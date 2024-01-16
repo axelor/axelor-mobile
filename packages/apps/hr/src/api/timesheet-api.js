@@ -55,6 +55,25 @@ const createTimesheetToValidateCriteria = (searchValue, user) => {
   return criteria;
 };
 
+const createDraftTimesheetCriteria = userId => {
+  const criteria = [
+    {
+      fieldName: 'statusSelect',
+      operator: '=',
+      value: Timesheet.statusSelect.Draft,
+    },
+  ];
+
+  if (userId != null) {
+    criteria.push({
+      fieldName: 'employee.user.id',
+      operator: '=',
+      value: userId,
+    });
+  }
+  return criteria;
+};
+
 export async function fetchTimesheet({searchValue = null, userId, page = 0}) {
   return createStandardSearch({
     model: 'com.axelor.apps.hr.db.Timesheet',
@@ -73,8 +92,8 @@ export async function fetchTimesheetToValidate({
   return createStandardSearch({
     model: 'com.axelor.apps.hr.db.Timesheet',
     criteria: createTimesheetToValidateCriteria(searchValue, user),
-    fieldKey: 'hr_timesheet',
-    sortKey: 'hr_timesheet',
+    fieldKey: 'hr_draftTimesheet',
+    sortKey: 'hr_draftTimesheet',
     page,
   });
 }
@@ -84,5 +103,15 @@ export async function fetchTimesheetById({timesheetId}) {
     model: 'com.axelor.apps.hr.db.Timesheet',
     id: timesheetId,
     fieldKey: 'hr_timesheet',
+  });
+}
+
+export async function fetchDraftTimesheet({userId}) {
+  return createStandardSearch({
+    model: 'com.axelor.apps.hr.db.Timesheet',
+    criteria: createDraftTimesheetCriteria(userId),
+    fieldKey: 'hr_expenseDraft',
+    numberElementsByPage: null,
+    page: 0,
   });
 }

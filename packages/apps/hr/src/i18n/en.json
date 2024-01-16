@@ -64,6 +64,11 @@
   "Hr_ActiveTimer": "Active timer",
   "Hr_CreateTimer": "Create a timer",
   "Hr_Product": "Activity",
+  "Hr_SelectTimers": "Select timers",
+  "Hr_TimesheetToLink": "Timesheet to link",
+  "Hr_TimesheetAlreadyExists": "Caution, a timesheet already exists for those dates",
+  "Hr_StartDate": "Start date",
+  "Hr_EndDate": "End date",
   "Hr_SliceAction_FetchExpenseLines": "fetch expense lines",
   "Hr_SliceAction_SearchDraftExpense": "fetch draft expenses",
   "Hr_SliceAction_FetchExpense": "fetch expenses",
@@ -97,5 +102,6 @@
   "Hr_SliceAction_FetchManufOrder": "fetch manufacturing order",
   "Hr_SliceAction_FetchOperationOrder": "fetch operation order",
   "Hr_SliceAction_FetchTimesheetById": "fetch timesheet by id",
-  "Hr_SliceAction_FetchTimesheetLine": "fetch timesheet line"
+  "Hr_SliceAction_FetchTimesheetLine": "fetch timesheet line",
+  "Hr_SliceAction_FetchDraftTimesheet": "fetch draft timesheet"
 }

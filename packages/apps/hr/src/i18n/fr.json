@@ -64,6 +64,11 @@
   "Hr_ActiveTimer": "Chronomètre actif",
   "Hr_CreateTimer": "Créer un chronomètre",
   "Hr_Product": "Activité",
+  "Hr_SelectTimers": "Sélectionner des chronomètres",
+  "Hr_TimesheetToLink": "Feuille de temps à lier",
+  "Hr_TimesheetAlreadyExists": "Attention, une feuille de temps existe déjà pour ses dates",
+  "Hr_StartDate": "Date de début",
+  "Hr_EndDate": "Date de fin",
   "Hr_SliceAction_FetchExpenseLines": "récupération des lignes de frais",
   "Hr_SliceAction_SearchDraftExpense": "récupération des notes de frais brouillon",
   "Hr_SliceAction_FetchExpense": "récupération des notes de frais",
@@ -97,5 +102,6 @@
   "Hr_SliceAction_FetchManufOrder": "récupération des ordres de fabrication",
   "Hr_SliceAction_FetchOperationOrder": "récupération des opérations de fabrication",
   "Hr_SliceAction_FetchTimesheetById": "récuperation d'une feuille de temps par id",
-  "Hr_SliceAction_FetchTimesheetLine": "récupération des lignes d'une feuille de temps"
+  "Hr_SliceAction_FetchTimesheetLine": "récupération des lignes d'une feuille de temps",
+  "Hr_SliceAction_FetchDraftTimesheet": "récupération des feuilles de temps brouillon"
 }

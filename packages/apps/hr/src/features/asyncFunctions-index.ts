@@ -55,6 +55,7 @@ export {
 export {fetchTimer} from './timerSlice';
 export {fetchTimesheetLine} from './timesheetLineSlice';
 export {
+  fetchDraftTimesheet,
   fetchTimesheet,
   fetchTimesheetById,
   fetchTimesheetToValidate,
