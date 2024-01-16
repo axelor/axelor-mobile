@@ -18,28 +18,18 @@
 
 import React, {useCallback, useEffect, useMemo} from 'react';
 import {useDispatch, useSelector} from 'react-redux';
-import {useThemeColor} from '@axelor/aos-mobile-ui';
-import {FormView} from '../components';
+import {CustomFieldForm} from '../components';
 import {
   fetchJsonFieldsOfModel,
   fetchObject,
   updateJsonFieldsObject,
 } from '../features/metaJsonFieldSlice';
-import {
-  formConfigsProvider,
-  mapFormToStudioFields,
-  mapStudioFields,
-  mapStudioFieldsWithFormula,
-} from '../forms';
-import {isEmpty} from '../utils';
+import {mapFormToStudioFields} from '../forms';
 import {headerActionsProvider} from '../header';
 import {useTranslator} from '../i18n';
 
-const FORM_KEY = 'attrs-form';
-
 const JsonFieldScreen = ({route}) => {
   const {model, modelId} = route.params;
-  const Colors = useThemeColor();
   const I18n = useTranslator();
   const dispatch = useDispatch();
 
@@ -56,39 +46,6 @@ const JsonFieldScreen = ({route}) => {
     refresh();
   }, [refresh]);
 
-  const {fields, panels, defaults} = useMemo(
-    () => mapStudioFields(mapStudioFieldsWithFormula(_fields, object), Colors),
-    [Colors, _fields, object],
-  );
-
-  useEffect(() => {
-    formConfigsProvider.registerForm(
-      FORM_KEY,
-      {
-        readonlyIf: () => false,
-        fields,
-        panels,
-      },
-      {replaceOld: true},
-    );
-  }, [fields, panels]);
-
-  const attrsValues = useMemo(() => {
-    if (isEmpty(object)) {
-      return {};
-    }
-
-    let result = {};
-
-    Object.entries(object)
-      .filter(([key]) => key.toLowerCase().includes('attrs'))
-      .forEach(([_, value]: [string, string]) => {
-        result = {...result, ...JSON.parse(value)};
-      });
-
-    return result;
-  }, [object]);
-
   useEffect(() => {
     headerActionsProvider.registerModel('core_metaJsonFields_details', {
       actions: [
@@ -104,28 +61,33 @@ const JsonFieldScreen = ({route}) => {
     });
   }, [I18n, refresh]);
 
-  return (
-    <FormView
-      actions={[
-        {
-          key: 'validateChanges',
-          type: 'custom',
-          needRequiredFields: true,
-          needValidation: true,
-          customAction: ({objectState}) => {
-            dispatch(
-              (updateJsonFieldsObject as any)({
-                modelName: model,
-                id: object.id,
-                version: object.version,
-                values: mapFormToStudioFields(_fields, objectState),
-              }),
-            );
-          },
+  const additionalActions = useMemo(
+    () => [
+      {
+        key: 'validateChanges',
+        type: 'custom',
+        needRequiredFields: true,
+        needValidation: true,
+        customAction: ({objectState}) => {
+          dispatch(
+            (updateJsonFieldsObject as any)({
+              modelName: model,
+              id: object.id,
+              version: object.version,
+              values: mapFormToStudioFields(_fields, objectState),
+            }),
+          );
         },
-      ]}
-      formKey={FORM_KEY}
-      defaultValue={attrsValues == null ? {...defaults} : attrsValues}
+      },
+    ],
+    [dispatch, model, object, _fields],
+  );
+
+  return (
+    <CustomFieldForm
+      model={model}
+      modelId={modelId}
+      additionalActions={additionalActions}
     />
   );
 };

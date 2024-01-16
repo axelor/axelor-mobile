@@ -18,7 +18,38 @@
 
 import {axiosApiProvider} from '../../apiProviders';
 
-export async function fetchJsonFieldsOfModel({modelName}: {modelName: string}) {
+const createJsonFieldsOfModelCriteria = (modelName: string, type: string) => {
+  const criteria = [
+    {
+      fieldName: 'model',
+      operator: '=',
+      value: modelName,
+    },
+    {
+      fieldName: 'isVisibleInMobileApp',
+      operator: '=',
+      value: true,
+    },
+  ];
+
+  if (type != null) {
+    criteria.push({
+      fieldName: 'modelField',
+      operator: '=',
+      value: type,
+    });
+  }
+
+  return criteria;
+};
+
+export async function fetchJsonFieldsOfModel({
+  modelName,
+  type,
+}: {
+  modelName: string;
+  type: string;
+}) {
   if (modelName == null) {
     return null;
   }
@@ -28,18 +59,7 @@ export async function fetchJsonFieldsOfModel({modelName}: {modelName: string}) {
     data: {
       data: {
         operator: 'and',
-        criteria: [
-          {
-            fieldName: 'model',
-            operator: '=',
-            value: modelName,
-          },
-          {
-            fieldName: 'isVisibleInMobileApp',
-            operator: '=',
-            value: true,
-          },
-        ],
+        criteria: createJsonFieldsOfModelCriteria(modelName, type),
       },
       limit: null,
     },
