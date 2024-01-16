@@ -155,6 +155,9 @@
   "Base_FormAction_Refresh": "Actualiser",
   "Base_FormAction_Reset": "Réinitialiser",
   "Base_SelectAll": "Tout sélectionner",
+  "Base_Dashboard": "Tableau de bord",
+  "Base_Dashboard_Misconfigured": "Ce tableau de bord est mal configuré, veuillez contacter votre administrateur.",
+  "Base_Dashboard_RefreshConfig": "Actualiser le tableau de bord",
   "Base_SliceAction_FetchAttachedFiles": "récupération des fichiers joints",
   "Base_SliceAction_FetchFilesDetails": "récupération des détails du fichier",
   "Base_SliceAction_FetchMetaModule": "récupération des modules",
@@ -176,5 +179,6 @@
   "Base_SliceAction_FetchDataOfModel": "récupération des données du model",
   "Base_SliceAction_UpdateJsonFieldsObject": "mise à jour des champs studio de l'objet",
   "Base_SliceAction_FetchAnomalies": "récupération des anomalies d'un object",
-  "Base_SliceAction_SearchUser": "récupération des utilisateurs"
+  "Base_SliceAction_SearchUser": "récupération des utilisateurs",
+  "Base_SliceAction_FetchDashboardConfigs": "récupération des configurations de tableaux de bord"
 }
