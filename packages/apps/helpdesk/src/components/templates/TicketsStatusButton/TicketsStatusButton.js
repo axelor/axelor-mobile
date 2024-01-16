@@ -23,13 +23,12 @@ import {
   useTranslator,
   getNowDateZonesISOString,
 } from '@axelor/aos-mobile-core';
-import {Button, useThemeColor} from '@axelor/aos-mobile-ui';
+import {Button} from '@axelor/aos-mobile-ui';
 import {Ticket} from '../../../types';
 import {updateTicketStatus} from '../../../features/ticketSlice';
 
 const TicketsStatusButton = ({}) => {
   const I18n = useTranslator();
-  const Colors = useThemeColor();
   const dispatch = useDispatch();
 
   const {ticket} = useSelector(state => state.ticket);
