@@ -20,7 +20,7 @@
     "lint": "eslint .",
     "format": "prettier --write src/",
     "format:check": "prettier --check src/",
-    "license:add": "npx add-copyright-header --generate --dir 'src' && npx add-copyright-header --generate --dir 'stories'"
+    "license:add": "npx add-copyright-header --generate --dir 'src' && npx add-copyright-header --generate --dir 'stories' && npx add-copyright-header --generate --dir '__tests__'"
   },
   "peerDependencies": {
     "react": "*",
