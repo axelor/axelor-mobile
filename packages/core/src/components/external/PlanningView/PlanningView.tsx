@@ -343,7 +343,7 @@ const getStyles = (Colors, assignedToMeSwitch) =>
     headerButton: {
       flexDirection: 'row',
       alignItems: 'center',
-      marginRight: 10,
+      marginRight: 5,
     },
     switchCard: {
       width: '45%',
