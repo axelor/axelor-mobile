@@ -17,6 +17,7 @@
  */
 
 import {FormConfigs} from '@axelor/aos-mobile-core';
+import {DurationInput} from '@axelor/aos-mobile-ui';
 import {
   ActiveTimerStopwatch,
   BillableSwitchCard,
@@ -338,9 +339,9 @@ export const hr_formsRegister: FormConfigs = {
       },
       duration: {
         titleKey: 'Hr_Duration',
-        type: 'number',
-        widget: 'increment',
-        required: true,
+        type: 'string',
+        widget: 'custom',
+        customComponent: DurationInput,
       },
       comments: {
         titleKey: 'Hr_Comments',
