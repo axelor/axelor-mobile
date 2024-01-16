@@ -41,7 +41,7 @@ const routes = {
     AppStock: '/ws/rest/com.axelor.studio.db.AppStock',
     AppSupplychain: '/ws/rest/com.axelor.studio.db.AppSupplychain',
     AppTimesheet: '/ws/rest/com.axelor.studio.db.AppTimesheet',
-    AppMobileSettings: '/ws/rest/com.axelor.studio.db.AppMobileSettings',
+    AppMobileSettings: '/ws/aos/mobilesettings',
     AppProduction: 'ws/rest/com.axelor.studio.db.AppProduction',
     TraceBack: '/ws/rest/com.axelor.apps.base.db.TraceBack',
     EmailAddress: '/ws/rest/com.axelor.message.db.EmailAddress',
