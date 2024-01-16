@@ -111,8 +111,6 @@
   "Stock_NoTrackingNumberConfigured": "Aucun numéro de suivi configuré",
   "Stock_FromStockLocation": "Emplacement stock source",
   "Stock_ToStockLocation": "Vers l'emplacement de stock",
-  "Stock_DefineLines": "Compléter les lignes",
-  "Stock_LinesAdded": "Lignes ajoutées",
   "Stock_Products": "Produits",
   "Stock_Quantity": "Quantité",
   "Stock_Remove": "Retirer",
