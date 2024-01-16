@@ -16,6 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+export {default as CustomFieldForm} from './CustomFieldForm/CustomFieldForm';
 export {default as FormView} from './FormView/FormView';
 export * from './FormView/Alerts';
 export {
