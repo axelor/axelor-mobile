@@ -32,11 +32,11 @@ const MenuSeparator = ({title, iconSize = 15}) => {
       <View style={styles.menuItemContainer}>
         <Icon
           style={styles.menuItemIcon}
-          name={'chevron-right'}
+          name="chevron-right"
           size={iconSize}
           color={Colors.secondaryColor.background}
         />
-        <Text style={styles.menuItemTitle}>{title}</Text>
+        <Text>{title}</Text>
       </View>
       <View style={styles.borderSeparator} />
     </View>
@@ -58,10 +58,6 @@ const getStyles = Colors =>
     },
     menuItemIcon: {
       marginRight: 5,
-    },
-    menuItemTitle: {
-      fontSize: 16,
-      color: Colors.secondaryColor.background,
     },
     borderSeparator: {
       width: '60%',
