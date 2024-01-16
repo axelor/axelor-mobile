@@ -157,6 +157,7 @@
   "Base_SelectAll": "Select all",
   "Base_Dashboard": "Dashboard",
   "Base_Dashboard_Misconfigured": "This dashboard is misconfigured, please contact your administrator.",
+  "Base_Dashboard_RefreshConfig": "Refresh dashboard",
   "Base_SliceAction_FetchAttachedFiles": "fetch attached files",
   "Base_SliceAction_FetchFilesDetails": "fetch file details",
   "Base_SliceAction_FetchMetaModule": "fetch meta modules",
@@ -178,5 +179,6 @@
   "Base_SliceAction_FetchDataOfModel": "fetch data of model",
   "Base_SliceAction_UpdateJsonFieldsObject": "update custom fields of object",
   "Base_SliceAction_FetchAnomalies": "fetch anomalies of object",
-  "Base_SliceAction_SearchUser": "search user"
+  "Base_SliceAction_SearchUser": "search user",
+  "Base_SliceAction_FetchDashboardConfigs": "fetch dashboard configurations"
 }

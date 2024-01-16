@@ -57,7 +57,7 @@ export const DashboardScreen = ({dashboardId}) => {
           order: 10,
           showInHeader: false,
           iconName: 'arrow-repeat',
-          title: I18n.t('Base_Studio_RefreshConfig'),
+          title: I18n.t('Base_Dashboard_RefreshConfig'),
           onPress: refresh,
         },
       ],
