@@ -17,8 +17,13 @@
  */
 
 import React, {useEffect} from 'react';
+import {
+  formatDate,
+  useSelector,
+  useDispatch,
+  useTranslator,
+} from '@axelor/aos-mobile-core';
 import {Picker} from '@axelor/aos-mobile-ui';
-import {useSelector, useDispatch, useTranslator} from '@axelor/aos-mobile-core';
 import {fetchDraftTimesheet} from '../../../features/timesheetSlice';
 
 interface DraftTimesheetPickerProps {
@@ -48,13 +53,21 @@ const DraftTimesheetPicker = ({
     dispatch((fetchDraftTimesheet as any)({userId: user?.id}));
   }, [dispatch, user?.id]);
 
+  const displayValue = item => {
+    return `${formatDate(
+      item.fromDate,
+      I18n.t('Base_DateFormat'),
+    )} - ${formatDate(item.toDate, I18n.t('Base_DateFormat'))}`;
+  };
+
   return (
     <Picker
       style={style}
       title={I18n.t(title)}
       defaultValue={defaultValue}
       listItems={draftTimesheetList}
-      labelField="fullName"
+      displayValue={displayValue}
+      labelField="id"
       valueField="id"
       emptyValue={false}
       onValueChange={onChange}

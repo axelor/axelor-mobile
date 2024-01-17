@@ -66,7 +66,7 @@
   "Hr_Product": "Activité",
   "Hr_SelectTimers": "Sélectionner des chronomètres",
   "Hr_TimesheetToLink": "Feuille de temps à lier",
-  "Hr_TimesheetAlreadyExists": "Attention, une feuille de temps existe déjà pour ses dates",
+  "Hr_TimesheetAlreadyExists": "Attention, une feuille de temps existe déjà pour ces dates",
   "Hr_StartDate": "Date de début",
   "Hr_EndDate": "Date de fin",
   "Hr_SliceAction_FetchExpenseLines": "récupération des lignes de frais",

@@ -55,7 +55,7 @@ const createTimesheetToValidateCriteria = (searchValue, user) => {
   return criteria;
 };
 
-const createDraftTimesheetCriteria = userId => {
+const createDraftTimesheetCriteria = (userId, fromDate, toDate) => {
   const criteria = [
     {
       fieldName: 'statusSelect',
@@ -71,6 +71,23 @@ const createDraftTimesheetCriteria = userId => {
       value: userId,
     });
   }
+
+  if (fromDate != null) {
+    criteria.push({
+      fieldName: 'fromDate',
+      operator: '>=',
+      value: fromDate,
+    });
+  }
+
+  if (toDate != null) {
+    criteria.push({
+      fieldName: 'toDate',
+      operator: '<=',
+      value: toDate,
+    });
+  }
+
   return criteria;
 };
 
@@ -92,8 +109,8 @@ export async function fetchTimesheetToValidate({
   return createStandardSearch({
     model: 'com.axelor.apps.hr.db.Timesheet',
     criteria: createTimesheetToValidateCriteria(searchValue, user),
-    fieldKey: 'hr_draftTimesheet',
-    sortKey: 'hr_draftTimesheet',
+    fieldKey: 'hr_timesheet',
+    sortKey: 'hr_timesheet',
     page,
   });
 }
@@ -106,11 +123,11 @@ export async function fetchTimesheetById({timesheetId}) {
   });
 }
 
-export async function fetchDraftTimesheet({userId}) {
+export async function fetchDraftTimesheet({userId, fromDate, toDate}) {
   return createStandardSearch({
     model: 'com.axelor.apps.hr.db.Timesheet',
-    criteria: createDraftTimesheetCriteria(userId),
-    fieldKey: 'hr_expenseDraft',
+    criteria: createDraftTimesheetCriteria(userId, fromDate, toDate),
+    fieldKey: 'hr_timesheet',
     numberElementsByPage: null,
     page: 0,
   });
