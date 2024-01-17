@@ -17,9 +17,10 @@
  */
 
 import React, {useCallback, useEffect, useMemo, useRef, useState} from 'react';
-import {Platform, StyleSheet, View} from 'react-native';
+import {Dimensions, Platform, StyleSheet, View} from 'react-native';
 import useTranslator from '../../../i18n/hooks/use-translator';
 import {
+  Alert,
   Card,
   getCommonStyles,
   Icon,
@@ -33,24 +34,138 @@ import {
 import {DatePicker} from '../../molecules';
 import DateInputUtils from './date-input.helper';
 
+const ACTION_ICON_SIZE = 30;
+
+interface DateInputSelectionProps {
+  mode: 'date' | 'datetime' | 'time';
+  nullable: boolean;
+  popup: boolean;
+  currentDate: Date;
+  selectedDate: Date;
+  setSelectedDate: (date: Date) => void;
+  onDateChange: (date: Date) => void;
+  setPickerIsOpen: (pickerIsOpen: boolean) => void;
+}
+
+const DateInputSelection = ({
+  mode,
+  nullable,
+  popup,
+  currentDate,
+  selectedDate,
+  setSelectedDate,
+  onDateChange,
+  setPickerIsOpen,
+}: DateInputSelectionProps) => {
+  const Colors = useThemeColor();
+
+  const [pickerWidth, setPickerWidth] = useState<number>(
+    Dimensions.get('window').width * 0.8,
+  );
+
+  const onCheckDate = useCallback(() => {
+    if (!selectedDate) {
+      setSelectedDate(currentDate);
+      onDateChange(currentDate);
+      setPickerIsOpen(false);
+    } else {
+      onDateChange(selectedDate);
+      setPickerIsOpen(false);
+    }
+  }, [
+    currentDate,
+    onDateChange,
+    selectedDate,
+    setPickerIsOpen,
+    setSelectedDate,
+  ]);
+
+  const onClearDate = useCallback(() => {
+    setSelectedDate(null);
+    setPickerIsOpen(false);
+  }, [setPickerIsOpen, setSelectedDate]);
+
+  return (
+    <>
+      <View
+        onLayout={event => {
+          if (!popup) {
+            const {width} = event.nativeEvent.layout;
+            setPickerWidth(width);
+          }
+        }}
+        style={
+          popup
+            ? selectionstyles.datePickerContainerPopup
+            : selectionstyles.datePickerContainer
+        }>
+        <DatePicker
+          defaultDate={selectedDate || currentDate}
+          onDateChange={setSelectedDate}
+          mode={mode}
+          pickerWidth={pickerWidth}
+        />
+      </View>
+      <View style={selectionstyles.actionContainer}>
+        <Icon
+          name="check-circle-fill"
+          color={Colors.primaryColor.background}
+          size={ACTION_ICON_SIZE}
+          touchable={true}
+          onPress={onCheckDate}
+          style={selectionstyles.actionButton}
+        />
+        {nullable && (
+          <Icon
+            name="x-circle-fill"
+            color={Colors.primaryColor.background}
+            size={ACTION_ICON_SIZE}
+            touchable={true}
+            onPress={onClearDate}
+            style={selectionstyles.actionButton}
+          />
+        )}
+      </View>
+    </>
+  );
+};
+
+const selectionstyles = StyleSheet.create({
+  actionButton: {
+    marginLeft: 10,
+  },
+  actionContainer: {
+    flexDirection: 'row',
+    justifyContent: 'flex-end',
+    alignItems: 'flex-end',
+    alignSelf: 'flex-end',
+  },
+  datePickerContainer: {
+    flex: 1,
+  },
+  datePickerContainerPopup: {
+    marginTop: 10,
+  },
+});
+
 interface DateInputProps {
   title: string;
   defaultDate?: Date;
   mode?: 'date' | 'datetime' | 'time';
   nullable?: boolean;
+  popup?: boolean;
   onDateChange: (date: Date) => void;
   style?: any;
   readonly?: boolean;
   required?: boolean;
 }
 
-const ACTION_ICON_SIZE = 30;
-
 const DateInput = ({
   title,
   defaultDate,
   mode = 'datetime',
   nullable = false,
+  popup = false,
   onDateChange,
   style,
   readonly = false,
@@ -61,7 +176,6 @@ const DateInput = ({
 
   const currentDate = useMemo(() => new Date(), []);
 
-  const [pickerWidth, setPickerWidth] = useState<number>();
   const [pickerIsOpen, setPickerIsOpen] = useState(false);
   const [selectedDate, setSelectedDate] = useState(defaultDate);
 
@@ -90,22 +204,6 @@ const DateInput = ({
       setPickerIsOpen(current => !current);
     }
   };
-
-  const onCheckDate = useCallback(() => {
-    if (!selectedDate) {
-      setSelectedDate(currentDate);
-      onDateChange(currentDate);
-      setPickerIsOpen(false);
-    } else {
-      onDateChange(selectedDate);
-      setPickerIsOpen(false);
-    }
-  }, [onDateChange, selectedDate, currentDate]);
-
-  const onClearDate = useCallback(() => {
-    setSelectedDate(null);
-    setPickerIsOpen(false);
-  }, []);
 
   const commonStyles = useMemo(
     () => getCommonStyles(Colors, _required),
@@ -150,43 +248,40 @@ const DateInput = ({
         ]}
       />
       <View style={Platform.OS === 'ios' ? styles.dropdownContainer : null}>
-        {pickerIsOpen ? (
-          <Card style={styles.selectionContainer}>
-            <View
-              onLayout={event => {
-                const {width} = event.nativeEvent.layout;
-                setPickerWidth(width);
-              }}
-              style={styles.datePickerContainer}>
-              <DatePicker
-                defaultDate={selectedDate || currentDate}
-                onDateChange={setSelectedDate}
+        {popup ? (
+          <Alert
+            visible={pickerIsOpen}
+            cancelButtonConfig={{
+              showInHeader: true,
+              onPress: () => setPickerIsOpen(false),
+            }}>
+            <DateInputSelection
+              mode={mode}
+              nullable={nullable}
+              popup={popup}
+              currentDate={currentDate}
+              selectedDate={selectedDate}
+              setSelectedDate={setSelectedDate}
+              onDateChange={onDateChange}
+              setPickerIsOpen={setPickerIsOpen}
+            />
+          </Alert>
+        ) : (
+          pickerIsOpen && (
+            <Card style={styles.selectionContainer}>
+              <DateInputSelection
                 mode={mode}
-                pickerWidth={pickerWidth}
+                nullable={nullable}
+                popup={popup}
+                currentDate={currentDate}
+                selectedDate={selectedDate}
+                setSelectedDate={setSelectedDate}
+                onDateChange={onDateChange}
+                setPickerIsOpen={setPickerIsOpen}
               />
-            </View>
-            <View style={styles.actionContainer}>
-              <Icon
-                name="check-circle-fill"
-                color={Colors.primaryColor.background}
-                size={ACTION_ICON_SIZE}
-                touchable={true}
-                onPress={onCheckDate}
-                style={styles.actionButton}
-              />
-              {nullable && (
-                <Icon
-                  name="x-circle-fill"
-                  color={Colors.primaryColor.background}
-                  size={ACTION_ICON_SIZE}
-                  touchable={true}
-                  onPress={onClearDate}
-                  style={styles.actionButton}
-                />
-              )}
-            </View>
-          </Card>
-        ) : null}
+            </Card>
+          )
+        )}
       </View>
     </View>
   );
@@ -198,22 +293,11 @@ const getStyles = (
   required: boolean,
 ) =>
   StyleSheet.create({
-    actionButton: {
-      marginLeft: 10,
-    },
-    actionContainer: {
-      flexDirection: 'row',
-      justifyContent: 'flex-end',
-      alignItems: 'flex-end',
-    },
     container: {
       width: '100%',
     },
     containerZIndex: {
       zIndex: pickerIsOpen ? 100 : 0,
-    },
-    datePickerContainer: {
-      flex: 1,
     },
     rightIconButton: {
       borderColor: required
