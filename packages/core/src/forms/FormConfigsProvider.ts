@@ -26,15 +26,19 @@ export interface RegisterOptions {
 
 class FormConfigsProvider {
   private formConfigs: FormConfigs;
-  private refreshCallBack: Function;
+  private refreshCallBack: Function[];
 
   constructor() {
     this.formConfigs = {};
-    this.refreshCallBack = () => {};
+    this.refreshCallBack = [];
   }
 
   register(callBack) {
-    this.refreshCallBack = callBack;
+    this.refreshCallBack.push(callBack);
+  }
+
+  unregister(callBack) {
+    this.refreshCallBack = this.refreshCallBack.filter(_f => _f !== callBack);
   }
 
   init(configs: FormConfigs) {
@@ -42,7 +46,7 @@ class FormConfigsProvider {
   }
 
   private updateState() {
-    this.refreshCallBack(this.formConfigs);
+    this.refreshCallBack.forEach(_f => _f(this.formConfigs));
   }
 
   getFormConfig(key: string): Form {
@@ -71,6 +75,10 @@ export const useFormConfig = (modelKey: string): {config: Form} => {
 
   useEffect(() => {
     formConfigsProvider.register(setForms);
+
+    return () => {
+      formConfigsProvider.unregister(setForms);
+    };
   }, []);
 
   const getFormConfigOfModel = useCallback(
