@@ -55,4 +55,4 @@ export {
   fetchTimesheetById as fetchTimesheetByIdApi,
   fetchTimesheetToValidate as fetchTimesheetToValidateApi,
 } from './timesheet-api';
-export {fetchTimesheetLineSlice as fetchTimesheetLineSliceApi} from './timesheet-line-api';
+export {fetchTimesheetLine as fetchTimesheetLineApi} from './timesheet-line-api';

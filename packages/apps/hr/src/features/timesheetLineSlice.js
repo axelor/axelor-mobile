@@ -21,13 +21,13 @@ import {
   generateInifiniteScrollCases,
   handlerApiCall,
 } from '@axelor/aos-mobile-core';
-import {fetchTimesheetLineSlice as _fetchTimesheetLineSlice} from '../api/timesheet-line-api';
+import {fetchTimesheetLine as _fetchTimesheetLine} from '../api/timesheet-line-api';
 
-export const fetchTimesheetLineSlice = createAsyncThunk(
-  'timesheetLine/fetchExpenseLine',
+export const fetchTimesheetLine = createAsyncThunk(
+  'timesheetLine/fetchTimesheetLine',
   async function (data, {getState}) {
     return handlerApiCall({
-      fetchFunction: _fetchTimesheetLineSlice,
+      fetchFunction: _fetchTimesheetLine,
       data,
       action: 'Hr_SliceAction_FetchTimesheetLine',
       getState,
@@ -47,7 +47,7 @@ const timesheetLineSlice = createSlice({
   name: 'timesheetLine',
   initialState,
   extraReducers: builder => {
-    generateInifiniteScrollCases(builder, fetchTimesheetLineSlice, {
+    generateInifiniteScrollCases(builder, fetchTimesheetLine, {
       loading: 'loadingTimesheetLine',
       moreLoading: 'moreLoading',
       isListEnd: 'isListEnd',

@@ -30,7 +30,7 @@ import {
   TimesheetHeader,
 } from '../../components';
 import {fetchTimesheetById} from '../../features/timesheetSlice';
-import {fetchTimesheetLineSlice} from '../../features/timesheetLineSlice';
+import {fetchTimesheetLine} from '../../features/timesheetLineSlice';
 import {Time, Timesheet} from '../../types';
 
 const TimesheetDetailsScreen = ({route}) => {
@@ -53,9 +53,7 @@ const TimesheetDetailsScreen = ({route}) => {
 
   const fetchTimesheetLineAPI = useCallback(
     (page = 0) => {
-      dispatch(
-        fetchTimesheetLineSlice({timesheetId: timesheet?.id, page: page}),
-      );
+      dispatch(fetchTimesheetLine({timesheetId: timesheet?.id, page: page}));
     },
     [dispatch, timesheet],
   );

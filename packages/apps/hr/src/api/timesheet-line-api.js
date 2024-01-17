@@ -22,20 +22,17 @@ import {
 } from '@axelor/aos-mobile-core';
 
 const createTimesheetLineCriteria = (searchValue, timesheetId) => {
-  const criteria = [getSearchCriterias('hr_timesheetLine', searchValue)];
-
-  if (timesheetId != null) {
-    criteria.push({
+  return [
+    {
       fieldName: 'timesheet.id',
       operator: '=',
       value: timesheetId,
-    });
-  }
-
-  return criteria;
+    },
+    getSearchCriterias('hr_timesheetLine', searchValue),
+  ];
 };
 
-export async function fetchTimesheetLineSlice({
+export async function fetchTimesheetLine({
   searchValue = null,
   timesheetId,
   page = 0,
