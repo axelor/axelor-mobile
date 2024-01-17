@@ -16,16 +16,4 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import ControlEntryListScreen from './ControlEntryListScreen';
-
-export default {
-  ControlEntryListScreen: {
-    title: 'Quality_ControlEntry',
-    component: ControlEntryListScreen,
-    options: {
-      shadedHeader: false,
-    },
-  },
-};
-
-export {ControlEntryListScreen};
+export {controlEntryReducer as controlEntry} from './controlEntrySlice';

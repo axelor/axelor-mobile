@@ -15,17 +15,22 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
+import {
+  createStandardSearch,
+  getSearchCriterias,
+} from '@axelor/aos-mobile-core';
 
-import ControlEntryListScreen from './ControlEntryListScreen';
-
-export default {
-  ControlEntryListScreen: {
-    title: 'Quality_ControlEntry',
-    component: ControlEntryListScreen,
-    options: {
-      shadedHeader: false,
-    },
-  },
+const createControlEntryCriteria = searchValue => {
+  const criteria = [getSearchCriterias('quality_controlEntry', searchValue)];
+  return criteria;
 };
 
-export {ControlEntryListScreen};
+export async function searchControlEntry({searchValue = null, page = 0}) {
+  return createStandardSearch({
+    model: 'com.axelor.apps.quality.db.ControlEntry',
+    criteria: createControlEntryCriteria(searchValue),
+    fieldKey: 'quality_controlEntry',
+    sortKey: 'quality_controlEntry',
+    page: page,
+  });
+}

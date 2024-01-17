@@ -5,9 +5,9 @@ export const app_config = {
    * when the application is running in debug mode
    */
   testInstanceConfig: {
-    defaultUrl: '',
+    defaultUrl: 'http://72849-preview.cloud-sw1.axelor.io/',
     defaultUsername: '',
-    defaultPassword: '',
+    defaultPassword: 'admin',
   },
 
   /*

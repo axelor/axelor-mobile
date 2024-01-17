@@ -16,16 +16,6 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import ControlEntryListScreen from './ControlEntryListScreen';
-
-export default {
-  ControlEntryListScreen: {
-    title: 'Quality_ControlEntry',
-    component: ControlEntryListScreen,
-    options: {
-      shadedHeader: false,
-    },
-  },
-};
-
-export {ControlEntryListScreen};
+export {quality_searchFields} from './searchFields';
+export {quality_sortFields} from './sortFields';
+export {quality_modelAPI} from './objectFields';

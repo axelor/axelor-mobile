@@ -16,16 +16,8 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import ControlEntryListScreen from './ControlEntryListScreen';
+import {SortFields} from '@axelor/aos-mobile-core';
 
-export default {
-  ControlEntryListScreen: {
-    title: 'Quality_ControlEntry',
-    component: ControlEntryListScreen,
-    options: {
-      shadedHeader: false,
-    },
-  },
+export const quality_sortFields: SortFields = {
+  quality_controlEntry: ['entryDateTime', 'createdOn'],
 };
-
-export {ControlEntryListScreen};

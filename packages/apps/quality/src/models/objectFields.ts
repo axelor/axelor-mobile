@@ -16,16 +16,15 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import ControlEntryListScreen from './ControlEntryListScreen';
+import {ObjectFields, schemaContructor} from '@axelor/aos-mobile-core';
 
-export default {
-  ControlEntryListScreen: {
-    title: 'Quality_ControlEntry',
-    component: ControlEntryListScreen,
-    options: {
-      shadedHeader: false,
-    },
-  },
+export const quality_modelAPI: ObjectFields = {
+  quality_controlEntry: schemaContructor.object({
+    inspector: schemaContructor.subObject(),
+    name: schemaContructor.string(),
+    controlEntrySamplesList: schemaContructor
+      .array()
+      .of(schemaContructor.subObject()),
+    entryDateTime: schemaContructor.string(),
+  }),
 };
-
-export {ControlEntryListScreen};

@@ -1,7 +1,7 @@
 /*
  * Axelor Business Solutions
  *
- * Copyright (C) 2023 Axelor (<http://axelor.com>).
+ * Copyright (C) 2024 Axelor (<http://axelor.com>).
  *
  * This program is free software: you can redistribute it and/or  modify
  * it under the terms of the GNU Affero General Public License, version 3,
@@ -16,7 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import React from 'react';
+import React, {useEffect} from 'react';
 import {StyleSheet, View} from 'react-native';
 import {
   HeaderContainer,
@@ -25,10 +25,22 @@ import {
   ToggleButton,
   useThemeColor,
 } from '@axelor/aos-mobile-ui';
-import {DateInput} from '@axelor/aos-mobile-core';
+import {DateInput, useDispatch, useSelector} from '@axelor/aos-mobile-core';
+import {searchControlEntry} from '../features/controlEntrySlice';
 
 const ControlEntryListScreen = ({navigation}) => {
   const Colors = useThemeColor();
+  const dispatch = useDispatch();
+
+  const {userId} = useSelector(state => state.auth);
+  const {controlEntryList} = useSelector(state => state.controlEntry);
+
+  useEffect(() => {
+    dispatch(searchControlEntry({searchValue: null}));
+  }, [dispatch]);
+
+  console.log(userId);
+  console.log(controlEntryList);
 
   return (
     <Screen removeSpaceOnTop={true}>
