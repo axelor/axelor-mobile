@@ -16,7 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import React, {useCallback} from 'react';
+import React, {useCallback, useEffect} from 'react';
 import {
   changeDefaultStockLocation,
   UserScreen as AuthUserScreen,
@@ -45,6 +45,15 @@ const UserScreen = ({navigation}) => {
     },
     [dispatch],
   );
+
+  useEffect(() => {
+    if (!mobileSettings?.isStockLocationManagementEnabled) {
+      updateDefaultStockLocation(null);
+    }
+  }, [
+    mobileSettings?.isStockLocationManagementEnabled,
+    updateDefaultStockLocation,
+  ]);
 
   return (
     <AuthUserScreen navigation={navigation}>
