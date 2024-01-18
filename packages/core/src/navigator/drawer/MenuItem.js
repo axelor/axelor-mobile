@@ -21,6 +21,7 @@ import {getMenuTitle, hasSubMenus} from '../menu.helper';
 import useTranslator from '../../i18n/hooks/use-translator';
 import SubMenuItemList from './SubMenuItemList';
 import MenuItemEntry from './MenuItemEntry';
+import MenuSeparator from './MenuSeparator';
 
 const MenuItem = ({
   state,
@@ -46,6 +47,10 @@ const MenuItem = ({
         disabled={disabled}
       />
     );
+  }
+
+  if (menuItem.separator) {
+    return <MenuSeparator title={getMenuTitle(menuItem, {I18n})} />;
   }
 
   return (
