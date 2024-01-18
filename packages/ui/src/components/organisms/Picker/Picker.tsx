@@ -150,9 +150,9 @@ const Picker = ({
       if (displayValue) {
         return displayValue(item);
       } else if (labelField) {
-        return item?.[labelField];
+        return item[labelField];
       } else {
-        return item?.[valueField];
+        return item[valueField];
       }
     },
     [displayValue, labelField, valueField],
