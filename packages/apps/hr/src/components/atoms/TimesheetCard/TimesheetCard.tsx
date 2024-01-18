@@ -23,6 +23,7 @@ import {useTranslator} from '@axelor/aos-mobile-core';
 import DatesInterval from '../DatesInterval/DatesInterval';
 import TextUnit from '../TextUnit/TextUnit';
 import {Timesheet} from '../../../types';
+import {getDurationUnit} from '../../../utils';
 
 interface TimesheetCardProps {
   statusSelect: number;
@@ -30,6 +31,7 @@ interface TimesheetCardProps {
   endDate: string;
   company: string;
   totalDuration: number;
+  durationUnit: string;
   employeeName?: string;
   style?: any;
   onPress: () => void;
@@ -41,6 +43,7 @@ const TimesheetCard = ({
   endDate,
   company,
   totalDuration,
+  durationUnit,
   employeeName,
   style,
   onPress,
@@ -90,9 +93,9 @@ const TimesheetCard = ({
             {
               customComponent: (
                 <TextUnit
-                  style={styles.textUnit}
                   value={totalDuration}
-                  unit={I18n.t('Hr_TimeUnit_Hours')}
+                  unit={getDurationUnit(durationUnit, I18n)}
+                  style={styles.textUnit}
                 />
               ),
             },

@@ -16,19 +16,32 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import {SortFields} from '@axelor/aos-mobile-core';
+import {
+  createStandardSearch,
+  getSearchCriterias,
+} from '@axelor/aos-mobile-core';
 
-export const hr_sortFields: SortFields = {
-  hr_currency: ['name'],
-  hr_expense: ['-createdOn'],
-  hr_expenseLines: ['-expenseDate', '-createdOn'],
-  hr_expenseType: ['name', 'fullName'],
-  hr_kilomectricAllowParam: ['name', 'code'],
-  hr_manufOrder: ['manufOrderSeq'],
-  hr_operationOrder: ['name'],
-  hr_project: ['name', 'fullName'],
-  hr_projectTask: ['name', 'fullName'],
-  hr_timer: ['-startDateTime'],
-  hr_timesheet: ['-fromDate', '-toDate'],
-  hr_timesheetLine: ['-date', '-duration'],
+const createTimesheetLineCriteria = (searchValue, timesheetId) => {
+  return [
+    {
+      fieldName: 'timesheet.id',
+      operator: '=',
+      value: timesheetId,
+    },
+    getSearchCriterias('hr_timesheetLine', searchValue),
+  ];
 };
+
+export async function fetchTimesheetLine({
+  searchValue = null,
+  timesheetId,
+  page = 0,
+}) {
+  return createStandardSearch({
+    model: 'com.axelor.apps.hr.db.TimesheetLine',
+    criteria: createTimesheetLineCriteria(searchValue, timesheetId),
+    fieldKey: 'hr_timesheetLine',
+    sortKey: 'hr_timesheetLine',
+    page,
+  });
+}
