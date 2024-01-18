@@ -18,7 +18,6 @@
 
 import InternalMoveCreationScreen from './InternalMoveCreationScreen';
 import InternalMoveDetailsGeneralScreen from './InternalMoveDetailsGeneralScreen';
-import InternalMoveLineCreationScreen from './InternalMoveLineCreationScreen';
 import InternalMoveLineDetailsScreen from './InternalMoveLineDetailsScreen';
 import InternalMoveLineListScreen from './InternalMoveLineListScreen';
 import InternalMoveListScreen from './InternalMoveListScreen';
@@ -45,13 +44,6 @@ export default {
   InternalMoveCreationScreen: {
     title: 'Stock_InternalMove',
     component: InternalMoveCreationScreen,
-  },
-  InternalMoveLineCreationScreen: {
-    title: 'Stock_InternalMove',
-    component: InternalMoveLineCreationScreen,
-    options: {
-      shadedHeader: false,
-    },
   },
   InternalMoveLineDetailsScreen: {
     title: 'Stock_InternalMove',
@@ -85,7 +77,6 @@ export default {
 
 export {InternalMoveCreationScreen};
 export {InternalMoveDetailsGeneralScreen};
-export {InternalMoveLineCreationScreen};
 export {InternalMoveLineDetailsScreen};
 export {InternalMoveLineListScreen};
 export {InternalMoveListScreen};
