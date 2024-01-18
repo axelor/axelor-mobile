@@ -32,6 +32,31 @@ class TimesheetType {
     validation: 'toValidateMode',
   };
 
+  static getStatusName = (
+    status: number,
+    I18n: {t: (key: string) => string},
+  ): string => {
+    if (I18n) {
+      switch (status) {
+        case this.statusSelect.Draft:
+          return I18n.t('Hr_Status_Draft');
+        case this.statusSelect.WaitingValidation:
+          return I18n.t('Hr_Status_WaitingValidation');
+        case this.statusSelect.Validate:
+          return I18n.t('Hr_Status_Validate');
+        case this.statusSelect.Refused:
+          return I18n.t('Hr_Status_Refused');
+        case this.statusSelect.Canceled:
+          return I18n.t('Hr_Status_Canceled');
+        default:
+          console.warn(
+            `Status provided with value ${status} is not supported by Timesheet`,
+          );
+          return null;
+      }
+    }
+  };
+
   static getStatusColor = (status: number, Colors: ThemeColors): Color => {
     switch (status) {
       case this.statusSelect.Draft:
@@ -39,7 +64,7 @@ class TimesheetType {
       case this.statusSelect.WaitingValidation:
         return Colors.cautionColor;
       case this.statusSelect.Validate:
-        return Colors.primaryColor;
+        return Colors.successColor;
       case this.statusSelect.Refused:
         return Colors.importantColor;
       case this.statusSelect.Canceled:
