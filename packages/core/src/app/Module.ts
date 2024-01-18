@@ -20,15 +20,28 @@ import {Reducer} from '@reduxjs/toolkit';
 import {Schema} from 'yup';
 import {FormConfigs} from '../forms/types';
 
-interface MenuBase {
+interface MinimumMenuFields {
   title: string;
-  icon?: string;
-  disabled?: boolean;
   hideIf?: (storeState: any) => boolean;
-  compatibilityAOS?: Compatibility;
   parent?: string;
   order?: number;
 }
+
+interface MenuSeparator extends MinimumMenuFields {
+  separator: true;
+}
+
+interface MenuBase extends MinimumMenuFields {
+  icon: string;
+  disabled?: boolean;
+  compatibilityAOS?: Compatibility;
+}
+
+interface MenuWithScreen extends MenuBase {
+  screen: string;
+}
+
+export interface SubMenu extends MenuWithScreen {}
 
 interface MenuWithSubMenus extends MenuBase {
   subMenus: {
@@ -36,21 +49,11 @@ interface MenuWithSubMenus extends MenuBase {
   };
 }
 
-interface MenuWithScreen extends MenuBase {
-  screen: string;
-}
-
 interface RootMenuWithScreen extends MenuWithScreen {
   isDefault?: boolean;
 }
 
-interface MenuSeparator extends MenuBase {
-  separator: true;
-}
-
 export type Menu = MenuWithSubMenus | RootMenuWithScreen | MenuSeparator;
-
-export interface SubMenu extends MenuWithScreen {}
 
 interface ScreenOptions {
   shadedHeader: boolean;
