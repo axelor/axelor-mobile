@@ -20,15 +20,50 @@ import {
   getSearchCriterias,
 } from '@axelor/aos-mobile-core';
 
-const createControlEntryCriteria = searchValue => {
+const createControlEntryCriteria = (searchValue, isInspector, userId, date) => {
   const criteria = [getSearchCriterias('quality_controlEntry', searchValue)];
+
+  if (isInspector && userId != null) {
+    criteria.push({
+      fieldName: 'inspector.id',
+      operator: '=',
+      value: userId,
+    });
+  }
+
+  if (date != null) {
+    criteria.push(
+      {
+        fieldName: 'entryDateTime',
+        operator: '>=',
+        value: `${date}T00:00:00.000Z`,
+      },
+      {
+        fieldName: 'entryDateTime',
+        operator: '<=',
+        value: `${date}T23:59:59.000Z`,
+      },
+    );
+  }
+
   return criteria;
 };
 
-export async function searchControlEntry({searchValue = null, page = 0}) {
+export async function searchControlEntry({
+  searchValue = null,
+  page = 0,
+  isInspector,
+  userId,
+  date,
+}) {
   return createStandardSearch({
     model: 'com.axelor.apps.quality.db.ControlEntry',
-    criteria: createControlEntryCriteria(searchValue),
+    criteria: createControlEntryCriteria(
+      searchValue,
+      isInspector,
+      userId,
+      date,
+    ),
     fieldKey: 'quality_controlEntry',
     sortKey: 'quality_controlEntry',
     page: page,

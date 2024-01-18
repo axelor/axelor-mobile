@@ -61,7 +61,13 @@ const ControlEntryCard = ({
           <Text style={styles.flex}>{`${I18n.t(
             'Quality_Sample',
           )} : ${sampleCount}`}</Text>
-          <ProgressBar style={styles.flex} value={50} />
+          <ProgressBar
+            style={styles.progressBar}
+            value={50}
+            showPercent={false}
+            height={15}
+            styleTxt={styles.textProgressBar}
+          />
         </View>
       </Card>
     </TouchableOpacity>
@@ -90,8 +96,18 @@ const styles = StyleSheet.create({
   childrenContainer: {
     flexDirection: 'row',
     alignItems: 'center',
+    marginVertical: 5,
   },
-  flex: {flex: 1},
+  flex: {
+    flex: 1,
+  },
+  progressBar: {
+    borderRadius: 20,
+    width: '40%',
+  },
+  textProgressBar: {
+    display: 'none',
+  },
 });
 
 export default ControlEntryCard;

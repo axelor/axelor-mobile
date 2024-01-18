@@ -16,7 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import React, {useCallback} from 'react';
+import React, {useCallback, useState} from 'react';
 import {StyleSheet, View} from 'react-native';
 import {
   HeaderContainer,
@@ -34,7 +34,7 @@ import {
 import {searchControlEntry} from '../features/controlEntrySlice';
 import ControlEntryCard from '../components/ControlEntryCard/ControlEntryCard';
 
-const ControlEntryListScreen = ({navigation}) => {
+const ControlEntryListScreen = ({}) => {
   const Colors = useThemeColor();
   const I18n = useTranslator();
   const dispatch = useDispatch();
@@ -43,14 +43,21 @@ const ControlEntryListScreen = ({navigation}) => {
   const {controlEntryList, loadingControlEntryList, moreLoading, isListEnd} =
     useSelector(state => state.controlEntry);
 
-  console.log(userId);
-  console.log(controlEntryList);
+  const [isInspectorFilter, setIsInspectorFilter] = useState(false);
+  const [dateToFilter, setDateToFilter] = useState(null);
 
   const fetchControlEntryAPI = useCallback(
     (page = 0) => {
-      dispatch(searchControlEntry({page: page}));
+      dispatch(
+        searchControlEntry({
+          page: page,
+          isInspector: isInspectorFilter,
+          userId: userId,
+          date: dateToFilter,
+        }),
+      );
     },
-    [dispatch],
+    [dispatch, isInspectorFilter, userId, dateToFilter],
   );
 
   return (
@@ -60,7 +67,8 @@ const ControlEntryListScreen = ({navigation}) => {
         fixedItems={
           <View style={styles.headerContainer}>
             <ToggleButton
-              isActive={false}
+              isActive={isInspectorFilter}
+              onPress={() => setIsInspectorFilter(current => !current)}
               activeColor={Colors.successColor}
               buttonConfig={{
                 iconName: 'person-fill',
@@ -68,7 +76,14 @@ const ControlEntryListScreen = ({navigation}) => {
                 style: styles.toggleButton,
               }}
             />
-            <DateInput style={styles.dateInput} />
+            <DateInput
+              style={styles.dateInput}
+              nullable={true}
+              onDateChange={date =>
+                setDateToFilter(date.toISOString().split('T')[0])
+              }
+              mode="date"
+            />
           </View>
         }
       />
