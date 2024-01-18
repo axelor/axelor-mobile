@@ -94,6 +94,7 @@ const TimesheetDetailCard = ({
         endDate={item.toDate}
         company={item.company.name}
         totalDuration={item.periodTotal}
+        durationUnit={item.timeLoggingPreferenceSelect}
         employeeName={isValidationMode ? item.employee?.name : null}
         style={styles.cardContainer}
         onPress={onPress}

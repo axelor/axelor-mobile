@@ -31,7 +31,7 @@ import TimesheetWaitingValidationSearchBar from '../TimesheetWaitingValidationSe
 import {fetchTimesheetToValidate} from '../../../features/timesheetSlice';
 import {Timesheet} from '../../../types';
 
-const TimesheetHeader = ({
+const TimesheetFilters = ({
   mode,
   onChangeStatus = () => {},
   onChangeMode = () => {},
@@ -126,4 +126,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default TimesheetHeader;
+export default TimesheetFilters;

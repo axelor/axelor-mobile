@@ -17,6 +17,7 @@
  */
 
 import {
+  createStandardFetch,
   createStandardSearch,
   getSearchCriterias,
 } from '@axelor/aos-mobile-core';
@@ -75,5 +76,13 @@ export async function fetchTimesheetToValidate({
     fieldKey: 'hr_timesheet',
     sortKey: 'hr_timesheet',
     page,
+  });
+}
+
+export async function fetchTimesheetById({timesheetId}) {
+  return createStandardFetch({
+    model: 'com.axelor.apps.hr.db.Timesheet',
+    id: timesheetId,
+    fieldKey: 'hr_timesheet',
   });
 }
