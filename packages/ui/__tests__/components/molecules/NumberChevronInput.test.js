@@ -51,8 +51,16 @@ describe('NumberChevronInput Component', () => {
     };
 
     const wrapper = shallow(<NumberChevronInput {..._props} />);
-    const increaseButton = wrapper.find(TouchableOpacity).at(0);
-    const decreaseButton = wrapper.find(TouchableOpacity).at(1);
+    const increaseButton = wrapper
+      .find('ChevronButton')
+      .at(0)
+      .dive()
+      .find(TouchableOpacity);
+    const decreaseButton = wrapper
+      .find('ChevronButton')
+      .at(1)
+      .dive()
+      .find(TouchableOpacity);
 
     increaseButton.simulate('press');
     expect(_onValueChangeMock).toHaveBeenCalledWith(
@@ -74,7 +82,11 @@ describe('NumberChevronInput Component', () => {
     };
 
     const wrapper = shallow(<NumberChevronInput {..._props} />);
-    const increaseButton = wrapper.find(TouchableOpacity).at(0);
+    const increaseButton = wrapper
+      .find('ChevronButton')
+      .at(0)
+      .dive()
+      .find(TouchableOpacity);
 
     expect(increaseButton.prop('disabled')).toBe(true);
   });
@@ -86,7 +98,11 @@ describe('NumberChevronInput Component', () => {
     };
 
     const wrapper = shallow(<NumberChevronInput {..._props} />);
-    const decreaseButton = wrapper.find(TouchableOpacity).at(1);
+    const decreaseButton = wrapper
+      .find('ChevronButton')
+      .at(1)
+      .dive()
+      .find(TouchableOpacity);
 
     expect(decreaseButton.prop('disabled')).toBe(true);
   });
