@@ -59,5 +59,7 @@ export const QualityModule: Module = {
 };
 
 export * from './api';
+export * from './components';
 export * from './features/asyncFunctions-index';
 export * from './screens';
+export * from './types';

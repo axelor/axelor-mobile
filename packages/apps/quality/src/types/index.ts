@@ -16,18 +16,4 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import {ObjectFields, schemaContructor} from '@axelor/aos-mobile-core';
-
-export const quality_modelAPI: ObjectFields = {
-  quality_controlEntry: schemaContructor.object({
-    inspector: schemaContructor.subObject(),
-    name: schemaContructor.string(),
-    controlEntrySamplesList: schemaContructor
-      .array()
-      .of(schemaContructor.subObject()),
-    entryDateTime: schemaContructor.string(),
-    statusSelect: schemaContructor.number(),
-    sampleCount: schemaContructor.number(),
-    controlPlan: schemaContructor.subObject,
-  }),
-};
+export {default as ControlEntry} from './controlEntry';
