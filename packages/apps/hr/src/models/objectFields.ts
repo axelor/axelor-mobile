@@ -111,11 +111,21 @@ export const hr_modelAPI: ObjectFields = {
     toDate: schemaContructor.string(),
     company: schemaContructor.subObject('name'),
     periodTotal: schemaContructor.number(),
+    timeLoggingPreferenceSelect: schemaContructor.string(),
     employee: schemaContructor
       .subObject('name')
       .concat(
         schemaContructor.object({managerUser: schemaContructor.subObject()}),
       ),
+  }),
+  hr_timesheetLine: schemaContructor.object({
+    project: schemaContructor.subObject('name'),
+    projectTask: schemaContructor.subObject('name'),
+    manufOrder: schemaContructor.subObject('name'),
+    operationOrder: schemaContructor.subObject('name'),
+    comments: schemaContructor.string(),
+    date: schemaContructor.string(),
+    duration: schemaContructor.number(),
   }),
   auth_user: schemaContructor.object({
     employee: schemaContructor.subObject().concat(

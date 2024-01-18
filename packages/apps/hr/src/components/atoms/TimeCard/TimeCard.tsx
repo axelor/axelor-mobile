@@ -23,6 +23,7 @@ import {useTranslator} from '@axelor/aos-mobile-core';
 import DateDisplay from '../DateDisplay/DateDisplay';
 import TextUnit from '../TextUnit/TextUnit';
 import {Time} from '../../../types';
+import {getDurationUnit} from '../../../utils';
 
 interface TimeCardProps {
   statusSelect: number;
@@ -96,7 +97,7 @@ const TimeCard = ({
               customComponent: (
                 <TextUnit
                   value={duration}
-                  unit={Time.getDurationUnit(durationUnit, I18n)}
+                  unit={getDurationUnit(durationUnit, I18n)}
                   style={styles.textUnit}
                 />
               ),

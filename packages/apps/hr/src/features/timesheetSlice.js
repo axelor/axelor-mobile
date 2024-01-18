@@ -23,6 +23,7 @@ import {
 } from '@axelor/aos-mobile-core';
 import {
   fetchTimesheet as _fetchTimesheet,
+  fetchTimesheetById as _fetchTimesheetById,
   fetchTimesheetToValidate as _fetchTimesheetToValidate,
 } from '../api/timesheet-api';
 
@@ -52,6 +53,19 @@ export const fetchTimesheetToValidate = createAsyncThunk(
   },
 );
 
+export const fetchTimesheetById = createAsyncThunk(
+  'timesheet/fetchTimesheetById',
+  async function (data, {getState}) {
+    return handlerApiCall({
+      fetchFunction: _fetchTimesheetById,
+      data,
+      action: 'Hr_SliceAction_FetchTimesheetById',
+      getState,
+      responseOptions: {isArrayResponse: false},
+    });
+  },
+);
+
 const initialState = {
   loadingMyTimesheet: true,
   moreLoadingMyTimesheet: false,
@@ -63,6 +77,9 @@ const initialState = {
   isListEndTimesheetToValidate: false,
   timesheetToValidateList: [],
   totalNumberTimesheetToValidate: 0,
+
+  loadingTimesheet: true,
+  timesheet: {},
 };
 
 const timesheetSlice = createSlice({
@@ -89,6 +106,13 @@ const timesheetSlice = createSlice({
         manageTotal: true,
       },
     );
+    builder.addCase(fetchTimesheetById.pending, (state, action) => {
+      state.loadingTimesheet = true;
+    });
+    builder.addCase(fetchTimesheetById.fulfilled, (state, action) => {
+      state.loadingTimesheet = false;
+      state.timesheet = action.payload;
+    });
   },
 });
 
