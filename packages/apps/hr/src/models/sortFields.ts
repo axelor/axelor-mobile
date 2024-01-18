@@ -30,5 +30,5 @@ export const hr_sortFields: SortFields = {
   hr_projectTask: ['name', 'fullName'],
   hr_timer: ['-startDateTime'],
   hr_timesheet: ['-fromDate', '-toDate'],
-  hr_timesheetLine: ['-duration'],
+  hr_timesheetLine: ['-date', '-duration'],
 };

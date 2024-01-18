@@ -49,7 +49,7 @@ const TimesheetHeader = ({timesheet, statusSelect}: TimesheetHeaderProps) => {
         {I18n.t('User_Company')} : {timesheet.company.name}
       </Text>
       <Text>
-        {I18n.t('Hr_Total_Duration')} : {timesheet.periodTotal}
+        {I18n.t('Hr_TotalDuration')} : {timesheet.periodTotal}
         {getDurationUnit(timesheet.timeLoggingPreferenceSelect, I18n)}
       </Text>
     </View>
