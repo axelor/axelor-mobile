@@ -32,6 +32,11 @@ storiesOf('ui/molecules/NumberChevronInput', module).add(
         defaultValue: 5,
         control: {type: 'number'},
       },
+      stepSize: {
+        type: 'number',
+        defaultValue: 1,
+        control: {type: 'number'},
+      },
       minValue: {
         type: 'number',
         defaultValue: 0,
