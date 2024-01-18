@@ -37,6 +37,7 @@ interface QuantityCardProps {
   onValueChange: (value: number) => void;
   editable: boolean;
   actionQty?: boolean;
+  iconName?: string;
   onPressActionQty?: () => void;
   isBigButton?: boolean;
 }
@@ -49,6 +50,7 @@ const QuantityCard = ({
   onValueChange,
   editable,
   actionQty = false,
+  iconName = 'pencil-fill',
   onPressActionQty = () => {},
   isBigButton = false,
 }: QuantityCardProps) => {
@@ -89,7 +91,7 @@ const QuantityCard = ({
           <View style={styles.actionContainer}>
             <View style={styles.childrenContainer}>{children}</View>
             <Icon
-              name="pencil-fill"
+              name={iconName}
               size={17}
               touchable={true}
               onPress={onPressActionQty}
