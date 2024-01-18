@@ -16,7 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import React, {useEffect, useMemo, useRef, useState} from 'react';
+import React, {useEffect, useCallback, useMemo, useRef, useState} from 'react';
 import {Platform, StyleSheet, View} from 'react-native';
 import {ThemeColors, useThemeColor} from '../../../theme';
 import {getCommonStyles, getFromList} from '../../../utils';
@@ -38,7 +38,7 @@ interface PickerProps {
   defaultValue?: string;
   listItems: any[];
   displayValue?: (item: any) => string;
-  labelField: string;
+  labelField?: string;
   valueField: string;
   emptyValue?: boolean;
   isValueItem?: boolean;
@@ -141,22 +141,29 @@ const Picker = ({
     [Colors, _required, marginBottom, isOpen],
   );
 
-  const _displayValue = useMemo(() => {
-    if (selectedItem == null) {
-      return '';
-    }
+  const _displayValue = useCallback(
+    item => {
+      if (item == null) {
+        return '';
+      }
 
-    return displayValue
-      ? displayValue(selectedItem)
-      : selectedItem?.[labelField];
-  }, [displayValue, labelField, selectedItem]);
+      if (displayValue) {
+        return displayValue(item);
+      } else if (labelField) {
+        return item[labelField];
+      } else {
+        return item[valueField];
+      }
+    },
+    [displayValue, labelField, valueField],
+  );
 
   if (readonly) {
     return (
       <FormInput
         style={[styles.container, style]}
         title={title}
-        defaultValue={_displayValue}
+        defaultValue={_displayValue(selectedItem)}
         readOnly
       />
     );
@@ -179,7 +186,7 @@ const Picker = ({
             color={Colors.secondaryColor_dark.background}
           />
         }
-        title={_displayValue}
+        title={_displayValue(selectedItem)}
         styleText={styles.textPicker}
         style={[
           commonStyles.filter,
@@ -196,9 +203,7 @@ const Picker = ({
           emptyValue={emptyValue}
           objectList={listItems}
           keyField={valueField}
-          displayValue={item =>
-            displayValue ? displayValue(item) : item[labelField]
-          }
+          displayValue={_displayValue}
           handleSelect={handleValueChange}
           isPicker={true}
           selectedItem={[selectedItem]}
