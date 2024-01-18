@@ -16,144 +16,191 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import React, {useCallback, useState} from 'react';
+import React, {useCallback, useEffect, useState} from 'react';
+import {KeyboardAvoidingScrollView, Screen} from '@axelor/aos-mobile-ui';
 import {
-  HalfLabelCard,
-  KeyboardAvoidingScrollView,
-  Screen,
-} from '@axelor/aos-mobile-ui';
-import {useTranslator} from '@axelor/aos-mobile-core';
-import {InternalMoveLineNotes, StockLocationSearchBar} from '../../components';
-import {StockMove} from '../../types';
-import {StyleSheet} from 'react-native';
+  AvailableProductsSearchBar,
+  InternalMoveCreationAlert,
+  InternalMoveCreationButtons,
+  InternalMoveCreationQuantityCard,
+  InternalMoveCreationViewAll,
+  StockLocationSearchBar,
+} from '../../components';
+
+import {InternalMoveCreation} from '../../types';
 
 const fromStockLocationScanKey = 'from-stock-location_internal-move-creation';
+const itemScanKey = 'product-tracking-number_internal-move-creation';
 const toStockLocationScanKey = 'to-stock-location_internal-move-creation';
 
-const CREATION_STEP = {
-  fromStockLocation: 0,
-  toStockLocation: 1,
-  lines: 2,
-};
-
-const InternalMoveCreationScreen = ({navigation}) => {
-  const I18n = useTranslator();
-
-  const [currentStep, setStep] = useState(CREATION_STEP.fromStockLocation);
+const InternalMoveCreationScreen = () => {
+  const [currentStep, setCurrentStep] = useState(
+    InternalMoveCreation.step.fromStockLocation,
+  );
   const [fromStockLocation, setFromStockLocation] = useState(null);
+  const [lines, setLines] = useState([]);
+  const [newLine, setNewLine] = useState(null);
   const [toStockLocation, setToStockLocation] = useState(null);
-  const [notes, setNotes] = useState(null);
+  const [movedQty, setMovedQty] = useState(0);
+  const [isAlertVisible, setIsAlertVisible] = useState(false);
+
+  const handleAddLine = () => {
+    setLines(prevLines => {
+      const newLines = [...prevLines];
+      const indexLine = newLines.findIndex(line => line.id === newLine?.id);
+
+      if (indexLine >= 0) {
+        newLines[indexLine].realQty += movedQty;
+      } else {
+        newLines.push({
+          product: newLine?.product,
+          trackingNumber: newLine?.trackingNumber,
+          realQty: movedQty,
+          unit: newLine?.product?.unit,
+          id: newLine?.id,
+        });
+      }
+
+      return newLines;
+    });
+    handleProductChange(null);
+  };
 
   const handleFromStockLocationChange = useCallback(
     _value => {
       if (_value == null) {
-        handleReset(CREATION_STEP.fromStockLocation);
+        handleReset(InternalMoveCreation.step.fromStockLocation);
       } else {
         setFromStockLocation(_value);
-        handleNextStep(CREATION_STEP.fromStockLocation);
+        setCurrentStep(InternalMoveCreation.step.addLine);
       }
     },
-    [handleNextStep, handleReset],
+    [handleReset],
+  );
+
+  const handleProductChange = useCallback(
+    _value => {
+      if (_value == null) {
+        handleReset(InternalMoveCreation.step.addLine);
+      } else {
+        setNewLine(_value);
+        setCurrentStep(InternalMoveCreation.step.validateLine);
+      }
+    },
+    [handleReset],
   );
 
   const handleToStockLocationChange = useCallback(
     _value => {
       if (_value == null) {
-        handleReset(CREATION_STEP.toStockLocation);
+        handleReset(InternalMoveCreation.step.toStockLocation);
       } else {
         setToStockLocation(_value);
-        handleNextStep(CREATION_STEP.toStockLocation);
+        setCurrentStep(InternalMoveCreation.step.toStockLocation);
       }
     },
-    [handleNextStep, handleReset],
+    [handleReset],
   );
 
-  const handleReset = useCallback((_step = CREATION_STEP.fromStockLocation) => {
-    setStep(_step);
+  const handleReset = useCallback(
+    (_step = InternalMoveCreation.step.fromStockLocation) => {
+      setCurrentStep(_step);
 
-    if (_step === CREATION_STEP.toStockLocation) {
-      setToStockLocation(null);
-    }
+      if (_step === InternalMoveCreation.step.fromStockLocation) {
+        setFromStockLocation(null);
+      }
 
-    if (_step === CREATION_STEP.fromStockLocation) {
-      setFromStockLocation(null);
-    }
-  }, []);
+      if (_step === InternalMoveCreation.step.addLine) {
+        setMovedQty(0);
+        setNewLine(null);
+      }
 
-  const handleNextStep = useCallback(
-    _current => {
-      setStep(() => {
-        if (_current === CREATION_STEP.fromStockLocation) {
-          if (toStockLocation != null) {
-            return CREATION_STEP.lines;
-          } else {
-            return CREATION_STEP.toStockLocation;
-          }
-        }
-        if (_current <= CREATION_STEP.toStockLocation) {
-          return CREATION_STEP.lines;
-        }
-        return _current;
-      });
+      if (_step === InternalMoveCreation.step.toStockLocation) {
+        setToStockLocation(null);
+      }
     },
-    [toStockLocation],
+    [],
   );
 
-  const handleCompleteLines = useCallback(() => {
-    navigation.navigate('InternalMoveLineCreationScreen', {
-      fromStockLocation,
-      toStockLocation,
-      notes,
-    });
-  }, [fromStockLocation, navigation, notes, toStockLocation]);
+  useEffect(() => {
+    if (
+      lines.length === 0 &&
+      currentStep >= InternalMoveCreation.step.toStockLocation
+    ) {
+      setCurrentStep(InternalMoveCreation.step.addLine);
+    }
+  }, [currentStep, lines]);
 
   return (
-    <Screen>
+    <Screen
+      fixedItems={
+        <InternalMoveCreationButtons
+          step={currentStep}
+          setStep={setCurrentStep}
+          fromStockLocation={fromStockLocation}
+          lines={lines}
+          toStockLocation={toStockLocation}
+          movedQty={movedQty}
+          addLine={handleAddLine}
+        />
+      }>
       <KeyboardAvoidingScrollView keyboardOffset={{android: 100}}>
         <StockLocationSearchBar
           placeholderKey="Stock_OriginalStockLocation"
           scanKey={fromStockLocationScanKey}
           onChange={handleFromStockLocationChange}
           defaultValue={fromStockLocation}
-          isFocus={currentStep === CREATION_STEP.fromStockLocation}
+          isFocus={currentStep === InternalMoveCreation.step.fromStockLocation}
           isScrollViewContainer={true}
         />
-        {currentStep >= CREATION_STEP.toStockLocation || toStockLocation ? (
-          <>
-            <StockLocationSearchBar
-              placeholderKey="Stock_DestinationStockLocation"
-              scanKey={toStockLocationScanKey}
-              onChange={handleToStockLocationChange}
-              defaultValue={toStockLocation}
-              isFocus={currentStep === CREATION_STEP.toStockLocation}
-              secondFilter={true}
-              isScrollViewContainer={true}
-            />
-            <InternalMoveLineNotes
-              notes={notes}
-              setNotes={setNotes}
-              status={StockMove.status.Draft}
-            />
-          </>
-        ) : null}
-        {currentStep >= CREATION_STEP.lines && (
-          <HalfLabelCard
-            style={styles.button}
-            iconName="diagram-3-fill"
-            title={I18n.t('Stock_DefineLines')}
-            onPress={handleCompleteLines}
+        {currentStep >= InternalMoveCreation.step.addLine && (
+          <InternalMoveCreationViewAll
+            lines={lines}
+            setLines={setLines}
+            setIsAlertVisible={setIsAlertVisible}
           />
         )}
+        {currentStep === InternalMoveCreation.step.addLine && (
+          <AvailableProductsSearchBar
+            stockLocationId={fromStockLocation?.id}
+            scanKey={itemScanKey}
+            onChange={handleProductChange}
+            defaultValue={newLine}
+            isFocus={currentStep === InternalMoveCreation.step.addLine}
+            isScrollViewContainer={true}
+          />
+        )}
+        {currentStep === InternalMoveCreation.step.validateLine && (
+          <InternalMoveCreationQuantityCard
+            movedQty={movedQty}
+            setMovedQty={setMovedQty}
+            cancelMove={() => handleProductChange(null)}
+            productName={newLine?.product?.name}
+            trackingNumber={newLine?.trackingNumber?.trackingNumberSeq}
+            availableQty={newLine?.product?.currentQty}
+            productUnit={newLine?.product?.unit?.name}
+          />
+        )}
+        {currentStep >= InternalMoveCreation.step.toStockLocation && (
+          <StockLocationSearchBar
+            placeholderKey="Stock_DestinationStockLocation"
+            scanKey={toStockLocationScanKey}
+            onChange={handleToStockLocationChange}
+            defaultValue={toStockLocation}
+            isFocus={currentStep === InternalMoveCreation.step.toStockLocation}
+            secondFilter={true}
+            isScrollViewContainer={true}
+          />
+        )}
+        <InternalMoveCreationAlert
+          isAlertVisible={isAlertVisible}
+          setIsAlertVisible={setIsAlertVisible}
+          lines={lines}
+          setLines={setLines}
+        />
       </KeyboardAvoidingScrollView>
     </Screen>
   );
 };
-
-const styles = StyleSheet.create({
-  button: {
-    alignSelf: 'flex-end',
-    marginRight: 18,
-  },
-});
 
 export default InternalMoveCreationScreen;
