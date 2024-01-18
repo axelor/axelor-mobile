@@ -22,6 +22,8 @@ export {
   isDateTime,
   getNextMonth,
   getPreviousMonth,
+  getStartOfDay,
+  getEndOfDay,
   diffDate,
   sameDate,
   incrementDate,

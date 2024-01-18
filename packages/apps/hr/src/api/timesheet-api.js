@@ -72,19 +72,41 @@ const createDraftTimesheetCriteria = (userId, fromDate, toDate) => {
     });
   }
 
-  if (fromDate != null) {
+  if (fromDate != null && toDate != null) {
     criteria.push({
-      fieldName: 'fromDate',
-      operator: '>=',
-      value: fromDate,
-    });
-  }
-
-  if (toDate != null) {
-    criteria.push({
-      fieldName: 'toDate',
-      operator: '<=',
-      value: toDate,
+      operator: 'or',
+      criteria: [
+        {
+          operator: 'and',
+          criteria: [
+            {
+              fieldName: 'fromDate',
+              operator: '<=',
+              value: fromDate,
+            },
+            {
+              fieldName: 'toDate',
+              operator: '>=',
+              value: fromDate,
+            },
+          ],
+        },
+        {
+          operator: 'and',
+          criteria: [
+            {
+              fieldName: 'fromDate',
+              operator: '<=',
+              value: toDate,
+            },
+            {
+              fieldName: 'toDate',
+              operator: '>=',
+              value: toDate,
+            },
+          ],
+        },
+      ],
     });
   }
 

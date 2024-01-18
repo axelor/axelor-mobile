@@ -69,6 +69,7 @@
   "Hr_TimesheetAlreadyExists": "Caution, a timesheet already exists for those dates",
   "Hr_StartDate": "Start date",
   "Hr_EndDate": "End date",
+  "Hr_DateIntervalError": "Caution, start date cannot be more recent than end date",
   "Hr_SliceAction_FetchExpenseLines": "fetch expense lines",
   "Hr_SliceAction_SearchDraftExpense": "fetch draft expenses",
   "Hr_SliceAction_FetchExpense": "fetch expenses",
@@ -103,5 +104,6 @@
   "Hr_SliceAction_FetchOperationOrder": "fetch operation order",
   "Hr_SliceAction_FetchTimesheetById": "fetch timesheet by id",
   "Hr_SliceAction_FetchTimesheetLine": "fetch timesheet line",
-  "Hr_SliceAction_FetchDraftTimesheet": "fetch draft timesheet"
+  "Hr_SliceAction_FetchDraftTimesheet": "fetch draft timesheet",
+  "Hr_SliceAction_FetchTimerDateInterval": "fetch timer with date interval"
 }

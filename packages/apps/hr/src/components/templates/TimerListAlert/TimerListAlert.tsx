@@ -16,21 +16,30 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import React, {useEffect, useState} from 'react';
+import React, {useCallback, useEffect, useMemo, useState} from 'react';
 import {StyleSheet, View} from 'react-native';
 import {
   DateInput,
+  getEndOfDay,
+  getStartOfDay,
   useDispatch,
   useSelector,
   useTranslator,
 } from '@axelor/aos-mobile-core';
-import {Alert, Label, useThemeColor} from '@axelor/aos-mobile-ui';
+import {
+  Alert,
+  CheckboxScrollList,
+  Label,
+  useThemeColor,
+} from '@axelor/aos-mobile-ui';
 import DraftTimesheetPicker from '../DraftTimesheetPicker/DraftTimesheetPicker';
-import {fetchDraftTimesheet} from '../../../features/timesheetSlice';
+import {TimeDetailCard} from '../../molecules';
+import {fetchTimerDateInterval} from '../../../features/timerSlice';
+import {fetchDraftTimesheet} from '../../../api/timesheet-api';
 
 const INPUT_MODE = {
   Timesheet: 0,
-  DateIntervale: 1,
+  DateInterval: 1,
 };
 
 interface TimerListAlertProps {
@@ -46,35 +55,87 @@ const TimerListAlert = ({
   const Colors = useThemeColor();
   const dispatch = useDispatch();
 
-  const [timesheet, setTimesheet] = useState(null);
   const [fromDate, setFromDate] = useState(null);
   const [toDate, setToDate] = useState(null);
   const [inputMode, setInputMode] = useState(null);
-  const [isAlreadyExistsError, setIsAlreadyExistsError] = useState(false);
+  const [isTimesheetError, setIsTimesheetError] = useState(false);
+  const [isDateIntervalError, setIsDateIntervalError] = useState(false);
+  const [selectedTimers, setSelectedTimers] = useState([]);
 
-  const {user} = useSelector((state: any) => state.user);
-  const {draftTimesheetList} = useSelector((state: any) => state.timesheet);
+  const isTimesheetMode = useMemo(
+    () => inputMode === INPUT_MODE.Timesheet,
+    [inputMode],
+  );
 
-  useEffect(() => {
-    if (inputMode === INPUT_MODE.DateIntervale && fromDate && toDate) {
+  const isConfirmButtonDisabled = useMemo(
+    () =>
+      isTimesheetError || isDateIntervalError || selectedTimers.length === 0,
+    [isDateIntervalError, isTimesheetError, selectedTimers],
+  );
+
+  const {
+    timerDateIntervalList,
+    loadingTimerDateInterval,
+    moreLoadingTimerDateInterval,
+    isListEndTimerDateInterval,
+  } = useSelector((state: any) => state.hr_timer);
+  const {userId} = useSelector((state: any) => state.auth);
+
+  const fetchTimerDateIntervalAPI = useCallback(
+    (page = 0) => {
       dispatch(
-        (fetchDraftTimesheet as any)({
-          userId: user?.id,
+        (fetchTimerDateInterval as any)({
+          userId: userId,
           fromDate: fromDate,
           toDate: toDate,
+          page: page,
         }),
       );
-    }
-  }, [dispatch, fromDate, inputMode, toDate, user?.id]);
+    },
+    [dispatch, fromDate, toDate, userId],
+  );
 
-  useEffect(() => console.log(draftTimesheetList), [draftTimesheetList]);
+  useEffect(() => {
+    if (!isTimesheetMode && fromDate && toDate) {
+      if (getStartOfDay(fromDate) <= getEndOfDay(toDate)) {
+        fetchDraftTimesheet({
+          userId: userId,
+          fromDate: fromDate,
+          toDate: toDate,
+        }).then(res => {
+          setIsDateIntervalError(false);
+          setIsTimesheetError(res.data?.data?.length > 0);
+        });
+      } else {
+        setIsTimesheetError(false);
+        setIsDateIntervalError(true);
+      }
+    }
+  }, [dispatch, fromDate, isTimesheetMode, toDate, userId]);
+
+  const renderChexboxItem = ({item}) => {
+    return (
+      <TimeDetailCard
+        statusSelect={item.statusSelect}
+        project={item.project?.name}
+        task={item.projectTask?.name}
+        comments={item.comments}
+        date={item.startDateTime}
+        duration={item.duration}
+        durationUnit={'hours'}
+        isActions={false}
+      />
+    );
+  };
 
   const handleCancel = () => {
     setIsAlertVisible(false);
-    setTimesheet(null);
     setFromDate(null);
     setToDate(null);
     setInputMode(null);
+    setIsTimesheetError(false);
+    setIsDateIntervalError(false);
+    setSelectedTimers([]);
   };
 
   return (
@@ -87,20 +148,31 @@ const TimerListAlert = ({
       confirmButtonConfig={{
         width: 50,
         title: null,
-        onPress: () => console.log('Confirm button pressed.'),
+        disabled: isConfirmButtonDisabled,
+        onPress: () => console.log(selectedTimers),
       }}
       translator={I18n.t}>
-      <DraftTimesheetPicker
-        style={styles.picker}
-        onChange={_timesheet => {
-          setTimesheet(_timesheet);
-          setInputMode(INPUT_MODE.Timesheet);
-        }}
-        readonly={inputMode === INPUT_MODE.DateIntervale}
-      />
-      {isAlreadyExistsError && (
+      {(inputMode == null || isTimesheetMode) && (
+        <DraftTimesheetPicker
+          style={styles.picker}
+          onChange={timesheet => {
+            setSelectedTimers([]);
+            setFromDate(new Date(timesheet.fromDate));
+            setToDate(new Date(timesheet.toDate));
+            setInputMode(INPUT_MODE.Timesheet);
+          }}
+        />
+      )}
+      {isTimesheetError && (
         <Label
           message={I18n.t('Hr_TimesheetAlreadyExists')}
+          iconName="exclamation-triangle-fill"
+          color={Colors.errorColor}
+        />
+      )}
+      {isDateIntervalError && (
+        <Label
+          message={I18n.t('Hr_DateIntervalError')}
           iconName="exclamation-triangle-fill"
           color={Colors.errorColor}
         />
@@ -110,30 +182,42 @@ const TimerListAlert = ({
           style={styles.dateInput}
           title={I18n.t('Hr_StartDate')}
           mode="date"
+          nullable
           popup
-          defaultDate={
-            inputMode === INPUT_MODE.Timesheet && new Date(timesheet.fromDate)
-          }
+          defaultDate={fromDate}
           onDateChange={date => {
+            setSelectedTimers([]);
             setFromDate(date);
-            setInputMode(INPUT_MODE.DateIntervale);
+            setInputMode(INPUT_MODE.DateInterval);
           }}
-          readonly={inputMode === INPUT_MODE.Timesheet}
+          readonly={isTimesheetMode}
         />
         <DateInput
           style={styles.dateInput}
           title={I18n.t('Hr_EndDate')}
           mode="date"
-          defaultDate={
-            inputMode === INPUT_MODE.Timesheet && new Date(timesheet.toDate)
-          }
+          nullable
+          popup
+          defaultDate={toDate}
           onDateChange={date => {
+            setSelectedTimers([]);
             setToDate(date);
-            setInputMode(INPUT_MODE.DateIntervale);
+            setInputMode(INPUT_MODE.DateInterval);
           }}
-          readonly={inputMode === INPUT_MODE.Timesheet}
+          readonly={isTimesheetMode}
         />
       </View>
+      <CheckboxScrollList
+        styleTopCheckbox={styles.topCheckbox}
+        loadingList={loadingTimerDateInterval}
+        data={timerDateIntervalList}
+        onCheckedChange={setSelectedTimers}
+        renderItem={renderChexboxItem}
+        fetchData={fetchTimerDateIntervalAPI}
+        moreLoading={moreLoadingTimerDateInterval}
+        isListEnd={isListEndTimerDateInterval}
+        translator={I18n.t}
+      />
     </Alert>
   );
 };
@@ -149,6 +233,9 @@ const styles = StyleSheet.create({
   },
   dateInput: {
     width: '48%',
+  },
+  topCheckbox: {
+    marginTop: 5,
   },
 });
 
