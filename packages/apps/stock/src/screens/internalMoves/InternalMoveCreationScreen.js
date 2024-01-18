@@ -63,7 +63,6 @@ const InternalMoveCreationScreen = () => {
 
       return newLines;
     });
-    setMovedQty(0);
     handleProductChange(null);
   };
 
@@ -112,6 +111,7 @@ const InternalMoveCreationScreen = () => {
       }
 
       if (_step === InternalMoveCreation.step.addLine) {
+        setMovedQty(0);
         setNewLine(null);
       }
 

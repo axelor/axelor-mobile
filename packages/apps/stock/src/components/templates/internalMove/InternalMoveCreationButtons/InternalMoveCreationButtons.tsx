@@ -54,14 +54,6 @@ const InternalMoveCreationButtons = ({
 
   const {user} = useSelector((state: any) => state.user);
 
-  const handleAddPress = () => {
-    if (step === InternalMoveCreation.step.validateLine) {
-      addLine();
-    } else {
-      setStep(InternalMoveCreation.step.addLine);
-    }
-  };
-
   const handleFinishPress = () => {
     if (step === InternalMoveCreation.step.validateLine) {
       addLine();
@@ -94,7 +86,7 @@ const InternalMoveCreationButtons = ({
             color={Colors.progressColor}
             width="45%"
             disabled={movedQty === 0}
-            onPress={handleAddPress}
+            onPress={addLine}
           />
         )}
         <Button
@@ -117,7 +109,9 @@ const InternalMoveCreationButtons = ({
           iconName="arrow-left"
           color={Colors.progressColor}
           width={toStockLocation ? '45%' : '90%'}
-          onPress={handleAddPress}
+          onPress={() => {
+            setStep(InternalMoveCreation.step.addLine);
+          }}
         />
         {toStockLocation && (
           <Button
