@@ -43,16 +43,6 @@ class TimeType {
         return null;
     }
   };
-
-  static getDurationUnit = (
-    durationUnit: string,
-    I18n: {t: (key: string) => string},
-  ): string => {
-    const durationUnitCapitalized =
-      durationUnit.charAt(0).toUpperCase() + durationUnit.slice(1);
-
-    return I18n.t(`Hr_TimeUnit_${durationUnitCapitalized}`);
-  };
 }
 
 export default TimeType;

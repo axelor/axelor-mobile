@@ -33,6 +33,6 @@ export {default as ManufOrderSearchBar} from './ManufOrderSearchBar/ManufOrderSe
 export {default as OperationOrderSearchBar} from './OperationOrderSearchBar/OperationOrderSearchBar';
 export {default as ProjectSearchBar} from './ProjectSearchBar/ProjectSearchBar';
 export {default as ProjectTaskSearchBar} from './ProjectTaskSearchBar/ProjectTaskSearchBar';
-export {default as TimesheetHeader} from './TimesheetHeader/TimesheetHeader';
+export {default as TimesheetFilters} from './TimesheetFilters/TimesheetFilters';
 export {default as TimesheetWaitingValidationSearchBar} from './TimesheetWaitingValidationSearchBar/TimesheetWaitingValidationSearchBar';
 export {default as ToggleSwitchMode} from './ToggleSwitchMode/ToggleSwitchMode';

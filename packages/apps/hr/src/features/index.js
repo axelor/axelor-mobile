@@ -26,4 +26,5 @@ export {kilometricAllowParamReducer as kilometricAllowParam} from './kilometricA
 export {manufOrderReducer as hr_manufOrder} from './manufOrderSlice';
 export {projectReducer as project} from './projectSlice';
 export {timerReducer as hr_timer} from './timerSlice';
+export {timesheetLineReducer as timesheetLine} from './timesheetLineSlice';
 export {timesheetReducer as timesheet} from './timesheetSlice';
