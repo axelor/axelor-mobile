@@ -308,10 +308,10 @@ export const hr_formsRegister: FormConfigs = {
       },
     },
   },
-  hr_ActiveTimer: {
+  hr_Timer: {
     modelName: 'com.axelor.apps.hr.db.TSTimer',
     fields: {
-      activeTimerDate: {
+      timerDate: {
         titleKey: 'Hr_Date',
         type: 'date',
         widget: 'date',

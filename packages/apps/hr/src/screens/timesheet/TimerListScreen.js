@@ -52,7 +52,11 @@ const TimerListScreen = ({navigation}) => {
             date={item.startDateTime}
             duration={item.duration}
             durationUnit={'hours'}
-            onEdit={() => navigation.navigate('TimerFormScreen')}
+            onEdit={() =>
+              navigation.navigate('TimerFormScreen', {
+                timer: item,
+              })
+            }
           />
         )}
         fetchData={fetchTimerAPI}

@@ -16,20 +16,30 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import React from 'react';
+import React, {useMemo} from 'react';
 import {FormView} from '@axelor/aos-mobile-core';
 
-const TimerFormScreen = ({}) => {
-  const defaultValue = {
-    activeTimerDate: new Date().toISOString().split('T')[0],
-  };
+const TimerFormScreen = ({route}) => {
+  const {timer} = route?.params;
+
+  const defaultValue = useMemo(() => {
+    if (timer != null) {
+      return {
+        timerDate: timer.startDateTime,
+        project: timer.project?.name,
+        projectTask: timer.projectTask?.name,
+        duration: timer.duration,
+        comments: timer.comments,
+      };
+    }
+
+    return {
+      timerDate: new Date().toISOString().split('T')[0],
+    };
+  }, [timer]);
 
   return (
-    <FormView
-      defaultValue={defaultValue}
-      actions={[]}
-      formKey="hr_ActiveTimer"
-    />
+    <FormView defaultValue={defaultValue} actions={[]} formKey="hr_Timer" />
   );
 };
 
