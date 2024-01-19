@@ -16,7 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import React, {useCallback, useEffect, useMemo} from 'react';
+import React, {useCallback, useEffect, useMemo, useRef} from 'react';
 import {useDispatch, useSelector} from 'react-redux';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import {useThemeColor} from '@axelor/aos-mobile-ui';
@@ -43,6 +43,9 @@ const RootNavigator = ({
   const Colors = useThemeColor();
   const I18n = useTranslator();
   const dispatch = useDispatch();
+
+  const tokenInterval = useRef();
+  const connectionInterval = useRef();
 
   const {sessionExpired} = useSessionExpired();
   const {registerHeaderBand} = useHeaderBand();
@@ -83,8 +86,8 @@ const RootNavigator = ({
   }, [Colors, I18n, registerHeaderBand]);
 
   useEffect(() => {
-    const interval = setInterval(checkInternetConnection, 5000);
-    return () => clearInterval(interval.current);
+    connectionInterval.current = setInterval(checkInternetConnection, 5000);
+    return () => clearInterval(connectionInterval.current);
   }, [checkInternetConnection]);
 
   const handleSessionExpired = useCallback(() => {
@@ -108,8 +111,8 @@ const RootNavigator = ({
       }
     };
 
-    const interval = setInterval(checkERPToken, 120000);
-    return () => clearInterval(interval.current);
+    tokenInterval.current = setInterval(checkERPToken, 120000);
+    return () => clearInterval(tokenInterval.current);
   }, [handleSessionExpired, logged]);
 
   useEffect(() => {
