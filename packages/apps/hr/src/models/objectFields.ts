@@ -133,9 +133,6 @@ export const hr_modelAPI: ObjectFields = {
     date: schemaContructor.string(),
     duration: schemaContructor.number(),
   }),
-  hr_draftTimesheet: schemaContructor.object({
-    fullName: schemaContructor.string(),
-  }),
   auth_user: schemaContructor.object({
     employee: schemaContructor.subObject().concat(
       schemaContructor.object({
