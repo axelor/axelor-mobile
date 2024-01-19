@@ -82,8 +82,9 @@ const DateInputSelection = ({
 
   const onClearDate = useCallback(() => {
     setSelectedDate(null);
+    onDateChange(null);
     setPickerIsOpen(false);
-  }, [setPickerIsOpen, setSelectedDate]);
+  }, [onDateChange, setPickerIsOpen, setSelectedDate]);
 
   return (
     <>
