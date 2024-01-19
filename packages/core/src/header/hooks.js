@@ -17,7 +17,7 @@
  */
 
 import {useNavigation} from '@react-navigation/native';
-import {useCallback, useEffect, useMemo, useState} from 'react';
+import {useCallback, useEffect, useMemo, useRef, useState} from 'react';
 import {useDispatch, useSelector} from 'react-redux';
 import {countAttachmentFiles} from '../features/attachedFilesSlice';
 import {countUnreadMailMessages} from '../features/mailMessageSlice';
@@ -27,6 +27,7 @@ import {fetchModel} from '../api/model-api';
 import {useOnline} from '../features/onlineSlice';
 import {getNetInfo} from '../api/net-info-utils';
 import {fetchJsonFieldsOfModel} from '../forms';
+import {useIsFocused} from '../hooks/use-navigation';
 
 export const useBasicActions = ({
   model,
@@ -39,6 +40,8 @@ export const useBasicActions = ({
   const navigation = useNavigation();
   const I18n = useTranslator();
   const online = useOnline();
+  const connectionInterval = useRef();
+  const isFocused = useIsFocused();
   const dispatch = useDispatch();
 
   const {attachments} = useSelector(state => state.attachedFiles);
@@ -96,14 +99,19 @@ export const useBasicActions = ({
 
   const checkInternetConnection = useCallback(async () => {
     const {isConnected: _isConnected} = await getNetInfo();
-
     setIsConnected(_isConnected);
   }, []);
 
   useEffect(() => {
-    const interval = setInterval(checkInternetConnection, 2000);
-    return () => clearInterval(interval.current);
-  }, [checkInternetConnection]);
+    if (isFocused) {
+      connectionInterval.current = setInterval(checkInternetConnection, 2000);
+    } else {
+      clearInterval(connectionInterval.current);
+    }
+    return () => {
+      clearInterval(connectionInterval.current);
+    };
+  }, [checkInternetConnection, isFocused]);
 
   const mailMessagesAction = useMemo(() => {
     return {
