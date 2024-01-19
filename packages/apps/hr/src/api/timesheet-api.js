@@ -55,7 +55,12 @@ const createTimesheetToValidateCriteria = (searchValue, user) => {
   return criteria;
 };
 
-const createDraftTimesheetCriteria = (userId, fromDate, toDate) => {
+const createDraftTimesheetCriteria = (
+  userId,
+  fromDate,
+  toDate,
+  isOverlapAllowed,
+) => {
   const criteria = [
     {
       fieldName: 'statusSelect',
@@ -73,41 +78,59 @@ const createDraftTimesheetCriteria = (userId, fromDate, toDate) => {
   }
 
   if (fromDate != null && toDate != null) {
-    criteria.push({
-      operator: 'or',
-      criteria: [
-        {
-          operator: 'and',
-          criteria: [
-            {
-              fieldName: 'fromDate',
-              operator: '<=',
-              value: fromDate,
-            },
-            {
-              fieldName: 'toDate',
-              operator: '>=',
-              value: fromDate,
-            },
-          ],
-        },
-        {
-          operator: 'and',
-          criteria: [
-            {
-              fieldName: 'fromDate',
-              operator: '<=',
-              value: toDate,
-            },
-            {
-              fieldName: 'toDate',
-              operator: '>=',
-              value: toDate,
-            },
-          ],
-        },
-      ],
-    });
+    if (isOverlapAllowed) {
+      criteria.push({
+        operator: 'and',
+        criteria: [
+          {
+            fieldName: 'fromDate',
+            operator: '>=',
+            value: fromDate,
+          },
+          {
+            fieldName: 'toDate',
+            operator: '<=',
+            value: toDate,
+          },
+        ],
+      });
+    } else {
+      criteria.push({
+        operator: 'or',
+        criteria: [
+          {
+            operator: 'and',
+            criteria: [
+              {
+                fieldName: 'fromDate',
+                operator: '<=',
+                value: fromDate,
+              },
+              {
+                fieldName: 'toDate',
+                operator: '>=',
+                value: fromDate,
+              },
+            ],
+          },
+          {
+            operator: 'and',
+            criteria: [
+              {
+                fieldName: 'fromDate',
+                operator: '<=',
+                value: toDate,
+              },
+              {
+                fieldName: 'toDate',
+                operator: '>=',
+                value: toDate,
+              },
+            ],
+          },
+        ],
+      });
+    }
   }
 
   return criteria;
@@ -145,10 +168,20 @@ export async function fetchTimesheetById({timesheetId}) {
   });
 }
 
-export async function fetchDraftTimesheet({userId, fromDate, toDate}) {
+export async function fetchDraftTimesheet({
+  userId,
+  fromDate,
+  toDate,
+  isOverlapAllowed,
+}) {
   return createStandardSearch({
     model: 'com.axelor.apps.hr.db.Timesheet',
-    criteria: createDraftTimesheetCriteria(userId, fromDate, toDate),
+    criteria: createDraftTimesheetCriteria(
+      userId,
+      fromDate,
+      toDate,
+      isOverlapAllowed,
+    ),
     fieldKey: 'hr_timesheet',
     numberElementsByPage: null,
     page: 0,

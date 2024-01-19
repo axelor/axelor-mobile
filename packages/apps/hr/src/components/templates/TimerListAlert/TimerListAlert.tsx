@@ -102,6 +102,7 @@ const TimerListAlert = ({
           userId: userId,
           fromDate: fromDate,
           toDate: toDate,
+          isOverlapAllowed: false,
         }).then(res => {
           setIsDateIntervalError(false);
           setIsTimesheetError(res.data?.data?.length > 0);
