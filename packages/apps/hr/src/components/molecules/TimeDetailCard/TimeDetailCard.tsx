@@ -33,6 +33,8 @@ interface TimeDetailCardProps {
   durationUnit: string;
   isActions?: boolean;
   style?: any;
+  onEdit?: () => void;
+  onDelete?: () => void;
 }
 
 const TimeDetailCard = ({
@@ -47,16 +49,10 @@ const TimeDetailCard = ({
   durationUnit,
   isActions = true,
   style,
+  onEdit = () => {},
+  onDelete = () => {},
 }: TimeDetailCardProps) => {
   const Colors = useThemeColor();
-
-  const handleEdit = () => {
-    console.log('handleEdit');
-  };
-
-  const handleDelete = () => {
-    console.log('handleDelete');
-  };
 
   return (
     <View style={[styles.container, style]}>
@@ -77,13 +73,13 @@ const TimeDetailCard = ({
           <CardIconButton
             iconName={'pencil-fill'}
             iconColor={Colors.secondaryColor_dark.background}
-            onPress={handleEdit}
+            onPress={onEdit}
             style={styles.cardIconButton}
           />
           <CardIconButton
             iconName={'trash3-fill'}
             iconColor={Colors.errorColor.background}
-            onPress={handleDelete}
+            onPress={onDelete}
             style={styles.cardIconButton}
           />
         </View>
