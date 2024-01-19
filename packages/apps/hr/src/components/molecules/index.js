@@ -16,7 +16,6 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-export {default as ActiveTimerStopwatch} from './ActiveTimerStopwatch/ActiveTimerStopwatch';
 export {default as ExpenseAddPopup} from './ExpenseAddPopup/ExpenseAddPopup';
 export {default as ExpenseDetailsValidationButton} from './ExpenseDetailsValidationButton/ExpenseDetailsValidationButton';
 export {default as ExpenseLineDetailCard} from './ExpenseLineDetailCard/ExpenseLineDetailCard';
@@ -24,6 +23,7 @@ export {default as ExpenseLineValidationButton} from './ExpenseLineValidationBut
 export {default as ExpenseRefusalPopup} from './ExpenseRefusalPopup/ExpenseRefusalPopup';
 export {default as TimeDetailCard} from './TimeDetailCard/TimeDetailCard';
 export {default as TimerDeclareButton} from './TimerDeclareButton/TimerDeclareButton';
+export {default as TimerStopwatch} from './TimerStopwatch/TimerStopwatch';
 export {default as TimesheetDetailCard} from './TimesheetDetailCard/TimesheetDetailCard';
 export {default as TimesheetDetailsButtons} from './TimesheetDetailsButtons/TimesheetDetailsButtons';
 export {default as TimesheetHeader} from './TimesheetHeader/TimesheetHeader';

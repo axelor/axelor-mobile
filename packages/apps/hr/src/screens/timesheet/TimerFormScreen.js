@@ -19,7 +19,7 @@
 import React from 'react';
 import {FormView} from '@axelor/aos-mobile-core';
 
-const ActiveTimerFormScreen = ({}) => {
+const TimerFormScreen = ({}) => {
   const defaultValue = {
     activeTimerDate: new Date().toISOString().split('T')[0],
   };
@@ -33,4 +33,4 @@ const ActiveTimerFormScreen = ({}) => {
   );
 };
 
-export default ActiveTimerFormScreen;
+export default TimerFormScreen;

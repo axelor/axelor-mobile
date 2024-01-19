@@ -23,15 +23,12 @@ import {StyleSheet} from 'react-native';
 const DEFAULT_TIME = 0;
 const DEFAULT_STATUS = StopwatchType.status.Ready;
 
-interface ActiveTimerStopwatchProps {
+interface TimerStopwatchProps {
   style?: any;
   objectState?: any;
 }
 
-const ActiveTimerStopwatch = ({
-  style = null,
-  objectState,
-}: ActiveTimerStopwatchProps) => {
+const TimerStopwatch = ({style = null, objectState}: TimerStopwatchProps) => {
   const I18n = useTranslator();
 
   // const [time, setTime] = useState(DEFAULT_TIME);
@@ -61,4 +58,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default ActiveTimerStopwatch;
+export default TimerStopwatch;

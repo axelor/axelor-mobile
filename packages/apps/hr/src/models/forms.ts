@@ -19,10 +19,10 @@
 import {FormConfigs} from '@axelor/aos-mobile-core';
 import {DurationInput} from '@axelor/aos-mobile-ui';
 import {
-  ActiveTimerStopwatch,
   BillableSwitchCard,
   CurrencySearchBar,
   DistanceIncrement,
+  DraftExpensePicker,
   CityFormInput,
   ExpenseTypeSearchBar,
   KilometricAllowParamSearchBar,
@@ -31,8 +31,8 @@ import {
   OperationOrderSearchBar,
   ProjectSearchBar,
   ProjectTaskSearchBar,
+  TimerStopwatch,
   ToggleSwitchMode,
-  DraftExpensePicker,
 } from '../components';
 import {ExpenseLine} from '../types';
 import {updateExpenseDate} from '../features/kilometricAllowParamSlice';
@@ -355,7 +355,7 @@ export const hr_formsRegister: FormConfigs = {
       stopwatch: {
         type: 'object',
         widget: 'custom',
-        customComponent: ActiveTimerStopwatch,
+        customComponent: TimerStopwatch,
       },
     },
   },

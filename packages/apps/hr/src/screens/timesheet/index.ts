@@ -20,7 +20,7 @@ import TimerListScreen from './TimerListScreen';
 import TimesheetListScreen from './TimesheetListScreen';
 import TimesheetLineFormScreen from './TimesheetLineFormScreen';
 import TimesheetDetailsScreen from './TimesheetDetailsScreen';
-import ActiveTimerFormScreen from './ActiveTimerFormScreen';
+import TimerFormScreen from './TimerFormScreen';
 
 export default {
   TimerListScreen: {
@@ -42,12 +42,12 @@ export default {
   },
   ActiveTimerFormScreen: {
     title: 'Hr_ActiveTimer',
-    component: ActiveTimerFormScreen,
+    component: TimerFormScreen,
     actionID: 'hr_active_timer',
   },
-  NewTimerFormScreen: {
-    title: 'Hr_NewTimer',
-    component: ActiveTimerFormScreen,
+  TimerFormScreen: {
+    title: 'Hr_Timer',
+    component: TimerFormScreen,
   },
 };
 
@@ -55,4 +55,4 @@ export {TimerListScreen};
 export {TimesheetListScreen};
 export {TimesheetLineFormScreen};
 export {TimesheetDetailsScreen};
-export {ActiveTimerFormScreen};
+export {TimerFormScreen};
