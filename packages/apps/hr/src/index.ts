@@ -44,7 +44,7 @@ export const HrModule: Module = {
     fr: frTranslations,
   },
   menus: {
-    stock_menu_timesheetsSeparator: {
+    hr_menu_timesheetsSeparator: {
       title: 'Hr_Timesheets',
       separator: true,
     },
