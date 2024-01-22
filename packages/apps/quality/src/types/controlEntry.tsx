@@ -65,7 +65,7 @@ class ControlEntry {
         return Colors.errorColor;
       default:
         console.warn(
-          `Status provided with value ${status} is not supported by inventory`,
+          `Status provided with value ${status} is not supported by control entry`,
         );
         return null;
     }
