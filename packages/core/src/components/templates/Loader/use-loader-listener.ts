@@ -47,8 +47,8 @@ const useLoaderListner = ({
         type: 'success',
         position: 'top',
         topOffset: 30,
-        text1: I18n.t('Base_Error'),
-        text2: response || I18n.t('Base_Loader_proccessSuccessMessage'),
+        text1: I18n.t('Base_Success'),
+        text2: response || I18n.t('Base_Loader_ProccessSuccessMessage'),
         onPress: onSuccess,
       });
     } catch (error) {
@@ -57,7 +57,7 @@ const useLoaderListner = ({
         position: 'top',
         topOffset: 30,
         text1: I18n.t('Base_Error'),
-        text2: error.toString() || I18n.t('Base_Loader_proccessErrorMessage'),
+        text2: error.toString() || I18n.t('Base_Loader_ProccessErrorMessage'),
         onPress: onError,
       });
     } finally {
@@ -66,14 +66,12 @@ const useLoaderListner = ({
   }, [process, onSuccess, onError, I18n]);
 
   useEffect(() => {
-    if (!start && !loading) {
-      return;
+    if (start && loading) {
+      executeProcess();
     }
-
-    executeProcess();
   }, [start, loading, executeProcess]);
 
-  return useMemo(() => ({loading, listner: () => setStart(true)}), [loading]);
+  return useMemo(() => ({loading, listener: () => setStart(true)}), [loading]);
 };
 
 export default useLoaderListner;
