@@ -56,7 +56,7 @@ const TimerListAlert = ({
   const dispatch = useDispatch();
 
   const [fromDate, setFromDate] = useState(null);
-  const [toDate, setToDate] = useState(null);
+  const [toDate, setToDate] = useState(new Date());
   const [inputMode, setInputMode] = useState(null);
   const [isTimesheetError, setIsTimesheetError] = useState(false);
   const [isDateIntervalError, setIsDateIntervalError] = useState(false);
@@ -64,6 +64,11 @@ const TimerListAlert = ({
 
   const isTimesheetMode = useMemo(
     () => inputMode === INPUT_MODE.Timesheet,
+    [inputMode],
+  );
+
+  const isDateIntervalMode = useMemo(
+    () => inputMode === INPUT_MODE.DateInterval,
     [inputMode],
   );
 
@@ -96,7 +101,7 @@ const TimerListAlert = ({
   );
 
   useEffect(() => {
-    if (!isTimesheetMode && fromDate && toDate) {
+    if (isDateIntervalMode && fromDate && toDate) {
       if (getStartOfDay(fromDate) <= getEndOfDay(toDate)) {
         fetchDraftTimesheet({
           userId: userId,
@@ -112,18 +117,17 @@ const TimerListAlert = ({
         setIsDateIntervalError(true);
       }
     }
-  }, [dispatch, fromDate, isTimesheetMode, toDate, userId]);
+  }, [dispatch, fromDate, isDateIntervalMode, toDate, userId]);
 
   const renderChexboxItem = ({item}) => {
     return (
       <TimeDetailCard
         statusSelect={item.statusSelect}
         project={item.project?.name}
-        task={item.projectTask?.name}
-        comments={item.comments}
         date={item.startDateTime}
         duration={item.duration}
         durationUnit={'hours'}
+        isSmallCard
         isActions={false}
       />
     );
@@ -132,7 +136,7 @@ const TimerListAlert = ({
   const handleCancel = () => {
     setIsAlertVisible(false);
     setFromDate(null);
-    setToDate(null);
+    setToDate(new Date());
     setInputMode(null);
     setIsTimesheetError(false);
     setIsDateIntervalError(false);
@@ -153,7 +157,7 @@ const TimerListAlert = ({
         onPress: () => console.log(selectedTimers),
       }}
       translator={I18n.t}>
-      {(inputMode == null || isTimesheetMode) && (
+      {!isDateIntervalMode && (
         <DraftTimesheetPicker
           style={styles.picker}
           onChange={timesheet => {
@@ -192,6 +196,7 @@ const TimerListAlert = ({
             setInputMode(INPUT_MODE.DateInterval);
           }}
           readonly={isTimesheetMode}
+          required={isDateIntervalMode}
         />
         <DateInput
           style={styles.dateInput}
@@ -206,6 +211,7 @@ const TimerListAlert = ({
             setInputMode(INPUT_MODE.DateInterval);
           }}
           readonly={isTimesheetMode}
+          required={isDateIntervalMode}
         />
       </View>
       <CheckboxScrollList
