@@ -17,10 +17,12 @@
  */
 
 import {FormConfigs} from '@axelor/aos-mobile-core';
+import {DurationInput} from '@axelor/aos-mobile-ui';
 import {
   BillableSwitchCard,
   CurrencySearchBar,
   DistanceIncrement,
+  DraftExpensePicker,
   CityFormInput,
   ExpenseTypeSearchBar,
   KilometricAllowParamSearchBar,
@@ -29,8 +31,8 @@ import {
   OperationOrderSearchBar,
   ProjectSearchBar,
   ProjectTaskSearchBar,
+  TimerStopwatch,
   ToggleSwitchMode,
-  DraftExpensePicker,
 } from '../components';
 import {ExpenseLine} from '../types';
 import {updateExpenseDate} from '../features/kilometricAllowParamSlice';
@@ -281,7 +283,7 @@ export const hr_formsRegister: FormConfigs = {
             .isTimesheetProjectInvoicingEnabled,
       },
       timesheetDate: {
-        titleKey: 'Hr_TimesheetDate',
+        titleKey: 'Hr_Date',
         type: 'date',
         widget: 'date',
         required: true,
@@ -303,6 +305,57 @@ export const hr_formsRegister: FormConfigs = {
           adjustHeightWithLines: true,
           style: {marginBottom: 100, width: '90%', alignSelf: 'center'},
         },
+      },
+    },
+  },
+  hr_Timer: {
+    modelName: 'com.axelor.apps.hr.db.TSTimer',
+    fields: {
+      startDateTime: {
+        titleKey: 'Hr_Date',
+        type: 'datetime',
+        widget: 'date',
+        required: true,
+      },
+      project: {
+        titleKey: 'Hr_Project',
+        type: 'object',
+        widget: 'custom',
+        customComponent: ProjectSearchBar,
+        hideIf: ({objectState}) => objectState.manufOrder != null,
+        required: true,
+      },
+      projectTask: {
+        titleKey: 'Hr_ProjectTask',
+        type: 'object',
+        widget: 'custom',
+        customComponent: ProjectTaskSearchBar,
+        dependsOn: {
+          project: ({newValue, dispatch}) => {
+            dispatch(updateProject(newValue));
+          },
+        },
+        required: true,
+      },
+      duration: {
+        titleKey: 'Hr_Duration',
+        type: 'string',
+        widget: 'custom',
+        customComponent: DurationInput,
+      },
+      comments: {
+        titleKey: 'Hr_Comments',
+        type: 'string',
+        widget: 'default',
+        options: {
+          multiline: true,
+          adjustHeightWithLines: true,
+        },
+      },
+      stopwatch: {
+        type: 'object',
+        widget: 'custom',
+        customComponent: TimerStopwatch,
       },
     },
   },
