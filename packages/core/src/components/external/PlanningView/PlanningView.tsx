@@ -48,7 +48,7 @@ interface PlanningProps {
   itemList?: AgendaEvent[];
   changeWeekButton: boolean;
   returnToDayButton: boolean;
-  assignedToMeSwitch?: boolean;
+  manageAssignment?: boolean;
 }
 
 const PlanningView = ({
@@ -60,7 +60,7 @@ const PlanningView = ({
   itemList = [],
   changeWeekButton = true,
   returnToDayButton = true,
-  assignedToMeSwitch = true,
+  manageAssignment = false,
 }: PlanningProps) => {
   const Colors = useThemeColor();
   const I18n = useTranslator();
@@ -69,14 +69,14 @@ const PlanningView = ({
 
   const [fetchDate, setFetchDate] = useState<any>();
   const [currentDate, setCurrentDate] = useState(new Date().toISOString());
-  const [assigned, setAssigned] = useState(false);
+  const [assigned, setAssigned] = useState(true);
 
   const filterOnUserAssigned = useCallback(
     list => {
       if (!Array.isArray(list) || list.length === 0) {
         return [];
       } else {
-        if (assigned) {
+        if (assigned && manageAssignment) {
           return list?.filter(item => item?.data?.userId === userId);
         } else {
           return list;
@@ -97,8 +97,8 @@ const PlanningView = ({
   );
 
   const styles = useMemo(
-    () => getStyles(Colors, assignedToMeSwitch),
-    [Colors, assignedToMeSwitch],
+    () => getStyles(Colors, manageAssignment),
+    [Colors, manageAssignment],
   );
 
   const renderDate = date => {
@@ -194,7 +194,7 @@ const PlanningView = ({
   return (
     <View style={styles.agendaContainer}>
       <View style={styles.headerPlanning}>
-        {assignedToMeSwitch && (
+        {manageAssignment && (
           <SwitchCard
             title={I18n.t('Base_AssignedToMe')}
             defaultValue={assigned}
@@ -266,7 +266,7 @@ const PlanningView = ({
   );
 };
 
-const getStyles = (Colors, assignedToMeSwitch) =>
+const getStyles = (Colors, manageAssignment) =>
   StyleSheet.create({
     agendaContainer: {
       height: '100%',
@@ -337,7 +337,7 @@ const getStyles = (Colors, assignedToMeSwitch) =>
     },
     headerPlanning: {
       flexDirection: 'row',
-      justifyContent: assignedToMeSwitch ? 'space-between' : 'flex-end',
+      justifyContent: manageAssignment ? 'space-between' : 'flex-end',
       alignItems: 'center',
     },
     headerButton: {
