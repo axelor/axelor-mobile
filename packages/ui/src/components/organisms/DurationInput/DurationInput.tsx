@@ -16,7 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import React, {useEffect, useMemo, useRef, useState} from 'react';
+import React, {useCallback, useEffect, useMemo, useRef, useState} from 'react';
 import {StyleSheet, View} from 'react-native';
 import NumberChevronInput, {
   INPUT_CHANGE_TYPE,
@@ -56,22 +56,23 @@ const DurationInput = ({
     setFormattedDuration(formatDurationSecondsToArray(defaultValue ?? 0));
   }, [defaultValue]);
 
-  useEffect(() => {
-    onChange(formatDurationArrayToSeconds(formattedDuration));
-  }, [formattedDuration, onChange]);
-
   const _required = useMemo(
     () => required && formatDurationArrayToSeconds(formattedDuration) === 0,
     [formattedDuration, required],
   );
 
-  const changeFormattedDuration = (index: number, value: number) => {
-    setFormattedDuration(duration => {
-      const durationCopy = duration.slice();
-      durationCopy[index] = value;
-      return durationCopy;
-    });
-  };
+  const changeFormattedDuration = useCallback(
+    (index: number, value: number) => {
+      setFormattedDuration(duration => {
+        const durationCopy = duration.slice();
+        durationCopy[index] = value;
+        const newDurationSeconds = formatDurationArrayToSeconds(durationCopy);
+        onChange(newDurationSeconds);
+        return durationCopy;
+      });
+    },
+    [onChange],
+  );
 
   const changeFocusedInput = (
     inputIndex: number,
