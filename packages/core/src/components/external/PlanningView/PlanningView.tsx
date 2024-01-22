@@ -83,7 +83,7 @@ const PlanningView = ({
         }
       }
     },
-    [assigned, userId],
+    [assigned, manageAssignment, userId],
   );
 
   const _agendaItems = useMemo(
