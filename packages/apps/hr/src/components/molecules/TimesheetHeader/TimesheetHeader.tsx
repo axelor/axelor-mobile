@@ -18,8 +18,8 @@
 
 import React from 'react';
 import {StyleSheet, View} from 'react-native';
-import {useTranslator} from '@axelor/aos-mobile-core';
-import {Badge, Text, useThemeColor} from '@axelor/aos-mobile-ui';
+import {useSelector, useTranslator} from '@axelor/aos-mobile-core';
+import {Badge, CircleButton, Text, useThemeColor} from '@axelor/aos-mobile-ui';
 import {DatesInterval} from '../../atoms';
 import {Timesheet} from '../../../types';
 import {getDurationUnit} from '../../../utils';
@@ -33,9 +33,11 @@ const TimesheetHeader = ({timesheet, statusSelect}: TimesheetHeaderProps) => {
   const Colors = useThemeColor();
   const I18n = useTranslator();
 
+  const {mobileSettings} = useSelector((state: any) => state.appConfig);
+
   return (
     <View style={styles.container}>
-      <View style={styles.firstLineContainer}>
+      <View style={styles.rowContainer}>
         <DatesInterval
           startDate={timesheet.fromDate}
           endDate={timesheet.toDate}
@@ -45,13 +47,24 @@ const TimesheetHeader = ({timesheet, statusSelect}: TimesheetHeaderProps) => {
           title={Timesheet.getStatusName(statusSelect, I18n)}
         />
       </View>
-      <Text>
-        {I18n.t('User_Company')} : {timesheet.company.name}
-      </Text>
-      <Text>
-        {I18n.t('Hr_TotalDuration')} : {timesheet.periodTotal}
-        {getDurationUnit(timesheet.timeLoggingPreferenceSelect, I18n)}
-      </Text>
+      <View style={styles.rowContainer}>
+        <View>
+          <Text>
+            {I18n.t('User_Company')} : {timesheet.company.name}
+          </Text>
+          <Text>
+            {I18n.t('Hr_TotalDuration')} : {timesheet.periodTotal}
+            {getDurationUnit(timesheet.timeLoggingPreferenceSelect, I18n)}
+          </Text>
+        </View>
+        {mobileSettings?.isLineCreationOfTimesheetDetailsAllowed && (
+          <CircleButton
+            size={38}
+            iconName="plus-lg"
+            onPress={() => console.log('OK')}
+          />
+        )}
+      </View>
     </View>
   );
 };
@@ -60,11 +73,10 @@ const styles = StyleSheet.create({
   container: {
     marginHorizontal: 24,
   },
-  firstLineContainer: {
+  rowContainer: {
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
-    marginBottom: 5,
   },
 });
 
