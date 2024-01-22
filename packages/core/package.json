@@ -26,7 +26,6 @@
   "peerDependencies": {
     "@react-native-clipboard/clipboard": "^1.11.1",
     "axios": "^0.26.1",
-    "i18next": "^21.9.2",
     "react": "18.2.0",
     "react-native": "0.68.1",
     "react-native-contacts": "^7.0.6",
@@ -56,7 +55,6 @@
     "axios": "^0.26.1",
     "cpx2": "^4.2.0",
     "eslint": "^7.32.0",
-    "i18next": "^21.9.2",
     "metro-react-native-babel-preset": "^0.72.3",
     "prettier": "^2.7.1",
     "react": "18.2.0",
@@ -86,6 +84,7 @@
     "@react-navigation/native-stack": "6.9.13",
     "@react-navigation/stack": "6.3.17",
     "@reduxjs/toolkit": "^1.8.5",
+    "i18next": "23.7.18",
     "moment": "^2.29.4",
     "react-i18next": "14.0.1",
     "react-native-calendars": "1.1284",

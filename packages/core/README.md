@@ -38,8 +38,6 @@ This package has a few required libraries as peer dependencies:
 
 - [@react-native-clipboard/clipboard](https://www.npmjs.com/package/@react-native-clipboard/clipboard)
 - [axios](https://www.npmjs.com/package/axios)
-- [i18next](https://www.npmjs.com/package/i18next)
-- [react-i18next](https://www.npmjs.com/package/react-i18next)
 - [react-native-date-picker](https://www.npmjs.com/package/react-native-date-picker)
 - [react-native-datawedge-intents](https://www.npmjs.com/package/react-native-datawedge-intents)
 - [react-native-device-info](https://www.npmjs.com/package/react-native-device-info)

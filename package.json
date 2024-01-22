@@ -40,7 +40,6 @@
     "@reduxjs/toolkit": "^1.8.1",
     "axios": "^0.26.1",
     "bootstrap-icons": "^1.10.3",
-    "i18next": "^21.8.3",
     "react": "18.2.0",
     "react-native": "0.68.1",
     "react-native-contacts": "^7.0.6",
