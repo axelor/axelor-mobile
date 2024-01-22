@@ -52,15 +52,15 @@ const LoaderScreen = () => {
     console.log('Custom action executed!');
   };
 
-  const {loading, trigger} = useLoaderListner({
+  const {loading, listner} = useLoaderListner({
     process,
-    onPress: handleCustomAction,
+    onSuccess: handleCustomAction,
   });
 
   return (
     <Screen>
       <View>
-        <Button title="check process" onPress={trigger} disabled={loading} />
+        <Button title="check process" onPress={listner} disabled={loading} />
       </View>
     </Screen>
   );

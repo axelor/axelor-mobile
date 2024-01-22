@@ -17,6 +17,7 @@
  */
 
 export {default as AttachedFilesView} from './AttachedFilesView/AttachedFilesView';
+export {default as useLoaderListner} from './Loader/use-loader-listener';
 export {default as MailMessageView} from './MailMessageView/MailMessageView';
 export {default as PopupApplicationInformation} from './PopupApplicationInformation/PopupApplicationInformation';
 export {default as PopupMinimalRequiredVersion} from './PopupMinimalRequiredVersion/PopupMinimalRequiredVersion';

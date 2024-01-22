@@ -158,6 +158,8 @@
   "Base_Dashboard": "Tableau de bord",
   "Base_Dashboard_Misconfigured": "Ce tableau de bord est mal configuré, veuillez contacter votre administrateur.",
   "Base_Dashboard_RefreshConfig": "Actualiser le tableau de bord",
+  "Base_Loader_proccessSuccessMessage": "Le processus s'est terminé avec succès.",
+  "Base_Loader_proccessErrorMessage": "Une erreur s'est produite!",
   "Base_SliceAction_FetchAttachedFiles": "récupération des fichiers joints",
   "Base_SliceAction_FetchFilesDetails": "récupération des détails du fichier",
   "Base_SliceAction_FetchMetaModule": "récupération des modules",

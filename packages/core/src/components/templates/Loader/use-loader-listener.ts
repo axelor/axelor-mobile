@@ -17,18 +17,26 @@
  */
 
 import {useCallback, useEffect, useMemo, useState} from 'react';
+import {useTranslator} from '../../../i18n';
 import {showToastMessage} from '../../../utils/show-toast-message';
 
 interface LoaderListenerProps {
   process: () => Promise<any>;
-  onPress?: () => void;
+  onSuccess?: () => void;
+  onError?: () => void;
 }
 
-const useLoaderListner = ({process, onPress}: LoaderListenerProps) => {
+const useLoaderListner = ({
+  process,
+  onSuccess = () => console.log('Process successfully completed.'),
+  onError = () => console.warn('An error has occurred!'),
+}: LoaderListenerProps) => {
+  const I18n = useTranslator();
+
   const [loading, setLoading] = useState(false);
   const [start, setStart] = useState(false);
 
-  const handleProcess = useCallback(async () => {
+  const executeProcess = useCallback(async () => {
     try {
       setStart(false);
       setLoading(true);
@@ -39,33 +47,33 @@ const useLoaderListner = ({process, onPress}: LoaderListenerProps) => {
         type: 'success',
         position: 'top',
         topOffset: 30,
-        text1: 'Success',
-        text2: response,
-        onPress,
+        text1: I18n.t('Base_Error'),
+        text2: response || I18n.t('Base_Loader_proccessSuccessMessage'),
+        onPress: onSuccess,
       });
     } catch (error) {
       showToastMessage({
         type: 'error',
         position: 'top',
         topOffset: 30,
-        text1: 'Error',
-        text2: error.toString(),
-        onPress,
+        text1: I18n.t('Base_Error'),
+        text2: error.toString() || I18n.t('Base_Loader_proccessErrorMessage'),
+        onPress: onError,
       });
     } finally {
       setLoading(false);
     }
-  }, [process, onPress]);
+  }, [process, onSuccess, onError, I18n]);
 
   useEffect(() => {
     if (!start && !loading) {
       return;
     }
 
-    handleProcess();
-  }, [start, loading, handleProcess]);
+    executeProcess();
+  }, [start, loading, executeProcess]);
 
-  return useMemo(() => ({loading, trigger: () => setStart(true)}), [loading]);
+  return useMemo(() => ({loading, listner: () => setStart(true)}), [loading]);
 };
 
 export default useLoaderListner;
