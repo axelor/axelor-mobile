@@ -30,6 +30,9 @@ export default {
   TimesheetListScreen: {
     title: 'Hr_Timesheets',
     component: TimesheetListScreen,
+    options: {
+      shadedHeader: false,
+    },
   },
   TimesheetLineFormScreen: {
     title: 'Hr_TimesheetLine',
@@ -38,6 +41,9 @@ export default {
   TimesheetDetailsScreen: {
     title: 'Hr_Timesheets',
     component: TimesheetDetailsScreen,
+    options: {
+      shadedHeader: false,
+    },
   },
 };
 
