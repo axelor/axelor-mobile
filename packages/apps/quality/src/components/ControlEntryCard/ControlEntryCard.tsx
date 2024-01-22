@@ -19,7 +19,7 @@
 import React, {useEffect, useMemo, useState} from 'react';
 import {StyleSheet, TouchableOpacity, View} from 'react-native';
 import {Card, ProgressBar, Text, useThemeColor} from '@axelor/aos-mobile-ui';
-import {useTranslator, useDispatch, useSelector} from '@axelor/aos-mobile-core';
+import {useTranslator, useDispatch} from '@axelor/aos-mobile-core';
 import {DateDisplay} from '../atoms';
 import {ControlEntry} from '../../types';
 import {searchControlEntrySampleApi} from '../../api';
