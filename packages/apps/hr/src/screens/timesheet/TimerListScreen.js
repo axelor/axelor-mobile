@@ -22,7 +22,7 @@ import {Screen, ScrollList} from '@axelor/aos-mobile-ui';
 import {TimeDetailCard, TimerDeclareButton} from '../../components';
 import {fetchTimer} from '../../features/timerSlice';
 
-const TimerListScreen = ({}) => {
+const TimerListScreen = ({navigation}) => {
   const I18n = useTranslator();
   const dispatch = useDispatch();
 
@@ -52,6 +52,11 @@ const TimerListScreen = ({}) => {
             date={item.startDateTime}
             duration={item.duration}
             durationUnit={'hours'}
+            onEdit={() =>
+              navigation.navigate('TimerFormScreen', {
+                timer: item,
+              })
+            }
           />
         )}
         fetchData={fetchTimerAPI}

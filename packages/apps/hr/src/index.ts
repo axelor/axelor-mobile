@@ -64,6 +64,11 @@ export const HrModule: Module = {
       icon: 'clock-history',
       screen: 'TimesheetListScreen',
     },
+    hr_menu_activeTimer: {
+      title: 'Hr_ActiveTimer',
+      icon: 'stopwatch',
+      screen: 'ActiveTimerFormScreen',
+    },
   },
   screens: {
     ...ExpenseScreens,
