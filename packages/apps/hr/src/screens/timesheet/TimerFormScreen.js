@@ -20,21 +20,21 @@ import React, {useMemo} from 'react';
 import {FormView} from '@axelor/aos-mobile-core';
 
 const TimerFormScreen = ({route}) => {
-  const {timer} = route?.params;
+  const timer = route?.params?.timer;
 
   const defaultValue = useMemo(() => {
     if (timer != null) {
       return {
-        timerDate: timer.startDateTime,
-        project: timer.project?.name,
-        projectTask: timer.projectTask?.name,
+        startDateTime: timer.startDateTime,
+        project: timer.project,
+        projectTask: timer.projectTask,
         duration: timer.duration,
         comments: timer.comments,
       };
     }
 
     return {
-      timerDate: new Date().toISOString().split('T')[0],
+      startDateTime: new Date().toISOString(),
     };
   }, [timer]);
 

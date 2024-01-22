@@ -311,9 +311,9 @@ export const hr_formsRegister: FormConfigs = {
   hr_Timer: {
     modelName: 'com.axelor.apps.hr.db.TSTimer',
     fields: {
-      timerDate: {
+      startDateTime: {
         titleKey: 'Hr_Date',
-        type: 'date',
+        type: 'datetime',
         widget: 'date',
         required: true,
       },

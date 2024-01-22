@@ -62,6 +62,7 @@
   "Hr_Duration": "Duration (heures)",
   "Hr_TotalDuration": "Durée totale",
   "Hr_ActiveTimer": "Chronomètre actif",
+  "Hr_CreateTimer": "Créer un chronomètre",
   "Hr_SliceAction_FetchExpenseLines": "récupération des lignes de frais",
   "Hr_SliceAction_SearchDraftExpense": "récupération des notes de frais brouillon",
   "Hr_SliceAction_FetchExpense": "récupération des notes de frais",

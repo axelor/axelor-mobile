@@ -62,6 +62,7 @@
   "Hr_Duration": "Duration (hours)",
   "Hr_TotalDuration": "Total duration",
   "Hr_ActiveTimer": "Active timer",
+  "Hr_CreateTimer": "Create a timer",
   "Hr_SliceAction_FetchExpenseLines": "fetch expense lines",
   "Hr_SliceAction_SearchDraftExpense": "fetch draft expenses",
   "Hr_SliceAction_FetchExpense": "fetch expenses",
