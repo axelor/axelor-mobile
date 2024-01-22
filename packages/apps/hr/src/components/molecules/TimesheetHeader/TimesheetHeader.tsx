@@ -16,9 +16,13 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import React from 'react';
+import React, {useMemo} from 'react';
 import {StyleSheet, View} from 'react-native';
-import {useSelector, useTranslator} from '@axelor/aos-mobile-core';
+import {
+  useNavigation,
+  useSelector,
+  useTranslator,
+} from '@axelor/aos-mobile-core';
 import {Badge, CircleButton, Text, useThemeColor} from '@axelor/aos-mobile-ui';
 import {DatesInterval} from '../../atoms';
 import {Timesheet} from '../../../types';
@@ -32,8 +36,16 @@ interface TimesheetHeaderProps {
 const TimesheetHeader = ({timesheet, statusSelect}: TimesheetHeaderProps) => {
   const Colors = useThemeColor();
   const I18n = useTranslator();
+  const navigation = useNavigation();
 
   const {mobileSettings} = useSelector((state: any) => state.appConfig);
+
+  const isAddButton = useMemo(
+    () =>
+      mobileSettings?.isLineCreationOfTimesheetDetailsAllowed &&
+      statusSelect === Timesheet.statusSelect.Draft,
+    [mobileSettings?.isLineCreationOfTimesheetDetailsAllowed, statusSelect],
+  );
 
   return (
     <View style={styles.container}>
@@ -43,6 +55,7 @@ const TimesheetHeader = ({timesheet, statusSelect}: TimesheetHeaderProps) => {
           endDate={timesheet.toDate}
         />
         <Badge
+          style={styles.badge}
           color={Timesheet.getStatusColor(statusSelect, Colors)}
           title={Timesheet.getStatusName(statusSelect, I18n)}
         />
@@ -57,11 +70,15 @@ const TimesheetHeader = ({timesheet, statusSelect}: TimesheetHeaderProps) => {
             {getDurationUnit(timesheet.timeLoggingPreferenceSelect, I18n)}
           </Text>
         </View>
-        {mobileSettings?.isLineCreationOfTimesheetDetailsAllowed && (
+        {isAddButton && (
           <CircleButton
             size={38}
             iconName="plus-lg"
-            onPress={() => console.log('OK')}
+            onPress={() =>
+              navigation.navigate('TimesheetLineFormScreen', {
+                timesheetId: timesheet.id,
+              })
+            }
           />
         )}
       </View>
@@ -77,6 +94,9 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
+  },
+  badge: {
+    margin: 0,
   },
 });
 
