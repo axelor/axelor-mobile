@@ -19,6 +19,7 @@
 import {useEffect} from 'react';
 import {
   headerActionsProvider,
+  useNavigation,
   useSelector,
   useTranslator,
   useDispatch,
@@ -29,6 +30,7 @@ import {fetchExpenseById} from '../features/expenseSlice';
 export const useHrHeaders = () => {
   useExpenseDetailsAction();
   useTimerListAction();
+  useActiveTimerAction();
 };
 
 const useExpenseDetailsAction = () => {
@@ -64,6 +66,7 @@ const useExpenseDetailsAction = () => {
 const useTimerListAction = () => {
   const Colors = useThemeColor();
   const I18n = useTranslator();
+  const navigation = useNavigation();
 
   useEffect(() => {
     headerActionsProvider.registerModel('hr_timers_list', {
@@ -72,12 +75,34 @@ const useTimerListAction = () => {
           key: 'newTimer',
           order: 10,
           iconName: 'plus-lg',
-          title: I18n.t('Hr_NewTimer'),
+          title: I18n.t('Hr_CreateTimer'),
           iconColor: Colors.primaryColor.background,
-          onPress: () => console.log('Header button pressed.'),
+          onPress: () => navigation.navigate('TimerFormScreen'),
           showInHeader: true,
         },
       ],
     });
-  }, [Colors, I18n]);
+  }, [Colors, I18n, navigation]);
+};
+
+const useActiveTimerAction = () => {
+  const Colors = useThemeColor();
+  const I18n = useTranslator();
+  const navigation = useNavigation();
+
+  useEffect(() => {
+    headerActionsProvider.registerModel('hr_active_timer', {
+      actions: [
+        {
+          key: 'newTimer',
+          order: 10,
+          iconName: 'plus-lg',
+          title: I18n.t('Hr_CreateTimer'),
+          iconColor: Colors.primaryColor.background,
+          onPress: () => navigation.navigate('TimerFormScreen'),
+          showInHeader: true,
+        },
+      ],
+    });
+  }, [Colors, I18n, navigation]);
 };
