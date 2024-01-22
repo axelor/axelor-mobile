@@ -46,7 +46,7 @@ class ControlEntry {
           return I18n.t('Stock_Status_Canceled');
         default:
           console.warn(
-            `Status provided with value ${select} is not supported by inventory`,
+            `Status provided with value ${select} is not supported by control entry`,
           );
           return null;
       }
