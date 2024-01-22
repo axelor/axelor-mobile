@@ -57,7 +57,7 @@ const useLoaderListner = ({
         position: 'top',
         topOffset: 30,
         text1: I18n.t('Base_Error'),
-        text2: error.toString() || I18n.t('Base_Loader_ProccessErrorMessage'),
+        text2: error || I18n.t('Base_Loader_ProccessErrorMessage'),
         onPress: onError,
       });
     } finally {
@@ -66,7 +66,7 @@ const useLoaderListner = ({
   }, [process, onSuccess, onError, I18n]);
 
   useEffect(() => {
-    if (start && loading) {
+    if (start && !loading) {
       executeProcess();
     }
   }, [start, loading, executeProcess]);
