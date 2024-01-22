@@ -96,6 +96,7 @@ const ControlEntryListScreen = ({}) => {
             entryDateTime={item?.entryDateTime}
             statusSelect={item?.statusSelect}
             name={item?.name}
+            controlEntryId={item?.id}
           />
         )}
         fetchData={fetchControlEntryAPI}

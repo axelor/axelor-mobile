@@ -27,6 +27,12 @@ class ControlEntry {
     Canceled: 4,
   };
 
+  static sampleResult = {
+    NotControlled: 1,
+    Compliant: 2,
+    NotComploant: 3,
+  };
+
   static getStatus = (select: number, I18n: TranslatorProps): string => {
     if (I18n) {
       switch (select) {

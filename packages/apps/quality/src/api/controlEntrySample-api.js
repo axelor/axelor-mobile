@@ -16,5 +16,24 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-export {searchControlEntry as searchControlEntryApi} from './controlEntry-api';
-export {searchControlEntrySample as searchControlEntrySampleApi} from './controlEntrySample-api';
+import {createStandardSearch} from '@axelor/aos-mobile-core';
+
+const createControlEntrySampleCriteria = controlEntryId => {
+  return [
+    {
+      fieldName: 'controlEntry.id',
+      operator: '=',
+      value: controlEntryId,
+    },
+  ];
+};
+
+export async function searchControlEntrySample({page = 0, controlEntryId}) {
+  return createStandardSearch({
+    model: 'com.axelor.apps.quality.db.ControlEntrySample',
+    criteria: createControlEntrySampleCriteria(controlEntryId),
+    fieldKey: 'quality_controlEntrySample',
+    sortKey: 'quality_controlEntrySample',
+    page: page,
+  });
+}

@@ -30,4 +30,9 @@ export const quality_modelAPI: ObjectFields = {
     sampleCount: schemaContructor.number(),
     controlPlan: schemaContructor.subObject,
   }),
+  quality_controlEntrySample: schemaContructor.object({
+    fullName: schemaContructor.string(),
+    resultSelect: schemaContructor.number(),
+    entrySampleNbr: schemaContructor.number(),
+  }),
 };

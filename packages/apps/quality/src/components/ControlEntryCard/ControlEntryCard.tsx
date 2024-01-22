@@ -16,12 +16,13 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import React, {useMemo} from 'react';
+import React, {useEffect, useMemo, useState} from 'react';
 import {StyleSheet, TouchableOpacity, View} from 'react-native';
 import {Card, ProgressBar, Text, useThemeColor} from '@axelor/aos-mobile-ui';
-import {useTranslator} from '@axelor/aos-mobile-core';
+import {useTranslator, useDispatch, useSelector} from '@axelor/aos-mobile-core';
 import {DateDisplay} from '../atoms';
 import {ControlEntry} from '../../types';
+import {searchControlEntrySampleApi} from '../../api';
 
 interface ControlEntryCardProps {
   style?: any;
@@ -30,6 +31,7 @@ interface ControlEntryCardProps {
   entryDateTime?: string;
   statusSelect?: number;
   name?: string;
+  controlEntryId?: number;
 }
 const ControlEntryCard = ({
   style,
@@ -38,9 +40,35 @@ const ControlEntryCard = ({
   entryDateTime,
   statusSelect,
   name,
+  controlEntryId,
 }: ControlEntryCardProps) => {
   const Colors = useThemeColor();
   const I18n = useTranslator();
+  const dispatch = useDispatch();
+
+  const [controlEntrySampleList, setControlEntrySampleList] = useState([]);
+
+  useEffect(() => {
+    searchControlEntrySampleApi({controlEntryId: controlEntryId}).then(
+      response => {
+        setControlEntrySampleList(response?.data?.data);
+      },
+    );
+  }, [controlEntryId, dispatch]);
+
+  const numberSampledFilled = useMemo(() => {
+    if (controlEntrySampleList != null && controlEntrySampleList?.length > 0) {
+      let total = controlEntrySampleList?.length;
+      let notControlled = 0;
+      controlEntrySampleList?.forEach(sample => {
+        if (sample?.resultSelect === ControlEntry?.sampleResult.NotControlled) {
+          notControlled++;
+        }
+      });
+      return 100 - (notControlled / total) * 100;
+    }
+    return 0;
+  }, [controlEntrySampleList]);
 
   const borderStyle = useMemo(() => {
     return getStyles(
@@ -63,7 +91,7 @@ const ControlEntryCard = ({
           )} : ${sampleCount}`}</Text>
           <ProgressBar
             style={styles.progressBar}
-            value={50}
+            value={numberSampledFilled}
             showPercent={false}
             height={15}
             styleTxt={styles.textProgressBar}
