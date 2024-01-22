@@ -44,15 +44,15 @@ export const HrModule: Module = {
     fr: frTranslations,
   },
   menus: {
-    hr_menu_expenseLines: {
-      title: 'Hr_ExpenseLines',
-      icon: 'receipt',
-      screen: 'ExpenseLinesListScreen',
+    stock_menu_timesheetsSeparator: {
+      title: 'Hr_Timesheets',
+      separator: true,
     },
-    hr_menu_expenses: {
-      title: 'Hr_Expenses',
-      icon: 'credit-card-fill',
-      screen: 'ExpenseListScreen',
+    hr_menu_activeTimer: {
+      title: 'Hr_ActiveTimer',
+      icon: 'stopwatch',
+      screen: 'ActiveTimerFormScreen',
+      isDefault: true,
     },
     hr_menu_timers: {
       title: 'Hr_Timers',
@@ -64,10 +64,19 @@ export const HrModule: Module = {
       icon: 'clock-history',
       screen: 'TimesheetListScreen',
     },
-    hr_menu_activeTimer: {
-      title: 'Hr_ActiveTimer',
-      icon: 'stopwatch',
-      screen: 'ActiveTimerFormScreen',
+    hr_menu_expensesSeparator: {
+      title: 'Hr_Expenses',
+      separator: true,
+    },
+    hr_menu_expenseLines: {
+      title: 'Hr_ExpenseLines',
+      icon: 'receipt',
+      screen: 'ExpenseLinesListScreen',
+    },
+    hr_menu_expenses: {
+      title: 'Hr_Expenses',
+      icon: 'credit-card-fill',
+      screen: 'ExpenseListScreen',
     },
   },
   screens: {
