@@ -24,9 +24,9 @@ import {
   useTranslator,
 } from '@axelor/aos-mobile-core';
 import {AutoCompleteSearch} from '@axelor/aos-mobile-ui';
-import {searchProjectTask} from '../../../features/projectSlice';
+import {searchProduct} from '../../../features/projectSlice';
 
-interface ProjectTaskSearchBarProps {
+interface ProductSearchBarProps {
   style?: any;
   title?: string;
   defaultValue?: string;
@@ -35,72 +35,64 @@ interface ProjectTaskSearchBarProps {
   required?: boolean;
 }
 
-const ProjectTaskSearchBarAux = ({
+const ProductSearchBarAux = ({
   style = null,
-  title = 'Hr_ProjectTask',
+  title = 'Hr_Product',
   defaultValue = null,
   onChange = () => {},
   readonly = false,
   required = false,
-}: ProjectTaskSearchBarProps) => {
+}: ProductSearchBarProps) => {
   const I18n = useTranslator();
   const dispatch = useDispatch();
 
-  const {user} = useSelector((state: any) => state.user);
-  const {
-    project,
-    projectTaskList,
-    loadingProjectTask,
-    moreLoadingProjectTask,
-    isListEndProjectTask,
-  } = useSelector((state: any) => state.project);
+  const {loadingProduct, moreLoadingProduct, isListEndProduct, productList} =
+    useSelector((state: any) => state.project);
 
-  const searchProjectTaskAPI = useCallback(
+  const searchProductAPI = useCallback(
     ({page = 0, searchValue}) => {
       dispatch(
-        (searchProjectTask as any)({
+        (searchProduct as any)({
           page,
           searchValue,
-          userId: user?.id,
-          projectId: project?.id,
         }),
       );
     },
-    [dispatch, project?.id, user?.id],
+    [dispatch],
   );
 
   return (
     <AutoCompleteSearch
       style={style}
       title={I18n.t(title)}
-      objectList={projectTaskList}
+      objectList={productList}
       value={defaultValue}
       required={required}
       readonly={readonly}
       onChangeValue={onChange}
-      fetchData={searchProjectTaskAPI}
+      fetchData={searchProductAPI}
       displayValue={displayItemFullname}
       placeholder={title}
       showDetailsPopup={true}
-      loadingList={loadingProjectTask}
-      moreLoading={moreLoadingProjectTask}
-      isListEnd={isListEndProjectTask}
+      loadingList={loadingProduct}
+      moreLoading={moreLoadingProduct}
+      isListEnd={isListEndProduct}
       navigate={false}
       oneFilter={false}
     />
   );
 };
 
-const ProjectTaskSearchBar = ({
+const ProductSearchBar = ({
   style = null,
-  title = 'Hr_ProjectTask',
+  title = 'Hr_Product',
   defaultValue = null,
   onChange = () => {},
   readonly = false,
   required = false,
-}: ProjectTaskSearchBarProps) => {
+}: ProductSearchBarProps) => {
   return (
-    <ProjectTaskSearchBarAux
+    <ProductSearchBarAux
       style={style}
       title={title}
       defaultValue={defaultValue}
@@ -111,4 +103,4 @@ const ProjectTaskSearchBar = ({
   );
 };
 
-export default ProjectTaskSearchBar;
+export default ProductSearchBar;
