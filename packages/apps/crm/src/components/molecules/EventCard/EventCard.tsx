@@ -103,7 +103,7 @@ const EventCard = ({
   );
 };
 
-const getStyles = (color: {}) =>
+const getStyles = (color: string) =>
   StyleSheet.create({
     border: {
       borderLeftWidth: 7,
