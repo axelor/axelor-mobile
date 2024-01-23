@@ -28,6 +28,7 @@ export const hr_searchFields: SearchFields = {
   hr_operationOrder: ['name'],
   hr_project: ['name', 'fullName'],
   hr_projectTask: ['name', 'fullName'],
+  hr_product: ['name', 'fullName'],
   hr_timer: ['project.fullName', 'projectTask.fullName', 'comments'],
   hr_timesheet: ['employee.name'],
   hr_timesheetLine: ['project.fullName', 'manufOrder.fullName'],

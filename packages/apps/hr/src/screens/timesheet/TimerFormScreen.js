@@ -28,6 +28,7 @@ const TimerFormScreen = ({route}) => {
         startDateTime: timer.startDateTime,
         project: timer.project,
         projectTask: timer.projectTask,
+        product: timer.product,
         duration: timer.duration,
         comments: timer.comments,
       };
