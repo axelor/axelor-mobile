@@ -22,6 +22,7 @@ import {
   generateInifiniteScrollCases,
 } from '@axelor/aos-mobile-core';
 import {
+  searchProduct as _searchProduct,
   searchProject as _searchProject,
   searchProjectTask as _searchProjectTask,
 } from '../api/project-api';
@@ -52,6 +53,19 @@ export const searchProjectTask = createAsyncThunk(
   },
 );
 
+export const searchProduct = createAsyncThunk(
+  'project/searchProduct',
+  async function (data, {getState}) {
+    return handlerApiCall({
+      fetchFunction: _searchProduct,
+      data,
+      action: 'Hr_SliceAction_FetchProduct',
+      getState,
+      responseOptions: {isArrayResponse: true},
+    });
+  },
+);
+
 const initialState = {
   project: {},
 
@@ -64,6 +78,11 @@ const initialState = {
   moreLoadingProjectTask: false,
   isListEndProjectTask: false,
   projectTaskList: [],
+
+  loadingProduct: true,
+  moreLoadingProduct: false,
+  isListEndProduct: false,
+  productList: [],
 };
 
 const projectSlice = createSlice({
@@ -86,6 +105,12 @@ const projectSlice = createSlice({
       moreLoading: 'moreLoadingProjectTask',
       isListEnd: 'isListEndProjectTask',
       list: 'projectTaskList',
+    });
+    generateInifiniteScrollCases(builder, searchProduct, {
+      loading: 'loadingProduct',
+      moreLoading: 'moreLoadingProduct',
+      isListEnd: 'isListEndProduct',
+      list: 'productList',
     });
   },
 });

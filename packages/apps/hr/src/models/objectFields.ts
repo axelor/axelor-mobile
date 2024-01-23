@@ -95,11 +95,17 @@ export const hr_modelAPI: ObjectFields = {
   hr_projectTask: schemaContructor.object({
     fullName: schemaContructor.string(),
     name: schemaContructor.string(),
+    product: schemaContructor.subObject('fullName'),
+  }),
+  hr_product: schemaContructor.object({
+    fullName: schemaContructor.string(),
+    name: schemaContructor.string(),
   }),
   hr_timer: schemaContructor.object({
     statusSelect: schemaContructor.number(),
     project: schemaContructor.subObject('name'),
     projectTask: schemaContructor.subObject('name'),
+    product: schemaContructor.subObject('name'),
     comments: schemaContructor.string(),
     startDateTime: schemaContructor.string(),
     duration: schemaContructor.number(),
