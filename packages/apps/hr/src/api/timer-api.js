@@ -21,6 +21,7 @@ import {
   getSearchCriterias,
   getStartOfDay,
 } from '@axelor/aos-mobile-core';
+import {Time} from '../types';
 
 const createTimerCriteria = (searchValue, userId, fromDate, toDate) => {
   const criteria = [
@@ -60,6 +61,28 @@ const createTimerCriteria = (searchValue, userId, fromDate, toDate) => {
   return criteria;
 };
 
+const createActiveTimerCriteria = userId => {
+  const criteria = createTimerCriteria(null, userId);
+
+  criteria.push({
+    operator: 'OR',
+    criteria: [
+      {
+        fieldName: 'statusSelect',
+        operator: '=',
+        value: Time.statusSelect.InProgress,
+      },
+      {
+        fieldName: 'statusSelect',
+        operator: '=',
+        value: Time.statusSelect.Paused,
+      },
+    ],
+  });
+
+  return criteria;
+};
+
 export async function fetchTimer({
   searchValue = null,
   userId,
@@ -73,5 +96,16 @@ export async function fetchTimer({
     fieldKey: 'hr_timer',
     sortKey: 'hr_timer',
     page,
+  });
+}
+
+export async function fetchActiveTimer({userId}) {
+  return createStandardSearch({
+    model: 'com.axelor.apps.hr.db.TSTimer',
+    criteria: createActiveTimerCriteria(userId),
+    fieldKey: 'hr_timer',
+    sortKey: 'hr_timer',
+    numberElementsByPage: 1,
+    page: 0,
   });
 }

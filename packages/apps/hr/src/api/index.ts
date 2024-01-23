@@ -50,7 +50,10 @@ export {
   searchProject as searchProjectApi,
   searchProjectTask as searchProjectTaskApi,
 } from './project-api';
-export {fetchTimer as fetchTimerApi} from './timer-api';
+export {
+  fetchActiveTimer as fetchActiveTimerApi,
+  fetchTimer as fetchTimerApi,
+} from './timer-api';
 export {
   fetchDraftTimesheet as fetchDraftTimesheetApi,
   fetchTimesheet as fetchTimesheetApi,

@@ -16,28 +16,39 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import React, {useMemo} from 'react';
-import {FormView} from '@axelor/aos-mobile-core';
+import React, {useEffect, useMemo} from 'react';
+import {FormView, useDispatch, useSelector} from '@axelor/aos-mobile-core';
+import {fetchActiveTimer} from '../../features/timerSlice';
 
 const TimerFormScreen = ({route}) => {
-  const timer = route?.params?.timer;
+  const isCreation = route?.params?.isCreation;
+  const timerToUpdate = route?.params?.timerToUpdate;
+  const dispatch = useDispatch();
+
+  const {user} = useSelector(state => state.user);
+  const {activeTimer} = useSelector(state => state.hr_timer);
+
+  useEffect(() => {
+    dispatch(fetchActiveTimer({userId: user?.id}));
+  }, [dispatch, user?.id]);
 
   const defaultValue = useMemo(() => {
-    if (timer != null) {
+    if (isCreation) {
       return {
-        startDateTime: timer.startDateTime,
-        project: timer.project,
-        projectTask: timer.projectTask,
-        product: timer.product,
-        duration: timer.duration,
-        comments: timer.comments,
+        startDateTime: new Date().toISOString(),
       };
     }
 
+    const timer = timerToUpdate ?? activeTimer;
     return {
-      startDateTime: new Date().toISOString(),
+      startDateTime: timer.startDateTime,
+      project: timer.project,
+      projectTask: timer.projectTask,
+      product: timer.product,
+      duration: timer.duration,
+      comments: timer.comments,
     };
-  }, [timer]);
+  }, [activeTimer, isCreation, timerToUpdate]);
 
   return (
     <FormView defaultValue={defaultValue} actions={[]} formKey="hr_Timer" />
