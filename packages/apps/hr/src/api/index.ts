@@ -46,6 +46,7 @@ export {
   searchOperationOrder as searchOperationOrderApi,
 } from './manuf-order-api';
 export {
+  searchProduct as searchProductApi,
   searchProject as searchProjectApi,
   searchProjectTask as searchProjectTaskApi,
 } from './project-api';

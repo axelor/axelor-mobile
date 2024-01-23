@@ -46,7 +46,12 @@ export {
   searchOperationOrder,
   updateManufOrder,
 } from './manufOrderSlice';
-export {searchProject, searchProjectTask, updateProject} from './projectSlice';
+export {
+  searchProduct,
+  searchProject,
+  searchProjectTask,
+  updateProject,
+} from './projectSlice';
 export {fetchTimer} from './timerSlice';
 export {fetchTimesheetLine} from './timesheetLineSlice';
 export {
