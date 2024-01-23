@@ -23,7 +23,6 @@ import {
   Camera as PackageCamera,
   useCameraDevices,
 } from 'react-native-vision-camera';
-import {BarcodeFormat, useScanBarcodes} from 'vision-camera-code-scanner';
 import {Icon, useThemeColor} from '@axelor/aos-mobile-ui';
 import {formatScan} from '../../../utils/formatters';
 import {
@@ -40,23 +39,18 @@ const CameraScanner = () => {
   const Colors = useThemeColor();
   const dispatch = useDispatch();
 
-  const [frameProcessor, barcodes] = useScanBarcodes(
-    [BarcodeFormat.ALL_FORMATS],
-    {
-      checkInverted: true,
-    },
-  );
-
   const handleScan = useCallback(
     barcode => {
       if (barcode != null) {
+        console.log(barcode);
+      } else {
         dispatch(
           scanBarcode({
             value: formatScan(
               barcode.displayValue,
-              BarcodeFormat[barcode.format],
+              'qrcode', // TODO: BarcodeFormat[barcode.format],
             ),
-            type: BarcodeFormat[barcode.format],
+            type: 'qrcode', // TODO: BarcodeFormat[barcode.format],
           }),
         );
       }
@@ -67,12 +61,6 @@ const CameraScanner = () => {
   const handleClose = useCallback(() => {
     dispatch(disableCameraScanner());
   }, [dispatch]);
-
-  useEffect(() => {
-    if (barcodes[0] != null) {
-      handleScan(barcodes[0]);
-    }
-  }, [barcodes, handleScan]);
 
   useEffect(() => {
     if (isActive) {
@@ -103,8 +91,7 @@ const CameraScanner = () => {
         style={styles.camera}
         device={device}
         isActive={true}
-        frameProcessor={frameProcessor}
-        frameProcessorFps={5}
+        codeScanner={{codeTypes: ['qr', 'ean-13'], onCodeScanned: handleScan}}
       />
     </View>
   );

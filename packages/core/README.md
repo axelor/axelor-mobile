@@ -51,7 +51,6 @@ This package has a few required libraries as peer dependencies:
 - [react-native-static-safe-area-insets](https://www.npmjs.com/package/react-native-static-safe-area-insets)
 - [react-native-toast-message](https://www.npmjs.com/package/react-native-toast-message)
 - [react-native-vision-camera](https://www.npmjs.com/package/react-native-vision-camera)
-- [vision-camera-code-scanner](https://www.npmjs.com/package/vision-camera-code-scanner)
 
 ### Create an application
 

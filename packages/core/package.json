@@ -42,9 +42,8 @@
     "react-native-static-safe-area-insets": "^2.2.0",
     "react-native-toast-message": "^2.1.5",
     "react-native-vector-icons": "^9.2.0",
-    "react-native-vision-camera": "2.15.6",
-    "react-native-blob-util": "0.19.6",
-    "vision-camera-code-scanner": "^0.2.0"
+    "react-native-vision-camera": "3.8.2",
+    "react-native-blob-util": "0.19.6"
   },
   "devDependencies": {
     "@babel/runtime": "^7.19.0",
@@ -72,9 +71,8 @@
     "react-native-static-safe-area-insets": "^2.2.0",
     "react-native-toast-message": "^2.1.5",
     "react-native-vector-icons": "^9.2.0",
-    "react-native-vision-camera": "2.15.6",
-    "react-native-blob-util": "0.19.6",
-    "vision-camera-code-scanner": "^0.2.0"
+    "react-native-vision-camera": "3.8.2",
+    "react-native-blob-util": "0.19.6"
   },
   "dependencies": {
     "@axelor/aos-mobile-error": "7.2.4",

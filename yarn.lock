@@ -13190,10 +13190,10 @@ react-native-vector-icons@^9.1.0, react-native-vector-icons@^9.2.0:
     prop-types "^15.7.2"
     yargs "^16.1.1"
 
-react-native-vision-camera@2.15.6:
-  version "2.15.6"
-  resolved "https://registry.npmjs.org/react-native-vision-camera/-/react-native-vision-camera-2.15.6.tgz#50fe9b47117a257f2c8bf7c33994fdadb897d091"
-  integrity sha512-TEdriQ2SQAhF7byw7iDaOh8cJm/IECOUofBhcdswtAK9LSqCkVEIhX3pna2L3Obt6evc8zaFnYCVqhvC3UtKRg==
+react-native-vision-camera@3.8.2:
+  version "3.8.2"
+  resolved "https://registry.npmjs.org/react-native-vision-camera/-/react-native-vision-camera-3.8.2.tgz#f4f75f84c6a19e1c3474ddc0f7f785b5a526739b"
+  integrity sha512-MY39l2e3hNRPUefn2JPShOFExcw0PblbAcUGvJrIfS9pMzdIyceo0umRAx8lOGXzDUAdb+xy/tFWb8zGxKimCQ==
 
 react-native-web-linear-gradient@1.1.2:
   version "1.1.2"
