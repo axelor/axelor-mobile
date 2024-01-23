@@ -145,6 +145,7 @@ const TimerListAlert = ({
 
   return (
     <Alert
+      style={styles.alert}
       visible={isAlertVisible}
       title={I18n.t('Hr_SelectTimers')}
       cancelButtonConfig={{
@@ -230,6 +231,9 @@ const TimerListAlert = ({
 };
 
 const styles = StyleSheet.create({
+  alert: {
+    height: '80%',
+  },
   picker: {
     width: '100%',
   },
