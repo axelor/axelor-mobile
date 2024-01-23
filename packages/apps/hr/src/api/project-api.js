@@ -22,7 +22,19 @@ import {
 } from '@axelor/aos-mobile-core';
 
 const createProjectCriteria = (searchValue, activeCompanyId) => {
-  const criteria = [getSearchCriterias('hr_project', searchValue)];
+  const criteria = [
+    {
+      fieldName: 'imputable',
+      operator: '=',
+      value: true,
+    },
+    {
+      fieldName: 'isShowTimeSpent',
+      operator: '=',
+      value: true,
+    },
+    getSearchCriterias('hr_project', searchValue),
+  ];
 
   if (activeCompanyId != null) {
     criteria.push({
@@ -35,8 +47,15 @@ const createProjectCriteria = (searchValue, activeCompanyId) => {
   return criteria;
 };
 
-const createProjectTaskCriteria = (searchValue, projectId) => {
-  const criteria = [getSearchCriterias('hr_projectTask', searchValue)];
+const createProjectTaskCriteria = (searchValue, userId, projectId) => {
+  const criteria = [
+    {
+      fieldName: 'assignedTo.employee.user.id',
+      operator: '=',
+      value: userId,
+    },
+    getSearchCriterias('hr_projectTask', searchValue),
+  ];
 
   if (projectId != null) {
     criteria.push({
@@ -49,6 +68,22 @@ const createProjectTaskCriteria = (searchValue, projectId) => {
   return criteria;
 };
 
+const createProductCriteria = searchValue => {
+  return [
+    {
+      fieldName: 'isActivity',
+      operator: '=',
+      value: true,
+    },
+    {
+      fieldName: 'dtype',
+      operator: '=',
+      value: 'Product',
+    },
+    getSearchCriterias('hr_projectTask', searchValue),
+  ];
+};
+
 export async function searchProject({searchValue, page = 0, activeCompanyId}) {
   return createStandardSearch({
     model: 'com.axelor.apps.project.db.Project',
@@ -59,12 +94,27 @@ export async function searchProject({searchValue, page = 0, activeCompanyId}) {
   });
 }
 
-export async function searchProjectTask({searchValue, page = 0, projectId}) {
+export async function searchProjectTask({
+  searchValue,
+  page = 0,
+  userId,
+  projectId,
+}) {
   return createStandardSearch({
     model: 'com.axelor.apps.project.db.ProjectTask',
-    criteria: createProjectTaskCriteria(searchValue, projectId),
+    criteria: createProjectTaskCriteria(searchValue, userId, projectId),
     fieldKey: 'hr_projectTask',
     sortKey: 'hr_projectTask',
+    page,
+  });
+}
+
+export async function searchProduct({searchValue, page = 0}) {
+  return createStandardSearch({
+    model: 'com.axelor.apps.base.db.Product',
+    criteria: createProductCriteria(searchValue),
+    fieldKey: 'hr_product',
+    sortKey: 'hr_product',
     page,
   });
 }
