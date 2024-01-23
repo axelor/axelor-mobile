@@ -31,6 +31,7 @@ export {default as KilometricAllowParamSearchBar} from './KilometricAllowParamSe
 export {default as KilometricTypeSelectPicker} from './KilometricTypeSelectPicker/KilometricTypeSelectPicker';
 export {default as ManufOrderSearchBar} from './ManufOrderSearchBar/ManufOrderSearchBar';
 export {default as OperationOrderSearchBar} from './OperationOrderSearchBar/OperationOrderSearchBar';
+export {default as ProductSearchBar} from './ProductSearchBar/ProductSearchBar';
 export {default as ProjectSearchBar} from './ProjectSearchBar/ProjectSearchBar';
 export {default as ProjectTaskSearchBar} from './ProjectTaskSearchBar/ProjectTaskSearchBar';
 export {default as TimesheetFilters} from './TimesheetFilters/TimesheetFilters';

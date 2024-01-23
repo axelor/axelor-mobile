@@ -29,6 +29,7 @@ import {
   KilometricTypeSelectPicker,
   ManufOrderSearchBar,
   OperationOrderSearchBar,
+  ProductSearchBar,
   ProjectSearchBar,
   ProjectTaskSearchBar,
   TimerStopwatch,
@@ -322,7 +323,6 @@ export const hr_formsRegister: FormConfigs = {
         type: 'object',
         widget: 'custom',
         customComponent: ProjectSearchBar,
-        hideIf: ({objectState}) => objectState.manufOrder != null,
         required: true,
       },
       projectTask: {
@@ -333,6 +333,18 @@ export const hr_formsRegister: FormConfigs = {
         dependsOn: {
           project: ({newValue, dispatch}) => {
             dispatch(updateProject(newValue));
+          },
+        },
+        required: true,
+      },
+      product: {
+        titleKey: 'Hr_Product',
+        type: 'object',
+        widget: 'custom',
+        customComponent: ProductSearchBar,
+        dependsOn: {
+          projectTask: ({objectState}) => {
+            return objectState.projectTask?.product;
           },
         },
         required: true,
