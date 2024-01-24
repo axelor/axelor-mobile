@@ -80,7 +80,7 @@ const ControlEntryListScreen = ({}) => {
               style={styles.dateInput}
               nullable={true}
               onDateChange={date =>
-                setDateToFilter(date.toISOString().split('T')[0])
+                setDateToFilter(date?.toISOString()?.split('T')[0])
               }
               mode="date"
             />

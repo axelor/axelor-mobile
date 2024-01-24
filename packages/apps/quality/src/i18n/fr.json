@@ -6,5 +6,6 @@
   "Quality_Status_InProgress": "En cours",
   "Quality_Status_Completed": "Complété",
   "Quality_Status_Canceled": "Annulé",
+  "Quality_NewControlEntry": "Nouveau relevé de contrôle",
   "Quality_SliceAction_SearchControlEntry": "recherche des Relevé de contrôle"
 }
