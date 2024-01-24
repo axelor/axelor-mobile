@@ -16,10 +16,16 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-export {default as AttachedFilesView} from './AttachedFilesView/AttachedFilesView';
-export * from './Loader';
-export {default as MailMessageView} from './MailMessageView/MailMessageView';
-export {default as PopupApplicationInformation} from './PopupApplicationInformation/PopupApplicationInformation';
-export {default as PopupMinimalRequiredVersion} from './PopupMinimalRequiredVersion/PopupMinimalRequiredVersion';
-export {default as SocialNetworkLinks} from './SocialNetworkLinks/SocialNetworkLinks';
-export {default as UserSearchBar} from './UserSearchBar/UserSearchBar';
+import {default as LoaderScreen} from './LoaderScreen';
+
+export default {
+  LoaderScreen: {
+    title: 'Test Loader',
+    component: LoaderScreen,
+    options: {
+      shadedHeader: false,
+    },
+  },
+};
+
+export {LoaderScreen};
