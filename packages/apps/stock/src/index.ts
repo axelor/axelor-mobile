@@ -20,6 +20,7 @@ import {Module} from '@axelor/aos-mobile-core';
 import CustomerDeliveryScreens from './screens/customerDeliveries';
 import InternalMovesScreens from './screens/internalMoves';
 import InventoriesScreens from './screens/inventories';
+import LoaderScreens from './screens/loader';
 import ProductsScreens from './screens/products';
 import StockCorrectionScreens from './screens/stockCorrections';
 import SupplierArrivalsScreens from './screens/supplierArrivals';
@@ -45,6 +46,11 @@ export const StockModule: Module = {
     downToVersion: '7.1.0',
   },
   menus: {
+    loader_test_screen: {
+      title: 'Loader',
+      icon: 'bug-fill',
+      screen: 'LoaderScreen',
+    },
     stock_menu_product: {
       title: 'Stock_Product',
       icon: 'cart-fill',
@@ -80,6 +86,7 @@ export const StockModule: Module = {
     ...CustomerDeliveryScreens,
     ...InternalMovesScreens,
     ...InventoriesScreens,
+    ...LoaderScreens,
     ...ProductsScreens,
     ...StockCorrectionScreens,
     ...SupplierArrivalsScreens,
@@ -114,6 +121,7 @@ export * from './screens/auth/UserScreen';
 export * from './screens/customerDeliveries';
 export * from './screens/internalMoves';
 export * from './screens/inventories';
+export * from './screens/loader';
 export * from './screens/products';
 export * from './screens/stockCorrections';
 export * from './screens/supplierArrivals';

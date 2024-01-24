@@ -177,6 +177,8 @@
   "Base_Details": "Details",
   "Base_Label": "Label",
   "Base_Value": "Value",
+  "Base_Loader_ProccessSuccessMessage": "Process successfully completed.",
+  "Base_Loader_ProccessErrorMessage": "An error has occurred.",
   "Base_SliceAction_FetchAttachedFiles": "fetch attached files",
   "Base_SliceAction_FetchFilesDetails": "fetch file details",
   "Base_SliceAction_FetchMetaModule": "fetch meta modules",
