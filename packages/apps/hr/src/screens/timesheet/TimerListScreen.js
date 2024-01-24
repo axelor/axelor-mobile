@@ -38,6 +38,10 @@ const TimerListScreen = ({navigation}) => {
     [dispatch, userId],
   );
 
+  const formatSecondsToHours = seconds => {
+    return (seconds / 3600).toFixed(2);
+  };
+
   return (
     <Screen fixedItems={<TimerDeclareButton />}>
       <ScrollList
@@ -50,7 +54,7 @@ const TimerListScreen = ({navigation}) => {
             task={item.projectTask?.name}
             comments={item.comments}
             date={item.startDateTime}
-            duration={item.duration}
+            duration={formatSecondsToHours(item.duration)}
             durationUnit={'hours'}
             onEdit={() =>
               navigation.navigate('TimerFormScreen', {
