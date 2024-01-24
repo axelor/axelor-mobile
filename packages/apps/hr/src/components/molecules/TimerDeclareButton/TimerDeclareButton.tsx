@@ -20,14 +20,18 @@ import React from 'react';
 import {useTranslator} from '@axelor/aos-mobile-core';
 import {Button} from '@axelor/aos-mobile-ui';
 
-const TimerDeclareButton = () => {
+interface TimerDeclareButtonProps {
+  setIsAlertVisible: (visible: boolean) => void;
+}
+
+const TimerDeclareButton = ({setIsAlertVisible}: TimerDeclareButtonProps) => {
   const I18n = useTranslator();
 
   return (
     <Button
       iconName="calendar-check"
       title={I18n.t('Base_Declare')}
-      onPress={() => console.log('Declare button pressed.')}
+      onPress={() => setIsAlertVisible(true)}
     />
   );
 };

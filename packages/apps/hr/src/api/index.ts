@@ -52,6 +52,7 @@ export {
 } from './project-api';
 export {fetchTimer as fetchTimerApi} from './timer-api';
 export {
+  fetchDraftTimesheet as fetchDraftTimesheetApi,
   fetchTimesheet as fetchTimesheetApi,
   fetchTimesheetById as fetchTimesheetByIdApi,
   fetchTimesheetToValidate as fetchTimesheetToValidateApi,

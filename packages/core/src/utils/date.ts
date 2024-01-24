@@ -42,6 +42,18 @@ export const getPreviousMonth = (date: Date): Date => {
   }
 };
 
+export const getStartOfDay = (date: Date): Date => {
+  const _date = new Date(date);
+  _date.setUTCHours(0, 0, 0, 0);
+  return _date;
+};
+
+export const getEndOfDay = (date: Date): Date => {
+  const _date = new Date(date);
+  _date.setUTCHours(24, 0, 0, 0);
+  return _date;
+};
+
 export const sameDate = (date1: Date, date2: Date): boolean => {
   if (
     date1.getDate() === date2.getDate() &&

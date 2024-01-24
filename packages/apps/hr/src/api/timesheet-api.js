@@ -55,6 +55,87 @@ const createTimesheetToValidateCriteria = (searchValue, user) => {
   return criteria;
 };
 
+const createDraftTimesheetCriteria = (
+  userId,
+  fromDate,
+  toDate,
+  isOverlapAllowed,
+) => {
+  const criteria = [
+    {
+      fieldName: 'statusSelect',
+      operator: '=',
+      value: Timesheet.statusSelect.Draft,
+    },
+  ];
+
+  if (userId != null) {
+    criteria.push({
+      fieldName: 'employee.user.id',
+      operator: '=',
+      value: userId,
+    });
+  }
+
+  if (fromDate != null && toDate != null) {
+    if (isOverlapAllowed) {
+      criteria.push({
+        operator: 'and',
+        criteria: [
+          {
+            fieldName: 'fromDate',
+            operator: '>=',
+            value: fromDate,
+          },
+          {
+            fieldName: 'toDate',
+            operator: '<=',
+            value: toDate,
+          },
+        ],
+      });
+    } else {
+      criteria.push({
+        operator: 'or',
+        criteria: [
+          {
+            operator: 'and',
+            criteria: [
+              {
+                fieldName: 'fromDate',
+                operator: '<=',
+                value: fromDate,
+              },
+              {
+                fieldName: 'toDate',
+                operator: '>=',
+                value: fromDate,
+              },
+            ],
+          },
+          {
+            operator: 'and',
+            criteria: [
+              {
+                fieldName: 'fromDate',
+                operator: '<=',
+                value: toDate,
+              },
+              {
+                fieldName: 'toDate',
+                operator: '>=',
+                value: toDate,
+              },
+            ],
+          },
+        ],
+      });
+    }
+  }
+
+  return criteria;
+};
+
 export async function fetchTimesheet({searchValue = null, userId, page = 0}) {
   return createStandardSearch({
     model: 'com.axelor.apps.hr.db.Timesheet',
@@ -84,5 +165,25 @@ export async function fetchTimesheetById({timesheetId}) {
     model: 'com.axelor.apps.hr.db.Timesheet',
     id: timesheetId,
     fieldKey: 'hr_timesheet',
+  });
+}
+
+export async function fetchDraftTimesheet({
+  userId,
+  fromDate,
+  toDate,
+  isOverlapAllowed,
+}) {
+  return createStandardSearch({
+    model: 'com.axelor.apps.hr.db.Timesheet',
+    criteria: createDraftTimesheetCriteria(
+      userId,
+      fromDate,
+      toDate,
+      isOverlapAllowed,
+    ),
+    fieldKey: 'hr_timesheet',
+    numberElementsByPage: null,
+    page: 0,
   });
 }
