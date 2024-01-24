@@ -32,7 +32,7 @@ import {
   useTranslator,
 } from '@axelor/aos-mobile-core';
 import {searchControlEntry} from '../features/controlEntrySlice';
-import ControlEntryCard from '../components/ControlEntryCard/ControlEntryCard';
+import {ControlEntryCard} from '../components';
 
 const ControlEntryListScreen = ({}) => {
   const Colors = useThemeColor();
@@ -92,11 +92,11 @@ const ControlEntryListScreen = ({}) => {
         data={controlEntryList}
         renderItem={({item}) => (
           <ControlEntryCard
-            sampleCount={item?.sampleCount}
-            entryDateTime={item?.entryDateTime}
-            statusSelect={item?.statusSelect}
-            name={item?.name}
-            controlEntryId={item?.id}
+            sampleCount={item.sampleCount}
+            entryDateTime={item.entryDateTime}
+            statusSelect={item.statusSelect}
+            name={item.name}
+            controlEntryId={item.id}
           />
         )}
         fetchData={fetchControlEntryAPI}
@@ -111,16 +111,14 @@ const ControlEntryListScreen = ({}) => {
 const styles = StyleSheet.create({
   headerContainer: {
     flexDirection: 'row',
-    justifyContent: 'space-around',
+    justifyContent: 'space-evenly',
   },
   toggleButton: {
     height: 40,
     top: '16%',
-    left: 5,
   },
   dateInput: {
     width: '80%',
-    marginRight: 5,
   },
 });
 

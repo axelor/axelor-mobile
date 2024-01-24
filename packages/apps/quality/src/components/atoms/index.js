@@ -16,4 +16,5 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+export {default as ControlEntryCard} from './ControlEntryCard/ControlEntryCard';
 export {default as DateDisplay} from './DateDisplay/DateDisplay';

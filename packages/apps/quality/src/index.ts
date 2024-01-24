@@ -17,7 +17,7 @@
  */
 
 import {Module} from '@axelor/aos-mobile-core';
-import QualityScreen from './screens/';
+import QualityScreens from './screens';
 import enTranslations from './i18n/en.json';
 import frTranslations from './i18n/fr.json';
 import {
@@ -42,13 +42,13 @@ export const QualityModule: Module = {
   },
   menus: {
     quality_menu_controlEntry: {
-      title: 'Helpdesk_myTickets',
+      title: 'Quality_ControlEntry',
       icon: 'card-checklist',
       screen: 'ControlEntryListScreen',
     },
   },
   screens: {
-    ...QualityScreen,
+    ...QualityScreens,
   },
   reducers: {...qualityReducers},
   models: {

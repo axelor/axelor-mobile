@@ -2,5 +2,9 @@
   "Quality_Quality": "Qualité",
   "Quality_ControlEntry": "Relevé de contrôle",
   "Quality_Sample": "Échantillon",
+  "Quality_Status_Draft": "Brouillon",
+  "Quality_Status_InProgress": "En cours",
+  "Quality_Status_Completed": "Complété",
+  "Quality_Status_Canceled": "Annulé",
   "Quality_SliceAction_SearchControlEntry": "recherche des Relevé de contrôle"
 }

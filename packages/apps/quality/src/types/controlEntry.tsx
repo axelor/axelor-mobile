@@ -30,20 +30,20 @@ class ControlEntry {
   static sampleResult = {
     NotControlled: 1,
     Compliant: 2,
-    NotComploant: 3,
+    NotCompliant: 3,
   };
 
   static getStatus = (select: number, I18n: TranslatorProps): string => {
     if (I18n) {
       switch (select) {
         case this.status.Draft:
-          return I18n.t('Stock_Status_Draft');
+          return I18n.t('Quality_Status_Draft');
         case this.status.InProgress:
-          return I18n.t('Stock_Status_InProgress');
+          return I18n.t('Quality_Status_InProgress');
         case this.status.Completed:
-          return I18n.t('Stock_Status_Completed');
+          return I18n.t('Quality_Status_Completed');
         case this.status.Canceled:
-          return I18n.t('Stock_Status_Canceled');
+          return I18n.t('Quality_Status_Canceled');
         default:
           console.warn(
             `Status provided with value ${select} is not supported by control entry`,
