@@ -55,6 +55,7 @@ const LoaderScreen = () => {
   const {loading, listener} = useLoaderListner({
     process,
     onSuccess: handleCustomAction,
+    onError: () => console.warn('An error has occurred!'),
   });
 
   return (

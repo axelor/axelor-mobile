@@ -28,8 +28,8 @@ interface LoaderListenerProps {
 
 const useLoaderListner = ({
   process,
-  onSuccess = () => console.log('Process successfully completed.'),
-  onError = () => console.warn('An error has occurred!'),
+  onSuccess = () => {},
+  onError = () => {},
 }: LoaderListenerProps) => {
   const I18n = useTranslator();
 
