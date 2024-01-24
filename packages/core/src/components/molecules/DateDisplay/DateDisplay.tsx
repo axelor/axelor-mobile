@@ -19,7 +19,7 @@
 import React, {useMemo} from 'react';
 import {StyleSheet, View} from 'react-native';
 import {Icon, Text, useThemeColor} from '@axelor/aos-mobile-ui';
-import useTranslator from '../../../i18n/hooks/use-translator';
+import {useTranslator} from '../../../i18n';
 import {getFullDateItems} from '../../../utils';
 
 interface DateDisplayProps {
