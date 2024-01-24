@@ -33,6 +33,10 @@ const DateDisplay = ({date, size = 18}: DateDisplayProps) => {
 
   const _date = useMemo(() => getFullDateItems(date, I18n), [I18n, date]);
 
+  if (_date == null) {
+    return null;
+  }
+
   return (
     <View style={styles.container}>
       <Icon
