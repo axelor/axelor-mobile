@@ -21,16 +21,20 @@ import {StyleSheet, View} from 'react-native';
 import {getFullDateItems, useTranslator} from '@axelor/aos-mobile-core';
 import {Icon, Text, useThemeColor} from '@axelor/aos-mobile-ui';
 
-interface IconDateProps {
+interface DateDisplayProps {
   date: string;
   size?: number;
 }
 
-const IconDate = ({date, size = 18}: IconDateProps) => {
+const DateDisplay = ({date, size = 18}: DateDisplayProps) => {
   const I18n = useTranslator();
   const Colors = useThemeColor();
 
   const _date = useMemo(() => getFullDateItems(date, I18n), [I18n, date]);
+
+  if (_date == null) {
+    return null;
+  }
 
   return (
     <View style={styles.container}>
@@ -57,4 +61,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default IconDate;
+export default DateDisplay;
