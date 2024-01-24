@@ -27,10 +27,10 @@ import {
 } from '@axelor/aos-mobile-ui';
 import {
   AnomalyBubble,
+  DateDisplay,
   useSelector,
   useTranslator,
 } from '@axelor/aos-mobile-core';
-import DateDisplay from '../DateDisplay/DateDisplay';
 import TextUnit from '../TextUnit/TextUnit';
 
 interface ExpenseLineCardProps {
