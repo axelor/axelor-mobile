@@ -18,7 +18,6 @@
 
 import React, {useCallback, useEffect, useMemo, useRef, useState} from 'react';
 import {Dimensions, Platform, StyleSheet, View} from 'react-native';
-import useTranslator from '../../../i18n/hooks/use-translator';
 import {
   Alert,
   Card,
@@ -31,6 +30,7 @@ import {
   OUTSIDE_INDICATOR,
   ThemeColors,
 } from '@axelor/aos-mobile-ui';
+import {useTranslator} from '../../../i18n';
 import {DatePicker} from '../../molecules';
 import DateInputUtils from './date-input.helper';
 
@@ -59,9 +59,7 @@ const DateInputSelection = ({
 }: DateInputSelectionProps) => {
   const Colors = useThemeColor();
 
-  const [pickerWidth, setPickerWidth] = useState<number>(
-    Dimensions.get('window').width * 0.8,
-  );
+  const [pickerWidth, setPickerWidth] = useState<number>();
 
   const onCheckDate = useCallback(() => {
     if (!selectedDate) {
@@ -87,26 +85,18 @@ const DateInputSelection = ({
   }, [onDateChange, setPickerIsOpen, setSelectedDate]);
 
   return (
-    <>
-      <View
-        onLayout={event => {
-          if (!popup) {
-            const {width} = event.nativeEvent.layout;
-            setPickerWidth(width);
-          }
-        }}
-        style={
-          popup
-            ? selectionstyles.datePickerContainerPopup
-            : selectionstyles.datePickerContainer
-        }>
-        <DatePicker
-          defaultDate={selectedDate || currentDate}
-          onDateChange={setSelectedDate}
-          mode={mode}
-          pickerWidth={pickerWidth}
-        />
-      </View>
+    <View
+      onLayout={event => {
+        const {width} = event.nativeEvent.layout;
+        setPickerWidth(width);
+      }}
+      style={popup ? selectionstyles.datePickerContainerPopup : null}>
+      <DatePicker
+        defaultDate={selectedDate || currentDate}
+        onDateChange={setSelectedDate}
+        mode={mode}
+        pickerWidth={popup ? Dimensions.get('window').width * 0.8 : pickerWidth}
+      />
       <View style={selectionstyles.actionContainer}>
         <Icon
           name="check-circle-fill"
@@ -127,7 +117,7 @@ const DateInputSelection = ({
           />
         )}
       </View>
-    </>
+    </View>
   );
 };
 
@@ -140,9 +130,6 @@ const selectionstyles = StyleSheet.create({
     justifyContent: 'flex-end',
     alignItems: 'flex-end',
     alignSelf: 'flex-end',
-  },
-  datePickerContainer: {
-    flex: 1,
   },
   datePickerContainerPopup: {
     marginTop: 10,
