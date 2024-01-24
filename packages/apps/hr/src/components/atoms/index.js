@@ -16,7 +16,6 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-export {default as DateDisplay} from './DateDisplay/DateDisplay';
 export {default as DatesInterval} from './DatesInterval/DatesInterval';
 export {default as ExpenseCard} from './ExpenseCard/ExpenseCard';
 export {default as ExpenseLineCard} from './ExpenseLineCard/ExpenseLineCard';

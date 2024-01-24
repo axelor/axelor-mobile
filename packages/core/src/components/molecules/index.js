@@ -17,6 +17,7 @@
  */
 
 export {default as CameraButton} from './CameraButton/CameraButton';
+export {default as DateDisplay} from './DateDisplay/DateDisplay';
 export {default as DatePicker} from './DatePicker/DatePicker';
 export {default as FocusScreen} from './FocusScreen/FocusScreen';
 export {default as HeaderBand} from './HeaderBand/HeaderBand';
