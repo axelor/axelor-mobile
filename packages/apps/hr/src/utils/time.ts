@@ -16,5 +16,10 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-export * from './unit';
-export * from './time';
+export const formatSecondsToHours = (seconds: number): string => {
+  if (seconds == null) {
+    return '0';
+  }
+
+  return (seconds / 3600).toFixed(2);
+};

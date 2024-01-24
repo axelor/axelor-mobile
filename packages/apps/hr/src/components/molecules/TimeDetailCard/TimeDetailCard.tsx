@@ -29,8 +29,9 @@ interface TimeDetailCardProps {
   operation?: string;
   comments?: string;
   date: string;
-  duration: number;
+  duration: number | string;
   durationUnit: string;
+  isSmallCard?: boolean;
   isActions?: boolean;
   style?: any;
   onEdit?: () => void;
@@ -47,6 +48,7 @@ const TimeDetailCard = ({
   date,
   duration,
   durationUnit,
+  isSmallCard,
   isActions = true,
   style,
   onEdit = () => {},
@@ -66,6 +68,7 @@ const TimeDetailCard = ({
         date={date}
         duration={duration}
         durationUnit={durationUnit}
+        isSmallCard={isSmallCard}
         style={styles.cardContainer}
       />
       {isActions && (
