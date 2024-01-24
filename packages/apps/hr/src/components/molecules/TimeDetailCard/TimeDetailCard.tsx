@@ -29,7 +29,7 @@ interface TimeDetailCardProps {
   operation?: string;
   comments?: string;
   date: string;
-  duration: number;
+  duration: number | string;
   durationUnit: string;
   isSmallCard?: boolean;
   isActions?: boolean;

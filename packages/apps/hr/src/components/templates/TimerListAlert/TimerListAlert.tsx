@@ -36,6 +36,7 @@ import DraftTimesheetPicker from '../DraftTimesheetPicker/DraftTimesheetPicker';
 import {TimeDetailCard} from '../../molecules';
 import {fetchTimerDateInterval} from '../../../features/timerSlice';
 import {fetchDraftTimesheet} from '../../../api/timesheet-api';
+import {formatSecondsToHours} from '../../../utils';
 
 const INPUT_MODE = {
   Timesheet: 0,
@@ -54,6 +55,14 @@ const TimerListAlert = ({
   const I18n = useTranslator();
   const Colors = useThemeColor();
   const dispatch = useDispatch();
+
+  const {
+    timerDateIntervalList,
+    loadingTimerDateInterval,
+    moreLoadingTimerDateInterval,
+    isListEndTimerDateInterval,
+  } = useSelector((state: any) => state.hr_timer);
+  const {userId} = useSelector((state: any) => state.auth);
 
   const [fromDate, setFromDate] = useState(null);
   const [toDate, setToDate] = useState(new Date());
@@ -77,14 +86,6 @@ const TimerListAlert = ({
       isTimesheetError || isDateIntervalError || selectedTimers.length === 0,
     [isDateIntervalError, isTimesheetError, selectedTimers],
   );
-
-  const {
-    timerDateIntervalList,
-    loadingTimerDateInterval,
-    moreLoadingTimerDateInterval,
-    isListEndTimerDateInterval,
-  } = useSelector((state: any) => state.hr_timer);
-  const {userId} = useSelector((state: any) => state.auth);
 
   const fetchTimerDateIntervalAPI = useCallback(
     (page = 0) => {
@@ -125,8 +126,8 @@ const TimerListAlert = ({
         statusSelect={item.statusSelect}
         project={item.project?.name}
         date={item.startDateTime}
-        duration={item.duration}
-        durationUnit={'hours'}
+        duration={formatSecondsToHours(item.duration)}
+        durationUnit="hours"
         isSmallCard
         isActions={false}
       />

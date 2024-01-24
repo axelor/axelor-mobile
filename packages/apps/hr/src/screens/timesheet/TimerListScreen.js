@@ -25,6 +25,7 @@ import {
   TimerListAlert,
 } from '../../components';
 import {fetchTimer} from '../../features/timerSlice';
+import {formatSecondsToHours} from '../../utils';
 
 const TimerListScreen = ({navigation}) => {
   const I18n = useTranslator();
@@ -43,10 +44,6 @@ const TimerListScreen = ({navigation}) => {
     },
     [dispatch, userId],
   );
-
-  const formatSecondsToHours = seconds => {
-    return (seconds / 3600).toFixed(2);
-  };
 
   return (
     <Screen

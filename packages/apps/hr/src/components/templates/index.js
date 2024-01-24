@@ -35,7 +35,7 @@ export {default as OperationOrderSearchBar} from './OperationOrderSearchBar/Oper
 export {default as ProductSearchBar} from './ProductSearchBar/ProductSearchBar';
 export {default as ProjectSearchBar} from './ProjectSearchBar/ProjectSearchBar';
 export {default as ProjectTaskSearchBar} from './ProjectTaskSearchBar/ProjectTaskSearchBar';
-export {default as TimesheetFilters} from './TimesheetFilters/TimesheetFilters';
 export {default as TimerListAlert} from './TimerListAlert/TimerListAlert';
+export {default as TimesheetFilters} from './TimesheetFilters/TimesheetFilters';
 export {default as TimesheetWaitingValidationSearchBar} from './TimesheetWaitingValidationSearchBar/TimesheetWaitingValidationSearchBar';
 export {default as ToggleSwitchMode} from './ToggleSwitchMode/ToggleSwitchMode';
