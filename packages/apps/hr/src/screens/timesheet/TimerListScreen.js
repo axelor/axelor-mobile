@@ -16,15 +16,22 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import React, {useCallback} from 'react';
+import React, {useCallback, useState} from 'react';
 import {useDispatch, useSelector, useTranslator} from '@axelor/aos-mobile-core';
 import {Screen, ScrollList} from '@axelor/aos-mobile-ui';
-import {TimeDetailCard, TimerDeclareButton} from '../../components';
+import {
+  TimeDetailCard,
+  TimerDeclareButton,
+  TimerListAlert,
+} from '../../components';
 import {fetchTimer} from '../../features/timerSlice';
+import {formatSecondsToHours} from '../../utils';
 
 const TimerListScreen = ({navigation}) => {
   const I18n = useTranslator();
   const dispatch = useDispatch();
+
+  const [isAlertVisible, setIsAlertVisible] = useState(false);
 
   const {timerList, loadingTimer, moreLoading, isListEnd} = useSelector(
     state => state.hr_timer,
@@ -38,12 +45,9 @@ const TimerListScreen = ({navigation}) => {
     [dispatch, userId],
   );
 
-  const formatSecondsToHours = seconds => {
-    return (seconds / 3600).toFixed(2);
-  };
-
   return (
-    <Screen fixedItems={<TimerDeclareButton />}>
+    <Screen
+      fixedItems={<TimerDeclareButton setIsAlertVisible={setIsAlertVisible} />}>
       <ScrollList
         loadingList={loadingTimer}
         data={timerList}
@@ -67,6 +71,10 @@ const TimerListScreen = ({navigation}) => {
         moreLoading={moreLoading}
         isListEnd={isListEnd}
         translator={I18n.t}
+      />
+      <TimerListAlert
+        isAlertVisible={isAlertVisible}
+        setIsAlertVisible={setIsAlertVisible}
       />
     </Screen>
   );

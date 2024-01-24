@@ -22,6 +22,7 @@ import {
   generateInifiniteScrollCases,
 } from '@axelor/aos-mobile-core';
 import {
+  fetchDraftTimesheet as _fetchDraftTimesheet,
   fetchTimesheet as _fetchTimesheet,
   fetchTimesheetById as _fetchTimesheetById,
   fetchTimesheetToValidate as _fetchTimesheetToValidate,
@@ -66,6 +67,19 @@ export const fetchTimesheetById = createAsyncThunk(
   },
 );
 
+export const fetchDraftTimesheet = createAsyncThunk(
+  'timesheet/fetchDraftTimesheet',
+  async function (data = {}, {getState}) {
+    return handlerApiCall({
+      fetchFunction: _fetchDraftTimesheet,
+      data,
+      action: 'Hr_SliceAction_FetchDraftTimesheet',
+      getState,
+      responseOptions: {isArrayResponse: true},
+    });
+  },
+);
+
 const initialState = {
   loadingMyTimesheet: true,
   moreLoadingMyTimesheet: false,
@@ -80,6 +94,9 @@ const initialState = {
 
   loadingTimesheet: true,
   timesheet: {},
+
+  loadingDraftTimesheet: true,
+  draftTimesheetList: [],
 };
 
 const timesheetSlice = createSlice({
@@ -112,6 +129,13 @@ const timesheetSlice = createSlice({
     builder.addCase(fetchTimesheetById.fulfilled, (state, action) => {
       state.loadingTimesheet = false;
       state.timesheet = action.payload;
+    });
+    builder.addCase(fetchDraftTimesheet.pending, state => {
+      state.loadingDraftTimesheet = true;
+    });
+    builder.addCase(fetchDraftTimesheet.fulfilled, (state, action) => {
+      state.loadingDraftTimesheet = false;
+      state.draftTimesheetList = action.payload;
     });
   },
 });

@@ -36,11 +36,29 @@ export const fetchTimer = createAsyncThunk(
   },
 );
 
+export const fetchTimerDateInterval = createAsyncThunk(
+  'hr_timer/fetchTimerDateInterval',
+  async function (data, {getState}) {
+    return handlerApiCall({
+      fetchFunction: _fetchTimer,
+      data,
+      action: 'Hr_SliceAction_FetchTimerDateInterval',
+      getState,
+      responseOptions: {isArrayResponse: true},
+    });
+  },
+);
+
 const initialState = {
   loadingTimer: true,
   moreLoading: false,
   isListEnd: false,
   timerList: [],
+
+  loadingTimerDateInterval: true,
+  moreLoadingTimerDateInterval: false,
+  isListEndTimerDateInterval: false,
+  timerDateIntervalList: [],
 };
 
 const timerSlice = createSlice({
@@ -52,6 +70,12 @@ const timerSlice = createSlice({
       moreLoading: 'moreLoading',
       isListEnd: 'isListEnd',
       list: 'timerList',
+    });
+    generateInifiniteScrollCases(builder, fetchTimerDateInterval, {
+      loading: 'loadingTimerDateInterval',
+      moreLoading: 'moreLoadingTimerDateInterval',
+      isListEnd: 'isListEndTimerDateInterval',
+      list: 'timerDateIntervalList',
     });
   },
 });
