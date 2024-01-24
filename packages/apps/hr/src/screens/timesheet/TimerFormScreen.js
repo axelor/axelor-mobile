@@ -44,6 +44,7 @@ const TimerFormScreen = ({route}) => {
     if (isCreation) {
       return {
         startDateTime: new Date().toISOString(),
+        product: user?.employee?.product,
       };
     }
 
@@ -56,7 +57,7 @@ const TimerFormScreen = ({route}) => {
       duration: timer.duration,
       comments: timer.comments,
     };
-  }, [activeTimer, isCreation, timerToUpdate]);
+  }, [activeTimer, isCreation, timerToUpdate, user?.employee?.product]);
 
   return (
     <FormView defaultValue={defaultValue} actions={[]} formKey="hr_Timer" />
