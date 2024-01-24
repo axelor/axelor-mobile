@@ -18,7 +18,7 @@
 
 import React, {useMemo} from 'react';
 import {StyleSheet, View} from 'react-native';
-import {ObjectCard, useThemeColor} from '@axelor/aos-mobile-ui';
+import {Color, ObjectCard, useThemeColor} from '@axelor/aos-mobile-ui';
 import {useTranslator} from '@axelor/aos-mobile-core';
 import DateDisplay from '../DateDisplay/DateDisplay';
 import TextUnit from '../TextUnit/TextUnit';
@@ -33,9 +33,10 @@ interface TimeCardProps {
   operation?: string;
   comments?: string;
   date: string;
-  duration: number;
+  duration: number | string;
   durationUnit: string;
   isBorderColor?: boolean;
+  isSmallCard?: boolean;
   style?: any;
 }
 
@@ -50,14 +51,15 @@ const TimeCard = ({
   duration,
   durationUnit,
   isBorderColor = true,
+  isSmallCard = false,
   style,
 }: TimeCardProps) => {
   const I18n = useTranslator();
   const Colors = useThemeColor();
 
   const styles = useMemo(
-    () => getStyles(Time.getStatusColor(statusSelect, Colors)),
-    [Colors, statusSelect],
+    () => getStyles(Time.getStatusColor(statusSelect, Colors), isSmallCard),
+    [Colors, isSmallCard, statusSelect],
   );
 
   return (
@@ -75,12 +77,13 @@ const TimeCard = ({
               numberOfLines: 2,
             },
             {
-              displayText: (task || operation) ?? '-',
+              displayText: !isSmallCard && ((task || operation) ?? '-'),
               numberOfLines: 2,
+              hideIfNull: true,
               style: styles.subTitle,
             },
             {
-              displayText: comments,
+              displayText: !isSmallCard && comments,
               numberOfLines: 2,
               hideIfNull: true,
               style: styles.subTitle,
@@ -109,10 +112,10 @@ const TimeCard = ({
   );
 };
 
-const getStyles = color =>
+const getStyles = (color: Color, isSmallCard: boolean) =>
   StyleSheet.create({
     container: {
-      minHeight: 100,
+      minHeight: isSmallCard ? 'auto' : 100,
       justifyContent: 'center',
       marginHorizontal: 1,
       marginVertical: 1,
@@ -129,7 +132,7 @@ const getStyles = color =>
       alignItems: 'flex-end',
     },
     textUnit: {
-      marginTop: 5,
+      marginTop: isSmallCard ? 0 : 5,
     },
   });
 
