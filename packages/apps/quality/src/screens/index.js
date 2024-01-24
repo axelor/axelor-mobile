@@ -20,7 +20,7 @@ import ControlEntryListScreen from './ControlEntryListScreen';
 
 export default {
   ControlEntryListScreen: {
-    title: 'Quality_ControlEntry',
+    title: 'Quality_ControlEntries',
     component: ControlEntryListScreen,
     actionID: 'quality_controlEntry_list',
     options: {

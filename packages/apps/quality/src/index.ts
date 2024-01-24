@@ -43,7 +43,7 @@ export const QualityModule: Module = {
   },
   menus: {
     quality_menu_controlEntry: {
-      title: 'Quality_ControlEntry',
+      title: 'Quality_ControlEntries',
       icon: 'card-checklist',
       screen: 'ControlEntryListScreen',
     },

@@ -112,6 +112,7 @@ const styles = StyleSheet.create({
   headerContainer: {
     flexDirection: 'row',
     justifyContent: 'space-evenly',
+    marginTop: '-5%',
   },
   toggleButton: {
     height: 40,
