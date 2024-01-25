@@ -106,7 +106,9 @@ const NumberChevronInput = ({
   const [inputValue, setInputValue] = useState(defaultValue);
   const [isFocused, setIsFocused] = useState(false);
 
-  useEffect(() => setInputValue(defaultValue), [defaultValue]);
+  useEffect(() => {
+    setInputValue(defaultValue);
+  }, [defaultValue]);
 
   const _required = useMemo(
     () => required && (inputValue == null || inputValue === 0),
