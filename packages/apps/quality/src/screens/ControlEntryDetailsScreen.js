@@ -17,7 +17,13 @@
  */
 
 import React, {useCallback} from 'react';
-import {HeaderContainer, Screen, ScrollList} from '@axelor/aos-mobile-ui';
+import {
+  Button,
+  HeaderContainer,
+  Screen,
+  ScrollList,
+  useThemeColor,
+} from '@axelor/aos-mobile-ui';
 import {useDispatch, useSelector, useTranslator} from '@axelor/aos-mobile-core';
 import {ControlEntryHeader, ControlEntrySampleCard} from '../components';
 import {searchControlEntrySample} from '../features/controlEntrySampleSlice';
@@ -27,6 +33,7 @@ const ControlEntryDetailsScreen = ({route}) => {
 
   const dispatch = useDispatch();
   const I18n = useTranslator();
+  const Colors = useThemeColor();
 
   const {
     controlEntrySampleList,
@@ -48,7 +55,15 @@ const ControlEntryDetailsScreen = ({route}) => {
   );
 
   return (
-    <Screen removeSpaceOnTop>
+    <Screen
+      removeSpaceOnTop
+      fixedItems={
+        <Button
+          title={I18n.t('Quality_MarkAsCompleted')}
+          iconName="check-lg"
+          color={Colors.successColor}
+        />
+      }>
       <HeaderContainer
         expandableFilter={false}
         fixedItems={<ControlEntryHeader controlEntryId={controlEntryId} />}

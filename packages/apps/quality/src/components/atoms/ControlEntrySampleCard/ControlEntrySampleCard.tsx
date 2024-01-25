@@ -68,7 +68,6 @@ const ControlEntrySampleCard = ({
   useEffect(() => {
     searchControlEntrySampleLineApi({controlEntrySampleId: controlPlanId}).then(
       response => {
-        console.log(response?.data?.data);
         setControlEntrySampleLineList(response?.data?.data);
       },
     );

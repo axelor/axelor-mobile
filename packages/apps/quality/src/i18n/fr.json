@@ -9,6 +9,7 @@
   "Quality_Status_Canceled": "Annulé",
   "Quality_NewControlEntry": "Nouveau relevé de contrôle",
   "Quality_ControlPlan": "Plan de contrôle",
+  "Quality_MarkAsCompleted": "Marquer comme terminé",
   "Quality_SliceAction_SearchControlEntry": "recherche des relevés de contrôle",
   "Quality_SliceAction_FetchControlEntryById": "récupération du relevé de contrôle par id",
   "Quality_SliceAction_SearchControlEntrySample": "recherche sur les échantillons du relevé de contôle"
