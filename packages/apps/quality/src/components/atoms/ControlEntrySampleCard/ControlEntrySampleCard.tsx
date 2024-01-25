@@ -19,70 +19,69 @@
 import React, {useEffect, useMemo, useState} from 'react';
 import {StyleSheet, TouchableOpacity, View} from 'react-native';
 import {Card, ProgressBar, Text, useThemeColor} from '@axelor/aos-mobile-ui';
-import {useTranslator, DateDisplay} from '@axelor/aos-mobile-core';
 import {ControlEntry} from '../../../types';
-import {searchControlEntrySampleApi} from '../../../api';
+import {searchControlEntrySampleLineApi} from '../../../api';
 
-interface ControlEntryCardProps {
+interface ControlEntrySampleCardProps {
   style?: any;
+  controlPlanId?: number;
+  resultSelect?: number;
+  samplefullName?: string;
   onPress?: () => void;
-  sampleCount?: number;
-  entryDateTime?: string;
-  statusSelect?: number;
-  name?: string;
-  controlEntryId?: number;
 }
-const ControlEntryCard = ({
+const ControlEntrySampleCard = ({
   style,
-  onPress,
-  sampleCount,
-  entryDateTime,
-  statusSelect,
-  name,
-  controlEntryId,
-}: ControlEntryCardProps) => {
+  controlPlanId,
+  resultSelect,
+  samplefullName,
+  onPress = () => {},
+}: ControlEntrySampleCardProps) => {
   const Colors = useThemeColor();
-  const I18n = useTranslator();
 
-  const [numberSampleFilled, setNumberSampleFilled] = useState<number>(0);
+  const [controlEntrySampleLineList, setControlEntrySampleLineList] = useState(
+    [],
+  );
 
-  useEffect(() => {
-    searchControlEntrySampleApi({controlEntryId: controlEntryId})
-      .then(response => {
-        if (Array.isArray(response?.data?.data)) {
-          const controlEntrySampleList: any[] = response.data.data;
-          const total = controlEntrySampleList.length;
-          const notControlled = controlEntrySampleList.filter(
-            sample =>
-              sample.resultSelect === ControlEntry.sampleResult.NotControlled,
-          ).length;
-
-          setNumberSampleFilled(100 - (notControlled / total) * 100);
-        } else {
-          setNumberSampleFilled(0);
+  const numberSampledFilled = useMemo(() => {
+    if (
+      controlEntrySampleLineList != null &&
+      controlEntrySampleLineList?.length > 0
+    ) {
+      let total = controlEntrySampleLineList?.length;
+      let notControlled = 0;
+      controlEntrySampleLineList?.forEach(sample => {
+        if (sample?.resultSelect === ControlEntry?.sampleResult.NotControlled) {
+          notControlled++;
         }
-      })
-      .catch(() => setNumberSampleFilled(0));
-  }, [controlEntryId]);
+      });
+      return 100 - (notControlled / total) * 100;
+    }
+    return 0;
+  }, [controlEntrySampleLineList]);
 
   const borderStyle = useMemo(() => {
     return getStyles(
-      ControlEntry.getStatusColor(statusSelect, Colors)?.background,
+      ControlEntry.getSampleResultColor(resultSelect, Colors)?.background,
     )?.border;
-  }, [Colors, statusSelect]);
+  }, [Colors, resultSelect]);
+
+  useEffect(() => {
+    searchControlEntrySampleLineApi({controlEntrySampleId: controlPlanId}).then(
+      response => {
+        console.log(response?.data?.data);
+        setControlEntrySampleLineList(response?.data?.data);
+      },
+    );
+  }, [controlPlanId]);
 
   return (
     <TouchableOpacity onPress={onPress} activeOpacity={0.9}>
       <Card style={[styles.container, borderStyle, style]}>
         <View style={styles.childrenContainer}>
-          <Text writingType="title">{name}</Text>
-          <DateDisplay date={entryDateTime} />
-        </View>
-        <View style={styles.childrenContainer}>
-          <Text>{`${I18n.t('Quality_Sample')} : ${sampleCount}`}</Text>
+          <Text>{samplefullName}</Text>
           <ProgressBar
             style={styles.progressBar}
-            value={numberSampleFilled}
+            value={numberSampledFilled}
             showPercent={false}
             height={15}
             styleTxt={styles.textProgressBar}
@@ -93,7 +92,7 @@ const ControlEntryCard = ({
   );
 };
 
-const getStyles = (color: string) =>
+const getStyles = color =>
   StyleSheet.create({
     border: {
       borderLeftWidth: 7,
@@ -123,5 +122,4 @@ const styles = StyleSheet.create({
     display: 'none',
   },
 });
-
-export default ControlEntryCard;
+export default ControlEntrySampleCard;

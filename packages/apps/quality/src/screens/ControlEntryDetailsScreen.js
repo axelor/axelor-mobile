@@ -17,9 +17,9 @@
  */
 
 import React, {useCallback, useEffect} from 'react';
-import {HeaderContainer, Screen, ScrollList, Text} from '@axelor/aos-mobile-ui';
+import {HeaderContainer, Screen, ScrollList} from '@axelor/aos-mobile-ui';
 import {useDispatch, useSelector, useTranslator} from '@axelor/aos-mobile-core';
-import {ControlEntryHeader} from '../components';
+import {ControlEntryHeader, ControlEntrySampleCard} from '../components';
 import {fetchControlEntryById} from '../features/controlEntrySlice';
 import {searchControlEntrySample} from '../features/controlEntrySampleSlice';
 
@@ -64,7 +64,13 @@ const ControlEntryDetailsScreen = ({route}) => {
         moreLoading={moreLoading}
         isListEnd={isListEnd}
         translator={I18n.t}
-        renderItem={({item}) => <Text>{item?.fullName}</Text>}
+        renderItem={({item}) => (
+          <ControlEntrySampleCard
+            controlPlanId={item.id}
+            resultSelect={item.resultSelect}
+            samplefullName={item.fullName}
+          />
+        )}
       />
     </Screen>
   );
