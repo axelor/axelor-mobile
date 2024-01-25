@@ -17,10 +17,10 @@
  */
 
 import {FormConfigs, UserSearchBar} from '@axelor/aos-mobile-core';
+import {DurationInput} from '@axelor/aos-mobile-ui';
 import {
   ContactPartnerSearchBar,
   CustomerSearchBar,
-  DurationFormInput,
   ProgressFormInput,
   ProjectSearchBar,
   TicketTypeSearchBar,
@@ -120,7 +120,7 @@ export const helpdesk_formsRegister: FormConfigs = {
         titleKey: 'Helpdesk_Duration',
         type: 'string',
         widget: 'custom',
-        customComponent: DurationFormInput,
+        customComponent: DurationInput,
       },
       assignedToUser: {
         titleKey: 'Helpdesk_AssignedToUser',
