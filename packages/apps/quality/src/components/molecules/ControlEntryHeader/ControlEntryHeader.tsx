@@ -67,7 +67,7 @@ const ControlEntryHeader = ({}: ControlEntryHeaderProps) => {
         <ToggleButton
           activeColor={Colors.successColor}
           buttonConfig={{
-            iconName: 'person-fill',
+            iconName: 'clipboard2-fill',
             width: '10%',
             style: styles.toggleButton,
           }}
