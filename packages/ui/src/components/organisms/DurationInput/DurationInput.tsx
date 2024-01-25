@@ -66,8 +66,7 @@ const DurationInput = ({
       setFormattedDuration(duration => {
         const durationCopy = duration.slice();
         durationCopy[index] = value;
-        const newDurationSeconds = formatDurationArrayToSeconds(durationCopy);
-        onChange(newDurationSeconds);
+        onChange(formatDurationArrayToSeconds(durationCopy));
         return durationCopy;
       });
     },
