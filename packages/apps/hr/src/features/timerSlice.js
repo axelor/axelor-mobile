@@ -21,7 +21,10 @@ import {
   handlerApiCall,
   generateInifiniteScrollCases,
 } from '@axelor/aos-mobile-core';
-import {fetchTimer as _fetchTimer} from '../api/timer-api';
+import {
+  fetchActiveTimer as _fetchActiveTimer,
+  fetchTimer as _fetchTimer,
+} from '../api/timer-api';
 
 export const fetchTimer = createAsyncThunk(
   'hr_timer/fetchTimer',
@@ -49,6 +52,19 @@ export const fetchTimerDateInterval = createAsyncThunk(
   },
 );
 
+export const fetchActiveTimer = createAsyncThunk(
+  'hr_timer/fetchActiveTimer',
+  async function (data, {getState}) {
+    return handlerApiCall({
+      fetchFunction: _fetchActiveTimer,
+      data,
+      action: 'Hr_SliceAction_FetchActiveTimer',
+      getState,
+      responseOptions: {isArrayResponse: false},
+    });
+  },
+);
+
 const initialState = {
   loadingTimer: true,
   moreLoading: false,
@@ -59,6 +75,9 @@ const initialState = {
   moreLoadingTimerDateInterval: false,
   isListEndTimerDateInterval: false,
   timerDateIntervalList: [],
+
+  loadingActiveTimer: true,
+  activeTimer: {},
 };
 
 const timerSlice = createSlice({
@@ -76,6 +95,13 @@ const timerSlice = createSlice({
       moreLoading: 'moreLoadingTimerDateInterval',
       isListEnd: 'isListEndTimerDateInterval',
       list: 'timerDateIntervalList',
+    });
+    builder.addCase(fetchActiveTimer.pending, state => {
+      state.loadingActiveTimer = true;
+    });
+    builder.addCase(fetchActiveTimer.fulfilled, (state, action) => {
+      state.loadingActiveTimer = false;
+      state.activeTimer = action.payload;
     });
   },
 });
