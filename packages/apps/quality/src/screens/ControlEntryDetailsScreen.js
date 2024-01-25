@@ -32,6 +32,7 @@ const ControlEntryDetailsScreen = ({route}) => {
 
   const dispatch = useDispatch();
   const I18n = useTranslator();
+  const Colors = useThemeColor();
 
   const {
     controlEntrySampleList,
