@@ -24,14 +24,12 @@ interface LoaderListenerProps {
   process: () => Promise<any>;
   onSuccess?: () => void;
   onError?: () => void;
-  disabled?: boolean;
 }
 
 const useLoaderListner = ({
   process,
   onSuccess = () => {},
   onError = () => {},
-  disabled = false,
 }: LoaderListenerProps) => {
   const I18n = useTranslator();
 
@@ -51,7 +49,7 @@ const useLoaderListner = ({
         topOffset: 30,
         text1: I18n.t('Base_Success'),
         text2: response || I18n.t('Base_Loader_ProccessSuccessMessage'),
-        onPress: !disabled ? onSuccess : () => {},
+        onPress: onSuccess,
       });
     } catch (error) {
       showToastMessage({
@@ -60,12 +58,12 @@ const useLoaderListner = ({
         topOffset: 30,
         text1: I18n.t('Base_Error'),
         text2: error || I18n.t('Base_Loader_ProccessErrorMessage'),
-        onPress: !disabled ? onError : () => {},
+        onPress: onError,
       });
     } finally {
       setLoading(false);
     }
-  }, [process, disabled, onSuccess, onError, I18n]);
+  }, [process, onSuccess, onError, I18n]);
 
   useEffect(() => {
     if (start && !loading) {

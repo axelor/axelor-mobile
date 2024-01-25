@@ -16,7 +16,8 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import React, {useCallback, useEffect, useState} from 'react';
+import React, {useCallback, useEffect, useRef, useState} from 'react';
+import {ActivityIndicator, Dimensions, StyleSheet, View} from 'react-native';
 import {
   BlockInteractionScreen,
   Button,
@@ -26,22 +27,42 @@ import {
   useConfig,
   useThemeColor,
 } from '@axelor/aos-mobile-ui';
-import {ActivityIndicator, Dimensions, StyleSheet, View} from 'react-native';
 import {useTranslator} from '../../../i18n';
-import {useNavigation} from '@react-navigation/native';
+import {useNavigation} from '../../../hooks/use-navigation';
+import useLoaderListner from './use-loader-listener';
 
 interface LoaderPopupProps {
-  loading: boolean;
-  timeout: number;
+  process: () => Promise<any>;
   onSuccess: () => void;
   onError: () => void;
+  timeout: number;
+  disabled: boolean;
 }
 
-const LoaderPopup = ({loading, timeout = 100}: LoaderPopupProps) => {
+const LoaderPopup = ({
+  process,
+  onSuccess,
+  onError,
+  timeout = 100,
+  disabled = false,
+}: LoaderPopupProps) => {
   const navigation = useNavigation();
   const I18n = useTranslator();
   const Colors = useThemeColor();
   const {setActivityIndicator} = useConfig();
+  const timeoutRef = useRef(null);
+
+  const {loading, listener} = useLoaderListner({
+    process,
+    onSuccess: () => {
+      setShowPopup(false);
+      !disabled && onSuccess();
+    },
+    onError: () => {
+      setShowPopup(false);
+      !disabled && onError();
+    },
+  });
 
   const [showPopup, setShowPopup] = useState<boolean>(false);
 
@@ -50,17 +71,28 @@ const LoaderPopup = ({loading, timeout = 100}: LoaderPopupProps) => {
   }, [navigation]);
 
   useEffect(() => {
+    listener();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  useEffect(() => {
     if (loading && !showPopup) {
       setActivityIndicator(true);
     }
 
-    const timerId = setTimeout(() => {
+    if (timeoutRef.current) {
+      clearTimeout(timeoutRef.current);
+    }
+
+    timeoutRef.current = setTimeout(() => {
       setActivityIndicator(false);
       setShowPopup(true);
     }, timeout);
 
-    return () => clearTimeout(timerId);
-  }, [timeout, loading, showPopup, setActivityIndicator]);
+    return () => {
+      clearTimeout(timeoutRef.current);
+    };
+  }, [timeout, loading, showPopup, setActivityIndicator, setShowPopup]);
 
   if (!loading || !showPopup) {
     return null;
@@ -71,7 +103,7 @@ const LoaderPopup = ({loading, timeout = 100}: LoaderPopupProps) => {
       <Card style={styles.popupContainer}>
         <Label
           type="danger"
-          message={I18n.t('Base_Loading_DoNotCloseTheApp')}
+          message={I18n.t('Base_Loader_DoNotCloseTheApp')}
           iconName="exclamation-triangle-fill"
         />
         <View style={styles.activityIndicatorContainer}>
@@ -79,13 +111,13 @@ const LoaderPopup = ({loading, timeout = 100}: LoaderPopupProps) => {
             size="large"
             color={Colors.primaryColor.background}
           />
-          <Text style={styles.loadingLabel}>
+          <Text writingType="title">
             {I18n.t('Base_Loader_LoadingInProgress')}
           </Text>
         </View>
         <Button
           iconName="check-lg"
-          title={I18n.t('Base_Loader_NotifyMeWantItIsReady')}
+          title={I18n.t('Base_Loader_NotifyMe')}
           onPress={handleGoBack}
         />
       </Card>
@@ -109,9 +141,6 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     marginHorizontal: 30,
-  },
-  loadingLabel: {
-    fontWeight: 'bold',
   },
 });
 

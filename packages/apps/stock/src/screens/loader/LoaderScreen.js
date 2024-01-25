@@ -35,9 +35,9 @@
  */
 
 import React from 'react';
-import {Button, View} from 'react-native';
+import {View} from 'react-native';
 import {Screen} from '@axelor/aos-mobile-ui';
-import {LoaderPopup, useLoaderListner} from '@axelor/aos-mobile-core';
+import {LoaderPopup} from '@axelor/aos-mobile-core';
 
 // Screen for test Loader functionnalities
 const LoaderScreen = () => {
@@ -52,18 +52,16 @@ const LoaderScreen = () => {
     console.log('Custom action executed!');
   };
 
-  const {loading, listener} = useLoaderListner({
-    process,
-    onSuccess: handleCustomAction,
-    onError: () => console.warn('An error has occurred!'),
-    disabled: true,
-  });
-
   return (
     <Screen>
       <View>
-        <Button title="check process" onPress={listener} disabled={loading} />
-        <LoaderPopup loading={loading} timeout={5000} />
+        <LoaderPopup
+          process={process}
+          timeout={5000}
+          onSuccess={handleCustomAction}
+          onError={() => console.warn('An error has occurred!')}
+          disabled={true}
+        />
       </View>
     </Screen>
   );
