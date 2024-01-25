@@ -17,20 +17,28 @@
  */
 
 import React, {useEffect, useMemo} from 'react';
-import {FormView, useDispatch, useSelector} from '@axelor/aos-mobile-core';
+import {
+  FormView,
+  useDispatch,
+  useIsFocused,
+  useSelector,
+} from '@axelor/aos-mobile-core';
 import {fetchActiveTimer} from '../../features/timerSlice';
 
 const TimerFormScreen = ({route}) => {
   const isCreation = route?.params?.isCreation;
   const timerToUpdate = route?.params?.timerToUpdate;
+  const isFocused = useIsFocused();
   const dispatch = useDispatch();
 
   const {user} = useSelector(state => state.user);
   const {activeTimer} = useSelector(state => state.hr_timer);
 
   useEffect(() => {
-    dispatch(fetchActiveTimer({userId: user?.id}));
-  }, [dispatch, user?.id]);
+    if (isFocused) {
+      dispatch(fetchActiveTimer({userId: user?.id}));
+    }
+  }, [dispatch, isFocused, user?.id]);
 
   const defaultValue = useMemo(() => {
     if (isCreation) {
