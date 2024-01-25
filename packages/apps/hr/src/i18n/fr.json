@@ -97,6 +97,7 @@
   "Hr_SliceAction_GetDistance": "récupération de la distance",
   "Hr_SliceAction_SearchManagedEmployee": "récupération des employés gérés",
   "Hr_SliceAction_FetchTimer": "récupération des chronomètres",
+  "Hr_SliceAction_FetchActiveTimer": "récupération du chronomètre actif",
   "Hr_SliceAction_FetchTimesheet": "récupération des feuilles de temps",
   "Hr_SliceAction_FetchTimesheetToValidate": "récupération des feuilles de temps à valider",
   "Hr_SliceAction_DeleteExpense": "suppression d'une note de frais",

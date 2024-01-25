@@ -52,7 +52,11 @@ export {
   searchProjectTask,
   updateProject,
 } from './projectSlice';
-export {fetchTimer, fetchTimerDateInterval} from './timerSlice';
+export {
+  fetchActiveTimer,
+  fetchTimer,
+  fetchTimerDateInterval,
+} from './timerSlice';
 export {fetchTimesheetLine} from './timesheetLineSlice';
 export {
   fetchDraftTimesheet,

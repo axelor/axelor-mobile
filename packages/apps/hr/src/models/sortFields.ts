@@ -29,7 +29,7 @@ export const hr_sortFields: SortFields = {
   hr_project: ['name', 'fullName'],
   hr_projectTask: ['name', 'fullName'],
   hr_product: ['name', 'fullName'],
-  hr_timer: ['-startDateTime'],
+  hr_timer: ['-updatedOn'],
   hr_timesheet: ['-fromDate', '-toDate'],
   hr_timesheetLine: ['-date', '-duration'],
 };
