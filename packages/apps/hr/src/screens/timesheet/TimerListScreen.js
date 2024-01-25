@@ -62,7 +62,7 @@ const TimerListScreen = ({navigation}) => {
             durationUnit={'hours'}
             onEdit={() =>
               navigation.navigate('TimerFormScreen', {
-                timer: item,
+                timerToUpdate: item,
               })
             }
           />
