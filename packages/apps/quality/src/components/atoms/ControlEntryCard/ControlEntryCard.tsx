@@ -80,15 +80,11 @@ const ControlEntryCard = ({
     <TouchableOpacity onPress={onPress} activeOpacity={0.9}>
       <Card style={[styles.container, borderStyle, style]}>
         <View style={styles.childrenContainer}>
-          <Text style={styles.flex} writingType="title">
-            {name}
-          </Text>
+          <Text writingType="title">{name}</Text>
           <DateDisplay date={entryDateTime} />
         </View>
         <View style={styles.childrenContainer}>
-          <Text style={styles.flex}>{`${I18n.t(
-            'Quality_Sample',
-          )} : ${sampleCount}`}</Text>
+          <Text>{`${I18n.t('Quality_Sample')} : ${sampleCount}`}</Text>
           <ProgressBar
             style={styles.progressBar}
             value={numberSampledFilled}
@@ -112,9 +108,6 @@ const getStyles = color =>
 
 const styles = StyleSheet.create({
   container: {
-    flexDirection: 'column',
-    justifyContent: 'flex-start',
-    alignItems: 'flex-start',
     marginHorizontal: 12,
     marginVertical: 4,
     paddingHorizontal: 15,
@@ -125,9 +118,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     marginVertical: 5,
-  },
-  flex: {
-    flex: 1,
+    justifyContent: 'space-between',
   },
   progressBar: {
     borderRadius: 20,
