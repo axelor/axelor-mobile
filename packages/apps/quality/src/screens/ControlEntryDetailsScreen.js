@@ -16,11 +16,10 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import React, {useCallback, useEffect} from 'react';
+import React, {useCallback} from 'react';
 import {HeaderContainer, Screen, ScrollList} from '@axelor/aos-mobile-ui';
 import {useDispatch, useSelector, useTranslator} from '@axelor/aos-mobile-core';
 import {ControlEntryHeader, ControlEntrySampleCard} from '../components';
-import {fetchControlEntryById} from '../features/controlEntrySlice';
 import {searchControlEntrySample} from '../features/controlEntrySampleSlice';
 
 const ControlEntryDetailsScreen = ({route}) => {
@@ -35,9 +34,6 @@ const ControlEntryDetailsScreen = ({route}) => {
     moreLoading,
     isListEnd,
   } = useSelector(state => state.controlEntrySample);
-  useEffect(() => {
-    dispatch(fetchControlEntryById({controlEntryId: controlEntryId}));
-  }, [controlEntryId, dispatch]);
 
   const fetchControlEntryAPI = useCallback(
     (page = 0) => {
@@ -55,7 +51,7 @@ const ControlEntryDetailsScreen = ({route}) => {
     <Screen removeSpaceOnTop>
       <HeaderContainer
         expandableFilter={false}
-        fixedItems={<ControlEntryHeader />}
+        fixedItems={<ControlEntryHeader controlEntryId={controlEntryId} />}
       />
       <ScrollList
         loadingList={loadingControlEntrySampleList}

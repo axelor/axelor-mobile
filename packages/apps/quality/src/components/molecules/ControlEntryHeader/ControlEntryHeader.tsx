@@ -16,9 +16,14 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import React from 'react';
+import React, {useEffect} from 'react';
 import {StyleSheet, View} from 'react-native';
-import {isEmpty, useSelector, useTranslator} from '@axelor/aos-mobile-core';
+import {
+  isEmpty,
+  useSelector,
+  useTranslator,
+  useDispatch,
+} from '@axelor/aos-mobile-core';
 import {
   Badge,
   ProgressBar,
@@ -28,14 +33,22 @@ import {
 } from '@axelor/aos-mobile-ui';
 import {DateDisplay} from '../../atoms';
 import {ControlEntry} from '../../../types';
+import {fetchControlEntryById} from '../../../features/controlEntrySlice';
 
-interface ControlEntryHeaderProps {}
+interface ControlEntryHeaderProps {
+  controlEntryId: number;
+}
 
-const ControlEntryHeader = ({}: ControlEntryHeaderProps) => {
+const ControlEntryHeader = ({controlEntryId}: ControlEntryHeaderProps) => {
   const I18n = useTranslator();
   const Colors = useThemeColor();
+  const dispatch = useDispatch();
 
   const {controlEntry} = useSelector((state: any) => state.controlEntry);
+
+  useEffect(() => {
+    dispatch((fetchControlEntryById as any)({controlEntryId: controlEntryId}));
+  }, [controlEntryId, dispatch]);
 
   if (controlEntry == null || isEmpty(controlEntry)) {
     return null;
