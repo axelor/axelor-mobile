@@ -18,3 +18,4 @@
 
 export {default as ControlEntryDetailsButtons} from './ControlEntryDetailsButtons/ControlEntryDetailsButtons';
 export {default as ControlEntryDetailsHeader} from './ControlEntryDetailsHeader/ControlEntryDetailsHeader';
+export {default as ControlEntryHeader} from './ControlEntryHeader/ControlEntryHeader';
