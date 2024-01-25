@@ -77,7 +77,8 @@ const useTimerListAction = () => {
           iconName: 'plus-lg',
           title: I18n.t('Hr_CreateTimer'),
           iconColor: Colors.primaryColor.background,
-          onPress: () => navigation.navigate('TimerFormScreen'),
+          onPress: () =>
+            navigation.navigate('TimerFormScreen', {isCreation: true}),
           showInHeader: true,
         },
       ],
@@ -99,7 +100,8 @@ const useActiveTimerAction = () => {
           iconName: 'plus-lg',
           title: I18n.t('Hr_CreateTimer'),
           iconColor: Colors.primaryColor.background,
-          onPress: () => navigation.navigate('TimerFormScreen'),
+          onPress: () =>
+            navigation.navigate('TimerFormScreen', {isCreation: true}),
           showInHeader: true,
         },
       ],
