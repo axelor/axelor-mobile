@@ -34,7 +34,7 @@ import {
 import {searchControlEntry} from '../features/controlEntrySlice';
 import {ControlEntryCard} from '../components';
 
-const ControlEntryListScreen = ({}) => {
+const ControlEntryListScreen = ({navigation}) => {
   const Colors = useThemeColor();
   const I18n = useTranslator();
   const dispatch = useDispatch();
@@ -96,6 +96,11 @@ const ControlEntryListScreen = ({}) => {
             statusSelect={item.statusSelect}
             name={item.name}
             controlEntryId={item.id}
+            onPress={() =>
+              navigation.navigate('ControlEntryDetailsScreen', {
+                controlEntryId: item.id,
+              })
+            }
           />
         )}
         fetchData={fetchControlEntryAPI}

@@ -17,6 +17,7 @@
  */
 
 import ControlEntryListScreen from './ControlEntryListScreen';
+import ControlEntryDetailsScreen from './ControlEntryDetailsScreen';
 
 export default {
   ControlEntryListScreen: {
@@ -27,6 +28,14 @@ export default {
       shadedHeader: false,
     },
   },
+  ControlEntryDetailsScreen: {
+    title: 'Quality_ControlEntry',
+    component: ControlEntryDetailsScreen,
+    options: {
+      shadedHeader: false,
+    },
+  },
 };
 
 export {ControlEntryListScreen};
+export {ControlEntryDetailsScreen};

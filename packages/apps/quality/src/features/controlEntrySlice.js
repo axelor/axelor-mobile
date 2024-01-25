@@ -21,7 +21,10 @@ import {
   generateInifiniteScrollCases,
   handlerApiCall,
 } from '@axelor/aos-mobile-core';
-import {searchControlEntry as _searchControlEntry} from '../api/control-entry-api';
+import {
+  searchControlEntry as _searchControlEntry,
+  fetchControlEntryById as _fetchControlEntryById,
+} from '../api/control-entry-api';
 
 export const searchControlEntry = createAsyncThunk(
   'controlEntry/searchControlEntry',
@@ -36,11 +39,27 @@ export const searchControlEntry = createAsyncThunk(
   },
 );
 
+export const fetchControlEntryById = createAsyncThunk(
+  'controlEntry/fetchControlEntryById',
+  async function (data, {getState}) {
+    return handlerApiCall({
+      fetchFunction: _fetchControlEntryById,
+      data,
+      action: 'Quality_SliceAction_FetchControlEntryById',
+      getState,
+      responseOptions: {isArrayResponse: false},
+    });
+  },
+);
+
 const initialState = {
   loadingControlEntryList: true,
   moreLoading: false,
   isListEnd: false,
   controlEntryList: [],
+
+  loadingControlEntry: true,
+  controlEntry: {},
 };
 
 const controlEntrySlice = createSlice({
@@ -52,6 +71,13 @@ const controlEntrySlice = createSlice({
       moreLoading: 'moreLoading',
       isListEnd: 'isListEnd',
       list: 'controlEntryList',
+    });
+    builder.addCase(fetchControlEntryById.pending, (state, action) => {
+      state.loadingControlEntry = true;
+    });
+    builder.addCase(fetchControlEntryById.fulfilled, (state, action) => {
+      state.loadingControlEntry = false;
+      state.controlEntry = action.payload;
     });
   },
 });
