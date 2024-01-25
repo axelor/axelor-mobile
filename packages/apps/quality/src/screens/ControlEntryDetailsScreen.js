@@ -26,6 +26,7 @@ import {
 } from '../components';
 import {searchControlEntrySample} from '../features/controlEntrySampleSlice';
 import {fetchControlEntryById} from '../features/controlEntrySlice';
+import {searchControlEntrySample} from '../features/controlEntrySampleSlice';
 
 const ControlEntryDetailsScreen = ({route}) => {
   const {controlEntryId} = route.params;
@@ -90,6 +91,15 @@ const ControlEntryDetailsScreen = ({route}) => {
             samplefullName={item.fullName}
           />
         )}
+      />
+      <ScrollList
+        loadingList={loadingControlEntrySampleList}
+        data={controlEntrySampleList}
+        fetchData={fetchControlEntryAPI}
+        moreLoading={moreLoading}
+        isListEnd={isListEnd}
+        translator={I18n.t}
+        renderItem={({item}) => <Text>{item?.fullName}</Text>}
       />
     </Screen>
   );
