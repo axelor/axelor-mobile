@@ -140,6 +140,7 @@ export const hr_modelAPI: ObjectFields = {
         employeeVehicleList: schemaContructor
           .array()
           .of(schemaContructor.subObject()),
+        product: schemaContructor.subObject('name'),
       }),
     ),
   }),
