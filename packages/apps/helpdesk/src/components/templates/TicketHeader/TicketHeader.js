@@ -32,13 +32,23 @@ const TicketHeader = ({}) => {
   const Colors = useThemeColor();
   const I18n = useTranslator();
 
-  const {ticket, ticketTypeList} = useSelector(state => state.ticket);
-
-  const colorIndex = useMemo(
-    () =>
-      ticketTypeList?.findIndex(status => status.id === ticket.ticketType?.id),
-    [ticket, ticketTypeList],
+  const {ticket, ticketStatusList, ticketTypeList} = useSelector(
+    state => state.ticket,
   );
+
+  const colorStatus = useMemo(() => {
+    const colorIndex = ticketStatusList?.findIndex(
+      status => status.id === ticket.ticketStatus?.id,
+    );
+    return Ticket.getStatusColor(colorIndex, Colors);
+  }, [Colors, ticketStatusList, ticket.ticketStatus?.id]);
+
+  const colorType = useMemo(() => {
+    const colorIndex = ticketTypeList?.findIndex(
+      status => status.id === ticket.ticketType?.id,
+    );
+    return Ticket.getTypeColor(colorIndex, Colors);
+  }, [Colors, ticketTypeList, ticket.ticketType?.id]);
 
   return (
     <View style={styles.headerContainer}>
@@ -51,15 +61,11 @@ const TicketHeader = ({}) => {
         </View>
         <View style={styles.badgeContainer}>
           <View style={styles.upperBadgesContainer}>
-            <Badge
-              title={Ticket.getStatus(ticket.statusSelect, I18n)}
-              color={Ticket.getStatusColor(ticket.statusSelect, Colors)}
-            />
+            {!checkNullString(ticket.ticketStatus?.name) && (
+              <Badge title={ticket.ticketStatus?.name} color={colorStatus} />
+            )}
             {!checkNullString(ticket.ticketType?.name) && (
-              <Badge
-                title={ticket.ticketType?.name}
-                color={Ticket.getTypeColor(colorIndex, Colors)}
-              />
+              <Badge title={ticket.ticketType?.name} color={colorType} />
             )}
           </View>
           {ticket.prioritySelect !== null && (

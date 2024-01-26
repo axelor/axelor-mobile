@@ -39,6 +39,10 @@ import {
 
 const DEFAULT_STATUS = StopwatchType.status.Ready;
 const DEFAULT_TIME = 0;
+const TIMER_STATUS = {
+  inProgress: 1,
+  stop: 0,
+};
 
 const TicketStopwatch = ({}) => {
   const I18n = useTranslator();
@@ -64,9 +68,36 @@ const TicketStopwatch = ({}) => {
     dispatch(searchTimerHistoryById({idTimer: timer?.id}));
   }, [dispatch, timer]);
 
+  const getTimerStatus = useCallback(
+    (ticketStatus, timerState) => {
+      if (ticketStatus?.id === helpdeskConfig?.defaultTicketStatus) {
+        return StopwatchType.status.Ready;
+      }
+      if (
+        ticketStatus?.id === helpdeskConfig?.In_Progress &&
+        timerState === TIMER_STATUS.stop
+      ) {
+        return StopwatchType.status.Paused;
+      }
+      if (
+        ticketStatus?.id === helpdeskConfig?.inProgressTicketStatus &&
+        timerState === TIMER_STATUS.inProgress
+      ) {
+        return StopwatchType.status.InProgress;
+      }
+      if (ticketStatus?.id === helpdeskConfig?.resolvedTicketStatus) {
+        return StopwatchType.status.Finished;
+      }
+      if (ticketStatus?.id === helpdeskConfig?.closedTicketStatus) {
+        return StopwatchType.status.Finished;
+      }
+    },
+    [helpdeskConfig],
+  );
+
   const getTimerState = useCallback(() => {
     const status = !isEmpty(ticket)
-      ? Ticket.getTimerState(ticket?.statusSelect, timer?.statusSelect)
+      ? getTimerStatus(ticket?.ticketStatus, timer?.statusSelect)
       : DEFAULT_STATUS;
 
     const _time =
@@ -80,7 +111,7 @@ const TicketStopwatch = ({}) => {
     setTime(_time);
 
     return {status, _time};
-  }, [ticket, timer, timerHistory]);
+  }, [getTimerStatus, ticket, timer, timerHistory]);
 
   useEffect(() => {
     getTimerState();
@@ -88,9 +119,9 @@ const TicketStopwatch = ({}) => {
 
   const disbaled = useMemo(
     () =>
-      ticket?.statusSelect === Ticket.status.Closed ||
-      ticket?.statusSelect === Ticket.status.Resolved,
-    [ticket],
+      ticket?.statusSelect === helpdeskConfig?.closedTicketStatus ||
+      ticket?.statusSelect === helpdeskConfig?.resolvedTicketStatus,
+    [helpdeskConfig, ticket],
   );
 
   const updateStatus = useCallback(
@@ -125,16 +156,16 @@ const TicketStopwatch = ({}) => {
           disable={disbaled}
         />
       )}
-      {ticket?.statusSelect !== Ticket.status.Closed &&
-        ticket?.statusSelect !== Ticket.status.New && (
+      {ticket?.statusSelect !== helpdeskConfig?.closedTicketStatus &&
+        ticket?.statusSelect !== helpdeskConfig?.defaultTicketStatus && (
           <Button
             title={I18n.t('Helpdesk_Close')}
             iconName="power"
             onPress={() => updateStatus(Ticket.stopWatchStatus.validate)}
             color={Colors.primaryColor}
             disabled={
-              ticket?.statusSelect === Ticket.status.Closed ||
-              ticket?.statusSelect === Ticket.status.New
+              ticket?.statusSelect === helpdeskConfig?.closedTicketStatus ||
+              ticket?.statusSelect === helpdeskConfig?.defaultTicketStatus
             }
           />
         )}

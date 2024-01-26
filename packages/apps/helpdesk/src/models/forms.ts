@@ -23,6 +23,7 @@ import {
   DurationFormInput,
   ProgressFormInput,
   ProjectSearchBar,
+  TicketStatusSearchBar,
   TicketTypeSearchBar,
   TicketPriorityPicker,
 } from '../components';
@@ -85,6 +86,12 @@ export const helpdesk_formsRegister: FormConfigs = {
         type: 'object',
         widget: 'custom',
         customComponent: TicketTypeSearchBar,
+      },
+      ticketStatus: {
+        titleKey: 'Helpdesk_Status',
+        type: 'object',
+        widget: 'custom',
+        customComponent: TicketStatusSearchBar,
       },
       prioritySelect: {
         type: 'number',

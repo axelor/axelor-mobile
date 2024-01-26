@@ -32,6 +32,7 @@ const TicketsStatusButton = ({}) => {
   const dispatch = useDispatch();
 
   const {ticket} = useSelector(state => state.ticket);
+  const {helpdesk: helpdeskConfig} = useSelector(state => state.appConfig);
 
   const updateStatus = useCallback(
     status => {
@@ -47,7 +48,7 @@ const TicketsStatusButton = ({}) => {
     [dispatch, ticket],
   );
 
-  if (ticket?.statusSelect === Ticket.status.New) {
+  if (ticket?.statusSelect === helpdeskConfig?.defaultTicketStatus) {
     return (
       <Button
         title={I18n.t('Helpdesk_Start')}
@@ -57,7 +58,7 @@ const TicketsStatusButton = ({}) => {
     );
   }
 
-  if (ticket?.statusSelect === Ticket.status.In_Progress) {
+  if (ticket?.statusSelect === helpdeskConfig?.inProgressTicketStatus) {
     return (
       <Button
         title={I18n.t('Helpdesk_Resolve')}

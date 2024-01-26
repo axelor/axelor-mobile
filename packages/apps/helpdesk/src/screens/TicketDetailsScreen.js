@@ -39,6 +39,7 @@ const TicketDetailsScreen = ({route}) => {
   const dispatch = useDispatch();
 
   const {loadingTicket, ticket} = useSelector(state => state.ticket);
+  const {helpdesk: helpdeskConfig} = useSelector(state => state.appConfig);
 
   const fetchTicket = useCallback(() => {
     dispatch(fetchTicketById({ticketId: idTicket}));
@@ -63,7 +64,7 @@ const TicketDetailsScreen = ({route}) => {
         <TicketDropdownCards />
         <TicketStopwatch />
       </ScrollView>
-      {ticket?.statusSelect !== Ticket.status.Closed && (
+      {ticket?.statusSelect !== helpdeskConfig?.closedTicketStatus && (
         <TicketEditButton idTicket={idTicket} />
       )}
     </Screen>
