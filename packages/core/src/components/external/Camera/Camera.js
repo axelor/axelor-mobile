@@ -23,7 +23,7 @@ import {
   Camera as PackageCamera,
   frameRateIncluded,
   sortFormats,
-  useCameraDevices,
+  useCameraPermission,
 } from 'react-native-vision-camera';
 import StaticSafeAreaInsets from 'react-native-static-safe-area-insets';
 import RNFS from 'react-native-fs';
@@ -53,16 +53,20 @@ const SAFE_AREA_PADDING = {
 const BUTTON_SIZE = 40;
 
 const Camera = () => {
-  const Colors = useThemeColor();
+  const camera = useRef(null);
   const {isEnabled} = useCameraSelector();
-  const [hasPermission, setHasPermission] = useState(false);
+  const {hasPermission, requestPermission} = useCameraPermission();
+  const devices = PackageCamera.getAvailableCameraDevices();
+  const Colors = useThemeColor();
+  const dispatch = useDispatch();
+
   const [cameraPosition, setCameraPosition] = useState('back');
   const [flash, setFlash] = useState('off');
   const [enableNightMode, setEnableNightMode] = useState(false);
-  const camera = useRef(null);
-  const devices = useCameraDevices();
-  const device = devices[cameraPosition];
-  const dispatch = useDispatch();
+
+  const device = useMemo(() => {
+    return devices.find(d => d.position === cameraPosition);
+  }, [cameraPosition, devices]);
 
   const formats = useMemo(() => {
     if (device?.formats == null) {
@@ -143,16 +147,11 @@ const Camera = () => {
 
   useEffect(() => {
     if (isEnabled) {
-      (async () => {
-        const status = await PackageCamera.requestCameraPermission();
-        setHasPermission(status === 'authorized');
-      })();
+      requestPermission();
     }
-
-    return () => setHasPermission(false);
   }, [isEnabled]);
 
-  if (!hasPermission && !isEnabled) {
+  if (!hasPermission || !isEnabled) {
     return null;
   }
 

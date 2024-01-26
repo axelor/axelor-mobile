@@ -16,12 +16,14 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import React, {useCallback, useEffect, useState} from 'react';
+import React, {useCallback, useEffect} from 'react';
 import {Dimensions, StyleSheet, View} from 'react-native';
 import {useDispatch} from 'react-redux';
 import {
   Camera as PackageCamera,
-  useCameraDevices,
+  useCameraDevice,
+  useCameraPermission,
+  useCodeScanner,
 } from 'react-native-vision-camera';
 import {Icon, useThemeColor} from '@axelor/aos-mobile-ui';
 import {formatScan} from '../../../utils/formatters';
@@ -33,30 +35,10 @@ import {
 
 const CameraScanner = () => {
   const {isEnabled: isActive} = useCameraScannerSelector();
-  const [hasPermission, setHasPermission] = useState(false);
-  const devices = useCameraDevices();
-  const device = devices.back;
+  const device = useCameraDevice('back');
+  const {hasPermission, requestPermission} = useCameraPermission();
   const Colors = useThemeColor();
   const dispatch = useDispatch();
-
-  const handleScan = useCallback(
-    barcode => {
-      if (barcode != null) {
-        console.log(barcode);
-      } else {
-        dispatch(
-          scanBarcode({
-            value: formatScan(
-              barcode.displayValue,
-              'qrcode', // TODO: BarcodeFormat[barcode.format],
-            ),
-            type: 'qrcode', // TODO: BarcodeFormat[barcode.format],
-          }),
-        );
-      }
-    },
-    [dispatch],
-  );
 
   const handleClose = useCallback(() => {
     dispatch(disableCameraScanner());
@@ -64,16 +46,25 @@ const CameraScanner = () => {
 
   useEffect(() => {
     if (isActive) {
-      (async () => {
-        const status = await PackageCamera.requestCameraPermission();
-        setHasPermission(status === 'authorized');
-      })();
+      requestPermission();
     }
-
-    return () => setHasPermission(false);
   }, [isActive]);
 
-  if (!hasPermission && !isActive) {
+  const codeScanner = useCodeScanner({
+    codeTypes: ['qr', 'ean-13'],
+    onCodeScanned: barcode => {
+      if (Array.isArray(barcode) && barcode[0] != null) {
+        dispatch(
+          scanBarcode({
+            value: formatScan(barcode[0].value, barcode[0].type),
+            type: barcode[0].type,
+          }),
+        );
+      }
+    },
+  });
+
+  if (!hasPermission || !isActive) {
     return null;
   }
 
@@ -91,7 +82,7 @@ const CameraScanner = () => {
         style={styles.camera}
         device={device}
         isActive={true}
-        codeScanner={{codeTypes: ['qr', 'ean-13'], onCodeScanned: handleScan}}
+        codeScanner={codeScanner}
       />
     </View>
   );
