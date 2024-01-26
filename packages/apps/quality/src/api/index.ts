@@ -17,8 +17,8 @@
  */
 
 export {
-  searchControlEntry as searchControlEntryApi,
   fetchControlEntryById as fetchControlEntryByIdApi,
+  searchControlEntry as searchControlEntryApi,
 } from './control-entry-api';
 export {searchControlEntrySample as searchControlEntrySampleApi} from './control-entry-sample-api';
 export {searchControlEntrySampleLine as searchControlEntrySampleLineApi} from './control-entry-sample-line-api';

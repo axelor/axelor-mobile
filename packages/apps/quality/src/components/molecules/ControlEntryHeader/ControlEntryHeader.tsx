@@ -60,6 +60,7 @@ const ControlEntryHeader = ({controlEntryId}: ControlEntryHeaderProps) => {
         <Badge
           color={ControlEntry.getStatusColor(controlEntry.statusSelect, Colors)}
           title={ControlEntry.getStatus(controlEntry.statusSelect, I18n)}
+          style={styles.badge}
         />
       </View>
       <View style={styles.row}>
@@ -71,10 +72,11 @@ const ControlEntryHeader = ({controlEntryId}: ControlEntryHeaderProps) => {
       <Text>{`${I18n.t('Quality_ControlPlan')} : ${
         controlEntry.controlPlan?.name
       }`}</Text>
-      <View style={styles.progressHeader}>
+      <View style={styles.row}>
         <ProgressBar
           value={controlEntry.sampleCount}
           style={styles.progressBar}
+          height={37}
         />
         <ToggleButton
           activeColor={Colors.successColor}
@@ -96,19 +98,17 @@ const styles = StyleSheet.create({
   row: {
     justifyContent: 'space-between',
     flexDirection: 'row',
-    marginVertical: 2,
+    marginBottom: 2,
+    alignItems: 'center',
   },
-  progressHeader: {
-    justifyContent: 'space-between',
-    flexDirection: 'row',
-    marginTop: '3%',
+  badge: {
+    margin: 0,
   },
   progressBar: {
     width: '85%',
   },
   toggleButton: {
     height: 40,
-    top: '-20%',
   },
 });
 

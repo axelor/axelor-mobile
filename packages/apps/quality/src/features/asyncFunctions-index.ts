@@ -17,4 +17,4 @@
  */
 
 export {searchControlEntrySample} from './controlEntrySampleSlice';
-export {searchControlEntry} from './controlEntrySlice';
+export {fetchControlEntryById, searchControlEntry} from './controlEntrySlice';

@@ -24,7 +24,7 @@ import {
 import {searchControlEntrySample as _searchControlEntrySample} from '../api/control-entry-sample-api';
 
 export const searchControlEntrySample = createAsyncThunk(
-  'controlEntry/searchControlEntrySample',
+  'controlEntrySample/searchControlEntrySample',
   async function (data, {getState}) {
     return handlerApiCall({
       fetchFunction: _searchControlEntrySample,

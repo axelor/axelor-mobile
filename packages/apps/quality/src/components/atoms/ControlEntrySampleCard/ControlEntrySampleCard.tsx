@@ -24,9 +24,9 @@ import {searchControlEntrySampleLineApi} from '../../../api';
 
 interface ControlEntrySampleCardProps {
   style?: any;
-  controlPlanId?: number;
-  resultSelect?: number;
-  samplefullName?: string;
+  controlPlanId: number;
+  resultSelect: number;
+  samplefullName: string;
   onPress?: () => void;
 }
 const ControlEntrySampleCard = ({
