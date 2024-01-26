@@ -28,7 +28,7 @@ export const quality_modelAPI: ObjectFields = {
     entryDateTime: schemaContructor.string(),
     statusSelect: schemaContructor.number(),
     sampleCount: schemaContructor.number(),
-    controlPlan: schemaContructor.subObject,
+    controlPlan: schemaContructor.subObject(),
   }),
   quality_controlEntrySample: schemaContructor.object({
     fullName: schemaContructor.string(),

@@ -60,7 +60,7 @@ class ControlEntry {
       case this.status.InProgress:
         return Colors.progressColor;
       case this.status.Completed:
-        return Colors.priorityColor;
+        return Colors.successColor;
       case this.status.Canceled:
         return Colors.errorColor;
       default:
@@ -71,4 +71,5 @@ class ControlEntry {
     }
   };
 }
+
 export default ControlEntry;
