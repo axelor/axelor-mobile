@@ -17,8 +17,16 @@
  */
 
 import {Module} from '@axelor/aos-mobile-core';
+import QualityScreens from './screens';
 import enTranslations from './i18n/en.json';
 import frTranslations from './i18n/fr.json';
+import {
+  quality_modelAPI,
+  quality_searchFields,
+  quality_sortFields,
+} from './models';
+import * as qualityReducers from './features';
+import {useQualityHeaders} from './hooks/use-quality-header-actions';
 
 export const QualityModule: Module = {
   name: 'app-quality',
@@ -33,4 +41,27 @@ export const QualityModule: Module = {
     en: enTranslations,
     fr: frTranslations,
   },
+  menus: {
+    quality_menu_controlEntry: {
+      title: 'Quality_ControlEntries',
+      icon: 'card-checklist',
+      screen: 'ControlEntryListScreen',
+    },
+  },
+  screens: {
+    ...QualityScreens,
+  },
+  reducers: {...qualityReducers},
+  models: {
+    objectFields: {...quality_modelAPI},
+    sortFields: {...quality_sortFields},
+    searchFields: {...quality_searchFields},
+    headerRegisters: useQualityHeaders,
+  },
 };
+
+export * from './api';
+export * from './components';
+export * from './features/asyncFunctions-index';
+export * from './screens';
+export * from './types';

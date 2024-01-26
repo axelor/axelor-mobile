@@ -1,3 +1,11 @@
 {
-  "Quality_Quality": "Quality"
+  "Quality_Quality": "Quality",
+  "Quality_ControlEntries": "Control entries",
+  "Quality_Sample": "Sample",
+  "Quality_Status_Draft": "Draft",
+  "Quality_Status_InProgress": "In progress",
+  "Quality_Status_Completed": "Completed",
+  "Quality_Status_Canceled": "Canceled",
+  "Quality_NewControlEntry": "new control entry",
+  "Quality_SliceAction_SearchControlEntry": "search control entries"
 }
