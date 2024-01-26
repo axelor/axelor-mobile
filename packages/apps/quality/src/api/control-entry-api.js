@@ -17,7 +17,9 @@
  */
 import {
   createStandardSearch,
+  getEndOfDay,
   getSearchCriterias,
+  getStartOfDay,
 } from '@axelor/aos-mobile-core';
 
 const createControlEntryCriteria = (searchValue, isInspector, userId, date) => {
@@ -36,12 +38,12 @@ const createControlEntryCriteria = (searchValue, isInspector, userId, date) => {
       {
         fieldName: 'entryDateTime',
         operator: '>=',
-        value: `${date}T00:00:00.000Z`,
+        value: getStartOfDay(date).toISOString(),
       },
       {
         fieldName: 'entryDateTime',
         operator: '<=',
-        value: `${date}T23:59:59.000Z`,
+        value: getEndOfDay(date).toISOString(),
       },
     );
   }

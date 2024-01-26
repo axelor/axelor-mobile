@@ -44,7 +44,7 @@ const ControlEntryListScreen = ({}) => {
     useSelector(state => state.controlEntry);
 
   const [isInspectorFilter, setIsInspectorFilter] = useState(false);
-  const [dateToFilter, setDateToFilter] = useState(null);
+  const [dateFilter, setDateFilter] = useState(null);
 
   const fetchControlEntryAPI = useCallback(
     (page = 0) => {
@@ -53,11 +53,11 @@ const ControlEntryListScreen = ({}) => {
           page: page,
           isInspector: isInspectorFilter,
           userId: userId,
-          date: dateToFilter,
+          date: dateFilter,
         }),
       );
     },
-    [dispatch, isInspectorFilter, userId, dateToFilter],
+    [dispatch, isInspectorFilter, userId, dateFilter],
   );
 
   return (
@@ -79,10 +79,9 @@ const ControlEntryListScreen = ({}) => {
             <DateInput
               style={styles.dateInput}
               nullable={true}
-              onDateChange={date =>
-                setDateToFilter(date?.toISOString()?.split('T')[0])
-              }
+              onDateChange={setDateFilter}
               mode="date"
+              popup
             />
           </View>
         }
