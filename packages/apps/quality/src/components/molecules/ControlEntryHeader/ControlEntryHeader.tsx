@@ -19,7 +19,7 @@
 import React, {useEffect} from 'react';
 import {StyleSheet, View} from 'react-native';
 import {
-  isEmpty,
+  DateDisplay,
   useSelector,
   useTranslator,
   useDispatch,
@@ -31,7 +31,6 @@ import {
   ToggleButton,
   useThemeColor,
 } from '@axelor/aos-mobile-ui';
-import {DateDisplay} from '../../atoms';
 import {ControlEntry} from '../../../types';
 import {fetchControlEntryById} from '../../../features/controlEntrySlice';
 
@@ -50,7 +49,7 @@ const ControlEntryHeader = ({controlEntryId}: ControlEntryHeaderProps) => {
     dispatch((fetchControlEntryById as any)({controlEntryId: controlEntryId}));
   }, [controlEntryId, dispatch]);
 
-  if (controlEntry == null || isEmpty(controlEntry)) {
+  if (controlEntry?.id !== controlEntryId) {
     return null;
   }
 
