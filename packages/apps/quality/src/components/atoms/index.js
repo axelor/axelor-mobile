@@ -17,4 +17,3 @@
  */
 
 export {default as ControlEntryCard} from './ControlEntryCard/ControlEntryCard';
-export {default as DateDisplay} from './DateDisplay/DateDisplay';

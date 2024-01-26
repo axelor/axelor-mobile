@@ -19,10 +19,9 @@
 import React, {useEffect, useMemo, useState} from 'react';
 import {StyleSheet, TouchableOpacity, View} from 'react-native';
 import {Card, ProgressBar, Text, useThemeColor} from '@axelor/aos-mobile-ui';
-import {useTranslator, useDispatch} from '@axelor/aos-mobile-core';
+import {useTranslator, useDispatch, DateDisplay} from '@axelor/aos-mobile-core';
 import {ControlEntry} from '../../../types';
 import {searchControlEntrySampleApi} from '../../../api';
-import {DateDisplay} from '..';
 
 interface ControlEntryCardProps {
   style?: any;
@@ -46,29 +45,31 @@ const ControlEntryCard = ({
   const I18n = useTranslator();
   const dispatch = useDispatch();
 
-  const [controlEntrySampleList, setControlEntrySampleList] = useState([]);
+  const [numberSampleFilled, setNumberSampleFilled] = useState<number>(0);
 
   useEffect(() => {
-    searchControlEntrySampleApi({controlEntryId: controlEntryId}).then(
-      response => {
-        setControlEntrySampleList(response?.data?.data);
-      },
-    );
-  }, [controlEntryId, dispatch]);
+    searchControlEntrySampleApi({controlEntryId: controlEntryId})
+      .then(response => {
+        if (Array.isArray(response?.data?.data)) {
+          const controlEntrySampleList = response.data.data;
+          const total = controlEntrySampleList?.length;
+          let notControlled = 0;
 
-  const numberSampledFilled = useMemo(() => {
-    if (controlEntrySampleList != null && controlEntrySampleList?.length > 0) {
-      let total = controlEntrySampleList?.length;
-      let notControlled = 0;
-      controlEntrySampleList?.forEach(sample => {
-        if (sample?.resultSelect === ControlEntry?.sampleResult.NotControlled) {
-          notControlled++;
+          controlEntrySampleList?.forEach(sample => {
+            if (
+              sample?.resultSelect === ControlEntry?.sampleResult.NotControlled
+            ) {
+              notControlled++;
+            }
+          });
+
+          setNumberSampleFilled(100 - (notControlled / total) * 100);
+        } else {
+          setNumberSampleFilled(0);
         }
-      });
-      return 100 - (notControlled / total) * 100;
-    }
-    return 0;
-  }, [controlEntrySampleList]);
+      })
+      .catch(() => setNumberSampleFilled(0));
+  }, [controlEntryId, dispatch]);
 
   const borderStyle = useMemo(() => {
     return getStyles(
@@ -87,7 +88,7 @@ const ControlEntryCard = ({
           <Text>{`${I18n.t('Quality_Sample')} : ${sampleCount}`}</Text>
           <ProgressBar
             style={styles.progressBar}
-            value={numberSampledFilled}
+            value={numberSampleFilled}
             showPercent={false}
             height={15}
             styleTxt={styles.textProgressBar}
@@ -98,7 +99,7 @@ const ControlEntryCard = ({
   );
 };
 
-const getStyles = color =>
+const getStyles = (color: string) =>
   StyleSheet.create({
     border: {
       borderLeftWidth: 7,
