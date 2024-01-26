@@ -51,17 +51,12 @@ const ControlEntryCard = ({
     searchControlEntrySampleApi({controlEntryId: controlEntryId})
       .then(response => {
         if (Array.isArray(response?.data?.data)) {
-          const controlEntrySampleList = response.data.data;
-          const total = controlEntrySampleList?.length;
-          let notControlled = 0;
-
-          controlEntrySampleList?.forEach(sample => {
-            if (
-              sample?.resultSelect === ControlEntry?.sampleResult.NotControlled
-            ) {
-              notControlled++;
-            }
-          });
+          const controlEntrySampleList: any[] = response.data.data;
+          const total = controlEntrySampleList.length;
+          const notControlled = controlEntrySampleList.filter(
+            sample =>
+              sample.resultSelect === ControlEntry.sampleResult.NotControlled,
+          ).length;
 
           setNumberSampleFilled(100 - (notControlled / total) * 100);
         } else {
