@@ -53,6 +53,7 @@ export {
 export {
   fetchActiveTimer as fetchActiveTimerApi,
   fetchTimer as fetchTimerApi,
+  fetchTimerById as fetchTimerByIdApi,
 } from './timer-api';
 export {
   fetchDraftTimesheet as fetchDraftTimesheetApi,

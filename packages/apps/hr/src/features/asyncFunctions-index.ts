@@ -55,6 +55,7 @@ export {
 export {
   fetchActiveTimer,
   fetchTimer,
+  fetchTimerById,
   fetchTimerDateInterval,
 } from './timerSlice';
 export {fetchTimesheetLine} from './timesheetLineSlice';

@@ -24,6 +24,7 @@ import {
 import {
   fetchActiveTimer as _fetchActiveTimer,
   fetchTimer as _fetchTimer,
+  fetchTimerById as _fetchTimerById,
 } from '../api/timer-api';
 
 export const fetchTimer = createAsyncThunk(
@@ -52,6 +53,19 @@ export const fetchTimerDateInterval = createAsyncThunk(
   },
 );
 
+export const fetchTimerById = createAsyncThunk(
+  'hr_timer/fetchTimerById',
+  async function (data = {}, {getState}) {
+    return handlerApiCall({
+      fetchFunction: _fetchTimerById,
+      data,
+      action: 'Hr_SliceAction_FetchTimerById',
+      getState,
+      responseOptions: {isArrayResponse: false},
+    });
+  },
+);
+
 export const fetchActiveTimer = createAsyncThunk(
   'hr_timer/fetchActiveTimer',
   async function (data, {getState}) {
@@ -76,6 +90,9 @@ const initialState = {
   isListEndTimerDateInterval: false,
   timerDateIntervalList: [],
 
+  loadingOneTimer: true,
+  timer: {},
+
   loadingActiveTimer: true,
   activeTimer: {},
 };
@@ -95,6 +112,13 @@ const timerSlice = createSlice({
       moreLoading: 'moreLoadingTimerDateInterval',
       isListEnd: 'isListEndTimerDateInterval',
       list: 'timerDateIntervalList',
+    });
+    builder.addCase(fetchTimerById.pending, state => {
+      state.loadingOneTimer = true;
+    });
+    builder.addCase(fetchTimerById.fulfilled, (state, action) => {
+      state.loadingOneTimer = false;
+      state.timer = action.payload;
     });
     builder.addCase(fetchActiveTimer.pending, state => {
       state.loadingActiveTimer = true;
