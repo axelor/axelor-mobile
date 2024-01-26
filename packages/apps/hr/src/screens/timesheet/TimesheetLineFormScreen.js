@@ -16,13 +16,29 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import React from 'react';
+import React, {useMemo} from 'react';
 import {FormView} from '@axelor/aos-mobile-core';
 
-const TimesheetLineFormScreen = ({}) => {
-  const defaultValue = {
-    timesheetDate: new Date().toISOString().split('T')[0],
-  };
+const TimesheetLineFormScreen = ({route}) => {
+  const {timesheetId, timesheetLine} = route?.params;
+
+  const defaultValue = useMemo(() => {
+    if (timesheetLine != null) {
+      return {
+        project: timesheetLine.project,
+        projectTask: timesheetLine.projectTask,
+        manufOrder: timesheetLine.manufOrder,
+        operationOrder: timesheetLine.operationOrder,
+        date: timesheetLine.date,
+        duration: timesheetLine.duration,
+        comments: timesheetLine.comments,
+      };
+    }
+
+    return {
+      date: new Date().toISOString().split('T')[0],
+    };
+  }, [timesheetLine]);
 
   return (
     <FormView
@@ -33,6 +49,17 @@ const TimesheetLineFormScreen = ({}) => {
           type: 'create',
           needValidation: true,
           needRequiredFields: true,
+          hideIf: () => timesheetId == null,
+          customAction: ({objectState}) => {
+            console.log('Form data:', objectState);
+          },
+        },
+        {
+          key: 'update-timesheetLine',
+          type: 'update',
+          needValidation: true,
+          needRequiredFields: true,
+          hideIf: () => timesheetLine == null,
           customAction: ({objectState}) => {
             console.log('Form data:', objectState);
           },
