@@ -33,7 +33,7 @@ import {fetchTimesheetById} from '../../features/timesheetSlice';
 import {fetchTimesheetLine} from '../../features/timesheetLineSlice';
 import {Time, Timesheet} from '../../types';
 
-const TimesheetDetailsScreen = ({route}) => {
+const TimesheetDetailsScreen = ({navigation, route}) => {
   const {timesheetId} = route.params;
   const I18n = useTranslator();
   const dispatch = useDispatch();
@@ -88,6 +88,11 @@ const TimesheetDetailsScreen = ({route}) => {
             duration={item.duration}
             durationUnit={timesheet.timeLoggingPreferenceSelect}
             isActions={_statusSelect === Timesheet.statusSelect.Draft}
+            onEdit={() =>
+              navigation.navigate('TimesheetLineFormScreen', {
+                timesheetLine: item,
+              })
+            }
           />
         )}
         fetchData={fetchTimesheetLineAPI}
