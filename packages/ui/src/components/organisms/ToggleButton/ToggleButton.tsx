@@ -40,10 +40,18 @@ const ToggleButton = ({
   const Colors = useThemeColor();
 
   const [isSelected, setIsSelected] = useState(isActive);
+  const [shouldTriggerPress, setShouldTriggerPress] = useState(false);
 
   useEffect(() => {
     setIsSelected(isActive);
   }, [isActive]);
+
+  useEffect(() => {
+    if (shouldTriggerPress) {
+      onPress(isSelected);
+      setShouldTriggerPress(false);
+    }
+  }, [shouldTriggerPress, isSelected, onPress]);
 
   const _activeColor = useMemo(() => {
     return activeColor != null ? activeColor : Colors.primaryColor;
@@ -54,12 +62,9 @@ const ToggleButton = ({
   }, [Colors, inactiveColor]);
 
   const handlePress = useCallback(() => {
-    setIsSelected(current => {
-      const newValue = !current;
-      onPress(newValue);
-      return newValue;
-    });
-  }, [onPress]);
+    setIsSelected(current => !current);
+    setShouldTriggerPress(true);
+  }, []);
 
   const buttonConfigMemo = useMemo(() => {
     let _buttonColor: Color = isSelected ? _activeColor : _inactiveColor;
