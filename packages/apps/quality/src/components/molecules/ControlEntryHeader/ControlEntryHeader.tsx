@@ -98,7 +98,6 @@ const styles = StyleSheet.create({
   row: {
     justifyContent: 'space-between',
     flexDirection: 'row',
-    marginBottom: 2,
     alignItems: 'center',
   },
   badge: {
