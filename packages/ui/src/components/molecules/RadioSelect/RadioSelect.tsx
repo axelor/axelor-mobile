@@ -28,6 +28,7 @@ interface RadioItem {
 
 const RadioSelect = ({
   style,
+  itemStyle,
   items,
   question,
   radioSize,
@@ -36,6 +37,7 @@ const RadioSelect = ({
   defaultValue,
 }: {
   style?: any;
+  itemStyle?: any;
   items: RadioItem[];
   question?: string;
   radioSize?: number;
@@ -59,7 +61,8 @@ const RadioSelect = ({
           {question}
         </Text>
       )}
-      <View style={[{flexDirection: direction}, styles.itemsContainer]}>
+      <View
+        style={[{flexDirection: direction}, styles.itemsContainer, itemStyle]}>
         {items.map(item => (
           <RadioButton
             key={item.id}
