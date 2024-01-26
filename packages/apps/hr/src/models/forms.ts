@@ -283,7 +283,7 @@ export const hr_formsRegister: FormConfigs = {
           !storeState.appConfig.mobileSettings
             .isTimesheetProjectInvoicingEnabled,
       },
-      timesheetDate: {
+      date: {
         titleKey: 'Hr_Date',
         type: 'date',
         widget: 'date',
