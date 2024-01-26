@@ -21,7 +21,7 @@ import {
   generateInifiniteScrollCases,
   handlerApiCall,
 } from '@axelor/aos-mobile-core';
-import {searchControlEntrySample as _searchControlEntrySample} from '../api/controlEntrySample-api';
+import {searchControlEntrySample as _searchControlEntrySample} from '../api/control-entry-sample-api';
 
 export const searchControlEntrySample = createAsyncThunk(
   'controlEntry/searchControlEntrySample',

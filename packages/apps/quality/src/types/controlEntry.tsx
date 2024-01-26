@@ -79,7 +79,7 @@ class ControlEntry {
       case this.sampleResult.Compliant:
         return Colors.successColor;
       case this.sampleResult.NotCompliant:
-        return Colors.importantColor;
+        return Colors.errorColor;
       case this.sampleResult.NotControlled:
         return Colors.secondaryColor;
       default:
