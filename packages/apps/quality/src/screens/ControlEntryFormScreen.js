@@ -16,8 +16,22 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-export {default as ControlEntryDetailsButtons} from './ControlEntryDetailsButtons/ControlEntryDetailsButtons';
-export {default as ControlEntryDetailsHeader} from './ControlEntryDetailsHeader/ControlEntryDetailsHeader';
-export {default as ControlEntryFormButtons} from './ControlEntryFormButtons/ControlEntryFormButtons';
-export {default as ControlEntryFormHeader} from './ControlEntryFormHeader/ControlEntryFormHeader';
-export {default as ControlEntryHeader} from './ControlEntryHeader/ControlEntryHeader';
+import React from 'react';
+import {HeaderContainer, Screen} from '@axelor/aos-mobile-ui';
+import {ControlEntryFormButtons, ControlEntryFormHeader} from '../components';
+
+const ControlEntryFormScreen = ({route}) => {
+  const {controlEntryId} = route.params;
+
+  return (
+    <Screen removeSpaceOnTop fixedItems={<ControlEntryFormButtons />}>
+      <HeaderContainer
+        expandableFilter={false}
+        fixedItems={<ControlEntryFormHeader controlEntryId={controlEntryId} />}
+        ixed
+      />
+    </Screen>
+  );
+};
+
+export default ControlEntryFormScreen;

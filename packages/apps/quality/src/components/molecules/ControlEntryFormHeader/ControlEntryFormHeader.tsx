@@ -24,15 +24,12 @@ import {
   useTranslator,
   useDispatch,
   DateDisplay,
-  useNavigation,
 } from '@axelor/aos-mobile-core';
 import {
-  Alert,
   Badge,
+  Icon,
   ProgressBar,
-  RadioSelect,
   Text,
-  ToggleButton,
   useThemeColor,
 } from '@axelor/aos-mobile-ui';
 import {ControlEntry} from '../../../types';
@@ -43,15 +40,13 @@ interface ControlEntryHeaderProps {
   controlEntryId: number;
 }
 
-const ControlEntryHeader = ({controlEntryId}: ControlEntryHeaderProps) => {
-  const navigation = useNavigation();
+const ControlEntryFormHeader = ({controlEntryId}: ControlEntryHeaderProps) => {
   const I18n = useTranslator();
   const Colors = useThemeColor();
   const dispatch = useDispatch();
 
   const {controlEntry} = useSelector((state: any) => state.controlEntry);
 
-  const [showAlert, setShowAlert] = useState(false);
   const [numberSampleFilled, setNumberSampleFilled] = useState<number>(0);
 
   useEffect(() => {
@@ -96,56 +91,22 @@ const ControlEntryHeader = ({controlEntryId}: ControlEntryHeaderProps) => {
         }`}</Text>
         <DateDisplay date={controlEntry.entryDateTime} />
       </View>
-      <Text>{`${I18n.t('Quality_ControlPlan')} : ${
-        controlEntry.controlPlan?.name
-      }`}</Text>
-      <View style={styles.progressHeader}>
-        <ProgressBar value={numberSampleFilled} style={styles.progressBar} />
-        <ToggleButton
-          activeColor={Colors.successColor}
-          isActive={showAlert}
-          onPress={() => setShowAlert(true)}
-          buttonConfig={{
-            iconName: 'clipboard2-fill',
-            width: '10%',
-            style: styles.toggleButton,
-          }}
+      <View style={styles.progressContainer}>
+        <Icon name="palette2" />
+        <ProgressBar
+          value={numberSampleFilled}
+          style={[styles.progressBar, styles.margin]}
+          showPercent={false}
         />
       </View>
-      <Alert
-        visible={showAlert}
-        cancelButtonConfig={{
-          hide: false,
-          width: '15%',
-          styleTxt: {display: 'none'},
-          onPress: () => {
-            setShowAlert(false);
-          },
-        }}
-        confirmButtonConfig={{
-          hide: false,
-          width: '15%',
-          styleTxt: {display: 'none'},
-          onPress: () => {
-            setShowAlert(false);
-            navigation.navigate('ControlEntryFormScreen', {
-              controlEntryId: controlEntryId,
-            });
-          },
-        }}>
-        <RadioSelect
-          direction="column"
-          question="Filling method"
-          itemStyle={styles.radioSelect}
-          items={[
-            {id: '1', title: 'By Sample'},
-            {id: '2', title: 'By Characteristic'},
-          ]}
-          onChange={e => {
-            console.log(e);
-          }}
+      <View style={styles.progressContainer}>
+        <Icon name="palette2" />
+        <ProgressBar
+          value={numberSampleFilled}
+          showPercent={false}
+          style={styles.progressBar}
         />
-      </Alert>
+      </View>
     </View>
   );
 };
@@ -159,21 +120,20 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     marginVertical: 2,
   },
-  progressHeader: {
-    justifyContent: 'space-between',
+  progressContainer: {
     flexDirection: 'row',
-    marginTop: '3%',
+    justifyContent: 'space-between',
   },
   progressBar: {
-    width: '85%',
+    width: '90%',
+  },
+  margin: {
+    marginVertical: '2%',
   },
   toggleButton: {
     height: 40,
     top: '-20%',
   },
-  radioSelect: {
-    height: 150,
-  },
 });
 
-export default ControlEntryHeader;
+export default ControlEntryFormHeader;
