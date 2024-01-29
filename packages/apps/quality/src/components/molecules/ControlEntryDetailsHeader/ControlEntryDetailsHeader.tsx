@@ -89,13 +89,13 @@ const ControlEntryDetailsHeader = ({
         <ProgressBar
           value={numberSampleFilled}
           style={styles.progressBar}
-          height={37}
+          height={38}
         />
         <Button
           isNeutralBackground={true}
           iconName="clipboard2-fill"
           width="10%"
-          style={styles.toggleButton}
+          style={styles.button}
         />
       </View>
     </View>
@@ -117,7 +117,7 @@ const styles = StyleSheet.create({
   progressBar: {
     width: '88%',
   },
-  toggleButton: {
+  button: {
     height: 40,
     borderWidth: 1,
   },

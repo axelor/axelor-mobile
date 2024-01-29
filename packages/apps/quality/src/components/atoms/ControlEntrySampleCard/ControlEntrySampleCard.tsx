@@ -100,12 +100,6 @@ const styles = StyleSheet.create({
     marginVertical: 5,
     justifyContent: 'space-between',
   },
-  childrenContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    marginVertical: 5,
-    justifyContent: 'space-between',
-  },
   progressBar: {
     borderRadius: 20,
     width: '40%',

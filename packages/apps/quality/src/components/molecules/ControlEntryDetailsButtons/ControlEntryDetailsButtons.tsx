@@ -18,18 +18,13 @@
 
 import React from 'react';
 import {useTranslator} from '@axelor/aos-mobile-core';
-import {Button, useThemeColor} from '@axelor/aos-mobile-ui';
+import {Button} from '@axelor/aos-mobile-ui';
 
 const ControlEntryDetailsButtons = () => {
-  const Colors = useThemeColor();
   const I18n = useTranslator();
 
   return (
-    <Button
-      title={I18n.t('Quality_MarkAsCompleted')}
-      iconName="check-lg"
-      color={Colors.successColor}
-    />
+    <Button title={I18n.t('Quality_MarkAsCompleted')} iconName="check-lg" />
   );
 };
 
