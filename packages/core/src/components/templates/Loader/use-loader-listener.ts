@@ -19,59 +19,116 @@
 import {useCallback, useEffect, useMemo, useState} from 'react';
 import {useTranslator} from '../../../i18n';
 import {showToastMessage} from '../../../utils/show-toast-message';
+import {useLoader} from './LoaderContext';
+
+export type LoaderStatus = 'error' | 'ok' | undefined;
 
 interface LoaderListenerProps {
   process: () => Promise<any>;
+  onFinish?: (status: LoaderStatus) => void;
   onSuccess?: () => void;
   onError?: () => void;
+  disabled?: boolean;
 }
 
 const useLoaderListner = ({
   process,
+  onFinish = () => {},
   onSuccess = () => {},
   onError = () => {},
+  disabled = false,
 }: LoaderListenerProps) => {
   const I18n = useTranslator();
 
   const [loading, setLoading] = useState(false);
   const [start, setStart] = useState(false);
 
-  const executeProcess = useCallback(async () => {
-    try {
-      setStart(false);
-      setLoading(true);
+  const {getCurrentNotifyMe, setNotifyMe, setShowPopup} = useLoader();
 
+  const onFinishCallBack = useCallback(
+    (status: LoaderStatus, response: any) => {
+      const notifyMe = getCurrentNotifyMe();
+
+      setShowPopup(false);
+      onFinish(status);
+
+      console.log('notifyMe######', notifyMe);
+
+      if (!notifyMe) {
+        status === 'ok' ? onSuccess() : onError();
+        return;
+      }
+
+      if (status === 'ok') {
+        showToastMessage({
+          type: 'success',
+          position: 'top',
+          topOffset: 30,
+          text1: I18n.t('Base_Success'),
+          text2: response || I18n.t('Base_Loader_ProccessSuccessMessage'),
+          onPress: () => !disabled && onSuccess(),
+        });
+      } else {
+        showToastMessage({
+          type: 'error',
+          position: 'top',
+          topOffset: 30,
+          text1: I18n.t('Base_Error'),
+          text2: response || I18n.t('Base_Loader_ProccessErrorMessage'),
+          onPress: () => !disabled && onError(),
+        });
+      }
+    },
+    [
+      disabled,
+      getCurrentNotifyMe,
+      setShowPopup,
+      onSuccess,
+      onError,
+      onFinish,
+      I18n,
+    ],
+  );
+
+  const executeProcess = useCallback(async () => {
+    setStart(false);
+    setLoading(true);
+
+    try {
       const response = await process();
 
-      showToastMessage({
-        type: 'success',
-        position: 'top',
-        topOffset: 30,
-        text1: I18n.t('Base_Success'),
-        text2: response || I18n.t('Base_Loader_ProccessSuccessMessage'),
-        onPress: onSuccess,
-      });
-    } catch (error) {
-      showToastMessage({
-        type: 'error',
-        position: 'top',
-        topOffset: 30,
-        text1: I18n.t('Base_Error'),
-        text2: error || I18n.t('Base_Loader_ProccessErrorMessage'),
-        onPress: onError,
-      });
-    } finally {
       setLoading(false);
+      onFinishCallBack('ok', response);
+    } catch (error) {
+      setLoading(false);
+      onFinishCallBack('error', error);
     }
-  }, [process, onSuccess, onError, I18n]);
+  }, [process, onFinishCallBack]);
+
+  const processCallBack = useCallback(
+    (_start: boolean) => {
+      if (!_start) {
+        return;
+      }
+
+      executeProcess();
+    },
+    [executeProcess],
+  );
+
+  const handleListener = useCallback(() => {
+    setNotifyMe(false);
+    setStart(true);
+  }, [setNotifyMe]);
 
   useEffect(() => {
-    if (start && !loading) {
-      executeProcess();
-    }
-  }, [start, loading, executeProcess]);
+    processCallBack(start);
+  }, [start, processCallBack]);
 
-  return useMemo(() => ({loading, listener: () => setStart(true)}), [loading]);
+  return useMemo(
+    () => ({loading, listener: handleListener}),
+    [loading, handleListener],
+  );
 };
 
 export default useLoaderListner;

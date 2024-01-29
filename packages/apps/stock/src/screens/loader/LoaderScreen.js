@@ -34,13 +34,15 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import React from 'react';
+import React, {useState} from 'react';
 import {View} from 'react-native';
-import {Screen} from '@axelor/aos-mobile-ui';
+import {Button, Screen} from '@axelor/aos-mobile-ui';
 import {LoaderPopup} from '@axelor/aos-mobile-core';
 
 // Screen for test Loader functionnalities
 const LoaderScreen = () => {
+  const [runProccess, setRunProccess] = useState(false);
+
   const process = () =>
     new Promise(resolve => {
       setTimeout(() => {
@@ -48,19 +50,31 @@ const LoaderScreen = () => {
       }, 10000);
     });
 
-  const handleCustomAction = () => {
-    console.log('Custom action executed!');
+  const handleSuccessAction = () => {
+    setRunProccess(false);
+    console.log('Success action executed!');
+  };
+
+  const handleErrorAction = () => {
+    setRunProccess(false);
+    console.log('Error action executed!');
   };
 
   return (
     <Screen>
       <View>
+        <Button
+          title="Run process"
+          onPress={() => setRunProccess(true)}
+          disabled={runProccess}
+        />
         <LoaderPopup
           process={process}
+          runProccess={runProccess}
           timeout={5000}
-          onSuccess={handleCustomAction}
-          onError={() => console.warn('An error has occurred!')}
-          disabled={true}
+          onSuccess={handleSuccessAction}
+          onError={handleErrorAction}
+          disabled={false}
         />
       </View>
     </Screen>
