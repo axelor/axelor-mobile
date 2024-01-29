@@ -17,7 +17,7 @@
  */
 
 import React, {useEffect, useMemo, useState} from 'react';
-import {StyleSheet, TouchableOpacity, View} from 'react-native';
+import {StyleSheet, TouchableOpacity} from 'react-native';
 import {Card, ProgressBar, Text, useThemeColor} from '@axelor/aos-mobile-ui';
 import {ControlEntry} from '../../../types';
 import {searchControlEntrySampleLineApi} from '../../../api';
@@ -38,26 +38,7 @@ const ControlEntrySampleCard = ({
 }: ControlEntrySampleCardProps) => {
   const Colors = useThemeColor();
 
-  const [controlEntrySampleLineList, setControlEntrySampleLineList] = useState(
-    [],
-  );
-
-  const numberSampledFilled = useMemo(() => {
-    if (
-      controlEntrySampleLineList != null &&
-      controlEntrySampleLineList?.length > 0
-    ) {
-      let total = controlEntrySampleLineList?.length;
-      let notControlled = 0;
-      controlEntrySampleLineList?.forEach(sample => {
-        if (sample?.resultSelect === ControlEntry?.sampleResult.NotControlled) {
-          notControlled++;
-        }
-      });
-      return 100 - (notControlled / total) * 100;
-    }
-    return 0;
-  }, [controlEntrySampleLineList]);
+  const [numberSampleFilled, setNumberSampleFilled] = useState<number>(0);
 
   const borderStyle = useMemo(() => {
     return getStyles(
@@ -66,32 +47,41 @@ const ControlEntrySampleCard = ({
   }, [Colors, resultSelect]);
 
   useEffect(() => {
-    searchControlEntrySampleLineApi({controlEntrySampleId: controlPlanId}).then(
-      response => {
-        setControlEntrySampleLineList(response?.data?.data);
-      },
-    );
+    searchControlEntrySampleLineApi({controlEntrySampleId: controlPlanId})
+      .then(response => {
+        if (Array.isArray(response?.data?.data)) {
+          const controlEntrySampleLineList: any[] = response.data.data;
+          const total = controlEntrySampleLineList.length;
+          const notControlled = controlEntrySampleLineList.filter(
+            sample =>
+              sample.resultSelect === ControlEntry.sampleResult.NotControlled,
+          ).length;
+
+          setNumberSampleFilled(100 - (notControlled / total) * 100);
+        } else {
+          setNumberSampleFilled(0);
+        }
+      })
+      .catch(() => setNumberSampleFilled(0));
   }, [controlPlanId]);
 
   return (
     <TouchableOpacity onPress={onPress} activeOpacity={0.9}>
       <Card style={[styles.container, borderStyle, style]}>
-        <View style={styles.childrenContainer}>
-          <Text>{samplefullName}</Text>
-          <ProgressBar
-            style={styles.progressBar}
-            value={numberSampledFilled}
-            showPercent={false}
-            height={15}
-            styleTxt={styles.textProgressBar}
-          />
-        </View>
+        <Text>{samplefullName}</Text>
+        <ProgressBar
+          style={styles.progressBar}
+          value={numberSampleFilled}
+          showPercent={false}
+          height={15}
+          styleTxt={styles.textProgressBar}
+        />
       </Card>
     </TouchableOpacity>
   );
 };
 
-const getStyles = color =>
+const getStyles = (color: string) =>
   StyleSheet.create({
     border: {
       borderLeftWidth: 7,
@@ -102,10 +92,13 @@ const getStyles = color =>
 const styles = StyleSheet.create({
   container: {
     marginHorizontal: 12,
-    marginVertical: 4,
     paddingHorizontal: 15,
     paddingRight: 15,
     paddingVertical: 10,
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginVertical: 5,
+    justifyContent: 'space-between',
   },
   childrenContainer: {
     flexDirection: 'row',

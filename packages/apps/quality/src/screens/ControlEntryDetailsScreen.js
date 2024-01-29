@@ -16,7 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import React, {useCallback} from 'react';
+import React, {useCallback, useEffect} from 'react';
 import {
   Button,
   HeaderContainer,
@@ -27,6 +27,7 @@ import {
 import {useDispatch, useSelector, useTranslator} from '@axelor/aos-mobile-core';
 import {ControlEntryHeader, ControlEntrySampleCard} from '../components';
 import {searchControlEntrySample} from '../features/controlEntrySampleSlice';
+import {fetchControlEntryById} from '../features/controlEntrySlice';
 
 const ControlEntryDetailsScreen = ({route}) => {
   const {controlEntryId} = route.params;
@@ -41,6 +42,7 @@ const ControlEntryDetailsScreen = ({route}) => {
     moreLoading,
     isListEnd,
   } = useSelector(state => state.controlEntrySample);
+  const {controlEntry} = useSelector(state => state.controlEntry);
 
   const fetchControlEntryAPI = useCallback(
     (page = 0) => {
@@ -54,6 +56,14 @@ const ControlEntryDetailsScreen = ({route}) => {
     [dispatch, controlEntryId],
   );
 
+  useEffect(() => {
+    dispatch(fetchControlEntryById({controlEntryId: controlEntryId}));
+  }, [controlEntryId, dispatch]);
+
+  if (controlEntry?.id !== controlEntryId) {
+    return null;
+  }
+
   return (
     <Screen
       removeSpaceOnTop
@@ -66,7 +76,15 @@ const ControlEntryDetailsScreen = ({route}) => {
       }>
       <HeaderContainer
         expandableFilter={false}
-        fixedItems={<ControlEntryHeader controlEntryId={controlEntryId} />}
+        fixedItems={
+          <ControlEntryHeader
+            name={controlEntry.name}
+            statusSelect={controlEntry.statusSelect}
+            entryDateTime={controlEntry.entryDateTime}
+            sampleCount={controlEntry.sampleCount}
+            controlPlanName={controlEntry.controlPlan?.name}
+          />
+        }
       />
       <ScrollList
         loadingList={loadingControlEntrySampleList}

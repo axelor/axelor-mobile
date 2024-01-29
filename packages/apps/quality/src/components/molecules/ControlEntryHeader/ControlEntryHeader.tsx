@@ -16,14 +16,9 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import React, {useEffect} from 'react';
+import React from 'react';
 import {StyleSheet, View} from 'react-native';
-import {
-  DateDisplay,
-  useSelector,
-  useTranslator,
-  useDispatch,
-} from '@axelor/aos-mobile-core';
+import {DateDisplay, useTranslator} from '@axelor/aos-mobile-core';
 import {
   Badge,
   ProgressBar,
@@ -32,49 +27,43 @@ import {
   useThemeColor,
 } from '@axelor/aos-mobile-ui';
 import {ControlEntry} from '../../../types';
-import {fetchControlEntryById} from '../../../features/controlEntrySlice';
 
 interface ControlEntryHeaderProps {
-  controlEntryId: number;
+  name: string;
+  statusSelect: number;
+  sampleCount: number;
+  controlPlanName: string;
+  entryDateTime: string;
 }
 
-const ControlEntryHeader = ({controlEntryId}: ControlEntryHeaderProps) => {
+const ControlEntryHeader = ({
+  name,
+  statusSelect,
+  sampleCount,
+  controlPlanName,
+  entryDateTime,
+}: ControlEntryHeaderProps) => {
   const I18n = useTranslator();
   const Colors = useThemeColor();
-  const dispatch = useDispatch();
-
-  const {controlEntry} = useSelector((state: any) => state.controlEntry);
-
-  useEffect(() => {
-    dispatch((fetchControlEntryById as any)({controlEntryId: controlEntryId}));
-  }, [controlEntryId, dispatch]);
-
-  if (controlEntry?.id !== controlEntryId) {
-    return null;
-  }
 
   return (
     <View style={styles.container}>
       <View style={styles.row}>
-        <Text writingType="title">{controlEntry.name}</Text>
+        <Text writingType="title">{name}</Text>
         <Badge
-          color={ControlEntry.getStatusColor(controlEntry.statusSelect, Colors)}
-          title={ControlEntry.getStatus(controlEntry.statusSelect, I18n)}
+          color={ControlEntry.getStatusColor(statusSelect, Colors)}
+          title={ControlEntry.getStatus(statusSelect, I18n)}
           style={styles.badge}
         />
       </View>
       <View style={styles.row}>
-        <Text>{`${I18n.t('Quality_Sample')} : ${
-          controlEntry.sampleCount
-        }`}</Text>
-        <DateDisplay date={controlEntry.entryDateTime} />
+        <Text>{`${I18n.t('Quality_Sample')} : ${sampleCount}`}</Text>
+        <DateDisplay date={entryDateTime} />
       </View>
-      <Text>{`${I18n.t('Quality_ControlPlan')} : ${
-        controlEntry.controlPlan?.name
-      }`}</Text>
+      <Text>{`${I18n.t('Quality_ControlPlan')} : ${controlPlanName}`}</Text>
       <View style={styles.row}>
         <ProgressBar
-          value={controlEntry.sampleCount}
+          value={sampleCount}
           style={styles.progressBar}
           height={37}
         />
