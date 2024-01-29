@@ -17,15 +17,13 @@
  */
 
 import React, {useCallback, useEffect} from 'react';
-import {
-  Button,
-  HeaderContainer,
-  Screen,
-  ScrollList,
-  useThemeColor,
-} from '@axelor/aos-mobile-ui';
+import {HeaderContainer, Screen, ScrollList} from '@axelor/aos-mobile-ui';
 import {useDispatch, useSelector, useTranslator} from '@axelor/aos-mobile-core';
-import {ControlEntryHeader, ControlEntrySampleCard} from '../components';
+import {
+  ControlEntryDetailsButtons,
+  ControlEntryDetailsHeader,
+  ControlEntrySampleCard,
+} from '../components';
 import {searchControlEntrySample} from '../features/controlEntrySampleSlice';
 import {fetchControlEntryById} from '../features/controlEntrySlice';
 
@@ -34,7 +32,6 @@ const ControlEntryDetailsScreen = ({route}) => {
 
   const dispatch = useDispatch();
   const I18n = useTranslator();
-  const Colors = useThemeColor();
 
   const {
     controlEntrySampleList,
@@ -65,19 +62,12 @@ const ControlEntryDetailsScreen = ({route}) => {
   }
 
   return (
-    <Screen
-      removeSpaceOnTop
-      fixedItems={
-        <Button
-          title={I18n.t('Quality_MarkAsCompleted')}
-          iconName="check-lg"
-          color={Colors.successColor}
-        />
-      }>
+    <Screen removeSpaceOnTop fixedItems={<ControlEntryDetailsButtons />}>
       <HeaderContainer
         expandableFilter={false}
         fixedItems={
-          <ControlEntryHeader
+          <ControlEntryDetailsHeader
+            controlEntryId={controlEntry.id}
             name={controlEntry.name}
             statusSelect={controlEntry.statusSelect}
             entryDateTime={controlEntry.entryDateTime}

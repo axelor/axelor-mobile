@@ -16,5 +16,21 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-export {default as ControlEntryDetailsButtons} from './ControlEntryDetailsButtons/ControlEntryDetailsButtons';
-export {default as ControlEntryDetailsHeader} from './ControlEntryDetailsHeader/ControlEntryDetailsHeader';
+import React from 'react';
+import {useTranslator} from '@axelor/aos-mobile-core';
+import {Button, useThemeColor} from '@axelor/aos-mobile-ui';
+
+const ControlEntryDetailsButtons = () => {
+  const Colors = useThemeColor();
+  const I18n = useTranslator();
+
+  return (
+    <Button
+      title={I18n.t('Quality_MarkAsCompleted')}
+      iconName="check-lg"
+      color={Colors.successColor}
+    />
+  );
+};
+
+export default ControlEntryDetailsButtons;

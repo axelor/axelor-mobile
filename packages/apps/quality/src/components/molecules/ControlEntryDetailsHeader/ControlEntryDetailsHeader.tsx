@@ -16,19 +16,21 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import React from 'react';
+import React, {useEffect, useState} from 'react';
 import {StyleSheet, View} from 'react-native';
 import {DateDisplay, useTranslator} from '@axelor/aos-mobile-core';
 import {
   Badge,
+  Button,
   ProgressBar,
   Text,
-  ToggleButton,
   useThemeColor,
 } from '@axelor/aos-mobile-ui';
 import {ControlEntry} from '../../../types';
+import {searchControlEntrySampleApi} from '../../../api';
 
 interface ControlEntryHeaderProps {
+  controlEntryId: number;
   name: string;
   statusSelect: number;
   sampleCount: number;
@@ -36,7 +38,8 @@ interface ControlEntryHeaderProps {
   entryDateTime: string;
 }
 
-const ControlEntryHeader = ({
+const ControlEntryDetailsHeader = ({
+  controlEntryId,
   name,
   statusSelect,
   sampleCount,
@@ -45,6 +48,27 @@ const ControlEntryHeader = ({
 }: ControlEntryHeaderProps) => {
   const I18n = useTranslator();
   const Colors = useThemeColor();
+
+  const [numberSampleFilled, setNumberSampleFilled] = useState<number>(0);
+
+  useEffect(() => {
+    searchControlEntrySampleApi({controlEntryId: controlEntryId})
+      .then(response => {
+        if (Array.isArray(response?.data?.data)) {
+          const controlEntrySampleList: any[] = response.data.data;
+          const total = controlEntrySampleList.length;
+          const notControlled = controlEntrySampleList.filter(
+            sample =>
+              sample.resultSelect === ControlEntry.sampleResult.NotControlled,
+          ).length;
+
+          setNumberSampleFilled(100 - (notControlled / total) * 100);
+        } else {
+          setNumberSampleFilled(0);
+        }
+      })
+      .catch(() => setNumberSampleFilled(0));
+  }, [controlEntryId]);
 
   return (
     <View style={styles.container}>
@@ -63,17 +87,15 @@ const ControlEntryHeader = ({
       <Text>{`${I18n.t('Quality_ControlPlan')} : ${controlPlanName}`}</Text>
       <View style={styles.row}>
         <ProgressBar
-          value={sampleCount}
+          value={numberSampleFilled}
           style={styles.progressBar}
           height={37}
         />
-        <ToggleButton
-          activeColor={Colors.successColor}
-          buttonConfig={{
-            iconName: 'clipboard2-fill',
-            width: '10%',
-            style: styles.toggleButton,
-          }}
+        <Button
+          isNeutralBackground={true}
+          iconName="clipboard2-fill"
+          width="10%"
+          style={styles.toggleButton}
         />
       </View>
     </View>
@@ -93,11 +115,12 @@ const styles = StyleSheet.create({
     margin: 0,
   },
   progressBar: {
-    width: '85%',
+    width: '88%',
   },
   toggleButton: {
     height: 40,
+    borderWidth: 1,
   },
 });
 
-export default ControlEntryHeader;
+export default ControlEntryDetailsHeader;
