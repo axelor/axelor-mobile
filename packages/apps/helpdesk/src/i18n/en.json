@@ -40,6 +40,7 @@
   "Helpdesk_DeadlineDate": "Deadline",
   "Helpdesk_SliceAction_FetchMyTicket": "fetch my tickets",
   "Helpdesk_SliceAction_FetchTicketType": "fetch ticket types",
+  "Helpdesk_SliceAction_FetchTicketStatus": "fetch ticket status",
   "Helpdesk_SliceAction_FetchMyTeamTicket": "fetch my team tickets",
   "Helpdesk_SliceAction_FetchTicketById": "fetch ticket by id",
   "Helpdesk_SliceAction_FetchTimerById": "fetch timer by id",
@@ -49,6 +50,7 @@
   "Helpdesk_SliceAction_FetchCustomerById": "fetch customer by id",
   "Helpdesk_SliceAction_FetchProjects": "fetch projects",
   "Helpdesk_SliceAction_SearchTicketType": "search ticket types",
+  "Helpdesk_SliceAction_SearchTicketStatus": "search ticket status",
   "Helpdesk_SliceAction_UpdateTicket": "update ticket",
   "Helpdesk_SliceAction_CreateTicket": "create ticket",
   "Helpdesk_SliceAction_FetchCustomerContact": "fetch customer contact"

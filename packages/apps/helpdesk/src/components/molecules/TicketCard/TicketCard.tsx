@@ -40,7 +40,8 @@ interface TicketCardProps {
   responsibleUser: string;
   assignedToUser: string;
   prioritySelect: number;
-  statusSelect: number;
+  allTicketStatus: any[];
+  ticketStatus: any;
   allTicketType?: any;
   ticketType?: any;
   onPress: () => void;
@@ -55,13 +56,21 @@ const TicketCard = ({
   responsibleUser,
   assignedToUser,
   prioritySelect,
-  statusSelect,
+  allTicketStatus,
+  ticketStatus,
   allTicketType,
   ticketType,
   onPress,
 }: TicketCardProps) => {
   const Colors = useThemeColor();
   const I18n = useTranslator();
+
+  const colorStatus = useMemo(() => {
+    const colorIndex = allTicketStatus?.findIndex(
+      status => status.id === ticketStatus?.id,
+    );
+    return Ticket.getStatusColor(colorIndex, Colors);
+  }, [Colors, allTicketStatus, ticketStatus?.id]);
 
   const colorType = useMemo(() => {
     const colorIndex = allTicketType?.findIndex(
@@ -81,8 +90,8 @@ const TicketCard = ({
       sideBadges={{
         items: [
           {
-            displayText: Ticket.getStatus(statusSelect, I18n),
-            color: Ticket.getStatusColor(statusSelect, Colors),
+            displayText: ticketStatus?.name,
+            color: colorStatus,
           },
           {
             displayText: ticketType?.name,

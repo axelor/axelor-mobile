@@ -24,9 +24,11 @@ import {
 } from '@axelor/aos-mobile-core';
 import {
   getTicket,
+  getTicketStatus,
   getTicketType,
   searchTickets,
   updateStatusTicket,
+  searchTicketStatus as _searchTicketStatus,
   searchTicketType as _searchTicketType,
   updateTicket as _updateTicket,
   createTicket as _createTicket,
@@ -65,6 +67,19 @@ export const fetchTicketType = createAsyncThunk(
       fetchFunction: getTicketType,
       data,
       action: 'Helpdesk_SliceAction_FetchTicketType',
+      getState,
+      responseOptions: {isArrayResponse: true},
+    });
+  },
+);
+
+export const fetchTicketStatus = createAsyncThunk(
+  'ticket/fetchTicketStatus',
+  async function (data = {}, {getState}) {
+    return handlerApiCall({
+      fetchFunction: getTicketStatus,
+      data,
+      action: 'Helpdesk_SliceAction_FetchTicketStatus',
       getState,
       responseOptions: {isArrayResponse: true},
     });
@@ -112,6 +127,19 @@ export const searchTicketType = createAsyncThunk(
       fetchFunction: _searchTicketType,
       data,
       action: 'Helpdesk_SliceAction_SearchTicketType',
+      getState,
+      responseOptions: {isArrayResponse: true},
+    });
+  },
+);
+
+export const searchTicketStatus = createAsyncThunk(
+  'ticket/searchTicketStatus',
+  async function (data, {getState}) {
+    return handlerApiCall({
+      fetchFunction: _searchTicketStatus,
+      data,
+      action: 'Helpdesk_SliceAction_SearchTicketStatus',
       getState,
       responseOptions: {isArrayResponse: true},
     });
@@ -169,15 +197,20 @@ const initialState = {
   isListEnd: false,
   ticketList: [],
 
+  loadingMyTeamTicket: true,
+  moreMoadingMyTeamTicket: false,
+  isListEndMyTeamTicket: false,
+  myTeamTicketList: [],
+
   loadingTicketType: true,
   moreLoadingTicketType: false,
   isListEndTicketType: false,
   ticketTypeList: [],
 
-  loadingMyTeamTicket: true,
-  moreMoadingMyTeamTicket: false,
-  isListEndMyTeamTicket: false,
-  myTeamTicketList: [],
+  loadingTicketStatus: true,
+  moreLoadingTicketStatus: false,
+  isListEndTicketStatus: false,
+  ticketStatusList: [],
 };
 
 const ticketSlice = createSlice({
@@ -202,12 +235,25 @@ const ticketSlice = createSlice({
       isListEnd: 'isListEndTicketType',
       list: 'ticketTypeList',
     });
+    generateInifiniteScrollCases(builder, searchTicketStatus, {
+      loading: 'loadingTicketStatus',
+      moreLoading: 'moreLoadingTicketStatus',
+      isListEnd: 'isListEndTicketStatus',
+      list: 'ticketStatusList',
+    });
     builder.addCase(fetchTicketType.pending, state => {
       state.loadingTicketType = true;
     });
     builder.addCase(fetchTicketType.fulfilled, (state, action) => {
       state.loadingTicketType = false;
       state.ticketTypeList = action.payload;
+    });
+    builder.addCase(fetchTicketStatus.pending, state => {
+      state.loadingTicketStatus = true;
+    });
+    builder.addCase(fetchTicketStatus.fulfilled, (state, action) => {
+      state.loadingTicketStatus = false;
+      state.ticketStatusList = action.payload;
     });
     builder.addCase(fetchTicketById.pending, (state, action) => {
       state.loadingTicket = true;
