@@ -25,6 +25,7 @@ export {default as TicketDropdownCards} from './TicketDropdownCards/TicketDropdo
 export {default as TicketEditButton} from './TicketEditButton/TicketEditButton';
 export {default as TicketHeader} from './TicketHeader/TicketHeader';
 export {default as TicketPriorityPicker} from './TicketPriorityPicker/TicketPriorityPicker';
-export {default as TicketsStatusButton} from './TicketsStatusButton/TicketsStatusButton';
+export {default as TicketStatusButton} from './TicketStatusButton/TicketStatusButton';
+export {default as TicketStatusSearchBar} from './TicketStatusSearchBar/TicketStatusSearchBar';
 export {default as TicketStopwatch} from './TicketStopwatch/TicketStopwatch';
 export {default as TicketTypeSearchBar} from './TicketTypeSearchBar/TicketTypeSearchBar';

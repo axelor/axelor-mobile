@@ -25,8 +25,10 @@ export {searchProject as searchProjectApi} from './project-api';
 export {
   createTicket as createTicketApi,
   getTicket,
+  getTicketStatus,
   getTicketType,
   searchTickets,
+  searchTicketStatus as searchTicketStatusApi,
   searchTicketType as searchTicketTypeApi,
   updateStatusTicket,
   updateTicket as updateTicketApi,
