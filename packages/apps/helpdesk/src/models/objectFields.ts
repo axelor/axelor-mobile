@@ -27,7 +27,7 @@ export const helpdesk_modelAPI: ObjectFields = {
     deadlineDateT: schemaContructor.string(),
     responsibleUser: schemaContructor.subObject(),
     assignedToUser: schemaContructor.subObject(),
-    statusSelect: schemaContructor.number(),
+    ticketStatus: schemaContructor.subObject('name'),
     ticketType: schemaContructor.subObject(),
     prioritySelect: schemaContructor.number(),
     description: schemaContructor.string(),
@@ -39,6 +39,9 @@ export const helpdesk_modelAPI: ObjectFields = {
     timerList: schemaContructor.array().of(schemaContructor.subObject()),
   }),
   helpdesk_ticketType: schemaContructor.object({
+    name: schemaContructor.string(),
+  }),
+  helpdesk_ticketStatus: schemaContructor.object({
     name: schemaContructor.string(),
   }),
   helpdesk_timerHistory: schemaContructor.object({

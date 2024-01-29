@@ -26,10 +26,12 @@ const TicketFormScreen = ({navigation, route}) => {
   const _dispatch = useDispatch();
 
   const {ticket} = useSelector(state => state.ticket);
+  const {helpdesk: helpdeskConfig} = useSelector(state => state.appConfig);
 
   const defaultValue = useMemo(() => {
     const _default = {
       duration: 0,
+      ticketStatus: helpdeskConfig?.defaultTicketStatus,
     };
 
     if (idTicket != null) {
@@ -40,7 +42,7 @@ const TicketFormScreen = ({navigation, route}) => {
     }
 
     return _default;
-  }, [idTicket, ticket]);
+  }, [helpdeskConfig?.defaultTicketStatus, idTicket, ticket]);
 
   const createTicketAPI = useCallback((_ticket, dispatch) => {
     dispatch(

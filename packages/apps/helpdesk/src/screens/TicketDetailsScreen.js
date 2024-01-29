@@ -31,7 +31,6 @@ import {
   TicketEditButton,
   TicketStopwatch,
 } from '../components';
-import {Ticket} from '../types';
 
 const TicketDetailsScreen = ({route}) => {
   const {idTicket} = route.params;
@@ -39,6 +38,7 @@ const TicketDetailsScreen = ({route}) => {
   const dispatch = useDispatch();
 
   const {loadingTicket, ticket} = useSelector(state => state.ticket);
+  const {helpdesk: helpdeskConfig} = useSelector(state => state.appConfig);
 
   const fetchTicket = useCallback(() => {
     dispatch(fetchTicketById({ticketId: idTicket}));
@@ -63,7 +63,7 @@ const TicketDetailsScreen = ({route}) => {
         <TicketDropdownCards />
         <TicketStopwatch />
       </ScrollView>
-      {ticket?.statusSelect !== Ticket.status.Closed && (
+      {ticket?.ticketStatus?.id !== helpdeskConfig?.closedTicketStatus?.id && (
         <TicketEditButton idTicket={idTicket} />
       )}
     </Screen>
