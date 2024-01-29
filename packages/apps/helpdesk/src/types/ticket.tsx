@@ -17,15 +17,9 @@
  */
 
 import {Color, ThemeColors} from '@axelor/aos-mobile-ui';
-import {calculateDiff, StopwatchType} from '@axelor/aos-mobile-core';
+import {calculateDiff} from '@axelor/aos-mobile-core';
 
 class TicketType {
-  static status = {
-    New: 0,
-    In_Progress: 1,
-    Resolved: 2,
-    Closed: 3,
-  };
   static priority = {
     Low: 1,
     Normal: 2,
@@ -39,11 +33,6 @@ class TicketType {
     stop: 'stop',
     reset: 'reset',
     validate: 'validate',
-  };
-
-  static timerStatus = {
-    inProgress: 1,
-    stop: 0,
   };
 
   static getTotalDuration = (timerHystoryList: any): number => {
@@ -60,93 +49,23 @@ class TicketType {
     return totalDuration;
   };
 
-  static getTimerState = (ticketState: number, timerState: number) => {
-    if (ticketState === TicketType.status.New) {
-      return StopwatchType.status.Ready;
-    }
-    if (
-      ticketState === TicketType.status.In_Progress &&
-      timerState === TicketType.timerStatus.stop
-    ) {
-      return StopwatchType.status.Paused;
-    }
-    if (
-      ticketState === TicketType.status.In_Progress &&
-      timerState === TicketType.timerStatus.inProgress
-    ) {
-      return StopwatchType.status.InProgress;
-    }
-    if (ticketState === TicketType.status.Closed) {
-      return StopwatchType.status.Finished;
-    }
-    if (ticketState === TicketType.status.Resolved) {
-      return StopwatchType.status.Finished;
-    }
-  };
-
-  static getStatus = (select: number, I18n: {t: (key: string) => string}) => {
-    if (I18n) {
-      switch (select) {
-        case this.status.New:
-          return I18n.t('Helpdesk_Status_New');
-        case this.status.In_Progress:
-          return I18n.t('Helpdesk_Status_In_Progress');
-        case this.status.Resolved:
-          return I18n.t('Helpdesk_Status_Resolved');
-        case this.status.Closed:
-          return I18n.t('Helpdesk_Status_Closed');
-        default:
-          console.warn(
-            `Status provided with value ${select} is not supported by Ticket`,
-          );
-          return null;
-      }
-    }
-  };
-
-  static getStatusList = (
-    Colors: ThemeColors,
-    I18n: {t: (key: string) => string},
-  ) => {
-    return [
-      {
-        title: I18n.t('Helpdesk_Status_New'),
-        color: this.getStatusColor(this.status.New, Colors),
-        key: this.status.New,
-      },
-      {
-        title: I18n.t('Helpdesk_Status_In_Progress'),
-        color: this.getStatusColor(this.status.In_Progress, Colors),
-        key: this.status.In_Progress,
-      },
-      {
-        title: I18n.t('Helpdesk_Status_Resolved'),
-        color: this.getStatusColor(this.status.Resolved, Colors),
-        key: this.status.Resolved,
-      },
-      {
-        title: I18n.t('Helpdesk_Status_Closed'),
-        color: this.getStatusColor(this.status.Closed, Colors),
-        key: this.status.Closed,
-      },
-    ];
-  };
-
-  static getStatusColor = (status: number, Colors: ThemeColors) => {
-    switch (status) {
-      case this.status.New:
-        return Colors.plannedColor;
-      case this.status.In_Progress:
-        return Colors.progressColor;
-      case this.status.Resolved:
-        return Colors.successColor;
-      case this.status.Closed:
-        return Colors.cautionColor;
-      default:
-        console.warn(
-          `Status provided with value ${status} is not supported by Ticket`,
-        );
-        return null;
+  static getStatusColor = (index: number, Colors: ThemeColors): Color => {
+    if (index === 0) {
+      return Colors.primaryColor;
+    } else if (index === 1) {
+      return Colors.progressColor;
+    } else if (index === 2) {
+      return Colors.priorityColor;
+    } else if (index === 3) {
+      return Colors.errorColor;
+    } else if (index === 4) {
+      return Colors.cautionColor;
+    } else if (index === 5) {
+      return Colors.plannedColor;
+    } else if (index === 6) {
+      return Colors.secondaryColor;
+    } else {
+      Colors.primaryColor;
     }
   };
 

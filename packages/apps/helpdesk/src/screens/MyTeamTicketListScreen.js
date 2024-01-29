@@ -32,7 +32,11 @@ import {
   useTranslator,
   filterChip,
 } from '@axelor/aos-mobile-core';
-import {fetchMyTeamTickets, fetchTicketType} from '../features/ticketSlice';
+import {
+  fetchMyTeamTickets,
+  fetchTicketStatus,
+  fetchTicketType,
+} from '../features/ticketSlice';
 import {MyTeamTicketSearchBar, TicketCard} from '../components';
 import {Ticket} from '../types';
 
@@ -48,6 +52,7 @@ const MyTeamTicketListScreen = ({navigation}) => {
     moreMoadingMyTeamTicket,
     isListEndMyTeamTicket,
     ticketTypeList,
+    ticketStatusList,
   } = useSelector(state => state.ticket);
 
   const [selectedType, setSelectedType] = useState([]);
@@ -58,6 +63,7 @@ const MyTeamTicketListScreen = ({navigation}) => {
 
   useEffect(() => {
     dispatch(fetchTicketType());
+    dispatch(fetchTicketStatus());
   }, [dispatch]);
 
   const fetchTicketsAPI = useCallback(
@@ -80,8 +86,16 @@ const MyTeamTicketListScreen = ({navigation}) => {
   }, [ticketTypeList, Colors]);
 
   const ticketStatusListItems = useMemo(() => {
-    return Ticket.getStatusList(Colors, I18n);
-  }, [Colors, I18n]);
+    return ticketStatusList
+      ? ticketStatusList.map((status, index) => {
+          return {
+            title: status.name,
+            color: Ticket.getStatusColor(index, Colors),
+            key: status.id,
+          };
+        })
+      : [];
+  }, [ticketStatusList, Colors]);
 
   const filterOnType = useCallback(
     list => {
@@ -107,7 +121,9 @@ const MyTeamTicketListScreen = ({navigation}) => {
       } else {
         if (selectedStatus.length > 0) {
           return list?.filter(item =>
-            selectedStatus.find(status => item?.statusSelect === status.key),
+            selectedStatus.find(
+              status => item?.ticketStatus?.id === status.key,
+            ),
           );
         } else {
           return list;
@@ -171,7 +187,8 @@ const MyTeamTicketListScreen = ({navigation}) => {
             subject={item.subject}
             progressSelect={item.progressSelect}
             ticketType={item.ticketType}
-            statusSelect={item.statusSelect}
+            allTicketStatus={ticketStatusList}
+            ticketStatus={item.ticketStatus}
             deadlineDateT={item.deadlineDateT}
             responsibleUser={item?.responsibleUser?.fullName}
             prioritySelect={item.prioritySelect}
