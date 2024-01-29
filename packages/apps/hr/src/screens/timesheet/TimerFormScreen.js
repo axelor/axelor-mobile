@@ -55,8 +55,13 @@ const TimerFormScreen = ({route}) => {
       project: _timer.project,
       projectTask: _timer.projectTask,
       product: _timer.product,
-      duration: _timer.duration,
+      updatedDuration: _timer.updatedDuration,
       comments: _timer.comments,
+      stopwatch: {
+        duration: _timer.duration,
+        timerStartDateT: _timer.timerStartDateT,
+        status: _timer.statusSelect,
+      },
     };
   }, [
     activeTimer,
