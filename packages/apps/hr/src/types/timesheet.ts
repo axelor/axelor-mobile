@@ -32,6 +32,11 @@ class TimesheetType {
     validation: 'toValidateMode',
   };
 
+  static imputation = {
+    Project: 1,
+    ManufOrder: 2,
+  };
+
   static getStatusName = (
     status: number,
     I18n: {t: (key: string) => string},

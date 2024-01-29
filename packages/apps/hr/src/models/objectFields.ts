@@ -131,6 +131,7 @@ export const hr_modelAPI: ObjectFields = {
     projectTask: schemaContructor.subObject('name'),
     manufOrder: schemaContructor.subObject('name'),
     operationOrder: schemaContructor.subObject('name'),
+    product: schemaContructor.subObject('name'),
     comments: schemaContructor.string(),
     date: schemaContructor.string(),
     duration: schemaContructor.number(),
@@ -143,6 +144,7 @@ export const hr_modelAPI: ObjectFields = {
           .array()
           .of(schemaContructor.subObject()),
         product: schemaContructor.subObject('name'),
+        timesheetImputationSelect: schemaContructor.number(),
       }),
     ),
   }),

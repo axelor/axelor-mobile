@@ -35,7 +35,7 @@ import {
   TimerStopwatch,
   ToggleSwitchMode,
 } from '../components';
-import {ExpenseLine} from '../types';
+
 import {updateExpenseDate} from '../features/kilometricAllowParamSlice';
 import {updateManufOrder} from '../features/manufOrderSlice';
 import {updateProject} from '../features/projectSlice';
@@ -44,6 +44,7 @@ import {
   updateFromCity,
   updateToCity,
 } from '../features/distanceSlice';
+import {ExpenseLine, Timesheet} from '../types';
 
 export const hr_formsRegister: FormConfigs = {
   hr_Expenseline: {
@@ -239,14 +240,24 @@ export const hr_formsRegister: FormConfigs = {
         type: 'object',
         widget: 'custom',
         customComponent: ProjectSearchBar,
-        hideIf: ({objectState}) => objectState.manufOrder != null,
+        hideIf: ({storeState}) =>
+          storeState.user.user.employee.timesheetImputationSelect !==
+            Timesheet.imputation.Project ||
+          !storeState.appConfig.mobileSettings.fieldsToShowOnTimesheet.find(
+            (field: string) => field === 'project',
+          ),
       },
       projectTask: {
         titleKey: 'Hr_ProjectTask',
         type: 'object',
         widget: 'custom',
         customComponent: ProjectTaskSearchBar,
-        hideIf: ({objectState}) => objectState.project == null,
+        hideIf: ({storeState}) =>
+          storeState.user.user.employee.timesheetImputationSelect !==
+            Timesheet.imputation.Project ||
+          !storeState.appConfig.mobileSettings.fieldsToShowOnTimesheet.find(
+            (field: string) => field === 'projectTask',
+          ),
         dependsOn: {
           project: ({newValue, dispatch}) => {
             dispatch(updateProject(newValue));
@@ -258,19 +269,45 @@ export const hr_formsRegister: FormConfigs = {
         type: 'object',
         widget: 'custom',
         customComponent: ManufOrderSearchBar,
-        hideIf: ({objectState}) => objectState.project != null,
+        hideIf: ({storeState}) =>
+          storeState.user.user.employee.timesheetImputationSelect !==
+            Timesheet.imputation.ManufOrder ||
+          !storeState.appConfig.mobileSettings.fieldsToShowOnTimesheet.find(
+            (field: string) => field === 'manufOrder',
+          ),
       },
       operationOrder: {
         titleKey: 'Hr_OperationOrder',
         type: 'object',
         widget: 'custom',
         customComponent: OperationOrderSearchBar,
-        hideIf: ({objectState}) => objectState.manufOrder == null,
+        hideIf: ({storeState}) =>
+          storeState.user.user.employee.timesheetImputationSelect !==
+            Timesheet.imputation.ManufOrder ||
+          !storeState.appConfig.mobileSettings.fieldsToShowOnTimesheet.find(
+            (field: string) => field === 'operationOrder',
+          ),
         dependsOn: {
           manufOrder: ({newValue, dispatch}) => {
             dispatch(updateManufOrder(newValue));
           },
         },
+      },
+      product: {
+        titleKey: 'Hr_Product',
+        type: 'object',
+        widget: 'custom',
+        customComponent: ProductSearchBar,
+        hideIf: ({storeState}) =>
+          !storeState.appConfig.mobileSettings.fieldsToShowOnTimesheet.find(
+            (field: string) => field === 'product',
+          ),
+        dependsOn: {
+          projectTask: ({objectState}) => {
+            return objectState.projectTask?.product;
+          },
+        },
+        required: true,
       },
       toInvoice: {
         titleKey: 'Hr_ToInvoice',
@@ -287,9 +324,9 @@ export const hr_formsRegister: FormConfigs = {
         titleKey: 'Hr_Date',
         type: 'date',
         widget: 'date',
-        required: true,
         readonlyIf: ({storeState}) =>
           !storeState.appConfig.mobileSettings.isEditionOfDateAllowed,
+        required: true,
       },
       duration: {
         titleKey: 'Hr_Duration',
@@ -323,25 +360,39 @@ export const hr_formsRegister: FormConfigs = {
         type: 'object',
         widget: 'custom',
         customComponent: ProjectSearchBar,
-        required: true,
+        hideIf: ({storeState}) =>
+          storeState.user.user.employee.timesheetImputationSelect !==
+            Timesheet.imputation.Project ||
+          !storeState.appConfig.mobileSettings.fieldsToShowOnTimesheet.find(
+            (field: string) => field === 'project',
+          ),
       },
       projectTask: {
         titleKey: 'Hr_ProjectTask',
         type: 'object',
         widget: 'custom',
         customComponent: ProjectTaskSearchBar,
+        hideIf: ({storeState}) =>
+          storeState.user.user.employee.timesheetImputationSelect !==
+            Timesheet.imputation.Project ||
+          !storeState.appConfig.mobileSettings.fieldsToShowOnTimesheet.find(
+            (field: string) => field === 'projectTask',
+          ),
         dependsOn: {
           project: ({newValue, dispatch}) => {
             dispatch(updateProject(newValue));
           },
         },
-        required: true,
       },
       product: {
         titleKey: 'Hr_Product',
         type: 'object',
         widget: 'custom',
         customComponent: ProductSearchBar,
+        hideIf: ({storeState}) =>
+          !storeState.appConfig.mobileSettings.fieldsToShowOnTimesheet.find(
+            (field: string) => field === 'product',
+          ),
         dependsOn: {
           projectTask: ({objectState}) => {
             return objectState.projectTask?.product;
