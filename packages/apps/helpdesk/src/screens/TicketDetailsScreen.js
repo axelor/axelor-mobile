@@ -31,7 +31,6 @@ import {
   TicketEditButton,
   TicketStopwatch,
 } from '../components';
-import {Ticket} from '../types';
 
 const TicketDetailsScreen = ({route}) => {
   const {idTicket} = route.params;
@@ -64,7 +63,7 @@ const TicketDetailsScreen = ({route}) => {
         <TicketDropdownCards />
         <TicketStopwatch />
       </ScrollView>
-      {ticket?.statusSelect !== helpdeskConfig?.closedTicketStatus && (
+      {ticket?.ticketStatus?.id !== helpdeskConfig?.closedTicketStatus?.id && (
         <TicketEditButton idTicket={idTicket} />
       )}
     </Screen>

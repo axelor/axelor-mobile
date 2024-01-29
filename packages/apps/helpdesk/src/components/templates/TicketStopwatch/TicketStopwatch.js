@@ -29,7 +29,7 @@ import {
   getNowDateZonesISOString,
 } from '@axelor/aos-mobile-core';
 import {Ticket} from '../../../types';
-import TicketsStatusButton from '../TicketsStatusButton/TicketsStatusButton';
+import {TicketStatusButton} from '../../templates';
 import {updateTicketStatus} from '../../../features/ticketSlice';
 import {
   fetchTimerById,
@@ -70,25 +70,25 @@ const TicketStopwatch = ({}) => {
 
   const getTimerStatus = useCallback(
     (ticketStatus, timerState) => {
-      if (ticketStatus?.id === helpdeskConfig?.defaultTicketStatus) {
+      if (ticketStatus?.id === helpdeskConfig?.defaultTicketStatus?.id) {
         return StopwatchType.status.Ready;
       }
       if (
-        ticketStatus?.id === helpdeskConfig?.In_Progress &&
+        ticketStatus?.id === helpdeskConfig?.inProgressTicketStatus?.id &&
         timerState === TIMER_STATUS.stop
       ) {
         return StopwatchType.status.Paused;
       }
       if (
-        ticketStatus?.id === helpdeskConfig?.inProgressTicketStatus &&
+        ticketStatus?.id === helpdeskConfig?.inProgressTicketStatus?.id &&
         timerState === TIMER_STATUS.inProgress
       ) {
         return StopwatchType.status.InProgress;
       }
-      if (ticketStatus?.id === helpdeskConfig?.resolvedTicketStatus) {
+      if (ticketStatus?.id === helpdeskConfig?.resolvedTicketStatus?.id) {
         return StopwatchType.status.Finished;
       }
-      if (ticketStatus?.id === helpdeskConfig?.closedTicketStatus) {
+      if (ticketStatus?.id === helpdeskConfig?.closedTicketStatus?.id) {
         return StopwatchType.status.Finished;
       }
     },
@@ -119,8 +119,8 @@ const TicketStopwatch = ({}) => {
 
   const disbaled = useMemo(
     () =>
-      ticket?.statusSelect === helpdeskConfig?.closedTicketStatus ||
-      ticket?.statusSelect === helpdeskConfig?.resolvedTicketStatus,
+      ticket?.ticketStatus?.id === helpdeskConfig?.closedTicketStatus?.id ||
+      ticket?.ticketStatus?.id === helpdeskConfig?.resolvedTicketStatus?.id,
     [helpdeskConfig, ticket],
   );
 
@@ -141,7 +141,7 @@ const TicketStopwatch = ({}) => {
   return (
     <View>
       {!helpdeskConfig?.manageTimer ? (
-        <TicketsStatusButton />
+        <TicketStatusButton />
       ) : (
         <Stopwatch
           startTime={time}
@@ -156,17 +156,14 @@ const TicketStopwatch = ({}) => {
           disable={disbaled}
         />
       )}
-      {ticket?.statusSelect !== helpdeskConfig?.closedTicketStatus &&
-        ticket?.statusSelect !== helpdeskConfig?.defaultTicketStatus && (
+      {ticket?.ticketStatus?.id !== helpdeskConfig?.closedTicketStatus?.id &&
+        ticket?.ticketStatus?.id !==
+          helpdeskConfig?.defaultTicketStatus?.id && (
           <Button
             title={I18n.t('Helpdesk_Close')}
             iconName="power"
             onPress={() => updateStatus(Ticket.stopWatchStatus.validate)}
             color={Colors.primaryColor}
-            disabled={
-              ticket?.statusSelect === helpdeskConfig?.closedTicketStatus ||
-              ticket?.statusSelect === helpdeskConfig?.defaultTicketStatus
-            }
           />
         )}
     </View>

@@ -27,7 +27,7 @@ import {Button} from '@axelor/aos-mobile-ui';
 import {Ticket} from '../../../types';
 import {updateTicketStatus} from '../../../features/ticketSlice';
 
-const TicketsStatusButton = ({}) => {
+const TicketStatusButton = ({}) => {
   const I18n = useTranslator();
   const dispatch = useDispatch();
 
@@ -48,7 +48,7 @@ const TicketsStatusButton = ({}) => {
     [dispatch, ticket],
   );
 
-  if (ticket?.statusSelect === helpdeskConfig?.defaultTicketStatus) {
+  if (ticket?.ticketStatus?.id === helpdeskConfig?.defaultTicketStatus?.id) {
     return (
       <Button
         title={I18n.t('Helpdesk_Start')}
@@ -58,7 +58,7 @@ const TicketsStatusButton = ({}) => {
     );
   }
 
-  if (ticket?.statusSelect === helpdeskConfig?.inProgressTicketStatus) {
+  if (ticket?.ticketStatus?.id === helpdeskConfig?.inProgressTicketStatus?.id) {
     return (
       <Button
         title={I18n.t('Helpdesk_Resolve')}
@@ -71,4 +71,4 @@ const TicketsStatusButton = ({}) => {
   return null;
 };
 
-export default TicketsStatusButton;
+export default TicketStatusButton;
