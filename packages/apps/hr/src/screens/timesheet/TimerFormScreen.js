@@ -23,41 +23,60 @@ import {
   useIsFocused,
   useSelector,
 } from '@axelor/aos-mobile-core';
-import {fetchActiveTimer} from '../../features/timerSlice';
+import {fetchActiveTimer, fetchTimerById} from '../../features/timerSlice';
 
 const TimerFormScreen = ({route}) => {
   const isCreation = route?.params?.isCreation;
-  const timerToUpdate = route?.params?.timerToUpdate;
+  const idTimerToUpdate = route?.params?.idTimerToUpdate;
   const isFocused = useIsFocused();
   const dispatch = useDispatch();
 
   const {user} = useSelector(state => state.user);
-  const {activeTimer} = useSelector(state => state.hr_timer);
+  const {activeTimer, timer} = useSelector(state => state.hr_timer);
 
   useEffect(() => {
     if (isFocused) {
       dispatch(fetchActiveTimer({userId: user?.id}));
+      idTimerToUpdate && dispatch(fetchTimerById({timerId: idTimerToUpdate}));
     }
-  }, [dispatch, isFocused, user?.id]);
+  }, [dispatch, idTimerToUpdate, isFocused, user?.id]);
 
   const defaultValue = useMemo(() => {
+    const DEFAULT = {
+      startDateTime: new Date().toISOString(),
+      product: user?.employee?.product,
+    };
+
     if (isCreation) {
+      return DEFAULT;
+    }
+
+    const _timer = idTimerToUpdate ? timer : activeTimer;
+
+    if (_timer != null) {
       return {
-        startDateTime: new Date().toISOString(),
-        product: user?.employee?.product,
+        startDateTime: _timer.startDateTime,
+        project: _timer.project,
+        projectTask: _timer.projectTask,
+        product: _timer.product,
+        updatedDuration: _timer.updatedDuration,
+        comments: _timer.comments,
+        stopwatch: {
+          duration: _timer.duration,
+          timerStartDateT: _timer.timerStartDateT,
+          status: _timer.statusSelect,
+        },
       };
     }
 
-    const timer = timerToUpdate ?? activeTimer;
-    return {
-      startDateTime: timer.startDateTime,
-      project: timer.project,
-      projectTask: timer.projectTask,
-      product: timer.product,
-      duration: timer.duration,
-      comments: timer.comments,
-    };
-  }, [activeTimer, isCreation, timerToUpdate, user?.employee?.product]);
+    return DEFAULT;
+  }, [
+    activeTimer,
+    idTimerToUpdate,
+    isCreation,
+    timer,
+    user?.employee?.product,
+  ]);
 
   return (
     <FormView defaultValue={defaultValue} actions={[]} formKey="hr_Timer" />
