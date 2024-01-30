@@ -55,17 +55,15 @@ const TimerStopwatch = ({
     const _status = defaultValue?.status ?? DEFAULT_STATUS;
     setStatus(_status);
 
-    let _time = DEFAULT_TIME;
-    if (defaultValue?.duration != null) {
-      const durationInMilliseconds = defaultValue.duration * 1000;
-      if (_status === TIMER_STATUS.Start) {
-        _time =
-          durationInMilliseconds +
-          calculateDiff(defaultValue.timerStartDateT, new Date());
-      } else {
-        _time = durationInMilliseconds;
-      }
+    let _time = (defaultValue?.duration ?? DEFAULT_TIME) * 1000;
+
+    if (
+      _status === TIMER_STATUS.Start &&
+      defaultValue?.timerStartDateT != null
+    ) {
+      _time += calculateDiff(defaultValue.timerStartDateT, new Date());
     }
+
     setTime(_time);
 
     return {time: _time, status: _status};
@@ -76,6 +74,7 @@ const TimerStopwatch = ({
   }, [getTimerState]);
 
   useEffect(() => {
+    // TODO: remove this after doing the API requests
     console.log(objectState);
   }, [objectState]);
 
