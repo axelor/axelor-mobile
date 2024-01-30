@@ -349,8 +349,8 @@ export const hr_formsRegister: FormConfigs = {
         },
         required: true,
       },
-      duration: {
-        titleKey: 'Hr_Duration',
+      updatedDuration: {
+        titleKey: 'Hr_UpdatedDuration',
         type: 'string',
         widget: 'custom',
         customComponent: DurationInput,

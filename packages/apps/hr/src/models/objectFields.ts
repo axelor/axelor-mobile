@@ -108,7 +108,9 @@ export const hr_modelAPI: ObjectFields = {
     product: schemaContructor.subObject('name'),
     comments: schemaContructor.string(),
     startDateTime: schemaContructor.string(),
+    timerStartDateT: schemaContructor.string(),
     duration: schemaContructor.number(),
+    updatedDuration: schemaContructor.number(),
   }),
   hr_timesheet: schemaContructor.object({
     statusSelect: schemaContructor.number(),
