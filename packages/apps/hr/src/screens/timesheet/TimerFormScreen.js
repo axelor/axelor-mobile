@@ -42,27 +42,34 @@ const TimerFormScreen = ({route}) => {
   }, [dispatch, idTimerToUpdate, isFocused, user?.id]);
 
   const defaultValue = useMemo(() => {
+    const DEFAULT = {
+      startDateTime: new Date().toISOString(),
+      product: user?.employee?.product,
+    };
+
     if (isCreation) {
-      return {
-        startDateTime: new Date().toISOString(),
-        product: user?.employee?.product,
-      };
+      return DEFAULT;
     }
 
     const _timer = idTimerToUpdate ? timer : activeTimer;
-    return {
-      startDateTime: _timer.startDateTime,
-      project: _timer.project,
-      projectTask: _timer.projectTask,
-      product: _timer.product,
-      updatedDuration: _timer.updatedDuration,
-      comments: _timer.comments,
-      stopwatch: {
-        duration: _timer.duration,
-        timerStartDateT: _timer.timerStartDateT,
-        status: _timer.statusSelect,
-      },
-    };
+
+    if (_timer != null) {
+      return {
+        startDateTime: _timer.startDateTime,
+        project: _timer.project,
+        projectTask: _timer.projectTask,
+        product: _timer.product,
+        updatedDuration: _timer.updatedDuration,
+        comments: _timer.comments,
+        stopwatch: {
+          duration: _timer.duration,
+          timerStartDateT: _timer.timerStartDateT,
+          status: _timer.statusSelect,
+        },
+      };
+    }
+
+    return DEFAULT;
   }, [
     activeTimer,
     idTimerToUpdate,
