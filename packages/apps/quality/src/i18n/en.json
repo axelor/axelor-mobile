@@ -1,11 +1,16 @@
 {
   "Quality_Quality": "Quality",
   "Quality_ControlEntries": "Control entries",
+  "Quality_ControlEntry": "Control entry",
   "Quality_Sample": "Sample",
   "Quality_Status_Draft": "Draft",
   "Quality_Status_InProgress": "In progress",
   "Quality_Status_Completed": "Completed",
   "Quality_Status_Canceled": "Canceled",
   "Quality_NewControlEntry": "new control entry",
-  "Quality_SliceAction_SearchControlEntry": "search control entries"
+  "Quality_ControlPlan": "Control plan",
+  "Quality_MarkAsCompleted": "Mark as completed",
+  "Quality_SliceAction_SearchControlEntry": "search control entries",
+  "Quality_SliceAction_FetchControlEntryById": "fetch control entry by id",
+  "Quality_SliceAction_SearchControlEntrySample": "search control entry samples"
 }

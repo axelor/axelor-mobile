@@ -16,4 +16,5 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+export {controlEntrySampleReducer as controlEntrySample} from './controlEntrySampleSlice';
 export {controlEntryReducer as controlEntry} from './controlEntrySlice';

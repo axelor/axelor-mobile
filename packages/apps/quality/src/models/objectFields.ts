@@ -35,4 +35,8 @@ export const quality_modelAPI: ObjectFields = {
     resultSelect: schemaContructor.number(),
     entrySampleNbr: schemaContructor.number(),
   }),
+  quality_controlEntrySampleLine: schemaContructor.object({
+    name: schemaContructor.string(),
+    resultSelect: schemaContructor.number(),
+  }),
 };

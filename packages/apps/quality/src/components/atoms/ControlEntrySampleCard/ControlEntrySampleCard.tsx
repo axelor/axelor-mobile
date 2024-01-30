@@ -17,42 +17,42 @@
  */
 
 import React, {useEffect, useMemo, useState} from 'react';
-import {StyleSheet, TouchableOpacity, View} from 'react-native';
+import {StyleSheet, TouchableOpacity} from 'react-native';
 import {Card, ProgressBar, Text, useThemeColor} from '@axelor/aos-mobile-ui';
-import {useTranslator, DateDisplay} from '@axelor/aos-mobile-core';
 import {ControlEntry} from '../../../types';
-import {searchControlEntrySampleApi} from '../../../api';
+import {searchControlEntrySampleLineApi} from '../../../api';
 
-interface ControlEntryCardProps {
+interface ControlEntrySampleCardProps {
   style?: any;
+  controlEntrySampleId: number;
+  resultSelect: number;
+  samplefullName: string;
   onPress?: () => void;
-  sampleCount?: number;
-  entryDateTime?: string;
-  statusSelect?: number;
-  name?: string;
-  controlEntryId?: number;
 }
-const ControlEntryCard = ({
+const ControlEntrySampleCard = ({
   style,
-  onPress,
-  sampleCount,
-  entryDateTime,
-  statusSelect,
-  name,
-  controlEntryId,
-}: ControlEntryCardProps) => {
+  controlEntrySampleId,
+  resultSelect,
+  samplefullName,
+  onPress = () => {},
+}: ControlEntrySampleCardProps) => {
   const Colors = useThemeColor();
-  const I18n = useTranslator();
 
   const [numberSampleFilled, setNumberSampleFilled] = useState<number>(0);
 
+  const borderStyle = useMemo(() => {
+    return getStyles(
+      ControlEntry.getSampleResultColor(resultSelect, Colors)?.background,
+    )?.border;
+  }, [Colors, resultSelect]);
+
   useEffect(() => {
-    searchControlEntrySampleApi({controlEntryId: controlEntryId})
+    searchControlEntrySampleLineApi({controlEntrySampleId})
       .then(response => {
         if (Array.isArray(response?.data?.data)) {
-          const controlEntrySampleList: any[] = response.data.data;
-          const total = controlEntrySampleList.length;
-          const notControlled = controlEntrySampleList.filter(
+          const controlEntrySampleLineList: any[] = response.data.data;
+          const total = controlEntrySampleLineList.length;
+          const notControlled = controlEntrySampleLineList.filter(
             sample =>
               sample.resultSelect === ControlEntry.sampleResult.NotControlled,
           ).length;
@@ -63,31 +63,19 @@ const ControlEntryCard = ({
         }
       })
       .catch(() => setNumberSampleFilled(0));
-  }, [controlEntryId]);
-
-  const borderStyle = useMemo(() => {
-    return getStyles(
-      ControlEntry.getStatusColor(statusSelect, Colors)?.background,
-    )?.border;
-  }, [Colors, statusSelect]);
+  }, [controlEntrySampleId]);
 
   return (
     <TouchableOpacity onPress={onPress} activeOpacity={0.9}>
       <Card style={[styles.container, borderStyle, style]}>
-        <View style={styles.childrenContainer}>
-          <Text writingType="title">{name}</Text>
-          <DateDisplay date={entryDateTime} />
-        </View>
-        <View style={styles.childrenContainer}>
-          <Text>{`${I18n.t('Quality_Sample')} : ${sampleCount}`}</Text>
-          <ProgressBar
-            style={styles.progressBar}
-            value={numberSampleFilled}
-            showPercent={false}
-            height={15}
-            styleTxt={styles.textProgressBar}
-          />
-        </View>
+        <Text>{samplefullName}</Text>
+        <ProgressBar
+          style={styles.progressBar}
+          value={numberSampleFilled}
+          showPercent={false}
+          height={15}
+          styleTxt={styles.textProgressBar}
+        />
       </Card>
     </TouchableOpacity>
   );
@@ -104,12 +92,9 @@ const getStyles = (color: string) =>
 const styles = StyleSheet.create({
   container: {
     marginHorizontal: 12,
-    marginVertical: 4,
     paddingHorizontal: 15,
     paddingRight: 15,
     paddingVertical: 10,
-  },
-  childrenContainer: {
     flexDirection: 'row',
     alignItems: 'center',
     marginVertical: 5,
@@ -123,5 +108,4 @@ const styles = StyleSheet.create({
     display: 'none',
   },
 });
-
-export default ControlEntryCard;
+export default ControlEntrySampleCard;
