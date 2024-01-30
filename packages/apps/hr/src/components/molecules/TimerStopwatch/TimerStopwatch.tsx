@@ -18,7 +18,14 @@
 
 import React, {useCallback, useEffect, useState} from 'react';
 import {StyleSheet} from 'react-native';
-import {calculateDiff, useTranslator, Stopwatch} from '@axelor/aos-mobile-core';
+import {
+  calculateDiff,
+  Stopwatch,
+  useDispatch,
+  useSelector,
+  useTranslator,
+} from '@axelor/aos-mobile-core';
+import {createTimer} from '../../../features/timerSlice';
 
 const DEFAULT_TIME = 0;
 const TIMER_STATUS = {
@@ -47,6 +54,7 @@ const TimerStopwatch = ({
   objectState,
 }: TimerStopwatchProps) => {
   const I18n = useTranslator();
+  const dispatch = useDispatch();
 
   const [time, setTime] = useState(DEFAULT_TIME);
   const [status, setStatus] = useState(DEFAULT_STATUS);
@@ -69,6 +77,21 @@ const TimerStopwatch = ({
     return {time: _time, status: _status};
   }, [defaultValue]);
 
+  const {userId} = useSelector((state: any) => state.auth);
+
+  const createTimerAPI = useCallback(() => {
+    const _timer = {
+      startDateTime: objectState?.startDateTime,
+      projectId: objectState?.project?.id,
+      projectTaskId: objectState?.projectTask?.id,
+      productId: objectState?.product?.id,
+      duration: objectState?.duration,
+      comments: objectState?.comments,
+    };
+
+    dispatch((createTimer as any)({userId: userId, timer: _timer}));
+  }, [dispatch, objectState, userId]);
+
   useEffect(() => {
     getTimerState();
   }, [getTimerState]);
@@ -85,9 +108,11 @@ const TimerStopwatch = ({
       status={status}
       getTimerState={getTimerState}
       timerFormat={I18n.t('Hr_TimerFormat')}
-      onPlay={() => console.log('Play button pressed.')}
+      onPlay={createTimerAPI}
+      disablePlay={!objectState?.product}
       onPause={() => console.log('Pause button pressed.')}
       onStop={() => console.log('Stop button pressed.')}
+      onCancel={() => console.log('Cancel button pressed.')}
     />
   );
 };

@@ -54,6 +54,8 @@ export {
   updateProject,
 } from './projectSlice';
 export {
+  createTimer,
+  deleteTimer,
   fetchActiveTimer,
   fetchTimer,
   fetchTimerById,

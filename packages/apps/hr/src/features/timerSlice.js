@@ -22,9 +22,12 @@ import {
   generateInifiniteScrollCases,
 } from '@axelor/aos-mobile-core';
 import {
+  createTimer as _createTimer,
+  deleteTimer as _deleteTimer,
   fetchActiveTimer as _fetchActiveTimer,
   fetchTimer as _fetchTimer,
   fetchTimerById as _fetchTimerById,
+  updateTimerStatus as _updateTimerStatus,
 } from '../api/timer-api';
 
 export const fetchTimer = createAsyncThunk(
@@ -75,6 +78,46 @@ export const fetchActiveTimer = createAsyncThunk(
       action: 'Hr_SliceAction_FetchActiveTimer',
       getState,
       responseOptions: {isArrayResponse: false},
+    });
+  },
+);
+
+export const createTimer = createAsyncThunk(
+  'hr_timer/createTimer',
+  async function (data = {}, {getState, dispatch}) {
+    return handlerApiCall({
+      fetchFunction: _createTimer,
+      data,
+      action: 'Hr_SliceAction_CreateTimer',
+      getState,
+      responseOptions: {isArrayResponse: false},
+    })
+      .then(res => {
+        return handlerApiCall({
+          fetchFunction: _updateTimerStatus,
+          data: {timerId: res.timerId, version: res.version, toStatus: 'start'},
+          action: 'Hr_SliceAction_UpdateTimerStatus',
+          getState,
+          responseOptions: {isArrayResponse: false},
+        });
+      })
+      .then(() => {
+        dispatch(fetchTimer({userId: data.userId, page: 0}));
+      });
+  },
+);
+
+export const deleteTimer = createAsyncThunk(
+  'hr_timer/deleteTimer',
+  async function (data = {}, {getState, dispatch}) {
+    return handlerApiCall({
+      fetchFunction: _deleteTimer,
+      data,
+      action: 'Hr_SliceAction_DeleteTimer',
+      getState,
+      responseOptions: {isArrayResponse: false, showToast: true},
+    }).then(() => {
+      dispatch(fetchTimer({userId: data.userId, page: 0}));
     });
   },
 );
