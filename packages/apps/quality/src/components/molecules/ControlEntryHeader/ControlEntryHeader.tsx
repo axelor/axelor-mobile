@@ -53,6 +53,7 @@ const ControlEntryHeader = ({controlEntryId}: ControlEntryHeaderProps) => {
 
   const [showAlert, setShowAlert] = useState(false);
   const [numberSampleFilled, setNumberSampleFilled] = useState<number>(0);
+  const [selectedMode, setSelectedMode] = useState(null);
 
   useEffect(() => {
     dispatch((fetchControlEntryById as any)({controlEntryId: controlEntryId}));
@@ -126,10 +127,12 @@ const ControlEntryHeader = ({controlEntryId}: ControlEntryHeaderProps) => {
           hide: false,
           width: '15%',
           styleTxt: {display: 'none'},
+          disabled: selectedMode == null,
           onPress: () => {
             setShowAlert(false);
             navigation.navigate('ControlEntryFormScreen', {
               controlEntryId: controlEntryId,
+              selectedMode: selectedMode,
             });
           },
         }}>
@@ -141,9 +144,7 @@ const ControlEntryHeader = ({controlEntryId}: ControlEntryHeaderProps) => {
             {id: '1', title: 'By Sample'},
             {id: '2', title: 'By Characteristic'},
           ]}
-          onChange={e => {
-            console.log(e);
-          }}
+          onChange={setSelectedMode}
         />
       </Alert>
     </View>

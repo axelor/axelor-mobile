@@ -21,9 +21,23 @@ import {StyleSheet, View} from 'react-native';
 import {} from '@axelor/aos-mobile-core';
 import {Button, Icon, useThemeColor} from '@axelor/aos-mobile-ui';
 
-interface ControlEntryFormButtonsProps {}
+interface ControlEntryFormButtonsProps {
+  handleNextSample: () => void;
+  handlePrevSample: () => void;
+  handleNextCharacteristic: () => void;
+  handlePrevCharacteristic: () => void;
+  isLastCharacteristic: boolean;
+  isFirstCharacteristic: boolean;
+}
 
-const ControlEntryFormButtons = ({}: ControlEntryFormButtonsProps) => {
+const ControlEntryFormButtons = ({
+  handleNextSample,
+  handlePrevSample,
+  handleNextCharacteristic,
+  handlePrevCharacteristic,
+  isLastCharacteristic,
+  isFirstCharacteristic,
+}: ControlEntryFormButtonsProps) => {
   const Colors = useThemeColor();
 
   return (
@@ -31,16 +45,22 @@ const ControlEntryFormButtons = ({}: ControlEntryFormButtonsProps) => {
       <View style={styles.childrenContainer}>
         <View style={styles.buttonContainer}>
           <Button
-            onPress={() => console.log('Delete button pressed.')}
+            onPress={
+              isFirstCharacteristic
+                ? handlePrevSample
+                : handlePrevCharacteristic
+            }
             color={Colors.secondaryColor}
-            iconName="palette2"
+            iconName={isFirstCharacteristic ? 'cup-hot-fill' : 'palette2'}
           />
           <Icon name="chevron-left" style={styles.chevronLeft} />
         </View>
         <View style={styles.buttonContainer}>
           <Button
-            onPress={() => console.log('Send button pressed.')}
-            iconName="palette2"
+            onPress={
+              isLastCharacteristic ? handleNextSample : handleNextCharacteristic
+            }
+            iconName={isLastCharacteristic ? 'cup-hot-fill' : 'palette2'}
             color={Colors.secondaryColor}
           />
           <Icon name="chevron-right" style={styles.chevronRight} />

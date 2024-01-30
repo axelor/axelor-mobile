@@ -16,7 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import React, {useEffect, useState} from 'react';
+import React, {useEffect} from 'react';
 import {StyleSheet, View} from 'react-native';
 import {
   isEmpty,
@@ -34,43 +34,30 @@ import {
 } from '@axelor/aos-mobile-ui';
 import {ControlEntry} from '../../../types';
 import {fetchControlEntryById} from '../../../features/controlEntrySlice';
-import {searchControlEntrySampleApi} from '../../../api';
 
 interface ControlEntryHeaderProps {
   controlEntryId: number;
+  currentIndex: number;
+  currentIndexCharacteristic: number;
 }
 
-const ControlEntryFormHeader = ({controlEntryId}: ControlEntryHeaderProps) => {
+const ControlEntryFormHeader = ({
+  controlEntryId,
+  currentIndex,
+  currentIndexCharacteristic,
+}: ControlEntryHeaderProps) => {
   const I18n = useTranslator();
   const Colors = useThemeColor();
   const dispatch = useDispatch();
 
   const {controlEntry} = useSelector((state: any) => state.controlEntry);
-
-  const [numberSampleFilled, setNumberSampleFilled] = useState<number>(0);
+  const {controlEntrySampleLineList} = useSelector(
+    (state: any) => state.controlEntrySampleLine,
+  );
 
   useEffect(() => {
     dispatch((fetchControlEntryById as any)({controlEntryId: controlEntryId}));
   }, [controlEntryId, dispatch]);
-
-  useEffect(() => {
-    searchControlEntrySampleApi({controlEntryId: controlEntryId})
-      .then(response => {
-        if (Array.isArray(response?.data?.data)) {
-          const controlEntrySampleList: any[] = response.data.data;
-          const total = controlEntrySampleList.length;
-          const notControlled = controlEntrySampleList.filter(
-            sample =>
-              sample.resultSelect === ControlEntry.sampleResult.NotControlled,
-          ).length;
-
-          setNumberSampleFilled(100 - (notControlled / total) * 100);
-        } else {
-          setNumberSampleFilled(0);
-        }
-      })
-      .catch(() => setNumberSampleFilled(0));
-  }, [controlEntryId]);
 
   if (controlEntry == null || isEmpty(controlEntry)) {
     return null;
@@ -92,9 +79,10 @@ const ControlEntryFormHeader = ({controlEntryId}: ControlEntryHeaderProps) => {
         <DateDisplay date={controlEntry.entryDateTime} />
       </View>
       <View style={styles.progressContainer}>
-        <Icon name="palette2" />
+        <Icon name="cup-hot-fill" />
         <ProgressBar
-          value={numberSampleFilled}
+          total={controlEntry?.controlEntrySamplesList?.length}
+          value={currentIndex}
           style={[styles.progressBar, styles.margin]}
           showPercent={false}
         />
@@ -102,7 +90,8 @@ const ControlEntryFormHeader = ({controlEntryId}: ControlEntryHeaderProps) => {
       <View style={styles.progressContainer}>
         <Icon name="palette2" />
         <ProgressBar
-          value={numberSampleFilled}
+          value={currentIndexCharacteristic}
+          total={controlEntrySampleLineList?.length}
           showPercent={false}
           style={styles.progressBar}
         />
