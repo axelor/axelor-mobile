@@ -85,7 +85,7 @@ const ControlEntryDetailsScreen = ({route}) => {
         translator={I18n.t}
         renderItem={({item}) => (
           <ControlEntrySampleCard
-            controlPlanId={item.id}
+            controlEntrySampleId={item.id}
             resultSelect={item.resultSelect}
             samplefullName={item.fullName}
           />

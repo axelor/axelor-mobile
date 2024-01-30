@@ -24,14 +24,14 @@ import {searchControlEntrySampleLineApi} from '../../../api';
 
 interface ControlEntrySampleCardProps {
   style?: any;
-  controlPlanId: number;
+  controlEntrySampleId: number;
   resultSelect: number;
   samplefullName: string;
   onPress?: () => void;
 }
 const ControlEntrySampleCard = ({
   style,
-  controlPlanId,
+  controlEntrySampleId,
   resultSelect,
   samplefullName,
   onPress = () => {},
@@ -47,7 +47,7 @@ const ControlEntrySampleCard = ({
   }, [Colors, resultSelect]);
 
   useEffect(() => {
-    searchControlEntrySampleLineApi({controlEntrySampleId: controlPlanId})
+    searchControlEntrySampleLineApi({controlEntrySampleId})
       .then(response => {
         if (Array.isArray(response?.data?.data)) {
           const controlEntrySampleLineList: any[] = response.data.data;
@@ -63,7 +63,7 @@ const ControlEntrySampleCard = ({
         }
       })
       .catch(() => setNumberSampleFilled(0));
-  }, [controlPlanId]);
+  }, [controlEntrySampleId]);
 
   return (
     <TouchableOpacity onPress={onPress} activeOpacity={0.9}>
