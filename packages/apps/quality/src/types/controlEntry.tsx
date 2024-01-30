@@ -70,6 +70,25 @@ class ControlEntry {
         return null;
     }
   };
+
+  static getSampleResultColor = (
+    sampleResult: number,
+    Colors: ThemeColors,
+  ): Color => {
+    switch (sampleResult) {
+      case this.sampleResult.Compliant:
+        return Colors.successColor;
+      case this.sampleResult.NotCompliant:
+        return Colors.errorColor;
+      case this.sampleResult.NotControlled:
+        return Colors.secondaryColor;
+      default:
+        console.warn(
+          `Sample result provided with value ${sampleResult} is not supported by control entry`,
+        );
+        return null;
+    }
+  };
 }
 
 export default ControlEntry;
