@@ -16,5 +16,9 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-export {searchControlEntry as searchControlEntryApi} from './control-entry-api';
+export {
+  fetchControlEntryById as fetchControlEntryByIdApi,
+  searchControlEntry as searchControlEntryApi,
+} from './control-entry-api';
 export {searchControlEntrySample as searchControlEntrySampleApi} from './control-entry-sample-api';
+export {searchControlEntrySampleLine as searchControlEntrySampleLineApi} from './control-entry-sample-line-api';
