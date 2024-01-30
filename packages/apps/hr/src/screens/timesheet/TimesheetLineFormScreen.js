@@ -17,10 +17,12 @@
  */
 
 import React, {useMemo} from 'react';
-import {FormView} from '@axelor/aos-mobile-core';
+import {FormView, useSelector} from '@axelor/aos-mobile-core';
 
 const TimesheetLineFormScreen = ({route}) => {
   const {timesheetId, timesheetLine} = route?.params;
+
+  const {user} = useSelector(state => state.user);
 
   const defaultValue = useMemo(() => {
     if (timesheetLine != null) {
@@ -29,6 +31,7 @@ const TimesheetLineFormScreen = ({route}) => {
         projectTask: timesheetLine.projectTask,
         manufOrder: timesheetLine.manufOrder,
         operationOrder: timesheetLine.operationOrder,
+        product: timesheetLine.product,
         date: timesheetLine.date,
         duration: timesheetLine.duration,
         comments: timesheetLine.comments,
@@ -37,8 +40,9 @@ const TimesheetLineFormScreen = ({route}) => {
 
     return {
       date: new Date().toISOString().split('T')[0],
+      product: user?.employee?.product,
     };
-  }, [timesheetLine]);
+  }, [timesheetLine, user]);
 
   return (
     <FormView
