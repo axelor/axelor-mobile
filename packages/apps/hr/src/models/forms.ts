@@ -35,7 +35,6 @@ import {
   TimerStopwatch,
   ToggleSwitchMode,
 } from '../components';
-
 import {updateExpenseDate} from '../features/kilometricAllowParamSlice';
 import {updateManufOrder} from '../features/manufOrderSlice';
 import {updateProject} from '../features/projectSlice';
