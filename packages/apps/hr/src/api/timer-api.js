@@ -16,6 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 import {
+  createStandardFetch,
   createStandardSearch,
   getEndOfDay,
   getSearchCriterias,
@@ -96,6 +97,14 @@ export async function fetchTimer({
     fieldKey: 'hr_timer',
     sortKey: 'hr_timer',
     page,
+  });
+}
+
+export async function fetchTimerById({timerId}) {
+  return createStandardFetch({
+    model: 'com.axelor.apps.hr.db.TSTimer',
+    id: timerId,
+    fieldKey: 'hr_timer',
   });
 }
 
