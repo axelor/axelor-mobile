@@ -16,6 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 import {
+  createStandardFetch,
   createStandardSearch,
   getEndOfDay,
   getSearchCriterias,
@@ -69,5 +70,13 @@ export async function searchControlEntry({
     fieldKey: 'quality_controlEntry',
     sortKey: 'quality_controlEntry',
     page: page,
+  });
+}
+
+export async function fetchControlEntryById({controlEntryId}) {
+  return createStandardFetch({
+    model: 'com.axelor.apps.quality.db.ControlEntry',
+    id: controlEntryId,
+    fieldKey: 'quality_controlEntry',
   });
 }

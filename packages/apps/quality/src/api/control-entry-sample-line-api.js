@@ -16,5 +16,27 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-export * from './atoms';
-export * from './molecules';
+import {createStandardSearch} from '@axelor/aos-mobile-core';
+
+const createControlEntrySampleLineCriteria = controlEntrySampleId => {
+  return [
+    {
+      fieldName: 'controlEntrySample.id',
+      operator: '=',
+      value: controlEntrySampleId,
+    },
+  ];
+};
+
+export async function searchControlEntrySampleLine({
+  page = 0,
+  controlEntrySampleId,
+}) {
+  return createStandardSearch({
+    model: 'com.axelor.apps.quality.db.ControlEntryPlanLine',
+    criteria: createControlEntrySampleLineCriteria(controlEntrySampleId),
+    fieldKey: 'quality_controlEntrySampleLine',
+    sortKey: 'quality_controlEntrySampleLine',
+    page: page,
+  });
+}

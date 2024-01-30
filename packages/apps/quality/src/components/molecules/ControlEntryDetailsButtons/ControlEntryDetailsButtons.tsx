@@ -16,5 +16,16 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-export * from './atoms';
-export * from './molecules';
+import React from 'react';
+import {useTranslator} from '@axelor/aos-mobile-core';
+import {Button} from '@axelor/aos-mobile-ui';
+
+const ControlEntryDetailsButtons = () => {
+  const I18n = useTranslator();
+
+  return (
+    <Button title={I18n.t('Quality_MarkAsCompleted')} iconName="check-lg" />
+  );
+};
+
+export default ControlEntryDetailsButtons;
