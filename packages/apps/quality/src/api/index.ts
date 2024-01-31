@@ -21,4 +21,8 @@ export {
   searchControlEntry as searchControlEntryApi,
 } from './control-entry-api';
 export {searchControlEntrySample as searchControlEntrySampleApi} from './control-entry-sample-api';
-export {searchControlEntrySampleLine as searchControlEntrySampleLineApi} from './control-entry-sample-line-api';
+export {
+  searchControlEntrySampleLine as searchControlEntrySampleLineApi,
+  searchControlEntrySampleLineByCharacteristic as searchControlEntrySampleLineByCharacteristicApi,
+} from './control-entry-sample-line-api';
+export {fetchControlPlanById as fetchControlPlanByIdApi} from './control-plan-api';

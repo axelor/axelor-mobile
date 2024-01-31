@@ -35,25 +35,36 @@ import {
 import {ControlEntry} from '../../../types';
 import {fetchControlEntryById} from '../../../features/controlEntrySlice';
 
+const MODE = {
+  bySample: '1',
+  byCharacteristic: '2',
+};
+
 interface ControlEntryHeaderProps {
   controlEntryId: number;
-  currentIndex: number;
+  currentIndexSample: number;
   currentIndexCharacteristic: number;
+  currentControlPLanIndex: number;
+  currentSampleLineIndex: number;
+  mode: string;
 }
 
 const ControlEntryFormHeader = ({
   controlEntryId,
-  currentIndex,
+  currentIndexSample,
   currentIndexCharacteristic,
+  currentControlPLanIndex,
+  currentSampleLineIndex,
+  mode,
 }: ControlEntryHeaderProps) => {
   const I18n = useTranslator();
   const Colors = useThemeColor();
   const dispatch = useDispatch();
 
   const {controlEntry} = useSelector((state: any) => state.controlEntry);
-  const {controlEntrySampleLineList} = useSelector(
-    (state: any) => state.controlEntrySampleLine,
-  );
+  const {controlEntrySampleLineList, controlEntrySampleLineByCharacteristic} =
+    useSelector((state: any) => state.controlEntrySampleLine);
+  const {controlPlan} = useSelector((state: any) => state.controlPlan);
 
   useEffect(() => {
     dispatch((fetchControlEntryById as any)({controlEntryId: controlEntryId}));
@@ -79,19 +90,35 @@ const ControlEntryFormHeader = ({
         <DateDisplay date={controlEntry.entryDateTime} />
       </View>
       <View style={styles.progressContainer}>
-        <Icon name="cup-hot-fill" />
+        <Icon name={mode === MODE.bySample ? 'eyedropper' : 'palette2'} />
         <ProgressBar
-          total={controlEntry?.controlEntrySamplesList?.length}
-          value={currentIndex}
+          total={
+            mode === MODE.bySample
+              ? controlEntry?.controlEntrySamplesList?.length
+              : controlPlan?.controlPlanLinesSet?.length
+          }
+          value={
+            mode === MODE.bySample
+              ? currentIndexSample
+              : currentControlPLanIndex
+          }
           style={[styles.progressBar, styles.margin]}
           showPercent={false}
         />
       </View>
       <View style={styles.progressContainer}>
-        <Icon name="palette2" />
+        <Icon name={mode === MODE.bySample ? 'palette2' : 'eyedropper'} />
         <ProgressBar
-          value={currentIndexCharacteristic}
-          total={controlEntrySampleLineList?.length}
+          value={
+            mode === MODE.bySample
+              ? currentIndexCharacteristic
+              : currentSampleLineIndex
+          }
+          total={
+            mode === MODE.bySample
+              ? controlEntrySampleLineList?.length
+              : controlEntrySampleLineByCharacteristic?.length
+          }
           showPercent={false}
           style={styles.progressBar}
         />

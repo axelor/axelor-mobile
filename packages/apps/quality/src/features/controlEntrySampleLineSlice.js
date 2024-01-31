@@ -21,7 +21,10 @@ import {
   generateInifiniteScrollCases,
   handlerApiCall,
 } from '@axelor/aos-mobile-core';
-import {searchControlEntrySampleLine as _searchControlEntrySampleLine} from '../api/control-entry-sample-line-api';
+import {
+  searchControlEntrySampleLine as _searchControlEntrySampleLine,
+  searchControlEntrySampleLineByCharacteristic as _searchControlEntrySampleLineByCharacteristic,
+} from '../api/control-entry-sample-line-api';
 
 export const searchControlEntrySampleLine = createAsyncThunk(
   'controlEntry/searchControlEntrySampleLine',
@@ -36,11 +39,28 @@ export const searchControlEntrySampleLine = createAsyncThunk(
   },
 );
 
+export const searchControlEntrySampleLineByCharacteristic = createAsyncThunk(
+  'controlEntry/searchControlEntrySampleLineByCharacteristic',
+  async function (data, {getState}) {
+    return handlerApiCall({
+      fetchFunction: _searchControlEntrySampleLineByCharacteristic,
+      data,
+      action:
+        'Quality_SliceAction_SearchControlEntrySampleLineByCharacteristic',
+      getState,
+      responseOptions: {isArrayResponse: true},
+    });
+  },
+);
+
 const initialState = {
   loadingControlEntrySamplelineList: true,
   moreLoading: false,
   isListEnd: false,
   controlEntrySampleLineList: [],
+
+  loadingControlEntrySamplelineByCharacteristicList: true,
+  controlEntrySampleLineByCharacteristic: [],
 };
 
 const controlEntrySampleLineSlice = createSlice({
@@ -53,6 +73,19 @@ const controlEntrySampleLineSlice = createSlice({
       isListEnd: 'isListEnd',
       list: 'controlEntrySampleLineList',
     });
+    builder.addCase(
+      searchControlEntrySampleLineByCharacteristic.pending,
+      (state, action) => {
+        state.loadingControlEntrySamplelineByCharacteristicList = true;
+      },
+    );
+    builder.addCase(
+      searchControlEntrySampleLineByCharacteristic.fulfilled,
+      (state, action) => {
+        state.loadingControlEntrySamplelineByCharacteristicList = false;
+        state.controlEntrySampleLineByCharacteristic = action.payload;
+      },
+    );
   },
 });
 

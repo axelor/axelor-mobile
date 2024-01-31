@@ -19,3 +19,4 @@
 export {controlEntrySampleLineReducer as controlEntrySampleLine} from './controlEntrySampleLineSlice';
 export {controlEntrySampleReducer as controlEntrySample} from './controlEntrySampleSlice';
 export {controlEntryReducer as controlEntry} from './controlEntrySlice';
+export {controlPlanReducer as controlPlan} from './controlPlanSlice';

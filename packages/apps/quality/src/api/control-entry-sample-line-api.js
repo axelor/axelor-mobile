@@ -40,3 +40,29 @@ export async function searchControlEntrySampleLine({
     page: page,
   });
 }
+
+const createControlEntrySampleLineByCharacteristicCriteria =
+  characteristicId => {
+    return [
+      {
+        fieldName: 'controlPlanLine.id',
+        operator: '=',
+        value: characteristicId,
+      },
+    ];
+  };
+
+export async function searchControlEntrySampleLineByCharacteristic({
+  page = 0,
+  characteristicId,
+}) {
+  console.log('ici');
+  return createStandardSearch({
+    model: 'com.axelor.apps.quality.db.ControlEntryPlanLine',
+    criteria:
+      createControlEntrySampleLineByCharacteristicCriteria(characteristicId),
+    fieldKey: 'quality_controlEntrySampleLine',
+    sortKey: 'quality_controlEntrySampleLine',
+    page: page,
+  });
+}

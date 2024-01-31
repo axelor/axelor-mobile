@@ -16,7 +16,12 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-export {searchControlEntrySampleLine} from './controlEntrySampleLineSlice';
-export {searchControlEntrySample} from './controlEntrySampleSlice';
-export {fetchControlEntryById, searchControlEntry} from './controlEntrySlice';
-export {fetchControlPlanById} from './controlPlanSlice';
+import {createStandardFetch} from '@axelor/aos-mobile-core';
+
+export async function fetchControlPlanById({controlPlanId}) {
+  return createStandardFetch({
+    model: 'com.axelor.apps.quality.db.ControlPlan',
+    id: controlPlanId,
+    fieldKey: 'quality_controlPlan',
+  });
+}

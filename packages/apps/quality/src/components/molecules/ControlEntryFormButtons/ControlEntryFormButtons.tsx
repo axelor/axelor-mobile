@@ -21,6 +21,11 @@ import {StyleSheet, View} from 'react-native';
 import {} from '@axelor/aos-mobile-core';
 import {Button, Icon, useThemeColor} from '@axelor/aos-mobile-ui';
 
+const MODE = {
+  bySample: '1',
+  byCharacteristic: '2',
+};
+
 interface ControlEntryFormButtonsProps {
   handleNextSample: () => void;
   handlePrevSample: () => void;
@@ -28,6 +33,13 @@ interface ControlEntryFormButtonsProps {
   handlePrevCharacteristic: () => void;
   isLastCharacteristic: boolean;
   isFirstCharacteristic: boolean;
+  mode: string;
+  handleNextControlPlan: () => void;
+  handlePrevControlPLan: () => void;
+  handleNextSampleLine: () => void;
+  handlePrevSampleLine: () => void;
+  isLastSampleLine: boolean;
+  isFirstSampleLine: boolean;
 }
 
 const ControlEntryFormButtons = ({
@@ -37,6 +49,13 @@ const ControlEntryFormButtons = ({
   handlePrevCharacteristic,
   isLastCharacteristic,
   isFirstCharacteristic,
+  mode,
+  handleNextControlPlan,
+  handlePrevControlPLan,
+  handleNextSampleLine,
+  handlePrevSampleLine,
+  isLastSampleLine,
+  isFirstSampleLine,
 }: ControlEntryFormButtonsProps) => {
   const Colors = useThemeColor();
 
@@ -46,21 +65,31 @@ const ControlEntryFormButtons = ({
         <View style={styles.buttonContainer}>
           <Button
             onPress={
-              isFirstCharacteristic
-                ? handlePrevSample
-                : handlePrevCharacteristic
+              mode === MODE.bySample
+                ? isFirstCharacteristic
+                  ? handlePrevSample
+                  : handlePrevCharacteristic
+                : isFirstSampleLine
+                ? handlePrevControlPLan
+                : handlePrevSampleLine
             }
             color={Colors.secondaryColor}
-            iconName={isFirstCharacteristic ? 'cup-hot-fill' : 'palette2'}
+            iconName={isFirstCharacteristic ? 'eyedropper' : 'palette2'}
           />
           <Icon name="chevron-left" style={styles.chevronLeft} />
         </View>
         <View style={styles.buttonContainer}>
           <Button
             onPress={
-              isLastCharacteristic ? handleNextSample : handleNextCharacteristic
+              mode === MODE.bySample
+                ? isLastCharacteristic
+                  ? handleNextSample
+                  : handleNextCharacteristic
+                : isLastSampleLine
+                ? handleNextControlPlan
+                : handleNextSampleLine
             }
-            iconName={isLastCharacteristic ? 'cup-hot-fill' : 'palette2'}
+            iconName={isLastCharacteristic ? 'eyedropper' : 'palette2'}
             color={Colors.secondaryColor}
           />
           <Icon name="chevron-right" style={styles.chevronRight} />

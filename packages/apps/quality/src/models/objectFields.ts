@@ -38,5 +38,13 @@ export const quality_modelAPI: ObjectFields = {
   quality_controlEntrySampleLine: schemaContructor.object({
     name: schemaContructor.string(),
     resultSelect: schemaContructor.number(),
+    controlPlanLine: schemaContructor.subObject('characteristic'),
+    characteristic: schemaContructor.subObject(),
+  }),
+  quality_controlPlan: schemaContructor.object({
+    name: schemaContructor.string(),
+    controlPlanLinesSet: schemaContructor
+      .array()
+      .of(schemaContructor.subObject()),
   }),
 };
