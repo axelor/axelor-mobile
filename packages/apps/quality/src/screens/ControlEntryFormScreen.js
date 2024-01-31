@@ -160,37 +160,21 @@ const ControlEntryFormScreen = ({route}) => {
     }
   }, [controlEntrySampleLineByCharacteristic?.length, currentSampleLineIndex]);
 
+  //MODE SAMPLE mis à jour du current sample en fonction de son index
   useEffect(() => {
     setCurrentSample(
       controlEntry?.controlEntrySamplesList[currentIndexSample - 1],
     );
-    if (selectedMode === MODE.byCharacteristic) {
-      if (controlPlan?.controlPlanLinesSet?.length > 0) {
-        setCurrentCharacteristic(
-          controlPlan?.controlPlanLinesSet[currentIndexCharacteristic],
-        );
-      }
-    }
-  }, [
-    controlEntry,
-    controlPlan?.controlPlanLinesSet,
-    currentIndexCharacteristic,
-    currentIndexSample,
-    selectedMode,
-  ]);
+  }, [controlEntry?.controlEntrySamplesList, currentIndexSample]);
 
+  //MODE SAMPLE fetch des sample line en fonction des samples
   useEffect(() => {
     dispatch(
       searchControlEntrySampleLine({controlEntrySampleId: currentSample?.id}),
     );
   }, [currentSample?.id, dispatch]);
 
-  useEffect(() => {
-    if (controlEntrySampleLineList?.length > 0) {
-      setCurrentCharacteristic(controlEntrySampleLineList[0]);
-    }
-  }, [controlEntrySampleLineList]);
-
+  //MODE SAMPLE set le cuurentSampleLine en fonction de son index
   useEffect(() => {
     if (controlEntrySampleLineList?.length > 0) {
       setCurrentCharacteristic(
@@ -199,6 +183,7 @@ const ControlEntryFormScreen = ({route}) => {
     }
   }, [controlEntrySampleLineList, currentIndexCharacteristic]);
 
+  //MODE SAMPLE set des firsts et last items
   useEffect(() => {
     if (currentIndexCharacteristic === controlEntrySampleLineList?.length) {
       setIsLastCharacteristic(true);
@@ -282,11 +267,15 @@ const ControlEntryFormScreen = ({route}) => {
           />
         }
       />
-      {currentCharacteristic != null && (
+      {((selectedMode === MODE.bySample && currentCharacteristic != null) ||
+        (selectedMode === MODE.byCharacteristic &&
+          currentSampleLine?.id != null)) && (
         <CustomFieldForm
           model="com.axelor.apps.quality.db.ControlEntryPlanLine"
           modelId={
-            MODE.bySample ? currentCharacteristic?.id : currentSampleLine?.id
+            selectedMode === MODE.bySample
+              ? currentCharacteristic?.id
+              : currentSampleLine?.id
           }
         />
       )}
