@@ -40,6 +40,9 @@ const ControlEntryFormScreen = ({route}) => {
 
   const dispatch = useDispatch();
 
+  const {controlEntrySampleList} = useSelector(
+    state => state.controlEntrySample,
+  );
   const {controlEntrySampleLineList, controlEntrySampleLineByCharacteristic} =
     useSelector(state => state.controlEntrySampleLine);
   const {controlEntry} = useSelector(state => state.controlEntry);
@@ -85,14 +88,16 @@ const ControlEntryFormScreen = ({route}) => {
   // MODE CARACT fetch des lignes sample par currentControlPlan stocké dans controlEntrySampleLineByCharacteristic
   useEffect(() => {
     if (selectedMode === MODE.byCharacteristic) {
+      const idListSample = controlEntrySampleList.map(elt => elt.id);
       dispatch(
         searchControlEntrySampleLineByCharacteristic({
           characteristicId: currentControlPLan?.id,
+          idListSample: idListSample,
           page: 0,
         }),
       );
     }
-  }, [currentControlPLan?.id, dispatch, selectedMode]);
+  }, [controlEntrySampleList, currentControlPLan?.id, dispatch, selectedMode]);
 
   // MODE CARACT set du currentSampleLine  en fonction de son Index par default 1
   useEffect(() => {
