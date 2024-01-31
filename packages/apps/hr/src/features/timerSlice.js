@@ -91,15 +91,31 @@ export const createTimer = createAsyncThunk(
       action: 'Hr_SliceAction_CreateTimer',
       getState,
       responseOptions: {isArrayResponse: false},
+    }).then(res => {
+      dispatch(
+        updateTimerStatus({
+          userId: data.userId,
+          timerId: res.timerId,
+          version: res.version,
+          toStatus: 'start',
+        }),
+      );
+    });
+  },
+);
+
+export const updateTimerStatus = createAsyncThunk(
+  'hr_timer/updateTimerStatus',
+  async function (data = {}, {getState, dispatch}) {
+    return handlerApiCall({
+      fetchFunction: _updateTimerStatus,
+      data,
+      action: 'Hr_SliceAction_UpdateTimerStatus',
+      getState,
+      responseOptions: {isArrayResponse: false},
     })
       .then(res => {
-        return handlerApiCall({
-          fetchFunction: _updateTimerStatus,
-          data: {timerId: res.timerId, version: res.version, toStatus: 'start'},
-          action: 'Hr_SliceAction_UpdateTimerStatus',
-          getState,
-          responseOptions: {isArrayResponse: false},
-        });
+        dispatch(fetchTimerById({timerId: res.timerId}));
       })
       .then(() => {
         dispatch(fetchTimer({userId: data.userId, page: 0}));

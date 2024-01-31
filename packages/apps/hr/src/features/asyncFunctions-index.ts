@@ -60,6 +60,7 @@ export {
   fetchTimer,
   fetchTimerById,
   fetchTimerDateInterval,
+  updateTimerStatus,
 } from './timerSlice';
 export {
   createTimesheetLine,

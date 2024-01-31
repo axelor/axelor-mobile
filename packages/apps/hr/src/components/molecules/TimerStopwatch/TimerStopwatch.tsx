@@ -25,7 +25,7 @@ import {
   useSelector,
   useTranslator,
 } from '@axelor/aos-mobile-core';
-import {createTimer} from '../../../features/timerSlice';
+import {createTimer, updateTimerStatus} from '../../../features/timerSlice';
 
 const DEFAULT_TIME = 0;
 const TIMER_STATUS = {
@@ -37,6 +37,8 @@ const TIMER_STATUS = {
 const DEFAULT_STATUS = TIMER_STATUS.Draft;
 
 interface TimerValueProps {
+  timerId: number;
+  version: number;
   duration: number;
   timerStartDateT: string;
   status: number;
@@ -59,6 +61,35 @@ const TimerStopwatch = ({
   const [time, setTime] = useState(DEFAULT_TIME);
   const [status, setStatus] = useState(DEFAULT_STATUS);
 
+  const {userId} = useSelector((state: any) => state.auth);
+
+  const createTimerAPI = useCallback(() => {
+    const _timer = {
+      startDateTime: objectState?.startDateTime,
+      projectId: objectState?.project?.id,
+      projectTaskId: objectState?.projectTask?.id,
+      productId: objectState?.product?.id,
+      duration: objectState?.duration,
+      comments: objectState?.comments,
+    };
+
+    dispatch((createTimer as any)({userId: userId, timer: _timer}));
+  }, [dispatch, objectState, userId]);
+
+  const updateTimerStatusAPI = useCallback(
+    (toStatus: string) => {
+      dispatch(
+        (updateTimerStatus as any)({
+          userId: userId,
+          timerId: defaultValue?.timerId,
+          version: defaultValue?.version,
+          toStatus: toStatus,
+        }),
+      );
+    },
+    [defaultValue, dispatch, userId],
+  );
+
   const getTimerState = useCallback(() => {
     const _status = defaultValue?.status ?? DEFAULT_STATUS;
     setStatus(_status);
@@ -77,29 +108,9 @@ const TimerStopwatch = ({
     return {time: _time, status: _status};
   }, [defaultValue]);
 
-  const {userId} = useSelector((state: any) => state.auth);
-
-  const createTimerAPI = useCallback(() => {
-    const _timer = {
-      startDateTime: objectState?.startDateTime,
-      projectId: objectState?.project?.id,
-      projectTaskId: objectState?.projectTask?.id,
-      productId: objectState?.product?.id,
-      duration: objectState?.duration,
-      comments: objectState?.comments,
-    };
-
-    dispatch((createTimer as any)({userId: userId, timer: _timer}));
-  }, [dispatch, objectState, userId]);
-
   useEffect(() => {
     getTimerState();
   }, [getTimerState]);
-
-  useEffect(() => {
-    // TODO: remove this after doing the API requests
-    console.log(objectState);
-  }, [objectState]);
 
   return (
     <Stopwatch
@@ -108,11 +119,13 @@ const TimerStopwatch = ({
       status={status}
       getTimerState={getTimerState}
       timerFormat={I18n.t('Hr_TimerFormat')}
-      onPlay={createTimerAPI}
+      onPlay={() =>
+        defaultValue?.timerId ? updateTimerStatusAPI('start') : createTimerAPI()
+      }
       disablePlay={!objectState?.product}
-      onPause={() => console.log('Pause button pressed.')}
-      onStop={() => console.log('Stop button pressed.')}
-      onCancel={() => console.log('Cancel button pressed.')}
+      onPause={() => updateTimerStatusAPI('pause')}
+      onStop={() => updateTimerStatusAPI('stop')}
+      onCancel={() => updateTimerStatusAPI('reset')}
     />
   );
 };

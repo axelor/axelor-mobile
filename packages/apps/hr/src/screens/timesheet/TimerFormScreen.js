@@ -37,9 +37,9 @@ const TimerFormScreen = ({route}) => {
   useEffect(() => {
     if (isFocused) {
       dispatch(fetchActiveTimer({userId: user?.id}));
-      idTimerToUpdate && dispatch(fetchTimerById({timerId: idTimerToUpdate}));
+      dispatch(fetchTimerById({timerId: idTimerToUpdate ?? activeTimer.id}));
     }
-  }, [dispatch, idTimerToUpdate, isFocused, user?.id]);
+  }, [activeTimer, dispatch, idTimerToUpdate, isFocused, user?.id]);
 
   const defaultValue = useMemo(() => {
     const DEFAULT = {
@@ -51,32 +51,26 @@ const TimerFormScreen = ({route}) => {
       return DEFAULT;
     }
 
-    const _timer = idTimerToUpdate ? timer : activeTimer;
-
-    if (_timer != null) {
+    if (timer != null) {
       return {
-        startDateTime: _timer.startDateTime,
-        project: _timer.project,
-        projectTask: _timer.projectTask,
-        product: _timer.product,
-        updatedDuration: _timer.updatedDuration,
-        comments: _timer.comments,
+        startDateTime: timer.startDateTime,
+        project: timer.project,
+        projectTask: timer.projectTask,
+        product: timer.product,
+        updatedDuration: timer.updatedDuration,
+        comments: timer.comments,
         stopwatch: {
-          duration: _timer.duration,
-          timerStartDateT: _timer.timerStartDateT,
-          status: _timer.statusSelect,
+          timerId: timer.id,
+          version: timer.version,
+          duration: timer.duration,
+          timerStartDateT: timer.timerStartDateT,
+          status: timer.statusSelect,
         },
       };
     }
 
     return DEFAULT;
-  }, [
-    activeTimer,
-    idTimerToUpdate,
-    isCreation,
-    timer,
-    user?.employee?.product,
-  ]);
+  }, [isCreation, timer, user?.employee?.product]);
 
   return (
     <FormView defaultValue={defaultValue} actions={[]} formKey="hr_Timer" />
