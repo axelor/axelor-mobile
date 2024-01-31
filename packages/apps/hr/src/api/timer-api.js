@@ -127,6 +127,13 @@ export async function createTimer({timer}) {
   });
 }
 
+export async function updateTimer({timer}) {
+  return axiosApiProvider.put({
+    url: `ws/aos/timesheet/timer/update/${timer.id}`,
+    data: timer,
+  });
+}
+
 export async function updateTimerStatus({timerId, version, toStatus}) {
   return axiosApiProvider.put({
     url: `ws/aos/timesheet/timer/status/${timerId}`,

@@ -16,14 +16,18 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import React, {useEffect, useMemo} from 'react';
+import React, {useCallback, useEffect, useMemo} from 'react';
 import {
   FormView,
   useDispatch,
   useIsFocused,
   useSelector,
 } from '@axelor/aos-mobile-core';
-import {fetchActiveTimer, fetchTimerById} from '../../features/timerSlice';
+import {
+  fetchActiveTimer,
+  fetchTimerById,
+  updateTimer,
+} from '../../features/timerSlice';
 
 const TimerFormScreen = ({route}) => {
   const isCreation = route?.params?.isCreation;
@@ -32,14 +36,15 @@ const TimerFormScreen = ({route}) => {
   const dispatch = useDispatch();
 
   const {user} = useSelector(state => state.user);
-  const {activeTimer, timer} = useSelector(state => state.hr_timer);
+  const {timer} = useSelector(state => state.hr_timer);
 
   useEffect(() => {
-    if (isFocused) {
-      dispatch(fetchActiveTimer({userId: user?.id}));
-      dispatch(fetchTimerById({timerId: idTimerToUpdate ?? activeTimer.id}));
+    if (isFocused && !isCreation) {
+      idTimerToUpdate
+        ? dispatch(fetchTimerById({timerId: idTimerToUpdate}))
+        : dispatch(fetchActiveTimer({userId: user?.id}));
     }
-  }, [activeTimer, dispatch, idTimerToUpdate, isFocused, user?.id]);
+  }, [dispatch, idTimerToUpdate, isCreation, isFocused, user?.id]);
 
   const defaultValue = useMemo(() => {
     const DEFAULT = {
@@ -51,7 +56,7 @@ const TimerFormScreen = ({route}) => {
       return DEFAULT;
     }
 
-    if (timer != null) {
+    if (timer != null && Object.keys(timer).length > 0) {
       return {
         startDateTime: timer.startDateTime,
         project: timer.project,
@@ -72,8 +77,51 @@ const TimerFormScreen = ({route}) => {
     return DEFAULT;
   }, [isCreation, timer, user?.employee?.product]);
 
+  const fieldsComparison = objectState => {
+    return (
+      objectState.startDateTime === timer.startDateTime &&
+      objectState.project?.id === timer.project?.id &&
+      objectState.projectTask?.id === timer.projectTask?.id &&
+      objectState.product?.id === timer.product?.id &&
+      objectState.updatedDuration === timer.updatedDuration &&
+      objectState.comments === timer.comments
+    );
+  };
+
+  const updateTimerAPI = useCallback(
+    objectState => {
+      const _timer = {
+        id: timer.id,
+        version: timer.version,
+        startDateTime: objectState.startDateTime,
+        projectId: objectState.project?.id,
+        projectTaskId: objectState.projectTask?.id,
+        productId: objectState.product?.id,
+        duration: objectState.updatedDuration,
+        comments: objectState.comments,
+      };
+
+      dispatch(updateTimer({timer: _timer}));
+    },
+    [dispatch, timer],
+  );
+
   return (
-    <FormView defaultValue={defaultValue} actions={[]} formKey="hr_Timer" />
+    <FormView
+      defaultValue={defaultValue}
+      actions={[
+        {
+          key: 'update-timer',
+          type: 'update',
+          needValidation: true,
+          needRequiredFields: true,
+          disabledIf: ({objectState}) => fieldsComparison(objectState),
+          hideIf: () => !timer?.id,
+          customAction: ({objectState}) => updateTimerAPI(objectState),
+        },
+      ]}
+      formKey="hr_Timer"
+    />
   );
 };
 

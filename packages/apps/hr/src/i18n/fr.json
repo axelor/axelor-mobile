@@ -121,6 +121,7 @@
   "Hr_SliceAction_UpdateTimesheetStatus": "mise à jour du statut d'une feuille de temps",
   "Hr_SliceAction_DeleteTimesheet": "suppression d'une feuille de temps",
   "Hr_SliceAction_CreateTimer": "création d'un chronomètre",
-  "Hr_SliceAction_DeleteTimer": "suppression d'un chronomètre",
-  "Hr_SliceAction_UpdateTimerStatus": "mise à jour du statut"
+  "Hr_SliceAction_UpdateTimer": "mise à jour d'un chronomètre",
+  "Hr_SliceAction_UpdateTimerStatus": "mise à jour du statut d'un chronomètre",
+  "Hr_SliceAction_DeleteTimer": "suppression d'un chronomètre"
 }

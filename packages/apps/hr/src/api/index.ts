@@ -57,6 +57,7 @@ export {
   fetchActiveTimer as fetchActiveTimerApi,
   fetchTimer as fetchTimerApi,
   fetchTimerById as fetchTimerByIdApi,
+  updateTimer as updateTimerApi,
   updateTimerStatus as updateTimerStatusApi,
 } from './timer-api';
 export {

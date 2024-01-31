@@ -27,6 +27,7 @@ import {
   fetchActiveTimer as _fetchActiveTimer,
   fetchTimer as _fetchTimer,
   fetchTimerById as _fetchTimerById,
+  updateTimer as _updateTimer,
   updateTimerStatus as _updateTimerStatus,
 } from '../api/timer-api';
 
@@ -71,13 +72,15 @@ export const fetchTimerById = createAsyncThunk(
 
 export const fetchActiveTimer = createAsyncThunk(
   'hr_timer/fetchActiveTimer',
-  async function (data, {getState}) {
+  async function (data, {getState, dispatch}) {
     return handlerApiCall({
       fetchFunction: _fetchActiveTimer,
       data,
       action: 'Hr_SliceAction_FetchActiveTimer',
       getState,
       responseOptions: {isArrayResponse: false},
+    }).then(res => {
+      dispatch(fetchTimerById({timerId: res.id}));
     });
   },
 );
@@ -104,6 +107,25 @@ export const createTimer = createAsyncThunk(
   },
 );
 
+export const updateTimer = createAsyncThunk(
+  'hr_timer/updateTimer',
+  async function (data = {}, {getState, dispatch}) {
+    return handlerApiCall({
+      fetchFunction: _updateTimer,
+      data,
+      action: 'Hr_SliceAction_UpdateTimer',
+      getState,
+      responseOptions: {isArrayResponse: false, showToast: true},
+    })
+      .then(() => {
+        dispatch(fetchTimerById({timerId: data.timer.id}));
+      })
+      .then(() => {
+        dispatch(fetchTimer({userId: data.userId, page: 0}));
+      });
+  },
+);
+
 export const updateTimerStatus = createAsyncThunk(
   'hr_timer/updateTimerStatus',
   async function (data = {}, {getState, dispatch}) {
@@ -114,8 +136,8 @@ export const updateTimerStatus = createAsyncThunk(
       getState,
       responseOptions: {isArrayResponse: false},
     })
-      .then(res => {
-        dispatch(fetchTimerById({timerId: res.timerId}));
+      .then(() => {
+        dispatch(fetchTimerById({timerId: data.timerId}));
       })
       .then(() => {
         dispatch(fetchTimer({userId: data.userId, page: 0}));
@@ -151,9 +173,6 @@ const initialState = {
 
   loadingOneTimer: true,
   timer: {},
-
-  loadingActiveTimer: true,
-  activeTimer: {},
 };
 
 const timerSlice = createSlice({
@@ -178,13 +197,6 @@ const timerSlice = createSlice({
     builder.addCase(fetchTimerById.fulfilled, (state, action) => {
       state.loadingOneTimer = false;
       state.timer = action.payload;
-    });
-    builder.addCase(fetchActiveTimer.pending, state => {
-      state.loadingActiveTimer = true;
-    });
-    builder.addCase(fetchActiveTimer.fulfilled, (state, action) => {
-      state.loadingActiveTimer = false;
-      state.activeTimer = action.payload;
     });
   },
 });
