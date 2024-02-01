@@ -76,12 +76,13 @@ const ControlEntryFormScreen = ({route}) => {
 
   // MODE CARACT set du currentControl Plan en fonction de son Index par default 1
   useEffect(() => {
-    if (selectedMode === MODE.byCharacteristic) {
-      if (Array.isArray(controlPlan?.controlPlanLinesSet)) {
-        setCurrentControlPLan(
-          controlPlan?.controlPlanLinesSet[currentControlPLanIndex - 1],
-        );
-      }
+    if (
+      selectedMode === MODE.byCharacteristic &&
+      Array.isArray(controlPlan?.controlPlanLinesSet)
+    ) {
+      setCurrentControlPLan(
+        controlPlan?.controlPlanLinesSet[currentControlPLanIndex - 1],
+      );
     }
   }, [controlPlan?.controlPlanLinesSet, currentControlPLanIndex, selectedMode]);
 
@@ -101,12 +102,19 @@ const ControlEntryFormScreen = ({route}) => {
 
   // MODE CARACT set du currentSampleLine  en fonction de son Index par default 1
   useEffect(() => {
-    if (controlEntrySampleLineByCharacteristic?.length > 0) {
+    if (
+      selectedMode === MODE.byCharacteristic &&
+      controlEntrySampleLineByCharacteristic?.length > 0
+    ) {
       setCurrentSampleLine(
         controlEntrySampleLineByCharacteristic[currentSampleLineIndex - 1],
       );
     }
-  }, [controlEntrySampleLineByCharacteristic, currentSampleLineIndex]);
+  }, [
+    controlEntrySampleLineByCharacteristic,
+    currentSampleLineIndex,
+    selectedMode,
+  ]);
 
   // MODE CARACT NEXBUTTON CONTROL PLAN
   const handleNextControlPlan = () => {
@@ -148,59 +156,76 @@ const ControlEntryFormScreen = ({route}) => {
   };
   // MODE CARACT Manage isLast item sample line
   useEffect(() => {
-    if (
-      currentSampleLineIndex === controlEntrySampleLineByCharacteristic?.length
-    ) {
-      setIsLastSampleLine(true);
-    } else {
-      setIsLastSampleLine(false);
+    if (selectedMode === MODE.byCharacteristic) {
+      if (
+        currentSampleLineIndex ===
+        controlEntrySampleLineByCharacteristic?.length
+      ) {
+        setIsLastSampleLine(true);
+      } else {
+        setIsLastSampleLine(false);
+      }
+      if (currentSampleLineIndex === 1) {
+        setIsFirstSampleLine(true);
+      } else {
+        setIsFirstSampleLine(false);
+      }
     }
-    if (currentSampleLineIndex === 1) {
-      setIsFirstSampleLine(true);
-    } else {
-      setIsFirstSampleLine(false);
-    }
-  }, [controlEntrySampleLineByCharacteristic?.length, currentSampleLineIndex]);
+  }, [
+    controlEntrySampleLineByCharacteristic?.length,
+    currentSampleLineIndex,
+    selectedMode,
+  ]);
 
   //MODE SAMPLE mis à jour du current sample en fonction de son index
   useEffect(() => {
-    setCurrentSample(
-      controlEntry?.controlEntrySamplesList[currentIndexSample - 1],
-    );
-  }, [controlEntry?.controlEntrySamplesList, currentIndexSample]);
+    if (selectedMode === MODE.bySample) {
+      setCurrentSample(
+        controlEntry?.controlEntrySamplesList[currentIndexSample - 1],
+      );
+    }
+  }, [controlEntry?.controlEntrySamplesList, currentIndexSample, selectedMode]);
 
   //MODE SAMPLE fetch des sample line en fonction des samples
   useEffect(() => {
-    dispatch(
-      searchControlEntrySampleLine({controlEntrySampleId: currentSample?.id}),
-    );
-  }, [currentSample?.id, dispatch]);
+    if (selectedMode === MODE.bySample) {
+      dispatch(
+        searchControlEntrySampleLine({controlEntrySampleId: currentSample?.id}),
+      );
+    }
+  }, [currentSample?.id, dispatch, selectedMode]);
 
   //MODE SAMPLE set le cuurentSampleLine en fonction de son index
   useEffect(() => {
-    if (controlEntrySampleLineList?.length > 0) {
+    if (
+      selectedMode === MODE.bySample &&
+      controlEntrySampleLineList?.length > 0
+    ) {
       setCurrentCharacteristic(
         controlEntrySampleLineList[currentIndexCharacteristic - 1],
       );
     }
-  }, [controlEntrySampleLineList, currentIndexCharacteristic]);
+  }, [controlEntrySampleLineList, currentIndexCharacteristic, selectedMode]);
 
   //MODE SAMPLE set des firsts et last items
   useEffect(() => {
-    if (currentIndexCharacteristic === controlEntrySampleLineList?.length) {
-      setIsLastCharacteristic(true);
-    } else {
-      setIsLastCharacteristic(false);
-    }
-    if (currentIndexCharacteristic === 1) {
-      setIsFirstCharacteristic(true);
-    } else {
-      setIsFirstCharacteristic(false);
+    if (selectedMode === MODE.bySample) {
+      if (currentIndexCharacteristic === controlEntrySampleLineList?.length) {
+        setIsLastCharacteristic(true);
+      } else {
+        setIsLastCharacteristic(false);
+      }
+      if (currentIndexCharacteristic === 1) {
+        setIsFirstCharacteristic(true);
+      } else {
+        setIsFirstCharacteristic(false);
+      }
     }
   }, [
     controlEntrySampleLineList?.length,
     currentIndexCharacteristic,
     currentIndexSample,
+    selectedMode,
   ]);
 
   const handleNextSample = () => {
