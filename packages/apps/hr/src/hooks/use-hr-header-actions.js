@@ -25,12 +25,50 @@ import {
   useDispatch,
 } from '@axelor/aos-mobile-core';
 import {useThemeColor} from '@axelor/aos-mobile-ui';
-import {fetchExpenseById} from '../features/expenseSlice';
+import {fetchExpenseById, quickCreateExpense} from '../features/expenseSlice';
+import {Expense} from '../types';
 
 export const useHrHeaders = () => {
+  useExpenseAction();
   useExpenseDetailsAction();
   useTimerListAction();
   useActiveTimerAction();
+};
+
+const useExpenseAction = () => {
+  const Colors = useThemeColor();
+  const I18n = useTranslator();
+  const navigation = useNavigation();
+  const dispatch = useDispatch();
+
+  const {mobileSettings} = useSelector(state => state.appConfig);
+  const {userId} = useSelector(state => state.auth);
+
+  useEffect(() => {
+    headerActionsProvider.registerModel('hr_expenses_list', {
+      actions: [
+        {
+          key: 'newExpense',
+          order: 10,
+          iconName: 'plus-lg',
+          title: I18n.t('Hr_CreateExpense'),
+          iconColor: Colors.primaryColor.background,
+          hideIf: !mobileSettings?.isManualCreationOfExpenseAllowed,
+          onPress: () =>
+            dispatch(quickCreateExpense({userId})).then(
+              res =>
+                mobileSettings?.isLineCreationOfExpenseDetailsAllowed &&
+                navigation.navigate('ExpenseDetailsScreen', {
+                  idExpense: res.payload.expenseId,
+                  expenseMode: Expense.mode.personnal,
+                  isManualCreation: true,
+                }),
+            ),
+          showInHeader: true,
+        },
+      ],
+    });
+  }, [Colors, dispatch, I18n, mobileSettings, navigation, userId]);
 };
 
 const useExpenseDetailsAction = () => {
@@ -60,7 +98,7 @@ const useExpenseDetailsAction = () => {
         },
       ],
     });
-  }, [Colors, I18n, dispatch, expense, mobileSettings]);
+  }, [Colors, dispatch, expense, I18n, mobileSettings]);
 };
 
 const useTimerListAction = () => {

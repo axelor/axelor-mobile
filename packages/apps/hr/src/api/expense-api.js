@@ -127,6 +127,12 @@ export async function createExpense({expense}) {
   });
 }
 
+export async function quickCreateExpense() {
+  return axiosApiProvider.post({
+    url: 'ws/aos/expense/quick-create',
+  });
+}
+
 export async function updateExpense({expenseId, version, expenseLineIdList}) {
   return axiosApiProvider.put({
     url: `ws/aos/expense/add-line/${expenseId}`,
