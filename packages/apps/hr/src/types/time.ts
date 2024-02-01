@@ -33,7 +33,7 @@ class TimeType {
       case this.statusSelect.InProgress:
         return Colors.progressColor;
       case this.statusSelect.Paused:
-        return Colors.infoColor;
+        return Colors.cautionColor;
       case this.statusSelect.Completed:
         return Colors.successColor;
       default:
