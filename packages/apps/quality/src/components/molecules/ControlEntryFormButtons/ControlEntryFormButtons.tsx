@@ -74,7 +74,15 @@ const ControlEntryFormButtons = ({
                 : handlePrevSampleLine
             }
             color={Colors.secondaryColor}
-            iconName={isFirstCharacteristic ? 'eyedropper' : 'palette2'}
+            iconName={
+              mode === MODE.bySample
+                ? isFirstCharacteristic
+                  ? 'eyedropper'
+                  : 'palette2'
+                : isFirstSampleLine
+                ? 'palette2'
+                : 'eyedropper'
+            }
           />
           <Icon name="chevron-left" style={styles.chevronLeft} />
         </View>
@@ -89,7 +97,15 @@ const ControlEntryFormButtons = ({
                 ? handleNextControlPlan
                 : handleNextSampleLine
             }
-            iconName={isLastCharacteristic ? 'eyedropper' : 'palette2'}
+            iconName={
+              mode === MODE.bySample
+                ? isLastCharacteristic
+                  ? 'eyedropper'
+                  : 'palette2'
+                : isLastSampleLine
+                ? 'palette2'
+                : 'eyedropper'
+            }
             color={Colors.secondaryColor}
           />
           <Icon name="chevron-right" style={styles.chevronRight} />

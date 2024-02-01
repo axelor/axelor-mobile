@@ -110,7 +110,9 @@ const ControlEntryFormScreen = ({route}) => {
 
   // MODE CARACT NEXBUTTON CONTROL PLAN
   const handleNextControlPlan = () => {
-    setCurrentSampleLineIndex(1);
+    if (currentControlPLanIndex !== controlPlan.controlPlanLinesSet.length) {
+      setCurrentSampleLineIndex(1);
+    }
     if (currentControlPLanIndex <= controlPlan.controlPlanLinesSet.length - 1) {
       setCurrentControlPLanIndex(currentControlPLanIndex + 1);
     }
@@ -202,7 +204,9 @@ const ControlEntryFormScreen = ({route}) => {
   ]);
 
   const handleNextSample = () => {
-    setCurrentIndexCharacteristic(1);
+    if (currentIndexSample !== controlEntry?.controlEntrySamplesList.length) {
+      setCurrentIndexCharacteristic(1);
+    }
     if (
       currentIndexSample <=
       controlEntry?.controlEntrySamplesList.length - 1
