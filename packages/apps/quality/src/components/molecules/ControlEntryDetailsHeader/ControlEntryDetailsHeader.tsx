@@ -18,11 +18,17 @@
 
 import React, {useEffect, useState} from 'react';
 import {StyleSheet, View} from 'react-native';
-import {DateDisplay, useTranslator} from '@axelor/aos-mobile-core';
 import {
+  DateDisplay,
+  useNavigation,
+  useTranslator,
+} from '@axelor/aos-mobile-core';
+import {
+  Alert,
   Badge,
   Button,
   ProgressBar,
+  RadioSelect,
   Text,
   useThemeColor,
 } from '@axelor/aos-mobile-ui';
@@ -46,10 +52,13 @@ const ControlEntryDetailsHeader = ({
   controlPlanName,
   entryDateTime,
 }: ControlEntryHeaderProps) => {
+  const navigation = useNavigation();
   const I18n = useTranslator();
   const Colors = useThemeColor();
 
   const [numberSampleFilled, setNumberSampleFilled] = useState<number>(0);
+  const [showAlert, setShowAlert] = useState(false);
+  const [selectedMode, setSelectedMode] = useState(null);
 
   useEffect(() => {
     searchControlEntrySampleApi({controlEntryId: controlEntryId})
@@ -96,8 +105,43 @@ const ControlEntryDetailsHeader = ({
           iconName="clipboard2-fill"
           width="10%"
           style={styles.button}
+          onPress={() => setShowAlert(true)}
         />
       </View>
+      <Alert
+        visible={showAlert}
+        cancelButtonConfig={{
+          hide: false,
+          width: '15%',
+          styleTxt: {display: 'none'},
+          onPress: () => {
+            setShowAlert(false);
+          },
+        }}
+        confirmButtonConfig={{
+          hide: false,
+          width: '15%',
+          styleTxt: {display: 'none'},
+          disabled: selectedMode == null,
+          onPress: () => {
+            setShowAlert(false);
+            navigation.navigate('ControlEntryFormScreen', {
+              controlEntryId: controlEntryId,
+              selectedMode: selectedMode,
+            });
+          },
+        }}>
+        <RadioSelect
+          direction="column"
+          question="Filling method"
+          itemStyle={styles.radioSelect}
+          items={[
+            {id: '1', title: 'By Sample'},
+            {id: '2', title: 'By Characteristic'},
+          ]}
+          onChange={setSelectedMode}
+        />
+      </Alert>
     </View>
   );
 };
@@ -120,6 +164,9 @@ const styles = StyleSheet.create({
   button: {
     height: 40,
     borderWidth: 1,
+  },
+  radioSelect: {
+    height: 150,
   },
 });
 
