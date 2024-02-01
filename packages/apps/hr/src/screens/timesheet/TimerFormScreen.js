@@ -116,7 +116,7 @@ const TimerFormScreen = ({route}) => {
           needValidation: true,
           needRequiredFields: true,
           disabledIf: ({objectState}) => fieldsComparison(objectState),
-          hideIf: () => !timer?.id,
+          hideIf: () => isCreation || !timer?.id,
           customAction: ({objectState}) => updateTimerAPI(objectState),
         },
       ]}
