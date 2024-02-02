@@ -23,16 +23,17 @@ import {
   updateAgendaItems,
 } from '@axelor/aos-mobile-core';
 import {
-  searchExpenseDraft as _searchExpenseDraft,
-  searchMyExpense as _searchMyExpense,
-  searchExpenseToValidate as _searchExpenseToValidate,
-  getExpense,
   createExpense as _createExpense,
-  updateExpense as _updateExpense,
-  sendExpense as _sendExpense,
-  validateExpense as _validateExpense,
-  refuseExpense as _refuseExpense,
   deleteExpense as _deleteExpense,
+  getExpense,
+  quickCreateExpense as _quickCreateExpense,
+  refuseExpense as _refuseExpense,
+  sendExpense as _sendExpense,
+  searchExpenseDraft as _searchExpenseDraft,
+  searchExpenseToValidate as _searchExpenseToValidate,
+  searchMyExpense as _searchMyExpense,
+  updateExpense as _updateExpense,
+  validateExpense as _validateExpense,
 } from '../api/expense-api';
 import {Expense} from '../types';
 import {fetchExpenseLine} from './expenseLineSlice';
@@ -60,6 +61,22 @@ export const createExpense = createAsyncThunk(
         dispatch(fetchExpenseLine({userId: data.userId}));
         return res;
       });
+  },
+);
+
+export const quickCreateExpense = createAsyncThunk(
+  'expense/quickCreateExpense',
+  async function (data = {}, {getState, dispatch}) {
+    return handlerApiCall({
+      fetchFunction: _quickCreateExpense,
+      data,
+      action: 'Hr_SliceAction_QuickCreateExpense',
+      getState,
+      responseOptions: {isArrayResponse: false},
+    }).then(res => {
+      dispatch(searchMyExpense({userId: data.userId, page: 0}));
+      return res;
+    });
   },
 );
 

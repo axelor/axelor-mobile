@@ -34,11 +34,14 @@ const ExpenseLineSwitchAdd = ({
 }: ExpenseLineSwitchAddProps) => {
   const navigation = useNavigation();
 
+  const {mobileSettings} = useSelector((state: any) => state.appConfig);
   const {expense} = useSelector((state: any) => state.expense);
 
   const isAddButton = useMemo(
-    () => expense.statusSelect === Expense.statusSelect.Draft,
-    [expense],
+    () =>
+      mobileSettings?.isLineCreationOfExpenseDetailsAllowed &&
+      expense.statusSelect === Expense.statusSelect.Draft,
+    [expense, mobileSettings],
   );
 
   return (

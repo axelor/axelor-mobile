@@ -21,7 +21,9 @@ export {getDistance as getDistanceApi} from './distance-api';
 export {searchManagedEmployee as searchManagedEmployeeApi} from './employee-api';
 export {
   createExpense as createExpenseApi,
+  deleteExpense as deleteExpenseApi,
   getExpense,
+  quickCreateExpense as quickCreateExpenseApi,
   refuseExpense as refuseExpenseApi,
   searchExpenseDraft as searchExpenseDraftApi,
   searchExpenseToValidate as searchExpenseToValidateApi,
@@ -29,7 +31,6 @@ export {
   sendExpense as sendExpenseApi,
   updateExpense as updateExpenseApi,
   validateExpense as validateExpenseApi,
-  deleteExpense as deleteExpenseApi,
 } from './expense-api';
 export {
   createExpenseLine as createExpenseLineApi,

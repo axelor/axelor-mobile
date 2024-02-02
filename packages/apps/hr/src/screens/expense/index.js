@@ -33,6 +33,7 @@ export default {
     options: {
       shadedHeader: false,
     },
+    actionID: 'hr_expenses_list',
   },
   ExpenseDetailsScreen: {
     title: 'Hr_Expenses',
