@@ -56,11 +56,10 @@ const LoaderPopup = ({
 
   const timeoutRef = useRef(null);
 
-  const {notifyMe, showPopup, setNotifyMe, setShowPopup} = useLoader();
+  const {loading, notifyMe, showPopup, setNotifyMe, setShowPopup} = useLoader();
 
-  const {loading, listener} = useLoaderListner({
+  const {listener} = useLoaderListner({
     process,
-    onFinish: () => setShowPopup(false),
     onSuccess,
     onError,
     disabled,

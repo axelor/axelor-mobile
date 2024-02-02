@@ -37,7 +37,7 @@
 import React, {useState} from 'react';
 import {View} from 'react-native';
 import {Button, Screen} from '@axelor/aos-mobile-ui';
-import {LoaderPopup} from '@axelor/aos-mobile-core';
+import {LoaderPopup, useLoader} from '@axelor/aos-mobile-core';
 
 // Screen for test Loader functionnalities
 const LoaderScreen = () => {
@@ -60,13 +60,15 @@ const LoaderScreen = () => {
     console.log('Error action executed!');
   };
 
+  const {loading} = useLoader();
+
   return (
     <Screen>
       <View>
         <Button
           title="Run process"
           onPress={() => setRunProccess(true)}
-          disabled={runProccess}
+          disabled={loading}
         />
         <LoaderPopup
           process={process}

@@ -16,6 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-export {default as LoaderPopup} from './LoaderPopup';
-export {default as useLoaderListner} from './use-loader-listener';
 export * from './LoaderContext';
+export {default as LoaderPopup} from './LoaderPopup';
+export {default as LoaderToastNotifier} from './LoaderToastNotifier';
+export {default as useLoaderListner} from './use-loader-listener';

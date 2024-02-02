@@ -17,11 +17,7 @@
  */
 
 import {useCallback, useEffect, useMemo, useState} from 'react';
-import {useTranslator} from '../../../i18n';
-import {showToastMessage} from '../../../utils/show-toast-message';
-import {useLoader} from './LoaderContext';
-
-export type LoaderStatus = 'error' | 'ok' | undefined;
+import {LoaderStatus, useLoader} from './LoaderContext';
 
 interface LoaderListenerProps {
   process: () => Promise<any>;
@@ -38,56 +34,30 @@ const useLoaderListner = ({
   onError = () => {},
   disabled = false,
 }: LoaderListenerProps) => {
-  const I18n = useTranslator();
-
-  const [loading, setLoading] = useState(false);
   const [start, setStart] = useState(false);
 
-  const {getCurrentNotifyMe, setNotifyMe, setShowPopup} = useLoader();
+  const {
+    setLoading,
+    setNotifyMe,
+    setShowPopup,
+    setStatus,
+    setMessage,
+    setFinished,
+    setDisabled,
+    setOnSuccessCallBack,
+    setOnErrorCallBack,
+  } = useLoader();
 
   const onFinishCallBack = useCallback(
     (status: LoaderStatus, response: any) => {
-      const notifyMe = getCurrentNotifyMe();
-
+      setLoading(false);
       setShowPopup(false);
+      setStatus(status);
+      setMessage(response);
+      setFinished(true);
       onFinish(status);
-
-      console.log('notifyMe######', notifyMe);
-
-      if (!notifyMe) {
-        status === 'ok' ? onSuccess() : onError();
-        return;
-      }
-
-      if (status === 'ok') {
-        showToastMessage({
-          type: 'success',
-          position: 'top',
-          topOffset: 30,
-          text1: I18n.t('Base_Success'),
-          text2: response || I18n.t('Base_Loader_ProccessSuccessMessage'),
-          onPress: () => !disabled && onSuccess(),
-        });
-      } else {
-        showToastMessage({
-          type: 'error',
-          position: 'top',
-          topOffset: 30,
-          text1: I18n.t('Base_Error'),
-          text2: response || I18n.t('Base_Loader_ProccessErrorMessage'),
-          onPress: () => !disabled && onError(),
-        });
-      }
     },
-    [
-      disabled,
-      getCurrentNotifyMe,
-      setShowPopup,
-      onSuccess,
-      onError,
-      onFinish,
-      I18n,
-    ],
+    [setLoading, setFinished, setShowPopup, setStatus, setMessage, onFinish],
   );
 
   const executeProcess = useCallback(async () => {
@@ -96,14 +66,11 @@ const useLoaderListner = ({
 
     try {
       const response = await process();
-
-      setLoading(false);
       onFinishCallBack('ok', response);
     } catch (error) {
-      setLoading(false);
       onFinishCallBack('error', error);
     }
-  }, [process, onFinishCallBack]);
+  }, [process, setLoading, onFinishCallBack]);
 
   const processCallBack = useCallback(
     (_start: boolean) => {
@@ -117,18 +84,36 @@ const useLoaderListner = ({
   );
 
   const handleListener = useCallback(() => {
-    setNotifyMe(false);
     setStart(true);
-  }, [setNotifyMe]);
+    setLoading(false);
+
+    setNotifyMe(false);
+    setShowPopup(false);
+    setStatus(null);
+    setMessage(null);
+    setDisabled(disabled);
+
+    setOnSuccessCallBack(onSuccess);
+    setOnErrorCallBack(onError);
+  }, [
+    disabled,
+    onSuccess,
+    onError,
+    setLoading,
+    setNotifyMe,
+    setShowPopup,
+    setStatus,
+    setMessage,
+    setDisabled,
+    setOnSuccessCallBack,
+    setOnErrorCallBack,
+  ]);
 
   useEffect(() => {
     processCallBack(start);
   }, [start, processCallBack]);
 
-  return useMemo(
-    () => ({loading, listener: handleListener}),
-    [loading, handleListener],
-  );
+  return useMemo(() => ({listener: handleListener}), [handleListener]);
 };
 
 export default useLoaderListner;
