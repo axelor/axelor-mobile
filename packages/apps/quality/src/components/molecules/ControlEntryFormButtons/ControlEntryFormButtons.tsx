@@ -18,7 +18,6 @@
 
 import React from 'react';
 import {StyleSheet, View} from 'react-native';
-import {} from '@axelor/aos-mobile-core';
 import {Button, Icon, useThemeColor} from '@axelor/aos-mobile-ui';
 
 const MODE = {
@@ -40,6 +39,7 @@ interface ControlEntryFormButtonsProps {
   handlePrevSampleLine: () => void;
   isLastSampleLine: boolean;
   isFirstSampleLine: boolean;
+  onPress: () => {};
 }
 
 const ControlEntryFormButtons = ({
@@ -56,6 +56,7 @@ const ControlEntryFormButtons = ({
   handlePrevSampleLine,
   isLastSampleLine,
   isFirstSampleLine,
+  onPress,
 }: ControlEntryFormButtonsProps) => {
   const Colors = useThemeColor();
 
@@ -113,7 +114,7 @@ const ControlEntryFormButtons = ({
       </View>
       <View style={styles.lastButton}>
         <Button
-          onPress={() => console.log('Send button pressed.')}
+          onPress={onPress}
           iconName="check-lg"
           color={Colors.successColor}
         />

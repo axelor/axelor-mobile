@@ -24,7 +24,7 @@ import {
   fetchObject,
   updateJsonFieldsObject,
 } from '../features/metaJsonFieldSlice';
-import {mapFormToStudioFields} from '../forms';
+import {Action, mapFormToStudioFields} from '../forms';
 import {headerActionsProvider} from '../header';
 import {useTranslator} from '../i18n';
 
@@ -61,7 +61,7 @@ const JsonFieldScreen = ({route}) => {
     });
   }, [I18n, refresh]);
 
-  const additionalActions = useMemo(
+  const additionalActions: Action[] = useMemo(
     () => [
       {
         key: 'validateChanges',

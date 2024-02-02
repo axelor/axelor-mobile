@@ -110,6 +110,8 @@ const ControlEntryDetailsHeader = ({
       </View>
       <Alert
         visible={showAlert}
+        title={I18n.t('Quality_FillingMethod')}
+        style={styles.popup}
         cancelButtonConfig={{
           hide: false,
           width: '15%',
@@ -133,7 +135,6 @@ const ControlEntryDetailsHeader = ({
         }}>
         <RadioSelect
           direction="column"
-          question="Filling method"
           itemStyle={styles.radioSelect}
           items={[
             {id: '1', title: 'By Sample'},
@@ -167,6 +168,9 @@ const styles = StyleSheet.create({
   },
   radioSelect: {
     height: 150,
+  },
+  popup: {
+    width: '80%',
   },
 });
 

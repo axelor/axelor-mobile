@@ -25,10 +25,13 @@ import {
   fetchObject,
 } from '../../../features/metaJsonFieldSlice';
 import {
+  Action,
   formConfigsProvider,
   getAttrsValue,
+  mapFormToStudioFields,
   mapStudioFields,
   mapStudioFieldsWithFormula,
+  updateJsonFieldsObject,
 } from '../../../forms';
 
 const FORM_KEY = 'customField-form';
@@ -37,7 +40,7 @@ interface CustomFieldFormProps {
   model: string;
   modelId: string;
   fieldType?: string;
-  additionalActions?: any[];
+  additionalActions?: Action[];
 }
 
 const CustomFieldForm = ({
@@ -78,12 +81,39 @@ const CustomFieldForm = ({
   }, [fields, panels]);
 
   const attrsValues = useMemo(() => {
-    getAttrsValue(object);
+    return getAttrsValue(object);
   }, [object]);
+
+  const _additionalActions = useMemo(() => {
+    let newAdditionalActions = [];
+
+    additionalActions.forEach(action => {
+      if (action?.useDefaultAction) {
+        console.log('useDefault');
+        newAdditionalActions.push({
+          ...action,
+          onPress: ({objectState}) => {
+            dispatch(
+              (updateJsonFieldsObject as any)({
+                modelName: model,
+                id: object.id,
+                version: object.version,
+                values: mapFormToStudioFields(_fields, objectState),
+              }),
+            );
+          },
+        });
+      } else {
+        newAdditionalActions.push(action);
+      }
+    });
+
+    return newAdditionalActions;
+  }, [_fields, additionalActions, dispatch, model, object.id, object.version]);
 
   return (
     <FormView
-      actions={[...additionalActions]}
+      actions={[..._additionalActions]}
       formKey={FORM_KEY}
       defaultValue={attrsValues == null ? {...defaults} : attrsValues}
     />

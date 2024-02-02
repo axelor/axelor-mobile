@@ -91,21 +91,6 @@ const ControlEntryDetailsScreen = ({route}) => {
           />
         )}
       />
-      <ScrollList
-        loadingList={loadingControlEntrySampleList}
-        data={controlEntrySampleList}
-        fetchData={fetchControlEntryAPI}
-        moreLoading={moreLoading}
-        isListEnd={isListEnd}
-        translator={I18n.t}
-        renderItem={({item}) => (
-          <ControlEntrySampleCard
-            controlPlanId={item.id}
-            resultSelect={item.resultSelect}
-            samplefullName={item.fullName}
-          />
-        )}
-      />
     </Screen>
   );
 };

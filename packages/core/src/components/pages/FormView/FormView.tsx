@@ -204,6 +204,14 @@ const FormView = ({defaultValue = {}, formKey, actions}: FormProps) => {
           )
         : false) || _action.disabledIf?.({objectState: object, storeState});
 
+    if (_action.customComponent) {
+      return React.cloneElement(_action.customComponent, {
+        key: _action.key,
+        onPress: () =>
+          handleValidate(buttonConfig.onPress, _action.needValidation),
+      });
+    }
+
     return (
       <Button
         key={_action.key}

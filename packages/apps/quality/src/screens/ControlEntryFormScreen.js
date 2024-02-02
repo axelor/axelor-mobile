@@ -264,25 +264,7 @@ const ControlEntryFormScreen = ({route}) => {
   };
 
   return (
-    <Screen
-      removeSpaceOnTop
-      fixedItems={
-        <ControlEntryFormButtons
-          handleNextSample={handleNextSample}
-          handlePrevSample={handlePrevSample}
-          handleNextCharacteristic={handleNextCharacteristic}
-          handlePrevCharacteristic={handlePrevCharacteristic}
-          isLastCharacteristic={isLastCharacteristic}
-          isFirstCharacteristic={isFirstCharacteristic}
-          mode={selectedMode}
-          handleNextControlPlan={handleNextControlPlan}
-          handlePrevControlPLan={handlePrevControlPLan}
-          handleNextSampleLine={handleNextSampleLine}
-          handlePrevSampleLine={handlePrevSampleLine}
-          isLastSampleLine={isLastSampleLine}
-          isFirstSampleLine={isFirstSampleLine}
-        />
-      }>
+    <Screen removeSpaceOnTop>
       <HeaderContainer
         expandableFilter={false}
         fixedItems={
@@ -301,11 +283,35 @@ const ControlEntryFormScreen = ({route}) => {
           currentSampleLine?.id != null)) && (
         <CustomFieldForm
           model="com.axelor.apps.quality.db.ControlEntryPlanLine"
+          fieldType="entryAttrs"
           modelId={
             selectedMode === MODE.bySample
               ? currentCharacteristic?.id
               : currentSampleLine?.id
           }
+          additionalActions={[
+            {
+              key: 'customAction',
+              useDefaultAction: true,
+              customComponent: (
+                <ControlEntryFormButtons
+                  handleNextSample={handleNextSample}
+                  handlePrevSample={handlePrevSample}
+                  handleNextCharacteristic={handleNextCharacteristic}
+                  handlePrevCharacteristic={handlePrevCharacteristic}
+                  isLastCharacteristic={isLastCharacteristic}
+                  isFirstCharacteristic={isFirstCharacteristic}
+                  mode={selectedMode}
+                  handleNextControlPlan={handleNextControlPlan}
+                  handlePrevControlPLan={handlePrevControlPLan}
+                  handleNextSampleLine={handleNextSampleLine}
+                  handlePrevSampleLine={handlePrevSampleLine}
+                  isLastSampleLine={isLastSampleLine}
+                  isFirstSampleLine={isFirstSampleLine}
+                />
+              ),
+            },
+          ]}
         />
       )}
     </Screen>
