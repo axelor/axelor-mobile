@@ -23,6 +23,7 @@ import {useDispatch, useSelector} from 'react-redux';
 import {
   fetchJsonFieldsOfModel,
   fetchObject,
+  updateJsonFieldsObject,
 } from '../../../features/metaJsonFieldSlice';
 import {
   Action,
@@ -31,16 +32,19 @@ import {
   mapFormToStudioFields,
   mapStudioFields,
   mapStudioFieldsWithFormula,
-  updateJsonFieldsObject,
 } from '../../../forms';
 
 const FORM_KEY = 'customField-form';
+
+interface JsonAction extends Action {
+  useDefaultAction?: boolean;
+}
 
 interface CustomFieldFormProps {
   model: string;
   modelId: string;
   fieldType?: string;
-  additionalActions?: Action[];
+  additionalActions?: JsonAction[];
 }
 
 const CustomFieldForm = ({
@@ -80,40 +84,35 @@ const CustomFieldForm = ({
     );
   }, [fields, panels]);
 
-  const attrsValues = useMemo(() => {
-    return getAttrsValue(object);
-  }, [object]);
+  const attrsValues = useMemo(() => getAttrsValue(object), [object]);
 
-  const _additionalActions = useMemo(() => {
-    let newAdditionalActions = [];
-
-    additionalActions.forEach(action => {
-      if (action?.useDefaultAction) {
-        console.log('useDefault');
-        newAdditionalActions.push({
-          ...action,
-          onPress: ({objectState}) => {
-            dispatch(
-              (updateJsonFieldsObject as any)({
-                modelName: model,
-                id: object.id,
-                version: object.version,
-                values: mapFormToStudioFields(_fields, objectState),
-              }),
-            );
-          },
-        });
-      } else {
-        newAdditionalActions.push(action);
-      }
-    });
-
-    return newAdditionalActions;
-  }, [_fields, additionalActions, dispatch, model, object.id, object.version]);
+  const _additionalActions: Action[] = useMemo(
+    () =>
+      (additionalActions ?? []).map(_action => {
+        if (_action?.useDefaultAction) {
+          return {
+            ..._action,
+            customAction: ({objectState}) => {
+              dispatch(
+                (updateJsonFieldsObject as any)({
+                  modelName: model,
+                  id: object.id,
+                  version: object.version,
+                  values: mapFormToStudioFields(_fields, objectState),
+                }),
+              );
+            },
+          };
+        } else {
+          return _action;
+        }
+      }),
+    [_fields, additionalActions, dispatch, model, object?.id, object?.version],
+  );
 
   return (
     <FormView
-      actions={[..._additionalActions]}
+      actions={_additionalActions}
       formKey={FORM_KEY}
       defaultValue={attrsValues == null ? {...defaults} : attrsValues}
     />

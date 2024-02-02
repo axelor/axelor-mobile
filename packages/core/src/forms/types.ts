@@ -144,7 +144,6 @@ export interface Action {
   customAction?: (_options: ActionProps) => void;
   needValidation?: boolean;
   needRequiredFields?: boolean;
-  useDefaultAction?: boolean;
   customComponent?: ReactElement<any>;
 }
 
