@@ -29,7 +29,9 @@ export {
 } from './expenseLineSlice';
 export {
   createExpense,
+  deleteExpense,
   fetchExpenseById,
+  quickCreateExpense,
   refuseExpense,
   searchExpenseDraft,
   searchExpenseToValidate,
@@ -37,7 +39,6 @@ export {
   sendExpense,
   updateExpense,
   validateExpense,
-  deleteExpense,
 } from './expenseSlice';
 export {searchExpenseType} from './expenseTypeSlice';
 export {searchKilometricAllowParam} from './kilometricAllowParamSlice';
