@@ -70,6 +70,7 @@ const FormView = ({defaultValue = {}, formKey, actions}: FormProps) => {
 
   const [object, setObject] = useState(defaultValue);
   const [errors, setErrors] = useState<any[]>();
+  const [isReadOnly, setIsReadOnly] = useState(false);
 
   const formContent: (DisplayPanel | DisplayField)[] = useMemo(
     () => sortContent(config),
@@ -226,6 +227,10 @@ const FormView = ({defaultValue = {}, formKey, actions}: FormProps) => {
     );
   };
 
+  const toggleReadOnlyMode = () => {
+    setIsReadOnly(currentState => !currentState);
+  };
+
   const handleValidate = (_action, needValidation) => {
     if (needValidation) {
       return validateSchema(config, object)
@@ -251,6 +256,7 @@ const FormView = ({defaultValue = {}, formKey, actions}: FormProps) => {
     if (isField(item)) {
       return (
         <FieldComponent
+          readOnly={isReadOnly}
           key={`${item.key} - ${item.order}`}
           handleFieldChange={handleFieldChange}
           _field={item as DisplayField}
@@ -296,7 +302,8 @@ const FormView = ({defaultValue = {}, formKey, actions}: FormProps) => {
           />
         )}
         <View style={[styles.container, getZIndexStyle(5)]}>
-          {formContent.map(renderItem)}
+          <Button title="test" onPress={toggleReadOnlyMode} />
+          {formContent.map(item => renderItem(item))}
         </View>
       </KeyboardAvoidingScrollView>
     </Screen>
