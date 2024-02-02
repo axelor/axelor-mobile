@@ -35,7 +35,7 @@ import {
 import ExpenseRefusalPopup from '../ExpenseRefusalPopup/ExpenseRefusalPopup';
 import {StyleSheet} from 'react-native';
 
-const ExpenseDetailsValidationButton = ({expense, mode}) => {
+const ExpenseDetailsValidationButton = ({expense, mode, isManualCreation}) => {
   const navigation = useNavigation();
   const I18n = useTranslator();
   const dispatch = useDispatch();
@@ -76,11 +76,11 @@ const ExpenseDetailsValidationButton = ({expense, mode}) => {
     return (
       <View style={styles.buttonContainer}>
         <Button
-          title={I18n.t('Hr_Delete')}
+          title={I18n.t(isManualCreation ? 'Base_Cancel' : 'Hr_Delete')}
           onPress={deleteExpenseAPI}
           width="45%"
           color={Colors.errorColor}
-          iconName="trash3-fill"
+          iconName={isManualCreation ? 'x-lg' : 'trash3-fill'}
         />
         <Button
           title={I18n.t('Hr_Send')}

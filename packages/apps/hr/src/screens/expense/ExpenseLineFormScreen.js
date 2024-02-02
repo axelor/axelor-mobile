@@ -161,7 +161,7 @@ const ExpenseLineFormScreen = ({route, navigation}) => {
 
     const _default = {
       manageMode: modeExpense || ExpenseLine.modes.general,
-      isFromExpense: idExpense != null,
+      isFromExpense: idExpense != null && expenseLine?.id != null,
       hideToggle: false,
       expenseDate: _defaultDate,
       companyName: user.activeCompany?.name,
