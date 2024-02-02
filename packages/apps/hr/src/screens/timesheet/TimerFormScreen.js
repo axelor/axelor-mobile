@@ -19,6 +19,7 @@
 import React, {useCallback, useEffect, useMemo} from 'react';
 import {
   FormView,
+  isEmpty,
   useDispatch,
   useIsFocused,
   useSelector,
@@ -56,7 +57,7 @@ const TimerFormScreen = ({route}) => {
       return DEFAULT;
     }
 
-    if (timer != null && Object.keys(timer).length > 0) {
+    if (!isEmpty(timer)) {
       return {
         startDateTime: timer.startDateTime,
         project: timer.project,
