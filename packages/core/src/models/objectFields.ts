@@ -30,6 +30,5 @@ export const core_modelAPI: ObjectFields = {
   }),
   core_user: schemaContructor.object({
     fullName: schemaContructor.string(),
-    langage: schemaContructor.subObject(),
   }),
 };
