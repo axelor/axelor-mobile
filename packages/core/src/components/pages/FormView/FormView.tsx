@@ -23,6 +23,7 @@ import {
   Button,
   KeyboardAvoidingScrollView,
   Screen,
+  ToggleButton,
   WarningCard,
 } from '@axelor/aos-mobile-ui';
 import {useTranslator} from '../../../i18n';
@@ -76,6 +77,14 @@ const FormView = ({defaultValue = {}, formKey, actions}: FormProps) => {
     () => sortContent(config),
     [config],
   );
+
+  const hasActions = useMemo(() => {
+    return actions && actions.length > 0;
+  }, [actions]);
+
+  const styles = useMemo(() => {
+    return getStyles(hasActions);
+  }, [hasActions]);
 
   useEffect(() => {
     mapErrorWithTranslationKey();
@@ -302,21 +311,34 @@ const FormView = ({defaultValue = {}, formKey, actions}: FormProps) => {
           />
         )}
         <View style={[styles.container, getZIndexStyle(5)]}>
-          <Button title="test" onPress={toggleReadOnlyMode} />
           {formContent.map(item => renderItem(item))}
         </View>
       </KeyboardAvoidingScrollView>
+      <ToggleButton
+        buttonConfig={{style: styles.readOnlyButton, iconName: 'eye'}}
+        onPress={toggleReadOnlyMode}
+      />
     </Screen>
   );
 };
 
-const styles = StyleSheet.create({
-  scroll: {
-    height: null,
-  },
-  container: {
-    alignItems: 'center',
-  },
-});
+const getStyles = hasActions =>
+  StyleSheet.create({
+    scroll: {
+      height: null,
+    },
+    container: {
+      alignItems: 'center',
+    },
+    readOnlyButton: {
+      width: 50,
+      height: 50,
+      borderRadius: 7,
+      position: 'absolute',
+      bottom: hasActions ? 85 : 10,
+      right: 25,
+      zIndex: 10,
+    },
+  });
 
 export default FormView;
