@@ -18,7 +18,7 @@
 
 export {fetchCompanies} from './companySlice';
 export {uploadTranslations} from './configSlice';
-export {fetchLocalisations} from './localisationSlice';
+export {fetchLocalizations} from './localizationSlice';
 export {
   fetchActiveUser,
   updateActiveUser,

@@ -18,5 +18,5 @@
 
 export {companyReducer as company} from './companySlice';
 export {configReducer as config} from './configSlice';
-export {localisationReducer as localisation} from './localisationSlice';
+export {localizationReducer as localization} from './localizationSlice';
 export {userReducer as user} from './userSlice';

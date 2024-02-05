@@ -38,7 +38,7 @@ import {
   useTranslator,
 } from '../../index';
 import {fetchCompanies} from '../features/companySlice';
-import {fetchLocalisations} from '../features/localisationSlice';
+import {fetchLocalizations} from '../features/localizationSlice';
 import {
   changeActiveCompany,
   updateActiveUser,
@@ -55,7 +55,7 @@ const UserScreen = ({children}) => {
 
   const {companyList} = useSelector(state => state.company);
   const {userId} = useSelector(state => state.auth);
-  const {localizationList} = useSelector(state => state.localisation);
+  const {localizationList} = useSelector(state => state.localization);
   const {base: baseConfig} = useSelector(state => state.appConfig);
   const {loadingUser, user, isUser, canModifyCompany} = useSelector(
     state => state.user,
@@ -67,7 +67,7 @@ const UserScreen = ({children}) => {
   useEffect(() => {
     fetchUser();
     dispatch(fetchCompanies());
-    dispatch(fetchLocalisations());
+    dispatch(fetchLocalizations());
   }, [dispatch, fetchUser, userId]);
 
   useEffect(() => {
