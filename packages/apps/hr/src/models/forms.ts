@@ -327,7 +327,7 @@ export const hr_formsRegister: FormConfigs = {
           !storeState.appConfig.mobileSettings.isEditionOfDateAllowed,
         required: true,
       },
-      duration: {
+      hoursDuration: {
         titleKey: 'Hr_Duration',
         type: 'number',
         widget: 'increment',

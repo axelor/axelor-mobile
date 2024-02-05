@@ -22,10 +22,14 @@ import {
   generateInifiniteScrollCases,
 } from '@axelor/aos-mobile-core';
 import {
+  addTimerTimesheet as _addTimerTimesheet,
+  createTimesheet as _createTimesheet,
+  deleteTimesheet as _deleteTimesheet,
   fetchDraftTimesheet as _fetchDraftTimesheet,
   fetchTimesheet as _fetchTimesheet,
   fetchTimesheetById as _fetchTimesheetById,
   fetchTimesheetToValidate as _fetchTimesheetToValidate,
+  updateTimesheetStatus as _updateTimesheetStatus,
 } from '../api/timesheet-api';
 
 export const fetchTimesheet = createAsyncThunk(
@@ -76,6 +80,68 @@ export const fetchDraftTimesheet = createAsyncThunk(
       action: 'Hr_SliceAction_FetchDraftTimesheet',
       getState,
       responseOptions: {isArrayResponse: true},
+    });
+  },
+);
+
+export const createTimesheet = createAsyncThunk(
+  'timesheet/createTimesheet',
+  async function (data = {}, {getState, dispatch}) {
+    return handlerApiCall({
+      fetchFunction: _createTimesheet,
+      data,
+      action: 'Hr_SliceAction_CreateTimesheet',
+      getState,
+      responseOptions: {isArrayResponse: false},
+    }).then(() => {
+      dispatch(fetchTimesheet({userId: data.userId}));
+    });
+  },
+);
+
+export const addTimerTimesheet = createAsyncThunk(
+  'timesheet/addTimerTimesheet',
+  async function (data = {}, {getState, dispatch}) {
+    return handlerApiCall({
+      fetchFunction: _addTimerTimesheet,
+      data,
+      action: 'Hr_SliceAction_AddTimerTimesheet',
+      getState,
+      responseOptions: {isArrayResponse: false},
+    });
+  },
+);
+
+export const updateTimesheetStatus = createAsyncThunk(
+  'timesheet/updateTimesheetStatus',
+  async function (data = {}, {getState, dispatch}) {
+    return handlerApiCall({
+      fetchFunction: _updateTimesheetStatus,
+      data,
+      action: 'Hr_SliceAction_UpdateTimesheetStatus',
+      getState,
+      responseOptions: {isArrayResponse: false, showToast: true},
+    })
+      .then(() => {
+        dispatch(fetchTimesheetById({timesheetId: data.timesheetId}));
+      })
+      .then(() => {
+        dispatch(fetchTimesheet({userId: data.userId}));
+      });
+  },
+);
+
+export const deleteTimesheet = createAsyncThunk(
+  'timesheet/deleteTimesheet',
+  async function (data = {}, {getState, dispatch}) {
+    return handlerApiCall({
+      fetchFunction: _deleteTimesheet,
+      data,
+      action: 'Hr_SliceAction_DeleteTimesheet',
+      getState,
+      responseOptions: {isArrayResponse: false, showToast: true},
+    }).then(() => {
+      dispatch(fetchTimesheet({userId: data.userId}));
     });
   },
 );

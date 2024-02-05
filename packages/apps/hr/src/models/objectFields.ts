@@ -125,6 +125,7 @@ export const hr_modelAPI: ObjectFields = {
       .concat(
         schemaContructor.object({managerUser: schemaContructor.subObject()}),
       ),
+    groundForRefusal: schemaContructor.string(),
   }),
   hr_timesheetLine: schemaContructor.object({
     project: schemaContructor.subObject('name'),
@@ -135,6 +136,7 @@ export const hr_modelAPI: ObjectFields = {
     comments: schemaContructor.string(),
     date: schemaContructor.string(),
     duration: schemaContructor.number(),
+    hoursDuration: schemaContructor.number(),
   }),
   auth_user: schemaContructor.object({
     employee: schemaContructor.subObject().concat(

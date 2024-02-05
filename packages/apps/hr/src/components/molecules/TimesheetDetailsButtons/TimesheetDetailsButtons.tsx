@@ -16,55 +16,110 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import React from 'react';
+import React, {useCallback, useState} from 'react';
 import {StyleSheet, View} from 'react-native';
-import {useTranslator} from '@axelor/aos-mobile-core';
+import {
+  useDispatch,
+  useNavigation,
+  useSelector,
+  useTranslator,
+} from '@axelor/aos-mobile-core';
 import {Button, useThemeColor} from '@axelor/aos-mobile-ui';
+import RefusalPopup from '../RefusalPopup/RefusalPopup';
+import {
+  deleteTimesheet,
+  updateTimesheetStatus,
+} from '../../../features/timesheetSlice';
 import {Timesheet} from '../../../types';
 
 interface TimesheetDetailsButtonsProps {
+  timesheet: any;
   statusSelect: number;
+  isEmpty: boolean;
 }
 
 const TimesheetDetailsButtons = ({
+  timesheet,
   statusSelect,
+  isEmpty,
 }: TimesheetDetailsButtonsProps) => {
   const Colors = useThemeColor();
   const I18n = useTranslator();
+  const navigation = useNavigation();
+  const dispatch = useDispatch();
+
+  const [refusalPopupIsOpen, setRefusalPopupIsOpen] = useState(false);
+
+  const {user} = useSelector((state: any) => state.user);
+
+  const deleteTimesheetAPI = useCallback(() => {
+    dispatch(
+      (deleteTimesheet as any)({timesheetId: timesheet.id, userId: user.id}),
+    );
+    navigation.pop();
+  }, [dispatch, navigation, timesheet.id, user.id]);
 
   if (statusSelect === Timesheet.statusSelect.Draft) {
     return (
       <View style={styles.container}>
         <Button
           title={I18n.t('Hr_Delete')}
-          onPress={() => console.log('Delete button pressed.')}
+          onPress={deleteTimesheetAPI}
           width="45%"
           color={Colors.errorColor}
           iconName="trash3-fill"
         />
         <Button
           title={I18n.t('Hr_Send')}
-          onPress={() => console.log('Send button pressed.')}
+          onPress={() =>
+            dispatch(
+              (updateTimesheetStatus as any)({
+                timesheetId: timesheet.id,
+                version: timesheet.version,
+                toStatus: 'confirm',
+                userId: user.id,
+              }),
+            )
+          }
           width="45%"
           iconName="send-fill"
+          disabled={isEmpty}
         />
       </View>
     );
   }
 
-  if (statusSelect === Timesheet.statusSelect.WaitingValidation) {
+  if (
+    (user?.employee?.hrManager ||
+      timesheet.employee?.managerUser?.id === user.id) &&
+    statusSelect === Timesheet.statusSelect.WaitingValidation
+  ) {
     return (
       <View style={styles.container}>
         <Button
           title={I18n.t('Hr_Refuse')}
-          onPress={() => console.log('Refuse button pressed.')}
+          onPress={() => setRefusalPopupIsOpen(true)}
           width="45%"
           color={Colors.errorColor}
           iconName="x-lg"
         />
+        <RefusalPopup
+          isOpen={refusalPopupIsOpen}
+          timesheet={timesheet}
+          onCancel={() => setRefusalPopupIsOpen(false)}
+        />
         <Button
           title={I18n.t('Hr_Validate')}
-          onPress={() => console.log('Validate button pressed.')}
+          onPress={() =>
+            dispatch(
+              (updateTimesheetStatus as any)({
+                timesheetId: timesheet.id,
+                version: timesheet.version,
+                toStatus: 'validate',
+                userId: user.id,
+              }),
+            )
+          }
           width="45%"
           iconName="check-lg"
         />

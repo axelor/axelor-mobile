@@ -57,9 +57,18 @@ export {
   fetchTimerById as fetchTimerByIdApi,
 } from './timer-api';
 export {
+  addTimerTimesheet as addTimerTimesheetApi,
+  createTimesheet as createTimesheetApi,
+  deleteTimesheet as deleteTimesheetApi,
   fetchDraftTimesheet as fetchDraftTimesheetApi,
   fetchTimesheet as fetchTimesheetApi,
   fetchTimesheetById as fetchTimesheetByIdApi,
   fetchTimesheetToValidate as fetchTimesheetToValidateApi,
+  updateTimesheetStatus as updateTimesheetStatusApi,
 } from './timesheet-api';
-export {fetchTimesheetLine as fetchTimesheetLineApi} from './timesheet-line-api';
+export {
+  createTimesheetLine as createTimesheetLineApi,
+  deleteTimesheetLine as deleteTimesheetLineApi,
+  fetchTimesheetLine as fetchTimesheetLineApi,
+  updateTimesheetLine as updateTimesheetLineApi,
+} from './timesheet-line-api';
