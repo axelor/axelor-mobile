@@ -126,6 +126,7 @@ const TimerStopwatch = ({
       onPause={() => updateTimerStatusAPI('pause')}
       onStop={() => updateTimerStatusAPI('stop')}
       onCancel={() => updateTimerStatusAPI('reset')}
+      useObjectStatus
     />
   );
 };
