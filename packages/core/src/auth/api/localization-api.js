@@ -22,7 +22,7 @@ export async function searchLocalization() {
   return createStandardSearch({
     model: 'com.axelor.apps.base.db.Localization',
     criteria: [],
-    fieldKey: 'auth_Language',
+    fieldKey: 'auth_localization',
     page: 0,
   });
 }
