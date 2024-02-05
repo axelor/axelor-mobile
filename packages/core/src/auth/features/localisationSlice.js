@@ -18,13 +18,13 @@
 
 import {createAsyncThunk, createSlice} from '@reduxjs/toolkit';
 import {handlerApiCall} from '../../apiProviders/utils';
-import {searchLanguage} from '../api/language-api';
+import {searchLocalization} from '../api/localisation-api';
 
-export const fetchLanguages = createAsyncThunk(
-  'language/fetchLanguage',
+export const fetchLocalisations = createAsyncThunk(
+  'localisation/fetchLocalisations',
   async function (data = {}, {getState}) {
     return handlerApiCall({
-      fetchFunction: searchLanguage,
+      fetchFunction: searchLocalization,
       data,
       action: 'Auth_SliceAction_FetchLanguages',
       getState,
@@ -35,21 +35,21 @@ export const fetchLanguages = createAsyncThunk(
 
 const initialState = {
   loading: false,
-  languageList: [],
+  localizationList: [],
 };
 
-const languageSlice = createSlice({
-  name: 'language',
+const localisationSlice = createSlice({
+  name: 'localisation',
   initialState,
   extraReducers: builder => {
-    builder.addCase(fetchLanguages.pending, state => {
+    builder.addCase(fetchLocalisations.pending, state => {
       state.loading = true;
     });
-    builder.addCase(fetchLanguages.fulfilled, (state, action) => {
+    builder.addCase(fetchLocalisations.fulfilled, (state, action) => {
       state.loading = false;
-      state.languageList = action.payload;
+      state.localizationList = action.payload;
     });
   },
 });
 
-export const languageReducer = languageSlice.reducer;
+export const localisationReducer = localisationSlice.reducer;

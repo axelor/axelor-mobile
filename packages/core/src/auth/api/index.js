@@ -17,5 +17,5 @@
  */
 
 export {searchCompany} from './company-api';
-export {searchLanguage} from './language-api';
+export {searchLocalization} from './localisation-api';
 export {getLoggedUser, postUser} from './user-api';
