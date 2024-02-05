@@ -16,7 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import React, {useEffect, useMemo, useState} from 'react';
+import React, {useCallback, useEffect, useMemo, useState} from 'react';
 import {HeaderContainer, Screen} from '@axelor/aos-mobile-ui';
 import {
   CustomFieldForm,
@@ -24,57 +24,40 @@ import {
   useDispatch,
 } from '@axelor/aos-mobile-core';
 import {ControlEntryFormButtons, ControlEntryFormHeader} from '../components';
-import {searchControlEntrySampleLineOfControlEntry} from '../features/controlEntrySampleLineSlice';
+import {
+  fetchControlEntrySampleLine,
+  searchControlEntrySampleLineOfControlEntry as searchControlEntrySampleLine,
+} from '../features/controlEntrySampleLineSlice';
 import {fetchControlPlanById} from '../features/controlPlanSlice';
-
-const MODE = {
-  bySample: '1',
-  byCharacteristic: '2',
-};
+import {ControlEntry} from '../types';
 
 const ControlEntryFormScreen = ({route}) => {
   const {selectedMode} = route.params;
 
   const dispatch = useDispatch();
 
-  const {controlEntrySampleList} = useSelector(
-    state => state.controlEntrySample,
-  );
+  const {controlEntry} = useSelector(state => state.controlEntry);
+  const {controlPlan} = useSelector(state => state.controlPlan);
   const {sampleLineOfEntryList} = useSelector(
     state => state.controlEntrySampleLine,
   );
-  const {controlEntry} = useSelector(state => state.controlEntry);
-  const {controlPlan} = useSelector(state => state.controlPlan);
 
-  const [categoryIndex, setCategoryIndex] = useState(0);
-  const [currentIndex, setCurrentIndex] = useState(0);
+  const [categoryIndex, setCategoryIndex] = useState(null);
+  const [currentIndex, setCurrentIndex] = useState(null);
   const [itemSet, setItemSet] = useState([]);
   const [categorySet, setCategorySet] = useState([]);
 
   useEffect(() => {
     dispatch(fetchControlPlanById({id: controlEntry.controlPlan?.id}));
-    dispatch(
-      searchControlEntrySampleLineOfControlEntry({
-        controlEntryId: controlEntry.id,
-      }),
-    );
-  }, [
-    controlEntry?.controlPlan?.id,
-    controlEntry?.id,
-    controlEntrySampleList,
-    dispatch,
-  ]);
+    dispatch(searchControlEntrySampleLine({controlEntryId: controlEntry.id}));
+  }, [controlEntry?.controlPlan?.id, controlEntry?.id, dispatch]);
 
   useEffect(() => {
     if (Array.isArray(sampleLineOfEntryList)) {
       const _itemSet = sampleLineOfEntryList
         .map(
           _item =>
-            _item[
-              selectedMode === MODE.bySample // Should be done in type file
-                ? 'controlEntrySample'
-                : 'controlPlanLine'
-            ].id,
+            _item[ControlEntry.getMethodAssociatedAttribut(selectedMode)].id,
         )
         .filter((_item, _index, self) => self.indexOf(_item) === _index);
       setCategoryIndex(0);
@@ -85,17 +68,27 @@ const ControlEntryFormScreen = ({route}) => {
   }, [sampleLineOfEntryList, selectedMode]);
 
   useEffect(() => {
+    fetchSampleLine(itemSet, currentIndex);
+  }, [fetchSampleLine, itemSet, currentIndex]);
+
+  const fetchSampleLine = useCallback(
+    (_set, _index) => {
+      if (Array.isArray(_set) && _set.length > 0) {
+        dispatch(fetchControlEntrySampleLine({id: _set[_index].id}));
+      }
+    },
+    [dispatch],
+  );
+
+  useEffect(() => {
     if (
       Array.isArray(sampleLineOfEntryList) &&
       categorySet?.[categoryIndex] != null
     ) {
       const _itemSet = sampleLineOfEntryList.filter(
         _item =>
-          _item[
-            selectedMode === MODE.bySample // Should be done in type file
-              ? 'controlEntrySample'
-              : 'controlPlanLine'
-          ].id === categorySet?.[categoryIndex],
+          _item[ControlEntry.getMethodAssociatedAttribut(selectedMode)].id ===
+          categorySet?.[categoryIndex],
       );
       setCurrentIndex(0);
       setItemSet(_itemSet);
@@ -108,13 +101,11 @@ const ControlEntryFormScreen = ({route}) => {
     const nbSample = controlEntry?.controlEntrySamplesList?.length;
     const nbCharacteristic = controlPlan?.controlPlanLinesList?.length;
 
-    if (selectedMode === MODE.bySample) {
-      return {nbItemInCategory: nbCharacteristic, nbCategories: nbSample};
-    } else if (selectedMode === MODE.byCharacteristic) {
-      return {nbItemInCategory: nbSample, nbCategories: nbCharacteristic};
-    } else {
-      return {nbItemInCategory: 0, nbCategories: 0};
-    }
+    return ControlEntry.getMethodTotals(
+      selectedMode,
+      nbCharacteristic,
+      nbSample,
+    );
   }, [
     controlEntry?.controlEntrySamplesList?.length,
     controlPlan?.controlPlanLinesList?.length,
@@ -122,7 +113,7 @@ const ControlEntryFormScreen = ({route}) => {
   ]);
 
   const isLastItem = useMemo(
-    () => currentIndex % nbItemInCategory === 0,
+    () => (currentIndex + 1) % nbItemInCategory === 0,
     [currentIndex, nbItemInCategory],
   );
 
@@ -187,6 +178,10 @@ const ControlEntryFormScreen = ({route}) => {
             {
               key: 'customAction',
               useDefaultAction: true,
+              showToast: false,
+              postActions: () => {
+                fetchSampleLine(itemSet, currentIndex);
+              },
               customComponent: (
                 <ControlEntryFormButtons
                   handleNext={handleNext}
@@ -194,6 +189,8 @@ const ControlEntryFormScreen = ({route}) => {
                   mode={selectedMode}
                   isLastItem={isLastItem}
                   isFirstItem={isFirstItem}
+                  canNext={!isLastItem || categoryIndex + 1 !== nbCategories}
+                  canPrevious={!isFirstItem || categoryIndex !== 0}
                 />
               ),
             },

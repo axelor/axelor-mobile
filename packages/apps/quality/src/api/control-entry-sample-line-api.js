@@ -16,7 +16,10 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import {createStandardSearch} from '@axelor/aos-mobile-core';
+import {
+  createStandardSearch,
+  createStandardFetch,
+} from '@axelor/aos-mobile-core';
 
 const createControlEntrySampleLineCriteria = controlEntrySampleId => {
   return [
@@ -61,5 +64,13 @@ export async function searchControlEntrySampleLineOfControlEntry({
     sortKey: 'quality_controlEntrySampleLine',
     numberElementsByPage: null,
     page: 0,
+  });
+}
+
+export async function fetchControlEntrySampleLine({id}) {
+  return createStandardFetch({
+    model: 'com.axelor.apps.quality.db.ControlEntryPlanLine',
+    id,
+    fieldKey: 'quality_controlEntrySampleLine',
   });
 }

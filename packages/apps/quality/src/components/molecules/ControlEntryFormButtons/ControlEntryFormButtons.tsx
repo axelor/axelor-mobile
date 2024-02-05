@@ -16,79 +16,60 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import React from 'react';
+import React, {useMemo} from 'react';
 import {StyleSheet, View} from 'react-native';
-import {Button, Icon, useThemeColor} from '@axelor/aos-mobile-ui';
-
-const MODE = {
-  bySample: '1',
-  byCharacteristic: '2',
-};
+import {Button, useThemeColor} from '@axelor/aos-mobile-ui';
+import {ControlEntry} from '../../../types';
+import {NavigationButton} from '../../atoms';
 
 interface ControlEntryFormButtonsProps {
-  handleNext: () => void;
-  handlePrevious: () => void;
   mode: string;
+  canPrevious: boolean;
+  canNext: boolean;
   isFirstItem: boolean;
   isLastItem: boolean;
-  onPress: () => {};
+  handleNext: () => void;
+  handlePrevious: () => void;
+  onPress: () => any;
 }
 
 const ControlEntryFormButtons = ({
-  handleNext,
-  handlePrevious,
   mode,
+  canPrevious,
+  canNext,
   isFirstItem,
   isLastItem,
+  handleNext,
+  handlePrevious,
   onPress,
 }: ControlEntryFormButtonsProps) => {
   const Colors = useThemeColor();
 
+  const {categoryIcon, subCategoryIcon} = useMemo(
+    () => ControlEntry.getMethodIcons(mode),
+    [mode],
+  );
+
   return (
     <View style={styles.container}>
-      <View style={styles.childrenContainer}>
-        <View style={styles.buttonContainer}>
-          <Button
-            onPress={handlePrevious}
-            color={Colors.secondaryColor}
-            iconName={
-              isFirstItem
-                ? /**Should be done in type file */
-                  mode === MODE.bySample
-                  ? 'eyedropper'
-                  : 'palette2'
-                : mode === MODE.bySample
-                ? 'palette2'
-                : 'eyedropper'
-            }
-          />
-          <Icon name="chevron-left" style={styles.chevronLeft} />
-        </View>
-        <View style={styles.buttonContainer}>
-          <Button
-            onPress={handleNext}
-            iconName={
-              isLastItem
-                ? /**Should be done in type file */
-                  mode === MODE.bySample
-                  ? 'palette2'
-                  : 'eyedropper'
-                : mode === MODE.bySample
-                ? 'eyedropper'
-                : 'palette2'
-            }
-            color={Colors.secondaryColor}
-          />
-          <Icon name="chevron-right" style={styles.chevronRight} />
-        </View>
-      </View>
-      <View style={styles.lastButton}>
-        <Button
-          onPress={onPress}
-          iconName="check-lg"
-          color={Colors.successColor}
-        />
-      </View>
+      <NavigationButton
+        position="left"
+        onPress={handlePrevious}
+        icon={isFirstItem ? categoryIcon : subCategoryIcon}
+        disabled={!canPrevious}
+      />
+      <NavigationButton
+        position="right"
+        onPress={handleNext}
+        icon={isLastItem ? categoryIcon : subCategoryIcon}
+        disabled={!canNext}
+      />
+      <Button
+        style={styles.lastButton}
+        onPress={onPress}
+        iconName="check-lg"
+        color={Colors.successColor}
+      />
     </View>
   );
 };
@@ -97,23 +78,7 @@ const styles = StyleSheet.create({
   container: {
     flexDirection: 'row',
     justifyContent: 'space-evenly',
-    marginHorizontal: 24,
-  },
-  childrenContainer: {
-    flexDirection: 'row',
-  },
-  buttonContainer: {
-    width: '45%',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  chevronLeft: {
-    position: 'absolute',
-    left: '10%',
-  },
-  chevronRight: {
-    position: 'absolute',
-    right: '15%',
+    marginHorizontal: 18,
   },
   lastButton: {
     width: '15%',

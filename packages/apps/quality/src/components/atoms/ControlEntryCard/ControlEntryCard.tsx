@@ -79,7 +79,7 @@ const ControlEntryCard = ({
           <DateDisplay date={entryDateTime} />
         </View>
         <View style={styles.childrenContainer}>
-          <Text>{`${I18n.t('Quality_Sample')} : ${sampleCount}`}</Text>
+          <Text>{`${I18n.t('Quality_SampleCount')} : ${sampleCount}`}</Text>
           <ProgressBar
             style={styles.progressBar}
             value={numberSampleFilled}

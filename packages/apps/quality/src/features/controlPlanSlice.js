@@ -26,7 +26,7 @@ export const fetchControlPlanById = createAsyncThunk(
     return handlerApiCall({
       fetchFunction: _fetchControlPlanById,
       data,
-      action: 'Quality_SliceAction_SearchControlPlan',
+      action: 'Quality_SliceAction_FetchControlPlan',
       getState,
       responseOptions: {isArrayResponse: false},
     });

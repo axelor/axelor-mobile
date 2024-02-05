@@ -16,22 +16,11 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import React from 'react';
+import React, {useMemo} from 'react';
 import {StyleSheet, View} from 'react-native';
-import {useSelector, useTranslator, DateDisplay} from '@axelor/aos-mobile-core';
-import {
-  Badge,
-  Icon,
-  ProgressBar,
-  Text,
-  useThemeColor,
-} from '@axelor/aos-mobile-ui';
+import {Icon, ProgressBar} from '@axelor/aos-mobile-ui';
 import {ControlEntry} from '../../../types';
-
-const MODE = {
-  bySample: '1',
-  byCharacteristic: '2',
-};
+import {ControlEntryHeader, ControlEntrySampleLineHeader} from '../../atoms';
 
 interface ControlEntryHeaderProps {
   currentIndex: number;
@@ -48,29 +37,16 @@ const ControlEntryFormHeader = ({
   nbCategories,
   mode,
 }: ControlEntryHeaderProps) => {
-  const I18n = useTranslator();
-  const Colors = useThemeColor();
-
-  const {controlEntry} = useSelector((state: any) => state.controlEntry);
+  const {categoryIcon, subCategoryIcon} = useMemo(
+    () => ControlEntry.getMethodIcons(mode),
+    [mode],
+  );
 
   return (
     <View style={styles.container}>
-      <View style={styles.row}>
-        <Text writingType="title">{controlEntry.name}</Text>
-        <Badge
-          color={ControlEntry.getStatusColor(controlEntry.statusSelect, Colors)}
-          title={ControlEntry.getStatus(controlEntry.statusSelect, I18n)}
-        />
-      </View>
-      <View style={styles.row}>
-        <Text>{`${I18n.t('Quality_Sample')} : ${
-          controlEntry.sampleCount
-        }`}</Text>
-        <DateDisplay date={controlEntry.entryDateTime} />
-      </View>
+      <ControlEntryHeader />
       <View style={styles.progressContainer}>
-        {/**Should be done in type file */}
-        <Icon name={mode === MODE.bySample ? 'eyedropper' : 'palette2'} />
+        <Icon name={categoryIcon} />
         <ProgressBar
           total={nbCategories}
           value={categoryIndex + 1}
@@ -79,8 +55,7 @@ const ControlEntryFormHeader = ({
         />
       </View>
       <View style={styles.progressContainer}>
-        {/**Should be done in type file */}
-        <Icon name={mode === MODE.bySample ? 'palette2' : 'eyedropper'} />
+        <Icon name={subCategoryIcon} />
         <ProgressBar
           total={nbItemInCategory}
           value={currentIndex + 1}
@@ -88,6 +63,7 @@ const ControlEntryFormHeader = ({
           style={styles.progressBar}
         />
       </View>
+      <ControlEntrySampleLineHeader />
     </View>
   );
 };
@@ -95,11 +71,6 @@ const ControlEntryFormHeader = ({
 const styles = StyleSheet.create({
   container: {
     marginHorizontal: 24,
-  },
-  row: {
-    justifyContent: 'space-between',
-    flexDirection: 'row',
-    marginVertical: 2,
   },
   progressContainer: {
     flexDirection: 'row',

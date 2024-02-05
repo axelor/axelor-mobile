@@ -17,30 +17,14 @@
  */
 
 import {createAsyncThunk, createSlice} from '@reduxjs/toolkit';
+import {handlerApiCall} from '@axelor/aos-mobile-core';
 import {
-  generateInifiniteScrollCases,
-  handlerApiCall,
-} from '@axelor/aos-mobile-core';
-import {
-  searchControlEntrySampleLine as _searchControlEntrySampleLine,
+  fetchControlEntrySampleLine as _fetchControlEntrySampleLine,
   searchControlEntrySampleLineOfControlEntry as _searchControlEntrySampleLineOfControlEntry,
 } from '../api/control-entry-sample-line-api';
 
-export const searchControlEntrySampleLine = createAsyncThunk(
-  'controlEntry/searchControlEntrySampleLine',
-  async function (data, {getState}) {
-    return handlerApiCall({
-      fetchFunction: _searchControlEntrySampleLine,
-      data,
-      action: 'Quality_SliceAction_SearchControlEntrySampleLine',
-      getState,
-      responseOptions: {isArrayResponse: true},
-    });
-  },
-);
-
 export const searchControlEntrySampleLineOfControlEntry = createAsyncThunk(
-  'controlEntry/searchControlEntrySampleLineOfControlEntry',
+  'controlEntrySampleLine/searchControlEntrySampleLineOfControlEntry',
   async function (data, {getState}) {
     return handlerApiCall({
       fetchFunction: _searchControlEntrySampleLineOfControlEntry,
@@ -52,25 +36,37 @@ export const searchControlEntrySampleLineOfControlEntry = createAsyncThunk(
   },
 );
 
-const initialState = {
-  loadingControlEntrySamplelineList: true,
-  moreLoading: false,
-  isListEnd: false,
-  controlEntrySampleLineList: [],
+export const fetchControlEntrySampleLine = createAsyncThunk(
+  'controlEntrySampleLine/fetchControlEntrySampleLine',
+  async function (data, {getState}) {
+    return handlerApiCall({
+      fetchFunction: _fetchControlEntrySampleLine,
+      data,
+      action: 'Quality_SliceAction_FetchControlEntrySampleLine',
+      getState,
+      responseOptions: {isArrayResponse: false},
+    });
+  },
+);
 
+const initialState = {
   loadingSampleLines: true,
   sampleLineOfEntryList: [],
+
+  loadingSampleLine: false,
+  sampleLine: {},
 };
 
 const controlEntrySampleLineSlice = createSlice({
   name: 'controlEntrySampleLine',
   initialState,
   extraReducers: builder => {
-    generateInifiniteScrollCases(builder, searchControlEntrySampleLine, {
-      loading: 'loadingControlEntrySamplelineList',
-      moreLoading: 'moreLoading',
-      isListEnd: 'isListEnd',
-      list: 'controlEntrySampleLineList',
+    builder.addCase(fetchControlEntrySampleLine.pending, state => {
+      state.loadingSampleLine = true;
+    });
+    builder.addCase(fetchControlEntrySampleLine.fulfilled, (state, action) => {
+      state.loadingSampleLine = false;
+      state.sampleLine = action.payload;
     });
     builder.addCase(
       searchControlEntrySampleLineOfControlEntry.pending,
