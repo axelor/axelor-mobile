@@ -38,6 +38,8 @@ const FORM_KEY = 'customField-form';
 
 interface JsonAction extends Action {
   useDefaultAction?: boolean;
+  showToast?: boolean;
+  postActions?: () => void;
 }
 
 interface CustomFieldFormProps {
@@ -99,8 +101,12 @@ const CustomFieldForm = ({
                   id: object.id,
                   version: object.version,
                   values: mapFormToStudioFields(_fields, objectState),
+                  showToast:
+                    _action.showToast != null ? _action.showToast : true,
                 }),
-              );
+              ).then(() => {
+                _action.postActions?.();
+              });
             },
           };
         } else {
