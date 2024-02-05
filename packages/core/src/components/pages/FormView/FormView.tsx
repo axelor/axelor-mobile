@@ -87,7 +87,7 @@ const FormView = ({defaultValue = {}, formKey, actions}: FormProps) => {
   useEffect(() => {
     setObject(_current => {
       if (isEmpty(record)) {
-        if (isEmpty(defaultValue) || _current === defaultValue) {
+        if (defaultValue == null || _current === defaultValue) {
           return _current;
         } else {
           return defaultValue;
