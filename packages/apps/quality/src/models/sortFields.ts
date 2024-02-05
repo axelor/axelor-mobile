@@ -21,5 +21,8 @@ import {SortFields} from '@axelor/aos-mobile-core';
 export const quality_sortFields: SortFields = {
   quality_controlEntry: ['entryDateTime', 'createdOn'],
   quality_controlEntrySample: ['entrySampleNbr'],
-  quality_controlEntrySampleLine: ['createdOn'],
+  quality_controlEntrySampleLine: [
+    'controlEntrySample.id',
+    'controlPlanLine.id',
+  ],
 };

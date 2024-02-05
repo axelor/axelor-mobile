@@ -16,7 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import React, {useEffect, useState} from 'react';
+import React, {useEffect, useMemo, useState} from 'react';
 import {HeaderContainer, Screen} from '@axelor/aos-mobile-ui';
 import {
   CustomFieldForm,
@@ -24,10 +24,7 @@ import {
   useDispatch,
 } from '@axelor/aos-mobile-core';
 import {ControlEntryFormButtons, ControlEntryFormHeader} from '../components';
-import {
-  searchControlEntrySampleLine,
-  searchControlEntrySampleLineByCharacteristic,
-} from '../features/controlEntrySampleLineSlice';
+import {searchControlEntrySampleLineOfControlEntry} from '../features/controlEntrySampleLineSlice';
 import {fetchControlPlanById} from '../features/controlPlanSlice';
 
 const MODE = {
@@ -36,231 +33,135 @@ const MODE = {
 };
 
 const ControlEntryFormScreen = ({route}) => {
-  const {controlEntryId, selectedMode} = route.params;
+  const {selectedMode} = route.params;
 
   const dispatch = useDispatch();
 
   const {controlEntrySampleList} = useSelector(
     state => state.controlEntrySample,
   );
-  const {controlEntrySampleLineList, controlEntrySampleLineByCharacteristic} =
-    useSelector(state => state.controlEntrySampleLine);
+  const {sampleLineOfEntryList} = useSelector(
+    state => state.controlEntrySampleLine,
+  );
   const {controlEntry} = useSelector(state => state.controlEntry);
   const {controlPlan} = useSelector(state => state.controlPlan);
 
-  const [currentIndexSample, setCurrentIndexSample] = useState(1);
-  const [currentSample, setCurrentSample] = useState([]);
-  const [currentCharacteristic, setCurrentCharacteristic] = useState(null);
-  const [currentIndexCharacteristic, setCurrentIndexCharacteristic] =
-    useState(1);
-  const [isLastCharacteristic, setIsLastCharacteristic] = useState(false);
-  const [isFirstCharacteristic, setIsFirstCharacteristic] = useState(false);
+  const [categoryIndex, setCategoryIndex] = useState(0);
+  const [currentIndex, setCurrentIndex] = useState(0);
+  const [itemSet, setItemSet] = useState([]);
+  const [categorySet, setCategorySet] = useState([]);
 
-  const [currentControlPLan, setCurrentControlPLan] = useState(null);
-  const [currentControlPLanIndex, setCurrentControlPLanIndex] = useState(1);
-
-  const [currentSampleLine, setCurrentSampleLine] = useState(null);
-  const [currentSampleLineIndex, setCurrentSampleLineIndex] = useState(1);
-
-  const [isLastSampleLine, setIsLastSampleLine] = useState(false);
-  const [isFirstSampleLine, setIsFirstSampleLine] = useState(false);
-
-  // MODE CARACT FETCH DES CONTROLPLAN liste stocké dans controlPlan.controlPlanLinesSet
   useEffect(() => {
-    if (selectedMode === MODE.byCharacteristic) {
-      dispatch(
-        fetchControlPlanById({controlPlanId: controlEntry?.controlPlan?.id}),
-      );
-    }
-  }, [controlEntry?.controlPlan?.id, dispatch, selectedMode]);
+    dispatch(fetchControlPlanById({id: controlEntry.controlPlan?.id}));
+    dispatch(
+      searchControlEntrySampleLineOfControlEntry({
+        controlEntryId: controlEntry.id,
+      }),
+    );
+  }, [
+    controlEntry?.controlPlan?.id,
+    controlEntry?.id,
+    controlEntrySampleList,
+    dispatch,
+  ]);
 
-  // MODE CARACT set du currentControl Plan en fonction de son Index par default 1
+  useEffect(() => {
+    if (Array.isArray(sampleLineOfEntryList)) {
+      const _itemSet = sampleLineOfEntryList
+        .map(
+          _item =>
+            _item[
+              selectedMode === MODE.bySample // Should be done in type file
+                ? 'controlEntrySample'
+                : 'controlPlanLine'
+            ].id,
+        )
+        .filter((_item, _index, self) => self.indexOf(_item) === _index);
+      setCategoryIndex(0);
+      setCategorySet(_itemSet);
+    } else {
+      setCategorySet([]);
+    }
+  }, [sampleLineOfEntryList, selectedMode]);
+
   useEffect(() => {
     if (
-      selectedMode === MODE.byCharacteristic &&
-      Array.isArray(controlPlan?.controlPlanLinesSet)
+      Array.isArray(sampleLineOfEntryList) &&
+      categorySet?.[categoryIndex] != null
     ) {
-      setCurrentControlPLan(
-        controlPlan?.controlPlanLinesSet[currentControlPLanIndex - 1],
+      const _itemSet = sampleLineOfEntryList.filter(
+        _item =>
+          _item[
+            selectedMode === MODE.bySample // Should be done in type file
+              ? 'controlEntrySample'
+              : 'controlPlanLine'
+          ].id === categorySet?.[categoryIndex],
       );
+      setCurrentIndex(0);
+      setItemSet(_itemSet);
+    } else {
+      setItemSet([]);
     }
-  }, [controlPlan?.controlPlanLinesSet, currentControlPLanIndex, selectedMode]);
+  }, [categoryIndex, categorySet, sampleLineOfEntryList, selectedMode]);
 
-  // MODE CARACT fetch des lignes sample par currentControlPlan stocké dans controlEntrySampleLineByCharacteristic
-  useEffect(() => {
-    if (selectedMode === MODE.byCharacteristic) {
-      const idListSample = controlEntrySampleList.map(elt => elt.id);
-      dispatch(
-        searchControlEntrySampleLineByCharacteristic({
-          characteristicId: currentControlPLan?.id,
-          idListSample: idListSample,
-          page: 0,
-        }),
-      );
-    }
-  }, [controlEntrySampleList, currentControlPLan?.id, dispatch, selectedMode]);
+  const {nbItemInCategory, nbCategories} = useMemo(() => {
+    const nbSample = controlEntry?.controlEntrySamplesList?.length;
+    const nbCharacteristic = controlPlan?.controlPlanLinesList?.length;
 
-  // MODE CARACT set du currentSampleLine  en fonction de son Index par default 1
-  useEffect(() => {
-    if (
-      selectedMode === MODE.byCharacteristic &&
-      controlEntrySampleLineByCharacteristic?.length > 0
-    ) {
-      setCurrentSampleLine(
-        controlEntrySampleLineByCharacteristic[currentSampleLineIndex - 1],
-      );
+    if (selectedMode === MODE.bySample) {
+      return {nbItemInCategory: nbCharacteristic, nbCategories: nbSample};
+    } else if (selectedMode === MODE.byCharacteristic) {
+      return {nbItemInCategory: nbSample, nbCategories: nbCharacteristic};
+    } else {
+      return {nbItemInCategory: 0, nbCategories: 0};
     }
   }, [
-    controlEntrySampleLineByCharacteristic,
-    currentSampleLineIndex,
+    controlEntry?.controlEntrySamplesList?.length,
+    controlPlan?.controlPlanLinesList?.length,
     selectedMode,
   ]);
 
-  // MODE CARACT NEXBUTTON CONTROL PLAN
-  const handleNextControlPlan = () => {
-    if (currentControlPLanIndex !== controlPlan.controlPlanLinesSet.length) {
-      setCurrentSampleLineIndex(1);
-    }
-    if (currentControlPLanIndex <= controlPlan.controlPlanLinesSet.length - 1) {
-      setCurrentControlPLanIndex(currentControlPLanIndex + 1);
-    }
-  };
+  const isLastItem = useMemo(
+    () => currentIndex % nbItemInCategory === 0,
+    [currentIndex, nbItemInCategory],
+  );
 
-  // MODE CARACT PREVBUTTON CONTROL PLAN
-  const handlePrevControlPLan = () => {
-    setCurrentSampleLineIndex(1);
-    if (currentControlPLanIndex > 1) {
-      setCurrentControlPLanIndex(currentControlPLanIndex - 1);
-    }
-  };
+  const isFirstItem = useMemo(() => currentIndex === 0, [currentIndex]);
 
-  // MODE CARACT NEXT SAMPLE LINE
-  const handleNextSampleLine = () => {
-    if (
-      currentSampleLineIndex <=
-      controlEntrySampleLineByCharacteristic?.length - 1
-    ) {
-      setCurrentSampleLineIndex(currentSampleLineIndex + 1);
-    } else {
-      setIsLastSampleLine(true);
-    }
-  };
+  const handleNext = () => {
+    setCurrentIndex(_current => {
+      if ((_current + 1) % nbItemInCategory === 0) {
+        setCategoryIndex(_cIndex => {
+          if (_cIndex !== nbCategories - 1) {
+            return _cIndex + 1;
+          }
 
-  // MODE CARACT Prev SAMPLE LINE
-  const handlePrevSampleLine = () => {
-    if (currentSampleLineIndex > 1) {
-      setCurrentSampleLineIndex(currentSampleLineIndex - 1);
-    } else {
-      setIsLastSampleLine(true);
-    }
-  };
-  // MODE CARACT Manage isLast item sample line
-  useEffect(() => {
-    if (selectedMode === MODE.byCharacteristic) {
-      if (
-        currentSampleLineIndex ===
-        controlEntrySampleLineByCharacteristic?.length
-      ) {
-        setIsLastSampleLine(true);
-      } else {
-        setIsLastSampleLine(false);
+          return _cIndex;
+        });
+
+        return _current;
       }
-      if (currentSampleLineIndex === 1) {
-        setIsFirstSampleLine(true);
-      } else {
-        setIsFirstSampleLine(false);
-      }
-    }
-  }, [
-    controlEntrySampleLineByCharacteristic?.length,
-    currentSampleLineIndex,
-    selectedMode,
-  ]);
 
-  //MODE SAMPLE mis à jour du current sample en fonction de son index
-  useEffect(() => {
-    if (selectedMode === MODE.bySample) {
-      setCurrentSample(
-        controlEntry?.controlEntrySamplesList[currentIndexSample - 1],
-      );
-    }
-  }, [controlEntry?.controlEntrySamplesList, currentIndexSample, selectedMode]);
-
-  //MODE SAMPLE fetch des sample line en fonction des samples
-  useEffect(() => {
-    if (selectedMode === MODE.bySample) {
-      dispatch(
-        searchControlEntrySampleLine({controlEntrySampleId: currentSample?.id}),
-      );
-    }
-  }, [currentSample?.id, dispatch, selectedMode]);
-
-  //MODE SAMPLE set le cuurentSampleLine en fonction de son index
-  useEffect(() => {
-    if (
-      selectedMode === MODE.bySample &&
-      controlEntrySampleLineList?.length > 0
-    ) {
-      setCurrentCharacteristic(
-        controlEntrySampleLineList[currentIndexCharacteristic - 1],
-      );
-    }
-  }, [controlEntrySampleLineList, currentIndexCharacteristic, selectedMode]);
-
-  //MODE SAMPLE set des firsts et last items
-  useEffect(() => {
-    if (selectedMode === MODE.bySample) {
-      if (currentIndexCharacteristic === controlEntrySampleLineList?.length) {
-        setIsLastCharacteristic(true);
-      } else {
-        setIsLastCharacteristic(false);
-      }
-      if (currentIndexCharacteristic === 1) {
-        setIsFirstCharacteristic(true);
-      } else {
-        setIsFirstCharacteristic(false);
-      }
-    }
-  }, [
-    controlEntrySampleLineList?.length,
-    currentIndexCharacteristic,
-    currentIndexSample,
-    selectedMode,
-  ]);
-
-  const handleNextSample = () => {
-    if (currentIndexSample !== controlEntry?.controlEntrySamplesList.length) {
-      setCurrentIndexCharacteristic(1);
-    }
-    if (
-      currentIndexSample <=
-      controlEntry?.controlEntrySamplesList.length - 1
-    ) {
-      setCurrentIndexSample(currentIndexSample + 1);
-    }
+      return _current + 1;
+    });
   };
 
-  const handlePrevSample = () => {
-    setCurrentIndexCharacteristic(1);
-    if (currentIndexSample > 1) {
-      setCurrentIndexSample(currentIndexSample - 1);
-    }
-  };
+  const handlePrevious = () => {
+    setCurrentIndex(_current => {
+      if (_current === 0) {
+        setCategoryIndex(_cIndex => {
+          if (_cIndex !== 0) {
+            return _cIndex - 1;
+          }
 
-  const handleNextCharacteristic = () => {
-    if (currentIndexCharacteristic <= controlEntrySampleLineList?.length - 1) {
-      setCurrentIndexCharacteristic(currentIndexCharacteristic + 1);
-    } else {
-      setIsLastCharacteristic(true);
-    }
-  };
+          return _cIndex;
+        });
 
-  const handlePrevCharacteristic = () => {
-    if (currentIndexCharacteristic > 1) {
-      setCurrentIndexCharacteristic(currentIndexCharacteristic - 1);
-    } else {
-      setIsLastCharacteristic(true);
-    }
+        return _current;
+      }
+
+      return _current - 1;
+    });
   };
 
   return (
@@ -270,44 +171,29 @@ const ControlEntryFormScreen = ({route}) => {
         fixedItems={
           <ControlEntryFormHeader
             mode={selectedMode}
-            currentIndexSample={currentIndexSample}
-            controlEntryId={controlEntryId}
-            currentIndexCharacteristic={currentIndexCharacteristic}
-            currentControlPLanIndex={currentControlPLanIndex}
-            currentSampleLineIndex={currentSampleLineIndex}
+            currentIndex={currentIndex}
+            categoryIndex={categoryIndex}
+            nbItemInCategory={nbItemInCategory}
+            nbCategories={nbCategories}
           />
         }
       />
-      {((selectedMode === MODE.bySample && currentCharacteristic != null) ||
-        (selectedMode === MODE.byCharacteristic &&
-          currentSampleLine?.id != null)) && (
+      {categorySet[categoryIndex] != null && itemSet[currentIndex] != null && (
         <CustomFieldForm
           model="com.axelor.apps.quality.db.ControlEntryPlanLine"
           fieldType="entryAttrs"
-          modelId={
-            selectedMode === MODE.bySample
-              ? currentCharacteristic?.id
-              : currentSampleLine?.id
-          }
+          modelId={itemSet[currentIndex].id}
           additionalActions={[
             {
               key: 'customAction',
               useDefaultAction: true,
               customComponent: (
                 <ControlEntryFormButtons
-                  handleNextSample={handleNextSample}
-                  handlePrevSample={handlePrevSample}
-                  handleNextCharacteristic={handleNextCharacteristic}
-                  handlePrevCharacteristic={handlePrevCharacteristic}
-                  isLastCharacteristic={isLastCharacteristic}
-                  isFirstCharacteristic={isFirstCharacteristic}
+                  handleNext={handleNext}
+                  handlePrevious={handlePrevious}
                   mode={selectedMode}
-                  handleNextControlPlan={handleNextControlPlan}
-                  handlePrevControlPLan={handlePrevControlPLan}
-                  handleNextSampleLine={handleNextSampleLine}
-                  handlePrevSampleLine={handlePrevSampleLine}
-                  isLastSampleLine={isLastSampleLine}
-                  isFirstSampleLine={isFirstSampleLine}
+                  isLastItem={isLastItem}
+                  isFirstItem={isFirstItem}
                 />
               ),
             },

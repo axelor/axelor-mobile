@@ -16,15 +16,9 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import React, {useEffect} from 'react';
+import React from 'react';
 import {StyleSheet, View} from 'react-native';
-import {
-  isEmpty,
-  useSelector,
-  useTranslator,
-  useDispatch,
-  DateDisplay,
-} from '@axelor/aos-mobile-core';
+import {useSelector, useTranslator, DateDisplay} from '@axelor/aos-mobile-core';
 import {
   Badge,
   Icon,
@@ -33,7 +27,6 @@ import {
   useThemeColor,
 } from '@axelor/aos-mobile-ui';
 import {ControlEntry} from '../../../types';
-import {fetchControlEntryById} from '../../../features/controlEntrySlice';
 
 const MODE = {
   bySample: '1',
@@ -41,38 +34,24 @@ const MODE = {
 };
 
 interface ControlEntryHeaderProps {
-  controlEntryId: number;
-  currentIndexSample: number;
-  currentIndexCharacteristic: number;
-  currentControlPLanIndex: number;
-  currentSampleLineIndex: number;
+  currentIndex: number;
+  categoryIndex: number;
+  nbItemInCategory: number;
+  nbCategories: number;
   mode: string;
 }
 
 const ControlEntryFormHeader = ({
-  controlEntryId,
-  currentIndexSample,
-  currentIndexCharacteristic,
-  currentControlPLanIndex,
-  currentSampleLineIndex,
+  currentIndex,
+  categoryIndex,
+  nbItemInCategory,
+  nbCategories,
   mode,
 }: ControlEntryHeaderProps) => {
   const I18n = useTranslator();
   const Colors = useThemeColor();
-  const dispatch = useDispatch();
 
   const {controlEntry} = useSelector((state: any) => state.controlEntry);
-  const {controlEntrySampleLineList, controlEntrySampleLineByCharacteristic} =
-    useSelector((state: any) => state.controlEntrySampleLine);
-  const {controlPlan} = useSelector((state: any) => state.controlPlan);
-
-  useEffect(() => {
-    dispatch((fetchControlEntryById as any)({controlEntryId: controlEntryId}));
-  }, [controlEntryId, dispatch]);
-
-  if (controlEntry == null || isEmpty(controlEntry)) {
-    return null;
-  }
 
   return (
     <View style={styles.container}>
@@ -90,35 +69,21 @@ const ControlEntryFormHeader = ({
         <DateDisplay date={controlEntry.entryDateTime} />
       </View>
       <View style={styles.progressContainer}>
+        {/**Should be done in type file */}
         <Icon name={mode === MODE.bySample ? 'eyedropper' : 'palette2'} />
         <ProgressBar
-          total={
-            mode === MODE.bySample
-              ? controlEntry?.controlEntrySamplesList?.length
-              : controlPlan?.controlPlanLinesSet?.length
-          }
-          value={
-            mode === MODE.bySample
-              ? currentIndexSample
-              : currentControlPLanIndex
-          }
+          total={nbCategories}
+          value={categoryIndex + 1}
           style={[styles.progressBar, styles.margin]}
           showPercent={false}
         />
       </View>
       <View style={styles.progressContainer}>
+        {/**Should be done in type file */}
         <Icon name={mode === MODE.bySample ? 'palette2' : 'eyedropper'} />
         <ProgressBar
-          value={
-            mode === MODE.bySample
-              ? currentIndexCharacteristic
-              : currentSampleLineIndex
-          }
-          total={
-            mode === MODE.bySample
-              ? controlEntrySampleLineList?.length
-              : controlEntrySampleLineByCharacteristic?.length
-          }
+          total={nbItemInCategory}
+          value={currentIndex + 1}
           showPercent={false}
           style={styles.progressBar}
         />
@@ -145,10 +110,6 @@ const styles = StyleSheet.create({
   },
   margin: {
     marginVertical: '2%',
-  },
-  toggleButton: {
-    height: 40,
-    top: '-20%',
   },
 });
 

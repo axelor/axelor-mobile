@@ -18,10 +18,10 @@
 
 import {createStandardFetch} from '@axelor/aos-mobile-core';
 
-export async function fetchControlPlanById({controlPlanId}) {
+export async function fetchControlPlanById({id}) {
   return createStandardFetch({
     model: 'com.axelor.apps.quality.db.ControlPlan',
-    id: controlPlanId,
+    id,
     fieldKey: 'quality_controlPlan',
   });
 }

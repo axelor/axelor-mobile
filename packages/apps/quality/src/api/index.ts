@@ -23,6 +23,6 @@ export {
 export {searchControlEntrySample as searchControlEntrySampleApi} from './control-entry-sample-api';
 export {
   searchControlEntrySampleLine as searchControlEntrySampleLineApi,
-  searchControlEntrySampleLineByCharacteristic as searchControlEntrySampleLineByCharacteristicApi,
+  searchControlEntrySampleLineOfControlEntry as searchControlEntrySampleLineOfControlEntryApi,
 } from './control-entry-sample-line-api';
 export {fetchControlPlanById as fetchControlPlanByIdApi} from './control-plan-api';

@@ -26,36 +26,20 @@ const MODE = {
 };
 
 interface ControlEntryFormButtonsProps {
-  handleNextSample: () => void;
-  handlePrevSample: () => void;
-  handleNextCharacteristic: () => void;
-  handlePrevCharacteristic: () => void;
-  isLastCharacteristic: boolean;
-  isFirstCharacteristic: boolean;
+  handleNext: () => void;
+  handlePrevious: () => void;
   mode: string;
-  handleNextControlPlan: () => void;
-  handlePrevControlPLan: () => void;
-  handleNextSampleLine: () => void;
-  handlePrevSampleLine: () => void;
-  isLastSampleLine: boolean;
-  isFirstSampleLine: boolean;
+  isFirstItem: boolean;
+  isLastItem: boolean;
   onPress: () => {};
 }
 
 const ControlEntryFormButtons = ({
-  handleNextSample,
-  handlePrevSample,
-  handleNextCharacteristic,
-  handlePrevCharacteristic,
-  isLastCharacteristic,
-  isFirstCharacteristic,
+  handleNext,
+  handlePrevious,
   mode,
-  handleNextControlPlan,
-  handlePrevControlPLan,
-  handleNextSampleLine,
-  handlePrevSampleLine,
-  isLastSampleLine,
-  isFirstSampleLine,
+  isFirstItem,
+  isLastItem,
   onPress,
 }: ControlEntryFormButtonsProps) => {
   const Colors = useThemeColor();
@@ -65,22 +49,15 @@ const ControlEntryFormButtons = ({
       <View style={styles.childrenContainer}>
         <View style={styles.buttonContainer}>
           <Button
-            onPress={
-              mode === MODE.bySample
-                ? isFirstCharacteristic
-                  ? handlePrevSample
-                  : handlePrevCharacteristic
-                : isFirstSampleLine
-                ? handlePrevControlPLan
-                : handlePrevSampleLine
-            }
+            onPress={handlePrevious}
             color={Colors.secondaryColor}
             iconName={
-              mode === MODE.bySample
-                ? isFirstCharacteristic
+              isFirstItem
+                ? /**Should be done in type file */
+                  mode === MODE.bySample
                   ? 'eyedropper'
                   : 'palette2'
-                : isFirstSampleLine
+                : mode === MODE.bySample
                 ? 'palette2'
                 : 'eyedropper'
             }
@@ -89,23 +66,16 @@ const ControlEntryFormButtons = ({
         </View>
         <View style={styles.buttonContainer}>
           <Button
-            onPress={
-              mode === MODE.bySample
-                ? isLastCharacteristic
-                  ? handleNextSample
-                  : handleNextCharacteristic
-                : isLastSampleLine
-                ? handleNextControlPlan
-                : handleNextSampleLine
-            }
+            onPress={handleNext}
             iconName={
-              mode === MODE.bySample
-                ? isLastCharacteristic
-                  ? 'eyedropper'
-                  : 'palette2'
-                : isLastSampleLine
-                ? 'palette2'
-                : 'eyedropper'
+              isLastItem
+                ? /**Should be done in type file */
+                  mode === MODE.bySample
+                  ? 'palette2'
+                  : 'eyedropper'
+                : mode === MODE.bySample
+                ? 'eyedropper'
+                : 'palette2'
             }
             color={Colors.secondaryColor}
           />

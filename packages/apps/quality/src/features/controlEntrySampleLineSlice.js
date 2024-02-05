@@ -23,7 +23,7 @@ import {
 } from '@axelor/aos-mobile-core';
 import {
   searchControlEntrySampleLine as _searchControlEntrySampleLine,
-  searchControlEntrySampleLineByCharacteristic as _searchControlEntrySampleLineByCharacteristic,
+  searchControlEntrySampleLineOfControlEntry as _searchControlEntrySampleLineOfControlEntry,
 } from '../api/control-entry-sample-line-api';
 
 export const searchControlEntrySampleLine = createAsyncThunk(
@@ -39,14 +39,13 @@ export const searchControlEntrySampleLine = createAsyncThunk(
   },
 );
 
-export const searchControlEntrySampleLineByCharacteristic = createAsyncThunk(
-  'controlEntry/searchControlEntrySampleLineByCharacteristic',
+export const searchControlEntrySampleLineOfControlEntry = createAsyncThunk(
+  'controlEntry/searchControlEntrySampleLineOfControlEntry',
   async function (data, {getState}) {
     return handlerApiCall({
-      fetchFunction: _searchControlEntrySampleLineByCharacteristic,
+      fetchFunction: _searchControlEntrySampleLineOfControlEntry,
       data,
-      action:
-        'Quality_SliceAction_SearchControlEntrySampleLineByCharacteristic',
+      action: 'Quality_SliceAction_SearchControlEntrySampleLine',
       getState,
       responseOptions: {isArrayResponse: true},
     });
@@ -59,8 +58,8 @@ const initialState = {
   isListEnd: false,
   controlEntrySampleLineList: [],
 
-  loadingControlEntrySamplelineByCharacteristicList: true,
-  controlEntrySampleLineByCharacteristic: [],
+  loadingSampleLines: true,
+  sampleLineOfEntryList: [],
 };
 
 const controlEntrySampleLineSlice = createSlice({
@@ -74,16 +73,16 @@ const controlEntrySampleLineSlice = createSlice({
       list: 'controlEntrySampleLineList',
     });
     builder.addCase(
-      searchControlEntrySampleLineByCharacteristic.pending,
-      (state, action) => {
-        state.loadingControlEntrySamplelineByCharacteristicList = true;
+      searchControlEntrySampleLineOfControlEntry.pending,
+      state => {
+        state.loadingSampleLines = true;
       },
     );
     builder.addCase(
-      searchControlEntrySampleLineByCharacteristic.fulfilled,
+      searchControlEntrySampleLineOfControlEntry.fulfilled,
       (state, action) => {
-        state.loadingControlEntrySamplelineByCharacteristicList = false;
-        state.controlEntrySampleLineByCharacteristic = action.payload;
+        state.loadingSampleLines = false;
+        state.sampleLineOfEntryList = action.payload;
       },
     );
   },
