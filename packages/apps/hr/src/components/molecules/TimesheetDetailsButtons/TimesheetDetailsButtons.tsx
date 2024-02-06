@@ -16,7 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import React, {useCallback, useState} from 'react';
+import React, {useCallback, useMemo, useState} from 'react';
 import {StyleSheet, View} from 'react-native';
 import {
   useDispatch,
@@ -36,12 +36,14 @@ interface TimesheetDetailsButtonsProps {
   timesheet: any;
   statusSelect: number;
   isEmpty: boolean;
+  isManualCreation?: boolean;
 }
 
 const TimesheetDetailsButtons = ({
   timesheet,
   statusSelect,
   isEmpty,
+  isManualCreation = false,
 }: TimesheetDetailsButtonsProps) => {
   const Colors = useThemeColor();
   const I18n = useTranslator();
@@ -73,17 +75,22 @@ const TimesheetDetailsButtons = ({
     [dispatch, timesheet, user],
   );
 
+  const canDelete = useMemo(
+    () => isEmpty && !isManualCreation,
+    [isEmpty, isManualCreation],
+  );
+
   if (statusSelect === Timesheet.statusSelect.Draft) {
     return (
       <View style={styles.container}>
         <Button
-          title={I18n.t(isEmpty ? 'Hr_Delete' : 'Base_Cancel')}
+          title={I18n.t(canDelete ? 'Hr_Delete' : 'Base_Cancel')}
           onPress={() => {
-            isEmpty ? deleteAPI() : updateStatusAPI('cancel');
+            canDelete ? deleteAPI() : updateStatusAPI('cancel');
           }}
           width="45%"
           color={Colors.errorColor}
-          iconName={isEmpty ? 'trash3-fill' : 'x-lg'}
+          iconName={canDelete ? 'trash3-fill' : 'x-lg'}
         />
         <Button
           title={I18n.t('Hr_Send')}

@@ -17,9 +17,23 @@
  */
 
 import React, {useCallback, useEffect, useMemo, useState} from 'react';
-import {useDispatch, useSelector, useTranslator} from '@axelor/aos-mobile-core';
-import {HeaderContainer, Screen, ScrollList} from '@axelor/aos-mobile-ui';
-import {TimesheetDetailCard, TimesheetFilters} from '../../components';
+import {
+  headerActionsProvider,
+  useDispatch,
+  useSelector,
+  useTranslator,
+} from '@axelor/aos-mobile-core';
+import {
+  HeaderContainer,
+  Screen,
+  ScrollList,
+  useThemeColor,
+} from '@axelor/aos-mobile-ui';
+import {
+  TimesheetCreationAlert,
+  TimesheetDetailCard,
+  TimesheetFilters,
+} from '../../components';
 import {
   fetchTimesheet,
   fetchTimesheetToValidate,
@@ -28,11 +42,13 @@ import {
 import {Timesheet} from '../../types';
 
 const TimesheetListScreen = ({navigation}) => {
+  const Colors = useThemeColor();
   const I18n = useTranslator();
   const dispatch = useDispatch();
 
   const [mode, setMode] = useState(Timesheet.mode.personnal);
   const [selectedStatus, setSelectedStatus] = useState(null);
+  const [isCreationAlertOpen, setIsCreationAlertOpen] = useState(false);
 
   const {
     myTimesheetList,
@@ -44,7 +60,9 @@ const TimesheetListScreen = ({navigation}) => {
     moreLoadingTimesheetToValidate,
     isListEndTimesheetToValidate,
   } = useSelector(state => state.timesheet);
-  const {timesheet: timesheetConfig} = useSelector(state => state.appConfig);
+  const {mobileSettings, timesheet: timesheetConfig} = useSelector(
+    state => state.appConfig,
+  );
   const {user} = useSelector(state => state.user);
 
   useEffect(() => {
@@ -134,6 +152,23 @@ const TimesheetListScreen = ({navigation}) => {
     [filterOnStatus, listToDisplay.list],
   );
 
+  useEffect(() => {
+    headerActionsProvider.registerModel('hr_timesheets_list', {
+      actions: [
+        {
+          key: 'newTimesheet',
+          order: 10,
+          iconName: 'plus-lg',
+          title: I18n.t('Hr_CreateTimesheet'),
+          iconColor: Colors.primaryColor.background,
+          hideIf: !mobileSettings?.isManualCreationOfTimesheetAllowed,
+          onPress: () => setIsCreationAlertOpen(true),
+          showInHeader: true,
+        },
+      ],
+    });
+  }, [Colors, dispatch, I18n, mobileSettings, navigation]);
+
   return (
     <Screen removeSpaceOnTop={true}>
       <HeaderContainer
@@ -166,6 +201,10 @@ const TimesheetListScreen = ({navigation}) => {
         moreLoading={listToDisplay.moreLoading}
         isListEnd={listToDisplay.isListEnd}
         translator={I18n.t}
+      />
+      <TimesheetCreationAlert
+        isOpen={isCreationAlertOpen}
+        onCancel={() => setIsCreationAlertOpen(false)}
       />
     </Screen>
   );

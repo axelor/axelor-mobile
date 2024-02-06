@@ -34,6 +34,7 @@ export default {
     options: {
       shadedHeader: false,
     },
+    actionID: 'hr_timesheets_list',
   },
   TimesheetLineFormScreen: {
     title: 'Hr_TimesheetLine',
