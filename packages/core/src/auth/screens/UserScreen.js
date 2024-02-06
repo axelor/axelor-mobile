@@ -38,7 +38,7 @@ import {
   useTranslator,
 } from '../../index';
 import {fetchCompanies} from '../features/companySlice';
-import {fetchLanguages} from '../features/languageSlice';
+import {fetchLocalizations} from '../features/localizationSlice';
 import {
   changeActiveCompany,
   updateActiveUser,
@@ -55,7 +55,7 @@ const UserScreen = ({children}) => {
 
   const {companyList} = useSelector(state => state.company);
   const {userId} = useSelector(state => state.auth);
-  const {languageList} = useSelector(state => state.language);
+  const {localizationList} = useSelector(state => state.localization);
   const {base: baseConfig} = useSelector(state => state.appConfig);
   const {loadingUser, user, isUser, canModifyCompany} = useSelector(
     state => state.user,
@@ -67,7 +67,7 @@ const UserScreen = ({children}) => {
   useEffect(() => {
     fetchUser();
     dispatch(fetchCompanies());
-    dispatch(fetchLanguages());
+    dispatch(fetchLocalizations());
   }, [dispatch, fetchUser, userId]);
 
   useEffect(() => {
@@ -112,9 +112,13 @@ const UserScreen = ({children}) => {
   );
 
   const updateLanguage = useCallback(
-    language => {
+    localization => {
       dispatch(
-        updateActiveUser({id: user.id, language, version: user.version}),
+        updateActiveUser({
+          id: user.id,
+          localization: {id: localization},
+          version: user.version,
+        }),
       );
     },
     [dispatch, user],
@@ -165,13 +169,13 @@ const UserScreen = ({children}) => {
             />
           )}
           {children}
-          {languageList?.length > 1 && (
+          {localizationList?.length > 1 && (
             <Picker
               title={I18n.t('User_Language')}
-              defaultValue={user.language}
-              listItems={languageList}
+              defaultValue={user.localization?.id}
+              listItems={localizationList}
               labelField="name"
-              valueField="code"
+              valueField="id"
               onValueChange={updateLanguage}
               emptyValue={false}
             />

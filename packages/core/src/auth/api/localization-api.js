@@ -16,10 +16,13 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import {axiosApiProvider} from '../../apiProviders';
+import {createStandardSearch} from '../../apiProviders';
 
-export async function searchLanguage() {
-  return axiosApiProvider.get({
-    url: '/ws/rest/com.axelor.apps.base.db.Language/',
+export async function searchLocalization() {
+  return createStandardSearch({
+    model: 'com.axelor.apps.base.db.Localization',
+    criteria: [],
+    fieldKey: 'auth_localization',
+    page: 0,
   });
 }

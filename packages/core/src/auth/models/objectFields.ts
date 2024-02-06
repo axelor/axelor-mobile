@@ -31,6 +31,11 @@ export const auth_modelAPI: ObjectFields = {
         currency: schemaContructor.subObject('symbol'),
       }),
     ),
+    localization: schemaContructor.subObject().concat(
+      schemaContructor.object({
+        language: schemaContructor.subObject(),
+      }),
+    ),
     activeTeam: schemaContructor.subObject(),
     workshopStockLocation: schemaContructor.subObject(),
     roles: schemaContructor.array(),
@@ -38,5 +43,14 @@ export const auth_modelAPI: ObjectFields = {
     employee: schemaContructor.subObject(),
     language: schemaContructor.string(),
     todayDateT: schemaContructor.string(),
+  }),
+  auth_localization: schemaContructor.object({
+    code: schemaContructor.string(),
+    name: schemaContructor.string(),
+    language: schemaContructor.subObject().concat(
+      schemaContructor.object({
+        code: schemaContructor.number(),
+      }),
+    ),
   }),
 };
