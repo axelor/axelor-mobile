@@ -20,7 +20,7 @@
   "User_Language": "Langage",
   "User_Theme": "Thème",
   "User_NoAppUser": "L'utilisateur n'a pas pu être récupéré. Veuillez vérifier que vous avez les permissions nécessaires ou contactez votre administrateur.",
-  "Auth_SliceAction_FetchLanguages": "récupération des langages",
+  "Auth_SliceAction_FetchLocalization": "récupération des localisations",
   "Auth_SliceAction_FetchCompanies": "récupération des sociétés",
   "Auth_SliceAction_FetchActiveUser": "récupération de l'utilisateur actif",
   "Auth_SliceAction_UpdateActiveUser": "mise à jour de l'utilisateur actif"
