@@ -26,7 +26,7 @@ import {useSelector} from 'react-redux';
 
 export const selectLanguage = createSelector(
   state => state?.user,
-  userState => userState?.user?.language,
+  userState => userState?.user?.localization?.language?.code,
 );
 
 const DEFAULT_NAMESPACE = 'translation';
