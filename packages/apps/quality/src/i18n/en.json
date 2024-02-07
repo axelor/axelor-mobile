@@ -15,7 +15,7 @@
   "Quality_FillingMethod": "Filling method",
   "Quality_FillingMethod_Sample": "By sample",
   "Quality_FillingMethod_Characteristic": "By characteristic",
-  "Quality_ControlResult_Compliant": "Conforme",
+  "Quality_ControlResult_Compliant": "Compliant",
   "Quality_ControlResult_NotCompliant": "Not compliant",
   "Quality_ControlResult_NotControlled": "Not controlled",
   "Quality_SliceAction_SearchControlEntry": "search control entries",
