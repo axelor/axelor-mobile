@@ -16,7 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import React, {useCallback, useEffect} from 'react';
+import React, {useCallback, useEffect, useState} from 'react';
 import {Dimensions, StyleSheet, View} from 'react-native';
 import {useDispatch} from 'react-redux';
 import {
@@ -40,13 +40,27 @@ const CameraScanner = () => {
   const Colors = useThemeColor();
   const dispatch = useDispatch();
 
+  const [shouldClose, setShouldClose] = useState(true);
+  const [barcode, setBarcode] = useState(null);
+
   const handleClose = useCallback(() => {
-    dispatch(disableCameraScanner());
+    if (barcode != null) {
+      dispatch(
+        scanBarcode({
+          value: formatScan(barcode[0].value, barcode[0].type),
+          type: barcode[0].type,
+        }),
+      );
+    } else {
+      dispatch(disableCameraScanner());
+    }
   }, [dispatch]);
 
   useEffect(() => {
     if (isActive) {
       requestPermission();
+      setShouldClose(false);
+      setBarcode(null);
     }
   }, [isActive]);
 
@@ -54,14 +68,15 @@ const CameraScanner = () => {
     codeTypes: ['qr', 'ean-13'],
     onCodeScanned: barcode => {
       if (Array.isArray(barcode) && barcode[0] != null) {
-        dispatch(
-          scanBarcode({
-            value: formatScan(barcode[0].value, barcode[0].type),
-            type: barcode[0].type,
-          }),
-        );
+        setBarcode(barcode[0]);
       }
     },
+  });
+
+  console.log({
+    shouldClose,
+    barcode,
+    condition: !shouldClose && barcode == null,
   });
 
   if (!hasPermission || !isActive) {
@@ -75,13 +90,14 @@ const CameraScanner = () => {
         size={24}
         color={Colors.primaryColor.background}
         touchable={true}
-        onPress={handleClose}
+        onPress={() => setShouldClose(true)}
         style={styles.icon}
       />
       <PackageCamera
+        onStopped={handleClose}
         style={styles.camera}
         device={device}
-        isActive={true}
+        isActive={!shouldClose && barcode == null}
         codeScanner={codeScanner}
       />
     </View>
