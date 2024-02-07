@@ -23,5 +23,6 @@
   "Quality_SliceAction_SearchControlEntrySample": "recherche sur les échantillons du relevé de contôle",
   "Quality_SliceAction_FetchControlPlan": "récupération de la gamme de contrôle",
   "Quality_SliceAction_SearchControlEntrySampleLine": "recherche des lignes d'échantillons du relevé de contrôle",
-  "Quality_SliceAction_FetchControlEntrySampleLine": "récupération de la ligne d'échantillon du relevé de contrôle"
+  "Quality_SliceAction_FetchControlEntrySampleLine": "récupération de la ligne d'échantillon du relevé de contrôle",
+  "Quality_SliceAction_UpdateControlEntry": "mise à jour du relevé de contrôl"
 }

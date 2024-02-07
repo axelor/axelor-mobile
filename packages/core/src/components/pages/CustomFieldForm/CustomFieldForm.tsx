@@ -39,7 +39,7 @@ const FORM_KEY = 'customField-form';
 interface JsonAction extends Action {
   useDefaultAction?: boolean;
   showToast?: boolean;
-  postActions?: () => void;
+  postActions?: (res: any) => void;
 }
 
 interface CustomFieldFormProps {
@@ -104,8 +104,8 @@ const CustomFieldForm = ({
                   showToast:
                     _action.showToast != null ? _action.showToast : true,
                 }),
-              ).then(() => {
-                _action.postActions?.();
+              ).then(res => {
+                _action.postActions?.(res?.payload);
               });
             },
           };

@@ -26,6 +26,7 @@ import {
 } from '../components';
 import {searchControlEntrySample} from '../features/controlEntrySampleSlice';
 import {fetchControlEntryById} from '../features/controlEntrySlice';
+import {ControlEntry} from '../types';
 
 const ControlEntryDetailsScreen = ({route}) => {
   const {controlEntryId} = route.params;
@@ -62,7 +63,13 @@ const ControlEntryDetailsScreen = ({route}) => {
   }
 
   return (
-    <Screen removeSpaceOnTop fixedItems={<ControlEntryDetailsButtons />}>
+    <Screen
+      removeSpaceOnTop
+      fixedItems={
+        controlEntry.statusSelect === ControlEntry.status.InProgress && (
+          <ControlEntryDetailsButtons />
+        )
+      }>
       <HeaderContainer
         expandableFilter={false}
         fixedItems={

@@ -17,14 +17,31 @@
  */
 
 import React from 'react';
-import {useTranslator} from '@axelor/aos-mobile-core';
+import {useDispatch, useSelector, useTranslator} from '@axelor/aos-mobile-core';
 import {Button} from '@axelor/aos-mobile-ui';
+import {updateControlEntry} from '../../../features/controlEntrySlice';
 
 const ControlEntryDetailsButtons = () => {
+  const dispatch = useDispatch();
   const I18n = useTranslator();
 
+  const {controlEntry} = useSelector((state: any) => state.controlEntry);
+
   return (
-    <Button title={I18n.t('Quality_MarkAsCompleted')} iconName="check-lg" />
+    <Button
+      title={I18n.t('Quality_MarkAsCompleted')}
+      onPress={() => {
+        const dataToSend = {...controlEntry, statusSelect: 3};
+        console.log('dataToSend', dataToSend);
+        dispatch(
+          (updateControlEntry as any)({
+            controlEntry: dataToSend,
+            controlEntryId: controlEntry.id,
+          }),
+        );
+      }}
+      iconName="check-lg"
+    />
   );
 };
 

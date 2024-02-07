@@ -67,6 +67,7 @@ const FillingMethodAlert = ({
         itemStyle={styles.radioSelect}
         items={ControlEntry.getFillingMethods(I18n)}
         onChange={setSelectedMode}
+        radioButtonStyle={styles.radioButton}
       />
     </Alert>
   );
@@ -78,6 +79,9 @@ const styles = StyleSheet.create({
   },
   popup: {
     width: '80%',
+  },
+  radioButton: {
+    width: 200,
   },
 });
 

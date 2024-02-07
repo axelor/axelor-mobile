@@ -29,6 +29,7 @@ interface RadioItem {
 const RadioSelect = ({
   style,
   itemStyle,
+  radioButtonStyle,
   items,
   question,
   radioSize,
@@ -38,6 +39,7 @@ const RadioSelect = ({
 }: {
   style?: any;
   itemStyle?: any;
+  radioButtonStyle?: any;
   items: RadioItem[];
   question?: string;
   radioSize?: number;
@@ -66,6 +68,7 @@ const RadioSelect = ({
         {items.map(item => (
           <RadioButton
             key={item.id}
+            style={radioButtonStyle}
             onPress={() => onRadioBtnClick(item)}
             selected={selectedItem?.id === item.id}
             title={item.title}

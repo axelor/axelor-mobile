@@ -19,6 +19,7 @@
 import {
   createStandardSearch,
   createStandardFetch,
+  axiosApiProvider,
 } from '@axelor/aos-mobile-core';
 
 const createControlEntrySampleLineCriteria = controlEntrySampleId => {
@@ -72,5 +73,23 @@ export async function fetchControlEntrySampleLine({id}) {
     model: 'com.axelor.apps.quality.db.ControlEntryPlanLine',
     id,
     fieldKey: 'quality_controlEntrySampleLine',
+  });
+}
+
+export async function checkComformity({object}) {
+  console.log('object', object);
+  return axiosApiProvider.post({
+    url: 'ws/action',
+    data: {
+      action:
+        'action-quality-control-entry-line-method-control-conformity,save',
+      data: {
+        context: {
+          ...object,
+          _model: 'com.axelor.apps.quality.db.ControlEntryPlanLine',
+        },
+      },
+      model: 'com.axelor.apps.quality.db.ControlEntryPlanLine',
+    },
   });
 }

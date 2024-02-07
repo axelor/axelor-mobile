@@ -23,5 +23,6 @@
   "Quality_SliceAction_SearchControlEntrySample": "search control entry samples",
   "Quality_SliceAction_FetchControlPlan": "fetch control plan",
   "Quality_SliceAction_SearchControlEntrySampleLine": "search control entry sample lines",
-  "Quality_SliceAction_FetchControlEntrySampleLine": "fetch control entry sample line"
+  "Quality_SliceAction_FetchControlEntrySampleLine": "fetch control entry sample line",
+  "Quality_SliceAction_UpdateControlEntry": "update control entry"
 }

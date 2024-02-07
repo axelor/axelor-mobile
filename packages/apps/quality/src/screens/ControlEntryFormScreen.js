@@ -30,6 +30,7 @@ import {
 } from '../features/controlEntrySampleLineSlice';
 import {fetchControlPlanById} from '../features/controlPlanSlice';
 import {ControlEntry} from '../types';
+import {checkComformity} from '../api/control-entry-sample-line-api';
 
 const ControlEntryFormScreen = ({route}) => {
   const {selectedMode} = route.params;
@@ -179,7 +180,8 @@ const ControlEntryFormScreen = ({route}) => {
               key: 'customAction',
               useDefaultAction: true,
               showToast: false,
-              postActions: () => {
+              postActions: async res => {
+                await checkComformity({object: res});
                 fetchSampleLine(itemSet, currentIndex);
               },
               customComponent: (

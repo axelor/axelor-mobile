@@ -24,6 +24,7 @@ import {
 import {
   searchControlEntry as _searchControlEntry,
   fetchControlEntryById as _fetchControlEntryById,
+  updateControlEntry as _updateControlEntry,
 } from '../api/control-entry-api';
 
 export const searchControlEntry = createAsyncThunk(
@@ -52,6 +53,27 @@ export const fetchControlEntryById = createAsyncThunk(
   },
 );
 
+export const updateControlEntry = createAsyncThunk(
+  'controlEntry/updateControlEntry',
+  async function (data = {}, {getState}) {
+    return handlerApiCall({
+      fetchFunction: _updateControlEntry,
+      data,
+      action: 'Quality_SliceAction_UpdateControlEntry',
+      getState,
+      responseOptions: {isArrayResponse: false},
+    }).then(() => {
+      return handlerApiCall({
+        fetchFunction: _fetchControlEntryById,
+        data: {controlEntryId: data?.controlEntryId},
+        action: 'Quality_SliceAction_FetchControlEntryById',
+        getState,
+        responseOptions: {isArrayResponse: false},
+      });
+    });
+  },
+);
+
 const initialState = {
   loadingControlEntryList: true,
   moreLoading: false,
@@ -76,6 +98,13 @@ const controlEntrySlice = createSlice({
       state.loadingControlEntry = true;
     });
     builder.addCase(fetchControlEntryById.fulfilled, (state, action) => {
+      state.loadingControlEntry = false;
+      state.controlEntry = action.payload;
+    });
+    builder.addCase(updateControlEntry.pending, (state, action) => {
+      state.loadingControlEntry = true;
+    });
+    builder.addCase(updateControlEntry.fulfilled, (state, action) => {
       state.loadingControlEntry = false;
       state.controlEntry = action.payload;
     });

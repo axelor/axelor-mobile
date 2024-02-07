@@ -21,5 +21,9 @@ export {
   searchControlEntrySampleLineOfControlEntry,
 } from './controlEntrySampleLineSlice';
 export {searchControlEntrySample} from './controlEntrySampleSlice';
-export {fetchControlEntryById, searchControlEntry} from './controlEntrySlice';
+export {
+  fetchControlEntryById,
+  searchControlEntry,
+  updateControlEntry,
+} from './controlEntrySlice';
 export {fetchControlPlanById} from './controlPlanSlice';
