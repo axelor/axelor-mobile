@@ -16,7 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import React, {useMemo} from 'react';
+import React, {useEffect, useMemo, useState} from 'react';
 import {StyleSheet, View} from 'react-native';
 import {
   checkNullString,
@@ -32,6 +32,7 @@ import {
   useThemeColor,
 } from '@axelor/aos-mobile-ui';
 import {DatesInterval} from '../../atoms';
+import {convertPeriodTimesheet} from '../../../api/timesheet-api';
 import {Timesheet} from '../../../types';
 import {getDurationUnit} from '../../../utils';
 
@@ -45,6 +46,8 @@ const TimesheetHeader = ({timesheet, statusSelect}: TimesheetHeaderProps) => {
   const I18n = useTranslator();
   const navigation = useNavigation();
 
+  const [convertedPeriod, setConvertedPeriod] = useState(0);
+
   const {mobileSettings} = useSelector((state: any) => state.appConfig);
 
   const isAddButton = useMemo(
@@ -53,6 +56,12 @@ const TimesheetHeader = ({timesheet, statusSelect}: TimesheetHeaderProps) => {
       statusSelect === Timesheet.statusSelect.Draft,
     [mobileSettings?.isLineCreationOfTimesheetDetailsAllowed, statusSelect],
   );
+
+  useEffect(() => {
+    convertPeriodTimesheet({timesheetId: timesheet.id}).then(res =>
+      setConvertedPeriod(res.data.object.periodTotalConvert),
+    );
+  }, [timesheet.id]);
 
   return (
     <View style={styles.container}>
@@ -73,7 +82,7 @@ const TimesheetHeader = ({timesheet, statusSelect}: TimesheetHeaderProps) => {
             {I18n.t('User_Company')} : {timesheet.company.name}
           </Text>
           <Text>
-            {I18n.t('Hr_TotalDuration')} : {timesheet.periodTotal}
+            {I18n.t('Hr_TotalDuration')} : {convertedPeriod}
             {getDurationUnit(timesheet.timeLoggingPreferenceSelect, I18n)}
           </Text>
         </View>
