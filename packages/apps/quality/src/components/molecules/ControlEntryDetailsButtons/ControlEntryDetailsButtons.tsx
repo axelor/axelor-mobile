@@ -20,6 +20,7 @@ import React from 'react';
 import {useDispatch, useSelector, useTranslator} from '@axelor/aos-mobile-core';
 import {Button} from '@axelor/aos-mobile-ui';
 import {updateControlEntry} from '../../../features/controlEntrySlice';
+import {ControlEntry} from '../../../types';
 
 const ControlEntryDetailsButtons = () => {
   const dispatch = useDispatch();
@@ -31,10 +32,12 @@ const ControlEntryDetailsButtons = () => {
     <Button
       title={I18n.t('Quality_MarkAsCompleted')}
       onPress={() => {
-        const dataToSend = {...controlEntry, statusSelect: 3};
         dispatch(
           (updateControlEntry as any)({
-            controlEntry: dataToSend,
+            controlEntry: {
+              ...controlEntry,
+              statusSelect: ControlEntry.status.Completed,
+            },
             controlEntryId: controlEntry.id,
           }),
         );
