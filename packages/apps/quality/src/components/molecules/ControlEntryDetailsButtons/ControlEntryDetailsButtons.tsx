@@ -32,7 +32,6 @@ const ControlEntryDetailsButtons = () => {
       title={I18n.t('Quality_MarkAsCompleted')}
       onPress={() => {
         const dataToSend = {...controlEntry, statusSelect: 3};
-        console.log('dataToSend', dataToSend);
         dispatch(
           (updateControlEntry as any)({
             controlEntry: dataToSend,

@@ -77,7 +77,6 @@ export async function fetchControlEntrySampleLine({id}) {
 }
 
 export async function checkComformity({object}) {
-  console.log('object', object);
   return axiosApiProvider.post({
     url: 'ws/action',
     data: {
