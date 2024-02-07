@@ -16,7 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import React, {useCallback, useEffect, useMemo} from 'react';
+import React, {useCallback, useEffect, useMemo, useState} from 'react';
 import {
   FormView,
   isEmpty,
@@ -36,6 +36,8 @@ const TimerFormScreen = ({route}) => {
   const isFocused = useIsFocused();
   const dispatch = useDispatch();
 
+  const [creation, setCreation] = useState(isCreation ?? false);
+
   const {user} = useSelector(state => state.user);
   const {timer} = useSelector(state => state.hr_timer);
 
@@ -51,9 +53,14 @@ const TimerFormScreen = ({route}) => {
     const DEFAULT = {
       startDateTime: new Date().toISOString(),
       product: user?.employee?.product,
+      stopwatch: {
+        onCreation: () => {
+          setCreation(false);
+        },
+      },
     };
 
-    if (isCreation) {
+    if (creation) {
       return DEFAULT;
     }
 
@@ -76,7 +83,7 @@ const TimerFormScreen = ({route}) => {
     }
 
     return DEFAULT;
-  }, [isCreation, timer, user?.employee?.product]);
+  }, [creation, timer, user?.employee?.product]);
 
   const fieldsComparison = objectState => {
     return (

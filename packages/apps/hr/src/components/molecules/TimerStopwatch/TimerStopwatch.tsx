@@ -42,6 +42,7 @@ interface TimerValueProps {
   duration: number;
   timerStartDateT: string;
   status: number;
+  onCreation: () => void;
 }
 
 interface TimerStopwatchProps {
@@ -73,8 +74,10 @@ const TimerStopwatch = ({
       comments: objectState?.comments,
     };
 
-    dispatch((createTimer as any)({userId: userId, timer: _timer}));
-  }, [dispatch, objectState, userId]);
+    (dispatch as any)(
+      (createTimer as any)({userId: userId, timer: _timer}),
+    ).then(() => defaultValue.onCreation());
+  }, [defaultValue, dispatch, objectState, userId]);
 
   const updateTimerStatusAPI = useCallback(
     (toStatus: string) => {
