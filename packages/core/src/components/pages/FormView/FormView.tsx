@@ -58,9 +58,15 @@ interface FormProps {
   defaultValue?: any;
   formKey: string;
   actions: Action[];
+  readonlyButton?: boolean;
 }
 
-const FormView = ({defaultValue = {}, formKey, actions}: FormProps) => {
+const FormView = ({
+  defaultValue = {},
+  formKey,
+  actions,
+  readonlyButton = false,
+}: FormProps) => {
   const I18n = useTranslator();
   const dispatch = useDispatch();
 
@@ -231,7 +237,7 @@ const FormView = ({defaultValue = {}, formKey, actions}: FormProps) => {
         onPress={() =>
           handleValidate(buttonConfig.onPress, _action.needValidation)
         }
-        disabled={isDisabled}
+        disabled={isDisabled || isReadOnly}
       />
     );
   };
@@ -314,10 +320,12 @@ const FormView = ({defaultValue = {}, formKey, actions}: FormProps) => {
           {formContent.map(item => renderItem(item))}
         </View>
       </KeyboardAvoidingScrollView>
-      <ToggleButton
-        buttonConfig={{style: styles.readOnlyButton, iconName: 'eye'}}
-        onPress={toggleReadOnlyMode}
-      />
+      {readonlyButton && (
+        <ToggleButton
+          buttonConfig={{style: styles.readOnlyButton, iconName: 'eye'}}
+          onPress={toggleReadOnlyMode}
+        />
+      )}
     </Screen>
   );
 };
