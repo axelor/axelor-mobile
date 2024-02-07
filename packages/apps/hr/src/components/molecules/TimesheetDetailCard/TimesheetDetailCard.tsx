@@ -29,6 +29,8 @@ interface TimesheetDetailCardProps {
   isActions?: boolean;
   style?: any;
   onPress: () => void;
+  onSend: () => void;
+  onValidate: () => void;
 }
 
 const TimesheetDetailCard = ({
@@ -37,6 +39,8 @@ const TimesheetDetailCard = ({
   isActions = true,
   style,
   onPress,
+  onSend,
+  onValidate,
 }: TimesheetDetailCardProps) => {
   const Colors = useThemeColor();
 
@@ -78,14 +82,6 @@ const TimesheetDetailCard = ({
     return false;
   }, [isActions, _statusSelect, userCanValidate]);
 
-  const handleSend = () => {
-    console.log('handleSend');
-  };
-
-  const handleValidate = () => {
-    console.log('handleValidate');
-  };
-
   return (
     <View style={[styles.container, style]}>
       <TimesheetCard
@@ -110,8 +106,8 @@ const TimesheetDetailCard = ({
             iconColor={Colors.secondaryColor_dark.background}
             onPress={() => {
               _statusSelect === Timesheet.statusSelect.Draft
-                ? handleSend()
-                : handleValidate();
+                ? onSend()
+                : onValidate();
             }}
             style={styles.flexOneContainer}
           />
