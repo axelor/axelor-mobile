@@ -53,12 +53,16 @@ export async function createTimesheetLine({timesheetLine}) {
       url: 'ws/aos/business/timesheet-line',
       data: timesheetLine,
     })
-    .catch(() =>
-      axiosApiProvider.post({
-        url: 'ws/aos/timesheet-line',
-        data: timesheetLine,
-      }),
-    );
+    .catch(e => {
+      if (e.response.status === 404) {
+        return axiosApiProvider.post({
+          url: 'ws/aos/timesheet-line',
+          data: timesheetLine,
+        });
+      } else {
+        throw e;
+      }
+    });
 }
 
 export async function updateTimesheetLine({timesheetLineId, timesheetLine}) {
@@ -67,12 +71,16 @@ export async function updateTimesheetLine({timesheetLineId, timesheetLine}) {
       url: `ws/aos/business/timesheet-line/update/${timesheetLineId}`,
       data: timesheetLine,
     })
-    .catch(() =>
-      axiosApiProvider.put({
-        url: `ws/aos/timesheet-line/update/${timesheetLineId}`,
-        data: timesheetLine,
-      }),
-    );
+    .catch(e => {
+      if (e.response.status === 404) {
+        return axiosApiProvider.put({
+          url: `ws/aos/timesheet-line/update/${timesheetLineId}`,
+          data: timesheetLine,
+        });
+      } else {
+        throw e;
+      }
+    });
 }
 
 export async function deleteTimesheetLine({timesheetLineId}) {
