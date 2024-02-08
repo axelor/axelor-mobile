@@ -16,20 +16,17 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import React, {useCallback, useState} from 'react';
+import React, {useState} from 'react';
 import {StyleSheet, View} from 'react-native';
 import {
   useDispatch,
-  useNavigation,
   useSelector,
   useTranslator,
+  useNavigation,
 } from '@axelor/aos-mobile-core';
 import {Button, useThemeColor} from '@axelor/aos-mobile-ui';
 import {TimesheetRefusalPopup} from '../../templates';
-import {
-  deleteTimesheet,
-  updateTimesheetStatus,
-} from '../../../features/timesheetSlice';
+import {updateTimesheetStatus} from '../../../features/timesheetSlice';
 import {Timesheet} from '../../../types';
 
 interface TimesheetDetailsButtonsProps {
@@ -52,35 +49,33 @@ const TimesheetDetailsButtons = ({
 
   const {user} = useSelector((state: any) => state.user);
 
-  const deleteTimesheetAPI = useCallback(() => {
+  const updateStatusAPI = status => {
     dispatch(
-      (deleteTimesheet as any)({timesheetId: timesheet.id, userId: user.id}),
+      (updateTimesheetStatus as any)({
+        timesheetId: timesheet.id,
+        version: timesheet.version,
+        toStatus: status,
+        user: user,
+      }),
     );
-    navigation.pop();
-  }, [dispatch, navigation, timesheet.id, user.id]);
+  };
 
   if (statusSelect === Timesheet.statusSelect.Draft) {
     return (
       <View style={styles.container}>
         <Button
-          title={I18n.t('Hr_Delete')}
-          onPress={deleteTimesheetAPI}
+          title={I18n.t('Base_Cancel')}
+          onPress={() => {
+            updateStatusAPI('cancel');
+            navigation.pop();
+          }}
           width="45%"
           color={Colors.errorColor}
-          iconName="trash3-fill"
+          iconName="x-lg"
         />
         <Button
           title={I18n.t('Hr_Send')}
-          onPress={() =>
-            dispatch(
-              (updateTimesheetStatus as any)({
-                timesheetId: timesheet.id,
-                version: timesheet.version,
-                toStatus: 'confirm',
-                user: user,
-              }),
-            )
-          }
+          onPress={() => updateStatusAPI('confirm')}
           width="45%"
           iconName="send-fill"
           disabled={isEmpty}
@@ -110,16 +105,7 @@ const TimesheetDetailsButtons = ({
         />
         <Button
           title={I18n.t('Hr_Validate')}
-          onPress={() =>
-            dispatch(
-              (updateTimesheetStatus as any)({
-                timesheetId: timesheet.id,
-                version: timesheet.version,
-                toStatus: 'validate',
-                user: user,
-              }),
-            )
-          }
+          onPress={() => updateStatusAPI('validate')}
           width="45%"
           iconName="check-lg"
         />
