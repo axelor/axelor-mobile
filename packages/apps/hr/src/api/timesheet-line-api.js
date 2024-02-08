@@ -17,6 +17,7 @@
  */
 
 import {
+  axiosApiProvider,
   createStandardSearch,
   getSearchCriterias,
 } from '@axelor/aos-mobile-core';
@@ -43,5 +44,47 @@ export async function fetchTimesheetLine({
     fieldKey: 'hr_timesheetLine',
     sortKey: 'hr_timesheetLine',
     page,
+  });
+}
+
+export async function createTimesheetLine({timesheetLine}) {
+  return axiosApiProvider
+    .post({
+      url: 'ws/aos/business/timesheet-line',
+      data: timesheetLine,
+    })
+    .catch(e => {
+      if (e.response.status === 404) {
+        return axiosApiProvider.post({
+          url: 'ws/aos/timesheet-line',
+          data: timesheetLine,
+        });
+      } else {
+        throw e;
+      }
+    });
+}
+
+export async function updateTimesheetLine({timesheetLineId, timesheetLine}) {
+  return axiosApiProvider
+    .put({
+      url: `ws/aos/business/timesheet-line/update/${timesheetLineId}`,
+      data: timesheetLine,
+    })
+    .catch(e => {
+      if (e.response.status === 404) {
+        return axiosApiProvider.put({
+          url: `ws/aos/timesheet-line/update/${timesheetLineId}`,
+          data: timesheetLine,
+        });
+      } else {
+        throw e;
+      }
+    });
+}
+
+export async function deleteTimesheetLine({timesheetLineId}) {
+  return axiosApiProvider.delete({
+    url: `ws/rest/com.axelor.apps.hr.db.TimesheetLine/${timesheetLineId}`,
   });
 }

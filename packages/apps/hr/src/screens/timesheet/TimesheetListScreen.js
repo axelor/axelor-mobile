@@ -23,6 +23,7 @@ import {TimesheetDetailCard, TimesheetFilters} from '../../components';
 import {
   fetchTimesheet,
   fetchTimesheetToValidate,
+  updateTimesheetStatus,
 } from '../../features/timesheetSlice';
 import {Timesheet} from '../../types';
 
@@ -49,6 +50,19 @@ const TimesheetListScreen = ({navigation}) => {
   useEffect(() => {
     dispatch(fetchTimesheetToValidate({page: 0, user: user}));
   }, [dispatch, user]);
+
+  const updateTimesheetStatusAPI = useCallback(
+    (timesheet, toStatus) =>
+      dispatch(
+        updateTimesheetStatus({
+          timesheetId: timesheet.id,
+          version: timesheet.version,
+          toStatus: toStatus,
+          userId: user.id,
+        }),
+      ),
+    [dispatch, user],
+  );
 
   const fetchTimesheetAPI = useCallback(
     (page = 0) => {
@@ -144,6 +158,8 @@ const TimesheetListScreen = ({navigation}) => {
                 timesheetId: item.id,
               })
             }
+            onSend={() => updateTimesheetStatusAPI(item, 'confirm')}
+            onValidate={() => updateTimesheetStatusAPI(item, 'validate')}
           />
         )}
         fetchData={listToDisplay.functionApi}
