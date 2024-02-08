@@ -118,6 +118,9 @@ const Dashboard = ({style, lineList}: DashboardProps) => {
         return (
           <View style={styles.lineContainer} key={indexLine}>
             {limitedGraphList?.map((graph, indexGraph) => {
+              if (!graph.dataList?.[0]?.length) {
+                return null;
+              }
               return renderChart(graph, indexGraph, nbGraphInLine);
             })}
           </View>

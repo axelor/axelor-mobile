@@ -78,14 +78,14 @@ export const DashboardScreen = ({dashboardId}) => {
     }));
   }, [dashboard]);
 
-  if (dashboard?.id !== dashboardId) {
-    return <ActivityIndicator size="large" />;
-  }
-
   if (!Array.isArray(dashboardData) || dashboardData.length === 0) {
     return (
       <WarningCard errorMessage={I18n.t('Base_Dashboard_Misconfigured')} />
     );
+  }
+
+  if (dashboard?.id !== dashboardId) {
+    return <ActivityIndicator size="large" />;
   }
 
   return <Dashboard lineList={dashboardData} />;
