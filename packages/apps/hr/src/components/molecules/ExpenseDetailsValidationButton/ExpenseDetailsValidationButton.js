@@ -17,8 +17,7 @@
  */
 
 import React, {useCallback, useState} from 'react';
-import {View} from 'react-native';
-
+import {View, StyleSheet} from 'react-native';
 import {
   useTranslator,
   useSelector,
@@ -32,14 +31,13 @@ import {
   sendExpense,
   validateExpense,
 } from '../../../features/expenseSlice';
-import RefusalPopup from '../RefusalPopup/RefusalPopup';
-import {StyleSheet} from 'react-native';
+import {ExpenseRefusalPopup} from '../../templates';
 
 const ExpenseDetailsValidationButton = ({expense, mode, isManualCreation}) => {
   const navigation = useNavigation();
+  const Colors = useThemeColor();
   const I18n = useTranslator();
   const dispatch = useDispatch();
-  const Colors = useThemeColor();
 
   const {user} = useSelector(state => state.user);
 
@@ -105,7 +103,7 @@ const ExpenseDetailsValidationButton = ({expense, mode, isManualCreation}) => {
           width="45%"
           iconName="x-lg"
         />
-        <RefusalPopup
+        <ExpenseRefusalPopup
           isOpen={refusalPopupIsOpen}
           expense={expense}
           expenseMode={mode}

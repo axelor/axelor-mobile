@@ -16,63 +16,27 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import React, {useCallback, useState} from 'react';
-import {useDispatch, useSelector, useTranslator} from '@axelor/aos-mobile-core';
+import React, {useState} from 'react';
+import {useTranslator} from '@axelor/aos-mobile-core';
 import {Alert, checkNullString, FormInput} from '@axelor/aos-mobile-ui';
-import {refuseExpense} from '../../../features/expenseSlice';
-import {updateTimesheetStatus} from '../../../features/timesheetSlice';
 
 interface RefusalPopupProps {
   isOpen: boolean;
-  expense?: any;
-  expenseMode?: string;
-  timesheet?: any;
   onCancel: () => void;
+  onValidate: (groundForRefusal: string) => void;
 }
 
-const RefusalPopup = ({
-  isOpen,
-  expense,
-  expenseMode,
-  timesheet,
-  onCancel,
-}: RefusalPopupProps) => {
+const RefusalPopup = ({isOpen, onValidate, onCancel}: RefusalPopupProps) => {
   const I18n = useTranslator();
-  const dispatch = useDispatch();
 
   const [refusalMessage, setRefusalMessage] = useState('');
-
-  const {user} = useSelector((state: any) => state.user);
-
-  const refuseAPI = useCallback(() => {
-    dispatch(
-      expense
-        ? (refuseExpense as any)({
-            expenseId: expense.id,
-            version: expense.version,
-            groundForRefusal: refusalMessage,
-            mode: expenseMode,
-          })
-        : (updateTimesheetStatus as any)({
-            timesheetId: timesheet.id,
-            version: timesheet.version,
-            toStatus: 'refuse',
-            groundForRefusal: refusalMessage,
-            userId: user.id,
-          }),
-    );
-  }, [dispatch, expense, expenseMode, refusalMessage, timesheet, user.id]);
-
-  if (expense == null && timesheet == null) {
-    return null;
-  }
 
   return (
     <Alert
       visible={isOpen}
       cancelButtonConfig={{onPress: onCancel}}
       confirmButtonConfig={{
-        onPress: refuseAPI,
+        onPress: () => onValidate(refusalMessage),
         disabled: checkNullString(refusalMessage),
       }}
       translator={I18n.t}>

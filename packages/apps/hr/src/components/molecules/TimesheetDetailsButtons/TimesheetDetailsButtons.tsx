@@ -25,7 +25,7 @@ import {
   useTranslator,
 } from '@axelor/aos-mobile-core';
 import {Button, useThemeColor} from '@axelor/aos-mobile-ui';
-import RefusalPopup from '../RefusalPopup/RefusalPopup';
+import {TimesheetRefusalPopup} from '../../templates';
 import {
   deleteTimesheet,
   updateTimesheetStatus,
@@ -103,7 +103,7 @@ const TimesheetDetailsButtons = ({
           color={Colors.errorColor}
           iconName="x-lg"
         />
-        <RefusalPopup
+        <TimesheetRefusalPopup
           isOpen={refusalPopupIsOpen}
           timesheet={timesheet}
           onCancel={() => setRefusalPopupIsOpen(false)}
