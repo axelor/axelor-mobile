@@ -33,6 +33,7 @@ interface TimeDetailCardProps {
   durationUnit: string;
   isSmallCard?: boolean;
   isActions?: boolean;
+  hideTrash?: boolean;
   style?: any;
   onEdit?: () => void;
   onDelete?: () => void;
@@ -49,6 +50,7 @@ const TimeDetailCard = ({
   duration,
   durationUnit,
   isSmallCard,
+  hideTrash = false,
   isActions = true,
   style,
   onEdit = () => {},
@@ -79,12 +81,14 @@ const TimeDetailCard = ({
             onPress={onEdit}
             style={styles.cardIconButton}
           />
-          <CardIconButton
-            iconName={'trash3-fill'}
-            iconColor={Colors.errorColor.background}
-            onPress={onDelete}
-            style={styles.cardIconButton}
-          />
+          {!hideTrash && (
+            <CardIconButton
+              iconName={'trash3-fill'}
+              iconColor={Colors.errorColor.background}
+              onPress={onDelete}
+              style={styles.cardIconButton}
+            />
+          )}
         </View>
       )}
     </View>
