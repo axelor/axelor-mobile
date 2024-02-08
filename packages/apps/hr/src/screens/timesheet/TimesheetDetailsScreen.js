@@ -30,7 +30,10 @@ import {
   TimesheetHeader,
 } from '../../components';
 import {fetchTimesheetById} from '../../features/timesheetSlice';
-import {fetchTimesheetLine} from '../../features/timesheetLineSlice';
+import {
+  deleteTimesheetLine,
+  fetchTimesheetLine,
+} from '../../features/timesheetLineSlice';
 import {Time, Timesheet} from '../../types';
 
 const TimesheetDetailsScreen = ({navigation, route}) => {
@@ -46,6 +49,11 @@ const TimesheetDetailsScreen = ({navigation, route}) => {
   const _statusSelect = useMemo(() => {
     return Timesheet.getStatus(timesheetConfig.needValidation, timesheet);
   }, [timesheet, timesheetConfig]);
+
+  const isTimesheetLineListEmpty = useMemo(
+    () => timesheetLineList == null || timesheetLineList.length === 0,
+    [timesheetLineList],
+  );
 
   useEffect(() => {
     dispatch(fetchTimesheetById({timesheetId: timesheetId}));
@@ -65,7 +73,13 @@ const TimesheetDetailsScreen = ({navigation, route}) => {
   return (
     <Screen
       removeSpaceOnTop
-      fixedItems={<TimesheetDetailsButtons statusSelect={_statusSelect} />}>
+      fixedItems={
+        <TimesheetDetailsButtons
+          timesheet={timesheet}
+          statusSelect={_statusSelect}
+          isEmpty={isTimesheetLineListEmpty}
+        />
+      }>
       <HeaderContainer
         expandableFilter={false}
         fixedItems={
@@ -90,8 +104,17 @@ const TimesheetDetailsScreen = ({navigation, route}) => {
             isActions={_statusSelect === Timesheet.statusSelect.Draft}
             onEdit={() =>
               navigation.navigate('TimesheetLineFormScreen', {
+                timesheetId: timesheetId,
                 timesheetLine: item,
               })
+            }
+            onDelete={() =>
+              dispatch(
+                deleteTimesheetLine({
+                  timesheetId: timesheetId,
+                  timesheetLineId: item.id,
+                }),
+              )
             }
           />
         )}

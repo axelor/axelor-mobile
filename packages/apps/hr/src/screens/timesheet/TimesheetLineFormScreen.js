@@ -16,13 +16,71 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import React, {useMemo} from 'react';
+import React, {useCallback, useMemo} from 'react';
 import {FormView, useSelector} from '@axelor/aos-mobile-core';
+import {
+  createTimesheetLine,
+  updateTimesheetLine,
+} from '../../features/timesheetLineSlice';
 
-const TimesheetLineFormScreen = ({route}) => {
+const TimesheetLineFormScreen = ({route, navigation}) => {
   const {timesheetId, timesheetLine} = route?.params;
 
   const {user} = useSelector(state => state.user);
+
+  const createTimesheetLineAPI = useCallback(
+    (objectState, dispatch) => {
+      const _timesheetLine = {
+        timesheetId: timesheetId,
+        projectId: objectState.project?.id,
+        projectTaskId: objectState.projectTask?.id,
+        manufOrderId: objectState.manufOrder?.id,
+        operationOrderId: objectState.operationOrder?.id,
+        productId: objectState.product?.id,
+        toInvoice: objectState.toInvoice,
+        date: objectState.date,
+        duration: objectState.hoursDuration,
+        comments: objectState.comments,
+      };
+
+      dispatch(
+        createTimesheetLine({
+          timesheetLine: _timesheetLine,
+        }),
+      );
+
+      navigation.goBack();
+    },
+    [navigation, timesheetId],
+  );
+
+  const updateTimesheetLineAPI = useCallback(
+    (objectState, dispatch) => {
+      const _timesheetLine = {
+        version: timesheetLine?.version,
+        projectId: objectState.project?.id,
+        projectTaskId: objectState.projectTask?.id,
+        manufOrderId: objectState.manufOrder?.id,
+        operationOrderId: objectState.operationOrder?.id,
+        productId: objectState.product?.id,
+        toInvoice: objectState.toInvoice,
+        date: objectState.date,
+        duration: objectState.hoursDuration,
+        comments: objectState.comments,
+      };
+
+      dispatch(
+        updateTimesheetLine({
+          timesheetId: timesheetId,
+          timesheetLineId: timesheetLine?.id,
+          timesheetLine: _timesheetLine,
+        }),
+      );
+
+      navigation.goBack();
+    },
+    [navigation, timesheetId, timesheetLine],
+  );
 
   const defaultValue = useMemo(() => {
     if (timesheetLine != null) {
@@ -32,8 +90,9 @@ const TimesheetLineFormScreen = ({route}) => {
         manufOrder: timesheetLine.manufOrder,
         operationOrder: timesheetLine.operationOrder,
         product: timesheetLine.product,
+        toInvoice: timesheetLine.toInvoice,
         date: timesheetLine.date,
-        duration: timesheetLine.duration,
+        hoursDuration: timesheetLine.hoursDuration,
         comments: timesheetLine.comments,
       };
     }
@@ -53,9 +112,9 @@ const TimesheetLineFormScreen = ({route}) => {
           type: 'create',
           needValidation: true,
           needRequiredFields: true,
-          hideIf: () => timesheetId == null,
-          customAction: ({objectState}) => {
-            console.log('Form data:', objectState);
+          hideIf: () => timesheetLine != null,
+          customAction: ({objectState, dispatch}) => {
+            return createTimesheetLineAPI(objectState, dispatch);
           },
         },
         {
@@ -64,8 +123,8 @@ const TimesheetLineFormScreen = ({route}) => {
           needValidation: true,
           needRequiredFields: true,
           hideIf: () => timesheetLine == null,
-          customAction: ({objectState}) => {
-            console.log('Form data:', objectState);
+          customAction: ({objectState, dispatch}) => {
+            return updateTimesheetLineAPI(objectState, dispatch);
           },
         },
       ]}

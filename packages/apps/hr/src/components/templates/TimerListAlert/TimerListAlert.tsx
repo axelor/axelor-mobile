@@ -23,6 +23,7 @@ import {
   getEndOfDay,
   getStartOfDay,
   useDispatch,
+  useNavigation,
   useSelector,
   useTranslator,
 } from '@axelor/aos-mobile-core';
@@ -35,13 +36,12 @@ import {
 import DraftTimesheetPicker from '../DraftTimesheetPicker/DraftTimesheetPicker';
 import {TimeDetailCard} from '../../molecules';
 import {fetchTimerDateInterval} from '../../../features/timerSlice';
+import {
+  addTimerTimesheet,
+  createTimesheet,
+} from '../../../features/timesheetSlice';
 import {fetchDraftTimesheet} from '../../../api/timesheet-api';
 import {formatSecondsToHours} from '../../../utils';
-
-const INPUT_MODE = {
-  Timesheet: 0,
-  DateInterval: 1,
-};
 
 interface TimerListAlertProps {
   isAlertVisible: boolean;
@@ -54,6 +54,7 @@ const TimerListAlert = ({
 }: TimerListAlertProps) => {
   const I18n = useTranslator();
   const Colors = useThemeColor();
+  const navigation = useNavigation();
   const dispatch = useDispatch();
 
   const {
@@ -64,27 +65,15 @@ const TimerListAlert = ({
   } = useSelector((state: any) => state.hr_timer);
   const {userId} = useSelector((state: any) => state.auth);
 
+  const [timesheet, setTimesheet] = useState(null);
   const [fromDate, setFromDate] = useState(null);
   const [toDate, setToDate] = useState(new Date());
-  const [inputMode, setInputMode] = useState(null);
-  const [isTimesheetError, setIsTimesheetError] = useState(false);
-  const [isDateIntervalError, setIsDateIntervalError] = useState(false);
+  const [errorKey, setErrorKey] = useState(null);
   const [selectedTimers, setSelectedTimers] = useState([]);
 
-  const isTimesheetMode = useMemo(
-    () => inputMode === INPUT_MODE.Timesheet,
-    [inputMode],
-  );
-
-  const isDateIntervalMode = useMemo(
-    () => inputMode === INPUT_MODE.DateInterval,
-    [inputMode],
-  );
-
   const isConfirmButtonDisabled = useMemo(
-    () =>
-      isTimesheetError || isDateIntervalError || selectedTimers.length === 0,
-    [isDateIntervalError, isTimesheetError, selectedTimers],
+    () => errorKey || selectedTimers.length === 0,
+    [errorKey, selectedTimers],
   );
 
   const fetchTimerDateIntervalAPI = useCallback(
@@ -102,7 +91,7 @@ const TimerListAlert = ({
   );
 
   useEffect(() => {
-    if (isDateIntervalMode && fromDate && toDate) {
+    if (timesheet == null && fromDate && toDate) {
       if (getStartOfDay(fromDate) <= getEndOfDay(toDate)) {
         fetchDraftTimesheet({
           userId: userId,
@@ -110,15 +99,15 @@ const TimerListAlert = ({
           toDate: toDate,
           isOverlapAllowed: false,
         }).then(res => {
-          setIsDateIntervalError(false);
-          setIsTimesheetError(res.data?.data?.length > 0);
+          setErrorKey(null);
+          res.data?.data?.length > 0 &&
+            setErrorKey('Hr_TimesheetAlreadyExists');
         });
       } else {
-        setIsTimesheetError(false);
-        setIsDateIntervalError(true);
+        setErrorKey('Hr_DateIntervalError');
       }
     }
-  }, [dispatch, fromDate, isDateIntervalMode, toDate, userId]);
+  }, [fromDate, timesheet, toDate, userId]);
 
   const renderChexboxItem = ({item}) => {
     return (
@@ -136,12 +125,34 @@ const TimerListAlert = ({
 
   const handleCancel = () => {
     setIsAlertVisible(false);
+    setTimesheet(null);
     setFromDate(null);
     setToDate(new Date());
-    setInputMode(null);
-    setIsTimesheetError(false);
-    setIsDateIntervalError(false);
+    setErrorKey(null);
     setSelectedTimers([]);
+  };
+
+  const handleConfirm = () => {
+    const timerIdList = selectedTimers.map(timer => timer.id);
+    if (timesheet) {
+      dispatch(
+        (addTimerTimesheet as any)({
+          timesheetId: timesheet?.id,
+          version: timesheet?.version,
+          timerIdList,
+        }),
+      );
+    } else {
+      dispatch(
+        (createTimesheet as any)({
+          fromDate,
+          toDate,
+          timerIdList,
+          userId,
+        }),
+      );
+    }
+    navigation.navigate('TimesheetListScreen');
   };
 
   return (
@@ -156,30 +167,23 @@ const TimerListAlert = ({
         width: 50,
         title: null,
         disabled: isConfirmButtonDisabled,
-        onPress: () => console.log(selectedTimers),
+        onPress: handleConfirm,
       }}
       translator={I18n.t}>
-      {!isDateIntervalMode && (
+      {(timesheet || !(fromDate && toDate)) && (
         <DraftTimesheetPicker
           style={styles.picker}
-          onChange={timesheet => {
+          onChange={_timesheet => {
             setSelectedTimers([]);
-            setFromDate(new Date(timesheet.fromDate));
-            setToDate(new Date(timesheet.toDate));
-            setInputMode(INPUT_MODE.Timesheet);
+            setTimesheet(_timesheet);
+            setFromDate(new Date(_timesheet.fromDate));
+            setToDate(new Date(_timesheet.toDate));
           }}
         />
       )}
-      {isTimesheetError && (
+      {errorKey && (
         <Label
-          message={I18n.t('Hr_TimesheetAlreadyExists')}
-          iconName="exclamation-triangle-fill"
-          color={Colors.errorColor}
-        />
-      )}
-      {isDateIntervalError && (
-        <Label
-          message={I18n.t('Hr_DateIntervalError')}
+          message={I18n.t(errorKey)}
           iconName="exclamation-triangle-fill"
           color={Colors.errorColor}
         />
@@ -195,10 +199,9 @@ const TimerListAlert = ({
           onDateChange={date => {
             setSelectedTimers([]);
             setFromDate(date);
-            setInputMode(INPUT_MODE.DateInterval);
           }}
-          readonly={isTimesheetMode}
-          required={isDateIntervalMode}
+          readonly={timesheet}
+          required={timesheet == null}
         />
         <DateInput
           style={styles.dateInput}
@@ -210,10 +213,9 @@ const TimerListAlert = ({
           onDateChange={date => {
             setSelectedTimers([]);
             setToDate(date);
-            setInputMode(INPUT_MODE.DateInterval);
           }}
-          readonly={isTimesheetMode}
-          required={isDateIntervalMode}
+          readonly={timesheet}
+          required={timesheet == null}
         />
       </View>
       <CheckboxScrollList

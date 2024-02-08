@@ -19,11 +19,18 @@
 import React, {useMemo} from 'react';
 import {StyleSheet, View} from 'react-native';
 import {
+  checkNullString,
   useNavigation,
   useSelector,
   useTranslator,
 } from '@axelor/aos-mobile-core';
-import {Badge, CircleButton, Text, useThemeColor} from '@axelor/aos-mobile-ui';
+import {
+  Badge,
+  CircleButton,
+  Label,
+  Text,
+  useThemeColor,
+} from '@axelor/aos-mobile-ui';
 import {DatesInterval} from '../../atoms';
 import {Timesheet} from '../../../types';
 import {getDurationUnit} from '../../../utils';
@@ -82,6 +89,14 @@ const TimesheetHeader = ({timesheet, statusSelect}: TimesheetHeaderProps) => {
           />
         )}
       </View>
+      {!checkNullString(timesheet.groundForRefusal) && (
+        <Label
+          message={`${I18n.t('Hr_GroundForRefusal')} : ${
+            timesheet.groundForRefusal
+          }`}
+          type="error"
+        />
+      )}
     </View>
   );
 };

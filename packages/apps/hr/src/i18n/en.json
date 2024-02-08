@@ -111,5 +111,12 @@
   "Hr_SliceAction_FetchTimesheetById": "fetch timesheet by id",
   "Hr_SliceAction_FetchTimesheetLine": "fetch timesheet line",
   "Hr_SliceAction_FetchDraftTimesheet": "fetch draft timesheet",
-  "Hr_SliceAction_FetchTimerDateInterval": "fetch timer with date interval"
+  "Hr_SliceAction_FetchTimerDateInterval": "fetch timer with date interval",
+  "Hr_SliceAction_CreateTimesheetLine": "create timesheet line",
+  "Hr_SliceAction_UpdateTimesheetLine": "update timesheet line",
+  "Hr_SliceAction_DeleteTimesheetLine": "delete timesheet line",
+  "Hr_SliceAction_CreateTimesheet": "create timesheet",
+  "Hr_SliceAction_AddTimerTimesheet": "add timers to timesheet",
+  "Hr_SliceAction_UpdateTimesheetStatus": "update timesheet status",
+  "Hr_SliceAction_DeleteTimesheet": "delete timesheet"
 }

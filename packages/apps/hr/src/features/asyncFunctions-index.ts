@@ -59,10 +59,19 @@ export {
   fetchTimerById,
   fetchTimerDateInterval,
 } from './timerSlice';
-export {fetchTimesheetLine} from './timesheetLineSlice';
 export {
+  createTimesheetLine,
+  deleteTimesheetLine,
+  fetchTimesheetLine,
+  updateTimesheetLine,
+} from './timesheetLineSlice';
+export {
+  addTimerTimesheet,
+  createTimesheet,
+  deleteTimesheet,
   fetchDraftTimesheet,
   fetchTimesheet,
   fetchTimesheetById,
   fetchTimesheetToValidate,
+  updateTimesheetStatus,
 } from './timesheetSlice';

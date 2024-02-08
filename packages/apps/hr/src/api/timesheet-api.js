@@ -17,6 +17,7 @@
  */
 
 import {
+  axiosApiProvider,
   createStandardFetch,
   createStandardSearch,
   getSearchCriterias,
@@ -185,5 +186,48 @@ export async function fetchDraftTimesheet({
     fieldKey: 'hr_timesheet',
     numberElementsByPage: null,
     page: 0,
+  });
+}
+
+export async function createTimesheet({fromDate, toDate, timerIdList}) {
+  return axiosApiProvider.post({
+    url: 'ws/aos/timesheet',
+    data: {
+      fromDate,
+      toDate,
+      timerIdList,
+    },
+  });
+}
+
+export async function addTimerTimesheet({timesheetId, version, timerIdList}) {
+  return axiosApiProvider.put({
+    url: `ws/aos/timesheet/add-timer/${timesheetId}`,
+    data: {
+      version,
+      timerIdList,
+    },
+  });
+}
+
+export async function updateTimesheetStatus({
+  timesheetId,
+  version,
+  toStatus,
+  groundForRefusal,
+}) {
+  return axiosApiProvider.put({
+    url: `ws/aos/timesheet/status/${timesheetId}`,
+    data: {
+      version,
+      toStatus,
+      groundForRefusal,
+    },
+  });
+}
+
+export async function deleteTimesheet({timesheetId}) {
+  return axiosApiProvider.delete({
+    url: `ws/rest/com.axelor.apps.hr.db.Timesheet/${timesheetId}`,
   });
 }
