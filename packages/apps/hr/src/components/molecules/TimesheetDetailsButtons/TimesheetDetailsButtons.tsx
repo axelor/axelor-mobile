@@ -16,13 +16,13 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import React, {useState} from 'react';
+import React, {useCallback, useState} from 'react';
 import {StyleSheet, View} from 'react-native';
 import {
   useDispatch,
+  useNavigation,
   useSelector,
   useTranslator,
-  useNavigation,
 } from '@axelor/aos-mobile-core';
 import {Button, useThemeColor} from '@axelor/aos-mobile-ui';
 import {TimesheetRefusalPopup} from '../../templates';
@@ -49,16 +49,19 @@ const TimesheetDetailsButtons = ({
 
   const {user} = useSelector((state: any) => state.user);
 
-  const updateStatusAPI = status => {
-    dispatch(
-      (updateTimesheetStatus as any)({
-        timesheetId: timesheet.id,
-        version: timesheet.version,
-        toStatus: status,
-        user: user,
-      }),
-    );
-  };
+  const updateStatusAPI = useCallback(
+    (status: string) => {
+      dispatch(
+        (updateTimesheetStatus as any)({
+          timesheetId: timesheet.id,
+          version: timesheet.version,
+          toStatus: status,
+          user: user,
+        }),
+      );
+    },
+    [dispatch, timesheet, user],
+  );
 
   if (statusSelect === Timesheet.statusSelect.Draft) {
     return (
