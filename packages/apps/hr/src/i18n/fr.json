@@ -117,6 +117,6 @@
   "Hr_SliceAction_DeleteTimesheetLine": "suppression d'une ligne de feuille de temps",
   "Hr_SliceAction_CreateTimesheet": "création d'une feuille de temps",
   "Hr_SliceAction_AddTimerTimesheet": "ajout de chronomètres à une feuille de temps",
-  "UpdateTimesheetStatus": "mise à jour du statut d'une feuille de temps",
+  "Hr_SliceAction_UpdateTimesheetStatus": "mise à jour du statut d'une feuille de temps",
   "Hr_SliceAction_DeleteTimesheet": "suppression d'une feuille de temps"
 }

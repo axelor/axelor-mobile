@@ -61,6 +61,7 @@ export {
 } from './timerSlice';
 export {
   createTimesheetLine,
+  deleteTimesheetLine,
   fetchTimesheetLine,
   updateTimesheetLine,
 } from './timesheetLineSlice';
