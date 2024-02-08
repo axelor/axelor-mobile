@@ -30,7 +30,6 @@ import type {
   Camera,
   PhotoFile,
   TakePhotoOptions,
-  TakeSnapshotOptions,
 } from 'react-native-vision-camera';
 
 const CAPTURE_BUTTON_SIZE = 78;
@@ -51,7 +50,7 @@ const CaptureButton = ({
   style?: any;
   type: string;
 }) => {
-  const takePhotoOptions = useMemo<TakePhotoOptions & TakeSnapshotOptions>(
+  const takePhotoOptions = useMemo<TakePhotoOptions>(
     () => ({
       photoCodec: type,
       qualityPrioritization: 'speed',

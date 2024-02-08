@@ -99,7 +99,7 @@ jest.mock('react-native-date-picker', () => ({
   default: jest.fn(),
 }));
 
-jest.mock('rn-fetch-blob', () => ({
+jest.mock('react-native-blob-util', () => ({
   DocumentDir: 'FAKE-DIRECTORY-PATH',
 }));
 

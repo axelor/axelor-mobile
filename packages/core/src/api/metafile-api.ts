@@ -23,7 +23,7 @@ import {
 } from '../apiProviders';
 import {DocumentPickerResponse} from 'react-native-document-picker';
 import RNFS from 'react-native-fs';
-import RNFetchBlob from 'rn-fetch-blob';
+import RNFetchBlob from 'react-native-blob-util';
 
 const createCriteria = (listFiles): Criteria[] => {
   if (Array.isArray(listFiles)) {

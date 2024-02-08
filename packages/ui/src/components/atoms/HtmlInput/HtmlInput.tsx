@@ -18,9 +18,9 @@
 
 import React, {useEffect, useRef, useState} from 'react';
 import {View, ScrollView} from 'react-native';
-import {useThemeColor} from '../../../theme/ThemeContext';
 import {actions, RichEditor, RichToolbar} from 'react-native-pell-rich-editor';
-import Text from '../Text/Text';
+import {useThemeColor} from '../../../theme/ThemeContext';
+import {Text} from '../../atoms';
 
 // NOTE: documentation https://www.npmjs.com/package/react-native-pell-rich-editor
 
@@ -79,7 +79,6 @@ const HtmlInput = ({
           <RichEditor
             ref={editor}
             placeholder={placeholder}
-            androidHardwareAccelerationDisabled={true}
             androidLayerType="software"
             initialContentHTML={defaultInput}
             onChange={onChange}

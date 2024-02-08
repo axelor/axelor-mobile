@@ -24,6 +24,7 @@ import {
   Text,
   useThemeColor,
   checkNullString,
+  ThemeColors,
 } from '@axelor/aos-mobile-ui';
 import {clipboardProvider} from '@axelor/aos-mobile-core';
 
@@ -83,7 +84,7 @@ const ContactInfoCard = ({
     </View>
   );
 };
-const getStyles = Colors =>
+const getStyles = (Colors: ThemeColors) =>
   StyleSheet.create({
     container: {
       flexDirection: 'column',
