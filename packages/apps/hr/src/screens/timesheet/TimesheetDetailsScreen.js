@@ -100,7 +100,7 @@ const TimesheetDetailsScreen = ({navigation, route}) => {
             comments={item.comments}
             date={item.date}
             duration={item.duration}
-            hideTrash={item.timer != null}
+            showTrash={item.timer == null}
             durationUnit={timesheet.timeLoggingPreferenceSelect}
             isActions={_statusSelect === Timesheet.statusSelect.Draft}
             onEdit={() =>
