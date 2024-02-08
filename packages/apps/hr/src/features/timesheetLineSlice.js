@@ -21,7 +21,12 @@ import {
   generateInifiniteScrollCases,
   handlerApiCall,
 } from '@axelor/aos-mobile-core';
-import {fetchTimesheetLine as _fetchTimesheetLine} from '../api/timesheet-line-api';
+import {
+  createTimesheetLine as _createTimesheetLine,
+  deleteTimesheetLine as _deleteTimesheetLine,
+  fetchTimesheetLine as _fetchTimesheetLine,
+  updateTimesheetLine as _updateTimesheetLine,
+} from '../api/timesheet-line-api';
 
 export const fetchTimesheetLine = createAsyncThunk(
   'timesheetLine/fetchTimesheetLine',
@@ -32,6 +37,53 @@ export const fetchTimesheetLine = createAsyncThunk(
       action: 'Hr_SliceAction_FetchTimesheetLine',
       getState,
       responseOptions: {isArrayResponse: true},
+    });
+  },
+);
+
+export const createTimesheetLine = createAsyncThunk(
+  'timesheetLine/createTimesheetLine',
+  async function (data, {getState, dispatch}) {
+    return handlerApiCall({
+      fetchFunction: _createTimesheetLine,
+      data,
+      action: 'Hr_SliceAction_CreateTimesheetLine',
+      getState,
+      responseOptions: {isArrayResponse: false, showToast: true},
+    }).then(() =>
+      dispatch(
+        fetchTimesheetLine({timesheetId: data.timesheetLine.timesheetId}),
+      ),
+    );
+  },
+);
+
+export const updateTimesheetLine = createAsyncThunk(
+  'timesheetLine/updateTimesheetLine',
+  async function (data, {getState, dispatch}) {
+    return handlerApiCall({
+      fetchFunction: _updateTimesheetLine,
+      data,
+      action: 'Hr_SliceAction_UpdateTimesheetLine',
+      getState,
+      responseOptions: {isArrayResponse: false, showToast: true},
+    }).then(() =>
+      dispatch(fetchTimesheetLine({timesheetId: data.timesheetId})),
+    );
+  },
+);
+
+export const deleteTimesheetLine = createAsyncThunk(
+  'timesheet/deleteTimesheet',
+  async function (data = {}, {getState, dispatch}) {
+    return handlerApiCall({
+      fetchFunction: _deleteTimesheetLine,
+      data,
+      action: 'Hr_SliceAction_DeleteTimesheetLine',
+      getState,
+      responseOptions: {isArrayResponse: false, showToast: true},
+    }).then(() => {
+      dispatch(fetchTimesheetLine({timesheetId: data.timesheetId}));
     });
   },
 );

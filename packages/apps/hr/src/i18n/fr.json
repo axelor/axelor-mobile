@@ -111,5 +111,12 @@
   "Hr_SliceAction_FetchTimesheetById": "récuperation d'une feuille de temps par id",
   "Hr_SliceAction_FetchTimesheetLine": "récupération des lignes d'une feuille de temps",
   "Hr_SliceAction_FetchDraftTimesheet": "récupération des feuilles de temps brouillon",
-  "Hr_SliceAction_FetchTimerDateInterval": "récupération des chronomètres avec un intervalle de date"
+  "Hr_SliceAction_FetchTimerDateInterval": "récupération des chronomètres avec un intervalle de date",
+  "Hr_SliceAction_CreateTimesheetLine": "création d'une ligne de feuille de temps",
+  "Hr_SliceAction_UpdateTimesheetLine": "mise à jour d'une ligne de feuille de temps",
+  "Hr_SliceAction_DeleteTimesheetLine": "suppression d'une ligne de feuille de temps",
+  "Hr_SliceAction_CreateTimesheet": "création d'une feuille de temps",
+  "Hr_SliceAction_AddTimerTimesheet": "ajout de chronomètres à une feuille de temps",
+  "Hr_SliceAction_UpdateTimesheetStatus": "mise à jour du statut d'une feuille de temps",
+  "Hr_SliceAction_DeleteTimesheet": "suppression d'une feuille de temps"
 }
