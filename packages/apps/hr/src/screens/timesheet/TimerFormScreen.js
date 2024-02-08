@@ -42,12 +42,12 @@ const TimerFormScreen = ({route}) => {
   const {timer} = useSelector(state => state.hr_timer);
 
   useEffect(() => {
-    if (isFocused && !isCreation) {
+    if (isFocused && !creation) {
       idTimerToUpdate
         ? dispatch(fetchTimerById({timerId: idTimerToUpdate}))
         : dispatch(fetchActiveTimer({userId: user?.id}));
     }
-  }, [dispatch, idTimerToUpdate, isCreation, isFocused, user?.id]);
+  }, [creation, dispatch, idTimerToUpdate, isFocused, user?.id]);
 
   const defaultValue = useMemo(() => {
     const DEFAULT = {
@@ -124,7 +124,7 @@ const TimerFormScreen = ({route}) => {
           needValidation: true,
           needRequiredFields: true,
           disabledIf: ({objectState}) => fieldsComparison(objectState),
-          hideIf: () => isCreation || !timer?.id,
+          hideIf: () => creation || !timer?.id,
           customAction: ({objectState}) => updateTimerAPI(objectState),
         },
       ]}
