@@ -21,7 +21,6 @@ import {StyleSheet, View} from 'react-native';
 import {useDispatch, useSelector, useTranslator} from '@axelor/aos-mobile-core';
 import {
   ChipSelect,
-  getCommonStyles,
   NumberBubble,
   Picker,
   ToggleSwitch,
@@ -39,8 +38,6 @@ const TimesheetFilters = ({
   const Colors = useThemeColor();
   const I18n = useTranslator();
   const dispatch = useDispatch();
-
-  const commonStyles = useMemo(() => getCommonStyles(Colors), [Colors]);
 
   const {totalNumberTimesheetToValidate} = useSelector(
     state => state.timesheet,
@@ -66,8 +63,6 @@ const TimesheetFilters = ({
       {timesheetConfig.needValidation &&
         (user?.employee?.hrManager || managedEmployeeTotal > 0) && (
           <ToggleSwitch
-            styleContainer={[commonStyles.filter, commonStyles.filterSize]}
-            styleToogle={styles.toggle}
             leftTitle={I18n.t('Hr_MyTimesheets')}
             rightTitle={I18n.t('Hr_ToValidate')}
             rigthElement={
@@ -114,11 +109,6 @@ const TimesheetFilters = ({
 const styles = StyleSheet.create({
   container: {
     alignItems: 'center',
-  },
-  toggle: {
-    width: '54%',
-    height: 38,
-    borderRadius: 13,
   },
   numberBubble: {
     position: 'absolute',
