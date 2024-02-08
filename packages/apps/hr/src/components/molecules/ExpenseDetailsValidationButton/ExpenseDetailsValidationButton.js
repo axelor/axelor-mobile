@@ -17,8 +17,7 @@
  */
 
 import React, {useCallback, useState} from 'react';
-import {View} from 'react-native';
-
+import {View, StyleSheet} from 'react-native';
 import {
   useTranslator,
   useSelector,
@@ -32,19 +31,17 @@ import {
   sendExpense,
   validateExpense,
 } from '../../../features/expenseSlice';
-import ExpenseRefusalPopup from '../ExpenseRefusalPopup/ExpenseRefusalPopup';
-import {StyleSheet} from 'react-native';
+import {ExpenseRefusalPopup} from '../../templates';
 
 const ExpenseDetailsValidationButton = ({expense, mode, isManualCreation}) => {
   const navigation = useNavigation();
+  const Colors = useThemeColor();
   const I18n = useTranslator();
   const dispatch = useDispatch();
-  const Colors = useThemeColor();
 
   const {user} = useSelector(state => state.user);
 
   const [refusalPopupIsOpen, setRefusalPopupIsOpen] = useState(false);
-  const [refusalMessage, setRefusalMessage] = useState('');
 
   const sendExpenseAPI = useCallback(() => {
     dispatch(
@@ -98,36 +95,27 @@ const ExpenseDetailsValidationButton = ({expense, mode, isManualCreation}) => {
     expense.statusSelect === Expense.statusSelect.WaitingValidation
   ) {
     return (
-      <>
-        <View style={styles.buttonContainer}>
-          <Button
-            title={I18n.t('Hr_Refuse')}
-            onPress={() => {
-              setRefusalPopupIsOpen(true);
-            }}
-            color={Colors.errorColor}
-            width="45%"
-            iconName="x-lg"
-          />
-          <Button
-            title={I18n.t('Hr_Validate')}
-            onPress={validateExpenseAPI}
-            width="45%"
-            iconName="check-lg"
-          />
-        </View>
-        <ExpenseRefusalPopup
-          expense={expense}
-          mode={mode}
-          refusalMessage={refusalMessage}
-          refusalPopupIsOpen={refusalPopupIsOpen}
-          setRefusalMessage={setRefusalMessage}
-          onClose={() => {
-            setRefusalMessage('');
-            setRefusalPopupIsOpen(false);
-          }}
+      <View style={styles.buttonContainer}>
+        <Button
+          title={I18n.t('Hr_Refuse')}
+          onPress={() => setRefusalPopupIsOpen(true)}
+          color={Colors.errorColor}
+          width="45%"
+          iconName="x-lg"
         />
-      </>
+        <ExpenseRefusalPopup
+          isOpen={refusalPopupIsOpen}
+          expense={expense}
+          expenseMode={mode}
+          onCancel={() => setRefusalPopupIsOpen(false)}
+        />
+        <Button
+          title={I18n.t('Hr_Validate')}
+          onPress={validateExpenseAPI}
+          width="45%"
+          iconName="check-lg"
+        />
+      </View>
     );
   }
 
