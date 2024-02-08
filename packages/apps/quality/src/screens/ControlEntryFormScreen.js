@@ -162,51 +162,53 @@ const ControlEntryFormScreen = ({route}) => {
     });
   };
 
+  const getValuesProgressBar = useCallback(
+    param => {
+      getProgressValuesApi(param)
+        .then(response => {
+          setProgressData({
+            bottomProgressBar:
+              selectedMode === ControlEntry.fillingMethod.Sample
+                ? response?.data?.characteristicControlledOnSample
+                : response?.data?.sampleControlledOnCharacteristic,
+            topProgressBar:
+              selectedMode === ControlEntry.fillingMethod.Sample
+                ? response?.data?.sampleCompletelyControlled
+                : response?.data?.characteristicCompletelyControlled,
+          });
+        })
+        .catch(() =>
+          setProgressData({bottomProgressBar: 0, topProgressBar: 0}),
+        );
+    },
+    [selectedMode],
+  );
+
   useEffect(() => {
-    if (selectedMode === ControlEntry.fillingMethod.Sample) {
-      if (sampleLine != null) {
-        getProgressValuesApi({
-          controlEntryId: controlEntry?.id,
-          sampleId: sampleLine?.controlEntrySample?.id,
-        })
-          .then(response => {
-            console.log(response?.data);
-            setProgressData({
-              bottomProgressBar:
-                response?.data?.characteristicControlledOnSample,
-              topProgressBar: response?.data?.sampleCompletelyControlled,
-            });
-          })
-          .catch(() =>
-            setProgressData({bottomProgressBar: 0, topProgressBar: 0}),
-          );
-      }
+    if (
+      selectedMode === ControlEntry.fillingMethod.Sample &&
+      sampleLine?.controlEntrySample?.id != null
+    ) {
+      getValuesProgressBar({
+        controlEntryId: controlEntry?.id,
+        sampleId: sampleLine?.controlEntrySample?.id,
+      });
     }
-    if (selectedMode === ControlEntry.fillingMethod.Characteristic) {
-      if (controlPlan?.controlPlanLinesList != null) {
-        getProgressValuesApi({
-          controlEntryId: controlEntry?.id,
-          characteristicId:
-            controlPlan?.controlPlanLinesList?.[categoryIndex]?.id,
-        })
-          .then(response => {
-            console.log(response?.data);
-            setProgressData({
-              bottomProgressBar:
-                response?.data?.sampleControlledOnCharacteristic,
-              topProgressBar:
-                response?.data?.characteristicCompletelyControlled,
-            });
-          })
-          .catch(() =>
-            setProgressData({bottomProgressBar: 0, topProgressBar: 0}),
-          );
-      }
+    if (
+      selectedMode === ControlEntry.fillingMethod.Characteristic &&
+      controlPlan?.controlPlanLinesList != null
+    ) {
+      getValuesProgressBar({
+        controlEntryId: controlEntry?.id,
+        characteristicId:
+          controlPlan?.controlPlanLinesList?.[categoryIndex]?.id,
+      });
     }
   }, [
     categoryIndex,
-    controlEntry?.id,
-    controlPlan?.controlPlanLinesList,
+    controlEntry,
+    controlPlan,
+    getValuesProgressBar,
     sampleLine,
     selectedMode,
   ]);
