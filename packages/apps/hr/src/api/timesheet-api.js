@@ -225,5 +225,3 @@ export async function updateTimesheetStatus({
     },
   });
 }
-
-
