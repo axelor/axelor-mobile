@@ -90,3 +90,18 @@ export async function updateControlEntry({controlEntry}) {
     },
   });
 }
+
+export async function getProgressValues({
+  controlEntryId,
+  characteristicId,
+  sampleId,
+}) {
+  return axiosApiProvider.post({
+    url: 'ws/aos/controlentry/progressValues',
+    data: {
+      controlEntryId,
+      characteristicId,
+      sampleId,
+    },
+  });
+}

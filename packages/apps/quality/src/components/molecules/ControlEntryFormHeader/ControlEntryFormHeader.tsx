@@ -23,19 +23,17 @@ import {ControlEntry} from '../../../types';
 import {ControlEntryHeader, ControlEntrySampleLineHeader} from '../../atoms';
 
 interface ControlEntryHeaderProps {
-  currentIndex: number;
-  categoryIndex: number;
   nbItemInCategory: number;
   nbCategories: number;
   mode: string;
+  progressData: any;
 }
 
 const ControlEntryFormHeader = ({
-  currentIndex,
-  categoryIndex,
   nbItemInCategory,
   nbCategories,
   mode,
+  progressData,
 }: ControlEntryHeaderProps) => {
   const {categoryIcon, subCategoryIcon} = useMemo(
     () => ControlEntry.getMethodIcons(mode),
@@ -49,7 +47,7 @@ const ControlEntryFormHeader = ({
         <Icon name={categoryIcon} />
         <ProgressBar
           total={nbCategories}
-          value={categoryIndex + 1}
+          value={progressData.topProgressBar}
           style={[styles.progressBar, styles.margin]}
           showPercent={false}
         />
@@ -58,7 +56,7 @@ const ControlEntryFormHeader = ({
         <Icon name={subCategoryIcon} />
         <ProgressBar
           total={nbItemInCategory}
-          value={currentIndex + 1}
+          value={progressData.bottomProgressBar}
           showPercent={false}
           style={styles.progressBar}
         />

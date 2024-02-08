@@ -20,6 +20,7 @@ export {
   fetchControlEntryById as fetchControlEntryByIdApi,
   searchControlEntry as searchControlEntryApi,
   updateControlEntry as updateControlEntryApi,
+  getProgressValues as getProgressValuesApi,
 } from './control-entry-api';
 export {searchControlEntrySample as searchControlEntrySampleApi} from './control-entry-sample-api';
 export {

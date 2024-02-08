@@ -31,6 +31,7 @@ import {
 import {fetchControlPlanById} from '../features/controlPlanSlice';
 import {ControlEntry} from '../types';
 import {checkComformity} from '../api/control-entry-sample-line-api';
+import {getProgressValuesApi} from '../api';
 
 const ControlEntryFormScreen = ({route}) => {
   const {selectedMode} = route.params;
@@ -39,6 +40,7 @@ const ControlEntryFormScreen = ({route}) => {
 
   const {controlEntry} = useSelector(state => state.controlEntry);
   const {controlPlan} = useSelector(state => state.controlPlan);
+  const {sampleLine} = useSelector(state => state.controlEntrySampleLine);
   const {sampleLineOfEntryList} = useSelector(
     state => state.controlEntrySampleLine,
   );
@@ -47,6 +49,10 @@ const ControlEntryFormScreen = ({route}) => {
   const [currentIndex, setCurrentIndex] = useState(null);
   const [itemSet, setItemSet] = useState([]);
   const [categorySet, setCategorySet] = useState([]);
+  const [progressData, setProgressData] = useState({
+    topProgressBar: 0,
+    bottomProgressBar: 0,
+  });
 
   useEffect(() => {
     dispatch(fetchControlPlanById({id: controlEntry.controlPlan?.id}));
@@ -156,6 +162,55 @@ const ControlEntryFormScreen = ({route}) => {
     });
   };
 
+  useEffect(() => {
+    if (selectedMode === ControlEntry.fillingMethod.Sample) {
+      if (sampleLine != null) {
+        getProgressValuesApi({
+          controlEntryId: controlEntry?.id,
+          sampleId: sampleLine?.controlEntrySample?.id,
+        })
+          .then(response => {
+            console.log(response?.data);
+            setProgressData({
+              bottomProgressBar:
+                response?.data?.characteristicControlledOnSample,
+              topProgressBar: response?.data?.sampleCompletelyControlled,
+            });
+          })
+          .catch(() =>
+            setProgressData({bottomProgressBar: 0, topProgressBar: 0}),
+          );
+      }
+    }
+    if (selectedMode === ControlEntry.fillingMethod.Characteristic) {
+      if (controlPlan?.controlPlanLinesList != null) {
+        getProgressValuesApi({
+          controlEntryId: controlEntry?.id,
+          characteristicId:
+            controlPlan?.controlPlanLinesList?.[categoryIndex]?.id,
+        })
+          .then(response => {
+            console.log(response?.data);
+            setProgressData({
+              bottomProgressBar:
+                response?.data?.sampleControlledOnCharacteristic,
+              topProgressBar:
+                response?.data?.characteristicCompletelyControlled,
+            });
+          })
+          .catch(() =>
+            setProgressData({bottomProgressBar: 0, topProgressBar: 0}),
+          );
+      }
+    }
+  }, [
+    categoryIndex,
+    controlEntry?.id,
+    controlPlan?.controlPlanLinesList,
+    sampleLine,
+    selectedMode,
+  ]);
+
   return (
     <Screen removeSpaceOnTop>
       <HeaderContainer
@@ -167,6 +222,7 @@ const ControlEntryFormScreen = ({route}) => {
             categoryIndex={categoryIndex}
             nbItemInCategory={nbItemInCategory}
             nbCategories={nbCategories}
+            progressData={progressData}
           />
         }
       />
