@@ -37,7 +37,7 @@ import {
 import {Time, Timesheet} from '../../types';
 
 const TimesheetDetailsScreen = ({navigation, route}) => {
-  const {timesheetId} = route.params;
+  const {timesheetId, isManualCreation} = route.params;
   const I18n = useTranslator();
   const dispatch = useDispatch();
 
@@ -78,6 +78,7 @@ const TimesheetDetailsScreen = ({navigation, route}) => {
           timesheet={timesheet}
           statusSelect={_statusSelect}
           isEmpty={isTimesheetLineListEmpty}
+          isManualCreation={isManualCreation}
         />
       }>
       <HeaderContainer
