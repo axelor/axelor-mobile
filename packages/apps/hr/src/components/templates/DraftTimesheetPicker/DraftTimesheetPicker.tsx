@@ -60,6 +60,10 @@ const DraftTimesheetPicker = ({
     )} - ${formatDate(item.toDate, I18n.t('Base_DateFormat'))}`;
   };
 
+  if (!Array.isArray(draftTimesheetList) || draftTimesheetList.length === 0) {
+    return null;
+  }
+
   return (
     <Picker
       style={style}

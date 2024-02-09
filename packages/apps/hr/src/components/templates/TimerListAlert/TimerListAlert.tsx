@@ -123,7 +123,7 @@ const TimerListAlert = ({
     );
   };
 
-  const handleCancel = () => {
+  const resetStates = () => {
     setIsAlertVisible(false);
     setTimesheet(null);
     setFromDate(null);
@@ -152,7 +152,7 @@ const TimerListAlert = ({
         }),
       );
     }
-    setIsAlertVisible(false);
+    resetStates();
     navigation.navigate('TimesheetListScreen');
   };
 
@@ -162,7 +162,7 @@ const TimerListAlert = ({
       visible={isAlertVisible}
       title={I18n.t('Hr_SelectTimers')}
       cancelButtonConfig={{
-        onPress: handleCancel,
+        onPress: resetStates,
       }}
       confirmButtonConfig={{
         width: 50,
