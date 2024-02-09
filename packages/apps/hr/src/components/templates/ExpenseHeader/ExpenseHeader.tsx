@@ -53,14 +53,15 @@ const ExpenseHeader = ({}) => {
           ? user?.activeCompany?.currency?.symbol
           : user?.activeCompany?.currency?.code
       }`}</Text>
-      {!checkNullString(expense?.groundForRefusal) && (
-        <Label
-          message={`${I18n.t('Hr_GroundForRefusal')} : ${
-            expense?.groundForRefusal
-          }`}
-          type="error"
-        />
-      )}
+      {expense.statusSelect === Expense.statusSelect.Refused &&
+        !checkNullString(expense?.groundForRefusal) && (
+          <Label
+            message={`${I18n.t('Hr_GroundForRefusal')} : ${
+              expense?.groundForRefusal
+            }`}
+            type="error"
+          />
+        )}
     </View>
   );
 };

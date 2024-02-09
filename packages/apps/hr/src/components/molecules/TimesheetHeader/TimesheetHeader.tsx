@@ -89,14 +89,15 @@ const TimesheetHeader = ({timesheet, statusSelect}: TimesheetHeaderProps) => {
           />
         )}
       </View>
-      {!checkNullString(timesheet.groundForRefusal) && (
-        <Label
-          message={`${I18n.t('Hr_GroundForRefusal')} : ${
-            timesheet.groundForRefusal
-          }`}
-          type="error"
-        />
-      )}
+      {statusSelect === Timesheet.statusSelect.Refused &&
+        !checkNullString(timesheet.groundForRefusal) && (
+          <Label
+            message={`${I18n.t('Hr_GroundForRefusal')} : ${
+              timesheet.groundForRefusal
+            }`}
+            type="error"
+          />
+        )}
     </View>
   );
 };
