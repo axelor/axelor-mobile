@@ -31,6 +31,7 @@ import {
   fetchTimesheetToValidate as _fetchTimesheetToValidate,
   updateTimesheetStatus as _updateTimesheetStatus,
 } from '../api/timesheet-api';
+import {fetchTimer} from './timerSlice';
 
 export const fetchTimesheet = createAsyncThunk(
   'timesheet/fetchTimesheet',
@@ -93,9 +94,13 @@ export const createTimesheet = createAsyncThunk(
       action: 'Hr_SliceAction_CreateTimesheet',
       getState,
       responseOptions: {isArrayResponse: false},
-    }).then(() => {
-      dispatch(fetchTimesheet({userId: data.userId}));
-    });
+    })
+      .then(() => {
+        dispatch(fetchTimesheet({userId: data.userId}));
+      })
+      .then(() => {
+        dispatch(fetchTimer({userId: data.userId}));
+      });
   },
 );
 
@@ -108,6 +113,8 @@ export const addTimerTimesheet = createAsyncThunk(
       action: 'Hr_SliceAction_AddTimerTimesheet',
       getState,
       responseOptions: {isArrayResponse: false},
+    }).then(() => {
+      dispatch(fetchTimer({userId: data.userId}));
     });
   },
 );
