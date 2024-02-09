@@ -17,7 +17,7 @@
  */
 
 import React, {useEffect, useMemo, useState} from 'react';
-import {StyleSheet, TouchableOpacity} from 'react-native';
+import {StyleSheet} from 'react-native';
 import {Card, ProgressBar, Text, useThemeColor} from '@axelor/aos-mobile-ui';
 import {ControlEntry} from '../../../types';
 import {searchControlEntrySampleLineApi} from '../../../api';
@@ -27,14 +27,12 @@ interface ControlEntrySampleCardProps {
   controlEntrySampleId: number;
   resultSelect: number;
   samplefullName: string;
-  onPress?: () => void;
 }
 const ControlEntrySampleCard = ({
   style,
   controlEntrySampleId,
   resultSelect,
   samplefullName,
-  onPress = () => {},
 }: ControlEntrySampleCardProps) => {
   const Colors = useThemeColor();
 
@@ -66,18 +64,16 @@ const ControlEntrySampleCard = ({
   }, [controlEntrySampleId]);
 
   return (
-    <TouchableOpacity onPress={onPress} activeOpacity={0.9}>
-      <Card style={[styles.container, borderStyle, style]}>
-        <Text>{samplefullName}</Text>
-        <ProgressBar
-          style={styles.progressBar}
-          value={numberSampleFilled}
-          showPercent={false}
-          height={15}
-          styleTxt={styles.textProgressBar}
-        />
-      </Card>
-    </TouchableOpacity>
+    <Card style={[styles.container, borderStyle, style]}>
+      <Text>{samplefullName}</Text>
+      <ProgressBar
+        style={styles.progressBar}
+        value={numberSampleFilled}
+        showPercent={false}
+        height={15}
+        styleTxt={styles.textProgressBar}
+      />
+    </Card>
   );
 };
 
