@@ -24,6 +24,7 @@ export {default as RefusalPopup} from './RefusalPopup/RefusalPopup';
 export {default as TimeDetailCard} from './TimeDetailCard/TimeDetailCard';
 export {default as TimerDeclareButton} from './TimerDeclareButton/TimerDeclareButton';
 export {default as TimerStopwatch} from './TimerStopwatch/TimerStopwatch';
+export {default as TimesheetCreationAlert} from './TimesheetCreationAlert/TimesheetCreationAlert';
 export {default as TimesheetDetailCard} from './TimesheetDetailCard/TimesheetDetailCard';
 export {default as TimesheetDetailsButtons} from './TimesheetDetailsButtons/TimesheetDetailsButtons';
 export {default as TimesheetHeader} from './TimesheetHeader/TimesheetHeader';
