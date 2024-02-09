@@ -16,11 +16,12 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import React, {useMemo} from 'react';
+import React, {useEffect, useMemo, useState} from 'react';
 import {StyleSheet, View} from 'react-native';
 import {useSelector} from '@axelor/aos-mobile-core';
 import {CardIconButton, useThemeColor} from '@axelor/aos-mobile-ui';
 import {TimesheetCard} from '../../atoms';
+import {convertPeriodTimesheet} from '../../../api/timesheet-api';
 import {Timesheet} from '../../../types';
 
 interface TimesheetDetailCardProps {
@@ -48,6 +49,8 @@ const TimesheetDetailCard = ({
     (state: any) => state.appConfig,
   );
   const {user} = useSelector((state: any) => state.user);
+
+  const [convertedPeriod, setConvertedPeriod] = useState<number>(0);
 
   const _statusSelect = useMemo(() => {
     return Timesheet.getStatus(timesheetConfig.needValidation, item);
@@ -82,6 +85,18 @@ const TimesheetDetailCard = ({
     return false;
   }, [isActions, _statusSelect, userCanValidate]);
 
+  useEffect(() => {
+    convertPeriodTimesheet({timesheetId: item.id})
+      .then(res => {
+        if (res?.data?.object != null) {
+          setConvertedPeriod(res.data.object.periodTotalConvert);
+        } else {
+          setConvertedPeriod(0);
+        }
+      })
+      .catch(() => setConvertedPeriod(0));
+  }, [item.id]);
+
   return (
     <View style={[styles.container, style]}>
       <TimesheetCard
@@ -89,7 +104,7 @@ const TimesheetDetailCard = ({
         startDate={item.fromDate}
         endDate={item.toDate}
         company={item.company.name}
-        totalDuration={item.periodTotal}
+        totalDuration={convertedPeriod}
         durationUnit={item.timeLoggingPreferenceSelect}
         employeeName={isValidationMode ? item.employee?.name : null}
         style={styles.cardContainer}
