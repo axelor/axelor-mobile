@@ -52,35 +52,42 @@ const TimesheetDetailsButtons = ({
 
   const {user} = useSelector((state: any) => state.user);
 
-  const deleteTimesheetAPI = useCallback(() => {
+  const deleteAPI = useCallback(() => {
     dispatch(
       (deleteTimesheet as any)({timesheetId: timesheet.id, userId: user.id}),
     );
     navigation.pop();
   }, [dispatch, navigation, timesheet.id, user.id]);
 
+  const updateStatusAPI = useCallback(
+    (toStatus: string) => {
+      dispatch(
+        (updateTimesheetStatus as any)({
+          timesheetId: timesheet.id,
+          version: timesheet.version,
+          toStatus: toStatus,
+          user: user,
+        }),
+      );
+    },
+    [dispatch, timesheet, user],
+  );
+
   if (statusSelect === Timesheet.statusSelect.Draft) {
     return (
       <View style={styles.container}>
         <Button
-          title={I18n.t('Hr_Delete')}
-          onPress={deleteTimesheetAPI}
+          title={I18n.t(isEmpty ? 'Hr_Delete' : 'Base_Cancel')}
+          onPress={() => {
+            isEmpty ? deleteAPI() : updateStatusAPI('cancel');
+          }}
           width="45%"
           color={Colors.errorColor}
-          iconName="trash3-fill"
+          iconName={isEmpty ? 'trash3-fill' : 'x-lg'}
         />
         <Button
           title={I18n.t('Hr_Send')}
-          onPress={() =>
-            dispatch(
-              (updateTimesheetStatus as any)({
-                timesheetId: timesheet.id,
-                version: timesheet.version,
-                toStatus: 'confirm',
-                user: user,
-              }),
-            )
-          }
+          onPress={() => updateStatusAPI('confirm')}
           width="45%"
           iconName="send-fill"
           disabled={isEmpty}
@@ -110,16 +117,7 @@ const TimesheetDetailsButtons = ({
         />
         <Button
           title={I18n.t('Hr_Validate')}
-          onPress={() =>
-            dispatch(
-              (updateTimesheetStatus as any)({
-                timesheetId: timesheet.id,
-                version: timesheet.version,
-                toStatus: 'validate',
-                user: user,
-              }),
-            )
-          }
+          onPress={() => updateStatusAPI('validate')}
           width="45%"
           iconName="check-lg"
         />
