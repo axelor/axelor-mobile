@@ -58,6 +58,7 @@ export {
 } from './timer-api';
 export {
   addTimerTimesheet as addTimerTimesheetApi,
+  convertPeriodTimesheet as convertPeriodTimesheetApi,
   createTimesheet as createTimesheetApi,
   deleteTimesheet as deleteTimesheetApi,
   fetchDraftTimesheet as fetchDraftTimesheetApi,

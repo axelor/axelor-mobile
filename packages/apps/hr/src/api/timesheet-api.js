@@ -231,3 +231,9 @@ export async function deleteTimesheet({timesheetId}) {
     url: `ws/rest/com.axelor.apps.hr.db.Timesheet/${timesheetId}`,
   });
 }
+
+export async function convertPeriodTimesheet({timesheetId}) {
+  return axiosApiProvider.get({
+    url: `ws/aos/timesheet/convertPeriod/${timesheetId}`,
+  });
+}
