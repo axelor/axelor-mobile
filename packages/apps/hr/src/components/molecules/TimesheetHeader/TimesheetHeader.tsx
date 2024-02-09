@@ -16,7 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import React, {useMemo} from 'react';
+import React, {useEffect, useMemo, useState} from 'react';
 import {StyleSheet, View} from 'react-native';
 import {
   checkNullString,
@@ -32,8 +32,8 @@ import {
   useThemeColor,
 } from '@axelor/aos-mobile-ui';
 import {DatesInterval} from '../../atoms';
+import {convertPeriodTimesheet} from '../../../api/timesheet-api';
 import {Timesheet} from '../../../types';
-import {getDurationUnit} from '../../../utils';
 
 interface TimesheetHeaderProps {
   timesheet: any;
@@ -47,12 +47,32 @@ const TimesheetHeader = ({timesheet, statusSelect}: TimesheetHeaderProps) => {
 
   const {mobileSettings} = useSelector((state: any) => state.appConfig);
 
+  const [convertedPeriod, setConvertedPeriod] = useState<{
+    value: number;
+    title: string;
+  }>(null);
+
   const isAddButton = useMemo(
     () =>
       mobileSettings?.isLineCreationOfTimesheetDetailsAllowed &&
       statusSelect === Timesheet.statusSelect.Draft,
     [mobileSettings?.isLineCreationOfTimesheetDetailsAllowed, statusSelect],
   );
+
+  useEffect(() => {
+    convertPeriodTimesheet({timesheetId: timesheet.id})
+      .then(res => {
+        if (res?.data?.object != null) {
+          setConvertedPeriod({
+            value: res.data.object.periodTotalConvert,
+            title: res.data.object.periodTotalConvertTitle,
+          });
+        } else {
+          setConvertedPeriod(null);
+        }
+      })
+      .catch(() => setConvertedPeriod(null));
+  }, [timesheet.id]);
 
   return (
     <View style={styles.container}>
@@ -73,8 +93,10 @@ const TimesheetHeader = ({timesheet, statusSelect}: TimesheetHeaderProps) => {
             {I18n.t('User_Company')} : {timesheet.company.name}
           </Text>
           <Text>
-            {I18n.t('Hr_TotalDuration')} : {timesheet.periodTotal}
-            {getDurationUnit(timesheet.timeLoggingPreferenceSelect, I18n)}
+            {I18n.t('Hr_TotalDuration')} :
+            {convertedPeriod != null
+              ? ` ${convertedPeriod.value} ${convertedPeriod.title}`
+              : ' -'}
           </Text>
         </View>
         {isAddButton && (
