@@ -53,16 +53,28 @@ export const HrModule: Module = {
       icon: 'stopwatch',
       screen: 'ActiveTimerFormScreen',
       isDefault: true,
+      compatibilityAOS: {
+        moduleName: 'axelor-human-resource',
+        downToVersion: '8.0.0',
+      },
     },
     hr_menu_timers: {
       title: 'Hr_Timers',
       icon: 'hourglass-split',
       screen: 'TimerListScreen',
+      compatibilityAOS: {
+        moduleName: 'axelor-human-resource',
+        downToVersion: '8.0.0',
+      },
     },
     hr_menu_timesheets: {
       title: 'Hr_Timesheets',
       icon: 'clock-history',
       screen: 'TimesheetListScreen',
+      compatibilityAOS: {
+        moduleName: 'axelor-human-resource',
+        downToVersion: '8.0.0',
+      },
     },
     hr_menu_expensesSeparator: {
       title: 'Hr_Expenses',
