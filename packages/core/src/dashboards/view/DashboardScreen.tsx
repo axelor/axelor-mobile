@@ -28,13 +28,16 @@ export const DashboardScreen = ({dashboardId}) => {
   const I18n = useTranslator();
 
   const [dashboard, setDashboard] = useState<any>({});
+  const [loading, setLoading] = useState<boolean>(false);
 
   const refresh = useCallback(() => {
+    setLoading(true);
     fetchDashboard({id: dashboardId})
       .then(response => {
         setDashboard({...(response?.data?.object ?? {}), id: dashboardId});
       })
-      .catch(() => setDashboard({}));
+      .catch(() => setDashboard({}))
+      .finally(() => setLoading(false));
   }, [dashboardId]);
 
   useEffect(() => {
@@ -78,7 +81,7 @@ export const DashboardScreen = ({dashboardId}) => {
     }));
   }, [dashboard]);
 
-  if (dashboard?.id !== dashboardId) {
+  if (loading) {
     return <ActivityIndicator size="large" />;
   }
 
