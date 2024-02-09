@@ -16,7 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import React, {useCallback, useMemo, useState} from 'react';
+import React, {useCallback, useState} from 'react';
 import {StyleSheet, View} from 'react-native';
 import {
   useDispatch,
@@ -75,22 +75,19 @@ const TimesheetDetailsButtons = ({
     [dispatch, timesheet, user],
   );
 
-  const canDelete = useMemo(
-    () => isEmpty && !isManualCreation,
-    [isEmpty, isManualCreation],
-  );
-
   if (statusSelect === Timesheet.statusSelect.Draft) {
     return (
       <View style={styles.container}>
         <Button
-          title={I18n.t(canDelete ? 'Hr_Delete' : 'Base_Cancel')}
+          title={I18n.t(
+            isEmpty && !isManualCreation ? 'Hr_Delete' : 'Base_Cancel',
+          )}
           onPress={() => {
-            canDelete ? deleteAPI() : updateStatusAPI('cancel');
+            isEmpty ? deleteAPI() : updateStatusAPI('cancel');
           }}
           width="45%"
           color={Colors.errorColor}
-          iconName={canDelete ? 'trash3-fill' : 'x-lg'}
+          iconName={isEmpty && !isManualCreation ? 'trash3-fill' : 'x-lg'}
         />
         <Button
           title={I18n.t('Hr_Send')}
