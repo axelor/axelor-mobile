@@ -140,6 +140,7 @@ const TimerListAlert = ({
           timesheetId: timesheet?.id,
           version: timesheet?.version,
           timerIdList,
+          userId,
         }),
       );
     } else {
