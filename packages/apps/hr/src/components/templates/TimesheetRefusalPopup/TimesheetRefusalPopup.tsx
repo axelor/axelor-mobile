@@ -44,11 +44,11 @@ const TimesheetRefusalPopup = ({
           version: timesheet.version,
           toStatus: 'refuse',
           groundForRefusal: refusalMessage,
-          userId: user.id,
+          user: user,
         }),
       );
     },
-    [dispatch, timesheet, user.id],
+    [dispatch, timesheet, user],
   );
 
   return (

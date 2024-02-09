@@ -77,7 +77,7 @@ const TimesheetDetailsButtons = ({
                 timesheetId: timesheet.id,
                 version: timesheet.version,
                 toStatus: 'confirm',
-                userId: user.id,
+                user: user,
               }),
             )
           }
@@ -116,7 +116,7 @@ const TimesheetDetailsButtons = ({
                 timesheetId: timesheet.id,
                 version: timesheet.version,
                 toStatus: 'validate',
-                userId: user.id,
+                user: user,
               }),
             )
           }

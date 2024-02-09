@@ -58,7 +58,7 @@ const TimesheetListScreen = ({navigation}) => {
           timesheetId: timesheet.id,
           version: timesheet.version,
           toStatus: toStatus,
-          userId: user.id,
+          user: user,
         }),
       ),
     [dispatch, user],
