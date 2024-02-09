@@ -18,7 +18,11 @@
 
 import React, {useMemo} from 'react';
 import {StyleSheet, View} from 'react-native';
-import {getFullDateItems, useTranslator} from '@axelor/aos-mobile-core';
+import {
+  areObjectsEquals,
+  getFullDateItems,
+  useTranslator,
+} from '@axelor/aos-mobile-core';
 import {Text} from '@axelor/aos-mobile-ui';
 
 interface DateIntervalProps {
@@ -44,7 +48,7 @@ const DatesInterval = ({startDate, endDate, style}: DateIntervalProps) => {
   );
 
   const renderDates = () => {
-    if (_startDate === _endDate || _endDate == null) {
+    if (areObjectsEquals(_startDate, _endDate) || _endDate == null) {
       // prettier-ignore
       return (
         <Text>
