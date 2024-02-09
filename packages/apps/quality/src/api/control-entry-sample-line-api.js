@@ -16,7 +16,11 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import {createStandardSearch} from '@axelor/aos-mobile-core';
+import {
+  createStandardSearch,
+  createStandardFetch,
+  axiosApiProvider,
+} from '@axelor/aos-mobile-core';
 
 const createControlEntrySampleLineCriteria = controlEntrySampleId => {
   return [
@@ -38,5 +42,53 @@ export async function searchControlEntrySampleLine({
     fieldKey: 'quality_controlEntrySampleLine',
     sortKey: 'quality_controlEntrySampleLine',
     page: page,
+  });
+}
+
+const createSampleLineOfControlEntryCriteria = controlEntryId => {
+  return [
+    {
+      fieldName: 'controlEntrySample.controlEntry.id',
+      operator: '=',
+      value: controlEntryId,
+    },
+  ];
+};
+
+export async function searchControlEntrySampleLineOfControlEntry({
+  controlEntryId,
+}) {
+  return createStandardSearch({
+    model: 'com.axelor.apps.quality.db.ControlEntryPlanLine',
+    criteria: createSampleLineOfControlEntryCriteria(controlEntryId),
+    fieldKey: 'quality_controlEntrySampleLine',
+    sortKey: 'quality_controlEntrySampleLine',
+    numberElementsByPage: null,
+    page: 0,
+  });
+}
+
+export async function fetchControlEntrySampleLine({id}) {
+  return createStandardFetch({
+    model: 'com.axelor.apps.quality.db.ControlEntryPlanLine',
+    id,
+    fieldKey: 'quality_controlEntrySampleLine',
+  });
+}
+
+export async function checkComformity({object}) {
+  return axiosApiProvider.post({
+    url: 'ws/action',
+    data: {
+      action:
+        'action-quality-control-entry-line-method-control-conformity,save',
+      data: {
+        context: {
+          ...object,
+          _model: 'com.axelor.apps.quality.db.ControlEntryPlanLine',
+        },
+      },
+      model: 'com.axelor.apps.quality.db.ControlEntryPlanLine',
+    },
   });
 }

@@ -24,6 +24,7 @@ import {
 import {
   searchControlEntry as _searchControlEntry,
   fetchControlEntryById as _fetchControlEntryById,
+  updateControlEntry as _updateControlEntry,
 } from '../api/control-entry-api';
 
 export const searchControlEntry = createAsyncThunk(
@@ -48,6 +49,21 @@ export const fetchControlEntryById = createAsyncThunk(
       action: 'Quality_SliceAction_FetchControlEntryById',
       getState,
       responseOptions: {isArrayResponse: false},
+    });
+  },
+);
+
+export const updateControlEntry = createAsyncThunk(
+  'controlEntry/updateControlEntry',
+  async function (data = {}, {getState, dispatch}) {
+    return handlerApiCall({
+      fetchFunction: _updateControlEntry,
+      data,
+      action: 'Quality_SliceAction_UpdateControlEntry',
+      getState,
+      responseOptions: {isArrayResponse: false},
+    }).then(() => {
+      dispatch(fetchControlEntryById({controlEntryId: data?.controlEntryId}));
     });
   },
 );

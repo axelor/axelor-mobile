@@ -18,38 +18,21 @@
 
 import React, {useEffect, useState} from 'react';
 import {StyleSheet, View} from 'react-native';
-import {DateDisplay, useTranslator} from '@axelor/aos-mobile-core';
-import {
-  Badge,
-  Button,
-  ProgressBar,
-  Text,
-  useThemeColor,
-} from '@axelor/aos-mobile-ui';
+import {Button, ProgressBar} from '@axelor/aos-mobile-ui';
 import {ControlEntry} from '../../../types';
 import {searchControlEntrySampleApi} from '../../../api';
+import {ControlEntryHeader} from '../../atoms';
+import {FillingMethodAlert} from '../../molecules';
 
 interface ControlEntryHeaderProps {
   controlEntryId: number;
-  name: string;
-  statusSelect: number;
-  sampleCount: number;
-  controlPlanName: string;
-  entryDateTime: string;
 }
 
 const ControlEntryDetailsHeader = ({
   controlEntryId,
-  name,
-  statusSelect,
-  sampleCount,
-  controlPlanName,
-  entryDateTime,
 }: ControlEntryHeaderProps) => {
-  const I18n = useTranslator();
-  const Colors = useThemeColor();
-
   const [numberSampleFilled, setNumberSampleFilled] = useState<number>(0);
+  const [showAlert, setShowAlert] = useState(false);
 
   useEffect(() => {
     searchControlEntrySampleApi({controlEntryId: controlEntryId})
@@ -72,19 +55,7 @@ const ControlEntryDetailsHeader = ({
 
   return (
     <View style={styles.container}>
-      <View style={styles.row}>
-        <Text writingType="title">{name}</Text>
-        <Badge
-          color={ControlEntry.getStatusColor(statusSelect, Colors)}
-          title={ControlEntry.getStatus(statusSelect, I18n)}
-          style={styles.badge}
-        />
-      </View>
-      <View style={styles.row}>
-        <Text>{`${I18n.t('Quality_Sample')} : ${sampleCount}`}</Text>
-        <DateDisplay date={entryDateTime} />
-      </View>
-      <Text>{`${I18n.t('Quality_ControlPlan')} : ${controlPlanName}`}</Text>
+      <ControlEntryHeader />
       <View style={styles.row}>
         <ProgressBar
           value={numberSampleFilled}
@@ -96,8 +67,14 @@ const ControlEntryDetailsHeader = ({
           iconName="clipboard2-fill"
           width="10%"
           style={styles.button}
+          onPress={() => setShowAlert(true)}
         />
       </View>
+      <FillingMethodAlert
+        controlEntryId={controlEntryId}
+        visible={showAlert}
+        setVisible={setShowAlert}
+      />
     </View>
   );
 };
@@ -110,9 +87,6 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     flexDirection: 'row',
     alignItems: 'center',
-  },
-  badge: {
-    margin: 0,
   },
   progressBar: {
     width: '88%',

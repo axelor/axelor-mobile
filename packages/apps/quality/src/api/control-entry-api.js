@@ -16,6 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 import {
+  axiosApiProvider,
   createStandardFetch,
   createStandardSearch,
   getEndOfDay,
@@ -78,5 +79,29 @@ export async function fetchControlEntryById({controlEntryId}) {
     model: 'com.axelor.apps.quality.db.ControlEntry',
     id: controlEntryId,
     fieldKey: 'quality_controlEntry',
+  });
+}
+
+export async function updateControlEntry({controlEntry}) {
+  return axiosApiProvider.post({
+    url: '/ws/rest/com.axelor.apps.quality.db.ControlEntry/',
+    data: {
+      data: controlEntry,
+    },
+  });
+}
+
+export async function getProgressValues({
+  controlEntryId,
+  characteristicId,
+  sampleId,
+}) {
+  return axiosApiProvider.post({
+    url: 'ws/aos/controlentry/progressValues',
+    data: {
+      controlEntryId,
+      characteristicId,
+      sampleId,
+    },
   });
 }

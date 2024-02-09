@@ -24,6 +24,7 @@ import {ThemeColors, useThemeColor} from '../../../theme';
 const DEFAULT_SIZE = 20;
 
 const RadioButton = ({
+  style,
   onPress,
   selected,
   title,
@@ -33,6 +34,7 @@ const RadioButton = ({
   selected: boolean;
   title: string;
   size?: number;
+  style?: any;
 }) => {
   const Colors = useThemeColor();
 
@@ -41,7 +43,7 @@ const RadioButton = ({
   return (
     <TouchableOpacity
       onPress={onPress}
-      style={[styles.container, selected ? styles.selectedCard : null]}>
+      style={[styles.container, selected ? styles.selectedCard : null, style]}>
       <View style={styles.buttonExt}>
         {selected ? <View style={styles.buttonInt} /> : null}
       </View>
