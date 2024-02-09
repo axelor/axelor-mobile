@@ -87,7 +87,7 @@ const FormView = ({defaultValue = {}, formKey, actions}: FormProps) => {
   useEffect(() => {
     setObject(_current => {
       if (isEmpty(record)) {
-        if (isEmpty(defaultValue) || _current === defaultValue) {
+        if (defaultValue == null || _current === defaultValue) {
           return _current;
         } else {
           return defaultValue;
@@ -203,6 +203,14 @@ const FormView = ({defaultValue = {}, formKey, actions}: FormProps) => {
             }),
           )
         : false) || _action.disabledIf?.({objectState: object, storeState});
+
+    if (_action.customComponent) {
+      return React.cloneElement(_action.customComponent, {
+        key: _action.key,
+        onPress: () =>
+          handleValidate(buttonConfig.onPress, _action.needValidation),
+      });
+    }
 
     return (
       <Button
