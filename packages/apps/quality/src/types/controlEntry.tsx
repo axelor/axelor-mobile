@@ -33,6 +33,11 @@ class ControlEntry {
     NotCompliant: 3,
   };
 
+  static fillingMethod = {
+    Sample: 'sample',
+    Characteristic: 'characteristic',
+  };
+
   static getStatus = (select: number, I18n: TranslatorProps): string => {
     if (I18n) {
       switch (select) {
@@ -87,6 +92,82 @@ class ControlEntry {
           `Sample result provided with value ${sampleResult} is not supported by control entry`,
         );
         return null;
+    }
+  };
+
+  static getSampleResultTitle = (
+    sampleResult: number,
+    I18n: TranslatorProps,
+  ): string => {
+    if (I18n) {
+      switch (sampleResult) {
+        case this.sampleResult.Compliant:
+          return I18n.t('Quality_ControlResult_Compliant');
+        case this.sampleResult.NotCompliant:
+          return I18n.t('Quality_ControlResult_NotCompliant');
+        case this.sampleResult.NotControlled:
+          return I18n.t('Quality_ControlResult_NotControlled');
+        default:
+          console.warn(
+            `Sample result provided with value ${sampleResult} is not supported by control entry`,
+          );
+          return null;
+      }
+    }
+  };
+
+  static getFillingMethods = (I18n: TranslatorProps) => {
+    return Object.entries(this.fillingMethod).map(([key, value]) => ({
+      title: I18n.t(`Quality_FillingMethod_${key}`),
+      id: value,
+    }));
+  };
+
+  static getMethodAssociatedAttribut = (fillingMethod: string): string => {
+    switch (fillingMethod) {
+      case this.fillingMethod.Sample:
+        return 'controlEntrySample';
+      case this.fillingMethod.Characteristic:
+        return 'controlPlanLine';
+      default:
+        console.warn(
+          `Filling method provided with value ${fillingMethod} is not supported by control entry`,
+        );
+        return null;
+    }
+  };
+
+  static getMethodTotals = (
+    fillingMethod: string,
+    nbCharacteristic: number,
+    nbSample: number,
+  ): {nbItemInCategory: number; nbCategories: number} => {
+    switch (fillingMethod) {
+      case this.fillingMethod.Sample:
+        return {nbItemInCategory: nbCharacteristic, nbCategories: nbSample};
+      case this.fillingMethod.Characteristic:
+        return {nbItemInCategory: nbSample, nbCategories: nbCharacteristic};
+      default:
+        console.warn(
+          `Filling method provided with value ${fillingMethod} is not supported by control entry`,
+        );
+        return {nbItemInCategory: 0, nbCategories: 0};
+    }
+  };
+
+  static getMethodIcons = (
+    fillingMethod: string,
+  ): {categoryIcon: string; subCategoryIcon: string} => {
+    switch (fillingMethod) {
+      case this.fillingMethod.Sample:
+        return {categoryIcon: 'eyedropper', subCategoryIcon: 'palette2'};
+      case this.fillingMethod.Characteristic:
+        return {categoryIcon: 'palette2', subCategoryIcon: 'eyedropper'};
+      default:
+        console.warn(
+          `Filling method provided with value ${fillingMethod} is not supported by control entry`,
+        );
+        return {categoryIcon: null, subCategoryIcon: null};
     }
   };
 }

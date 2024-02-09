@@ -19,6 +19,14 @@
 export {
   fetchControlEntryById as fetchControlEntryByIdApi,
   searchControlEntry as searchControlEntryApi,
+  updateControlEntry as updateControlEntryApi,
+  getProgressValues as getProgressValuesApi,
 } from './control-entry-api';
 export {searchControlEntrySample as searchControlEntrySampleApi} from './control-entry-sample-api';
-export {searchControlEntrySampleLine as searchControlEntrySampleLineApi} from './control-entry-sample-line-api';
+export {
+  checkComformity,
+  fetchControlEntrySampleLine as fetchControlEntrySampleLineApi,
+  searchControlEntrySampleLine as searchControlEntrySampleLineApi,
+  searchControlEntrySampleLineOfControlEntry as searchControlEntrySampleLineOfControlEntryApi,
+} from './control-entry-sample-line-api';
+export {fetchControlPlanById as fetchControlPlanByIdApi} from './control-plan-api';

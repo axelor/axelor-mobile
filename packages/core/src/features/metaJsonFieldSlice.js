@@ -58,7 +58,7 @@ export const updateJsonFieldsObject = createAsyncThunk(
       data: data,
       action: 'Base_SliceAction_UpdateJsonFieldsObject',
       getState: getState,
-      responseOptions: {isArrayResponse: false, showToast: true},
+      responseOptions: {isArrayResponse: false, showToast: data.showToast},
     });
   },
 );

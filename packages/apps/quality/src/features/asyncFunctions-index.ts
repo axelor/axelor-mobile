@@ -16,5 +16,14 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+export {
+  fetchControlEntrySampleLine,
+  searchControlEntrySampleLineOfControlEntry,
+} from './controlEntrySampleLineSlice';
 export {searchControlEntrySample} from './controlEntrySampleSlice';
-export {fetchControlEntryById, searchControlEntry} from './controlEntrySlice';
+export {
+  fetchControlEntryById,
+  searchControlEntry,
+  updateControlEntry,
+} from './controlEntrySlice';
+export {fetchControlPlanById} from './controlPlanSlice';

@@ -18,3 +18,6 @@
 
 export {default as ControlEntryDetailsButtons} from './ControlEntryDetailsButtons/ControlEntryDetailsButtons';
 export {default as ControlEntryDetailsHeader} from './ControlEntryDetailsHeader/ControlEntryDetailsHeader';
+export {default as ControlEntryFormButtons} from './ControlEntryFormButtons/ControlEntryFormButtons';
+export {default as ControlEntryFormHeader} from './ControlEntryFormHeader/ControlEntryFormHeader';
+export {default as FillingMethodAlert} from './FillingMethodAlert/FillingMethodAlert';
