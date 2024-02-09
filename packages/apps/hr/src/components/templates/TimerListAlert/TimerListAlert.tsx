@@ -152,6 +152,7 @@ const TimerListAlert = ({
         }),
       );
     }
+    setIsAlertVisible(false);
     navigation.navigate('TimesheetListScreen');
   };
 
