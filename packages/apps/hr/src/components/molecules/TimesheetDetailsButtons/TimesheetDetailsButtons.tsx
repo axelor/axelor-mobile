@@ -26,7 +26,10 @@ import {
 } from '@axelor/aos-mobile-core';
 import {Button, useThemeColor} from '@axelor/aos-mobile-ui';
 import {TimesheetRefusalPopup} from '../../templates';
-import {updateTimesheetStatus} from '../../../features/timesheetSlice';
+import {
+  deleteTimesheet,
+  updateTimesheetStatus,
+} from '../../../features/timesheetSlice';
 import {Timesheet} from '../../../types';
 
 interface TimesheetDetailsButtonsProps {
@@ -49,13 +52,20 @@ const TimesheetDetailsButtons = ({
 
   const {user} = useSelector((state: any) => state.user);
 
+  const deleteAPI = useCallback(() => {
+    dispatch(
+      (deleteTimesheet as any)({timesheetId: timesheet.id, userId: user.id}),
+    );
+    navigation.pop();
+  }, [dispatch, navigation, timesheet.id, user.id]);
+
   const updateStatusAPI = useCallback(
-    (status: string) => {
+    (toStatus: string) => {
       dispatch(
         (updateTimesheetStatus as any)({
           timesheetId: timesheet.id,
           version: timesheet.version,
-          toStatus: status,
+          toStatus: toStatus,
           user: user,
         }),
       );
@@ -67,14 +77,13 @@ const TimesheetDetailsButtons = ({
     return (
       <View style={styles.container}>
         <Button
-          title={I18n.t('Base_Cancel')}
+          title={I18n.t(isEmpty ? 'Hr_Delete' : 'Base_Cancel')}
           onPress={() => {
-            updateStatusAPI('cancel');
-            navigation.pop();
+            isEmpty ? deleteAPI() : updateStatusAPI('cancel');
           }}
           width="45%"
           color={Colors.errorColor}
-          iconName="x-lg"
+          iconName={isEmpty ? 'trash3-fill' : 'x-lg'}
         />
         <Button
           title={I18n.t('Hr_Send')}

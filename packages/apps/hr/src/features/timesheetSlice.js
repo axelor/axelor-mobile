@@ -24,6 +24,7 @@ import {
 import {
   addTimerTimesheet as _addTimerTimesheet,
   createTimesheet as _createTimesheet,
+  deleteTimesheet as _deleteTimesheet,
   fetchDraftTimesheet as _fetchDraftTimesheet,
   fetchTimesheet as _fetchTimesheet,
   fetchTimesheetById as _fetchTimesheetById,
@@ -130,6 +131,21 @@ export const updateTimesheetStatus = createAsyncThunk(
       .then(() => {
         dispatch(fetchTimesheetToValidate({user: data.user}));
       });
+  },
+);
+
+export const deleteTimesheet = createAsyncThunk(
+  'timesheet/deleteTimesheet',
+  async function (data = {}, {getState, dispatch}) {
+    return handlerApiCall({
+      fetchFunction: _deleteTimesheet,
+      data,
+      action: 'Hr_SliceAction_DeleteTimesheet',
+      getState,
+      responseOptions: {isArrayResponse: false, showToast: true},
+    }).then(() => {
+      dispatch(fetchTimesheet({userId: data.userId}));
+    });
   },
 );
 

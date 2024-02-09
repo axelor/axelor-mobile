@@ -68,6 +68,7 @@ export {
 export {
   addTimerTimesheet,
   createTimesheet,
+  deleteTimesheet,
   fetchDraftTimesheet,
   fetchTimesheet,
   fetchTimesheetById,

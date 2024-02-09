@@ -59,6 +59,7 @@ export {
 export {
   addTimerTimesheet as addTimerTimesheetApi,
   createTimesheet as createTimesheetApi,
+  deleteTimesheet as deleteTimesheetApi,
   fetchDraftTimesheet as fetchDraftTimesheetApi,
   fetchTimesheet as fetchTimesheetApi,
   fetchTimesheetById as fetchTimesheetByIdApi,

@@ -225,3 +225,9 @@ export async function updateTimesheetStatus({
     },
   });
 }
+
+export async function deleteTimesheet({timesheetId}) {
+  return axiosApiProvider.delete({
+    url: `ws/rest/com.axelor.apps.hr.db.Timesheet/${timesheetId}`,
+  });
+}
