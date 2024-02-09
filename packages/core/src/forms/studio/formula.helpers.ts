@@ -33,7 +33,7 @@ const removeContextedFields = (fields: any[], object: any): any[] => {
     }
 
     return (
-      object[item.contextField]?.id === parseInt(item.contextFieldValue, 10)
+      object?.[item.contextField]?.id === parseInt(item.contextFieldValue, 10)
     );
   });
 };

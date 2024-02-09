@@ -3,6 +3,8 @@
   "Quality_ControlEntries": "Relevés de contrôle",
   "Quality_ControlEntry": "Relevé de contrôle",
   "Quality_Sample": "Échantillon",
+  "Quality_SampleCount": "Nombre d'échantillons",
+  "Quality_Characteristic": "Caractéristique",
   "Quality_Status_Draft": "Brouillon",
   "Quality_Status_InProgress": "En cours",
   "Quality_Status_Completed": "Complété",
@@ -10,7 +12,17 @@
   "Quality_NewControlEntry": "Nouveau relevé de contrôle",
   "Quality_ControlPlan": "Plan de contrôle",
   "Quality_MarkAsCompleted": "Marquer comme terminé",
+  "Quality_FillingMethod": "Méthode de remplissage",
+  "Quality_FillingMethod_Sample": "Par échantillon",
+  "Quality_FillingMethod_Characteristic": "Par caractéristique",
+  "Quality_ControlResult_Compliant": "Conforme",
+  "Quality_ControlResult_NotCompliant": "Non conforme",
+  "Quality_ControlResult_NotControlled": "Non contrôlé",
   "Quality_SliceAction_SearchControlEntry": "recherche des relevés de contrôle",
   "Quality_SliceAction_FetchControlEntryById": "récupération du relevé de contrôle par id",
-  "Quality_SliceAction_SearchControlEntrySample": "recherche sur les échantillons du relevé de contôle"
+  "Quality_SliceAction_SearchControlEntrySample": "recherche sur les échantillons du relevé de contôle",
+  "Quality_SliceAction_FetchControlPlan": "récupération de la gamme de contrôle",
+  "Quality_SliceAction_SearchControlEntrySampleLine": "recherche des lignes d'échantillons du relevé de contrôle",
+  "Quality_SliceAction_FetchControlEntrySampleLine": "récupération de la ligne d'échantillon du relevé de contrôle",
+  "Quality_SliceAction_UpdateControlEntry": "mise à jour du relevé de contrôle"
 }

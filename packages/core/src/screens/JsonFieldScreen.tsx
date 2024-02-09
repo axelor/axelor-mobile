@@ -16,15 +16,13 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import React, {useCallback, useEffect, useMemo} from 'react';
-import {useDispatch, useSelector} from 'react-redux';
+import React, {useCallback, useEffect} from 'react';
+import {useDispatch} from 'react-redux';
 import {CustomFieldForm} from '../components';
 import {
   fetchJsonFieldsOfModel,
   fetchObject,
-  updateJsonFieldsObject,
 } from '../features/metaJsonFieldSlice';
-import {mapFormToStudioFields} from '../forms';
 import {headerActionsProvider} from '../header';
 import {useTranslator} from '../i18n';
 
@@ -32,10 +30,6 @@ const JsonFieldScreen = ({route}) => {
   const {model, modelId} = route.params;
   const I18n = useTranslator();
   const dispatch = useDispatch();
-
-  const {fields: _fields, object} = useSelector(
-    (state: any) => state.metaJsonField,
-  );
 
   const refresh = useCallback(() => {
     dispatch((fetchJsonFieldsOfModel as any)({modelName: model}));
@@ -61,33 +55,17 @@ const JsonFieldScreen = ({route}) => {
     });
   }, [I18n, refresh]);
 
-  const additionalActions = useMemo(
-    () => [
-      {
-        key: 'validateChanges',
-        type: 'custom',
-        needRequiredFields: true,
-        needValidation: true,
-        customAction: ({objectState}) => {
-          dispatch(
-            (updateJsonFieldsObject as any)({
-              modelName: model,
-              id: object.id,
-              version: object.version,
-              values: mapFormToStudioFields(_fields, objectState),
-            }),
-          );
-        },
-      },
-    ],
-    [dispatch, model, object, _fields],
-  );
-
   return (
     <CustomFieldForm
       model={model}
       modelId={modelId}
-      additionalActions={additionalActions}
+      additionalActions={[
+        {
+          key: 'validateChanges',
+          type: 'custom',
+          useDefaultAction: true,
+        },
+      ]}
     />
   );
 };

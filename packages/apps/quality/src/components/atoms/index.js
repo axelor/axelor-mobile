@@ -17,4 +17,7 @@
  */
 
 export {default as ControlEntryCard} from './ControlEntryCard/ControlEntryCard';
+export {default as ControlEntryHeader} from './ControlEntryHeader/ControlEntryHeader';
 export {default as ControlEntrySampleCard} from './ControlEntrySampleCard/ControlEntrySampleCard';
+export {default as ControlEntrySampleLineHeader} from './ControlEntrySampleLineHeader/ControlEntrySampleLineHeader';
+export {default as NavigationButton} from './NavigationButton/NavigationButton';

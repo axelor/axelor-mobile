@@ -16,13 +16,12 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import {SortFields} from '@axelor/aos-mobile-core';
+import {createStandardFetch} from '@axelor/aos-mobile-core';
 
-export const quality_sortFields: SortFields = {
-  quality_controlEntry: ['entryDateTime', 'createdOn'],
-  quality_controlEntrySample: ['entrySampleNbr'],
-  quality_controlEntrySampleLine: [
-    'controlEntrySample.id',
-    'controlPlanLine.id',
-  ],
-};
+export async function fetchControlPlanById({id}) {
+  return createStandardFetch({
+    model: 'com.axelor.apps.quality.db.ControlPlan',
+    id,
+    fieldKey: 'quality_controlPlan',
+  });
+}

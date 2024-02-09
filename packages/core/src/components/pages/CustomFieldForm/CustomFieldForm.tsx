@@ -23,21 +23,30 @@ import {useDispatch, useSelector} from 'react-redux';
 import {
   fetchJsonFieldsOfModel,
   fetchObject,
+  updateJsonFieldsObject,
 } from '../../../features/metaJsonFieldSlice';
 import {
+  Action,
   formConfigsProvider,
   getAttrsValue,
+  mapFormToStudioFields,
   mapStudioFields,
   mapStudioFieldsWithFormula,
 } from '../../../forms';
 
 const FORM_KEY = 'customField-form';
 
+interface JsonAction extends Action {
+  useDefaultAction?: boolean;
+  showToast?: boolean;
+  postActions?: (res: any) => void;
+}
+
 interface CustomFieldFormProps {
   model: string;
   modelId: string;
   fieldType?: string;
-  additionalActions?: any[];
+  additionalActions?: JsonAction[];
 }
 
 const CustomFieldForm = ({
@@ -77,13 +86,39 @@ const CustomFieldForm = ({
     );
   }, [fields, panels]);
 
-  const attrsValues = useMemo(() => {
-    getAttrsValue(object);
-  }, [object]);
+  const attrsValues = useMemo(() => getAttrsValue(object), [object]);
+
+  const _additionalActions: Action[] = useMemo(
+    () =>
+      (additionalActions ?? []).map(_action => {
+        if (_action?.useDefaultAction) {
+          return {
+            ..._action,
+            customAction: ({objectState}) => {
+              dispatch(
+                (updateJsonFieldsObject as any)({
+                  modelName: model,
+                  id: object.id,
+                  version: object.version,
+                  values: mapFormToStudioFields(_fields, objectState),
+                  showToast:
+                    _action.showToast != null ? _action.showToast : true,
+                }),
+              ).then(res => {
+                _action.postActions?.(res?.payload);
+              });
+            },
+          };
+        } else {
+          return _action;
+        }
+      }),
+    [_fields, additionalActions, dispatch, model, object?.id, object?.version],
+  );
 
   return (
     <FormView
-      actions={[...additionalActions]}
+      actions={_additionalActions}
       formKey={FORM_KEY}
       defaultValue={attrsValues == null ? {...defaults} : attrsValues}
     />
