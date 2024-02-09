@@ -30,8 +30,7 @@ import {
 } from '../features/controlEntrySampleLineSlice';
 import {fetchControlPlanById} from '../features/controlPlanSlice';
 import {ControlEntry} from '../types';
-import {checkComformity} from '../api/control-entry-sample-line-api';
-import {getProgressValuesApi} from '../api';
+import {checkComformity, getProgressValuesApi} from '../api';
 
 const ControlEntryFormScreen = ({route}) => {
   const {selectedMode} = route.params;

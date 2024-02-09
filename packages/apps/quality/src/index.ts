@@ -33,10 +33,10 @@ export const QualityModule: Module = {
   title: 'Quality_Quality',
   subtitle: 'Quality_Quality',
   icon: 'clipboard-check',
-  /*compatibilityAOS: {
+  compatibilityAOS: {
     moduleName: 'axelor-quality',
     downToVersion: '8.0.0',
-  },*/
+  },
   translations: {
     en: enTranslations,
     fr: frTranslations,
