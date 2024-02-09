@@ -34,7 +34,6 @@ import {
 import {DatesInterval} from '../../atoms';
 import {convertPeriodTimesheet} from '../../../api/timesheet-api';
 import {Timesheet} from '../../../types';
-import {getDurationUnit} from '../../../utils';
 
 interface TimesheetHeaderProps {
   timesheet: any;
@@ -46,9 +45,12 @@ const TimesheetHeader = ({timesheet, statusSelect}: TimesheetHeaderProps) => {
   const I18n = useTranslator();
   const navigation = useNavigation();
 
-  const [convertedPeriod, setConvertedPeriod] = useState(0);
-
   const {mobileSettings} = useSelector((state: any) => state.appConfig);
+
+  const [convertedPeriod, setConvertedPeriod] = useState<{
+    value: number;
+    title: string;
+  }>(null);
 
   const isAddButton = useMemo(
     () =>
@@ -58,9 +60,18 @@ const TimesheetHeader = ({timesheet, statusSelect}: TimesheetHeaderProps) => {
   );
 
   useEffect(() => {
-    convertPeriodTimesheet({timesheetId: timesheet.id}).then(res =>
-      setConvertedPeriod(res.data.object.periodTotalConvert),
-    );
+    convertPeriodTimesheet({timesheetId: timesheet.id})
+      .then(res => {
+        if (res?.data?.object != null) {
+          setConvertedPeriod({
+            value: res.data.object.periodTotalConvert,
+            title: res.data.object.periodTotalConvertTitle,
+          });
+        } else {
+          setConvertedPeriod(null);
+        }
+      })
+      .catch(() => setConvertedPeriod(null));
   }, [timesheet.id]);
 
   return (
@@ -82,8 +93,10 @@ const TimesheetHeader = ({timesheet, statusSelect}: TimesheetHeaderProps) => {
             {I18n.t('User_Company')} : {timesheet.company.name}
           </Text>
           <Text>
-            {I18n.t('Hr_TotalDuration')} : {convertedPeriod}
-            {getDurationUnit(timesheet.timeLoggingPreferenceSelect, I18n)}
+            {I18n.t('Hr_TotalDuration')} :
+            {convertedPeriod != null
+              ? ` ${convertedPeriod.value} ${convertedPeriod.title}`
+              : ' -'}
           </Text>
         </View>
         {isAddButton && (

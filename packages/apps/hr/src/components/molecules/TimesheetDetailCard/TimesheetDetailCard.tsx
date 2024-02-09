@@ -45,12 +45,12 @@ const TimesheetDetailCard = ({
 }: TimesheetDetailCardProps) => {
   const Colors = useThemeColor();
 
-  const [convertedPeriod, setConvertedPeriod] = useState(0);
-
   const {timesheet: timesheetConfig} = useSelector(
     (state: any) => state.appConfig,
   );
   const {user} = useSelector((state: any) => state.user);
+
+  const [convertedPeriod, setConvertedPeriod] = useState<number>(0);
 
   const _statusSelect = useMemo(() => {
     return Timesheet.getStatus(timesheetConfig.needValidation, item);
@@ -86,9 +86,15 @@ const TimesheetDetailCard = ({
   }, [isActions, _statusSelect, userCanValidate]);
 
   useEffect(() => {
-    convertPeriodTimesheet({timesheetId: item.id}).then(res =>
-      setConvertedPeriod(res.data.object.periodTotalConvert),
-    );
+    convertPeriodTimesheet({timesheetId: item.id})
+      .then(res => {
+        if (res?.data?.object != null) {
+          setConvertedPeriod(res.data.object.periodTotalConvert);
+        } else {
+          setConvertedPeriod(0);
+        }
+      })
+      .catch(() => setConvertedPeriod(0));
   }, [item.id]);
 
   return (
