@@ -36,12 +36,14 @@ interface TimesheetDetailsButtonsProps {
   timesheet: any;
   statusSelect: number;
   isEmpty: boolean;
+  isManualCreation?: boolean;
 }
 
 const TimesheetDetailsButtons = ({
   timesheet,
   statusSelect,
   isEmpty,
+  isManualCreation = false,
 }: TimesheetDetailsButtonsProps) => {
   const Colors = useThemeColor();
   const I18n = useTranslator();
@@ -77,13 +79,15 @@ const TimesheetDetailsButtons = ({
     return (
       <View style={styles.container}>
         <Button
-          title={I18n.t(isEmpty ? 'Hr_Delete' : 'Base_Cancel')}
+          title={I18n.t(
+            isEmpty && !isManualCreation ? 'Hr_Delete' : 'Base_Cancel',
+          )}
           onPress={() => {
             isEmpty ? deleteAPI() : updateStatusAPI('cancel');
           }}
           width="45%"
           color={Colors.errorColor}
-          iconName={isEmpty ? 'trash3-fill' : 'x-lg'}
+          iconName={isEmpty && !isManualCreation ? 'trash3-fill' : 'x-lg'}
         />
         <Button
           title={I18n.t('Hr_Send')}

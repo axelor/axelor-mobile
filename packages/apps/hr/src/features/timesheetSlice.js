@@ -94,13 +94,11 @@ export const createTimesheet = createAsyncThunk(
       action: 'Hr_SliceAction_CreateTimesheet',
       getState,
       responseOptions: {isArrayResponse: false},
-    })
-      .then(() => {
-        dispatch(fetchTimesheet({userId: data.userId}));
-      })
-      .then(() => {
-        dispatch(fetchTimer({userId: data.userId}));
-      });
+    }).then(res => {
+      dispatch(fetchTimesheet({userId: data.userId}));
+      dispatch(fetchTimer({userId: data.userId}));
+      return res;
+    });
   },
 );
 
