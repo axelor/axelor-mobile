@@ -126,7 +126,10 @@ export const updateTimesheetStatus = createAsyncThunk(
         dispatch(fetchTimesheetById({timesheetId: data.timesheetId}));
       })
       .then(() => {
-        dispatch(fetchTimesheet({userId: data.userId}));
+        dispatch(fetchTimesheet({userId: data.user.id}));
+      })
+      .then(() => {
+        dispatch(fetchTimesheetToValidate({user: data.user}));
       });
   },
 );
