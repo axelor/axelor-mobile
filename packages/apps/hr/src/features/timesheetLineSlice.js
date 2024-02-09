@@ -27,6 +27,7 @@ import {
   fetchTimesheetLine as _fetchTimesheetLine,
   updateTimesheetLine as _updateTimesheetLine,
 } from '../api/timesheet-line-api';
+import {fetchTimesheetById} from './timesheetSlice';
 
 export const fetchTimesheetLine = createAsyncThunk(
   'timesheetLine/fetchTimesheetLine',
@@ -52,7 +53,7 @@ export const createTimesheetLine = createAsyncThunk(
       responseOptions: {isArrayResponse: false, showToast: true},
     }).then(() =>
       dispatch(
-        fetchTimesheetLine({timesheetId: data.timesheetLine.timesheetId}),
+        fetchTimesheetById({timesheetId: data.timesheetLine.timesheetId}),
       ),
     );
   },
@@ -68,7 +69,7 @@ export const updateTimesheetLine = createAsyncThunk(
       getState,
       responseOptions: {isArrayResponse: false, showToast: true},
     }).then(() =>
-      dispatch(fetchTimesheetLine({timesheetId: data.timesheetId})),
+      dispatch(fetchTimesheetById({timesheetId: data.timesheetId})),
     );
   },
 );
@@ -83,7 +84,7 @@ export const deleteTimesheetLine = createAsyncThunk(
       getState,
       responseOptions: {isArrayResponse: false, showToast: true},
     }).then(() => {
-      dispatch(fetchTimesheetLine({timesheetId: data.timesheetId}));
+      dispatch(fetchTimesheetById({timesheetId: data.timesheetId}));
     });
   },
 );
