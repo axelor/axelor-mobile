@@ -28,13 +28,16 @@ export const DashboardScreen = ({dashboardId}) => {
   const I18n = useTranslator();
 
   const [dashboard, setDashboard] = useState<any>({});
+  const [loading, setLoading] = useState<boolean>(false);
 
   const refresh = useCallback(() => {
+    setLoading(true);
     fetchDashboard({id: dashboardId})
       .then(response => {
         setDashboard({...(response?.data?.object ?? {}), id: dashboardId});
       })
-      .catch(() => setDashboard({}));
+      .catch(() => setDashboard({}))
+      .finally(() => setLoading(false));
   }, [dashboardId]);
 
   useEffect(() => {
@@ -78,14 +81,14 @@ export const DashboardScreen = ({dashboardId}) => {
     }));
   }, [dashboard]);
 
+  if (loading) {
+    return <ActivityIndicator size="large" />;
+  }
+
   if (!Array.isArray(dashboardData) || dashboardData.length === 0) {
     return (
       <WarningCard errorMessage={I18n.t('Base_Dashboard_Misconfigured')} />
     );
-  }
-
-  if (dashboard?.id !== dashboardId) {
-    return <ActivityIndicator size="large" />;
   }
 
   return <Dashboard lineList={dashboardData} />;
