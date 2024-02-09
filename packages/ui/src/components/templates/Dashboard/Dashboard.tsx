@@ -109,16 +109,20 @@ const Dashboard = ({style, lineList}: DashboardProps) => {
   return (
     <ScrollView style={[styles.container, style]}>
       {lineList?.map((line, indexLine) => {
-        const nbGraphInLine = Math.min(
-          line.graphList?.length,
-          MAX_GRAPH_PER_LINE,
+        const validGraphs = line.graphList.filter(
+          graph => graph.dataList?.[0]?.length > 0,
         );
+        const nbGraphInLine = Math.min(validGraphs.length, MAX_GRAPH_PER_LINE);
+
         const limitedGraphList = line.graphList?.slice(0, MAX_GRAPH_PER_LINE);
 
         return (
           <View style={styles.lineContainer} key={indexLine}>
             {limitedGraphList?.map((graph, indexGraph) => {
-              return renderChart(graph, indexGraph, nbGraphInLine);
+              if (graph.dataList?.[0]?.length > 0) {
+                return renderChart(graph, indexGraph, nbGraphInLine);
+              }
+              return null;
             })}
           </View>
         );
