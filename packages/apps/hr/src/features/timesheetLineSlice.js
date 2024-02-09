@@ -74,7 +74,7 @@ export const updateTimesheetLine = createAsyncThunk(
 );
 
 export const deleteTimesheetLine = createAsyncThunk(
-  'timesheet/deleteTimesheet',
+  'timesheet/deleteTimesheetLine',
   async function (data = {}, {getState, dispatch}) {
     return handlerApiCall({
       fetchFunction: _deleteTimesheetLine,
