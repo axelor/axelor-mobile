@@ -56,7 +56,7 @@ const createControlEntryCriteria = (searchValue, isInspector, userId, date) => {
 export async function searchControlEntry({
   searchValue = null,
   page = 0,
-  isInspector,
+  isInspector = false,
   userId,
   date,
 }) {

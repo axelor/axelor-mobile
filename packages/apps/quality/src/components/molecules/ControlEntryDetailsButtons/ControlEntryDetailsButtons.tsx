@@ -26,6 +26,7 @@ const ControlEntryDetailsButtons = () => {
   const dispatch = useDispatch();
   const I18n = useTranslator();
 
+  const {userId} = useSelector((state: any) => state.auth);
   const {controlEntry} = useSelector((state: any) => state.controlEntry);
 
   return (
@@ -39,6 +40,7 @@ const ControlEntryDetailsButtons = () => {
               statusSelect: ControlEntry.status.Completed,
             },
             controlEntryId: controlEntry.id,
+            userId: userId,
           }),
         );
       }}
