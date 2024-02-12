@@ -10,6 +10,7 @@
   "Quality_Status_Completed": "Completed",
   "Quality_Status_Canceled": "Canceled",
   "Quality_NewControlEntry": "new control entry",
+  "Quality_RefreshControlEntry": "refresh control entry",
   "Quality_ControlPlan": "Control plan",
   "Quality_MarkAsCompleted": "Mark as completed",
   "Quality_FillingMethod": "Filling method",

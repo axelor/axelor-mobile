@@ -19,6 +19,7 @@
 import React, {useEffect, useState} from 'react';
 import {StyleSheet, View} from 'react-native';
 import {Button, ProgressBar} from '@axelor/aos-mobile-ui';
+import {useSelector} from '@axelor/aos-mobile-core';
 import {ControlEntry} from '../../../types';
 import {searchControlEntrySampleApi} from '../../../api';
 import {ControlEntryHeader} from '../../atoms';
@@ -34,24 +35,28 @@ const ControlEntryDetailsHeader = ({
   const [numberSampleFilled, setNumberSampleFilled] = useState<number>(0);
   const [showAlert, setShowAlert] = useState(false);
 
-  useEffect(() => {
-    searchControlEntrySampleApi({controlEntryId: controlEntryId})
-      .then(response => {
-        if (Array.isArray(response?.data?.data)) {
-          const controlEntrySampleList: any[] = response.data.data;
-          const total = controlEntrySampleList.length;
-          const notControlled = controlEntrySampleList.filter(
-            sample =>
-              sample.resultSelect === ControlEntry.sampleResult.NotControlled,
-          ).length;
+  const {controlEntry} = useSelector((state: any) => state.controlEntry);
 
-          setNumberSampleFilled(100 - (notControlled / total) * 100);
-        } else {
-          setNumberSampleFilled(0);
-        }
-      })
-      .catch(() => setNumberSampleFilled(0));
-  }, [controlEntryId]);
+  useEffect(() => {
+    if (controlEntry?.id != null) {
+      searchControlEntrySampleApi({controlEntryId: controlEntry?.id})
+        .then(response => {
+          if (Array.isArray(response?.data?.data)) {
+            const controlEntrySampleList: any[] = response.data.data;
+            const total = controlEntrySampleList.length;
+            const notControlled = controlEntrySampleList.filter(
+              sample =>
+                sample.resultSelect === ControlEntry.sampleResult.NotControlled,
+            ).length;
+
+            setNumberSampleFilled(100 - (notControlled / total) * 100);
+          } else {
+            setNumberSampleFilled(0);
+          }
+        })
+        .catch(() => setNumberSampleFilled(0));
+    }
+  }, [controlEntry]);
 
   return (
     <View style={styles.container}>
