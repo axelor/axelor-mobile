@@ -18,6 +18,7 @@
 
 import React, {useMemo} from 'react';
 import {StyleSheet, View} from 'react-native';
+import {useSelector} from '@axelor/aos-mobile-core';
 import {Button, useThemeColor} from '@axelor/aos-mobile-ui';
 import {ControlEntry} from '../../../types';
 import {NavigationButton} from '../../atoms';
@@ -45,6 +46,15 @@ const ControlEntryFormButtons = ({
 }: ControlEntryFormButtonsProps) => {
   const Colors = useThemeColor();
 
+  const {controlEntry} = useSelector((state: any) => state.controlEntry);
+
+  const isConformityButton = useMemo(
+    () =>
+      controlEntry.statusSelect === ControlEntry.status.Draft ||
+      controlEntry.statusSelect === ControlEntry.status.InProgress,
+    [controlEntry.statusSelect],
+  );
+
   const {categoryIcon, subCategoryIcon} = useMemo(
     () => ControlEntry.getMethodIcons(mode),
     [mode],
@@ -64,12 +74,14 @@ const ControlEntryFormButtons = ({
         icon={isLastItem ? categoryIcon : subCategoryIcon}
         disabled={!canNext}
       />
-      <Button
-        style={styles.lastButton}
-        onPress={onPress}
-        iconName="check-lg"
-        color={Colors.successColor}
-      />
+      {isConformityButton && (
+        <Button
+          style={styles.lastButton}
+          onPress={onPress}
+          iconName="check-lg"
+          color={Colors.successColor}
+        />
+      )}
     </View>
   );
 };
