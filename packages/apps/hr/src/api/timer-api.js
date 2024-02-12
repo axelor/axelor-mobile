@@ -16,6 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 import {
+  axiosApiProvider,
   createStandardFetch,
   createStandardSearch,
   getEndOfDay,
@@ -116,5 +117,35 @@ export async function fetchActiveTimer({userId}) {
     sortKey: 'hr_timer',
     numberElementsByPage: 1,
     page: 0,
+  });
+}
+
+export async function createTimer({timer}) {
+  return axiosApiProvider.post({
+    url: 'ws/aos/timesheet/timer/',
+    data: timer,
+  });
+}
+
+export async function updateTimer({timer}) {
+  return axiosApiProvider.put({
+    url: `ws/aos/timesheet/timer/update/${timer.id}`,
+    data: timer,
+  });
+}
+
+export async function updateTimerStatus({timerId, version, toStatus}) {
+  return axiosApiProvider.put({
+    url: `ws/aos/timesheet/timer/status/${timerId}`,
+    data: {
+      version: version,
+      toStatus: toStatus,
+    },
+  });
+}
+
+export async function deleteTimer({timerId}) {
+  return axiosApiProvider.delete({
+    url: `ws/rest/com.axelor.apps.hr.db.TSTimer/${timerId}`,
   });
 }
