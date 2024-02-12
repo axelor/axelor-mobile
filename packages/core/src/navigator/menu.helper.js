@@ -175,6 +175,7 @@ export function getDefaultMenuKey(module) {
 
   const defaultMenuEntry = Object.entries(menus)
     .map(([key, menu]) => ({...menu, key}))
+    .filter(menu => !isMenuIncompatible(menu.compatibilityAOS))
     .find(menu => menu.isDefault === true);
 
   return defaultMenuEntry ? defaultMenuEntry.key : null;
