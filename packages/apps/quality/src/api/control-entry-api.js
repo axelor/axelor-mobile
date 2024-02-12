@@ -58,7 +58,7 @@ export async function searchControlEntry({
   page = 0,
   isInspector = false,
   userId,
-  date,
+  date = null,
 }) {
   return createStandardSearch({
     model: 'com.axelor.apps.quality.db.ControlEntry',
