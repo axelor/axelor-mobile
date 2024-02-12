@@ -33,9 +33,9 @@ class TimeType {
       case this.statusSelect.InProgress:
         return Colors.progressColor;
       case this.statusSelect.Paused:
-        return Colors.infoColor;
+        return Colors.cautionColor;
       case this.statusSelect.Completed:
-        return Colors.primaryColor;
+        return Colors.successColor;
       default:
         console.warn(
           `Status provided with value ${status} is not supported by TimesheetLine`,

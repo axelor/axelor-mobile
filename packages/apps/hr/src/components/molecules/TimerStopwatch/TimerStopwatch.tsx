@@ -18,7 +18,14 @@
 
 import React, {useCallback, useEffect, useState} from 'react';
 import {StyleSheet} from 'react-native';
-import {calculateDiff, useTranslator, Stopwatch} from '@axelor/aos-mobile-core';
+import {
+  calculateDiff,
+  Stopwatch,
+  useDispatch,
+  useSelector,
+  useTranslator,
+} from '@axelor/aos-mobile-core';
+import {createTimer, updateTimerStatus} from '../../../features/timerSlice';
 
 const DEFAULT_TIME = 0;
 const TIMER_STATUS = {
@@ -30,9 +37,12 @@ const TIMER_STATUS = {
 const DEFAULT_STATUS = TIMER_STATUS.Draft;
 
 interface TimerValueProps {
+  timerId: number;
+  version: number;
   duration: number;
   timerStartDateT: string;
   status: number;
+  onCreation: () => void;
 }
 
 interface TimerStopwatchProps {
@@ -47,9 +57,41 @@ const TimerStopwatch = ({
   objectState,
 }: TimerStopwatchProps) => {
   const I18n = useTranslator();
+  const dispatch = useDispatch();
 
   const [time, setTime] = useState(DEFAULT_TIME);
   const [status, setStatus] = useState(DEFAULT_STATUS);
+
+  const {userId} = useSelector((state: any) => state.auth);
+
+  const createTimerAPI = useCallback(() => {
+    const _timer = {
+      startDateTime: objectState?.startDateTime,
+      projectId: objectState?.project?.id,
+      projectTaskId: objectState?.projectTask?.id,
+      productId: objectState?.product?.id,
+      duration: objectState?.updatedDuration,
+      comments: objectState?.comments,
+    };
+
+    (dispatch as any)(
+      (createTimer as any)({userId: userId, timer: _timer}),
+    ).then(() => defaultValue.onCreation());
+  }, [defaultValue, dispatch, objectState, userId]);
+
+  const updateTimerStatusAPI = useCallback(
+    (toStatus: string) => {
+      dispatch(
+        (updateTimerStatus as any)({
+          userId: userId,
+          timerId: defaultValue?.timerId,
+          version: defaultValue?.version,
+          toStatus: toStatus,
+        }),
+      );
+    },
+    [defaultValue, dispatch, userId],
+  );
 
   const getTimerState = useCallback(() => {
     const _status = defaultValue?.status ?? DEFAULT_STATUS;
@@ -73,11 +115,6 @@ const TimerStopwatch = ({
     getTimerState();
   }, [getTimerState]);
 
-  useEffect(() => {
-    // TODO: remove this after doing the API requests
-    console.log(objectState);
-  }, [objectState]);
-
   return (
     <Stopwatch
       style={[styles.container, style]}
@@ -85,9 +122,14 @@ const TimerStopwatch = ({
       status={status}
       getTimerState={getTimerState}
       timerFormat={I18n.t('Hr_TimerFormat')}
-      onPlay={() => console.log('Play button pressed.')}
-      onPause={() => console.log('Pause button pressed.')}
-      onStop={() => console.log('Stop button pressed.')}
+      onPlay={() =>
+        defaultValue?.timerId ? updateTimerStatusAPI('start') : createTimerAPI()
+      }
+      disablePlay={!objectState?.product}
+      onPause={() => updateTimerStatusAPI('pause')}
+      onStop={() => updateTimerStatusAPI('stop')}
+      onCancel={() => updateTimerStatusAPI('reset')}
+      useObjectStatus
     />
   );
 };
