@@ -38,7 +38,7 @@ export const searchControlEntrySampleLineOfControlEntry = createAsyncThunk(
 
 export const fetchControlEntrySampleLine = createAsyncThunk(
   'controlEntrySampleLine/fetchControlEntrySampleLine',
-  async function (data, {getState, dispatch}) {
+  async function (data, {getState}) {
     return handlerApiCall({
       fetchFunction: _fetchControlEntrySampleLine,
       data,

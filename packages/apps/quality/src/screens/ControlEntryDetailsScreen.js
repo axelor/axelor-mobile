@@ -60,7 +60,17 @@ const ControlEntryDetailsScreen = ({route}) => {
   );
 
   useEffect(() => {
-    dispatch(fetchControlEntryById({controlEntryId: controlEntryId}));
+    let isMounted = true;
+
+    dispatch(fetchControlEntryById({controlEntryId: controlEntryId})).then(
+      () => {
+        if (isMounted) {
+        }
+      },
+    );
+    return () => {
+      isMounted = false;
+    };
   }, [controlEntryId, dispatch]);
 
   if (controlEntry?.id !== controlEntryId) {
