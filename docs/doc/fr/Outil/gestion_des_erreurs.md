@@ -6,7 +6,7 @@ sidebar_class_name: icon gestions des erreurs
 
 # Gestion des erreurs
 
-La lib raire **_ERROR_** contient le composant _ErrorBoundary_ qui permet d’afficher un écran de secours en cas d’erreur technique lors de l’exécution de l’application mobile. Ce composant détecte les erreurs et envoie un traceback sur l’ERP web.
+La librairie **_ERROR_** contient le composant _ErrorBoundary_ qui permet d’afficher un écran de secours en cas d’erreur technique lors de l’exécution de l’application mobile. Ce composant détecte les erreurs et envoie un traceback sur l’ERP web.
 
 Afin de réaliser ces actions, le composant a besoin de plusieurs attributs :
 

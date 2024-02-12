@@ -159,7 +159,7 @@ Un field est défini à travers plusieurs attribut :
   ```
 
 :::caution
-Il faut faire attention lors de l’utilisation des composants custom avec l’attribut **hideIf**. En effet, l’affichage étant conditionnel, il ne faut pas que le composant utilise des hooks afin d’éviter les erreurs de rendu dus à un nombre de hooks différents entre les différents renders.
+Il faut faire attention lors de l’utilisation des composants custom avec l’attribut hideIf. En effet, l’affichage étant conditionnel, il ne faut pas que le composant utilise des hooks afin d’éviter les erreurs de rendu dus à un nombre de hooks différents entre les différents renders.
 
 L’astuce est donc de créer un composant auxiliaire qui va gérer l’ensemble des hooks puis de créer un composant au-dessus qui transmet seulement les valeurs au composant auxiliaire.
 
@@ -268,6 +268,7 @@ Ce composant prend en argument trois éléments :
     customAction?: (_options: ActionProps) => void;
     needValidation?: boolean;
     needRequiredFields?: boolean;
+    customComponent?: ReactElement<any>;
   }
 
   interface ActionProps {
@@ -292,3 +293,4 @@ Ce composant prend en argument trois éléments :
   - _customAction_ : action personnalisée à effectuer au clique.
   - _needValidation_ : permet de demander au formulaire de vérifier si les valeurs remplies par l’utilisateur répondent aux contraintes avant d’effectuer l’action. Si le formulaire est correcte alors l’action est effectuée. Dans le cas contraire, l’utilisateur obtient un récapitulatif des éléments à corriger.
   - _needRequiredFields_ : empêche l’utilisateur de cliquer sur le bouton si certains champs requis ne sont pas remplis.
+  - _customComponent_ : composant personnalisé pour l'affichage du bouton. L'attribut onPress du composant sera ré-écrit avec l'action qui lui est associée.

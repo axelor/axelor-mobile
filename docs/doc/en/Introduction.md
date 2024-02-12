@@ -20,7 +20,8 @@ This new mobile application currently includes the following modules with differ
 - Manufacturing (AOS v6.4+)
 - CRM (AOS v7.1+)
 - Helpdesk (AOS v7.1+)
-- HR (Expense) (AOS v7.2+)
+- HR : Expense (AOS v7.2+) & Timesheet (AOS v8.0+)
+- Quality (AOS v8.0+)
 
 The three main priorities in the development of this mobile application were :
 
