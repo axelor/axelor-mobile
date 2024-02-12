@@ -22,15 +22,23 @@ import {fetchOptionsOfHeaderKey, mergeActions} from './utils';
 
 class HeaderActionsProvider {
   private headerActions: HeaderActions;
-  private refreshCallBack: Function;
+  private refreshCallBack: Function[];
 
   constructor() {
     this.headerActions = {};
-    this.refreshCallBack = () => {};
+    this.refreshCallBack = [];
   }
 
   register(callBack) {
-    this.refreshCallBack = callBack;
+    this.refreshCallBack.push(callBack);
+  }
+
+  unregister(callBack) {
+    this.refreshCallBack = this.refreshCallBack.filter(_f => _f !== callBack);
+  }
+
+  private updateState(key: string, options: HeaderOptions) {
+    this.refreshCallBack.forEach(_f => _f(key, options));
   }
 
   registerModel(key: string, options: HeaderOptions) {
@@ -45,7 +53,7 @@ class HeaderActionsProvider {
       };
     }
 
-    this.refreshCallBack(key, this.headerActions[key]);
+    this.updateState(key, this.headerActions[key]);
   }
 
   getHeaderOptions(key: string): HeaderOptions {
@@ -74,6 +82,10 @@ export const useHeaderActions = (): {headers: HeaderActions} => {
 
   useEffect(() => {
     headerActionsProvider.register(refreshData);
+
+    return () => {
+      headerActionsProvider.unregister(refreshData);
+    };
   }, [refreshData]);
 
   return useMemo(() => ({headers}), [headers]);
