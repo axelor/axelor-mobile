@@ -47,6 +47,7 @@ interface CustomFieldFormProps {
   modelId: string;
   fieldType?: string;
   additionalActions?: JsonAction[];
+  readonly?: boolean;
 }
 
 const CustomFieldForm = ({
@@ -54,6 +55,7 @@ const CustomFieldForm = ({
   modelId,
   fieldType = null,
   additionalActions = [],
+  readonly = false,
 }: CustomFieldFormProps) => {
   const Colors = useThemeColor();
   const dispatch = useDispatch();
@@ -78,13 +80,13 @@ const CustomFieldForm = ({
     formConfigsProvider.registerForm(
       FORM_KEY,
       {
-        readonlyIf: () => false,
+        readonlyIf: () => readonly,
         fields,
         panels,
       },
       {replaceOld: true},
     );
-  }, [fields, panels]);
+  }, [fields, panels, readonly]);
 
   const attrsValues = useMemo(() => getAttrsValue(object), [object]);
 
