@@ -116,5 +116,5 @@ export default App;
 - Build packages : `yarn build`
 - Install debug android APK : `yarn android`
 - Start Metro for development : `yarn start`
-- Create release APK : `cd example/android && ./gradlew app:assembleRelease`
-- [Create release App bundle](https://reactnative.dev/docs/signed-apk-android#generating-the-release-aab) : `cd example/android && ./gradlew app:bundleRelease`
+- Create release APK : `yarn android:apk`
+- [Create release App bundle](https://reactnative.dev/docs/signed-apk-android#generating-the-release-aab) : `yarn android:bundle`

@@ -46,7 +46,7 @@ useEffect(() => {
 There are already two components that use the camera:
 
 - **UploadFileInput**: allows the user to select an image from the phone's storage or to take a photo. This photo can then be transformed into a MetaFile or remain in base64 format.
-- **CameraPhoto**: offers the possibility of opening the camera at the click of a button, then taking a photo. This photo can be returned as a MetaFile or in base64 format, depending on the component's configuration.
+- **CameraButton**: offers the possibility of opening the camera at the click of a button, then taking a photo. This photo can be returned as a MetaFile or in base64 format, depending on the component's configuration.
 
 ## Recovering information from a scan
 
