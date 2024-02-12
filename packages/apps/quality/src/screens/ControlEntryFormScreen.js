@@ -53,6 +53,13 @@ const ControlEntryFormScreen = ({route}) => {
     bottomProgressBar: 0,
   });
 
+  const isReadonly = useMemo(
+    () =>
+      controlEntry.statusSelect === ControlEntry.status.Completed ||
+      controlEntry.statusSelect === ControlEntry.status.Canceled,
+    [controlEntry.statusSelect],
+  );
+
   useEffect(() => {
     dispatch(fetchControlPlanById({id: controlEntry.controlPlan?.id}));
     dispatch(searchControlEntrySampleLine({controlEntryId: controlEntry.id}));
@@ -254,6 +261,7 @@ const ControlEntryFormScreen = ({route}) => {
               ),
             },
           ]}
+          readonly={isReadonly}
         />
       )}
     </Screen>
