@@ -78,7 +78,7 @@ Les configurations prises en considération sont :
 - **writingStylesConfig**: Permet de venir modifier les thèmes d’écriture en surchargeant la configuration standard.
 - **logoFile**: Permet de personnaliser le logo affiché sur la page de connexion pour les projets clients.
 
-Un example de fichier de configuration est [disponible sur Github](https://github.com/axelor/axelor-mobile/blob/7.0/src/app.config.js).
+Un exemple de fichier de configuration est [disponible sur Github](https://github.com/axelor/axelor-mobile/blob/7.0/src/app.config.js).
 
 ## Démarrer le projet
 
@@ -112,9 +112,9 @@ export default App;
 
 ### Commandes importantes
 
-- Install dependencies : `yarn clean && yarn`
-- Build packages : `yarn build`
-- Install debug android APK : `yarn android`
-- Start Metro for development : `yarn start`
-- Create release APK : `cd example/android && ./gradlew app:assembleRelease`
-- [Create release App bundle](https://reactnative.dev/docs/signed-apk-android#generating-the-release-aab) : `cd example/android && ./gradlew app:bundleRelease`
+- Installer les dépendances : `yarn clean && yarn`
+- Build les packages : `yarn build`
+- Installer l'APK de développement : `yarn android`
+- Démarrer Metro pour le développement : `yarn start`
+- Générer un APK de production : `yarn android:apk`
+- [Générer un app bundle](https://reactnative.dev/docs/signed-apk-android#generating-the-release-aab) : `yarn android:bundle`

@@ -155,7 +155,7 @@ A field is defined by several attributes:
   ```
 
 :::caution
-Care must be taken when using custom components with the **hideIf** attribute. As the display is conditional, the component must not use hooks to avoid rendering errors due to a different number of hooks between different renders.
+Care must be taken when using custom components with the hideIf attribute. As the display is conditional, the component must not use hooks to avoid rendering errors due to a different number of hooks between different renders.
 
 The trick is to create an auxiliary component that will manage all the hooks, then create a component above it that transmits only the values to the auxiliary component.
 
@@ -264,6 +264,7 @@ This component takes three elements as arguments:
     customAction?: (_options: ActionProps) => void;
     needValidation?: boolean;
     needRequiredFields?: boolean;
+    customComponent?: ReactElement<any>;
   }
 
   interface ActionProps {
@@ -288,3 +289,4 @@ This component takes three elements as arguments:
   - _customAction_: custom action to be performed on click.
   - _needValidation_: allows you to ask the form to check whether the values filled in by the user meet the constraints before performing the action. If the form is correct, the action is performed. If not, the user receives a summary of the elements to be corrected.
   - _needRequiredFields_: prevents the user from clicking on the button if certain required fields are not filled in.
+  - _customComponent_ : custom component to display the button. The component's onPress attribute will be rewritten with the associated action.

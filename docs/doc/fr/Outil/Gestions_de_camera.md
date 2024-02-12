@@ -46,7 +46,7 @@ useEffect(() => {
 Il existe déjà deux composants qui utilisent la caméra :
 
 - **UploadFileInput** : offre la possibilité à l’utilisateur de sélectionner une image du stockage du téléphone ou de prendre une photo. Cette photo peut ensuite être transformé en MetaFile ou rester au format base64.
-- **CameraPhoto** : offre la possibilié d’ouvrir la caméra au clique puis de permettre une action sur la prise de photo. Cette photo peut être renvoyée sous forme de MetaFile ou au format base64 en fonction de la configuration donnée au composant.
+- **CameraButton** : offre la possibilié d’ouvrir la caméra au clique puis de permettre une action sur la prise de photo. Cette photo peut être renvoyée sous forme de MetaFile ou au format base64 en fonction de la configuration donnée au composant.
 
 ## Récupération des informations d’un scan
 
