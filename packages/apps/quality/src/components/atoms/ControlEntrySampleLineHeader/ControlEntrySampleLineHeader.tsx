@@ -52,7 +52,9 @@ const ControlEntrySampleLineHeader = ({}) => {
         />
       </View>
       <Text>{`${I18n.t('Quality_Characteristic')} : ${
-        sampleLine.controlPlanLine?.characteristic?.name
+        sampleLine.controlPlanLine?.name != null
+          ? sampleLine.controlPlanLine?.name
+          : sampleLine.controlPlanLine?.characteristic?.name
       }`}</Text>
     </View>
   );
