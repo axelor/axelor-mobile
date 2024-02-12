@@ -17,6 +17,7 @@
  */
 
 import React, {useCallback, useEffect, useMemo, useState} from 'react';
+import {useConfig} from '@axelor/aos-mobile-ui';
 import {
   FormView,
   isEmpty,
@@ -35,19 +36,31 @@ const TimerFormScreen = ({route}) => {
   const idTimerToUpdate = route?.params?.idTimerToUpdate;
   const isFocused = useIsFocused();
   const dispatch = useDispatch();
+  const {setActivityIndicator} = useConfig();
 
   const [creation, setCreation] = useState(isCreation ?? false);
 
   const {user} = useSelector(state => state.user);
-  const {timer} = useSelector(state => state.hr_timer);
+  const {timer, loadingCreation} = useSelector(state => state.hr_timer);
 
   useEffect(() => {
-    if (isFocused && !creation) {
+    if (isFocused && !creation && !loadingCreation) {
       idTimerToUpdate
         ? dispatch(fetchTimerById({timerId: idTimerToUpdate}))
         : dispatch(fetchActiveTimer({userId: user?.id}));
     }
-  }, [creation, dispatch, idTimerToUpdate, isFocused, user?.id]);
+  }, [
+    creation,
+    dispatch,
+    idTimerToUpdate,
+    isFocused,
+    loadingCreation,
+    user?.id,
+  ]);
+
+  useEffect(() => {
+    setActivityIndicator(loadingCreation);
+  }, [loadingCreation, setActivityIndicator]);
 
   const defaultValue = useMemo(() => {
     const DEFAULT = {
@@ -116,7 +129,7 @@ const TimerFormScreen = ({route}) => {
 
   return (
     <FormView
-      defaultValue={defaultValue}
+      defaultValue={loadingCreation ? null : defaultValue}
       actions={[
         {
           key: 'update-timer',

@@ -70,7 +70,7 @@ const TimerStopwatch = ({
       projectId: objectState?.project?.id,
       projectTaskId: objectState?.projectTask?.id,
       productId: objectState?.product?.id,
-      duration: objectState?.duration,
+      duration: objectState?.updatedDuration,
       comments: objectState?.comments,
     };
 

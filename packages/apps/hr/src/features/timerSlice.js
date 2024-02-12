@@ -172,6 +172,7 @@ const initialState = {
   timerDateIntervalList: [],
 
   loadingOneTimer: true,
+  loadingCreation: false,
   timer: {},
 };
 
@@ -191,12 +192,31 @@ const timerSlice = createSlice({
       isListEnd: 'isListEndTimerDateInterval',
       list: 'timerDateIntervalList',
     });
+    builder.addCase(createTimer.pending, state => {
+      state.loadingCreation = true;
+    });
+    builder.addCase(createTimer.rejected, state => {
+      state.loadingCreation = false;
+    });
+    builder.addCase(updateTimerStatus.rejected, state => {
+      if (state.loadingCreation) {
+        state.loadingCreation = false;
+      }
+    });
     builder.addCase(fetchTimerById.pending, state => {
       state.loadingOneTimer = true;
     });
     builder.addCase(fetchTimerById.fulfilled, (state, action) => {
+      if (state.loadingCreation) {
+        state.loadingCreation = false;
+      }
       state.loadingOneTimer = false;
       state.timer = action.payload;
+    });
+    builder.addCase(fetchTimerById.rejected, state => {
+      if (state.loadingCreation) {
+        state.loadingCreation = false;
+      }
     });
   },
 });
