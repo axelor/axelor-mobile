@@ -17,8 +17,13 @@
  */
 
 import React, {useCallback, useEffect} from 'react';
-import {HeaderContainer, Screen, ScrollList} from '@axelor/aos-mobile-ui';
-import {useDispatch, useSelector, useTranslator} from '@axelor/aos-mobile-core';
+import {HeaderContainer, ScrollList} from '@axelor/aos-mobile-ui';
+import {
+  useDispatch,
+  useSelector,
+  useTranslator,
+  FocusScreen,
+} from '@axelor/aos-mobile-core';
 import {
   ControlEntryDetailsButtons,
   ControlEntryDetailsHeader,
@@ -63,7 +68,8 @@ const ControlEntryDetailsScreen = ({route}) => {
   }
 
   return (
-    <Screen
+    <FocusScreen
+      fetcher={fetchControlEntryAPI}
       removeSpaceOnTop
       fixedItems={
         controlEntry.statusSelect === ControlEntry.status.InProgress && (
@@ -98,7 +104,7 @@ const ControlEntryDetailsScreen = ({route}) => {
           />
         )}
       />
-    </Screen>
+    </FocusScreen>
   );
 };
 
