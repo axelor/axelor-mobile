@@ -54,10 +54,14 @@ export {
   updateProject,
 } from './projectSlice';
 export {
+  createTimer,
+  deleteTimer,
   fetchActiveTimer,
   fetchTimer,
   fetchTimerById,
   fetchTimerDateInterval,
+  updateTimer,
+  updateTimerStatus,
 } from './timerSlice';
 export {
   createTimesheetLine,

@@ -22,9 +22,13 @@ import {
   generateInifiniteScrollCases,
 } from '@axelor/aos-mobile-core';
 import {
+  createTimer as _createTimer,
+  deleteTimer as _deleteTimer,
   fetchActiveTimer as _fetchActiveTimer,
   fetchTimer as _fetchTimer,
   fetchTimerById as _fetchTimerById,
+  updateTimer as _updateTimer,
+  updateTimerStatus as _updateTimerStatus,
 } from '../api/timer-api';
 
 export const fetchTimer = createAsyncThunk(
@@ -68,13 +72,90 @@ export const fetchTimerById = createAsyncThunk(
 
 export const fetchActiveTimer = createAsyncThunk(
   'hr_timer/fetchActiveTimer',
-  async function (data, {getState}) {
+  async function (data, {getState, dispatch}) {
     return handlerApiCall({
       fetchFunction: _fetchActiveTimer,
       data,
       action: 'Hr_SliceAction_FetchActiveTimer',
       getState,
       responseOptions: {isArrayResponse: false},
+    }).then(res => {
+      dispatch(fetchTimerById({timerId: res.id}));
+    });
+  },
+);
+
+export const createTimer = createAsyncThunk(
+  'hr_timer/createTimer',
+  async function (data = {}, {getState, dispatch}) {
+    return handlerApiCall({
+      fetchFunction: _createTimer,
+      data,
+      action: 'Hr_SliceAction_CreateTimer',
+      getState,
+      responseOptions: {isArrayResponse: false},
+    }).then(res => {
+      dispatch(
+        updateTimerStatus({
+          userId: data.userId,
+          timerId: res.timerId,
+          version: res.version,
+          toStatus: 'start',
+        }),
+      );
+    });
+  },
+);
+
+export const updateTimer = createAsyncThunk(
+  'hr_timer/updateTimer',
+  async function (data = {}, {getState, dispatch}) {
+    return handlerApiCall({
+      fetchFunction: _updateTimer,
+      data,
+      action: 'Hr_SliceAction_UpdateTimer',
+      getState,
+      responseOptions: {isArrayResponse: false, showToast: true},
+    })
+      .then(() => {
+        dispatch(fetchTimerById({timerId: data.timer.id}));
+      })
+      .then(() => {
+        dispatch(fetchTimer({userId: data.userId, page: 0}));
+      });
+  },
+);
+
+export const updateTimerStatus = createAsyncThunk(
+  'hr_timer/updateTimerStatus',
+  async function (data = {}, {getState, dispatch}) {
+    return handlerApiCall({
+      fetchFunction: _updateTimerStatus,
+      data,
+      action: 'Hr_SliceAction_UpdateTimerStatus',
+      getState,
+      responseOptions: {isArrayResponse: false},
+    })
+      .then(() => {
+        dispatch(fetchTimerById({timerId: data.timerId}));
+      })
+      .then(() => {
+        dispatch(fetchTimer({userId: data.userId, page: 0}));
+      });
+  },
+);
+
+export const deleteTimer = createAsyncThunk(
+  'hr_timer/deleteTimer',
+  async function (data = {}, {getState, dispatch}) {
+    return handlerApiCall({
+      fetchFunction: _deleteTimer,
+      data,
+      action: 'Hr_SliceAction_DeleteTimer',
+      getState,
+      responseOptions: {isArrayResponse: false, showToast: true},
+    }).then(() => {
+      dispatch(fetchTimer({userId: data.userId, page: 0}));
     });
   },
 );
@@ -91,10 +172,8 @@ const initialState = {
   timerDateIntervalList: [],
 
   loadingOneTimer: true,
+  loadingCreation: false,
   timer: {},
-
-  loadingActiveTimer: true,
-  activeTimer: {},
 };
 
 const timerSlice = createSlice({
@@ -113,19 +192,31 @@ const timerSlice = createSlice({
       isListEnd: 'isListEndTimerDateInterval',
       list: 'timerDateIntervalList',
     });
+    builder.addCase(createTimer.pending, state => {
+      state.loadingCreation = true;
+    });
+    builder.addCase(createTimer.rejected, state => {
+      state.loadingCreation = false;
+    });
+    builder.addCase(updateTimerStatus.rejected, state => {
+      if (state.loadingCreation) {
+        state.loadingCreation = false;
+      }
+    });
     builder.addCase(fetchTimerById.pending, state => {
       state.loadingOneTimer = true;
     });
     builder.addCase(fetchTimerById.fulfilled, (state, action) => {
+      if (state.loadingCreation) {
+        state.loadingCreation = false;
+      }
       state.loadingOneTimer = false;
       state.timer = action.payload;
     });
-    builder.addCase(fetchActiveTimer.pending, state => {
-      state.loadingActiveTimer = true;
-    });
-    builder.addCase(fetchActiveTimer.fulfilled, (state, action) => {
-      state.loadingActiveTimer = false;
-      state.activeTimer = action.payload;
+    builder.addCase(fetchTimerById.rejected, state => {
+      if (state.loadingCreation) {
+        state.loadingCreation = false;
+      }
     });
   },
 });
