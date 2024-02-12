@@ -61,25 +61,12 @@ const ControlEntryListScreen = ({navigation}) => {
           isInspector: isInspectorFilter,
           userId: userId,
           date: dateFilter,
+          selectedStatus: selectedStatus,
         }),
       );
     },
-    [dispatch, isInspectorFilter, userId, dateFilter],
+    [dispatch, isInspectorFilter, userId, dateFilter, selectedStatus],
   );
-
-  const filteredList = useMemo(() => {
-    if (!Array.isArray(controlEntryList) || controlEntryList.length === 0) {
-      return [];
-    } else {
-      if (selectedStatus != null) {
-        return controlEntryList?.filter(
-          item => item?.statusSelect === selectedStatus,
-        );
-      } else {
-        return controlEntryList;
-      }
-    }
-  }, [controlEntryList, selectedStatus]);
 
   return (
     <Screen removeSpaceOnTop={true}>
@@ -119,7 +106,7 @@ const ControlEntryListScreen = ({navigation}) => {
       />
       <ScrollList
         loadingList={loadingControlEntryList}
-        data={filteredList}
+        data={controlEntryList}
         renderItem={({item}) => (
           <ControlEntryCard
             sampleCount={item.sampleCount}
