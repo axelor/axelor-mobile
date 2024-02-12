@@ -19,7 +19,6 @@
 import {
   headerActionsProvider,
   useDispatch,
-  useNavigation,
   useSelector,
   useTranslator,
 } from '@axelor/aos-mobile-core';
@@ -28,30 +27,7 @@ import {useThemeColor} from '@axelor/aos-mobile-ui';
 import {fetchControlEntryById} from '../features/controlEntrySlice';
 
 export const useQualityHeaders = () => {
-  useControlEntryListActions();
   useControlEntryDetailsActions();
-};
-
-const useControlEntryListActions = () => {
-  const Colors = useThemeColor();
-  const navigation = useNavigation();
-  const I18n = useTranslator();
-
-  useEffect(() => {
-    headerActionsProvider.registerModel('quality_controlEntry_list', {
-      actions: [
-        {
-          key: 'newControlEntry',
-          order: 10,
-          iconName: 'plus-lg',
-          title: I18n.t('Quality_NewControlEntry'),
-          iconColor: Colors.primaryColor.background,
-          onPress: () => console.log(I18n.t('Quality_NewControlEntry')),
-          showInHeader: true,
-        },
-      ],
-    });
-  }, [Colors, I18n, navigation]);
 };
 
 const useControlEntryDetailsActions = () => {
