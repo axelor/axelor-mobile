@@ -24,7 +24,7 @@ import {
   TimerDeclareButton,
   TimerListAlert,
 } from '../../components';
-import {fetchTimer} from '../../features/timerSlice';
+import {deleteTimer, fetchTimer} from '../../features/timerSlice';
 import {formatSecondsToHours} from '../../utils';
 
 const TimerListScreen = ({navigation}) => {
@@ -64,6 +64,9 @@ const TimerListScreen = ({navigation}) => {
               navigation.navigate('TimerFormScreen', {
                 idTimerToUpdate: item.id,
               })
+            }
+            onDelete={() =>
+              dispatch(deleteTimer({timerId: item.id, userId: userId}))
             }
           />
         )}

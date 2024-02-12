@@ -52,9 +52,13 @@ export {
   searchProjectTask as searchProjectTaskApi,
 } from './project-api';
 export {
+  createTimer as createTimerApi,
+  deleteTimer as deleteTimerApi,
   fetchActiveTimer as fetchActiveTimerApi,
   fetchTimer as fetchTimerApi,
   fetchTimerById as fetchTimerByIdApi,
+  updateTimer as updateTimerApi,
+  updateTimerStatus as updateTimerStatusApi,
 } from './timer-api';
 export {
   addTimerTimesheet as addTimerTimesheetApi,

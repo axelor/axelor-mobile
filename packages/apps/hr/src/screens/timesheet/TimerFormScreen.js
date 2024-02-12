@@ -16,70 +16,133 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import React, {useEffect, useMemo} from 'react';
+import React, {useCallback, useEffect, useMemo, useState} from 'react';
+import {useConfig} from '@axelor/aos-mobile-ui';
 import {
   FormView,
+  isEmpty,
   useDispatch,
   useIsFocused,
   useSelector,
 } from '@axelor/aos-mobile-core';
-import {fetchActiveTimer, fetchTimerById} from '../../features/timerSlice';
+import {
+  fetchActiveTimer,
+  fetchTimerById,
+  updateTimer,
+} from '../../features/timerSlice';
 
 const TimerFormScreen = ({route}) => {
   const isCreation = route?.params?.isCreation;
   const idTimerToUpdate = route?.params?.idTimerToUpdate;
   const isFocused = useIsFocused();
   const dispatch = useDispatch();
+  const {setActivityIndicator} = useConfig();
+
+  const [creation, setCreation] = useState(isCreation ?? false);
 
   const {user} = useSelector(state => state.user);
-  const {activeTimer, timer} = useSelector(state => state.hr_timer);
+  const {timer, loadingCreation} = useSelector(state => state.hr_timer);
 
   useEffect(() => {
-    if (isFocused) {
-      dispatch(fetchActiveTimer({userId: user?.id}));
-      idTimerToUpdate && dispatch(fetchTimerById({timerId: idTimerToUpdate}));
+    if (isFocused && !creation && !loadingCreation) {
+      idTimerToUpdate
+        ? dispatch(fetchTimerById({timerId: idTimerToUpdate}))
+        : dispatch(fetchActiveTimer({userId: user?.id}));
     }
-  }, [dispatch, idTimerToUpdate, isFocused, user?.id]);
+  }, [
+    creation,
+    dispatch,
+    idTimerToUpdate,
+    isFocused,
+    loadingCreation,
+    user?.id,
+  ]);
+
+  useEffect(() => {
+    setActivityIndicator(loadingCreation);
+  }, [loadingCreation, setActivityIndicator]);
 
   const defaultValue = useMemo(() => {
     const DEFAULT = {
       startDateTime: new Date().toISOString(),
       product: user?.employee?.product,
+      stopwatch: {
+        onCreation: () => {
+          setCreation(false);
+        },
+      },
     };
 
-    if (isCreation) {
+    if (creation) {
       return DEFAULT;
     }
 
-    const _timer = idTimerToUpdate ? timer : activeTimer;
-
-    if (_timer != null) {
+    if (!isEmpty(timer)) {
       return {
-        startDateTime: _timer.startDateTime,
-        project: _timer.project,
-        projectTask: _timer.projectTask,
-        product: _timer.product,
-        updatedDuration: _timer.updatedDuration,
-        comments: _timer.comments,
+        startDateTime: timer.startDateTime,
+        project: timer.project,
+        projectTask: timer.projectTask,
+        product: timer.product,
+        updatedDuration: timer.updatedDuration,
+        comments: timer.comments,
         stopwatch: {
-          duration: _timer.duration,
-          timerStartDateT: _timer.timerStartDateT,
-          status: _timer.statusSelect,
+          timerId: timer.id,
+          version: timer.version,
+          duration: timer.duration,
+          timerStartDateT: timer.timerStartDateT,
+          status: timer.statusSelect,
         },
       };
     }
 
     return DEFAULT;
-  }, [
-    activeTimer,
-    idTimerToUpdate,
-    isCreation,
-    timer,
-    user?.employee?.product,
-  ]);
+  }, [creation, timer, user?.employee?.product]);
+
+  const fieldsComparison = objectState => {
+    return (
+      objectState.startDateTime === timer.startDateTime &&
+      objectState.project?.id === timer.project?.id &&
+      objectState.projectTask?.id === timer.projectTask?.id &&
+      objectState.product?.id === timer.product?.id &&
+      objectState.updatedDuration === timer.updatedDuration &&
+      objectState.comments === timer.comments
+    );
+  };
+
+  const updateTimerAPI = useCallback(
+    objectState => {
+      const _timer = {
+        id: timer.id,
+        version: timer.version,
+        startDateTime: objectState.startDateTime,
+        projectId: objectState.project?.id,
+        projectTaskId: objectState.projectTask?.id,
+        productId: objectState.product?.id,
+        duration: objectState.updatedDuration,
+        comments: objectState.comments,
+      };
+
+      dispatch(updateTimer({timer: _timer}));
+    },
+    [dispatch, timer],
+  );
 
   return (
-    <FormView defaultValue={defaultValue} actions={[]} formKey="hr_Timer" />
+    <FormView
+      defaultValue={loadingCreation ? null : defaultValue}
+      actions={[
+        {
+          key: 'update-timer',
+          type: 'update',
+          needValidation: true,
+          needRequiredFields: true,
+          disabledIf: ({objectState}) => fieldsComparison(objectState),
+          hideIf: () => creation || !timer?.id,
+          customAction: ({objectState}) => updateTimerAPI(objectState),
+        },
+      ]}
+      formKey="hr_Timer"
+    />
   );
 };
 
