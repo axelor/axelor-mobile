@@ -19,6 +19,7 @@
 import React, {useEffect, useState} from 'react';
 import {StyleSheet, View} from 'react-native';
 import {Button, ProgressBar} from '@axelor/aos-mobile-ui';
+import {useSelector} from '@axelor/aos-mobile-core';
 import {ControlEntry} from '../../../types';
 import {searchControlEntrySampleApi} from '../../../api';
 import {ControlEntryHeader} from '../../atoms';
@@ -34,8 +35,10 @@ const ControlEntryDetailsHeader = ({
   const [numberSampleFilled, setNumberSampleFilled] = useState<number>(0);
   const [showAlert, setShowAlert] = useState(false);
 
+  const {controlEntry} = useSelector((state: any) => state.controlEntry);
+
   useEffect(() => {
-    searchControlEntrySampleApi({controlEntryId: controlEntryId})
+    searchControlEntrySampleApi({controlEntryId: controlEntry?.id})
       .then(response => {
         if (Array.isArray(response?.data?.data)) {
           const controlEntrySampleList: any[] = response.data.data;
@@ -51,7 +54,7 @@ const ControlEntryDetailsHeader = ({
         }
       })
       .catch(() => setNumberSampleFilled(0));
-  }, [controlEntryId]);
+  }, [controlEntry]);
 
   return (
     <View style={styles.container}>
