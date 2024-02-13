@@ -77,7 +77,7 @@ const FormView = ({
 
   const [object, setObject] = useState(defaultValue);
   const [errors, setErrors] = useState<any[]>();
-  const [isReadonly, setIsReadonly] = useState(false);
+  const [isReadonly, setIsReadonly] = useState(readonlyButton);
 
   const formContent: (DisplayPanel | DisplayField)[] = useMemo(
     () => sortContent(config),
