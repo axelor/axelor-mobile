@@ -162,6 +162,7 @@ class EventType {
           partner: _e.partner?.fullName,
           eventLead: _e.eventLead?.fullName,
           partnerTypeSelect: _e.partner?.partnerTypeSelect,
+          userId: _e.user?.id,
         },
       };
     });
