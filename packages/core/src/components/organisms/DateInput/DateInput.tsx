@@ -34,7 +34,7 @@ import {DatePicker} from '../../molecules';
 import DateInputUtils from './date-input.helper';
 
 interface DateInputProps {
-  title: string;
+  title?: string;
   defaultDate?: Date;
   mode?: 'date' | 'datetime' | 'time';
   nullable?: boolean;
@@ -124,7 +124,7 @@ const DateInput = ({
         Platform.OS === 'ios' ? styles.containerZIndex : null,
         style,
       ]}>
-      <Text style={styles.title}>{title}</Text>
+      {title && <Text style={styles.title}>{title}</Text>}
       <RightIconButton
         onPress={togglePicker}
         icon={
