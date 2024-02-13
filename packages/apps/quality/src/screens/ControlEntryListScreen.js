@@ -17,7 +17,7 @@
  */
 
 import React, {useCallback, useMemo, useState} from 'react';
-import {StyleSheet, View} from 'react-native';
+import {Dimensions, StyleSheet, View} from 'react-native';
 import {
   ChipSelect,
   HeaderContainer,
@@ -97,6 +97,7 @@ const ControlEntryListScreen = ({navigation}) => {
           <ChipSelect
             mode="multi"
             selectionItems={statusListItems}
+            width={Dimensions.get('window').width * 0.25}
             onChangeValue={setSelectedStatus}
           />
         }
@@ -133,11 +134,10 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignSelf: 'center',
-    marginTop: '-5%',
+    alignItems: 'center',
   },
   toggleButton: {
     height: 40,
-    top: '16%',
   },
   dateInput: {
     width: '85%',
