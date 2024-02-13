@@ -10,6 +10,7 @@
   "Quality_Status_Completed": "Complété",
   "Quality_Status_Canceled": "Annulé",
   "Quality_NewControlEntry": "Nouveau relevé de contrôle",
+  "Quality_RefreshControlEntry": "Mettre à jour le relevé de contrôle",
   "Quality_ControlPlan": "Plan de contrôle",
   "Quality_MarkAsCompleted": "Marquer comme terminé",
   "Quality_FillingMethod": "Méthode de remplissage",

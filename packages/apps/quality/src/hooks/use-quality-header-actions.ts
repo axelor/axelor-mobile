@@ -18,11 +18,19 @@
 
 import {
   headerActionsProvider,
+  useDispatch,
   useNavigation,
+  useSelector,
   useTranslator,
 } from '@axelor/aos-mobile-core';
 import {useEffect} from 'react';
 import {useThemeColor} from '@axelor/aos-mobile-ui';
+import {fetchControlEntryById} from '../features/controlEntrySlice';
+
+export const useQualityHeaders = () => {
+  useControlEntryListActions();
+  useControlEntryDetailsActions();
+};
 
 const useControlEntryListActions = () => {
   const Colors = useThemeColor();
@@ -46,6 +54,32 @@ const useControlEntryListActions = () => {
   }, [Colors, I18n, navigation]);
 };
 
-export const useQualityHeaders = () => {
-  useControlEntryListActions();
+const useControlEntryDetailsActions = () => {
+  const Colors = useThemeColor();
+  const I18n = useTranslator();
+  const dispatch = useDispatch();
+
+  const {controlEntry} = useSelector((state: any) => state.controlEntry);
+
+  useEffect(() => {
+    headerActionsProvider.registerModel('quality_controlEntry_details', {
+      actions: [
+        {
+          key: 'refreshControlEntry',
+          order: 10,
+          iconName: 'arrow-repeat',
+          title: I18n.t('Quality_RefreshControlEntry'),
+          iconColor: Colors.primaryColor.background,
+          onPress: () => {
+            dispatch(
+              (fetchControlEntryById as any)({
+                controlEntryId: controlEntry?.id,
+              }),
+            );
+          },
+          showInHeader: true,
+        },
+      ],
+    });
+  }, [Colors, I18n, controlEntry?.id, dispatch]);
 };

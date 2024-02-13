@@ -47,16 +47,16 @@ const ControlEntryDetailsScreen = ({route}) => {
   } = useSelector(state => state.controlEntrySample);
   const {controlEntry} = useSelector(state => state.controlEntry);
 
-  const fetchControlEntryAPI = useCallback(
+  const fetchControlEntrySampleAPI = useCallback(
     (page = 0) => {
       dispatch(
         searchControlEntrySample({
           page: page,
-          controlEntryId: controlEntryId,
+          controlEntryId: controlEntry?.id,
         }),
       );
     },
-    [dispatch, controlEntryId],
+    [dispatch, controlEntry],
   );
 
   useEffect(() => {
@@ -69,7 +69,7 @@ const ControlEntryDetailsScreen = ({route}) => {
 
   return (
     <FocusScreen
-      fetcher={fetchControlEntryAPI}
+      fetcher={fetchControlEntrySampleAPI}
       removeSpaceOnTop
       fixedItems={
         controlEntry.statusSelect === ControlEntry.status.InProgress && (
@@ -92,7 +92,7 @@ const ControlEntryDetailsScreen = ({route}) => {
       <ScrollList
         loadingList={loadingControlEntrySampleList}
         data={controlEntrySampleList}
-        fetchData={fetchControlEntryAPI}
+        fetchData={fetchControlEntrySampleAPI}
         moreLoading={moreLoading}
         isListEnd={isListEnd}
         translator={I18n.t}
