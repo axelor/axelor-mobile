@@ -64,6 +64,7 @@ export const updateControlEntry = createAsyncThunk(
       responseOptions: {isArrayResponse: false},
     }).then(() => {
       dispatch(fetchControlEntryById({controlEntryId: data?.controlEntryId}));
+      dispatch(searchControlEntry({}));
     });
   },
 );

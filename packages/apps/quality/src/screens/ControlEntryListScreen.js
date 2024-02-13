@@ -79,6 +79,7 @@ const ControlEntryListScreen = ({navigation}) => {
             <DateInput
               style={styles.dateInput}
               nullable={true}
+              defaultDate={dateFilter}
               onDateChange={setDateFilter}
               mode="date"
               popup
@@ -96,11 +97,13 @@ const ControlEntryListScreen = ({navigation}) => {
             statusSelect={item.statusSelect}
             name={item.name}
             controlEntryId={item.id}
-            onPress={() =>
+            onPress={() => {
+              setDateFilter(null);
+              setIsInspectorFilter(false);
               navigation.navigate('ControlEntryDetailsScreen', {
                 controlEntryId: item.id,
-              })
-            }
+              });
+            }}
           />
         )}
         fetchData={fetchControlEntryAPI}
