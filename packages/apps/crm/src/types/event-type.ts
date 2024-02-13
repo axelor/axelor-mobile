@@ -65,7 +65,7 @@ class EventType {
       case this.status.Planned:
         return Colors.secondaryColor;
       case this.status.Realized:
-        return Colors.successColor;
+        return Colors.primaryColor;
       case this.status.Canceled:
         return Colors.cautionColor;
       default:
@@ -162,6 +162,7 @@ class EventType {
           partner: _e.partner?.fullName,
           eventLead: _e.eventLead?.fullName,
           partnerTypeSelect: _e.partner?.partnerTypeSelect,
+          userId: _e.user?.id,
         },
       };
     });

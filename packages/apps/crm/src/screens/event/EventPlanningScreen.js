@@ -22,7 +22,6 @@ import {
   Screen,
   useThemeColor,
   HeaderContainer,
-  ToggleSwitch,
   MultiValuePicker,
 } from '@axelor/aos-mobile-ui';
 import {
@@ -42,11 +41,9 @@ function EventPlanningScreen({navigation}) {
   const I18n = useTranslator();
 
   const {eventList, loading} = useSelector(state => state.event);
-  const {userId} = useSelector(state => state.auth);
 
   const [filteredList, setFilteredList] = useState(eventList);
   const [filter, setFilter] = useState(null);
-  const [assigned, setAssigned] = useState(false);
   const [selectedStatus, setSelectedStatus] = useState([]);
   const [dateSave, setDateSave] = useState(null);
 
@@ -105,21 +102,6 @@ function EventPlanningScreen({navigation}) {
     [selectedStatus],
   );
 
-  const filterOnUserAssigned = useCallback(
-    list => {
-      if (!Array.isArray(list) || list.length === 0) {
-        return [];
-      } else {
-        if (assigned) {
-          return list?.filter(item => item?.user?.id === userId);
-        } else {
-          return list;
-        }
-      }
-    },
-    [assigned, userId],
-  );
-
   const navigateToEvent = id => {
     if (id != null) {
       navigation.navigate('EventDetailsScreen', {
@@ -171,8 +153,8 @@ function EventPlanningScreen({navigation}) {
   };
 
   useEffect(() => {
-    setFilteredList(filterOnUserAssigned(filterOnStatus(eventList)));
-  }, [filterOnUserAssigned, filterOnStatus, eventList]);
+    setFilteredList(filterOnStatus(eventList));
+  }, [filterOnStatus, eventList]);
 
   return (
     <Screen removeSpaceOnTop={true}>
@@ -190,16 +172,12 @@ function EventPlanningScreen({navigation}) {
               showDetailsPopup={false}
               oneFilter={true}
             />
-            <ToggleSwitch
-              leftTitle={I18n.t('Crm_All')}
-              rightTitle={I18n.t('Crm_AssignedToMe')}
-              onSwitch={() => setAssigned(!assigned)}
-            />
           </View>
         }
       />
       <PlanningView
         itemList={listItem}
+        manageAssignment={true}
         renderItem={renderDayEventDetails}
         renderFullDayItem={renderDayEvent}
         fetchbyMonth={fetchItemsByMonth}
