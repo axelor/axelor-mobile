@@ -76,6 +76,17 @@ class ControlEntry {
     }
   };
 
+  static getStatusList = (
+    Colors: ThemeColors,
+    I18n: {t: (key: string) => string},
+  ) => {
+    return Object.entries(this.status).map(([key, value]) => ({
+      title: I18n.t(`Quality_Status_${key}`),
+      color: this.getStatusColor(value, Colors),
+      key: value,
+    }));
+  };
+
   static getSampleResultColor = (
     sampleResult: number,
     Colors: ThemeColors,
