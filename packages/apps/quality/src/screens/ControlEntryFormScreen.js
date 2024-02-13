@@ -32,7 +32,7 @@ import {fetchControlPlanById} from '../features/controlPlanSlice';
 import {ControlEntry} from '../types';
 import {checkComformity, getProgressValuesApi} from '../api';
 
-const ControlEntryFormScreen = ({route}) => {
+const ControlEntryFormScreen = ({navigation, route}) => {
   const {selectedMode} = route.params;
 
   const dispatch = useDispatch();
@@ -132,7 +132,12 @@ const ControlEntryFormScreen = ({route}) => {
 
   const isFirstItem = useMemo(() => currentIndex === 0, [currentIndex]);
 
-  const handleNext = () => {
+  const canNext = useMemo(
+    () => !isLastItem || categoryIndex + 1 !== nbCategories,
+    [categoryIndex, isLastItem, nbCategories],
+  );
+
+  const handleNext = useCallback(() => {
     setCurrentIndex(_current => {
       if ((_current + 1) % nbItemInCategory === 0) {
         setCategoryIndex(_cIndex => {
@@ -148,7 +153,7 @@ const ControlEntryFormScreen = ({route}) => {
 
       return _current + 1;
     });
-  };
+  }, [nbCategories, nbItemInCategory]);
 
   const handlePrevious = () => {
     setCurrentIndex(_current => {
@@ -219,6 +224,15 @@ const ControlEntryFormScreen = ({route}) => {
     selectedMode,
   ]);
 
+  const handleValidation = useCallback(() => {
+    fetchSampleLine(itemSet, currentIndex);
+    if (canNext) {
+      handleNext();
+    } else {
+      navigation.pop();
+    }
+  }, [canNext, currentIndex, fetchSampleLine, handleNext, itemSet, navigation]);
+
   return (
     <Screen removeSpaceOnTop>
       <HeaderContainer
@@ -246,7 +260,7 @@ const ControlEntryFormScreen = ({route}) => {
               showToast: false,
               postActions: async res => {
                 await checkComformity({object: res});
-                fetchSampleLine(itemSet, currentIndex);
+                handleValidation();
               },
               customComponent: (
                 <ControlEntryFormButtons
@@ -255,7 +269,7 @@ const ControlEntryFormScreen = ({route}) => {
                   mode={selectedMode}
                   isLastItem={isLastItem}
                   isFirstItem={isFirstItem}
-                  canNext={!isLastItem || categoryIndex + 1 !== nbCategories}
+                  canNext={canNext}
                   canPrevious={!isFirstItem || categoryIndex !== 0}
                 />
               ),
