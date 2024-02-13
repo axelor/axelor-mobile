@@ -38,24 +38,22 @@ const ControlEntryDetailsHeader = ({
   const {controlEntry} = useSelector((state: any) => state.controlEntry);
 
   useEffect(() => {
-    if (controlEntry?.id != null) {
-      searchControlEntrySampleApi({controlEntryId: controlEntry?.id})
-        .then(response => {
-          if (Array.isArray(response?.data?.data)) {
-            const controlEntrySampleList: any[] = response.data.data;
-            const total = controlEntrySampleList.length;
-            const notControlled = controlEntrySampleList.filter(
-              sample =>
-                sample.resultSelect === ControlEntry.sampleResult.NotControlled,
-            ).length;
+    searchControlEntrySampleApi({controlEntryId: controlEntry?.id})
+      .then(response => {
+        if (Array.isArray(response?.data?.data)) {
+          const controlEntrySampleList: any[] = response.data.data;
+          const total = controlEntrySampleList.length;
+          const notControlled = controlEntrySampleList.filter(
+            sample =>
+              sample.resultSelect === ControlEntry.sampleResult.NotControlled,
+          ).length;
 
-            setNumberSampleFilled(100 - (notControlled / total) * 100);
-          } else {
-            setNumberSampleFilled(0);
-          }
-        })
-        .catch(() => setNumberSampleFilled(0));
-    }
+          setNumberSampleFilled(100 - (notControlled / total) * 100);
+        } else {
+          setNumberSampleFilled(0);
+        }
+      })
+      .catch(() => setNumberSampleFilled(0));
   }, [controlEntry]);
 
   return (

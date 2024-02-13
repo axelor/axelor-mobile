@@ -26,7 +26,11 @@ import {
 import {useEffect} from 'react';
 import {useThemeColor} from '@axelor/aos-mobile-ui';
 import {fetchControlEntryById} from '../features/controlEntrySlice';
-import {searchControlEntrySample} from '../features/controlEntrySampleSlice';
+
+export const useQualityHeaders = () => {
+  useControlEntryListActions();
+  useControlEntryDetailsActions();
+};
 
 const useControlEntryListActions = () => {
   const Colors = useThemeColor();
@@ -52,7 +56,6 @@ const useControlEntryListActions = () => {
 
 const useControlEntryDetailsActions = () => {
   const Colors = useThemeColor();
-  const navigation = useNavigation();
   const I18n = useTranslator();
   const dispatch = useDispatch();
 
@@ -73,21 +76,10 @@ const useControlEntryDetailsActions = () => {
                 controlEntryId: controlEntry?.id,
               }),
             );
-            dispatch(
-              (searchControlEntrySample as any)({
-                page: 0,
-                controlEntryId: controlEntry?.id,
-              }),
-            );
           },
           showInHeader: true,
         },
       ],
     });
-  }, [Colors, I18n, controlEntry?.id, dispatch, navigation]);
-};
-
-export const useQualityHeaders = () => {
-  useControlEntryListActions();
-  useControlEntryDetailsActions();
+  }, [Colors, I18n, controlEntry?.id, dispatch]);
 };
