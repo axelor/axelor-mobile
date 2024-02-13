@@ -52,7 +52,6 @@ export const HrModule: Module = {
       title: 'Hr_ActiveTimer',
       icon: 'stopwatch',
       screen: 'ActiveTimerFormScreen',
-      isDefault: true,
       compatibilityAOS: {
         moduleName: 'axelor-human-resource',
         downToVersion: '8.0.0',
