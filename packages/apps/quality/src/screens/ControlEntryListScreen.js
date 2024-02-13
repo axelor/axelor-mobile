@@ -19,8 +19,8 @@
 import React, {useCallback, useMemo, useState} from 'react';
 import {StyleSheet, View} from 'react-native';
 import {
+  ChipSelect,
   HeaderContainer,
-  Picker,
   Screen,
   ScrollList,
   ToggleButton,
@@ -49,7 +49,7 @@ const ControlEntryListScreen = ({navigation}) => {
   const [dateFilter, setDateFilter] = useState(null);
   const [selectedStatus, setSelectedStatus] = useState(null);
 
-  const statusList = useMemo(() => {
+  const statusListItems = useMemo(() => {
     return ControlEntry.getStatusList(Colors, I18n);
   }, [Colors, I18n]);
 
@@ -94,12 +94,10 @@ const ControlEntryListScreen = ({navigation}) => {
                 popup
               />
             </View>
-            <Picker
-              listItems={statusList}
-              title={I18n.t('Base_Status')}
-              onValueChange={setSelectedStatus}
-              labelField="title"
-              valueField="key"
+            <ChipSelect
+              mode="switch"
+              selectionItems={statusListItems}
+              onChangeValue={chiplist => setSelectedStatus(chiplist[0]?.key)}
             />
           </View>
         }
