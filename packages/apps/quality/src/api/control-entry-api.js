@@ -56,9 +56,9 @@ const createControlEntryCriteria = (searchValue, isInspector, userId, date) => {
 export async function searchControlEntry({
   searchValue = null,
   page = 0,
-  isInspector,
-  userId,
-  date,
+  isInspector = false,
+  userId = null,
+  date = null,
 }) {
   return createStandardSearch({
     model: 'com.axelor.apps.quality.db.ControlEntry',
