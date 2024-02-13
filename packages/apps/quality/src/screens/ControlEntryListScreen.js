@@ -16,9 +16,10 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import React, {useCallback, useState} from 'react';
+import React, {useCallback, useMemo, useState} from 'react';
 import {StyleSheet, View} from 'react-native';
 import {
+  ChipSelect,
   HeaderContainer,
   Screen,
   ScrollList,
@@ -33,6 +34,7 @@ import {
 } from '@axelor/aos-mobile-core';
 import {searchControlEntry} from '../features/controlEntrySlice';
 import {ControlEntryCard} from '../components';
+import {ControlEntry} from '../types';
 
 const ControlEntryListScreen = ({navigation}) => {
   const Colors = useThemeColor();
@@ -45,6 +47,11 @@ const ControlEntryListScreen = ({navigation}) => {
 
   const [isInspectorFilter, setIsInspectorFilter] = useState(false);
   const [dateFilter, setDateFilter] = useState(null);
+  const [selectedStatus, setSelectedStatus] = useState([]);
+
+  const statusListItems = useMemo(() => {
+    return ControlEntry.getStatusList(Colors, I18n);
+  }, [Colors, I18n]);
 
   const fetchControlEntryAPI = useCallback(
     (page = 0) => {
@@ -54,10 +61,11 @@ const ControlEntryListScreen = ({navigation}) => {
           isInspector: isInspectorFilter,
           userId: userId,
           date: dateFilter,
+          selectedStatus: selectedStatus,
         }),
       );
     },
-    [dispatch, isInspectorFilter, userId, dateFilter],
+    [dispatch, isInspectorFilter, userId, dateFilter, selectedStatus],
   );
 
   return (
@@ -79,12 +87,18 @@ const ControlEntryListScreen = ({navigation}) => {
             <DateInput
               style={styles.dateInput}
               nullable={true}
-              defaultDate={dateFilter}
               onDateChange={setDateFilter}
               mode="date"
               popup
             />
           </View>
+        }
+        chipComponent={
+          <ChipSelect
+            mode="multi"
+            selectionItems={statusListItems}
+            onChangeValue={setSelectedStatus}
+          />
         }
       />
       <ScrollList
@@ -98,8 +112,6 @@ const ControlEntryListScreen = ({navigation}) => {
             name={item.name}
             controlEntryId={item.id}
             onPress={() => {
-              setDateFilter(null);
-              setIsInspectorFilter(false);
               navigation.navigate('ControlEntryDetailsScreen', {
                 controlEntryId: item.id,
               });
@@ -117,8 +129,10 @@ const ControlEntryListScreen = ({navigation}) => {
 
 const styles = StyleSheet.create({
   headerContainer: {
+    width: '90%',
     flexDirection: 'row',
-    justifyContent: 'space-evenly',
+    justifyContent: 'space-between',
+    alignSelf: 'center',
     marginTop: '-5%',
   },
   toggleButton: {
@@ -126,7 +140,7 @@ const styles = StyleSheet.create({
     top: '16%',
   },
   dateInput: {
-    width: '80%',
+    width: '85%',
   },
 });
 

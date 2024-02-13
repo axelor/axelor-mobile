@@ -24,7 +24,13 @@ import {
   getStartOfDay,
 } from '@axelor/aos-mobile-core';
 
-const createControlEntryCriteria = (searchValue, isInspector, userId, date) => {
+const createControlEntryCriteria = (
+  searchValue,
+  isInspector,
+  userId,
+  date,
+  selectedStatus,
+) => {
   const criteria = [getSearchCriterias('quality_controlEntry', searchValue)];
 
   if (isInspector && userId != null) {
@@ -33,6 +39,16 @@ const createControlEntryCriteria = (searchValue, isInspector, userId, date) => {
       operator: '=',
       value: userId,
     });
+  }
+
+  if (Array.isArray(selectedStatus) && selectedStatus.length > 0) {
+    const statusCriteria = selectedStatus.map(_status => ({
+      fieldName: 'statusSelect',
+      operator: '=',
+      value: _status.key,
+    }));
+
+    criteria.push({operator: 'OR', criteria: statusCriteria});
   }
 
   if (date != null) {
@@ -59,6 +75,7 @@ export async function searchControlEntry({
   isInspector = false,
   userId = null,
   date = null,
+  selectedStatus = null,
 }) {
   return createStandardSearch({
     model: 'com.axelor.apps.quality.db.ControlEntry',
@@ -67,6 +84,7 @@ export async function searchControlEntry({
       isInspector,
       userId,
       date,
+      selectedStatus,
     ),
     fieldKey: 'quality_controlEntry',
     sortKey: 'quality_controlEntry',
