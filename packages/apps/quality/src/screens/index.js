@@ -24,7 +24,6 @@ export default {
   ControlEntryListScreen: {
     title: 'Quality_ControlEntries',
     component: ControlEntryListScreen,
-    actionID: 'quality_controlEntry_list',
     options: {
       shadedHeader: false,
     },
