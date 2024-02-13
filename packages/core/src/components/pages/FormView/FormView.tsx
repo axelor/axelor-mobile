@@ -271,12 +271,16 @@ const FormView = ({
     if (isField(item)) {
       return (
         <FieldComponent
-          readOnly={isReadOnly}
           key={`${item.key} - ${item.order}`}
           handleFieldChange={handleFieldChange}
           _field={item as DisplayField}
           object={object}
-          globalReadonly={config.readonlyIf}
+          globalReadonly={() =>
+            isReadOnly ||
+            (config.readonlyIf
+              ? config.readonlyIf({objectState: object, storeState})
+              : false)
+          }
           formContent={getConfigItems(config)}
         />
       );

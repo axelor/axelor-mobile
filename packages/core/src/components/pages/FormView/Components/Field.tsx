@@ -51,14 +51,12 @@ interface FieldProps {
   object: any;
   globalReadonly?: (values?: States) => boolean;
   formContent: (DisplayPanel | DisplayField)[];
-  readOnly?: boolean;
 }
 
 const Field = ({
   handleFieldChange,
   _field,
   object,
-  readOnly,
   globalReadonly = () => false,
   formContent,
 }: FieldProps) => {
@@ -109,12 +107,11 @@ const Field = ({
 
   const isReadonly = useMemo(() => {
     return (
-      readOnly ||
       globalReadonly({objectState: object, storeState: storeState}) ||
       _field.readonly ||
       _field.readonlyIf({objectState: object, storeState: storeState})
     );
-  }, [_field, globalReadonly, object, readOnly, storeState]);
+  }, [_field, globalReadonly, object, storeState]);
 
   const fieldStyle: StyleProp<ViewStyle> = useMemo(
     () => ({
