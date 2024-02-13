@@ -82,7 +82,7 @@ const LineChart = ({
         xAxisLabelTextStyle={{color: Colors.secondaryColor_dark.background}}
         initialSpacing={_spacing / 2}
         spacing={_spacing}
-        endSpacing={5}
+        endSpacing={_spacing * 2}
         isAnimated={true}
         backgroundColor={backgroundColor}
         {...chartProps}
@@ -103,6 +103,7 @@ const getStyles = rotateLabel =>
       paddingHorizontal: 0,
       paddingRight: 5,
       paddingVertical: 10,
+      overflow: 'hidden',
     },
     title: {
       marginTop: rotateLabel ? 30 : 0,
