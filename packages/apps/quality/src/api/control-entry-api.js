@@ -41,12 +41,14 @@ const createControlEntryCriteria = (
     });
   }
 
-  if (selectedStatus != null) {
-    criteria.push({
+  if (Array.isArray(selectedStatus) && selectedStatus.length > 0) {
+    const statusCriteria = selectedStatus.map(_status => ({
       fieldName: 'statusSelect',
       operator: '=',
-      value: selectedStatus,
-    });
+      value: _status.key,
+    }));
+
+    criteria.push({operator: 'OR', criteria: statusCriteria});
   }
 
   if (date != null) {

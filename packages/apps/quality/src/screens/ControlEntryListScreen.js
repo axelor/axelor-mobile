@@ -47,7 +47,7 @@ const ControlEntryListScreen = ({navigation}) => {
 
   const [isInspectorFilter, setIsInspectorFilter] = useState(false);
   const [dateFilter, setDateFilter] = useState(null);
-  const [selectedStatus, setSelectedStatus] = useState(null);
+  const [selectedStatus, setSelectedStatus] = useState([]);
 
   const statusListItems = useMemo(() => {
     return ControlEntry.getStatusList(Colors, I18n);
@@ -73,33 +73,32 @@ const ControlEntryListScreen = ({navigation}) => {
       <HeaderContainer
         expandableFilter={false}
         fixedItems={
-          <View>
-            <View style={styles.headerTopContainer}>
-              <ToggleButton
-                isActive={isInspectorFilter}
-                onPress={() => setIsInspectorFilter(current => !current)}
-                activeColor={Colors.successColor}
-                buttonConfig={{
-                  iconName: 'person-fill',
-                  width: '10%',
-                  style: styles.toggleButton,
-                }}
-              />
-              <DateInput
-                style={styles.dateInput}
-                nullable={true}
-                defaultDate={dateFilter}
-                onDateChange={setDateFilter}
-                mode="date"
-                popup
-              />
-            </View>
-            <ChipSelect
-              mode="switch"
-              selectionItems={statusListItems}
-              onChangeValue={chiplist => setSelectedStatus(chiplist[0]?.key)}
+          <View style={styles.headerContainer}>
+            <ToggleButton
+              isActive={isInspectorFilter}
+              onPress={() => setIsInspectorFilter(current => !current)}
+              activeColor={Colors.successColor}
+              buttonConfig={{
+                iconName: 'person-fill',
+                width: '10%',
+                style: styles.toggleButton,
+              }}
+            />
+            <DateInput
+              style={styles.dateInput}
+              nullable={true}
+              onDateChange={setDateFilter}
+              mode="date"
+              popup
             />
           </View>
+        }
+        chipComponent={
+          <ChipSelect
+            mode="multi"
+            selectionItems={statusListItems}
+            onChangeValue={setSelectedStatus}
+          />
         }
       />
       <ScrollList
@@ -113,8 +112,6 @@ const ControlEntryListScreen = ({navigation}) => {
             name={item.name}
             controlEntryId={item.id}
             onPress={() => {
-              setDateFilter(null);
-              setIsInspectorFilter(false);
               navigation.navigate('ControlEntryDetailsScreen', {
                 controlEntryId: item.id,
               });
@@ -131,7 +128,7 @@ const ControlEntryListScreen = ({navigation}) => {
 };
 
 const styles = StyleSheet.create({
-  headerTopContainer: {
+  headerContainer: {
     width: '90%',
     flexDirection: 'row',
     justifyContent: 'space-between',

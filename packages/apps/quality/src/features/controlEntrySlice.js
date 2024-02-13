@@ -20,6 +20,7 @@ import {createAsyncThunk, createSlice} from '@reduxjs/toolkit';
 import {
   generateInifiniteScrollCases,
   handlerApiCall,
+  updateAgendaItems,
 } from '@axelor/aos-mobile-core';
 import {
   searchControlEntry as _searchControlEntry,
@@ -64,7 +65,6 @@ export const updateControlEntry = createAsyncThunk(
       responseOptions: {isArrayResponse: false},
     }).then(() => {
       dispatch(fetchControlEntryById({controlEntryId: data?.controlEntryId}));
-      dispatch(searchControlEntry({}));
     });
   },
 );
@@ -95,6 +95,9 @@ const controlEntrySlice = createSlice({
     builder.addCase(fetchControlEntryById.fulfilled, (state, action) => {
       state.loadingControlEntry = false;
       state.controlEntry = action.payload;
+      state.controlEntryList = updateAgendaItems(state.controlEntryList, [
+        action.payload,
+      ]);
     });
   },
 });
