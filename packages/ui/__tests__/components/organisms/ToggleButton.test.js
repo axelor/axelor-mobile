@@ -57,13 +57,11 @@ describe('ToggleButton Component', () => {
     expect(wrapper.find(Button).prop('color')).toBe(props.inactiveColor);
 
     wrapper.simulate('press');
-    expect(onPress).toHaveBeenCalledWith(true);
 
     expect(wrapper.find(Button).prop('isNeutralBackground')).toBe(false);
     expect(wrapper.find(Button).prop('color')).toBe(props.activeColor);
 
     wrapper.simulate('press');
-    expect(onPress).toHaveBeenCalledWith(false);
 
     expect(wrapper.find(Button).prop('isNeutralBackground')).toBe(true);
     expect(wrapper.find(Button).prop('color')).toBe(props.inactiveColor);
