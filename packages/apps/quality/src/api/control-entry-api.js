@@ -57,7 +57,7 @@ export async function searchControlEntry({
   searchValue = null,
   page = 0,
   isInspector = false,
-  userId,
+  userId = null,
   date = null,
 }) {
   return createStandardSearch({
