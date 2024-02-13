@@ -82,7 +82,7 @@ const LineChart = ({
         xAxisLabelTextStyle={{color: Colors.secondaryColor_dark.background}}
         initialSpacing={_spacing / 2}
         spacing={_spacing}
-        endSpacing={_spacing * 2}
+        endSpacing={_spacing}
         isAnimated={true}
         backgroundColor={backgroundColor}
         {...chartProps}
