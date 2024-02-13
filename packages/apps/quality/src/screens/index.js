@@ -32,6 +32,7 @@ export default {
   ControlEntryDetailsScreen: {
     title: 'Quality_ControlEntry',
     component: ControlEntryDetailsScreen,
+    actionID: 'quality_controlEntry_details',
     options: {
       shadedHeader: false,
     },
