@@ -132,13 +132,10 @@ const ControlEntryFormScreen = ({navigation, route}) => {
 
   const isFirstItem = useMemo(() => currentIndex === 0, [currentIndex]);
 
-  const canNext = useMemo(() => {
-    if (!isLastItem || categoryIndex + 1 !== nbCategories) {
-      return true;
-    } else {
-      return false;
-    }
-  }, [categoryIndex, isLastItem, nbCategories]);
+  const canNext = useMemo(
+    () => !isLastItem || categoryIndex + 1 !== nbCategories,
+    [categoryIndex, isLastItem, nbCategories],
+  );
 
   const handleNext = useCallback(() => {
     setCurrentIndex(_current => {
