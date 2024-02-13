@@ -16,7 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import React, {useEffect, useMemo, useState} from 'react';
+import React, {useEffect, useMemo, useRef, useState} from 'react';
 import {StyleSheet} from 'react-native';
 import {Card, ProgressBar, Text, useThemeColor} from '@axelor/aos-mobile-ui';
 import {ControlEntry} from '../../../types';
@@ -36,6 +36,8 @@ const ControlEntrySampleCard = ({
 }: ControlEntrySampleCardProps) => {
   const Colors = useThemeColor();
 
+  const isMounted = useRef(true);
+
   const [numberSampleFilled, setNumberSampleFilled] = useState<number>(0);
 
   const borderStyle = useMemo(() => {
@@ -45,22 +47,33 @@ const ControlEntrySampleCard = ({
   }, [Colors, resultSelect]);
 
   useEffect(() => {
+    isMounted.current = true;
+
     searchControlEntrySampleLineApi({controlEntrySampleId})
       .then(response => {
-        if (Array.isArray(response?.data?.data)) {
-          const controlEntrySampleLineList: any[] = response.data.data;
-          const total = controlEntrySampleLineList.length;
-          const notControlled = controlEntrySampleLineList.filter(
-            sample =>
-              sample.resultSelect === ControlEntry.sampleResult.NotControlled,
-          ).length;
-
-          setNumberSampleFilled(100 - (notControlled / total) * 100);
-        } else {
-          setNumberSampleFilled(0);
+        if (isMounted.current) {
+          if (Array.isArray(response?.data?.data)) {
+            const controlEntrySampleLineList: any[] = response.data.data;
+            const total = controlEntrySampleLineList.length;
+            const notControlled = controlEntrySampleLineList.filter(
+              sample =>
+                sample.resultSelect === ControlEntry.sampleResult.NotControlled,
+            ).length;
+            setNumberSampleFilled(100 - (notControlled / total) * 100);
+          } else {
+            setNumberSampleFilled(0);
+          }
         }
       })
-      .catch(() => setNumberSampleFilled(0));
+      .catch(() => {
+        if (isMounted.current) {
+          setNumberSampleFilled(0);
+        }
+      });
+
+    return () => {
+      isMounted.current = false;
+    };
   }, [controlEntrySampleId]);
 
   return (
