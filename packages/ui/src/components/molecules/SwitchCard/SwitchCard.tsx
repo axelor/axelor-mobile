@@ -49,8 +49,14 @@ const SwitchCard = ({
         styles.container,
         style,
       ]}>
-      <Text>{title}</Text>
-      <Switch isEnabled={defaultValue} handleToggle={onToggle} />
+      <Text numberOfLines={2} style={styles.text}>
+        {title}
+      </Text>
+      <Switch
+        style={styles.switch}
+        isEnabled={defaultValue}
+        handleToggle={onToggle}
+      />
     </View>
   );
 };
@@ -63,6 +69,12 @@ const getStyles = (Colors: ThemeColors) =>
       borderWidth: 1,
       marginHorizontal: 0,
       minHeight: 40,
+    },
+    text: {
+      flex: 3,
+    },
+    switch: {
+      flex: 1,
     },
   });
 

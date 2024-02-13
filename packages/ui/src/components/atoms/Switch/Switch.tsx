@@ -22,10 +22,11 @@ import {useThemeColor} from '../../../theme/ThemeContext';
 
 interface SwitchProps {
   isEnabled: boolean;
+  style: any;
   handleToggle: (any) => void;
 }
 
-const Switch = ({isEnabled, handleToggle}: SwitchProps) => {
+const Switch = ({isEnabled, handleToggle, style}: SwitchProps) => {
   const Colors = useThemeColor();
 
   const toggleSwitch = () => {
@@ -34,6 +35,7 @@ const Switch = ({isEnabled, handleToggle}: SwitchProps) => {
 
   return (
     <RNSwitch
+      style={style}
       trackColor={{
         false: Colors.secondaryColor.background_light,
         true: Colors.primaryColor.background_light,
