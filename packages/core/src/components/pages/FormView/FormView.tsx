@@ -77,7 +77,7 @@ const FormView = ({
 
   const [object, setObject] = useState(defaultValue);
   const [errors, setErrors] = useState<any[]>();
-  const [isReadOnly, setIsReadOnly] = useState(false);
+  const [isReadonly, setIsReadonly] = useState(false);
 
   const formContent: (DisplayPanel | DisplayField)[] = useMemo(
     () => sortContent(config),
@@ -237,13 +237,13 @@ const FormView = ({
         onPress={() =>
           handleValidate(buttonConfig.onPress, _action.needValidation)
         }
-        disabled={isDisabled || isReadOnly}
+        disabled={isDisabled || isReadonly}
       />
     );
   };
 
   const toggleReadOnlyMode = () => {
-    setIsReadOnly(currentState => !currentState);
+    setIsReadonly(currentState => !currentState);
   };
 
   const handleValidate = (_action, needValidation) => {
@@ -276,10 +276,9 @@ const FormView = ({
           _field={item as DisplayField}
           object={object}
           globalReadonly={() =>
-            isReadOnly ||
-            (config.readonlyIf
-              ? config.readonlyIf({objectState: object, storeState})
-              : false)
+            isReadonly ||
+            (config.readonlyIf &&
+              config.readonlyIf({objectState: object, storeState}))
           }
           formContent={getConfigItems(config)}
         />
@@ -321,7 +320,7 @@ const FormView = ({
           />
         )}
         <View style={[styles.container, getZIndexStyle(5)]}>
-          {formContent.map(item => renderItem(item))}
+          {formContent.map(renderItem)}
         </View>
       </KeyboardAvoidingScrollView>
       {readonlyButton && (
