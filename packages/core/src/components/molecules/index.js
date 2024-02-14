@@ -24,5 +24,6 @@ export {default as HeaderBand} from './HeaderBand/HeaderBand';
 export {default as HeaderOptionMenuItem} from './HeaderOptionsMenuItem/HeaderOptionMenuItem';
 export {default as InputBarCodeCard} from './InputBarCodeCard/InputBarCodeCard';
 export {default as MailMessageReadIcon} from './MailMessageReadIcon/MailMessageReadIcon';
+export {default as PeriodDisplay} from './PeriodDisplay/PeriodDisplay';
 export {default as TrackItem} from './TrackItem/TrackItem';
 export {default as UploadFileInput} from './UploadFileInput/UploadFileInput';
