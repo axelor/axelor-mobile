@@ -16,16 +16,65 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import React, {useCallback, useState} from 'react';
-import {useDispatch, useSelector, useTranslator} from '@axelor/aos-mobile-core';
-import {Screen, ScrollList} from '@axelor/aos-mobile-ui';
+import React, {useCallback, useMemo, useState} from 'react';
+import {StyleSheet, View} from 'react-native';
+import {
+  DateDisplay,
+  ISODateTimeToDate,
+  useDispatch,
+  useSelector,
+  useTranslator,
+} from '@axelor/aos-mobile-core';
+import {
+  GroupByScrollList,
+  NumberBubble,
+  Screen,
+  useThemeColor,
+} from '@axelor/aos-mobile-ui';
 import {
   TimeDetailCard,
   TimerDeclareButton,
   TimerListAlert,
 } from '../../components';
-import {deleteTimer, fetchTimer} from '../../features/timerSlice';
+import {
+  deleteTimer,
+  fetchTimer,
+  getNumberTimerByDate,
+} from '../../features/timerSlice';
 import {formatSecondsToHours} from '../../utils';
+
+const CustomTopSeparator = ({title: date, numberItems, isFirstItem}) => {
+  const Colors = useThemeColor();
+
+  const styles = useMemo(() => getSeparatorStyles(isFirstItem), [isFirstItem]);
+
+  return (
+    <View style={styles.separatorContainer}>
+      <DateDisplay date={date} />
+      <NumberBubble
+        style={styles.number}
+        number={numberItems}
+        color={Colors.inverseColor}
+        isNeutralBackground={true}
+      />
+    </View>
+  );
+};
+
+const getSeparatorStyles = isFirstItem =>
+  StyleSheet.create({
+    separatorContainer: {
+      flexDirection: 'row',
+      width: '90%',
+      alignSelf: 'center',
+      justifyContent: 'flex-start',
+      marginTop: isFirstItem ? 5 : 15,
+      marginBottom: 2,
+    },
+    number: {
+      marginLeft: 10,
+    },
+  });
 
 const TimerListScreen = ({navigation}) => {
   const I18n = useTranslator();
@@ -33,9 +82,8 @@ const TimerListScreen = ({navigation}) => {
 
   const [isAlertVisible, setIsAlertVisible] = useState(false);
 
-  const {timerList, loadingTimer, moreLoading, isListEnd} = useSelector(
-    state => state.hr_timer,
-  );
+  const {timerList, loadingTimer, moreLoading, isListEnd, numberTimerDates} =
+    useSelector(state => state.hr_timer);
   const {userId} = useSelector(state => state.auth);
 
   const fetchTimerAPI = useCallback(
@@ -48,7 +96,7 @@ const TimerListScreen = ({navigation}) => {
   return (
     <Screen
       fixedItems={<TimerDeclareButton setIsAlertVisible={setIsAlertVisible} />}>
-      <ScrollList
+      <GroupByScrollList
         loadingList={loadingTimer}
         data={timerList}
         renderItem={({item}) => (
@@ -74,6 +122,24 @@ const TimerListScreen = ({navigation}) => {
         moreLoading={moreLoading}
         isListEnd={isListEnd}
         translator={I18n.t}
+        separatorCondition={(prevItem, currentItem) =>
+          ISODateTimeToDate(prevItem.startDateTime) >
+          ISODateTimeToDate(currentItem.startDateTime)
+        }
+        fetchTopIndicator={currentItem => {
+          const currentItemDate = ISODateTimeToDate(currentItem.startDateTime);
+          dispatch(
+            getNumberTimerByDate({
+              date: currentItemDate,
+              userId: userId,
+            }),
+          );
+          return {
+            title: currentItemDate,
+            numberItems: numberTimerDates[currentItemDate],
+          };
+        }}
+        customTopSeparator={<CustomTopSeparator />}
       />
       <TimerListAlert
         isAlertVisible={isAlertVisible}

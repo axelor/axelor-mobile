@@ -85,6 +85,30 @@ const createActiveTimerCriteria = userId => {
   return criteria;
 };
 
+const createNumberTimerByDateCriteria = (userId, date) => {
+  const criteria = createTimerCriteria(null, userId);
+
+  const dateStartOfDay = getStartOfDay(date);
+  const dateEndOfDay = getEndOfDay(date);
+  criteria.push({
+    operator: 'and',
+    criteria: [
+      {
+        fieldName: 'startDateTime',
+        operator: '>=',
+        value: dateStartOfDay,
+      },
+      {
+        fieldName: 'startDateTime',
+        operator: '<=',
+        value: dateEndOfDay,
+      },
+    ],
+  });
+
+  return criteria;
+};
+
 export async function fetchTimer({
   searchValue = null,
   userId,
@@ -116,6 +140,16 @@ export async function fetchActiveTimer({userId}) {
     fieldKey: 'hr_timer',
     sortKey: 'hr_timer',
     numberElementsByPage: 1,
+    page: 0,
+  });
+}
+
+export async function getNumberTimerByDate({userId, date}) {
+  return createStandardSearch({
+    model: 'com.axelor.apps.hr.db.TSTimer',
+    criteria: createNumberTimerByDateCriteria(userId, date),
+    fieldKey: 'hr_timer',
+    numberElementsByPage: null,
     page: 0,
   });
 }

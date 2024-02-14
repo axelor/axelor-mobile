@@ -35,6 +35,7 @@ export {
 export {
   createExpenseLine as createExpenseLineApi,
   deleteExpenseLine as deleteExpenseLineApi,
+  getNumberExpenseLineByDate as getNumberExpenseLineByDateApi,
   searchExpenseLines as searchExpenseLinespi,
   searchGeneralExpenseLines as searchGeneralExpenseLinesApi,
   searchKilometricExpenseLines as searchKilometricExpenseLinesApi,
@@ -57,6 +58,7 @@ export {
   fetchActiveTimer as fetchActiveTimerApi,
   fetchTimer as fetchTimerApi,
   fetchTimerById as fetchTimerByIdApi,
+  getNumberTimerByDate as getNumberTimerByDateApi,
   updateTimer as updateTimerApi,
   updateTimerStatus as updateTimerStatusApi,
 } from './timer-api';
