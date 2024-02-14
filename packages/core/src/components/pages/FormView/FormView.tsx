@@ -218,7 +218,7 @@ const FormView = ({
 
     buttonConfig.onPress = () => {
       originalOnPress();
-      if (readonlyButton) {
+      if (_action.readonlyAfterAction) {
         toggleReadonlyMode();
       }
     };
@@ -261,6 +261,7 @@ const FormView = ({
         titleKey: 'Base_Cancel',
         type: 'custom',
         needValidation: true,
+        readonlyAfterAction: true,
         customAction: () => {
           handleReset();
         },
