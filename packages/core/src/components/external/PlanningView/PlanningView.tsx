@@ -346,7 +346,6 @@ const getStyles = (Colors, manageAssignment) =>
     },
     switchCard: {
       width: '50%',
-      backgroundColor: 'red',
       marginLeft: 5,
     },
   });
