@@ -85,7 +85,7 @@ const BarChart = ({
         barBorderBottomLeftRadius={0}
         initialSpacing={_spacing / 2}
         spacing={_spacing}
-        endSpacing={5}
+        endSpacing={_spacing}
         horizontal={horizontal}
         disablePress={true}
         yAxisTextStyle={{color: Colors.secondaryColor_dark.background}}
@@ -107,6 +107,7 @@ const getStyles = rotateLabel =>
       paddingHorizontal: 0,
       paddingRight: 5,
       paddingVertical: 10,
+      overflow: 'hidden',
     },
     title: {
       marginTop: rotateLabel ? 30 : 0,
