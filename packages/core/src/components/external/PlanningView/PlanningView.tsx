@@ -197,9 +197,9 @@ const PlanningView = ({
         {manageAssignment && (
           <SwitchCard
             title={I18n.t('Base_AssignedToMe')}
+            style={styles.switchCard}
             defaultValue={assigned}
             onToggle={() => setAssigned(!assigned)}
-            style={styles.switchCard}
           />
         )}
         <View style={styles.headerButton}>
@@ -333,7 +333,7 @@ const getStyles = (Colors, manageAssignment) =>
     circleButton: {
       marginHorizontal: 5,
       marginTop: 5,
-      width: 35 + 50 * (1 / 3),
+      width: 40,
     },
     headerPlanning: {
       flexDirection: 'row',
@@ -343,11 +343,10 @@ const getStyles = (Colors, manageAssignment) =>
     headerButton: {
       flexDirection: 'row',
       alignItems: 'center',
-      marginRight: 5,
     },
     switchCard: {
-      width: '45%',
-      marginHorizontal: 10,
+      width: '50%',
+      marginLeft: 5,
     },
   });
 
