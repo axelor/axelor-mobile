@@ -261,8 +261,8 @@ const FormView = ({
         titleKey: 'Base_Cancel',
         type: 'custom',
         needValidation: true,
-        readonlyAfterAction: true,
         customAction: () => {
+          toggleReadonlyMode();
           handleReset();
         },
         hideIf: () => !readonlyButton,
