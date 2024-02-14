@@ -18,18 +18,19 @@
 
 export {updateAgendaItems} from './agenda';
 export {
-  isDate,
-  isDateTime,
+  diffDate,
+  getDay,
+  getEndOfDay,
+  getFullDateItems,
+  getMonth,
   getNextMonth,
   getPreviousMonth,
   getStartOfDay,
-  getEndOfDay,
-  diffDate,
-  sameDate,
   incrementDate,
-  getDay,
-  getMonth,
-  getFullDateItems,
+  isDate,
+  isDateTime,
+  ISODateTimeToDate,
+  sameDate,
 } from './date';
 export {displayItemName, displayItemFullname} from './displayers';
 export {

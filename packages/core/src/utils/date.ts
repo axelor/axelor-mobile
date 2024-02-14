@@ -132,3 +132,7 @@ export const getFullDateItems = (
     year: _date.getFullYear(),
   };
 };
+
+export const ISODateTimeToDate = (date: string): string => {
+  return date.split('T')[0];
+};
