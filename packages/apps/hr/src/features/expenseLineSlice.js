@@ -22,12 +22,12 @@ import {
   handlerApiCall,
 } from '@axelor/aos-mobile-core';
 import {
+  createExpenseLine as _createExpenseLine,
+  deleteExpenseLine as _deleteExpenseLine,
   searchExpenseLines as _searchExpenseLines,
   searchGeneralExpenseLines as _searchGeneralExpenseLines,
   searchKilometricExpenseLines as _searchKilometricExpenseLines,
-  createExpenseLine as _createExpenseLine,
   updateExpenseLine as _updateExpenseLine,
-  deleteExpenseLine as _deleteExpenseLine,
 } from '../api/expense-line-api';
 import {fetchExpenseById, updateExpense} from './expenseSlice';
 import {ExpenseLine} from '../types';
