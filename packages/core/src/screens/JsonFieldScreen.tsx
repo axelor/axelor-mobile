@@ -65,6 +65,7 @@ const JsonFieldScreen = ({route}) => {
           key: 'validateChanges',
           type: 'custom',
           useDefaultAction: true,
+          readonlyAfterAction: true,
         },
       ]}
     />

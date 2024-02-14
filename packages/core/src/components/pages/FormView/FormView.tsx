@@ -16,7 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import React, {useEffect, useMemo, useState} from 'react';
+import React, {useCallback, useEffect, useMemo, useState} from 'react';
 import {StyleSheet, View} from 'react-native';
 import {useDispatch, useSelector} from 'react-redux';
 import {
@@ -214,6 +214,15 @@ const FormView = ({
           )
         : false) || _action.disabledIf?.({objectState: object, storeState});
 
+    const originalOnPress = buttonConfig.onPress;
+
+    buttonConfig.onPress = () => {
+      originalOnPress();
+      if (readonlyButton) {
+        toggleReadonlyMode();
+      }
+    };
+
     if (_action.customComponent) {
       return React.cloneElement(_action.customComponent, {
         key: _action.key,
@@ -241,19 +250,26 @@ const FormView = ({
     setIsReadonly(currentState => !currentState);
   };
 
+  const handleReset = useCallback(() => {
+    setObject(defaultValue);
+  }, [defaultValue]);
+
   const actions: Action[] = useMemo(() => {
     return [
       {
         key: 'cancel-readonly',
         titleKey: 'Base_Cancel',
         type: 'custom',
-        customAction: () => toggleReadonlyMode(),
+        needValidation: true,
+        customAction: () => {
+          handleReset();
+        },
         hideIf: () => !readonlyButton,
         color: Colors.errorColor,
       },
       ...(_actions ?? []),
     ];
-  }, [Colors.errorColor, _actions, readonlyButton]);
+  }, [Colors.errorColor, _actions, handleReset, readonlyButton]);
 
   const handleValidate = (_action, needValidation) => {
     if (needValidation) {
@@ -270,10 +286,6 @@ const FormView = ({
       _action(object);
       resolve();
     });
-  };
-
-  const handleReset = () => {
-    setObject(defaultValue);
   };
 
   const renderItem = (item: DisplayPanel | DisplayField) => {
