@@ -19,8 +19,7 @@
 import React, {useMemo} from 'react';
 import {StyleSheet, View} from 'react-native';
 import {ObjectCard, useThemeColor} from '@axelor/aos-mobile-ui';
-import {useTranslator} from '@axelor/aos-mobile-core';
-import DatesInterval from '../DatesInterval/DatesInterval';
+import {useTranslator, PeriodDisplay} from '@axelor/aos-mobile-core';
 import TextUnit from '../TextUnit/TextUnit';
 import {Timesheet} from '../../../types';
 import {getDurationUnit} from '../../../utils';
@@ -66,7 +65,7 @@ const TimesheetCard = ({
           items: [
             {
               customComponent: (
-                <DatesInterval
+                <PeriodDisplay
                   startDate={startDate}
                   endDate={endDate}
                   style={styles.datesInterval}

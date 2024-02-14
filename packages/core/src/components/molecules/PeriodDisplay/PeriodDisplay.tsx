@@ -18,20 +18,17 @@
 
 import React, {useMemo} from 'react';
 import {StyleSheet, View} from 'react-native';
-import {
-  areObjectsEquals,
-  getFullDateItems,
-  useTranslator,
-} from '@axelor/aos-mobile-core';
 import {Text} from '@axelor/aos-mobile-ui';
+import {useTranslator} from '../../../i18n';
+import {areObjectsEquals, getFullDateItems} from '../../../utils';
 
-interface DateIntervalProps {
+interface PeriodDisplayProps {
   startDate: string;
   endDate: string;
   style?: any;
 }
 
-const DatesInterval = ({startDate, endDate, style}: DateIntervalProps) => {
+const PeriodDisplay = ({startDate, endDate, style}: PeriodDisplayProps) => {
   const I18n = useTranslator();
 
   const _startDate = useMemo(
@@ -91,4 +88,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default DatesInterval;
+export default PeriodDisplay;
