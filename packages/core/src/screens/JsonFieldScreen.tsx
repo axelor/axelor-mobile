@@ -59,6 +59,7 @@ const JsonFieldScreen = ({route}) => {
     <CustomFieldForm
       model={model}
       modelId={modelId}
+      readonlyButton={true}
       additionalActions={[
         {
           key: 'validateChanges',

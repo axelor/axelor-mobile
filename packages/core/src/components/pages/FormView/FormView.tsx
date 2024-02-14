@@ -21,10 +21,11 @@ import {StyleSheet, View} from 'react-native';
 import {useDispatch, useSelector} from 'react-redux';
 import {
   Button,
+  CircleButton,
   KeyboardAvoidingScrollView,
   Screen,
-  ToggleButton,
   WarningCard,
+  useThemeColor,
 } from '@axelor/aos-mobile-ui';
 import {useTranslator} from '../../../i18n';
 import {
@@ -64,10 +65,11 @@ interface FormProps {
 const FormView = ({
   defaultValue = {},
   formKey,
-  actions,
+  actions: _actions,
   readonlyButton = false,
 }: FormProps) => {
   const I18n = useTranslator();
+  const Colors = useThemeColor();
   const dispatch = useDispatch();
 
   const {config} = useFormConfig(formKey);
@@ -83,14 +85,6 @@ const FormView = ({
     () => sortContent(config),
     [config],
   );
-
-  const hasActions = useMemo(() => {
-    return actions && actions.length > 0;
-  }, [actions]);
-
-  const styles = useMemo(() => {
-    return getStyles(hasActions);
-  }, [hasActions]);
 
   useEffect(() => {
     mapErrorWithTranslationKey();
@@ -225,6 +219,7 @@ const FormView = ({
         key: _action.key,
         onPress: () =>
           handleValidate(buttonConfig.onPress, _action.needValidation),
+        disabled: isDisabled,
       });
     }
 
@@ -237,14 +232,28 @@ const FormView = ({
         onPress={() =>
           handleValidate(buttonConfig.onPress, _action.needValidation)
         }
-        disabled={isDisabled || isReadonly}
+        disabled={isDisabled}
       />
     );
   };
 
-  const toggleReadOnlyMode = () => {
+  const toggleReadonlyMode = () => {
     setIsReadonly(currentState => !currentState);
   };
+
+  const actions: Action[] = useMemo(() => {
+    return [
+      {
+        key: 'cancel-readonly',
+        titleKey: 'Base_Cancel',
+        type: 'custom',
+        customAction: () => toggleReadonlyMode(),
+        hideIf: () => !readonlyButton,
+        color: Colors.errorColor,
+      },
+      ...(_actions ?? []),
+    ];
+  }, [Colors.errorColor, _actions, readonlyButton]);
 
   const handleValidate = (_action, needValidation) => {
     if (needValidation) {
@@ -305,7 +314,11 @@ const FormView = ({
 
   return (
     <Screen
-      fixedItems={actions.length === 0 ? undefined : actions.map(renderAction)}
+      fixedItems={
+        actions.length === 0 || isReadonly
+          ? undefined
+          : actions.map(renderAction)
+      }
       removeSpaceOnTop={true}>
       <KeyboardAvoidingScrollView
         keyboardOffset={{
@@ -323,33 +336,29 @@ const FormView = ({
           {formContent.map(renderItem)}
         </View>
       </KeyboardAvoidingScrollView>
-      {readonlyButton && (
-        <ToggleButton
-          buttonConfig={{style: styles.readOnlyButton, iconName: 'eye'}}
-          onPress={toggleReadOnlyMode}
+      {readonlyButton && isReadonly && (
+        <CircleButton
+          style={styles.floatingButton}
+          iconName="pencil-fill"
+          onPress={toggleReadonlyMode}
         />
       )}
     </Screen>
   );
 };
 
-const getStyles = hasActions =>
-  StyleSheet.create({
-    scroll: {
-      height: null,
-    },
-    container: {
-      alignItems: 'center',
-    },
-    readOnlyButton: {
-      width: 50,
-      height: 50,
-      borderRadius: 7,
-      position: 'absolute',
-      bottom: hasActions ? 85 : 10,
-      right: 25,
-      zIndex: 10,
-    },
-  });
+const styles = StyleSheet.create({
+  scroll: {
+    height: null,
+  },
+  container: {
+    alignItems: 'center',
+  },
+  floatingButton: {
+    position: 'absolute',
+    bottom: 25,
+    right: 25,
+  },
+});
 
 export default FormView;
