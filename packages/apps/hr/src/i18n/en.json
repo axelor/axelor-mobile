@@ -123,7 +123,5 @@
   "Hr_SliceAction_CreateTimer": "create timer",
   "Hr_SliceAction_UpdateTimer": "update timer",
   "Hr_SliceAction_UpdateTimerStatus": "update timer status",
-  "Hr_SliceAction_DeleteTimer": "delete timer",
-  "Hr_SliceAction_GetNumberTimerByDate": "get the number of timers by date",
-  "Hr_SliceAction_GetNumberExpenseLineByDate": "get the number of expense lines by date"
+  "Hr_SliceAction_DeleteTimer": "delete timer"
 }

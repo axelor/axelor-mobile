@@ -123,7 +123,5 @@
   "Hr_SliceAction_CreateTimer": "création d'un chronomètre",
   "Hr_SliceAction_UpdateTimer": "mise à jour d'un chronomètre",
   "Hr_SliceAction_UpdateTimerStatus": "mise à jour du statut d'un chronomètre",
-  "Hr_SliceAction_DeleteTimer": "suppression d'un chronomètre",
-  "Hr_SliceAction_GetNumberTimerByDate": "récupération du nombre de chronomètres par date",
-  "Hr_SliceAction_GetNumberExpenseLineByDate": "récupération du nombre de lignes de feuille de temps par date"
+  "Hr_SliceAction_DeleteTimer": "suppression d'un chronomètre"
 }
