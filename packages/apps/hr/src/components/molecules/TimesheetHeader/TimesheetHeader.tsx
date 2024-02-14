@@ -23,6 +23,7 @@ import {
   useNavigation,
   useSelector,
   useTranslator,
+  PeriodDisplay,
 } from '@axelor/aos-mobile-core';
 import {
   Badge,
@@ -31,7 +32,6 @@ import {
   Text,
   useThemeColor,
 } from '@axelor/aos-mobile-ui';
-import {DatesInterval} from '../../atoms';
 import {convertPeriodTimesheet} from '../../../api/timesheet-api';
 import {Timesheet} from '../../../types';
 
@@ -77,7 +77,7 @@ const TimesheetHeader = ({timesheet, statusSelect}: TimesheetHeaderProps) => {
   return (
     <View style={styles.container}>
       <View style={styles.rowContainer}>
-        <DatesInterval
+        <PeriodDisplay
           startDate={timesheet.fromDate}
           endDate={timesheet.toDate}
         />
