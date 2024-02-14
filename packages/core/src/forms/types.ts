@@ -145,6 +145,7 @@ export interface Action {
   needValidation?: boolean;
   needRequiredFields?: boolean;
   customComponent?: ReactElement<any>;
+  readonlyAfterAction?: boolean;
 }
 
 interface ActionProps {

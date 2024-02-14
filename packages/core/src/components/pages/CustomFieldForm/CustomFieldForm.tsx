@@ -48,6 +48,7 @@ interface CustomFieldFormProps {
   fieldType?: string;
   additionalActions?: JsonAction[];
   readonly?: boolean;
+  readonlyButton?: boolean;
 }
 
 const CustomFieldForm = ({
@@ -56,6 +57,7 @@ const CustomFieldForm = ({
   fieldType = null,
   additionalActions = [],
   readonly = false,
+  readonlyButton = false,
 }: CustomFieldFormProps) => {
   const Colors = useThemeColor();
   const dispatch = useDispatch();
@@ -123,6 +125,7 @@ const CustomFieldForm = ({
       actions={_additionalActions}
       formKey={FORM_KEY}
       defaultValue={attrsValues == null ? {...defaults} : attrsValues}
+      readonlyButton={readonlyButton}
     />
   );
 };
