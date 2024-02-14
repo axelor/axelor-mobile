@@ -16,14 +16,16 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import React, {useEffect, useMemo, useState} from 'react';
+import React, {useCallback, useEffect, useMemo, useState} from 'react';
 import {StyleSheet, View} from 'react-native';
 import {useDispatch, useSelector} from 'react-redux';
 import {
   Button,
+  CircleButton,
   KeyboardAvoidingScrollView,
   Screen,
   WarningCard,
+  useThemeColor,
 } from '@axelor/aos-mobile-ui';
 import {useTranslator} from '../../../i18n';
 import {
@@ -57,10 +59,17 @@ interface FormProps {
   defaultValue?: any;
   formKey: string;
   actions: Action[];
+  readonlyButton?: boolean;
 }
 
-const FormView = ({defaultValue = {}, formKey, actions}: FormProps) => {
+const FormView = ({
+  defaultValue = {},
+  formKey,
+  actions: _actions,
+  readonlyButton = false,
+}: FormProps) => {
   const I18n = useTranslator();
+  const Colors = useThemeColor();
   const dispatch = useDispatch();
 
   const {config} = useFormConfig(formKey);
@@ -70,6 +79,7 @@ const FormView = ({defaultValue = {}, formKey, actions}: FormProps) => {
 
   const [object, setObject] = useState(defaultValue);
   const [errors, setErrors] = useState<any[]>();
+  const [isReadonly, setIsReadonly] = useState(readonlyButton);
 
   const formContent: (DisplayPanel | DisplayField)[] = useMemo(
     () => sortContent(config),
@@ -204,11 +214,21 @@ const FormView = ({defaultValue = {}, formKey, actions}: FormProps) => {
           )
         : false) || _action.disabledIf?.({objectState: object, storeState});
 
+    const originalOnPress = buttonConfig.onPress;
+
+    buttonConfig.onPress = () => {
+      originalOnPress();
+      if (_action.readonlyAfterAction) {
+        toggleReadonlyMode();
+      }
+    };
+
     if (_action.customComponent) {
       return React.cloneElement(_action.customComponent, {
         key: _action.key,
         onPress: () =>
           handleValidate(buttonConfig.onPress, _action.needValidation),
+        disabled: isDisabled,
       });
     }
 
@@ -225,6 +245,32 @@ const FormView = ({defaultValue = {}, formKey, actions}: FormProps) => {
       />
     );
   };
+
+  const toggleReadonlyMode = () => {
+    setIsReadonly(currentState => !currentState);
+  };
+
+  const handleReset = useCallback(() => {
+    setObject(defaultValue);
+  }, [defaultValue]);
+
+  const actions: Action[] = useMemo(() => {
+    return [
+      {
+        key: 'cancel-readonly',
+        titleKey: 'Base_Cancel',
+        type: 'custom',
+        needValidation: true,
+        customAction: () => {
+          toggleReadonlyMode();
+          handleReset();
+        },
+        hideIf: () => !readonlyButton,
+        color: Colors.errorColor,
+      },
+      ...(_actions ?? []),
+    ];
+  }, [Colors.errorColor, _actions, handleReset, readonlyButton]);
 
   const handleValidate = (_action, needValidation) => {
     if (needValidation) {
@@ -243,10 +289,6 @@ const FormView = ({defaultValue = {}, formKey, actions}: FormProps) => {
     });
   };
 
-  const handleReset = () => {
-    setObject(defaultValue);
-  };
-
   const renderItem = (item: DisplayPanel | DisplayField) => {
     if (isField(item)) {
       return (
@@ -255,7 +297,11 @@ const FormView = ({defaultValue = {}, formKey, actions}: FormProps) => {
           handleFieldChange={handleFieldChange}
           _field={item as DisplayField}
           object={object}
-          globalReadonly={config.readonlyIf}
+          globalReadonly={() =>
+            isReadonly ||
+            (config.readonlyIf &&
+              config.readonlyIf({objectState: object, storeState}))
+          }
           formContent={getConfigItems(config)}
         />
       );
@@ -281,7 +327,11 @@ const FormView = ({defaultValue = {}, formKey, actions}: FormProps) => {
 
   return (
     <Screen
-      fixedItems={actions.length === 0 ? undefined : actions.map(renderAction)}
+      fixedItems={
+        actions.length === 0 || isReadonly
+          ? undefined
+          : actions.map(renderAction)
+      }
       removeSpaceOnTop={true}>
       <KeyboardAvoidingScrollView
         keyboardOffset={{
@@ -299,6 +349,13 @@ const FormView = ({defaultValue = {}, formKey, actions}: FormProps) => {
           {formContent.map(renderItem)}
         </View>
       </KeyboardAvoidingScrollView>
+      {readonlyButton && isReadonly && (
+        <CircleButton
+          style={styles.floatingButton}
+          iconName="pencil-fill"
+          onPress={toggleReadonlyMode}
+        />
+      )}
     </Screen>
   );
 };
@@ -309,6 +366,11 @@ const styles = StyleSheet.create({
   },
   container: {
     alignItems: 'center',
+  },
+  floatingButton: {
+    position: 'absolute',
+    bottom: 25,
+    right: 25,
   },
 });
 
