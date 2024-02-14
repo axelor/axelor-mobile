@@ -88,6 +88,7 @@
   "Crm_EndDate": "Date de fin",
   "Crm_AllDay": "Toute la journée ?",
   "Crm_Location": "Emplacement",
+  "Crm_Tours": "Tournées",
   "Crm_SliceAction_FetchCatalog": "récupération des catalogues",
   "Crm_SliceAction_FetchCatalogType": "récupération des types de catalogue",
   "Crm_SliceAction_FetchClient": "récupération des clients",
