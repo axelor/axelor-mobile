@@ -24,7 +24,6 @@ import {
 import {
   createExpenseLine as _createExpenseLine,
   deleteExpenseLine as _deleteExpenseLine,
-  getNumberExpenseLineByDate as _getNumberExpenseLineByDate,
   searchExpenseLines as _searchExpenseLines,
   searchGeneralExpenseLines as _searchGeneralExpenseLines,
   searchKilometricExpenseLines as _searchKilometricExpenseLines,
@@ -68,19 +67,6 @@ export const searchGeneralExpenseLines = createAsyncThunk(
       action: 'Hr_SliceAction_SearchGeneralExpenseLines',
       getState,
       responseOptions: {isArrayResponse: true, resturnTotalWithData: true},
-    });
-  },
-);
-
-export const getNumberExpenseLineByDate = createAsyncThunk(
-  'expenseLine/getNumberExpenseLineByDate',
-  async function (data, {getState}) {
-    return handlerApiCall({
-      fetchFunction: _getNumberExpenseLineByDate,
-      data,
-      action: 'Hr_SliceAction_GetNumberExpenseLineByDate',
-      getState,
-      responseOptions: {returnTotal: true},
     });
   },
 );
@@ -188,8 +174,6 @@ const initialState = {
   isListEndKilometricExpenseLine: true,
   kilometricExpenseLineList: [],
   totalNumberExpenseKilomectric: 0,
-
-  numberExpenseLineDates: {},
 };
 
 const expenseLineSlice = createSlice({
@@ -264,9 +248,6 @@ const expenseLineSlice = createSlice({
       if (action?.meta?.arg?.expenseId == null) {
         state.expenseLineList = action.payload;
       }
-    });
-    builder.addCase(getNumberExpenseLineByDate.fulfilled, (state, action) => {
-      state.numberExpenseLineDates[action?.meta?.arg?.date] = action.payload;
     });
   },
 });

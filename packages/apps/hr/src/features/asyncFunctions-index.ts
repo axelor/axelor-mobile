@@ -23,7 +23,6 @@ export {
   createExpenseLine,
   deleteExpenseLine,
   fetchExpenseLine,
-  getNumberExpenseLineByDate,
   searchGeneralExpenseLines,
   searchKilometricExpenseLines,
   updateExpenseLine,
@@ -61,7 +60,6 @@ export {
   fetchTimer,
   fetchTimerById,
   fetchTimerDateInterval,
-  getNumberTimerByDate,
   updateTimer,
   updateTimerStatus,
 } from './timerSlice';

@@ -27,7 +27,6 @@ import {
   fetchActiveTimer as _fetchActiveTimer,
   fetchTimer as _fetchTimer,
   fetchTimerById as _fetchTimerById,
-  getNumberTimerByDate as _getNumberTimerByDate,
   updateTimer as _updateTimer,
   updateTimerStatus as _updateTimerStatus,
 } from '../api/timer-api';
@@ -82,19 +81,6 @@ export const fetchActiveTimer = createAsyncThunk(
       responseOptions: {isArrayResponse: false},
     }).then(res => {
       dispatch(fetchTimerById({timerId: res.id}));
-    });
-  },
-);
-
-export const getNumberTimerByDate = createAsyncThunk(
-  'hr_timer/getNumberTimerByDate',
-  async function (data, {getState}) {
-    return handlerApiCall({
-      fetchFunction: _getNumberTimerByDate,
-      data,
-      action: 'Hr_SliceAction_GetNumberTimerByDate',
-      getState,
-      responseOptions: {returnTotal: true},
     });
   },
 );
@@ -188,8 +174,6 @@ const initialState = {
   loadingOneTimer: true,
   loadingCreation: false,
   timer: {},
-
-  numberTimerDates: {},
 };
 
 const timerSlice = createSlice({
@@ -233,9 +217,6 @@ const timerSlice = createSlice({
       if (state.loadingCreation) {
         state.loadingCreation = false;
       }
-    });
-    builder.addCase(getNumberTimerByDate.fulfilled, (state, action) => {
-      state.numberTimerDates[action?.meta?.arg?.date] = action.payload;
     });
   },
 });

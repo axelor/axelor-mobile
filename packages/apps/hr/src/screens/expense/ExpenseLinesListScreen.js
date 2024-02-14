@@ -16,78 +16,36 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import React, {useCallback, useEffect, useMemo, useState} from 'react';
-import {StyleSheet, View} from 'react-native';
+import React, {useCallback, useEffect, useState} from 'react';
 import {
   DoubleIcon,
   GroupByScrollList,
-  NumberBubble,
   Screen,
   useThemeColor,
 } from '@axelor/aos-mobile-ui';
 import {
   CameraButton,
-  DateDisplay,
   headerActionsProvider,
   useDispatch,
   useSelector,
   useTranslator,
 } from '@axelor/aos-mobile-core';
+import {fetchExpenseLine} from '../../features/expenseLineSlice';
 import {
-  fetchExpenseLine,
-  getNumberExpenseLineByDate,
-} from '../../features/expenseLineSlice';
-import {
+  DateSeparator,
   ExpenseAddPopup,
   ExpenseLineDetailCard,
   ExpenseLineValidationButton,
 } from '../../components';
-
-const CustomTopSeparator = ({title: date, numberItems, isFirstItem}) => {
-  const Colors = useThemeColor();
-
-  const styles = useMemo(() => getSeparatorStyles(isFirstItem), [isFirstItem]);
-
-  return (
-    <View style={styles.separatorContainer}>
-      <DateDisplay date={date} />
-      <NumberBubble
-        style={styles.number}
-        number={numberItems}
-        color={Colors.inverseColor}
-        isNeutralBackground={true}
-      />
-    </View>
-  );
-};
-
-const getSeparatorStyles = isFirstItem =>
-  StyleSheet.create({
-    separatorContainer: {
-      flexDirection: 'row',
-      width: '90%',
-      alignSelf: 'center',
-      justifyContent: 'flex-start',
-      marginTop: isFirstItem ? 5 : 15,
-      marginBottom: 2,
-    },
-    number: {
-      marginLeft: 10,
-    },
-  });
+import {getNumberExpenseLineByDateApi} from '../../api';
 
 const ExpenseLinesListScreen = ({navigation}) => {
   const Colors = useThemeColor();
   const I18n = useTranslator();
   const dispatch = useDispatch();
 
-  const {
-    expenseLineList,
-    loadingExpenseLine,
-    moreLoading,
-    isListEnd,
-    numberExpenseLineDates,
-  } = useSelector(state => state.expenseLine);
+  const {expenseLineList, loadingExpenseLine, moreLoading, isListEnd} =
+    useSelector(state => state.expenseLine);
   const {userId} = useSelector(state => state.auth);
 
   const [isSelectionMode, setIsSelectionMode] = useState(false);
@@ -208,20 +166,12 @@ const ExpenseLinesListScreen = ({navigation}) => {
         separatorCondition={(prevItem, currentItem) =>
           prevItem.expenseDate > currentItem.expenseDate
         }
-        fetchTopIndicator={currentItem => {
-          const currentItemDate = currentItem.expenseDate;
-          dispatch(
-            getNumberExpenseLineByDate({
-              date: currentItemDate,
-              userId: userId,
-            }),
-          );
-          return {
-            title: currentItemDate,
-            numberItems: numberExpenseLineDates[currentItemDate],
-          };
-        }}
-        customTopSeparator={<CustomTopSeparator />}
+        fetchTopIndicator={currentItem => ({
+          title: currentItem.expenseDate,
+        })}
+        customTopSeparator={
+          <DateSeparator fetchNumberOfItems={getNumberExpenseLineByDateApi} />
+        }
       />
       {!isSelectionMode && (
         <CameraButton
