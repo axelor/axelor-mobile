@@ -19,8 +19,8 @@
 import React, {useCallback, useEffect, useState} from 'react';
 import {
   DoubleIcon,
+  GroupByScrollList,
   Screen,
-  ScrollList,
   useThemeColor,
 } from '@axelor/aos-mobile-ui';
 import {
@@ -32,10 +32,12 @@ import {
 } from '@axelor/aos-mobile-core';
 import {fetchExpenseLine} from '../../features/expenseLineSlice';
 import {
+  DateSeparator,
   ExpenseAddPopup,
   ExpenseLineDetailCard,
   ExpenseLineValidationButton,
 } from '../../components';
+import {getNumberExpenseLineByDateApi} from '../../api';
 
 const ExpenseLinesListScreen = ({navigation}) => {
   const Colors = useThemeColor();
@@ -139,7 +141,7 @@ const ExpenseLinesListScreen = ({navigation}) => {
           />
         )
       }>
-      <ScrollList
+      <GroupByScrollList
         loadingList={loadingExpenseLine}
         data={expenseLineList}
         disabledRefresh={isSelectionMode}
@@ -161,6 +163,15 @@ const ExpenseLinesListScreen = ({navigation}) => {
         moreLoading={moreLoading}
         isListEnd={isListEnd}
         translator={I18n.t}
+        separatorCondition={(prevItem, currentItem) =>
+          prevItem.expenseDate > currentItem.expenseDate
+        }
+        fetchTopIndicator={currentItem => ({
+          title: currentItem.expenseDate,
+        })}
+        customTopSeparator={
+          <DateSeparator fetchNumberOfItems={getNumberExpenseLineByDateApi} />
+        }
       />
       {!isSelectionMode && (
         <CameraButton

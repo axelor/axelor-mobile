@@ -85,6 +85,18 @@ const createKilomectricExpenseLineCriteria = (searchValue, expenseId) => {
   return criteria;
 };
 
+const createNumberExpenseLineByDateCriteria = (userId, date) => {
+  const criteria = createExpenseLinesCriteria(null, userId);
+
+  criteria.push({
+    fieldName: 'expenseDate',
+    operator: '=',
+    value: date,
+  });
+
+  return criteria;
+};
+
 export async function searchExpenseLines({
   searchValue = null,
   userId,
@@ -122,6 +134,16 @@ export async function searchKilometricExpenseLines({
     criteria: createKilomectricExpenseLineCriteria(searchValue, expenseId),
     fieldKey: 'hr_expenseLines',
     page: page,
+  });
+}
+
+export async function getNumberExpenseLineByDate({userId, date}) {
+  return createStandardSearch({
+    model: 'com.axelor.apps.hr.db.ExpenseLine',
+    criteria: createNumberExpenseLineByDateCriteria(userId, date),
+    fieldKey: 'hr_expenseLines',
+    numberElementsByPage: null,
+    page: 0,
   });
 }
 

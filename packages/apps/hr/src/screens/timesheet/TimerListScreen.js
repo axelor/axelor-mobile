@@ -17,15 +17,22 @@
  */
 
 import React, {useCallback, useState} from 'react';
-import {useDispatch, useSelector, useTranslator} from '@axelor/aos-mobile-core';
-import {Screen, ScrollList} from '@axelor/aos-mobile-ui';
 import {
+  ISODateTimeToDate,
+  useDispatch,
+  useSelector,
+  useTranslator,
+} from '@axelor/aos-mobile-core';
+import {GroupByScrollList, Screen} from '@axelor/aos-mobile-ui';
+import {
+  DateSeparator,
   TimeDetailCard,
   TimerDeclareButton,
   TimerListAlert,
 } from '../../components';
 import {deleteTimer, fetchTimer} from '../../features/timerSlice';
 import {formatSecondsToHours} from '../../utils';
+import {getNumberTimerByDateApi} from '../../api';
 
 const TimerListScreen = ({navigation}) => {
   const I18n = useTranslator();
@@ -48,7 +55,7 @@ const TimerListScreen = ({navigation}) => {
   return (
     <Screen
       fixedItems={<TimerDeclareButton setIsAlertVisible={setIsAlertVisible} />}>
-      <ScrollList
+      <GroupByScrollList
         loadingList={loadingTimer}
         data={timerList}
         renderItem={({item}) => (
@@ -74,6 +81,16 @@ const TimerListScreen = ({navigation}) => {
         moreLoading={moreLoading}
         isListEnd={isListEnd}
         translator={I18n.t}
+        separatorCondition={(prevItem, currentItem) =>
+          ISODateTimeToDate(prevItem.startDateTime) >
+          ISODateTimeToDate(currentItem.startDateTime)
+        }
+        fetchTopIndicator={currentItem => ({
+          title: ISODateTimeToDate(currentItem.startDateTime),
+        })}
+        customTopSeparator={
+          <DateSeparator fetchNumberOfItems={getNumberTimerByDateApi} />
+        }
       />
       <TimerListAlert
         isAlertVisible={isAlertVisible}
