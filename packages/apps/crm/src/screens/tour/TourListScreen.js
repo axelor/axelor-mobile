@@ -22,7 +22,6 @@ import {
   HeaderContainer,
   Screen,
   ScrollList,
-  Text,
   ToggleButton,
   useThemeColor,
 } from '@axelor/aos-mobile-ui';
@@ -33,6 +32,7 @@ import {
   useTranslator,
 } from '@axelor/aos-mobile-core';
 import {searchTour} from '../../features/tourSlice';
+import {TourCard} from '../../components';
 
 const TourListScreen = ({navigation}) => {
   const Colors = useThemeColor();
@@ -92,7 +92,13 @@ const TourListScreen = ({navigation}) => {
       <ScrollList
         loadingList={loadingTourList}
         data={tourList}
-        renderItem={({item}) => <Text>test</Text>}
+        renderItem={({item}) => (
+          <TourCard
+            name={item.name}
+            entryDateTime={item.date}
+            salesperson={item.salespersonUser?.fullName}
+          />
+        )}
         fetchData={fetchTourAPI}
         moreLoading={moreLoading}
         isListEnd={isListEnd}
