@@ -35,7 +35,6 @@ import {
 } from '../../features/onlineSlice';
 import {ApiProviderConfig} from '../../apiProviders/config';
 import {TranslationsButton} from '../components';
-import {WebView} from '../../components';
 
 const SettingsScreen = ({children}) => {
   const I18n = useTranslator();
@@ -123,7 +122,6 @@ const SettingsScreen = ({children}) => {
         <Text>{`${I18n.t('Base_ConnectedOn')}:`}</Text>
         <Text numberOfLines={1}>{baseUrl}</Text>
       </View>
-      <WebView queryParams="action.timesheet.view.my.timesheet/list/1" />
     </Screen>
   );
 };
