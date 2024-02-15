@@ -96,7 +96,7 @@ const EventCard = ({
   );
 };
 
-const getStyles = (color: {}) =>
+const getStyles = (color: string) =>
   StyleSheet.create({
     border: {
       borderLeftWidth: 7,
@@ -107,26 +107,24 @@ const getStyles = (color: {}) =>
 const styles = StyleSheet.create({
   container: {
     flexDirection: 'row',
-    alignItems: 'center',
-    borderLeftWidth: 7,
-    borderLeftColor: 'red',
     justifyContent: 'space-between',
-    width: '90%',
+    alignItems: 'center',
+    paddingLeft: 15,
+    paddingRight: 20,
   },
   containerChild: {
     flexDirection: 'row',
     alignItems: 'center',
   },
   containerLeft: {
+    flex: 1,
     flexDirection: 'column',
     alignItems: 'center',
-    flex: 2,
   },
   containerMid: {
+    flex: 2,
     flexDirection: 'column',
     alignItems: 'center',
-    marginHorizontal: '7%',
-    flex: 2,
   },
   containerRight: {
     flexDirection: 'column',
