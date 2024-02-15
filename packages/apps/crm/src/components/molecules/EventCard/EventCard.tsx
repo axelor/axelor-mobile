@@ -57,8 +57,6 @@ const EventCard = ({
     [I18n, startDate],
   );
 
-  const day = startDate.getDate();
-
   const startTime = useMemo(() => formatTime(startDate), [startDate]);
   const endTime = useMemo(() => formatTime(endDate), [endDate]);
 
@@ -72,7 +70,7 @@ const EventCard = ({
         <View style={styles.containerChild}>
           <View style={styles.containerLeft}>
             <Text>{_date.day}</Text>
-            <Text style={styles.textNumber}>{day}</Text>
+            <Text style={styles.textNumber}>{_date.date}</Text>
             <Text>{_date.month}</Text>
           </View>
           <View style={styles.containerMid}>
