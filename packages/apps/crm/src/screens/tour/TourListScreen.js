@@ -16,15 +16,106 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import React from 'react';
-import {Screen, Text} from '@axelor/aos-mobile-ui';
+import React, {useCallback, useState} from 'react';
+import {StyleSheet, View} from 'react-native';
+import {
+  HeaderContainer,
+  Screen,
+  ScrollList,
+  Text,
+  ToggleButton,
+  useThemeColor,
+} from '@axelor/aos-mobile-ui';
+import {
+  DateInput,
+  useDispatch,
+  useSelector,
+  useTranslator,
+} from '@axelor/aos-mobile-core';
+import {searchTour} from '../../features/tourSlice';
 
 const TourListScreen = ({navigation}) => {
+  const Colors = useThemeColor();
+  const dispatch = useDispatch();
+  const I18n = useTranslator();
+
+  const {userId} = useSelector(state => state.auth);
+  const {tourList, loadingTourList, moreLoading, isListEnd} = useSelector(
+    state => state.tour,
+  );
+
+  const [isSalesFilter, setIsSaleFilter] = useState(false);
+  const [dateFilter, setDateFilter] = useState(null);
+
+  const fetchTourAPI = useCallback(
+    (page = 0) => {
+      dispatch(
+        searchTour({
+          page: page,
+          isSalesperson: isSalesFilter,
+          userId: userId,
+          date: dateFilter,
+        }),
+      );
+    },
+    [dispatch, isSalesFilter, userId, dateFilter],
+  );
+
+  console.log('tourList', tourList);
+
   return (
     <Screen removeSpaceOnTop={true}>
-      <Text>Test</Text>
+      <HeaderContainer
+        expandableFilter={false}
+        fixedItems={
+          <View style={styles.headerContainer}>
+            <ToggleButton
+              isActive={isSalesFilter}
+              onPress={() => setIsSaleFilter(current => !current)}
+              activeColor={Colors.successColor}
+              buttonConfig={{
+                iconName: 'person-fill',
+                width: '10%',
+                style: styles.toggleButton,
+              }}
+            />
+            <DateInput
+              style={styles.dateInput}
+              nullable={true}
+              onDateChange={setDateFilter}
+              mode="date"
+              popup
+            />
+          </View>
+        }
+      />
+      <ScrollList
+        loadingList={loadingTourList}
+        data={tourList}
+        renderItem={({item}) => <Text>test</Text>}
+        fetchData={fetchTourAPI}
+        moreLoading={moreLoading}
+        isListEnd={isListEnd}
+        translator={I18n.t}
+      />
     </Screen>
   );
 };
+
+const styles = StyleSheet.create({
+  headerContainer: {
+    width: '90%',
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignSelf: 'center',
+    alignItems: 'center',
+  },
+  toggleButton: {
+    height: 40,
+  },
+  dateInput: {
+    width: '85%',
+  },
+});
 
 export default TourListScreen;

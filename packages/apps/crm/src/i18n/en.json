@@ -130,5 +130,6 @@
   "Crm_SliceAction_GetPartnerOpportunities": "get partner's opportunities",
   "Crm_SliceAction_SearchPartner": "search partner",
   "Crm_SliceAction_CreateEvent": "create event",
-  "Crm_SliceAction_UpdateEvent": "update event"
+  "Crm_SliceAction_UpdateEvent": "update event",
+  "Crm_SliceAction_FetchTour": "fetch tour"
 }

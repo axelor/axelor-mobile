@@ -203,4 +203,9 @@ export const crm_modelAPI: ObjectFields = {
       .of(schemaContructor.subObject()),
     leadScoringSelect: schemaContructor.number(),
   }),
+  crm_Tour: schemaContructor.object({
+    name: schemaContructor.string(),
+    salespersonUser: schemaContructor.subObject(),
+    date: schemaContructor.string(),
+  }),
 };

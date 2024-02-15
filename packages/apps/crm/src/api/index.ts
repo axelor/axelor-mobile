@@ -74,3 +74,4 @@ export {
   updateProspect as updateProspectApi,
   updateProspectScoring,
 } from './prospect-api';
+export {searchTour as searchTourApi} from './tour-api';
