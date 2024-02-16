@@ -16,9 +16,13 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import React, {useMemo} from 'react';
+import React, {useCallback, useMemo} from 'react';
 import {StyleSheet, View} from 'react-native';
-import {useSelector} from '@axelor/aos-mobile-core';
+import {
+  showToastMessage,
+  useSelector,
+  useTranslator,
+} from '@axelor/aos-mobile-core';
 import {Button, useThemeColor} from '@axelor/aos-mobile-ui';
 import {ControlEntry} from '../../../types';
 import {NavigationButton} from '../../atoms';
@@ -45,8 +49,12 @@ const ControlEntryFormButtons = ({
   onPress,
 }: ControlEntryFormButtonsProps) => {
   const Colors = useThemeColor();
+  const I18n = useTranslator();
 
   const {controlEntry} = useSelector((state: any) => state.controlEntry);
+  const {sampleLine} = useSelector(
+    (state: any) => state.controlEntrySampleLine,
+  );
 
   const isConformityButton = useMemo(
     () =>
@@ -60,17 +68,42 @@ const ControlEntryFormButtons = ({
     [mode],
   );
 
+  const handleNotControlled = useCallback(() => {
+    if (sampleLine.resultSelect === ControlEntry.sampleResult.NotControlled) {
+      showToastMessage({
+        type: ControlEntry.getSampleResultType(
+          ControlEntry.sampleResult.NotControlled,
+        ),
+        position: 'bottom',
+        bottomOffset: 20,
+        text1: `${I18n.t('Quality_ConformityResult')}`,
+        text2: I18n.t('Quality_ConformityResultDetails', {
+          result: ControlEntry.getSampleResultTitle(
+            ControlEntry.sampleResult.NotControlled,
+            I18n,
+          ),
+        }),
+      });
+    }
+  }, [I18n, sampleLine.resultSelect]);
+
   return (
     <View style={styles.container}>
       <NavigationButton
         position="left"
-        onPress={handlePrevious}
+        onPress={() => {
+          handleNotControlled();
+          handlePrevious();
+        }}
         icon={isFirstItem ? categoryIcon : subCategoryIcon}
         disabled={!canPrevious}
       />
       <NavigationButton
         position="right"
-        onPress={handleNext}
+        onPress={() => {
+          handleNotControlled();
+          handleNext();
+        }}
         icon={isLastItem ? categoryIcon : subCategoryIcon}
         disabled={!canNext}
       />

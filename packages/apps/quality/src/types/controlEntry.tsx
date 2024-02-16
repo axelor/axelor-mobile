@@ -132,8 +132,9 @@ class ControlEntry {
       case this.sampleResult.Compliant:
         return 'success';
       case this.sampleResult.NotCompliant:
-      case this.sampleResult.NotControlled:
         return 'error';
+      case this.sampleResult.NotControlled:
+        return 'neutral';
       default:
         console.warn(
           `Sample result provided with value ${sampleResult} is not supported by control entry`,

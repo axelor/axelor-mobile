@@ -75,6 +75,16 @@ const Toast = () => {
         text2NumberOfLines={3}
       />
     ),
+    neutral: (props: any) => (
+      <BaseToast
+        {...props}
+        style={[styles.toast, styles.neutral]}
+        contentContainerStyle={styles.toastContent}
+        text1Style={styles.title}
+        text2Style={styles.detail}
+        text2NumberOfLines={3}
+      />
+    ),
   };
 
   return (
@@ -118,6 +128,9 @@ const getStyles = (Colors: ThemeColors, alertColor: string) =>
     },
     success: {
       borderLeftColor: Colors.successColor.background,
+    },
+    neutral: {
+      borderLeftColor: Colors.secondaryColor.background,
     },
     toastContent: {
       paddingVertical: 5,
