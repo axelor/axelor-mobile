@@ -3,6 +3,29 @@ title: 7.1.0
 tags: Changelog
 ---
 
+## [7.1.7] (2024-02-16)
+
+### @axelor/aos-mobile-crm
+
+#### Fixes
+
+- Event card: improve style to avoid display issue
+
+### @axelor/aos-mobile-core
+
+#### Fixes
+
+- Drawer: issue on menu web configs management
+- Header action provider: keep list of callbacks for refresh to avoid issue when multiples uses of hook
+- Connection header: use refs for intervals to avoid duplication
+- MailMessageView: avoid keyboard display issue on Android
+
+### @axelor/aos-mobile-ui
+
+#### Fixes
+
+- HtmlInput: add text color as default icons color to avoid theme issues
+
 ## [7.1.6] (2024-01-09)
 
 ### @axelor/aos-mobile-helpdesk
@@ -341,6 +364,7 @@ This update breaks the compatability with AOS Stock module under version 7.1 due
 - Add number decimal digit config management system
 - Manage multilines input with auto height resize on FormInput
 
+[7.1.7]: https://github.com/axelor/axelor-mobile/compare/7.1.6...7.1.7
 [7.1.6]: https://github.com/axelor/axelor-mobile/compare/7.1.5...7.1.6
 [7.1.5]: https://github.com/axelor/axelor-mobile/compare/7.1.4...7.1.5
 [7.1.4]: https://github.com/axelor/axelor-mobile/compare/7.1.3...7.1.4
