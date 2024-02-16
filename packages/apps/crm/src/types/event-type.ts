@@ -51,7 +51,10 @@ class EventType {
     }
   };
 
-  static getStatusBorderColor = (status: number, Colors: ThemeColors) => {
+  static getStatusBorderColor = (
+    status: number,
+    Colors: ThemeColors,
+  ): string => {
     switch (status) {
       case this.status.Planned:
         return Colors.secondaryColor.background;
@@ -63,7 +66,7 @@ class EventType {
         console.warn(
           `Status provided with value ${status} is not supported by Event`,
         );
-        return {};
+        return null;
     }
   };
 
