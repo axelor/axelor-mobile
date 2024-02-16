@@ -23,11 +23,7 @@ import DrawerToggleButton from './DrawerToggleButton';
 import BackIcon from './BackIcon';
 import {useTranslator} from '../../i18n';
 import {HeaderOptionsMenu} from '../../components';
-import {
-  fetchOptionsOfHeaderKey,
-  headerActionsProvider,
-  useHeaderActions,
-} from '../../header';
+import {headerActionsProvider, useHeaderActions} from '../../header';
 
 const TIME_BEFORE_RETRY = 500;
 
@@ -37,22 +33,16 @@ const Header = ({mainScreen, title, actionID = null, shadedHeader = true}) => {
 
   let timeOutRequestCall = useRef();
 
-  const {headers} = useHeaderActions();
+  const {headers} = useHeaderActions(actionID);
 
   const [options, setOptions] = useState();
 
   useEffect(() => {
-    setOptions(fetchOptionsOfHeaderKey(headers, actionID));
-  }, [actionID, headers]);
+    setOptions(headers);
+  }, [headers]);
 
   const handleTimeOut = useCallback(() => {
-    setOptions(_current => {
-      if (_current == null) {
-        return headerActionsProvider.getHeaderOptions(actionID);
-      }
-
-      return _current;
-    });
+    setOptions(headerActionsProvider.getHeaderOptions(actionID));
   }, [actionID]);
 
   useEffect(() => {
