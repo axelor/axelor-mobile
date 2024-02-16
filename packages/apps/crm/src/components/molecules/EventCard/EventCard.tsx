@@ -19,7 +19,7 @@
 import React, {useMemo} from 'react';
 import {StyleSheet, TouchableOpacity, View} from 'react-native';
 import {Card, Icon, Text, useThemeColor, Badge} from '@axelor/aos-mobile-ui';
-import {useTranslator} from '@axelor/aos-mobile-core';
+import {getFullDateItems, useTranslator} from '@axelor/aos-mobile-core';
 import EventType from '../../../types/event-type';
 
 interface EventCardProps {
@@ -31,16 +31,6 @@ interface EventCardProps {
   eventName: string;
   onPress: () => void;
 }
-
-const dayOfWeek = [
-  'Crm_Sun',
-  'Crm_Mon',
-  'Crm_Tue',
-  'Crm_Wed',
-  'Crm_Thu',
-  'Crm_Fri',
-  'Crm_Sat',
-];
 
 const formatTime = (date: Date): string => {
   const hours = date.getHours();
@@ -62,8 +52,10 @@ const EventCard = ({
   const Colors = useThemeColor();
   const I18n = useTranslator();
 
-  const dayString = dayOfWeek[startDate.getDay()];
-  const day = startDate.getDate();
+  const _date = useMemo(
+    () => getFullDateItems(startDate.toISOString(), I18n),
+    [I18n, startDate],
+  );
 
   const startTime = useMemo(() => formatTime(startDate), [startDate]);
   const endTime = useMemo(() => formatTime(endDate), [endDate]);
@@ -77,8 +69,9 @@ const EventCard = ({
       <Card style={[styles.container, borderStyle, style]}>
         <View style={styles.containerChild}>
           <View style={styles.containerLeft}>
-            <Text style={styles.textNumber}>{day}</Text>
-            <Text>{I18n.t(dayString)}</Text>
+            <Text>{_date.day}</Text>
+            <Text style={styles.textNumber}>{_date.date}</Text>
+            <Text>{_date.month}</Text>
           </View>
           <View style={styles.containerMid}>
             <Text>{startTime}</Text>
@@ -103,7 +96,7 @@ const EventCard = ({
   );
 };
 
-const getStyles = (color: {}) =>
+const getStyles = (color: string) =>
   StyleSheet.create({
     border: {
       borderLeftWidth: 7,
@@ -114,26 +107,24 @@ const getStyles = (color: {}) =>
 const styles = StyleSheet.create({
   container: {
     flexDirection: 'row',
-    alignItems: 'center',
-    borderLeftWidth: 7,
-    borderLeftColor: 'red',
     justifyContent: 'space-between',
-    width: '90%',
+    alignItems: 'center',
+    paddingLeft: 15,
+    paddingRight: 20,
   },
   containerChild: {
     flexDirection: 'row',
     alignItems: 'center',
   },
   containerLeft: {
+    flex: 1,
     flexDirection: 'column',
     alignItems: 'center',
-    flex: 1,
   },
   containerMid: {
+    flex: 2,
     flexDirection: 'column',
     alignItems: 'center',
-    marginHorizontal: '7%',
-    flex: 1,
   },
   containerRight: {
     flexDirection: 'column',
