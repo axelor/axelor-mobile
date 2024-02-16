@@ -3,6 +3,29 @@ title: 7.0.0
 tags: Changelog
 ---
 
+## [7.0.10] (2024-02-16)
+
+### @axelor/aos-mobile-crm
+
+#### Fixes
+
+- Event card: improve style to avoid display issue
+
+### @axelor/aos-mobile-core
+
+#### Fixes
+
+- Drawer: issue on menu web configs management
+- Header action provider: keep list of callbacks for refresh to avoid issue when multiples uses of hook
+- Connection header: use refs for intervals to avoid duplication
+- MailMessageView: avoid keyboard display issue on Android
+
+### @axelor/aos-mobile-ui
+
+#### Fixes
+
+- HtmlInput: add text color as default icons color to avoid theme issues
+
 ## [7.0.9] (2024-01-09)
 
 ### @axelor/aos-mobile-crm
@@ -431,6 +454,7 @@ The project architecture has also been updated, the example folder has been expl
 - Replace ChipSelect by MultiValuePicker on list screens
 - Add search bar details pop up on screens: add empowered searchBar for objects
 
+[7.0.10]: https://github.com/axelor/axelor-mobile/compare/7.0.9...7.0.10
 [7.0.9]: https://github.com/axelor/axelor-mobile/compare/7.0.8...7.0.9
 [7.0.8]: https://github.com/axelor/axelor-mobile/compare/7.0.7...7.0.8
 [7.0.7]: https://github.com/axelor/axelor-mobile/compare/7.0.6...7.0.7
