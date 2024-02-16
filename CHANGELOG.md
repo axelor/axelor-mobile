@@ -3,6 +3,64 @@ title: 7.2.0
 tags: Changelog
 ---
 
+## [7.2.5] (2024-02-16)
+
+### @axelor/aos-mobile-hr
+
+#### Fixes
+
+The module has been completely analyzed to correct loading errors due to duplicated attributes.
+
+### @axelor/aos-mobile-helpdesk
+
+#### Fixes
+
+The module has been completely analyzed to correct loading errors due to duplicated attributes.
+
+- Ticket: add reset button on creation form
+
+### @axelor/aos-mobile-crm
+
+#### Fixes
+
+The module has been completely analyzed to correct loading errors due to duplicated attributes.
+
+- Event card: improve style to avoid display issue
+
+### @axelor/aos-mobile-manufacturing
+
+#### Fixes
+
+The module has been completely analyzed to correct loading errors due to duplicated attributes.
+
+### @axelor/aos-mobile-stock
+
+#### Fixes
+
+The module has been completely analyzed to correct loading errors due to duplicated attributes.
+
+### @axelor/aos-mobile-core
+
+#### Fixes
+
+- Drawer: issue on menu web configs management
+- From provider: keep list of callbacks for refresh to avoid issue when multiples uses of hook
+- Header action provider: keep list of callbacks for refresh to avoid issue when multiples uses of hook
+- Connection header: use refs for intervals to avoid duplication
+- FormView: display issue on field error message
+- MailMessageView: avoid keyboard display issue on Android
+
+### @axelor/aos-mobile-ui
+
+#### Features
+
+- Alert: add buttonsContainerStyle props
+
+#### Fixes
+
+- Picker: make labelField prop not required
+- HtmlInput: add text color as default icons color to avoid theme issues
+
 ## [7.2.4] (2024-01-09)
 
 This version features a new apk management system, with build types that differentiate between apks available on Github and applications published on the store.
@@ -290,6 +348,7 @@ It enables user to manage Expenses through the mobile application. You can creat
 - Remove IconButton component which should be replaced by Button component.
 - Remove Pop-up components which should be replaced by Alert component.
 
+[7.2.5]: https://github.com/axelor/axelor-mobile/compare/7.2.4...7.2.5
 [7.2.4]: https://github.com/axelor/axelor-mobile/compare/7.2.3...7.2.4
 [7.2.3]: https://github.com/axelor/axelor-mobile/compare/7.2.2...7.2.3
 [7.2.2]: https://github.com/axelor/axelor-mobile/compare/7.2.1...7.2.2
