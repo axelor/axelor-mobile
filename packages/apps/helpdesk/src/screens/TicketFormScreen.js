@@ -18,11 +18,14 @@
 
 import React, {useCallback, useMemo, useEffect} from 'react';
 import {useSelector, useDispatch, FormView} from '@axelor/aos-mobile-core';
+import {useThemeColor} from '@axelor/aos-mobile-ui';
 import {createTicket, updateTicket} from '../features/ticketSlice';
 import {getCustomerbyId} from '../features/customerSlice';
 
 const TicketFormScreen = ({navigation, route}) => {
   const idTicket = route?.params?.idTicket;
+
+  const Colors = useThemeColor();
   const _dispatch = useDispatch();
 
   const {ticket} = useSelector(state => state.ticket);
@@ -84,6 +87,12 @@ const TicketFormScreen = ({navigation, route}) => {
             createTicketAPI(objectState, dispatch);
             handleReset();
           },
+        },
+        {
+          color: Colors.cautionColor,
+          key: 'reset-ticket',
+          type: 'reset',
+          hideIf: () => idTicket != null,
         },
         {
           key: 'update-ticket',
