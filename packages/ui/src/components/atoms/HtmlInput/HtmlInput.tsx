@@ -101,7 +101,7 @@ const HtmlInput = ({
           style={styleToolbar}
           editor={editor}
           selectedIconTint={Colors.primaryColor.background}
-          iconTint={Colors.primaryColor.foreground}
+          iconTint={Colors.text}
           actions={[
             actions.setBold,
             actions.setItalic,
