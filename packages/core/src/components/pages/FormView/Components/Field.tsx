@@ -303,7 +303,8 @@ const styles = StyleSheet.create({
     width: Dimensions.get('window').width * 0.7,
   },
   error: {
-    marginLeft: 5,
+    width: '90%',
+    alignSelf: 'center',
   },
 });
 
