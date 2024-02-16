@@ -37,8 +37,8 @@ class HeaderActionsProvider {
     this.refreshCallBack = this.refreshCallBack.filter(_f => _f !== callBack);
   }
 
-  private updateState(key: string, options: HeaderOptions) {
-    this.refreshCallBack.forEach(_f => _f(key, options));
+  private updateState() {
+    this.refreshCallBack.forEach(_f => _f(this.headerActions));
   }
 
   registerModel(key: string, options: HeaderOptions) {
@@ -53,40 +53,42 @@ class HeaderActionsProvider {
       };
     }
 
-    this.updateState(key, this.headerActions[key]);
+    this.updateState();
   }
 
   getHeaderOptions(key: string): HeaderOptions {
     return fetchOptionsOfHeaderKey(this.headerActions, key);
   }
+
+  getAllHeaderActions(): HeaderActions {
+    return this.headerActions;
+  }
 }
 
 export const headerActionsProvider = new HeaderActionsProvider();
 
-export const useHeaderActions = (): {headers: HeaderActions} => {
-  const [headers, setHeaders] = useState<HeaderActions>();
-
-  const refreshData = useCallback((key: string, options: HeaderOptions) => {
-    setHeaders(_current => {
-      if (_current?.[key] === options) {
-        return _current;
-      }
-
-      const updatedHeaders = _current != null ? {..._current} : {};
-
-      updatedHeaders[key] = options;
-
-      return updatedHeaders;
-    });
-  }, []);
+export const useHeaderActions = (
+  actionID: string,
+): {headers: HeaderOptions} => {
+  const [headers, setHeaders] = useState<HeaderActions>(
+    headerActionsProvider.getAllHeaderActions(),
+  );
 
   useEffect(() => {
-    headerActionsProvider.register(refreshData);
+    headerActionsProvider.register(options => setHeaders({...options}));
 
     return () => {
-      headerActionsProvider.unregister(refreshData);
+      headerActionsProvider.unregister(setHeaders);
     };
-  }, [refreshData]);
+  }, []);
 
-  return useMemo(() => ({headers}), [headers]);
+  const getFormConfigOfModel = useCallback(
+    key => fetchOptionsOfHeaderKey(headers, key),
+    [headers],
+  );
+
+  return useMemo(
+    () => ({headers: getFormConfigOfModel(actionID)}),
+    [actionID, getFormConfigOfModel],
+  );
 };
