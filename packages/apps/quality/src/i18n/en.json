@@ -18,6 +18,8 @@
   "Quality_ControlResult_Compliant": "Compliant",
   "Quality_ControlResult_NotCompliant": "Not compliant",
   "Quality_ControlResult_NotControlled": "Not controlled",
+  "Quality_ConformityResult": "Conformity result",
+  "Quality_ConformityResultDetails": "The test result is: {{result}}",
   "Quality_SliceAction_SearchControlEntry": "search control entries",
   "Quality_SliceAction_FetchControlEntryById": "fetch control entry by id",
   "Quality_SliceAction_SearchControlEntrySample": "search control entry samples",

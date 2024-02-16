@@ -20,8 +20,10 @@ import React, {useCallback, useEffect, useMemo, useState} from 'react';
 import {HeaderContainer, Screen} from '@axelor/aos-mobile-ui';
 import {
   CustomFieldForm,
-  useSelector,
+  showToastMessage,
   useDispatch,
+  useSelector,
+  useTranslator,
 } from '@axelor/aos-mobile-core';
 import {ControlEntryFormButtons, ControlEntryFormHeader} from '../components';
 import {
@@ -34,7 +36,7 @@ import {checkComformity, getProgressValuesApi} from '../api';
 
 const ControlEntryFormScreen = ({navigation, route}) => {
   const {selectedMode} = route.params;
-
+  const I18n = useTranslator();
   const dispatch = useDispatch();
 
   const {controlEntry} = useSelector(state => state.controlEntry);
@@ -225,13 +227,12 @@ const ControlEntryFormScreen = ({navigation, route}) => {
   ]);
 
   const handleValidation = useCallback(() => {
-    fetchSampleLine(itemSet, currentIndex);
     if (canNext) {
       handleNext();
     } else {
       navigation.pop();
     }
-  }, [canNext, currentIndex, fetchSampleLine, handleNext, itemSet, navigation]);
+  }, [canNext, handleNext, navigation]);
 
   return (
     <Screen removeSpaceOnTop>
@@ -259,7 +260,17 @@ const ControlEntryFormScreen = ({navigation, route}) => {
               useDefaultAction: true,
               showToast: false,
               postActions: async res => {
-                await checkComformity({object: res});
+                await checkComformity({object: res}).then(result => {
+                  showToastMessage({
+                    type: ControlEntry.getSampleResultType(result),
+                    position: 'bottom',
+                    bottomOffset: 20,
+                    text1: `${I18n.t('Quality_ConformityResult')}`,
+                    text2: I18n.t('Quality_ConformityResultDetails', {
+                      result: ControlEntry.getSampleResultTitle(result, I18n),
+                    }),
+                  });
+                });
                 handleValidation();
               },
               customComponent: (

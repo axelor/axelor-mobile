@@ -127,6 +127,21 @@ class ControlEntry {
     }
   };
 
+  static getSampleResultType = (sampleResult: number): string => {
+    switch (sampleResult) {
+      case this.sampleResult.Compliant:
+        return 'success';
+      case this.sampleResult.NotCompliant:
+      case this.sampleResult.NotControlled:
+        return 'error';
+      default:
+        console.warn(
+          `Sample result provided with value ${sampleResult} is not supported by control entry`,
+        );
+        return 'error';
+    }
+  };
+
   static getFillingMethods = (I18n: TranslatorProps) => {
     return Object.entries(this.fillingMethod).map(([key, value]) => ({
       title: I18n.t(`Quality_FillingMethod_${key}`),
