@@ -19,7 +19,7 @@
 import TourListScreen from './TourListScreen';
 
 export default {
-  tourListScreen: {
+  TourListScreen: {
     title: 'Crm_Tours',
     component: TourListScreen,
     options: {

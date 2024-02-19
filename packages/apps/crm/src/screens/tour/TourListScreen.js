@@ -23,7 +23,6 @@ import {
   Screen,
   ScrollList,
   ToggleButton,
-  useThemeColor,
 } from '@axelor/aos-mobile-ui';
 import {
   DateInput,
@@ -35,7 +34,6 @@ import {searchTour} from '../../features/tourSlice';
 import {TourCard} from '../../components';
 
 const TourListScreen = ({navigation}) => {
-  const Colors = useThemeColor();
   const dispatch = useDispatch();
   const I18n = useTranslator();
 
@@ -70,7 +68,6 @@ const TourListScreen = ({navigation}) => {
             <ToggleButton
               isActive={isSalesFilter}
               onPress={() => setIsSaleFilter(current => !current)}
-              activeColor={Colors.successColor}
               buttonConfig={{
                 iconName: 'person-fill',
                 width: '10%',

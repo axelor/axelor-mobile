@@ -40,7 +40,8 @@ const TourCard = ({
 }: TourCardProps) => {
   const I18n = useTranslator();
 
-  const [numberSampleFilled, setNumberSampleFilled] = useState<number>(0);
+  const [numberTourLineValidated, setNumberTourLineValidated] =
+    useState<number>(0);
   const [totalTourLine, seTotalTourLine] = useState<number>(0);
 
   useEffect(() => {
@@ -53,13 +54,13 @@ const TourCard = ({
             line => line.isValidated === false,
           ).length;
 
-          setNumberSampleFilled(100 - (notValidated / total) * 100);
+          setNumberTourLineValidated(100 - (notValidated / total) * 100);
           seTotalTourLine(total);
         } else {
-          setNumberSampleFilled(0);
+          setNumberTourLineValidated(0);
         }
       })
-      .catch(() => setNumberSampleFilled(0));
+      .catch(() => setNumberTourLineValidated(0));
   }, [tourId]);
 
   return (
@@ -78,7 +79,7 @@ const TourCard = ({
           />
           <ProgressBar
             style={styles.progressBar}
-            value={numberSampleFilled}
+            value={numberTourLineValidated}
             showPercent={false}
             height={15}
             styleTxt={styles.textProgressBar}

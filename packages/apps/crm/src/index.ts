@@ -80,7 +80,7 @@ export const CrmModule: Module = {
     crm_menu_tour: {
       title: 'Crm_Tours',
       icon: 'globe-europe-africa',
-      screen: 'tourListScreen',
+      screen: 'TourListScreen',
     },
     crm_menu_event: {
       title: 'Crm_Events',
