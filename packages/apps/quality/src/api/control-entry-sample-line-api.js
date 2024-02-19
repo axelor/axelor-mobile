@@ -21,6 +21,7 @@ import {
   createStandardFetch,
   axiosApiProvider,
 } from '@axelor/aos-mobile-core';
+import {ControlEntry} from '../types';
 
 const createControlEntrySampleLineCriteria = controlEntrySampleId => {
   return [
@@ -77,18 +78,35 @@ export async function fetchControlEntrySampleLine({id}) {
 }
 
 export async function checkComformity({object}) {
-  return axiosApiProvider.post({
-    url: 'ws/action',
-    data: {
-      action:
-        'action-quality-control-entry-line-method-control-conformity,save',
+  return axiosApiProvider
+    .post({
+      url: 'ws/action',
       data: {
-        context: {
-          ...object,
-          _model: 'com.axelor.apps.quality.db.ControlEntryPlanLine',
+        action: 'action-quality-control-entry-line-method-control-conformity',
+        data: {
+          context: {
+            ...object,
+            _model: 'com.axelor.apps.quality.db.ControlEntryPlanLine',
+          },
         },
+        model: 'com.axelor.apps.quality.db.ControlEntryPlanLine',
       },
-      model: 'com.axelor.apps.quality.db.ControlEntryPlanLine',
-    },
-  });
+    })
+    .then(() =>
+      createStandardFetch({
+        model: 'com.axelor.apps.quality.db.ControlEntryPlanLine',
+        id: object.id,
+        fieldKey: 'quality_controlEntrySampleLine',
+      }),
+    )
+    .then(({data: {data}}) => {
+      if (data?.[0] != null) {
+        return data[0].resultSelect;
+      } else {
+        return ControlEntry.sampleResult.NotControlled;
+      }
+    })
+    .catch(() => {
+      return ControlEntry.sampleResult.NotControlled;
+    });
 }

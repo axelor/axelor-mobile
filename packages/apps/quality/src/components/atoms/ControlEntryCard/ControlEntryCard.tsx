@@ -16,7 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import React, {useEffect, useMemo, useState} from 'react';
+import React, {useEffect, useMemo, useRef, useState} from 'react';
 import {StyleSheet, TouchableOpacity, View} from 'react-native';
 import {Card, ProgressBar, Text, useThemeColor} from '@axelor/aos-mobile-ui';
 import {useTranslator, DateDisplay} from '@axelor/aos-mobile-core';
@@ -44,25 +44,38 @@ const ControlEntryCard = ({
   const Colors = useThemeColor();
   const I18n = useTranslator();
 
+  const isMounted = useRef(true);
+
   const [numberSampleFilled, setNumberSampleFilled] = useState<number>(0);
 
   useEffect(() => {
+    isMounted.current = true;
+
     searchControlEntrySampleApi({controlEntryId: controlEntryId})
       .then(response => {
-        if (Array.isArray(response?.data?.data)) {
-          const controlEntrySampleList: any[] = response.data.data;
-          const total = controlEntrySampleList.length;
-          const notControlled = controlEntrySampleList.filter(
-            sample =>
-              sample.resultSelect === ControlEntry.sampleResult.NotControlled,
-          ).length;
-
-          setNumberSampleFilled(100 - (notControlled / total) * 100);
-        } else {
-          setNumberSampleFilled(0);
+        if (isMounted.current) {
+          if (Array.isArray(response?.data?.data)) {
+            const controlEntrySampleList: any[] = response.data.data;
+            const total = controlEntrySampleList.length;
+            const notControlled = controlEntrySampleList.filter(
+              sample =>
+                sample.resultSelect === ControlEntry.sampleResult.NotControlled,
+            ).length;
+            setNumberSampleFilled(100 - (notControlled / total) * 100);
+          } else {
+            setNumberSampleFilled(0);
+          }
         }
       })
-      .catch(() => setNumberSampleFilled(0));
+      .catch(() => {
+        if (isMounted.current) {
+          setNumberSampleFilled(0);
+        }
+      });
+
+    return () => {
+      isMounted.current = false;
+    };
   }, [controlEntryId]);
 
   const borderStyle = useMemo(() => {
