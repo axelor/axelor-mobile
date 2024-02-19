@@ -67,14 +67,16 @@ const ExpenseLineTypeDisplay = ({
   }, [isGeneral, isKilometric, I18n]);
 
   useEffect(() => {
-    if (hasExpenseLines) {
-      onChange(_mode => {
-        return isKilometric
-          ? ExpenseLine.modes.kilometric
-          : ExpenseLine.modes.general;
-      });
+    if (hasExpenseLines && !displayToggle) {
+      if (isGeneral) {
+        onChange(ExpenseLine.modes.general);
+      }
+
+      if (isKilometric) {
+        onChange(ExpenseLine.modes.kilometric);
+      }
     }
-  }, [hasExpenseLines, isKilometric, onChange]);
+  }, [displayToggle, hasExpenseLines, isGeneral, isKilometric, onChange]);
 
   const renderToggle = useCallback(() => {
     return (
