@@ -16,18 +16,24 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import {SortFields} from '@axelor/aos-mobile-core';
+import {createStandardSearch} from '@axelor/aos-mobile-core';
 
-export const crm_sortFields: SortFields = {
-  crm_catalog: ['name', 'catalogType.name', 'createdOn'],
-  crm_client: ['name', 'partnerSeq', 'createdOn'],
-  crm_contact: ['name', 'createdOn'],
-  crm_event: ['startDateTime'],
-  crm_function: ['name'],
-  crm_lead: ['leadStatus', 'enterpriseName', 'createdOn'],
-  crm_opportunity: ['opportunityStatus.sequence', 'expectedCloseDate'],
-  crm_opportunityStatus: ['sequence'],
-  crm_prospect: ['name', 'partnerSeq', 'createdOn'],
-  crm_Tour: ['-date'],
-  crm_tourLine: ['tourLineOrder'],
+const createTourLineCriteria = tourId => {
+  return [
+    {
+      fieldName: 'tour.id',
+      operator: '=',
+      value: tourId,
+    },
+  ];
 };
+
+export async function searchTourLine({page = 0, tourId}) {
+  return createStandardSearch({
+    model: 'com.axelor.apps.crm.db.TourLine',
+    criteria: createTourLineCriteria(tourId),
+    fieldKey: 'crm_tourLine',
+    sortKey: 'crm_tourLine',
+    page: page,
+  });
+}

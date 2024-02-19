@@ -16,47 +16,75 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import React from 'react';
+import React, {useEffect, useState} from 'react';
 import {StyleSheet, TouchableOpacity, View} from 'react-native';
-import {Card, LabelText, Text} from '@axelor/aos-mobile-ui';
+import {Card, LabelText, Text, ProgressBar} from '@axelor/aos-mobile-ui';
 import {useTranslator, DateDisplay} from '@axelor/aos-mobile-core';
+import {searchTourLineApi} from '../../../api';
 
 interface TourCardProps {
   style?: any;
   onPress?: () => void;
-  sampleCount?: number;
   salesperson?: string;
-  entryDateTime?: string;
+  tourId: number;
+  date?: string;
   name?: string;
 }
 const TourCard = ({
   style,
   onPress,
-  sampleCount,
-  entryDateTime,
+  date,
   salesperson,
+  tourId,
   name,
 }: TourCardProps) => {
   const I18n = useTranslator();
+
+  const [numberSampleFilled, setNumberSampleFilled] = useState<number>(0);
+  const [totalTourLine, seTotalTourLine] = useState<number>(0);
+
+  useEffect(() => {
+    searchTourLineApi({tourId: tourId})
+      .then(response => {
+        if (Array.isArray(response?.data?.data)) {
+          const tourLineList: any[] = response.data.data;
+          const total = tourLineList.length;
+          const notValidated = tourLineList.filter(
+            line => line.isValidated === false,
+          ).length;
+
+          setNumberSampleFilled(100 - (notValidated / total) * 100);
+          seTotalTourLine(total);
+        } else {
+          setNumberSampleFilled(0);
+        }
+      })
+      .catch(() => setNumberSampleFilled(0));
+  }, [tourId]);
 
   return (
     <TouchableOpacity onPress={onPress} activeOpacity={0.9}>
       <Card style={[styles.container, style]}>
         <View style={styles.childrenContainer}>
           <Text writingType="title">{name}</Text>
-          <DateDisplay date={entryDateTime} />
+          <DateDisplay date={date} />
         </View>
         <View style={styles.childrenContainer}>
-          <Text>{`${I18n.t('Quality_SampleCount')} : ${sampleCount}`}</Text>
-          {/*<ProgressBar
+          <LabelText
+            iconName="person-fill"
+            title={salesperson}
+            textStyle={styles.fontSize}
+            size={16}
+          />
+          <ProgressBar
             style={styles.progressBar}
             value={numberSampleFilled}
             showPercent={false}
             height={15}
             styleTxt={styles.textProgressBar}
-          />*/}
+          />
         </View>
-        <LabelText iconName="person-fill" title={salesperson} />
+        <Text>{`${totalTourLine} ${I18n.t('Crm_SheduledVisits')}`}</Text>
       </Card>
     </TouchableOpacity>
   );
@@ -82,6 +110,9 @@ const styles = StyleSheet.create({
   },
   textProgressBar: {
     display: 'none',
+  },
+  fontSize: {
+    fontSize: 16,
   },
 });
 

@@ -61,8 +61,6 @@ const TourListScreen = ({navigation}) => {
     [dispatch, isSalesFilter, userId, dateFilter],
   );
 
-  console.log('tourList', tourList);
-
   return (
     <Screen removeSpaceOnTop={true}>
       <HeaderContainer
@@ -95,7 +93,8 @@ const TourListScreen = ({navigation}) => {
         renderItem={({item}) => (
           <TourCard
             name={item.name}
-            entryDateTime={item.date}
+            date={item.date}
+            tourId={item.id}
             salesperson={item.salespersonUser?.fullName}
           />
         )}
