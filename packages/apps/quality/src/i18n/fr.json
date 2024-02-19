@@ -19,7 +19,6 @@
   "Quality_ControlResult_NotCompliant": "Non conforme",
   "Quality_ControlResult_NotControlled": "Non contrôlé",
   "Quality_ConformityResult": "Résultat de la conformité",
-  "Quality_ConformityResultDetails": "Le résultat du test est : {{result}}",
   "Quality_SliceAction_SearchControlEntry": "recherche des relevés de contrôle",
   "Quality_SliceAction_FetchControlEntryById": "récupération du relevé de contrôle par id",
   "Quality_SliceAction_SearchControlEntrySample": "recherche sur les échantillons du relevé de contôle",

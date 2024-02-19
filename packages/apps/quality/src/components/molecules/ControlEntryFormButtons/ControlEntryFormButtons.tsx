@@ -75,14 +75,12 @@ const ControlEntryFormButtons = ({
           ControlEntry.sampleResult.NotControlled,
         ),
         position: 'bottom',
-        bottomOffset: 20,
+        bottomOffset: 80,
         text1: `${I18n.t('Quality_ConformityResult')}`,
-        text2: I18n.t('Quality_ConformityResultDetails', {
-          result: ControlEntry.getSampleResultTitle(
-            ControlEntry.sampleResult.NotControlled,
-            I18n,
-          ),
-        }),
+        text2: ControlEntry.getSampleResultTitle(
+          ControlEntry.sampleResult.NotControlled,
+          I18n,
+        ),
       });
     }
   }, [I18n, sampleLine.resultSelect]);
