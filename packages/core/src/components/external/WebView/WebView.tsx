@@ -21,20 +21,39 @@ import {ActivityIndicator, StyleSheet} from 'react-native';
 import {WebView as RNWebView} from 'react-native-webview';
 import {useThemeColor} from '@axelor/aos-mobile-ui';
 import {useSelector} from '../../../redux/hooks';
+import {checkNullString} from '../../../utils';
 
 interface WebViewProps {
   style?: any;
-  queryParams?: string;
+  baseUrl?: string;
+  path?: string;
+  queryParams?: Object;
 }
 
-const WebView = ({style, queryParams = ''}: WebViewProps) => {
+const WebView = ({style, baseUrl, path, queryParams}: WebViewProps) => {
   const Colors = useThemeColor();
 
-  const {baseUrl} = useSelector((state: any) => state.auth);
+  const {baseUrl: AOSBaseUrl} = useSelector((state: any) => state.auth);
+
+  const formattedQueryParams = useMemo(() => {
+    let _formattedQueryParams = '';
+
+    Object.entries(queryParams).map(([key, value]) => {
+      if (value == null) {
+        return;
+      }
+
+      const separator = checkNullString(_formattedQueryParams) ? '?' : '&';
+      const queryParam = key + '=' + value;
+      _formattedQueryParams += separator + queryParam;
+    });
+
+    return _formattedQueryParams;
+  }, [queryParams]);
 
   const uri = useMemo(
-    () => baseUrl + '#/ds/' + queryParams,
-    [baseUrl, queryParams],
+    () => (baseUrl ?? AOSBaseUrl) + path + formattedQueryParams,
+    [AOSBaseUrl, baseUrl, formattedQueryParams, path],
   );
 
   return (
