@@ -28,6 +28,6 @@ export const crm_sortFields: SortFields = {
   crm_opportunity: ['opportunityStatus.sequence', 'expectedCloseDate'],
   crm_opportunityStatus: ['sequence'],
   crm_prospect: ['name', 'partnerSeq', 'createdOn'],
-  crm_Tour: ['-date'],
+  crm_tour: ['-date'],
   crm_tourLine: ['tourLineOrder'],
 };

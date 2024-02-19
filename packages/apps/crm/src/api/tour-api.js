@@ -24,7 +24,7 @@ import {
 } from '@axelor/aos-mobile-core';
 
 const createToursCriteria = (searchValue, userId, isSalesperson, date) => {
-  const criteria = [getSearchCriterias('crm_Tour', searchValue)];
+  const criteria = [getSearchCriterias('crm_tour', searchValue)];
 
   if (isSalesperson && userId != null) {
     criteria.push({
@@ -62,8 +62,8 @@ export async function searchTour({
   return createStandardSearch({
     model: 'com.axelor.apps.crm.db.Tour',
     criteria: createToursCriteria(searchValue, userId, isSalesperson, date),
-    fieldKey: 'crm_Tour',
-    sortKey: 'crm_Tour',
+    fieldKey: 'crm_tour',
+    sortKey: 'crm_tour',
     page: page,
   });
 }

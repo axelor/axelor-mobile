@@ -27,8 +27,8 @@ interface TourCardProps {
   onPress?: () => void;
   salesperson?: string;
   tourId: number;
-  date?: string;
-  name?: string;
+  date: string;
+  name: string;
 }
 const TourCard = ({
   style,

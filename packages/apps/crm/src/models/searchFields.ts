@@ -62,5 +62,5 @@ export const crm_searchFields: SearchFields = {
     'fixedPhone',
     'emailAddress.name',
   ],
-  crm_Tour: ['name', 'salespersonUser', 'date'],
+  crm_tour: ['name', 'salespersonUser', 'date'],
 };
