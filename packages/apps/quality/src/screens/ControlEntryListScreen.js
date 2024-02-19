@@ -77,7 +77,6 @@ const ControlEntryListScreen = ({navigation}) => {
             <ToggleButton
               isActive={isInspectorFilter}
               onPress={() => setIsInspectorFilter(current => !current)}
-              activeColor={Colors.successColor}
               buttonConfig={{
                 iconName: 'person-fill',
                 width: '10%',
