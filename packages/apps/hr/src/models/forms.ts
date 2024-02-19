@@ -95,7 +95,7 @@ export const hr_formsRegister: FormConfigs = {
         widget: 'custom',
         customComponent: ProjectSearchBar,
         hideIf: ({storeState}) =>
-          !storeState.appConfig.mobileSettings.isProjectInvoicingEnabled,
+          !storeState.appConfig.mobileSettings.isExpenseProjectInvoicingEnabled,
       },
       toInvoice: {
         titleKey: 'Hr_ToInvoice',
@@ -103,7 +103,7 @@ export const hr_formsRegister: FormConfigs = {
         widget: 'custom',
         customComponent: BillableSwitchCard,
         hideIf: ({storeState}) =>
-          !storeState.appConfig.mobileSettings.isProjectInvoicingEnabled,
+          !storeState.appConfig.mobileSettings.isExpenseProjectInvoicingEnabled,
       },
       expenseProduct: {
         titleKey: 'Hr_ExpenseType',
