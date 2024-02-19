@@ -3,6 +3,14 @@ title: 7.2.0
 tags: Changelog
 ---
 
+## [7.2.6] (2024-02-19)
+
+### @axelor/aos-mobile-hr
+
+#### Fixes
+
+- Expense details: line type logic was inverted on ToggleSwitch
+
 ## [7.2.5] (2024-02-16)
 
 ### @axelor/aos-mobile-hr
@@ -348,6 +356,7 @@ It enables user to manage Expenses through the mobile application. You can creat
 - Remove IconButton component which should be replaced by Button component.
 - Remove Pop-up components which should be replaced by Alert component.
 
+[7.2.6]: https://github.com/axelor/axelor-mobile/compare/7.2.5...7.2.6
 [7.2.5]: https://github.com/axelor/axelor-mobile/compare/7.2.4...7.2.5
 [7.2.4]: https://github.com/axelor/axelor-mobile/compare/7.2.3...7.2.4
 [7.2.3]: https://github.com/axelor/axelor-mobile/compare/7.2.2...7.2.3
