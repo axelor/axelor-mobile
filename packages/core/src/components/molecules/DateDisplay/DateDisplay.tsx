@@ -23,12 +23,11 @@ import {useTranslator} from '../../../i18n';
 import {getFullDateItems} from '../../../utils';
 
 interface DateDisplayProps {
-  style?: any;
   date: string;
   size?: number;
 }
 
-const DateDisplay = ({date, size = 18, style}: DateDisplayProps) => {
+const DateDisplay = ({date, size = 18}: DateDisplayProps) => {
   const I18n = useTranslator();
   const Colors = useThemeColor();
 
@@ -39,7 +38,7 @@ const DateDisplay = ({date, size = 18, style}: DateDisplayProps) => {
   }
 
   return (
-    <View style={[styles.container, style]}>
+    <View style={styles.container}>
       <Icon
         name="calendar-event"
         color={Colors.secondaryColor.foreground}
