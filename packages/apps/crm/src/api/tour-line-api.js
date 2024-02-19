@@ -28,12 +28,17 @@ const createTourLineCriteria = tourId => {
   ];
 };
 
-export async function searchTourLine({page = 0, tourId}) {
+export async function searchTourLine({
+  page = 0,
+  tourId,
+  numberElementsByPage = 10,
+}) {
   return createStandardSearch({
     model: 'com.axelor.apps.crm.db.TourLine',
     criteria: createTourLineCriteria(tourId),
     fieldKey: 'crm_tourLine',
     sortKey: 'crm_tourLine',
     page: page,
+    numberElementsByPage: numberElementsByPage,
   });
 }

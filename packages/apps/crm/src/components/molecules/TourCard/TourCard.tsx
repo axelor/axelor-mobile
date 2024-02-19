@@ -16,7 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import React, {useEffect, useState} from 'react';
+import React, {useEffect, useRef, useState} from 'react';
 import {StyleSheet, TouchableOpacity, View} from 'react-native';
 import {Card, LabelText, Text, ProgressBar} from '@axelor/aos-mobile-ui';
 import {useTranslator, DateDisplay} from '@axelor/aos-mobile-core';
@@ -30,6 +30,7 @@ interface TourCardProps {
   date: string;
   name: string;
 }
+
 const TourCard = ({
   style,
   onPress,
@@ -40,27 +41,41 @@ const TourCard = ({
 }: TourCardProps) => {
   const I18n = useTranslator();
 
+  const isMounted = useRef(true);
+
   const [numberTourLineValidated, setNumberTourLineValidated] =
     useState<number>(0);
-  const [totalTourLine, seTotalTourLine] = useState<number>(0);
+  const [totalTourLine, setTotalTourLine] = useState<number>(0);
 
   useEffect(() => {
-    searchTourLineApi({tourId: tourId})
-      .then(response => {
-        if (Array.isArray(response?.data?.data)) {
-          const tourLineList: any[] = response.data.data;
-          const total = tourLineList.length;
-          const notValidated = tourLineList.filter(
-            line => line.isValidated === false,
-          ).length;
+    isMounted.current = true;
 
-          setNumberTourLineValidated(100 - (notValidated / total) * 100);
-          seTotalTourLine(total);
-        } else {
-          setNumberTourLineValidated(0);
+    searchTourLineApi({tourId: tourId, numberElementsByPage: null})
+      .then(response => {
+        if (isMounted.current) {
+          if (Array.isArray(response?.data?.data)) {
+            const tourLineList: any[] = response.data.data;
+            const total = tourLineList.length;
+            const notValidated = tourLineList.filter(
+              line => line.isValidated,
+            ).length;
+
+            setNumberTourLineValidated(notValidated);
+            setTotalTourLine(total);
+          } else {
+            setNumberTourLineValidated(0);
+          }
         }
       })
-      .catch(() => setNumberTourLineValidated(0));
+      .catch(() => {
+        if (isMounted.current) {
+          setNumberTourLineValidated(0);
+        }
+      });
+
+    return () => {
+      isMounted.current = false;
+    };
   }, [tourId]);
 
   return (
@@ -80,12 +95,17 @@ const TourCard = ({
           <ProgressBar
             style={styles.progressBar}
             value={numberTourLineValidated}
+            total={totalTourLine}
             showPercent={false}
             height={15}
             styleTxt={styles.textProgressBar}
           />
         </View>
-        <Text>{`${totalTourLine} ${I18n.t('Crm_SheduledVisits')}`}</Text>
+        <Text>
+          {I18n.t('Crm_ScheduledVisits', {
+            totalTourLine,
+          })}
+        </Text>
       </Card>
     </TouchableOpacity>
   );

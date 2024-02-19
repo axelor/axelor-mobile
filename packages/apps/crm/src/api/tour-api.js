@@ -18,9 +18,7 @@
 
 import {
   createStandardSearch,
-  getEndOfDay,
   getSearchCriterias,
-  getStartOfDay,
 } from '@axelor/aos-mobile-core';
 
 const createToursCriteria = (searchValue, userId, isSalesperson, date) => {
@@ -35,18 +33,11 @@ const createToursCriteria = (searchValue, userId, isSalesperson, date) => {
   }
 
   if (date != null) {
-    criteria.push(
-      {
-        fieldName: 'date',
-        operator: '>=',
-        value: getStartOfDay(date).toISOString(),
-      },
-      {
-        fieldName: 'date',
-        operator: '<=',
-        value: getEndOfDay(date).toISOString(),
-      },
-    );
+    criteria.push({
+      fieldName: 'date',
+      operator: '=',
+      value: date,
+    });
   }
 
   return criteria;
