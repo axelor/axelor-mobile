@@ -1,0 +1,5 @@
+{
+  "title": "<object or component name>: <description>",
+  "type": "feat | fix | refactor",
+  "packages": []
+}
