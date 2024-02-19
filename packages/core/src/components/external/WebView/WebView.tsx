@@ -40,7 +40,7 @@ const WebView = ({style, queryParams = ''}: WebViewProps) => {
   return (
     <RNWebView
       containerStyle={style}
-      source={{uri: uri}}
+      source={{uri}}
       startInLoadingState
       renderLoading={() => (
         <ActivityIndicator
