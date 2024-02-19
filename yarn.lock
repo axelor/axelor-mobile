@@ -13954,10 +13954,10 @@ react-native-mmkv@2.4.3:
   resolved "https://registry.npmjs.org/react-native-mmkv/-/react-native-mmkv-2.4.3.tgz#6bb4c2d5e328513da11faab1371d056a189adbd0"
   integrity sha512-0hYNOTbsjJ5j5cpX+qjwReGIxuYE9MWRsyPQ72fTOvzmEjYXCF4Wr2VQoqx8R6W1/Uinekvln7dGvJ4RExmHhQ==
 
-react-native-pell-rich-editor@1.8.8:
-  version "1.8.8"
-  resolved "https://registry.npmjs.org/react-native-pell-rich-editor/-/react-native-pell-rich-editor-1.8.8.tgz#c6299635de49d8facfded7175d064c0ff89dbc7d"
-  integrity sha512-pPpj3rVEbmOcGbUMiutuQhpxp5HzOQlhVGhZ6B7aWlsliWWDtsi+lu3RXNV+g62PcQ07qDDtZwKOx1fSzff6HQ==
+react-native-pell-rich-editor@1.9.0:
+  version "1.9.0"
+  resolved "https://registry.npmjs.org/react-native-pell-rich-editor/-/react-native-pell-rich-editor-1.9.0.tgz#e222b4cd8ead9b5e1de7b6cf2f31a3315c82e570"
+  integrity sha512-BKzlu++FySzPXrb5bczD8b/ZZJtfzcD4z7FvW7TrH+4OENEQtaIiEMfmb5N09Kv3YVJcfm8fut8Y+GLNAcCQHA==
 
 react-native-reanimated@2.10.0:
   version "2.10.0"
@@ -14051,18 +14051,10 @@ react-native-web@0.18.12:
     postcss-value-parser "^4.2.0"
     styleq "^0.1.2"
 
-react-native-webview@11.26.0:
-  version "11.26.0"
-  resolved "https://registry.npmjs.org/react-native-webview/-/react-native-webview-11.26.0.tgz#e524992876fe4a79e69905f0fab8949b470e9f16"
-  integrity sha512-4T4CKRm8xlaQDz9h/bCMPGAvtkesrhkRWqCX9FDJEzBToaVUIsV0ZOqtC4w/JSnCtFKKYiaC1ReJtCGv+4mFeQ==
-  dependencies:
-    escape-string-regexp "2.0.0"
-    invariant "2.2.4"
-
-react-native-webview@^13.8.1:
-  version "13.8.1"
-  resolved "https://registry.npmjs.org/react-native-webview/-/react-native-webview-13.8.1.tgz#d0058c063e38241476049aaab2e5cc9f254d5480"
-  integrity sha512-7Jqm1WzWJrOWraBAXQfKtr/Uo5Jw/IJHzC40jYLwgV/eVGmLJ9BpGKw6QVw7wpRkjmTZ2Typ4B1aHJLJJQFslA==
+react-native-webview@11.26.1:
+  version "11.26.1"
+  resolved "https://registry.npmjs.org/react-native-webview/-/react-native-webview-11.26.1.tgz#658c09ed5162dc170b361e48c2dd26c9712879da"
+  integrity sha512-hC7BkxOpf+z0UKhxFSFTPAM4shQzYmZHoELa6/8a/MspcjEP7ukYKpuSUTLDywQditT8yI9idfcKvfZDKQExGw==
   dependencies:
     escape-string-regexp "2.0.0"
     invariant "2.2.4"
