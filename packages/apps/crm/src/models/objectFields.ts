@@ -203,4 +203,13 @@ export const crm_modelAPI: ObjectFields = {
       .of(schemaContructor.subObject()),
     leadScoringSelect: schemaContructor.number(),
   }),
+  crm_tour: schemaContructor.object({
+    name: schemaContructor.string(),
+    salespersonUser: schemaContructor.subObject(),
+    date: schemaContructor.string(),
+  }),
+  crm_tourLine: schemaContructor.object({
+    tourLineOrder: schemaContructor.number(),
+    isValidated: schemaContructor.boolean(),
+  }),
 };
