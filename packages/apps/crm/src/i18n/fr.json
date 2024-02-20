@@ -88,6 +88,8 @@
   "Crm_EndDate": "Date de fin",
   "Crm_AllDay": "Toute la journée ?",
   "Crm_Location": "Emplacement",
+  "Crm_Tours": "Tournées",
+  "Crm_ScheduledVisits": "{{totalTourLine}} visites programmées",
   "Crm_SliceAction_FetchCatalog": "récupération des catalogues",
   "Crm_SliceAction_FetchCatalogType": "récupération des types de catalogue",
   "Crm_SliceAction_FetchClient": "récupération des clients",
@@ -129,5 +131,6 @@
   "Crm_SliceAction_GetPartnerOpportunities": "récupération des opportunités du partenaire",
   "Crm_SliceAction_SearchPartner": "recherche des partenaires",
   "Crm_SliceAction_CreateEvent": "création de l'événement",
-  "Crm_SliceAction_UpdateEvent": "mise à jour de l'événement"
+  "Crm_SliceAction_UpdateEvent": "mise à jour de l'événement",
+  "Crm_SliceAction_FetchTour": "récupération des tournées"
 }
