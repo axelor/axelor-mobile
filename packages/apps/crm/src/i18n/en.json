@@ -88,6 +88,8 @@
   "Crm_EndDate": "End date",
   "Crm_AllDay": "All day ?",
   "Crm_Location": "Location",
+  "Crm_Tours": "Tours",
+  "Crm_ScheduledVisits": "{{totalTourLine}} scheduled visits",
   "Crm_SliceAction_FetchCatalog": "fetch catalogs",
   "Crm_SliceAction_FetchCatalogType": "fetch catalog types",
   "Crm_SliceAction_FetchClient": "fetch clients",
@@ -129,5 +131,6 @@
   "Crm_SliceAction_GetPartnerOpportunities": "get partner's opportunities",
   "Crm_SliceAction_SearchPartner": "search partner",
   "Crm_SliceAction_CreateEvent": "create event",
-  "Crm_SliceAction_UpdateEvent": "update event"
+  "Crm_SliceAction_UpdateEvent": "update event",
+  "Crm_SliceAction_FetchTour": "fetch tours"
 }

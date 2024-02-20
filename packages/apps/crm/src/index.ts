@@ -24,6 +24,7 @@ import ContactScreens from './screens/contact/';
 import ClientScreens from './screens/client';
 import CatalogScreen from './screens/catalog';
 import EventScreen from './screens/event';
+import TourScreen from './screens/tour';
 import enTranslations from './i18n/en.json';
 import frTranslations from './i18n/fr.json';
 import * as crmReducers from './features';
@@ -76,6 +77,11 @@ export const CrmModule: Module = {
       screen: 'CatalogListScreen',
       hideIf: store => !store.crm?.isManageCatalogs,
     },
+    crm_menu_tour: {
+      title: 'Crm_Tours',
+      icon: 'globe-europe-africa',
+      screen: 'TourListScreen',
+    },
     crm_menu_event: {
       title: 'Crm_Events',
       icon: 'calendar2-week',
@@ -89,6 +95,7 @@ export const CrmModule: Module = {
     ...ClientScreens,
     ...ContactScreens,
     ...CatalogScreen,
+    ...TourScreen,
     ...EventScreen,
   },
   translations: {
