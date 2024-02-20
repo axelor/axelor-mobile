@@ -16,14 +16,29 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-export {catalogReducer as catalog} from './catalogSlice';
-export {clientReducer as client} from './clientSlice';
-export {companyReducer as crm_company} from './companySlice';
-export {contactReducer as contact} from './contactSlice';
-export {eventReducer as event} from './eventSlice';
-export {functionReducer as function} from './functionSlice';
-export {leadReducer as lead} from './leadSlice';
-export {opportunityReducer as opportunity} from './opportunitySlice';
-export {partnerReducer as partner} from './partnerSlice';
-export {prospectReducer as prospect} from './prospectSlice';
-export {tourReducer as tour} from './tourSlice';
+import {createStandardSearch} from '@axelor/aos-mobile-core';
+
+const createTourLineCriteria = tourId => {
+  return [
+    {
+      fieldName: 'tour.id',
+      operator: '=',
+      value: tourId,
+    },
+  ];
+};
+
+export async function searchTourLine({
+  page = 0,
+  tourId,
+  numberElementsByPage = 10,
+}) {
+  return createStandardSearch({
+    model: 'com.axelor.apps.crm.db.TourLine',
+    criteria: createTourLineCriteria(tourId),
+    fieldKey: 'crm_tourLine',
+    sortKey: 'crm_tourLine',
+    page: page,
+    numberElementsByPage: numberElementsByPage,
+  });
+}
