@@ -33,10 +33,10 @@ interface DistributionBarProps {
 }
 
 const DistributionBar = ({
-  style,
   distribution,
   total = 100,
   height = 30,
+  style,
 }: DistributionBarProps) => {
   const Colors = useThemeColor();
 
