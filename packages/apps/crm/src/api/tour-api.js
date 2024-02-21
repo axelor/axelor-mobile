@@ -17,6 +17,7 @@
  */
 
 import {
+  createStandardFetch,
   createStandardSearch,
   getSearchCriterias,
 } from '@axelor/aos-mobile-core';
@@ -56,5 +57,13 @@ export async function searchTour({
     fieldKey: 'crm_tour',
     sortKey: 'crm_tour',
     page: page,
+  });
+}
+
+export async function fetchControlTourById({tourId}) {
+  return createStandardFetch({
+    model: 'com.axelor.apps.crm.db.Tour',
+    id: tourId,
+    fieldKey: 'crm_tour',
   });
 }

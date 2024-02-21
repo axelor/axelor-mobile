@@ -20,8 +20,12 @@ import {createAsyncThunk, createSlice} from '@reduxjs/toolkit';
 import {
   generateInifiniteScrollCases,
   handlerApiCall,
+  updateAgendaItems,
 } from '@axelor/aos-mobile-core';
-import {searchTour as _searchTour} from '../api/tour-api';
+import {
+  searchTour as _searchTour,
+  fetchControlTourById as _fetchControlTourById,
+} from '../api/tour-api';
 
 export const searchTour = createAsyncThunk(
   'tour/searchTour',
@@ -36,11 +40,26 @@ export const searchTour = createAsyncThunk(
   },
 );
 
+export const fetchControlTourById = createAsyncThunk(
+  'tour/fetchControlTourById',
+  async function (data, {getState}) {
+    return handlerApiCall({
+      fetchFunction: _fetchControlTourById,
+      data,
+      action: 'Crm_SliceAction_FetchTourById',
+      getState,
+      responseOptions: {isArrayResponse: false},
+    });
+  },
+);
+
 const initialState = {
   loadingTourList: true,
   moreLoading: false,
   isListEnd: false,
   tourList: [],
+  loadingTour: true,
+  tour: {},
 };
 
 const tourSlice = createSlice({
@@ -52,6 +71,14 @@ const tourSlice = createSlice({
       moreLoading: 'moreLoading',
       isListEnd: 'isListEnd',
       list: 'tourList',
+    });
+    builder.addCase(fetchControlTourById.pending, (state, action) => {
+      state.loadingTour = true;
+    });
+    builder.addCase(fetchControlTourById.fulfilled, (state, action) => {
+      state.loadingTour = false;
+      state.tour = action.payload;
+      state.tourList = updateAgendaItems(state.tourList, [action.payload]);
     });
   },
 });

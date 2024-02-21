@@ -132,5 +132,6 @@
   "Crm_SliceAction_SearchPartner": "recherche des partenaires",
   "Crm_SliceAction_CreateEvent": "création de l'événement",
   "Crm_SliceAction_UpdateEvent": "mise à jour de l'événement",
-  "Crm_SliceAction_FetchTour": "récupération des tournées"
+  "Crm_SliceAction_FetchTour": "récupération des tournées",
+  "Crm_SliceAction_FetchTourById": "récupération de la tournée par id"
 }

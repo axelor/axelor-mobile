@@ -17,11 +17,19 @@
  */
 
 import TourListScreen from './TourListScreen';
+import TourDetailsScreen from './TourDetailsScreen';
 
 export default {
   TourListScreen: {
     title: 'Crm_Tours',
     component: TourListScreen,
+    options: {
+      shadedHeader: false,
+    },
+  },
+  TourDetailsScreen: {
+    title: 'Crm_Tours',
+    component: TourDetailsScreen,
     options: {
       shadedHeader: false,
     },
