@@ -20,7 +20,7 @@ import React, {useCallback, useEffect} from 'react';
 import {StyleSheet} from 'react-native';
 import {HeaderContainer, Screen, ScrollList, Text} from '@axelor/aos-mobile-ui';
 import {useDispatch, useSelector, useTranslator} from '@axelor/aos-mobile-core';
-import {TourDetailsHeader} from '../../components';
+import {TourDetailsHeader, TourLineCard} from '../../components';
 import {fetchControlTourById} from '../../features/tourSlice';
 import {searchTourLine} from '../../features/tourLineSlice';
 
@@ -49,8 +49,6 @@ const TourDetailsScreen = ({navigation, route}) => {
     [dispatch, tourId],
   );
 
-  console.log(tourLineList);
-
   return (
     <Screen removeSpaceOnTop={true}>
       <HeaderContainer
@@ -64,7 +62,12 @@ const TourDetailsScreen = ({navigation, route}) => {
         moreLoading={moreLoading}
         isListEnd={isListEnd}
         translator={I18n.t}
-        renderItem={({item}) => <Text>test</Text>}
+        renderItem={({item}) => (
+          <TourLineCard
+            name={item?.partner?.fullName}
+            adress={item?.address?.fullName}
+          />
+        )}
       />
     </Screen>
   );

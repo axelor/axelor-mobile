@@ -28,3 +28,4 @@ export {default as PlanningEventCard} from './PlanningEventCard/PlanningEventCar
 export {default as SocialNetworksInfoCard} from './SocialNetworksInfoCard/SocialNetworksInfoCard';
 export {default as TourCard} from './TourCard/TourCard';
 export {default as TourDetailsHeader} from './TourDetailsHeader/TourDetailsHeader';
+export {default as TourLineCard} from './TourLineCard/TourLineCard';
