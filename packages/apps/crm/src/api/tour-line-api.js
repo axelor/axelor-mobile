@@ -18,24 +18,35 @@
 
 import {createStandardSearch} from '@axelor/aos-mobile-core';
 
-const createTourLineCriteria = tourId => {
-  return [
+const createTourLineCriteria = (tourId, status) => {
+  const criteria = [
     {
       fieldName: 'tour.id',
       operator: '=',
       value: tourId,
     },
   ];
+
+  if (status != null) {
+    criteria.push({
+      fieldName: 'isValidated',
+      operator: '=',
+      value: status,
+    });
+  }
+
+  return criteria;
 };
 
 export async function searchTourLine({
   page = 0,
   tourId,
   numberElementsByPage = 10,
+  status = null,
 }) {
   return createStandardSearch({
     model: 'com.axelor.apps.crm.db.TourLine',
-    criteria: createTourLineCriteria(tourId),
+    criteria: createTourLineCriteria(tourId, status),
     fieldKey: 'crm_tourLine',
     sortKey: 'crm_tourLine',
     page: page,

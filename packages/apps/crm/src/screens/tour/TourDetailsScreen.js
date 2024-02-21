@@ -16,22 +16,31 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import React, {useCallback, useEffect} from 'react';
-import {StyleSheet} from 'react-native';
-import {HeaderContainer, Screen, ScrollList, Text} from '@axelor/aos-mobile-ui';
+import React, {useCallback, useEffect, useState} from 'react';
+import {
+  ChipSelect,
+  HeaderContainer,
+  Screen,
+  ScrollList,
+  useThemeColor,
+} from '@axelor/aos-mobile-ui';
 import {useDispatch, useSelector, useTranslator} from '@axelor/aos-mobile-core';
 import {TourDetailsHeader, TourLineCard} from '../../components';
 import {fetchControlTourById} from '../../features/tourSlice';
 import {searchTourLine} from '../../features/tourLineSlice';
+import {TourLineType} from '../../types';
 
-const TourDetailsScreen = ({navigation, route}) => {
+const TourDetailsScreen = ({route}) => {
   const {tourId} = route.params;
 
   const dispatch = useDispatch();
   const I18n = useTranslator();
+  const Colors = useThemeColor();
 
   const {tourLineList, loadingTourLineList, moreLoading, isListEnd} =
     useSelector(state => state.tourLine);
+
+  const [selectedStatus, setSelectedStatus] = useState([]);
 
   useEffect(() => {
     dispatch(fetchControlTourById({tourId: tourId}));
@@ -43,10 +52,16 @@ const TourDetailsScreen = ({navigation, route}) => {
         searchTourLine({
           page: page,
           tourId: tourId,
+          status:
+            selectedStatus[0]?.key === TourLineType.status.Planned
+              ? false
+              : selectedStatus[0]?.key === TourLineType.status.Validated
+              ? true
+              : null,
         }),
       );
     },
-    [dispatch, tourId],
+    [dispatch, selectedStatus, tourId],
   );
 
   return (
@@ -54,6 +69,24 @@ const TourDetailsScreen = ({navigation, route}) => {
       <HeaderContainer
         expandableFilter={false}
         fixedItems={<TourDetailsHeader totalTourLine={tourLineList?.length} />}
+        chipComponent={
+          <ChipSelect
+            mode="switch"
+            onChangeValue={chiplist => setSelectedStatus(chiplist)}
+            selectionItems={[
+              {
+                title: I18n.t('Crm_Event_Status_Planned'),
+                color: Colors.secondaryColor,
+                key: TourLineType.status.Planned,
+              },
+              {
+                title: I18n.t('Crm_Status_Validated'),
+                color: Colors.successColor,
+                key: TourLineType.status.Validated,
+              },
+            ]}
+          />
+        }
       />
       <ScrollList
         loadingList={loadingTourLineList}
@@ -66,13 +99,13 @@ const TourDetailsScreen = ({navigation, route}) => {
           <TourLineCard
             name={item?.partner?.fullName}
             adress={item?.address?.fullName}
+            eventId={item?.event?.id}
+            isValidated={item?.isValidated}
           />
         )}
       />
     </Screen>
   );
 };
-
-const styles = StyleSheet.create({});
 
 export default TourDetailsScreen;

@@ -17,15 +17,27 @@
  */
 
 import React from 'react';
-import {CardIconButton, ObjectCard, useThemeColor} from '@axelor/aos-mobile-ui';
+import {
+  CardIconButton,
+  ObjectCard,
+  checkNullString,
+  useThemeColor,
+} from '@axelor/aos-mobile-ui';
 import {StyleSheet, View} from 'react-native';
 
 interface TourLineCardProps {
   name: string;
   adress?: string;
+  eventId?: number;
+  isValidated?: boolean;
 }
 
-const TourLineCard = ({adress, name}: TourLineCardProps) => {
+const TourLineCard = ({
+  adress,
+  name,
+  eventId,
+  isValidated = false,
+}: TourLineCardProps) => {
   const Colors = useThemeColor();
 
   return (
@@ -47,25 +59,31 @@ const TourLineCard = ({adress, name}: TourLineCardProps) => {
         />
       </View>
       <View style={styles.cardIconButtonContainer}>
-        <CardIconButton
-          style={styles.cardIconButton}
-          iconName="geo-alt-fill"
-          iconColor={Colors.secondaryColor.background}
-          onPress={() => {}}
-        />
-        <CardIconButton
-          style={styles.cardIconButton}
-          iconName="calendar-event"
-          iconColor={Colors.secondaryColor.background}
-          onPress={() => {}}
-        />
+        {!checkNullString(adress) && (
+          <CardIconButton
+            style={styles.cardIconButton}
+            iconName="geo-alt-fill"
+            iconColor={Colors.primaryColor.foreground}
+            onPress={() => {}}
+          />
+        )}
+        {eventId != null && (
+          <CardIconButton
+            style={styles.cardIconButton}
+            iconName="calendar-event"
+            iconColor={Colors.primaryColor.foreground}
+            onPress={() => {}}
+          />
+        )}
       </View>
-      <CardIconButton
-        style={styles.cardIconButton}
-        iconName="check-lg"
-        iconColor={Colors.successColor.background}
-        onPress={() => {}}
-      />
+      {!isValidated && (
+        <CardIconButton
+          style={styles.cardIconButton}
+          iconName="check-lg"
+          iconColor={Colors.successColor.background}
+          onPress={() => {}}
+        />
+      )}
     </View>
   );
 };

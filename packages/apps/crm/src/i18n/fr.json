@@ -30,6 +30,7 @@
   "Crm_Event_Status_Planned": "Planifié",
   "Crm_Event_Status_Realized": "Réalisé",
   "Crm_Event_Status_Canceled": "Annulé",
+  "Crm_Status_Validated": "Validé",
   "Crm_Event_Category_Event": "Événement",
   "Crm_Event_Category_Call": "Appel",
   "Crm_Event_Category_Meeting": "Réunion",
