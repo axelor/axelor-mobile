@@ -16,10 +16,29 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+import {Color, ThemeColors} from '@axelor/aos-mobile-ui';
+
 class TourLineType {
   static status = {
     Planned: 1,
     Validated: 2,
+  };
+
+  static getBorderColor = (
+    isValidated: boolean,
+    Colors: ThemeColors,
+  ): Color => {
+    switch (isValidated) {
+      case true:
+        return Colors.successColor;
+      case false:
+        return Colors.secondaryColor;
+      default:
+        console.warn(
+          `isValidated provided with value ${isValidated} is not supported by tour Line`,
+        );
+        return null;
+    }
   };
 }
 

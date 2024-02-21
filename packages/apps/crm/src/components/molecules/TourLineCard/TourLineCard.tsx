@@ -16,7 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import React from 'react';
+import React, {useMemo} from 'react';
 import {
   CardIconButton,
   ObjectCard,
@@ -24,6 +24,7 @@ import {
   useThemeColor,
 } from '@axelor/aos-mobile-ui';
 import {StyleSheet, View} from 'react-native';
+import {TourLineType} from '../../../types';
 
 interface TourLineCardProps {
   name: string;
@@ -40,12 +41,18 @@ const TourLineCard = ({
 }: TourLineCardProps) => {
   const Colors = useThemeColor();
 
+  const borderStyle = useMemo(() => {
+    return getStyles(
+      TourLineType.getBorderColor(isValidated, Colors)?.background,
+    )?.border;
+  }, [Colors, isValidated]);
+
   return (
     <View style={styles.globalContainer}>
       <View style={styles.objectCardContainer}>
         <ObjectCard
           showArrow={false}
-          style={styles.objectCard}
+          style={[styles.objectCard, borderStyle]}
           upperTexts={{
             items: [
               {displayText: name, isTitle: true},
@@ -87,6 +94,14 @@ const TourLineCard = ({
     </View>
   );
 };
+
+const getStyles = color =>
+  StyleSheet.create({
+    border: {
+      borderLeftWidth: 7,
+      borderLeftColor: color,
+    },
+  });
 
 const styles = StyleSheet.create({
   globalContainer: {
