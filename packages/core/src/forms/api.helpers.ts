@@ -81,3 +81,23 @@ export async function refreshRecord({
 }) {
   return getModelApi().get({modelName, id});
 }
+
+export async function deleteRecord({
+  modelName,
+  id,
+}: {
+  modelName: string;
+  id: number;
+}) {
+  return getActionApi().send({
+    method: 'delete',
+    url: `ws/rest/${modelName}/${id}`,
+    body: {},
+    description: `delete ${modelName} with id ${id}`,
+    matchers: {
+      modelName,
+      id: id,
+      fields: {},
+    },
+  });
+}

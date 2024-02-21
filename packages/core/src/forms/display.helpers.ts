@@ -19,7 +19,6 @@
 import {KeyboardType, Platform} from 'react-native';
 import {checkNullString} from '@axelor/aos-mobile-ui';
 import {
-  Action,
   DEFAULT_COLSPAN,
   DisplayField,
   DisplayPanel,
@@ -305,24 +304,5 @@ export const getKeyboardType = (_field: DisplayField): KeyboardType => {
       return 'email-address';
     default:
       return 'default';
-  }
-};
-
-export const getButtonTitleKey = (_action: Action): string => {
-  if (_action.titleKey != null) {
-    return _action.titleKey;
-  }
-
-  switch (_action.type) {
-    case 'create':
-      return 'Base_FormAction_Create';
-    case 'update':
-      return 'Base_FormAction_Update';
-    case 'refresh':
-      return 'Base_FormAction_Refresh';
-    case 'reset':
-      return 'Base_FormAction_Reset';
-    default:
-      return 'Base_FormAction_Save';
   }
 };
