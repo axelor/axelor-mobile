@@ -18,104 +18,63 @@
 
 import React, {useCallback, useEffect, useMemo, useRef, useState} from 'react';
 import {StyleSheet, View} from 'react-native';
-import {animationUtil} from '../../../tools/AnimationUtil';
-import {Text} from '../../atoms';
 import {
   OUTSIDE_INDICATOR,
   useClickOutside,
 } from '../../../hooks/use-click-outside';
-import {useThemeColor} from '../../../theme/ThemeContext';
-import {ThemeColors} from '../../../theme/themes';
+import {ThemeColors, useThemeColor} from '../../../theme';
 import {CircleButton} from '../../molecules';
-
-interface FloatingButtonProps {
-  actions: ActionProps[];
-  iconName?: string;
-  size?: number;
-  style?: any;
-  translator: (translationKey: string) => string;
-}
-
-interface ActionProps {
-  key: number;
-  title: string;
-  iconName: string;
-  disabled: boolean;
-  onPress: () => void;
-}
-
-const FLOATING_BUTTON_SIZE = 60;
-const ACTION_BUTTON_SIZE_PERCENTAGE = 0.8;
-const MIN_ACTION_BUTTON_WIDTH = 200;
-
-const FloatingActionButton = ({
-  actionKey,
-  title,
-  iconName,
-  buttonParams,
-  disabled = false,
-  onPress,
-  translator,
-}: {
-  actionKey: number;
-  title: string;
-  iconName: string;
-  buttonParams: any;
-  disabled?: boolean;
-  onPress: (actionKey: number) => void;
-  translator: (translationKey: string) => string;
-}) => {
-  const Colors = useThemeColor();
-  const styles = useMemo(() => getStyles(Colors), [Colors]);
-
-  const handleActionPress = useCallback(
-    () => onPress(actionKey),
-    [actionKey, onPress],
-  );
-
-  return (
-    <View style={styles.actionButtonContainer}>
-      <CircleButton
-        iconName={iconName}
-        size={buttonParams.size}
-        onPress={handleActionPress}
-        disabled={disabled}
-        style={{marginRight: buttonParams.marginRight}}
-      />
-      <View style={styles.actionTitleContainer}>
-        <Text fontSize={16} style={styles.actionTitle}>
-          {translator(title)}
-        </Text>
-      </View>
-    </View>
-  );
-};
+import {Icon} from '../../atoms';
+import {
+  ACTION_BUTTON_SIZE_PERCENTAGE,
+  ActionProps,
+  FLOATING_BUTTON_SIZE,
+  FloatingButtonProps,
+} from './types';
+import FloatingActionButton from './FloatingActionButton';
+import Indicator from './Indicator';
 
 const FloatingButton = ({
-  actions,
-  iconName = 'plus-lg',
-  size = FLOATING_BUTTON_SIZE,
   style,
+  actions: _actions,
+  iconName = 'plus-lg',
+  closeIconName = 'x-lg',
+  size = FLOATING_BUTTON_SIZE,
+  closeOnOutsideClick = true,
+  onGlobalPress,
   translator,
+  useCircleStyle = false,
 }: FloatingButtonProps) => {
   const Colors = useThemeColor();
-  const [isOpen, setIsOpen] = useState(false);
 
   const wrapperRef = useRef(null);
   const clickOutside = useClickOutside({
     wrapperRef,
   });
 
+  const [isOpen, setIsOpen] = useState(false);
+  const [expanded, setExpanded] = useState(false);
+
+  const styles = useMemo(() => getStyles(Colors), [Colors]);
+
   useEffect(() => {
-    if (clickOutside === OUTSIDE_INDICATOR && isOpen) {
-      animationUtil.animateNext();
+    if (clickOutside === OUTSIDE_INDICATOR && isOpen && closeOnOutsideClick) {
       setIsOpen(false);
     }
-  }, [clickOutside, isOpen]);
+  }, [clickOutside, closeOnOutsideClick, isOpen]);
+
+  const handleFLoatingButtonPress = useCallback(() => {
+    if (onGlobalPress) {
+      onGlobalPress();
+    }
+    setIsOpen(current => !current);
+    setExpanded(true);
+  }, [onGlobalPress]);
 
   const actionButtonParams = useMemo(() => {
     const actionButtonSize = Math.floor(size * ACTION_BUTTON_SIZE_PERCENTAGE);
-    const actionButtonMarginRight = Math.floor((size - actionButtonSize) / 2);
+    const actionButtonMarginRight =
+      Math.floor((size - actionButtonSize) / 2) - 1;
 
     return {
       size: actionButtonSize,
@@ -123,36 +82,46 @@ const FloatingButton = ({
     };
   }, [size]);
 
-  const onActionPress = useCallback(actionPress => {
-    actionPress();
-    setIsOpen(false);
-  }, []);
-
-  const actionComponents = useMemo(
-    () =>
-      actions
-        ?.reverse()
-        ?.map(action => (
-          <FloatingActionButton
-            key={action.key}
-            actionKey={action.key}
-            title={action.title}
-            iconName={action.iconName}
-            buttonParams={actionButtonParams}
-            disabled={action.disabled}
-            onPress={() => onActionPress(action.onPress)}
-            translator={translator}
-          />
-        )),
-    [actions, actionButtonParams, onActionPress, translator],
+  const renderAction = useCallback(
+    (action: ActionProps) => (
+      <FloatingActionButton
+        key={action.key}
+        title={action.title}
+        iconName={action.iconName}
+        color={action.color}
+        size={actionButtonParams.size}
+        disabled={action.disabled}
+        indicator={action.indicator}
+        onPress={() => {
+          action.onPress();
+          if (action.closeOnPress) {
+            handleFLoatingButtonPress();
+          }
+        }}
+        translator={translator}
+        useCircleStyle={useCircleStyle}
+      />
+    ),
+    [
+      actionButtonParams.size,
+      handleFLoatingButtonPress,
+      translator,
+      useCircleStyle,
+    ],
   );
 
-  const styles = useMemo(() => getStyles(Colors), [Colors]);
+  const actions = useMemo(() => {
+    if (_actions == null || _actions?.length === 0) {
+      return [];
+    }
 
-  const handleFLoatingButtonPress = useCallback(() => {
-    animationUtil.animateNext();
-    setIsOpen(current => !current);
-  }, []);
+    return _actions.filter(action => action.hideIf !== true).reverse();
+  }, [_actions]);
+
+  const showIndicator = useMemo(
+    () => actions.some(_action => _action.indicator),
+    [actions],
+  );
 
   if (actions == null || actions?.length === 0) {
     return <View />;
@@ -161,13 +130,34 @@ const FloatingButton = ({
   return (
     <View ref={wrapperRef} style={[styles.container, style]}>
       {isOpen && (
-        <View style={styles.actionsContainer}>{actionComponents}</View>
+        <View
+          style={[
+            {padding: actionButtonParams.marginRight},
+            useCircleStyle ? styles.actionsContainer : null,
+          ]}>
+          {useCircleStyle ? (
+            <Icon
+              name={expanded ? 'chevron-down' : 'chevron-up'}
+              touchable={true}
+              onPress={() => setExpanded(current => !current)}
+            />
+          ) : null}
+          {!expanded && (
+            <Indicator
+              show={showIndicator}
+              color={Colors.errorColor}
+              style={styles.indicator}
+            />
+          )}
+          {expanded && actions.map(renderAction)}
+        </View>
       )}
       <CircleButton
-        iconName={isOpen ? 'x-lg' : iconName}
+        iconName={isOpen ? closeIconName : iconName}
         onPress={handleFLoatingButtonPress}
         size={size}
         style={styles.floatingButton}
+        square={!useCircleStyle}
       />
     </View>
   );
@@ -175,35 +165,32 @@ const FloatingButton = ({
 
 const getStyles = (Colors: ThemeColors) =>
   StyleSheet.create({
-    actionButtonContainer: {
-      flexDirection: 'row-reverse',
-      marginTop: 7,
+    container: {
+      position: 'absolute',
+      bottom: 10,
+      right: 10,
     },
     actionsContainer: {
-      marginBottom: 10,
-    },
-    actionTitleContainer: {
       backgroundColor: Colors.backgroundColor,
-      marginHorizontal: 15,
-      marginVertical: 10,
-      justifyContent: 'center',
-      alignItems: 'center',
-      minWidth: MIN_ACTION_BUTTON_WIDTH,
-      borderRadius: 7,
+      borderRadius: 60,
+      borderTopWidth: 0.5,
+      borderRightWidth: 0.5,
+      borderLeftWidth: 0.5,
+      borderTopColor: 'rgba(0,0,0,0.1)',
+      borderRightColor: 'rgba(0,0,0,0.2)',
+      borderLeftColor: 'rgba(0,0,0,0.1)',
       elevation: 3,
       shadowOpacity: 0.5,
       shadowColor: Colors.secondaryColor.background,
       shadowOffset: {width: 0, height: 0},
     },
-    actionTitle: {
-      textAlign: 'center',
-    },
-    container: {
-      justifyContent: 'flex-end',
-      alignItems: 'flex-end',
-    },
     floatingButton: {
       alignSelf: 'flex-end',
+    },
+    indicator: {
+      right: 5,
+      left: null,
+      top: -2,
     },
   });
 
