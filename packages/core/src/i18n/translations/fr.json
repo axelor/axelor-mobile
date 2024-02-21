@@ -188,6 +188,7 @@
   "Base_SliceAction_CreateRecord": "création de l'objet",
   "Base_SliceAction_UpdateRecord": "mise à jour de l'objet",
   "Base_SliceAction_RefreshRecord": "actualisation de l'objet",
+  "Base_SliceAction_DeleteRecord": "suppression de l'objet",
   "Base_SliceAction_FetchJsonFieldsOfModel": "récupération des champs studio du modèle",
   "Base_SliceAction_FetchObjectModelTypes": "récupération des types de champs studio",
   "Base_SliceAction_FetchDataOfModel": "récupération des données du model",
