@@ -19,6 +19,7 @@
 import React, {useMemo, useState, useCallback} from 'react';
 import {StyleSheet, View} from 'react-native';
 import {
+  checkNullString,
   HeaderContainer,
   Screen,
   ScrollList,
@@ -38,6 +39,11 @@ const ContactListScreen = ({navigation}) => {
   );
 
   const [assigned, setAssigned] = useState(false);
+  const [filter, setFilter] = useState(null);
+
+  const handleDataSearch = useCallback(searchValue => {
+    setFilter(searchValue);
+  }, []);
 
   const fetchContactAPI = useCallback(
     page => {
@@ -77,7 +83,11 @@ const ContactListScreen = ({navigation}) => {
               rightTitle={I18n.t('Crm_AssignedToMe')}
               onSwitch={() => setAssigned(!assigned)}
             />
-            <ContactSearchBar showDetailsPopup={false} oneFilter={true} />
+            <ContactSearchBar
+              showDetailsPopup={false}
+              oneFilter={true}
+              onFetchDataAction={handleDataSearch}
+            />
           </View>
         }
       />
@@ -104,6 +114,7 @@ const ContactListScreen = ({navigation}) => {
         fetchData={fetchContactAPI}
         moreLoading={moreLoading}
         isListEnd={isListEnd}
+        filter={!checkNullString(filter)}
         translator={I18n.t}
       />
     </Screen>
