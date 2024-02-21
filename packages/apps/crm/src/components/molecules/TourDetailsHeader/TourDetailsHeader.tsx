@@ -21,17 +21,18 @@ import {StyleSheet, View} from 'react-native';
 import {LabelText, Text} from '@axelor/aos-mobile-ui';
 import {DateDisplay, useTranslator, useSelector} from '@axelor/aos-mobile-core';
 
-interface TourDetailsHeaderProps {}
+interface TourDetailsHeaderProps {
+  totalTourLine: number;
+}
 
-const TourDetailsHeader = ({}: TourDetailsHeaderProps) => {
+const TourDetailsHeader = ({totalTourLine = 0}: TourDetailsHeaderProps) => {
   const I18n = useTranslator();
-  const totalTourLine = 2;
 
   const {tour} = useSelector((state: any) => state.tour);
 
   return (
     <View style={styles.container}>
-      <View style={styles.row}>
+      <View>
         <Text writingType="title">{'name'}</Text>
       </View>
       <View style={styles.row}>
@@ -61,13 +62,6 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     flexDirection: 'row',
     alignItems: 'center',
-  },
-  progressBar: {
-    width: '88%',
-  },
-  button: {
-    height: 40,
-    borderWidth: 1,
   },
   fontSize: {
     fontSize: 16,

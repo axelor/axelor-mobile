@@ -133,5 +133,6 @@
   "Crm_SliceAction_CreateEvent": "create event",
   "Crm_SliceAction_UpdateEvent": "update event",
   "Crm_SliceAction_FetchTour": "fetch tours",
-  "Crm_SliceAction_FetchTourById": "fetch tour by id"
+  "Crm_SliceAction_FetchTourById": "fetch tour by id",
+  "Crm_SliceAction_FetchTourLine": "fetch tour lines"
 }

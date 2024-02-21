@@ -133,5 +133,6 @@
   "Crm_SliceAction_CreateEvent": "création de l'événement",
   "Crm_SliceAction_UpdateEvent": "mise à jour de l'événement",
   "Crm_SliceAction_FetchTour": "récupération des tournées",
-  "Crm_SliceAction_FetchTourById": "récupération de la tournée par id"
+  "Crm_SliceAction_FetchTourById": "récupération de la tournée par id",
+  "Crm_SliceAction_FetchTourLine": "récupération des lignes de la tournée"
 }

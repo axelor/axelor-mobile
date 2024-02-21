@@ -16,32 +16,56 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import React, {useEffect} from 'react';
+import React, {useCallback, useEffect} from 'react';
 import {StyleSheet} from 'react-native';
-import {HeaderContainer, Screen, Text} from '@axelor/aos-mobile-ui';
-import {useDispatch, useSelector} from '@axelor/aos-mobile-core';
+import {HeaderContainer, Screen, ScrollList, Text} from '@axelor/aos-mobile-ui';
+import {useDispatch, useSelector, useTranslator} from '@axelor/aos-mobile-core';
 import {TourDetailsHeader} from '../../components';
 import {fetchControlTourById} from '../../features/tourSlice';
+import {searchTourLine} from '../../features/tourLineSlice';
 
 const TourDetailsScreen = ({navigation, route}) => {
   const {tourId} = route.params;
+
   const dispatch = useDispatch();
+  const I18n = useTranslator();
 
-  const {tour} = useSelector(state => state.tour);
-
-  console.log('tour', tour);
+  const {tourLineList, loadingTourLineList, moreLoading, isListEnd} =
+    useSelector(state => state.tourLine);
 
   useEffect(() => {
     dispatch(fetchControlTourById({tourId: tourId}));
   }, [dispatch, tourId]);
 
+  const fetchTourLineAPI = useCallback(
+    (page = 0) => {
+      dispatch(
+        searchTourLine({
+          page: page,
+          tourId: tourId,
+        }),
+      );
+    },
+    [dispatch, tourId],
+  );
+
+  console.log(tourLineList);
+
   return (
     <Screen removeSpaceOnTop={true}>
       <HeaderContainer
         expandableFilter={false}
-        fixedItems={<TourDetailsHeader />}
+        fixedItems={<TourDetailsHeader totalTourLine={tourLineList?.length} />}
       />
-      <Text>Test</Text>
+      <ScrollList
+        loadingList={loadingTourLineList}
+        data={tourLineList}
+        fetchData={fetchTourLineAPI}
+        moreLoading={moreLoading}
+        isListEnd={isListEnd}
+        translator={I18n.t}
+        renderItem={({item}) => <Text>test</Text>}
+      />
     </Screen>
   );
 };
