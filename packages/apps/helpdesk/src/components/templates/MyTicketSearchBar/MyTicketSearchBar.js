@@ -29,6 +29,7 @@ const MyTicketSearchBar = ({
   navigate = false,
   oneFilter = false,
   isFocus = false,
+  onFetchDataAction,
 }) => {
   const I18n = useTranslator();
   const dispatch = useDispatch();
@@ -42,6 +43,7 @@ const MyTicketSearchBar = ({
 
   const fetchMyTicketSearchBarAPI = useCallback(
     ({page = 0, searchValue}) => {
+      onFetchDataAction && onFetchDataAction(searchValue);
       dispatch(
         fetchMyTickets({
           page: page,
@@ -50,7 +52,7 @@ const MyTicketSearchBar = ({
         }),
       );
     },
-    [dispatch, user],
+    [dispatch, onFetchDataAction, user],
   );
 
   return (

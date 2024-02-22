@@ -34,6 +34,7 @@ const OpportunitySearchBar = ({
   navigate = false,
   oneFilter = false,
   isFocus = false,
+  onFetchDataAction,
 }) => {
   const I18n = useTranslator();
   const dispatch = useDispatch();
@@ -44,9 +45,10 @@ const OpportunitySearchBar = ({
 
   const fetchOpportunitiesSearchBarAPI = useCallback(
     ({page = 0, searchValue}) => {
+      onFetchDataAction && onFetchDataAction(searchValue);
       dispatch(fetchOpportunities({page, searchValue}));
     },
-    [dispatch],
+    [dispatch, onFetchDataAction],
   );
 
   return (

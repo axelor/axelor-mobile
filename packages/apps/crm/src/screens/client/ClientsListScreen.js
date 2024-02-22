@@ -19,6 +19,7 @@
 import React, {useState, useCallback, useEffect} from 'react';
 import {StyleSheet, View} from 'react-native';
 import {
+  checkNullString,
   HeaderContainer,
   Screen,
   ScrollList,
@@ -39,6 +40,11 @@ const CLientsListScreen = ({navigation}) => {
 
   const [filteredList, setFilteredList] = useState(clientList);
   const [assigned, setAssigned] = useState(false);
+  const [filter, setFilter] = useState(null);
+
+  const handleDataSearch = useCallback(searchValue => {
+    setFilter(searchValue);
+  }, []);
 
   const fetchClientAPI = useCallback(
     page => {
@@ -77,7 +83,11 @@ const CLientsListScreen = ({navigation}) => {
               rightTitle={I18n.t('Crm_AssignedToMe')}
               onSwitch={() => setAssigned(!assigned)}
             />
-            <ClientSearchBar showDetailsPopup={false} oneFilter={true} />
+            <ClientSearchBar
+              showDetailsPopup={false}
+              oneFilter={true}
+              onFetchDataAction={handleDataSearch}
+            />
           </View>
         }
       />
@@ -103,6 +113,7 @@ const CLientsListScreen = ({navigation}) => {
         fetchData={fetchClientAPI}
         moreLoading={moreLoading}
         isListEnd={isListEnd}
+        filter={!checkNullString(filter)}
         translator={I18n.t}
       />
     </Screen>

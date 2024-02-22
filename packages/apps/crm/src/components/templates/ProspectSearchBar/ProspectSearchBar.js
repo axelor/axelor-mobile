@@ -34,6 +34,7 @@ const ProspectSearchBar = ({
   navigate = false,
   oneFilter = false,
   isFocus = false,
+  onFetchDataAction,
 }) => {
   const I18n = useTranslator();
   const dispatch = useDispatch();
@@ -44,9 +45,10 @@ const ProspectSearchBar = ({
 
   const fetchProspectSearchBarAPI = useCallback(
     ({page = 0, searchValue}) => {
+      onFetchDataAction && onFetchDataAction(searchValue);
       dispatch(fetchProspects({page, searchValue}));
     },
-    [dispatch],
+    [dispatch, onFetchDataAction],
   );
 
   return (

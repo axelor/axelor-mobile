@@ -34,6 +34,7 @@ const CatalogsSearchBar = ({
   navigate = false,
   oneFilter = false,
   isFocus = false,
+  onFetchDataAction,
 }) => {
   const I18n = useTranslator();
   const dispatch = useDispatch();
@@ -44,9 +45,10 @@ const CatalogsSearchBar = ({
 
   const fetchCatalogSearchBarAPI = useCallback(
     ({page = 0, searchValue}) => {
+      onFetchDataAction && onFetchDataAction(searchValue);
       dispatch(fetchCatalog({page, searchValue}));
     },
-    [dispatch],
+    [dispatch, onFetchDataAction],
   );
 
   return (

@@ -19,12 +19,13 @@
 import React, {useCallback, useEffect, useMemo, useState} from 'react';
 import {Dimensions, StyleSheet, View} from 'react-native';
 import {
-  Screen,
-  HeaderContainer,
-  ScrollList,
-  MultiValuePicker,
-  useThemeColor,
+  checkNullString,
   ChipSelect,
+  HeaderContainer,
+  MultiValuePicker,
+  Screen,
+  ScrollList,
+  useThemeColor,
 } from '@axelor/aos-mobile-ui';
 import {
   useDispatch,
@@ -55,6 +56,11 @@ const MyTeamTicketListScreen = ({navigation}) => {
   const [priorityStatus, setPriorityStatus] = useState(
     Ticket.getPriorityList(Colors, I18n).filter(e => e.isActive === true),
   );
+  const [filter, setFilter] = useState(null);
+
+  const handleDataSearch = useCallback(searchValue => {
+    setFilter(searchValue);
+  }, []);
 
   useEffect(() => {
     dispatch(fetchTicketType());
@@ -139,6 +145,7 @@ const MyTeamTicketListScreen = ({navigation}) => {
             oneFilter={true}
             placeholderKey={I18n.t('Helpdesk_Ticket')}
             team={true}
+            onFetchDataAction={handleDataSearch}
           />
         }
         chipComponent={
@@ -190,6 +197,7 @@ const MyTeamTicketListScreen = ({navigation}) => {
         fetchData={fetchTicketsAPI}
         moreLoading={moreMoadingMyTeamTicket}
         isListEnd={isListEndMyTeamTicket}
+        filter={!checkNullString(filter)}
         translator={I18n.t}
       />
     </Screen>

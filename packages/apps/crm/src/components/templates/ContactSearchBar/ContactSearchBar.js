@@ -38,6 +38,7 @@ const ContactSearchBarAux = ({
   oneFilter = false,
   isFocus = false,
   showTitle = false,
+  onFetchDataAction,
 }) => {
   const I18n = useTranslator();
   const dispatch = useDispatch();
@@ -48,9 +49,10 @@ const ContactSearchBarAux = ({
 
   const fetchContactSearchBarAPI = useCallback(
     ({page = 0, searchValue}) => {
+      onFetchDataAction && onFetchDataAction(searchValue);
       dispatch(fetchContact({page, searchValue}));
     },
-    [dispatch],
+    [dispatch, onFetchDataAction],
   );
 
   return (
@@ -88,6 +90,7 @@ const ContactSearchBar = ({
   oneFilter = false,
   isFocus = false,
   showTitle = false,
+  onFetchDataAction = () => {},
 }) => {
   return (
     <ContactSearchBarAux
@@ -102,6 +105,7 @@ const ContactSearchBar = ({
       oneFilter={oneFilter}
       isFocus={isFocus}
       showTitle={showTitle}
+      onFetchDataAction={onFetchDataAction}
     />
   );
 };

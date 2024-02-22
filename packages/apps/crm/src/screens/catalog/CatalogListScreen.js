@@ -19,10 +19,11 @@
 import React, {useEffect, useState, useCallback, useMemo} from 'react';
 import {StyleSheet, View} from 'react-native';
 import {
-  Screen,
+  checkNullString,
   HeaderContainer,
-  ScrollList,
   MultiValuePicker,
+  Screen,
+  ScrollList,
   useThemeColor,
   WarningCard,
 } from '@axelor/aos-mobile-ui';
@@ -43,6 +44,11 @@ const CatalogListScreen = ({navigation}) => {
     useSelector(state => state.catalog);
 
   const [selectedStatus, setSelectedStatus] = useState([]);
+  const [filter, setFilter] = useState(null);
+
+  const handleDataSearch = useCallback(searchValue => {
+    setFilter(searchValue);
+  }, []);
 
   const catalogTypeListItems = useMemo(() => {
     return catalogTypeList
@@ -116,7 +122,11 @@ const CatalogListScreen = ({navigation}) => {
         expandableFilter={false}
         fixedItems={
           <View style={styles.headerContainer}>
-            <CatalogsSearchBar showDetailsPopup={false} oneFilter={true} />
+            <CatalogsSearchBar
+              showDetailsPopup={false}
+              oneFilter={true}
+              onFetchDataAction={handleDataSearch}
+            />
             <MultiValuePicker
               listItems={catalogTypeListItems}
               title={I18n.t('Base_Status')}
@@ -144,6 +154,7 @@ const CatalogListScreen = ({navigation}) => {
         fetchData={fetchCatalogAPI}
         moreLoading={moreLoading}
         isListEnd={isListEnd}
+        filter={!checkNullString(filter)}
         translator={I18n.t}
       />
     </Screen>

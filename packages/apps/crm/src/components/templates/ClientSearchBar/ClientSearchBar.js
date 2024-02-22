@@ -34,6 +34,7 @@ const ClientSearchBar = ({
   navigate = false,
   oneFilter = false,
   isFocus = false,
+  onFetchDataAction,
 }) => {
   const I18n = useTranslator();
   const dispatch = useDispatch();
@@ -44,9 +45,10 @@ const ClientSearchBar = ({
 
   const fetchClientSearchBarAPI = useCallback(
     ({page = 0, searchValue}) => {
+      onFetchDataAction && onFetchDataAction(searchValue);
       dispatch(fetchClients({page, searchValue}));
     },
-    [dispatch],
+    [dispatch, onFetchDataAction],
   );
 
   return (
