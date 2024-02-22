@@ -56,6 +56,6 @@ export async function searchTourLine({
 
 export async function validateTourLine({tourLineId}) {
   return axiosApiProvider.put({
-    url: `ws/aos/ticket/${tourLineId}`,
+    url: `ws/aos/tour-line/validate/${tourLineId}`,
   });
 }
