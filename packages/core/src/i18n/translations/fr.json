@@ -158,6 +158,8 @@
   "Base_FormAction_Update": "Mettre à jour",
   "Base_FormAction_Refresh": "Actualiser",
   "Base_FormAction_Reset": "Réinitialiser",
+  "Base_FormAction_Confirmation": "Confirmation",
+  "Base_FormAction_DirtyStateConfirmation": "Les modifications actuelles seront perdues.\nVoulez-vous vraiment continuer?",
   "Base_SelectAll": "Tout sélectionner",
   "Base_WebView": "Vue web",
   "Base_Dashboard": "Tableau de bord",
