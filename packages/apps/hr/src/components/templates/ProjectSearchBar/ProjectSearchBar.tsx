@@ -47,7 +47,7 @@ const ProjectSearchBarAux = ({
   const dispatch = useDispatch();
 
   const {projectList, loadingProject, moreLoading, isListEnd} = useSelector(
-    (state: any) => state.project,
+    (state: any) => state.hr_project,
   );
   const {user} = useSelector((state: any) => state.user);
 

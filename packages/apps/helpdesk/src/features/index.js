@@ -17,6 +17,6 @@
  */
 
 export {customerReducer as customer} from './customerSlice';
-export {projectReducer as project} from './projectSlice';
+export {projectReducer as helpdesk_project} from './projectSlice';
 export {ticketReducer as ticket} from './ticketSlice';
 export {timerReducer as timer} from './timerSlice';
