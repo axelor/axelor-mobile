@@ -16,7 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import React, {useEffect, useRef} from 'react';
+import React, {useCallback, useEffect, useRef, useState} from 'react';
 import {ActivityIndicator, Dimensions, StyleSheet, View} from 'react-native';
 import {
   BlockInteractionScreen,
@@ -30,53 +30,54 @@ import {
 import {useTranslator} from '../../../i18n';
 import {useNavigation} from '../../../hooks/use-navigation';
 import useLoaderListner from './use-loader-listener';
-import {useLoader} from './LoaderContext';
+import {processProvider} from './ProcessProvider';
 
 interface LoaderPopupProps {
   process: () => Promise<any>;
   onSuccess: () => void;
   onError: () => void;
-  runProccess: boolean;
-  timeout: number;
-  disabled: boolean;
+  start?: boolean;
+  disabled?: boolean;
+  timeout?: number;
 }
 
 const LoaderPopup = ({
   process,
   onSuccess,
   onError,
-  runProccess = false,
-  timeout = 100,
+  start = false,
   disabled = false,
+  timeout = 100,
 }: LoaderPopupProps) => {
   const navigation = useNavigation();
   const I18n = useTranslator();
   const Colors = useThemeColor();
   const {setActivityIndicator} = useConfig();
 
+  const [showPopup, setShowPopup] = useState<boolean>();
+
   const timeoutRef = useRef(null);
 
-  const {loading, notifyMe, showPopup, setNotifyMe, setShowPopup} = useLoader();
+  const {processItem: pi, loading} = useLoaderListner(
+    {
+      disabled,
+      process,
+      onSuccess,
+      onError,
+    },
+    () => setShowPopup(false),
+  );
 
-  const {listener} = useLoaderListner({
-    process,
-    onSuccess,
-    onError,
-    disabled,
-  });
+  const handleNotifyMe = useCallback(() => {
+    processProvider.notifyMe(pi);
+    navigation.goBack();
+  }, [pi, navigation]);
 
   useEffect(() => {
-    if (notifyMe) {
-      navigation.goBack();
+    if (start) {
+      processProvider.runProcess(pi, I18n);
     }
-  }, [navigation, notifyMe]);
-
-  useEffect(() => {
-    if (runProccess) {
-      listener();
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [runProccess]);
+  }, [start, pi, I18n]);
 
   useEffect(() => {
     if (loading) {
@@ -120,7 +121,7 @@ const LoaderPopup = ({
         <Button
           iconName="check-lg"
           title={I18n.t('Base_Loader_NotifyMe')}
-          onPress={() => setNotifyMe(true)}
+          onPress={handleNotifyMe}
         />
       </Card>
     </BlockInteractionScreen>

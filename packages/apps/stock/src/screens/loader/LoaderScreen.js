@@ -37,42 +37,41 @@
 import React, {useState} from 'react';
 import {View} from 'react-native';
 import {Button, Screen} from '@axelor/aos-mobile-ui';
-import {LoaderPopup, useLoader} from '@axelor/aos-mobile-core';
+import {LoaderPopup} from '@axelor/aos-mobile-core';
 
 // Screen for test Loader functionnalities
 const LoaderScreen = () => {
-  const [runProccess, setRunProccess] = useState(false);
+  const [start, setStart] = useState(false);
 
   const process = () =>
-    new Promise(resolve => {
+    new Promise((resolve, reject) => {
       setTimeout(() => {
-        resolve('Process finished');
+        resolve('Process completed');
+        // reject('Process failed');
       }, 10000);
     });
 
   const handleSuccessAction = () => {
-    setRunProccess(false);
+    setStart(false);
     console.log('Success action executed!');
   };
 
   const handleErrorAction = () => {
-    setRunProccess(false);
+    setStart(false);
     console.log('Error action executed!');
   };
-
-  const {loading} = useLoader();
 
   return (
     <Screen>
       <View>
         <Button
           title="Run process"
-          onPress={() => setRunProccess(true)}
-          disabled={loading}
+          onPress={() => setStart(true)}
+          disabled={start}
         />
         <LoaderPopup
+          start={start}
           process={process}
-          runProccess={runProccess}
           timeout={5000}
           onSuccess={handleSuccessAction}
           onError={handleErrorAction}

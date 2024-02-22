@@ -30,7 +30,6 @@ import {
   Camera,
   CameraScanner,
   HeaderBandList,
-  LoaderToastNotifier,
   Scanner,
   Toast,
 } from '../components';
@@ -88,7 +87,6 @@ const ContextedApplication = ({
         <NavigationContainer>
           <HeaderBandList />
           <LoadingIndicator />
-          <LoaderToastNotifier />
           <BlockInteractionMessage />
           <RootNavigator
             modules={modules}

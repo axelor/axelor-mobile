@@ -16,7 +16,36 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-export {default as LoaderPopup} from './LoaderPopup';
-export * from './ProcessProvider';
-export * from './types';
-export {default as useLoaderListner} from './use-loader-listener';
+export type callBack = (...args) => void;
+
+export enum EventType {
+  STARTED = 'STARTED',
+  COMPLETED = 'COMPLETED',
+  FAILED = 'FAILED',
+}
+
+export type Event = {
+  [e in EventType]: callBack[];
+};
+
+export enum ProcessStatus {
+  RUNNING = 'RUNNING',
+  COMPLETED = 'COMPLETED',
+  FAILED = 'FAILED',
+}
+
+export type ProcessOption = {
+  disabled: boolean;
+  process: () => Promise<any>;
+  onSuccess: () => void;
+  onError: () => void;
+};
+
+export type ProcessItem = ProcessOption & {
+  key: string;
+  loading: boolean;
+  notifyMe: boolean;
+  status: ProcessStatus;
+  message: string;
+  completed: boolean;
+};

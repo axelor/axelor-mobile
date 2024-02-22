@@ -40,7 +40,6 @@ import {requestBuilder} from '../apiProviders/Standard/requests.helper';
 import {core_modelAPI, core_searchFields, core_sortFields} from '../models';
 import {HeaderBandProvider} from '../header';
 import {addModuleForms, formConfigsProvider} from '../forms';
-import {LoaderProvider} from '../components';
 
 const ApplicationContext = createContext(null);
 
@@ -167,9 +166,7 @@ const ContextsProvider = ({
               defaultTheme={defaultWritingTheme}
               writingStylesConfig={writingStylesConfig}>
               <ConfigProvider showModulesSubtitle={showModulesSubtitle}>
-                <HeaderBandProvider>
-                  <LoaderProvider>{children}</LoaderProvider>
-                </HeaderBandProvider>
+                <HeaderBandProvider>{children}</HeaderBandProvider>
               </ConfigProvider>
             </WritingThemeProvider>
           </ThemeProvider>

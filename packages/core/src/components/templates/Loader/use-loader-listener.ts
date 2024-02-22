@@ -16,104 +16,41 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import {useCallback, useEffect, useMemo, useState} from 'react';
-import {LoaderStatus, useLoader} from './LoaderContext';
+import {useEffect, useMemo, useState} from 'react';
+import {EventType, ProcessItem, ProcessOption} from './types';
+import {processProvider} from './ProcessProvider';
+import {generateUniqueID} from './loader-helper';
 
-interface LoaderListenerProps {
-  process: () => Promise<any>;
-  onFinish?: (status: LoaderStatus) => void;
-  onSuccess?: () => void;
-  onError?: () => void;
-  disabled?: boolean;
-}
-
-const useLoaderListner = ({
-  process,
+const useLoaderListner = (
+  processOptions: ProcessOption,
   onFinish = () => {},
-  onSuccess = () => {},
-  onError = () => {},
-  disabled = false,
-}: LoaderListenerProps) => {
-  const [start, setStart] = useState(false);
+) => {
+  const [key, setKey] = useState<string>();
+  const [loading, setLoading] = useState<boolean>(false);
+  const [processItem, setProcessItem] = useState<ProcessItem>();
 
-  const {
-    setLoading,
-    setNotifyMe,
-    setShowPopup,
-    setStatus,
-    setMessage,
-    setFinished,
-    setDisabled,
-    setOnSuccessCallBack,
-    setOnErrorCallBack,
-  } = useLoader();
-
-  const onFinishCallBack = useCallback(
-    (status: LoaderStatus, response: any) => {
-      setLoading(false);
-      setShowPopup(false);
-      setStatus(status);
-      setMessage(response);
-      setFinished(true);
-      onFinish(status);
-    },
-    [setLoading, setFinished, setShowPopup, setStatus, setMessage, onFinish],
-  );
-
-  const executeProcess = useCallback(async () => {
-    setStart(false);
-    setLoading(true);
-
-    try {
-      const response = await process();
-      onFinishCallBack('ok', response);
-    } catch (error) {
-      onFinishCallBack('error', error);
-    }
-  }, [process, setLoading, onFinishCallBack]);
-
-  const processCallBack = useCallback(
-    (_start: boolean) => {
-      if (!_start) {
-        return;
-      }
-
-      executeProcess();
-    },
-    [executeProcess],
-  );
-
-  const handleListener = useCallback(() => {
-    setStart(true);
+  const onFinishCallback = () => {
     setLoading(false);
-
-    setNotifyMe(false);
-    setShowPopup(false);
-    setStatus(null);
-    setMessage(null);
-    setDisabled(disabled);
-
-    setOnSuccessCallBack(onSuccess);
-    setOnErrorCallBack(onError);
-  }, [
-    disabled,
-    onSuccess,
-    onError,
-    setLoading,
-    setNotifyMe,
-    setShowPopup,
-    setStatus,
-    setMessage,
-    setDisabled,
-    setOnSuccessCallBack,
-    setOnErrorCallBack,
-  ]);
+    onFinish();
+  };
 
   useEffect(() => {
-    processCallBack(start);
-  }, [start, processCallBack]);
+    const unid = generateUniqueID();
+    const p = processProvider.registerProcess(unid, processOptions);
 
-  return useMemo(() => ({listener: handleListener}), [handleListener]);
+    processProvider.on(unid, EventType.STARTED, () => setLoading(true));
+    processProvider.on(unid, EventType.COMPLETED, onFinishCallback);
+    processProvider.on(unid, EventType.FAILED, onFinishCallback);
+
+    setKey(unid);
+    setProcessItem(p);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  return useMemo(
+    () => ({key, processItem, loading}),
+    [key, processItem, loading],
+  );
 };
 
 export default useLoaderListner;
