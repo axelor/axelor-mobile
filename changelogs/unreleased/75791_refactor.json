@@ -1,0 +1,5 @@
+{
+  "title": "Application version: use value from authentication store",
+  "type": "refactor",
+  "packages": "core"
+}

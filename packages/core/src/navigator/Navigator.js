@@ -63,13 +63,7 @@ export const ModuleNavigatorContext = createContext({
   modulesScreens: {},
 });
 
-const Navigator = ({
-  modules,
-  mainMenu,
-  onRefresh,
-  version,
-  versionCheckConfig,
-}) => {
+const Navigator = ({modules, mainMenu, onRefresh, versionCheckConfig}) => {
   const storeState = useSelector(state => state.appConfig);
   const {user} = useSelector(state => state.user);
   const {dashboardConfigs} = useSelector(state => state.mobileDashboard);
@@ -225,7 +219,6 @@ const Navigator = ({
             modules={enabledModule}
             onModuleClick={changeActiveModule}
             onRefresh={onRefresh}
-            version={version}
             versionCheckConfig={versionCheckConfig}
           />
         )}>

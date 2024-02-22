@@ -78,6 +78,7 @@ const initialState = {
   responseInterceptorId: null,
   applicationMode: null,
   error: null,
+  appVersion: null,
 };
 
 export const authSlice = createSlice({
@@ -86,6 +87,9 @@ export const authSlice = createSlice({
   reducers: {
     clearError: state => {
       state.error = null;
+    },
+    setAppVersion: (state, action) => {
+      state.appVersion = action.payload.appVersion;
     },
   },
   extraReducers: builder => {
@@ -141,6 +145,6 @@ export const authSlice = createSlice({
   },
 });
 
-export const {clearError} = authSlice.actions;
+export const {clearError, setAppVersion} = authSlice.actions;
 
 export const authReducer = authSlice.reducer;
