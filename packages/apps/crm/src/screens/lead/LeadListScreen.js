@@ -19,12 +19,13 @@
 import React, {useCallback, useState, useEffect, useMemo} from 'react';
 import {StyleSheet, View} from 'react-native';
 import {
-  Screen,
+  checkNullString,
   HeaderContainer,
-  ToggleSwitch,
-  ScrollList,
-  useThemeColor,
   MultiValuePicker,
+  Screen,
+  ScrollList,
+  ToggleSwitch,
+  useThemeColor,
 } from '@axelor/aos-mobile-ui';
 import {useDispatch, useSelector, useTranslator} from '@axelor/aos-mobile-core';
 import {fetchLeads, fetchLeadStatus} from '../../features/leadSlice';
@@ -42,6 +43,11 @@ const LeadListScreen = ({navigation}) => {
 
   const [selectedStatus, setSelectedStatus] = useState([]);
   const [assigned, setAssigned] = useState(false);
+  const [filter, setFilter] = useState(null);
+
+  const handleDataSearch = useCallback(searchValue => {
+    setFilter(searchValue);
+  }, []);
 
   const leadStatusListItems = useMemo(() => {
     return leadStatusList
@@ -114,7 +120,11 @@ const LeadListScreen = ({navigation}) => {
               rightTitle={I18n.t('Crm_AssignedToMe')}
               onSwitch={() => setAssigned(!assigned)}
             />
-            <LeadSearchBar showDetailsPopup={false} oneFilter={true} />
+            <LeadSearchBar
+              showDetailsPopup={false}
+              oneFilter={true}
+              onFetchDataAction={handleDataSearch}
+            />
             <MultiValuePicker
               listItems={leadStatusListItems}
               title={I18n.t('Base_Status')}
@@ -156,6 +166,7 @@ const LeadListScreen = ({navigation}) => {
         fetchData={fetchLeadsAPI}
         moreLoading={moreLoading}
         isListEnd={isListEnd}
+        filter={!checkNullString(filter)}
         translator={I18n.t}
       />
     </Screen>

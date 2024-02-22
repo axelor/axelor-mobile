@@ -29,6 +29,7 @@ const MyTeamTicketSearchBar = ({
   navigate = false,
   oneFilter = false,
   isFocus = false,
+  onFetchDataAction,
 }) => {
   const I18n = useTranslator();
   const dispatch = useDispatch();
@@ -45,6 +46,7 @@ const MyTeamTicketSearchBar = ({
 
   const fetchMyTeamTicketSearchBarAPI = useCallback(
     ({page = 0, searchValue}) => {
+      onFetchDataAction && onFetchDataAction(searchValue);
       dispatch(
         fetchMyTeamTickets({
           searchValue: searchValue,
@@ -53,7 +55,7 @@ const MyTeamTicketSearchBar = ({
         }),
       );
     },
-    [dispatch, user],
+    [dispatch, onFetchDataAction, user],
   );
 
   return (

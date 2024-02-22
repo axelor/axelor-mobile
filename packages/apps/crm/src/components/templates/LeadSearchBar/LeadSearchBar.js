@@ -38,6 +38,7 @@ const LeadSearchBarAux = ({
   oneFilter = false,
   isFocus = false,
   showTitle = false,
+  onFetchDataAction,
 }) => {
   const I18n = useTranslator();
   const dispatch = useDispatch();
@@ -48,9 +49,10 @@ const LeadSearchBarAux = ({
 
   const fetchLeadSearchBarAPI = useCallback(
     ({page = 0, searchValue}) => {
+      onFetchDataAction && onFetchDataAction(searchValue);
       dispatch(fetchLeads({page, searchValue}));
     },
-    [dispatch],
+    [dispatch, onFetchDataAction],
   );
 
   return (
@@ -88,6 +90,7 @@ const LeadSearchBar = ({
   oneFilter = false,
   isFocus = false,
   showTitle = false,
+  onFetchDataAction = () => {},
 }) => {
   return (
     <LeadSearchBarAux
@@ -102,6 +105,7 @@ const LeadSearchBar = ({
       oneFilter={oneFilter}
       isFocus={isFocus}
       showTitle={showTitle}
+      onFetchDataAction={onFetchDataAction}
     />
   );
 };
