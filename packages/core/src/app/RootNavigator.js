@@ -122,10 +122,8 @@ const RootNavigator = ({modules, mainMenu, onRefresh, configuration}) => {
             name="SessionManagementScreen"
             component={SessionManagementScreen}
             initialParams={{
-              version: appVersion,
               testInstanceConfig: configuration?.testInstanceConfig,
               releaseInstanceConfig: configuration?.releaseInstanceConfig,
-              enableConnectionSessions: configuration?.enableConnectionSessions,
               logoFile: configuration?.logoFile,
             }}
           />
@@ -134,7 +132,6 @@ const RootNavigator = ({modules, mainMenu, onRefresh, configuration}) => {
             name="LoginScreen"
             component={LoginScreen}
             initialParams={{
-              version: appVersion,
               testInstanceConfig: configuration?.testInstanceConfig,
               releaseInstanceConfig: configuration?.releaseInstanceConfig,
               logoFile: configuration?.logoFile,
