@@ -16,7 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import {createStandardSearch} from '@axelor/aos-mobile-core';
+import {axiosApiProvider, createStandardSearch} from '@axelor/aos-mobile-core';
 
 const createTourLineCriteria = (tourId, status) => {
   const criteria = [
@@ -51,5 +51,11 @@ export async function searchTourLine({
     sortKey: 'crm_tourLine',
     page: page,
     numberElementsByPage: numberElementsByPage,
+  });
+}
+
+export async function validateTourLine({tourLineId}) {
+  return axiosApiProvider.put({
+    url: `ws/aos/ticket/${tourLineId}`,
   });
 }

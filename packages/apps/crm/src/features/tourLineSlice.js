@@ -21,7 +21,10 @@ import {
   generateInifiniteScrollCases,
   handlerApiCall,
 } from '@axelor/aos-mobile-core';
-import {searchTourLine as _searchTourLine} from '../api/tour-line-api';
+import {
+  searchTourLine as _searchTourLine,
+  validateTourLine as _validateTourLine,
+} from '../api/tour-line-api';
 
 export const searchTourLine = createAsyncThunk(
   'tourLine/searchTourLine',
@@ -32,6 +35,19 @@ export const searchTourLine = createAsyncThunk(
       action: 'Crm_SliceAction_FetchTourLine',
       getState,
       responseOptions: {isArrayResponse: true},
+    });
+  },
+);
+
+export const validateTourLine = createAsyncThunk(
+  'tourLine/validateTourLine',
+  async function (data, {getState, dispatch}) {
+    return handlerApiCall({
+      fetchFunction: _validateTourLine,
+      data,
+      action: 'Crm_SliceAction_ValidateTourLine',
+      getState,
+      responseOptions: {isArrayResponse: false},
     });
   },
 );

@@ -90,6 +90,7 @@
   "Crm_AllDay": "All day ?",
   "Crm_Location": "Location",
   "Crm_Tours": "Tours",
+  "Crm_RefreshTour": "Refresh tour",
   "Crm_ScheduledVisits": "{{totalTourLine}} scheduled visits",
   "Crm_SliceAction_FetchCatalog": "fetch catalogs",
   "Crm_SliceAction_FetchCatalogType": "fetch catalog types",

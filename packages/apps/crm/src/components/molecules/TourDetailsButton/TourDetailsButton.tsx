@@ -16,25 +16,23 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import TourListScreen from './TourListScreen';
-import TourDetailsScreen from './TourDetailsScreen';
+import React from 'react';
+import {Button, useThemeColor} from '@axelor/aos-mobile-ui';
+import {useTranslator} from '@axelor/aos-mobile-core';
 
-export default {
-  TourListScreen: {
-    title: 'Crm_Tours',
-    component: TourListScreen,
-    options: {
-      shadedHeader: false,
-    },
-  },
-  TourDetailsScreen: {
-    title: 'Crm_Tours',
-    component: TourDetailsScreen,
-    actionID: 'crm_tour_details',
-    options: {
-      shadedHeader: false,
-    },
-  },
+interface TourDetailsButtonProps {}
+
+const TourDetailsButton = ({}: TourDetailsButtonProps) => {
+  const I18n = useTranslator();
+  const Colors = useThemeColor();
+
+  return (
+    <Button
+      iconName="calendar-check"
+      title={I18n.t('Crm_Status_Validated')}
+      color={Colors.successColor}
+    />
+  );
 };
 
-export {TourListScreen};
+export default TourDetailsButton;

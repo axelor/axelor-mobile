@@ -23,14 +23,23 @@ import {
   checkNullString,
   useThemeColor,
 } from '@axelor/aos-mobile-ui';
+import {
+  useDispatch,
+  linkingProvider,
+  useNavigation,
+} from '@axelor/aos-mobile-core';
 import {StyleSheet, View} from 'react-native';
 import {TourLineType} from '../../../types';
+import {validateTourLine} from '../../../features/tourLineSlice';
 
 interface TourLineCardProps {
   name: string;
   adress?: string;
   eventId?: number;
   isValidated?: boolean;
+  id: number;
+  tourId: number;
+  status?: boolean | null;
 }
 
 const TourLineCard = ({
@@ -38,8 +47,11 @@ const TourLineCard = ({
   name,
   eventId,
   isValidated = false,
+  id,
 }: TourLineCardProps) => {
   const Colors = useThemeColor();
+  const dispatch = useDispatch();
+  const navigation = useNavigation();
 
   const borderStyle = useMemo(() => {
     return getStyles(
@@ -71,7 +83,7 @@ const TourLineCard = ({
             style={styles.cardIconButton}
             iconName="geo-alt-fill"
             iconColor={Colors.primaryColor.foreground}
-            onPress={() => {}}
+            onPress={() => linkingProvider.openMapApp(adress)}
           />
         )}
         {eventId != null && (
@@ -79,7 +91,11 @@ const TourLineCard = ({
             style={styles.cardIconButton}
             iconName="calendar-event"
             iconColor={Colors.primaryColor.foreground}
-            onPress={() => {}}
+            onPress={() =>
+              navigation.navigate('EventDetailsScreen', {
+                eventId: eventId,
+              })
+            }
           />
         )}
       </View>
@@ -88,7 +104,13 @@ const TourLineCard = ({
           style={styles.cardIconButton}
           iconName="check-lg"
           iconColor={Colors.successColor.background}
-          onPress={() => {}}
+          onPress={() => {
+            dispatch(
+              (validateTourLine as any)({
+                tourLineId: id,
+              }),
+            );
+          }}
         />
       )}
     </View>

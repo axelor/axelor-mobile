@@ -25,7 +25,11 @@ import {
   useThemeColor,
 } from '@axelor/aos-mobile-ui';
 import {useDispatch, useSelector, useTranslator} from '@axelor/aos-mobile-core';
-import {TourDetailsHeader, TourLineCard} from '../../components';
+import {
+  TourDetailsButton,
+  TourDetailsHeader,
+  TourLineCard,
+} from '../../components';
 import {fetchControlTourById} from '../../features/tourSlice';
 import {searchTourLine} from '../../features/tourLineSlice';
 import {TourLineType} from '../../types';
@@ -65,7 +69,7 @@ const TourDetailsScreen = ({route}) => {
   );
 
   return (
-    <Screen removeSpaceOnTop={true}>
+    <Screen removeSpaceOnTop={true} fixedItems={<TourDetailsButton />}>
       <HeaderContainer
         expandableFilter={false}
         fixedItems={<TourDetailsHeader totalTourLine={tourLineList?.length} />}
@@ -101,6 +105,7 @@ const TourDetailsScreen = ({route}) => {
             adress={item?.address?.fullName}
             eventId={item?.event?.id}
             isValidated={item?.isValidated}
+            id={item.id}
           />
         )}
       />
