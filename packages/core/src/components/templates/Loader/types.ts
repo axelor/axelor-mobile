@@ -36,6 +36,7 @@ export enum ProcessStatus {
 
 export type ProcessOption = {
   disabled: boolean;
+  autoLeave: boolean;
   process: () => Promise<any>;
   onSuccess: () => void;
   onError: () => void;
