@@ -1,1 +1,1 @@
-export {default as BasicActionsButton} from './BasicActionsButton';
+export {default as FloatingTools} from './FloatingTools';

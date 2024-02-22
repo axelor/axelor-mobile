@@ -47,7 +47,7 @@ import {Field as FieldComponent, Panel as PanelComponent} from './Components';
 import {ConstraintsValidatorPopup} from './Alerts';
 import {clearRecord} from '../../../features/formSlice';
 import {areObjectsEquals, isEmpty} from '../../../utils';
-import {BasicActionsButton} from './Buttons';
+import {FloatingTools} from './Buttons';
 
 interface FormProps {
   defaultValue?: any;
@@ -317,7 +317,7 @@ const FormView = ({
           {formContent.map(renderItem)}
         </View>
       </KeyboardAvoidingScrollView>
-      <BasicActionsButton
+      <FloatingTools
         hideIf={!floatingTools}
         style={{bottom: buttonHeight + 20}}
         toggleReadonly={toggleReadonlyMode}
@@ -337,6 +337,7 @@ const styles = StyleSheet.create({
   },
   container: {
     alignItems: 'center',
+    paddingBottom: 125,
   },
 });
 

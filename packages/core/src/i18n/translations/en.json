@@ -155,6 +155,8 @@
   "Base_FormAction_Update": "Update",
   "Base_FormAction_Refresh": "Refresh",
   "Base_FormAction_Reset": "Reset",
+  "Base_FormAction_Confirmation": "Confirmation",
+  "Base_FormAction_DirtyStateConfirmation": "Current changes will be lost.\nDo you really want to proceed ?",
   "Base_SelectAll": "Select all",
   "Base_Dashboard": "Dashboard",
   "Base_Dashboard_Misconfigured": "This dashboard is misconfigured, please contact your administrator.",
