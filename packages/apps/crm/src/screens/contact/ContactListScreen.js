@@ -19,6 +19,7 @@
 import React, {useMemo, useState, useCallback} from 'react';
 import {StyleSheet, View} from 'react-native';
 import {
+  checkNullString,
   HeaderContainer,
   Screen,
   ScrollList,
@@ -41,6 +42,11 @@ const ContactListScreen = ({navigation}) => {
   );
 
   const [assigned, setAssigned] = useState(false);
+  const [filter, setFilter] = useState(null);
+
+  const handleDataSearch = useCallback(searchValue => {
+    setFilter(searchValue);
+  }, []);
 
   const commonStyles = useMemo(() => getCommonStyles(Colors), [Colors]);
 
@@ -53,8 +59,8 @@ const ContactListScreen = ({navigation}) => {
 
   const filterOnUserAssigned = useCallback(
     list => {
-      if (list == null || list === []) {
-        return list;
+      if (!Array.isArray(list) || list.length === 0) {
+        return [];
       } else {
         if (assigned) {
           return list?.filter(item => item?.user?.id === userId);
@@ -88,6 +94,7 @@ const ContactListScreen = ({navigation}) => {
               showDetailsPopup={false}
               oneFilter={true}
               showTitle={false}
+              onFetchDataAction={handleDataSearch}
             />
           </View>
         }
@@ -117,6 +124,7 @@ const ContactListScreen = ({navigation}) => {
         fetchData={fetchContactAPI}
         moreLoading={moreLoading}
         isListEnd={isListEnd}
+        filter={!checkNullString(filter)}
         translator={I18n.t}
       />
     </Screen>
