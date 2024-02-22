@@ -86,7 +86,7 @@ const initialState = {
 };
 
 const projectSlice = createSlice({
-  name: 'project',
+  name: 'hr_project',
   initialState,
   reducers: {
     updateProject: (state, action) => {

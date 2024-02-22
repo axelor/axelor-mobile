@@ -54,7 +54,7 @@ const initialState = {
 };
 
 const ticketSlice = createSlice({
-  name: 'timer',
+  name: 'helpdesk_timer',
   initialState,
   reducers: {
     clearTimer: state => {

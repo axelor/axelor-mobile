@@ -44,7 +44,7 @@ const initialState = {
 };
 
 const projectSlice = createSlice({
-  name: 'project',
+  name: 'helpdesk_project',
   initialState,
   extraReducers: builder => {
     generateInifiniteScrollCases(builder, searchProject, {
