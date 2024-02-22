@@ -1,0 +1,5 @@
+{
+  "title": "List screens: avoid page loading when search is active",
+  "type": "fix",
+  "packages": "crm"
+}

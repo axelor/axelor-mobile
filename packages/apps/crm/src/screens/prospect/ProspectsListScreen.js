@@ -19,6 +19,7 @@
 import React, {useMemo, useState, useCallback} from 'react';
 import {StyleSheet, View} from 'react-native';
 import {
+  checkNullString,
   HeaderContainer,
   Screen,
   ScrollList,
@@ -41,6 +42,11 @@ const ProspectsListScreen = ({navigation}) => {
   );
 
   const [assigned, setAssigned] = useState(false);
+  const [filter, setFilter] = useState(null);
+
+  const handleDataSearch = useCallback(searchValue => {
+    setFilter(searchValue);
+  }, []);
 
   const commonStyles = useMemo(() => getCommonStyles(Colors), [Colors]);
 
@@ -53,8 +59,8 @@ const ProspectsListScreen = ({navigation}) => {
 
   const filterOnUserAssigned = useCallback(
     list => {
-      if (list == null || list === []) {
-        return list;
+      if (!Array.isArray(list) || list.length === 0) {
+        return [];
       } else {
         if (assigned) {
           return list?.filter(item => item?.user?.id === userId);
@@ -84,7 +90,11 @@ const ProspectsListScreen = ({navigation}) => {
               rightTitle={I18n.t('Crm_AssignedToMe')}
               onSwitch={() => setAssigned(!assigned)}
             />
-            <ProspectSearchBar showDetailsPopup={false} oneFilter={true} />
+            <ProspectSearchBar
+              showDetailsPopup={false}
+              oneFilter={true}
+              onFetchDataAction={handleDataSearch}
+            />
           </View>
         }
       />
@@ -111,6 +121,7 @@ const ProspectsListScreen = ({navigation}) => {
         fetchData={fetchProspectAPI}
         moreLoading={moreLoading}
         isListEnd={isListEnd}
+        filter={!checkNullString(filter)}
         translator={I18n.t}
       />
     </Screen>

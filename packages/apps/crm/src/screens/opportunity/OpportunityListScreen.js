@@ -19,13 +19,14 @@
 import React, {useMemo, useState, useCallback, useEffect} from 'react';
 import {StyleSheet, View} from 'react-native';
 import {
+  checkNullString,
+  getCommonStyles,
   HeaderContainer,
+  MultiValuePicker,
   Screen,
   ScrollList,
-  useThemeColor,
-  getCommonStyles,
   ToggleSwitch,
-  MultiValuePicker,
+  useThemeColor,
 } from '@axelor/aos-mobile-ui';
 import {useDispatch, useSelector, useTranslator} from '@axelor/aos-mobile-core';
 import {OpportunityCard, OpportunitySearchBar} from '../../components';
@@ -51,6 +52,11 @@ const OpportunityListScreen = ({navigation}) => {
 
   const [assigned, setAssigned] = useState(false);
   const [selectedStatus, setSelectedStatus] = useState([]);
+  const [filter, setFilter] = useState(null);
+
+  const handleDataSearch = useCallback(searchValue => {
+    setFilter(searchValue);
+  }, []);
 
   const commonStyles = useMemo(() => getCommonStyles(Colors), [Colors]);
 
@@ -75,8 +81,8 @@ const OpportunityListScreen = ({navigation}) => {
 
   const filterOnUserAssigned = useCallback(
     list => {
-      if (list == null || list === []) {
-        return list;
+      if (!Array.isArray(list) || list.length === 0) {
+        return [];
       } else {
         if (assigned) {
           return list?.filter(item => item?.user?.id === userId);
@@ -90,8 +96,8 @@ const OpportunityListScreen = ({navigation}) => {
 
   const filterOnStatus = useCallback(
     list => {
-      if (list == null || list === []) {
-        return list;
+      if (!Array.isArray(list) || list.length === 0) {
+        return [];
       } else {
         if (selectedStatus.length > 0) {
           return list?.filter(item =>
@@ -129,7 +135,11 @@ const OpportunityListScreen = ({navigation}) => {
               rightTitle={I18n.t('Crm_AssignedToMe')}
               onSwitch={() => setAssigned(!assigned)}
             />
-            <OpportunitySearchBar showDetailsPopup={false} oneFilter={true} />
+            <OpportunitySearchBar
+              showDetailsPopup={false}
+              oneFilter={true}
+              onFetchDataAction={handleDataSearch}
+            />
             <MultiValuePicker
               listItems={opportunityStatusListItems}
               title={I18n.t('Base_Status')}
@@ -162,6 +172,7 @@ const OpportunityListScreen = ({navigation}) => {
         fetchData={fetchOpportunityAPI}
         moreLoading={moreLoading}
         isListEnd={isListEnd}
+        filter={!checkNullString(filter)}
         translator={I18n.t}
       />
     </Screen>
