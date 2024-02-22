@@ -110,6 +110,7 @@ const CustomSearchBar = ({
       loadingList={loading}
       moreLoading={moreLoading}
       isListEnd={isListEnd}
+      oneFilter={true}
     />
   );
 };
