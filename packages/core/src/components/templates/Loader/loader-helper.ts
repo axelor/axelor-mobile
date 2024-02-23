@@ -16,7 +16,6 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-export {default as LoaderPopup} from './LoaderPopup';
-export * from './ProcessProvider';
-export * from './types';
-export {default as useLoaderListner} from './use-loader-listener';
+export const generateUniqueID = () => {
+  return new Date().getTime().toString();
+};

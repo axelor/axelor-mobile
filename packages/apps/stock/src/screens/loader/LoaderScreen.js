@@ -34,34 +34,49 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import React from 'react';
-import {Button, View} from 'react-native';
-import {Screen} from '@axelor/aos-mobile-ui';
-import {useLoaderListner} from '@axelor/aos-mobile-core';
+import React, {useState} from 'react';
+import {View} from 'react-native';
+import {Button, Screen} from '@axelor/aos-mobile-ui';
+import {LoaderPopup} from '@axelor/aos-mobile-core';
 
 // Screen for test Loader functionnalities
 const LoaderScreen = () => {
+  const [start, setStart] = useState(false);
+
   const process = () =>
-    new Promise(resolve => {
+    new Promise((resolve, reject) => {
       setTimeout(() => {
-        resolve('Process finished');
+        resolve('Process completed');
+        // reject('Process failed');
       }, 10000);
     });
 
-  const handleCustomAction = () => {
-    console.log('Custom action executed!');
+  const handleSuccessAction = () => {
+    setStart(false);
+    console.log('Success action executed!');
   };
 
-  const {loading, listener} = useLoaderListner({
-    process,
-    onSuccess: handleCustomAction,
-    onError: () => console.warn('An error has occurred!'),
-  });
+  const handleErrorAction = () => {
+    setStart(false);
+    console.log('Error action executed!');
+  };
 
   return (
     <Screen>
       <View>
-        <Button title="check process" onPress={listener} disabled={loading} />
+        <Button
+          title="Run process"
+          onPress={() => setStart(true)}
+          disabled={start}
+        />
+        <LoaderPopup
+          start={start}
+          process={process}
+          timeout={5000}
+          onSuccess={handleSuccessAction}
+          onError={handleErrorAction}
+          disabled={false}
+        />
       </View>
     </Screen>
   );
