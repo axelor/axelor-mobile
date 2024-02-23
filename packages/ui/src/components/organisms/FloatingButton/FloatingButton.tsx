@@ -115,7 +115,7 @@ const FloatingButton = ({
       return [];
     }
 
-    return _actions.filter(action => action.hideIf !== true).reverse();
+    return _actions.filter(action => action.hideIf !== true);
   }, [_actions]);
 
   const showIndicator = useMemo(
@@ -142,7 +142,7 @@ const FloatingButton = ({
               onPress={() => setExpanded(current => !current)}
             />
           ) : null}
-          {!expanded && (
+          {!expanded && useCircleStyle && (
             <Indicator
               show={showIndicator}
               color={Colors.errorColor}
