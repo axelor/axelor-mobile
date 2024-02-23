@@ -16,62 +16,41 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import {useCallback, useEffect, useMemo, useState} from 'react';
-import {useTranslator} from '../../../i18n';
-import {showToastMessage} from '../../../utils/show-toast-message';
+import {useEffect, useMemo, useState} from 'react';
+import {EventType, ProcessItem, ProcessOption} from './types';
+import {processProvider} from './ProcessProvider';
+import {generateUniqueID} from './loader-helper';
 
-interface LoaderListenerProps {
-  process: () => Promise<any>;
-  onSuccess?: () => void;
-  onError?: () => void;
-}
+const useLoaderListner = (
+  processOptions: ProcessOption,
+  onFinish = () => {},
+) => {
+  const [key, setKey] = useState<string>();
+  const [loading, setLoading] = useState<boolean>(false);
+  const [processItem, setProcessItem] = useState<ProcessItem>();
 
-const useLoaderListner = ({
-  process,
-  onSuccess = () => {},
-  onError = () => {},
-}: LoaderListenerProps) => {
-  const I18n = useTranslator();
-
-  const [loading, setLoading] = useState(false);
-  const [start, setStart] = useState(false);
-
-  const executeProcess = useCallback(async () => {
-    try {
-      setStart(false);
-      setLoading(true);
-
-      const response = await process();
-
-      showToastMessage({
-        type: 'success',
-        position: 'top',
-        topOffset: 30,
-        text1: I18n.t('Base_Success'),
-        text2: response || I18n.t('Base_Loader_ProccessSuccessMessage'),
-        onPress: onSuccess,
-      });
-    } catch (error) {
-      showToastMessage({
-        type: 'error',
-        position: 'top',
-        topOffset: 30,
-        text1: I18n.t('Base_Error'),
-        text2: error || I18n.t('Base_Loader_ProccessErrorMessage'),
-        onPress: onError,
-      });
-    } finally {
-      setLoading(false);
-    }
-  }, [process, onSuccess, onError, I18n]);
+  const onFinishCallback = () => {
+    setLoading(false);
+    onFinish();
+  };
 
   useEffect(() => {
-    if (start && !loading) {
-      executeProcess();
-    }
-  }, [start, loading, executeProcess]);
+    const unid = generateUniqueID();
+    const p = processProvider.registerProcess(unid, processOptions);
 
-  return useMemo(() => ({loading, listener: () => setStart(true)}), [loading]);
+    processProvider.on(unid, EventType.STARTED, () => setLoading(true));
+    processProvider.on(unid, EventType.COMPLETED, onFinishCallback);
+    processProvider.on(unid, EventType.FAILED, onFinishCallback);
+
+    setKey(unid);
+    setProcessItem(p);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  return useMemo(
+    () => ({key, processItem, loading}),
+    [key, processItem, loading],
+  );
 };
 
 export default useLoaderListner;
