@@ -80,7 +80,8 @@ class ProcessProvider {
   }
 
   notifyMe(p: ProcessItem) {
-    this._processMap.set(p.key, {...p, notifyMe: true});
+    p.notifyMe = true;
+    this._processMap.set(p.key, p);
   }
 
   async runProcess(p: ProcessItem, I18n: TranslatorProps) {
