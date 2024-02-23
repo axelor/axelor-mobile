@@ -54,11 +54,11 @@ const LoaderPopup = ({
   const Colors = useThemeColor();
   const {setActivityIndicator} = useConfig();
 
-  const [showPopup, setShowPopup] = useState<boolean>();
+  const [showPopup, setShowPopup] = useState<boolean>(false);
 
   const timeoutRef = useRef(null);
 
-  const {processItem: pi, loading} = useLoaderListner(
+  const {processItem, loading} = useLoaderListner(
     {
       disabled,
       process,
@@ -69,15 +69,15 @@ const LoaderPopup = ({
   );
 
   const handleNotifyMe = useCallback(() => {
-    processProvider.notifyMe(pi);
+    processProvider.notifyMe(processItem);
     navigation.goBack();
-  }, [pi, navigation]);
+  }, [processItem, navigation]);
 
   useEffect(() => {
     if (start) {
-      processProvider.runProcess(pi, I18n);
+      processProvider.runProcess(processItem, I18n);
     }
-  }, [start, pi, I18n]);
+  }, [start, processItem, I18n]);
 
   useEffect(() => {
     if (loading) {
@@ -131,19 +131,19 @@ const LoaderPopup = ({
 const styles = StyleSheet.create({
   popupContainer: {
     position: 'absolute',
-    width: 350,
+    width: Dimensions.get('window').width * 0.9,
     top: Dimensions.get('window').height * 0.2,
-    left: Dimensions.get('window').width * 0.06,
-    elevation: 24,
-    shadowOpacity: 12,
+    left: Dimensions.get('window').width * 0.05,
+    paddingRight: null,
+    paddingHorizontal: 15,
     paddingVertical: 10,
   },
   activityIndicatorContainer: {
     flex: 1,
     flexDirection: 'row',
-    justifyContent: 'center',
+    justifyContent: 'space-evenly',
     alignItems: 'center',
-    marginHorizontal: 30,
+    marginVertical: 15,
   },
 });
 

@@ -48,7 +48,7 @@ class ProcessProvider {
     this._events.set(key, event);
   }
 
-  emit(key: string, e: EventType, ...args) {
+  private emit(key: string, e: EventType, ...args) {
     if (this._events.has(key) && this._events.get(key)[e]) {
       this._events.get(key)[e].forEach(c => c(...args));
     }
@@ -75,12 +75,12 @@ class ProcessProvider {
       console.error(`Process with key ${key} not found.`);
       return null;
     }
+
     return this._processMap.get(key);
   }
 
   notifyMe(p: ProcessItem) {
-    p.notifyMe = true;
-    this._processMap.set(p.key, p);
+    this._processMap.set(p.key, {...p, notifyMe: true});
   }
 
   async runProcess(p: ProcessItem, I18n: TranslatorProps) {
@@ -89,31 +89,10 @@ class ProcessProvider {
     }
 
     this.onStart(p);
-    this._executeProcess(p, I18n);
+    this.executeProcess(p, I18n);
   }
 
-  private onStart(p: ProcessItem) {
-    this._processMap.set(p.key, {
-      ...p,
-      loading: true,
-      status: ProcessStatus.RUNNING,
-    });
-
-    this.on(p.key, EventType.COMPLETED, this._onCompleted);
-    this.on(p.key, EventType.FAILED, this._onFailed);
-    this.emit(p.key, EventType.STARTED);
-  }
-
-  private async _executeProcess(p: ProcessItem, I18n: TranslatorProps) {
-    try {
-      const response = await p.process();
-      this._onFinish(p, ProcessStatus.COMPLETED, response, I18n);
-    } catch (error) {
-      this._onFinish(p, ProcessStatus.FAILED, error, I18n);
-    }
-  }
-
-  private _onFinish(
+  private onFinish(
     p: ProcessItem,
     status: ProcessStatus,
     message: string,
@@ -137,7 +116,7 @@ class ProcessProvider {
     );
   }
 
-  private _onCompleted(p: ProcessItem, I18n: TranslatorProps) {
+  private onCompleted(p: ProcessItem, I18n: TranslatorProps) {
     const {notifyMe, message, disabled, onSuccess} = p;
     if (!notifyMe) {
       onSuccess();
@@ -153,7 +132,7 @@ class ProcessProvider {
     }
   }
 
-  private _onFailed(p: ProcessItem, I18n: TranslatorProps) {
+  private onFailed(p: ProcessItem, I18n: TranslatorProps) {
     const {notifyMe, message, disabled, onError} = p;
     if (!notifyMe) {
       onError();
@@ -166,6 +145,27 @@ class ProcessProvider {
         text2: message || I18n.t('Base_Loader_ProccessErrorMessage'),
         onPress: () => !disabled && onError(),
       });
+    }
+  }
+
+  private onStart(p: ProcessItem) {
+    this._processMap.set(p.key, {
+      ...p,
+      loading: true,
+      status: ProcessStatus.RUNNING,
+    });
+
+    this.on(p.key, EventType.COMPLETED, this.onCompleted);
+    this.on(p.key, EventType.FAILED, this.onFailed);
+    this.emit(p.key, EventType.STARTED);
+  }
+
+  private async executeProcess(p: ProcessItem, I18n: TranslatorProps) {
+    try {
+      const response = await p.process();
+      this.onFinish(p, ProcessStatus.COMPLETED, response, I18n);
+    } catch (error) {
+      this.onFinish(p, ProcessStatus.FAILED, error, I18n);
     }
   }
 }
