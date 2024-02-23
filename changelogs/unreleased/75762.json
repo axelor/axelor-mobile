@@ -1,0 +1,5 @@
+{
+  "title": "SearchListScreen: new component to simplify list view creation and manage search and scroll with a single API given in props",
+  "type": "feat",
+  "packages": "core"
+}
