@@ -17,6 +17,7 @@
  */
 
 import {
+  axiosApiProvider,
   createStandardFetch,
   createStandardSearch,
   getSearchCriterias,
@@ -65,5 +66,11 @@ export async function fetchControlTourById({tourId}) {
     model: 'com.axelor.apps.crm.db.Tour',
     id: tourId,
     fieldKey: 'crm_tour',
+  });
+}
+
+export async function validateTour({tourId}) {
+  return axiosApiProvider.put({
+    url: `ws/aos/tour/validate/${tourId}`,
   });
 }

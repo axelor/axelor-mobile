@@ -25,6 +25,7 @@ import {
 import {
   searchTour as _searchTour,
   fetchControlTourById as _fetchControlTourById,
+  validateTour as _validateTour,
 } from '../api/tour-api';
 
 export const searchTour = createAsyncThunk(
@@ -47,6 +48,19 @@ export const fetchControlTourById = createAsyncThunk(
       fetchFunction: _fetchControlTourById,
       data,
       action: 'Crm_SliceAction_FetchTourById',
+      getState,
+      responseOptions: {isArrayResponse: false},
+    });
+  },
+);
+
+export const validateTour = createAsyncThunk(
+  'tour/validateTour',
+  async function (data, {getState, dispatch}) {
+    return handlerApiCall({
+      fetchFunction: _validateTour,
+      data,
+      action: 'Crm_SliceAction_ValidateTour',
       getState,
       responseOptions: {isArrayResponse: false},
     });

@@ -19,6 +19,7 @@
 import React, {useMemo} from 'react';
 import {
   CardIconButton,
+  Icon,
   ObjectCard,
   checkNullString,
   useThemeColor,
@@ -27,6 +28,7 @@ import {
   useDispatch,
   linkingProvider,
   useNavigation,
+  clipboardProvider,
 } from '@axelor/aos-mobile-core';
 import {StyleSheet, View} from 'react-native';
 import {TourLineType} from '../../../types';
@@ -74,6 +76,22 @@ const TourLineCard = ({
                 iconName: 'geo-alt-fill',
               },
             ],
+          }}
+          lowerBadges={{
+            items: [
+              {
+                customComponent: (
+                  <Icon
+                    name="copy"
+                    touchable={true}
+                    onPress={() =>
+                      clipboardProvider.copyToClipboard(`${name} ${adress}`)
+                    }
+                  />
+                ),
+              },
+            ],
+            fixedOnRightSide: true,
           }}
         />
       </View>

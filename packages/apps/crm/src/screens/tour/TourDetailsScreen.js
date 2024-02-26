@@ -69,7 +69,9 @@ const TourDetailsScreen = ({route}) => {
   );
 
   return (
-    <Screen removeSpaceOnTop={true} fixedItems={<TourDetailsButton />}>
+    <Screen
+      removeSpaceOnTop={true}
+      fixedItems={<TourDetailsButton tourId={tourId} />}>
       <HeaderContainer
         expandableFilter={false}
         fixedItems={<TourDetailsHeader totalTourLine={tourLineList?.length} />}

@@ -18,19 +18,30 @@
 
 import React from 'react';
 import {Button, useThemeColor} from '@axelor/aos-mobile-ui';
-import {useTranslator} from '@axelor/aos-mobile-core';
+import {useTranslator, useDispatch} from '@axelor/aos-mobile-core';
+import {validateTour} from '../../../features/tourSlice';
 
-interface TourDetailsButtonProps {}
+interface TourDetailsButtonProps {
+  tourId: number;
+}
 
-const TourDetailsButton = ({}: TourDetailsButtonProps) => {
+const TourDetailsButton = ({tourId}: TourDetailsButtonProps) => {
   const I18n = useTranslator();
   const Colors = useThemeColor();
+  const dispatch = useDispatch();
 
   return (
     <Button
       iconName="calendar-check"
       title={I18n.t('Crm_Status_Validated')}
       color={Colors.successColor}
+      onPress={() => {
+        dispatch(
+          (validateTour as any)({
+            tourId: tourId,
+          }),
+        );
+      }}
     />
   );
 };
