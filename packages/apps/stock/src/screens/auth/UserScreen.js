@@ -17,6 +17,7 @@
  */
 
 import React, {useCallback, useEffect} from 'react';
+import {StyleSheet} from 'react-native';
 import {
   changeDefaultStockLocation,
   UserScreen as AuthUserScreen,
@@ -65,10 +66,17 @@ const UserScreen = ({navigation}) => {
           placeholderKey="Stock_StockLocation"
           defaultValue={user?.workshopStockLocation}
           onChange={updateDefaultStockLocation}
+          style={styles.picker}
         />
       )}
     </AuthUserScreen>
   );
 };
+
+const styles = StyleSheet.create({
+  picker: {
+    width: '100%',
+  },
+});
 
 export default UserScreen;

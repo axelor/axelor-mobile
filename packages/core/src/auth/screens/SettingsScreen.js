@@ -19,11 +19,12 @@
 import React, {useCallback} from 'react';
 import {StyleSheet, View} from 'react-native';
 import {
+  Picker,
   Screen,
   SwitchCard,
+  Text,
   useConfig,
   useTheme,
-  Text,
 } from '@axelor/aos-mobile-ui';
 import {useDispatch, useSelector} from 'react-redux';
 import {useTranslator} from '../../i18n';
@@ -33,6 +34,7 @@ import {
   useEffectOnline,
   useOnline,
 } from '../../features/onlineSlice';
+import {updateActiveUser} from '../../features/userSlice';
 import {ApiProviderConfig} from '../../apiProviders/config';
 import {NavigationToolsButton, TranslationsButton} from '../components';
 
@@ -52,6 +54,26 @@ const SettingsScreen = ({children}) => {
   } = useConfig();
 
   const {appVersion, baseUrl} = useSelector(state => state.auth);
+  const {user} = useSelector(state => state.user);
+  const {localizationList} = useSelector(state => state.localization);
+
+  const handleChangeTheme = useCallback(
+    newTheme => Theme.changeTheme(newTheme),
+    [Theme],
+  );
+
+  const updateLanguage = useCallback(
+    localization => {
+      dispatch(
+        updateActiveUser({
+          id: user.id,
+          localization: {id: localization},
+          version: user.version,
+        }),
+      );
+    },
+    [dispatch, user],
+  );
 
   const handleToggleConnection = useCallback(
     state => {
@@ -87,10 +109,33 @@ const SettingsScreen = ({children}) => {
   return (
     <Screen style={styles.screen}>
       <View style={styles.container}>
+        {localizationList?.length > 1 && (
+          <Picker
+            title={I18n.t('User_Language')}
+            defaultValue={user.localization?.id}
+            listItems={localizationList}
+            labelField="name"
+            valueField="id"
+            onValueChange={updateLanguage}
+            emptyValue={false}
+          />
+        )}
+        {!Theme.isColorBlind && Theme.themes?.length !== 1 && (
+          <Picker
+            title={I18n.t('User_Theme')}
+            defaultValue={Theme.activeTheme?.key}
+            listItems={Theme.themes}
+            labelField="name"
+            valueField="key"
+            onValueChange={handleChangeTheme}
+            emptyValue={false}
+          />
+        )}
         <SwitchCard
           title={I18n.t('User_ShowFilter')}
           defaultValue={showFilter}
           onToggle={toggleFilterConfig}
+          style={styles.topSwitchCard}
         />
         <SwitchCard
           title={I18n.t('User_VirtualKeyboardConfig')}
@@ -132,10 +177,13 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
   },
   container: {
-    marginTop: 15,
+    marginTop: 10,
     justifyContent: 'flex-start',
     alignItems: 'center',
     flex: 1,
+  },
+  topSwitchCard: {
+    marginTop: 5,
   },
   footerContainer: {
     justifyContent: 'center',
