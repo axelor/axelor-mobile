@@ -1,0 +1,5 @@
+{
+  "title": "Reducers: changes reducer names of functionnal packages to avoid conflict.",
+  "type": "fix",
+  "packages": ["hr", "helpdesk"]
+}

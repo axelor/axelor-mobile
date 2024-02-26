@@ -53,7 +53,7 @@ const ProjectTaskSearchBarAux = ({
     loadingProjectTask,
     moreLoadingProjectTask,
     isListEndProjectTask,
-  } = useSelector((state: any) => state.project);
+  } = useSelector((state: any) => state.hr_project);
 
   const searchProjectTaskAPI = useCallback(
     ({page = 0, searchValue}) => {
