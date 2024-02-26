@@ -33,24 +33,28 @@ const ProductUnitInformations = ({product}) => {
           value={product.unit?.name}
           formatValueToNumber={false}
         />
-        <SmallPropertyCard
-          style={styles.stockCard}
-          title={I18n.t('Sale_Sale')}
-          value={
-            product.salesUnit ? product.salesUnit?.name : product.unit?.name
-          }
-          formatValueToNumber={false}
-        />
-        <SmallPropertyCard
-          style={styles.stockCard}
-          title={I18n.t('Purchase_Purchase')}
-          value={
-            product.purchasesUnit
-              ? product.purchasesUnit?.name
-              : product.unit?.name
-          }
-          formatValueToNumber={false}
-        />
+        {product.sellable && (
+          <SmallPropertyCard
+            style={styles.stockCard}
+            title={I18n.t('Sale_Sale')}
+            value={
+              product.salesUnit ? product.salesUnit?.name : product.unit?.name
+            }
+            formatValueToNumber={false}
+          />
+        )}
+        {product.purchasable && (
+          <SmallPropertyCard
+            style={styles.stockCard}
+            title={I18n.t('Purchase_Purchase')}
+            value={
+              product.purchasesUnit
+                ? product.purchasesUnit?.name
+                : product.unit?.name
+            }
+            formatValueToNumber={false}
+          />
+        )}
       </View>
     );
   }
