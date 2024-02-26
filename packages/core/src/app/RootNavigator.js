@@ -44,7 +44,7 @@ const RootNavigator = ({modules, mainMenu, onRefresh, configuration}) => {
   const {sessionExpired} = useSessionExpired();
   const {registerHeaderBand} = useHeaderBand();
 
-  const {appVersion, logged} = useSelector(state => state.auth);
+  const {logged} = useSelector(state => state.auth);
 
   const modulesHeaderRegisters = useMemo(() => {
     return modules
