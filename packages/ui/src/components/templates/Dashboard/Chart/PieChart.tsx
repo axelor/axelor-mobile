@@ -16,7 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import React, {useEffect, useMemo, useState} from 'react';
+import React, {useCallback, useEffect, useMemo, useState} from 'react';
 import {Dimensions, StyleSheet, View} from 'react-native';
 import {PieChart as RNPieChart} from 'react-native-gifted-charts';
 import {useThemeColor} from '../../../../theme/ThemeContext';
@@ -52,11 +52,12 @@ const PieChart = ({
   sectionAutoFocus = true,
   radius = 90,
   innerRadius = 60,
-  focusOnPress = false,
+  focusOnPress = true,
 }: PieChartProps) => {
   const Colors = useThemeColor();
 
   const [dataSet, setDataSet] = useState(datasets);
+  const [selectedItem, setSelectedItem] = useState({label: '', value: ''});
 
   useEffect(() => {
     setDataSet(
@@ -68,9 +69,21 @@ const PieChart = ({
     );
   }, [Colors, datasets]);
 
+  const handlePress = useCallback(item => {
+    setSelectedItem(current =>
+      current.label === item.label
+        ? {label: '', value: ''}
+        : {label: item.label, value: item.value.toString()},
+    );
+  }, []);
+
   const _width = useMemo(() => {
     return widthGraph - MARGIN * 2;
   }, [widthGraph]);
+
+  const styles = useMemo(() => {
+    return getStyles(innerRadius);
+  }, [innerRadius]);
 
   return (
     <View style={[styles.container, {width: _width}, styleContainer]}>
@@ -83,6 +96,20 @@ const PieChart = ({
         innerRadius={innerRadius}
         focusOnPress={focusOnPress}
         innerCircleColor={Colors.backgroundColor}
+        textColor={Colors.text}
+        onPress={item => {
+          handlePress(item);
+        }}
+        centerLabelComponent={() => {
+          return (
+            <View style={styles.centeredView}>
+              <Text numberOfLines={2} writingType="details">
+                {selectedItem?.label}
+              </Text>
+              <Text numberOfLines={1}>{selectedItem?.value}</Text>
+            </View>
+          );
+        }}
       />
       {!checkNullString(title) && <Text style={styles.title}>{title}</Text>}
       {legend && (
@@ -109,38 +136,46 @@ const PieChart = ({
   );
 };
 
-const styles = StyleSheet.create({
-  container: {
-    flexDirection: 'column',
-    justifyContent: 'center',
-    alignItems: 'center',
-    alignContent: 'center',
-    minWidth:
-      Dimensions.get('window').width > 500
-        ? Dimensions.get('window').width / 4 - MARGIN * 2
-        : Dimensions.get('window').width / 2 - MARGIN * 2,
-    margin: MARGIN,
-  },
-  title: {
-    alignSelf: 'center',
-    textAlign: 'center',
-  },
-  legendContainer: {
-    flexDirection: 'column',
-  },
-  itemLegendContainer: {
-    flexDirection: 'row',
-    marginVertical: 5,
-  },
-  legend: {
-    marginHorizontal: 5,
-  },
-  legendColor: {
-    borderWidth: 5,
-    marginVertical: 2,
-    borderTopRightRadius: 7,
-    borderBottomRightRadius: 7,
-  },
-});
+const getStyles = (innerRadius: number) =>
+  StyleSheet.create({
+    centeredView: {
+      justifyContent: 'center',
+      alignItems: 'center',
+      maxWidth: innerRadius * 2,
+      maxHeight: innerRadius * 2,
+      padding: 10,
+    },
+    container: {
+      flexDirection: 'column',
+      justifyContent: 'center',
+      alignItems: 'center',
+      alignContent: 'center',
+      minWidth:
+        Dimensions.get('window').width > 500
+          ? Dimensions.get('window').width / 4 - MARGIN * 2
+          : Dimensions.get('window').width / 2 - MARGIN * 2,
+      margin: MARGIN,
+    },
+    title: {
+      alignSelf: 'center',
+      textAlign: 'center',
+    },
+    legendContainer: {
+      flexDirection: 'column',
+    },
+    itemLegendContainer: {
+      flexDirection: 'row',
+      marginVertical: 5,
+    },
+    legend: {
+      marginHorizontal: 5,
+    },
+    legendColor: {
+      borderWidth: 5,
+      marginVertical: 2,
+      borderTopRightRadius: 7,
+      borderBottomRightRadius: 7,
+    },
+  });
 
 export default PieChart;
