@@ -39,7 +39,7 @@ const CustomerSearchBar = ({
   const dispatch = useDispatch();
 
   const {customerList, loading, moreLoading, isListEnd} = useSelector(
-    state => state.customer,
+    state => state.helpdesk_customer,
   );
 
   const searchCustomerAPI = useCallback(

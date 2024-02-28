@@ -24,7 +24,7 @@ import {
 import {searchProject as _searchProject} from '../api/project-api';
 
 export const searchProject = createAsyncThunk(
-  'Project/searchProject',
+  'helpdesk_project/searchProject',
   async function (data, {getState}) {
     return handlerApiCall({
       fetchFunction: _searchProject,
@@ -44,7 +44,7 @@ const initialState = {
 };
 
 const projectSlice = createSlice({
-  name: 'project',
+  name: 'helpdesk_project',
   initialState,
   extraReducers: builder => {
     generateInifiniteScrollCases(builder, searchProject, {

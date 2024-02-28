@@ -47,7 +47,7 @@ const ProductSearchBarAux = ({
   const dispatch = useDispatch();
 
   const {loadingProduct, moreLoadingProduct, isListEndProduct, productList} =
-    useSelector((state: any) => state.project);
+    useSelector((state: any) => state.hr_project);
 
   const searchProductAPI = useCallback(
     ({page = 0, searchValue}) => {

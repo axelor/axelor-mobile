@@ -44,7 +44,7 @@ const ContactPartnerSearchBar = ({
     moreLoadingCustomerContact,
     isListEndCustomerContact,
     customerContactList,
-  } = useSelector(state => state.customer);
+  } = useSelector(state => state.helpdesk_customer);
 
   const searchContactAPI = useCallback(
     ({page = 0, searchValue}) => {
