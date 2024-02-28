@@ -182,6 +182,7 @@
   "Base_Loader_DoNotCloseTheApp": "Do not close the application until the process is done.",
   "Base_Loader_NotifyMe": "Notify me when it's ready",
   "Base_Loader_LoadingInProgress": "Loading in progress",
+  "Base_Loader_ProccessesInBackground": "{{numberProcesses}} process(es) running in background, do not close the application.",
   "Base_SliceAction_FetchAttachedFiles": "fetch attached files",
   "Base_SliceAction_FetchFilesDetails": "fetch file details",
   "Base_SliceAction_FetchMetaModule": "fetch meta modules",
