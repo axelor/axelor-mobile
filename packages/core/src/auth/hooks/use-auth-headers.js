@@ -24,10 +24,12 @@ import {useTranslator} from '../../i18n';
 import {useNavigation} from '../../hooks/use-navigation';
 import {useOnline} from '../../features/onlineSlice';
 import {formatDateTime} from '../../utils/formatters';
+import {useLoaderListener} from '../../components';
 
 export const useAuthHeaders = () => {
   useUserProfileActions();
   useAuthHeaderBands();
+  useLoaderHeaderBand();
 };
 
 const useUserProfileActions = () => {
@@ -93,4 +95,24 @@ const useAuthHeaderBands = () => {
       showIf: online.isEnabled === false,
     });
   }, [I18n, Colors, registerHeaderBand, online.isEnabled]);
+};
+
+const useLoaderHeaderBand = () => {
+  const Colors = useThemeColor();
+  const I18n = useTranslator();
+
+  const {registerHeaderBand} = useHeaderBand();
+  const {numberProcesses} = useLoaderListener();
+
+  useEffect(() => {
+    registerHeaderBand({
+      key: 'loader',
+      text: I18n.t('Base_Loader_ProccessesInBackground', {
+        numberProcesses,
+      }),
+      color: Colors.cautionColor,
+      order: 15,
+      showIf: numberProcesses > 0,
+    });
+  }, [I18n, Colors, registerHeaderBand, numberProcesses]);
 };

@@ -17,40 +17,17 @@
  */
 
 import {useEffect, useMemo, useState} from 'react';
-import {EventType, ProcessItem, ProcessOption} from './types';
 import {processProvider} from './ProcessProvider';
-import {generateUniqueID} from './loader-helper';
 
-const useLoaderListner = (
-  processOptions: ProcessOption,
-  onFinish = () => {},
-) => {
-  const [key, setKey] = useState<string>();
-  const [loading, setLoading] = useState<boolean>(false);
-  const [processItem, setProcessItem] = useState<ProcessItem>();
-
-  const onFinishCallback = () => {
-    setLoading(false);
-    onFinish();
-  };
+const useLoaderListener = () => {
+  const [numberProcesses, setNumberProcesses] = useState<number>(0);
 
   useEffect(() => {
-    const unid = generateUniqueID();
-    const p = processProvider.registerProcess(unid, processOptions);
-
-    processProvider.on(unid, EventType.STARTED, () => setLoading(true));
-    processProvider.on(unid, EventType.COMPLETED, onFinishCallback);
-    processProvider.on(unid, EventType.FAILED, onFinishCallback);
-
-    setKey(unid);
-    setProcessItem(p);
+    setNumberProcesses(processProvider.numberOfRunningProcess);
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [processProvider.numberOfRunningProcess]);
 
-  return useMemo(
-    () => ({key, processItem, loading}),
-    [key, processItem, loading],
-  );
+  return useMemo(() => ({numberProcesses}), [numberProcesses]);
 };
 
-export default useLoaderListner;
+export default useLoaderListener;
