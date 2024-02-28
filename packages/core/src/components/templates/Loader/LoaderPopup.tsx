@@ -63,7 +63,6 @@ const LoaderPopup = ({
   const {processItem, loading} = useLoaderListner(
     {
       disabled,
-      autoLeave,
       process,
       onSuccess,
       onError,
