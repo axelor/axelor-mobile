@@ -1,0 +1,6 @@
+{
+    "title": "Dashboard: rename file to allow mobile app to work on macOS",
+    "type": "fix",
+    "packages": "ui"
+  }
+  

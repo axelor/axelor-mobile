@@ -19,7 +19,7 @@
 import React from 'react';
 import {Dimensions, StyleSheet, View} from 'react-native';
 import {ScrollView} from '../../atoms';
-import Chart from './chart';
+import Chart from './chart-type';
 import {
   Data,
   Max_Number_Graph_Line as MAX_GRAPH_PER_LINE,

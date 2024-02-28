@@ -21,7 +21,7 @@ import {Dimensions} from 'react-native';
 import {storiesOf} from '@storybook/react-native';
 import {Screen} from '../../../src/components/atoms';
 import {Dashboard} from '../../../src/components/templates';
-import Chart from '../../../src/components/templates/Dashboard/chart';
+import Chart from '../../../src/components/templates/Dashboard/chart-type';
 
 storiesOf('ui/templates/Dashboard/Dashboard', module)
   .addParameters({

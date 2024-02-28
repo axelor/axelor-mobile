@@ -17,7 +17,7 @@
  */
 
 import {ThemeColors} from '../../../../theme';
-import Chart from '../chart';
+import Chart from '../chart-type';
 import {Data} from '../dashboard.helper';
 
 const mergeDataForGroupedBars = (datasets: any[][]): any[] => {
