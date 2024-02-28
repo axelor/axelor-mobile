@@ -29,7 +29,7 @@ import {
 } from '@axelor/aos-mobile-ui';
 import {useTranslator} from '../../../i18n';
 import {useNavigation} from '../../../hooks/use-navigation';
-import useLoaderListner from './use-loader-listener';
+import useProcessRegister from './use-process-register';
 import {processProvider} from './ProcessProvider';
 
 interface LoaderPopupProps {
@@ -60,7 +60,7 @@ const LoaderPopup = ({
 
   const timeoutRef = useRef(null);
 
-  const {processItem, loading} = useLoaderListner(
+  const {processItem, loading} = useProcessRegister(
     {
       disabled,
       process,

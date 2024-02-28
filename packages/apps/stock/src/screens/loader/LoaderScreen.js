@@ -48,7 +48,7 @@ const LoaderScreen = () => {
       setTimeout(() => {
         resolve('Process completed');
         // reject('Process failed');
-      }, 10000);
+      }, 15000);
     });
 
   const handleSuccessAction = () => {
@@ -76,7 +76,7 @@ const LoaderScreen = () => {
           onSuccess={handleSuccessAction}
           onError={handleErrorAction}
           disabled={false}
-          autoLeave={true}
+          autoLeave={false}
         />
       </View>
     </Screen>

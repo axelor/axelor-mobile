@@ -30,6 +30,7 @@ import {useTranslator} from '../i18n';
 import {showToastMessage} from '../utils';
 import {logout} from '../features/authSlice';
 import {useSessionExpired} from '../apiProviders/config';
+import {useLoaderListener} from '../components';
 
 const {Navigator, Screen} = createNativeStackNavigator();
 
@@ -49,6 +50,7 @@ const RootNavigator = ({
 
   const {sessionExpired} = useSessionExpired();
   const {registerHeaderBand} = useHeaderBand();
+  const {numberProcesses} = useLoaderListener();
 
   const {logged} = useSelector(state => state.auth);
 
@@ -120,6 +122,18 @@ const RootNavigator = ({
       handleSessionExpired();
     }
   }, [handleSessionExpired, sessionExpired]);
+
+  useEffect(() => {
+    registerHeaderBand({
+      key: 'loader',
+      text: I18n.t('Base_Loader_ProccessesInBackground', {
+        numberProcesses,
+      }),
+      color: Colors.cautionColor,
+      order: 15,
+      showIf: numberProcesses > 0,
+    });
+  }, [I18n, Colors, registerHeaderBand, numberProcesses]);
 
   return (
     <Navigator screenOptions={{headerShown: false}}>
