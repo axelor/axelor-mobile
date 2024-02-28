@@ -35,6 +35,7 @@ export enum ProcessStatus {
 }
 
 export type ProcessOption = {
+  name: string;
   disabled: boolean;
   process: () => Promise<any>;
   onSuccess: (response?: any) => void;
@@ -44,6 +45,9 @@ export type ProcessOption = {
 export type ProcessItem = ProcessOption & {
   key: string;
   loading: boolean;
+  startedDate: string;
+  completedDate: string;
+  failedDate: string;
   notifyMe: boolean;
   status: ProcessStatus;
   response?: any;
