@@ -27,7 +27,9 @@ export async function fetchGraphDataset({chartName}: {chartName: string}) {
     url: `/ws/meta/chart/${chartName}`,
     data: {
       data: {
+        fromDate: '2023-02-28',
         monthSelect: 12,
+        toDate: '2024-02-28',
         todayDate: '2024-02-28',
         // fromDate: '2023-02-28',
         // toDate: '2024-02-28',

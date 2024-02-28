@@ -26,17 +26,23 @@ interface GraphAopProps {
 }
 
 const GraphAop = ({
-  chartName = 'chart.invoice.sale.paymentCondition.distribution',
+  chartName = 'chart.created.leads.per.month',
 }: GraphAopProps) => {
   const [graph, setGraph] = useState({type: '', dataset: [], title: ''});
 
   useEffect(() => {
     let result = {type: '', dataset: [], title: ''};
+    let onInit = null;
     fetchTypeGraph({
       chartName: chartName,
     }).then(response => {
+      console.log('response?.data?.data', response?.data?.data);
       result.title = response?.data?.data?.title;
       result.type = response?.data?.data?.series[0].type;
+      onInit = response?.data?.data?.onInit;
+
+      console.log('onInit', onInit);
+
       return fetchGraphDataset({
         chartName: chartName,
       }).then(res => {
