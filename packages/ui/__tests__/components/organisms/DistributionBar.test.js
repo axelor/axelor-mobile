@@ -38,48 +38,28 @@ describe('DistributionBar Component', () => {
     expect(wrapper.exists()).toBe(true);
   });
 
-  it('calculates percentage width for each group correctly', () => {
+  it('renders each group with the right style', () => {
+    const customHeight = 40;
     const total = 100;
     const wrapper = shallow(
-      <DistributionBar distribution={mockDistribution} total={total} />,
+      <DistributionBar
+        distribution={mockDistribution}
+        total={total}
+        height={customHeight}
+      />,
     );
 
     const groupViews = wrapper.find(View).at(0).children();
+    mockDistribution.forEach((_group, index) => {
+      const groupStyle = getGlobalStyles(groupViews.at(index));
+      const expectedWidth = `${(_group.value / total) * 100}%`;
 
-    const firstGroupStyle = getGlobalStyles(groupViews.at(0));
-    const secondGroupStyle = getGlobalStyles(groupViews.at(1));
-
-    const expectedFirstWidth = `${(mockDistribution[0].value / total) * 100}%`;
-    const expectedSecondWidth = `${(mockDistribution[1].value / total) * 100}%`;
-
-    expect(firstGroupStyle.width).toEqual(expectedFirstWidth);
-    expect(secondGroupStyle.width).toEqual(expectedSecondWidth);
-  });
-
-  it('applies correct height and colors to groups', () => {
-    const customHeight = 40;
-    const wrapper = shallow(
-      <DistributionBar distribution={mockDistribution} height={customHeight} />,
-    );
-
-    const groupViews = wrapper.find(View).at(0).children();
-
-    const firstGroupStyles = getGlobalStyles(groupViews.at(0));
-    const secondGroupStyles = getGlobalStyles(groupViews.at(1));
-
-    expect(firstGroupStyles).toEqual(
-      expect.objectContaining({
+      expect(groupStyle).toMatchObject({
+        width: expectedWidth,
         height: customHeight - 2,
-        backgroundColor: mockDistribution[0].color.background,
-      }),
-    );
-
-    expect(secondGroupStyles).toEqual(
-      expect.objectContaining({
-        height: customHeight - 2,
-        backgroundColor: mockDistribution[1].color.background,
-      }),
-    );
+        backgroundColor: _group.color.background,
+      });
+    });
   });
 
   it('renders with default height when not provided', () => {
@@ -91,6 +71,7 @@ describe('DistributionBar Component', () => {
 
   it('handles empty distribution array correctly', () => {
     const wrapper = shallow(<DistributionBar distribution={[]} />);
+
     expect(wrapper.find(View).length).toBe(1);
   });
 
