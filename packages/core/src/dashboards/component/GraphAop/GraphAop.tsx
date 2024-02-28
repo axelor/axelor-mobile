@@ -26,7 +26,7 @@ interface GraphAopProps {
 }
 
 const GraphAop = ({
-  chartName = 'chart.paymentVoucher.customer.paymentMode.distribution.amount',
+  chartName = 'chart.invoice.sale.paymentCondition.distribution',
 }: GraphAopProps) => {
   const [graph, setGraph] = useState({type: '', dataset: [], title: ''});
 
@@ -70,7 +70,7 @@ const GraphAop = ({
   const PieChartRender = (datasets, type, title) => {
     return (
       <PieChart
-        datasets={datasets}
+        datasets={datasets[0]}
         widthGraph={Dimensions.get('window').width}
         donut={type === Chart.chartType.donut}
         title={title}
@@ -121,7 +121,7 @@ const GraphAop = ({
 
   return (
     <View>
-      {renderChar(graph.type, transformData(graph.dataset), graph.title)}
+      {renderChar(graph.type, [transformData(graph.dataset)], graph.title)}
     </View>
   );
 };
