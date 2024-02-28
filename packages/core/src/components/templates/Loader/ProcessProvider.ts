@@ -30,10 +30,16 @@ import {
 class ProcessProvider {
   private _events: Map<string, Event>;
   private _processMap: Map<string, ProcessItem>;
+  private _numberOfRunningProcess: number;
 
   constructor() {
     this._events = new Map();
     this._processMap = new Map();
+    this._numberOfRunningProcess = 0;
+  }
+
+  get numberOfRunningProcess() {
+    return this._numberOfRunningProcess;
   }
 
   on(key: string, e: EventType, c: callBack) {
@@ -107,6 +113,8 @@ class ProcessProvider {
       completed: true,
     });
 
+    this.decrementNumberOfRunningProcess();
+
     this.emit(
       p.key,
       status === ProcessStatus.COMPLETED
@@ -149,12 +157,25 @@ class ProcessProvider {
     }
   }
 
+  private incrementNumberOfRunningProcess() {
+    this._numberOfRunningProcess++;
+  }
+
+  private decrementNumberOfRunningProcess() {
+    this._numberOfRunningProcess = Math.max(
+      0,
+      this._numberOfRunningProcess - 1,
+    );
+  }
+
   private onStart(p: ProcessItem) {
     this._processMap.set(p.key, {
       ...p,
       loading: true,
       status: ProcessStatus.RUNNING,
     });
+
+    this.incrementNumberOfRunningProcess();
 
     this.on(p.key, EventType.COMPLETED, this.onCompleted);
     this.on(p.key, EventType.FAILED, this.onFailed);

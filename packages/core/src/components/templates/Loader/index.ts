@@ -19,4 +19,5 @@
 export {default as LoaderPopup} from './LoaderPopup';
 export * from './ProcessProvider';
 export * from './types';
-export {default as useLoaderListner} from './use-loader-listener';
+export {default as useLoaderListener} from './use-loader-listener';
+export {default as useProcessRegister} from './use-process-register';
