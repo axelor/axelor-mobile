@@ -33,13 +33,153 @@ class ProcessProvider {
   private _numberOfRunningProcess: number;
 
   constructor() {
-    this._events = new Map();
-    this._processMap = new Map();
     this._numberOfRunningProcess = 0;
+    this._events = new Map();
+    this._processMap = new Map([
+      [
+        '1645554000000',
+        {
+          key: '1645554000000',
+          name: 'Process 1',
+          disabled: false,
+          loading: false,
+          notifyMe: true,
+          status: ProcessStatus.RUNNING,
+          message: 'Process is running...',
+          completed: false,
+          startedDate: '2023-01-15T08:00:00.000Z',
+          completedDate: null,
+          failedDate: null,
+          process: async () => {
+            return new Promise(resolve => {
+              setTimeout(resolve, 3000);
+            });
+          },
+          onSuccess: () => {
+            console.log('Process completed successfully');
+          },
+          onError: () => {
+            console.error('Error occurred during process');
+          },
+        },
+      ],
+      [
+        '1645554100000',
+        {
+          key: '1645554100000',
+          name: 'Process 2',
+          disabled: true,
+          loading: false,
+          notifyMe: false,
+          status: ProcessStatus.COMPLETED,
+          message: 'Process completed',
+          completed: true,
+          startedDate: '2023-01-16T10:30:00.000Z',
+          completedDate: '2023-01-16T11:45:00.000Z',
+          failedDate: null,
+          process: async () => {
+            return new Promise(resolve => {
+              setTimeout(resolve, 2000);
+            });
+          },
+          onSuccess: () => {
+            console.log('Process completed successfully');
+          },
+          onError: () => {
+            console.error('Error occurred during process');
+          },
+        },
+      ],
+      [
+        '1645554000000',
+        {
+          key: '1645554000000',
+          name: 'Process 3',
+          disabled: false,
+          loading: false,
+          notifyMe: true,
+          status: ProcessStatus.RUNNING,
+          message: 'Process is running...',
+          completed: false,
+          startedDate: '2023-01-17T12:45:00.000Z',
+          completedDate: null,
+          failedDate: null,
+          process: async () => {
+            return new Promise(resolve => {
+              setTimeout(resolve, 3000);
+            });
+          },
+          onSuccess: () => {
+            console.log('Process completed successfully');
+          },
+          onError: () => {
+            console.error('Error occurred during process');
+          },
+        },
+      ],
+      [
+        '1645554100000',
+        {
+          key: '1645554100000',
+          name: 'Process 4',
+          disabled: true,
+          loading: false,
+          notifyMe: false,
+          status: ProcessStatus.COMPLETED,
+          message: 'Process completed',
+          completed: true,
+          startedDate: '2023-01-20T09:30:00.000Z',
+          completedDate: '2023-01-20T09:35:00.000Z',
+          failedDate: null,
+          process: async () => {
+            return new Promise(resolve => {
+              setTimeout(resolve, 2000);
+            });
+          },
+          onSuccess: () => {
+            console.log('Process completed successfully');
+          },
+          onError: () => {
+            console.error('Error occurred during process');
+          },
+        },
+      ],
+      [
+        '1645554200000',
+        {
+          key: '1645554200000',
+          name: 'Process 5',
+          disabled: false,
+          loading: false,
+          notifyMe: true,
+          status: ProcessStatus.FAILED,
+          message: 'Process failed',
+          completed: true,
+          startedDate: '2023-01-21T11:00:00.000Z',
+          completedDate: null,
+          failedDate: '2023-01-21T11:15:00.000Z',
+          process: async () => {
+            return new Promise((resolve, reject) => {
+              setTimeout(reject, 1500);
+            });
+          },
+          onSuccess: () => {
+            console.log('Process completed successfully');
+          },
+          onError: () => {
+            console.error('Error occurred during process');
+          },
+        },
+      ],
+    ]);
   }
 
   get numberOfRunningProcess() {
     return this._numberOfRunningProcess;
+  }
+
+  get processList() {
+    return [...this._processMap.values()];
   }
 
   on(key: string, e: EventType, c: callBack) {
@@ -65,6 +205,9 @@ class ProcessProvider {
       key,
       ...processOptions,
       loading: false,
+      startedDate: null,
+      completedDate: null,
+      failedDate: null,
       notifyMe: false,
       message: null,
       status: null,
@@ -111,6 +254,9 @@ class ProcessProvider {
       loading: false,
       message: message,
       completed: true,
+      completedDate:
+        status === ProcessStatus.COMPLETED && new Date().toISOString(),
+      failedDate: status === ProcessStatus.FAILED && new Date().toISOString(),
     });
 
     this.decrementNumberOfRunningProcess();
@@ -173,6 +319,7 @@ class ProcessProvider {
       ...p,
       loading: true,
       status: ProcessStatus.RUNNING,
+      startedDate: new Date().toISOString(),
     });
 
     this.incrementNumberOfRunningProcess();

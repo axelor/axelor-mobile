@@ -16,5 +16,4 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-export {default as ProcessHistoryCard} from './ProcessHistoryCard/ProcessHistoryCard';
-export {default as TranslationsButton} from './TranslationsButton/TranslationsButton';
+export {default as ProcessHistory} from './process-history';

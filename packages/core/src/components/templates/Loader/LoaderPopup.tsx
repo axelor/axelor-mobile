@@ -62,6 +62,7 @@ const LoaderPopup = ({
 
   const {processItem, loading} = useProcessRegister(
     {
+      name: 'process #1',
       disabled,
       process,
       onSuccess,
