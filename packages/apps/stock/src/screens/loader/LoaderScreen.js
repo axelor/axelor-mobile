@@ -76,6 +76,7 @@ const LoaderScreen = () => {
           onSuccess={handleSuccessAction}
           onError={handleErrorAction}
           disabled={false}
+          autoLeave={true}
         />
       </View>
     </Screen>
