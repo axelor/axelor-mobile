@@ -43,8 +43,17 @@ const useUserProfileActions = () => {
     headerActionsProvider.registerModel('auth_user_profile', {
       actions: [
         {
-          key: 'settings',
+          key: 'processes',
           order: 10,
+          iconName: 'clock-history',
+          iconColor: Colors.primaryColor.background,
+          title: I18n.t('User_ProcessHistroy'),
+          onPress: () => navigation.navigate('ProcessesHistroyListScreen'),
+          showInHeader: true,
+        },
+        {
+          key: 'settings',
+          order: 20,
           iconName: 'gear-fill',
           iconColor: Colors.primaryColor.background,
           title: I18n.t('User_Settings'),
