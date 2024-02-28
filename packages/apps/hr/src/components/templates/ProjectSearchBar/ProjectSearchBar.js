@@ -33,7 +33,7 @@ const ProjectSearchBar = ({
   const dispatch = useDispatch();
 
   const {projectList, loadingProject, moreLoading, isListEnd} = useSelector(
-    state => state.project,
+    state => state.hr_project,
   );
   const {user} = useSelector(state => state.user);
 

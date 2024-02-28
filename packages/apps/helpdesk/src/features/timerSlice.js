@@ -22,7 +22,7 @@ import {handlerApiCall} from '@axelor/aos-mobile-core';
 import {getTimer, searchTimerHistoryWithId} from '../api/timer-api';
 
 export const fetchTimerById = createAsyncThunk(
-  'timer/fetchTimerById',
+  'helpdesk_timer/fetchTimerById',
   async function (data = {}, {getState}) {
     return handlerApiCall({
       fetchFunction: getTimer,
@@ -35,7 +35,7 @@ export const fetchTimerById = createAsyncThunk(
 );
 
 export const searchTimerHistoryById = createAsyncThunk(
-  'timerHistory/searchTimerHistoryById',
+  'helpdesk_timer/searchTimerHistoryById',
   async function (data = {}, {getState}) {
     return handlerApiCall({
       fetchFunction: searchTimerHistoryWithId,
@@ -54,7 +54,7 @@ const initialState = {
 };
 
 const ticketSlice = createSlice({
-  name: 'timer',
+  name: 'helpdesk_timer',
   initialState,
   reducers: {
     clearTimer: state => {

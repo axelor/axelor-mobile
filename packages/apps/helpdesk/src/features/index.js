@@ -16,8 +16,8 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-export {customerReducer as customer} from './customerSlice';
+export {customerReducer as helpdesk_customer} from './customerSlice';
 export {helpdeskConfigReducer as helpdeskConfig} from './helpdeskConfigSlice';
-export {projectReducer as project} from './projectSlice';
+export {projectReducer as helpdesk_project} from './projectSlice';
 export {ticketReducer as ticket} from './ticketSlice';
-export {timerReducer as timer} from './timerSlice';
+export {timerReducer as helpdesk_timer} from './timerSlice';

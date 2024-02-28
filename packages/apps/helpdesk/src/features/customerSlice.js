@@ -28,7 +28,7 @@ import {
 } from '../api/customer-api';
 
 export const searchCustomer = createAsyncThunk(
-  'customer/searchCustomer',
+  'helpdesk_customer/searchCustomer',
   async function (data, {getState}) {
     return handlerApiCall({
       fetchFunction: _searchCustomer,
@@ -41,7 +41,7 @@ export const searchCustomer = createAsyncThunk(
 );
 
 export const searchCustomerContact = createAsyncThunk(
-  'customer/searchCustomerContact',
+  'helpdesk_customer/searchCustomerContact',
   async function (data, {getState}) {
     return handlerApiCall({
       fetchFunction: _searchCustomerContact,
@@ -54,7 +54,7 @@ export const searchCustomerContact = createAsyncThunk(
 );
 
 export const getCustomerbyId = createAsyncThunk(
-  'customer/getCustomerbyId',
+  'helpdesk_customer/getCustomerbyId',
   async function (data = {}, {getState}) {
     return handlerApiCall({
       fetchFunction: getCustomer,
@@ -81,7 +81,7 @@ const initialState = {
 };
 
 const customerSlice = createSlice({
-  name: 'customer',
+  name: 'helpdesk_customer',
   initialState,
   extraReducers: builder => {
     generateInifiniteScrollCases(builder, searchCustomer, {

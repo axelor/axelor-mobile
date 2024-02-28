@@ -38,7 +38,7 @@ const ProjectSearchBar = ({
   const dispatch = useDispatch();
 
   const {projectList, loadingProject, moreLoading, isListEnd} = useSelector(
-    state => state.project,
+    state => state.helpdesk_project,
   );
 
   const searchProjectAPI = useCallback(

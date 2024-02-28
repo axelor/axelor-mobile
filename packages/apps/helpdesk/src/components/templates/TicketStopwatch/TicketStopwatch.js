@@ -46,7 +46,7 @@ const TicketStopwatch = ({}) => {
   const dispatch = useDispatch();
 
   const {ticket} = useSelector(state => state.ticket);
-  const {timer, timerHistory} = useSelector(state => state.timer);
+  const {timer, timerHistory} = useSelector(state => state.helpdesk_timer);
   const {helpdeskConfig} = useSelector(state => state.helpdeskConfig);
 
   const [timerStatus, setTimerStatus] = useState(DEFAULT_STATUS);
