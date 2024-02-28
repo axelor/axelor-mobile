@@ -1,0 +1,5 @@
+{
+  "title": "DistributionBar: add this component which divides a bar according to the number of groups given in proportion to their weight",
+  "type": "feat",
+  "packages": "ui"
+}
