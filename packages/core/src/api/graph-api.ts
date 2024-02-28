@@ -16,6 +16,23 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-export * from './Chart';
-export {default as Chart} from './chart';
-export {default as Dashboard} from './Dashboard';
+import {axiosApiProvider} from '../apiProviders';
+
+export async function fetchTypeGraph({chartName}: {chartName: string}) {
+  return axiosApiProvider.get({url: `/ws/meta/chart/${chartName}`});
+}
+
+export async function fetchGraphDataset({chartName}: {chartName: string}) {
+  return axiosApiProvider.post({
+    url: `/ws/meta/chart/${chartName}`,
+    data: {
+      data: {
+        monthSelect: 12,
+        todayDate: '2024-02-28',
+        // fromDate: '2023-02-28',
+        // toDate: '2024-02-28',
+      },
+      fields: ['dataset'],
+    },
+  });
+}

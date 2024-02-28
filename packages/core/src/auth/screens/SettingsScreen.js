@@ -16,7 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import React, {useCallback} from 'react';
+import React, {useCallback, useEffect} from 'react';
 import {StyleSheet, View} from 'react-native';
 import {
   Screen,
@@ -35,6 +35,8 @@ import {
 } from '../../features/onlineSlice';
 import {ApiProviderConfig} from '../../apiProviders/config';
 import {TranslationsButton} from '../components';
+import {fetchGraphDataset} from '../../api/graph-api';
+import {GraphAop} from '../../dashboards';
 
 const SettingsScreen = ({children}) => {
   const I18n = useTranslator();
@@ -117,6 +119,7 @@ const SettingsScreen = ({children}) => {
         {children}
         <TranslationsButton />
       </View>
+      <GraphAop />
       <View style={styles.footerContainer}>
         <Text>{I18n.t('Base_Version', {appVersion: appVersion})}</Text>
         <Text>{`${I18n.t('Base_ConnectedOn')}:`}</Text>

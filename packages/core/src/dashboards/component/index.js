@@ -16,6 +16,4 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-export * from './Chart';
-export {default as Chart} from './chart';
-export {default as Dashboard} from './Dashboard';
+export {default as GraphAop} from './GraphAop/GraphAop';
