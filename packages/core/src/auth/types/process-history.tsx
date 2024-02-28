@@ -16,9 +16,28 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-export {default as DashboardsCard} from './DashboardsCard/DashboardsCard';
-export {default as NavigationToolsButton} from './NavigationToolsButton/NavigationToolsButton';
-export {default as ProcessHistoryCard} from './ProcessHistoryCard/ProcessHistoryCard';
-export {default as ShortcutsCard} from './ShortcutsCard/ShortcutsCard';
-export {default as TranslationsButton} from './TranslationsButton/TranslationsButton';
-export {default as UserCard} from './UserCard/UserCard';
+import {Color, ThemeColors} from '@axelor/aos-mobile-ui';
+import {ProcessStatus} from '../../components';
+
+class ProcessHistory {
+  static getStatusColor = (
+    status: ProcessStatus,
+    Colors: ThemeColors,
+  ): Color => {
+    switch (status) {
+      case ProcessStatus.RUNNING:
+        return Colors.cautionColor;
+      case ProcessStatus.COMPLETED:
+        return Colors.successColor;
+      case ProcessStatus.FAILED:
+        return Colors.errorColor;
+      default:
+        console.warn(
+          `Status provided with value ${status} is not supported by process history`,
+        );
+        return null;
+    }
+  };
+}
+
+export default ProcessHistory;

@@ -26,6 +26,7 @@ import {
   EventType,
   Event,
 } from './types';
+import {DEMO_DATA} from './demo-data';
 
 class ProcessProvider {
   private _events: Map<string, Event>;
@@ -34,12 +35,16 @@ class ProcessProvider {
 
   constructor() {
     this._events = new Map();
-    this._processMap = new Map();
+    this._processMap = new Map(DEMO_DATA);
     this._numberOfRunningProcess = 0;
   }
 
   get numberOfRunningProcess() {
     return this._numberOfRunningProcess;
+  }
+
+  get processList() {
+    return [...this._processMap.values()];
   }
 
   on(key: string, e: EventType, c: callBack) {
@@ -65,6 +70,9 @@ class ProcessProvider {
       key,
       ...processOptions,
       loading: false,
+      startedDate: null,
+      completedDate: null,
+      failedDate: null,
       notifyMe: false,
       response: null,
       status: null,
@@ -111,6 +119,9 @@ class ProcessProvider {
       loading: false,
       response,
       completed: true,
+      completedDate:
+        status === ProcessStatus.COMPLETED && new Date().toISOString(),
+      failedDate: status === ProcessStatus.FAILED && new Date().toISOString(),
     };
 
     this._processMap.set(p.key, updatedProcess);
@@ -181,6 +192,7 @@ class ProcessProvider {
       ...p,
       loading: true,
       status: ProcessStatus.RUNNING,
+      startedDate: new Date().toISOString(),
     });
 
     this.incrementNumberOfRunningProcess();
