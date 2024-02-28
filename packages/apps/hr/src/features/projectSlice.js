@@ -28,7 +28,7 @@ import {
 } from '../api/project-api';
 
 export const searchProject = createAsyncThunk(
-  'project/searchProject',
+  'hr_project/searchProject',
   async function (data, {getState}) {
     return handlerApiCall({
       fetchFunction: _searchProject,
@@ -41,7 +41,7 @@ export const searchProject = createAsyncThunk(
 );
 
 export const searchProjectTask = createAsyncThunk(
-  'project/searchProjectTask',
+  'hr_project/searchProjectTask',
   async function (data, {getState}) {
     return handlerApiCall({
       fetchFunction: _searchProjectTask,
@@ -54,7 +54,7 @@ export const searchProjectTask = createAsyncThunk(
 );
 
 export const searchProduct = createAsyncThunk(
-  'project/searchProduct',
+  'hr_project/searchProduct',
   async function (data, {getState}) {
     return handlerApiCall({
       fetchFunction: _searchProduct,

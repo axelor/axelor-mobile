@@ -1,5 +1,5 @@
 {
-  "title": "Reducers: changes reducer names of functionnal packages to avoid conflict.",
+  "title": "Reducers: follow naming convention to avoid conflict.",
   "type": "fix",
   "packages": ["hr", "helpdesk"]
 }
