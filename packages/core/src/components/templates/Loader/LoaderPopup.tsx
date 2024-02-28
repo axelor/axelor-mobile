@@ -38,6 +38,7 @@ interface LoaderPopupProps {
   onError: () => void;
   start?: boolean;
   disabled?: boolean;
+  autoLeave?: boolean;
   timeout?: number;
 }
 
@@ -47,6 +48,7 @@ const LoaderPopup = ({
   onError,
   start = false,
   disabled = false,
+  autoLeave = false,
   timeout = 100,
 }: LoaderPopupProps) => {
   const navigation = useNavigation();
@@ -87,7 +89,8 @@ const LoaderPopup = ({
 
       timeoutRef.current = setTimeout(() => {
         setActivityIndicator(false);
-        setShowPopup(true);
+
+        autoLeave ? handleNotifyMe() : setShowPopup(true);
       }, timeout);
     }
 
@@ -95,7 +98,15 @@ const LoaderPopup = ({
       setActivityIndicator(false);
       clearTimeout(timeoutRef.current);
     };
-  }, [timeout, loading, showPopup, setActivityIndicator, setShowPopup]);
+  }, [
+    timeout,
+    loading,
+    showPopup,
+    autoLeave,
+    setActivityIndicator,
+    setShowPopup,
+    handleNotifyMe,
+  ]);
 
   if (!loading || !showPopup) {
     return null;
