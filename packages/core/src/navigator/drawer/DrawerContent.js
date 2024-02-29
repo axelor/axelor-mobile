@@ -49,7 +49,6 @@ const DrawerContent = ({
   navigation,
   onModuleClick,
   onRefresh,
-  version,
   versionCheckConfig,
 }) => {
   useEffect(() => {
@@ -91,7 +90,8 @@ const DrawerContent = ({
   const secondaryMenusLeft = useRef(new Animated.Value(0)).current;
   const {activeModule} = useContext(ModuleNavigatorContext);
   const {mobileSettings} = useSelector(_state => _state.appConfig);
-  const mobileVersion = formatVersionString(version);
+  const {appVersion} = useSelector(_state => _state.auth);
+  const mobileVersion = formatVersionString(appVersion);
 
   const minimalRequiredVersion = useMemo(
     () => formatVersionString(mobileSettings?.minimalRequiredMobileAppVersion),
