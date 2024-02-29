@@ -51,7 +51,7 @@ const SettingsScreen = ({children}) => {
     showSubtitles,
   } = useConfig();
 
-  const {baseUrl} = useSelector(state => state.auth);
+  const {appVersion, baseUrl} = useSelector(state => state.auth);
 
   const handleToggleConnection = useCallback(
     state => {
@@ -118,6 +118,7 @@ const SettingsScreen = ({children}) => {
         <TranslationsButton />
       </View>
       <View style={styles.footerContainer}>
+        <Text>{I18n.t('Base_Version', {appVersion: appVersion})}</Text>
         <Text>{`${I18n.t('Base_ConnectedOn')}:`}</Text>
         <Text numberOfLines={1}>{baseUrl}</Text>
       </View>

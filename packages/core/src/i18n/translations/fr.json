@@ -62,6 +62,7 @@
   "Base_Logout": "Déconnexion",
   "Base_TimeFormat": "HH:mm",
   "Base_ConnectedOn": "Connecté à",
+  "Base_Version": "Version {{appVersion}}",
   "Base_Status": "Statut",
   "Base_Error": "Erreur",
   "Base_Success": "Succès",

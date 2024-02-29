@@ -62,6 +62,7 @@
   "Base_Logout": "Log out",
   "Base_TimeFormat": "HH:mm",
   "Base_ConnectedOn": "Connected on",
+  "Base_Version": "Version {{appVersion}}",
   "Base_Status": "Status",
   "Base_Error": "Error",
   "Base_Success": "Success",
