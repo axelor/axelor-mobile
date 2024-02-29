@@ -17,17 +17,18 @@
  */
 
 import React, {useCallback, useMemo, useState} from 'react';
+import {View} from 'react-native'
 import {
   AutoCompleteSearch,
   HeaderContainer,
-  Screen,
+  
   ScrollList,
 } from '@axelor/aos-mobile-ui';
 import {ScannerAutocompleteSearch} from '../../organisms';
 import {useDispatch} from '../../../redux/hooks';
 import useTranslator from '../../../i18n/hooks/use-translator';
 
-interface SearchListScreenProps {
+interface SearchListViewProps {
   list: any[];
   loading: boolean;
   moreLoading: boolean;
@@ -44,7 +45,7 @@ interface SearchListScreenProps {
   renderListItem: (item: any) => any;
 }
 
-const SearchListScreen = ({
+const SearchListView = ({
   list,
   loading,
   moreLoading,
@@ -59,7 +60,7 @@ const SearchListScreen = ({
   chipComponent,
   headerChildren,
   renderListItem,
-}: SearchListScreenProps) => {
+}: SearchListViewProps) => {
   const I18n = useTranslator();
   const dispatch = useDispatch();
 
@@ -99,7 +100,7 @@ const SearchListScreen = ({
   );
 
   return (
-    <Screen removeSpaceOnTop={true}>
+    <View >
       <HeaderContainer
         fixedItems={
           <SearchBar
@@ -125,8 +126,8 @@ const SearchListScreen = ({
         isListEnd={isListEnd}
         translator={I18n.t}
       />
-    </Screen>
+    </View>
   );
 };
 
-export default SearchListScreen;
+export default SearchListView;
