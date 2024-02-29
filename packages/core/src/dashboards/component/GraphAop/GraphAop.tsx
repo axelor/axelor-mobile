@@ -20,6 +20,7 @@ import React, {useEffect, useState} from 'react';
 import {Dimensions, View} from 'react-native';
 import {Chart, BarChart, LineChart, PieChart} from '@axelor/aos-mobile-ui';
 import {
+  fetchActionView,
   fetchGraphDataset,
   fetchTypeGraph,
   getGraphParameter,
@@ -35,33 +36,47 @@ const GraphAop = ({
   const [graph, setGraph] = useState({type: '', dataset: [], title: ''});
 
   useEffect(() => {
-    let result = {type: '', dataset: [], title: ''};
+    const fetchGraphData = async () => {
+      const result = {type: '', dataset: [], title: ''};
 
-    fetchTypeGraph({chartName: chartName}).then(response => {
-      result.title = response?.data?.data?.title;
-      result.type = response?.data?.data?.series[0].type;
-      const onInit = response?.data?.data?.onInit;
-
-      if (onInit) {
-        getGraphParameter({
-          chartName: chartName,
-          action: onInit,
-        })
-          .then(res => {
-            const parameter = res?.data?.data[0].values;
-            return fetchGraphDataset({chartName, parameter});
-          })
-          .then(res => {
-            result.dataset = res?.data?.data?.dataset;
-            setGraph(result);
-          });
-      } else {
-        fetchGraphDataset({chartName, parameter: null}).then(res => {
-          result.dataset = res?.data?.data?.dataset;
-          setGraph(result);
+      try {
+        const actionViewResponse = await fetchActionView({
+          actionViewName: 'dashlet.leads.by.country',
         });
+
+        const context = actionViewResponse?.data?.data[0]?.view?.context;
+        const _chartName =
+          actionViewResponse?.data?.data[0]?.view.views[0].name;
+
+        const typeResponse = await fetchTypeGraph({chartName: _chartName});
+        result.title = typeResponse?.data?.data?.title;
+        result.type = typeResponse?.data?.data?.series[0].type;
+        const onInit = typeResponse?.data?.data?.onInit;
+
+        let parameter = null;
+        if (onInit) {
+          const paramResponse = await getGraphParameter({
+            chartName,
+            action: onInit,
+            context: context,
+          });
+          parameter = paramResponse?.data?.data[0].values;
+        }
+
+        const datasetResponse = await fetchGraphDataset({
+          chartName,
+          parameter,
+          context,
+        });
+        result.dataset = datasetResponse?.data?.data?.dataset;
+      } catch (error) {
+        console.error('Error fetching graph data:', error);
       }
-    });
+
+      setGraph(result);
+    };
+
+    fetchGraphData();
   }, [chartName]);
 
   const BarChartRender = (datasets, title) => {

@@ -18,21 +18,35 @@
 
 import {axiosApiProvider} from '../apiProviders';
 
+export async function fetchActionView({actionViewName}) {
+  return axiosApiProvider.post({
+    url: `/ws/action/${actionViewName}`,
+    data: {
+      data: {
+        context: {
+          _id: null,
+        },
+      },
+      model: 'com.axelor.meta.db.MetaAction',
+    },
+  });
+}
+
 export async function fetchTypeGraph({chartName}: {chartName: string}) {
   return axiosApiProvider.get({url: `/ws/meta/chart/${chartName}`});
 }
 
-export async function fetchGraphDataset({chartName, parameter}) {
+export async function fetchGraphDataset({chartName, parameter, context}) {
   return axiosApiProvider.post({
     url: `/ws/meta/chart/${chartName}`,
     data: {
-      data: {...parameter, todayDate: new Date().toISOString().split('T')[0]},
+      data: {...parameter, ...context},
       fields: ['dataset'],
     },
   });
 }
 
-export async function getGraphParameter({action, chartName}) {
+export async function getGraphParameter({action, chartName, context}) {
   return axiosApiProvider
     .post({
       url: 'ws/action',
@@ -40,7 +54,7 @@ export async function getGraphParameter({action, chartName}) {
         action: action,
         data: {
           context: {
-            todayDate: new Date().toISOString().split('T')[0],
+            ...context,
             _chart: chartName,
           },
         },
