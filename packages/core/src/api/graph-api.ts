@@ -26,7 +26,7 @@ export async function fetchGraphDataset({chartName, parameter}) {
   return axiosApiProvider.post({
     url: `/ws/meta/chart/${chartName}`,
     data: {
-      data: {...parameter, todayDate: '2024-02-29'},
+      data: {...parameter, todayDate: new Date().toISOString().split('T')[0]},
       fields: ['dataset'],
     },
   });
@@ -40,7 +40,7 @@ export async function getGraphParameter({action, chartName}) {
         action: action,
         data: {
           context: {
-            todayDate: '2024-02-29',
+            todayDate: new Date().toISOString().split('T')[0],
             _chart: chartName,
           },
         },

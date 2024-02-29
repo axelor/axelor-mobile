@@ -30,41 +30,37 @@ interface GraphAopProps {
 }
 
 const GraphAop = ({
-  chartName = 'chart.created.leads.per.month',
+  chartName = 'chart.leads.by.country.bar',
 }: GraphAopProps) => {
   const [graph, setGraph] = useState({type: '', dataset: [], title: ''});
 
   useEffect(() => {
     let result = {type: '', dataset: [], title: ''};
-    let onInit = null;
-    fetchTypeGraph({
-      chartName: chartName,
-    }).then(response => {
-      console.log('response?.data?.data', response?.data?.data);
+
+    fetchTypeGraph({chartName: chartName}).then(response => {
       result.title = response?.data?.data?.title;
       result.type = response?.data?.data?.series[0].type;
-      onInit = response?.data?.data?.onInit;
+      const onInit = response?.data?.data?.onInit;
 
-      console.log('onInit', onInit);
-
-      return getGraphParameter({
-        chartName: chartName,
-        action: onInit,
-      })
-        .then(res => {
-          console.log('parameter', res?.data?.data[0].values);
-          const parameter = res?.data?.data[0].values;
-          return parameter;
+      if (onInit) {
+        getGraphParameter({
+          chartName: chartName,
+          action: onInit,
         })
-        .then(parameter => {
-          console.log('paramter', parameter);
-          return fetchGraphDataset({chartName, parameter});
-        })
-        .then(res => {
+          .then(res => {
+            const parameter = res?.data?.data[0].values;
+            return fetchGraphDataset({chartName, parameter});
+          })
+          .then(res => {
+            result.dataset = res?.data?.data?.dataset;
+            setGraph(result);
+          });
+      } else {
+        fetchGraphDataset({chartName, parameter: null}).then(res => {
           result.dataset = res?.data?.data?.dataset;
-
           setGraph(result);
         });
+      }
     });
   }, [chartName]);
 
