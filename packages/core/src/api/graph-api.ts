@@ -47,21 +47,17 @@ export async function fetchGraphDataset({chartName, parameter, context}) {
 }
 
 export async function getGraphParameter({action, chartName, context}) {
-  return axiosApiProvider
-    .post({
-      url: 'ws/action',
+  return axiosApiProvider.post({
+    url: 'ws/action',
+    data: {
+      action: action,
       data: {
-        action: action,
-        data: {
-          context: {
-            ...context,
-            _chart: chartName,
-          },
+        context: {
+          ...context,
+          _chart: chartName,
         },
-        model: 'com.axelor.script.ScriptBindings',
       },
-    })
-    .catch(e => {
-      console.log(e);
-    });
+      model: 'com.axelor.script.ScriptBindings',
+    },
+  });
 }
