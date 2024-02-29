@@ -17,11 +17,10 @@
  */
 
 import React, {useCallback, useMemo, useState} from 'react';
-import {View} from 'react-native'
+import {View} from 'react-native';
 import {
   AutoCompleteSearch,
   HeaderContainer,
-  
   ScrollList,
 } from '@axelor/aos-mobile-ui';
 import {ScannerAutocompleteSearch} from '../../organisms';
@@ -100,7 +99,7 @@ const SearchListView = ({
   );
 
   return (
-    <View >
+    <View>
       <HeaderContainer
         fixedItems={
           <SearchBar
