@@ -26,7 +26,7 @@ class ProcessHistory {
   ): Color => {
     switch (status) {
       case ProcessStatus.RUNNING:
-        return Colors.cautionColor;
+        return Colors.progressColor;
       case ProcessStatus.COMPLETED:
         return Colors.successColor;
       case ProcessStatus.FAILED:
