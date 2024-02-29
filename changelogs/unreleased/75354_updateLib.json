@@ -1,5 +1,0 @@
-{
-  "title": "package.json: update react-native-pell-rich-editor to 1.9.0 && update react-native-webview to 11.26.1",
-  "type": "feat",
-  "packages": "ui"
-}
