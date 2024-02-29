@@ -119,7 +119,7 @@ const SettingsScreen = ({children}) => {
         {children}
         <TranslationsButton />
       </View>
-      <GraphAop />
+      <GraphAop actionViewName="dashlet.leads.by.country" />
       <View style={styles.footerContainer}>
         <Text>{I18n.t('Base_Version', {appVersion: appVersion})}</Text>
         <Text>{`${I18n.t('Base_ConnectedOn')}:`}</Text>

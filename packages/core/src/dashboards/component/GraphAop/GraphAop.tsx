@@ -27,12 +27,10 @@ import {
 } from '../../../api/graph-api';
 
 interface GraphAopProps {
-  chartName: string;
+  actionViewName: string;
 }
 
-const GraphAop = ({
-  chartName = 'chart.leads.by.country.bar',
-}: GraphAopProps) => {
+const GraphAop = ({actionViewName}: GraphAopProps) => {
   const [graph, setGraph] = useState({type: '', dataset: [], title: ''});
 
   useEffect(() => {
@@ -41,14 +39,13 @@ const GraphAop = ({
 
       try {
         const actionViewResponse = await fetchActionView({
-          actionViewName: 'dashlet.leads.by.country',
+          actionViewName: actionViewName,
         });
 
         const context = actionViewResponse?.data?.data[0]?.view?.context;
-        const _chartName =
-          actionViewResponse?.data?.data[0]?.view.views[0].name;
+        const chartName = actionViewResponse?.data?.data[0]?.view.views[0].name;
 
-        const typeResponse = await fetchTypeGraph({chartName: _chartName});
+        const typeResponse = await fetchTypeGraph({chartName: chartName});
         result.title = typeResponse?.data?.data?.title;
         result.type = typeResponse?.data?.data?.series[0].type;
         const onInit = typeResponse?.data?.data?.onInit;
@@ -77,7 +74,7 @@ const GraphAop = ({
     };
 
     fetchGraphData();
-  }, [chartName]);
+  }, [actionViewName]);
 
   const BarChartRender = (datasets, title) => {
     return (
