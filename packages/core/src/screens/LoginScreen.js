@@ -31,13 +31,14 @@ import {
 } from '../sessions';
 
 const LoginScreen = ({route}) => {
-  const appVersion = route?.params?.version;
   const testInstanceConfig = route?.params?.testInstanceConfig;
   const releaseInstanceConfig = route?.params?.releaseInstanceConfig;
   const logoFile = route?.params?.logoFile;
   const dispatch = useDispatch();
 
-  const {loading, error, baseUrl} = useSelector(state => state.auth);
+  const {appVersion, loading, error, baseUrl} = useSelector(
+    state => state.auth,
+  );
 
   const urlStorage = useMemo(() => getStorageUrl(), []);
   const modeDebug = useMemo(() => __DEV__, []);

@@ -29,9 +29,9 @@ import {
   useSessions,
 } from '../sessions';
 import {clearError} from '../features/authSlice';
+import {useSelector} from '../redux/hooks';
 
 const SessionManagementScreen = ({route}) => {
-  const appVersion = route?.params?.version;
   const testInstanceConfig = route?.params?.testInstanceConfig;
   const releaseInstanceConfig = route?.params?.releaseInstanceConfig;
   const logoFile = route?.params?.logoFile;
@@ -56,6 +56,8 @@ const SessionManagementScreen = ({route}) => {
   const [session, setSession] = useState(
     sessionDefault != null ? sessionDefault : null,
   );
+
+  const {appVersion} = useSelector(state => state.auth);
 
   useEffect(() => {
     if (!popupCreateIsOpen && !popupConnectionIsOpen) {
