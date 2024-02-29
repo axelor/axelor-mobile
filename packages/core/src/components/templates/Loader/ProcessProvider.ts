@@ -27,159 +27,148 @@ import {
   Event,
 } from './types';
 
+// TODO: add register process to all process list
 class ProcessProvider {
   private _events: Map<string, Event>;
   private _processMap: Map<string, ProcessItem>;
+  private _allProcessList: ProcessItem[];
   private _numberOfRunningProcess: number;
 
   constructor() {
     this._numberOfRunningProcess = 0;
     this._events = new Map();
-    this._processMap = new Map([
-      [
-        '1645554000000',
-        {
-          key: '1645554000000',
-          name: 'Process 1',
-          disabled: false,
-          loading: false,
-          notifyMe: true,
-          status: ProcessStatus.RUNNING,
-          message: 'Process is running...',
-          completed: false,
-          startedDate: '2023-01-15T08:00:00.000Z',
-          completedDate: null,
-          failedDate: null,
-          process: async () => {
-            return new Promise(resolve => {
-              setTimeout(resolve, 3000);
-            });
-          },
-          onSuccess: () => {
-            console.log('Process completed successfully');
-          },
-          onError: () => {
-            console.error('Error occurred during process');
-          },
+    this._processMap = new Map();
+
+    this._allProcessList = [
+      {
+        key: '1645554000001',
+        name: 'Process 1',
+        disabled: false,
+        loading: false,
+        notifyMe: true,
+        status: ProcessStatus.RUNNING,
+        message: 'Process is running...',
+        completed: false,
+        startedDate: '2023-01-15T08:00:00.000Z',
+        completedDate: null,
+        failedDate: null,
+        process: async () => {
+          return new Promise(resolve => {
+            setTimeout(resolve, 3000);
+          });
         },
-      ],
-      [
-        '1645554100000',
-        {
-          key: '1645554100000',
-          name: 'Process 2',
-          disabled: true,
-          loading: false,
-          notifyMe: false,
-          status: ProcessStatus.COMPLETED,
-          message: 'Process completed',
-          completed: true,
-          startedDate: '2023-01-16T10:30:00.000Z',
-          completedDate: '2023-01-16T11:45:00.000Z',
-          failedDate: null,
-          process: async () => {
-            return new Promise(resolve => {
-              setTimeout(resolve, 2000);
-            });
-          },
-          onSuccess: () => {
-            console.log('Process completed successfully');
-          },
-          onError: () => {
-            console.error('Error occurred during process');
-          },
+        onSuccess: () => {
+          console.log('Process completed successfully');
         },
-      ],
-      [
-        '1645554000000',
-        {
-          key: '1645554000000',
-          name: 'Process 3',
-          disabled: false,
-          loading: false,
-          notifyMe: true,
-          status: ProcessStatus.RUNNING,
-          message: 'Process is running...',
-          completed: false,
-          startedDate: '2023-01-17T12:45:00.000Z',
-          completedDate: null,
-          failedDate: null,
-          process: async () => {
-            return new Promise(resolve => {
-              setTimeout(resolve, 3000);
-            });
-          },
-          onSuccess: () => {
-            console.log('Process completed successfully');
-          },
-          onError: () => {
-            console.error('Error occurred during process');
-          },
+        onError: () => {
+          console.error('Error occurred during process');
         },
-      ],
-      [
-        '1645554100000',
-        {
-          key: '1645554100000',
-          name: 'Process 4',
-          disabled: true,
-          loading: false,
-          notifyMe: false,
-          status: ProcessStatus.COMPLETED,
-          message: 'Process completed',
-          completed: true,
-          startedDate: '2023-01-20T09:30:00.000Z',
-          completedDate: '2023-01-20T09:35:00.000Z',
-          failedDate: null,
-          process: async () => {
-            return new Promise(resolve => {
-              setTimeout(resolve, 2000);
-            });
-          },
-          onSuccess: () => {
-            console.log('Process completed successfully');
-          },
-          onError: () => {
-            console.error('Error occurred during process');
-          },
+      },
+      {
+        key: '1645554100001',
+        name: 'Process 2',
+        disabled: true,
+        loading: false,
+        notifyMe: false,
+        status: ProcessStatus.COMPLETED,
+        message: 'Process completed',
+        completed: true,
+        startedDate: '2023-01-16T10:30:00.000Z',
+        completedDate: '2023-01-16T11:45:00.000Z',
+        failedDate: null,
+        process: async () => {
+          return new Promise(resolve => {
+            setTimeout(resolve, 2000);
+          });
         },
-      ],
-      [
-        '1645554200000',
-        {
-          key: '1645554200000',
-          name: 'Process 5',
-          disabled: false,
-          loading: false,
-          notifyMe: true,
-          status: ProcessStatus.FAILED,
-          message: 'Process failed',
-          completed: true,
-          startedDate: '2023-01-21T11:00:00.000Z',
-          completedDate: null,
-          failedDate: '2023-01-21T11:15:00.000Z',
-          process: async () => {
-            return new Promise((resolve, reject) => {
-              setTimeout(reject, 1500);
-            });
-          },
-          onSuccess: () => {
-            console.log('Process completed successfully');
-          },
-          onError: () => {
-            console.error('Error occurred during process');
-          },
+        onSuccess: () => {
+          console.log('Process completed successfully');
         },
-      ],
-    ]);
+        onError: () => {
+          console.error('Error occurred during process');
+        },
+      },
+      {
+        key: '1645554000000',
+        name: 'Process 3',
+        disabled: false,
+        loading: false,
+        notifyMe: true,
+        status: ProcessStatus.RUNNING,
+        message: 'Process is running...',
+        completed: false,
+        startedDate: '2023-01-17T12:45:00.000Z',
+        completedDate: null,
+        failedDate: null,
+        process: async () => {
+          return new Promise(resolve => {
+            setTimeout(resolve, 3000);
+          });
+        },
+        onSuccess: () => {
+          console.log('Process completed successfully');
+        },
+        onError: () => {
+          console.error('Error occurred during process');
+        },
+      },
+      {
+        key: '1645554100000',
+        name: 'Process 4',
+        disabled: true,
+        loading: false,
+        notifyMe: false,
+        status: ProcessStatus.COMPLETED,
+        message: 'Process completed',
+        completed: true,
+        startedDate: '2023-01-20T09:30:00.000Z',
+        completedDate: '2023-01-20T09:35:00.000Z',
+        failedDate: null,
+        process: async () => {
+          return new Promise(resolve => {
+            setTimeout(resolve, 2000);
+          });
+        },
+        onSuccess: () => {
+          console.log('Process completed successfully');
+        },
+        onError: () => {
+          console.error('Error occurred during process');
+        },
+      },
+      {
+        key: '1645554200000',
+        name: 'Process 5',
+        disabled: false,
+        loading: false,
+        notifyMe: true,
+        status: ProcessStatus.FAILED,
+        message: 'Process failed',
+        completed: true,
+        startedDate: '2023-01-21T11:00:00.000Z',
+        completedDate: null,
+        failedDate: '2023-01-21T11:15:00.000Z',
+        process: async () => {
+          return new Promise((resolve, reject) => {
+            setTimeout(reject, 1500);
+          });
+        },
+        onSuccess: () => {
+          console.log('Process completed successfully');
+        },
+        onError: () => {
+          console.error('Error occurred during process');
+        },
+      },
+    ];
   }
 
   get numberOfRunningProcess() {
     return this._numberOfRunningProcess;
   }
 
-  get processList() {
-    return [...this._processMap.values()];
+  get allProcessList() {
+    return this._allProcessList;
   }
 
   on(key: string, e: EventType, c: callBack) {

@@ -18,16 +18,26 @@
 
 import {useEffect, useMemo, useState} from 'react';
 import {processProvider} from './ProcessProvider';
+import {ProcessItem} from './types';
 
 const useLoaderListener = () => {
   const [numberProcesses, setNumberProcesses] = useState<number>(0);
+  const [allProcessList, setAllProcessList] = useState<ProcessItem[]>([]);
 
   useEffect(() => {
     setNumberProcesses(processProvider.numberOfRunningProcess);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [processProvider.numberOfRunningProcess]);
 
-  return useMemo(() => ({numberProcesses}), [numberProcesses]);
+  useEffect(() => {
+    setAllProcessList(processProvider.allProcessList);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [processProvider.allProcessList]);
+
+  return useMemo(
+    () => ({numberProcesses, allProcessList}),
+    [numberProcesses, allProcessList],
+  );
 };
 
 export default useLoaderListener;
