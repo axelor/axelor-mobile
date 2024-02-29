@@ -35,6 +35,8 @@ import {
 } from '../components';
 import {RouterProvider} from '../config';
 import {proxy, releaseConfig, versionCheckConfig} from './types';
+import {useDispatch} from '../redux/hooks';
+import {setAppVersion} from '../features/authSlice';
 
 interface instanceConfig {
   testInstanceConfig: proxy;
@@ -57,6 +59,8 @@ const ContextedApplication = ({
   version,
   configuration,
 }: ContextedApplicationProps) => {
+  const dispatch = useDispatch();
+
   const [, setRefresh] = useState(false);
   const [tracebackRoute, setTracebackRoute] = useState('');
 
@@ -67,6 +71,10 @@ const ContextedApplication = ({
   useEffect(() => {
     RouterProvider.get('TraceBack').then(setTracebackRoute);
   }, []);
+
+  useEffect(() => {
+    dispatch(setAppVersion({appVersion: version}));
+  }, [dispatch, version]);
 
   const getActiveUserId = useCallback(
     () => getActiveUserInfo().then(({userId}) => userId),
@@ -91,7 +99,6 @@ const ContextedApplication = ({
           <RootNavigator
             modules={modules}
             mainMenu={mainMenu}
-            version={version}
             onRefresh={() => setRefresh(_current => !_current)}
             configuration={configuration}
           />
