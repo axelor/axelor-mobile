@@ -48,6 +48,7 @@ const TourLineCard = ({
   adress,
   name,
   eventId,
+  tourId,
   isValidated = false,
   id,
 }: TourLineCardProps) => {
@@ -126,6 +127,7 @@ const TourLineCard = ({
             dispatch(
               (validateTourLine as any)({
                 tourLineId: id,
+                tourId: tourId,
               }),
             );
           }}

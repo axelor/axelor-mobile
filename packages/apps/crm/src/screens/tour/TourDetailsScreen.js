@@ -44,6 +44,8 @@ const TourDetailsScreen = ({route}) => {
   const {tourLineList, loadingTourLineList, moreLoading, isListEnd} =
     useSelector(state => state.tourLine);
 
+  const {tour} = useSelector(state => state.tour);
+
   const [selectedStatus, setSelectedStatus] = useState([]);
 
   useEffect(() => {
@@ -52,10 +54,13 @@ const TourDetailsScreen = ({route}) => {
 
   const fetchTourLineAPI = useCallback(
     (page = 0) => {
+      if (tour?.id == null) {
+        return null;
+      }
       dispatch(
         searchTourLine({
           page: page,
-          tourId: tourId,
+          tourId: tour?.id,
           status:
             selectedStatus[0]?.key === TourLineType.status.Planned
               ? false
@@ -65,7 +70,7 @@ const TourDetailsScreen = ({route}) => {
         }),
       );
     },
-    [dispatch, selectedStatus, tourId],
+    [dispatch, selectedStatus, tour],
   );
 
   return (
@@ -108,6 +113,7 @@ const TourDetailsScreen = ({route}) => {
             eventId={item?.event?.id}
             isValidated={item?.isValidated}
             id={item.id}
+            tourId={tourId}
           />
         )}
       />

@@ -25,6 +25,7 @@ import {
   searchTourLine as _searchTourLine,
   validateTourLine as _validateTourLine,
 } from '../api/tour-line-api';
+import {fetchControlTourById} from './tourSlice';
 
 export const searchTourLine = createAsyncThunk(
   'tourLine/searchTourLine',
@@ -48,6 +49,8 @@ export const validateTourLine = createAsyncThunk(
       action: 'Crm_SliceAction_ValidateTourLine',
       getState,
       responseOptions: {isArrayResponse: false},
+    }).then(() => {
+      dispatch(fetchControlTourById({tourId: data?.tourId}));
     });
   },
 );
