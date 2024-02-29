@@ -28,14 +28,17 @@ import {
 } from './types';
 import {DEMO_DATA} from './demo-data';
 
+// TODO: add register process to all process list
 class ProcessProvider {
   private _events: Map<string, Event>;
   private _processMap: Map<string, ProcessItem>;
+  private _allProcessList: ProcessItem[];
   private _numberOfRunningProcess: number;
 
   constructor() {
     this._events = new Map();
-    this._processMap = new Map(DEMO_DATA);
+    this._processMap = new Map();
+    this._allProcessList = DEMO_DATA;
     this._numberOfRunningProcess = 0;
   }
 
@@ -43,8 +46,8 @@ class ProcessProvider {
     return this._numberOfRunningProcess;
   }
 
-  get processList() {
-    return [...this._processMap.values()];
+  get allProcessList() {
+    return this._allProcessList;
   }
 
   on(key: string, e: EventType, c: callBack) {
