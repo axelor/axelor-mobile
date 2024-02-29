@@ -63,6 +63,8 @@ export const validateTour = createAsyncThunk(
       action: 'Crm_SliceAction_ValidateTour',
       getState,
       responseOptions: {isArrayResponse: false},
+    }).then(() => {
+      dispatch(fetchControlTourById({tourId: data?.tourId}));
     });
   },
 );
