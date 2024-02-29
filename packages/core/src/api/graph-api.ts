@@ -22,19 +22,32 @@ export async function fetchTypeGraph({chartName}: {chartName: string}) {
   return axiosApiProvider.get({url: `/ws/meta/chart/${chartName}`});
 }
 
-export async function fetchGraphDataset({chartName}: {chartName: string}) {
+export async function fetchGraphDataset({chartName, parameter}) {
   return axiosApiProvider.post({
     url: `/ws/meta/chart/${chartName}`,
     data: {
-      data: {
-        fromDate: '2023-02-28',
-        monthSelect: 12,
-        toDate: '2024-02-28',
-        todayDate: '2024-02-28',
-        // fromDate: '2023-02-28',
-        // toDate: '2024-02-28',
-      },
+      data: {...parameter, todayDate: '2024-02-29'},
       fields: ['dataset'],
     },
   });
+}
+
+export async function getGraphParameter({action, chartName}) {
+  return axiosApiProvider
+    .post({
+      url: 'ws/action',
+      data: {
+        action: action,
+        data: {
+          context: {
+            todayDate: '2024-02-29',
+            _chart: chartName,
+          },
+        },
+        model: 'com.axelor.script.ScriptBindings',
+      },
+    })
+    .catch(e => {
+      console.log(e);
+    });
 }

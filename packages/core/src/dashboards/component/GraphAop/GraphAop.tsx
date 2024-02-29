@@ -19,7 +19,11 @@
 import React, {useEffect, useState} from 'react';
 import {Dimensions, View} from 'react-native';
 import {Chart, BarChart, LineChart, PieChart} from '@axelor/aos-mobile-ui';
-import {fetchGraphDataset, fetchTypeGraph} from '../../../api/graph-api';
+import {
+  fetchGraphDataset,
+  fetchTypeGraph,
+  getGraphParameter,
+} from '../../../api/graph-api';
 
 interface GraphAopProps {
   chartName: string;
@@ -43,13 +47,24 @@ const GraphAop = ({
 
       console.log('onInit', onInit);
 
-      return fetchGraphDataset({
+      return getGraphParameter({
         chartName: chartName,
-      }).then(res => {
-        result.dataset = res?.data?.data?.dataset;
+        action: onInit,
+      })
+        .then(res => {
+          console.log('parameter', res?.data?.data[0].values);
+          const parameter = res?.data?.data[0].values;
+          return parameter;
+        })
+        .then(parameter => {
+          console.log('paramter', parameter);
+          return fetchGraphDataset({chartName, parameter});
+        })
+        .then(res => {
+          result.dataset = res?.data?.data?.dataset;
 
-        setGraph(result);
-      });
+          setGraph(result);
+        });
     });
   }, [chartName]);
 
