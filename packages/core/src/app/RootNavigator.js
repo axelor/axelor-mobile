@@ -33,13 +33,7 @@ import {useSessionExpired} from '../apiProviders/config';
 
 const {Navigator, Screen} = createNativeStackNavigator();
 
-const RootNavigator = ({
-  modules,
-  mainMenu,
-  version,
-  onRefresh,
-  configuration,
-}) => {
+const RootNavigator = ({modules, mainMenu, onRefresh, configuration}) => {
   const Colors = useThemeColor();
   const I18n = useTranslator();
   const dispatch = useDispatch();
@@ -66,11 +60,10 @@ const RootNavigator = ({
         modules={modules}
         mainMenu={mainMenu}
         onRefresh={onRefresh}
-        version={version}
         versionCheckConfig={configuration?.versionCheckConfig}
       />
     ),
-    [modules, mainMenu, onRefresh, version, configuration?.versionCheckConfig],
+    [modules, mainMenu, onRefresh, configuration?.versionCheckConfig],
   );
 
   const checkInternetConnection = useCallback(async () => {
@@ -129,10 +122,8 @@ const RootNavigator = ({
             name="SessionManagementScreen"
             component={SessionManagementScreen}
             initialParams={{
-              version,
               testInstanceConfig: configuration?.testInstanceConfig,
               releaseInstanceConfig: configuration?.releaseInstanceConfig,
-              enableConnectionSessions: configuration?.enableConnectionSessions,
               logoFile: configuration?.logoFile,
             }}
           />
@@ -141,7 +132,6 @@ const RootNavigator = ({
             name="LoginScreen"
             component={LoginScreen}
             initialParams={{
-              version,
               testInstanceConfig: configuration?.testInstanceConfig,
               releaseInstanceConfig: configuration?.releaseInstanceConfig,
               logoFile: configuration?.logoFile,
