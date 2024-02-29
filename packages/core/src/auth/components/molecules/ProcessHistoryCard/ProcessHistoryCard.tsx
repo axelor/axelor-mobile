@@ -20,6 +20,7 @@ import React, {useCallback, useMemo} from 'react';
 import {StyleSheet} from 'react-native';
 import {useThemeColor, ObjectCard} from '@axelor/aos-mobile-ui';
 import {useTranslator} from '../../../../i18n';
+import {formatDateTime} from '../../../../utils';
 import {ProcessStatus} from '../../../../components';
 import {ProcessHistory} from '../../../types';
 
@@ -66,20 +67,22 @@ const ProccessHistoryCard = ({
           {
             iconName: 'calendar-event',
             indicatorText: I18n.t('User_ProcessHistory_StartedOn'),
-            displayText: startedDate,
+            displayText: formatDateTime(startedDate, I18n.t('Base_DateFormat')),
           },
           {
             iconName: 'calendar-check',
             indicatorText: I18n.t('User_ProcessHistory_CompletedOn'),
-            displayText: completedDate,
-            hideIfNull:
-              status !== ProcessStatus.COMPLETED || completedDate == null,
+            displayText: formatDateTime(
+              completedDate,
+              I18n.t('Base_DateFormat'),
+            ),
+            hideIf: status !== ProcessStatus.COMPLETED || completedDate == null,
           },
           {
             iconName: 'calendar-check',
             indicatorText: I18n.t('User_ProcessHistory_FailedOn'),
-            displayText: failedDate,
-            hideIfNull: status !== ProcessStatus.FAILED || failedDate == null,
+            displayText: formatDateTime(failedDate, I18n.t('Base_DateFormat')),
+            hideIf: status !== ProcessStatus.FAILED || failedDate == null,
           },
         ],
       }}
