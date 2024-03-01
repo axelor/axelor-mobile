@@ -16,5 +16,10 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-export {default as ProcessHistoryCard} from './ProcessHistoryCard/ProcessHistoryCard';
-export {default as TranslationsButton} from './TranslationsButton/TranslationsButton';
+import {sameDate} from '../../utils';
+
+export function isToday(date) {
+  const d = new Date(date);
+  const today = new Date();
+  return sameDate(d, today);
+}
