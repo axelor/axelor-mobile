@@ -52,4 +52,5 @@ export type ProcessItem = ProcessOption & {
   status: ProcessStatus;
   message: string;
   completed: boolean;
+  resolved: boolean;
 };

@@ -32,10 +32,12 @@ class ProcessProvider {
   private _events: Map<string, Event>;
   private _processMap: Map<string, ProcessItem>;
   private _allProcessList: ProcessItem[];
-  private _numberOfRunningProcess: number;
+  private _numberRunningProcess: number;
+  private _numberUnresolvedProcess: number;
 
   constructor() {
-    this._numberOfRunningProcess = 0;
+    this._numberRunningProcess = 0;
+    this._numberUnresolvedProcess = 0;
     this._events = new Map();
     this._processMap = new Map();
 
@@ -49,6 +51,7 @@ class ProcessProvider {
         status: ProcessStatus.RUNNING,
         message: 'Process is running...',
         completed: false,
+        resolved: false,
         startedDate: '2024-03-01T08:00:00.000Z',
         completedDate: null,
         failedDate: null,
@@ -73,6 +76,7 @@ class ProcessProvider {
         status: ProcessStatus.COMPLETED,
         message: 'Process completed',
         completed: true,
+        resolved: true,
         startedDate: '2023-01-16T10:30:00.000Z',
         completedDate: '2023-01-16T11:45:00.000Z',
         failedDate: null,
@@ -97,6 +101,7 @@ class ProcessProvider {
         status: ProcessStatus.RUNNING,
         message: 'Process is running...',
         completed: false,
+        resolved: false,
         startedDate: '2023-01-17T12:45:00.000Z',
         completedDate: null,
         failedDate: null,
@@ -121,6 +126,7 @@ class ProcessProvider {
         status: ProcessStatus.COMPLETED,
         message: 'Process completed',
         completed: true,
+        resolved: true,
         startedDate: '2023-01-20T09:30:00.000Z',
         completedDate: '2023-01-20T09:35:00.000Z',
         failedDate: null,
@@ -145,6 +151,7 @@ class ProcessProvider {
         status: ProcessStatus.FAILED,
         message: 'Process failed',
         completed: true,
+        resolved: false,
         startedDate: '2024-03-01T01:00:00.000Z',
         completedDate: null,
         failedDate: '2024-03-01T11:15:00.000Z',
@@ -163,8 +170,12 @@ class ProcessProvider {
     ];
   }
 
-  get numberOfRunningProcess() {
-    return this._numberOfRunningProcess;
+  get numberRunningProcess() {
+    return this._numberRunningProcess;
+  }
+
+  get numberUnresolvedProcess() {
+    return this._allProcessList.filter(p => p.completed && !p.resolved).length;
   }
 
   get allProcessList() {
@@ -201,6 +212,7 @@ class ProcessProvider {
       message: null,
       status: null,
       completed: false,
+      resolved: false,
     };
 
     this._processMap.set(key, _p);
@@ -263,7 +275,7 @@ class ProcessProvider {
   private onCompleted(p: ProcessItem, I18n: TranslatorProps) {
     const {notifyMe, message, disabled, onSuccess} = p;
     if (!notifyMe) {
-      onSuccess();
+      this.onFinishCallBack(p.key, onSuccess);
     } else {
       showToastMessage({
         type: 'success',
@@ -271,7 +283,7 @@ class ProcessProvider {
         topOffset: 30,
         text1: I18n.t('Base_Success'),
         text2: message || I18n.t('Base_Loader_ProccessSuccessMessage'),
-        onPress: () => !disabled && onSuccess(),
+        onPress: () => !disabled && this.onFinishCallBack(p.key, onSuccess),
       });
     }
   }
@@ -279,7 +291,7 @@ class ProcessProvider {
   private onFailed(p: ProcessItem, I18n: TranslatorProps) {
     const {notifyMe, message, disabled, onError} = p;
     if (!notifyMe) {
-      onError();
+      this.onFinishCallBack(p.key, onError);
     } else {
       showToastMessage({
         type: 'error',
@@ -287,20 +299,35 @@ class ProcessProvider {
         topOffset: 30,
         text1: I18n.t('Base_Error'),
         text2: message || I18n.t('Base_Loader_ProccessErrorMessage'),
-        onPress: () => !disabled && onError(),
+        onPress: () => !disabled && this.onFinishCallBack(p.key, onError),
       });
     }
   }
 
   private incrementNumberOfRunningProcess() {
-    this._numberOfRunningProcess++;
+    this._numberRunningProcess++;
   }
 
   private decrementNumberOfRunningProcess() {
-    this._numberOfRunningProcess = Math.max(
-      0,
-      this._numberOfRunningProcess - 1,
-    );
+    this._numberRunningProcess = Math.max(0, this._numberRunningProcess - 1);
+  }
+
+  private resolveProcess(key: string) {
+    if (!this._processMap.has(key)) {
+      throw new Error(`Process with key ${key} not found.`);
+    }
+
+    const p = this._processMap.get(key);
+    if (!p.completed) {
+      throw new Error(`Could not resolve uncompleted process ${key}`);
+    }
+
+    this._processMap.set(key, {...p, resolved: true});
+  }
+
+  private onFinishCallBack(key: string, cb: callBack) {
+    this.resolveProcess(key);
+    cb();
   }
 
   private onStart(p: ProcessItem) {
