@@ -73,3 +73,4 @@ export const authModule: Module = {
 export * from './screens';
 export * from './api';
 export * from './features/asyncFunctionsIndex';
+export * from './storage/ProcessStorage';

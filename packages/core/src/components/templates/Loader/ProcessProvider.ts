@@ -16,6 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+import {processStorage} from '../../../auth/storage/ProcessStorage';
 import {TranslatorProps} from '../../../i18n';
 import {showToastMessage} from '../../../utils/show-toast-message';
 import {
@@ -27,147 +28,19 @@ import {
   Event,
 } from './types';
 
-// TODO: add register process to all process list
 class ProcessProvider {
   private _events: Map<string, Event>;
   private _processMap: Map<string, ProcessItem>;
-  private _allProcessList: ProcessItem[];
+  private _processList: ProcessItem[];
   private _numberRunningProcess: number;
-  private _numberUnresolvedProcess: number;
 
   constructor() {
     this._numberRunningProcess = 0;
-    this._numberUnresolvedProcess = 0;
     this._events = new Map();
-    this._processMap = new Map();
+    this._processList = processStorage.getProcessList();
+    this._processMap = new Map(this._processList.map(p => [p.key, p]));
 
-    this._allProcessList = [
-      {
-        key: '1645554000001',
-        name: 'Process 1',
-        disabled: false,
-        loading: false,
-        notifyMe: true,
-        status: ProcessStatus.RUNNING,
-        message: 'Process is running...',
-        completed: false,
-        resolved: false,
-        startedDate: '2024-03-01T08:00:00.000Z',
-        completedDate: null,
-        failedDate: null,
-        process: async () => {
-          return new Promise(resolve => {
-            setTimeout(resolve, 3000);
-          });
-        },
-        onSuccess: () => {
-          console.log('Process completed successfully');
-        },
-        onError: () => {
-          console.error('Error occurred during process');
-        },
-      },
-      {
-        key: '1645554100001',
-        name: 'Process 2',
-        disabled: true,
-        loading: false,
-        notifyMe: false,
-        status: ProcessStatus.COMPLETED,
-        message: 'Process completed',
-        completed: true,
-        resolved: true,
-        startedDate: '2023-01-16T10:30:00.000Z',
-        completedDate: '2023-01-16T11:45:00.000Z',
-        failedDate: null,
-        process: async () => {
-          return new Promise(resolve => {
-            setTimeout(resolve, 2000);
-          });
-        },
-        onSuccess: () => {
-          console.log('Process completed successfully');
-        },
-        onError: () => {
-          console.error('Error occurred during process');
-        },
-      },
-      {
-        key: '1645554000000',
-        name: 'Process 3',
-        disabled: false,
-        loading: false,
-        notifyMe: true,
-        status: ProcessStatus.RUNNING,
-        message: 'Process is running...',
-        completed: false,
-        resolved: false,
-        startedDate: '2023-01-17T12:45:00.000Z',
-        completedDate: null,
-        failedDate: null,
-        process: async () => {
-          return new Promise(resolve => {
-            setTimeout(resolve, 3000);
-          });
-        },
-        onSuccess: () => {
-          console.log('Process completed successfully');
-        },
-        onError: () => {
-          console.error('Error occurred during process');
-        },
-      },
-      {
-        key: '1645554100000',
-        name: 'Process 4',
-        disabled: true,
-        loading: false,
-        notifyMe: false,
-        status: ProcessStatus.COMPLETED,
-        message: 'Process completed',
-        completed: true,
-        resolved: true,
-        startedDate: '2023-01-20T09:30:00.000Z',
-        completedDate: '2023-01-20T09:35:00.000Z',
-        failedDate: null,
-        process: async () => {
-          return new Promise(resolve => {
-            setTimeout(resolve, 2000);
-          });
-        },
-        onSuccess: () => {
-          console.log('Process completed successfully');
-        },
-        onError: () => {
-          console.error('Error occurred during process');
-        },
-      },
-      {
-        key: '1645554200000',
-        name: 'Process 5',
-        disabled: false,
-        loading: false,
-        notifyMe: true,
-        status: ProcessStatus.FAILED,
-        message: 'Process failed',
-        completed: true,
-        resolved: false,
-        startedDate: '2024-03-01T01:00:00.000Z',
-        completedDate: null,
-        failedDate: '2024-03-01T11:15:00.000Z',
-        process: async () => {
-          return new Promise((resolve, reject) => {
-            setTimeout(reject, 1500);
-          });
-        },
-        onSuccess: () => {
-          console.log('Process completed successfully');
-        },
-        onError: () => {
-          console.error('Error occurred during process');
-        },
-      },
-    ];
+    processStorage.register(this.setProcessList);
   }
 
   get numberRunningProcess() {
@@ -175,11 +48,15 @@ class ProcessProvider {
   }
 
   get numberUnresolvedProcess() {
-    return this._allProcessList.filter(p => p.completed && !p.resolved).length;
+    return this._processList.filter(p => p.completed && !p.resolved).length;
   }
 
   get allProcessList() {
-    return this._allProcessList;
+    return this._processList;
+  }
+
+  setProcessList(processList: ProcessItem[]) {
+    this._processList = processList;
   }
 
   on(key: string, e: EventType, c: callBack) {
@@ -216,6 +93,7 @@ class ProcessProvider {
     };
 
     this._processMap.set(key, _p);
+    processStorage.saveProcess(_p);
 
     return _p;
   }
@@ -232,6 +110,7 @@ class ProcessProvider {
   notifyMe(p: ProcessItem) {
     p.notifyMe = true;
     this._processMap.set(p.key, p);
+    processStorage.saveProcess(p);
   }
 
   async runProcess(p: ProcessItem, I18n: TranslatorProps) {
@@ -249,7 +128,7 @@ class ProcessProvider {
     message: string,
     I18n: TranslatorProps,
   ) {
-    this._processMap.set(p.key, {
+    const _p = {
       ...p,
       status,
       loading: false,
@@ -258,9 +137,12 @@ class ProcessProvider {
       completedDate:
         status === ProcessStatus.COMPLETED && new Date().toISOString(),
       failedDate: status === ProcessStatus.FAILED && new Date().toISOString(),
-    });
+    };
+    this._processMap.set(p.key, _p);
+    processStorage.saveProcess(_p);
 
     this.decrementNumberOfRunningProcess();
+    this.resolveProcess(p.key);
 
     this.emit(
       p.key,
@@ -277,13 +159,18 @@ class ProcessProvider {
     if (!notifyMe) {
       this.onFinishCallBack(p.key, onSuccess);
     } else {
+      const _handleToastPress = this.handleToastPress(
+        p.key,
+        disabled,
+        onSuccess,
+      );
       showToastMessage({
         type: 'success',
         position: 'top',
         topOffset: 30,
         text1: I18n.t('Base_Success'),
         text2: message || I18n.t('Base_Loader_ProccessSuccessMessage'),
-        onPress: () => !disabled && this.onFinishCallBack(p.key, onSuccess),
+        onPress: _handleToastPress,
       });
     }
   }
@@ -293,13 +180,14 @@ class ProcessProvider {
     if (!notifyMe) {
       this.onFinishCallBack(p.key, onError);
     } else {
+      const _handleToastPress = this.handleToastPress(p.key, disabled, onError);
       showToastMessage({
         type: 'error',
         position: 'top',
         topOffset: 30,
         text1: I18n.t('Base_Error'),
         text2: message || I18n.t('Base_Loader_ProccessErrorMessage'),
-        onPress: () => !disabled && this.onFinishCallBack(p.key, onError),
+        onPress: _handleToastPress,
       });
     }
   }
@@ -322,7 +210,9 @@ class ProcessProvider {
       throw new Error(`Could not resolve uncompleted process ${key}`);
     }
 
-    this._processMap.set(key, {...p, resolved: true});
+    const _p = {...p, resolved: true};
+    this._processMap.set(key, _p);
+    processStorage.saveProcess(_p);
   }
 
   private onFinishCallBack(key: string, cb: callBack) {
@@ -330,13 +220,19 @@ class ProcessProvider {
     cb();
   }
 
+  private handleToastPress(key: string, disabled: boolean, cb: callBack) {
+    return () => !disabled && this.onFinishCallBack(key, cb);
+  }
+
   private onStart(p: ProcessItem) {
-    this._processMap.set(p.key, {
+    const _p = {
       ...p,
       loading: true,
       status: ProcessStatus.RUNNING,
       startedDate: new Date().toISOString(),
-    });
+    };
+    this._processMap.set(p.key, _p);
+    processStorage.saveProcess(_p);
 
     this.incrementNumberOfRunningProcess();
 
