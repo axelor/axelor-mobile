@@ -16,6 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+import {processStorage} from '../../../auth/storage/ProcessStorage';
 import {TranslatorProps} from '../../../i18n';
 import {showToastMessage} from '../../../utils/show-toast-message';
 import {
@@ -26,22 +27,20 @@ import {
   EventType,
   Event,
 } from './types';
-import {DEMO_DATA} from './demo-data';
 
-// TODO: add register process to all process list
 class ProcessProvider {
   private _events: Map<string, Event>;
   private _processMap: Map<string, ProcessItem>;
-  private _allProcessList: ProcessItem[];
+  private _processList: ProcessItem[];
   private _numberRunningProcess: number;
-  private _numberUnresolvedProcess: number;
 
   constructor() {
     this._events = new Map();
-    this._processMap = new Map();
-    this._allProcessList = DEMO_DATA;
+    this._processList = processStorage.getProcessList();
+    this._processMap = new Map(this._processList.map(p => [p.key, p]));
     this._numberRunningProcess = 0;
-    this._numberUnresolvedProcess = 0;
+
+    processStorage.register(this.setProcessList);
   }
 
   get numberRunningProcess() {
@@ -49,11 +48,15 @@ class ProcessProvider {
   }
 
   get numberUnresolvedProcess() {
-    return this._allProcessList.filter(p => p.completed && !p.resolved).length;
+    return this._processList.filter(p => p.completed && !p.resolved).length;
   }
 
   get allProcessList() {
-    return this._allProcessList;
+    return this._processList;
+  }
+
+  setProcessList(processList: ProcessItem[]) {
+    this._processList = processList;
   }
 
   on(key: string, e: EventType, c: callBack) {
@@ -90,6 +93,7 @@ class ProcessProvider {
     };
 
     this._processMap.set(key, _p);
+    processStorage.saveProcess(_p);
 
     return _p;
   }
@@ -106,6 +110,7 @@ class ProcessProvider {
   notifyMe(p: ProcessItem) {
     p.notifyMe = true;
     this._processMap.set(p.key, p);
+    processStorage.saveProcess(p);
   }
 
   async runProcess(p: ProcessItem, I18n: TranslatorProps) {
@@ -123,7 +128,7 @@ class ProcessProvider {
     response: any,
     I18n: TranslatorProps,
   ) {
-    const updatedProcess = {
+    const _p = {
       ...p,
       status,
       loading: false,
@@ -134,16 +139,18 @@ class ProcessProvider {
       failedDate: status === ProcessStatus.FAILED && new Date().toISOString(),
     };
 
-    this._processMap.set(p.key, updatedProcess);
+    this._processMap.set(p.key, _p);
+    processStorage.saveProcess(_p);
 
     this.decrementNumberOfRunningProcess();
+    this.resolveProcess(p.key);
 
     this.emit(
       p.key,
       status === ProcessStatus.COMPLETED
         ? EventType.COMPLETED
         : EventType.FAILED,
-      updatedProcess,
+      _p,
       I18n,
     );
   }
@@ -206,7 +213,9 @@ class ProcessProvider {
       throw new Error(`Could not resolve uncompleted process ${key}`);
     }
 
-    this._processMap.set(key, {...p, resolved: true});
+    const _p = {...p, resolved: true};
+    this._processMap.set(key, _p);
+    processStorage.saveProcess(_p);
   }
 
   private onFinishCallBack(key: string, cb: callBack, response: any) {
@@ -215,12 +224,14 @@ class ProcessProvider {
   }
 
   private onStart(p: ProcessItem) {
-    this._processMap.set(p.key, {
+    const _p = {
       ...p,
       loading: true,
       status: ProcessStatus.RUNNING,
       startedDate: new Date().toISOString(),
-    });
+    };
+    this._processMap.set(p.key, _p);
+    processStorage.saveProcess(_p);
 
     this.incrementNumberOfRunningProcess();
 
