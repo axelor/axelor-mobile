@@ -9,7 +9,7 @@ export const DEMO_DATA: ProcessItem[] = [
     notifyMe: true,
     status: ProcessStatus.RUNNING,
     completed: false,
-    startedDate: '2023-01-15T08:00:00.000Z',
+    startedDate: '2024-03-01T08:00:00.000Z',
     completedDate: null,
     failedDate: null,
     process: async () => {
@@ -101,9 +101,9 @@ export const DEMO_DATA: ProcessItem[] = [
     notifyMe: true,
     status: ProcessStatus.FAILED,
     completed: true,
-    startedDate: '2023-01-21T11:00:00.000Z',
+    startedDate: '2024-03-01T01:00:00.000Z',
     completedDate: null,
-    failedDate: '2023-01-21T11:15:00.000Z',
+    failedDate: '2024-03-01T11:15:00.000Z',
     process: async () => {
       return new Promise((resolve, reject) => {
         setTimeout(reject, 1500);
