@@ -31,4 +31,12 @@ export const core_modelAPI: ObjectFields = {
   core_user: schemaContructor.object({
     fullName: schemaContructor.string(),
   }),
+  core_permissions: schemaContructor.object({
+    name: schemaContructor.string(),
+    object: schemaContructor.string(),
+    canRead: schemaContructor.boolean(),
+    canWrite: schemaContructor.boolean(),
+    canCreate: schemaContructor.boolean(),
+    canRemove: schemaContructor.boolean(),
+  }),
 };
