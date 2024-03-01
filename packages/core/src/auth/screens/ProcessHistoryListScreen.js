@@ -30,16 +30,32 @@ import {ProcessStatus, useLoaderListener} from '../../components';
 import {ProcessHistoryCard} from '../components';
 import {useTranslator} from '../../i18n';
 import {ProcessHistory} from '../types';
+import {isToday} from './process-history-list-screen-helper';
 
 const ProcessHistoryListScreen = () => {
   const I18n = useTranslator();
   const Colors = useThemeColor();
-  const [tabSwitch, setTabSwitch] = useState(false);
 
   const {allProcessList} = useLoaderListener();
 
   const [filteredList, setFilteredList] = useState(allProcessList);
+  const [today, setToday] = useState(true);
   const [selectedStatus, setSelectedStatus] = useState([]);
+
+  const filterOnDate = useCallback(
+    list => {
+      if (!Array.isArray(list) || list.length === 0) {
+        return [];
+      } else {
+        if (today) {
+          return list?.filter(item => isToday(item?.startedDate));
+        } else {
+          return list;
+        }
+      }
+    },
+    [today],
+  );
 
   const filterOnStatus = useCallback(
     list => {
@@ -49,8 +65,8 @@ const ProcessHistoryListScreen = () => {
   );
 
   useEffect(() => {
-    setFilteredList(filterOnStatus(allProcessList));
-  }, [filterOnStatus, allProcessList]);
+    setFilteredList(filterOnStatus(filterOnDate(allProcessList)));
+  }, [filterOnDate, filterOnStatus, allProcessList]);
 
   return (
     <Screen removeSpaceOnTop={true}>
@@ -59,7 +75,7 @@ const ProcessHistoryListScreen = () => {
           <ToggleSwitch
             leftTitle={I18n.t('User_ProcessHistory_Today')}
             rightTitle={I18n.t('User_ProcessHistory_All')}
-            onSwitch={() => setTabSwitch(!tabSwitch)}
+            onSwitch={() => setToday(!today)}
           />
         }
         chipComponent={
