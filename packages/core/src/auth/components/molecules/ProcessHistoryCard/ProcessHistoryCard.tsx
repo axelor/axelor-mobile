@@ -31,6 +31,8 @@ interface ProccessHistoryCardProps {
   startedDate: string;
   completedDate: string;
   failedDate: string;
+  completed: boolean;
+  resolved: boolean;
   onSuccess: () => void;
   onError: () => void;
 }
@@ -42,6 +44,8 @@ const ProccessHistoryCard = ({
   startedDate,
   completedDate,
   failedDate,
+  completed,
+  resolved,
   onSuccess,
   onError,
 }: ProccessHistoryCardProps) => {
@@ -86,6 +90,8 @@ const ProccessHistoryCard = ({
           },
         ],
       }}
+      showArrow={completed && !resolved}
+      touchable={completed && !resolved}
     />
   );
 };
