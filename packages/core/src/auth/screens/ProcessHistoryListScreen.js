@@ -123,6 +123,8 @@ const ProcessHistoryListScreen = () => {
             startedDate={item.startedDate}
             completedDate={item.completedDate}
             failedDate={item.failedDate}
+            completed={item.completed}
+            resolved={item.resolved}
             onSuccess={item.onSuccess}
             onError={item.onError}
             style={styles.item}

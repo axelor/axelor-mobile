@@ -22,12 +22,18 @@ import {ProcessItem} from './types';
 
 const useLoaderListener = () => {
   const [numberProcesses, setNumberProcesses] = useState<number>(0);
+  const [numberUnresolvedProcess, setUnresolvedProcess] = useState<number>(0);
   const [allProcessList, setAllProcessList] = useState<ProcessItem[]>([]);
 
   useEffect(() => {
-    setNumberProcesses(processProvider.numberOfRunningProcess);
+    setNumberProcesses(processProvider.numberRunningProcess);
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [processProvider.numberOfRunningProcess]);
+  }, [processProvider.numberRunningProcess]);
+
+  useEffect(() => {
+    setUnresolvedProcess(processProvider.numberUnresolvedProcess);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [processProvider.numberUnresolvedProcess]);
 
   useEffect(() => {
     setAllProcessList(processProvider.allProcessList);
@@ -35,8 +41,8 @@ const useLoaderListener = () => {
   }, [processProvider.allProcessList]);
 
   return useMemo(
-    () => ({numberProcesses, allProcessList}),
-    [numberProcesses, allProcessList],
+    () => ({numberProcesses, numberUnresolvedProcess, allProcessList}),
+    [numberProcesses, numberUnresolvedProcess, allProcessList],
   );
 };
 

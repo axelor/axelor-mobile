@@ -33,17 +33,23 @@ class ProcessProvider {
   private _events: Map<string, Event>;
   private _processMap: Map<string, ProcessItem>;
   private _allProcessList: ProcessItem[];
-  private _numberOfRunningProcess: number;
+  private _numberRunningProcess: number;
+  private _numberUnresolvedProcess: number;
 
   constructor() {
     this._events = new Map();
     this._processMap = new Map();
     this._allProcessList = DEMO_DATA;
-    this._numberOfRunningProcess = 0;
+    this._numberRunningProcess = 0;
+    this._numberUnresolvedProcess = 0;
   }
 
-  get numberOfRunningProcess() {
-    return this._numberOfRunningProcess;
+  get numberRunningProcess() {
+    return this._numberRunningProcess;
+  }
+
+  get numberUnresolvedProcess() {
+    return this._allProcessList.filter(p => p.completed && !p.resolved).length;
   }
 
   get allProcessList() {
@@ -80,6 +86,7 @@ class ProcessProvider {
       response: null,
       status: null,
       completed: false,
+      resolved: false,
     };
 
     this._processMap.set(key, _p);
@@ -144,7 +151,7 @@ class ProcessProvider {
   private onCompleted(p: ProcessItem, I18n: TranslatorProps) {
     const {notifyMe, response, disabled, onSuccess} = p;
     if (!notifyMe) {
-      onSuccess(response);
+      this.onFinishCallBack(p.key, onSuccess, response);
     } else {
       showToastMessage({
         type: 'success',
@@ -155,7 +162,8 @@ class ProcessProvider {
           typeof response === 'string'
             ? response
             : I18n.t('Base_Loader_ProccessSuccessMessage'),
-        onPress: () => !disabled && onSuccess(response),
+        onPress: () =>
+          !disabled && this.onFinishCallBack(p.key, onSuccess, response),
       });
     }
   }
@@ -163,7 +171,7 @@ class ProcessProvider {
   private onFailed(p: ProcessItem, I18n: TranslatorProps) {
     const {notifyMe, response, disabled, onError} = p;
     if (!notifyMe) {
-      onError(response);
+      this.onFinishCallBack(p.key, onError, response);
     } else {
       showToastMessage({
         type: 'error',
@@ -174,20 +182,36 @@ class ProcessProvider {
           typeof response === 'string'
             ? response
             : I18n.t('Base_Loader_ProccessErrorMessage'),
-        onPress: () => !disabled && onError(response),
+        onPress: () =>
+          !disabled && this.onFinishCallBack(p.key, onError, response),
       });
     }
   }
 
   private incrementNumberOfRunningProcess() {
-    this._numberOfRunningProcess++;
+    this._numberRunningProcess++;
   }
 
   private decrementNumberOfRunningProcess() {
-    this._numberOfRunningProcess = Math.max(
-      0,
-      this._numberOfRunningProcess - 1,
-    );
+    this._numberRunningProcess = Math.max(0, this._numberRunningProcess - 1);
+  }
+
+  private resolveProcess(key: string) {
+    if (!this._processMap.has(key)) {
+      throw new Error(`Process with key ${key} not found.`);
+    }
+
+    const p = this._processMap.get(key);
+    if (!p.completed) {
+      throw new Error(`Could not resolve uncompleted process ${key}`);
+    }
+
+    this._processMap.set(key, {...p, resolved: true});
+  }
+
+  private onFinishCallBack(key: string, cb: callBack, response: any) {
+    this.resolveProcess(key);
+    cb(response);
   }
 
   private onStart(p: ProcessItem) {
