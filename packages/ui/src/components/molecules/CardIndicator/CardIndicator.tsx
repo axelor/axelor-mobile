@@ -18,44 +18,37 @@
 
 import React, {useMemo, useState, useEffect, useRef} from 'react';
 import {Dimensions, StyleSheet, TouchableOpacity, View} from 'react-native';
-import {Card, Icon, Text} from '../../atoms';
-import {Color} from '../../../theme/themes';
-import {useThemeColor} from '../../../theme/ThemeContext';
+import {Card, Text} from '../../atoms';
 import {
   OUTSIDE_INDICATOR,
   useClickOutside,
 } from '../../../hooks/use-click-outside';
 import {checkNullString} from '../../../utils';
+import {useThemeColor} from '../../../theme';
 
-interface InfoBubbleProps {
+interface CardIndicatorProps {
   style?: any;
   textIndicationStyle?: any;
-  iconName: string;
-  badgeColor: Color;
-  indication: string;
-  size?: number;
+  indication?: string;
   position?: 'left' | 'right';
-  coloredBubble?: boolean;
+  children: any;
 }
 
-const InfoBubble = ({
+const CardIndicator = ({
   style,
-  iconName,
-  badgeColor,
   indication,
   textIndicationStyle,
-  size = Dimensions.get('window').width * 0.07,
   position = 'right',
-  coloredBubble = true,
-}: InfoBubbleProps) => {
+  children,
+}: CardIndicatorProps) => {
+  const Colors = useThemeColor();
   const [isOpen, setIsOpen] = useState(false);
   const wrapperRef = useRef(null);
-  const Colors = useThemeColor();
   const clickOutside = useClickOutside({wrapperRef});
 
   const styles = useMemo(
-    () => getStyles(badgeColor, Colors, isOpen, size, position),
-    [badgeColor, Colors, isOpen, size, position],
+    () => getStyles(Colors, isOpen, position),
+    [Colors, isOpen, position],
   );
 
   useEffect(() => {
@@ -71,12 +64,7 @@ const InfoBubble = ({
   return (
     <View ref={wrapperRef} style={[styles.container, style]}>
       <TouchableOpacity onPress={onPress} activeOpacity={0.95}>
-        <Icon
-          name={iconName}
-          style={coloredBubble ? styles.icon : null}
-          color={coloredBubble ? badgeColor.foreground : badgeColor.background}
-          size={coloredBubble ? size * 0.5 : size * 0.8}
-        />
+        {children}
       </TouchableOpacity>
       {!checkNullString(indication) && isOpen ? (
         <Card style={[styles.indicationCard, textIndicationStyle]}>
@@ -87,24 +75,13 @@ const InfoBubble = ({
   );
 };
 
-const getStyles = (badgeColor, Colors, isOpen, size, position) =>
+const getStyles = (Colors, isOpen, position) =>
   StyleSheet.create({
     container: {
       alignItems: 'center',
       flexDirection: 'row',
       marginVertical: 5,
       zIndex: isOpen ? 50 : 0,
-    },
-    icon: {
-      alignSelf: 'center',
-      justifyContent: 'center',
-      alignItems: 'center',
-      backgroundColor: badgeColor.background_light,
-      borderWidth: 2,
-      borderColor: badgeColor.background,
-      borderRadius: size,
-      width: size,
-      height: size,
     },
     indicationCard: {
       position: 'absolute',
@@ -118,4 +95,4 @@ const getStyles = (badgeColor, Colors, isOpen, size, position) =>
     },
   });
 
-export default InfoBubble;
+export default CardIndicator;
