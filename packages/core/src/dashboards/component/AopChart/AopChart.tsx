@@ -31,10 +31,10 @@ interface AopChartProps {
 }
 
 const AopChart = ({actionViewName}: AopChartProps) => {
-  const [graph, setGraph] = useState({type: '', dataset: [], title: ''});
+  const [chart, setChart] = useState({type: '', dataset: [], title: ''});
 
   useEffect(() => {
-    const fetchGraphData = async () => {
+    const fetchChartData = async () => {
       const result = {type: '', dataset: [], title: ''};
 
       try {
@@ -67,13 +67,13 @@ const AopChart = ({actionViewName}: AopChartProps) => {
         });
         result.dataset = datasetResponse?.data?.data?.dataset;
       } catch (error) {
-        setGraph({type: '', dataset: [], title: ''});
+        setChart({type: '', dataset: [], title: ''});
       }
 
-      setGraph(result);
+      setChart(result);
     };
 
-    fetchGraphData();
+    fetchChartData();
   }, [actionViewName]);
 
   const BarChartRender = (datasets, title) => {
@@ -144,13 +144,13 @@ const AopChart = ({actionViewName}: AopChartProps) => {
     }));
   };
 
-  if (graph.dataset?.length <= 0) {
+  if (chart.dataset?.length <= 0) {
     return null;
   }
 
   return (
     <View>
-      {renderChar(graph.type, [transformData(graph.dataset)], graph.title)}
+      {renderChar(chart.type, [transformData(chart.dataset)], chart.title)}
     </View>
   );
 };
