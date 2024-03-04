@@ -100,16 +100,18 @@ const PieChart = ({
         onPress={item => {
           handlePress(item);
         }}
-        centerLabelComponent={() => {
-          return (
-            <View style={styles.centeredView}>
-              <Text numberOfLines={2} writingType="details">
-                {selectedItem?.label}
-              </Text>
-              <Text numberOfLines={1}>{selectedItem?.value}</Text>
-            </View>
-          );
-        }}
+        centerLabelComponent={
+          donut
+            ? () => (
+                <View style={styles.centeredView}>
+                  <Text numberOfLines={2} writingType="details">
+                    {selectedItem?.label}
+                  </Text>
+                  <Text numberOfLines={1}>{selectedItem?.value}</Text>
+                </View>
+              )
+            : undefined
+        }
       />
       {!checkNullString(title) && <Text style={styles.title}>{title}</Text>}
       {legend && (
