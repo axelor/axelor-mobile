@@ -65,7 +65,7 @@ const InfoButton = ({
   );
 
   return (
-    <View ref={wrapperRef} style={[styles.container]}>
+    <View ref={wrapperRef} style={styles.container}>
       <CardIconButton
         iconName={iconName}
         iconColor={iconColor}
