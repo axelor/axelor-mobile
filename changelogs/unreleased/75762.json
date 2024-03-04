@@ -1,0 +1,5 @@
+{
+  "title": "add component SearchListView to simplify list view creation",
+  "type": "feat",
+  "packages": "core"
+}
