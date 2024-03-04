@@ -130,8 +130,9 @@ class ProcessProvider {
         topOffset: 30,
         text1: I18n.t('Base_Success'),
         text2:
-          JSON.stringify(response) ||
-          I18n.t('Base_Loader_ProccessSuccessMessage'),
+          typeof response === 'string'
+            ? response
+            : I18n.t('Base_Loader_ProccessSuccessMessage'),
         onPress: () => !disabled && onSuccess(response),
       });
     }
@@ -148,8 +149,9 @@ class ProcessProvider {
         topOffset: 30,
         text1: I18n.t('Base_Error'),
         text2:
-          JSON.stringify(response) ||
-          I18n.t('Base_Loader_ProccessErrorMessage'),
+          typeof response === 'string'
+            ? response
+            : I18n.t('Base_Loader_ProccessErrorMessage'),
         onPress: () => !disabled && onError(response),
       });
     }

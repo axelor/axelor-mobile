@@ -40,29 +40,25 @@ import {Button, Screen} from '@axelor/aos-mobile-ui';
 import {LoaderPopup} from '@axelor/aos-mobile-core';
 
 // Screen for test Loader functionnalities
-const LoaderScreen = ({navigation}) => {
+const LoaderScreen = ({}) => {
   const [start, setStart] = useState(false);
 
   const process = () =>
     new Promise((resolve, reject) => {
       setTimeout(() => {
-        resolve({product: {id: 3}});
+        resolve('Process completed');
         // reject('Process failed');
       }, 10000);
     });
 
   const handleSuccessAction = response => {
     setStart(false);
-    console.log('Success action executed!');
-
-    navigation.navigate('ProductStockDetailsScreen', {
-      product: response?.product,
-    });
+    console.log('Success action executed', response);
   };
 
   const handleErrorAction = error => {
     setStart(false);
-    console.log('Error action executed:', error);
+    console.log('Error action executed', error);
   };
 
   return (
