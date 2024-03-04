@@ -16,7 +16,7 @@
     "android": "react-native run-android --variant devDebug",
     "android:bundle": "cd android && ./gradlew app:bundleStoreRelease",
     "android:apk": "cd android && ./gradlew app:assemblePipelineRelease",
-    "ios": "react-native run-ios",
+    "ios": "react-native run-ios --simulator 'iPhone SE (3rd generation)'",
     "i18n": "nx run-many --target=i18n",
     "release": "nx run-many --target=npm-publish --verbose",
     "test": "jest --silent --updateSnapshot",

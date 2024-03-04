@@ -508,6 +508,7 @@
 					"$(inherited)",
 					"-ObjC",
 					"-lc++",
+					"-ld_classic",
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.axelor.AosMobile;
 				PRODUCT_NAME = AosMobile;
@@ -536,6 +537,7 @@
 					"$(inherited)",
 					"-ObjC",
 					"-lc++",
+					"-ld_classic",
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.axelor.AosMobile;
 				PRODUCT_NAME = AosMobile;
