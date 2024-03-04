@@ -66,7 +66,7 @@ class ProcessProvider {
       ...processOptions,
       loading: false,
       notifyMe: false,
-      message: null,
+      response: null,
       status: null,
       completed: false,
     };
@@ -102,16 +102,18 @@ class ProcessProvider {
   private onFinish(
     p: ProcessItem,
     status: ProcessStatus,
-    message: string,
+    response: any,
     I18n: TranslatorProps,
   ) {
-    this._processMap.set(p.key, {
+    const updatedProcess = {
       ...p,
       status,
       loading: false,
-      message: message,
+      response,
       completed: true,
-    });
+    };
+
+    this._processMap.set(p.key, updatedProcess);
 
     this.decrementNumberOfRunningProcess();
 
@@ -120,39 +122,45 @@ class ProcessProvider {
       status === ProcessStatus.COMPLETED
         ? EventType.COMPLETED
         : EventType.FAILED,
-      p,
+      updatedProcess,
       I18n,
     );
   }
 
   private onCompleted(p: ProcessItem, I18n: TranslatorProps) {
-    const {notifyMe, message, disabled, onSuccess} = p;
+    const {notifyMe, response, disabled, onSuccess} = p;
     if (!notifyMe) {
-      onSuccess();
+      onSuccess(response);
     } else {
       showToastMessage({
         type: 'success',
         position: 'top',
         topOffset: 30,
         text1: I18n.t('Base_Success'),
-        text2: message || I18n.t('Base_Loader_ProccessSuccessMessage'),
-        onPress: () => !disabled && onSuccess(),
+        text2:
+          typeof response === 'string'
+            ? response
+            : I18n.t('Base_Loader_ProccessSuccessMessage'),
+        onPress: () => !disabled && onSuccess(response),
       });
     }
   }
 
   private onFailed(p: ProcessItem, I18n: TranslatorProps) {
-    const {notifyMe, message, disabled, onError} = p;
+    const {notifyMe, response, disabled, onError} = p;
     if (!notifyMe) {
-      onError();
+      onError(response);
     } else {
       showToastMessage({
         type: 'error',
         position: 'top',
         topOffset: 30,
         text1: I18n.t('Base_Error'),
-        text2: message || I18n.t('Base_Loader_ProccessErrorMessage'),
-        onPress: () => !disabled && onError(),
+        text2:
+          typeof response === 'string'
+            ? response
+            : I18n.t('Base_Loader_ProccessErrorMessage'),
+        onPress: () => !disabled && onError(response),
       });
     }
   }

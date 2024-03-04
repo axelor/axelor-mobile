@@ -40,7 +40,7 @@ import {Button, Screen} from '@axelor/aos-mobile-ui';
 import {LoaderPopup} from '@axelor/aos-mobile-core';
 
 // Screen for test Loader functionnalities
-const LoaderScreen = () => {
+const LoaderScreen = ({}) => {
   const [start, setStart] = useState(false);
 
   const process = () =>
@@ -51,14 +51,14 @@ const LoaderScreen = () => {
       }, 15000);
     });
 
-  const handleSuccessAction = () => {
+  const handleSuccessAction = response => {
     setStart(false);
-    console.log('Success action executed!');
+    console.log('Success action executed', response);
   };
 
-  const handleErrorAction = () => {
+  const handleErrorAction = error => {
     setStart(false);
-    console.log('Error action executed!');
+    console.log('Error action executed', error);
   };
 
   return (
