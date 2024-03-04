@@ -32,11 +32,11 @@ export async function fetchActionView({actionViewName}) {
   });
 }
 
-export async function fetchTypeGraph({chartName}: {chartName: string}) {
+export async function fetchTypeChart({chartName}: {chartName: string}) {
   return axiosApiProvider.get({url: `/ws/meta/chart/${chartName}`});
 }
 
-export async function fetchGraphDataset({chartName, parameter, context}) {
+export async function fetchChartDataset({chartName, parameter, context}) {
   return axiosApiProvider.post({
     url: `/ws/meta/chart/${chartName}`,
     data: {
@@ -46,7 +46,7 @@ export async function fetchGraphDataset({chartName, parameter, context}) {
   });
 }
 
-export async function getGraphParameter({action, chartName, context}) {
+export async function getChartParameter({action, chartName, context}) {
   return axiosApiProvider.post({
     url: 'ws/action',
     data: {

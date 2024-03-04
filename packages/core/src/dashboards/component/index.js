@@ -16,4 +16,4 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-export {default as GraphAop} from './GraphAop/GraphAop';
+export {default as AopChart} from './AopChart/AopChart';

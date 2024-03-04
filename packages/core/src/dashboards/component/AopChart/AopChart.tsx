@@ -21,16 +21,16 @@ import {Dimensions, View} from 'react-native';
 import {Chart, BarChart, LineChart, PieChart} from '@axelor/aos-mobile-ui';
 import {
   fetchActionView,
-  fetchGraphDataset,
-  fetchTypeGraph,
-  getGraphParameter,
-} from '../../../api/graph-api';
+  fetchChartDataset,
+  fetchTypeChart,
+  getChartParameter,
+} from '../../../api/chart-api';
 
-interface GraphAopProps {
+interface AopChartProps {
   actionViewName: string;
 }
 
-const GraphAop = ({actionViewName}: GraphAopProps) => {
+const AopChart = ({actionViewName}: AopChartProps) => {
   const [graph, setGraph] = useState({type: '', dataset: [], title: ''});
 
   useEffect(() => {
@@ -45,14 +45,14 @@ const GraphAop = ({actionViewName}: GraphAopProps) => {
         const context = actionViewResponse?.data?.data[0]?.view?.context;
         const chartName = actionViewResponse?.data?.data[0]?.view.views[0].name;
 
-        const typeResponse = await fetchTypeGraph({chartName: chartName});
+        const typeResponse = await fetchTypeChart({chartName: chartName});
         result.title = typeResponse?.data?.data?.title;
         result.type = typeResponse?.data?.data?.series[0].type;
         const onInit = typeResponse?.data?.data?.onInit;
 
         let parameter = null;
         if (onInit) {
-          const paramResponse = await getGraphParameter({
+          const paramResponse = await getChartParameter({
             chartName,
             action: onInit,
             context: context,
@@ -60,14 +60,14 @@ const GraphAop = ({actionViewName}: GraphAopProps) => {
           parameter = paramResponse?.data?.data[0].values;
         }
 
-        const datasetResponse = await fetchGraphDataset({
+        const datasetResponse = await fetchChartDataset({
           chartName,
           parameter,
           context,
         });
         result.dataset = datasetResponse?.data?.data?.dataset;
       } catch (error) {
-        console.error('Error fetching graph data:', error);
+        setGraph({type: '', dataset: [], title: ''});
       }
 
       setGraph(result);
@@ -155,4 +155,4 @@ const GraphAop = ({actionViewName}: GraphAopProps) => {
   );
 };
 
-export default GraphAop;
+export default AopChart;
