@@ -1,5 +1,5 @@
 {
-  "title": "AopChart: component that will display Aop graphics",
+  "title": "AOPChart: component that will display AOP charts",
   "type": "feat",
   "packages": "core"
 }

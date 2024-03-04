@@ -26,11 +26,11 @@ import {
   getChartParameter,
 } from '../../../api/chart-api';
 
-interface AopChartProps {
+interface AOPChartProps {
   actionViewName: string;
 }
 
-const AopChart = ({actionViewName}: AopChartProps) => {
+const AOPChart = ({actionViewName}: AOPChartProps) => {
   const [chart, setChart] = useState({type: '', dataset: [], title: ''});
 
   useEffect(() => {
@@ -155,4 +155,4 @@ const AopChart = ({actionViewName}: AopChartProps) => {
   );
 };
 
-export default AopChart;
+export default AOPChart;
