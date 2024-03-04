@@ -41,8 +41,6 @@ export interface ComponentPermission extends FieldPermission {
   canDelete: boolean;
 }
 
-export type RightType = 'create' | 'read' | 'update' | 'delete';
-
 export const DEFAULT_DENIED_PERMISSION: Permission = {
   canCreate: false,
   canRead: false,
