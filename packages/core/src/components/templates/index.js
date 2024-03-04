@@ -20,5 +20,6 @@ export {default as AttachedFilesView} from './AttachedFilesView/AttachedFilesVie
 export {default as MailMessageView} from './MailMessageView/MailMessageView';
 export {default as PopupApplicationInformation} from './PopupApplicationInformation/PopupApplicationInformation';
 export {default as PopupMinimalRequiredVersion} from './PopupMinimalRequiredVersion/PopupMinimalRequiredVersion';
+export {default as SearchListView} from './SearchListView/SearchListView';
 export {default as SocialNetworkLinks} from './SocialNetworkLinks/SocialNetworkLinks';
 export {default as UserSearchBar} from './UserSearchBar/UserSearchBar';
