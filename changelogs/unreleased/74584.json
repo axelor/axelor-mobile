@@ -1,0 +1,5 @@
+{
+  "title": "ExpenseLine: use request to recompute totals on update",
+  "type": "fix",
+  "packages": "hr"
+}
