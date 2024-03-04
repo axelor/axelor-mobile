@@ -17,7 +17,7 @@
  */
 
 import React, {useCallback, useMemo, useState} from 'react';
-import {View} from 'react-native';
+import {StyleSheet, View} from 'react-native';
 import {
   AutoCompleteSearch,
   HeaderContainer,
@@ -99,7 +99,7 @@ const SearchListView = ({
   );
 
   return (
-    <View>
+    <View style={styles.container}>
       <HeaderContainer
         fixedItems={
           <SearchBar
@@ -128,5 +128,11 @@ const SearchListView = ({
     </View>
   );
 };
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+  },
+});
 
 export default SearchListView;
