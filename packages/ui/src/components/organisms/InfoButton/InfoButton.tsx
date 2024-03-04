@@ -47,10 +47,11 @@ const InfoButton = ({
   size = 50,
   position = 'left',
 }: InfoButtonProps) => {
-  const [showIndication, setShowIndication] = useState(false);
-  const wrapperRef = useRef(null);
   const Colors = useThemeColor();
+  const wrapperRef = useRef(null);
   const clickOutside = useClickOutside({wrapperRef});
+
+  const [showIndication, setShowIndication] = useState(false);
 
   useEffect(() => {
     if (clickOutside === OUTSIDE_INDICATOR && showIndication) {
