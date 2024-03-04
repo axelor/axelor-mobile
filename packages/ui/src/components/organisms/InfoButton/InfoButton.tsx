@@ -34,7 +34,6 @@ interface InfoButtonProps {
   iconColor: string;
   size?: number;
   position?: 'left' | 'right';
-  coloredBubble?: boolean;
   onPress: () => void;
 }
 
