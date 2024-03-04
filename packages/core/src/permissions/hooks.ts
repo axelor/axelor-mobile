@@ -16,17 +16,19 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import {useCallback, useEffect, useMemo, useState} from 'react';
+import {useCallback, useMemo} from 'react';
 import {useDispatch, useSelector} from '../redux/hooks';
 import {
   ComponentPermission,
-  DEFAULT_PERMISSION,
+  FieldPermission,
+  MetaPermission,
   ModelsPermission,
-  Permission,
 } from './type.helpers';
-import {formatPermissions, hasPermission} from './format.helpers';
-import {areObjectsEquals} from '../utils';
-import {fetchAllPermissions} from '../features/permissionSlice';
+import {hasFieldPermission, hasPermission} from './format.helpers';
+import {
+  fetchAllMetaPermissionRules,
+  fetchAllPermissions,
+} from '../features/permissionSlice';
 
 export const usePermissionsFetcher = (): (() => void) => {
   const dispatch = useDispatch();
@@ -35,41 +37,63 @@ export const usePermissionsFetcher = (): (() => void) => {
 
   return useCallback(() => {
     dispatch((fetchAllPermissions as any)({userId}));
+    dispatch((fetchAllMetaPermissionRules as any)({userId}));
   }, [dispatch, userId]);
 };
 
 const usePerms = (): {permissions: ModelsPermission} => {
   const {modelsPermissions} = useSelector((state: any) => state.permission);
 
-  return useMemo(
-    () => ({permissions: formatPermissions(modelsPermissions)}),
-    [modelsPermissions],
-  );
+  return useMemo(() => ({permissions: modelsPermissions}), [modelsPermissions]);
 };
 
-export const usePermitted = ({modelName}): ComponentPermission => {
-  const {permissions} = usePerms();
-
-  const [modelPerms, setModelPerms] = useState<Permission>(DEFAULT_PERMISSION);
-
-  useEffect(() => {
-    setModelPerms(_current => {
-      const _perms = hasPermission(permissions, modelName);
-
-      if (areObjectsEquals(_perms, _current)) {
-        return _current;
-      }
-
-      return _perms;
-    });
-  }, [modelName, permissions]);
+const useFieldPerms = (): {permissions: MetaPermission} => {
+  const {fieldsPermissions} = useSelector((state: any) => state.permission);
 
   return useMemo(() => {
+    return {permissions: fieldsPermissions};
+  }, [fieldsPermissions]);
+};
+
+export const usePermitted = ({
+  modelName,
+}: {
+  modelName: string;
+}): ComponentPermission => {
+  const {permissions} = usePerms();
+
+  return useMemo(() => {
+    const modelPerms = hasPermission(permissions, modelName);
+
     return {
       hidden: !modelPerms?.canRead,
       readonly: !modelPerms?.canWrite,
       canCreate: modelPerms?.canCreate,
       canDelete: modelPerms?.canRemove,
     };
-  }, [modelPerms]);
+  }, [modelName, permissions]);
+};
+
+export const useFieldPermitted = ({
+  modelName,
+  fieldName,
+}: {
+  modelName: string;
+  fieldName: string;
+}): FieldPermission => {
+  const {hidden, readonly} = usePermitted({modelName});
+  const {permissions: metaPermissions} = useFieldPerms();
+
+  return useMemo(() => {
+    const fieldPerms = hasFieldPermission(
+      metaPermissions,
+      modelName,
+      fieldName,
+    );
+
+    return {
+      hidden: hidden || !fieldPerms?.canRead,
+      readonly: readonly || !fieldPerms?.canWrite,
+    };
+  }, [fieldName, hidden, metaPermissions, modelName, readonly]);
 };

@@ -39,4 +39,15 @@ export const core_modelAPI: ObjectFields = {
     canCreate: schemaContructor.boolean(),
     canRemove: schemaContructor.boolean(),
   }),
+  core_metaPermissionRule: schemaContructor.object({
+    field: schemaContructor.string(),
+    canRead: schemaContructor.boolean(),
+    canWrite: schemaContructor.boolean(),
+    metaPermission: schemaContructor.subObject().concat(
+      schemaContructor.object({
+        name: schemaContructor.string(),
+        object: schemaContructor.string(),
+      }),
+    ),
+  }),
 };

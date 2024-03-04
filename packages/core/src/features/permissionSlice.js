@@ -18,7 +18,14 @@
 
 import {createAsyncThunk, createSlice} from '@reduxjs/toolkit';
 import {handlerApiCall} from '../apiProviders/utils';
-import {getAllPerms as _getAllPerms} from '../permissions/api.helpers';
+import {
+  getAllPerms as _getAllPerms,
+  getAllFieldsPerms as _getAllFieldsPerms,
+} from '../permissions/api.helpers';
+import {
+  formatMetaPermissions,
+  formatPermissions,
+} from '../permissions/format.helpers';
 
 export const fetchAllPermissions = createAsyncThunk(
   'permission/fetchAllPermissions',
@@ -34,8 +41,23 @@ export const fetchAllPermissions = createAsyncThunk(
   },
 );
 
+export const fetchAllMetaPermissionRules = createAsyncThunk(
+  'permission/fetchAllMetaPermissionRules',
+  async function (data, {getState}) {
+    return handlerApiCall({
+      fetchFunction: _getAllFieldsPerms,
+      data: data,
+      action: 'Base_SliceAction_FetchAllMetaPermissionRules',
+      getState: getState,
+      responseOptions: {isArrayResponse: true, showToast: false},
+      errorOptions: {showErrorToast: false},
+    });
+  },
+);
+
 const initialState = {
-  modelsPermissions: [],
+  modelsPermissions: {},
+  fieldsPermissions: {},
 };
 
 const permissionSlice = createSlice({
@@ -43,7 +65,10 @@ const permissionSlice = createSlice({
   initialState,
   extraReducers: builder => {
     builder.addCase(fetchAllPermissions.fulfilled, (state, action) => {
-      state.modelsPermissions = action.payload;
+      state.modelsPermissions = formatPermissions(action.payload);
+    });
+    builder.addCase(fetchAllMetaPermissionRules.fulfilled, (state, action) => {
+      state.fieldsPermissions = formatMetaPermissions(action.payload);
     });
   },
 });

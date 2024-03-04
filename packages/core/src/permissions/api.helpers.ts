@@ -23,9 +23,28 @@ export async function getAllPerms({userId}) {
     return createStandardSearch({
       model: 'com.axelor.auth.db.Permission',
       domain:
-        'self IN (SELECT p FROM User u join u.permissions p WHERE u.id = :userId) OR self IN (SELECT p FROM User u join u.group g join g.permissions p WHERE u.id = :userId) OR self IN(SELECT p FROM User u join u.roles r join r.permissions p WHERE u.id = :userId) OR self IN(SELECT p FROM User u join u.group g join g.roles r join r.permissions p WHERE u.id = :userId)',
+        'self IN (SELECT p FROM User u join u.permissions p WHERE u.id = :userId) OR self IN (SELECT p FROM User u join u.group g join g.permissions p WHERE u.id = :userId) OR self IN (SELECT p FROM User u join u.roles r join r.permissions p WHERE u.id = :userId) OR self IN (SELECT p FROM User u join u.group g join g.roles r join r.permissions p WHERE u.id = :userId)',
       domainContext: {userId},
       fieldKey: 'core_permissions',
+      numberElementsByPage: null,
+      page: 0,
+    });
+  }
+
+  return null;
+}
+
+export async function getAllFieldsPerms({userId}) {
+  if (userId != null) {
+    return createStandardSearch({
+      model: 'com.axelor.meta.db.MetaPermissionRule',
+      criteria: [
+        {fieldName: 'metaPermission.active', operator: '=', value: true},
+      ],
+      domain:
+        'self.metaPermission IN (SELECT p FROM User u join u.metaPermissions p WHERE u.id = :userId) OR self.metaPermission IN (SELECT p FROM User u join u.group g join g.metaPermissions p WHERE u.id = :userId) OR self.metaPermission IN (SELECT p FROM User u join u.roles r join r.metaPermissions p WHERE u.id = :userId) OR self.metaPermission IN (SELECT p FROM User u join u.group g join g.roles r join r.metaPermissions p WHERE u.id = :userId)',
+      domainContext: {userId},
+      fieldKey: 'core_metaPermissionRule',
       numberElementsByPage: null,
       page: 0,
     });

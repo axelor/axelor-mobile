@@ -34,7 +34,6 @@ import {
   logout,
   useBinaryImageUri,
   useDispatch,
-  usePermissionsFetcher,
   useSelector,
   useTranslator,
 } from '../../index';
@@ -53,7 +52,6 @@ const UserScreen = ({children}) => {
   const I18n = useTranslator();
   const formatImage = useBinaryImageUri();
   const dispatch = useDispatch();
-  const fetchAllPermissions = usePermissionsFetcher();
 
   const {companyList} = useSelector(state => state.company);
   const {userId} = useSelector(state => state.auth);
@@ -128,8 +126,7 @@ const UserScreen = ({children}) => {
 
   const fetchUser = useCallback(() => {
     dispatch(fetchActiveUser(userId));
-    fetchAllPermissions();
-  }, [dispatch, fetchAllPermissions, userId]);
+  }, [dispatch, userId]);
 
   return (
     <Screen style={styles.container}>

@@ -19,28 +19,42 @@
 export interface Permission {
   canRead: boolean;
   canWrite: boolean;
-  canCreate: boolean;
-  canRemove: boolean;
-}
-
-export interface ComponentPermission {
-  hidden: boolean;
-  readonly: boolean;
-  canCreate: boolean;
-  canDelete: boolean;
+  canCreate?: boolean;
+  canRemove?: boolean;
 }
 
 export interface ModelsPermission {
   [modelName: string]: Permission;
 }
 
+export interface MetaPermission {
+  [modelName: string]: {perms: Permission; fieldName: string}[];
+}
+
+export interface FieldPermission {
+  hidden: boolean;
+  readonly: boolean;
+}
+
+export interface ComponentPermission extends FieldPermission {
+  canCreate: boolean;
+  canDelete: boolean;
+}
+
 export type RightType = 'create' | 'read' | 'update' | 'delete';
 
-export const DEFAULT_PERMISSION: Permission = {
+export const DEFAULT_DENIED_PERMISSION: Permission = {
   canCreate: false,
   canRead: false,
   canRemove: false,
   canWrite: false,
+};
+
+export const DEFAULT_APPROVED_PERMISSION: Permission = {
+  canCreate: true,
+  canRead: true,
+  canRemove: true,
+  canWrite: true,
 };
 
 export const GLOBAL_MARKER = '.*';

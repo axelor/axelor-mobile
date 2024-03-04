@@ -18,8 +18,10 @@
 
 import {checkNullString} from '@axelor/aos-mobile-ui';
 import {
-  DEFAULT_PERMISSION,
+  DEFAULT_APPROVED_PERMISSION,
+  DEFAULT_DENIED_PERMISSION,
   GLOBAL_MARKER,
+  MetaPermission,
   ModelsPermission,
   Permission,
 } from './type.helpers';
@@ -43,12 +45,31 @@ export const formatPermissions = (permissionList: any[]): ModelsPermission => {
   return permissions;
 };
 
+export const formatMetaPermissions = (
+  permissionList: any[],
+): MetaPermission => {
+  if (!Array.isArray(permissionList) || permissionList.length === 0) {
+    return {};
+  }
+
+  const permissions: MetaPermission = {};
+
+  permissionList.forEach(({field, canRead, canWrite, metaPermission}) => {
+    const modelPerms = permissions[metaPermission.object] ?? [];
+
+    modelPerms.push({perms: {canRead, canWrite}, fieldName: field});
+    permissions[metaPermission.object] = modelPerms;
+  });
+
+  return permissions;
+};
+
 export const hasPermission = (
   permissions: ModelsPermission,
   modelName: string,
 ): Permission => {
   if (permissions == null) {
-    return DEFAULT_PERMISSION;
+    return DEFAULT_DENIED_PERMISSION;
   }
 
   if (permissions[modelName] != null) {
@@ -73,5 +94,24 @@ export const hasPermission = (
     return permissions[permissionModel];
   }
 
-  return DEFAULT_PERMISSION;
+  return DEFAULT_DENIED_PERMISSION;
+};
+
+export const hasFieldPermission = (
+  permissions: MetaPermission,
+  modelName: string,
+  fieldName: string,
+): Permission => {
+  if (permissions == null) {
+    return DEFAULT_APPROVED_PERMISSION;
+  }
+
+  const modelPerms = permissions[modelName] ?? [];
+  const fieldPerms = modelPerms.find(perm => perm.fieldName === fieldName);
+
+  if (fieldPerms != null) {
+    return fieldPerms.perms;
+  }
+
+  return DEFAULT_APPROVED_PERMISSION;
 };
