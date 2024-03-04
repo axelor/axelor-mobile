@@ -26,6 +26,7 @@ import {
 } from '@axelor/aos-mobile-ui';
 import {
   DateInput,
+  FocusScreen,
   useDispatch,
   useSelector,
   useTranslator,
@@ -60,7 +61,7 @@ const TourListScreen = ({navigation}) => {
   );
 
   return (
-    <Screen removeSpaceOnTop={true}>
+    <FocusScreen removeSpaceOnTop={true} fetcher={fetchTourAPI}>
       <HeaderContainer
         expandableFilter={false}
         fixedItems={
@@ -105,7 +106,7 @@ const TourListScreen = ({navigation}) => {
         isListEnd={isListEnd}
         translator={I18n.t}
       />
-    </Screen>
+    </FocusScreen>
   );
 };
 
