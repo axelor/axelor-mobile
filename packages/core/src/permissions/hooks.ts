@@ -19,7 +19,11 @@
 import {useCallback, useMemo} from 'react';
 import {useDispatch, useSelector} from '../redux/hooks';
 import {
+  ADMIN_CHECK_FIELD,
+  ADMIN_GROUP,
+  ADMIN_USER,
   ComponentPermission,
+  DEFAULT_APPROVED_PERMISSION,
   FieldPermission,
   MetaPermission,
   ModelsPermission,
@@ -29,6 +33,21 @@ import {
   fetchAllMetaPermissionRules,
   fetchAllPermissions,
 } from '../features/permissionSlice';
+
+export const useIsAdmin = (): boolean => {
+  const {user} = useSelector((state: any) => state.user);
+
+  return useMemo(() => {
+    if (user == null) {
+      return false;
+    }
+
+    return (
+      user[ADMIN_CHECK_FIELD] === ADMIN_USER ||
+      user.group?.[ADMIN_CHECK_FIELD] === ADMIN_GROUP
+    );
+  }, [user]);
+};
 
 export const usePermissionsFetcher = (): (() => void) => {
   const dispatch = useDispatch();
@@ -61,9 +80,12 @@ export const usePermitted = ({
   modelName: string;
 }): ComponentPermission => {
   const {permissions} = usePerms();
+  const _isAdmin = useIsAdmin();
 
   return useMemo(() => {
-    const modelPerms = hasPermission(permissions, modelName);
+    const modelPerms = _isAdmin
+      ? DEFAULT_APPROVED_PERMISSION
+      : hasPermission(permissions, modelName);
 
     return {
       hidden: !modelPerms?.canRead,
@@ -71,7 +93,7 @@ export const usePermitted = ({
       canCreate: modelPerms?.canCreate,
       canDelete: modelPerms?.canRemove,
     };
-  }, [modelName, permissions]);
+  }, [_isAdmin, modelName, permissions]);
 };
 
 export const useFieldPermitted = ({
@@ -83,17 +105,16 @@ export const useFieldPermitted = ({
 }): FieldPermission => {
   const {hidden, readonly} = usePermitted({modelName});
   const {permissions: metaPermissions} = useFieldPerms();
+  const _isAdmin = useIsAdmin();
 
   return useMemo(() => {
-    const fieldPerms = hasFieldPermission(
-      metaPermissions,
-      modelName,
-      fieldName,
-    );
+    const fieldPerms = _isAdmin
+      ? DEFAULT_APPROVED_PERMISSION
+      : hasFieldPermission(metaPermissions, modelName, fieldName);
 
     return {
       hidden: hidden || !fieldPerms?.canRead,
       readonly: readonly || !fieldPerms?.canWrite,
     };
-  }, [fieldName, hidden, metaPermissions, modelName, readonly]);
+  }, [_isAdmin, fieldName, hidden, metaPermissions, modelName, readonly]);
 };

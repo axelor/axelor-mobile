@@ -58,3 +58,7 @@ export const DEFAULT_APPROVED_PERMISSION: Permission = {
 };
 
 export const GLOBAL_MARKER = '.*';
+
+export const ADMIN_USER = 'admin';
+export const ADMIN_GROUP = 'admins';
+export const ADMIN_CHECK_FIELD = 'code';
