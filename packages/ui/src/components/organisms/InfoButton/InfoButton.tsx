@@ -79,7 +79,7 @@ const InfoButton = ({
       {showIndication && (
         <View>
           <Card style={[styles.indication, textIndicationStyle]}>
-            <Text>{indication}</Text>
+            <Text style={styles.text}>{indication}</Text>
           </Card>
         </View>
       )}
@@ -105,6 +105,9 @@ const getStyles = (Colors, size, position) =>
       elevation: 5,
       [position === 'left' ? 'right' : 'left']:
         Dimensions.get('window').width * 0.08,
+    },
+    text: {
+      color: Colors.text,
     },
   });
 
