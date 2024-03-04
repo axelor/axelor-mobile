@@ -26,12 +26,14 @@ interface CardIconButtonProps {
   iconName: string;
   iconColor: string;
   onPress: (any) => void;
+  onLongPress?: (any) => void;
 }
 
 const CardIconButton = ({
   style,
   iconName,
   iconColor,
+  onLongPress,
   onPress = () => {},
 }: CardIconButtonProps) => {
   const Colors = useThemeColor();
@@ -41,6 +43,7 @@ const CardIconButton = ({
   return (
     <TouchableOpacity
       style={[styles.container, style]}
+      onLongPress={onLongPress}
       onPress={onPress}
       activeOpacity={0.4}>
       <Icon size={20} name={iconName} color={iconColor} />
