@@ -16,7 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import {axiosApiProvider} from '../apiProviders';
+import {axiosApiProvider} from '../../../apiProviders';
 
 export async function fetchActionView({actionViewName}) {
   return axiosApiProvider.post({

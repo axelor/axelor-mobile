@@ -24,19 +24,21 @@ import {
   fetchChartDataset,
   fetchTypeChart,
   getChartParameter,
-} from '../../../api/chart-api';
+} from './api.helpers';
 import {transformData} from './AOPChart.helper';
+
+const DEFAULT_CHART_CONFIG = {type: '', dataset: [], title: ''};
 
 interface AOPChartProps {
   actionViewName: string;
 }
 
 const AOPChart = ({actionViewName}: AOPChartProps) => {
-  const [chart, setChart] = useState({type: '', dataset: [], title: ''});
+  const [chart, setChart] = useState(DEFAULT_CHART_CONFIG);
 
   useEffect(() => {
     const fetchChartData = async () => {
-      const result = {type: '', dataset: [], title: ''};
+      let result = {...DEFAULT_CHART_CONFIG};
 
       try {
         const actionViewResponse = await fetchActionView({
@@ -68,7 +70,7 @@ const AOPChart = ({actionViewName}: AOPChartProps) => {
         });
         result.dataset = datasetResponse?.data?.data?.dataset;
       } catch (error) {
-        setChart({type: '', dataset: [], title: ''});
+        result = {...DEFAULT_CHART_CONFIG};
       }
 
       setChart(result);
