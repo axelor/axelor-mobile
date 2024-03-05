@@ -16,7 +16,19 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-export {default as BottomBar} from './BottomBar/BottomBar';
-export * from './Dashboard';
-export {default as ObjectCard} from './ObjectCard/ObjectCard';
-export {default as TabsScreen} from './TabsScreen/TabsScreen';
+export const getVisibleItems = items => {
+  if (!Array.isArray(items) || items.length === 0) {
+    return [];
+  }
+
+  return items
+    .map((item, index) => ({
+      order: index * 10,
+      disabled: false,
+      hidden: false,
+      ...item,
+      key: `bottomBar_item${index}`,
+    }))
+    .filter(_item => !_item.hidden)
+    .sort((a, b) => a.order - b.order);
+};
