@@ -19,13 +19,15 @@
 import {axiosApiProvider, createStandardSearch} from '@axelor/aos-mobile-core';
 
 const createTourLineCriteria = (tourId, isValidated) => {
-  const criteria = [
-    {
+  const criteria = [];
+
+  if (tourId != null) {
+    criteria.push({
       fieldName: 'tour.id',
       operator: '=',
       value: tourId,
-    },
-  ];
+    });
+  }
 
   if (isValidated != null) {
     criteria.push({

@@ -54,9 +54,6 @@ const TourDetailsScreen = ({route}) => {
 
   const fetchTourLineAPI = useCallback(
     (page = 0) => {
-      if (tour?.id == null) {
-        return null;
-      }
       dispatch(
         searchTourLine({
           page: page,
@@ -67,6 +64,10 @@ const TourDetailsScreen = ({route}) => {
     },
     [dispatch, selectedStatus, tour],
   );
+
+  if (tour?.id !== tourId) {
+    return null;
+  }
 
   return (
     <Screen
