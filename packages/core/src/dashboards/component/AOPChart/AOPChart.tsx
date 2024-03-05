@@ -17,8 +17,8 @@
  */
 
 import React, {useEffect, useState} from 'react';
-import {Dimensions, View} from 'react-native';
-import {Chart, BarChart, LineChart, PieChart} from '@axelor/aos-mobile-ui';
+import {View} from 'react-native';
+import {ChartRender} from '@axelor/aos-mobile-ui';
 import {
   fetchActionView,
   fetchChartDataset,
@@ -79,61 +79,19 @@ const AOPChart = ({actionViewName}: AOPChartProps) => {
     fetchChartData();
   }, [actionViewName]);
 
-  const BarChartRender = (datasets, title) => {
-    return (
-      <BarChart
-        datasets={datasets}
-        widthGraph={Dimensions.get('window').width}
-        title={title}
-      />
-    );
-  };
-
-  const LineChartRender = (datasets, title) => {
-    return (
-      <LineChart
-        datasets={datasets}
-        widthGraph={Dimensions.get('window').width}
-        title={title}
-      />
-    );
-  };
-
-  const PieChartRender = (datasets, type, title) => {
-    return (
-      <PieChart
-        datasets={datasets[0]}
-        widthGraph={Dimensions.get('window').width}
-        donut={type === Chart.chartType.donut}
-        title={title}
-      />
-    );
-  };
-
-  const renderChar = (type, dataset, title) => {
-    switch (type) {
-      case Chart.chartType.bar:
-        return BarChartRender(dataset, title);
-
-      case Chart.chartType.pie:
-      case Chart.chartType.donut:
-        return PieChartRender(dataset, type, title);
-
-      case Chart.chartType.line:
-        return LineChartRender(dataset, title);
-
-      default:
-        return null;
-    }
-  };
-
   if (chart.dataset?.length <= 0) {
     return null;
   }
 
   return (
     <View>
-      {renderChar(chart.type, transformData(chart.dataset), chart.title)}
+      <ChartRender
+        graph={{
+          dataList: transformData(chart.dataset),
+          title: chart.title,
+          type: chart.type,
+        }}
+      />
     </View>
   );
 };
