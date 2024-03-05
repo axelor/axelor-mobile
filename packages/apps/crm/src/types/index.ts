@@ -21,4 +21,4 @@ export {default as EventType} from './event-type';
 export {default as Lead} from './lead';
 export {default as Opportunity} from './opportunity';
 export {default as Prospect} from './prospect';
-export {default as TourLineType} from './tourLine';
+export {default as TourLine} from './tourLine';

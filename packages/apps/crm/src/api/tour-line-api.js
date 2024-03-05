@@ -18,7 +18,7 @@
 
 import {axiosApiProvider, createStandardSearch} from '@axelor/aos-mobile-core';
 
-const createTourLineCriteria = (tourId, status) => {
+const createTourLineCriteria = (tourId, isValidated) => {
   const criteria = [
     {
       fieldName: 'tour.id',
@@ -27,11 +27,11 @@ const createTourLineCriteria = (tourId, status) => {
     },
   ];
 
-  if (status != null) {
+  if (isValidated != null) {
     criteria.push({
       fieldName: 'isValidated',
       operator: '=',
-      value: status,
+      value: isValidated,
     });
   }
 
@@ -42,11 +42,11 @@ export async function searchTourLine({
   page = 0,
   tourId,
   numberElementsByPage = 10,
-  status = null,
+  isValidated = null,
 }) {
   return createStandardSearch({
     model: 'com.axelor.apps.crm.db.TourLine',
-    criteria: createTourLineCriteria(tourId, status),
+    criteria: createTourLineCriteria(tourId, isValidated),
     fieldKey: 'crm_tourLine',
     sortKey: 'crm_tourLine',
     page: page,

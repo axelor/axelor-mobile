@@ -32,7 +32,7 @@ import {
 } from '../../components';
 import {fetchTourById} from '../../features/tourSlice';
 import {searchTourLine} from '../../features/tourLineSlice';
-import {TourLineType} from '../../types';
+import {TourLine} from '../../types';
 
 const TourDetailsScreen = ({route}) => {
   const {tourId} = route.params;
@@ -61,12 +61,7 @@ const TourDetailsScreen = ({route}) => {
         searchTourLine({
           page: page,
           tourId: tour?.id,
-          status:
-            selectedStatus[0]?.key === TourLineType.status.Planned
-              ? false
-              : selectedStatus[0]?.key === TourLineType.status.Validated
-              ? true
-              : null,
+          isValidated: selectedStatus[0]?.key,
         }),
       );
     },
@@ -88,12 +83,12 @@ const TourDetailsScreen = ({route}) => {
               {
                 title: I18n.t('Crm_Status_Planned'),
                 color: Colors.secondaryColor,
-                key: TourLineType.status.Planned,
+                key: TourLine.status.Planned,
               },
               {
                 title: I18n.t('Crm_Status_Validated'),
                 color: Colors.successColor,
-                key: TourLineType.status.Validated,
+                key: TourLine.status.Validated,
               },
             ]}
           />

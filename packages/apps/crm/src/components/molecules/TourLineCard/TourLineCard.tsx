@@ -31,7 +31,7 @@ import {
   clipboardProvider,
 } from '@axelor/aos-mobile-core';
 import {StyleSheet, View} from 'react-native';
-import {TourLineType} from '../../../types';
+import {TourLine} from '../../../types';
 import {validateTourLine} from '../../../features/tourLineSlice';
 
 interface TourLineCardProps {
@@ -57,9 +57,8 @@ const TourLineCard = ({
   const navigation = useNavigation();
 
   const borderStyle = useMemo(() => {
-    return getStyles(
-      TourLineType.getBorderColor(isValidated, Colors)?.background,
-    )?.border;
+    return getStyles(TourLine.getBorderColor(isValidated, Colors)?.background)
+      ?.border;
   }, [Colors, isValidated]);
 
   return (

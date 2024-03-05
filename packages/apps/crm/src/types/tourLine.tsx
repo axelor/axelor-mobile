@@ -20,22 +20,19 @@ import {Color, ThemeColors} from '@axelor/aos-mobile-ui';
 
 class TourLineType {
   static status = {
-    Planned: 1,
-    Validated: 2,
+    Planned: false,
+    Validated: true,
   };
 
-  static getBorderColor = (
-    isValidated: boolean,
-    Colors: ThemeColors,
-  ): Color => {
-    switch (isValidated) {
-      case true:
+  static getBorderColor = (status: boolean, Colors: ThemeColors): Color => {
+    switch (status) {
+      case this.status.Validated:
         return Colors.successColor;
-      case false:
+      case this.status.Planned:
         return Colors.secondaryColor;
       default:
         console.warn(
-          `isValidated provided with value ${isValidated} is not supported by tour Line`,
+          `Status provided with value ${status} is not supported by tour Line`,
         );
         return null;
     }
