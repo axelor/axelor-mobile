@@ -26,7 +26,7 @@ interface TourCardProps {
   style?: any;
   onPress?: () => void;
   salesperson?: string;
-  tourId: number;
+  tour: any;
   date: string;
   name: string;
 }
@@ -36,7 +36,7 @@ const TourCard = ({
   onPress,
   date,
   salesperson,
-  tourId,
+  tour,
   name,
 }: TourCardProps) => {
   const I18n = useTranslator();
@@ -50,7 +50,7 @@ const TourCard = ({
   useEffect(() => {
     isMounted.current = true;
 
-    searchTourLineApi({tourId: tourId, numberElementsByPage: null})
+    searchTourLineApi({tourId: tour?.id, numberElementsByPage: null})
       .then(response => {
         if (isMounted.current) {
           if (Array.isArray(response?.data?.data)) {
@@ -76,7 +76,7 @@ const TourCard = ({
     return () => {
       isMounted.current = false;
     };
-  }, [tourId]);
+  }, [tour]);
 
   return (
     <TouchableOpacity onPress={onPress} activeOpacity={0.9}>

@@ -18,10 +18,14 @@
 
 import React, {useCallback, useState} from 'react';
 import {StyleSheet, View} from 'react-native';
-import {HeaderContainer, ScrollList, ToggleButton} from '@axelor/aos-mobile-ui';
+import {
+  HeaderContainer,
+  ScrollList,
+  ToggleButton,
+  Screen,
+} from '@axelor/aos-mobile-ui';
 import {
   DateInput,
-  FocusScreen,
   useDispatch,
   useSelector,
   useTranslator,
@@ -56,7 +60,7 @@ const TourListScreen = ({navigation}) => {
   );
 
   return (
-    <FocusScreen removeSpaceOnTop={true} fetcher={fetchTourAPI}>
+    <Screen removeSpaceOnTop={true}>
       <HeaderContainer
         expandableFilter={false}
         fixedItems={
@@ -87,7 +91,7 @@ const TourListScreen = ({navigation}) => {
           <TourCard
             name={item.name}
             date={item.date}
-            tourId={item.id}
+            tour={item}
             salesperson={item.salespersonUser?.fullName}
             onPress={() =>
               navigation.navigate('TourDetailsScreen', {
@@ -101,7 +105,7 @@ const TourListScreen = ({navigation}) => {
         isListEnd={isListEnd}
         translator={I18n.t}
       />
-    </FocusScreen>
+    </Screen>
   );
 };
 

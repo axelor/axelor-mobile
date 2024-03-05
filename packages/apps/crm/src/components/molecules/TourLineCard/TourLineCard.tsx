@@ -70,7 +70,7 @@ const TourLineCard = ({
           style={[styles.objectCard, borderStyle]}
           upperTexts={{
             items: [
-              {displayText: name, isTitle: true},
+              {displayText: name, isTitle: true, numberOfLines: 1},
               {
                 indicatorText: adress,
                 hideIfNull: true,
