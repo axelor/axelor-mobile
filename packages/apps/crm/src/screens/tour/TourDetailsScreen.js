@@ -30,7 +30,7 @@ import {
   TourDetailsHeader,
   TourLineCard,
 } from '../../components';
-import {fetchControlTourById} from '../../features/tourSlice';
+import {fetchTourById} from '../../features/tourSlice';
 import {searchTourLine} from '../../features/tourLineSlice';
 import {TourLineType} from '../../types';
 
@@ -49,7 +49,7 @@ const TourDetailsScreen = ({route}) => {
   const [selectedStatus, setSelectedStatus] = useState([]);
 
   useEffect(() => {
-    dispatch(fetchControlTourById({tourId: tourId}));
+    dispatch(fetchTourById({tourId: tourId}));
   }, [dispatch, tourId]);
 
   const fetchTourLineAPI = useCallback(
@@ -86,7 +86,7 @@ const TourDetailsScreen = ({route}) => {
             onChangeValue={chiplist => setSelectedStatus(chiplist)}
             selectionItems={[
               {
-                title: I18n.t('Crm_Event_Status_Planned'),
+                title: I18n.t('Crm_Status_Planned'),
                 color: Colors.secondaryColor,
                 key: TourLineType.status.Planned,
               },

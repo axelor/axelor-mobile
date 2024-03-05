@@ -24,7 +24,7 @@ import {
 } from '@axelor/aos-mobile-core';
 import {
   searchTour as _searchTour,
-  fetchControlTourById as _fetchControlTourById,
+  fetchTourById as _fetchTourById,
   validateTour as _validateTour,
 } from '../api/tour-api';
 
@@ -41,11 +41,11 @@ export const searchTour = createAsyncThunk(
   },
 );
 
-export const fetchControlTourById = createAsyncThunk(
-  'tour/fetchControlTourById',
+export const fetchTourById = createAsyncThunk(
+  'tour/fetchTourById',
   async function (data, {getState}) {
     return handlerApiCall({
-      fetchFunction: _fetchControlTourById,
+      fetchFunction: _fetchTourById,
       data,
       action: 'Crm_SliceAction_FetchTourById',
       getState,
@@ -64,7 +64,7 @@ export const validateTour = createAsyncThunk(
       getState,
       responseOptions: {isArrayResponse: false},
     }).then(() => {
-      dispatch(fetchControlTourById({tourId: data?.tourId}));
+      dispatch(fetchTourById({tourId: data?.tourId}));
     });
   },
 );
@@ -74,6 +74,7 @@ const initialState = {
   moreLoading: false,
   isListEnd: false,
   tourList: [],
+
   loadingTour: true,
   tour: {},
 };
@@ -88,10 +89,10 @@ const tourSlice = createSlice({
       isListEnd: 'isListEnd',
       list: 'tourList',
     });
-    builder.addCase(fetchControlTourById.pending, (state, action) => {
+    builder.addCase(fetchTourById.pending, (state, action) => {
       state.loadingTour = true;
     });
-    builder.addCase(fetchControlTourById.fulfilled, (state, action) => {
+    builder.addCase(fetchTourById.fulfilled, (state, action) => {
       state.loadingTour = false;
       state.tour = action.payload;
       state.tourList = updateAgendaItems(state.tourList, [action.payload]);

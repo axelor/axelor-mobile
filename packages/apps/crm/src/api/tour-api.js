@@ -61,7 +61,7 @@ export async function searchTour({
   });
 }
 
-export async function fetchControlTourById({tourId}) {
+export async function fetchTourById({tourId}) {
   return createStandardFetch({
     model: 'com.axelor.apps.crm.db.Tour',
     id: tourId,

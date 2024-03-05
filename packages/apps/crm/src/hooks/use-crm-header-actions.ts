@@ -26,7 +26,7 @@ import {
 } from '@axelor/aos-mobile-core';
 import {useEffect} from 'react';
 import {useThemeColor} from '@axelor/aos-mobile-ui';
-import {fetchControlTourById} from '../features/tourSlice';
+import {fetchTourById} from '../features/tourSlice';
 
 const useCatalogListActions = () => {
   const Colors = useThemeColor();
@@ -336,7 +336,7 @@ const useTourDetailsActions = () => {
           iconColor: Colors.primaryColor.background,
           onPress: () => {
             dispatch(
-              (fetchControlTourById as any)({
+              (fetchTourById as any)({
                 tourId: tour?.id,
               }),
             );

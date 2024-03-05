@@ -75,6 +75,7 @@ export {
   updateProspectScoring,
 } from './prospect-api';
 export {
+  fetchTourById as fetchTourByIdApi,
   searchTour as searchTourApi,
   validateTour as validateTourApi,
 } from './tour-api';

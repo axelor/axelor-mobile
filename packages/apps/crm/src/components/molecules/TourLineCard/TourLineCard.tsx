@@ -166,6 +166,7 @@ const styles = StyleSheet.create({
   },
   cardIconButton: {
     flex: 1,
+    margin: 0,
   },
 });
 
