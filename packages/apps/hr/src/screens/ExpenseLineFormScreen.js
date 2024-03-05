@@ -106,20 +106,24 @@ const ExpenseLineFormScreen = ({route, navigation}) => {
       const dataToSend = {
         id: expenseLine?.id,
         version: expenseLine?.version,
-        project: _expenseLine.project,
+        expenseId:
+          _expenseLine.expense?.id === idExpense
+            ? null
+            : _expenseLine.expense?.id,
+        projectId: _expenseLine.project?.id,
         toInvoice: _expenseLine.toInvoice,
-        expenseProduct: _expenseLine.expenseProduct,
+        expenseProductId: _expenseLine.expenseProduct?.id,
         expenseDate: _expenseLine.expenseDate,
         employeeId: user?.employee?.id,
         totalAmount: _expenseLine.totalAmount,
         totalTax: _expenseLine.totalTax,
-        currency: _expenseLine.currency,
+        currencyId: _expenseLine.currency?.id,
         comments: _expenseLine.comments,
-        justificationMetaFile:
+        justificationMetaFileId:
           mode === ExpenseLine.modes.general
-            ? _expenseLine.justificationMetaFile
+            ? _expenseLine.justificationMetaFile?.id
             : null,
-        kilometricAllowParam: _expenseLine.kilometricAllowParam,
+        kilometricAllowParamId: _expenseLine.kilometricAllowParam?.id,
         kilometricTypeSelect: _expenseLine.kilometricTypeSelect?.key,
         distance: _expenseLine.distance,
         fromCity: _expenseLine.fromCity,
