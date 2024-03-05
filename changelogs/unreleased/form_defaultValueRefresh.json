@@ -1,0 +1,5 @@
+{
+  "title": "FormView: refresh issue when no default value is given",
+  "type": "fix",
+  "packages": "core"
+}

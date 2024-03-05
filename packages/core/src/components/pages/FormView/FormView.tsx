@@ -59,7 +59,7 @@ interface FormProps {
   actions: Action[];
 }
 
-const FormView = ({defaultValue = {}, formKey, actions}: FormProps) => {
+const FormView = ({defaultValue, formKey, actions}: FormProps) => {
   const I18n = useTranslator();
   const dispatch = useDispatch();
 
@@ -68,7 +68,7 @@ const FormView = ({defaultValue = {}, formKey, actions}: FormProps) => {
   const storeState = useSelector((state: any) => state);
   const {record} = useSelector((state: any) => state.form);
 
-  const [object, setObject] = useState(defaultValue);
+  const [object, setObject] = useState(defaultValue ?? {});
   const [errors, setErrors] = useState<any[]>();
 
   const formContent: (DisplayPanel | DisplayField)[] = useMemo(
@@ -236,7 +236,7 @@ const FormView = ({defaultValue = {}, formKey, actions}: FormProps) => {
   };
 
   const handleReset = () => {
-    setObject(defaultValue);
+    setObject(defaultValue ?? {});
   };
 
   const renderItem = (item: DisplayPanel | DisplayField) => {
