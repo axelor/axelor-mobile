@@ -16,8 +16,8 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import React, {useMemo} from 'react';
-import {Dimensions, StyleSheet} from 'react-native';
+import React, {useMemo, useState} from 'react';
+import {Dimensions, StyleSheet, TouchableOpacity} from 'react-native';
 import {Icon} from '../../atoms';
 import {Color} from '../../../theme/themes';
 import CardIndicator from '.././../molecules/CardIndicator/CardIndicator';
@@ -45,18 +45,23 @@ const InfoBubble = ({
 }: InfoBubbleProps) => {
   const styles = useMemo(() => getStyles(badgeColor, size), [badgeColor, size]);
 
+  const [isVisible, setIsVisible] = useState(false);
+
   return (
     <CardIndicator
       style={style}
       indication={indication}
       position={position}
+      isVisible={isVisible}
       textIndicationStyle={textIndicationStyle}>
-      <Icon
-        name={iconName}
-        style={coloredBubble ? styles.icon : null}
-        color={coloredBubble ? badgeColor.foreground : badgeColor.background}
-        size={coloredBubble ? size * 0.5 : size * 0.8}
-      />
+      <TouchableOpacity onPress={() => setIsVisible(current => !current)}>
+        <Icon
+          name={iconName}
+          style={coloredBubble ? styles.icon : null}
+          color={coloredBubble ? badgeColor.foreground : badgeColor.background}
+          size={coloredBubble ? size * 0.5 : size * 0.8}
+        />
+      </TouchableOpacity>
     </CardIndicator>
   );
 };

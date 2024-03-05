@@ -17,7 +17,7 @@
  */
 
 import React, {useMemo, useState, useEffect, useRef} from 'react';
-import {Dimensions, StyleSheet, TouchableOpacity, View} from 'react-native';
+import {Dimensions, StyleSheet, View} from 'react-native';
 import {Card, Text} from '../../atoms';
 import {
   OUTSIDE_INDICATOR,
@@ -32,6 +32,7 @@ interface CardIndicatorProps {
   indication?: string;
   position?: 'left' | 'right';
   children: any;
+  isVisible: boolean;
 }
 
 const CardIndicator = ({
@@ -40,32 +41,42 @@ const CardIndicator = ({
   textIndicationStyle,
   position = 'right',
   children,
+  isVisible,
 }: CardIndicatorProps) => {
   const Colors = useThemeColor();
   const [isOpen, setIsOpen] = useState(false);
   const wrapperRef = useRef(null);
   const clickOutside = useClickOutside({wrapperRef});
 
+  const [childSize, setChildSize] = useState({width: 0, height: 0});
+
   const styles = useMemo(
-    () => getStyles(Colors, isOpen, position),
-    [Colors, isOpen, position],
+    () => getStyles(Colors, isOpen, position, childSize),
+    [Colors, childSize, isOpen, position],
   );
 
   useEffect(() => {
+    setIsOpen(isVisible);
+  }, [isVisible]);
+
+  useEffect(() => {
     if (clickOutside === OUTSIDE_INDICATOR && isOpen) {
+      console.log('ici');
       setIsOpen(false);
     }
   }, [clickOutside, isOpen]);
 
-  const onPress = () => {
-    setIsOpen(current => !current);
-  };
+  useEffect(() => {
+    if (wrapperRef.current) {
+      wrapperRef.current.measure((x, y, width, height) => {
+        setChildSize({width, height});
+      });
+    }
+  }, [isVisible, children]);
 
   return (
     <View ref={wrapperRef} style={[styles.container, style]}>
-      <TouchableOpacity onPress={onPress} activeOpacity={0.95}>
-        {children}
-      </TouchableOpacity>
+      {children}
       {!checkNullString(indication) && isOpen ? (
         <Card style={[styles.indicationCard, textIndicationStyle]}>
           <Text>{indication}</Text>
@@ -75,7 +86,7 @@ const CardIndicator = ({
   );
 };
 
-const getStyles = (Colors, isOpen, position) =>
+const getStyles = (Colors, isOpen, position, childSize) =>
   StyleSheet.create({
     container: {
       alignItems: 'center',
@@ -90,8 +101,8 @@ const getStyles = (Colors, isOpen, position) =>
       paddingRight: 10,
       zIndex: 99,
       backgroundColor: Colors.backgroundColor,
-      [position === 'left' ? 'right' : 'left']:
-        Dimensions.get('window').width * 0.08,
+      //top: 0,
+      [position === 'left' ? 'right' : 'left']: childSize.width,
     },
   });
 

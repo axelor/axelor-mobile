@@ -16,15 +16,9 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import React, {useState, useRef, useEffect, useMemo} from 'react';
-import {StyleSheet, View, Text, Dimensions} from 'react-native';
+import React, {useState} from 'react';
 import CardIconButton from '../../molecules/CardIconButton/CardIconButton';
-import {useThemeColor} from '../../../theme/ThemeContext';
-import {
-  OUTSIDE_INDICATOR,
-  useClickOutside,
-} from '../../../hooks/use-click-outside';
-import {Card} from '../../atoms';
+import CardIndicator from '.././../molecules/CardIndicator/CardIndicator';
 
 interface InfoButtonProps {
   style?: any;
@@ -39,76 +33,33 @@ interface InfoButtonProps {
 
 const InfoButton = ({
   iconName,
-  onPress,
+  onPress = () => {},
   iconColor,
   indication,
   style,
   textIndicationStyle,
-  size = 50,
   position = 'left',
 }: InfoButtonProps) => {
-  const Colors = useThemeColor();
-  const wrapperRef = useRef(null);
-  const clickOutside = useClickOutside({wrapperRef});
-
-  const [showIndication, setShowIndication] = useState(false);
-
-  useEffect(() => {
-    if (clickOutside === OUTSIDE_INDICATOR && showIndication) {
-      setShowIndication(false);
-    }
-  }, [clickOutside, showIndication]);
-
-  const styles = useMemo(
-    () => getStyles(Colors, size, position),
-    [Colors, size, position],
-  );
+  const [isVisible, setIsVisible] = useState(false);
 
   return (
-    <View ref={wrapperRef} style={styles.container}>
+    <CardIndicator
+      indication={indication}
+      position={position}
+      isVisible={isVisible}
+      style={style}
+      textIndicationStyle={textIndicationStyle}>
       <CardIconButton
         iconName={iconName}
         iconColor={iconColor}
         onPress={() => {
           onPress();
-          setShowIndication(false);
+          setIsVisible(false);
         }}
-        onLongPress={() => setShowIndication(true)}
-        style={[{width: size, height: size}, style]}
+        onLongPress={() => setIsVisible(current => !current)}
       />
-      {showIndication && (
-        <View>
-          <Card style={[styles.indication, textIndicationStyle]}>
-            <Text style={styles.text}>{indication}</Text>
-          </Card>
-        </View>
-      )}
-    </View>
+    </CardIndicator>
   );
 };
-
-const getStyles = (Colors, size, position) =>
-  StyleSheet.create({
-    container: {
-      position: 'relative',
-      alignItems: 'center',
-      justifyContent: 'center',
-    },
-    indication: {
-      position: 'absolute',
-      paddingLeft: 10,
-      paddingVertical: 10,
-      paddingRight: 10,
-      zIndex: 99,
-      backgroundColor: Colors.backgroundColor,
-      bottom: size,
-      elevation: 5,
-      [position === 'left' ? 'right' : 'left']:
-        Dimensions.get('window').width * 0.08,
-    },
-    text: {
-      color: Colors.text,
-    },
-  });
 
 export default InfoButton;

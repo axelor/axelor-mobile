@@ -25,7 +25,7 @@ interface CardIconButtonProps {
   style?: any;
   iconName: string;
   iconColor: string;
-  onPress: (any) => void;
+  onPress?: (any) => void;
   onLongPress?: (any) => void;
 }
 
@@ -40,11 +40,16 @@ const CardIconButton = ({
 
   const styles = useMemo(() => getStyles(Colors), [Colors]);
 
+  const onPressTest = e => {
+    console.log('ici');
+    onPress(e);
+  };
+
   return (
     <TouchableOpacity
       style={[styles.container, style]}
       onLongPress={onLongPress}
-      onPress={onPress}
+      onPress={onPressTest}
       activeOpacity={0.4}>
       <Icon size={20} name={iconName} color={iconColor} />
     </TouchableOpacity>
