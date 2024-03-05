@@ -16,7 +16,19 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-export {default as BottomBar} from './BottomBar/BottomBar';
-export * from './Dashboard';
-export {default as ObjectCard} from './ObjectCard/ObjectCard';
-export {default as TabsScreen} from './TabsScreen/TabsScreen';
+import {Color} from '../../../theme';
+
+export interface BottomBarItem {
+  iconName: string;
+  color?: Color;
+  title?: string;
+  order?: number;
+  hidden?: boolean;
+  disabled?: boolean;
+  indicator?: number;
+  viewComponent: React.ReactNode;
+}
+
+export interface DisplayItem extends BottomBarItem {
+  key: string;
+}
