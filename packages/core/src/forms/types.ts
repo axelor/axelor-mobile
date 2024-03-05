@@ -111,7 +111,7 @@ export interface JSONObject<Type> {
 
 export interface Form {
   readonlyIf?: (values?: States) => boolean;
-  modelName?: string;
+  modelName: string;
   panels?: JSONObject<Panel>;
   /** Fields attribut is a JSON object contening all fields of object.
    * When defining a field you need to define as key in the JSON object

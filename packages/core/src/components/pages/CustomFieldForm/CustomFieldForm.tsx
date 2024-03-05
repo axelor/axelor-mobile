@@ -85,10 +85,11 @@ const CustomFieldForm = ({
         readonlyIf: () => readonly,
         fields,
         panels,
+        modelName: model,
       },
       {replaceOld: true},
     );
-  }, [fields, panels, readonly]);
+  }, [fields, model, panels, readonly]);
 
   const attrsValues = useMemo(
     () => (object?.id !== modelId ? null : getAttrsValue(object)),
