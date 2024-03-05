@@ -82,11 +82,19 @@ const PieChart = ({
   }, [widthGraph]);
 
   const styles = useMemo(() => {
-    return getStyles(innerRadius);
-  }, [innerRadius]);
+    return getStyles(innerRadius, donut);
+  }, [innerRadius, donut]);
 
   return (
     <View style={[styles.container, {width: _width}, styleContainer]}>
+      {!donut && !checkNullString(selectedItem.label) && (
+        <View style={styles.infoView}>
+          <Text numberOfLines={1} writingType="details">
+            {selectedItem?.label}
+          </Text>
+          <Text numberOfLines={1}>{selectedItem?.value}</Text>
+        </View>
+      )}
       <RNPieChart
         data={dataSet}
         donut={donut}
@@ -138,8 +146,15 @@ const PieChart = ({
   );
 };
 
-const getStyles = (innerRadius: number) =>
+const getStyles = (innerRadius: number, donut: boolean) =>
   StyleSheet.create({
+    infoView: {
+      position: 'absolute',
+      top: 0,
+      alignItems: 'center',
+      width: '100%',
+      zIndex: 1,
+    },
     centeredView: {
       justifyContent: 'center',
       alignItems: 'center',
@@ -157,6 +172,7 @@ const getStyles = (innerRadius: number) =>
           ? Dimensions.get('window').width / 4 - MARGIN * 2
           : Dimensions.get('window').width / 2 - MARGIN * 2,
       margin: MARGIN,
+      paddingTop: donut ? 0 : 35,
     },
     title: {
       alignSelf: 'center',
