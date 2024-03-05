@@ -1,0 +1,5 @@
+{
+  "title": "NumberBubble: manage font size depending on bubble size",
+  "type": "feat",
+  "packages": "ui"
+}
