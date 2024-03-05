@@ -138,7 +138,7 @@ export const updateExpenseLine = createAsyncThunk(
     return handlerApiCall({
       fetchFunction: _updateExpenseLine,
       data,
-      action: 'Hr_SliceAction_SearchKilometricAllowParam',
+      action: 'Hr_SliceAction_UpdateExpenseLine',
       getState,
       responseOptions: {isArrayResponse: false},
     }).then(() => {

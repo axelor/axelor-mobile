@@ -75,6 +75,8 @@ const ExpenseLineTypeDisplay = ({
       if (isKilometric) {
         onChange(ExpenseLine.modes.kilometric);
       }
+    } else {
+      onChange(ExpenseLine.modes.general);
     }
   }, [displayToggle, hasExpenseLines, isGeneral, isKilometric, onChange]);
 
