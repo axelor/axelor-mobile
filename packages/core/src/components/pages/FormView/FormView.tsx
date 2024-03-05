@@ -63,7 +63,7 @@ interface FormProps {
 }
 
 const FormView = ({
-  defaultValue = {},
+  defaultValue,
   formKey,
   actions: _actions,
   readonlyButton = false,
@@ -77,7 +77,7 @@ const FormView = ({
   const storeState = useSelector((state: any) => state);
   const {record} = useSelector((state: any) => state.form);
 
-  const [object, setObject] = useState(defaultValue);
+  const [object, setObject] = useState(defaultValue ?? {});
   const [errors, setErrors] = useState<any[]>();
   const [isReadonly, setIsReadonly] = useState(readonlyButton);
 
@@ -251,7 +251,7 @@ const FormView = ({
   };
 
   const handleReset = useCallback(() => {
-    setObject(defaultValue);
+    setObject(defaultValue ?? {});
   }, [defaultValue]);
 
   const actions: Action[] = useMemo(() => {
