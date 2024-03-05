@@ -25,6 +25,7 @@ import {
   fetchTypeChart,
   getChartParameter,
 } from '../../../api/chart-api';
+import {transformData} from './AOPChart.helper';
 
 interface AOPChartProps {
   actionViewName: string;
@@ -124,33 +125,13 @@ const AOPChart = ({actionViewName}: AOPChartProps) => {
     }
   };
 
-  const transformData = data => {
-    const sample = data[0];
-    let valueKey = '';
-    let labelKey = '';
-
-    Object.keys(sample).forEach(key => {
-      const value = sample[key];
-      if (!isNaN(parseFloat(value))) {
-        valueKey = key;
-      } else {
-        labelKey = key;
-      }
-    });
-
-    return data.map(item => ({
-      label: item[labelKey],
-      value: parseFloat(item[valueKey]) || 0,
-    }));
-  };
-
   if (chart.dataset?.length <= 0) {
     return null;
   }
 
   return (
     <View>
-      {renderChar(chart.type, [transformData(chart.dataset)], chart.title)}
+      {renderChar(chart.type, transformData(chart.dataset), chart.title)}
     </View>
   );
 };
