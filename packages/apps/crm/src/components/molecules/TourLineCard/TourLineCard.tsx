@@ -106,7 +106,7 @@ const TourLineCard = ({
         )}
         {eventId != null && (
           <CardIconButton
-            style={styles.cardIconButton}
+            style={styles.cardIconButtonMargin}
             iconName="calendar-event"
             iconColor={Colors.primaryColor.foreground}
             onPress={() =>
@@ -166,6 +166,11 @@ const styles = StyleSheet.create({
   cardIconButton: {
     flex: 1,
     margin: 0,
+  },
+  cardIconButtonMargin: {
+    flex: 1,
+    marginTop: 2,
+    marginBottom: 0,
   },
 });
 
