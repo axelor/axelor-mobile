@@ -1,0 +1,5 @@
+{
+  "title": "BottomBar: add new component to manage tab navigation",
+  "type": "feat",
+  "packages": "ui"
+}
