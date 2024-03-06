@@ -16,7 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import React from 'react';
+import React, {ReactElement} from 'react';
 import {Dimensions, StyleSheet, View} from 'react-native';
 import {ScrollView} from '../../atoms';
 import Chart from './chart-type';
@@ -30,6 +30,8 @@ interface Graph {
   type: keyof typeof Chart.chartType;
   dataList: Data[][];
   title?: string;
+  metaActionName?: string;
+  customChart?: ReactElement | JSX.Element;
 }
 
 interface Line {
@@ -52,11 +54,14 @@ const getGraphWidth = (nbGraphInLine: number) => {
 };
 
 const Dashboard = ({style, lineList}: DashboardProps) => {
+  console.log('datAList', lineList);
   return (
     <ScrollView style={[styles.container, style]}>
       {lineList?.map((line, indexLine) => {
+        console.log('line', line);
         const validGraphs = line.graphList.filter(
-          graph => graph.dataList?.[0]?.length > 0,
+          graph =>
+            graph.dataList?.[0]?.length > 0 || graph.customChart !== null,
         );
         const nbGraphInLine = Math.min(validGraphs.length, MAX_GRAPH_PER_LINE);
 
@@ -65,9 +70,19 @@ const Dashboard = ({style, lineList}: DashboardProps) => {
         return (
           <View style={styles.lineContainer} key={indexLine}>
             {limitedGraphList?.map((graph, indexGraph) => {
-              if (graph.dataList?.[0]?.length > 0) {
+              if (
+                graph.dataList?.[0]?.length > 0 ||
+                graph.customChart !== null
+              ) {
                 const {dataList, title, type} = graph;
                 const widthGraph = getGraphWidth(nbGraphInLine);
+
+                if (graph.customChart !== null) {
+                  return React.cloneElement(graph.customChart, {
+                    key: indexGraph,
+                    widthGraph: widthGraph,
+                  });
+                }
                 return (
                   <ChartRender
                     key={indexGraph}

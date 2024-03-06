@@ -23,6 +23,7 @@ import {useTranslator} from '../../i18n';
 import {createDashboardActionID} from '../display.helpers';
 import {ActivityIndicator} from 'react-native';
 import {fetchDashboard} from '../api.helpers';
+import {AOPChart} from '../component';
 
 export const DashboardScreen = ({dashboardId}) => {
   const I18n = useTranslator();
@@ -74,6 +75,11 @@ export const DashboardScreen = ({dashboardId}) => {
 
     return dashboard?.dashboardLineList.map(elt => ({
       graphList: elt.chartList.map(ch => ({
+        metaActionName: ch.metaActionName,
+        customChart:
+          ch.metaActionName == null ? null : (
+            <AOPChart actionViewName={ch.metaActionName} />
+          ),
         type: ch.chartType,
         dataList: [ch.valueList],
         title: ch?.chartName,
