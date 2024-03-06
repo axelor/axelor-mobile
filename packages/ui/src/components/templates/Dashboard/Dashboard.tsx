@@ -30,7 +30,6 @@ interface Graph {
   type: keyof typeof Chart.chartType;
   dataList: Data[][];
   title?: string;
-  metaActionName?: string;
   customChart?: ReactElement | JSX.Element;
 }
 

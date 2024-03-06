@@ -75,7 +75,6 @@ export const DashboardScreen = ({dashboardId}) => {
 
     return dashboard?.dashboardLineList.map(elt => ({
       graphList: elt.chartList.map(ch => ({
-        metaActionName: ch.metaActionName,
         customChart:
           ch.metaActionName == null ? null : (
             <AOPChart actionViewName={ch.metaActionName} />
