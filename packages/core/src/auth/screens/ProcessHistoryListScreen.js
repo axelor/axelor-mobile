@@ -15,6 +15,7 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
+
 import React, {useCallback, useEffect, useState} from 'react';
 import {StyleSheet} from 'react-native';
 import {
@@ -32,13 +33,14 @@ import {useTranslator} from '../../i18n';
 import {ProcessHistory} from '../types';
 import {isToday} from './process-history-list-screen-helper';
 
+// TODO: add refresh method to the list
 const ProcessHistoryListScreen = () => {
   const I18n = useTranslator();
   const Colors = useThemeColor();
 
-  const {allProcessList} = useLoaderListener();
+  const {processList} = useLoaderListener();
 
-  const [filteredList, setFilteredList] = useState(allProcessList);
+  const [filteredList, setFilteredList] = useState(processList);
   const [today, setToday] = useState(true);
   const [selectedStatus, setSelectedStatus] = useState([]);
 
@@ -48,7 +50,11 @@ const ProcessHistoryListScreen = () => {
         return [];
       } else {
         if (today) {
-          return list?.filter(item => isToday(item?.startedDate));
+          return list?.filter(
+            item =>
+              isToday(item?.startedDate) ||
+              item?.status === ProcessStatus.PENDING,
+          );
         } else {
           return list;
         }
@@ -65,8 +71,8 @@ const ProcessHistoryListScreen = () => {
   );
 
   useEffect(() => {
-    setFilteredList(filterOnStatus(filterOnDate(allProcessList)));
-  }, [filterOnDate, filterOnStatus, allProcessList]);
+    setFilteredList(filterOnStatus(filterOnDate(processList)));
+  }, [filterOnDate, filterOnStatus, processList]);
 
   return (
     <Screen removeSpaceOnTop={true}>

@@ -28,6 +28,7 @@ import {
   Event,
 } from './types';
 
+//TODO: resolve toast press
 class ProcessProvider {
   private _events: Map<string, Event>;
   private _processMap: Map<string, ProcessItem>;
@@ -40,7 +41,8 @@ class ProcessProvider {
     this._processList = processStorage.getProcessList();
     this._processMap = new Map(this._processList.map(p => [p.key, p]));
 
-    processStorage.register(this.setProcessList);
+    this.onCompleted = this.onCompleted.bind(this);
+    this.onFailed = this.onFailed.bind(this);
   }
 
   get numberRunningProcess() {
@@ -49,14 +51,6 @@ class ProcessProvider {
 
   get numberUnresolvedProcess() {
     return this._processList.filter(p => p.completed && !p.resolved).length;
-  }
-
-  get allProcessList() {
-    return this._processList;
-  }
-
-  setProcessList(processList: ProcessItem[]) {
-    this._processList = processList;
   }
 
   on(key: string, e: EventType, c: callBack) {
@@ -87,7 +81,7 @@ class ProcessProvider {
       failedDate: null,
       notifyMe: false,
       message: null,
-      status: null,
+      status: ProcessStatus.PENDING,
       completed: false,
       resolved: false,
     };
@@ -108,6 +102,8 @@ class ProcessProvider {
   }
 
   notifyMe(p: ProcessItem) {
+    console.log('*** notifyMe ***');
+    console.log(p);
     p.notifyMe = true;
     this._processMap.set(p.key, p);
     processStorage.saveProcess(p);
@@ -118,8 +114,8 @@ class ProcessProvider {
       throw new Error(`Process with key ${p.key} not found.`);
     }
 
-    this.onStart(p);
-    this.executeProcess(p, I18n);
+    const _p = this.onStart(p);
+    this.executeProcess(_p, I18n);
   }
 
   private onFinish(
@@ -136,41 +132,42 @@ class ProcessProvider {
       completed: true,
       completedDate:
         status === ProcessStatus.COMPLETED && new Date().toISOString(),
-      failedDate: status === ProcessStatus.FAILED && new Date().toISOString(),
+      failedDate:
+        status === ProcessStatus.FAILED ? new Date().toISOString() : null,
     };
-    this._processMap.set(p.key, _p);
-    processStorage.saveProcess(_p);
 
     this.decrementNumberOfRunningProcess();
-    this.resolveProcess(p.key);
+    this.resolveProcess(_p);
 
+    this._processMap.set(p.key, _p);
+    processStorage.saveProcess(_p);
     this.emit(
       p.key,
       status === ProcessStatus.COMPLETED
         ? EventType.COMPLETED
         : EventType.FAILED,
-      p,
+      _p,
       I18n,
     );
   }
 
   private onCompleted(p: ProcessItem, I18n: TranslatorProps) {
     const {notifyMe, message, disabled, onSuccess} = p;
+
+    console.log('*** onCompleted ****');
+    console.log(p);
+
     if (!notifyMe) {
-      this.onFinishCallBack(p.key, onSuccess);
+      onSuccess();
+      this.resolveProcess(p);
     } else {
-      const _handleToastPress = this.handleToastPress(
-        p.key,
-        disabled,
-        onSuccess,
-      );
       showToastMessage({
         type: 'success',
         position: 'top',
         topOffset: 30,
         text1: I18n.t('Base_Success'),
         text2: message || I18n.t('Base_Loader_ProccessSuccessMessage'),
-        onPress: _handleToastPress,
+        onPress: () => !disabled && onSuccess(),
       });
     }
   }
@@ -178,16 +175,16 @@ class ProcessProvider {
   private onFailed(p: ProcessItem, I18n: TranslatorProps) {
     const {notifyMe, message, disabled, onError} = p;
     if (!notifyMe) {
-      this.onFinishCallBack(p.key, onError);
+      onError();
+      this.resolveProcess(p);
     } else {
-      const _handleToastPress = this.handleToastPress(p.key, disabled, onError);
       showToastMessage({
         type: 'error',
         position: 'top',
         topOffset: 30,
         text1: I18n.t('Base_Error'),
         text2: message || I18n.t('Base_Loader_ProccessErrorMessage'),
-        onPress: _handleToastPress,
+        onPress: () => !disabled && onError(),
       });
     }
   }
@@ -200,31 +197,21 @@ class ProcessProvider {
     this._numberRunningProcess = Math.max(0, this._numberRunningProcess - 1);
   }
 
-  private resolveProcess(key: string) {
-    if (!this._processMap.has(key)) {
-      throw new Error(`Process with key ${key} not found.`);
+  private resolveProcess(p: ProcessItem) {
+    if (!this._processMap.has(p?.key)) {
+      throw new Error(`Process with key ${p?.key} not found.`);
     }
 
-    const p = this._processMap.get(key);
     if (!p.completed) {
-      throw new Error(`Could not resolve uncompleted process ${key}`);
+      throw new Error(`Could not resolve uncompleted process ${p.key}`);
     }
 
     const _p = {...p, resolved: true};
-    this._processMap.set(key, _p);
+    this._processMap.set(p.key, _p);
     processStorage.saveProcess(_p);
   }
 
-  private onFinishCallBack(key: string, cb: callBack) {
-    this.resolveProcess(key);
-    cb();
-  }
-
-  private handleToastPress(key: string, disabled: boolean, cb: callBack) {
-    return () => !disabled && this.onFinishCallBack(key, cb);
-  }
-
-  private onStart(p: ProcessItem) {
+  private onStart(p: ProcessItem): ProcessItem {
     const _p = {
       ...p,
       loading: true,
@@ -239,6 +226,8 @@ class ProcessProvider {
     this.on(p.key, EventType.COMPLETED, this.onCompleted);
     this.on(p.key, EventType.FAILED, this.onFailed);
     this.emit(p.key, EventType.STARTED);
+
+    return _p;
   }
 
   private async executeProcess(p: ProcessItem, I18n: TranslatorProps) {
