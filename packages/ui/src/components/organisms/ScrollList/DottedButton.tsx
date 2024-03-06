@@ -47,7 +47,7 @@ const DottedButton = ({
 
   const styles = useMemo(() => {
     return getStyles(buttonColor, vertical);
-  }, [buttonColor]);
+  }, [buttonColor, vertical]);
 
   const commonStyles = useMemo(() => {
     return getCommonStyles(Colors);
