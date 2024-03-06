@@ -25,6 +25,7 @@ import {Text} from '../../../../atoms';
 import Chart from '../../chart-type';
 import {Data} from '../../dashboard.helper';
 import ChartLegend from './ChartLegend';
+import InfoView from './InfoView';
 
 const MARGIN = 5;
 
@@ -83,18 +84,17 @@ const PieChart = ({
   }, [widthGraph]);
 
   const styles = useMemo(() => {
-    return getStyles(innerRadius, donut);
-  }, [innerRadius, donut]);
+    return getStyles(donut);
+  }, [donut]);
 
   return (
     <View style={[styles.container, {width: _width}, styleContainer]}>
       {!donut && !checkNullString(selectedItem.label) && (
-        <View style={styles.infoView}>
-          <Text numberOfLines={1} writingType="details">
-            {selectedItem?.label}
-          </Text>
-          <Text numberOfLines={1}>{selectedItem?.value}</Text>
-        </View>
+        <InfoView
+          innerRadius={innerRadius}
+          isCentered={false}
+          selectedItem={selectedItem}
+        />
       )}
       <RNPieChart
         data={dataSet}
@@ -112,12 +112,11 @@ const PieChart = ({
         centerLabelComponent={
           donut
             ? () => (
-                <View style={styles.centeredView}>
-                  <Text numberOfLines={2} writingType="details">
-                    {selectedItem?.label}
-                  </Text>
-                  <Text numberOfLines={1}>{selectedItem?.value}</Text>
-                </View>
+                <InfoView
+                  innerRadius={innerRadius}
+                  isCentered={true}
+                  selectedItem={selectedItem}
+                />
               )
             : undefined
         }
@@ -128,22 +127,8 @@ const PieChart = ({
   );
 };
 
-const getStyles = (innerRadius: number, donut: boolean) =>
+const getStyles = (donut: boolean) =>
   StyleSheet.create({
-    infoView: {
-      position: 'absolute',
-      top: 0,
-      alignItems: 'center',
-      width: '100%',
-      zIndex: 1,
-    },
-    centeredView: {
-      justifyContent: 'center',
-      alignItems: 'center',
-      maxWidth: innerRadius * 2,
-      maxHeight: innerRadius * 2,
-      padding: 10,
-    },
     container: {
       flexDirection: 'column',
       justifyContent: 'center',
