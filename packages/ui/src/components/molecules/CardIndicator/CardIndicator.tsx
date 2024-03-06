@@ -17,7 +17,7 @@
  */
 
 import React, {useMemo, useState, useEffect, useRef} from 'react';
-import {Dimensions, StyleSheet, View} from 'react-native';
+import {StyleSheet, View} from 'react-native';
 import {Card, Text} from '../../atoms';
 import {
   OUTSIDE_INDICATOR,
@@ -48,11 +48,9 @@ const CardIndicator = ({
   const wrapperRef = useRef(null);
   const clickOutside = useClickOutside({wrapperRef});
 
-  const [childSize, setChildSize] = useState({width: 0, height: 0});
-
   const styles = useMemo(
-    () => getStyles(Colors, isOpen, position, childSize),
-    [Colors, childSize, isOpen, position],
+    () => getStyles(Colors, isOpen, position),
+    [Colors, isOpen, position],
   );
 
   useEffect(() => {
@@ -66,27 +64,21 @@ const CardIndicator = ({
     }
   }, [clickOutside, isOpen]);
 
-  useEffect(() => {
-    if (wrapperRef.current) {
-      wrapperRef.current.measure((x, y, width, height) => {
-        setChildSize({width, height});
-      });
-    }
-  }, [isVisible, children]);
-
   return (
     <View ref={wrapperRef} style={[styles.container, style]}>
       {children}
       {!checkNullString(indication) && isOpen ? (
-        <Card style={[styles.indicationCard, textIndicationStyle]}>
-          <Text>{indication}</Text>
-        </Card>
+        <View>
+          <Card style={[styles.indicationCard, textIndicationStyle]}>
+            <Text>{indication}</Text>
+          </Card>
+        </View>
       ) : null}
     </View>
   );
 };
 
-const getStyles = (Colors, isOpen, position, childSize) =>
+const getStyles = (Colors, isOpen, position) =>
   StyleSheet.create({
     container: {
       alignItems: 'center',
@@ -101,8 +93,8 @@ const getStyles = (Colors, isOpen, position, childSize) =>
       paddingRight: 10,
       zIndex: 99,
       backgroundColor: Colors.backgroundColor,
-      //top: 0,
-      [position === 'left' ? 'right' : 'left']: childSize.width,
+      bottom: '50%',
+      [position === 'left' ? 'right' : 'left']: position === 'left' ? 10 : 0,
     },
   });
 
