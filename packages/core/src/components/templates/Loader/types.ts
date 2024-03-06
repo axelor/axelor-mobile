@@ -29,6 +29,7 @@ export type Event = {
 };
 
 export enum ProcessStatus {
+  PENDING = 'PENDING',
   RUNNING = 'RUNNING',
   COMPLETED = 'COMPLETED',
   FAILED = 'FAILED',

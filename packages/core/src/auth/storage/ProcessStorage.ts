@@ -18,15 +18,24 @@
 
 import {Storage, storage} from '../../storage/Storage';
 import {ProcessItem} from '../../components';
+import {deserialize, serialize} from './process-storage.helper';
 
 const PROCESS_HISTORY_KEY = 'PROCESS_HISTORY';
 
 class ProcessStorage {
   private processList: ProcessItem[];
-  private refreshCallBack: (sessionList: ProcessItem[]) => void;
+  private refreshCallBack: (processList: ProcessItem[]) => void;
 
   constructor(private localStorage: Storage) {
     this.processList = [];
+  }
+
+  private updateState() {
+    if (this.refreshCallBack == null) {
+      return;
+    }
+
+    this.refreshCallBack(this.processList);
   }
 
   register(callBack) {
@@ -35,7 +44,9 @@ class ProcessStorage {
 
   getProcessList(): ProcessItem[] {
     if (this.processList == null || this.processList.length === 0) {
-      this.processList = this.localStorage.getItem(PROCESS_HISTORY_KEY) || [];
+      this.processList = deserialize(
+        this.localStorage.getItem(PROCESS_HISTORY_KEY),
+      );
     }
     return this.processList;
   }
@@ -45,7 +56,7 @@ class ProcessStorage {
       return;
     }
 
-    if (this.processList.find(_item => _item.key === process.key)) {
+    if (this.processList.find(_item => _item.key === process.key) != null) {
       this.processList = this.processList.map(_item => {
         if (_item.key === process.key) {
           return {..._item, ...process};
@@ -57,7 +68,7 @@ class ProcessStorage {
       this.processList.push(process);
     }
 
-    this.localStorage.setItem(PROCESS_HISTORY_KEY, this.processList);
+    this.localStorage.setItem(PROCESS_HISTORY_KEY, serialize(this.processList));
     this.updateState();
   }
 
@@ -76,14 +87,6 @@ class ProcessStorage {
 
     this.localStorage.setItem(PROCESS_HISTORY_KEY, processList);
     this.updateState();
-  }
-
-  private updateState() {
-    if (this.refreshCallBack == null) {
-      return;
-    }
-
-    this.refreshCallBack(this.processList);
   }
 }
 
