@@ -19,11 +19,12 @@
 import React, {useCallback, useEffect, useMemo, useState} from 'react';
 import {Dimensions, StyleSheet, View} from 'react-native';
 import {PieChart as RNPieChart} from 'react-native-gifted-charts';
-import {useThemeColor} from '../../../../theme/ThemeContext';
-import {checkNullString} from '../../../../utils/strings';
-import {Text} from '../../../atoms';
-import Chart from '../chart-type';
-import {Data} from '../dashboard.helper';
+import {useThemeColor} from '../../../../../theme/ThemeContext';
+import {checkNullString} from '../../../../../utils/strings';
+import {Text} from '../../../../atoms';
+import Chart from '../../chart-type';
+import {Data} from '../../dashboard.helper';
+import ChartLegend from './ChartLegend';
 
 const MARGIN = 5;
 
@@ -122,26 +123,7 @@ const PieChart = ({
         }
       />
       {!checkNullString(title) && <Text style={styles.title}>{title}</Text>}
-      {legend && (
-        <View style={styles.legendContainer}>
-          {dataSet.map((_data, index) => (
-            <View key={index} style={styles.itemLegendContainer}>
-              <View
-                style={[
-                  styles.legendColor,
-                  {
-                    borderColor: _data.color,
-                    backgroundColor: _data.color,
-                  },
-                ]}
-              />
-              <Text
-                style={styles.legend}
-                fontSize={15}>{`${_data.label} : ${_data.value}`}</Text>
-            </View>
-          ))}
-        </View>
-      )}
+      {legend && <ChartLegend dataSet={dataSet} />}
     </View>
   );
 };
@@ -177,22 +159,6 @@ const getStyles = (innerRadius: number, donut: boolean) =>
     title: {
       alignSelf: 'center',
       textAlign: 'center',
-    },
-    legendContainer: {
-      flexDirection: 'column',
-    },
-    itemLegendContainer: {
-      flexDirection: 'row',
-      marginVertical: 5,
-    },
-    legend: {
-      marginHorizontal: 5,
-    },
-    legendColor: {
-      borderWidth: 5,
-      marginVertical: 2,
-      borderTopRightRadius: 7,
-      borderBottomRightRadius: 7,
     },
   });
 
