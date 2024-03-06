@@ -17,8 +17,17 @@
  */
 
 import React, {useCallback, useEffect, useState} from 'react';
-import {StyleSheet, View, FlatList, ActivityIndicator} from 'react-native';
+import {ActivityIndicator, FlatList, StyleSheet, View} from 'react-native';
+import {Color} from '../../../theme/themes';
 import {Text} from '../../atoms';
+import TopActions from './TopActions';
+
+export interface Action {
+  iconName: string;
+  title: string;
+  color?: Color;
+  onPress: () => void;
+}
 
 interface ScrollListProps {
   style?: any;
@@ -33,6 +42,8 @@ interface ScrollListProps {
   translator?: (translationKey: string) => string;
   horizontal?: boolean;
   disabledRefresh?: boolean;
+  actionList?: Action[];
+  verticalAction?: boolean;
 }
 
 const ScrollList = ({
@@ -48,6 +59,8 @@ const ScrollList = ({
   translator,
   horizontal = false,
   disabledRefresh = false,
+  actionList,
+  verticalAction,
 }: ScrollListProps) => {
   const [, setPage] = useState(0);
 
@@ -106,33 +119,38 @@ const ScrollList = ({
   }
 
   return (
-    <FlatList
-      style={[styles.scrollView, style]}
-      data={data}
-      onRefresh={disabledRefresh ? null : updateData}
-      refreshing={loadingList}
-      horizontal={horizontal}
-      onEndReached={onEndReached}
-      ListFooterComponent={() => {
-        return (
-          <View style={[styles.footerText, styleFooter]}>
-            {moreLoading && <ActivityIndicator size="large" color="black" />}
-            {isListEnd && (
-              <Text>
-                {data == null || data?.length === 0
-                  ? translator != null
-                    ? translator('Base_NoData')
-                    : 'No data.'
-                  : translator != null
-                  ? translator('Base_NoMoreItems')
-                  : 'No more items.'}
-              </Text>
-            )}
-          </View>
-        );
-      }}
-      renderItem={renderItem}
-    />
+    <>
+      {Array.isArray(actionList) && actionList.length > 0 && (
+        <TopActions actionList={actionList} verticalAction={verticalAction} />
+      )}
+      <FlatList
+        style={[styles.scrollView, style]}
+        data={data}
+        onRefresh={disabledRefresh ? null : updateData}
+        refreshing={loadingList}
+        horizontal={horizontal}
+        onEndReached={onEndReached}
+        ListFooterComponent={() => {
+          return (
+            <View style={[styles.footerText, styleFooter]}>
+              {moreLoading && <ActivityIndicator size="large" color="black" />}
+              {isListEnd && (
+                <Text>
+                  {data == null || data?.length === 0
+                    ? translator != null
+                      ? translator('Base_NoData')
+                      : 'No data.'
+                    : translator != null
+                    ? translator('Base_NoMoreItems')
+                    : 'No more items.'}
+                </Text>
+              )}
+            </View>
+          );
+        }}
+        renderItem={renderItem}
+      />
+    </>
   );
 };
 
