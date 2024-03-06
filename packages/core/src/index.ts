@@ -59,4 +59,5 @@ export * from './i18n';
 export * from './config';
 export * from './header';
 export * from './forms';
+export * from './dashboards';
 export {useNavigation, useIsFocused} from './hooks/use-navigation';

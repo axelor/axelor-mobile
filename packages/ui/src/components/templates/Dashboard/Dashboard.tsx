@@ -24,7 +24,7 @@ import {
   Data,
   Max_Number_Graph_Line as MAX_GRAPH_PER_LINE,
 } from './dashboard.helper';
-import {BarChart, LineChart, PieChart} from './Chart';
+import {ChartRender} from './Chart';
 
 interface Graph {
   type: keyof typeof Chart.chartType;
@@ -52,86 +52,6 @@ const getGraphWidth = (nbGraphInLine: number) => {
   }
 };
 
-const BarChartRender = (
-  datasets,
-  key,
-  title,
-  widthGraph,
-  hideCardBackground,
-) => {
-  return (
-    <BarChart
-      key={key}
-      title={title}
-      datasets={datasets}
-      widthGraph={widthGraph}
-      hideCardBackground={hideCardBackground}
-    />
-  );
-};
-
-const LineChartRender = (
-  datasets,
-  key,
-  title,
-  widthGraph,
-  hideCardBackground,
-) => {
-  return (
-    <LineChart
-      key={key}
-      title={title}
-      datasets={datasets}
-      widthGraph={widthGraph}
-      hideCardBackground={hideCardBackground}
-    />
-  );
-};
-
-const PieChartRender = (datasets, key, title, widthGraph, type) => {
-  return (
-    <PieChart
-      key={key}
-      title={title}
-      datasets={datasets[0]}
-      widthGraph={widthGraph}
-      donut={type === Chart.chartType.donut}
-    />
-  );
-};
-
-const renderChart = (graph, indexGraph, nbGraphInLine, hideCardBackground) => {
-  const {dataList, title, type} = graph;
-  const widthGraph = getGraphWidth(nbGraphInLine);
-
-  switch (type) {
-    case Chart.chartType.bar:
-      return BarChartRender(
-        dataList,
-        indexGraph,
-        title,
-        widthGraph,
-        hideCardBackground,
-      );
-
-    case Chart.chartType.pie:
-    case Chart.chartType.donut:
-      return PieChartRender(dataList, indexGraph, title, widthGraph, type);
-
-    case Chart.chartType.line:
-      return LineChartRender(
-        dataList,
-        indexGraph,
-        title,
-        widthGraph,
-        hideCardBackground,
-      );
-
-    default:
-      return null;
-  }
-};
-
 const Dashboard = ({
   style,
   lineList,
@@ -151,11 +71,17 @@ const Dashboard = ({
           <View style={styles.lineContainer} key={indexLine}>
             {limitedGraphList?.map((graph, indexGraph) => {
               if (graph.dataList?.[0]?.length > 0) {
-                return renderChart(
-                  graph,
-                  indexGraph,
-                  nbGraphInLine,
-                  hideCardBackground,
+                const {dataList, title, type} = graph;
+                const widthGraph = getGraphWidth(nbGraphInLine);
+                return (
+                  <ChartRender
+                    key={indexGraph}
+                    dataList={dataList}
+                    title={title}
+                    type={type}
+                    widthGraph={widthGraph}
+                    hideCardBackground={hideCardBackground}
+                  />
                 );
               }
               return null;

@@ -16,7 +16,4 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-export {default as BarChart} from './BarChart';
-export {default as ChartRender} from './ChartRender';
-export {default as LineChart} from './LineChart';
-export {default as PieChart} from './PieChart/PieChart';
+export * from './component';

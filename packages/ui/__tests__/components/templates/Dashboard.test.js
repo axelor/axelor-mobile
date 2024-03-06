@@ -20,6 +20,7 @@ import React from 'react';
 import {shallow} from 'enzyme';
 import {
   BarChart,
+  ChartRender,
   Dashboard,
   LineChart,
   PieChart,
@@ -141,39 +142,40 @@ describe('Dashboard Component', () => {
   it('should render the charts defined in lineList with the right props', () => {
     const wrapper = shallow(<Dashboard {...props} />);
 
-    const testChart = (chartComponent, idx, chart) => {
-      expect(wrapper.find(chartComponent).at(idx).exists()).toBe(true);
+    const testChart = (component, lineIdx, graphIdx, chart) => {
+      const chartComponent = wrapper
+        .find('View')
+        .at(lineIdx)
+        .dive()
+        .find(ChartRender)
+        .at(graphIdx)
+        .dive();
+
+      expect(chartComponent.exists()).toBe(true);
+      expect(chartComponent.find(component).exists()).toBe(true);
       if (chart.type === chartType.donut) {
-        expect(wrapper.find(chartComponent).at(idx).prop('donut')).toBe(true);
+        expect(chartComponent.find(component).prop('donut')).toBe(true);
       }
-      expect(wrapper.find(chartComponent).at(idx).prop('title')).toBe(
-        chart.title,
-      );
-      expect(wrapper.find(chartComponent).at(idx).prop('datasets')).toBe(
+      expect(chartComponent.find(component).prop('title')).toBe(chart.title);
+      expect(chartComponent.find(component).prop('datasets')).toBe(
         chart.type === chartType.pie || chart.type === chartType.donut
           ? chart.dataList[0]
           : chart.dataList,
       );
     };
 
-    let barChartIdx = 0;
-    let lineChartIdx = 0;
-    let pieChartIdx = 0;
-    props.lineList.forEach(line =>
-      line.graphList.forEach(graph => {
+    props.lineList.forEach((line, lineIdx) => {
+      line.graphList.forEach((graph, index) => {
         switch (graph.type) {
           case chartType.bar:
-            testChart(BarChart, barChartIdx, graph);
-            barChartIdx++;
+            testChart(BarChart, lineIdx, index, graph);
             break;
           case chartType.line:
-            testChart(LineChart, lineChartIdx, graph);
-            lineChartIdx++;
+            testChart(LineChart, lineIdx, index, graph);
             break;
           case chartType.pie:
           case chartType.donut:
-            testChart(PieChart, pieChartIdx, graph);
-            pieChartIdx++;
+            testChart(PieChart, lineIdx, index, graph);
             break;
           default:
             console.warn(
@@ -181,8 +183,8 @@ describe('Dashboard Component', () => {
             );
             break;
         }
-      }),
-    );
+      });
+    });
   });
 
   it('should apply custom style when provided', () => {
