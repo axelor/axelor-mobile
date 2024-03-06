@@ -17,7 +17,6 @@
  */
 
 import React, {useEffect, useState} from 'react';
-import {View} from 'react-native';
 import {ChartRender} from '@axelor/aos-mobile-ui';
 import {
   fetchActionView,
@@ -25,15 +24,11 @@ import {
   fetchTypeChart,
   getChartParameter,
 } from './api.helpers';
-import {transformData} from './AOPChart.helper';
+import {transformData} from './format.helpers';
 
 const DEFAULT_CHART_CONFIG = {type: '', dataset: [], title: ''};
 
-interface AOPChartProps {
-  actionViewName: string;
-}
-
-const AOPChart = ({actionViewName}: AOPChartProps) => {
+const AOPChart = ({actionViewName}: {actionViewName: string}) => {
   const [chart, setChart] = useState(DEFAULT_CHART_CONFIG);
 
   useEffect(() => {
@@ -84,15 +79,11 @@ const AOPChart = ({actionViewName}: AOPChartProps) => {
   }
 
   return (
-    <View>
-      <ChartRender
-        graph={{
-          dataList: transformData(chart.dataset),
-          title: chart.title,
-          type: chart.type,
-        }}
-      />
-    </View>
+    <ChartRender
+      dataList={transformData(chart.dataset)}
+      title={chart.title}
+      type={chart.type}
+    />
   );
 };
 

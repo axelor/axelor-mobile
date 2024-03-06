@@ -17,14 +17,14 @@
  */
 
 import React from 'react';
-import {StyleSheet, View} from 'react-native';
+import {Dimensions, StyleSheet, View} from 'react-native';
 import {ScrollView} from '../../atoms';
 import Chart from './chart-type';
 import {
   Data,
   Max_Number_Graph_Line as MAX_GRAPH_PER_LINE,
 } from './dashboard.helper';
-import ChartRender from './Chart/ChartRender';
+import {ChartRender} from './Chart';
 
 interface Graph {
   type: keyof typeof Chart.chartType;
@@ -41,6 +41,16 @@ interface DashboardProps {
   lineList: Line[];
 }
 
+const getGraphWidth = (nbGraphInLine: number) => {
+  if (nbGraphInLine === 1) {
+    return Dimensions.get('window').width;
+  } else if (Dimensions.get('window').width < 500) {
+    return Dimensions.get('window').width / 2;
+  } else {
+    return Dimensions.get('window').width / nbGraphInLine;
+  }
+};
+
 const Dashboard = ({style, lineList}: DashboardProps) => {
   return (
     <ScrollView style={[styles.container, style]}>
@@ -56,12 +66,15 @@ const Dashboard = ({style, lineList}: DashboardProps) => {
           <View style={styles.lineContainer} key={indexLine}>
             {limitedGraphList?.map((graph, indexGraph) => {
               if (graph.dataList?.[0]?.length > 0) {
+                const {dataList, title, type} = graph;
+                const widthGraph = getGraphWidth(nbGraphInLine);
                 return (
                   <ChartRender
                     key={indexGraph}
-                    graph={graph}
-                    indexGraph={indexGraph}
-                    nbGraphInLine={nbGraphInLine}
+                    dataList={dataList}
+                    title={title}
+                    type={type}
+                    widthGraph={widthGraph}
                   />
                 );
               }

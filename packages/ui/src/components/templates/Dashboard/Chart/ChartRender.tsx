@@ -22,43 +22,21 @@ import Chart from '../chart-type';
 import BarChart from './BarChart';
 import LineChart from './LineChart';
 import PieChart from './PieChart';
+import {Data} from '../dashboard.helper';
 
-const getGraphWidth = (nbGraphInLine: number) => {
-  if (nbGraphInLine === 1) {
-    return Dimensions.get('window').width;
-  } else if (Dimensions.get('window').width < 500) {
-    return Dimensions.get('window').width / 2;
-  } else {
-    return Dimensions.get('window').width / nbGraphInLine;
-  }
+const BarChartRender = (datasets, title, widthGraph) => {
+  return <BarChart title={title} datasets={datasets} widthGraph={widthGraph} />;
 };
 
-const BarChartRender = (datasets, key, title, widthGraph) => {
+const LineChartRender = (datasets, title, widthGraph) => {
   return (
-    <BarChart
-      key={key}
-      title={title}
-      datasets={datasets}
-      widthGraph={widthGraph}
-    />
+    <LineChart title={title} datasets={datasets} widthGraph={widthGraph} />
   );
 };
 
-const LineChartRender = (datasets, key, title, widthGraph) => {
-  return (
-    <LineChart
-      key={key}
-      title={title}
-      datasets={datasets}
-      widthGraph={widthGraph}
-    />
-  );
-};
-
-const PieChartRender = (datasets, key, title, widthGraph, type) => {
+const PieChartRender = (datasets, title, widthGraph, type) => {
   return (
     <PieChart
-      key={key}
       title={title}
       datasets={datasets[0]}
       widthGraph={widthGraph}
@@ -67,24 +45,25 @@ const PieChartRender = (datasets, key, title, widthGraph, type) => {
   );
 };
 
-const ChartRender = ({graph, indexGraph = 0, nbGraphInLine = null}) => {
-  const {dataList, title, type} = graph;
-  const widthGraph =
-    nbGraphInLine != null
-      ? getGraphWidth(nbGraphInLine)
-      : Dimensions.get('window').width;
-
+const ChartRender = ({
+  dataList,
+  title,
+  type,
+  widthGraph = Dimensions.get('window').width,
+}: {
+  dataList: Data[][];
+  title: string;
+  type: string;
+  widthGraph?: number;
+}) => {
   switch (type) {
     case Chart.chartType.bar:
-      return BarChartRender(dataList, indexGraph, title, widthGraph);
-
+      return BarChartRender(dataList, title, widthGraph);
+    case Chart.chartType.line:
+      return LineChartRender(dataList, title, widthGraph);
     case Chart.chartType.pie:
     case Chart.chartType.donut:
-      return PieChartRender(dataList, indexGraph, title, widthGraph, type);
-
-    case Chart.chartType.line:
-      return LineChartRender(dataList, indexGraph, title, widthGraph);
-
+      return PieChartRender(dataList, title, widthGraph, type);
     default:
       return null;
   }

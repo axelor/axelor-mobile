@@ -16,11 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-interface ChartDataItem {
-  [key: string]: any;
-}
-
-interface TransformedChartDataItem {
+interface Data {
   label: string;
   value: number;
 }
@@ -30,7 +26,7 @@ interface AxesKeys {
   labelKey: string;
 }
 
-export const getAxesKeys = (data: ChartDataItem[]): AxesKeys => {
+export const getAxesKeys = (data: any): AxesKeys => {
   const sample = data[0];
   let valueKey: string = '';
   let labelKey: string = '';
@@ -53,10 +49,8 @@ export const getAxesKeys = (data: ChartDataItem[]): AxesKeys => {
   return {valueKey, labelKey};
 };
 
-export const transformData = (
-  data: ChartDataItem[],
-): [TransformedChartDataItem[]] => {
-  if (!data || data.length === 0) {
+export const transformData = (data: any[]): Data[][] => {
+  if (!Array.isArray(data) || data.length === 0) {
     return [[]];
   }
 
