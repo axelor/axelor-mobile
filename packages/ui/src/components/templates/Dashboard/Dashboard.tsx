@@ -57,8 +57,7 @@ const Dashboard = ({style, lineList}: DashboardProps) => {
     <ScrollView style={[styles.container, style]}>
       {lineList?.map((line, indexLine) => {
         const validGraphs = line.graphList.filter(
-          graph =>
-            graph.dataList?.[0]?.length > 0 || graph.customChart !== null,
+          graph => graph.dataList?.[0]?.length > 0 || graph.customChart != null,
         );
         const nbGraphInLine = Math.min(validGraphs.length, MAX_GRAPH_PER_LINE);
 
@@ -69,12 +68,12 @@ const Dashboard = ({style, lineList}: DashboardProps) => {
             {limitedGraphList?.map((graph, indexGraph) => {
               if (
                 graph.dataList?.[0]?.length > 0 ||
-                graph.customChart !== null
+                graph.customChart != null
               ) {
                 const {dataList, title, type} = graph;
                 const widthGraph = getGraphWidth(nbGraphInLine);
 
-                if (graph.customChart !== null) {
+                if (graph.customChart != null) {
                   return React.cloneElement(graph.customChart, {
                     key: indexGraph,
                     widthGraph: widthGraph,
