@@ -20,9 +20,9 @@ import React, {useCallback, useState} from 'react';
 import {StyleSheet, View} from 'react-native';
 import {
   HeaderContainer,
+  Screen,
   ScrollList,
   ToggleButton,
-  Screen,
 } from '@axelor/aos-mobile-ui';
 import {
   DateInput,
