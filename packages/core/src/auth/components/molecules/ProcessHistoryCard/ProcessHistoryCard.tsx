@@ -53,7 +53,7 @@ const ProccessHistoryCard = ({
   const I18n = useTranslator();
 
   const borderStyle = useMemo(() => {
-    return getStyles(ProcessHistory.getStatusColor(status, Colors).background)
+    return getStyles(ProcessHistory.getStatusColor(status, Colors)?.background)
       ?.border;
   }, [Colors, status]);
 
@@ -72,6 +72,7 @@ const ProccessHistoryCard = ({
             iconName: 'calendar-event',
             indicatorText: I18n.t('User_ProcessHistory_StartedOn'),
             displayText: formatDateTime(startedDate, I18n.t('Base_DateFormat')),
+            hideIf: startedDate == null,
           },
           {
             iconName: 'calendar-check',
