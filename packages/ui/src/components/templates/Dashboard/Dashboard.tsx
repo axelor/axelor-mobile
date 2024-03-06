@@ -54,11 +54,9 @@ const getGraphWidth = (nbGraphInLine: number) => {
 };
 
 const Dashboard = ({style, lineList}: DashboardProps) => {
-  console.log('datAList', lineList);
   return (
     <ScrollView style={[styles.container, style]}>
       {lineList?.map((line, indexLine) => {
-        console.log('line', line);
         const validGraphs = line.graphList.filter(
           graph =>
             graph.dataList?.[0]?.length > 0 || graph.customChart !== null,
