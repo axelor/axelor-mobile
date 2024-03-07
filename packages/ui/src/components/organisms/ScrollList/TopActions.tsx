@@ -23,24 +23,25 @@ import DottedButton from './DottedButton';
 
 export interface TopActionsProps {
   actionList?: Action[];
-  verticalAction?: boolean;
+  verticalActions?: boolean;
 }
 
-const TopActions = ({actionList, verticalAction}: TopActionsProps) => {
+const TopActions = ({actionList, verticalActions}: TopActionsProps) => {
   return (
     <View style={styles.container}>
       {actionList.map((action, index) => {
-        let _verticalAction = verticalAction;
-        if (_verticalAction && index === actionList.length - 1) {
-          _verticalAction = false;
+        let horizontal = verticalActions;
+        if (!verticalActions && index === actionList.length - 1) {
+          horizontal = true;
         }
 
         return (
           <DottedButton
             iconName={action.iconName}
             title={action.title}
-            vertical={_verticalAction}
+            horizontal={horizontal}
             onPress={action.onPress}
+            key={index}
           />
         );
       })}

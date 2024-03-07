@@ -27,7 +27,7 @@ export interface DottedButtonProps {
   iconName: string;
   title: string;
   color?: Color;
-  vertical?: boolean;
+  horizontal?: boolean;
   onPress: () => void;
 }
 
@@ -35,7 +35,7 @@ const DottedButton = ({
   iconName,
   title,
   color,
-  vertical = false,
+  horizontal = true,
   onPress = () => {},
 }: DottedButtonProps) => {
   const Colors = useThemeColor();
@@ -46,8 +46,8 @@ const DottedButton = ({
   );
 
   const styles = useMemo(() => {
-    return getStyles(buttonColor, vertical);
-  }, [buttonColor, vertical]);
+    return getStyles(buttonColor, horizontal);
+  }, [buttonColor, horizontal]);
 
   const commonStyles = useMemo(() => {
     return getCommonStyles(Colors);
@@ -73,11 +73,11 @@ const DottedButton = ({
   );
 };
 
-const getStyles = (color: Color, vertical: boolean) =>
+const getStyles = (color: Color, horizontal: boolean) =>
   StyleSheet.create({
     button: {
-      flexDirection: vertical ? 'column' : 'row',
-      width: vertical ? '49%' : '100%',
+      flexDirection: horizontal ? 'row' : 'column',
+      width: horizontal ? '100%' : '49%',
       height: 'auto',
       justifyContent: 'flex-start',
       alignSelf: 'stretch',
@@ -87,12 +87,12 @@ const getStyles = (color: Color, vertical: boolean) =>
     },
     icon: {
       flex: 0,
-      marginHorizontal: vertical ? 0 : 5,
+      marginHorizontal: horizontal ? 5 : 0,
     },
     text: {
-      flex: vertical ? 0 : 1,
-      marginLeft: vertical ? 0 : 15,
-      marginTop: vertical ? 5 : 0,
+      flex: horizontal ? 1 : 0,
+      marginLeft: horizontal ? 15 : 0,
+      marginTop: horizontal ? 0 : 5,
     },
   });
 

@@ -43,7 +43,7 @@ interface ScrollListProps {
   horizontal?: boolean;
   disabledRefresh?: boolean;
   actionList?: Action[];
-  verticalAction?: boolean;
+  verticalActions?: boolean;
 }
 
 const ScrollList = ({
@@ -60,7 +60,7 @@ const ScrollList = ({
   horizontal = false,
   disabledRefresh = false,
   actionList,
-  verticalAction,
+  verticalActions = true,
 }: ScrollListProps) => {
   const [, setPage] = useState(0);
 
@@ -121,7 +121,7 @@ const ScrollList = ({
   return (
     <>
       {Array.isArray(actionList) && actionList.length > 0 && (
-        <TopActions actionList={actionList} verticalAction={verticalAction} />
+        <TopActions actionList={actionList} verticalActions={verticalActions} />
       )}
       <FlatList
         style={[styles.scrollView, style]}
