@@ -23,12 +23,14 @@ import {Text} from '../../atoms';
 const {width: screenWidth} = Dimensions.get('window');
 interface SentenceScrollerProps {
   sentence: string;
+  textStyle?: any;
   duration?: number;
 }
 
 const SentenceAnimatedScroller = ({
   sentence,
-  duration = 5000,
+  textStyle,
+  duration = 7000,
 }: SentenceScrollerProps) => {
   const scrollX = useRef(new Animated.Value(screenWidth)).current;
   const sentenceWidth = useMemo(() => sentence.length * 8, [sentence]);
@@ -59,7 +61,7 @@ const SentenceAnimatedScroller = ({
           width: sentenceWidth,
           transform: [{translateX: scrollX}],
         }}>
-        <Text>{sentence}</Text>
+        <Text style={textStyle}>{sentence}</Text>
       </Animated.View>
     </View>
   );
@@ -68,7 +70,6 @@ const SentenceAnimatedScroller = ({
 const styles = StyleSheet.create({
   container: {
     overflow: 'hidden',
-    height: 30,
   },
 });
 

@@ -16,19 +16,29 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import React, {useMemo} from 'react';
+import React, {useCallback, useMemo, useState} from 'react';
 import {Dimensions, StyleSheet, View} from 'react-native';
-import {Color, useThemeColor} from '@axelor/aos-mobile-ui/src/theme';
-import {Text} from '@axelor/aos-mobile-ui/src/components/atoms';
+import {
+  Color,
+  SentenceAnimatedScroller,
+  Text,
+  useThemeColor,
+} from '@axelor/aos-mobile-ui';
 
 interface HeaderBandProps {
   color: Color;
   text: string;
-  showIf: boolean;
+  showIf?: boolean;
 }
 
-const HeaderBand = ({color, text, showIf}: HeaderBandProps) => {
+const HeaderBand = ({color, text, showIf = true}: HeaderBandProps) => {
   const Colors = useThemeColor();
+
+  const [numberOfLines, setNumberOfLines] = useState<number>(1);
+
+  const handleTextLayout = useCallback(event => {
+    setNumberOfLines(event.nativeEvent.lines.length);
+  }, []);
 
   const styles = useMemo(
     () => getStyles(color || Colors.secondaryColor),
@@ -41,9 +51,13 @@ const HeaderBand = ({color, text, showIf}: HeaderBandProps) => {
 
   return (
     <View style={styles.container}>
-      <Text numberOfLines={1} style={styles.text}>
-        {text}
-      </Text>
+      {numberOfLines > 1 ? (
+        <SentenceAnimatedScroller sentence={text} textStyle={styles.text} />
+      ) : (
+        <Text style={styles.text} onTextLayout={handleTextLayout}>
+          {text}
+        </Text>
+      )}
     </View>
   );
 };
@@ -58,7 +72,6 @@ const getStyles = (color: Color) =>
       height: 24,
     },
     text: {
-      maxWidth: '80%',
       textAlign: 'center',
       fontSize: 12,
       paddingVertical: 3,

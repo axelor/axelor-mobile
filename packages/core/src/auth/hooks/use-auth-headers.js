@@ -93,4 +93,15 @@ const useAuthHeaderBands = () => {
       showIf: online.isEnabled === false,
     });
   }, [I18n, Colors, registerHeaderBand, online.isEnabled]);
+
+  // Test header band long text animation
+  useEffect(() => {
+    registerHeaderBand({
+      key: 'test',
+      text: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.',
+      color: Colors.primaryColor,
+      order: 15,
+      showIf: true,
+    });
+  }, [Colors, registerHeaderBand]);
 };
