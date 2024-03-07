@@ -24,7 +24,7 @@ import {getEndOfDay, getStartOfDay} from '../../../utils';
 import {useTranslator} from '../../../i18n';
 
 interface dateInputConfig {
-  date: Date;
+  date?: Date;
   onDateChange: (date: Date) => void;
   readonly?: boolean;
   required?: boolean;
