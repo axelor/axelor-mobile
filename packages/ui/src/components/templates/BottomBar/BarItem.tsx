@@ -16,12 +16,16 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import React, {useMemo} from 'react';
-import {StyleSheet, View} from 'react-native';
+import React, {useEffect, useMemo} from 'react';
+import {StyleSheet, View, Text} from 'react-native';
 import {Color, useThemeColor} from '../../../theme';
 import {checkNullString} from '../../../utils';
 import {Button, NumberBubble} from '../../molecules';
-import {Text} from '../../atoms';
+import Animated, {
+  useSharedValue,
+  useAnimatedStyle,
+  withSpring,
+} from 'react-native-reanimated';
 
 const BarItem = ({
   iconName,
@@ -44,34 +48,43 @@ const BarItem = ({
 }) => {
   const Colors = useThemeColor();
 
+  const scale = useSharedValue(1);
+
+  useEffect(() => {
+    scale.value = withSpring(isSelected ? 1.2 : 1);
+  }, [isSelected, scale]);
+
+  const animatedStyle = useAnimatedStyle(() => {
+    return {
+      transform: [{scale: scale.value}],
+    };
+  });
+
   const buttonColor: Color = useMemo(
     () => color ?? Colors.primaryColor,
     [Colors.primaryColor, color],
   );
 
-  const buttonSize: number = useMemo(
-    () => (isSelected ? size * 1.2 : size),
-    [isSelected, size],
-  );
-
   return (
     <View style={styles.container}>
-      <Button
-        iconName={iconName}
-        color={buttonColor}
-        disabled={disabled}
-        onPress={onPress}
-        width={buttonSize}
-        style={{height: buttonSize}}
-        iconSize={buttonSize * 0.6}
-      />
+      <Animated.View style={animatedStyle}>
+        <Button
+          iconName={iconName}
+          color={buttonColor}
+          disabled={disabled}
+          onPress={onPress}
+          width={size}
+          style={{height: size}}
+          iconSize={size * 0.6}
+        />
+      </Animated.View>
       {indicator > 0 && (
         <NumberBubble
           number={indicator}
           color={buttonColor}
           isNeutralBackground={true}
           style={styles.indicator}
-          size={buttonSize * 0.6}
+          size={size * 0.6}
         />
       )}
       {!checkNullString(title) && <Text>{title}</Text>}
@@ -104,6 +117,9 @@ const styles = StyleSheet.create({
     position: 'absolute',
     top: -5,
     right: -10,
+  },
+  title: {
+    marginTop: 4,
   },
 });
 
