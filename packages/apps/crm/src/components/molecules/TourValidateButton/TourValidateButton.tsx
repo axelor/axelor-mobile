@@ -29,7 +29,7 @@ const TourValidateButton = ({tourId}: {tourId: number}) => {
   return (
     <Button
       iconName="calendar-check"
-      title={I18n.t('Crm_Status_Validated')}
+      title={I18n.t('Base_Validate')}
       color={Colors.successColor}
       onPress={() => {
         dispatch(

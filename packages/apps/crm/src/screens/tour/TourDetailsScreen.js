@@ -74,7 +74,7 @@ const TourDetailsScreen = ({route}) => {
       fixedItems={<TourValidateButton tourId={tourId} />}>
       <HeaderContainer
         expandableFilter={false}
-        fixedItems={<TourDetailsHeader totalTourLine={tourLineList?.length} />}
+        fixedItems={<TourDetailsHeader />}
         chipComponent={
           <ChipSelect
             mode="switch"

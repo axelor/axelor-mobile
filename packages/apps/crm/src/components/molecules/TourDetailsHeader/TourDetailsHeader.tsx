@@ -21,14 +21,11 @@ import {StyleSheet, View} from 'react-native';
 import {LabelText, Text} from '@axelor/aos-mobile-ui';
 import {DateDisplay, useTranslator, useSelector} from '@axelor/aos-mobile-core';
 
-interface TourDetailsHeaderProps {
-  totalTourLine: number;
-}
-
-const TourDetailsHeader = ({totalTourLine = 0}: TourDetailsHeaderProps) => {
+const TourDetailsHeader = () => {
   const I18n = useTranslator();
 
   const {tour} = useSelector((state: any) => state.tour);
+  const {totalTourLine} = useSelector((state: any) => state.tourLine);
 
   return (
     <View style={styles.container}>

@@ -35,7 +35,7 @@ export const searchTourLine = createAsyncThunk(
       data,
       action: 'Crm_SliceAction_FetchTourLine',
       getState,
-      responseOptions: {isArrayResponse: true},
+      responseOptions: {isArrayResponse: true, resturnTotalWithData: true},
     });
   },
 );
@@ -60,18 +60,27 @@ const initialState = {
   moreLoading: false,
   isListEnd: false,
   tourLineList: [],
+  totalTourLine: 0,
 };
 
 const tourLineSlice = createSlice({
   name: 'tourLine',
   initialState,
   extraReducers: builder => {
-    generateInifiniteScrollCases(builder, searchTourLine, {
-      loading: 'loadingTourLineList',
-      moreLoading: 'moreLoading',
-      isListEnd: 'isListEnd',
-      list: 'tourLineList',
-    });
+    generateInifiniteScrollCases(
+      builder,
+      searchTourLine,
+      {
+        loading: 'loadingTourLineList',
+        moreLoading: 'moreLoading',
+        isListEnd: 'isListEnd',
+        list: 'tourLineList',
+        total: 'totalTourLine',
+      },
+      {
+        manageTotal: true,
+      },
+    );
   },
 });
 
