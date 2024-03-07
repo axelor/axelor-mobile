@@ -28,7 +28,7 @@ import {useDispatch, useSelector, useTranslator} from '@axelor/aos-mobile-core';
 import {
   TourDetailsButton,
   TourDetailsHeader,
-  TourLineCard,
+  TourLineActionCard,
 } from '../../components';
 import {fetchTourById} from '../../features/tourSlice';
 import {searchTourLine} from '../../features/tourLineSlice';
@@ -37,14 +37,13 @@ import {TourLine} from '../../types';
 const TourDetailsScreen = ({route}) => {
   const {tourId} = route.params;
 
-  const dispatch = useDispatch();
   const I18n = useTranslator();
   const Colors = useThemeColor();
-
-  const {tourLineList, loadingTourLineList, moreLoading, isListEnd} =
-    useSelector(state => state.tourLine);
+  const dispatch = useDispatch();
 
   const {tour} = useSelector(state => state.tour);
+  const {tourLineList, loadingTourLineList, moreLoading, isListEnd} =
+    useSelector(state => state.tourLine);
 
   const [selectedStatus, setSelectedStatus] = useState([]);
 
@@ -103,11 +102,11 @@ const TourDetailsScreen = ({route}) => {
         isListEnd={isListEnd}
         translator={I18n.t}
         renderItem={({item}) => (
-          <TourLineCard
+          <TourLineActionCard
             name={item?.partner?.fullName}
-            adress={item?.address?.fullName}
-            eventId={item?.event?.id}
+            address={item?.address?.fullName}
             isValidated={item?.isValidated}
+            eventId={item?.event?.id}
             id={item.id}
             tourId={tourId}
           />
