@@ -20,19 +20,19 @@ import React, {useMemo} from 'react';
 import {StyleSheet, View} from 'react-native';
 import {Text} from '../../../../atoms';
 
-interface InfoViewProps {
+interface LabelViewProps {
   innerRadius: number;
   selectedItem: any;
   isCentered: boolean;
 }
 
-const InfoView = ({selectedItem, innerRadius, isCentered}: InfoViewProps) => {
+const LabelView = ({selectedItem, innerRadius, isCentered}: LabelViewProps) => {
   const styles = useMemo(() => {
     return getStyles(innerRadius);
   }, [innerRadius]);
 
   return (
-    <View style={isCentered ? styles.centeredView : styles.infoView}>
+    <View style={isCentered ? styles.centered : styles.top}>
       <Text numberOfLines={isCentered ? 2 : 1} writingType="details">
         {selectedItem?.label}
       </Text>
@@ -43,14 +43,14 @@ const InfoView = ({selectedItem, innerRadius, isCentered}: InfoViewProps) => {
 
 const getStyles = (innerRadius: number) =>
   StyleSheet.create({
-    infoView: {
+    top: {
       position: 'absolute',
       top: 0,
       alignItems: 'center',
       width: '100%',
       zIndex: 1,
     },
-    centeredView: {
+    centered: {
       justifyContent: 'center',
       alignItems: 'center',
       maxWidth: innerRadius * 2,
@@ -59,4 +59,4 @@ const getStyles = (innerRadius: number) =>
     },
   });
 
-export default InfoView;
+export default LabelView;

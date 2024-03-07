@@ -25,7 +25,7 @@ import {Text} from '../../../../atoms';
 import Chart from '../../chart-type';
 import {Data} from '../../dashboard.helper';
 import ChartLegend from './ChartLegend';
-import InfoView from './InfoView';
+import LabelView from './LabelView';
 
 const MARGIN = 5;
 
@@ -90,7 +90,7 @@ const PieChart = ({
   return (
     <View style={[styles.container, {width: _width}, styleContainer]}>
       {!donut && !checkNullString(selectedItem.label) && (
-        <InfoView
+        <LabelView
           innerRadius={innerRadius}
           isCentered={false}
           selectedItem={selectedItem}
@@ -112,7 +112,7 @@ const PieChart = ({
         centerLabelComponent={
           donut
             ? () => (
-                <InfoView
+                <LabelView
                   innerRadius={innerRadius}
                   isCentered={true}
                   selectedItem={selectedItem}
