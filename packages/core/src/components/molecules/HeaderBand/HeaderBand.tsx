@@ -16,9 +16,14 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import React, {useMemo} from 'react';
+import React, {useCallback, useMemo, useState} from 'react';
 import {Dimensions, StyleSheet, View} from 'react-native';
-import {Color, Text, useThemeColor} from '@axelor/aos-mobile-ui';
+import {
+  Color,
+  SentenceAnimatedScroller,
+  Text,
+  useThemeColor,
+} from '@axelor/aos-mobile-ui';
 import {HeaderBandHelper} from '../../../header';
 
 interface HeaderBandProps {
@@ -29,6 +34,12 @@ interface HeaderBandProps {
 
 const HeaderBand = ({color, text, showIf}: HeaderBandProps) => {
   const Colors = useThemeColor();
+
+  const [numberOfLines, setNumberOfLines] = useState<number>(1);
+
+  const handleTextLayout = useCallback(event => {
+    setNumberOfLines(event.nativeEvent.lines.length);
+  }, []);
 
   const styles = useMemo(
     () => getStyles(color || Colors.secondaryColor),
@@ -41,9 +52,13 @@ const HeaderBand = ({color, text, showIf}: HeaderBandProps) => {
 
   return (
     <View style={styles.container}>
-      <Text numberOfLines={1} style={styles.text}>
-        {text}
-      </Text>
+      {numberOfLines > 1 ? (
+        <SentenceAnimatedScroller sentence={text} textStyle={styles.text} />
+      ) : (
+        <Text style={styles.text} onTextLayout={handleTextLayout}>
+          {text}
+        </Text>
+      )}
     </View>
   );
 };
@@ -58,7 +73,6 @@ const getStyles = (color: Color) =>
       height: HeaderBandHelper.bandHeight,
     },
     text: {
-      maxWidth: '80%',
       textAlign: 'center',
       fontSize: 12,
       paddingVertical: 3,

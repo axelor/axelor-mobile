@@ -32,7 +32,7 @@ storiesOf('ui/molecules/SentenceAnimatedScroller', module).add(
       },
       duration: {
         type: 'number',
-        defaultValue: 5000,
+        defaultValue: 7000,
         control: {type: 'number'},
       },
     },
