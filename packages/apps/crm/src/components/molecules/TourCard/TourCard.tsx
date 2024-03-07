@@ -25,20 +25,10 @@ import {searchTourLineApi} from '../../../api';
 interface TourCardProps {
   style?: any;
   onPress?: () => void;
-  salesperson?: string;
   tour: any;
-  date: string;
-  name: string;
 }
 
-const TourCard = ({
-  style,
-  onPress,
-  date,
-  salesperson,
-  tour,
-  name,
-}: TourCardProps) => {
+const TourCard = ({style, onPress, tour}: TourCardProps) => {
   const I18n = useTranslator();
 
   const isMounted = useRef(true);
@@ -82,13 +72,13 @@ const TourCard = ({
     <TouchableOpacity onPress={onPress} activeOpacity={0.9}>
       <Card style={[styles.container, style]}>
         <View style={styles.childrenContainer}>
-          <Text writingType="title">{name}</Text>
-          <DateDisplay date={date} />
+          <Text writingType="title">{tour.name}</Text>
+          <DateDisplay date={tour.date} />
         </View>
         <View style={styles.childrenContainer}>
           <LabelText
             iconName="person-fill"
-            title={salesperson}
+            title={tour.salespersonUser?.fullName}
             textStyle={styles.fontSize}
             size={16}
           />

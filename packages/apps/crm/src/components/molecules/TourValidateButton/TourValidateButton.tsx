@@ -21,11 +21,7 @@ import {Button, useThemeColor} from '@axelor/aos-mobile-ui';
 import {useTranslator, useDispatch} from '@axelor/aos-mobile-core';
 import {validateTour} from '../../../features/tourSlice';
 
-interface TourDetailsButtonProps {
-  tourId: number;
-}
-
-const TourDetailsButton = ({tourId}: TourDetailsButtonProps) => {
+const TourValidateButton = ({tourId}: {tourId: number}) => {
   const I18n = useTranslator();
   const Colors = useThemeColor();
   const dispatch = useDispatch();
@@ -46,4 +42,4 @@ const TourDetailsButton = ({tourId}: TourDetailsButtonProps) => {
   );
 };
 
-export default TourDetailsButton;
+export default TourValidateButton;

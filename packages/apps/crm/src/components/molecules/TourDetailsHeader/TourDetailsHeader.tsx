@@ -32,9 +32,7 @@ const TourDetailsHeader = ({totalTourLine = 0}: TourDetailsHeaderProps) => {
 
   return (
     <View style={styles.container}>
-      <View>
-        <Text writingType="title">{tour?.name}</Text>
-      </View>
+      <Text writingType="title">{tour?.name}</Text>
       <View style={styles.row}>
         <LabelText
           iconName="person-fill"

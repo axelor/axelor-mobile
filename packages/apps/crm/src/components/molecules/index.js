@@ -27,6 +27,6 @@ export {default as PartnerInfoCard} from './PartnerInfoCard/PartnerInfoCard';
 export {default as PlanningEventCard} from './PlanningEventCard/PlanningEventCard';
 export {default as SocialNetworksInfoCard} from './SocialNetworksInfoCard/SocialNetworksInfoCard';
 export {default as TourCard} from './TourCard/TourCard';
-export {default as TourDetailsButton} from './TourDetailsButton/TourDetailsButton';
+export {default as TourValidateButton} from './TourValidateButton/TourValidateButton';
 export {default as TourDetailsHeader} from './TourDetailsHeader/TourDetailsHeader';
 export {default as TourLineCard} from './TourLineCard/TourLineCard';

@@ -26,7 +26,7 @@ import {
 } from '@axelor/aos-mobile-ui';
 import {useDispatch, useSelector, useTranslator} from '@axelor/aos-mobile-core';
 import {
-  TourDetailsButton,
+  TourValidateButton,
   TourDetailsHeader,
   TourLineActionCard,
 } from '../../components';
@@ -71,7 +71,7 @@ const TourDetailsScreen = ({route}) => {
   return (
     <Screen
       removeSpaceOnTop={true}
-      fixedItems={<TourDetailsButton tourId={tourId} />}>
+      fixedItems={<TourValidateButton tourId={tourId} />}>
       <HeaderContainer
         expandableFilter={false}
         fixedItems={<TourDetailsHeader totalTourLine={tourLineList?.length} />}
