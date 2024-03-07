@@ -17,11 +17,15 @@
  */
 
 import React, {useCallback, useEffect, useMemo, useState} from 'react';
-import {Dashboard, WarningCard} from '@axelor/aos-mobile-ui';
+import {
+  Dashboard,
+  WarningCard,
+  SentenceAnimatedScroller,
+} from '@axelor/aos-mobile-ui';
 import {headerActionsProvider} from '../../header';
 import {useTranslator} from '../../i18n';
 import {createDashboardActionID} from '../display.helpers';
-import {ActivityIndicator} from 'react-native';
+import {ActivityIndicator, View} from 'react-native';
 import {fetchDashboard} from '../api.helpers';
 
 export const DashboardScreen = ({dashboardId}) => {
@@ -91,5 +95,10 @@ export const DashboardScreen = ({dashboardId}) => {
     );
   }
 
-  return <Dashboard lineList={dashboardData} />;
+  return (
+    <View>
+      <SentenceAnimatedScroller sentence="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. " />
+      <Dashboard lineList={dashboardData} />
+    </View>
+  );
 };
