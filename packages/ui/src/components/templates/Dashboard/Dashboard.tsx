@@ -70,15 +70,16 @@ const Dashboard = ({style, lineList}: DashboardProps) => {
                 graph.dataList?.[0]?.length > 0 ||
                 graph.customChart != null
               ) {
-                const {dataList, title, type} = graph;
+                const {customChart, dataList, title, type} = graph;
                 const widthGraph = getGraphWidth(nbGraphInLine);
 
-                if (graph.customChart != null) {
-                  return React.cloneElement(graph.customChart, {
+                if (customChart != null) {
+                  return React.cloneElement(customChart, {
                     key: indexGraph,
                     widthGraph: widthGraph,
                   });
                 }
+
                 return (
                   <ChartRender
                     key={indexGraph}
