@@ -84,12 +84,12 @@ const PieChart = ({
   }, [widthGraph]);
 
   const styles = useMemo(() => {
-    return getStyles(donut);
-  }, [donut]);
+    return getStyles(donut, focusOnPress);
+  }, [donut, focusOnPress]);
 
   return (
     <View style={[styles.container, {width: _width}, styleContainer]}>
-      {!donut && !checkNullString(selectedItem.label) && (
+      {!donut && focusOnPress && !checkNullString(selectedItem.label) && (
         <LabelView
           innerRadius={innerRadius}
           isCentered={false}
@@ -110,7 +110,7 @@ const PieChart = ({
           handlePress(item);
         }}
         centerLabelComponent={
-          donut
+          donut && focusOnPress
             ? () => (
                 <LabelView
                   innerRadius={innerRadius}
@@ -127,7 +127,7 @@ const PieChart = ({
   );
 };
 
-const getStyles = (donut: boolean) =>
+const getStyles = (donut: boolean, focusOnPress: boolean) =>
   StyleSheet.create({
     container: {
       flexDirection: 'column',
@@ -139,7 +139,7 @@ const getStyles = (donut: boolean) =>
           ? Dimensions.get('window').width / 4 - MARGIN * 2
           : Dimensions.get('window').width / 2 - MARGIN * 2,
       margin: MARGIN,
-      paddingTop: donut ? 0 : 35,
+      paddingTop: donut || !focusOnPress ? 0 : 35,
     },
     title: {
       alignSelf: 'center',
