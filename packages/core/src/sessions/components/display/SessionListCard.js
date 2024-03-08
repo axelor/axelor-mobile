@@ -47,9 +47,7 @@ const SessionListCard = ({
         />
       </View>
       {!Array.isArray(sessions) || sessions?.length === 0 ? null : (
-        <ScrollView
-          contentContainerStyle={styles.contentContainer}
-          style={styles.scrollView}>
+        <ScrollView>
           {sessions.map(_session => (
             <SessionCard
               key={_session.id}
@@ -70,41 +68,20 @@ const SessionListCard = ({
 const getStyles = Colors =>
   StyleSheet.create({
     container: {
-      maxHeight: Dimensions.get('window').height * 0.45,
       width: '100%',
-    },
-    scrollView: {
-      width: '100%',
-    },
-    contentContainer: {
-      alignItems: 'center',
-      paddingHorizontal: '5%',
+      height: '65%',
     },
     iconContainer: {
       alignSelf: 'flex-end',
-      flexDirection: 'row',
-      marginRight: 20,
-    },
-    icon: {
-      marginHorizontal: 4,
-    },
-    details: {
-      fontStyle: 'italic',
+      marginRight: '5%',
     },
     iconPlus: {
-      margin: 4,
-      alignSelf: 'center',
-      justifyContent: 'center',
-      alignItems: 'center',
+      width: 30,
+      height: 30,
+      borderRadius: 10,
       backgroundColor: Colors.secondaryColor_dark.foreground,
       borderWidth: 1,
       borderColor: Colors.primaryColor.background,
-      borderRadius: 10,
-      width: 30,
-      height: 30,
-    },
-    textIndicationStyle: {
-      width: Dimensions.get('window').width * 0.65,
     },
   });
 
