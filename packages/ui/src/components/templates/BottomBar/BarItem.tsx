@@ -65,6 +65,11 @@ const BarItem = ({
     [Colors.primaryColor, color],
   );
 
+  const buttonSize: number = useMemo(
+    () => (isSelected ? size * 1.2 : size),
+    [isSelected, size],
+  );
+
   return (
     <View style={styles.container}>
       <Animated.View style={animatedStyle}>
@@ -84,7 +89,7 @@ const BarItem = ({
           color={buttonColor}
           isNeutralBackground={true}
           style={styles.indicator}
-          size={size * 0.6}
+          size={buttonSize * 0.6}
         />
       )}
       {!checkNullString(title) && <Text>{title}</Text>}
