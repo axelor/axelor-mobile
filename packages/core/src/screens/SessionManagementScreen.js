@@ -17,9 +17,9 @@
  */
 
 import React, {useCallback, useEffect, useMemo, useState} from 'react';
-import {StyleSheet, View, Dimensions} from 'react-native';
+import {KeyboardAvoidingView, StyleSheet, View} from 'react-native';
 import {useDispatch} from 'react-redux';
-import {Text, KeyboardAvoidingScrollView, Screen} from '@axelor/aos-mobile-ui';
+import {Text, Screen} from '@axelor/aos-mobile-ui';
 import {
   LogoImage,
   PopupCreateSession,
@@ -88,7 +88,7 @@ const SessionManagementScreen = ({route}) => {
 
   return (
     <Screen>
-      <KeyboardAvoidingScrollView keyboardOffset={{ios: 0, android: 180}}>
+      <KeyboardAvoidingView keyboardOffset={{ios: 0, android: 180}}>
         <View style={styles.container}>
           <View style={styles.imageContainer}>
             <LogoImage logoFile={logoFile} url={session?.url} />
@@ -102,69 +102,55 @@ const SessionManagementScreen = ({route}) => {
             openCreation={() => setPopupCreateIsOpen(true)}
             session={session}
           />
-          <PopupCreateSession
-            sessionList={sessionList}
-            visible={popupCreateIsOpen}
-            handleVisibility={setPopupCreateIsOpen}
-            showUrlInput={showUrlInput}
-            modeDebug={modeDebug}
-            testInstanceConfig={testInstanceConfig}
-            releaseInstanceConfig={releaseInstanceConfig}
-          />
-          <PopupSession
-            sessionActive={session}
-            popupIsOpen={!popupEditIsOpen && popupConnectionIsOpen}
-            handleClose={() => setPopupConnectionIsOpen(false)}
-            showUrlInput={showUrlInput}
-            testInstanceConfig={testInstanceConfig}
-          />
-          <PopupEditSession
-            session={session}
-            sessionList={sessionList}
-            popupIsOpen={popupEditIsOpen}
-            showUrlInput={showUrlInput}
-            handleClose={() => {
-              setPopupConnectionIsOpen(false);
-              setPopupEditIsOpen(false);
-            }}
-            modeDebug={modeDebug}
-          />
-          <View style={styles.copyright}>
+          <View style={styles.copyrightContainer}>
             <Text>{`© 2005 - ${new Date().getFullYear()} Axelor. All rights reserved.`}</Text>
             <Text>{`Version ${appVersion}`}</Text>
           </View>
         </View>
-      </KeyboardAvoidingScrollView>
+        <PopupCreateSession
+          sessionList={sessionList}
+          visible={popupCreateIsOpen}
+          handleVisibility={setPopupCreateIsOpen}
+          showUrlInput={showUrlInput}
+          modeDebug={modeDebug}
+          testInstanceConfig={testInstanceConfig}
+          releaseInstanceConfig={releaseInstanceConfig}
+        />
+        <PopupSession
+          sessionActive={session}
+          popupIsOpen={!popupEditIsOpen && popupConnectionIsOpen}
+          handleClose={() => setPopupConnectionIsOpen(false)}
+          showUrlInput={showUrlInput}
+          testInstanceConfig={testInstanceConfig}
+        />
+        <PopupEditSession
+          session={session}
+          sessionList={sessionList}
+          popupIsOpen={popupEditIsOpen}
+          showUrlInput={showUrlInput}
+          handleClose={() => {
+            setPopupConnectionIsOpen(false);
+            setPopupEditIsOpen(false);
+          }}
+          modeDebug={modeDebug}
+        />
+      </KeyboardAvoidingView>
     </Screen>
   );
 };
 
 const styles = StyleSheet.create({
   container: {
-    marginTop: '15%',
-    alignItems: 'center',
-    height:
-      Dimensions.get('window').height < 950
-        ? Dimensions.get('window').height * 0.9
-        : Dimensions.get('window').height * 0.85,
+    height: '100%',
+    justifyContent: 'space-evenly',
   },
   imageContainer: {
-    alignItems: 'center',
-    width: '100%',
     height: '15%',
-    marginTop:
-      Dimensions.get('window').height < 500
-        ? '10%'
-        : Dimensions.get('window').height > 950
-        ? '15%'
-        : '40%',
-    marginBottom: 10,
-  },
-  copyright: {
-    position: 'absolute',
     alignItems: 'center',
-    width: '100%',
-    bottom: 0,
+    paddingTop: '15%',
+  },
+  copyrightContainer: {
+    alignItems: 'center',
   },
 });
 
