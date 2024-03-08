@@ -87,15 +87,23 @@ const PieChart = ({
     return getStyles(donut, focusOnPress);
   }, [donut, focusOnPress]);
 
+  const renderLabelView = useCallback(() => {
+    if (!focusOnPress) {
+      return undefined;
+    }
+
+    return (
+      <LabelView
+        innerRadius={innerRadius}
+        isCentered={donut}
+        selectedItem={selectedItem}
+      />
+    );
+  }, [donut, focusOnPress, innerRadius, selectedItem]);
+
   return (
     <View style={[styles.container, {width: _width}, styleContainer]}>
-      {!donut && focusOnPress && !checkNullString(selectedItem.label) && (
-        <LabelView
-          innerRadius={innerRadius}
-          isCentered={false}
-          selectedItem={selectedItem}
-        />
-      )}
+      {!donut && renderLabelView()}
       <RNPieChart
         data={dataSet}
         donut={donut}
@@ -109,17 +117,7 @@ const PieChart = ({
         onPress={item => {
           handlePress(item);
         }}
-        centerLabelComponent={
-          donut && focusOnPress
-            ? () => (
-                <LabelView
-                  innerRadius={innerRadius}
-                  isCentered={true}
-                  selectedItem={selectedItem}
-                />
-              )
-            : undefined
-        }
+        centerLabelComponent={donut ? renderLabelView : undefined}
       />
       {!checkNullString(title) && <Text style={styles.title}>{title}</Text>}
       {legend && <ChartLegend dataSet={dataSet} />}

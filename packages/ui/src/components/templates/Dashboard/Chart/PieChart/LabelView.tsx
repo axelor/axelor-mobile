@@ -19,6 +19,7 @@
 import React, {useMemo} from 'react';
 import {StyleSheet, View} from 'react-native';
 import {Text} from '../../../../atoms';
+import {checkNullString} from '../../../../../utils';
 
 interface LabelViewProps {
   innerRadius: number;
@@ -30,6 +31,10 @@ const LabelView = ({selectedItem, innerRadius, isCentered}: LabelViewProps) => {
   const styles = useMemo(() => {
     return getStyles(innerRadius);
   }, [innerRadius]);
+
+  if (checkNullString(selectedItem?.label)) {
+    return null;
+  }
 
   return (
     <View style={isCentered ? styles.centered : styles.top}>
