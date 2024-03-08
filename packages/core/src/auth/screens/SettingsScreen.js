@@ -24,8 +24,6 @@ import {
   useConfig,
   useTheme,
   Text,
-  useThemeColor,
-  BottomBar,
 } from '@axelor/aos-mobile-ui';
 import {useDispatch, useSelector} from 'react-redux';
 import {useTranslator} from '../../i18n';
@@ -39,7 +37,6 @@ import {ApiProviderConfig} from '../../apiProviders/config';
 import {TranslationsButton} from '../components';
 
 const SettingsScreen = ({children}) => {
-  const Colors = useThemeColor();
   const I18n = useTranslator();
   const Theme = useTheme();
   const online = useOnline();
@@ -87,34 +84,6 @@ const SettingsScreen = ({children}) => {
     [setShowSubtitles],
   );
 
-  const EXEMPLE = [
-    {
-      iconName: 'house',
-      viewComponent: <Screen title="House view component" />,
-      color: Colors.secondaryColor_dark,
-    },
-    {
-      iconName: 'clock-history',
-      viewComponent: <Screen title="Clock history view component" />,
-      indicator: 5,
-      color: Colors.plannedColor,
-    },
-    {
-      iconName: 'trash',
-      viewComponent: <Screen title="Trash view component" />,
-      color: Colors.infoColor,
-    },
-    {
-      iconName: 'x-lg',
-      viewComponent: <Screen title="X view component" />,
-      color: Colors.progressColor,
-    },
-    {
-      iconName: 'person-fill',
-      viewComponent: <Screen title="Person view component" />,
-    },
-  ];
-
   return (
     <Screen style={styles.screen}>
       <View style={styles.container}>
@@ -148,7 +117,6 @@ const SettingsScreen = ({children}) => {
         {children}
         <TranslationsButton />
       </View>
-      <BottomBar items={EXEMPLE} />
       <View style={styles.footerContainer}>
         <Text>{I18n.t('Base_Version', {appVersion: appVersion})}</Text>
         <Text>{`${I18n.t('Base_ConnectedOn')}:`}</Text>
