@@ -19,13 +19,17 @@
 import 'react-native-gesture-handler/jestSetup';
 import 'react-native/jest/setup';
 
-jest.mock('react-native-reanimated', () => ({
-  useSharedValue: jest.fn,
-  useAnimatedStyle: jest.fn,
-  default: {
-    call: jest.fn(),
-  },
-}));
+jest.mock('react-native-reanimated', () => {
+  const View = require('react-native').View;
+  return {
+    useSharedValue: jest.fn,
+    useAnimatedStyle: jest.fn,
+    View: View,
+    default: {
+      call: jest.fn(),
+    },
+  };
+});
 
 jest.mock('react-native/Libraries/Animated/NativeAnimatedHelper');
 
