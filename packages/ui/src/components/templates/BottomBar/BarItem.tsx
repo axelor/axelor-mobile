@@ -88,16 +88,6 @@ const BarItem = ({
         />
       )}
       {!checkNullString(title) && <Text>{title}</Text>}
-      <View
-        style={[
-          styles.selectedBar,
-          {
-            borderColor: isSelected
-              ? buttonColor.background
-              : Colors.backgroundColor,
-          },
-        ]}
-      />
     </View>
   );
 };
@@ -107,6 +97,7 @@ const styles = StyleSheet.create({
     flexDirection: 'column',
     alignItems: 'center',
     marginHorizontal: 2,
+    marginBottom: 6,
   },
   selectedBar: {
     borderTopWidth: 1,

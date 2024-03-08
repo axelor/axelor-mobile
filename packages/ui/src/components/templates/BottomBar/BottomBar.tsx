@@ -16,9 +16,15 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import React, {useCallback, useEffect, useMemo, useState} from 'react';
+import React, {useCallback, useEffect, useMemo, useRef, useState} from 'react';
 import {Dimensions, StyleSheet, View} from 'react-native';
+import Animated, {
+  useAnimatedStyle,
+  useSharedValue,
+  withSpring,
+} from 'react-native-reanimated';
 import {useConfig} from '../../../config/ConfigContext';
+import {useThemeColor} from '../../../theme';
 import {Card} from '../../atoms';
 import BarItem from './BarItem';
 import {BottomBarItem, DisplayItem} from './types.helper';
@@ -35,10 +41,37 @@ const BottomBar = ({
   items: BottomBarItem[];
   itemSize?: number;
 }) => {
+  const {headerHeight} = useConfig();
+  const Colors = useThemeColor();
+
   const [selectedKey, setSelectedKey] = useState<string>();
   const [viewHeight, setViewHeight] = useState<number>(WINDOW_HEIGHT * 0.8);
+  const [selectedItemColor, setSelectedItemColor] = useState<any>();
 
-  const {headerHeight} = useConfig();
+  const itemPositions = useRef({});
+  const animatedX = useSharedValue(0);
+
+  const onItemLayout = useCallback(
+    (event, key) => {
+      itemPositions.current[key] = event.nativeEvent.layout.x;
+      if (key === selectedKey) {
+        animatedX.value = itemPositions.current[key];
+      }
+    },
+    [animatedX, selectedKey],
+  );
+
+  useEffect(() => {
+    if (selectedKey && itemPositions.current[selectedKey] !== undefined) {
+      animatedX.value = withSpring(itemPositions.current[selectedKey]);
+    }
+  }, [selectedKey, animatedX]);
+
+  const animatedStyle = useAnimatedStyle(() => {
+    return {
+      transform: [{translateX: animatedX.value}],
+    };
+  });
 
   const visibleItems: DisplayItem[] = useMemo(
     () => getVisibleItems(items),
@@ -48,20 +81,26 @@ const BottomBar = ({
   const renderItem = useCallback(
     (item: DisplayItem) => {
       return (
-        <BarItem
-          {...item}
-          size={itemSize}
-          onPress={() => setSelectedKey(item.key)}
-          isSelected={selectedKey === item.key}
-        />
+        <View key={item.key} onLayout={event => onItemLayout(event, item.key)}>
+          <BarItem
+            {...item}
+            size={itemSize}
+            onPress={() => {
+              setSelectedItemColor(item.color);
+              setSelectedKey(item.key);
+            }}
+            isSelected={selectedKey === item.key}
+          />
+        </View>
       );
     },
-    [itemSize, selectedKey],
+    [itemSize, onItemLayout, selectedKey],
   );
 
   useEffect(() => {
     if (selectedKey == null) {
       setSelectedKey(visibleItems?.[0].key);
+      setSelectedItemColor(visibleItems?.[0].color);
     }
   }, [selectedKey, visibleItems]);
 
@@ -77,6 +116,18 @@ const BottomBar = ({
         }}>
         <Card style={[styles.bottomContainer, style]}>
           {visibleItems.map(renderItem)}
+          <Animated.View
+            style={[
+              styles.animatedBar,
+              animatedStyle,
+              {
+                backgroundColor:
+                  selectedItemColor?.background != null
+                    ? selectedItemColor?.background
+                    : Colors.primaryColor?.background,
+              },
+            ]}
+          />
         </Card>
       </View>
     </View>
@@ -97,6 +148,13 @@ const styles = StyleSheet.create({
     alignItems: 'flex-end',
     alignSelf: 'center',
     marginBottom: 10,
+  },
+  animatedBar: {
+    position: 'absolute',
+    height: 2,
+    width: 40,
+    bottom: 10,
+    left: 2,
   },
 });
 
