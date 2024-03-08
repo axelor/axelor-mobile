@@ -1,0 +1,5 @@
+{
+  "title": "Login screen: improve display.",
+  "type": "fix",
+  "packages": "core"
+}
