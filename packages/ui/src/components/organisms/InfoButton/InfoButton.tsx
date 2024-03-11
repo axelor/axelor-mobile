@@ -27,7 +27,6 @@ interface InfoButtonProps {
   iconName: string;
   indication: string;
   iconColor: string;
-  size?: number;
   position?: 'left' | 'right';
   onPress: () => void;
   space?: number;

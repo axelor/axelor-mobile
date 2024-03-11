@@ -19,37 +19,21 @@
 import React from 'react';
 import {Dimensions, StyleSheet, View} from 'react-native';
 import {storiesOf} from '@storybook/react-native';
-import InfoButton from '../../src/components/organisms/InfoButton/InfoButton';
-import {lightTheme} from '../../src/theme';
+import {CardIndicator, Text} from '../../src/components';
 
-storiesOf('ui/organisms/InfoButton', module).add(
+storiesOf('ui/molecules/CardIndicator', module).add(
   'Default',
-  args => (
-    <View style={styles.view}>
-      <InfoButton
-        style={styles.container}
-        {...args}
-        iconColor={lightTheme.colors[args.iconColor].background}
-      />
-    </View>
-  ),
+  args => {
+    return (
+      <View style={styles.view}>
+        <CardIndicator {...args} handleClose={() => {}}>
+          <Text>Test</Text>
+        </CardIndicator>
+      </View>
+    );
+  },
   {
     argTypes: {
-      iconName: {
-        control: {
-          type: 'text',
-        },
-        defaultValue: 'info',
-      },
-      iconColor: {
-        options: Object.entries(lightTheme.colors)
-          .filter(([, _color]) => typeof _color !== 'string')
-          .map(([key]) => key),
-        defaultValue: 'primaryColor',
-        control: {
-          type: 'select',
-        },
-      },
       indication: {
         control: {
           type: 'text',
@@ -69,6 +53,12 @@ storiesOf('ui/organisms/InfoButton', module).add(
         },
         defaultValue: 50,
       },
+      isVisible: {
+        control: {
+          type: 'boolean',
+        },
+        defaultValue: true,
+      },
     },
   },
 );
@@ -80,8 +70,5 @@ const styles = StyleSheet.create({
     flexDirection: 'column',
     alignItems: 'center',
     justifyContent: 'center',
-  },
-  container: {
-    width: 50,
   },
 });

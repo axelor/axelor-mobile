@@ -21,7 +21,7 @@ import {View} from 'react-native';
 import {shallow} from 'enzyme';
 import {Card, CardIndicator, Text} from '@axelor/aos-mobile-ui';
 
-describe('CardIconButton Component', () => {
+describe('CardIndicator Component', () => {
   const props = {
     indication: 'heart',
     children: <View testID="children" />,
