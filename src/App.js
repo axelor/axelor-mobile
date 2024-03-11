@@ -24,6 +24,7 @@ import {CrmModule} from '@axelor/aos-mobile-crm';
 import {HelpDeskModule} from '@axelor/aos-mobile-helpdesk';
 import {HrModule} from '@axelor/aos-mobile-hr';
 import {QualityModule} from '@axelor/aos-mobile-quality';
+import {InterventionModule} from '@axelor/aos-mobile-intervention';
 import application_properties from '../package.json';
 import {app_config} from './app.config';
 
@@ -37,6 +38,7 @@ const App = () => {
         HelpDeskModule,
         HrModule,
         QualityModule,
+        InterventionModule,
       ]}
       mainMenu="auth_menu_user"
       version={application_properties.version}
