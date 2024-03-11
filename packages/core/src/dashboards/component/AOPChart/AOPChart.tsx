@@ -28,7 +28,13 @@ import {transformData} from './format.helpers';
 
 const DEFAULT_CHART_CONFIG = {type: '', dataset: [], title: ''};
 
-const AOPChart = ({actionViewName}: {actionViewName: string}) => {
+const AOPChart = ({
+  actionViewName,
+  widthGraph,
+}: {
+  actionViewName: string;
+  widthGraph?: number;
+}) => {
   const [chart, setChart] = useState(DEFAULT_CHART_CONFIG);
 
   useEffect(() => {
@@ -83,6 +89,7 @@ const AOPChart = ({actionViewName}: {actionViewName: string}) => {
       dataList={transformData(chart.dataset)}
       title={chart.title}
       type={chart.type}
+      widthGraph={widthGraph}
     />
   );
 };
