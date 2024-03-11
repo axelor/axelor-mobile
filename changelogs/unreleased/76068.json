@@ -1,0 +1,5 @@
+{
+  "title": "HeaderBand: add the possibility of automatic scrolling on HeaderBand using new component SentenceAnimatedScroller",
+  "type": "feat",
+  "packages": ["core", "ui"]
+}
