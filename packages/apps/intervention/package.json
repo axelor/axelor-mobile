@@ -1,0 +1,50 @@
+{
+  "name": "@axelor/aos-mobile-intervention",
+  "version": "8.1.0",
+  "author": "Axelor",
+  "license": "AGPL-3.0-only",
+  "publishConfig": {
+    "access": "public"
+  },
+  "main": "lib/index.js",
+  "types": "lib/index.d.js",
+  "files": [
+    "lib"
+  ],
+  "scripts": {
+    "clean": "rm -rf lib/",
+    "compile": "tsc -p tsconfig.build.json",
+    "dev": "npm run compile -- --watch",
+    "build": "npm run clean && npm run compile",
+    "i18n": "i18n-parser --config=./i18n.json",
+    "npm-publish": "npm publish",
+    "lint": "eslint .",
+    "format": "prettier --write src/",
+    "format:check": "prettier --check src/",
+    "license:add": "npx add-copyright-header --generate --dir 'src'"
+  },
+  "peerDependencies": {
+    "react": "18.2.0",
+    "react-i18next": "^11.18.6"
+  },
+  "dependencies": {
+    "@axelor/aos-mobile-core": "8.0.3",
+    "@axelor/aos-mobile-ui": "8.0.3",
+    "@reduxjs/toolkit": "^1.8.5"
+  },
+  "devDependencies": {
+    "@babel/runtime": "^7.19.0",
+    "@react-native-community/eslint-config": "^2.0.0",
+    "@types/react": "18.2.0",
+    "@types/react-native": "0.68.1",
+    "cpx2": "^4.2.0",
+    "eslint": "^7.32.0",
+    "i18n-parser": "^1.0.0",
+    "prettier": "^2.7.1",
+    "react": "18.2.0",
+    "react-native": "0.68.1"
+  },
+  "resolutions": {
+    "@types/react": "18.2.0"
+  }
+}

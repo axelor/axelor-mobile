@@ -35,6 +35,7 @@
     "@axelor/aos-mobile-crm": "8.0.3",
     "@axelor/aos-mobile-helpdesk": "8.0.3",
     "@axelor/aos-mobile-hr": "8.0.3",
+    "@axelor/aos-mobile-intervention": "8.1.0",
     "@axelor/aos-mobile-manufacturing": "8.0.3",
     "@axelor/aos-mobile-quality": "8.0.3",
     "@axelor/aos-mobile-stock": "8.0.3",
