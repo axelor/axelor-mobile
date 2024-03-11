@@ -16,7 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import React, {useCallback, useEffect, useState} from 'react';
+import React, {useCallback, useEffect, useMemo, useState} from 'react';
 import {
   ChipSelect,
   HeaderContainer,
@@ -64,6 +64,10 @@ const TourDetailsScreen = ({route}) => {
     [dispatch, selectedStatus, tour],
   );
 
+  const hasUnvalidatedItems = useMemo(() => {
+    return tourLineList.some(item => !item.isValidated);
+  }, [tourLineList]);
+
   if (tour?.id !== tourId) {
     return null;
   }
@@ -71,7 +75,9 @@ const TourDetailsScreen = ({route}) => {
   return (
     <Screen
       removeSpaceOnTop={true}
-      fixedItems={<TourValidateButton tourId={tourId} />}>
+      fixedItems={
+        hasUnvalidatedItems && <TourValidateButton tourId={tourId} />
+      }>
       <HeaderContainer
         expandableFilter={false}
         fixedItems={<TourDetailsHeader />}

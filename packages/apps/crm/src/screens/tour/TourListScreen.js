@@ -89,10 +89,7 @@ const TourListScreen = ({navigation}) => {
         data={tourList}
         renderItem={({item}) => (
           <TourCard
-            name={item.name}
-            date={item.date}
             tour={item}
-            salesperson={item.salespersonUser?.fullName}
             onPress={() =>
               navigation.navigate('TourDetailsScreen', {
                 tourId: item.id,
