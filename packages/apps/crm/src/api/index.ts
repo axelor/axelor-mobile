@@ -74,5 +74,12 @@ export {
   updateProspect as updateProspectApi,
   updateProspectScoring,
 } from './prospect-api';
-export {searchTour as searchTourApi} from './tour-api';
-export {searchTourLine as searchTourLineApi} from './tour-line-api';
+export {
+  fetchTourById as fetchTourByIdApi,
+  searchTour as searchTourApi,
+  validateTour as validateTourApi,
+} from './tour-api';
+export {
+  searchTourLine as searchTourLineApi,
+  validateTourLine as validateTourLineApi,
+} from './tour-line-api';

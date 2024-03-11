@@ -20,8 +20,13 @@ import {createAsyncThunk, createSlice} from '@reduxjs/toolkit';
 import {
   generateInifiniteScrollCases,
   handlerApiCall,
+  updateAgendaItems,
 } from '@axelor/aos-mobile-core';
-import {searchTour as _searchTour} from '../api/tour-api';
+import {
+  searchTour as _searchTour,
+  fetchTourById as _fetchTourById,
+  validateTour as _validateTour,
+} from '../api/tour-api';
 
 export const searchTour = createAsyncThunk(
   'tour/searchTour',
@@ -36,11 +41,42 @@ export const searchTour = createAsyncThunk(
   },
 );
 
+export const fetchTourById = createAsyncThunk(
+  'tour/fetchTourById',
+  async function (data, {getState}) {
+    return handlerApiCall({
+      fetchFunction: _fetchTourById,
+      data,
+      action: 'Crm_SliceAction_FetchTourById',
+      getState,
+      responseOptions: {isArrayResponse: false},
+    });
+  },
+);
+
+export const validateTour = createAsyncThunk(
+  'tour/validateTour',
+  async function (data, {getState, dispatch}) {
+    return handlerApiCall({
+      fetchFunction: _validateTour,
+      data,
+      action: 'Crm_SliceAction_ValidateTour',
+      getState,
+      responseOptions: {isArrayResponse: false},
+    }).then(() => {
+      dispatch(fetchTourById({tourId: data?.tourId}));
+    });
+  },
+);
+
 const initialState = {
   loadingTourList: true,
   moreLoading: false,
   isListEnd: false,
   tourList: [],
+
+  loadingTour: true,
+  tour: {},
 };
 
 const tourSlice = createSlice({
@@ -52,6 +88,14 @@ const tourSlice = createSlice({
       moreLoading: 'moreLoading',
       isListEnd: 'isListEnd',
       list: 'tourList',
+    });
+    builder.addCase(fetchTourById.pending, (state, action) => {
+      state.loadingTour = true;
+    });
+    builder.addCase(fetchTourById.fulfilled, (state, action) => {
+      state.loadingTour = false;
+      state.tour = action.payload;
+      state.tourList = updateAgendaItems(state.tourList, [action.payload]);
     });
   },
 });
