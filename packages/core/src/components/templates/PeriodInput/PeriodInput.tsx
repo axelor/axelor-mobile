@@ -18,7 +18,7 @@
 
 import React, {useCallback, useEffect, useMemo, useState} from 'react';
 import {StyleSheet, View} from 'react-native';
-import {Label, useThemeColor} from '@axelor/aos-mobile-ui';
+import {Label} from '@axelor/aos-mobile-ui';
 import {DateInput} from '../../organisms';
 import {getEndOfDay, getStartOfDay} from '../../../utils';
 import {useTranslator} from '../../../i18n';
@@ -49,7 +49,6 @@ const PeriodInput = ({
   style,
 }: PeriodInputProps) => {
   const I18n = useTranslator();
-  const Colors = useThemeColor();
 
   const [startDate, setStartDate] = useState(startDateConfig.date);
   const [endDate, setEndDate] = useState(endDateConfig.date);
@@ -73,30 +72,41 @@ const PeriodInput = ({
     return getStyles(horizontal);
   }, [horizontal]);
 
-  const renderDateInput = useCallback((mode: number) => {
-    const isStartDate = mode === DATE_INPUT_MODE.startDate;
-    const translationKey = isStartDate ? 'Base_StartDate' : 'Base_EndDate';
-    const date = isStartDate ? startDate : endDate;
-    const setDate = isStartDate ? setStartDate : setEndDate;
-    const dateConfig = isStartDate ? startDateConfig : endDateConfig;
+  const renderDateInput = useCallback(
+    (mode: number) => {
+      const isStartDate = mode === DATE_INPUT_MODE.startDate;
+      const translationKey = isStartDate ? 'Base_StartDate' : 'Base_EndDate';
+      const date = isStartDate ? startDate : endDate;
+      const setDate = isStartDate ? setStartDate : setEndDate;
+      const dateConfig = isStartDate ? startDateConfig : endDateConfig;
 
-    return (
-      <DateInput
-        style={styles.dateInput}
-        title={I18n.t(translationKey)}
-        mode="date"
-        nullable
-        popup={horizontal}
-        defaultDate={date}
-        onDateChange={_date => {
-          setDate(_date);
-          dateConfig.onDateChange(_date);
-        }}
-        readonly={dateConfig.readonly}
-        required={dateConfig.required}
-      />
-    );
-  }, []);
+      return (
+        <DateInput
+          style={styles.dateInput}
+          title={I18n.t(translationKey)}
+          mode="date"
+          nullable
+          popup={horizontal}
+          defaultDate={date}
+          onDateChange={_date => {
+            setDate(_date);
+            dateConfig.onDateChange(_date);
+          }}
+          readonly={dateConfig.readonly}
+          required={dateConfig.required}
+        />
+      );
+    },
+    [
+      endDate,
+      endDateConfig,
+      horizontal,
+      I18n,
+      startDate,
+      startDateConfig,
+      styles.dateInput,
+    ],
+  );
 
   return (
     <View style={[styles.container, style]}>
