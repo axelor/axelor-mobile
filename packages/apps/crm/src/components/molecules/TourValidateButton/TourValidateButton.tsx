@@ -16,15 +16,50 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import React from 'react';
+import React, {useEffect, useRef, useState} from 'react';
 import {Button, useThemeColor} from '@axelor/aos-mobile-ui';
-import {useTranslator, useDispatch} from '@axelor/aos-mobile-core';
+import {useTranslator, useDispatch, useSelector} from '@axelor/aos-mobile-core';
 import {validateTour} from '../../../features/tourSlice';
+import {searchTourLineApi} from '../../../api';
 
-const TourValidateButton = ({tourId}: {tourId: number}) => {
+const TourValidateButton = ({}) => {
   const I18n = useTranslator();
   const Colors = useThemeColor();
   const dispatch = useDispatch();
+
+  const isMounted = useRef(true);
+
+  const {tour} = useSelector((state: any) => state.tour);
+
+  const [numberUnValidated, setNumberUnValidated] = useState<number>(0);
+
+  useEffect(() => {
+    isMounted.current = true;
+
+    searchTourLineApi({
+      tourId: tour?.id,
+      isValidated: false,
+      numberElementsByPage: 1,
+    })
+      .then(({data}) => {
+        if (isMounted.current) {
+          setNumberUnValidated(data?.total);
+        }
+      })
+      .catch(() => {
+        if (isMounted.current) {
+          setNumberUnValidated(0);
+        }
+      });
+
+    return () => {
+      isMounted.current = false;
+    };
+  }, [tour]);
+
+  if (numberUnValidated === 0) {
+    return null;
+  }
 
   return (
     <Button
@@ -34,7 +69,7 @@ const TourValidateButton = ({tourId}: {tourId: number}) => {
       onPress={() => {
         dispatch(
           (validateTour as any)({
-            tourId: tourId,
+            tourId: tour?.id,
           }),
         );
       }}
