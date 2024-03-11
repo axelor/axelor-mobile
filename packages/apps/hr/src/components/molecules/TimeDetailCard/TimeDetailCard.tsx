@@ -104,6 +104,7 @@ const styles = StyleSheet.create({
   },
   cardContainer: {
     flex: 6,
+    margin: 2,
   },
   iconContainer: {
     flexDirection: 'column',
