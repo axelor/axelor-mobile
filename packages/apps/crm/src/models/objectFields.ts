@@ -211,5 +211,8 @@ export const crm_modelAPI: ObjectFields = {
   crm_tourLine: schemaContructor.object({
     tourLineOrder: schemaContructor.number(),
     isValidated: schemaContructor.boolean(),
+    partner: schemaContructor.subObject(),
+    address: schemaContructor.subObject(),
+    event: schemaContructor.subObject(),
   }),
 };
