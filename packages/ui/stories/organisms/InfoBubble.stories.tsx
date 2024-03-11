@@ -18,10 +18,10 @@
 
 import React from 'react';
 import {storiesOf} from '@storybook/react-native';
-import {InfoBubble} from '../../src/components/molecules';
+import {InfoBubble} from '../../src/components';
 import {lightTheme} from '../../src/theme/themes';
 
-storiesOf('ui/molecules/InfoBubble', module).add(
+storiesOf('ui/organisms/InfoBubble', module).add(
   'default',
   args => {
     return (
@@ -60,7 +60,7 @@ storiesOf('ui/molecules/InfoBubble', module).add(
         control: {
           type: 'number',
         },
-        defaultValue: 50,
+        defaultValue: 25,
       },
       position: {
         control: {
@@ -68,6 +68,12 @@ storiesOf('ui/molecules/InfoBubble', module).add(
         },
         options: ['right', 'left'],
         defaultValue: 'right',
+      },
+      coloredBubble: {
+        control: {
+          type: 'boolean',
+        },
+        defaultValue: true,
       },
     },
   },

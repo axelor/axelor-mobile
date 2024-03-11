@@ -111,22 +111,20 @@ const TimesheetDetailCard = ({
         onPress={onPress}
       />
       {_isActions && (
-        <View style={styles.flexOneContainer}>
-          <CardIconButton
-            iconName={
-              _statusSelect === Timesheet.statusSelect.Draft
-                ? 'send-fill'
-                : 'check-lg'
-            }
-            iconColor={Colors.secondaryColor_dark.background}
-            onPress={() => {
-              _statusSelect === Timesheet.statusSelect.Draft
-                ? onSend()
-                : onValidate();
-            }}
-            style={styles.flexOneContainer}
-          />
-        </View>
+        <CardIconButton
+          iconName={
+            _statusSelect === Timesheet.statusSelect.Draft
+              ? 'send-fill'
+              : 'check-lg'
+          }
+          iconColor={Colors.secondaryColor_dark.background}
+          onPress={() => {
+            _statusSelect === Timesheet.statusSelect.Draft
+              ? onSend()
+              : onValidate();
+          }}
+          style={styles.flexOneContainer}
+        />
       )}
     </View>
   );
@@ -138,6 +136,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignSelf: 'center',
     marginVertical: 2,
+    flex: 1,
   },
   cardContainer: {
     flex: 6,

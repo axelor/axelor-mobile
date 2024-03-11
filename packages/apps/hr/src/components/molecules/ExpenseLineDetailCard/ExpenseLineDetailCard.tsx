@@ -138,27 +138,29 @@ const ExpenseLineDetailCard = ({
           </View>
           {ExpenseLine.getExpenseMode(item) === ExpenseLine.modes.general &&
             item.justificationMetaFile != null && (
-              <CardIconButton
-                iconName={'arrows-angle-expand'}
-                iconColor={Colors.secondaryColor_dark.background}
-                onPress={handleShowFile}
-                style={styles.cardIconButton}
-              />
+              <View style={styles.flexOne}>
+                <CardIconButton
+                  iconName="arrows-angle-expand"
+                  iconColor={Colors.secondaryColor_dark.background}
+                  onPress={handleShowFile}
+                  style={styles.flexOne}
+                />
+              </View>
             )}
           {expense == null ||
           expense.statusSelect === Expense.statusSelect.Draft ? (
-            <View style={styles.iconContainer}>
+            <View style={styles.flexOne}>
               <CardIconButton
                 iconName="pencil-fill"
                 iconColor={Colors.secondaryColor_dark.background}
                 onPress={onEdit}
-                style={styles.cardIconButton}
+                style={styles.flexOne}
               />
               <CardIconButton
                 iconName="trash3-fill"
                 iconColor={Colors.errorColor.background}
                 onPress={handleDelete}
-                style={styles.cardIconButton}
+                style={styles.flexOne}
               />
             </View>
           ) : null}
@@ -174,12 +176,11 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     alignSelf: 'center',
     width: '96%',
-    marginHorizontal: '2%',
     minHeight: 90,
     marginVertical: 4,
   },
   checkbox: {
-    marginRight: 5,
+    marginHorizontal: 4,
   },
   animatedCard: {
     position: 'absolute',
@@ -191,19 +192,15 @@ const styles = StyleSheet.create({
     display: 'flex',
     flexDirection: 'row',
     alignItems: 'center',
-    flex: 1,
-    justifyContent: 'space-evenly',
     alignSelf: 'center',
+    flex: 1,
     marginVertical: 4,
   },
   containerCard: {
     flex: 6,
+    margin: 2,
   },
-  iconContainer: {
-    flexDirection: 'column',
-    flex: 1,
-  },
-  cardIconButton: {
+  flexOne: {
     flex: 1,
   },
 });
