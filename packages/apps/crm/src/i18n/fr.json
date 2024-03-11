@@ -27,9 +27,10 @@
   "Crm_LinkedPartnersOfContact": "Clients et/ou prospects associés",
   "Crm_PriceList": "Liste de prix",
   "Crm_Employees": "Employés",
-  "Crm_Event_Status_Planned": "Planifié",
-  "Crm_Event_Status_Realized": "Réalisé",
-  "Crm_Event_Status_Canceled": "Annulé",
+  "Crm_Status_Planned": "Planifié",
+  "Crm_Status_Realized": "Réalisé",
+  "Crm_Status_Canceled": "Annulé",
+  "Crm_Status_Validated": "Validé",
   "Crm_Event_Category_Event": "Événement",
   "Crm_Event_Category_Call": "Appel",
   "Crm_Event_Category_Meeting": "Réunion",
@@ -89,6 +90,7 @@
   "Crm_AllDay": "Toute la journée ?",
   "Crm_Location": "Emplacement",
   "Crm_Tours": "Tournées",
+  "Crm_RefreshTour": "Mettre à jour la tournée",
   "Crm_ScheduledVisits": "{{totalTourLine}} visites programmées",
   "Crm_SliceAction_FetchCatalog": "récupération des catalogues",
   "Crm_SliceAction_FetchCatalogType": "récupération des types de catalogue",
@@ -132,5 +134,9 @@
   "Crm_SliceAction_SearchPartner": "recherche des partenaires",
   "Crm_SliceAction_CreateEvent": "création de l'événement",
   "Crm_SliceAction_UpdateEvent": "mise à jour de l'événement",
-  "Crm_SliceAction_FetchTour": "récupération des tournées"
+  "Crm_SliceAction_FetchTour": "récupération des tournées",
+  "Crm_SliceAction_FetchTourById": "récupération de la tournée par id",
+  "Crm_SliceAction_FetchTourLine": "récupération des lignes de la tournée",
+  "Crm_SliceAction_ValidateTourLine": "validation d'une ligne de tournée",
+  "Crm_SliceAction_ValidateTour": "validation de la tournée"
 }

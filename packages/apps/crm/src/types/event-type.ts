@@ -42,11 +42,11 @@ class EventType {
     if (I18n) {
       switch (select) {
         case this.status.Planned:
-          return I18n.t('Crm_Event_Status_Planned');
+          return I18n.t('Crm_Status_Planned');
         case this.status.Realized:
-          return I18n.t('Crm_Event_Status_Realized');
+          return I18n.t('Crm_Status_Realized');
         case this.status.Canceled:
-          return I18n.t('Crm_Event_Status_Canceled');
+          return I18n.t('Crm_Status_Canceled');
         default:
           console.warn(
             `Status provided with value ${select} is not supported by Event`,

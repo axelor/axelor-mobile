@@ -16,29 +16,46 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import {createStandardSearch} from '@axelor/aos-mobile-core';
+import {axiosApiProvider, createStandardSearch} from '@axelor/aos-mobile-core';
 
-const createTourLineCriteria = tourId => {
-  return [
+const createTourLineCriteria = (tourId, isValidated) => {
+  const criteria = [
     {
       fieldName: 'tour.id',
       operator: '=',
       value: tourId,
     },
   ];
+
+  if (isValidated != null) {
+    criteria.push({
+      fieldName: 'isValidated',
+      operator: '=',
+      value: isValidated,
+    });
+  }
+
+  return criteria;
 };
 
 export async function searchTourLine({
   page = 0,
   tourId,
   numberElementsByPage = 10,
+  isValidated = null,
 }) {
   return createStandardSearch({
     model: 'com.axelor.apps.crm.db.TourLine',
-    criteria: createTourLineCriteria(tourId),
+    criteria: createTourLineCriteria(tourId, isValidated),
     fieldKey: 'crm_tourLine',
     sortKey: 'crm_tourLine',
     page: page,
     numberElementsByPage: numberElementsByPage,
+  });
+}
+
+export async function validateTourLine({tourLineId}) {
+  return axiosApiProvider.put({
+    url: `ws/aos/tour-line/validate/${tourLineId}`,
   });
 }

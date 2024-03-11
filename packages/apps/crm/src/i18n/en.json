@@ -27,9 +27,10 @@
   "Crm_LinkedPartnersOfContact": "Linked clients and/or prospects",
   "Crm_PriceList": "Price list",
   "Crm_Employees": "Employees",
-  "Crm_Event_Status_Planned": "Planned",
-  "Crm_Event_Status_Realized": "Realized",
-  "Crm_Event_Status_Canceled": "Canceled",
+  "Crm_Status_Planned": "Planned",
+  "Crm_Status_Realized": "Realized",
+  "Crm_Status_Canceled": "Canceled",
+  "Crm_Status_Validated": "Validated",
   "Crm_Event_Category_Event": "Event",
   "Crm_Event_Category_Call": "Call",
   "Crm_Event_Category_Meeting": "Meeting",
@@ -89,6 +90,7 @@
   "Crm_AllDay": "All day ?",
   "Crm_Location": "Location",
   "Crm_Tours": "Tours",
+  "Crm_RefreshTour": "Refresh tour",
   "Crm_ScheduledVisits": "{{totalTourLine}} scheduled visits",
   "Crm_SliceAction_FetchCatalog": "fetch catalogs",
   "Crm_SliceAction_FetchCatalogType": "fetch catalog types",
@@ -132,5 +134,9 @@
   "Crm_SliceAction_SearchPartner": "search partner",
   "Crm_SliceAction_CreateEvent": "create event",
   "Crm_SliceAction_UpdateEvent": "update event",
-  "Crm_SliceAction_FetchTour": "fetch tours"
+  "Crm_SliceAction_FetchTour": "fetch tours",
+  "Crm_SliceAction_FetchTourById": "fetch tour by id",
+  "Crm_SliceAction_FetchTourLine": "fetch tour lines",
+  "Crm_SliceAction_ValidateTourLine": "validate tour line",
+  "Crm_SliceAction_ValidateTour": "validate tour"
 }

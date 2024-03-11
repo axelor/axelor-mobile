@@ -16,9 +16,27 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-export {default as CatalogType} from './catalog';
-export {default as EventType} from './event-type';
-export {default as Lead} from './lead';
-export {default as Opportunity} from './opportunity';
-export {default as Prospect} from './prospect';
-export {default as TourLine} from './tourLine';
+import {Color, ThemeColors} from '@axelor/aos-mobile-ui';
+
+class TourLineType {
+  static status = {
+    Planned: false,
+    Validated: true,
+  };
+
+  static getBorderColor = (status: boolean, Colors: ThemeColors): Color => {
+    switch (status) {
+      case this.status.Validated:
+        return Colors.successColor;
+      case this.status.Planned:
+        return Colors.secondaryColor;
+      default:
+        console.warn(
+          `Status provided with value ${status} is not supported by tour Line`,
+        );
+        return null;
+    }
+  };
+}
+
+export default TourLineType;
