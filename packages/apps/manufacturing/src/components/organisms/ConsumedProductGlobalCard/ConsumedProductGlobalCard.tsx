@@ -97,16 +97,16 @@ const ConsumedProductGlobalCard = ({
         onPress={onPress}
         increment={{addedQty, incrementVisible}}
       />
-      <View style={styles.middleContainer}>
+      <View style={styles.flexOne}>
         <CardIconButton
-          style={styles.cardIconButton}
+          style={styles.flexOne}
           iconName="geo-alt-fill"
           iconColor={Colors.secondaryColor.background}
           onPress={onLocationPress}
         />
         {isSubOF ? (
           <CardIconButton
-            style={styles.cardIconButton}
+            style={styles.flexOne}
             iconName="diagram-3-fill"
             iconColor={Colors.secondaryColor.background}
             onPress={onSubOfPress}
@@ -114,9 +114,9 @@ const ConsumedProductGlobalCard = ({
         ) : null}
       </View>
       {!disableMore && (
-        <View style={styles.middleContainer}>
+        <View style={styles.flexOne}>
           <CardIconButton
-            style={styles.cardIconButton}
+            style={styles.flexOne}
             iconName="plus-lg"
             iconColor={Colors.primaryColor.background}
             onPress={handleIncrement}
@@ -136,16 +136,13 @@ const styles = StyleSheet.create({
     justifyContent: 'space-evenly',
     alignItems: 'center',
     marginHorizontal: 14,
-    marginVertical: 2,
   },
-  middleContainer: {
+  flexOne: {
     flex: 1,
   },
   consumedCard: {
     flex: 5,
-  },
-  cardIconButton: {
-    flex: 1,
+    margin: 2,
   },
 });
 

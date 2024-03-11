@@ -16,16 +16,16 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import React, {useMemo} from 'react';
+import React from 'react';
 import {StyleSheet, TouchableOpacity} from 'react-native';
-import {useThemeColor} from '../../../theme/ThemeContext';
-import {Icon} from '../../atoms';
+import {Card, Icon} from '../../atoms';
 
 interface CardIconButtonProps {
   style?: any;
   iconName: string;
   iconColor: string;
   onPress: (any) => void;
+  onLongPress?: (any) => void;
 }
 
 const CardIconButton = ({
@@ -33,34 +33,35 @@ const CardIconButton = ({
   iconName,
   iconColor,
   onPress = () => {},
+  onLongPress = () => {},
 }: CardIconButtonProps) => {
-  const Colors = useThemeColor();
-
-  const styles = useMemo(() => getStyles(Colors), [Colors]);
-
   return (
     <TouchableOpacity
       style={[styles.container, style]}
+      onLongPress={onLongPress}
       onPress={onPress}
-      activeOpacity={0.4}>
-      <Icon size={20} name={iconName} color={iconColor} />
+      activeOpacity={0.9}>
+      <Card style={styles.cardContainer}>
+        <Icon size={20} name={iconName} color={iconColor} />
+      </Card>
     </TouchableOpacity>
   );
 };
 
-const getStyles = Colors =>
-  StyleSheet.create({
-    container: {
-      height: '100%',
-      width: '90%',
-      borderRadius: 8,
-      alignSelf: 'center',
-      shadowOpacity: 0,
-      elevation: 0,
-      justifyContent: 'center',
-      backgroundColor: Colors.backgroundColor,
-      margin: 2,
-    },
-  });
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    margin: 2,
+  },
+  cardContainer: {
+    height: '100%',
+    width: '100%',
+    alignSelf: 'center',
+    justifyContent: 'center',
+    paddingHorizontal: 10,
+    paddingRight: 10,
+    paddingVertical: 10,
+  },
+});
 
 export default CardIconButton;
