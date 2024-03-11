@@ -16,12 +16,17 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import React, {useEffect, useMemo, useState} from 'react';
+import React, {useCallback, useEffect, useMemo, useState} from 'react';
 import {StyleSheet, View} from 'react-native';
 import {Label, useThemeColor} from '@axelor/aos-mobile-ui';
 import {DateInput} from '../../organisms';
 import {getEndOfDay, getStartOfDay} from '../../../utils';
 import {useTranslator} from '../../../i18n';
+
+const DATE_INPUT_MODE = {
+  startDate: 0,
+  endDate: 1,
+};
 
 interface dateInputConfig {
   date?: Date;
@@ -46,66 +51,63 @@ const PeriodInput = ({
   const I18n = useTranslator();
   const Colors = useThemeColor();
 
-  const [fromDate, setFromDate] = useState(startDateConfig.date);
-  const [toDate, setToDate] = useState(endDateConfig.date);
+  const [startDate, setStartDate] = useState(startDateConfig.date);
+  const [endDate, setEndDate] = useState(endDateConfig.date);
   const [isPeriodError, setIsPeriodError] = useState(false);
 
   useEffect(() => {
-    setFromDate(startDateConfig.date);
+    setStartDate(startDateConfig.date);
   }, [startDateConfig.date]);
 
   useEffect(() => {
-    setToDate(endDateConfig.date);
+    setEndDate(endDateConfig.date);
   }, [endDateConfig.date]);
 
   useEffect(() => {
     setIsPeriodError(
-      fromDate && toDate && getStartOfDay(fromDate) > getEndOfDay(toDate),
+      startDate && endDate && getStartOfDay(startDate) > getEndOfDay(endDate),
     );
-  }, [fromDate, toDate]);
+  }, [startDate, endDate]);
 
   const styles = useMemo(() => {
     return getStyles(horizontal);
   }, [horizontal]);
 
+  const renderDateInput = useCallback((mode: number) => {
+    const isStartDate = mode === DATE_INPUT_MODE.startDate;
+    const translationKey = isStartDate ? 'Base_StartDate' : 'Base_EndDate';
+    const date = isStartDate ? startDate : endDate;
+    const setDate = isStartDate ? setStartDate : setEndDate;
+    const dateConfig = isStartDate ? startDateConfig : endDateConfig;
+
+    return (
+      <DateInput
+        style={styles.dateInput}
+        title={I18n.t(translationKey)}
+        mode="date"
+        nullable
+        popup={horizontal}
+        defaultDate={date}
+        onDateChange={_date => {
+          setDate(_date);
+          dateConfig.onDateChange(_date);
+        }}
+        readonly={dateConfig.readonly}
+        required={dateConfig.required}
+      />
+    );
+  }, []);
+
   return (
     <View style={[styles.container, style]}>
-      {isPeriodError && (
-        <Label
-          message={I18n.t('Base_PeriodError')}
-          iconName="exclamation-triangle-fill"
-          color={Colors.errorColor}
-        />
-      )}
+      <Label
+        type="error"
+        message={I18n.t('Base_PeriodError')}
+        visible={isPeriodError}
+      />
       <View style={styles.datesContainer}>
-        <DateInput
-          style={styles.dateInput}
-          title={I18n.t('Base_StartDate')}
-          mode="date"
-          nullable
-          popup={horizontal}
-          defaultDate={fromDate}
-          onDateChange={date => {
-            setFromDate(date);
-            startDateConfig.onDateChange(date);
-          }}
-          readonly={startDateConfig.readonly}
-          required={startDateConfig.required}
-        />
-        <DateInput
-          style={styles.dateInput}
-          title={I18n.t('Base_EndDate')}
-          mode="date"
-          nullable
-          popup={horizontal}
-          defaultDate={toDate}
-          onDateChange={date => {
-            setToDate(date);
-            endDateConfig.onDateChange(date);
-          }}
-          readonly={endDateConfig.readonly}
-          required={endDateConfig.required}
-        />
+        {renderDateInput(DATE_INPUT_MODE.startDate)}
+        {renderDateInput(DATE_INPUT_MODE.endDate)}
       </View>
     </View>
   );
