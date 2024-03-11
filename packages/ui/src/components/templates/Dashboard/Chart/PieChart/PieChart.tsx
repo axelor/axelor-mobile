@@ -16,14 +16,16 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import React, {useEffect, useMemo, useState} from 'react';
+import React, {useCallback, useEffect, useMemo, useState} from 'react';
 import {Dimensions, StyleSheet, View} from 'react-native';
 import {PieChart as RNPieChart} from 'react-native-gifted-charts';
-import {useThemeColor} from '../../../../theme/ThemeContext';
-import {checkNullString} from '../../../../utils/strings';
-import {Text} from '../../../atoms';
-import Chart from '../chart-type';
-import {Data} from '../dashboard.helper';
+import {useThemeColor} from '../../../../../theme/ThemeContext';
+import {checkNullString} from '../../../../../utils/strings';
+import {Text} from '../../../../atoms';
+import Chart from '../../chart-type';
+import {Data} from '../../dashboard.helper';
+import ChartLegend from './ChartLegend';
+import LabelView from './LabelView';
 
 const MARGIN = 5;
 
@@ -52,11 +54,12 @@ const PieChart = ({
   sectionAutoFocus = true,
   radius = 90,
   innerRadius = 60,
-  focusOnPress = false,
+  focusOnPress = true,
 }: PieChartProps) => {
   const Colors = useThemeColor();
 
   const [dataSet, setDataSet] = useState(datasets);
+  const [selectedItem, setSelectedItem] = useState({label: '', value: ''});
 
   useEffect(() => {
     setDataSet(
@@ -68,12 +71,39 @@ const PieChart = ({
     );
   }, [Colors, datasets]);
 
+  const handlePress = useCallback(item => {
+    setSelectedItem(current =>
+      current.label === item.label
+        ? {label: '', value: ''}
+        : {label: item.label, value: item.value.toString()},
+    );
+  }, []);
+
   const _width = useMemo(() => {
     return widthGraph - MARGIN * 2;
   }, [widthGraph]);
 
+  const styles = useMemo(() => {
+    return getStyles(donut, focusOnPress);
+  }, [donut, focusOnPress]);
+
+  const renderLabelView = useCallback(() => {
+    if (!focusOnPress) {
+      return undefined;
+    }
+
+    return (
+      <LabelView
+        innerRadius={innerRadius}
+        isCentered={donut}
+        selectedItem={selectedItem}
+      />
+    );
+  }, [donut, focusOnPress, innerRadius, selectedItem]);
+
   return (
     <View style={[styles.container, {width: _width}, styleContainer]}>
+      {!donut && renderLabelView()}
       <RNPieChart
         data={dataSet}
         donut={donut}
@@ -83,64 +113,36 @@ const PieChart = ({
         innerRadius={innerRadius}
         focusOnPress={focusOnPress}
         innerCircleColor={Colors.backgroundColor}
+        textColor={Colors.text}
+        onPress={item => {
+          handlePress(item);
+        }}
+        centerLabelComponent={donut ? renderLabelView : undefined}
       />
       {!checkNullString(title) && <Text style={styles.title}>{title}</Text>}
-      {legend && (
-        <View style={styles.legendContainer}>
-          {dataSet.map((_data, index) => (
-            <View key={index} style={styles.itemLegendContainer}>
-              <View
-                style={[
-                  styles.legendColor,
-                  {
-                    borderColor: _data.color,
-                    backgroundColor: _data.color,
-                  },
-                ]}
-              />
-              <Text
-                style={styles.legend}
-                fontSize={15}>{`${_data.label} : ${_data.value}`}</Text>
-            </View>
-          ))}
-        </View>
-      )}
+      {legend && <ChartLegend dataSet={dataSet} />}
     </View>
   );
 };
 
-const styles = StyleSheet.create({
-  container: {
-    flexDirection: 'column',
-    justifyContent: 'center',
-    alignItems: 'center',
-    alignContent: 'center',
-    minWidth:
-      Dimensions.get('window').width > 500
-        ? Dimensions.get('window').width / 4 - MARGIN * 2
-        : Dimensions.get('window').width / 2 - MARGIN * 2,
-    margin: MARGIN,
-  },
-  title: {
-    alignSelf: 'center',
-    textAlign: 'center',
-  },
-  legendContainer: {
-    flexDirection: 'column',
-  },
-  itemLegendContainer: {
-    flexDirection: 'row',
-    marginVertical: 5,
-  },
-  legend: {
-    marginHorizontal: 5,
-  },
-  legendColor: {
-    borderWidth: 5,
-    marginVertical: 2,
-    borderTopRightRadius: 7,
-    borderBottomRightRadius: 7,
-  },
-});
+const getStyles = (donut: boolean, focusOnPress: boolean) =>
+  StyleSheet.create({
+    container: {
+      flexDirection: 'column',
+      justifyContent: 'center',
+      alignItems: 'center',
+      alignContent: 'center',
+      minWidth:
+        Dimensions.get('window').width > 500
+          ? Dimensions.get('window').width / 4 - MARGIN * 2
+          : Dimensions.get('window').width / 2 - MARGIN * 2,
+      margin: MARGIN,
+      paddingTop: donut || !focusOnPress ? 0 : 35,
+    },
+    title: {
+      alignSelf: 'center',
+      textAlign: 'center',
+    },
+  });
 
 export default PieChart;

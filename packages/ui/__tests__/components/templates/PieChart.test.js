@@ -75,12 +75,13 @@ describe('PieChart Component', () => {
 
   it('should display a legend if props is true', () => {
     const wrapper = shallow(<PieChart {...props} legend />);
+    const chartLegend = wrapper.find('ChartLegend').dive();
 
-    props.datasets.forEach((data, index) =>
-      expect(wrapper.find(Text).at(index).prop('children')).toBe(
-        `${data.label} : ${data.value}`,
-      ),
-    );
+    props.datasets.forEach((dataset, index) => {
+      const textChildren = chartLegend.find(Text).at(index).prop('children');
+      const expectedText = `${dataset.label} : ${dataset.value}`;
+      expect(textChildren).toContain(expectedText);
+    });
   });
 
   it('should display title if provided', () => {
