@@ -25,6 +25,7 @@ import {
   useTheme,
   Text,
 } from '@axelor/aos-mobile-ui';
+import {SignatureInput} from '@axelor/aos-mobile-core';
 import {useDispatch, useSelector} from 'react-redux';
 import {useTranslator} from '../../i18n';
 import {
@@ -116,6 +117,7 @@ const SettingsScreen = ({children}) => {
         />
         {children}
         <TranslationsButton />
+        <SignatureInput />
       </View>
       <View style={styles.footerContainer}>
         <Text>{I18n.t('Base_Version', {appVersion: appVersion})}</Text>
