@@ -16,7 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import React from 'react';
+import React, {ReactElement} from 'react';
 import {Dimensions, StyleSheet, View} from 'react-native';
 import {ScrollView} from '../../atoms';
 import Chart from './chart-type';
@@ -30,6 +30,7 @@ interface Graph {
   type: keyof typeof Chart.chartType;
   dataList: Data[][];
   title?: string;
+  customChart?: ReactElement | JSX.Element;
 }
 
 interface Line {
@@ -61,18 +62,24 @@ const Dashboard = ({
     <ScrollView style={[styles.container, style]}>
       {lineList?.map((line, indexLine) => {
         const validGraphs = line.graphList.filter(
-          graph => graph.dataList?.[0]?.length > 0,
+          graph => graph.dataList?.[0]?.length > 0 || graph.customChart != null,
         );
         const nbGraphInLine = Math.min(validGraphs.length, MAX_GRAPH_PER_LINE);
+        const widthGraph = getGraphWidth(nbGraphInLine);
 
-        const limitedGraphList = line.graphList?.slice(0, MAX_GRAPH_PER_LINE);
+        const limitedGraphList = validGraphs?.slice(0, nbGraphInLine);
 
         return (
           <View style={styles.lineContainer} key={indexLine}>
-            {limitedGraphList?.map((graph, indexGraph) => {
-              if (graph.dataList?.[0]?.length > 0) {
-                const {dataList, title, type} = graph;
-                const widthGraph = getGraphWidth(nbGraphInLine);
+            {limitedGraphList?.map(
+              ({customChart, dataList, title, type}, indexGraph) => {
+                if (customChart != null) {
+                  return React.cloneElement(customChart, {
+                    key: indexGraph,
+                    widthGraph,
+                  });
+                }
+
                 return (
                   <ChartRender
                     key={indexGraph}
@@ -83,9 +90,8 @@ const Dashboard = ({
                     hideCardBackground={hideCardBackground}
                   />
                 );
-              }
-              return null;
-            })}
+              },
+            )}
           </View>
         );
       })}
