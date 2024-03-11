@@ -17,13 +17,14 @@
  */
 
 import React, {useCallback, useEffect, useMemo, useState} from 'react';
+import {ActivityIndicator} from 'react-native';
 import {Dashboard, WarningCard} from '@axelor/aos-mobile-ui';
 import {headerActionsProvider} from '../../header';
 import {useTranslator} from '../../i18n';
-import {createDashboardActionID} from '../display.helpers';
-import {ActivityIndicator} from 'react-native';
-import {fetchDashboard} from '../api.helpers';
 import {formatDateTime} from '../../utils';
+import {AOPChart} from '../component';
+import {createDashboardActionID} from '../display.helpers';
+import {fetchDashboard} from '../api.helpers';
 
 export const DashboardScreen = ({dashboardId, hideCardBackground = false}) => {
   const I18n = useTranslator();
@@ -77,6 +78,9 @@ export const DashboardScreen = ({dashboardId, hideCardBackground = false}) => {
 
     return dashboard?.dashboardLineList.map(elt => ({
       graphList: elt.chartList.map(ch => ({
+        customChart: ch.metaActionName && (
+          <AOPChart actionViewName={ch.metaActionName} />
+        ),
         type: ch.chartType,
         dataList: [ch.valueList],
         title: ch?.chartName,
