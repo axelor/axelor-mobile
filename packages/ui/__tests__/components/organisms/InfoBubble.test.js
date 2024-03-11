@@ -19,7 +19,7 @@
 import React from 'react';
 import {TouchableOpacity} from 'react-native';
 import {shallow} from 'enzyme';
-import {Card, Icon, InfoBubble, Text} from '@axelor/aos-mobile-ui';
+import {CardIndicator, Icon, InfoBubble} from '@axelor/aos-mobile-ui';
 import {getGlobalStyles, getDefaultThemeColors} from '../../tools';
 
 describe('InfoBubble Component', () => {
@@ -60,20 +60,22 @@ describe('InfoBubble Component', () => {
   it('should display the indication when clicked', () => {
     const wrapper = shallow(<InfoBubble {...props} />);
 
-    expect(wrapper.find(Card).exists()).toBe(false);
+    expect(wrapper.find(CardIndicator).exists()).toBe(true);
     wrapper.find(TouchableOpacity).simulate('press');
 
-    expect(wrapper.find(Icon).exists()).toBe(true);
-    expect(wrapper.find(Text).prop('children')).toBe(props.indication);
+    expect(wrapper.find(CardIndicator).props()).toMatchObject({
+      indication: props.indication,
+      isVisible: true,
+    });
   });
 
   it('should hide the indication when clicked twice', () => {
     const wrapper = shallow(<InfoBubble {...props} />);
 
     wrapper.find(TouchableOpacity).simulate('press');
-    expect(wrapper.find(Card).exists()).toBe(true);
+    expect(wrapper.find(CardIndicator).prop('isVisible')).toBe(true);
 
     wrapper.find(TouchableOpacity).simulate('press');
-    expect(wrapper.find(Card).exists()).toBe(false);
+    expect(wrapper.find(CardIndicator).prop('isVisible')).toBe(false);
   });
 });
