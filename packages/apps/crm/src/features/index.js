@@ -26,4 +26,5 @@ export {leadReducer as lead} from './leadSlice';
 export {opportunityReducer as opportunity} from './opportunitySlice';
 export {partnerReducer as partner} from './partnerSlice';
 export {prospectReducer as prospect} from './prospectSlice';
+export {tourLineReducer as tourLine} from './tourLineSlice';
 export {tourReducer as tour} from './tourSlice';
