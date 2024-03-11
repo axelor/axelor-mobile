@@ -64,8 +64,8 @@ const TourDetailsScreen = ({route}) => {
     [dispatch, selectedStatus, tour],
   );
 
-  const hasUnvalidatedItems = useMemo(() => {
-    return tourLineList.some(item => !item.isValidated);
+  const hasUnvalidatedTourLine = useMemo(() => {
+    return tourLineList.some(tourLine => !tourLine.isValidated);
   }, [tourLineList]);
 
   if (tour?.id !== tourId) {
@@ -76,7 +76,7 @@ const TourDetailsScreen = ({route}) => {
     <Screen
       removeSpaceOnTop={true}
       fixedItems={
-        hasUnvalidatedItems && <TourValidateButton tourId={tourId} />
+        hasUnvalidatedTourLine && <TourValidateButton tourId={tourId} />
       }>
       <HeaderContainer
         expandableFilter={false}
