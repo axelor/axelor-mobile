@@ -27,6 +27,8 @@ export {default as FloatingButton} from './FloatingButton/FloatingButton';
 export {default as GroupByScrollList} from './GroupByScrollList/GroupByScrollList';
 export {default as HeaderContainer} from './HeaderContainer/HeaderContainer';
 export {default as ImageBubble} from './ImageBubble/ImageBubble';
+export {default as InfoBubble} from './InfoBubble/InfoBubble';
+export {default as InfoButton} from './InfoButton/InfoButton';
 export {default as MultiValuePicker} from './MultiValuePicker/MultiValuePicker';
 export {default as Picker} from './Picker/Picker';
 export {default as ProgressBar} from './ProgressBar/ProgressBar';
