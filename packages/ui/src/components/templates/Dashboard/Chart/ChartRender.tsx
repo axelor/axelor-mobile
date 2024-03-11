@@ -21,7 +21,7 @@ import {Dimensions} from 'react-native';
 import Chart from '../chart-type';
 import BarChart from './BarChart';
 import LineChart from './LineChart';
-import PieChart from './PieChart';
+import PieChart from './PieChart/PieChart';
 import {Data} from '../dashboard.helper';
 
 const BarChartRender = (datasets, title, widthGraph, hideCardBackground) => {
