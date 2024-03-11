@@ -53,6 +53,7 @@ const InfoBubble = ({
       indication={indication}
       position={position}
       isVisible={isVisible}
+      handleClose={() => setIsVisible(false)}
       textIndicationStyle={textIndicationStyle}>
       <TouchableOpacity onPress={() => setIsVisible(current => !current)}>
         <Icon

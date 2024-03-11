@@ -19,6 +19,7 @@
 import React, {useState} from 'react';
 import CardIconButton from '../../molecules/CardIconButton/CardIconButton';
 import CardIndicator from '.././../molecules/CardIndicator/CardIndicator';
+import {Dimensions} from 'react-native';
 
 interface InfoButtonProps {
   style?: any;
@@ -29,16 +30,18 @@ interface InfoButtonProps {
   size?: number;
   position?: 'left' | 'right';
   onPress: () => void;
+  space?: number;
 }
 
 const InfoButton = ({
-  iconName,
-  onPress = () => {},
-  iconColor,
-  indication,
   style,
   textIndicationStyle,
+  iconName,
+  iconColor,
+  indication,
   position = 'left',
+  onPress = () => {},
+  space = Dimensions.get('window').width * 0.15,
 }: InfoButtonProps) => {
   const [isVisible, setIsVisible] = useState(false);
 
@@ -48,7 +51,9 @@ const InfoButton = ({
       position={position}
       isVisible={isVisible}
       style={style}
-      textIndicationStyle={textIndicationStyle}>
+      textIndicationStyle={textIndicationStyle}
+      handleClose={() => setIsVisible(false)}
+      space={space}>
       <CardIconButton
         iconName={iconName}
         iconColor={iconColor}

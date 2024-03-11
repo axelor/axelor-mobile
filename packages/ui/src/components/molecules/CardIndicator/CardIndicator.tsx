@@ -16,15 +16,14 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import React, {useMemo, useState, useEffect, useRef} from 'react';
-import {StyleSheet, View} from 'react-native';
-import {Card, Text} from '../../atoms';
+import React, {useMemo, useEffect, useRef} from 'react';
+import {Dimensions, StyleSheet, View} from 'react-native';
 import {
   OUTSIDE_INDICATOR,
   useClickOutside,
 } from '../../../hooks/use-click-outside';
 import {checkNullString} from '../../../utils';
-import {useThemeColor} from '../../../theme';
+import {Card, Text} from '../../atoms';
 
 interface CardIndicatorProps {
   style?: any;
@@ -33,57 +32,51 @@ interface CardIndicatorProps {
   position?: 'left' | 'right';
   children: any;
   isVisible: boolean;
+  handleClose: () => void;
+  space?: number;
 }
 
 const CardIndicator = ({
   style,
-  indication,
   textIndicationStyle,
+  indication,
   position = 'right',
   children,
   isVisible,
+  handleClose,
+  space = Dimensions.get('window').width * 0.08,
 }: CardIndicatorProps) => {
-  const Colors = useThemeColor();
-  const [isOpen, setIsOpen] = useState(false);
   const wrapperRef = useRef(null);
   const clickOutside = useClickOutside({wrapperRef});
 
   const styles = useMemo(
-    () => getStyles(Colors, isOpen, position),
-    [Colors, isOpen, position],
+    () => getStyles(isVisible, position, space),
+    [isVisible, position, space],
   );
 
   useEffect(() => {
-    setIsOpen(isVisible);
-  }, [isVisible]);
-
-  useEffect(() => {
-    if (clickOutside === OUTSIDE_INDICATOR && isOpen) {
-      console.log('ici');
-      setIsOpen(false);
+    if (clickOutside === OUTSIDE_INDICATOR && isVisible) {
+      handleClose();
     }
-  }, [clickOutside, isOpen]);
+  }, [clickOutside, isVisible, handleClose]);
 
   return (
     <View ref={wrapperRef} style={[styles.container, style]}>
       {children}
-      {!checkNullString(indication) && isOpen ? (
-        <View>
-          <Card style={[styles.indicationCard, textIndicationStyle]}>
-            <Text>{indication}</Text>
-          </Card>
-        </View>
+      {!checkNullString(indication) && isVisible ? (
+        <Card style={[styles.indicationCard, textIndicationStyle]}>
+          <Text>{indication}</Text>
+        </Card>
       ) : null}
     </View>
   );
 };
 
-const getStyles = (Colors, isOpen, position) =>
+const getStyles = (isOpen, position, space) =>
   StyleSheet.create({
     container: {
-      alignItems: 'center',
       flexDirection: 'row',
-      marginVertical: 5,
+      alignItems: 'center',
       zIndex: isOpen ? 50 : 0,
     },
     indicationCard: {
@@ -92,9 +85,7 @@ const getStyles = (Colors, isOpen, position) =>
       paddingVertical: 10,
       paddingRight: 10,
       zIndex: 99,
-      backgroundColor: Colors.backgroundColor,
-      bottom: '50%',
-      [position === 'left' ? 'right' : 'left']: position === 'left' ? 10 : 0,
+      [position === 'left' ? 'right' : 'left']: space,
     },
   });
 
