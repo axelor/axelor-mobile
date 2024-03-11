@@ -24,7 +24,7 @@ interface CardIconButtonProps {
   style?: any;
   iconName: string;
   iconColor: string;
-  onPress?: (any) => void;
+  onPress: (any) => void;
   onLongPress?: (any) => void;
 }
 

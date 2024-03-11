@@ -20,7 +20,7 @@ import React, {useMemo} from 'react';
 import {ActivityIndicator, Dimensions, StyleSheet, View} from 'react-native';
 import {Text} from '../../atoms';
 import {NumberBubble} from '../../molecules';
-import InfoBubble from '../InfoBubble/InfoBubble';
+import {InfoBubble} from '../../organisms';
 import {Color, useThemeColor} from '../../../theme';
 
 export interface TopIndicator {

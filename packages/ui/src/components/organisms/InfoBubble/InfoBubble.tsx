@@ -19,8 +19,8 @@
 import React, {useMemo, useState} from 'react';
 import {Dimensions, StyleSheet, TouchableOpacity} from 'react-native';
 import {Icon} from '../../atoms';
-import {Color} from '../../../theme/themes';
-import CardIndicator from '.././../molecules/CardIndicator/CardIndicator';
+import {Color} from '../../../theme';
+import {CardIndicator} from '.././../molecules';
 
 interface InfoBubbleProps {
   style?: any;

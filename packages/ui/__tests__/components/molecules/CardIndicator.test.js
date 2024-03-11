@@ -44,6 +44,7 @@ describe('CardIndicator Component', () => {
 
     wrapper.setProps({isVisible: false});
 
+    expect(wrapper.contains(props.children)).toBe(true);
     expect(wrapper.find(Card).exists()).toBe(false);
   });
 });

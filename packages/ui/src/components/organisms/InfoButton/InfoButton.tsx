@@ -17,16 +17,15 @@
  */
 
 import React, {useState} from 'react';
-import CardIconButton from '../../molecules/CardIconButton/CardIconButton';
-import CardIndicator from '.././../molecules/CardIndicator/CardIndicator';
 import {Dimensions} from 'react-native';
+import {CardIconButton, CardIndicator} from '../../molecules';
 
 interface InfoButtonProps {
   style?: any;
   textIndicationStyle?: any;
   iconName: string;
-  indication: string;
   iconColor: string;
+  indication: string;
   position?: 'left' | 'right';
   onPress: () => void;
   space?: number;
