@@ -63,7 +63,11 @@ const BottomBar = ({
 
   useEffect(() => {
     if (selectedKey && itemPositions.current[selectedKey] !== undefined) {
-      animatedX.value = withSpring(itemPositions.current[selectedKey]);
+      animatedX.value = withSpring(itemPositions.current[selectedKey], {
+        damping: 13,
+        stiffness: 90,
+        mass: 1,
+      });
     }
   }, [selectedKey, animatedX]);
 

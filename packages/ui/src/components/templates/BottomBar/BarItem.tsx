@@ -17,15 +17,16 @@
  */
 
 import React, {useEffect, useMemo} from 'react';
-import {StyleSheet, View, Text} from 'react-native';
-import {Color, useThemeColor} from '../../../theme';
-import {checkNullString} from '../../../utils';
-import {Button, NumberBubble} from '../../molecules';
+import {StyleSheet, View} from 'react-native';
 import Animated, {
   useSharedValue,
   useAnimatedStyle,
   withSpring,
 } from 'react-native-reanimated';
+import {Color, useThemeColor} from '../../../theme';
+import {checkNullString} from '../../../utils';
+import {Button, NumberBubble} from '../../molecules';
+import {Text} from '../../atoms';
 
 const BarItem = ({
   iconName,
@@ -84,13 +85,14 @@ const BarItem = ({
         />
       </Animated.View>
       {indicator > 0 && (
-        <NumberBubble
-          number={indicator}
-          color={buttonColor}
-          isNeutralBackground={true}
-          style={styles.indicator}
-          size={buttonSize * 0.6}
-        />
+        <Animated.View style={[animatedStyle, styles.indicator]}>
+          <NumberBubble
+            number={indicator}
+            color={buttonColor}
+            isNeutralBackground={true}
+            size={buttonSize * 0.6}
+          />
+        </Animated.View>
       )}
       {!checkNullString(title) && <Text>{title}</Text>}
     </View>
@@ -103,11 +105,6 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     marginHorizontal: 2,
     marginBottom: 6,
-  },
-  selectedBar: {
-    borderTopWidth: 1,
-    width: 30,
-    marginTop: 5,
   },
   indicator: {
     position: 'absolute',
