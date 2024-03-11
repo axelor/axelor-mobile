@@ -22,9 +22,11 @@ import {
   useSelector,
   useNavigation,
   useTranslator,
+  useDispatch,
 } from '@axelor/aos-mobile-core';
 import {useEffect} from 'react';
 import {useThemeColor} from '@axelor/aos-mobile-ui';
+import {fetchTourById} from '../features/tourSlice';
 
 const useCatalogListActions = () => {
   const Colors = useThemeColor();
@@ -310,6 +312,49 @@ const useProspectDetailsActions = () => {
   }, [mobileSettings, prospect, I18n, navigation]);
 };
 
+const useTourDetailsActions = () => {
+  const I18n = useTranslator();
+  const navigation = useNavigation();
+  const Colors = useThemeColor();
+  const dispatch = useDispatch();
+
+  const {mobileSettings} = useSelector((state: any) => state.appConfig);
+  const {tour} = useSelector((state: any) => state.tour);
+
+  useEffect(() => {
+    headerActionsProvider.registerModel('crm_tour_details', {
+      model: 'com.axelor.apps.crm.db.Tour',
+      modelId: tour?.id,
+      disableMailMessages: !mobileSettings?.isTrackerMessageEnabled,
+      attachedFileScreenTitle: tour?.name,
+      actions: [
+        {
+          key: 'refreshTour',
+          order: 10,
+          iconName: 'arrow-repeat',
+          title: I18n.t('Crm_RefreshTour'),
+          iconColor: Colors.primaryColor.background,
+          onPress: () => {
+            dispatch(
+              (fetchTourById as any)({
+                tourId: tour?.id,
+              }),
+            );
+          },
+          showInHeader: true,
+        },
+      ],
+    });
+  }, [
+    mobileSettings,
+    I18n,
+    navigation,
+    tour,
+    Colors.primaryColor.background,
+    dispatch,
+  ]);
+};
+
 const useEventDetailsActions = () => {
   const {mobileSettings} = useSelector((state: any) => state.appConfig);
   const {event} = useSelector((state: any) => state.event);
@@ -333,4 +378,5 @@ export const useCRMHeaders = () => {
   useOpportunityListActions();
   useOpportunityDetailsActions();
   useProspectDetailsActions();
+  useTourDetailsActions();
 };

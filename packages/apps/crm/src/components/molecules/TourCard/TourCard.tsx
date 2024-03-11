@@ -25,20 +25,10 @@ import {searchTourLineApi} from '../../../api';
 interface TourCardProps {
   style?: any;
   onPress?: () => void;
-  salesperson?: string;
-  tourId: number;
-  date: string;
-  name: string;
+  tour: any;
 }
 
-const TourCard = ({
-  style,
-  onPress,
-  date,
-  salesperson,
-  tourId,
-  name,
-}: TourCardProps) => {
+const TourCard = ({style, onPress, tour}: TourCardProps) => {
   const I18n = useTranslator();
 
   const isMounted = useRef(true);
@@ -50,7 +40,7 @@ const TourCard = ({
   useEffect(() => {
     isMounted.current = true;
 
-    searchTourLineApi({tourId: tourId, numberElementsByPage: null})
+    searchTourLineApi({tourId: tour?.id, numberElementsByPage: null})
       .then(response => {
         if (isMounted.current) {
           if (Array.isArray(response?.data?.data)) {
@@ -76,19 +66,19 @@ const TourCard = ({
     return () => {
       isMounted.current = false;
     };
-  }, [tourId]);
+  }, [tour]);
 
   return (
     <TouchableOpacity onPress={onPress} activeOpacity={0.9}>
       <Card style={[styles.container, style]}>
         <View style={styles.childrenContainer}>
-          <Text writingType="title">{name}</Text>
-          <DateDisplay date={date} />
+          <Text writingType="title">{tour.name}</Text>
+          <DateDisplay date={tour.date} />
         </View>
         <View style={styles.childrenContainer}>
           <LabelText
             iconName="person-fill"
-            title={salesperson}
+            title={tour.salespersonUser?.fullName}
             textStyle={styles.fontSize}
             size={16}
           />
