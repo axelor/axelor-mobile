@@ -179,7 +179,7 @@ const ScrollList = ({
   }
 
   return (
-    <View>
+    <View style={styles.container}>
       <Animated.View style={[styles.buttonContainer, animatedButtonStyle]}>
         <CircleButton
           square={false}
@@ -222,6 +222,9 @@ const ScrollList = ({
 };
 
 const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+  },
   buttonContainer: {
     position: 'absolute',
     top: 8,
