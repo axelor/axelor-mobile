@@ -14,7 +14,7 @@ const SignatureInput = ({
   base64Src,
   disabled = false,
   onValidate = () => {},
-  readSignature = true,
+  readSignature = false,
   handleReadSignature = () => {},
 }) => {
   const ref = useRef();
@@ -34,6 +34,7 @@ const SignatureInput = ({
 
   useEffect(() => {
     if (readSignature) {
+      console.log('ici');
       ref.current.readSignature();
     }
   }, [readSignature]);
@@ -60,7 +61,6 @@ const SignatureInput = ({
   };
 
   const handleClear = () => {
-    setBase64Signature('');
     ref.current.clearSignature();
   };
 
@@ -69,8 +69,9 @@ const SignatureInput = ({
     setBase64Signature(signatureData);
   };
 
-  console.log(base64Signature);
+  console.log('base64Signature', base64Signature);
   console.log(editSignature);
+  console.log('readSignature', readSignature);
 
   return (
     <View style={styles.container}>
@@ -78,8 +79,7 @@ const SignatureInput = ({
         {editSignature ? (
           <Signature
             webStyle={style}
-            // backgroundColor={Colors.screenBackgroundColor}
-            backgroundColor={'red'}
+            backgroundColor={Colors.screenBackgroundColor}
             dataURL={base64Signature}
             ref={ref}
             onOK={handleOK}
@@ -133,9 +133,8 @@ const styles = StyleSheet.create({
     flexDirection: 'column',
   },
   signatureContainer: {
-    width: '100%',
+    width: 300,
     height: 300,
-    backgroundColor: 'green',
   },
   imageSize: {
     width: Dimensions.get('window').width * 0.6,

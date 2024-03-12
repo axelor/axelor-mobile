@@ -14040,10 +14040,10 @@ react-native-screens@3.13.1:
     react-freeze "^1.0.0"
     warn-once "^0.1.0"
 
-react-native-signature-canvas@4.4.1:
-  version "4.4.1"
-  resolved "https://registry.npmjs.org/react-native-signature-canvas/-/react-native-signature-canvas-4.4.1.tgz#cb320dcf14b128ba58c299d52c7fb8ea6ee10ba9"
-  integrity sha512-2FMo88796tnRnQ8uN+dLpBRYcpzr08kcOqkVOVxE3TVvBUAIeEoSbCPa3URHkApMXLLDADU8dpXJK3eTpCeBEA==
+react-native-signature-canvas@4.7.2:
+  version "4.7.2"
+  resolved "https://registry.npmjs.org/react-native-signature-canvas/-/react-native-signature-canvas-4.7.2.tgz#04e7143e6274533b24b5a59e9b000b01bfaa5592"
+  integrity sha512-n4TUmYEFTHIbosLSa7ovMhirA+9EWw6pYbUIk2uUuiCfYqyF5TESb9EzjRU7VllDESWce9Djwy20VmwPKvEJWA==
 
 react-native-static-safe-area-insets@^2.2.0:
   version "2.2.0"
