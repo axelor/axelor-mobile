@@ -66,11 +66,6 @@ const BarItem = ({
     [Colors.primaryColor, color],
   );
 
-  const buttonSize: number = useMemo(
-    () => (isSelected ? size * 1.2 : size),
-    [isSelected, size],
-  );
-
   return (
     <View style={styles.container}>
       <Animated.View style={animatedStyle}>
@@ -90,7 +85,6 @@ const BarItem = ({
             number={indicator}
             color={buttonColor}
             isNeutralBackground={true}
-            size={buttonSize * 0.6}
           />
         </Animated.View>
       )}
