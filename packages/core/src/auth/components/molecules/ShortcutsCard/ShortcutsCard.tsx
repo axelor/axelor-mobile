@@ -16,7 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import React, {useMemo} from 'react';
+import React, {useCallback, useMemo} from 'react';
 import {Dimensions, FlatList, StyleSheet, TouchableOpacity} from 'react-native';
 import {Card, Icon, Text} from '@axelor/aos-mobile-ui';
 import {useNavigation} from '../../../../hooks/use-navigation';
@@ -27,6 +27,13 @@ const ACTION_TYPE = {
   ScreenNavigation: 0,
 };
 
+interface Shortcut {
+  name: string;
+  iconName: string;
+  actionType: number;
+  params: any;
+}
+
 interface ShortcutsCardProps {
   style?: any;
   horizontal?: boolean;
@@ -34,21 +41,6 @@ interface ShortcutsCardProps {
 
 const ShortcutsCard = ({style, horizontal = true}: ShortcutsCardProps) => {
   const navigation = useNavigation();
-
-  const renderShortCut = ({item, index}) => {
-    return (
-      <TouchableOpacity
-        style={styles.shortcut}
-        onPress={() =>
-          item.actionType === ACTION_TYPE.ScreenNavigation &&
-          navigation.navigate(item.params)
-        }
-        key={index}>
-        <Icon name="clock-history" size={35} />
-        <Text fontSize={14}>{item.name}</Text>
-      </TouchableOpacity>
-    );
-  };
 
   const styles = useMemo(() => {
     const cardWidth =
@@ -59,6 +51,36 @@ const ShortcutsCard = ({style, horizontal = true}: ShortcutsCardProps) => {
 
     return getStyles(shortCutWidth);
   }, [horizontal]);
+
+  const shortcutAction = useCallback(
+    (shortcut: Shortcut) => {
+      switch (shortcut.actionType) {
+        case ACTION_TYPE.ScreenNavigation:
+          return navigation.navigate(shortcut.params);
+        default:
+          console.warn(
+            `Action type provided with value ${shortcut.actionType} is not supported by shortcuts.`,
+          );
+          return null;
+      }
+    },
+    [navigation],
+  );
+
+  const renderShortCut = useCallback(
+    ({item, index}) => {
+      return (
+        <TouchableOpacity
+          style={styles.shortcut}
+          onPress={() => shortcutAction(item)}
+          key={index}>
+          <Icon name={item.iconName} size={35} />
+          <Text fontSize={14}>{item.name}</Text>
+        </TouchableOpacity>
+      );
+    },
+    [shortcutAction, styles.shortcut],
+  );
 
   if (!Array.isArray(demoData) || demoData.length === 0) {
     return null;
@@ -97,26 +119,31 @@ export default ShortcutsCard;
 const demoData = [
   {
     name: 'Timesheets',
+    iconName: 'clock-history',
     actionType: ACTION_TYPE.ScreenNavigation,
     params: 'TimesheetListScreen',
   },
   {
     name: 'Timesheets',
+    iconName: 'clock-history',
     actionType: ACTION_TYPE.ScreenNavigation,
     params: 'TimesheetListScreen',
   },
   {
     name: 'Timesheets',
+    iconName: 'clock-history',
     actionType: ACTION_TYPE.ScreenNavigation,
     params: 'TimesheetListScreen',
   },
   {
     name: 'Timesheets',
+    iconName: 'clock-history',
     actionType: ACTION_TYPE.ScreenNavigation,
     params: 'TimesheetListScreen',
   },
   {
     name: 'Timesheets',
+    iconName: 'clock-history',
     actionType: ACTION_TYPE.ScreenNavigation,
     params: 'TimesheetListScreen',
   },

@@ -17,8 +17,7 @@
  */
 
 import React, {useCallback, useEffect, useMemo} from 'react';
-import {StyleSheet, Dimensions, View} from 'react-native';
-import DeviceInfo from 'react-native-device-info';
+import {StyleSheet, View} from 'react-native';
 import {
   Card,
   Icon,
@@ -26,7 +25,6 @@ import {
   LabelText,
   Picker,
   Text,
-  useConfig,
   useThemeColor,
 } from '@axelor/aos-mobile-ui';
 import {fetchCompanies} from '../../../features/companySlice';
@@ -48,8 +46,6 @@ const UserCard = ({children, style}) => {
   const I18n = useTranslator();
   const dispatch = useDispatch();
   const formatImage = useBinaryImageUri();
-  const {setFilterConfig, setVirtualKeyboardConfig, setNbDecimalDigitForQty} =
-    useConfig();
 
   const {base: baseConfig} = useSelector((state: any) => state.appConfig);
   const {userId} = useSelector((state: any) => state.auth);
@@ -61,22 +57,6 @@ const UserCard = ({children, style}) => {
     dispatch((fetchCompanies as any)());
     dispatch((fetchLocalizations as any)());
   }, [dispatch, userId]);
-
-  useEffect(() => {
-    if (baseConfig?.nbDecimalDigitForQty != null) {
-      setNbDecimalDigitForQty(baseConfig?.nbDecimalDigitForQty);
-    }
-  }, [baseConfig, setNbDecimalDigitForQty]);
-
-  useEffect(() => {
-    const SMALL_SCREEN_HEIGHT = 500;
-
-    DeviceInfo.getManufacturer().then(manufacturer =>
-      setVirtualKeyboardConfig(manufacturer === 'Zebra Technologies'),
-    );
-
-    setFilterConfig(Dimensions.get('window').height > SMALL_SCREEN_HEIGHT);
-  }, [setFilterConfig, setVirtualKeyboardConfig]);
 
   const displayCompanyPicker = useMemo(
     () => baseConfig?.enableMultiCompany && canModifyCompany,
@@ -98,6 +78,7 @@ const UserCard = ({children, style}) => {
     },
     [dispatch],
   );
+
   const styles = useMemo(() => {
     return getStyles(Colors);
   }, [Colors]);
