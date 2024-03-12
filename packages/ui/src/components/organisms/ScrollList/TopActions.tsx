@@ -54,7 +54,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     flexWrap: 'wrap',
     justifyContent: 'space-between',
-    marginTop: 5,
+    marginBottom: 5,
     marginHorizontal: 12,
   },
 });

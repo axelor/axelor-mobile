@@ -16,11 +16,25 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import React, {useCallback, useEffect, useState} from 'react';
-import {ActivityIndicator, FlatList, StyleSheet, View} from 'react-native';
+import React, {useCallback, useEffect, useRef, useState} from 'react';
+import {
+  Animated,
+  ActivityIndicator,
+  Dimensions,
+  FlatList,
+  StyleSheet,
+  View,
+} from 'react-native';
 import {Color} from '../../../theme/themes';
 import {Text} from '../../atoms';
+import {CircleButton} from '../../molecules';
 import TopActions from './TopActions';
+
+const BUTTON_SIZE = 40;
+const SCREEN_WIDTH_50_PERCENT = Dimensions.get('window').width * 0.5;
+const SCREEN_HEIGHT_50_PERCENT = Dimensions.get('window').height * 0.5;
+
+const AnimatedFlatList = Animated.createAnimatedComponent(FlatList);
 
 export interface Action {
   iconName: string;
@@ -110,6 +124,52 @@ const ScrollList = ({
     }
   }, [loadingList, moreLoading]);
 
+  const _renderItem = useCallback(
+    ({item, index}) => {
+      return (
+        <>
+          {index === 0 &&
+            Array.isArray(actionList) &&
+            actionList.length > 0 && (
+              <TopActions
+                actionList={actionList}
+                verticalActions={verticalActions}
+              />
+            )}
+          {renderItem({item, index})}
+        </>
+      );
+    },
+    [actionList, renderItem, verticalActions],
+  );
+
+  const flatList = useRef<FlatList>();
+
+  const moveToTop = () => {
+    flatList.current.scrollToIndex({index: 0, animated: true});
+  };
+
+  const translateY = new Animated.Value(0);
+
+  const handleScroll = Animated.event(
+    [{nativeEvent: {contentOffset: {y: translateY}}}],
+    {useNativeDriver: true},
+  );
+
+  const interpolation = translateY.interpolate({
+    inputRange: [SCREEN_HEIGHT_50_PERCENT, SCREEN_HEIGHT_50_PERCENT + 180],
+    outputRange: [0, 1],
+    extrapolate: 'clamp',
+  });
+  const animatedButtonStyle = {
+    opacity: interpolation,
+    transform: [
+      {
+        scale: interpolation,
+      },
+    ],
+  };
+
   if (loadingList) {
     return (
       <View style={styles.loadingContainer}>
@@ -119,11 +179,17 @@ const ScrollList = ({
   }
 
   return (
-    <>
-      {Array.isArray(actionList) && actionList.length > 0 && (
-        <TopActions actionList={actionList} verticalActions={verticalActions} />
-      )}
-      <FlatList
+    <View>
+      <Animated.View style={[styles.buttonContainer, animatedButtonStyle]}>
+        <CircleButton
+          square={false}
+          iconName="arrow-up"
+          size={BUTTON_SIZE}
+          onPress={moveToTop}
+        />
+      </Animated.View>
+      <AnimatedFlatList
+        ref={flatList}
         style={[styles.scrollView, style]}
         data={data}
         onRefresh={disabledRefresh ? null : updateData}
@@ -148,13 +214,20 @@ const ScrollList = ({
             </View>
           );
         }}
-        renderItem={renderItem}
+        renderItem={_renderItem}
+        onScroll={handleScroll}
       />
-    </>
+    </View>
   );
 };
 
 const styles = StyleSheet.create({
+  buttonContainer: {
+    position: 'absolute',
+    top: 8,
+    left: SCREEN_WIDTH_50_PERCENT - BUTTON_SIZE / 2,
+    zIndex: 1,
+  },
   loadingContainer: {
     flex: 1,
   },
