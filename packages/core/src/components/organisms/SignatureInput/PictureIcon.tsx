@@ -20,9 +20,7 @@ import React, {useEffect} from 'react';
 import {StyleSheet} from 'react-native';
 import {useThemeColor, Icon} from '@axelor/aos-mobile-ui';
 import {useDispatch} from 'react-redux';
-import enableCamera, {
-  useCameraScannerValueByKey,
-} from '../../../features/cameraScannerSlice';
+import {enableCamera, useCameraValueByKey} from '../../../features/cameraSlice';
 
 interface PictureIconProps {
   cameraKey: string;
@@ -36,7 +34,7 @@ const PictureIcon = ({
   onChange,
 }: PictureIconProps) => {
   const Colors = useThemeColor();
-  const photo = useCameraScannerValueByKey(cameraKey);
+  const photo = useCameraValueByKey(cameraKey);
   const dispatch = useDispatch();
 
   useEffect(() => {
