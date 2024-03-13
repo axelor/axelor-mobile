@@ -17,9 +17,9 @@
  */
 
 import React from 'react';
+import {ActivityIndicator, View} from 'react-native';
 import {shallow} from 'enzyme';
-import {ScrollList} from '@axelor/aos-mobile-ui';
-import {FlatList, ActivityIndicator} from 'react-native';
+import {ScrollList, TopActions} from '@axelor/aos-mobile-ui';
 
 describe('ScrollList Component', () => {
   const props = {
@@ -28,12 +28,13 @@ describe('ScrollList Component', () => {
       {id: 1, name: 'Item 1'},
       {id: 2, name: 'Item 2'},
     ],
-    renderItem: jest.fn(),
+    renderItem: ({index}) => <View testID={`item_${index}`} />,
     fetchData: jest.fn(),
     moreLoading: false,
     isListEnd: false,
     horizontal: true,
     actionList: [{iconName: 'add', title: 'Add', onPress: jest.fn()}],
+    verticalActions: false,
   };
 
   it('renders without crashing', () => {
@@ -42,13 +43,22 @@ describe('ScrollList Component', () => {
   });
 
   it('passes the correct props to FlatList', () => {
-    const wrapper = shallow(<ScrollList {...props} />);
-    const flatListProps = wrapper.find(FlatList).props();
+    const renderItem = jest.fn();
+    const wrapper = shallow(<ScrollList {...props} renderItem={renderItem} />);
+    const animatedFlatList = wrapper
+      .find('ForwardRef(AnimatedComponentWrapper)')
+      .at(1);
 
-    expect(flatListProps.data).toEqual(props.data);
-    expect(flatListProps.renderItem).toEqual(props.renderItem);
-    expect(flatListProps.horizontal).toBe(props.horizontal);
-    expect(flatListProps.onEndReached).toEqual(expect.any(Function));
+    expect(animatedFlatList.props()).toMatchObject({
+      data: props.data,
+      horizontal: props.horizontal,
+    });
+
+    props.data.forEach((item, index) => {
+      animatedFlatList.props().renderItem({item, index});
+    });
+
+    expect(renderItem).toHaveBeenCalledTimes(props.data.length);
   });
 
   it('shows ActivityIndicator when loadingList is true', () => {
@@ -59,12 +69,53 @@ describe('ScrollList Component', () => {
 
   it('renders TopActions if actionList is provided', () => {
     const wrapper = shallow(<ScrollList {...props} />);
-    expect(wrapper.find('TopActions').exists()).toBeTruthy();
+
+    const animatedFlatList = wrapper
+      .find('ForwardRef(AnimatedComponentWrapper)')
+      .at(1);
+
+    props.data.forEach((item, index) => {
+      const itemWrapper = animatedFlatList.props().renderItem({item, index});
+      expect(itemWrapper.props.children.length).toBe(2);
+
+      if (index === 0) {
+        expect(itemWrapper.props.children[0]).toMatchObject({
+          type: TopActions,
+          props: {
+            actionList: props.actionList,
+            verticalActions: props.verticalActions,
+          },
+        });
+      } else {
+        expect(itemWrapper.props.children[0]).toBe(false);
+      }
+
+      expect(itemWrapper.props.children[1]).toMatchObject({
+        type: View,
+        props: {
+          testID: `item_${index}`,
+        },
+      });
+    });
   });
 
   it('does not render TopActions if actionList is empty', () => {
-    const _props = {...props, actionList: []};
-    const wrapper = shallow(<ScrollList {..._props} />);
-    expect(wrapper.find('TopActions').exists()).toBeFalsy();
+    const wrapper = shallow(<ScrollList {...props} actionList={[]} />);
+
+    const animatedFlatList = wrapper
+      .find('ForwardRef(AnimatedComponentWrapper)')
+      .at(1);
+
+    props.data.forEach((item, index) => {
+      const itemWrapper = animatedFlatList.props().renderItem({item, index});
+      expect(itemWrapper.props.children.length).toBe(2);
+      expect(itemWrapper.props.children[0]).toBe(false);
+      expect(itemWrapper.props.children[1]).toMatchObject({
+        type: View,
+        props: {
+          testID: `item_${index}`,
+        },
+      });
+    });
   });
 });

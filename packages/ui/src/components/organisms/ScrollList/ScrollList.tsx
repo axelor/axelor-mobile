@@ -25,7 +25,7 @@ import {
   StyleSheet,
   View,
 } from 'react-native';
-import {Color} from '../../../theme/themes';
+import {Color} from '../../../theme';
 import {Text} from '../../atoms';
 import {CircleButton} from '../../molecules';
 import TopActions from './TopActions';
