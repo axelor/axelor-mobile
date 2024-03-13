@@ -1,5 +1,0 @@
-{
-  "title": "Reducers: follow naming convention to avoid conflict.",
-  "type": "fix",
-  "packages": ["hr", "helpdesk"]
-}

@@ -1,5 +1,0 @@
-{
-  "title": "ControlEntryListScreen: change success to primary color on ToggleButton",
-  "type": "fix",
-  "packages": "quality"
-}

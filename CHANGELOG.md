@@ -3,6 +3,60 @@ title: 8.0.0
 tags: Changelog
 ---
 
+## [8.0.1] (2024-03-13)
+
+This version restore the iOS build which was broken due to some changes in dependencies.
+
+### @axelor/aos-mobile-core
+
+#### Fixes
+
+- Login screen: improve display.
+- FormView: refresh issue when no default value is given
+- Studio form view: remove display of items preview on search bars
+
+### @axelor/aos-mobile-ui
+
+#### Features
+
+- Dashboard: possibility to hide background card on chart
+
+#### Fixes
+
+- Dashboard: rename file to allow mobile app to work on macOS
+
+### @axelor/aos-mobile-quality
+
+#### Fixes
+
+- Control entry list view: change success to primary color on toggle button
+
+### @axelor/aos-mobile-hr
+
+#### Fixes
+
+- Expense line: use request to recompute totals on update
+- Reducers: follow naming convention to avoid conflict.
+
+### @axelor/aos-mobile-helpdesk
+
+#### Fixes
+
+- List screens: avoid page loading when search is active
+- Reducers: follow naming convention to avoid conflict.
+
+### @axelor/aos-mobile-crm
+
+#### Fixes
+
+- List screens: avoid page loading when search is active
+
+### @axelor/aos-mobile-stock
+
+#### Fixes
+
+- Product details: hide units if product is not sellable or purchasable
+
 ## [8.0.0] (2024-02-19)
 
 This version of the application is no more retrocompatible by default due to some new requests. Retrocompatibility can be restored by rewritting routes' path in the configuration file.
@@ -113,4 +167,5 @@ Changes has been done to get new core and ui improvements: use of ChipSelect, co
 
 Changes has been done to get new core and ui improvements: use of ChipSelect, color differentiation between success and primary, definition of required configs, use of icons for Bootstrap
 
+[8.0.1]: https://github.com/axelor/axelor-mobile/compare/8.0.0...8.0.1
 [8.0.0]: https://github.com/axelor/axelor-mobile/compare/7.2.6...8.0.0

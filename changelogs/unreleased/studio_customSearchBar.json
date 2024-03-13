@@ -1,5 +1,0 @@
-{
-  "title": "Studio form view: remove display of items preview on search bars",
-  "type": "fix",
-  "packages": "core"
-}
