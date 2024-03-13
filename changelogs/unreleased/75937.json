@@ -1,0 +1,5 @@
+{
+  "title": "Dashboard: possibility to hide background card on chart",
+  "type": "feat",
+  "packages": "ui"
+}

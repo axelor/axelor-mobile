@@ -74,39 +74,25 @@ const LineChart = ({
     return Math.max(_containerWidth / datasets?.[0]?.length, 20);
   }, [_containerWidth, datasets, spacing]);
 
-  const renderRNLineChart = () => {
-    return (
-      <>
-        <RNLineChart
-          width={_graphWidth}
-          yAxisTextStyle={{
-            color: Colors.secondaryColor_dark.background,
-          }}
-          xAxisLabelTextStyle={{color: Colors.secondaryColor_dark.background}}
-          initialSpacing={_spacing / 2}
-          spacing={_spacing}
-          endSpacing={_spacing}
-          isAnimated={true}
-          backgroundColor={backgroundColor}
-          {...chartProps}
-        />
-        {!checkNullString(title) && <Text style={styles.title}>{title}</Text>}
-      </>
-    );
-  };
-
-  if (hideCardBackground) {
-    return (
-      <View style={[styles.container, {width: _containerWidth}, style]}>
-        {renderRNLineChart()}
-      </View>
-    );
-  }
+  const Container = hideCardBackground ? View : Card;
 
   return (
-    <Card style={[styles.container, {width: _containerWidth}, style]}>
-      {renderRNLineChart()}
-    </Card>
+    <Container style={[styles.container, {width: _containerWidth}, style]}>
+      <RNLineChart
+        width={_graphWidth}
+        yAxisTextStyle={{
+          color: Colors.secondaryColor_dark.background,
+        }}
+        xAxisLabelTextStyle={{color: Colors.secondaryColor_dark.background}}
+        initialSpacing={_spacing / 2}
+        spacing={_spacing}
+        endSpacing={_spacing}
+        isAnimated={true}
+        backgroundColor={backgroundColor}
+        {...chartProps}
+      />
+      {!checkNullString(title) && <Text style={styles.title}>{title}</Text>}
+    </Container>
   );
 };
 

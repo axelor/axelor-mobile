@@ -74,43 +74,29 @@ const BarChart = ({
     return Math.max(_containerWidth / barChartData.length, 20);
   }, [_containerWidth, barChartData.length, spacing]);
 
-  const renderRNBarChart = () => {
-    return (
-      <>
-        <RNBarChart
-          data={barChartData}
-          width={_graphWidth}
-          isAnimated={true}
-          barBorderRadius={4}
-          barBorderTopRightRadius={7}
-          barBorderTopLeftRadius={7}
-          barBorderBottomRightRadius={0}
-          barBorderBottomLeftRadius={0}
-          initialSpacing={_spacing / 2}
-          spacing={_spacing}
-          endSpacing={_spacing}
-          horizontal={horizontal}
-          disablePress={true}
-          yAxisTextStyle={{color: Colors.secondaryColor_dark.background}}
-          xAxisLabelTextStyle={{color: Colors.secondaryColor_dark.background}}
-        />
-        {!checkNullString(title) && <Text style={styles.title}>{title}</Text>}
-      </>
-    );
-  };
-
-  if (hideCardBackground) {
-    return (
-      <View style={[styles.container, {width: _containerWidth}, style]}>
-        {renderRNBarChart()}
-      </View>
-    );
-  }
+  const Container = hideCardBackground ? View : Card;
 
   return (
-    <Card style={[styles.container, {width: _containerWidth}, style]}>
-      {renderRNBarChart()}
-    </Card>
+    <Container style={[styles.container, {width: _containerWidth}, style]}>
+      <RNBarChart
+        data={barChartData}
+        width={_graphWidth}
+        isAnimated={true}
+        barBorderRadius={4}
+        barBorderTopRightRadius={7}
+        barBorderTopLeftRadius={7}
+        barBorderBottomRightRadius={0}
+        barBorderBottomLeftRadius={0}
+        initialSpacing={_spacing / 2}
+        spacing={_spacing}
+        endSpacing={_spacing}
+        horizontal={horizontal}
+        disablePress={true}
+        yAxisTextStyle={{color: Colors.secondaryColor_dark.background}}
+        xAxisLabelTextStyle={{color: Colors.secondaryColor_dark.background}}
+      />
+      {!checkNullString(title) && <Text style={styles.title}>{title}</Text>}
+    </Container>
   );
 };
 

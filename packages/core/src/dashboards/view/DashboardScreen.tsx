@@ -24,7 +24,7 @@ import {createDashboardActionID} from '../display.helpers';
 import {ActivityIndicator} from 'react-native';
 import {fetchDashboard} from '../api.helpers';
 
-export const DashboardScreen = ({dashboardId}) => {
+export const DashboardScreen = ({dashboardId, hideCardBackground = false}) => {
   const I18n = useTranslator();
 
   const [dashboard, setDashboard] = useState<any>({});
@@ -91,5 +91,10 @@ export const DashboardScreen = ({dashboardId}) => {
     );
   }
 
-  return <Dashboard lineList={dashboardData} />;
+  return (
+    <Dashboard
+      lineList={dashboardData}
+      hideCardBackground={hideCardBackground}
+    />
+  );
 };
