@@ -3,6 +3,42 @@ title: 7.2.0
 tags: Changelog
 ---
 
+## [7.2.7] (2024-03-13)
+
+### @axelor/aos-mobile-core
+
+#### Fixes
+
+- Login screen: improve display.
+- FormView: refresh issue when no default value is given
+- Studio form view: remove display of items preview on search bars
+
+### @axelor/aos-mobile-hr
+
+#### Fixes
+
+- ExpenseLine: use request to recompute totals on update
+- Reducers: follow naming convention to avoid conflict.
+
+### @axelor/aos-mobile-helpdesk
+
+#### Fixes
+
+- List screens: avoid page loading when search is active
+- Reducers: follow naming convention to avoid conflict.
+
+### @axelor/aos-mobile-crm
+
+#### Fixes
+
+- List screens: avoid page loading when search is active
+
+### @axelor/aos-mobile-stock
+
+#### Fixes
+
+- Product details: hide units if product is not sellable or purchasable
+
 ## [7.2.6] (2024-02-19)
 
 ### @axelor/aos-mobile-hr
@@ -356,6 +392,7 @@ It enables user to manage Expenses through the mobile application. You can creat
 - Remove IconButton component which should be replaced by Button component.
 - Remove Pop-up components which should be replaced by Alert component.
 
+[7.2.7]: https://github.com/axelor/axelor-mobile/compare/7.2.6...7.2.7
 [7.2.6]: https://github.com/axelor/axelor-mobile/compare/7.2.5...7.2.6
 [7.2.5]: https://github.com/axelor/axelor-mobile/compare/7.2.4...7.2.5
 [7.2.4]: https://github.com/axelor/axelor-mobile/compare/7.2.3...7.2.4
