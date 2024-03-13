@@ -1,3 +1,7 @@
 {
-  "Intervention_Intervention": "Intervention"
+  "Intervention_Intervention": "Intervention",
+  "Intervention_Interventions": "Interventions",
+  "Intervention_DayInterventions": "Of the day",
+  "Intervention_Planned": "Planned",
+  "Intervention_History": "History"
 }
