@@ -99,6 +99,7 @@ export const DashboardScreen = ({dashboardId, hideCardBackground = false}) => {
       hideCardBackground={hideCardBackground}
       translator={I18n.t}
       lastUpdated={lastUpdated}
+      displayLastUpdate={true}
     />
   );
 };

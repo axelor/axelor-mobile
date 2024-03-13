@@ -42,6 +42,7 @@ interface DashboardProps {
   hideCardBackground?: boolean;
   lastUpdated?: Date;
   translator?: (translationKey: string) => string;
+  displayLastUpdate?: boolean;
 }
 
 const getGraphWidth = (nbGraphInLine: number) => {
@@ -140,6 +141,7 @@ const Dashboard = ({
   hideCardBackground = false,
   translator,
   lastUpdated,
+  displayLastUpdate = false,
 }: DashboardProps) => {
   return (
     <ScrollView style={[styles.container, style]}>
@@ -167,11 +169,15 @@ const Dashboard = ({
           </View>
         );
       })}
-      <View style={styles.dateContainer}>
-        <Text>
-          {`${translator('Base_LastUpdate')}: ${lastUpdated.toLocaleString()}`}
-        </Text>
-      </View>
+      {displayLastUpdate && lastUpdated != null && (
+        <View style={styles.dateContainer}>
+          <Text>
+            {`${translator(
+              'Base_LastUpdate',
+            )}: ${lastUpdated.toLocaleString()}`}
+          </Text>
+        </View>
+      )}
     </ScrollView>
   );
 };
