@@ -29,12 +29,14 @@ export const DashboardScreen = ({dashboardId, hideCardBackground = false}) => {
 
   const [dashboard, setDashboard] = useState<any>({});
   const [loading, setLoading] = useState<boolean>(false);
+  const [lastUpdated, setLastUpdated] = useState<Date>(new Date());
 
   const refresh = useCallback(() => {
     setLoading(true);
     fetchDashboard({id: dashboardId})
       .then(response => {
         setDashboard({...(response?.data?.object ?? {}), id: dashboardId});
+        setLastUpdated(new Date());
       })
       .catch(() => setDashboard({}))
       .finally(() => setLoading(false));
@@ -96,6 +98,7 @@ export const DashboardScreen = ({dashboardId, hideCardBackground = false}) => {
       lineList={dashboardData}
       hideCardBackground={hideCardBackground}
       translator={I18n.t}
+      lastUpdated={lastUpdated}
     />
   );
 };
