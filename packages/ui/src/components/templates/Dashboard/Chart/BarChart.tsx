@@ -17,7 +17,7 @@
  */
 
 import React, {useMemo} from 'react';
-import {StyleSheet, Dimensions} from 'react-native';
+import {StyleSheet, Dimensions, View} from 'react-native';
 import {BarChart as RNBarChart} from 'react-native-gifted-charts';
 import {useThemeColor} from '../../../../theme';
 import {Card, Text} from '../../../atoms';
@@ -35,6 +35,7 @@ interface BarCharProps {
   horizontal?: boolean;
   title?: string;
   rotateLabel?: boolean;
+  hideCardBackground?: boolean;
 }
 
 const BarChart = ({
@@ -45,6 +46,7 @@ const BarChart = ({
   horizontal = false,
   title,
   rotateLabel = true,
+  hideCardBackground = false,
 }: BarCharProps) => {
   const Colors = useThemeColor();
 
@@ -72,8 +74,10 @@ const BarChart = ({
     return Math.max(_containerWidth / barChartData.length, 20);
   }, [_containerWidth, barChartData.length, spacing]);
 
+  const Container = hideCardBackground ? View : Card;
+
   return (
-    <Card style={[styles.container, {width: _containerWidth}, style]}>
+    <Container style={[styles.container, {width: _containerWidth}, style]}>
       <RNBarChart
         data={barChartData}
         width={_graphWidth}
@@ -92,7 +96,7 @@ const BarChart = ({
         xAxisLabelTextStyle={{color: Colors.secondaryColor_dark.background}}
       />
       {!checkNullString(title) && <Text style={styles.title}>{title}</Text>}
-    </Card>
+    </Container>
   );
 };
 
