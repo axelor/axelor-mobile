@@ -3,6 +3,26 @@ title: 7.0.0
 tags: Changelog
 ---
 
+## [7.0.11] (2024-03-13)
+
+### @axelor/aos-mobile-core
+
+#### Fixes
+
+- Login screen: improve display.
+
+### @axelor/aos-mobile-crm
+
+#### Fixes
+
+- List screens: avoid page loading when search is active
+
+### @axelor/aos-mobile-stock
+
+#### Fixes
+
+- Product details: hide units if product is not sellable or purchasable
+
 ## [7.0.10] (2024-02-16)
 
 ### @axelor/aos-mobile-crm
@@ -454,6 +474,7 @@ The project architecture has also been updated, the example folder has been expl
 - Replace ChipSelect by MultiValuePicker on list screens
 - Add search bar details pop up on screens: add empowered searchBar for objects
 
+[7.0.11]: https://github.com/axelor/axelor-mobile/compare/7.0.10...7.0.11
 [7.0.10]: https://github.com/axelor/axelor-mobile/compare/7.0.9...7.0.10
 [7.0.9]: https://github.com/axelor/axelor-mobile/compare/7.0.8...7.0.9
 [7.0.8]: https://github.com/axelor/axelor-mobile/compare/7.0.7...7.0.8
