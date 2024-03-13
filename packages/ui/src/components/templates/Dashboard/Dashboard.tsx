@@ -135,7 +135,7 @@ const renderChart = (graph, indexGraph, nbGraphInLine, hideCardBackground) => {
 const Dashboard = ({
   style,
   lineList,
-  hideCardBackground = true,
+  hideCardBackground = false,
 }: DashboardProps) => {
   return (
     <ScrollView style={[styles.container, style]}>
