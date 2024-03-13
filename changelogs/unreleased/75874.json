@@ -1,5 +1,0 @@
-{
-  "title": "Product details: hide units if product is not sellable or purchasable",
-  "type": "fix",
-  "packages": "stock"
-}

@@ -3,6 +3,32 @@ title: 7.1.0
 tags: Changelog
 ---
 
+## [7.1.8] (2024-03-13)
+
+### @axelor/aos-mobile-core
+
+#### Fixes
+
+- Login screen: improve display.
+
+### @axelor/aos-mobile-helpdesk
+
+#### Fixes
+
+- List screens: avoid page loading when search is active
+
+### @axelor/aos-mobile-crm
+
+#### Fixes
+
+- List screens: avoid page loading when search is active
+
+### @axelor/aos-mobile-stock
+
+#### Fixes
+
+- Product details: hide units if product is not sellable or purchasable
+
 ## [7.1.7] (2024-02-16)
 
 ### @axelor/aos-mobile-crm
@@ -364,6 +390,7 @@ This update breaks the compatability with AOS Stock module under version 7.1 due
 - Add number decimal digit config management system
 - Manage multilines input with auto height resize on FormInput
 
+[7.1.8]: https://github.com/axelor/axelor-mobile/compare/7.1.7...7.1.8
 [7.1.7]: https://github.com/axelor/axelor-mobile/compare/7.1.6...7.1.7
 [7.1.6]: https://github.com/axelor/axelor-mobile/compare/7.1.5...7.1.6
 [7.1.5]: https://github.com/axelor/axelor-mobile/compare/7.1.4...7.1.5
