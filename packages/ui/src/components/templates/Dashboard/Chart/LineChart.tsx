@@ -76,19 +76,22 @@ const LineChart = ({
 
   const renderRNLineChart = () => {
     return (
-      <RNLineChart
-        width={_graphWidth}
-        yAxisTextStyle={{
-          color: Colors.secondaryColor_dark.background,
-        }}
-        xAxisLabelTextStyle={{color: Colors.secondaryColor_dark.background}}
-        initialSpacing={_spacing / 2}
-        spacing={_spacing}
-        endSpacing={_spacing}
-        isAnimated={true}
-        backgroundColor={backgroundColor}
-        {...chartProps}
-      />
+      <>
+        <RNLineChart
+          width={_graphWidth}
+          yAxisTextStyle={{
+            color: Colors.secondaryColor_dark.background,
+          }}
+          xAxisLabelTextStyle={{color: Colors.secondaryColor_dark.background}}
+          initialSpacing={_spacing / 2}
+          spacing={_spacing}
+          endSpacing={_spacing}
+          isAnimated={true}
+          backgroundColor={backgroundColor}
+          {...chartProps}
+        />
+        {!checkNullString(title) && <Text style={styles.title}>{title}</Text>}
+      </>
     );
   };
 
@@ -96,7 +99,6 @@ const LineChart = ({
     return (
       <View style={[styles.container, {width: _containerWidth}, style]}>
         {renderRNLineChart()}
-        {!checkNullString(title) && <Text style={styles.title}>{title}</Text>}
       </View>
     );
   }
@@ -104,7 +106,6 @@ const LineChart = ({
   return (
     <Card style={[styles.container, {width: _containerWidth}, style]}>
       {renderRNLineChart()}
-      {!checkNullString(title) && <Text style={styles.title}>{title}</Text>}
     </Card>
   );
 };

@@ -76,23 +76,26 @@ const BarChart = ({
 
   const renderRNBarChart = () => {
     return (
-      <RNBarChart
-        data={barChartData}
-        width={_graphWidth}
-        isAnimated={true}
-        barBorderRadius={4}
-        barBorderTopRightRadius={7}
-        barBorderTopLeftRadius={7}
-        barBorderBottomRightRadius={0}
-        barBorderBottomLeftRadius={0}
-        initialSpacing={_spacing / 2}
-        spacing={_spacing}
-        endSpacing={_spacing}
-        horizontal={horizontal}
-        disablePress={true}
-        yAxisTextStyle={{color: Colors.secondaryColor_dark.background}}
-        xAxisLabelTextStyle={{color: Colors.secondaryColor_dark.background}}
-      />
+      <>
+        <RNBarChart
+          data={barChartData}
+          width={_graphWidth}
+          isAnimated={true}
+          barBorderRadius={4}
+          barBorderTopRightRadius={7}
+          barBorderTopLeftRadius={7}
+          barBorderBottomRightRadius={0}
+          barBorderBottomLeftRadius={0}
+          initialSpacing={_spacing / 2}
+          spacing={_spacing}
+          endSpacing={_spacing}
+          horizontal={horizontal}
+          disablePress={true}
+          yAxisTextStyle={{color: Colors.secondaryColor_dark.background}}
+          xAxisLabelTextStyle={{color: Colors.secondaryColor_dark.background}}
+        />
+        {!checkNullString(title) && <Text style={styles.title}>{title}</Text>}
+      </>
     );
   };
 
@@ -100,14 +103,13 @@ const BarChart = ({
     return (
       <View style={[styles.container, {width: _containerWidth}, style]}>
         {renderRNBarChart()}
-        {!checkNullString(title) && <Text style={styles.title}>{title}</Text>}
       </View>
     );
   }
+
   return (
     <Card style={[styles.container, {width: _containerWidth}, style]}>
       {renderRNBarChart()}
-      {!checkNullString(title) && <Text style={styles.title}>{title}</Text>}
     </Card>
   );
 };
