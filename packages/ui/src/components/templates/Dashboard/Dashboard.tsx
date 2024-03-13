@@ -16,9 +16,9 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import React from 'react';
+import React, {useEffect, useState} from 'react';
 import {Dimensions, StyleSheet, View} from 'react-native';
-import {ScrollView} from '../../atoms';
+import {ScrollView, Text} from '../../atoms';
 import Chart from './chart-type';
 import {
   Data,
@@ -40,6 +40,7 @@ interface DashboardProps {
   style?: any;
   lineList: Line[];
   hideCardBackground?: boolean;
+  translator?: (translationKey: string) => string;
 }
 
 const getGraphWidth = (nbGraphInLine: number) => {
@@ -163,6 +164,11 @@ const Dashboard = ({
           </View>
         );
       })}
+      <View style={styles.dateContainer}>
+        <Text>
+          {`${translator('Base_LastUpdate')}: ${date.toLocaleString()}`}
+        </Text>
+      </View>
     </ScrollView>
   );
 };
@@ -176,6 +182,10 @@ const styles = StyleSheet.create({
     flexWrap: 'wrap',
     flexDirection: 'row',
     justifyContent: 'space-evenly',
+  },
+  dateContainer: {
+    alignItems: 'center',
+    marginTop: 20,
   },
 });
 

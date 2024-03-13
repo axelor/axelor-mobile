@@ -95,6 +95,7 @@ export const DashboardScreen = ({dashboardId, hideCardBackground = false}) => {
     <Dashboard
       lineList={dashboardData}
       hideCardBackground={hideCardBackground}
+      translator={I18n.t}
     />
   );
 };
