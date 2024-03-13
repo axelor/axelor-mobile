@@ -17,7 +17,7 @@
  */
 
 import React, {useMemo} from 'react';
-import {Dimensions, StyleSheet} from 'react-native';
+import {Dimensions, StyleSheet, View} from 'react-native';
 import {LineChart as RNLineChart} from 'react-native-gifted-charts';
 import {useThemeColor} from '../../../../theme';
 import {Card, Text} from '../../../atoms';
@@ -35,6 +35,7 @@ interface LineChartProps {
   backgroundColor?: string;
   rotateLabel?: boolean;
   title?: string;
+  hideCardBackground?: boolean;
 }
 
 const LineChart = ({
@@ -45,6 +46,7 @@ const LineChart = ({
   backgroundColor,
   title,
   rotateLabel = true,
+  hideCardBackground = false,
 }: LineChartProps) => {
   const Colors = useThemeColor();
 
@@ -72,8 +74,8 @@ const LineChart = ({
     return Math.max(_containerWidth / datasets?.[0]?.length, 20);
   }, [_containerWidth, datasets, spacing]);
 
-  return (
-    <Card style={[styles.container, {width: _containerWidth}, style]}>
+  const renderRNLineChart = () => {
+    return (
       <RNLineChart
         width={_graphWidth}
         yAxisTextStyle={{
@@ -87,6 +89,21 @@ const LineChart = ({
         backgroundColor={backgroundColor}
         {...chartProps}
       />
+    );
+  };
+
+  if (hideCardBackground) {
+    return (
+      <View style={[styles.container, {width: _containerWidth}, style]}>
+        {renderRNLineChart()}
+        {!checkNullString(title) && <Text style={styles.title}>{title}</Text>}
+      </View>
+    );
+  }
+
+  return (
+    <Card style={[styles.container, {width: _containerWidth}, style]}>
+      {renderRNLineChart()}
       {!checkNullString(title) && <Text style={styles.title}>{title}</Text>}
     </Card>
   );

@@ -39,6 +39,7 @@ interface Line {
 interface DashboardProps {
   style?: any;
   lineList: Line[];
+  hideCardBackground?: boolean;
 }
 
 const getGraphWidth = (nbGraphInLine: number) => {
@@ -51,24 +52,38 @@ const getGraphWidth = (nbGraphInLine: number) => {
   }
 };
 
-const BarChartRender = (datasets, key, title, widthGraph) => {
+const BarChartRender = (
+  datasets,
+  key,
+  title,
+  widthGraph,
+  hideCardBackground,
+) => {
   return (
     <BarChart
       key={key}
       title={title}
       datasets={datasets}
       widthGraph={widthGraph}
+      hideCardBackground={hideCardBackground}
     />
   );
 };
 
-const LineChartRender = (datasets, key, title, widthGraph) => {
+const LineChartRender = (
+  datasets,
+  key,
+  title,
+  widthGraph,
+  hideCardBackground,
+) => {
   return (
     <LineChart
       key={key}
       title={title}
       datasets={datasets}
       widthGraph={widthGraph}
+      hideCardBackground={hideCardBackground}
     />
   );
 };
@@ -85,27 +100,43 @@ const PieChartRender = (datasets, key, title, widthGraph, type) => {
   );
 };
 
-const renderChart = (graph, indexGraph, nbGraphInLine) => {
+const renderChart = (graph, indexGraph, nbGraphInLine, hideCardBackground) => {
   const {dataList, title, type} = graph;
   const widthGraph = getGraphWidth(nbGraphInLine);
 
   switch (type) {
     case Chart.chartType.bar:
-      return BarChartRender(dataList, indexGraph, title, widthGraph);
+      return BarChartRender(
+        dataList,
+        indexGraph,
+        title,
+        widthGraph,
+        hideCardBackground,
+      );
 
     case Chart.chartType.pie:
     case Chart.chartType.donut:
       return PieChartRender(dataList, indexGraph, title, widthGraph, type);
 
     case Chart.chartType.line:
-      return LineChartRender(dataList, indexGraph, title, widthGraph);
+      return LineChartRender(
+        dataList,
+        indexGraph,
+        title,
+        widthGraph,
+        hideCardBackground,
+      );
 
     default:
       return null;
   }
 };
 
-const Dashboard = ({style, lineList}: DashboardProps) => {
+const Dashboard = ({
+  style,
+  lineList,
+  hideCardBackground = true,
+}: DashboardProps) => {
   return (
     <ScrollView style={[styles.container, style]}>
       {lineList?.map((line, indexLine) => {
@@ -120,7 +151,12 @@ const Dashboard = ({style, lineList}: DashboardProps) => {
           <View style={styles.lineContainer} key={indexLine}>
             {limitedGraphList?.map((graph, indexGraph) => {
               if (graph.dataList?.[0]?.length > 0) {
-                return renderChart(graph, indexGraph, nbGraphInLine);
+                return renderChart(
+                  graph,
+                  indexGraph,
+                  nbGraphInLine,
+                  hideCardBackground,
+                );
               }
               return null;
             })}

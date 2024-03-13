@@ -17,7 +17,7 @@
  */
 
 import React, {useMemo} from 'react';
-import {StyleSheet, Dimensions} from 'react-native';
+import {StyleSheet, Dimensions, View} from 'react-native';
 import {BarChart as RNBarChart} from 'react-native-gifted-charts';
 import {useThemeColor} from '../../../../theme';
 import {Card, Text} from '../../../atoms';
@@ -35,6 +35,7 @@ interface BarCharProps {
   horizontal?: boolean;
   title?: string;
   rotateLabel?: boolean;
+  hideCardBackground?: boolean;
 }
 
 const BarChart = ({
@@ -45,6 +46,7 @@ const BarChart = ({
   horizontal = false,
   title,
   rotateLabel = true,
+  hideCardBackground = false,
 }: BarCharProps) => {
   const Colors = useThemeColor();
 
@@ -72,8 +74,8 @@ const BarChart = ({
     return Math.max(_containerWidth / barChartData.length, 20);
   }, [_containerWidth, barChartData.length, spacing]);
 
-  return (
-    <Card style={[styles.container, {width: _containerWidth}, style]}>
+  const renderRNBarChart = () => {
+    return (
       <RNBarChart
         data={barChartData}
         width={_graphWidth}
@@ -91,6 +93,20 @@ const BarChart = ({
         yAxisTextStyle={{color: Colors.secondaryColor_dark.background}}
         xAxisLabelTextStyle={{color: Colors.secondaryColor_dark.background}}
       />
+    );
+  };
+
+  if (hideCardBackground) {
+    return (
+      <View style={[styles.container, {width: _containerWidth}, style]}>
+        {renderRNBarChart()}
+        {!checkNullString(title) && <Text style={styles.title}>{title}</Text>}
+      </View>
+    );
+  }
+  return (
+    <Card style={[styles.container, {width: _containerWidth}, style]}>
+      {renderRNBarChart()}
       {!checkNullString(title) && <Text style={styles.title}>{title}</Text>}
     </Card>
   );
