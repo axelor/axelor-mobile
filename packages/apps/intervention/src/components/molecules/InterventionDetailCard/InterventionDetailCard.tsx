@@ -18,8 +18,8 @@
 
 import React, {useMemo} from 'react';
 import {StyleSheet, View} from 'react-native';
-import {linkingProvider} from '@axelor/aos-mobile-core';
-import {CardIconButton, useThemeColor} from '@axelor/aos-mobile-ui';
+import {linkingProvider, useTranslator} from '@axelor/aos-mobile-core';
+import {InfoButton, useThemeColor} from '@axelor/aos-mobile-ui';
 import {InterventionCard} from '../../atoms';
 
 interface InterventionContent {
@@ -28,7 +28,8 @@ interface InterventionContent {
   deliveredPartner: any;
   planifStartDateTime: string;
   interventionType: any;
-  address?: any;
+  address: any;
+  assignedTo: any;
 }
 
 interface InterventionDetailCardProps {
@@ -42,6 +43,7 @@ const InterventionDetailCard = ({
   intervention,
   onPress,
 }: InterventionDetailCardProps) => {
+  const I18n = useTranslator();
   const Colors = useThemeColor();
 
   const address = useMemo(
@@ -66,22 +68,24 @@ const InterventionDetailCard = ({
         {...intervention}
         onPress={onPress}
       />
-      {address && phone && (
-        <View style={styles.iconContainer}>
+      {(address || phone) && (
+        <View style={styles.flexOne}>
           {address && (
-            <CardIconButton
+            <InfoButton
+              style={styles.flexOne}
               iconName={'geo-alt-fill'}
               iconColor={Colors.secondaryColor_dark.background}
+              indication={I18n.t('Intervention_OpenMap')}
               onPress={() => linkingProvider.openMapApp(address)}
-              style={styles.cardIconButton}
             />
           )}
           {phone && (
-            <CardIconButton
+            <InfoButton
+              style={styles.flexOne}
               iconName={'telephone-fill'}
               iconColor={Colors.secondaryColor_dark.background}
+              indication={I18n.t('Intervention_OpenPhone')}
               onPress={() => linkingProvider.openCallApp(phone)}
-              style={styles.cardIconButton}
             />
           )}
         </View>
@@ -101,11 +105,7 @@ const styles = StyleSheet.create({
     flex: 6,
     margin: 2,
   },
-  iconContainer: {
-    flexDirection: 'column',
-    flex: 1,
-  },
-  cardIconButton: {
+  flexOne: {
     flex: 1,
   },
 });

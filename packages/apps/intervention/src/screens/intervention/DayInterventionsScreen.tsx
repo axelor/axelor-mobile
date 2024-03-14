@@ -17,45 +17,23 @@
  */
 
 import React from 'react';
-import {InterventionDetailCard} from '../../components';
+import {Screen} from '@axelor/aos-mobile-ui';
+import {InterventionsListView} from '../../components';
+import {Intervention} from '../../types';
 
 const DayInterventionsScreen = ({}) => {
   return (
-    <InterventionDetailCard
-      intervention={testIntervention}
-      onPress={() => console.log('Card pressed.')}
-    />
+    <Screen removeSpaceOnTop={true}>
+      <InterventionsListView
+        statusList={[
+          Intervention.status.Planned,
+          Intervention.status.Started,
+          Intervention.status.Suspended,
+        ]}
+        defaultDate={new Date()}
+      />
+    </Screen>
   );
 };
 
 export default DayInterventionsScreen;
-
-const testIntervention = {
-  id: 1,
-  version: 0,
-  statusSelect: 20,
-  sequence: 'TEST0001',
-  deliveredPartner: {
-    fullName: '0001 - TEST',
-    mobilephone: '0600000000',
-    fixedPhone: '0100000000',
-    picture: {
-      id: 1,
-      $version: 0,
-    },
-    id: 1,
-    $version: 0,
-  },
-  planifStartDateTime: '2024-03-13T12:00Z',
-  interventionType: {
-    code: 'MTN',
-    name: 'Maintenance',
-    id: 1,
-    $version: 0,
-  },
-  address: {
-    fullName: '1 Avenue des Champs-Élysées',
-    id: 1,
-    $version: 0,
-  },
-};

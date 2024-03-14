@@ -2,6 +2,12 @@
   "Intervention_Intervention": "Intervention",
   "Intervention_Interventions": "Interventions",
   "Intervention_DayInterventions": "Du jour",
-  "Intervention_Planned": "Planifiées",
-  "Intervention_History": "Historique"
+  "Intervention_PlannedInterventions": "Planifiées",
+  "Intervention_InterventionsHistory": "Historique",
+  "Intervention_OpenMap": "Voir l'itinéraire",
+  "Intervention_OpenPhone": "Appeler le contact",
+  "Intervention_Status_Planned": "Planifiée",
+  "Intervention_Status_Started": "Démarrée",
+  "Intervention_Status_Suspended": "Suspendue",
+  "Intervention_SliceAction_FetchIntervention": "récupération des interventions"
 }

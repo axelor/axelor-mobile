@@ -22,16 +22,25 @@ import InterventionsHistoryScreen from './InterventionsHistoryScreen';
 
 export default {
   DayInterventionsScreen: {
-    title: 'Intervention_DayInterventions',
+    title: 'Intervention_Interventions',
     component: DayInterventionsScreen,
+    options: {
+      shadedHeader: false,
+    },
   },
   PlannedInterventionsScreen: {
-    title: 'Intervention_Planned',
+    title: 'Intervention_Interventions',
     component: PlannedInterventionsScreen,
+    options: {
+      shadedHeader: false,
+    },
   },
   InterventionsHistoryScreen: {
-    title: 'Intervention_History',
+    title: 'Intervention_Interventions',
     component: InterventionsHistoryScreen,
+    options: {
+      shadedHeader: false,
+    },
   },
 };
 

@@ -16,6 +16,8 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-export * from './atoms';
-export * from './molecules';
-export * from './templates';
+import {SortFields} from '@axelor/aos-mobile-core';
+
+export const intervention_sortFields: SortFields = {
+  intervention_intervention: ['-planifStartDateTime'],
+};

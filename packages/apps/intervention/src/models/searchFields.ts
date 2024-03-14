@@ -16,16 +16,8 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import React from 'react';
-import {View} from 'react-native';
-import {Text} from '@axelor/aos-mobile-ui';
+import {SearchFields} from '@axelor/aos-mobile-core';
 
-const InterventionsHistoryScreen = ({}) => {
-  return (
-    <View>
-      <Text>InterventionsHistoryScreen</Text>
-    </View>
-  );
+export const intervention_searchFields: SearchFields = {
+  intervention_intervention: ['sequence'],
 };
-
-export default InterventionsHistoryScreen;

@@ -16,6 +16,12 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-export * from './atoms';
-export * from './molecules';
-export * from './templates';
+import React from 'react';
+import {InterventionsListView} from '../../components';
+import {Intervention} from '../../types';
+
+const InterventionsHistoryScreen = ({}) => {
+  return <InterventionsListView statusList={[Intervention.status.Finished]} />;
+};
+
+export default InterventionsHistoryScreen;

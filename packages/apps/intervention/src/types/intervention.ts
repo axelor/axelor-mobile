@@ -43,6 +43,23 @@ class InterventionType {
         return null;
     }
   };
+
+  static getStatusList = (
+    statusList: number[],
+    Colors: ThemeColors,
+    I18n: {t: (key: string) => string},
+  ) => {
+    return statusList.map(statusValue => {
+      const key = Object.keys(this.status).find(
+        _key => this.status[_key] === statusValue,
+      );
+      return {
+        title: I18n.t(`Intervention_Status_${key}`),
+        color: this.getStatusColor(statusValue, Colors),
+        key: statusValue,
+      };
+    });
+  };
 }
 
 export default InterventionType;

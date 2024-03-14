@@ -18,7 +18,12 @@
 
 import React, {useMemo} from 'react';
 import {StyleSheet, View} from 'react-native';
-import {DateDisplay, useMetafileUri} from '@axelor/aos-mobile-core';
+import {
+  formatDateTime,
+  useMetafileUri,
+  useSelector,
+  useTranslator,
+} from '@axelor/aos-mobile-core';
 import {ObjectCard, useThemeColor} from '@axelor/aos-mobile-ui';
 import {Intervention} from '../../../types';
 
@@ -29,7 +34,8 @@ interface InterventionCardProps {
   sequence: string;
   planifStartDateTime: string;
   interventionType: any;
-  address?: any;
+  address: any;
+  assignedTo: any;
   onPress: () => void;
 }
 
@@ -41,10 +47,14 @@ const InterventionCard = ({
   planifStartDateTime,
   interventionType,
   address,
+  assignedTo,
   onPress,
 }: InterventionCardProps) => {
+  const I18n = useTranslator();
   const Colors = useThemeColor();
   const formatMetaFile = useMetafileUri();
+
+  const {userId} = useSelector((state: any) => state.auth);
 
   const borderStyle = useMemo(
     () =>
@@ -62,20 +72,25 @@ const InterventionCard = ({
           defaultIconSize: 50,
           imageSize: styles.imageSize,
           resizeMode: 'contain',
-          source: formatMetaFile(deliveredPartner?.picture?.id),
+          source: formatMetaFile(deliveredPartner.picture?.id),
         }}
         upperTexts={{
           items: [
             {displayText: sequence, isTitle: true},
-            {displayText: deliveredPartner.fullName},
+            {
+              displayText: deliveredPartner.fullName,
+              numberOfLines: 2,
+            },
           ],
         }}
         lowerTexts={{
           items: [
             {
-              customComponent: (
-                <DateDisplay date={planifStartDateTime} size={14} />
+              indicatorText: formatDateTime(
+                planifStartDateTime,
+                I18n.t('Base_DateTimeFormat'),
               ),
+              iconName: 'calendar-event',
             },
             {
               indicatorText: interventionType.name,
@@ -83,8 +98,13 @@ const InterventionCard = ({
             },
             {
               indicatorText: address.fullName,
-              hideIfNull: true,
               iconName: 'geo-alt-fill',
+              hideIfNull: true,
+            },
+            {
+              indicatorText: assignedTo.fullName,
+              iconName: 'person-fill',
+              hideIf: assignedTo.id === userId,
             },
           ],
         }}

@@ -20,6 +20,12 @@ import {Module} from '@axelor/aos-mobile-core';
 import enTranslations from './i18n/en.json';
 import frTranslations from './i18n/fr.json';
 import InterventionScreens from './screens/intervention';
+import * as interventionReducers from './features';
+import {
+  intervention_modelAPI,
+  intervention_searchFields,
+  intervention_sortFields,
+} from './models';
 
 export const InterventionModule: Module = {
   name: 'app-intervention',
@@ -45,12 +51,12 @@ export const InterventionModule: Module = {
       screen: 'DayInterventionsScreen',
     },
     intervention_menu_plannedInterventions: {
-      title: 'Intervention_Planned',
+      title: 'Intervention_PlannedInterventions',
       icon: 'calendar-week',
       screen: 'PlannedInterventionsScreen',
     },
     intervention_menu_interventionsHistory: {
-      title: 'Intervention_History',
+      title: 'Intervention_InterventionsHistory',
       icon: 'clock-history',
       screen: 'InterventionsHistoryScreen',
     },
@@ -58,8 +64,18 @@ export const InterventionModule: Module = {
   screens: {
     ...InterventionScreens,
   },
+  reducers: {
+    ...interventionReducers,
+  },
+  models: {
+    objectFields: {...intervention_modelAPI},
+    searchFields: {...intervention_searchFields},
+    sortFields: {...intervention_sortFields},
+  },
 };
 
+export * from './api';
 export * from './components';
+export * from './features/asyncFunctions-index';
 export * from './screens/intervention';
 export * from './types';

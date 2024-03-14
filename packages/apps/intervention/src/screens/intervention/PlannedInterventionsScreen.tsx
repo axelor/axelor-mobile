@@ -17,15 +17,11 @@
  */
 
 import React from 'react';
-import {View} from 'react-native';
-import {Text} from '@axelor/aos-mobile-ui';
+import {InterventionsListView} from '../../components';
+import {Intervention} from '../../types';
 
 const PlannedInterventionsScreen = ({}) => {
-  return (
-    <View>
-      <Text>PlannedInterventionsScreen</Text>
-    </View>
-  );
+  return <InterventionsListView statusList={[Intervention.status.Planned]} />;
 };
 
 export default PlannedInterventionsScreen;
