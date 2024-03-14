@@ -11,5 +11,6 @@
   "Intervention_Status_Suspended": "Suspended",
   "Intervention_SliceAction_FetchIntervention": "fetch intervention",
   "Intervention_CustomerPark": "Customer Park",
-  "Intervention_Equipments": "Equiments"
+  "Intervention_Equipments": "Equiments",
+  "Intervention_SliceAction_SearchEquipments": "search equipments"
 }

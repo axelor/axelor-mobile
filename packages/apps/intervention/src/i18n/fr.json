@@ -11,5 +11,6 @@
   "Intervention_Status_Suspended": "Suspendue",
   "Intervention_SliceAction_FetchIntervention": "récupération des interventions",
   "Intervention_CustomerPark": "Parc clients",
-  "Intervention_Equipments": "Équipements"
+  "Intervention_Equipments": "Équipements",
+  "Intervention_SliceAction_SearchEquipments": "recherche sur les équipements"
 }

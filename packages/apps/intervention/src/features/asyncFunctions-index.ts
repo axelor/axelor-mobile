@@ -17,3 +17,4 @@
  */
 
 export {fetchIntervention} from './interventionSlice';
+export {searchEquipments} from './equipmentsSlice';

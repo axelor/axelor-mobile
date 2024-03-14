@@ -16,10 +16,25 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import React from 'react';
+import React, {useEffect} from 'react';
 import {Screen, Text} from '@axelor/aos-mobile-ui';
+import {useSelector, useDispatch} from '@axelor/aos-mobile-core';
+import {searchEquipments} from '../../features/equipmentsSlice';
 
 const CustomerParkScreen = ({}) => {
+  const dispatch = useDispatch();
+
+  const {loadingList, moreLoading, isListEnd, equipmentList} = useSelector(
+    state => state.intervention_equipments,
+  );
+
+  useEffect(() => {
+    console.log('ici');
+    dispatch(searchEquipments({}));
+  }, [dispatch]);
+
+  console.log(equipmentList);
+
   return (
     <Screen removeSpaceOnTop={true}>
       <Text>Test</Text>

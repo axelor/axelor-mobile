@@ -17,3 +17,4 @@
  */
 
 export {fetchIntervention as fetchInterventionApi} from './intervention-api';
+export {searchEquipments as searchEquipmentsApi} from './equipments-api';

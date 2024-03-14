@@ -17,3 +17,4 @@
  */
 
 export {interventionReducer as intervention_intervention} from './interventionSlice';
+export {equipmentsReducer as intervention_equipments} from './equipmentsSlice';
