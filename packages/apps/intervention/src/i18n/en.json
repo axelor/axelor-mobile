@@ -9,5 +9,7 @@
   "Intervention_Status_Planned": "Planned",
   "Intervention_Status_Started": "Started",
   "Intervention_Status_Suspended": "Suspended",
-  "Intervention_SliceAction_FetchIntervention": "fetch intervention"
+  "Intervention_SliceAction_FetchIntervention": "fetch intervention",
+  "Intervention_CustomerPark": "Customer Park",
+  "Intervention_Equipments": "Equiments"
 }
