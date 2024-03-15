@@ -40,7 +40,8 @@ interface DashboardProps {
   style?: any;
   lineList: Line[];
   hideCardBackground?: boolean;
-  lastUpdated?: Date;
+  /** Formatted last update date */
+  lastUpdate?: Date;
   translator?: (translationKey: string) => string;
   displayLastUpdate?: boolean;
 }
@@ -140,7 +141,7 @@ const Dashboard = ({
   lineList,
   hideCardBackground = false,
   translator,
-  lastUpdated,
+  lastUpdate,
   displayLastUpdate = false,
 }: DashboardProps) => {
   return (
@@ -169,13 +170,9 @@ const Dashboard = ({
           </View>
         );
       })}
-      {displayLastUpdate && lastUpdated != null && (
+      {displayLastUpdate && lastUpdate != null && (
         <View style={styles.dateContainer}>
-          <Text>
-            {`${translator(
-              'Base_LastUpdate',
-            )}: ${lastUpdated.toLocaleString()}`}
-          </Text>
+          <Text>{`${translator('Base_LastUpdate')} : ${lastUpdate}`}</Text>
         </View>
       )}
     </ScrollView>

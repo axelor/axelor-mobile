@@ -23,20 +23,21 @@ import {useTranslator} from '../../i18n';
 import {createDashboardActionID} from '../display.helpers';
 import {ActivityIndicator} from 'react-native';
 import {fetchDashboard} from '../api.helpers';
+import {formatDateTime} from '../../utils';
 
 export const DashboardScreen = ({dashboardId, hideCardBackground = false}) => {
   const I18n = useTranslator();
 
   const [dashboard, setDashboard] = useState<any>({});
   const [loading, setLoading] = useState<boolean>(false);
-  const [lastUpdated, setLastUpdated] = useState<Date>(new Date());
+  const [lastUpdate, setLastUpdate] = useState<Date>(new Date());
 
   const refresh = useCallback(() => {
     setLoading(true);
     fetchDashboard({id: dashboardId})
       .then(response => {
         setDashboard({...(response?.data?.object ?? {}), id: dashboardId});
-        setLastUpdated(new Date());
+        setLastUpdate(new Date());
       })
       .catch(() => setDashboard({}))
       .finally(() => setLoading(false));
@@ -98,7 +99,7 @@ export const DashboardScreen = ({dashboardId, hideCardBackground = false}) => {
       lineList={dashboardData}
       hideCardBackground={hideCardBackground}
       translator={I18n.t}
-      lastUpdated={lastUpdated}
+      lastUpdate={formatDateTime(lastUpdate, I18n.t('Base_DateTimeFormat'))}
       displayLastUpdate={true}
     />
   );
