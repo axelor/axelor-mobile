@@ -28,7 +28,8 @@ import {
 
 export const mapStudioFields = (
   items: any[],
-  Colors,
+  Colors: ThemeColors,
+  removeUnauthorizedFields: (item: any) => any,
 ): {panels: JSONObject<Panel>; fields: JSONObject<Field>; defaults: any} => {
   let formFields: JSONObject<Field> = {};
   let formPanels: JSONObject<Panel> = {};
@@ -46,6 +47,7 @@ export const mapStudioFields = (
         metaJsonFields,
         modelField,
         Colors,
+        removeUnauthorizedFields,
       );
 
       formFields = {...formFields, ..._fields};
@@ -185,6 +187,7 @@ const manageContentOfModel = (
   metaJsonFields: any[],
   modelField: string,
   Colors: ThemeColors,
+  removeUnauthorizedFields: (item: any) => any,
 ): {_panels: JSONObject<Panel>; _fields: JSONObject<Field>; _defaults: any} => {
   const formFields: JSONObject<Field> = {};
   const formPanels: JSONObject<Panel> = {};
@@ -194,6 +197,7 @@ const manageContentOfModel = (
   metaJsonFields
     .sort((a, b) => a.sequence - b.sequence)
     .filter(_item => _item.modelField === modelField)
+    .map(removeUnauthorizedFields)
     .forEach(item => {
       switch (item.type) {
         case 'panel':
@@ -222,6 +226,7 @@ const manageContentOfModel = (
             order: item.sequence,
             parentPanel: lastPanel,
             widget: 'custom',
+            hideIf: () => item.hidden,
             customComponent: () =>
               Label({
                 message: item.title,
@@ -237,6 +242,7 @@ const manageContentOfModel = (
             order: item.sequence,
             parentPanel: lastPanel,
             widget: 'custom',
+            hideIf: () => item.hidden,
             customComponent: () =>
               HorizontalRule({
                 style: {
@@ -254,6 +260,7 @@ const manageContentOfModel = (
             order: item.sequence,
             parentPanel: lastPanel,
             widget: 'custom',
+            hideIf: () => item.hidden,
             customComponent: CustomButton,
             options: {item},
           };
@@ -274,9 +281,15 @@ const manageContentOfModel = (
             requiredIf: createFormulaFunction(item.requiredIf),
             readonly: item.readonly,
             readonlyIf: createFormulaFunction(item.readonlyIf),
-            hideIf: createFormulaFunction(
-              combinedFormula('||', item.hideIf, reverseFormula(item.showIf)),
-            ),
+            hideIf: item.hidden
+              ? () => true
+              : createFormulaFunction(
+                  combinedFormula(
+                    '||',
+                    item.hideIf,
+                    reverseFormula(item.showIf),
+                  ),
+                ),
             order: item.sequence,
             parentPanel: lastPanel,
             widget: widget,

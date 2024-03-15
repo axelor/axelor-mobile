@@ -17,9 +17,9 @@
  */
 
 import React, {useEffect, useMemo} from 'react';
-import {useThemeColor} from '@axelor/aos-mobile-ui';
-import {FormView} from '../../pages/';
 import {useDispatch, useSelector} from 'react-redux';
+import {useThemeColor} from '@axelor/aos-mobile-ui';
+import {FormView} from '../../pages';
 import {
   fetchJsonFieldsOfModel,
   fetchObject,
@@ -32,6 +32,7 @@ import {
   mapFormToStudioFields,
   mapStudioFields,
   mapStudioFieldsWithFormula,
+  useFieldPermitter,
 } from '../../../forms';
 
 const FORM_KEY = 'customField-form';
@@ -66,6 +67,8 @@ const CustomFieldForm = ({
     (state: any) => state.metaJsonField,
   );
 
+  const removeUnauthorizedFields = useFieldPermitter({modelName: model});
+
   useEffect(() => {
     dispatch(
       (fetchJsonFieldsOfModel as any)({modelName: model, type: fieldType}),
@@ -74,8 +77,13 @@ const CustomFieldForm = ({
   }, [dispatch, model, modelId, fieldType]);
 
   const {fields, panels, defaults} = useMemo(
-    () => mapStudioFields(mapStudioFieldsWithFormula(_fields, object), Colors),
-    [Colors, _fields, object],
+    () =>
+      mapStudioFields(
+        mapStudioFieldsWithFormula(_fields, object),
+        Colors,
+        removeUnauthorizedFields,
+      ),
+    [Colors, _fields, object, removeUnauthorizedFields],
   );
 
   useEffect(() => {

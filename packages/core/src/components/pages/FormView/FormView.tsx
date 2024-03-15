@@ -77,7 +77,7 @@ const FormView = ({
 
   const storeState = useSelector((state: any) => state);
   const {record} = useSelector((state: any) => state.form);
-  const {canCreate, readonly} = usePermitted({modelName: config.modelName});
+  const {canCreate, readonly} = usePermitted({modelName: config?.modelName});
 
   const [object, setObject] = useState(defaultValue ?? {});
   const [errors, setErrors] = useState<any[]>();

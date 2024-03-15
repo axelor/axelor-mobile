@@ -21,6 +21,7 @@ import {handlerApiCall} from '../apiProviders/utils';
 import {
   fetchJsonFieldsOfModel as _fetchJsonFieldsOfModel,
   fetchObject as _fetchObject,
+  fetchObjectModelTypes as _fetchObjectModelTypes,
   updateJsonFieldsObject as _updateJsonFieldsObject,
 } from '../forms/studio/api.helpers';
 
@@ -31,6 +32,19 @@ export const fetchJsonFieldsOfModel = createAsyncThunk(
       fetchFunction: _fetchJsonFieldsOfModel,
       data: data,
       action: 'Base_SliceAction_FetchJsonFieldsOfModel',
+      getState: getState,
+      responseOptions: {isArrayResponse: true, showToast: false},
+    });
+  },
+);
+
+export const fetchObjectModelTypes = createAsyncThunk(
+  'metaJsonField/fetchObjectModelTypes',
+  async function (data, {getState}) {
+    return handlerApiCall({
+      fetchFunction: _fetchObjectModelTypes,
+      data: data,
+      action: 'Base_SliceAction_FetchObjectModelTypes',
       getState: getState,
       responseOptions: {isArrayResponse: true, showToast: false},
     });
@@ -65,6 +79,7 @@ export const updateJsonFieldsObject = createAsyncThunk(
 
 const initialState = {
   fields: [],
+  modelTypes: [],
   object: {},
 };
 
@@ -74,6 +89,9 @@ const metaJsonFieldSlice = createSlice({
   extraReducers: builder => {
     builder.addCase(fetchJsonFieldsOfModel.fulfilled, (state, action) => {
       state.fields = action.payload;
+    });
+    builder.addCase(fetchObjectModelTypes.fulfilled, (state, action) => {
+      state.modelTypes = (action.payload ?? []).map(_item => _item.name);
     });
     builder.addCase(fetchObject.fulfilled, (state, action) => {
       state.object = action.payload;

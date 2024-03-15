@@ -32,6 +32,7 @@ export interface MetaPermission {
 }
 
 export interface FieldPermission {
+  key?: string;
   hidden: boolean;
   readonly: boolean;
 }

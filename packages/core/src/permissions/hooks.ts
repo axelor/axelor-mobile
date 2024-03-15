@@ -118,3 +118,29 @@ export const useFieldPermitted = ({
     };
   }, [_isAdmin, fieldName, hidden, metaPermissions, modelName, readonly]);
 };
+
+export const useFieldsPermissions = ({
+  modelName,
+  fieldNames,
+}: {
+  modelName: string;
+  fieldNames: string[];
+}): FieldPermission[] => {
+  const {hidden, readonly} = usePermitted({modelName});
+  const {permissions: metaPermissions} = useFieldPerms();
+  const _isAdmin = useIsAdmin();
+
+  return useMemo(() => {
+    return fieldNames.map(_fieldName => {
+      const fieldPerms = _isAdmin
+        ? DEFAULT_APPROVED_PERMISSION
+        : hasFieldPermission(metaPermissions, modelName, _fieldName);
+
+      return {
+        key: _fieldName,
+        hidden: hidden || !fieldPerms?.canRead,
+        readonly: readonly || !fieldPerms?.canWrite,
+      };
+    });
+  }, [_isAdmin, fieldNames, hidden, metaPermissions, modelName, readonly]);
+};
