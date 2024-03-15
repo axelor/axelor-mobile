@@ -16,5 +16,27 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-export {default as Intervention} from './intervention';
-export {default as Equipment} from './equipment';
+import {Color, ThemeColors} from '@axelor/aos-mobile-ui';
+
+class EquipmentType {
+  static status = {
+    InService: true,
+    NotInService: false || null,
+  };
+
+  static getBorderColor = (status: boolean, Colors: ThemeColors): Color => {
+    switch (status) {
+      case this.status.InService:
+        return Colors.successColor;
+      case this.status.NotInService:
+        return Colors.cautionColor;
+      default:
+        console.warn(
+          `Status provided with value ${status} is not supported by equipment`,
+        );
+        return null;
+    }
+  };
+}
+
+export default EquipmentType;

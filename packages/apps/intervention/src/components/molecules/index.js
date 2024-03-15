@@ -16,5 +16,4 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-export {default as Intervention} from './intervention';
-export {default as Equipment} from './equipment';
+export {default as EquipmentCard} from './EquipmentCard/EquipmentCard';

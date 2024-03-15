@@ -16,28 +16,50 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import React, {useEffect} from 'react';
-import {Screen, Text} from '@axelor/aos-mobile-ui';
-import {useSelector, useDispatch} from '@axelor/aos-mobile-core';
+import React, {useCallback, useEffect} from 'react';
+import {Screen, ScrollList} from '@axelor/aos-mobile-ui';
+import {useSelector, useDispatch, useTranslator} from '@axelor/aos-mobile-core';
 import {searchEquipments} from '../../features/equipmentsSlice';
+import {EquipmentActionCard} from '../../components';
 
 const CustomerParkScreen = ({}) => {
   const dispatch = useDispatch();
+  const I18n = useTranslator();
 
   const {loadingList, moreLoading, isListEnd, equipmentList} = useSelector(
     state => state.intervention_equipments,
   );
 
   useEffect(() => {
-    console.log('ici');
     dispatch(searchEquipments({}));
   }, [dispatch]);
 
-  console.log(equipmentList);
+  const searchEquipmentsAPI = useCallback(
+    (page = 0) => {
+      dispatch(searchEquipments({page: page}));
+    },
+    [dispatch],
+  );
 
   return (
     <Screen removeSpaceOnTop={true}>
-      <Text>Test</Text>
+      <ScrollList
+        loadingList={loadingList}
+        data={equipmentList}
+        fetchData={searchEquipmentsAPI}
+        moreLoading={moreLoading}
+        isListEnd={isListEnd}
+        translator={I18n.t}
+        renderItem={({item}) => (
+          <EquipmentActionCard
+            sequence={item.sequence}
+            name={item.name}
+            code={item.code}
+            equipmentFamily={item.equipmentFamily?.name}
+            inService={item.inService}
+          />
+        )}
+      />
     </Screen>
   );
 };
