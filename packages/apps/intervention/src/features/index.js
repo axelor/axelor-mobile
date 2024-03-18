@@ -18,4 +18,4 @@
 
 export {interventionReducer as intervention_intervention} from './interventionSlice';
 export {clientAndProspectReducer as intervention_clientAndProspect} from './clientAndProspectSlice';
-export {equipmentsReducer as intervention_equipments} from './equipmentsSlice';
+export {equipmentReducer as intervention_equipments} from './equipmentSlice';

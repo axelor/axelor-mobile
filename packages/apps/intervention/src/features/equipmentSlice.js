@@ -22,30 +22,30 @@ import {
   handlerApiCall,
 } from '@axelor/aos-mobile-core';
 import {
-  searchEquipments as _searchEquipments,
-  searchPlaceEquipments as _searchPlaceEquipments,
+  searchEquipment as _searchEquipment,
+  searchPlaceEquipment as _searchPlaceEquipment,
 } from '../api/equipments-api';
 
-export const searchEquipments = createAsyncThunk(
-  'intervention_equipments/searchEquipments',
+export const searchEquipment = createAsyncThunk(
+  'intervention_equipments/searchEquipment',
   async function (data, {getState}) {
     return handlerApiCall({
-      fetchFunction: _searchEquipments,
+      fetchFunction: _searchEquipment,
       data,
-      action: 'Intervention_SliceAction_SearchEquipments',
+      action: 'Intervention_SliceAction_SearchEquipment',
       getState,
       responseOptions: {isArrayResponse: true},
     });
   },
 );
 
-export const searchPlaceEquipments = createAsyncThunk(
-  'intervention_equipments/searchPlaceEquipments',
+export const searchPlaceEquipment = createAsyncThunk(
+  'intervention_equipments/searchPlaceEquipment',
   async function (data, {getState}) {
     return handlerApiCall({
-      fetchFunction: _searchPlaceEquipments,
+      fetchFunction: _searchPlaceEquipment,
       data,
-      action: 'Intervention_SliceAction_SearchPlaceEquipments',
+      action: 'Intervention_SliceAction_SearchPlaceEquipment',
       getState,
       responseOptions: {isArrayResponse: true},
     });
@@ -64,17 +64,17 @@ const initialState = {
   equipmentListEquipPlace: [],
 };
 
-const equipmentsSlice = createSlice({
+const equipmentSlice = createSlice({
   name: 'intervention_equipments',
   initialState,
   extraReducers: builder => {
-    generateInifiniteScrollCases(builder, searchEquipments, {
+    generateInifiniteScrollCases(builder, searchEquipment, {
       loading: 'loadingList',
       moreLoading: 'moreLoading',
       isListEnd: 'isListEnd',
       list: 'equipmentList',
     });
-    generateInifiniteScrollCases(builder, searchPlaceEquipments, {
+    generateInifiniteScrollCases(builder, searchPlaceEquipment, {
       loading: 'loadingListEquipPlace',
       moreLoading: 'moreLoadingEquipPlace',
       isListEnd: 'isListEndEquipPlace',
@@ -83,4 +83,4 @@ const equipmentsSlice = createSlice({
   },
 });
 
-export const equipmentsReducer = equipmentsSlice.reducer;
+export const equipmentReducer = equipmentSlice.reducer;

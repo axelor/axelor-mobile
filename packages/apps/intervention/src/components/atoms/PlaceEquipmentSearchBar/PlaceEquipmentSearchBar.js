@@ -24,7 +24,7 @@ import {
   useTranslator,
 } from '@axelor/aos-mobile-core';
 import {AutoCompleteSearch} from '@axelor/aos-mobile-ui';
-import {searchPlaceEquipments} from '../../../features/equipmentsSlice';
+import {searchPlaceEquipment} from '../../../features/equipmentSlice';
 
 const PlaceEquipmentSearchBar = ({
   style = null,
@@ -54,7 +54,7 @@ const PlaceEquipmentSearchBar = ({
   const searchClientAndProspectAPI = useCallback(
     ({page = 0, searchValue}) => {
       dispatch(
-        searchPlaceEquipments({
+        searchPlaceEquipment({
           page,
           searchValue,
           inService: inService,

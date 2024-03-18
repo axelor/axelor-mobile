@@ -71,7 +71,7 @@ const createEquipmentsCriteria = ({
   return criteria;
 };
 
-export async function searchEquipments({
+export async function searchEquipment({
   searchValue,
   page = 0,
   inService,
@@ -92,7 +92,7 @@ export async function searchEquipments({
   });
 }
 
-export async function searchPlaceEquipments({
+export async function searchPlaceEquipment({
   searchValue,
   page = 0,
   inService,

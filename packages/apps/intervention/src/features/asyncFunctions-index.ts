@@ -17,5 +17,5 @@
  */
 
 export {fetchIntervention} from './interventionSlice';
-export {searchEquipments} from './equipmentsSlice';
+export {searchEquipment} from './equipmentSlice';
 export {searchClientAndProspect} from './clientAndProspectSlice';

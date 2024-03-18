@@ -25,7 +25,7 @@ import {
   useThemeColor,
 } from '@axelor/aos-mobile-ui';
 import {useSelector, useDispatch, useTranslator} from '@axelor/aos-mobile-core';
-import {searchEquipments} from '../../features/equipmentsSlice';
+import {searchEquipment} from '../../features/equipmentSlice';
 import {CustomerParkHeader, EquipmentActionCard} from '../../components';
 import {Equipment} from '../../types';
 
@@ -42,10 +42,10 @@ const CustomerParkScreen = ({}) => {
     state => state.intervention_equipments,
   );
 
-  const searchEquipmentsAPI = useCallback(
+  const searchEquipmentAPI = useCallback(
     (page = 0) => {
       dispatch(
-        searchEquipments({
+        searchEquipment({
           page: page,
           inService: selectedStatus[0]?.key,
           partnerId: customer?.id,
@@ -90,7 +90,7 @@ const CustomerParkScreen = ({}) => {
       <ScrollList
         loadingList={loadingList}
         data={equipmentList}
-        fetchData={searchEquipmentsAPI}
+        fetchData={searchEquipmentAPI}
         moreLoading={moreLoading}
         isListEnd={isListEnd}
         translator={I18n.t}

@@ -19,6 +19,6 @@
 export {fetchIntervention as fetchInterventionApi} from './intervention-api';
 export {searchClientAndProspect as searchClientAndProspectApi} from './client-and-prospect-api';
 export {
-  searchEquipments as searchEquipmentsApi,
-  searchPlaceEquipments as searchPlaceEquipmentsApi,
+  searchEquipment as searchEquipmentApi,
+  searchPlaceEquipment as searchPlaceEquipmentApi,
 } from './equipments-api';
