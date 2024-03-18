@@ -24,6 +24,11 @@ class EquipmentType {
     NotInService: false,
   };
 
+  static type = {
+    equipment: 'equipment',
+    place: 'place',
+  };
+
   static getBorderColor = (status: boolean, Colors: ThemeColors): Color => {
     switch (status) {
       case this.status.InService:

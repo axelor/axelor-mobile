@@ -17,3 +17,4 @@
  */
 
 export {default as ClientProspectSearchBar} from './ClientProspectSearchBar/ClientProspectSearchBar';
+export {default as PlaceEquipmentSearchBar} from './PlaceEquipmentSearchBar/PlaceEquipmentSearchBar';

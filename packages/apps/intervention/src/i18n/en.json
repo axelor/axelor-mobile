@@ -15,6 +15,7 @@
   "Intervention_Status_InService": "In Service",
   "Intervention_Customer": "Customer",
   "Intervention_Status_NotInService": "Not in service",
+  "Intervention_ParentPlace": "Parent Place",
   "Intervention_SliceAction_SearchEquipments": "search equipments",
   "Intervention_SliceAction_SearchClientAndProspect": "search clients and prospects",
   "Intervention_SliceAction_SearchPlaceEquipments": ""

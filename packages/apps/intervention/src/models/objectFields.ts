@@ -53,6 +53,11 @@ export const intervention_modelAPI: ObjectFields = {
       inService: schemaContructor.boolean(),
       equipmentFamily: schemaContructor.subObject(),
     }),
+    name: schemaContructor.string(),
+    typeSelect: schemaContructor.string(),
+    code: schemaContructor.string(),
+    inService: schemaContructor.boolean(),
+    equipmentFamily: schemaContructor.subObject(),
   }),
   intervention_partner: schemaContructor.object({
     simpleFullName: schemaContructor.string(),

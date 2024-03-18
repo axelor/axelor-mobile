@@ -57,6 +57,11 @@ const initialState = {
   moreLoading: false,
   isListEnd: false,
   equipmentList: [],
+
+  loadingListEquipPlace: false,
+  moreLoadingEquipPlace: false,
+  isListEndEquipPlace: false,
+  equipmentListEquipPlace: [],
 };
 
 const equipmentsSlice = createSlice({
@@ -68,6 +73,12 @@ const equipmentsSlice = createSlice({
       moreLoading: 'moreLoading',
       isListEnd: 'isListEnd',
       list: 'equipmentList',
+    });
+    generateInifiniteScrollCases(builder, searchPlaceEquipments, {
+      loading: 'loadingListEquipPlace',
+      moreLoading: 'moreLoadingEquipPlace',
+      isListEnd: 'isListEndEquipPlace',
+      list: 'equipmentListEquipPlace',
     });
   },
 });

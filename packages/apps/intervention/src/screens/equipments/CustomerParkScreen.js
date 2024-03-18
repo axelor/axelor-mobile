@@ -36,6 +36,7 @@ const CustomerParkScreen = ({}) => {
 
   const [selectedStatus, setSelectedStatus] = useState([]);
   const [customer, setCustomer] = useState(null);
+  const [parentPlace, setParentPlace] = useState(null);
 
   const {loadingList, moreLoading, isListEnd, equipmentList} = useSelector(
     state => state.intervention_equipments,
@@ -52,17 +53,26 @@ const CustomerParkScreen = ({}) => {
           page: page,
           inService: selectedStatus[0]?.key,
           partnerId: customer?.id,
+          parentPlaceId: parentPlace?.id,
         }),
       );
     },
-    [customer, dispatch, selectedStatus],
+    [customer, dispatch, selectedStatus, parentPlace],
   );
+
+  console.log('parentPlace', parentPlace);
 
   return (
     <Screen removeSpaceOnTop={true}>
       <HeaderContainer
         fixedItems={
-          <CustomerParkHeader setCustomer={setCustomer} customer={customer} />
+          <CustomerParkHeader
+            setCustomer={setCustomer}
+            customer={customer}
+            inService={selectedStatus[0]?.key}
+            parentPlace={parentPlace}
+            setParentPlace={setParentPlace}
+          />
         }
         chipComponent={
           <ChipSelect

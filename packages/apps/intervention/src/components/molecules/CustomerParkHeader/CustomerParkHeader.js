@@ -18,9 +18,15 @@
 
 import React from 'react';
 import {View} from 'react-native';
-import {ClientProspectSearchBar} from '../../atoms';
+import {ClientProspectSearchBar, PlaceEquipmentSearchBar} from '../../atoms';
 
-const CustomerParkHeader = ({setCustomer, customer}) => {
+const CustomerParkHeader = ({
+  setCustomer,
+  customer,
+  inService,
+  parentPlace,
+  setParentPlace,
+}) => {
   return (
     <View>
       <ClientProspectSearchBar
@@ -28,6 +34,14 @@ const CustomerParkHeader = ({setCustomer, customer}) => {
         defaultValue={customer}
         onChange={e => {
           setCustomer(e);
+        }}
+      />
+      <PlaceEquipmentSearchBar
+        defaultValue={parentPlace}
+        inService={inService}
+        customerId={customer?.id}
+        onChange={e => {
+          setParentPlace(e);
         }}
       />
     </View>

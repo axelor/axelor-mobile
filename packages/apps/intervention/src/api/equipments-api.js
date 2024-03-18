@@ -20,8 +20,15 @@ import {
   createStandardSearch,
   getSearchCriterias,
 } from '@axelor/aos-mobile-core';
+import {Equipment} from '../types';
 
-const createEquipmentsCriteria = (searchValue, inService, partnerId) => {
+const createEquipmentsCriteria = ({
+  searchValue,
+  inService,
+  partnerId,
+  isPlaceEquipment = false,
+  parentPlaceId,
+}) => {
   const criteria = [getSearchCriterias('intervention_equipment', searchValue)];
 
   criteria.push({
@@ -45,6 +52,22 @@ const createEquipmentsCriteria = (searchValue, inService, partnerId) => {
     }
   }
 
+  if (isPlaceEquipment) {
+    criteria.push({
+      fieldName: 'typeSelect',
+      operator: '=',
+      value: Equipment.type.place,
+    });
+  }
+
+  if (parentPlaceId != null) {
+    criteria.push({
+      fieldName: 'parentEquipment.id',
+      operator: '=',
+      value: parentPlaceId,
+    });
+  }
+
   return criteria;
 };
 
@@ -53,16 +76,39 @@ export async function searchEquipments({
   page = 0,
   inService,
   partnerId,
+  parentPlaceId,
 }) {
   return createStandardSearch({
     model: 'com.axelor.apps.intervention.db.Equipment',
-    criteria: createEquipmentsCriteria(searchValue, inService, partnerId),
+    criteria: createEquipmentsCriteria({
+      searchValue,
+      inService,
+      partnerId,
+      parentPlaceId,
+    }),
     fieldKey: 'intervention_equipment',
     sortKey: 'intervention_equipment',
     page,
   });
 }
 
-export async function searchPlaceEquipments({}) {
-  return null;
+export async function searchPlaceEquipments({
+  searchValue,
+  page = 0,
+  inService,
+  partnerId,
+  isPlaceEquipment = true,
+}) {
+  return createStandardSearch({
+    model: 'com.axelor.apps.intervention.db.Equipment',
+    criteria: createEquipmentsCriteria({
+      searchValue,
+      inService,
+      partnerId,
+      isPlaceEquipment,
+    }),
+    fieldKey: 'intervention_equipment',
+    sortKey: 'intervention_equipment',
+    page,
+  });
 }
