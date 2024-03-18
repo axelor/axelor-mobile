@@ -1,3 +1,4 @@
+export {searchClientAndProspect} from './clientAndProspectSlice';
 /*
  * Axelor Business Solutions
  *

@@ -21,8 +21,14 @@ import {
   getSearchCriterias,
 } from '@axelor/aos-mobile-core';
 
-const createEquipmentsCriteria = (searchValue, inService) => {
+const createEquipmentsCriteria = (searchValue, inService, partnerId) => {
   const criteria = [getSearchCriterias('intervention_equipment', searchValue)];
+
+  criteria.push({
+    fieldName: 'partner.id',
+    operator: '=',
+    value: partnerId,
+  });
 
   if (inService != null) {
     if (!inService) {
@@ -42,10 +48,15 @@ const createEquipmentsCriteria = (searchValue, inService) => {
   return criteria;
 };
 
-export async function searchEquipments({searchValue, page = 0, inService}) {
+export async function searchEquipments({
+  searchValue,
+  page = 0,
+  inService,
+  partnerId,
+}) {
   return createStandardSearch({
     model: 'com.axelor.apps.intervention.db.Equipment',
-    criteria: createEquipmentsCriteria(searchValue, inService),
+    criteria: createEquipmentsCriteria(searchValue, inService, partnerId),
     fieldKey: 'intervention_equipment',
     sortKey: 'intervention_equipment',
     page,

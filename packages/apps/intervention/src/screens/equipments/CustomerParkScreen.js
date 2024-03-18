@@ -26,7 +26,7 @@ import {
 } from '@axelor/aos-mobile-ui';
 import {useSelector, useDispatch, useTranslator} from '@axelor/aos-mobile-core';
 import {searchEquipments} from '../../features/equipmentsSlice';
-import {EquipmentActionCard} from '../../components';
+import {CustomerParkHeader, EquipmentActionCard} from '../../components';
 import {Equipment} from '../../types';
 
 const CustomerParkScreen = ({}) => {
@@ -35,6 +35,7 @@ const CustomerParkScreen = ({}) => {
   const Colors = useThemeColor();
 
   const [selectedStatus, setSelectedStatus] = useState([]);
+  const [customer, setCustomer] = useState(null);
 
   const {loadingList, moreLoading, isListEnd, equipmentList} = useSelector(
     state => state.intervention_equipments,
@@ -47,15 +48,22 @@ const CustomerParkScreen = ({}) => {
   const searchEquipmentsAPI = useCallback(
     (page = 0) => {
       dispatch(
-        searchEquipments({page: page, inService: selectedStatus[0]?.key}),
+        searchEquipments({
+          page: page,
+          inService: selectedStatus[0]?.key,
+          partnerId: customer?.id,
+        }),
       );
     },
-    [dispatch, selectedStatus],
+    [customer, dispatch, selectedStatus],
   );
 
   return (
     <Screen removeSpaceOnTop={true}>
       <HeaderContainer
+        fixedItems={
+          <CustomerParkHeader setCustomer={setCustomer} customer={customer} />
+        }
         chipComponent={
           <ChipSelect
             mode="switch"

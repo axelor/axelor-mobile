@@ -16,6 +16,22 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-export {interventionReducer as intervention_intervention} from './interventionSlice';
-export {clientAndProspectReducer as intervention_clientAndProspect} from './clientAndProspectSlice';
-export {equipmentsReducer as intervention_equipments} from './equipmentsSlice';
+import React from 'react';
+import {View} from 'react-native';
+import {ClientProspectSearchBar} from '../../atoms';
+
+const CustomerParkHeader = ({setCustomer, customer}) => {
+  return (
+    <View>
+      <ClientProspectSearchBar
+        required={true}
+        defaultValue={customer}
+        onChange={e => {
+          setCustomer(e);
+        }}
+      />
+    </View>
+  );
+};
+
+export default CustomerParkHeader;
