@@ -16,15 +16,25 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import React, {useCallback, useEffect} from 'react';
-import {Screen, ScrollList} from '@axelor/aos-mobile-ui';
+import React, {useCallback, useEffect, useState} from 'react';
+import {
+  ChipSelect,
+  HeaderContainer,
+  Screen,
+  ScrollList,
+  useThemeColor,
+} from '@axelor/aos-mobile-ui';
 import {useSelector, useDispatch, useTranslator} from '@axelor/aos-mobile-core';
 import {searchEquipments} from '../../features/equipmentsSlice';
 import {EquipmentActionCard} from '../../components';
+import {Equipment} from '../../types';
 
 const CustomerParkScreen = ({}) => {
   const dispatch = useDispatch();
   const I18n = useTranslator();
+  const Colors = useThemeColor();
+
+  const [selectedStatus, setSelectedStatus] = useState([]);
 
   const {loadingList, moreLoading, isListEnd, equipmentList} = useSelector(
     state => state.intervention_equipments,
@@ -36,13 +46,35 @@ const CustomerParkScreen = ({}) => {
 
   const searchEquipmentsAPI = useCallback(
     (page = 0) => {
-      dispatch(searchEquipments({page: page}));
+      dispatch(
+        searchEquipments({page: page, inService: selectedStatus[0]?.key}),
+      );
     },
-    [dispatch],
+    [dispatch, selectedStatus],
   );
 
   return (
     <Screen removeSpaceOnTop={true}>
+      <HeaderContainer
+        chipComponent={
+          <ChipSelect
+            mode="switch"
+            onChangeValue={chiplist => setSelectedStatus(chiplist)}
+            selectionItems={[
+              {
+                title: I18n.t('Intervention_Status_InService'),
+                color: Colors.successColor,
+                key: Equipment.status.InService,
+              },
+              {
+                title: I18n.t('Intervention_Status_NotInService'),
+                color: Colors.cautionColor,
+                key: Equipment.status.NotInService,
+              },
+            ]}
+          />
+        }
+      />
       <ScrollList
         loadingList={loadingList}
         data={equipmentList}

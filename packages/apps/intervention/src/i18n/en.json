@@ -12,5 +12,7 @@
   "Intervention_SliceAction_FetchIntervention": "fetch intervention",
   "Intervention_CustomerPark": "Customer Park",
   "Intervention_Equipments": "Equiments",
+  "Intervention_Status_InService": "In Service",
+  "Intervention_Status_NotInService": "Not in service",
   "Intervention_SliceAction_SearchEquipments": "search equipments"
 }

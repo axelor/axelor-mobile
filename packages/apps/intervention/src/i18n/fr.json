@@ -12,5 +12,7 @@
   "Intervention_SliceAction_FetchIntervention": "récupération des interventions",
   "Intervention_CustomerPark": "Parc clients",
   "Intervention_Equipments": "Équipements",
+  "Intervention_Status_InService": "En Service",
+  "Intervention_Status_NotInService": "Pas en service",
   "Intervention_SliceAction_SearchEquipments": "recherche sur les équipements"
 }

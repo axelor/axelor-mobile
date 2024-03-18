@@ -16,12 +16,36 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import {createStandardSearch} from '@axelor/aos-mobile-core';
+import {
+  createStandardSearch,
+  getSearchCriterias,
+} from '@axelor/aos-mobile-core';
 
-export async function searchEquipments({searchValue, page = 0}) {
+const createEquipmentsCriteria = (searchValue, inService) => {
+  const criteria = [getSearchCriterias('intervention_equipment', searchValue)];
+
+  if (inService != null) {
+    if (!inService) {
+      criteria.push({
+        fieldName: 'inService',
+        operator: 'isNull',
+      });
+    } else {
+      criteria.push({
+        fieldName: 'inService',
+        operator: '=',
+        value: inService,
+      });
+    }
+  }
+
+  return criteria;
+};
+
+export async function searchEquipments({searchValue, page = 0, inService}) {
   return createStandardSearch({
     model: 'com.axelor.apps.intervention.db.Equipment',
-    criteria: [],
+    criteria: createEquipmentsCriteria(searchValue, inService),
     fieldKey: 'intervention_equipment',
     sortKey: 'intervention_equipment',
     page,

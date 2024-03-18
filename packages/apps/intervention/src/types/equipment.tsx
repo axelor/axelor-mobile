@@ -21,14 +21,14 @@ import {Color, ThemeColors} from '@axelor/aos-mobile-ui';
 class EquipmentType {
   static status = {
     InService: true,
-    NotInService: false || null,
+    NotInService: false,
   };
 
   static getBorderColor = (status: boolean, Colors: ThemeColors): Color => {
     switch (status) {
       case this.status.InService:
         return Colors.successColor;
-      case this.status.NotInService:
+      case this.status.NotInService || null:
         return Colors.cautionColor;
       default:
         console.warn(
