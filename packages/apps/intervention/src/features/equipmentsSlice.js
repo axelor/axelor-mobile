@@ -21,7 +21,10 @@ import {
   generateInifiniteScrollCases,
   handlerApiCall,
 } from '@axelor/aos-mobile-core';
-import {searchEquipments as _searchEquipments} from '../api/equipments-api';
+import {
+  searchEquipments as _searchEquipments,
+  searchPlaceEquipments as _searchPlaceEquipments,
+} from '../api/equipments-api';
 
 export const searchEquipments = createAsyncThunk(
   'intervention_equipments/searchEquipments',
@@ -30,6 +33,19 @@ export const searchEquipments = createAsyncThunk(
       fetchFunction: _searchEquipments,
       data,
       action: 'Intervention_SliceAction_SearchEquipments',
+      getState,
+      responseOptions: {isArrayResponse: true},
+    });
+  },
+);
+
+export const searchPlaceEquipments = createAsyncThunk(
+  'intervention_equipments/searchPlaceEquipments',
+  async function (data, {getState}) {
+    return handlerApiCall({
+      fetchFunction: _searchPlaceEquipments,
+      data,
+      action: 'Intervention_SliceAction_SearchPlaceEquipments',
       getState,
       responseOptions: {isArrayResponse: true},
     });

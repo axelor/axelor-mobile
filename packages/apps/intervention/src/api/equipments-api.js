@@ -62,3 +62,7 @@ export async function searchEquipments({
     page,
   });
 }
+
+export async function searchPlaceEquipments({}) {
+  return null;
+}

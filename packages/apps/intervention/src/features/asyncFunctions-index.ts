@@ -1,4 +1,3 @@
-export {searchClientAndProspect} from './clientAndProspectSlice';
 /*
  * Axelor Business Solutions
  *
@@ -19,3 +18,4 @@ export {searchClientAndProspect} from './clientAndProspectSlice';
 
 export {fetchIntervention} from './interventionSlice';
 export {searchEquipments} from './equipmentsSlice';
+export {searchClientAndProspect} from './clientAndProspectSlice';
