@@ -58,6 +58,12 @@ const createEquipmentsCriteria = ({
       operator: '=',
       value: Equipment.type.place,
     });
+  } else {
+    criteria.push({
+      fieldName: 'typeSelect',
+      operator: '=',
+      value: Equipment.type.equipment,
+    });
   }
 
   if (parentPlaceId != null) {
