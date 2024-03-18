@@ -61,7 +61,7 @@ const initialState = {
   loadingListEquipPlace: false,
   moreLoadingEquipPlace: false,
   isListEndEquipPlace: false,
-  equipmentListEquipPlace: [],
+  equipmentPlaceList: [],
 };
 
 const equipmentSlice = createSlice({
@@ -78,7 +78,7 @@ const equipmentSlice = createSlice({
       loading: 'loadingListEquipPlace',
       moreLoading: 'moreLoadingEquipPlace',
       isListEnd: 'isListEndEquipPlace',
-      list: 'equipmentListEquipPlace',
+      list: 'equipmentPlaceList',
     });
   },
 });

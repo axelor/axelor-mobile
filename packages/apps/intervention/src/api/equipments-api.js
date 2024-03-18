@@ -38,16 +38,16 @@ const createEquipmentsCriteria = ({
   });
 
   if (inService != null) {
-    if (!inService) {
-      criteria.push({
-        fieldName: 'inService',
-        operator: 'isNull',
-      });
-    } else {
+    if (inService) {
       criteria.push({
         fieldName: 'inService',
         operator: '=',
         value: inService,
+      });
+    } else {
+      criteria.push({
+        fieldName: 'inService',
+        operator: 'isNull',
       });
     }
   }

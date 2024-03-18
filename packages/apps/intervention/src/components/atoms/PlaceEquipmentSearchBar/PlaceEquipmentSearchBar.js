@@ -48,7 +48,7 @@ const PlaceEquipmentSearchBar = ({
     loadingListEquipPlace,
     moreLoadingEquipPlace,
     isListEndEquipPlace,
-    equipmentListEquipPlace,
+    equipmentPlaceList,
   } = useSelector(state => state.intervention_equipments);
 
   const searchClientAndProspectAPI = useCallback(
@@ -68,7 +68,7 @@ const PlaceEquipmentSearchBar = ({
   return (
     <AutoCompleteSearch
       title={showTitle && I18n.t(title)}
-      objectList={equipmentListEquipPlace}
+      objectList={equipmentPlaceList}
       value={defaultValue}
       required={required}
       readonly={readonly}
