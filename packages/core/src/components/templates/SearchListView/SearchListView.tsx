@@ -16,7 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import React, {useCallback, useMemo, useState} from 'react';
+import React, {useCallback, useEffect, useMemo, useState} from 'react';
 import {StyleSheet, View} from 'react-native';
 import {
   AutoCompleteSearch,
@@ -26,6 +26,7 @@ import {
 import {ScannerAutocompleteSearch} from '../../organisms';
 import {useDispatch} from '../../../redux/hooks';
 import useTranslator from '../../../i18n/hooks/use-translator';
+import {useIsFocused} from '../../../hooks/use-navigation';
 
 interface SearchListViewProps {
   list: any[];
@@ -34,12 +35,14 @@ interface SearchListViewProps {
   isListEnd: boolean;
   sliceFunction: any;
   sliceFunctionData?: Object;
-  onChangeSearchValue?: () => void;
+  onChangeSearchValue?: (item: any) => void;
   displaySearchValue?: () => string;
   searchPlaceholder?: string;
   searchNavigate?: boolean;
   scanKeySearch?: string;
+  fixedItems?: any;
   chipComponent?: any;
+  expandableFilter?: boolean;
   headerChildren?: any;
   renderListItem: (item: any) => any;
 }
@@ -56,12 +59,15 @@ const SearchListView = ({
   searchPlaceholder,
   searchNavigate,
   scanKeySearch = null,
+  fixedItems,
   chipComponent,
+  expandableFilter,
   headerChildren,
   renderListItem,
 }: SearchListViewProps) => {
   const I18n = useTranslator();
   const dispatch = useDispatch();
+  const isFocused = useIsFocused();
 
   const [filter, setFilter] = useState(null);
 
@@ -87,11 +93,17 @@ const SearchListView = ({
   );
 
   const fetchListAPI = useCallback(
-    page => {
+    (page = 0) => {
       fetchApi({page, searchValue: filter});
     },
     [fetchApi, filter],
   );
+
+  useEffect(() => {
+    if (isFocused) {
+      fetchListAPI();
+    }
+  }, [fetchListAPI, isFocused]);
 
   const SearchBar = useMemo(
     () => (scanKeySearch ? ScannerAutocompleteSearch : AutoCompleteSearch),
@@ -102,18 +114,22 @@ const SearchListView = ({
     <View style={styles.container}>
       <HeaderContainer
         fixedItems={
-          <SearchBar
-            objectList={list}
-            onChangeValue={onChangeSearchValue}
-            fetchData={fetchSearchAPI}
-            displayValue={displaySearchValue}
-            placeholder={searchPlaceholder}
-            oneFilter={true}
-            navigate={searchNavigate}
-            scanKeySearch={scanKeySearch}
-          />
+          <>
+            <SearchBar
+              objectList={list}
+              onChangeValue={onChangeSearchValue}
+              fetchData={fetchSearchAPI}
+              displayValue={displaySearchValue}
+              placeholder={searchPlaceholder}
+              oneFilter={true}
+              navigate={searchNavigate}
+              scanKeySearch={scanKeySearch}
+            />
+            {fixedItems}
+          </>
         }
-        chipComponent={chipComponent}>
+        chipComponent={chipComponent}
+        expandableFilter={expandableFilter}>
         {headerChildren}
       </HeaderContainer>
       <ScrollList
