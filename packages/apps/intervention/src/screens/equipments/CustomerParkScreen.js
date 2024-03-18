@@ -16,21 +16,18 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import React, {useCallback, useState} from 'react';
+import React, {useMemo, useState} from 'react';
+import {ChipSelect, Screen, useThemeColor} from '@axelor/aos-mobile-ui';
 import {
-  ChipSelect,
-  HeaderContainer,
-  Screen,
-  ScrollList,
-  useThemeColor,
-} from '@axelor/aos-mobile-ui';
-import {useSelector, useDispatch, useTranslator} from '@axelor/aos-mobile-core';
+  useSelector,
+  useTranslator,
+  SearchListView,
+} from '@axelor/aos-mobile-core';
 import {searchEquipment} from '../../features/equipmentSlice';
 import {CustomerParkHeader, EquipmentActionCard} from '../../components';
 import {Equipment} from '../../types';
 
 const CustomerParkScreen = ({}) => {
-  const dispatch = useDispatch();
   const I18n = useTranslator();
   const Colors = useThemeColor();
 
@@ -42,24 +39,35 @@ const CustomerParkScreen = ({}) => {
     state => state.intervention_equipments,
   );
 
-  const searchEquipmentAPI = useCallback(
-    (page = 0) => {
-      dispatch(
-        searchEquipment({
-          page: page,
-          inService: selectedStatus[0]?.key,
-          partnerId: customer?.id,
-          parentPlaceId: parentPlace?.id,
-        }),
-      );
-    },
-    [customer, dispatch, selectedStatus, parentPlace],
+  const sliceFunctionData = useMemo(
+    () => ({
+      inService: selectedStatus[0]?.key,
+      partnerId: customer?.id,
+      parentPlaceId: parentPlace?.id,
+    }),
+    [customer?.id, parentPlace?.id, selectedStatus],
   );
 
   return (
     <Screen removeSpaceOnTop={true}>
-      <HeaderContainer
-        fixedItems={
+      <SearchListView
+        list={equipmentList}
+        loading={loadingList}
+        moreLoading={moreLoading}
+        isListEnd={isListEnd}
+        sliceFunction={searchEquipment}
+        sliceFunctionData={sliceFunctionData}
+        onChangeSearchValue={() => {}}
+        renderListItem={({item}) => (
+          <EquipmentActionCard
+            sequence={item.sequence}
+            name={item.name}
+            code={item.code}
+            equipmentFamily={item.equipmentFamily?.name}
+            inService={item.inService}
+          />
+        )}
+        headerTopChildren={
           <CustomerParkHeader
             setCustomer={setCustomer}
             customer={customer}
@@ -86,23 +94,6 @@ const CustomerParkScreen = ({}) => {
             ]}
           />
         }
-      />
-      <ScrollList
-        loadingList={loadingList}
-        data={equipmentList}
-        fetchData={searchEquipmentAPI}
-        moreLoading={moreLoading}
-        isListEnd={isListEnd}
-        translator={I18n.t}
-        renderItem={({item}) => (
-          <EquipmentActionCard
-            sequence={item.sequence}
-            name={item.name}
-            code={item.code}
-            equipmentFamily={item.equipmentFamily?.name}
-            inService={item.inService}
-          />
-        )}
       />
     </Screen>
   );
