@@ -17,6 +17,15 @@
  */
 
 import {Module} from '@axelor/aos-mobile-core';
+import enTranslations from './i18n/en.json';
+import frTranslations from './i18n/fr.json';
+import InterventionScreens from './screens/intervention';
+import * as interventionReducers from './features';
+import {
+  intervention_modelAPI,
+  intervention_searchFields,
+  intervention_sortFields,
+} from './models';
 
 export const InterventionModule: Module = {
   name: 'app-intervention',
@@ -25,6 +34,48 @@ export const InterventionModule: Module = {
   icon: 'car-front-fill',
   compatibilityAOS: {
     moduleName: 'axelor-intervention',
-    downToVersion: '8.1.0',
+    // downToVersion: '8.1.0',
+  },
+  translations: {
+    en: enTranslations,
+    fr: frTranslations,
+  },
+  menus: {
+    intervention_menu_interventionSeparator: {
+      title: 'Intervention_Interventions',
+      separator: true,
+    },
+    intervention_menu_dayInterventions: {
+      title: 'Intervention_DayInterventions',
+      icon: 'calendar-event',
+      screen: 'DayInterventionsScreen',
+    },
+    intervention_menu_plannedInterventions: {
+      title: 'Intervention_PlannedInterventions',
+      icon: 'calendar-week',
+      screen: 'PlannedInterventionsScreen',
+    },
+    intervention_menu_interventionsHistory: {
+      title: 'Intervention_InterventionsHistory',
+      icon: 'clock-history',
+      screen: 'InterventionsHistoryScreen',
+    },
+  },
+  screens: {
+    ...InterventionScreens,
+  },
+  reducers: {
+    ...interventionReducers,
+  },
+  models: {
+    objectFields: {...intervention_modelAPI},
+    searchFields: {...intervention_searchFields},
+    sortFields: {...intervention_sortFields},
   },
 };
+
+export * from './api';
+export * from './components';
+export * from './features/asyncFunctions-index';
+export * from './screens/intervention';
+export * from './types';
