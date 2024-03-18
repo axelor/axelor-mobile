@@ -1,3 +1,13 @@
 {
-  "Intervention_Intervention": "Intervention"
+  "Intervention_Intervention": "Intervention",
+  "Intervention_Interventions": "Interventions",
+  "Intervention_DayInterventions": "Of the day",
+  "Intervention_PlannedInterventions": "Planned",
+  "Intervention_InterventionsHistory": "History",
+  "Intervention_OpenMap": "Open map",
+  "Intervention_OpenPhone": "Open phone",
+  "Intervention_Status_Planned": "Planned",
+  "Intervention_Status_Started": "Started",
+  "Intervention_Status_Suspended": "Suspended",
+  "Intervention_SliceAction_FetchIntervention": "fetch intervention"
 }
