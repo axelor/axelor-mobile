@@ -16,7 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import React, {useCallback, useEffect, useState} from 'react';
+import React, {useCallback, useState} from 'react';
 import {
   ChipSelect,
   HeaderContainer,
@@ -42,10 +42,6 @@ const CustomerParkScreen = ({}) => {
     state => state.intervention_equipments,
   );
 
-  useEffect(() => {
-    dispatch(searchEquipments({}));
-  }, [dispatch]);
-
   const searchEquipmentsAPI = useCallback(
     (page = 0) => {
       dispatch(
@@ -59,8 +55,6 @@ const CustomerParkScreen = ({}) => {
     },
     [customer, dispatch, selectedStatus, parentPlace],
   );
-
-  console.log('parentPlace', parentPlace);
 
   return (
     <Screen removeSpaceOnTop={true}>
