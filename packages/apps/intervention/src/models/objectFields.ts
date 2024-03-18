@@ -25,8 +25,6 @@ export const intervention_modelAPI: ObjectFields = {
       schemaContructor.object({
         fullName: schemaContructor.string(),
         picture: schemaContructor.subObject(),
-        mobilephone: schemaContructor.string(),
-        fixedPhone: schemaContructor.string(),
       }),
     ),
     sequence: schemaContructor.string(),
@@ -42,5 +40,11 @@ export const intervention_modelAPI: ObjectFields = {
       }),
     ),
     assignedTo: schemaContructor.subObject(),
+    contact: schemaContructor.subObject().concat(
+      schemaContructor.object({
+        mobilePhone: schemaContructor.string(),
+        fixedPhone: schemaContructor.string(),
+      }),
+    ),
   }),
 };

@@ -30,6 +30,7 @@ interface InterventionContent {
   interventionType: any;
   address: any;
   assignedTo: any;
+  contact: any;
 }
 
 interface InterventionDetailCardProps {
@@ -53,12 +54,8 @@ const InterventionDetailCard = ({
 
   const phone = useMemo(
     () =>
-      intervention?.deliveredPartner?.mobilephone ||
-      intervention?.deliveredPartner?.fixedPhone,
-    [
-      intervention?.deliveredPartner?.fixedPhone,
-      intervention?.deliveredPartner?.mobilephone,
-    ],
+      intervention?.contact?.mobilePhone || intervention?.contact?.fixedPhone,
+    [intervention?.contact?.mobilePhone, intervention?.contact?.fixedPhone],
   );
 
   return (
