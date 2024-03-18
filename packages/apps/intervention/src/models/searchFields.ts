@@ -19,5 +19,5 @@
 import {SearchFields} from '@axelor/aos-mobile-core';
 
 export const intervention_searchFields: SearchFields = {
-  intervention_intervention: ['sequence'],
+  intervention_intervention: ['sequence', 'deliveredPartner.fullName'],
 };
