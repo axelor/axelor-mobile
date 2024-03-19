@@ -25,6 +25,7 @@
     "format:check": "nx run-many --target=format:check",
     "graph": "nx graph",
     "license:add": "nx run-many --target=license:add",
+    "generator": "npx aom-generate --options && yarn license:add",
     "storybook": "start-storybook -p 6006",
     "build-storybook": "build-storybook",
     "postinstall": "patch-package"
