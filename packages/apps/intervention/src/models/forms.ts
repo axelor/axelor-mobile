@@ -90,6 +90,26 @@ export const intervention_formsRegister: FormConfigs = {
         required: true,
         customComponent: EquipmentFamilySearchBar,
       },
+      scheduleOfOperation: {
+        titleKey: 'Intervention_ScheduleOfOperation',
+        type: 'string',
+        widget: 'default',
+      },
+      specificAccessSchedule: {
+        titleKey: 'Intervention_SpecificAccessSchedule',
+        type: 'string',
+        widget: 'default',
+      },
+      comments: {
+        titleKey: 'Intervention_Comments',
+        type: 'string',
+        widget: 'default',
+        options: {
+          multiline: true,
+          adjustHeightWithLines: true,
+          style: {marginBottom: 100, width: '90%', alignSelf: 'center'},
+        },
+      },
     },
   },
 };
