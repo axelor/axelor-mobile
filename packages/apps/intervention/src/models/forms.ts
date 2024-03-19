@@ -16,16 +16,20 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import CustomerParkScreen from './CustomerParkScreen';
+import {FormConfigs} from '@axelor/aos-mobile-core';
+import {ClientProspectSearchBar} from '../components';
 
-export default {
-  CustomerParkScreen: {
-    title: 'Intervention_CustomerPark',
-    component: CustomerParkScreen,
-    options: {
-      shadedHeader: false,
+export const intervention_formsRegister: FormConfigs = {
+  intervention_equipment: {
+    modelName: 'com.axelor.apps.intervention.db.Equipment',
+    fields: {
+      partner: {
+        titleKey: 'Intervention_Customer',
+        type: 'object',
+        widget: 'custom',
+        required: true,
+        customComponent: ClientProspectSearchBar,
+      },
     },
   },
 };
-
-export {CustomerParkScreen};

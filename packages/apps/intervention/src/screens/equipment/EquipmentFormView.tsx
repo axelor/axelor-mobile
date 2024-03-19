@@ -16,7 +16,30 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-export {intervention_formsRegister} from './forms';
-export {intervention_modelAPI} from './objectFields';
-export {intervention_searchFields} from './searchFields';
-export {intervention_sortFields} from './sortFields';
+import React, {useEffect} from 'react';
+import {FormView, useDispatch} from '@axelor/aos-mobile-core';
+
+const EquipmentFormView = ({route}) => {
+  const idEquipment = route.params.idEquipment;
+  const _dispatch = useDispatch();
+
+  useEffect(() => {});
+
+  return (
+    <FormView
+      formKey="intervention_equipment"
+      //defaultValue={_defaultValue}
+      actions={[
+        {
+          key: 'update-equipment',
+          type: 'update',
+          needRequiredFields: true,
+          needValidation: true,
+          customAction: ({dispatch, objectState}) => {},
+        },
+      ]}
+    />
+  );
+};
+
+export default EquipmentFormView;

@@ -16,7 +16,22 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-export {intervention_formsRegister} from './forms';
-export {intervention_modelAPI} from './objectFields';
-export {intervention_searchFields} from './searchFields';
-export {intervention_sortFields} from './sortFields';
+import CustomerParkScreen from './CustomerParkScreen';
+import EquipmentFormView from './EquipmentFormView';
+
+export default {
+  CustomerParkScreen: {
+    title: 'Intervention_CustomerPark',
+    component: CustomerParkScreen,
+    options: {
+      shadedHeader: false,
+    },
+  },
+  EquipmentFormView: {
+    title: 'Intervention_Equipment',
+    component: EquipmentFormView,
+  },
+};
+
+export {CustomerParkScreen};
+export {EquipmentFormView};

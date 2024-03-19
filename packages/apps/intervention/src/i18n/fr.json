@@ -12,6 +12,7 @@
   "Intervention_Status_Finished": "Terminée",
   "Intervention_CustomerPark": "Parc client",
   "Intervention_Equipments": "Équipements",
+  "Intervention_Equipment": "Équipement",
   "Intervention_Customer": "Client",
   "Intervention_EquipmentStatus_InService": "En service",
   "Intervention_EquipmentStatus_NotInService": "Pas en service",
