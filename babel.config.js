@@ -10,14 +10,6 @@ module.exports = {
   },
   plugins: [
     [
-      'module-resolver',
-      {
-        alias: {
-          '@': './src',
-        },
-      },
-    ],
-    [
       'react-native-reanimated/plugin',
       {
         globals: ['__scanCodes'],

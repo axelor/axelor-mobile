@@ -16,18 +16,16 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import {Action, AnyAction} from '@reduxjs/toolkit';
 import {Dispatch} from 'react';
 import {
-  DefaultRootState,
   useSelector as useReduxSelector,
   useDispatch as useReduxDispatch,
 } from 'react-redux';
 
-export function useDispatch<A extends Action = AnyAction>(): Dispatch<A> {
+export function useDispatch(): Dispatch<any> {
   return useReduxDispatch();
 }
 
-export function useSelector(selector: (state: DefaultRootState) => any) {
+export function useSelector(selector: (state: any) => any) {
   return useReduxSelector(selector);
 }

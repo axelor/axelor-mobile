@@ -27,7 +27,9 @@ const path = require('path');
  * @returns {Object} - An object mapping package names to their corresponding lib paths.
  */
 function getModulePackageNameMapping(baseDir, currentDir = '') {
-  const modulePackageNameMapping = {};
+  const modulePackageNameMapping = {
+    '^axios$': 'axios/dist/node/axios.cjs',
+  };
 
   // Function to recursively explore directories and find package.json files
   function exploreDir(dir) {
