@@ -17,6 +17,7 @@
  */
 
 import {
+  createStandardFetch,
   createStandardSearch,
   getSearchCriterias,
 } from '@axelor/aos-mobile-core';
@@ -94,5 +95,13 @@ export async function searchPlaceEquipment({searchValue, page = 0, partnerId}) {
     fieldKey: 'intervention_equipment',
     sortKey: 'intervention_equipment',
     page,
+  });
+}
+
+export async function getEquipmentById({equipmentId}) {
+  return createStandardFetch({
+    model: 'com.axelor.apps.intervention.db.Equipment',
+    id: equipmentId,
+    fieldKey: 'intervention_equipment',
   });
 }

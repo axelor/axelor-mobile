@@ -18,6 +18,7 @@
 
 export {searchClientAndProspect as searchClientAndProspectApi} from './client-and-prospect-api';
 export {
+  getEquipmentById as getEquipmentByIdApi,
   searchEquipment as searchEquipmentApi,
   searchPlaceEquipment as searchPlaceEquipmentApi,
 } from './equipment-api';

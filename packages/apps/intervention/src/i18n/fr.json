@@ -33,5 +33,6 @@
   "Intervention_SliceAction_SearchPlaceEquipment": "recherche sur les équipements de type place",
   "Intervention_SliceAction_FetchInterventionById": "récuperation d'une intervention par id",
   "Intervention_SliceAction_FetchRange": "récupération des gammes",
-  "Intervention_SliceAction_FetchQuestion": "récupération des questions"
+  "Intervention_SliceAction_FetchQuestion": "récupération des questions",
+  "Intervention_SliceAction_GetEquipmentById": "récupération de l'équipement par id"
 }

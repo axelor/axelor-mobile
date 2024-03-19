@@ -16,19 +16,28 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import React, {useEffect} from 'react';
-import {FormView, useDispatch} from '@axelor/aos-mobile-core';
+import React, {useEffect, useMemo} from 'react';
+import {FormView, useDispatch, useSelector} from '@axelor/aos-mobile-core';
+import {getEquipmentById} from '../../features/equipmentSlice';
 
 const EquipmentFormView = ({route}) => {
   const idEquipment = route.params.idEquipment;
   const _dispatch = useDispatch();
 
-  useEffect(() => {});
+  const {equipment} = useSelector(state => state.intervention_equipment);
+
+  useEffect(() => {
+    _dispatch(getEquipmentById({equipmentId: idEquipment}));
+  }, [_dispatch, idEquipment]);
+
+  const _defaultValue = useMemo(() => {
+    return {...equipment};
+  }, [equipment]);
 
   return (
     <FormView
       formKey="intervention_equipment"
-      //defaultValue={_defaultValue}
+      defaultValue={_defaultValue}
       actions={[
         {
           key: 'update-equipment',

@@ -17,6 +17,10 @@
  */
 
 export {searchClientAndProspect} from './clientAndProspectSlice';
-export {searchEquipment} from './equipmentSlice';
+export {
+  getEquipmentById,
+  searchEquipment,
+  searchPlaceEquipment,
+} from './equipmentSlice';
 export {fetchIntervention, fetchInterventionById} from './interventionSlice';
 export {fetchQuestion, fetchRange} from './questionSlice';

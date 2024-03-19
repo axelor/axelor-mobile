@@ -33,5 +33,6 @@
   "Intervention_SliceAction_SearchPlaceEquipment": "search on place equipment",
   "Intervention_SliceAction_FetchInterventionById": "fetch intervention by id",
   "Intervention_SliceAction_FetchRange": "fetch range",
-  "Intervention_SliceAction_FetchQuestion": "fetch question"
+  "Intervention_SliceAction_FetchQuestion": "fetch question",
+  "Intervention_SliceAction_GetEquipmentById": "get element by id"
 }

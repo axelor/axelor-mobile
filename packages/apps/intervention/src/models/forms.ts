@@ -29,6 +29,9 @@ export const intervention_formsRegister: FormConfigs = {
         widget: 'custom',
         required: true,
         customComponent: ClientProspectSearchBar,
+        options: {
+          showTitle: true,
+        },
       },
     },
   },
