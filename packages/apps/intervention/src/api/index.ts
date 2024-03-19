@@ -22,6 +22,7 @@ export {
   searchEquipment as searchEquipmentApi,
   searchPlaceEquipment as searchPlaceEquipmentApi,
 } from './equipment-api';
+export {searchEquipmentFamily as searchEquipmentFamilyApi} from './equipment-family-api';
 export {
   fetchIntervention as fetchInterventionApi,
   fetchInterventionById as fetchInterventionByIdApi,

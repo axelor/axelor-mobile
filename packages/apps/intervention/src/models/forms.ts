@@ -19,6 +19,7 @@
 import {FormConfigs} from '@axelor/aos-mobile-core';
 import {
   ClientProspectSearchBar,
+  EquipmentFamilySearchBar,
   //PlaceEquipmentSearchBar,
   TypePicker,
 } from '../components';
@@ -81,6 +82,13 @@ export const intervention_formsRegister: FormConfigs = {
         titleKey: 'Intervention_CustomerWarrantyOnPartEndDate',
         type: 'date',
         widget: 'date',
+      },
+      equipmentFamily: {
+        titleKey: 'Intervention_EquipmentFamily',
+        type: 'object',
+        widget: 'custom',
+        required: true,
+        customComponent: EquipmentFamilySearchBar,
       },
     },
   },

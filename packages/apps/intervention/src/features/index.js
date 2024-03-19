@@ -17,6 +17,7 @@
  */
 
 export {clientAndProspectReducer as intervention_clientAndProspect} from './clientAndProspectSlice';
+export {equipmentFamilyReducer as intervention_equipmentFamily} from './equipmentFamilySlice';
 export {equipmentReducer as intervention_equipment} from './equipmentSlice';
 export {interventionReducer as intervention_intervention} from './interventionSlice';
 export {questionReducer as intervention_question} from './questionSlice';

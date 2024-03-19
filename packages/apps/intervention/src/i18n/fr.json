@@ -29,6 +29,7 @@
   "Intervention_TimerFormat": "ddj HHhmm",
   "Intervention_Code": "Code",
   "Intervention_Designation": "Désignation",
+  "Intervention_EquipmentFamily": "Famille d'équipement",
   "Intervention_CommissioningDate": "Date de mise en service",
   "Intervention_CustomerWarrantyOnPartEndDate": "Date de fin de garantie pièce client",
   "Intervention_SliceAction_FetchIntervention": "récupération des interventions",
@@ -38,5 +39,6 @@
   "Intervention_SliceAction_FetchInterventionById": "récuperation d'une intervention par id",
   "Intervention_SliceAction_FetchRange": "récupération des gammes",
   "Intervention_SliceAction_FetchQuestion": "récupération des questions",
-  "Intervention_SliceAction_GetEquipmentById": "récupération de l'équipement par id"
+  "Intervention_SliceAction_GetEquipmentById": "récupération de l'équipement par id",
+  "Intervention_SliceAction_SearchEquipmentFamily": "recherche sur les familles d'équipement"
 }

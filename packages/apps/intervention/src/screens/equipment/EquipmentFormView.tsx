@@ -24,10 +24,10 @@ const EquipmentFormView = ({route}) => {
   const idEquipment = route.params.idEquipment;
   const _dispatch = useDispatch();
 
-  const {equipment} = useSelector(state => state.intervention_equipment);
+  const {equipment} = useSelector((state: any) => state.intervention_equipment);
 
   useEffect(() => {
-    _dispatch(getEquipmentById({equipmentId: idEquipment}));
+    _dispatch((getEquipmentById as any)({equipmentId: idEquipment}));
   }, [_dispatch, idEquipment]);
 
   const _defaultValue = useMemo(() => {

@@ -79,6 +79,9 @@ export const intervention_modelAPI: ObjectFields = {
     commissioningDate: schemaContructor.string(),
     customerWarrantyOnPartEndDate: schemaContructor.string(),
   }),
+  intervention_equipmentFamily: schemaContructor.object({
+    name: schemaContructor.string(),
+  }),
   intervention_partner: schemaContructor.object({
     simpleFullName: schemaContructor.string(),
     fullName: schemaContructor.string(),
