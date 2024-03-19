@@ -49,9 +49,9 @@ const PlaceEquipmentSearchBar = ({
     moreLoadingEquipPlace,
     isListEndEquipPlace,
     equipmentPlaceList,
-  } = useSelector(state => state.intervention_equipments);
+  } = useSelector(state => state.intervention_equipment);
 
-  const searchClientAndProspectAPI = useCallback(
+  const searchPlaceEquipmentAPI = useCallback(
     ({page = 0, searchValue}) => {
       dispatch(
         searchPlaceEquipment({
@@ -73,7 +73,7 @@ const PlaceEquipmentSearchBar = ({
       required={required}
       readonly={readonly}
       onChangeValue={onChange}
-      fetchData={searchClientAndProspectAPI}
+      fetchData={searchPlaceEquipmentAPI}
       displayValue={displayItemName}
       placeholder={I18n.t(title)}
       showDetailsPopup={showDetailsPopup}

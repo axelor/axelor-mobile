@@ -46,11 +46,6 @@ export const intervention_modelAPI: ObjectFields = {
         fixedPhone: schemaContructor.string(),
       }),
     ),
-    name: schemaContructor.string(),
-    typeSelect: schemaContructor.string(),
-    code: schemaContructor.string(),
-    inService: schemaContructor.boolean(),
-    equipmentFamily: schemaContructor.subObject(),
   }),
   intervention_equipment: schemaContructor.object({
     sequence: schemaContructor.string(),

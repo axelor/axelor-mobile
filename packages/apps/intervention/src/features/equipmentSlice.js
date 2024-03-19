@@ -27,7 +27,7 @@ import {
 } from '../api/equipments-api';
 
 export const searchEquipment = createAsyncThunk(
-  'intervention_equipments/searchEquipment',
+  'intervention_equipment/searchEquipment',
   async function (data, {getState}) {
     return handlerApiCall({
       fetchFunction: _searchEquipment,
@@ -40,7 +40,7 @@ export const searchEquipment = createAsyncThunk(
 );
 
 export const searchPlaceEquipment = createAsyncThunk(
-  'intervention_equipments/searchPlaceEquipment',
+  'intervention_equipment/searchPlaceEquipment',
   async function (data, {getState}) {
     return handlerApiCall({
       fetchFunction: _searchPlaceEquipment,
@@ -65,7 +65,7 @@ const initialState = {
 };
 
 const equipmentSlice = createSlice({
-  name: 'intervention_equipments',
+  name: 'intervention_equipment',
   initialState,
   extraReducers: builder => {
     generateInifiniteScrollCases(builder, searchEquipment, {

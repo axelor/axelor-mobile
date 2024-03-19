@@ -61,7 +61,7 @@ export const InterventionModule: Module = {
       icon: 'clock-history',
       screen: 'InterventionsHistoryScreen',
     },
-    Equipments: {
+    intervention_separator_equipments: {
       title: 'Intervention_Equipments',
       separator: true,
     },

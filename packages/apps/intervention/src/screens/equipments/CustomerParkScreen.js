@@ -36,7 +36,7 @@ const CustomerParkScreen = ({}) => {
   const [parentPlace, setParentPlace] = useState(null);
 
   const {loadingList, moreLoading, isListEnd, equipmentList} = useSelector(
-    state => state.intervention_equipments,
+    state => state.intervention_equipment,
   );
 
   const sliceFunctionData = useMemo(
