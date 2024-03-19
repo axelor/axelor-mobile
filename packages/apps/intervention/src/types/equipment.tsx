@@ -40,6 +40,13 @@ class EquipmentType {
     }));
   };
 
+  static generateTypeList = () => {
+    return Object.entries(this.type).map(([key, value]) => ({
+      label: key,
+      value: value,
+    }));
+  };
+
   static getStatusColor = (status: boolean, Colors: ThemeColors): Color => {
     switch (status) {
       case this.status.InService:

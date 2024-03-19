@@ -17,7 +17,11 @@
  */
 
 import {FormConfigs} from '@axelor/aos-mobile-core';
-import {ClientProspectSearchBar, PlaceEquipmentSearchBar} from '../components';
+import {
+  ClientProspectSearchBar,
+  PlaceEquipmentSearchBar,
+  TypePicker,
+} from '../components';
 
 export const intervention_formsRegister: FormConfigs = {
   intervention_equipment: {
@@ -54,6 +58,12 @@ export const intervention_formsRegister: FormConfigs = {
         titleKey: 'Intervention_Designation',
         type: 'string',
         widget: 'default',
+      },
+      typeSelect: {
+        titleKey: 'Intervention_Type',
+        type: 'string',
+        widget: 'custom',
+        customComponent: TypePicker,
       },
     },
   },
