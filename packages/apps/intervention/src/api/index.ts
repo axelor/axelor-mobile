@@ -21,4 +21,4 @@ export {searchClientAndProspect as searchClientAndProspectApi} from './client-an
 export {
   searchEquipment as searchEquipmentApi,
   searchPlaceEquipment as searchPlaceEquipmentApi,
-} from './equipments-api';
+} from './equipment-api';

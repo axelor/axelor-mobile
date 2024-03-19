@@ -24,7 +24,7 @@ import {
 import {
   searchEquipment as _searchEquipment,
   searchPlaceEquipment as _searchPlaceEquipment,
-} from '../api/equipments-api';
+} from '../api/equipment-api';
 
 export const searchEquipment = createAsyncThunk(
   'intervention_equipment/searchEquipment',
