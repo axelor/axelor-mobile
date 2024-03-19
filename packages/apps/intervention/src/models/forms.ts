@@ -19,7 +19,7 @@
 import {FormConfigs} from '@axelor/aos-mobile-core';
 import {
   ClientProspectSearchBar,
-  PlaceEquipmentSearchBar,
+  //PlaceEquipmentSearchBar,
   TypePicker,
 } from '../components';
 
@@ -58,12 +58,29 @@ export const intervention_formsRegister: FormConfigs = {
         titleKey: 'Intervention_Designation',
         type: 'string',
         widget: 'default',
+        required: true,
       },
       typeSelect: {
         titleKey: 'Intervention_Type',
         type: 'string',
         widget: 'custom',
         customComponent: TypePicker,
+        required: true,
+      },
+      inService: {
+        titleKey: 'Intervention_Status_InService',
+        type: 'boolean',
+        widget: 'checkbox',
+      },
+      commissioningDate: {
+        titleKey: 'Intervention_CommissioningDate',
+        type: 'date',
+        widget: 'date',
+      },
+      customerWarrantyOnPartEndDate: {
+        titleKey: 'Intervention_CustomerWarrantyOnPartEndDate',
+        type: 'date',
+        widget: 'date',
       },
     },
   },

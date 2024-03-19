@@ -29,6 +29,8 @@
   "Intervention_TimerFormat": "ddd HHhmm",
   "Intervention_Code": "Code",
   "Intervention_Designation": "Designation",
+  "Intervention_CommissioningDate": "Commissioning date",
+  "Intervention_CustomerWarrantyOnPartEndDate": "Customer warranty on part end date",
   "Intervention_SliceAction_FetchIntervention": "fetch intervention",
   "Intervention_SliceAction_SearchEquipment": "search equipments",
   "Intervention_SliceAction_SearchClientAndProspect": "search clients and prospects",

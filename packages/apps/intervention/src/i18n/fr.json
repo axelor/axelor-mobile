@@ -29,6 +29,8 @@
   "Intervention_TimerFormat": "ddj HHhmm",
   "Intervention_Code": "Code",
   "Intervention_Designation": "Désignation",
+  "Intervention_CommissioningDate": "Date de mise en service",
+  "Intervention_CustomerWarrantyOnPartEndDate": "Date de fin de garantie pièce client",
   "Intervention_SliceAction_FetchIntervention": "récupération des interventions",
   "Intervention_SliceAction_SearchEquipment": "recherche sur les équipements",
   "Intervention_SliceAction_SearchClientAndProspect": "recherche sur les clients et prospects",
