@@ -20,6 +20,8 @@ import React from 'react';
 import {TouchableOpacity, View} from 'react-native';
 import {shallow} from 'enzyme';
 import {BlockInteractionScreen} from '@axelor/aos-mobile-ui';
+import * as configContext from '../../../lib/config/ConfigContext';
+import {getGlobalStyles} from '../../tools';
 
 describe('BlockInteractionScreen Component', () => {
   it('renders without crashing', () => {
@@ -50,29 +52,22 @@ describe('BlockInteractionScreen Component', () => {
     expect(onPressMock).not.toHaveBeenCalled();
   });
 
-  it('renders without hidden the header', () => {
-    const children = <View testID="children" />;
-    const wrapper = shallow(
-      <BlockInteractionScreen>{children}</BlockInteractionScreen>,
-    );
-
-    const container = wrapper.find(View).at(0);
-
-    const topStyle = container.prop('style')?.top;
-
-    expect(topStyle).toBe(115);
-  });
-
   it('hides the header if specified', () => {
+    const mockHeaderHeight = 70;
+
+    jest.spyOn(configContext, 'useConfig').mockImplementation(() => ({
+      headerHeight: mockHeaderHeight,
+    }));
+
     const children = <View testID="children" />;
-    const wrapper = shallow(
-      <BlockInteractionScreen hideHeader>{children}</BlockInteractionScreen>,
+    const wrapper = shallow(<BlockInteractionScreen children={children} />);
+    const hiddenWrapper = shallow(
+      <BlockInteractionScreen children={children} hideHeader />,
     );
 
-    const container = wrapper.find(View).at(0);
-
-    const topStyle = container.prop('style')?.top;
-
-    expect(topStyle).toBe(0);
+    expect(getGlobalStyles(wrapper.find(View).at(0)).top).toBe(
+      mockHeaderHeight,
+    );
+    expect(getGlobalStyles(hiddenWrapper.find(View).at(0)).top).toBe(0);
   });
 });
