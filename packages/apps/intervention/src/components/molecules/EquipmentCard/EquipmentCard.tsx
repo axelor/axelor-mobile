@@ -41,7 +41,7 @@ const EquipmentCard = ({
   const Colors = useThemeColor();
 
   const borderStyle = useMemo(() => {
-    return getStyles(Equipment.getBorderColor(inService, Colors)?.background)
+    return getStyles(Equipment.getStatusColor(inService, Colors)?.background)
       ?.border;
   }, [Colors, inService]);
 
@@ -83,10 +83,6 @@ const getStyles = color =>
 
 const styles = StyleSheet.create({
   objectCard: {
-    marginHorizontal: 0,
-    marginRight: 2,
-    marginVertical: 0,
-    paddingBottom: 5,
     paddingRight: 10,
   },
 });

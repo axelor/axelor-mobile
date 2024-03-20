@@ -16,9 +16,9 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-export {fetchIntervention as fetchInterventionApi} from './intervention-api';
 export {searchClientAndProspect as searchClientAndProspectApi} from './client-and-prospect-api';
 export {
   searchEquipment as searchEquipmentApi,
   searchPlaceEquipment as searchPlaceEquipmentApi,
 } from './equipment-api';
+export {fetchIntervention as fetchInterventionApi} from './intervention-api';

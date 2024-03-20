@@ -38,33 +38,18 @@ const createEquipmentsCriteria = ({
   });
 
   if (inService != null) {
-    if (inService) {
-      criteria.push({
-        fieldName: 'inService',
-        operator: '=',
-        value: inService,
-      });
-    } else {
-      criteria.push({
-        fieldName: 'inService',
-        operator: 'isNull',
-      });
-    }
+    criteria.push({
+      fieldName: 'inService',
+      operator: inService ? '=' : '!=',
+      value: true,
+    });
   }
 
-  if (isPlaceEquipment) {
-    criteria.push({
-      fieldName: 'typeSelect',
-      operator: '=',
-      value: Equipment.type.place,
-    });
-  } else {
-    criteria.push({
-      fieldName: 'typeSelect',
-      operator: '=',
-      value: Equipment.type.equipment,
-    });
-  }
+  criteria.push({
+    fieldName: 'typeSelect',
+    operator: '=',
+    value: isPlaceEquipment ? Equipment.type.place : Equipment.type.equipment,
+  });
 
   if (parentPlaceId != null) {
     criteria.push({

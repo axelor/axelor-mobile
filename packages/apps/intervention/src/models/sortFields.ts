@@ -20,5 +20,5 @@ import {SortFields} from '@axelor/aos-mobile-core';
 
 export const intervention_sortFields: SortFields = {
   intervention_intervention: ['planifStartDateTime'],
-  intervention_equipment: ['name'],
+  intervention_equipment: ['sequence'],
 };

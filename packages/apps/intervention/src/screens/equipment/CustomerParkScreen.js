@@ -81,18 +81,7 @@ const CustomerParkScreen = ({}) => {
           <ChipSelect
             mode="switch"
             onChangeValue={chiplist => setSelectedStatus(chiplist)}
-            selectionItems={[
-              {
-                title: I18n.t('Intervention_Status_InService'),
-                color: Colors.successColor,
-                key: Equipment.status.InService,
-              },
-              {
-                title: I18n.t('Intervention_Status_NotInService'),
-                color: Colors.cautionColor,
-                key: Equipment.status.NotInService,
-              },
-            ]}
+            selectionItems={Equipment.getStatusList(Colors, I18n)}
           />
         }
       />

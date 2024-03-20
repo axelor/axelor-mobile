@@ -18,8 +18,8 @@
 
 import React from 'react';
 import {StyleSheet, View} from 'react-native';
-import {EquipmentCard} from '../../molecules';
 import {CardIconButton, useThemeColor} from '@axelor/aos-mobile-ui';
+import {EquipmentCard} from '../../molecules';
 
 interface EquipmentActionCardProps {
   sequence: string;

@@ -29,11 +29,23 @@ class EquipmentType {
     place: 'place',
   };
 
-  static getBorderColor = (status: boolean, Colors: ThemeColors): Color => {
+  static getStatusList = (
+    Colors: ThemeColors,
+    I18n: {t: (key: string) => string},
+  ) => {
+    return Object.entries(this.status).map(([key, value]) => ({
+      title: I18n.t(`Intervention_Status_${key}`),
+      key: value,
+      color: this.getStatusColor(value, Colors),
+    }));
+  };
+
+  static getStatusColor = (status: boolean, Colors: ThemeColors): Color => {
     switch (status) {
       case this.status.InService:
         return Colors.successColor;
-      case this.status.NotInService || null:
+      case this.status.NotInService:
+      case null:
         return Colors.cautionColor;
       default:
         console.warn(

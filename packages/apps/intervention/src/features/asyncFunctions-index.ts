@@ -16,6 +16,6 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-export {fetchIntervention} from './interventionSlice';
 export {searchEquipment} from './equipmentSlice';
 export {searchClientAndProspect} from './clientAndProspectSlice';
+export {fetchIntervention} from './interventionSlice';

@@ -24,30 +24,20 @@ import {
 const createClientAndProspectCriteria = searchValue => {
   return [
     {
-      operator: 'or',
+      operator: 'and',
       criteria: [
         {
-          operator: 'and',
+          fieldName: 'isContact',
+          operator: '=',
+          value: false,
+        },
+        {
+          operator: 'or',
           criteria: [
-            {
-              fieldName: 'isContact',
-              operator: '=',
-              value: false,
-            },
             {
               fieldName: 'isCustomer',
               operator: '=',
               value: true,
-            },
-          ],
-        },
-        {
-          operator: 'and',
-          criteria: [
-            {
-              fieldName: 'isContact',
-              operator: '=',
-              value: false,
             },
             {
               fieldName: 'isProspect',
