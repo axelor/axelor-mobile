@@ -17,11 +17,14 @@
  */
 
 import React, {useCallback, useEffect, useMemo, useState} from 'react';
-import {StyleSheet, View} from 'react-native';
-import {BottomBarItem, DisplayItem} from './types.helper';
-import {Card, ScrollView} from '../../atoms';
+import {Dimensions, StyleSheet, View} from 'react-native';
+import {useConfig} from '../../../config/ConfigContext';
+import {Card} from '../../atoms';
 import BarItem from './BarItem';
+import {BottomBarItem, DisplayItem} from './types.helper';
 import {getVisibleItems} from './display.helper';
+
+const WINDOW_HEIGHT = Dimensions.get('window').height;
 
 const BottomBar = ({
   style,
@@ -33,6 +36,9 @@ const BottomBar = ({
   itemSize?: number;
 }) => {
   const [selectedKey, setSelectedKey] = useState<string>();
+  const [viewHeight, setViewHeight] = useState<number>(WINDOW_HEIGHT * 0.75);
+
+  const {headerHeight} = useConfig();
 
   const visibleItems: DisplayItem[] = useMemo(
     () => getVisibleItems(items),
@@ -61,12 +67,18 @@ const BottomBar = ({
 
   return (
     <View style={styles.container}>
-      <ScrollView>
+      <View style={{height: viewHeight}}>
         {visibleItems.find(_item => _item.key === selectedKey)?.viewComponent}
-      </ScrollView>
-      <Card style={[styles.bottomContainer, style]}>
-        {visibleItems.map(renderItem)}
-      </Card>
+      </View>
+      <View
+        onLayout={event => {
+          const {height: barHeight} = event.nativeEvent.layout;
+          setViewHeight(WINDOW_HEIGHT - headerHeight - barHeight);
+        }}>
+        <Card style={[styles.bottomContainer, style]}>
+          {visibleItems.map(renderItem)}
+        </Card>
+      </View>
     </View>
   );
 };
