@@ -68,7 +68,7 @@ const defaultConfigContext = {
   hideVirtualKeyboard: false,
   showActivityIndicator: false,
   showSubtitles: false,
-  headerHeight: 115,
+  headerHeight: 60,
   blockInteractionConfig: {
     visible: false,
     message: '',
