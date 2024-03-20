@@ -26,6 +26,29 @@ class InterventionType {
     Finished: 50,
   };
 
+  static getStatus = (
+    status: number,
+    I18n: {t: (key: string) => string},
+  ): string => {
+    if (I18n) {
+      switch (status) {
+        case this.status.Planned:
+          return I18n.t('Intervention_Status_Planned');
+        case this.status.Started:
+          return I18n.t('Intervention_Status_Started');
+        case this.status.Suspended:
+          return I18n.t('Intervention_Status_Suspended');
+        case this.status.Finished:
+          return I18n.t('Intervention_Status_Finished');
+        default:
+          console.warn(
+            `Status provided with value ${status} is not supported by Intervention.`,
+          );
+          return null;
+      }
+    }
+  };
+
   static getStatusColor = (status: number, Colors: ThemeColors): Color => {
     switch (status) {
       case this.status.Planned:
