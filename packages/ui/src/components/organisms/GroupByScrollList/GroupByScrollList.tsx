@@ -22,7 +22,7 @@ import BottomSeparator, {
   BottomIndicator,
   BottomSeparatorProps,
 } from './BottomSeparator';
-import ScrollList from '../ScrollList/ScrollList';
+import {ActionType, ScrollList} from '../ScrollList';
 
 interface GroupByScrollListProps {
   style?: any;
@@ -41,6 +41,8 @@ interface GroupByScrollListProps {
   customTopSeparator?: ReactElement<TopSeparatorProps>;
   fetchBottomIndicator?: (prevItem: any) => BottomIndicator;
   customBottomSeparator?: ReactElement<BottomSeparatorProps>;
+  actionList?: ActionType[];
+  verticalActions?: boolean;
 }
 
 const GroupByScrollList = ({
@@ -60,6 +62,8 @@ const GroupByScrollList = ({
   customTopSeparator,
   fetchBottomIndicator,
   customBottomSeparator,
+  actionList,
+  verticalActions,
 }: GroupByScrollListProps) => {
   const renderSeparator = (customSeparator, Separator, props) => {
     return customSeparator ? (
@@ -129,6 +133,8 @@ const GroupByScrollList = ({
       translator={translator}
       horizontal={horizontal}
       disabledRefresh={disabledRefresh}
+      actionList={actionList}
+      verticalActions={verticalActions}
     />
   );
 };
