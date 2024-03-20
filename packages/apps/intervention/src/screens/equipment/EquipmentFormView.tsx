@@ -16,12 +16,15 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import React, {useEffect, useMemo} from 'react';
+import React, {useCallback, useEffect, useMemo} from 'react';
 import {FormView, useDispatch, useSelector} from '@axelor/aos-mobile-core';
-import {getEquipmentById} from '../../features/equipmentSlice';
+import {useThemeColor} from '@axelor/aos-mobile-ui';
+import {getEquipmentById, updateEquipment} from '../../features/equipmentSlice';
 
-const EquipmentFormView = ({route}) => {
+const EquipmentFormView = ({navigation, route}) => {
   const idEquipment = route.params.idEquipment;
+
+  const Colors = useThemeColor();
   const _dispatch = useDispatch();
 
   const {equipment} = useSelector((state: any) => state.intervention_equipment);
@@ -29,6 +32,19 @@ const EquipmentFormView = ({route}) => {
   useEffect(() => {
     _dispatch((getEquipmentById as any)({equipmentId: idEquipment}));
   }, [_dispatch, idEquipment]);
+
+  const updateEquipmentAPI = useCallback(
+    (_equipment, dispatch) => {
+      dispatch(
+        updateEquipment({
+          equipment: _equipment,
+        }),
+      );
+
+      navigation.pop();
+    },
+    [navigation],
+  );
 
   const _defaultValue = useMemo(() => {
     return {...equipment};
@@ -44,7 +60,14 @@ const EquipmentFormView = ({route}) => {
           type: 'update',
           needRequiredFields: true,
           needValidation: true,
-          customAction: ({dispatch, objectState}) => {},
+          customAction: ({dispatch, objectState}) => {
+            updateEquipmentAPI(objectState, dispatch);
+          },
+        },
+        {
+          color: Colors.cautionColor,
+          key: 'reset-equipment',
+          type: 'reset',
         },
       ]}
     />

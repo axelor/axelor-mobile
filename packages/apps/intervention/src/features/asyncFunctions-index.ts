@@ -23,6 +23,7 @@ export {
   getEquipmentById,
   searchEquipment,
   searchPlaceEquipment,
+  updateEquipment,
 } from './equipmentSlice';
 export {fetchIntervention, fetchInterventionById} from './interventionSlice';
 export {fetchQuestion, fetchRange} from './questionSlice';

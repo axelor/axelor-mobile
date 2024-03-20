@@ -25,6 +25,7 @@ import {
   getEquipmentById as _getEquipmentById,
   searchEquipment as _searchEquipment,
   searchPlaceEquipment as _searchPlaceEquipment,
+  updateEquipment as _updateEquipment,
 } from '../api/equipment-api';
 
 export const searchEquipment = createAsyncThunk(
@@ -62,6 +63,19 @@ export const getEquipmentById = createAsyncThunk(
       action: 'Intervention_SliceAction_GetEquipmentById',
       getState,
       responseOptions: {isArrayResponse: false},
+    });
+  },
+);
+
+export const updateEquipment = createAsyncThunk(
+  'intervention_equipment/updateEquipment',
+  async function (data, {getState}) {
+    return handlerApiCall({
+      fetchFunction: _updateEquipment,
+      data,
+      action: 'Intervention_SliceAction_UpdateEquipment',
+      getState,
+      responseOptions: {isArrayResponse: false, showToast: true},
     });
   },
 );

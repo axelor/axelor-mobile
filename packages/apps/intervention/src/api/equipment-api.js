@@ -17,6 +17,7 @@
  */
 
 import {
+  axiosApiProvider,
   createStandardFetch,
   createStandardSearch,
   getSearchCriterias,
@@ -103,5 +104,14 @@ export async function getEquipmentById({equipmentId}) {
     model: 'com.axelor.apps.intervention.db.Equipment',
     id: equipmentId,
     fieldKey: 'intervention_equipment',
+  });
+}
+
+export async function updateEquipment({equipment}) {
+  return axiosApiProvider.post({
+    url: '/ws/rest/com.axelor.apps.intervention.db.Equipment',
+    data: {
+      data: equipment,
+    },
   });
 }

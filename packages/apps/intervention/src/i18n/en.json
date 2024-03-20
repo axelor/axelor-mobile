@@ -45,5 +45,6 @@
   "Intervention_SliceAction_FetchQuestion": "fetch question",
   "Intervention_SliceAction_GetEquipmentById": "get element by id",
   "Intervention_SliceAction_SearchEquipmentFamily": "search on equipment family",
-  "Intervention_SliceAction_SearchContract": "search contract"
+  "Intervention_SliceAction_SearchContract": "search contract",
+  "Intervention_SliceAction_UpdateEquipment": "update equipment"
 }
