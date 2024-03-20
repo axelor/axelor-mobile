@@ -28,6 +28,7 @@ import {
   intervention_searchFields,
   intervention_sortFields,
 } from './models';
+import {useInterventionHeaders} from './hooks/use-intervention-header-actions';
 
 export const InterventionModule: Module = {
   name: 'app-intervention',
@@ -84,6 +85,7 @@ export const InterventionModule: Module = {
     searchFields: {...intervention_searchFields},
     sortFields: {...intervention_sortFields},
     formsRegister: {...intervention_formsRegister},
+    headerRegisters: useInterventionHeaders,
   },
 };
 

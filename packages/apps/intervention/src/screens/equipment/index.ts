@@ -29,6 +29,7 @@ export default {
   },
   EquipmentFormView: {
     title: 'Intervention_Equipment',
+    actionID: 'intervention_equipment_form',
     component: EquipmentFormView,
   },
 };
