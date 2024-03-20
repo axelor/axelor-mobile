@@ -42,6 +42,8 @@ function AttachedFilesView({
   isStaticList = false,
   isMetaFile = false,
   screenTitle,
+  actionList = [],
+  verticalActions = true,
 }) {
   const Colors = useThemeColor();
   const I18n = useTranslator();
@@ -151,6 +153,8 @@ function AttachedFilesView({
         moreLoading={false}
         isListEnd={true}
         translator={I18n.t}
+        actionList={actionList}
+        verticalActions={verticalActions}
       />
     </Screen>
   );

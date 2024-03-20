@@ -38,6 +38,24 @@ const Item = ({title}: {title: string}) => (
 
 const renderItem = ({item}: {item: any}) => <Item title={item.title} />;
 
+const actionList = [
+  {
+    iconName: 'car-front',
+    title: 'Test 1',
+    onPress: () => console.log('Test 1 pressed.'),
+  },
+  {
+    iconName: 'car-front',
+    title: 'Test 2',
+    onPress: () => console.log('Test 2 pressed.'),
+  },
+  {
+    iconName: 'car-front',
+    title: 'Test 3',
+    onPress: () => console.log('Test 3 pressed.'),
+  },
+];
+
 storiesOf('ui/organisms/ScrollList', module).add(
   'default',
   args => {
@@ -50,6 +68,7 @@ storiesOf('ui/organisms/ScrollList', module).add(
         moreLoading={false}
         isListEnd={false}
         filter={false}
+        actionList={actionList}
         {...args}
       />
     );
@@ -72,6 +91,11 @@ storiesOf('ui/organisms/ScrollList', module).add(
         control: {type: 'boolean'},
       },
       horizontal: {
+        type: 'boolean',
+        defaultValue: false,
+        control: {type: 'boolean'},
+      },
+      verticalAction: {
         type: 'boolean',
         defaultValue: false,
         control: {type: 'boolean'},
