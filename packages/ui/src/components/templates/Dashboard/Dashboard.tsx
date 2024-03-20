@@ -18,7 +18,7 @@
 
 import React from 'react';
 import {Dimensions, StyleSheet, View} from 'react-native';
-import {ScrollView} from '../../atoms';
+import {ScrollView, Text} from '../../atoms';
 import Chart from './chart-type';
 import {
   Data,
@@ -40,6 +40,10 @@ interface DashboardProps {
   style?: any;
   lineList: Line[];
   hideCardBackground?: boolean;
+  /** Formatted last update date */
+  lastUpdate?: Date;
+  translator?: (translationKey: string) => string;
+  displayLastUpdate?: boolean;
 }
 
 const getGraphWidth = (nbGraphInLine: number) => {
@@ -136,6 +140,9 @@ const Dashboard = ({
   style,
   lineList,
   hideCardBackground = false,
+  translator,
+  lastUpdate,
+  displayLastUpdate = false,
 }: DashboardProps) => {
   return (
     <ScrollView style={[styles.container, style]}>
@@ -163,6 +170,11 @@ const Dashboard = ({
           </View>
         );
       })}
+      {displayLastUpdate && lastUpdate != null && (
+        <View style={styles.dateContainer}>
+          <Text>{`${translator('Base_LastUpdate')} : ${lastUpdate}`}</Text>
+        </View>
+      )}
     </ScrollView>
   );
 };
@@ -176,6 +188,10 @@ const styles = StyleSheet.create({
     flexWrap: 'wrap',
     flexDirection: 'row',
     justifyContent: 'space-evenly',
+  },
+  dateContainer: {
+    alignItems: 'center',
+    marginTop: 20,
   },
 });
 

@@ -159,6 +159,7 @@
   "Base_Dashboard_Misconfigured": "Ce tableau de bord est mal configuré, veuillez contacter votre administrateur.",
   "Base_Dashboard_RefreshConfig": "Actualiser le tableau de bord",
   "Base_AssignedToMe": "Assigné à moi",
+  "Base_LastUpdate": "Dernière mise à jour",
   "Base_SliceAction_FetchAttachedFiles": "récupération des fichiers joints",
   "Base_SliceAction_FetchFilesDetails": "récupération des détails du fichier",
   "Base_SliceAction_FetchMetaModule": "récupération des modules",
