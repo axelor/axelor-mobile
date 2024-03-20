@@ -72,7 +72,6 @@ const CustomerParkScreen = ({}) => {
           <CustomerParkHeader
             setCustomer={setCustomer}
             customer={customer}
-            inService={selectedStatus[0]?.key}
             parentPlace={parentPlace}
             setParentPlace={setParentPlace}
           />

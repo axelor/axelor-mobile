@@ -23,7 +23,6 @@ import {ClientProspectSearchBar, PlaceEquipmentSearchBar} from '../../atoms';
 const CustomerParkHeader = ({
   setCustomer,
   customer,
-  inService,
   parentPlace,
   setParentPlace,
 }) => {
@@ -38,7 +37,6 @@ const CustomerParkHeader = ({
       />
       <PlaceEquipmentSearchBar
         defaultValue={parentPlace}
-        inService={inService}
         customerId={customer?.id}
         onChange={e => {
           setParentPlace(e);

@@ -18,7 +18,7 @@
 
 import React from 'react';
 import {StyleSheet, View} from 'react-native';
-import {CardIconButton, useThemeColor} from '@axelor/aos-mobile-ui';
+import {InfoButton, useThemeColor} from '@axelor/aos-mobile-ui';
 import {EquipmentCard} from '../../molecules';
 
 interface EquipmentActionCardProps {
@@ -49,25 +49,28 @@ const EquipmentActionCard = ({
         inService={inService}
       />
       <View style={styles.flexOne}>
-        <CardIconButton
+        <InfoButton
           style={styles.flexOne}
           iconName="front"
-          iconColor={Colors.successColor.foreground}
+          iconColor={Colors.secondaryColor_dark.background}
           onPress={() => {}}
+          indication=""
         />
       </View>
       <View style={styles.flexOne}>
-        <CardIconButton
+        <InfoButton
           style={styles.flexOne}
           iconName="pencil-fill"
-          iconColor={Colors.primaryColor.foreground}
+          iconColor={Colors.secondaryColor_dark.background}
           onPress={() => {}}
+          indication=""
         />
-        <CardIconButton
+        <InfoButton
           style={styles.flexOne}
           iconName="archive-fill"
           iconColor={Colors.errorColor.background}
           onPress={() => {}}
+          indication=""
         />
       </View>
     </View>

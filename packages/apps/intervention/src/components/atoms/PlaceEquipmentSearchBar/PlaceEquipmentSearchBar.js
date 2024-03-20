@@ -57,12 +57,11 @@ const PlaceEquipmentSearchBar = ({
         searchPlaceEquipment({
           page,
           searchValue,
-          inService: inService,
           partnerId: customerId,
         }),
       );
     },
-    [customerId, dispatch, inService],
+    [customerId, dispatch],
   );
 
   return (
