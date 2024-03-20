@@ -24,11 +24,11 @@ import {
   useTranslator,
 } from '@axelor/aos-mobile-core';
 import {AutoCompleteSearch} from '@axelor/aos-mobile-ui';
-import {searchEquipmentFamily} from '../../../features/equipmentFamilySlice';
+import {searchContract} from '../../../features/contractSlice';
 
-const EquipmentFamilySearchBar = ({
+const ContractSearchBar = ({
   style = null,
-  title = 'Intervention_EquipmentFamily',
+  title = 'Intervention_Contract',
   defaultValue = null,
   onChange = () => {},
   readonly = false,
@@ -42,12 +42,13 @@ const EquipmentFamilySearchBar = ({
   const I18n = useTranslator();
   const dispatch = useDispatch();
 
-  const {loadingList, moreLoading, isListEnd, equipmentFamilyList} =
-    useSelector(state => state.intervention_equipmentFamily);
+  const {loadingList, moreLoading, isListEnd, contractList} = useSelector(
+    state => state.intervention_contract,
+  );
 
-  const searchEquipmentFamilyAPI = useCallback(
+  const searchContractAPI = useCallback(
     ({page = 0}) => {
-      dispatch(searchEquipmentFamily({page}));
+      dispatch(searchContract({page}));
     },
     [dispatch],
   );
@@ -55,12 +56,12 @@ const EquipmentFamilySearchBar = ({
   return (
     <AutoCompleteSearch
       title={showTitle && I18n.t(title)}
-      objectList={equipmentFamilyList}
+      objectList={contractList}
       value={defaultValue}
       required={required}
       readonly={readonly}
       onChangeValue={onChange}
-      fetchData={searchEquipmentFamilyAPI}
+      fetchData={searchContractAPI}
       displayValue={displayItemName}
       placeholder={I18n.t(title)}
       showDetailsPopup={showDetailsPopup}
@@ -75,4 +76,4 @@ const EquipmentFamilySearchBar = ({
   );
 };
 
-export default EquipmentFamilySearchBar;
+export default ContractSearchBar;

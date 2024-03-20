@@ -16,13 +16,14 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-export {searchClientAndProspect} from './clientAndProspectSlice';
-export {searchContract} from './contractSlice';
-export {searchEquipmentFamily} from './equipmentFamilySlice';
-export {
-  getEquipmentById,
-  searchEquipment,
-  searchPlaceEquipment,
-} from './equipmentSlice';
-export {fetchIntervention, fetchInterventionById} from './interventionSlice';
-export {fetchQuestion, fetchRange} from './questionSlice';
+import {createStandardSearch} from '@axelor/aos-mobile-core';
+
+export async function searchContract({page}) {
+  return createStandardSearch({
+    model: 'com.axelor.apps.contract.db.Contract',
+    criteria: [],
+    fieldKey: 'intervention_contract',
+    sortKey: 'intervention_econtract',
+    page: page,
+  });
+}

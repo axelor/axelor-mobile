@@ -35,6 +35,7 @@
   "Intervention_ScheduleOfOperation": "Schedule of operation",
   "Intervention_SpecificAccessSchedule": "Specific access schedule",
   "Intervention_Comments": "Comments",
+  "Intervention_Contract": "Contract",
   "Intervention_SliceAction_FetchIntervention": "fetch intervention",
   "Intervention_SliceAction_SearchEquipment": "search equipments",
   "Intervention_SliceAction_SearchClientAndProspect": "search clients and prospects",
@@ -43,5 +44,6 @@
   "Intervention_SliceAction_FetchRange": "fetch range",
   "Intervention_SliceAction_FetchQuestion": "fetch question",
   "Intervention_SliceAction_GetEquipmentById": "get element by id",
-  "Intervention_SliceAction_SearchEquipmentFamily": "search on equipment family"
+  "Intervention_SliceAction_SearchEquipmentFamily": "search on equipment family",
+  "Intervention_SliceAction_SearchContract": "search contract"
 }

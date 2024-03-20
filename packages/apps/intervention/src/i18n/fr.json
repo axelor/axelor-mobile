@@ -35,6 +35,7 @@
   "Intervention_ScheduleOfOperation": "Calendrier de fonctionnement",
   "Intervention_SpecificAccessSchedule": "Horaire d'accès spécifique",
   "Intervention_Comments": "Commentaires",
+  "Intervention_Contract": "Contrat",
   "Intervention_SliceAction_FetchIntervention": "récupération des interventions",
   "Intervention_SliceAction_SearchEquipment": "recherche sur les équipements",
   "Intervention_SliceAction_SearchClientAndProspect": "recherche sur les clients et prospects",
@@ -43,5 +44,6 @@
   "Intervention_SliceAction_FetchRange": "récupération des gammes",
   "Intervention_SliceAction_FetchQuestion": "récupération des questions",
   "Intervention_SliceAction_GetEquipmentById": "récupération de l'équipement par id",
-  "Intervention_SliceAction_SearchEquipmentFamily": "recherche sur les familles d'équipement"
+  "Intervention_SliceAction_SearchEquipmentFamily": "recherche sur les familles d'équipement",
+  "Intervention_SliceAction_SearchContract": "recherche sur les contrats"
 }

@@ -19,6 +19,7 @@
 import {FormConfigs} from '@axelor/aos-mobile-core';
 import {
   ClientProspectSearchBar,
+  ContractSearchBar,
   EquipmentFamilySearchBar,
   //PlaceEquipmentSearchBar,
   TypePicker,
@@ -42,7 +43,6 @@ export const intervention_formsRegister: FormConfigs = {
         titleKey: 'Intervention_ParentPlace',
         type: 'object',
         widget: 'custom',
-        required: true,
         customComponent: PlaceEquipmentSearchBar,
         options: {
           showTitle: true,
@@ -99,6 +99,12 @@ export const intervention_formsRegister: FormConfigs = {
         titleKey: 'Intervention_SpecificAccessSchedule',
         type: 'string',
         widget: 'default',
+      },
+      contract: {
+        titleKey: 'Intervention_Contract',
+        type: 'object',
+        widget: 'custom',
+        customComponent: ContractSearchBar,
       },
       comments: {
         titleKey: 'Intervention_Comments',

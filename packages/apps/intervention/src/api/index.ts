@@ -17,6 +17,7 @@
  */
 
 export {searchClientAndProspect as searchClientAndProspectApi} from './client-and-prospect-api';
+export {searchContract as searchContractApi} from './contract-api';
 export {
   getEquipmentById as getEquipmentByIdApi,
   searchEquipment as searchEquipmentApi,
