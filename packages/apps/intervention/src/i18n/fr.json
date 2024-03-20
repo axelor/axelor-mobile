@@ -25,6 +25,7 @@
   "Intervention_Type": "Type",
   "Intervention_Description": "Description",
   "Intervention_OnCallManagement": "On-call management",
+  "Intervention_TimerFormat": "ddj HHhmm",
   "Intervention_SliceAction_FetchIntervention": "récupération des interventions",
   "Intervention_SliceAction_SearchEquipment": "recherche sur les équipements",
   "Intervention_SliceAction_SearchClientAndProspect": "recherche sur les clients et prospects",

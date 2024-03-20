@@ -16,6 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+import {StopwatchType} from '@axelor/aos-mobile-core';
 import {Color, ThemeColors} from '@axelor/aos-mobile-ui';
 
 class InterventionType {
@@ -82,6 +83,24 @@ class InterventionType {
         key: statusValue,
       };
     });
+  };
+
+  static getStopwatchStatus = (status: number): number => {
+    switch (status) {
+      case this.status.Planned:
+        return StopwatchType.status.Ready;
+      case this.status.Started:
+        return StopwatchType.status.InProgress;
+      case this.status.Suspended:
+        return StopwatchType.status.Paused;
+      case this.status.Finished:
+        return StopwatchType.status.Finished;
+      default:
+        console.warn(
+          `Status provided with value ${status} is not supported by Intervention.`,
+        );
+        return null;
+    }
   };
 }
 

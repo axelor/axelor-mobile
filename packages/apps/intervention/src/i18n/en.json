@@ -25,6 +25,7 @@
   "Intervention_Type": "Type",
   "Intervention_Description": "Description",
   "Intervention_OnCallManagement": "Gestion des astreintes",
+  "Intervention_TimerFormat": "ddd HHhmm",
   "Intervention_SliceAction_FetchIntervention": "fetch intervention",
   "Intervention_SliceAction_SearchEquipment": "search equipments",
   "Intervention_SliceAction_SearchClientAndProspect": "search clients and prospects",

@@ -16,18 +16,54 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import React from 'react';
+import React, {useCallback, useState} from 'react';
 import {StyleSheet, View} from 'react-native';
-import {useSelector} from '@axelor/aos-mobile-core';
+import {
+  calculateDiff,
+  Stopwatch,
+  useSelector,
+  useTranslator,
+} from '@axelor/aos-mobile-core';
 import {HeaderContainer, ScrollView} from '@axelor/aos-mobile-ui';
 import {GtCard, InterventionHeader} from '../../molecules';
 import {DropdownCards} from '../../organisms';
 import {Intervention} from '../../../types';
 
+const NUMBER_MILLISECONDS_IN_SECOND = 1000;
+
 const GeneralInformationView = ({}) => {
+  const I18n = useTranslator();
+
   const {intervention} = useSelector(
     (state: any) => state.intervention_intervention,
   );
+
+  const [duration, setDuration] = useState(
+    intervention.totalDuration * NUMBER_MILLISECONDS_IN_SECOND,
+  );
+  const [lastStart, setLastStart] = useState(intervention.lastStartDateTime);
+
+  const getDuration = useCallback(() => {
+    if (intervention.statusSelect === Intervention.status.Started) {
+      return duration + calculateDiff(lastStart, new Date());
+    }
+    return duration;
+  }, [duration, intervention.statusSelect, lastStart]);
+
+  const handlePlay = useCallback(() => {
+    console.log('Play button pressed.');
+    const now = new Date();
+    setLastStart(now.toISOString());
+  }, []);
+
+  const handlePause = useCallback(() => {
+    console.log('Pause button pressed.');
+    setDuration(current => current + calculateDiff(lastStart, new Date()));
+  }, [lastStart]);
+
+  const handleStop = useCallback(() => {
+    console.log('Stop button pressed.');
+  }, []);
 
   return (
     <View>
@@ -53,6 +89,17 @@ const GeneralInformationView = ({}) => {
           gtStatus={Intervention.status.Finished}
         />
         <DropdownCards intervention={intervention} />
+        <Stopwatch
+          style={styles.stopwatch}
+          startTime={getDuration()}
+          status={Intervention.getStopwatchStatus(intervention.statusSelect)}
+          timerFormat={I18n.t('Intervention_TimerFormat')}
+          onPlay={handlePlay}
+          onPause={handlePause}
+          onStop={handleStop}
+          useObjectStatus
+          hideCancel
+        />
       </ScrollView>
     </View>
   );
@@ -64,6 +111,10 @@ const styles = StyleSheet.create({
   },
   dropdownCardTitle: {
     fontWeight: 'bold',
+  },
+  stopwatch: {
+    marginTop: 30,
+    marginVertical: 0,
   },
 });
 
