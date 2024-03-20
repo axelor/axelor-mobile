@@ -1,0 +1,47 @@
+{
+  "useState": {
+    "prefix": "ust",
+    "body": ["const [$1, set${1/(.*)/${1:/capitalize}/}] = useState($2);"],
+    "description": "React useState() hook"
+  },
+  "useEffect": {
+    "prefix": "uef",
+    "body": ["useEffect(() => {", "\t$1", "}, [$2]);"],
+    "description": "React useEffect() hook"
+  },
+  "useCallback": {
+    "prefix": "ucb",
+    "body": ["const $1 = useCallback(($2) => {", "\t\t$3", "\t},[$4]);"],
+    "description": "React useCallback() hook"
+  },
+  "useMemo": {
+    "prefix": "umo",
+    "body": ["const $1 = useMemo(() => $2, [$3]);"],
+    "description": "React useMemo() hook"
+  },
+  "useRef": {
+    "prefix": "urf",
+    "body": ["const $1 = useRef($2);"],
+    "description": "React useRef() hook"
+  },
+  "useSelector": {
+    "prefix": "uss",
+    "body": ["const {$1} = useSelector((state: any) => state.$2);"],
+    "description": "Redux useSelector() hook"
+  },
+  "useDispatch": {
+    "prefix": "usdf",
+    "body": ["const dispatch = useDispatch();"],
+    "description": "Redux useDispatch() hook"
+  },
+  "useThemeColor": {
+    "prefix": "utc",
+    "body": ["const Colors = useThemeColor();"],
+    "description": "UI useThemeColor() hook"
+  },
+  "useTranslator": {
+    "prefix": "utr",
+    "body": ["const I18n = useTranslator();"],
+    "description": "Core useTranslator() hook"
+  }
+}
