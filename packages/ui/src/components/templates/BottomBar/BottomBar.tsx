@@ -36,7 +36,7 @@ const BottomBar = ({
   itemSize?: number;
 }) => {
   const [selectedKey, setSelectedKey] = useState<string>();
-  const [viewHeight, setViewHeight] = useState<number>(WINDOW_HEIGHT * 0.75);
+  const [viewHeight, setViewHeight] = useState<number>(WINDOW_HEIGHT * 0.8);
 
   const {headerHeight} = useConfig();
 

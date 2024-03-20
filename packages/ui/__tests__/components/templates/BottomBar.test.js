@@ -19,7 +19,14 @@
 import React from 'react';
 import {View} from 'react-native';
 import {shallow} from 'enzyme';
-import {BottomBar, Card, Text, checkNullString} from '@axelor/aos-mobile-ui';
+import {
+  BottomBar,
+  Button,
+  Card,
+  NumberBubble,
+  Text,
+  checkNullString,
+} from '@axelor/aos-mobile-ui';
 import {getVisibleItems} from '../../../src/components/templates/BottomBar/display.helper';
 import {getDefaultThemeColors, getGlobalStyles} from '../../tools';
 
@@ -104,16 +111,16 @@ describe('PieChart Component', () => {
 
       const barItemWrapper = wrapper.find('BarItem').at(index).dive();
 
-      expect(barItemWrapper.find('Button').exists()).toBe(true);
-      expect(barItemWrapper.find('Button').props()).toMatchObject({
+      expect(barItemWrapper.find(Button).exists()).toBe(true);
+      expect(barItemWrapper.find(Button).props()).toMatchObject({
         iconName: item.iconName,
         color: item.color ?? Colors.primaryColor,
         disabled: item.disabled,
       });
 
       if (item.indicator > 0) {
-        expect(barItemWrapper.find('NumberBubble').exists()).toBe(true);
-        expect(barItemWrapper.find('NumberBubble').props()).toMatchObject({
+        expect(barItemWrapper.find(NumberBubble).exists()).toBe(true);
+        expect(barItemWrapper.find(NumberBubble).props()).toMatchObject({
           number: item.indicator,
           color: item.color ?? Colors.primaryColor,
           isNeutralBackground: true,
@@ -121,8 +128,8 @@ describe('PieChart Component', () => {
       }
 
       if (!checkNullString(item.title)) {
-        expect(barItemWrapper.find('Text').exists()).toBe(true);
-        expect(barItemWrapper.find('Text').prop('children')).toBe(item.title);
+        expect(barItemWrapper.find(Text).exists()).toBe(true);
+        expect(barItemWrapper.find(Text).prop('children')).toBe(item.title);
       }
     });
   });
@@ -132,14 +139,14 @@ describe('PieChart Component', () => {
     const visibleItems = getVisibleItems(props.items);
 
     wrapper.find('BarItem').at(1).simulate('press');
-    expect(
-      wrapper.find('ScrollView').contains(visibleItems[1].viewComponent),
-    ).toBe(true);
+    expect(wrapper.find(View).contains(visibleItems[1].viewComponent)).toBe(
+      true,
+    );
 
     wrapper.find('BarItem').at(3).simulate('press');
-    expect(
-      wrapper.find('ScrollView').contains(visibleItems[3].viewComponent),
-    ).toBe(true);
+    expect(wrapper.find(View).contains(visibleItems[3].viewComponent)).toBe(
+      true,
+    );
   });
 
   it('should apply custom style when provided', () => {
