@@ -18,8 +18,8 @@
 
 import React, {useMemo} from 'react';
 import {Dimensions, StyleSheet, View} from 'react-native';
-import {Color, useThemeColor} from '@axelor/aos-mobile-ui/src/theme';
-import {Text} from '@axelor/aos-mobile-ui/src/components/atoms';
+import {Color, Text, useThemeColor} from '@axelor/aos-mobile-ui';
+import {HeaderBandHelper} from '../../../header';
 
 interface HeaderBandProps {
   color: Color;
@@ -55,7 +55,7 @@ const getStyles = (color: Color) =>
       backgroundColor: color.background_light,
       justifyContent: 'center',
       alignItems: 'center',
-      height: 24,
+      height: HeaderBandHelper.bandHeight,
     },
     text: {
       maxWidth: '80%',
