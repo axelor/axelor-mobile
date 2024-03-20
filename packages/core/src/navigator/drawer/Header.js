@@ -18,12 +18,17 @@
 
 import React, {useCallback, useEffect, useMemo, useRef, useState} from 'react';
 import {Dimensions, Platform, StyleSheet, View} from 'react-native';
-import {Text, useThemeColor} from '@axelor/aos-mobile-ui';
+import {Text, useConfig, useThemeColor} from '@axelor/aos-mobile-ui';
 import DrawerToggleButton from './DrawerToggleButton';
 import BackIcon from './BackIcon';
 import {useTranslator} from '../../i18n';
 import {HeaderOptionsMenu} from '../../components';
-import {headerActionsProvider, useHeaderActions} from '../../header';
+import {
+  HeaderBandHelper,
+  headerActionsProvider,
+  useHeaderActions,
+  useHeaderBand,
+} from '../../header';
 
 const TIME_BEFORE_RETRY = 500;
 
@@ -31,11 +36,27 @@ const Header = ({mainScreen, title, actionID = null, shadedHeader = true}) => {
   const Colors = useThemeColor();
   const I18n = useTranslator();
 
+  const {setHeaderHeight} = useConfig();
+  const {allBands} = useHeaderBand();
+
   let timeOutRequestCall = useRef();
 
   const {headers} = useHeaderActions(actionID);
 
   const [options, setOptions] = useState();
+  const [containerHeight, setContainerHeight] = useState();
+
+  const visibleBands = useMemo(() => {
+    return HeaderBandHelper.filterBands(allBands)?.length ?? 0;
+  }, [allBands]);
+
+  useEffect(() => {
+    const height = containerHeight + visibleBands * HeaderBandHelper.bandHeight;
+
+    if (!isNaN(height)) {
+      setHeaderHeight(height);
+    }
+  }, [visibleBands, containerHeight, setHeaderHeight]);
 
   useEffect(() => {
     setOptions(headers);
@@ -57,7 +78,12 @@ const Header = ({mainScreen, title, actionID = null, shadedHeader = true}) => {
   const styles = useMemo(() => getHeaderStyles(Colors), [Colors]);
 
   return (
-    <View style={[styles.header, shadedHeader ? styles.shadedHeader : null]}>
+    <View
+      onLayout={event => {
+        const {height} = event.nativeEvent.layout;
+        setContainerHeight(height);
+      }}
+      style={[styles.header, shadedHeader ? styles.shadedHeader : null]}>
       <View style={styles.options}>
         {mainScreen ? (
           <DrawerToggleButton tintColor={Colors.primaryColor.background} />

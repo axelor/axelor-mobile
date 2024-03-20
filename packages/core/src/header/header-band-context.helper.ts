@@ -19,6 +19,7 @@
 import {HeaderBandItem} from './types';
 
 export class HeaderBandHelper {
+  static bandHeight = 24;
   static filterBands = (allBands: HeaderBandItem[]): HeaderBandItem[] => {
     return allBands
       .filter(band => band.showIf)
