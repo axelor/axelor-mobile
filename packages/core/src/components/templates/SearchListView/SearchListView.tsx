@@ -19,6 +19,7 @@
 import React, {useCallback, useEffect, useMemo, useState} from 'react';
 import {StyleSheet, View} from 'react-native';
 import {
+  ActionType,
   AutoCompleteSearch,
   HeaderContainer,
   ScrollList,
@@ -45,6 +46,8 @@ interface SearchListViewProps {
   expandableFilter?: boolean;
   headerChildren?: any;
   renderListItem: (item: any) => any;
+  actionList?: ActionType[];
+  verticalActions?: boolean;
 }
 
 const SearchListView = ({
@@ -64,6 +67,8 @@ const SearchListView = ({
   expandableFilter,
   headerChildren,
   renderListItem,
+  actionList,
+  verticalActions,
 }: SearchListViewProps) => {
   const I18n = useTranslator();
   const dispatch = useDispatch();
@@ -140,6 +145,8 @@ const SearchListView = ({
         moreLoading={moreLoading}
         isListEnd={isListEnd}
         translator={I18n.t}
+        actionList={actionList}
+        verticalActions={verticalActions}
       />
     </View>
   );

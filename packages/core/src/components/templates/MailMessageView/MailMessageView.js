@@ -50,7 +50,12 @@ import {MailMessageType} from '../../../types';
 
 const DEFAULT_BOTTOM_MARGIN = 10;
 
-const MailMessageView = ({model, modelId}) => {
+const MailMessageView = ({
+  model,
+  modelId,
+  actionList = [],
+  verticalActions = true,
+}) => {
   const dispatch = useDispatch();
   const I18n = useTranslator();
   const Colors = useThemeColor();
@@ -253,6 +258,8 @@ const MailMessageView = ({model, modelId}) => {
             moreLoading={moreLoading}
             isListEnd={isListEnd}
             translator={I18n.t}
+            actionList={actionList}
+            verticalActions={verticalActions}
           />
         </View>
         <ChipSelect
