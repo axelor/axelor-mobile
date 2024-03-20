@@ -24,7 +24,11 @@ import {
   SearchListView,
 } from '@axelor/aos-mobile-core';
 import {searchEquipment} from '../../features/equipmentSlice';
-import {CustomerParkHeader, EquipmentActionCard} from '../../components';
+import {
+  ClientProspectSearchBar,
+  EquipmentActionCard,
+  PlaceEquipmentSearchBar,
+} from '../../components';
 import {Equipment} from '../../types';
 
 const CustomerParkScreen = ({}) => {
@@ -36,7 +40,7 @@ const CustomerParkScreen = ({}) => {
   const [parentPlace, setParentPlace] = useState(null);
 
   const {loadingList, moreLoading, isListEnd, equipmentList} = useSelector(
-    state => state.intervention_equipment,
+    (state: any) => state.intervention_equipment,
   );
 
   const sliceFunctionData = useMemo(
@@ -69,12 +73,20 @@ const CustomerParkScreen = ({}) => {
           />
         )}
         headerTopChildren={
-          <CustomerParkHeader
-            setCustomer={setCustomer}
-            customer={customer}
-            parentPlace={parentPlace}
-            setParentPlace={setParentPlace}
-          />
+          <>
+            <ClientProspectSearchBar
+              required={true}
+              defaultValue={customer}
+              onChange={e => {
+                setCustomer(e);
+              }}
+            />
+            <PlaceEquipmentSearchBar
+              defaultValue={parentPlace}
+              customerId={customer?.id}
+              onChange={e => setParentPlace(e)}
+            />
+          </>
         }
         chipComponent={
           <ChipSelect

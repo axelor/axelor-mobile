@@ -30,7 +30,7 @@ const PlaceEquipmentSearchBar = ({
   style = null,
   title = 'Intervention_ParentPlace',
   defaultValue = null,
-  onChange = () => {},
+  onChange = e => {},
   readonly = false,
   required = false,
   showDetailsPopup = true,
@@ -38,7 +38,6 @@ const PlaceEquipmentSearchBar = ({
   oneFilter = false,
   isFocus = false,
   showTitle = false,
-  inService,
   customerId,
 }) => {
   const I18n = useTranslator();

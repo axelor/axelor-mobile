@@ -16,6 +16,5 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-export {default as CustomerParkHeader} from './CustomerParkHeader/CustomerParkHeader';
 export {default as EquipmentCard} from './EquipmentCard/EquipmentCard';
 export {default as InterventionDetailCard} from './InterventionDetailCard/InterventionDetailCard';
