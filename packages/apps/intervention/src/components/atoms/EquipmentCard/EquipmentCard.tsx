@@ -83,6 +83,9 @@ const getStyles = color =>
 
 const styles = StyleSheet.create({
   objectCard: {
+    marginHorizontal: 0,
+    marginRight: 2,
+    marginVertical: 0,
     paddingRight: 10,
   },
 });
