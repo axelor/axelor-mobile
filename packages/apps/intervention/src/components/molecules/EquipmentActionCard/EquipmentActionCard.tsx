@@ -19,7 +19,7 @@
 import React from 'react';
 import {StyleSheet, View} from 'react-native';
 import {InfoButton, useThemeColor} from '@axelor/aos-mobile-ui';
-import {EquipmentCard} from '../../molecules';
+import {EquipmentCard} from '../../atoms';
 
 interface EquipmentActionCardProps {
   sequence: string;
