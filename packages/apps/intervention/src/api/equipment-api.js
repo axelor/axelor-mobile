@@ -83,20 +83,13 @@ export async function searchEquipment({
   });
 }
 
-export async function searchPlaceEquipment({
-  searchValue,
-  page = 0,
-  inService,
-  partnerId,
-  isPlaceEquipment = true,
-}) {
+export async function searchPlaceEquipment({searchValue, page = 0, partnerId}) {
   return createStandardSearch({
     model: 'com.axelor.apps.intervention.db.Equipment',
     criteria: createEquipmentsCriteria({
       searchValue,
-      inService,
       partnerId,
-      isPlaceEquipment,
+      isPlaceEquipment: true,
     }),
     fieldKey: 'intervention_equipment',
     sortKey: 'intervention_equipment',

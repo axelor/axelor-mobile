@@ -34,7 +34,7 @@ class EquipmentType {
     I18n: {t: (key: string) => string},
   ) => {
     return Object.entries(this.status).map(([key, value]) => ({
-      title: I18n.t(`Intervention_Status_${key}`),
+      title: I18n.t(`Intervention_EquipmentStatus_${key}`),
       key: value,
       color: this.getStatusColor(value, Colors),
     }));

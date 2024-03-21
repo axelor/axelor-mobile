@@ -77,14 +77,12 @@ const CustomerParkScreen = ({}) => {
             <ClientProspectSearchBar
               required={true}
               defaultValue={customer}
-              onChange={e => {
-                setCustomer(e);
-              }}
+              onChange={setCustomer}
             />
             <PlaceEquipmentSearchBar
               defaultValue={parentPlace}
               customerId={customer?.id}
-              onChange={e => setParentPlace(e)}
+              onChange={setParentPlace}
             />
           </>
         }

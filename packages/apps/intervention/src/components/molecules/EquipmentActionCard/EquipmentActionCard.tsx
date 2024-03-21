@@ -19,6 +19,7 @@
 import React from 'react';
 import {StyleSheet, View} from 'react-native';
 import {InfoButton, useThemeColor} from '@axelor/aos-mobile-ui';
+import {useTranslator} from '@axelor/aos-mobile-core';
 import {EquipmentCard} from '../../atoms';
 
 interface EquipmentActionCardProps {
@@ -37,6 +38,7 @@ const EquipmentActionCard = ({
   inService,
 }: EquipmentActionCardProps) => {
   const Colors = useThemeColor();
+  const I18n = useTranslator();
 
   return (
     <View style={styles.globalContainer}>
@@ -54,7 +56,7 @@ const EquipmentActionCard = ({
           iconName="front"
           iconColor={Colors.secondaryColor_dark.background}
           onPress={() => {}}
-          indication=""
+          indication={I18n.t('Intervention_Duplicate')}
         />
       </View>
       <View style={styles.flexOne}>
@@ -63,14 +65,14 @@ const EquipmentActionCard = ({
           iconName="pencil-fill"
           iconColor={Colors.secondaryColor_dark.background}
           onPress={() => {}}
-          indication=""
+          indication={I18n.t('Intervention_Edit')}
         />
         <InfoButton
           style={styles.flexOne}
           iconName="archive-fill"
           iconColor={Colors.errorColor.background}
           onPress={() => {}}
-          indication=""
+          indication={I18n.t('Intervention_Archive')}
         />
       </View>
     </View>
