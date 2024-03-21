@@ -28,6 +28,7 @@ interface LabelTextProps {
   title?: string | number;
   value?: string | number;
   size?: number;
+  textSize?: number;
   color?: string;
   iconName?: string;
   onlyOneLine?: boolean;
@@ -40,6 +41,7 @@ const LabelText = ({
   title,
   value,
   size = 12,
+  textSize = 14,
   color,
   iconName = null,
   onlyOneLine = false,
@@ -57,7 +59,7 @@ const LabelText = ({
       {!checkNullString(title) && (
         <Text
           style={[styles.title, textStyle]}
-          fontSize={14}
+          fontSize={textSize}
           numberOfLines={onlyOneLine ? 1 : null}>
           {title}
         </Text>
@@ -65,7 +67,7 @@ const LabelText = ({
       {!checkNullString(value) && (
         <Text
           style={[styles.txtDetails, textStyle]}
-          fontSize={14}
+          fontSize={textSize}
           numberOfLines={onlyOneLine ? 1 : null}>
           {value}
         </Text>
