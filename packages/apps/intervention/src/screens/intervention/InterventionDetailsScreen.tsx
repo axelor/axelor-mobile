@@ -19,7 +19,7 @@
 import React, {useEffect} from 'react';
 import {useDispatch, useSelector} from '@axelor/aos-mobile-core';
 import {BottomBar, Screen, useThemeColor} from '@axelor/aos-mobile-ui';
-import {GeneralInformationView} from '../../components';
+import {GeneralInformationView, SurveyView} from '../../components';
 import {fetchInterventionById} from '../../features/interventionSlice';
 
 const InterventionDetailsScreen = ({route}) => {
@@ -40,6 +40,11 @@ const InterventionDetailsScreen = ({route}) => {
       iconName: 'house',
       viewComponent: <GeneralInformationView />,
       color: Colors.secondaryColor_dark,
+    },
+    {
+      iconName: 'card-checklist',
+      viewComponent: <SurveyView />,
+      color: Colors.progressColor,
     },
   ];
 

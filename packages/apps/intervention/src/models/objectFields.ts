@@ -81,4 +81,24 @@ export const intervention_modelAPI: ObjectFields = {
     partnerSeq: schemaContructor.string(),
     user: schemaContructor.subObject('fullName'),
   }),
+  intervention_question: schemaContructor.object({
+    interventionRange: schemaContructor.subObject().concat(
+      schemaContructor.object({
+        name: schemaContructor.string(),
+        equipment: schemaContructor.subObject('name'),
+      }),
+    ),
+    title: schemaContructor.string(),
+    isAnswered: schemaContructor.boolean(),
+    isConditional: schemaContructor.boolean(),
+    conditionalAnswerValueSet: schemaContructor.subObject(),
+    conditionalInterventionQuestion: schemaContructor.subObject(),
+    isRequired: schemaContructor.boolean(),
+    indicationText: schemaContructor.string(),
+    isPrivate: schemaContructor.boolean(),
+  }),
+  intervention_range: schemaContructor.object({
+    equipment: schemaContructor.subObject('name'),
+    rangeVal: schemaContructor.subObject('title'),
+  }),
 };
