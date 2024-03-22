@@ -36,7 +36,7 @@ const EquipmentFormView = ({navigation, route}) => {
   const updateEquipmentAPI = useCallback(
     (_equipment, dispatch) => {
       dispatch(
-        updateEquipment({
+        (updateEquipment as any)({
           equipment: _equipment,
         }),
       );

@@ -38,7 +38,7 @@ const PlaceEquipmentSearchBar = ({
   oneFilter = false,
   isFocus = false,
   showTitle = false,
-  customerId,
+  customerId = null,
 }) => {
   const I18n = useTranslator();
   const dispatch = useDispatch();

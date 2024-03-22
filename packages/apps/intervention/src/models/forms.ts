@@ -21,7 +21,7 @@ import {
   ClientProspectSearchBar,
   ContractSearchBar,
   EquipmentFamilySearchBar,
-  //PlaceEquipmentSearchBar,
+  PlaceEquipmentSearchBar,
   TypePicker,
 } from '../components';
 
@@ -39,7 +39,7 @@ export const intervention_formsRegister: FormConfigs = {
           showTitle: true,
         },
       },
-      /*parentEquipment: {
+      parentEquipment: {
         titleKey: 'Intervention_ParentPlace',
         type: 'object',
         widget: 'custom',
@@ -47,9 +47,8 @@ export const intervention_formsRegister: FormConfigs = {
         options: {
           showTitle: true,
           inService: null,
-          customerId: null,
         },
-      },*/
+      },
       code: {
         titleKey: 'Intervention_Code',
         type: 'string',
