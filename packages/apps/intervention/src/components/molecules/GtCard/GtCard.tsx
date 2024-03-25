@@ -26,8 +26,8 @@ const DURATION_NEARLY_EXPIRED_IN_HOURS = 24 * 7;
 interface GtCardProps {
   titleKey: string;
   maxDate: string;
-  startDate: string;
   realGt: number;
+  plannedGt: number;
   interventionStatus: number;
   gtStatus: number;
 }
@@ -35,8 +35,8 @@ interface GtCardProps {
 const GtCard = ({
   titleKey,
   maxDate,
-  startDate,
   realGt,
+  plannedGt,
   interventionStatus,
   gtStatus,
 }: GtCardProps) => {
@@ -63,18 +63,13 @@ const GtCard = ({
         } else {
           color = Colors.progressColor;
         }
-      } else {
-        const realDate = new Date(startDate);
-        realDate.setHours(realDate.getHours() + realGt);
-
-        if (_maxDate < realDate) {
-          color = Colors.errorColor;
-        }
+      } else if (realGt > plannedGt) {
+        color = Colors.errorColor;
       }
     }
 
     return getStyles(color.background)?.border;
-  }, [Colors, gtStatus, interventionStatus, maxDate, realGt, startDate]);
+  }, [Colors, gtStatus, interventionStatus, maxDate, plannedGt, realGt]);
 
   return (
     <Card style={[styles.container, borderStyle]}>

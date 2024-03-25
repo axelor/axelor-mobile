@@ -54,10 +54,18 @@ export const intervention_modelAPI: ObjectFields = {
       schemaContructor.object({
         maxGitDateTime: schemaContructor.string(),
         maxGrtDateTime: schemaContructor.string(),
+        realGit: schemaContructor.number(),
+        realGrt: schemaContructor.number(),
         onCallManagement: schemaContructor.boolean(),
       }),
     ),
     description: schemaContructor.string(),
+    contract: schemaContructor.subObject().concat(
+      schemaContructor.object({
+        guaranteedInterventionTime: schemaContructor.number(),
+        guaranteedRecoveryTime: schemaContructor.number(),
+      }),
+    ),
   }),
   intervention_equipment: schemaContructor.object({
     sequence: schemaContructor.string(),

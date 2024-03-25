@@ -74,17 +74,17 @@ const GeneralInformationView = ({}) => {
       <ScrollView style={styles.scrollView}>
         <GtCard
           titleKey={'Intervention_MaxGIT'}
-          maxDate={intervention.customerRequest.maxGitDateTime}
-          startDate={intervention.startDateTime}
-          realGt={intervention.customerRequest.realGit}
+          maxDate={intervention.customerRequest?.maxGitDateTime}
+          realGt={intervention.customerRequest?.realGit}
+          plannedGt={intervention.contract?.guaranteedInterventionTime}
           interventionStatus={intervention.statusSelect}
           gtStatus={Intervention.status.Started}
         />
         <GtCard
           titleKey={'Intervention_MaxGRT'}
-          maxDate={intervention.customerRequest.maxGrtDateTime}
-          startDate={intervention.startDateTime}
-          realGt={intervention.customerRequest.realGrt}
+          maxDate={intervention.customerRequest?.maxGrtDateTime}
+          realGt={intervention.customerRequest?.realGrt}
+          plannedGt={intervention.contract?.guaranteedRecoveryTime}
           interventionStatus={intervention.statusSelect}
           gtStatus={Intervention.status.Finished}
         />
