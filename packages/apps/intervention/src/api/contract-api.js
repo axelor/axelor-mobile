@@ -16,14 +16,37 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import {createStandardSearch} from '@axelor/aos-mobile-core';
+import {
+  createStandardSearch,
+  getSearchCriterias,
+} from '@axelor/aos-mobile-core';
 
-export async function searchContract({page}) {
+const VALIDATED_CONTRACT_STATUS = 3;
+
+const createContractCriteria = ({partnerId, searchValue}) => {
+  const criteria = [
+    getSearchCriterias('intervention_contract', searchValue),
+    {
+      fieldName: 'currentContractVersion.statusSelect',
+      operator: '=',
+      value: VALIDATED_CONTRACT_STATUS,
+    },
+    {
+      fieldName: 'partner.id',
+      operator: '=',
+      value: partnerId,
+    },
+  ];
+
+  return criteria;
+};
+
+export async function searchContract({page, partnerId, searchValue}) {
   return createStandardSearch({
     model: 'com.axelor.apps.contract.db.Contract',
-    criteria: [],
+    criteria: createContractCriteria({partnerId, searchValue}),
     fieldKey: 'intervention_contract',
-    sortKey: 'intervention_econtract',
+    sortKey: 'intervention_contract',
     page: page,
   });
 }

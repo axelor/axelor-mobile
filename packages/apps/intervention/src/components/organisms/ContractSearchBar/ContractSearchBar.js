@@ -38,6 +38,7 @@ const ContractSearchBar = ({
   oneFilter = false,
   isFocus = false,
   showTitle = true,
+  partnerId = null,
 }) => {
   const I18n = useTranslator();
   const dispatch = useDispatch();
@@ -47,10 +48,10 @@ const ContractSearchBar = ({
   );
 
   const searchContractAPI = useCallback(
-    ({page = 0}) => {
-      dispatch(searchContract({page}));
+    ({page = 0, searchValue}) => {
+      dispatch(searchContract({page, partnerId, searchValue}));
     },
-    [dispatch],
+    [dispatch, partnerId],
   );
 
   return (
