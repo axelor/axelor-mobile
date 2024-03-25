@@ -29,6 +29,9 @@ export const intervention_modelAPI: ObjectFields = {
     ),
     sequence: schemaContructor.string(),
     planifStartDateTime: schemaContructor.string(),
+    startDateTime: schemaContructor.string(),
+    totalDuration: schemaContructor.number(),
+    lastStartDateTime: schemaContructor.string(),
     interventionType: schemaContructor.subObject().concat(
       schemaContructor.object({
         name: schemaContructor.string(),
@@ -44,6 +47,23 @@ export const intervention_modelAPI: ObjectFields = {
       schemaContructor.object({
         mobilePhone: schemaContructor.string(),
         fixedPhone: schemaContructor.string(),
+        emailAddress: schemaContructor.subObject('address'),
+      }),
+    ),
+    customerRequest: schemaContructor.subObject().concat(
+      schemaContructor.object({
+        maxGitDateTime: schemaContructor.string(),
+        maxGrtDateTime: schemaContructor.string(),
+        realGit: schemaContructor.number(),
+        realGrt: schemaContructor.number(),
+        onCallManagement: schemaContructor.boolean(),
+      }),
+    ),
+    description: schemaContructor.string(),
+    contract: schemaContructor.subObject().concat(
+      schemaContructor.object({
+        guaranteedInterventionTime: schemaContructor.number(),
+        guaranteedRecoveryTime: schemaContructor.number(),
       }),
     ),
   }),

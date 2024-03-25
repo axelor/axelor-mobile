@@ -164,6 +164,8 @@
   "Base_StartDate": "Date de début",
   "Base_EndDate": "Date de fin",
   "Base_PeriodError": "Attention, la date de début ne peut pas être plus récente que la date de fin.",
+  "Base_Yes": "Oui",
+  "Base_No": "Non",
   "Base_SliceAction_FetchAttachedFiles": "récupération des fichiers joints",
   "Base_SliceAction_FetchFilesDetails": "récupération des détails du fichier",
   "Base_SliceAction_FetchMetaModule": "récupération des modules",
