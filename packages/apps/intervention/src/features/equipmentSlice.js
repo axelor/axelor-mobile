@@ -69,13 +69,19 @@ export const getEquipmentById = createAsyncThunk(
 
 export const updateEquipment = createAsyncThunk(
   'intervention_equipment/updateEquipment',
-  async function (data, {getState}) {
+  async function (data, {getState, dispatch}) {
     return handlerApiCall({
       fetchFunction: _updateEquipment,
       data,
       action: 'Intervention_SliceAction_UpdateEquipment',
       getState,
       responseOptions: {isArrayResponse: false, showToast: true},
+    }).then(() => {
+      dispatch(
+        searchEquipment({
+          partnerId: data?.partnerId,
+        }),
+      );
     });
   },
 );

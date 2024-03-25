@@ -37,6 +37,7 @@ export const intervention_formsRegister: FormConfigs = {
         customComponent: ClientProspectSearchBar,
         options: {
           showTitle: true,
+          readonly: true,
         },
       },
       parentEquipment: {

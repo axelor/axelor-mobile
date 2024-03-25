@@ -38,6 +38,7 @@ const EquipmentFormView = ({navigation, route}) => {
       dispatch(
         (updateEquipment as any)({
           equipment: _equipment,
+          partnerId: _equipment?.partner?.id,
         }),
       );
 
