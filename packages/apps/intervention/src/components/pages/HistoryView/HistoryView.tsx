@@ -16,11 +16,50 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import React from 'react';
-import {Text} from '@axelor/aos-mobile-ui';
+import React, {useMemo} from 'react';
+import {
+  clipboardProvider,
+  SearchListView,
+  useSelector,
+  useTranslator,
+} from '@axelor/aos-mobile-core';
+import {InterventionDetailCard, InterventionHeader} from '../../molecules';
+import {fetchIntervention} from '../../../features/interventionSlice';
+import {Intervention} from '../../../types';
 
 const HistoryView = ({}) => {
-  return <Text>HistoryView</Text>;
+  const I18n = useTranslator();
+
+  const {loading, moreLoading, isListEnd, interventionList, intervention} =
+    useSelector((state: any) => state.intervention_intervention);
+
+  const sliceFunctionData = useMemo(
+    () => ({
+      deliveredPartnerId: intervention.deliveredPartner?.id,
+      statusList: [Intervention.status.Finished],
+    }),
+    [intervention.deliveredPartner?.id],
+  );
+
+  return (
+    <SearchListView
+      list={interventionList}
+      loading={loading}
+      moreLoading={moreLoading}
+      isListEnd={isListEnd}
+      sliceFunction={fetchIntervention}
+      sliceFunctionData={sliceFunctionData}
+      searchPlaceholder={I18n.t('Base_Search')}
+      headerTopChildren={<InterventionHeader intervention={intervention} />}
+      renderListItem={({item}) => (
+        <InterventionDetailCard
+          intervention={item}
+          isCopyCard={true}
+          onPress={() => clipboardProvider.copyToClipboard(item.sequence)}
+        />
+      )}
+    />
+  );
 };
 
 export default HistoryView;
