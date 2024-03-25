@@ -17,6 +17,7 @@
  */
 
 import {
+  createStandardFetch,
   createStandardSearch,
   getEndOfDay,
   getSearchCriterias,
@@ -84,5 +85,13 @@ export async function fetchIntervention({
     fieldKey: 'intervention_intervention',
     sortKey: 'intervention_intervention',
     page,
+  });
+}
+
+export async function fetchInterventionById({interventionId}) {
+  return createStandardFetch({
+    model: 'com.axelor.apps.intervention.db.Intervention',
+    id: interventionId,
+    fieldKey: 'intervention_intervention',
   });
 }
