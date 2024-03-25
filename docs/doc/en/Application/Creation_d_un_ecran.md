@@ -137,6 +137,7 @@ A field is defined by several attributes:
     | 'label'
     | 'password'
     | 'file'
+    | 'signature'
     | 'date'
     | 'checkbox'
     | 'custom';

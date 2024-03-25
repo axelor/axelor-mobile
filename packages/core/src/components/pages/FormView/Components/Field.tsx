@@ -42,7 +42,7 @@ import {
 import {useTranslator} from '../../../../i18n';
 import {useSelector} from '../../../../redux/hooks';
 import {UploadFileInput} from '../../../molecules';
-import {DateInput} from '../../../organisms';
+import {DateInput, SignatureInput} from '../../../organisms';
 import {CustomPasswordInput} from '../Custom';
 
 interface FieldProps {
@@ -163,6 +163,18 @@ const Field = ({
             title={I18n.t(_field.titleKey)}
             defaultValue={value}
             onUpload={handleChange}
+            required={isRequired}
+            readonly={isReadonly}
+            {..._field.options}
+          />
+        );
+      case 'signature':
+        return (
+          <SignatureInput
+            style={fieldStyle}
+            title={I18n.t(_field.titleKey)}
+            defaultValue={value}
+            onChange={handleChange}
             required={isRequired}
             readonly={isReadonly}
             {..._field.options}

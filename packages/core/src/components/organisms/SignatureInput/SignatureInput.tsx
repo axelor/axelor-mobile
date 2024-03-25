@@ -20,7 +20,9 @@ import React, {useCallback, useEffect, useMemo, useRef, useState} from 'react';
 import {Dimensions, StyleSheet, View} from 'react-native';
 import Signature, {SignatureViewRef} from 'react-native-signature-canvas';
 import {
+  checkNullString,
   Icon,
+  Text,
   ThemeColors,
   getCommonStyles,
   useThemeColor,
@@ -33,6 +35,7 @@ import PictureIcon from './PictureIcon';
 
 const SignatureInput = ({
   style,
+  title,
   defaultValue,
   readonly = false,
   required = false,
@@ -45,6 +48,7 @@ const SignatureInput = ({
   iconSize = 25,
 }: {
   style?: any;
+  title?: string;
   defaultValue?: any;
   readonly?: boolean;
   required?: boolean;
@@ -66,8 +70,8 @@ const SignatureInput = ({
   );
 
   useEffect(() => {
-    setEditSignature(defaultValue?.id == null);
-  }, [defaultValue?.id]);
+    setEditSignature(!readonly && defaultValue?.id == null);
+  }, [defaultValue?.id, readonly]);
 
   const canvaStyle = useMemo(
     () => `
@@ -149,86 +153,87 @@ const SignatureInput = ({
   }, []);
 
   return (
-    <View
-      style={[
-        commonStyles.filter,
-        commonStyles.filterAlign,
-        commonStyles.filterSize,
-        styles.container,
-        style,
-      ]}>
-      <View style={styles.signatureContainer}>
-        {!readonly && editSignature ? (
-          <Signature
-            webStyle={canvaStyle}
-            backgroundColor={Colors.screenBackgroundColor}
-            dataURL={returnBase64String ? defaultValue : null}
-            ref={ref}
-            onOK={handleSignature}
-            autoClear={false}
-          />
-        ) : (
-          <AOSImage
-            imageSize={styles.signatureContainer}
-            metaFile={returnBase64String ? null : defaultValue}
-            defaultIconSize={canvaSize * 0.5}
-            enableImageViewer={true}
-            resizeMode="contain"
-          />
-        )}
-      </View>
-      {!readonly && !editSignature ? (
-        <View style={styles.iconContainer}>
-          <Icon
-            name="vector-pen"
-            size={iconSize}
-            touchable={true}
-            onPress={() => setEditSignature(true)}
-            style={styles.icon}
-          />
-        </View>
-      ) : (
-        <View style={styles.iconContainer}>
-          <Icon
-            name="x-lg"
-            size={iconSize}
-            touchable={true}
-            onPress={() => setEditSignature(false)}
-            style={styles.icon}
-          />
-          <View style={styles.icon} />
-          <Icon
-            name="upload"
-            size={iconSize}
-            style={styles.icon}
-            touchable={true}
-            visible={enableFileSelection}
-            onPress={() => handleDocumentSelection(handleUpload)}
-          />
-          {enablePicture && (
-            <PictureIcon
-              style={styles.icon}
-              size={iconSize}
-              cameraKey={cameraKey}
-              onChange={handleUpload}
+    <View style={[styles.container, style]}>
+      {!checkNullString(title) && <Text style={styles.title}>{title}</Text>}
+      <View
+        style={[
+          commonStyles.filter,
+          commonStyles.filterAlign,
+          styles.contentContainer,
+        ]}>
+        <View style={styles.signatureContainer}>
+          {!readonly && editSignature ? (
+            <Signature
+              webStyle={canvaStyle}
+              backgroundColor={Colors.screenBackgroundColor}
+              dataURL={returnBase64String ? defaultValue : null}
+              ref={ref}
+              onOK={handleSignature}
+              autoClear={false}
+            />
+          ) : (
+            <AOSImage
+              imageSize={styles.signatureContainer}
+              metaFile={returnBase64String ? null : defaultValue}
+              defaultIconSize={canvaSize * 0.5}
+              enableImageViewer={true}
+              resizeMode="contain"
             />
           )}
-          <Icon
-            name="eraser"
-            size={iconSize}
-            touchable={true}
-            onPress={handleClear}
-            style={styles.icon}
-          />
-          <Icon
-            name="check-lg"
-            size={iconSize}
-            touchable={true}
-            onPress={handleSave}
-            style={styles.icon}
-          />
         </View>
-      )}
+        {!readonly && !editSignature ? (
+          <View style={styles.iconContainer}>
+            <Icon
+              name="vector-pen"
+              size={iconSize}
+              touchable={true}
+              onPress={() => setEditSignature(true)}
+              style={styles.icon}
+            />
+          </View>
+        ) : (
+          <View style={styles.iconContainer}>
+            <Icon
+              name="x-lg"
+              size={iconSize}
+              touchable={true}
+              onPress={() => setEditSignature(false)}
+              style={styles.icon}
+            />
+            <View style={styles.icon} />
+            <Icon
+              name="upload"
+              size={iconSize}
+              style={styles.icon}
+              touchable={true}
+              visible={enableFileSelection}
+              onPress={() => handleDocumentSelection(handleUpload)}
+            />
+            {enablePicture && (
+              <PictureIcon
+                style={styles.icon}
+                size={iconSize}
+                cameraKey={cameraKey}
+                onChange={handleUpload}
+              />
+            )}
+            <Icon
+              name="eraser"
+              size={iconSize}
+              touchable={true}
+              onPress={handleClear}
+              style={styles.icon}
+            />
+            <Icon
+              name="check-lg"
+              size={iconSize}
+              touchable={true}
+              onPress={handleSave}
+              style={styles.icon}
+            />
+          </View>
+        )}
+      </View>
     </View>
   );
 };
@@ -236,6 +241,10 @@ const SignatureInput = ({
 const getStyles = (Colors: ThemeColors, canvaSize: any, required: boolean) =>
   StyleSheet.create({
     container: {
+      width: '90%',
+      alignSelf: 'center',
+    },
+    contentContainer: {
       height: null,
       paddingVertical: 5,
       paddingHorizontal: 10,
@@ -243,6 +252,7 @@ const getStyles = (Colors: ThemeColors, canvaSize: any, required: boolean) =>
         ? Colors.errorColor.background
         : Colors.secondaryColor.background,
       borderWidth: 1,
+      marginHorizontal: 0,
     },
     signatureContainer: {
       width: canvaSize,
@@ -257,6 +267,9 @@ const getStyles = (Colors: ThemeColors, canvaSize: any, required: boolean) =>
     },
     icon: {
       margin: 5,
+    },
+    title: {
+      marginLeft: 10,
     },
   });
 

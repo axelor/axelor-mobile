@@ -249,8 +249,8 @@ export const getWidget = (_field: DisplayField): Widget => {
     return 'custom';
   }
 
-  if (_field.widget === 'file') {
-    return 'file';
+  if (_field.widget === 'file' || _field.widget === 'signature') {
+    return _field.widget;
   }
 
   if (_field.widget === 'label' && _field.type === 'string') {
