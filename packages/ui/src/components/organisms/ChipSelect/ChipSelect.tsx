@@ -33,7 +33,7 @@ interface Item {
   isActive?: boolean;
   color: Color;
   title: string;
-  key: string | number;
+  key: string | number | boolean;
 }
 
 interface ChipSelectProps {
