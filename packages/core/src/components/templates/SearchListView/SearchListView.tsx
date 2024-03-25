@@ -45,6 +45,7 @@ interface SearchListViewProps {
   chipComponent?: any;
   expandableFilter?: boolean;
   headerChildren?: any;
+  headerTopChildren?: any;
   renderListItem: (item: any) => any;
   actionList?: ActionType[];
   verticalActions?: boolean;
@@ -66,6 +67,7 @@ const SearchListView = ({
   chipComponent,
   expandableFilter,
   headerChildren,
+  headerTopChildren,
   renderListItem,
   actionList,
   verticalActions,
@@ -118,6 +120,7 @@ const SearchListView = ({
   return (
     <View style={styles.container}>
       <HeaderContainer
+        topChildren={headerTopChildren}
         fixedItems={
           <>
             <SearchBar

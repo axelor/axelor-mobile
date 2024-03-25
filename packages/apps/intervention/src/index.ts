@@ -20,6 +20,7 @@ import {Module} from '@axelor/aos-mobile-core';
 import enTranslations from './i18n/en.json';
 import frTranslations from './i18n/fr.json';
 import InterventionScreens from './screens/intervention';
+import EquipmentsScreens from './screens/equipment/';
 import * as interventionReducers from './features';
 import {
   intervention_modelAPI,
@@ -60,9 +61,19 @@ export const InterventionModule: Module = {
       icon: 'clock-history',
       screen: 'InterventionsHistoryScreen',
     },
+    intervention_separator_equipments: {
+      title: 'Intervention_Equipments',
+      separator: true,
+    },
+    intervention_menu_customerPark: {
+      title: 'Intervention_CustomerPark',
+      icon: 'wrench',
+      screen: 'CustomerParkScreen',
+    },
   },
   screens: {
     ...InterventionScreens,
+    ...EquipmentsScreens,
   },
   reducers: {
     ...interventionReducers,
