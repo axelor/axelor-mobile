@@ -33,3 +33,9 @@ export async function fetchDashboardConfigs() {
     url: 'ws/rest/com.axelor.apps.mobilesettings.db.MobileDashboard',
   });
 }
+
+export async function fetchChartById(mobileChartId) {
+  return axiosApiProvider.get({
+    url: `/ws/aos/mobilechart/${mobileChartId}`,
+  });
+}

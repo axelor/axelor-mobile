@@ -17,3 +17,4 @@
  */
 
 export {default as AOPChart} from './AOPChart/AOPChart';
+export {default as RefreshChart} from './RefreshChart/RefreshChart';
