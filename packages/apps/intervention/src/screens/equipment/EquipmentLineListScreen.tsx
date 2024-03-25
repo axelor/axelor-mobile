@@ -16,28 +16,15 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import CustomerParkScreen from './CustomerParkScreen';
-import EquipmentFormView from './EquipmentFormView';
-import EquipmentLineListScreen from './EquipmentLineListScreen';
+import React from 'react';
+import {Screen, Text} from '@axelor/aos-mobile-ui';
 
-export default {
-  CustomerParkScreen: {
-    title: 'Intervention_CustomerPark',
-    component: CustomerParkScreen,
-    options: {
-      shadedHeader: false,
-    },
-  },
-  EquipmentFormView: {
-    title: 'Intervention_Equipment',
-    actionID: 'intervention_equipment_form',
-    component: EquipmentFormView,
-  },
-  EquipmentLineListScreen: {
-    title: 'Intervention_EquipmentLine',
-    component: EquipmentLineListScreen,
-  },
+const EquipmentLineListScreen = ({}) => {
+  return (
+    <Screen removeSpaceOnTop={true}>
+      <Text>test</Text>
+    </Screen>
+  );
 };
 
-export {CustomerParkScreen};
-export {EquipmentFormView};
+export default EquipmentLineListScreen;

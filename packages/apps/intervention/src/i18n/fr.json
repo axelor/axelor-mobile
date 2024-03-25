@@ -38,6 +38,8 @@
   "Intervention_SpecificAccessSchedule": "Horaire d'accès spécifique",
   "Intervention_Comments": "Commentaires",
   "Intervention_Contract": "Contrat",
+  "Intervention_EquipmentLine": "Ligne d'équipement",
+  "Intervention_OpenEquipmentLine": "Ouvrir les lignes d'équipements",
   "Intervention_CreatedOn": "Créée le",
   "Intervention_UpdatedOn": "Mise à jour le",
   "Intervention_CreatedBy": "Créée par",

@@ -38,6 +38,8 @@
   "Intervention_SpecificAccessSchedule": "Specific access schedule",
   "Intervention_Comments": "Comments",
   "Intervention_Contract": "Contract",
+  "Intervention_EquipmentLine": "Equipment line",
+  "Intervention_OpenEquipmentLine": "Open equipment line",
   "Intervention_CreatedOn": "Created on",
   "Intervention_UpdatedOn": "Updated on",
   "Intervention_CreatedBy": "Created by",
