@@ -21,3 +21,4 @@ export {default as ContractSearchBar} from './ContractSearchBar/ContractSearchBa
 export {default as DropdownCards} from './DropdownCards/DropdownCards';
 export {default as EquipmentFamilySearchBar} from './EquipmentFamilySearchBar/EquipmentFamilySearchBar';
 export {default as PlaceEquipmentSearchBar} from './PlaceEquipmentSearchBar/PlaceEquipmentSearchBar';
+export {default as TypePicker} from './TypePicker/TypePicker';

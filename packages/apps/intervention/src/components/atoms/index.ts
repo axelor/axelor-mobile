@@ -19,4 +19,3 @@
 export {default as EquipmentCard} from './EquipmentCard/EquipmentCard';
 export {default as InterventionCard} from './InterventionCard/InterventionCard';
 export {default as QuestionCard} from './QuestionCard/QuestionCard';
-export {default as TypePicker} from './TypePicker/TypePicker';
