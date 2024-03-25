@@ -17,50 +17,38 @@
  */
 
 import React, {useEffect} from 'react';
-import {StyleSheet} from 'react-native';
-import {useThemeColor, Icon} from '@axelor/aos-mobile-ui';
-import {useDispatch} from 'react-redux';
+import {Icon} from '@axelor/aos-mobile-ui';
+import {useDispatch} from '../../../redux/hooks';
 import {enableCamera, useCameraValueByKey} from '../../../features/cameraSlice';
 
 interface PictureIconProps {
+  style?: any;
+  size: number;
   cameraKey: string;
-  disabled?: boolean;
   onChange: (any: any) => void;
 }
 
-const PictureIcon = ({
-  cameraKey,
-  disabled = false,
-  onChange,
-}: PictureIconProps) => {
-  const Colors = useThemeColor();
+const PictureIcon = ({style, size, cameraKey, onChange}: PictureIconProps) => {
   const photo = useCameraValueByKey(cameraKey);
   const dispatch = useDispatch();
 
   useEffect(() => {
     if (photo) {
-      onChange(`data:image/jpeg;base64,${photo}`);
+      onChange(photo);
     }
   }, [onChange, photo]);
 
   return (
     <Icon
-      name="camera"
-      color={Colors.primaryColor.background}
-      size={25}
-      style={styles.icon}
-      touchable={!disabled}
+      name="camera-fill"
+      size={size}
+      style={style}
+      touchable={true}
       onPress={() => {
         dispatch((enableCamera as any)(cameraKey));
       }}
     />
   );
 };
-
-const styles = StyleSheet.create({
-  icon: {
-    margin: 5,
-  },
-});
 
 export default PictureIcon;

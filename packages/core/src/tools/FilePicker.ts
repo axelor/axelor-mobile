@@ -16,27 +16,31 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import DocumentPicker from 'react-native-document-picker';
+import DocumentPicker, {
+  DocumentPickerResponse,
+} from 'react-native-document-picker';
 import RNFS from 'react-native-fs';
 
-export const handleDocumentSelection = async onChange => {
+export const handleDocumentSelection = async (
+  onChange: (file: any) => void,
+  documentTypesAllowed: string = 'allFiles',
+) => {
   try {
-    const document = await DocumentPicker.pick({
+    const file: DocumentPickerResponse = await DocumentPicker.pickSingle({
       presentationStyle: 'fullScreen',
-      allowMultiSelection: false,
-      type: 'image/*',
-    }).then(documentList => {
-      if (documentList == null || documentList.length === 0) {
-        return null;
-      }
-      return documentList[0];
+      type: DocumentPicker.types[documentTypesAllowed],
     });
 
-    if (document == null) {
-      return onChange(null);
-    }
-    const fileData = await RNFS.readFile(document.uri, 'base64');
-    onChange(`data:${document.type};base64,${fileData}`);
+    const base64Data = await RNFS.readFile(file.uri, 'base64');
+
+    onChange({
+      name: file.name,
+      dateTime: new Date().toISOString(),
+      type: file.type,
+      size: file.size,
+      base64: base64Data,
+      fullBase64: `data:${file.type};base64,${base64Data}`,
+    });
   } catch (err) {
     console.warn(err);
   }
