@@ -16,4 +16,6 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+export {clientAndProspectReducer as intervention_clientAndProspect} from './clientAndProspectSlice';
+export {equipmentReducer as intervention_equipment} from './equipmentSlice';
 export {interventionReducer as intervention_intervention} from './interventionSlice';
