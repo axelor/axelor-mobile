@@ -47,4 +47,18 @@ export const intervention_modelAPI: ObjectFields = {
       }),
     ),
   }),
+  intervention_equipment: schemaContructor.object({
+    sequence: schemaContructor.string(),
+    name: schemaContructor.string(),
+    code: schemaContructor.string(),
+    inService: schemaContructor.boolean(),
+    equipmentFamily: schemaContructor.subObject(),
+  }),
+  intervention_partner: schemaContructor.object({
+    simpleFullName: schemaContructor.string(),
+    fullName: schemaContructor.string(),
+    name: schemaContructor.string(),
+    partnerSeq: schemaContructor.string(),
+    user: schemaContructor.subObject('fullName'),
+  }),
 };
