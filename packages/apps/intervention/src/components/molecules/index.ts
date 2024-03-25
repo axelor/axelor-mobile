@@ -16,4 +16,5 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+export {default as EquipmentActionCard} from './EquipmentActionCard/EquipmentActionCard';
 export {default as InterventionDetailCard} from './InterventionDetailCard/InterventionDetailCard';

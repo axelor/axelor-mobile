@@ -17,3 +17,4 @@
  */
 
 export {default as Intervention} from './intervention';
+export {default as Equipment} from './equipment';

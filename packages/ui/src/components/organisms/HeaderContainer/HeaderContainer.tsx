@@ -25,6 +25,7 @@ import {ThemeColors, useThemeColor} from '../../../theme';
 
 interface HeaderContainerProps {
   style?: any;
+  topChildren?: any;
   children?: any;
   fixedItems?: any;
   chipComponent?: any;
@@ -34,6 +35,7 @@ interface HeaderContainerProps {
 
 const HeaderContainer = ({
   style,
+  topChildren,
   children,
   fixedItems = null,
   chipComponent = null,
@@ -59,6 +61,7 @@ const HeaderContainer = ({
 
   return (
     <View style={[styles.container, style]}>
+      {expandableFilter && isVisible && topChildren}
       {fixedItems}
       {expandableFilter && isVisible && children}
       {chipComponent}
