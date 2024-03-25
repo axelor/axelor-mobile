@@ -46,10 +46,11 @@ const QuestionCard = ({
   return (
     <ObjectCard
       style={styles.border}
+      leftContainerFlex={6}
       onPress={onPress}
       upperTexts={{
         items: [
-          {displayText: interventionRange?.name, hideIfNull: true},
+          {displayText: interventionRange?.rangeVal?.title, hideIfNull: true},
           {displayText: interventionRange?.equipment?.name, hideIfNull: true},
           {
             displayText: title,

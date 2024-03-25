@@ -86,6 +86,7 @@ export const intervention_modelAPI: ObjectFields = {
       schemaContructor.object({
         name: schemaContructor.string(),
         equipment: schemaContructor.subObject('name'),
+        rangeVal: schemaContructor.subObject('title'),
       }),
     ),
     title: schemaContructor.string(),
