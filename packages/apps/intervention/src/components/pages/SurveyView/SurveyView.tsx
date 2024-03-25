@@ -63,7 +63,6 @@ const SurveyView = ({}) => {
 
   const questionStatus = useCallback(
     question => {
-      console.log(question);
       return Question.getStatus(
         question,
         questionlist.find(
