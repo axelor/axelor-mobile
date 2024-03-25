@@ -22,6 +22,7 @@ import {
   DateInput,
   filterChip,
   SearchListView,
+  useNavigation,
   useSelector,
   useTranslator,
 } from '@axelor/aos-mobile-core';
@@ -41,6 +42,7 @@ const InterventionsListView = ({
 }: InterventionsListViewProps) => {
   const I18n = useTranslator();
   const Colors = useThemeColor();
+  const navigation = useNavigation();
 
   const {loading, moreLoading, isListEnd, interventionList} = useSelector(
     (state: any) => state.intervention_intervention,
@@ -110,7 +112,11 @@ const InterventionsListView = ({
       renderListItem={({item}) => (
         <InterventionDetailCard
           intervention={item}
-          onPress={() => console.log('Intervention card pressed.')}
+          onPress={() =>
+            navigation.navigate('InterventionDetailsScreen', {
+              interventionId: item.id,
+            })
+          }
         />
       )}
     />

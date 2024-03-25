@@ -21,7 +21,10 @@ import {
   generateInifiniteScrollCases,
   handlerApiCall,
 } from '@axelor/aos-mobile-core';
-import {fetchIntervention as _fetchIntervention} from '../api/intervention-api';
+import {
+  fetchIntervention as _fetchIntervention,
+  fetchInterventionById as _fetchInterventionById,
+} from '../api/intervention-api';
 
 export const fetchIntervention = createAsyncThunk(
   'intervention_intervention/fetchIntervention',
@@ -36,11 +39,27 @@ export const fetchIntervention = createAsyncThunk(
   },
 );
 
+export const fetchInterventionById = createAsyncThunk(
+  'intervention_intervention/fetchInterventionById',
+  async function (data, {getState}) {
+    return handlerApiCall({
+      fetchFunction: _fetchInterventionById,
+      data,
+      action: 'Intervention_SliceAction_FetchInterventionById',
+      getState,
+      responseOptions: {isArrayResponse: false},
+    });
+  },
+);
+
 const initialState = {
   loading: true,
   moreLoading: false,
   isListEnd: false,
   interventionList: [],
+
+  loadingIntervention: true,
+  intervention: {},
 };
 
 const interventionSlice = createSlice({
@@ -52,6 +71,13 @@ const interventionSlice = createSlice({
       moreLoading: 'moreLoading',
       isListEnd: 'isListEnd',
       list: 'interventionList',
+    });
+    builder.addCase(fetchInterventionById.pending, state => {
+      state.loadingIntervention = true;
+    });
+    builder.addCase(fetchInterventionById.fulfilled, (state, action) => {
+      state.loadingIntervention = false;
+      state.intervention = action.payload;
     });
   },
 });
