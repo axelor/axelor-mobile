@@ -24,7 +24,7 @@
   "Intervention_AssignedTo": "Assigned to",
   "Intervention_Type": "Type",
   "Intervention_Description": "Description",
-  "Intervention_OnCallManagement": "Gestion des astreintes",
+  "Intervention_OnCallManagement": "On-call management",
   "Intervention_TimerFormat": "ddd HHhmm",
   "Intervention_SliceAction_FetchIntervention": "fetch intervention",
   "Intervention_SliceAction_SearchEquipment": "search equipments",
