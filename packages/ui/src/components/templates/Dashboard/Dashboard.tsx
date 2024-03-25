@@ -16,9 +16,9 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import React, {ReactElement, useState} from 'react';
+import React, {ReactElement} from 'react';
 import {Dimensions, StyleSheet, View} from 'react-native';
-import {Icon, ScrollView} from '../../atoms';
+import {ScrollView} from '../../atoms';
 import Chart from './chart-type';
 import {
   Data,
@@ -31,8 +31,6 @@ interface Graph {
   dataList: Data[][];
   title?: string;
   customChart?: ReactElement | JSX.Element;
-  chartId?: number;
-  refreshChart?: () => Promise<any>;
 }
 
 interface Line {
@@ -60,14 +58,9 @@ const Dashboard = ({
   lineList,
   hideCardBackground = false,
 }: DashboardProps) => {
-  const [_lineList, setLineList] = useState(lineList);
-
-  console.log('lineList', _lineList);
-  console.log('lineList0', _lineList[0]);
-
   return (
     <ScrollView style={[styles.container, style]}>
-      {_lineList?.map((line, indexLine) => {
+      {lineList?.map((line, indexLine) => {
         const validGraphs = line.graphList.filter(
           graph => graph.dataList?.[0]?.length > 0 || graph.customChart != null,
         );
@@ -76,44 +69,10 @@ const Dashboard = ({
 
         const limitedGraphList = validGraphs?.slice(0, nbGraphInLine);
 
-        const _refreshChart = async (refreshChart, chartId) => {
-          const newGraphData = await refreshChart().then(
-            res => res?.data?.object,
-          );
-
-          //console.log(newGraphData);
-
-          const updatedLineList = lineList.map(_line => {
-            console.log('line', _line);
-            return {
-              ..._line,
-              graphList: _line.graphList.map(graph => {
-                if (graph.chartId === chartId) {
-                  return {
-                    ...graph,
-                    dataList: [newGraphData.valueList],
-                    title: newGraphData.chartName,
-                    type: newGraphData.chartType,
-                  };
-                }
-                return graph;
-              }),
-            };
-          });
-
-          console.log('updatedLineList', updatedLineList);
-          console.log('updatedLineList', updatedLineList[0]);
-
-          setLineList(updatedLineList);
-        };
-
         return (
           <View style={styles.lineContainer} key={indexLine}>
             {limitedGraphList?.map(
-              (
-                {customChart, dataList, title, type, refreshChart, chartId},
-                indexGraph,
-              ) => {
+              ({customChart, dataList, title, type}, indexGraph) => {
                 if (customChart != null) {
                   return React.cloneElement(customChart, {
                     key: indexGraph,
@@ -122,28 +81,14 @@ const Dashboard = ({
                 }
 
                 return (
-                  <View key={indexGraph}>
-                    <ChartRender
-                      dataList={dataList}
-                      title={title}
-                      type={type}
-                      widthGraph={widthGraph}
-                      hideCardBackground={hideCardBackground}
-                    />
-                    <Icon
-                      name="arrow-clockwise"
-                      style={{
-                        position: 'absolute',
-                        right: 10,
-                        top: 10,
-                        zIndex: 1,
-                      }}
-                      touchable={true}
-                      onPress={() => {
-                        _refreshChart(refreshChart, chartId);
-                      }}
-                    />
-                  </View>
+                  <ChartRender
+                    key={indexGraph}
+                    dataList={dataList}
+                    title={title}
+                    type={type}
+                    widthGraph={widthGraph}
+                    hideCardBackground={hideCardBackground}
+                  />
                 );
               },
             )}

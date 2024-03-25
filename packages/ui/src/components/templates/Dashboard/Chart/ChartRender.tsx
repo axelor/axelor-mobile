@@ -70,6 +70,7 @@ const ChartRender = ({
   widthGraph?: number;
   hideCardBackground?: boolean;
 }) => {
+  console.log('dataList', dataList);
   switch (type) {
     case Chart.chartType.bar:
       return BarChartRender(dataList, title, widthGraph, hideCardBackground);

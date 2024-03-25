@@ -22,7 +22,7 @@ import {headerActionsProvider} from '../../header';
 import {useTranslator} from '../../i18n';
 import {createDashboardActionID} from '../display.helpers';
 import {ActivityIndicator} from 'react-native';
-import {fetchChartById, fetchDashboard} from '../api.helpers';
+import {fetchDashboard} from '../api.helpers';
 import {AOPChart} from '../component';
 
 export const DashboardScreen = ({dashboardId, hideCardBackground = false}) => {
@@ -68,10 +68,6 @@ export const DashboardScreen = ({dashboardId, hideCardBackground = false}) => {
     });
   }, [I18n, dashboardId, refresh]);
 
-  const refreshChart = chartId => {
-    return fetchChartById(chartId).then(res => res);
-  };
-
   const dashboardData = useMemo(() => {
     if (!Array.isArray(dashboard?.dashboardLineList)) {
       return [];
@@ -79,8 +75,6 @@ export const DashboardScreen = ({dashboardId, hideCardBackground = false}) => {
 
     return dashboard?.dashboardLineList.map(elt => ({
       graphList: elt.chartList.map(ch => ({
-        chartId: ch.chartId,
-        refreshChart: () => refreshChart(ch.chartId),
         customChart: ch.metaActionName && (
           <AOPChart actionViewName={ch.metaActionName} />
         ),

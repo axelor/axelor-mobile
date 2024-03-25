@@ -35,7 +35,6 @@ export async function fetchDashboardConfigs() {
 }
 
 export async function fetchChartById(mobileChartId) {
-  console.log('-----------------------');
   return axiosApiProvider.get({
     url: `/ws/aos/mobilechart/${mobileChartId}`,
   });
