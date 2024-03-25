@@ -9,6 +9,7 @@
   "Intervention_Status_Planned": "Planned",
   "Intervention_Status_Started": "Started",
   "Intervention_Status_Suspended": "Suspended",
+  "Intervention_Status_Finished": "Finished",
   "Intervention_CustomerPark": "Customer Park",
   "Intervention_Equipments": "Equipments",
   "Intervention_Customer": "Customer",
@@ -18,8 +19,16 @@
   "Intervention_Duplicate": "Duplicate",
   "Intervention_Edit": "Edit",
   "Intervention_Archive": "Archive",
+  "Intervention_MaxGIT": "Max GIT",
+  "Intervention_MaxGRT": "Max GRT",
+  "Intervention_AssignedTo": "Assigned to",
+  "Intervention_Type": "Type",
+  "Intervention_Description": "Description",
+  "Intervention_OnCallManagement": "On-call management",
+  "Intervention_TimerFormat": "ddd HHhmm",
   "Intervention_SliceAction_FetchIntervention": "fetch intervention",
   "Intervention_SliceAction_SearchEquipment": "search equipments",
   "Intervention_SliceAction_SearchClientAndProspect": "search clients and prospects",
-  "Intervention_SliceAction_SearchPlaceEquipment": "search on place equipment"
+  "Intervention_SliceAction_SearchPlaceEquipment": "search on place equipment",
+  "Intervention_SliceAction_FetchInterventionById": "fetch intervention by id"
 }
