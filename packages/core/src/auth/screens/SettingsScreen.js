@@ -16,7 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import React, {useCallback, useState} from 'react';
+import React, {useCallback} from 'react';
 import {StyleSheet, View} from 'react-native';
 import {
   Screen,
@@ -24,9 +24,7 @@ import {
   useConfig,
   useTheme,
   Text,
-  Button,
 } from '@axelor/aos-mobile-ui';
-import {SignatureInput} from '@axelor/aos-mobile-core';
 import {useDispatch, useSelector} from 'react-redux';
 import {useTranslator} from '../../i18n';
 import {
@@ -36,16 +34,13 @@ import {
   useOnline,
 } from '../../features/onlineSlice';
 import {ApiProviderConfig} from '../../apiProviders/config';
+import {TranslationsButton} from '../components';
 
 const SettingsScreen = ({children}) => {
   const I18n = useTranslator();
   const Theme = useTheme();
   const online = useOnline();
   const dispatch = useDispatch();
-  const [readSignature, setReadSignature] = useState(false);
-  const [signatureAnswer, setSignatureAnswer] = useState();
-
-  //  console.log('signatureAnswer', signatureAnswer);
 
   const {
     showFilter,
@@ -120,32 +115,13 @@ const SettingsScreen = ({children}) => {
           onToggle={handleToggleSubtitles}
         />
         {children}
-        <Button
-          title="test"
-          onPress={() => {
-            setReadSignature(true);
-          }}
-        />
-        <SignatureInput
-          readSignature={readSignature}
-          signFile={signatureAnswer}
-          base64Src={signatureAnswer}
-          onValidate={value => setSignatureAnswer(value)}
-          handleReadSignature={() => {
-            setReadSignature(false);
-          }}
-        />
+        <TranslationsButton />
       </View>
       <View style={styles.footerContainer}>
         <Text>{I18n.t('Base_Version', {appVersion: appVersion})}</Text>
         <Text>{`${I18n.t('Base_ConnectedOn')}:`}</Text>
         <Text numberOfLines={1}>{baseUrl}</Text>
       </View>
-      <Button
-        onPress={() => {
-          setReadSignature(true);
-        }}
-      />
     </Screen>
   );
 };
