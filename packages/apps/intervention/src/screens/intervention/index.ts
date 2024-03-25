@@ -19,6 +19,7 @@
 import DayInterventionsScreen from './DayInterventionsScreen';
 import PlannedInterventionsScreen from './PlannedInterventionsScreen';
 import InterventionsHistoryScreen from './InterventionsHistoryScreen';
+import InterventionDetailsScreen from './InterventionDetailsScreen';
 
 export default {
   DayInterventionsScreen: {
@@ -42,8 +43,16 @@ export default {
       shadedHeader: false,
     },
   },
+  InterventionDetailsScreen: {
+    title: 'Intervention_Intervention',
+    component: InterventionDetailsScreen,
+    options: {
+      shadedHeader: false,
+    },
+  },
 };
 
 export {DayInterventionsScreen};
 export {PlannedInterventionsScreen};
 export {InterventionsHistoryScreen};
+export {InterventionDetailsScreen};

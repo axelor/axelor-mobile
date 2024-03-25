@@ -21,4 +21,7 @@ export {
   searchEquipment as searchEquipmentApi,
   searchPlaceEquipment as searchPlaceEquipmentApi,
 } from './equipment-api';
-export {fetchIntervention as fetchInterventionApi} from './intervention-api';
+export {
+  fetchIntervention as fetchInterventionApi,
+  fetchInterventionById as fetchInterventionByIdApi,
+} from './intervention-api';
