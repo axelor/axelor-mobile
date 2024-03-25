@@ -21,6 +21,7 @@ import {useDispatch, useSelector} from '@axelor/aos-mobile-core';
 import {BottomBar, Screen, useThemeColor} from '@axelor/aos-mobile-ui';
 import {GeneralInformationView, SurveyView} from '../../components';
 import {fetchInterventionById} from '../../features/interventionSlice';
+import {Intervention} from '../../types';
 
 const InterventionDetailsScreen = ({route}) => {
   const {interventionId} = route.params;
@@ -45,6 +46,7 @@ const InterventionDetailsScreen = ({route}) => {
       iconName: 'card-checklist',
       viewComponent: <SurveyView />,
       color: Colors.progressColor,
+      disabled: intervention.statusSelect < Intervention.status.Started,
     },
   ];
 
