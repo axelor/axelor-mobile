@@ -16,6 +16,11 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-export {default as GeneralInformationView} from './GeneralInformationView/GeneralInformationView';
-export {default as HistoryView} from './HistoryView/HistoryView';
-export {default as SurveyView} from './SurveyView/SurveyView';
+import React from 'react';
+import {Text} from '@axelor/aos-mobile-ui';
+
+const HistoryView = ({}) => {
+  return <Text>HistoryView</Text>;
+};
+
+export default HistoryView;
