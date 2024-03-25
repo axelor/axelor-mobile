@@ -16,7 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import React, {useCallback, useEffect, useState} from 'react';
+import React, {useCallback, useState} from 'react';
 import {StyleSheet, View} from 'react-native';
 import {useDispatch, useSelector, useTranslator} from '@axelor/aos-mobile-core';
 import {HeaderContainer, ScrollList} from '@axelor/aos-mobile-ui';
@@ -39,15 +39,6 @@ const SurveyView = ({}) => {
     (state: any) => state.intervention_question,
   );
 
-  useEffect(() => {
-    dispatch(
-      (fetchQuestion as any)({
-        interventionId: intervention.id,
-        rangeId: selectedRangeId,
-      }),
-    );
-  }, [dispatch, intervention.id, selectedRangeId]);
-
   const fetchQuestionAPI = useCallback(
     (page = 0) => {
       dispatch(
@@ -61,7 +52,7 @@ const SurveyView = ({}) => {
     [dispatch, intervention.id, selectedRangeId],
   );
 
-  const questionStatus = useCallback(
+  const getQuestionStatus = useCallback(
     question => {
       return Question.getStatus(
         question,
@@ -92,7 +83,7 @@ const SurveyView = ({}) => {
         data={questionlist}
         renderItem={({item}) => (
           <QuestionCard
-            status={questionStatus(item)}
+            status={getQuestionStatus(item)}
             onPress={() => console.log('Question pressed.')}
             {...item}
           />
