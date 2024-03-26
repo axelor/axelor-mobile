@@ -19,10 +19,11 @@
 import React from 'react';
 import {StyleSheet, View} from 'react-native';
 import {InfoButton, useThemeColor} from '@axelor/aos-mobile-ui';
-import {useTranslator} from '@axelor/aos-mobile-core';
+import {useNavigation, useTranslator} from '@axelor/aos-mobile-core';
 import {EquipmentCard} from '../../atoms';
 
 interface EquipmentActionCardProps {
+  idEquipment: number;
   sequence: string;
   name: string;
   code: string;
@@ -31,6 +32,7 @@ interface EquipmentActionCardProps {
 }
 
 const EquipmentActionCard = ({
+  idEquipment,
   sequence,
   name,
   code,
@@ -39,6 +41,7 @@ const EquipmentActionCard = ({
 }: EquipmentActionCardProps) => {
   const Colors = useThemeColor();
   const I18n = useTranslator();
+  const navigation = useNavigation();
 
   return (
     <View style={styles.globalContainer}>
@@ -64,7 +67,11 @@ const EquipmentActionCard = ({
           style={styles.flexOne}
           iconName="pencil-fill"
           iconColor={Colors.secondaryColor_dark.background}
-          onPress={() => {}}
+          onPress={() => {
+            navigation.navigate('EquipmentFormView', {
+              idEquipment,
+            });
+          }}
           indication={I18n.t('Intervention_Edit')}
         />
         <InfoButton

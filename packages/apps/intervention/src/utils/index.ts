@@ -16,14 +16,4 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-export {searchClientAndProspect} from './clientAndProspectSlice';
-export {searchContract} from './contractSlice';
-export {searchEquipmentFamily} from './equipmentFamilySlice';
-export {
-  getEquipmentById,
-  searchEquipment,
-  searchPlaceEquipment,
-  updateEquipment,
-} from './equipmentSlice';
-export {fetchIntervention, fetchInterventionById} from './interventionSlice';
-export {fetchQuestion, fetchRange} from './questionSlice';
+export * from './form-types';

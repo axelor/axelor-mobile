@@ -16,14 +16,12 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-export {searchClientAndProspect} from './clientAndProspectSlice';
-export {searchContract} from './contractSlice';
-export {searchEquipmentFamily} from './equipmentFamilySlice';
-export {
-  getEquipmentById,
-  searchEquipment,
-  searchPlaceEquipment,
-  updateEquipment,
-} from './equipmentSlice';
-export {fetchIntervention, fetchInterventionById} from './interventionSlice';
-export {fetchQuestion, fetchRange} from './questionSlice';
+export interface CustomComponentProps {
+  style?: any;
+  title?: string;
+  defaultValue?: string;
+  onChange?: (any: any) => void;
+  readonly?: boolean;
+  required?: boolean;
+  [key: string]: any;
+}

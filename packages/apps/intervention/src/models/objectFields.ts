@@ -73,6 +73,21 @@ export const intervention_modelAPI: ObjectFields = {
     code: schemaContructor.string(),
     inService: schemaContructor.boolean(),
     equipmentFamily: schemaContructor.subObject(),
+    parentEquipment: schemaContructor.subObject(),
+    partner: schemaContructor.subObject(),
+    typeSelect: schemaContructor.string(),
+    commissioningDate: schemaContructor.string(),
+    customerWarrantyOnPartEndDate: schemaContructor.string(),
+    scheduleOfOperation: schemaContructor.string(),
+    specificAccessSchedule: schemaContructor.string(),
+    comments: schemaContructor.string(),
+    contract: schemaContructor.subObject(),
+  }),
+  intervention_equipmentFamily: schemaContructor.object({
+    name: schemaContructor.string(),
+  }),
+  intervention_contract: schemaContructor.object({
+    name: schemaContructor.string(),
   }),
   intervention_partner: schemaContructor.object({
     simpleFullName: schemaContructor.string(),
