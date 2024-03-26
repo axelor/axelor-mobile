@@ -18,7 +18,7 @@
 
 import React from 'react';
 import {View} from 'react-native';
-import {ObjectCard, Text} from '@axelor/aos-mobile-ui';
+import {ObjectCard, Text, useThemeColor} from '@axelor/aos-mobile-ui';
 
 interface EquipmentLineCardProps {
   style?: any;
@@ -39,13 +39,25 @@ const EquipmentLineCard = ({
   quantity,
   unit,
 }: EquipmentLineCardProps) => {
+  const Colors = useThemeColor();
+
   return (
     <View style={style}>
       <ObjectCard
         style={style}
         showArrow={false}
         sideBadges={{
-          items: [{customComponent: <Text>{`${quantity} ${unit}`}</Text>}],
+          items: [
+            {
+              customComponent: (
+                <Text
+                  writingType="important"
+                  textColor={
+                    Colors.successColor.background
+                  }>{`${quantity} ${unit}`}</Text>
+              ),
+            },
+          ],
         }}
         upperTexts={{
           items: [
