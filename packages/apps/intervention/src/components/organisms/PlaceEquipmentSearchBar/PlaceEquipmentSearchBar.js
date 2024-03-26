@@ -30,7 +30,7 @@ const PlaceEquipmentSearchBar = ({
   style = null,
   title = 'Intervention_ParentPlace',
   defaultValue = null,
-  onChange = e => {},
+  onChange = () => {},
   readonly = false,
   required = false,
   showDetailsPopup = true,

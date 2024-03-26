@@ -22,5 +22,6 @@ export const intervention_sortFields: SortFields = {
   intervention_intervention: ['planifStartDateTime'],
   intervention_contract: ['name'],
   intervention_equipment: ['sequence'],
+  intervention_equipmentFamily: ['name'],
   intervention_question: ['interventionRange.orderSeq', 'orderSeq'],
 };

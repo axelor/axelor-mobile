@@ -46,8 +46,8 @@ const EquipmentFamilySearchBar = ({
     useSelector(state => state.intervention_equipmentFamily);
 
   const searchEquipmentFamilyAPI = useCallback(
-    ({page = 0}) => {
-      dispatch(searchEquipmentFamily({page}));
+    ({page = 0, searchValue}) => {
+      dispatch(searchEquipmentFamily({page, searchValue}));
     },
     [dispatch],
   );

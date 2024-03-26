@@ -30,7 +30,7 @@ const ClientProspectSearchBar = ({
   style = null,
   title = 'Intervention_Customer',
   defaultValue = null,
-  onChange = e => {},
+  onChange = () => {},
   readonly = false,
   required = false,
   showDetailsPopup = true,

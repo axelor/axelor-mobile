@@ -19,6 +19,10 @@
 import {useEffect} from 'react';
 import {headerActionsProvider, useSelector} from '@axelor/aos-mobile-core';
 
+export const useInterventionHeaders = () => {
+  useEquipmentFormActions();
+};
+
 const useEquipmentFormActions = () => {
   const {mobileSettings} = useSelector((state: any) => state.appConfig);
   const {equipment} = useSelector((state: any) => state.intervention_equipment);
@@ -31,8 +35,4 @@ const useEquipmentFormActions = () => {
       attachedFileScreenTitle: equipment?.name,
     });
   }, [mobileSettings, equipment]);
-};
-
-export const useInterventionHeaders = () => {
-  useEquipmentFormActions();
 };

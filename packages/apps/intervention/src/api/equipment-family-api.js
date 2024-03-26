@@ -16,12 +16,15 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import {createStandardSearch} from '@axelor/aos-mobile-core';
+import {
+  createStandardSearch,
+  getSearchCriterias,
+} from '@axelor/aos-mobile-core';
 
-export async function searchEquipmentFamily({page}) {
+export async function searchEquipmentFamily({page = 0, searchValue = null}) {
   return createStandardSearch({
     model: 'com.axelor.apps.intervention.db.EquipmentFamily',
-    criteria: [],
+    criteria: [getSearchCriterias('intervention_equipmentFamily', searchValue)],
     fieldKey: 'intervention_equipmentFamily',
     sortKey: 'intervention_equipmentFamily',
     page: page,
