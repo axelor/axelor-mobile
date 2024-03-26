@@ -21,9 +21,7 @@ import {StyleSheet, View} from 'react-native';
 import {Badge, LabelText, Text, useThemeColor} from '@axelor/aos-mobile-ui';
 import {useTranslator, useSelector} from '@axelor/aos-mobile-core';
 
-interface EquipmentLineHeaderProps {}
-
-const EquipmentLineHeader = ({}: EquipmentLineHeaderProps) => {
+const EquipmentLineHeader = () => {
   const Colors = useThemeColor();
   const I18n = useTranslator();
 

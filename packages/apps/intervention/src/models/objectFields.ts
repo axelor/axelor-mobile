@@ -84,7 +84,6 @@ export const intervention_modelAPI: ObjectFields = {
     contract: schemaContructor.subObject(),
   }),
   intervention_equipmentLine: schemaContructor.object({
-    equipmentLineProductLabel: schemaContructor.string(),
     trackingNumber: schemaContructor.subObject('trackingNumberSeq'),
     product: schemaContructor.subObject().concat(
       schemaContructor.object({

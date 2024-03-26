@@ -17,7 +17,6 @@
  */
 
 import React from 'react';
-import {View} from 'react-native';
 import {ObjectCard, Text, useThemeColor} from '@axelor/aos-mobile-ui';
 
 interface EquipmentLineCardProps {
@@ -42,37 +41,35 @@ const EquipmentLineCard = ({
   const Colors = useThemeColor();
 
   return (
-    <View style={style}>
-      <ObjectCard
-        style={style}
-        showArrow={false}
-        sideBadges={{
-          items: [
-            {
-              customComponent: (
-                <Text
-                  writingType="important"
-                  textColor={
-                    Colors.successColor.background
-                  }>{`${quantity} ${unit}`}</Text>
-              ),
-            },
-          ],
-        }}
-        upperTexts={{
-          items: [
-            {isTitle: true, displayText: productName},
-            {displayText: productCode},
-            {
-              iconName: 'qr-code',
-              indicatorText: trackingNumber,
-              hideIfNull: true,
-            },
-            {displayText: comments, numberOfLines: 2, hideIfNull: true},
-          ],
-        }}
-      />
-    </View>
+    <ObjectCard
+      style={style}
+      showArrow={false}
+      sideBadges={{
+        items: [
+          {
+            customComponent: (
+              <Text
+                writingType="important"
+                textColor={
+                  Colors.successColor.background
+                }>{`${quantity} ${unit}`}</Text>
+            ),
+          },
+        ],
+      }}
+      upperTexts={{
+        items: [
+          {isTitle: true, displayText: productName},
+          {displayText: productCode},
+          {
+            iconName: 'qr-code',
+            indicatorText: trackingNumber,
+            hideIfNull: true,
+          },
+          {displayText: comments, numberOfLines: 2, hideIfNull: true},
+        ],
+      }}
+    />
   );
 };
 
