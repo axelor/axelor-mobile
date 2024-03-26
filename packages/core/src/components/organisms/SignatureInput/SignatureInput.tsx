@@ -30,8 +30,10 @@ import {
 import {handleDocumentSelection} from '../../../tools';
 import {uploadBase64} from '../../../api/metafile-api';
 import {useSelector} from '../../../redux/hooks';
+import {showToastMessage} from '../../../utils';
 import {AOSImage} from '../../organisms';
 import PictureIcon from './PictureIcon';
+import SaveIcon from './SaveIcon';
 
 const SignatureInput = ({
   style,
@@ -65,6 +67,7 @@ const SignatureInput = ({
 
   const {baseUrl, jsessionId, token} = useSelector((state: any) => state.auth);
 
+  const [unsavedChanges, setUnsavedChanges] = useState(false);
   const [editSignature, setEditSignature] = useState<boolean>(
     !readonly && defaultValue?.id == null,
   );
@@ -73,26 +76,14 @@ const SignatureInput = ({
     setEditSignature(!readonly && defaultValue?.id == null);
   }, [defaultValue?.id, readonly]);
 
-  const canvaStyle = useMemo(
-    () => `
-  .m-signature-pad {
-      font-size: 15px;
-      width: 100%;
-      height: 100%;
-      margin-left: 0;
-      margin-top: 0;
-      background-color: ${Colors.screenBackgroundColor};
-  }
-
-  .m-signature-pad--footer {
-    display: none;
-  }`,
-    [Colors],
-  );
-
   const _required = useMemo(
     () => required && defaultValue?.id == null,
     [required, defaultValue],
+  );
+
+  const canvaStyle = useMemo(
+    () => getCanvaStyles(Colors.screenBackgroundColor),
+    [Colors],
   );
 
   const commonStyles = useMemo(() => getCommonStyles(Colors), [Colors]);
@@ -102,9 +93,25 @@ const SignatureInput = ({
     [Colors, canvaSize, _required],
   );
 
+  const handleClose = useCallback(() => {
+    setEditSignature(false);
+    setUnsavedChanges(false);
+  }, []);
+
+  const handleSave = useCallback(() => {
+    ref.current.readSignature();
+  }, []);
+
+  const handleClear = useCallback(() => {
+    ref.current.clearSignature();
+    setUnsavedChanges(false);
+  }, []);
+
   const handleUpload = useCallback(
     async (file: any) => {
       try {
+        handleClose();
+
         if (returnBase64String) {
           onChange(file.fullBase64);
           return;
@@ -118,10 +125,16 @@ const SignatureInput = ({
 
         onChange(response);
       } catch (error) {
-        console.log('Could not upload the file:', error);
+        showToastMessage({
+          type: 'error',
+          position: 'bottom',
+          text1: 'Error',
+          text2: `Could not upload the file.\n${error}`,
+          onPress: () => {},
+        });
       }
     },
-    [baseUrl, jsessionId, onChange, returnBase64String, token],
+    [baseUrl, handleClose, jsessionId, onChange, returnBase64String, token],
   );
 
   const handleSignature = useCallback(
@@ -129,8 +142,9 @@ const SignatureInput = ({
       const [_type, base64] = fullBase64.split(';base64,');
       const type = _type.replace('data:', '');
       const extension = type.split('/')[1];
-      const size =
-        (base64.length * 3) / 4 - (base64.slice(-2) === '==' ? 2 : 1);
+      const numberEquals = [...(base64.slice(-2).matchAll(/[=]/g) ?? [])]
+        .length;
+      const size = (base64.length * 3) / 4 - numberEquals;
 
       handleUpload({
         fullBase64,
@@ -143,14 +157,6 @@ const SignatureInput = ({
     },
     [handleUpload],
   );
-
-  const handleSave = useCallback(() => {
-    ref.current.readSignature();
-  }, []);
-
-  const handleClear = useCallback(() => {
-    ref.current.clearSignature();
-  }, []);
 
   return (
     <View style={[styles.container, style]}>
@@ -169,6 +175,7 @@ const SignatureInput = ({
               dataURL={returnBase64String ? defaultValue : null}
               ref={ref}
               onOK={handleSignature}
+              onBegin={() => setUnsavedChanges(true)}
               autoClear={false}
             />
           ) : (
@@ -197,7 +204,7 @@ const SignatureInput = ({
               name="x-lg"
               size={iconSize}
               touchable={true}
-              onPress={() => setEditSignature(false)}
+              onPress={handleClose}
               style={styles.icon}
             />
             <View style={styles.icon} />
@@ -224,11 +231,10 @@ const SignatureInput = ({
               onPress={handleClear}
               style={styles.icon}
             />
-            <Icon
-              name="check-lg"
-              size={iconSize}
-              touchable={true}
-              onPress={handleSave}
+            <SaveIcon
+              iconSize={iconSize}
+              handleSave={handleSave}
+              unsavedChanges={unsavedChanges}
               style={styles.icon}
             />
           </View>
@@ -272,5 +278,21 @@ const getStyles = (Colors: ThemeColors, canvaSize: any, required: boolean) =>
       marginLeft: 10,
     },
   });
+
+const getCanvaStyles = (backgroundColor: string) => {
+  return `
+  .m-signature-pad {
+      font-size: 15px;
+      width: 100%;
+      height: 100%;
+      margin-left: 0;
+      margin-top: 0;
+      background-color: ${backgroundColor};
+  }
+
+  .m-signature-pad--footer {
+    display: none;
+  }`;
+};
 
 export default SignatureInput;
