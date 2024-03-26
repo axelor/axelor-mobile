@@ -20,6 +20,7 @@ import React, {useMemo} from 'react';
 import {Picker} from '@axelor/aos-mobile-ui';
 import {useTranslator} from '@axelor/aos-mobile-core';
 import {Equipment} from '../../../types';
+import {CustomComponentProps} from '../../../utils';
 
 const TypePicker = ({
   title = 'Intervention_Type',
@@ -27,7 +28,7 @@ const TypePicker = ({
   onChange = () => {},
   readonly = false,
   required = false,
-}) => {
+}: CustomComponentProps) => {
   const I18n = useTranslator();
 
   const equipmentTypeList = useMemo(() => Equipment.generateTypeList(), []);

@@ -25,6 +25,7 @@ import {
 } from '@axelor/aos-mobile-core';
 import {AutoCompleteSearch} from '@axelor/aos-mobile-ui';
 import {searchClientAndProspect} from '../../../features/clientAndProspectSlice';
+import {CustomComponentProps} from '../../../utils';
 
 const ClientProspectSearchBar = ({
   style = null,
@@ -36,18 +37,17 @@ const ClientProspectSearchBar = ({
   showDetailsPopup = true,
   navigate = false,
   oneFilter = false,
-  isFocus = false,
   showTitle = false,
-}) => {
+}: CustomComponentProps) => {
   const I18n = useTranslator();
   const dispatch = useDispatch();
 
   const {loadingList, moreLoading, isListEnd, clientAndProspectList} =
-    useSelector(state => state.intervention_clientAndProspect);
+    useSelector((state: any) => state.intervention_clientAndProspect);
 
   const searchClientAndProspectAPI = useCallback(
     ({page = 0, searchValue}) => {
-      dispatch(searchClientAndProspect({page, searchValue}));
+      dispatch((searchClientAndProspect as any)({page, searchValue}));
     },
     [dispatch],
   );
@@ -69,7 +69,6 @@ const ClientProspectSearchBar = ({
       isListEnd={isListEnd}
       navigate={navigate}
       oneFilter={oneFilter}
-      isFocus={isFocus}
       style={style}
     />
   );

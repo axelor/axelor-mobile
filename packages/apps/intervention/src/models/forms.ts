@@ -16,7 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import {FormConfigs} from '@axelor/aos-mobile-core';
+import {FormConfigs, customComponentOptions} from '@axelor/aos-mobile-core';
 import {
   ClientProspectSearchBar,
   ContractSearchBar,
@@ -24,6 +24,11 @@ import {
   PlaceEquipmentSearchBar,
   TypePicker,
 } from '../components';
+
+const CustomerComponentWrapper = component => {
+  return ({objectState, ...props}: customComponentOptions) =>
+    component({...props, customerId: objectState.partner?.id});
+};
 
 export const intervention_formsRegister: FormConfigs = {
   intervention_equipment: {
@@ -44,10 +49,9 @@ export const intervention_formsRegister: FormConfigs = {
         titleKey: 'Intervention_ParentPlace',
         type: 'object',
         widget: 'custom',
-        customComponent: PlaceEquipmentSearchBar,
+        customComponent: CustomerComponentWrapper(PlaceEquipmentSearchBar),
         options: {
           showTitle: true,
-          inService: null,
         },
       },
       code: {
@@ -104,7 +108,7 @@ export const intervention_formsRegister: FormConfigs = {
         titleKey: 'Intervention_Contract',
         type: 'object',
         widget: 'custom',
-        customComponent: ContractSearchBar,
+        customComponent: CustomerComponentWrapper(ContractSearchBar),
       },
       comments: {
         titleKey: 'Intervention_Comments',

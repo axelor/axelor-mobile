@@ -25,6 +25,7 @@ import {
 } from '@axelor/aos-mobile-core';
 import {AutoCompleteSearch} from '@axelor/aos-mobile-ui';
 import {searchContract} from '../../../features/contractSlice';
+import {CustomComponentProps} from '../../../utils';
 
 const ContractSearchBar = ({
   style = null,
@@ -36,22 +37,23 @@ const ContractSearchBar = ({
   showDetailsPopup = true,
   navigate = false,
   oneFilter = false,
-  isFocus = false,
   showTitle = true,
-  partnerId = null,
-}) => {
+  customerId = null,
+}: CustomComponentProps) => {
   const I18n = useTranslator();
   const dispatch = useDispatch();
 
   const {loadingList, moreLoading, isListEnd, contractList} = useSelector(
-    state => state.intervention_contract,
+    (state: any) => state.intervention_contract,
   );
 
   const searchContractAPI = useCallback(
     ({page = 0, searchValue}) => {
-      dispatch(searchContract({page, partnerId, searchValue}));
+      dispatch(
+        (searchContract as any)({page, partnerId: customerId, searchValue}),
+      );
     },
-    [dispatch, partnerId],
+    [dispatch, customerId],
   );
 
   return (
@@ -71,7 +73,6 @@ const ContractSearchBar = ({
       isListEnd={isListEnd}
       navigate={navigate}
       oneFilter={oneFilter}
-      isFocus={isFocus}
       style={style}
     />
   );

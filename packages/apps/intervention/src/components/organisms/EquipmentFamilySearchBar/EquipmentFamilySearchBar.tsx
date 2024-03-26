@@ -24,11 +24,12 @@ import {
   useTranslator,
 } from '@axelor/aos-mobile-core';
 import {AutoCompleteSearch} from '@axelor/aos-mobile-ui';
-import {searchPlaceEquipment} from '../../../features/equipmentSlice';
+import {searchEquipmentFamily} from '../../../features/equipmentFamilySlice';
+import {CustomComponentProps} from '../../../utils';
 
-const PlaceEquipmentSearchBar = ({
+const EquipmentFamilySearchBar = ({
   style = null,
-  title = 'Intervention_ParentPlace',
+  title = 'Intervention_EquipmentFamily',
   defaultValue = null,
   onChange = () => {},
   readonly = false,
@@ -36,54 +37,41 @@ const PlaceEquipmentSearchBar = ({
   showDetailsPopup = true,
   navigate = false,
   oneFilter = false,
-  isFocus = false,
-  showTitle = false,
-  customerId = null,
-}) => {
+  showTitle = true,
+}: CustomComponentProps) => {
   const I18n = useTranslator();
   const dispatch = useDispatch();
 
-  const {
-    loadingListEquipPlace,
-    moreLoadingEquipPlace,
-    isListEndEquipPlace,
-    equipmentPlaceList,
-  } = useSelector(state => state.intervention_equipment);
+  const {loadingList, moreLoading, isListEnd, equipmentFamilyList} =
+    useSelector((state: any) => state.intervention_equipmentFamily);
 
-  const searchPlaceEquipmentAPI = useCallback(
+  const searchEquipmentFamilyAPI = useCallback(
     ({page = 0, searchValue}) => {
-      dispatch(
-        searchPlaceEquipment({
-          page,
-          searchValue,
-          partnerId: customerId,
-        }),
-      );
+      dispatch((searchEquipmentFamily as any)({page, searchValue}));
     },
-    [customerId, dispatch],
+    [dispatch],
   );
 
   return (
     <AutoCompleteSearch
       title={showTitle && I18n.t(title)}
-      objectList={equipmentPlaceList}
+      objectList={equipmentFamilyList}
       value={defaultValue}
       required={required}
       readonly={readonly}
       onChangeValue={onChange}
-      fetchData={searchPlaceEquipmentAPI}
+      fetchData={searchEquipmentFamilyAPI}
       displayValue={displayItemName}
       placeholder={I18n.t(title)}
       showDetailsPopup={showDetailsPopup}
-      loadingList={loadingListEquipPlace}
-      moreLoading={moreLoadingEquipPlace}
-      isListEnd={isListEndEquipPlace}
+      loadingList={loadingList}
+      moreLoading={moreLoading}
+      isListEnd={isListEnd}
       navigate={navigate}
       oneFilter={oneFilter}
-      isFocus={isFocus}
       style={style}
     />
   );
 };
 
-export default PlaceEquipmentSearchBar;
+export default EquipmentFamilySearchBar;
