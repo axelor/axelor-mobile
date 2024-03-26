@@ -25,21 +25,21 @@ import {
 } from '@axelor/aos-mobile-core';
 import {AutoCompleteSearch} from '@axelor/aos-mobile-ui';
 import {searchPlaceEquipment} from '../../../features/equipmentSlice';
+import {CustomComponentProps} from '../../../utils';
 
 const PlaceEquipmentSearchBar = ({
   style = null,
   title = 'Intervention_ParentPlace',
   defaultValue = null,
-  onChange = e => {},
+  onChange = () => {},
   readonly = false,
   required = false,
   showDetailsPopup = true,
   navigate = false,
   oneFilter = false,
-  isFocus = false,
   showTitle = false,
-  customerId,
-}) => {
+  customerId = null,
+}: CustomComponentProps) => {
   const I18n = useTranslator();
   const dispatch = useDispatch();
 
@@ -48,12 +48,12 @@ const PlaceEquipmentSearchBar = ({
     moreLoadingEquipPlace,
     isListEndEquipPlace,
     equipmentPlaceList,
-  } = useSelector(state => state.intervention_equipment);
+  } = useSelector((state: any) => state.intervention_equipment);
 
   const searchPlaceEquipmentAPI = useCallback(
     ({page = 0, searchValue}) => {
       dispatch(
-        searchPlaceEquipment({
+        (searchPlaceEquipment as any)({
           page,
           searchValue,
           partnerId: customerId,
@@ -80,7 +80,6 @@ const PlaceEquipmentSearchBar = ({
       isListEnd={isListEndEquipPlace}
       navigate={navigate}
       oneFilter={oneFilter}
-      isFocus={isFocus}
       style={style}
     />
   );

@@ -22,8 +22,10 @@ import {
   handlerApiCall,
 } from '@axelor/aos-mobile-core';
 import {
+  getEquipmentById as _getEquipmentById,
   searchEquipment as _searchEquipment,
   searchPlaceEquipment as _searchPlaceEquipment,
+  updateEquipment as _updateEquipment,
 } from '../api/equipment-api';
 
 export const searchEquipment = createAsyncThunk(
@@ -52,6 +54,38 @@ export const searchPlaceEquipment = createAsyncThunk(
   },
 );
 
+export const getEquipmentById = createAsyncThunk(
+  'intervention_equipment/getEquipmentById',
+  async function (data, {getState}) {
+    return handlerApiCall({
+      fetchFunction: _getEquipmentById,
+      data,
+      action: 'Intervention_SliceAction_GetEquipmentById',
+      getState,
+      responseOptions: {isArrayResponse: false},
+    });
+  },
+);
+
+export const updateEquipment = createAsyncThunk(
+  'intervention_equipment/updateEquipment',
+  async function (data, {getState, dispatch}) {
+    return handlerApiCall({
+      fetchFunction: _updateEquipment,
+      data,
+      action: 'Intervention_SliceAction_UpdateEquipment',
+      getState,
+      responseOptions: {isArrayResponse: false, showToast: true},
+    }).then(() => {
+      dispatch(
+        searchEquipment({
+          partnerId: data?.partnerId,
+        }),
+      );
+    });
+  },
+);
+
 const initialState = {
   loadingList: false,
   moreLoading: false,
@@ -62,6 +96,9 @@ const initialState = {
   moreLoadingEquipPlace: false,
   isListEndEquipPlace: false,
   equipmentPlaceList: [],
+
+  loading: false,
+  equipment: {},
 };
 
 const equipmentSlice = createSlice({
@@ -79,6 +116,13 @@ const equipmentSlice = createSlice({
       moreLoading: 'moreLoadingEquipPlace',
       isListEnd: 'isListEndEquipPlace',
       list: 'equipmentPlaceList',
+    });
+    builder.addCase(getEquipmentById.pending, (state, action) => {
+      state.loading = true;
+    });
+    builder.addCase(getEquipmentById.fulfilled, (state, action) => {
+      state.loading = false;
+      state.equipment = action.payload;
     });
   },
 });
