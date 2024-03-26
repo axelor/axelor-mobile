@@ -58,5 +58,6 @@
   "Intervention_SliceAction_UpdateEquipment": "update equipment",
   "Intervention_SliceAction_FetchInterventionNote": "fetch intervention note",
   "Intervention_SliceAction_DeleteInterventionNote": "delete intervention note",
-  "Intervention_SliceAction_FetchInterventionNoteType": "fetch intervention note type"
+  "Intervention_SliceAction_FetchInterventionNoteType": "fetch intervention note type",
+  "Intervention_SliceAction_SearchEquipmentLine": "search on equipment line"
 }

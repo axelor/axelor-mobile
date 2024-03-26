@@ -16,13 +16,54 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import React from 'react';
-import {Screen, Text} from '@axelor/aos-mobile-ui';
+import React, {useCallback} from 'react';
+import {HeaderContainer, Screen, ScrollList} from '@axelor/aos-mobile-ui';
+import {useSelector, useDispatch, useTranslator} from '@axelor/aos-mobile-core';
+import {searchEquipmentLine} from '../../features/equipmentLineSlice';
+import {EquipmentLineCard, EquipmentLineHeader} from '../../components';
 
 const EquipmentLineListScreen = ({}) => {
+  const dispatch = useDispatch();
+  const I18n = useTranslator();
+
+  const {equipment} = useSelector((state: any) => state.intervention_equipment);
+  const {loadingList, moreLoading, isListEnd, equipmentLineList} = useSelector(
+    (state: any) => state.intervention_equipmentLine,
+  );
+
+  const fetchEquipmentLineAPI = useCallback(
+    (page = 0) => {
+      dispatch(
+        (searchEquipmentLine as any)({equipmentId: equipment?.id, page}),
+      );
+    },
+    [dispatch, equipment.id],
+  );
+
   return (
     <Screen removeSpaceOnTop={true}>
-      <Text>test</Text>
+      <HeaderContainer
+        expandableFilter={false}
+        fixedItems={<EquipmentLineHeader />}
+      />
+      <ScrollList
+        loadingList={loadingList}
+        data={equipmentLineList}
+        renderItem={({item}) => (
+          <EquipmentLineCard
+            productName={item.product?.name}
+            productCode={item.product?.code}
+            trackingNumber={item.trackingNumber?.trackingNumberSeq}
+            comments={item.comments}
+            quantity={item.quantity}
+            unit={item.product?.unit?.name}
+          />
+        )}
+        fetchData={fetchEquipmentLineAPI}
+        moreLoading={moreLoading}
+        isListEnd={isListEnd}
+        translator={I18n.t}
+      />
     </Screen>
   );
 };

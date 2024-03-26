@@ -36,6 +36,9 @@ export default {
   EquipmentLineListScreen: {
     title: 'Intervention_EquipmentLine',
     component: EquipmentLineListScreen,
+    options: {
+      shadedHeader: false,
+    },
   },
 };
 

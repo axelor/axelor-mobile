@@ -58,5 +58,6 @@
   "Intervention_SliceAction_UpdateEquipment": "mise à jour de l'équipement",
   "Intervention_SliceAction_FetchInterventionNote": "récupération des notes d'interventions",
   "Intervention_SliceAction_DeleteInterventionNote": "suppression d'une note d'intervention",
-  "Intervention_SliceAction_FetchInterventionNoteType": "récupération des types de note d'intervention"
+  "Intervention_SliceAction_FetchInterventionNoteType": "récupération des types de note d'intervention",
+  "Intervention_SliceAction_SearchEquipmentLine": "recherche sur les lignes d'équipement"
 }
