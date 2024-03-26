@@ -56,7 +56,7 @@ const NoteView = ({}) => {
       sliceFunctionData={sliceFunctionData}
       searchPlaceholder={I18n.t('Base_Search')}
       headerTopChildren={<InterventionHeader intervention={intervention} />}
-      fixedItems={
+      headerChildren={
         <InterventionNoteTypePicker
           onChangeNoteTypeId={setSelectedNoteTypeId}
         />

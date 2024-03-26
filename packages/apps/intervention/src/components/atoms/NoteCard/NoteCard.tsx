@@ -19,7 +19,7 @@
 import React from 'react';
 import {StyleSheet, View} from 'react-native';
 import {formatDate, useTranslator} from '@axelor/aos-mobile-core';
-import {LabelText, ObjectCard} from '@axelor/aos-mobile-ui';
+import {ObjectCard} from '@axelor/aos-mobile-ui';
 
 interface NoteCardProps {
   style?: any;
@@ -28,6 +28,7 @@ interface NoteCardProps {
   createdOn: string;
   updatedOn: string;
   createdBy: any;
+  updatedBy: any;
 }
 
 const NoteCard = ({
@@ -37,6 +38,7 @@ const NoteCard = ({
   createdOn,
   updatedOn,
   createdBy,
+  updatedBy,
 }: NoteCardProps) => {
   const I18n = useTranslator();
 
@@ -51,31 +53,25 @@ const NoteCard = ({
             {
               displayText: metaFile ? metaFile.fileName : description,
               isTitle: true,
+              style: styles.marginBottom,
             },
             {
-              customComponent: (
-                <LabelText
-                  title={I18n.t('Intervention_CreatedOn')}
-                  value={formatDate(createdOn, I18n.t('Base_DateFormat'))}
-                />
-              ),
+              indicatorText: I18n.t('Intervention_CreatedOn'),
+              displayText: formatDate(createdOn, I18n.t('Base_DateFormat')),
             },
             {
-              customComponent: (
-                <LabelText
-                  title={I18n.t('Intervention_UpdatedOn')}
-                  value={formatDate(updatedOn, I18n.t('Base_DateFormat'))}
-                />
-              ),
+              indicatorText: I18n.t('Intervention_UpdatedOn'),
+              displayText: formatDate(updatedOn, I18n.t('Base_DateFormat')),
               hideIf: updatedOn == null,
             },
             {
-              customComponent: (
-                <LabelText
-                  title={I18n.t('Intervention_CreatedBy')}
-                  value={createdBy.fullName}
-                />
-              ),
+              indicatorText: I18n.t('Intervention_CreatedBy'),
+              displayText: createdBy?.fullName,
+            },
+            {
+              indicatorText: I18n.t('Intervention_UpdatedBy'),
+              displayText: updatedBy?.fullName,
+              hideIf: updatedBy?.fullName == null,
             },
           ],
         }}
@@ -86,8 +82,12 @@ const NoteCard = ({
 
 const styles = StyleSheet.create({
   container: {
+    minHeight: 100,
     marginHorizontal: 1,
     marginVertical: 1,
+  },
+  marginBottom: {
+    marginBottom: 5,
   },
 });
 

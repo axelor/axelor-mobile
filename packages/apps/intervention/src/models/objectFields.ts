@@ -125,5 +125,6 @@ export const intervention_modelAPI: ObjectFields = {
     createdOn: schemaContructor.string(),
     updatedOn: schemaContructor.string(),
     createdBy: schemaContructor.subObject(),
+    updatedBy: schemaContructor.subObject(),
   }),
 };

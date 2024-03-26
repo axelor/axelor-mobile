@@ -41,6 +41,7 @@
   "Intervention_CreatedOn": "Created on",
   "Intervention_UpdatedOn": "Updated on",
   "Intervention_CreatedBy": "Created by",
+  "Intervention_UpdatedBy": "Updated by",
   "Intervention_CreateNote": "Create a note",
   "Intervention_SliceAction_FetchIntervention": "fetch intervention",
   "Intervention_SliceAction_SearchEquipment": "search equipments",

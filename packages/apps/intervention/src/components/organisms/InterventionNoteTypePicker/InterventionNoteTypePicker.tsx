@@ -17,7 +17,7 @@
  */
 
 import React, {useEffect} from 'react';
-import {useDispatch, useSelector} from '@axelor/aos-mobile-core';
+import {useDispatch, useSelector, useTranslator} from '@axelor/aos-mobile-core';
 import {Picker} from '@axelor/aos-mobile-ui';
 import {fetchInterventionNoteType} from '../../../features/interventionNoteSlice';
 
@@ -30,6 +30,7 @@ const InterventionNoteTypePicker = ({
   defaultValue = null,
   onChangeNoteTypeId = () => {},
 }: InterventionNoteTypePickerProps) => {
+  const I18n = useTranslator();
   const dispatch = useDispatch();
 
   const {interventionNoteTypeList} = useSelector(
@@ -42,6 +43,7 @@ const InterventionNoteTypePicker = ({
 
   return (
     <Picker
+      title={I18n.t('Intervention_Type')}
       listItems={interventionNoteTypeList}
       labelField="name"
       valueField="id"

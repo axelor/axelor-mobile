@@ -36,6 +36,7 @@ interface NoteContent {
   createdOn: string;
   updatedOn: string;
   createdBy: any;
+  updatedBy: any;
 }
 
 interface NoteDetailCardProps {
