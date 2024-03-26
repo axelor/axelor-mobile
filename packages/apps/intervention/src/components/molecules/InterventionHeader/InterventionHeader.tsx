@@ -65,6 +65,7 @@ const styles = StyleSheet.create({
   rowContainer: {
     flexDirection: 'row',
     justifyContent: 'space-between',
+    marginBottom: 3,
   },
   labelText: {
     fontSize: 16,
