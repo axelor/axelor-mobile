@@ -20,7 +20,7 @@ import React, {useCallback} from 'react';
 import {HeaderContainer, Screen, ScrollList} from '@axelor/aos-mobile-ui';
 import {useSelector, useDispatch, useTranslator} from '@axelor/aos-mobile-core';
 import {searchEquipmentLine} from '../../features/equipmentLineSlice';
-import {EquipmentLineCard, EquipmentLineHeader} from '../../components';
+import {EquipmentLineCard, EquipmentDetailsHeader} from '../../components';
 
 const EquipmentLineListScreen = ({}) => {
   const dispatch = useDispatch();
@@ -44,7 +44,7 @@ const EquipmentLineListScreen = ({}) => {
     <Screen removeSpaceOnTop={true}>
       <HeaderContainer
         expandableFilter={false}
-        fixedItems={<EquipmentLineHeader />}
+        fixedItems={<EquipmentDetailsHeader />}
       />
       <ScrollList
         loadingList={loadingList}
