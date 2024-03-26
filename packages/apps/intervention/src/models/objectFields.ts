@@ -118,4 +118,12 @@ export const intervention_modelAPI: ObjectFields = {
     equipment: schemaContructor.subObject('name'),
     rangeVal: schemaContructor.subObject('title'),
   }),
+  intervention_interventionNote: schemaContructor.object({
+    partner: schemaContructor.subObject(),
+    metaFile: schemaContructor.subObject('fileName'),
+    description: schemaContructor.string(),
+    createdOn: schemaContructor.string(),
+    updatedOn: schemaContructor.string(),
+    createdBy: schemaContructor.subObject(),
+  }),
 };

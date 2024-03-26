@@ -20,6 +20,8 @@
   "Intervention_Duplicate": "Duplicate",
   "Intervention_Edit": "Edit",
   "Intervention_Archive": "Archive",
+  "Intervention_Delete": "Delete",
+  "Intervention_OpenFile": "Open file",
   "Intervention_MaxGIT": "Max GIT",
   "Intervention_MaxGRT": "Max GRT",
   "Intervention_AssignedTo": "Assigned to",
@@ -36,6 +38,10 @@
   "Intervention_SpecificAccessSchedule": "Specific access schedule",
   "Intervention_Comments": "Comments",
   "Intervention_Contract": "Contract",
+  "Intervention_CreatedOn": "Created on",
+  "Intervention_UpdatedOn": "Updated on",
+  "Intervention_CreatedBy": "Created by",
+  "Intervention_CreateNote": "Create a note",
   "Intervention_SliceAction_FetchIntervention": "fetch intervention",
   "Intervention_SliceAction_SearchEquipment": "search equipments",
   "Intervention_SliceAction_SearchClientAndProspect": "search clients and prospects",
@@ -46,5 +52,8 @@
   "Intervention_SliceAction_GetEquipmentById": "get element by id",
   "Intervention_SliceAction_SearchEquipmentFamily": "search on equipment family",
   "Intervention_SliceAction_SearchContract": "search contract",
-  "Intervention_SliceAction_UpdateEquipment": "update equipment"
+  "Intervention_SliceAction_UpdateEquipment": "update equipment",
+  "Intervention_SliceAction_FetchInterventionNote": "fetch intervention note",
+  "Intervention_SliceAction_DeleteInterventionNote": "delete intervention note",
+  "Intervention_SliceAction_FetchInterventionNoteType": "fetch intervention note type"
 }
