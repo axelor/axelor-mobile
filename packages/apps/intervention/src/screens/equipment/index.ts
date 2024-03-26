@@ -17,6 +17,7 @@
  */
 
 import CustomerParkScreen from './CustomerParkScreen';
+import EquipmentFormView from './EquipmentFormView';
 
 export default {
   CustomerParkScreen: {
@@ -26,6 +27,12 @@ export default {
       shadedHeader: false,
     },
   },
+  EquipmentFormView: {
+    title: 'Intervention_Equipment',
+    actionID: 'intervention_equipment_form',
+    component: EquipmentFormView,
+  },
 };
 
 export {CustomerParkScreen};
+export {EquipmentFormView};
