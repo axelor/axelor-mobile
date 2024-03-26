@@ -24,7 +24,7 @@ import {
   useSelector,
   useTranslator,
 } from '@axelor/aos-mobile-core';
-import {ObjectCard, useThemeColor} from '@axelor/aos-mobile-ui';
+import {Icon, ObjectCard, useThemeColor} from '@axelor/aos-mobile-ui';
 import {Intervention} from '../../../types';
 
 interface InterventionCardProps {
@@ -36,6 +36,7 @@ interface InterventionCardProps {
   interventionType: any;
   address: any;
   assignedTo: any;
+  isCopyCard?: boolean;
   onPress: () => void;
 }
 
@@ -48,6 +49,7 @@ const InterventionCard = ({
   interventionType,
   address,
   assignedTo,
+  isCopyCard = false,
   onPress,
 }: InterventionCardProps) => {
   const I18n = useTranslator();
@@ -67,6 +69,8 @@ const InterventionCard = ({
     <View style={style}>
       <ObjectCard
         style={[styles.container, borderStyle]}
+        showArrow={!isCopyCard}
+        leftContainerFlex={6}
         onPress={onPress}
         image={{
           defaultIconSize: 50,
@@ -108,6 +112,16 @@ const InterventionCard = ({
             },
           ],
         }}
+        sideBadges={{
+          style: styles.badges,
+          items: [
+            isCopyCard && {
+              customComponent: (
+                <Icon name="copy" color={Colors.secondaryColor.background} />
+              ),
+            },
+          ],
+        }}
       />
     </View>
   );
@@ -123,12 +137,17 @@ const getStyles = color =>
 
 const styles = StyleSheet.create({
   container: {
+    flex: 1,
     marginHorizontal: 1,
     marginVertical: 1,
   },
   imageSize: {
     height: 50,
     width: 50,
+  },
+  badges: {
+    justifyContent: 'flex-end',
+    alignItems: 'flex-end',
   },
 });
 
