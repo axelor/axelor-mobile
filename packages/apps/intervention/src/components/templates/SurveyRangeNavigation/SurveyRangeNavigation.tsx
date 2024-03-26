@@ -54,11 +54,16 @@ const SurveyRangeNavigation = ({
 
   const isArrowDisabled = useCallback(
     arrowType => {
+      if (!Array.isArray(rangeList) || rangeList.length === 0) {
+        return true;
+      } else if (selectedRangeId == null) {
+        return true;
+      }
+
       const index =
         arrowType === ARROW_TYPE.Previous ? 0 : rangeList.length - 1;
 
       return (
-        selectedRangeId == null ||
         rangeList.findIndex(range => range.id === selectedRangeId) === index
       );
     },
@@ -104,7 +109,6 @@ const SurveyRangeNavigation = ({
         valueField="id"
         defaultValue={selectedRangeId}
         onValueChange={handleChangeRangeId}
-        emptyValue={false}
       />
       <Button
         style={styles.button}

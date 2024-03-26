@@ -97,6 +97,7 @@ export const intervention_modelAPI: ObjectFields = {
     isRequired: schemaContructor.boolean(),
     indicationText: schemaContructor.string(),
     isPrivate: schemaContructor.boolean(),
+    listAnswer: schemaContructor.subObject(),
   }),
   intervention_range: schemaContructor.object({
     equipment: schemaContructor.subObject('name'),

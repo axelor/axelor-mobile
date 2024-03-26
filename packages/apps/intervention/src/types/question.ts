@@ -58,9 +58,9 @@ class Question {
       case this.status.Info:
         return Colors.infoColor;
       case this.status.Conditional:
-        return Colors.inverseColor;
+        return Colors.plannedColor;
       case this.status.Default:
-        return Colors.defaultColor;
+        return Colors.secondaryColor;
       case this.status.Hidden:
         return null;
       default:

@@ -43,6 +43,10 @@ const QuestionCard = ({
     [Colors, status],
   );
 
+  if (status === Question.status.Hidden) {
+    return null;
+  }
+
   return (
     <ObjectCard
       style={styles.border}
@@ -50,7 +54,11 @@ const QuestionCard = ({
       onPress={onPress}
       upperTexts={{
         items: [
-          {displayText: interventionRange?.rangeVal?.title, hideIfNull: true},
+          {
+            displayText: interventionRange?.rangeVal?.title,
+            style: styles.details,
+            hideIfNull: true,
+          },
           {displayText: interventionRange?.equipment?.name, hideIfNull: true},
           {
             displayText: title,
@@ -71,7 +79,7 @@ const QuestionCard = ({
   );
 };
 
-const getStyles = color =>
+const getStyles = (color: string) =>
   StyleSheet.create({
     border: {
       borderLeftWidth: 7,
@@ -79,6 +87,9 @@ const getStyles = color =>
     },
     badges: {
       alignItems: 'flex-end',
+    },
+    details: {
+      fontStyle: 'italic',
     },
   });
 
