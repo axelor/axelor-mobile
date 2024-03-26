@@ -30,5 +30,7 @@
   "Intervention_SliceAction_SearchEquipment": "recherche sur les équipements",
   "Intervention_SliceAction_SearchClientAndProspect": "recherche sur les clients et prospects",
   "Intervention_SliceAction_SearchPlaceEquipment": "recherche sur les équipements de type place",
-  "Intervention_SliceAction_FetchInterventionById": "récuperation d'une intervention par id"
+  "Intervention_SliceAction_FetchInterventionById": "récuperation d'une intervention par id",
+  "Intervention_SliceAction_FetchRange": "récupération des gammes",
+  "Intervention_SliceAction_FetchQuestion": "récupération des questions"
 }
