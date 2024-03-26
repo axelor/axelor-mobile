@@ -70,6 +70,7 @@ const InterventionCard = ({
       <ObjectCard
         style={[styles.container, borderStyle]}
         showArrow={!isCopyCard}
+        leftContainerFlex={6}
         onPress={onPress}
         image={{
           defaultIconSize: 50,
