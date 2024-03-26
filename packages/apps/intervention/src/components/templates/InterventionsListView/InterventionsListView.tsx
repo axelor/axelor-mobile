@@ -71,6 +71,13 @@ const InterventionsListView = ({
     [isAssignedToMe, selectedDate, statusList, userId],
   );
 
+  const handleItemPress = item => {
+    item &&
+      navigation.navigate('InterventionDetailsScreen', {
+        interventionId: item.id,
+      });
+  };
+
   return (
     <SearchListView
       list={filteredList}
@@ -79,7 +86,7 @@ const InterventionsListView = ({
       isListEnd={isListEnd}
       sliceFunction={fetchIntervention}
       sliceFunctionData={sliceFunctionData}
-      onChangeSearchValue={item => console.log(item)}
+      onChangeSearchValue={handleItemPress}
       searchPlaceholder={I18n.t('Base_Search')}
       headerChildren={
         <View style={styles.headerContainer}>
@@ -112,11 +119,7 @@ const InterventionsListView = ({
       renderListItem={({item}) => (
         <InterventionDetailCard
           intervention={item}
-          onPress={() =>
-            navigation.navigate('InterventionDetailsScreen', {
-              interventionId: item.id,
-            })
-          }
+          onPress={() => handleItemPress(item)}
         />
       )}
     />

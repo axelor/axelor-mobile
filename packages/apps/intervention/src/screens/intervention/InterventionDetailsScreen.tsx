@@ -19,7 +19,11 @@
 import React, {useEffect} from 'react';
 import {useDispatch, useSelector} from '@axelor/aos-mobile-core';
 import {BottomBar, Screen, useThemeColor} from '@axelor/aos-mobile-ui';
-import {GeneralInformationView, SurveyView} from '../../components';
+import {
+  GeneralInformationView,
+  HistoryView,
+  SurveyView,
+} from '../../components';
 import {fetchInterventionById} from '../../features/interventionSlice';
 import {Intervention} from '../../types';
 
@@ -47,6 +51,11 @@ const InterventionDetailsScreen = ({route}) => {
       viewComponent: <SurveyView />,
       color: Colors.progressColor,
       disabled: intervention.statusSelect < Intervention.status.Started,
+    },
+    {
+      iconName: 'clock-history',
+      viewComponent: <HistoryView />,
+      color: Colors.successColor,
     },
   ];
 
