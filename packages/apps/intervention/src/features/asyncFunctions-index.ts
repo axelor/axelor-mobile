@@ -19,3 +19,4 @@
 export {searchClientAndProspect} from './clientAndProspectSlice';
 export {searchEquipment} from './equipmentSlice';
 export {fetchIntervention, fetchInterventionById} from './interventionSlice';
+export {fetchQuestion, fetchRange} from './questionSlice';
