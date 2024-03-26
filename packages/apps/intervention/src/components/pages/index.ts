@@ -17,3 +17,4 @@
  */
 
 export {default as GeneralInformationView} from './GeneralInformationView/GeneralInformationView';
+export {default as SurveyView} from './SurveyView/SurveyView';

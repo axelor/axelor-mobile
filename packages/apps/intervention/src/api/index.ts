@@ -25,3 +25,7 @@ export {
   fetchIntervention as fetchInterventionApi,
   fetchInterventionById as fetchInterventionByIdApi,
 } from './intervention-api';
+export {
+  fetchQuestion as fetchQuestionApi,
+  fetchRange as fetchRangeApi,
+} from './question-api';

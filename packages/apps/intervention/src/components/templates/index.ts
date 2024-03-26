@@ -17,3 +17,4 @@
  */
 
 export {default as InterventionsListView} from './InterventionsListView/InterventionsListView';
+export {default as SurveyRangeNavigation} from './SurveyRangeNavigation/SurveyRangeNavigation';
