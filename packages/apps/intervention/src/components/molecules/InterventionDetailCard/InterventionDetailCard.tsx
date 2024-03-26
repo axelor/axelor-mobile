@@ -36,12 +36,14 @@ interface InterventionContent {
 interface InterventionDetailCardProps {
   style?: any;
   intervention: InterventionContent;
+  isCopyCard?: boolean;
   onPress: () => void;
 }
 
 const InterventionDetailCard = ({
   style,
   intervention,
+  isCopyCard,
   onPress,
 }: InterventionDetailCardProps) => {
   const I18n = useTranslator();
@@ -63,6 +65,7 @@ const InterventionDetailCard = ({
       <InterventionCard
         style={styles.cardContainer}
         {...intervention}
+        isCopyCard={isCopyCard}
         onPress={onPress}
       />
       {(address || phone) && (

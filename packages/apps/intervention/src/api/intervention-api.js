@@ -24,7 +24,13 @@ import {
   getStartOfDay,
 } from '@axelor/aos-mobile-core';
 
-const createInterventionCriteria = (searchValue, userId, date, statusList) => {
+const createInterventionCriteria = (
+  searchValue,
+  userId,
+  deliveredPartnerId,
+  date,
+  statusList,
+) => {
   const criteria = [
     getSearchCriterias('intervention_intervention', searchValue),
   ];
@@ -34,6 +40,14 @@ const createInterventionCriteria = (searchValue, userId, date, statusList) => {
       fieldName: 'assignedTo.employee.user.id',
       operator: '=',
       value: userId,
+    });
+  }
+
+  if (deliveredPartnerId != null) {
+    criteria.push({
+      fieldName: 'deliveredPartner.id',
+      operator: '=',
+      value: deliveredPartnerId,
     });
   }
 
@@ -75,13 +89,20 @@ const createInterventionCriteria = (searchValue, userId, date, statusList) => {
 export async function fetchIntervention({
   searchValue,
   userId,
+  deliveredPartnerId,
   date,
   statusList,
   page = 0,
 }) {
   return createStandardSearch({
     model: 'com.axelor.apps.intervention.db.Intervention',
-    criteria: createInterventionCriteria(searchValue, userId, date, statusList),
+    criteria: createInterventionCriteria(
+      searchValue,
+      userId,
+      deliveredPartnerId,
+      date,
+      statusList,
+    ),
     fieldKey: 'intervention_intervention',
     sortKey: 'intervention_intervention',
     page,
