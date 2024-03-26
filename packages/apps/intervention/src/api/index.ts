@@ -17,10 +17,14 @@
  */
 
 export {searchClientAndProspect as searchClientAndProspectApi} from './client-and-prospect-api';
+export {searchContract as searchContractApi} from './contract-api';
 export {
+  getEquipmentById as getEquipmentByIdApi,
   searchEquipment as searchEquipmentApi,
   searchPlaceEquipment as searchPlaceEquipmentApi,
+  updateEquipment as updateEquipmentApi,
 } from './equipment-api';
+export {searchEquipmentFamily as searchEquipmentFamilyApi} from './equipment-family-api';
 export {
   fetchIntervention as fetchInterventionApi,
   fetchInterventionById as fetchInterventionByIdApi,

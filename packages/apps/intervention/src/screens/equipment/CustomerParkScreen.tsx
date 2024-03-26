@@ -65,6 +65,7 @@ const CustomerParkScreen = ({}) => {
         searchPlaceholder={I18n.t('Base_Search')}
         renderListItem={({item}) => (
           <EquipmentActionCard
+            idEquipment={item.id}
             sequence={item.sequence}
             name={item.name}
             code={item.code}

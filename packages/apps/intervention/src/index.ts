@@ -23,10 +23,12 @@ import InterventionScreens from './screens/intervention';
 import EquipmentsScreens from './screens/equipment/';
 import * as interventionReducers from './features';
 import {
+  intervention_formsRegister,
   intervention_modelAPI,
   intervention_searchFields,
   intervention_sortFields,
 } from './models';
+import {useInterventionHeaders} from './hooks/use-intervention-header-actions';
 
 export const InterventionModule: Module = {
   name: 'app-intervention',
@@ -82,6 +84,8 @@ export const InterventionModule: Module = {
     objectFields: {...intervention_modelAPI},
     searchFields: {...intervention_searchFields},
     sortFields: {...intervention_sortFields},
+    formsRegister: {...intervention_formsRegister},
+    headerRegisters: useInterventionHeaders,
   },
 };
 

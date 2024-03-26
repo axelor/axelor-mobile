@@ -18,36 +18,36 @@
 
 import React, {useCallback} from 'react';
 import {
-  displayItemFullname,
+  displayItemName,
   useDispatch,
   useSelector,
   useTranslator,
 } from '@axelor/aos-mobile-core';
 import {AutoCompleteSearch} from '@axelor/aos-mobile-ui';
-import {searchClientAndProspect} from '../../../features/clientAndProspectSlice';
+import {searchEquipmentFamily} from '../../../features/equipmentFamilySlice';
+import {CustomComponentProps} from '../../../utils';
 
-const ClientProspectSearchBar = ({
+const EquipmentFamilySearchBar = ({
   style = null,
-  title = 'Intervention_Customer',
+  title = 'Intervention_EquipmentFamily',
   defaultValue = null,
-  onChange = e => {},
+  onChange = () => {},
   readonly = false,
   required = false,
   showDetailsPopup = true,
   navigate = false,
   oneFilter = false,
-  isFocus = false,
-  showTitle = false,
-}) => {
+  showTitle = true,
+}: CustomComponentProps) => {
   const I18n = useTranslator();
   const dispatch = useDispatch();
 
-  const {loadingList, moreLoading, isListEnd, clientAndProspectList} =
-    useSelector(state => state.intervention_clientAndProspect);
+  const {loadingList, moreLoading, isListEnd, equipmentFamilyList} =
+    useSelector((state: any) => state.intervention_equipmentFamily);
 
-  const searchClientAndProspectAPI = useCallback(
+  const searchEquipmentFamilyAPI = useCallback(
     ({page = 0, searchValue}) => {
-      dispatch(searchClientAndProspect({page, searchValue}));
+      dispatch((searchEquipmentFamily as any)({page, searchValue}));
     },
     [dispatch],
   );
@@ -55,13 +55,13 @@ const ClientProspectSearchBar = ({
   return (
     <AutoCompleteSearch
       title={showTitle && I18n.t(title)}
-      objectList={clientAndProspectList}
+      objectList={equipmentFamilyList}
       value={defaultValue}
       required={required}
       readonly={readonly}
       onChangeValue={onChange}
-      fetchData={searchClientAndProspectAPI}
-      displayValue={displayItemFullname}
+      fetchData={searchEquipmentFamilyAPI}
+      displayValue={displayItemName}
       placeholder={I18n.t(title)}
       showDetailsPopup={showDetailsPopup}
       loadingList={loadingList}
@@ -69,10 +69,9 @@ const ClientProspectSearchBar = ({
       isListEnd={isListEnd}
       navigate={navigate}
       oneFilter={oneFilter}
-      isFocus={isFocus}
       style={style}
     />
   );
 };
 
-export default ClientProspectSearchBar;
+export default EquipmentFamilySearchBar;

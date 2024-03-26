@@ -17,5 +17,8 @@
  */
 
 export {default as ClientProspectSearchBar} from './ClientProspectSearchBar/ClientProspectSearchBar';
+export {default as ContractSearchBar} from './ContractSearchBar/ContractSearchBar';
 export {default as DropdownCards} from './DropdownCards/DropdownCards';
+export {default as EquipmentFamilySearchBar} from './EquipmentFamilySearchBar/EquipmentFamilySearchBar';
 export {default as PlaceEquipmentSearchBar} from './PlaceEquipmentSearchBar/PlaceEquipmentSearchBar';
+export {default as TypePicker} from './TypePicker/TypePicker';
