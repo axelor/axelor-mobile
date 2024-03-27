@@ -130,3 +130,7 @@ jest.mock('react-native-pell-rich-editor', () => ({
 jest.mock('@react-native-clipboard/clipboard', () => ({
   default: jest.fn(),
 }));
+
+jest.mock('react-native-signature-canvas', () => ({
+  Signature: jest.fn(),
+}));
