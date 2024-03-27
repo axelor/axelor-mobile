@@ -79,6 +79,7 @@ export type Widget =
   | 'label'
   | 'password'
   | 'file'
+  | 'signature'
   | 'date'
   | 'checkbox'
   | 'custom';

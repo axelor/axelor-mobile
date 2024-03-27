@@ -96,6 +96,7 @@
     "moment": "^2.29.4",
     "react-native-calendars": "1.1284",
     "react-native-reanimated": "2.10.0",
+    "react-native-signature-canvas": "4.5.1",
     "react-native-syntax-highlighter": "^2.1.0",
     "react-redux": "^7.2.8",
     "yup": "^1.0.2"
