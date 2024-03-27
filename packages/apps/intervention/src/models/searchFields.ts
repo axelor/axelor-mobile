@@ -31,4 +31,5 @@ export const intervention_searchFields: SearchFields = {
     'fixedPhone',
     'emailAddress.name',
   ],
+  intervention_interventionNote: ['description', 'metaFile.fileName'],
 };
