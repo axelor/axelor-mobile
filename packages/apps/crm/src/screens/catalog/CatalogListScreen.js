@@ -27,7 +27,12 @@ import {
   useThemeColor,
   WarningCard,
 } from '@axelor/aos-mobile-ui';
-import {useDispatch, useSelector, useTranslator} from '@axelor/aos-mobile-core';
+import {
+  useDispatch,
+  useIsAdmin,
+  useSelector,
+  useTranslator,
+} from '@axelor/aos-mobile-core';
 import {CatalogCard, CatalogsSearchBar} from '../../components';
 import {fetchCatalog, fetchCatalogType} from '../../features/catalogSlice';
 import Catalog from '../../types/catalog';
@@ -36,9 +41,9 @@ const CatalogListScreen = ({}) => {
   const I18n = useTranslator();
   const Colors = useThemeColor();
   const dispatch = useDispatch();
+  const isAdmin = useIsAdmin();
 
   const {crm: crmConfig} = useSelector(state => state.appConfig);
-  const {user} = useSelector(state => state.user);
   const {loadingCatalog, moreLoading, isListEnd, catalogList, catalogTypeList} =
     useSelector(state => state.catalog);
 
@@ -103,7 +108,7 @@ const CatalogListScreen = ({}) => {
       <View>
         <WarningCard
           errorMessage={
-            user?.group?.code === 'admins'
+            isAdmin
               ? I18n.t('Crm_Catalogs_Disabled') +
                 '\n' +
                 I18n.t('Crm_Catalogs_Disabled_Admin')

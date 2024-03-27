@@ -82,6 +82,34 @@ export async function fetchObject({
   });
 }
 
+export async function fetchObjectModelTypes({modelName}: {modelName: string}) {
+  if (modelName == null) {
+    return null;
+  }
+
+  return axiosApiProvider.post({
+    url: 'ws/rest/com.axelor.meta.db.MetaField/search',
+    data: {
+      data: {
+        operator: 'and',
+        criteria: [
+          {
+            fieldName: 'metaModel.fullName',
+            operator: '=',
+            value: modelName,
+          },
+          {
+            fieldName: 'json',
+            operator: '=',
+            value: true,
+          },
+        ],
+      },
+      limit: null,
+    },
+  });
+}
+
 export async function updateJsonFieldsObject({
   modelName,
   id,
