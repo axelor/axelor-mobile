@@ -101,7 +101,7 @@ const getStyles = Colors =>
       zIndex: 35,
     },
     content: {
-      width: Dimensions.get('window').width * 0.92,
+      width: Dimensions.get('window').width * 0.9,
       borderColor: Colors.secondaryColor.background,
       borderWidth: 1,
       marginHorizontal: 0,
@@ -109,7 +109,7 @@ const getStyles = Colors =>
     },
     containerChildren: {
       backgroundColor: Colors.backgroundColor,
-      width: Dimensions.get('window').width * 0.9,
+      width: Dimensions.get('window').width * 0.88,
       paddingTop: 25,
       paddingLeft: 10,
       paddingRight: 10,
