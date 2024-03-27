@@ -30,6 +30,11 @@ export {
   fetchInterventionById as fetchInterventionByIdApi,
 } from './intervention-api';
 export {
+  deleteInterventionNote as deleteInterventionNoteApi,
+  fetchInterventionNote as fetchInterventionNoteApi,
+  fetchInterventionNoteType as fetchInterventionNoteTypeApi,
+} from './intervention-note-api';
+export {
   fetchQuestion as fetchQuestionApi,
   fetchRange as fetchRangeApi,
 } from './question-api';

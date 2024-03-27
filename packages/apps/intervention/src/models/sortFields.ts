@@ -24,4 +24,5 @@ export const intervention_sortFields: SortFields = {
   intervention_equipment: ['sequence'],
   intervention_equipmentFamily: ['name'],
   intervention_question: ['interventionRange.orderSeq', 'orderSeq'],
+  intervention_interventionNote: ['updatedOn', 'createdOn'],
 };

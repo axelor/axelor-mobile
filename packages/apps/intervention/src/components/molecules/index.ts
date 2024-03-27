@@ -21,3 +21,4 @@ export {default as EquipmentActionCard} from './EquipmentActionCard/EquipmentAct
 export {default as GtCard} from './GtCard/GtCard';
 export {default as InterventionDetailCard} from './InterventionDetailCard/InterventionDetailCard';
 export {default as InterventionHeader} from './InterventionHeader/InterventionHeader';
+export {default as NoteDetailCard} from './NoteDetailCard/NoteDetailCard';

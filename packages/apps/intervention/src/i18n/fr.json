@@ -20,6 +20,8 @@
   "Intervention_Duplicate": "Dupliquer",
   "Intervention_Edit": "Editer",
   "Intervention_Archive": "Archiver",
+  "Intervention_Delete": "Supprimer",
+  "Intervention_OpenFile": "Ouvrir le fichier",
   "Intervention_MaxGIT": "GTI max",
   "Intervention_MaxGRT": "GTR max",
   "Intervention_AssignedTo": "Assignée à",
@@ -36,6 +38,11 @@
   "Intervention_SpecificAccessSchedule": "Horaire d'accès spécifique",
   "Intervention_Comments": "Commentaires",
   "Intervention_Contract": "Contrat",
+  "Intervention_CreatedOn": "Créée le",
+  "Intervention_UpdatedOn": "Mise à jour le",
+  "Intervention_CreatedBy": "Créée par",
+  "Intervention_UpdatedBy": "Mise à jour par",
+  "Intervention_CreateNote": "Créer une note",
   "Intervention_SliceAction_FetchIntervention": "récupération des interventions",
   "Intervention_SliceAction_SearchEquipment": "recherche sur les équipements",
   "Intervention_SliceAction_SearchClientAndProspect": "recherche sur les clients et prospects",
@@ -46,5 +53,8 @@
   "Intervention_SliceAction_GetEquipmentById": "récupération de l'équipement par id",
   "Intervention_SliceAction_SearchEquipmentFamily": "recherche sur les familles d'équipement",
   "Intervention_SliceAction_SearchContract": "recherche sur les contrats",
-  "Intervention_SliceAction_UpdateEquipment": "mise à jour de l'équipement"
+  "Intervention_SliceAction_UpdateEquipment": "mise à jour de l'équipement",
+  "Intervention_SliceAction_FetchInterventionNote": "récupération des notes d'interventions",
+  "Intervention_SliceAction_DeleteInterventionNote": "suppression d'une note d'intervention",
+  "Intervention_SliceAction_FetchInterventionNoteType": "récupération des types de note d'intervention"
 }
