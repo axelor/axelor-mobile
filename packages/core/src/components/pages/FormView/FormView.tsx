@@ -28,6 +28,7 @@ import {
   useThemeColor,
 } from '@axelor/aos-mobile-ui';
 import {useTranslator} from '../../../i18n';
+import {usePermitted} from '../../../permissions';
 import {
   Action,
   DisplayField,
@@ -76,6 +77,7 @@ const FormView = ({
 
   const storeState = useSelector((state: any) => state);
   const {record} = useSelector((state: any) => state.form);
+  const {canCreate, readonly} = usePermitted({modelName: config?.modelName});
 
   const [object, setObject] = useState(defaultValue ?? {});
   const [errors, setErrors] = useState<any[]>();
@@ -138,6 +140,17 @@ const FormView = ({
     });
   };
 
+  const isButtonAuthorized = (_action: Action) => {
+    switch (_action.type) {
+      case 'create':
+        return canCreate;
+      case 'update':
+        return !readonly;
+      default:
+        return true;
+    }
+  };
+
   const getButtonConfig = (
     _action: Action,
   ): {title: string; onPress: (value?: any) => void} => {
@@ -198,7 +211,10 @@ const FormView = ({
   };
 
   const renderAction = (_action: Action) => {
-    if (_action.hideIf?.({objectState: object, storeState})) {
+    if (
+      !isButtonAuthorized(_action) ||
+      _action.hideIf?.({objectState: object, storeState})
+    ) {
       return null;
     }
 
@@ -297,6 +313,7 @@ const FormView = ({
           handleFieldChange={handleFieldChange}
           _field={item as DisplayField}
           object={object}
+          modelName={config.modelName}
           globalReadonly={() =>
             isReadonly ||
             (config.readonlyIf &&

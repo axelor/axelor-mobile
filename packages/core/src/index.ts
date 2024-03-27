@@ -60,4 +60,5 @@ export * from './config';
 export * from './header';
 export * from './forms';
 export * from './dashboards';
+export * from './permissions';
 export {useNavigation, useIsFocused} from './hooks/use-navigation';

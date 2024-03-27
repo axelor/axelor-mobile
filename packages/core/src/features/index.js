@@ -28,5 +28,6 @@ export {metaJsonFieldReducer as metaJsonField} from './metaJsonFieldSlice';
 export {metaModuleReducer as metaModule} from './metaModuleSlice';
 export {mobileDashboardReducer as mobileDashboard} from './mobileDashboardSlice';
 export {onlineReducer as online} from './onlineSlice';
+export {permissionReducer as permission} from './permissionSlice';
 export {default as scanner} from './scannerSlice';
 export {userListReducer as userList} from './userSlice';
