@@ -45,7 +45,20 @@ const EquipmentPictureScreen = ({}) => {
     [dispatch, equipment.id],
   );
 
+  const prepareImageData = pictures => {
+    const pairedData = [];
+    for (let i = 0; i < pictures.length; i += 2) {
+      pairedData.push({
+        item1: pictures[i],
+        item2: pictures[i + 1] ? pictures[i + 1] : null,
+      });
+    }
+    return pairedData;
+  };
+
   console.log(equipmentPictureList);
+
+  const pairedEquipmentPictureList = prepareImageData(equipmentPictureList);
 
   return (
     <Screen removeSpaceOnTop={true}>
@@ -54,18 +67,38 @@ const EquipmentPictureScreen = ({}) => {
         fixedItems={<EquipmentDetailsHeader />}
       />
       <ScrollList
+        actionList={[
+          {
+            iconName: 'plus-lg',
+            title: I18n.t('Intervention_ChoosePhoto'),
+            onPress: () => {},
+          },
+          {
+            iconName: 'camera-fill',
+            title: I18n.t('Intervention_TakePicture'),
+            onPress: () => {},
+          },
+        ]}
         loadingList={loadingList}
-        data={equipmentPictureList}
-        numColumns={2}
+        data={pairedEquipmentPictureList}
         renderItem={({item}) => (
-          <View style={styles.container}>
+          <View style={styles.rowContainer}>
             <AOSImage
               generalStyle={styles.imageStyle}
               imageSize={styles.imageSize}
               resizeMode="stretch"
-              metaFile={item?.pictureFile}
+              metaFile={item.item1.pictureFile}
               defaultIconSize={60}
             />
+            {item.item2 && (
+              <AOSImage
+                generalStyle={styles.imageStyle}
+                imageSize={styles.imageSize}
+                resizeMode="stretch"
+                metaFile={item.item2.pictureFile}
+                defaultIconSize={60}
+              />
+            )}
           </View>
         )}
         fetchData={fetchEquipmentPictureAPI}
@@ -83,13 +116,14 @@ const styles = StyleSheet.create({
     width: Dimensions.get('window').width * 0.4,
   },
   imageStyle: {
-    marginRight: 10,
-    marginVertical: 10,
-  },
-  container: {
     flex: 1,
-    alignItems: 'center',
-    alignSelf: 'center',
+    margin: 5,
+  },
+  rowContainer: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    marginHorizontal: 10,
+    marginVertical: 5,
   },
 });
 

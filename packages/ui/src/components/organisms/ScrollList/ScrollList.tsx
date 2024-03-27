@@ -58,14 +58,12 @@ interface ScrollListProps {
   disabledRefresh?: boolean;
   actionList?: Action[];
   verticalActions?: boolean;
-  numColumns?: number;
 }
 
 const ScrollList = ({
   style,
   styleFooter,
   loadingList = false,
-  numColumns = 1,
   data = [],
   renderItem,
   fetchData = () => [],
@@ -193,7 +191,6 @@ const ScrollList = ({
       <AnimatedFlatList
         ref={flatList}
         style={[styles.scrollView, style]}
-        numColumns={numColumns}
         data={data}
         onRefresh={disabledRefresh ? null : updateData}
         refreshing={loadingList}
