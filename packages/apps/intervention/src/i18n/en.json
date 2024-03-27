@@ -38,6 +38,8 @@
   "Intervention_SpecificAccessSchedule": "Specific access schedule",
   "Intervention_Comments": "Comments",
   "Intervention_Contract": "Contract",
+  "Intervention_EquipmentLine": "Equipment line",
+  "Intervention_OpenEquipmentLine": "Open equipment line",
   "Intervention_CreatedOn": "Created on",
   "Intervention_UpdatedOn": "Updated on",
   "Intervention_CreatedBy": "Created by",
@@ -56,5 +58,6 @@
   "Intervention_SliceAction_UpdateEquipment": "update equipment",
   "Intervention_SliceAction_FetchInterventionNote": "fetch intervention note",
   "Intervention_SliceAction_DeleteInterventionNote": "delete intervention note",
-  "Intervention_SliceAction_FetchInterventionNoteType": "fetch intervention note type"
+  "Intervention_SliceAction_FetchInterventionNoteType": "fetch intervention note type",
+  "Intervention_SliceAction_SearchEquipmentLine": "search on equipment line"
 }
