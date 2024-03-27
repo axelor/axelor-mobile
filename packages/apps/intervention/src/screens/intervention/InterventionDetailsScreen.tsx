@@ -16,7 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import React, {useEffect} from 'react';
+import React, {useEffect, useMemo} from 'react';
 import {useDispatch, useSelector} from '@axelor/aos-mobile-core';
 import {BottomBar, Screen, useThemeColor} from '@axelor/aos-mobile-ui';
 import {
@@ -27,6 +27,7 @@ import {
   SurveyView,
 } from '../../components';
 import {fetchInterventionById} from '../../features/interventionSlice';
+import {searchInterventionEquipment} from '../../features/equipmentSlice';
 import {Intervention} from '../../types';
 
 const InterventionDetailsScreen = ({route}) => {
@@ -37,10 +38,29 @@ const InterventionDetailsScreen = ({route}) => {
   const {intervention} = useSelector(
     (state: any) => state.intervention_intervention,
   );
+  const {totalNumberInterventionEquipment} = useSelector(
+    (state: any) => state.intervention_equipment,
+  );
+
+  const idsInterventionEquipement = useMemo(
+    () => intervention?.equipmentSet?.map(equipment => equipment.id),
+    [intervention],
+  );
 
   useEffect(() => {
     dispatch((fetchInterventionById as any)({interventionId}));
   }, [dispatch, interventionId]);
+
+  useEffect(() => {
+    if (
+      Array.isArray(idsInterventionEquipement) &&
+      idsInterventionEquipement.length > 0
+    ) {
+      dispatch(
+        (searchInterventionEquipment as any)({idsInterventionEquipement}),
+      );
+    }
+  }, [dispatch, idsInterventionEquipement]);
 
   const bottomBarItems = [
     {
@@ -58,6 +78,7 @@ const InterventionDetailsScreen = ({route}) => {
       iconName: 'cart3',
       viewComponent: <EquipmentView />,
       color: Colors.infoColor,
+      indicator: totalNumberInterventionEquipment,
     },
     {
       iconName: 'chat-text',
