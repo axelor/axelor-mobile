@@ -22,6 +22,7 @@ import {BottomBar, Screen, useThemeColor} from '@axelor/aos-mobile-ui';
 import {
   GeneralInformationView,
   HistoryView,
+  NoteView,
   SurveyView,
 } from '../../components';
 import {fetchInterventionById} from '../../features/interventionSlice';
@@ -51,6 +52,11 @@ const InterventionDetailsScreen = ({route}) => {
       viewComponent: <SurveyView />,
       color: Colors.progressColor,
       disabled: intervention.statusSelect < Intervention.status.Started,
+    },
+    {
+      iconName: 'chat-text',
+      viewComponent: <NoteView />,
+      color: Colors.plannedColor,
     },
     {
       iconName: 'clock-history',
