@@ -20,21 +20,22 @@ import React from 'react';
 import {View} from 'react-native';
 import {shallow} from 'enzyme';
 import {CircleButton, FloatingButton, Text} from '@axelor/aos-mobile-ui';
-import {getGlobalStyles} from '../../tools';
+import {getGlobalStyles, getDefaultThemeColors} from '../../tools';
 
 describe('FloatingButton Component', () => {
+  const Colors = getDefaultThemeColors();
   const props = {
     actions: [
       {
         key: 1,
         title: 'Title 1',
         iconName: 'car',
+        color: Colors.errorColor,
         disabled: false,
         onPress: jest.fn(),
       },
       {
         key: 2,
-        title: 'Title 2',
         iconName: 'motorcycle',
         disabled: true,
         onPress: jest.fn(),
@@ -73,12 +74,18 @@ describe('FloatingButton Component', () => {
 
   it('should give the right iconName and size props to the main button', () => {
     const iconName = 'check';
+    const closeIconName = 'x-lg';
     const size = 50;
     const wrapper = shallow(
       <FloatingButton {...props} iconName={iconName} size={size} />,
     );
 
     expect(wrapper.find(CircleButton).prop('iconName')).toBe(iconName);
+    expect(wrapper.find(CircleButton).prop('size')).toBe(size);
+
+    wrapper.find(CircleButton).simulate('press');
+
+    expect(wrapper.find(CircleButton).prop('iconName')).toBe(closeIconName);
     expect(wrapper.find(CircleButton).prop('size')).toBe(size);
   });
 
@@ -97,24 +104,48 @@ describe('FloatingButton Component', () => {
           .at(i)
           .dive()
           .find(CircleButton)
-          .prop('iconName'),
-      ).toBe(props.actions[i].iconName);
+          .props(),
+      ).toMatchObject({
+        iconName: props.actions[i].iconName,
+        disabled: props.actions[i].disabled,
+        color: props.actions[i].color,
+        square: true,
+      });
+
+      if (props.actions[i].title != null) {
+        expect(
+          wrapper
+            .find('FloatingActionButton')
+            .at(i)
+            .dive()
+            .find(Text)
+            .prop('children'),
+        ).toBe(props.actions[i].title);
+      } else {
+        expect(
+          wrapper.find('FloatingActionButton').at(i).dive().find(Text).length,
+        ).toBe(0);
+      }
+    }
+  });
+
+  it('should render circle style when defined', () => {
+    const wrapper = shallow(
+      <FloatingButton {...props} useCircleStyle={true} />,
+    );
+
+    expect(wrapper.find(CircleButton).prop('square')).toBe(false);
+    wrapper.find(CircleButton).simulate('press');
+
+    for (let i = 0; i < props.actions.length; i++) {
       expect(
         wrapper
           .find('FloatingActionButton')
           .at(i)
           .dive()
           .find(CircleButton)
-          .prop('disabled'),
-      ).toBe(props.actions[i].disabled);
-      expect(
-        wrapper
-          .find('FloatingActionButton')
-          .at(i)
-          .dive()
-          .find(Text)
-          .prop('children'),
-      ).toBe(props.actions[i].title);
+          .prop('square'),
+      ).toBe(false);
     }
   });
 

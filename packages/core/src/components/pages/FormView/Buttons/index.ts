@@ -16,11 +16,4 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-export * from './studio';
-export * from './api.helpers';
-export * from './display.helpers';
-export * from './FormConfigsProvider';
-export * from './action.helpers';
-export * from './register.helpers';
-export * from './types';
-export * from './validation.helpers';
+export {default as FloatingTools} from './FloatingTools';

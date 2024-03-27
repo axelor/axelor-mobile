@@ -20,36 +20,42 @@ import React from 'react';
 import {storiesOf} from '@storybook/react-native';
 import {action} from '@storybook/addon-actions';
 import {FloatingButton} from '../../src/components/organisms';
-
-const actions = [
-  {
-    key: 1,
-    title: 'Add',
-    iconName: 'plus',
-    disabled: false,
-    onPress: action('Add button pressed'),
-  },
-  {
-    key: 2,
-    title: 'Edit',
-    iconName: 'pencil',
-    disabled: false,
-    onPress: action('Edit button pressed'),
-  },
-  {
-    key: 3,
-    title: 'Delete',
-    iconName: 'trash-fill',
-    disabled: true,
-    onPress: action('Delete button pressed'),
-  },
-];
+import {lightTheme} from '../../src/theme';
 
 storiesOf('ui/organisms/FloatingButton', module).add(
   'Default',
   args => {
     return (
-      <FloatingButton actions={actions} translator={key => key} {...args} />
+      <FloatingButton
+        actions={[
+          {
+            key: 1,
+            title: args.showTitles ? 'Add' : null,
+            iconName: 'plus',
+            color: lightTheme.colors.infoColor,
+            hideIf: args.hideAdd,
+            onPress: action('Add button pressed'),
+          },
+          {
+            key: 2,
+            title: args.showTitles ? 'Edit' : null,
+            iconName: 'pencil',
+            color: lightTheme.colors.progressColor,
+            indicator: args.showIndicatorOnEdit,
+            onPress: action('Edit button pressed'),
+          },
+          {
+            key: 3,
+            title: args.showTitles ? 'Delete' : null,
+            iconName: 'trash-fill',
+            color: lightTheme.colors.errorColor,
+            disabled: args.disableDelete,
+            onPress: action('Delete button pressed'),
+          },
+        ]}
+        translator={key => key}
+        {...args}
+      />
     );
   },
   {
@@ -59,14 +65,34 @@ storiesOf('ui/organisms/FloatingButton', module).add(
         defaultValue: 'pen-fill',
         control: {type: 'text'},
       },
+      closeIconName: {
+        type: 'string',
+        defaultValue: 'x-lg',
+        control: {type: 'text'},
+      },
       size: {
-        control: {
-          type: 'range',
-          min: 15,
-          max: 75,
-          step: 5,
-        },
-        defaultValue: 50,
+        control: {type: 'range', min: 30, max: 100, step: 5},
+        defaultValue: 60,
+      },
+      useCircleStyle: {
+        type: 'boolean',
+        defaultValue: false,
+      },
+      showTitles: {
+        type: 'boolean',
+        defaultValue: true,
+      },
+      showIndicatorOnEdit: {
+        type: 'boolean',
+        defaultValue: false,
+      },
+      disableDelete: {
+        type: 'boolean',
+        defaultValue: false,
+      },
+      hideAdd: {
+        type: 'boolean',
+        defaultValue: false,
       },
     },
   },

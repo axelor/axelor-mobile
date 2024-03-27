@@ -22,6 +22,7 @@ import {
   createRecord as _createRecord,
   updateRecord as _updateRecord,
   refreshRecord as _refreshRecord,
+  deleteRecord as _deleteRecord,
 } from '../forms/api.helpers';
 
 export const createRecord = createAsyncThunk(
@@ -57,6 +58,19 @@ export const refreshRecord = createAsyncThunk(
       fetchFunction: _refreshRecord,
       data: data,
       action: 'Base_SliceAction_RefreshRecord',
+      getState: getState,
+      responseOptions: {isArrayResponse: false},
+    });
+  },
+);
+
+export const deleteRecord = createAsyncThunk(
+  'form/deleteRecord',
+  async function (data, {getState}) {
+    return handlerApiCall({
+      fetchFunction: _deleteRecord,
+      data: data,
+      action: 'Base_SliceAction_DeleteRecord',
       getState: getState,
       responseOptions: {isArrayResponse: false},
     });
