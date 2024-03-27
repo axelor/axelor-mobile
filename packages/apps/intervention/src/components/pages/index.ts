@@ -18,4 +18,5 @@
 
 export {default as GeneralInformationView} from './GeneralInformationView/GeneralInformationView';
 export {default as HistoryView} from './HistoryView/HistoryView';
+export {default as NoteView} from './NoteView/NoteView';
 export {default as SurveyView} from './SurveyView/SurveyView';

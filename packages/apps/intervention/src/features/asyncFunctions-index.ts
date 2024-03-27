@@ -25,5 +25,10 @@ export {
   searchPlaceEquipment,
   updateEquipment,
 } from './equipmentSlice';
+export {
+  deleteInterventionNote,
+  fetchInterventionNote,
+  fetchInterventionNoteType,
+} from './interventionNoteSlice';
 export {fetchIntervention, fetchInterventionById} from './interventionSlice';
 export {fetchQuestion, fetchRange} from './questionSlice';
