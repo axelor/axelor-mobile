@@ -20,6 +20,7 @@ import React from 'react';
 import {StyleSheet, View} from 'react-native';
 import {Badge, LabelText, Text, useThemeColor} from '@axelor/aos-mobile-ui';
 import {useTranslator, useSelector} from '@axelor/aos-mobile-core';
+import {Equipment} from '../../../types';
 
 const EquipmentDetailsHeader = () => {
   const Colors = useThemeColor();
@@ -40,14 +41,8 @@ const EquipmentDetailsHeader = () => {
           />
         </View>
         <Badge
-          color={
-            equipment.inService ? Colors.successColor : Colors.cautionColor
-          }
-          title={
-            equipment.inService
-              ? I18n.t('Intervention_EquipmentStatus_InService')
-              : I18n.t('Intervention_EquipmentStatus_NotInService')
-          }
+          color={Equipment.getStatusColor(equipment.inService, Colors)}
+          title={Equipment.getStatusKey(equipment.inService, I18n)}
         />
       </View>
     </View>
