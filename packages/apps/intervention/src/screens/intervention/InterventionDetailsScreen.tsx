@@ -20,6 +20,7 @@ import React, {useEffect} from 'react';
 import {useDispatch, useSelector} from '@axelor/aos-mobile-core';
 import {BottomBar, Screen, useThemeColor} from '@axelor/aos-mobile-ui';
 import {
+  EquipmentView,
   GeneralInformationView,
   HistoryView,
   NoteView,
@@ -52,6 +53,11 @@ const InterventionDetailsScreen = ({route}) => {
       viewComponent: <SurveyView />,
       color: Colors.progressColor,
       disabled: intervention.statusSelect < Intervention.status.Started,
+    },
+    {
+      iconName: 'cart3',
+      viewComponent: <EquipmentView />,
+      color: Colors.infoColor,
     },
     {
       iconName: 'chat-text',

@@ -61,6 +61,7 @@ const InterventionHeader = ({intervention}: InterventionHeaderProps) => {
 const styles = StyleSheet.create({
   container: {
     marginHorizontal: 24,
+    marginBottom: 5,
   },
   rowContainer: {
     flexDirection: 'row',

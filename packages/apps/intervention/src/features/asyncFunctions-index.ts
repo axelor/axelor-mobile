@@ -23,6 +23,7 @@ export {searchEquipmentLine} from './equipmentLineSlice';
 export {
   getEquipmentById,
   searchEquipment,
+  searchInterventionEquipment,
   searchPlaceEquipment,
   updateEquipment,
 } from './equipmentSlice';

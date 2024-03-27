@@ -17,6 +17,7 @@
   "Intervention_EquipmentStatus_InService": "In service",
   "Intervention_EquipmentStatus_NotInService": "Not in service",
   "Intervention_ParentPlace": "Parent place",
+  "Intervention_Unlink": "Unlink",
   "Intervention_Duplicate": "Duplicate",
   "Intervention_Edit": "Edit",
   "Intervention_Archive": "Archive",
@@ -45,6 +46,8 @@
   "Intervention_CreatedBy": "Created by",
   "Intervention_UpdatedBy": "Updated by",
   "Intervention_CreateNote": "Create a note",
+  "Intervention_CreateEquipment": "Create an equipment",
+  "Intervention_LinkEquipment": "Link an equipment",
   "Intervention_SliceAction_FetchIntervention": "fetch intervention",
   "Intervention_SliceAction_SearchEquipment": "search equipments",
   "Intervention_SliceAction_SearchClientAndProspect": "search clients and prospects",
@@ -59,5 +62,6 @@
   "Intervention_SliceAction_FetchInterventionNote": "fetch intervention note",
   "Intervention_SliceAction_DeleteInterventionNote": "delete intervention note",
   "Intervention_SliceAction_FetchInterventionNoteType": "fetch intervention note type",
-  "Intervention_SliceAction_SearchEquipmentLine": "search on equipment line"
+  "Intervention_SliceAction_SearchEquipmentLine": "search on equipment line",
+  "Intervention_SliceAction_SearchInterventionEquipment": "search intervention equipments"
 }

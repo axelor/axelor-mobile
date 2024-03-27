@@ -126,11 +126,11 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     alignSelf: 'center',
     width: '90%',
-    marginTop: 5,
   },
   button: {
     width: BUTTON_SIZE,
     height: BUTTON_SIZE,
+    marginVertical: 0,
   },
   picker: {
     width: Dimensions.get('window').width * 0.9 - (2 * BUTTON_SIZE + 10),

@@ -29,6 +29,11 @@ class EquipmentType {
     place: 'place',
   };
 
+  static mode = {
+    intervention: 'intervention',
+    client: 'client',
+  };
+
   static generateTypeList = () => {
     return Object.entries(this.type).map(([key, value]) => ({
       label: key,
