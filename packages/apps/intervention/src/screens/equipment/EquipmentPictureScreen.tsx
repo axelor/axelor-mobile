@@ -22,13 +22,12 @@ import {
   useSelector,
   useDispatch,
   useTranslator,
-  AOSImage,
   enableCamera,
   handleDocumentSelection,
 } from '@axelor/aos-mobile-core';
 import EquipmentDetailsHeader from '../../components/molecules/EquipmentDetailsHeader/EquipmentDetailsHeader';
 import {searchEquipmentPicture} from '../../features/equipmentPictureSlice';
-import {Dimensions, StyleSheet, View} from 'react-native';
+import {PicturesCard} from '../../components';
 
 const cameraKey = 'equipment_pictures';
 
@@ -90,24 +89,7 @@ const EquipmentPictureScreen = ({}) => {
         loadingList={loadingList}
         data={pairedEquipmentPictureList}
         renderItem={({item}) => (
-          <View style={styles.rowContainer}>
-            <AOSImage
-              generalStyle={styles.imageStyle}
-              imageSize={styles.imageSize}
-              resizeMode="stretch"
-              metaFile={item.item1.pictureFile}
-              defaultIconSize={60}
-            />
-            {item.item2 && (
-              <AOSImage
-                generalStyle={styles.imageStyle}
-                imageSize={styles.imageSize}
-                resizeMode="stretch"
-                metaFile={item.item2.pictureFile}
-                defaultIconSize={60}
-              />
-            )}
-          </View>
+          <PicturesCard item={item} onPressClose={() => {}} />
         )}
         fetchData={fetchEquipmentPictureAPI}
         moreLoading={moreLoading}
@@ -117,22 +99,5 @@ const EquipmentPictureScreen = ({}) => {
     </Screen>
   );
 };
-
-const styles = StyleSheet.create({
-  imageSize: {
-    height: Dimensions.get('window').width * 0.4,
-    width: Dimensions.get('window').width * 0.4,
-  },
-  imageStyle: {
-    flex: 1,
-    margin: 5,
-  },
-  rowContainer: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    marginHorizontal: 10,
-    marginVertical: 5,
-  },
-});
 
 export default EquipmentPictureScreen;
