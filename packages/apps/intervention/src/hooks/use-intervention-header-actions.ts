@@ -17,13 +17,21 @@
  */
 
 import {useEffect} from 'react';
-import {headerActionsProvider, useSelector} from '@axelor/aos-mobile-core';
+import {
+  headerActionsProvider,
+  useSelector,
+  useTranslator,
+  useNavigation,
+} from '@axelor/aos-mobile-core';
 
 export const useInterventionHeaders = () => {
   useEquipmentFormActions();
 };
 
 const useEquipmentFormActions = () => {
+  const I18n = useTranslator();
+  const navigation = useNavigation();
+
   const {mobileSettings} = useSelector((state: any) => state.appConfig);
   const {equipment} = useSelector((state: any) => state.intervention_equipment);
 
@@ -33,6 +41,15 @@ const useEquipmentFormActions = () => {
       modelId: equipment?.id,
       disableMailMessages: !mobileSettings?.isTrackerMessageEnabled,
       attachedFileScreenTitle: equipment?.name,
+      actions: [
+        {
+          key: 'openEquipmentLine',
+          title: I18n.t('Intervention_OpenEquipmentLine'),
+          order: 10,
+          iconName: 'card-list',
+          onPress: () => navigation.navigate('EquipmentLineListScreen'),
+        },
+      ],
     });
-  }, [mobileSettings, equipment]);
+  }, [mobileSettings, equipment, I18n, navigation]);
 };

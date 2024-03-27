@@ -29,17 +29,6 @@ class EquipmentType {
     place: 'place',
   };
 
-  static getStatusList = (
-    Colors: ThemeColors,
-    I18n: {t: (key: string) => string},
-  ) => {
-    return Object.entries(this.status).map(([key, value]) => ({
-      title: I18n.t(`Intervention_EquipmentStatus_${key}`),
-      key: value,
-      color: this.getStatusColor(value, Colors),
-    }));
-  };
-
   static generateTypeList = () => {
     return Object.entries(this.type).map(([key, value]) => ({
       label: key,
@@ -60,6 +49,35 @@ class EquipmentType {
         );
         return null;
     }
+  };
+
+  static getStatusKey = (
+    status: boolean,
+    I18n: {t: (key: string) => string},
+  ): string => {
+    switch (status) {
+      case this.status.InService:
+        return I18n.t('Intervention_EquipmentStatus_InService');
+      case this.status.NotInService:
+      case null:
+        return I18n.t('Intervention_EquipmentStatus_NotInService');
+      default:
+        console.warn(
+          `Status provided with value ${status} is not supported by equipment`,
+        );
+        return null;
+    }
+  };
+
+  static getStatusList = (
+    Colors: ThemeColors,
+    I18n: {t: (key: string) => string},
+  ) => {
+    return Object.values(this.status).map(value => ({
+      title: this.getStatusKey(value, I18n),
+      key: value,
+      color: this.getStatusColor(value, Colors),
+    }));
   };
 }
 

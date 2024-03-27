@@ -19,6 +19,7 @@
 export {searchClientAndProspect} from './clientAndProspectSlice';
 export {searchContract} from './contractSlice';
 export {searchEquipmentFamily} from './equipmentFamilySlice';
+export {searchEquipmentLine} from './equipmentLineSlice';
 export {
   getEquipmentById,
   searchEquipment,
