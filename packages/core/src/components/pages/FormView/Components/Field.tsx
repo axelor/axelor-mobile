@@ -44,6 +44,7 @@ import {useSelector} from '../../../../redux/hooks';
 import {UploadFileInput} from '../../../molecules';
 import {DateInput, SignatureInput} from '../../../organisms';
 import {CustomPasswordInput} from '../Custom';
+import {useFieldPermitted} from '../../../../permissions';
 
 interface FieldProps {
   handleFieldChange: (newValue: any, fieldName: string) => void;
@@ -51,6 +52,7 @@ interface FieldProps {
   object: any;
   globalReadonly?: (values?: States) => boolean;
   formContent: (DisplayPanel | DisplayField)[];
+  modelName: string;
 }
 
 const Field = ({
@@ -59,12 +61,17 @@ const Field = ({
   object,
   globalReadonly = () => false,
   formContent,
+  modelName,
 }: FieldProps) => {
   const I18n = useTranslator();
   const Colors = useThemeColor();
   const value = object?.[_field.key];
 
   const storeState = useSelector((state: any) => state);
+  const {hidden, readonly} = useFieldPermitted({
+    modelName,
+    fieldName: _field.key,
+  });
 
   const zIndex: number = useMemo(() => {
     return getZIndex(formContent, _field.key);
@@ -95,8 +102,10 @@ const Field = ({
   );
 
   const isHidden = useMemo(() => {
-    return _field.hideIf({objectState: object, storeState: storeState});
-  }, [_field, object, storeState]);
+    return (
+      hidden || _field.hideIf({objectState: object, storeState: storeState})
+    );
+  }, [_field, hidden, object, storeState]);
 
   const isRequired = useMemo(() => {
     return (
@@ -107,11 +116,12 @@ const Field = ({
 
   const isReadonly = useMemo(() => {
     return (
+      readonly ||
       globalReadonly({objectState: object, storeState: storeState}) ||
       _field.readonly ||
       _field.readonlyIf({objectState: object, storeState: storeState})
     );
-  }, [_field, globalReadonly, object, storeState]);
+  }, [_field, globalReadonly, object, readonly, storeState]);
 
   const fieldStyle: StyleProp<ViewStyle> = useMemo(
     () => ({
