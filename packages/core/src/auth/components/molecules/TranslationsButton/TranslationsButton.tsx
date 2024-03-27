@@ -29,18 +29,19 @@ import {
 import {getTranslations, selectLanguage, useTranslator} from '../../../../i18n';
 import {showToastMessage} from '../../../../utils';
 import {clearMessage, uploadTranslations} from '../../../features/configSlice';
+import {useIsAdmin} from '../../../../permissions';
 
 const TranslationsButton = ({}) => {
   const I18n = useTranslator();
   const Colors = useThemeColor();
   const dispatch = useDispatch();
+  const isAdmin = useIsAdmin();
 
   const {setActivityIndicator} = useConfig();
 
   const language = useSelector(selectLanguage);
 
   const {message} = useSelector((state: any) => state.config);
-  const {user} = useSelector((state: any) => state.user);
 
   const styles = useMemo(() => getStyles(Colors), [Colors]);
 
@@ -58,7 +59,7 @@ const TranslationsButton = ({}) => {
     dispatch((uploadTranslations as any)({language, translations}));
   }, [dispatch, language, setActivityIndicator]);
 
-  if (user?.group?.code !== 'admins') {
+  if (!isAdmin) {
     return null;
   }
 
