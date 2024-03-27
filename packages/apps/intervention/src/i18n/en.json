@@ -45,6 +45,7 @@
   "Intervention_CreatedBy": "Created by",
   "Intervention_UpdatedBy": "Updated by",
   "Intervention_CreateNote": "Create a note",
+  "Intervention_OpenEquipmentPictures": "Open equipment pictures",
   "Intervention_SliceAction_FetchIntervention": "fetch intervention",
   "Intervention_SliceAction_SearchEquipment": "search equipments",
   "Intervention_SliceAction_SearchClientAndProspect": "search clients and prospects",
@@ -59,5 +60,6 @@
   "Intervention_SliceAction_FetchInterventionNote": "fetch intervention note",
   "Intervention_SliceAction_DeleteInterventionNote": "delete intervention note",
   "Intervention_SliceAction_FetchInterventionNoteType": "fetch intervention note type",
-  "Intervention_SliceAction_SearchEquipmentLine": "search on equipment line"
+  "Intervention_SliceAction_SearchEquipmentLine": "search on equipment line",
+  "Intervention_SliceAction_SearchEquipmentPicture": ""
 }

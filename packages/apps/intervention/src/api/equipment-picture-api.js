@@ -16,21 +16,26 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-export {searchClientAndProspect} from './clientAndProspectSlice';
-export {searchContract} from './contractSlice';
-export {searchEquipmentFamily} from './equipmentFamilySlice';
-export {searchEquipmentLine} from './equipmentLineSlice';
-export {searchEquipmentPicture} from './equipmentPictureSlice';
-export {
-  getEquipmentById,
-  searchEquipment,
-  searchPlaceEquipment,
-  updateEquipment,
-} from './equipmentSlice';
-export {
-  deleteInterventionNote,
-  fetchInterventionNote,
-  fetchInterventionNoteType,
-} from './interventionNoteSlice';
-export {fetchIntervention, fetchInterventionById} from './interventionSlice';
-export {fetchQuestion, fetchRange} from './questionSlice';
+import {createStandardSearch} from '@axelor/aos-mobile-core';
+
+const createEquipmentPictureCriteria = equipmentId => {
+  const criteria = [
+    {
+      fieldName: 'equipment.id',
+      operator: '=',
+      value: equipmentId,
+    },
+  ];
+
+  return criteria;
+};
+
+export async function searchEquipmentPicture({equipmentId, page = 0}) {
+  return createStandardSearch({
+    model: 'com.axelor.apps.intervention.db.Picture',
+    criteria: createEquipmentPictureCriteria(equipmentId),
+    fieldKey: 'intervention_equipmentPicture',
+    sortKey: 'intervention_equipmentPicture',
+    page,
+  });
+}
