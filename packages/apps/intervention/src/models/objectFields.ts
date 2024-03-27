@@ -83,6 +83,18 @@ export const intervention_modelAPI: ObjectFields = {
     comments: schemaContructor.string(),
     contract: schemaContructor.subObject(),
   }),
+  intervention_equipmentLine: schemaContructor.object({
+    trackingNumber: schemaContructor.subObject('trackingNumberSeq'),
+    product: schemaContructor.subObject().concat(
+      schemaContructor.object({
+        name: schemaContructor.string(),
+        code: schemaContructor.string(),
+        unit: schemaContructor.subObject(),
+      }),
+    ),
+    comments: schemaContructor.string(),
+    quantity: schemaContructor.string(),
+  }),
   intervention_equipmentFamily: schemaContructor.object({
     name: schemaContructor.string(),
   }),
