@@ -53,6 +53,7 @@ import {
   filterAuthorizedDashboardMenus,
 } from '../dashboards/menu.helpers';
 import {fetchDashboardConfigs} from '../features/mobileDashboardSlice';
+import {usePermissionsFetcher} from '../permissions';
 
 const Drawer = createDrawerNavigator();
 const Stack = createStackNavigator();
@@ -73,6 +74,7 @@ const Navigator = ({modules, mainMenu, onRefresh, versionCheckConfig}) => {
   const I18n = useTranslator();
   const Colors = useThemeColor();
   const dispatch = useDispatch();
+  const fetchAllPermission = usePermissionsFetcher();
 
   const {screens: dashboardScreeens, menus: dashboardMenusConfig} = useMemo(
     () => createDashboardScreens(dashboardConfigs),
@@ -127,7 +129,8 @@ const Navigator = ({modules, mainMenu, onRefresh, versionCheckConfig}) => {
   useEffect(() => {
     dispatch(fetchMetaModules());
     dispatch(fetchDashboardConfigs());
-  }, [dispatch]);
+    fetchAllPermission();
+  }, [dispatch, fetchAllPermission]);
 
   const changeActiveModule = useCallback(
     moduleName => {

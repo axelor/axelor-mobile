@@ -183,6 +183,7 @@
   "Base_SliceAction_UpdateRecord": "update record",
   "Base_SliceAction_RefreshRecord": "refresh record",
   "Base_SliceAction_FetchJsonFieldsOfModel": "fetch custom fields of model",
+  "Base_SliceAction_FetchObjectModelTypes": "fetch model types of object model",
   "Base_SliceAction_FetchDataOfModel": "fetch data of model",
   "Base_SliceAction_UpdateJsonFieldsObject": "update custom fields of object",
   "Base_SliceAction_FetchAnomalies": "fetch anomalies of object",
