@@ -16,17 +16,21 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import React, {useCallback} from 'react';
+import React, {useCallback, useMemo} from 'react';
 import {HeaderContainer, Screen, ScrollList} from '@axelor/aos-mobile-ui';
 import {
   useSelector,
   useDispatch,
   useTranslator,
   AOSImage,
+  enableCamera,
+  handleDocumentSelection,
 } from '@axelor/aos-mobile-core';
 import EquipmentDetailsHeader from '../../components/molecules/EquipmentDetailsHeader/EquipmentDetailsHeader';
 import {searchEquipmentPicture} from '../../features/equipmentPictureSlice';
 import {Dimensions, StyleSheet, View} from 'react-native';
+
+const cameraKey = 'equipment_pictures';
 
 const EquipmentPictureScreen = ({}) => {
   const dispatch = useDispatch();
@@ -56,9 +60,9 @@ const EquipmentPictureScreen = ({}) => {
     return pairedData;
   };
 
-  console.log(equipmentPictureList);
-
-  const pairedEquipmentPictureList = prepareImageData(equipmentPictureList);
+  const pairedEquipmentPictureList = useMemo(() => {
+    return prepareImageData(equipmentPictureList);
+  }, [equipmentPictureList]);
 
   return (
     <Screen removeSpaceOnTop={true}>
@@ -71,12 +75,16 @@ const EquipmentPictureScreen = ({}) => {
           {
             iconName: 'plus-lg',
             title: I18n.t('Intervention_ChoosePhoto'),
-            onPress: () => {},
+            onPress: () => {
+              handleDocumentSelection(file => console.log(file));
+            },
           },
           {
             iconName: 'camera-fill',
             title: I18n.t('Intervention_TakePicture'),
-            onPress: () => {},
+            onPress: () => {
+              dispatch((enableCamera as any)(cameraKey));
+            },
           },
         ]}
         loadingList={loadingList}
