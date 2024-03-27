@@ -18,5 +18,6 @@
 
 export {clipboardProvider} from './ClipboardProvider';
 export {contactProvider} from './ContactProvider';
+export {handleDocumentSelection} from './FilePicker';
 export {openFileInExternalApp} from './FileViewer';
 export {linkingProvider} from './LinkingProvider';

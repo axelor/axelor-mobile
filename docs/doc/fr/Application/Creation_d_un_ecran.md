@@ -140,6 +140,7 @@ Un field est défini à travers plusieurs attribut :
     | 'label'
     | 'password'
     | 'file'
+    | 'signature'
     | 'date'
     | 'checkbox'
     | 'custom';
