@@ -28,12 +28,13 @@ import {
   useThemeColor,
 } from '@axelor/aos-mobile-ui';
 import {handleDocumentSelection} from '../../../tools';
-import {uploadBase64} from '../../../api/metafile-api';
+import {deleteMetaFile, uploadBase64} from '../../../api/metafile-api';
 import {useSelector} from '../../../redux/hooks';
 import {showToastMessage} from '../../../utils';
 import {AOSImage} from '../../organisms';
 import PictureIcon from './PictureIcon';
-import SaveIcon from './SaveIcon';
+
+const CANVA_HEIGHT = 300;
 
 const SignatureInput = ({
   style,
@@ -78,7 +79,7 @@ const SignatureInput = ({
 
   const _required = useMemo(
     () => required && defaultValue?.id == null,
-    [required, defaultValue],
+    [required, defaultValue?.id],
   );
 
   const canvaStyle = useMemo(
@@ -86,7 +87,10 @@ const SignatureInput = ({
     [Colors],
   );
 
-  const commonStyles = useMemo(() => getCommonStyles(Colors), [Colors]);
+  const commonStyles = useMemo(
+    () => getCommonStyles(Colors, _required),
+    [Colors, _required],
+  );
 
   const styles = useMemo(
     () => getStyles(Colors, canvaSize, _required),
@@ -107,10 +111,28 @@ const SignatureInput = ({
     setUnsavedChanges(false);
   }, []);
 
+  const handleFileDelete = useCallback(
+    async (sendChange = true) => {
+      if (defaultValue?.id != null) {
+        try {
+          await deleteMetaFile(defaultValue?.id);
+        } catch (error) {
+          console.log('Could not delete the file:', error);
+        }
+      }
+
+      if (sendChange) {
+        onChange(null);
+      }
+    },
+    [defaultValue?.id, onChange],
+  );
+
   const handleUpload = useCallback(
     async (file: any) => {
       try {
         handleClose();
+        handleFileDelete(false);
 
         if (returnBase64String) {
           onChange(file.fullBase64);
@@ -134,7 +156,15 @@ const SignatureInput = ({
         });
       }
     },
-    [baseUrl, handleClose, jsessionId, onChange, returnBase64String, token],
+    [
+      baseUrl,
+      handleClose,
+      handleFileDelete,
+      jsessionId,
+      onChange,
+      returnBase64String,
+      token,
+    ],
   );
 
   const handleSignature = useCallback(
@@ -158,17 +188,22 @@ const SignatureInput = ({
     [handleUpload],
   );
 
+  const containerStyle = useMemo(
+    () => [
+      commonStyles.filter,
+      commonStyles.filterAlign,
+      styles.contentContainer,
+      unsavedChanges ? commonStyles.inputFocused : null,
+    ],
+    [commonStyles, styles, unsavedChanges],
+  );
+
   return (
     <View style={[styles.container, style]}>
       {!checkNullString(title) && <Text style={styles.title}>{title}</Text>}
-      <View
-        style={[
-          commonStyles.filter,
-          commonStyles.filterAlign,
-          styles.contentContainer,
-        ]}>
-        <View style={styles.signatureContainer}>
-          {!readonly && editSignature ? (
+      {editSignature ? (
+        <View style={containerStyle}>
+          <View style={styles.signatureContainer}>
             <Signature
               webStyle={canvaStyle}
               backgroundColor={Colors.screenBackgroundColor}
@@ -178,27 +213,7 @@ const SignatureInput = ({
               onBegin={() => setUnsavedChanges(true)}
               autoClear={false}
             />
-          ) : (
-            <AOSImage
-              imageSize={styles.signatureContainer}
-              metaFile={returnBase64String ? null : defaultValue}
-              defaultIconSize={canvaSize * 0.5}
-              enableImageViewer={true}
-              resizeMode="contain"
-            />
-          )}
-        </View>
-        {!readonly && !editSignature ? (
-          <View style={styles.iconContainer}>
-            <Icon
-              name="vector-pen"
-              size={iconSize}
-              touchable={true}
-              onPress={() => setEditSignature(true)}
-              style={styles.icon}
-            />
           </View>
-        ) : (
           <View style={styles.iconContainer}>
             <Icon
               name="x-lg"
@@ -231,15 +246,53 @@ const SignatureInput = ({
               onPress={handleClear}
               style={styles.icon}
             />
-            <SaveIcon
-              iconSize={iconSize}
-              handleSave={handleSave}
-              unsavedChanges={unsavedChanges}
+            <Icon
+              name="check-lg"
+              size={iconSize}
+              touchable={unsavedChanges}
+              color={
+                unsavedChanges
+                  ? Colors.successColor.background
+                  : Colors.secondaryColor.background
+              }
+              onPress={handleSave}
               style={styles.icon}
             />
           </View>
-        )}
-      </View>
+        </View>
+      ) : (
+        <View style={containerStyle}>
+          <View style={styles.signatureContainer}>
+            <AOSImage
+              imageSize={styles.signatureContainer}
+              metaFile={returnBase64String ? null : defaultValue}
+              defaultIconSize={canvaSize * 0.5}
+              enableImageViewer={true}
+              resizeMode="contain"
+            />
+          </View>
+          {!readonly && (
+            <View style={styles.iconContainer}>
+              <Icon
+                name="vector-pen"
+                size={iconSize}
+                touchable={true}
+                onPress={() => setEditSignature(true)}
+                style={styles.icon}
+              />
+              <Icon
+                name="trash3-fill"
+                visible={defaultValue?.id != null}
+                size={iconSize}
+                touchable={true}
+                color={Colors.errorColor.background}
+                onPress={handleFileDelete}
+                style={styles.icon}
+              />
+            </View>
+          )}
+        </View>
+      )}
     </View>
   );
 };
@@ -262,7 +315,7 @@ const getStyles = (Colors: ThemeColors, canvaSize: any, required: boolean) =>
     },
     signatureContainer: {
       width: canvaSize,
-      height: 300,
+      height: CANVA_HEIGHT,
       justifyContent: 'center',
     },
     iconContainer: {
@@ -272,7 +325,7 @@ const getStyles = (Colors: ThemeColors, canvaSize: any, required: boolean) =>
       height: '100%',
     },
     icon: {
-      margin: 5,
+      marginVertical: 5,
     },
     title: {
       marginLeft: 10,
