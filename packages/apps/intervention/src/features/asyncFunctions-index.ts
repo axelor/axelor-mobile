@@ -28,6 +28,7 @@ export {
 export {
   getEquipmentById,
   searchEquipment,
+  searchInterventionEquipment,
   searchPlaceEquipment,
   updateEquipment,
 } from './equipmentSlice';
