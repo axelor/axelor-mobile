@@ -1,0 +1,5 @@
+{
+  "title": "SignatureInput: add new component to enable user signature",
+  "type": "feat",
+  "packages": "core"
+}
