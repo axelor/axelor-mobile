@@ -16,19 +16,19 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import {useCallback, useEffect} from 'react';
+import {useCallback, useEffect, useMemo} from 'react';
 import {useDispatch, useSelector} from 'react-redux';
-import {fetchObjectModelTypes} from './api.helpers';
+import {fetchObjectModelTypes} from '../../features/metaJsonFieldSlice';
 import {useFieldsPermissions, useIsAdmin} from '../../permissions';
 
 const isFieldHidden = (authorizedRoles, userRoles) => {
   if (!Array.isArray(authorizedRoles) || authorizedRoles.length === 0) {
-    return true;
-  } else if (!Array.isArray(userRoles) || userRoles.length === 0) {
     return false;
+  } else if (!Array.isArray(userRoles) || userRoles.length === 0) {
+    return true;
   } else {
-    return authorizedRoles.some(
-      _role => userRoles.find(({id: roleId}) => roleId === _role.id) != null,
+    return authorizedRoles.every(
+      _role => userRoles.find(({id: roleId}) => roleId === _role.id) == null,
     );
   }
 };
@@ -49,17 +49,27 @@ export const useFieldPermitter = ({modelName}: {modelName: string}) => {
     dispatch((fetchObjectModelTypes as any)({modelName}));
   }, [dispatch, modelName]);
 
+  const roles = useMemo(() => {
+    const _userRoles = user?.roles ?? [];
+    const _groupRoles = user?.group?.roles ?? [];
+
+    return [..._userRoles, ..._groupRoles].filter(
+      (item, index, self) => self.findIndex(_i => _i.id === item.id) === index,
+    );
+  }, [user?.group?.roles, user?.roles]);
+
   return useCallback(
     _item => {
       if (isAdmin) {
         return _item;
       }
 
-      const {readonly} = permissions.find(({key}) => key === _item.modelField);
-      const isHidden = isFieldHidden(_item.roles, user?.roles);
+      const {readonly} =
+        permissions.find(({key}) => key === _item.modelField) ?? {};
+      const isHidden = isFieldHidden(_item.roles, roles);
 
       return {..._item, readonly, hidden: isHidden};
     },
-    [isAdmin, permissions, user?.roles],
+    [isAdmin, permissions, roles],
   );
 };
