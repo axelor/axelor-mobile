@@ -17,12 +17,27 @@
  */
 
 import {createAsyncThunk, createSlice} from '@reduxjs/toolkit';
+import {handlerApiCall} from '../../apiProviders';
 import {postTranslations} from '../../i18n';
+import {uploadNavigationTools as _uploadNavigationTools} from '../api/config-api';
 
 export const uploadTranslations = createAsyncThunk(
   'base/uploadTranslations',
   async function ({language, translations}) {
     return postTranslations(language, translations);
+  },
+);
+
+export const uploadNavigationTools = createAsyncThunk(
+  'base/uploadNavigationTools',
+  async function (data = {}, {getState}) {
+    return handlerApiCall({
+      fetchFunction: _uploadNavigationTools,
+      data,
+      action: 'Auth_SliceAction_UploadNavigationTools',
+      getState,
+      responseOptions: {isArrayResponse: false, showToast: true},
+    });
   },
 );
 
@@ -46,6 +61,15 @@ const configSlice = createSlice({
     builder.addCase(uploadTranslations.fulfilled, (state, action) => {
       state.loading = false;
       state.message = action.payload;
+    });
+    builder.addCase(uploadNavigationTools.pending, state => {
+      state.loading = true;
+    });
+    builder.addCase(uploadNavigationTools.rejected, state => {
+      state.loading = false;
+    });
+    builder.addCase(uploadNavigationTools.fulfilled, (state, action) => {
+      state.loading = false;
     });
   },
 });

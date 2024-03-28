@@ -30,6 +30,7 @@ export default {
     options: {
       shadedHeader: false,
     },
+    isUsableOnShortcut: true,
   },
   ProductStockDetailsScreen: {
     title: 'Stock_Product',

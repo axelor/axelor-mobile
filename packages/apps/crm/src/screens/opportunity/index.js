@@ -28,6 +28,7 @@ export default {
     options: {
       shadedHeader: false,
     },
+    isUsableOnShortcut: true,
   },
   OpportunityDetailsScreen: {
     title: 'Crm_Opportunity',

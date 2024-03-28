@@ -12,6 +12,7 @@
   "User_ColorForColorBlind": "Mode daltonien",
   "User_Show_Drawer_Subtitles": "Afficher les sous titres des modules",
   "User_SendTranslations": "Envoyer les traductions",
+  "User_SendNavigationInformations": "Envoyer les informations de navigation",
   "User_UserProfile": "Profil utilisateur",
   "User_Settings": "Paramètres",
   "User_Company": "Société",
@@ -23,5 +24,6 @@
   "Auth_SliceAction_FetchLocalization": "récupération des localisations",
   "Auth_SliceAction_FetchCompanies": "récupération des sociétés",
   "Auth_SliceAction_FetchActiveUser": "récupération de l'utilisateur actif",
-  "Auth_SliceAction_UpdateActiveUser": "mise à jour de l'utilisateur actif"
+  "Auth_SliceAction_UpdateActiveUser": "mise à jour de l'utilisateur actif",
+  "Auth_SliceAction_UploadNavigationTools": "envoie des informations de navigation"
 }

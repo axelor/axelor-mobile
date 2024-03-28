@@ -32,6 +32,7 @@ export default {
     options: {
       shadedHeader: false,
     },
+    isUsableOnShortcut: true,
   },
   ManufacturingOrderDetailsScreen: {
     title: 'Manufacturing_ManufacturingOrder',

@@ -68,6 +68,17 @@ export function isMenuIncompatible(compatibility) {
   return false;
 }
 
+export function formatMenus(module) {
+  return Object.fromEntries(
+    Object.entries(module.menus).map(([key, menu], idx) => {
+      return [
+        key,
+        {...menu, order: menu.order ?? idx * 10, parent: module.name},
+      ];
+    }),
+  );
+}
+
 export function hasSubMenus(menu) {
   return (
     menu != null &&

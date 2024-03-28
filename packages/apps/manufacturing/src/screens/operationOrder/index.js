@@ -28,6 +28,7 @@ export default {
     options: {
       shadedHeader: false,
     },
+    isUsableOnShortcut: true,
   },
   OperationOrderDetailsScreen: {
     title: 'Manufacturing_OperationOrder',
@@ -50,6 +51,7 @@ export default {
     options: {
       shadedHeader: false,
     },
+    isUsableOnShortcut: true,
   },
 };
 

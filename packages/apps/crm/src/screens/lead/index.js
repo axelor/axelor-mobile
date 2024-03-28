@@ -28,6 +28,7 @@ export default {
     options: {
       shadedHeader: false,
     },
+    isUsableOnShortcut: true,
   },
   LeadDetailsScreen: {
     title: 'Crm_Lead',

@@ -34,7 +34,7 @@ import {
   useOnline,
 } from '../../features/onlineSlice';
 import {ApiProviderConfig} from '../../apiProviders/config';
-import {TranslationsButton} from '../components';
+import {NavigationToolsButton, TranslationsButton} from '../components';
 
 const SettingsScreen = ({children}) => {
   const I18n = useTranslator();
@@ -116,6 +116,7 @@ const SettingsScreen = ({children}) => {
         />
         {children}
         <TranslationsButton />
+        <NavigationToolsButton />
       </View>
       <View style={styles.footerContainer}>
         <Text>{I18n.t('Base_Version', {appVersion: appVersion})}</Text>

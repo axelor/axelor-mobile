@@ -27,6 +27,7 @@ export default {
     options: {
       shadedHeader: false,
     },
+    isUsableOnShortcut: true,
   },
   CatalogFormScreen: {
     title: 'Crm_Catalogs',

@@ -31,6 +31,7 @@ export default {
     options: {
       shadedHeader: false,
     },
+    isUsableOnShortcut: true,
   },
   InventoryPlannedDetailsScreen: {
     title: 'Stock_Inventory',

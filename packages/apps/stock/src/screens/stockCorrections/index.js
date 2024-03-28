@@ -28,6 +28,7 @@ export default {
     options: {
       shadedHeader: false,
     },
+    isUsableOnShortcut: true,
   },
   StockCorrectionDetailsScreen: {
     title: 'Stock_StockCorrection',
@@ -40,6 +41,7 @@ export default {
   StockCorrectionCreationScreen: {
     title: 'Stock_StockCorrection',
     component: StockCorrectionCreationScreen,
+    isUsableOnShortcut: true,
   },
 };
 
