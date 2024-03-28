@@ -113,6 +113,7 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
   },
   stopwatch: {
+    width: '90%',
     marginTop: 30,
     marginVertical: 0,
   },
