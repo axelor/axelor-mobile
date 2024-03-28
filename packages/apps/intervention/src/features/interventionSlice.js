@@ -24,6 +24,7 @@ import {
 import {
   fetchIntervention as _fetchIntervention,
   fetchInterventionById as _fetchInterventionById,
+  searchHistoryInterventionByEquipment as _searchHistoryInterventionByEquipment,
 } from '../api/intervention-api';
 
 export const fetchIntervention = createAsyncThunk(
@@ -52,11 +53,29 @@ export const fetchInterventionById = createAsyncThunk(
   },
 );
 
+export const searchHistoryInterventionByEquipment = createAsyncThunk(
+  'intervention_intervention/searchHistoryInterventionByEquipment',
+  async function (data, {getState}) {
+    return handlerApiCall({
+      fetchFunction: _searchHistoryInterventionByEquipment,
+      data,
+      action: 'Intervention_SliceAction_SearchHistoryInterventionByEquipment',
+      getState,
+      responseOptions: {isArrayResponse: true},
+    });
+  },
+);
+
 const initialState = {
   loading: true,
   moreLoading: false,
   isListEnd: false,
   interventionList: [],
+
+  loadingHistoryList: true,
+  moreLoadingHistory: false,
+  isListEndHistory: false,
+  interventionHistoryList: [],
 
   loadingIntervention: true,
   intervention: {},
@@ -72,6 +91,16 @@ const interventionSlice = createSlice({
       isListEnd: 'isListEnd',
       list: 'interventionList',
     });
+    generateInifiniteScrollCases(
+      builder,
+      searchHistoryInterventionByEquipment,
+      {
+        loading: 'loadingHistoryList',
+        moreLoading: 'moreLoadingHistory',
+        isListEnd: 'isListEndHistory',
+        list: 'interventionHistoryList',
+      },
+    );
     builder.addCase(fetchInterventionById.pending, state => {
       state.loadingIntervention = true;
     });

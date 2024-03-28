@@ -40,6 +40,7 @@
   "Intervention_Contract": "Contrat",
   "Intervention_EquipmentLine": "Ligne d'équipement",
   "Intervention_OpenEquipmentLine": "Ouvrir les lignes d'équipements",
+  "Intervention_OpenEquipmentIntervention": "Ouvrir l'historique des interventions",
   "Intervention_CreatedOn": "Créée le",
   "Intervention_UpdatedOn": "Mise à jour le",
   "Intervention_CreatedBy": "Créée par",
@@ -59,5 +60,6 @@
   "Intervention_SliceAction_FetchInterventionNote": "récupération des notes d'interventions",
   "Intervention_SliceAction_DeleteInterventionNote": "suppression d'une note d'intervention",
   "Intervention_SliceAction_FetchInterventionNoteType": "récupération des types de note d'intervention",
-  "Intervention_SliceAction_SearchEquipmentLine": "recherche sur les lignes d'équipement"
+  "Intervention_SliceAction_SearchEquipmentLine": "recherche sur les lignes d'équipement",
+  "Intervention_SliceAction_SearchHistoryInterventionByEquipment": "recherche l'historique des interventions par equipment"
 }

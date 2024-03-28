@@ -18,6 +18,7 @@
 
 import CustomerParkScreen from './CustomerParkScreen';
 import EquipmentFormView from './EquipmentFormView';
+import EquipmentInterventionListScreen from './EquipmentInterventionListScreen';
 import EquipmentLineListScreen from './EquipmentLineListScreen';
 
 export default {
@@ -36,6 +37,13 @@ export default {
   EquipmentLineListScreen: {
     title: 'Intervention_EquipmentLine',
     component: EquipmentLineListScreen,
+    options: {
+      shadedHeader: false,
+    },
+  },
+  EquipmentInterventionListScreen: {
+    title: 'Intervention_Equipment',
+    component: EquipmentInterventionListScreen,
     options: {
       shadedHeader: false,
     },
