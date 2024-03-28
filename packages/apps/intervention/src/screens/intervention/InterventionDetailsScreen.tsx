@@ -45,7 +45,7 @@ const InterventionDetailsScreen = ({route}) => {
     {
       iconName: 'house',
       viewComponent: <GeneralInformationView />,
-      color: Colors.primaryColor,
+      color: Colors.secondaryColor_dark,
     },
     {
       iconName: 'card-checklist',
