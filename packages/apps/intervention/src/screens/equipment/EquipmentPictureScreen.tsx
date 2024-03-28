@@ -98,7 +98,9 @@ const EquipmentPictureScreen = ({}) => {
             item={item}
             onPressClose={() => {}}
             selectedImageId={selectedImageId}
-            onSelectImage={itemId => handleSelectImage(itemId)}
+            onSelectImage={itemId =>
+              handleSelectImage(itemId !== selectedImageId ? itemId : null)
+            }
           />
         )}
         fetchData={fetchEquipmentPictureAPI}
