@@ -62,26 +62,16 @@ const PicturesCard = ({style, item, onPressClose}: PicturesCardProps) => {
       Animated.sequence([
         Animated.timing(animationRef, {
           toValue: 5,
-          duration: 50,
+          duration: 100,
           useNativeDriver: true,
         }),
         Animated.timing(animationRef, {
           toValue: -5,
-          duration: 50,
-          useNativeDriver: true,
-        }),
-        Animated.timing(animationRef, {
-          toValue: 5,
-          duration: 50,
-          useNativeDriver: true,
-        }),
-        Animated.timing(animationRef, {
-          toValue: 0,
-          duration: 50,
+          duration: 100,
           useNativeDriver: true,
         }),
       ]),
-      {iterations: 3},
+      {iterations: 2},
     ).start();
   };
 
