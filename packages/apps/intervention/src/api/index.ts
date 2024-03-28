@@ -29,6 +29,7 @@ export {searchEquipmentLine as searchEquipmentLineApi} from './equipment-line-ap
 export {
   fetchIntervention as fetchInterventionApi,
   fetchInterventionById as fetchInterventionByIdApi,
+  searchHistoryInterventionByEquipment as searchHistoryInterventionByEquipmentApi,
 } from './intervention-api';
 export {
   deleteInterventionNote as deleteInterventionNoteApi,

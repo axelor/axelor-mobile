@@ -31,5 +31,9 @@ export {
   fetchInterventionNote,
   fetchInterventionNoteType,
 } from './interventionNoteSlice';
-export {fetchIntervention, fetchInterventionById} from './interventionSlice';
+export {
+  fetchIntervention,
+  fetchInterventionById,
+  searchHistoryInterventionByEquipment,
+} from './interventionSlice';
 export {fetchQuestion, fetchRange} from './questionSlice';
