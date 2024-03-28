@@ -16,7 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import React, {useCallback, useMemo} from 'react';
+import React, {useCallback, useMemo, useState} from 'react';
 import {HeaderContainer, Screen, ScrollList} from '@axelor/aos-mobile-ui';
 import {
   useSelector,
@@ -38,6 +38,11 @@ const EquipmentPictureScreen = ({}) => {
   const {equipment} = useSelector((state: any) => state.intervention_equipment);
   const {equipmentPictureList, loadingList, moreLoading, isListEnd} =
     useSelector((state: any) => state.intervention_equipmentPicture);
+  const [selectedImageId, setSelectedImageId] = useState(null);
+
+  const handleSelectImage = id => {
+    setSelectedImageId(id);
+  };
 
   const fetchEquipmentPictureAPI = useCallback(
     (page = 0) => {
@@ -89,7 +94,12 @@ const EquipmentPictureScreen = ({}) => {
         loadingList={loadingList}
         data={pairedEquipmentPictureList}
         renderItem={({item}) => (
-          <PicturesCard item={item} onPressClose={() => {}} />
+          <PicturesCard
+            item={item}
+            onPressClose={() => {}}
+            selectedImageId={selectedImageId}
+            onSelectImage={itemId => handleSelectImage(itemId)}
+          />
         )}
         fetchData={fetchEquipmentPictureAPI}
         moreLoading={moreLoading}

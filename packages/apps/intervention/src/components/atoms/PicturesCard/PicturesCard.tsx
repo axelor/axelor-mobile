@@ -16,7 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import React, {useMemo, useRef, useState} from 'react';
+import React, {useMemo, useRef} from 'react';
 import {
   Animated,
   StyleSheet,
@@ -36,23 +36,36 @@ interface PicturesCardProps {
   style?: any;
   item: any;
   onPressClose?: () => void;
+  selectedImageId: any;
+  onSelectImage: any;
 }
 
-const PicturesCard = ({style, item, onPressClose}: PicturesCardProps) => {
+const PicturesCard = ({
+  style,
+  item,
+  onPressClose,
+  selectedImageId,
+  onSelectImage,
+}: PicturesCardProps) => {
   const Colors = useThemeColor();
   const I18n = useTranslator();
 
   const {baseUrl, token, jsessionId} = useSelector((state: any) => state.auth);
 
-  const [showClose, setShowClose] = useState({item1: false, item2: false});
   const shakeAnimation1 = useRef(new Animated.Value(0)).current;
   const shakeAnimation2 = useRef(new Animated.Value(0)).current;
 
-  const handleLongPress = itemKey => {
-    setShowClose(prev => ({...prev, [itemKey]: !prev[itemKey]}));
-    startShakeAnimation(
-      itemKey === 'item1' ? shakeAnimation1 : shakeAnimation2,
-    );
+  const handleLongPress = imageId => {
+    onSelectImage(imageId);
+    const animationRef =
+      item.item1.id === imageId
+        ? shakeAnimation1
+        : item.item2 && item.item2.id === imageId
+        ? shakeAnimation2
+        : null;
+    if (animationRef) {
+      startShakeAnimation(animationRef);
+    }
   };
 
   const styles = useMemo(() => getStyles(Colors), [Colors]);
@@ -83,11 +96,11 @@ const PicturesCard = ({style, item, onPressClose}: PicturesCardProps) => {
     );
   };
 
-  const renderImage = (imageData, itemKey, animationRef) => (
+  const renderImage = (imageData, animationRef) => (
     <View style={styles.imageContainer}>
       <TouchableOpacity
         onPress={() => handleShowFile(imageData.pictureFile)}
-        onLongPress={() => handleLongPress(itemKey)}
+        onLongPress={() => handleLongPress(imageData.id)}
         delayLongPress={300}>
         <Animated.View style={{transform: [{translateX: animationRef}]}}>
           <AOSImage
@@ -99,24 +112,23 @@ const PicturesCard = ({style, item, onPressClose}: PicturesCardProps) => {
           />
         </Animated.View>
       </TouchableOpacity>
-      {showClose[itemKey] && (
-        <TouchableOpacity
+      {selectedImageId === imageData.id && (
+        <Icon
           style={styles.closeIcon}
-          onPress={() => onPressClose()}>
-          <Icon
-            name="x-lg"
-            size={15}
-            color={Colors.importantColor.background}
-          />
-        </TouchableOpacity>
+          onPress={() => onPressClose()}
+          touchable={true}
+          name="x-lg"
+          size={15}
+          color={Colors.importantColor.background}
+        />
       )}
     </View>
   );
 
   return (
     <View style={styles.rowContainer}>
-      {item.item1 && renderImage(item.item1, 'item1', shakeAnimation1)}
-      {item.item2 && renderImage(item.item2, 'item2', shakeAnimation2)}
+      {item.item1 && renderImage(item.item1, shakeAnimation1)}
+      {item.item2 && renderImage(item.item2, shakeAnimation2)}
     </View>
   );
 };
@@ -142,7 +154,7 @@ const getStyles = (color: ThemeColors) =>
     closeIcon: {
       position: 'absolute',
       right: -5,
-      top: -5,
+      top: -10,
       backgroundColor: color.backgroundColor,
       borderRadius: 50,
       padding: 5,
