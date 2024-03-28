@@ -27,7 +27,7 @@ import {
   SurveyView,
 } from '../../components';
 import {fetchInterventionById} from '../../features/interventionSlice';
-import {searchInterventionEquipment} from '../../features/equipmentSlice';
+import {fetchNumberInterventionEquipment} from '../../features/equipmentSlice';
 import {Intervention} from '../../types';
 
 const InterventionDetailsScreen = ({route}) => {
@@ -57,7 +57,9 @@ const InterventionDetailsScreen = ({route}) => {
       idsInterventionEquipement.length > 0
     ) {
       dispatch(
-        (searchInterventionEquipment as any)({idsInterventionEquipement}),
+        (fetchNumberInterventionEquipment as any)({
+          idsInterventionEquipement,
+        }),
       );
     }
   }, [dispatch, idsInterventionEquipement]);

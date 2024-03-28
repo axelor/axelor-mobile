@@ -37,7 +37,20 @@ export const searchEquipment = createAsyncThunk(
       data,
       action: 'Intervention_SliceAction_SearchEquipment',
       getState,
-      responseOptions: {isArrayResponse: true, resturnTotalWithData: true},
+      responseOptions: {isArrayResponse: true},
+    });
+  },
+);
+
+export const fetchNumberClientEquipment = createAsyncThunk(
+  'intervention_equipment/fetchNumberClientEquipment',
+  async function (data, {getState}) {
+    return handlerApiCall({
+      fetchFunction: _searchEquipment,
+      data: {isCountFetch: true, ...data},
+      action: 'Intervention_SliceAction_FetchNumberClientEquipment',
+      getState,
+      responseOptions: {isArrayResponse: false, resturnTotalWithData: true},
     });
   },
 );
@@ -50,7 +63,20 @@ export const searchInterventionEquipment = createAsyncThunk(
       data,
       action: 'Intervention_SliceAction_SearchInterventionEquipment',
       getState,
-      responseOptions: {isArrayResponse: true, resturnTotalWithData: true},
+      responseOptions: {isArrayResponse: true},
+    });
+  },
+);
+
+export const fetchNumberInterventionEquipment = createAsyncThunk(
+  'intervention_equipment/fetchNumberInterventionEquipment',
+  async function (data, {getState}) {
+    return handlerApiCall({
+      fetchFunction: _searchInterventionEquipment,
+      data: {isCountFetch: true, ...data},
+      action: 'Intervention_SliceAction_FetchNumberInterventionEquipment',
+      getState,
+      responseOptions: {isArrayResponse: false, resturnTotalWithData: true},
     });
   },
 );
@@ -126,32 +152,25 @@ const equipmentSlice = createSlice({
   name: 'intervention_equipment',
   initialState,
   extraReducers: builder => {
-    generateInifiniteScrollCases(
-      builder,
-      searchEquipment,
-      {
-        loading: 'loadingList',
-        moreLoading: 'moreLoading',
-        isListEnd: 'isListEnd',
-        list: 'equipmentList',
-        total: 'totalNumberClientEquipment',
-      },
-      {
-        manageTotal: true,
-      },
-    );
-    generateInifiniteScrollCases(
-      builder,
-      searchInterventionEquipment,
-      {
-        loading: 'loadingInterventionEquipmentList',
-        moreLoading: 'moreLoadingInterventionEquipment',
-        isListEnd: 'isInterventionEquipmentListEnd',
-        list: 'interventionEquipmentList',
-        total: 'totalNumberInterventionEquipment',
-      },
-      {
-        manageTotal: true,
+    generateInifiniteScrollCases(builder, searchEquipment, {
+      loading: 'loadingList',
+      moreLoading: 'moreLoading',
+      isListEnd: 'isListEnd',
+      list: 'equipmentList',
+    });
+    builder.addCase(fetchNumberClientEquipment.fulfilled, (state, action) => {
+      state.totalNumberClientEquipment = action.payload.total;
+    });
+    generateInifiniteScrollCases(builder, searchInterventionEquipment, {
+      loading: 'loadingInterventionEquipmentList',
+      moreLoading: 'moreLoadingInterventionEquipment',
+      isListEnd: 'isInterventionEquipmentListEnd',
+      list: 'interventionEquipmentList',
+    });
+    builder.addCase(
+      fetchNumberInterventionEquipment.fulfilled,
+      (state, action) => {
+        state.totalNumberInterventionEquipment = action.payload.total;
       },
     );
     generateInifiniteScrollCases(builder, searchPlaceEquipment, {
@@ -160,7 +179,7 @@ const equipmentSlice = createSlice({
       isListEnd: 'isListEndEquipPlace',
       list: 'equipmentPlaceList',
     });
-    builder.addCase(getEquipmentById.pending, (state, action) => {
+    builder.addCase(getEquipmentById.pending, state => {
       state.loading = true;
     });
     builder.addCase(getEquipmentById.fulfilled, (state, action) => {

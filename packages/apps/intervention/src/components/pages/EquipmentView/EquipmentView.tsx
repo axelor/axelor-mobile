@@ -32,6 +32,8 @@ import {
 } from '@axelor/aos-mobile-ui';
 import {EquipmentActionCard, InterventionHeader} from '../../molecules';
 import {
+  fetchNumberClientEquipment,
+  fetchNumberInterventionEquipment,
   searchEquipment,
   searchInterventionEquipment,
 } from '../../../features/equipmentSlice';
@@ -44,6 +46,31 @@ const EquipmentView = ({}) => {
 
   const [selectedStatus, setSelectedStatus] = useState([]);
   const [mode, setMode] = useState(Equipment.mode.intervention);
+
+  const isInterventionMode = useMemo(
+    () => mode === Equipment.mode.intervention,
+    [mode],
+  );
+
+  const actionList = useMemo(() => {
+    const _actionList = [
+      {
+        iconName: 'plus',
+        title: I18n.t('Intervention_CreateEquipment'),
+        onPress: () => console.log('Create an equipment button pressed.'),
+      },
+    ];
+
+    if (isInterventionMode) {
+      _actionList.push({
+        iconName: 'link-45deg',
+        title: I18n.t('Intervention_LinkEquipment'),
+        onPress: () => console.log('Link an equipment button pressed.'),
+      });
+    }
+
+    return _actionList;
+  }, [I18n, isInterventionMode]);
 
   const {intervention} = useSelector(
     (state: any) => state.intervention_intervention,
@@ -83,7 +110,7 @@ const EquipmentView = ({}) => {
   );
 
   const ObjectToDisplay = useMemo(() => {
-    if (mode === Equipment.mode.intervention) {
+    if (isInterventionMode) {
       return {
         list: interventionEquipmentList,
         loading: loadingInterventionEquipmentList,
@@ -106,10 +133,10 @@ const EquipmentView = ({}) => {
     equipmentList,
     interventionEquipmentList,
     isInterventionEquipmentListEnd,
+    isInterventionMode,
     isListEnd,
     loadingInterventionEquipmentList,
     loadingList,
-    mode,
     moreLoading,
     moreLoadingInterventionEquipment,
     searchEquipmentData,
@@ -118,10 +145,16 @@ const EquipmentView = ({}) => {
 
   useEffect(() => {
     dispatch(
-      (searchInterventionEquipment as any)(searchInterventionEquipmentData),
+      (fetchNumberInterventionEquipment as any)({
+        idsInterventionEquipement,
+      }),
     );
-    dispatch((searchEquipment as any)(searchEquipmentData));
-  }, [dispatch, searchEquipmentData, searchInterventionEquipmentData]);
+    dispatch(
+      (fetchNumberClientEquipment as any)({
+        partnerId: intervention.deliveredPartner?.id,
+      }),
+    );
+  }, [dispatch, idsInterventionEquipement, intervention.deliveredPartner?.id]);
 
   return (
     <SearchListView
@@ -133,7 +166,7 @@ const EquipmentView = ({}) => {
       sliceFunctionData={ObjectToDisplay.sliceFunctionData}
       searchPlaceholder={I18n.t('Base_Search')}
       headerTopChildren={<InterventionHeader intervention={intervention} />}
-      fixedItems={
+      headerChildren={
         <ToggleSwitch
           leftTitle={I18n.t('Intervention_Intervention')}
           rightTitle={I18n.t('Intervention_Customer')}
@@ -177,21 +210,10 @@ const EquipmentView = ({}) => {
           code={item.code}
           equipmentFamily={item.equipmentFamily?.name}
           inService={item.inService}
-          isUnlinkAction={mode === Equipment.mode.intervention}
+          isUnlinkAction={isInterventionMode}
         />
       )}
-      actionList={[
-        {
-          iconName: 'plus',
-          title: I18n.t('Intervention_CreateEquipment'),
-          onPress: () => console.log('Create an equipment button pressed.'),
-        },
-        {
-          iconName: 'link-45deg',
-          title: I18n.t('Intervention_LinkEquipment'),
-          onPress: () => console.log('Link an equipment button pressed.'),
-        },
-      ]}
+      actionList={actionList}
     />
   );
 };

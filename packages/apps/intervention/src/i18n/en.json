@@ -77,5 +77,7 @@
   "Intervention_SliceAction_FetchInterventionNoteById": "fetch intervention note by id",
   "Intervention_SliceAction_UpdateInterventionNote": "update intervention note",
   "Intervention_SliceAction_CreateInterventionNote": "create intervention note",
-  "Intervention_SliceAction_SearchInterventionEquipment": "search intervention equipments"
+  "Intervention_SliceAction_SearchInterventionEquipment": "search intervention equipments",
+  "Intervention_SliceAction_FetchNumberClientEquipment": "fetch the number of client equipment",
+  "Intervention_SliceAction_FetchNumberInterventionEquipment": "fetch the number of intervention equipment"
 }
