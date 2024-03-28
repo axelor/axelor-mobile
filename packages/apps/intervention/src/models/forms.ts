@@ -73,7 +73,7 @@ export const intervention_formsRegister: FormConfigs = {
         required: true,
       },
       inService: {
-        titleKey: 'Intervention_Status_InService',
+        titleKey: 'Intervention_EquipmentStatus_InService',
         type: 'boolean',
         widget: 'checkbox',
       },
