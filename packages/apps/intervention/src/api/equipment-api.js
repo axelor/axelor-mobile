@@ -64,12 +64,37 @@ const createEquipmentsCriteria = ({
   return criteria;
 };
 
+const createInterventionEquipmentCriteria = ({
+  searchValue,
+  idsInterventionEquipement,
+  inService,
+}) => {
+  const criteria = [getSearchCriterias('intervention_equipment', searchValue)];
+
+  criteria.push({
+    fieldName: 'id',
+    operator: 'in',
+    value: idsInterventionEquipement,
+  });
+
+  if (inService != null) {
+    criteria.push({
+      fieldName: 'inService',
+      operator: inService ? '=' : '!=',
+      value: true,
+    });
+  }
+
+  return criteria;
+};
+
 export async function searchEquipment({
   searchValue,
   page = 0,
   inService,
   partnerId,
   parentPlaceId,
+  isCountFetch = false,
 }) {
   return createStandardSearch({
     model: 'com.axelor.apps.intervention.db.Equipment',
@@ -82,6 +107,28 @@ export async function searchEquipment({
     fieldKey: 'intervention_equipment',
     sortKey: 'intervention_equipment',
     page,
+    numberElementsByPage: isCountFetch ? 0 : 10,
+  });
+}
+
+export async function searchInterventionEquipment({
+  searchValue,
+  idsInterventionEquipement,
+  inService,
+  isCountFetch = false,
+  page = 0,
+}) {
+  return createStandardSearch({
+    model: 'com.axelor.apps.intervention.db.Equipment',
+    criteria: createInterventionEquipmentCriteria({
+      searchValue,
+      idsInterventionEquipement,
+      inService,
+    }),
+    fieldKey: 'intervention_equipment',
+    sortKey: 'intervention_equipment',
+    page,
+    numberElementsByPage: isCountFetch ? 0 : 10,
   });
 }
 

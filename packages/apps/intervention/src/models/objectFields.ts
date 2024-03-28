@@ -66,6 +66,7 @@ export const intervention_modelAPI: ObjectFields = {
         guaranteedRecoveryTime: schemaContructor.number(),
       }),
     ),
+    equipmentSet: schemaContructor.array().of(schemaContructor.subObject()),
   }),
   intervention_equipment: schemaContructor.object({
     sequence: schemaContructor.string(),
