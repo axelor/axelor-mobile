@@ -63,5 +63,7 @@
   "Intervention_SliceAction_DeleteInterventionNote": "delete intervention note",
   "Intervention_SliceAction_FetchInterventionNoteType": "fetch intervention note type",
   "Intervention_SliceAction_SearchEquipmentLine": "search on equipment line",
-  "Intervention_SliceAction_SearchInterventionEquipment": "search intervention equipments"
+  "Intervention_SliceAction_SearchInterventionEquipment": "search intervention equipments",
+  "Intervention_SliceAction_FetchNumberClientEquipment": "fetch the number of client equipment",
+  "Intervention_SliceAction_FetchNumberInterventionEquipment": "fetch the number of intervention equipment"
 }

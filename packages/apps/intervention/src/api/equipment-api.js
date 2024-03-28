@@ -94,6 +94,7 @@ export async function searchEquipment({
   inService,
   partnerId,
   parentPlaceId,
+  isCountFetch = false,
 }) {
   return createStandardSearch({
     model: 'com.axelor.apps.intervention.db.Equipment',
@@ -106,6 +107,7 @@ export async function searchEquipment({
     fieldKey: 'intervention_equipment',
     sortKey: 'intervention_equipment',
     page,
+    numberElementsByPage: isCountFetch ? 0 : 10,
   });
 }
 
@@ -113,6 +115,7 @@ export async function searchInterventionEquipment({
   searchValue,
   idsInterventionEquipement,
   inService,
+  isCountFetch = false,
   page = 0,
 }) {
   return createStandardSearch({
@@ -125,6 +128,7 @@ export async function searchInterventionEquipment({
     fieldKey: 'intervention_equipment',
     sortKey: 'intervention_equipment',
     page,
+    numberElementsByPage: isCountFetch ? 0 : 10,
   });
 }
 
