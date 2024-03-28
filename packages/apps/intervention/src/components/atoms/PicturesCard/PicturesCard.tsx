@@ -16,9 +16,20 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import React, {useMemo} from 'react';
-import {Dimensions, StyleSheet, TouchableOpacity, View} from 'react-native';
-import {AOSImage} from '@axelor/aos-mobile-core';
+import React, {useMemo, useRef, useState} from 'react';
+import {
+  Animated,
+  StyleSheet,
+  TouchableOpacity,
+  View,
+  Dimensions,
+} from 'react-native';
+import {
+  AOSImage,
+  openFileInExternalApp,
+  useTranslator,
+  useSelector,
+} from '@axelor/aos-mobile-core';
 import {ThemeColors, Icon, useThemeColor} from '@axelor/aos-mobile-ui';
 
 interface PicturesCardProps {
@@ -29,56 +40,119 @@ interface PicturesCardProps {
 
 const PicturesCard = ({style, item, onPressClose}: PicturesCardProps) => {
   const Colors = useThemeColor();
+  const I18n = useTranslator();
+
+  const {baseUrl, token, jsessionId} = useSelector((state: any) => state.auth);
+
+  const [showClose, setShowClose] = useState({item1: false, item2: false});
+  const shakeAnimation1 = useRef(new Animated.Value(0)).current;
+  const shakeAnimation2 = useRef(new Animated.Value(0)).current;
+
+  const handleLongPress = itemKey => {
+    setShowClose(prev => ({...prev, [itemKey]: !prev[itemKey]}));
+    startShakeAnimation(
+      itemKey === 'item1' ? shakeAnimation1 : shakeAnimation2,
+    );
+  };
 
   const styles = useMemo(() => getStyles(Colors), [Colors]);
 
-  const ImageWithCloseButton = ({imageItem}) => (
+  const startShakeAnimation = animationRef => {
+    Animated.loop(
+      Animated.sequence([
+        Animated.timing(animationRef, {
+          toValue: 5,
+          duration: 50,
+          useNativeDriver: true,
+        }),
+        Animated.timing(animationRef, {
+          toValue: -5,
+          duration: 50,
+          useNativeDriver: true,
+        }),
+        Animated.timing(animationRef, {
+          toValue: 5,
+          duration: 50,
+          useNativeDriver: true,
+        }),
+        Animated.timing(animationRef, {
+          toValue: 0,
+          duration: 50,
+          useNativeDriver: true,
+        }),
+      ]),
+      {iterations: 3},
+    ).start();
+  };
+
+  const handleShowFile = async imageData => {
+    await openFileInExternalApp(
+      {fileName: imageData?.fileName, id: imageData?.id, isMetaFile: true},
+      {baseUrl: baseUrl, token: token, jsessionId: jsessionId},
+      I18n,
+    );
+  };
+
+  const renderImage = (imageData, itemKey, animationRef) => (
     <View style={styles.imageContainer}>
-      <AOSImage
-        generalStyle={styles.imageStyle}
-        imageSize={styles.imageSize}
-        resizeMode="stretch"
-        metaFile={imageItem.pictureFile}
-        defaultIconSize={60}
-      />
       <TouchableOpacity
-        style={styles.closeButton}
-        onPress={() => onPressClose()}>
-        <Icon name="x-lg" size={15} color={Colors.importantColor.background} />
+        onPress={() => handleShowFile(imageData.pictureFile)}
+        onLongPress={() => handleLongPress(itemKey)}
+        delayLongPress={300}>
+        <Animated.View style={{transform: [{translateX: animationRef}]}}>
+          <AOSImage
+            generalStyle={[styles.imageStyle, style]}
+            imageSize={styles.imageSize}
+            resizeMode="contain"
+            metaFile={imageData.pictureFile}
+            defaultIconSize={60}
+          />
+        </Animated.View>
       </TouchableOpacity>
+      {showClose[itemKey] && (
+        <TouchableOpacity
+          style={styles.closeIcon}
+          onPress={() => onPressClose()}>
+          <Icon
+            name="x-lg"
+            size={15}
+            color={Colors.importantColor.background}
+          />
+        </TouchableOpacity>
+      )}
     </View>
   );
 
   return (
-    <View style={[styles.rowContainer, style]}>
-      {item.item1 && <ImageWithCloseButton imageItem={item.item1} />}
-      {item.item2 && <ImageWithCloseButton imageItem={item.item2} />}
+    <View style={styles.rowContainer}>
+      {item.item1 && renderImage(item.item1, 'item1', shakeAnimation1)}
+      {item.item2 && renderImage(item.item2, 'item2', shakeAnimation2)}
     </View>
   );
 };
 
 const getStyles = (color: ThemeColors) =>
   StyleSheet.create({
-    imageSize: {
-      height: Dimensions.get('window').width * 0.4,
-      width: Dimensions.get('window').width * 0.4,
-    },
-    imageStyle: {
-      flex: 1,
-      margin: 5,
-    },
     rowContainer: {
       flexDirection: 'row',
       justifyContent: 'space-between',
-      marginHorizontal: 10,
-      marginVertical: 5,
+      margin: 10,
     },
     imageContainer: {
       position: 'relative',
+      margin: 5,
     },
-    closeButton: {
+    imageStyle: {
+      flex: 1,
+    },
+    imageSize: {
+      height: Dimensions.get('window').width * 0.45,
+      width: Dimensions.get('window').width * 0.45,
+    },
+    closeIcon: {
       position: 'absolute',
       right: -5,
+      top: -5,
       backgroundColor: color.backgroundColor,
       borderRadius: 50,
       padding: 5,
