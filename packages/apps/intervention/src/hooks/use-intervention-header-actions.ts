@@ -45,7 +45,6 @@ const useEquipmentFormActions = () => {
         {
           key: 'openEquipmentLine',
           title: I18n.t('Intervention_OpenEquipmentLine'),
-          showInHeader: false,
           order: 10,
           iconName: 'card-list',
           onPress: () => navigation.navigate('EquipmentLineListScreen'),
@@ -53,7 +52,6 @@ const useEquipmentFormActions = () => {
         {
           key: 'openEquipmentPictures',
           title: I18n.t('Intervention_OpenEquipmentPictures'),
-          showInHeader: false,
           order: 20,
           iconName: 'images',
           onPress: () => navigation.navigate('EquipmentPictureScreen'),
