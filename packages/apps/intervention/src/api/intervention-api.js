@@ -89,12 +89,6 @@ const createInterventionCriteria = (
 const createInterventionHistoryCriteria = (statusList, equipmentId) => {
   const criteria = [];
 
-  criteria.push({
-    fieldName: 'equipmentSet.id',
-    operator: '=',
-    value: equipmentId,
-  });
-
   if (Array.isArray(statusList) && statusList.length > 0) {
     criteria.push({
       operator: 'or',
