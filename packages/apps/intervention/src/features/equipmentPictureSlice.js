@@ -21,7 +21,11 @@ import {
   generateInifiniteScrollCases,
   handlerApiCall,
 } from '@axelor/aos-mobile-core';
-import {searchEquipmentPicture as _searchEquipmentPicture} from '../api/equipment-picture-api';
+import {
+  createEquipmentPicture as _createEquipmentPicture,
+  deleteEquipmentPicture as _deleteEquipmentPicture,
+  searchEquipmentPicture as _searchEquipmentPicture,
+} from '../api/equipment-picture-api';
 
 export const searchEquipmentPicture = createAsyncThunk(
   'intervention_equipmentPicture/searchEquipmentPicture',
@@ -33,6 +37,36 @@ export const searchEquipmentPicture = createAsyncThunk(
       getState,
       responseOptions: {isArrayResponse: true},
     });
+  },
+);
+
+export const createEquipmentPicture = createAsyncThunk(
+  'intervention_equipmentPicture/createEquipmentPicture',
+  async function (data, {getState, dispatch}) {
+    return handlerApiCall({
+      fetchFunction: _createEquipmentPicture,
+      data,
+      action: 'Intervention_SliceAction_CreateEquipmentPicture',
+      getState,
+      responseOptions: {isArrayResponse: false},
+    }).then(() =>
+      dispatch(searchEquipmentPicture({equipmentId: data.equipmentId})),
+    );
+  },
+);
+
+export const deleteEquipmentPicture = createAsyncThunk(
+  'intervention_equipmentPicture/deleteEquipmentPicture',
+  async function (data, {getState, dispatch}) {
+    return handlerApiCall({
+      fetchFunction: _deleteEquipmentPicture,
+      data,
+      action: 'Intervention_SliceAction_DeleteEquipmentPicture',
+      getState,
+      responseOptions: {isArrayResponse: false},
+    }).then(() =>
+      dispatch(searchEquipmentPicture({equipmentId: data.equipmentId})),
+    );
   },
 );
 

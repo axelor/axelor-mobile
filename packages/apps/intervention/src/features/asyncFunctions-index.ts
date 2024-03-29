@@ -20,7 +20,11 @@ export {searchClientAndProspect} from './clientAndProspectSlice';
 export {searchContract} from './contractSlice';
 export {searchEquipmentFamily} from './equipmentFamilySlice';
 export {searchEquipmentLine} from './equipmentLineSlice';
-export {searchEquipmentPicture} from './equipmentPictureSlice';
+export {
+  createEquipmentPicture,
+  deleteEquipmentPicture,
+  searchEquipmentPicture,
+} from './equipmentPictureSlice';
 export {
   getEquipmentById,
   searchEquipment,

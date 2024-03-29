@@ -63,5 +63,7 @@
   "Intervention_SliceAction_DeleteInterventionNote": "delete intervention note",
   "Intervention_SliceAction_FetchInterventionNoteType": "fetch intervention note type",
   "Intervention_SliceAction_SearchEquipmentLine": "search on equipment line",
-  "Intervention_SliceAction_SearchEquipmentPicture": "search on equipment picture"
+  "Intervention_SliceAction_SearchEquipmentPicture": "search on equipment picture",
+  "Intervention_SliceAction_DeleteEquipmentPicture": "delete an equipment picture",
+  "Intervention_SliceAction_CreateEquipmentPicture": "create an equipment picture"
 }

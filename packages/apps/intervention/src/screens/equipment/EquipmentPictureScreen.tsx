@@ -16,7 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import React, {useCallback, useMemo, useState} from 'react';
+import React, {useCallback, useEffect, useMemo, useState} from 'react';
 import {HeaderContainer, Screen, ScrollList} from '@axelor/aos-mobile-ui';
 import {
   useSelector,
@@ -24,16 +24,25 @@ import {
   useTranslator,
   enableCamera,
   handleDocumentSelection,
+  uploadBase64,
+  showToastMessage,
+  useCameraValueByKey,
 } from '@axelor/aos-mobile-core';
-import {searchEquipmentPicture} from '../../features/equipmentPictureSlice';
+import {
+  createEquipmentPicture,
+  deleteEquipmentPicture,
+  searchEquipmentPicture,
+} from '../../features/equipmentPictureSlice';
 import {EquipmentDetailsHeader, PicturesRow} from '../../components';
 
-const cameraKey = 'equipment_pictures';
+const cameraKey = 'equipment_createPicture';
 
 const EquipmentPictureScreen = ({}) => {
+  const photo = useCameraValueByKey(cameraKey);
   const dispatch = useDispatch();
   const I18n = useTranslator();
 
+  const {baseUrl, token, jsessionId} = useSelector((state: any) => state.auth);
   const {equipment} = useSelector((state: any) => state.intervention_equipment);
   const {equipmentPictureList, loadingList, moreLoading, isListEnd} =
     useSelector((state: any) => state.intervention_equipmentPicture);
@@ -64,6 +73,54 @@ const EquipmentPictureScreen = ({}) => {
     return pairedData;
   }, [equipmentPictureList]);
 
+  const handleDeletePicture = useCallback(
+    (pictureId: number) => {
+      dispatch(
+        (deleteEquipmentPicture as any)({
+          equipmentId: equipment.id,
+          version: equipment.version,
+          pictureId,
+        }),
+      );
+    },
+    [dispatch, equipment],
+  );
+
+  const handleUpload = useCallback(
+    async (file: any) => {
+      try {
+        const metaFile = await uploadBase64(file, {
+          baseUrl,
+          token,
+          jsessionId,
+        });
+
+        dispatch(
+          (createEquipmentPicture as any)({
+            equipmentId: equipment.id,
+            version: equipment.version,
+            metaFileId: metaFile.id,
+          }),
+        );
+      } catch (error) {
+        showToastMessage({
+          type: 'error',
+          position: 'bottom',
+          text1: 'Error',
+          text2: `Could not upload the file.\n${error}`,
+          onPress: () => {},
+        });
+      }
+    },
+    [baseUrl, dispatch, equipment, jsessionId, token],
+  );
+
+  useEffect(() => {
+    if (photo) {
+      handleUpload(photo);
+    }
+  }, [handleUpload, photo]);
+
   return (
     <Screen removeSpaceOnTop={true}>
       <HeaderContainer
@@ -76,7 +133,7 @@ const EquipmentPictureScreen = ({}) => {
             iconName: 'plus-lg',
             title: I18n.t('Intervention_ChoosePhoto'),
             onPress: () => {
-              handleDocumentSelection(file => console.log(file));
+              handleDocumentSelection(handleUpload);
             },
           },
           {
@@ -92,7 +149,7 @@ const EquipmentPictureScreen = ({}) => {
         renderItem={({item}) => (
           <PicturesRow
             item={item}
-            handleDelete={() => {}}
+            handleDelete={handleDeletePicture}
             selectedImageId={selectedImageId}
             onSelectImage={itemId =>
               setSelectedImageId(itemId !== selectedImageId ? itemId : null)

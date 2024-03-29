@@ -63,5 +63,7 @@
   "Intervention_SliceAction_DeleteInterventionNote": "suppression d'une note d'intervention",
   "Intervention_SliceAction_FetchInterventionNoteType": "récupération des types de note d'intervention",
   "Intervention_SliceAction_SearchEquipmentLine": "recherche sur les lignes d'équipement",
-  "Intervention_SliceAction_SearchEquipmentPicture": "recherche sur les photos de l'équipement"
+  "Intervention_SliceAction_SearchEquipmentPicture": "recherche sur les photos de l'équipement",
+  "Intervention_SliceAction_DeleteEquipmentPicture": "suppression d'une image d'équipement",
+  "Intervention_SliceAction_CreateEquipmentPicture": "création d'une image d'équipement"
 }
