@@ -25,9 +25,8 @@ import {
   enableCamera,
   handleDocumentSelection,
 } from '@axelor/aos-mobile-core';
-import EquipmentDetailsHeader from '../../components/molecules/EquipmentDetailsHeader/EquipmentDetailsHeader';
 import {searchEquipmentPicture} from '../../features/equipmentPictureSlice';
-import {PicturesCard} from '../../components';
+import {EquipmentDetailsHeader, PicturesRow} from '../../components';
 
 const cameraKey = 'equipment_pictures';
 
@@ -38,11 +37,8 @@ const EquipmentPictureScreen = ({}) => {
   const {equipment} = useSelector((state: any) => state.intervention_equipment);
   const {equipmentPictureList, loadingList, moreLoading, isListEnd} =
     useSelector((state: any) => state.intervention_equipmentPicture);
-  const [selectedImageId, setSelectedImageId] = useState(null);
 
-  const handleSelectImage = id => {
-    setSelectedImageId(id);
-  };
+  const [selectedImageId, setSelectedImageId] = useState(null);
 
   const fetchEquipmentPictureAPI = useCallback(
     (page = 0) => {
@@ -53,19 +49,19 @@ const EquipmentPictureScreen = ({}) => {
     [dispatch, equipment.id],
   );
 
-  const prepareImageData = pictures => {
-    const pairedData = [];
-    for (let i = 0; i < pictures.length; i += 2) {
-      pairedData.push({
-        item1: pictures[i],
-        item2: pictures[i + 1] ? pictures[i + 1] : null,
-      });
-    }
-    return pairedData;
-  };
-
   const pairedEquipmentPictureList = useMemo(() => {
-    return prepareImageData(equipmentPictureList);
+    const pairedData = [];
+
+    if (Array.isArray(equipmentPictureList)) {
+      for (let i = 0; i < equipmentPictureList.length; i += 2) {
+        pairedData.push({
+          item1: equipmentPictureList?.[i],
+          item2: equipmentPictureList?.[i + 1],
+        });
+      }
+    }
+
+    return pairedData;
   }, [equipmentPictureList]);
 
   return (
@@ -94,12 +90,12 @@ const EquipmentPictureScreen = ({}) => {
         loadingList={loadingList}
         data={pairedEquipmentPictureList}
         renderItem={({item}) => (
-          <PicturesCard
+          <PicturesRow
             item={item}
-            onPressClose={() => {}}
+            handleDelete={() => {}}
             selectedImageId={selectedImageId}
             onSelectImage={itemId =>
-              handleSelectImage(itemId !== selectedImageId ? itemId : null)
+              setSelectedImageId(itemId !== selectedImageId ? itemId : null)
             }
           />
         )}
