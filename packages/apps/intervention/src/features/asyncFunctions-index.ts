@@ -21,6 +21,11 @@ export {searchContract} from './contractSlice';
 export {searchEquipmentFamily} from './equipmentFamilySlice';
 export {searchEquipmentLine} from './equipmentLineSlice';
 export {
+  createEquipmentPicture,
+  deleteEquipmentPicture,
+  searchEquipmentPicture,
+} from './equipmentPictureSlice';
+export {
   getEquipmentById,
   searchEquipment,
   searchPlaceEquipment,
