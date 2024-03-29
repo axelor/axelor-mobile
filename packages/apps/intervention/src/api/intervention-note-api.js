@@ -18,6 +18,7 @@
 
 import {
   axiosApiProvider,
+  createStandardFetch,
   createStandardSearch,
   getSearchCriterias,
 } from '@axelor/aos-mobile-core';
@@ -63,6 +64,14 @@ export async function fetchInterventionNote({
     fieldKey: 'intervention_interventionNote',
     sortKey: 'intervention_interventionNote',
     page,
+  });
+}
+
+export async function fetchInterventionNoteById({interventionNoteId}) {
+  return createStandardFetch({
+    model: 'com.axelor.apps.intervention.db.InterventionNote',
+    id: interventionNoteId,
+    fieldKey: 'intervention_interventionNote',
   });
 }
 

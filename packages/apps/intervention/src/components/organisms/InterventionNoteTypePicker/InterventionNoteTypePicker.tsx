@@ -23,12 +23,12 @@ import {fetchInterventionNoteType} from '../../../features/interventionNoteSlice
 
 interface InterventionNoteTypePickerProps {
   defaultValue?: string;
-  onChangeNoteTypeId: (noteTypeId: number) => void;
+  onChange: (noteType: any) => void;
 }
 
 const InterventionNoteTypePicker = ({
   defaultValue = null,
-  onChangeNoteTypeId = () => {},
+  onChange = () => {},
 }: InterventionNoteTypePickerProps) => {
   const I18n = useTranslator();
   const dispatch = useDispatch();
@@ -48,7 +48,8 @@ const InterventionNoteTypePicker = ({
       labelField="name"
       valueField="id"
       defaultValue={defaultValue}
-      onValueChange={onChangeNoteTypeId}
+      onValueChange={onChange}
+      isValueItem
     />
   );
 };

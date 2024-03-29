@@ -24,6 +24,7 @@ import {
 import {
   deleteInterventionNote as _deleteInterventionNote,
   fetchInterventionNote as _fetchInterventionNote,
+  fetchInterventionNoteById as _fetchInterventionNoteById,
   fetchInterventionNoteType as _fetchInterventionNoteType,
 } from '../api/intervention-note-api';
 
@@ -36,6 +37,19 @@ export const fetchInterventionNote = createAsyncThunk(
       action: 'Intervention_SliceAction_FetchInterventionNote',
       getState,
       responseOptions: {isArrayResponse: true},
+    });
+  },
+);
+
+export const fetchInterventionNoteById = createAsyncThunk(
+  'intervention_interventionNote/fetchInterventionNoteById',
+  async function (data, {getState}) {
+    return handlerApiCall({
+      fetchFunction: _fetchInterventionNoteById,
+      data,
+      action: 'Intervention_SliceAction_FetchInterventionNoteById',
+      getState,
+      responseOptions: {isArrayResponse: false},
     });
   },
 );
@@ -76,6 +90,9 @@ const initialState = {
   isListEnd: false,
   interventionNoteList: [],
 
+  loadingInterventionNote: true,
+  interventionNote: {},
+
   loadingInterventionNoteTypeList: true,
   interventionNoteTypeList: [],
 };
@@ -89,6 +106,13 @@ const interventionNoteSlice = createSlice({
       moreLoading: 'moreLoading',
       isListEnd: 'isListEnd',
       list: 'interventionNoteList',
+    });
+    builder.addCase(fetchInterventionNoteById.pending, state => {
+      state.loadingInterventionNote = true;
+    });
+    builder.addCase(fetchInterventionNoteById.fulfilled, (state, action) => {
+      state.loadingInterventionNote = false;
+      state.interventionNote = action.payload;
     });
     builder.addCase(fetchInterventionNoteType.pending, state => {
       state.loadingInterventionNoteTypeList = true;

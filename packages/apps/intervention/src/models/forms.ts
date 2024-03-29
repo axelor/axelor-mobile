@@ -21,6 +21,7 @@ import {
   ClientProspectSearchBar,
   ContractSearchBar,
   EquipmentFamilySearchBar,
+  InterventionNoteTypePicker,
   PlaceEquipmentSearchBar,
   TypePicker,
 } from '../components';
@@ -119,6 +120,38 @@ export const intervention_formsRegister: FormConfigs = {
           adjustHeightWithLines: true,
           style: {marginBottom: 100, width: '90%', alignSelf: 'center'},
         },
+      },
+    },
+  },
+  intervention_interventionNote: {
+    modelName: 'com.axelor.apps.intervention.db.InterventionNote',
+    fields: {
+      type: {
+        titleKey: 'Intervention_Type',
+        type: 'object',
+        widget: 'custom',
+        customComponent: InterventionNoteTypePicker,
+      },
+      description: {
+        titleKey: 'Intervention_Description',
+        type: 'string',
+        widget: 'default',
+        options: {
+          multiline: true,
+          adjustHeightWithLines: true,
+        },
+        hideIf: ({objectState}) =>
+          !objectState.type || objectState.type.attachedFile === true,
+      },
+      metaFile: {
+        titleKey: 'Intervention_MetaFile',
+        type: 'object',
+        widget: 'file',
+        options: {
+          displayPreview: true,
+        },
+        hideIf: ({objectState}) =>
+          !objectState.type || objectState.type.attachedFile === false,
       },
     },
   },

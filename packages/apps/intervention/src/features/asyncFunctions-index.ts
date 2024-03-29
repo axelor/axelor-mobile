@@ -34,6 +34,7 @@ export {
 export {
   deleteInterventionNote,
   fetchInterventionNote,
+  fetchInterventionNoteById,
   fetchInterventionNoteType,
 } from './interventionNoteSlice';
 export {

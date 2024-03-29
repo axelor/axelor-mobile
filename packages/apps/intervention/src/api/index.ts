@@ -39,6 +39,7 @@ export {
 export {
   deleteInterventionNote as deleteInterventionNoteApi,
   fetchInterventionNote as fetchInterventionNoteApi,
+  fetchInterventionNoteById as fetchInterventionNoteByIdApi,
   fetchInterventionNoteType as fetchInterventionNoteTypeApi,
 } from './intervention-note-api';
 export {
