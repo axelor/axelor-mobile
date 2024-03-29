@@ -139,4 +139,7 @@ export const intervention_modelAPI: ObjectFields = {
     createdBy: schemaContructor.subObject(),
     updatedBy: schemaContructor.subObject(),
   }),
+  intervention_equipmentPicture: schemaContructor.object({
+    pictureFile: schemaContructor.subObject(),
+  }),
 };

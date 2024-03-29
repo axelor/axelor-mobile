@@ -39,7 +39,10 @@
   "Intervention_Comments": "Commentaires",
   "Intervention_Contract": "Contrat",
   "Intervention_EquipmentLine": "Ligne d'équipement",
-  "Intervention_OpenEquipmentLine": "Ouvrir les lignes d'équipements",
+  "Intervention_OpenEquipmentLine": "Ouvrir les lignes",
+  "Intervention_OpenEquipmentPictures": "Ouvrir les photos",
+  "Intervention_ChoosePhoto": "Choisir une photo",
+  "Intervention_TakePicture": "Prendre une photo",
   "Intervention_CreatedOn": "Créée le",
   "Intervention_UpdatedOn": "Mise à jour le",
   "Intervention_CreatedBy": "Créée par",
@@ -59,5 +62,8 @@
   "Intervention_SliceAction_FetchInterventionNote": "récupération des notes d'interventions",
   "Intervention_SliceAction_DeleteInterventionNote": "suppression d'une note d'intervention",
   "Intervention_SliceAction_FetchInterventionNoteType": "récupération des types de note d'intervention",
-  "Intervention_SliceAction_SearchEquipmentLine": "recherche sur les lignes d'équipement"
+  "Intervention_SliceAction_SearchEquipmentLine": "recherche sur les lignes d'équipement",
+  "Intervention_SliceAction_SearchEquipmentPicture": "recherche sur les photos de l'équipement",
+  "Intervention_SliceAction_DeleteEquipmentPicture": "suppression d'une image d'équipement",
+  "Intervention_SliceAction_CreateEquipmentPicture": "création d'une image d'équipement"
 }

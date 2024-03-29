@@ -20,4 +20,5 @@ export {default as EquipmentCard} from './EquipmentCard/EquipmentCard';
 export {default as EquipmentLineCard} from './EquipmentLineCard/EquipmentLineCard';
 export {default as InterventionCard} from './InterventionCard/InterventionCard';
 export {default as NoteCard} from './NoteCard/NoteCard';
+export {default as PictureCard} from './PictureCard/PictureCard';
 export {default as QuestionCard} from './QuestionCard/QuestionCard';
