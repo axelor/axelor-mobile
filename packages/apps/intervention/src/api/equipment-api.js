@@ -113,16 +113,20 @@ export async function searchEquipment({
 
 export async function searchInterventionEquipment({
   searchValue,
-  idsInterventionEquipement,
+  idsInterventionEquipement: equipmentIds,
   inService,
   isCountFetch = false,
   page = 0,
 }) {
+  if (!Array.isArray(equipmentIds) || equipmentIds.length === 0) {
+    return {data: {data: [], total: 0}};
+  }
+
   return createStandardSearch({
     model: 'com.axelor.apps.intervention.db.Equipment',
     criteria: createInterventionEquipmentCriteria({
       searchValue,
-      idsInterventionEquipement,
+      idsInterventionEquipement: equipmentIds,
       inService,
     }),
     fieldKey: 'intervention_equipment',
