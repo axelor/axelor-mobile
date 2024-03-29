@@ -154,7 +154,17 @@ const EquipmentView = ({}) => {
         partnerId: intervention.deliveredPartner?.id,
       }),
     );
-  }, [dispatch, idsInterventionEquipement, intervention.deliveredPartner?.id]);
+    dispatch(
+      (searchInterventionEquipment as any)(searchInterventionEquipmentData),
+    );
+    dispatch((searchEquipment as any)(searchEquipmentData));
+  }, [
+    dispatch,
+    idsInterventionEquipement,
+    intervention.deliveredPartner?.id,
+    searchEquipmentData,
+    searchInterventionEquipmentData,
+  ]);
 
   return (
     <SearchListView
