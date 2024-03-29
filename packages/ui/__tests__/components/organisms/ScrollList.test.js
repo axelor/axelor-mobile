@@ -97,6 +97,9 @@ describe('ScrollList Component', () => {
         },
       });
     });
+
+    const emptyWrapper = shallow(<ScrollList {...props} data={[]} />);
+    expect(emptyWrapper.find(TopActions).exists()).toBe(true);
   });
 
   it('does not render TopActions if actionList is empty', () => {
@@ -109,7 +112,7 @@ describe('ScrollList Component', () => {
     props.data.forEach((item, index) => {
       const itemWrapper = animatedFlatList.props().renderItem({item, index});
       expect(itemWrapper.props.children.length).toBe(2);
-      expect(itemWrapper.props.children[0]).toBe(false);
+      expect(itemWrapper.props.children[0]).toBeFalsy();
       expect(itemWrapper.props.children[1]).toMatchObject({
         type: View,
         props: {
