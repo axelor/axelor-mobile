@@ -124,23 +124,26 @@ const ScrollList = ({
     }
   }, [loadingList, moreLoading]);
 
+  const renderActions = useCallback(() => {
+    if (Array.isArray(actionList) && actionList.length > 0) {
+      return (
+        <TopActions actionList={actionList} verticalActions={verticalActions} />
+      );
+    }
+
+    return null;
+  }, [actionList, verticalActions]);
+
   const _renderItem = useCallback(
     ({item, index}) => {
       return (
         <>
-          {index === 0 &&
-            Array.isArray(actionList) &&
-            actionList.length > 0 && (
-              <TopActions
-                actionList={actionList}
-                verticalActions={verticalActions}
-              />
-            )}
+          {index === 0 && renderActions()}
           {renderItem({item, index})}
         </>
       );
     },
-    [actionList, renderItem, verticalActions],
+    [renderActions, renderItem],
   );
 
   const flatList = useRef<FlatList>();
@@ -188,6 +191,7 @@ const ScrollList = ({
           onPress={moveToTop}
         />
       </Animated.View>
+      {!Array.isArray(data) || data.length === 0 ? renderActions() : null}
       <AnimatedFlatList
         ref={flatList}
         style={[styles.scrollView, style]}
