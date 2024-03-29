@@ -32,10 +32,12 @@ export {
   updateEquipment,
 } from './equipmentSlice';
 export {
+  createInterventionNote,
   deleteInterventionNote,
   fetchInterventionNote,
   fetchInterventionNoteById,
   fetchInterventionNoteType,
+  updateInterventionNote,
 } from './interventionNoteSlice';
 export {
   fetchIntervention,

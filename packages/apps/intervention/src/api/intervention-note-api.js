@@ -81,6 +81,24 @@ export async function fetchInterventionNoteType() {
   });
 }
 
+export async function createInterventionNote({interventionNote}) {
+  return axiosApiProvider.post({
+    url: 'ws/rest/com.axelor.apps.intervention.db.InterventionNote',
+    data: {
+      data: interventionNote,
+    },
+  });
+}
+
+export async function updateInterventionNote({interventionNote}) {
+  return axiosApiProvider.post({
+    url: `ws/rest/com.axelor.apps.intervention.db.InterventionNote/${interventionNote.id}`,
+    data: {
+      data: interventionNote,
+    },
+  });
+}
+
 export async function deleteInterventionNote({interventionNoteId}) {
   return axiosApiProvider.delete({
     url: `ws/rest/com.axelor.apps.intervention.db.InterventionNote/${interventionNoteId}`,

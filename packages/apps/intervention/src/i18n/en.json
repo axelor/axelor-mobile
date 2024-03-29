@@ -70,5 +70,7 @@
   "Intervention_SliceAction_DeleteEquipmentPicture": "delete an equipment picture",
   "Intervention_SliceAction_CreateEquipmentPicture": "create an equipment picture",
   "Intervention_SliceAction_SearchHistoryInterventionByEquipment": "search history intervention by equipment",
-  "Intervention_SliceAction_FetchInterventionNoteById": "fetch intervention note by id"
+  "Intervention_SliceAction_FetchInterventionNoteById": "fetch intervention note by id",
+  "Intervention_SliceAction_UpdateInterventionNote": "update intervention note",
+  "Intervention_SliceAction_CreateInterventionNote": "create intervention note"
 }

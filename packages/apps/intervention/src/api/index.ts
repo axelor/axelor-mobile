@@ -37,10 +37,12 @@ export {
   searchHistoryInterventionByEquipment as searchHistoryInterventionByEquipmentApi,
 } from './intervention-api';
 export {
+  createInterventionNote as createInterventionNoteApi,
   deleteInterventionNote as deleteInterventionNoteApi,
   fetchInterventionNote as fetchInterventionNoteApi,
   fetchInterventionNoteById as fetchInterventionNoteByIdApi,
   fetchInterventionNoteType as fetchInterventionNoteTypeApi,
+  updateInterventionNote as updateInterventionNoteApi,
 } from './intervention-note-api';
 export {
   fetchQuestion as fetchQuestionApi,

@@ -70,5 +70,7 @@
   "Intervention_SliceAction_DeleteEquipmentPicture": "suppression d'une image d'équipement",
   "Intervention_SliceAction_CreateEquipmentPicture": "création d'une image d'équipement",
   "Intervention_SliceAction_SearchHistoryInterventionByEquipment": "recherche l'historique des interventions par equipment",
-  "Intervention_SliceAction_FetchInterventionNoteById": "récuperation d'une note d'intervention par id"
+  "Intervention_SliceAction_FetchInterventionNoteById": "récuperation d'une note d'intervention par id",
+  "Intervention_SliceAction_UpdateInterventionNote": "mise à jour d'une note d'intervention",
+  "Intervention_SliceAction_CreateInterventionNote": "création d'une note d'intervention"
 }

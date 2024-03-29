@@ -22,10 +22,12 @@ import {
   handlerApiCall,
 } from '@axelor/aos-mobile-core';
 import {
+  createInterventionNote as _createInterventionNote,
   deleteInterventionNote as _deleteInterventionNote,
   fetchInterventionNote as _fetchInterventionNote,
   fetchInterventionNoteById as _fetchInterventionNoteById,
   fetchInterventionNoteType as _fetchInterventionNoteType,
+  updateInterventionNote as _updateInterventionNote,
 } from '../api/intervention-note-api';
 
 export const fetchInterventionNote = createAsyncThunk(
@@ -63,6 +65,40 @@ export const fetchInterventionNoteType = createAsyncThunk(
       action: 'Intervention_SliceAction_FetchInterventionNoteType',
       getState,
       responseOptions: {isArrayResponse: true},
+    });
+  },
+);
+
+export const createInterventionNote = createAsyncThunk(
+  'intervention_interventionNote/createInterventionNote',
+  async function (data, {getState, dispatch}) {
+    return handlerApiCall({
+      fetchFunction: _createInterventionNote,
+      data,
+      action: 'Intervention_SliceAction_CreateInterventionNote',
+      getState,
+      responseOptions: {isArrayResponse: false, showToast: true},
+    }).then(() => {
+      dispatch(
+        fetchInterventionNote({deliveredPartnerId: data.deliveredPartnerId}),
+      );
+    });
+  },
+);
+
+export const updateInterventionNote = createAsyncThunk(
+  'intervention_interventionNote/updateInterventionNote',
+  async function (data, {getState, dispatch}) {
+    return handlerApiCall({
+      fetchFunction: _updateInterventionNote,
+      data,
+      action: 'Intervention_SliceAction_UpdateInterventionNote',
+      getState,
+      responseOptions: {isArrayResponse: false, showToast: true},
+    }).then(() => {
+      dispatch(
+        fetchInterventionNote({deliveredPartnerId: data.deliveredPartnerId}),
+      );
     });
   },
 );
