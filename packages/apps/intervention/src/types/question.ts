@@ -28,6 +28,18 @@ class Question {
     Hidden: 6,
   };
 
+  static answerType = {
+    AdvancedMonitoring: 'advancedMonitoring',
+    CheckBox: 'checkbox',
+    Date: 'date',
+    Indication: 'indication',
+    Measure: 'measure',
+    Picture: 'picture',
+    Signature: 'signature',
+    Text: 'text',
+    ValueList: 'list',
+  };
+
   static getStatus = (question: any, conditionalQuestion?: any): number => {
     if (question?.isAnswered) {
       return this.status.Answered;

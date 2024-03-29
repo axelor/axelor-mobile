@@ -25,6 +25,7 @@ import {
   PlaceEquipmentSearchBar,
   TypePicker,
 } from '../components';
+import {Question} from '../types';
 
 const CustomerComponentWrapper = component => {
   return ({objectState, ...props}: customComponentOptions) =>
@@ -160,6 +161,18 @@ export const intervention_formsRegister: FormConfigs = {
           objectState.type && objectState.type.attachedFile === true,
         hideIf: ({objectState}) =>
           !objectState.type || objectState.type.attachedFile === false,
+      },
+    },
+  },
+  intervention_interventionQuestion: {
+    modelName: 'com.axelor.apps.intervention.db.InterventionQuestion',
+    fields: {
+      checkboxAnswer: {
+        type: 'boolean',
+        widget: 'checkbox',
+        hideIf: ({storeState}) =>
+          storeState.intervention_question.question.answerTypeSelect !==
+          Question.answerType.CheckBox,
       },
     },
   },

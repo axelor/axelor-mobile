@@ -55,6 +55,7 @@
   "Intervention_RefreshIntervention": "Refresh intervention",
   "Intervention_CreateEquipment": "Create an equipment",
   "Intervention_LinkEquipment": "Link an equipment",
+  "Intervention_Survey": "Survey",
   "Intervention_SliceAction_FetchIntervention": "fetch intervention",
   "Intervention_SliceAction_SearchEquipment": "search equipments",
   "Intervention_SliceAction_SearchClientAndProspect": "search clients and prospects",
@@ -79,5 +80,7 @@
   "Intervention_SliceAction_CreateInterventionNote": "create intervention note",
   "Intervention_SliceAction_SearchInterventionEquipment": "search intervention equipments",
   "Intervention_SliceAction_FetchNumberClientEquipment": "fetch the number of client equipment",
-  "Intervention_SliceAction_FetchNumberInterventionEquipment": "fetch the number of intervention equipment"
+  "Intervention_SliceAction_FetchNumberInterventionEquipment": "fetch the number of intervention equipment",
+  "Intervention_SliceAction_FetchQuestionById": "fetch question by id",
+  "Intervention_SliceAction_UpdateQuestion": "update question"
 }

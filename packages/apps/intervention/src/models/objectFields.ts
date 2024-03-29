@@ -126,6 +126,9 @@ export const intervention_modelAPI: ObjectFields = {
     indicationText: schemaContructor.string(),
     isPrivate: schemaContructor.boolean(),
     listAnswer: schemaContructor.subObject(),
+    indication: schemaContructor.string(),
+    answerTypeSelect: schemaContructor.string(),
+    checkboxAnswer: schemaContructor.boolean(),
   }),
   intervention_range: schemaContructor.object({
     equipment: schemaContructor.subObject('name'),
