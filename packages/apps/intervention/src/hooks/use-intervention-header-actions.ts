@@ -49,6 +49,13 @@ const useEquipmentFormActions = () => {
           iconName: 'card-list',
           onPress: () => navigation.navigate('EquipmentLineListScreen'),
         },
+        {
+          key: 'openEquipmentPictures',
+          title: I18n.t('Intervention_OpenEquipmentPictures'),
+          order: 20,
+          iconName: 'images',
+          onPress: () => navigation.navigate('EquipmentPictureScreen'),
+        },
       ],
     });
   }, [mobileSettings, equipment, I18n, navigation]);
