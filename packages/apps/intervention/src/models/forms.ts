@@ -130,6 +130,7 @@ export const intervention_formsRegister: FormConfigs = {
         titleKey: 'Intervention_Type',
         type: 'object',
         widget: 'custom',
+        required: true,
         customComponent: InterventionNoteTypePicker,
       },
       description: {
@@ -140,6 +141,8 @@ export const intervention_formsRegister: FormConfigs = {
           multiline: true,
           adjustHeightWithLines: true,
         },
+        requiredIf: ({objectState}) =>
+          objectState.type && objectState.type.attachedFile === false,
         hideIf: ({objectState}) =>
           !objectState.type || objectState.type.attachedFile === true,
       },
@@ -150,6 +153,8 @@ export const intervention_formsRegister: FormConfigs = {
         options: {
           displayPreview: true,
         },
+        requiredIf: ({objectState}) =>
+          objectState.type && objectState.type.attachedFile === true,
         hideIf: ({objectState}) =>
           !objectState.type || objectState.type.attachedFile === false,
       },

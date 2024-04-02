@@ -46,56 +46,32 @@ const InterventionNoteFormScreen = ({route, navigation}) => {
       );
   }, [dispatch, noteId]);
 
-  const defaultValue = useMemo(() => {
-    return {
-      type: interventionNote?.type,
-      description: interventionNote?.description,
-      metaFile: interventionNote?.metaFile,
-    };
-  }, [interventionNote]);
+  const defaultValue = useMemo(
+    () =>
+      noteId
+        ? interventionNote
+        : {
+            partner: intervention?.deliveredPartner,
+          },
+    [intervention?.deliveredPartner, interventionNote, noteId],
+  );
 
   const interventionNoteAPI = useCallback(
     objectState => {
-      const defaultData = {
-        type: objectState?.type,
-        description: objectState?.description,
-        metaFile: objectState?.metaFile,
-      };
-
-      let _interventionNote;
-      if (noteId) {
-        _interventionNote = {
-          id: interventionNote?.id,
-          version: interventionNote?.version,
-          ...defaultData,
-        };
-      } else {
-        _interventionNote = {
-          partner: intervention?.deliveredPartner,
-          ...defaultData,
-        };
-      }
-
       const sliceFunction = noteId
         ? updateInterventionNote
         : createInterventionNote;
+
       dispatch(
         (sliceFunction as any)({
-          interventionNote: _interventionNote,
+          interventionNote: objectState,
           deliveredPartnerId: intervention?.deliveredPartner?.id,
         }),
       );
 
       navigation.pop();
     },
-    [
-      dispatch,
-      intervention?.deliveredPartner,
-      interventionNote?.id,
-      interventionNote?.version,
-      navigation,
-      noteId,
-    ],
+    [dispatch, intervention?.deliveredPartner, navigation, noteId],
   );
 
   if (noteId && noteId !== interventionNote.id) {
@@ -110,7 +86,7 @@ const InterventionNoteFormScreen = ({route, navigation}) => {
         fixedItems={<InterventionHeader intervention={intervention} />}
       />
       <FormView
-        defaultValue={noteId && defaultValue}
+        defaultValue={defaultValue}
         actions={[
           {
             key: 'create-interventionNote',

@@ -50,6 +50,7 @@ const InterventionNoteTypePicker = ({
       defaultValue={defaultValue}
       onValueChange={onChange}
       isValueItem
+      isScrollViewContainer
     />
   );
 };
