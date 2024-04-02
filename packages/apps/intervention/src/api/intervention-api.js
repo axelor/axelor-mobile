@@ -86,6 +86,23 @@ const createInterventionCriteria = (
   return criteria;
 };
 
+const createInterventionHistoryCriteria = (statusList, equipmentId) => {
+  const criteria = [];
+
+  if (Array.isArray(statusList) && statusList.length > 0) {
+    criteria.push({
+      operator: 'or',
+      criteria: statusList.map(status => ({
+        fieldName: 'statusSelect',
+        operator: '=',
+        value: status,
+      })),
+    });
+  }
+
+  return criteria;
+};
+
 export async function fetchIntervention({
   searchValue,
   userId,
@@ -114,5 +131,25 @@ export async function fetchInterventionById({interventionId}) {
     model: 'com.axelor.apps.intervention.db.Intervention',
     id: interventionId,
     fieldKey: 'intervention_intervention',
+  });
+}
+
+export async function searchHistoryInterventionByEquipment({
+  page,
+  statusList,
+  equipmentId,
+}) {
+  return createStandardSearch({
+    model: 'com.axelor.apps.intervention.db.Intervention',
+    criteria: createInterventionHistoryCriteria(statusList, equipmentId),
+    domain: ':equipment MEMBER OF self.equipmentSet',
+    domainContext: {
+      equipment: {
+        id: equipmentId,
+      },
+    },
+    fieldKey: 'intervention_intervention',
+    sortKey: 'intervention_intervention',
+    page,
   });
 }
