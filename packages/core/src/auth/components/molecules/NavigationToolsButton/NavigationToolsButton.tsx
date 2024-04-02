@@ -48,7 +48,7 @@ const NavigationToolsButton = ({}) => {
     }
   }, [dispatch, setActivityIndicator, loading]);
 
-  const handleSendTranslations = useCallback(() => {
+  const handleSend = useCallback(() => {
     setActivityIndicator(true);
     dispatch((uploadNavigationTools as any)());
   }, [dispatch, setActivityIndicator]);
@@ -64,7 +64,7 @@ const NavigationToolsButton = ({}) => {
       }
       style={styles.content}
       title={I18n.t('User_SendNavigationInformations')}
-      onPress={handleSendTranslations}
+      onPress={handleSend}
     />
   );
 };
