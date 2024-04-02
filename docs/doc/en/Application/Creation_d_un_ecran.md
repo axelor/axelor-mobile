@@ -15,20 +15,24 @@ In terms of architecture, in order to distinguish screens from standard componen
 The core library provides a typing scheme for the screen structure, with the information required to register the various screens in the navigation. A screen is defined by a key and various attributes:
 
 ```tsx
+interface ScreenOptions {
+  shadedHeader: boolean;
+}
+
 export interface Screen {
   component: React.FC<any>;
   title: string;
+  actionID?: string;
   options?: ScreenOptions;
-}
-
-interface ScreenOptions {
-  shadedHeader: boolean;
+  isUsableOnShortcut?: boolean;
 }
 ```
 
 - a title (_title_) to be displayed in the header when the user is on the page. This must actually be a translation key to facilitate internationalization of the application.
 - the component corresponding to the screen content (_component_).
+- an _actionID_ key to link the screen to a configuration of actions to be displayed in the header.
 - options for displaying the screen, such as whether or not to have a header with a shadow. The header has a shadow by default, so there's no need to supply this attribute when a shadow is required.
+- an _isUsableOnShortcut_ tag to indicate whether the screen can be used as a shortcut on the home screen.
 
 Then simply export all the screens in this form:
 

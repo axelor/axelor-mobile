@@ -28,6 +28,7 @@ export default {
     options: {
       shadedHeader: false,
     },
+    isUsableOnShortcut: true,
   },
   PlannedInterventionsScreen: {
     title: 'Intervention_Interventions',
@@ -35,6 +36,7 @@ export default {
     options: {
       shadedHeader: false,
     },
+    isUsableOnShortcut: true,
   },
   InterventionsHistoryScreen: {
     title: 'Intervention_Interventions',
@@ -42,6 +44,7 @@ export default {
     options: {
       shadedHeader: false,
     },
+    isUsableOnShortcut: true,
   },
   InterventionDetailsScreen: {
     title: 'Intervention_Intervention',
