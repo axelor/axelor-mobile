@@ -16,18 +16,19 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import React, {useCallback, useEffect, useMemo, useState} from 'react';
+import React, {useCallback, useEffect, useState} from 'react';
 import {StyleSheet, View} from 'react-native';
 import {FormView, useDispatch, useSelector} from '@axelor/aos-mobile-core';
 import {HeaderContainer, Screen, Text} from '@axelor/aos-mobile-ui';
 import {InterventionHeader} from '../../components';
 import {fetchQuestionById, updateQuestion} from '../../features/questionSlice';
+import {Question} from '../../types';
 
 const InterventionQuestionFormScreen = ({route, navigation}) => {
   const dispatch = useDispatch();
 
   const rangeId = route?.params?.rangeId;
-  const [questionId, setQuestionId] = useState(route?.params?.questionId);
+  const [questionId] = useState(route?.params?.questionId);
 
   const {intervention} = useSelector(
     (state: any) => state.intervention_intervention,
@@ -38,23 +39,11 @@ const InterventionQuestionFormScreen = ({route, navigation}) => {
     dispatch((fetchQuestionById as any)({questionId}));
   }, [dispatch, questionId]);
 
-  const defaultValue = useMemo(() => {
-    return {
-      checkboxAnswer: question?.checkboxAnswer,
-    };
-  }, [question]);
-
   const updateQuestionAPI = useCallback(
     objectState => {
-      const _question = {
-        id: question?.id,
-        version: question?.version,
-        checkboxAnswer: objectState?.checkboxAnswer,
-      };
-
       dispatch(
         (updateQuestion as any)({
-          question: _question,
+          question: objectState,
           interventionId: intervention?.id,
           rangeId: rangeId,
         }),
@@ -62,7 +51,7 @@ const InterventionQuestionFormScreen = ({route, navigation}) => {
 
       navigation.pop();
     },
-    [dispatch, intervention?.id, navigation, question, rangeId],
+    [dispatch, intervention?.id, navigation, rangeId],
   );
 
   return (
@@ -79,13 +68,15 @@ const InterventionQuestionFormScreen = ({route, navigation}) => {
         )}
       </View>
       <FormView
-        defaultValue={defaultValue}
+        defaultValue={question}
         actions={[
           {
             key: 'save-interventionQuestion',
             type: 'custom',
             needValidation: true,
             needRequiredFields: true,
+            hideIf: () =>
+              question.answerTypeSelect === Question.answerType.Indication,
             customAction: ({objectState}) => {
               updateQuestionAPI(objectState);
             },

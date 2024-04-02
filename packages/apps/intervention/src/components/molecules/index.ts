@@ -24,3 +24,7 @@ export {default as InterventionDetailCard} from './InterventionDetailCard/Interv
 export {default as InterventionHeader} from './InterventionHeader/InterventionHeader';
 export {default as NoteDetailCard} from './NoteDetailCard/NoteDetailCard';
 export {default as PicturesRow} from './PicturesRow/PicturesRow';
+export {default as QuestionAdvancedMonitoring} from './QuestionAdvancedMonitoring/QuestionAdvancedMonitoring';
+export {default as QuestionCheckbox} from './QuestionCheckbox/QuestionCheckbox';
+export {default as QuestionList} from './QuestionList/QuestionList';
+export {default as QuestionMeasure} from './QuestionMeasure/QuestionMeasure';
