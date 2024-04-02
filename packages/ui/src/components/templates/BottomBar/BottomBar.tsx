@@ -35,7 +35,7 @@ const WINDOW_HEIGHT = Dimensions.get('window').height;
 const BottomBar = ({
   style,
   items,
-  itemSize = 40,
+  itemSize = 50,
 }: {
   style?: any;
   items: BottomBarItem[];
@@ -156,9 +156,9 @@ const styles = StyleSheet.create({
   animatedBar: {
     position: 'absolute',
     height: 2,
-    width: 40,
+    width: 41,
     bottom: 10,
-    left: 2,
+    left: 7,
   },
 });
 

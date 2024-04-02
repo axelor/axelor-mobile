@@ -49,10 +49,10 @@ const BarItem = ({
 }) => {
   const Colors = useThemeColor();
 
-  const scale = useSharedValue(1);
+  const scale = useSharedValue(0.8);
 
   useEffect(() => {
-    scale.value = withSpring(isSelected ? 1.2 : 1);
+    scale.value = withSpring(isSelected ? 1 : 0.8);
   }, [isSelected, scale]);
 
   const animatedStyle = useAnimatedStyle(() => {
