@@ -19,6 +19,7 @@
 import React, {useMemo, useState} from 'react';
 import {
   SearchListView,
+  useNavigation,
   useSelector,
   useTranslator,
 } from '@axelor/aos-mobile-core';
@@ -28,6 +29,7 @@ import {fetchInterventionNote} from '../../../features/interventionNoteSlice';
 
 const NoteView = ({}) => {
   const I18n = useTranslator();
+  const navigation = useNavigation();
 
   const [selectedNoteTypeId, setSelectedNoteTypeId] = useState(null);
 
@@ -58,7 +60,7 @@ const NoteView = ({}) => {
       headerTopChildren={<InterventionHeader intervention={intervention} />}
       headerChildren={
         <InterventionNoteTypePicker
-          onChangeNoteTypeId={setSelectedNoteTypeId}
+          onChange={noteType => setSelectedNoteTypeId(noteType?.id)}
         />
       }
       renderListItem={({item}) => <NoteDetailCard note={item} />}
@@ -66,7 +68,7 @@ const NoteView = ({}) => {
         {
           iconName: 'plus',
           title: I18n.t('Intervention_CreateNote'),
-          onPress: () => console.log('Create a note button pressed.'),
+          onPress: () => navigation.navigate('InterventionNoteFormScreen'),
         },
       ]}
     />

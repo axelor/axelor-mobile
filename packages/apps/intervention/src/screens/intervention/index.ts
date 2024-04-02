@@ -20,6 +20,7 @@ import DayInterventionsScreen from './DayInterventionsScreen';
 import PlannedInterventionsScreen from './PlannedInterventionsScreen';
 import InterventionsHistoryScreen from './InterventionsHistoryScreen';
 import InterventionDetailsScreen from './InterventionDetailsScreen';
+import InterventionNoteFormScreen from './InterventionNoteFormScreen';
 
 export default {
   DayInterventionsScreen: {
@@ -53,9 +54,17 @@ export default {
       shadedHeader: false,
     },
   },
+  InterventionNoteFormScreen: {
+    title: 'Intervention_Note',
+    component: InterventionNoteFormScreen,
+    options: {
+      shadedHeader: false,
+    },
+  },
 };
 
 export {DayInterventionsScreen};
 export {PlannedInterventionsScreen};
 export {InterventionsHistoryScreen};
 export {InterventionDetailsScreen};
+export {InterventionNoteFormScreen};
