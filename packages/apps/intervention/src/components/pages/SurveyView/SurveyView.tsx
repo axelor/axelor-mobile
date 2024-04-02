@@ -49,7 +49,7 @@ const SurveyView = ({}) => {
         }),
       );
     },
-    [dispatch, intervention.id, selectedRangeId],
+    [dispatch, intervention, selectedRangeId],
   );
 
   const getQuestionStatus = useCallback(
