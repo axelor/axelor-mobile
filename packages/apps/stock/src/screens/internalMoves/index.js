@@ -32,6 +32,7 @@ export default {
     options: {
       shadedHeader: false,
     },
+    isUsableOnShortcut: true,
   },
   InternalMoveDetailsGeneralScreen: {
     title: 'Stock_InternalMove',
@@ -44,6 +45,7 @@ export default {
   InternalMoveCreationScreen: {
     title: 'Stock_InternalMove',
     component: InternalMoveCreationScreen,
+    isUsableOnShortcut: true,
   },
   InternalMoveLineDetailsScreen: {
     title: 'Stock_InternalMove',

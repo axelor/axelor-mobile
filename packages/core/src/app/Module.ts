@@ -43,7 +43,7 @@ interface MenuWithScreen extends MenuBase {
 
 export interface SubMenu extends MenuWithScreen {}
 
-interface MenuWithSubMenus extends MenuBase {
+export interface MenuWithSubMenus extends MenuBase {
   subMenus: {
     [subMenuKey: string]: SubMenu;
   };
@@ -64,6 +64,7 @@ export interface Screen {
   title: string;
   actionID?: string;
   options?: ScreenOptions;
+  isUsableOnShortcut?: boolean;
 }
 
 export interface ObjectFields {

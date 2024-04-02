@@ -1,0 +1,13 @@
+{
+  "title": "Shortcut management: mark screens from module usable for user screen shortcuts",
+  "type": "feat",
+  "packages": [
+    "crm",
+    "helpdesk",
+    "hr",
+    "intervention",
+    "manufacturing",
+    "stock",
+    "quality"
+  ]
+}

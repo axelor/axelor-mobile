@@ -40,6 +40,7 @@ import {
   manageSubMenusOverriding,
   getMenuTitle,
   hasSubMenus,
+  formatMenus,
 } from './menu.helper';
 import useTranslator from '../i18n/hooks/use-translator';
 import {useDispatch, useSelector} from 'react-redux';
@@ -54,6 +55,7 @@ import {
 } from '../dashboards/menu.helpers';
 import {fetchDashboardConfigs} from '../features/mobileDashboardSlice';
 import {usePermissionsFetcher} from '../permissions';
+import {navigationInformations} from './NavigationInformationsProvider';
 
 const Drawer = createDrawerNavigator();
 const Stack = createStackNavigator();
@@ -144,8 +146,12 @@ const Navigator = ({modules, mainMenu, onRefresh, versionCheckConfig}) => {
   const modulesMenus = useMemo(() => {
     return enabledModule
       .filter(moduleHasMenus)
-      .reduce((menus, _module) => ({...menus, ..._module.menus}), {});
+      .reduce((menus, _module) => ({...menus, ...formatMenus(_module)}), {});
   }, [enabledModule]);
+
+  useEffect(() => {
+    navigationInformations.registerMenus(modulesMenus);
+  }, [modulesMenus]);
 
   const modulesScreens = useMemo(
     () =>
@@ -155,6 +161,10 @@ const Navigator = ({modules, mainMenu, onRefresh, versionCheckConfig}) => {
       }),
     [dashboardScreeens, modules],
   );
+
+  useEffect(() => {
+    navigationInformations.registerScreens(modulesScreens);
+  }, [modulesScreens]);
 
   const ModulesScreensStackNavigator = useCallback(
     ({initialRouteName, ...rest}) => (
