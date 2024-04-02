@@ -34,7 +34,11 @@ export const auth_modelAPI: ObjectFields = {
     activeTeam: schemaContructor.subObject(),
     workshopStockLocation: schemaContructor.subObject(),
     roles: schemaContructor.array(),
-    group: schemaContructor.subObject(),
+    group: schemaContructor.subObject().concat(
+      schemaContructor.object({
+        roles: schemaContructor.array(),
+      }),
+    ),
     employee: schemaContructor.subObject(),
     language: schemaContructor.string(),
     todayDateT: schemaContructor.string(),

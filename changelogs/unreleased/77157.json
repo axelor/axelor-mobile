@@ -1,0 +1,5 @@
+{
+  "title": "Menu: consider user roles and user group roles to check access",
+  "type": "fix",
+  "packages": "core"
+}
