@@ -22,9 +22,12 @@ import {
   handlerApiCall,
 } from '@axelor/aos-mobile-core';
 import {
+  createInterventionNote as _createInterventionNote,
   deleteInterventionNote as _deleteInterventionNote,
   fetchInterventionNote as _fetchInterventionNote,
+  fetchInterventionNoteById as _fetchInterventionNoteById,
   fetchInterventionNoteType as _fetchInterventionNoteType,
+  updateInterventionNote as _updateInterventionNote,
 } from '../api/intervention-note-api';
 
 export const fetchInterventionNote = createAsyncThunk(
@@ -40,6 +43,19 @@ export const fetchInterventionNote = createAsyncThunk(
   },
 );
 
+export const fetchInterventionNoteById = createAsyncThunk(
+  'intervention_interventionNote/fetchInterventionNoteById',
+  async function (data, {getState}) {
+    return handlerApiCall({
+      fetchFunction: _fetchInterventionNoteById,
+      data,
+      action: 'Intervention_SliceAction_FetchInterventionNoteById',
+      getState,
+      responseOptions: {isArrayResponse: false},
+    });
+  },
+);
+
 export const fetchInterventionNoteType = createAsyncThunk(
   'intervention_interventionNote/fetchInterventionNoteType',
   async function (data, {getState}) {
@@ -49,6 +65,32 @@ export const fetchInterventionNoteType = createAsyncThunk(
       action: 'Intervention_SliceAction_FetchInterventionNoteType',
       getState,
       responseOptions: {isArrayResponse: true},
+    });
+  },
+);
+
+export const createInterventionNote = createAsyncThunk(
+  'intervention_interventionNote/createInterventionNote',
+  async function (data, {getState, dispatch}) {
+    return handlerApiCall({
+      fetchFunction: _createInterventionNote,
+      data,
+      action: 'Intervention_SliceAction_CreateInterventionNote',
+      getState,
+      responseOptions: {isArrayResponse: false, showToast: true},
+    });
+  },
+);
+
+export const updateInterventionNote = createAsyncThunk(
+  'intervention_interventionNote/updateInterventionNote',
+  async function (data, {getState, dispatch}) {
+    return handlerApiCall({
+      fetchFunction: _updateInterventionNote,
+      data,
+      action: 'Intervention_SliceAction_UpdateInterventionNote',
+      getState,
+      responseOptions: {isArrayResponse: false, showToast: true},
     });
   },
 );
@@ -76,6 +118,9 @@ const initialState = {
   isListEnd: false,
   interventionNoteList: [],
 
+  loadingInterventionNote: true,
+  interventionNote: {},
+
   loadingInterventionNoteTypeList: true,
   interventionNoteTypeList: [],
 };
@@ -89,6 +134,13 @@ const interventionNoteSlice = createSlice({
       moreLoading: 'moreLoading',
       isListEnd: 'isListEnd',
       list: 'interventionNoteList',
+    });
+    builder.addCase(fetchInterventionNoteById.pending, state => {
+      state.loadingInterventionNote = true;
+    });
+    builder.addCase(fetchInterventionNoteById.fulfilled, (state, action) => {
+      state.loadingInterventionNote = false;
+      state.interventionNote = action.payload;
     });
     builder.addCase(fetchInterventionNoteType.pending, state => {
       state.loadingInterventionNoteTypeList = true;

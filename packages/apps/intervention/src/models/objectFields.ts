@@ -131,6 +131,7 @@ export const intervention_modelAPI: ObjectFields = {
     rangeVal: schemaContructor.subObject('title'),
   }),
   intervention_interventionNote: schemaContructor.object({
+    type: schemaContructor.subObject('attachedFile'),
     partner: schemaContructor.subObject(),
     metaFile: schemaContructor.subObject('fileName'),
     description: schemaContructor.string(),
