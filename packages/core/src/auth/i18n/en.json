@@ -12,6 +12,7 @@
   "User_ColorForColorBlind": "Color blind mode",
   "User_Show_Drawer_Subtitles": "Show modules subtitles",
   "User_SendTranslations": "Send translations",
+  "User_SendNavigationInformations": "Send navigation informations",
   "User_UserProfile": "User profile",
   "User_Settings": "Settings",
   "User_Company": "Company",
@@ -23,5 +24,6 @@
   "Auth_SliceAction_FetchLocalization": "fetch localizations",
   "Auth_SliceAction_FetchCompanies": "fetch companies",
   "Auth_SliceAction_FetchActiveUser": "fetch active user",
-  "Auth_SliceAction_UpdateActiveUser": "update active user"
+  "Auth_SliceAction_UpdateActiveUser": "update active user",
+  "Auth_SliceAction_UploadNavigationTools": "upload navigation tools"
 }
