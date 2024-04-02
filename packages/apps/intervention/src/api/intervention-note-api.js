@@ -18,6 +18,7 @@
 
 import {
   axiosApiProvider,
+  createStandardFetch,
   createStandardSearch,
   getSearchCriterias,
 } from '@axelor/aos-mobile-core';
@@ -66,9 +67,35 @@ export async function fetchInterventionNote({
   });
 }
 
+export async function fetchInterventionNoteById({interventionNoteId}) {
+  return createStandardFetch({
+    model: 'com.axelor.apps.intervention.db.InterventionNote',
+    id: interventionNoteId,
+    fieldKey: 'intervention_interventionNote',
+  });
+}
+
 export async function fetchInterventionNoteType() {
   return axiosApiProvider.get({
     url: '/ws/rest/com.axelor.apps.intervention.db.InterventionNoteType',
+  });
+}
+
+export async function createInterventionNote({interventionNote}) {
+  return axiosApiProvider.post({
+    url: 'ws/rest/com.axelor.apps.intervention.db.InterventionNote',
+    data: {
+      data: interventionNote,
+    },
+  });
+}
+
+export async function updateInterventionNote({interventionNote}) {
+  return axiosApiProvider.post({
+    url: `ws/rest/com.axelor.apps.intervention.db.InterventionNote/${interventionNote.id}`,
+    data: {
+      data: interventionNote,
+    },
   });
 }
 

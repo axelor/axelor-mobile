@@ -21,6 +21,7 @@ import {StyleSheet, View} from 'react-native';
 import {
   openFileInExternalApp,
   useDispatch,
+  useNavigation,
   useSelector,
   useTranslator,
 } from '@axelor/aos-mobile-core';
@@ -48,6 +49,7 @@ const NoteDetailCard = ({style, note}: NoteDetailCardProps) => {
   const I18n = useTranslator();
   const Colors = useThemeColor();
   const dispatch = useDispatch();
+  const navigation = useNavigation();
 
   const {baseUrl, token, jsessionId} = useSelector((state: any) => state.auth);
 
@@ -80,7 +82,11 @@ const NoteDetailCard = ({style, note}: NoteDetailCardProps) => {
           style={styles.flexOne}
           iconName="pencil-fill"
           iconColor={Colors.secondaryColor_dark.background}
-          onPress={() => console.log('Edit button pressed.')}
+          onPress={() =>
+            navigation.navigate('InterventionNoteFormScreen', {
+              noteId: note.id,
+            })
+          }
           indication={I18n.t('Intervention_Edit')}
         />
         <InfoButton
