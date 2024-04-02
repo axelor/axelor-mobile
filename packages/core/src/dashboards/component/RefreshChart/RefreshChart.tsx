@@ -18,7 +18,7 @@
 
 import React, {useEffect, useState} from 'react';
 import {StyleSheet, View} from 'react-native';
-import {ChartRender, Icon, checkNullString} from '@axelor/aos-mobile-ui';
+import {ChartRender, Icon} from '@axelor/aos-mobile-ui';
 import {fetchChartById} from '../../api.helpers';
 import AOPChart from '../AOPChart/AOPChart';
 
@@ -33,10 +33,12 @@ const RefreshChart = ({
   chartId,
   hideCardBackground = false,
 }: RefreshChartProps) => {
-  const [dataList, setDataList] = useState([]);
-  const [chartName, setChartName] = useState();
-  const [chartType, setChartType] = useState();
-  const [actionViewNAme, setActionViewNAme] = useState(null);
+  const [charConfig, setChartConfig] = useState({
+    dataList: [],
+    chartName: null,
+    chartType: null,
+    actionViewName: null,
+  });
 
   useEffect(() => {
     refreshChart(chartId);
@@ -45,60 +47,60 @@ const RefreshChart = ({
   const refreshChart = _chartId => {
     fetchChartById(_chartId)
       .then(res => {
-        if (res?.data?.object?.metaActionName != null) {
-          setActionViewNAme(res?.data?.object?.metaActionName);
+        const {data} = res;
+
+        if (data?.object?.metaActionName) {
+          setChartConfig({
+            actionViewName: data.object.metaActionName,
+            dataList: [],
+            chartName: null,
+            chartType: null,
+          });
         } else {
-          setActionViewNAme(null);
-          setChartName(res.data?.object?.chartName);
-          setChartType(res.data?.object?.chartType);
-          setDataList([res.data?.object?.valueList]);
+          setChartConfig({
+            dataList: [data.object.valueList],
+            chartName: data.object.chartName,
+            chartType: data.object.chartType,
+            actionViewName: null,
+          });
         }
       })
       .catch(() => {
-        setActionViewNAme(null);
-        setChartName(null);
-        setChartType(null);
-        setDataList([]);
+        setChartConfig({
+          dataList: [],
+          chartName: null,
+          chartType: null,
+          actionViewName: null,
+        });
       });
   };
 
-  if (actionViewNAme != null) {
-    return (
-      <View style={style}>
-        <AOPChart actionViewName={actionViewNAme} />
-        <Icon
-          name="arrow-clockwise"
-          style={styles.icon}
-          touchable={true}
-          onPress={() => {
-            refreshChart(chartId);
-          }}
-        />
-      </View>
-    );
-  }
-
-  return (
-    Array.isArray(dataList) &&
-    dataList.length > 0 &&
-    !checkNullString(chartType) && (
-      <View style={style}>
+  const renderContent = () => {
+    if (charConfig.actionViewName) {
+      return <AOPChart actionViewName={charConfig.actionViewName} />;
+    } else if (charConfig.dataList.length > 0 && charConfig.chartType) {
+      return (
         <ChartRender
-          dataList={dataList}
-          title={chartName}
-          type={chartType}
+          dataList={charConfig.dataList}
+          title={charConfig.chartName}
+          type={charConfig.chartType}
           hideCardBackground={hideCardBackground}
         />
-        <Icon
-          name="arrow-clockwise"
-          style={styles.icon}
-          touchable={true}
-          onPress={() => {
-            refreshChart(chartId);
-          }}
-        />
-      </View>
-    )
+      );
+    }
+    return null;
+  };
+
+  return (
+    <View style={style}>
+      {renderContent()}
+      <Icon
+        name="arrow-clockwise"
+        style={styles.icon}
+        touchable={true}
+        onPress={() => refreshChart(chartId)}
+      />
+    </View>
   );
 };
 
