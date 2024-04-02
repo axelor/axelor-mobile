@@ -40,6 +40,7 @@
   "Intervention_Contract": "Contract",
   "Intervention_EquipmentLine": "Equipment line",
   "Intervention_OpenEquipmentLine": "Open lines",
+  "Intervention_OpenEquipmentIntervention": "Open intervention history",
   "Intervention_OpenEquipmentPictures": "Open pictures",
   "Intervention_ChoosePhoto": "Choose a photo",
   "Intervention_TakePicture": "Take a picture",
@@ -65,5 +66,6 @@
   "Intervention_SliceAction_SearchEquipmentLine": "search on equipment line",
   "Intervention_SliceAction_SearchEquipmentPicture": "search on equipment picture",
   "Intervention_SliceAction_DeleteEquipmentPicture": "delete an equipment picture",
-  "Intervention_SliceAction_CreateEquipmentPicture": "create an equipment picture"
+  "Intervention_SliceAction_CreateEquipmentPicture": "create an equipment picture",
+  "Intervention_SliceAction_SearchHistoryInterventionByEquipment": "search history intervention by equipment"
 }
