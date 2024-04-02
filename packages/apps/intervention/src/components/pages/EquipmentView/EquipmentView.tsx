@@ -16,24 +16,16 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import React, {useEffect, useMemo, useState} from 'react';
-import {StyleSheet} from 'react-native';
+import React, {useMemo, useState} from 'react';
 import {
-  useDispatch,
   useSelector,
   useTranslator,
   SearchListView,
 } from '@axelor/aos-mobile-core';
-import {
-  ChipSelect,
-  NumberBubble,
-  ToggleSwitch,
-  useThemeColor,
-} from '@axelor/aos-mobile-ui';
+import {ChipSelect, useThemeColor} from '@axelor/aos-mobile-ui';
 import {EquipmentActionCard, InterventionHeader} from '../../molecules';
+import {EquipmentModeSwitch} from '../../organisms';
 import {
-  fetchNumberClientEquipment,
-  fetchNumberInterventionEquipment,
   searchEquipment,
   searchInterventionEquipment,
 } from '../../../features/equipmentSlice';
@@ -42,7 +34,20 @@ import {Equipment} from '../../../types';
 const EquipmentView = ({}) => {
   const I18n = useTranslator();
   const Colors = useThemeColor();
-  const dispatch = useDispatch();
+
+  const {intervention} = useSelector(
+    (state: any) => state.intervention_intervention,
+  );
+  const {
+    loadingList,
+    moreLoading,
+    isListEnd,
+    equipmentList,
+    loadingInterventionEquipmentList,
+    moreLoadingInterventionEquipment,
+    isInterventionEquipmentListEnd,
+    interventionEquipmentList,
+  } = useSelector((state: any) => state.intervention_equipment);
 
   const [selectedStatus, setSelectedStatus] = useState([]);
   const [mode, setMode] = useState(Equipment.mode.intervention);
@@ -72,41 +77,22 @@ const EquipmentView = ({}) => {
     return _actionList;
   }, [I18n, isInterventionMode]);
 
-  const {intervention} = useSelector(
-    (state: any) => state.intervention_intervention,
-  );
-  const {
-    loadingList,
-    moreLoading,
-    isListEnd,
-    equipmentList,
-    totalNumberClientEquipment,
-    loadingInterventionEquipmentList,
-    moreLoadingInterventionEquipment,
-    isInterventionEquipmentListEnd,
-    interventionEquipmentList,
-    totalNumberInterventionEquipment,
-  } = useSelector((state: any) => state.intervention_equipment);
-
   const idsInterventionEquipement = useMemo(
     () => intervention.equipmentSet.map(equipment => equipment.id),
     [intervention],
   );
 
-  const searchInterventionEquipmentData = useMemo(
-    () => ({
-      idsInterventionEquipement,
-      inService: selectedStatus[0]?.key,
-    }),
-    [idsInterventionEquipement, selectedStatus],
-  );
-
   const searchEquipmentData = useMemo(
     () => ({
+      idsInterventionEquipement,
       partnerId: intervention.deliveredPartner?.id,
       inService: selectedStatus[0]?.key,
     }),
-    [intervention.deliveredPartner?.id, selectedStatus],
+    [
+      idsInterventionEquipement,
+      intervention.deliveredPartner?.id,
+      selectedStatus,
+    ],
   );
 
   const ObjectToDisplay = useMemo(() => {
@@ -117,7 +103,7 @@ const EquipmentView = ({}) => {
         moreLoading: moreLoadingInterventionEquipment,
         isListEnd: isInterventionEquipmentListEnd,
         sliceFunction: searchInterventionEquipment,
-        sliceFunctionData: searchInterventionEquipmentData,
+        sliceFunctionData: searchEquipmentData,
       };
     } else {
       return {
@@ -140,71 +126,14 @@ const EquipmentView = ({}) => {
     moreLoading,
     moreLoadingInterventionEquipment,
     searchEquipmentData,
-    searchInterventionEquipmentData,
-  ]);
-
-  useEffect(() => {
-    dispatch(
-      (fetchNumberInterventionEquipment as any)({
-        idsInterventionEquipement,
-      }),
-    );
-    dispatch(
-      (fetchNumberClientEquipment as any)({
-        partnerId: intervention.deliveredPartner?.id,
-      }),
-    );
-    dispatch(
-      (searchInterventionEquipment as any)(searchInterventionEquipmentData),
-    );
-    dispatch((searchEquipment as any)(searchEquipmentData));
-  }, [
-    dispatch,
-    idsInterventionEquipement,
-    intervention.deliveredPartner?.id,
-    searchEquipmentData,
-    searchInterventionEquipmentData,
   ]);
 
   return (
     <SearchListView
-      list={ObjectToDisplay.list}
-      loading={ObjectToDisplay.loading}
-      moreLoading={ObjectToDisplay.moreLoading}
-      isListEnd={ObjectToDisplay.isListEnd}
-      sliceFunction={ObjectToDisplay.sliceFunction}
-      sliceFunctionData={ObjectToDisplay.sliceFunctionData}
+      {...ObjectToDisplay}
       searchPlaceholder={I18n.t('Base_Search')}
       headerTopChildren={<InterventionHeader intervention={intervention} />}
-      headerChildren={
-        <ToggleSwitch
-          leftTitle={I18n.t('Intervention_Intervention')}
-          rightTitle={I18n.t('Intervention_Customer')}
-          leftElement={
-            <NumberBubble
-              style={styles.indicator}
-              number={totalNumberInterventionEquipment}
-              color={Colors.primaryColor}
-              isNeutralBackground={true}
-            />
-          }
-          rigthElement={
-            <NumberBubble
-              style={styles.indicator}
-              number={totalNumberClientEquipment}
-              color={Colors.primaryColor}
-              isNeutralBackground={true}
-            />
-          }
-          onSwitch={() =>
-            setMode(_mode =>
-              _mode === Equipment.mode.intervention
-                ? Equipment.mode.client
-                : Equipment.mode.intervention,
-            )
-          }
-        />
-      }
+      headerChildren={<EquipmentModeSwitch setMode={setMode} />}
       chipComponent={
         <ChipSelect
           mode="switch"
@@ -227,12 +156,5 @@ const EquipmentView = ({}) => {
     />
   );
 };
-
-const styles = StyleSheet.create({
-  indicator: {
-    position: 'absolute',
-    right: 10,
-  },
-});
 
 export default EquipmentView;
