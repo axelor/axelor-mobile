@@ -66,7 +66,7 @@ storiesOf('ui/templates/BottomBar', module).add(
         control: {
           type: 'number',
         },
-        defaultValue: 40,
+        defaultValue: 50,
       },
     },
   },
