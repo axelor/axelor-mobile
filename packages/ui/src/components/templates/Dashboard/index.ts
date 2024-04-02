@@ -17,6 +17,5 @@
  */
 
 export * from './Chart';
-export * from './dashboard.helper';
 export {default as Chart} from './chart-type';
 export {default as Dashboard} from './Dashboard';
