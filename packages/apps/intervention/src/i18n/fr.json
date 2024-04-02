@@ -40,6 +40,7 @@
   "Intervention_Contract": "Contrat",
   "Intervention_EquipmentLine": "Ligne d'équipement",
   "Intervention_OpenEquipmentLine": "Ouvrir les lignes",
+  "Intervention_OpenEquipmentIntervention": "Ouvrir l'historique des interventions",
   "Intervention_OpenEquipmentPictures": "Ouvrir les photos",
   "Intervention_ChoosePhoto": "Choisir une photo",
   "Intervention_TakePicture": "Prendre une photo",
@@ -65,5 +66,6 @@
   "Intervention_SliceAction_SearchEquipmentLine": "recherche sur les lignes d'équipement",
   "Intervention_SliceAction_SearchEquipmentPicture": "recherche sur les photos de l'équipement",
   "Intervention_SliceAction_DeleteEquipmentPicture": "suppression d'une image d'équipement",
-  "Intervention_SliceAction_CreateEquipmentPicture": "création d'une image d'équipement"
+  "Intervention_SliceAction_CreateEquipmentPicture": "création d'une image d'équipement",
+  "Intervention_SliceAction_SearchHistoryInterventionByEquipment": "recherche l'historique des interventions par equipment"
 }

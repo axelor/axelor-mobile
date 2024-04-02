@@ -56,6 +56,13 @@ const useEquipmentFormActions = () => {
           iconName: 'images',
           onPress: () => navigation.navigate('EquipmentPictureScreen'),
         },
+        {
+          key: 'openEquipmentIntervention',
+          title: I18n.t('Intervention_OpenEquipmentIntervention'),
+          order: 30,
+          iconName: 'car-front-fill',
+          onPress: () => navigation.navigate('EquipmentInterventionListScreen'),
+        },
       ],
     });
   }, [mobileSettings, equipment, I18n, navigation]);
