@@ -15,20 +15,24 @@ Au niveau de l’architecture, afin de bien distinguer les écrans des composant
 La librairie core fournit un typage pour la structure des écrans avec les informations nécessaires à l’enregistrement dans la navigation des différents écrans. Un écran est définit par une clé puis différents attributs :
 
 ```tsx
+interface ScreenOptions {
+  shadedHeader: boolean;
+}
+
 export interface Screen {
   component: React.FC<any>;
   title: string;
+  actionID?: string;
   options?: ScreenOptions;
-}
-
-interface ScreenOptions {
-  shadedHeader: boolean;
+  isUsableOnShortcut?: boolean;
 }
 ```
 
 - un titre (_title_) à afficher dans le header lorsque l’utilisateur se trouve sur la page. Il doit s’agir en réalité d’une clé de traduction afin de faciliter l’internationalisation de l’application.
-- le composant correspondant au contenu de l’écran (_component)_
+- le composant correspondant au contenu de l’écran (_component_)
+- une clé _actionID_ pour relier l'écran à une configuration d'actions à afficher dans le header.
 - des options pour l’affichage de l’écran comme par exemple la possibilité d’avoir ou non un header avec une ombre. Le header a par défaut une ombre, il n’est donc pas nécessaire de fournir cet attribut lorsque l’ombre est voulue.
+- un bouléen _isUsableOnShortcut_ pour indiquer si l'écran peut être utilisé dans un raccourci sur l'écran d'accueil.
 
 Il suffit ensuite d’exporter tous les écrans sous cette forme :
 

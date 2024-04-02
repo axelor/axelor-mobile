@@ -26,6 +26,7 @@ export default {
     options: {
       shadedHeader: false,
     },
+    isUsableOnShortcut: true,
   },
   TourDetailsScreen: {
     title: 'Crm_Tours',
