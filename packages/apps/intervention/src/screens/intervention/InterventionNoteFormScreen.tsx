@@ -29,8 +29,7 @@ import {
 
 const InterventionNoteFormScreen = ({route, navigation}) => {
   const noteId = route?.params?.noteId;
-
-  const dispatch = useDispatch();
+  const dispatch: any = useDispatch();
 
   const {intervention} = useSelector(
     (state: any) => state.intervention_intervention,
@@ -67,9 +66,7 @@ const InterventionNoteFormScreen = ({route, navigation}) => {
           interventionNote: objectState,
           deliveredPartnerId: intervention?.deliveredPartner?.id,
         }),
-      );
-
-      navigation.pop();
+      ).then(() => navigation.pop());
     },
     [dispatch, intervention?.deliveredPartner, navigation, noteId],
   );

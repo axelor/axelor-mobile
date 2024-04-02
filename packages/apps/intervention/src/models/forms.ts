@@ -132,6 +132,9 @@ export const intervention_formsRegister: FormConfigs = {
         widget: 'custom',
         required: true,
         customComponent: InterventionNoteTypePicker,
+        options: {
+          isScrollViewContainer: true,
+        },
       },
       description: {
         titleKey: 'Intervention_Description',

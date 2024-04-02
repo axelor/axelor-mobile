@@ -24,11 +24,13 @@ import {fetchInterventionNoteType} from '../../../features/interventionNoteSlice
 interface InterventionNoteTypePickerProps {
   defaultValue?: string;
   onChange: (noteType: any) => void;
+  isScrollViewContainer?: boolean;
 }
 
 const InterventionNoteTypePicker = ({
   defaultValue = null,
   onChange = () => {},
+  isScrollViewContainer = false,
 }: InterventionNoteTypePickerProps) => {
   const I18n = useTranslator();
   const dispatch = useDispatch();
@@ -50,7 +52,7 @@ const InterventionNoteTypePicker = ({
       defaultValue={defaultValue}
       onValueChange={onChange}
       isValueItem
-      isScrollViewContainer
+      isScrollViewContainer={isScrollViewContainer}
     />
   );
 };

@@ -78,10 +78,6 @@ export const createInterventionNote = createAsyncThunk(
       action: 'Intervention_SliceAction_CreateInterventionNote',
       getState,
       responseOptions: {isArrayResponse: false, showToast: true},
-    }).then(() => {
-      dispatch(
-        fetchInterventionNote({deliveredPartnerId: data.deliveredPartnerId}),
-      );
     });
   },
 );
@@ -95,10 +91,6 @@ export const updateInterventionNote = createAsyncThunk(
       action: 'Intervention_SliceAction_UpdateInterventionNote',
       getState,
       responseOptions: {isArrayResponse: false, showToast: true},
-    }).then(() => {
-      dispatch(
-        fetchInterventionNote({deliveredPartnerId: data.deliveredPartnerId}),
-      );
     });
   },
 );
