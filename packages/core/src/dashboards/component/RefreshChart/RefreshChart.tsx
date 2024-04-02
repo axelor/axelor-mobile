@@ -16,64 +16,89 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {StyleSheet, View} from 'react-native';
-import {ChartRender, Icon, Data} from '@axelor/aos-mobile-ui';
+import {ChartRender, Icon, checkNullString} from '@axelor/aos-mobile-ui';
 import {fetchChartById} from '../../api.helpers';
-
-interface Chart {
-  title: string;
-  type: 'line' | 'bar' | 'pie' | 'donut';
-  id: number;
-  datasets: Data[][];
-}
+import AOPChart from '../AOPChart/AOPChart';
 
 interface RefreshChartProps {
   style?: any;
-  chart: Chart;
+  chartId: number;
   hideCardBackground?: boolean;
 }
 
 const RefreshChart = ({
   style,
-  chart,
+  chartId,
   hideCardBackground = false,
 }: RefreshChartProps) => {
-  const [dataList, setDataList] = useState(chart.datasets);
-  const [chartName, setChartName] = useState(chart.title);
-  const [chartType, setChartType] = useState(chart.type);
+  const [dataList, setDataList] = useState([]);
+  const [chartName, setChartName] = useState();
+  const [chartType, setChartType] = useState();
+  const [actionViewNAme, setActionViewNAme] = useState(null);
 
-  const refreshChart = chartId => {
-    fetchChartById(chartId)
+  useEffect(() => {
+    refreshChart(chartId);
+  }, [chartId]);
+
+  const refreshChart = _chartId => {
+    fetchChartById(_chartId)
       .then(res => {
-        setChartName(res.data?.object?.chartName);
-        setChartType(res.data?.object?.chartType);
-        setDataList([res.data?.object?.valueList]);
+        if (res?.data?.object?.metaActionName != null) {
+          setActionViewNAme(res?.data?.object?.metaActionName);
+        } else {
+          setActionViewNAme(null);
+          setChartName(res.data?.object?.chartName);
+          setChartType(res.data?.object?.chartType);
+          setDataList([res.data?.object?.valueList]);
+        }
       })
       .catch(() => {
-        setChartName(chart.title);
-        setChartType(chart.type);
-        setDataList(chart.datasets);
+        setActionViewNAme(null);
+        setChartName(null);
+        setChartType(null);
+        setDataList([]);
       });
   };
 
+  if (actionViewNAme != null) {
+    return (
+      <View style={style}>
+        <AOPChart actionViewName={actionViewNAme} />
+        <Icon
+          name="arrow-clockwise"
+          style={styles.icon}
+          touchable={true}
+          onPress={() => {
+            refreshChart(chartId);
+          }}
+        />
+      </View>
+    );
+  }
+
   return (
-    <View style={style}>
-      <ChartRender
-        dataList={dataList}
-        title={chartName}
-        type={chartType}
-        hideCardBackground={hideCardBackground}
-      />
-      <Icon
-        name="arrow-clockwise"
-        style={styles.icon}
-        touchable={true}
-        onPress={() => {
-          refreshChart(chart.id);
-        }}
-      />
-    </View>
+    Array.isArray(dataList) &&
+    dataList.length > 0 &&
+    !checkNullString(chartType) && (
+      <View style={style}>
+        <ChartRender
+          dataList={dataList}
+          title={chartName}
+          type={chartType}
+          hideCardBackground={hideCardBackground}
+        />
+        <Icon
+          name="arrow-clockwise"
+          style={styles.icon}
+          touchable={true}
+          onPress={() => {
+            refreshChart(chartId);
+          }}
+        />
+      </View>
+    )
   );
 };
 
