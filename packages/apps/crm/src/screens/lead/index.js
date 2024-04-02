@@ -41,6 +41,7 @@ export default {
   LeadFormScreen: {
     title: 'Crm_Lead',
     component: LeadFormScreen,
+    isUsableOnShortcut: true,
   },
 };
 

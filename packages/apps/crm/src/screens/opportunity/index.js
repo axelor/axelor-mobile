@@ -41,6 +41,7 @@ export default {
   OpportunityFormScreen: {
     title: 'Crm_Opportunity',
     component: OpportunityFormScreen,
+    isUsableOnShortcut: true,
   },
 };
 
