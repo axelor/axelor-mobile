@@ -26,6 +26,7 @@ export default {
     title: 'Hr_ExpenseLines',
     component: ExpenseLinesListScreen,
     actionID: 'hr_expenseLine_list',
+    isUsableOnShortcut: true,
   },
   ExpenseListScreen: {
     title: 'Hr_Expenses',
@@ -34,6 +35,7 @@ export default {
       shadedHeader: false,
     },
     actionID: 'hr_expenses_list',
+    isUsableOnShortcut: true,
   },
   ExpenseDetailsScreen: {
     title: 'Hr_Expenses',
@@ -46,6 +48,7 @@ export default {
   ExpenseLineFormScreen: {
     title: 'Hr_CreateExpenseLine',
     component: ExpenseLineFormScreen,
+    isUsableOnShortcut: true,
   },
 };
 

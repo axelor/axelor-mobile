@@ -1,0 +1,5 @@
+{
+  "title": "Navigation: send menu and screen informations from settings screen to webapp",
+  "type": "feat",
+  "packages": "core"
+}

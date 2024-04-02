@@ -28,6 +28,7 @@ export default {
     options: {
       shadedHeader: false,
     },
+    isUsableOnShortcut: true,
   },
   LeadDetailsScreen: {
     title: 'Crm_Lead',
@@ -40,6 +41,7 @@ export default {
   LeadFormScreen: {
     title: 'Crm_Lead',
     component: LeadFormScreen,
+    isUsableOnShortcut: true,
   },
 };
 
