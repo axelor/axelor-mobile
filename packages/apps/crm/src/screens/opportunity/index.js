@@ -28,6 +28,7 @@ export default {
     options: {
       shadedHeader: false,
     },
+    isUsableOnShortcut: true,
   },
   OpportunityDetailsScreen: {
     title: 'Crm_Opportunity',
@@ -40,6 +41,7 @@ export default {
   OpportunityFormScreen: {
     title: 'Crm_Opportunity',
     component: OpportunityFormScreen,
+    isUsableOnShortcut: true,
   },
 };
 

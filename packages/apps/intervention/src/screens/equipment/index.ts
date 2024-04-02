@@ -29,6 +29,7 @@ export default {
     options: {
       shadedHeader: false,
     },
+    isUsableOnShortcut: true,
   },
   EquipmentFormView: {
     title: 'Intervention_Equipment',

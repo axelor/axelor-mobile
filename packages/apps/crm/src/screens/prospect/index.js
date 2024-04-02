@@ -27,6 +27,7 @@ export default {
     options: {
       shadedHeader: false,
     },
+    isUsableOnShortcut: true,
   },
   ProspectDetailsScreen: {
     title: 'Crm_Prospect',

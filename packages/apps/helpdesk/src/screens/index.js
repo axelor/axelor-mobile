@@ -28,6 +28,7 @@ export default {
     options: {
       shadedHeader: false,
     },
+    isUsableOnShortcut: true,
   },
   MyTeamTicketListScreen: {
     title: 'Helpdesk_myTeamTickets',
@@ -35,10 +36,12 @@ export default {
     options: {
       shadedHeader: false,
     },
+    isUsableOnShortcut: true,
   },
   TicketFormScreen: {
     title: 'Helpdesk_Ticket',
     component: TicketFormScreen,
+    isUsableOnShortcut: true,
   },
   TicketDetailsScreen: {
     title: 'Helpdesk_Ticket',
