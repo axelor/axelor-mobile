@@ -19,11 +19,12 @@
 import React, {useMemo} from 'react';
 import {Dimensions, StyleSheet, TouchableOpacity, View} from 'react-native';
 import {
-  Text,
-  useThemeColor,
-  ObjectCard,
-  Icon,
   capitalizeFirstLetter,
+  Icon,
+  ObjectCard,
+  Text,
+  TextUnit,
+  useThemeColor,
 } from '@axelor/aos-mobile-ui';
 import {
   AnomalyBubble,
@@ -31,7 +32,6 @@ import {
   useSelector,
   useTranslator,
 } from '@axelor/aos-mobile-core';
-import TextUnit from '../TextUnit/TextUnit';
 
 interface ExpenseLineCardProps {
   expenseId: number;
