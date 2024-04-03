@@ -77,16 +77,21 @@ const useInterventionDetailsActions = () => {
   const Colors = useThemeColor();
   const dispatch = useDispatch();
 
+  const {mobileSettings} = useSelector((state: any) => state.appConfig);
   const {intervention} = useSelector(
     (state: any) => state.intervention_intervention,
   );
 
   useEffect(() => {
     headerActionsProvider.registerModel('intervention_intervention_details', {
+      model: 'com.axelor.apps.intervention.db.Intervention',
+      modelId: intervention?.id,
+      disableMailMessages: !mobileSettings?.isTrackerMessageEnabled,
+      attachedFileScreenTitle: intervention?.sequence,
       actions: [
         {
           key: 'refreshIntervention',
-          order: 10,
+          order: 0,
           iconName: 'arrow-repeat',
           title: I18n.t('Intervention_RefreshIntervention'),
           iconColor: Colors.primaryColor.background,
@@ -99,5 +104,11 @@ const useInterventionDetailsActions = () => {
         },
       ],
     });
-  }, [I18n, Colors, dispatch, intervention.id]);
+  }, [
+    I18n,
+    Colors,
+    dispatch,
+    intervention,
+    mobileSettings?.isTrackerMessageEnabled,
+  ]);
 };
