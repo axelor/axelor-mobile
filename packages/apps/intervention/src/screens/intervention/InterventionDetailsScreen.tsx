@@ -16,7 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import React, {useEffect, useMemo} from 'react';
+import React, {useEffect, useMemo, useState} from 'react';
 import {useDispatch, useSelector} from '@axelor/aos-mobile-core';
 import {BottomBar, Screen, useThemeColor} from '@axelor/aos-mobile-ui';
 import {
@@ -34,6 +34,8 @@ const InterventionDetailsScreen = ({route}) => {
   const {interventionId} = route.params;
   const Colors = useThemeColor();
   const dispatch = useDispatch();
+
+  const [selectedRangeId, setSelectedRangeId] = useState(null);
 
   const {intervention} = useSelector(
     (state: any) => state.intervention_intervention,
@@ -67,7 +69,12 @@ const InterventionDetailsScreen = ({route}) => {
     },
     {
       iconName: 'card-checklist',
-      viewComponent: <SurveyView />,
+      viewComponent: (
+        <SurveyView
+          selectedRangeId={selectedRangeId}
+          onChangeRangeId={setSelectedRangeId}
+        />
+      ),
       color: Colors.progressColor,
       disabled: intervention.statusSelect < Intervention.status.Started,
     },
