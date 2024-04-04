@@ -27,6 +27,7 @@ import {
   SurveyView,
 } from '../../components';
 import {fetchInterventionById} from '../../features/interventionSlice';
+import {fetchRange} from '../../features/questionSlice';
 import {fetchNumberInterventionEquipment} from '../../features/equipmentSlice';
 import {Intervention} from '../../types';
 
@@ -52,6 +53,13 @@ const InterventionDetailsScreen = ({route}) => {
   useEffect(() => {
     dispatch((fetchInterventionById as any)({interventionId}));
   }, [dispatch, interventionId]);
+
+  useEffect(() => {
+    intervention?.id &&
+      (dispatch as any)(
+        (fetchRange as any)({interventionId: intervention?.id}),
+      ).then(res => setSelectedRangeId(res.payload[0].id));
+  }, [dispatch, intervention?.id]);
 
   useEffect(() => {
     dispatch(

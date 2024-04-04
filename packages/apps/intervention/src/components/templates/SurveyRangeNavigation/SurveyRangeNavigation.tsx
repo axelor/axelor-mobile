@@ -16,11 +16,10 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import React, {useCallback, useEffect} from 'react';
+import React, {useCallback} from 'react';
 import {Dimensions, StyleSheet, View} from 'react-native';
-import {useSelector, useDispatch} from '@axelor/aos-mobile-core';
+import {useSelector} from '@axelor/aos-mobile-core';
 import {Button, Picker} from '@axelor/aos-mobile-ui';
-import {fetchRange} from '../../../features/questionSlice';
 
 const BUTTON_SIZE = 40;
 const ARROW_TYPE = {
@@ -37,20 +36,7 @@ const SurveyRangeNavigation = ({
   selectedRangeId,
   onChangeRangeId,
 }: SurveyRangeNavigationProps) => {
-  const dispatch = useDispatch();
-
-  const {intervention} = useSelector(
-    (state: any) => state.intervention_intervention,
-  );
   const {rangeList} = useSelector((state: any) => state.intervention_question);
-
-  useEffect(() => {
-    (dispatch as any)(
-      (fetchRange as any)({interventionId: intervention?.id}),
-    ).then(
-      res => selectedRangeId == null && onChangeRangeId(res.payload[0].id),
-    );
-  }, [dispatch, intervention?.id, onChangeRangeId, selectedRangeId]);
 
   const isArrowDisabled = useCallback(
     arrowType => {
