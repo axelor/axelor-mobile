@@ -1,0 +1,5 @@
+{
+  "title": "RefreshChart: add new component to refresh single chart",
+  "type": "feat",
+  "packages": "core"
+}
