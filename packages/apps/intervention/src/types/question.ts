@@ -92,20 +92,11 @@ class Question {
 
   static getAdvancedMonitoringAnswers = (I18n: {
     t: (key: string) => string;
-  }): {id: number; title: string}[] => {
-    const advancedMonitoringAnswers: {id: number; title: string}[] = [];
-
-    for (let answer in this.advancedMonitoring) {
-      advancedMonitoringAnswers.push({
-        id: this.advancedMonitoring[answer],
-        title: this.getAdvencedMonitoringAnswer(
-          this.advancedMonitoring[answer],
-          I18n,
-        ),
-      });
-    }
-
-    return advancedMonitoringAnswers;
+  }): {id: string; title: string}[] => {
+    return Object.entries(this.advancedMonitoring).map(([, value]) => ({
+      id: value,
+      title: this.getAdvencedMonitoringAnswer(value, I18n),
+    }));
   };
 
   static getAdvencedMonitoringAnswer = (
