@@ -21,6 +21,7 @@ export {searchContract as searchContractApi} from './contract-api';
 export {
   getEquipmentById as getEquipmentByIdApi,
   searchEquipment as searchEquipmentApi,
+  searchInterventionEquipment as searchInterventionEquipmentApi,
   searchPlaceEquipment as searchPlaceEquipmentApi,
   updateEquipment as updateEquipmentApi,
 } from './equipment-api';

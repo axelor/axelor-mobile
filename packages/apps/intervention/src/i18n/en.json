@@ -17,6 +17,7 @@
   "Intervention_EquipmentStatus_InService": "In service",
   "Intervention_EquipmentStatus_NotInService": "Not in service",
   "Intervention_ParentPlace": "Parent place",
+  "Intervention_Unlink": "Unlink",
   "Intervention_Duplicate": "Duplicate",
   "Intervention_Edit": "Edit",
   "Intervention_Archive": "Archive",
@@ -52,6 +53,8 @@
   "Intervention_Note": "Note",
   "Intervention_MetaFile": "File",
   "Intervention_RefreshIntervention": "Refresh intervention",
+  "Intervention_CreateEquipment": "Create an equipment",
+  "Intervention_LinkEquipment": "Link an equipment",
   "Intervention_SliceAction_FetchIntervention": "fetch intervention",
   "Intervention_SliceAction_SearchEquipment": "search equipments",
   "Intervention_SliceAction_SearchClientAndProspect": "search clients and prospects",
@@ -73,5 +76,8 @@
   "Intervention_SliceAction_SearchHistoryInterventionByEquipment": "search history intervention by equipment",
   "Intervention_SliceAction_FetchInterventionNoteById": "fetch intervention note by id",
   "Intervention_SliceAction_UpdateInterventionNote": "update intervention note",
-  "Intervention_SliceAction_CreateInterventionNote": "create intervention note"
+  "Intervention_SliceAction_CreateInterventionNote": "create intervention note",
+  "Intervention_SliceAction_SearchInterventionEquipment": "search intervention equipments",
+  "Intervention_SliceAction_FetchNumberClientEquipment": "fetch the number of client equipment",
+  "Intervention_SliceAction_FetchNumberInterventionEquipment": "fetch the number of intervention equipment"
 }
