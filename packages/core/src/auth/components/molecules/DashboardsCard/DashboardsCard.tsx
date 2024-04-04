@@ -17,17 +17,23 @@
  */
 
 import React from 'react';
-import {StyleSheet} from 'react-native';
+import {Dimensions, StyleSheet} from 'react-native';
 import {Card} from '@axelor/aos-mobile-ui';
 import {DashboardView} from '../../../../dashboards/view';
 import {useSelector} from '../../../../index';
 
 const DashboardsCard = ({style}) => {
-  const {dashboardConfigs} = useSelector((state: any) => state.mobileDashboard);
+  const {mobileSettings} = useSelector((state: any) => state.appConfig);
 
   const renderDashboards = () => {
-    return dashboardConfigs.map((dashboard, index) => {
-      return <DashboardView dashboardId={dashboard.id} key={index} />;
+    return mobileSettings?.dashboardIdList.map((dashboardId, index) => {
+      return (
+        <DashboardView
+          dashboardId={dashboardId}
+          dashboardWidth={Dimensions.get('window').width * 0.85}
+          key={index}
+        />
+      );
     });
   };
 
@@ -40,8 +46,9 @@ const styles = StyleSheet.create({
     width: '90%',
     justifyContent: 'center',
     alignSelf: 'center',
-    paddingHorizontal: 16,
-    paddingRight: 16,
+    paddingVertical: 0,
+    paddingHorizontal: 0,
+    paddingRight: 0,
   },
 });
 

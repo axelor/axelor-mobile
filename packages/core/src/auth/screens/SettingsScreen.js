@@ -21,6 +21,7 @@ import {StyleSheet, View} from 'react-native';
 import {
   Picker,
   Screen,
+  ScrollView,
   SwitchCard,
   Text,
   useConfig,
@@ -108,7 +109,7 @@ const SettingsScreen = ({children}) => {
 
   return (
     <Screen style={styles.screen}>
-      <View style={styles.container}>
+      <ScrollView contentContainerStyle={styles.container}>
         {localizationList?.length > 1 && (
           <Picker
             title={I18n.t('User_Language')}
@@ -135,34 +136,38 @@ const SettingsScreen = ({children}) => {
           title={I18n.t('User_ShowFilter')}
           defaultValue={showFilter}
           onToggle={toggleFilterConfig}
-          style={styles.topSwitchCard}
+          style={[styles.topSwitchCard, styles.switchCard]}
         />
         <SwitchCard
           title={I18n.t('User_VirtualKeyboardConfig')}
           defaultValue={hideVirtualKeyboard}
           onToggle={toggleVirtualKeyboardConfig}
+          style={styles.switchCard}
         />
         <SwitchCard
           title={I18n.t('User_ColorForColorBlind')}
           defaultValue={Theme.isColorBlind}
           onToggle={handleToggleColorBlind}
+          style={styles.switchCard}
         />
         {ApiProviderConfig.allowConnectionBlock && (
           <SwitchCard
             title={I18n.t('User_BlockConnection')}
             defaultValue={!online.isEnabled}
             onToggle={handleToggleConnection}
+            style={styles.switchCard}
           />
         )}
         <SwitchCard
           title={I18n.t('User_Show_Drawer_Subtitles')}
           defaultValue={showSubtitles}
           onToggle={handleToggleSubtitles}
+          style={styles.switchCard}
         />
         {children}
         <TranslationsButton />
         <NavigationToolsButton />
-      </View>
+      </ScrollView>
       <View style={styles.footerContainer}>
         <Text>{I18n.t('Base_Version', {appVersion: appVersion})}</Text>
         <Text>{`${I18n.t('Base_ConnectedOn')}:`}</Text>
@@ -178,12 +183,15 @@ const styles = StyleSheet.create({
   },
   container: {
     marginTop: 10,
-    justifyContent: 'flex-start',
+    justifyContent: 'center',
     alignItems: 'center',
     flex: 1,
   },
   topSwitchCard: {
     marginTop: 5,
+  },
+  switchCard: {
+    alignSelf: 'center',
   },
   footerContainer: {
     justifyContent: 'center',

@@ -19,13 +19,11 @@
 import React, {useCallback, useMemo} from 'react';
 import {Dimensions, FlatList, StyleSheet, TouchableOpacity} from 'react-native';
 import {Card, Icon, Text} from '@axelor/aos-mobile-ui';
+import {useSelector} from '../../../../index';
 import {useNavigation} from '../../../../hooks/use-navigation';
 
 const CARD_PERCENT_WIDTH = 90;
 const CARD_PADDING = 16;
-const ACTION_TYPE = {
-  ScreenNavigation: 0,
-};
 
 interface Shortcut {
   name: string;
@@ -42,6 +40,8 @@ interface ShortcutsCardProps {
 const ShortcutsCard = ({style, horizontal = true}: ShortcutsCardProps) => {
   const navigation = useNavigation();
 
+  const {mobileSettings} = useSelector((state: any) => state.appConfig);
+
   const styles = useMemo(() => {
     const cardWidth =
       Dimensions.get('window').width * (CARD_PERCENT_WIDTH / 100);
@@ -52,46 +52,38 @@ const ShortcutsCard = ({style, horizontal = true}: ShortcutsCardProps) => {
     return getStyles(shortCutWidth);
   }, [horizontal]);
 
-  const shortcutAction = useCallback(
-    (shortcut: Shortcut) => {
-      switch (shortcut.actionType) {
-        case ACTION_TYPE.ScreenNavigation:
-          return navigation.navigate(shortcut.params);
-        default:
-          console.warn(
-            `Action type provided with value ${shortcut.actionType} is not supported by shortcuts.`,
-          );
-          return null;
-      }
-    },
-    [navigation],
-  );
-
   const renderShortCut = useCallback(
-    ({item, index}) => {
+    ({item}) => {
       return (
         <TouchableOpacity
           style={styles.shortcut}
-          onPress={() => shortcutAction(item)}
-          key={index}>
+          onPress={() => navigation.navigate(item.mobileScreenName)}
+          key={item.shortcutId}>
           <Icon name={item.iconName} size={35} />
           <Text fontSize={14}>{item.name}</Text>
         </TouchableOpacity>
       );
     },
-    [shortcutAction, styles.shortcut],
+    [navigation, styles.shortcut],
   );
 
-  if (!Array.isArray(demoData) || demoData.length === 0) {
+  if (
+    !Array.isArray(mobileSettings?.mobileShortcutList) ||
+    mobileSettings?.mobileShortcutList.length === 0
+  ) {
     return null;
   }
 
   return (
     <Card style={[styles.card, style]}>
       {horizontal ? (
-        <FlatList data={demoData} renderItem={renderShortCut} horizontal />
+        <FlatList
+          data={mobileSettings?.mobileShortcutList}
+          renderItem={renderShortCut}
+          horizontal
+        />
       ) : (
-        demoData.map((item, index) => renderShortCut({item, index}))
+        mobileSettings?.mobileShortcutList.map(item => renderShortCut({item}))
       )}
     </Card>
   );
@@ -115,36 +107,3 @@ const getStyles = (shortCutWidth: number) =>
   });
 
 export default ShortcutsCard;
-
-const demoData = [
-  {
-    name: 'Timesheets',
-    iconName: 'clock-history',
-    actionType: ACTION_TYPE.ScreenNavigation,
-    params: 'TimesheetListScreen',
-  },
-  {
-    name: 'Timesheets',
-    iconName: 'clock-history',
-    actionType: ACTION_TYPE.ScreenNavigation,
-    params: 'TimesheetListScreen',
-  },
-  {
-    name: 'Timesheets',
-    iconName: 'clock-history',
-    actionType: ACTION_TYPE.ScreenNavigation,
-    params: 'TimesheetListScreen',
-  },
-  {
-    name: 'Timesheets',
-    iconName: 'clock-history',
-    actionType: ACTION_TYPE.ScreenNavigation,
-    params: 'TimesheetListScreen',
-  },
-  {
-    name: 'Timesheets',
-    iconName: 'clock-history',
-    actionType: ACTION_TYPE.ScreenNavigation,
-    params: 'TimesheetListScreen',
-  },
-];

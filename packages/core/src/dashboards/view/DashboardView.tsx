@@ -25,7 +25,17 @@ import {ActivityIndicator} from 'react-native';
 import {fetchDashboard} from '../api.helpers';
 import {AOPChart} from '../component';
 
-export const DashboardView = ({dashboardId, hideCardBackground}) => {
+interface DashboardViewProps {
+  dashboardId: number;
+  hideCardBackground?: boolean;
+  dashboardWidth?: number;
+}
+
+export const DashboardView = ({
+  dashboardId,
+  hideCardBackground,
+  dashboardWidth,
+}: DashboardViewProps) => {
   const I18n = useTranslator();
 
   const [dashboard, setDashboard] = useState<any>({});
@@ -99,6 +109,7 @@ export const DashboardView = ({dashboardId, hideCardBackground}) => {
     <Dashboard
       lineList={dashboardData}
       hideCardBackground={hideCardBackground}
+      dashboardWidth={dashboardWidth}
     />
   );
 };

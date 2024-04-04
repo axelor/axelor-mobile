@@ -19,11 +19,22 @@
 import React from 'react';
 import {DashboardView} from './DashboardView';
 
-export const DashboardScreen = ({dashboardId, hideCardBackground = false}) => {
+interface DashboardScreenProps {
+  dashboardId: number;
+  hideCardBackground?: boolean;
+  dashboardWidth?: number;
+}
+
+export const DashboardScreen = ({
+  dashboardId,
+  hideCardBackground,
+  dashboardWidth,
+}: DashboardScreenProps) => {
   return (
     <DashboardView
       dashboardId={dashboardId}
       hideCardBackground={hideCardBackground}
+      dashboardWidth={dashboardWidth}
     />
   );
 };
