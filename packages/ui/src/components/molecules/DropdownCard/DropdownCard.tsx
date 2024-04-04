@@ -17,7 +17,7 @@
  */
 
 import React, {useMemo, useState} from 'react';
-import {Dimensions, StyleSheet, TouchableOpacity, View} from 'react-native';
+import {StyleSheet, TouchableOpacity, View} from 'react-native';
 import {animationUtil} from '../../../tools/AnimationUtil';
 import {useThemeColor} from '../../../theme/ThemeContext';
 import {Card, Icon, Text} from '../../atoms';
@@ -60,7 +60,7 @@ const DropdownCard = ({
   return (
     <View style={styles.container}>
       <TouchableOpacity
-        style={styles.touchable}
+        style={styles.containerContent}
         onPress={handleCardPress}
         disabled={!showIcon}
         activeOpacity={0.95}>
@@ -95,11 +95,11 @@ const getStyles = Colors =>
       alignItems: 'center',
       width: '90%',
     },
-    touchable: {
-      zIndex: 31,
+    containerContent: {
+      width: '100%',
+      zIndex: 35,
     },
     content: {
-      width: Dimensions.get('window').width * 0.92,
       borderColor: Colors.secondaryColor.background,
       borderWidth: 1,
       marginHorizontal: 0,
@@ -107,7 +107,7 @@ const getStyles = Colors =>
     },
     containerChildren: {
       backgroundColor: Colors.backgroundColor,
-      width: Dimensions.get('window').width * 0.9,
+      width: '98%',
       paddingTop: 25,
       paddingLeft: 10,
       paddingRight: 10,
