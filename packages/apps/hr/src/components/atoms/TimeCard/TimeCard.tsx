@@ -18,9 +18,13 @@
 
 import React, {useMemo} from 'react';
 import {StyleSheet, View} from 'react-native';
-import {Color, ObjectCard, useThemeColor} from '@axelor/aos-mobile-ui';
+import {
+  Color,
+  ObjectCard,
+  TextUnit,
+  useThemeColor,
+} from '@axelor/aos-mobile-ui';
 import {DateDisplay, useTranslator} from '@axelor/aos-mobile-core';
-import TextUnit from '../TextUnit/TextUnit';
 import {Time} from '../../../types';
 import {getDurationUnit} from '../../../utils';
 
