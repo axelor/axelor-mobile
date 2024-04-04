@@ -17,7 +17,7 @@
  */
 
 import React, {ReactNode, useState} from 'react';
-import {Dimensions, StyleSheet, View} from 'react-native';
+import {StyleSheet, View} from 'react-native';
 import {DropdownCard} from '../../molecules';
 
 interface DropdownCardSwitchProps {
@@ -69,7 +69,7 @@ const styles = StyleSheet.create({
     flexDirection: 'column',
     justifyContent: 'center',
     alignItems: 'center',
-    width: Dimensions.get('window').width * 0.9,
+    width: '100%',
     marginBottom: 5,
   },
 });
