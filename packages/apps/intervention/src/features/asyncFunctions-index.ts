@@ -26,6 +26,8 @@ export {
   searchEquipmentPicture,
 } from './equipmentPictureSlice';
 export {
+  fetchNumberClientEquipment,
+  fetchNumberInterventionEquipment,
   getEquipmentById,
   searchEquipment,
   searchInterventionEquipment,
