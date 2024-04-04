@@ -50,6 +50,7 @@ export default {
   InterventionDetailsScreen: {
     title: 'Intervention_Intervention',
     component: InterventionDetailsScreen,
+    actionID: 'intervention_intervention_details',
     options: {
       shadedHeader: false,
     },
