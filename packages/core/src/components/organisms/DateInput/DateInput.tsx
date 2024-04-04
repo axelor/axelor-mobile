@@ -29,6 +29,7 @@ import {
   useThemeColor,
   OUTSIDE_INDICATOR,
   ThemeColors,
+  checkNullString,
 } from '@axelor/aos-mobile-ui';
 import {DatePicker} from '../../molecules';
 import DateInputUtils from './date-input.helper';
@@ -124,7 +125,7 @@ const DateInput = ({
         Platform.OS === 'ios' ? styles.containerZIndex : null,
         style,
       ]}>
-      {title && <Text style={styles.title}>{title}</Text>}
+      {!checkNullString(title) && <Text style={styles.title}>{title}</Text>}
       <RightIconButton
         onPress={togglePicker}
         icon={
