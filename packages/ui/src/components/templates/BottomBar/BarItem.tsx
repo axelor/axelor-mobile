@@ -16,8 +16,13 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import React, {useMemo} from 'react';
+import React, {useEffect, useMemo} from 'react';
 import {StyleSheet, View} from 'react-native';
+import Animated, {
+  useSharedValue,
+  useAnimatedStyle,
+  withSpring,
+} from 'react-native-reanimated';
 import {Color, useThemeColor} from '../../../theme';
 import {checkNullString} from '../../../utils';
 import {Button, NumberBubble} from '../../molecules';
@@ -44,47 +49,46 @@ const BarItem = ({
 }) => {
   const Colors = useThemeColor();
 
+  const scale = useSharedValue(0.8);
+
+  useEffect(() => {
+    scale.value = withSpring(isSelected ? 1 : 0.8);
+  }, [isSelected, scale]);
+
+  const animatedStyle = useAnimatedStyle(() => {
+    return {
+      transform: [{scale: scale.value}],
+    };
+  });
+
   const buttonColor: Color = useMemo(
     () => color ?? Colors.primaryColor,
     [Colors.primaryColor, color],
   );
 
-  const buttonSize: number = useMemo(
-    () => (isSelected ? size * 1.2 : size),
-    [isSelected, size],
-  );
-
   return (
     <View style={styles.container}>
-      <Button
-        iconName={iconName}
-        color={buttonColor}
-        disabled={disabled}
-        onPress={onPress}
-        width={buttonSize}
-        style={{height: buttonSize}}
-        iconSize={buttonSize * 0.6}
-      />
-      {indicator > 0 && (
-        <NumberBubble
-          number={indicator}
+      <Animated.View style={animatedStyle}>
+        <Button
+          iconName={iconName}
           color={buttonColor}
-          isNeutralBackground={true}
-          style={styles.indicator}
-          size={buttonSize * 0.6}
+          disabled={disabled}
+          onPress={onPress}
+          width={size}
+          style={{height: size}}
+          iconSize={size * 0.6}
         />
+      </Animated.View>
+      {indicator > 0 && (
+        <Animated.View style={[animatedStyle, styles.indicator]}>
+          <NumberBubble
+            number={indicator}
+            color={buttonColor}
+            isNeutralBackground={true}
+          />
+        </Animated.View>
       )}
       {!checkNullString(title) && <Text>{title}</Text>}
-      <View
-        style={[
-          styles.selectedBar,
-          {
-            borderColor: isSelected
-              ? buttonColor.background
-              : Colors.backgroundColor,
-          },
-        ]}
-      />
     </View>
   );
 };
@@ -94,11 +98,7 @@ const styles = StyleSheet.create({
     flexDirection: 'column',
     alignItems: 'center',
     marginHorizontal: 2,
-  },
-  selectedBar: {
-    borderTopWidth: 1,
-    width: 30,
-    marginTop: 5,
+    marginBottom: 6,
   },
   indicator: {
     position: 'absolute',

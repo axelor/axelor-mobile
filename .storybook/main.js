@@ -22,6 +22,22 @@ module.exports = {
       '@storybook/react-native': '@storybook/react',
       'react-native-linear-gradient': 'react-native-web-linear-gradient',
     };
+
+    config.module.rules.push({
+      test: /\.js$/,
+      include: /node_modules[\\\/]react-native-reanimated/,
+      use: {
+        loader: 'babel-loader',
+        options: {
+          presets: [
+            '@babel/preset-env',
+            'module:metro-react-native-babel-preset',
+          ],
+          plugins: ['react-native-reanimated/plugin'],
+        },
+      },
+    });
+
     return config;
   },
 };
