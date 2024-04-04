@@ -18,7 +18,8 @@
 
 import React, {useMemo} from 'react';
 import {StyleSheet} from 'react-native';
-import {Color, Text, useThemeColor} from '@axelor/aos-mobile-ui';
+import {Text} from '../../atoms';
+import {Color, useThemeColor} from '../../../theme';
 
 interface TextUnitProps {
   value: string | number;
