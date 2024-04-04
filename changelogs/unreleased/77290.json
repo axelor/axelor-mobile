@@ -1,0 +1,5 @@
+{
+  "title": "TextUnit: move component from hr package to ui package",
+  "type": "refactor",
+  "packages": ["ui", "hr"]
+}
