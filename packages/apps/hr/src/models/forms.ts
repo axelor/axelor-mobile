@@ -240,7 +240,7 @@ export const hr_formsRegister: FormConfigs = {
         widget: 'custom',
         customComponent: ProjectSearchBar,
         hideIf: ({storeState}) =>
-          storeState.user.user.employee.timesheetImputationSelect !==
+          storeState.user.user.employee?.timesheetImputationSelect !==
             Timesheet.imputation.Project ||
           !storeState.appConfig.mobileSettings.fieldsToShowOnTimesheet.find(
             (field: string) => field === 'project',
@@ -252,7 +252,7 @@ export const hr_formsRegister: FormConfigs = {
         widget: 'custom',
         customComponent: ProjectTaskSearchBar,
         hideIf: ({storeState}) =>
-          storeState.user.user.employee.timesheetImputationSelect !==
+          storeState.user.user.employee?.timesheetImputationSelect !==
             Timesheet.imputation.Project ||
           !storeState.appConfig.mobileSettings.fieldsToShowOnTimesheet.find(
             (field: string) => field === 'projectTask',
@@ -269,7 +269,7 @@ export const hr_formsRegister: FormConfigs = {
         widget: 'custom',
         customComponent: ManufOrderSearchBar,
         hideIf: ({storeState}) =>
-          storeState.user.user.employee.timesheetImputationSelect !==
+          storeState.user.user.employee?.timesheetImputationSelect !==
             Timesheet.imputation.ManufOrder ||
           !storeState.appConfig.mobileSettings.fieldsToShowOnTimesheet.find(
             (field: string) => field === 'manufOrder',
@@ -281,7 +281,7 @@ export const hr_formsRegister: FormConfigs = {
         widget: 'custom',
         customComponent: OperationOrderSearchBar,
         hideIf: ({storeState}) =>
-          storeState.user.user.employee.timesheetImputationSelect !==
+          storeState.user.user.employee?.timesheetImputationSelect !==
             Timesheet.imputation.ManufOrder ||
           !storeState.appConfig.mobileSettings.fieldsToShowOnTimesheet.find(
             (field: string) => field === 'operationOrder',
@@ -360,7 +360,7 @@ export const hr_formsRegister: FormConfigs = {
         widget: 'custom',
         customComponent: ProjectSearchBar,
         hideIf: ({storeState}) =>
-          storeState.user.user.employee.timesheetImputationSelect !==
+          storeState.user.user.employee?.timesheetImputationSelect !==
             Timesheet.imputation.Project ||
           !storeState.appConfig.mobileSettings.fieldsToShowOnTimesheet.find(
             (field: string) => field === 'project',
@@ -372,7 +372,7 @@ export const hr_formsRegister: FormConfigs = {
         widget: 'custom',
         customComponent: ProjectTaskSearchBar,
         hideIf: ({storeState}) =>
-          storeState.user.user.employee.timesheetImputationSelect !==
+          storeState.user.user.employee?.timesheetImputationSelect !==
             Timesheet.imputation.Project ||
           !storeState.appConfig.mobileSettings.fieldsToShowOnTimesheet.find(
             (field: string) => field === 'projectTask',
