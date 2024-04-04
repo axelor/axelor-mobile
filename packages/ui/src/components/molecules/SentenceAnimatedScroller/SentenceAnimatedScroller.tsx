@@ -24,21 +24,28 @@ const {width: screenWidth} = Dimensions.get('window');
 interface SentenceScrollerProps {
   sentence: string;
   textStyle?: any;
+  /** Min: 10000 ms */
   duration?: number;
 }
+
+const DURATION_MIN = 10000;
 
 const SentenceAnimatedScroller = ({
   sentence,
   textStyle,
-  duration = 7000,
+  duration = DURATION_MIN,
 }: SentenceScrollerProps) => {
   const scrollX = useRef(new Animated.Value(screenWidth)).current;
   const sentenceWidth = useMemo(() => sentence.length * 8, [sentence]);
 
+  const styles = useMemo(() => {
+    return getStyles(sentenceWidth, scrollX);
+  }, [sentenceWidth, scrollX]);
+
   useEffect(() => {
     const scrollAnimation = Animated.timing(scrollX, {
       toValue: -sentenceWidth,
-      duration,
+      duration: Math.max(duration, DURATION_MIN),
       useNativeDriver: true,
     });
 
@@ -49,28 +56,27 @@ const SentenceAnimatedScroller = ({
     return () => {
       repeatAnimation.stop();
     };
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [duration, scrollX, sentenceWidth]);
 
   return (
     <View style={styles.container}>
-      <Animated.View
-        // eslint-disable-next-line react-native/no-inline-styles
-        style={{
-          flexDirection: 'row',
-          width: sentenceWidth,
-          transform: [{translateX: scrollX}],
-        }}>
+      <Animated.View style={styles.animatedContainer}>
         <Text style={textStyle}>{sentence}</Text>
       </Animated.View>
     </View>
   );
 };
 
-const styles = StyleSheet.create({
-  container: {
-    overflow: 'hidden',
-  },
-});
+const getStyles = (sentenceWidth, scrollX) =>
+  StyleSheet.create({
+    container: {
+      overflow: 'hidden',
+    },
+    animatedContainer: {
+      flexDirection: 'row',
+      width: sentenceWidth,
+      transform: [{translateX: scrollX}],
+    },
+  });
 
 export default SentenceAnimatedScroller;
