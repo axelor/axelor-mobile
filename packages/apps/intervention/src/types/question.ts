@@ -93,7 +93,7 @@ class Question {
   static getAdvancedMonitoringAnswers = (I18n: {
     t: (key: string) => string;
   }): {id: string; title: string}[] => {
-    return Object.entries(this.advancedMonitoring).map(([, value]) => ({
+    return Object.values(this.advancedMonitoring).map(value => ({
       id: value,
       title: this.getAdvencedMonitoringAnswer(value, I18n),
     }));
