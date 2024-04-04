@@ -93,17 +93,19 @@ const RefreshChart = ({
 
   const content = renderContent();
 
+  if (content == null) {
+    return null;
+  }
+
   return (
     <View style={style}>
       {content}
-      {content && (
-        <Icon
-          name="arrow-clockwise"
-          style={styles.icon}
-          touchable={true}
-          onPress={() => refreshChart(chartId)}
-        />
-      )}
+      <Icon
+        name="arrow-clockwise"
+        style={styles.icon}
+        touchable={true}
+        onPress={() => refreshChart(chartId)}
+      />
     </View>
   );
 };
