@@ -29,6 +29,7 @@ interface EquipmentActionCardProps {
   code: string;
   equipmentFamily: string;
   inService: boolean;
+  isUnlinkAction?: boolean;
 }
 
 const EquipmentActionCard = ({
@@ -38,6 +39,7 @@ const EquipmentActionCard = ({
   code,
   equipmentFamily,
   inService,
+  isUnlinkAction = false,
 }: EquipmentActionCardProps) => {
   const Colors = useThemeColor();
   const I18n = useTranslator();
@@ -54,6 +56,15 @@ const EquipmentActionCard = ({
         inService={inService}
       />
       <View style={styles.flexOne}>
+        {isUnlinkAction && (
+          <InfoButton
+            style={styles.flexOne}
+            iconName="x-lg"
+            iconColor={Colors.secondaryColor_dark.background}
+            onPress={() => {}}
+            indication={I18n.t('Intervention_Unlink')}
+          />
+        )}
         <InfoButton
           style={styles.flexOne}
           iconName="front"
