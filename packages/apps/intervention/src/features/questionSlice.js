@@ -23,7 +23,9 @@ import {
 } from '@axelor/aos-mobile-core';
 import {
   fetchQuestion as _fetchQuestion,
+  fetchQuestionById as _fetchQuestionById,
   fetchRange as _fetchRange,
+  updateQuestion as _updateQuestion,
 } from '../api/question-api';
 
 export const fetchQuestion = createAsyncThunk(
@@ -41,6 +43,39 @@ export const fetchQuestion = createAsyncThunk(
       }
 
       return res;
+    });
+  },
+);
+
+export const fetchQuestionById = createAsyncThunk(
+  'intervention_question/fetchQuestionById',
+  async function (data, {getState}) {
+    return handlerApiCall({
+      fetchFunction: _fetchQuestionById,
+      data,
+      action: 'Intervention_SliceAction_FetchQuestionById',
+      getState,
+      responseOptions: {isArrayResponse: false},
+    });
+  },
+);
+
+export const updateQuestion = createAsyncThunk(
+  'intervention_question/updateQuestion',
+  async function (data, {getState, dispatch}) {
+    return handlerApiCall({
+      fetchFunction: _updateQuestion,
+      data,
+      action: 'Intervention_SliceAction_UpdateQuestion',
+      getState,
+      responseOptions: {isArrayResponse: false, showToast: true},
+    }).then(() => {
+      dispatch(
+        fetchQuestion({
+          interventionId: data.interventionId,
+          rangeId: data.rangeId,
+        }),
+      );
     });
   },
 );
@@ -64,6 +99,9 @@ const initialState = {
   isListEnd: false,
   questionlist: [],
 
+  loadingQuestion: true,
+  question: {},
+
   loadingRangeList: true,
   rangeList: [],
 };
@@ -77,6 +115,13 @@ const questionSlice = createSlice({
       moreLoading: 'moreLoading',
       isListEnd: 'isListEnd',
       list: 'questionlist',
+    });
+    builder.addCase(fetchQuestionById.pending, state => {
+      state.loadingQuestion = true;
+    });
+    builder.addCase(fetchQuestionById.fulfilled, (state, action) => {
+      state.loadingQuestion = false;
+      state.question = action.payload;
     });
     builder.addCase(fetchRange.pending, state => {
       state.loadingRangeList = true;
