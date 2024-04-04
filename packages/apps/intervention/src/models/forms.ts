@@ -23,8 +23,13 @@ import {
   EquipmentFamilySearchBar,
   InterventionNoteTypePicker,
   PlaceEquipmentSearchBar,
+  QuestionAdvancedMonitoring,
+  QuestionCheckbox,
+  QuestionList,
+  QuestionMeasure,
   TypePicker,
 } from '../components';
+import {Question} from '../types';
 
 const CustomerComponentWrapper = component => {
   return ({objectState, ...props}: customComponentOptions) =>
@@ -160,6 +165,106 @@ export const intervention_formsRegister: FormConfigs = {
           objectState.type && objectState.type.attachedFile === true,
         hideIf: ({objectState}) =>
           !objectState.type || objectState.type.attachedFile === false,
+      },
+    },
+  },
+  intervention_interventionQuestion: {
+    modelName: 'com.axelor.apps.intervention.db.InterventionQuestion',
+    fields: {
+      advancedMonitoringAnswer: {
+        type: 'string',
+        widget: 'custom',
+        customComponent: QuestionAdvancedMonitoring,
+        requiredIf: ({objectState}) =>
+          objectState.answerTypeSelect ===
+            Question.answerType.AdvancedMonitoring && objectState.isRequired,
+        hideIf: ({objectState}) =>
+          objectState.answerTypeSelect !==
+          Question.answerType.AdvancedMonitoring,
+      },
+      checkboxAnswer: {
+        type: 'boolean',
+        widget: 'custom',
+        customComponent: QuestionCheckbox,
+        requiredIf: ({objectState}) =>
+          objectState.answerTypeSelect === Question.answerType.CheckBox &&
+          objectState.isRequired,
+        hideIf: ({objectState}) =>
+          objectState.answerTypeSelect !== Question.answerType.CheckBox,
+      },
+      dateAnswer: {
+        type: 'date',
+        widget: 'date',
+        options: {
+          popup: true,
+        },
+        requiredIf: ({objectState}) =>
+          objectState.answerTypeSelect === Question.answerType.Date &&
+          objectState.isRequired,
+        hideIf: ({objectState}) =>
+          objectState.answerTypeSelect !== Question.answerType.Date,
+      },
+      indicationText: {
+        type: 'string',
+        widget: 'default',
+        readonly: true,
+        hideIf: ({objectState}) =>
+          objectState.answerTypeSelect !== Question.answerType.Indication,
+      },
+      measureAnswer: {
+        type: 'number',
+        widget: 'custom',
+        customComponent: QuestionMeasure,
+        requiredIf: ({objectState}) =>
+          objectState.answerTypeSelect === Question.answerType.Measure &&
+          objectState.isRequired,
+        hideIf: ({objectState}) =>
+          objectState.answerTypeSelect !== Question.answerType.Measure,
+      },
+      pictureAnswer: {
+        type: 'object',
+        widget: 'file',
+        options: {
+          documentTypesAllowed: 'images',
+          displayPreview: true,
+        },
+        requiredIf: ({objectState}) =>
+          objectState.answerTypeSelect === Question.answerType.Picture &&
+          objectState.isRequired,
+        hideIf: ({objectState}) =>
+          objectState.answerTypeSelect !== Question.answerType.Picture,
+      },
+      signatureAnswer: {
+        type: 'object',
+        widget: 'signature',
+        requiredIf: ({objectState}) =>
+          objectState.answerTypeSelect === Question.answerType.Signature &&
+          objectState.isRequired,
+        hideIf: ({objectState}) =>
+          objectState.answerTypeSelect !== Question.answerType.Signature,
+      },
+      textAnswer: {
+        type: 'string',
+        widget: 'default',
+        options: {
+          multiline: true,
+          adjustHeightWithLines: true,
+        },
+        requiredIf: ({objectState}) =>
+          objectState.answerTypeSelect === Question.answerType.Text &&
+          objectState.isRequired,
+        hideIf: ({objectState}) =>
+          objectState.answerTypeSelect !== Question.answerType.Text,
+      },
+      listAnswer: {
+        type: 'object',
+        widget: 'custom',
+        customComponent: QuestionList,
+        requiredIf: ({objectState}) =>
+          objectState.answerTypeSelect === Question.answerType.ValueList &&
+          objectState.isRequired,
+        hideIf: ({objectState}) =>
+          objectState.answerTypeSelect !== Question.answerType.ValueList,
       },
     },
   },

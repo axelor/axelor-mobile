@@ -47,4 +47,9 @@ export {
   fetchInterventionById,
   searchHistoryInterventionByEquipment,
 } from './interventionSlice';
-export {fetchQuestion, fetchRange} from './questionSlice';
+export {
+  fetchQuestion,
+  fetchQuestionById,
+  fetchRange,
+  updateQuestion,
+} from './questionSlice';

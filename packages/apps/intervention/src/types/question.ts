@@ -28,6 +28,25 @@ class Question {
     Hidden: 6,
   };
 
+  static answerType = {
+    AdvancedMonitoring: 'advancedMonitoring',
+    CheckBox: 'checkbox',
+    Date: 'date',
+    Indication: 'indication',
+    Measure: 'measure',
+    Picture: 'picture',
+    Signature: 'signature',
+    Text: 'text',
+    ValueList: 'list',
+  };
+
+  static advancedMonitoring = {
+    Home: 'home',
+    Office: 'office',
+    PrveiousIntervention: 'previous',
+    NextIntervention: 'next',
+  };
+
   static getStatus = (question: any, conditionalQuestion?: any): number => {
     if (question?.isAnswered) {
       return this.status.Answered;
@@ -66,6 +85,38 @@ class Question {
       default:
         console.warn(
           `Status provided with value ${status} is not supported by InterventionQuestion.`,
+        );
+        return null;
+    }
+  };
+
+  static getAdvancedMonitoringAnswers = (I18n: {
+    t: (key: string) => string;
+  }): {id: string; title: string}[] => {
+    return Object.values(this.advancedMonitoring).map(value => ({
+      id: value,
+      title: this.getAdvencedMonitoringAnswer(value, I18n),
+    }));
+  };
+
+  static getAdvencedMonitoringAnswer = (
+    answerType: string,
+    I18n: {t: (key: string) => string},
+  ): string => {
+    switch (answerType) {
+      case this.advancedMonitoring.Home:
+        return I18n.t('Intervention_AdvancedMonitoringAnswerHome');
+      case this.advancedMonitoring.Office:
+        return I18n.t('Intervention_AdvancedMonitoringAnswerOffice');
+      case this.advancedMonitoring.PrveiousIntervention:
+        return I18n.t(
+          'Intervention_AdvancedMonitoringAnswerPreviousIntervention',
+        );
+      case this.advancedMonitoring.NextIntervention:
+        return I18n.t('Intervention_AdvancedMonitoringAnswerNextIntervention');
+      default:
+        console.warn(
+          `Type provided with value ${answerType} is not supported by advanced monitoring answer.`,
         );
         return null;
     }
