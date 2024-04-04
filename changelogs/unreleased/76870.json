@@ -1,5 +1,5 @@
 {
-  "title": "Form hr : ignore error when user does not have an employee",
+  "title": "Form view: avoid error when user does not have an employee",
   "type": "fix",
   "packages": "hr"
 }
