@@ -16,11 +16,18 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import React, {useEffect, useState} from 'react';
+import React, {useEffect, useMemo, useState} from 'react';
 import {StyleSheet, View} from 'react-native';
 import {ChartRender, Icon} from '@axelor/aos-mobile-ui';
 import {fetchChartById} from '../../api.helpers';
 import AOPChart from '../AOPChart/AOPChart';
+
+const DEFAULT_CONFIG = {
+  dataList: [],
+  chartName: null,
+  chartType: null,
+  actionViewName: null,
+};
 
 interface RefreshChartProps {
   style?: any;
@@ -33,12 +40,7 @@ const RefreshChart = ({
   chartId,
   hideCardBackground = false,
 }: RefreshChartProps) => {
-  const [charConfig, setChartConfig] = useState({
-    dataList: [],
-    chartName: null,
-    chartType: null,
-    actionViewName: null,
-  });
+  const [charConfig, setChartConfig] = useState(DEFAULT_CONFIG);
 
   useEffect(() => {
     refreshChart(chartId);
@@ -51,31 +53,24 @@ const RefreshChart = ({
 
         if (data?.object?.metaActionName) {
           setChartConfig({
+            ...DEFAULT_CONFIG,
             actionViewName: data.object.metaActionName,
-            dataList: [],
-            chartName: null,
-            chartType: null,
           });
         } else {
           setChartConfig({
+            ...DEFAULT_CONFIG,
             dataList: [data.object.valueList],
             chartName: data.object.chartName,
             chartType: data.object.chartType,
-            actionViewName: null,
           });
         }
       })
       .catch(() => {
-        setChartConfig({
-          dataList: [],
-          chartName: null,
-          chartType: null,
-          actionViewName: null,
-        });
+        setChartConfig(DEFAULT_CONFIG);
       });
   };
 
-  const renderContent = () => {
+  const renderContent = useMemo(() => {
     if (charConfig.actionViewName) {
       return <AOPChart actionViewName={charConfig.actionViewName} />;
     } else if (charConfig.dataList.length > 0 && charConfig.chartType) {
@@ -89,17 +84,15 @@ const RefreshChart = ({
       );
     }
     return null;
-  };
+  }, [charConfig, hideCardBackground]);
 
-  const content = renderContent();
-
-  if (content == null) {
+  if (renderContent == null) {
     return null;
   }
 
   return (
     <View style={style}>
-      {content}
+      {renderContent}
       <Icon
         name="arrow-clockwise"
         style={styles.icon}
