@@ -47,5 +47,7 @@ export {
 } from './intervention-note-api';
 export {
   fetchQuestion as fetchQuestionApi,
+  fetchQuestionById as fetchQuestionByIdApi,
   fetchRange as fetchRangeApi,
+  updateQuestion as updateQuestionApi,
 } from './question-api';
