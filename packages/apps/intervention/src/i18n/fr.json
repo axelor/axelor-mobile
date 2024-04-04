@@ -17,6 +17,7 @@
   "Intervention_EquipmentStatus_InService": "En service",
   "Intervention_EquipmentStatus_NotInService": "Pas en service",
   "Intervention_ParentPlace": "Lieu parent",
+  "Intervention_Unlink": "Dissocier",
   "Intervention_Duplicate": "Dupliquer",
   "Intervention_Edit": "Editer",
   "Intervention_Archive": "Archiver",
@@ -52,6 +53,8 @@
   "Intervention_Note": "Note",
   "Intervention_MetaFile": "Fichier",
   "Intervention_RefreshIntervention": "Actualiser l'intervention",
+  "Intervention_CreateEquipment": "Créer un équipement",
+  "Intervention_LinkEquipment": "Lier un équipement",
   "Intervention_SliceAction_FetchIntervention": "récupération des interventions",
   "Intervention_SliceAction_SearchEquipment": "recherche sur les équipements",
   "Intervention_SliceAction_SearchClientAndProspect": "recherche sur les clients et prospects",
@@ -73,5 +76,8 @@
   "Intervention_SliceAction_SearchHistoryInterventionByEquipment": "recherche l'historique des interventions par equipment",
   "Intervention_SliceAction_FetchInterventionNoteById": "récuperation d'une note d'intervention par id",
   "Intervention_SliceAction_UpdateInterventionNote": "mise à jour d'une note d'intervention",
-  "Intervention_SliceAction_CreateInterventionNote": "création d'une note d'intervention"
+  "Intervention_SliceAction_CreateInterventionNote": "création d'une note d'intervention",
+  "Intervention_SliceAction_SearchInterventionEquipment": "recherche sur les équipements liés à une intervention",
+  "Intervention_SliceAction_FetchNumberClientEquipment": "récupération du nombre d'équipements liés à un client",
+  "Intervention_SliceAction_FetchNumberInterventionEquipment": "récupération du nombre d'équipements liés à une intervention"
 }
