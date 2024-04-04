@@ -51,6 +51,7 @@
   "Intervention_CreateNote": "Créer une note",
   "Intervention_Note": "Note",
   "Intervention_MetaFile": "Fichier",
+  "Intervention_RefreshIntervention": "Actualiser l'intervention",
   "Intervention_SliceAction_FetchIntervention": "récupération des interventions",
   "Intervention_SliceAction_SearchEquipment": "recherche sur les équipements",
   "Intervention_SliceAction_SearchClientAndProspect": "recherche sur les clients et prospects",
