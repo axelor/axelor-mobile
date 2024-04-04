@@ -21,7 +21,7 @@ import {KeyboardTypeOptions, StyleSheet, View} from 'react-native';
 import {Input, Text} from '../../atoms';
 import {useThemeColor} from '../../../theme/ThemeContext';
 import {ThemeColors} from '../../../theme/themes';
-import {getCommonStyles} from '../../../utils/commons-styles';
+import {getCommonStyles, checkNullString} from '../../../utils';
 
 interface FormInputProps {
   title: string;
@@ -95,7 +95,7 @@ const FormInput = ({
 
   return (
     <View style={[styles.container, style]}>
-      <Text style={styles.title}>{title}</Text>
+      {!checkNullString(title) && <Text style={styles.title}>{title}</Text>}
       <View
         style={[
           commonStyles.filter,

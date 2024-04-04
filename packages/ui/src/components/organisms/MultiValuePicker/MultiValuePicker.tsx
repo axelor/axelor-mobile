@@ -18,16 +18,18 @@
 
 import React, {useCallback, useEffect, useMemo, useRef, useState} from 'react';
 import {Platform, StyleSheet, View} from 'react-native';
-import {useThemeColor} from '../../../theme/ThemeContext';
-import {getCommonStyles} from '../../../utils/commons-styles';
+import {Color, ThemeColors, useThemeColor} from '../../../theme';
 import {Text} from '../../atoms';
 import {SelectionContainer, MultiValuePickerButton} from '../../molecules';
-import {getItemsFromList} from '../../../utils/list';
+import {
+  checkNullString,
+  getCommonStyles,
+  getItemsFromList,
+} from '../../../utils';
 import {
   OUTSIDE_INDICATOR,
   useClickOutside,
 } from '../../../hooks/use-click-outside';
-import {Color, ThemeColors} from '../../../theme';
 
 interface Item {
   color: Color;
@@ -128,7 +130,9 @@ const MultiValuePicker = ({
         Platform.OS === 'ios' && pickerIsOpen ? styles.containerZIndex : null,
         style,
       ]}>
-      {title && <Text style={[styles.title, styleTxt]}>{title}</Text>}
+      {!checkNullString(title) && (
+        <Text style={[styles.title, styleTxt]}>{title}</Text>
+      )}
       <MultiValuePickerButton
         onPress={togglePicker}
         listItem={selectedItemList}

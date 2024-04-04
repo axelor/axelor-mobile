@@ -37,7 +37,7 @@ import {
 } from '../../../api/metafile-api';
 import {useTranslator} from '../../../i18n';
 import {openFileInExternalApp} from '../../../tools';
-import {useMetafileUri} from '../../../utils';
+import {checkNullString, useMetafileUri} from '../../../utils';
 import {
   useCameraValueByKey,
   enableCamera,
@@ -260,7 +260,7 @@ const UploadFileInput = ({
 
   return (
     <View style={[styles.container, style]}>
-      <Text style={styles.title}>{title}</Text>
+      {!checkNullString(title) && <Text style={styles.title}>{title}</Text>}
       <View
         style={[
           commonStyles.filter,

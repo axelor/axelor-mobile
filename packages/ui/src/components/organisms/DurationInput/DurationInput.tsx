@@ -26,6 +26,7 @@ import {
   formatDurationArrayToSeconds,
   formatDurationSecondsToArray,
 } from './duration.helpers';
+import {checkNullString} from '../../../utils';
 
 interface DurationInputProps {
   style?: any;
@@ -85,7 +86,7 @@ const DurationInput = ({
 
   return (
     <View style={[styles.container, style]}>
-      {title && <Text style={styles.title}>{title}</Text>}
+      {!checkNullString(title) && <Text style={styles.title}>{title}</Text>}
       <View style={styles.inputContainer}>
         <NumberChevronInput
           style={inputStyle}
