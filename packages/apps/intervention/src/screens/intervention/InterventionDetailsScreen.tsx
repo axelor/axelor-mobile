@@ -16,16 +16,18 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import React, {useEffect} from 'react';
+import React, {useEffect, useMemo} from 'react';
 import {useDispatch, useSelector} from '@axelor/aos-mobile-core';
 import {BottomBar, Screen, useThemeColor} from '@axelor/aos-mobile-ui';
 import {
+  EquipmentView,
   GeneralInformationView,
   HistoryView,
   NoteView,
   SurveyView,
 } from '../../components';
 import {fetchInterventionById} from '../../features/interventionSlice';
+import {fetchNumberInterventionEquipment} from '../../features/equipmentSlice';
 import {Intervention} from '../../types';
 
 const InterventionDetailsScreen = ({route}) => {
@@ -36,10 +38,26 @@ const InterventionDetailsScreen = ({route}) => {
   const {intervention} = useSelector(
     (state: any) => state.intervention_intervention,
   );
+  const {totalNumberInterventionEquipment} = useSelector(
+    (state: any) => state.intervention_equipment,
+  );
+
+  const idsInterventionEquipement = useMemo(
+    () => intervention?.equipmentSet?.map(equipment => equipment.id),
+    [intervention],
+  );
 
   useEffect(() => {
     dispatch((fetchInterventionById as any)({interventionId}));
   }, [dispatch, interventionId]);
+
+  useEffect(() => {
+    dispatch(
+      (fetchNumberInterventionEquipment as any)({
+        idsInterventionEquipement,
+      }),
+    );
+  }, [dispatch, idsInterventionEquipement]);
 
   const bottomBarItems = [
     {
@@ -52,6 +70,12 @@ const InterventionDetailsScreen = ({route}) => {
       viewComponent: <SurveyView />,
       color: Colors.progressColor,
       disabled: intervention.statusSelect < Intervention.status.Started,
+    },
+    {
+      iconName: 'cart3',
+      viewComponent: <EquipmentView />,
+      color: Colors.infoColor,
+      indicator: totalNumberInterventionEquipment,
     },
     {
       iconName: 'chat-text',
