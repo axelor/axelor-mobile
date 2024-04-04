@@ -19,13 +19,17 @@
 import {useEffect} from 'react';
 import {
   headerActionsProvider,
+  useDispatch,
   useSelector,
   useTranslator,
   useNavigation,
 } from '@axelor/aos-mobile-core';
+import {useThemeColor} from '@axelor/aos-mobile-ui';
+import {fetchInterventionById} from '../features/interventionSlice';
 
 export const useInterventionHeaders = () => {
   useEquipmentFormActions();
+  useInterventionDetailsActions();
 };
 
 const useEquipmentFormActions = () => {
@@ -66,4 +70,45 @@ const useEquipmentFormActions = () => {
       ],
     });
   }, [mobileSettings, equipment, I18n, navigation]);
+};
+
+const useInterventionDetailsActions = () => {
+  const I18n = useTranslator();
+  const Colors = useThemeColor();
+  const dispatch = useDispatch();
+
+  const {mobileSettings} = useSelector((state: any) => state.appConfig);
+  const {intervention} = useSelector(
+    (state: any) => state.intervention_intervention,
+  );
+
+  useEffect(() => {
+    headerActionsProvider.registerModel('intervention_intervention_details', {
+      model: 'com.axelor.apps.intervention.db.Intervention',
+      modelId: intervention?.id,
+      disableMailMessages: !mobileSettings?.isTrackerMessageEnabled,
+      attachedFileScreenTitle: intervention?.sequence,
+      actions: [
+        {
+          key: 'refreshIntervention',
+          order: 0,
+          iconName: 'arrow-repeat',
+          title: I18n.t('Intervention_RefreshIntervention'),
+          iconColor: Colors.primaryColor.background,
+          onPress: () => {
+            dispatch(
+              (fetchInterventionById as any)({interventionId: intervention.id}),
+            );
+          },
+          showInHeader: true,
+        },
+      ],
+    });
+  }, [
+    I18n,
+    Colors,
+    dispatch,
+    intervention,
+    mobileSettings?.isTrackerMessageEnabled,
+  ]);
 };
