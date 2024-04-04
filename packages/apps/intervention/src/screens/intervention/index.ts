@@ -21,6 +21,7 @@ import PlannedInterventionsScreen from './PlannedInterventionsScreen';
 import InterventionsHistoryScreen from './InterventionsHistoryScreen';
 import InterventionDetailsScreen from './InterventionDetailsScreen';
 import InterventionNoteFormScreen from './InterventionNoteFormScreen';
+import InterventionQuestionFormScreen from './InterventionQuestionFormScreen';
 
 export default {
   DayInterventionsScreen: {
@@ -62,6 +63,13 @@ export default {
       shadedHeader: false,
     },
   },
+  InterventionQuestionFormScreen: {
+    title: 'Intervention_Survey',
+    component: InterventionQuestionFormScreen,
+    options: {
+      shadedHeader: false,
+    },
+  },
 };
 
 export {DayInterventionsScreen};
@@ -69,3 +77,4 @@ export {PlannedInterventionsScreen};
 export {InterventionsHistoryScreen};
 export {InterventionDetailsScreen};
 export {InterventionNoteFormScreen};
+export {InterventionQuestionFormScreen};

@@ -18,7 +18,12 @@
 
 import React, {useCallback, useState} from 'react';
 import {StyleSheet, View} from 'react-native';
-import {useDispatch, useSelector, useTranslator} from '@axelor/aos-mobile-core';
+import {
+  useDispatch,
+  useNavigation,
+  useSelector,
+  useTranslator,
+} from '@axelor/aos-mobile-core';
 import {HeaderContainer, ScrollList} from '@axelor/aos-mobile-ui';
 import {QuestionCard} from '../../atoms';
 import {InterventionHeader} from '../../molecules';
@@ -29,6 +34,7 @@ import {Question} from '../../../types';
 const SurveyView = ({}) => {
   const I18n = useTranslator();
   const dispatch = useDispatch();
+  const navigation = useNavigation();
 
   const [selectedRangeId, setSelectedRangeId] = useState(null);
 
@@ -84,7 +90,12 @@ const SurveyView = ({}) => {
         renderItem={({item}) => (
           <QuestionCard
             status={getQuestionStatus(item)}
-            onPress={() => console.log('Question pressed.')}
+            onPress={() =>
+              navigation.navigate('InterventionQuestionFormScreen', {
+                questionId: item.id,
+                rangeId: selectedRangeId,
+              })
+            }
             {...item}
           />
         )}

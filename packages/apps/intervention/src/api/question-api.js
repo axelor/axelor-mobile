@@ -16,7 +16,11 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import {createStandardSearch} from '@axelor/aos-mobile-core';
+import {
+  axiosApiProvider,
+  createStandardFetch,
+  createStandardSearch,
+} from '@axelor/aos-mobile-core';
 
 const createQuestionCriteria = (interventionId, rangeId) => {
   const criteria = [
@@ -54,6 +58,23 @@ export async function fetchQuestion({interventionId, rangeId, page = 0}) {
     fieldKey: 'intervention_question',
     sortKey: 'intervention_question',
     page,
+  });
+}
+
+export async function fetchQuestionById({questionId}) {
+  return createStandardFetch({
+    model: 'com.axelor.apps.intervention.db.InterventionQuestion',
+    id: questionId,
+    fieldKey: 'intervention_question',
+  });
+}
+
+export async function updateQuestion({question}) {
+  return axiosApiProvider.post({
+    url: `ws/rest/com.axelor.apps.intervention.db.InterventionQuestion/${question.id}`,
+    data: {
+      data: question,
+    },
   });
 }
 
