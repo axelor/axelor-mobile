@@ -16,8 +16,9 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import React, {useMemo, useState} from 'react';
+import React, {useEffect, useMemo, useState} from 'react';
 import {
+  useDispatch,
   useSelector,
   useTranslator,
   SearchListView,
@@ -34,6 +35,7 @@ import {Equipment} from '../../../types';
 const EquipmentView = ({}) => {
   const I18n = useTranslator();
   const Colors = useThemeColor();
+  const dispatch = useDispatch();
 
   const {intervention} = useSelector(
     (state: any) => state.intervention_intervention,
@@ -125,6 +127,16 @@ const EquipmentView = ({}) => {
     loadingList,
     moreLoading,
     moreLoadingInterventionEquipment,
+    searchEquipmentData,
+  ]);
+
+  useEffect(() => {
+    dispatch((searchInterventionEquipment as any)(searchEquipmentData));
+    dispatch((searchEquipment as any)(searchEquipmentData));
+  }, [
+    dispatch,
+    idsInterventionEquipement,
+    intervention.deliveredPartner.id,
     searchEquipmentData,
   ]);
 
