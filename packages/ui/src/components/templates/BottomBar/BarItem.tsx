@@ -105,9 +105,6 @@ const styles = StyleSheet.create({
     top: -5,
     right: -10,
   },
-  title: {
-    marginTop: 4,
-  },
 });
 
 export default BarItem;
