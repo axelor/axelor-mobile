@@ -19,7 +19,7 @@
 import React, {useEffect, useCallback, useMemo, useRef, useState} from 'react';
 import {Platform, StyleSheet, View} from 'react-native';
 import {ThemeColors, useThemeColor} from '../../../theme';
-import {getCommonStyles, getFromList} from '../../../utils';
+import {checkNullString, getCommonStyles, getFromList} from '../../../utils';
 import {
   OUTSIDE_INDICATOR,
   useClickOutside,
@@ -177,7 +177,9 @@ const Picker = ({
         Platform.OS === 'ios' ? styles.containerZIndex : null,
         style,
       ]}>
-      {title && <Text style={[styles.title, styleTxt]}>{title}</Text>}
+      {!checkNullString(title) && (
+        <Text style={[styles.title, styleTxt]}>{title}</Text>
+      )}
       <RightIconButton
         onPress={togglePicker}
         icon={

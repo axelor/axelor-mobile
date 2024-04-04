@@ -90,7 +90,7 @@ const SearchBar = ({
 
   return (
     <View style={[styles.container, style]}>
-      {title && <Text style={styles.title}>{title}</Text>}
+      {!checkNullString(title) && <Text style={styles.title}>{title}</Text>}
       <IconInput
         inputRef={inputRef}
         style={[
