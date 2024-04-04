@@ -52,16 +52,11 @@ const InterventionDetailsScreen = ({route}) => {
   }, [dispatch, interventionId]);
 
   useEffect(() => {
-    if (
-      Array.isArray(idsInterventionEquipement) &&
-      idsInterventionEquipement.length > 0
-    ) {
-      dispatch(
-        (fetchNumberInterventionEquipment as any)({
-          idsInterventionEquipement,
-        }),
-      );
-    }
+    dispatch(
+      (fetchNumberInterventionEquipment as any)({
+        idsInterventionEquipement,
+      }),
+    );
   }, [dispatch, idsInterventionEquipement]);
 
   const bottomBarItems = [
