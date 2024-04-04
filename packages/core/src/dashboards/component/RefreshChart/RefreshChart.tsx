@@ -70,7 +70,7 @@ const RefreshChart = ({
       });
   };
 
-  const renderContent = useMemo(() => {
+  const content = useMemo(() => {
     if (charConfig.actionViewName) {
       return <AOPChart actionViewName={charConfig.actionViewName} />;
     } else if (charConfig.dataList.length > 0 && charConfig.chartType) {
@@ -86,13 +86,13 @@ const RefreshChart = ({
     return null;
   }, [charConfig, hideCardBackground]);
 
-  if (renderContent == null) {
+  if (content == null) {
     return null;
   }
 
   return (
     <View style={style}>
-      {renderContent}
+      {content}
       <Icon
         name="arrow-clockwise"
         style={styles.icon}
