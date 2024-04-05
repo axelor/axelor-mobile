@@ -16,7 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import React, {useCallback, useState} from 'react';
+import React, {useCallback} from 'react';
 import {StyleSheet, View} from 'react-native';
 import {
   useDispatch,
@@ -31,12 +31,15 @@ import {SurveyRangeNavigation} from '../../templates';
 import {fetchQuestion} from '../../../features/questionSlice';
 import {Question} from '../../../types';
 
-const SurveyView = ({}) => {
+interface SurveyViewProps {
+  selectedRangeId: number;
+  onChangeRangeId: (rangeId: number) => void;
+}
+
+const SurveyView = ({selectedRangeId, onChangeRangeId}: SurveyViewProps) => {
   const I18n = useTranslator();
   const dispatch = useDispatch();
   const navigation = useNavigation();
-
-  const [selectedRangeId, setSelectedRangeId] = useState(null);
 
   const {intervention} = useSelector(
     (state: any) => state.intervention_intervention,
@@ -78,8 +81,8 @@ const SurveyView = ({}) => {
           <>
             <InterventionHeader intervention={intervention} />
             <SurveyRangeNavigation
-              defaultValue={selectedRangeId}
-              onChangeRangeId={setSelectedRangeId}
+              selectedRangeId={selectedRangeId}
+              onChangeRangeId={onChangeRangeId}
             />
           </>
         }
