@@ -17,9 +17,9 @@
  */
 
 import React from 'react';
-import {TouchableOpacity, View} from 'react-native';
+import {View} from 'react-native';
 import {shallow} from 'enzyme';
-import {Input, NumberChevronInput} from '@axelor/aos-mobile-ui';
+import {Icon, Input, NumberChevronInput} from '@axelor/aos-mobile-ui';
 import {getGlobalStyles} from '../../tools';
 
 export const INPUT_CHANGE_TYPE = {
@@ -55,12 +55,12 @@ describe('NumberChevronInput Component', () => {
       .find('ChevronButton')
       .at(0)
       .dive()
-      .find(TouchableOpacity);
+      .find(Icon);
     const decreaseButton = wrapper
       .find('ChevronButton')
       .at(1)
       .dive()
-      .find(TouchableOpacity);
+      .find(Icon);
 
     increaseButton.simulate('press');
     expect(_onValueChangeMock).toHaveBeenCalledWith(
@@ -86,9 +86,9 @@ describe('NumberChevronInput Component', () => {
       .find('ChevronButton')
       .at(0)
       .dive()
-      .find(TouchableOpacity);
+      .find(Icon);
 
-    expect(increaseButton.prop('disabled')).toBe(true);
+    expect(increaseButton.prop('touchable')).toBe(false);
   });
 
   it('does not allow value to exceed min limits', () => {
@@ -102,9 +102,9 @@ describe('NumberChevronInput Component', () => {
       .find('ChevronButton')
       .at(1)
       .dive()
-      .find(TouchableOpacity);
+      .find(Icon);
 
-    expect(decreaseButton.prop('disabled')).toBe(true);
+    expect(decreaseButton.prop('touchable')).toBe(false);
   });
 
   it('value is correctly re-set when value is out of bound', () => {

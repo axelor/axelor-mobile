@@ -16,11 +16,17 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import React, {LegacyRef, useEffect, useMemo, useState} from 'react';
-import {StyleSheet, TextInput, TouchableOpacity, View} from 'react-native';
-import {Icon, Input} from '../../atoms';
+import React, {
+  LegacyRef,
+  useCallback,
+  useEffect,
+  useMemo,
+  useState,
+} from 'react';
+import {StyleSheet, TextInput, View} from 'react-native';
 import {useThemeColor, ThemeColors} from '../../../theme';
-import {getCommonStyles} from '../../../utils/commons-styles';
+import {getCommonStyles} from '../../../utils';
+import {Icon, Input} from '../../atoms';
 
 const ChevronButton = ({
   isIncreasing,
@@ -57,16 +63,16 @@ const ChevronButton = ({
   const canChangeValue = isIncreasing ? canIncreaseValue : canDecreaseValue;
 
   return (
-    <TouchableOpacity onPress={changeValue} disabled={!canChangeValue}>
-      <Icon
-        name={iconName}
-        color={
-          canChangeValue
-            ? Colors.secondaryColor_dark.background
-            : Colors.secondaryColor.background
-        }
-      />
-    </TouchableOpacity>
+    <Icon
+      name={iconName}
+      color={
+        canChangeValue
+          ? Colors.secondaryColor_dark.background
+          : Colors.secondaryColor.background
+      }
+      touchable={canChangeValue}
+      onPress={changeValue}
+    />
   );
 };
 
@@ -106,10 +112,6 @@ const NumberChevronInput = ({
   const [inputValue, setInputValue] = useState(defaultValue);
   const [isFocused, setIsFocused] = useState(false);
 
-  useEffect(() => {
-    setInputValue(defaultValue);
-  }, [defaultValue]);
-
   const _required = useMemo(
     () => required && (inputValue == null || inputValue === 0),
     [required, inputValue],
@@ -125,38 +127,56 @@ const NumberChevronInput = ({
     [Colors, _required],
   );
 
-  const handleChange = (value: string) => {
-    let writtenNumber = null;
-    let mode = INPUT_CHANGE_TYPE.keyboard;
+  const handleChange = useCallback(
+    (value: string) => {
+      let writtenNumber = null;
+      let mode = INPUT_CHANGE_TYPE.keyboard;
 
-    if (value?.length > 0) {
-      writtenNumber = Number(value[value.length - 1]);
+      if (value?.length > 0) {
+        writtenNumber = Number(value[value.length - 1]);
+      }
+
+      if (writtenNumber < minValue || writtenNumber > maxValue) {
+        const distanceToMinValue = Math.abs(writtenNumber - minValue);
+        const distanceToMaxValue = Math.abs(writtenNumber - maxValue);
+        writtenNumber =
+          distanceToMinValue < distanceToMaxValue ? minValue : maxValue;
+        mode = INPUT_CHANGE_TYPE.limit;
+      }
+
+      return {newValue: writtenNumber, mode};
+    },
+    [maxValue, minValue],
+  );
+
+  useEffect(() => {
+    if (!Number.isNaN(Number(defaultValue))) {
+      const {newValue} = handleChange(defaultValue.toString());
+
+      setInputValue(newValue);
     }
+  }, [defaultValue, handleChange]);
 
-    if (Number.isNaN(writtenNumber)) {
-      return;
-    }
+  const handleInputChange = useCallback(
+    (value: string) => {
+      if (!Number.isNaN(Number(value))) {
+        const {newValue, mode} = handleChange(value);
 
-    if (writtenNumber < minValue || writtenNumber > maxValue) {
-      const distanceToMinValue = Math.abs(writtenNumber - minValue);
-      const distanceToMaxValue = Math.abs(writtenNumber - maxValue);
-      writtenNumber =
-        distanceToMinValue < distanceToMaxValue ? minValue : maxValue;
-      mode = INPUT_CHANGE_TYPE.limit;
-    }
+        setInputValue(newValue);
+        onValueChange(newValue, mode);
+      }
+    },
+    [handleChange, onValueChange],
+  );
 
-    setInputValue(writtenNumber);
-    onValueChange(writtenNumber, mode);
-  };
-
-  const handleSelection = () => {
+  const handleSelection = useCallback(() => {
     setIsFocused(true);
-  };
+  }, []);
 
-  const handleEndFocus = () => {
+  const handleEndFocus = useCallback(() => {
     setIsFocused(false);
     onEndFocus();
-  };
+  }, [onEndFocus]);
 
   return (
     <View style={[styles.container, style]}>
@@ -182,7 +202,7 @@ const NumberChevronInput = ({
           style={styles.input}
           inputRef={inputRef}
           value={inputValue?.toString()}
-          onChange={handleChange}
+          onChange={handleInputChange}
           onSelection={handleSelection}
           onEndFocus={handleEndFocus}
           readOnly={readonly}

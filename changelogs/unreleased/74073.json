@@ -1,0 +1,5 @@
+{
+  "title": "NumberChevronInput: format default value when it changes",
+  "type": "fix",
+  "packages": "ui"
+}
