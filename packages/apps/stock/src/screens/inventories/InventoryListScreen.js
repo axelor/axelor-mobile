@@ -16,21 +16,13 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import React, {useCallback, useMemo, useState} from 'react';
+import React, {useMemo, useState} from 'react';
+import {ChipSelect, Screen, useThemeColor} from '@axelor/aos-mobile-ui';
 import {
-  AutoCompleteSearch,
-  ChipSelect,
-  HeaderContainer,
-  Screen,
-  ScrollList,
-  useThemeColor,
-} from '@axelor/aos-mobile-ui';
-import {
-  filterList,
-  useDispatch,
+  filterChip,
+  SearchListView,
   useSelector,
   useTranslator,
-  filterChip,
 } from '@axelor/aos-mobile-core';
 import {InventoryCard, StockLocationSearchBar} from '../../components';
 import {searchInventories} from '../../features/inventorySlice';
@@ -42,34 +34,14 @@ const stockLocationScanKey = 'stock-location_inventory-list';
 const InventoryListScreen = ({navigation}) => {
   const Colors = useThemeColor();
   const I18n = useTranslator();
-  const dispatch = useDispatch();
 
   const {loadingList, moreLoading, isListEnd, inventoryList} = useSelector(
     state => state.inventory,
   );
 
   const [stockLocation, setStockLocation] = useState(null);
-  const [filter, setFilter] = useState(null);
   const [navigate, setNavigate] = useState(false);
   const [selectedStatus, setSelectedStatus] = useState([]);
-
-  const filterOnStatus = useCallback(
-    list => filterChip(list, selectedStatus, 'statusSelect'),
-    [selectedStatus],
-  );
-
-  const filteredList = useMemo(
-    () =>
-      filterOnStatus(
-        filterList(
-          inventoryList,
-          'stockLocation',
-          'id',
-          stockLocation?.id ?? '',
-        ),
-      ),
-    [filterOnStatus, stockLocation, inventoryList],
-  );
 
   const navigateToInventoryDetail = item => {
     if (item != null) {
@@ -83,40 +55,31 @@ const InventoryListScreen = ({navigation}) => {
     }
   };
 
-  const fetchInventoriesAPI = useCallback(
-    page => {
-      dispatch(searchInventories({searchValue: filter, page: page}));
-    },
-    [dispatch, filter],
+  const sliceFunctionData = useMemo(
+    () => ({
+      stockLocationId: stockLocation?.id,
+    }),
+    [stockLocation?.id],
   );
 
-  const handleRefChange = useCallback(
-    ({page = 0, searchValue}) => {
-      setFilter(searchValue);
-      dispatch(
-        searchInventories({
-          searchValue: searchValue,
-          page: page,
-        }),
-      );
-    },
-    [dispatch],
+  const filteredList = useMemo(
+    () => filterChip(inventoryList, selectedStatus, 'statusSelect'),
+    [inventoryList, selectedStatus],
   );
 
   return (
     <Screen removeSpaceOnTop={true}>
-      <HeaderContainer
-        fixedItems={
-          <AutoCompleteSearch
-            objectList={inventoryList}
-            onChangeValue={item => navigateToInventoryDetail(item)}
-            fetchData={handleRefChange}
-            displayValue={displayInventorySeq}
-            placeholder={I18n.t('Stock_Ref')}
-            oneFilter={true}
-            navigate={navigate}
-          />
-        }
+      <SearchListView
+        list={filteredList}
+        loading={loadingList}
+        moreLoading={moreLoading}
+        isListEnd={isListEnd}
+        sliceFunction={searchInventories}
+        sliceFunctionData={sliceFunctionData}
+        onChangeSearchValue={navigateToInventoryDetail}
+        displaySearchValue={displayInventorySeq}
+        searchPlaceholder={I18n.t('Stock_Ref')}
+        searchNavigate={navigate}
         chipComponent={
           <ChipSelect
             mode="switch"
@@ -156,18 +119,16 @@ const InventoryListScreen = ({navigation}) => {
               },
             ]}
           />
-        }>
-        <StockLocationSearchBar
-          scanKey={stockLocationScanKey}
-          placeholderKey="Stock_StockLocation"
-          defaultValue={stockLocation}
-          onChange={setStockLocation}
-        />
-      </HeaderContainer>
-      <ScrollList
-        loadingList={loadingList}
-        data={filteredList}
-        renderItem={({item}) => (
+        }
+        headerChildren={
+          <StockLocationSearchBar
+            scanKey={stockLocationScanKey}
+            placeholderKey="Stock_StockLocation"
+            defaultValue={stockLocation}
+            onChange={setStockLocation}
+          />
+        }
+        renderListItem={({item}) => (
           <InventoryCard
             reference={item.inventorySeq}
             status={item.statusSelect}
@@ -177,10 +138,6 @@ const InventoryListScreen = ({navigation}) => {
             onPress={() => navigateToInventoryDetail(item)}
           />
         )}
-        fetchData={fetchInventoriesAPI}
-        moreLoading={moreLoading}
-        isListEnd={isListEnd}
-        translator={I18n.t}
       />
     </Screen>
   );

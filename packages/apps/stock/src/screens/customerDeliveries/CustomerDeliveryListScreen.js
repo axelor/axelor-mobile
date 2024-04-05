@@ -16,21 +16,13 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import React, {useCallback, useMemo, useState} from 'react';
+import React, {useMemo, useState} from 'react';
+import {ChipSelect, Screen, useThemeColor} from '@axelor/aos-mobile-ui';
 import {
-  AutoCompleteSearch,
-  ChipSelect,
-  Screen,
-  HeaderContainer,
-  ScrollList,
-  useThemeColor,
-} from '@axelor/aos-mobile-ui';
-import {
-  filterList,
-  useDispatch,
+  filterChip,
+  SearchListView,
   useSelector,
   useTranslator,
-  filterChip,
 } from '@axelor/aos-mobile-core';
 import {
   CustomerDeliveryCard,
@@ -46,7 +38,6 @@ const stockLocationScanKey = 'stock-location_customer-delivery-list';
 const CustomerDeliveryListScreen = ({navigation}) => {
   const Colors = useThemeColor();
   const I18n = useTranslator();
-  const dispatch = useDispatch();
 
   const {loadingList, moreLoading, isListEnd, deliveryList} = useSelector(
     state => state.customerDelivery,
@@ -54,32 +45,8 @@ const CustomerDeliveryListScreen = ({navigation}) => {
 
   const [stockLocation, setStockLocation] = useState(null);
   const [customer, setCustomer] = useState(null);
-  const [filter, setFilter] = useState(null);
   const [selectedStatus, setSelectedStatus] = useState([]);
   const [navigate, setNavigate] = useState(false);
-
-  const filterOnStatus = useCallback(
-    list => filterChip(list, selectedStatus, 'statusSelect'),
-    [selectedStatus],
-  );
-
-  const filteredList = useMemo(
-    () =>
-      filterOnStatus(
-        filterList(
-          filterList(
-            deliveryList,
-            'fromStockLocation',
-            'id',
-            stockLocation?.id ?? '',
-          ),
-          'partner',
-          'id',
-          customer?.id ?? '',
-        ),
-      ),
-    [filterOnStatus, stockLocation, deliveryList, customer],
-  );
 
   const navigateToCustomerDelivery = item => {
     if (item != null) {
@@ -90,45 +57,32 @@ const CustomerDeliveryListScreen = ({navigation}) => {
     }
   };
 
-  const fetchDeliveriesAPI = useCallback(
-    page => {
-      dispatch(
-        searchDeliveries({
-          searchValue: filter,
-          page: page,
-        }),
-      );
-    },
-    [dispatch, filter],
+  const sliceFunctionData = useMemo(
+    () => ({
+      fromStockLocationId: stockLocation?.id,
+      partnerId: customer?.id,
+    }),
+    [customer?.id, stockLocation?.id],
   );
 
-  const handleRefChange = useCallback(
-    ({page = 0, searchValue}) => {
-      setFilter(searchValue);
-      dispatch(
-        searchDeliveries({
-          searchValue: searchValue,
-          page: page,
-        }),
-      );
-    },
-    [dispatch],
+  const filteredList = useMemo(
+    () => filterChip(deliveryList, selectedStatus, 'statusSelect'),
+    [deliveryList, selectedStatus],
   );
 
   return (
     <Screen removeSpaceOnTop={true}>
-      <HeaderContainer
-        fixedItems={
-          <AutoCompleteSearch
-            objectList={deliveryList}
-            onChangeValue={item => navigateToCustomerDelivery(item)}
-            fetchData={handleRefChange}
-            displayValue={displayStockMoveSeq}
-            placeholder={I18n.t('Stock_Ref')}
-            oneFilter={true}
-            navigate={navigate}
-          />
-        }
+      <SearchListView
+        list={filteredList}
+        loading={loadingList}
+        moreLoading={moreLoading}
+        isListEnd={isListEnd}
+        sliceFunction={searchDeliveries}
+        sliceFunctionData={sliceFunctionData}
+        onChangeSearchValue={navigateToCustomerDelivery}
+        displaySearchValue={displayStockMoveSeq}
+        searchPlaceholder={I18n.t('Stock_Ref')}
+        searchNavigate={navigate}
         chipComponent={
           <ChipSelect
             mode="switch"
@@ -152,23 +106,23 @@ const CustomerDeliveryListScreen = ({navigation}) => {
               },
             ]}
           />
-        }>
-        <StockLocationSearchBar
-          scanKey={stockLocationScanKey}
-          placeholderKey="Stock_StockLocation"
-          defaultValue={stockLocation}
-          onChange={setStockLocation}
-        />
-        <PartnerSearchBar
-          defaultValue={customer}
-          onChange={setCustomer}
-          placeholderKey="Stock_Customer"
-        />
-      </HeaderContainer>
-      <ScrollList
-        loadingList={loadingList}
-        data={filteredList}
-        renderItem={({item}) => (
+        }
+        headerChildren={
+          <>
+            <StockLocationSearchBar
+              scanKey={stockLocationScanKey}
+              placeholderKey="Stock_StockLocation"
+              defaultValue={stockLocation}
+              onChange={setStockLocation}
+            />
+            <PartnerSearchBar
+              defaultValue={customer}
+              onChange={setCustomer}
+              placeholderKey="Stock_Customer"
+            />
+          </>
+        }
+        renderListItem={({item}) => (
           <CustomerDeliveryCard
             reference={item.stockMoveSeq}
             client={item.partner?.fullName}
@@ -185,10 +139,6 @@ const CustomerDeliveryListScreen = ({navigation}) => {
             onPress={() => navigateToCustomerDelivery(item)}
           />
         )}
-        fetchData={fetchDeliveriesAPI}
-        moreLoading={moreLoading}
-        isListEnd={isListEnd}
-        translator={I18n.t}
       />
     </Screen>
   );

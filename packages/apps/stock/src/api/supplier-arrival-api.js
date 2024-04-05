@@ -24,8 +24,8 @@ import {
 } from '@axelor/aos-mobile-core';
 import StockMove from '../types/stock-move';
 
-const createSearchCriteria = searchValue => {
-  return [
+const createSearchCriteria = (searchValue, toStockLocationId, partnerId) => {
+  const criteria = [
     {
       fieldName: 'isReversion',
       operator: '=',
@@ -53,12 +53,35 @@ const createSearchCriteria = searchValue => {
     },
     getSearchCriterias('stock_supplierArrival', searchValue),
   ];
+
+  if (toStockLocationId != null) {
+    criteria.push({
+      fieldName: 'toStockLocation.id',
+      operator: '=',
+      value: toStockLocationId,
+    });
+  }
+
+  if (partnerId != null) {
+    criteria.push({
+      fieldName: 'partner.id',
+      operator: '=',
+      value: partnerId,
+    });
+  }
+
+  return criteria;
 };
 
-export async function searchSupplierArrivalFilter({searchValue, page = 0}) {
+export async function searchSupplierArrivalFilter({
+  searchValue,
+  toStockLocationId,
+  partnerId,
+  page = 0,
+}) {
   return createStandardSearch({
     model: 'com.axelor.apps.stock.db.StockMove',
-    criteria: createSearchCriteria(searchValue),
+    criteria: createSearchCriteria(searchValue, toStockLocationId, partnerId),
     fieldKey: 'stock_supplierArrival',
     sortKey: 'stock_supplierArrival',
     page,

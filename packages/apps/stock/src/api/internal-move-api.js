@@ -25,8 +25,12 @@ import {
 import StockLocation from '../types/stock-location';
 import StockMove from '../types/stock-move';
 
-const createSearchCriteria = searchValue => {
-  return [
+const createSearchCriteria = (
+  searchValue,
+  fromStockLocationId,
+  toStockLocationId,
+) => {
+  const criteria = [
     {
       fieldName: 'fromStockLocation.typeSelect',
       operator: '=',
@@ -44,12 +48,39 @@ const createSearchCriteria = searchValue => {
     },
     getSearchCriterias('stock_internalMove', searchValue),
   ];
+
+  if (fromStockLocationId != null) {
+    criteria.push({
+      fieldName: 'fromStockLocation.id',
+      operator: '=',
+      value: fromStockLocationId,
+    });
+  }
+
+  if (toStockLocationId != null) {
+    criteria.push({
+      fieldName: 'toStockLocation.id',
+      operator: '=',
+      value: toStockLocationId,
+    });
+  }
+
+  return criteria;
 };
 
-export async function searchInternalMoveFilter({searchValue = null, page = 0}) {
+export async function searchInternalMoveFilter({
+  searchValue = null,
+  fromStockLocationId,
+  toStockLocationId,
+  page = 0,
+}) {
   return createStandardSearch({
     model: 'com.axelor.apps.stock.db.StockMove',
-    criteria: createSearchCriteria(searchValue),
+    criteria: createSearchCriteria(
+      searchValue,
+      fromStockLocationId,
+      toStockLocationId,
+    ),
     fieldKey: 'stock_internalMove',
     sortKey: 'stock_internalMove',
     page,
