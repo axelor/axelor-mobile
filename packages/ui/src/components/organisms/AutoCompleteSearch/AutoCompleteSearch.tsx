@@ -136,7 +136,7 @@ const AutoCompleteSearch = ({
         setSelected(true);
         setSearchText(changeScreenAfter ? '' : displayValue(item));
         setPopupIsVisible(false);
-        onChangeValue(item);
+        onChangeValue?.(item);
       }
     },
     [changeScreenAfter, displayValue, onChangeValue],
@@ -152,7 +152,7 @@ const AutoCompleteSearch = ({
     setSelected(false);
     setPreviousState(searchText);
     setSearchText('');
-    onChangeValue(null);
+    onChangeValue?.(null);
   }, [onChangeValue, searchText]);
 
   const stopInterval = useCallback(() => {
@@ -203,7 +203,7 @@ const AutoCompleteSearch = ({
           );
           setDisplayList(false);
           stopInterval();
-          onChangeValue(objectList[0]);
+          onChangeValue?.(objectList[0]);
         } else {
           setDisplayList(true);
         }

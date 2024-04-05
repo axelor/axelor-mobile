@@ -108,7 +108,7 @@ const ScannerAutocompleteSearch = ({
   const handleChangeValue = useCallback(
     _value => {
       setSearchValue(_value);
-      onChangeValue(_value);
+      onChangeValue?.(_value);
     },
     [onChangeValue],
   );
