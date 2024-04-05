@@ -18,6 +18,7 @@
 
 import {Schema, mixed, number, object} from 'yup';
 import {Models, Module, ObjectFields, SearchFields, SortFields} from './Module';
+import {ModuleSelections} from '../selections';
 
 export const addModuleObjectFields = (
   objectFields: ObjectFields,
@@ -82,6 +83,37 @@ export const addModuleSearchFields = (
   return result;
 };
 
+const addModuleTypeObjects = (
+  types: ModuleSelections,
+  moduleObjects: ModuleSelections,
+): ModuleSelections => {
+  const currentObjects = types.map(_i => _i.key);
+
+  const result: ModuleSelections = [
+    ...(moduleObjects.filter(({key}) => !currentObjects.includes(key)) ?? []),
+  ];
+
+  const overrideObjects = moduleObjects.filter(({key}) =>
+    currentObjects.includes(key),
+  );
+
+  if (Array.isArray(overrideObjects) && overrideObjects.length > 0) {
+    types.forEach(_type => {
+      const newConfig = overrideObjects.find(_i => _i.key === _type.key);
+
+      result.push({
+        ..._type,
+        ...newConfig,
+        fields: {..._type.fields, ...newConfig.fields},
+      });
+    });
+  } else {
+    result.concat(types);
+  }
+
+  return result;
+};
+
 export const addModuleModels = (models: Models, _module: Module): Models => {
   const fields = _module?.models;
 
@@ -95,5 +127,8 @@ export const addModuleModels = (models: Models, _module: Module): Models => {
     searchFields: fields?.searchFields
       ? addModuleSearchFields(models.searchFields, fields.searchFields)
       : models.searchFields,
+    typeObjects: fields?.typeObjects
+      ? addModuleTypeObjects(models.typeObjects, fields.typeObjects)
+      : models.typeObjects,
   };
 };

@@ -61,6 +61,7 @@ import {
   createWebViewScreens,
   filterAuthorizedWebViewMenus,
 } from '../webViews/menu.helper';
+import {useSelectionRegister} from '../selections';
 
 const Drawer = createDrawerNavigator();
 const Stack = createStackNavigator();
@@ -83,6 +84,8 @@ const Navigator = ({modules, mainMenu, onRefresh, versionCheckConfig}) => {
   const Colors = useThemeColor();
   const dispatch = useDispatch();
   const fetchAllPermission = usePermissionsFetcher();
+
+  useSelectionRegister();
 
   const {screens: dashboardScreeens, menus: dashboardMenusConfig} = useMemo(
     () => createDashboardScreens(dashboardConfigs),

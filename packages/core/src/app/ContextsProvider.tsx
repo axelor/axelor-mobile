@@ -40,6 +40,7 @@ import {requestBuilder} from '../apiProviders/Standard/requests.helper';
 import {core_modelAPI, core_searchFields, core_sortFields} from '../models';
 import {HeaderBandProvider} from '../header';
 import {addModuleForms, formConfigsProvider} from '../forms';
+import {SelectionProvider} from '../selections';
 
 const ApplicationContext = createContext(null);
 
@@ -132,6 +133,7 @@ const ContextsProvider = ({
           objectFields: {...core_modelAPI},
           sortFields: {...core_sortFields},
           searchFields: {...core_searchFields},
+          typeObjects: [],
         }),
     [modules],
   );
@@ -166,7 +168,10 @@ const ContextsProvider = ({
               defaultTheme={defaultWritingTheme}
               writingStylesConfig={writingStylesConfig}>
               <ConfigProvider showModulesSubtitle={showModulesSubtitle}>
-                <HeaderBandProvider>{children}</HeaderBandProvider>
+                <SelectionProvider
+                  typeConfigs={modulesObjectFields.typeObjects}>
+                  <HeaderBandProvider>{children}</HeaderBandProvider>
+                </SelectionProvider>
               </ConfigProvider>
             </WritingThemeProvider>
           </ThemeProvider>
