@@ -24,8 +24,8 @@ import {
   RouterProvider,
 } from '@axelor/aos-mobile-core';
 
-const createLeadCriteria = searchValue => {
-  return [
+const createLeadCriteria = (searchValue, userId, assigned, statusList) => {
+  const criteria = [
     {
       fieldName: 'leadStatus.isOpen',
       operator: '=',
@@ -33,12 +33,39 @@ const createLeadCriteria = searchValue => {
     },
     getSearchCriterias('crm_lead', searchValue),
   ];
+
+  if (userId != null && assigned) {
+    criteria.push({
+      fieldName: 'user.id',
+      operator: '=',
+      value: userId,
+    });
+  }
+
+  if (Array.isArray(statusList) && statusList.length > 0) {
+    criteria.push({
+      operator: 'or',
+      criteria: statusList.map(status => ({
+        fieldName: 'leadStatus.id',
+        operator: '=',
+        value: status.key,
+      })),
+    });
+  }
+
+  return criteria;
 };
 
-export async function searchLeads({searchValue, page = 0}) {
+export async function searchLeads({
+  searchValue,
+  page = 0,
+  userId,
+  assigned,
+  statusList,
+}) {
   return createStandardSearch({
     model: 'com.axelor.apps.crm.db.Lead',
-    criteria: createLeadCriteria(searchValue),
+    criteria: createLeadCriteria(searchValue, userId, assigned, statusList),
     fieldKey: 'crm_lead',
     sortKey: 'crm_lead',
     page,

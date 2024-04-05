@@ -16,20 +16,22 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import React, {useCallback, useState, useEffect, useMemo} from 'react';
+import React, {useState, useEffect, useMemo} from 'react';
 import {StyleSheet, View} from 'react-native';
 import {
-  checkNullString,
-  HeaderContainer,
   MultiValuePicker,
   Screen,
-  ScrollList,
   ToggleSwitch,
   useThemeColor,
 } from '@axelor/aos-mobile-ui';
-import {useDispatch, useSelector, useTranslator} from '@axelor/aos-mobile-core';
+import {
+  SearchListView,
+  useDispatch,
+  useSelector,
+  useTranslator,
+} from '@axelor/aos-mobile-core';
 import {fetchLeads, fetchLeadStatus} from '../../features/leadSlice';
-import {LeadsCard, LeadSearchBar} from '../../components';
+import {LeadsCard} from '../../components';
 import {Lead} from '../../types';
 
 const LeadListScreen = ({navigation}) => {
@@ -43,11 +45,6 @@ const LeadListScreen = ({navigation}) => {
 
   const [selectedStatus, setSelectedStatus] = useState([]);
   const [assigned, setAssigned] = useState(false);
-  const [filter, setFilter] = useState(null);
-
-  const handleDataSearch = useCallback(searchValue => {
-    setFilter(searchValue);
-  }, []);
 
   const leadStatusListItems = useMemo(() => {
     return leadStatusList
@@ -61,69 +58,37 @@ const LeadListScreen = ({navigation}) => {
       : [];
   }, [leadStatusList, Colors]);
 
-  const fetchLeadsAPI = useCallback(
-    (page = 0) => {
-      dispatch(fetchLeads({page: page}));
-    },
-    [dispatch],
-  );
-
-  const filterOnUserAssigned = useCallback(
-    list => {
-      if (!Array.isArray(list) || list.length === 0) {
-        return [];
-      } else {
-        if (assigned) {
-          return list?.filter(item => item?.user?.id === userId);
-        } else {
-          return list;
-        }
-      }
-    },
-    [assigned, userId],
-  );
-
-  const filterOnStatus = useCallback(
-    list => {
-      if (!Array.isArray(list) || list.length === 0) {
-        return [];
-      } else {
-        if (selectedStatus.length > 0) {
-          return list?.filter(item =>
-            selectedStatus.find(status => item?.leadStatus?.id === status.key),
-          );
-        } else {
-          return list;
-        }
-      }
-    },
-    [selectedStatus],
-  );
-
   useEffect(() => {
     dispatch(fetchLeadStatus());
   }, [dispatch]);
 
-  const filteredList = useMemo(
-    () => filterOnUserAssigned(filterOnStatus(leadList)),
-    [leadList, filterOnUserAssigned, filterOnStatus],
+  const sliceFunctionData = useMemo(
+    () => ({
+      userId: userId,
+      assigned: assigned,
+      statusList: selectedStatus,
+    }),
+    [assigned, selectedStatus, userId],
   );
 
   return (
     <Screen removeSpaceOnTop={true}>
-      <HeaderContainer
+      <SearchListView
         expandableFilter={false}
+        list={leadList}
+        loading={loadingLeadList}
+        moreLoading={moreLoading}
+        isListEnd={isListEnd}
+        sliceFunction={fetchLeads}
+        sliceFunctionData={sliceFunctionData}
+        onChangeSearchValue={() => {}}
+        searchPlaceholder={I18n.t('Crm_Leads')}
         fixedItems={
           <View style={styles.headerContainer}>
             <ToggleSwitch
               leftTitle={I18n.t('Crm_All')}
               rightTitle={I18n.t('Crm_AssignedToMe')}
               onSwitch={() => setAssigned(!assigned)}
-            />
-            <LeadSearchBar
-              showDetailsPopup={false}
-              oneFilter={true}
-              onFetchDataAction={handleDataSearch}
             />
             <MultiValuePicker
               listItems={leadStatusListItems}
@@ -132,11 +97,7 @@ const LeadListScreen = ({navigation}) => {
             />
           </View>
         }
-      />
-      <ScrollList
-        loadingList={loadingLeadList}
-        data={filteredList}
-        renderItem={({item}) => (
+        renderListItem={({item}) => (
           <LeadsCard
             style={styles.item}
             leadsFullname={item.simpleFullName}
@@ -163,11 +124,6 @@ const LeadListScreen = ({navigation}) => {
             }
           />
         )}
-        fetchData={fetchLeadsAPI}
-        moreLoading={moreLoading}
-        isListEnd={isListEnd}
-        filter={!checkNullString(filter)}
-        translator={I18n.t}
       />
     </Screen>
   );
