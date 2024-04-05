@@ -16,33 +16,67 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import React, {ReactNode, useState} from 'react';
+import React, {ReactNode, useCallback, useEffect, useState} from 'react';
 import {Dimensions, StyleSheet, View} from 'react-native';
 import {DropdownCard} from '../../molecules';
 
 interface DropdownCardSwitchProps {
   style?: any;
-  dropdownItems: DropdownItem[];
   styleTitle?: any;
+  dropdownItems: DropdownItem[];
+  multiSelection?: boolean;
 }
 interface DropdownItem {
   key: number;
   title: string;
   childrenComp: ReactNode;
+  isDefaultVisible?: boolean;
 }
 
 const DropdownCardSwitch = ({
   style,
-  dropdownItems,
   styleTitle,
+  dropdownItems,
+  multiSelection = false,
 }: DropdownCardSwitchProps) => {
-  const [openedCardKey, setOpenedCardKey] = useState<Number>();
+  const getDefaultVisibleItems = useCallback(() => {
+    let defaultVisibleItems = [];
+
+    if (multiSelection) {
+      defaultVisibleItems = dropdownItems.map(
+        item => item.isDefaultVisible && item.key,
+      );
+    } else {
+      const firstVisibleCard = dropdownItems.find(
+        item => item.isDefaultVisible,
+      );
+      defaultVisibleItems = [firstVisibleCard?.key];
+    }
+
+    return defaultVisibleItems;
+  }, [dropdownItems, multiSelection]);
+
+  const [openedCardKeys, setOpenedCardKeys] = useState<Number[]>(
+    getDefaultVisibleItems(),
+  );
+
+  useEffect(() => {
+    setOpenedCardKeys(getDefaultVisibleItems());
+  }, [getDefaultVisibleItems]);
 
   const handlePress = key => {
-    if (openedCardKey === key) {
-      setOpenedCardKey(null);
+    const cardKeyIdx = openedCardKeys.indexOf(key);
+
+    if (cardKeyIdx >= 0) {
+      setOpenedCardKeys(current => {
+        const _current = [...current];
+        _current.splice(cardKeyIdx, 1);
+        return _current;
+      });
     } else {
-      setOpenedCardKey(key);
+      multiSelection
+        ? setOpenedCardKeys(current => [...current, key])
+        : setOpenedCardKeys([key]);
     }
   };
 
@@ -55,7 +89,7 @@ const DropdownCardSwitch = ({
             title={elt.title}
             styleText={styleTitle}
             onPress={() => handlePress(elt.key)}
-            dropdownIsOpen={elt.key === openedCardKey}>
+            dropdownIsOpen={!!openedCardKeys.find(key => key === elt.key)}>
             {elt.childrenComp}
           </DropdownCard>
         );
