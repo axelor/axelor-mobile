@@ -35,7 +35,7 @@ interface PickerProps {
   styleTxt?: any;
   title?: string;
   onValueChange: (any) => void;
-  defaultValue?: string;
+  defaultValue?: string | number;
   listItems: any[];
   displayValue?: (item: any) => string;
   labelField?: string;

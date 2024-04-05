@@ -16,11 +16,10 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import React, {useCallback, useEffect, useState} from 'react';
+import React, {useCallback} from 'react';
 import {Dimensions, StyleSheet, View} from 'react-native';
-import {useSelector, useDispatch} from '@axelor/aos-mobile-core';
+import {useSelector} from '@axelor/aos-mobile-core';
 import {Button, Picker} from '@axelor/aos-mobile-ui';
-import {fetchRange} from '../../../features/questionSlice';
 
 const BUTTON_SIZE = 40;
 const ARROW_TYPE = {
@@ -29,28 +28,15 @@ const ARROW_TYPE = {
 };
 
 interface SurveyRangeNavigationProps {
-  defaultValue?: string;
+  selectedRangeId: number;
   onChangeRangeId: (rangeId: number) => void;
 }
 
 const SurveyRangeNavigation = ({
-  defaultValue = null,
-  onChangeRangeId = () => {},
+  selectedRangeId,
+  onChangeRangeId,
 }: SurveyRangeNavigationProps) => {
-  const dispatch = useDispatch();
-
-  const [selectedRangeId, setSelectedRangeId] = useState(null);
-
-  useEffect(() => setSelectedRangeId(defaultValue), [defaultValue]);
-
-  const {intervention} = useSelector(
-    (state: any) => state.intervention_intervention,
-  );
   const {rangeList} = useSelector((state: any) => state.intervention_question);
-
-  useEffect(() => {
-    dispatch((fetchRange as any)({interventionId: intervention?.id}));
-  }, [dispatch, intervention?.id]);
 
   const isArrowDisabled = useCallback(
     arrowType => {
@@ -75,11 +61,6 @@ const SurveyRangeNavigation = ({
       ? `${item?.equipment.name} - ${item.rangeVal?.title}`
       : item.rangeVal?.title;
 
-  const handleChangeRangeId = (rangeId: number) => {
-    setSelectedRangeId(rangeId);
-    onChangeRangeId(rangeId);
-  };
-
   const handleChangeRange = (arrowType: number) => {
     const selectedRangeIdx = rangeList.findIndex(
       range => range.id === selectedRangeId,
@@ -91,7 +72,7 @@ const SurveyRangeNavigation = ({
     } else {
       newRange = rangeList[selectedRangeIdx + 1];
     }
-    handleChangeRangeId(newRange.id);
+    onChangeRangeId(newRange.id);
   };
 
   return (
@@ -108,7 +89,7 @@ const SurveyRangeNavigation = ({
         displayValue={displayValue}
         valueField="id"
         defaultValue={selectedRangeId}
-        onValueChange={handleChangeRangeId}
+        onValueChange={onChangeRangeId}
       />
       <Button
         style={styles.button}
