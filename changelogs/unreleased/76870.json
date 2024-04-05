@@ -1,0 +1,5 @@
+{
+  "title": "Form views: avoid error when user does not have an employee",
+  "type": "fix",
+  "packages": "hr"
+}
