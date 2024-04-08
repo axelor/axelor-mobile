@@ -16,19 +16,21 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import React, {useMemo, useState, useCallback, useEffect} from 'react';
-import {StyleSheet, View} from 'react-native';
+import React, {useMemo, useState, useEffect} from 'react';
+import {StyleSheet} from 'react-native';
 import {
-  checkNullString,
-  HeaderContainer,
   MultiValuePicker,
   Screen,
-  ScrollList,
   ToggleSwitch,
   useThemeColor,
 } from '@axelor/aos-mobile-ui';
-import {useDispatch, useSelector, useTranslator} from '@axelor/aos-mobile-core';
-import {PartnerCard, ProspectSearchBar} from '../../components';
+import {
+  SearchListView,
+  useDispatch,
+  useSelector,
+  useTranslator,
+} from '@axelor/aos-mobile-core';
+import {PartnerCard} from '../../components';
 import {
   fetchProspects,
   fetchProspectStatus,
@@ -52,11 +54,6 @@ const ProspectsListScreen = ({navigation}) => {
 
   const [selectedStatus, setSelectedStatus] = useState([]);
   const [assigned, setAssigned] = useState(false);
-  const [filter, setFilter] = useState(null);
-
-  const handleDataSearch = useCallback(searchValue => {
-    setFilter(searchValue);
-  }, []);
 
   const prospectStatusListItems = useMemo(() => {
     return prospectStatusList
@@ -70,86 +67,50 @@ const ProspectsListScreen = ({navigation}) => {
       : [];
   }, [prospectStatusList, Colors]);
 
-  const fetchProspectAPI = useCallback(
-    page => {
-      dispatch(fetchProspects({page: page}));
-    },
-    [dispatch],
-  );
-
-  const filterOnStatus = useCallback(
-    list => {
-      if (!Array.isArray(list)) {
-        return [];
-      } else {
-        if (selectedStatus.length > 0) {
-          return list?.filter(item =>
-            selectedStatus.find(
-              status => item?.partnerStatus?.id === status.key,
-            ),
-          );
-        } else {
-          return list;
-        }
-      }
-    },
-    [selectedStatus],
-  );
-
-  const filterOnUserAssigned = useCallback(
-    list => {
-      if (!Array.isArray(list)) {
-        return [];
-      } else {
-        if (assigned) {
-          return list?.filter(item => item?.user?.id === userId);
-        } else {
-          return list;
-        }
-      }
-    },
-    [assigned, userId],
-  );
-
-  const filteredList = useMemo(
-    () => filterOnUserAssigned(filterOnStatus(prospectList)),
-    [filterOnUserAssigned, prospectList, filterOnStatus],
-  );
-
   useEffect(() => {
     dispatch(fetchProspectStatus());
   }, [dispatch]);
 
+  const sliceFunctionData = useMemo(
+    () => ({
+      userId: userId,
+      assigned: assigned,
+      statusList: selectedStatus,
+    }),
+    [assigned, selectedStatus, userId],
+  );
+
   return (
     <Screen removeSpaceOnTop={true}>
-      <HeaderContainer
+      <SearchListView
         expandableFilter={false}
-        fixedItems={
-          <View style={styles.headerContainer}>
-            <ToggleSwitch
-              leftTitle={I18n.t('Crm_All')}
-              rightTitle={I18n.t('Crm_AssignedToMe')}
-              onSwitch={() => setAssigned(!assigned)}
-            />
-            <ProspectSearchBar
-              showDetailsPopup={false}
-              oneFilter={true}
-              onFetchDataAction={handleDataSearch}
-            />
-            {crmConfig?.crmProcessOnPartner && (
-              <MultiValuePicker
-                listItems={prospectStatusListItems}
-                title={I18n.t('Base_Status')}
-                onValueChange={statusList => setSelectedStatus(statusList)}
-              />
-            )}
-          </View>
+        list={prospectList}
+        loading={loadingList}
+        moreLoading={moreLoading}
+        isListEnd={isListEnd}
+        sliceFunction={fetchProspects}
+        sliceFunctionData={sliceFunctionData}
+        onChangeSearchValue={() => {}}
+        searchPlaceholder={I18n.t('Crm_Prospects')}
+        headerTopChildren={
+          <ToggleSwitch
+            style={styles.headerContainer}
+            leftTitle={I18n.t('Crm_All')}
+            rightTitle={I18n.t('Crm_AssignedToMe')}
+            onSwitch={() => setAssigned(!assigned)}
+          />
         }
-      />
-      <ScrollList
-        loadingList={loadingList}
-        data={filteredList}
-        renderItem={({item}) => (
+        fixedItems={
+          crmConfig?.crmProcessOnPartner && (
+            <MultiValuePicker
+              style={styles.headerContainer}
+              listItems={prospectStatusListItems}
+              title={I18n.t('Base_Status')}
+              onValueChange={statusList => setSelectedStatus(statusList)}
+            />
+          )
+        }
+        renderListItem={({item}) => (
           <PartnerCard
             style={styles.item}
             partnerFullName={item.simpleFullName}
@@ -171,11 +132,6 @@ const ProspectsListScreen = ({navigation}) => {
             }
           />
         )}
-        fetchData={fetchProspectAPI}
-        moreLoading={moreLoading}
-        isListEnd={isListEnd}
-        filter={!checkNullString(filter)}
-        translator={I18n.t}
       />
     </Screen>
   );
@@ -187,7 +143,7 @@ const styles = StyleSheet.create({
     marginVertical: 4,
   },
   headerContainer: {
-    alignItems: 'center',
+    alignSelf: 'center',
   },
 });
 
