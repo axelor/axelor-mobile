@@ -41,19 +41,25 @@ const ChevronButton = ({
   const Colors = useThemeColor();
 
   const canIncreaseValue = useMemo(
-    () => !readonly && inputValue < maxValue,
+    () => !readonly && (maxValue == null || inputValue < maxValue),
     [inputValue, maxValue, readonly],
   );
 
   const canDecreaseValue = useMemo(
-    () => !readonly && inputValue > minValue,
+    () => !readonly && (minValue == null || inputValue > minValue),
     [inputValue, minValue, readonly],
   );
 
   const changeValue = () => {
     setInputValue(currentValue => {
       let newValue = currentValue + (isIncreasing ? stepSize : -stepSize);
-      newValue = Math.min(Math.max(newValue, minValue), maxValue);
+
+      if (minValue != null && newValue < minValue) {
+        newValue = minValue;
+      } else if (maxValue != null && newValue > maxValue) {
+        newValue = maxValue;
+      }
+
       onValueChange(newValue, INPUT_CHANGE_TYPE.button);
       return newValue;
     });
@@ -132,15 +138,17 @@ const NumberChevronInput = ({
       let writtenNumber = null;
       let mode = INPUT_CHANGE_TYPE.keyboard;
 
-      if (value?.length > 0) {
+      if (maxValue != null && value?.length > maxValue.toString().length) {
         writtenNumber = Number(value[value.length - 1]);
+      } else {
+        writtenNumber = Number(value);
       }
 
-      if (writtenNumber < minValue || writtenNumber > maxValue) {
-        const distanceToMinValue = Math.abs(writtenNumber - minValue);
-        const distanceToMaxValue = Math.abs(writtenNumber - maxValue);
-        writtenNumber =
-          distanceToMinValue < distanceToMaxValue ? minValue : maxValue;
+      if (minValue != null && writtenNumber < minValue) {
+        writtenNumber = minValue;
+        mode = INPUT_CHANGE_TYPE.limit;
+      } else if (maxValue != null && writtenNumber > maxValue) {
+        writtenNumber = maxValue;
         mode = INPUT_CHANGE_TYPE.limit;
       }
 
