@@ -17,7 +17,7 @@
  */
 
 import React, {useState, useEffect, useMemo} from 'react';
-import {StyleSheet, View} from 'react-native';
+import {StyleSheet} from 'react-native';
 import {
   MultiValuePicker,
   Screen,
@@ -83,19 +83,21 @@ const LeadListScreen = ({navigation}) => {
         sliceFunctionData={sliceFunctionData}
         onChangeSearchValue={() => {}}
         searchPlaceholder={I18n.t('Crm_Leads')}
+        headerTopChildren={
+          <ToggleSwitch
+            style={styles.headerContainer}
+            leftTitle={I18n.t('Crm_All')}
+            rightTitle={I18n.t('Crm_AssignedToMe')}
+            onSwitch={() => setAssigned(!assigned)}
+          />
+        }
         fixedItems={
-          <View style={styles.headerContainer}>
-            <ToggleSwitch
-              leftTitle={I18n.t('Crm_All')}
-              rightTitle={I18n.t('Crm_AssignedToMe')}
-              onSwitch={() => setAssigned(!assigned)}
-            />
-            <MultiValuePicker
-              listItems={leadStatusListItems}
-              title={I18n.t('Base_Status')}
-              onValueChange={statusList => setSelectedStatus(statusList)}
-            />
-          </View>
+          <MultiValuePicker
+            style={styles.headerContainer}
+            listItems={leadStatusListItems}
+            title={I18n.t('Base_Status')}
+            onValueChange={statusList => setSelectedStatus(statusList)}
+          />
         }
         renderListItem={({item}) => (
           <LeadsCard
@@ -135,7 +137,7 @@ const styles = StyleSheet.create({
     marginVertical: 4,
   },
   headerContainer: {
-    alignItems: 'center',
+    alignSelf: 'center',
   },
 });
 

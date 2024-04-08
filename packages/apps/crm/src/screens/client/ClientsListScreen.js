@@ -16,85 +16,56 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import React, {useState, useCallback, useEffect} from 'react';
-import {StyleSheet, View} from 'react-native';
+import React, {useState, useMemo} from 'react';
+import {StyleSheet} from 'react-native';
+import {Screen, ToggleSwitch} from '@axelor/aos-mobile-ui';
 import {
-  checkNullString,
-  HeaderContainer,
-  Screen,
-  ScrollList,
-  ToggleSwitch,
-} from '@axelor/aos-mobile-ui';
-import {useDispatch, useSelector, useTranslator} from '@axelor/aos-mobile-core';
-import {ClientSearchBar, PartnerCard} from '../../components';
+  SearchListView,
+  useSelector,
+  useTranslator,
+} from '@axelor/aos-mobile-core';
+import {PartnerCard} from '../../components';
 import {fetchClients} from '../../features/clientSlice';
 
 const CLientsListScreen = ({navigation}) => {
   const I18n = useTranslator();
-  const dispatch = useDispatch();
 
   const {userId} = useSelector(state => state.auth);
   const {loadingClientList, moreLoading, isListEnd, clientList} = useSelector(
     state => state.client,
   );
 
-  const [filteredList, setFilteredList] = useState(clientList);
   const [assigned, setAssigned] = useState(false);
-  const [filter, setFilter] = useState(null);
 
-  const handleDataSearch = useCallback(searchValue => {
-    setFilter(searchValue);
-  }, []);
-
-  const fetchClientAPI = useCallback(
-    page => {
-      dispatch(fetchClients({page: page}));
-    },
-    [dispatch],
+  const sliceFunctionData = useMemo(
+    () => ({
+      userId: userId,
+      assigned: assigned,
+    }),
+    [userId, assigned],
   );
-
-  const filterOnUserAssigned = useCallback(
-    list => {
-      if (!Array.isArray(list) || list.length === 0) {
-        return [];
-      } else {
-        if (assigned) {
-          return list?.filter(item => item?.user?.id === userId);
-        } else {
-          return list;
-        }
-      }
-    },
-    [assigned, userId],
-  );
-
-  useEffect(() => {
-    setFilteredList(filterOnUserAssigned(clientList));
-  }, [filterOnUserAssigned, clientList]);
 
   return (
     <Screen removeSpaceOnTop={true}>
-      <HeaderContainer
+      <SearchListView
         expandableFilter={false}
-        fixedItems={
-          <View style={styles.headerContainer}>
-            <ToggleSwitch
-              leftTitle={I18n.t('Crm_All')}
-              rightTitle={I18n.t('Crm_AssignedToMe')}
-              onSwitch={() => setAssigned(!assigned)}
-            />
-            <ClientSearchBar
-              showDetailsPopup={false}
-              oneFilter={true}
-              onFetchDataAction={handleDataSearch}
-            />
-          </View>
+        list={clientList}
+        loading={loadingClientList}
+        moreLoading={moreLoading}
+        isListEnd={isListEnd}
+        sliceFunction={fetchClients}
+        sliceFunctionData={sliceFunctionData}
+        onChangeSearchValue={() => {}}
+        searchPlaceholder={I18n.t('Crm_Clients')}
+        headerTopChildren={
+          <ToggleSwitch
+            style={styles.headerContainer}
+            leftTitle={I18n.t('Crm_All')}
+            rightTitle={I18n.t('Crm_AssignedToMe')}
+            onSwitch={() => setAssigned(!assigned)}
+          />
         }
-      />
-      <ScrollList
-        loadingList={loadingClientList}
-        data={filteredList}
-        renderItem={({item}) => (
+        renderListItem={({item}) => (
           <PartnerCard
             style={styles.item}
             partnerFullName={item.simpleFullName}
@@ -110,11 +81,6 @@ const CLientsListScreen = ({navigation}) => {
             }
           />
         )}
-        fetchData={fetchClientAPI}
-        moreLoading={moreLoading}
-        isListEnd={isListEnd}
-        filter={!checkNullString(filter)}
-        translator={I18n.t}
       />
     </Screen>
   );
@@ -126,7 +92,7 @@ const styles = StyleSheet.create({
     marginVertical: 4,
   },
   headerContainer: {
-    alignItems: 'center',
+    alignSelf: 'center',
   },
 });
 

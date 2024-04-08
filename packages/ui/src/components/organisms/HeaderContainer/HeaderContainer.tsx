@@ -61,7 +61,7 @@ const HeaderContainer = ({
 
   return (
     <View style={[styles.container, style]}>
-      {expandableFilter && isVisible && topChildren}
+      {topChildren != null && topChildren}
       {fixedItems}
       {expandableFilter && isVisible && children}
       {chipComponent}
