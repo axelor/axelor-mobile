@@ -57,7 +57,7 @@ const ContactListScreen = ({navigation}) => {
         sliceFunctionData={sliceFunctionData}
         onChangeSearchValue={() => {}}
         searchPlaceholder={I18n.t('Crm_Contacts')}
-        headerTopChildren={
+        topFixedItems={
           <ToggleSwitch
             style={styles.headerItem}
             leftTitle={I18n.t('Crm_All')}

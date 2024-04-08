@@ -92,7 +92,7 @@ const ProspectsListScreen = ({navigation}) => {
         sliceFunctionData={sliceFunctionData}
         onChangeSearchValue={() => {}}
         searchPlaceholder={I18n.t('Crm_Prospects')}
-        headerTopChildren={
+        topFixedItems={
           <ToggleSwitch
             style={styles.headerItem}
             leftTitle={I18n.t('Crm_All')}

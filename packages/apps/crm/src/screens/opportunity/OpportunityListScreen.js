@@ -91,7 +91,7 @@ const OpportunityListScreen = ({navigation}) => {
         sliceFunctionData={sliceFunctionData}
         onChangeSearchValue={() => {}}
         searchPlaceholder={I18n.t('Crm_Opportunity')}
-        headerTopChildren={
+        topFixedItems={
           <ToggleSwitch
             style={styles.headerItem}
             leftTitle={I18n.t('Crm_All')}
