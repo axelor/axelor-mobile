@@ -16,9 +16,11 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import React, {useCallback} from 'react';
+import React, {useCallback, useMemo} from 'react';
 import {StyleSheet, View} from 'react-native';
+import {useDispatch, useSelector} from 'react-redux';
 import {
+  HorizontalRule,
   Picker,
   Screen,
   ScrollView,
@@ -27,7 +29,7 @@ import {
   useConfig,
   useTheme,
 } from '@axelor/aos-mobile-ui';
-import {useDispatch, useSelector} from 'react-redux';
+
 import {useTranslator} from '../../i18n';
 import {
   disable,
@@ -38,11 +40,13 @@ import {
 import {updateActiveUser} from '../../features/userSlice';
 import {ApiProviderConfig} from '../../apiProviders/config';
 import {NavigationToolsButton, TranslationsButton} from '../components';
+import {useIsAdmin} from '../../permissions';
 
 const SettingsScreen = ({children}) => {
   const I18n = useTranslator();
   const Theme = useTheme();
   const online = useOnline();
+  const isAdmin = useIsAdmin();
   const dispatch = useDispatch();
 
   const {
@@ -57,6 +61,16 @@ const SettingsScreen = ({children}) => {
   const {appVersion, baseUrl} = useSelector(state => state.auth);
   const {user} = useSelector(state => state.user);
   const {localizationList} = useSelector(state => state.localization);
+
+  const isLanguagePicker = useMemo(
+    () => localizationList?.length > 1,
+    [localizationList?.length],
+  );
+
+  const isThemePicker = useMemo(
+    () => !Theme.isColorBlind && Theme.themes?.length !== 1,
+    [Theme.isColorBlind, Theme.themes?.length],
+  );
 
   const handleChangeTheme = useCallback(
     newTheme => Theme.changeTheme(newTheme),
@@ -110,7 +124,7 @@ const SettingsScreen = ({children}) => {
   return (
     <Screen style={styles.screen}>
       <ScrollView contentContainerStyle={styles.container}>
-        {localizationList?.length > 1 && (
+        {isLanguagePicker && (
           <Picker
             title={I18n.t('User_Language')}
             defaultValue={user.localization?.id}
@@ -121,7 +135,7 @@ const SettingsScreen = ({children}) => {
             emptyValue={false}
           />
         )}
-        {!Theme.isColorBlind && Theme.themes?.length !== 1 && (
+        {isThemePicker && (
           <Picker
             title={I18n.t('User_Theme')}
             defaultValue={Theme.activeTheme?.key}
@@ -131,6 +145,9 @@ const SettingsScreen = ({children}) => {
             onValueChange={handleChangeTheme}
             emptyValue={false}
           />
+        )}
+        {(isLanguagePicker || isThemePicker) && (
+          <HorizontalRule style={styles.lineSeparator} />
         )}
         <SwitchCard
           title={I18n.t('User_ShowFilter')}
@@ -165,6 +182,7 @@ const SettingsScreen = ({children}) => {
           style={styles.switchCard}
         />
         {children}
+        {isAdmin && <HorizontalRule style={styles.lineSeparator} />}
         <TranslationsButton />
         <NavigationToolsButton />
       </ScrollView>
@@ -186,6 +204,11 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     flex: 1,
+  },
+  lineSeparator: {
+    alignSelf: 'center',
+    width: '25%',
+    marginVertical: 15,
   },
   topSwitchCard: {
     marginTop: 5,

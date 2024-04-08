@@ -39,7 +39,11 @@ const ShortcutsCard = ({style, horizontal = true}: ShortcutsCardProps) => {
     const cardWidth =
       Dimensions.get('window').width * (CARD_PERCENT_WIDTH / 100);
     const insideCardWidth = cardWidth - CARD_PADDING * 2;
-    const numberShortcutPerLine = horizontal ? 3.5 : 3;
+    const baseNumberShortcutPerLine =
+      Dimensions.get('window').width < 500 ? 3 : 6;
+    const numberShortcutPerLine = horizontal
+      ? baseNumberShortcutPerLine + 0.5
+      : baseNumberShortcutPerLine;
     const shortCutWidth = insideCardWidth / numberShortcutPerLine;
 
     return getStyles(shortCutWidth);
@@ -53,7 +57,9 @@ const ShortcutsCard = ({style, horizontal = true}: ShortcutsCardProps) => {
           onPress={() => navigation.navigate(item.mobileScreenName)}
           key={item.shortcutId}>
           <Icon name={item.iconName} size={35} />
-          <Text fontSize={14}>{item.name}</Text>
+          <Text fontSize={14} numberOfLines={2}>
+            {item.name}
+          </Text>
         </TouchableOpacity>
       );
     },
