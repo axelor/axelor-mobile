@@ -104,7 +104,7 @@ const CatalogListScreen = ({}) => {
         searchPlaceholder={I18n.t('Crm_Catalogs')}
         fixedItems={
           <MultiValuePicker
-            style={styles.headerContainer}
+            style={styles.headerItem}
             listItems={catalogTypeListItems}
             title={I18n.t('Base_Status')}
             onValueChange={statusList => setSelectedStatus(statusList)}
@@ -133,7 +133,7 @@ const styles = StyleSheet.create({
     marginHorizontal: 12,
     marginVertical: 4,
   },
-  headerContainer: {
+  headerItem: {
     alignSelf: 'center',
   },
 });

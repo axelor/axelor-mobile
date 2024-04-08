@@ -85,7 +85,7 @@ const LeadListScreen = ({navigation}) => {
         searchPlaceholder={I18n.t('Crm_Leads')}
         headerTopChildren={
           <ToggleSwitch
-            style={styles.headerContainer}
+            style={styles.headerItem}
             leftTitle={I18n.t('Crm_All')}
             rightTitle={I18n.t('Crm_AssignedToMe')}
             onSwitch={() => setAssigned(!assigned)}
@@ -93,7 +93,7 @@ const LeadListScreen = ({navigation}) => {
         }
         fixedItems={
           <MultiValuePicker
-            style={styles.headerContainer}
+            style={styles.headerItem}
             listItems={leadStatusListItems}
             title={I18n.t('Base_Status')}
             onValueChange={statusList => setSelectedStatus(statusList)}
@@ -136,7 +136,7 @@ const styles = StyleSheet.create({
     marginHorizontal: 12,
     marginVertical: 4,
   },
-  headerContainer: {
+  headerItem: {
     alignSelf: 'center',
   },
 });
