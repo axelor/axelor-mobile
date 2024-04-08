@@ -41,12 +41,12 @@ interface DashboardProps {
   style?: any;
   lineList: Line[];
   hideCardBackground?: boolean;
-  dashboardWidth?: number;
+  chartWidth?: number;
 }
 
-const getGraphWidth = (dashboardWidth: number, nbGraphInLine: number) => {
-  if (dashboardWidth) {
-    return dashboardWidth;
+const getGraphWidth = (chartWidth: number, nbGraphInLine: number) => {
+  if (chartWidth) {
+    return chartWidth;
   } else if (nbGraphInLine === 1) {
     return Dimensions.get('window').width;
   } else if (Dimensions.get('window').width < 500) {
@@ -60,7 +60,7 @@ const Dashboard = ({
   style,
   lineList,
   hideCardBackground = false,
-  dashboardWidth = null,
+  chartWidth = null,
 }: DashboardProps) => {
   return (
     <ScrollView style={[styles.container, style]}>
@@ -69,7 +69,7 @@ const Dashboard = ({
           graph => graph.dataList?.[0]?.length > 0 || graph.customChart != null,
         );
         const nbGraphInLine = Math.min(validGraphs.length, MAX_GRAPH_PER_LINE);
-        const widthGraph = getGraphWidth(dashboardWidth, nbGraphInLine);
+        const widthGraph = getGraphWidth(chartWidth, nbGraphInLine);
 
         const limitedGraphList = validGraphs?.slice(0, nbGraphInLine);
 

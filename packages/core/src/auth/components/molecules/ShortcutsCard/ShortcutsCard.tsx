@@ -25,13 +25,6 @@ import {useNavigation} from '../../../../hooks/use-navigation';
 const CARD_PERCENT_WIDTH = 90;
 const CARD_PADDING = 16;
 
-interface Shortcut {
-  name: string;
-  iconName: string;
-  actionType: number;
-  params: any;
-}
-
 interface ShortcutsCardProps {
   style?: any;
   horizontal?: boolean;
@@ -98,6 +91,7 @@ const getStyles = (shortCutWidth: number) =>
       alignSelf: 'center',
       paddingHorizontal: CARD_PADDING,
       paddingRight: CARD_PADDING,
+      zIndex: 1,
     },
     shortcut: {
       width: shortCutWidth,

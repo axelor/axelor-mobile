@@ -84,6 +84,7 @@ const UserScreen = ({children}) => {
 const styles = StyleSheet.create({
   scroll: {
     height: null,
+    minHeight: '100%',
   },
   marginCard: {
     marginBottom: 10,

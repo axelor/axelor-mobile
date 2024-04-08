@@ -17,24 +17,26 @@
  */
 
 import React, {useCallback, useEffect, useMemo, useState} from 'react';
+import {ActivityIndicator} from 'react-native';
 import {Dashboard, WarningCard} from '@axelor/aos-mobile-ui';
 import {headerActionsProvider} from '../../header';
 import {useTranslator} from '../../i18n';
 import {createDashboardActionID} from '../display.helpers';
-import {ActivityIndicator} from 'react-native';
 import {fetchDashboard} from '../api.helpers';
 import {AOPChart} from '../component';
 
 interface DashboardViewProps {
   dashboardId: number;
+  isHeaderAction?: boolean;
   hideCardBackground?: boolean;
-  dashboardWidth?: number;
+  chartWidth?: number;
 }
 
 export const DashboardView = ({
   dashboardId,
+  isHeaderAction = false,
   hideCardBackground,
-  dashboardWidth,
+  chartWidth,
 }: DashboardViewProps) => {
   const I18n = useTranslator();
 
@@ -64,19 +66,23 @@ export const DashboardView = ({
   }, [refresh]);
 
   useEffect(() => {
-    headerActionsProvider.registerModel(createDashboardActionID(dashboardId), {
-      actions: [
+    isHeaderAction &&
+      headerActionsProvider.registerModel(
+        createDashboardActionID(dashboardId),
         {
-          key: 'refreshConfig',
-          order: 10,
-          showInHeader: false,
-          iconName: 'arrow-repeat',
-          title: I18n.t('Base_Dashboard_RefreshConfig'),
-          onPress: refresh,
+          actions: [
+            {
+              key: 'refreshConfig',
+              order: 10,
+              showInHeader: false,
+              iconName: 'arrow-repeat',
+              title: I18n.t('Base_Dashboard_RefreshConfig'),
+              onPress: refresh,
+            },
+          ],
         },
-      ],
-    });
-  }, [I18n, dashboardId, refresh]);
+      );
+  }, [I18n, dashboardId, isHeaderAction, refresh]);
 
   const dashboardData = useMemo(() => {
     if (!Array.isArray(dashboard?.dashboardLineList)) {
@@ -109,7 +115,7 @@ export const DashboardView = ({
     <Dashboard
       lineList={dashboardData}
       hideCardBackground={hideCardBackground}
-      dashboardWidth={dashboardWidth}
+      chartWidth={chartWidth}
     />
   );
 };

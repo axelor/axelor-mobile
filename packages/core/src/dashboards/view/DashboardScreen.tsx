@@ -22,19 +22,20 @@ import {DashboardView} from './DashboardView';
 interface DashboardScreenProps {
   dashboardId: number;
   hideCardBackground?: boolean;
-  dashboardWidth?: number;
+  chartWidth?: number;
 }
 
 export const DashboardScreen = ({
   dashboardId,
   hideCardBackground,
-  dashboardWidth,
+  chartWidth,
 }: DashboardScreenProps) => {
   return (
     <DashboardView
       dashboardId={dashboardId}
+      isHeaderAction={true}
       hideCardBackground={hideCardBackground}
-      dashboardWidth={dashboardWidth}
+      chartWidth={chartWidth}
     />
   );
 };

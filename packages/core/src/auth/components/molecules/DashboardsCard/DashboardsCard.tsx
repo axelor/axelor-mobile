@@ -30,7 +30,8 @@ const DashboardsCard = ({style}) => {
       return (
         <DashboardView
           dashboardId={dashboardId}
-          dashboardWidth={Dimensions.get('window').width * 0.85}
+          hideCardBackground
+          chartWidth={Dimensions.get('window').width * 0.85}
           key={index}
         />
       );
@@ -49,6 +50,7 @@ const styles = StyleSheet.create({
     paddingVertical: 0,
     paddingHorizontal: 0,
     paddingRight: 0,
+    zIndex: 1,
   },
 });
 

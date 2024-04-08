@@ -25,6 +25,7 @@ import {
   LabelText,
   Picker,
   Text,
+  ThemeColors,
   useThemeColor,
 } from '@axelor/aos-mobile-ui';
 import {fetchCompanies} from '../../../features/companySlice';
@@ -80,8 +81,10 @@ const UserCard = ({children, style}) => {
   );
 
   const styles = useMemo(() => {
-    return getStyles(Colors);
-  }, [Colors]);
+    const isCardTopMargin = displayCompanyPicker || !!children;
+
+    return getStyles(isCardTopMargin, Colors);
+  }, [Colors, children, displayCompanyPicker]);
 
   return (
     <Card style={[styles.card, style]}>
@@ -133,19 +136,20 @@ const UserCard = ({children, style}) => {
   );
 };
 
-const getStyles = Colors =>
+const getStyles = (isCardTopMargin: boolean, Colors: ThemeColors) =>
   StyleSheet.create({
     card: {
       width: '90%',
       alignSelf: 'center',
       paddingHorizontal: 16,
       paddingRight: 16,
+      zIndex: 2,
     },
     cardTopContainer: {
       flexDirection: 'row',
       justifyContent: 'space-between',
       alignItems: 'center',
-      marginBottom: 10,
+      marginBottom: isCardTopMargin ? 10 : 0,
     },
     cardTopLeftContainer: {
       flexDirection: 'row',
