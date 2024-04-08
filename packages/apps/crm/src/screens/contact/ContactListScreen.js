@@ -16,22 +16,19 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import React, {useMemo, useState, useCallback} from 'react';
-import {StyleSheet, View} from 'react-native';
+import React, {useMemo, useState} from 'react';
+import {StyleSheet} from 'react-native';
+import {Screen, ToggleSwitch} from '@axelor/aos-mobile-ui';
 import {
-  checkNullString,
-  HeaderContainer,
-  Screen,
-  ScrollList,
-  ToggleSwitch,
-} from '@axelor/aos-mobile-ui';
-import {useDispatch, useSelector, useTranslator} from '@axelor/aos-mobile-core';
+  SearchListView,
+  useSelector,
+  useTranslator,
+} from '@axelor/aos-mobile-core';
 import {fetchContact} from '../../features/contactSlice';
-import {ContactSearchBar, PartnerCard} from '../../components';
+import {PartnerCard} from '../../components';
 
 const ContactListScreen = ({navigation}) => {
   const I18n = useTranslator();
-  const dispatch = useDispatch();
 
   const {userId} = useSelector(state => state.auth);
   const {loadingContact, moreLoading, isListEnd, contactList} = useSelector(
@@ -39,62 +36,36 @@ const ContactListScreen = ({navigation}) => {
   );
 
   const [assigned, setAssigned] = useState(false);
-  const [filter, setFilter] = useState(null);
 
-  const handleDataSearch = useCallback(searchValue => {
-    setFilter(searchValue);
-  }, []);
-
-  const fetchContactAPI = useCallback(
-    page => {
-      dispatch(fetchContact({page: page}));
-    },
-    [dispatch],
-  );
-
-  const filterOnUserAssigned = useCallback(
-    list => {
-      if (!Array.isArray(list) || list.length === 0) {
-        return [];
-      } else {
-        if (assigned) {
-          return list?.filter(item => item?.user?.id === userId);
-        } else {
-          return list;
-        }
-      }
-    },
-    [assigned, userId],
-  );
-
-  const filteredList = useMemo(
-    () => filterOnUserAssigned(contactList),
-    [filterOnUserAssigned, contactList],
+  const sliceFunctionData = useMemo(
+    () => ({
+      userId: userId,
+      assigned: assigned,
+    }),
+    [userId, assigned],
   );
 
   return (
     <Screen removeSpaceOnTop={true}>
-      <HeaderContainer
+      <SearchListView
         expandableFilter={false}
-        fixedItems={
-          <View style={styles.headerContainer}>
-            <ToggleSwitch
-              leftTitle={I18n.t('Crm_All')}
-              rightTitle={I18n.t('Crm_AssignedToMe')}
-              onSwitch={() => setAssigned(!assigned)}
-            />
-            <ContactSearchBar
-              showDetailsPopup={false}
-              oneFilter={true}
-              onFetchDataAction={handleDataSearch}
-            />
-          </View>
+        list={contactList}
+        loading={loadingContact}
+        moreLoading={moreLoading}
+        isListEnd={isListEnd}
+        sliceFunction={fetchContact}
+        sliceFunctionData={sliceFunctionData}
+        onChangeSearchValue={() => {}}
+        searchPlaceholder={I18n.t('Crm_Contacts')}
+        headerTopChildren={
+          <ToggleSwitch
+            style={styles.headerContainer}
+            leftTitle={I18n.t('Crm_All')}
+            rightTitle={I18n.t('Crm_AssignedToMe')}
+            onSwitch={() => setAssigned(!assigned)}
+          />
         }
-      />
-      <ScrollList
-        loadingList={loadingContact}
-        data={filteredList}
-        renderItem={({item}) => (
+        renderListItem={({item}) => (
           <PartnerCard
             style={styles.item}
             partnerFullName={item.simpleFullName}
@@ -111,11 +82,6 @@ const ContactListScreen = ({navigation}) => {
             }
           />
         )}
-        fetchData={fetchContactAPI}
-        moreLoading={moreLoading}
-        isListEnd={isListEnd}
-        filter={!checkNullString(filter)}
-        translator={I18n.t}
       />
     </Screen>
   );
@@ -127,7 +93,7 @@ const styles = StyleSheet.create({
     marginVertical: 4,
   },
   headerContainer: {
-    alignItems: 'center',
+    alignSelf: 'center',
   },
 });
 
