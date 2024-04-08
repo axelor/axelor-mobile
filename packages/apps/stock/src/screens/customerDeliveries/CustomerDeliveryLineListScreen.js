@@ -17,17 +17,9 @@
  */
 
 import React, {useCallback, useState, useMemo} from 'react';
+import {ChipSelect, Screen, useThemeColor} from '@axelor/aos-mobile-ui';
 import {
-  ChipSelect,
-  HeaderContainer,
-  Screen,
-  ScrollList,
-  useThemeColor,
-} from '@axelor/aos-mobile-ui';
-import {
-  checkNullString,
-  ScannerAutocompleteSearch,
-  useDispatch,
+  SearchListView,
   useSelector,
   useTranslator,
 } from '@axelor/aos-mobile-core';
@@ -44,7 +36,6 @@ const CustomerDeliveryLineListScreen = ({route, navigation}) => {
   const customerDelivery = route.params.customerDelivery;
   const Colors = useThemeColor();
   const I18n = useTranslator();
-  const dispatch = useDispatch();
 
   const {mobileSettings} = useSelector(state => state.appConfig);
   const {customerDeliveryLineList} =
@@ -53,7 +44,6 @@ const CustomerDeliveryLineListScreen = ({route, navigation}) => {
     state => state.customerDeliveryLine,
   );
 
-  const [filter, setFilter] = useState(null);
   const [selectedStatus, setSelectedStatus] = useState([]);
 
   const handleShowLine = (
@@ -75,37 +65,11 @@ const CustomerDeliveryLineListScreen = ({route, navigation}) => {
     handleShowLine(item, 0, true);
   };
 
-  const fetchDeliveryLinesAPI = useCallback(
-    ({page = 0, searchValue}) => {
-      if (!checkNullString(searchValue)) {
-        setFilter(searchValue);
-        dispatch(
-          fetchCustomerDeliveryLines({
-            customerDeliveryId: customerDelivery.id,
-            searchValue: searchValue,
-            page: 0,
-          }),
-        );
-      } else {
-        dispatch(
-          fetchCustomerDeliveryLines({
-            customerDeliveryId: customerDelivery.id,
-            page: page,
-          }),
-        );
-      }
-    },
-    [dispatch, customerDelivery.id],
-  );
-
-  const filterLinesAPI = useCallback(
-    ({searchValue}) => fetchDeliveryLinesAPI({searchValue}),
-    [fetchDeliveryLinesAPI],
-  );
-
-  const scrollLinesAPI = useCallback(
-    page => fetchDeliveryLinesAPI({page}),
-    [fetchDeliveryLinesAPI],
+  const sliceFunctionData = useMemo(
+    () => ({
+      customerDeliveryId: customerDelivery.id,
+    }),
+    [customerDelivery.id],
   );
 
   const filterOnStatus = useCallback(
@@ -136,8 +100,28 @@ const CustomerDeliveryLineListScreen = ({route, navigation}) => {
 
   return (
     <Screen removeSpaceOnTop={true}>
-      <HeaderContainer
-        fixedItems={
+      <SearchListView
+        list={filteredList}
+        loading={loadingCDLinesList}
+        moreLoading={moreLoading}
+        isListEnd={isListEnd}
+        sliceFunction={fetchCustomerDeliveryLines}
+        sliceFunctionData={sliceFunctionData}
+        onChangeSearchValue={handleLineSearch}
+        displaySearchValue={displayLine}
+        searchPlaceholder={I18n.t('Stock_SearchLine')}
+        scanKeySearch={scanKey}
+        chipComponent={
+          <ChipSelect
+            mode="switch"
+            onChangeValue={chiplist => setSelectedStatus(chiplist)}
+            selectionItems={StockMoveLine.getStockMoveLineStatusItems(
+              I18n,
+              Colors,
+            )}
+          />
+        }
+        headerTopChildren={
           <StockMoveHeader
             reference={customerDelivery.stockMoveSeq}
             status={customerDelivery.statusSelect}
@@ -152,31 +136,7 @@ const CustomerDeliveryLineListScreen = ({route, navigation}) => {
             availability={customerDelivery.availableStatusSelect}
           />
         }
-        chipComponent={
-          <ChipSelect
-            mode="switch"
-            onChangeValue={chiplist => setSelectedStatus(chiplist)}
-            selectionItems={StockMoveLine.getStockMoveLineStatusItems(
-              I18n,
-              Colors,
-            )}
-          />
-        }>
-        <ScannerAutocompleteSearch
-          objectList={filteredList}
-          onChangeValue={handleLineSearch}
-          fetchData={filterLinesAPI}
-          displayValue={displayLine}
-          scanKeySearch={scanKey}
-          placeholder={I18n.t('Stock_SearchLine')}
-          isFocus={true}
-          oneFilter={true}
-        />
-      </HeaderContainer>
-      <ScrollList
-        loadingList={loadingCDLinesList}
-        data={filteredList}
-        renderItem={({item}) => (
+        renderListItem={({item}) => (
           <CustomerDeliveryLineCard
             productName={item.product.fullName}
             stockLocationName={item.fromStockLocation?.name}
@@ -196,11 +156,6 @@ const CustomerDeliveryLineListScreen = ({route, navigation}) => {
             onPress={() => handleShowLine(item)}
           />
         )}
-        fetchData={scrollLinesAPI}
-        moreLoading={moreLoading}
-        isListEnd={isListEnd}
-        filter={filter != null && filter !== ''}
-        translator={I18n.t}
       />
     </Screen>
   );
