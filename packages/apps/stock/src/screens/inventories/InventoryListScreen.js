@@ -19,7 +19,6 @@
 import React, {useMemo, useState} from 'react';
 import {ChipSelect, Screen, useThemeColor} from '@axelor/aos-mobile-ui';
 import {
-  filterChip,
   SearchListView,
   useSelector,
   useTranslator,
@@ -58,19 +57,15 @@ const InventoryListScreen = ({navigation}) => {
   const sliceFunctionData = useMemo(
     () => ({
       stockLocationId: stockLocation?.id,
+      statusList: selectedStatus,
     }),
-    [stockLocation?.id],
-  );
-
-  const filteredList = useMemo(
-    () => filterChip(inventoryList, selectedStatus, 'statusSelect'),
-    [inventoryList, selectedStatus],
+    [selectedStatus, stockLocation?.id],
   );
 
   return (
     <Screen removeSpaceOnTop={true}>
       <SearchListView
-        list={filteredList}
+        list={inventoryList}
         loading={loadingList}
         moreLoading={moreLoading}
         isListEnd={isListEnd}

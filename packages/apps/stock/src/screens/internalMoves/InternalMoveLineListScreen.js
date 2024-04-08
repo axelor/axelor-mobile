@@ -110,17 +110,8 @@ const InternalMoveLineListScreen = ({route, navigation}) => {
         displaySearchValue={displayLine}
         searchPlaceholder={I18n.t('Stock_SearchLine')}
         scanKeySearch={scanKey}
-        chipComponent={
-          <ChipSelect
-            mode="switch"
-            onChangeValue={chiplist => setSelectedStatus(chiplist)}
-            selectionItems={StockMoveLine.getStockMoveLineStatusItems(
-              I18n,
-              Colors,
-            )}
-          />
-        }
-        headerTopChildren={
+        isHideableSearch
+        fixedItems={
           <StockMoveHeader
             reference={internalMove.stockMoveSeq}
             status={internalMove.statusSelect}
@@ -133,6 +124,16 @@ const InternalMoveLineListScreen = ({route, navigation}) => {
                 : null
             }
             availability={internalMove.availableStatusSelect}
+          />
+        }
+        chipComponent={
+          <ChipSelect
+            mode="switch"
+            onChangeValue={chiplist => setSelectedStatus(chiplist)}
+            selectionItems={StockMoveLine.getStockMoveLineStatusItems(
+              I18n,
+              Colors,
+            )}
           />
         }
         renderListItem={({item}) => (

@@ -29,6 +29,7 @@ const createSearchCriteria = (
   searchValue,
   fromStockLocationId,
   toStockLocationId,
+  statusList,
 ) => {
   const criteria = [
     {
@@ -65,6 +66,17 @@ const createSearchCriteria = (
     });
   }
 
+  if (Array.isArray(statusList) && statusList.length > 0) {
+    criteria.push({
+      operator: 'or',
+      criteria: statusList.map(status => ({
+        fieldName: 'statusSelect',
+        operator: '=',
+        value: status.key,
+      })),
+    });
+  }
+
   return criteria;
 };
 
@@ -72,6 +84,7 @@ export async function searchInternalMoveFilter({
   searchValue = null,
   fromStockLocationId,
   toStockLocationId,
+  statusList,
   page = 0,
 }) {
   return createStandardSearch({
@@ -80,6 +93,7 @@ export async function searchInternalMoveFilter({
       searchValue,
       fromStockLocationId,
       toStockLocationId,
+      statusList,
     ),
     fieldKey: 'stock_internalMove',
     sortKey: 'stock_internalMove',

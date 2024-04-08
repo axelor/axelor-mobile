@@ -24,7 +24,12 @@ import {
 } from '@axelor/aos-mobile-core';
 import StockMove from '../types/stock-move';
 
-const createSearchCriteria = (searchValue, fromStockLocationId, partnerId) => {
+const createSearchCriteria = (
+  searchValue,
+  fromStockLocationId,
+  partnerId,
+  statusList,
+) => {
   const criteria = [
     {
       fieldName: 'isReversion',
@@ -70,6 +75,17 @@ const createSearchCriteria = (searchValue, fromStockLocationId, partnerId) => {
     });
   }
 
+  if (Array.isArray(statusList) && statusList.length > 0) {
+    criteria.push({
+      operator: 'or',
+      criteria: statusList.map(status => ({
+        fieldName: 'statusSelect',
+        operator: '=',
+        value: status.key,
+      })),
+    });
+  }
+
   return criteria;
 };
 
@@ -77,11 +93,17 @@ export async function searchDeliveryFilter({
   searchValue = null,
   fromStockLocationId,
   partnerId,
+  statusList,
   page = 0,
 }) {
   return createStandardSearch({
     model: 'com.axelor.apps.stock.db.StockMove',
-    criteria: createSearchCriteria(searchValue, fromStockLocationId, partnerId),
+    criteria: createSearchCriteria(
+      searchValue,
+      fromStockLocationId,
+      partnerId,
+      statusList,
+    ),
     fieldKey: 'stock_customerDelivery',
     sortKey: 'stock_customerDelivery',
     page,

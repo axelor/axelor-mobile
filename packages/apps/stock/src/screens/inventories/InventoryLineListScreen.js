@@ -116,6 +116,19 @@ const InventoryLineListScreen = ({route, navigation}) => {
         displaySearchValue={displayLine}
         searchPlaceholder={I18n.t('Stock_SearchLine')}
         scanKeySearch={scanKey}
+        isHideableSearch
+        fixedItems={
+          <InventoryHeader
+            reference={inventory.inventorySeq}
+            status={inventory.statusSelect}
+            date={
+              inventory.statusSelect === Inventory.status.Planned
+                ? inventory.plannedStartDateT
+                : inventory.plannedEndDateT
+            }
+            stockLocation={inventory.stockLocation?.name}
+          />
+        }
         chipComponent={
           <ChipSelect
             mode="switch"
@@ -137,18 +150,6 @@ const InventoryLineListScreen = ({route, navigation}) => {
                 key: STATUS.undone,
               },
             ]}
-          />
-        }
-        headerTopChildren={
-          <InventoryHeader
-            reference={inventory.inventorySeq}
-            status={inventory.statusSelect}
-            date={
-              inventory.statusSelect === Inventory.status.Planned
-                ? inventory.plannedStartDateT
-                : inventory.plannedEndDateT
-            }
-            stockLocation={inventory.stockLocation?.name}
           />
         }
         renderListItem={({item}) => (
