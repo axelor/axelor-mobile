@@ -1,0 +1,5 @@
+{
+  "title": "GridView: add new component to manage grid display",
+  "type": "feat",
+  "packages": "ui"
+}
