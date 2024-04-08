@@ -1,0 +1,5 @@
+{
+  "title": "NumberChevronInput: enable limit with more than one digit",
+  "type": "fix",
+  "packages": "ui"
+}
