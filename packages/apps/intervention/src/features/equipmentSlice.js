@@ -22,11 +22,13 @@ import {
   handlerApiCall,
 } from '@axelor/aos-mobile-core';
 import {
+  archiveEquipment as _archiveEquipment,
+  copyEquipment as _copyEquipment,
   getEquipmentById as _getEquipmentById,
   searchEquipment as _searchEquipment,
   searchInterventionEquipment as _searchInterventionEquipment,
   searchPlaceEquipment as _searchPlaceEquipment,
-  updateEquipment as _updateEquipment,
+  saveEquipment as _saveEquipment,
 } from '../api/equipment-api';
 
 export const searchEquipment = createAsyncThunk(
@@ -107,13 +109,13 @@ export const getEquipmentById = createAsyncThunk(
   },
 );
 
-export const updateEquipment = createAsyncThunk(
-  'intervention_equipment/updateEquipment',
+export const saveEquipment = createAsyncThunk(
+  'intervention_equipment/saveEquipment',
   async function (data, {getState, dispatch}) {
     return handlerApiCall({
-      fetchFunction: _updateEquipment,
+      fetchFunction: _saveEquipment,
       data,
-      action: 'Intervention_SliceAction_UpdateEquipment',
+      action: 'Intervention_SliceAction_SaveEquipment',
       getState,
       responseOptions: {isArrayResponse: false, showToast: true},
     }).then(() => {
@@ -122,6 +124,38 @@ export const updateEquipment = createAsyncThunk(
           partnerId: data?.partnerId,
         }),
       );
+      data?.isCreation &&
+        dispatch(
+          fetchNumberClientEquipment({
+            partnerId: data?.partnerId,
+          }),
+        );
+    });
+  },
+);
+
+export const archiveEquipment = createAsyncThunk(
+  'intervention_equipment/archiveEquipment',
+  async function (data, {getState}) {
+    return handlerApiCall({
+      fetchFunction: _archiveEquipment,
+      data,
+      action: 'Intervention_SliceAction_ArchiveEquipment',
+      getState,
+      responseOptions: {isArrayResponse: false, showToast: true},
+    });
+  },
+);
+
+export const copyEquipment = createAsyncThunk(
+  'intervention_equipment/copyEquipment',
+  async function (data, {getState}) {
+    return handlerApiCall({
+      fetchFunction: _copyEquipment,
+      data,
+      action: 'Intervention_SliceAction_CopyEquipment',
+      getState,
+      responseOptions: {isArrayResponse: false},
     });
   },
 );

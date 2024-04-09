@@ -158,11 +158,43 @@ export async function getEquipmentById({equipmentId}) {
   });
 }
 
-export async function updateEquipment({equipment}) {
+export async function saveEquipment({equipment}) {
   return axiosApiProvider.post({
     url: '/ws/rest/com.axelor.apps.intervention.db.Equipment',
     data: {
       data: equipment,
     },
   });
+}
+
+export async function archiveEquipment({equipmentId, equipmentVersion}) {
+  return axiosApiProvider.post({
+    url: '/ws/rest/com.axelor.apps.intervention.db.Equipment/',
+    data: {
+      data: {
+        id: equipmentId,
+        version: equipmentVersion,
+        archived: true,
+      },
+    },
+  });
+}
+
+export async function copyEquipment({equipmentId}) {
+  return axiosApiProvider
+    .get({
+      url: `/ws/rest/com.axelor.apps.intervention.db.Equipment/${equipmentId}/copy`,
+    })
+    .catch(error => {
+      throw new Error(error);
+    })
+    .then(({data}) => {
+      const equipment = Array.isArray(data?.data) ? data.data[0] : null;
+
+      if (equipment != null) {
+        return saveEquipment({equipment});
+      }
+
+      return null;
+    });
 }

@@ -73,7 +73,7 @@
   "Intervention_SliceAction_GetEquipmentById": "récupération de l'équipement par id",
   "Intervention_SliceAction_SearchEquipmentFamily": "recherche sur les familles d'équipement",
   "Intervention_SliceAction_SearchContract": "recherche sur les contrats",
-  "Intervention_SliceAction_UpdateEquipment": "mise à jour de l'équipement",
+  "Intervention_SliceAction_SaveEquipment": "sauvegarde de l'équipement",
   "Intervention_SliceAction_FetchInterventionNote": "récupération des notes d'interventions",
   "Intervention_SliceAction_DeleteInterventionNote": "suppression d'une note d'intervention",
   "Intervention_SliceAction_FetchInterventionNoteType": "récupération des types de note d'intervention",
@@ -90,5 +90,7 @@
   "Intervention_SliceAction_FetchNumberInterventionEquipment": "récupération du nombre d'équipements liés à une intervention",
   "Intervention_SliceAction_FetchQuestionById": "récuperation d'une question par id",
   "Intervention_SliceAction_UpdateQuestion": "mise à jour d'une question",
-  "Intervention_SliceAction_FetchActiveIntervention": "récupération de l'intervention active"
+  "Intervention_SliceAction_FetchActiveIntervention": "récupération de l'intervention active",
+  "Intervention_SliceAction_ArchiveEquipment": "archivage d'un équipement",
+  "Intervention_SliceAction_CopyEquipment": "copie d'un équipement"
 }

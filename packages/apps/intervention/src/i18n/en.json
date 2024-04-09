@@ -73,7 +73,7 @@
   "Intervention_SliceAction_GetEquipmentById": "get element by id",
   "Intervention_SliceAction_SearchEquipmentFamily": "search on equipment family",
   "Intervention_SliceAction_SearchContract": "search contract",
-  "Intervention_SliceAction_UpdateEquipment": "update equipment",
+  "Intervention_SliceAction_SaveEquipment": "save equipment",
   "Intervention_SliceAction_FetchInterventionNote": "fetch intervention note",
   "Intervention_SliceAction_DeleteInterventionNote": "delete intervention note",
   "Intervention_SliceAction_FetchInterventionNoteType": "fetch intervention note type",
@@ -90,5 +90,7 @@
   "Intervention_SliceAction_FetchNumberInterventionEquipment": "fetch the number of intervention equipment",
   "Intervention_SliceAction_FetchQuestionById": "fetch question by id",
   "Intervention_SliceAction_UpdateQuestion": "update question",
-  "Intervention_SliceAction_FetchActiveIntervention": "fetch active intervention"
+  "Intervention_SliceAction_FetchActiveIntervention": "fetch active intervention",
+  "Intervention_SliceAction_ArchiveEquipment": "archive equipment",
+  "Intervention_SliceAction_CopyEquipment": "copy equipment"
 }

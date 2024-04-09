@@ -19,11 +19,13 @@
 export {searchClientAndProspect as searchClientAndProspectApi} from './client-and-prospect-api';
 export {searchContract as searchContractApi} from './contract-api';
 export {
+  archiveEquipment as archiveEquipmentApi,
+  copyEquipment as copyEquipmentApi,
   getEquipmentById as getEquipmentByIdApi,
   searchEquipment as searchEquipmentApi,
   searchInterventionEquipment as searchInterventionEquipmentApi,
   searchPlaceEquipment as searchPlaceEquipmentApi,
-  updateEquipment as updateEquipmentApi,
+  saveEquipment as saveEquipmentApi,
 } from './equipment-api';
 export {searchEquipmentFamily as searchEquipmentFamilyApi} from './equipment-family-api';
 export {searchEquipmentLine as searchEquipmentLineApi} from './equipment-line-api';
