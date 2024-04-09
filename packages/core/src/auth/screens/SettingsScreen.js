@@ -24,6 +24,7 @@ import {
   useConfig,
   useTheme,
   Text,
+  Button,
 } from '@axelor/aos-mobile-ui';
 import {useDispatch, useSelector} from 'react-redux';
 import {useTranslator} from '../../i18n';
@@ -35,6 +36,7 @@ import {
 } from '../../features/onlineSlice';
 import {ApiProviderConfig} from '../../apiProviders/config';
 import {NavigationToolsButton, TranslationsButton} from '../components';
+import {linkingProvider} from '../../tools';
 
 const SettingsScreen = ({children}) => {
   const I18n = useTranslator();
@@ -84,6 +86,21 @@ const SettingsScreen = ({children}) => {
     [setShowSubtitles],
   );
 
+  const pois2 = [
+    {address: 'ATL SERVICES, 113 Rue de Bry, 94430 Chennevières-sur-Marne'},
+    {
+      address:
+        'Comptable LGA Conseil Saint-Maur-des-Fossés, 1BIS Av. Foch, 94100 Saint-Maur-des-Fossés',
+    },
+    {address: '246 rue Paul Vaillant Couturier, 92000 Nanterre'},
+    {address: 'LAX Dance Studio, 18bis Villa Riberolle, 75020 Paris'},
+    {latitude: 47.163125, longitude: 2.710288},
+    {
+      address:
+        'AAP (Madrassah du Pré-Saint-Gervais), 49 Rue Danton, 93310 Le Pré-Saint-Gervais',
+    },
+  ];
+
   return (
     <Screen style={styles.screen}>
       <View style={styles.container}>
@@ -117,6 +134,12 @@ const SettingsScreen = ({children}) => {
         {children}
         <TranslationsButton />
         <NavigationToolsButton />
+        <Button
+          title="test"
+          onPress={() => {
+            linkingProvider.openGoogleMapsDirections(pois2);
+          }}
+        />
       </View>
       <View style={styles.footerContainer}>
         <Text>{I18n.t('Base_Version', {appVersion: appVersion})}</Text>

@@ -130,13 +130,13 @@ class LinkingProvider {
   }
 
   async openGoogleMapsDirections(
-    pois: Array<{address: string; latitude?: number; longitude?: number}>,
+    pois: Array<{address?: string; latitude?: number; longitude?: number}>,
   ) {
     const url = createGoogleMapsDirectionsURL(pois);
 
     await this.openURL(url, {
-      title: 'Could not open the map app',
-      message: 'Error while opening directions in the map app',
+      title: 'Could not open Google Maps',
+      message: 'Error while opening directions in Google Maps',
     });
   }
 }

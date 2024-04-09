@@ -116,7 +116,7 @@ export const createAndroidNavigaitonURLParams = (
 };
 
 export const createGoogleMapsDirectionsURL = (
-  pois: Array<{address: string; latitude?: number; longitude?: number}>,
+  pois: Array<{address?: string; latitude?: number; longitude?: number}>,
 ) => {
   const baseURL = 'https://www.google.com/maps/dir/';
   const directions = pois
