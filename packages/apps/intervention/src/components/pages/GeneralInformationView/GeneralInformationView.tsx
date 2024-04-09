@@ -21,6 +21,7 @@ import {StyleSheet, View} from 'react-native';
 import {
   calculateDiff,
   Stopwatch,
+  useDispatch,
   useSelector,
   useTranslator,
 } from '@axelor/aos-mobile-core';
@@ -28,11 +29,13 @@ import {HeaderContainer, ScrollView} from '@axelor/aos-mobile-ui';
 import {GtCard, InterventionHeader} from '../../molecules';
 import {DropdownCards} from '../../organisms';
 import {Intervention} from '../../../types';
+import {updateInterventionStatus} from '../../../features/interventionSlice';
 
 const NUMBER_MILLISECONDS_IN_SECOND = 1000;
 
 const GeneralInformationView = ({}) => {
   const I18n = useTranslator();
+  const dispatch = useDispatch();
 
   const {intervention} = useSelector(
     (state: any) => state.intervention_intervention,
@@ -50,20 +53,36 @@ const GeneralInformationView = ({}) => {
     return duration;
   }, [duration, intervention.statusSelect, lastStart]);
 
+  const updateIntervention = useCallback(
+    (targetStatus: number, dateTime: string) => {
+      dispatch(
+        (updateInterventionStatus as any)({
+          interventionId: intervention.id,
+          version: intervention.version,
+          dateTime,
+          targetStatus,
+        }),
+      );
+    },
+    [dispatch, intervention.id, intervention.version],
+  );
+
   const handlePlay = useCallback(() => {
-    console.log('Play button pressed.');
     const now = new Date();
+    updateIntervention(Intervention.status.Started, now.toISOString());
     setLastStart(now.toISOString());
-  }, []);
+  }, [updateIntervention]);
 
   const handlePause = useCallback(() => {
-    console.log('Pause button pressed.');
-    setDuration(current => current + calculateDiff(lastStart, new Date()));
-  }, [lastStart]);
+    const now = new Date();
+    updateIntervention(Intervention.status.Suspended, now.toISOString());
+    setDuration(current => current + calculateDiff(lastStart, now));
+  }, [lastStart, updateIntervention]);
 
   const handleStop = useCallback(() => {
-    console.log('Stop button pressed.');
-  }, []);
+    const now = new Date();
+    updateIntervention(Intervention.status.Finished, now.toISOString());
+  }, [updateIntervention]);
 
   return (
     <View>
@@ -97,6 +116,9 @@ const GeneralInformationView = ({}) => {
           onPlay={handlePlay}
           onPause={handlePause}
           onStop={handleStop}
+          disableStop={
+            intervention.statusSelect !== Intervention.status.Started
+          }
           useObjectStatus
           hideCancel
         />

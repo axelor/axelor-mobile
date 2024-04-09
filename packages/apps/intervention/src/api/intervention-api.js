@@ -17,6 +17,7 @@
  */
 
 import {
+  axiosApiProvider,
   createStandardFetch,
   createStandardSearch,
   getEndOfDay,
@@ -166,5 +167,21 @@ export async function fetchActiveIntervention({userId}) {
     sortKey: 'intervention_activeIntervention',
     numberElementsByPage: 1,
     page: 0,
+  });
+}
+
+export async function updateInterventionStatus({
+  interventionId,
+  version,
+  targetStatus,
+  dateTime,
+}) {
+  return axiosApiProvider.put({
+    url: `ws/aos/intervention/status/${interventionId}`,
+    data: {
+      toStatus: targetStatus,
+      dateTime,
+      version,
+    },
   });
 }
