@@ -39,46 +39,45 @@ const DropdownCardSwitch = ({
   dropdownItems,
   multiSelection = false,
 }: DropdownCardSwitchProps) => {
-  const getDefaultVisibleItems = useCallback(() => {
-    let defaultVisibleItems = [];
+  const getDefaultVisibleItemsKeys = useCallback(() => {
+    const defaultVisibleItems = dropdownItems.filter(
+      item => item.isDefaultVisible,
+    );
 
-    if (multiSelection) {
-      defaultVisibleItems = dropdownItems.map(
-        item => item.isDefaultVisible && item.key,
-      );
-    } else {
-      const firstVisibleCard = dropdownItems.find(
-        item => item.isDefaultVisible,
-      );
-      defaultVisibleItems = [firstVisibleCard?.key];
+    let defaultVisibleItemsKeys = defaultVisibleItems.map(item => item.key);
+    if (!multiSelection) {
+      defaultVisibleItemsKeys = defaultVisibleItemsKeys.slice(0, 1);
     }
 
-    return defaultVisibleItems;
+    return defaultVisibleItemsKeys;
   }, [dropdownItems, multiSelection]);
 
   const [openedCardKeys, setOpenedCardKeys] = useState<Number[]>(
-    getDefaultVisibleItems(),
+    getDefaultVisibleItemsKeys(),
   );
 
   useEffect(() => {
-    setOpenedCardKeys(getDefaultVisibleItems());
-  }, [getDefaultVisibleItems]);
+    setOpenedCardKeys(getDefaultVisibleItemsKeys());
+  }, [getDefaultVisibleItemsKeys]);
 
-  const handlePress = key => {
-    const cardKeyIdx = openedCardKeys.indexOf(key);
-
-    if (cardKeyIdx >= 0) {
+  const handlePress = useCallback(
+    key => {
       setOpenedCardKeys(current => {
         const _current = [...current];
-        _current.splice(cardKeyIdx, 1);
-        return _current;
+        const cardKeyIdx = _current.indexOf(key);
+
+        if (cardKeyIdx >= 0) {
+          _current.splice(cardKeyIdx, 1);
+          return _current;
+        } else if (multiSelection) {
+          return [...current, key];
+        } else {
+          return [key];
+        }
       });
-    } else {
-      multiSelection
-        ? setOpenedCardKeys(current => [...current, key])
-        : setOpenedCardKeys([key]);
-    }
-  };
+    },
+    [multiSelection],
+  );
 
   return (
     <View style={[styles.container, style]}>
