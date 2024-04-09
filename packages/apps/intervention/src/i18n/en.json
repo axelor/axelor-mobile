@@ -94,5 +94,8 @@
   "Intervention_SliceAction_ArchiveEquipment": "archive equipment",
   "Intervention_SliceAction_CopyEquipment": "copy equipment",
   "Intervention_SliceAction_DeleteEquipment": "delete equipment",
-  "Intervention_SliceAction_UpdateInterventionStatus": "update intervention status"
+  "Intervention_SliceAction_UpdateInterventionStatus": "update intervention status",
+  "Intervention_SliceAction_UnlinkEquipment": "unlink equipment from intervention",
+  "Intervention_SliceAction_LinkEquipment": "link equipment to intervention",
+  "Intervention_SliceAction_SearchEquipmentToLink": "search equipment available to link on intervention"
 }

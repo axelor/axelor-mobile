@@ -16,7 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import React, {useEffect, useMemo, useState} from 'react';
+import React, {useCallback, useEffect, useMemo, useState} from 'react';
 import {
   SearchListView,
   useDispatch,
@@ -27,10 +27,12 @@ import {
 import {ChipSelect, useThemeColor} from '@axelor/aos-mobile-ui';
 import {EquipmentActionCard, InterventionHeader} from '../../molecules';
 import {EquipmentModeSwitch} from '../../organisms';
+import {LinkEquipmentPopup} from '../../templates';
 import {
   searchEquipment,
   searchInterventionEquipment,
 } from '../../../features/equipmentSlice';
+import {unlinkEquipment} from '../../../features/interventionSlice';
 import {Equipment} from '../../../types';
 
 const EquipmentView = ({}) => {
@@ -55,6 +57,7 @@ const EquipmentView = ({}) => {
 
   const [selectedStatus, setSelectedStatus] = useState([]);
   const [mode, setMode] = useState(Equipment.mode.intervention);
+  const [alertVisible, setAlertVisible] = useState(false);
 
   const isInterventionMode = useMemo(
     () => mode === Equipment.mode.intervention,
@@ -75,7 +78,7 @@ const EquipmentView = ({}) => {
       _actionList.push({
         iconName: 'link-45deg',
         title: I18n.t('Intervention_LinkEquipment'),
-        onPress: () => console.log('Link an equipment button pressed.'),
+        onPress: () => setAlertVisible(true),
       });
     }
 
@@ -143,33 +146,53 @@ const EquipmentView = ({}) => {
     searchEquipmentData,
   ]);
 
+  const handleUnlinkEquipment = useCallback(
+    equipmentId => {
+      dispatch(
+        (unlinkEquipment as any)({
+          interventionId: intervention.id,
+          interventionVersion: intervention.version,
+          equipmentId,
+        }),
+      );
+    },
+    [dispatch, intervention.id, intervention.version],
+  );
+
   return (
-    <SearchListView
-      {...ObjectToDisplay}
-      searchPlaceholder={I18n.t('Base_Search')}
-      headerTopChildren={<InterventionHeader intervention={intervention} />}
-      headerChildren={<EquipmentModeSwitch setMode={setMode} />}
-      chipComponent={
-        <ChipSelect
-          mode="switch"
-          onChangeValue={chiplist => setSelectedStatus(chiplist)}
-          selectionItems={Equipment.getStatusList(Colors, I18n)}
-        />
-      }
-      renderListItem={({item}) => (
-        <EquipmentActionCard
-          idEquipment={item.id}
-          equipmentVersion={item.version}
-          sequence={item.sequence}
-          name={item.name}
-          code={item.code}
-          equipmentFamily={item.equipmentFamily?.name}
-          inService={item.inService}
-          isUnlinkAction={isInterventionMode}
-        />
-      )}
-      actionList={actionList}
-    />
+    <>
+      <SearchListView
+        {...ObjectToDisplay}
+        searchPlaceholder={I18n.t('Base_Search')}
+        headerTopChildren={<InterventionHeader intervention={intervention} />}
+        headerChildren={<EquipmentModeSwitch setMode={setMode} />}
+        chipComponent={
+          <ChipSelect
+            mode="switch"
+            onChangeValue={chiplist => setSelectedStatus(chiplist)}
+            selectionItems={Equipment.getStatusList(Colors, I18n)}
+          />
+        }
+        renderListItem={({item}) => (
+          <EquipmentActionCard
+            idEquipment={item.id}
+            equipmentVersion={item.version}
+            sequence={item.sequence}
+            name={item.name}
+            code={item.code}
+            equipmentFamily={item.equipmentFamily?.name}
+            inService={item.inService}
+            isUnlinkAction={isInterventionMode}
+            handleUnlink={() => handleUnlinkEquipment(item.id)}
+          />
+        )}
+        actionList={actionList}
+      />
+      <LinkEquipmentPopup
+        visible={alertVisible}
+        onClose={() => setAlertVisible(false)}
+      />
+    </>
   );
 };
 

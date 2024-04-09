@@ -40,6 +40,7 @@ interface EquipmentActionCardProps {
   inService: boolean;
   isUnlinkAction?: boolean;
   handleArchive?: () => void;
+  handleUnlink?: () => void;
 }
 
 const EquipmentActionCard = ({
@@ -52,6 +53,7 @@ const EquipmentActionCard = ({
   inService,
   isUnlinkAction = false,
   handleArchive = () => {},
+  handleUnlink,
 }: EquipmentActionCardProps) => {
   const Colors = useThemeColor();
   const I18n = useTranslator();
@@ -89,7 +91,7 @@ const EquipmentActionCard = ({
             style={styles.flexOne}
             iconName="x-lg"
             iconColor={Colors.secondaryColor_dark.background}
-            onPress={() => {}}
+            onPress={handleUnlink}
             indication={I18n.t('Intervention_Unlink')}
           />
         )}
