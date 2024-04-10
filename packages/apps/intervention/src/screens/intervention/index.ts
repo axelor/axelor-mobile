@@ -16,6 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+import ActiveInterventionScreen from './ActiveInterventionScreen';
 import DayInterventionsScreen from './DayInterventionsScreen';
 import PlannedInterventionsScreen from './PlannedInterventionsScreen';
 import InterventionsHistoryScreen from './InterventionsHistoryScreen';
@@ -24,6 +25,14 @@ import InterventionNoteFormScreen from './InterventionNoteFormScreen';
 import InterventionQuestionFormScreen from './InterventionQuestionFormScreen';
 
 export default {
+  ActiveInterventionScreen: {
+    title: 'Intervention_Intervention',
+    component: ActiveInterventionScreen,
+    options: {
+      shadedHeader: false,
+    },
+    isUsableOnShortcut: true,
+  },
   DayInterventionsScreen: {
     title: 'Intervention_Interventions',
     component: DayInterventionsScreen,
@@ -72,6 +81,7 @@ export default {
   },
 };
 
+export {ActiveInterventionScreen};
 export {DayInterventionsScreen};
 export {PlannedInterventionsScreen};
 export {InterventionsHistoryScreen};

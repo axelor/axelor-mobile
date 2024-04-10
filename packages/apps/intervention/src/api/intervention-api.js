@@ -23,6 +23,7 @@ import {
   getSearchCriterias,
   getStartOfDay,
 } from '@axelor/aos-mobile-core';
+import {Intervention} from '../types';
 
 const createInterventionCriteria = (
   searchValue,
@@ -151,5 +152,18 @@ export async function searchHistoryInterventionByEquipment({
     fieldKey: 'intervention_intervention',
     sortKey: 'intervention_intervention',
     page,
+  });
+}
+
+export async function fetchActiveIntervention({userId}) {
+  return createStandardSearch({
+    model: 'com.axelor.apps.intervention.db.Intervention',
+    criteria: createInterventionCriteria(null, userId, null, null, [
+      Intervention.status.Started,
+    ]),
+    fieldKey: 'intervention_intervention',
+    sortKey: 'intervention_intervention',
+    numberElementsByPage: 1,
+    page: 0,
   });
 }

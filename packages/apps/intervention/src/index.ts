@@ -48,6 +48,11 @@ export const InterventionModule: Module = {
       title: 'Intervention_Interventions',
       separator: true,
     },
+    intervention_menu_activeIntervention: {
+      title: 'Intervention_ActiveIntervention',
+      icon: 'calendar-check',
+      screen: 'ActiveInterventionScreen',
+    },
     intervention_menu_dayInterventions: {
       title: 'Intervention_DayInterventions',
       icon: 'calendar-event',
