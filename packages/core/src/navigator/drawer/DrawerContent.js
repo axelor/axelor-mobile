@@ -23,7 +23,7 @@ import React, {
   useEffect,
   useCallback,
 } from 'react';
-import {StyleSheet, View, Animated} from 'react-native';
+import {StyleSheet, View, Animated, ScrollView} from 'react-native';
 import {SafeAreaView} from 'react-native-safe-area-context';
 import {CommonActions, DrawerActions} from '@react-navigation/native';
 import {useThemeColor, useConfig} from '@axelor/aos-mobile-ui';
@@ -215,7 +215,7 @@ const DrawerContent = ({
     <SafeAreaView style={styles.container}>
       {externalMenuIsVisible && (
         <View style={styles.iconsContainer}>
-          <View>
+          <ScrollView>
             {drawerModules.map(_module => (
               <View key={_module.name} style={styles.menuItemContainer}>
                 <MenuIconButton
@@ -233,7 +233,7 @@ const DrawerContent = ({
                 />
               </View>
             ))}
-          </View>
+          </ScrollView>
           <View style={styles.otherIconsContainer}>
             <AuthMenuIconButton
               isActive={authModule.name === activeModule.name}

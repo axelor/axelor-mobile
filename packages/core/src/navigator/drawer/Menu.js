@@ -30,6 +30,7 @@ import {
 } from '../menu.helper';
 import useTranslator from '../../i18n/hooks/use-translator';
 import {formatCompatibilityToDisplay} from '../module.helper';
+import {ScrollView} from 'react-native';
 
 const MenuItemList = ({
   state,
@@ -137,7 +138,7 @@ const Menu = ({
 
   return (
     <View style={styles.menuContainer}>
-      <View style={styles.moduleMenuContainer}>
+      <ScrollView contentContainerStyle={styles.moduleMenuContainer}>
         <View style={styles.menuTitleContainer}>
           <Text style={styles.menuTitle}>{title}</Text>
         </View>
@@ -160,7 +161,7 @@ const Menu = ({
           onItemClick={onItemClick}
           disabled={compatibilityError}
         />
-      </View>
+      </ScrollView>
       <View style={styles.authMenuIcon}>{authMenu}</View>
     </View>
   );
