@@ -40,7 +40,7 @@ import {requestBuilder} from '../apiProviders/Standard/requests.helper';
 import {core_modelAPI, core_searchFields, core_sortFields} from '../models';
 import {HeaderBandProvider} from '../header';
 import {addModuleForms, formConfigsProvider} from '../forms';
-import {SelectionProvider} from '../selections';
+import {initSelections} from '../selections';
 
 const ApplicationContext = createContext(null);
 
@@ -147,6 +147,7 @@ const ContextsProvider = ({
 
   useEffect(() => {
     objectFieldsProvider.init(modulesObjectFields);
+    initSelections(modulesObjectFields.typeObjects);
     requestBuilder.init(defaultRequestLimit);
     formConfigsProvider.init(modulesFormsRegisters);
   }, [defaultRequestLimit, modulesObjectFields, modulesFormsRegisters]);
@@ -168,10 +169,7 @@ const ContextsProvider = ({
               defaultTheme={defaultWritingTheme}
               writingStylesConfig={writingStylesConfig}>
               <ConfigProvider showModulesSubtitle={showModulesSubtitle}>
-                <SelectionProvider
-                  typeConfigs={modulesObjectFields.typeObjects}>
-                  <HeaderBandProvider>{children}</HeaderBandProvider>
-                </SelectionProvider>
+                <HeaderBandProvider>{children}</HeaderBandProvider>
               </ConfigProvider>
             </WritingThemeProvider>
           </ThemeProvider>

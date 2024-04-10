@@ -17,5 +17,5 @@
  */
 
 export * from './hooks';
-export {SelectionProvider} from './SelectionContext';
+export {initSelections, registerTypes} from './SelectionProvider';
 export * from './types';

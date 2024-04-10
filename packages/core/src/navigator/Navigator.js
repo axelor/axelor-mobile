@@ -61,7 +61,7 @@ import {
   createWebViewScreens,
   filterAuthorizedWebViewMenus,
 } from '../webViews/menu.helper';
-import {useSelectionRegister} from '../selections';
+import {registerTypes} from '../selections';
 
 const Drawer = createDrawerNavigator();
 const Stack = createStackNavigator();
@@ -84,8 +84,6 @@ const Navigator = ({modules, mainMenu, onRefresh, versionCheckConfig}) => {
   const Colors = useThemeColor();
   const dispatch = useDispatch();
   const fetchAllPermission = usePermissionsFetcher();
-
-  useSelectionRegister();
 
   const {screens: dashboardScreeens, menus: dashboardMenusConfig} = useMemo(
     () => createDashboardScreens(dashboardConfigs),
@@ -140,6 +138,7 @@ const Navigator = ({modules, mainMenu, onRefresh, versionCheckConfig}) => {
 
   useEffect(() => {
     dispatch(fetchRequiredConfig(requiredConfig));
+    registerTypes();
     // Note: the configs only need to be fetched once at user connection
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);

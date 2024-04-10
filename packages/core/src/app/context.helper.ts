@@ -87,24 +87,50 @@ const addModuleTypeObjects = (
   types: ModuleSelections,
   moduleObjects: ModuleSelections,
 ): ModuleSelections => {
-  const currentObjects = types.map(_i => _i.key);
+  const currentObjects = types.map(_i => _i.modelName);
 
   const result: ModuleSelections = [
-    ...(moduleObjects.filter(({key}) => !currentObjects.includes(key)) ?? []),
+    ...(moduleObjects.filter(
+      ({modelName}) => !currentObjects.includes(modelName),
+    ) ?? []),
   ];
 
-  const overrideObjects = moduleObjects.filter(({key}) =>
-    currentObjects.includes(key),
+  const overrideObjects = moduleObjects.filter(({modelName}) =>
+    currentObjects.includes(modelName),
   );
 
   if (Array.isArray(overrideObjects) && overrideObjects.length > 0) {
     types.forEach(_type => {
-      const newConfig = overrideObjects.find(_i => _i.key === _type.key);
+      const newConfig = overrideObjects.find(
+        _i => _i.modelName === _type.modelName,
+      );
+
+      const fields = {..._type.fields};
+
+      Object.entries(newConfig.fields).forEach(([fieldName, config]) => {
+        const oldConfig = _type.fields[fieldName];
+        const overrideMethod =
+          config.overrideMethod ?? oldConfig?.overrideMethod ?? 'rewrite';
+        const useWebContent =
+          config.useWebContent ?? oldConfig?.useWebContent ?? false;
+
+        if (overrideMethod === 'rewrite') {
+          fields[fieldName] = config;
+        } else if (overrideMethod === 'add' && oldConfig != null) {
+          fields[fieldName] = {
+            overrideMethod,
+            useWebContent,
+            content: [...config.content, ...oldConfig.content].filter(
+              (_i, idx, self) =>
+                self.findIndex(({value}) => value === _i.value) === idx,
+            ),
+          };
+        }
+      });
 
       result.push({
-        ..._type,
-        ...newConfig,
-        fields: {..._type.fields, ...newConfig.fields},
+        modelName: _type.modelName,
+        fields,
       });
     });
   } else {

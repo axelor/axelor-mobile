@@ -22,15 +22,17 @@ export type ModuleSelections = ModelSelection[];
 
 export interface ModelSelection {
   modelName: string;
-  key: string;
   fields: {
-    [fieldName: string]: SelectionItem[];
+    [fieldName: string]: {
+      overrideMethod?: 'add' | 'rewrite';
+      useWebContent?: boolean;
+      content: SelectionItem[];
+    };
   };
 }
 
 export interface TypeConfig {
   modelName: string;
-  key: string;
   selections: Selections;
 }
 
@@ -39,6 +41,11 @@ export interface Selections {
     list: SelectionItem[];
     getItemTitle?: (value: any) => string;
     getItemColor?: (value: any) => Color;
+    getSelectionItems?: () => {
+      title: string;
+      color: Color;
+      value: string | number;
+    }[];
     [key: string]: any;
   };
 }
