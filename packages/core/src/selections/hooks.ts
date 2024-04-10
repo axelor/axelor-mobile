@@ -16,52 +16,64 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import {useMemo} from 'react';
+import {useCallback, useMemo} from 'react';
 import {useThemeColor} from '@axelor/aos-mobile-ui';
-import {getSelectionTypes} from './SelectionProvider';
-import {Selections} from './types';
 import {useTranslator} from '../i18n';
+import {SelectionHelpers, SelectionFields, Selection} from './types';
+import {formatTypes} from './format.helpers';
 
-function getSelectionTitle(modelName: string) {
-  return modelName.split('.').pop();
+export const useTypes = (): {[modelKey: string]: SelectionFields} => {
+  return useMemo(() => formatTypes(), []);
+};
+
+export function getTypes(): {[modelKey: string]: SelectionFields} {
+  return formatTypes();
 }
 
-export const useTypes = (): {[modelKey: string]: Selections} => {
+export const useTypeHelpers = (): SelectionHelpers => {
   const Colors = useThemeColor();
   const I18n = useTranslator();
 
-  const types = useMemo(() => getSelectionTypes(), []);
+  const getItemTitle = useCallback(
+    (selection: Selection, value: any) => {
+      if (Array.isArray(selection?.list) && selection.list.length > 0) {
+        return I18n.t(selection.list.find(_i => _i.value === value)?.title);
+      }
 
-  return useMemo(() => {
-    const result = {};
+      return null;
+    },
+    [I18n],
+  );
 
-    types.forEach(({modelName, selections}) => {
-      const content: Selections = {};
+  const getItemColor = useCallback(
+    (selection: Selection, value: any) => {
+      if (Array.isArray(selection?.list) && selection.list.length > 0) {
+        const colorKey = selection.list.find(_i => _i.value === value)?.color;
 
-      Object.entries(selections).forEach(([_key, _select]) => {
-        const getItemTitle = value => {
-          return I18n.t(_select.list.find(_i => _i === value).title);
-        };
+        return Colors[colorKey] ?? Colors.primaryColor; // TODO: radnom
+      }
 
-        const getItemColor = value => {
-          const colorKey = _select.list.find(_i => _i === value).color;
+      return null;
+    },
+    [Colors],
+  );
 
-          return Colors[colorKey] ?? Colors.primaryColor; // TODO: radnom
-        };
+  const getSelectionItems = useCallback(
+    (selection: Selection) => {
+      console.log(selection);
+      return (
+        selection?.list?.map(_i => ({
+          title: getItemTitle(selection, _i.value),
+          color: getItemColor(selection, _i.value),
+          value: _i.value,
+        })) ?? []
+      );
+    },
+    [getItemColor, getItemTitle],
+  );
 
-        content[_key] = {
-          ..._select,
-          ...(Object.fromEntries(
-            _select.list.map(({key: selectKey, value}) => [selectKey, value]),
-          ) ?? {}),
-          getItemTitle,
-          getItemColor,
-        };
-      });
-
-      result[getSelectionTitle(modelName)] = content;
-    });
-
-    return result;
-  }, [Colors, I18n, types]);
+  return useMemo(
+    () => ({getItemColor, getItemTitle, getSelectionItems}),
+    [getItemColor, getItemTitle, getSelectionItems],
+  );
 };

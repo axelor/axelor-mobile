@@ -21,7 +21,7 @@ import {
   ModelSelection,
   ModuleSelections,
   SelectionItem,
-  Selections,
+  SelectionFields,
   TypeConfig,
 } from './types';
 
@@ -46,7 +46,7 @@ class SelectionProvider {
 
   private async fetchConfigs({modelName, fields}: ModelSelection) {
     const metaFields = await fetchMetaConfig({modelName});
-    const modelSelections: Selections = {};
+    const modelSelections: SelectionFields = {};
 
     Object.entries(fields).forEach(([name, {content, useWebContent}]) => {
       const selectConfig: any = useWebContent

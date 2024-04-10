@@ -33,21 +33,26 @@ export interface ModelSelection {
 
 export interface TypeConfig {
   modelName: string;
-  selections: Selections;
+  selections: SelectionFields;
 }
 
-export interface Selections {
-  [fieldName: string]: {
-    list: SelectionItem[];
-    getItemTitle?: (value: any) => string;
-    getItemColor?: (value: any) => Color;
-    getSelectionItems?: () => {
-      title: string;
-      color: Color;
-      value: string | number;
-    }[];
-    [key: string]: any;
-  };
+export interface SelectionFields {
+  [fieldName: string]: Selection;
+}
+
+export interface Selection {
+  list: SelectionItem[];
+  [key: string]: any;
+}
+
+export interface SelectionHelpers {
+  getItemTitle?: (selection: Selection, value: any) => string;
+  getItemColor?: (selection: Selection, value: any) => Color;
+  getSelectionItems?: (selection: Selection) => {
+    title: string;
+    color: Color;
+    value: string | number;
+  }[];
 }
 
 export interface SelectionItem {
