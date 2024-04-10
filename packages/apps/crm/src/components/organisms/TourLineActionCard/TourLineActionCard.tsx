@@ -28,7 +28,7 @@ import {validateTourLine} from '../../../features/tourLineSlice';
 import {TourLineCard} from '../../molecules';
 
 interface TourLineActionCardProps {
-  name: string;
+  partner: any;
   address: string;
   isValidated: boolean;
   eventId?: number;
@@ -37,7 +37,7 @@ interface TourLineActionCardProps {
 }
 
 const TourLineActionCard = ({
-  name,
+  partner,
   address,
   isValidated = false,
   eventId,
@@ -52,7 +52,7 @@ const TourLineActionCard = ({
     <View style={styles.globalContainer}>
       <TourLineCard
         style={styles.objectCardContainer}
-        name={name}
+        name={partner?.fullName}
         address={address}
         isValidated={isValidated}
       />
@@ -63,7 +63,7 @@ const TourLineActionCard = ({
           iconColor={Colors.primaryColor.foreground}
           onPress={() => linkingProvider.openMapApp(address)}
         />
-        {eventId != null && (
+        {eventId != null ? (
           <CardIconButton
             style={styles.flexOne}
             iconName="calendar-event"
@@ -71,6 +71,17 @@ const TourLineActionCard = ({
             onPress={() =>
               navigation.navigate('EventDetailsScreen', {
                 eventId: eventId,
+              })
+            }
+          />
+        ) : (
+          <CardIconButton
+            style={styles.flexOne}
+            iconName="calendar2-plus"
+            iconColor={Colors.primaryColor.foreground}
+            onPress={() =>
+              navigation.navigate('EventFormScreen', {
+                client: partner,
               })
             }
           />
