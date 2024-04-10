@@ -25,10 +25,12 @@ import {
 import ManufacturingOrder from '../types/manufacturing-order';
 
 const createManufOrderCriteria = (
-  companyId,
-  workshopId,
-  manageWorkshop,
   searchValue,
+  companyId,
+  manageWorkshop,
+  workshopId,
+  statusList,
+  productId,
 ) => {
   let criterias = [
     {
@@ -90,23 +92,46 @@ const createManufOrderCriteria = (
     });
   }
 
+  if (Array.isArray(statusList) && statusList.length > 0) {
+    criterias.push({
+      operator: 'or',
+      criteria: statusList.map(status => ({
+        fieldName: 'statusSelect',
+        operator: '=',
+        value: status.key,
+      })),
+    });
+  }
+
+  if (productId != null) {
+    criterias.push({
+      fieldName: 'product.id',
+      operator: '=',
+      value: productId,
+    });
+  }
+
   return criterias;
 };
 
 export async function searchManufacturingOrderFilter({
-  companyId = null,
-  workshopId = null,
   searchValue = null,
+  companyId = null,
   manageWorkshop,
+  workshopId = null,
+  statusList,
+  productId,
   page = 0,
 }) {
   return createStandardSearch({
     model: 'com.axelor.apps.production.db.ManufOrder',
     criteria: createManufOrderCriteria(
-      companyId,
-      workshopId,
-      manageWorkshop,
       searchValue,
+      companyId,
+      manageWorkshop,
+      workshopId,
+      statusList,
+      productId,
     ),
     fieldKey: 'manufacturing_manufacturingOrder',
     sortKey: 'manufacturing_manufacturingOrder',
