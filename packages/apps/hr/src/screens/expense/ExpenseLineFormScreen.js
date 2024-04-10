@@ -171,6 +171,7 @@ const ExpenseLineFormScreen = ({route, navigation}) => {
       totalAmount: 0,
       totalTax: 0,
       distance: 0,
+      currency: user.activeCompany.currency,
     };
 
     if (justificationMetaFile != null) {
@@ -239,6 +240,7 @@ const ExpenseLineFormScreen = ({route, navigation}) => {
     idExpense,
     justificationMetaFile,
     modeExpense,
+    user.activeCompany.currency,
     user.activeCompany?.name,
   ]);
 
