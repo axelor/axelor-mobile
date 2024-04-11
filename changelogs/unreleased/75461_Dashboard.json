@@ -1,0 +1,5 @@
+{
+  "title": "Dashboard: add possibility to define chart width",
+  "type": "feat",
+  "packages": "ui"
+}
