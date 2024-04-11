@@ -31,8 +31,16 @@ import {fetchRange} from '../../features/questionSlice';
 import {fetchNumberInterventionEquipment} from '../../features/equipmentSlice';
 import {Intervention} from '../../types';
 
-const InterventionDetailsScreen = ({route}) => {
-  const {interventionId} = route.params;
+export interface InterventionDetailsScreenProps {
+  route?: any;
+  interventionId?: number;
+}
+
+const InterventionDetailsScreen = ({
+  route,
+  interventionId,
+}: InterventionDetailsScreenProps) => {
+  const _interventionId = route?.params?.interventionId || interventionId;
   const Colors = useThemeColor();
   const dispatch = useDispatch();
 
@@ -51,8 +59,8 @@ const InterventionDetailsScreen = ({route}) => {
   );
 
   useEffect(() => {
-    dispatch((fetchInterventionById as any)({interventionId}));
-  }, [dispatch, interventionId]);
+    dispatch((fetchInterventionById as any)({interventionId: _interventionId}));
+  }, [_interventionId, dispatch]);
 
   useEffect(() => {
     intervention?.id &&
@@ -104,7 +112,7 @@ const InterventionDetailsScreen = ({route}) => {
     },
   ];
 
-  if (intervention?.id !== interventionId) {
+  if (intervention?.id !== _interventionId) {
     return null;
   }
 
