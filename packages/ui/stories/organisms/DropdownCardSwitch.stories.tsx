@@ -26,14 +26,28 @@ const dropdownItems = [
     key: 1,
     title: 'Dropdown 1',
     childrenComp: <Text>Dropdown 1 Content</Text>,
+    isDefaultVisible: true,
   },
   {
     key: 2,
     title: 'Dropdown 2',
     childrenComp: <Text>Dropdown 2 Content</Text>,
+    isDefaultVisible: false,
   },
 ];
 
-storiesOf('ui/organisms/DropdownCardSwitch', module).add('default', () => (
-  <DropdownCardSwitch dropdownItems={dropdownItems} />
-));
+storiesOf('ui/organisms/DropdownCardSwitch', module).add(
+  'Default',
+  args => {
+    return <DropdownCardSwitch dropdownItems={dropdownItems} {...args} />;
+  },
+  {
+    argTypes: {
+      multiSelection: {
+        type: 'boolean',
+        defaultValue: false,
+        control: {type: 'boolean'},
+      },
+    },
+  },
+);
