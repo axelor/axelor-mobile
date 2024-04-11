@@ -16,34 +16,62 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import React from 'react';
+import React, {useCallback} from 'react';
 import {StyleSheet, View} from 'react-native';
 import {InfoButton, useThemeColor} from '@axelor/aos-mobile-ui';
-import {useNavigation, useTranslator} from '@axelor/aos-mobile-core';
+import {
+  useDispatch,
+  useNavigation,
+  useTranslator,
+} from '@axelor/aos-mobile-core';
 import {EquipmentCard} from '../../atoms';
+import {
+  archiveEquipment,
+  copyEquipment,
+} from '../../../features/equipmentSlice';
 
 interface EquipmentActionCardProps {
   idEquipment: number;
+  equipmentVersion: number;
   sequence: string;
   name: string;
   code: string;
   equipmentFamily: string;
   inService: boolean;
   isUnlinkAction?: boolean;
+  handleArchive?: () => void;
 }
 
 const EquipmentActionCard = ({
   idEquipment,
+  equipmentVersion,
   sequence,
   name,
   code,
   equipmentFamily,
   inService,
   isUnlinkAction = false,
+  handleArchive = () => {},
 }: EquipmentActionCardProps) => {
   const Colors = useThemeColor();
   const I18n = useTranslator();
   const navigation = useNavigation();
+  const dispatch = useDispatch();
+
+  const handleDuplicate = useCallback(() => {
+    (dispatch as any)(
+      (copyEquipment as any)({
+        equipmentId: idEquipment,
+      }),
+    ).then(
+      res =>
+        res.payload?.id &&
+        navigation.navigate('EquipmentFormView', {
+          idEquipment: res.payload?.id,
+          isCreation: true,
+        }),
+    );
+  }, [dispatch, idEquipment, navigation]);
 
   return (
     <View style={styles.globalContainer}>
@@ -69,7 +97,7 @@ const EquipmentActionCard = ({
           style={styles.flexOne}
           iconName="front"
           iconColor={Colors.secondaryColor_dark.background}
-          onPress={() => {}}
+          onPress={handleDuplicate}
           indication={I18n.t('Intervention_Duplicate')}
         />
       </View>
@@ -89,7 +117,14 @@ const EquipmentActionCard = ({
           style={styles.flexOne}
           iconName="archive-fill"
           iconColor={Colors.errorColor.background}
-          onPress={() => {}}
+          onPress={() =>
+            (dispatch as any)(
+              (archiveEquipment as any)({
+                equipmentId: idEquipment,
+                equipmentVersion,
+              }),
+            ).then(() => handleArchive())
+          }
           indication={I18n.t('Intervention_Archive')}
         />
       </View>
