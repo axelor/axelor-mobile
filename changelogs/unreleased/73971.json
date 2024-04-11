@@ -1,0 +1,5 @@
+{
+  "title": "tools: possibility to open a list of point of interest on google maps",
+  "type": "feat",
+  "packages": "core"
+}
