@@ -16,7 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import React, {useCallback, useEffect, useMemo, useState} from 'react';
+import React, {useCallback, useEffect, useState} from 'react';
 import {StyleSheet, View} from 'react-native';
 import {
   ActionType,
@@ -41,6 +41,7 @@ interface SearchListViewProps {
   searchPlaceholder?: string;
   searchNavigate?: boolean;
   scanKeySearch?: string;
+  isHideableSearch?: boolean;
   fixedItems?: any;
   topFixedItems?: any;
   chipComponent?: any;
@@ -64,6 +65,7 @@ const SearchListView = ({
   searchPlaceholder,
   searchNavigate,
   scanKeySearch = null,
+  isHideableSearch = false,
   fixedItems,
   topFixedItems,
   chipComponent,
@@ -114,10 +116,32 @@ const SearchListView = ({
     }
   }, [fetchListAPI, isFocused]);
 
-  const SearchBar = useMemo(
-    () => (scanKeySearch ? ScannerAutocompleteSearch : AutoCompleteSearch),
-    [scanKeySearch],
-  );
+  const renderSearchBar = useCallback(() => {
+    const SearchBar = scanKeySearch
+      ? ScannerAutocompleteSearch
+      : AutoCompleteSearch;
+
+    return (
+      <SearchBar
+        objectList={list}
+        onChangeValue={onChangeSearchValue}
+        fetchData={fetchSearchAPI}
+        displayValue={displaySearchValue}
+        placeholder={searchPlaceholder}
+        oneFilter={true}
+        navigate={searchNavigate}
+        scanKeySearch={scanKeySearch}
+      />
+    );
+  }, [
+    displaySearchValue,
+    fetchSearchAPI,
+    list,
+    onChangeSearchValue,
+    scanKeySearch,
+    searchNavigate,
+    searchPlaceholder,
+  ]);
 
   return (
     <View style={styles.container}>
@@ -126,21 +150,13 @@ const SearchListView = ({
         fixedItems={
           <>
             {topFixedItems}
-            <SearchBar
-              objectList={list}
-              onChangeValue={onChangeSearchValue}
-              fetchData={fetchSearchAPI}
-              displayValue={displaySearchValue}
-              placeholder={searchPlaceholder}
-              oneFilter={true}
-              navigate={searchNavigate}
-              scanKeySearch={scanKeySearch}
-            />
+            {!isHideableSearch && renderSearchBar()}
             {fixedItems}
           </>
         }
         chipComponent={chipComponent}
         expandableFilter={expandableFilter}>
+        {isHideableSearch && renderSearchBar()}
         {headerChildren}
       </HeaderContainer>
       <ScrollList
