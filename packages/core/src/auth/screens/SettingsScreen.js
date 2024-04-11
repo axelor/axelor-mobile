@@ -16,16 +16,19 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import React, {useCallback} from 'react';
+import React, {useCallback, useMemo} from 'react';
 import {StyleSheet, View} from 'react-native';
+import {useDispatch, useSelector} from 'react-redux';
 import {
+  HorizontalRule,
+  Picker,
   Screen,
+  ScrollView,
   SwitchCard,
+  Text,
   useConfig,
   useTheme,
-  Text,
 } from '@axelor/aos-mobile-ui';
-import {useDispatch, useSelector} from 'react-redux';
 import {useTranslator} from '../../i18n';
 import {
   disable,
@@ -33,13 +36,16 @@ import {
   useEffectOnline,
   useOnline,
 } from '../../features/onlineSlice';
+import {updateActiveUser} from '../../features/userSlice';
 import {ApiProviderConfig} from '../../apiProviders/config';
 import {NavigationToolsButton, TranslationsButton} from '../components';
+import {useIsAdmin} from '../../permissions';
 
 const SettingsScreen = ({children}) => {
   const I18n = useTranslator();
   const Theme = useTheme();
   const online = useOnline();
+  const isAdmin = useIsAdmin();
   const dispatch = useDispatch();
 
   const {
@@ -52,6 +58,36 @@ const SettingsScreen = ({children}) => {
   } = useConfig();
 
   const {appVersion, baseUrl} = useSelector(state => state.auth);
+  const {user} = useSelector(state => state.user);
+  const {localizationList} = useSelector(state => state.localization);
+
+  const isLanguagePicker = useMemo(
+    () => localizationList?.length > 1,
+    [localizationList?.length],
+  );
+
+  const isThemePicker = useMemo(
+    () => !Theme.isColorBlind && Theme.themes?.length !== 1,
+    [Theme.isColorBlind, Theme.themes?.length],
+  );
+
+  const handleChangeTheme = useCallback(
+    newTheme => Theme.changeTheme(newTheme),
+    [Theme],
+  );
+
+  const updateLanguage = useCallback(
+    localization => {
+      dispatch(
+        updateActiveUser({
+          id: user.id,
+          localization: {id: localization},
+          version: user.version,
+        }),
+      );
+    },
+    [dispatch, user],
+  );
 
   const handleToggleConnection = useCallback(
     state => {
@@ -86,38 +122,69 @@ const SettingsScreen = ({children}) => {
 
   return (
     <Screen style={styles.screen}>
-      <View style={styles.container}>
+      <ScrollView contentContainerStyle={styles.container}>
+        {isLanguagePicker && (
+          <Picker
+            title={I18n.t('User_Language')}
+            defaultValue={user.localization?.id}
+            listItems={localizationList}
+            labelField="name"
+            valueField="id"
+            onValueChange={updateLanguage}
+            emptyValue={false}
+          />
+        )}
+        {isThemePicker && (
+          <Picker
+            title={I18n.t('User_Theme')}
+            defaultValue={Theme.activeTheme?.key}
+            listItems={Theme.themes}
+            labelField="name"
+            valueField="key"
+            onValueChange={handleChangeTheme}
+            emptyValue={false}
+          />
+        )}
+        {(isLanguagePicker || isThemePicker) && (
+          <HorizontalRule style={styles.lineSeparator} />
+        )}
         <SwitchCard
           title={I18n.t('User_ShowFilter')}
           defaultValue={showFilter}
           onToggle={toggleFilterConfig}
+          style={[styles.topSwitchCard, styles.switchCard]}
         />
         <SwitchCard
           title={I18n.t('User_VirtualKeyboardConfig')}
           defaultValue={hideVirtualKeyboard}
           onToggle={toggleVirtualKeyboardConfig}
+          style={styles.switchCard}
         />
         <SwitchCard
           title={I18n.t('User_ColorForColorBlind')}
           defaultValue={Theme.isColorBlind}
           onToggle={handleToggleColorBlind}
+          style={styles.switchCard}
         />
         {ApiProviderConfig.allowConnectionBlock && (
           <SwitchCard
             title={I18n.t('User_BlockConnection')}
             defaultValue={!online.isEnabled}
             onToggle={handleToggleConnection}
+            style={styles.switchCard}
           />
         )}
         <SwitchCard
           title={I18n.t('User_Show_Drawer_Subtitles')}
           defaultValue={showSubtitles}
           onToggle={handleToggleSubtitles}
+          style={styles.switchCard}
         />
         {children}
+        {isAdmin && <HorizontalRule style={styles.lineSeparator} />}
         <TranslationsButton />
         <NavigationToolsButton />
-      </View>
+      </ScrollView>
       <View style={styles.footerContainer}>
         <Text>{I18n.t('Base_Version', {appVersion: appVersion})}</Text>
         <Text>{`${I18n.t('Base_ConnectedOn')}:`}</Text>
@@ -132,10 +199,21 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
   },
   container: {
-    marginTop: 15,
-    justifyContent: 'flex-start',
+    marginTop: 10,
+    justifyContent: 'center',
     alignItems: 'center',
     flex: 1,
+  },
+  lineSeparator: {
+    alignSelf: 'center',
+    width: '25%',
+    marginVertical: 15,
+  },
+  topSwitchCard: {
+    marginTop: 5,
+  },
+  switchCard: {
+    alignSelf: 'center',
   },
   footerContainer: {
     justifyContent: 'center',

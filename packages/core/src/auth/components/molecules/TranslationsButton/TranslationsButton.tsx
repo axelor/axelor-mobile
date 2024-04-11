@@ -80,11 +80,12 @@ const getStyles = (Colors: ThemeColors) =>
     content: {
       width: Dimensions.get('window').width * 0.9,
       height: 40,
+      alignSelf: 'center',
       borderColor: Colors.secondaryColor.background,
       borderWidth: 1,
-      marginHorizontal: 18,
       paddingLeft: 10,
       paddingRight: 25,
+      marginRight: 0,
     },
   });
 
