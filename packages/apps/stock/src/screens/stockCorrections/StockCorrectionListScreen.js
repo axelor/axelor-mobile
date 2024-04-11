@@ -16,7 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import React, {useCallback, useMemo, useState} from 'react';
+import React, {useCallback, useEffect, useState} from 'react';
 import {
   ChipSelect,
   HeaderContainer,
@@ -25,11 +25,10 @@ import {
   useThemeColor,
 } from '@axelor/aos-mobile-ui';
 import {
-  filterList,
   useDispatch,
+  useIsFocused,
   useSelector,
   useTranslator,
-  filterChip,
 } from '@axelor/aos-mobile-core';
 import {
   ProductSearchBar,
@@ -45,6 +44,7 @@ const productScanKey = 'product_stock-correction-list';
 const StockCorrectionListScreen = ({navigation}) => {
   const Colors = useThemeColor();
   const I18n = useTranslator();
+  const isFocused = useIsFocused();
   const dispatch = useDispatch();
 
   const {loadingList, moreLoading, isListEnd, stockCorrectionList} =
@@ -54,31 +54,6 @@ const StockCorrectionListScreen = ({navigation}) => {
   const [product, setProduct] = useState(null);
   const [selectedStatus, setSelectedStatus] = useState([]);
 
-  const filterOnStatus = useCallback(
-    list => {
-      return filterChip(list, selectedStatus, 'statusSelect');
-    },
-    [selectedStatus],
-  );
-
-  const filteredList = useMemo(
-    () =>
-      filterOnStatus(
-        filterList(
-          filterList(
-            stockCorrectionList,
-            'stockLocation',
-            'id',
-            stockLocation?.id ?? '',
-          ),
-          'product',
-          'id',
-          product?.id ?? '',
-        ),
-      ),
-    [stockCorrectionList, stockLocation, product, filterOnStatus],
-  );
-
   const showStockCorrectionDetails = stockCorrection => {
     navigation.navigate('StockCorrectionDetailsScreen', {
       stockCorrectionId: stockCorrection?.id,
@@ -87,10 +62,25 @@ const StockCorrectionListScreen = ({navigation}) => {
 
   const searchStockCorrectionsAPI = useCallback(
     page => {
-      dispatch(searchStockCorrections({page: page}));
+      dispatch(
+        searchStockCorrections({
+          stockLocationId: stockLocation?.id,
+          productId: product?.id,
+          statusList: selectedStatus,
+          page,
+        }),
+      );
     },
-    [dispatch],
+    [dispatch, product?.id, selectedStatus, stockLocation?.id],
   );
+
+  useEffect(() => {
+    if (isFocused) {
+      setStockLocation(null);
+      setProduct(null);
+      setSelectedStatus([]);
+    }
+  }, [isFocused]);
 
   return (
     <Screen removeSpaceOnTop={true}>
@@ -99,24 +89,12 @@ const StockCorrectionListScreen = ({navigation}) => {
           <ChipSelect
             mode="switch"
             onChangeValue={chiplist => setSelectedStatus(chiplist)}
-            selectionItems={[
-              {
-                title: I18n.t('Stock_Status_Draft'),
-                color: StockCorrection.getStatusColor(
-                  StockCorrection.status.Draft,
-                  Colors,
-                ),
-                key: StockCorrection.status.Draft,
-              },
-              {
-                title: I18n.t('Stock_Status_Validated'),
-                color: StockCorrection.getStatusColor(
-                  StockCorrection.status.Validated,
-                  Colors,
-                ),
-                key: StockCorrection.status.Validated,
-              },
-            ]}
+            isRefresh
+            selectionItems={StockCorrection.getStatusList(
+              Colors,
+              I18n,
+              selectedStatus,
+            )}
           />
         }>
         <StockLocationSearchBar
@@ -132,7 +110,7 @@ const StockCorrectionListScreen = ({navigation}) => {
       </HeaderContainer>
       <ScrollList
         loadingList={loadingList}
-        data={filteredList}
+        data={stockCorrectionList}
         renderItem={({item}) => (
           <StockCorrectionCard
             status={item.statusSelect}

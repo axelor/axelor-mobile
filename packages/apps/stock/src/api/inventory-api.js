@@ -24,8 +24,8 @@ import {
 } from '@axelor/aos-mobile-core';
 import Inventory from '../types/inventory';
 
-const createSearchCriteria = searchValue => {
-  return [
+const createSearchCriteria = (searchValue, stockLocationId, statusList) => {
+  const criteria = [
     {
       fieldName: 'statusSelect',
       operator: '!=',
@@ -38,6 +38,27 @@ const createSearchCriteria = searchValue => {
     },
     getSearchCriterias('stock_inventory', searchValue),
   ];
+
+  if (stockLocationId != null) {
+    criteria.push({
+      fieldName: 'stockLocation.id',
+      operator: '=',
+      value: stockLocationId,
+    });
+  }
+
+  if (Array.isArray(statusList) && statusList.length > 0) {
+    criteria.push({
+      operator: 'or',
+      criteria: statusList.map(status => ({
+        fieldName: 'statusSelect',
+        operator: '=',
+        value: status.key,
+      })),
+    });
+  }
+
+  return criteria;
 };
 
 export async function fetchInventory({inventoryId}) {
@@ -48,10 +69,15 @@ export async function fetchInventory({inventoryId}) {
   });
 }
 
-export async function searchInventoryFilter({searchValue, page = 0}) {
+export async function searchInventoryFilter({
+  searchValue,
+  stockLocationId,
+  statusList,
+  page = 0,
+}) {
   return createStandardSearch({
     model: 'com.axelor.apps.stock.db.Inventory',
-    criteria: createSearchCriteria(searchValue),
+    criteria: createSearchCriteria(searchValue, stockLocationId, statusList),
     fieldKey: 'stock_inventory',
     sortKey: 'stock_inventory',
     page,

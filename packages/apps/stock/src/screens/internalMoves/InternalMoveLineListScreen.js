@@ -17,17 +17,9 @@
  */
 
 import React, {useCallback, useState, useMemo} from 'react';
+import {ChipSelect, Screen, useThemeColor} from '@axelor/aos-mobile-ui';
 import {
-  ChipSelect,
-  HeaderContainer,
-  Screen,
-  ScrollList,
-  useThemeColor,
-} from '@axelor/aos-mobile-ui';
-import {
-  checkNullString,
-  ScannerAutocompleteSearch,
-  useDispatch,
+  SearchListView,
   useSelector,
   useTranslator,
 } from '@axelor/aos-mobile-core';
@@ -44,7 +36,6 @@ const InternalMoveLineListScreen = ({route, navigation}) => {
   const internalMove = route.params.internalMove;
   const Colors = useThemeColor();
   const I18n = useTranslator();
-  const dispatch = useDispatch();
 
   const {mobileSettings} = useSelector(state => state.appConfig);
   const {internalMoveLineList} = useInternalLinesWithRacks(internalMove);
@@ -52,7 +43,6 @@ const InternalMoveLineListScreen = ({route, navigation}) => {
     state => state.internalMoveLine,
   );
 
-  const [filter, setFilter] = useState(null);
   const [selectedStatus, setSelectedStatus] = useState([]);
 
   const handleShowLine = (
@@ -74,37 +64,11 @@ const InternalMoveLineListScreen = ({route, navigation}) => {
     handleShowLine(item, true);
   };
 
-  const fetchInternalLinesAPI = useCallback(
-    ({page = 0, searchValue}) => {
-      if (!checkNullString(searchValue)) {
-        setFilter(searchValue);
-        dispatch(
-          fetchInternalMoveLines({
-            internalMoveId: internalMove.id,
-            searchValue: searchValue,
-            page: 0,
-          }),
-        );
-      } else {
-        dispatch(
-          fetchInternalMoveLines({
-            internalMoveId: internalMove.id,
-            page: page,
-          }),
-        );
-      }
-    },
-    [dispatch, internalMove.id],
-  );
-
-  const filterLinesAPI = useCallback(
-    ({searchValue}) => fetchInternalLinesAPI({searchValue}),
-    [fetchInternalLinesAPI],
-  );
-
-  const scrollLinesAPI = useCallback(
-    page => fetchInternalLinesAPI({page}),
-    [fetchInternalLinesAPI],
+  const sliceFunctionData = useMemo(
+    () => ({
+      internalMoveId: internalMove.id,
+    }),
+    [internalMove.id],
   );
 
   const filterOnStatus = useCallback(
@@ -135,7 +99,18 @@ const InternalMoveLineListScreen = ({route, navigation}) => {
 
   return (
     <Screen removeSpaceOnTop={true}>
-      <HeaderContainer
+      <SearchListView
+        list={filteredList}
+        loading={loadingIMLinesList}
+        moreLoading={moreLoading}
+        isListEnd={isListEnd}
+        sliceFunction={fetchInternalMoveLines}
+        sliceFunctionData={sliceFunctionData}
+        onChangeSearchValue={handleLineSearch}
+        displaySearchValue={displayLine}
+        searchPlaceholder={I18n.t('Stock_SearchLine')}
+        scanKeySearch={scanKey}
+        isHideableSearch
         fixedItems={
           <StockMoveHeader
             reference={internalMove.stockMoveSeq}
@@ -160,22 +135,8 @@ const InternalMoveLineListScreen = ({route, navigation}) => {
               Colors,
             )}
           />
-        }>
-        <ScannerAutocompleteSearch
-          objectList={filteredList}
-          onChangeValue={handleLineSearch}
-          fetchData={filterLinesAPI}
-          displayValue={displayLine}
-          scanKeySearch={scanKey}
-          placeholder={I18n.t('Stock_SearchLine')}
-          isFocus={true}
-          oneFilter={true}
-        />
-      </HeaderContainer>
-      <ScrollList
-        loadingList={loadingIMLinesList}
-        data={filteredList}
-        renderItem={({item}) => (
+        }
+        renderListItem={({item}) => (
           <InternalMoveLineCard
             productName={item.product?.fullName}
             internalMoveStatus={internalMove.statusSelect}
@@ -195,11 +156,6 @@ const InternalMoveLineListScreen = ({route, navigation}) => {
             onPress={() => handleShowLine(item)}
           />
         )}
-        fetchData={scrollLinesAPI}
-        moreLoading={moreLoading}
-        isListEnd={isListEnd}
-        filter={filter != null && filter !== ''}
-        translator={I18n.t}
       />
     </Screen>
   );

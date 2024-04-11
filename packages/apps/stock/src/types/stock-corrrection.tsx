@@ -52,6 +52,19 @@ class StockCorrection {
         return null;
     }
   };
+
+  static getStatusList = (
+    Colors: ThemeColors,
+    I18n: TranslatorProps,
+    selectedStatus: any[],
+  ) => {
+    return Object.values(this.status).map(_value => ({
+      title: this.getStatus(_value, I18n),
+      color: this.getStatusColor(_value, Colors),
+      key: _value,
+      isActive: selectedStatus.find(_i => _i.key === _value),
+    }));
+  };
 }
 
 export default StockCorrection;
