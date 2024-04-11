@@ -42,11 +42,11 @@ interface SearchListViewProps {
   searchNavigate?: boolean;
   scanKeySearch?: string;
   fixedItems?: any;
+  topFixedItems?: any;
   chipComponent?: any;
   expandableFilter?: boolean;
   headerChildren?: any;
   headerTopChildren?: any;
-  topFixedItems?: any;
   renderListItem: (item: any) => any;
   actionList?: ActionType[];
   verticalActions?: boolean;
@@ -65,11 +65,11 @@ const SearchListView = ({
   searchNavigate,
   scanKeySearch = null,
   fixedItems,
+  topFixedItems,
   chipComponent,
   expandableFilter,
   headerChildren,
   headerTopChildren,
-  topFixedItems,
   renderListItem,
   actionList,
   verticalActions,

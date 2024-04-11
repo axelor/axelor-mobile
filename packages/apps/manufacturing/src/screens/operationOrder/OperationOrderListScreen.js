@@ -16,22 +16,13 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import React, {useCallback, useEffect, useState} from 'react';
+import React, {useMemo, useState} from 'react';
 import {StyleSheet} from 'react-native';
+import {ChipSelect, Screen, useThemeColor} from '@axelor/aos-mobile-ui';
 import {
-  ChipSelect,
-  HeaderContainer,
-  Screen,
-  ScrollList,
-  useThemeColor,
-} from '@axelor/aos-mobile-ui';
-import {
-  filterList,
-  ScannerAutocompleteSearch,
-  useDispatch,
+  SearchListView,
   useSelector,
   useTranslator,
-  filterChip,
 } from '@axelor/aos-mobile-core';
 import OperationOrder from '../../types/operation-order';
 import {fetchOperationOrders} from '../../features/operationOrderSlice';
@@ -47,7 +38,6 @@ const refScanKey = 'manufOrderSeq_manufacturing-order-list';
 function OperationOrderListScreen({navigation}) {
   const Colors = useThemeColor();
   const I18n = useTranslator();
-  const dispatch = useDispatch();
 
   const {loadingList, moreLoading, isListEnd, operationOrderList} = useSelector(
     state => state.operationOrder,
@@ -55,30 +45,8 @@ function OperationOrderListScreen({navigation}) {
 
   const [machine, setMachine] = useState(null);
   const [workCenter, setWorkCenter] = useState(null);
-  const [filteredList, setFilteredList] = useState(operationOrderList);
   const [selectedStatus, setSelectedStatus] = useState([]);
-  const [filter, setFilter] = useState(null);
   const [navigate, setNavigate] = useState(false);
-
-  const filterOnStatus = useCallback(
-    list => {
-      return filterChip(list, selectedStatus, 'statusSelect');
-    },
-    [selectedStatus],
-  );
-
-  useEffect(() => {
-    setFilteredList(
-      filterOnStatus(
-        filterList(
-          operationOrderList,
-          ['workCenter', 'machine'],
-          ['id', 'id'],
-          [workCenter?.id ?? '', machine?.id ?? ''],
-        ),
-      ),
-    );
-  }, [filterOnStatus, machine, operationOrderList, workCenter]);
 
   const navigateToOperationOrder = item => {
     if (item != null) {
@@ -89,46 +57,29 @@ function OperationOrderListScreen({navigation}) {
     }
   };
 
-  const fetchOperationOrderAPI = useCallback(
-    page => {
-      dispatch(
-        fetchOperationOrders({
-          searchValue: filter,
-          page: page,
-        }),
-      );
-    },
-    [dispatch, filter],
-  );
-
-  const handleRefChange = useCallback(
-    ({page = 0, searchValue}) => {
-      setFilter(searchValue);
-      dispatch(
-        fetchOperationOrders({
-          searchValue: searchValue,
-          page: page,
-        }),
-      );
-    },
-    [dispatch],
+  const sliceFunctionData = useMemo(
+    () => ({
+      statusList: selectedStatus,
+      workCenterId: workCenter?.id,
+      machineId: machine?.id,
+    }),
+    [machine?.id, selectedStatus, workCenter?.id],
   );
 
   return (
     <Screen removeSpaceOnTop={true}>
-      <HeaderContainer
-        fixedItems={
-          <ScannerAutocompleteSearch
-            objectList={operationOrderList}
-            onChangeValue={item => navigateToOperationOrder(item)}
-            fetchData={handleRefChange}
-            displayValue={displayManufOrderSeq}
-            placeholder={I18n.t('Manufacturing_Ref')}
-            scanKeySearch={refScanKey}
-            oneFilter={true}
-            navigate={navigate}
-          />
-        }
+      <SearchListView
+        list={operationOrderList}
+        loading={loadingList}
+        moreLoading={moreLoading}
+        isListEnd={isListEnd}
+        sliceFunction={fetchOperationOrders}
+        sliceFunctionData={sliceFunctionData}
+        onChangeSearchValue={navigateToOperationOrder}
+        displaySearchValue={displayManufOrderSeq}
+        searchPlaceholder={I18n.t('Manufacturing_Ref')}
+        searchNavigate={navigate}
+        scanKeySearch={refScanKey}
         chipComponent={
           <ChipSelect
             mode="multi"
@@ -169,14 +120,14 @@ function OperationOrderListScreen({navigation}) {
             ]}
             width={100}
           />
-        }>
-        <WorkCenterSearchBar onChange={setWorkCenter} />
-        <MachineSearchBar onChange={setMachine} />
-      </HeaderContainer>
-      <ScrollList
-        loadingList={loadingList}
-        data={filteredList}
-        renderItem={({item}) => (
+        }
+        headerChildren={
+          <>
+            <WorkCenterSearchBar onChange={setWorkCenter} />
+            <MachineSearchBar onChange={setMachine} />
+          </>
+        }
+        renderListItem={({item}) => (
           <OperationOrderDetailsCard
             style={styles.item}
             status={item.statusSelect}
@@ -193,10 +144,6 @@ function OperationOrderListScreen({navigation}) {
             onPress={() => navigateToOperationOrder(item)}
           />
         )}
-        fetchData={fetchOperationOrderAPI}
-        moreLoading={moreLoading}
-        isListEnd={isListEnd}
-        translator={I18n.t}
       />
     </Screen>
   );
