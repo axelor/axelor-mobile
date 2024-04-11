@@ -233,15 +233,13 @@ const DrawerContent = ({
                     compatibility={_module.compatibilityAOS}
                   />
                 </View>
-                <View>
-                  {!innerMenuIsVisible && (
-                    <MenuTitle
-                      key={_module.name}
-                      module={_module}
-                      onPress={() => handleModuleClick(_module)}
-                    />
-                  )}
-                </View>
+                {!innerMenuIsVisible && (
+                  <MenuTitle
+                    key={_module.name}
+                    module={_module}
+                    onPress={() => handleModuleClick(_module)}
+                  />
+                )}
               </View>
             ))}
           </ScrollView>
@@ -309,7 +307,6 @@ const getStyles = Colors =>
     },
     iconsContainer: {
       justifyContent: 'space-between',
-      alignItems: 'center',
       marginHorizontal: 12,
       zIndex: 3,
     },
