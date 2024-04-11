@@ -160,9 +160,10 @@ export async function fetchActiveIntervention({userId}) {
     model: 'com.axelor.apps.intervention.db.Intervention',
     criteria: createInterventionCriteria(null, userId, null, null, [
       Intervention.status.Started,
+      Intervention.status.Suspended,
     ]),
     fieldKey: 'intervention_intervention',
-    sortKey: 'intervention_intervention',
+    sortKey: 'intervention_activeIntervention',
     numberElementsByPage: 1,
     page: 0,
   });

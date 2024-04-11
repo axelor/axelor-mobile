@@ -132,6 +132,9 @@ const interventionSlice = createSlice({
       state.loadingActiveIntervention = false;
       state.activeIntervention = action.payload;
     });
+    builder.addCase(fetchActiveIntervention.rejected, state => {
+      state.loadingActiveIntervention = false;
+    });
   },
 });
 
