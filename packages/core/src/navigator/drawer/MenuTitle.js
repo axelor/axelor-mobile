@@ -68,11 +68,13 @@ const MenuTitle = ({module, onPress}) => {
 
 const styles = StyleSheet.create({
   menuItemContainer: {
+    width: 200,
     height: 60,
     marginVertical: 8,
     flexDirection: 'column',
     justifyContent: 'center',
     alignItems: 'flex-start',
+    marginLeft: '5%',
   },
   text: {
     marginHorizontal: 6,

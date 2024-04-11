@@ -23,7 +23,7 @@ import React, {
   useEffect,
   useCallback,
 } from 'react';
-import {StyleSheet, View, Animated} from 'react-native';
+import {StyleSheet, View, Animated, ScrollView} from 'react-native';
 import {SafeAreaView} from 'react-native-safe-area-context';
 import {CommonActions, DrawerActions} from '@react-navigation/native';
 import {useThemeColor, useConfig} from '@axelor/aos-mobile-ui';
@@ -151,19 +151,6 @@ const DrawerContent = ({
     [externalMenuIsVisible, secondaryMenusLeft],
   );
 
-  const scrollY = useRef(new Animated.Value(0)).current;
-
-  const handleScroll = Animated.event(
-    [{nativeEvent: {contentOffset: {y: scrollY}}}],
-    {useNativeDriver: false},
-  );
-
-  const textTranslate = scrollY.interpolate({
-    inputRange: [0, 150],
-    outputRange: [0, -150],
-    extrapolate: 'clamp',
-  });
-
   const handleModuleClick = _module => {
     onModuleClick(_module.name);
     navigateToDefaultMenu(_module);
@@ -228,25 +215,36 @@ const DrawerContent = ({
     <SafeAreaView style={styles.container}>
       {externalMenuIsVisible && (
         <View style={styles.iconsContainer}>
-          <Animated.ScrollView onScroll={handleScroll} scrollEventThrottle={16}>
+          <ScrollView>
             {drawerModules.map(_module => (
-              <View key={_module.name} style={styles.menuItemContainer}>
-                <MenuIconButton
-                  key={_module.title}
-                  icon={_module.icon}
-                  subtitle={showSubtitles && I18n.t(_module.subtitle)}
-                  disabled={_module.disabled}
-                  color={
-                    _module === activeModule
-                      ? Colors.primaryColor.background_light
-                      : null
-                  }
-                  onPress={() => handleModuleClick(_module)}
-                  compatibility={_module.compatibilityAOS}
-                />
+              <View style={styles.globalContainer}>
+                <View key={_module.name} style={styles.menuItemContainer}>
+                  <MenuIconButton
+                    key={_module.title}
+                    icon={_module.icon}
+                    subtitle={showSubtitles && I18n.t(_module.subtitle)}
+                    disabled={_module.disabled}
+                    color={
+                      _module === activeModule
+                        ? Colors.primaryColor.background_light
+                        : null
+                    }
+                    onPress={() => handleModuleClick(_module)}
+                    compatibility={_module.compatibilityAOS}
+                  />
+                </View>
+                <View>
+                  {!innerMenuIsVisible && (
+                    <MenuTitle
+                      key={_module.name}
+                      module={_module}
+                      onPress={() => handleModuleClick(_module)}
+                    />
+                  )}
+                </View>
               </View>
             ))}
-          </Animated.ScrollView>
+          </ScrollView>
           <View style={styles.otherIconsContainer}>
             <AuthMenuIconButton
               isActive={authModule.name === activeModule.name}
@@ -257,20 +255,6 @@ const DrawerContent = ({
         </View>
       )}
       <View style={styles.menusContainer}>
-        <Animated.View
-          style={[
-            {
-              transform: [{translateY: textTranslate}],
-            },
-          ]}>
-          {drawerModules.map(_module => (
-            <MenuTitle
-              key={_module.name}
-              module={_module}
-              onPress={() => handleModuleClick(_module)}
-            />
-          ))}
-        </Animated.View>
         <Animated.View
           style={[
             styles.secondaryMenusContainer,
@@ -316,6 +300,9 @@ const getStyles = Colors =>
       backgroundColor: Colors.screenBackgroundColor,
       overflow: 'hidden',
       zIndex: 2,
+    },
+    globalContainer: {
+      flexDirection: 'row',
     },
     menusContainer: {
       flex: 1,
