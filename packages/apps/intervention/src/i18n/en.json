@@ -1,6 +1,7 @@
 {
   "Intervention_Intervention": "Intervention",
   "Intervention_Interventions": "Interventions",
+  "Intervention_ActiveIntervention": "Active intervention",
   "Intervention_DayInterventions": "Of the day",
   "Intervention_PlannedInterventions": "Planned",
   "Intervention_InterventionsHistory": "History",
@@ -61,6 +62,7 @@
   "Intervention_AdvancedMonitoringAnswerPreviousIntervention": "Previous intervention",
   "Intervention_AdvancedMonitoringAnswerNextIntervention": "Next intervention",
   "Intervention_DesiredUnit": "Desired unit : {{unit}}",
+  "Intervention_NoActiveIntervention": "No active intervention",
   "Intervention_SliceAction_FetchIntervention": "fetch intervention",
   "Intervention_SliceAction_SearchEquipment": "search equipments",
   "Intervention_SliceAction_SearchClientAndProspect": "search clients and prospects",
@@ -87,5 +89,6 @@
   "Intervention_SliceAction_FetchNumberClientEquipment": "fetch the number of client equipment",
   "Intervention_SliceAction_FetchNumberInterventionEquipment": "fetch the number of intervention equipment",
   "Intervention_SliceAction_FetchQuestionById": "fetch question by id",
-  "Intervention_SliceAction_UpdateQuestion": "update question"
+  "Intervention_SliceAction_UpdateQuestion": "update question",
+  "Intervention_SliceAction_FetchActiveIntervention": "fetch active intervention"
 }
