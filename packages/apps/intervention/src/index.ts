@@ -34,7 +34,7 @@ export const InterventionModule: Module = {
   name: 'app-intervention',
   title: 'Intervention_Intervention',
   subtitle: 'Intervention_Intervention',
-  icon: 'car-front-fill',
+  icon: 'tools',
   compatibilityAOS: {
     moduleName: 'axelor-intervention',
     // downToVersion: '8.1.0',
