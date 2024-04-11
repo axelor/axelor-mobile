@@ -24,9 +24,24 @@ import {getGlobalStyles} from '../../tools';
 
 describe('DropdownCardSwitch', () => {
   const dropdownItems = [
-    {key: 1, title: 'Item 1', childrenComp: <Text>Content 1</Text>},
-    {key: 2, title: 'Item 2', childrenComp: <Text>Content 2</Text>},
-    {key: 3, title: 'Item 3', childrenComp: <Text>Content 3</Text>},
+    {
+      key: 1,
+      title: 'Item 1',
+      childrenComp: <Text>Content 1</Text>,
+      isDefaultVisible: true,
+    },
+    {
+      key: 2,
+      title: 'Item 2',
+      childrenComp: <Text>Content 2</Text>,
+      isDefaultVisible: false,
+    },
+    {
+      key: 3,
+      title: 'Item 3',
+      childrenComp: <Text>Content 3</Text>,
+      isDefaultVisible: false,
+    },
   ];
 
   it('should render without crashing', () => {
@@ -52,6 +67,9 @@ describe('DropdownCardSwitch', () => {
           .children()
           .containsMatchingElement(item.childrenComp),
       ).toBe(true);
+      expect(wrapper.find(DropdownCard).at(idx).prop('dropdownIsOpen')).toBe(
+        item.isDefaultVisible,
+      );
     });
   });
 
@@ -61,7 +79,8 @@ describe('DropdownCardSwitch', () => {
     );
 
     for (let i = 0; i < dropdownItems.length; i++) {
-      wrapper.find(DropdownCard).at(i).simulate('press');
+      !wrapper.find(DropdownCard).at(i).prop('dropdownIsOpen') &&
+        wrapper.find(DropdownCard).at(i).simulate('press');
 
       expect(wrapper.find(DropdownCard).at(i).prop('dropdownIsOpen')).toBe(
         true,
@@ -72,6 +91,23 @@ describe('DropdownCardSwitch', () => {
           expect(
             wrapper.find(DropdownCard).at(idx).prop('dropdownIsOpen'),
           ).toBe(false),
+      );
+    }
+  });
+
+  it('should be possible to open all cards if multiSelection is true', () => {
+    const wrapper = shallow(
+      <DropdownCardSwitch dropdownItems={dropdownItems} multiSelection />,
+    );
+
+    for (let i = 0; i < dropdownItems.length; i++) {
+      !wrapper.find(DropdownCard).at(i).prop('dropdownIsOpen') &&
+        wrapper.find(DropdownCard).at(i).simulate('press');
+    }
+
+    for (let i = 0; i < dropdownItems.length; i++) {
+      expect(wrapper.find(DropdownCard).at(i).prop('dropdownIsOpen')).toBe(
+        true,
       );
     }
   });

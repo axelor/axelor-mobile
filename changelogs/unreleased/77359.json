@@ -1,0 +1,5 @@
+{
+  "title": "DropdownCardSwitch: add multi selection and default visible cards",
+  "type": "feat",
+  "packages": "ui"
+}

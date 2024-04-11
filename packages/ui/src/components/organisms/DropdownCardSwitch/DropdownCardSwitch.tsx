@@ -16,35 +16,68 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import React, {ReactNode, useState} from 'react';
+import React, {ReactNode, useCallback, useEffect, useState} from 'react';
 import {Dimensions, StyleSheet, View} from 'react-native';
 import {DropdownCard} from '../../molecules';
 
 interface DropdownCardSwitchProps {
   style?: any;
-  dropdownItems: DropdownItem[];
   styleTitle?: any;
+  dropdownItems: DropdownItem[];
+  multiSelection?: boolean;
 }
 interface DropdownItem {
   key: number;
   title: string;
   childrenComp: ReactNode;
+  isDefaultVisible?: boolean;
 }
 
 const DropdownCardSwitch = ({
   style,
-  dropdownItems,
   styleTitle,
+  dropdownItems,
+  multiSelection = false,
 }: DropdownCardSwitchProps) => {
-  const [openedCardKey, setOpenedCardKey] = useState<Number>();
+  const getDefaultVisibleItemsKeys = useCallback(() => {
+    const defaultVisibleItems = dropdownItems.filter(
+      item => item.isDefaultVisible,
+    );
 
-  const handlePress = key => {
-    if (openedCardKey === key) {
-      setOpenedCardKey(null);
-    } else {
-      setOpenedCardKey(key);
+    let defaultVisibleItemsKeys = defaultVisibleItems.map(item => item.key);
+    if (!multiSelection) {
+      defaultVisibleItemsKeys = defaultVisibleItemsKeys.slice(0, 1);
     }
-  };
+
+    return defaultVisibleItemsKeys;
+  }, [dropdownItems, multiSelection]);
+
+  const [openedCardKeys, setOpenedCardKeys] = useState<Number[]>(
+    getDefaultVisibleItemsKeys(),
+  );
+
+  useEffect(() => {
+    setOpenedCardKeys(getDefaultVisibleItemsKeys());
+  }, [getDefaultVisibleItemsKeys]);
+
+  const handlePress = useCallback(
+    key => {
+      setOpenedCardKeys(current => {
+        const _current = [...current];
+        const cardKeyIdx = _current.indexOf(key);
+
+        if (cardKeyIdx >= 0) {
+          _current.splice(cardKeyIdx, 1);
+          return _current;
+        } else if (multiSelection) {
+          return [...current, key];
+        } else {
+          return [key];
+        }
+      });
+    },
+    [multiSelection],
+  );
 
   return (
     <View style={[styles.container, style]}>
@@ -55,7 +88,7 @@ const DropdownCardSwitch = ({
             title={elt.title}
             styleText={styleTitle}
             onPress={() => handlePress(elt.key)}
-            dropdownIsOpen={elt.key === openedCardKey}>
+            dropdownIsOpen={!!openedCardKeys.find(key => key === elt.key)}>
             {elt.childrenComp}
           </DropdownCard>
         );
