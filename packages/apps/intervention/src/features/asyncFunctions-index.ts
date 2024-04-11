@@ -28,13 +28,14 @@ export {
 export {
   archiveEquipment,
   copyEquipment,
+  deleteEquipment,
   fetchNumberClientEquipment,
   fetchNumberInterventionEquipment,
   getEquipmentById,
+  saveEquipment,
   searchEquipment,
   searchInterventionEquipment,
   searchPlaceEquipment,
-  saveEquipment,
 } from './equipmentSlice';
 export {
   createInterventionNote,

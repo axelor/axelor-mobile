@@ -19,7 +19,11 @@
 import React, {useCallback, useEffect, useMemo} from 'react';
 import {FormView, useDispatch, useSelector} from '@axelor/aos-mobile-core';
 import {useThemeColor} from '@axelor/aos-mobile-ui';
-import {getEquipmentById, saveEquipment} from '../../features/equipmentSlice';
+import {
+  deleteEquipment,
+  getEquipmentById,
+  saveEquipment,
+} from '../../features/equipmentSlice';
 
 const EquipmentFormView = ({navigation, route}) => {
   const idEquipment = route.params.idEquipment;
@@ -51,6 +55,19 @@ const EquipmentFormView = ({navigation, route}) => {
       navigation.pop();
     },
     [isCreation, navigation],
+  );
+
+  const deleteEquipmentAPI = useCallback(
+    (_equipment, dispatch) => {
+      dispatch(
+        (deleteEquipment as any)({
+          equipmentId: _equipment?.id,
+        }),
+      );
+
+      navigation.pop();
+    },
+    [navigation],
   );
 
   const _defaultValue = useMemo(() => {
@@ -87,6 +104,16 @@ const EquipmentFormView = ({navigation, route}) => {
           key: 'reset-equipment',
           type: 'reset',
           hideIf: () => isCreation,
+        },
+        {
+          color: Colors.cautionColor,
+          key: 'delete-equipment',
+          type: 'custom',
+          titleKey: 'Base_Cancel',
+          customAction: ({dispatch, objectState}) => {
+            deleteEquipmentAPI(objectState, dispatch);
+          },
+          hideIf: () => !(isCreation && idEquipment != null),
         },
       ]}
     />

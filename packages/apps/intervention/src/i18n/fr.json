@@ -91,6 +91,7 @@
   "Intervention_SliceAction_FetchQuestionById": "récuperation d'une question par id",
   "Intervention_SliceAction_UpdateQuestion": "mise à jour d'une question",
   "Intervention_SliceAction_FetchActiveIntervention": "récupération de l'intervention active",
-  "Intervention_SliceAction_ArchiveEquipment": "archivage d'un équipement",
-  "Intervention_SliceAction_CopyEquipment": "copie d'un équipement"
+  "Intervention_SliceAction_ArchiveEquipment": "archivage de l'équipement",
+  "Intervention_SliceAction_CopyEquipment": "copie de l'équipement",
+  "Intervention_SliceAction_DeleteEquipment": "suppression de l'équipment"
 }

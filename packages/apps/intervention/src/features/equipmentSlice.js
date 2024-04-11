@@ -24,11 +24,12 @@ import {
 import {
   archiveEquipment as _archiveEquipment,
   copyEquipment as _copyEquipment,
+  deleteEquipment as _deleteEquipment,
   getEquipmentById as _getEquipmentById,
+  saveEquipment as _saveEquipment,
   searchEquipment as _searchEquipment,
   searchInterventionEquipment as _searchInterventionEquipment,
   searchPlaceEquipment as _searchPlaceEquipment,
-  saveEquipment as _saveEquipment,
 } from '../api/equipment-api';
 
 export const searchEquipment = createAsyncThunk(
@@ -154,6 +155,19 @@ export const copyEquipment = createAsyncThunk(
       fetchFunction: _copyEquipment,
       data,
       action: 'Intervention_SliceAction_CopyEquipment',
+      getState,
+      responseOptions: {isArrayResponse: false},
+    });
+  },
+);
+
+export const deleteEquipment = createAsyncThunk(
+  'intervention_equipment/deleteEquipment',
+  async function (data, {getState}) {
+    return handlerApiCall({
+      fetchFunction: _deleteEquipment,
+      data,
+      action: 'Intervention_SliceAction_DeleteEquipment',
       getState,
       responseOptions: {isArrayResponse: false},
     });

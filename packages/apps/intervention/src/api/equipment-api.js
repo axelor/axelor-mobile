@@ -198,3 +198,9 @@ export async function copyEquipment({equipmentId}) {
       return null;
     });
 }
+
+export async function deleteEquipment({equipmentId}) {
+  return axiosApiProvider.delete({
+    url: `/ws/rest/com.axelor.apps.intervention.db.Equipment/${equipmentId}`,
+  });
+}

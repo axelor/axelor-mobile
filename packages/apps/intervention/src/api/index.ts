@@ -21,11 +21,12 @@ export {searchContract as searchContractApi} from './contract-api';
 export {
   archiveEquipment as archiveEquipmentApi,
   copyEquipment as copyEquipmentApi,
+  deleteEquipment as deleteEquipmentApi,
   getEquipmentById as getEquipmentByIdApi,
+  saveEquipment as saveEquipmentApi,
   searchEquipment as searchEquipmentApi,
   searchInterventionEquipment as searchInterventionEquipmentApi,
   searchPlaceEquipment as searchPlaceEquipmentApi,
-  saveEquipment as saveEquipmentApi,
 } from './equipment-api';
 export {searchEquipmentFamily as searchEquipmentFamilyApi} from './equipment-family-api';
 export {searchEquipmentLine as searchEquipmentLineApi} from './equipment-line-api';
