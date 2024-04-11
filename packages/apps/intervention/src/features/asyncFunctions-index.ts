@@ -26,13 +26,16 @@ export {
   searchEquipmentPicture,
 } from './equipmentPictureSlice';
 export {
+  archiveEquipment,
+  copyEquipment,
+  deleteEquipment,
   fetchNumberClientEquipment,
   fetchNumberInterventionEquipment,
   getEquipmentById,
+  saveEquipment,
   searchEquipment,
   searchInterventionEquipment,
   searchPlaceEquipment,
-  updateEquipment,
 } from './equipmentSlice';
 export {
   createInterventionNote,
