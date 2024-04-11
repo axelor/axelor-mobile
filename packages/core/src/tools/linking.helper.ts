@@ -114,3 +114,22 @@ export const createAndroidNavigaitonURLParams = (
     {param: 'mode', value: transportType},
   ];
 };
+
+export const createGoogleMapsDirectionsURL = (
+  pois: Array<{address?: string; latitude?: number; longitude?: number}>,
+) => {
+  const baseURL = 'https://www.google.com/maps/dir/';
+  const validDirections = pois
+    .filter(
+      poi =>
+        poi.address != null || (poi.latitude != null && poi.longitude != null),
+    )
+    .map(poi => {
+      return poi.address
+        ? encodeURI(poi.address)
+        : `${poi.latitude},${poi.longitude}`;
+    })
+    .join('/');
+
+  return `${baseURL}${validDirections}`;
+};
