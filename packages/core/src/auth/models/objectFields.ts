@@ -47,6 +47,7 @@ export const auth_modelAPI: ObjectFields = {
     employee: schemaContructor.subObject(),
     language: schemaContructor.string(),
     todayDateT: schemaContructor.string(),
+    code: schemaContructor.string(),
   }),
   auth_localization: schemaContructor.object({
     code: schemaContructor.string(),
