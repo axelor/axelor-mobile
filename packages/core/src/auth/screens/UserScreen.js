@@ -33,6 +33,7 @@ const UserScreen = ({children}) => {
   const {userId} = useSelector(state => state.auth);
   const {base: baseConfig} = useSelector(state => state.appConfig);
   const {loadingUser, isUser} = useSelector(state => state.user);
+  const {mobileSettings} = useSelector(state => state.appConfig);
 
   const {setFilterConfig, setVirtualKeyboardConfig, setNbDecimalDigitForQty} =
     useConfig();
@@ -69,7 +70,10 @@ const UserScreen = ({children}) => {
         refresh={{loading: false, fetcher: fetchUser}}
         style={styles.scroll}>
         <UserCard children={children} style={styles.marginCard} />
-        <ShortcutsCard style={styles.marginCard} />
+        <ShortcutsCard
+          style={styles.marginCard}
+          horizontal={mobileSettings?.isOneLineShortcut}
+        />
         <DashboardsCard />
       </ScrollView>
       <PopupApplicationInformation
