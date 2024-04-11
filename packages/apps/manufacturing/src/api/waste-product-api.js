@@ -16,27 +16,34 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import {axiosApiProvider, createStandardSearch} from '@axelor/aos-mobile-core';
+import {
+  axiosApiProvider,
+  createStandardSearch,
+  getSearchCriterias,
+} from '@axelor/aos-mobile-core';
 import {fetchManufacturingOrder} from './manufacturing-order-api';
 
-const createWasteProductCriteria = wasteProdProductList => {
+const createWasteProductCriteria = (searchValue, wasteProdProductList) => {
+  const criteria = [
+    getSearchCriterias('manufacturing_prodProduct', searchValue),
+  ];
+
   if (Array.isArray(wasteProdProductList) && wasteProdProductList.length > 0) {
-    return [
-      {
-        operator: 'or',
-        criteria: wasteProdProductList.map(prodProduct => ({
-          fieldName: 'id',
-          operator: '=',
-          value: prodProduct?.id,
-        })),
-      },
-    ];
+    criteria.push({
+      operator: 'or',
+      criteria: wasteProdProductList.map(prodProduct => ({
+        fieldName: 'id',
+        operator: '=',
+        value: prodProduct?.id,
+      })),
+    });
   }
 
-  return [];
+  return criteria;
 };
 
 export async function fetchManufacturingOrderWasteProducts({
+  searchValue = null,
   manufOrderId,
   page,
 }) {
@@ -53,7 +60,10 @@ export async function fetchManufacturingOrderWasteProducts({
       ) {
         return createStandardSearch({
           model: 'com.axelor.apps.production.db.ProdProduct',
-          criteria: createWasteProductCriteria(manufOrder.wasteProdProductList),
+          criteria: createWasteProductCriteria(
+            searchValue,
+            manufOrder.wasteProdProductList,
+          ),
           fieldKey: 'manufacturing_prodProduct',
           page,
         });

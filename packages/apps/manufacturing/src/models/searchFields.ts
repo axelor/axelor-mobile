@@ -23,4 +23,5 @@ export const manufacturing_searchFields: SearchFields = {
   manufacturing_manufacturingOrder: ['manufOrderSeq'],
   manufacturing_operationOrder: ['manufOrder.manufOrderSeq'],
   manufacturing_workCenter: ['name'],
+  manufacturing_prodProduct: ['product.fullName'],
 };
