@@ -46,6 +46,7 @@ interface SearchListViewProps {
   expandableFilter?: boolean;
   headerChildren?: any;
   headerTopChildren?: any;
+  topFixedItems?: any;
   renderListItem: (item: any) => any;
   actionList?: ActionType[];
   verticalActions?: boolean;
@@ -68,6 +69,7 @@ const SearchListView = ({
   expandableFilter,
   headerChildren,
   headerTopChildren,
+  topFixedItems,
   renderListItem,
   actionList,
   verticalActions,
@@ -123,6 +125,7 @@ const SearchListView = ({
         topChildren={headerTopChildren}
         fixedItems={
           <>
+            {topFixedItems}
             <SearchBar
               objectList={list}
               onChangeValue={onChangeSearchValue}

@@ -16,19 +16,21 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import React, {useMemo, useState, useCallback, useEffect} from 'react';
-import {StyleSheet, View} from 'react-native';
+import React, {useMemo, useState, useEffect} from 'react';
+import {StyleSheet} from 'react-native';
 import {
-  checkNullString,
-  HeaderContainer,
   MultiValuePicker,
   Screen,
-  ScrollList,
   ToggleSwitch,
   useThemeColor,
 } from '@axelor/aos-mobile-ui';
-import {useDispatch, useSelector, useTranslator} from '@axelor/aos-mobile-core';
-import {OpportunityCard, OpportunitySearchBar} from '../../components';
+import {
+  SearchListView,
+  useDispatch,
+  useSelector,
+  useTranslator,
+} from '@axelor/aos-mobile-core';
+import {OpportunityCard} from '../../components';
 import {
   fetchOpportunities,
   fetchOpportunityStatus,
@@ -51,11 +53,6 @@ const OpportunityListScreen = ({navigation}) => {
 
   const [assigned, setAssigned] = useState(false);
   const [selectedStatus, setSelectedStatus] = useState([]);
-  const [filter, setFilter] = useState(null);
-
-  const handleDataSearch = useCallback(searchValue => {
-    setFilter(searchValue);
-  }, []);
 
   const opportunityStatusListItems = useMemo(() => {
     return opportunityStatusList
@@ -69,84 +66,48 @@ const OpportunityListScreen = ({navigation}) => {
       : [];
   }, [opportunityStatusList, Colors]);
 
-  const fetchOpportunityAPI = useCallback(
-    page => {
-      dispatch(fetchOpportunities({page: page}));
-    },
-    [dispatch],
-  );
-
-  const filterOnUserAssigned = useCallback(
-    list => {
-      if (!Array.isArray(list)) {
-        return [];
-      } else {
-        if (assigned) {
-          return list?.filter(item => item?.user?.id === userId);
-        } else {
-          return list;
-        }
-      }
-    },
-    [assigned, userId],
-  );
-
-  const filterOnStatus = useCallback(
-    list => {
-      if (!Array.isArray(list)) {
-        return [];
-      } else {
-        if (selectedStatus.length > 0) {
-          return list?.filter(item =>
-            selectedStatus.find(
-              status => item?.opportunityStatus?.id === status.key,
-            ),
-          );
-        } else {
-          return list;
-        }
-      }
-    },
-    [selectedStatus],
-  );
-
-  const filteredList = useMemo(
-    () => filterOnUserAssigned(filterOnStatus(opportunityList)),
-    [filterOnUserAssigned, filterOnStatus, opportunityList],
-  );
-
   useEffect(() => {
     dispatch(fetchOpportunityStatus());
   }, [dispatch]);
 
+  const sliceFunctionData = useMemo(
+    () => ({
+      userId: userId,
+      assigned: assigned,
+      statusList: selectedStatus,
+    }),
+    [assigned, selectedStatus, userId],
+  );
+
   return (
     <Screen removeSpaceOnTop={true}>
-      <HeaderContainer
+      <SearchListView
         expandableFilter={false}
-        fixedItems={
-          <View style={styles.headerContainer}>
-            <ToggleSwitch
-              leftTitle={I18n.t('Crm_All')}
-              rightTitle={I18n.t('Crm_AssignedToMe')}
-              onSwitch={() => setAssigned(!assigned)}
-            />
-            <OpportunitySearchBar
-              showDetailsPopup={false}
-              oneFilter={true}
-              onFetchDataAction={handleDataSearch}
-            />
-            <MultiValuePicker
-              listItems={opportunityStatusListItems}
-              title={I18n.t('Base_Status')}
-              onValueChange={statusList => setSelectedStatus(statusList)}
-            />
-          </View>
+        list={opportunityList}
+        loading={loadingList}
+        moreLoading={moreLoading}
+        isListEnd={isListEnd}
+        sliceFunction={fetchOpportunities}
+        sliceFunctionData={sliceFunctionData}
+        onChangeSearchValue={() => {}}
+        searchPlaceholder={I18n.t('Crm_Opportunity')}
+        topFixedItems={
+          <ToggleSwitch
+            style={styles.headerItem}
+            leftTitle={I18n.t('Crm_All')}
+            rightTitle={I18n.t('Crm_AssignedToMe')}
+            onSwitch={() => setAssigned(!assigned)}
+          />
         }
-      />
-      <ScrollList
-        loadingList={loadingList}
-        data={filteredList}
-        renderItem={({item}) => (
+        fixedItems={
+          <MultiValuePicker
+            style={styles.headerItem}
+            listItems={opportunityStatusListItems}
+            title={I18n.t('Base_Status')}
+            onValueChange={statusList => setSelectedStatus(statusList)}
+          />
+        }
+        renderListItem={({item}) => (
           <OpportunityCard
             amount={item.amount}
             expectedCloseDate={item.expectedCloseDate}
@@ -164,11 +125,6 @@ const OpportunityListScreen = ({navigation}) => {
             style={styles.item}
           />
         )}
-        fetchData={fetchOpportunityAPI}
-        moreLoading={moreLoading}
-        isListEnd={isListEnd}
-        filter={!checkNullString(filter)}
-        translator={I18n.t}
       />
     </Screen>
   );
@@ -179,8 +135,8 @@ const styles = StyleSheet.create({
     marginHorizontal: 12,
     marginVertical: 4,
   },
-  headerContainer: {
-    alignItems: 'center',
+  headerItem: {
+    alignSelf: 'center',
   },
 });
 

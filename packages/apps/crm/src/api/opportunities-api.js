@@ -23,14 +23,51 @@ import {
   getSearchCriterias,
 } from '@axelor/aos-mobile-core';
 
-const createOpportunityCriteria = searchValue => {
-  return [getSearchCriterias('crm_opportunity', searchValue)];
+const createOpportunityCriteria = (
+  searchValue,
+  userId,
+  assigned,
+  statusList,
+) => {
+  const criteria = [getSearchCriterias('crm_opportunity', searchValue)];
+
+  if (userId != null && assigned) {
+    criteria.push({
+      fieldName: 'user.id',
+      operator: '=',
+      value: userId,
+    });
+  }
+
+  if (Array.isArray(statusList) && statusList.length > 0) {
+    criteria.push({
+      operator: 'or',
+      criteria: statusList.map(status => ({
+        fieldName: 'opportunityStatus.id',
+        operator: '=',
+        value: status.key,
+      })),
+    });
+  }
+
+  return criteria;
 };
 
-export async function searchOpportunities({searchValue, page = 0}) {
+export async function searchOpportunities({
+  searchValue,
+  page = 0,
+  userId,
+  assigned,
+  statusList,
+}) {
   return createStandardSearch({
     model: 'com.axelor.apps.crm.db.Opportunity',
-    criteria: createOpportunityCriteria(searchValue),
+    criteria: createOpportunityCriteria(
+      searchValue,
+      userId,
+      assigned,
+      statusList,
+    ),
     fieldKey: 'crm_opportunity',
     sortKey: 'crm_opportunity',
     page,
