@@ -89,24 +89,12 @@ const StockCorrectionListScreen = ({navigation}) => {
           <ChipSelect
             mode="switch"
             onChangeValue={chiplist => setSelectedStatus(chiplist)}
-            selectionItems={[
-              {
-                title: I18n.t('Stock_Status_Draft'),
-                color: StockCorrection.getStatusColor(
-                  StockCorrection.status.Draft,
-                  Colors,
-                ),
-                key: StockCorrection.status.Draft,
-              },
-              {
-                title: I18n.t('Stock_Status_Validated'),
-                color: StockCorrection.getStatusColor(
-                  StockCorrection.status.Validated,
-                  Colors,
-                ),
-                key: StockCorrection.status.Validated,
-              },
-            ]}
+            isRefresh
+            selectionItems={StockCorrection.getStatusList(
+              Colors,
+              I18n,
+              selectedStatus,
+            )}
           />
         }>
         <StockLocationSearchBar
