@@ -116,20 +116,6 @@ const stockCorrectionSlice = createSlice({
       state.loading = false;
       state.stockCorrection = action.payload;
     });
-    builder.addCase(createCorrection.pending, (state, action) => {
-      state.loadingList = true;
-    });
-    builder.addCase(createCorrection.fulfilled, (state, action) => {
-      state.loadingList = false;
-      state.stockCorrectionList = action.payload;
-    });
-    builder.addCase(updateCorrection.pending, (state, action) => {
-      state.loadingList = true;
-    });
-    builder.addCase(updateCorrection.fulfilled, (state, action) => {
-      state.loadingList = false;
-      state.stockCorrectionList = action.payload;
-    });
   },
 });
 
