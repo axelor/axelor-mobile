@@ -16,29 +16,26 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import React, {useCallback, useEffect, useMemo, useState} from 'react';
+import React, {useEffect, useMemo, useState} from 'react';
 import {StyleSheet, View} from 'react-native';
 import {
-  checkNullString,
   ChipSelect,
-  HeaderContainer,
   MultiValuePicker,
   Screen,
-  ScrollList,
   useThemeColor,
 } from '@axelor/aos-mobile-ui';
 import {
+  SearchListView,
   useDispatch,
   useSelector,
   useTranslator,
-  filterChip,
 } from '@axelor/aos-mobile-core';
 import {
   fetchMyTickets,
   fetchTicketStatus,
   fetchTicketType,
 } from '../features/ticketSlice';
-import {MyTicketSearchBar, TicketCard} from '../components';
+import {TicketCard} from '../components';
 import {Ticket} from '../types';
 
 const MyTicketListScreen = ({navigation}) => {
@@ -58,26 +55,16 @@ const MyTicketListScreen = ({navigation}) => {
 
   const [selectedType, setSelectedType] = useState([]);
   const [selectedStatus, setSelectedStatus] = useState([]);
-  const [priorityStatus, setPriorityStatus] = useState(
+  const [selectedPriority, setSelectedPriority] = useState(
     Ticket.getPriorityList(Colors, I18n).filter(e => e.isActive === true),
   );
-  const [filter, setFilter] = useState(null);
 
-  const handleDataSearch = useCallback(searchValue => {
-    setFilter(searchValue);
-  }, []);
+  const displayItemTicketSeq = item => item.ticketSeq;
 
   useEffect(() => {
     dispatch(fetchTicketType());
     dispatch(fetchTicketStatus());
   }, [dispatch]);
-
-  const fetchMyTicketsAPI = useCallback(
-    (page = 0) => {
-      dispatch(fetchMyTickets({userId: userId, page: page}));
-    },
-    [dispatch, userId],
-  );
 
   const ticketTypeListItems = useMemo(() => {
     return ticketTypeList
@@ -103,90 +90,49 @@ const MyTicketListScreen = ({navigation}) => {
       : [];
   }, [ticketStatusList, Colors]);
 
-  const filterOnType = useCallback(
-    list => {
-      if (!Array.isArray(list) || list.length === 0) {
-        return [];
-      } else {
-        if (selectedType.length > 0) {
-          return list?.filter(item =>
-            selectedType.find(status => item?.ticketType?.id === status.key),
-          );
-        } else {
-          return list;
-        }
-      }
-    },
-    [selectedType],
-  );
-
-  const filterOnStatus = useCallback(
-    list => {
-      if (!Array.isArray(list) || list.length === 0) {
-        return [];
-      } else {
-        if (selectedStatus.length > 0) {
-          return list?.filter(item =>
-            selectedStatus.find(
-              status => item?.ticketStatus?.id === status.key,
-            ),
-          );
-        } else {
-          return list;
-        }
-      }
-    },
-    [selectedStatus],
-  );
-
-  const filterOnPriority = useCallback(
-    list => {
-      return filterChip(list, priorityStatus, 'prioritySelect');
-    },
-    [priorityStatus],
-  );
-
-  const filteredList = useMemo(
-    () => filterOnStatus(filterOnType(filterOnPriority(ticketList))),
-    [ticketList, filterOnType, filterOnStatus, filterOnPriority],
+  const sliceFunctionData = useMemo(
+    () => ({
+      userId,
+      statusList: selectedStatus,
+      typeList: selectedType,
+      priorityList: selectedPriority,
+    }),
+    [selectedPriority, selectedStatus, selectedType, userId],
   );
 
   return (
     <Screen removeSpaceOnTop={true}>
-      <HeaderContainer
-        expandableFilter={true}
-        fixedItems={
-          <MyTicketSearchBar
-            showDetailsPopup={false}
-            oneFilter={true}
-            placeholderKey={I18n.t('Helpdesk_Ticket')}
-            onFetchDataAction={handleDataSearch}
-          />
-        }
+      <SearchListView
+        list={ticketList}
+        loading={loadingTicketList}
+        moreLoading={moreLoading}
+        isListEnd={isListEnd}
+        sliceFunction={fetchMyTickets}
+        sliceFunctionData={sliceFunctionData}
+        displaySearchValue={displayItemTicketSeq}
+        searchPlaceholder={I18n.t('Helpdesk_Ticket')}
         chipComponent={
           <ChipSelect
             mode="multi"
-            onChangeValue={chiplist => setPriorityStatus(chiplist)}
+            onChangeValue={chiplist => setSelectedPriority(chiplist)}
             selectionItems={Ticket.getPriorityList(Colors, I18n)}
           />
-        }>
-        <View style={styles.headerContainer}>
-          <MultiValuePicker
-            listItems={ticketStatusListItems}
-            title={I18n.t('Helpdesk_Status')}
-            onValueChange={statusList => setSelectedStatus(statusList)}
-          />
-          <MultiValuePicker
-            listItems={ticketTypeListItems}
-            title={I18n.t('Helpdesk_Type')}
-            onValueChange={typeList => setSelectedType(typeList)}
-          />
-        </View>
-      </HeaderContainer>
-      <ScrollList
-        loadingList={loadingTicketList}
-        data={filteredList}
-        renderItem={({item}) => (
+        }
+        headerChildren={
+          <View style={styles.headerContainer}>
+            <MultiValuePicker
+              listItems={ticketStatusListItems}
+              title={I18n.t('Helpdesk_Status')}
+              onValueChange={statusList => setSelectedStatus(statusList)}
+            />
+            <MultiValuePicker
+              listItems={ticketTypeListItems}
+              title={I18n.t('Helpdesk_Type')}
+              onValueChange={typeList => setSelectedType(typeList)}
+            />
+          </View>
+        }
+        renderListItem={({item}) => (
           <TicketCard
             style={styles.item}
             ticketSeq={item.ticketSeq}
@@ -207,11 +153,6 @@ const MyTicketListScreen = ({navigation}) => {
             }
           />
         )}
-        fetchData={fetchMyTicketsAPI}
-        moreLoading={moreLoading}
-        isListEnd={isListEnd}
-        filter={!checkNullString(filter)}
-        translator={I18n.t}
       />
     </Screen>
   );

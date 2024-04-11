@@ -18,8 +18,6 @@
 
 export {default as ContactPartnerSearchBar} from './ContactPartnerSearchBar/ContactPartnerSearchBar';
 export {default as CustomerSearchBar} from './CustomerSearchBar/CustomerSearchBar';
-export {default as MyTeamTicketSearchBar} from './MyTeamTicketSearchBar/MyTeamTicketSearchBar';
-export {default as MyTicketSearchBar} from './MyTicketSearchBar/MyTicketSearchBar';
 export {default as ProjectSearchBar} from './ProjectSearchBar/ProjectSearchBar';
 export {default as TicketDropdownCards} from './TicketDropdownCards/TicketDropdownCards';
 export {default as TicketEditButton} from './TicketEditButton/TicketEditButton';
