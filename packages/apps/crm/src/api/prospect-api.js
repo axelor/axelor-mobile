@@ -24,8 +24,8 @@ import {
   RouterProvider,
 } from '@axelor/aos-mobile-core';
 
-const createProspectCriteria = searchValue => {
-  return [
+const createProspectCriteria = (searchValue, userId, assigned, statusList) => {
+  const criteria = [
     {
       operator: 'and',
       criteria: [
@@ -43,12 +43,39 @@ const createProspectCriteria = searchValue => {
     },
     getSearchCriterias('crm_prospect', searchValue),
   ];
+
+  if (userId != null && assigned) {
+    criteria.push({
+      fieldName: 'user.id',
+      operator: '=',
+      value: userId,
+    });
+  }
+
+  if (Array.isArray(statusList) && statusList.length > 0) {
+    criteria.push({
+      operator: 'or',
+      criteria: statusList.map(status => ({
+        fieldName: 'partnerStatus.id',
+        operator: '=',
+        value: status.key,
+      })),
+    });
+  }
+
+  return criteria;
 };
 
-export async function searchProspect({searchValue, page = 0}) {
+export async function searchProspect({
+  searchValue,
+  page = 0,
+  userId,
+  assigned,
+  statusList,
+}) {
   return createStandardSearch({
     model: 'com.axelor.apps.base.db.Partner',
-    criteria: createProspectCriteria(searchValue),
+    criteria: createProspectCriteria(searchValue, userId, assigned, statusList),
     fieldKey: 'crm_prospect',
     sortKey: 'crm_prospect',
     page,

@@ -24,8 +24,8 @@ import {
   RouterProvider,
 } from '@axelor/aos-mobile-core';
 
-const createContactCriteria = searchValue => {
-  return [
+const createContactCriteria = (searchValue, userId, assigned) => {
+  const criteria = [
     {
       operator: 'and',
       criteria: [
@@ -53,6 +53,16 @@ const createContactCriteria = searchValue => {
     },
     getSearchCriterias('crm_contact', searchValue),
   ];
+
+  if (userId != null && assigned) {
+    criteria.push({
+      fieldName: 'user.id',
+      operator: '=',
+      value: userId,
+    });
+  }
+
+  return criteria;
 };
 
 export async function searchContactWithIds(idList) {
@@ -71,10 +81,10 @@ export async function searchContactWithIds(idList) {
   });
 }
 
-export async function searchContact({searchValue, page = 0}) {
+export async function searchContact({searchValue, page = 0, userId, assigned}) {
   return createStandardSearch({
     model: 'com.axelor.apps.base.db.Partner',
-    criteria: createContactCriteria(searchValue),
+    criteria: createContactCriteria(searchValue, userId, assigned),
     fieldKey: 'crm_contact',
     sortKey: 'crm_contact',
     page,
