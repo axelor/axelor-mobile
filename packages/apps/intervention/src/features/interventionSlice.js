@@ -22,6 +22,7 @@ import {
   handlerApiCall,
 } from '@axelor/aos-mobile-core';
 import {
+  fetchActiveIntervention as _fetchActiveIntervention,
   fetchIntervention as _fetchIntervention,
   fetchInterventionById as _fetchInterventionById,
   searchHistoryInterventionByEquipment as _searchHistoryInterventionByEquipment,
@@ -66,6 +67,19 @@ export const searchHistoryInterventionByEquipment = createAsyncThunk(
   },
 );
 
+export const fetchActiveIntervention = createAsyncThunk(
+  'intervention_intervention/fetchActiveIntervention',
+  async function (data, {getState}) {
+    return handlerApiCall({
+      fetchFunction: _fetchActiveIntervention,
+      data,
+      action: 'Intervention_SliceAction_FetchActiveIntervention',
+      getState,
+      responseOptions: {isArrayResponse: false},
+    });
+  },
+);
+
 const initialState = {
   loading: true,
   moreLoading: false,
@@ -79,6 +93,9 @@ const initialState = {
 
   loadingIntervention: true,
   intervention: {},
+
+  loadingActiveIntervention: false,
+  activeIntervention: {},
 };
 
 const interventionSlice = createSlice({
@@ -107,6 +124,16 @@ const interventionSlice = createSlice({
     builder.addCase(fetchInterventionById.fulfilled, (state, action) => {
       state.loadingIntervention = false;
       state.intervention = action.payload;
+    });
+    builder.addCase(fetchActiveIntervention.pending, state => {
+      state.loadingActiveIntervention = true;
+    });
+    builder.addCase(fetchActiveIntervention.fulfilled, (state, action) => {
+      state.loadingActiveIntervention = false;
+      state.activeIntervention = action.payload;
+    });
+    builder.addCase(fetchActiveIntervention.rejected, state => {
+      state.loadingActiveIntervention = false;
     });
   },
 });
