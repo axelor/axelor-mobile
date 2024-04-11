@@ -67,6 +67,7 @@ export const intervention_modelAPI: ObjectFields = {
       }),
     ),
     equipmentSet: schemaContructor.array().of(schemaContructor.subObject()),
+    updatedOn: schemaContructor.string(),
   }),
   intervention_equipment: schemaContructor.object({
     sequence: schemaContructor.string(),

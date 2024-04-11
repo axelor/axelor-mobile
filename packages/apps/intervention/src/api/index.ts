@@ -33,6 +33,7 @@ export {
   searchEquipmentPicture as searchEquipmentPictureApi,
 } from './equipment-picture-api';
 export {
+  fetchActiveIntervention as fetchActiveInterventionApi,
   fetchIntervention as fetchInterventionApi,
   fetchInterventionById as fetchInterventionByIdApi,
   searchHistoryInterventionByEquipment as searchHistoryInterventionByEquipmentApi,
