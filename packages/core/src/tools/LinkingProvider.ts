@@ -17,7 +17,12 @@
  */
 
 import {Linking} from 'react-native';
-import {createURLParams, mapURLBuilder, TransportType} from './linking.helper';
+import {
+  createGoogleMapsDirectionsURL,
+  createURLParams,
+  mapURLBuilder,
+  TransportType,
+} from './linking.helper';
 import {showToastMessage} from '../utils';
 
 class LinkingProvider {
@@ -121,6 +126,17 @@ class LinkingProvider {
     await this.openURL(URL, {
       title: 'Could not open the map app',
       message: `Error while opening ${address} in the map app`,
+    });
+  }
+
+  async openGoogleMapsDirections(
+    pois: Array<{address?: string; latitude?: number; longitude?: number}>,
+  ) {
+    const url = createGoogleMapsDirectionsURL(pois);
+
+    await this.openURL(url, {
+      title: 'Could not open Google Maps',
+      message: 'Error while opening directions in Google Maps',
     });
   }
 }
