@@ -16,22 +16,13 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import React, {useCallback, useEffect, useState} from 'react';
+import React, {useMemo, useState} from 'react';
 import {StyleSheet} from 'react-native';
+import {ChipSelect, Screen, useThemeColor} from '@axelor/aos-mobile-ui';
 import {
-  ChipSelect,
-  Screen,
-  ScrollList,
-  HeaderContainer,
-  useThemeColor,
-} from '@axelor/aos-mobile-ui';
-import {
-  filterList,
-  ScannerAutocompleteSearch,
-  useDispatch,
+  SearchListView,
   useSelector,
   useTranslator,
-  filterChip,
 } from '@axelor/aos-mobile-core';
 import {ProductSearchBar} from '@axelor/aos-mobile-stock';
 import ManufacturingOrder from '../../types/manufacturing-order';
@@ -45,7 +36,6 @@ const refScanKey = 'manufOrderSeq_manufacturing-order-list';
 const ManufacturingOrderListScreen = ({navigation}) => {
   const Colors = useThemeColor();
   const I18n = useTranslator();
-  const dispatch = useDispatch();
 
   const {user} = useSelector(state => state.user);
   const {loading, moreLoading, isListEnd, manufOrderList} = useSelector(
@@ -54,25 +44,8 @@ const ManufacturingOrderListScreen = ({navigation}) => {
   const {production: productionConfig} = useSelector(state => state.appConfig);
 
   const [product, setProduct] = useState(null);
-  const [filteredList, setFilteredList] = useState(manufOrderList);
-  const [filter, setFilter] = useState(null);
   const [selectedStatus, setSelectedStatus] = useState([]);
   const [navigate, setNavigate] = useState(false);
-
-  const filterOnStatus = useCallback(
-    list => {
-      return filterChip(list, selectedStatus, 'statusSelect');
-    },
-    [selectedStatus],
-  );
-
-  useEffect(() => {
-    setFilteredList(
-      filterOnStatus(
-        filterList(manufOrderList, 'product', 'id', product?.id ?? ''),
-      ),
-    );
-  }, [filterOnStatus, manufOrderList, product?.id]);
 
   const navigateToManufOrder = item => {
     if (item != null) {
@@ -83,43 +56,18 @@ const ManufacturingOrderListScreen = ({navigation}) => {
     }
   };
 
-  const fetchManufOrderAPI = useCallback(
-    page => {
-      dispatch(
-        fetchManufacturingOrders({
-          companyId: user?.activeCompany?.id,
-          manageWorkshop: productionConfig?.manageWorkshop,
-          workshopId: user?.workshopStockLocation?.id,
-          searchValue: filter,
-          page: page,
-        }),
-      );
-    },
+  const sliceFunctionData = useMemo(
+    () => ({
+      companyId: user?.activeCompany?.id,
+      manageWorkshop: productionConfig?.manageWorkshop,
+      workshopId: user?.workshopStockLocation?.id,
+      statusList: selectedStatus,
+      productId: product?.id,
+    }),
     [
-      dispatch,
-      filter,
+      product?.id,
       productionConfig?.manageWorkshop,
-      user?.activeCompany?.id,
-      user?.workshopStockLocation?.id,
-    ],
-  );
-
-  const handleRefChange = useCallback(
-    ({page = 0, searchValue}) => {
-      setFilter(searchValue);
-      dispatch(
-        fetchManufacturingOrders({
-          companyId: user?.activeCompany?.id,
-          manageWorkshop: productionConfig?.manageWorkshop,
-          workshopId: user?.workshopStockLocation?.id,
-          searchValue: searchValue,
-          page: page,
-        }),
-      );
-    },
-    [
-      dispatch,
-      productionConfig?.manageWorkshop,
+      selectedStatus,
       user?.activeCompany?.id,
       user?.workshopStockLocation?.id,
     ],
@@ -127,19 +75,18 @@ const ManufacturingOrderListScreen = ({navigation}) => {
 
   return (
     <Screen removeSpaceOnTop={true}>
-      <HeaderContainer
-        fixedItems={
-          <ScannerAutocompleteSearch
-            objectList={manufOrderList}
-            onChangeValue={item => navigateToManufOrder(item)}
-            fetchData={handleRefChange}
-            displayValue={displayManufOrderSeq}
-            placeholder={I18n.t('Manufacturing_Ref')}
-            scanKeySearch={refScanKey}
-            oneFilter={true}
-            navigate={navigate}
-          />
-        }
+      <SearchListView
+        list={manufOrderList}
+        loading={loading}
+        moreLoading={moreLoading}
+        isListEnd={isListEnd}
+        sliceFunction={fetchManufacturingOrders}
+        sliceFunctionData={sliceFunctionData}
+        onChangeSearchValue={navigateToManufOrder}
+        displaySearchValue={displayManufOrderSeq}
+        searchPlaceholder={I18n.t('Manufacturing_Ref')}
+        searchNavigate={navigate}
+        scanKeySearch={refScanKey}
         chipComponent={
           <ChipSelect
             mode="multi"
@@ -180,17 +127,15 @@ const ManufacturingOrderListScreen = ({navigation}) => {
             ]}
             width={100}
           />
-        }>
-        <ProductSearchBar
-          scanKey={productScanKey}
-          onChange={setProduct}
-          defaultValue={product}
-        />
-      </HeaderContainer>
-      <ScrollList
-        loadingList={loading}
-        data={filteredList}
-        renderItem={({item}) => (
+        }
+        headerChildren={
+          <ProductSearchBar
+            scanKey={productScanKey}
+            onChange={setProduct}
+            defaultValue={product}
+          />
+        }
+        renderListItem={({item}) => (
           <ManufacturingOrderCard
             reference={item.manufOrderSeq}
             status={item.statusSelect}
@@ -207,10 +152,6 @@ const ManufacturingOrderListScreen = ({navigation}) => {
             onPress={() => navigateToManufOrder(item)}
           />
         )}
-        fetchData={fetchManufOrderAPI}
-        moreLoading={moreLoading}
-        isListEnd={isListEnd}
-        translator={I18n.t}
       />
     </Screen>
   );

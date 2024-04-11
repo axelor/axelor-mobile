@@ -26,7 +26,13 @@ import {
 } from '@axelor/aos-mobile-core';
 import OperationOrder from '../types/operation-order';
 
-const createOperationOrderCriteria = (manufOrderId, searchValue) => {
+const createOperationOrderCriteria = (
+  searchValue,
+  manufOrderId,
+  statusList,
+  workCenterId,
+  machineId,
+) => {
   let criterias = [
     {
       operator: 'OR',
@@ -61,6 +67,33 @@ const createOperationOrderCriteria = (manufOrderId, searchValue) => {
       fieldName: 'manufOrder.id',
       operator: '=',
       value: manufOrderId,
+    });
+  }
+
+  if (Array.isArray(statusList) && statusList.length > 0) {
+    criterias.push({
+      operator: 'or',
+      criteria: statusList.map(status => ({
+        fieldName: 'statusSelect',
+        operator: '=',
+        value: status.key,
+      })),
+    });
+  }
+
+  if (workCenterId != null) {
+    criterias.push({
+      fieldName: 'workCenter.id',
+      operator: '=',
+      value: workCenterId,
+    });
+  }
+
+  if (machineId != null) {
+    criterias.push({
+      fieldName: 'machine.id',
+      operator: '=',
+      value: machineId,
     });
   }
 
@@ -111,13 +144,22 @@ const createOperationOrderPlanningCriteria = date => {
 };
 
 export async function searchOperationOrderFilter({
-  manufOrderId = null,
   searchValue = null,
+  manufOrderId = null,
+  statusList,
+  workCenterId,
+  machineId,
   page = 0,
 }) {
   return createStandardSearch({
     model: 'com.axelor.apps.production.db.OperationOrder',
-    criteria: createOperationOrderCriteria(manufOrderId, searchValue),
+    criteria: createOperationOrderCriteria(
+      searchValue,
+      manufOrderId,
+      statusList,
+      workCenterId,
+      machineId,
+    ),
     fieldKey: 'manufacturing_operationOrder',
     sortKey: 'manufacturing_operationOrder',
     page,
