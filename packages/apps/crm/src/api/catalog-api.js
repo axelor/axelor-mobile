@@ -22,14 +22,27 @@ import {
   getSearchCriterias,
 } from '@axelor/aos-mobile-core';
 
-const createCatalogCriteria = searchValue => {
-  return [getSearchCriterias('crm_catalog', searchValue)];
+const createCatalogCriteria = (searchValue, statusList) => {
+  const criteria = [getSearchCriterias('crm_catalog', searchValue)];
+
+  if (Array.isArray(statusList) && statusList.length > 0) {
+    criteria.push({
+      operator: 'or',
+      criteria: statusList.map(status => ({
+        fieldName: 'catalogType.id',
+        operator: '=',
+        value: status.key,
+      })),
+    });
+  }
+
+  return criteria;
 };
 
-export async function searchCatalog({searchValue, page = 0}) {
+export async function searchCatalog({searchValue, statusList, page = 0}) {
   return createStandardSearch({
     model: 'com.axelor.apps.crm.db.Catalog',
-    criteria: createCatalogCriteria(searchValue),
+    criteria: createCatalogCriteria(searchValue, statusList),
     fieldKey: 'crm_catalog',
     sortKey: 'crm_catalog',
     page,
