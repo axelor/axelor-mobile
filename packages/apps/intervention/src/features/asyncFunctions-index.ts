@@ -43,6 +43,7 @@ export {
   updateInterventionNote,
 } from './interventionNoteSlice';
 export {
+  fetchActiveIntervention,
   fetchIntervention,
   fetchInterventionById,
   searchHistoryInterventionByEquipment,
