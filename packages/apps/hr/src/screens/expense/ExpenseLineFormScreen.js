@@ -49,6 +49,7 @@ const ExpenseLineFormScreen = ({route, navigation}) => {
   const _dispatch = useDispatch();
 
   const {user} = useSelector(state => state.user);
+  const {mobileSettings} = useSelector(state => state.appConfig);
 
   useEffect(() => {
     _dispatch(fetchCompanies());
@@ -162,6 +163,10 @@ const ExpenseLineFormScreen = ({route, navigation}) => {
   const defaultValue = useMemo(() => {
     const _defaultDate = new Date().toISOString().split('T')[0];
 
+    const defaultCurrency = mobileSettings?.isMultiCurrencyEnabled
+      ? user.activeCompany?.currency
+      : undefined;
+
     const _default = {
       manageMode: modeExpense || ExpenseLine.modes.general,
       isFromExpense: idExpense != null && expenseLine?.id != null,
@@ -171,7 +176,7 @@ const ExpenseLineFormScreen = ({route, navigation}) => {
       totalAmount: 0,
       totalTax: 0,
       distance: 0,
-      currency: user.activeCompany.currency,
+      currency: defaultCurrency,
     };
 
     if (justificationMetaFile != null) {
@@ -239,8 +244,9 @@ const ExpenseLineFormScreen = ({route, navigation}) => {
     expenseLine,
     idExpense,
     justificationMetaFile,
+    mobileSettings?.isMultiCurrencyEnabled,
     modeExpense,
-    user.activeCompany.currency,
+    user.activeCompany?.currency,
     user.activeCompany?.name,
   ]);
 
