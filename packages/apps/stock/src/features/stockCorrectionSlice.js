@@ -56,7 +56,7 @@ export const fetchStockCorrection = createAsyncThunk(
 
 export const createCorrection = createAsyncThunk(
   'stockCorrection/createStockCorrection',
-  async function (data, {getState}) {
+  async function (data, {getState, dispatch}) {
     return handlerApiCall({
       fetchFunction: createStockCorrection,
       data,
@@ -64,20 +64,14 @@ export const createCorrection = createAsyncThunk(
       getState,
       responseOptions: {showToast: true},
     }).then(() => {
-      return handlerApiCall({
-        fetchFunction: searchStockCorrection,
-        data,
-        action: 'Stock_SliceAction_SearchStockCorrections',
-        getState,
-        responseOptions: {isArrayResponse: true},
-      });
+      dispatch(searchStockCorrections({}));
     });
   },
 );
 
 export const updateCorrection = createAsyncThunk(
   'stockCorrection/updateStockCorrection',
-  async function (data, {getState}) {
+  async function (data, {getState, dispatch}) {
     return handlerApiCall({
       fetchFunction: updateStockCorrection,
       data,
@@ -85,13 +79,7 @@ export const updateCorrection = createAsyncThunk(
       getState,
       responseOptions: {showToast: true, isArrayResponse: false},
     }).then(() => {
-      return handlerApiCall({
-        fetchFunction: searchStockCorrection,
-        data,
-        action: 'Stock_SliceAction_SearchStockCorrections',
-        getState,
-        responseOptions: {isArrayResponse: true},
-      });
+      dispatch(searchStockCorrections({}));
     });
   },
 );
@@ -127,20 +115,6 @@ const stockCorrectionSlice = createSlice({
     builder.addCase(fetchStockCorrection.fulfilled, (state, action) => {
       state.loading = false;
       state.stockCorrection = action.payload;
-    });
-    builder.addCase(createCorrection.pending, (state, action) => {
-      state.loadingList = true;
-    });
-    builder.addCase(createCorrection.fulfilled, (state, action) => {
-      state.loadingList = false;
-      state.stockCorrectionList = action.payload;
-    });
-    builder.addCase(updateCorrection.pending, (state, action) => {
-      state.loadingList = true;
-    });
-    builder.addCase(updateCorrection.fulfilled, (state, action) => {
-      state.loadingList = false;
-      state.stockCorrectionList = action.payload;
     });
   },
 });

@@ -16,21 +16,12 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import React, {useCallback, useMemo, useState} from 'react';
+import React, {useMemo, useState} from 'react';
+import {ChipSelect, Screen, useThemeColor} from '@axelor/aos-mobile-ui';
 import {
-  AutoCompleteSearch,
-  ChipSelect,
-  HeaderContainer,
-  Screen,
-  ScrollList,
-  useThemeColor,
-} from '@axelor/aos-mobile-ui';
-import {
-  filterList,
-  useDispatch,
+  SearchListView,
   useSelector,
   useTranslator,
-  filterChip,
 } from '@axelor/aos-mobile-core';
 import {
   PartnerSearchBar,
@@ -46,7 +37,6 @@ const stockLocationScanKey = 'stock-location_supplier-arrival-list';
 const SupplierArrivalListScreen = ({navigation}) => {
   const Colors = useThemeColor();
   const I18n = useTranslator();
-  const dispatch = useDispatch();
 
   const {loadingList, moreLoading, isListEnd, supplierArrivalsList} =
     useSelector(state => state.supplierArrival);
@@ -54,31 +44,7 @@ const SupplierArrivalListScreen = ({navigation}) => {
   const [stockLocation, setStockLocation] = useState(null);
   const [partner, setPartner] = useState(null);
   const [selectedStatus, setSelectedStatus] = useState([]);
-  const [filter, setFilter] = useState(null);
   const [navigate, setNavigate] = useState(false);
-
-  const filterOnStatus = useCallback(
-    list => filterChip(list, selectedStatus, 'statusSelect'),
-    [selectedStatus],
-  );
-
-  const filteredList = useMemo(
-    () =>
-      filterOnStatus(
-        filterList(
-          filterList(
-            supplierArrivalsList,
-            'toStockLocation',
-            'id',
-            stockLocation?.id ?? '',
-          ),
-          'partner',
-          'id',
-          partner?.id ?? '',
-        ),
-      ),
-    [filterOnStatus, partner, stockLocation, supplierArrivalsList],
-  );
 
   const navigateToSupplierDetail = item => {
     if (item != null) {
@@ -89,45 +55,28 @@ const SupplierArrivalListScreen = ({navigation}) => {
     }
   };
 
-  const fetchSupplierArrivalsAPI = useCallback(
-    page => {
-      dispatch(
-        searchSupplierArrivals({
-          searchValue: filter,
-          page: page,
-        }),
-      );
-    },
-    [dispatch, filter],
-  );
-
-  const handleRefChange = useCallback(
-    ({page = 0, searchValue}) => {
-      setFilter(searchValue);
-      dispatch(
-        searchSupplierArrivals({
-          searchValue: searchValue,
-          page: page,
-        }),
-      );
-    },
-    [dispatch],
+  const sliceFunctionData = useMemo(
+    () => ({
+      toStockLocationId: stockLocation?.id,
+      partnerId: partner?.id,
+      statusList: selectedStatus,
+    }),
+    [partner?.id, selectedStatus, stockLocation?.id],
   );
 
   return (
     <Screen removeSpaceOnTop={true}>
-      <HeaderContainer
-        fixedItems={
-          <AutoCompleteSearch
-            placeholder={I18n.t('Stock_Ref')}
-            objectList={supplierArrivalsList}
-            displayValue={displayStockMoveSeq}
-            onChangeValue={item => navigateToSupplierDetail(item)}
-            oneFilter={true}
-            fetchData={handleRefChange}
-            navigate={navigate}
-          />
-        }
+      <SearchListView
+        list={supplierArrivalsList}
+        loading={loadingList}
+        moreLoading={moreLoading}
+        isListEnd={isListEnd}
+        sliceFunction={searchSupplierArrivals}
+        sliceFunctionData={sliceFunctionData}
+        onChangeSearchValue={navigateToSupplierDetail}
+        displaySearchValue={displayStockMoveSeq}
+        searchPlaceholder={I18n.t('Stock_Ref')}
+        searchNavigate={navigate}
         chipComponent={
           <ChipSelect
             mode="switch"
@@ -151,24 +100,24 @@ const SupplierArrivalListScreen = ({navigation}) => {
               },
             ]}
           />
-        }>
-        <StockLocationSearchBar
-          scanKey={stockLocationScanKey}
-          placeholderKey="Stock_StockLocation"
-          defaultValue={stockLocation}
-          onChange={setStockLocation}
-        />
-        <PartnerSearchBar
-          defaultValue={partner}
-          onChange={setPartner}
-          placeholderKey="Stock_Supplier"
-          isClient={false}
-        />
-      </HeaderContainer>
-      <ScrollList
-        loadingList={loadingList}
-        data={filteredList}
-        renderItem={({item}) => (
+        }
+        headerChildren={
+          <>
+            <StockLocationSearchBar
+              scanKey={stockLocationScanKey}
+              placeholderKey="Stock_StockLocation"
+              defaultValue={stockLocation}
+              onChange={setStockLocation}
+            />
+            <PartnerSearchBar
+              defaultValue={partner}
+              onChange={setPartner}
+              placeholderKey="Stock_Supplier"
+              isClient={false}
+            />
+          </>
+        }
+        renderListItem={({item}) => (
           <SupplierArrivalCard
             reference={item.stockMoveSeq}
             client={item.partner?.fullName}
@@ -182,10 +131,6 @@ const SupplierArrivalListScreen = ({navigation}) => {
             origin={item.origin}
           />
         )}
-        fetchData={fetchSupplierArrivalsAPI}
-        moreLoading={moreLoading}
-        isListEnd={isListEnd}
-        translator={I18n.t}
       />
     </Screen>
   );
