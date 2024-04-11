@@ -29,7 +29,6 @@ import {
   useConfig,
   useTheme,
 } from '@axelor/aos-mobile-ui';
-
 import {useTranslator} from '../../i18n';
 import {
   disable,
