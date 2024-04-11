@@ -19,26 +19,49 @@
 import React, {useCallback, useEffect, useMemo} from 'react';
 import {FormView, useDispatch, useSelector} from '@axelor/aos-mobile-core';
 import {useThemeColor} from '@axelor/aos-mobile-ui';
-import {getEquipmentById, updateEquipment} from '../../features/equipmentSlice';
+import {
+  deleteEquipment,
+  getEquipmentById,
+  saveEquipment,
+} from '../../features/equipmentSlice';
 
 const EquipmentFormView = ({navigation, route}) => {
   const idEquipment = route.params.idEquipment;
+  const isCreation = route.params.isCreation;
 
   const Colors = useThemeColor();
   const _dispatch = useDispatch();
 
   const {equipment} = useSelector((state: any) => state.intervention_equipment);
+  const {intervention} = useSelector(
+    (state: any) => state.intervention_intervention,
+  );
 
   useEffect(() => {
-    _dispatch((getEquipmentById as any)({equipmentId: idEquipment}));
+    idEquipment &&
+      _dispatch((getEquipmentById as any)({equipmentId: idEquipment}));
   }, [_dispatch, idEquipment]);
 
-  const updateEquipmentAPI = useCallback(
+  const saveEquipmentAPI = useCallback(
     (_equipment, dispatch) => {
       dispatch(
-        (updateEquipment as any)({
+        (saveEquipment as any)({
           equipment: _equipment,
           partnerId: _equipment?.partner?.id,
+          isCreation: isCreation,
+        }),
+      );
+
+      navigation.pop();
+    },
+    [isCreation, navigation],
+  );
+
+  const deleteEquipmentAPI = useCallback(
+    (_equipment, dispatch) => {
+      dispatch(
+        (deleteEquipment as any)({
+          equipmentId: _equipment?.id,
         }),
       );
 
@@ -48,8 +71,8 @@ const EquipmentFormView = ({navigation, route}) => {
   );
 
   const _defaultValue = useMemo(() => {
-    return {...equipment};
-  }, [equipment]);
+    return idEquipment ? equipment : {partner: intervention.deliveredPartner};
+  }, [equipment, idEquipment, intervention.deliveredPartner]);
 
   return (
     <FormView
@@ -57,18 +80,40 @@ const EquipmentFormView = ({navigation, route}) => {
       defaultValue={_defaultValue}
       actions={[
         {
+          key: 'create-equipment',
+          type: 'create',
+          needRequiredFields: true,
+          needValidation: true,
+          customAction: ({dispatch, objectState}) => {
+            saveEquipmentAPI(objectState, dispatch);
+          },
+          hideIf: () => !isCreation,
+        },
+        {
           key: 'update-equipment',
           type: 'update',
           needRequiredFields: true,
           needValidation: true,
           customAction: ({dispatch, objectState}) => {
-            updateEquipmentAPI(objectState, dispatch);
+            saveEquipmentAPI(objectState, dispatch);
           },
+          hideIf: () => isCreation,
         },
         {
           color: Colors.cautionColor,
           key: 'reset-equipment',
           type: 'reset',
+          hideIf: () => isCreation,
+        },
+        {
+          color: Colors.cautionColor,
+          key: 'delete-equipment',
+          type: 'custom',
+          titleKey: 'Base_Cancel',
+          customAction: ({dispatch, objectState}) => {
+            deleteEquipmentAPI(objectState, dispatch);
+          },
+          hideIf: () => !(isCreation && idEquipment != null),
         },
       ]}
     />
