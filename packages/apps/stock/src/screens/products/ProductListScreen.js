@@ -17,9 +17,15 @@
  */
 
 import React, {useEffect, useState, useCallback} from 'react';
-import {Screen, ScrollList, HeaderContainer} from '@axelor/aos-mobile-ui';
-import {useDispatch, useSelector, useTranslator} from '@axelor/aos-mobile-core';
-import {ProductCard, ProductSearchBar} from '../../components';
+import {Screen} from '@axelor/aos-mobile-ui';
+import {
+  displayItemName,
+  SearchListView,
+  useDispatch,
+  useSelector,
+  useTranslator,
+} from '@axelor/aos-mobile-core';
+import {ProductCard} from '../../components';
 import {searchProducts} from '../../features/productSlice';
 import {fetchProductsAvailability} from '../../features/productIndicatorsSlice';
 
@@ -34,19 +40,7 @@ const ProductListScreen = ({navigation}) => {
   const {loadingProduct, moreLoadingProduct, isListEndProduct, productList} =
     useSelector(state => state.product);
 
-  const [filter, setFilter] = useState(null);
   const [navigate, setNavigate] = useState(false);
-
-  const fetchProductsAPI = useCallback(
-    (page = 0) => {
-      dispatch(searchProducts({page: page}));
-    },
-    [dispatch],
-  );
-
-  const handleDataSearch = useCallback(searchValue => {
-    setFilter(searchValue);
-  }, []);
 
   const showProductDetails = useCallback(
     product => {
@@ -72,24 +66,19 @@ const ProductListScreen = ({navigation}) => {
 
   return (
     <Screen removeSpaceOnTop={true}>
-      <HeaderContainer
+      <SearchListView
+        list={productList}
+        loading={loadingProduct}
+        moreLoading={moreLoadingProduct}
+        isListEnd={isListEndProduct}
+        sliceFunction={searchProducts}
+        onChangeSearchValue={showProductDetails}
+        displaySearchValue={displayItemName}
+        searchPlaceholder={I18n.t('Stock_Product')}
+        searchNavigate={navigate}
+        scanKeySearch={productScanKey}
         expandableFilter={false}
-        fixedItems={
-          <ProductSearchBar
-            scanKey={productScanKey}
-            onChange={showProductDetails}
-            onFetchDataAction={handleDataSearch}
-            showDetailsPopup={false}
-            navigate={navigate}
-            oneFilter={true}
-            isFocus={true}
-          />
-        }
-      />
-      <ScrollList
-        loadingList={loadingProduct}
-        data={productList}
-        renderItem={({item, index}) => (
+        renderListItem={({item, index}) => (
           <ProductCard
             key={item.id}
             name={item.name}
@@ -101,11 +90,6 @@ const ProductListScreen = ({navigation}) => {
             onPress={() => showProductDetails(item)}
           />
         )}
-        fetchData={fetchProductsAPI}
-        moreLoading={moreLoadingProduct}
-        isListEnd={isListEndProduct}
-        filter={filter != null && filter !== ''}
-        translator={I18n.t}
       />
     </Screen>
   );
