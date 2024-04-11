@@ -23,8 +23,16 @@ import {
   axiosApiProvider,
 } from '@axelor/aos-mobile-core';
 
-const createTicketCriteria = (searchValue, userId, userTeam) => {
+const createTicketCriteria = (
+  searchValue,
+  userId,
+  userTeam,
+  statusList,
+  typeList,
+  priorityList,
+) => {
   const criteria = [getSearchCriterias('helpdesk_ticket', searchValue)];
+
   if (userId != null) {
     criteria.push({
       fieldName: 'assignedToUser.id',
@@ -32,6 +40,7 @@ const createTicketCriteria = (searchValue, userId, userTeam) => {
       value: userId,
     });
   }
+
   if (userTeam != null) {
     criteria.push({
       fieldName: 'assignedToUser.activeTeam',
@@ -39,6 +48,40 @@ const createTicketCriteria = (searchValue, userId, userTeam) => {
       value: userTeam,
     });
   }
+
+  if (Array.isArray(statusList) && statusList.length > 0) {
+    criteria.push({
+      operator: 'or',
+      criteria: statusList.map(status => ({
+        fieldName: 'ticketStatus.id',
+        operator: '=',
+        value: status.key,
+      })),
+    });
+  }
+
+  if (Array.isArray(typeList) && typeList.length > 0) {
+    criteria.push({
+      operator: 'or',
+      criteria: typeList.map(type => ({
+        fieldName: 'ticketType.id',
+        operator: '=',
+        value: type.key,
+      })),
+    });
+  }
+
+  if (Array.isArray(priorityList) && priorityList.length > 0) {
+    criteria.push({
+      operator: 'or',
+      criteria: priorityList.map(priority => ({
+        fieldName: 'prioritySelect',
+        operator: '=',
+        value: priority.key,
+      })),
+    });
+  }
+
   return criteria;
 };
 
@@ -50,10 +93,25 @@ const createTicketStatusCriteria = searchValue => {
   return [getSearchCriterias('helpdesk_ticketStatus', searchValue)];
 };
 
-export async function searchTickets({searchValue, userId, page = 0, userTeam}) {
+export async function searchTickets({
+  searchValue,
+  userId,
+  userTeam,
+  statusList,
+  typeList,
+  priorityList,
+  page = 0,
+}) {
   return createStandardSearch({
     model: 'com.axelor.apps.helpdesk.db.Ticket',
-    criteria: createTicketCriteria(searchValue, userId, userTeam),
+    criteria: createTicketCriteria(
+      searchValue,
+      userId,
+      userTeam,
+      statusList,
+      typeList,
+      priorityList,
+    ),
     fieldKey: 'helpdesk_ticket',
     sortKey: 'helpdesk_ticket',
     page,
