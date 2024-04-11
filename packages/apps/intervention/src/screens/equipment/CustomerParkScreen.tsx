@@ -19,9 +19,9 @@
 import React, {useMemo, useState} from 'react';
 import {ChipSelect, Screen, useThemeColor} from '@axelor/aos-mobile-ui';
 import {
+  SearchListView,
   useSelector,
   useTranslator,
-  SearchListView,
 } from '@axelor/aos-mobile-core';
 import {searchEquipment} from '../../features/equipmentSlice';
 import {
@@ -49,7 +49,7 @@ const CustomerParkScreen = ({}) => {
       partnerId: customer?.id,
       parentPlaceId: parentPlace?.id,
     }),
-    [customer?.id, parentPlace?.id, selectedStatus],
+    [customer, parentPlace?.id, selectedStatus],
   );
 
   return (
@@ -66,11 +66,15 @@ const CustomerParkScreen = ({}) => {
         renderListItem={({item}) => (
           <EquipmentActionCard
             idEquipment={item.id}
+            equipmentVersion={item.version}
             sequence={item.sequence}
             name={item.name}
             code={item.code}
             equipmentFamily={item.equipmentFamily?.name}
             inService={item.inService}
+            handleArchive={() => {
+              setCustomer(_current => ({..._current}));
+            }}
           />
         )}
         headerTopChildren={

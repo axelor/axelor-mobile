@@ -18,10 +18,11 @@
 
 import React, {useEffect, useMemo, useState} from 'react';
 import {
+  SearchListView,
   useDispatch,
   useSelector,
   useTranslator,
-  SearchListView,
+  useNavigation,
 } from '@axelor/aos-mobile-core';
 import {ChipSelect, useThemeColor} from '@axelor/aos-mobile-ui';
 import {EquipmentActionCard, InterventionHeader} from '../../molecules';
@@ -35,6 +36,7 @@ import {Equipment} from '../../../types';
 const EquipmentView = ({}) => {
   const I18n = useTranslator();
   const Colors = useThemeColor();
+  const navigation = useNavigation();
   const dispatch = useDispatch();
 
   const {intervention} = useSelector(
@@ -64,7 +66,8 @@ const EquipmentView = ({}) => {
       {
         iconName: 'plus',
         title: I18n.t('Intervention_CreateEquipment'),
-        onPress: () => console.log('Create an equipment button pressed.'),
+        onPress: () =>
+          navigation.navigate('EquipmentFormView', {isCreation: true}),
       },
     ];
 
@@ -77,7 +80,7 @@ const EquipmentView = ({}) => {
     }
 
     return _actionList;
-  }, [I18n, isInterventionMode]);
+  }, [I18n, isInterventionMode, navigation]);
 
   const idsInterventionEquipement = useMemo(
     () => intervention.equipmentSet.map(equipment => equipment.id),
@@ -156,6 +159,7 @@ const EquipmentView = ({}) => {
       renderListItem={({item}) => (
         <EquipmentActionCard
           idEquipment={item.id}
+          equipmentVersion={item.version}
           sequence={item.sequence}
           name={item.name}
           code={item.code}
