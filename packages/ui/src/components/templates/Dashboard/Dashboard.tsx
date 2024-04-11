@@ -45,10 +45,13 @@ interface DashboardProps {
   lastUpdate?: Date;
   translator?: (translationKey: string) => string;
   displayLastUpdate?: boolean;
+  chartWidth?: number;
 }
 
-const getGraphWidth = (nbGraphInLine: number) => {
-  if (nbGraphInLine === 1) {
+const getGraphWidth = (chartWidth: number, nbGraphInLine: number) => {
+  if (chartWidth) {
+    return chartWidth;
+  } else if (nbGraphInLine === 1) {
     return Dimensions.get('window').width;
   } else if (Dimensions.get('window').width < 500) {
     return Dimensions.get('window').width / 2;
@@ -64,6 +67,7 @@ const Dashboard = ({
   translator,
   lastUpdate,
   displayLastUpdate = false,
+  chartWidth = null,
 }: DashboardProps) => {
   return (
     <ScrollView style={[styles.container, style]}>
@@ -72,7 +76,7 @@ const Dashboard = ({
           graph => graph.dataList?.[0]?.length > 0 || graph.customChart != null,
         );
         const nbGraphInLine = Math.min(validGraphs.length, MAX_GRAPH_PER_LINE);
-        const widthGraph = getGraphWidth(nbGraphInLine);
+        const widthGraph = getGraphWidth(chartWidth, nbGraphInLine);
 
         const limitedGraphList = validGraphs?.slice(0, nbGraphInLine);
 
