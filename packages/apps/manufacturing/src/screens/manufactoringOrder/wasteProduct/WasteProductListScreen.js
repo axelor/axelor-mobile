@@ -16,22 +16,19 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import React, {useCallback, useEffect, useState} from 'react';
+import React, {useCallback, useEffect, useMemo, useState} from 'react';
 import {StyleSheet, View} from 'react-native';
 import {
   Alert,
   Button,
-  HeaderContainer,
   Icon,
   Screen,
-  ScrollList,
   Text,
   useThemeColor,
   useConfig,
 } from '@axelor/aos-mobile-ui';
 import {
-  filterList,
-  ScannerAutocompleteSearch,
+  SearchListView,
   useDispatch,
   useSelector,
   useTranslator,
@@ -57,8 +54,6 @@ const WasteProductListScreen = ({route, navigation}) => {
     useSelector(state => state.wasteProducts);
 
   const [isVisible, setVisible] = useState(false);
-  const [product, setProduct] = useState(null);
-  const [filteredList, setFilteredList] = useState(wasteProductList);
   const [canDeclare, setDeclare] = useState(
     manufOrder?.statusSelect === ManufacturingOrder.status.InProgress &&
       manufOrder?.wasteStockMove == null,
@@ -74,24 +69,6 @@ const WasteProductListScreen = ({route, navigation}) => {
       dispatch(clearDeclareResponse());
     }
   }, [declareResponse, dispatch, manufOrder, setActivityIndicator]);
-
-  const fetchWasteProductsAPI = useCallback(
-    page => {
-      dispatch(
-        fetchWasteProducts({
-          manufOrderId: manufOrder?.id,
-          page: page,
-        }),
-      );
-    },
-    [dispatch, manufOrder],
-  );
-
-  useEffect(() => {
-    setFilteredList(
-      filterList(wasteProductList, 'product', 'fullName', product ?? ''),
-    );
-  }, [product, wasteProductList]);
 
   const handleViewItem = item => {
     if (item) {
@@ -119,6 +96,13 @@ const WasteProductListScreen = ({route, navigation}) => {
     );
   }, [dispatch, manufOrder, setActivityIndicator]);
 
+  const sliceFunctionData = useMemo(
+    () => ({
+      manufOrderId: manufOrder?.id,
+    }),
+    [manufOrder?.id],
+  );
+
   return (
     <Screen
       removeSpaceOnTop={true}
@@ -142,9 +126,19 @@ const WasteProductListScreen = ({route, navigation}) => {
         translator={I18n.t}>
         <Text>{I18n.t('Manufacturing_ConfirmWasteDeclaration')}</Text>
       </Alert>
-      <HeaderContainer
+      <SearchListView
+        list={wasteProductList}
+        loading={loading}
+        moreLoading={moreLoading}
+        isListEnd={isListEnd}
+        sliceFunction={fetchWasteProducts}
+        sliceFunctionData={sliceFunctionData}
+        onChangeSearchValue={handleViewItem}
+        displaySearchValue={item => item?.product?.fullName}
+        searchPlaceholder={I18n.t('Manufacturing_Product')}
+        scanKeySearch={productScanKey}
         expandableFilter={false}
-        fixedItems={
+        topFixedItems={
           <>
             <ManufacturingOrderHeader
               parentMO={manufOrder.parentMO}
@@ -164,22 +158,9 @@ const WasteProductListScreen = ({route, navigation}) => {
                 />
               )}
             </View>
-            <ScannerAutocompleteSearch
-              objectList={wasteProductList}
-              onChangeValue={item => handleViewItem(item)}
-              fetchData={({searchValue}) => setProduct(searchValue)}
-              displayValue={item => item?.product?.fullName}
-              placeholder={I18n.t('Manufacturing_Product')}
-              scanKeySearch={productScanKey}
-              oneFilter={true}
-            />
           </>
         }
-      />
-      <ScrollList
-        loadingList={loading}
-        data={filteredList}
-        renderItem={({item}) => (
+        renderListItem={({item}) => (
           <WasteProductCard
             productName={item?.product?.fullName}
             wasteQty={item?.qty}
@@ -187,10 +168,6 @@ const WasteProductListScreen = ({route, navigation}) => {
             onPress={() => handleViewItem(item)}
           />
         )}
-        fetchData={fetchWasteProductsAPI}
-        isListEnd={isListEnd}
-        moreLoading={moreLoading}
-        translator={I18n.t}
       />
     </Screen>
   );
