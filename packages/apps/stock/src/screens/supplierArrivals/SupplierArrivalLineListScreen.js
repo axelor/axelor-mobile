@@ -17,17 +17,9 @@
  */
 
 import React, {useCallback, useState, useMemo} from 'react';
+import {ChipSelect, Screen, useThemeColor} from '@axelor/aos-mobile-ui';
 import {
-  ChipSelect,
-  HeaderContainer,
-  Screen,
-  ScrollList,
-  useThemeColor,
-} from '@axelor/aos-mobile-ui';
-import {
-  checkNullString,
-  ScannerAutocompleteSearch,
-  useDispatch,
+  SearchListView,
   useSelector,
   useTranslator,
 } from '@axelor/aos-mobile-core';
@@ -44,7 +36,6 @@ const SupplierArrivalLineListScreen = ({route, navigation}) => {
   const supplierArrival = route.params.supplierArrival;
   const Colors = useThemeColor();
   const I18n = useTranslator();
-  const dispatch = useDispatch();
 
   const {mobileSettings} = useSelector(state => state.appConfig);
   const {supplierArrivalLineList} = useSupplierLinesWithRacks(supplierArrival);
@@ -52,7 +43,6 @@ const SupplierArrivalLineListScreen = ({route, navigation}) => {
     state => state.supplierArrivalLine,
   );
 
-  const [filter, setFilter] = useState(null);
   const [selectedStatus, setSelectedStatus] = useState([]);
 
   const handleShowLine = (
@@ -75,36 +65,11 @@ const SupplierArrivalLineListScreen = ({route, navigation}) => {
     handleShowLine(item, true);
   };
 
-  const fetchSupplierLinesAPI = useCallback(
-    ({page = 0, searchValue}) => {
-      if (!checkNullString(searchValue)) {
-        setFilter(searchValue);
-        dispatch(
-          fetchSupplierArrivalLines({
-            supplierArrivalId: supplierArrival.id,
-            searchValue: searchValue,
-            page: 0,
-          }),
-        );
-      } else {
-        dispatch(
-          fetchSupplierArrivalLines({
-            supplierArrivalId: supplierArrival.id,
-            page: page,
-          }),
-        );
-      }
-    },
-    [dispatch, supplierArrival.id],
-  );
-
-  const filterLinesAPI = useCallback(
-    ({searchValue}) => fetchSupplierLinesAPI({searchValue}),
-    [fetchSupplierLinesAPI],
-  );
-  const scrollLinesAPI = useCallback(
-    page => fetchSupplierLinesAPI({page}),
-    [fetchSupplierLinesAPI],
+  const sliceFunctionData = useMemo(
+    () => ({
+      supplierArrivalId: supplierArrival.id,
+    }),
+    [supplierArrival.id],
   );
 
   const filterOnStatus = useCallback(
@@ -135,7 +100,18 @@ const SupplierArrivalLineListScreen = ({route, navigation}) => {
 
   return (
     <Screen removeSpaceOnTop={true}>
-      <HeaderContainer
+      <SearchListView
+        list={filteredList}
+        loading={loadingSALinesList}
+        moreLoading={moreLoading}
+        isListEnd={isListEnd}
+        sliceFunction={fetchSupplierArrivalLines}
+        sliceFunctionData={sliceFunctionData}
+        onChangeSearchValue={handleLineSearch}
+        displaySearchValue={displayLine}
+        searchPlaceholder={I18n.t('Stock_SearchLine')}
+        scanKeySearch={scanKey}
+        isHideableSearch
         fixedItems={
           <StockMoveHeader
             reference={supplierArrival.stockMoveSeq}
@@ -159,22 +135,8 @@ const SupplierArrivalLineListScreen = ({route, navigation}) => {
               Colors,
             )}
           />
-        }>
-        <ScannerAutocompleteSearch
-          objectList={filteredList}
-          onChangeValue={handleLineSearch}
-          fetchData={filterLinesAPI}
-          displayValue={displayLine}
-          scanKeySearch={scanKey}
-          placeholder={I18n.t('Stock_SearchLine')}
-          isFocus={true}
-          oneFilter={true}
-        />
-      </HeaderContainer>
-      <ScrollList
-        loadingList={loadingSALinesList}
-        data={filteredList}
-        renderItem={({item}) => (
+        }
+        renderListItem={({item}) => (
           <SupplierArrivalLineCard
             productName={item.product?.fullName}
             stockLocationName={item.toStockLocation?.name}
@@ -191,11 +153,6 @@ const SupplierArrivalLineListScreen = ({route, navigation}) => {
             }}
           />
         )}
-        fetchData={scrollLinesAPI}
-        moreLoading={moreLoading}
-        isListEnd={isListEnd}
-        filter={filter != null && filter !== ''}
-        translator={I18n.t}
       />
     </Screen>
   );
