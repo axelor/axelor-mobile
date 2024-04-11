@@ -17,7 +17,7 @@
  */
 
 import React, {useMemo} from 'react';
-import {View, StyleSheet} from 'react-native';
+import {View, StyleSheet, ScrollView} from 'react-native';
 import {CommonActions, DrawerActions} from '@react-navigation/native';
 import {Text, WarningCard} from '@axelor/aos-mobile-ui';
 import MenuItem from './MenuItem';
@@ -30,7 +30,6 @@ import {
 } from '../menu.helper';
 import useTranslator from '../../i18n/hooks/use-translator';
 import {formatCompatibilityToDisplay} from '../module.helper';
-import {ScrollView} from 'react-native';
 
 const MenuItemList = ({
   state,

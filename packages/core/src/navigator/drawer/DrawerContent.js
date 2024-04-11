@@ -23,7 +23,7 @@ import React, {
   useEffect,
   useCallback,
 } from 'react';
-import {StyleSheet, View, Animated, ScrollView} from 'react-native';
+import {StyleSheet, View, Animated} from 'react-native';
 import {SafeAreaView} from 'react-native-safe-area-context';
 import {CommonActions, DrawerActions} from '@react-navigation/native';
 import {useThemeColor, useConfig} from '@axelor/aos-mobile-ui';
@@ -151,6 +151,19 @@ const DrawerContent = ({
     [externalMenuIsVisible, secondaryMenusLeft],
   );
 
+  const scrollY = useRef(new Animated.Value(0)).current;
+
+  const handleScroll = Animated.event(
+    [{nativeEvent: {contentOffset: {y: scrollY}}}],
+    {useNativeDriver: false},
+  );
+
+  const textTranslate = scrollY.interpolate({
+    inputRange: [0, 150],
+    outputRange: [0, -150],
+    extrapolate: 'clamp',
+  });
+
   const handleModuleClick = _module => {
     onModuleClick(_module.name);
     navigateToDefaultMenu(_module);
@@ -215,7 +228,7 @@ const DrawerContent = ({
     <SafeAreaView style={styles.container}>
       {externalMenuIsVisible && (
         <View style={styles.iconsContainer}>
-          <ScrollView>
+          <Animated.ScrollView onScroll={handleScroll} scrollEventThrottle={16}>
             {drawerModules.map(_module => (
               <View key={_module.name} style={styles.menuItemContainer}>
                 <MenuIconButton
@@ -233,7 +246,7 @@ const DrawerContent = ({
                 />
               </View>
             ))}
-          </ScrollView>
+          </Animated.ScrollView>
           <View style={styles.otherIconsContainer}>
             <AuthMenuIconButton
               isActive={authModule.name === activeModule.name}
@@ -244,7 +257,12 @@ const DrawerContent = ({
         </View>
       )}
       <View style={styles.menusContainer}>
-        <View>
+        <Animated.View
+          style={[
+            {
+              transform: [{translateY: textTranslate}],
+            },
+          ]}>
           {drawerModules.map(_module => (
             <MenuTitle
               key={_module.name}
@@ -252,7 +270,7 @@ const DrawerContent = ({
               onPress={() => handleModuleClick(_module)}
             />
           ))}
-        </View>
+        </Animated.View>
         <Animated.View
           style={[
             styles.secondaryMenusContainer,
