@@ -226,9 +226,6 @@ const ScrollList = ({
 };
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-  },
   buttonContainer: {
     position: 'absolute',
     top: 8,
