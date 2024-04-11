@@ -17,17 +17,9 @@
  */
 
 import React, {useCallback, useState, useMemo} from 'react';
+import {ChipSelect, Screen, useThemeColor} from '@axelor/aos-mobile-ui';
 import {
-  ChipSelect,
-  HeaderContainer,
-  Screen,
-  ScrollList,
-  useThemeColor,
-} from '@axelor/aos-mobile-ui';
-import {
-  checkNullString,
-  ScannerAutocompleteSearch,
-  useDispatch,
+  SearchListView,
   useSelector,
   useTranslator,
 } from '@axelor/aos-mobile-core';
@@ -49,13 +41,11 @@ const InventoryLineListScreen = ({route, navigation}) => {
   const inventory = route.params.inventory;
   const Colors = useThemeColor();
   const I18n = useTranslator();
-  const dispatch = useDispatch();
 
   const {mobileSettings} = useSelector(state => state.appConfig);
   const {loadingInventoryLines, moreLoading, isListEnd, inventoryLineList} =
     useSelector(state => state.inventoryLine);
 
-  const [filter, setFilter] = useState(null);
   const [selectedStatus, setSelectedStatus] = useState([]);
 
   const handleShowLine = (
@@ -78,37 +68,11 @@ const InventoryLineListScreen = ({route, navigation}) => {
     handleShowLine(item, true);
   };
 
-  const fetchInventoryLinesAPI = useCallback(
-    ({page = 0, searchValue}) => {
-      if (!checkNullString(searchValue)) {
-        setFilter(searchValue);
-        dispatch(
-          fetchInventoryLines({
-            inventoryId: inventory?.id,
-            searchValue: searchValue,
-            page: 0,
-          }),
-        );
-      } else {
-        dispatch(
-          fetchInventoryLines({
-            inventoryId: inventory?.id,
-            page: page,
-          }),
-        );
-      }
-    },
-    [dispatch, inventory?.id],
-  );
-
-  const filterLinesAPI = useCallback(
-    ({searchValue}) => fetchInventoryLinesAPI({searchValue}),
-    [fetchInventoryLinesAPI],
-  );
-
-  const scrollLinesAPI = useCallback(
-    page => fetchInventoryLinesAPI({page}),
-    [fetchInventoryLinesAPI],
+  const sliceFunctionData = useMemo(
+    () => ({
+      inventoryId: inventory?.id,
+    }),
+    [inventory?.id],
   );
 
   const filterOnStatus = useCallback(
@@ -141,7 +105,18 @@ const InventoryLineListScreen = ({route, navigation}) => {
 
   return (
     <Screen removeSpaceOnTop={true}>
-      <HeaderContainer
+      <SearchListView
+        list={filteredList}
+        loading={loadingInventoryLines}
+        moreLoading={moreLoading}
+        isListEnd={isListEnd}
+        sliceFunction={fetchInventoryLines}
+        sliceFunctionData={sliceFunctionData}
+        onChangeSearchValue={handleLineSearch}
+        displaySearchValue={displayLine}
+        searchPlaceholder={I18n.t('Stock_SearchLine')}
+        scanKeySearch={scanKey}
+        isHideableSearch
         fixedItems={
           <InventoryHeader
             reference={inventory.inventorySeq}
@@ -176,22 +151,8 @@ const InventoryLineListScreen = ({route, navigation}) => {
               },
             ]}
           />
-        }>
-        <ScannerAutocompleteSearch
-          objectList={filteredList}
-          onChangeValue={handleLineSearch}
-          fetchData={filterLinesAPI}
-          displayValue={displayLine}
-          scanKeySearch={scanKey}
-          placeholder={I18n.t('Stock_SearchLine')}
-          isFocus={true}
-          oneFilter={true}
-        />
-      </HeaderContainer>
-      <ScrollList
-        loadingList={loadingInventoryLines}
-        data={filteredList}
-        renderItem={({item}) => (
+        }
+        renderListItem={({item}) => (
           <InventoryLineCard
             productName={item.product?.fullName}
             currentQty={item.currentQty}
@@ -202,11 +163,6 @@ const InventoryLineListScreen = ({route, navigation}) => {
             onPress={() => handleShowLine(item)}
           />
         )}
-        fetchData={scrollLinesAPI}
-        moreLoading={moreLoading}
-        isListEnd={isListEnd}
-        filter={filter != null && filter !== ''}
-        translator={I18n.t}
       />
     </Screen>
   );

@@ -22,10 +22,56 @@ import {
   createStandardSearch,
 } from '@axelor/aos-mobile-core';
 
-export async function searchStockCorrection({page = 0}) {
+const createSearchStockCorrectionCriteria = (
+  stockLocationId,
+  productId,
+  statusList,
+) => {
+  const criteria = [];
+
+  if (stockLocationId != null) {
+    criteria.push({
+      fieldName: 'stockLocation.id',
+      operator: '=',
+      value: stockLocationId,
+    });
+  }
+
+  if (productId != null) {
+    criteria.push({
+      fieldName: 'product.id',
+      operator: '=',
+      value: productId,
+    });
+  }
+
+  if (Array.isArray(statusList) && statusList.length > 0) {
+    criteria.push({
+      operator: 'or',
+      criteria: statusList.map(status => ({
+        fieldName: 'statusSelect',
+        operator: '=',
+        value: status.key,
+      })),
+    });
+  }
+
+  return criteria;
+};
+
+export async function searchStockCorrection({
+  stockLocationId,
+  productId,
+  statusList,
+  page = 0,
+}) {
   return createStandardSearch({
     model: 'com.axelor.apps.stock.db.StockCorrection',
-    criteria: [],
+    criteria: createSearchStockCorrectionCriteria(
+      stockLocationId,
+      productId,
+      statusList,
+    ),
     fieldKey: 'stock_stockCorrection',
     sortKey: 'stock_stockCorrection',
     page,
