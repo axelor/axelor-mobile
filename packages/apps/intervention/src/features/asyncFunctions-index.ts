@@ -50,6 +50,7 @@ export {
   fetchIntervention,
   fetchInterventionById,
   searchHistoryInterventionByEquipment,
+  updateInterventionStatus,
 } from './interventionSlice';
 export {
   fetchQuestion,
