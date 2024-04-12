@@ -16,7 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import React, {useCallback} from 'react';
+import React from 'react';
 import {StyleSheet, View} from 'react-native';
 import {InfoButton, useThemeColor} from '@axelor/aos-mobile-ui';
 import {
@@ -41,6 +41,7 @@ interface EquipmentActionCardProps {
   isUnlinkAction?: boolean;
   handleArchive?: () => void;
   handleUnlink?: () => void;
+  handleDuplicate?: (equipmentId: number) => void;
 }
 
 const EquipmentActionCard = ({
@@ -54,26 +55,12 @@ const EquipmentActionCard = ({
   isUnlinkAction = false,
   handleArchive = () => {},
   handleUnlink,
+  handleDuplicate,
 }: EquipmentActionCardProps) => {
   const Colors = useThemeColor();
   const I18n = useTranslator();
   const navigation = useNavigation();
   const dispatch = useDispatch();
-
-  const handleDuplicate = useCallback(() => {
-    (dispatch as any)(
-      (copyEquipment as any)({
-        equipmentId: idEquipment,
-      }),
-    ).then(
-      res =>
-        res.payload?.id &&
-        navigation.navigate('EquipmentFormView', {
-          idEquipment: res.payload?.id,
-          isCreation: true,
-        }),
-    );
-  }, [dispatch, idEquipment, navigation]);
 
   return (
     <View style={styles.globalContainer}>
@@ -99,7 +86,23 @@ const EquipmentActionCard = ({
           style={styles.flexOne}
           iconName="front"
           iconColor={Colors.secondaryColor_dark.background}
-          onPress={handleDuplicate}
+          onPress={() =>
+            (dispatch as any)(
+              (copyEquipment as any)({
+                equipmentId: idEquipment,
+              }),
+            ).then(({payload}) => {
+              const equipmentId = payload?.id;
+              if (equipmentId != null) {
+                handleDuplicate != null
+                  ? handleDuplicate(equipmentId)
+                  : navigation.navigate('EquipmentFormView', {
+                      idEquipment: equipmentId,
+                      isCreation: true,
+                    });
+              }
+            })
+          }
           indication={I18n.t('Intervention_Duplicate')}
         />
       </View>

@@ -29,6 +29,7 @@ import {EquipmentActionCard, InterventionHeader} from '../../molecules';
 import {EquipmentModeSwitch} from '../../organisms';
 import {LinkEquipmentPopup} from '../../templates';
 import {
+  fetchNumberClientEquipment,
   searchEquipment,
   searchInterventionEquipment,
 } from '../../../features/equipmentSlice';
@@ -70,7 +71,11 @@ const EquipmentView = ({}) => {
         iconName: 'plus',
         title: I18n.t('Intervention_CreateEquipment'),
         onPress: () =>
-          navigation.navigate('EquipmentFormView', {isCreation: true}),
+          navigation.navigate('EquipmentFormView', {
+            isCreation: true,
+            interventionId: isInterventionMode && intervention.id,
+            interventionVersion: isInterventionMode && intervention.version,
+          }),
       },
     ];
 
@@ -83,7 +88,13 @@ const EquipmentView = ({}) => {
     }
 
     return _actionList;
-  }, [I18n, isInterventionMode, navigation]);
+  }, [
+    I18n,
+    intervention.id,
+    intervention.version,
+    isInterventionMode,
+    navigation,
+  ]);
 
   const idsInterventionEquipement = useMemo(
     () => intervention.equipmentSet.map(equipment => equipment.id),
@@ -184,6 +195,29 @@ const EquipmentView = ({}) => {
             inService={item.inService}
             isUnlinkAction={isInterventionMode}
             handleUnlink={() => handleUnlinkEquipment(item.id)}
+            handleArchive={() => {
+              if (isInterventionMode) {
+                handleUnlinkEquipment(item.id);
+              } else {
+                setSelectedStatus(_current => [..._current]);
+                dispatch(
+                  (fetchNumberClientEquipment as any)({
+                    partnerId: intervention.deliveredPartner?.id,
+                  }),
+                );
+              }
+            }}
+            handleDuplicate={
+              isInterventionMode
+                ? equipmentId =>
+                    navigation.navigate('EquipmentFormView', {
+                      idEquipment: equipmentId,
+                      isCreation: true,
+                      interventionId: intervention.id,
+                      interventionVersion: intervention.version,
+                    })
+                : null
+            }
           />
         )}
         actionList={actionList}

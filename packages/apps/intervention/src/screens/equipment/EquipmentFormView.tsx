@@ -49,12 +49,19 @@ const EquipmentFormView = ({navigation, route}) => {
           equipment: _equipment,
           partnerId: _equipment?.partner?.id,
           isCreation: isCreation,
+          interventionId: route.params.interventionId,
+          interventionVersion: route.params.interventionVersion,
         }),
       );
 
       navigation.pop();
     },
-    [isCreation, navigation],
+    [
+      isCreation,
+      navigation,
+      route.params.interventionId,
+      route.params.interventionVersion,
+    ],
   );
 
   const deleteEquipmentAPI = useCallback(

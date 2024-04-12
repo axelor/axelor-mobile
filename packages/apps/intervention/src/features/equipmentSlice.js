@@ -32,6 +32,7 @@ import {
   searchInterventionEquipment as _searchInterventionEquipment,
   searchPlaceEquipment as _searchPlaceEquipment,
 } from '../api/equipment-api';
+import {linkEquipment} from './interventionSlice';
 
 export const searchEquipment = createAsyncThunk(
   'intervention_equipment/searchEquipment',
@@ -120,18 +121,27 @@ export const saveEquipment = createAsyncThunk(
       action: 'Intervention_SliceAction_SaveEquipment',
       getState,
       responseOptions: {isArrayResponse: false, showToast: true},
-    }).then(() => {
-      dispatch(
-        searchEquipment({
-          partnerId: data?.partnerId,
-        }),
-      );
-      data?.isCreation &&
+    }).then(equipment => {
+      const equipmentId = equipment?.id;
+      if (equipmentId != null) {
         dispatch(
-          fetchNumberClientEquipment({
-            partnerId: data?.partnerId,
+          searchEquipment({
+            partnerId: data.partnerId,
           }),
         );
+
+        if (data.isCreation) {
+          dispatch(
+            fetchNumberClientEquipment({
+              partnerId: data.partnerId,
+            }),
+          );
+
+          if (data.interventionId && data.interventionVersion) {
+            dispatch(linkEquipment({...data, equipmentId}));
+          }
+        }
+      }
     });
   },
 );
