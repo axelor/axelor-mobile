@@ -31,12 +31,14 @@ interface InternalMoveCreationViewAllProps {
   lines: any[];
   setLines: (fct: (lines: any[]) => any[]) => void;
   setIsAlertVisible: (visible: boolean) => void;
+  handleEditLine: (line: any) => void;
 }
 
 const InternalMoveCreationViewAll = ({
   lines,
   setLines,
   setIsAlertVisible,
+  handleEditLine,
 }: InternalMoveCreationViewAllProps) => {
   const Colors = useThemeColor();
   const I18n = useTranslator();
@@ -63,6 +65,12 @@ const InternalMoveCreationViewAll = ({
             <Text style={styles.productQty}>
               {line.realQty} {line.unit.name}
             </Text>
+            <Icon
+              name="pencil-fill"
+              size={20}
+              touchable
+              onPress={() => handleEditLine(line)}
+            />
             <Icon
               name="x-lg"
               size={20}

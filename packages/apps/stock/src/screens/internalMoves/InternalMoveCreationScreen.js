@@ -50,7 +50,9 @@ const InternalMoveCreationScreen = () => {
       const indexLine = newLines.findIndex(line => line.id === newLine?.id);
 
       if (indexLine >= 0) {
-        newLines[indexLine].realQty += movedQty;
+        const prevLineQty = newLines[indexLine].realQty;
+        newLines[indexLine].realQty =
+          newLine.realQty > 0 ? movedQty : prevLineQty + movedQty;
       } else {
         newLines.push({
           product: newLine?.product,
@@ -64,6 +66,12 @@ const InternalMoveCreationScreen = () => {
       return newLines;
     });
     handleProductChange(null);
+  };
+
+  const handleEditLine = line => {
+    setNewLine(line);
+    setMovedQty(line.realQty);
+    setCurrentStep(InternalMoveCreation.step.validateLine);
   };
 
   const handleFromStockLocationChange = useCallback(
@@ -158,6 +166,7 @@ const InternalMoveCreationScreen = () => {
             lines={lines}
             setLines={setLines}
             setIsAlertVisible={setIsAlertVisible}
+            handleEditLine={handleEditLine}
           />
         )}
         {currentStep === InternalMoveCreation.step.addLine && (
@@ -197,6 +206,7 @@ const InternalMoveCreationScreen = () => {
           setIsAlertVisible={setIsAlertVisible}
           lines={lines}
           setLines={setLines}
+          handleEditLine={handleEditLine}
         />
       </KeyboardAvoidingScrollView>
     </Screen>

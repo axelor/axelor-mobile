@@ -22,6 +22,7 @@ import {useTranslator} from '@axelor/aos-mobile-core';
 import {
   Alert,
   CheckboxScrollList,
+  Icon,
   Text,
   useThemeColor,
 } from '@axelor/aos-mobile-ui';
@@ -31,6 +32,7 @@ interface InternalMoveCreationAlertProps {
   setIsAlertVisible: (visible: boolean) => void;
   lines: any[];
   setLines: (lines: any[]) => void;
+  handleEditLine: (line: any) => void;
 }
 
 const InternalMoveCreationAlert = ({
@@ -38,6 +40,7 @@ const InternalMoveCreationAlert = ({
   setIsAlertVisible,
   lines,
   setLines,
+  handleEditLine,
 }: InternalMoveCreationAlertProps) => {
   const Colors = useThemeColor();
   const I18n = useTranslator();
@@ -48,10 +51,21 @@ const InternalMoveCreationAlert = ({
     return (
       <View style={styles.renderContainer}>
         <View style={styles.renderFirstLine}>
-          <Text writingType="important">{item.product?.name}</Text>
-          <Text>
+          <Text style={styles.productName} writingType="important">
+            {item.product?.name}
+          </Text>
+          <Text style={styles.productQty}>
             {item.realQty} {item.unit?.name}
           </Text>
+          <Icon
+            name="pencil-fill"
+            size={20}
+            touchable
+            onPress={() => {
+              setIsAlertVisible(false);
+              handleEditLine(item);
+            }}
+          />
         </View>
         {item.trackingNumber?.trackingNumberSeq && (
           <Text writingType="details">
@@ -106,6 +120,13 @@ const styles = StyleSheet.create({
   renderFirstLine: {
     flexDirection: 'row',
     justifyContent: 'space-between',
+    alignItems: 'flex-start',
+  },
+  productName: {
+    flex: 4,
+  },
+  productQty: {
+    flex: 2,
   },
 });
 
