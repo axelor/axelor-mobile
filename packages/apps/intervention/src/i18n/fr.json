@@ -93,5 +93,6 @@
   "Intervention_SliceAction_FetchActiveIntervention": "récupération de l'intervention active",
   "Intervention_SliceAction_ArchiveEquipment": "archivage de l'équipement",
   "Intervention_SliceAction_CopyEquipment": "copie de l'équipement",
-  "Intervention_SliceAction_DeleteEquipment": "suppression de l'équipement"
+  "Intervention_SliceAction_DeleteEquipment": "suppression de l'équipement",
+  "Intervention_SliceAction_UpdateInterventionStatus": "mise à jour de l'intervention"
 }

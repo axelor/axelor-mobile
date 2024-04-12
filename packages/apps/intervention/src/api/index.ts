@@ -40,6 +40,7 @@ export {
   fetchIntervention as fetchInterventionApi,
   fetchInterventionById as fetchInterventionByIdApi,
   searchHistoryInterventionByEquipment as searchHistoryInterventionByEquipmentApi,
+  updateInterventionStatus as updateInterventionStatusApi,
 } from './intervention-api';
 export {
   createInterventionNote as createInterventionNoteApi,
