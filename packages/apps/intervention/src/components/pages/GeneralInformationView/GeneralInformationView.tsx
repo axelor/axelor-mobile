@@ -16,11 +16,13 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import React, {useCallback, useState} from 'react';
+import React, {useCallback, useEffect, useState} from 'react';
 import {StyleSheet, View} from 'react-native';
 import {
   calculateDiff,
+  getNowDateZonesISOString,
   Stopwatch,
+  useDispatch,
   useSelector,
   useTranslator,
 } from '@axelor/aos-mobile-core';
@@ -28,11 +30,13 @@ import {HeaderContainer, ScrollView} from '@axelor/aos-mobile-ui';
 import {GtCard, InterventionHeader} from '../../molecules';
 import {DropdownCards} from '../../organisms';
 import {Intervention} from '../../../types';
+import {updateInterventionStatus} from '../../../features/interventionSlice';
 
 const NUMBER_MILLISECONDS_IN_SECOND = 1000;
 
 const GeneralInformationView = ({}) => {
   const I18n = useTranslator();
+  const dispatch = useDispatch();
 
   const {intervention} = useSelector(
     (state: any) => state.intervention_intervention,
@@ -43,6 +47,11 @@ const GeneralInformationView = ({}) => {
   );
   const [lastStart, setLastStart] = useState(intervention.lastStartDateTime);
 
+  useEffect(() => {
+    setDuration(intervention.totalDuration * NUMBER_MILLISECONDS_IN_SECOND);
+    setLastStart(intervention.lastStartDateTime);
+  }, [intervention]);
+
   const getDuration = useCallback(() => {
     if (intervention.statusSelect === Intervention.status.Started) {
       return duration + calculateDiff(lastStart, new Date());
@@ -50,20 +59,32 @@ const GeneralInformationView = ({}) => {
     return duration;
   }, [duration, intervention.statusSelect, lastStart]);
 
+  const updateIntervention = useCallback(
+    (targetStatus: number) => {
+      dispatch(
+        (updateInterventionStatus as any)({
+          interventionId: intervention.id,
+          version: intervention.version,
+          targetStatus,
+        }),
+      );
+    },
+    [dispatch, intervention.id, intervention.version],
+  );
+
   const handlePlay = useCallback(() => {
-    console.log('Play button pressed.');
-    const now = new Date();
-    setLastStart(now.toISOString());
-  }, []);
+    updateIntervention(Intervention.status.Started);
+    setLastStart(getNowDateZonesISOString());
+  }, [updateIntervention]);
 
   const handlePause = useCallback(() => {
-    console.log('Pause button pressed.');
+    updateIntervention(Intervention.status.Suspended);
     setDuration(current => current + calculateDiff(lastStart, new Date()));
-  }, [lastStart]);
+  }, [lastStart, updateIntervention]);
 
   const handleStop = useCallback(() => {
-    console.log('Stop button pressed.');
-  }, []);
+    updateIntervention(Intervention.status.Finished);
+  }, [updateIntervention]);
 
   return (
     <View>
@@ -97,6 +118,9 @@ const GeneralInformationView = ({}) => {
           onPlay={handlePlay}
           onPause={handlePause}
           onStop={handleStop}
+          disableStop={
+            intervention.statusSelect !== Intervention.status.Started
+          }
           useObjectStatus
           hideCancel
         />
