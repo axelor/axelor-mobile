@@ -128,6 +128,7 @@ const SearchDetailsPopUp = ({
 const styles = StyleSheet.create({
   popup: {
     height: Dimensions.get('window').height * 0.9,
+    maxHeight: null,
     paddingHorizontal: 10,
     paddingRight: 10,
     paddingVertical: 10,
