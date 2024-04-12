@@ -25,7 +25,9 @@ import {
   fetchActiveIntervention as _fetchActiveIntervention,
   fetchIntervention as _fetchIntervention,
   fetchInterventionById as _fetchInterventionById,
+  linkEquipment as _linkEquipment,
   searchHistoryInterventionByEquipment as _searchHistoryInterventionByEquipment,
+  unlinkEquipment as _unlinkEquipment,
   updateInterventionStatus as _updateInterventionStatus,
 } from '../api/intervention-api';
 
@@ -92,6 +94,36 @@ export const updateInterventionStatus = createAsyncThunk(
       responseOptions: {isArrayResponse: false, showToast: true},
     }).then(() => {
       dispatch(fetchInterventionById({interventionId: data.interventionId}));
+    });
+  },
+);
+
+export const unlinkEquipment = createAsyncThunk(
+  'intervention_intervention/unlinkEquipment',
+  async function (data, {getState, dispatch}) {
+    return handlerApiCall({
+      fetchFunction: _unlinkEquipment,
+      data,
+      action: 'Intervention_SliceAction_UnlinkEquipment',
+      getState,
+      responseOptions: {isArrayResponse: false, showToast: true},
+    }).then(() => {
+      dispatch(fetchInterventionById(data));
+    });
+  },
+);
+
+export const linkEquipment = createAsyncThunk(
+  'intervention_intervention/linkEquipment',
+  async function (data, {getState, dispatch}) {
+    return handlerApiCall({
+      fetchFunction: _linkEquipment,
+      data,
+      action: 'Intervention_SliceAction_LinkEquipment',
+      getState,
+      responseOptions: {isArrayResponse: false, showToast: true},
+    }).then(() => {
+      dispatch(fetchInterventionById(data));
     });
   },
 );

@@ -204,3 +204,57 @@ export async function deleteEquipment({equipmentId}) {
     url: `/ws/rest/com.axelor.apps.intervention.db.Equipment/${equipmentId}`,
   });
 }
+
+const createInterventionEquipmentToLinkCriteria = ({
+  searchValue,
+  equipmentSet,
+  partnerId,
+}) => {
+  const criteria = [
+    getSearchCriterias('intervention_equipment', searchValue),
+    {
+      fieldName: 'partner.id',
+      operator: '=',
+      value: partnerId,
+    },
+    {
+      fieldName: 'typeSelect',
+      operator: '=',
+      value: Equipment.type.equipment,
+    },
+  ];
+
+  if (Array.isArray(equipmentSet) && equipmentSet.length > 0) {
+    criteria.push({
+      operator: 'not',
+      criteria: [
+        {
+          fieldName: 'id',
+          operator: 'in',
+          value: equipmentSet,
+        },
+      ],
+    });
+  }
+
+  return criteria;
+};
+
+export async function searchEquipmentToLink({
+  page = 0,
+  searchValue,
+  equipmentSet,
+  partnerId,
+}) {
+  return createStandardSearch({
+    model: 'com.axelor.apps.intervention.db.Equipment',
+    criteria: createInterventionEquipmentToLinkCriteria({
+      searchValue,
+      equipmentSet,
+      partnerId,
+    }),
+    fieldKey: 'intervention_equipment',
+    sortKey: 'intervention_equipment',
+    page,
+  });
+}
