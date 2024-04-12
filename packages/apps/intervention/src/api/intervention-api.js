@@ -185,3 +185,25 @@ export async function updateInterventionStatus({
     },
   });
 }
+
+export async function linkEquipment({
+  interventionId,
+  interventionVersion,
+  equipmentId,
+}) {
+  return axiosApiProvider.put({
+    url: `ws/aos/intervention/add-equipment/${interventionId}`,
+    data: {equipmentId, version: interventionVersion},
+  });
+}
+
+export async function unlinkEquipment({
+  interventionId,
+  interventionVersion,
+  equipmentId,
+}) {
+  return axiosApiProvider.put({
+    url: `ws/aos/intervention/remove-equipment/${interventionId}`,
+    data: {equipmentId, version: interventionVersion},
+  });
+}
