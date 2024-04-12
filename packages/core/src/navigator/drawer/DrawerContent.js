@@ -217,25 +217,22 @@ const DrawerContent = ({
         <View style={styles.iconsContainer}>
           <ScrollView>
             {drawerModules.map(_module => (
-              <View style={styles.globalContainer}>
-                <View key={_module.name} style={styles.menuItemContainer}>
-                  <MenuIconButton
-                    key={_module.title}
-                    icon={_module.icon}
-                    subtitle={showSubtitles && I18n.t(_module.subtitle)}
-                    disabled={_module.disabled}
-                    color={
-                      _module === activeModule
-                        ? Colors.primaryColor.background_light
-                        : null
-                    }
-                    onPress={() => handleModuleClick(_module)}
-                    compatibility={_module.compatibilityAOS}
-                  />
-                </View>
+              <View style={styles.globalContainer} key={_module.name}>
+                <MenuIconButton
+                  style={styles.menuItemContainer}
+                  icon={_module.icon}
+                  subtitle={showSubtitles && I18n.t(_module.subtitle)}
+                  disabled={_module.disabled}
+                  color={
+                    _module === activeModule
+                      ? Colors.primaryColor.background_light
+                      : null
+                  }
+                  onPress={() => handleModuleClick(_module)}
+                  compatibility={_module.compatibilityAOS}
+                />
                 {!innerMenuIsVisible && (
                   <MenuTitle
-                    key={_module.name}
                     module={_module}
                     onPress={() => handleModuleClick(_module)}
                   />
