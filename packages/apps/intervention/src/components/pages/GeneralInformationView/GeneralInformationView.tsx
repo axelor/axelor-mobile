@@ -16,10 +16,11 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import React, {useCallback, useState} from 'react';
+import React, {useCallback, useEffect, useState} from 'react';
 import {StyleSheet, View} from 'react-native';
 import {
   calculateDiff,
+  getNowDateZonesISOString,
   Stopwatch,
   useDispatch,
   useSelector,
@@ -46,6 +47,11 @@ const GeneralInformationView = ({}) => {
   );
   const [lastStart, setLastStart] = useState(intervention.lastStartDateTime);
 
+  useEffect(() => {
+    setDuration(intervention.totalDuration * NUMBER_MILLISECONDS_IN_SECOND);
+    setLastStart(intervention.lastStartDateTime);
+  }, [intervention]);
+
   const getDuration = useCallback(() => {
     if (intervention.statusSelect === Intervention.status.Started) {
       return duration + calculateDiff(lastStart, new Date());
@@ -54,12 +60,11 @@ const GeneralInformationView = ({}) => {
   }, [duration, intervention.statusSelect, lastStart]);
 
   const updateIntervention = useCallback(
-    (targetStatus: number, dateTime: string) => {
+    (targetStatus: number) => {
       dispatch(
         (updateInterventionStatus as any)({
           interventionId: intervention.id,
           version: intervention.version,
-          dateTime,
           targetStatus,
         }),
       );
@@ -68,20 +73,17 @@ const GeneralInformationView = ({}) => {
   );
 
   const handlePlay = useCallback(() => {
-    const now = new Date();
-    updateIntervention(Intervention.status.Started, now.toISOString());
-    setLastStart(now.toISOString());
+    updateIntervention(Intervention.status.Started);
+    setLastStart(getNowDateZonesISOString());
   }, [updateIntervention]);
 
   const handlePause = useCallback(() => {
-    const now = new Date();
-    updateIntervention(Intervention.status.Suspended, now.toISOString());
-    setDuration(current => current + calculateDiff(lastStart, now));
+    updateIntervention(Intervention.status.Suspended);
+    setDuration(current => current + calculateDiff(lastStart, new Date()));
   }, [lastStart, updateIntervention]);
 
   const handleStop = useCallback(() => {
-    const now = new Date();
-    updateIntervention(Intervention.status.Finished, now.toISOString());
+    updateIntervention(Intervention.status.Finished);
   }, [updateIntervention]);
 
   return (

@@ -21,6 +21,7 @@ import {
   createStandardFetch,
   createStandardSearch,
   getEndOfDay,
+  getNowDateZonesISOString,
   getSearchCriterias,
   getStartOfDay,
 } from '@axelor/aos-mobile-core';
@@ -174,13 +175,12 @@ export async function updateInterventionStatus({
   interventionId,
   version,
   targetStatus,
-  dateTime,
 }) {
   return axiosApiProvider.put({
     url: `ws/aos/intervention/status/${interventionId}`,
     data: {
       toStatus: targetStatus,
-      dateTime,
+      dateTime: getNowDateZonesISOString(),
       version,
     },
   });
