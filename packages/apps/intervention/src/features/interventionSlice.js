@@ -26,6 +26,7 @@ import {
   fetchIntervention as _fetchIntervention,
   fetchInterventionById as _fetchInterventionById,
   searchHistoryInterventionByEquipment as _searchHistoryInterventionByEquipment,
+  updateInterventionStatus as _updateInterventionStatus,
 } from '../api/intervention-api';
 
 export const fetchIntervention = createAsyncThunk(
@@ -76,6 +77,21 @@ export const fetchActiveIntervention = createAsyncThunk(
       action: 'Intervention_SliceAction_FetchActiveIntervention',
       getState,
       responseOptions: {isArrayResponse: false},
+    });
+  },
+);
+
+export const updateInterventionStatus = createAsyncThunk(
+  'intervention_intervention/updateInterventionStatus',
+  async function (data, {getState, dispatch}) {
+    return handlerApiCall({
+      fetchFunction: _updateInterventionStatus,
+      data,
+      action: 'Intervention_SliceAction_UpdateInterventionStatus',
+      getState,
+      responseOptions: {isArrayResponse: false, showToast: true},
+    }).then(() => {
+      dispatch(fetchInterventionById({interventionId: data.interventionId}));
     });
   },
 );

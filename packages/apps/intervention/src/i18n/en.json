@@ -93,5 +93,6 @@
   "Intervention_SliceAction_FetchActiveIntervention": "fetch active intervention",
   "Intervention_SliceAction_ArchiveEquipment": "archive equipment",
   "Intervention_SliceAction_CopyEquipment": "copy equipment",
-  "Intervention_SliceAction_DeleteEquipment": "delete equipment"
+  "Intervention_SliceAction_DeleteEquipment": "delete equipment",
+  "Intervention_SliceAction_UpdateInterventionStatus": "update intervention status"
 }
