@@ -17,4 +17,5 @@
  */
 
 export {default as InterventionsListView} from './InterventionsListView/InterventionsListView';
+export {default as LinkEquipmentPopup} from './LinkEquipmentPopup/LinkEquipmentPopup';
 export {default as SurveyRangeNavigation} from './SurveyRangeNavigation/SurveyRangeNavigation';

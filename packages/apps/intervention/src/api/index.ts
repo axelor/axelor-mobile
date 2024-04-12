@@ -25,6 +25,7 @@ export {
   getEquipmentById as getEquipmentByIdApi,
   saveEquipment as saveEquipmentApi,
   searchEquipment as searchEquipmentApi,
+  searchEquipmentToLink as searchEquipmentToLinkApi,
   searchInterventionEquipment as searchInterventionEquipmentApi,
   searchPlaceEquipment as searchPlaceEquipmentApi,
 } from './equipment-api';
@@ -39,7 +40,9 @@ export {
   fetchActiveIntervention as fetchActiveInterventionApi,
   fetchIntervention as fetchInterventionApi,
   fetchInterventionById as fetchInterventionByIdApi,
+  linkEquipment as linkEquipmentApi,
   searchHistoryInterventionByEquipment as searchHistoryInterventionByEquipmentApi,
+  unlinkEquipment as unlinkEquipmentApi,
   updateInterventionStatus as updateInterventionStatusApi,
 } from './intervention-api';
 export {

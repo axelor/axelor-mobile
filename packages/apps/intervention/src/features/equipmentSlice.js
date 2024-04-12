@@ -28,9 +28,11 @@ import {
   getEquipmentById as _getEquipmentById,
   saveEquipment as _saveEquipment,
   searchEquipment as _searchEquipment,
+  searchEquipmentToLink as _searchEquipmentToLink,
   searchInterventionEquipment as _searchInterventionEquipment,
   searchPlaceEquipment as _searchPlaceEquipment,
 } from '../api/equipment-api';
+import {linkEquipment} from './interventionSlice';
 
 export const searchEquipment = createAsyncThunk(
   'intervention_equipment/searchEquipment',
@@ -119,18 +121,27 @@ export const saveEquipment = createAsyncThunk(
       action: 'Intervention_SliceAction_SaveEquipment',
       getState,
       responseOptions: {isArrayResponse: false, showToast: true},
-    }).then(() => {
-      dispatch(
-        searchEquipment({
-          partnerId: data?.partnerId,
-        }),
-      );
-      data?.isCreation &&
+    }).then(equipment => {
+      const equipmentId = equipment?.id;
+      if (equipmentId != null) {
         dispatch(
-          fetchNumberClientEquipment({
-            partnerId: data?.partnerId,
+          searchEquipment({
+            partnerId: data.partnerId,
           }),
         );
+
+        if (data.isCreation) {
+          dispatch(
+            fetchNumberClientEquipment({
+              partnerId: data.partnerId,
+            }),
+          );
+
+          if (data.interventionId && data.interventionVersion) {
+            dispatch(linkEquipment({...data, equipmentId}));
+          }
+        }
+      }
     });
   },
 );
@@ -174,6 +185,19 @@ export const deleteEquipment = createAsyncThunk(
   },
 );
 
+export const searchEquipmentToLink = createAsyncThunk(
+  'intervention_equipment/searchEquipmentToLink',
+  async function (data, {getState}) {
+    return handlerApiCall({
+      fetchFunction: _searchEquipmentToLink,
+      data,
+      action: 'Intervention_SliceAction_SearchEquipmentToLink',
+      getState,
+      responseOptions: {isArrayResponse: true},
+    });
+  },
+);
+
 const initialState = {
   loadingList: false,
   moreLoading: false,
@@ -191,6 +215,11 @@ const initialState = {
   moreLoadingEquipPlace: false,
   isListEndEquipPlace: false,
   equipmentPlaceList: [],
+
+  loadingListEquipToLink: false,
+  moreLoadingEquipToLink: false,
+  isListEndEquipToLink: false,
+  equipmentToLinkList: [],
 
   loading: false,
   equipment: {},
@@ -233,6 +262,12 @@ const equipmentSlice = createSlice({
     builder.addCase(getEquipmentById.fulfilled, (state, action) => {
       state.loading = false;
       state.equipment = action.payload;
+    });
+    generateInifiniteScrollCases(builder, searchEquipmentToLink, {
+      loading: 'loadingListEquipToLink',
+      moreLoading: 'moreLoadingEquipToLink',
+      isListEnd: 'isListEndEquipToLink',
+      list: 'equipmentToLinkList',
     });
   },
 });
