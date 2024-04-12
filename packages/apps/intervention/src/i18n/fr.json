@@ -94,5 +94,8 @@
   "Intervention_SliceAction_ArchiveEquipment": "archivage de l'équipement",
   "Intervention_SliceAction_CopyEquipment": "copie de l'équipement",
   "Intervention_SliceAction_DeleteEquipment": "suppression de l'équipement",
-  "Intervention_SliceAction_UpdateInterventionStatus": "mise à jour de l'intervention"
+  "Intervention_SliceAction_UpdateInterventionStatus": "mise à jour de l'intervention",
+  "Intervention_SliceAction_UnlinkEquipment": "dissociation d'un équipement de l'intervention",
+  "Intervention_SliceAction_LinkEquipment": "ajout d'un équipement sur l'intervention",
+  "Intervention_SliceAction_SearchEquipmentToLink": "recherche des équipements à ajouter sur l'intervention"
 }
