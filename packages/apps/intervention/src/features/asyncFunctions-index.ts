@@ -34,6 +34,7 @@ export {
   getEquipmentById,
   saveEquipment,
   searchEquipment,
+  searchEquipmentToLink,
   searchInterventionEquipment,
   searchPlaceEquipment,
 } from './equipmentSlice';
@@ -49,7 +50,9 @@ export {
   fetchActiveIntervention,
   fetchIntervention,
   fetchInterventionById,
+  linkEquipment,
   searchHistoryInterventionByEquipment,
+  unlinkEquipment,
   updateInterventionStatus,
 } from './interventionSlice';
 export {
