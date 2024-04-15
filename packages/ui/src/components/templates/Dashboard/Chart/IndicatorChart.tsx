@@ -22,8 +22,7 @@ import {ThemeColors, useThemeColor} from '../../../../theme';
 import {Card, Text} from '../../../atoms';
 import {Data} from '../dashboard.helper';
 import {getCommonStyles} from '../../../../utils';
-
-const MARGIN = 5;
+import {MARGIN, getContainerMinWidth, getContainerWidth} from './chart.helper';
 
 interface IndicatorChartProps {
   style?: any;
@@ -51,6 +50,14 @@ const IndicatorChart = ({
   const styles = useMemo(() => {
     return getStyles(Colors);
   }, [Colors]);
+
+  const containerWidth = useMemo(() => {
+    return getContainerWidth(widthGraph);
+  }, [widthGraph]);
+
+  const containerMinWidth = useMemo(() => {
+    return getContainerMinWidth();
+  }, []);
 
   const renderIndicator = useMemo(() => {
     if (datasets?.length === 1) {
@@ -101,13 +108,7 @@ const IndicatorChart = ({
         </>
       );
     }
-  }, [
-    Colors.primaryColor.background,
-    commonStyles.button,
-    datasets,
-    styles,
-    title,
-  ]);
+  }, [Colors, commonStyles.button, datasets, styles, title]);
 
   if (!Array.isArray(datasets) || datasets.length === 0) {
     return null;
@@ -115,7 +116,11 @@ const IndicatorChart = ({
 
   return (
     <Container
-      style={[styles.container, {width: widthGraph - MARGIN * 2}, style]}>
+      style={[
+        styles.container,
+        {width: containerWidth, minWidth: containerMinWidth},
+        style,
+      ]}>
       {renderIndicator}
     </Container>
   );
@@ -124,10 +129,6 @@ const IndicatorChart = ({
 const getStyles = (color: ThemeColors) =>
   StyleSheet.create({
     container: {
-      minWidth:
-        Dimensions.get('window').width > 500
-          ? Dimensions.get('window').width / 4 - MARGIN * 2
-          : Dimensions.get('window').width / 2 - MARGIN * 2,
       margin: MARGIN,
       paddingHorizontal: 0,
       paddingRight: 5,
@@ -155,8 +156,8 @@ const getStyles = (color: ThemeColors) =>
       alignSelf: 'center',
     },
     valueContainer: {
-      backgroundColor: color.primaryColor.background,
-      borderColor: color.primaryColor.background,
+      backgroundColor: color.primaryColor.background_light,
+      borderColor: color.primaryColor.background_light,
       paddingVertical: 0,
       paddingHorizontal: 24,
       width: '90%',
