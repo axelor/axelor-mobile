@@ -88,9 +88,16 @@ const IndicatorChart = ({
             const isIconAbsent = data.icon == null;
             return (
               <View
-                style={[commonStyles.button, styles.valueContainer]}
+                style={[
+                  commonStyles.button,
+                  styles.valueContainer,
+                  data.color && {
+                    backgroundColor: data.color,
+                    borderColor: data.color,
+                  },
+                ]}
                 key={index}>
-                <View style={styles.groupIconValue2}>
+                <View style={styles.groupIconValue}>
                   {!isIconAbsent && (
                     <Icon style={styles.icon} size={20} name={data.icon} />
                   )}
@@ -161,10 +168,6 @@ const getStyles = (color: ThemeColors) =>
       marginBottom: 10,
     },
     groupIconValue: {
-      flexDirection: 'row',
-      alignItems: 'center',
-    },
-    groupIconValue2: {
       flexDirection: 'row',
       alignItems: 'center',
       flex: 2,
