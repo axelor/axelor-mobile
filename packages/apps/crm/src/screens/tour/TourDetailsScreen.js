@@ -16,14 +16,8 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import React, {useCallback, useEffect, useState} from 'react';
-import {
-  ChipSelect,
-  HeaderContainer,
-  Screen,
-  ScrollList,
-  useThemeColor,
-} from '@axelor/aos-mobile-ui';
+import React, {useCallback, useEffect, useMemo, useState} from 'react';
+import {HeaderContainer, Screen, ScrollList} from '@axelor/aos-mobile-ui';
 import {useDispatch, useSelector, useTranslator} from '@axelor/aos-mobile-core';
 import {
   TourValidateButton,
@@ -32,13 +26,11 @@ import {
 } from '../../components';
 import {fetchTourById} from '../../features/tourSlice';
 import {searchTourLine} from '../../features/tourLineSlice';
-import {TourLine} from '../../types';
 
 const TourDetailsScreen = ({route}) => {
   const {tourId} = route.params;
 
   const I18n = useTranslator();
-  const Colors = useThemeColor();
   const dispatch = useDispatch();
 
   const {tour} = useSelector(state => state.tour);
@@ -46,6 +38,14 @@ const TourDetailsScreen = ({route}) => {
     useSelector(state => state.tourLine);
 
   const [selectedStatus, setSelectedStatus] = useState([]);
+
+  const adressList = useMemo(() => {
+    if (Array.isArray(tourLineList) && tourLineList.length > 0) {
+      return tourLineList?.map(line => ({address: line?.address?.fullName}));
+    } else {
+      return [];
+    }
+  }, [tourLineList]);
 
   useEffect(() => {
     dispatch(fetchTourById({tourId: tourId}));
@@ -74,23 +74,10 @@ const TourDetailsScreen = ({route}) => {
       fixedItems={<TourValidateButton tourId={tourId} />}>
       <HeaderContainer
         expandableFilter={false}
-        fixedItems={<TourDetailsHeader />}
-        chipComponent={
-          <ChipSelect
-            mode="switch"
-            onChangeValue={chiplist => setSelectedStatus(chiplist)}
-            selectionItems={[
-              {
-                title: I18n.t('Crm_Status_Planned'),
-                color: Colors.secondaryColor,
-                key: TourLine.status.Planned,
-              },
-              {
-                title: I18n.t('Crm_Status_Validated'),
-                color: Colors.successColor,
-                key: TourLine.status.Validated,
-              },
-            ]}
+        fixedItems={
+          <TourDetailsHeader
+            setSelectedStatus={setSelectedStatus}
+            adressList={adressList}
           />
         }
       />
