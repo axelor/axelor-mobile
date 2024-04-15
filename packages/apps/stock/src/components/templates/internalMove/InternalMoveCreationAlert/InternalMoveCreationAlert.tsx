@@ -78,6 +78,7 @@ const InternalMoveCreationAlert = ({
 
   return (
     <Alert
+      style={styles.alertContainer}
       visible={isAlertVisible}
       title={I18n.t('Stock_Products')}
       cancelButtonConfig={{
@@ -127,6 +128,9 @@ const styles = StyleSheet.create({
   },
   productQty: {
     flex: 2,
+  },
+  alertContainer: {
+    height: '70%',
   },
 });
 
