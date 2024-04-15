@@ -24,50 +24,61 @@ import {
   useTranslator,
 } from '@axelor/aos-mobile-core';
 import {AutoCompleteSearch} from '@axelor/aos-mobile-ui';
-import {fetchContact} from '../../../features/contactSlice';
+import {fetchLeads} from '../../../features/leadSlice';
 
-const ContactSearchBar = ({
-  placeholderKey = 'Crm_Contacts',
-  defaultValue = '',
+interface SearchBarProps {
+  style?: any;
+  placeholderKey?: string;
+  defaultValue?: string;
+  onChange?: (item: any) => void;
+  showDetailsPopup?: boolean;
+  navigate?: boolean;
+  oneFilter?: boolean;
+  onFetchDataAction?: (searchValue: string) => void;
+}
+
+const LeadSearchBar = ({
+  style = null,
+  placeholderKey = 'Crm_Leads',
+  defaultValue = null,
   onChange = () => {},
   showDetailsPopup = true,
   navigate = false,
   oneFilter = false,
-  isFocus = false,
   onFetchDataAction,
-}) => {
+}: SearchBarProps) => {
   const I18n = useTranslator();
   const dispatch = useDispatch();
 
-  const {contactList, loadingContact, moreLoading, isListEnd} = useSelector(
-    state => state.contact,
+  const {leadList, loadingLead, moreLoading, isListEnd} = useSelector(
+    (state: any) => state.lead,
   );
 
-  const fetchContactSearchBarAPI = useCallback(
+  const fetchLeadSearchBarAPI = useCallback(
     ({page = 0, searchValue}) => {
       onFetchDataAction && onFetchDataAction(searchValue);
-      dispatch(fetchContact({page, searchValue}));
+      dispatch((fetchLeads as any)({page, searchValue}));
     },
     [dispatch, onFetchDataAction],
   );
 
   return (
     <AutoCompleteSearch
-      objectList={contactList}
+      style={style}
+      objectList={leadList}
       value={defaultValue}
       onChangeValue={onChange}
-      fetchData={fetchContactSearchBarAPI}
+      fetchData={fetchLeadSearchBarAPI}
       displayValue={displayItemName}
       placeholder={I18n.t(placeholderKey)}
       showDetailsPopup={showDetailsPopup}
-      loadingList={loadingContact}
+      loadingList={loadingLead}
       moreLoading={moreLoading}
       isListEnd={isListEnd}
       navigate={navigate}
       oneFilter={oneFilter}
-      isFocus={isFocus}
     />
   );
 };
 
-export default ContactSearchBar;
+export default LeadSearchBar;
