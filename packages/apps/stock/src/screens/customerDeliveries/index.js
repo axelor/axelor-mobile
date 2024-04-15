@@ -43,6 +43,7 @@ export default {
   CustomerDeliveryLineDetailScreen: {
     title: 'Stock_CustomerDelivery',
     component: CustomerDeliveryLineDetailScreen,
+    actionID: 'stock_customerDelivery_lineDetails',
     options: {
       shadedHeader: false,
     },

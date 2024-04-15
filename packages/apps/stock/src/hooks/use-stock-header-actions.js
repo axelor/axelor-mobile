@@ -28,16 +28,20 @@ import {StockMove} from '../types';
 
 export const useStockHeaders = () => {
   useCustomerDeliveryDetailsActions();
+  useCustomerDeliveryLineDetailActions();
   useCustomerDeliveryLineListActions();
   useInternalMoveDetailsActions();
+  useInternalMoveLineDetailActions();
   useInternalMoveListActions();
   useInventoryPlannedDetailsActions();
   useInventoryStartedDetailsActions();
+  useInventoryLineDetailsActions();
   useProductDetailsActions();
   useProductStockDetailsActions();
   useStockCorrectionListActions();
   useStockCorrectionDetailsActions();
   useSupplierArrivalDetailsActions();
+  useSupplierArrivalLineDetailActions();
   useSupplierArrivalLineListActions();
 };
 
@@ -91,6 +95,34 @@ const useCustomerDeliveryLineListActions = () => {
   ]);
 };
 
+const useCustomerDeliveryLineDetailActions = () => {
+  const Colors = useThemeColor();
+  const navigation = useNavigation();
+  const I18n = useTranslator();
+
+  const {mobileSettings} = useSelector(state => state.appConfig);
+  const {productFromId: product} = useSelector(state => state.product);
+  const {customerDeliveryLine} = useSelector(
+    state => state.customerDeliveryLine,
+  );
+
+  useEffect(() => {
+    headerActionsProvider.registerModel('stock_customerDelivery_lineDetails', {
+      model: 'com.axelor.apps.stock.db.StockMoveLine',
+      modelId: customerDeliveryLine?.id,
+      disableMailMessages: !mobileSettings?.isTrackerMessageEnabled,
+      attachedFileScreenTitle: product.name,
+    });
+  }, [
+    Colors,
+    I18n,
+    customerDeliveryLine?.id,
+    mobileSettings?.isTrackerMessageEnabled,
+    navigation,
+    product.name,
+  ]);
+};
+
 const useInternalMoveDetailsActions = () => {
   const {mobileSettings} = useSelector(state => state.appConfig);
   const {internalMove} = useSelector(state => state.internalMove);
@@ -126,6 +158,32 @@ const useInternalMoveListActions = () => {
   }, [Colors, I18n, navigation]);
 };
 
+const useInternalMoveLineDetailActions = () => {
+  const Colors = useThemeColor();
+  const navigation = useNavigation();
+  const I18n = useTranslator();
+
+  const {mobileSettings} = useSelector(state => state.appConfig);
+  const {productFromId: product} = useSelector(state => state.product);
+  const {internalMoveLine} = useSelector(state => state.internalMoveLine);
+
+  useEffect(() => {
+    headerActionsProvider.registerModel('stock_internalMove_lineDetails', {
+      model: 'com.axelor.apps.stock.db.StockMoveLine',
+      modelId: internalMoveLine?.id,
+      disableMailMessages: !mobileSettings?.isTrackerMessageEnabled,
+      attachedFileScreenTitle: product.name,
+    });
+  }, [
+    Colors,
+    I18n,
+    internalMoveLine?.id,
+    mobileSettings?.isTrackerMessageEnabled,
+    navigation,
+    product.name,
+  ]);
+};
+
 const useInventoryPlannedDetailsActions = () => {
   const {mobileSettings} = useSelector(state => state.appConfig);
   const {inventory} = useSelector(state => state.inventory);
@@ -150,6 +208,21 @@ const useInventoryStartedDetailsActions = () => {
       disableMailMessages: !mobileSettings?.isTrackerMessageEnabled,
     });
   }, [mobileSettings, inventory]);
+};
+
+const useInventoryLineDetailsActions = () => {
+  const {mobileSettings} = useSelector(state => state.appConfig);
+  const {inventoryLine} = useSelector(state => state.inventoryLine);
+  const {productFromId} = useSelector(state => state.product);
+
+  useEffect(() => {
+    headerActionsProvider.registerModel('stock_inventory_lineDetails', {
+      model: 'com.axelor.apps.stock.db.InventoryLine',
+      modelId: inventoryLine?.id,
+      attachedFileScreenTitle: productFromId?.name,
+      disableMailMessages: !mobileSettings?.isTrackerMessageEnabled,
+    });
+  }, [mobileSettings, inventoryLine, productFromId]);
 };
 
 const useProductDetailsActions = () => {
@@ -263,5 +336,31 @@ const useSupplierArrivalLineListActions = () => {
     Colors.primaryColor.background,
     navigation,
     supplierArrival,
+  ]);
+};
+
+const useSupplierArrivalLineDetailActions = () => {
+  const Colors = useThemeColor();
+  const navigation = useNavigation();
+  const I18n = useTranslator();
+
+  const {mobileSettings} = useSelector(state => state.appConfig);
+  const {productFromId: product} = useSelector(state => state.product);
+  const {supplierArrivalLine} = useSelector(state => state.supplierArrivalLine);
+
+  useEffect(() => {
+    headerActionsProvider.registerModel('stock_supplierArrival_lineDetails', {
+      model: 'com.axelor.apps.stock.db.StockMoveLine',
+      modelId: supplierArrivalLine?.id,
+      disableMailMessages: !mobileSettings?.isTrackerMessageEnabled,
+      attachedFileScreenTitle: product.name,
+    });
+  }, [
+    Colors,
+    I18n,
+    supplierArrivalLine?.id,
+    mobileSettings?.isTrackerMessageEnabled,
+    navigation,
+    product.name,
   ]);
 };
