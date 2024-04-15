@@ -22,6 +22,20 @@ import {AutoCompleteSearch} from '@axelor/aos-mobile-ui';
 import {fetchContact} from '../../../features/contactSlice';
 import {displayItemFullname} from '../../../utils/displayers';
 
+interface SearchBarProps {
+  style?: any;
+  titleKey?: string;
+  placeholderKey?: string;
+  defaultValue?: string;
+  onChange?: (item: any) => void;
+  required?: boolean;
+  showDetailsPopup?: boolean;
+  navigate?: boolean;
+  oneFilter?: boolean;
+  showTitle?: boolean;
+  onFetchDataAction?: (searchValue: string) => void;
+}
+
 const ContactSearchBar = ({
   placeholderKey = 'Crm_Contacts',
   defaultValue = null,
@@ -29,24 +43,23 @@ const ContactSearchBar = ({
   showDetailsPopup = true,
   navigate = false,
   oneFilter = false,
-  isFocus = false,
   showTitle = true,
   style,
   titleKey = 'Crm_Contact',
   required,
   onFetchDataAction,
-}) => {
+}: SearchBarProps) => {
   const I18n = useTranslator();
   const dispatch = useDispatch();
 
   const {contactList, loadingContact, moreLoading, isListEnd} = useSelector(
-    state => state.contact,
+    (state: any) => state.contact,
   );
 
   const fetchContactSearchBarAPI = useCallback(
     ({page = 0, searchValue}) => {
       onFetchDataAction && onFetchDataAction(searchValue);
-      dispatch(fetchContact({page, searchValue}));
+      dispatch((fetchContact as any)({page, searchValue}));
     },
     [dispatch, onFetchDataAction],
   );
@@ -67,7 +80,6 @@ const ContactSearchBar = ({
       isListEnd={isListEnd}
       navigate={navigate}
       oneFilter={oneFilter}
-      isFocus={isFocus}
       style={style}
     />
   );

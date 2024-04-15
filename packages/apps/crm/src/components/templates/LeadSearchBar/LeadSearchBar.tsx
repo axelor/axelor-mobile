@@ -26,27 +26,36 @@ import {
 import {AutoCompleteSearch} from '@axelor/aos-mobile-ui';
 import {fetchLeads} from '../../../features/leadSlice';
 
+interface SearchBarProps {
+  placeholderKey?: string;
+  defaultValue?: string;
+  onChange?: (item: any) => void;
+  showDetailsPopup?: boolean;
+  navigate?: boolean;
+  oneFilter?: boolean;
+  onFetchDataAction?: (searchValue: string) => void;
+}
+
 const LeadSearchBar = ({
   placeholderKey = 'Crm_Leads',
-  defaultValue = '',
+  defaultValue = null,
   onChange = () => {},
   showDetailsPopup = true,
   navigate = false,
   oneFilter = false,
-  isFocus = false,
   onFetchDataAction,
-}) => {
+}: SearchBarProps) => {
   const I18n = useTranslator();
   const dispatch = useDispatch();
 
   const {leadList, loadingLead, moreLoading, isListEnd} = useSelector(
-    state => state.lead,
+    (state: any) => state.lead,
   );
 
   const fetchLeadSearchBarAPI = useCallback(
     ({page = 0, searchValue}) => {
       onFetchDataAction && onFetchDataAction(searchValue);
-      dispatch(fetchLeads({page, searchValue}));
+      dispatch((fetchLeads as any)({page, searchValue}));
     },
     [dispatch, onFetchDataAction],
   );
@@ -65,7 +74,6 @@ const LeadSearchBar = ({
       isListEnd={isListEnd}
       navigate={navigate}
       oneFilter={oneFilter}
-      isFocus={isFocus}
     />
   );
 };
