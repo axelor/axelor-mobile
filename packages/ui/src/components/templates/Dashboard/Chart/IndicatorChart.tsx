@@ -142,12 +142,11 @@ const getStyles = (color: ThemeColors) =>
       marginBottom: 10,
     },
     groupValue: {
-      marginLeft: 24,
-      maxWidth: '30%',
+      flex: 1,
     },
     groupLabel: {
-      marginRight: 24,
-      maxWidth: '40%',
+      flex: 1,
+      textAlign: 'right',
     },
     centerContent: {
       justifyContent: 'center',
@@ -159,6 +158,7 @@ const getStyles = (color: ThemeColors) =>
       backgroundColor: color.primaryColor.background,
       borderColor: color.primaryColor.background,
       paddingVertical: 0,
+      paddingHorizontal: 24,
       width: '90%',
       justifyContent: 'space-between',
     },
