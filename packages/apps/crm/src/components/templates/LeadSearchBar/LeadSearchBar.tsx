@@ -27,30 +27,29 @@ import {AutoCompleteSearch} from '@axelor/aos-mobile-ui';
 import {fetchLeads} from '../../../features/leadSlice';
 
 const LeadSearchBarAux = ({
-  style = null,
-  title = 'Crm_Leads',
-  defaultValue = '',
-  onChange = () => {},
-  required = false,
-  readonly = false,
-  showDetailsPopup = true,
-  navigate = false,
-  oneFilter = false,
-  isFocus = false,
-  showTitle = false,
+  style,
+  title,
+  defaultValue,
+  onChange,
+  readonly,
+  required,
+  showDetailsPopup,
+  navigate,
+  oneFilter,
+  showTitle,
   onFetchDataAction,
-}) => {
+}: SearchBarProps) => {
   const I18n = useTranslator();
   const dispatch = useDispatch();
 
   const {leadList, loadingLead, moreLoading, isListEnd} = useSelector(
-    state => state.lead,
+    (state: any) => state.lead,
   );
 
   const fetchLeadSearchBarAPI = useCallback(
     ({page = 0, searchValue}) => {
       onFetchDataAction && onFetchDataAction(searchValue);
-      dispatch(fetchLeads({page, searchValue}));
+      dispatch((fetchLeads as any)({page, searchValue}));
     },
     [dispatch, onFetchDataAction],
   );
@@ -71,27 +70,39 @@ const LeadSearchBarAux = ({
       isListEnd={isListEnd}
       navigate={navigate}
       oneFilter={oneFilter}
-      isFocus={isFocus}
       required={required}
       readonly={readonly}
     />
   );
 };
 
+interface SearchBarProps {
+  style?: any;
+  title?: string;
+  defaultValue?: string;
+  onChange?: (item: any) => void;
+  readonly?: boolean;
+  required?: boolean;
+  showDetailsPopup?: boolean;
+  navigate?: boolean;
+  oneFilter?: boolean;
+  showTitle?: boolean;
+  onFetchDataAction?: (searchValue: string) => void;
+}
+
 const LeadSearchBar = ({
   style = null,
-  readonly = false,
   title = 'Crm_Leads',
-  defaultValue = '',
+  defaultValue = null,
   onChange = () => {},
+  readonly = false,
   required = false,
   showDetailsPopup = true,
   navigate = false,
   oneFilter = false,
-  isFocus = false,
   showTitle = false,
-  onFetchDataAction = () => {},
-}) => {
+  onFetchDataAction,
+}: SearchBarProps) => {
   return (
     <LeadSearchBarAux
       style={style}
@@ -103,7 +114,6 @@ const LeadSearchBar = ({
       showDetailsPopup={showDetailsPopup}
       navigate={navigate}
       oneFilter={oneFilter}
-      isFocus={isFocus}
       showTitle={showTitle}
       onFetchDataAction={onFetchDataAction}
     />
