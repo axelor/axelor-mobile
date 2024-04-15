@@ -27,30 +27,29 @@ import {AutoCompleteSearch} from '@axelor/aos-mobile-ui';
 import {fetchContact} from '../../../features/contactSlice';
 
 const ContactSearchBarAux = ({
-  style = null,
-  title = 'Crm_Contacts',
-  defaultValue = null,
-  onChange = () => {},
-  required = false,
-  readonly = false,
-  showDetailsPopup = true,
-  navigate = false,
-  oneFilter = false,
-  isFocus = false,
-  showTitle = false,
+  style,
+  title,
+  defaultValue,
+  onChange,
+  readonly,
+  required,
+  showDetailsPopup,
+  navigate,
+  oneFilter,
+  showTitle,
   onFetchDataAction,
-}) => {
+}: SearchBarProps) => {
   const I18n = useTranslator();
   const dispatch = useDispatch();
 
   const {contactList, loadingContact, moreLoading, isListEnd} = useSelector(
-    state => state.contact,
+    (state: any) => state.contact,
   );
 
   const fetchContactSearchBarAPI = useCallback(
     ({page = 0, searchValue}) => {
       onFetchDataAction && onFetchDataAction(searchValue);
-      dispatch(fetchContact({page, searchValue}));
+      dispatch((fetchContact as any)({page, searchValue}));
     },
     [dispatch, onFetchDataAction],
   );
@@ -72,11 +71,24 @@ const ContactSearchBarAux = ({
       isListEnd={isListEnd}
       navigate={navigate}
       oneFilter={oneFilter}
-      isFocus={isFocus}
       style={style}
     />
   );
 };
+
+interface SearchBarProps {
+  style?: any;
+  title?: string;
+  defaultValue?: string;
+  onChange?: (item: any) => void;
+  readonly?: boolean;
+  required?: boolean;
+  showDetailsPopup?: boolean;
+  navigate?: boolean;
+  oneFilter?: boolean;
+  showTitle?: boolean;
+  onFetchDataAction?: (searchValue: string) => void;
+}
 
 const ContactSearchBar = ({
   style = null,
@@ -88,10 +100,9 @@ const ContactSearchBar = ({
   showDetailsPopup = true,
   navigate = false,
   oneFilter = false,
-  isFocus = false,
   showTitle = false,
-  onFetchDataAction = () => {},
-}) => {
+  onFetchDataAction,
+}: SearchBarProps) => {
   return (
     <ContactSearchBarAux
       style={style}
@@ -103,7 +114,6 @@ const ContactSearchBar = ({
       showDetailsPopup={showDetailsPopup}
       navigate={navigate}
       oneFilter={oneFilter}
-      isFocus={isFocus}
       showTitle={showTitle}
       onFetchDataAction={onFetchDataAction}
     />
