@@ -28,16 +28,20 @@ import {StockMove} from '../types';
 
 export const useStockHeaders = () => {
   useCustomerDeliveryDetailsActions();
+  useCustomerDeliveryLineDetailsActions();
   useCustomerDeliveryLineListActions();
   useInternalMoveDetailsActions();
+  useInternalMoveLineDetailsActions();
   useInternalMoveListActions();
   useInventoryPlannedDetailsActions();
   useInventoryStartedDetailsActions();
+  useInventoryLineDetailsActions();
   useProductDetailsActions();
   useProductStockDetailsActions();
   useStockCorrectionListActions();
   useStockCorrectionDetailsActions();
   useSupplierArrivalDetailsActions();
+  useSupplierArrivalLineDetailsActions();
   useSupplierArrivalLineListActions();
 };
 
@@ -91,6 +95,27 @@ const useCustomerDeliveryLineListActions = () => {
   ]);
 };
 
+const useCustomerDeliveryLineDetailsActions = () => {
+  const {mobileSettings} = useSelector(state => state.appConfig);
+  const {productFromId: product} = useSelector(state => state.product);
+  const {customerDeliveryLine} = useSelector(
+    state => state.customerDeliveryLine,
+  );
+
+  useEffect(() => {
+    headerActionsProvider.registerModel('stock_customerDelivery_lineDetails', {
+      model: 'com.axelor.apps.stock.db.StockMoveLine',
+      modelId: customerDeliveryLine?.id,
+      disableMailMessages: !mobileSettings?.isTrackerMessageEnabled,
+      attachedFileScreenTitle: product?.name,
+    });
+  }, [
+    customerDeliveryLine?.id,
+    mobileSettings?.isTrackerMessageEnabled,
+    product?.name,
+  ]);
+};
+
 const useInternalMoveDetailsActions = () => {
   const {mobileSettings} = useSelector(state => state.appConfig);
   const {internalMove} = useSelector(state => state.internalMove);
@@ -126,6 +151,25 @@ const useInternalMoveListActions = () => {
   }, [Colors, I18n, navigation]);
 };
 
+const useInternalMoveLineDetailsActions = () => {
+  const {mobileSettings} = useSelector(state => state.appConfig);
+  const {productFromId: product} = useSelector(state => state.product);
+  const {internalMoveLine} = useSelector(state => state.internalMoveLine);
+
+  useEffect(() => {
+    headerActionsProvider.registerModel('stock_internalMove_lineDetails', {
+      model: 'com.axelor.apps.stock.db.StockMoveLine',
+      modelId: internalMoveLine?.id,
+      disableMailMessages: !mobileSettings?.isTrackerMessageEnabled,
+      attachedFileScreenTitle: product?.name,
+    });
+  }, [
+    internalMoveLine?.id,
+    mobileSettings?.isTrackerMessageEnabled,
+    product?.name,
+  ]);
+};
+
 const useInventoryPlannedDetailsActions = () => {
   const {mobileSettings} = useSelector(state => state.appConfig);
   const {inventory} = useSelector(state => state.inventory);
@@ -150,6 +194,25 @@ const useInventoryStartedDetailsActions = () => {
       disableMailMessages: !mobileSettings?.isTrackerMessageEnabled,
     });
   }, [mobileSettings, inventory]);
+};
+
+const useInventoryLineDetailsActions = () => {
+  const {mobileSettings} = useSelector(state => state.appConfig);
+  const {productFromId: product} = useSelector(state => state.product);
+  const {inventoryLine} = useSelector(state => state.inventoryLine);
+
+  useEffect(() => {
+    headerActionsProvider.registerModel('stock_inventory_lineDetails', {
+      model: 'com.axelor.apps.stock.db.InventoryLine',
+      modelId: inventoryLine?.id,
+      disableMailMessages: !mobileSettings?.isTrackerMessageEnabled,
+      attachedFileScreenTitle: product?.name,
+    });
+  }, [
+    mobileSettings?.isTrackerMessageEnabled,
+    inventoryLine?.id,
+    product?.name,
+  ]);
 };
 
 const useProductDetailsActions = () => {
@@ -263,5 +326,24 @@ const useSupplierArrivalLineListActions = () => {
     Colors.primaryColor.background,
     navigation,
     supplierArrival,
+  ]);
+};
+
+const useSupplierArrivalLineDetailsActions = () => {
+  const {mobileSettings} = useSelector(state => state.appConfig);
+  const {productFromId: product} = useSelector(state => state.product);
+  const {supplierArrivalLine} = useSelector(state => state.supplierArrivalLine);
+
+  useEffect(() => {
+    headerActionsProvider.registerModel('stock_supplierArrival_lineDetails', {
+      model: 'com.axelor.apps.stock.db.StockMoveLine',
+      modelId: supplierArrivalLine?.id,
+      disableMailMessages: !mobileSettings?.isTrackerMessageEnabled,
+      attachedFileScreenTitle: product?.name,
+    });
+  }, [
+    supplierArrivalLine?.id,
+    mobileSettings?.isTrackerMessageEnabled,
+    product?.name,
   ]);
 };
