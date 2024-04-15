@@ -96,10 +96,6 @@ const useCustomerDeliveryLineListActions = () => {
 };
 
 const useCustomerDeliveryLineDetailsActions = () => {
-  const Colors = useThemeColor();
-  const navigation = useNavigation();
-  const I18n = useTranslator();
-
   const {mobileSettings} = useSelector(state => state.appConfig);
   const {productFromId: product} = useSelector(state => state.product);
   const {customerDeliveryLine} = useSelector(
@@ -111,15 +107,12 @@ const useCustomerDeliveryLineDetailsActions = () => {
       model: 'com.axelor.apps.stock.db.StockMoveLine',
       modelId: customerDeliveryLine?.id,
       disableMailMessages: !mobileSettings?.isTrackerMessageEnabled,
-      attachedFileScreenTitle: product.name,
+      attachedFileScreenTitle: product?.name,
     });
   }, [
-    Colors,
-    I18n,
     customerDeliveryLine?.id,
     mobileSettings?.isTrackerMessageEnabled,
-    navigation,
-    product.name,
+    product?.name,
   ]);
 };
 
@@ -159,10 +152,6 @@ const useInternalMoveListActions = () => {
 };
 
 const useInternalMoveLineDetailsActions = () => {
-  const Colors = useThemeColor();
-  const navigation = useNavigation();
-  const I18n = useTranslator();
-
   const {mobileSettings} = useSelector(state => state.appConfig);
   const {productFromId: product} = useSelector(state => state.product);
   const {internalMoveLine} = useSelector(state => state.internalMoveLine);
@@ -172,15 +161,12 @@ const useInternalMoveLineDetailsActions = () => {
       model: 'com.axelor.apps.stock.db.StockMoveLine',
       modelId: internalMoveLine?.id,
       disableMailMessages: !mobileSettings?.isTrackerMessageEnabled,
-      attachedFileScreenTitle: product.name,
+      attachedFileScreenTitle: product?.name,
     });
   }, [
-    Colors,
-    I18n,
     internalMoveLine?.id,
     mobileSettings?.isTrackerMessageEnabled,
-    navigation,
-    product.name,
+    product?.name,
   ]);
 };
 
@@ -212,17 +198,21 @@ const useInventoryStartedDetailsActions = () => {
 
 const useInventoryLineDetailsActions = () => {
   const {mobileSettings} = useSelector(state => state.appConfig);
+  const {productFromId: product} = useSelector(state => state.product);
   const {inventoryLine} = useSelector(state => state.inventoryLine);
-  const {productFromId} = useSelector(state => state.product);
 
   useEffect(() => {
     headerActionsProvider.registerModel('stock_inventory_lineDetails', {
       model: 'com.axelor.apps.stock.db.InventoryLine',
       modelId: inventoryLine?.id,
-      attachedFileScreenTitle: productFromId?.name,
       disableMailMessages: !mobileSettings?.isTrackerMessageEnabled,
+      attachedFileScreenTitle: product?.name,
     });
-  }, [mobileSettings, inventoryLine, productFromId]);
+  }, [
+    mobileSettings?.isTrackerMessageEnabled,
+    inventoryLine?.id,
+    product?.name,
+  ]);
 };
 
 const useProductDetailsActions = () => {
@@ -340,10 +330,6 @@ const useSupplierArrivalLineListActions = () => {
 };
 
 const useSupplierArrivalLineDetailsActions = () => {
-  const Colors = useThemeColor();
-  const navigation = useNavigation();
-  const I18n = useTranslator();
-
   const {mobileSettings} = useSelector(state => state.appConfig);
   const {productFromId: product} = useSelector(state => state.product);
   const {supplierArrivalLine} = useSelector(state => state.supplierArrivalLine);
@@ -353,14 +339,11 @@ const useSupplierArrivalLineDetailsActions = () => {
       model: 'com.axelor.apps.stock.db.StockMoveLine',
       modelId: supplierArrivalLine?.id,
       disableMailMessages: !mobileSettings?.isTrackerMessageEnabled,
-      attachedFileScreenTitle: product.name,
+      attachedFileScreenTitle: product?.name,
     });
   }, [
-    Colors,
-    I18n,
     supplierArrivalLine?.id,
     mobileSettings?.isTrackerMessageEnabled,
-    navigation,
-    product.name,
+    product?.name,
   ]);
 };
