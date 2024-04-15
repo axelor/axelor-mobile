@@ -28,10 +28,10 @@ import {StockMove} from '../types';
 
 export const useStockHeaders = () => {
   useCustomerDeliveryDetailsActions();
-  useCustomerDeliveryLineDetailActions();
+  useCustomerDeliveryLineDetailsActions();
   useCustomerDeliveryLineListActions();
   useInternalMoveDetailsActions();
-  useInternalMoveLineDetailActions();
+  useInternalMoveLineDetailsActions();
   useInternalMoveListActions();
   useInventoryPlannedDetailsActions();
   useInventoryStartedDetailsActions();
@@ -41,7 +41,7 @@ export const useStockHeaders = () => {
   useStockCorrectionListActions();
   useStockCorrectionDetailsActions();
   useSupplierArrivalDetailsActions();
-  useSupplierArrivalLineDetailActions();
+  useSupplierArrivalLineDetailsActions();
   useSupplierArrivalLineListActions();
 };
 
@@ -95,7 +95,7 @@ const useCustomerDeliveryLineListActions = () => {
   ]);
 };
 
-const useCustomerDeliveryLineDetailActions = () => {
+const useCustomerDeliveryLineDetailsActions = () => {
   const Colors = useThemeColor();
   const navigation = useNavigation();
   const I18n = useTranslator();
@@ -158,7 +158,7 @@ const useInternalMoveListActions = () => {
   }, [Colors, I18n, navigation]);
 };
 
-const useInternalMoveLineDetailActions = () => {
+const useInternalMoveLineDetailsActions = () => {
   const Colors = useThemeColor();
   const navigation = useNavigation();
   const I18n = useTranslator();
@@ -339,7 +339,7 @@ const useSupplierArrivalLineListActions = () => {
   ]);
 };
 
-const useSupplierArrivalLineDetailActions = () => {
+const useSupplierArrivalLineDetailsActions = () => {
   const Colors = useThemeColor();
   const navigation = useNavigation();
   const I18n = useTranslator();
