@@ -19,10 +19,11 @@
 import React, {useMemo} from 'react';
 import {StyleSheet, Dimensions, View} from 'react-native';
 import {ThemeColors, useThemeColor} from '../../../../theme';
-import {Card, Text} from '../../../atoms';
+import {Card, Icon, Text} from '../../../atoms';
 import {Data} from '../dashboard.helper';
-import {getCommonStyles} from '../../../../utils';
+import {checkNullString, getCommonStyles} from '../../../../utils';
 import {MARGIN, getContainerMinWidth, getContainerWidth} from './chart.helper';
+import {TextUnit} from '../../../molecules';
 
 interface IndicatorChartProps {
   style?: any;
@@ -62,46 +63,52 @@ const IndicatorChart = ({
   const renderIndicator = useMemo(() => {
     if (datasets?.length === 1) {
       return (
-        <>
-          <Text
-            style={styles.title}
-            textColor={Colors.primaryColor.background}
-            writingType="important">
-            {`${datasets[0].value} ${datasets[0].label}`}
-          </Text>
-          <Text style={styles.title}>{title}</Text>
-        </>
+        <View style={styles.containerOneValue}>
+          {!checkNullString(datasets[0].icon) && (
+            <Icon size={30} name={datasets[0].icon} />
+          )}
+          <View style={styles.containerValueTitle}>
+            <Text
+              style={styles.title}
+              textColor={Colors.primaryColor.background}
+              writingType="important">
+              {`${datasets[0].value} ${datasets[0].unit}`}
+            </Text>
+            <Text numberOfLines={2} style={styles.title}>
+              {datasets[0].title}
+            </Text>
+          </View>
+        </View>
       );
     } else if (datasets?.length > 1) {
       return (
         <>
           <Text style={styles.groupTitle}>{title}</Text>
           {datasets.map((data, index) => {
-            const isLabelAbsent = data.label == null;
+            const isIconAbsent = data.icon == null;
             return (
               <View
-                style={[
-                  commonStyles.button,
-                  styles.valueContainer,
-                  isLabelAbsent && styles.centerContent,
-                ]}
+                style={[commonStyles.button, styles.valueContainer]}
                 key={index}>
-                <Text
-                  numberOfLines={2}
-                  style={
-                    isLabelAbsent ? styles.oneValueCentered : styles.groupValue
-                  }
-                  writingType="important">
-                  {data.value}
-                </Text>
-                {!isLabelAbsent && (
-                  <Text
-                    numberOfLines={2}
-                    style={styles.groupLabel}
-                    writingType="important">
-                    {data.label}
+                <View style={styles.groupIconValue2}>
+                  {!isIconAbsent && (
+                    <Icon style={styles.icon} size={20} name={data.icon} />
+                  )}
+                  <Text numberOfLines={2} writingType="important">
+                    {data.title}
                   </Text>
-                )}
+                </View>
+                <View style={styles.textUnitContainer}>
+                  <TextUnit
+                    style={styles.textUnit}
+                    unit={data.unit}
+                    value={data.value}
+                    color={Colors.secondaryColor_dark}
+                    fontSize={16}
+                    numberOfLines={2}
+                    defaultColor={true}
+                  />
+                </View>
               </View>
             );
           })}
@@ -122,6 +129,9 @@ const IndicatorChart = ({
         style,
       ]}>
       {renderIndicator}
+      {!checkNullString(title) && datasets?.length === 1 && (
+        <Text style={styles.title}>{title}</Text>
+      )}
     </Container>
   );
 };
@@ -130,30 +140,43 @@ const getStyles = (color: ThemeColors) =>
   StyleSheet.create({
     container: {
       margin: MARGIN,
-      paddingHorizontal: 0,
       paddingRight: 5,
+      paddingLeft: 5,
       paddingVertical: 10,
     },
     title: {
       alignSelf: 'center',
       textAlign: 'center',
     },
+    containerOneValue: {
+      flexDirection: 'row',
+      justifyContent: 'space-evenly',
+    },
+    containerValueTitle: {
+      flexDirection: 'column',
+      paddingHorizontal: 10,
+    },
     groupTitle: {
       marginHorizontal: 24,
       marginBottom: 10,
     },
-    groupValue: {
+    groupIconValue: {
+      flexDirection: 'row',
+      alignItems: 'center',
+    },
+    groupIconValue2: {
+      flexDirection: 'row',
+      alignItems: 'center',
+      flex: 2,
+    },
+    icon: {
+      marginRight: '5%',
+    },
+    textUnitContainer: {
       flex: 1,
     },
-    groupLabel: {
-      flex: 1,
-      textAlign: 'right',
-    },
-    centerContent: {
-      justifyContent: 'center',
-    },
-    oneValueCentered: {
-      alignSelf: 'center',
+    textUnit: {
+      alignSelf: 'flex-end',
     },
     valueContainer: {
       backgroundColor: color.primaryColor.background_light,
@@ -161,6 +184,8 @@ const getStyles = (color: ThemeColors) =>
       paddingVertical: 0,
       paddingHorizontal: 24,
       width: '90%',
+      flexDirection: 'row',
+      alignItems: 'center',
       justifyContent: 'space-between',
     },
   });

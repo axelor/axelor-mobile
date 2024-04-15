@@ -27,6 +27,8 @@ interface TextUnitProps {
   color?: Color;
   fontSize?: number;
   style?: any;
+  numberOfLines?: number;
+  defaultColor?: boolean;
 }
 
 const TextUnit = ({
@@ -35,6 +37,8 @@ const TextUnit = ({
   color,
   fontSize = 22,
   style,
+  numberOfLines,
+  defaultColor = false,
 }: TextUnitProps) => {
   const Colors = useThemeColor();
 
@@ -42,9 +46,10 @@ const TextUnit = ({
 
   return (
     <Text
-      textColor={_color.background}
+      textColor={defaultColor ? Colors.text : _color.background}
       fontSize={fontSize}
-      style={[styles.text, style]}>
+      style={[styles.text, style]}
+      numberOfLines={numberOfLines}>
       {value} {unit}
     </Text>
   );
