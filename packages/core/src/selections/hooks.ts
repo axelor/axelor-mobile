@@ -20,7 +20,7 @@ import {useCallback, useMemo} from 'react';
 import {useThemeColor} from '@axelor/aos-mobile-ui';
 import {useTranslator} from '../i18n';
 import {SelectionHelpers, SelectionFields, Selection} from './types';
-import {formatTypes} from './format.helpers';
+import {formatTypes, getRandomColor} from './format.helpers';
 
 export const useTypes = (): {[modelKey: string]: SelectionFields} => {
   return useMemo(() => formatTypes(), []);
@@ -48,9 +48,21 @@ export const useTypeHelpers = (): SelectionHelpers => {
   const getItemColor = useCallback(
     (selection: Selection, value: any) => {
       if (Array.isArray(selection?.list) && selection.list.length > 0) {
-        const colorKey = selection.list.find(_i => _i.value === value)?.color;
+        const item = selection.list
+          .map((_i, idx) => ({content: _i, index: idx}))
+          .find(({content: _i}) => _i.value === value);
 
-        return Colors[colorKey] ?? Colors.primaryColor; // TODO: radnom
+        if (item == null) {
+          return null;
+        }
+
+        const colorKey = item.content.color?.toLowerCase();
+
+        return (
+          Object.entries(Colors).find(([key, _]) => {
+            return key.toLowerCase() === colorKey;
+          })?.[1] ?? getRandomColor(Colors, item.index)
+        );
       }
 
       return null;
@@ -60,7 +72,6 @@ export const useTypeHelpers = (): SelectionHelpers => {
 
   const getSelectionItems = useCallback(
     (selection: Selection) => {
-      console.log(selection);
       return (
         selection?.list?.map(_i => ({
           title: getItemTitle(selection, _i.value),

@@ -16,6 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+import {Color, ThemeColors} from '@axelor/aos-mobile-ui';
 import {getSelectionTypes} from './SelectionProvider';
 import {SelectionFields} from './types';
 
@@ -40,4 +41,12 @@ export function formatTypes(): {[modelKey: string]: SelectionFields} {
       return [getSelectionTitle(modelName), content];
     }),
   );
+}
+
+export function getRandomColor(Colors: ThemeColors, index: number): Color {
+  const values = Object.values(Colors).filter(
+    _color => typeof _color !== 'string',
+  );
+
+  return values[index % values.length];
 }
