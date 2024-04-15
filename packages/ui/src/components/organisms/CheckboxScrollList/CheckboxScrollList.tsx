@@ -90,7 +90,7 @@ const CheckboxScrollList = ({
   };
 
   return (
-    <>
+    <View style={styles.container}>
       <Checkbox
         style={[styles.checkbox, styleTopCheckbox]}
         styleTxt={styles.checkboxTxt}
@@ -122,11 +122,15 @@ const CheckboxScrollList = ({
         horizontal={horizontal}
         disabledRefresh={disabledRefresh}
       />
-    </>
+    </View>
   );
 };
 
 const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    width: '100%',
+  },
   checkbox: {
     width: '100%',
   },
