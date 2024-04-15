@@ -1,5 +1,5 @@
 {
-  "title": "TourDetailsScreen: add new button to see itinerary on Tour details",
+  "title": "TourDetailsScreen: add new button to see itinerary",
   "type": "feat",
   "packages": "crm"
 }

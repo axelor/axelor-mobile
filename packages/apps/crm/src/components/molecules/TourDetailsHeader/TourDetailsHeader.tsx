@@ -33,7 +33,13 @@ import {
 } from '@axelor/aos-mobile-core';
 import {TourLine} from '../../../types';
 
-const TourDetailsHeader = ({setSelectedStatus, adressList}) => {
+const TourDetailsHeader = ({
+  setSelectedStatus,
+  adressList,
+}: {
+  setSelectedStatus: (value: any) => void;
+  adressList: {address?: string; latitude?: number; longitude?: number}[];
+}) => {
   const I18n = useTranslator();
 
   const Colors = useThemeColor();
