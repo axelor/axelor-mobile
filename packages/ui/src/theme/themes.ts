@@ -39,6 +39,26 @@ export interface ThemeColors {
   warningColor: Color;
   inverseColor: Color;
   infoColor: Color;
+  red: Color;
+  pink: Color;
+  purple: Color;
+  deepPurple: Color;
+  indigo: Color;
+  blue: Color;
+  lightBlue: Color;
+  cyan: Color;
+  teal: Color;
+  green: Color;
+  lightGreen: Color;
+  lime: Color;
+  yellow: Color;
+  amber: Color;
+  orange: Color;
+  deepOrange: Color;
+  brown: Color;
+  grey: Color;
+  blueGrey: Color;
+  black: Color;
   text: string;
   placeholderTextColor: string;
 }
@@ -48,6 +68,109 @@ export interface Theme {
   name: string;
   colors: ThemeColors;
 }
+
+const bootstrapColors = {
+  red: {
+    background: '#DC3545',
+    background_light: '#EA868F',
+    foreground: '#000000',
+  },
+  pink: {
+    background: '#D63384',
+    background_light: '#E685B5',
+    foreground: '#000000',
+  },
+  purple: {
+    background: '#6F42C1',
+    background_light: '#A98EDA',
+    foreground: '#000000',
+  },
+  deepPurple: {
+    background: '#673AB7',
+    background_light: '#A489D4',
+    foreground: '#000000',
+  },
+  indigo: {
+    background: '#6610F2',
+    background_light: '#A370F7',
+    foreground: '#000000',
+  },
+  blue: {
+    background: '#0D6EFD',
+    background_light: '#6EA8FE',
+    foreground: '#000000',
+  },
+  lightBlue: {
+    background: '#03A9F4',
+    background_light: '#68CBF8',
+    foreground: '#000000',
+  },
+  cyan: {
+    background: '#0DCAF0',
+    background_light: '#6EDFF6',
+    foreground: '#000000',
+  },
+  teal: {
+    background: '#20C997',
+    background_light: '#79DFC1',
+    foreground: '#000000',
+  },
+  green: {
+    background: '#198754',
+    background_light: '#75B798',
+    foreground: '#000000',
+  },
+  lightGreen: {
+    background: '#8BC34A',
+    background_light: '#B9DB92',
+    foreground: '#000000',
+  },
+  lime: {
+    background: '#CDDC39',
+    background_light: '#E1EA88',
+    foreground: '#000000',
+  },
+  yellow: {
+    background: '#FFC107',
+    background_light: '#FFDA6A',
+    foreground: '#000000',
+  },
+  amber: {
+    background: '#FFC107',
+    background_light: '#FFDA6A',
+    foreground: '#000000',
+  },
+  orange: {
+    background: '#FD7E14',
+    background_light: '#FEB272',
+    foreground: '#000000',
+  },
+  deepOrange: {
+    background: '#FF5722',
+    background_light: '#FF9A7A',
+    foreground: '#000000',
+  },
+  brown: {
+    background: '#795548',
+    background_light: '#AF9991',
+    foreground: '#FFFFFF',
+  },
+  grey: {
+    background: '#6C757D',
+    background_light: '#A7ACB1',
+    foreground: '#000000',
+  },
+  blueGrey: {
+    background: '#607D8B',
+    background_light: '#A0B1B9',
+    foreground: '#000000',
+  },
+  black: {
+    background: '#000000',
+    background_light: '#666666',
+    foreground: '#FFFFFF',
+  },
+};
 
 export const lightTheme: Theme = {
   key: 'light',
@@ -125,6 +248,7 @@ export const lightTheme: Theme = {
       foreground: '#000000',
       background: '#36AEE1',
     },
+    ...bootstrapColors,
     text: '#000000',
     placeholderTextColor: '#C0C0C0',
   },
@@ -206,6 +330,7 @@ export const purpleTheme: Theme = {
       foreground: '#000000',
       background: '#26C6F9',
     },
+    ...bootstrapColors,
     text: '#333333',
     placeholderTextColor: '#C0C0C0',
   },
@@ -287,6 +412,7 @@ export const colorBlindTheme: Theme = {
       foreground: '#000000',
       background: '#36AEE1',
     },
+    ...bootstrapColors,
     text: '#000000',
     placeholderTextColor: '#C0C0C0',
   },
