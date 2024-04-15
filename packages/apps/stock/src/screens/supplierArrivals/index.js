@@ -43,6 +43,7 @@ export default {
   SupplierArrivalLineDetailScreen: {
     title: 'Stock_SupplierArrival',
     component: SupplierArrivalLineDetailScreen,
+    actionID: 'stock_supplierArrival_lineDetails',
     options: {
       shadedHeader: false,
     },

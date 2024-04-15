@@ -51,6 +51,7 @@ export default {
   InventoryLineDetailsScreen: {
     title: 'Stock_Inventory',
     component: InventoryLineDetailsScreen,
+    actionID: 'stock_inventory_lineDetails',
     options: {
       shadedHeader: false,
     },

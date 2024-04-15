@@ -46,6 +46,7 @@ export default {
     component: InternalMoveLineCreationScreen,
   },
   InternalMoveLineDetailsScreen: {
+    actionID: 'stock_internalMove_lineDetails',
     title: 'Stock_InternalMove',
     component: InternalMoveLineDetailsScreen,
     options: {
