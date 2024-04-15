@@ -1,0 +1,5 @@
+{
+  "title": "LineDetailsScreen: add header action",
+  "type": "fix",
+  "packages": "stock"
+}
