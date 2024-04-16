@@ -1,0 +1,5 @@
+{
+  "title": "Internal move creation: add possibility to modify quantity of a line",
+  "type": "feat",
+  "packages": "stock"
+}
