@@ -54,6 +54,7 @@ import {
   filterAuthorizedDashboardMenus,
 } from '../dashboards/menu.helpers';
 import {fetchDashboardConfigs} from '../features/mobileDashboardSlice';
+import {fetchWebViewConfigs} from '../features/mobileWebViewSlice';
 import {usePermissionsFetcher} from '../permissions';
 import {navigationInformations} from './NavigationInformationsProvider';
 
@@ -70,6 +71,7 @@ const Navigator = ({modules, mainMenu, onRefresh, versionCheckConfig}) => {
   const storeState = useSelector(state => state.appConfig);
   const {user} = useSelector(state => state.user);
   const {dashboardConfigs} = useSelector(state => state.mobileDashboard);
+  const {webViewConfigs} = useSelector(state => state.mobileWebView);
   const {mobileSettings} = useSelector(state => state.appConfig);
   const {metaModules} = useSelector(state => state.metaModule);
 
@@ -77,6 +79,8 @@ const Navigator = ({modules, mainMenu, onRefresh, versionCheckConfig}) => {
   const Colors = useThemeColor();
   const dispatch = useDispatch();
   const fetchAllPermission = usePermissionsFetcher();
+
+  console.log(webViewConfigs);
 
   const {screens: dashboardScreeens, menus: dashboardMenusConfig} = useMemo(
     () => createDashboardScreens(dashboardConfigs),
@@ -131,6 +135,7 @@ const Navigator = ({modules, mainMenu, onRefresh, versionCheckConfig}) => {
   useEffect(() => {
     dispatch(fetchMetaModules());
     dispatch(fetchDashboardConfigs());
+    dispatch(fetchWebViewConfigs());
     fetchAllPermission();
   }, [dispatch, fetchAllPermission]);
 

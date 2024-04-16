@@ -187,5 +187,6 @@
   "Base_SliceAction_UpdateJsonFieldsObject": "mise à jour des champs studio de l'objet",
   "Base_SliceAction_FetchAnomalies": "récupération des anomalies d'un object",
   "Base_SliceAction_SearchUser": "récupération des utilisateurs",
-  "Base_SliceAction_FetchDashboardConfigs": "récupération des configurations de tableaux de bord"
+  "Base_SliceAction_FetchDashboardConfigs": "récupération des configurations de tableaux de bord",
+  "Base_SliceAction_FetchWebViewConfigs": "récupération des configurations de vues web"
 }
