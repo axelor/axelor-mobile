@@ -17,6 +17,7 @@
  */
 
 import React, {useCallback, useEffect, useState} from 'react';
+import {Dimensions, StyleSheet, View} from 'react-native';
 import {
   ChipSelect,
   HeaderContainer,
@@ -28,6 +29,7 @@ import {useDispatch, useSelector, useTranslator} from '@axelor/aos-mobile-core';
 import {
   TourValidateButton,
   TourDetailsHeader,
+  TourItineraryButton,
   TourLineActionCard,
 } from '../../components';
 import {fetchTourById} from '../../features/tourSlice';
@@ -76,22 +78,16 @@ const TourDetailsScreen = ({route}) => {
         expandableFilter={false}
         fixedItems={<TourDetailsHeader />}
         chipComponent={
-          <ChipSelect
-            mode="switch"
-            onChangeValue={chiplist => setSelectedStatus(chiplist)}
-            selectionItems={[
-              {
-                title: I18n.t('Crm_Status_Planned'),
-                color: Colors.secondaryColor,
-                key: TourLine.status.Planned,
-              },
-              {
-                title: I18n.t('Crm_Status_Validated'),
-                color: Colors.successColor,
-                key: TourLine.status.Validated,
-              },
-            ]}
-          />
+          <View style={styles.chipContainer}>
+            <ChipSelect
+              style={styles.chipSelect}
+              width={Dimensions.get('window').width * 0.4}
+              mode="switch"
+              onChangeValue={setSelectedStatus}
+              selectionItems={TourLine.getStatusList(Colors, I18n)}
+            />
+            <TourItineraryButton />
+          </View>
         }
       />
       <ScrollList
@@ -115,5 +111,16 @@ const TourDetailsScreen = ({route}) => {
     </Screen>
   );
 };
+
+const styles = StyleSheet.create({
+  chipContainer: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    marginHorizontal: 12,
+  },
+  chipSelect: {
+    marginHorizontal: 0,
+  },
+});
 
 export default TourDetailsScreen;
