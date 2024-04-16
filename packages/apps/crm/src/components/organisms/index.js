@@ -23,6 +23,7 @@ export {default as DropdownEventView} from './DropdownEventView/DropdownEventVie
 export {default as DropdownGeneralView} from './DropdownGeneralView/DropdownGeneralView';
 export {default as DropdownOpportunityView} from './DropdownOpportunityView/DropdownOpportunityView';
 export {default as EditButton} from './EditButton/EditButton';
+export {default as TourItineraryButton} from './TourItineraryButton/TourItineraryButton';
 export {default as TourLineActionCard} from './TourLineActionCard/TourLineActionCard';
 
 export * from './Client';
