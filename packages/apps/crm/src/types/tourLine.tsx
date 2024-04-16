@@ -17,6 +17,7 @@
  */
 
 import {Color, ThemeColors} from '@axelor/aos-mobile-ui';
+import {TranslatorProps} from '@axelor/aos-mobile-core';
 
 class TourLineType {
   static status = {
@@ -36,6 +37,14 @@ class TourLineType {
         );
         return null;
     }
+  };
+
+  static getStatusList = (Colors: ThemeColors, I18n: TranslatorProps) => {
+    return Object.entries(this.status).map(([key, value]) => ({
+      title: I18n.t(`Crm_Status_${key}`),
+      color: this.getBorderColor(value, Colors),
+      key: value,
+    }));
   };
 }
 
