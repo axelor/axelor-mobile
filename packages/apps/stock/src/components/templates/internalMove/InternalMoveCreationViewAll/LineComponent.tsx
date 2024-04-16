@@ -18,28 +18,43 @@
 
 import React from 'react';
 import {StyleSheet, View} from 'react-native';
-import {Icon, Text} from '@axelor/aos-mobile-ui';
+import {Icon, Text, useThemeColor} from '@axelor/aos-mobile-ui';
 
 const LineComponent = ({
   line,
+  isSelected,
   setLines,
   handleEditLine,
 }: {
   line: any;
+  isSelected: boolean;
   setLines: (fct: (lines: any[]) => any[]) => void;
   handleEditLine: (line: any) => void;
 }) => {
+  const Colors = useThemeColor();
+
   return (
     <View style={styles.container}>
-      <Text style={styles.productName}>{line.product.name}</Text>
-      <Text style={styles.productQty}>
+      <Text
+        style={styles.productName}
+        writingType={isSelected ? 'title' : null}
+        textColor={isSelected ? Colors.secondaryColor.background : null}
+        fontSize={16}>
+        {line.product.name}
+      </Text>
+      <Text
+        style={styles.productQty}
+        writingType={isSelected ? 'title' : null}
+        textColor={isSelected ? Colors.secondaryColor.background : null}
+        fontSize={16}>
         {line.realQty} {line.unit.name}
       </Text>
       <Icon
         style={styles.icon}
         name="pencil-fill"
         size={16}
-        touchable
+        touchable={!isSelected}
+        color={isSelected ? Colors.secondaryColor.background : null}
         onPress={() => handleEditLine(line)}
       />
       <Icon

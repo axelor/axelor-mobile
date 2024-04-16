@@ -35,6 +35,7 @@ interface InternalMoveCreationButtonsProps {
   lines: any[];
   toStockLocation: any;
   movedQty: number;
+  isEditionMode: boolean;
   addLine: () => void;
 }
 
@@ -45,6 +46,7 @@ const InternalMoveCreationButtons = ({
   lines,
   toStockLocation,
   movedQty,
+  isEditionMode,
   addLine,
 }: InternalMoveCreationButtonsProps) => {
   const Colors = useThemeColor();
@@ -81,8 +83,8 @@ const InternalMoveCreationButtons = ({
       <View style={styles.container}>
         {step === InternalMoveCreation.step.validateLine && (
           <Button
-            title={I18n.t('Base_Add')}
-            iconName="plus-lg"
+            title={I18n.t(isEditionMode ? 'Base_Save' : 'Base_Add')}
+            iconName={isEditionMode ? null : 'plus-lg'}
             color={Colors.progressColor}
             width="45%"
             disabled={movedQty === 0}

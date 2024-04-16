@@ -29,6 +29,7 @@ import LineComponent from './LineComponent';
 
 interface InternalMoveCreationViewAllProps {
   lines: any[];
+  currentLineId: number;
   setLines: (fct: (lines: any[]) => any[]) => void;
   setIsAlertVisible: (visible: boolean) => void;
   handleEditLine: (line: any) => void;
@@ -36,6 +37,7 @@ interface InternalMoveCreationViewAllProps {
 
 const InternalMoveCreationViewAll = ({
   lines,
+  currentLineId,
   setLines,
   setIsAlertVisible,
   handleEditLine,
@@ -62,6 +64,7 @@ const InternalMoveCreationViewAll = ({
         return (
           <LineComponent
             key={index}
+            isSelected={currentLineId === line.id}
             line={line}
             setLines={setLines}
             handleEditLine={handleEditLine}

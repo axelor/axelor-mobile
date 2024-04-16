@@ -16,7 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import React, {useCallback, useEffect, useState} from 'react';
+import React, {useCallback, useEffect, useMemo, useState} from 'react';
 import {KeyboardAvoidingScrollView, Screen} from '@axelor/aos-mobile-ui';
 import {
   AvailableProductsSearchBar,
@@ -50,14 +50,17 @@ const InternalMoveCreationScreen = () => {
       const indexLine = newLines.findIndex(line => line.id === newLine?.id);
 
       if (indexLine >= 0) {
-        const prevLineQty = newLines[indexLine].realQty;
-        newLines[indexLine].realQty =
-          newLine.realQty > 0 ? movedQty : prevLineQty + movedQty;
+        if (isEditionMode) {
+          newLines[indexLine].realQty = movedQty;
+        } else {
+          newLines[indexLine].realQty += movedQty;
+        }
       } else {
         newLines.push({
           product: newLine?.product,
           trackingNumber: newLine?.trackingNumber,
           realQty: movedQty,
+          currentQty: newLine?.currentQty,
           unit: newLine?.product?.unit,
           id: newLine?.id,
         });
@@ -139,6 +142,12 @@ const InternalMoveCreationScreen = () => {
     }
   }, [currentStep, lines]);
 
+  const isEditionMode = useMemo(
+    () =>
+      newLine?.realQty > 0 && lines.find(({id}) => id === newLine.id) != null,
+    [lines, newLine],
+  );
+
   return (
     <Screen
       fixedItems={
@@ -149,6 +158,7 @@ const InternalMoveCreationScreen = () => {
           lines={lines}
           toStockLocation={toStockLocation}
           movedQty={movedQty}
+          isEditionMode={isEditionMode}
           addLine={handleAddLine}
         />
       }>
@@ -164,6 +174,7 @@ const InternalMoveCreationScreen = () => {
         {currentStep >= InternalMoveCreation.step.addLine && (
           <InternalMoveCreationViewAll
             lines={lines}
+            currentLineId={isEditionMode ? newLine.id : null}
             setLines={setLines}
             setIsAlertVisible={setIsAlertVisible}
             handleEditLine={handleEditLine}
@@ -186,7 +197,7 @@ const InternalMoveCreationScreen = () => {
             cancelMove={() => handleProductChange(null)}
             productName={newLine?.product?.name}
             trackingNumber={newLine?.trackingNumber?.trackingNumberSeq}
-            availableQty={newLine?.product?.currentQty}
+            availableQty={newLine?.currentQty}
             productUnit={newLine?.product?.unit?.name}
           />
         )}
