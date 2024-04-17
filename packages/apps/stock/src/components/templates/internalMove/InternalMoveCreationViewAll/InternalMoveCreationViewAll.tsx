@@ -20,23 +20,27 @@ import React from 'react';
 import {StyleSheet, View} from 'react-native';
 import {useTranslator} from '@axelor/aos-mobile-core';
 import {
-  Icon,
   NumberBubble,
   Text,
   useThemeColor,
   ViewAllContainer,
 } from '@axelor/aos-mobile-ui';
+import LineComponent from './LineComponent';
 
 interface InternalMoveCreationViewAllProps {
   lines: any[];
+  currentLineId: number;
   setLines: (fct: (lines: any[]) => any[]) => void;
   setIsAlertVisible: (visible: boolean) => void;
+  handleEditLine: (line: any) => void;
 }
 
 const InternalMoveCreationViewAll = ({
   lines,
+  currentLineId,
   setLines,
   setIsAlertVisible,
+  handleEditLine,
 }: InternalMoveCreationViewAllProps) => {
   const Colors = useThemeColor();
   const I18n = useTranslator();
@@ -58,22 +62,13 @@ const InternalMoveCreationViewAll = ({
       </View>
       {lines.slice(0, 3).map((line, index) => {
         return (
-          <View style={styles.lineContainer} key={index}>
-            <Text style={styles.productName}>{line.product.name}</Text>
-            <Text style={styles.productQty}>
-              {line.realQty} {line.unit.name}
-            </Text>
-            <Icon
-              name="x-lg"
-              size={20}
-              touchable
-              onPress={() =>
-                setLines(prevLines =>
-                  prevLines.filter(_line => _line.id !== line.id),
-                )
-              }
-            />
-          </View>
+          <LineComponent
+            key={index}
+            isSelected={currentLineId === line.id}
+            line={line}
+            setLines={setLines}
+            handleEditLine={handleEditLine}
+          />
         );
       })}
     </ViewAllContainer>
@@ -91,17 +86,6 @@ const styles = StyleSheet.create({
   },
   numberBubble: {
     marginLeft: 10,
-  },
-  lineContainer: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    marginTop: 5,
-  },
-  productName: {
-    flex: 4,
-  },
-  productQty: {
-    flex: 2,
   },
 });
 
