@@ -79,15 +79,12 @@ export const WebViewScreen = ({webViewId}: WebViewScreenProps) => {
 
   return (
     <WebView
-      baseUrl={
-        webViewData?.url != null ? webViewData?.url : 'https://www.notion.so/'
+      baseUrl={webViewData?.url != null ? webViewData?.url : null}
+      path={
+        webViewData?.metaAction != null
+          ? `#/ds/${webViewData?.metaAction?.name}`
+          : ''
       }
-      path="/hr/timesheet/"
-      queryParams={{
-        timesheetId: 1,
-        showActivity: true,
-        dailyLimit: 0,
-      }}
     />
   );
 };
