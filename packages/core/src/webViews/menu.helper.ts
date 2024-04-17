@@ -16,11 +16,11 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import {Menu, Screen} from '../app';
-import {createDashboardActionID} from './display.helpers';
-import {DashboardScreen} from './view';
+import {Menu, Module, Screen} from '../app';
+import {createWebViewActionID} from './display.helpers';
+import {WebViewScreen} from './view';
 
-type DashboardMenuConfig = {
+type WebViewMenuConfig = {
   [menuKey: string]: {menu: Menu; configRoles: any[]};
 };
 
@@ -33,47 +33,47 @@ type Screens = {
 };
 
 const createScreenComponent = id => {
-  return props => DashboardScreen({...props, dashboardId: id});
+  return props => WebViewScreen({...props, webViewId: id});
 };
 
-export const createDashboardScreens = (
-  dashboardConfigs: {
+export const createWebViewScreens = (
+  webViewConfigs: {
     id: number;
     appName: string;
-    isCustom: boolean;
+    isAosWebView: boolean;
     menuTitle?: string;
     iconName?: string;
     menuOrder?: number;
     authorizedRoleSet: any[];
   }[],
-): {menus: DashboardMenuConfig; screens: Screens} => {
+): {menus: WebViewMenuConfig; screens: Screens} => {
   const screens: Screens = {};
-  const menus: DashboardMenuConfig = {};
+  const menus: WebViewMenuConfig = {};
 
-  if (Array.isArray(dashboardConfigs) && dashboardConfigs.length > 0) {
-    dashboardConfigs.forEach(
+  if (Array.isArray(webViewConfigs) && webViewConfigs.length > 0) {
+    webViewConfigs.forEach(
       ({
         id,
         appName,
-        isCustom = false,
+        isAosWebView = false,
         menuTitle,
         iconName,
         menuOrder,
         authorizedRoleSet = [],
       }) => {
-        const config = isCustom
+        const config = isAosWebView
           ? {
-              title: menuTitle ?? 'Base_Dashboard',
-              icon: iconName ?? 'graph-up',
-              order: menuOrder,
+              title: menuTitle ?? 'Base_WebView',
+              icon: iconName ?? 'layers',
+              order: menuOrder ?? 99,
             }
-          : {title: 'Base_Dashboard', icon: 'graph-up', order: -10};
-        const screenKey = `Dashboard_${appName}_${id}`;
+          : {title: 'Base_WebView', icon: 'layers', order: 99};
+        const screenKey = `WebView_${appName}_${id}`;
 
         screens[screenKey] = {
           title: config.title,
           component: createScreenComponent(id),
-          actionID: createDashboardActionID(id),
+          actionID: createWebViewActionID(id),
         } as Screen;
 
         const _menu: Menu = {
@@ -86,10 +86,9 @@ export const createDashboardScreens = (
             downToVersion: '8.0.0',
           },
           screen: screenKey,
-          isDefault: true,
         };
 
-        menus[`${appName}_menu_dashboard${id}`] = {
+        menus[`${appName}_menu_webView${id}`] = {
           menu: _menu,
           configRoles: authorizedRoleSet,
         };
@@ -100,13 +99,13 @@ export const createDashboardScreens = (
   return {menus, screens};
 };
 
-export const filterAuthorizedDashboardMenus = (
-  dashboardConfigs: DashboardMenuConfig,
+export const filterAuthorizedWebViewMenus = (
+  webViewConfigs: WebViewMenuConfig,
   {roles: userRoles}: {roles: any[]},
 ): Menus => {
   const menus: Menus = {};
 
-  Object.entries(dashboardConfigs)
+  Object.entries(webViewConfigs)
     .filter(([_, {configRoles: authorizedRoleSet}]) => {
       if (!Array.isArray(authorizedRoleSet) || authorizedRoleSet.length === 0) {
         return true;
@@ -123,4 +122,28 @@ export const filterAuthorizedDashboardMenus = (
     });
 
   return menus;
+};
+
+export const addMenusToModules = (
+  modules: Module[],
+  ...menusArray: Menus[]
+) => {
+  return modules.map(_module => {
+    let updatedMenus = _module.menus ?? {};
+
+    menusArray.forEach(menus => {
+      const associatedMenus = Object.fromEntries(
+        Object.entries(menus).filter(
+          ([, menuDetails]) => menuDetails.parent === _module.name,
+        ),
+      );
+
+      updatedMenus = {...updatedMenus, ...associatedMenus};
+    });
+
+    return {
+      ..._module,
+      menus: updatedMenus,
+    };
+  });
 };

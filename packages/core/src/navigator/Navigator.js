@@ -41,6 +41,7 @@ import {
   getMenuTitle,
   hasSubMenus,
   formatMenus,
+  addMenusToModules,
 } from './menu.helper';
 import useTranslator from '../i18n/hooks/use-translator';
 import {useDispatch, useSelector} from 'react-redux';
@@ -49,7 +50,6 @@ import Header from './drawer/Header';
 import {fetchMetaModules} from '../features/metaModuleSlice';
 import {fetchRequiredConfig} from '../features/appConfigSlice';
 import {
-  addDashboardMenus,
   createDashboardScreens,
   filterAuthorizedDashboardMenus,
 } from '../dashboards/menu.helpers';
@@ -57,6 +57,10 @@ import {fetchDashboardConfigs} from '../features/mobileDashboardSlice';
 import {fetchWebViewConfigs} from '../features/mobileWebViewSlice';
 import {usePermissionsFetcher} from '../permissions';
 import {navigationInformations} from './NavigationInformationsProvider';
+import {
+  createWebViewScreens,
+  filterAuthorizedWebViewMenus,
+} from '../webViews/menu.helper';
 
 const Drawer = createDrawerNavigator();
 const Stack = createStackNavigator();
@@ -80,23 +84,27 @@ const Navigator = ({modules, mainMenu, onRefresh, versionCheckConfig}) => {
   const dispatch = useDispatch();
   const fetchAllPermission = usePermissionsFetcher();
 
-  console.log(webViewConfigs);
-
   const {screens: dashboardScreeens, menus: dashboardMenusConfig} = useMemo(
     () => createDashboardScreens(dashboardConfigs),
     [dashboardConfigs],
+  );
+
+  const {screens: webViewScreens, menus: webViewMenusConfig} = useMemo(
+    () => createWebViewScreens(webViewConfigs),
+    [webViewConfigs],
   );
 
   const enabledModule = useMemo(
     () =>
       manageWebCompatibility(
         manageWebConfig(
-          addDashboardMenus(
+          addMenusToModules(
             manageOverridingMenus(
               manageSubMenusOverriding(
                 checkModulesMenusAccessibility(modules, mobileSettings?.apps),
               ),
             ),
+            filterAuthorizedWebViewMenus(webViewMenusConfig, user),
             filterAuthorizedDashboardMenus(dashboardMenusConfig, user),
           ),
           storeState,
@@ -105,6 +113,7 @@ const Navigator = ({modules, mainMenu, onRefresh, versionCheckConfig}) => {
       ),
     [
       dashboardMenusConfig,
+      webViewMenusConfig,
       metaModules,
       mobileSettings?.apps,
       modules,
@@ -163,8 +172,9 @@ const Navigator = ({modules, mainMenu, onRefresh, versionCheckConfig}) => {
       modules.reduce((screens, module) => ({...screens, ...module.screens}), {
         ...BaseScreen,
         ...dashboardScreeens,
+        ...webViewScreens,
       }),
-    [dashboardScreeens, modules],
+    [dashboardScreeens, webViewScreens, modules],
   );
 
   useEffect(() => {

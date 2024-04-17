@@ -156,6 +156,7 @@
   "Base_FormAction_Refresh": "Actualiser",
   "Base_FormAction_Reset": "Réinitialiser",
   "Base_SelectAll": "Tout sélectionner",
+  "Base_WebView": "Vue web",
   "Base_Dashboard": "Tableau de bord",
   "Base_Dashboard_Misconfigured": "Ce tableau de bord est mal configuré, veuillez contacter votre administrateur.",
   "Base_Dashboard_RefreshConfig": "Actualiser le tableau de bord",
