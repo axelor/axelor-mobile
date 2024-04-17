@@ -25,10 +25,6 @@ interface WebViewScreenProps {
   chartWidth?: number;
 }
 
-export const WebViewScreen = ({
-  dashboardId,
-  hideCardBackground,
-  chartWidth,
-}: WebViewScreenProps) => {
+export const WebViewScreen = ({}: WebViewScreenProps) => {
   return <Text>test</Text>;
 };
