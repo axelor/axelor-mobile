@@ -1,5 +1,0 @@
-{
-  "languages": ["fr", "en"],
-  "sourceDir": "./src",
-  "outputDir": "./src/i18n/translations"
-}
