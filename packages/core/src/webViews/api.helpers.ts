@@ -23,3 +23,9 @@ export async function fetchWebViewConfigs() {
     url: 'ws/rest/com.axelor.apps.mobilesettings.db.MobileWebView',
   });
 }
+
+export async function fetchWebViewById({mobileWebViewId}) {
+  return axiosApiProvider.get({
+    url: `ws/rest/com.axelor.apps.mobilesettings.db.MobileWebView/${mobileWebViewId}`,
+  });
+}

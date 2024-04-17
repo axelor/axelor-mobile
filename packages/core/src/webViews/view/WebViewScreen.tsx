@@ -16,15 +16,78 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import React from 'react';
-import {Text} from '@axelor/aos-mobile-ui';
+import React, {useCallback, useEffect, useState} from 'react';
+import {WebView} from '../../components';
+import {fetchWebViewById} from '../api.helpers';
+import {ActivityIndicator} from 'react-native';
+import {headerActionsProvider} from '../../header';
+import {createWebViewActionID} from '../display.helpers';
+import {useTranslator} from '../../i18n';
 
 interface WebViewScreenProps {
-  dashboardId: number;
+  webViewId: number;
   hideCardBackground?: boolean;
   chartWidth?: number;
 }
 
-export const WebViewScreen = ({}: WebViewScreenProps) => {
-  return <Text>test</Text>;
+export const WebViewScreen = ({webViewId}: WebViewScreenProps) => {
+  const I18n = useTranslator();
+
+  const [webViewData, setWebViewData] = useState<any>({});
+  const [loading, setLoading] = useState<boolean>(false);
+
+  const refresh = useCallback(() => {
+    setLoading(true);
+    fetchWebViewById({mobileWebViewId: webViewId})
+      .then(response => {
+        setWebViewData(response?.data?.data[0]);
+      })
+      .catch(e => console.log(e))
+      .finally(() => setLoading(false));
+  }, [webViewId]);
+
+  useEffect(() => {
+    let isMounted = true;
+
+    if (isMounted) {
+      refresh();
+    }
+
+    return () => {
+      isMounted = false;
+    };
+  }, [refresh]);
+
+  useEffect(() => {
+    headerActionsProvider.registerModel(createWebViewActionID(webViewId), {
+      actions: [
+        {
+          key: 'refreshConfig',
+          order: 10,
+          showInHeader: false,
+          iconName: 'arrow-repeat',
+          title: I18n.t('Base_WebView_RefreshConfig'),
+          onPress: refresh,
+        },
+      ],
+    });
+  }, [I18n, webViewId, refresh]);
+
+  if (loading) {
+    return <ActivityIndicator size="large" />;
+  }
+
+  return (
+    <WebView
+      baseUrl={
+        webViewData?.url != null ? webViewData?.url : 'https://www.notion.so/'
+      }
+      path="/hr/timesheet/"
+      queryParams={{
+        timesheetId: 1,
+        showActivity: true,
+        dailyLimit: 0,
+      }}
+    />
+  );
 };

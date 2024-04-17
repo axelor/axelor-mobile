@@ -160,6 +160,7 @@
   "Base_Dashboard": "Dashboard",
   "Base_Dashboard_Misconfigured": "This dashboard is misconfigured, please contact your administrator.",
   "Base_Dashboard_RefreshConfig": "Refresh dashboard",
+  "Base_WebView_RefreshConfig": "Refresh webView",
   "Base_AssignedToMe": "Assigned to me",
   "Base_StartDate": "Start date",
   "Base_EndDate": "End date",
