@@ -32,7 +32,7 @@
     "@types/react": "18.2.65",
     "cpx2": "^4.2.0",
     "eslint": "^7.32.0",
-    "metro-react-native-babel-preset": "^0.72.3",
+    "metro-react-native-babel-preset": "0.72.4",
     "prettier": "^2.7.1",
     "react": "18.2.0"
   },
