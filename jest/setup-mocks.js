@@ -54,6 +54,21 @@ jest.mock('react-native-device-info', () => ({
   getManufacturer: 'FAKE-MANUFACTURER',
 }));
 
+jest.mock('react-native/Libraries/TurboModule/TurboModuleRegistry', () => {
+  const turboModuleRegistry = jest.requireActual(
+    'react-native/Libraries/TurboModule/TurboModuleRegistry',
+  );
+  return {
+    ...turboModuleRegistry,
+    getEnforcing: name => {
+      if (name === 'RNDocumentPicker') {
+        return null;
+      }
+      return turboModuleRegistry.getEnforcing(name);
+    },
+  };
+});
+
 jest.mock(
   'react-native-toast-message',
   () => ({
@@ -109,7 +124,7 @@ jest.mock('react-native-date-picker', () => ({
   default: jest.fn(),
 }));
 
-jest.mock('rn-fetch-blob', () => ({
+jest.mock('react-native-blob-util', () => ({
   DocumentDir: 'FAKE-DIRECTORY-PATH',
 }));
 
