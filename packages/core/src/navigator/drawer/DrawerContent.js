@@ -215,7 +215,7 @@ const DrawerContent = ({
     <SafeAreaView style={styles.container}>
       {externalMenuIsVisible && (
         <View style={styles.iconsContainer}>
-          <ScrollView>
+          <ScrollView showsVerticalScrollIndicator={false}>
             {drawerModules.map(_module => (
               <View style={styles.globalContainer} key={_module.name}>
                 <MenuIconButton

@@ -137,7 +137,9 @@ const Menu = ({
 
   return (
     <View style={styles.menuContainer}>
-      <ScrollView contentContainerStyle={styles.moduleMenuContainer}>
+      <ScrollView
+        contentContainerStyle={styles.moduleMenuContainer}
+        showsVerticalScrollIndicator={false}>
         <View style={styles.menuTitleContainer}>
           <Text style={styles.menuTitle}>{title}</Text>
         </View>
