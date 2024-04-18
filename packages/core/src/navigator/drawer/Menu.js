@@ -17,7 +17,7 @@
  */
 
 import React, {useMemo} from 'react';
-import {View, StyleSheet} from 'react-native';
+import {View, StyleSheet, ScrollView} from 'react-native';
 import {CommonActions, DrawerActions} from '@react-navigation/native';
 import {Text, WarningCard} from '@axelor/aos-mobile-ui';
 import MenuItem from './MenuItem';
@@ -137,7 +137,9 @@ const Menu = ({
 
   return (
     <View style={styles.menuContainer}>
-      <View style={styles.moduleMenuContainer}>
+      <ScrollView
+        contentContainerStyle={styles.moduleMenuContainer}
+        showsVerticalScrollIndicator={false}>
         <View style={styles.menuTitleContainer}>
           <Text style={styles.menuTitle}>{title}</Text>
         </View>
@@ -160,7 +162,7 @@ const Menu = ({
           onItemClick={onItemClick}
           disabled={compatibilityError}
         />
-      </View>
+      </ScrollView>
       <View style={styles.authMenuIcon}>{authMenu}</View>
     </View>
   );

@@ -23,7 +23,7 @@ import React, {
   useEffect,
   useCallback,
 } from 'react';
-import {StyleSheet, View, Animated} from 'react-native';
+import {StyleSheet, View, Animated, ScrollView} from 'react-native';
 import {SafeAreaView} from 'react-native-safe-area-context';
 import {CommonActions, DrawerActions} from '@react-navigation/native';
 import {useThemeColor, useConfig} from '@axelor/aos-mobile-ui';
@@ -215,11 +215,11 @@ const DrawerContent = ({
     <SafeAreaView style={styles.container}>
       {externalMenuIsVisible && (
         <View style={styles.iconsContainer}>
-          <View>
+          <ScrollView showsVerticalScrollIndicator={false}>
             {drawerModules.map(_module => (
-              <View key={_module.name} style={styles.menuItemContainer}>
+              <View style={styles.globalContainer} key={_module.name}>
                 <MenuIconButton
-                  key={_module.title}
+                  style={styles.menuItemContainer}
                   icon={_module.icon}
                   subtitle={showSubtitles && I18n.t(_module.subtitle)}
                   disabled={_module.disabled}
@@ -231,9 +231,15 @@ const DrawerContent = ({
                   onPress={() => handleModuleClick(_module)}
                   compatibility={_module.compatibilityAOS}
                 />
+                {!innerMenuIsVisible && (
+                  <MenuTitle
+                    module={_module}
+                    onPress={() => handleModuleClick(_module)}
+                  />
+                )}
               </View>
             ))}
-          </View>
+          </ScrollView>
           <View style={styles.otherIconsContainer}>
             <AuthMenuIconButton
               isActive={authModule.name === activeModule.name}
@@ -244,15 +250,6 @@ const DrawerContent = ({
         </View>
       )}
       <View style={styles.menusContainer}>
-        <View>
-          {drawerModules.map(_module => (
-            <MenuTitle
-              key={_module.name}
-              module={_module}
-              onPress={() => handleModuleClick(_module)}
-            />
-          ))}
-        </View>
         <Animated.View
           style={[
             styles.secondaryMenusContainer,
@@ -299,13 +296,16 @@ const getStyles = Colors =>
       overflow: 'hidden',
       zIndex: 2,
     },
+    globalContainer: {
+      flexDirection: 'row',
+    },
     menusContainer: {
       flex: 1,
     },
     iconsContainer: {
       justifyContent: 'space-between',
-      alignItems: 'center',
       marginHorizontal: 12,
+      width: '100%',
       zIndex: 3,
     },
     otherIconsContainer: {
