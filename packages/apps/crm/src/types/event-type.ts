@@ -80,8 +80,8 @@ class EventType {
     Colors: ThemeColors,
     I18n: {t: (key: string) => string},
   ) => {
-    return Object.entries(this.status).map(([key, value]) => ({
-      title: I18n.t(`Crm_Event_Status_${key}`),
+    return Object.values(this.status).map(value => ({
+      title: this.getStatus(value, I18n),
       key: value,
       color: this.getStatusolor(value, Colors),
     }));
