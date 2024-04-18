@@ -17,7 +17,7 @@
  */
 
 import React, {useMemo} from 'react';
-import {StyleSheet, TouchableOpacity} from 'react-native';
+import {Dimensions, StyleSheet, TouchableOpacity} from 'react-native';
 import {Text, useThemeColor} from '@axelor/aos-mobile-ui';
 import {useTranslator} from '../../i18n';
 import {
@@ -68,7 +68,7 @@ const MenuTitle = ({module, onPress}) => {
 
 const styles = StyleSheet.create({
   menuItemContainer: {
-    width: 200,
+    width: Dimensions.get('window').width * 0.6,
     height: 60,
     marginVertical: 8,
     flexDirection: 'column',
