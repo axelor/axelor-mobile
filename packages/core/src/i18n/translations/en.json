@@ -156,9 +156,11 @@
   "Base_FormAction_Refresh": "Refresh",
   "Base_FormAction_Reset": "Reset",
   "Base_SelectAll": "Select all",
+  "Base_WebView": "WebView",
   "Base_Dashboard": "Dashboard",
   "Base_Dashboard_Misconfigured": "This dashboard is misconfigured, please contact your administrator.",
   "Base_Dashboard_RefreshConfig": "Refresh dashboard",
+  "Base_WebView_RefreshConfig": "Refresh webView",
   "Base_AssignedToMe": "Assigned to me",
   "Base_LastUpdate": "Last update",
   "Base_StartDate": "Start date",
@@ -188,5 +190,6 @@
   "Base_SliceAction_UpdateJsonFieldsObject": "update custom fields of object",
   "Base_SliceAction_FetchAnomalies": "fetch anomalies of object",
   "Base_SliceAction_SearchUser": "search user",
-  "Base_SliceAction_FetchDashboardConfigs": "fetch dashboard configurations"
+  "Base_SliceAction_FetchDashboardConfigs": "fetch dashboard configurations",
+  "Base_SliceAction_FetchWebViewConfigs": "fetch webView configurations"
 }

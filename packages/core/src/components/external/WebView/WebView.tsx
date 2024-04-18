@@ -38,15 +38,17 @@ const WebView = ({style, baseUrl, path, queryParams}: WebViewProps) => {
   const formattedQueryParams = useMemo(() => {
     let _formattedQueryParams = '';
 
-    Object.entries(queryParams).map(([key, value]) => {
-      if (value == null) {
-        return;
-      }
+    if (queryParams != null) {
+      Object.entries(queryParams).map(([key, value]) => {
+        if (value == null) {
+          return;
+        }
 
-      const separator = checkNullString(_formattedQueryParams) ? '?' : '&';
-      const queryParam = key + '=' + value;
-      _formattedQueryParams += separator + queryParam;
-    });
+        const separator = checkNullString(_formattedQueryParams) ? '?' : '&';
+        const queryParam = key + '=' + value;
+        _formattedQueryParams += separator + queryParam;
+      });
+    }
 
     return _formattedQueryParams;
   }, [queryParams]);

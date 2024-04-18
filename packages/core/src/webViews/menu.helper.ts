@@ -17,10 +17,10 @@
  */
 
 import {Menu, Screen} from '../app';
-import {createDashboardActionID} from './display.helpers';
-import {DashboardScreen} from './view';
+import {createWebViewActionID} from './display.helpers';
+import {WebViewScreen} from './view';
 
-type DashboardMenuConfig = {
+type WebViewMenuConfig = {
   [menuKey: string]: {menu: Menu; configRoles: any[]};
 };
 
@@ -33,47 +33,44 @@ type Screens = {
 };
 
 const createScreenComponent = id => {
-  return props => DashboardScreen({...props, dashboardId: id});
+  return props => WebViewScreen({...props, webViewId: id});
 };
 
-export const createDashboardScreens = (
-  dashboardConfigs: {
+export const createWebViewScreens = (
+  webViewConfigs: {
     id: number;
     appName: string;
-    isCustom: boolean;
+    isAosWebView: boolean;
     menuTitle?: string;
     iconName?: string;
     menuOrder?: number;
     authorizedRoleSet: any[];
   }[],
-): {menus: DashboardMenuConfig; screens: Screens} => {
+): {menus: WebViewMenuConfig; screens: Screens} => {
   const screens: Screens = {};
-  const menus: DashboardMenuConfig = {};
+  const menus: WebViewMenuConfig = {};
 
-  if (Array.isArray(dashboardConfigs) && dashboardConfigs.length > 0) {
-    dashboardConfigs.forEach(
+  if (Array.isArray(webViewConfigs) && webViewConfigs.length > 0) {
+    webViewConfigs.forEach(
       ({
         id,
         appName,
-        isCustom = false,
         menuTitle,
         iconName,
         menuOrder,
         authorizedRoleSet = [],
       }) => {
-        const config = isCustom
-          ? {
-              title: menuTitle ?? 'Base_Dashboard',
-              icon: iconName ?? 'graph-up',
-              order: menuOrder,
-            }
-          : {title: 'Base_Dashboard', icon: 'graph-up', order: -10};
-        const screenKey = `Dashboard_${appName}_${id}`;
+        const config = {
+          title: menuTitle ?? 'Base_WebView',
+          icon: iconName ?? 'layers',
+          order: menuOrder ?? 99,
+        };
+        const screenKey = `WebView_${appName}_${id}`;
 
         screens[screenKey] = {
           title: config.title,
           component: createScreenComponent(id),
-          actionID: createDashboardActionID(id),
+          actionID: createWebViewActionID(id),
         } as Screen;
 
         const _menu: Menu = {
@@ -83,13 +80,12 @@ export const createDashboardScreens = (
           order: config.order,
           compatibilityAOS: {
             moduleName: 'axelor-mobile-settings',
-            downToVersion: '8.0.0',
+            downToVersion: '8.1.0',
           },
           screen: screenKey,
-          isDefault: true,
         };
 
-        menus[`${appName}_menu_dashboard${id}`] = {
+        menus[`${appName}_menu_webView${id}`] = {
           menu: _menu,
           configRoles: authorizedRoleSet,
         };
@@ -100,13 +96,13 @@ export const createDashboardScreens = (
   return {menus, screens};
 };
 
-export const filterAuthorizedDashboardMenus = (
-  dashboardConfigs: DashboardMenuConfig,
+export const filterAuthorizedWebViewMenus = (
+  webViewConfigs: WebViewMenuConfig,
   {roles: userRoles}: {roles: any[]},
 ): Menus => {
   const menus: Menus = {};
 
-  Object.entries(dashboardConfigs)
+  Object.entries(webViewConfigs)
     .filter(([_, {configRoles: authorizedRoleSet}]) => {
       if (!Array.isArray(authorizedRoleSet) || authorizedRoleSet.length === 0) {
         return true;

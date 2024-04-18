@@ -191,3 +191,24 @@ export function getDefaultMenuKey(module) {
 
   return defaultMenuEntry ? defaultMenuEntry.key : null;
 }
+
+export const addMenusToModules = (modules, ...menusArray) => {
+  return modules.map(_module => {
+    let updatedMenus = _module.menus ?? {};
+
+    menusArray.forEach(menus => {
+      const associatedMenus = Object.fromEntries(
+        Object.entries(menus).filter(
+          ([, menuDetails]) => menuDetails.parent === _module.name,
+        ),
+      );
+
+      updatedMenus = {...updatedMenus, ...associatedMenus};
+    });
+
+    return {
+      ..._module,
+      menus: updatedMenus,
+    };
+  });
+};
