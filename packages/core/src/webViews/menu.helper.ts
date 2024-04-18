@@ -16,7 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import {Menu, Module, Screen} from '../app';
+import {Menu, Screen} from '../app';
 import {createWebViewActionID} from './display.helpers';
 import {WebViewScreen} from './view';
 
@@ -80,7 +80,7 @@ export const createWebViewScreens = (
           order: config.order,
           compatibilityAOS: {
             moduleName: 'axelor-mobile-settings',
-            downToVersion: '8.0.0',
+            downToVersion: '8.1.0',
           },
           screen: screenKey,
         };
@@ -119,28 +119,4 @@ export const filterAuthorizedWebViewMenus = (
     });
 
   return menus;
-};
-
-export const addMenusToModules = (
-  modules: Module[],
-  ...menusArray: Menus[]
-) => {
-  return modules.map(_module => {
-    let updatedMenus = _module.menus ?? {};
-
-    menusArray.forEach(menus => {
-      const associatedMenus = Object.fromEntries(
-        Object.entries(menus).filter(
-          ([, menuDetails]) => menuDetails.parent === _module.name,
-        ),
-      );
-
-      updatedMenus = {...updatedMenus, ...associatedMenus};
-    });
-
-    return {
-      ..._module,
-      menus: updatedMenus,
-    };
-  });
 };

@@ -17,12 +17,12 @@
  */
 
 import React, {useCallback, useEffect, useState} from 'react';
-import {WebView} from '../../components';
-import {fetchWebViewById} from '../api.helpers';
 import {ActivityIndicator} from 'react-native';
+import {WebView} from '../../components';
 import {headerActionsProvider} from '../../header';
-import {createWebViewActionID} from '../display.helpers';
 import {useTranslator} from '../../i18n';
+import {fetchWebViewById} from '../api.helpers';
+import {createWebViewActionID} from '../display.helpers';
 
 interface WebViewScreenProps {
   webViewId: number;
@@ -42,7 +42,7 @@ export const WebViewScreen = ({webViewId}: WebViewScreenProps) => {
       .then(response => {
         setWebViewData(response?.data?.data[0]);
       })
-      .catch(e => console.log(e))
+      .catch(() => setWebViewData({}))
       .finally(() => setLoading(false));
   }, [webViewId]);
 
@@ -79,7 +79,7 @@ export const WebViewScreen = ({webViewId}: WebViewScreenProps) => {
 
   return (
     <WebView
-      baseUrl={webViewData?.url != null ? webViewData?.url : null}
+      baseUrl={webViewData?.url}
       path={
         webViewData?.metaAction != null
           ? `#/ds/${webViewData?.metaAction?.name}`
