@@ -1,0 +1,5 @@
+{
+  "title": "BootstrapIconIcon: fix the question mark when dark mode",
+  "type": "fix",
+  "packages": "ui"
+}
