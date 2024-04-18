@@ -55,7 +55,6 @@ const BootstrapIcon = ({name, size, color, style}: BootstrapIconProps) => {
     <Text
       style={{
         fontSize: size / 2,
-        color,
       }}>
       ?
     </Text>
