@@ -55,19 +55,16 @@ export const createWebViewScreens = (
       ({
         id,
         appName,
-        isAosWebView = false,
         menuTitle,
         iconName,
         menuOrder,
         authorizedRoleSet = [],
       }) => {
-        const config = isAosWebView
-          ? {
-              title: menuTitle ?? 'Base_WebView',
-              icon: iconName ?? 'layers',
-              order: menuOrder ?? 99,
-            }
-          : {title: 'Base_WebView', icon: 'layers', order: 99};
+        const config = {
+          title: menuTitle ?? 'Base_WebView',
+          icon: iconName ?? 'layers',
+          order: menuOrder ?? 99,
+        };
         const screenKey = `WebView_${appName}_${id}`;
 
         screens[screenKey] = {
