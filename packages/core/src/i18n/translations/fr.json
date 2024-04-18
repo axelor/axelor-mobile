@@ -158,9 +158,11 @@
   "Base_FormAction_Refresh": "Actualiser",
   "Base_FormAction_Reset": "Réinitialiser",
   "Base_SelectAll": "Tout sélectionner",
+  "Base_WebView": "Vue web",
   "Base_Dashboard": "Tableau de bord",
   "Base_Dashboard_Misconfigured": "Ce tableau de bord est mal configuré, veuillez contacter votre administrateur.",
   "Base_Dashboard_RefreshConfig": "Actualiser le tableau de bord",
+  "Base_WebView_RefreshConfig": "Actualiser la vue web",
   "Base_AssignedToMe": "Assigné à moi",
   "Base_LastUpdate": "Dernière mise à jour",
   "Base_StartDate": "Date de début",
@@ -190,5 +192,6 @@
   "Base_SliceAction_UpdateJsonFieldsObject": "mise à jour des champs studio de l'objet",
   "Base_SliceAction_FetchAnomalies": "récupération des anomalies d'un object",
   "Base_SliceAction_SearchUser": "récupération des utilisateurs",
-  "Base_SliceAction_FetchDashboardConfigs": "récupération des configurations de tableaux de bord"
+  "Base_SliceAction_FetchDashboardConfigs": "récupération des configurations de tableaux de bord",
+  "Base_SliceAction_FetchWebViewConfigs": "récupération des configurations de vues web"
 }
