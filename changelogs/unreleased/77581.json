@@ -1,5 +1,0 @@
-{
-  "title": "Form inputs: remove space on top when there is no title",
-  "type": "fix",
-  "packages": ["core", "ui"]
-}

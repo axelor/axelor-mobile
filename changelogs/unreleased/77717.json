@@ -1,5 +1,0 @@
-{
-  "title": "BootstrapIcon: define default color to avoid invisible question mark on dark mode",
-  "type": "fix",
-  "packages": "ui"
-}

@@ -3,6 +3,55 @@ title: 8.0.0
 tags: Changelog
 ---
 
+## [8.0.2] (2024-04-19)
+
+### @axelor/aos-mobile-core
+
+#### Fixes
+
+- SearchBars: avoid error when no onChange function is provided
+- Form inputs: remove space on top when there is no title
+- Drawer: add scroll on modules and menus list
+- Header: compute height to fill in the ui config value
+
+### @axelor/aos-mobile-ui
+
+#### Features
+
+- Dashboard: add last update date information
+- LabelText: add the possibility to define text size
+
+#### Fixes
+
+- NumberChevronInput: enable limit with more than one digit
+- NumberChevronInput: format default value when it changes
+- SearchBars: avoid error when no onChange function is provided
+- DropdownCard: make the width adjustable to the content
+- Form inputs: remove space on top when there is no title
+- BootstrapIcon: define default color to avoid invisible question mark on dark mode
+
+### @axelor/aos-mobile-hr
+
+#### Fixes
+
+- Form views: avoid error when user does not have an employee
+
+### @axelor/aos-mobile-crm
+
+#### Fixes
+
+- Event: form view take a long time to load
+
+### @axelor/aos-mobile-stock
+
+#### Features
+
+- Internal move creation: add possibility to modify quantity of a line
+
+#### Fixes
+
+- Line views: add default header actions (attached files, tracker and custom fields)
+
 ## [8.0.1] (2024-03-13)
 
 This version restore the iOS build which was broken due to some changes in dependencies.
@@ -167,5 +216,6 @@ Changes has been done to get new core and ui improvements: use of ChipSelect, co
 
 Changes has been done to get new core and ui improvements: use of ChipSelect, color differentiation between success and primary, definition of required configs, use of icons for Bootstrap
 
+[8.0.2]: https://github.com/axelor/axelor-mobile/compare/8.0.1...8.0.2
 [8.0.1]: https://github.com/axelor/axelor-mobile/compare/8.0.0...8.0.1
 [8.0.0]: https://github.com/axelor/axelor-mobile/compare/7.2.6...8.0.0
