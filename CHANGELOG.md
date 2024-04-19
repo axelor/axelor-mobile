@@ -3,6 +3,41 @@ title: 7.1.0
 tags: Changelog
 ---
 
+## [7.1.9] (2024-04-19)
+
+### @axelor/aos-mobile-core
+
+#### Fixes
+
+- SearchBars: avoid error when no onChange function is provided
+- Form inputs: remove space on top when there is no title
+- Drawer: add scroll on modules and menus list
+- Header: compute height to fill in the ui config value
+
+### @axelor/aos-mobile-ui
+
+#### Features
+
+- LabelText: add the possibility to define text size
+
+#### Fixes
+
+- SearchBars: avoid error when no onChange function is provided
+- DropdownCard: make the width adjustable to the content
+- Form inputs: remove space on top when there is no title
+
+### @axelor/aos-mobile-crm
+
+#### Fixes
+
+- Event: form view take a long time to load
+
+### @axelor/aos-mobile-stock
+
+#### Fixes
+
+- Line views: add default header actions (attached files, tracker and custom fields)
+
 ## [7.1.8] (2024-03-13)
 
 ### @axelor/aos-mobile-core
@@ -390,6 +425,7 @@ This update breaks the compatability with AOS Stock module under version 7.1 due
 - Add number decimal digit config management system
 - Manage multilines input with auto height resize on FormInput
 
+[7.1.9]: https://github.com/axelor/axelor-mobile/compare/7.1.8...7.1.9
 [7.1.8]: https://github.com/axelor/axelor-mobile/compare/7.1.7...7.1.8
 [7.1.7]: https://github.com/axelor/axelor-mobile/compare/7.1.6...7.1.7
 [7.1.6]: https://github.com/axelor/axelor-mobile/compare/7.1.5...7.1.6

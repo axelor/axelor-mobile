@@ -1,5 +1,0 @@
-{
-  "title": "SearchBars: avoid error when no onChange function is provided",
-  "type": "fix",
-  "packages": ["ui", "core"]
-}
