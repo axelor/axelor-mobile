@@ -21,6 +21,7 @@ import {ColorValue} from 'react-native';
 import Svg, {Path} from 'react-native-svg';
 import Text from '../Text/Text';
 import iconsMap from '../../../icons/bootstrap-icon-map.json';
+import {useThemeColor} from '../../../theme';
 
 interface BootstrapIconProps {
   name: string;
@@ -30,6 +31,8 @@ interface BootstrapIconProps {
 }
 
 const BootstrapIcon = ({name, size, color, style}: BootstrapIconProps) => {
+  const Colors = useThemeColor();
+
   if (iconsMap == null) {
     return null;
   }
@@ -53,6 +56,7 @@ const BootstrapIcon = ({name, size, color, style}: BootstrapIconProps) => {
 
   return (
     <Text
+      textColor={Colors.secondaryColor_dark.background}
       style={{
         fontSize: size / 2,
       }}>
