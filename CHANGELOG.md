@@ -3,6 +3,39 @@ title: 7.0.0
 tags: Changelog
 ---
 
+## [7.0.12] (2024-04-19)
+
+### @axelor/aos-mobile-core
+
+#### Fixes
+
+- SearchBars: avoid error when no onChange function is provided
+- Drawer: add scroll on modules and menus list
+- Header: compute height to fill in the ui config value
+
+### @axelor/aos-mobile-ui
+
+#### Features
+
+- LabelText: add the possibility to define text size
+
+#### Fixes
+
+- SearchBars: avoid error when no onChange function is provided
+- DropdownCard: make the width adjustable to the content
+
+### @axelor/aos-mobile-crm
+
+#### Fixes
+
+- Event: form view take a long time to load
+
+### @axelor/aos-mobile-stock
+
+#### Fixes
+
+- Line views: add default header actions (attached files, tracker and custom fields)
+
 ## [7.0.11] (2024-03-13)
 
 ### @axelor/aos-mobile-core
@@ -474,6 +507,7 @@ The project architecture has also been updated, the example folder has been expl
 - Replace ChipSelect by MultiValuePicker on list screens
 - Add search bar details pop up on screens: add empowered searchBar for objects
 
+[7.0.12]: https://github.com/axelor/axelor-mobile/compare/7.0.11...7.0.12
 [7.0.11]: https://github.com/axelor/axelor-mobile/compare/7.0.10...7.0.11
 [7.0.10]: https://github.com/axelor/axelor-mobile/compare/7.0.9...7.0.10
 [7.0.9]: https://github.com/axelor/axelor-mobile/compare/7.0.8...7.0.9

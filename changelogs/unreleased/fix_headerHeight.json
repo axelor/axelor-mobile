@@ -1,5 +1,0 @@
-{
-  "title": "Header: compute height to fill in the ui config value",
-  "type": "fix",
-  "packages": ["core"]
-}
