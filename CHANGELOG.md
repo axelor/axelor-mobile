@@ -3,6 +3,42 @@ title: 7.2.0
 tags: Changelog
 ---
 
+## [7.2.8] (2024-04-19)
+
+### @axelor/aos-mobile-core
+
+#### Fixes
+
+- Menu: consider user roles and user group roles to check access
+- SearchBars: avoid error when no onChange function is provided
+- Form inputs: remove space on top when there is no title
+- Drawer: add scroll on modules and menus list
+- Header: compute height to fill in the ui config value
+
+### @axelor/aos-mobile-ui
+
+#### Features
+
+- LabelText: add the possibility to define text size
+
+#### Fixes
+
+- SearchBars: avoid error when no onChange function is provided
+- DropdownCard: make the width adjustable to the content
+- Form inputs: remove space on top when there is no title
+
+### @axelor/aos-mobile-crm
+
+#### Fixes
+
+- Event: form view take a long time to load
+
+### @axelor/aos-mobile-stock
+
+#### Fixes
+
+- Line views: add default header actions (attached files, tracker and custom fields)
+
 ## [7.2.7] (2024-03-13)
 
 ### @axelor/aos-mobile-core
@@ -392,6 +428,7 @@ It enables user to manage Expenses through the mobile application. You can creat
 - Remove IconButton component which should be replaced by Button component.
 - Remove Pop-up components which should be replaced by Alert component.
 
+[7.2.8]: https://github.com/axelor/axelor-mobile/compare/7.2.7...7.2.8
 [7.2.7]: https://github.com/axelor/axelor-mobile/compare/7.2.6...7.2.7
 [7.2.6]: https://github.com/axelor/axelor-mobile/compare/7.2.5...7.2.6
 [7.2.5]: https://github.com/axelor/axelor-mobile/compare/7.2.4...7.2.5
