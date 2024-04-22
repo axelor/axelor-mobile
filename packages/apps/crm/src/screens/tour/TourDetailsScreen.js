@@ -104,6 +104,7 @@ const TourDetailsScreen = ({route}) => {
             isValidated={item?.isValidated}
             eventId={item?.event?.id}
             id={item.id}
+            version={item.version}
             tourId={tourId}
           />
         )}

@@ -25,6 +25,7 @@ export {default as DropdownOpportunityView} from './DropdownOpportunityView/Drop
 export {default as EditButton} from './EditButton/EditButton';
 export {default as TourItineraryButton} from './TourItineraryButton/TourItineraryButton';
 export {default as TourLineActionCard} from './TourLineActionCard/TourLineActionCard';
+export {default as TourLineEventPopup} from './TourLineEventPopup/TourLineEventPopup';
 
 export * from './Client';
 export * from './Contact';
