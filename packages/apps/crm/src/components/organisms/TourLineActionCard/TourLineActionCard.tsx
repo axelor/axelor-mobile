@@ -112,6 +112,7 @@ const TourLineActionCard = ({
         version={version}
         id={id}
         tourId={tourId}
+        isValidated={isValidated}
       />
     </View>
   );
