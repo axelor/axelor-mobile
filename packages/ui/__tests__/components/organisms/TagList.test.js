@@ -1,7 +1,7 @@
 import React from 'react';
 import {shallow} from 'enzyme';
 import {TagList, Badge, Text} from '@axelor/aos-mobile-ui';
-import {getDefaultThemeColors} from '../../tools';
+import {getDefaultThemeColors, getGlobalStyles} from '../../tools';
 
 describe('TagList Component', () => {
   const Colors = getDefaultThemeColors();
@@ -64,5 +64,14 @@ describe('TagList Component', () => {
     expect(wrapper.find(Badge).at(0).prop('title')).toBe('First');
     expect(wrapper.find(Badge).at(1).prop('title')).toBe('Middle');
     expect(wrapper.find(Badge).at(2).prop('title')).toBe('Last');
+  });
+
+  it('should render with custom style', () => {
+    const customStyle = {
+      margin: 20,
+    };
+    const wrapper = shallow(<TagList tags={tags} style={customStyle} />);
+
+    expect(getGlobalStyles(wrapper.find('View'))).toMatchObject(customStyle);
   });
 });
