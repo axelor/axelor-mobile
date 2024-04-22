@@ -27,6 +27,7 @@ storiesOf('ui/organisms/TagList', module).add(
     return (
       <TagList
         {...args}
+        defaultColor={lightTheme.colors[args.defaultColor]}
         tags={[
           {
             title: args.tag1_title,
@@ -40,6 +41,9 @@ storiesOf('ui/organisms/TagList', module).add(
             order: args.tag2_order,
             hide: args.tag2_hide,
           },
+          {
+            title: 'Tag3',
+          },
         ]}
       />
     );
@@ -51,6 +55,14 @@ storiesOf('ui/organisms/TagList', module).add(
           type: 'text',
         },
         defaultValue: 'Title',
+      },
+      defaultColor: {
+        options: Object.entries(lightTheme.colors)
+          .filter(([, _color]) => typeof _color !== 'string')
+          .map(([key]) => key),
+        control: {
+          type: 'select',
+        },
       },
       tag1_title: {
         control: {

@@ -33,9 +33,10 @@ interface TagListProps {
   style?: any;
   title?: string;
   tags: Tag[];
+  defaultColor?: Color;
 }
 
-const TagList = ({style, title, tags}: TagListProps) => {
+const TagList = ({style, title, tags, defaultColor}: TagListProps) => {
   const Colors = useThemeColor();
 
   const visibleSortTags = useMemo(
@@ -54,7 +55,10 @@ const TagList = ({style, title, tags}: TagListProps) => {
     <View style={[styles.container, style]}>
       {title && <Text style={styles.text}>{title} :</Text>}
       {visibleSortTags.map((tag, index) => {
-        const color = tag.color != null ? tag.color : Colors.infoColor;
+        const _defaultColor =
+          defaultColor != null ? defaultColor : Colors.infoColor;
+        const color = tag.color != null ? tag.color : _defaultColor;
+
         return (
           <Badge
             style={styles.badge}
