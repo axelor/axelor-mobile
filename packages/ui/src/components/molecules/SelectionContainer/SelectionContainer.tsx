@@ -122,6 +122,8 @@ interface SelectionContainerProps {
   isPicker?: boolean;
   selectedItem?: any[];
   readonly?: boolean;
+  translator?: ({key, values}) => string;
+  title?: string;
 }
 
 const SelectionContainer = ({
@@ -134,6 +136,8 @@ const SelectionContainer = ({
   isPicker = false,
   selectedItem = [],
   readonly = false,
+  translator,
+  title,
 }: SelectionContainerProps) => {
   const Colors = useThemeColor();
 
@@ -152,6 +156,21 @@ const SelectionContainer = ({
     () => selectedItem?.map(_item => _item?.[keyField]) ?? [],
     [keyField, selectedItem],
   );
+
+  const renderEmptyState = useCallback(() => {
+    const _title = title.toLowerCase();
+
+    const message =
+      translator != null
+        ? translator({key: 'Base_NoDataContainer', values: {_title}})
+        : `No ${_title} available`;
+
+    return (
+      <View style={styles.emptyContainer}>
+        <Text>{message}</Text>
+      </View>
+    );
+  }, [title, styles, translator]);
 
   const renderListItemContainer = useCallback(() => {
     if (!Array.isArray(objectList) || objectList.length === 0) {
@@ -222,7 +241,7 @@ const SelectionContainer = ({
   ]);
 
   if (objectList == null || objectList.length === 0) {
-    return null;
+    return renderEmptyState();
   }
 
   return (
@@ -261,6 +280,15 @@ const getStyles = (
       zIndex: 115,
       width: '104%',
       left: -14,
+    },
+    emptyContainer: {
+      top: -4,
+      padding: 10,
+      alignItems: 'center',
+      justifyContent: 'center',
+      borderColor: Colors.secondaryColor.background,
+      borderWidth: 1,
+      borderRadius: 7,
     },
   });
 

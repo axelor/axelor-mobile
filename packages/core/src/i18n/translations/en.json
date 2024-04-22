@@ -4,6 +4,7 @@
   "Base_OK": "Ok",
   "Base_NoMoreItems": "No more items.",
   "Base_NoData": "No data.",
+  "Base_NoDataContainer": "No {{title}} available",
   "Base_Description": "Description",
   "Base_AllFilters": "All filters",
   "Base_DateFormat": "MM/DD/YYYY",

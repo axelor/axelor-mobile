@@ -47,6 +47,7 @@ interface MultiValuePickerProps {
   listItems: Item[];
   readonly?: boolean;
   required?: boolean;
+  translator?: ({key, values}) => string;
 }
 
 const MultiValuePicker = ({
@@ -59,6 +60,7 @@ const MultiValuePicker = ({
   listItems = [],
   readonly = false,
   required = false,
+  translator,
 }: MultiValuePickerProps) => {
   const Colors = useThemeColor();
 
@@ -156,6 +158,8 @@ const MultiValuePicker = ({
           isPicker={true}
           selectedItem={selectedItemList}
           readonly={readonly}
+          title={title}
+          translator={translator}
         />
       ) : null}
     </View>

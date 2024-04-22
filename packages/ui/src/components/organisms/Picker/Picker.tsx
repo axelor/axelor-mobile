@@ -45,6 +45,7 @@ interface PickerProps {
   readonly?: boolean;
   required?: boolean;
   isScrollViewContainer?: boolean;
+  translator?: ({key, values}) => string;
 }
 
 const Picker = ({
@@ -63,6 +64,7 @@ const Picker = ({
   readonly = false,
   required = false,
   isScrollViewContainer = false,
+  translator,
 }: PickerProps) => {
   const Colors = useThemeColor();
 
@@ -209,6 +211,8 @@ const Picker = ({
           handleSelect={handleValueChange}
           isPicker={true}
           selectedItem={[selectedItem]}
+          title={title}
+          translator={translator}
         />
       )}
     </View>
