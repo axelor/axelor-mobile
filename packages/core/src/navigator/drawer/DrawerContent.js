@@ -305,7 +305,6 @@ const getStyles = Colors =>
     iconsContainer: {
       justifyContent: 'space-between',
       marginHorizontal: 12,
-      width: '100%',
       zIndex: 3,
     },
     otherIconsContainer: {
