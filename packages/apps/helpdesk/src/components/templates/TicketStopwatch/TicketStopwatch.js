@@ -27,6 +27,7 @@ import {
   useDispatch,
   useSelector,
   getNowDateZonesISOString,
+  usePermitted,
 } from '@axelor/aos-mobile-core';
 import {Ticket} from '../../../types';
 import {TicketStatusButton} from '../../templates';
@@ -48,6 +49,9 @@ const TicketStopwatch = ({}) => {
   const I18n = useTranslator();
   const Colors = useThemeColor();
   const dispatch = useDispatch();
+  const {readonly} = usePermitted({
+    modelName: 'com.axelor.apps.helpdesk.db.Ticket',
+  });
 
   const {ticket} = useSelector(state => state.ticket);
   const {timer, timerHistory} = useSelector(state => state.helpdesk_timer);
@@ -137,6 +141,10 @@ const TicketStopwatch = ({}) => {
     },
     [dispatch, ticket],
   );
+
+  if (readonly) {
+    return null;
+  }
 
   return (
     <View>
