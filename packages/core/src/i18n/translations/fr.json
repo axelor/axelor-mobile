@@ -4,7 +4,7 @@
   "Base_OK": "Ok",
   "Base_NoMoreItems": "Fin de la liste.",
   "Base_NoData": "Aucune donnée.",
-  "Base_NoDataContainer": "Aucun {{title}} disponnible",
+  "Base_NoDataContainer": "Aucun {{title}} disponible",
   "Base_Description": "Description",
   "Base_AllFilters": "Tous les filtres",
   "Base_DateFormat": "DD/MM/YYYY",
