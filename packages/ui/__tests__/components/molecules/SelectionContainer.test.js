@@ -19,7 +19,7 @@
 import React from 'react';
 import {View} from 'react-native';
 import {shallow} from 'enzyme';
-import {Icon, SelectionContainer} from '@axelor/aos-mobile-ui';
+import {Icon, SelectionContainer, Text} from '@axelor/aos-mobile-ui';
 import {getGlobalStyles} from '../../tools';
 
 describe('SelectionContainer', () => {
@@ -61,22 +61,41 @@ describe('SelectionContainer', () => {
       expect(handleSelect).toHaveBeenCalledWith(props.objectList[i]);
     }
   });
-
-  it('should not render if objectList is empty or null', () => {
+  it('should render empty state message if objectList is empty or null', () => {
     const newPropsEmptyArr = {
       ...props,
       objectList: [],
+      title: 'item',
+      translator: ({key, values}) => `No ${values._title} available`,
     };
     const newPropsNullArr = {
       ...props,
       objectList: null,
+      title: 'item',
+      translator: ({key, values}) => `No ${values._title} available`,
+    };
+    const newPropsNullTranslator = {
+      ...props,
+      objectList: null,
+      title: 'item',
+      translator: null,
     };
 
     const wrapperEmpty = shallow(<SelectionContainer {...newPropsEmptyArr} />);
     const wrapperNull = shallow(<SelectionContainer {...newPropsNullArr} />);
+    const wrapperNullTranslator = shallow(
+      <SelectionContainer {...newPropsNullTranslator} />,
+    );
 
-    expect(wrapperEmpty.isEmptyRender()).toBe(true);
-    expect(wrapperNull.isEmptyRender()).toBe(true);
+    expect(wrapperEmpty.find(Text).prop('children')).toBe(
+      `No ${newPropsEmptyArr.title} available`,
+    );
+    expect(wrapperNull.find(Text).prop('children')).toBe(
+      `No ${newPropsNullArr.title} available`,
+    );
+    expect(wrapperNullTranslator.find(Text).prop('children')).toBe(
+      `No ${newPropsNullTranslator.title} available`,
+    );
   });
 
   it('should render a list of SelectionItem with Icon when isPicker is true', () => {
