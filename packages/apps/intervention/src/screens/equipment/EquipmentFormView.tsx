@@ -20,6 +20,7 @@ import React, {useCallback, useEffect, useMemo} from 'react';
 import {FormView, useDispatch, useSelector} from '@axelor/aos-mobile-core';
 import {useThemeColor} from '@axelor/aos-mobile-ui';
 import {
+  clearEquipment,
   deleteEquipment,
   getEquipmentById,
   saveEquipment,
@@ -41,6 +42,10 @@ const EquipmentFormView = ({navigation, route}) => {
     idEquipment &&
       _dispatch((getEquipmentById as any)({equipmentId: idEquipment}));
   }, [_dispatch, idEquipment]);
+
+  useEffect(() => {
+    isCreation && _dispatch(clearEquipment());
+  }, [_dispatch, isCreation]);
 
   const saveEquipmentAPI = useCallback(
     (_equipment, dispatch) => {

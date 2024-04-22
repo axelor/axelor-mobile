@@ -228,6 +228,11 @@ const initialState = {
 const equipmentSlice = createSlice({
   name: 'intervention_equipment',
   initialState,
+  reducers: {
+    clearEquipment: state => {
+      state.equipment = {};
+    },
+  },
   extraReducers: builder => {
     generateInifiniteScrollCases(builder, searchEquipment, {
       loading: 'loadingList',
@@ -271,5 +276,7 @@ const equipmentSlice = createSlice({
     });
   },
 });
+
+export const {clearEquipment} = equipmentSlice.actions;
 
 export const equipmentReducer = equipmentSlice.reducer;
