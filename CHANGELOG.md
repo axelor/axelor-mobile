@@ -3,6 +3,14 @@ title: 8.0.0
 tags: Changelog
 ---
 
+## [8.0.3] (2024-04-22)
+
+### @axelor/aos-mobile-core
+
+#### Fixes
+
+- Drawer: display of the menu list
+
 ## [8.0.2] (2024-04-19)
 
 ### @axelor/aos-mobile-core
@@ -216,6 +224,7 @@ Changes has been done to get new core and ui improvements: use of ChipSelect, co
 
 Changes has been done to get new core and ui improvements: use of ChipSelect, color differentiation between success and primary, definition of required configs, use of icons for Bootstrap
 
+[8.0.3]: https://github.com/axelor/axelor-mobile/compare/8.0.2...8.0.3
 [8.0.2]: https://github.com/axelor/axelor-mobile/compare/8.0.1...8.0.2
 [8.0.1]: https://github.com/axelor/axelor-mobile/compare/8.0.0...8.0.1
 [8.0.0]: https://github.com/axelor/axelor-mobile/compare/7.2.6...8.0.0
