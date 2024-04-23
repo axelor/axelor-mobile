@@ -37,6 +37,7 @@ interface ExpenseLineCardProps {
   expenseId: number;
   expenseDate?: string;
   projectName?: string;
+  projetcTaskName?: string;
   totalAmount?: string;
   currency?: string;
   displayText?: string;
@@ -51,6 +52,7 @@ const ExpenseLineCard = ({
   expenseId,
   expenseDate,
   projectName,
+  projetcTaskName,
   totalAmount,
   currency,
   displayText,
@@ -95,6 +97,11 @@ const ExpenseLineCard = ({
             },
             {
               indicatorText: projectName,
+              hideIfNull: true,
+              style: [styles.details, styles.italic],
+            },
+            {
+              indicatorText: projetcTaskName,
               hideIfNull: true,
               style: [styles.details, styles.italic],
             },

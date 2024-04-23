@@ -97,6 +97,19 @@ export const hr_formsRegister: FormConfigs = {
         hideIf: ({storeState}) =>
           !storeState.appConfig.mobileSettings.isExpenseProjectInvoicingEnabled,
       },
+      projectTask: {
+        titleKey: 'Hr_ProjectTask',
+        type: 'object',
+        widget: 'custom',
+        customComponent: ProjectTaskSearchBar,
+        hideIf: ({storeState}) =>
+          !storeState.appConfig.mobileSettings.isExpenseProjectInvoicingEnabled,
+        dependsOn: {
+          project: ({newValue, dispatch}) => {
+            dispatch(updateProject(newValue));
+          },
+        },
+      },
       toInvoice: {
         titleKey: 'Hr_ToInvoice',
         type: 'boolean',
