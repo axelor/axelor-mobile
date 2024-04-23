@@ -111,7 +111,6 @@ const OpportunityDropdownInfo = ({}) => {
 const styles = StyleSheet.create({
   container: {
     alignItems: 'center',
-    alignSelf: 'center',
   },
   textTitle: {
     fontWeight: 'bold',
