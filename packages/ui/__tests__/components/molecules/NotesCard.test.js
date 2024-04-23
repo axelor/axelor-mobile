@@ -60,6 +60,8 @@ describe('NotesCard Component', () => {
     const customStyle = {width: 200};
     const wrapper = shallow(<NotesCard {...props} style={customStyle} />);
 
-    expect(getGlobalStyles(wrapper.find(View))).toMatchObject(customStyle);
+    expect(getGlobalStyles(wrapper.find(View).at(0))).toMatchObject(
+      customStyle,
+    );
   });
 });
