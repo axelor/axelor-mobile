@@ -1,0 +1,5 @@
+{
+  "title": "ExpenseTypeSearchBar: add missing paramaters on searchBar",
+  "type": "fix",
+  "packages": "hr"
+}
