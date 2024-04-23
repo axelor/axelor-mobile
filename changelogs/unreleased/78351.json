@@ -1,0 +1,5 @@
+{
+  "title": "CustomerDeliveryLineListScreen: fix inconsistency issue in search line",
+  "type": "fix",
+  "packages": "stock"
+}
