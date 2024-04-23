@@ -16,24 +16,44 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import React, {useCallback, useEffect, useState} from 'react';
+import React, {useCallback, useEffect, useMemo, useState} from 'react';
 import {StyleSheet, View} from 'react-native';
-import {FormView, useDispatch, useSelector} from '@axelor/aos-mobile-core';
-import {HeaderContainer, Screen, Text} from '@axelor/aos-mobile-ui';
+import {
+  FormView,
+  useDispatch,
+  useSelector,
+  useTranslator,
+} from '@axelor/aos-mobile-core';
+import {
+  Badge,
+  Icon,
+  HeaderContainer,
+  Screen,
+  Text,
+  useThemeColor,
+} from '@axelor/aos-mobile-ui';
 import {InterventionHeader} from '../../components';
 import {fetchQuestionById, updateQuestion} from '../../features/questionSlice';
 import {Question} from '../../types';
 
 const InterventionQuestionFormScreen = ({route, navigation}) => {
+  const Colors = useThemeColor();
+  const I18n = useTranslator();
   const dispatch = useDispatch();
 
   const rangeId = route?.params?.rangeId;
+  const questionStatus = route?.params?.questionStatus;
   const [questionId] = useState(route?.params?.questionId);
 
   const {intervention} = useSelector(
     (state: any) => state.intervention_intervention,
   );
   const {question} = useSelector((state: any) => state.intervention_question);
+
+  const questionBadge = useMemo(
+    () => Question.getBadge(questionStatus, I18n, Colors),
+    [Colors, I18n, questionStatus],
+  );
 
   useEffect(() => {
     dispatch((fetchQuestionById as any)({questionId}));
@@ -62,7 +82,15 @@ const InterventionQuestionFormScreen = ({route, navigation}) => {
         fixedItems={<InterventionHeader intervention={intervention} />}
       />
       <View style={styles.questionContainer}>
-        <Text writingType="title">{question.title}</Text>
+        <View style={styles.questionTitleContainer}>
+          <Text writingType="title" style={styles.questionTitle}>
+            {question.title}
+          </Text>
+          {questionBadge && (
+            <Badge title={questionBadge.title} color={questionBadge.color} />
+          )}
+          {question.isPrivate && <Icon name="lock" />}
+        </View>
         {question.indication && (
           <Text writingType="details">{question.indication}</Text>
         )}
@@ -96,6 +124,14 @@ const styles = StyleSheet.create({
     width: '90%',
     alignSelf: 'center',
     marginBottom: 10,
+  },
+  questionTitleContainer: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+  },
+  questionTitle: {
+    flex: 4,
   },
 });
 
