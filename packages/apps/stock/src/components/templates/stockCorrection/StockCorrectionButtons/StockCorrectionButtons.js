@@ -23,6 +23,7 @@ import {
   useDispatch,
   useNavigation,
   useSelector,
+  usePermitted,
 } from '@axelor/aos-mobile-core';
 import {Button, useThemeColor} from '@axelor/aos-mobile-ui';
 import StockCorrection from '../../../../types/stock-corrrection';
@@ -46,6 +47,9 @@ const StockCorrectionButtons = ({
   const Colors = useThemeColor();
   const navigation = useNavigation();
   const dispatch = useDispatch();
+  const {readonly} = usePermitted({
+    modelName: 'com.axelor.apps.stock.db.StockCorrection',
+  });
 
   const {mobileSettings} = useSelector(state => state.appConfig);
 
@@ -109,7 +113,7 @@ const StockCorrectionButtons = ({
     [handleAPI],
   );
 
-  if (reason?.id == null) {
+  if (reason?.id == null || readonly) {
     return null;
   }
 

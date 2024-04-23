@@ -21,6 +21,7 @@ import {StyleSheet} from 'react-native';
 import {
   useDispatch,
   useNavigation,
+  usePermitted,
   useSelector,
   useTranslator,
 } from '@axelor/aos-mobile-core';
@@ -36,6 +37,12 @@ const InventorySearchLineContainer = ({}) => {
   const I18n = useTranslator();
   const navigation = useNavigation();
   const dispatch = useDispatch();
+  const {readonly} = usePermitted({
+    modelName: 'com.axelor.apps.stock.db.Inventory',
+  });
+  const {canCreate} = usePermitted({
+    modelName: 'com.axelor.apps.stock.db.InventoryLine',
+  });
 
   const {mobileSettings} = useSelector(state => state.appConfig);
   const {inventory} = useSelector(state => state.inventory);
@@ -102,7 +109,11 @@ const InventorySearchLineContainer = ({}) => {
       scanKey={scanKey}
       onViewPress={handleViewAll}
       filterLine={filterLine}
-      showAction={inventory?.statusSelect < Inventory.status.Completed}
+      showAction={
+        !readonly &&
+        canCreate &&
+        inventory?.statusSelect < Inventory.status.Completed
+      }
       onAction={handleNewLine}
       renderItem={item => (
         <InventoryLineCard

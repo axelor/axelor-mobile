@@ -21,6 +21,7 @@ import {
   useTranslator,
   useDispatch,
   useNavigation,
+  usePermitted,
 } from '@axelor/aos-mobile-core';
 import {Button} from '@axelor/aos-mobile-ui';
 import {realizeInternalMove} from '../../../../features/internalMoveSlice';
@@ -30,6 +31,9 @@ const InternalMoveRealizeButton = ({internalMove}) => {
   const I18n = useTranslator();
   const dispatch = useDispatch();
   const navigation = useNavigation();
+  const {readonly} = usePermitted({
+    modelName: 'com.axelor.apps.stock.db.StockMove',
+  });
 
   const handleRealizeStockMove = useCallback(() => {
     dispatch(
@@ -42,7 +46,7 @@ const InternalMoveRealizeButton = ({internalMove}) => {
     navigation.popToTop();
   }, [dispatch, internalMove, navigation]);
 
-  if (internalMove.statusSelect === StockMove.status.Planned) {
+  if (!readonly && internalMove.statusSelect === StockMove.status.Planned) {
     return (
       <Button title={I18n.t('Base_Realize')} onPress={handleRealizeStockMove} />
     );

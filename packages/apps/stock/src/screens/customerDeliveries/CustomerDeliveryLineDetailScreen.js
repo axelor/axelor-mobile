@@ -23,7 +23,12 @@ import {
   KeyboardAvoidingScrollView,
   NotesCard,
 } from '@axelor/aos-mobile-ui';
-import {useDispatch, useSelector, useTranslator} from '@axelor/aos-mobile-core';
+import {
+  useDispatch,
+  usePermitted,
+  useSelector,
+  useTranslator,
+} from '@axelor/aos-mobile-core';
 import {
   ProductCardInfo,
   StockMoveHeader,
@@ -43,6 +48,9 @@ const CustomerDeliveryLineDetailScreen = ({route, navigation}) => {
   const {customerDelivery, customerDeliveryLineId, productId} = route.params;
   const I18n = useTranslator();
   const dispatch = useDispatch();
+  const {readonly} = usePermitted({
+    modelName: 'com.axelor.apps.stock.db.StockMoveLine',
+  });
 
   const {stock: stockConfig} = useSelector(state => state.appConfig);
   const {productFromId: product} = useSelector(state => state.product);
@@ -114,7 +122,7 @@ const CustomerDeliveryLineDetailScreen = ({route, navigation}) => {
           customerDeliveryLine={customerDeliveryLine}
           realQty={realQty}
           fromStockLocation={fromStockLocation}
-          visible={!isTrackingNumberSelectVisible}
+          visible={!readonly && !isTrackingNumberSelectVisible}
         />
       }
       loading={loadingCustomerDeliveryLine}>
@@ -151,6 +159,7 @@ const CustomerDeliveryLineDetailScreen = ({route, navigation}) => {
             isFocus={true}
             defaultStockLocation={customerDelivery.fromStockLocation}
             readOnly={
+              readonly ||
               customerDelivery?.statusSelect !== StockMove.status.Planned
             }
           />
@@ -166,13 +175,14 @@ const CustomerDeliveryLineDetailScreen = ({route, navigation}) => {
         <CustomerDeliveryLineTrackingNumberSelect
           product={product}
           customerDeliveryLine={customerDeliveryLine}
-          visible={isTrackingNumberSelectVisible}
+          visible={!readonly && isTrackingNumberSelectVisible}
         />
         <CustomerDeliveryLineQuantityCard
           customerDelivery={customerDelivery}
           customerDeliveryLine={customerDeliveryLine}
           realQty={realQty}
           setRealQty={setRealQty}
+          readonly={readonly}
         />
         <NotesCard
           title={I18n.t('Stock_NotesClient')}

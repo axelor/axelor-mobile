@@ -23,6 +23,7 @@ import {
   useSelector,
   useDispatch,
   useNavigation,
+  usePermitted,
 } from '@axelor/aos-mobile-core';
 import Inventory from '../../../../types/inventory';
 import {
@@ -42,6 +43,9 @@ const InventoryLineButtons = ({
   const I18n = useTranslator();
   const dispatch = useDispatch();
   const navigation = useNavigation();
+  const {canCreate, readonly} = usePermitted({
+    modelName: 'com.axelor.apps.stock.db.InventoryLine',
+  });
 
   const {productFromId} = useSelector(state => state.product);
 
@@ -95,11 +99,11 @@ const InventoryLineButtons = ({
     return null;
   }
 
-  if (inventoryLine == null) {
+  if (inventoryLine == null && canCreate) {
     return <Button title={I18n.t('Base_Add')} onPress={handleNewLine} />;
   }
 
-  if (inventory?.statusSelect !== Inventory.status.Validated) {
+  if (!readonly && inventory?.statusSelect !== Inventory.status.Validated) {
     return (
       <Button
         title={
