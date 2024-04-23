@@ -138,7 +138,7 @@ export async function fetchActiveTimer({userId}) {
     model: 'com.axelor.apps.hr.db.TSTimer',
     criteria: createActiveTimerCriteria(userId),
     fieldKey: 'hr_timer',
-    sortKey: 'hr_timer',
+    sortKey: 'hr_activeTimer',
     numberElementsByPage: 1,
     page: 0,
   });
