@@ -21,6 +21,8 @@ import {StyleSheet, View} from 'react-native';
 import {Card, HtmlInput, Icon, Text} from '../../atoms';
 import {useThemeColor} from '../../../theme/ThemeContext';
 
+const MAX_HEIGHT = 100;
+
 interface NotesCardProps {
   title: string;
   data: string;
@@ -31,6 +33,7 @@ const NotesCard = ({title, data, style}: NotesCardProps) => {
   const Colors = useThemeColor();
 
   const [expanded, setExpanded] = useState(false);
+  const [chevronHeight, setChevronHeight] = useState(0);
 
   if (data == null || data === '') {
     return null;
@@ -43,24 +46,32 @@ const NotesCard = ({title, data, style}: NotesCardProps) => {
   return (
     <View style={[styles.description, style]}>
       <Text style={styles.title}>{title}</Text>
-      <Card
-        style={[
-          styles.note,
-          expanded ? styles.expandedNote : styles.collapsedNote,
-        ]}>
-        <HtmlInput
-          defaultInput={data}
-          readonly={true}
-          style={!expanded && styles.htmlInput}
-        />
-        <Icon
-          touchable={true}
-          onPress={toggleExpanded}
-          style={styles.icon}
-          name={expanded ? 'chevron-up' : 'chevron-down'}
-          color={Colors.primaryColor.background}
-        />
-      </Card>
+      <View
+        onLayout={event => {
+          const {height} = event.nativeEvent.layout;
+          setChevronHeight(height);
+        }}>
+        <Card
+          style={[
+            styles.note,
+            expanded ? styles.expandedNote : styles.collapsedNote,
+          ]}>
+          <HtmlInput
+            defaultInput={data}
+            readonly={true}
+            style={!expanded && styles.htmlInput}
+          />
+          {chevronHeight > MAX_HEIGHT && (
+            <Icon
+              touchable={true}
+              onPress={toggleExpanded}
+              style={styles.icon}
+              name={expanded ? 'chevron-up' : 'chevron-down'}
+              color={Colors.primaryColor.background}
+            />
+          )}
+        </Card>
+      </View>
     </View>
   );
 };
@@ -86,17 +97,16 @@ const styles = StyleSheet.create({
     paddingVertical: 10,
   },
   htmlInput: {
-    maxHeight: 100,
+    maxHeight: MAX_HEIGHT,
   },
   collapsedNote: {
-    //maxHeight: 100,
     overflow: 'hidden',
   },
   expandedNote: {
     maxHeight: null,
   },
   icon: {
-    marginBottom: 10,
+    marginTop: 10,
   },
 });
 
