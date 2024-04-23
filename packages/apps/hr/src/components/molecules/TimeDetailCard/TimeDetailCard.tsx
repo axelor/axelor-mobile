@@ -33,6 +33,7 @@ interface TimeDetailCardProps {
   durationUnit: string;
   isSmallCard?: boolean;
   isActions?: boolean;
+  canEdit?: boolean;
   showTrash?: boolean;
   style?: any;
   onEdit?: () => void;
@@ -51,6 +52,7 @@ const TimeDetailCard = ({
   durationUnit,
   isSmallCard,
   showTrash = true,
+  canEdit = true,
   isActions = true,
   style,
   onEdit = () => {},
@@ -76,7 +78,7 @@ const TimeDetailCard = ({
       {isActions && (
         <View style={styles.iconContainer}>
           <CardIconButton
-            iconName={'pencil-fill'}
+            iconName={canEdit ? 'pencil-fill' : 'file-earmark-text'}
             iconColor={Colors.secondaryColor_dark.background}
             onPress={onEdit}
             style={styles.cardIconButton}
