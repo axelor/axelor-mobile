@@ -43,17 +43,17 @@ const ActiveInterventionScreen = ({}) => {
     isFocused && dispatch((fetchActiveIntervention as any)({userId}));
   }, [dispatch, isFocused, userId]);
 
-  if (loadingActiveIntervention) {
+  if (activeIntervention?.id) {
+    return (
+      <InterventionDetailsScreen interventionId={activeIntervention?.id} />
+    );
+  } else if (loadingActiveIntervention) {
     return (
       <ActivityIndicator
         style={styles.activityIndicator}
         size="large"
         color={Colors.inverseColor.background}
       />
-    );
-  } else if (activeIntervention?.id) {
-    return (
-      <InterventionDetailsScreen interventionId={activeIntervention?.id} />
     );
   } else {
     return (
