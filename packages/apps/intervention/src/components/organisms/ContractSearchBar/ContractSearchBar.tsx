@@ -27,7 +27,7 @@ import {AutoCompleteSearch} from '@axelor/aos-mobile-ui';
 import {searchContract} from '../../../features/contractSlice';
 import {CustomComponentProps} from '../../../utils';
 
-const ContractSearchBar = ({
+const ContractSearchBarAux = ({
   style = null,
   title = 'Intervention_Contract',
   defaultValue = null,
@@ -74,6 +74,36 @@ const ContractSearchBar = ({
       navigate={navigate}
       oneFilter={oneFilter}
       style={style}
+    />
+  );
+};
+
+const ContractSearchBar = ({
+  style = null,
+  title = 'Intervention_Contract',
+  defaultValue = null,
+  onChange = () => {},
+  readonly = false,
+  required = false,
+  showDetailsPopup = true,
+  navigate = false,
+  oneFilter = false,
+  showTitle = true,
+  customerId = null,
+}: CustomComponentProps) => {
+  return (
+    <ContractSearchBarAux
+      style={style}
+      title={title}
+      defaultValue={defaultValue}
+      onChange={onChange}
+      readonly={readonly}
+      required={required}
+      showDetailsPopup={showDetailsPopup}
+      navigate={navigate}
+      oneFilter={oneFilter}
+      showTitle={showTitle}
+      customerId={customerId}
     />
   );
 };
