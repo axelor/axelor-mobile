@@ -1,5 +1,5 @@
 {
-  "title": "Opportunity details screen: modify the with of the informations dropdown",
+  "title": "Opportunity details screen: modify the width of the informations dropdown",
   "type": "fix",
   "packages": "crm"
 }
