@@ -1,5 +1,5 @@
 {
-  "title": "ListScreen: remove useless onChangeSearchValue",
+  "title": "List views: remove empty onChange functions",
   "type": "fix",
-  "packages": "crm"
+  "packages": ["crm", "intervention", "manufacturing"]
 }
