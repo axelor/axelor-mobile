@@ -1,0 +1,5 @@
+{
+  "title": "List views: remove empty onChange functions",
+  "type": "fix",
+  "packages": ["crm", "intervention", "manufacturing"]
+}

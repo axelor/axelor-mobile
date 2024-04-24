@@ -90,7 +90,6 @@ const ProspectsListScreen = ({navigation}) => {
         isListEnd={isListEnd}
         sliceFunction={fetchProspects}
         sliceFunctionData={sliceFunctionData}
-        onChangeSearchValue={() => {}}
         searchPlaceholder={I18n.t('Crm_Prospects')}
         topFixedItems={
           <ToggleSwitch
