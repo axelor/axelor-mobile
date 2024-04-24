@@ -25,9 +25,9 @@ describe('TagList Component', () => {
   const Colors = getDefaultThemeColors();
 
   const tags = [
-    {title: 'tag1', order: 1},
-    {title: 'tag2', color: Colors.plannedColor, order: 2},
-    {title: 'tag13', order: 3},
+    {title: 'tag1'},
+    {title: 'tag2', color: Colors.plannedColor},
+    {title: 'tag13'},
   ];
 
   it('renders without crashing', () => {
@@ -54,34 +54,52 @@ describe('TagList Component', () => {
       <TagList tags={tags} defaultColor={defaultColor} />,
     );
 
-    expect(wrapper.find(Badge).at(0).prop('color')).toBe(defaultColor);
-    expect(wrapper.find(Badge).at(1).prop('color')).toBe(Colors.plannedColor);
-    expect(wrapper.find(Badge).at(2).prop('color')).toBe(defaultColor);
+    tags.forEach((tag, idx) => {
+      expect(wrapper.find(Badge).at(idx).prop('color')).toBe(
+        tag.color != null ? tag.color : defaultColor,
+      );
+      expect(wrapper.find(Badge).at(idx).prop('title')).toBe(tag.title);
+    });
   });
 
   it('uses theme color if no defaultColor is specified', () => {
     const wrapper = shallow(<TagList tags={tags} />);
 
-    expect(wrapper.find(Badge).at(0).prop('color')).toBe(Colors.infoColor);
-    expect(wrapper.find(Badge).at(2).prop('color')).toBe(Colors.infoColor);
+    tags.forEach((tag, idx) => {
+      expect(wrapper.find(Badge).at(idx).prop('color')).toBe(
+        tag.color != null ? tag.color : Colors.infoColor,
+      );
+      expect(wrapper.find(Badge).at(idx).prop('title')).toBe(tag.title);
+    });
   });
 
-  it('does not render if all tags are hidden', () => {
-    const hiddenTags = tags.map(tag => ({...tag, hide: true}));
+  it('does not render if all tags are hidden or list is empty', () => {
+    const hiddenTags = tags.map(tag => ({...tag, hidden: true}));
     const wrapper = shallow(<TagList tags={hiddenTags} />);
+    const emptyWrapper = shallow(<TagList tags={[]} />);
+
     expect(wrapper.isEmptyRender()).toBe(true);
+    expect(emptyWrapper.isEmptyRender()).toBe(true);
   });
 
   it('sorts tags based on their order', () => {
     const unorderedTags = [
-      {title: 'Last', order: 3},
-      {title: 'First', order: 1},
-      {title: 'Middle', order: 2},
+      {title: 'Middle', order: 3},
+      {title: 'Last'},
+      {title: 'First', order: 2},
     ];
     const wrapper = shallow(<TagList tags={unorderedTags} />);
-    expect(wrapper.find(Badge).at(0).prop('title')).toBe('First');
-    expect(wrapper.find(Badge).at(1).prop('title')).toBe('Middle');
-    expect(wrapper.find(Badge).at(2).prop('title')).toBe('Last');
+
+    unorderedTags
+      .map((tag, idx) => ({
+        ...tag,
+        order: tag.order != null ? tag.order : idx * 10,
+      }))
+      .sort((a, b) => a.order - b.order)
+      .filter(tag => tag.hidden !== true)
+      .forEach((tag, idx) => {
+        expect(wrapper.find(Badge).at(idx).prop('title')).toBe(tag.title);
+      });
   });
 
   it('should render with custom style', () => {

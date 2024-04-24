@@ -18,8 +18,15 @@
 
 import React from 'react';
 import {storiesOf} from '@storybook/react-native';
-import {TagList} from '../../src/components/organisms';
+import {TagList} from '../../src/components';
 import {lightTheme} from '../../src/theme';
+
+const availableColors = [
+  'undefined',
+  ...Object.entries(lightTheme.colors)
+    .filter(([, _color]) => typeof _color !== 'string')
+    .map(([key]) => key),
+];
 
 storiesOf('ui/organisms/TagList', module).add(
   'Default',
@@ -33,16 +40,13 @@ storiesOf('ui/organisms/TagList', module).add(
             title: args.tag1_title,
             color: lightTheme.colors[args.tag1_color],
             order: args.tag1_order,
-            hide: args.tag1_hide,
+            hidden: args.tag1_hidden,
           },
           {
             title: args.tag2_title,
             color: lightTheme.colors[args.tag2_color],
             order: args.tag2_order,
-            hide: args.tag2_hide,
-          },
-          {
-            title: 'Tag3',
+            hidden: args.tag2_hidden,
           },
         ]}
       />
@@ -57,9 +61,7 @@ storiesOf('ui/organisms/TagList', module).add(
         defaultValue: 'Title',
       },
       defaultColor: {
-        options: Object.entries(lightTheme.colors)
-          .filter(([, _color]) => typeof _color !== 'string')
-          .map(([key]) => key),
+        options: availableColors,
         control: {
           type: 'select',
         },
@@ -71,9 +73,7 @@ storiesOf('ui/organisms/TagList', module).add(
         defaultValue: 'Tag 1',
       },
       tag1_color: {
-        options: Object.entries(lightTheme.colors)
-          .filter(([, _color]) => typeof _color !== 'string')
-          .map(([key]) => key),
+        options: availableColors,
         defaultValue: 'primaryColor',
         control: {
           type: 'select',
@@ -81,12 +81,12 @@ storiesOf('ui/organisms/TagList', module).add(
       },
       tag1_order: {
         type: 'number',
-        defaultValue: 1,
+        defaultValue: 0,
         control: {
           type: 'number',
         },
       },
-      tag1_hide: {
+      tag1_hidden: {
         type: 'boolean',
         defaultValue: false,
         control: {type: 'boolean'},
@@ -98,21 +98,19 @@ storiesOf('ui/organisms/TagList', module).add(
         defaultValue: 'Tag 2',
       },
       tag2_color: {
-        options: Object.entries(lightTheme.colors)
-          .filter(([, _color]) => typeof _color !== 'string')
-          .map(([key]) => key),
+        options: availableColors,
         control: {
           type: 'select',
         },
       },
       tag2_order: {
         type: 'number',
-        defaultValue: 2,
+        defaultValue: 10,
         control: {
           type: 'number',
         },
       },
-      tag2_hide: {
+      tag2_hidden: {
         type: 'boolean',
         defaultValue: false,
         control: {type: 'boolean'},

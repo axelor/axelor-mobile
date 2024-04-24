@@ -18,15 +18,16 @@
 
 import React, {useMemo} from 'react';
 import {StyleSheet, View} from 'react-native';
+import {Color, useThemeColor} from '../../../theme';
+import {checkNullString} from '../../../utils';
 import {Badge} from '../../molecules';
 import {Text} from '../../atoms';
-import {Color, useThemeColor} from '../../../theme';
 
 interface Tag {
   title: string;
   color?: Color;
   order?: number;
-  hide?: boolean;
+  hidden?: boolean;
 }
 
 interface TagListProps {
@@ -41,8 +42,12 @@ const TagList = ({style, title, tags, defaultColor}: TagListProps) => {
 
   const visibleSortTags = useMemo(
     () =>
-      tags
-        .filter(tag => tag.hide !== true)
+      (tags ?? [])
+        .map((tag, idx) => ({
+          ...tag,
+          order: tag.order != null ? tag.order : idx * 10,
+        }))
+        .filter(tag => tag.hidden !== true)
         .sort((firstTag, secondTag) => firstTag.order - secondTag.order),
     [tags],
   );
@@ -53,11 +58,10 @@ const TagList = ({style, title, tags, defaultColor}: TagListProps) => {
 
   return (
     <View style={[styles.container, style]}>
-      {title && <Text style={styles.text}>{title} :</Text>}
+      {!checkNullString(title) && <Text style={styles.text}>{title} :</Text>}
       {visibleSortTags.map((tag, index) => {
-        const _defaultColor =
-          defaultColor != null ? defaultColor : Colors.infoColor;
-        const color = tag.color != null ? tag.color : _defaultColor;
+        const color =
+          tag.color != null ? tag.color : defaultColor ?? Colors.infoColor;
 
         return (
           <Badge
