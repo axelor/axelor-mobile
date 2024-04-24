@@ -180,7 +180,6 @@ const ConsumedProductListScreen = ({route, navigation}) => {
             </View>
             <ScannerAutocompleteSearch
               objectList={consumedProductList}
-              onChangeValue={() => {}}
               fetchData={({searchValue}) => setProduct(searchValue)}
               displayValue={item => item?.productName}
               placeholder={I18n.t('Manufacturing_Product')}

@@ -100,7 +100,6 @@ const CatalogListScreen = ({}) => {
         isListEnd={isListEnd}
         sliceFunction={fetchCatalog}
         sliceFunctionData={sliceFunctionData}
-        onChangeSearchValue={() => {}}
         searchPlaceholder={I18n.t('Crm_Catalogs')}
         fixedItems={
           <MultiValuePicker

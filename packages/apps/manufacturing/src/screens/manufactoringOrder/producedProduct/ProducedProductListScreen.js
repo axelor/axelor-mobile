@@ -145,7 +145,6 @@ const ProducedProductListScreen = ({route, navigation}) => {
             </View>
             <ScannerAutocompleteSearch
               objectList={producedProductList}
-              onChangeValue={() => {}}
               fetchData={({searchValue}) => setProduct(searchValue)}
               displayValue={item => item?.productName}
               placeholder={I18n.t('Manufacturing_Product')}

@@ -55,7 +55,6 @@ const ContactListScreen = ({navigation}) => {
         isListEnd={isListEnd}
         sliceFunction={fetchContact}
         sliceFunctionData={sliceFunctionData}
-        onChangeSearchValue={() => {}}
         searchPlaceholder={I18n.t('Crm_Contacts')}
         topFixedItems={
           <ToggleSwitch

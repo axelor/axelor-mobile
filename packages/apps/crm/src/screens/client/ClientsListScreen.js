@@ -55,7 +55,6 @@ const CLientsListScreen = ({navigation}) => {
         isListEnd={isListEnd}
         sliceFunction={fetchClients}
         sliceFunctionData={sliceFunctionData}
-        onChangeSearchValue={() => {}}
         searchPlaceholder={I18n.t('Crm_Clients')}
         topFixedItems={
           <ToggleSwitch
