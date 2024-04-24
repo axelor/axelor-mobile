@@ -81,7 +81,6 @@ const LeadListScreen = ({navigation}) => {
         isListEnd={isListEnd}
         sliceFunction={fetchLeads}
         sliceFunctionData={sliceFunctionData}
-        onChangeSearchValue={() => {}}
         searchPlaceholder={I18n.t('Crm_Leads')}
         topFixedItems={
           <ToggleSwitch
