@@ -102,6 +102,9 @@ export const hr_formsRegister: FormConfigs = {
         type: 'object',
         widget: 'custom',
         customComponent: ProjectTaskSearchBar,
+        options: {
+          isMemberRequired: true,
+        },
         hideIf: ({storeState}) =>
           !storeState.appConfig.mobileSettings.isExpenseProjectInvoicingEnabled,
         dependsOn: {
@@ -384,6 +387,9 @@ export const hr_formsRegister: FormConfigs = {
         type: 'object',
         widget: 'custom',
         customComponent: ProjectTaskSearchBar,
+        options: {
+          isAssignedToRequired: true,
+        },
         hideIf: ({storeState}) =>
           storeState.user.user.employee?.timesheetImputationSelect !==
             Timesheet.imputation.Project ||
