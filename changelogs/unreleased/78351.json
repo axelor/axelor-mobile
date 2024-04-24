@@ -1,5 +1,5 @@
 {
-  "title": "CustomerDeliveryLineListScreen: fix inconsistency issue in search line",
+  "title": "Customer Delivery: restore navigation on search lines view",
   "type": "fix",
   "packages": "stock"
 }
