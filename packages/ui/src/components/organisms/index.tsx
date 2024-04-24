@@ -35,4 +35,5 @@ export {default as Picker} from './Picker/Picker';
 export {default as ProgressBar} from './ProgressBar/ProgressBar';
 export {ActionType, ScrollList, TopActions} from './ScrollList';
 export {default as SearchBar} from './SearchBar/SearchBar';
+export {default as TagList} from './TagList/TagList';
 export {default as ToggleButton} from './ToggleButton/ToggleButton';
