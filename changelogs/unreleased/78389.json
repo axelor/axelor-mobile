@@ -1,0 +1,5 @@
+{
+  "title": "Login: use new AOP request to get user informations",
+  "type": "fix",
+  "packages": "core"
+}
