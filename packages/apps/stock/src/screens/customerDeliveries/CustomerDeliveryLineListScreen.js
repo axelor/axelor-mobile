@@ -72,7 +72,7 @@ const CustomerDeliveryLineListScreen = ({route, navigation}) => {
   };
 
   const handleLineSearch = item => {
-    handleShowLine(item, 0, true);
+    handleShowLine(item, true);
   };
 
   const fetchDeliveryLinesAPI = useCallback(
