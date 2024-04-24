@@ -17,9 +17,9 @@
  */
 
 import React from 'react';
-import {View} from 'react-native';
+import {TouchableOpacity, View} from 'react-native';
 import {shallow} from 'enzyme';
-import {HtmlInput, NotesCard, Text} from '@axelor/aos-mobile-ui';
+import {HtmlInput, Icon, NotesCard, Text} from '@axelor/aos-mobile-ui';
 import {getGlobalStyles} from '../../tools';
 
 describe('NotesCard Component', () => {
@@ -59,24 +59,32 @@ describe('NotesCard Component', () => {
   it('should render chevron icon when content exceeds maximum height', () => {
     const wrapper = shallow(<NotesCard {...props} />);
 
-    const fakeEvent = {nativeEvent: {layout: {height: 150}}};
-    wrapper.find(View).at(1).props().onLayout(fakeEvent);
+    wrapper
+      .find(TouchableOpacity)
+      .simulate('layout', {nativeEvent: {layout: {height: 150}}});
 
-    expect(wrapper.find('Icon').exists()).toBe(true);
-    expect(wrapper.find('Icon').prop('name')).toBe('chevron-down');
+    expect(wrapper.find(Icon).exists()).toBe(true);
+    expect(wrapper.find(Icon).prop('name')).toBe('chevron-down');
+
+    wrapper.find(TouchableOpacity).simulate('press');
+
+    expect(wrapper.find(Icon).prop('name')).toBe('chevron-up');
   });
 
   it('should not render chevron icon when content is within maximum height', () => {
     const wrapper = shallow(<NotesCard {...props} />);
-    expect(wrapper.find('Icon').exists()).toBe(false);
+
+    wrapper
+      .find(TouchableOpacity)
+      .simulate('layout', {nativeEvent: {layout: {height: 20}}});
+
+    expect(wrapper.find(Icon).exists()).toBe(false);
   });
 
   it('should apply custom style when provided', () => {
     const customStyle = {width: 200};
     const wrapper = shallow(<NotesCard {...props} style={customStyle} />);
 
-    expect(getGlobalStyles(wrapper.find(View).at(0))).toMatchObject(
-      customStyle,
-    );
+    expect(getGlobalStyles(wrapper.find(View))).toMatchObject(customStyle);
   });
 });

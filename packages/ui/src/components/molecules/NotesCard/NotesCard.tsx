@@ -17,11 +17,11 @@
  */
 
 import React, {useState} from 'react';
-import {StyleSheet, View} from 'react-native';
+import {StyleSheet, TouchableOpacity, View} from 'react-native';
 import {Card, HtmlInput, Icon, Text} from '../../atoms';
 import {useThemeColor} from '../../../theme/ThemeContext';
 
-const MAX_HEIGHT = 100;
+const MAX_HEIGHT = 70;
 
 interface NotesCardProps {
   title: string;
@@ -46,7 +46,10 @@ const NotesCard = ({title, data, style}: NotesCardProps) => {
   return (
     <View style={[styles.description, style]}>
       <Text style={styles.title}>{title}</Text>
-      <View
+      <TouchableOpacity
+        disabled={chevronHeight < MAX_HEIGHT}
+        activeOpacity={0.9}
+        onPress={toggleExpanded}
         onLayout={event => {
           const {height} = event.nativeEvent.layout;
           setChevronHeight(height);
@@ -59,15 +62,13 @@ const NotesCard = ({title, data, style}: NotesCardProps) => {
           />
           {chevronHeight > MAX_HEIGHT && (
             <Icon
-              touchable={true}
-              onPress={toggleExpanded}
               style={styles.icon}
               name={expanded ? 'chevron-up' : 'chevron-down'}
               color={Colors.primaryColor.background}
             />
           )}
         </Card>
-      </View>
+      </TouchableOpacity>
     </View>
   );
 };
@@ -75,7 +76,7 @@ const NotesCard = ({title, data, style}: NotesCardProps) => {
 const styles = StyleSheet.create({
   description: {
     flexDirection: 'column',
-    marginTop: 10,
+    marginVertical: 5,
     width: '90%',
     alignSelf: 'center',
   },
@@ -85,18 +86,17 @@ const styles = StyleSheet.create({
   note: {
     justifyContent: 'center',
     width: '100%',
-    elevation: 0,
-    shadowOpacity: 0,
     borderRadius: 7,
-    marginVertical: 8,
+    marginVertical: 4,
     paddingRight: 10,
-    paddingVertical: 10,
+    paddingVertical: 5,
+    paddingHorizontal: 10,
   },
   htmlInput: {
     maxHeight: MAX_HEIGHT,
   },
   icon: {
-    marginTop: 10,
+    marginTop: 5,
   },
 });
 
