@@ -61,9 +61,9 @@ export async function loginApi(
 }
 
 export async function getActiveUserInfo() {
-  const response = await axios.get('/ws/app/info');
+  const response = await axios.get('/ws/public/app/info');
   return {
-    userId: response.data['user.id'],
-    applicationMode: response.data['application.mode'],
+    userId: response?.data?.user?.id,
+    applicationMode: response?.data?.application?.mode,
   };
 }
