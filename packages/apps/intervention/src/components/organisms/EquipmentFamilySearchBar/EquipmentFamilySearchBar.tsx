@@ -27,7 +27,7 @@ import {AutoCompleteSearch} from '@axelor/aos-mobile-ui';
 import {searchEquipmentFamily} from '../../../features/equipmentFamilySlice';
 import {CustomComponentProps} from '../../../utils';
 
-const EquipmentFamilySearchBar = ({
+const EquipmentFamilySearchBarAux = ({
   style = null,
   title = 'Intervention_EquipmentFamily',
   defaultValue = null,
@@ -70,6 +70,34 @@ const EquipmentFamilySearchBar = ({
       navigate={navigate}
       oneFilter={oneFilter}
       style={style}
+    />
+  );
+};
+
+const EquipmentFamilySearchBar = ({
+  style = null,
+  title = 'Intervention_EquipmentFamily',
+  defaultValue = null,
+  onChange = () => {},
+  readonly = false,
+  required = false,
+  showDetailsPopup = true,
+  navigate = false,
+  oneFilter = false,
+  showTitle = true,
+}: CustomComponentProps) => {
+  return (
+    <EquipmentFamilySearchBarAux
+      style={style}
+      title={title}
+      defaultValue={defaultValue}
+      onChange={onChange}
+      readonly={readonly}
+      required={required}
+      showDetailsPopup={showDetailsPopup}
+      navigate={navigate}
+      oneFilter={oneFilter}
+      showTitle={showTitle}
     />
   );
 };

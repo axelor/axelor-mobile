@@ -29,7 +29,7 @@ import {
   QuestionMeasure,
   TypePicker,
 } from '../components';
-import {Question} from '../types';
+import {Equipment, Question} from '../types';
 
 const CustomerComponentWrapper = component => {
   return ({objectState, ...props}: customComponentOptions) =>
@@ -82,39 +82,54 @@ export const intervention_formsRegister: FormConfigs = {
         titleKey: 'Intervention_EquipmentStatus_InService',
         type: 'boolean',
         widget: 'checkbox',
+        hideIf: ({objectState}) =>
+          objectState?.typeSelect === Equipment.type.place,
       },
       commissioningDate: {
         titleKey: 'Intervention_CommissioningDate',
         type: 'date',
         widget: 'date',
+        hideIf: ({objectState}) =>
+          objectState?.typeSelect === Equipment.type.place,
       },
       customerWarrantyOnPartEndDate: {
         titleKey: 'Intervention_CustomerWarrantyOnPartEndDate',
         type: 'date',
         widget: 'date',
+        hideIf: ({objectState}) =>
+          objectState?.typeSelect === Equipment.type.place,
       },
       equipmentFamily: {
         titleKey: 'Intervention_EquipmentFamily',
         type: 'object',
         widget: 'custom',
-        required: true,
+        requiredIf: ({objectState}) =>
+          objectState?.typeSelect === Equipment.type.equipment,
         customComponent: EquipmentFamilySearchBar,
+        hideIf: ({objectState}) =>
+          objectState?.typeSelect === Equipment.type.place,
       },
       scheduleOfOperation: {
         titleKey: 'Intervention_ScheduleOfOperation',
         type: 'string',
         widget: 'default',
+        hideIf: ({objectState}) =>
+          objectState?.typeSelect === Equipment.type.place,
       },
       specificAccessSchedule: {
         titleKey: 'Intervention_SpecificAccessSchedule',
         type: 'string',
         widget: 'default',
+        hideIf: ({objectState}) =>
+          objectState?.typeSelect === Equipment.type.place,
       },
       contract: {
         titleKey: 'Intervention_Contract',
         type: 'object',
         widget: 'custom',
         customComponent: CustomerComponentWrapper(ContractSearchBar),
+        hideIf: ({objectState}) =>
+          objectState?.typeSelect === Equipment.type.place,
       },
       comments: {
         titleKey: 'Intervention_Comments',
