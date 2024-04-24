@@ -1,5 +1,5 @@
 {
-  "title": "NotesCard: improve component to display an expand/collapse icon only when the content exceeds a set height",
+  "title": "NotesCard: improve component style and make it expandable when content is too long",
   "type": "feat",
   "packages": "ui"
 }
