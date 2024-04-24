@@ -30,7 +30,7 @@ const Switch = ({isEnabled, handleToggle, style}: SwitchProps) => {
   const Colors = useThemeColor();
 
   const toggleSwitch = () => {
-    handleToggle(!isEnabled);
+    handleToggle != null && handleToggle(!isEnabled);
   };
 
   return (

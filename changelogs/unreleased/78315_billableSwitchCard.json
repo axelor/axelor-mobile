@@ -1,0 +1,5 @@
+{
+  "title": "BillableSwitchCard: add readonly & required parameters on components",
+  "type": "feat",
+  "packages": "ui"
+}

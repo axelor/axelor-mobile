@@ -26,6 +26,8 @@ interface SwitchCardProps {
   style?: any;
   title: string;
   defaultValue: boolean;
+  required?: boolean;
+  readonly?: boolean;
   onToggle: (any) => void;
 }
 
@@ -33,12 +35,25 @@ const SwitchCard = ({
   style,
   title,
   defaultValue,
+  required = false,
+  readonly,
   onToggle = () => {},
 }: SwitchCardProps) => {
   const Colors = useThemeColor();
 
-  const commonStyles = useMemo(() => getCommonStyles(Colors), [Colors]);
-  const styles = useMemo(() => getStyles(Colors), [Colors]);
+  const _required = useMemo(
+    () => required && defaultValue == null,
+    [required, defaultValue],
+  );
+
+  const commonStyles = useMemo(
+    () => getCommonStyles(Colors, _required),
+    [Colors, _required],
+  );
+  const styles = useMemo(
+    () => getStyles(Colors, _required),
+    [Colors, _required],
+  );
 
   return (
     <View
@@ -55,17 +70,19 @@ const SwitchCard = ({
       <Switch
         style={styles.switch}
         isEnabled={defaultValue}
-        handleToggle={onToggle}
+        handleToggle={readonly ? null : onToggle}
       />
     </View>
   );
 };
 
-const getStyles = (Colors: ThemeColors) =>
+const getStyles = (Colors: ThemeColors, _required: boolean) =>
   StyleSheet.create({
     container: {
       width: '90%',
-      borderColor: Colors.secondaryColor.background,
+      borderColor: _required
+        ? Colors.errorColor.background
+        : Colors.secondaryColor.background,
       borderWidth: 1,
       marginHorizontal: 0,
       minHeight: 40,
