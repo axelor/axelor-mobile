@@ -26,6 +26,7 @@ import {
 } from '@axelor/aos-mobile-core';
 import {useThemeColor} from '@axelor/aos-mobile-ui';
 import {fetchInterventionById} from '../features/interventionSlice';
+import {Equipment} from '../types';
 
 export const useInterventionHeaders = () => {
   useEquipmentFormActions();
@@ -51,7 +52,9 @@ const useEquipmentFormActions = () => {
           title: I18n.t('Intervention_OpenEquipmentLine'),
           order: 10,
           iconName: 'card-list',
-          hideIf: equipment.id == null,
+          hideIf:
+            equipment?.id == null ||
+            equipment?.typeSelect === Equipment.type.place,
           onPress: () => navigation.navigate('EquipmentLineListScreen'),
         },
         {
@@ -59,7 +62,7 @@ const useEquipmentFormActions = () => {
           title: I18n.t('Intervention_OpenEquipmentPictures'),
           order: 20,
           iconName: 'images',
-          hideIf: equipment.id == null,
+          hideIf: equipment?.id == null,
           onPress: () => navigation.navigate('EquipmentPictureScreen'),
         },
         {
@@ -67,7 +70,9 @@ const useEquipmentFormActions = () => {
           title: I18n.t('Intervention_OpenEquipmentIntervention'),
           order: 30,
           iconName: 'car-front-fill',
-          hideIf: equipment.id == null,
+          hideIf:
+            equipment?.id == null ||
+            equipment?.typeSelect === Equipment.type.place,
           onPress: () => navigation.navigate('EquipmentInterventionListScreen'),
         },
       ],
