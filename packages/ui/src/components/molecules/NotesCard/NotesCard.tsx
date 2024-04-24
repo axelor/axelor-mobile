@@ -51,11 +51,7 @@ const NotesCard = ({title, data, style}: NotesCardProps) => {
           const {height} = event.nativeEvent.layout;
           setChevronHeight(height);
         }}>
-        <Card
-          style={[
-            styles.note,
-            expanded ? styles.expandedNote : styles.collapsedNote,
-          ]}>
+        <Card style={styles.note}>
           <HtmlInput
             defaultInput={data}
             readonly={true}
@@ -98,12 +94,6 @@ const styles = StyleSheet.create({
   },
   htmlInput: {
     maxHeight: MAX_HEIGHT,
-  },
-  collapsedNote: {
-    overflow: 'hidden',
-  },
-  expandedNote: {
-    maxHeight: null,
   },
   icon: {
     marginTop: 10,

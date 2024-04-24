@@ -56,6 +56,21 @@ describe('NotesCard Component', () => {
     expect(wrapper.find(HtmlInput).exists()).toBe(false);
   });
 
+  it('should render chevron icon when content exceeds maximum height', () => {
+    const wrapper = shallow(<NotesCard {...props} />);
+
+    const fakeEvent = {nativeEvent: {layout: {height: 150}}};
+    wrapper.find(View).at(1).props().onLayout(fakeEvent);
+
+    expect(wrapper.find('Icon').exists()).toBe(true);
+    expect(wrapper.find('Icon').prop('name')).toBe('chevron-down');
+  });
+
+  it('should not render chevron icon when content is within maximum height', () => {
+    const wrapper = shallow(<NotesCard {...props} />);
+    expect(wrapper.find('Icon').exists()).toBe(false);
+  });
+
   it('should apply custom style when provided', () => {
     const customStyle = {width: 200};
     const wrapper = shallow(<NotesCard {...props} style={customStyle} />);
