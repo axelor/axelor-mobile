@@ -61,7 +61,6 @@ const CustomerParkScreen = ({}) => {
         isListEnd={isListEnd}
         sliceFunction={searchEquipment}
         sliceFunctionData={sliceFunctionData}
-        onChangeSearchValue={() => {}}
         searchPlaceholder={I18n.t('Base_Search')}
         renderListItem={({item}) => (
           <EquipmentActionCard
