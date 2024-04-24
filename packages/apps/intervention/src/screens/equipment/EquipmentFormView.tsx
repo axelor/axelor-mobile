@@ -39,13 +39,12 @@ const EquipmentFormView = ({navigation, route}) => {
   );
 
   useEffect(() => {
-    idEquipment &&
+    if (idEquipment != null) {
       _dispatch((getEquipmentById as any)({equipmentId: idEquipment}));
+    } else {
+      _dispatch(clearEquipment());
+    }
   }, [_dispatch, idEquipment]);
-
-  useEffect(() => {
-    isCreation && _dispatch(clearEquipment());
-  }, [_dispatch, isCreation]);
 
   const saveEquipmentAPI = useCallback(
     (_equipment, dispatch) => {
