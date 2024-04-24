@@ -89,7 +89,6 @@ const OpportunityListScreen = ({navigation}) => {
         isListEnd={isListEnd}
         sliceFunction={fetchOpportunities}
         sliceFunctionData={sliceFunctionData}
-        onChangeSearchValue={() => {}}
         searchPlaceholder={I18n.t('Crm_Opportunity')}
         topFixedItems={
           <ToggleSwitch
