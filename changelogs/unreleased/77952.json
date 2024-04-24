@@ -1,0 +1,5 @@
+{
+  "title": "TagList: add new component to display a list of tags",
+  "type": "feat",
+  "packages": "ui"
+}
