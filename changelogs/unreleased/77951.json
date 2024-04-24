@@ -1,0 +1,5 @@
+{
+  "title": "NotesCard: improve component style and make it expandable when content is too long",
+  "type": "feat",
+  "packages": "ui"
+}

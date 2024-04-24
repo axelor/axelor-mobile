@@ -16,9 +16,12 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import React from 'react';
-import {StyleSheet, View} from 'react-native';
-import {Card, HtmlInput, Text} from '../../atoms';
+import React, {useState} from 'react';
+import {StyleSheet, TouchableOpacity, View} from 'react-native';
+import {Card, HtmlInput, Icon, Text} from '../../atoms';
+import {useThemeColor} from '../../../theme/ThemeContext';
+
+const MAX_HEIGHT = 70;
 
 interface NotesCardProps {
   title: string;
@@ -27,16 +30,45 @@ interface NotesCardProps {
 }
 
 const NotesCard = ({title, data, style}: NotesCardProps) => {
+  const Colors = useThemeColor();
+
+  const [expanded, setExpanded] = useState(false);
+  const [chevronHeight, setChevronHeight] = useState(0);
+
   if (data == null || data === '') {
     return null;
   }
 
+  const toggleExpanded = () => {
+    setExpanded(current => !current);
+  };
+
   return (
     <View style={[styles.description, style]}>
       <Text style={styles.title}>{title}</Text>
-      <Card style={styles.note}>
-        <HtmlInput defaultInput={data} readonly={true} />
-      </Card>
+      <TouchableOpacity
+        disabled={chevronHeight < MAX_HEIGHT}
+        activeOpacity={0.9}
+        onPress={toggleExpanded}
+        onLayout={event => {
+          const {height} = event.nativeEvent.layout;
+          setChevronHeight(height);
+        }}>
+        <Card style={styles.note}>
+          <HtmlInput
+            defaultInput={data}
+            readonly={true}
+            style={!expanded && styles.htmlInput}
+          />
+          {chevronHeight > MAX_HEIGHT && (
+            <Icon
+              style={styles.icon}
+              name={expanded ? 'chevron-up' : 'chevron-down'}
+              color={Colors.primaryColor.background}
+            />
+          )}
+        </Card>
+      </TouchableOpacity>
     </View>
   );
 };
@@ -44,7 +76,7 @@ const NotesCard = ({title, data, style}: NotesCardProps) => {
 const styles = StyleSheet.create({
   description: {
     flexDirection: 'column',
-    marginTop: 10,
+    marginVertical: 5,
     width: '90%',
     alignSelf: 'center',
   },
@@ -54,12 +86,17 @@ const styles = StyleSheet.create({
   note: {
     justifyContent: 'center',
     width: '100%',
-    elevation: 0,
-    shadowOpacity: 0,
     borderRadius: 7,
-    marginVertical: 8,
+    marginVertical: 4,
     paddingRight: 10,
-    paddingVertical: 10,
+    paddingVertical: 5,
+    paddingHorizontal: 10,
+  },
+  htmlInput: {
+    maxHeight: MAX_HEIGHT,
+  },
+  icon: {
+    marginTop: 5,
   },
 });
 
