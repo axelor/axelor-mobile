@@ -3,6 +3,14 @@ title: 7.2.0
 tags: Changelog
 ---
 
+## [7.2.9] (2024-04-24)
+
+### @axelor/aos-mobile-core
+
+#### Fixes
+
+- Drawer: display of the menu list
+
 ## [7.2.8] (2024-04-19)
 
 ### @axelor/aos-mobile-core
@@ -428,6 +436,7 @@ It enables user to manage Expenses through the mobile application. You can creat
 - Remove IconButton component which should be replaced by Button component.
 - Remove Pop-up components which should be replaced by Alert component.
 
+[7.2.9]: https://github.com/axelor/axelor-mobile/compare/7.2.8...7.2.9
 [7.2.8]: https://github.com/axelor/axelor-mobile/compare/7.2.7...7.2.8
 [7.2.7]: https://github.com/axelor/axelor-mobile/compare/7.2.6...7.2.7
 [7.2.6]: https://github.com/axelor/axelor-mobile/compare/7.2.5...7.2.6
