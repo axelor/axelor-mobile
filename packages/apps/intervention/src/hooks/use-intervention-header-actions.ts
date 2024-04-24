@@ -51,6 +51,7 @@ const useEquipmentFormActions = () => {
           title: I18n.t('Intervention_OpenEquipmentLine'),
           order: 10,
           iconName: 'card-list',
+          hideIf: equipment.id == null,
           onPress: () => navigation.navigate('EquipmentLineListScreen'),
         },
         {
@@ -58,6 +59,7 @@ const useEquipmentFormActions = () => {
           title: I18n.t('Intervention_OpenEquipmentPictures'),
           order: 20,
           iconName: 'images',
+          hideIf: equipment.id == null,
           onPress: () => navigation.navigate('EquipmentPictureScreen'),
         },
         {
@@ -65,6 +67,7 @@ const useEquipmentFormActions = () => {
           title: I18n.t('Intervention_OpenEquipmentIntervention'),
           order: 30,
           iconName: 'car-front-fill',
+          hideIf: equipment.id == null,
           onPress: () => navigation.navigate('EquipmentInterventionListScreen'),
         },
       ],
