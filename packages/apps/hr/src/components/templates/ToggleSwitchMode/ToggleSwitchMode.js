@@ -25,6 +25,7 @@ const ToggleSwitchMode = ({
   style = null,
   defaultValue = ExpenseLine.modes.general,
   onChange = () => {},
+  readonly = false,
 }) => {
   const I18n = useTranslator();
 
@@ -42,6 +43,7 @@ const ToggleSwitchMode = ({
         onChange(_mode);
         setMode(_mode);
       }}
+      readonly={readonly}
     />
   );
 };

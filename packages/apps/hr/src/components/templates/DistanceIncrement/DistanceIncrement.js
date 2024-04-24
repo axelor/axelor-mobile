@@ -63,7 +63,7 @@ const DistanceIncrement = ({
   title,
   defaultValue,
   onChange,
-  readOnly,
+  readonly,
   required,
 }) => {
   return (
@@ -72,7 +72,7 @@ const DistanceIncrement = ({
       onChange={onChange}
       style={style}
       title={title}
-      readonly={readOnly}
+      readonly={readonly}
       required={required}
     />
   );
