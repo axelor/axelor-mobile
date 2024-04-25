@@ -37,7 +37,7 @@ export const InterventionModule: Module = {
   icon: 'tools',
   compatibilityAOS: {
     moduleName: 'axelor-intervention',
-    // downToVersion: '8.1.0',
+    downToVersion: '8.1.0',
   },
   translations: {
     en: enTranslations,
