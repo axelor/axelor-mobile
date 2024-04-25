@@ -97,7 +97,6 @@ const SurveyView = ({selectedRangeId, onChangeRangeId}: SurveyViewProps) => {
               navigation.navigate('InterventionQuestionFormScreen', {
                 questionId: item.id,
                 rangeId: selectedRangeId,
-                questionStatus: getQuestionStatus(item),
               })
             }
             {...item}

@@ -42,13 +42,25 @@ const InterventionQuestionFormScreen = ({route, navigation}) => {
   const dispatch = useDispatch();
 
   const rangeId = route?.params?.rangeId;
-  const questionStatus = route?.params?.questionStatus;
   const [questionId] = useState(route?.params?.questionId);
 
   const {intervention} = useSelector(
     (state: any) => state.intervention_intervention,
   );
-  const {question} = useSelector((state: any) => state.intervention_question);
+  const {question, questionlist} = useSelector(
+    (state: any) => state.intervention_question,
+  );
+
+  const questionStatus = useMemo(
+    () =>
+      Question.getStatus(
+        question,
+        questionlist.find(
+          q => q.id === question.conditionalInterventionQuestion?.id,
+        ),
+      ),
+    [question, questionlist],
+  );
 
   const questionBadge = useMemo(
     () => Question.getBadge(questionStatus, I18n, Colors),
@@ -87,7 +99,11 @@ const InterventionQuestionFormScreen = ({route, navigation}) => {
             {question.title}
           </Text>
           {questionBadge && (
-            <Badge title={questionBadge.title} color={questionBadge.color} />
+            <Badge
+              style={styles.badge}
+              title={questionBadge.title}
+              color={questionBadge.color}
+            />
           )}
           {question.isPrivate && <Icon name="lock" />}
         </View>
@@ -132,6 +148,10 @@ const styles = StyleSheet.create({
   },
   questionTitle: {
     flex: 4,
+  },
+  badge: {
+    width: null,
+    paddingHorizontal: 5,
   },
 });
 
