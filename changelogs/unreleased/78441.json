@@ -1,5 +1,5 @@
 {
-  "title": "ProjectTaskSearchBar: modify filters on timesheet lines and timers",
+  "title": "Project tasks: modify filters on timesheet lines and timers",
   "type": "fix",
   "packages": "hr"
 }
