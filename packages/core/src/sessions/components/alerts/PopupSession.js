@@ -69,6 +69,7 @@ const PopupSession = ({
 
   return (
     <Alert
+      style={styles.alert}
       visible={isOpen}
       title={sessionActive?.name}
       cancelButtonConfig={{
@@ -104,6 +105,9 @@ const PopupSession = ({
 };
 
 const styles = StyleSheet.create({
+  alert: {
+    maxHeight: '90%',
+  },
   popupContainer: {
     flexDirection: 'column',
     alignItems: 'center',

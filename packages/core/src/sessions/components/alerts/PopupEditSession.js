@@ -79,6 +79,7 @@ const PopupEditSession = ({
 
   return (
     <Alert
+      style={styles.alert}
       visible={popupIsOpen}
       title={I18n.t('Base_Connection_EditSession')}
       cancelButtonConfig={{
@@ -95,6 +96,9 @@ const PopupEditSession = ({
 };
 
 const styles = StyleSheet.create({
+  alert: {
+    maxHeight: '90%',
+  },
   popupContainer: {
     flexDirection: 'column',
     alignItems: 'center',
