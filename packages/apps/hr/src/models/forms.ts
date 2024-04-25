@@ -381,7 +381,6 @@ export const hr_formsRegister: FormConfigs = {
           !storeState.appConfig.mobileSettings.fieldsToShowOnTimesheet.find(
             (field: string) => field === 'projectTask',
           ),
-
         dependsOn: {
           project: ({newValue, dispatch}) => {
             dispatch(updateProject(newValue));
