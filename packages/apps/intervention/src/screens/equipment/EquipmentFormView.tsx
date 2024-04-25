@@ -25,6 +25,7 @@ import {
   getEquipmentById,
   saveEquipment,
 } from '../../features/equipmentSlice';
+import {Equipment} from '../../types';
 
 const EquipmentFormView = ({navigation, route}) => {
   const idEquipment = route.params.idEquipment;
@@ -82,7 +83,14 @@ const EquipmentFormView = ({navigation, route}) => {
   );
 
   const _defaultValue = useMemo(() => {
-    return idEquipment ? equipment : {partner: intervention.deliveredPartner};
+    return idEquipment
+      ? equipment
+      : {
+          partner: intervention.deliveredPartner,
+          inService: true,
+          typeSelect: Equipment.type.equipment,
+          commissioningDate: new Date().toISOString().split('T')[0],
+        };
   }, [equipment, idEquipment, intervention.deliveredPartner]);
 
   return (
