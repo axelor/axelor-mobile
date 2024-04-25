@@ -25,36 +25,55 @@ import {
   useTranslator,
 } from '@axelor/aos-mobile-core';
 import {Label, Screen, useThemeColor} from '@axelor/aos-mobile-ui';
-import {fetchActiveIntervention} from '../../features/interventionSlice';
+import {
+  fetchActiveIntervention,
+  fetchInterventionById,
+} from '../../features/interventionSlice';
 import InterventionDetailsScreen from './InterventionDetailsScreen';
 
-const ActiveInterventionScreen = ({}) => {
+const LoadingComponent = () => {
   const Colors = useThemeColor();
+
+  return (
+    <ActivityIndicator
+      style={styles.activityIndicator}
+      size="large"
+      color={Colors.inverseColor.background}
+    />
+  );
+};
+
+const ActiveInterventionScreen = ({}) => {
   const I18n = useTranslator();
   const isFocused = useIsFocused();
   const dispatch = useDispatch();
 
   const {userId} = useSelector((state: any) => state.auth);
-  const {loadingActiveIntervention, activeIntervention} = useSelector(
-    (state: any) => state.intervention_intervention,
-  );
+  const {loadingActiveIntervention, activeIntervention, intervention} =
+    useSelector((state: any) => state.intervention_intervention);
 
   useEffect(() => {
     isFocused && dispatch((fetchActiveIntervention as any)({userId}));
   }, [dispatch, isFocused, userId]);
 
-  if (loadingActiveIntervention) {
-    return (
-      <ActivityIndicator
-        style={styles.activityIndicator}
-        size="large"
-        color={Colors.inverseColor.background}
-      />
-    );
-  } else if (activeIntervention?.id) {
-    return (
-      <InterventionDetailsScreen interventionId={activeIntervention?.id} />
-    );
+  useEffect(() => {
+    if (activeIntervention?.id != null) {
+      dispatch(
+        (fetchInterventionById as any)({interventionId: activeIntervention.id}),
+      );
+    }
+  }, [activeIntervention?.id, dispatch]);
+
+  if (activeIntervention != null) {
+    if (activeIntervention.id !== intervention?.id) {
+      return <LoadingComponent />;
+    } else {
+      return (
+        <InterventionDetailsScreen interventionId={activeIntervention?.id} />
+      );
+    }
+  } else if (loadingActiveIntervention) {
+    return <LoadingComponent />;
   } else {
     return (
       <Screen removeSpaceOnTop={true}>
