@@ -98,9 +98,9 @@ const styles = StyleSheet.create({
     margin: 3,
   },
   labText: {
-    width: '95%',
+    width: '100%',
     marginVertical: 10,
-    marginLeft: 20,
+    marginLeft: 5,
   },
 });
 

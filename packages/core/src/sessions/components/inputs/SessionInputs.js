@@ -17,14 +17,21 @@
  */
 
 import React, {useCallback, useEffect, useMemo, useState} from 'react';
-import {ActivityIndicator, StyleSheet, View} from 'react-native';
+import {
+  ActivityIndicator,
+  Dimensions,
+  Keyboard,
+  ScrollView,
+  StyleSheet,
+  View,
+} from 'react-native';
 import {useDispatch} from 'react-redux';
 import DeviceInfo from 'react-native-device-info';
 import {
   Button,
-  WarningCard,
   checkNullString,
   useThemeColor,
+  WarningCard,
 } from '@axelor/aos-mobile-ui';
 import {
   DefaultCheckbox,
@@ -98,6 +105,7 @@ const SessionInputs = ({
     password: session?.password,
     isDefault: session?.isDefault,
   });
+  const [isKeyboardOpen, setIsKeyboardOpen] = useState(false);
 
   useEffect(() => {
     if (
@@ -217,28 +225,55 @@ const SessionInputs = ({
     nameSessionAlreadyExist,
   ]);
 
+  const styles = useMemo(
+    () => getStyles(mode, isKeyboardOpen),
+    [isKeyboardOpen, mode],
+  );
+
+  useEffect(() => {
+    const keyboardDidHideListener = Keyboard.addListener(
+      'keyboardDidHide',
+      () => {
+        setIsKeyboardOpen(false);
+      },
+    );
+
+    const keyboardDidShowListener = Keyboard.addListener(
+      'keyboardDidShow',
+      () => {
+        setIsKeyboardOpen(true);
+      },
+    );
+
+    return () => {
+      keyboardDidHideListener.remove();
+      keyboardDidShowListener.remove();
+    };
+  }, []);
+
   if (hidden) {
     return null;
   }
 
   return (
-    <View style={style}>
+    <ScrollView style={styles.container}>
       <View>
         {!loading && nameSessionAlreadyExist && (
           <WarningCard
-            style={styles.warningCard}
+            style={styles.fullWidth}
             errorMessage={I18n.t('Base_Connection_SessionNameAlreadyExist')}
           />
         )}
       </View>
       <SessionNameInput
+        style={styles.fullWidth}
         value={form?.name}
         onChange={_value => handleFieldChange(_value, FIELDS.name)}
-        style={styles.input}
         showRequiredFields={showRequiredFields}
         hidden={mode === MODE.connection || mode === MODE.unique}
       />
       <UrlInput
+        style={styles.fullWidth}
         value={form?.url}
         onChange={_value => handleFieldChange(_value, FIELDS.url)}
         readOnly={mode === MODE.connection}
@@ -250,11 +285,11 @@ const SessionInputs = ({
             ? Colors.primaryColor.background
             : Colors.secondaryColor_dark.background
         }
-        style={styles.input}
         showRequiredFields={showRequiredFields}
         hidden={!showUrlInput}
       />
       <UsernameInput
+        style={styles.fullWidth}
         value={form?.username}
         onChange={_value => handleFieldChange(_value, FIELDS.username)}
         readOnly={mode === MODE.connection}
@@ -266,18 +301,18 @@ const SessionInputs = ({
             ? Colors.primaryColor.background
             : Colors.secondaryColor_dark.background
         }
-        style={styles.input}
         showRequiredFields={showRequiredFields}
       />
       <PasswordInput
+        style={styles.fullWidth}
         value={form?.password}
         onChange={_value => handleFieldChange(_value, FIELDS.password)}
         readOnly={loading}
-        style={styles.input}
         showRequiredFields={showRequiredFields}
         hidden={mode === MODE.edition}
       />
       <DefaultCheckbox
+        style={styles.fullWidth}
         value={form?.isDefault}
         onChange={_value => handleFieldChange(_value, FIELDS.isDefault)}
         hidden={mode === MODE.connection || mode === MODE.unique}
@@ -297,22 +332,30 @@ const SessionInputs = ({
           style={styles.button}
         />
       )}
-    </View>
+    </ScrollView>
   );
 };
 
-const styles = StyleSheet.create({
-  button: {
-    marginTop: 15,
-    width: 150,
-    height: 30,
-  },
-  input: {
-    width: '100%',
-  },
-  warningCard: {
-    width: '90%',
-  },
-});
+const getStyles = (mode, isKeyboardOpen) =>
+  StyleSheet.create({
+    container: {
+      width: mode === MODE.unique ? '90%' : '100%',
+      height:
+        Dimensions.get('window').height < 500 &&
+        (mode === MODE.creation || isKeyboardOpen)
+          ? '85%'
+          : null,
+    },
+    fullWidth: {
+      width: '100%',
+      marginHorizontal: 0,
+      marginLeft: 0,
+    },
+    button: {
+      marginVertical: 15,
+      width: 150,
+      height: 30,
+    },
+  });
 
 export default SessionInputs;

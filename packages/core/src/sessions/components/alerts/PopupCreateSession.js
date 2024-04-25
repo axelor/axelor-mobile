@@ -139,6 +139,7 @@ const PopupCreateSession = ({
 
   return (
     <Alert
+      style={styles.alert}
       visible={visible}
       title={I18n.t('Base_Connection_CreateSession')}
       cancelButtonConfig={{
@@ -155,6 +156,9 @@ const PopupCreateSession = ({
 };
 
 const styles = StyleSheet.create({
+  alert: {
+    maxHeight: '90%',
+  },
   popupContainer: {
     flexDirection: 'column',
     alignItems: 'center',

@@ -1,0 +1,5 @@
+{
+  "title": "Login: improve inputs display on small screens",
+  "type": "fix",
+  "packages": "core"
+}
