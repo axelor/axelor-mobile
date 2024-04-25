@@ -45,7 +45,7 @@ const ExpenseLineFormScreen = ({route, navigation}) => {
   const _dispatch = useDispatch();
 
   const {user} = useSelector(state => state.user);
-  const {mobileSettings} = useSelector(state => state.appConfig);
+  const {mobileSettings} = useSelector(state => state.config);
 
   useEffect(() => {
     _dispatch(fetchCompanies());
