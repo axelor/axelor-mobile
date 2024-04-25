@@ -96,7 +96,7 @@ const useCustomerDeliveryLineListActions = () => {
 };
 
 const useCustomerDeliveryLineDetailsActions = () => {
-  const {mobileSettings} = useSelector(state => state.appConfig);
+  const {mobileSettings} = useSelector(state => state.config);
   const {productFromId: product} = useSelector(state => state.product);
   const {customerDeliveryLine} = useSelector(
     state => state.customerDeliveryLine,
@@ -153,7 +153,7 @@ const useInternalMoveListActions = () => {
 };
 
 const useInternalMoveLineDetailsActions = () => {
-  const {mobileSettings} = useSelector(state => state.appConfig);
+  const {mobileSettings} = useSelector(state => state.config);
   const {productFromId: product} = useSelector(state => state.product);
   const {internalMoveLine} = useSelector(state => state.internalMoveLine);
 
@@ -198,7 +198,7 @@ const useInventoryStartedDetailsActions = () => {
 };
 
 const useInventoryLineDetailsActions = () => {
-  const {mobileSettings} = useSelector(state => state.appConfig);
+  const {mobileSettings} = useSelector(state => state.config);
   const {productFromId: product} = useSelector(state => state.product);
   const {inventoryLine} = useSelector(state => state.inventoryLine);
 
@@ -331,7 +331,7 @@ const useSupplierArrivalLineListActions = () => {
 };
 
 const useSupplierArrivalLineDetailsActions = () => {
-  const {mobileSettings} = useSelector(state => state.appConfig);
+  const {mobileSettings} = useSelector(state => state.config);
   const {productFromId: product} = useSelector(state => state.product);
   const {supplierArrivalLine} = useSelector(state => state.supplierArrivalLine);
 
