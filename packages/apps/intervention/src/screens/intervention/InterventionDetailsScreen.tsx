@@ -17,7 +17,7 @@
  */
 
 import React, {useEffect, useMemo, useState} from 'react';
-import {useDispatch, useIsFocused, useSelector} from '@axelor/aos-mobile-core';
+import {useDispatch, useSelector} from '@axelor/aos-mobile-core';
 import {BottomBar, Screen, useThemeColor} from '@axelor/aos-mobile-ui';
 import {
   EquipmentView,
@@ -42,7 +42,6 @@ const InterventionDetailsScreen = ({
 }: InterventionDetailsScreenProps) => {
   const _interventionId = route?.params?.interventionId || interventionId;
   const Colors = useThemeColor();
-  const isFocused = useIsFocused();
   const dispatch = useDispatch();
 
   const [selectedRangeId, setSelectedRangeId] = useState(null);
@@ -60,11 +59,8 @@ const InterventionDetailsScreen = ({
   );
 
   useEffect(() => {
-    isFocused &&
-      dispatch(
-        (fetchInterventionById as any)({interventionId: _interventionId}),
-      );
-  }, [_interventionId, dispatch, isFocused]);
+    dispatch((fetchInterventionById as any)({interventionId: _interventionId}));
+  }, [_interventionId, dispatch]);
 
   useEffect(() => {
     intervention?.id &&
