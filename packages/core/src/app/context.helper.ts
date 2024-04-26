@@ -89,7 +89,7 @@ const addModuleTypeObjects = (
 ): ModuleSelections => {
   const currentObjects = types.map(_i => _i.modelName);
 
-  const result: ModuleSelections = [
+  let result: ModuleSelections = [
     ...(moduleObjects.filter(
       ({modelName}) => !currentObjects.includes(modelName),
     ) ?? []),
@@ -134,7 +134,7 @@ const addModuleTypeObjects = (
       });
     });
   } else {
-    result.concat(types);
+    result = result.concat(types);
   }
 
   return result;

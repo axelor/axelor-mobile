@@ -46,12 +46,32 @@ export interface Selection {
 }
 
 export interface SelectionHelpers {
-  getItemTitle?: (selection: Selection, value: any) => string;
-  getItemColor?: (selection: Selection, value: any) => Color;
-  getSelectionItems?: (selection: Selection) => {
+  getItemTitle: (selection: Selection, value: any) => string;
+  getItemColor: (selection: Selection, value: any) => Color;
+  getSelectionItems: (
+    selection: Selection,
+    selectedItem: {key: any; [key: string]: any}[],
+  ) => {
     title: string;
     color: Color;
     value: string | number;
+    key: string | number;
+    isActive: boolean;
+  }[];
+  getItemColorFromIndex: (
+    selectionList: ObjectSelectionItem[],
+    value: ObjectSelectionItem,
+  ) => Color;
+  getCustomSelectionItems: (
+    selectionList: ObjectSelectionItem[],
+    titleField: string,
+    selectedItem: {key: any; [key: string]: any}[],
+  ) => {
+    title: string;
+    color: Color;
+    value: string | number;
+    key: string | number;
+    isActive: boolean;
   }[];
 }
 
@@ -61,4 +81,9 @@ export interface SelectionItem {
   title: string;
   color?: string;
   order?: number;
+}
+
+export interface ObjectSelectionItem {
+  id: number;
+  [key: string]: any;
 }

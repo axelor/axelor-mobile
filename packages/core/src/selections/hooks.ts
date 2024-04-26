@@ -19,7 +19,12 @@
 import {useCallback, useMemo} from 'react';
 import {useThemeColor} from '@axelor/aos-mobile-ui';
 import {useTranslator} from '../i18n';
-import {SelectionHelpers, SelectionFields, Selection} from './types';
+import {
+  SelectionHelpers,
+  SelectionFields,
+  Selection,
+  ObjectSelectionItem,
+} from './types';
 import {formatTypes, getRandomColor} from './format.helpers';
 
 export const useTypes = (): {[modelKey: string]: SelectionFields} => {
@@ -71,20 +76,71 @@ export const useTypeHelpers = (): SelectionHelpers => {
   );
 
   const getSelectionItems = useCallback(
-    (selection: Selection) => {
+    (
+      selection: Selection,
+      selectedItem: {key: any; [key: string]: any}[] = [],
+    ) => {
       return (
         selection?.list?.map(_i => ({
           title: getItemTitle(selection, _i.value),
           color: getItemColor(selection, _i.value),
           value: _i.value,
+          key: _i.value,
+          isActive:
+            selectedItem.find(({key}) => key === _i.value) != null ?? false,
         })) ?? []
       );
     },
     [getItemColor, getItemTitle],
   );
 
+  const getItemColorFromIndex = useCallback(
+    (selectionList: ObjectSelectionItem[], value: ObjectSelectionItem) => {
+      const idx = (selectionList ?? [])?.findIndex(({id}) => id === value?.id);
+
+      if (idx !== -1) {
+        return getRandomColor(Colors, idx);
+      } else {
+        return null;
+      }
+    },
+    [Colors],
+  );
+
+  const getCustomSelectionItems = useCallback(
+    (
+      selectionList: ObjectSelectionItem[],
+      titleField: string,
+      selectedItem: {key: any; [key: string]: any}[] = [],
+    ) => {
+      return (
+        (selectionList ?? [])?.map((_i, idx) => ({
+          title: _i[titleField],
+          color: getRandomColor(Colors, idx),
+          value: _i.id,
+          key: _i.id,
+          isActive:
+            selectedItem.find(({key}) => key === _i.id) != null ?? false,
+        })) ?? []
+      );
+    },
+    [Colors],
+  );
+
   return useMemo(
-    () => ({getItemColor, getItemTitle, getSelectionItems}),
-    [getItemColor, getItemTitle, getSelectionItems],
+    () => ({
+      getItemColor,
+      getItemTitle,
+      getSelectionItems,
+      getItemColorFromIndex,
+      getCustomSelectionItems,
+    }),
+    [
+      getCustomSelectionItems,
+      getItemColor,
+      getItemColorFromIndex,
+      getItemTitle,
+      getSelectionItems,
+    ],
   );
 };
