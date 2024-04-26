@@ -63,6 +63,8 @@
   "Intervention_AdvancedMonitoringAnswerNextIntervention": "Next intervention",
   "Intervention_DesiredUnit": "Desired unit : {{unit}}",
   "Intervention_NoActiveIntervention": "No active intervention",
+  "Intervention_QuestionRequired": "Required",
+  "Intervention_QuestionConditional": "Conditional",
   "Intervention_SliceAction_FetchIntervention": "fetch intervention",
   "Intervention_SliceAction_SearchEquipment": "search equipments",
   "Intervention_SliceAction_SearchClientAndProspect": "search clients and prospects",
