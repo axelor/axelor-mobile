@@ -62,6 +62,7 @@ const ExpenseLineFormScreen = ({route, navigation}) => {
 
       const dataToSend = {
         projectId: _expenseLine.project?.id,
+        projectTaskId: _expenseLine.projectTask?.id,
         toInvoice: _expenseLine.toInvoice,
         expenseProductId: _expenseLine.expenseProduct?.id,
         expenseDate: _expenseLine.expenseDate,
@@ -115,6 +116,7 @@ const ExpenseLineFormScreen = ({route, navigation}) => {
             ? null
             : _expenseLine.expense?.id,
         projectId: _expenseLine.project?.id,
+        projectTaskId: _expenseLine.projectTask?.id,
         toInvoice: _expenseLine.toInvoice,
         expenseProductId: _expenseLine.expenseProduct?.id,
         expenseDate: _expenseLine.expenseDate,
@@ -196,6 +198,7 @@ const ExpenseLineFormScreen = ({route, navigation}) => {
           expense: expenseLine.expense,
           expenseDate: expenseLine.expenseDate,
           project: expenseLine.project,
+          projectTask: expenseLine.projectTask,
           toInvoice: expenseLine.toInvoice,
           expenseProduct: expenseLine.expenseProduct,
           totalAmount: expenseLine.totalAmount || 0,
@@ -216,6 +219,7 @@ const ExpenseLineFormScreen = ({route, navigation}) => {
           expense: expenseLine.expense,
           expenseDate: expenseLine.expenseDate,
           project: expenseLine.project,
+          projectTask: expenseLine.projectTask,
           toInvoice: expenseLine.toInvoice,
           fromCity: expenseLine.fromCity,
           toCity: expenseLine.toCity,
