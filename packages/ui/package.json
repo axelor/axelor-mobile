@@ -44,7 +44,7 @@
     "@svgr/plugin-prettier": "^6.5.1",
     "@svgr/plugin-svgo": "^6.5.1",
     "@types/react": "18.2.65",
-    "@types/react-native": "0.68.1",
+    "@types/react-native":"0.70.19",
     "bootstrap-icons": "^1.10.3",
     "eslint": "^7.32.0",
     "glob": "^8.1.0",
