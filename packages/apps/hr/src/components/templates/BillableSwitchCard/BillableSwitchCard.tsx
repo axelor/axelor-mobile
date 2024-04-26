@@ -25,7 +25,7 @@ const BillableSwitchCard = ({
   title = 'Hr_ToInvoice',
   defaultValue = null,
   onChange = () => {},
-  required = true,
+  required = false,
   readonly = false,
 }) => {
   const I18n = useTranslator();

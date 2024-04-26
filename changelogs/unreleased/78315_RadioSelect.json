@@ -1,5 +1,0 @@
-{
-  "title": "RadioSelect: add readonly parameter on component",
-  "type": "feat",
-  "packages": "ui"
-}

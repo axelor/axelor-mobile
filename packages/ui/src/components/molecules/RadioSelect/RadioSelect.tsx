@@ -77,6 +77,7 @@ const RadioSelect = ({
             selected={selectedItem?.id === item.id}
             title={item.title}
             size={radioSize}
+            readonly={readonly}
           />
         ))}
       </View>
