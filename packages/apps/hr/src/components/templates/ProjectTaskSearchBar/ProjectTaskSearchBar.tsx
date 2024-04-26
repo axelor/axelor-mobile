@@ -33,6 +33,7 @@ interface ProjectTaskSearchBarProps {
   onChange?: (any: any) => void;
   readonly?: boolean;
   required?: boolean;
+  isAssignedToRequired?: boolean;
 }
 
 const ProjectTaskSearchBarAux = ({
@@ -42,6 +43,7 @@ const ProjectTaskSearchBarAux = ({
   onChange = () => {},
   readonly = false,
   required = false,
+  isAssignedToRequired = false,
 }: ProjectTaskSearchBarProps) => {
   const I18n = useTranslator();
   const dispatch = useDispatch();
@@ -63,10 +65,11 @@ const ProjectTaskSearchBarAux = ({
           searchValue,
           userId: user?.id,
           projectId: project?.id,
+          isAssignedToRequired,
         }),
       );
     },
-    [dispatch, project?.id, user?.id],
+    [dispatch, isAssignedToRequired, project?.id, user?.id],
   );
 
   return (
@@ -98,6 +101,7 @@ const ProjectTaskSearchBar = ({
   onChange = () => {},
   readonly = false,
   required = false,
+  isAssignedToRequired = false,
 }: ProjectTaskSearchBarProps) => {
   return (
     <ProjectTaskSearchBarAux
@@ -107,6 +111,7 @@ const ProjectTaskSearchBar = ({
       onChange={onChange}
       readonly={readonly}
       required={required}
+      isAssignedToRequired={isAssignedToRequired}
     />
   );
 };

@@ -251,7 +251,8 @@ export const hr_formsRegister: FormConfigs = {
         type: 'object',
         widget: 'custom',
         customComponent: ProjectTaskSearchBar,
-        hideIf: ({storeState}) =>
+        hideIf: ({objectState, storeState}) =>
+          objectState.project == null ||
           storeState.user.user.employee?.timesheetImputationSelect !==
             Timesheet.imputation.Project ||
           !storeState.appConfig.mobileSettings.fieldsToShowOnTimesheet.find(
@@ -371,6 +372,9 @@ export const hr_formsRegister: FormConfigs = {
         type: 'object',
         widget: 'custom',
         customComponent: ProjectTaskSearchBar,
+        options: {
+          isAssignedToRequired: true,
+        },
         hideIf: ({storeState}) =>
           storeState.user.user.employee?.timesheetImputationSelect !==
             Timesheet.imputation.Project ||

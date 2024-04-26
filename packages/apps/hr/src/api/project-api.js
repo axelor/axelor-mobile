@@ -47,15 +47,21 @@ const createProjectCriteria = (searchValue, activeCompanyId) => {
   return criteria;
 };
 
-const createProjectTaskCriteria = (searchValue, userId, projectId) => {
-  const criteria = [
-    {
+const createProjectTaskCriteria = (
+  searchValue,
+  userId,
+  projectId,
+  isAssignedToRequired,
+) => {
+  const criteria = [getSearchCriterias('hr_projectTask', searchValue)];
+
+  if (isAssignedToRequired) {
+    criteria.push({
       fieldName: 'assignedTo.employee.user.id',
       operator: '=',
       value: userId,
-    },
-    getSearchCriterias('hr_projectTask', searchValue),
-  ];
+    });
+  }
 
   if (projectId != null) {
     criteria.push({
@@ -99,10 +105,16 @@ export async function searchProjectTask({
   page = 0,
   userId,
   projectId,
+  isAssignedToRequired,
 }) {
   return createStandardSearch({
     model: 'com.axelor.apps.project.db.ProjectTask',
-    criteria: createProjectTaskCriteria(searchValue, userId, projectId),
+    criteria: createProjectTaskCriteria(
+      searchValue,
+      userId,
+      projectId,
+      isAssignedToRequired,
+    ),
     fieldKey: 'hr_projectTask',
     sortKey: 'hr_projectTask',
     page,
