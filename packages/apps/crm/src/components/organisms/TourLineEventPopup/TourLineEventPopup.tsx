@@ -36,7 +36,6 @@ interface TourLineEventPopupProps {
   id: number;
   isValidated: boolean;
   tourId: number;
-  tourLine: any;
 }
 
 const TourLineEventPopup = ({
@@ -48,7 +47,6 @@ const TourLineEventPopup = ({
   id,
   tourId,
   isValidated,
-  tourLine,
 }: TourLineEventPopupProps) => {
   const Colors = useThemeColor();
   const I18n = useTranslator();
@@ -91,7 +89,8 @@ const TourLineEventPopup = ({
             navigation.navigate('EventFormScreen', {
               client: partner,
               tourlineData: {
-                tourLine: tourLine,
+                tourLineVersion: version,
+                tourLineId: id,
                 tourId: tourId,
                 isValidated: isValidated,
               },

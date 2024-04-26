@@ -111,10 +111,11 @@ export const createEvent = createAsyncThunk(
       if (data?.tourlineData != null) {
         dispatch(
           updateTourLine({
-            tourLineId: data.tourlineData?.tourLine?.id,
-            tourLineVersion: data.tourlineData?.tourLine?.version,
+            tourLineId: data.tourlineData?.tourLineId,
+            tourLineVersion: data.tourlineData?.tourLineVersion,
             event: res,
             tourId: data.tourlineData?.tourId,
+            isValidated: data.tourlineData?.isValidated,
           }),
         );
       }
