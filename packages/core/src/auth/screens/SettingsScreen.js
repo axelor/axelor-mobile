@@ -36,7 +36,7 @@ import {
   useEffectOnline,
   useOnline,
 } from '../../features/onlineSlice';
-import {updateActiveUser} from '../../features/userSlice';
+import {updateActiveUser} from '../features/userSlice';
 import {ApiProviderConfig} from '../../apiProviders/config';
 import {NavigationToolsButton, TranslationsButton} from '../components';
 import {useIsAdmin} from '../../permissions';
