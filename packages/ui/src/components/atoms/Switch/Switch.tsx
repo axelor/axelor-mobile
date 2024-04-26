@@ -23,11 +23,16 @@ import {useThemeColor} from '../../../theme/ThemeContext';
 interface SwitchProps {
   isEnabled: boolean;
   style: any;
-  readonly: boolean;
+  readonly?: boolean;
   handleToggle: (any) => void;
 }
 
-const Switch = ({isEnabled, handleToggle, style, readonly}: SwitchProps) => {
+const Switch = ({
+  isEnabled,
+  handleToggle,
+  style,
+  readonly = false,
+}: SwitchProps) => {
   const Colors = useThemeColor();
 
   const toggleSwitch = () => {

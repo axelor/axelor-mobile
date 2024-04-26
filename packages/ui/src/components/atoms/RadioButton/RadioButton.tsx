@@ -29,11 +29,11 @@ const RadioButton = ({
   selected,
   title,
   size = DEFAULT_SIZE,
-  readonly,
+  readonly = false,
 }: {
   onPress: () => void;
   selected: boolean;
-  readonly: boolean;
+  readonly?: boolean;
   title: string;
   size?: number;
   style?: any;
