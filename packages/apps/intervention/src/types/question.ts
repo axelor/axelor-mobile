@@ -90,6 +90,42 @@ class Question {
     }
   };
 
+  static getStatusKey = (
+    status: number,
+    I18n: {t: (key: string) => string},
+  ): string => {
+    const statusKey = Object.keys(this.status).find(
+      key => this.status[key] === status,
+    );
+
+    if (statusKey != null) {
+      return I18n.t(`Intervention_Question${statusKey}`);
+    } else {
+      console.warn(
+        `Status provided with value ${status} is not supported by InterventionQuestion.`,
+      );
+      return null;
+    }
+  };
+
+  static getBadge = (
+    status: number,
+    I18n: {t: (key: string) => string},
+    Colors: ThemeColors,
+  ): {title: string; color: Color} => {
+    if (
+      status === Question.status.Required ||
+      status === Question.status.Conditional
+    ) {
+      return {
+        title: this.getStatusKey(status, I18n),
+        color: this.getStatusColor(status, Colors),
+      };
+    } else {
+      return null;
+    }
+  };
+
   static getAdvancedMonitoringAnswers = (I18n: {
     t: (key: string) => string;
   }): {id: string; title: string}[] => {
