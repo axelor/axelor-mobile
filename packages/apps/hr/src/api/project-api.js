@@ -106,6 +106,7 @@ export async function searchProjectTask({
   userId,
   projectId,
   isAssignedToRequired,
+  isMemberRequired,
 }) {
   return createStandardSearch({
     model: 'com.axelor.apps.project.db.ProjectTask',
@@ -115,6 +116,14 @@ export async function searchProjectTask({
       projectId,
       isAssignedToRequired,
     ),
+    ...(isMemberRequired && {
+      domain: ':user MEMBER OF self.project.membersUserSet',
+      domainContext: {
+        user: {
+          id: userId,
+        },
+      },
+    }),
     fieldKey: 'hr_projectTask',
     sortKey: 'hr_projectTask',
     page,
