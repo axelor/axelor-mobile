@@ -119,6 +119,7 @@ const ExpenseLineDetailCard = ({
               expenseId={item.id}
               expenseDate={item.expenseDate}
               projectName={item.project?.fullName}
+              projectTaskName={item.projectTask?.fullName}
               totalAmount={item.totalAmount}
               currency={item.currency?.symbol || item.currency?.name}
               fromCity={item.fromCity}

@@ -57,6 +57,7 @@ export const hr_modelAPI: ObjectFields = {
     fromCity: schemaContructor.string(),
     toCity: schemaContructor.string(),
     project: schemaContructor.subObject(),
+    projectTask: schemaContructor.subObject(),
     totalAmount: schemaContructor.string(),
     expenseProduct: schemaContructor.subObject().concat(
       schemaContructor.object({
