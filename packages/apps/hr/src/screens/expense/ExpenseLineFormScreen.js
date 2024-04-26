@@ -269,11 +269,10 @@ const ExpenseLineFormScreen = ({route, navigation}) => {
           type: 'custom',
           titleKey: 'Base_Add',
           needValidation: true,
-          //needRequiredFields: true,
-          readonlyAfterAction: true,
-          //hideIf: () => expenseLine != null || idExpense == null,
+          needRequiredFields: true,
+          hideIf: () => expenseLine != null || idExpense == null,
           customAction: ({dispatch, objectState}) => {
-            //return createExpenseLineAPI(objectState, dispatch);
+            return createExpenseLineAPI(objectState, dispatch);
           },
         },
         {
