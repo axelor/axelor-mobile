@@ -10,7 +10,7 @@
   },
   "scripts": {
     "clean": "find . -type d -name node_modules | xargs rm -rf && find . -type d -name lib | xargs rm -rf",
-    "dev": "nx run-many --target=dev --maxParallel=10 ",
+    "dev": "nx run-many --target=dev --maxParallel=15",
     "build": "nx run-many --target=build",
     "start": "nx run-many --target=build && react-native start",
     "android": "react-native run-android --variant devDebug",
