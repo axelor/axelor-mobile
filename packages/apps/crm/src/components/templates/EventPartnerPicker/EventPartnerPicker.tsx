@@ -28,6 +28,7 @@ const EventPartnerPicker = ({
   readonly = false,
   required = false,
   partner,
+  style,
 }) => {
   const dispatch = useDispatch();
   const I18n = useTranslator();
@@ -40,6 +41,7 @@ const EventPartnerPicker = ({
 
   return (
     <Picker
+      style={style}
       title={I18n.t(title)}
       defaultValue={defaultValue}
       listItems={listEventPartner}

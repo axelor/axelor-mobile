@@ -67,7 +67,10 @@ export const updateTourLine = createAsyncThunk(
       responseOptions: {isArrayResponse: false},
     }).then(() => {
       dispatch(
-        searchTourLine({tourId: data?.tourId, isValidated: data?.isValidated}),
+        searchTourLine({
+          tourId: data?.tourId,
+          isValidated: data?.isValidated,
+        }),
       );
     });
   },

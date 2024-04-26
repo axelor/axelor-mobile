@@ -17,13 +17,13 @@
  */
 
 import React, {useCallback, useState} from 'react';
+import {StyleSheet, TouchableOpacity, View} from 'react-native';
 import {Alert, LabelText, useThemeColor} from '@axelor/aos-mobile-ui';
 import {
   useTranslator,
   useNavigation,
   useDispatch,
 } from '@axelor/aos-mobile-core';
-import {StyleSheet, TouchableOpacity, View} from 'react-native';
 import {EventPartnerPicker} from '../../templates';
 import {updateTourLine} from '../../../features/tourLineSlice';
 
@@ -36,9 +36,11 @@ interface TourLineEventPopupProps {
   id: number;
   isValidated: boolean;
   tourId: number;
+  tourLine: any;
 }
 
 const TourLineEventPopup = ({
+  style,
   visible,
   partner,
   onClose,
@@ -46,6 +48,7 @@ const TourLineEventPopup = ({
   id,
   tourId,
   isValidated,
+  tourLine,
 }: TourLineEventPopupProps) => {
   const Colors = useThemeColor();
   const I18n = useTranslator();
@@ -76,13 +79,22 @@ const TourLineEventPopup = ({
         onPress: updateTourLineEventAPI,
         disabled: eventTourLine == null,
       }}>
-      <View style={styles.container}>
-        <EventPartnerPicker partner={partner} onChange={setEventTourLine} />
+      <View style={[styles.container, style]}>
+        <EventPartnerPicker
+          partner={partner}
+          onChange={setEventTourLine}
+          style={styles.picker}
+        />
         <TouchableOpacity
           onPress={() => {
             onClose();
             navigation.navigate('EventFormScreen', {
               client: partner,
+              tourlineData: {
+                tourLine: tourLine,
+                tourId: tourId,
+                isValidated: isValidated,
+              },
             });
           }}>
           <LabelText
@@ -101,6 +113,9 @@ const TourLineEventPopup = ({
 const styles = StyleSheet.create({
   container: {
     flexDirection: 'column',
+    width: '100%',
+  },
+  picker: {
     width: '100%',
   },
   labelText: {

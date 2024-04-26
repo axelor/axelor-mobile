@@ -36,6 +36,8 @@ interface TourLineActionCardProps {
   id: number;
   tourId: number;
   version: number;
+  tourLine: any;
+  selectedStatus?: boolean;
 }
 
 const TourLineActionCard = ({
@@ -46,6 +48,8 @@ const TourLineActionCard = ({
   tourId,
   id,
   version,
+  tourLine,
+  selectedStatus,
 }: TourLineActionCardProps) => {
   const Colors = useThemeColor();
   const dispatch = useDispatch();
@@ -112,7 +116,8 @@ const TourLineActionCard = ({
         version={version}
         id={id}
         tourId={tourId}
-        isValidated={isValidated}
+        isValidated={selectedStatus}
+        tourLine={tourLine}
       />
     </View>
   );

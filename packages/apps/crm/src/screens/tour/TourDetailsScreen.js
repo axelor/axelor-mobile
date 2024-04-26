@@ -106,6 +106,8 @@ const TourDetailsScreen = ({route}) => {
             id={item.id}
             version={item.version}
             tourId={tourId}
+            tourLine={item}
+            selectedStatus={selectedStatus[0]?.key}
           />
         )}
       />

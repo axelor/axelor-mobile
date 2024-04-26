@@ -66,5 +66,9 @@ export {
   updateProspect,
   updateProspectScore,
 } from './prospectSlice';
-export {searchTourLine, validateTourLine} from './tourLineSlice';
+export {
+  searchTourLine,
+  updateTourLine,
+  validateTourLine,
+} from './tourLineSlice';
 export {fetchTourById, searchTour, validateTour} from './tourSlice';

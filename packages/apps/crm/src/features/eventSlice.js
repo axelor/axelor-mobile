@@ -31,6 +31,7 @@ import {
   updateEvent as _updateEvent,
 } from '../api/event-api';
 import {fetchLeadById} from './leadSlice';
+import {updateTourLine} from './tourLineSlice';
 
 export const searchEventById = createAsyncThunk(
   'event/searchEventById',
@@ -107,6 +108,16 @@ export const createEvent = createAsyncThunk(
       getState,
       responseOptions: {isArrayResponse: false, showToast: true},
     }).then(res => {
+      if (data?.tourlineData != null) {
+        dispatch(
+          updateTourLine({
+            tourLineId: data.tourlineData?.tourLine?.id,
+            tourLineVersion: data.tourlineData?.tourLine?.version,
+            event: res,
+            tourId: data.tourlineData?.tourId,
+          }),
+        );
+      }
       if (data?.event?.isLead) {
         dispatch(fetchLeadById({leadId: data?.event?.eventLead?.id}));
       }
