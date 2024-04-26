@@ -65,6 +65,7 @@
   "Intervention_NoActiveIntervention": "No active intervention",
   "Intervention_QuestionRequired": "Required",
   "Intervention_QuestionConditional": "Conditional",
+  "Intervention_PrivateQuestion": "Private question",
   "Intervention_SliceAction_FetchIntervention": "fetch intervention",
   "Intervention_SliceAction_SearchEquipment": "search equipments",
   "Intervention_SliceAction_SearchClientAndProspect": "search clients and prospects",

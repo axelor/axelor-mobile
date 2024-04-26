@@ -18,7 +18,8 @@
 
 import React, {useMemo} from 'react';
 import {StyleSheet} from 'react-native';
-import {Icon, ObjectCard, useThemeColor} from '@axelor/aos-mobile-ui';
+import {useTranslator} from '@axelor/aos-mobile-core';
+import {InfoBubble, ObjectCard, useThemeColor} from '@axelor/aos-mobile-ui';
 import {Question} from '../../../types';
 
 interface QuestionCardProps {
@@ -37,6 +38,7 @@ const QuestionCard = ({
   onPress,
 }: QuestionCardProps) => {
   const Colors = useThemeColor();
+  const I18n = useTranslator();
 
   const styles = useMemo(
     () => getStyles(Question.getStatusColor(status, Colors)?.background),
@@ -71,7 +73,15 @@ const QuestionCard = ({
         style: styles.badges,
         items: [
           isPrivate && {
-            customComponent: <Icon name="lock" />,
+            customComponent: (
+              <InfoBubble
+                coloredBubble={false}
+                iconName="lock"
+                badgeColor={Colors.secondaryColor_dark}
+                indication={I18n.t('Intervention_PrivateQuestion')}
+                position="left"
+              />
+            ),
           },
         ],
       }}

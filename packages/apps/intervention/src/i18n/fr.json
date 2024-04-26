@@ -65,6 +65,7 @@
   "Intervention_NoActiveIntervention": "Pas d'intervention active",
   "Intervention_QuestionRequired": "Requise",
   "Intervention_QuestionConditional": "Conditionnelle",
+  "Intervention_PrivateQuestion": "Question privée",
   "Intervention_SliceAction_FetchIntervention": "récupération des interventions",
   "Intervention_SliceAction_SearchEquipment": "recherche sur les équipements",
   "Intervention_SliceAction_SearchClientAndProspect": "recherche sur les clients et prospects",
