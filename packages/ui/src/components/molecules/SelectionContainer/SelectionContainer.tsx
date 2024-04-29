@@ -164,7 +164,7 @@ const SelectionContainer = ({
     const _title = checkNullString(title) ? 'data' : title?.toLowerCase();
 
     const message =
-      translator != null && !checkNullString(title)
+      translator != null
         ? translator('Base_NoDataPicker', {title: _title})
         : `No ${_title} available`;
 

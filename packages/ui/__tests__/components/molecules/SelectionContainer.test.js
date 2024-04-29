@@ -66,13 +66,13 @@ describe('SelectionContainer', () => {
       ...props,
       objectList: [],
       title: 'item',
-      translator: ({key, values}) => `No ${values._title} available`,
+      translator: (key, values) => `No ${values.title} available`,
     };
     const newPropsNullArr = {
       ...props,
       objectList: null,
       title: 'item',
-      translator: ({key, values}) => `No ${values._title} available`,
+      translator: (key, values) => `No ${values.title} available`,
     };
     const newPropsNullTranslator = {
       ...props,
@@ -80,7 +80,6 @@ describe('SelectionContainer', () => {
       title: 'item',
       translator: null,
     };
-
     const wrapperEmpty = shallow(<SelectionContainer {...newPropsEmptyArr} />);
     const wrapperNull = shallow(<SelectionContainer {...newPropsNullArr} />);
     const wrapperNullTranslator = shallow(
