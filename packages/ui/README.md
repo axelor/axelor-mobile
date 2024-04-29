@@ -29,13 +29,9 @@ Install the library :
 yarn add @axelor/aos-mobile-ui
 ```
 
-Compatibility with React v18.2.x and React Native v0.68.x.
+Compatibility with React v18.2.x and React Native v0.70.x.
 
-This package has a few required libraries as peer dependencies:
-
-- [react-native-vector-icons](https://www.npmjs.com/package/react-native-vector-icons)
-- [react-native-system-navigation-bar](https://www.npmjs.com/package/react-native-system-navigation-bar)
-- [react-native-pell-rich-editor](https://www.npmjs.com/package/react-native-pell-rich-editor)
+This package has a few required libraries as peer dependencies, please check package.json for more informations.
 
 ### Use of basic components
 

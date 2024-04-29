@@ -1881,63 +1881,63 @@
     mkdirp "^1.0.4"
     rimraf "^3.0.2"
 
-"@nrwl/tao@18.1.2":
-  version "18.1.2"
-  resolved "https://registry.npmjs.org/@nrwl/tao/-/tao-18.1.2.tgz#5a05befc9260cae8c7f38ec83669f4ffbfd83f3b"
-  integrity sha512-IA+osZ5TlKMwJmcP7TECW7TO0JdNNQud9Dgkh1ZfJ4GWnT7WEkE9b2Yf1IFeeB81kCTXXq8jfISa8ZY21MjRaQ==
+"@nrwl/tao@18.3.4":
+  version "18.3.4"
+  resolved "https://registry.npmjs.org/@nrwl/tao/-/tao-18.3.4.tgz#e574addaae87a0fa83bd6163ef006c41be1ce066"
+  integrity sha512-+7KsDYmGj1cvNaXZcjSYOPN1h17hsGFBtVX7MqnpJLLkQTUhKg2rQxqyluzshJ+RoDUVtYPGyHg1AizlB66RIA==
   dependencies:
-    nx "18.1.2"
+    nx "18.3.4"
     tslib "^2.3.0"
 
-"@nx/nx-darwin-arm64@18.1.2":
-  version "18.1.2"
-  resolved "https://registry.npmjs.org/@nx/nx-darwin-arm64/-/nx-darwin-arm64-18.1.2.tgz#8c6d020d744e52900b215d180ad29c2873dc4acd"
-  integrity sha512-KduC9WBmeTLP8HyTg4NOgQGLk9LEd5qd9dGuYKPU0jA4b+eJIa0rRHEjFdc5WulQrcUAvTIKfmScRCgzR96ogg==
+"@nx/nx-darwin-arm64@18.3.4":
+  version "18.3.4"
+  resolved "https://registry.npmjs.org/@nx/nx-darwin-arm64/-/nx-darwin-arm64-18.3.4.tgz#35d64992cce42d25866289fb75ec286874663260"
+  integrity sha512-MOGk9z4fIoOkJB68diH3bwoWrC8X9IzMNsz1mu0cbVfgCRAfIV3b+lMsiwQYzWal3UWW5DE5Rkss4F8whiV5Uw==
 
-"@nx/nx-darwin-x64@18.1.2":
-  version "18.1.2"
-  resolved "https://registry.npmjs.org/@nx/nx-darwin-x64/-/nx-darwin-x64-18.1.2.tgz#7247cbea93ea2b8c9ad7d22b1f25374454543589"
-  integrity sha512-mBf3X8m4P4QHoW8g/L/YoK8zkndDyIw4bojLg8Q3xc47s5JZFCqSSMeOXZ9NicM2DpPiDWSQALtQX7A8lIsoAA==
+"@nx/nx-darwin-x64@18.3.4":
+  version "18.3.4"
+  resolved "https://registry.npmjs.org/@nx/nx-darwin-x64/-/nx-darwin-x64-18.3.4.tgz#057c83b4d923660fe8cac06b5f59824811c7e21f"
+  integrity sha512-tSzPRnNB3QdPM+KYiIuRCUtyCwcuIRC95FfP0ZB3WvfDeNxJChEAChNqmCMDE4iFvZhGuze8WqkJuIVdte+lyQ==
 
-"@nx/nx-freebsd-x64@18.1.2":
-  version "18.1.2"
-  resolved "https://registry.npmjs.org/@nx/nx-freebsd-x64/-/nx-freebsd-x64-18.1.2.tgz#cddc5e345f100a8fa88ff4e39e0e253f843ef3f7"
-  integrity sha512-ZqzT2BTsOHhWip1PvNm7AZ4Pzn4I+IZNRvtRgpETYvIH+nqoCmi5rrEi1avnhnr6P5hyzh2mISRSyk186SbZew==
+"@nx/nx-freebsd-x64@18.3.4":
+  version "18.3.4"
+  resolved "https://registry.npmjs.org/@nx/nx-freebsd-x64/-/nx-freebsd-x64-18.3.4.tgz#d044b2cc23d2159a4a5eca057336fefba3432a31"
+  integrity sha512-bjSPak/d+bcR95/pxHMRhnnpHc6MnrQcG6f5AjX15Esm4JdrdQKPBmG1RybuK0WKSyD5wgVhkAGc/QQUom9l8g==
 
-"@nx/nx-linux-arm-gnueabihf@18.1.2":
-  version "18.1.2"
-  resolved "https://registry.npmjs.org/@nx/nx-linux-arm-gnueabihf/-/nx-linux-arm-gnueabihf-18.1.2.tgz#4a1a5de3bc3ca2d8525259ea5c15ff1ca779cdcb"
-  integrity sha512-V9Dp9uuuce+/f50dXxaYz1C9ULo5+5VS35yc6gN7b6SchCWjNK+xg1YcHBTRNc2ChBtayO2z+mBQ1s6wMDNs/Q==
+"@nx/nx-linux-arm-gnueabihf@18.3.4":
+  version "18.3.4"
+  resolved "https://registry.npmjs.org/@nx/nx-linux-arm-gnueabihf/-/nx-linux-arm-gnueabihf-18.3.4.tgz#d61cd20c87c63bb9ee89e1d59a921b1d294d9daf"
+  integrity sha512-/1HnUL7jhH0S7PxJqf6R1pk3QlAU22GY89EQV9fd+RDUtp7IyzaTlkebijTIqfxlSjC4OO3bPizaxEaxdd3uKQ==
 
-"@nx/nx-linux-arm64-gnu@18.1.2":
-  version "18.1.2"
-  resolved "https://registry.npmjs.org/@nx/nx-linux-arm64-gnu/-/nx-linux-arm64-gnu-18.1.2.tgz#cbb2624d0d245242a09f90715eaabcfb4c8be804"
-  integrity sha512-aM860T4Hy2JCLcU56mtARIp1MdT1Ms7cGUQzE+a5irM8ZdaHsPdRnYqIgEKd3hoF6PQ6/piHFXWa4xm7pe/2KA==
+"@nx/nx-linux-arm64-gnu@18.3.4":
+  version "18.3.4"
+  resolved "https://registry.npmjs.org/@nx/nx-linux-arm64-gnu/-/nx-linux-arm64-gnu-18.3.4.tgz#3c22f37bb2e691e1c1a8afd0f3f103967067fd21"
+  integrity sha512-g/2IaB2bZTKaBNPEf9LxtIXb1XHdhh3VO9PnePIrwkkixPMLN0dTxT5Sttt75lvLP3EU1AUR5w3Aaz2Q1mYtWA==
 
-"@nx/nx-linux-arm64-musl@18.1.2":
-  version "18.1.2"
-  resolved "https://registry.npmjs.org/@nx/nx-linux-arm64-musl/-/nx-linux-arm64-musl-18.1.2.tgz#a99fd2898030bca1be14077e2e23ec3122c369c1"
-  integrity sha512-BgBoOeIgCQ56xii7fKNWiE7UIP/0G+OQhdWJQmh+q6NN0kk78WsdCSq+f7f7LQIji5HiNqUUVx9fd1s6xRSb/w==
+"@nx/nx-linux-arm64-musl@18.3.4":
+  version "18.3.4"
+  resolved "https://registry.npmjs.org/@nx/nx-linux-arm64-musl/-/nx-linux-arm64-musl-18.3.4.tgz#eb7f617952f2268135d89c41257dbae0e1f2fb7d"
+  integrity sha512-MgfKLoEF6I1cCS+0ooFLEjJSSVdCYyCT9Q96IHRJntAEL8u/0GR2OUoBoLC+q1lnbIkJr/uqTJxA2Jh+sJTIbA==
 
-"@nx/nx-linux-x64-gnu@18.1.2":
-  version "18.1.2"
-  resolved "https://registry.npmjs.org/@nx/nx-linux-x64-gnu/-/nx-linux-x64-gnu-18.1.2.tgz#e80bfef4f0cf8243f18dd1aa91b4b47a915e3497"
-  integrity sha512-WDOjtk+K2Tc9SNjGe+zmyy05VUerZpEQ5kvB6Ude0v/W2bMnmpVrLZwwTF5Yrq0ebbUlXM/9wtc1Zjjc75MU2g==
+"@nx/nx-linux-x64-gnu@18.3.4":
+  version "18.3.4"
+  resolved "https://registry.npmjs.org/@nx/nx-linux-x64-gnu/-/nx-linux-x64-gnu-18.3.4.tgz#ae8daa8f8b70229189eba13e083dad3e4c91d788"
+  integrity sha512-vbHxv7m3gjthBvw50EYCtgyY0Zg5nVTaQtX+wRsmKybV2i7wHbw5zIe1aL4zHUm6TcPGbIQK+utVM+hyCqKHVA==
 
-"@nx/nx-linux-x64-musl@18.1.2":
-  version "18.1.2"
-  resolved "https://registry.npmjs.org/@nx/nx-linux-x64-musl/-/nx-linux-x64-musl-18.1.2.tgz#afd9a93b306c5b8f52385a0b54de2c3573e61834"
-  integrity sha512-I7jTmbfR5CHC3KVlU3SkqYKJnn25MbH8pdRZJY4gaHnqL9JzbHw9rxddhKBj41lez7jQZTGLnPFUV7JPLXTzKg==
+"@nx/nx-linux-x64-musl@18.3.4":
+  version "18.3.4"
+  resolved "https://registry.npmjs.org/@nx/nx-linux-x64-musl/-/nx-linux-x64-musl-18.3.4.tgz#1dc370e175960d4efd3e36de80feaa84a15831a2"
+  integrity sha512-qIJKJCYFRLVSALsvg3avjReOjuYk91Q0hFXMJ2KaEM1Y3tdzcFN0fKBiaHexgbFIUk8zJuS4dJObTqSYMXowbg==
 
-"@nx/nx-win32-arm64-msvc@18.1.2":
-  version "18.1.2"
-  resolved "https://registry.npmjs.org/@nx/nx-win32-arm64-msvc/-/nx-win32-arm64-msvc-18.1.2.tgz#490f04af286894a3e1b33fb83cd9ce1466166280"
-  integrity sha512-KQobKvkrdkmaJmx0Pyt2lzHkNugO0gE7q9F4h22KIECyGW1tC3nSPAB4F3mmdE2KuWKgYG5WLafvzusysLsR7g==
+"@nx/nx-win32-arm64-msvc@18.3.4":
+  version "18.3.4"
+  resolved "https://registry.npmjs.org/@nx/nx-win32-arm64-msvc/-/nx-win32-arm64-msvc-18.3.4.tgz#017d1a98cdcbedc54c03a69855c85fa8d7e1edbf"
+  integrity sha512-UxC8mRkFTPdZbKFprZkiBqVw8624xU38kI0xyooxKlFpt5lccTBwJ0B7+R8p1RoWyvh2DSyFI9VvfD7lczg1lA==
 
-"@nx/nx-win32-x64-msvc@18.1.2":
-  version "18.1.2"
-  resolved "https://registry.npmjs.org/@nx/nx-win32-x64-msvc/-/nx-win32-x64-msvc-18.1.2.tgz#e6587d71e529cc30376d250da0af3095300c259f"
-  integrity sha512-uvJvROSwHBwkTOoOPkb56jEsKJjr4LnZ3fCHmEbrtGhAUC0gAUL+dWJUDHoatrGzN+bM2VqrvgNCGkityK96hw==
+"@nx/nx-win32-x64-msvc@18.3.4":
+  version "18.3.4"
+  resolved "https://registry.npmjs.org/@nx/nx-win32-x64-msvc/-/nx-win32-x64-msvc-18.3.4.tgz#73564706abd46b480b6f6482d1a7103738aa8f8a"
+  integrity sha512-/RqEjNU9hxIBxRLafCNKoH3SaB2FShf+1ZnIYCdAoCZBxLJebDpnhiyrVs0lPnMj9248JbizEMdJj1+bs/bXig==
 
 "@pmmmwh/react-refresh-webpack-plugin@^0.5.3":
   version "0.5.11"
@@ -3776,13 +3776,6 @@
   integrity sha512-5WEHKGglRjq/Ae3F8UQxg+GYUIhTUEiyBT9GKPoOLU/vPTn8iZrRbdzxqvarOaGludIejJykHLMdOCdhgWqaxA==
   dependencies:
     "@types/react" "*"
-
-"@types/react-i18next@^8.1.0":
-  version "8.1.0"
-  resolved "https://registry.npmjs.org/@types/react-i18next/-/react-i18next-8.1.0.tgz#5faacbfe7dc0f24729c1df6914610bfe861a50de"
-  integrity sha512-d4xhcjX5b3roNMObRNMfb1HinHQlQLPo8xlDj60dnHeeAw2bBymR2cy/l1giJpHzo/ZFgSvgVUvIWr4kCrenCg==
-  dependencies:
-    react-i18next "*"
 
 "@types/react-native@0.70.19":
   version "0.70.19"
@@ -8184,6 +8177,11 @@ get-value@^2.0.3, get-value@^2.0.6:
   resolved "https://registry.npmjs.org/get-value/-/get-value-2.0.6.tgz#dc15ca1c672387ca76bd37ac0a395ba2042a2c28"
   integrity sha512-Ln0UQDlxH1BapMu3GPtf7CuYNwRZf2gwCuPqbyG6pB8WfmFpzqcy4xtAaAMUhnNqjMKTiCPZG2oMT3YSx8U2NA==
 
+gifted-charts-core@^0.1.4:
+  version "0.1.4"
+  resolved "https://registry.npmjs.org/gifted-charts-core/-/gifted-charts-core-0.1.4.tgz#252dd09588f4a34f820f267aeeb59daed7e54ee2"
+  integrity sha512-GDNPXipxLfd55C1DBfgQTw6EsZWCA9rGL9Q90hugTFfw4p2lONPmozZJVfdUShDbcQoVfOv8muI53+G/FUao6A==
+
 github-slugger@^1.0.0:
   version "1.5.0"
   resolved "https://registry.npmjs.org/github-slugger/-/github-slugger-1.5.0.tgz#17891bbc73232051474d68bd867a34625c955f7d"
@@ -8742,10 +8740,10 @@ hyphenate-style-name@^1.0.3:
   resolved "https://registry.npmjs.org/hyphenate-style-name/-/hyphenate-style-name-1.0.4.tgz#691879af8e220aea5750e8827db4ef62a54e361d"
   integrity sha512-ygGZLjmXfPHj+ZWh6LwbC37l43MhfztxetbFCoYTM2VjkIUpeHgSNn7QIyVFj7YQ1Wl9Cbw5sholVJPzWvC2MQ==
 
-i18next@^23.11.2:
-  version "23.11.2"
-  resolved "https://registry.npmjs.org/i18next/-/i18next-23.11.2.tgz#4c0e8192a9ba230fe7dc68b76459816ab601826e"
-  integrity sha512-qMBm7+qT8jdpmmDw/kQD16VpmkL9BdL+XNAK5MNbNFaf1iQQq35ZbPrSlqmnNPOSUY4m342+c0t0evinF5l7sA==
+i18next@^23.11.3:
+  version "23.11.3"
+  resolved "https://registry.npmjs.org/i18next/-/i18next-23.11.3.tgz#d269c9c15bae9d90ab291055cfc433089ca5f77b"
+  integrity sha512-Pq/aSKowir7JM0rj+Wa23Kb6KKDUGno/HjG+wRQu0PxoTbpQ4N89MAT0rFGvXmLkRLNMb1BbBOKGozl01dabzg==
   dependencies:
     "@babel/runtime" "^7.23.2"
 
@@ -11299,12 +11297,12 @@ nwsapi@^2.2.0:
   resolved "https://registry.npmjs.org/nwsapi/-/nwsapi-2.2.7.tgz#738e0707d3128cb750dddcfe90e4610482df0f30"
   integrity sha512-ub5E4+FBPKwAZx0UwIQOjYWGHTEq5sPqHQNRN8Z9e4A7u3Tj1weLJsL59yH9vmvqEtBHaOmT6cYQKIZOxp35FQ==
 
-nx@18.1.2:
-  version "18.1.2"
-  resolved "https://registry.npmjs.org/nx/-/nx-18.1.2.tgz#e193111cbc6162e1e0afad07b24b01a960649423"
-  integrity sha512-E414xp6lVtiTGdDUMVo72G96G66t7oJMqmcHRMEZ/mVq5ZpNWUhfMuRq5Fh8orXPtrM3xk5SHokmmFvo5PKC+g==
+nx@18.3.4:
+  version "18.3.4"
+  resolved "https://registry.npmjs.org/nx/-/nx-18.3.4.tgz#0be7e1b35d87f98a1c15d73c5d56c3ade999176c"
+  integrity sha512-7rOHRyxpnZGJ3pHnwmpoAMHt9hNuwibWhOhPBJDhJVcbQJtGfwcWWyV/iSEnVXwKZ2lfHVE3TwE+gXFdT/GFiw==
   dependencies:
-    "@nrwl/tao" "18.1.2"
+    "@nrwl/tao" "18.3.4"
     "@yarnpkg/lockfile" "^1.1.0"
     "@yarnpkg/parsers" "3.0.0-rc.46"
     "@zkochan/js-yaml" "0.0.6"
@@ -11339,16 +11337,16 @@ nx@18.1.2:
     yargs "^17.6.2"
     yargs-parser "21.1.1"
   optionalDependencies:
-    "@nx/nx-darwin-arm64" "18.1.2"
-    "@nx/nx-darwin-x64" "18.1.2"
-    "@nx/nx-freebsd-x64" "18.1.2"
-    "@nx/nx-linux-arm-gnueabihf" "18.1.2"
-    "@nx/nx-linux-arm64-gnu" "18.1.2"
-    "@nx/nx-linux-arm64-musl" "18.1.2"
-    "@nx/nx-linux-x64-gnu" "18.1.2"
-    "@nx/nx-linux-x64-musl" "18.1.2"
-    "@nx/nx-win32-arm64-msvc" "18.1.2"
-    "@nx/nx-win32-x64-msvc" "18.1.2"
+    "@nx/nx-darwin-arm64" "18.3.4"
+    "@nx/nx-darwin-x64" "18.3.4"
+    "@nx/nx-freebsd-x64" "18.3.4"
+    "@nx/nx-linux-arm-gnueabihf" "18.3.4"
+    "@nx/nx-linux-arm64-gnu" "18.3.4"
+    "@nx/nx-linux-arm64-musl" "18.3.4"
+    "@nx/nx-linux-x64-gnu" "18.3.4"
+    "@nx/nx-linux-x64-musl" "18.3.4"
+    "@nx/nx-win32-arm64-msvc" "18.3.4"
+    "@nx/nx-win32-x64-msvc" "18.3.4"
 
 ob1@0.72.4:
   version "0.72.4"
@@ -12489,14 +12487,6 @@ react-freeze@^1.0.0:
   resolved "https://registry.npmjs.org/react-freeze/-/react-freeze-1.0.4.tgz#cbbea2762b0368b05cbe407ddc9d518c57c6f3ad"
   integrity sha512-r4F0Sec0BLxWicc7HEyo2x3/2icUTrRmDjaaRyzzn+7aDyFZliszMDOgLVwSnQnYENOlL1o569Ze2HZefk8clA==
 
-react-i18next@*:
-  version "14.1.0"
-  resolved "https://registry.npmjs.org/react-i18next/-/react-i18next-14.1.0.tgz#44da74fbffd416f5d0c5307ef31735cf10cc91d9"
-  integrity sha512-3KwX6LHpbvGQ+sBEntjV4sYW3Zovjjl3fpoHbUwSgFHf0uRBcbeCBLR5al6ikncI5+W0EFb71QXZmfop+J6NrQ==
-  dependencies:
-    "@babel/runtime" "^7.23.9"
-    html-parse-stringify "^3.0.1"
-
 react-i18next@^14.1.1:
   version "14.1.1"
   resolved "https://registry.npmjs.org/react-i18next/-/react-i18next-14.1.1.tgz#3d942a99866555ae3552c40f9fddfa061e29d7f3"
@@ -12526,7 +12516,7 @@ react-is@17.0.2, react-is@^17.0.1:
   resolved "https://registry.npmjs.org/react-is/-/react-is-17.0.2.tgz#e691d4a8e9c789365655539ab372762b0efb54f0"
   integrity sha512-w2GsyukL62IJnlaff/nRegPQR94C/XXamvMWmSHRJ4y7Ts/4ocGRmTHvOs8PSE6pB3dWOrD/nueuU5sduBsQ4w==
 
-"react-is@^16.12.0 || ^17.0.0 || ^18.0.0", react-is@^18.0.0:
+"react-is@^16.12.0 || ^17.0.0 || ^18.0.0":
   version "18.2.0"
   resolved "https://registry.npmjs.org/react-is/-/react-is-18.2.0.tgz#199431eeaaa2e09f86427efbb4f1473edb47609b"
   integrity sha512-xWGDIW6x921xtzPkhiULtthJHoJvBbF3q26fzloPCK0hsvxtPVelvftw3zjbHWSkR2km9Z+4uxbDDK/6Zw9B8w==
@@ -12535,6 +12525,11 @@ react-is@^16.13.0, react-is@^16.13.1, react-is@^16.7.0, react-is@^16.8.6:
   version "16.13.1"
   resolved "https://registry.npmjs.org/react-is/-/react-is-16.13.1.tgz#789729a4dc36de2999dc156dd6c1d9c18cea56a4"
   integrity sha512-24e6ynE2H+OKt4kqsOvNd8kBpV65zoxbA4BVsEOB3ARVWQki/DHzaUoC5KuON/BiccDaCCTZBuOcfZs70kR8bQ==
+
+react-is@^18.0.0:
+  version "18.3.1"
+  resolved "https://registry.npmjs.org/react-is/-/react-is-18.3.1.tgz#e83557dc12eae63a99e003a46388b1dcbb44db7e"
+  integrity sha512-/LLMVyas0ljjAtoYiPqYiL8VWXzUUdThrmU5+n20DZv+a+ClRoevUzw5JxU+Ieh5/c87ytoTBV9G1FiKfNJdmg==
 
 react-is@^18.2.0:
   version "18.3.0"
@@ -12584,7 +12579,7 @@ react-native-codegen@^0.70.7:
     jscodeshift "^0.14.0"
     nullthrows "^1.1.1"
 
-react-native-contacts@^7.0.6:
+react-native-contacts@^7.0.8:
   version "7.0.8"
   resolved "https://registry.npmjs.org/react-native-contacts/-/react-native-contacts-7.0.8.tgz#485ba7a77653b30205c76f96494808d07b8e57b9"
   integrity sha512-Zfkdpw1uQVRb8v1m+ogknzjyfEs9k63o2sPAYvxZ8ZJff31D45G8+uZb6VcM4tIe3ELH9EDvh93nd515kFvRYQ==
@@ -12594,22 +12589,20 @@ react-native-datawedge-intents@^0.1.8:
   resolved "https://registry.npmjs.org/react-native-datawedge-intents/-/react-native-datawedge-intents-0.1.8.tgz#2021b8ad2b351bce84c84392dcfdf1731750ef0e"
   integrity sha512-HefmAOgsEhXsfZZOL2e2x7s46toI8oZ8ZlNJS/DrvZwbZB9VqaCC076IqOKxnalPyO6JlIIrZaw58xD1jFRvhg==
 
-react-native-date-picker@4.2.14:
-  version "4.2.14"
-  resolved "https://registry.npmjs.org/react-native-date-picker/-/react-native-date-picker-4.2.14.tgz#ebeb3bf8d682268a4e405decde1e72ab95ecffb7"
-  integrity sha512-rP0ycj3I+8x4pIUGjeh7pL+cMPntKccLGX/OXx790bsIM0Hcyg0ZL86kGnnZu9fEUhXlgdr3OK/jhQue5L6kSQ==
-  dependencies:
-    prop-types "^15.8.1"
+react-native-date-picker@4.4.2:
+  version "4.4.2"
+  resolved "https://registry.npmjs.org/react-native-date-picker/-/react-native-date-picker-4.4.2.tgz#f7bb9daa8559237e08bd30f907ee8487a6e2a6ec"
+  integrity sha512-wYKN8nYWhETVHJV/+Im30JOdzkFRwYRrDlEOyyYesOjt+1JTFJh9M7K5CqePLOIB4Nxlf2f2lRSI0VoUyFIovA==
 
-react-native-device-info@^10.3.0:
-  version "10.13.1"
-  resolved "https://registry.npmjs.org/react-native-device-info/-/react-native-device-info-10.13.1.tgz#f87f44ba7b67933248be10ca302a4f2f6dbbdd4f"
-  integrity sha512-j/7Z+Yl9Cesjp8vKaVzbuJQKJSVs4ojXATt5WjwipZ0Ss0mBJjqtbc4x5dfZLmQ4y55VVa7c0v8KHca1iqY/TQ==
+react-native-device-info@^10.13.2:
+  version "10.13.2"
+  resolved "https://registry.npmjs.org/react-native-device-info/-/react-native-device-info-10.13.2.tgz#7bfd4eb991c3434b8a2c38224cb1f51f8e799d54"
+  integrity sha512-5EAls7uvGdZkVfp1KWHsR5BfJJHp/ux64+ZPj1865IcaUyrNQIWYFmrTHwTH8L/NGJUTBrzv+y6WODnN17LSbw==
 
-react-native-document-picker@9.1.1:
-  version "9.1.1"
-  resolved "https://registry.npmjs.org/react-native-document-picker/-/react-native-document-picker-9.1.1.tgz#54390c500396b61ed697095ef8a6f9cbe0977bc9"
-  integrity sha512-BW+7DbsILuFThlBm7NUFVUmKKf6Awkcf9R0q8wiCU2DlGGtAKQTt2iHpO5+Dn/7WMPB+rqNv3X1HsmJQ0t5R3g==
+react-native-document-picker@9.1.2:
+  version "9.1.2"
+  resolved "https://registry.npmjs.org/react-native-document-picker/-/react-native-document-picker-9.1.2.tgz#ec44cbf0736559afef0e129b1a361e50b40a6dab"
+  integrity sha512-7ll4tIH2qiz6a+NIAvQRbPQCznDd+AstDjhW2BevKjz3WCYQuOIcQRPR8X5vbkJ+pFc2ZAak6y2wSCvTJ4BYLQ==
   dependencies:
     invariant "^2.2.4"
 
@@ -12626,10 +12619,10 @@ react-native-fs@^2.20.0:
     base-64 "^0.1.0"
     utf8 "^3.0.0"
 
-react-native-gesture-handler@2.15.0:
-  version "2.15.0"
-  resolved "https://registry.npmjs.org/react-native-gesture-handler/-/react-native-gesture-handler-2.15.0.tgz#f8e6c0451a7bdf065edb7b9be605480db402baa0"
-  integrity sha512-cmMGW8k86o/xgVTBZZOPohvR5re4Vh65PUxH4HbBBJAYTog4aN4wTVTUlnoky01HuSN8/X4h3tI/K3XLPoDnsg==
+react-native-gesture-handler@2.16.1:
+  version "2.16.1"
+  resolved "https://registry.npmjs.org/react-native-gesture-handler/-/react-native-gesture-handler-2.16.1.tgz#a2b6828134988632a87f5444a2cc2caa34f16748"
+  integrity sha512-7AlZS2IWDPQylAYOQle2mI0Xs0omAd/Kr+gAy58hjS14LUhxZAwYMVxcSFMlN9PfzXomoNVhmJBapDWIWUw/NA==
   dependencies:
     "@egjs/hammerjs" "^2.0.17"
     hoist-non-react-statics "^3.3.0"
@@ -12637,10 +12630,12 @@ react-native-gesture-handler@2.15.0:
     lodash "^4.17.21"
     prop-types "^15.7.2"
 
-react-native-gifted-charts@1.3.12:
-  version "1.3.12"
-  resolved "https://registry.npmjs.org/react-native-gifted-charts/-/react-native-gifted-charts-1.3.12.tgz#efb5772f563a8f24c882af389c2e799925fe2666"
-  integrity sha512-Jw4aMXUqH6IEIGPmBKJsFwBd7j9J0wyo00IQxdrZc/tUoUxqzuWIPFPJf0XSPZNiLS86fgjBAzrvEusZvWNy3w==
+react-native-gifted-charts@1.4.10:
+  version "1.4.10"
+  resolved "https://registry.npmjs.org/react-native-gifted-charts/-/react-native-gifted-charts-1.4.10.tgz#14bf600b7a4ffa566c2a5062f8f8bb08c9fd47f1"
+  integrity sha512-9zJbvn4Fp38wgVUF5QVtQJUMRqCVzYXp0knW4IuPJ25BsetganwaXC36F26J9XuhJqtu6KWvWQgKshvIj2N/JA==
+  dependencies:
+    gifted-charts-core "^0.1.4"
 
 react-native-gradle-plugin@^0.70.3:
   version "0.70.3"
@@ -12657,10 +12652,10 @@ react-native-mmkv@2.5.1:
   resolved "https://registry.npmjs.org/react-native-mmkv/-/react-native-mmkv-2.5.1.tgz#29fc462077fab16a5e1b79570fbf8acaac9d87b4"
   integrity sha512-5eQu25z3H6zf6w0NkJoTuFEFrbOu6luZxZ6+rK1W+XwY/rjPSFZFQPVtMaz3im90RbILFXXM/KrFGZrpaJJRoQ==
 
-react-native-pell-rich-editor@1.8.8:
-  version "1.8.8"
-  resolved "https://registry.npmjs.org/react-native-pell-rich-editor/-/react-native-pell-rich-editor-1.8.8.tgz#c6299635de49d8facfded7175d064c0ff89dbc7d"
-  integrity sha512-pPpj3rVEbmOcGbUMiutuQhpxp5HzOQlhVGhZ6B7aWlsliWWDtsi+lu3RXNV+g62PcQ07qDDtZwKOx1fSzff6HQ==
+react-native-pell-rich-editor@1.9.0:
+  version "1.9.0"
+  resolved "https://registry.npmjs.org/react-native-pell-rich-editor/-/react-native-pell-rich-editor-1.9.0.tgz#e222b4cd8ead9b5e1de7b6cf2f31a3315c82e570"
+  integrity sha512-BKzlu++FySzPXrb5bczD8b/ZZJtfzcD4z7FvW7TrH+4OENEQtaIiEMfmb5N09Kv3YVJcfm8fut8Y+GLNAcCQHA==
 
 react-native-reanimated@2.10.0:
   version "2.10.0"
@@ -12675,15 +12670,15 @@ react-native-reanimated@2.10.0:
     setimmediate "^1.0.5"
     string-hash-64 "^1.0.3"
 
-react-native-safe-area-context@4.2.4:
-  version "4.2.4"
-  resolved "https://registry.npmjs.org/react-native-safe-area-context/-/react-native-safe-area-context-4.2.4.tgz#4df42819759c4d3c74252c8678c2772cfa2271a6"
-  integrity sha512-OOX+W2G4YYufvryonn6Kw6YnyT8ZThkxPHZBD04NLHaZmicUaaDVII/PZ3M5fD1o5N62+T+8K4bCS5Un2ggvkA==
+react-native-safe-area-context@4.10.1:
+  version "4.10.1"
+  resolved "https://registry.npmjs.org/react-native-safe-area-context/-/react-native-safe-area-context-4.10.1.tgz#29fb27395ff7dfa2fa38788a27226330d73a81cc"
+  integrity sha512-w8tCuowDorUkPoWPXmhqosovBr33YsukkwYCDERZFHAxIkx6qBadYxfeoaJ91nCQKjkNzGrK5qhoNOeSIcYSpA==
 
-react-native-screens@3.14.1:
-  version "3.14.1"
-  resolved "https://registry.npmjs.org/react-native-screens/-/react-native-screens-3.14.1.tgz#9eca8ef524cc0466701779498d128d820cc06f69"
-  integrity sha512-QkaiYEx5kuAkLjfN+AmR7FC9jyzohqnc5T1PBi35oZtGiLMoyTJIzyep/g8458++WvDwm0vismIifaNHsWFyHg==
+react-native-screens@3.18.2:
+  version "3.18.2"
+  resolved "https://registry.npmjs.org/react-native-screens/-/react-native-screens-3.18.2.tgz#d7ab2d145258d3db9fa630fa5379dc4474117866"
+  integrity sha512-ANUEuvMUlsYJ1QKukEhzhfrvOUO9BVH9Nzg+6eWxpn3cfD/O83yPBOF8Mx6x5H/2+sMy+VS5x/chWOOo/U7QJw==
   dependencies:
     react-freeze "^1.0.0"
     warn-once "^0.1.0"
@@ -12718,15 +12713,15 @@ react-native-syntax-highlighter@^2.1.0:
   dependencies:
     react-syntax-highlighter "^6.0.4"
 
-react-native-system-navigation-bar@2.2.0:
-  version "2.2.0"
-  resolved "https://registry.npmjs.org/react-native-system-navigation-bar/-/react-native-system-navigation-bar-2.2.0.tgz#70c924e5b40a34c6f78910ca7bf990082637ddab"
-  integrity sha512-iVrWFbEh5WSX5pFiCBxJ1+zte4zTbTjLFsK/OZjKpwpZgLgDingEHaqQPAU+PPTYxzkShoCiaVnCNIbDzNnBow==
+react-native-system-navigation-bar@2.6.4:
+  version "2.6.4"
+  resolved "https://registry.npmjs.org/react-native-system-navigation-bar/-/react-native-system-navigation-bar-2.6.4.tgz#34edee7051dea01531ff2be95dc14f9fa8a540b7"
+  integrity sha512-4pysgADW53PiuHv+2glzNLJnHSxqDszZvLoitLFI5os4D+gCDfxmR36VSET4EnXkzSf8X9mbeFkHYDypDHJyZA==
 
-react-native-toast-message@2.1.8:
-  version "2.1.8"
-  resolved "https://registry.npmjs.org/react-native-toast-message/-/react-native-toast-message-2.1.8.tgz#60570821d9391b90947bea2e3e90276701ce35e3"
-  integrity sha512-vlDQVkvpSq9L3/GRfoKaxVQyenj/A7yHToC9M0nrSCTR9XPXzoc2AOgRQnM6GVvDhetDld9ZfGtFcucyWcGQNA==
+react-native-toast-message@2.2.0:
+  version "2.2.0"
+  resolved "https://registry.npmjs.org/react-native-toast-message/-/react-native-toast-message-2.2.0.tgz#c53a4746b15616858a7d61c4386b92cbe9fbf911"
+  integrity sha512-AFti8VzUk6JvyGAlLm9/BknTNDXrrhqnUk7ak/pM7uCTxDPveAu2ekszU0on6vnUPFnG04H/QfYE2IlETqeaWw==
 
 react-native-vector-icons@10.0.3:
   version "10.0.3"
