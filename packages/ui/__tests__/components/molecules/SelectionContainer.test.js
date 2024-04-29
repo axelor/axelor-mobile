@@ -66,13 +66,13 @@ describe('SelectionContainer', () => {
       ...props,
       objectList: [],
       title: 'item',
-      translator: (key, values) => `No ${values.title} available`,
+      translator: (key, values) => `Aucun ${values.title} disponible`,
     };
     const newPropsNullArr = {
       ...props,
       objectList: null,
       title: 'item',
-      translator: (key, values) => `No ${values.title} available`,
+      translator: (key, values) => `Aucun ${values.title} disponible`,
     };
     const newPropsNullTranslator = {
       ...props,
@@ -87,10 +87,10 @@ describe('SelectionContainer', () => {
     );
 
     expect(wrapperEmpty.find(Text).prop('children')).toBe(
-      `No ${newPropsEmptyArr.title} available`,
+      `Aucun ${newPropsEmptyArr.title} disponible`,
     );
     expect(wrapperNull.find(Text).prop('children')).toBe(
-      `No ${newPropsNullArr.title} available`,
+      `Aucun ${newPropsNullArr.title} disponible`,
     );
     expect(wrapperNullTranslator.find(Text).prop('children')).toBe(
       `No ${newPropsNullTranslator.title} available`,
