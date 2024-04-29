@@ -19,6 +19,7 @@
 import React, {useEffect} from 'react';
 import {ActivityIndicator, StyleSheet} from 'react-native';
 import {
+  isEmpty,
   useDispatch,
   useIsFocused,
   useSelector,
@@ -64,7 +65,7 @@ const ActiveInterventionScreen = ({}) => {
     }
   }, [activeIntervention?.id, dispatch]);
 
-  if (activeIntervention != null) {
+  if (activeIntervention != null && !isEmpty(activeIntervention)) {
     if (activeIntervention.id !== intervention?.id) {
       return <LoadingComponent />;
     } else {
