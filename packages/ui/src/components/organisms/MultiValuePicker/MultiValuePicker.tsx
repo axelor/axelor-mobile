@@ -47,7 +47,7 @@ interface MultiValuePickerProps {
   listItems: Item[];
   readonly?: boolean;
   required?: boolean;
-  translator?: ({key, values}) => string;
+  translator?: (key: string, values: Object) => string;
 }
 
 const MultiValuePicker = ({

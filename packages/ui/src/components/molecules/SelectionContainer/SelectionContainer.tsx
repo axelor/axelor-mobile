@@ -20,6 +20,7 @@ import React, {useCallback, useMemo} from 'react';
 import {ScrollView, StyleSheet, TouchableOpacity, View} from 'react-native';
 import {Color, ThemeColors, useThemeColor} from '../../../theme';
 import {Icon, Text} from '../../atoms';
+import {checkNullString} from '../../../utils';
 
 interface SelectionItemProps {
   style?: any;
@@ -122,7 +123,7 @@ interface SelectionContainerProps {
   isPicker?: boolean;
   selectedItem?: any[];
   readonly?: boolean;
-  translator?: ({key, values}) => string;
+  translator?: (key: string, values: Object) => string;
   title?: string;
 }
 
@@ -141,11 +142,13 @@ const SelectionContainer = ({
 }: SelectionContainerProps) => {
   const Colors = useThemeColor();
 
-  const listLength = useMemo(
-    () =>
-      objectList != null && (objectList.length <= 5 ? objectList.length : 5),
-    [objectList],
-  );
+  const listLength = useMemo(() => {
+    if (objectList == null || objectList.length === 0) {
+      return 1;
+    } else {
+      return objectList.length <= 5 ? objectList.length : 5;
+    }
+  }, [objectList]);
 
   const styles = useMemo(
     () => getStyles(Colors, listLength, emptyValue),
@@ -158,15 +161,15 @@ const SelectionContainer = ({
   );
 
   const renderEmptyState = useCallback(() => {
-    const _title = title.toLowerCase();
+    const _title = checkNullString(title) ? 'data' : title?.toLowerCase();
 
     const message =
-      translator != null
-        ? translator({key: 'Base_NoDataContainer', values: {_title}})
+      translator != null && !checkNullString(title)
+        ? translator('Base_NoDataPicker', {title: _title})
         : `No ${_title} available`;
 
     return (
-      <View style={styles.emptyContainer}>
+      <View style={[styles.flatListContainer, styles.emptyContainer]}>
         <Text>{message}</Text>
       </View>
     );
@@ -282,13 +285,8 @@ const getStyles = (
       left: -14,
     },
     emptyContainer: {
-      top: -4,
-      padding: 10,
       alignItems: 'center',
       justifyContent: 'center',
-      borderColor: Colors.secondaryColor.background,
-      borderWidth: 1,
-      borderRadius: 7,
     },
   });
 

@@ -45,7 +45,7 @@ interface PickerProps {
   readonly?: boolean;
   required?: boolean;
   isScrollViewContainer?: boolean;
-  translator?: ({key, values}) => string;
+  translator?: (key: string, values: Object) => string;
 }
 
 const Picker = ({
@@ -116,9 +116,10 @@ const Picker = ({
 
   const marginBottom = useMemo(() => {
     if (isScrollViewContainer && isOpen) {
-      const visibleListLength = !Array.isArray(listItems)
-        ? 0
-        : Math.min(listItems.length, 5);
+      const visibleListLength =
+        !Array.isArray(listItems) || listItems?.length === 0
+          ? 1
+          : Math.min(listItems.length, 5);
 
       return emptyValue
         ? visibleListLength * ITEM_HEIGHT + ITEM_HEIGHT + 5
