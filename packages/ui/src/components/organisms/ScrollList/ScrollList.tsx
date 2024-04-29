@@ -30,6 +30,7 @@ import {Text} from '../../atoms';
 import {CircleButton} from '../../molecules';
 import TopActions from './TopActions';
 
+const DISPLAY_LOADING_DELAY_MILLISECONDS = 3000;
 const BUTTON_SIZE = 40;
 const SCREEN_WIDTH_50_PERCENT = Dimensions.get('window').width * 0.5;
 const SCREEN_HEIGHT_50_PERCENT = Dimensions.get('window').height * 0.5;
@@ -180,7 +181,7 @@ const ScrollList = ({
     if (loadingList) {
       loadingTimer = setTimeout(() => {
         setIsLoading(true);
-      }, 3000);
+      }, DISPLAY_LOADING_DELAY_MILLISECONDS);
     } else {
       setIsLoading(false);
       clearTimeout(loadingTimer);
