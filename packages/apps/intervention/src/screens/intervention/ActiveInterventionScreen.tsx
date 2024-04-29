@@ -65,7 +65,7 @@ const ActiveInterventionScreen = ({}) => {
     }
   }, [activeIntervention?.id, dispatch]);
 
-  if (activeIntervention != null && !isEmpty(activeIntervention)) {
+  if (!isEmpty(activeIntervention)) {
     if (activeIntervention.id !== intervention?.id) {
       return <LoadingComponent />;
     } else {
