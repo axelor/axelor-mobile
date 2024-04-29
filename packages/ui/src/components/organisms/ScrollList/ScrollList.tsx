@@ -77,6 +77,7 @@ const ScrollList = ({
   verticalActions = true,
 }: ScrollListProps) => {
   const [, setPage] = useState(0);
+  const [isLoading, setIsLoading] = useState(false);
 
   const updateData = useCallback(() => {
     setPage(0);
@@ -173,7 +174,24 @@ const ScrollList = ({
     ],
   };
 
-  if (loadingList) {
+  useEffect(() => {
+    let loadingTimer;
+
+    if (loadingList) {
+      loadingTimer = setTimeout(() => {
+        setIsLoading(true);
+      }, 3000);
+    } else {
+      setIsLoading(false);
+      clearTimeout(loadingTimer);
+    }
+
+    return () => {
+      clearTimeout(loadingTimer);
+    };
+  }, [loadingList]);
+
+  if (isLoading) {
     return (
       <View style={styles.loadingContainer}>
         <ActivityIndicator size="large" color="black" />
