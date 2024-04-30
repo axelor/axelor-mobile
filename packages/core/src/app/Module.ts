@@ -19,6 +19,7 @@
 import {Reducer} from '@reduxjs/toolkit';
 import {Schema} from 'yup';
 import {FormConfigs} from '../forms/types';
+import {ModuleSelections} from '../selections';
 
 interface MinimumMenuFields {
   title: string;
@@ -85,6 +86,7 @@ export interface Models {
   searchFields?: SearchFields;
   formsRegister?: FormConfigs;
   headerRegisters?: Function;
+  typeObjects?: ModuleSelections;
 }
 
 type version = `${number}.${number}.${number}` | '-';

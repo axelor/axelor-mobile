@@ -18,6 +18,7 @@
 
 import {Schema, mixed, number, object} from 'yup';
 import {Models, Module, ObjectFields, SearchFields, SortFields} from './Module';
+import {ModuleSelections} from '../selections';
 
 export const addModuleObjectFields = (
   objectFields: ObjectFields,
@@ -82,6 +83,70 @@ export const addModuleSearchFields = (
   return result;
 };
 
+const addModuleTypeObjects = (
+  types: ModuleSelections,
+  moduleObjects: ModuleSelections,
+): ModuleSelections => {
+  const currentObjects = types.map(_i => _i.specificKey ?? _i.modelName);
+
+  let result: ModuleSelections = [
+    ...(moduleObjects.filter(({modelName, specificKey}) =>
+      specificKey != null
+        ? !currentObjects.includes(specificKey)
+        : !currentObjects.includes(modelName),
+    ) ?? []),
+  ];
+
+  const overrideObjects = moduleObjects.filter(({modelName, specificKey}) =>
+    specificKey != null
+      ? currentObjects.includes(specificKey)
+      : currentObjects.includes(modelName),
+  );
+
+  if (Array.isArray(overrideObjects) && overrideObjects.length > 0) {
+    types.forEach(_type => {
+      const newConfig = overrideObjects.find(({modelName, specificKey}) =>
+        _type.specificKey != null
+          ? specificKey === _type.specificKey
+          : specificKey == null && modelName === _type.modelName,
+      );
+
+      const fields = {..._type.fields};
+
+      Object.entries(newConfig.fields).forEach(([fieldName, config]) => {
+        const oldConfig = _type.fields[fieldName];
+        const overrideMethod =
+          config.overrideMethod ?? oldConfig?.overrideMethod ?? 'rewrite';
+        const useWebContent =
+          config.useWebContent ?? oldConfig?.useWebContent ?? false;
+
+        if (overrideMethod === 'rewrite') {
+          fields[fieldName] = config;
+        } else if (overrideMethod === 'add' && oldConfig != null) {
+          fields[fieldName] = {
+            overrideMethod,
+            useWebContent,
+            content: [...config.content, ...oldConfig.content].filter(
+              (_i, idx, self) =>
+                self.findIndex(({value}) => value === _i.value) === idx,
+            ),
+          };
+        }
+      });
+
+      result.push({
+        modelName: _type.modelName,
+        specificKey: _type.specificKey,
+        fields,
+      });
+    });
+  } else {
+    result = result.concat(types);
+  }
+
+  return result;
+};
+
 export const addModuleModels = (models: Models, _module: Module): Models => {
   const fields = _module?.models;
 
@@ -95,5 +160,8 @@ export const addModuleModels = (models: Models, _module: Module): Models => {
     searchFields: fields?.searchFields
       ? addModuleSearchFields(models.searchFields, fields.searchFields)
       : models.searchFields,
+    typeObjects: fields?.typeObjects
+      ? addModuleTypeObjects(models.typeObjects, fields.typeObjects)
+      : models.typeObjects,
   };
 };
