@@ -19,6 +19,13 @@
 import {Module} from '@axelor/aos-mobile-core';
 import enTranslations from './i18n/en.json';
 import frTranslations from './i18n/fr.json';
+import ProjectScreens from './screens/';
+import * as projectReducers from './features';
+import {
+  project_modelAPI,
+  project_searchFields,
+  project_sortFields,
+} from './models';
 
 export const ProjectModule: Module = {
   name: 'app-project',
@@ -33,4 +40,32 @@ export const ProjectModule: Module = {
     en: enTranslations,
     fr: frTranslations,
   },
+  menus: {
+    project_menu_projects: {
+      title: 'project_projects',
+      icon: 'clipboard2-data',
+      screen: 'ProjectScreen',
+    },
+    project_menu_businessProjects: {
+      title: 'project_BuisnessProjects',
+      icon: 'briefcase-fill',
+      screen: 'BuisnessProjectScreen',
+    },
+  },
+  screens: {
+    ...ProjectScreens,
+  },
+  reducers: {
+    ...projectReducers,
+  },
+  models: {
+    objectFields: {...project_modelAPI},
+    searchFields: {...project_searchFields},
+    sortFields: {...project_sortFields},
+  },
 };
+
+export * from './api';
+export * from './components';
+export * from './features/asyncFunctions-index';
+export * from './types';
