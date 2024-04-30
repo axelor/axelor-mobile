@@ -1,0 +1,5 @@
+{
+  "title": "Theme: add new colors on theme object to manage Bootstrap colors",
+  "type": "feat",
+  "packages": "ui"
+}
