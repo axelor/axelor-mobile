@@ -18,7 +18,7 @@
 
 import React, {useMemo} from 'react';
 import {StyleSheet} from 'react-native';
-import {useMetafileUri, useTranslator} from '@axelor/aos-mobile-core';
+import {useMetafileUri, useSelector} from '@axelor/aos-mobile-core';
 import {ObjectCard, useThemeColor} from '@axelor/aos-mobile-ui';
 import {Project} from '../../../types';
 
@@ -32,6 +32,7 @@ interface ProjectCardProps {
   company: string;
   assignedTo: string;
   projectStatus: number;
+  parentProject: string;
 }
 
 const ProjectCard = ({
@@ -44,27 +45,38 @@ const ProjectCard = ({
   company,
   assignedTo,
   projectStatus,
+  parentProject,
 }: ProjectCardProps) => {
-  const I18n = useTranslator();
   const Colors = useThemeColor();
   const formatMetaFile = useMetafileUri();
+
+  const {base: baseConfig} = useSelector(state => state.appConfig);
+  const {user} = useSelector(state => state.user);
 
   const borderStyle = useMemo(() => {
     return getStyles(Project.getStatusColor(projectStatus, Colors)?.background)
       .border;
   }, [Colors, projectStatus]);
 
+  const noCustomer = useMemo(() => {
+    return customerName == null && customerPicture == null;
+  }, [customerName, customerPicture]);
+
   return (
     <ObjectCard
       onPress={onPress}
       style={[borderStyle, style]}
-      image={{
-        generalStyle: styles.imageIcon,
-        imageSize: styles.imageSize,
-        resizeMode: 'contain',
-        defaultIconSize: 50,
-        source: formatMetaFile(customerPicture?.id),
-      }}
+      image={
+        !noCustomer
+          ? {
+              generalStyle: styles.imageIcon,
+              imageSize: styles.imageSize,
+              resizeMode: 'contain',
+              defaultIconSize: 50,
+              source: formatMetaFile(customerPicture?.id),
+            }
+          : null
+      }
       upperTexts={{
         items: [
           {displayText: name, isTitle: true},
@@ -84,6 +96,8 @@ const ProjectCard = ({
           {
             indicatorText: company,
             hideIfNull: true,
+            hideIf:
+              !baseConfig?.enableMultiCompany || user?.companySet?.length <= 1,
             iconName: 'building-fill',
           },
           {
@@ -100,6 +114,11 @@ const ProjectCard = ({
             indicatorText: 'partnerEmail',
             hideIfNull: true,
             iconName: 'envelope-fill',
+          },
+          {
+            indicatorText: parentProject,
+            hideIfNull: true,
+            iconName: 'diagram-3-fill',
           },
         ],
       }}

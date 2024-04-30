@@ -31,5 +31,6 @@ export const project_modelAPI: ObjectFields = {
     ),
     company: schemaContructor.subObject(),
     assignedTo: schemaContructor.subObject(),
+    parentProject: schemaContructor.subObject(),
   }),
 };

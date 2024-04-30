@@ -66,6 +66,17 @@ class ProjectType {
         return null;
     }
   };
+
+  static getStatusList = (
+    Colors: ThemeColors,
+    I18n: {t: (key: string) => string},
+  ) => {
+    return Object.values(this.status).map(value => ({
+      title: this.getStatus(value, I18n),
+      color: this.getStatusColor(value, Colors),
+      key: value,
+    }));
+  };
 }
 
 export default ProjectType;
