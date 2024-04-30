@@ -26,7 +26,7 @@ function getSelectionTitle(modelName: string) {
 
 export function formatTypes(): {[modelKey: string]: SelectionFields} {
   return Object.fromEntries(
-    getSelectionTypes().map(({modelName, selections}) => {
+    getSelectionTypes().map(({modelName, specificKey, selections}) => {
       const content: SelectionFields = {};
 
       Object.entries(selections).forEach(([_key, _select]) => {
@@ -38,7 +38,10 @@ export function formatTypes(): {[modelKey: string]: SelectionFields} {
         };
       });
 
-      return [getSelectionTitle(modelName), content];
+      return [
+        specificKey != null ? specificKey : getSelectionTitle(modelName),
+        content,
+      ];
     }),
   );
 }

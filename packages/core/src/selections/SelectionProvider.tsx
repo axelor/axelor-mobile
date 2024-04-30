@@ -44,7 +44,7 @@ class SelectionProvider {
     });
   }
 
-  private async fetchConfigs({modelName, fields}: ModelSelection) {
+  private async fetchConfigs({modelName, specificKey, fields}: ModelSelection) {
     const metaFields = await fetchMetaConfig({modelName});
     const modelSelections: SelectionFields = {};
 
@@ -80,7 +80,7 @@ class SelectionProvider {
 
     this.typeconfigs = [
       ...this.typeconfigs,
-      {modelName, selections: modelSelections},
+      {modelName, specificKey, selections: modelSelections},
     ];
   }
 

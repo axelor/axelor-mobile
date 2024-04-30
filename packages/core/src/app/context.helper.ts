@@ -87,22 +87,28 @@ const addModuleTypeObjects = (
   types: ModuleSelections,
   moduleObjects: ModuleSelections,
 ): ModuleSelections => {
-  const currentObjects = types.map(_i => _i.modelName);
+  const currentObjects = types.map(_i => _i.specificKey ?? _i.modelName);
 
   let result: ModuleSelections = [
-    ...(moduleObjects.filter(
-      ({modelName}) => !currentObjects.includes(modelName),
+    ...(moduleObjects.filter(({modelName, specificKey}) =>
+      specificKey != null
+        ? !currentObjects.includes(specificKey)
+        : !currentObjects.includes(modelName),
     ) ?? []),
   ];
 
-  const overrideObjects = moduleObjects.filter(({modelName}) =>
-    currentObjects.includes(modelName),
+  const overrideObjects = moduleObjects.filter(({modelName, specificKey}) =>
+    specificKey != null
+      ? currentObjects.includes(specificKey)
+      : currentObjects.includes(modelName),
   );
 
   if (Array.isArray(overrideObjects) && overrideObjects.length > 0) {
     types.forEach(_type => {
-      const newConfig = overrideObjects.find(
-        _i => _i.modelName === _type.modelName,
+      const newConfig = overrideObjects.find(({modelName, specificKey}) =>
+        _type.specificKey != null
+          ? specificKey === _type.specificKey
+          : specificKey == null && modelName === _type.modelName,
       );
 
       const fields = {..._type.fields};
@@ -130,6 +136,7 @@ const addModuleTypeObjects = (
 
       result.push({
         modelName: _type.modelName,
+        specificKey: _type.specificKey,
         fields,
       });
     });

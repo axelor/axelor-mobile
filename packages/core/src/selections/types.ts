@@ -22,6 +22,7 @@ export type ModuleSelections = ModelSelection[];
 
 export interface ModelSelection {
   modelName: string;
+  specificKey?: string;
   fields: {
     [fieldName: string]: {
       overrideMethod?: 'add' | 'rewrite';
@@ -33,6 +34,7 @@ export interface ModelSelection {
 
 export interface TypeConfig {
   modelName: string;
+  specificKey?: string;
   selections: SelectionFields;
 }
 
