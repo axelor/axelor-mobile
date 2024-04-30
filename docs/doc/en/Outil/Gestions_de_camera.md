@@ -1,6 +1,6 @@
 ---
 id: Gestion de la camera
-sidebar_position: 7
+sidebar_position: 8
 sidebar_class_name: icon gestion de la camera
 ---
 
