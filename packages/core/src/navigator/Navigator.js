@@ -61,6 +61,7 @@ import {
   createWebViewScreens,
   filterAuthorizedWebViewMenus,
 } from '../webViews/menu.helper';
+import {registerTypes} from '../selections';
 
 const Drawer = createDrawerNavigator();
 const Stack = createStackNavigator();
@@ -137,6 +138,7 @@ const Navigator = ({modules, mainMenu, onRefresh, versionCheckConfig}) => {
 
   useEffect(() => {
     dispatch(fetchRequiredConfig(requiredConfig));
+    registerTypes();
     // Note: the configs only need to be fetched once at user connection
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
