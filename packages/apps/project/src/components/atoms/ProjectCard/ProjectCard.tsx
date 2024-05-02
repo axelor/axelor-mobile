@@ -106,16 +106,6 @@ const ProjectCard = ({
             iconName: 'pin-angle-fill',
           },
           {
-            indicatorText: 'partnerFixedPhone',
-            hideIfNull: true,
-            iconName: 'telephone-fill',
-          },
-          {
-            indicatorText: 'partnerEmail',
-            hideIfNull: true,
-            iconName: 'envelope-fill',
-          },
-          {
             indicatorText: parentProject,
             hideIfNull: true,
             iconName: 'diagram-3-fill',

@@ -4,5 +4,7 @@
   "Project_Status_InProgress": "En cours",
   "Project_Status_Done": "Réalisée",
   "Project_Status_Canceled": "Annulé",
+  "Project_BuisnessProjects": "Affaires",
+  "Project_projects": "Projets",
   "Project_SliceAction_SearchProject": "recherche sur les projets"
 }
