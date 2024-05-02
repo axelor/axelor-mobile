@@ -91,8 +91,8 @@ const CustomFieldForm = ({
   }, [fields, panels, readonly]);
 
   const attrsValues = useMemo(
-    () => (object?.id !== modelId ? null : getAttrsValue(object)),
-    [modelId, object],
+    () => (object?.id != modelId ? null : getAttrsValue(object, fieldType)),
+    [modelId, object, fieldType],
   );
 
   const _additionalActions: Action[] = useMemo(

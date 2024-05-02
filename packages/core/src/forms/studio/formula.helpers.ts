@@ -52,20 +52,16 @@ export const mapStudioFieldsWithFormula = (
   }));
 };
 
-export const getAttrsValue = (object: any) => {
-  if (isEmpty(object)) {
+export const getAttrsValue = (object: Object, fieldType: string) => {
+  if (
+    isEmpty(object) ||
+    !object.hasOwnProperty(fieldType) ||
+    typeof object[fieldType] !== 'string'
+  ) {
     return {};
   }
 
-  let result = {};
-
-  Object.entries(object)
-    .filter(([key]) => key.toLowerCase().includes('attrs'))
-    .forEach(([_, value]: [string, string]) => {
-      result = {...result, ...JSON.parse(value)};
-    });
-
-  return result;
+  return JSON.parse(object[fieldType]);
 };
 
 export const createFormulaFunction = (formula: string) => {
