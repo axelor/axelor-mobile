@@ -6,5 +6,5 @@
   "Project_projects": "Projets",
   "Project_SliceAction_FetchProjectStatus": "récupération des statuts de projet",
   "Project_SliceAction_SearchProject": "recherche sur les projets",
-  "Project_SliceAction_FetchProjectById": "recupération du projet par id"
+  "Project_SliceAction_FetchProjectById": "récupération du projet par id"
 }
