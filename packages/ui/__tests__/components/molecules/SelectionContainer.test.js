@@ -19,7 +19,7 @@
 import React from 'react';
 import {View} from 'react-native';
 import {shallow} from 'enzyme';
-import {Icon, SelectionContainer} from '@axelor/aos-mobile-ui';
+import {Icon, SelectionContainer, Text} from '@axelor/aos-mobile-ui';
 import {getGlobalStyles} from '../../tools';
 
 describe('SelectionContainer', () => {
@@ -62,21 +62,36 @@ describe('SelectionContainer', () => {
     }
   });
 
-  it('should not render if objectList is empty or null', () => {
-    const newPropsEmptyArr = {
-      ...props,
-      objectList: [],
-    };
-    const newPropsNullArr = {
-      ...props,
-      objectList: null,
-    };
+  it('should render empty state message if objectList is empty or null', () => {
+    const translator = (_, values) => `Aucun(e) ${values.title} disponible.`;
+    const title = 'Item';
+    const lowerTitle = 'Item'.toLowerCase();
 
-    const wrapperEmpty = shallow(<SelectionContainer {...newPropsEmptyArr} />);
-    const wrapperNull = shallow(<SelectionContainer {...newPropsNullArr} />);
+    const renderProps = {...props, title, objectList: undefined};
 
-    expect(wrapperEmpty.isEmptyRender()).toBe(true);
-    expect(wrapperNull.isEmptyRender()).toBe(true);
+    const wrapperEmpty = shallow(
+      <SelectionContainer
+        {...renderProps}
+        objectList={[]}
+        translator={translator}
+      />,
+    );
+    const wrapperNull = shallow(
+      <SelectionContainer {...renderProps} translator={translator} />,
+    );
+    const wrapperNullTranslator = shallow(
+      <SelectionContainer {...renderProps} />,
+    );
+
+    expect(wrapperEmpty.find(Text).prop('children')).toBe(
+      translator(null, {title: lowerTitle}),
+    );
+    expect(wrapperNull.find(Text).prop('children')).toBe(
+      translator(null, {title: lowerTitle}),
+    );
+    expect(wrapperNullTranslator.find(Text).prop('children')).toBe(
+      `No ${lowerTitle} available.`,
+    );
   });
 
   it('should render a list of SelectionItem with Icon when isPicker is true', () => {
