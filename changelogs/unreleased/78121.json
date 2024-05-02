@@ -1,0 +1,5 @@
+{
+  "title": "Picker: add indicator when no data",
+  "type": "fix",
+  "packages": "ui"
+}
