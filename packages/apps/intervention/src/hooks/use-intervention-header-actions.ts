@@ -135,8 +135,8 @@ const useActiveInterventionActions = () => {
   useEffect(() => {
     headerActionsProvider.registerModel('intervention_active_intervention', {
       model: 'com.axelor.apps.intervention.db.Intervention',
-      modelId: intervention?.id,
-      disableMailMessages: !mobileSettings?.isTrackerMessageEnabled,
+      modelId: activeIntervention?.id,
+      disableMailMessages: mobileSettings?.isTrackerMessageEnabled,
       attachedFileScreenTitle: intervention?.sequence,
       actions: [
         {
@@ -145,7 +145,9 @@ const useActiveInterventionActions = () => {
           iconName: 'arrow-repeat',
           title: I18n.t('Intervention_RefreshIntervention'),
           iconColor: Colors.primaryColor.background,
-          hideIf: intervention?.id !== activeIntervention?.id,
+          hideIf:
+            activeIntervention?.id == null ||
+            intervention?.id !== activeIntervention?.id,
           onPress: () => {
             dispatch(
               (fetchInterventionById as any)({interventionId: intervention.id}),
