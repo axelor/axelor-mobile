@@ -81,5 +81,6 @@ export {
 } from './tour-api';
 export {
   searchTourLine as searchTourLineApi,
+  updateTourLine as updateTourLineApi,
   validateTourLine as validateTourLineApi,
 } from './tour-line-api';

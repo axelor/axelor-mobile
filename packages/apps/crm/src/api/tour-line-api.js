@@ -59,3 +59,16 @@ export async function validateTourLine({tourLineId}) {
     url: `ws/aos/tour-line/validate/${tourLineId}`,
   });
 }
+
+export async function updateTourLine({tourLineId, tourLineVersion, event}) {
+  return axiosApiProvider.post({
+    url: '/ws/rest/com.axelor.apps.crm.db.TourLine',
+    data: {
+      data: {
+        id: tourLineId,
+        version: tourLineVersion,
+        event: {id: event?.id},
+      },
+    },
+  });
+}
