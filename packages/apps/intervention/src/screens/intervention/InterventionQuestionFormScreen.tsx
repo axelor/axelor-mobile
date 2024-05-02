@@ -26,11 +26,11 @@ import {
 } from '@axelor/aos-mobile-core';
 import {
   Badge,
-  Icon,
   HeaderContainer,
   Screen,
   Text,
   useThemeColor,
+  InfoBubble,
 } from '@axelor/aos-mobile-ui';
 import {InterventionHeader} from '../../components';
 import {fetchQuestionById, updateQuestion} from '../../features/questionSlice';
@@ -105,7 +105,15 @@ const InterventionQuestionFormScreen = ({route, navigation}) => {
               color={questionBadge.color}
             />
           )}
-          {question.isPrivate && <Icon name="lock" />}
+          {question.isPrivate && (
+            <InfoBubble
+              coloredBubble={false}
+              iconName="lock"
+              badgeColor={Colors.secondaryColor_dark}
+              indication={I18n.t('Intervention_PrivateQuestion')}
+              position="left"
+            />
+          )}
         </View>
         {question.indication && (
           <Text writingType="details">{question.indication}</Text>
