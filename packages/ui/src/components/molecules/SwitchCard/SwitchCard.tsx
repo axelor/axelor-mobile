@@ -26,6 +26,7 @@ interface SwitchCardProps {
   style?: any;
   title: string;
   defaultValue: boolean;
+  readonly?: boolean;
   onToggle: (any) => void;
 }
 
@@ -33,6 +34,7 @@ const SwitchCard = ({
   style,
   title,
   defaultValue,
+  readonly = false,
   onToggle = () => {},
 }: SwitchCardProps) => {
   const Colors = useThemeColor();
@@ -55,6 +57,7 @@ const SwitchCard = ({
       <Switch
         style={styles.switch}
         isEnabled={defaultValue}
+        readonly={readonly}
         handleToggle={onToggle}
       />
     </View>

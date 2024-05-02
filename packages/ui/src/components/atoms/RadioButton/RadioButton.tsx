@@ -29,9 +29,11 @@ const RadioButton = ({
   selected,
   title,
   size = DEFAULT_SIZE,
+  readonly = false,
 }: {
   onPress: () => void;
   selected: boolean;
+  readonly?: boolean;
   title: string;
   size?: number;
   style?: any;
@@ -43,11 +45,16 @@ const RadioButton = ({
   return (
     <TouchableOpacity
       onPress={onPress}
+      disabled={readonly}
       style={[styles.container, selected ? styles.selectedCard : null, style]}>
       <View style={styles.buttonExt}>
         {selected ? <View style={styles.buttonInt} /> : null}
       </View>
-      <Text style={styles.title}>{title}</Text>
+      <Text
+        textColor={readonly ? Colors.secondaryColor.background : Colors.text}
+        style={styles.title}>
+        {title}
+      </Text>
     </TouchableOpacity>
   );
 };
