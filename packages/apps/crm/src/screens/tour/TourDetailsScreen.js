@@ -99,12 +99,14 @@ const TourDetailsScreen = ({route}) => {
         translator={I18n.t}
         renderItem={({item}) => (
           <TourLineActionCard
-            name={item?.partner?.fullName}
+            partner={item?.partner}
             address={item?.address?.fullName}
             isValidated={item?.isValidated}
             eventId={item?.event?.id}
             id={item.id}
+            version={item.version}
             tourId={tourId}
+            selectedStatus={selectedStatus[0]?.key}
           />
         )}
       />
