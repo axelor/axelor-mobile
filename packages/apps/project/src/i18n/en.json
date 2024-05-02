@@ -5,6 +5,10 @@
   "Project_Buisness": "Business",
   "Project_projects": "Projects",
   "Project_SliceAction_FetchProjectStatus": "fetch project status",
+  "Project_Invoicing": "Invoicing",
+  "Project_Members": "Members",
+  "Project_Team": "Team",
+  "Project_Sites": "Sites",
   "Project_SliceAction_SearchProject": "search project",
   "Project_SliceAction_FetchProjectById": "fetch project by id"
 }

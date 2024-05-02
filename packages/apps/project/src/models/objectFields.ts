@@ -26,22 +26,30 @@ export const project_modelAPI: ObjectFields = {
     clientPartner: schemaContructor.subObject().concat(
       schemaContructor.object({
         picture: schemaContructor.subObject(),
+        jobTitleFunction: schemaContructor.subObject(),
         name: schemaContructor.string(),
       }),
     ),
-<<<<<<< HEAD
+    contactPartner: schemaContructor.subObject().concat(
+      schemaContructor.object({
+        picture: schemaContructor.subObject(),
+        jobTitleFunction: schemaContructor.subObject(),
+        name: schemaContructor.string(),
+      }),
+    ),
     company: schemaContructor.subObject('name'),
     assignedTo: schemaContructor.subObject('fullName'),
     parentProject: schemaContructor.subObject('fullName'),
+    isBusinessProject: schemaContructor.boolean(),
+    fromDate: schemaContructor.string(),
+    toDate: schemaContructor.string(),
+    siteSet: schemaContructor.array().of(schemaContructor.subObject()),
+    description: schemaContructor.string(),
+    team: schemaContructor.subObject(),
+    membersUserSet: schemaContructor.array().of(schemaContructor.subObject()),
   }),
   project_projectStatus: schemaContructor.object({
     name: schemaContructor.string(),
     isCompleted: schemaContructor.boolean(),
-=======
-    company: schemaContructor.subObject(),
-    assignedTo: schemaContructor.subObject(),
-    parentProject: schemaContructor.subObject(),
-    isBusinessProject: schemaContructor.boolean(),
->>>>>>> feat: add GeneralInformationView
   }),
 };
