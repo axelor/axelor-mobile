@@ -111,10 +111,12 @@ const TourLineActionCard = ({
         visible={addPopupIsVisible}
         partner={partner}
         onClose={() => setAddPopupIsVisible(false)}
-        version={version}
-        id={id}
-        tourId={tourId}
-        isValidated={selectedStatus}
+        tourlineData={{
+          isValidated: selectedStatus,
+          tourLineVersion: version,
+          tourId: tourId,
+          tourLineId: id,
+        }}
       />
     </View>
   );

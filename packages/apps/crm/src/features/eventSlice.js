@@ -109,15 +109,7 @@ export const createEvent = createAsyncThunk(
       responseOptions: {isArrayResponse: false, showToast: true},
     }).then(res => {
       if (data?.tourlineData != null) {
-        dispatch(
-          updateTourLine({
-            tourLineId: data.tourlineData?.tourLineId,
-            tourLineVersion: data.tourlineData?.tourLineVersion,
-            event: res,
-            tourId: data.tourlineData?.tourId,
-            isValidated: data.tourlineData?.isValidated,
-          }),
-        );
+        dispatch(updateTourLine({...data.tourlineData, event: res}));
       }
       if (data?.event?.isLead) {
         dispatch(fetchLeadById({leadId: data?.event?.eventLead?.id}));

@@ -32,10 +32,12 @@ interface TourLineEventPopupProps {
   visible: boolean;
   partner: any;
   onClose: any;
-  version: number;
-  id: number;
-  isValidated: boolean;
-  tourId: number;
+  tourlineData: {
+    tourLineId: number;
+    tourLineVersion: number;
+    tourId: number;
+    isValidated: boolean;
+  };
 }
 
 const TourLineEventPopup = ({
@@ -43,10 +45,7 @@ const TourLineEventPopup = ({
   visible,
   partner,
   onClose,
-  version,
-  id,
-  tourId,
-  isValidated,
+  tourlineData,
 }: TourLineEventPopupProps) => {
   const Colors = useThemeColor();
   const I18n = useTranslator();
@@ -59,13 +58,10 @@ const TourLineEventPopup = ({
     dispatch(
       (updateTourLine as any)({
         event: eventTourLine,
-        tourLineId: id,
-        tourLineVersion: version,
-        tourId: tourId,
-        isValidated: isValidated,
+        ...tourlineData,
       }),
     );
-  }, [dispatch, eventTourLine, id, version, tourId, isValidated]);
+  }, [dispatch, eventTourLine, tourlineData]);
 
   return (
     <Alert
@@ -88,12 +84,7 @@ const TourLineEventPopup = ({
             onClose();
             navigation.navigate('EventFormScreen', {
               client: partner,
-              tourlineData: {
-                tourLineVersion: version,
-                tourLineId: id,
-                tourId: tourId,
-                isValidated: isValidated,
-              },
+              tourlineData,
             });
           }}>
           <LabelText
