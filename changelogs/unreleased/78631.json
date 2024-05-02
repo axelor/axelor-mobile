@@ -1,0 +1,5 @@
+{
+  "title": "PasswordInput: reverse password icon order",
+  "type": "fix",
+  "packages": "core"
+}
