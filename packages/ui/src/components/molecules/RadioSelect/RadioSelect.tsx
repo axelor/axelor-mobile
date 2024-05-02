@@ -32,9 +32,9 @@ interface RadioSelectProps {
   radioButtonStyle?: any;
   items: RadioItem[];
   question?: string;
-  readonly?: boolean;
   radioSize?: number;
-  direction: 'row' | 'column';
+  direction?: 'row' | 'column';
+  readonly?: boolean;
   onChange: (value: string) => void;
   defaultValue?: string;
 }
@@ -47,7 +47,7 @@ const RadioSelect = ({
   question,
   radioSize,
   direction = 'row',
-  readonly,
+  readonly = false,
   onChange,
   defaultValue,
 }: RadioSelectProps) => {
@@ -73,7 +73,7 @@ const RadioSelect = ({
           <RadioButton
             key={item.id}
             style={radioButtonStyle}
-            onPress={() => !readonly && onRadioBtnClick(item)}
+            onPress={() => onRadioBtnClick(item)}
             selected={selectedItem?.id === item.id}
             title={item.title}
             size={radioSize}

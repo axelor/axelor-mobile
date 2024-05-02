@@ -45,12 +45,13 @@ const RadioButton = ({
   return (
     <TouchableOpacity
       onPress={onPress}
+      disabled={readonly}
       style={[styles.container, selected ? styles.selectedCard : null, style]}>
       <View style={styles.buttonExt}>
         {selected ? <View style={styles.buttonInt} /> : null}
       </View>
       <Text
-        textColor={readonly && Colors.secondaryColor.background}
+        textColor={readonly ? Colors.secondaryColor.background : Colors.text}
         style={styles.title}>
         {title}
       </Text>

@@ -18,7 +18,7 @@
 
 import React from 'react';
 import {Switch as RNSwitch} from 'react-native';
-import {useThemeColor} from '../../../theme/ThemeContext';
+import {useThemeColor} from '../../../theme';
 
 interface SwitchProps {
   isEnabled: boolean;
@@ -36,7 +36,7 @@ const Switch = ({
   const Colors = useThemeColor();
 
   const toggleSwitch = () => {
-    !readonly && handleToggle(!isEnabled);
+    handleToggle(!isEnabled);
   };
 
   return (
@@ -50,6 +50,7 @@ const Switch = ({
       ios_backgroundColor={Colors.backgroundColor}
       onValueChange={toggleSwitch}
       value={isEnabled}
+      disabled={readonly}
     />
   );
 };
