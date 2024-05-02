@@ -62,17 +62,20 @@ describe('SelectionContainer', () => {
     }
   });
   it('should render empty state message if objectList is empty or null', () => {
+    const translator = (key, values) =>
+      `Aucun(e) ${values.title} disponible(s)`;
+
     const newPropsEmptyArr = {
       ...props,
       objectList: [],
       title: 'item',
-      translator: (key, values) => `Aucun ${values.title} disponible`,
+      translator,
     };
     const newPropsNullArr = {
       ...props,
       objectList: null,
       title: 'item',
-      translator: (key, values) => `Aucun ${values.title} disponible`,
+      translator,
     };
     const newPropsNullTranslator = {
       ...props,
@@ -87,10 +90,10 @@ describe('SelectionContainer', () => {
     );
 
     expect(wrapperEmpty.find(Text).prop('children')).toBe(
-      `Aucun ${newPropsEmptyArr.title} disponible`,
+      translator(null, newPropsEmptyArr),
     );
     expect(wrapperNull.find(Text).prop('children')).toBe(
-      `Aucun ${newPropsNullArr.title} disponible`,
+      translator(null, newPropsNullArr),
     );
     expect(wrapperNullTranslator.find(Text).prop('children')).toBe(
       `No ${newPropsNullTranslator.title} available`,

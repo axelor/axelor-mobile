@@ -161,7 +161,11 @@ const SelectionContainer = ({
   );
 
   const renderEmptyState = useCallback(() => {
-    const _title = checkNullString(title) ? 'data' : title?.toLowerCase();
+    const _title = checkNullString(title)
+      ? translator != null
+        ? translator('Base_Data', null).toLocaleLowerCase()
+        : 'data'
+      : title?.toLowerCase();
 
     const message =
       translator != null
