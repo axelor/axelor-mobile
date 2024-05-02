@@ -61,7 +61,7 @@ const PasswordInput = ({
       leftIconsList={[<Icon name="key-fill" size={17} style={styles.icon} />]}
       rightIconsList={[
         <Icon
-          name={visible ? 'eye-fill' : 'eye-slash-fill'}
+          name={visible ? 'eye-slash-fill' : 'eye-fill'}
           size={17}
           touchable={true}
           onPress={() => setVisible(!visible)}
