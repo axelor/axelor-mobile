@@ -20,6 +20,7 @@ export {default as CatalogTypePicker} from './CatalogTypePicker/CatalogTypePicke
 export {default as CivilityPicker} from './CivilityPicker/CivilityPicker';
 export {default as ClientProspectSearchBar} from './ClientProspectSearchBar/ClientProspectSearchBar';
 export {default as ContactSearchBar} from './ContactSearchBar/ContactSearchBar';
+export {default as EventPartnerPicker} from './EventPartnerPicker/EventPartnerPicker';
 export {default as EventSearchBar} from './EventSearchBar/EventSearchBar';
 export {default as EventStatusPicker} from './EventStatusPicker/EventStatusPicker';
 export {default as EventTypePicker} from './EventTypePicker/EventTypePicker';

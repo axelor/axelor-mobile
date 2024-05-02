@@ -24,6 +24,7 @@ import {
 import {
   searchTourLine as _searchTourLine,
   validateTourLine as _validateTourLine,
+  updateTourLine as _updateTourLine,
 } from '../api/tour-line-api';
 import {fetchTourById} from './tourSlice';
 
@@ -55,6 +56,25 @@ export const validateTourLine = createAsyncThunk(
   },
 );
 
+export const updateTourLine = createAsyncThunk(
+  'tourLine/updateTourLine',
+  async function (data, {getState, dispatch}) {
+    return handlerApiCall({
+      fetchFunction: _updateTourLine,
+      data,
+      action: 'Crm_SliceAction_UpdateTourLine',
+      getState,
+      responseOptions: {isArrayResponse: false},
+    }).then(() => {
+      dispatch(
+        searchTourLine({
+          tourId: data?.tourId,
+          isValidated: data?.isValidated,
+        }),
+      );
+    });
+  },
+);
 const initialState = {
   loadingTourLineList: true,
   moreLoading: false,
