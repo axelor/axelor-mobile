@@ -123,7 +123,7 @@ interface SelectionContainerProps {
   isPicker?: boolean;
   selectedItem?: any[];
   readonly?: boolean;
-  translator?: (key: string, values: Object) => string;
+  translator?: (key: string, values?: Object) => string;
   title?: string;
 }
 
@@ -161,16 +161,14 @@ const SelectionContainer = ({
   );
 
   const renderEmptyState = useCallback(() => {
-    const _title = checkNullString(title)
-      ? translator != null
-        ? translator('Base_Data', null).toLocaleLowerCase()
-        : 'data'
-      : title?.toLowerCase();
+    const _title =
+      (checkNullString(title) ? translator?.('Base_Data') : title) ?? 'data';
+    const lowerTitle = _title.toLowerCase();
 
     const message =
       translator != null
-        ? translator('Base_NoDataPicker', {title: _title})
-        : `No ${_title} available`;
+        ? translator('Base_NoDataPicker', {title: lowerTitle})
+        : `No ${lowerTitle} available.`;
 
     return (
       <View style={[styles.flatListContainer, styles.emptyContainer]}>

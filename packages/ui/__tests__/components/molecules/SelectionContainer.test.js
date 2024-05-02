@@ -61,42 +61,36 @@ describe('SelectionContainer', () => {
       expect(handleSelect).toHaveBeenCalledWith(props.objectList[i]);
     }
   });
-  it('should render empty state message if objectList is empty or null', () => {
-    const translator = (key, values) =>
-      `Aucun(e) ${values.title} disponible(s)`;
 
-    const newPropsEmptyArr = {
-      ...props,
-      objectList: [],
-      title: 'item',
-      translator,
-    };
-    const newPropsNullArr = {
-      ...props,
-      objectList: null,
-      title: 'item',
-      translator,
-    };
-    const newPropsNullTranslator = {
-      ...props,
-      objectList: null,
-      title: 'item',
-      translator: null,
-    };
-    const wrapperEmpty = shallow(<SelectionContainer {...newPropsEmptyArr} />);
-    const wrapperNull = shallow(<SelectionContainer {...newPropsNullArr} />);
+  it('should render empty state message if objectList is empty or null', () => {
+    const translator = (_, values) => `Aucun(e) ${values.title} disponible.`;
+    const title = 'Item';
+    const lowerTitle = 'Item'.toLowerCase();
+
+    const renderProps = {...props, title, objectList: undefined};
+
+    const wrapperEmpty = shallow(
+      <SelectionContainer
+        {...renderProps}
+        objectList={[]}
+        translator={translator}
+      />,
+    );
+    const wrapperNull = shallow(
+      <SelectionContainer {...renderProps} translator={translator} />,
+    );
     const wrapperNullTranslator = shallow(
-      <SelectionContainer {...newPropsNullTranslator} />,
+      <SelectionContainer {...renderProps} />,
     );
 
     expect(wrapperEmpty.find(Text).prop('children')).toBe(
-      translator(null, newPropsEmptyArr),
+      translator(null, {title: lowerTitle}),
     );
     expect(wrapperNull.find(Text).prop('children')).toBe(
-      translator(null, newPropsNullArr),
+      translator(null, {title: lowerTitle}),
     );
     expect(wrapperNullTranslator.find(Text).prop('children')).toBe(
-      `No ${newPropsNullTranslator.title} available`,
+      `No ${lowerTitle} available.`,
     );
   });
 

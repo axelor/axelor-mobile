@@ -45,7 +45,7 @@ interface PickerProps {
   readonly?: boolean;
   required?: boolean;
   isScrollViewContainer?: boolean;
-  translator?: (key: string, values: Object) => string;
+  translator?: (key: string, values?: Object) => string;
 }
 
 const Picker = ({
