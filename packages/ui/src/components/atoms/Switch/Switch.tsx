@@ -18,14 +18,15 @@
 
 import React from 'react';
 import {Switch as RNSwitch} from 'react-native';
-import {useThemeColor} from '../../../theme/ThemeContext';
+import {useThemeColor} from '../../../theme';
 
 interface SwitchProps {
   isEnabled: boolean;
+  readonly?: boolean;
   handleToggle: (any) => void;
 }
 
-const Switch = ({isEnabled, handleToggle}: SwitchProps) => {
+const Switch = ({isEnabled, handleToggle, readonly = false}: SwitchProps) => {
   const Colors = useThemeColor();
 
   const toggleSwitch = () => {
@@ -42,6 +43,7 @@ const Switch = ({isEnabled, handleToggle}: SwitchProps) => {
       ios_backgroundColor={Colors.backgroundColor}
       onValueChange={toggleSwitch}
       value={isEnabled}
+      disabled={readonly}
     />
   );
 };

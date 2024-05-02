@@ -81,9 +81,23 @@ const ExpenseTypeSearchBarAux = ({
   );
 };
 
-const ExpenseTypeSearchBar = ({defaultValue, onChange}) => {
+const ExpenseTypeSearchBar = ({
+  style = null,
+  title = 'Hr_ExpenseType',
+  defaultValue = null,
+  onChange = () => {},
+  required = true,
+  readonly = false,
+}) => {
   return (
-    <ExpenseTypeSearchBarAux defaultValue={defaultValue} onChange={onChange} />
+    <ExpenseTypeSearchBarAux
+      defaultValue={defaultValue}
+      onChange={onChange}
+      style={style}
+      title={title}
+      required={required}
+      readonly={readonly}
+    />
   );
 };
 

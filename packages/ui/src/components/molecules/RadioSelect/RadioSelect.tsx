@@ -26,23 +26,27 @@ interface RadioItem {
   title: string;
 }
 
+interface RadioSelectProps {
+  style?: any;
+  items: RadioItem[];
+  question?: string;
+  radioSize?: number;
+  direction?: 'row' | 'column';
+  readonly?: boolean;
+  onChange: (value: string) => void;
+  defaultValue?: string;
+}
+
 const RadioSelect = ({
   style,
   items,
   question,
   radioSize,
   direction = 'row',
+  readonly = false,
   onChange,
   defaultValue,
-}: {
-  style?: any;
-  items: RadioItem[];
-  question?: string;
-  radioSize?: number;
-  direction: 'row' | 'column';
-  onChange: (value: string) => void;
-  defaultValue?: string;
-}) => {
+}: RadioSelectProps) => {
   const [selectedItem, setSelecteditem] = useState(
     items.find(_i => _i.id === defaultValue),
   );
@@ -67,6 +71,7 @@ const RadioSelect = ({
             selected={selectedItem?.id === item.id}
             title={item.title}
             size={radioSize}
+            readonly={readonly}
           />
         ))}
       </View>
