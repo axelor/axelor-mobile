@@ -47,6 +47,7 @@ interface MultiValuePickerProps {
   disabled?: boolean;
   disabledValue?: string[];
   required?: boolean;
+  translator?: (key: string, values?: Object) => string;
 }
 
 const MultiValuePicker = ({
@@ -60,6 +61,7 @@ const MultiValuePicker = ({
   disabled = false,
   disabledValue = [],
   required = false,
+  translator,
 }: MultiValuePickerProps) => {
   const Colors = useThemeColor();
 
@@ -164,6 +166,8 @@ const MultiValuePicker = ({
               handleSelect={handleValueChange}
               isPicker={true}
               selectedItem={selectedItemList}
+              title={title}
+              translator={translator}
             />
           ) : null}
         </View>

@@ -20,6 +20,7 @@ import React, {useCallback, useMemo} from 'react';
 import {ScrollView, StyleSheet, TouchableOpacity, View} from 'react-native';
 import {Color, ThemeColors, useThemeColor} from '../../../theme';
 import {Icon, Text} from '../../atoms';
+import {checkNullString} from '../../../utils';
 
 interface SelectionItemProps {
   style?: any;
@@ -113,6 +114,8 @@ interface SelectionContainerProps {
   emptyValue?: boolean;
   isPicker?: boolean;
   selectedItem?: any[];
+  translator?: (key: string, values?: Object) => string;
+  title?: string;
 }
 
 const SelectionContainer = ({
@@ -124,14 +127,18 @@ const SelectionContainer = ({
   emptyValue = false,
   isPicker = false,
   selectedItem = [],
+  translator,
+  title,
 }: SelectionContainerProps) => {
   const Colors = useThemeColor();
 
-  const listLength = useMemo(
-    () =>
-      objectList != null && (objectList.length <= 5 ? objectList.length : 5),
-    [objectList],
-  );
+  const listLength = useMemo(() => {
+    if (objectList == null || objectList.length === 0) {
+      return 1;
+    } else {
+      return objectList.length <= 5 ? objectList.length : 5;
+    }
+  }, [objectList]);
 
   const styles = useMemo(
     () => getStyles(Colors, listLength, emptyValue),
@@ -142,6 +149,23 @@ const SelectionContainer = ({
     () => selectedItem?.map(_item => _item?.[keyField]) ?? [],
     [keyField, selectedItem],
   );
+
+  const renderEmptyState = useCallback(() => {
+    const _title =
+      (checkNullString(title) ? translator?.('Base_Data') : title) ?? 'data';
+    const lowerTitle = _title.toLowerCase();
+
+    const message =
+      translator != null
+        ? translator('Base_NoDataPicker', {title: lowerTitle})
+        : `No ${lowerTitle} available.`;
+
+    return (
+      <View style={[styles.flatListContainer, styles.emptyContainer]}>
+        <Text>{message}</Text>
+      </View>
+    );
+  }, [title, styles, translator]);
 
   const renderListItemContainer = useCallback(() => {
     if (!Array.isArray(objectList) || objectList.length === 0) {
@@ -203,7 +227,7 @@ const SelectionContainer = ({
   }, [emptyValue, handleSelect, renderListItemContainer, styles.border]);
 
   if (objectList == null || objectList.length === 0) {
-    return null;
+    return renderEmptyState();
   }
 
   return (
@@ -243,6 +267,10 @@ const getStyles = (
       zIndex: 52,
       width: '104%',
       left: -14,
+    },
+    emptyContainer: {
+      alignItems: 'center',
+      justifyContent: 'center',
     },
   });
 

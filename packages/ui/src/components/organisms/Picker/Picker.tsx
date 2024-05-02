@@ -48,6 +48,7 @@ interface PickerProps {
   iconName?: string;
   required?: boolean;
   isScrollViewContainer?: boolean;
+  translator?: (key: string, values?: Object) => string;
 }
 
 const Picker = ({
@@ -67,6 +68,7 @@ const Picker = ({
   iconName = null,
   required = false,
   isScrollViewContainer = false,
+  translator,
 }: PickerProps) => {
   const [pickerIsOpen, setPickerIsOpen] = useState(false);
   const [isFocused, setIsFocused] = useState(false);
@@ -124,9 +126,12 @@ const Picker = ({
   );
 
   const marginBottom = useMemo(() => {
-    const listLength = listItems?.length ?? 0;
-
     if (isScrollViewContainer && pickerIsOpen) {
+      const listLength =
+        !Array.isArray(listItems) || listItems?.length === 0
+          ? 1
+          : Math.min(listItems.length, 5);
+
       return emptyValue
         ? listLength * ITEM_HEIGHT + ITEM_HEIGHT + 5
         : listLength * ITEM_HEIGHT + 5;
@@ -208,6 +213,8 @@ const Picker = ({
               handleSelect={handleValueChange}
               isPicker={true}
               selectedItem={[selectedItem]}
+              title={title}
+              translator={translator}
             />
           ) : null}
         </View>
