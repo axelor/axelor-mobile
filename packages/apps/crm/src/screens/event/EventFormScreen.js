@@ -32,6 +32,7 @@ const EventFormScreen = ({navigation, route}) => {
   const prospect = route?.params?.prospect;
   const client = route?.params?.client;
   const contact = route?.params?.contact;
+  const tourlineData = route?.params?.tourlineData;
 
   const {user} = useSelector(state => state.user);
 
@@ -100,10 +101,15 @@ const EventFormScreen = ({navigation, route}) => {
 
   const createEventAPI = useCallback(
     (_event, dispatch) => {
-      dispatch(createEvent({event: _event}));
+      dispatch(
+        createEvent({
+          event: _event,
+          tourlineData: tourlineData,
+        }),
+      );
       navigation.pop();
     },
-    [navigation],
+    [navigation, tourlineData],
   );
 
   const updateEventAPI = useCallback(

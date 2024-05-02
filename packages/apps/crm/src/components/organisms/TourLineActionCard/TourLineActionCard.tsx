@@ -16,7 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import React from 'react';
+import React, {useState} from 'react';
 import {StyleSheet, View} from 'react-native';
 import {CardIconButton, useThemeColor} from '@axelor/aos-mobile-ui';
 import {
@@ -25,34 +25,41 @@ import {
   useNavigation,
 } from '@axelor/aos-mobile-core';
 import {validateTourLine} from '../../../features/tourLineSlice';
+import TourLineEventPopup from '../TourLineEventPopup/TourLineEventPopup';
 import {TourLineCard} from '../../molecules';
 
 interface TourLineActionCardProps {
-  name: string;
+  partner: any;
   address: string;
   isValidated: boolean;
   eventId?: number;
   id: number;
   tourId: number;
+  version: number;
+  selectedStatus?: boolean;
 }
 
 const TourLineActionCard = ({
-  name,
+  partner,
   address,
   isValidated = false,
   eventId,
   tourId,
   id,
+  version,
+  selectedStatus,
 }: TourLineActionCardProps) => {
   const Colors = useThemeColor();
   const dispatch = useDispatch();
   const navigation = useNavigation();
 
+  const [addPopupIsVisible, setAddPopupIsVisible] = useState(false);
+
   return (
     <View style={styles.globalContainer}>
       <TourLineCard
         style={styles.objectCardContainer}
-        name={name}
+        name={partner?.fullName}
         address={address}
         isValidated={isValidated}
       />
@@ -63,7 +70,7 @@ const TourLineActionCard = ({
           iconColor={Colors.primaryColor.foreground}
           onPress={() => linkingProvider.openMapApp(address)}
         />
-        {eventId != null && (
+        {eventId != null ? (
           <CardIconButton
             style={styles.flexOne}
             iconName="calendar-event"
@@ -73,6 +80,13 @@ const TourLineActionCard = ({
                 eventId: eventId,
               })
             }
+          />
+        ) : (
+          <CardIconButton
+            style={styles.flexOne}
+            iconName="calendar2-plus"
+            iconColor={Colors.primaryColor.foreground}
+            onPress={() => setAddPopupIsVisible(true)}
           />
         )}
       </View>
@@ -93,6 +107,17 @@ const TourLineActionCard = ({
           />
         </View>
       )}
+      <TourLineEventPopup
+        visible={addPopupIsVisible}
+        partner={partner}
+        onClose={() => setAddPopupIsVisible(false)}
+        tourlineData={{
+          isValidated: selectedStatus,
+          tourLineVersion: version,
+          tourId: tourId,
+          tourLineId: id,
+        }}
+      />
     </View>
   );
 };
