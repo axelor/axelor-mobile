@@ -53,10 +53,9 @@ const SupplierProductInfo = ({}) => {
 
 const styles = StyleSheet.create({
   supplierInfoContainer: {
-    marginVertical: '1%',
-    marginHorizontal: 16,
+    width: '90%',
     flexDirection: 'row',
-    alignItems: 'center',
+    marginVertical: 10,
   },
   supplierInfo: {
     marginLeft: '3%',
