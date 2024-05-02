@@ -24,6 +24,7 @@ import {
   SearchListView,
   useTypeHelpers,
   useDispatch,
+  useNavigation,
 } from '@axelor/aos-mobile-core';
 import {MultiValuePicker, ToggleButton} from '@axelor/aos-mobile-ui';
 import {
@@ -41,6 +42,7 @@ const ProjectListView = ({
 }: ProjectListViewListViewProps) => {
   const I18n = useTranslator();
   const dispatch = useDispatch();
+  const navigation = useNavigation();
   const {getCustomSelectionItems} = useTypeHelpers();
 
   const {userId} = useSelector((state: any) => state.auth);
@@ -97,14 +99,18 @@ const ProjectListView = ({
       }
       renderListItem={({item}) => (
         <ProjectCard
-          onPress={() => {}}
           customer={item.clientPartner}
-          name={item.name}
-          code={item.code}
-          company={item.company?.name}
-          assignedTo={isAssignedToMe ? null : item.assignedTo?.fullName}
           projectStatus={item.projectStatus}
-          parentProject={item.parentProject?.fullName}
+          onPress={() => {
+            navigation.navigate('ProjectDetailsScreen', {
+              projectId: item.id,
+            });
+          }}
+          name={item?.name}
+          code={item?.code}
+          company={item?.company?.name}
+          assignedTo={item?.assignedTo?.fullName}
+          parentProject={item?.parentProject?.fullName}
         />
       )}
     />

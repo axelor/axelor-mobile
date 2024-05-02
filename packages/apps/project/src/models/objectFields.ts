@@ -29,6 +29,7 @@ export const project_modelAPI: ObjectFields = {
         name: schemaContructor.string(),
       }),
     ),
+<<<<<<< HEAD
     company: schemaContructor.subObject('name'),
     assignedTo: schemaContructor.subObject('fullName'),
     parentProject: schemaContructor.subObject('fullName'),
@@ -36,5 +37,11 @@ export const project_modelAPI: ObjectFields = {
   project_projectStatus: schemaContructor.object({
     name: schemaContructor.string(),
     isCompleted: schemaContructor.boolean(),
+=======
+    company: schemaContructor.subObject(),
+    assignedTo: schemaContructor.subObject(),
+    parentProject: schemaContructor.subObject(),
+    isBusinessProject: schemaContructor.boolean(),
+>>>>>>> feat: add GeneralInformationView
   }),
 };

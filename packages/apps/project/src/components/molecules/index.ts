@@ -16,32 +16,4 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import BuisnessProjectScreen from './BuisnessProjectScreen';
-import ProjectDetailsScreen from './ProjectDetailsScreen';
-import ProjectScreen from './ProjectScreen';
-
-export default {
-  BuisnessProjectScreen: {
-    title: 'Project_BuisnessProjects',
-    component: BuisnessProjectScreen,
-    options: {
-      shadedHeader: false,
-    },
-  },
-  ProjectScreen: {
-    title: 'Project_Projects',
-    component: ProjectScreen,
-    options: {
-      shadedHeader: false,
-    },
-  },
-  ProjectDetailsScreen: {
-    title: 'Project_projects',
-    component: ProjectDetailsScreen,
-    options: {
-      shadedHeader: false,
-    },
-  },
-};
-
-export {ProjectScreen};
+export {default as ProjectHeader} from './ProjectHeader/ProjectHeader';
