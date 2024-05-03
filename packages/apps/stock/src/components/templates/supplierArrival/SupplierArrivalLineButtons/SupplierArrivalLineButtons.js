@@ -23,8 +23,8 @@ import {
   useNavigation,
   usePermitted,
   useTranslator,
+  useTypes,
 } from '@axelor/aos-mobile-core';
-import StockMove from '../../../../types/stock-move';
 import {updateSupplierArrivalLine} from '../../../../features/supplierArrivalLineSlice';
 
 const SupplierArrivalLineButtons = ({
@@ -37,6 +37,7 @@ const SupplierArrivalLineButtons = ({
   const I18n = useTranslator();
   const dispatch = useDispatch();
   const navigation = useNavigation();
+  const {StockMove} = useTypes();
   const {readonly} = usePermitted({
     modelName: 'com.axelor.apps.stock.db.StockMoveLine',
   });
@@ -68,7 +69,10 @@ const SupplierArrivalLineButtons = ({
     toStockLocation,
   ]);
 
-  if (!readonly && supplierArrival.statusSelect !== StockMove.status.Realized) {
+  if (
+    !readonly &&
+    supplierArrival.statusSelect !== StockMove?.statusSelect.Realized
+  ) {
     return <Button title={I18n.t('Base_Validate')} onPress={handleValidate} />;
   }
 

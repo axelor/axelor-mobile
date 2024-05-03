@@ -19,14 +19,14 @@
 import React, {useCallback, useMemo} from 'react';
 import {StyleSheet, View} from 'react-native';
 import {
-  useTranslator,
   useDispatch,
   useNavigation,
   useSelector,
   usePermitted,
+  useTranslator,
+  useTypes,
 } from '@axelor/aos-mobile-core';
 import {Button, useThemeColor} from '@axelor/aos-mobile-ui';
-import StockCorrection from '../../../../types/stock-corrrection';
 import {
   createCorrection,
   updateCorrection,
@@ -47,6 +47,7 @@ const StockCorrectionButtons = ({
   const Colors = useThemeColor();
   const navigation = useNavigation();
   const dispatch = useDispatch();
+  const {StockCorrection} = useTypes();
   const {readonly} = usePermitted({
     modelName: 'com.axelor.apps.stock.db.StockCorrection',
   });
@@ -56,12 +57,16 @@ const StockCorrectionButtons = ({
   const isValidateButtonVisible = useMemo(
     () =>
       mobileSettings?.isStockCorrectionValidationEnabled &&
-      status !== StockCorrection.status.Validated,
-    [status, mobileSettings?.isStockCorrectionValidationEnabled],
+      status !== StockCorrection?.statusSelect.Validated,
+    [
+      mobileSettings?.isStockCorrectionValidationEnabled,
+      status,
+      StockCorrection?.statusSelect.Validated,
+    ],
   );
 
   const handleAPI = useCallback(
-    (_status = StockCorrection.status.Draft) => {
+    (_status = StockCorrection?.statusSelect.Draft) => {
       dispatch(
         stockCorrection
           ? updateCorrection({
@@ -90,6 +95,7 @@ const StockCorrectionButtons = ({
       navigation.pop();
     },
     [
+      StockCorrection?.statusSelect.Draft,
       comments,
       dispatch,
       navigation,
@@ -104,13 +110,13 @@ const StockCorrectionButtons = ({
   );
 
   const handleSave = useCallback(
-    () => handleAPI(StockCorrection.status.Draft),
-    [handleAPI],
+    () => handleAPI(StockCorrection?.statusSelect.Draft),
+    [StockCorrection?.statusSelect.Draft, handleAPI],
   );
 
   const handleValidate = useCallback(
-    () => handleAPI(StockCorrection.status.Validated),
-    [handleAPI],
+    () => handleAPI(StockCorrection?.statusSelect.Validated),
+    [StockCorrection?.statusSelect.Validated, handleAPI],
   );
 
   if (reason?.id == null || readonly) {

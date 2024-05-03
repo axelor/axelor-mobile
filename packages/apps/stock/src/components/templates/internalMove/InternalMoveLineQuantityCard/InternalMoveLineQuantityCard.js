@@ -23,9 +23,9 @@ import {
   useNavigation,
   usePermitted,
   useTranslator,
+  useTypes,
 } from '@axelor/aos-mobile-core';
 import {QuantityCard} from '../../../organisms';
-import StockMove from '../../../../types/stock-move';
 
 const InternalMoveLineQuantityCard = ({
   status,
@@ -40,6 +40,7 @@ const InternalMoveLineQuantityCard = ({
   const I18n = useTranslator();
   const navigation = useNavigation();
   const formatNumber = useDigitFormat();
+  const {StockMove} = useTypes();
   const {canCreate} = usePermitted({
     modelName: 'com.axelor.apps.stock.db.StockCorrection',
   });
@@ -63,13 +64,13 @@ const InternalMoveLineQuantityCard = ({
       onValueChange={handleQtyChange}
       editable={
         !readonly &&
-        (status === StockMove.status.Draft ||
-          status === StockMove.status.Planned)
+        (status === StockMove?.statusSelect.Draft ||
+          status === StockMove?.statusSelect.Planned)
       }
       actionQty={
         canCreate &&
-        (status === StockMove.status.Draft ||
-          status === StockMove.status.Planned)
+        (status === StockMove?.statusSelect.Draft ||
+          status === StockMove?.statusSelect.Planned)
       }
       onPressActionQty={handleCreateCorrection}
       isBigButton={true}>

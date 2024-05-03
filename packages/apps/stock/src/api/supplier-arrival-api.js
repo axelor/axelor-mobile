@@ -21,8 +21,10 @@ import {
   createStandardFetch,
   createStandardSearch,
   getSearchCriterias,
+  getTypes,
 } from '@axelor/aos-mobile-core';
-import StockMove from '../types/stock-move';
+
+const StockMove = getTypes().StockMove;
 
 const createSearchCriteria = (
   searchValue,
@@ -39,7 +41,7 @@ const createSearchCriteria = (
     {
       fieldName: 'typeSelect',
       operator: '=',
-      value: StockMove.type.incoming,
+      value: StockMove?.typeSelect.incoming,
     },
     {
       operator: 'OR',
@@ -47,12 +49,12 @@ const createSearchCriteria = (
         {
           fieldName: 'statusSelect',
           operator: '=',
-          value: StockMove.status.Planned,
+          value: StockMove?.statusSelect.Planned,
         },
         {
           fieldName: 'statusSelect',
           operator: '=',
-          value: StockMove.status.Realized,
+          value: StockMove?.statusSelect.Realized,
         },
       ],
     },
@@ -125,7 +127,7 @@ export async function addLineStockMove({
   trackingNumberId,
   expectedQty,
   realQty,
-  conformity = StockMove.conformity.None,
+  conformity = StockMove?.conformitySelect.None,
   version,
   toStockLocationId,
 }) {

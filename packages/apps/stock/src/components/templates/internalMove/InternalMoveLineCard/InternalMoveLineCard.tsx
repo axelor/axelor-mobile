@@ -26,8 +26,12 @@ import {
   useDigitFormat,
   useThemeColor,
 } from '@axelor/aos-mobile-ui';
-import {useSelector, useTranslator} from '@axelor/aos-mobile-core';
-import StockMove from '../../../../types/stock-move';
+import {
+  useSelector,
+  useTranslator,
+  useTypeHelpers,
+  useTypes,
+} from '@axelor/aos-mobile-core';
 
 interface InternalMoveLineCardProps {
   style?: any;
@@ -45,7 +49,7 @@ interface InternalMoveLineCardProps {
 
 const InternalMoveLineCard = ({
   style,
-  internalMoveStatus = StockMove.status.Planned,
+  internalMoveStatus,
   productName,
   availability,
   trackingNumber,
@@ -59,6 +63,8 @@ const InternalMoveLineCard = ({
   const Colors = useThemeColor();
   const I18n = useTranslator();
   const formatNumber = useDigitFormat();
+  const {StockMove} = useTypes();
+  const {getItemColor, getItemTitle} = useTypeHelpers();
 
   const {stock: stockConfig} = useSelector((state: any) => state.appConfig);
 
@@ -77,6 +83,11 @@ const InternalMoveLineCard = ({
   const borderStyle = useMemo(() => {
     return getStyles(borderColor)?.border;
   }, [borderColor]);
+
+  const _internalMoveStatus = useMemo(
+    () => internalMoveStatus ?? StockMove?.statusSelect.Planned,
+    [StockMove?.statusSelect.Planned, internalMoveStatus],
+  );
 
   return (
     <ObjectCard
@@ -121,13 +132,19 @@ const InternalMoveLineCard = ({
       sideBadges={
         availability == null ||
         availability === 0 ||
-        internalMoveStatus === StockMove.status.Realized
+        _internalMoveStatus === StockMove?.statusSelect.Realized
           ? null
           : {
               items: [
                 {
-                  displayText: StockMove.getAvailability(availability, I18n),
-                  color: StockMove.getAvailabilityColor(availability, Colors),
+                  displayText: getItemTitle(
+                    StockMove?.availabilityStatusSelect,
+                    availability,
+                  ),
+                  color: getItemColor(
+                    StockMove?.availabilityStatusSelect,
+                    availability,
+                  ),
                 },
               ],
             }

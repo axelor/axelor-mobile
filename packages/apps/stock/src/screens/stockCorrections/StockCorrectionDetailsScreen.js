@@ -23,7 +23,12 @@ import {
   Screen,
   KeyboardAvoidingScrollView,
 } from '@axelor/aos-mobile-ui';
-import {useDispatch, usePermitted, useSelector} from '@axelor/aos-mobile-core';
+import {
+  useDispatch,
+  usePermitted,
+  useSelector,
+  useTypes,
+} from '@axelor/aos-mobile-core';
 import {
   StockCorrectionHeader,
   StockCorrectionButtons,
@@ -34,12 +39,12 @@ import {
 } from '../../components';
 import {fetchProductWithId} from '../../features/productSlice';
 import {fetchProductIndicators} from '../../features/productIndicatorsSlice';
-import StockCorrection from '../../types/stock-corrrection';
 import {fetchStockCorrection} from '../../features/stockCorrectionSlice';
 
 const StockCorrectionDetailsScreen = ({route}) => {
   const stockCorrectionId = route.params.stockCorrectionId;
   const dispatch = useDispatch();
+  const {StockCorrection} = useTypes();
   const {readonly} = usePermitted({
     modelName: 'com.axelor.apps.stock.db.StockCorrection',
   });
@@ -57,12 +62,18 @@ const StockCorrectionDetailsScreen = ({route}) => {
   const [reason, setReason] = useState();
 
   const databaseQty = useMemo(() => {
-    if (stockCorrection?.statusSelect === StockCorrection.status.Validated) {
+    if (
+      stockCorrection?.statusSelect === StockCorrection?.statusSelect.Validated
+    ) {
       return stockCorrection?.baseQty;
     }
 
     return productIndicators?.realQty;
-  }, [productIndicators?.realQty, stockCorrection]);
+  }, [
+    StockCorrection?.statusSelect.Validated,
+    productIndicators?.realQty,
+    stockCorrection,
+  ]);
 
   const getStockCorrection = useCallback(() => {
     dispatch(fetchStockCorrection({id: stockCorrectionId}));

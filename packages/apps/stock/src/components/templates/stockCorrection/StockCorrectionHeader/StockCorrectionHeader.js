@@ -18,13 +18,12 @@
 
 import React from 'react';
 import {View, StyleSheet} from 'react-native';
-import {useTranslator} from '@axelor/aos-mobile-core';
-import {Text, Badge, useThemeColor} from '@axelor/aos-mobile-ui';
-import StockCorrection from '../../../../types/stock-corrrection';
+import {useTypeHelpers, useTypes} from '@axelor/aos-mobile-core';
+import {Text, Badge} from '@axelor/aos-mobile-ui';
 
 const StockCorrectionHeader = ({stockLocation, status}) => {
-  const I18n = useTranslator();
-  const Colors = useThemeColor();
+  const {StockCorrection} = useTypes();
+  const {getItemColor, getItemTitle} = useTypeHelpers();
 
   return (
     <View style={styles.content}>
@@ -33,8 +32,8 @@ const StockCorrectionHeader = ({stockLocation, status}) => {
       </View>
       {status && (
         <Badge
-          color={StockCorrection.getStatusColor(status, Colors)}
-          title={StockCorrection.getStatus(status, I18n)}
+          color={getItemColor(StockCorrection?.statusSelect, status)}
+          title={getItemTitle(StockCorrection?.statusSelect, status)}
         />
       )}
     </View>

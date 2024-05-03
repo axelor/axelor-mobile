@@ -21,20 +21,22 @@ import {
   createStandardFetch,
   createStandardSearch,
   getSearchCriterias,
+  getTypes,
 } from '@axelor/aos-mobile-core';
-import Inventory from '../types/inventory';
+
+const Inventory = getTypes().Inventory;
 
 const createSearchCriteria = (searchValue, stockLocationId, statusList) => {
   const criteria = [
     {
       fieldName: 'statusSelect',
       operator: '!=',
-      value: Inventory.status.Draft,
+      value: Inventory?.statusSelect.Draft,
     },
     {
       fieldName: 'statusSelect',
       operator: '!=',
-      value: Inventory.status.Canceled,
+      value: Inventory?.statusSelect.Canceled,
     },
     getSearchCriterias('stock_inventory', searchValue),
   ];

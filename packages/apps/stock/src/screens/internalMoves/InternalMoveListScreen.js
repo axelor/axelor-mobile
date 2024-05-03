@@ -17,16 +17,18 @@
  */
 
 import React, {useMemo, useState} from 'react';
-import {ChipSelect, Screen, useThemeColor} from '@axelor/aos-mobile-ui';
+import {ChipSelect, Screen} from '@axelor/aos-mobile-ui';
 import {
   SearchListView,
   useSelector,
   useTranslator,
+  useTypeHelpers,
+  useTypes,
 } from '@axelor/aos-mobile-core';
 import {InternalMoveCard, StockLocationSearchBar} from '../../components';
 import {searchInternalMoves} from '../../features/internalMoveSlice';
 import {displayStockMoveSeq} from '../../utils/displayers';
-import StockMove from '../../types/stock-move';
+import {default as StockMoveType} from '../../types/stock-move';
 
 const stockOriginalLocationScanKey =
   'stock-original-location_internal-move-list';
@@ -34,8 +36,9 @@ const stockDestinationLocationScanKey =
   'stock-destination-location_internal-move-list';
 
 const InternalMoveListScreen = ({navigation}) => {
-  const Colors = useThemeColor();
   const I18n = useTranslator();
+  const {StockMove} = useTypes();
+  const {getSelectionItems} = useTypeHelpers();
 
   const {loadingInternalMoveList, moreLoading, isListEnd, internalMoveList} =
     useSelector(state => state.internalMove);
@@ -54,6 +57,18 @@ const InternalMoveListScreen = ({navigation}) => {
       });
     }
   };
+
+  const statusList = useMemo(() => {
+    const statusToDisplay = [
+      StockMove?.statusSelect.Draft,
+      StockMove?.statusSelect.Planned,
+      StockMove?.statusSelect.Realized,
+    ];
+
+    return getSelectionItems(StockMove?.statusSelect, selectedStatus).filter(
+      status => statusToDisplay.includes(status.value),
+    );
+  }, [StockMove?.statusSelect, getSelectionItems, selectedStatus]);
 
   const sliceFunctionData = useMemo(
     () => ({
@@ -80,30 +95,8 @@ const InternalMoveListScreen = ({navigation}) => {
         chipComponent={
           <ChipSelect
             mode="switch"
-            onChangeValue={chiplist => setSelectedStatus(chiplist)}
-            selectionItems={[
-              {
-                title: I18n.t('Stock_Status_Draft'),
-                color: StockMove.getStatusColor(StockMove.status.Draft, Colors),
-                key: StockMove.status.Draft,
-              },
-              {
-                title: I18n.t('Stock_Status_Planned'),
-                color: StockMove.getStatusColor(
-                  StockMove.status.Planned,
-                  Colors,
-                ),
-                key: StockMove.status.Planned,
-              },
-              {
-                title: I18n.t('Stock_Status_Realized'),
-                color: StockMove.getStatusColor(
-                  StockMove.status.Realized,
-                  Colors,
-                ),
-                key: StockMove.status.Realized,
-              },
-            ]}
+            onChangeValue={setSelectedStatus}
+            selectionItems={statusList}
           />
         }
         headerChildren={
@@ -131,7 +124,7 @@ const InternalMoveListScreen = ({navigation}) => {
             fromStockLocation={item.fromStockLocation.name}
             toStockLocation={item.toStockLocation.name}
             origin={item.origin}
-            date={StockMove.getStockMoveDate(item.statusSelect, item)}
+            date={StockMoveType.getStockMoveDate(item.statusSelect, item)}
             onPress={() => showInternalMoveDetails(item)}
           />
         )}

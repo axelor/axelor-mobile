@@ -29,6 +29,8 @@ import {
   usePermitted,
   useSelector,
   useTranslator,
+  useTypeHelpers,
+  useTypes,
 } from '@axelor/aos-mobile-core';
 import {
   StockMoveHeader,
@@ -41,7 +43,7 @@ import {
 import {fetchProductWithId} from '../../features/productSlice';
 import {fetchProductForSupplier} from '../../features/supplierCatalogSlice';
 import {fetchSupplierArrivalLine} from '../../features/supplierArrivalLineSlice';
-import {StockMove, StockMoveLine} from '../../types';
+import {StockMove as StockMoveType, StockMoveLine} from '../../types';
 
 const stockLocationScanKey = 'to-stock-location_supplier-arrival-line-update';
 
@@ -49,6 +51,8 @@ const SupplierArrivalLineDetailScreen = ({route, navigation}) => {
   const {supplierArrival, supplierArrivalLineId, productId} = route.params;
   const I18n = useTranslator();
   const dispatch = useDispatch();
+  const {StockMove} = useTypes();
+  const {getSelectionItems, getItemTitle} = useTypeHelpers();
   const {readonly} = usePermitted({
     modelName: 'com.axelor.apps.stock.db.StockMoveLine',
   });
@@ -67,8 +71,11 @@ const SupplierArrivalLineDetailScreen = ({route, navigation}) => {
   const [toStockLocation, setToStockLocation] = useState(null);
   const [realQty, setRealQty] = useState(0);
   const [conformity, setConformity] = useState({
-    name: StockMove.getConformity(StockMove.conformity.None, I18n),
-    id: StockMove.conformity.None,
+    title: getItemTitle(
+      StockMove?.conformitySelect,
+      StockMove?.conformitySelect.None,
+    ),
+    value: StockMove?.conformitySelect.None,
   });
 
   useEffect(() => {
@@ -78,17 +85,24 @@ const SupplierArrivalLineDetailScreen = ({route, navigation}) => {
         : supplierArrivalLine?.realQty || 0,
     );
     setConformity({
-      name: StockMove.getConformity(
-        supplierArrivalLine?.conformitySelect ?? StockMove.conformity.None,
-        I18n,
+      title: getItemTitle(
+        StockMove?.conformitySelect,
+        supplierArrivalLine?.conformitySelect ??
+          StockMove?.conformitySelect.None,
       ),
-      id:
+      value:
         supplierArrivalLine != null
           ? supplierArrivalLine.conformitySelect
-          : StockMove.conformity.None,
+          : StockMove?.conformitySelect.None,
     });
     setToStockLocation(supplierArrivalLine?.toStockLocation);
-  }, [supplierArrivalLine, I18n, supplierArrival]);
+  }, [
+    supplierArrivalLine,
+    I18n,
+    supplierArrival,
+    getItemTitle,
+    StockMove?.conformitySelect,
+  ]);
 
   useEffect(() => {
     dispatch(fetchProductWithId(supplierArrivalLine.product?.id ?? productId));
@@ -115,11 +129,17 @@ const SupplierArrivalLineDetailScreen = ({route, navigation}) => {
   const handleConformityChange = item => {
     if (item === null) {
       setConformity({
-        name: StockMove.getConformity(StockMove.conformity.None, I18n),
-        id: StockMove.conformity.None,
+        title: getItemTitle(
+          StockMove?.conformitySelect,
+          StockMove?.conformitySelect.None,
+        ),
+        value: StockMove?.conformitySelect.None,
       });
     } else {
-      setConformity({name: StockMove.getConformity(item, I18n), id: item});
+      setConformity({
+        title: getItemTitle(StockMove?.conformitySelect, item),
+        value: item,
+      });
     }
   };
 
@@ -128,6 +148,17 @@ const SupplierArrivalLineDetailScreen = ({route, navigation}) => {
       product: product,
     });
   };
+
+  const conformityList = useMemo(() => {
+    const conformityToDisplay = [
+      StockMove?.conformitySelect.Compliant,
+      StockMove?.conformitySelect.Non_Compliant,
+    ];
+
+    return getSelectionItems(StockMove?.conformitySelect).filter(_conformity =>
+      conformityToDisplay.includes(_conformity.value),
+    );
+  }, [StockMove?.conformitySelect, getSelectionItems]);
 
   return (
     <Screen
@@ -148,7 +179,7 @@ const SupplierArrivalLineDetailScreen = ({route, navigation}) => {
             reference={supplierArrival.stockMoveSeq}
             status={supplierArrival.statusSelect}
             lineRef={supplierArrivalLine?.name}
-            date={StockMove.getStockMoveDate(
+            date={StockMoveType.getStockMoveDate(
               supplierArrival.statusSelect,
               supplierArrival,
             )}
@@ -186,7 +217,7 @@ const SupplierArrivalLineDetailScreen = ({route, navigation}) => {
             defaultStockLocation={supplierArrival.toStockLocation}
             readOnly={
               readonly ||
-              supplierArrival?.statusSelect !== StockMove.status.Planned
+              supplierArrival?.statusSelect !== StockMove?.statusSelect.Planned
             }
           />
         ) : null}
@@ -194,12 +225,12 @@ const SupplierArrivalLineDetailScreen = ({route, navigation}) => {
           title={I18n.t('Stock_Conformity')}
           onValueChange={item => handleConformityChange(item)}
           defaultValue={conformity?.id}
-          listItems={StockMove.getConformitySelection(I18n)}
-          labelField="name"
-          valueField="id"
+          listItems={conformityList}
+          labelField="title"
+          valueField="value"
           readonly={
             readonly ||
-            supplierArrival?.statusSelect === StockMove.status.Realized
+            supplierArrival?.statusSelect === StockMove?.statusSelect.Realized
           }
           isScrollViewContainer={true}
         />

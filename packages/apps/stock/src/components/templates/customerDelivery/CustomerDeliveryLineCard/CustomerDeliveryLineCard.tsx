@@ -24,8 +24,12 @@ import {
   useDigitFormat,
   useThemeColor,
 } from '@axelor/aos-mobile-ui';
-import {useSelector, useTranslator} from '@axelor/aos-mobile-core';
-import StockMove from '../../../../types/stock-move';
+import {
+  useSelector,
+  useTranslator,
+  useTypeHelpers,
+  useTypes,
+} from '@axelor/aos-mobile-core';
 import {Dimensions} from 'react-native';
 
 interface CustomerDeliveryLineCardProps {
@@ -54,6 +58,8 @@ const CustomerDeliveryLineCard = ({
   const Colors = useThemeColor();
   const I18n = useTranslator();
   const formatNumber = useDigitFormat();
+  const {StockMove} = useTypes();
+  const {getItemColor, getItemTitle} = useTypeHelpers();
 
   const {stock: stockConfig} = useSelector((state: any) => state.appConfig);
 
@@ -117,8 +123,14 @@ const CustomerDeliveryLineCard = ({
           : {
               items: [
                 {
-                  displayText: StockMove.getAvailability(availability, I18n),
-                  color: StockMove.getAvailabilityColor(availability, Colors),
+                  displayText: getItemTitle(
+                    StockMove?.availabilityStatusSelect,
+                    availability,
+                  ),
+                  color: getItemColor(
+                    StockMove?.availabilityStatusSelect,
+                    availability,
+                  ),
                 },
               ],
             }

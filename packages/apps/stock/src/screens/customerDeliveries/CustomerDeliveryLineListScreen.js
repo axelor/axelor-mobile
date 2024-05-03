@@ -22,10 +22,11 @@ import {
   SearchListView,
   useSelector,
   useTranslator,
+  useTypes,
 } from '@axelor/aos-mobile-core';
 import {CustomerDeliveryLineCard, StockMoveHeader} from '../../components';
 import {fetchCustomerDeliveryLines} from '../../features/customerDeliveryLineSlice';
-import {StockMove, StockMoveLine} from '../../types';
+import {StockMove as StockMoveType, StockMoveLine} from '../../types';
 import {showLine} from '../../utils/line-navigation';
 import {useCustomerLinesWithRacks} from '../../hooks';
 import {displayLine} from '../../utils/displayers';
@@ -36,6 +37,7 @@ const CustomerDeliveryLineListScreen = ({route, navigation}) => {
   const customerDelivery = route.params.customerDelivery;
   const Colors = useThemeColor();
   const I18n = useTranslator();
+  const {StockMove} = useTypes();
 
   const {mobileSettings} = useSelector(state => state.appConfig);
   const {customerDeliveryLineList} =
@@ -118,7 +120,7 @@ const CustomerDeliveryLineListScreen = ({route, navigation}) => {
             status={customerDelivery.statusSelect}
             date={
               customerDelivery
-                ? StockMove.getStockMoveDate(
+                ? StockMoveType.getStockMoveDate(
                     customerDelivery.statusSelect,
                     customerDelivery,
                   )
@@ -150,7 +152,7 @@ const CustomerDeliveryLineListScreen = ({route, navigation}) => {
             trackingNumber={item?.trackingNumber}
             locker={item.locker}
             availability={
-              customerDelivery.statusSelect === StockMove.status.Realized
+              customerDelivery.statusSelect === StockMove?.statusSelect.Realized
                 ? null
                 : item.availableStatusSelect
             }

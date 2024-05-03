@@ -18,9 +18,13 @@
 
 import React, {useMemo} from 'react';
 import {StyleSheet} from 'react-native';
-import {ObjectCard, useThemeColor} from '@axelor/aos-mobile-ui';
-import {formatDate, useTranslator} from '@axelor/aos-mobile-core';
-import StockMove from '../../../../types/stock-move';
+import {ObjectCard} from '@axelor/aos-mobile-ui';
+import {
+  formatDate,
+  useTranslator,
+  useTypeHelpers,
+  useTypes,
+} from '@axelor/aos-mobile-core';
 
 interface SupplierArrivalCardProps {
   style?: any;
@@ -41,13 +45,14 @@ const SupplierArrivalCard = ({
   date,
   onPress,
 }: SupplierArrivalCardProps) => {
-  const Colors = useThemeColor();
   const I18n = useTranslator();
+  const {StockMove} = useTypes();
+  const {getItemColor} = useTypeHelpers();
 
   const borderStyle = useMemo(() => {
-    return getStyles(StockMove.getStatusColor(status, Colors).background)
+    return getStyles(getItemColor(StockMove?.statusSelect, status).background)
       ?.border;
-  }, [Colors, status]);
+  }, [StockMove?.statusSelect, getItemColor, status]);
 
   const _formatDate = useMemo(() => {
     if (date == null) {
@@ -55,12 +60,12 @@ const SupplierArrivalCard = ({
     }
     const _date = formatDate(date, I18n.t('Base_DateFormat'));
 
-    if (status === StockMove.status.Planned) {
+    if (status === StockMove?.statusSelect.Planned) {
       return `${I18n.t('Base_PlannedFor')} ${_date}`;
     }
 
     return `${I18n.t('Base_RealizedOn')} ${_date}`;
-  }, [I18n, date, status]);
+  }, [I18n, StockMove?.statusSelect, date, status]);
 
   return (
     <ObjectCard
@@ -82,7 +87,9 @@ const SupplierArrivalCard = ({
             hideIfNull: true,
             style: [
               styles.noBold,
-              status === StockMove.status.Planned ? styles.creationDate : null,
+              status === StockMove?.statusSelect.Planned
+                ? styles.creationDate
+                : null,
             ],
           },
         ],

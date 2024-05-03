@@ -24,8 +24,12 @@ import {
   useThemeColor,
   useDigitFormat,
 } from '@axelor/aos-mobile-ui';
-import {isEmpty, useSelector, useTranslator} from '@axelor/aos-mobile-core';
-import StockMove from '../../../../types/stock-move';
+import {
+  isEmpty,
+  useSelector,
+  useTranslator,
+  useTypes,
+} from '@axelor/aos-mobile-core';
 import {QuantityCard} from '../../../organisms';
 
 const SupplierArrivalLineQuantityCard = ({
@@ -38,6 +42,7 @@ const SupplierArrivalLineQuantityCard = ({
   const I18n = useTranslator();
   const Colors = useThemeColor();
   const formatNumber = useDigitFormat();
+  const {StockMove} = useTypes();
 
   const {productFromId: product} = useSelector((state: any) => state.product);
 
@@ -69,7 +74,8 @@ const SupplierArrivalLineQuantityCard = ({
       defaultValue={realQty}
       onValueChange={handleQtyChange}
       editable={
-        !readonly && supplierArrival.statusSelect !== StockMove.status.Realized
+        !readonly &&
+        supplierArrival.statusSelect !== StockMove?.statusSelect.Realized
       }
       isBigButton={true}>
       <View style={styles.headerQuantityCard}>

@@ -16,7 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import React, {useCallback, useState} from 'react';
+import React, {useCallback, useMemo, useState} from 'react';
 import {View, StyleSheet} from 'react-native';
 import {
   HeaderContainer,
@@ -24,7 +24,13 @@ import {
   Picker,
   Screen,
 } from '@axelor/aos-mobile-ui';
-import {useDispatch, useSelector, useTranslator} from '@axelor/aos-mobile-core';
+import {
+  useDispatch,
+  useSelector,
+  useTranslator,
+  useTypeHelpers,
+  useTypes,
+} from '@axelor/aos-mobile-core';
 import {
   ProductCardInfo,
   ProductTrackingNumberSearchBar,
@@ -34,7 +40,7 @@ import {
   SupplierArrivalLineQuantityCard,
   SupplierProductInfo,
 } from '../../components';
-import StockMove from '../../types/stock-move';
+import {default as StockMoveType} from '../../types/stock-move';
 import {fetchProductWithId} from '../../features/productSlice';
 import {fetchProductForSupplier} from '../../features/supplierCatalogSlice';
 
@@ -51,6 +57,8 @@ const SupplierArrivalLineCreationScreen = ({route, navigation}) => {
   const {supplierArrival} = route.params;
   const I18n = useTranslator();
   const dispatch = useDispatch();
+  const {StockMove} = useTypes();
+  const {getSelectionItems, getItemTitle} = useTypeHelpers();
 
   const {productFromId: product} = useSelector(state => state.product);
   const {stock: stockConfig} = useSelector(state => state.appConfig);
@@ -62,8 +70,11 @@ const SupplierArrivalLineCreationScreen = ({route, navigation}) => {
     supplierArrival.toStockLocation,
   );
   const [conformity, setConformity] = useState({
-    name: StockMove.getConformity(StockMove.conformity.None, I18n),
-    id: StockMove.conformity.None,
+    title: getItemTitle(
+      StockMove?.conformitySelect,
+      StockMove?.conformitySelect.None,
+    ),
+    value: StockMove?.conformitySelect.None,
   });
   const [currentStep, setCurrentStep] = useState(
     CREATION_STEP.product_trackingNumber,
@@ -105,11 +116,17 @@ const SupplierArrivalLineCreationScreen = ({route, navigation}) => {
   const handleConformityChange = item => {
     if (item === null) {
       setConformity({
-        name: StockMove.getConformity(StockMove.conformity.None, I18n),
-        id: StockMove.conformity.None,
+        title: getItemTitle(
+          StockMove?.conformitySelect,
+          StockMove?.conformitySelect.None,
+        ),
+        value: StockMove?.conformitySelect.None,
       });
     } else {
-      setConformity({name: StockMove.getConformity(item, I18n), id: item});
+      setConformity({
+        title: getItemTitle(StockMove?.conformitySelect, item),
+        value: item,
+      });
     }
   };
 
@@ -152,6 +169,17 @@ const SupplierArrivalLineCreationScreen = ({route, navigation}) => {
     });
   };
 
+  const conformityList = useMemo(() => {
+    const conformityToDisplay = [
+      StockMove?.conformitySelect.Compliant,
+      StockMove?.conformitySelect.Non_Compliant,
+    ];
+
+    return getSelectionItems(StockMove?.conformitySelect).filter(_conformity =>
+      conformityToDisplay.includes(_conformity.value),
+    );
+  }, [StockMove?.conformitySelect, getSelectionItems]);
+
   return (
     <Screen
       removeSpaceOnTop={true}
@@ -172,7 +200,7 @@ const SupplierArrivalLineCreationScreen = ({route, navigation}) => {
           <StockMoveHeader
             reference={supplierArrival.stockMoveSeq}
             status={supplierArrival.statusSelect}
-            date={StockMove.getStockMoveDate(
+            date={StockMoveType.getStockMoveDate(
               supplierArrival.statusSelect,
               supplierArrival,
             )}
@@ -219,11 +247,12 @@ const SupplierArrivalLineCreationScreen = ({route, navigation}) => {
                 title={I18n.t('Stock_Conformity')}
                 onValueChange={item => handleConformityChange(item)}
                 defaultValue={conformity?.id}
-                listItems={StockMove.getConformitySelection(I18n)}
-                labelField="name"
-                valueField="id"
+                listItems={conformityList}
+                labelField="title"
+                valueField="value"
                 readonly={
-                  supplierArrival?.statusSelect === StockMove.status.Realized
+                  supplierArrival?.statusSelect ===
+                  StockMove?.statusSelect.Realized
                 }
                 isScrollViewContainer={true}
               />

@@ -18,9 +18,13 @@
 
 import React, {useMemo} from 'react';
 import {StyleSheet, View} from 'react-native';
-import {Badge, LabelText, Text, useThemeColor} from '@axelor/aos-mobile-ui';
-import {formatDate, useTranslator} from '@axelor/aos-mobile-core';
-import Inventory from '../../../../types/inventory';
+import {Badge, LabelText, Text} from '@axelor/aos-mobile-ui';
+import {
+  formatDate,
+  useTranslator,
+  useTypeHelpers,
+  useTypes,
+} from '@axelor/aos-mobile-core';
 
 interface InventoryHeaderProps {
   reference: string;
@@ -35,8 +39,9 @@ const InventoryHeader = ({
   date,
   stockLocation,
 }: InventoryHeaderProps) => {
-  const Colors = useThemeColor();
   const I18n = useTranslator();
+  const {Inventory} = useTypes();
+  const {getItemColor, getItemTitle} = useTypeHelpers();
 
   const _formatDate = useMemo(() => {
     if (date == null) {
@@ -56,8 +61,8 @@ const InventoryHeader = ({
       </View>
       <View style={styles.badgeContainer}>
         <Badge
-          color={Inventory.getStatusColor(status, Colors)}
-          title={Inventory.getStatus(status, I18n)}
+          color={getItemColor(Inventory?.statusSelect, status)}
+          title={getItemTitle(Inventory?.statusSelect, status)}
         />
       </View>
     </View>

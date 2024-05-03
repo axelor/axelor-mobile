@@ -22,15 +22,16 @@ import {
   useNavigation,
   usePermitted,
   useTranslator,
+  useTypes,
 } from '@axelor/aos-mobile-core';
 import {Button} from '@axelor/aos-mobile-ui';
-import StockMove from '../../../../types/stock-move';
 import {realizeCustomerDelivery} from '../../../../features/customerDeliverySlice';
 
 const CustomerDeliveryRealizeButton = ({customerDelivery}) => {
   const I18n = useTranslator();
   const dispatch = useDispatch();
   const navigation = useNavigation();
+  const {StockMove} = useTypes();
   const {readonly} = usePermitted({
     modelName: 'com.axelor.apps.stock.db.StockMove',
   });
@@ -47,7 +48,7 @@ const CustomerDeliveryRealizeButton = ({customerDelivery}) => {
 
   if (
     !readonly &&
-    customerDelivery.statusSelect !== StockMove.status.Realized
+    customerDelivery.statusSelect !== StockMove?.statusSelect.Realized
   ) {
     return <Button onPress={handleRealize} title={I18n.t('Base_Realize')} />;
   }
