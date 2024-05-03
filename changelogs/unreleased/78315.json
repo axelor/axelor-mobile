@@ -1,5 +1,0 @@
-{
-  "title": "Expense line form: add missing readonly & required parameters on components",
-  "type": "fix",
-  "packages": "hr"
-}

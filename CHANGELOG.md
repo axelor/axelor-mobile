@@ -3,6 +3,43 @@ title: 7.2.0
 tags: Changelog
 ---
 
+## [7.2.10] (2024-05-03)
+
+### @axelor/aos-mobile-core
+
+#### Fixes
+
+- PasswordInput: reverse password icon order
+
+### @axelor/aos-mobile-ui
+
+#### Fixes
+
+- Picker: add indicator when no data
+- RadioSelect: add readonly parameter with default value to false
+- Switch: add readonly parameter with default value to false
+
+### @axelor/aos-mobile-hr
+
+#### Fixes
+
+- Expense line form: add missing readonly & required parameters on components
+- Config: access mobile settings from store
+
+### @axelor/aos-mobile-crm
+
+#### Fixes
+
+- Opportunity details screen: modify the width of the informations dropdown
+
+### @axelor/aos-mobile-stock
+
+#### Fixes
+
+- Supplier arrival: adjust style of supplier catalog
+- Customer Delivery: restore navigation on search lines view
+- Config: access mobile settings from store
+
 ## [7.2.9] (2024-04-24)
 
 ### @axelor/aos-mobile-core
@@ -436,6 +473,7 @@ It enables user to manage Expenses through the mobile application. You can creat
 - Remove IconButton component which should be replaced by Button component.
 - Remove Pop-up components which should be replaced by Alert component.
 
+[7.2.10]: https://github.com/axelor/axelor-mobile/compare/7.2.9...7.2.10
 [7.2.9]: https://github.com/axelor/axelor-mobile/compare/7.2.8...7.2.9
 [7.2.8]: https://github.com/axelor/axelor-mobile/compare/7.2.7...7.2.8
 [7.2.7]: https://github.com/axelor/axelor-mobile/compare/7.2.6...7.2.7

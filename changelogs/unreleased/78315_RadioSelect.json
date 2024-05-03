@@ -1,5 +1,0 @@
-{
-  "title": "RadioSelect: add readonly parameter with default value to false",
-  "type": "fix",
-  "packages": "ui"
-}
