@@ -3,6 +3,40 @@ title: 7.1.0
 tags: Changelog
 ---
 
+## [7.1.11] (2024-05-03)
+
+### @axelor/aos-mobile-core
+
+#### Fixes
+
+- PasswordInput: reverse password icon order
+
+### @axelor/aos-mobile-ui
+
+#### Fixes
+
+- Picker: add indicator when no data
+
+### @axelor/aos-mobile-hr
+
+#### Fixes
+
+- Config: access mobile settings from store
+
+### @axelor/aos-mobile-crm
+
+#### Fixes
+
+- Opportunity details screen: modify the width of the informations dropdown
+
+### @axelor/aos-mobile-stock
+
+#### Fixes
+
+- Supplier arrival: adjust style of supplier catalog
+- Customer Delivery: restore navigation on search lines view
+- Config: access mobile settings from store
+
 ## [7.1.10] (2024-04-24)
 
 ### @axelor/aos-mobile-core
@@ -433,6 +467,7 @@ This update breaks the compatability with AOS Stock module under version 7.1 due
 - Add number decimal digit config management system
 - Manage multilines input with auto height resize on FormInput
 
+[7.1.11]: https://github.com/axelor/axelor-mobile/compare/7.1.10...7.1.11
 [7.1.10]: https://github.com/axelor/axelor-mobile/compare/7.1.9...7.1.10
 [7.1.9]: https://github.com/axelor/axelor-mobile/compare/7.1.8...7.1.9
 [7.1.8]: https://github.com/axelor/axelor-mobile/compare/7.1.7...7.1.8

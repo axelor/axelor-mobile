@@ -1,5 +1,0 @@
-{
-  "title": "Config: access mobile settings from store",
-  "type": "fix",
-  "packages": ["stock", "hr"]
-}
