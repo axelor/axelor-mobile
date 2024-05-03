@@ -3,6 +3,40 @@ title: 7.0.0
 tags: Changelog
 ---
 
+## [7.0.14] (2024-05-03)
+
+### @axelor/aos-mobile-core
+
+#### Fixes
+
+- PasswordInput: reverse password icon order
+
+### @axelor/aos-mobile-ui
+
+#### Fixes
+
+- Picker: add indicator when no data
+
+### @axelor/aos-mobile-hr
+
+#### Fixes
+
+- Config: access mobile settings from store
+
+### @axelor/aos-mobile-crm
+
+#### Fixes
+
+- Opportunity details screen: modify the width of the informations dropdown
+
+### @axelor/aos-mobile-stock
+
+#### Fixes
+
+- Supplier arrival: adjust style of supplier catalog
+- Customer Delivery: restore navigation on search lines view
+- Config: access mobile settings from store
+
 ## [7.0.13] (2024-04-24)
 
 ### @axelor/aos-mobile-core
@@ -515,6 +549,7 @@ The project architecture has also been updated, the example folder has been expl
 - Replace ChipSelect by MultiValuePicker on list screens
 - Add search bar details pop up on screens: add empowered searchBar for objects
 
+[7.0.14]: https://github.com/axelor/axelor-mobile/compare/7.0.13...7.0.14
 [7.0.13]: https://github.com/axelor/axelor-mobile/compare/7.0.12...7.0.13
 [7.0.12]: https://github.com/axelor/axelor-mobile/compare/7.0.11...7.0.12
 [7.0.11]: https://github.com/axelor/axelor-mobile/compare/7.0.10...7.0.11
