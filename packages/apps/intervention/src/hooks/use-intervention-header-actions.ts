@@ -136,7 +136,7 @@ const useActiveInterventionActions = () => {
     headerActionsProvider.registerModel('intervention_active_intervention', {
       model: 'com.axelor.apps.intervention.db.Intervention',
       modelId: activeIntervention?.id,
-      disableMailMessages: mobileSettings?.isTrackerMessageEnabled,
+      disableMailMessages: !mobileSettings?.isTrackerMessageEnabled,
       attachedFileScreenTitle: intervention?.sequence,
       actions: [
         {
