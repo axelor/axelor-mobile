@@ -53,15 +53,27 @@ export const mapStudioFieldsWithFormula = (
 };
 
 export const getAttrsValue = (object: Object, fieldType: string) => {
-  if (
-    isEmpty(object) ||
-    !object.hasOwnProperty(fieldType) ||
-    typeof object[fieldType] !== 'string'
-  ) {
+  if (isEmpty(object)) {
     return {};
   }
 
-  return JSON.parse(object[fieldType]);
+  if (
+    fieldType != null ||
+    object.hasOwnProperty(fieldType) ||
+    typeof object[fieldType] !== 'string'
+  ) {
+    return JSON.parse(object[fieldType]);
+  }
+
+  let result = {};
+
+  Object.entries(object)
+    .filter(([key]) => key.toLowerCase().includes('attrs'))
+    .forEach(([_, value]: [string, string]) => {
+      result = {...result, ...JSON.parse(value)};
+    });
+
+  return result;
 };
 
 export const createFormulaFunction = (formula: string) => {
