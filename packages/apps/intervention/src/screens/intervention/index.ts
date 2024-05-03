@@ -28,6 +28,7 @@ export default {
   ActiveInterventionScreen: {
     title: 'Intervention_Intervention',
     component: ActiveInterventionScreen,
+    actionID: 'intervention_active_intervention',
     options: {
       shadedHeader: false,
     },

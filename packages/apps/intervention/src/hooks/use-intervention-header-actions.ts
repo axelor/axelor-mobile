@@ -31,6 +31,7 @@ import {Equipment} from '../types';
 export const useInterventionHeaders = () => {
   useEquipmentFormActions();
   useInterventionDetailsActions();
+  useActiveInterventionActions();
 };
 
 const useEquipmentFormActions = () => {
@@ -118,5 +119,50 @@ const useInterventionDetailsActions = () => {
     dispatch,
     intervention,
     mobileSettings?.isTrackerMessageEnabled,
+  ]);
+};
+
+const useActiveInterventionActions = () => {
+  const I18n = useTranslator();
+  const Colors = useThemeColor();
+  const dispatch = useDispatch();
+
+  const {mobileSettings} = useSelector((state: any) => state.appConfig);
+  const {intervention, activeIntervention} = useSelector(
+    (state: any) => state.intervention_intervention,
+  );
+
+  useEffect(() => {
+    headerActionsProvider.registerModel('intervention_active_intervention', {
+      model: 'com.axelor.apps.intervention.db.Intervention',
+      modelId: activeIntervention?.id,
+      disableMailMessages: !mobileSettings?.isTrackerMessageEnabled,
+      attachedFileScreenTitle: intervention?.sequence,
+      actions: [
+        {
+          key: 'refreshIntervention',
+          order: 0,
+          iconName: 'arrow-repeat',
+          title: I18n.t('Intervention_RefreshIntervention'),
+          iconColor: Colors.primaryColor.background,
+          hideIf:
+            activeIntervention?.id == null ||
+            intervention?.id !== activeIntervention?.id,
+          onPress: () => {
+            dispatch(
+              (fetchInterventionById as any)({interventionId: intervention.id}),
+            );
+          },
+          showInHeader: true,
+        },
+      ],
+    });
+  }, [
+    I18n,
+    Colors,
+    dispatch,
+    intervention,
+    mobileSettings?.isTrackerMessageEnabled,
+    activeIntervention?.id,
   ]);
 };
