@@ -3,6 +3,44 @@ title: 8.0.0
 tags: Changelog
 ---
 
+## [8.0.4] (2024-05-03)
+
+### @axelor/aos-mobile-core
+
+#### Fixes
+
+- Login: improve inputs display on small screens
+- PasswordInput: reverse password icon order
+
+### @axelor/aos-mobile-ui
+
+#### Fixes
+
+- Picker: add indicator when no data
+- RadioSelect: add readonly parameter with default value to false
+- Switch: add readonly parameter with default value to false
+
+### @axelor/aos-mobile-hr
+
+#### Fixes
+
+- Expense line form: add missing readonly & required parameters on components
+- Timers: correct order in list view
+- Project tasks: modify filters on timesheet lines and timers
+
+### @axelor/aos-mobile-crm
+
+#### Fixes
+
+- Opportunity details screen: modify the width of the informations dropdown
+
+### @axelor/aos-mobile-stock
+
+#### Fixes
+
+- Supplier arrival: adjust style of supplier catalog
+- Customer Delivery: restore navigation on search lines view
+
 ## [8.0.3] (2024-04-22)
 
 ### @axelor/aos-mobile-core
@@ -224,6 +262,7 @@ Changes has been done to get new core and ui improvements: use of ChipSelect, co
 
 Changes has been done to get new core and ui improvements: use of ChipSelect, color differentiation between success and primary, definition of required configs, use of icons for Bootstrap
 
+[8.0.4]: https://github.com/axelor/axelor-mobile/compare/8.0.3...8.0.4
 [8.0.3]: https://github.com/axelor/axelor-mobile/compare/8.0.2...8.0.3
 [8.0.2]: https://github.com/axelor/axelor-mobile/compare/8.0.1...8.0.2
 [8.0.1]: https://github.com/axelor/axelor-mobile/compare/8.0.0...8.0.1
