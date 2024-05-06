@@ -16,9 +16,97 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import React, {useCallback} from 'react';
+import React, {useCallback, useEffect, useState} from 'react';
+import {ActivityIndicator, StyleSheet, View} from 'react-native';
 import BranchCard from './BranchCard';
-import SubBranchView from './SubBranchView';
+import {Label} from '../../molecules';
+import {useThemeColor} from '../../../theme';
+
+interface SubBranchViewProps {
+  parentFieldName: string;
+  branchId: number;
+  openBranches: any[];
+  openBranchesLastIdx: number;
+  setOpenBranches: (current: any) => void;
+  renderBranch: (renderParams: any) => any;
+  renderLeaf: (renderParams: any) => any;
+  fetchBranchData: (idParent: number) => Promise<any>;
+  branchCondition: (item: any) => boolean;
+  translator?: (translationKey: string) => string;
+}
+
+const SubBranchView = ({
+  parentFieldName,
+  branchId,
+  openBranches,
+  openBranchesLastIdx,
+  setOpenBranches,
+  renderBranch,
+  renderLeaf,
+  fetchBranchData,
+  branchCondition,
+  translator,
+}: SubBranchViewProps) => {
+  const Colors = useThemeColor();
+
+  const [subBranchData, setSubBranchData] = useState([]);
+
+  useEffect(() => {
+    let isMounted = true;
+
+    fetchBranchData(branchId)
+      .then(res => isMounted && setSubBranchData(res.data.data))
+      .catch(() => setSubBranchData([]));
+
+    return () => {
+      isMounted = false;
+    };
+  }, [branchId, fetchBranchData]);
+
+  return (
+    <>
+      {subBranchData &&
+        subBranchData.map((item, index) => {
+          const _openBranchesLastIdx = openBranchesLastIdx + 1;
+
+          return (
+            <View style={styles.marginLeft} key={index}>
+              {branchCondition(item) ? (
+                <Branch
+                  branch={{item, index}}
+                  parentFieldName={parentFieldName}
+                  openBranches={openBranches}
+                  openBranchesLastIdx={_openBranchesLastIdx}
+                  setOpenBranches={setOpenBranches}
+                  renderBranch={renderBranch}
+                  renderLeaf={renderLeaf}
+                  fetchBranchData={fetchBranchData}
+                  branchCondition={branchCondition}
+                  translator={translator}
+                />
+              ) : (
+                renderLeaf({item, index})
+              )}
+            </View>
+          );
+        })}
+      {subBranchData && subBranchData.length === 0 && (
+        <ActivityIndicator
+          style={styles.subBranchInfo}
+          size="large"
+          color={Colors.inverseColor.background}
+        />
+      )}
+      {!subBranchData && (
+        <Label
+          style={styles.subBranchInfo}
+          message={translator != null ? translator('Base_NoData') : 'No data.'}
+          type="info"
+        />
+      )}
+    </>
+  );
+};
 
 interface BranchProps {
   branch: {item: any; index: number};
@@ -103,5 +191,15 @@ const Branch = ({
     </>
   );
 };
+
+const styles = StyleSheet.create({
+  marginLeft: {
+    marginLeft: 15,
+  },
+  subBranchInfo: {
+    width: '90%',
+    alignSelf: 'center',
+  },
+});
 
 export default Branch;
