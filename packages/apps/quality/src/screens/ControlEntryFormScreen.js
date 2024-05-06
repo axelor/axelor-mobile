@@ -22,6 +22,7 @@ import {
   CustomFieldForm,
   showToastMessage,
   useDispatch,
+  usePermitted,
   useSelector,
   useTranslator,
 } from '@axelor/aos-mobile-core';
@@ -38,6 +39,9 @@ const ControlEntryFormScreen = ({navigation, route}) => {
   const {selectedMode} = route.params;
   const I18n = useTranslator();
   const dispatch = useDispatch();
+  const {readonly} = usePermitted({
+    modelName: 'com.axelor.apps.quality.db.ControlEntryPlanLine',
+  });
 
   const {controlEntry} = useSelector(state => state.controlEntry);
   const {controlPlan} = useSelector(state => state.controlPlan);
@@ -57,9 +61,10 @@ const ControlEntryFormScreen = ({navigation, route}) => {
 
   const isReadonly = useMemo(
     () =>
+      readonly ||
       controlEntry.statusSelect === ControlEntry.status.Completed ||
       controlEntry.statusSelect === ControlEntry.status.Canceled,
-    [controlEntry.statusSelect],
+    [controlEntry.statusSelect, readonly],
   );
 
   useEffect(() => {
