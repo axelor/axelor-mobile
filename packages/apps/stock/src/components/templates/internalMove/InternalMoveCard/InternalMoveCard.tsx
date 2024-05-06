@@ -54,7 +54,7 @@ const InternalMoveCard = ({
   const {getItemColor, getItemTitle} = useTypeHelpers();
 
   const borderStyle = useMemo(() => {
-    return getStyles(getItemColor(StockMove?.statusSelect, status).background)
+    return getStyles(getItemColor(StockMove?.statusSelect, status)?.background)
       ?.border;
   }, [StockMove?.statusSelect, getItemColor, status]);
 

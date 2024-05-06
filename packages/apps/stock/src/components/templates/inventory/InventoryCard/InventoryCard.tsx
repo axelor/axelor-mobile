@@ -48,7 +48,7 @@ const InventoryCard = ({
   const {getItemColor} = useTypeHelpers();
 
   const borderStyle = useMemo(() => {
-    return getStyles(getItemColor(Inventory?.statusSelect, status).background)
+    return getStyles(getItemColor(Inventory?.statusSelect, status)?.background)
       ?.border;
   }, [Inventory?.statusSelect, getItemColor, status]);
 

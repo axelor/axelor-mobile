@@ -66,7 +66,7 @@ const InternalMoveListScreen = ({navigation}) => {
     ];
 
     return getSelectionItems(StockMove?.statusSelect, selectedStatus).filter(
-      status => statusToDisplay.includes(status.value),
+      ({value}) => statusToDisplay.includes(value),
     );
   }, [StockMove?.statusSelect, getSelectionItems, selectedStatus]);
 

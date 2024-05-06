@@ -155,8 +155,8 @@ const SupplierArrivalLineDetailScreen = ({route, navigation}) => {
       StockMove?.conformitySelect.Non_Compliant,
     ];
 
-    return getSelectionItems(StockMove?.conformitySelect).filter(_conformity =>
-      conformityToDisplay.includes(_conformity.value),
+    return getSelectionItems(StockMove?.conformitySelect).filter(({value}) =>
+      conformityToDisplay.includes(value),
     );
   }, [StockMove?.conformitySelect, getSelectionItems]);
 

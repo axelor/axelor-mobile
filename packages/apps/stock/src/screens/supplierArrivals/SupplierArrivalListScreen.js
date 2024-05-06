@@ -32,6 +32,7 @@ import {
 } from '../../components';
 import {searchSupplierArrivals} from '../../features/supplierArrivalSlice';
 import {displayStockMoveSeq} from '../../utils/displayers';
+
 const stockLocationScanKey = 'stock-location_supplier-arrival-list';
 
 const SupplierArrivalListScreen = ({navigation}) => {
@@ -63,7 +64,7 @@ const SupplierArrivalListScreen = ({navigation}) => {
     ];
 
     return getSelectionItems(StockMove?.statusSelect, selectedStatus).filter(
-      status => statusToDisplay.includes(status.value),
+      ({value}) => statusToDisplay.includes(value),
     );
   }, [StockMove?.statusSelect, getSelectionItems, selectedStatus]);
 
