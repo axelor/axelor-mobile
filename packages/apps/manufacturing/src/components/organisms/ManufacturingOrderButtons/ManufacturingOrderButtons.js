@@ -18,7 +18,12 @@
 
 import React, {useCallback} from 'react';
 import {Button, useThemeColor} from '@axelor/aos-mobile-ui';
-import {useTranslator, useDispatch, useSelector} from '@axelor/aos-mobile-core';
+import {
+  useTranslator,
+  useDispatch,
+  useSelector,
+  usePermitted,
+} from '@axelor/aos-mobile-core';
 import ManufacturingOrder from '../../../types/manufacturing-order';
 import {updateStatusOfManufOrder} from '../../../features/manufacturingOrderSlice';
 
@@ -26,6 +31,9 @@ const ManufacturingOrderButtons = ({}) => {
   const Colors = useThemeColor();
   const I18n = useTranslator();
   const dispatch = useDispatch();
+  const {readonly} = usePermitted({
+    modelName: 'com.axelor.apps.production.db.ManufOrder',
+  });
 
   const {manufOrder} = useSelector(state => state.manufacturingOrder);
 
@@ -41,6 +49,10 @@ const ManufacturingOrderButtons = ({}) => {
     },
     [dispatch, manufOrder],
   );
+
+  if (readonly) {
+    return null;
+  }
 
   if (manufOrder.statusSelect === ManufacturingOrder.status.Planned) {
     return (
