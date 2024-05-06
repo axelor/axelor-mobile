@@ -52,9 +52,13 @@ export const mapStudioFieldsWithFormula = (
   }));
 };
 
-export const getAttrsValue = (object: any) => {
+export const getAttrsValue = (object: Object, fieldType?: string) => {
   if (isEmpty(object)) {
     return {};
+  }
+
+  if (fieldType != null) {
+    return object[fieldType] != null ? JSON.parse(object[fieldType]) : {};
   }
 
   let result = {};
