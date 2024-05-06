@@ -17,8 +17,10 @@
  */
 
 import React, {useState} from 'react';
+import {StyleSheet} from 'react-native';
 import Branch from './Branch';
 import {ActionType, ScrollList} from '../../organisms';
+import {HorizontalRule} from '../../atoms';
 
 interface TreeViewProps {
   style?: any;
@@ -79,21 +81,28 @@ const TreeView = ({
   const [openBranches, setOpenBranches] = useState([]);
 
   const _renderItem = ({item, index}) => {
-    return branchCondition(item) ? (
-      <Branch
-        branch={{item, index}}
-        parentFieldName={parentFieldName}
-        openBranches={openBranches}
-        openBranchesLastIdx={0}
-        setOpenBranches={setOpenBranches}
-        renderBranch={renderBranch}
-        renderLeaf={renderLeaf}
-        fetchBranchData={fetchBranchData}
-        branchCondition={branchCondition}
-        translator={translator}
-      />
-    ) : (
-      renderLeaf({item, index})
+    return (
+      <>
+        {branchCondition(item) ? (
+          <Branch
+            branch={{item, index}}
+            parentFieldName={parentFieldName}
+            openBranches={openBranches}
+            openBranchesLastIdx={0}
+            setOpenBranches={setOpenBranches}
+            renderBranch={renderBranch}
+            renderLeaf={renderLeaf}
+            fetchBranchData={fetchBranchData}
+            branchCondition={branchCondition}
+            translator={translator}
+          />
+        ) : (
+          renderLeaf({item, index})
+        )}
+        {!!openBranches.find(_branch => _branch.idOpen === item.id) && (
+          <HorizontalRule style={styles.horizontalRule} />
+        )}
+      </>
     );
   };
 
@@ -116,5 +125,13 @@ const TreeView = ({
     />
   );
 };
+
+const styles = StyleSheet.create({
+  horizontalRule: {
+    alignSelf: 'center',
+    width: '70%',
+    marginVertical: 10,
+  },
+});
 
 export default TreeView;
