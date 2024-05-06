@@ -44,7 +44,7 @@ interface JsonAction extends Action {
 
 interface CustomFieldFormProps {
   model: string;
-  modelId: string;
+  modelId: number;
   fieldType?: string;
   additionalActions?: JsonAction[];
   readonly?: boolean;
@@ -91,7 +91,7 @@ const CustomFieldForm = ({
   }, [fields, panels, readonly]);
 
   const attrsValues = useMemo(
-    () => (object?.id != modelId ? null : getAttrsValue(object, fieldType)),
+    () => (object?.id !== modelId ? null : getAttrsValue(object, fieldType)),
     [modelId, object, fieldType],
   );
 
