@@ -32,7 +32,7 @@ interface SubBranchViewProps {
   renderLeaf: (renderParams: any) => any;
   fetchBranchData: (idParent: number) => Promise<any>;
   branchCondition: (item: any) => boolean;
-  translator: (translationKey: string) => string;
+  translator?: (translationKey: string) => string;
 }
 
 const SubBranchView = ({
@@ -52,7 +52,15 @@ const SubBranchView = ({
   const [subBranchData, setSubBranchData] = useState([]);
 
   useEffect(() => {
-    fetchBranchData(branchId).then(res => setSubBranchData(res.data.data));
+    let isMounted = true;
+
+    fetchBranchData(branchId)
+      .then(res => isMounted && setSubBranchData(res.data.data))
+      .catch(() => setSubBranchData([]));
+
+    return () => {
+      isMounted = false;
+    };
   }, [branchId, fetchBranchData]);
 
   return (
@@ -92,7 +100,7 @@ const SubBranchView = ({
       {!subBranchData && (
         <Label
           style={styles.subBranchInfo}
-          message={translator('Base_NoData')}
+          message={translator != null ? translator('Base_NoData') : 'No data.'}
           type="info"
         />
       )}

@@ -30,7 +30,7 @@ interface BranchProps {
   renderLeaf: (renderParams: any) => any;
   fetchBranchData: (idParent: number) => Promise<any>;
   branchCondition: (item: any) => boolean;
-  translator: (translationKey: string) => string;
+  translator?: (translationKey: string) => string;
 }
 
 const Branch = ({

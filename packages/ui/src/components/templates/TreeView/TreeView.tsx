@@ -26,15 +26,30 @@ interface TreeViewProps {
   loadingList: boolean;
   data: any[];
   parentFieldName: string;
+  /**
+   * Function used to display what is inside a branch card.
+   */
   renderBranch: (renderParams: any) => any;
+  /**
+   * Function used to display a leaf card.
+   */
   renderLeaf: (renderParams: any) => any;
+  /**
+   * Function used to fetch elements at the root, those that have no parent.
+   */
   fetchData: (fetchOptions?: any) => any[] | void;
+  /**
+   * Function used to fetch elements of a branch.
+   */
   fetchBranchData: (idParent: number) => Promise<any>;
+  /**
+   * Function used to determine if an element is a branch or a leaf.
+   */
   branchCondition: (item: any) => boolean;
   moreLoading: boolean;
   isListEnd: boolean;
   filter?: boolean;
-  translator: (translationKey: string) => string;
+  translator?: (translationKey: string) => string;
   horizontal?: boolean;
   disabledRefresh?: boolean;
   actionList?: ActionType[];
@@ -64,25 +79,21 @@ const TreeView = ({
   const [openBranches, setOpenBranches] = useState([]);
 
   const _renderItem = ({item, index}) => {
-    return (
-      <>
-        {branchCondition(item) ? (
-          <Branch
-            branch={{item, index}}
-            parentFieldName={parentFieldName}
-            openBranches={openBranches}
-            openBranchesLastIdx={0}
-            setOpenBranches={setOpenBranches}
-            renderBranch={renderBranch}
-            renderLeaf={renderLeaf}
-            fetchBranchData={fetchBranchData}
-            branchCondition={branchCondition}
-            translator={translator}
-          />
-        ) : (
-          renderLeaf({item, index})
-        )}
-      </>
+    return branchCondition(item) ? (
+      <Branch
+        branch={{item, index}}
+        parentFieldName={parentFieldName}
+        openBranches={openBranches}
+        openBranchesLastIdx={0}
+        setOpenBranches={setOpenBranches}
+        renderBranch={renderBranch}
+        renderLeaf={renderLeaf}
+        fetchBranchData={fetchBranchData}
+        branchCondition={branchCondition}
+        translator={translator}
+      />
+    ) : (
+      renderLeaf({item, index})
     );
   };
 
