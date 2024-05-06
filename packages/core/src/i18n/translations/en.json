@@ -119,6 +119,7 @@
   "Base_Comments": "Comments",
   "Base_Notifications": "Notifications",
   "Base_FormNotFound": "The requested form cannot be found, please contact an administrator.",
+  "Base_FormMissingCreateAccess": "You do not have creation rights for this object.",
   "Base_FormValidation_String": "must be a string",
   "Base_FormValidation_Number": "must be a number",
   "Base_FormValidation_Boolean": "must be a boolean",
