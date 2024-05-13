@@ -28,6 +28,7 @@ import {
   usePermitted,
   useSelector,
   useTranslator,
+  useTypes,
 } from '@axelor/aos-mobile-core';
 import {
   ProductCardInfo,
@@ -38,7 +39,7 @@ import {
   StockLocationSearchBar,
 } from '../../components';
 import {fetchProductWithId} from '../../features/productSlice';
-import {StockMove, StockMoveLine} from '../../types';
+import {StockMove as StockMoveType, StockMoveLine} from '../../types';
 import {fetchCustomerDeliveryLine} from '../../features/customerDeliveryLineSlice';
 
 const stockLocationScanKey =
@@ -48,6 +49,7 @@ const CustomerDeliveryLineDetailScreen = ({route, navigation}) => {
   const {customerDelivery, customerDeliveryLineId, productId} = route.params;
   const I18n = useTranslator();
   const dispatch = useDispatch();
+  const {StockMove} = useTypes();
   const {readonly} = usePermitted({
     modelName: 'com.axelor.apps.stock.db.StockMoveLine',
   });
@@ -68,7 +70,7 @@ const CustomerDeliveryLineDetailScreen = ({route, navigation}) => {
 
   const isTrackingNumberSelectVisible = useMemo(
     () =>
-      StockMove.isTrackingNumberSelectVisible(
+      StockMoveType.isTrackingNumberSelectVisible(
         customerDelivery?.statusSelect,
         product,
         trackingNumber,
@@ -135,7 +137,7 @@ const CustomerDeliveryLineDetailScreen = ({route, navigation}) => {
             lineRef={customerDeliveryLine?.name}
             date={
               customerDelivery
-                ? StockMove.getStockMoveDate(
+                ? StockMoveType.getStockMoveDate(
                     customerDelivery.statusSelect,
                     customerDelivery,
                   )
@@ -160,7 +162,7 @@ const CustomerDeliveryLineDetailScreen = ({route, navigation}) => {
             defaultStockLocation={customerDelivery.fromStockLocation}
             readOnly={
               readonly ||
-              customerDelivery?.statusSelect !== StockMove.status.Planned
+              customerDelivery?.statusSelect !== StockMove?.statusSelect.Planned
             }
           />
         ) : null}

@@ -24,11 +24,12 @@ import {
   usePermitted,
   useSelector,
   useTranslator,
+  useTypes,
 } from '@axelor/aos-mobile-core';
 import {CustomerDeliveryLineCard} from '../../../templates';
 import {SearchLineContainer} from '../../../organisms';
 import {showLine} from '../../../../utils/line-navigation';
-import {StockMove, StockMoveLine} from '../../../../types';
+import {StockMoveLine} from '../../../../types';
 import {fetchCustomerDeliveryLines} from '../../../../features/customerDeliveryLineSlice';
 import {useCustomerLinesWithRacks} from '../../../../hooks';
 
@@ -38,6 +39,7 @@ const CustomerDeliverySearchLineContainer = ({}) => {
   const I18n = useTranslator();
   const navigation = useNavigation();
   const dispatch = useDispatch();
+  const {StockMove} = useTypes();
   const {readonly} = usePermitted({
     modelName: 'com.axelor.apps.stock.db.StockMove',
   });
@@ -105,7 +107,7 @@ const CustomerDeliverySearchLineContainer = ({}) => {
     if (
       readonly ||
       !canCreate ||
-      customerDelivery.statusSelect >= StockMove.status.Realized
+      customerDelivery.statusSelect >= StockMove?.statusSelect.Realized
     ) {
       return false;
     }
@@ -115,7 +117,13 @@ const CustomerDeliverySearchLineContainer = ({}) => {
     }
 
     return mobileSettings.isCustomerDeliveryLineAdditionEnabled;
-  }, [canCreate, customerDelivery, mobileSettings, readonly]);
+  }, [
+    StockMove?.statusSelect.Realized,
+    canCreate,
+    customerDelivery,
+    mobileSettings,
+    readonly,
+  ]);
 
   return (
     <SearchLineContainer
@@ -141,7 +149,7 @@ const CustomerDeliverySearchLineContainer = ({}) => {
           trackingNumber={item.trackingNumber}
           locker={item.locker}
           availability={
-            customerDelivery.statusSelect !== StockMove.status.Realized
+            customerDelivery.statusSelect !== StockMove?.statusSelect.Realized
               ? item.availableStatusSelect
               : null
           }

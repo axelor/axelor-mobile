@@ -19,3 +19,4 @@
 export {stock_searchFields} from './searchFields';
 export {stock_sortFields} from './sortFields';
 export {stock_modelAPI} from './objectFields';
+export {stock_typeObjects} from './typeObjects';

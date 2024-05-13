@@ -23,15 +23,16 @@ import {
   useTranslator,
   useNavigation,
   usePermitted,
+  useTypes,
 } from '@axelor/aos-mobile-core';
 import {Button} from '@axelor/aos-mobile-ui';
-import Inventory from '../../../../types/inventory';
 import {updateInventory} from '../../../../features/inventorySlice';
 
 const InventoryButtons = ({}) => {
   const I18n = useTranslator();
   const dispatch = useDispatch();
   const navigation = useNavigation();
+  const {Inventory} = useTypes();
   const {readonly} = usePermitted({
     modelName: 'com.axelor.apps.stock.db.Inventory',
   });
@@ -44,7 +45,7 @@ const InventoryButtons = ({}) => {
       updateInventory({
         inventoryId: inventory?.id,
         version: inventory?.version,
-        status: Inventory.status.InProgress,
+        status: Inventory?.statusSelect.InProgress,
         userId: null,
       }),
     );
@@ -52,37 +53,37 @@ const InventoryButtons = ({}) => {
     navigation.navigate('InventoryStartedDetailsScreen', {
       inventoryId: inventory?.id,
     });
-  }, [dispatch, inventory, navigation]);
+  }, [Inventory?.statusSelect.InProgress, dispatch, inventory, navigation]);
 
   const handleCompleteInventory = useCallback(() => {
     dispatch(
       updateInventory({
         inventoryId: inventory.id,
         version: inventory.version,
-        status: Inventory.status.Completed,
+        status: Inventory?.statusSelect.Completed,
         userId: null,
       }),
     );
     navigation.popToTop();
-  }, [dispatch, inventory, navigation]);
+  }, [Inventory?.statusSelect.Completed, dispatch, inventory, navigation]);
 
   const handleValidateInventory = useCallback(() => {
     dispatch(
       updateInventory({
         inventoryId: inventory.id,
         version: inventory.version,
-        status: Inventory.status.Validated,
+        status: Inventory?.statusSelect.Validated,
         userId: null,
       }),
     );
     navigation.popToTop();
-  }, [dispatch, inventory, navigation]);
+  }, [Inventory?.statusSelect.Validated, dispatch, inventory, navigation]);
 
   if (readonly) {
     return null;
   }
 
-  if (inventory?.statusSelect === Inventory.status.Planned) {
+  if (inventory?.statusSelect === Inventory?.statusSelect.Planned) {
     return (
       <Button
         title={I18n.t('Base_Start')}
@@ -92,7 +93,7 @@ const InventoryButtons = ({}) => {
     );
   }
 
-  if (inventory?.statusSelect === Inventory.status.InProgress) {
+  if (inventory?.statusSelect === Inventory?.statusSelect.InProgress) {
     return (
       <Button
         title={I18n.t('Base_Complete')}
@@ -103,7 +104,7 @@ const InventoryButtons = ({}) => {
   }
 
   if (
-    inventory?.statusSelect === Inventory.status.Completed &&
+    inventory?.statusSelect === Inventory?.statusSelect.Completed &&
     mobileSettings?.isInventoryValidationEnabled !== false
   ) {
     return (

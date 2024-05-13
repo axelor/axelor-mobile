@@ -27,7 +27,12 @@ import enTranslations from './i18n/en.json';
 import frTranslations from './i18n/fr.json';
 import * as stockReducers from './features';
 import UserScreen from './screens/auth/UserScreen';
-import {stock_modelAPI, stock_searchFields, stock_sortFields} from './models';
+import {
+  stock_modelAPI,
+  stock_searchFields,
+  stock_sortFields,
+  stock_typeObjects,
+} from './models';
 import {useStockHeaders} from './hooks/use-stock-header-actions';
 
 export const StockModule: Module = {
@@ -96,6 +101,7 @@ export const StockModule: Module = {
     sortFields: {...stock_sortFields},
     searchFields: {...stock_searchFields},
     headerRegisters: useStockHeaders,
+    typeObjects: stock_typeObjects,
   },
   requiredConfig: ['AppStock', 'AppSupplychain'],
 };

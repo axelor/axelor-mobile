@@ -19,8 +19,12 @@
 import React from 'react';
 import {StyleSheet, TouchableOpacity, View} from 'react-native';
 import {Badge, Card, Text, useThemeColor} from '@axelor/aos-mobile-ui';
-import {AOSImage, useTranslator} from '@axelor/aos-mobile-core';
-import Product from '../../../../types/product';
+import {
+  AOSImage,
+  useTranslator,
+  useTypeHelpers,
+  useTypes,
+} from '@axelor/aos-mobile-core';
 
 interface ProductCharacteristicsProps {
   style?: any;
@@ -47,6 +51,8 @@ const ProductCharacteristics = ({
 }: ProductCharacteristicsProps) => {
   const Colors = useThemeColor();
   const I18n = useTranslator();
+  const {Product} = useTypes();
+  const {getItemTitle} = useTypeHelpers();
 
   return (
     <Card style={[styles.container, style]}>
@@ -70,7 +76,7 @@ const ProductCharacteristics = ({
         {procurMethod && (
           <Badge
             color={Colors.plannedColor}
-            title={Product.getProcurementMethod(procurMethod, I18n)}
+            title={getItemTitle(Product?.procurementMethodSelect, procurMethod)}
           />
         )}
         {prototype && (

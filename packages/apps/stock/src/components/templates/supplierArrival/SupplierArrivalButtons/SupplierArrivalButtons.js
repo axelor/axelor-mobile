@@ -23,14 +23,15 @@ import {
   useNavigation,
   usePermitted,
   useTranslator,
+  useTypes,
 } from '@axelor/aos-mobile-core';
-import StockMove from '../../../../types/stock-move';
 import {realizeSupplierArrival} from '../../../../features/supplierArrivalSlice';
 
 const SupplierArrivalButtons = ({supplierArrival}) => {
   const I18n = useTranslator();
   const dispatch = useDispatch();
   const navigation = useNavigation();
+  const {StockMove} = useTypes();
   const {readonly} = usePermitted({
     modelName: 'com.axelor.apps.stock.db.StockMove',
   });
@@ -45,7 +46,10 @@ const SupplierArrivalButtons = ({supplierArrival}) => {
     navigation.popToTop();
   };
 
-  if (!readonly && supplierArrival.statusSelect !== StockMove.status.Realized) {
+  if (
+    !readonly &&
+    supplierArrival.statusSelect !== StockMove?.statusSelect.Realized
+  ) {
     return <Button onPress={handleRealize} title={I18n.t('Base_Realize')} />;
   }
 

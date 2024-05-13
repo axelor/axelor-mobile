@@ -17,9 +17,8 @@
  */
 
 import React from 'react';
-import {useTranslator} from '@axelor/aos-mobile-core';
+import {useTranslator, useTypes} from '@axelor/aos-mobile-core';
 import {FormHtmlInput} from '@axelor/aos-mobile-ui';
-import StockCorrection from '../../../../types/stock-corrrection';
 
 const StockCorrectionHtmlInput = ({
   stockCorrection,
@@ -28,6 +27,7 @@ const StockCorrectionHtmlInput = ({
   readonly = false,
 }) => {
   const I18n = useTranslator();
+  const {StockCorrection} = useTypes();
 
   const handleCommentsChange = comments => {
     setComments(comments);
@@ -41,7 +41,8 @@ const StockCorrectionHtmlInput = ({
       onChange={handleCommentsChange}
       readonly={
         readonly ||
-        stockCorrection?.statusSelect === StockCorrection.status.Validated
+        stockCorrection?.statusSelect ===
+          StockCorrection?.statusSelect.Validated
       }
       hideIfNull={true}
     />

@@ -22,10 +22,10 @@ import {
   SearchListView,
   useSelector,
   useTranslator,
+  useTypes,
 } from '@axelor/aos-mobile-core';
 import {InventoryHeader, InventoryLineCard} from '../../components';
 import {fetchInventoryLines} from '../../features/inventoryLineSlice';
-import Inventory from '../../types/inventory';
 import {showLine} from '../../utils/line-navigation';
 import {displayLine} from '../../utils/displayers';
 
@@ -41,6 +41,7 @@ const InventoryLineListScreen = ({route, navigation}) => {
   const inventory = route.params.inventory;
   const Colors = useThemeColor();
   const I18n = useTranslator();
+  const {Inventory} = useTypes();
 
   const {mobileSettings} = useSelector(state => state.appConfig);
   const {loadingInventoryLines, moreLoading, isListEnd, inventoryLineList} =
@@ -58,7 +59,7 @@ const InventoryLineListScreen = ({route, navigation}) => {
       lineDetailsScreen: 'InventoryLineDetailsScreen',
       selectTrackingScreen: 'InventorySelectTrackingScreen',
       selectProductScreen: 'InventorySelectProductScreen',
-      detailStatus: Inventory.status.Validated,
+      detailStatus: Inventory?.statusSelect.Validated,
       skipVerification,
       navigation,
     });
@@ -122,7 +123,7 @@ const InventoryLineListScreen = ({route, navigation}) => {
             reference={inventory.inventorySeq}
             status={inventory.statusSelect}
             date={
-              inventory.statusSelect === Inventory.status.Planned
+              inventory.statusSelect === Inventory?.statusSelect.Planned
                 ? inventory.plannedStartDateT
                 : inventory.plannedEndDateT
             }

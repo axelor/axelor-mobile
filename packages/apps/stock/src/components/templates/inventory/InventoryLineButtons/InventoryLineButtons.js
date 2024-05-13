@@ -24,8 +24,8 @@ import {
   useDispatch,
   useNavigation,
   usePermitted,
+  useTypes,
 } from '@axelor/aos-mobile-core';
-import Inventory from '../../../../types/inventory';
 import {
   createNewInventoryLine,
   updateInventoryLine,
@@ -43,6 +43,7 @@ const InventoryLineButtons = ({
   const I18n = useTranslator();
   const dispatch = useDispatch();
   const navigation = useNavigation();
+  const {Inventory} = useTypes();
   const {canCreate, readonly} = usePermitted({
     modelName: 'com.axelor.apps.stock.db.InventoryLine',
   });
@@ -103,11 +104,14 @@ const InventoryLineButtons = ({
     return <Button title={I18n.t('Base_Add')} onPress={handleNewLine} />;
   }
 
-  if (!readonly && inventory?.statusSelect !== Inventory.status.Validated) {
+  if (
+    !readonly &&
+    inventory?.statusSelect !== Inventory?.statusSelect.Validated
+  ) {
     return (
       <Button
         title={
-          inventory.statusSelect <= Inventory.status.InProgress
+          inventory.statusSelect <= Inventory?.statusSelect.InProgress
             ? I18n.t('Base_Save')
             : I18n.t('Base_Check')
         }

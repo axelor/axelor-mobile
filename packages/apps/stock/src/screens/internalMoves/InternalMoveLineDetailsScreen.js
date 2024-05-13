@@ -27,6 +27,7 @@ import {
   useDispatch,
   usePermitted,
   useSelector,
+  useTypes,
 } from '@axelor/aos-mobile-core';
 import {
   ProductCardInfo,
@@ -41,7 +42,7 @@ import {
 import {fetchProductWithId} from '../../features/productSlice';
 import {fetchInternalMoveLine} from '../../features/internalMoveLineSlice';
 import {fetchProductIndicators} from '../../features/productIndicatorsSlice';
-import {StockMove, StockMoveLine} from '../../types';
+import {StockMove as StockMoveType, StockMoveLine} from '../../types';
 
 const fromScanKey = 'from-stock-location_internal-move-line-update';
 const toScanKey = 'to-stock-location_internal-move-line-update';
@@ -49,6 +50,7 @@ const toScanKey = 'to-stock-location_internal-move-line-update';
 const InternalMoveLineDetailsScreen = ({navigation, route}) => {
   const {internalMove, internalMoveLineId} = route.params;
   const dispatch = useDispatch();
+  const {StockMove} = useTypes();
   const {readonly} = usePermitted({
     modelName: 'com.axelor.apps.stock.db.StockMoveLine',
   });
@@ -81,7 +83,7 @@ const InternalMoveLineDetailsScreen = ({navigation, route}) => {
 
   const isTrackingNumberSelectVisible = useMemo(
     () =>
-      StockMove.isTrackingNumberSelectVisible(
+      StockMoveType.isTrackingNumberSelectVisible(
         internalMove?.statusSelect,
         product,
         trackingNumber,
@@ -90,14 +92,15 @@ const InternalMoveLineDetailsScreen = ({navigation, route}) => {
   );
 
   const plannedQty = useMemo(() => {
-    if (internalMove.statusSelect === StockMove.status.Realized) {
+    if (internalMove.statusSelect === StockMove?.statusSelect.Realized) {
       return internalMoveLine?.realQty;
     } else {
       return productIndicators?.availableStock;
     }
   }, [
+    StockMove?.statusSelect.Realized,
     internalMove.statusSelect,
-    internalMoveLine.realQty,
+    internalMoveLine?.realQty,
     productIndicators?.availableStock,
   ]);
 
@@ -175,7 +178,7 @@ const InternalMoveLineDetailsScreen = ({navigation, route}) => {
           <StockMoveHeader
             reference={internalMove.stockMoveSeq}
             status={internalMove.statusSelect}
-            date={StockMove.getStockMoveDate(
+            date={StockMoveType.getStockMoveDate(
               internalMove.statusSelect,
               internalMove,
             )}
@@ -196,7 +199,8 @@ const InternalMoveLineDetailsScreen = ({navigation, route}) => {
             defaultValue={fromStockLocation}
             defaultStockLocation={internalMove.fromStockLocation}
             readOnly={
-              readonly || internalMove.statusSelect !== StockMove.status.Planned
+              readonly ||
+              internalMove.statusSelect !== StockMove?.statusSelect.Planned
             }
           />
         ) : null}
@@ -243,7 +247,8 @@ const InternalMoveLineDetailsScreen = ({navigation, route}) => {
             defaultStockLocation={internalMove.toStockLocation}
             isScrollViewContainer={true}
             readOnly={
-              readonly || internalMove.statusSelect !== StockMove.status.Planned
+              readonly ||
+              internalMove.statusSelect !== StockMove?.statusSelect.Planned
             }
           />
         ) : null}
