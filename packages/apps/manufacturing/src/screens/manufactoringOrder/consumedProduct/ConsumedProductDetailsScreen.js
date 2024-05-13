@@ -24,7 +24,12 @@ import {
   Text,
   useDigitFormat,
 } from '@axelor/aos-mobile-ui';
-import {useDispatch, useSelector, useTranslator} from '@axelor/aos-mobile-core';
+import {
+  useDispatch,
+  usePermitted,
+  useSelector,
+  useTranslator,
+} from '@axelor/aos-mobile-core';
 import {QuantityCard, ProductCardInfo} from '@axelor/aos-mobile-stock';
 import {
   ConsumedProductTrackingNumberSelect,
@@ -45,6 +50,9 @@ const ConsumedProductDetailsScreen = ({route, navigation}) => {
   const I18n = useTranslator();
   const formatNumber = useDigitFormat();
   const dispatch = useDispatch();
+  const {readonly} = usePermitted({
+    modelName: 'com.axelor.apps.production.db.ProdProduct',
+  });
 
   const {consumedProductStockMoveLine, consumedProduct} = useSelector(
     state => state.prodProducts,
@@ -204,13 +212,14 @@ const ConsumedProductDetailsScreen = ({route, navigation}) => {
           stockMoveLineVersion={consumedProdProduct?.stockMoveLineVersion}
           manufOrderId={manufOrder?.id}
           manufOrderVersion={manufOrder?.version}
-          visible={isTrackingNumberSelectVisible}
+          visible={!readonly && isTrackingNumberSelectVisible}
         />
         <QuantityCard
           labelQty={I18n.t('Manufacturing_ConsumedQty')}
           defaultValue={consumedQty}
           onValueChange={setConsumedQty}
           editable={
+            !readonly &&
             manufOrder?.statusSelect === ManufacturingOrder.status.InProgress
           }
           isBigButton={true}>

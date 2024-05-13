@@ -33,6 +33,7 @@ const SupplierArrivalLineQuantityCard = ({
   supplierArrivalLine,
   realQty,
   setRealQty,
+  readonly = false,
 }) => {
   const I18n = useTranslator();
   const Colors = useThemeColor();
@@ -67,7 +68,9 @@ const SupplierArrivalLineQuantityCard = ({
       labelQty={I18n.t('Stock_ReceivedQty')}
       defaultValue={realQty}
       onValueChange={handleQtyChange}
-      editable={supplierArrival.statusSelect !== StockMove.status.Realized}
+      editable={
+        !readonly && supplierArrival.statusSelect !== StockMove.status.Realized
+      }
       isBigButton={true}>
       <View style={styles.headerQuantityCard}>
         <Text>{`${I18n.t('Stock_AskedQty')} : ${askedQty}`}</Text>

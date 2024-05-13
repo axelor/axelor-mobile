@@ -22,7 +22,12 @@ import {
   KeyboardAvoidingScrollView,
   Screen,
 } from '@axelor/aos-mobile-ui';
-import {isEmpty, useDispatch, useSelector} from '@axelor/aos-mobile-core';
+import {
+  isEmpty,
+  useDispatch,
+  usePermitted,
+  useSelector,
+} from '@axelor/aos-mobile-core';
 import {
   ProductCardInfo,
   StockMoveHeader,
@@ -44,6 +49,9 @@ const toScanKey = 'to-stock-location_internal-move-line-update';
 const InternalMoveLineDetailsScreen = ({navigation, route}) => {
   const {internalMove, internalMoveLineId} = route.params;
   const dispatch = useDispatch();
+  const {readonly} = usePermitted({
+    modelName: 'com.axelor.apps.stock.db.StockMoveLine',
+  });
 
   const {activeCompany} = useSelector(state => state.user.user);
   const {stock: stockConfig} = useSelector(state => state.appConfig);
@@ -158,7 +166,7 @@ const InternalMoveLineDetailsScreen = ({navigation, route}) => {
           unit={unit}
           fromStockLocation={fromStockLocation}
           toStockLocation={toStockLocation}
-          visible={!isTrackingNumberSelectVisible}
+          visible={!readonly && !isTrackingNumberSelectVisible}
         />
       }>
       <HeaderContainer
@@ -187,7 +195,9 @@ const InternalMoveLineDetailsScreen = ({navigation, route}) => {
             onChange={setFromStockLocation}
             defaultValue={fromStockLocation}
             defaultStockLocation={internalMove.fromStockLocation}
-            readOnly={internalMove.statusSelect !== StockMove.status.Planned}
+            readOnly={
+              readonly || internalMove.statusSelect !== StockMove.status.Planned
+            }
           />
         ) : null}
         <ProductCardInfo
@@ -204,7 +214,7 @@ const InternalMoveLineDetailsScreen = ({navigation, route}) => {
         <InternalMoveLineTrackingNumberSelect
           product={product}
           internalMoveLine={internalMoveLine}
-          visible={isTrackingNumberSelectVisible}
+          visible={!readonly && isTrackingNumberSelectVisible}
         />
         <InternalMoveLineQuantityCard
           movedQty={movedQty}
@@ -214,12 +224,14 @@ const InternalMoveLineDetailsScreen = ({navigation, route}) => {
           status={internalMove.statusSelect}
           stockProduct={product}
           trackingNumber={internalMoveLine.trackingNumber}
+          readonly={readonly}
         />
         <InternalMoveLinePicker
           setUnit={setUnit}
           status={internalMove.statusSelect}
           unit={unit}
           isScrollViewContainer={true}
+          readonly={readonly}
         />
         {stockConfig.isManageStockLocationOnStockMoveLine ? (
           <StockLocationSearchBar
@@ -230,12 +242,15 @@ const InternalMoveLineDetailsScreen = ({navigation, route}) => {
             secondFilter={true}
             defaultStockLocation={internalMove.toStockLocation}
             isScrollViewContainer={true}
-            readOnly={internalMove.statusSelect !== StockMove.status.Planned}
+            readOnly={
+              readonly || internalMove.statusSelect !== StockMove.status.Planned
+            }
           />
         ) : null}
         <InternalMoveLineNotes
           notes={internalMove.note}
           status={internalMove.statusSelect}
+          readonly={readonly}
         />
       </KeyboardAvoidingScrollView>
     </Screen>

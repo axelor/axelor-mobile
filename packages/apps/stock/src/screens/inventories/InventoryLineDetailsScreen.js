@@ -23,7 +23,12 @@ import {
   KeyboardAvoidingScrollView,
   Screen,
 } from '@axelor/aos-mobile-ui';
-import {useDispatch, useSelector, useTranslator} from '@axelor/aos-mobile-core';
+import {
+  useDispatch,
+  usePermitted,
+  useSelector,
+  useTranslator,
+} from '@axelor/aos-mobile-core';
 import {
   DescriptionCard,
   InventoryHeader,
@@ -38,9 +43,11 @@ import Inventory from '../../types/inventory';
 
 const InventoryLineDetailsScreen = ({route, navigation}) => {
   const {inventory, inventoryLineId, productId} = route.params;
-
   const I18n = useTranslator();
   const dispatch = useDispatch();
+  const {readonly} = usePermitted({
+    modelName: 'com.axelor.apps.stock.db.InventoryLine',
+  });
 
   const {productFromId} = useSelector(state => state.product);
   const {inventoryLine, loadingInventoryLine} = useSelector(
@@ -142,17 +149,19 @@ const InventoryLineDetailsScreen = ({route, navigation}) => {
         <InventoryLineTrackingNumberSelect
           product={productFromId}
           inventoryLine={inventoryLine}
-          visible={isTrackingNumberSelectVisible}
+          visible={!readonly && isTrackingNumberSelectVisible}
         />
         <InventoryLineQuantityCard
           inventoryLine={inventoryLine}
           realQty={realQty}
           setRealQty={setRealQty}
+          readonly={readonly}
         />
         <DescriptionCard
           onChange={input => setDescription(input)}
           description={description}
           isEditable={
+            !readonly &&
             inventory.statusSelect !== Inventory.status.Completed &&
             inventory.statusSelect !== Inventory.status.Validated
           }

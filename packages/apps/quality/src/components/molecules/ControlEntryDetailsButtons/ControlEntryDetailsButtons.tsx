@@ -17,7 +17,12 @@
  */
 
 import React from 'react';
-import {useDispatch, useSelector, useTranslator} from '@axelor/aos-mobile-core';
+import {
+  useDispatch,
+  usePermitted,
+  useSelector,
+  useTranslator,
+} from '@axelor/aos-mobile-core';
 import {Button} from '@axelor/aos-mobile-ui';
 import {updateControlEntry} from '../../../features/controlEntrySlice';
 import {ControlEntry} from '../../../types';
@@ -25,8 +30,15 @@ import {ControlEntry} from '../../../types';
 const ControlEntryDetailsButtons = () => {
   const dispatch = useDispatch();
   const I18n = useTranslator();
+  const {readonly} = usePermitted({
+    modelName: 'com.axelor.apps.quality.db.ControlEntry',
+  });
 
   const {controlEntry} = useSelector((state: any) => state.controlEntry);
+
+  if (readonly) {
+    return null;
+  }
 
   return (
     <Button

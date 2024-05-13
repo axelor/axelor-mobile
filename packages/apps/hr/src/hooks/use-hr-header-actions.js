@@ -23,6 +23,7 @@ import {
   useSelector,
   useTranslator,
   useDispatch,
+  usePermitted,
 } from '@axelor/aos-mobile-core';
 import {useThemeColor} from '@axelor/aos-mobile-ui';
 import {fetchExpenseById, quickCreateExpense} from '../features/expenseSlice';
@@ -40,6 +41,9 @@ const useExpenseAction = () => {
   const I18n = useTranslator();
   const navigation = useNavigation();
   const dispatch = useDispatch();
+  const {canCreate} = usePermitted({
+    modelName: 'com.axelor.apps.hr.db.Expense',
+  });
 
   const {mobileSettings} = useSelector(state => state.appConfig);
   const {userId} = useSelector(state => state.auth);
@@ -53,7 +57,8 @@ const useExpenseAction = () => {
           iconName: 'plus-lg',
           title: I18n.t('Hr_CreateExpense'),
           iconColor: Colors.primaryColor.background,
-          hideIf: !mobileSettings?.isManualCreationOfExpenseAllowed,
+          hideIf:
+            !mobileSettings?.isManualCreationOfExpenseAllowed || !canCreate,
           onPress: () =>
             dispatch(quickCreateExpense({userId})).then(
               res =>
@@ -68,7 +73,7 @@ const useExpenseAction = () => {
         },
       ],
     });
-  }, [Colors, dispatch, I18n, mobileSettings, navigation, userId]);
+  }, [Colors, dispatch, I18n, mobileSettings, navigation, userId, canCreate]);
 };
 
 const useExpenseDetailsAction = () => {
@@ -105,6 +110,9 @@ const useTimerListAction = () => {
   const Colors = useThemeColor();
   const I18n = useTranslator();
   const navigation = useNavigation();
+  const {canCreate} = usePermitted({
+    modelName: 'com.axelor.apps.hr.db.TSTimer',
+  });
 
   useEffect(() => {
     headerActionsProvider.registerModel('hr_timers_list', {
@@ -115,19 +123,23 @@ const useTimerListAction = () => {
           iconName: 'plus-lg',
           title: I18n.t('Hr_CreateTimer'),
           iconColor: Colors.primaryColor.background,
+          hideIf: !canCreate,
           onPress: () =>
             navigation.navigate('TimerFormScreen', {isCreation: true}),
           showInHeader: true,
         },
       ],
     });
-  }, [Colors, I18n, navigation]);
+  }, [Colors, I18n, canCreate, navigation]);
 };
 
 const useActiveTimerAction = () => {
   const Colors = useThemeColor();
   const I18n = useTranslator();
   const navigation = useNavigation();
+  const {canCreate} = usePermitted({
+    modelName: 'com.axelor.apps.hr.db.TSTimer',
+  });
 
   useEffect(() => {
     headerActionsProvider.registerModel('hr_active_timer', {
@@ -138,11 +150,12 @@ const useActiveTimerAction = () => {
           iconName: 'plus-lg',
           title: I18n.t('Hr_CreateTimer'),
           iconColor: Colors.primaryColor.background,
+          hideIf: !canCreate,
           onPress: () =>
             navigation.navigate('TimerFormScreen', {isCreation: true}),
           showInHeader: true,
         },
       ],
     });
-  }, [Colors, I18n, navigation]);
+  }, [Colors, I18n, canCreate, navigation]);
 };

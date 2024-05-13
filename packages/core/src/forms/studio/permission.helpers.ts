@@ -42,7 +42,7 @@ export const useFieldPermitter = ({modelName}: {modelName: string}) => {
   const isAdmin = useIsAdmin();
   const permissions = useFieldsPermissions({
     modelName,
-    fieldNames: modelTypes,
+    fieldNames: modelTypes ?? [],
   });
 
   useEffect(() => {

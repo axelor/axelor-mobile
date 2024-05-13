@@ -21,6 +21,7 @@ import {StyleSheet, View} from 'react-native';
 import {
   useDispatch,
   useNavigation,
+  usePermitted,
   useSelector,
   useTranslator,
 } from '@axelor/aos-mobile-core';
@@ -49,6 +50,9 @@ const TimesheetDetailsButtons = ({
   const I18n = useTranslator();
   const navigation = useNavigation();
   const dispatch = useDispatch();
+  const {canDelete, readonly} = usePermitted({
+    modelName: 'com.axelor.apps.hr.db.Timesheet',
+  });
 
   const [refusalPopupIsOpen, setRefusalPopupIsOpen] = useState(false);
 
@@ -78,29 +82,34 @@ const TimesheetDetailsButtons = ({
   if (statusSelect === Timesheet.statusSelect.Draft) {
     return (
       <View style={styles.container}>
-        <Button
-          title={I18n.t(
-            isEmpty && !isManualCreation ? 'Hr_Delete' : 'Base_Cancel',
-          )}
-          onPress={() => {
-            isEmpty ? deleteAPI() : updateStatusAPI('cancel');
-          }}
-          width="45%"
-          color={Colors.errorColor}
-          iconName={isEmpty && !isManualCreation ? 'trash3-fill' : 'x-lg'}
-        />
-        <Button
-          title={I18n.t('Hr_Send')}
-          onPress={() => updateStatusAPI('confirm')}
-          width="45%"
-          iconName="send-fill"
-          disabled={isEmpty}
-        />
+        {(isEmpty && canDelete) || (!isEmpty && !readonly) ? (
+          <Button
+            title={I18n.t(
+              isEmpty && !isManualCreation ? 'Hr_Delete' : 'Base_Cancel',
+            )}
+            onPress={() => {
+              isEmpty ? deleteAPI() : updateStatusAPI('cancel');
+            }}
+            width="45%"
+            color={Colors.errorColor}
+            iconName={isEmpty && !isManualCreation ? 'trash3-fill' : 'x-lg'}
+          />
+        ) : null}
+        {!readonly && (
+          <Button
+            title={I18n.t('Hr_Send')}
+            onPress={() => updateStatusAPI('confirm')}
+            width="45%"
+            iconName="send-fill"
+            disabled={isEmpty}
+          />
+        )}
       </View>
     );
   }
 
   if (
+    !readonly &&
     (user?.employee?.hrManager ||
       timesheet.employee?.managerUser?.id === user.id) &&
     statusSelect === Timesheet.statusSelect.WaitingValidation

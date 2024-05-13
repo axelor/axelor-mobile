@@ -18,11 +18,19 @@
 
 import React from 'react';
 import {StyleSheet} from 'react-native';
-import {useNavigation} from '@axelor/aos-mobile-core';
+import {useNavigation, usePermitted} from '@axelor/aos-mobile-core';
 import {CircleButton} from '@axelor/aos-mobile-ui';
 
 const TicketEditButton = ({idTicket}) => {
   const navigation = useNavigation();
+  const {readonly} = usePermitted({
+    modelName: 'com.axelor.apps.helpdesk.db.Ticket',
+  });
+
+  if (readonly) {
+    return null;
+  }
+
   return (
     <CircleButton
       style={styles.floatingButton}

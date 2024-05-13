@@ -124,7 +124,7 @@ const InterventionQuestionFormScreen = ({route, navigation}) => {
         actions={[
           {
             key: 'save-interventionQuestion',
-            type: 'custom',
+            type: 'update',
             needValidation: true,
             needRequiredFields: true,
             hideIf: () =>

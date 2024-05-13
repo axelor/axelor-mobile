@@ -136,6 +136,7 @@ const CustomFieldForm = ({
     <FormView
       actions={_additionalActions}
       formKey={FORM_KEY}
+      isCustom={true}
       defaultValue={attrsValues == null ? {...defaults} : attrsValues}
       readonlyButton={readonlyButton}
     />

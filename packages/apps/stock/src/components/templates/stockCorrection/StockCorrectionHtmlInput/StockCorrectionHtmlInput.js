@@ -25,6 +25,7 @@ const StockCorrectionHtmlInput = ({
   stockCorrection,
   setComments,
   setSaveStatus = () => {},
+  readonly = false,
 }) => {
   const I18n = useTranslator();
 
@@ -39,6 +40,7 @@ const StockCorrectionHtmlInput = ({
       defaultValue={stockCorrection?.comments}
       onChange={handleCommentsChange}
       readonly={
+        readonly ||
         stockCorrection?.statusSelect === StockCorrection.status.Validated
       }
       hideIfNull={true}

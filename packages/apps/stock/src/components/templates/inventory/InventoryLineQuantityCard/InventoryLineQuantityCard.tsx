@@ -22,7 +22,12 @@ import {Text, useDigitFormat} from '@axelor/aos-mobile-ui';
 import Inventory from '../../../../types/inventory';
 import {QuantityCard} from '../../../organisms';
 
-const InventoryLineQuantityCard = ({realQty, setRealQty, inventoryLine}) => {
+const InventoryLineQuantityCard = ({
+  realQty,
+  setRealQty,
+  inventoryLine,
+  readonly = false,
+}) => {
   const I18n = useTranslator();
   const formatNumber = useDigitFormat();
 
@@ -33,7 +38,9 @@ const InventoryLineQuantityCard = ({realQty, setRealQty, inventoryLine}) => {
       labelQty={`${I18n.t('Stock_PhysicalQty')} :`}
       defaultValue={realQty}
       onValueChange={setRealQty}
-      editable={inventory.statusSelect !== Inventory.status.Validated}
+      editable={
+        !readonly && inventory.statusSelect !== Inventory.status.Validated
+      }
       isBigButton={true}>
       {inventoryLine == null ? (
         <Text>
