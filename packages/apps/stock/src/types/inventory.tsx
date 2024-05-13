@@ -19,21 +19,21 @@
 import {getTypes} from '@axelor/aos-mobile-core';
 
 class Inventory {
-  static statusSelect = getTypes()?.Inventory?.statusSelect;
-
   static getDate = (item: any): string => {
+    const statusSelect = getTypes().Inventory?.statusSelect;
+
     switch (item.statusSelect) {
-      case this.statusSelect.Draft:
+      case statusSelect.Draft:
         return item.createdOn;
-      case this.statusSelect.Planned:
+      case statusSelect.Planned:
         return item.plannedStartDateT;
-      case this.statusSelect.InProgress:
+      case statusSelect.InProgress:
         return item.plannedStartDateT;
-      case this.statusSelect.Completed:
+      case statusSelect.Completed:
         return item.updatedOn;
-      case this.statusSelect.Validated:
+      case statusSelect.Validated:
         return item.validatedOn;
-      case this.statusSelect.Canceled:
+      case statusSelect.Canceled:
         return item.updatedOn;
       default:
         console.warn(
@@ -48,10 +48,12 @@ class Inventory {
     product: any,
     trackingNumber: any,
   ) => {
+    const statusSelect = getTypes().Inventory?.statusSelect;
+
     return (
       product?.trackingNumberConfiguration != null &&
       trackingNumber == null &&
-      !(status >= this.statusSelect.Completed)
+      !(status >= statusSelect.Completed)
     );
   };
 }

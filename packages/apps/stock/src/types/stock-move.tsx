@@ -19,17 +19,17 @@
 import {getTypes} from '@axelor/aos-mobile-core';
 
 class StockMove {
-  static statusSelect = getTypes()?.StockMove?.statusSelect;
-
   static getStockMoveDate = (status: number, stockMove: any) => {
+    const statusSelect = getTypes()?.StockMove?.statusSelect;
+
     switch (status) {
-      case this.statusSelect.Draft:
+      case statusSelect.Draft:
         return stockMove?.createdOn;
-      case this.statusSelect.Planned:
+      case statusSelect.Planned:
         return stockMove?.estimatedDate;
-      case this.statusSelect.Realized:
+      case statusSelect.Realized:
         return stockMove?.realDate;
-      case this.statusSelect.Canceled:
+      case statusSelect.Canceled:
         return stockMove?.realDate;
       default:
         console.warn(
@@ -44,10 +44,12 @@ class StockMove {
     product: any,
     trackingNumber: any,
   ) => {
+    const statusSelect = getTypes()?.StockMove?.statusSelect;
+
     return (
       product?.trackingNumberConfiguration != null &&
       trackingNumber == null &&
-      status === this.statusSelect.Planned
+      status === statusSelect.Planned
     );
   };
 }

@@ -18,15 +18,13 @@
 
 import {getTypes} from '@axelor/aos-mobile-core';
 
-const StockMove = getTypes().StockMove;
-
 export const showLine = ({
   item,
   itemLine,
   lineDetailsScreen,
   selectTrackingScreen,
   selectProductScreen,
-  detailStatus = StockMove?.statusSelect.Realized,
+  detailStatus: _detailStatus,
   skipTrackingNumberVerification = false,
   skipVerification = false,
   navigation,
@@ -41,6 +39,9 @@ export const showLine = ({
   skipVerification?: boolean;
   navigation: any;
 }) => {
+  const StockMove = getTypes().StockMove;
+  const detailStatus = _detailStatus ?? StockMove?.statusSelect.Realized;
+
   if (itemLine?.data == null) {
     return;
   }

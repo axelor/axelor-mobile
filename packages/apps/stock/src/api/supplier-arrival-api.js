@@ -24,14 +24,14 @@ import {
   getTypes,
 } from '@axelor/aos-mobile-core';
 
-const StockMove = getTypes().StockMove;
-
 const createSearchCriteria = (
   searchValue,
   toStockLocationId,
   partnerId,
   statusList,
 ) => {
+  const StockMove = getTypes().StockMove;
+
   const criteria = [
     {
       fieldName: 'isReversion',
@@ -127,10 +127,12 @@ export async function addLineStockMove({
   trackingNumberId,
   expectedQty,
   realQty,
-  conformity = StockMove?.conformitySelect.None,
+  conformity,
   version,
   toStockLocationId,
 }) {
+  const StockMove = getTypes().StockMove;
+
   return axiosApiProvider.post({
     url: `/ws/aos/stock-move/add-line/${stockMoveId}`,
     data: {
@@ -139,7 +141,7 @@ export async function addLineStockMove({
       trackingNumberId: trackingNumberId,
       expectedQty: expectedQty,
       realQty: realQty,
-      conformity: conformity,
+      conformity: conformity ?? StockMove?.conformitySelect.None,
       version,
       toStockLocationId,
     },

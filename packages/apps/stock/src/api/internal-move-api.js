@@ -24,15 +24,15 @@ import {
   getTypes,
 } from '@axelor/aos-mobile-core';
 
-const StockLocation = getTypes().StockLocation;
-const StockMove = getTypes().StockMove;
-
 const createSearchCriteria = (
   searchValue,
   fromStockLocationId,
   toStockLocationId,
   statusList,
 ) => {
+  const StockLocation = getTypes().StockLocation;
+  const StockMove = getTypes().StockMove;
+
   const criteria = [
     {
       fieldName: 'fromStockLocation.typeSelect',

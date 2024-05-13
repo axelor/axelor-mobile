@@ -19,8 +19,6 @@
 import {ThemeColors} from '@axelor/aos-mobile-ui';
 import {getTypes, TranslatorProps} from '@axelor/aos-mobile-core';
 
-const StockMove = getTypes().StockMove;
-
 class StockMoveLine {
   static status = {
     Done: 'done',
@@ -29,6 +27,8 @@ class StockMoveLine {
   };
 
   static hideLineQty = (line, stockMove) => {
+    const StockMove = getTypes().StockMove;
+
     return (
       line?.isRealQtyModifiedByUser === false &&
       stockMove?.statusSelect <= StockMove?.statusSelect.Planned

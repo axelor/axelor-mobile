@@ -24,9 +24,9 @@ import {
   getTypes,
 } from '@axelor/aos-mobile-core';
 
-const Inventory = getTypes().Inventory;
-
 const createSearchCriteria = (searchValue, stockLocationId, statusList) => {
+  const Inventory = getTypes().Inventory;
+
   const criteria = [
     {
       fieldName: 'statusSelect',
