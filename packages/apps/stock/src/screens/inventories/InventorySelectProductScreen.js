@@ -18,9 +18,8 @@
 
 import React, {useState} from 'react';
 import {Alert, HeaderContainer, Screen, Text} from '@axelor/aos-mobile-ui';
-import {useTranslator} from '@axelor/aos-mobile-core';
+import {useTranslator, useTypes} from '@axelor/aos-mobile-core';
 import {InventoryHeader, ProductSearchBar} from '../../components';
-import Inventory from '../../types/inventory';
 
 const productScanKey = 'product_inventory-select';
 
@@ -28,6 +27,7 @@ const InventorySelectProductScreen = ({route, navigation}) => {
   const inventory = route.params.inventory;
   const inventoryLine = route.params.inventoryLine;
   const I18n = useTranslator();
+  const {Inventory} = useTypes();
 
   const [isVisible, setVisible] = useState(false);
 
@@ -76,7 +76,7 @@ const InventorySelectProductScreen = ({route, navigation}) => {
             reference={inventory.inventorySeq}
             status={inventory.statusSelect}
             date={
-              inventory.statusSelect === Inventory.status.Planned
+              inventory.statusSelect === Inventory?.statusSelect.Planned
                 ? inventory.plannedStartDateT
                 : inventory.plannedEndDateT
             }

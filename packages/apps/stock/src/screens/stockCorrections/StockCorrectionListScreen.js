@@ -16,19 +16,20 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import React, {useCallback, useEffect, useState} from 'react';
+import React, {useCallback, useEffect, useMemo, useState} from 'react';
 import {
   ChipSelect,
   HeaderContainer,
   Screen,
   ScrollList,
-  useThemeColor,
 } from '@axelor/aos-mobile-ui';
 import {
   useDispatch,
   useIsFocused,
   useSelector,
   useTranslator,
+  useTypeHelpers,
+  useTypes,
 } from '@axelor/aos-mobile-core';
 import {
   ProductSearchBar,
@@ -36,16 +37,16 @@ import {
   StockLocationSearchBar,
 } from '../../components';
 import {searchStockCorrections} from '../../features/stockCorrectionSlice';
-import StockCorrection from '../../types/stock-corrrection';
 
 const stockLocationScanKey = 'stock-location_stock-correction-list';
 const productScanKey = 'product_stock-correction-list';
 
 const StockCorrectionListScreen = ({navigation}) => {
-  const Colors = useThemeColor();
   const I18n = useTranslator();
   const isFocused = useIsFocused();
   const dispatch = useDispatch();
+  const {StockCorrection} = useTypes();
+  const {getSelectionItems} = useTypeHelpers();
 
   const {loadingList, moreLoading, isListEnd, stockCorrectionList} =
     useSelector(state => state.stockCorrection);
@@ -59,6 +60,11 @@ const StockCorrectionListScreen = ({navigation}) => {
       stockCorrectionId: stockCorrection?.id,
     });
   };
+
+  const statusList = useMemo(
+    () => getSelectionItems(StockCorrection?.statusSelect, selectedStatus),
+    [StockCorrection, getSelectionItems, selectedStatus],
+  );
 
   const searchStockCorrectionsAPI = useCallback(
     page => {
@@ -88,13 +94,9 @@ const StockCorrectionListScreen = ({navigation}) => {
         chipComponent={
           <ChipSelect
             mode="switch"
-            onChangeValue={chiplist => setSelectedStatus(chiplist)}
+            onChangeValue={setSelectedStatus}
             isRefresh
-            selectionItems={StockCorrection.getStatusList(
-              Colors,
-              I18n,
-              selectedStatus,
-            )}
+            selectionItems={statusList}
           />
         }>
         <StockLocationSearchBar
@@ -117,7 +119,7 @@ const StockCorrectionListScreen = ({navigation}) => {
             productFullname={item.product.fullName}
             stockLocation={item.stockLocation.name}
             date={
-              item.statusSelect === StockCorrection.status.Draft
+              item.statusSelect === StockCorrection?.statusSelect.Draft
                 ? item.createdOn
                 : item.validationDateT
             }

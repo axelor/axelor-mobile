@@ -17,11 +17,13 @@
  */
 
 import React, {useMemo, useState} from 'react';
-import {ChipSelect, Screen, useThemeColor} from '@axelor/aos-mobile-ui';
+import {ChipSelect, Screen} from '@axelor/aos-mobile-ui';
 import {
   SearchListView,
   useSelector,
   useTranslator,
+  useTypeHelpers,
+  useTypes,
 } from '@axelor/aos-mobile-core';
 import {
   CustomerDeliveryCard,
@@ -30,13 +32,13 @@ import {
 } from '../../components';
 import {searchDeliveries} from '../../features/customerDeliverySlice';
 import {displayStockMoveSeq} from '../../utils/displayers';
-import StockMove from '../../types/stock-move';
 
 const stockLocationScanKey = 'stock-location_customer-delivery-list';
 
 const CustomerDeliveryListScreen = ({navigation}) => {
-  const Colors = useThemeColor();
   const I18n = useTranslator();
+  const {StockMove} = useTypes();
+  const {getSelectionItems} = useTypeHelpers();
 
   const {loadingList, moreLoading, isListEnd, deliveryList} = useSelector(
     state => state.customerDelivery,
@@ -55,6 +57,17 @@ const CustomerDeliveryListScreen = ({navigation}) => {
       });
     }
   };
+
+  const statusList = useMemo(() => {
+    const statusToDisplay = [
+      StockMove?.statusSelect.Planned,
+      StockMove?.statusSelect.Realized,
+    ];
+
+    return getSelectionItems(StockMove?.statusSelect, selectedStatus).filter(
+      ({value}) => statusToDisplay.includes(value),
+    );
+  }, [StockMove?.statusSelect, getSelectionItems, selectedStatus]);
 
   const sliceFunctionData = useMemo(
     () => ({
@@ -81,25 +94,8 @@ const CustomerDeliveryListScreen = ({navigation}) => {
         chipComponent={
           <ChipSelect
             mode="switch"
-            onChangeValue={chiplist => setSelectedStatus(chiplist)}
-            selectionItems={[
-              {
-                title: I18n.t('Stock_Status_Planned'),
-                color: StockMove.getStatusColor(
-                  StockMove.status.Planned,
-                  Colors,
-                ),
-                key: StockMove.status.Planned,
-              },
-              {
-                title: I18n.t('Stock_Status_Realized'),
-                color: StockMove.getStatusColor(
-                  StockMove.status.Realized,
-                  Colors,
-                ),
-                key: StockMove.status.Realized,
-              },
-            ]}
+            onChangeValue={setSelectedStatus}
+            selectionItems={statusList}
           />
         }
         headerChildren={
@@ -123,9 +119,9 @@ const CustomerDeliveryListScreen = ({navigation}) => {
             client={item.partner?.fullName}
             status={item.statusSelect}
             date={
-              item.statusSelect === StockMove.status.Draft
+              item.statusSelect === StockMove?.statusSelect.Draft
                 ? item.createdOn
-                : item.statusSelect === StockMove.status.Planned
+                : item.statusSelect === StockMove?.statusSelect.Planned
                 ? item.estimatedDate
                 : item.realDate
             }

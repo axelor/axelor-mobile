@@ -18,14 +18,18 @@
 
 import React, {useMemo} from 'react';
 import {StyleSheet, View} from 'react-native';
-import {useTranslator, useSelector, isEmpty} from '@axelor/aos-mobile-core';
+import {
+  useTranslator,
+  useSelector,
+  isEmpty,
+  useTypes,
+} from '@axelor/aos-mobile-core';
 import {
   Text,
   Badge,
   useThemeColor,
   useDigitFormat,
 } from '@axelor/aos-mobile-ui';
-import StockMove from '../../../../types/stock-move';
 import {QuantityCard} from '../../../organisms';
 
 const CustomerDeliveryLineQuantityCard = ({
@@ -38,6 +42,7 @@ const CustomerDeliveryLineQuantityCard = ({
   const I18n = useTranslator();
   const Colors = useThemeColor();
   const formatNumber = useDigitFormat();
+  const {StockMove} = useTypes();
 
   const {productFromId: product} = useSelector((state: any) => state.product);
 
@@ -70,7 +75,8 @@ const CustomerDeliveryLineQuantityCard = ({
       defaultValue={realQty}
       onValueChange={handleQtyChange}
       editable={
-        !readonly && customerDelivery.statusSelect !== StockMove.status.Realized
+        !readonly &&
+        customerDelivery.statusSelect !== StockMove?.statusSelect.Realized
       }
       isBigButton={true}>
       <View style={styles.headerQuantityCard}>

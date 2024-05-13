@@ -16,7 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import {StockMove} from '../types';
+import {getTypes} from '@axelor/aos-mobile-core';
 
 export const showLine = ({
   item,
@@ -24,7 +24,7 @@ export const showLine = ({
   lineDetailsScreen,
   selectTrackingScreen,
   selectProductScreen,
-  detailStatus = StockMove.status.Realized,
+  detailStatus: _detailStatus,
   skipTrackingNumberVerification = false,
   skipVerification = false,
   navigation,
@@ -39,6 +39,9 @@ export const showLine = ({
   skipVerification?: boolean;
   navigation: any;
 }) => {
+  const StockMove = getTypes().StockMove;
+  const detailStatus = _detailStatus ?? StockMove?.statusSelect.Realized;
+
   if (itemLine?.data == null) {
     return;
   }
