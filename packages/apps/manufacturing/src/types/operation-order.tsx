@@ -18,73 +18,13 @@
 
 import {
   calculateDiff,
+  getTypes,
   StopwatchType,
   TranslatorProps,
 } from '@axelor/aos-mobile-core';
-import {Color, ThemeColors} from '@axelor/aos-mobile-ui';
 import {getDates} from '../utils';
 
 class OperationOrder {
-  static status = {
-    Draft: 1,
-    Canceled: 2,
-    Planned: 3,
-    InProgress: 4,
-    StandBy: 5,
-    Finished: 6,
-    Merged: 7,
-  };
-
-  static getStatus = (select: number, I18n: TranslatorProps): string => {
-    if (I18n) {
-      switch (select) {
-        case this.status.Draft:
-          return I18n.t('Manufacturing_Status_Draft');
-        case this.status.Planned:
-          return I18n.t('Manufacturing_Status_Planned');
-        case this.status.InProgress:
-          return I18n.t('Manufacturing_Status_InProgress');
-        case this.status.StandBy:
-          return I18n.t('Manufacturing_Status_StandBy');
-        case this.status.Finished:
-          return I18n.t('Manufacturing_Status_Finished');
-        case this.status.Merged:
-          return I18n.t('Manufacturing_Status_Merged');
-        case this.status.Canceled:
-          return I18n.t('Manufacturing_Status_Canceled');
-        default:
-          console.warn(
-            `Status provided with value ${select} is not supported by operation order`,
-          );
-          return null;
-      }
-    }
-  };
-
-  static getStatusColor = (status: number, Colors: ThemeColors): Color => {
-    switch (status) {
-      case this.status.Draft:
-        return Colors.secondaryColor;
-      case this.status.Planned:
-        return Colors.plannedColor;
-      case this.status.InProgress:
-        return Colors.progressColor;
-      case this.status.StandBy:
-        return Colors.cautionColor;
-      case this.status.Finished:
-        return Colors.successColor;
-      case this.status.Merged:
-        return Colors.priorityColor;
-      case this.status.Canceled:
-        return Colors.errorColor;
-      default:
-        console.warn(
-          `Status provided with value ${status} is not supported by operation order`,
-        );
-        return null;
-    }
-  };
-
   static getDates = (
     status: number,
     plannedStartDate: string,
@@ -95,7 +35,7 @@ class OperationOrder {
   ): {title: string; value: string}[] => {
     return getDates(
       status,
-      this.status,
+      getTypes()?.OperationOrder?.statusSelect,
       plannedStartDate,
       plannedEndDate,
       realStartDate,
@@ -108,6 +48,7 @@ class OperationOrder {
     operationOrder: any,
     userId?: number,
   ): {status?: number; time?: number} => {
+    const statusSelect = getTypes()?.OperationOrder?.statusSelect;
     const _durationList = operationOrder?.operationOrderDurationList?.filter(
       _duration => {
         if (userId != null) {
@@ -119,23 +60,23 @@ class OperationOrder {
     );
 
     switch (operationOrder.statusSelect) {
-      case OperationOrder.status.Draft:
-      case OperationOrder.status.Planned:
+      case statusSelect.Draft:
+      case statusSelect.Planned:
         return {
           status: StopwatchType.status.Ready,
           time: 0,
         };
-      case OperationOrder.status.InProgress:
+      case statusSelect.InProgress:
         return {
           status: this.getTimerStatus(_durationList),
           time: this.getTotalDuration(_durationList),
         };
-      case OperationOrder.status.StandBy:
+      case statusSelect.StandBy:
         return {
           status: this.getTimerStatus(_durationList),
           time: this.getTotalDuration(_durationList),
         };
-      case OperationOrder.status.Finished:
+      case statusSelect.Finished:
         return {
           status: StopwatchType.status.Finished,
           time: operationOrder.realDuration * 1000,
@@ -177,27 +118,6 @@ class OperationOrder {
     } else {
       return StopwatchType.status.Paused;
     }
-  };
-
-  static getCalendarListItems = (list: any[], Colors: ThemeColors): any[] => {
-    if (list == null || list.length === 0) {
-      return [];
-    }
-
-    return list.map(_e => {
-      return {
-        id: _e.id,
-        startDate: _e.plannedStartDateT,
-        endDate: _e.plannedEndDateT,
-        data: {
-          id: _e.id,
-          name: _e.operationName,
-          ref: _e.manufOrder?.manufOrderSeq,
-          workCenter: _e.workCenter?.name,
-          border: this.getStatusColor(_e.statusSelect, Colors).background,
-        },
-      };
-    });
   };
 }
 

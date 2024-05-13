@@ -18,17 +18,23 @@
 
 import React, {useMemo} from 'react';
 import {FromTo, TitledValue} from '@axelor/aos-mobile-ui';
-import {isEmpty, useSelector, useTranslator} from '@axelor/aos-mobile-core';
-import OperationOrder from '../../../types/operation-order';
+import {
+  isEmpty,
+  useSelector,
+  useTranslator,
+  useTypes,
+} from '@axelor/aos-mobile-core';
+import {default as OperationOrderType} from '../../../types/operation-order';
 
 function OperationOrderDatesCard({}) {
   const I18n = useTranslator();
+  const {OperationOrder} = useTypes();
 
   const {operationOrder} = useSelector((state: any) => state.operationOrder);
 
   const [startDate, endDate] = useMemo(() => {
     if (!isEmpty(operationOrder)) {
-      return OperationOrder.getDates(
+      return OperationOrderType.getDates(
         operationOrder?.statusSelect,
         operationOrder?.plannedStartDateT,
         operationOrder?.plannedEndDateT,
@@ -45,8 +51,10 @@ function OperationOrderDatesCard({}) {
       fromComponent={
         <TitledValue
           title={
-            operationOrder?.statusSelect === OperationOrder.status.Draft ||
-            operationOrder?.statusSelect === OperationOrder.status.Planned
+            operationOrder?.statusSelect ===
+              OperationOrder?.statusSelect.Draft ||
+            operationOrder?.statusSelect ===
+              OperationOrder?.statusSelect.Planned
               ? I18n.t('Base_Estimated')
               : I18n.t('Base_Real')
           }
@@ -56,7 +64,8 @@ function OperationOrderDatesCard({}) {
       toComponent={
         <TitledValue
           title={
-            operationOrder?.statusSelect === OperationOrder.status.Finished
+            operationOrder?.statusSelect ===
+            OperationOrder?.statusSelect.Finished
               ? I18n.t('Base_Real')
               : I18n.t('Base_Estimated')
           }

@@ -18,8 +18,8 @@
 
 import React, {useMemo} from 'react';
 import {StyleSheet} from 'react-native';
-import {ObjectCard, useDigitFormat, useThemeColor} from '@axelor/aos-mobile-ui';
-import {useTranslator} from '@axelor/aos-mobile-core';
+import {ObjectCard, useDigitFormat} from '@axelor/aos-mobile-ui';
+import {useTranslator, useTypeHelpers, useTypes} from '@axelor/aos-mobile-core';
 import ManufacturingOrder from '../../../types/manufacturing-order';
 
 interface ManufacturingOrderCardProps {
@@ -53,15 +53,15 @@ const ManufacturingOrderCard = ({
   realEndDate,
   onPress,
 }: ManufacturingOrderCardProps) => {
-  const Colors = useThemeColor();
   const I18n = useTranslator();
   const formatNumber = useDigitFormat();
+  const {ManufOrder} = useTypes();
+  const {getItemColor, getItemTitle} = useTypeHelpers();
 
   const borderStyle = useMemo(() => {
-    return getStyles(
-      ManufacturingOrder.getStatusColor(status, Colors).background,
-    )?.border;
-  }, [Colors, status]);
+    return getStyles(getItemColor(ManufOrder?.statusSelect, status)?.background)
+      ?.border;
+  }, [ManufOrder?.statusSelect, getItemColor, status]);
 
   const [startDate, endDate] = ManufacturingOrder.getDates(
     status,
@@ -80,8 +80,8 @@ const ManufacturingOrderCard = ({
         items: [
           {
             showIf: priority != null,
-            color: ManufacturingOrder.getPriorityColor(priority, Colors),
-            displayText: ManufacturingOrder.getPriority(priority, I18n),
+            color: getItemColor(ManufOrder?.prioritySelect, priority),
+            displayText: getItemTitle(ManufOrder?.prioritySelect, priority),
           },
         ],
       }}
@@ -116,8 +116,8 @@ const ManufacturingOrderCard = ({
             indicatorText: endDate.title,
             displayText: endDate.value,
             hideIf:
-              status === ManufacturingOrder.status.InProgress ||
-              status === ManufacturingOrder.status.StandBy ||
+              status === ManufOrder?.statusSelect.InProgress ||
+              status === ManufOrder?.statusSelect.StandBy ||
               endDate == null,
           },
         ],
