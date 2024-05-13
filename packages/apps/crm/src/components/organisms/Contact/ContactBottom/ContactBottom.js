@@ -17,11 +17,18 @@
  */
 
 import React from 'react';
-import {useNavigation} from '@axelor/aos-mobile-core';
+import {useNavigation, usePermitted} from '@axelor/aos-mobile-core';
 import EditButton from '../../EditButton/EditButton';
 
 const ContactBottom = ({idContact}) => {
   const navigation = useNavigation();
+  const {readonly} = usePermitted({
+    modelName: 'com.axelor.apps.base.db.Partner',
+  });
+
+  if (readonly) {
+    return null;
+  }
 
   return (
     <EditButton

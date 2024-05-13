@@ -19,7 +19,12 @@
 import React, {useCallback, useEffect, useState} from 'react';
 import {StyleSheet, View, Dimensions} from 'react-native';
 import {EditableInput, Picker, Screen, ScrollView} from '@axelor/aos-mobile-ui';
-import {useSelector, useDispatch, useTranslator} from '@axelor/aos-mobile-core';
+import {
+  useSelector,
+  useDispatch,
+  useTranslator,
+  usePermitted,
+} from '@axelor/aos-mobile-core';
 import {
   ProductCardStockIndicatorList,
   ProductSeeStockLocationDistribution,
@@ -39,6 +44,9 @@ const ProductStockDetailsScreen = ({route}) => {
   const productId = route.params.product?.id;
   const I18n = useTranslator();
   const dispatch = useDispatch();
+  const {readonly, hidden} = usePermitted({
+    modelName: 'com.axelor.apps.stock.db.StockLocationLine',
+  });
 
   const {loadingProductFromId, productFromId: product} = useSelector(
     state => state.product,
@@ -117,16 +125,18 @@ const ProductStockDetailsScreen = ({route}) => {
             onValueChange={item => setCompany(item)}
           />
         )}
-        <ProductSeeStockLocationDistribution
-          companyId={companyId}
-          product={product}
-        />
+        {!hidden && (
+          <ProductSeeStockLocationDistribution
+            companyId={companyId}
+            product={product}
+          />
+        )}
         <StockLocationSearchBar
           scanKey={stockLocationScanKey}
           onChange={setStockLocation}
           defaultValue={stockLocation}
         />
-        {stockLocation == null ? null : (
+        {readonly || stockLocation == null ? null : (
           <EditableInput
             placeholder={I18n.t('Stock_Locker')}
             onValidate={input => handleLockerChange(input)}

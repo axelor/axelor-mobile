@@ -21,6 +21,7 @@ import {StyleSheet} from 'react-native';
 import {
   useDispatch,
   useNavigation,
+  usePermitted,
   useSelector,
   useTranslator,
 } from '@axelor/aos-mobile-core';
@@ -37,6 +38,12 @@ const SupplierArrivalSearchLineContainer = ({}) => {
   const I18n = useTranslator();
   const navigation = useNavigation();
   const dispatch = useDispatch();
+  const {readonly} = usePermitted({
+    modelName: 'com.axelor.apps.stock.db.StockMove',
+  });
+  const {canCreate} = usePermitted({
+    modelName: 'com.axelor.apps.stock.db.StockMoveLine',
+  });
 
   const {mobileSettings} = useSelector(state => state.appConfig);
   const {supplierArrival} = useSelector(state => state.supplierArrival);
@@ -96,7 +103,11 @@ const SupplierArrivalSearchLineContainer = ({}) => {
   }, []);
 
   const showLineAdditionIcon = useMemo(() => {
-    if (supplierArrival.statusSelect >= StockMove.status.Realized) {
+    if (
+      readonly ||
+      !canCreate ||
+      supplierArrival.statusSelect >= StockMove.status.Realized
+    ) {
       return false;
     }
 
@@ -105,7 +116,7 @@ const SupplierArrivalSearchLineContainer = ({}) => {
     }
 
     return mobileSettings.isSupplierArrivalLineAdditionEnabled;
-  }, [supplierArrival, mobileSettings]);
+  }, [readonly, canCreate, supplierArrival, mobileSettings]);
 
   return (
     <SearchLineContainer

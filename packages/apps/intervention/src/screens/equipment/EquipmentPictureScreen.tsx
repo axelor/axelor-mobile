@@ -27,6 +27,7 @@ import {
   uploadBase64,
   showToastMessage,
   useCameraValueByKey,
+  usePermitted,
 } from '@axelor/aos-mobile-core';
 import {
   createEquipmentPicture,
@@ -41,6 +42,12 @@ const EquipmentPictureScreen = ({}) => {
   const photo = useCameraValueByKey(cameraKey);
   const dispatch = useDispatch();
   const I18n = useTranslator();
+  const {readonly} = usePermitted({
+    modelName: 'com.axelor.apps.intervention.db.Equipment',
+  });
+  const {canCreate, canDelete} = usePermitted({
+    modelName: 'com.axelor.apps.intervention.db.Picture',
+  });
 
   const {baseUrl, token, jsessionId} = useSelector((state: any) => state.auth);
   const {equipment} = useSelector((state: any) => state.intervention_equipment);
@@ -128,22 +135,26 @@ const EquipmentPictureScreen = ({}) => {
         fixedItems={<EquipmentDetailsHeader />}
       />
       <ScrollList
-        actionList={[
-          {
-            iconName: 'plus-lg',
-            title: I18n.t('Intervention_ChoosePhoto'),
-            onPress: () => {
-              handleDocumentSelection(handleUpload);
-            },
-          },
-          {
-            iconName: 'camera-fill',
-            title: I18n.t('Intervention_TakePicture'),
-            onPress: () => {
-              dispatch((enableCamera as any)(cameraKey));
-            },
-          },
-        ]}
+        actionList={
+          readonly || !canCreate
+            ? []
+            : [
+                {
+                  iconName: 'plus-lg',
+                  title: I18n.t('Intervention_ChoosePhoto'),
+                  onPress: () => {
+                    handleDocumentSelection(handleUpload);
+                  },
+                },
+                {
+                  iconName: 'camera-fill',
+                  title: I18n.t('Intervention_TakePicture'),
+                  onPress: () => {
+                    dispatch((enableCamera as any)(cameraKey));
+                  },
+                },
+              ]
+        }
         loadingList={loadingList}
         data={pairedEquipmentPictureList}
         renderItem={({item}) => (
@@ -152,7 +163,9 @@ const EquipmentPictureScreen = ({}) => {
             handleDelete={handleDeletePicture}
             selectedImageId={selectedImageId}
             onSelectImage={itemId =>
-              setSelectedImageId(itemId !== selectedImageId ? itemId : null)
+              canDelete
+                ? setSelectedImageId(itemId !== selectedImageId ? itemId : null)
+                : null
             }
           />
         )}

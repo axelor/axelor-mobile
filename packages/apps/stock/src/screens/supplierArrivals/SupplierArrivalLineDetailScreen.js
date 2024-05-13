@@ -24,7 +24,12 @@ import {
   Screen,
   KeyboardAvoidingScrollView,
 } from '@axelor/aos-mobile-ui';
-import {useDispatch, useSelector, useTranslator} from '@axelor/aos-mobile-core';
+import {
+  useDispatch,
+  usePermitted,
+  useSelector,
+  useTranslator,
+} from '@axelor/aos-mobile-core';
 import {
   StockMoveHeader,
   ProductCardInfo,
@@ -44,6 +49,9 @@ const SupplierArrivalLineDetailScreen = ({route, navigation}) => {
   const {supplierArrival, supplierArrivalLineId, productId} = route.params;
   const I18n = useTranslator();
   const dispatch = useDispatch();
+  const {readonly} = usePermitted({
+    modelName: 'com.axelor.apps.stock.db.StockMoveLine',
+  });
 
   const {stock: stockConfig} = useSelector(state => state.appConfig);
   const {productFromId: product} = useSelector(state => state.product);
@@ -166,6 +174,7 @@ const SupplierArrivalLineDetailScreen = ({route, navigation}) => {
           setRealQty={setRealQty}
           supplierArrival={supplierArrival}
           supplierArrivalLine={supplierArrivalLine}
+          readonly={readonly}
         />
         {stockConfig.isManageStockLocationOnStockMoveLine ? (
           <StockLocationSearchBar
@@ -176,6 +185,7 @@ const SupplierArrivalLineDetailScreen = ({route, navigation}) => {
             isFocus={true}
             defaultStockLocation={supplierArrival.toStockLocation}
             readOnly={
+              readonly ||
               supplierArrival?.statusSelect !== StockMove.status.Planned
             }
           />
@@ -187,7 +197,10 @@ const SupplierArrivalLineDetailScreen = ({route, navigation}) => {
           listItems={StockMove.getConformitySelection(I18n)}
           labelField="name"
           valueField="id"
-          readonly={supplierArrival?.statusSelect === StockMove.status.Realized}
+          readonly={
+            readonly ||
+            supplierArrival?.statusSelect === StockMove.status.Realized
+          }
           isScrollViewContainer={true}
         />
       </KeyboardAvoidingScrollView>

@@ -19,7 +19,11 @@
 import React from 'react';
 import {StyleSheet} from 'react-native';
 import {Text, useDigitFormat} from '@axelor/aos-mobile-ui';
-import {useNavigation, useTranslator} from '@axelor/aos-mobile-core';
+import {
+  useNavigation,
+  usePermitted,
+  useTranslator,
+} from '@axelor/aos-mobile-core';
 import {QuantityCard} from '../../../organisms';
 import StockMove from '../../../../types/stock-move';
 
@@ -31,10 +35,14 @@ const InternalMoveLineQuantityCard = ({
   setMovedQty,
   originalStockLocation,
   trackingNumber,
+  readonly = false,
 }) => {
   const I18n = useTranslator();
   const navigation = useNavigation();
   const formatNumber = useDigitFormat();
+  const {canCreate} = usePermitted({
+    modelName: 'com.axelor.apps.stock.db.StockCorrection',
+  });
 
   const handleQtyChange = value => {
     setMovedQty(value);
@@ -54,10 +62,14 @@ const InternalMoveLineQuantityCard = ({
       defaultValue={movedQty}
       onValueChange={handleQtyChange}
       editable={
-        status === StockMove.status.Draft || status === StockMove.status.Planned
+        !readonly &&
+        (status === StockMove.status.Draft ||
+          status === StockMove.status.Planned)
       }
       actionQty={
-        status === StockMove.status.Draft || status === StockMove.status.Planned
+        canCreate &&
+        (status === StockMove.status.Draft ||
+          status === StockMove.status.Planned)
       }
       onPressActionQty={handleCreateCorrection}
       isBigButton={true}>

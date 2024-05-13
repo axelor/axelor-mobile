@@ -29,6 +29,7 @@ import {
   AnomalyBubble,
   useTranslator,
   useSelector,
+  usePermitted,
 } from '@axelor/aos-mobile-core';
 import {Expense} from '../../../types';
 
@@ -61,6 +62,9 @@ const ExpenseCard = ({
 }: ExpenseCardProps) => {
   const Colors = useThemeColor();
   const I18n = useTranslator();
+  const {readonly} = usePermitted({
+    modelName: 'com.axelor.apps.hr.db.Expense',
+  });
 
   const {user} = useSelector((state: any) => state.user);
 
@@ -75,15 +79,13 @@ const ExpenseCard = ({
   }, [employeeManagerId, statusSelect, user?.employee?.hrManager, user.id]);
 
   const isDefaultDisplay = useMemo(() => {
-    if (
-      (statusSelect === Expense.statusSelect.WaitingValidation &&
-        userCanValidate) ||
-      statusSelect === Expense.statusSelect.Draft
-    ) {
-      return false;
-    }
-    return true;
-  }, [userCanValidate, statusSelect]);
+    return (
+      readonly ||
+      ((statusSelect !== Expense.statusSelect.WaitingValidation ||
+        !userCanValidate) &&
+        statusSelect !== Expense.statusSelect.Draft)
+    );
+  }, [readonly, statusSelect, userCanValidate]);
 
   const borderStyle = useMemo(() => {
     return getBorderStyle(Expense.getStatusColor(statusSelect, Colors)).border;

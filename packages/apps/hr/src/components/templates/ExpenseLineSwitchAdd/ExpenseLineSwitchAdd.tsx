@@ -18,7 +18,11 @@
 
 import React, {useMemo} from 'react';
 import {StyleSheet, View} from 'react-native';
-import {useNavigation, useSelector} from '@axelor/aos-mobile-core';
+import {
+  useNavigation,
+  usePermitted,
+  useSelector,
+} from '@axelor/aos-mobile-core';
 import {CircleButton} from '@axelor/aos-mobile-ui';
 import ExpenseLineTypeDisplay from '../ExpenseLineTypeDisplay/ExpenseLineTypeDisplay';
 import {Expense} from '../../../types';
@@ -33,15 +37,26 @@ const ExpenseLineSwitchAdd = ({
   onChangeSwicth,
 }: ExpenseLineSwitchAddProps) => {
   const navigation = useNavigation();
+  const {readonly} = usePermitted({modelName: 'com.axelor.apps.hr.db.Expense'});
+  const {canCreate} = usePermitted({
+    modelName: 'com.axelor.apps.hr.db.ExpenseLine',
+  });
 
   const {mobileSettings} = useSelector((state: any) => state.appConfig);
   const {expense} = useSelector((state: any) => state.expense);
 
   const isAddButton = useMemo(
     () =>
+      canCreate &&
+      !readonly &&
       mobileSettings?.isLineCreationOfExpenseDetailsAllowed &&
       expense.statusSelect === Expense.statusSelect.Draft,
-    [expense, mobileSettings],
+    [
+      canCreate,
+      expense,
+      mobileSettings?.isLineCreationOfExpenseDetailsAllowed,
+      readonly,
+    ],
   );
 
   return (

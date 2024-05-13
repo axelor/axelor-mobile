@@ -20,6 +20,7 @@ import {useEffect} from 'react';
 import {
   headerActionsProvider,
   useNavigation,
+  usePermitted,
   useSelector,
   useTranslator,
 } from '@axelor/aos-mobile-core';
@@ -62,6 +63,9 @@ const useCustomerDeliveryLineListActions = () => {
   const Colors = useThemeColor();
   const navigation = useNavigation();
   const I18n = useTranslator();
+  const {canCreate} = usePermitted({
+    modelName: 'com.axelor.apps.stock.db.StockMoveLine',
+  });
 
   const {mobileSettings} = useSelector(state => state.appConfig);
   const {customerDelivery} = useSelector(state => state.customerDelivery);
@@ -76,6 +80,7 @@ const useCustomerDeliveryLineListActions = () => {
           title: I18n.t('Stock_AddLine'),
           iconColor: Colors.primaryColor.background,
           hideIf:
+            !canCreate ||
             !mobileSettings?.isCustomerDeliveryLineAdditionEnabled ||
             customerDelivery?.statusSelect >= StockMove.status.Realized,
           onPress: () =>
@@ -86,13 +91,7 @@ const useCustomerDeliveryLineListActions = () => {
         },
       ],
     });
-  }, [
-    mobileSettings,
-    customerDelivery,
-    I18n,
-    Colors.primaryColor.background,
-    navigation,
-  ]);
+  }, [mobileSettings, customerDelivery, I18n, Colors, navigation, canCreate]);
 };
 
 const useCustomerDeliveryLineDetailsActions = () => {
@@ -133,6 +132,9 @@ const useInternalMoveListActions = () => {
   const Colors = useThemeColor();
   const navigation = useNavigation();
   const I18n = useTranslator();
+  const {canCreate} = usePermitted({
+    modelName: 'com.axelor.apps.stock.db.StockMove',
+  });
 
   useEffect(() => {
     headerActionsProvider.registerModel('stock_internalMove_list', {
@@ -143,12 +145,13 @@ const useInternalMoveListActions = () => {
           iconName: 'plus-lg',
           title: I18n.t('Stock_NewInternalMove'),
           iconColor: Colors.primaryColor.background,
+          hideIf: !canCreate,
           onPress: () => navigation.navigate('InternalMoveCreationScreen'),
           showInHeader: true,
         },
       ],
     });
-  }, [Colors, I18n, navigation]);
+  }, [Colors, I18n, canCreate, navigation]);
 };
 
 const useInternalMoveLineDetailsActions = () => {
@@ -247,6 +250,9 @@ const useStockCorrectionListActions = () => {
   const Colors = useThemeColor();
   const navigation = useNavigation();
   const I18n = useTranslator();
+  const {canCreate} = usePermitted({
+    modelName: 'com.axelor.apps.stock.db.StockCorrection',
+  });
 
   useEffect(() => {
     headerActionsProvider.registerModel('stock_stockCorrection_list', {
@@ -257,13 +263,14 @@ const useStockCorrectionListActions = () => {
           iconName: 'plus-lg',
           title: I18n.t('Stock_NewStockCorrection'),
           iconColor: Colors.primaryColor.background,
+          hideIf: !canCreate,
           onPress: () =>
             navigation.navigate('StockCorrectionCreationScreen', {}),
           showInHeader: true,
         },
       ],
     });
-  }, [Colors, I18n, navigation]);
+  }, [Colors, I18n, canCreate, navigation]);
 };
 
 const useStockCorrectionDetailsActions = () => {
@@ -296,6 +303,9 @@ const useSupplierArrivalLineListActions = () => {
   const Colors = useThemeColor();
   const navigation = useNavigation();
   const I18n = useTranslator();
+  const {canCreate} = usePermitted({
+    modelName: 'com.axelor.apps.stock.db.StockMoveLine',
+  });
 
   const {mobileSettings} = useSelector(state => state.appConfig);
   const {supplierArrival} = useSelector(state => state.supplierArrival);
@@ -310,6 +320,7 @@ const useSupplierArrivalLineListActions = () => {
           title: I18n.t('Stock_AddLine'),
           iconColor: Colors.primaryColor.background,
           hideIf:
+            !canCreate ||
             !mobileSettings?.isSupplierArrivalLineAdditionEnabled ||
             supplierArrival?.statusSelect >= StockMove.status.Realized,
           onPress: () =>
@@ -320,13 +331,7 @@ const useSupplierArrivalLineListActions = () => {
         },
       ],
     });
-  }, [
-    mobileSettings,
-    I18n,
-    Colors.primaryColor.background,
-    navigation,
-    supplierArrival,
-  ]);
+  }, [mobileSettings, I18n, Colors, navigation, supplierArrival, canCreate]);
 };
 
 const useSupplierArrivalLineDetailsActions = () => {

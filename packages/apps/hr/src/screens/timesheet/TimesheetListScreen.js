@@ -20,6 +20,7 @@ import React, {useCallback, useEffect, useMemo, useState} from 'react';
 import {
   headerActionsProvider,
   useDispatch,
+  usePermitted,
   useSelector,
   useTranslator,
 } from '@axelor/aos-mobile-core';
@@ -45,6 +46,9 @@ const TimesheetListScreen = ({navigation}) => {
   const Colors = useThemeColor();
   const I18n = useTranslator();
   const dispatch = useDispatch();
+  const {canCreate, readonly} = usePermitted({
+    modelName: 'com.axelor.apps.hr.db.Timesheet',
+  });
 
   const [mode, setMode] = useState(Timesheet.mode.personnal);
   const [selectedStatus, setSelectedStatus] = useState(null);
@@ -161,13 +165,14 @@ const TimesheetListScreen = ({navigation}) => {
           iconName: 'plus-lg',
           title: I18n.t('Hr_CreateTimesheet'),
           iconColor: Colors.primaryColor.background,
-          hideIf: !mobileSettings?.isManualCreationOfTimesheetAllowed,
+          hideIf:
+            !mobileSettings?.isManualCreationOfTimesheetAllowed || !canCreate,
           onPress: () => setIsCreationAlertOpen(true),
           showInHeader: true,
         },
       ],
     });
-  }, [Colors, dispatch, I18n, mobileSettings, navigation]);
+  }, [Colors, dispatch, I18n, mobileSettings, navigation, canCreate]);
 
   return (
     <Screen removeSpaceOnTop={true}>
@@ -188,6 +193,7 @@ const TimesheetListScreen = ({navigation}) => {
           <TimesheetDetailCard
             item={item}
             isValidationMode={mode === Timesheet.mode.validation}
+            isActions={!readonly}
             onPress={() =>
               navigation.navigate('TimesheetDetailsScreen', {
                 timesheetId: item.id,

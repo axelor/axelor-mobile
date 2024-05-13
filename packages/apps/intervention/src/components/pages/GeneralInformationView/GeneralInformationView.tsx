@@ -23,6 +23,7 @@ import {
   getNowDateZonesISOString,
   Stopwatch,
   useDispatch,
+  usePermitted,
   useSelector,
   useTranslator,
 } from '@axelor/aos-mobile-core';
@@ -37,6 +38,9 @@ const NUMBER_MILLISECONDS_IN_SECOND = 1000;
 const GeneralInformationView = ({}) => {
   const I18n = useTranslator();
   const dispatch = useDispatch();
+  const {readonly} = usePermitted({
+    modelName: 'com.axelor.apps.intervention.db.Intervention',
+  });
 
   const {intervention} = useSelector(
     (state: any) => state.intervention_intervention,
@@ -112,6 +116,7 @@ const GeneralInformationView = ({}) => {
         <DropdownCards intervention={intervention} />
         <Stopwatch
           style={styles.stopwatch}
+          disable={readonly}
           startTime={getDuration()}
           status={Intervention.getStopwatchStatus(intervention.statusSelect)}
           timerFormat={I18n.t('Intervention_TimerFormat')}

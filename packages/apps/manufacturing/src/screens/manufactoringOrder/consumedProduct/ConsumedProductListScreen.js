@@ -31,6 +31,7 @@ import {
   areObjectsEquals,
   ScannerAutocompleteSearch,
   useDispatch,
+  usePermitted,
   useSelector,
   useTranslator,
 } from '@axelor/aos-mobile-core';
@@ -52,6 +53,9 @@ const ConsumedProductListScreen = ({route, navigation}) => {
   const Colors = useThemeColor();
   const I18n = useTranslator();
   const dispatch = useDispatch();
+  const {canCreate, readonly} = usePermitted({
+    modelName: 'com.axelor.apps.production.db.ProdProduct',
+  });
 
   const {loadingConsumedProducts, consumedProductList} = useSelector(
     state => state.prodProducts,
@@ -167,16 +171,18 @@ const ConsumedProductListScreen = ({route, navigation}) => {
             />
             <View style={styles.titleContainer}>
               <Text>{I18n.t('Manufacturing_ConsumedProduct')}</Text>
-              {manufOrder?.statusSelect ===
-                ManufacturingOrder.status.InProgress && (
-                <Icon
-                  name="plus-lg"
-                  size={20}
-                  color={Colors.primaryColor.background}
-                  touchable={true}
-                  onPress={handleAddProduct}
-                />
-              )}
+              <Icon
+                name="plus-lg"
+                size={20}
+                color={Colors.primaryColor.background}
+                touchable={true}
+                visible={
+                  canCreate &&
+                  manufOrder?.statusSelect ===
+                    ManufacturingOrder.status.InProgress
+                }
+                onPress={handleAddProduct}
+              />
             </View>
             <ScannerAutocompleteSearch
               objectList={consumedProductList}
@@ -228,6 +234,7 @@ const ConsumedProductListScreen = ({route, navigation}) => {
               updateConsumedProductQtyAPI(item, pressValue)
             }
             disableMore={
+              readonly ||
               manufOrder?.statusSelect !== ManufacturingOrder.status.InProgress
             }
             onPress={() => handleViewItem(item)}
