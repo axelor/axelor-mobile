@@ -25,15 +25,15 @@ import {
   Screen,
   Text,
 } from '@axelor/aos-mobile-ui';
-import {useTranslator} from '@axelor/aos-mobile-core';
+import {useTranslator, useTypes} from '@axelor/aos-mobile-core';
 import {InventoryHeader, TrackingNumberSearchBar} from '../../components';
-import Inventory from '../../types/inventory';
 
 const trackingScanKey = 'tracking_inventory-select';
 
 const InventorySelectTrackingScreen = ({route, navigation}) => {
   const {inventory, inventoryLine, product} = route.params;
   const I18n = useTranslator();
+  const {Inventory} = useTypes();
 
   const [isVisible, setVisible] = useState(false);
 
@@ -73,7 +73,7 @@ const InventorySelectTrackingScreen = ({route, navigation}) => {
             reference={inventory.inventorySeq}
             status={inventory.statusSelect}
             date={
-              inventory.statusSelect === Inventory.status.Planned
+              inventory.statusSelect === Inventory?.statusSelect.Planned
                 ? inventory.plannedStartDateT
                 : inventory.plannedEndDateT
             }

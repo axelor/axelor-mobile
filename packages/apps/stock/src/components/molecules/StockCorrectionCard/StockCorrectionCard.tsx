@@ -18,9 +18,13 @@
 
 import React, {useMemo} from 'react';
 import {StyleSheet} from 'react-native';
-import {ObjectCard, useThemeColor} from '@axelor/aos-mobile-ui';
-import {formatDate, useTranslator} from '@axelor/aos-mobile-core';
-import StockCorrection from '../../../types/stock-corrrection';
+import {ObjectCard} from '@axelor/aos-mobile-ui';
+import {
+  formatDate,
+  useTranslator,
+  useTypeHelpers,
+  useTypes,
+} from '@axelor/aos-mobile-core';
 
 interface StockCorrectionCardProps {
   style?: any;
@@ -39,13 +43,15 @@ const StockCorrectionCard = ({
   date,
   onPress,
 }: StockCorrectionCardProps) => {
-  const Colors = useThemeColor();
   const I18n = useTranslator();
+  const {StockCorrection} = useTypes();
+  const {getItemColor} = useTypeHelpers();
 
   const borderStyle = useMemo(() => {
-    return getStyles(StockCorrection.getStatusColor(status, Colors)?.background)
-      ?.border;
-  }, [Colors, status]);
+    return getStyles(
+      getItemColor(StockCorrection?.statusSelect, status)?.background,
+    )?.border;
+  }, [StockCorrection?.statusSelect, getItemColor, status]);
 
   const _formatDate = useMemo(() => {
     if (date == null) {
@@ -53,12 +59,12 @@ const StockCorrectionCard = ({
     }
     const _date = formatDate(date, I18n.t('Base_DateFormat'));
 
-    if (status === StockCorrection.status.Draft) {
+    if (status === StockCorrection?.statusSelect.Draft) {
       return `${I18n.t('Base_CreatedOn')} ${_date}`;
     }
 
     return `${I18n.t('Base_ValidatedOn')} ${_date}`;
-  }, [I18n, date, status]);
+  }, [I18n, StockCorrection?.statusSelect.Draft, date, status]);
 
   return (
     <ObjectCard
@@ -74,7 +80,7 @@ const StockCorrectionCard = ({
             hideIfNull: true,
             style: [
               styles.noBold,
-              status === StockCorrection.status.Draft
+              status === StockCorrection?.statusSelect.Draft
                 ? styles.creationDate
                 : null,
             ],

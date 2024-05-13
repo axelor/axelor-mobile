@@ -28,6 +28,7 @@ import {
   usePermitted,
   useSelector,
   useTranslator,
+  useTypes,
 } from '@axelor/aos-mobile-core';
 import {
   DescriptionCard,
@@ -39,12 +40,13 @@ import {
 } from '../../components';
 import {fetchInventoryLine} from '../../features/inventoryLineSlice';
 import {fetchProductWithId} from '../../features/productSlice';
-import Inventory from '../../types/inventory';
+import {Inventory as InventoryType} from '../../types';
 
 const InventoryLineDetailsScreen = ({route, navigation}) => {
   const {inventory, inventoryLineId, productId} = route.params;
   const I18n = useTranslator();
   const dispatch = useDispatch();
+  const {Inventory} = useTypes();
   const {readonly} = usePermitted({
     modelName: 'com.axelor.apps.stock.db.InventoryLine',
   });
@@ -66,7 +68,7 @@ const InventoryLineDetailsScreen = ({route, navigation}) => {
 
   const isTrackingNumberSelectVisible = useMemo(
     () =>
-      Inventory.isTrackingNumberSelectVisible(
+      InventoryType.isTrackingNumberSelectVisible(
         inventory?.statusSelect,
         productFromId,
         trackingNumber,
@@ -124,7 +126,7 @@ const InventoryLineDetailsScreen = ({route, navigation}) => {
             reference={inventory.inventorySeq}
             status={inventory.statusSelect}
             date={
-              inventory.statusSelect === Inventory.status.Planned
+              inventory.statusSelect === Inventory?.statusSelect.Planned
                 ? inventory.plannedStartDateT
                 : inventory.plannedEndDateT
             }
@@ -162,8 +164,8 @@ const InventoryLineDetailsScreen = ({route, navigation}) => {
           description={description}
           isEditable={
             !readonly &&
-            inventory.statusSelect !== Inventory.status.Completed &&
-            inventory.statusSelect !== Inventory.status.Validated
+            inventory.statusSelect !== Inventory?.statusSelect.Completed &&
+            inventory.statusSelect !== Inventory?.statusSelect.Validated
           }
         />
         {inventoryLine == null && (

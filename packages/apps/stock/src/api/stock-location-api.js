@@ -19,19 +19,21 @@
 import {
   createStandardSearch,
   getSearchCriterias,
+  getTypes,
 } from '@axelor/aos-mobile-core';
-import StockLocation from '../types/stock-location';
 
 const createSearchCriteria = ({
   companyId,
   searchValue,
   defaultStockLocation,
 }) => {
+  const StockLocation = getTypes().StockLocation;
+
   let criterias = [
     {
       fieldName: 'typeSelect',
       operator: '=',
-      value: StockLocation.type.internal,
+      value: StockLocation?.typeSelect.internal,
     },
     getSearchCriterias('stock_stockLocation', searchValue),
   ];

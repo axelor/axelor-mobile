@@ -18,8 +18,12 @@
 
 import React, {useEffect} from 'react';
 import {getFromList, Picker} from '@axelor/aos-mobile-ui';
-import {useDispatch, useSelector, useTranslator} from '@axelor/aos-mobile-core';
-import StockMove from '../../../../types/stock-move';
+import {
+  useDispatch,
+  useSelector,
+  useTranslator,
+  useTypes,
+} from '@axelor/aos-mobile-core';
 import {fetchUnit} from '../../../../features/unitSlice';
 
 const InternalMoveLinePicker = ({
@@ -31,6 +35,7 @@ const InternalMoveLinePicker = ({
 }) => {
   const I18n = useTranslator();
   const dispatch = useDispatch();
+  const {StockMove} = useTypes();
 
   const {unitList} = useSelector(state => state.unit);
 
@@ -56,8 +61,8 @@ const InternalMoveLinePicker = ({
       valueField="id"
       readonly={
         readonly ||
-        status === StockMove.status.Realized ||
-        status === StockMove.status.Canceled
+        status === StockMove?.statusSelect.Realized ||
+        status === StockMove?.statusSelect.Canceled
       }
       required={true}
       isScrollViewContainer={isScrollViewContainer}

@@ -24,12 +24,13 @@ import {
   usePermitted,
   useSelector,
   useTranslator,
+  useTypes,
 } from '@axelor/aos-mobile-core';
 import {SearchLineContainer} from '../../../organisms';
 import {SupplierArrivalLineCard} from '../../../templates';
 import {showLine} from '../../../../utils/line-navigation';
 import {fetchSupplierArrivalLines} from '../../../../features/supplierArrivalLineSlice';
-import {StockMove, StockMoveLine} from '../../../../types';
+import {StockMoveLine} from '../../../../types';
 import {useSupplierLinesWithRacks} from '../../../../hooks';
 
 const scanKey = 'trackingNumber-or-product_supplier-arrival-details';
@@ -38,6 +39,7 @@ const SupplierArrivalSearchLineContainer = ({}) => {
   const I18n = useTranslator();
   const navigation = useNavigation();
   const dispatch = useDispatch();
+  const {StockMove} = useTypes();
   const {readonly} = usePermitted({
     modelName: 'com.axelor.apps.stock.db.StockMove',
   });
@@ -106,7 +108,7 @@ const SupplierArrivalSearchLineContainer = ({}) => {
     if (
       readonly ||
       !canCreate ||
-      supplierArrival.statusSelect >= StockMove.status.Realized
+      supplierArrival.statusSelect >= StockMove?.statusSelect.Realized
     ) {
       return false;
     }
@@ -116,7 +118,13 @@ const SupplierArrivalSearchLineContainer = ({}) => {
     }
 
     return mobileSettings.isSupplierArrivalLineAdditionEnabled;
-  }, [readonly, canCreate, supplierArrival, mobileSettings]);
+  }, [
+    readonly,
+    canCreate,
+    supplierArrival,
+    StockMove?.statusSelect.Realized,
+    mobileSettings,
+  ]);
 
   return (
     <SearchLineContainer

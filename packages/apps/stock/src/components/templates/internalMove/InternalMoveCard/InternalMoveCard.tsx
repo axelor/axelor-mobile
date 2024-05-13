@@ -18,9 +18,13 @@
 
 import React, {useMemo} from 'react';
 import {StyleSheet} from 'react-native';
-import {ObjectCard, useThemeColor} from '@axelor/aos-mobile-ui';
-import {formatDate, useTranslator} from '@axelor/aos-mobile-core';
-import StockMove from '../../../../types/stock-move';
+import {ObjectCard} from '@axelor/aos-mobile-ui';
+import {
+  formatDate,
+  useTranslator,
+  useTypeHelpers,
+  useTypes,
+} from '@axelor/aos-mobile-core';
 
 interface InternalMoveCardProps {
   style?: any;
@@ -45,13 +49,14 @@ const InternalMoveCard = ({
   date,
   onPress,
 }: InternalMoveCardProps) => {
-  const Colors = useThemeColor();
   const I18n = useTranslator();
+  const {StockMove} = useTypes();
+  const {getItemColor, getItemTitle} = useTypeHelpers();
 
   const borderStyle = useMemo(() => {
-    return getStyles(StockMove.getStatusColor(status, Colors).background)
+    return getStyles(getItemColor(StockMove?.statusSelect, status)?.background)
       ?.border;
-  }, [Colors, status]);
+  }, [StockMove?.statusSelect, getItemColor, status]);
 
   const _formatDate = useMemo(() => {
     if (date == null) {
@@ -59,16 +64,16 @@ const InternalMoveCard = ({
     }
     const _date = formatDate(date, I18n.t('Base_DateFormat'));
 
-    if (status === StockMove.status.Draft) {
+    if (status === StockMove?.statusSelect.Draft) {
       return `${I18n.t('Base_CreatedOn')} ${_date}`;
     }
 
-    if (status === StockMove.status.Planned) {
+    if (status === StockMove?.statusSelect.Planned) {
       return `${I18n.t('Base_PlannedFor')} ${_date}`;
     }
 
     return `${I18n.t('Base_ValidatedOn')} ${_date}`;
-  }, [I18n, date, status]);
+  }, [I18n, StockMove?.statusSelect, date, status]);
 
   return (
     <ObjectCard
@@ -90,7 +95,7 @@ const InternalMoveCard = ({
             displayText: _formatDate,
             style: [
               styles.noBold,
-              status !== StockMove.status.Realized ? styles.date : null,
+              status !== StockMove?.statusSelect.Realized ? styles.date : null,
             ],
             hideIfNull: true,
           },
@@ -102,8 +107,14 @@ const InternalMoveCard = ({
           : {
               items: [
                 {
-                  displayText: StockMove.getAvailability(availability, I18n),
-                  color: StockMove.getAvailabilityColor(availability, Colors),
+                  displayText: getItemTitle(
+                    StockMove?.availableStatusSelect,
+                    availability,
+                  ),
+                  color: getItemColor(
+                    StockMove?.availableStatusSelect,
+                    availability,
+                  ),
                 },
               ],
             }

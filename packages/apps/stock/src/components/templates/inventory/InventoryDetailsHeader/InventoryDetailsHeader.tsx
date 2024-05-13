@@ -18,13 +18,13 @@
 
 import React from 'react';
 import {StyleSheet, View} from 'react-native';
-import {useTranslator, useSelector} from '@axelor/aos-mobile-core';
+import {useTranslator, useSelector, useTypes} from '@axelor/aos-mobile-core';
 import {Text} from '@axelor/aos-mobile-ui';
-import {InventoryHeader} from '..';
-import {Inventory} from '../../../../types';
+import {InventoryHeader} from '../../inventory';
 
 const InventoryDetailsHeader = ({}) => {
   const I18n = useTranslator();
+  const {Inventory} = useTypes();
 
   const {inventory} = useSelector((state: any) => state.inventory);
 
@@ -34,7 +34,7 @@ const InventoryDetailsHeader = ({}) => {
         reference={inventory?.inventorySeq}
         status={inventory?.statusSelect}
         date={
-          inventory?.statusSelect === Inventory.status.Planned
+          inventory?.statusSelect === Inventory?.statusSelect.Planned
             ? inventory?.plannedStartDateT
             : inventory?.plannedEndDateT
         }

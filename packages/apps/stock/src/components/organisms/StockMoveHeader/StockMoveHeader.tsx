@@ -18,9 +18,13 @@
 
 import React from 'react';
 import {StyleSheet, View} from 'react-native';
-import {Badge, Text, useThemeColor} from '@axelor/aos-mobile-ui';
-import {formatDate, useTranslator} from '@axelor/aos-mobile-core';
-import StockMove from '../../../types/stock-move';
+import {Badge, Text} from '@axelor/aos-mobile-ui';
+import {
+  formatDate,
+  useTranslator,
+  useTypeHelpers,
+  useTypes,
+} from '@axelor/aos-mobile-core';
 
 interface StockMoveHeaderProps {
   reference: string;
@@ -37,8 +41,9 @@ const StockMoveHeader = ({
   date,
   availability,
 }: StockMoveHeaderProps) => {
-  const Colors = useThemeColor();
   const I18n = useTranslator();
+  const {StockMove} = useTypes();
+  const {getItemColor, getItemTitle} = useTypeHelpers();
 
   return (
     <View style={styles.infoContainer}>
@@ -62,15 +67,15 @@ const StockMoveHeader = ({
       </View>
       <View style={styles.badgeContainer}>
         <Badge
-          color={StockMove.getStatusColor(status, Colors)}
-          title={StockMove.getStatus(status, I18n)}
+          color={getItemColor(StockMove?.statusSelect, status)}
+          title={getItemTitle(StockMove?.statusSelect, status)}
         />
         {availability == null || availability === 0 ? (
           <View style={styles.refContainer} />
         ) : (
           <Badge
-            color={StockMove.getAvailabilityColor(availability, Colors)}
-            title={StockMove.getAvailability(availability, I18n)}
+            color={getItemColor(StockMove?.availableStatusSelect, availability)}
+            title={getItemTitle(StockMove?.availableStatusSelect, availability)}
           />
         )}
       </View>
