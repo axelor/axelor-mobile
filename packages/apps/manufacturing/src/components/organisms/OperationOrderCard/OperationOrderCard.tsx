@@ -45,13 +45,14 @@ const OperationOrderCard = ({
   onPress,
 }: OperationOrderCardProps) => {
   const Colors = useThemeColor();
-  const {ManufOrder} = useTypes();
+  const {OperationOrder} = useTypes();
   const {getItemColor} = useTypeHelpers();
 
   const borderStyle = useMemo(() => {
-    return getStyles(getItemColor(ManufOrder?.statusSelect, status)?.background)
-      ?.border;
-  }, [ManufOrder?.statusSelect, getItemColor, status]);
+    return getStyles(
+      getItemColor(OperationOrder?.statusSelect, status)?.background,
+    )?.border;
+  }, [OperationOrder?.statusSelect, getItemColor, status]);
 
   return (
     <ObjectCard

@@ -180,7 +180,7 @@ const ConsumedProductListScreen = ({route, navigation}) => {
                 visible={
                   canCreate &&
                   manufOrder?.statusSelect ===
-                    ManufOrder?.statusSelect.InProgres
+                    ManufOrder?.statusSelect.InProgress
                 }
                 onPress={handleAddProduct}
               />

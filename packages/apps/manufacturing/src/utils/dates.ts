@@ -22,14 +22,6 @@ import {
   TranslatorProps,
 } from '@axelor/aos-mobile-core';
 
-interface StatusTypeProps {
-  Draft: number;
-  Planned: number;
-  InProgress: number;
-  StandBy: number;
-  Finished: number;
-}
-
 export const getDates = (
   status: number,
   statusType: Selection,
