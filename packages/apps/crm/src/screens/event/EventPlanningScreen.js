@@ -18,12 +18,7 @@
 
 import React, {useCallback, useEffect, useMemo, useState} from 'react';
 import {StyleSheet, View} from 'react-native';
-import {
-  Screen,
-  useThemeColor,
-  HeaderContainer,
-  MultiValuePicker,
-} from '@axelor/aos-mobile-ui';
+import {Screen, HeaderContainer, MultiValuePicker} from '@axelor/aos-mobile-ui';
 import {
   filterChip,
   PlanningView,
@@ -38,7 +33,6 @@ import {EventSearchBar, PlanningEventCard} from '../../components';
 
 function EventPlanningScreen({navigation}) {
   const dispatch = useDispatch();
-  const Colors = useThemeColor();
   const I18n = useTranslator();
   const {Event} = useTypes();
   const {getItemColor, getSelectionItems} = useTypeHelpers();
