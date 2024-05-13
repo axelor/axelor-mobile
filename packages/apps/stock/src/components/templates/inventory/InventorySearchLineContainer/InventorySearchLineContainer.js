@@ -24,11 +24,11 @@ import {
   usePermitted,
   useSelector,
   useTranslator,
+  useTypes,
 } from '@axelor/aos-mobile-core';
 import {SearchLineContainer} from '../../../organisms';
 import {InventoryLineCard} from '../../../templates';
 import {showLine} from '../../../../utils/line-navigation';
-import {Inventory} from '../../../../types';
 import {fetchInventoryLines} from '../../../../features/inventoryLineSlice';
 
 const scanKey = 'trackingNumber-or-product_inventory-details';
@@ -37,6 +37,7 @@ const InventorySearchLineContainer = ({}) => {
   const I18n = useTranslator();
   const navigation = useNavigation();
   const dispatch = useDispatch();
+  const {Inventory} = useTypes();
   const {readonly} = usePermitted({
     modelName: 'com.axelor.apps.stock.db.Inventory',
   });
@@ -72,7 +73,7 @@ const InventorySearchLineContainer = ({}) => {
       lineDetailsScreen: 'InventoryLineDetailsScreen',
       selectTrackingScreen: 'InventorySelectTrackingScreen',
       selectProductScreen: 'InventorySelectProductScreen',
-      detailStatus: Inventory.status.Validated,
+      detailStatus: Inventory?.statusSelect.Validated,
       skipVerification,
       navigation,
     });
@@ -112,7 +113,7 @@ const InventorySearchLineContainer = ({}) => {
       showAction={
         !readonly &&
         canCreate &&
-        inventory?.statusSelect < Inventory.status.Completed
+        inventory?.statusSelect < Inventory?.statusSelect.Completed
       }
       onAction={handleNewLine}
       renderItem={item => (

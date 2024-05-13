@@ -21,8 +21,8 @@ import {
   createStandardFetch,
   createStandardSearch,
   getSearchCriterias,
+  getTypes,
 } from '@axelor/aos-mobile-core';
-import StockMove from '../types/stock-move';
 
 const createSearchCriteria = (supplierArrivalId, searchValue) => {
   return [
@@ -52,13 +52,16 @@ export async function updateLine({
   stockMoveLineId,
   version,
   realQty,
-  conformity = StockMove.conformity.None,
+  conformity: _conformity,
   toStockLocationId,
 }) {
+  const StockMove = getTypes().StockMove;
+  const conformity = _conformity ?? StockMove?.conformitySelect.None;
+
   return axiosApiProvider.put({
     url: `/ws/aos/stock-move-line/${stockMoveLineId}`,
     data:
-      conformity > StockMove.conformity.None
+      conformity > StockMove?.conformitySelect.None
         ? {
             version,
             realQty,

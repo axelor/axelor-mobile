@@ -21,9 +21,8 @@ import {
   createStandardFetch,
   createStandardSearch,
   getSearchCriterias,
+  getTypes,
 } from '@axelor/aos-mobile-core';
-import StockLocation from '../types/stock-location';
-import StockMove from '../types/stock-move';
 
 const createSearchCriteria = (
   searchValue,
@@ -31,21 +30,24 @@ const createSearchCriteria = (
   toStockLocationId,
   statusList,
 ) => {
+  const StockLocation = getTypes().StockLocation;
+  const StockMove = getTypes().StockMove;
+
   const criteria = [
     {
       fieldName: 'fromStockLocation.typeSelect',
       operator: '=',
-      value: StockLocation.type.internal,
+      value: StockLocation?.typeSelect.internal,
     },
     {
       fieldName: 'toStockLocation.typeSelect',
       operator: '=',
-      value: StockLocation.type.internal,
+      value: StockLocation?.typeSelect.internal,
     },
     {
       fieldName: 'typeSelect',
       operator: '=',
-      value: StockMove.type.internal,
+      value: StockMove?.typeSelect.internal,
     },
     getSearchCriterias('stock_internalMove', searchValue),
   ];

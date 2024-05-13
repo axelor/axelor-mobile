@@ -17,9 +17,13 @@
  */
 
 import React, {useEffect} from 'react';
-import {useTranslator, useSelector, useDispatch} from '@axelor/aos-mobile-core';
+import {
+  useDispatch,
+  useSelector,
+  useTranslator,
+  useTypes,
+} from '@axelor/aos-mobile-core';
 import {getFromList, Picker} from '@axelor/aos-mobile-ui';
-import StockCorrection from '../../../../types/stock-corrrection';
 import {fetchStockCorrectionReasons} from '../../../../features/stockCorrectionReasonSlice';
 
 const StockCorrectionReasonPicker = ({
@@ -32,6 +36,7 @@ const StockCorrectionReasonPicker = ({
 }) => {
   const I18n = useTranslator();
   const dispatch = useDispatch();
+  const {StockCorrection} = useTypes();
 
   const {stockCorrectionReasonList} = useSelector(
     state => state.stockCorrectionReason,
@@ -59,7 +64,7 @@ const StockCorrectionReasonPicker = ({
       labelField="name"
       valueField="id"
       required={true}
-      readonly={readonly || status === StockCorrection.status.Validated}
+      readonly={readonly || status === StockCorrection?.statusSelect.Validated}
       isScrollViewContainer={isScrollViewContainer}
     />
   );

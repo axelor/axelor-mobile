@@ -21,9 +21,9 @@ import {
   useTranslator,
   useDispatch,
   useNavigation,
+  useTypes,
 } from '@axelor/aos-mobile-core';
 import {Button} from '@axelor/aos-mobile-ui';
-import StockMove from '../../../../types/stock-move';
 import {updateCustomerDeliveryLine} from '../../../../features/customerDeliveryLineSlice';
 
 const CustomerDeliveryLineButtons = ({
@@ -36,6 +36,7 @@ const CustomerDeliveryLineButtons = ({
   const I18n = useTranslator();
   const dispatch = useDispatch();
   const navigation = useNavigation();
+  const {StockMove} = useTypes();
 
   const navigateBackToDetails = useCallback(() => {
     navigation.navigate('CustomerDeliveryDetailScreen', {
@@ -66,7 +67,7 @@ const CustomerDeliveryLineButtons = ({
     return null;
   }
 
-  if (customerDelivery.statusSelect !== StockMove.status.Realized) {
+  if (customerDelivery.statusSelect !== StockMove?.statusSelect.Realized) {
     return <Button title={I18n.t('Base_Validate')} onPress={handleValidate} />;
   }
 

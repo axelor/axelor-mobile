@@ -19,7 +19,7 @@
 import React, {useCallback, useEffect, useMemo, useState} from 'react';
 import {StyleSheet} from 'react-native';
 import {Screen, KeyboardAvoidingScrollView} from '@axelor/aos-mobile-ui';
-import {useDispatch, useSelector} from '@axelor/aos-mobile-core';
+import {useDispatch, useSelector, useTypes} from '@axelor/aos-mobile-core';
 import {
   ProductTrackingNumberSearchBar,
   StockCorrectionButtons,
@@ -30,7 +30,6 @@ import {
   StockLocationSearchBar,
 } from '../../components';
 import {fetchProductIndicators} from '../../features/productIndicatorsSlice';
-import StockCorrection from '../../types/stock-corrrection';
 
 const stockLocationScanKey =
   'original-stock-location_internal-move-select-from';
@@ -50,6 +49,7 @@ const StockCorrectionCreationScreen = ({route}) => {
   const routeProduct = route?.params?.product;
   const routeTrackingNumber = route?.params?.trackingNumber;
   const dispatch = useDispatch();
+  const {StockCorrection} = useTypes();
 
   const {user} = useSelector(state => state.user);
   const {productIndicators} = useSelector(state => state.productIndicators);
@@ -197,13 +197,13 @@ const StockCorrectionCreationScreen = ({route}) => {
               databaseQty={databaseQty}
               realQty={realQty}
               setRealQty={setRealQty}
-              status={StockCorrection.status.Draft}
+              status={StockCorrection?.statusSelect.Draft}
               stockProduct={product}
             />
             <StockCorrectionReasonPicker
               reason={reason}
               setReason={setReason}
-              status={StockCorrection.status.Draft}
+              status={StockCorrection?.statusSelect.Draft}
             />
             <StockCorrectionHtmlInput setComments={setComments} />
           </>

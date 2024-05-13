@@ -19,8 +19,12 @@
 import React, {useCallback} from 'react';
 import {StyleSheet} from 'react-native';
 import {ObjectCard, useDigitFormat, useThemeColor} from '@axelor/aos-mobile-ui';
-import {useMetafileUri, useTranslator} from '@axelor/aos-mobile-core';
-import Product from '../../../../types/product';
+import {
+  useMetafileUri,
+  useTranslator,
+  useTypeHelpers,
+  useTypes,
+} from '@axelor/aos-mobile-core';
 
 interface ProductAttribut {
   attrName: string;
@@ -52,6 +56,8 @@ const ProductVariantCard = ({
   const I18n = useTranslator();
   const formatMetaFile = useMetafileUri();
   const formatNumber = useDigitFormat();
+  const {ProductVariantValue} = useTypes();
+  const {getItemTitle} = useTypeHelpers();
 
   const renderAttrItems = useCallback(() => {
     if (!Array.isArray(attributesList?.attributes)) {
@@ -69,9 +75,9 @@ const ProductVariantCard = ({
           style: styles.attr,
           displayText: `${attr.attrName} : ${attr.attrValue} ${
             attr.priceExtra >= 0
-              ? `(${Product.getApplicationPriceSelect(
+              ? `(${getItemTitle(
+                  ProductVariantValue?.applicationPriceSelect,
                   attr.applicationPriceSelect,
-                  I18n,
                 )} : +${formatNumber(attr.priceExtra)})`
               : ''
           }`,
@@ -80,7 +86,12 @@ const ProductVariantCard = ({
     }
 
     return items?.length > 0 ? {items} : null;
-  }, [I18n, attributesList?.attributes, formatNumber]);
+  }, [
+    ProductVariantValue?.applicationPriceSelect,
+    attributesList?.attributes,
+    formatNumber,
+    getItemTitle,
+  ]);
 
   return (
     <ObjectCard

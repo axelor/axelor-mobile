@@ -23,9 +23,9 @@ import {
   usePermitted,
   useSelector,
   useTranslator,
+  useTypes,
 } from '@axelor/aos-mobile-core';
 import {useThemeColor} from '@axelor/aos-mobile-ui';
-import {StockMove} from '../types';
 
 export const useStockHeaders = () => {
   useCustomerDeliveryDetailsActions();
@@ -63,6 +63,7 @@ const useCustomerDeliveryLineListActions = () => {
   const Colors = useThemeColor();
   const navigation = useNavigation();
   const I18n = useTranslator();
+  const {StockMove} = useTypes();
   const {canCreate} = usePermitted({
     modelName: 'com.axelor.apps.stock.db.StockMoveLine',
   });
@@ -82,7 +83,7 @@ const useCustomerDeliveryLineListActions = () => {
           hideIf:
             !canCreate ||
             !mobileSettings?.isCustomerDeliveryLineAdditionEnabled ||
-            customerDelivery?.statusSelect >= StockMove.status.Realized,
+            customerDelivery?.statusSelect >= StockMove?.statusSelect.Realized,
           onPress: () =>
             navigation.navigate('CustomerDeliveryLineCreationScreen', {
               customerDelivery: customerDelivery,
@@ -91,7 +92,15 @@ const useCustomerDeliveryLineListActions = () => {
         },
       ],
     });
-  }, [mobileSettings, customerDelivery, I18n, Colors, navigation, canCreate]);
+  }, [
+    mobileSettings,
+    customerDelivery,
+    I18n,
+    Colors,
+    navigation,
+    canCreate,
+    StockMove?.statusSelect.Realized,
+  ]);
 };
 
 const useCustomerDeliveryLineDetailsActions = () => {
@@ -303,6 +312,7 @@ const useSupplierArrivalLineListActions = () => {
   const Colors = useThemeColor();
   const navigation = useNavigation();
   const I18n = useTranslator();
+  const {StockMove} = useTypes();
   const {canCreate} = usePermitted({
     modelName: 'com.axelor.apps.stock.db.StockMoveLine',
   });
@@ -322,7 +332,7 @@ const useSupplierArrivalLineListActions = () => {
           hideIf:
             !canCreate ||
             !mobileSettings?.isSupplierArrivalLineAdditionEnabled ||
-            supplierArrival?.statusSelect >= StockMove.status.Realized,
+            supplierArrival?.statusSelect >= StockMove?.statusSelect.Realized,
           onPress: () =>
             navigation.navigate('SupplierArrivalLineCreationScreen', {
               supplierArrival: supplierArrival,
@@ -331,7 +341,15 @@ const useSupplierArrivalLineListActions = () => {
         },
       ],
     });
-  }, [mobileSettings, I18n, Colors, navigation, supplierArrival, canCreate]);
+  }, [
+    mobileSettings,
+    I18n,
+    Colors,
+    navigation,
+    supplierArrival,
+    canCreate,
+    StockMove?.statusSelect.Realized,
+  ]);
 };
 
 const useSupplierArrivalLineDetailsActions = () => {

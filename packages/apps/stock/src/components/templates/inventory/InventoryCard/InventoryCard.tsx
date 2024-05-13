@@ -18,9 +18,13 @@
 
 import React, {useMemo} from 'react';
 import {StyleSheet} from 'react-native';
-import {ObjectCard, useThemeColor} from '@axelor/aos-mobile-ui';
-import {formatDate, useTranslator} from '@axelor/aos-mobile-core';
-import Inventory from '../../../../types/inventory';
+import {ObjectCard} from '@axelor/aos-mobile-ui';
+import {
+  formatDate,
+  useTranslator,
+  useTypeHelpers,
+  useTypes,
+} from '@axelor/aos-mobile-core';
 
 interface InventoryCardProps {
   style?: any;
@@ -39,13 +43,14 @@ const InventoryCard = ({
   stockLocation,
   onPress,
 }: InventoryCardProps) => {
-  const Colors = useThemeColor();
   const I18n = useTranslator();
+  const {Inventory} = useTypes();
+  const {getItemColor} = useTypeHelpers();
 
   const borderStyle = useMemo(() => {
-    return getStyles(Inventory.getStatusColor(status, Colors).background)
+    return getStyles(getItemColor(Inventory?.statusSelect, status)?.background)
       ?.border;
-  }, [Colors, status]);
+  }, [Inventory?.statusSelect, getItemColor, status]);
 
   const _formatDate = useMemo(() => {
     if (date == null) {
@@ -53,20 +58,20 @@ const InventoryCard = ({
     }
     const _date = formatDate(date, I18n.t('Base_DateFormat'));
 
-    if (status === Inventory.status.Planned) {
+    if (status === Inventory?.statusSelect.Planned) {
       return `${I18n.t('Base_PlannedFor')} ${_date}`;
     }
 
-    if (status === Inventory.status.InProgress) {
+    if (status === Inventory?.statusSelect.InProgress) {
       return `${I18n.t('Base_StartedOn')} ${_date}`;
     }
 
-    if (status === Inventory.status.Completed) {
+    if (status === Inventory?.statusSelect.Completed) {
       return `${I18n.t('Base_CompletedOn')} ${_date}`;
     }
 
     return `${I18n.t('Base_ValidatedOn')} ${_date}`;
-  }, [I18n, date, status]);
+  }, [I18n, Inventory?.statusSelect, date, status]);
 
   return (
     <ObjectCard
@@ -81,8 +86,8 @@ const InventoryCard = ({
             displayText: _formatDate,
             style: [
               styles.noBold,
-              status === Inventory.status.Planned ||
-              status === Inventory.status.InProgress
+              status === Inventory?.statusSelect.Planned ||
+              status === Inventory?.statusSelect.InProgress
                 ? styles.date
                 : null,
             ],
