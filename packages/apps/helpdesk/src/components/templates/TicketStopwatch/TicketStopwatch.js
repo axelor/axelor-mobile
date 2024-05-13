@@ -121,11 +121,30 @@ const TicketStopwatch = ({}) => {
     getTimerState();
   }, [getTimerState]);
 
-  const disbaled = useMemo(
+  const stopwatchDisabled = useMemo(
     () =>
+      readonly ||
       ticket?.ticketStatus?.id === helpdeskConfig?.closedTicketStatus?.id ||
       ticket?.ticketStatus?.id === helpdeskConfig?.resolvedTicketStatus?.id,
-    [helpdeskConfig, ticket],
+    [
+      helpdeskConfig?.closedTicketStatus?.id,
+      helpdeskConfig?.resolvedTicketStatus?.id,
+      readonly,
+      ticket?.ticketStatus?.id,
+    ],
+  );
+
+  const canClose = useMemo(
+    () =>
+      !readonly &&
+      ticket?.ticketStatus?.id !== helpdeskConfig?.closedTicketStatus?.id &&
+      ticket?.ticketStatus?.id !== helpdeskConfig?.defaultTicketStatus?.id,
+    [
+      helpdeskConfig?.closedTicketStatus?.id,
+      helpdeskConfig?.defaultTicketStatus?.id,
+      readonly,
+      ticket?.ticketStatus?.id,
+    ],
   );
 
   const updateStatus = useCallback(
@@ -142,10 +161,6 @@ const TicketStopwatch = ({}) => {
     [dispatch, ticket],
   );
 
-  if (readonly) {
-    return null;
-  }
-
   return (
     <View>
       {!helpdeskConfig?.manageTimer ? (
@@ -161,19 +176,17 @@ const TicketStopwatch = ({}) => {
           onPause={() => updateStatus(Ticket.stopWatchStatus.pause)}
           onStop={() => updateStatus(Ticket.stopWatchStatus.stop)}
           onCancel={() => updateStatus(Ticket.stopWatchStatus.reset)}
-          disable={disbaled}
+          disable={stopwatchDisabled}
         />
       )}
-      {ticket?.ticketStatus?.id !== helpdeskConfig?.closedTicketStatus?.id &&
-        ticket?.ticketStatus?.id !==
-          helpdeskConfig?.defaultTicketStatus?.id && (
-          <Button
-            title={I18n.t('Helpdesk_Close')}
-            iconName="power"
-            onPress={() => updateStatus(Ticket.stopWatchStatus.validate)}
-            color={Colors.primaryColor}
-          />
-        )}
+      {canClose && (
+        <Button
+          title={I18n.t('Helpdesk_Close')}
+          iconName="power"
+          onPress={() => updateStatus(Ticket.stopWatchStatus.validate)}
+          color={Colors.primaryColor}
+        />
+      )}
     </View>
   );
 };

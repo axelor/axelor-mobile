@@ -22,6 +22,7 @@ import {
   useSelector,
   useTranslator,
   getNowDateZonesISOString,
+  usePermitted,
 } from '@axelor/aos-mobile-core';
 import {Button} from '@axelor/aos-mobile-ui';
 import {Ticket} from '../../../types';
@@ -30,6 +31,9 @@ import {updateTicketStatus} from '../../../features/ticketSlice';
 const TicketStatusButton = ({}) => {
   const I18n = useTranslator();
   const dispatch = useDispatch();
+  const {readonly} = usePermitted({
+    modelName: 'com.axelor.apps.helpdesk.db.Ticket',
+  });
 
   const {ticket} = useSelector(state => state.ticket);
   const {helpdesk: helpdeskConfig} = useSelector(state => state.appConfig);
@@ -47,6 +51,10 @@ const TicketStatusButton = ({}) => {
     },
     [dispatch, ticket],
   );
+
+  if (readonly) {
+    return null;
+  }
 
   if (ticket?.ticketStatus?.id === helpdeskConfig?.defaultTicketStatus?.id) {
     return (
