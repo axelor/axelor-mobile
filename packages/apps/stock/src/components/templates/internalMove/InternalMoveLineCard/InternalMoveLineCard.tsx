@@ -138,11 +138,11 @@ const InternalMoveLineCard = ({
               items: [
                 {
                   displayText: getItemTitle(
-                    StockMove?.availabilityStatusSelect,
+                    StockMove?.availableStatusSelect,
                     availability,
                   ),
                   color: getItemColor(
-                    StockMove?.availabilityStatusSelect,
+                    StockMove?.availableStatusSelect,
                     availability,
                   ),
                 },

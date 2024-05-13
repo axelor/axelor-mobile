@@ -207,7 +207,7 @@ export const stock_typeObjects: ModuleSelections = [
           },
         ],
       },
-      availabilityStatusSelect: {
+      availableStatusSelect: {
         content: [
           {
             key: 'Available',

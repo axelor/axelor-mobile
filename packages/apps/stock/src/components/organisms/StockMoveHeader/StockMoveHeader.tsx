@@ -74,14 +74,8 @@ const StockMoveHeader = ({
           <View style={styles.refContainer} />
         ) : (
           <Badge
-            color={getItemColor(
-              StockMove?.availabilityStatusSelect,
-              availability,
-            )}
-            title={getItemTitle(
-              StockMove?.availabilityStatusSelect,
-              availability,
-            )}
+            color={getItemColor(StockMove?.availableStatusSelect, availability)}
+            title={getItemTitle(StockMove?.availableStatusSelect, availability)}
           />
         )}
       </View>
