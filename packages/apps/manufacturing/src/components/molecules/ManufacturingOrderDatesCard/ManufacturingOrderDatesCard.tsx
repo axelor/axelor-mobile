@@ -18,11 +18,17 @@
 
 import React, {useMemo} from 'react';
 import {FromTo, TitledValue} from '@axelor/aos-mobile-ui';
-import {isEmpty, useSelector, useTranslator} from '@axelor/aos-mobile-core';
+import {
+  isEmpty,
+  useSelector,
+  useTranslator,
+  useTypes,
+} from '@axelor/aos-mobile-core';
 import {ManufacturingOrder} from '../../../types';
 
 function ManufacturingOrderDatesCard({}) {
   const I18n = useTranslator();
+  const {ManufOrder} = useTypes();
 
   const {manufOrder} = useSelector((state: any) => state.manufacturingOrder);
 
@@ -45,8 +51,8 @@ function ManufacturingOrderDatesCard({}) {
       fromComponent={
         <TitledValue
           title={
-            manufOrder?.statusSelect === ManufacturingOrder.status.Draft ||
-            manufOrder?.statusSelect === ManufacturingOrder.status.Planned
+            manufOrder?.statusSelect === ManufOrder?.statusSelect.Draft ||
+            manufOrder?.statusSelect === ManufOrder?.statusSelect.Planned
               ? I18n.t('Base_Estimated')
               : I18n.t('Base_Real')
           }
@@ -56,7 +62,7 @@ function ManufacturingOrderDatesCard({}) {
       toComponent={
         <TitledValue
           title={
-            manufOrder?.statusSelect === ManufacturingOrder.status.Finished
+            manufOrder?.statusSelect === ManufOrder?.statusSelect.Finished
               ? I18n.t('Base_Real')
               : I18n.t('Base_Estimated')
           }

@@ -24,8 +24,7 @@ import {
   useThemeColor,
   checkNullString,
 } from '@axelor/aos-mobile-ui';
-import {useTranslator} from '@axelor/aos-mobile-core';
-import OperationOrder from '../../../types/operation-order';
+import {useTypes, useTypeHelpers} from '@axelor/aos-mobile-core';
 
 interface OperationOrderHeaderProps {
   manufOrderRef: string;
@@ -41,7 +40,8 @@ function OperationOrderHeader({
   priority,
 }: OperationOrderHeaderProps) {
   const Colors = useThemeColor();
-  const I18n = useTranslator();
+  const {OperationOrder} = useTypes();
+  const {getItemColor, getItemTitle} = useTypeHelpers();
 
   return (
     <View style={styles.infoContainer}>
@@ -56,8 +56,8 @@ function OperationOrderHeader({
       <View style={styles.badgeContainer}>
         {status != null && (
           <Badge
-            color={OperationOrder.getStatusColor(status, Colors)}
-            title={OperationOrder.getStatus(status, I18n)}
+            color={getItemColor(OperationOrder?.statusSelect, status)}
+            title={getItemTitle(OperationOrder?.statusSelect, status)}
           />
         )}
         {priority != null && (

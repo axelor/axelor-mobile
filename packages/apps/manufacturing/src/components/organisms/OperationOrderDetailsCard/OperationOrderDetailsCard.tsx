@@ -19,8 +19,13 @@
 import React, {useMemo} from 'react';
 import {StyleSheet} from 'react-native';
 import {useThemeColor, ObjectCard} from '@axelor/aos-mobile-ui';
-import {formatDuration, useTranslator} from '@axelor/aos-mobile-core';
-import OperationOrder from '../../../types/operation-order';
+import {
+  formatDuration,
+  useTranslator,
+  useTypes,
+  useTypeHelpers,
+} from '@axelor/aos-mobile-core';
+import {default as OperationOrderType} from '../../../types/operation-order';
 
 interface OperationOrderCardProps {
   style?: any;
@@ -55,13 +60,16 @@ const OperationOrderDetailsCard = ({
 }: OperationOrderCardProps) => {
   const Colors = useThemeColor();
   const I18n = useTranslator();
+  const {OperationOrder} = useTypes();
+  const {getItemColor} = useTypeHelpers();
 
   const borderStyle = useMemo(() => {
-    return getStyles(OperationOrder.getStatusColor(status, Colors).background)
-      ?.border;
-  }, [Colors, status]);
+    return getStyles(
+      getItemColor(OperationOrder?.statusSelect, status)?.background,
+    )?.border;
+  }, [OperationOrder?.statusSelect, getItemColor, status]);
 
-  const [startDate, endDate] = OperationOrder.getDates(
+  const [startDate, endDate] = OperationOrderType.getDates(
     status,
     plannedStartDate,
     plannedEndDate,
@@ -93,8 +101,8 @@ const OperationOrderDetailsCard = ({
             indicatorText: endDate.title,
             displayText: endDate.value,
             hideIf:
-              status === OperationOrder.status.InProgress ||
-              status === OperationOrder.status.StandBy ||
+              status === OperationOrder?.statusSelect.InProgress ||
+              status === OperationOrder?.statusSelect.StandBy ||
               endDate == null,
           },
           {
@@ -103,8 +111,8 @@ const OperationOrderDetailsCard = ({
               plannedDuration ? formatDuration(plannedDuration) : ''
             }`,
             hideIf:
-              status !== OperationOrder.status.InProgress &&
-              status !== OperationOrder.status.StandBy,
+              status !== OperationOrder?.statusSelect.InProgress &&
+              status !== OperationOrder?.statusSelect.StandBy,
           },
         ],
       }}

@@ -34,13 +34,13 @@ import {
   usePermitted,
   useSelector,
   useTranslator,
+  useTypes,
 } from '@axelor/aos-mobile-core';
 import {
   ManufacturingOrderHeader,
   ProducedProductCard,
 } from '../../../components';
 import {fetchProducedProducts} from '../../../features/prodProductSlice';
-import {ManufacturingOrder} from '../../../types';
 
 const productScanKey = 'product_manufacturing-order-produced-product-list';
 const IS_INFINITE_SCROLL_ENABLED = false;
@@ -53,6 +53,7 @@ const ProducedProductListScreen = ({route, navigation}) => {
   const {canCreate} = usePermitted({
     modelName: 'com.axelor.apps.production.db.ProdProduct',
   });
+  const {ManufOrder} = useTypes();
 
   const {loadingProducedProducts, producedProductList} = useSelector(
     state => state.prodProducts,
@@ -145,7 +146,7 @@ const ProducedProductListScreen = ({route, navigation}) => {
                 visible={
                   canCreate &&
                   manufOrder?.statusSelect ===
-                    ManufacturingOrder.status.InProgress
+                    ManufOrder?.statusSelect.InProgress
                 }
                 onPress={handleAddProduct}
               />

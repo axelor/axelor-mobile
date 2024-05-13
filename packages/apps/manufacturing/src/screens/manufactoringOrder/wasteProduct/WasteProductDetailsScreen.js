@@ -29,6 +29,7 @@ import {
   usePermitted,
   useSelector,
   useTranslator,
+  useTypes,
 } from '@axelor/aos-mobile-core';
 import {
   fetchUnit,
@@ -39,7 +40,6 @@ import {
   ManufacturingOrderHeader,
   ProdProductFixedItems,
 } from '../../../components';
-import {ManufacturingOrder} from '../../../types';
 import {
   addWasteProductToManufOrder,
   updateWasteProductOfManufOrder,
@@ -55,6 +55,7 @@ const WasteProductDetailsScreen = ({route, navigation}) => {
   const {readonly} = usePermitted({
     modelName: 'com.axelor.apps.production.db.ProdProduct',
   });
+  const {ManufOrder} = useTypes();
 
   const {unitList} = useSelector(state => state.unit);
   const {prodProduct} = useSelector(state => state.prodProducts);
@@ -131,7 +132,7 @@ const WasteProductDetailsScreen = ({route, navigation}) => {
       fixedItems={
         <ProdProductFixedItems
           show={
-            manufOrder?.statusSelect === ManufacturingOrder.status.InProgress &&
+            manufOrder?.statusSelect === ManufOrder?.statusSelect.InProgress &&
             manufOrder?.wasteStockMove == null
           }
           prodProduct={wasteProductId != null ? prodProduct : null}
@@ -171,7 +172,7 @@ const WasteProductDetailsScreen = ({route, navigation}) => {
           defaultValue={wasteQty}
           editable={
             !readonly &&
-            manufOrder?.statusSelect === ManufacturingOrder.status.InProgress &&
+            manufOrder?.statusSelect === ManufOrder?.statusSelect.InProgress &&
             manufOrder?.wasteStockMove == null
           }
           onValueChange={setWasteQty}
@@ -186,7 +187,7 @@ const WasteProductDetailsScreen = ({route, navigation}) => {
           valueField="id"
           readonly={
             readonly ||
-            manufOrder.statusSelect >= ManufacturingOrder.status.Finished
+            manufOrder.statusSelect >= ManufOrder?.statusSelect.Finished
           }
           required={true}
           isScrollViewContainer={true}

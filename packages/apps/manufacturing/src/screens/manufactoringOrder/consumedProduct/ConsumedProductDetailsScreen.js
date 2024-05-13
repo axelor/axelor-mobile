@@ -29,6 +29,7 @@ import {
   usePermitted,
   useSelector,
   useTranslator,
+  useTypes,
 } from '@axelor/aos-mobile-core';
 import {QuantityCard, ProductCardInfo} from '@axelor/aos-mobile-stock';
 import {
@@ -41,7 +42,6 @@ import {
   fetchConsumedProductWithId,
   updateProdProductOfManufOrder,
 } from '../../../features/prodProductSlice';
-import {ManufacturingOrder} from '../../../types';
 import {fetchManufOrder} from '../../../features/manufacturingOrderSlice';
 
 const ConsumedProductDetailsScreen = ({route, navigation}) => {
@@ -53,6 +53,7 @@ const ConsumedProductDetailsScreen = ({route, navigation}) => {
   const {readonly} = usePermitted({
     modelName: 'com.axelor.apps.production.db.ProdProduct',
   });
+  const {ManufOrder} = useTypes();
 
   const {consumedProductStockMoveLine, consumedProduct} = useSelector(
     state => state.prodProducts,
@@ -167,7 +168,7 @@ const ConsumedProductDetailsScreen = ({route, navigation}) => {
       fixedItems={
         <ProdProductFixedItems
           show={
-            manufOrder?.statusSelect === ManufacturingOrder.status.InProgress
+            manufOrder?.statusSelect === ManufOrder?.statusSelect.InProgress
           }
           prodProduct={consumedProdProduct}
           onPressCreate={handleCreateConsumedProduct}
@@ -220,7 +221,7 @@ const ConsumedProductDetailsScreen = ({route, navigation}) => {
           onValueChange={setConsumedQty}
           editable={
             !readonly &&
-            manufOrder?.statusSelect === ManufacturingOrder.status.InProgress
+            manufOrder?.statusSelect === ManufOrder?.statusSelect.InProgress
           }
           isBigButton={true}>
           <Text>

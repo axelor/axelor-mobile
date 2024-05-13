@@ -16,19 +16,15 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import {formatDateTime, TranslatorProps} from '@axelor/aos-mobile-core';
-
-interface StatusTypeProps {
-  Draft: number;
-  Planned: number;
-  InProgress: number;
-  StandBy: number;
-  Finished: number;
-}
+import {
+  formatDateTime,
+  Selection,
+  TranslatorProps,
+} from '@axelor/aos-mobile-core';
 
 export const getDates = (
   status: number,
-  statusType: StatusTypeProps,
+  statusType: Selection,
   plannedStartDate: string,
   plannedEndDate: string,
   realStartDate: string,

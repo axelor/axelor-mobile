@@ -17,24 +17,51 @@
  */
 
 import React, {useCallback, useMemo} from 'react';
-import {ObjectCard, Screen, useThemeColor} from '@axelor/aos-mobile-ui';
-import {PlanningView, useDispatch, useSelector} from '@axelor/aos-mobile-core';
+import {ObjectCard, Screen} from '@axelor/aos-mobile-ui';
+import {
+  PlanningView,
+  useDispatch,
+  useSelector,
+  useTypes,
+  useTypeHelpers,
+} from '@axelor/aos-mobile-core';
 import {fetchPlannedOperationOrder} from '../../features/operationOrderSlice';
-import OperationOrder from '../../types/operation-order';
 
 function OperationOrderPlanningScreen({navigation}) {
   const dispatch = useDispatch();
-  const Colors = useThemeColor();
+  const {OperationOrder} = useTypes();
+  const {getItemColor} = useTypeHelpers();
 
   const {plannedOperationOrderList, loading} = useSelector(
     state => state.operationOrder,
   );
 
-  const listItem = useMemo(
-    () =>
-      OperationOrder.getCalendarListItems(plannedOperationOrderList, Colors),
-    [Colors, plannedOperationOrderList],
-  );
+  const listItem = useMemo(() => {
+    if (
+      plannedOperationOrderList == null ||
+      plannedOperationOrderList.length === 0
+    ) {
+      return [];
+    }
+
+    return plannedOperationOrderList.map(plannedOperationOrder => {
+      return {
+        id: plannedOperationOrder.id,
+        startDate: plannedOperationOrder.plannedStartDateT,
+        endDate: plannedOperationOrder.plannedEndDateT,
+        data: {
+          id: plannedOperationOrder.id,
+          name: plannedOperationOrder.operationName,
+          ref: plannedOperationOrder.manufOrder?.manufOrderSeq,
+          workCenter: plannedOperationOrder.workCenter?.name,
+          border: getItemColor(
+            OperationOrder?.statusSelect,
+            plannedOperationOrder.statusSelect,
+          )?.background,
+        },
+      };
+    });
+  }, [OperationOrder?.statusSelect, getItemColor, plannedOperationOrderList]);
 
   const fetchItemsByMonth = useCallback(
     date => {

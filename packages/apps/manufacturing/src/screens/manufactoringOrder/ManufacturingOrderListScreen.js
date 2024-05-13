@@ -18,14 +18,15 @@
 
 import React, {useMemo, useState} from 'react';
 import {StyleSheet} from 'react-native';
-import {ChipSelect, Screen, useThemeColor} from '@axelor/aos-mobile-ui';
+import {ChipSelect, Screen} from '@axelor/aos-mobile-ui';
 import {
   SearchListView,
   useSelector,
   useTranslator,
+  useTypeHelpers,
+  useTypes,
 } from '@axelor/aos-mobile-core';
 import {ProductSearchBar} from '@axelor/aos-mobile-stock';
-import ManufacturingOrder from '../../types/manufacturing-order';
 import {fetchManufacturingOrders} from '../../features/manufacturingOrderSlice';
 import {ManufacturingOrderCard} from '../../components';
 import {displayManufOrderSeq} from '../../utils/displayers';
@@ -34,8 +35,9 @@ const productScanKey = 'product_manufacturing-order-list';
 const refScanKey = 'manufOrderSeq_manufacturing-order-list';
 
 const ManufacturingOrderListScreen = ({navigation}) => {
-  const Colors = useThemeColor();
   const I18n = useTranslator();
+  const {ManufOrder} = useTypes();
+  const {getSelectionItems} = useTypeHelpers();
 
   const {user} = useSelector(state => state.user);
   const {loading, moreLoading, isListEnd, manufOrderList} = useSelector(
@@ -73,6 +75,19 @@ const ManufacturingOrderListScreen = ({navigation}) => {
     ],
   );
 
+  const statusList = useMemo(() => {
+    const statusToDisplay = [
+      ManufOrder?.statusSelect.Planned,
+      ManufOrder?.statusSelect.InProgress,
+      ManufOrder?.statusSelect.StandBy,
+      ManufOrder?.statusSelect.Finished,
+    ];
+
+    return getSelectionItems(ManufOrder?.statusSelect, selectedStatus).filter(
+      ({value}) => statusToDisplay.includes(value),
+    );
+  }, [ManufOrder?.statusSelect, getSelectionItems, selectedStatus]);
+
   return (
     <Screen removeSpaceOnTop={true}>
       <SearchListView
@@ -90,41 +105,8 @@ const ManufacturingOrderListScreen = ({navigation}) => {
         chipComponent={
           <ChipSelect
             mode="multi"
-            onChangeValue={chiplist => setSelectedStatus(chiplist)}
-            selectionItems={[
-              {
-                title: I18n.t('Manufacturing_Status_Planned'),
-                color: ManufacturingOrder.getStatusColor(
-                  ManufacturingOrder.status.Planned,
-                  Colors,
-                ),
-                key: ManufacturingOrder.status.Planned,
-              },
-              {
-                title: I18n.t('Manufacturing_Status_InProgress'),
-                color: ManufacturingOrder.getStatusColor(
-                  ManufacturingOrder.status.InProgress,
-                  Colors,
-                ),
-                key: ManufacturingOrder.status.InProgress,
-              },
-              {
-                title: I18n.t('Manufacturing_Status_StandBy'),
-                color: ManufacturingOrder.getStatusColor(
-                  ManufacturingOrder.status.StandBy,
-                  Colors,
-                ),
-                key: ManufacturingOrder.status.StandBy,
-              },
-              {
-                title: I18n.t('Manufacturing_Status_Finished'),
-                color: ManufacturingOrder.getStatusColor(
-                  ManufacturingOrder.status.Finished,
-                  Colors,
-                ),
-                key: ManufacturingOrder.status.Finished,
-              },
-            ]}
+            onChangeValue={setSelectedStatus}
+            selectionItems={statusList}
             width={100}
           />
         }

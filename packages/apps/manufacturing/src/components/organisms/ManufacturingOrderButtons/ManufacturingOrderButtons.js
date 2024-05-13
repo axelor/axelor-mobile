@@ -19,12 +19,12 @@
 import React, {useCallback} from 'react';
 import {Button, useThemeColor} from '@axelor/aos-mobile-ui';
 import {
-  useTranslator,
   useDispatch,
-  useSelector,
   usePermitted,
+  useSelector,
+  useTranslator,
+  useTypes,
 } from '@axelor/aos-mobile-core';
-import ManufacturingOrder from '../../../types/manufacturing-order';
 import {updateStatusOfManufOrder} from '../../../features/manufacturingOrderSlice';
 
 const ManufacturingOrderButtons = ({}) => {
@@ -34,6 +34,7 @@ const ManufacturingOrderButtons = ({}) => {
   const {readonly} = usePermitted({
     modelName: 'com.axelor.apps.production.db.ManufOrder',
   });
+  const {ManufOrder} = useTypes();
 
   const {manufOrder} = useSelector(state => state.manufacturingOrder);
 
@@ -54,39 +55,39 @@ const ManufacturingOrderButtons = ({}) => {
     return null;
   }
 
-  if (manufOrder.statusSelect === ManufacturingOrder.status.Planned) {
+  if (manufOrder.statusSelect === ManufOrder?.statusSelect.Planned) {
     return (
       <Button
         title={I18n.t('Base_Start')}
-        onPress={() => handleUpdateStatus(ManufacturingOrder.status.InProgress)}
+        onPress={() => handleUpdateStatus(ManufOrder?.statusSelect.InProgress)}
         iconName="play-fill"
       />
     );
   }
 
-  if (manufOrder.statusSelect === ManufacturingOrder.status.InProgress) {
+  if (manufOrder.statusSelect === ManufOrder?.statusSelect.InProgress) {
     return (
       <>
         <Button
           title={I18n.t('Base_Pause')}
-          onPress={() => handleUpdateStatus(ManufacturingOrder.status.StandBy)}
+          onPress={() => handleUpdateStatus(ManufOrder?.statusSelect.StandBy)}
           iconName="pause-fill"
           color={Colors.secondaryColor}
         />
         <Button
           title={I18n.t('Base_Finish')}
-          onPress={() => handleUpdateStatus(ManufacturingOrder.status.Finished)}
+          onPress={() => handleUpdateStatus(ManufOrder?.statusSelect.Finished)}
           iconName="power"
         />
       </>
     );
   }
 
-  if (manufOrder.statusSelect === ManufacturingOrder.status.StandBy) {
+  if (manufOrder.statusSelect === ManufOrder?.statusSelect.StandBy) {
     return (
       <Button
         title={I18n.t('Base_Continue')}
-        onPress={() => handleUpdateStatus(ManufacturingOrder.status.InProgress)}
+        onPress={() => handleUpdateStatus(ManufOrder?.statusSelect.InProgress)}
         iconName="skip-end-fill"
       />
     );

@@ -21,8 +21,8 @@ import {
   createStandardFetch,
   createStandardSearch,
   getSearchCriterias,
+  getTypes,
 } from '@axelor/aos-mobile-core';
-import ManufacturingOrder from '../types/manufacturing-order';
 
 const createManufOrderCriteria = (
   searchValue,
@@ -32,11 +32,13 @@ const createManufOrderCriteria = (
   statusList,
   productId,
 ) => {
+  const ManufOrder = getTypes().ManufOrder;
+
   let criterias = [
     {
       fieldName: 'typeSelect',
       operator: '=',
-      value: ManufacturingOrder.type.production,
+      value: ManufOrder?.typeSelect.production,
     },
     {
       operator: 'OR',
@@ -44,22 +46,22 @@ const createManufOrderCriteria = (
         {
           fieldName: 'statusSelect',
           operator: '=',
-          value: ManufacturingOrder.status.Planned,
+          value: ManufOrder?.statusSelect.Planned,
         },
         {
           fieldName: 'statusSelect',
           operator: '=',
-          value: ManufacturingOrder.status.InProgress,
+          value: ManufOrder?.statusSelect.InProgress,
         },
         {
           fieldName: 'statusSelect',
           operator: '=',
-          value: ManufacturingOrder.status.StandBy,
+          value: ManufOrder?.statusSelect.StandBy,
         },
         {
           fieldName: 'statusSelect',
           operator: '=',
-          value: ManufacturingOrder.status.Finished,
+          value: ManufOrder?.statusSelect.Finished,
         },
       ],
     },
