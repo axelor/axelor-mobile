@@ -17,9 +17,12 @@
  */
 
 import React from 'react';
-import {ObjectCard, useThemeColor} from '@axelor/aos-mobile-ui';
-import {clipboardProvider, useTranslator} from '@axelor/aos-mobile-core';
-import ManufacturingOrder from '../../../types/manufacturing-order';
+import {ObjectCard} from '@axelor/aos-mobile-ui';
+import {
+  clipboardProvider,
+  useTypeHelpers,
+  useTypes,
+} from '@axelor/aos-mobile-core';
 
 const LinkedManufacturingOrderCard = ({
   manufOrderSeq,
@@ -28,8 +31,8 @@ const LinkedManufacturingOrderCard = ({
   manufOrderSeq: string;
   statusSelect: number;
 }) => {
-  const Colors = useThemeColor();
-  const I18n = useTranslator();
+  const {ManufOrder} = useTypes();
+  const {getItemColor, getItemTitle} = useTypeHelpers();
 
   return (
     <ObjectCard
@@ -38,8 +41,8 @@ const LinkedManufacturingOrderCard = ({
       sideBadges={{
         items: [
           {
-            displayText: ManufacturingOrder.getStatus(statusSelect, I18n),
-            color: ManufacturingOrder.getStatusColor(statusSelect, Colors),
+            displayText: getItemTitle(ManufOrder?.statusSelect, statusSelect),
+            color: getItemColor(ManufOrder?.statusSelect, statusSelect),
           },
         ],
       }}

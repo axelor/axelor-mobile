@@ -18,9 +18,8 @@
 
 import React from 'react';
 import {StyleSheet, View} from 'react-native';
-import {Badge, LabelText, Text, useThemeColor} from '@axelor/aos-mobile-ui';
-import {useTranslator} from '@axelor/aos-mobile-core';
-import ManufacturingOrder from '../../../types/manufacturing-order';
+import {Badge, LabelText, Text} from '@axelor/aos-mobile-ui';
+import {useTypeHelpers, useTypes} from '@axelor/aos-mobile-core';
 
 interface ManufacturingOrderHeaderProps {
   reference: string;
@@ -35,8 +34,8 @@ const ManufacturingOrderHeader = ({
   priority,
   parentMO = null,
 }: ManufacturingOrderHeaderProps) => {
-  const Colors = useThemeColor();
-  const I18n = useTranslator();
+  const {ManufOrder} = useTypes();
+  const {getItemColor, getItemTitle} = useTypeHelpers();
 
   return (
     <View style={styles.infoContainer}>
@@ -53,16 +52,16 @@ const ManufacturingOrderHeader = ({
           <View style={styles.refContainer} />
         ) : (
           <Badge
-            color={ManufacturingOrder.getStatusColor(status, Colors)}
-            title={ManufacturingOrder.getStatus(status, I18n)}
+            color={getItemColor(ManufOrder?.statusSelect, status)}
+            title={getItemTitle(ManufOrder?.statusSelect, status)}
           />
         )}
         {priority == null ? (
           <View style={styles.refContainer} />
         ) : (
           <Badge
-            color={ManufacturingOrder.getPriorityColor(priority, Colors)}
-            title={ManufacturingOrder.getPriority(priority, I18n)}
+            color={getItemColor(ManufOrder?.prioritySelect, priority)}
+            title={getItemTitle(ManufOrder?.prioritySelect, priority)}
           />
         )}
       </View>

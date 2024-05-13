@@ -26,8 +26,9 @@ import {
   useDispatch,
   useSelector,
   usePermitted,
+  useTypes,
 } from '@axelor/aos-mobile-core';
-import {OperationOrder} from '../../../types';
+import {default as OperationOrderType} from '../../../types';
 import {updateOperationOrder} from '../../../features/operationOrderSlice';
 import {StyleSheet, View} from 'react-native';
 
@@ -40,6 +41,7 @@ const OperationOrderStopwatch = ({}) => {
   const {readonly} = usePermitted({
     modelName: 'com.axelor.apps.production.db.OperationOrder',
   });
+  const {OperationOrder} = useTypes();
 
   const {operationOrder, updateMessage} = useSelector(
     state => state.operationOrder,
@@ -52,7 +54,7 @@ const OperationOrderStopwatch = ({}) => {
 
   const getTimerState = useCallback(() => {
     const timerState = !isEmpty(operationOrder)
-      ? OperationOrder.getTimerState(operationOrder, user?.id)
+      ? OperationOrderType.getTimerState(operationOrder, user?.id)
       : {status: DEFAULT_STATUS, time: DEFAULT_TIME};
 
     setTimerStatus(timerState.status);
@@ -98,9 +100,9 @@ const OperationOrderStopwatch = ({}) => {
         status={timerStatus}
         getTimerState={getTimerState}
         timerFormat={I18n.t('Stopwatch_TimerFormat')}
-        onPlay={() => updateStatus(OperationOrder.status.InProgress)}
-        onPause={() => updateStatus(OperationOrder.status.StandBy)}
-        onStop={() => updateStatus(OperationOrder.status.Finished)}
+        onPlay={() => updateStatus(OperationOrder?.statusSelect.InProgress)}
+        onPause={() => updateStatus(OperationOrder?.statusSelect.StandBy)}
+        onStop={() => updateStatus(OperationOrder?.statusSelect.Finished)}
         disableStop={
           timerStatus !== StopwatchType.status.InProgress &&
           timerStatus !== StopwatchType.status.Paused

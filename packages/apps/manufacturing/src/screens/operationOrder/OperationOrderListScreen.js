@@ -18,13 +18,14 @@
 
 import React, {useMemo, useState} from 'react';
 import {StyleSheet} from 'react-native';
-import {ChipSelect, Screen, useThemeColor} from '@axelor/aos-mobile-ui';
+import {ChipSelect, Screen} from '@axelor/aos-mobile-ui';
 import {
   SearchListView,
   useSelector,
   useTranslator,
+  useTypes,
+  useTypeHelpers,
 } from '@axelor/aos-mobile-core';
-import OperationOrder from '../../types/operation-order';
 import {fetchOperationOrders} from '../../features/operationOrderSlice';
 import {displayManufOrderSeq} from '../../utils/displayers';
 import {
@@ -36,8 +37,9 @@ import {
 const refScanKey = 'manufOrderSeq_manufacturing-order-list';
 
 function OperationOrderListScreen({navigation}) {
-  const Colors = useThemeColor();
   const I18n = useTranslator();
+  const {OperationOrder} = useTypes();
+  const {getSelectionItems} = useTypeHelpers();
 
   const {loadingList, moreLoading, isListEnd, operationOrderList} = useSelector(
     state => state.operationOrder,
@@ -66,6 +68,20 @@ function OperationOrderListScreen({navigation}) {
     [machine?.id, selectedStatus, workCenter?.id],
   );
 
+  const statusList = useMemo(() => {
+    const statusToDisplay = [
+      OperationOrder?.statusSelect.Planned,
+      OperationOrder?.statusSelect.InProgress,
+      OperationOrder?.statusSelect.StandBy,
+      OperationOrder?.statusSelect.Finished,
+    ];
+
+    return getSelectionItems(
+      OperationOrder?.statusSelect,
+      selectedStatus,
+    ).filter(({value}) => statusToDisplay.includes(value));
+  }, [OperationOrder?.statusSelect, getSelectionItems, selectedStatus]);
+
   return (
     <Screen removeSpaceOnTop={true}>
       <SearchListView
@@ -83,41 +99,8 @@ function OperationOrderListScreen({navigation}) {
         chipComponent={
           <ChipSelect
             mode="multi"
-            onChangeValue={chiplist => setSelectedStatus(chiplist)}
-            selectionItems={[
-              {
-                title: I18n.t('Manufacturing_Status_Planned'),
-                color: OperationOrder.getStatusColor(
-                  OperationOrder.status.Planned,
-                  Colors,
-                ),
-                key: OperationOrder.status.Planned,
-              },
-              {
-                title: I18n.t('Manufacturing_Status_InProgress'),
-                color: OperationOrder.getStatusColor(
-                  OperationOrder.status.InProgress,
-                  Colors,
-                ),
-                key: OperationOrder.status.InProgress,
-              },
-              {
-                title: I18n.t('Manufacturing_Status_StandBy'),
-                color: OperationOrder.getStatusColor(
-                  OperationOrder.status.StandBy,
-                  Colors,
-                ),
-                key: OperationOrder.status.StandBy,
-              },
-              {
-                title: I18n.t('Manufacturing_Status_Finished'),
-                color: OperationOrder.getStatusColor(
-                  OperationOrder.status.Finished,
-                  Colors,
-                ),
-                key: OperationOrder.status.Finished,
-              },
-            ]}
+            onChangeValue={setSelectedStatus}
+            selectionItems={statusList}
           />
         }
         headerChildren={

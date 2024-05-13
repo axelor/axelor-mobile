@@ -33,6 +33,7 @@ import {
   usePermitted,
   useSelector,
   useTranslator,
+  useTypes,
 } from '@axelor/aos-mobile-core';
 import {ManufacturingOrderHeader, WasteProductCard} from '../../../components';
 import {
@@ -40,7 +41,6 @@ import {
   declareWasteProductsOfManufOrder,
   fetchWasteProducts,
 } from '../../../features/wasteProductsSlice';
-import {ManufacturingOrder} from '../../../types';
 
 const productScanKey = 'product_manufacturing-order-waste-product-list';
 
@@ -56,13 +56,14 @@ const WasteProductListScreen = ({route, navigation}) => {
   const {readonly} = usePermitted({
     modelName: 'com.axelor.apps.production.db.ManufOrder',
   });
+  const {ManufOrder} = useTypes();
 
   const {loading, moreLoading, isListEnd, wasteProductList, declareResponse} =
     useSelector(state => state.wasteProducts);
 
   const [isVisible, setVisible] = useState(false);
   const [canDeclare, setDeclare] = useState(
-    manufOrder?.statusSelect === ManufacturingOrder.status.InProgress &&
+    manufOrder?.statusSelect === ManufOrder?.statusSelect.InProgress &&
       manufOrder?.wasteStockMove == null,
   );
 
