@@ -17,7 +17,7 @@
  */
 
 import React from 'react';
-import {useTranslator} from '@axelor/aos-mobile-core';
+import {usePermitted, useTranslator} from '@axelor/aos-mobile-core';
 import {Button} from '@axelor/aos-mobile-ui';
 
 interface TimerDeclareButtonProps {
@@ -26,6 +26,13 @@ interface TimerDeclareButtonProps {
 
 const TimerDeclareButton = ({setIsAlertVisible}: TimerDeclareButtonProps) => {
   const I18n = useTranslator();
+  const {canCreate} = usePermitted({
+    modelName: 'com.axelor.apps.hr.db.Timesheet',
+  });
+
+  if (!canCreate) {
+    return null;
+  }
 
   return (
     <Button

@@ -39,6 +39,9 @@ interface EquipmentActionCardProps {
   equipmentFamily: string;
   inService: boolean;
   isUnlinkAction?: boolean;
+  canCopy?: boolean;
+  canEdit?: boolean;
+  canArchive?: boolean;
   handleArchive?: () => void;
   handleUnlink?: () => void;
   handleDuplicate?: (equipmentId: number) => void;
@@ -53,6 +56,9 @@ const EquipmentActionCard = ({
   equipmentFamily,
   inService,
   isUnlinkAction = false,
+  canCopy = true,
+  canEdit = true,
+  canArchive = true,
   handleArchive = () => {},
   handleUnlink,
   handleDuplicate,
@@ -72,44 +78,48 @@ const EquipmentActionCard = ({
         equipmentFamily={equipmentFamily}
         inService={inService}
       />
-      <View style={styles.flexOne}>
-        {isUnlinkAction && (
-          <InfoButton
-            style={styles.flexOne}
-            iconName="x-lg"
-            iconColor={Colors.secondaryColor_dark.background}
-            onPress={handleUnlink}
-            indication={I18n.t('Intervention_Unlink')}
-          />
-        )}
-        <InfoButton
-          style={styles.flexOne}
-          iconName="front"
-          iconColor={Colors.secondaryColor_dark.background}
-          onPress={() =>
-            (dispatch as any)(
-              (copyEquipment as any)({
-                equipmentId: idEquipment,
-              }),
-            ).then(({payload}) => {
-              const equipmentId = payload?.id;
-              if (equipmentId != null) {
-                handleDuplicate != null
-                  ? handleDuplicate(equipmentId)
-                  : navigation.navigate('EquipmentFormView', {
-                      idEquipment: equipmentId,
-                      isCreation: true,
-                    });
+      {(isUnlinkAction || canCopy) && (
+        <View style={styles.flexOne}>
+          {isUnlinkAction && (
+            <InfoButton
+              style={styles.flexOne}
+              iconName="x-lg"
+              iconColor={Colors.secondaryColor_dark.background}
+              onPress={handleUnlink}
+              indication={I18n.t('Intervention_Unlink')}
+            />
+          )}
+          {canCopy && (
+            <InfoButton
+              style={styles.flexOne}
+              iconName="front"
+              iconColor={Colors.secondaryColor_dark.background}
+              onPress={() =>
+                (dispatch as any)(
+                  (copyEquipment as any)({
+                    equipmentId: idEquipment,
+                  }),
+                ).then(({payload}) => {
+                  const equipmentId = payload?.id;
+                  if (equipmentId != null) {
+                    handleDuplicate != null
+                      ? handleDuplicate(equipmentId)
+                      : navigation.navigate('EquipmentFormView', {
+                          idEquipment: equipmentId,
+                          isCreation: true,
+                        });
+                  }
+                })
               }
-            })
-          }
-          indication={I18n.t('Intervention_Duplicate')}
-        />
-      </View>
+              indication={I18n.t('Intervention_Duplicate')}
+            />
+          )}
+        </View>
+      )}
       <View style={styles.flexOne}>
         <InfoButton
           style={styles.flexOne}
-          iconName="pencil-fill"
+          iconName={canEdit ? 'pencil-fill' : 'file-earmark-text'}
           iconColor={Colors.secondaryColor_dark.background}
           onPress={() => {
             navigation.navigate('EquipmentFormView', {
@@ -118,20 +128,22 @@ const EquipmentActionCard = ({
           }}
           indication={I18n.t('Intervention_Edit')}
         />
-        <InfoButton
-          style={styles.flexOne}
-          iconName="archive-fill"
-          iconColor={Colors.errorColor.background}
-          onPress={() =>
-            (dispatch as any)(
-              (archiveEquipment as any)({
-                equipmentId: idEquipment,
-                equipmentVersion,
-              }),
-            ).then(() => handleArchive())
-          }
-          indication={I18n.t('Intervention_Archive')}
-        />
+        {canArchive && (
+          <InfoButton
+            style={styles.flexOne}
+            iconName="archive-fill"
+            iconColor={Colors.errorColor.background}
+            onPress={() =>
+              (dispatch as any)(
+                (archiveEquipment as any)({
+                  equipmentId: idEquipment,
+                  equipmentVersion,
+                }),
+              ).then(() => handleArchive())
+            }
+            indication={I18n.t('Intervention_Archive')}
+          />
+        )}
       </View>
     </View>
   );

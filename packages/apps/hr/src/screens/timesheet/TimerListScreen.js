@@ -20,6 +20,7 @@ import React, {useCallback, useState} from 'react';
 import {
   ISODateTimeToDate,
   useDispatch,
+  usePermitted,
   useSelector,
   useTranslator,
 } from '@axelor/aos-mobile-core';
@@ -37,6 +38,9 @@ import {getNumberTimerByDateApi} from '../../api';
 const TimerListScreen = ({navigation}) => {
   const I18n = useTranslator();
   const dispatch = useDispatch();
+  const {canDelete, readonly} = usePermitted({
+    modelName: 'com.axelor.apps.hr.db.TSTimer',
+  });
 
   const [isAlertVisible, setIsAlertVisible] = useState(false);
 
@@ -66,12 +70,14 @@ const TimerListScreen = ({navigation}) => {
             comments={item.comments}
             date={item.startDateTime}
             duration={formatSecondsToHours(item.duration)}
-            durationUnit={'hours'}
+            durationUnit="hours"
+            canEdit={!readonly}
             onEdit={() =>
               navigation.navigate('TimerFormScreen', {
                 idTimerToUpdate: item.id,
               })
             }
+            showTrash={canDelete}
             onDelete={() =>
               dispatch(deleteTimer({timerId: item.id, userId: userId}))
             }

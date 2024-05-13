@@ -16,12 +16,19 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import {useNavigation} from '@axelor/aos-mobile-core';
+import {useNavigation, usePermitted} from '@axelor/aos-mobile-core';
 import React from 'react';
 import {EditButton} from '../../../organisms';
 
 const OpportunityBottom = ({opportunityId}) => {
   const navigation = useNavigation();
+  const {readonly} = usePermitted({
+    modelName: 'com.axelor.apps.crm.db.Opportunity',
+  });
+
+  if (readonly) {
+    return null;
+  }
 
   return (
     <EditButton

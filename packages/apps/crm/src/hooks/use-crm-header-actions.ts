@@ -16,6 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+import {useEffect} from 'react';
 import {
   contactProvider,
   headerActionsProvider,
@@ -23,8 +24,8 @@ import {
   useNavigation,
   useTranslator,
   useDispatch,
+  usePermitted,
 } from '@axelor/aos-mobile-core';
-import {useEffect} from 'react';
 import {useThemeColor} from '@axelor/aos-mobile-ui';
 import {fetchTourById} from '../features/tourSlice';
 
@@ -32,6 +33,9 @@ const useCatalogListActions = () => {
   const Colors = useThemeColor();
   const navigation = useNavigation();
   const I18n = useTranslator();
+  const {canCreate} = usePermitted({
+    modelName: 'com.axelor.apps.crm.db.Catalog',
+  });
 
   const {crm: crmConfig} = useSelector((state: any) => state.appConfig);
 
@@ -44,18 +48,19 @@ const useCatalogListActions = () => {
           iconName: 'plus-lg',
           title: I18n.t('Crm_NewCatalog'),
           iconColor: Colors.primaryColor.background,
-          hideIf: !crmConfig?.isManageCatalogs,
+          hideIf: !crmConfig?.isManageCatalogs || !canCreate,
           onPress: () => navigation.navigate('CatalogFormScreen', {}),
           showInHeader: true,
         },
       ],
     });
-  }, [Colors, I18n, navigation, crmConfig]);
+  }, [Colors, I18n, navigation, crmConfig, canCreate]);
 };
 
 const useClientDetailsActions = () => {
   const I18n = useTranslator();
   const navigation = useNavigation();
+  const {canCreate} = usePermitted({modelName: 'com.axelor.apps.crm.db.Event'});
 
   const {mobileSettings} = useSelector((state: any) => state.appConfig);
   const {client} = useSelector((state: any) => state.client);
@@ -94,18 +99,20 @@ const useClientDetailsActions = () => {
           order: 20,
           iconName: 'calendar-plus-fill',
           title: I18n.t('Crm_CreateEvent'),
+          hideIf: !canCreate,
           onPress: () =>
             navigation.navigate('EventFormScreen', {client: client}),
           showInHeader: true,
         },
       ],
     });
-  }, [mobileSettings, client, I18n, navigation]);
+  }, [mobileSettings, client, I18n, navigation, canCreate]);
 };
 
 const useContactDetailsActions = () => {
   const I18n = useTranslator();
   const navigation = useNavigation();
+  const {canCreate} = usePermitted({modelName: 'com.axelor.apps.crm.db.Event'});
 
   const {mobileSettings} = useSelector((state: any) => state.appConfig);
   const {contact} = useSelector((state: any) => state.contact);
@@ -147,19 +154,21 @@ const useContactDetailsActions = () => {
           order: 20,
           iconName: 'calendar-plus-fill',
           title: I18n.t('Crm_CreateEvent'),
+          hideIf: !canCreate,
           onPress: () =>
             navigation.navigate('EventFormScreen', {contact: contact}),
           showInHeader: true,
         },
       ],
     });
-  }, [mobileSettings, contact, I18n, navigation]);
+  }, [mobileSettings, contact, I18n, navigation, canCreate]);
 };
 
 const useLeadListActions = () => {
   const Colors = useThemeColor();
   const navigation = useNavigation();
   const I18n = useTranslator();
+  const {canCreate} = usePermitted({modelName: 'com.axelor.apps.crm.db.Lead'});
 
   useEffect(() => {
     headerActionsProvider.registerModel('crm_lead_list', {
@@ -170,17 +179,19 @@ const useLeadListActions = () => {
           iconName: 'plus-lg',
           title: I18n.t('Crm_NewLead'),
           iconColor: Colors.primaryColor.background,
+          hideIf: !canCreate,
           onPress: () => navigation.navigate('LeadFormScreen', {}),
           showInHeader: true,
         },
       ],
     });
-  }, [Colors, I18n, navigation]);
+  }, [Colors, I18n, canCreate, navigation]);
 };
 
 const useLeadDetailsActions = () => {
   const I18n = useTranslator();
   const navigation = useNavigation();
+  const {canCreate} = usePermitted({modelName: 'com.axelor.apps.crm.db.Event'});
 
   const {mobileSettings} = useSelector((state: any) => state.appConfig);
   const {lead} = useSelector((state: any) => state.lead);
@@ -217,18 +228,22 @@ const useLeadDetailsActions = () => {
           order: 20,
           iconName: 'calendar-plus-fill',
           title: I18n.t('Crm_CreateEvent'),
+          hideIf: !canCreate,
           onPress: () => navigation.navigate('EventFormScreen', {lead: lead}),
           showInHeader: true,
         },
       ],
     });
-  }, [mobileSettings, lead, I18n, navigation]);
+  }, [mobileSettings, lead, I18n, navigation, canCreate]);
 };
 
 const useOpportunityListActions = () => {
   const Colors = useThemeColor();
   const navigation = useNavigation();
   const I18n = useTranslator();
+  const {canCreate} = usePermitted({
+    modelName: 'com.axelor.apps.crm.db.Opportunity',
+  });
 
   useEffect(() => {
     headerActionsProvider.registerModel('crm_opportunity_list', {
@@ -239,12 +254,13 @@ const useOpportunityListActions = () => {
           iconName: 'plus-lg',
           title: I18n.t('Crm_NewOpportunity'),
           iconColor: Colors.primaryColor.background,
+          hideIf: !canCreate,
           onPress: () => navigation.navigate('OpportunityFormScreen', {}),
           showInHeader: true,
         },
       ],
     });
-  }, [Colors, I18n, navigation]);
+  }, [Colors, I18n, canCreate, navigation]);
 };
 
 const useOpportunityDetailsActions = () => {
@@ -264,6 +280,7 @@ const useOpportunityDetailsActions = () => {
 const useProspectDetailsActions = () => {
   const navigation = useNavigation();
   const I18n = useTranslator();
+  const {canCreate} = usePermitted({modelName: 'com.axelor.apps.crm.db.Event'});
 
   const {mobileSettings} = useSelector((state: any) => state.appConfig);
   const {prospect} = useSelector((state: any) => state.prospect);
@@ -303,13 +320,14 @@ const useProspectDetailsActions = () => {
           order: 20,
           iconName: 'calendar-plus-fill',
           title: I18n.t('Crm_CreateEvent'),
+          hideIf: !canCreate,
           onPress: () =>
             navigation.navigate('EventFormScreen', {prospect: prospect}),
           showInHeader: true,
         },
       ],
     });
-  }, [mobileSettings, prospect, I18n, navigation]);
+  }, [mobileSettings, prospect, I18n, navigation, canCreate]);
 };
 
 const useTourDetailsActions = () => {

@@ -23,6 +23,7 @@ import {
   useSelector,
   useDispatch,
   useNavigation,
+  usePermitted,
 } from '@axelor/aos-mobile-core';
 import {Button, useThemeColor} from '@axelor/aos-mobile-ui';
 import {Expense} from '../../../types';
@@ -38,6 +39,9 @@ const ExpenseDetailsValidationButton = ({expense, mode, isManualCreation}) => {
   const Colors = useThemeColor();
   const I18n = useTranslator();
   const dispatch = useDispatch();
+  const {readonly, canDelete} = usePermitted({
+    modelName: 'com.axelor.apps.hr.db.Expense',
+  });
 
   const {user} = useSelector(state => state.user);
 
@@ -69,16 +73,22 @@ const ExpenseDetailsValidationButton = ({expense, mode, isManualCreation}) => {
     navigation.pop();
   }, [dispatch, expense.id, navigation, user.id]);
 
+  if (readonly) {
+    return null;
+  }
+
   if (expense.statusSelect === Expense.statusSelect.Draft) {
     return (
       <View style={styles.buttonContainer}>
-        <Button
-          title={I18n.t(isManualCreation ? 'Base_Cancel' : 'Hr_Delete')}
-          onPress={deleteExpenseAPI}
-          width="45%"
-          color={Colors.errorColor}
-          iconName={isManualCreation ? 'x-lg' : 'trash3-fill'}
-        />
+        {canDelete && (
+          <Button
+            title={I18n.t(isManualCreation ? 'Base_Cancel' : 'Hr_Delete')}
+            onPress={deleteExpenseAPI}
+            width="45%"
+            color={Colors.errorColor}
+            iconName={isManualCreation ? 'x-lg' : 'trash3-fill'}
+          />
+        )}
         <Button
           title={I18n.t('Hr_Send')}
           onPress={sendExpenseAPI}

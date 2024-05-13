@@ -1,0 +1,5 @@
+{
+  "title": "Permissions: check user rights for actions display",
+  "type": "refactor",
+  "packages": ["crm", "helpdesk", "hr", "stock", "manufacturing", "quality"]
+}

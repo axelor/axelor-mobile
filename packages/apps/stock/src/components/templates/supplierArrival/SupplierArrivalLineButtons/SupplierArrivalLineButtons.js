@@ -21,6 +21,7 @@ import {Button} from '@axelor/aos-mobile-ui';
 import {
   useDispatch,
   useNavigation,
+  usePermitted,
   useTranslator,
 } from '@axelor/aos-mobile-core';
 import StockMove from '../../../../types/stock-move';
@@ -36,6 +37,9 @@ const SupplierArrivalLineButtons = ({
   const I18n = useTranslator();
   const dispatch = useDispatch();
   const navigation = useNavigation();
+  const {readonly} = usePermitted({
+    modelName: 'com.axelor.apps.stock.db.StockMoveLine',
+  });
 
   const navigateBackToDetails = useCallback(() => {
     navigation.navigate('SupplierArrivalDetailsScreen', {
@@ -64,7 +68,7 @@ const SupplierArrivalLineButtons = ({
     toStockLocation,
   ]);
 
-  if (supplierArrival.statusSelect !== StockMove.status.Realized) {
+  if (!readonly && supplierArrival.statusSelect !== StockMove.status.Realized) {
     return <Button title={I18n.t('Base_Validate')} onPress={handleValidate} />;
   }
 

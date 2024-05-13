@@ -23,7 +23,7 @@ import {
   Screen,
   KeyboardAvoidingScrollView,
 } from '@axelor/aos-mobile-ui';
-import {useDispatch, useSelector} from '@axelor/aos-mobile-core';
+import {useDispatch, usePermitted, useSelector} from '@axelor/aos-mobile-core';
 import {
   StockCorrectionHeader,
   StockCorrectionButtons,
@@ -40,6 +40,9 @@ import {fetchStockCorrection} from '../../features/stockCorrectionSlice';
 const StockCorrectionDetailsScreen = ({route}) => {
   const stockCorrectionId = route.params.stockCorrectionId;
   const dispatch = useDispatch();
+  const {readonly} = usePermitted({
+    modelName: 'com.axelor.apps.stock.db.StockCorrection',
+  });
 
   const {loading, stockCorrection} = useSelector(
     state => state.stockCorrection,
@@ -134,17 +137,20 @@ const StockCorrectionDetailsScreen = ({route}) => {
           setSaveStatus={setSaveStatus}
           status={stockCorrection.statusSelect}
           stockProduct={product}
+          readonly={readonly}
         />
         <StockCorrectionReasonPicker
           reason={reason}
           setReason={setReason}
           setSaveStatus={setSaveStatus}
           status={stockCorrection.statusSelect}
+          readonly={readonly}
         />
         <StockCorrectionHtmlInput
           setComments={setComments}
           stockCorrection={stockCorrection}
           setSaveStatus={setSaveStatus}
+          readonly={readonly}
         />
       </KeyboardAvoidingScrollView>
     </Screen>

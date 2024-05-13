@@ -25,6 +25,7 @@ import {
   StopwatchType,
   useDispatch,
   useSelector,
+  usePermitted,
 } from '@axelor/aos-mobile-core';
 import {OperationOrder} from '../../../types';
 import {updateOperationOrder} from '../../../features/operationOrderSlice';
@@ -36,6 +37,9 @@ const DEFAULT_TIME = 0;
 const OperationOrderStopwatch = ({}) => {
   const I18n = useTranslator();
   const dispatch = useDispatch();
+  const {readonly} = usePermitted({
+    modelName: 'com.axelor.apps.production.db.OperationOrder',
+  });
 
   const {operationOrder, updateMessage} = useSelector(
     state => state.operationOrder,
@@ -101,6 +105,7 @@ const OperationOrderStopwatch = ({}) => {
           timerStatus !== StopwatchType.status.InProgress &&
           timerStatus !== StopwatchType.status.Paused
         }
+        disable={readonly}
         hideCancel={true}
         useObjectStatus={true}
       />

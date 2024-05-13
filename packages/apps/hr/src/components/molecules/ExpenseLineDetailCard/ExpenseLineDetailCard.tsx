@@ -24,6 +24,7 @@ import {
   useDispatch,
   useSelector,
   openFileInExternalApp,
+  usePermitted,
 } from '@axelor/aos-mobile-core';
 import {Expense, ExpenseLine} from '../../../types';
 import {ExpenseLineCard} from '../../atoms';
@@ -42,6 +43,9 @@ const ExpenseLineDetailCard = ({
   const I18n = useTranslator();
   const Colors = useThemeColor();
   const dispatch = useDispatch();
+  const {readonly, canDelete} = usePermitted({
+    modelName: 'com.axelor.apps.hr.db.ExpenseLine',
+  });
 
   const {userId} = useSelector((state: any) => state.auth);
   const {baseUrl, token, jsessionId} = useSelector((state: any) => state.auth);
@@ -152,17 +156,19 @@ const ExpenseLineDetailCard = ({
           expense.statusSelect === Expense.statusSelect.Draft ? (
             <View style={styles.flexOne}>
               <CardIconButton
-                iconName="pencil-fill"
+                iconName={readonly ? 'file-earmark-text' : 'pencil-fill'}
                 iconColor={Colors.secondaryColor_dark.background}
                 onPress={onEdit}
                 style={styles.flexOne}
               />
-              <CardIconButton
-                iconName="trash3-fill"
-                iconColor={Colors.errorColor.background}
-                onPress={handleDelete}
-                style={styles.flexOne}
-              />
+              {canDelete && (
+                <CardIconButton
+                  iconName="trash3-fill"
+                  iconColor={Colors.errorColor.background}
+                  onPress={handleDelete}
+                  style={styles.flexOne}
+                />
+              )}
             </View>
           ) : null}
         </View>

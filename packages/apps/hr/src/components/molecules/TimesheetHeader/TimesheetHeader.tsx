@@ -21,6 +21,7 @@ import {StyleSheet, View} from 'react-native';
 import {
   checkNullString,
   useNavigation,
+  usePermitted,
   useSelector,
   useTranslator,
   PeriodDisplay,
@@ -44,6 +45,12 @@ const TimesheetHeader = ({timesheet, statusSelect}: TimesheetHeaderProps) => {
   const Colors = useThemeColor();
   const I18n = useTranslator();
   const navigation = useNavigation();
+  const {canCreate} = usePermitted({
+    modelName: 'com.axelor.apps.hr.db.TimesheetLine',
+  });
+  const {readonly} = usePermitted({
+    modelName: 'com.axelor.apps.hr.db.Timesheet',
+  });
 
   const {mobileSettings} = useSelector((state: any) => state.appConfig);
 
@@ -55,8 +62,15 @@ const TimesheetHeader = ({timesheet, statusSelect}: TimesheetHeaderProps) => {
   const isAddButton = useMemo(
     () =>
       mobileSettings?.isLineCreationOfTimesheetDetailsAllowed &&
-      statusSelect === Timesheet.statusSelect.Draft,
-    [mobileSettings?.isLineCreationOfTimesheetDetailsAllowed, statusSelect],
+      statusSelect === Timesheet.statusSelect.Draft &&
+      canCreate &&
+      !readonly,
+    [
+      canCreate,
+      mobileSettings?.isLineCreationOfTimesheetDetailsAllowed,
+      readonly,
+      statusSelect,
+    ],
   );
 
   useEffect(() => {

@@ -23,6 +23,7 @@ import {
   useSelector,
   useTranslator,
   useNavigation,
+  usePermitted,
 } from '@axelor/aos-mobile-core';
 import {ChipSelect, useThemeColor} from '@axelor/aos-mobile-ui';
 import {EquipmentActionCard, InterventionHeader} from '../../molecules';
@@ -41,6 +42,12 @@ const EquipmentView = ({}) => {
   const Colors = useThemeColor();
   const navigation = useNavigation();
   const dispatch = useDispatch();
+  const {readonly: interventionReadonly} = usePermitted({
+    modelName: 'com.axelor.apps.intervention.db.Intervention',
+  });
+  const {canCreate, canDelete, readonly} = usePermitted({
+    modelName: 'com.axelor.apps.intervention.db.Equipment',
+  });
 
   const {intervention} = useSelector(
     (state: any) => state.intervention_intervention,
@@ -66,8 +73,14 @@ const EquipmentView = ({}) => {
   );
 
   const actionList = useMemo(() => {
-    const _actionList = [
-      {
+    const _actionList = [];
+
+    if (interventionReadonly && isInterventionMode) {
+      return _actionList;
+    }
+
+    if (canCreate) {
+      _actionList.push({
         iconName: 'plus',
         title: I18n.t('Intervention_CreateEquipment'),
         onPress: () =>
@@ -76,8 +89,8 @@ const EquipmentView = ({}) => {
             interventionId: isInterventionMode && intervention.id,
             interventionVersion: isInterventionMode && intervention.version,
           }),
-      },
-    ];
+      });
+    }
 
     if (isInterventionMode) {
       _actionList.push({
@@ -90,10 +103,12 @@ const EquipmentView = ({}) => {
     return _actionList;
   }, [
     I18n,
+    canCreate,
     intervention.id,
     intervention.version,
     isInterventionMode,
     navigation,
+    interventionReadonly,
   ]);
 
   const idsInterventionEquipement = useMemo(
@@ -193,7 +208,7 @@ const EquipmentView = ({}) => {
             code={item.code}
             equipmentFamily={item.equipmentFamily?.name}
             inService={item.inService}
-            isUnlinkAction={isInterventionMode}
+            isUnlinkAction={isInterventionMode && !interventionReadonly}
             handleUnlink={() => handleUnlinkEquipment(item.id)}
             handleArchive={() => {
               if (isInterventionMode) {
@@ -218,6 +233,9 @@ const EquipmentView = ({}) => {
                     })
                 : null
             }
+            canArchive={canDelete}
+            canCopy={canCreate}
+            canEdit={!readonly}
           />
         )}
         actionList={actionList}

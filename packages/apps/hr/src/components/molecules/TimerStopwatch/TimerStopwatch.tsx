@@ -22,6 +22,7 @@ import {
   calculateDiff,
   Stopwatch,
   useDispatch,
+  usePermitted,
   useSelector,
   useTranslator,
 } from '@axelor/aos-mobile-core';
@@ -58,6 +59,9 @@ const TimerStopwatch = ({
 }: TimerStopwatchProps) => {
   const I18n = useTranslator();
   const dispatch = useDispatch();
+  const {canCreate, readonly} = usePermitted({
+    modelName: 'com.axelor.apps.hr.db.TSTimer',
+  });
 
   const [time, setTime] = useState(DEFAULT_TIME);
   const [status, setStatus] = useState(DEFAULT_STATUS);
@@ -117,6 +121,7 @@ const TimerStopwatch = ({
 
   return (
     <Stopwatch
+      disable={defaultValue?.timerId != null && readonly}
       style={[styles.container, style]}
       startTime={time}
       status={status}
@@ -125,7 +130,9 @@ const TimerStopwatch = ({
       onPlay={() =>
         defaultValue?.timerId ? updateTimerStatusAPI('start') : createTimerAPI()
       }
-      disablePlay={!objectState?.product}
+      disablePlay={
+        !objectState?.product || (defaultValue?.timerId == null && !canCreate)
+      }
       onPause={() => updateTimerStatusAPI('pause')}
       onStop={() => updateTimerStatusAPI('stop')}
       onCancel={() => updateTimerStatusAPI('reset')}
