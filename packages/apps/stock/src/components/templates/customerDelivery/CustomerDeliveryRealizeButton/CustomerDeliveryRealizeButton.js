@@ -20,6 +20,7 @@ import React from 'react';
 import {
   useDispatch,
   useNavigation,
+  usePermitted,
   useTranslator,
 } from '@axelor/aos-mobile-core';
 import {Button} from '@axelor/aos-mobile-ui';
@@ -30,6 +31,9 @@ const CustomerDeliveryRealizeButton = ({customerDelivery}) => {
   const I18n = useTranslator();
   const dispatch = useDispatch();
   const navigation = useNavigation();
+  const {readonly} = usePermitted({
+    modelName: 'com.axelor.apps.stock.db.StockMove',
+  });
 
   const handleRealize = () => {
     dispatch(
@@ -41,7 +45,10 @@ const CustomerDeliveryRealizeButton = ({customerDelivery}) => {
     navigation.popToTop();
   };
 
-  if (customerDelivery.statusSelect !== StockMove.status.Realized) {
+  if (
+    !readonly &&
+    customerDelivery.statusSelect !== StockMove.status.Realized
+  ) {
     return <Button onPress={handleRealize} title={I18n.t('Base_Realize')} />;
   }
 

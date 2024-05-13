@@ -20,6 +20,7 @@ import React, {useMemo, useState} from 'react';
 import {
   SearchListView,
   useNavigation,
+  usePermitted,
   useSelector,
   useTranslator,
 } from '@axelor/aos-mobile-core';
@@ -30,6 +31,9 @@ import {fetchInterventionNote} from '../../../features/interventionNoteSlice';
 const NoteView = ({}) => {
   const I18n = useTranslator();
   const navigation = useNavigation();
+  const {readonly, canCreate, canDelete} = usePermitted({
+    modelName: 'com.axelor.apps.intervention.db.InterventionNote',
+  });
 
   const [selectedNoteTypeId, setSelectedNoteTypeId] = useState(null);
 
@@ -63,14 +67,21 @@ const NoteView = ({}) => {
           onChange={noteType => setSelectedNoteTypeId(noteType?.id)}
         />
       }
-      renderListItem={({item}) => <NoteDetailCard note={item} />}
-      actionList={[
-        {
-          iconName: 'plus',
-          title: I18n.t('Intervention_CreateNote'),
-          onPress: () => navigation.navigate('InterventionNoteFormScreen'),
-        },
-      ]}
+      renderListItem={({item}) => (
+        <NoteDetailCard note={item} canDelete={canDelete} canEdit={!readonly} />
+      )}
+      actionList={
+        canCreate
+          ? [
+              {
+                iconName: 'plus',
+                title: I18n.t('Intervention_CreateNote'),
+                onPress: () =>
+                  navigation.navigate('InterventionNoteFormScreen'),
+              },
+            ]
+          : []
+      }
     />
   );
 };

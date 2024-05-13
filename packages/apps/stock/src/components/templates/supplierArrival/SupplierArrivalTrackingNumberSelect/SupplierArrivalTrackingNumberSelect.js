@@ -18,7 +18,11 @@
 
 import React from 'react';
 import {StyleSheet, View} from 'react-native';
-import {useTranslator, useNavigation} from '@axelor/aos-mobile-core';
+import {
+  useTranslator,
+  useNavigation,
+  usePermitted,
+} from '@axelor/aos-mobile-core';
 import {Text, useThemeColor, Icon} from '@axelor/aos-mobile-ui';
 import TrackingNumberSearchBar from '../../TrackingNumberSearchBar/TrackingNumberSearchBar';
 
@@ -33,6 +37,9 @@ const SupplierArrivalTrackingNumberSelect = ({
   const I18n = useTranslator();
   const Colors = useThemeColor();
   const navigation = useNavigation();
+  const {canCreate} = usePermitted({
+    modelName: 'com.axelor.apps.stock.db.TrackingNumber',
+  });
 
   const handleAddTrackingNumber = () => {
     navigation.navigate('SupplierArrivalAddTrackingScreen', {
@@ -62,19 +69,21 @@ const SupplierArrivalTrackingNumberSelect = ({
 
   return (
     <View>
-      <View style={styles.trackingNumber}>
-        <Text style={styles.text_secondary}>
-          {I18n.t('Stock_AddTrackingNumber')}
-        </Text>
-        <Icon
-          name="plus-lg"
-          color={Colors.primaryColor.background}
-          size={24}
-          style={styles.action}
-          touchable={true}
-          onPress={handleAddTrackingNumber}
-        />
-      </View>
+      {canCreate && (
+        <View style={styles.trackingNumber}>
+          <Text style={styles.text_secondary}>
+            {I18n.t('Stock_AddTrackingNumber')}
+          </Text>
+          <Icon
+            name="plus-lg"
+            color={Colors.primaryColor.background}
+            size={24}
+            style={styles.action}
+            touchable={true}
+            onPress={handleAddTrackingNumber}
+          />
+        </View>
+      )}
       <TrackingNumberSearchBar
         scanKey={trackingScanKey}
         onChange={handleTrackingNumberSelection}

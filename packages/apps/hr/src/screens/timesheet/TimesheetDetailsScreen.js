@@ -20,6 +20,7 @@ import React, {useCallback, useEffect, useMemo} from 'react';
 import {
   AnomalyList,
   useDispatch,
+  usePermitted,
   useSelector,
   useTranslator,
 } from '@axelor/aos-mobile-core';
@@ -40,6 +41,9 @@ const TimesheetDetailsScreen = ({navigation, route}) => {
   const {timesheetId, isManualCreation} = route.params;
   const I18n = useTranslator();
   const dispatch = useDispatch();
+  const {canDelete, readonly} = usePermitted({
+    modelName: 'com.axelor.apps.hr.db.TimesheetLine',
+  });
 
   const {timesheet} = useSelector(state => state.timesheet);
   const {timesheet: timesheetConfig} = useSelector(state => state.appConfig);
@@ -101,9 +105,10 @@ const TimesheetDetailsScreen = ({navigation, route}) => {
             comments={item.comments}
             date={item.date}
             duration={item.duration}
-            showTrash={item.timer == null}
+            showTrash={item.timer == null && canDelete}
             durationUnit={timesheet.timeLoggingPreferenceSelect}
             isActions={_statusSelect === Timesheet.statusSelect.Draft}
+            canEdit={!readonly}
             onEdit={() =>
               navigation.navigate('TimesheetLineFormScreen', {
                 timesheetId: timesheetId,

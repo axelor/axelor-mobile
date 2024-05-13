@@ -119,6 +119,7 @@
   "Base_Comments": "Commentaires",
   "Base_Notifications": "Notifications",
   "Base_FormNotFound": "Le formulaire demandé est introuvable, merci de contacter un administrateur.",
+  "Base_FormMissingCreateAccess": "Vous n'avez pas les droits de création sur cet objet.",
   "Base_FormValidation_String": "doit être une chaîne de caractères",
   "Base_FormValidation_Number": "doit être un nombre",
   "Base_FormValidation_Boolean": "doit être un booléen",

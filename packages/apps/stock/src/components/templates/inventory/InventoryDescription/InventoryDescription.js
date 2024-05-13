@@ -17,14 +17,22 @@
  */
 
 import React, {useCallback} from 'react';
-import {useSelector, useDispatch, useTranslator} from '@axelor/aos-mobile-core';
-import {EditableInput, Text} from '@axelor/aos-mobile-ui';
+import {
+  useSelector,
+  useDispatch,
+  useTranslator,
+  usePermitted,
+} from '@axelor/aos-mobile-core';
+import {EditableInput, NotesCard, Text} from '@axelor/aos-mobile-ui';
 import {modifyDescription} from '../../../../features/inventorySlice';
 import {StyleSheet, View} from 'react-native';
 
 const InventoryDescription = ({}) => {
   const I18n = useTranslator();
   const dispatch = useDispatch();
+  const {readonly} = usePermitted({
+    modelName: 'com.axelor.apps.stock.db.Inventory',
+  });
 
   const {inventory} = useSelector(state => state.inventory);
 
@@ -40,6 +48,15 @@ const InventoryDescription = ({}) => {
     },
     [dispatch, inventory],
   );
+
+  if (readonly) {
+    return (
+      <NotesCard
+        title={I18n.t('Base_Description')}
+        data={inventory?.description}
+      />
+    );
+  }
 
   return (
     <View>

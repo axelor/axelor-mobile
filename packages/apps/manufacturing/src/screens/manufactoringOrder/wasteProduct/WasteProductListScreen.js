@@ -30,6 +30,7 @@ import {
 import {
   SearchListView,
   useDispatch,
+  usePermitted,
   useSelector,
   useTranslator,
 } from '@axelor/aos-mobile-core';
@@ -49,6 +50,12 @@ const WasteProductListScreen = ({route, navigation}) => {
   const Colors = useThemeColor();
   const I18n = useTranslator();
   const dispatch = useDispatch();
+  const {canCreate} = usePermitted({
+    modelName: 'com.axelor.apps.production.db.ProdProduct',
+  });
+  const {readonly} = usePermitted({
+    modelName: 'com.axelor.apps.production.db.ManufOrder',
+  });
 
   const {loading, moreLoading, isListEnd, wasteProductList, declareResponse} =
     useSelector(state => state.wasteProducts);
@@ -107,6 +114,7 @@ const WasteProductListScreen = ({route, navigation}) => {
     <Screen
       removeSpaceOnTop={true}
       fixedItems={
+        !readonly &&
         canDeclare &&
         !loading && (
           <Button
@@ -148,15 +156,14 @@ const WasteProductListScreen = ({route, navigation}) => {
             />
             <View style={styles.titleContainer}>
               <Text>{I18n.t('Manufacturing_WasteDeclaration')}</Text>
-              {canDeclare && (
-                <Icon
-                  name="plus-lg"
-                  size={20}
-                  color={Colors.primaryColor.background}
-                  touchable={true}
-                  onPress={handleAddProduct}
-                />
-              )}
+              <Icon
+                name="plus-lg"
+                size={20}
+                color={Colors.primaryColor.background}
+                touchable={true}
+                visible={canCreate && canDeclare}
+                onPress={handleAddProduct}
+              />
             </View>
           </>
         }

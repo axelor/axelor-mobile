@@ -85,6 +85,7 @@ const TimesheetLineFormScreen = ({route, navigation}) => {
   const defaultValue = useMemo(() => {
     if (timesheetLine != null) {
       return {
+        id: timesheetLine.id,
         project: timesheetLine.project,
         projectTask: timesheetLine.projectTask,
         manufOrder: timesheetLine.manufOrder,

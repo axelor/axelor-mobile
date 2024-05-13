@@ -20,6 +20,7 @@ import React, {useMemo, useState} from 'react';
 import {ChipSelect, Screen, useThemeColor} from '@axelor/aos-mobile-ui';
 import {
   SearchListView,
+  usePermitted,
   useSelector,
   useTranslator,
 } from '@axelor/aos-mobile-core';
@@ -34,6 +35,9 @@ import {Equipment} from '../../types';
 const CustomerParkScreen = ({}) => {
   const I18n = useTranslator();
   const Colors = useThemeColor();
+  const {canDelete, readonly, canCreate} = usePermitted({
+    modelName: 'com.axelor.apps.intervention.db.Equipment',
+  });
 
   const [selectedStatus, setSelectedStatus] = useState([]);
   const [customer, setCustomer] = useState(null);
@@ -74,6 +78,9 @@ const CustomerParkScreen = ({}) => {
             handleArchive={() => {
               setCustomer(_current => ({..._current}));
             }}
+            canArchive={canDelete}
+            canCopy={canCreate}
+            canEdit={!readonly}
           />
         )}
         headerTopChildren={

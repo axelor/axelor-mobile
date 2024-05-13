@@ -28,6 +28,7 @@ const StockCorrectionReasonPicker = ({
   setSaveStatus = () => {},
   setReason,
   isScrollViewContainer = false,
+  readonly = false,
 }) => {
   const I18n = useTranslator();
   const dispatch = useDispatch();
@@ -58,7 +59,7 @@ const StockCorrectionReasonPicker = ({
       labelField="name"
       valueField="id"
       required={true}
-      readonly={status === StockCorrection.status.Validated}
+      readonly={readonly || status === StockCorrection.status.Validated}
       isScrollViewContainer={isScrollViewContainer}
     />
   );

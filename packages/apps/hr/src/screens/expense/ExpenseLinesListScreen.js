@@ -27,6 +27,7 @@ import {
   CameraButton,
   headerActionsProvider,
   useDispatch,
+  usePermitted,
   useSelector,
   useTranslator,
 } from '@axelor/aos-mobile-core';
@@ -43,6 +44,9 @@ const ExpenseLinesListScreen = ({navigation, customOnUpload = null}) => {
   const Colors = useThemeColor();
   const I18n = useTranslator();
   const dispatch = useDispatch();
+  const {canCreate} = usePermitted({
+    modelName: 'com.axelor.apps.hr.db.ExpenseLine',
+  });
 
   const {expenseLineList, loadingExpenseLine, moreLoading, isListEnd} =
     useSelector(state => state.expenseLine);
@@ -81,7 +85,7 @@ const ExpenseLinesListScreen = ({navigation, customOnUpload = null}) => {
           key: 'newExpenseLines',
           order: 20,
           iconName: 'plus-lg',
-          hideIf: isSelectionMode,
+          hideIf: isSelectionMode || !canCreate,
           title: I18n.t('Hr_NewExpenseLine'),
           iconColor: Colors.primaryColor.background,
           onPress: () => navigation.navigate('ExpenseLineFormScreen', {}),
@@ -113,7 +117,7 @@ const ExpenseLinesListScreen = ({navigation, customOnUpload = null}) => {
         },
       ],
     });
-  }, [Colors, I18n, navigation, isSelectionMode]);
+  }, [Colors, I18n, navigation, isSelectionMode, canCreate]);
 
   const handleModeChange = (itemId = null) => {
     setIsSelectionMode(current => {
@@ -173,7 +177,7 @@ const ExpenseLinesListScreen = ({navigation, customOnUpload = null}) => {
           <DateSeparator fetchNumberOfItems={getNumberExpenseLineByDateApi} />
         }
       />
-      {!isSelectionMode && (
+      {!isSelectionMode && canCreate && (
         <CameraButton
           cameraKey="expense-line_justication_picture"
           onUpload={

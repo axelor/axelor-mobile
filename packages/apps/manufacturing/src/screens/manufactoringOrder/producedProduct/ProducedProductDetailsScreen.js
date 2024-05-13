@@ -24,7 +24,12 @@ import {
   HeaderContainer,
   useDigitFormat,
 } from '@axelor/aos-mobile-ui';
-import {useDispatch, useSelector, useTranslator} from '@axelor/aos-mobile-core';
+import {
+  useDispatch,
+  usePermitted,
+  useSelector,
+  useTranslator,
+} from '@axelor/aos-mobile-core';
 import {QuantityCard, ProductCardInfo} from '@axelor/aos-mobile-stock';
 import {
   ManufacturingOrderHeader,
@@ -43,6 +48,9 @@ const ProducedProductDetailsScreen = ({route, navigation}) => {
   const I18n = useTranslator();
   const formatNumber = useDigitFormat();
   const dispatch = useDispatch();
+  const {readonly} = usePermitted({
+    modelName: 'com.axelor.apps.production.db.ProdProduct',
+  });
 
   const {manufOrder, loadingOrder} = useSelector(
     state => state.manufacturingOrder,
@@ -164,12 +172,12 @@ const ProducedProductDetailsScreen = ({route, navigation}) => {
           }
           onPress={handleShowProduct}
         />
-
         <QuantityCard
           labelQty={I18n.t('Manufacturing_ProducedQty')}
           defaultValue={producedQty}
           onValueChange={setProducedQty}
           editable={
+            !readonly &&
             manufOrder?.statusSelect === ManufacturingOrder.status.InProgress
           }
           isBigButton={true}>

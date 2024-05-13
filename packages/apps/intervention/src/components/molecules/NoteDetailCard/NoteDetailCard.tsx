@@ -43,9 +43,16 @@ interface NoteContent {
 interface NoteDetailCardProps {
   style?: any;
   note: NoteContent;
+  canDelete?: boolean;
+  canEdit?: boolean;
 }
 
-const NoteDetailCard = ({style, note}: NoteDetailCardProps) => {
+const NoteDetailCard = ({
+  style,
+  note,
+  canDelete = true,
+  canEdit = true,
+}: NoteDetailCardProps) => {
   const I18n = useTranslator();
   const Colors = useThemeColor();
   const dispatch = useDispatch();
@@ -80,7 +87,7 @@ const NoteDetailCard = ({style, note}: NoteDetailCardProps) => {
       <View style={styles.flexOne}>
         <InfoButton
           style={styles.flexOne}
-          iconName="pencil-fill"
+          iconName={canEdit ? 'pencil-fill' : 'file-earmark-text'}
           iconColor={Colors.secondaryColor_dark.background}
           onPress={() =>
             navigation.navigate('InterventionNoteFormScreen', {
@@ -89,20 +96,22 @@ const NoteDetailCard = ({style, note}: NoteDetailCardProps) => {
           }
           indication={I18n.t('Intervention_Edit')}
         />
-        <InfoButton
-          style={styles.flexOne}
-          iconName="trash3-fill"
-          iconColor={Colors.errorColor.background}
-          onPress={() =>
-            dispatch(
-              (deleteInterventionNote as any)({
-                interventionNoteId: note.id,
-                deliveredPartnerId: note.partner.id,
-              }),
-            )
-          }
-          indication={I18n.t('Intervention_Delete')}
-        />
+        {canDelete && (
+          <InfoButton
+            style={styles.flexOne}
+            iconName="trash3-fill"
+            iconColor={Colors.errorColor.background}
+            onPress={() =>
+              dispatch(
+                (deleteInterventionNote as any)({
+                  interventionNoteId: note.id,
+                  deliveredPartnerId: note.partner.id,
+                }),
+              )
+            }
+            indication={I18n.t('Intervention_Delete')}
+          />
+        )}
       </View>
     </View>
   );

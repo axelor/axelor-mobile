@@ -24,7 +24,12 @@ import {
   ScrollView,
   HeaderContainer,
 } from '@axelor/aos-mobile-ui';
-import {useDispatch, useSelector, useTranslator} from '@axelor/aos-mobile-core';
+import {
+  useDispatch,
+  usePermitted,
+  useSelector,
+  useTranslator,
+} from '@axelor/aos-mobile-core';
 import {
   fetchUnit,
   ProductCardInfo,
@@ -47,6 +52,9 @@ const WasteProductDetailsScreen = ({route, navigation}) => {
   const wasteProductId = route.params.wasteProductId;
   const I18n = useTranslator();
   const dispatch = useDispatch();
+  const {readonly} = usePermitted({
+    modelName: 'com.axelor.apps.production.db.ProdProduct',
+  });
 
   const {unitList} = useSelector(state => state.unit);
   const {prodProduct} = useSelector(state => state.prodProducts);
@@ -162,6 +170,7 @@ const WasteProductDetailsScreen = ({route, navigation}) => {
           labelQty={I18n.t('Manufacturing_WasteQty')}
           defaultValue={wasteQty}
           editable={
+            !readonly &&
             manufOrder?.statusSelect === ManufacturingOrder.status.InProgress &&
             manufOrder?.wasteStockMove == null
           }
@@ -176,6 +185,7 @@ const WasteProductDetailsScreen = ({route, navigation}) => {
           labelField="name"
           valueField="id"
           readonly={
+            readonly ||
             manufOrder.statusSelect >= ManufacturingOrder.status.Finished
           }
           required={true}

@@ -17,11 +17,17 @@
  */
 
 import React from 'react';
-import {useNavigation} from '@axelor/aos-mobile-core';
+import {useNavigation, usePermitted} from '@axelor/aos-mobile-core';
 import {EditButton} from '../../../organisms';
 
 const EventBottom = ({event}) => {
   const navigation = useNavigation();
+  const {readonly} = usePermitted({modelName: 'com.axelor.apps.crm.db.Event'});
+
+  if (readonly) {
+    return null;
+  }
+
   return (
     <EditButton
       onPress={() =>

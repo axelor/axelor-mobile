@@ -27,6 +27,7 @@ const InternalMoveLinePicker = ({
   status,
   setUnit,
   isScrollViewContainer = false,
+  readonly = false,
 }) => {
   const I18n = useTranslator();
   const dispatch = useDispatch();
@@ -54,6 +55,7 @@ const InternalMoveLinePicker = ({
       labelField="name"
       valueField="id"
       readonly={
+        readonly ||
         status === StockMove.status.Realized ||
         status === StockMove.status.Canceled
       }

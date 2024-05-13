@@ -31,6 +31,7 @@ import {
   areObjectsEquals,
   ScannerAutocompleteSearch,
   useDispatch,
+  usePermitted,
   useSelector,
   useTranslator,
 } from '@axelor/aos-mobile-core';
@@ -49,10 +50,14 @@ const ProducedProductListScreen = ({route, navigation}) => {
   const Colors = useThemeColor();
   const I18n = useTranslator();
   const dispatch = useDispatch();
+  const {canCreate} = usePermitted({
+    modelName: 'com.axelor.apps.production.db.ProdProduct',
+  });
 
   const {loadingProducedProducts, producedProductList} = useSelector(
     state => state.prodProducts,
   );
+
   const [filteredList, setFilteredList] = useState(producedProductList);
   const [product, setProduct] = useState(null);
   const [selectedStatus, setSelectedStatus] = useState([]);
@@ -132,16 +137,18 @@ const ProducedProductListScreen = ({route, navigation}) => {
             />
             <View style={styles.titleContainer}>
               <Text>{I18n.t('Manufacturing_ProducedProduct')}</Text>
-              {manufOrder?.statusSelect ===
-                ManufacturingOrder.status.InProgress && (
-                <Icon
-                  name="plus-lg"
-                  size={20}
-                  color={Colors.primaryColor.background}
-                  touchable={true}
-                  onPress={handleAddProduct}
-                />
-              )}
+              <Icon
+                name="plus-lg"
+                size={20}
+                color={Colors.primaryColor.background}
+                touchable={true}
+                visible={
+                  canCreate &&
+                  manufOrder?.statusSelect ===
+                    ManufacturingOrder.status.InProgress
+                }
+                onPress={handleAddProduct}
+              />
             </View>
             <ScannerAutocompleteSearch
               objectList={producedProductList}

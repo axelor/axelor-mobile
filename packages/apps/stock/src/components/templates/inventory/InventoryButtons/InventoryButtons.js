@@ -22,6 +22,7 @@ import {
   useDispatch,
   useTranslator,
   useNavigation,
+  usePermitted,
 } from '@axelor/aos-mobile-core';
 import {Button} from '@axelor/aos-mobile-ui';
 import Inventory from '../../../../types/inventory';
@@ -31,6 +32,9 @@ const InventoryButtons = ({}) => {
   const I18n = useTranslator();
   const dispatch = useDispatch();
   const navigation = useNavigation();
+  const {readonly} = usePermitted({
+    modelName: 'com.axelor.apps.stock.db.Inventory',
+  });
 
   const {inventory} = useSelector(state => state.inventory);
   const {mobileSettings} = useSelector(state => state.appConfig);
@@ -73,6 +77,10 @@ const InventoryButtons = ({}) => {
     );
     navigation.popToTop();
   }, [dispatch, inventory, navigation]);
+
+  if (readonly) {
+    return null;
+  }
 
   if (inventory?.statusSelect === Inventory.status.Planned) {
     return (

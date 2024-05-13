@@ -19,7 +19,12 @@
 import React, {useCallback} from 'react';
 import {StyleSheet} from 'react-native';
 import {Picker} from '@axelor/aos-mobile-ui';
-import {useSelector, useDispatch, useTranslator} from '@axelor/aos-mobile-core';
+import {
+  useSelector,
+  useDispatch,
+  useTranslator,
+  usePermitted,
+} from '@axelor/aos-mobile-core';
 import {updateOpportunityStatus} from '../../../../features/opportunitySlice';
 
 const OpportunityUpdateStatusPicker = ({
@@ -30,6 +35,10 @@ const OpportunityUpdateStatusPicker = ({
 }) => {
   const I18n = useTranslator();
   const dispatch = useDispatch();
+  const {readonly} = usePermitted({
+    modelName: 'com.axelor.apps.crm.db.Opportunity',
+  });
+
   const {opportunity, opportunityStatusList} = useSelector(
     state => state.opportunity,
   );
@@ -45,6 +54,10 @@ const OpportunityUpdateStatusPicker = ({
       ),
     [dispatch, opportunity.id, opportunity.version],
   );
+
+  if (readonly) {
+    return null;
+  }
 
   return (
     <Picker

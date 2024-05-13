@@ -87,6 +87,7 @@ const TimerFormScreen = ({route}) => {
 
     if (!isEmpty(timer)) {
       return {
+        id: timer.id,
         startDateTime: timer.startDateTime,
         project: timer.project,
         projectTask: timer.projectTask,

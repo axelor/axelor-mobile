@@ -17,7 +17,7 @@
  */
 
 import React from 'react';
-import {useTranslator} from '@axelor/aos-mobile-core';
+import {usePermitted, useTranslator} from '@axelor/aos-mobile-core';
 import {Button} from '@axelor/aos-mobile-ui';
 
 interface ProdProductFixedItemsProps {
@@ -34,14 +34,20 @@ const ProdProductFixedItems = ({
   onPressCreate,
 }: ProdProductFixedItemsProps) => {
   const I18n = useTranslator();
+  const {canCreate, readonly} = usePermitted({
+    modelName: 'com.axelor.apps.production.db.ProdProduct',
+  });
 
   if (show) {
-    return (
-      <Button
-        title={I18n.t('Base_Save')}
-        onPress={prodProduct != null ? onPressUpdate : onPressCreate}
-      />
-    );
+    if (prodProduct != null && !readonly) {
+      return <Button title={I18n.t('Base_Save')} onPress={onPressUpdate} />;
+    }
+
+    if (prodProduct == null && canCreate) {
+      return <Button title={I18n.t('Base_Save')} onPress={onPressCreate} />;
+    }
+
+    return null;
   }
 
   return null;

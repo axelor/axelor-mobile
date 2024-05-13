@@ -193,6 +193,7 @@ const ExpenseLineFormScreen = ({route, navigation}) => {
       if (mode === ExpenseLine.modes.general) {
         return {
           ..._default,
+          id: expenseLine.id,
           manageMode: mode,
           hideToggle: true,
           expense: expenseLine.expense,
@@ -214,6 +215,7 @@ const ExpenseLineFormScreen = ({route, navigation}) => {
 
         return {
           ..._default,
+          id: expenseLine.id,
           manageMode: mode,
           hideToggle: true,
           expense: expenseLine.expense,

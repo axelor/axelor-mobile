@@ -30,6 +30,7 @@ const StockCorrectionQuantityCard = ({
   databaseQty,
   setRealQty,
   setSaveStatus = () => {},
+  readonly = false,
 }) => {
   const I18n = useTranslator();
   const formatNumber = useDigitFormat();
@@ -44,7 +45,7 @@ const StockCorrectionQuantityCard = ({
       labelQty={I18n.t('Stock_RealQty')}
       defaultValue={realQty}
       onValueChange={handleQtyChange}
-      editable={status === StockCorrection.status.Draft}
+      editable={!readonly && status === StockCorrection.status.Draft}
       isBigButton={true}>
       <Text style={styles.text}>
         {`${I18n.t('Stock_DatabaseQty')}: ${formatNumber(databaseQty)} ${

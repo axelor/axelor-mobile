@@ -68,7 +68,7 @@ export const hasPermission = (
   permissions: ModelsPermission,
   modelName: string,
 ): Permission => {
-  if (permissions == null) {
+  if (permissions == null || modelName == null) {
     return DEFAULT_DENIED_PERMISSION;
   }
 
