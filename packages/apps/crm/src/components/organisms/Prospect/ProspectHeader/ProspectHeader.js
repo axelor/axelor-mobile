@@ -26,19 +26,22 @@ import {
   checkNullString,
 } from '@axelor/aos-mobile-ui';
 import {
-  useSelector,
   AOSImageBubble,
-  useDispatch,
   SocialNetworkLinks,
+  useDispatch,
+  useSelector,
+  useTypes,
+  useTypeHelpers,
 } from '@axelor/aos-mobile-core';
 import {updateProspectScore} from '../../../../features/prospectSlice';
-import {Prospect} from '../../../../types';
 
-const ProspectHeader = ({colorIndex}) => {
+const ProspectHeader = ({partnerStatus}) => {
   const Colors = useThemeColor();
   const dispatch = useDispatch();
+  const {Partner} = useTypes();
+  const {getItemColorFromIndex} = useTypeHelpers();
 
-  const {prospect} = useSelector(state => state.prospect);
+  const {prospect, prospectStatusList} = useSelector(state => state.prospect);
   const {crm: crmConfig} = useSelector(state => state.appConfig);
 
   const updateScoreProspectAPI = useCallback(
@@ -61,7 +64,7 @@ const ProspectHeader = ({colorIndex}) => {
           <AOSImageBubble metaFileId={prospect?.picture?.id} />
           <SocialNetworkLinks
             data={{
-              [prospect.partnerTypeSelect === Prospect.partnerTypeSelect.Company
+              [prospect.partnerTypeSelect === Partner?.partnerTypeSelect.Company
                 ? 'company'
                 : 'fullName']: prospect?.simpleFullName,
             }}
@@ -95,7 +98,7 @@ const ProspectHeader = ({colorIndex}) => {
         )}
         {prospect.partnerStatus && crmConfig?.crmProcessOnPartner && (
           <Badge
-            color={Prospect.getStatusColor(colorIndex, Colors)}
+            color={getItemColorFromIndex(prospectStatusList, partnerStatus)}
             title={prospect.partnerStatus.name}
           />
         )}

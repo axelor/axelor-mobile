@@ -33,14 +33,15 @@ import {
   useSelector,
   useDispatch,
   SocialNetworkLinks,
+  useTypeHelpers,
 } from '@axelor/aos-mobile-core';
-import {Lead} from '../../../../types';
 import {updateLeadScore} from '../../../../features/leadSlice';
 
-const LeadHeader = ({idLead, versionLead, colorIndex}) => {
+const LeadHeader = ({idLead, versionLead, leadStatus, leadStatusList}) => {
   const Colors = useThemeColor();
   const I18n = useTranslator();
   const dispatch = useDispatch();
+  const {getItemColorFromIndex} = useTypeHelpers();
 
   const {baseUrl} = useSelector(state => state.auth);
   const {lead} = useSelector(state => state.lead);
@@ -104,7 +105,7 @@ const LeadHeader = ({idLead, versionLead, colorIndex}) => {
       <View style={styles.headerInfo}>
         {lead.leadStatus != null && (
           <Badge
-            color={Lead.getStatusColor(colorIndex, Colors)}
+            color={getItemColorFromIndex(leadStatusList, leadStatus)}
             title={lead.leadStatus.name}
           />
         )}

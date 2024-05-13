@@ -17,7 +17,7 @@
  */
 
 import React, {useCallback, useMemo} from 'react';
-import {FormView, useSelector} from '@axelor/aos-mobile-core';
+import {FormView, useSelector, useTypes} from '@axelor/aos-mobile-core';
 import {EventType} from '../../types';
 import {createEvent, updateEvent} from '../../features/eventSlice';
 
@@ -34,6 +34,8 @@ const EventFormScreen = ({navigation, route}) => {
   const contact = route?.params?.contact;
   const tourlineData = route?.params?.tourlineData;
 
+  const {Event} = useTypes();
+
   const {user} = useSelector(state => state.user);
 
   const defaultValue = useMemo(() => {
@@ -43,8 +45,8 @@ const EventFormScreen = ({navigation, route}) => {
     _defaultEndDate.setHours(_defaultStartDate.getHours() + 1);
 
     const _default = {
-      typeSelect: EventType.category.Meeting,
-      statusSelect: EventType.status.Planned,
+      typeSelect: Event?.typeSelect.Meeting,
+      statusSelect: Event?.ststatusSelectatus.Planned,
       startDateTime: _defaultStartDate.toISOString(),
       endDateTime: _defaultEndDate.toISOString(),
       user: user,

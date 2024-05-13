@@ -33,6 +33,7 @@ import {
   crm_modelAPI,
   crm_searchFields,
   crm_sortFields,
+  crm_typeObjects,
 } from './models';
 import {useCRMHeaders} from './hooks/use-crm-header-actions';
 
@@ -109,6 +110,7 @@ export const CrmModule: Module = {
     searchFields: {...crm_searchFields},
     formsRegister: {...crm_formsRegister},
     headerRegisters: useCRMHeaders,
+    typeObjects: crm_typeObjects,
   },
   requiredConfig: ['AppCrm'],
 };

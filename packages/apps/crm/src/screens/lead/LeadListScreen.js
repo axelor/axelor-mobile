@@ -18,26 +18,21 @@
 
 import React, {useState, useEffect, useMemo} from 'react';
 import {StyleSheet} from 'react-native';
-import {
-  MultiValuePicker,
-  Screen,
-  ToggleSwitch,
-  useThemeColor,
-} from '@axelor/aos-mobile-ui';
+import {MultiValuePicker, Screen, ToggleSwitch} from '@axelor/aos-mobile-ui';
 import {
   SearchListView,
   useDispatch,
   useSelector,
   useTranslator,
+  useTypeHelpers,
 } from '@axelor/aos-mobile-core';
 import {fetchLeads, fetchLeadStatus} from '../../features/leadSlice';
 import {LeadsCard} from '../../components';
-import {Lead} from '../../types';
 
 const LeadListScreen = ({navigation}) => {
   const I18n = useTranslator();
-  const Colors = useThemeColor();
   const dispatch = useDispatch();
+  const {getCustomSelectionItems} = useTypeHelpers();
 
   const {loadingLeadList, moreLoading, isListEnd, leadList, leadStatusList} =
     useSelector(state => state.lead);
@@ -46,17 +41,10 @@ const LeadListScreen = ({navigation}) => {
   const [selectedStatus, setSelectedStatus] = useState([]);
   const [assigned, setAssigned] = useState(false);
 
-  const leadStatusListItems = useMemo(() => {
-    return leadStatusList
-      ? leadStatusList.map((status, index) => {
-          return {
-            title: status.name,
-            color: Lead.getStatusColor(index, Colors),
-            key: status.id,
-          };
-        })
-      : [];
-  }, [leadStatusList, Colors]);
+  const leadStatusListItems = useMemo(
+    () => getCustomSelectionItems(leadStatusList, 'name'),
+    [getCustomSelectionItems, leadStatusList],
+  );
 
   useEffect(() => {
     dispatch(fetchLeadStatus());
@@ -118,9 +106,7 @@ const LeadListScreen = ({navigation}) => {
               navigation.navigate('LeadDetailsScreen', {
                 idLead: item.id,
                 versionLead: item.version,
-                colorIndex: leadStatusList?.findIndex(
-                  status => status.id === item.leadStatus?.id,
-                ),
+                leadStatus: item.leadStatus,
               })
             }
           />

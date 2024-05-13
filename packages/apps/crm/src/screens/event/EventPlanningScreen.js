@@ -25,20 +25,23 @@ import {
   MultiValuePicker,
 } from '@axelor/aos-mobile-ui';
 import {
+  filterChip,
   PlanningView,
   useDispatch,
   useSelector,
   useTranslator,
-  filterChip,
+  useTypes,
+  useTypeHelpers,
 } from '@axelor/aos-mobile-core';
 import {fetchPlannedEvent} from '../../features/eventSlice';
-import EventType from '../../types/event-type';
 import {EventSearchBar, PlanningEventCard} from '../../components';
 
 function EventPlanningScreen({navigation}) {
   const dispatch = useDispatch();
   const Colors = useThemeColor();
   const I18n = useTranslator();
+  const {Event} = useTypes();
+  const {getItemColor, getSelectionItems} = useTypeHelpers();
 
   const {eventList, loading} = useSelector(state => state.event);
 
@@ -48,43 +51,33 @@ function EventPlanningScreen({navigation}) {
   const [dateSave, setDateSave] = useState(null);
 
   const listItem = useMemo(() => {
-    return EventType.getCalendarListItems(filteredList, Colors);
-  }, [Colors, filteredList]);
+    if (filteredList == null || filteredList.length === 0) {
+      return [];
+    }
+
+    return filteredList.map(event => {
+      return {
+        id: event.id,
+        startDate: event.startDateTime,
+        endDate: event.endDateTime,
+        data: {
+          id: event.id,
+          subject: event.subject,
+          contactPartner: event.contactPartner?.fullName,
+          location: event.location,
+          border: getItemColor(Event?.typeSelect, event.typeSelect)?.background,
+          partner: event.partner?.fullName,
+          eventLead: event.eventLead?.fullName,
+          partnerTypeSelect: event.partner?.partnerTypeSelect,
+          userId: event.user?.id,
+        },
+      };
+    });
+  }, [Event?.typeSelect, filteredList, getItemColor]);
 
   const eventCategoryList = useMemo(
-    () => [
-      {
-        title: I18n.t('Crm_Event_Category_Event'),
-        color: EventType.getCategoryColor(EventType.category.Event, Colors),
-        key: EventType.category.Event,
-      },
-      {
-        title: I18n.t('Crm_Event_Category_Call'),
-        color: EventType.getCategoryColor(EventType.category.Call, Colors),
-        key: EventType.category.Call,
-      },
-      {
-        title: I18n.t('Crm_Event_Category_Meeting'),
-        color: EventType.getCategoryColor(EventType.category.Meeting, Colors),
-        key: EventType.category.Meeting,
-      },
-      {
-        title: I18n.t('Crm_Event_Category_Task'),
-        color: EventType.getCategoryColor(EventType.category.Task, Colors),
-        key: EventType.category.Task,
-      },
-      {
-        title: I18n.t('Crm_Event_Category_Leave'),
-        color: EventType.getCategoryColor(EventType.category.Leave, Colors),
-        key: EventType.category.Leave,
-      },
-      {
-        title: I18n.t('Crm_Event_Category_Note'),
-        color: EventType.getCategoryColor(EventType.category.Note, Colors),
-        key: EventType.category.Note,
-      },
-    ],
-    [I18n, Colors],
+    () => getSelectionItems(Event?.typeSelect),
+    [getSelectionItems, Event?.typeSelect],
   );
 
   const fetchItemsByMonth = useCallback(

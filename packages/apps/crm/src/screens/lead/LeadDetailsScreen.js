@@ -33,12 +33,12 @@ import {LeadHeader, LeadDropdownCards, LeadBottom} from '../../components';
 import {fetchLeadById} from '../../features/leadSlice';
 
 const LeadDetailsScreen = ({route}) => {
-  const {idLead, versionLead, colorIndex} = route.params;
+  const {idLead, versionLead, leadStatus} = route.params;
   const I18n = useTranslator();
   const dispatch = useDispatch();
   const isFocused = useIsFocused();
 
-  const {loadingLead, lead} = useSelector(state => state.lead);
+  const {loadingLead, lead, leadStatusList} = useSelector(state => state.lead);
 
   const getLead = useCallback(() => {
     dispatch(fetchLeadById({leadId: idLead}));
@@ -60,9 +60,10 @@ const LeadDetailsScreen = ({route}) => {
         expandableFilter={false}
         fixedItems={
           <LeadHeader
-            colorIndex={colorIndex}
             idLead={idLead}
             versionLead={versionLead}
+            leadStatus={leadStatus}
+            leadStatusList={leadStatusList}
           />
         }
       />
