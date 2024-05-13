@@ -23,8 +23,8 @@ import {
   getNextMonth,
   getPreviousMonth,
   getSearchCriterias,
+  getTypes,
 } from '@axelor/aos-mobile-core';
-import OperationOrder from '../types/operation-order';
 
 const createOperationOrderCriteria = (
   searchValue,
@@ -33,6 +33,8 @@ const createOperationOrderCriteria = (
   workCenterId,
   machineId,
 ) => {
+  const OperationOrder = getTypes().OperationOrder;
+
   let criterias = [
     {
       operator: 'OR',
@@ -40,22 +42,22 @@ const createOperationOrderCriteria = (
         {
           fieldName: 'statusSelect',
           operator: '=',
-          value: OperationOrder.status.Planned,
+          value: OperationOrder?.statusSelect.Planned,
         },
         {
           fieldName: 'statusSelect',
           operator: '=',
-          value: OperationOrder.status.InProgress,
+          value: OperationOrder?.statusSelect.InProgress,
         },
         {
           fieldName: 'statusSelect',
           operator: '=',
-          value: OperationOrder.status.StandBy,
+          value: OperationOrder?.statusSelect.StandBy,
         },
         {
           fieldName: 'statusSelect',
           operator: '=',
-          value: OperationOrder.status.Finished,
+          value: OperationOrder?.statusSelect.Finished,
         },
       ],
     },

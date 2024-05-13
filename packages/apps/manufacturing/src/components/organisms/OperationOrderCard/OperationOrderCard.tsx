@@ -19,8 +19,11 @@
 import React, {useMemo} from 'react';
 import {StyleSheet} from 'react-native';
 import {ObjectCard, useThemeColor} from '@axelor/aos-mobile-ui';
-import {formatDuration} from '@axelor/aos-mobile-core';
-import ManufacturingOrder from '../../../types/manufacturing-order';
+import {
+  formatDuration,
+  useTypeHelpers,
+  useTypes,
+} from '@axelor/aos-mobile-core';
 
 interface OperationOrderCardProps {
   style?: any;
@@ -42,12 +45,14 @@ const OperationOrderCard = ({
   onPress,
 }: OperationOrderCardProps) => {
   const Colors = useThemeColor();
+  const {OperationOrder} = useTypes();
+  const {getItemColor} = useTypeHelpers();
 
   const borderStyle = useMemo(() => {
     return getStyles(
-      ManufacturingOrder.getStatusColor(status, Colors).background,
+      getItemColor(OperationOrder?.statusSelect, status)?.background,
     )?.border;
-  }, [Colors, status]);
+  }, [OperationOrder?.statusSelect, getItemColor, status]);
 
   return (
     <ObjectCard

@@ -16,30 +16,31 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import React, {useCallback, useState, useEffect} from 'react';
+import React, {useCallback, useEffect, useMemo, useState} from 'react';
 import {StyleSheet} from 'react-native';
 import {
   ChipSelect,
   Screen,
   ScrollList,
   HeaderContainer,
-  useThemeColor,
 } from '@axelor/aos-mobile-ui';
 import {
   useDispatch,
   useSelector,
   useTranslator,
   filterChip,
+  useTypeHelpers,
+  useTypes,
 } from '@axelor/aos-mobile-core';
 import {ManufacturingOrderHeader, OperationOrderCard} from '../../components';
 import {fetchOperationOrders} from '../../features/operationOrderSlice';
-import ManufacturingOrder from '../../types/manufacturing-order';
 
 const ManufacturingOrderOperationListScreen = ({route, navigation}) => {
   const manufOrder = route.params.manufOrder;
-  const Colors = useThemeColor();
   const I18n = useTranslator();
   const dispatch = useDispatch();
+  const {ManufOrder} = useTypes();
+  const {getSelectionItems} = useTypeHelpers();
 
   const {
     loadingList: loadingOperations,
@@ -80,6 +81,19 @@ const ManufacturingOrderOperationListScreen = ({route, navigation}) => {
     setFilteredList(filterOnStatus(operationOrderList));
   }, [operationOrderList, filterOnStatus]);
 
+  const statusList = useMemo(() => {
+    const statusToDisplay = [
+      ManufOrder?.statusSelect.Planned,
+      ManufOrder?.statusSelect.InProgress,
+      ManufOrder?.statusSelect.StandBy,
+      ManufOrder?.statusSelect.Finished,
+    ];
+
+    return getSelectionItems(ManufOrder?.statusSelect, selectedStatus).filter(
+      ({value}) => statusToDisplay.includes(value),
+    );
+  }, [ManufOrder?.statusSelect, getSelectionItems, selectedStatus]);
+
   return (
     <Screen removeSpaceOnTop={true}>
       <HeaderContainer
@@ -95,41 +109,8 @@ const ManufacturingOrderOperationListScreen = ({route, navigation}) => {
         chipComponent={
           <ChipSelect
             mode="multi"
-            onChangeValue={chiplist => setSelectedStatus(chiplist)}
-            selectionItems={[
-              {
-                title: I18n.t('Manufacturing_Status_Planned'),
-                color: ManufacturingOrder.getStatusColor(
-                  ManufacturingOrder.status.Planned,
-                  Colors,
-                ),
-                key: ManufacturingOrder.status.Planned,
-              },
-              {
-                title: I18n.t('Manufacturing_Status_InProgress'),
-                color: ManufacturingOrder.getStatusColor(
-                  ManufacturingOrder.status.InProgress,
-                  Colors,
-                ),
-                key: ManufacturingOrder.status.InProgress,
-              },
-              {
-                title: I18n.t('Manufacturing_Status_StandBy'),
-                color: ManufacturingOrder.getStatusColor(
-                  ManufacturingOrder.status.StandBy,
-                  Colors,
-                ),
-                key: ManufacturingOrder.status.StandBy,
-              },
-              {
-                title: I18n.t('Manufacturing_Status_Finished'),
-                color: ManufacturingOrder.getStatusColor(
-                  ManufacturingOrder.status.Finished,
-                  Colors,
-                ),
-                key: ManufacturingOrder.status.Finished,
-              },
-            ]}
+            onChangeValue={setSelectedStatus}
+            selectionItems={statusList}
           />
         }
       />
