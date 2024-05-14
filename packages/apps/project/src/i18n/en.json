@@ -9,6 +9,7 @@
   "Project_Members": "Members",
   "Project_Team": "Team",
   "Project_Sites": "Sites",
+  "Project_RefreshProject": "Refresh project",
   "Project_SliceAction_SearchProject": "search project",
   "Project_SliceAction_FetchProjectById": "fetch project by id"
 }

@@ -41,42 +41,45 @@ const ProjectHeader = ({project}: ProjectHeaderProps) => {
 
   return (
     <View style={styles.container}>
-      <View style={styles.rowContainer}>
-        <Text writingType="title">{project?.name}</Text>
-        <Badge
-          title={Project.getStatus(project?.projectStatus?.id, I18n)}
-          color={Project.getStatusColor(project?.projectStatus?.id, Colors)}
-        />
-      </View>
-      <View style={styles.rowContainer}>
-        {baseConfig?.enableMultiCompany && user?.companySet?.length > 1 && (
+      <View style={styles.rowContainerGlobal}>
+        <View style={[styles.columnContainer, styles.flexShrink]}>
+          <Text writingType="title">{project?.name}</Text>
+          {baseConfig?.enableMultiCompany && user?.companySet?.length > 1 && (
+            <LabelText
+              iconName="building-fill"
+              size={16}
+              title={project?.company?.name}
+              textStyle={styles.labelText}
+            />
+          )}
           <LabelText
-            iconName="building-fill"
+            iconName="pin-angle-fill"
             size={16}
-            title={project?.company?.name}
+            title={project?.assignedTo?.fullName}
             textStyle={styles.labelText}
           />
-        )}
-        {project?.isBusinessProject && (
-          <Badge title={I18n.t('Project_Buisness')} color={Colors.infoColor} />
-        )}
+          {!checkNullString(project?.parentProject?.fullName) && (
+            <LabelText
+              iconName="diagram-3-fill"
+              size={16}
+              title={project?.parentProject?.fullName}
+              textStyle={styles.labelText}
+            />
+          )}
+        </View>
+        <View style={styles.columnContainer}>
+          <Badge
+            title={Project.getStatus(project?.projectStatus?.id, I18n)}
+            color={Project.getStatusColor(project?.projectStatus?.id, Colors)}
+          />
+          {project?.isBusinessProject && (
+            <Badge
+              title={I18n.t('Project_Buisness')}
+              color={Colors.infoColor}
+            />
+          )}
+        </View>
       </View>
-      <View style={styles.rowContainer}>
-        <LabelText
-          iconName="pin-angle-fill"
-          size={16}
-          title={project?.assignedTo?.fullName}
-          textStyle={styles.labelText}
-        />
-      </View>
-      {!checkNullString(project?.parentProject?.fullName) && (
-        <LabelText
-          iconName="diagram-3-fill"
-          size={16}
-          title={project?.parentProject?.fullName}
-          textStyle={styles.labelText}
-        />
-      )}
     </View>
   );
 };
@@ -86,13 +89,22 @@ const styles = StyleSheet.create({
     marginHorizontal: 24,
     marginBottom: 5,
   },
-  rowContainer: {
+  rowContainerGlobal: {
     flexDirection: 'row',
     justifyContent: 'space-between',
+    alignItems: 'flex-start',
+  },
+  columnContainer: {
+    flexDirection: 'column',
+    alignItems: 'flex-start',
     marginBottom: 3,
   },
   labelText: {
     fontSize: 16,
+  },
+  flexShrink: {
+    flexShrink: 1,
+    flexWrap: 'wrap',
   },
 });
 

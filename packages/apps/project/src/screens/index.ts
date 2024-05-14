@@ -38,6 +38,7 @@ export default {
   ProjectDetailsScreen: {
     title: 'Project_projects',
     component: ProjectDetailsScreen,
+    actionID: 'project_project_details',
     options: {
       shadedHeader: false,
     },
