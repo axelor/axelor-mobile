@@ -18,17 +18,18 @@
 
 import React, {useMemo} from 'react';
 import {StyleSheet, View} from 'react-native';
+import {ObjectCard, TextUnit} from '@axelor/aos-mobile-ui';
 import {
-  Color,
-  ObjectCard,
-  TextUnit,
-  useThemeColor,
-} from '@axelor/aos-mobile-ui';
-import {DateDisplay, useTranslator} from '@axelor/aos-mobile-core';
+  DateDisplay,
+  useTranslator,
+  useTypes,
+  useTypeHelpers,
+} from '@axelor/aos-mobile-core';
 import {Time} from '../../../types';
 import {getDurationUnit} from '../../../utils';
 
 interface TimeCardProps {
+  mode: number;
   statusSelect: number;
   project?: string;
   task?: string;
@@ -44,6 +45,7 @@ interface TimeCardProps {
 }
 
 const TimeCard = ({
+  mode,
   statusSelect,
   project,
   task,
@@ -58,12 +60,25 @@ const TimeCard = ({
   style,
 }: TimeCardProps) => {
   const I18n = useTranslator();
-  const Colors = useThemeColor();
+  const {Timer, Timesheet} = useTypes();
+  const {getItemColor} = useTypeHelpers();
 
-  const styles = useMemo(
-    () => getStyles(Time.getStatusColor(statusSelect, Colors), isSmallCard),
-    [Colors, isSmallCard, statusSelect],
-  );
+  const styles = useMemo(() => {
+    const timeStatusSelect =
+      mode === Time.mode.Timer ? Timer?.statusSelect : Timesheet?.statusSelect;
+
+    return getStyles(
+      getItemColor(timeStatusSelect, statusSelect)?.background,
+      isSmallCard,
+    );
+  }, [
+    Timer?.statusSelect,
+    Timesheet?.statusSelect,
+    getItemColor,
+    isSmallCard,
+    mode,
+    statusSelect,
+  ]);
 
   return (
     <View style={style}>
@@ -115,7 +130,7 @@ const TimeCard = ({
   );
 };
 
-const getStyles = (color: Color, isSmallCard: boolean) =>
+const getStyles = (color: string, isSmallCard: boolean) =>
   StyleSheet.create({
     container: {
       minHeight: isSmallCard ? 'auto' : 100,
@@ -125,7 +140,7 @@ const getStyles = (color: Color, isSmallCard: boolean) =>
     },
     borderColor: {
       borderLeftWidth: 7,
-      borderLeftColor: color.background,
+      borderLeftColor: color,
     },
     subTitle: {
       fontStyle: 'italic',

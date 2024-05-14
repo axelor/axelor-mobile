@@ -23,12 +23,14 @@ import {
   useDispatch,
   useSelector,
   useTranslator,
+  useTypes,
+  useTypeHelpers,
 } from '@axelor/aos-mobile-core';
 import {
   createExpenseLine,
   updateExpenseLine,
 } from '../../features/expenseLineSlice';
-import {ExpenseLine} from '../../types';
+import {ExpenseLine as ExpenseLineType} from '../../types';
 import {updateExpenseDate} from '../../features/kilometricAllowParamSlice';
 import {
   needUpdateDistance,
@@ -47,6 +49,8 @@ const ExpenseLineFormScreen = ({route, navigation}) => {
   } = route?.params;
   const I18n = useTranslator();
   const _dispatch = useDispatch();
+  const {ExpenseLine} = useTypes();
+  const {getItemTitle} = useTypeHelpers();
 
   const {user} = useSelector(state => state.user);
   const {mobileSettings} = useSelector(state => state.appConfig);
@@ -106,7 +110,7 @@ const ExpenseLineFormScreen = ({route, navigation}) => {
     (_expenseLine, dispatch) => {
       dispatch(needUpdateDistance(false));
 
-      const mode = ExpenseLine.getExpenseMode(expenseLine);
+      const mode = ExpenseLineType.getExpenseMode(expenseLine);
 
       const dataToSend = {
         id: expenseLine?.id,
@@ -126,7 +130,7 @@ const ExpenseLineFormScreen = ({route, navigation}) => {
         currencyId: _expenseLine.currency?.id,
         comments: _expenseLine.comments,
         justificationMetaFileId:
-          mode === ExpenseLine.modes.general
+          mode === ExpenseLineType.modes.general
             ? _expenseLine.justificationMetaFile?.id
             : null,
         kilometricAllowParamId: _expenseLine.kilometricAllowParam?.id,
@@ -170,7 +174,7 @@ const ExpenseLineFormScreen = ({route, navigation}) => {
       : undefined;
 
     const _default = {
-      manageMode: modeExpense || ExpenseLine.modes.general,
+      manageMode: modeExpense || ExpenseLineType.modes.general,
       isFromExpense: idExpense != null && expenseLine?.id != null,
       hideToggle: false,
       expenseDate: _defaultDate,
@@ -188,9 +192,9 @@ const ExpenseLineFormScreen = ({route, navigation}) => {
         justificationMetaFile,
       };
     } else if (expenseLine != null) {
-      const mode = ExpenseLine.getExpenseMode(expenseLine);
+      const mode = ExpenseLineType.getExpenseMode(expenseLine);
 
-      if (mode === ExpenseLine.modes.general) {
+      if (mode === ExpenseLineType.modes.general) {
         return {
           ..._default,
           id: expenseLine.id,
@@ -208,7 +212,7 @@ const ExpenseLineFormScreen = ({route, navigation}) => {
           justificationMetaFile: expenseLine.justificationMetaFile,
           comments: expenseLine.comments,
         };
-      } else if (mode === ExpenseLine.modes.kilometric) {
+      } else if (mode === ExpenseLineType.modes.kilometric) {
         _dispatch(updateExpenseDate(expenseLine?.expenseDate));
         _dispatch(updateFromCity(expenseLine?.fromCity));
         _dispatch(updateToCity(expenseLine?.toCity));
@@ -229,9 +233,9 @@ const ExpenseLineFormScreen = ({route, navigation}) => {
           kilometricAllowParam: expenseLine.kilometricAllowParam,
           kilometricTypeSelect: {
             key: expenseLine.kilometricTypeSelect,
-            title: ExpenseLine.getKilomectricTypeSelect(
+            title: getItemTitle(
+              ExpenseLine?.kilometricTypeSelect,
               expenseLine.kilometricTypeSelect,
-              I18n,
             ),
           },
           comments: expenseLine.comments,

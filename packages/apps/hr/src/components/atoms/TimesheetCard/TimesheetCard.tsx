@@ -18,9 +18,13 @@
 
 import React, {useMemo} from 'react';
 import {StyleSheet, View} from 'react-native';
-import {ObjectCard, TextUnit, useThemeColor} from '@axelor/aos-mobile-ui';
-import {useTranslator, PeriodDisplay} from '@axelor/aos-mobile-core';
-import {Timesheet} from '../../../types';
+import {ObjectCard, TextUnit} from '@axelor/aos-mobile-ui';
+import {
+  PeriodDisplay,
+  useTranslator,
+  useTypes,
+  useTypeHelpers,
+} from '@axelor/aos-mobile-core';
 import {getDurationUnit} from '../../../utils';
 
 interface TimesheetCardProps {
@@ -47,11 +51,15 @@ const TimesheetCard = ({
   onPress,
 }: TimesheetCardProps) => {
   const I18n = useTranslator();
-  const Colors = useThemeColor();
+  const {Timesheet} = useTypes();
+  const {getItemColor} = useTypeHelpers();
 
   const styles = useMemo(
-    () => getStyles(Timesheet.getStatusColor(statusSelect, Colors)),
-    [Colors, statusSelect],
+    () =>
+      getStyles(
+        getItemColor(Timesheet?.statusSelect, statusSelect)?.background,
+      ),
+    [Timesheet?.statusSelect, getItemColor, statusSelect],
   );
 
   return (
@@ -104,7 +112,7 @@ const TimesheetCard = ({
   );
 };
 
-const getStyles = color =>
+const getStyles = (color: string) =>
   StyleSheet.create({
     container: {
       marginHorizontal: 1,
@@ -112,7 +120,7 @@ const getStyles = color =>
     },
     borderColor: {
       borderLeftWidth: 7,
-      borderLeftColor: color.background,
+      borderLeftColor: color,
     },
     datesInterval: {
       marginBottom: 15,

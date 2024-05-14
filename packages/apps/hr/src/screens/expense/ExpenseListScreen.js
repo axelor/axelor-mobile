@@ -27,7 +27,13 @@ import {
   Picker,
   NumberBubble,
 } from '@axelor/aos-mobile-ui';
-import {useDispatch, useSelector, useTranslator} from '@axelor/aos-mobile-core';
+import {
+  useDispatch,
+  useSelector,
+  useTranslator,
+  useTypes,
+  useTypeHelpers,
+} from '@axelor/aos-mobile-core';
 import {ExpenseCard, ExpenseWaitingValidationSearchBar} from '../../components';
 import {
   searchExpenseToValidate,
@@ -36,12 +42,14 @@ import {
   validateExpense,
 } from '../../features/expenseSlice';
 import {searchManagedEmployee} from '../../features/employeeSlice';
-import {Expense} from '../../types';
+import {Expense as ExpenseType} from '../../types';
 
 const ExpenseListScreen = ({navigation}) => {
   const I18n = useTranslator();
   const Colors = useThemeColor();
   const dispatch = useDispatch();
+  const {Expense} = useTypes();
+  const {getSelectionItems} = useTypeHelpers();
 
   const {user} = useSelector(state => state.user);
   const {
@@ -57,12 +65,13 @@ const ExpenseListScreen = ({navigation}) => {
   } = useSelector(state => state.expense);
   const {managedEmployeeTotal} = useSelector(state => state.employee);
 
-  const [mode, setMode] = useState(Expense.mode.personnal);
+  const [mode, setMode] = useState(ExpenseType.mode.personnal);
   const [selectedStatus, setSelectedStatus] = useState(null);
 
-  const expenseStatusListItems = useMemo(() => {
-    return Expense.getStatusList(Colors, I18n);
-  }, [Colors, I18n]);
+  const expenseStatusListItems = useMemo(
+    () => getSelectionItems(Expense?.statusSelect),
+    [Expense?.statusSelect, getSelectionItems],
+  );
 
   useEffect(() => {
     dispatch(searchManagedEmployee({userId: user.id}));
@@ -108,7 +117,7 @@ const ExpenseListScreen = ({navigation}) => {
   );
 
   const ObjectToDisplay = useMemo(() => {
-    if (mode === Expense.mode.personnal) {
+    if (mode === ExpenseType.mode.personnal) {
       return {
         list: myExpenseList,
         loading: loadingMyExpense,
@@ -180,14 +189,14 @@ const ExpenseListScreen = ({navigation}) => {
                 onSwitch={() =>
                   setMode(_mode => {
                     setSelectedStatus(null);
-                    return _mode === Expense.mode.personnal
-                      ? Expense.mode.validation
-                      : Expense.mode.personnal;
+                    return _mode === ExpenseType.mode.personnal
+                      ? ExpenseType.mode.validation
+                      : ExpenseType.mode.personnal;
                   })
                 }
               />
             )}
-            {mode === Expense.mode.personnal ? (
+            {mode === ExpenseType.mode.personnal ? (
               <Picker
                 listItems={expenseStatusListItems}
                 title={I18n.t('Hr_Status')}
@@ -224,7 +233,7 @@ const ExpenseListScreen = ({navigation}) => {
             inTaxTotal={item.inTaxTotal}
             employeeManagerId={item.employee?.managerUser?.id}
             employeeName={
-              mode === Expense.mode.validation ? item.employee?.name : null
+              mode === ExpenseType.mode.validation ? item.employee?.name : null
             }
             onSend={() => sendExpenseAPI(item.id, item.version)}
             onValidate={() => validateExpenseAPI(item.id, item.version)}

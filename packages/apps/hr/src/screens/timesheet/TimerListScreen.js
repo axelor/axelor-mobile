@@ -34,6 +34,7 @@ import {
 import {deleteTimer, fetchTimer} from '../../features/timerSlice';
 import {formatSecondsToHours} from '../../utils';
 import {getNumberTimerByDateApi} from '../../api';
+import {Time} from '../../types';
 
 const TimerListScreen = ({navigation}) => {
   const I18n = useTranslator();
@@ -64,6 +65,7 @@ const TimerListScreen = ({navigation}) => {
         data={timerList}
         renderItem={({item}) => (
           <TimeDetailCard
+            mode={Time.mode.Timer}
             statusSelect={item.statusSelect}
             project={item.project?.name}
             task={item.projectTask?.name}

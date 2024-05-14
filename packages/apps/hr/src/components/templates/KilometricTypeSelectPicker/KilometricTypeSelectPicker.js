@@ -16,11 +16,10 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import React from 'react';
+import React, {useMemo} from 'react';
 import {StyleSheet} from 'react-native';
 import {Picker} from '@axelor/aos-mobile-ui';
-import {useTranslator} from '@axelor/aos-mobile-core';
-import {ExpenseLine} from '../../../types';
+import {useTypes, useTypeHelpers} from '@axelor/aos-mobile-core';
 
 const KilometricTypeSelectPickerAux = ({
   title = 'Hr_KilometricTypeSelect',
@@ -29,17 +28,20 @@ const KilometricTypeSelectPickerAux = ({
   readonly = false,
   required = false,
 }) => {
-  const I18n = useTranslator();
+  const {ExpenseLine} = useTypes();
+  const {getSelectionItems} = useTypeHelpers();
 
-  const kilomectricTypeselectList =
-    ExpenseLine.getKilomectricTypeSelectList(I18n);
+  const kilometricTypeSelectList = useMemo(
+    () => getSelectionItems(ExpenseLine?.kilometricTypeSelect),
+    [ExpenseLine?.kilometricTypeSelect, getSelectionItems],
+  );
 
   return (
     <Picker
       style={styles.picker}
       title={title}
       defaultValue={defaultValue}
-      listItems={kilomectricTypeselectList}
+      listItems={kilometricTypeSelectList}
       labelField="title"
       valueField="key"
       emptyValue={false}

@@ -24,6 +24,7 @@ import {
   usePermitted,
   useSelector,
   useTranslator,
+  useTypes,
 } from '@axelor/aos-mobile-core';
 import {Button, useThemeColor} from '@axelor/aos-mobile-ui';
 import {TimesheetRefusalPopup} from '../../templates';
@@ -31,7 +32,6 @@ import {
   deleteTimesheet,
   updateTimesheetStatus,
 } from '../../../features/timesheetSlice';
-import {Timesheet} from '../../../types';
 
 interface TimesheetDetailsButtonsProps {
   timesheet: any;
@@ -53,6 +53,7 @@ const TimesheetDetailsButtons = ({
   const {canDelete, readonly} = usePermitted({
     modelName: 'com.axelor.apps.hr.db.Timesheet',
   });
+  const {Timesheet} = useTypes();
 
   const [refusalPopupIsOpen, setRefusalPopupIsOpen] = useState(false);
 
@@ -79,7 +80,7 @@ const TimesheetDetailsButtons = ({
     [dispatch, timesheet, user],
   );
 
-  if (statusSelect === Timesheet.statusSelect.Draft) {
+  if (statusSelect === Timesheet?.statusSelect.Draft) {
     return (
       <View style={styles.container}>
         {(isEmpty && canDelete) || (!isEmpty && !readonly) ? (
@@ -112,7 +113,7 @@ const TimesheetDetailsButtons = ({
     !readonly &&
     (user?.employee?.hrManager ||
       timesheet.employee?.managerUser?.id === user.id) &&
-    statusSelect === Timesheet.statusSelect.WaitingValidation
+    statusSelect === Timesheet?.statusSelect.WaitingValidation
   ) {
     return (
       <View style={styles.container}>
