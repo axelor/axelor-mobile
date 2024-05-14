@@ -42,12 +42,12 @@ export const ProjectModule: Module = {
   },
   menus: {
     project_menu_projects: {
-      title: 'project_projects',
+      title: 'Project_Projects',
       icon: 'clipboard2-data',
       screen: 'ProjectScreen',
     },
     project_menu_businessProjects: {
-      title: 'project_BuisnessProjects',
+      title: 'Project_BuisnessProjects',
       icon: 'briefcase-fill',
       screen: 'BuisnessProjectScreen',
     },
@@ -69,3 +69,4 @@ export * from './api';
 export * from './components';
 export * from './features/asyncFunctions-index';
 export * from './types';
+export * from './screens';

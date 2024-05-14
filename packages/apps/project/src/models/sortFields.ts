@@ -18,4 +18,6 @@
 
 import {SortFields} from '@axelor/aos-mobile-core';
 
-export const project_sortFields: SortFields = {};
+export const project_sortFields: SortFields = {
+  project_project: ['projectStatus.id', 'name'],
+};

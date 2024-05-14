@@ -21,14 +21,14 @@ import ProjectScreen from './ProjectScreen';
 
 export default {
   BuisnessProjectScreen: {
-    title: 'project_buisnessProjects',
+    title: 'Project_BuisnessProjects',
     component: BuisnessProjectScreen,
     options: {
       shadedHeader: false,
     },
   },
   ProjectScreen: {
-    title: 'project_projects',
+    title: 'Project_Projects',
     component: ProjectScreen,
     options: {
       shadedHeader: false,

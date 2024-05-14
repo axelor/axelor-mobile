@@ -115,7 +115,7 @@ const styles = StyleSheet.create({
     height: 40,
   },
   picker: {
-    width: '87%',
+    width: '85%',
   },
 });
 

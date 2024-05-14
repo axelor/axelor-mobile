@@ -70,9 +70,9 @@ export async function searchProject({
     model: 'com.axelor.apps.project.db.Project',
     criteria: createProjectCriteria({
       searchValue,
-      businessProject: businessProject,
-      statusList: statusList,
-      userId: userId,
+      businessProject,
+      statusList,
+      userId,
     }),
     fieldKey: 'project_project',
     sortKey: 'project_project',

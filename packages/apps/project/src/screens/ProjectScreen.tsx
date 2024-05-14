@@ -23,7 +23,7 @@ import {ProjectListView} from '../components';
 const ProjectScreen = ({}) => {
   return (
     <Screen removeSpaceOnTop={true}>
-      <ProjectListView businessProject={false} />
+      <ProjectListView />
     </Screen>
   );
 };

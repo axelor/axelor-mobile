@@ -69,7 +69,7 @@ const ProjectCard = ({
       image={
         !noCustomer
           ? {
-              generalStyle: styles.imageIcon,
+              generalStyle: styles.imageSize,
               imageSize: styles.imageSize,
               resizeMode: 'contain',
               defaultIconSize: 50,
@@ -125,10 +125,6 @@ const getStyles = color =>
   });
 
 const styles = StyleSheet.create({
-  imageIcon: {
-    height: 50,
-    width: 50,
-  },
   imageSize: {
     height: 50,
     width: 50,
