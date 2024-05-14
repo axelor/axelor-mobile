@@ -22,7 +22,6 @@ import {
   FormView,
   useDispatch,
   useSelector,
-  useTranslator,
   useTypes,
   useTypeHelpers,
 } from '@axelor/aos-mobile-core';
@@ -47,7 +46,6 @@ const ExpenseLineFormScreen = ({route, navigation}) => {
     modeExpense,
     justificationMetaFile,
   } = route?.params;
-  const I18n = useTranslator();
   const _dispatch = useDispatch();
   const {ExpenseLine} = useTypes();
   const {getItemTitle} = useTypeHelpers();
@@ -249,9 +247,10 @@ const ExpenseLineFormScreen = ({route, navigation}) => {
 
     return _default;
   }, [
-    I18n,
+    ExpenseLine?.kilometricTypeSelect,
     _dispatch,
     expenseLine,
+    getItemTitle,
     idExpense,
     justificationMetaFile,
     mobileSettings?.isMultiCurrencyEnabled,
