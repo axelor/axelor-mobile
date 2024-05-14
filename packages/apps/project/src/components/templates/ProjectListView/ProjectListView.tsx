@@ -21,16 +21,13 @@ import {
   useSelector,
   useTranslator,
   SearchListView,
+  getTypes,
+  useTypeHelpers,
 } from '@axelor/aos-mobile-core';
-import {
-  MultiValuePicker,
-  ToggleButton,
-  useThemeColor,
-} from '@axelor/aos-mobile-ui';
+import {MultiValuePicker, ToggleButton} from '@axelor/aos-mobile-ui';
 import {searchProject} from '../../../features/projectSlice';
 import {ProjectCard} from '../../atoms';
 import {StyleSheet, View} from 'react-native';
-import {Project} from '../../../types';
 
 interface ProjectListViewListViewProps {
   businessProject?: boolean;
@@ -39,8 +36,9 @@ interface ProjectListViewListViewProps {
 const ProjectListView = ({
   businessProject = false,
 }: ProjectListViewListViewProps) => {
-  const Colors = useThemeColor();
   const I18n = useTranslator();
+  const Project = getTypes().Project;
+  const {getSelectionItems} = useTypeHelpers();
 
   const {userId} = useSelector((state: any) => state.auth);
   const {loading, moreLoading, isListEnd, projectList} = useSelector(
@@ -49,6 +47,11 @@ const ProjectListView = ({
 
   const [selectedStatus, setSelectedStatus] = useState([]);
   const [isAssignedToMe, setIsAssignedToMe] = useState(true);
+
+  const statusList = useMemo(
+    () => getSelectionItems(Project?.projectStatus, selectedStatus),
+    [Project?.projectStatus, getSelectionItems, selectedStatus],
+  );
 
   const sliceFunctionData = useMemo(
     () => ({
@@ -81,7 +84,7 @@ const ProjectListView = ({
           />
           <MultiValuePicker
             style={styles.picker}
-            listItems={Project.getStatusList(Colors, I18n)}
+            listItems={statusList}
             onValueChange={setSelectedStatus}
           />
         </View>

@@ -25,6 +25,7 @@ import {
   project_modelAPI,
   project_searchFields,
   project_sortFields,
+  project_typeObjects,
 } from './models';
 
 export const ProjectModule: Module = {
@@ -62,11 +63,11 @@ export const ProjectModule: Module = {
     objectFields: {...project_modelAPI},
     searchFields: {...project_searchFields},
     sortFields: {...project_sortFields},
+    typeObjects: project_typeObjects,
   },
 };
 
 export * from './api';
 export * from './components';
 export * from './features/asyncFunctions-index';
-export * from './types';
 export * from './screens';

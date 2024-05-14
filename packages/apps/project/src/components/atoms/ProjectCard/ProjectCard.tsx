@@ -18,9 +18,13 @@
 
 import React, {useMemo} from 'react';
 import {StyleSheet} from 'react-native';
-import {useMetafileUri, useSelector} from '@axelor/aos-mobile-core';
-import {ObjectCard, useThemeColor} from '@axelor/aos-mobile-ui';
-import {Project} from '../../../types';
+import {
+  getTypes,
+  useMetafileUri,
+  useSelector,
+  useTypeHelpers,
+} from '@axelor/aos-mobile-core';
+import {ObjectCard} from '@axelor/aos-mobile-ui';
 
 interface ProjectCardProps {
   style?: any;
@@ -47,16 +51,18 @@ const ProjectCard = ({
   projectStatus,
   parentProject,
 }: ProjectCardProps) => {
-  const Colors = useThemeColor();
   const formatMetaFile = useMetafileUri();
+  const Project = getTypes().Project;
+  const {getItemColor} = useTypeHelpers();
 
   const {base: baseConfig} = useSelector(state => state.appConfig);
   const {user} = useSelector(state => state.user);
 
   const borderStyle = useMemo(() => {
-    return getStyles(Project.getStatusColor(projectStatus, Colors)?.background)
-      .border;
-  }, [Colors, projectStatus]);
+    return getStyles(
+      getItemColor(Project?.projectStatus, projectStatus)?.background,
+    )?.border;
+  }, [Project?.projectStatus, getItemColor, projectStatus]);
 
   const noCustomer = useMemo(() => {
     return customerName == null && customerPicture == null;
