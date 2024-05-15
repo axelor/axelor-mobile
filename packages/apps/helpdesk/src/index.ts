@@ -25,6 +25,7 @@ import {
   helpdesk_searchFields,
   helpdesk_sortFields,
   helpdesk_formsRegister,
+  helpdesk_typeObjects,
 } from './models';
 import * as helpdeskReducers from './features';
 import {useHelpdeskHeaders} from './hooks/use-helpdesk-header-actions';
@@ -69,6 +70,7 @@ export const HelpDeskModule: Module = {
     searchFields: {...helpdesk_searchFields},
     headerRegisters: useHelpdeskHeaders,
     formsRegister: {...helpdesk_formsRegister},
+    typeObjects: helpdesk_typeObjects,
   },
   requiredConfig: ['AppHelpdesk'],
 };

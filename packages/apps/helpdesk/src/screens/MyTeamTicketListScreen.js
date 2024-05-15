@@ -18,17 +18,14 @@
 
 import React, {useEffect, useMemo, useState} from 'react';
 import {StyleSheet, View} from 'react-native';
-import {
-  ChipSelect,
-  MultiValuePicker,
-  Screen,
-  useThemeColor,
-} from '@axelor/aos-mobile-ui';
+import {ChipSelect, MultiValuePicker, Screen} from '@axelor/aos-mobile-ui';
 import {
   SearchListView,
   useDispatch,
   useSelector,
   useTranslator,
+  useTypeHelpers,
+  useTypes,
 } from '@axelor/aos-mobile-core';
 import {
   fetchMyTeamTickets,
@@ -36,12 +33,12 @@ import {
   fetchTicketType,
 } from '../features/ticketSlice';
 import {TicketCard} from '../components';
-import {Ticket} from '../types';
 
 const MyTeamTicketListScreen = ({navigation}) => {
   const I18n = useTranslator();
   const dispatch = useDispatch();
-  const Colors = useThemeColor();
+  const {Ticket} = useTypes();
+  const {getCustomSelectionItems, getSelectionItems} = useTypeHelpers();
 
   const {user} = useSelector(state => state.user);
   const {
@@ -56,7 +53,11 @@ const MyTeamTicketListScreen = ({navigation}) => {
   const [selectedType, setSelectedType] = useState([]);
   const [selectedStatus, setSelectedStatus] = useState([]);
   const [selectedPriority, setSelectedPriority] = useState(
-    Ticket.getPriorityList(Colors, I18n).filter(e => e.isActive === true),
+    getSelectionItems(Ticket?.prioritySelect).filter(({value}) =>
+      [Ticket?.prioritySelect.High, Ticket?.prioritySelect.Urgent].includes(
+        value,
+      ),
+    ),
   );
 
   const displayItemTicketSeq = item => item.ticketSeq;
@@ -66,29 +67,15 @@ const MyTeamTicketListScreen = ({navigation}) => {
     dispatch(fetchTicketStatus());
   }, [dispatch]);
 
-  const ticketTypeListItems = useMemo(() => {
-    return ticketTypeList
-      ? ticketTypeList.map((type, index) => {
-          return {
-            title: type.name,
-            color: Ticket.getTypeColor(index, Colors),
-            key: type.id,
-          };
-        })
-      : [];
-  }, [ticketTypeList, Colors]);
+  const ticketTypeListItems = useMemo(
+    () => getCustomSelectionItems(ticketTypeList, 'name'),
+    [getCustomSelectionItems, ticketTypeList],
+  );
 
-  const ticketStatusListItems = useMemo(() => {
-    return ticketStatusList
-      ? ticketStatusList.map((status, index) => {
-          return {
-            title: status.name,
-            color: Ticket.getStatusColor(index, Colors),
-            key: status.id,
-          };
-        })
-      : [];
-  }, [ticketStatusList, Colors]);
+  const ticketStatusListItems = useMemo(
+    () => getCustomSelectionItems(ticketStatusList, 'name'),
+    [getCustomSelectionItems, ticketStatusList],
+  );
 
   const sliceFunctionData = useMemo(
     () => ({
@@ -98,6 +85,11 @@ const MyTeamTicketListScreen = ({navigation}) => {
       priorityList: selectedPriority,
     }),
     [selectedPriority, selectedStatus, selectedType, user.activeTeam],
+  );
+
+  const priorityList = useMemo(
+    () => getSelectionItems(Ticket?.prioritySelect, selectedPriority),
+    [Ticket?.prioritySelect, getSelectionItems, selectedPriority],
   );
 
   return (
@@ -114,8 +106,8 @@ const MyTeamTicketListScreen = ({navigation}) => {
         chipComponent={
           <ChipSelect
             mode="multi"
-            onChangeValue={chiplist => setSelectedPriority(chiplist)}
-            selectionItems={Ticket.getPriorityList(Colors, I18n)}
+            onChangeValue={setSelectedPriority}
+            selectionItems={priorityList}
           />
         }
         headerChildren={
