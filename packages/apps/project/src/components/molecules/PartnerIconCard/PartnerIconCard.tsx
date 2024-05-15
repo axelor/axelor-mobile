@@ -26,6 +26,7 @@ interface PartnerIconCardProps {
   partnerPicture: any;
   partnerName: string;
   partnerJob?: string;
+  isContact?: boolean;
 }
 
 const PartnerIconCard = ({
@@ -33,8 +34,13 @@ const PartnerIconCard = ({
   partnerPicture,
   partnerName,
   partnerJob,
+  isContact = false,
 }: PartnerIconCardProps) => {
   const Colors = useThemeColor();
+
+  if (partnerName == null) {
+    return null;
+  }
 
   return (
     <View style={[styles.container, style]}>
@@ -46,7 +52,7 @@ const PartnerIconCard = ({
       />
       <View style={styles.iconContainer}>
         <CardIconButton
-          iconName={'pencil-fill'}
+          iconName={isContact ? 'telephone-fill' : 'geo-alt-fill'}
           iconColor={Colors.secondaryColor_dark.background}
           onPress={() => {}}
           style={styles.cardIconButton}

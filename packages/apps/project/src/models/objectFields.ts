@@ -47,6 +47,11 @@ export const project_modelAPI: ObjectFields = {
     description: schemaContructor.string(),
     team: schemaContructor.subObject(),
     membersUserSet: schemaContructor.array().of(schemaContructor.subObject()),
+    toInvoice: schemaContructor.boolean(),
+    isInvoicingExpenses: schemaContructor.boolean(),
+    isInvoicingPurchases: schemaContructor.boolean(),
+    currency: schemaContructor.subObject(),
+    priceList: schemaContructor.subObject(),
   }),
   project_projectStatus: schemaContructor.object({
     name: schemaContructor.string(),

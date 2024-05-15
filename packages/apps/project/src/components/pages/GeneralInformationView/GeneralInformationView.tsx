@@ -30,11 +30,10 @@ import {
   Icon,
   NotesCard,
   TagList,
-  Text,
   ScrollView,
-  checkNullString,
 } from '@axelor/aos-mobile-ui';
 import {PartnerIconCard, ProjectHeader} from '../../molecules';
+import {DropdownInvoicing, DropdownMembers} from '../../atoms';
 
 const GeneralInformationView = () => {
   const I18n = useTranslator();
@@ -50,11 +49,31 @@ const GeneralInformationView = () => {
     return project?.membersUserSet?.map(member => ({title: member?.fullName}));
   }, [project?.membersUserSet]);
 
+  const invoiceBoolList = useMemo(() => {
+    const booleanArray = [];
+    if (project?.toInvoice) {
+      booleanArray.push({
+        title: `${I18n.t('Project_PackagedTask')}`,
+      });
+    }
+    if (project?.isInvoicingExpenses) {
+      booleanArray.push({title: `${I18n.t('Project_Expenses')}`});
+    }
+    if (project?.isInvoicingPurchases) {
+      booleanArray.push({title: `${I18n.t('Project_Purchases')}`});
+    }
+
+    return booleanArray;
+  }, [
+    I18n,
+    project?.isInvoicingExpenses,
+    project?.isInvoicingPurchases,
+    project?.toInvoice,
+  ]);
+
   if (project == null || isEmpty(project)) {
     return null;
   }
-
-  console.log('siteset', project);
 
   return (
     <View>
@@ -89,34 +108,29 @@ const GeneralInformationView = () => {
           partnerPicture={project.contactPartner?.picture}
           partnerName={project.contactPartner?.name}
           partnerJob={project.contactPartner?.jobTitleFunction}
+          isContact={true}
         />
         <DropdownCardSwitch
           dropdownItems={[
             {
               key: 1,
               title: I18n.t('Project_Invoicing'),
-              childrenComp: <Text>Test</Text>,
+              childrenComp: (
+                <DropdownInvoicing
+                  currency={project?.currency}
+                  invoiceBoolList={invoiceBoolList}
+                  priceList={project?.priceList}
+                />
+              ),
             },
-          ]}
-        />
-        <DropdownCardSwitch
-          dropdownItems={[
             {
-              key: 1,
+              key: 2,
               title: I18n.t('Project_Members'),
               childrenComp: (
-                <>
-                  {!checkNullString(project?.team?.name) && (
-                    <Text>{`${I18n.t('Project_Team')} : ${
-                      project?.team?.name
-                    }`}</Text>
-                  )}
-                  <TagList title={I18n.t('Project_Members')} tags={members} />
-                </>
+                <DropdownMembers team={project?.team?.name} members={members} />
               ),
             },
           ]}
-          style={styles.marginBottom}
         />
       </ScrollView>
     </View>
@@ -140,9 +154,6 @@ const styles = StyleSheet.create({
   },
   notesCard: {
     marginTop: 24,
-  },
-  marginBottom: {
-    marginBottom: 100,
   },
 });
 

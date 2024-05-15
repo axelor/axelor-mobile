@@ -16,7 +16,28 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-export {default as DropdownInvoicing} from './DropdownInvoicing/DropdownInvoicing';
-export {default as DropdownMembers} from './DropdownMembers/DropdownMembers';
-export {default as PartnerCard} from './PartnerCard/PartnerCard';
-export {default as ProjectCard} from './ProjectCard/ProjectCard';
+import React from 'react';
+import {View} from 'react-native';
+import {TagList, Text, checkNullString} from '@axelor/aos-mobile-ui';
+import {useTranslator} from '@axelor/aos-mobile-core';
+
+interface DropdownMembersProps {
+  style?: any;
+  team: string;
+  members: any;
+}
+
+const DropdownMembers = ({style, team, members}: DropdownMembersProps) => {
+  const I18n = useTranslator();
+
+  return (
+    <View style={style}>
+      {!checkNullString(team) && (
+        <Text>{`${I18n.t('Project_Team')} : ${team}`}</Text>
+      )}
+      <TagList title={I18n.t('Project_Members')} tags={members} />
+    </View>
+  );
+};
+
+export default DropdownMembers;
