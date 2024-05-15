@@ -55,7 +55,7 @@ const CatalogCard = ({
 
   const {baseUrl, token, jsessionId} = useSelector((state: any) => state.auth);
 
-  const colorBadgeStyle = useMemo(
+  const badgeColor = useMemo(
     () => getItemColorFromIndex(allCatalogType, catalogueType),
     [allCatalogType, catalogueType, getItemColorFromIndex],
   );
@@ -90,7 +90,7 @@ const CatalogCard = ({
         items: [
           {
             displayText: category,
-            color: colorBadgeStyle,
+            color: badgeColor,
           },
         ],
       }}

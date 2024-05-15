@@ -32,7 +32,7 @@ const EventTypePicker = ({
   const {Event} = useTypes();
   const {getSelectionItems} = useTypeHelpers();
 
-  const statusList = useMemo(
+  const typeList = useMemo(
     () => getSelectionItems(Event?.typeSelect),
     [Event?.typeSelect, getSelectionItems],
   );
@@ -41,7 +41,7 @@ const EventTypePicker = ({
     <Picker
       style={style}
       title={I18n.t(title)}
-      listItems={statusList}
+      listItems={typeList}
       valueField="key"
       labelField="title"
       defaultValue={defaultValue}
