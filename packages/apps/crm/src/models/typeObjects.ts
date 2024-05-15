@@ -103,6 +103,26 @@ export const crm_typeObjects: ModuleSelections = [
           },
         ],
       },
+      titleSelect: {
+        useWebContent: true,
+        content: [
+          {
+            key: 'M',
+            value: 1,
+            title: 'Crm_Civility_M',
+          },
+          {
+            key: 'Ms',
+            value: 2,
+            title: 'Crm_Civility_Ms',
+          },
+          {
+            key: 'Mx',
+            value: 3,
+            title: 'Crm_Civility_Mx',
+          },
+        ],
+      },
     },
   },
 ];

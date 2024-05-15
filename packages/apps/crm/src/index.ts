@@ -118,7 +118,6 @@ export const CrmModule: Module = {
 export * from './api';
 export * from './components';
 export * from './features/asyncFunctions-index';
-export * from './hooks';
 export * from './screens/catalog';
 export * from './screens/client';
 export * from './screens/contact';
