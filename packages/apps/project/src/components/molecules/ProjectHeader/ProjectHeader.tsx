@@ -18,7 +18,12 @@
 
 import React from 'react';
 import {StyleSheet, View} from 'react-native';
-import {useSelector, useTranslator} from '@axelor/aos-mobile-core';
+import {
+  getTypes,
+  useSelector,
+  useTranslator,
+  useTypeHelpers,
+} from '@axelor/aos-mobile-core';
 import {
   Badge,
   LabelText,
@@ -26,7 +31,6 @@ import {
   checkNullString,
   useThemeColor,
 } from '@axelor/aos-mobile-ui';
-import {Project} from '../../../types/';
 
 interface ProjectHeaderProps {
   project: any;
@@ -35,6 +39,8 @@ interface ProjectHeaderProps {
 const ProjectHeader = ({project}: ProjectHeaderProps) => {
   const Colors = useThemeColor();
   const I18n = useTranslator();
+  const Project = getTypes().Project;
+  const {getItemColor, getItemTitle} = useTypeHelpers();
 
   const {base: baseConfig} = useSelector(state => state.appConfig);
   const {user} = useSelector(state => state.user);
@@ -69,8 +75,14 @@ const ProjectHeader = ({project}: ProjectHeaderProps) => {
         </View>
         <View style={styles.columnContainer}>
           <Badge
-            title={Project.getStatus(project?.projectStatus?.id, I18n)}
-            color={Project.getStatusColor(project?.projectStatus?.id, Colors)}
+            title={getItemTitle(
+              Project.projectStatus,
+              project?.projectStatus?.id,
+            )}
+            color={getItemColor(
+              Project.projectStatus,
+              project?.projectStatus?.id,
+            )}
           />
           {project?.isBusinessProject && (
             <Badge
