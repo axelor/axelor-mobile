@@ -22,10 +22,10 @@ import {
   usePermitted,
   useSelector,
   useTranslator,
+  useTypes,
 } from '@axelor/aos-mobile-core';
 import {Button} from '@axelor/aos-mobile-ui';
 import {updateControlEntry} from '../../../features/controlEntrySlice';
-import {ControlEntry} from '../../../types';
 
 const ControlEntryDetailsButtons = () => {
   const dispatch = useDispatch();
@@ -33,6 +33,7 @@ const ControlEntryDetailsButtons = () => {
   const {readonly} = usePermitted({
     modelName: 'com.axelor.apps.quality.db.ControlEntry',
   });
+  const {ControlEntry} = useTypes();
 
   const {controlEntry} = useSelector((state: any) => state.controlEntry);
 
@@ -48,7 +49,7 @@ const ControlEntryDetailsButtons = () => {
           (updateControlEntry as any)({
             controlEntry: {
               ...controlEntry,
-              statusSelect: ControlEntry.status.Completed,
+              statusSelect: ControlEntry?.statusSelect.Completed,
             },
             controlEntryId: controlEntry.id,
           }),

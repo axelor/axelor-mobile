@@ -24,22 +24,23 @@ import {
   Screen,
   ScrollList,
   ToggleButton,
-  useThemeColor,
 } from '@axelor/aos-mobile-ui';
 import {
   DateInput,
   useDispatch,
   useSelector,
   useTranslator,
+  useTypes,
+  useTypeHelpers,
 } from '@axelor/aos-mobile-core';
 import {searchControlEntry} from '../features/controlEntrySlice';
 import {ControlEntryCard} from '../components';
-import {ControlEntry} from '../types';
 
 const ControlEntryListScreen = ({navigation}) => {
-  const Colors = useThemeColor();
   const I18n = useTranslator();
   const dispatch = useDispatch();
+  const {ControlEntry} = useTypes();
+  const {getSelectionItems} = useTypeHelpers();
 
   const {userId} = useSelector(state => state.auth);
   const {controlEntryList, loadingControlEntryList, moreLoading, isListEnd} =
@@ -49,9 +50,10 @@ const ControlEntryListScreen = ({navigation}) => {
   const [dateFilter, setDateFilter] = useState(null);
   const [selectedStatus, setSelectedStatus] = useState([]);
 
-  const statusListItems = useMemo(() => {
-    return ControlEntry.getStatusList(Colors, I18n);
-  }, [Colors, I18n]);
+  const statusListItems = useMemo(
+    () => getSelectionItems(ControlEntry?.statusSelect, selectedStatus),
+    [ControlEntry?.statusSelect, getSelectionItems, selectedStatus],
+  );
 
   const fetchControlEntryAPI = useCallback(
     (page = 0) => {

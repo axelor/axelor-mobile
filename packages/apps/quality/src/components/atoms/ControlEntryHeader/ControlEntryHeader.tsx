@@ -18,13 +18,19 @@
 
 import React from 'react';
 import {StyleSheet, View} from 'react-native';
-import {DateDisplay, useSelector, useTranslator} from '@axelor/aos-mobile-core';
-import {Badge, Text, useThemeColor} from '@axelor/aos-mobile-ui';
-import {ControlEntry} from '../../../types';
+import {
+  DateDisplay,
+  useSelector,
+  useTranslator,
+  useTypes,
+  useTypeHelpers,
+} from '@axelor/aos-mobile-core';
+import {Badge, Text} from '@axelor/aos-mobile-ui';
 
 const ControlEntryHeader = ({}) => {
   const I18n = useTranslator();
-  const Colors = useThemeColor();
+  const {ControlEntry} = useTypes();
+  const {getItemColor, getItemTitle} = useTypeHelpers();
 
   const {controlEntry} = useSelector((state: any) => state.controlEntry);
 
@@ -33,8 +39,14 @@ const ControlEntryHeader = ({}) => {
       <View style={styles.row}>
         <Text writingType="title">{controlEntry.name}</Text>
         <Badge
-          color={ControlEntry.getStatusColor(controlEntry.statusSelect, Colors)}
-          title={ControlEntry.getStatus(controlEntry.statusSelect, I18n)}
+          color={getItemColor(
+            ControlEntry?.statusSelect,
+            controlEntry.statusSelect,
+          )}
+          title={getItemTitle(
+            ControlEntry?.statusSelect,
+            controlEntry.statusSelect,
+          )}
         />
       </View>
       <View style={styles.row}>

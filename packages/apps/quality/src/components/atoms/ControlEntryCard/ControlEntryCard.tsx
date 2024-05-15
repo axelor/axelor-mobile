@@ -18,9 +18,13 @@
 
 import React, {useEffect, useMemo, useRef, useState} from 'react';
 import {StyleSheet, TouchableOpacity, View} from 'react-native';
-import {Card, ProgressBar, Text, useThemeColor} from '@axelor/aos-mobile-ui';
-import {useTranslator, DateDisplay} from '@axelor/aos-mobile-core';
-import {ControlEntry} from '../../../types';
+import {Card, ProgressBar, Text} from '@axelor/aos-mobile-ui';
+import {
+  DateDisplay,
+  useTranslator,
+  useTypes,
+  useTypeHelpers,
+} from '@axelor/aos-mobile-core';
 import {searchControlEntrySampleApi} from '../../../api';
 
 interface ControlEntryCardProps {
@@ -41,8 +45,9 @@ const ControlEntryCard = ({
   name,
   controlEntryId,
 }: ControlEntryCardProps) => {
-  const Colors = useThemeColor();
   const I18n = useTranslator();
+  const {ControlEntry, ControlEntrySample} = useTypes();
+  const {getItemColor} = useTypeHelpers();
 
   const isMounted = useRef(true);
 
@@ -59,7 +64,8 @@ const ControlEntryCard = ({
             const total = controlEntrySampleList.length;
             const notControlled = controlEntrySampleList.filter(
               sample =>
-                sample.resultSelect === ControlEntry.sampleResult.NotControlled,
+                sample.resultSelect ===
+                ControlEntrySample?.resultSelect.NotControlled,
             ).length;
             setNumberSampleFilled(100 - (notControlled / total) * 100);
           } else {
@@ -76,13 +82,13 @@ const ControlEntryCard = ({
     return () => {
       isMounted.current = false;
     };
-  }, [controlEntryId]);
+  }, [ControlEntrySample?.resultSelect, controlEntryId]);
 
   const borderStyle = useMemo(() => {
     return getStyles(
-      ControlEntry.getStatusColor(statusSelect, Colors)?.background,
+      getItemColor(ControlEntry?.statusSelect, statusSelect)?.background,
     )?.border;
-  }, [Colors, statusSelect]);
+  }, [ControlEntry?.statusSelect, getItemColor, statusSelect]);
 
   return (
     <TouchableOpacity onPress={onPress} activeOpacity={0.9}>
