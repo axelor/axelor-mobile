@@ -18,7 +18,13 @@
 
 import React, {useEffect, useMemo} from 'react';
 import {StyleSheet, View} from 'react-native';
-import {useDispatch, useSelector, useTranslator} from '@axelor/aos-mobile-core';
+import {
+  useDispatch,
+  useSelector,
+  useTranslator,
+  useTypes,
+  useTypeHelpers,
+} from '@axelor/aos-mobile-core';
 import {
   ChipSelect,
   NumberBubble,
@@ -28,7 +34,7 @@ import {
 } from '@axelor/aos-mobile-ui';
 import TimesheetWaitingValidationSearchBar from '../TimesheetWaitingValidationSearchBar/TimesheetWaitingValidationSearchBar';
 import {fetchTimesheetToValidate} from '../../../features/timesheetSlice';
-import {Timesheet} from '../../../types';
+import {Timesheet as TimesheetType} from '../../../types';
 
 const TimesheetFilters = ({
   mode,
@@ -38,6 +44,8 @@ const TimesheetFilters = ({
   const Colors = useThemeColor();
   const I18n = useTranslator();
   const dispatch = useDispatch();
+  const {Timesheet} = useTypes();
+  const {getSelectionItems} = useTypeHelpers();
 
   const {totalNumberTimesheetToValidate} = useSelector(
     state => state.timesheet,
@@ -47,12 +55,23 @@ const TimesheetFilters = ({
   const {managedEmployeeTotal} = useSelector(state => state.employee);
 
   const timesheetStatusListItems = useMemo(() => {
-    return Timesheet.getStatusList(
-      timesheetConfig.needValidation,
-      Colors,
-      I18n,
-    );
-  }, [Colors, I18n, timesheetConfig.needValidation]);
+    let result = getSelectionItems(Timesheet?.statusSelect);
+
+    if (!timesheetConfig.needValidation) {
+      result = result.filter(({value}) =>
+        [
+          Timesheet?.statusSelect.Draft,
+          Timesheet?.statusSelect.Validate,
+        ].includes(value),
+      );
+    }
+
+    return result;
+  }, [
+    Timesheet?.statusSelect,
+    getSelectionItems,
+    timesheetConfig.needValidation,
+  ]);
 
   useEffect(() => {
     dispatch(fetchTimesheetToValidate({page: 0, user: user}));
@@ -76,14 +95,14 @@ const TimesheetFilters = ({
             onSwitch={() => {
               onChangeStatus(null);
               onChangeMode(_mode =>
-                _mode === Timesheet.mode.personnal
-                  ? Timesheet.mode.validation
-                  : Timesheet.mode.personnal,
+                _mode === TimesheetType.mode.personnal
+                  ? TimesheetType.mode.validation
+                  : TimesheetType.mode.personnal,
               );
             }}
           />
         )}
-      {mode === Timesheet.mode.personnal &&
+      {mode === TimesheetType.mode.personnal &&
         (timesheetConfig.needValidation ? (
           <Picker
             listItems={timesheetStatusListItems}
@@ -99,7 +118,7 @@ const TimesheetFilters = ({
             selectionItems={timesheetStatusListItems}
           />
         ))}
-      {mode === Timesheet.mode.validation && (
+      {mode === TimesheetType.mode.validation && (
         <TimesheetWaitingValidationSearchBar />
       )}
     </View>

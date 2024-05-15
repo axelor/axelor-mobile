@@ -23,6 +23,7 @@ import {
   usePermitted,
   useSelector,
   useTranslator,
+  useTypes,
 } from '@axelor/aos-mobile-core';
 import {HeaderContainer, ScrollList, Screen} from '@axelor/aos-mobile-ui';
 import {
@@ -35,7 +36,7 @@ import {
   deleteTimesheetLine,
   fetchTimesheetLine,
 } from '../../features/timesheetLineSlice';
-import {Time, Timesheet} from '../../types';
+import {Time, Timesheet as TimesheetType} from '../../types';
 
 const TimesheetDetailsScreen = ({navigation, route}) => {
   const {timesheetId, isManualCreation} = route.params;
@@ -44,6 +45,7 @@ const TimesheetDetailsScreen = ({navigation, route}) => {
   const {canDelete, readonly} = usePermitted({
     modelName: 'com.axelor.apps.hr.db.TimesheetLine',
   });
+  const {Timesheet} = useTypes();
 
   const {timesheet} = useSelector(state => state.timesheet);
   const {timesheet: timesheetConfig} = useSelector(state => state.appConfig);
@@ -51,7 +53,7 @@ const TimesheetDetailsScreen = ({navigation, route}) => {
     useSelector(state => state.timesheetLine);
 
   const _statusSelect = useMemo(() => {
-    return Timesheet.getStatus(timesheetConfig.needValidation, timesheet);
+    return TimesheetType.getStatus(timesheetConfig.needValidation, timesheet);
   }, [timesheet, timesheetConfig]);
 
   const isTimesheetLineListEmpty = useMemo(
@@ -97,7 +99,8 @@ const TimesheetDetailsScreen = ({navigation, route}) => {
         data={timesheetLineList}
         renderItem={({item}) => (
           <TimeDetailCard
-            statusSelect={Time.statusSelect.Draft}
+            mode={Time.mode.Timesheet}
+            statusSelect={Timesheet?.statusSelect.Draft}
             project={item.project?.name}
             task={item.projectTask?.name}
             manufOrder={item.manufOrder?.name}
@@ -107,7 +110,7 @@ const TimesheetDetailsScreen = ({navigation, route}) => {
             duration={item.duration}
             showTrash={item.timer == null && canDelete}
             durationUnit={timesheet.timeLoggingPreferenceSelect}
-            isActions={_statusSelect === Timesheet.statusSelect.Draft}
+            isActions={_statusSelect === Timesheet?.statusSelect.Draft}
             canEdit={!readonly}
             onEdit={() =>
               navigation.navigate('TimesheetLineFormScreen', {

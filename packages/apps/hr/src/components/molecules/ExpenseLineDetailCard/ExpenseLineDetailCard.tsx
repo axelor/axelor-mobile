@@ -20,13 +20,15 @@ import React, {useCallback, useEffect, useMemo, useRef, useState} from 'react';
 import {Animated, StyleSheet, View} from 'react-native';
 import {useThemeColor, CardIconButton, Checkbox} from '@axelor/aos-mobile-ui';
 import {
-  useTranslator,
-  useDispatch,
-  useSelector,
   openFileInExternalApp,
+  useDispatch,
   usePermitted,
+  useSelector,
+  useTranslator,
+  useTypes,
+  useTypeHelpers,
 } from '@axelor/aos-mobile-core';
-import {Expense, ExpenseLine} from '../../../types';
+import {ExpenseLine as ExpenseLineType} from '../../../types';
 import {ExpenseLineCard} from '../../atoms';
 import {deleteExpenseLine} from '../../../features/expenseLineSlice';
 
@@ -46,6 +48,8 @@ const ExpenseLineDetailCard = ({
   const {readonly, canDelete} = usePermitted({
     modelName: 'com.axelor.apps.hr.db.ExpenseLine',
   });
+  const {Expense, ExpenseLine} = useTypes();
+  const {getItemTitle} = useTypeHelpers();
 
   const {userId} = useSelector((state: any) => state.auth);
   const {baseUrl, token, jsessionId} = useSelector((state: any) => state.auth);
@@ -132,16 +136,17 @@ const ExpenseLineDetailCard = ({
               displayText={
                 item.fromCity == null && item.toCity == null
                   ? item.expenseProduct?.name
-                  : ExpenseLine.getKilomectricTypeSelect(
+                  : getItemTitle(
+                      ExpenseLine?.kilometricTypeSelect,
                       item.kilometricTypeSelect,
-                      I18n,
                     )
               }
               onLongPress={onLongPress}
               setCardHeight={setCardHeight}
             />
           </View>
-          {ExpenseLine.getExpenseMode(item) === ExpenseLine.modes.general &&
+          {ExpenseLineType.getExpenseMode(item) ===
+            ExpenseLineType.modes.general &&
             item.justificationMetaFile != null && (
               <View style={styles.flexOne}>
                 <CardIconButton
@@ -153,7 +158,7 @@ const ExpenseLineDetailCard = ({
               </View>
             )}
           {expense == null ||
-          expense.statusSelect === Expense.statusSelect.Draft ? (
+          expense.statusSelect === Expense?.statusSelect.Draft ? (
             <View style={styles.flexOne}>
               <CardIconButton
                 iconName={readonly ? 'file-earmark-text' : 'pencil-fill'}

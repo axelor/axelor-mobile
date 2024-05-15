@@ -21,15 +21,17 @@ import {
   getSearchCriterias,
   createStandardFetch,
   axiosApiProvider,
+  getTypes,
 } from '@axelor/aos-mobile-core';
-import {Expense} from '../types';
 
 const createExpenseDraftCriteria = userId => {
+  const Expense = getTypes().Expense;
+
   const criteria = [
     {
       fieldName: 'statusSelect',
       operator: '=',
-      value: Expense.statusSelect.Draft,
+      value: Expense?.statusSelect.Draft,
     },
   ];
 
@@ -58,12 +60,14 @@ const createMyExpenseCriteria = (searchValue, userId) => {
 };
 
 const createExpenseToValidateCriteria = (searchValue, user) => {
+  const Expense = getTypes().Expense;
+
   const criteria = [
     getSearchCriterias('hr_expense', searchValue),
     {
       fieldName: 'statusSelect',
       operator: '=',
-      value: Expense.statusSelect.WaitingValidation,
+      value: Expense?.statusSelect.WaitingValidation,
     },
   ];
 

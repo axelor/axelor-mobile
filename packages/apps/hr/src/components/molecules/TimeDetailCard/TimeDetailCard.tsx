@@ -22,6 +22,7 @@ import {CardIconButton, useThemeColor} from '@axelor/aos-mobile-ui';
 import {TimeCard} from '../../atoms';
 
 interface TimeDetailCardProps {
+  mode: number;
   statusSelect: number;
   project?: string;
   task?: string;
@@ -41,6 +42,7 @@ interface TimeDetailCardProps {
 }
 
 const TimeDetailCard = ({
+  mode,
   statusSelect,
   project,
   task,
@@ -63,6 +65,7 @@ const TimeDetailCard = ({
   return (
     <View style={[styles.container, style]}>
       <TimeCard
+        mode={mode}
         statusSelect={statusSelect}
         project={project}
         task={task}
