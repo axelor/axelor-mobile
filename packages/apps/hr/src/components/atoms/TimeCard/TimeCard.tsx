@@ -64,21 +64,13 @@ const TimeCard = ({
   const {getItemColor} = useTypeHelpers();
 
   const styles = useMemo(() => {
-    const timeStatusSelect =
-      mode === Time.mode.Timer ? Timer?.statusSelect : Timesheet?.statusSelect;
+    const timeObject = mode === Time.mode.Timer ? Timer : Timesheet;
 
     return getStyles(
-      getItemColor(timeStatusSelect, statusSelect)?.background,
+      getItemColor(timeObject?.statusSelect, statusSelect)?.background,
       isSmallCard,
     );
-  }, [
-    Timer?.statusSelect,
-    Timesheet?.statusSelect,
-    getItemColor,
-    isSmallCard,
-    mode,
-    statusSelect,
-  ]);
+  }, [Timer, Timesheet, getItemColor, isSmallCard, mode, statusSelect]);
 
   return (
     <View style={style}>

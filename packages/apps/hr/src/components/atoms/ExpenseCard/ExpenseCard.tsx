@@ -97,8 +97,9 @@ const ExpenseCard = ({
   }, [Expense?.statusSelect, readonly, statusSelect, userCanValidate]);
 
   const borderStyle = useMemo(() => {
-    return getBorderStyle(getItemColor(Expense?.statusSelect, statusSelect))
-      .border;
+    return getBorderStyle(
+      getItemColor(Expense?.statusSelect, statusSelect)?.background,
+    ).border;
   }, [Expense?.statusSelect, getItemColor, statusSelect]);
 
   return (
@@ -173,11 +174,11 @@ const ExpenseCard = ({
   );
 };
 
-const getBorderStyle = Colors =>
+const getBorderStyle = (color: string) =>
   StyleSheet.create({
     border: {
       borderLeftWidth: 7,
-      borderLeftColor: Colors.background,
+      borderLeftColor: color,
       marginHorizontal: 0,
       marginVertical: 0,
     },

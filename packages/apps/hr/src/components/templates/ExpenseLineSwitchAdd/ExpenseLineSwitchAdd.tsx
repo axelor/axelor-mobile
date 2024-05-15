@@ -55,7 +55,7 @@ const ExpenseLineSwitchAdd = ({
     [
       Expense?.statusSelect,
       canCreate,
-      expense.statusSelect,
+      expense,
       mobileSettings?.isLineCreationOfExpenseDetailsAllowed,
       readonly,
     ],
