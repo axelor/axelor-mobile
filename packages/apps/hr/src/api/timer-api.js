@@ -23,8 +23,8 @@ import {
   getEndOfDay,
   getSearchCriterias,
   getStartOfDay,
+  getTypes,
 } from '@axelor/aos-mobile-core';
-import {Time} from '../types';
 
 const createTimerCriteria = (searchValue, userId, fromDate, toDate) => {
   const criteria = [
@@ -65,6 +65,8 @@ const createTimerCriteria = (searchValue, userId, fromDate, toDate) => {
 };
 
 const createActiveTimerCriteria = userId => {
+  const Timer = getTypes().Timer;
+
   const criteria = createTimerCriteria(null, userId);
 
   criteria.push({
@@ -73,12 +75,12 @@ const createActiveTimerCriteria = userId => {
       {
         fieldName: 'statusSelect',
         operator: '=',
-        value: Time.statusSelect.InProgress,
+        value: Timer?.statusSelect.InProgress,
       },
       {
         fieldName: 'statusSelect',
         operator: '=',
-        value: Time.statusSelect.Paused,
+        value: Timer?.statusSelect.Paused,
       },
     ],
   });

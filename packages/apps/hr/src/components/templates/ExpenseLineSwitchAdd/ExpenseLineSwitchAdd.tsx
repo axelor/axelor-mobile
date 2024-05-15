@@ -22,10 +22,10 @@ import {
   useNavigation,
   usePermitted,
   useSelector,
+  useTypes,
 } from '@axelor/aos-mobile-core';
 import {CircleButton} from '@axelor/aos-mobile-ui';
 import ExpenseLineTypeDisplay from '../ExpenseLineTypeDisplay/ExpenseLineTypeDisplay';
-import {Expense} from '../../../types';
 
 interface ExpenseLineSwitchAddProps {
   mode: string;
@@ -41,6 +41,7 @@ const ExpenseLineSwitchAdd = ({
   const {canCreate} = usePermitted({
     modelName: 'com.axelor.apps.hr.db.ExpenseLine',
   });
+  const {Expense} = useTypes();
 
   const {mobileSettings} = useSelector((state: any) => state.appConfig);
   const {expense} = useSelector((state: any) => state.expense);
@@ -50,8 +51,9 @@ const ExpenseLineSwitchAdd = ({
       canCreate &&
       !readonly &&
       mobileSettings?.isLineCreationOfExpenseDetailsAllowed &&
-      expense.statusSelect === Expense.statusSelect.Draft,
+      expense.statusSelect === Expense?.statusSelect.Draft,
     [
+      Expense?.statusSelect,
       canCreate,
       expense,
       mobileSettings?.isLineCreationOfExpenseDetailsAllowed,

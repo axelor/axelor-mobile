@@ -42,6 +42,7 @@ import {
 } from '../../../features/timesheetSlice';
 import {fetchDraftTimesheet} from '../../../api/timesheet-api';
 import {formatSecondsToHours} from '../../../utils';
+import {Time} from '../../../types';
 
 interface TimerListAlertProps {
   isAlertVisible: boolean;
@@ -123,6 +124,7 @@ const TimerListAlert = ({
   const renderChexboxItem = ({item}) => {
     return (
       <TimeDetailCard
+        mode={Time.mode.Timer}
         statusSelect={item.statusSelect}
         project={item.project?.name}
         date={item.startDateTime}

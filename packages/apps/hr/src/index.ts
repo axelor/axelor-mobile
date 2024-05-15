@@ -26,6 +26,7 @@ import {
   hr_searchFields,
   hr_sortFields,
   hr_formsRegister,
+  hr_typeObjects,
 } from './models';
 import * as hrReducers from './features';
 import {useHrHeaders} from './hooks/use-hr-header-actions';
@@ -102,6 +103,7 @@ export const HrModule: Module = {
     searchFields: {...hr_searchFields},
     formsRegister: {...hr_formsRegister},
     headerRegisters: useHrHeaders,
+    typeObjects: hr_typeObjects,
   },
   requiredConfig: ['AppExpense', 'AppTimesheet'],
 };

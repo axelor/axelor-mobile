@@ -30,8 +30,9 @@ import {
   useTranslator,
   useSelector,
   usePermitted,
+  useTypes,
+  useTypeHelpers,
 } from '@axelor/aos-mobile-core';
-import {Expense} from '../../../types';
 
 interface ExpenseCardProps {
   style?: any;
@@ -65,31 +66,41 @@ const ExpenseCard = ({
   const {readonly} = usePermitted({
     modelName: 'com.axelor.apps.hr.db.Expense',
   });
+  const {Expense} = useTypes();
+  const {getItemColor} = useTypeHelpers();
 
   const {user} = useSelector((state: any) => state.user);
 
   const userCanValidate = useMemo(() => {
     if (
       (user?.employee?.hrManager || employeeManagerId === user.id) &&
-      statusSelect === Expense.statusSelect.WaitingValidation
+      statusSelect === Expense?.statusSelect.WaitingValidation
     ) {
       return true;
     }
     return false;
-  }, [employeeManagerId, statusSelect, user?.employee?.hrManager, user.id]);
+  }, [
+    Expense?.statusSelect,
+    employeeManagerId,
+    statusSelect,
+    user?.employee?.hrManager,
+    user.id,
+  ]);
 
   const isDefaultDisplay = useMemo(() => {
     return (
       readonly ||
-      ((statusSelect !== Expense.statusSelect.WaitingValidation ||
+      ((statusSelect !== Expense?.statusSelect.WaitingValidation ||
         !userCanValidate) &&
-        statusSelect !== Expense.statusSelect.Draft)
+        statusSelect !== Expense?.statusSelect.Draft)
     );
-  }, [readonly, statusSelect, userCanValidate]);
+  }, [Expense?.statusSelect, readonly, statusSelect, userCanValidate]);
 
   const borderStyle = useMemo(() => {
-    return getBorderStyle(Expense.getStatusColor(statusSelect, Colors)).border;
-  }, [Colors, statusSelect]);
+    return getBorderStyle(
+      getItemColor(Expense?.statusSelect, statusSelect)?.background,
+    ).border;
+  }, [Expense?.statusSelect, getItemColor, statusSelect]);
 
   return (
     <View style={[styles.container, style]}>
@@ -145,13 +156,13 @@ const ExpenseCard = ({
         <View style={styles.iconContainer}>
           <CardIconButton
             iconName={
-              statusSelect === Expense.statusSelect.Draft
+              statusSelect === Expense?.statusSelect.Draft
                 ? 'send-fill'
                 : 'check-lg'
             }
             iconColor={Colors.primaryColor.foreground}
             onPress={() => {
-              statusSelect === Expense.statusSelect.Draft
+              statusSelect === Expense?.statusSelect.Draft
                 ? onSend()
                 : onValidate();
             }}
@@ -163,11 +174,11 @@ const ExpenseCard = ({
   );
 };
 
-const getBorderStyle = Colors =>
+const getBorderStyle = (color: string) =>
   StyleSheet.create({
     border: {
       borderLeftWidth: 7,
-      borderLeftColor: Colors.background,
+      borderLeftColor: color,
       marginHorizontal: 0,
       marginVertical: 0,
     },

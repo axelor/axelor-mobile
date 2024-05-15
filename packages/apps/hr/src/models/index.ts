@@ -20,3 +20,4 @@ export {hr_formsRegister} from './forms';
 export {hr_searchFields} from './searchFields';
 export {hr_sortFields} from './sortFields';
 export {hr_modelAPI} from './objectFields';
+export {hr_typeObjects} from './typeObjects';
