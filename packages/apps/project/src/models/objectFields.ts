@@ -28,6 +28,14 @@ export const project_modelAPI: ObjectFields = {
         picture: schemaContructor.subObject(),
         jobTitleFunction: schemaContructor.subObject(),
         name: schemaContructor.string(),
+        mainAddress: schemaContructor.subObject('fullName').concat(
+          schemaContructor.object({
+            addressL4: schemaContructor.string(),
+            addressL7Country: schemaContructor.subObject('symbol'),
+            city: schemaContructor.subObject('name'),
+            zip: schemaContructor.string(),
+          }),
+        ),
       }),
     ),
     contactPartner: schemaContructor.subObject().concat(
@@ -35,6 +43,8 @@ export const project_modelAPI: ObjectFields = {
         picture: schemaContructor.subObject(),
         jobTitleFunction: schemaContructor.subObject(),
         name: schemaContructor.string(),
+        fixedPhone: schemaContructor.string(),
+        mobilePhone: schemaContructor.string(),
       }),
     ),
     company: schemaContructor.subObject('name'),

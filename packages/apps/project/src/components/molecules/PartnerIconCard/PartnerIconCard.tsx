@@ -19,6 +19,7 @@
 import React from 'react';
 import {StyleSheet, View} from 'react-native';
 import {CardIconButton, useThemeColor} from '@axelor/aos-mobile-ui';
+import {linkingProvider} from '@axelor/aos-mobile-core';
 import {PartnerCard} from '../../atoms';
 
 interface PartnerIconCardProps {
@@ -27,6 +28,9 @@ interface PartnerIconCardProps {
   partnerName: string;
   partnerJob?: string;
   isContact?: boolean;
+  mainAddress?: any;
+  fixedPhone?: string;
+  mobilePhone?: string;
 }
 
 const PartnerIconCard = ({
@@ -34,6 +38,9 @@ const PartnerIconCard = ({
   partnerPicture,
   partnerName,
   partnerJob,
+  mainAddress,
+  fixedPhone,
+  mobilePhone,
   isContact = false,
 }: PartnerIconCardProps) => {
   const Colors = useThemeColor();
@@ -54,7 +61,11 @@ const PartnerIconCard = ({
         <CardIconButton
           iconName={isContact ? 'telephone-fill' : 'geo-alt-fill'}
           iconColor={Colors.secondaryColor_dark.background}
-          onPress={() => {}}
+          onPress={() => {
+            isContact
+              ? linkingProvider.openCallApp(fixedPhone || mobilePhone)
+              : linkingProvider.openMapApp(mainAddress?.fullName);
+          }}
           style={styles.cardIconButton}
         />
       </View>

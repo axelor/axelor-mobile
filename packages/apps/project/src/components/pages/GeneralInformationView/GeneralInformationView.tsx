@@ -103,11 +103,14 @@ const GeneralInformationView = () => {
           partnerPicture={project.clientPartner?.picture}
           partnerName={project.clientPartner?.name}
           partnerJob={project.clientPartner?.jobTitleFunction}
+          mainAddress={project.clientPartner?.mainAddress}
         />
         <PartnerIconCard
           partnerPicture={project.contactPartner?.picture}
           partnerName={project.contactPartner?.name}
           partnerJob={project.contactPartner?.jobTitleFunction}
+          fixedPhone={project.contactPartner?.fixedPhone}
+          mobilePhone={project.contactPartner?.mobilePhone}
           isContact={true}
         />
         <DropdownCardSwitch
