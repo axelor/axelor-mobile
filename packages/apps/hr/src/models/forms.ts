@@ -16,7 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import {FormConfigs} from '@axelor/aos-mobile-core';
+import {FormConfigs, getTypes} from '@axelor/aos-mobile-core';
 import {DurationInput} from '@axelor/aos-mobile-ui';
 import {
   BillableSwitchCard,
@@ -43,7 +43,7 @@ import {
   updateFromCity,
   updateToCity,
 } from '../features/distanceSlice';
-import {ExpenseLine, Timesheet} from '../types';
+import {ExpenseLine} from '../types';
 
 export const hr_formsRegister: FormConfigs = {
   hr_Expenseline: {
@@ -257,7 +257,7 @@ export const hr_formsRegister: FormConfigs = {
         customComponent: ProjectSearchBar,
         hideIf: ({storeState}) =>
           storeState.user.user.employee?.timesheetImputationSelect !==
-            Timesheet.imputation.Project ||
+            getTypes()?.Employee?.timesheetImputationSelect.Project ||
           !storeState.appConfig.mobileSettings.fieldsToShowOnTimesheet.find(
             (field: string) => field === 'project',
           ),
@@ -270,7 +270,7 @@ export const hr_formsRegister: FormConfigs = {
         hideIf: ({objectState, storeState}) =>
           objectState.project == null ||
           storeState.user.user.employee?.timesheetImputationSelect !==
-            Timesheet.imputation.Project ||
+            getTypes()?.Employee?.timesheetImputationSelect.Project ||
           !storeState.appConfig.mobileSettings.fieldsToShowOnTimesheet.find(
             (field: string) => field === 'projectTask',
           ),
@@ -287,7 +287,7 @@ export const hr_formsRegister: FormConfigs = {
         customComponent: ManufOrderSearchBar,
         hideIf: ({storeState}) =>
           storeState.user.user.employee?.timesheetImputationSelect !==
-            Timesheet.imputation.ManufOrder ||
+            getTypes()?.Employee?.timesheetImputationSelect.ManufOrder ||
           !storeState.appConfig.mobileSettings.fieldsToShowOnTimesheet.find(
             (field: string) => field === 'manufOrder',
           ),
@@ -299,7 +299,7 @@ export const hr_formsRegister: FormConfigs = {
         customComponent: OperationOrderSearchBar,
         hideIf: ({storeState}) =>
           storeState.user.user.employee?.timesheetImputationSelect !==
-            Timesheet.imputation.ManufOrder ||
+            getTypes()?.Employee?.timesheetImputationSelect.ManufOrder ||
           !storeState.appConfig.mobileSettings.fieldsToShowOnTimesheet.find(
             (field: string) => field === 'operationOrder',
           ),
@@ -378,7 +378,7 @@ export const hr_formsRegister: FormConfigs = {
         customComponent: ProjectSearchBar,
         hideIf: ({storeState}) =>
           storeState.user.user.employee?.timesheetImputationSelect !==
-            Timesheet.imputation.Project ||
+            getTypes()?.Employee?.timesheetImputationSelect.Project ||
           !storeState.appConfig.mobileSettings.fieldsToShowOnTimesheet.find(
             (field: string) => field === 'project',
           ),
@@ -393,7 +393,7 @@ export const hr_formsRegister: FormConfigs = {
         },
         hideIf: ({storeState}) =>
           storeState.user.user.employee?.timesheetImputationSelect !==
-            Timesheet.imputation.Project ||
+            getTypes()?.Employee?.timesheetImputationSelect.Project ||
           !storeState.appConfig.mobileSettings.fieldsToShowOnTimesheet.find(
             (field: string) => field === 'projectTask',
           ),

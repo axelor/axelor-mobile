@@ -24,11 +24,6 @@ class TimesheetType {
     validation: 'toValidateMode',
   };
 
-  static imputation = {
-    Project: 1,
-    ManufOrder: 2,
-  };
-
   static getStatus = (needValidation: boolean, item: any) => {
     const Timesheet = getTypes().Timesheet;
 

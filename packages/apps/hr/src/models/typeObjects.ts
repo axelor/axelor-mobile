@@ -155,4 +155,23 @@ export const hr_typeObjects: ModuleSelections = [
       },
     },
   },
+  {
+    modelName: 'com.axelor.apps.hr.db.Employee',
+    fields: {
+      timesheetImputationSelect: {
+        content: [
+          {
+            key: 'Project',
+            value: 1,
+            title: null,
+          },
+          {
+            key: 'ManufOrder',
+            value: 2,
+            title: null,
+          },
+        ],
+      },
+    },
+  },
 ];
