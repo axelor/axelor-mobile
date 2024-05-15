@@ -17,10 +17,9 @@
  */
 
 import React from 'react';
-import {View} from 'react-native';
+import {View, StyleSheet} from 'react-native';
 import {ObjectCard} from '@axelor/aos-mobile-ui';
 import {useMetafileUri} from '@axelor/aos-mobile-core';
-import {StyleSheet} from 'react-native';
 
 interface PartnerCardProps {
   style?: any;
@@ -41,7 +40,7 @@ const PartnerCard = ({
     <View style={style}>
       <ObjectCard
         image={{
-          generalStyle: styles.imageIcon,
+          generalStyle: styles.imageSize,
           imageSize: styles.imageSize,
           resizeMode: 'contain',
           defaultIconSize: 50,
@@ -66,10 +65,6 @@ const PartnerCard = ({
 };
 
 const styles = StyleSheet.create({
-  imageIcon: {
-    height: 50,
-    width: 50,
-  },
   imageSize: {
     height: 50,
     width: 50,
