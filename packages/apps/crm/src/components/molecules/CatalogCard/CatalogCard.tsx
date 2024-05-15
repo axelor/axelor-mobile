@@ -18,14 +18,14 @@
 
 import React, {useMemo} from 'react';
 import {StyleSheet} from 'react-native';
-import {useThemeColor, Icon, ObjectCard} from '@axelor/aos-mobile-ui';
+import {Icon, ObjectCard} from '@axelor/aos-mobile-ui';
 import {
   openFileInExternalApp,
+  useBinaryImageUri,
   useSelector,
   useTranslator,
-  useBinaryImageUri,
+  useTypeHelpers,
 } from '@axelor/aos-mobile-core';
-import Catalog from '../../../types/catalog';
 
 interface PartnerCardProps {
   style?: any;
@@ -49,18 +49,16 @@ const CatalogCard = ({
   allCatalogType,
   pdfFile,
 }: PartnerCardProps) => {
-  const Colors = useThemeColor();
   const I18n = useTranslator();
   const formatBinaryFile = useBinaryImageUri();
+  const {getItemColorFromIndex} = useTypeHelpers();
 
   const {baseUrl, token, jsessionId} = useSelector((state: any) => state.auth);
 
-  const colorBadgeStyle = useMemo(() => {
-    const colorIndex = allCatalogType?.findIndex(
-      status => status.id === catalogueType?.id,
-    );
-    return Catalog.getStatusColor(colorIndex, Colors);
-  }, [Colors, allCatalogType, catalogueType]);
+  const badgeColor = useMemo(
+    () => getItemColorFromIndex(allCatalogType, catalogueType),
+    [allCatalogType, catalogueType, getItemColorFromIndex],
+  );
 
   const handleShowFile = async () => {
     await openFileInExternalApp(
@@ -92,7 +90,7 @@ const CatalogCard = ({
         items: [
           {
             displayText: category,
-            color: colorBadgeStyle,
+            color: badgeColor,
           },
         ],
       }}
