@@ -40,7 +40,6 @@ const EventLeadCard = ({}) => {
     navigation.navigate('LeadDetailsScreen', {
       idLead: lead.id,
       versionLead: lead.version,
-      leadStatus: lead.leadStatus,
     });
   }, [lead, navigation]);
 

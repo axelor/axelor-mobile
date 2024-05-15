@@ -33,12 +33,12 @@ import {LeadHeader, LeadDropdownCards, LeadBottom} from '../../components';
 import {fetchLeadById} from '../../features/leadSlice';
 
 const LeadDetailsScreen = ({route}) => {
-  const {idLead, versionLead, leadStatus} = route.params;
+  const {idLead, versionLead} = route.params;
   const I18n = useTranslator();
   const dispatch = useDispatch();
   const isFocused = useIsFocused();
 
-  const {loadingLead, lead, leadStatusList} = useSelector(state => state.lead);
+  const {loadingLead, lead} = useSelector(state => state.lead);
 
   const getLead = useCallback(() => {
     dispatch(fetchLeadById({leadId: idLead}));
@@ -58,14 +58,7 @@ const LeadDetailsScreen = ({route}) => {
     <Screen removeSpaceOnTop={true}>
       <HeaderContainer
         expandableFilter={false}
-        fixedItems={
-          <LeadHeader
-            idLead={idLead}
-            versionLead={versionLead}
-            leadStatus={leadStatus}
-            leadStatusList={leadStatusList}
-          />
-        }
+        fixedItems={<LeadHeader idLead={idLead} versionLead={versionLead} />}
       />
       <ScrollView refresh={{loading: loadingLead, fetcher: getLead}}>
         <NotesCard title={I18n.t('Crm_Description')} data={lead.description} />

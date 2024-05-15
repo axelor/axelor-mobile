@@ -106,7 +106,6 @@ const LeadListScreen = ({navigation}) => {
               navigation.navigate('LeadDetailsScreen', {
                 idLead: item.id,
                 versionLead: item.version,
-                leadStatus: item.leadStatus,
               })
             }
           />

@@ -34,17 +34,18 @@ import {
   useDispatch,
   SocialNetworkLinks,
   useTypeHelpers,
+  useBinaryPictureUri,
 } from '@axelor/aos-mobile-core';
 import {updateLeadScore} from '../../../../features/leadSlice';
 
-const LeadHeader = ({idLead, versionLead, leadStatus, leadStatusList}) => {
+const LeadHeader = ({idLead, versionLead}) => {
   const Colors = useThemeColor();
   const I18n = useTranslator();
   const dispatch = useDispatch();
   const {getItemColorFromIndex} = useTypeHelpers();
+  const formatURI = useBinaryPictureUri();
 
-  const {baseUrl} = useSelector(state => state.auth);
-  const {lead} = useSelector(state => state.lead);
+  const {lead, leadStatusList} = useSelector(state => state.lead);
 
   const updateScoreLeadAPI = useCallback(
     newScore => {
@@ -63,9 +64,7 @@ const LeadHeader = ({idLead, versionLead, leadStatus, leadStatusList}) => {
     <View style={styles.headerContainer}>
       <View style={styles.headerLeft}>
         <ImageBubble
-          source={{
-            uri: `${baseUrl}ws/rest/com.axelor.apps.crm.db.Lead/${idLead}/picture/download?v=${versionLead}&parentId=${idLead}&parentModel=com.axelor.apps.crm.db.Lead&image=true`,
-          }}
+          source={formatURI(idLead, versionLead, 'com.axelor.apps.crm.db.Lead')}
           listComponent={[
             lead.isDoNotSendEmail ? (
               <InfoBubble
@@ -105,7 +104,7 @@ const LeadHeader = ({idLead, versionLead, leadStatus, leadStatusList}) => {
       <View style={styles.headerInfo}>
         {lead.leadStatus != null && (
           <Badge
-            color={getItemColorFromIndex(leadStatusList, leadStatus)}
+            color={getItemColorFromIndex(leadStatusList, lead.leadStatus)}
             title={lead.leadStatus.name}
           />
         )}
