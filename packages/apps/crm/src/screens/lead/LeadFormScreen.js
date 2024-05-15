@@ -40,6 +40,7 @@ const LeadFormScreen = ({navigation, route}) => {
 
       navigation.navigate('LeadDetailsScreen', {
         idLead: objectState.id,
+        versionLead: objectState.version,
       });
     },
     [navigation],

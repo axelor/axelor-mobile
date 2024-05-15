@@ -16,9 +16,4 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-export {default as CatalogType} from './catalog';
-export {default as EventType} from './event-type';
-export {default as Lead} from './lead';
-export {default as Opportunity} from './opportunity';
-export {default as Prospect} from './prospect';
 export {default as TourLine} from './tourLine';
