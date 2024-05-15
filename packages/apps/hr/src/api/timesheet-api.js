@@ -21,8 +21,8 @@ import {
   createStandardFetch,
   createStandardSearch,
   getSearchCriterias,
+  getTypes,
 } from '@axelor/aos-mobile-core';
-import {Timesheet} from '../types';
 
 const createTimesheetCriteria = (searchValue, userId) => {
   return [
@@ -36,12 +36,14 @@ const createTimesheetCriteria = (searchValue, userId) => {
 };
 
 const createTimesheetToValidateCriteria = (searchValue, user) => {
+  const Timesheet = getTypes().Timesheet;
+
   const criteria = [
     getSearchCriterias('hr_timesheet', searchValue),
     {
       fieldName: 'statusSelect',
       operator: '=',
-      value: Timesheet.statusSelect.WaitingValidation,
+      value: Timesheet?.statusSelect.WaitingValidation,
     },
   ];
 
@@ -62,11 +64,13 @@ const createDraftTimesheetCriteria = (
   toDate,
   isOverlapAllowed,
 ) => {
+  const Timesheet = getTypes().Timesheet;
+
   const criteria = [
     {
       fieldName: 'statusSelect',
       operator: '=',
-      value: Timesheet.statusSelect.Draft,
+      value: Timesheet?.statusSelect.Draft,
     },
   ];
 

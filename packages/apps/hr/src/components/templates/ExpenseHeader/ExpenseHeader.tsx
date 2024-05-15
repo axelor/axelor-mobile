@@ -18,19 +18,18 @@
 
 import React from 'react';
 import {View, StyleSheet} from 'react-native';
+import {Text, Badge, Label, checkNullString} from '@axelor/aos-mobile-ui';
 import {
-  useThemeColor,
-  Text,
-  Badge,
-  Label,
-  checkNullString,
-} from '@axelor/aos-mobile-ui';
-import {useSelector, useTranslator} from '@axelor/aos-mobile-core';
-import {Expense} from '../../../types';
+  useSelector,
+  useTranslator,
+  useTypes,
+  useTypeHelpers,
+} from '@axelor/aos-mobile-core';
 
 const ExpenseHeader = ({}) => {
   const I18n = useTranslator();
-  const Colors = useThemeColor();
+  const {Expense} = useTypes();
+  const {getItemColor, getItemTitle} = useTypeHelpers();
 
   const {user} = useSelector((state: any) => state.user);
   const {expense} = useSelector((state: any) => state.expense);
@@ -44,8 +43,8 @@ const ExpenseHeader = ({}) => {
           </Text>
         </View>
         <Badge
-          color={Expense.getStatusColor(expense.statusSelect, Colors)}
-          title={Expense.getStatus(expense.statusSelect, I18n)}
+          color={getItemColor(Expense?.statusSelect, expense.statusSelect)}
+          title={getItemTitle(Expense?.statusSelect, expense.statusSelect)}
         />
       </View>
       <Text>{`${I18n.t('Hr_TotalATI')}: ${expense.inTaxTotal} ${
@@ -53,7 +52,7 @@ const ExpenseHeader = ({}) => {
           ? user?.activeCompany?.currency?.symbol
           : user?.activeCompany?.currency?.code
       }`}</Text>
-      {expense.statusSelect === Expense.statusSelect.Refused &&
+      {expense.statusSelect === Expense?.statusSelect.Refused &&
         !checkNullString(expense?.groundForRefusal) && (
           <Label
             message={`${I18n.t('Hr_GroundForRefusal')} : ${
