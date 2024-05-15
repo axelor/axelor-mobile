@@ -45,7 +45,7 @@ const TicketPriorityPicker = ({
       listItems={priorityList}
       onValueChange={onChange}
       labelField="title"
-      valueField="key"
+      valueField="value"
       required={required}
       readonly={readonly}
     />

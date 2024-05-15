@@ -18,25 +18,12 @@
 
 import React, {useMemo} from 'react';
 import {StyleSheet, View} from 'react-native';
-import {
-  Text,
-  useThemeColor,
-  Badge,
-  checkNullString,
-  ProgressBar,
-} from '@axelor/aos-mobile-ui';
-import {
-  useTranslator,
-  useSelector,
-  useTypes,
-  useTypeHelpers,
-} from '@axelor/aos-mobile-core';
+import {Text, Badge, checkNullString, ProgressBar} from '@axelor/aos-mobile-ui';
+import {useSelector, useTypes, useTypeHelpers} from '@axelor/aos-mobile-core';
 
 const TicketHeader = ({}) => {
-  const Colors = useThemeColor();
-  const I18n = useTranslator();
   const {Ticket} = useTypes();
-  const {getItemColorFromIndex} = useTypeHelpers();
+  const {getItemColorFromIndex, getItemColor, getItemTitle} = useTypeHelpers();
 
   const {ticket, ticketStatusList, ticketTypeList} = useSelector(
     state => state.ticket,
@@ -72,8 +59,14 @@ const TicketHeader = ({}) => {
           </View>
           {ticket.prioritySelect !== null && (
             <Badge
-              title={Ticket.getPriority(ticket.prioritySelect, I18n)}
-              color={Ticket.getPriorityColor(ticket.prioritySelect, Colors)}
+              title={getItemTitle(
+                Ticket?.prioritySelect,
+                ticket.prioritySelect,
+              )}
+              color={getItemColor(
+                Ticket?.prioritySelect,
+                ticket.prioritySelect,
+              )}
             />
           )}
         </View>
