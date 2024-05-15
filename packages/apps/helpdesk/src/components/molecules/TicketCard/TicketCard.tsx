@@ -18,17 +18,14 @@
 
 import React, {useMemo} from 'react';
 import {StyleSheet} from 'react-native';
+import {checkNullString, ObjectCard} from '@axelor/aos-mobile-ui';
 import {
-  checkNullString,
-  ObjectCard,
-  useThemeColor,
-} from '@axelor/aos-mobile-ui';
-import {
-  useTranslator,
   formatDateTime,
   formatDuration,
+  useTranslator,
+  useTypes,
+  useTypeHelpers,
 } from '@axelor/aos-mobile-core';
-import Ticket from '../../../types/ticket';
 
 interface TicketCardProps {
   style?: any;
@@ -62,26 +59,25 @@ const TicketCard = ({
   ticketType,
   onPress,
 }: TicketCardProps) => {
-  const Colors = useThemeColor();
   const I18n = useTranslator();
+  const {Ticket} = useTypes();
+  const {getItemColor, getItemColorFromIndex} = useTypeHelpers();
 
-  const colorStatus = useMemo(() => {
-    const colorIndex = allTicketStatus?.findIndex(
-      status => status.id === ticketStatus?.id,
-    );
-    return Ticket.getStatusColor(colorIndex, Colors);
-  }, [Colors, allTicketStatus, ticketStatus?.id]);
+  const colorStatus = useMemo(
+    () => getItemColorFromIndex(allTicketStatus, ticketStatus),
+    [allTicketStatus, getItemColorFromIndex, ticketStatus],
+  );
 
-  const colorType = useMemo(() => {
-    const colorIndex = allTicketType?.findIndex(
-      status => status.id === ticketType?.id,
-    );
-    return Ticket.getTypeColor(colorIndex, Colors);
-  }, [Colors, allTicketType, ticketType?.id]);
+  const colorType = useMemo(
+    () => getItemColorFromIndex(allTicketType, ticketType),
+    [allTicketType, getItemColorFromIndex, ticketType],
+  );
 
-  const borderStyle = useMemo(() => {
-    return getStyles(Ticket.getPriorityColor(prioritySelect, Colors))?.border;
-  }, [prioritySelect, Colors]);
+  const borderStyle = useMemo(
+    () =>
+      getStyles(getItemColor(Ticket?.prioritySelect, prioritySelect))?.border,
+    [getItemColor, Ticket?.prioritySelect, prioritySelect],
+  );
 
   return (
     <ObjectCard

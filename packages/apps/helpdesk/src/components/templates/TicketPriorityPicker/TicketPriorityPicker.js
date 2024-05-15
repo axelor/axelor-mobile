@@ -16,10 +16,9 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import React from 'react';
-import {useTranslator} from '@axelor/aos-mobile-core';
-import {Picker, useThemeColor} from '@axelor/aos-mobile-ui';
-import {Ticket} from '../../../types';
+import React, {useMemo} from 'react';
+import {useTranslator, useTypes, useTypeHelpers} from '@axelor/aos-mobile-core';
+import {Picker} from '@axelor/aos-mobile-ui';
 
 const TicketPriorityPicker = ({
   style = null,
@@ -30,17 +29,23 @@ const TicketPriorityPicker = ({
   readonly = false,
 }) => {
   const I18n = useTranslator();
-  const Colors = useThemeColor();
+  const {Ticket} = useTypes();
+  const {getSelectionItems} = useTypeHelpers();
+
+  const priorityList = useMemo(
+    () => getSelectionItems(Ticket?.prioritySelect),
+    [Ticket?.prioritySelect, getSelectionItems],
+  );
 
   return (
     <Picker
       style={style}
       title={I18n.t(title)}
       defaultValue={defaultValue}
-      listItems={Ticket.getPriorityList(Colors, I18n)}
+      listItems={priorityList}
       onValueChange={onChange}
       labelField="title"
-      valueField="key"
+      valueField="value"
       required={required}
       readonly={readonly}
     />
