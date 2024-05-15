@@ -112,7 +112,6 @@ const ProspectsListScreen = ({navigation}) => {
             onPress={() =>
               navigation.navigate('ProspectDetailsScreen', {
                 idProspect: item.id,
-                partnerStatus: item.partnerStatus,
               })
             }
           />

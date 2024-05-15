@@ -37,7 +37,7 @@ import {
 import {fetchProspectById} from '../../features/prospectSlice';
 
 const ProspectDetailsScreen = ({route}) => {
-  const {idProspect, partnerStatus} = route.params;
+  const {idProspect} = route.params;
   const I18n = useTranslator();
   const dispatch = useDispatch();
   const isFocused = useIsFocused();
@@ -62,7 +62,7 @@ const ProspectDetailsScreen = ({route}) => {
     <Screen removeSpaceOnTop={true}>
       <HeaderContainer
         expandableFilter={false}
-        fixedItems={<ProspectHeader partnerStatus={partnerStatus} />}
+        fixedItems={<ProspectHeader />}
       />
       <ScrollView refresh={{loading, fetcher: getProspect}}>
         <NotesCard title={I18n.t('Crm_Notes')} data={prospect.description} />

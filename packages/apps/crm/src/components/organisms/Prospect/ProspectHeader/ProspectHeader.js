@@ -35,7 +35,7 @@ import {
 } from '@axelor/aos-mobile-core';
 import {updateProspectScore} from '../../../../features/prospectSlice';
 
-const ProspectHeader = ({partnerStatus}) => {
+const ProspectHeader = ({}) => {
   const Colors = useThemeColor();
   const dispatch = useDispatch();
   const {Partner} = useTypes();
@@ -98,7 +98,10 @@ const ProspectHeader = ({partnerStatus}) => {
         )}
         {prospect.partnerStatus && crmConfig?.crmProcessOnPartner && (
           <Badge
-            color={getItemColorFromIndex(prospectStatusList, partnerStatus)}
+            color={getItemColorFromIndex(
+              prospectStatusList,
+              prospect.partnerStatus,
+            )}
             title={prospect.partnerStatus.name}
           />
         )}
