@@ -19,13 +19,13 @@
 import React from 'react';
 import {StyleSheet, View} from 'react-native';
 import {Text, Badge, useThemeColor} from '@axelor/aos-mobile-ui';
-import {useSelector, useTranslator} from '@axelor/aos-mobile-core';
-import EventType from '../../../../types/event-type';
+import {useSelector, useTypes, useTypeHelpers} from '@axelor/aos-mobile-core';
 
 const EventHeader = ({}) => {
-  const I18n = useTranslator();
   const Colors = useThemeColor();
   const {event} = useSelector(state => state.event);
+  const {Event} = useTypes();
+  const {getItemTitle} = useTypeHelpers();
 
   return (
     <View style={styles.headerContainer}>
@@ -36,11 +36,13 @@ const EventHeader = ({}) => {
       </View>
       <View style={styles.halfContainer}>
         {event.statusSelect != null && (
-          <Badge title={EventType.getStatus(event.statusSelect, I18n)} />
+          <Badge
+            title={getItemTitle(Event?.statusSelect, event.statusSelect)}
+          />
         )}
         {event.typeSelect != null && (
           <Badge
-            title={EventType.getCategory(event.typeSelect, I18n)}
+            title={getItemTitle(Event?.typeSelect, event.typeSelect)}
             color={Colors.plannedColor}
           />
         )}

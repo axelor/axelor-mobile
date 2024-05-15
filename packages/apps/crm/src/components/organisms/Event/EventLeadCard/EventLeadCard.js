@@ -40,11 +40,8 @@ const EventLeadCard = ({}) => {
     navigation.navigate('LeadDetailsScreen', {
       idLead: lead.id,
       versionLead: lead.version,
-      colorIndex: leadStatusList?.findIndex(
-        status => status.id === lead.leadStatus.id,
-      ),
     });
-  }, [lead, leadStatusList, navigation]);
+  }, [lead, navigation]);
 
   if (!event.eventLead) {
     return null;

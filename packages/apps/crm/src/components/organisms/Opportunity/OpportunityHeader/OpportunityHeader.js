@@ -16,27 +16,22 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import React, {useMemo, useCallback} from 'react';
+import React, {useCallback} from 'react';
 import {StyleSheet, View} from 'react-native';
-import {Text, Badge, StarScore, useThemeColor} from '@axelor/aos-mobile-ui';
-import {useSelector, useDispatch} from '@axelor/aos-mobile-core';
-import {Opportunity} from '../../../../types';
+import {Text, Badge, StarScore} from '@axelor/aos-mobile-ui';
+import {
+  useSelector,
+  useDispatch,
+  useTypeHelpers,
+} from '@axelor/aos-mobile-core';
 import {updateOpportunityScore} from '../../../../features/opportunitySlice';
 
 const OpportunityHeader = ({}) => {
-  const Colors = useThemeColor();
   const dispatch = useDispatch();
+  const {getItemColorFromIndex} = useTypeHelpers();
 
   const {opportunity, opportunityStatusList} = useSelector(
     state => state.opportunity,
-  );
-
-  const colorIndex = useMemo(
-    () =>
-      opportunityStatusList?.findIndex(
-        status => status.id === opportunity.opportunityStatus?.id,
-      ),
-    [opportunityStatusList, opportunity.opportunityStatus],
   );
 
   const updateOpportunityAPI = useCallback(
@@ -67,7 +62,10 @@ const OpportunityHeader = ({}) => {
       <View>
         {opportunity.opportunityStatus != null && (
           <Badge
-            color={Opportunity.getStatusColor(colorIndex, Colors)}
+            color={getItemColorFromIndex(
+              opportunityStatusList,
+              opportunity.opportunityStatus,
+            )}
             title={opportunity.opportunityStatus?.name}
           />
         )}

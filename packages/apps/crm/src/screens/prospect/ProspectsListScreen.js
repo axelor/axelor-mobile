@@ -18,29 +18,24 @@
 
 import React, {useMemo, useState, useEffect} from 'react';
 import {StyleSheet} from 'react-native';
-import {
-  MultiValuePicker,
-  Screen,
-  ToggleSwitch,
-  useThemeColor,
-} from '@axelor/aos-mobile-ui';
+import {MultiValuePicker, Screen, ToggleSwitch} from '@axelor/aos-mobile-ui';
 import {
   SearchListView,
   useDispatch,
   useSelector,
   useTranslator,
+  useTypeHelpers,
 } from '@axelor/aos-mobile-core';
 import {PartnerCard} from '../../components';
 import {
   fetchProspects,
   fetchProspectStatus,
 } from '../../features/prospectSlice';
-import {Prospect} from '../../types';
 
 const ProspectsListScreen = ({navigation}) => {
   const I18n = useTranslator();
-  const Colors = useThemeColor();
   const dispatch = useDispatch();
+  const {getCustomSelectionItems} = useTypeHelpers();
 
   const {userId} = useSelector(state => state.auth);
   const {
@@ -55,17 +50,10 @@ const ProspectsListScreen = ({navigation}) => {
   const [selectedStatus, setSelectedStatus] = useState([]);
   const [assigned, setAssigned] = useState(false);
 
-  const prospectStatusListItems = useMemo(() => {
-    return prospectStatusList
-      ? prospectStatusList.map((status, index) => {
-          return {
-            title: status.name,
-            color: Prospect.getStatusColor(index, Colors),
-            key: status.id,
-          };
-        })
-      : [];
-  }, [prospectStatusList, Colors]);
+  const prospectStatusListItems = useMemo(
+    () => getCustomSelectionItems(prospectStatusList, 'name'),
+    [getCustomSelectionItems, prospectStatusList],
+  );
 
   useEffect(() => {
     dispatch(fetchProspectStatus());
@@ -124,9 +112,6 @@ const ProspectsListScreen = ({navigation}) => {
             onPress={() =>
               navigation.navigate('ProspectDetailsScreen', {
                 idProspect: item.id,
-                colorIndex: prospectStatusList?.findIndex(
-                  status => status.id === item.partnerStatus?.id,
-                ),
               })
             }
           />

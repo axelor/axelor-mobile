@@ -17,8 +17,8 @@
  */
 
 import React from 'react';
+import {useTypes} from '@axelor/aos-mobile-core';
 import {ObjectCard} from '@axelor/aos-mobile-ui';
-import EventType from '../../../types/event-type';
 
 interface PlanningEventCardProps {
   style?: any;
@@ -43,6 +43,8 @@ const PlanningEventCard = ({
   eventLead,
   partnerTypeSelect,
 }: PlanningEventCardProps) => {
+  const {Partner} = useTypes();
+
   return (
     <ObjectCard
       key={id}
@@ -55,7 +57,7 @@ const PlanningEventCard = ({
             indicatorText: partner,
             hideIfNull: true,
             iconName:
-              partnerTypeSelect === EventType.partnerTypeSelect.Company
+              partnerTypeSelect === Partner?.partnerTypeSelect.Company
                 ? 'building-fill'
                 : 'person-fill',
           },
