@@ -18,14 +18,12 @@
 
 import React, {useMemo} from 'react';
 import {StyleSheet} from 'react-native';
+import {StarScore, formatNumber, ObjectCard} from '@axelor/aos-mobile-ui';
 import {
-  useThemeColor,
-  StarScore,
-  formatNumber,
-  ObjectCard,
-} from '@axelor/aos-mobile-ui';
-import {formatDate, useTranslator} from '@axelor/aos-mobile-core';
-import {Opportunity} from '../../../types';
+  formatDate,
+  useTranslator,
+  useTypeHelpers,
+} from '@axelor/aos-mobile-core';
 
 interface OpportunityCardProps {
   amount: string;
@@ -52,8 +50,8 @@ const OpportunityCard = ({
   style,
   onPress,
 }: OpportunityCardProps) => {
-  const Colors = useThemeColor();
   const I18n = useTranslator();
+  const {getItemColorFromIndex} = useTypeHelpers();
 
   const _expectedCloseDate = useMemo(
     () =>
@@ -63,13 +61,14 @@ const OpportunityCard = ({
     [expectedCloseDate, I18n],
   );
 
-  const borderStyle = useMemo(() => {
-    const colorIndex = allOpportunityStatus?.findIndex(
-      status => status.id === opportunityStatus?.id,
-    );
-    return getStyles(Opportunity.getStatusColor(colorIndex, Colors)?.background)
-      ?.border;
-  }, [Colors, allOpportunityStatus, opportunityStatus?.id]);
+  const borderStyle = useMemo(
+    () =>
+      getStyles(
+        getItemColorFromIndex(allOpportunityStatus, opportunityStatus)
+          ?.background,
+      )?.border,
+    [allOpportunityStatus, getItemColorFromIndex, opportunityStatus],
+  );
 
   return (
     <ObjectCard

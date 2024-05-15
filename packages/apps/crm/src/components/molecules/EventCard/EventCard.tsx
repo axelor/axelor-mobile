@@ -19,8 +19,12 @@
 import React, {useMemo} from 'react';
 import {StyleSheet, TouchableOpacity, View} from 'react-native';
 import {Card, Icon, Text, useThemeColor, Badge} from '@axelor/aos-mobile-ui';
-import {getFullDateItems, useTranslator} from '@axelor/aos-mobile-core';
-import EventType from '../../../types/event-type';
+import {
+  getFullDateItems,
+  useTranslator,
+  useTypes,
+  useTypeHelpers,
+} from '@axelor/aos-mobile-core';
 
 interface EventCardProps {
   style?: any;
@@ -51,6 +55,8 @@ const EventCard = ({
 }: EventCardProps) => {
   const Colors = useThemeColor();
   const I18n = useTranslator();
+  const {Event} = useTypes();
+  const {getItemColor, getItemTitle} = useTypeHelpers();
 
   const _date = useMemo(
     () => getFullDateItems(startDate.toISOString(), I18n),
@@ -61,8 +67,9 @@ const EventCard = ({
   const endTime = useMemo(() => formatTime(endDate), [endDate]);
 
   const borderStyle = useMemo(() => {
-    return getStyles(EventType.getStatusBorderColor(status, Colors)).border;
-  }, [Colors, status]);
+    return getStyles(getItemColor(Event?.statusSelect, status)?.background)
+      .border;
+  }, [Event?.statusSelect, getItemColor, status]);
 
   return (
     <TouchableOpacity onPress={onPress} activeOpacity={0.9}>
@@ -80,9 +87,9 @@ const EventCard = ({
           <View style={styles.containerRight}>
             <Text style={styles.bold}>{eventName}</Text>
             <Badge
-              title={EventType.getCategory(category, I18n)}
+              title={getItemTitle(Event?.typeSelect, category)}
               style={styles.badge}
-              color={EventType.getCategoryColor(category, Colors)}
+              color={getItemColor(Event?.typeSelect, category)}
             />
           </View>
         </View>

@@ -18,28 +18,23 @@
 
 import React, {useEffect, useState, useMemo} from 'react';
 import {StyleSheet, View} from 'react-native';
-import {
-  MultiValuePicker,
-  Screen,
-  useThemeColor,
-  WarningCard,
-} from '@axelor/aos-mobile-ui';
+import {MultiValuePicker, Screen, WarningCard} from '@axelor/aos-mobile-ui';
 import {
   SearchListView,
   useDispatch,
   useIsAdmin,
   useSelector,
   useTranslator,
+  useTypeHelpers,
 } from '@axelor/aos-mobile-core';
 import {CatalogCard} from '../../components';
 import {fetchCatalog, fetchCatalogType} from '../../features/catalogSlice';
-import Catalog from '../../types/catalog';
 
 const CatalogListScreen = ({}) => {
   const I18n = useTranslator();
-  const Colors = useThemeColor();
   const dispatch = useDispatch();
   const isAdmin = useIsAdmin();
+  const {getCustomSelectionItems} = useTypeHelpers();
 
   const {crm: crmConfig} = useSelector(state => state.appConfig);
   const {loadingCatalog, moreLoading, isListEnd, catalogList, catalogTypeList} =
@@ -47,17 +42,10 @@ const CatalogListScreen = ({}) => {
 
   const [selectedStatus, setSelectedStatus] = useState([]);
 
-  const catalogTypeListItems = useMemo(() => {
-    return catalogTypeList
-      ? catalogTypeList.map((status, index) => {
-          return {
-            title: status.name,
-            color: Catalog.getStatusColor(index, Colors),
-            key: status.id,
-          };
-        })
-      : [];
-  }, [catalogTypeList, Colors]);
+  const catalogTypeListItems = useMemo(
+    () => getCustomSelectionItems(catalogTypeList, 'name'),
+    [catalogTypeList, getCustomSelectionItems],
+  );
 
   useEffect(() => {
     dispatch(fetchCatalogType());

@@ -18,9 +18,8 @@
 
 import React, {useMemo} from 'react';
 import {StyleSheet} from 'react-native';
-import {useThemeColor, StarScore, ObjectCard} from '@axelor/aos-mobile-ui';
-import {useBinaryPictureUri} from '@axelor/aos-mobile-core';
-import Lead from '../../../types/lead';
+import {StarScore, ObjectCard} from '@axelor/aos-mobile-ui';
+import {useBinaryPictureUri, useTypeHelpers} from '@axelor/aos-mobile-core';
 
 interface LeadsCardProps {
   style?: any;
@@ -56,16 +55,15 @@ const LeadsCard = ({
   isDoNotSendEmail,
   isDoNotCall,
 }: LeadsCardProps) => {
-  const Colors = useThemeColor();
   const formatBinaryFile = useBinaryPictureUri();
+  const {getItemColorFromIndex} = useTypeHelpers();
 
-  const borderStyle = useMemo(() => {
-    const colorIndex = allLeadStatus?.findIndex(
-      status => status.id === leadsStatus?.id,
-    );
-    return getStyles(Lead.getStatusColor(colorIndex, Colors)?.background)
-      ?.border;
-  }, [Colors, allLeadStatus, leadsStatus?.id]);
+  const borderStyle = useMemo(
+    () =>
+      getStyles(getItemColorFromIndex(allLeadStatus, leadsStatus)?.background)
+        ?.border,
+    [allLeadStatus, getItemColorFromIndex, leadsStatus],
+  );
 
   return (
     <ObjectCard

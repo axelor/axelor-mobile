@@ -18,9 +18,12 @@
 
 import React, {useMemo} from 'react';
 import {StyleSheet} from 'react-native';
-import {StarScore, useThemeColor, ObjectCard} from '@axelor/aos-mobile-ui';
-import {useSelector, useMetafileUri} from '@axelor/aos-mobile-core';
-import Prospect from '../../../types/prospect';
+import {StarScore, ObjectCard} from '@axelor/aos-mobile-ui';
+import {
+  useSelector,
+  useMetafileUri,
+  useTypeHelpers,
+} from '@axelor/aos-mobile-core';
 
 interface PartnerCardProps {
   style?: any;
@@ -52,18 +55,18 @@ const PartnerCard = ({
   partnerStatus,
   onPress,
 }: PartnerCardProps) => {
-  const Colors = useThemeColor();
   const formatMetaFile = useMetafileUri();
+  const {getItemColorFromIndex} = useTypeHelpers();
 
   const {crm: crmConfig} = useSelector((state: any) => state.appConfig);
 
-  const borderStyle = useMemo(() => {
-    const colorIndex = allProspectStatus?.findIndex(
-      status => status.id === partnerStatus?.id,
-    );
-    return getStyles(Prospect.getStatusColor(colorIndex, Colors)?.background)
-      ?.border;
-  }, [Colors, allProspectStatus, partnerStatus?.id]);
+  const borderStyle = useMemo(
+    () =>
+      getStyles(
+        getItemColorFromIndex(allProspectStatus, partnerStatus)?.background,
+      )?.border,
+    [allProspectStatus, getItemColorFromIndex, partnerStatus],
+  );
 
   return (
     <ObjectCard

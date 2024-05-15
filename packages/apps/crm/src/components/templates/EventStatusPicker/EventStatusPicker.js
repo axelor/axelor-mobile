@@ -16,10 +16,9 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import React from 'react';
-import {useTranslator} from '@axelor/aos-mobile-core';
-import {Picker, useThemeColor} from '@axelor/aos-mobile-ui';
-import {EventType} from '../../../types';
+import React, {useMemo} from 'react';
+import {useTranslator, useTypes, useTypeHelpers} from '@axelor/aos-mobile-core';
+import {Picker} from '@axelor/aos-mobile-ui';
 
 const EventStatusPicker = ({
   style = null,
@@ -30,13 +29,19 @@ const EventStatusPicker = ({
   readonly = false,
 }) => {
   const I18n = useTranslator();
-  const Colors = useThemeColor();
+  const {Event} = useTypes();
+  const {getSelectionItems} = useTypeHelpers();
+
+  const statusList = useMemo(
+    () => getSelectionItems(Event?.statusSelect),
+    [Event?.statusSelect, getSelectionItems],
+  );
 
   return (
     <Picker
       style={style}
       title={I18n.t(title)}
-      listItems={EventType.getStatusList(Colors, I18n)}
+      listItems={statusList}
       defaultValue={defaultValue}
       valueField="key"
       labelField="title"

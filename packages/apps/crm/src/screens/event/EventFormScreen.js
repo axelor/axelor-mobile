@@ -17,8 +17,7 @@
  */
 
 import React, {useCallback, useMemo} from 'react';
-import {FormView, useSelector} from '@axelor/aos-mobile-core';
-import {EventType} from '../../types';
+import {FormView, useSelector, useTypes} from '@axelor/aos-mobile-core';
 import {createEvent, updateEvent} from '../../features/eventSlice';
 
 const MODELS = {
@@ -34,6 +33,8 @@ const EventFormScreen = ({navigation, route}) => {
   const contact = route?.params?.contact;
   const tourlineData = route?.params?.tourlineData;
 
+  const {Event} = useTypes();
+
   const {user} = useSelector(state => state.user);
 
   const defaultValue = useMemo(() => {
@@ -43,8 +44,8 @@ const EventFormScreen = ({navigation, route}) => {
     _defaultEndDate.setHours(_defaultStartDate.getHours() + 1);
 
     const _default = {
-      typeSelect: EventType.category.Meeting,
-      statusSelect: EventType.status.Planned,
+      typeSelect: Event?.typeSelect.Meeting,
+      statusSelect: Event?.statusSelect.Planned,
       startDateTime: _defaultStartDate.toISOString(),
       endDateTime: _defaultEndDate.toISOString(),
       user: user,
@@ -97,7 +98,7 @@ const EventFormScreen = ({navigation, route}) => {
     }
 
     return _default;
-  }, [user, event, lead, prospect, client, contact]);
+  }, [Event, user, event, lead, prospect, client, contact]);
 
   const createEventAPI = useCallback(
     (_event, dispatch) => {

@@ -16,28 +16,40 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import React from 'react';
+import React, {useMemo} from 'react';
 import {Picker} from '@axelor/aos-mobile-ui';
-import {useCivilityList} from '../../../hooks/use-civility-list';
+import {useTypes} from '@axelor/aos-mobile-core';
 
 const CivilityPicker = ({
-  style = null,
+  style,
   title = 'Crm_Civility',
   defaultValue = null,
-  onChange = console.log,
+  onChange,
   readonly = false,
   required = false,
+}: {
+  style?: any;
+  title?: string;
+  defaultValue?: string;
+  onChange?: (item: any) => void;
+  readonly?: boolean;
+  required?: boolean;
 }) => {
-  const {civilityList} = useCivilityList();
+  const {Partner} = useTypes();
+
+  const civilityList = useMemo(
+    () => Partner?.titleSelect.list,
+    [Partner?.titleSelect],
+  );
 
   return (
     <Picker
       style={style}
       title={title}
-      defaultValue={defaultValue}
+      defaultValue={Number(defaultValue)}
       listItems={civilityList}
-      labelField="name"
-      valueField="id"
+      labelField="title"
+      valueField="value"
       emptyValue={false}
       onValueChange={onChange}
       required={required}
