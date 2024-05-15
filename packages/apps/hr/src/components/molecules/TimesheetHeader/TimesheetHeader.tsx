@@ -20,21 +20,16 @@ import React, {useEffect, useMemo, useState} from 'react';
 import {StyleSheet, View} from 'react-native';
 import {
   checkNullString,
+  PeriodDisplay,
   useNavigation,
   usePermitted,
   useSelector,
   useTranslator,
-  PeriodDisplay,
+  useTypes,
+  useTypeHelpers,
 } from '@axelor/aos-mobile-core';
-import {
-  Badge,
-  CircleButton,
-  Label,
-  Text,
-  useThemeColor,
-} from '@axelor/aos-mobile-ui';
+import {Badge, CircleButton, Label, Text} from '@axelor/aos-mobile-ui';
 import {convertPeriodTimesheet} from '../../../api/timesheet-api';
-import {Timesheet} from '../../../types';
 
 interface TimesheetHeaderProps {
   timesheet: any;
@@ -42,7 +37,6 @@ interface TimesheetHeaderProps {
 }
 
 const TimesheetHeader = ({timesheet, statusSelect}: TimesheetHeaderProps) => {
-  const Colors = useThemeColor();
   const I18n = useTranslator();
   const navigation = useNavigation();
   const {canCreate} = usePermitted({
@@ -51,6 +45,8 @@ const TimesheetHeader = ({timesheet, statusSelect}: TimesheetHeaderProps) => {
   const {readonly} = usePermitted({
     modelName: 'com.axelor.apps.hr.db.Timesheet',
   });
+  const {Timesheet} = useTypes();
+  const {getItemColor, getItemTitle} = useTypeHelpers();
 
   const {mobileSettings} = useSelector((state: any) => state.appConfig);
 
@@ -62,10 +58,11 @@ const TimesheetHeader = ({timesheet, statusSelect}: TimesheetHeaderProps) => {
   const isAddButton = useMemo(
     () =>
       mobileSettings?.isLineCreationOfTimesheetDetailsAllowed &&
-      statusSelect === Timesheet.statusSelect.Draft &&
+      statusSelect === Timesheet?.statusSelect.Draft &&
       canCreate &&
       !readonly,
     [
+      Timesheet?.statusSelect.Draft,
       canCreate,
       mobileSettings?.isLineCreationOfTimesheetDetailsAllowed,
       readonly,
@@ -97,8 +94,8 @@ const TimesheetHeader = ({timesheet, statusSelect}: TimesheetHeaderProps) => {
         />
         <Badge
           style={styles.badge}
-          color={Timesheet.getStatusColor(statusSelect, Colors)}
-          title={Timesheet.getStatusName(statusSelect, I18n)}
+          color={getItemColor(Timesheet?.statusSelect, statusSelect)}
+          title={getItemTitle(Timesheet?.statusSelect, statusSelect)}
         />
       </View>
       <View style={styles.rowContainer}>
@@ -125,7 +122,7 @@ const TimesheetHeader = ({timesheet, statusSelect}: TimesheetHeaderProps) => {
           />
         )}
       </View>
-      {statusSelect === Timesheet.statusSelect.Refused &&
+      {statusSelect === Timesheet?.statusSelect.Refused &&
         !checkNullString(timesheet.groundForRefusal) && (
           <Label
             message={`${I18n.t('Hr_GroundForRefusal')} : ${

@@ -18,11 +18,11 @@
 
 import React, {useEffect, useMemo, useState} from 'react';
 import {StyleSheet, View} from 'react-native';
-import {useSelector} from '@axelor/aos-mobile-core';
+import {useSelector, useTypes} from '@axelor/aos-mobile-core';
 import {CardIconButton, useThemeColor} from '@axelor/aos-mobile-ui';
 import {TimesheetCard} from '../../atoms';
 import {convertPeriodTimesheet} from '../../../api/timesheet-api';
-import {Timesheet} from '../../../types';
+import {Timesheet as TimesheetType} from '../../../types';
 
 interface TimesheetDetailCardProps {
   item: any;
@@ -44,6 +44,7 @@ const TimesheetDetailCard = ({
   onValidate,
 }: TimesheetDetailCardProps) => {
   const Colors = useThemeColor();
+  const {Timesheet} = useTypes();
 
   const {timesheet: timesheetConfig} = useSelector(
     (state: any) => state.appConfig,
@@ -53,37 +54,38 @@ const TimesheetDetailCard = ({
   const [convertedPeriod, setConvertedPeriod] = useState<number>(0);
 
   const _statusSelect = useMemo(() => {
-    return Timesheet.getStatus(timesheetConfig.needValidation, item);
+    return TimesheetType.getStatus(timesheetConfig.needValidation, item);
   }, [item, timesheetConfig]);
 
   const userCanValidate = useMemo(() => {
     if (
       (user?.employee?.hrManager ||
         item.employee?.managerUser?.id === user.id) &&
-      _statusSelect === Timesheet.statusSelect.WaitingValidation
+      _statusSelect === Timesheet?.statusSelect.WaitingValidation
     ) {
       return true;
     }
     return false;
   }, [
-    item.employee?.managerUser?.id,
-    _statusSelect,
     user?.employee?.hrManager,
     user.id,
+    item.employee?.managerUser?.id,
+    _statusSelect,
+    Timesheet?.statusSelect,
   ]);
 
   const _isActions = useMemo(() => {
     if (
       isActions &&
-      (_statusSelect === Timesheet.statusSelect.Draft ||
-        (_statusSelect === Timesheet.statusSelect.WaitingValidation &&
+      (_statusSelect === Timesheet?.statusSelect.Draft ||
+        (_statusSelect === Timesheet?.statusSelect.WaitingValidation &&
           userCanValidate))
     ) {
       return true;
     }
 
     return false;
-  }, [isActions, _statusSelect, userCanValidate]);
+  }, [isActions, _statusSelect, Timesheet?.statusSelect, userCanValidate]);
 
   useEffect(() => {
     convertPeriodTimesheet({timesheetId: item.id})
@@ -113,13 +115,13 @@ const TimesheetDetailCard = ({
       {_isActions && (
         <CardIconButton
           iconName={
-            _statusSelect === Timesheet.statusSelect.Draft
+            _statusSelect === Timesheet?.statusSelect.Draft
               ? 'send-fill'
               : 'check-lg'
           }
           iconColor={Colors.secondaryColor_dark.background}
           onPress={() => {
-            _statusSelect === Timesheet.statusSelect.Draft
+            _statusSelect === Timesheet?.statusSelect.Draft
               ? onSend()
               : onValidate();
           }}

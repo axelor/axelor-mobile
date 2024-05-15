@@ -17,11 +17,6 @@
  */
 
 class ExpenseLineType {
-  static kilomectricTypeSelect = {
-    OneWay: 1,
-    RoundTrip: 2,
-  };
-
   static modes = {
     general: 'general',
     kilometric: 'kilometric',
@@ -37,34 +32,6 @@ class ExpenseLineType {
     }
 
     return this.modes.general;
-  };
-
-  static getKilomectricTypeSelect = (
-    select: number,
-    I18n: {t: (key: string) => string},
-  ) => {
-    if (I18n) {
-      switch (select) {
-        case this.kilomectricTypeSelect.OneWay:
-          return I18n.t('Hr_KilomectricTypeSelect_OneWay');
-        case this.kilomectricTypeSelect.RoundTrip:
-          return I18n.t('Hr_KilomectricTypeSelect_RoundTrip');
-        default:
-          console.warn(
-            `KilomectricTypeSelect provided with value ${select} is not supported by ExpenseLine`,
-          );
-          return null;
-      }
-    }
-  };
-
-  static getKilomectricTypeSelectList = (I18n: {
-    t: (key: string) => string;
-  }) => {
-    return Object.entries(this.kilomectricTypeSelect).map(([key, value]) => ({
-      title: I18n.t(`Hr_KilomectricTypeSelect_${key}`),
-      key: value,
-    }));
   };
 }
 

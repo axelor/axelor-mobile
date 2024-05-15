@@ -19,14 +19,14 @@
 import React, {useCallback, useState} from 'react';
 import {View, StyleSheet} from 'react-native';
 import {
-  useTranslator,
-  useSelector,
   useDispatch,
   useNavigation,
   usePermitted,
+  useSelector,
+  useTranslator,
+  useTypes,
 } from '@axelor/aos-mobile-core';
 import {Button, useThemeColor} from '@axelor/aos-mobile-ui';
-import {Expense} from '../../../types';
 import {
   deleteExpense,
   sendExpense,
@@ -42,6 +42,7 @@ const ExpenseDetailsValidationButton = ({expense, mode, isManualCreation}) => {
   const {readonly, canDelete} = usePermitted({
     modelName: 'com.axelor.apps.hr.db.Expense',
   });
+  const {Expense} = useTypes();
 
   const {user} = useSelector(state => state.user);
 
@@ -77,7 +78,7 @@ const ExpenseDetailsValidationButton = ({expense, mode, isManualCreation}) => {
     return null;
   }
 
-  if (expense.statusSelect === Expense.statusSelect.Draft) {
+  if (expense.statusSelect === Expense?.statusSelect.Draft) {
     return (
       <View style={styles.buttonContainer}>
         {canDelete && (
@@ -102,7 +103,7 @@ const ExpenseDetailsValidationButton = ({expense, mode, isManualCreation}) => {
   if (
     (user?.employee?.hrManager ||
       expense.employee?.managerUser?.id === user.id) &&
-    expense.statusSelect === Expense.statusSelect.WaitingValidation
+    expense.statusSelect === Expense?.statusSelect.WaitingValidation
   ) {
     return (
       <View style={styles.buttonContainer}>
