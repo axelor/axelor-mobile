@@ -23,6 +23,7 @@ import {
   useSelector,
   useTranslator,
   useTypes,
+  useTypeHelpers,
 } from '@axelor/aos-mobile-core';
 import {Button, useThemeColor} from '@axelor/aos-mobile-ui';
 import {ControlEntry as ControlEntryType} from '../../../types';
@@ -52,6 +53,7 @@ const ControlEntryFormButtons = ({
   const Colors = useThemeColor();
   const I18n = useTranslator();
   const {ControlEntry, ControlEntrySample} = useTypes();
+  const {getItemTitle} = useTypeHelpers();
 
   const {controlEntry} = useSelector((state: any) => state.controlEntry);
   const {sampleLine} = useSelector(
@@ -81,10 +83,18 @@ const ControlEntryFormButtons = ({
         position: 'bottom',
         bottomOffset: 80,
         text1: I18n.t('Quality_ConformityResult'),
-        text2: I18n.t('Quality_ControlResult_NotControlled'),
+        text2: getItemTitle(
+          ControlEntrySample?.resultSelect,
+          ControlEntrySample?.resultSelect.NotControlled,
+        ),
       });
     }
-  }, [ControlEntrySample?.resultSelect, I18n, sampleLine.resultSelect]);
+  }, [
+    ControlEntrySample?.resultSelect,
+    I18n,
+    getItemTitle,
+    sampleLine.resultSelect,
+  ]);
 
   return (
     <View style={styles.container}>
