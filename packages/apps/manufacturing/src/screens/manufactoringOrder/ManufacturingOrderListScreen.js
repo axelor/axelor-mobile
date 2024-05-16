@@ -178,6 +178,7 @@ const ManufacturingOrderListScreen = ({navigation}) => {
                 key: ManufacturingOrder.status.Finished,
               },
             ]}
+            width={100}
           />
         }>
         <ProductSearchBar
