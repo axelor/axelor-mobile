@@ -19,9 +19,9 @@
 import React, {useMemo} from 'react';
 import {StyleSheet} from 'react-native';
 import {
-  getTypes,
   useMetafileUri,
   useSelector,
+  useTypes,
   useTypeHelpers,
 } from '@axelor/aos-mobile-core';
 import {ObjectCard} from '@axelor/aos-mobile-ui';
@@ -52,7 +52,7 @@ const ProjectCard = ({
   parentProject,
 }: ProjectCardProps) => {
   const formatMetaFile = useMetafileUri();
-  const Project = getTypes().Project;
+  const {Project} = useTypes();
   const {getItemColor} = useTypeHelpers();
 
   const {base: baseConfig} = useSelector(state => state.appConfig);

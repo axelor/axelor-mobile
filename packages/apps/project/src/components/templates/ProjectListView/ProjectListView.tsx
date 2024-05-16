@@ -21,7 +21,7 @@ import {
   useSelector,
   useTranslator,
   SearchListView,
-  getTypes,
+  useTypes,
   useTypeHelpers,
 } from '@axelor/aos-mobile-core';
 import {MultiValuePicker, ToggleButton} from '@axelor/aos-mobile-ui';
@@ -37,7 +37,7 @@ const ProjectListView = ({
   businessProject = false,
 }: ProjectListViewListViewProps) => {
   const I18n = useTranslator();
-  const Project = getTypes().Project;
+  const {Project} = useTypes();
   const {getSelectionItems} = useTypeHelpers();
 
   const {userId} = useSelector((state: any) => state.auth);
