@@ -70,7 +70,9 @@ const SubBranchView = ({
           const _openBranchesLastIdx = openBranchesLastIdx + 1;
 
           return (
-            <View style={styles.marginLeft} key={index}>
+            <View
+              style={openBranchesLastIdx < 3 && styles.marginLeft}
+              key={index}>
               {branchCondition(item) ? (
                 <Branch
                   branch={{item, index}}
