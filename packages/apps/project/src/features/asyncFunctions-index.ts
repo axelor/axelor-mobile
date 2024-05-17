@@ -21,3 +21,4 @@ export {
   fetchProjectStatus,
   searchProject,
 } from './projectSlice';
+export {searchProjectTask} from './projectTaskSlice';

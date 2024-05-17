@@ -21,3 +21,4 @@ export {
   fetchProjectById as fetchProjectByIdApi,
   searchProject as searchProjectApi,
 } from './project-api';
+export {searchProjectTask as searchProjectTaskApi} from './project-task-api';
