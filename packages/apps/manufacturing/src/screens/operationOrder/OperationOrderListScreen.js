@@ -167,6 +167,7 @@ function OperationOrderListScreen({navigation}) {
                 key: OperationOrder.status.Finished,
               },
             ]}
+            width={100}
           />
         }>
         <WorkCenterSearchBar onChange={setWorkCenter} />
