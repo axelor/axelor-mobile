@@ -61,6 +61,11 @@ const TagList = ({
     [tags],
   );
 
+  const isEmpty = useMemo(
+    () => visibleSortTags.length === 0,
+    [visibleSortTags],
+  );
+
   const renderEmptyState = useCallback(() => {
     const _title =
       (checkNullString(title) ? translator?.('Base_Data') : title) ?? 'data';
@@ -71,37 +76,31 @@ const TagList = ({
         ? translator('Base_NoDataAvailable', {title: lowerTitle})
         : `No ${lowerTitle} available.`;
 
-    return (
-      <Badge style={styles.badge} title={message} color={Colors.infoColor} />
-    );
-  }, [Colors.infoColor, title, translator]);
+    return <Text>{message}</Text>;
+  }, [title, translator]);
 
-  if (visibleSortTags.length === 0) {
-    if (hideIfNull) {
-      return null;
-    } else {
-      return (
-        <View style={[styles.container, style]}>{renderEmptyState()}</View>
-      );
-    }
+  if (isEmpty && hideIfNull) {
+    return null;
   }
 
   return (
     <View style={[styles.container, style]}>
       {!checkNullString(title) && <Text style={styles.text}>{title} :</Text>}
-      {visibleSortTags.map((tag, index) => {
-        const color =
-          tag.color != null ? tag.color : defaultColor ?? Colors.infoColor;
+      {isEmpty
+        ? renderEmptyState()
+        : visibleSortTags.map((tag, index) => {
+            const color =
+              tag.color != null ? tag.color : defaultColor ?? Colors.infoColor;
 
-        return (
-          <Badge
-            style={styles.badge}
-            title={tag.title}
-            color={color}
-            key={index}
-          />
-        );
-      })}
+            return (
+              <Badge
+                style={styles.badge}
+                title={tag.title}
+                color={color}
+                key={index}
+              />
+            );
+          })}
     </View>
   );
 };

@@ -98,12 +98,12 @@ describe('TagList Component', () => {
     );
     const emptyWrapper = shallow(<TagList tags={[]} hideIfNull={false} />);
 
-    expect(wrapper.find(Badge).length).toBe(1);
-    expect(wrapper.find(Badge).prop('title')).toBe(
+    expect(wrapper.find(Text).length).toBe(2);
+    expect(wrapper.find(Text).at(1).prop('children')).toBe(
       translator(null, {title: lowerTitle}),
     );
-    expect(emptyWrapper.find(Badge).length).toBe(1);
-    expect(emptyWrapper.find(Badge).prop('title')).toBe('No data available.');
+    expect(emptyWrapper.find(Text).length).toBe(1);
+    expect(emptyWrapper.find(Text).prop('children')).toBe('No data available.');
   });
 
   it('sorts tags based on their order', () => {
