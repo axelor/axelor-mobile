@@ -3,7 +3,7 @@
  *
  * Copyright (C) 2024 Axelor (<http://axelor.com>).
  *
- * This program is free software: you can redistribute it and/or  modify
+ * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Affero General Public License, version 3,
  * as published by the Free Software Foundation.
  *
@@ -73,13 +73,37 @@ describe('TagList Component', () => {
     });
   });
 
-  it('does not render if all tags are hidden or list is empty', () => {
+  it('does not render if all tags are hidden or list is empty and hideIfNull is true', () => {
     const hiddenTags = tags.map(tag => ({...tag, hidden: true}));
     const wrapper = shallow(<TagList tags={hiddenTags} />);
     const emptyWrapper = shallow(<TagList tags={[]} />);
 
     expect(wrapper.isEmptyRender()).toBe(true);
     expect(emptyWrapper.isEmptyRender()).toBe(true);
+  });
+
+  it('renders empty state message if hideIfNull is false and there are no visible tags', () => {
+    const translator = (_, values) => `Aucun(e) ${values.title} disponible.`;
+    const title = 'Title';
+    const lowerTitle = title.toLowerCase();
+
+    const hiddenTags = tags.map(tag => ({...tag, hidden: true}));
+    const wrapper = shallow(
+      <TagList
+        title={title}
+        tags={hiddenTags}
+        hideIfNull={false}
+        translator={translator}
+      />,
+    );
+    const emptyWrapper = shallow(<TagList tags={[]} hideIfNull={false} />);
+
+    expect(wrapper.find(Badge).length).toBe(1);
+    expect(wrapper.find(Badge).prop('title')).toBe(
+      translator(null, {title: lowerTitle}),
+    );
+    expect(emptyWrapper.find(Badge).length).toBe(1);
+    expect(emptyWrapper.find(Badge).prop('title')).toBe('No data available.');
   });
 
   it('sorts tags based on their order', () => {

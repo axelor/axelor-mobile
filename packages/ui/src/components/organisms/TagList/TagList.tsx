@@ -16,7 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import React, {useMemo} from 'react';
+import React, {useCallback, useMemo} from 'react';
 import {StyleSheet, View} from 'react-native';
 import {Color, useThemeColor} from '../../../theme';
 import {checkNullString} from '../../../utils';
@@ -35,9 +35,18 @@ interface TagListProps {
   title?: string;
   tags: Tag[];
   defaultColor?: Color;
+  hideIfNull?: boolean;
+  translator?: (key: string, values?: Object) => string;
 }
 
-const TagList = ({style, title, tags, defaultColor}: TagListProps) => {
+const TagList = ({
+  style,
+  title,
+  tags,
+  defaultColor,
+  hideIfNull = true,
+  translator,
+}: TagListProps) => {
   const Colors = useThemeColor();
 
   const visibleSortTags = useMemo(
@@ -52,8 +61,29 @@ const TagList = ({style, title, tags, defaultColor}: TagListProps) => {
     [tags],
   );
 
+  const renderEmptyState = useCallback(() => {
+    const _title =
+      (checkNullString(title) ? translator?.('Base_Data') : title) ?? 'data';
+    const lowerTitle = _title.toLowerCase();
+
+    const message =
+      translator != null
+        ? translator('Base_NoDataAvailable', {title: lowerTitle})
+        : `No ${lowerTitle} available.`;
+
+    return (
+      <Badge style={styles.badge} title={message} color={Colors.infoColor} />
+    );
+  }, [Colors.infoColor, title, translator]);
+
   if (visibleSortTags.length === 0) {
-    return null;
+    if (hideIfNull) {
+      return null;
+    } else {
+      return (
+        <View style={[styles.container, style]}>{renderEmptyState()}</View>
+      );
+    }
   }
 
   return (
