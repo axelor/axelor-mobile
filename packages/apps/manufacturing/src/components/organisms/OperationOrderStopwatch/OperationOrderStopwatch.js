@@ -97,10 +97,7 @@ const OperationOrderStopwatch = ({}) => {
         onPlay={() => updateStatus(OperationOrder.status.InProgress)}
         onPause={() => updateStatus(OperationOrder.status.StandBy)}
         onStop={() => updateStatus(OperationOrder.status.Finished)}
-        disableStop={
-          timerStatus !== StopwatchType.status.InProgress &&
-          timerStatus !== StopwatchType.status.Paused
-        }
+        disableStop={timerStatus !== StopwatchType.status.InProgress}
         hideCancel={true}
         useObjectStatus={true}
       />
