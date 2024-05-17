@@ -52,7 +52,7 @@ export interface SelectionHelpers {
   getItemColor: (selection: Selection, value: any) => Color;
   getSelectionItems: (
     selection: Selection,
-    selectedItem: {key: any; [key: string]: any}[],
+    selectedItem?: {key: any; [key: string]: any}[],
   ) => {
     title: string;
     color: Color;
