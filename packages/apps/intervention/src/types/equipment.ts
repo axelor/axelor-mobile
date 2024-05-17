@@ -16,8 +16,11 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-export {intervention_formsRegister} from './forms';
-export {intervention_modelAPI} from './objectFields';
-export {intervention_searchFields} from './searchFields';
-export {intervention_sortFields} from './sortFields';
-export {intervention_typeObjects} from './typeObjects';
+class EquipmentType {
+  static mode = {
+    intervention: 'intervention',
+    client: 'client',
+  };
+}
+
+export default EquipmentType;

@@ -18,13 +18,12 @@
 
 import React from 'react';
 import {StyleSheet, View} from 'react-native';
-import {Badge, LabelText, Text, useThemeColor} from '@axelor/aos-mobile-ui';
-import {useTranslator, useSelector} from '@axelor/aos-mobile-core';
-import {Equipment} from '../../../types';
+import {Badge, LabelText, Text} from '@axelor/aos-mobile-ui';
+import {useSelector, useTypes, useTypeHelpers} from '@axelor/aos-mobile-core';
 
 const EquipmentDetailsHeader = () => {
-  const Colors = useThemeColor();
-  const I18n = useTranslator();
+  const {Equipment} = useTypes();
+  const {getItemColor, getItemTitle} = useTypeHelpers();
 
   const {equipment} = useSelector((state: any) => state.intervention_equipment);
 
@@ -41,8 +40,8 @@ const EquipmentDetailsHeader = () => {
           />
         </View>
         <Badge
-          color={Equipment.getStatusColor(equipment.inService, Colors)}
-          title={Equipment.getStatusKey(equipment.inService, I18n)}
+          color={getItemColor(Equipment?.serviceSelect, equipment.inService)}
+          title={getItemTitle(Equipment?.serviceSelect, equipment.inService)}
         />
       </View>
     </View>

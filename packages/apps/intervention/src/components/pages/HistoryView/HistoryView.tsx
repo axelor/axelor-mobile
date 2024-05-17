@@ -22,13 +22,14 @@ import {
   SearchListView,
   useSelector,
   useTranslator,
+  useTypes,
 } from '@axelor/aos-mobile-core';
 import {InterventionDetailCard, InterventionHeader} from '../../molecules';
 import {fetchIntervention} from '../../../features/interventionSlice';
-import {Intervention} from '../../../types';
 
 const HistoryView = ({}) => {
   const I18n = useTranslator();
+  const {Intervention} = useTypes();
 
   const {loading, moreLoading, isListEnd, interventionList, intervention} =
     useSelector((state: any) => state.intervention_intervention);
@@ -36,9 +37,9 @@ const HistoryView = ({}) => {
   const sliceFunctionData = useMemo(
     () => ({
       deliveredPartnerId: intervention.deliveredPartner?.id,
-      statusList: [Intervention.status.Finished],
+      statusList: [Intervention?.statusSelect.Finished],
     }),
-    [intervention.deliveredPartner?.id],
+    [Intervention?.statusSelect, intervention.deliveredPartner?.id],
   );
 
   return (

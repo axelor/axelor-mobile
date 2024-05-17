@@ -16,145 +16,29 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import {Color, ThemeColors} from '@axelor/aos-mobile-ui';
+import {getTypes} from '@axelor/aos-mobile-core';
 
 class Question {
-  static status = {
-    Answered: 1,
-    Required: 2,
-    Info: 3,
-    Conditional: 4,
-    Default: 5,
-    Hidden: 6,
-  };
-
-  static answerType = {
-    AdvancedMonitoring: 'advancedMonitoring',
-    CheckBox: 'checkbox',
-    Date: 'date',
-    Indication: 'indication',
-    Measure: 'measure',
-    Picture: 'picture',
-    Signature: 'signature',
-    Text: 'text',
-    ValueList: 'list',
-  };
-
-  static advancedMonitoring = {
-    Home: 'home',
-    Office: 'office',
-    PrveiousIntervention: 'previous',
-    NextIntervention: 'next',
-  };
-
   static getStatus = (question: any, conditionalQuestion?: any): number => {
+    const InterventionQuestion = getTypes().InterventionQuestion;
+
     if (question?.isAnswered) {
-      return this.status.Answered;
+      return InterventionQuestion?.statusSelect.Answered;
     } else if (
       question?.isConditional &&
       !question.conditionalAnswerValueSet.some(
         answer => answer.id === conditionalQuestion?.listAnswer?.id,
       )
     ) {
-      return this.status.Hidden;
+      return InterventionQuestion?.statusSelect.Hidden;
     } else if (question?.isConditional && !question?.isRequired) {
-      return this.status.Conditional;
+      return InterventionQuestion?.statusSelect.Conditional;
     } else if (question?.isRequired) {
-      return this.status.Required;
+      return InterventionQuestion?.statusSelect.Required;
     } else if (question?.indicationText) {
-      return this.status.Info;
+      return InterventionQuestion?.statusSelect.Info;
     } else {
-      return this.status.Default;
-    }
-  };
-
-  static getStatusColor = (status: number, Colors: ThemeColors): Color => {
-    switch (status) {
-      case this.status.Answered:
-        return Colors.successColor;
-      case this.status.Required:
-        return Colors.importantColor;
-      case this.status.Info:
-        return Colors.infoColor;
-      case this.status.Conditional:
-        return Colors.plannedColor;
-      case this.status.Default:
-        return Colors.secondaryColor;
-      case this.status.Hidden:
-        return null;
-      default:
-        console.warn(
-          `Status provided with value ${status} is not supported by InterventionQuestion.`,
-        );
-        return null;
-    }
-  };
-
-  static getStatusKey = (
-    status: number,
-    I18n: {t: (key: string) => string},
-  ): string => {
-    const statusKey = Object.keys(this.status).find(
-      key => this.status[key] === status,
-    );
-
-    if (statusKey != null) {
-      return I18n.t(`Intervention_Question${statusKey}`);
-    } else {
-      console.warn(
-        `Status provided with value ${status} is not supported by InterventionQuestion.`,
-      );
-      return null;
-    }
-  };
-
-  static getBadge = (
-    status: number,
-    I18n: {t: (key: string) => string},
-    Colors: ThemeColors,
-  ): {title: string; color: Color} => {
-    if (
-      status === Question.status.Required ||
-      status === Question.status.Conditional
-    ) {
-      return {
-        title: this.getStatusKey(status, I18n),
-        color: this.getStatusColor(status, Colors),
-      };
-    } else {
-      return null;
-    }
-  };
-
-  static getAdvancedMonitoringAnswers = (I18n: {
-    t: (key: string) => string;
-  }): {id: string; title: string}[] => {
-    return Object.values(this.advancedMonitoring).map(value => ({
-      id: value,
-      title: this.getAdvencedMonitoringAnswer(value, I18n),
-    }));
-  };
-
-  static getAdvencedMonitoringAnswer = (
-    answerType: string,
-    I18n: {t: (key: string) => string},
-  ): string => {
-    switch (answerType) {
-      case this.advancedMonitoring.Home:
-        return I18n.t('Intervention_AdvancedMonitoringAnswerHome');
-      case this.advancedMonitoring.Office:
-        return I18n.t('Intervention_AdvancedMonitoringAnswerOffice');
-      case this.advancedMonitoring.PrveiousIntervention:
-        return I18n.t(
-          'Intervention_AdvancedMonitoringAnswerPreviousIntervention',
-        );
-      case this.advancedMonitoring.NextIntervention:
-        return I18n.t('Intervention_AdvancedMonitoringAnswerNextIntervention');
-      default:
-        console.warn(
-          `Type provided with value ${answerType} is not supported by advanced monitoring answer.`,
-        );
-        return null;
+      return InterventionQuestion?.statusSelect.Default;
     }
   };
 }

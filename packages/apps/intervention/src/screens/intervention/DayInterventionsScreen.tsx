@@ -17,18 +17,20 @@
  */
 
 import React from 'react';
+import {useTypes} from '@axelor/aos-mobile-core';
 import {Screen} from '@axelor/aos-mobile-ui';
 import {InterventionsListView} from '../../components';
-import {Intervention} from '../../types';
 
 const DayInterventionsScreen = ({}) => {
+  const {Intervention} = useTypes();
+
   return (
     <Screen removeSpaceOnTop={true}>
       <InterventionsListView
         statusList={[
-          Intervention.status.Planned,
-          Intervention.status.Started,
-          Intervention.status.Suspended,
+          Intervention?.statusSelect.Planned,
+          Intervention?.statusSelect.Started,
+          Intervention?.statusSelect.Suspended,
         ]}
         defaultDate={new Date()}
       />

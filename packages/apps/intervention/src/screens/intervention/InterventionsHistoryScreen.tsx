@@ -17,14 +17,18 @@
  */
 
 import React from 'react';
+import {useTypes} from '@axelor/aos-mobile-core';
 import {Screen} from '@axelor/aos-mobile-ui';
 import {InterventionsListView} from '../../components';
-import {Intervention} from '../../types';
 
 const InterventionsHistoryScreen = ({}) => {
+  const {Intervention} = useTypes();
+
   return (
     <Screen removeSpaceOnTop={true}>
-      <InterventionsListView statusList={[Intervention.status.Finished]} />
+      <InterventionsListView
+        statusList={[Intervention?.statusSelect.Finished]}
+      />
     </Screen>
   );
 };

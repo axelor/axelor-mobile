@@ -18,8 +18,7 @@
 
 import React, {useMemo} from 'react';
 import {Picker} from '@axelor/aos-mobile-ui';
-import {useTranslator} from '@axelor/aos-mobile-core';
-import {Equipment} from '../../../types';
+import {useTranslator, useTypes, useTypeHelpers} from '@axelor/aos-mobile-core';
 import {CustomComponentProps} from '../../../utils';
 
 const TypePicker = ({
@@ -30,16 +29,21 @@ const TypePicker = ({
   required = false,
 }: CustomComponentProps) => {
   const I18n = useTranslator();
+  const {Equipment} = useTypes();
+  const {getSelectionItems} = useTypeHelpers();
 
-  const equipmentTypeList = useMemo(() => Equipment.generateTypeList(), []);
+  const equipmentTypeList = useMemo(
+    () => getSelectionItems(Equipment?.typeSelect),
+    [Equipment?.typeSelect, getSelectionItems],
+  );
 
   return (
     <Picker
       title={I18n.t(title)}
       defaultValue={defaultValue}
       listItems={equipmentTypeList}
-      labelField="label"
-      valueField="value"
+      labelField="title"
+      valueField="key"
       emptyValue={false}
       onValueChange={onChange}
       required={required}

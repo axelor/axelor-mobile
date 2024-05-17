@@ -17,7 +17,7 @@
  */
 
 import React, {useEffect, useMemo, useState} from 'react';
-import {useDispatch, useSelector} from '@axelor/aos-mobile-core';
+import {useDispatch, useSelector, useTypes} from '@axelor/aos-mobile-core';
 import {BottomBar, Screen, useThemeColor} from '@axelor/aos-mobile-ui';
 import {
   EquipmentView,
@@ -29,7 +29,6 @@ import {
 import {fetchInterventionById} from '../../features/interventionSlice';
 import {fetchRange} from '../../features/questionSlice';
 import {fetchNumberInterventionEquipment} from '../../features/equipmentSlice';
-import {Intervention} from '../../types';
 
 export interface InterventionDetailsScreenProps {
   route?: any;
@@ -43,6 +42,7 @@ const InterventionDetailsScreen = ({
   const _interventionId = route?.params?.interventionId || interventionId;
   const Colors = useThemeColor();
   const dispatch = useDispatch();
+  const {Intervention} = useTypes();
 
   const [selectedRangeId, setSelectedRangeId] = useState(null);
 
@@ -92,7 +92,7 @@ const InterventionDetailsScreen = ({
         />
       ),
       color: Colors.progressColor,
-      disabled: intervention.statusSelect < Intervention.status.Started,
+      disabled: intervention.statusSelect < Intervention?.statusSelect.Started,
     },
     {
       iconName: 'cart3',

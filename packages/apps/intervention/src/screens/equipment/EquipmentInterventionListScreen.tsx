@@ -19,18 +19,21 @@
 import React, {useCallback} from 'react';
 import {HeaderContainer, Screen, ScrollList} from '@axelor/aos-mobile-ui';
 import {
-  useSelector,
-  useDispatch,
-  useTranslator,
   clipboardProvider,
+  useDispatch,
+  useSelector,
+  useTranslator,
+  useTypes,
+  useTypeHelpers,
 } from '@axelor/aos-mobile-core';
 import {EquipmentDetailsHeader, InterventionDetailCard} from '../../components';
 import {searchHistoryInterventionByEquipment} from '../../features/interventionSlice';
-import {Intervention} from '../../types';
 
 const EquipmentInterventionListScreen = ({}) => {
   const dispatch = useDispatch();
   const I18n = useTranslator();
+  const {Intervention} = useTypes();
+  const {getSelectionItems} = useTypeHelpers();
 
   const {equipment} = useSelector((state: any) => state.intervention_equipment);
   const {
@@ -45,12 +48,14 @@ const EquipmentInterventionListScreen = ({}) => {
       dispatch(
         (searchHistoryInterventionByEquipment as any)({
           equipmentId: equipment?.id,
-          statusList: Object.values(Intervention.status),
+          statusList: getSelectionItems(Intervention?.statusSelect)?.map(
+            status => status.value,
+          ),
           page,
         }),
       );
     },
-    [dispatch, equipment.id],
+    [Intervention?.statusSelect, dispatch, equipment?.id, getSelectionItems],
   );
 
   return (

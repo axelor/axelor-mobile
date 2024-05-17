@@ -18,8 +18,8 @@
 
 import React, {useMemo} from 'react';
 import {StyleSheet, View} from 'react-native';
-import {ObjectCard, useThemeColor} from '@axelor/aos-mobile-ui';
-import {Equipment} from '../../../types';
+import {useTypes, useTypeHelpers} from '@axelor/aos-mobile-core';
+import {ObjectCard} from '@axelor/aos-mobile-ui';
 
 interface EquipmentCardProps {
   style?: any;
@@ -38,12 +38,14 @@ const EquipmentCard = ({
   equipmentFamily,
   inService = false,
 }: EquipmentCardProps) => {
-  const Colors = useThemeColor();
+  const {Equipment} = useTypes();
+  const {getItemColor} = useTypeHelpers();
 
   const borderStyle = useMemo(() => {
-    return getStyles(Equipment.getStatusColor(inService, Colors)?.background)
-      ?.border;
-  }, [Colors, inService]);
+    return getStyles(
+      getItemColor(Equipment?.serviceSelect, inService)?.background,
+    )?.border;
+  }, [Equipment?.serviceSelect, getItemColor, inService]);
 
   return (
     <View style={style}>
