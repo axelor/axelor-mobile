@@ -133,21 +133,21 @@ const Increment = ({
   }, [handleValueFormatting, value]);
 
   const handlePlus = () => {
-    const unformatedValue = defaultFormatting ? unformat(valueQty) : valueQty;
-    const newValue: number = parseFloat(unformatedValue) + stepSize;
+    const unformattedValue = defaultFormatting ? unformat(valueQty) : valueQty;
+    const newValue: number = parseFloat(unformattedValue) + stepSize;
 
     handleResult(newValue);
   };
 
   const handleMinus = () => {
-    const unformatedValue = defaultFormatting ? unformat(valueQty) : valueQty;
-    const newValue: number = parseFloat(unformatedValue) - stepSize;
+    const unformattedValue = defaultFormatting ? unformat(valueQty) : valueQty;
+    const newValue: number = parseFloat(unformattedValue) - stepSize;
 
     handleResult(newValue);
   };
 
   const handleEndInput = () => {
-    if (valueQty.slice(-1) === decimalSpacer) {
+    if (valueQty?.slice(-1) === decimalSpacer) {
       valueQty.replace(/.,$/, '');
     }
 
@@ -175,7 +175,7 @@ const Increment = ({
         style={[styles.inputLine, isBigButton ? styles.fixedInputWidth : null]}>
         <Input
           style={[styles.input, inputStyle]}
-          value={`${valueQty}`}
+          value={valueQty !== null ? String(valueQty) : ''}
           onChange={input => setValueQty(input)}
           keyboardType={keyboardType}
           onSelection={onFocus}
