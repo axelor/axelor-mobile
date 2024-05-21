@@ -21,14 +21,49 @@ import {
   getSearchCriterias,
 } from '@axelor/aos-mobile-core';
 
-const createProjectTaskCriteria = ({searchValue, idsProjectTask}) => {
+const createProjectTaskCriteria = ({
+  searchValue,
+  idsProjectTask,
+  userId,
+  selectedStatus,
+  selectedPriority,
+}) => {
   const criteria = [getSearchCriterias('project_projectTask', searchValue)];
-
   criteria.push({
     fieldName: 'id',
     operator: 'in',
     value: idsProjectTask,
   });
+
+  if (userId != null) {
+    criteria.push({
+      fieldName: 'assignedTo.employee.user.id',
+      operator: '=',
+      value: userId,
+    });
+  }
+
+  if (Array.isArray(selectedStatus) && selectedStatus.length > 0) {
+    criteria.push({
+      operator: 'or',
+      criteria: selectedStatus.map(status => ({
+        fieldName: 'status.id',
+        operator: '=',
+        value: status.key,
+      })),
+    });
+  }
+
+  if (Array.isArray(selectedPriority) && selectedPriority.length > 0) {
+    criteria.push({
+      operator: 'or',
+      criteria: selectedPriority.map(priority => ({
+        fieldName: 'priority.id',
+        operator: '=',
+        value: priority.key,
+      })),
+    });
+  }
 
   return criteria;
 };
@@ -37,12 +72,18 @@ export async function searchProjectTask({
   searchValue,
   page = 0,
   idsProjectTask,
+  userId,
+  selectedStatus,
+  selectedPriority,
 }) {
   return createStandardSearch({
     model: 'com.axelor.apps.project.db.ProjectTask',
     criteria: createProjectTaskCriteria({
       searchValue,
       idsProjectTask,
+      userId,
+      selectedStatus,
+      selectedPriority,
     }),
     fieldKey: 'project_projectTask',
     sortKey: 'project_projectTask',

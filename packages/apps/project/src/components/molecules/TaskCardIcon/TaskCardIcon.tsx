@@ -28,6 +28,8 @@ interface TaskCardIconProps {
   taskDeadline?: string;
   parentTask?: string;
   progress?: number;
+  priority?: number;
+  status?: number;
 }
 
 const TaskCardIcon = ({
@@ -37,6 +39,8 @@ const TaskCardIcon = ({
   taskDeadline,
   parentTask,
   progress,
+  priority,
+  status,
 }: TaskCardIconProps) => {
   const Colors = useThemeColor();
 
@@ -49,6 +53,8 @@ const TaskCardIcon = ({
           taskDeadline={taskDeadline}
           parentTask={parentTask}
           progress={progress}
+          priority={priority}
+          status={status}
         />
       </View>
       <View style={styles.iconContainer}>

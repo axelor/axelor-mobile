@@ -16,8 +16,9 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import React from 'react';
+import React, {useMemo} from 'react';
 import {StyleSheet, View} from 'react-native';
+import {useTypes, useTypeHelpers} from '@axelor/aos-mobile-core';
 import {Badge, ObjectCard, ProgressBar} from '@axelor/aos-mobile-ui';
 import {DateDisplay} from '@axelor/aos-mobile-core';
 
@@ -28,6 +29,8 @@ interface TaskCardProps {
   taskDeadline?: string;
   parentTask?: string;
   progress?: number;
+  priority?: number;
+  status?: number;
 }
 
 const TaskCard = ({
@@ -37,10 +40,20 @@ const TaskCard = ({
   taskDeadline,
   parentTask,
   progress,
+  priority,
+  status,
 }: TaskCardProps) => {
+  const {ProjectTask} = useTypes();
+  const {getItemColor, getItemTitle} = useTypeHelpers();
+
+  const borderStyle = useMemo(() => {
+    return getStyles(getItemColor(ProjectTask?.taskStatus, status)?.background)
+      ?.border;
+  }, [getItemColor, ProjectTask?.taskStatus, status]);
+
   return (
     <ObjectCard
-      style={style}
+      style={[borderStyle, style]}
       leftContainerFlex={2}
       upperTexts={{
         items: [
@@ -74,7 +87,10 @@ const TaskCard = ({
                   height={15}
                   styleTxt={styles.textProgressBar}
                 />
-                <Badge title={'priority'} />
+                <Badge
+                  title={getItemTitle(ProjectTask?.priority, priority)}
+                  color={getItemColor(ProjectTask?.priority, priority)}
+                />
               </View>
             ),
           },
@@ -83,6 +99,14 @@ const TaskCard = ({
     />
   );
 };
+
+const getStyles = color =>
+  StyleSheet.create({
+    border: {
+      borderLeftWidth: 7,
+      borderLeftColor: color,
+    },
+  });
 
 const styles = StyleSheet.create({
   progressBar: {
