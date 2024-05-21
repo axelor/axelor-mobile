@@ -63,28 +63,37 @@ const IndicatorChart = ({
   const renderIndicator = useMemo(() => {
     if (datasets?.length === 1) {
       return (
-        <View style={styles.containerOneValue}>
-          {!checkNullString(datasets[0].icon) && (
-            <Icon size={30} name={datasets[0].icon} />
-          )}
-          <View style={styles.containerValueTitle}>
-            <Text
-              style={styles.title}
-              textColor={datasets[0].color ?? Colors.primaryColor.background}
-              writingType="important">
-              {`${datasets[0].value} ${datasets[0].unit}`}
-            </Text>
-            <Text numberOfLines={2} style={styles.title}>
-              {datasets[0].title}
-            </Text>
+        <>
+          <View style={styles.containerOneValue}>
+            {!checkNullString(datasets[0].icon) && (
+              <Icon size={30} name={datasets[0].icon} />
+            )}
+            <View style={styles.containerValueTitle}>
+              <Text
+                style={styles.title}
+                textColor={datasets[0].color ?? Colors.primaryColor.background}
+                writingType="important">
+                {`${datasets[0].value} ${datasets[0].unit}`}
+              </Text>
+              <Text numberOfLines={2} style={styles.title}>
+                {datasets[0].title}
+              </Text>
+            </View>
           </View>
-        </View>
+          {!checkNullString(title) && (
+            <Text writingType="important" style={styles.title}>
+              {title}
+            </Text>
+          )}
+        </>
       );
     } else if (datasets?.length > 1) {
       return (
         <>
           {!checkNullString(title) && (
-            <Text style={styles.groupTitle}>{title}</Text>
+            <Text writingType="important" style={styles.groupTitle}>
+              {title}
+            </Text>
           )}
           {datasets.map((data, index) => {
             const isIcon = data.icon == null;
@@ -138,11 +147,6 @@ const IndicatorChart = ({
         style,
       ]}>
       {renderIndicator}
-      {!checkNullString(title) && datasets?.length === 1 && (
-        <Text writingType="title" style={styles.title}>
-          {title}
-        </Text>
-      )}
     </Container>
   );
 };
