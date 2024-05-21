@@ -164,6 +164,6 @@ export const getContainerMinWidth = () => {
   }
 };
 
-export const getContainerWidth = widthGraph => {
+export const getContainerWidth = (widthGraph: number) => {
   return widthGraph - MARGIN * 2;
 };

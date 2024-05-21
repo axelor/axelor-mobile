@@ -27,7 +27,7 @@ import {TextUnit} from '../../../molecules';
 
 interface IndicatorChartProps {
   style?: any;
-  widthGraph?: any;
+  widthGraph?: number;
   datasets: Data[];
   title?: string;
   hideCardBackground?: boolean;
@@ -70,7 +70,7 @@ const IndicatorChart = ({
           <View style={styles.containerValueTitle}>
             <Text
               style={styles.title}
-              textColor={Colors.primaryColor.background}
+              textColor={datasets[0].color ?? Colors.primaryColor.background}
               writingType="important">
               {`${datasets[0].value} ${datasets[0].unit}`}
             </Text>
@@ -83,9 +83,11 @@ const IndicatorChart = ({
     } else if (datasets?.length > 1) {
       return (
         <>
-          <Text style={styles.groupTitle}>{title}</Text>
+          {!checkNullString(title) && (
+            <Text style={styles.groupTitle}>{title}</Text>
+          )}
           {datasets.map((data, index) => {
-            const isIconAbsent = data.icon == null;
+            const isIcon = data.icon == null;
             return (
               <View
                 style={[
@@ -98,7 +100,7 @@ const IndicatorChart = ({
                 ]}
                 key={index}>
                 <View style={styles.groupIconValue}>
-                  {!isIconAbsent && (
+                  {!isIcon && (
                     <Icon style={styles.icon} size={20} name={data.icon} />
                   )}
                   <Text numberOfLines={2} writingType="important">
@@ -137,7 +139,9 @@ const IndicatorChart = ({
       ]}>
       {renderIndicator}
       {!checkNullString(title) && datasets?.length === 1 && (
-        <Text style={styles.title}>{title}</Text>
+        <Text writingType="title" style={styles.title}>
+          {title}
+        </Text>
       )}
     </Container>
   );

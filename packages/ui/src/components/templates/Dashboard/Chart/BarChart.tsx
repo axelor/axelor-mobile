@@ -32,7 +32,7 @@ import {
 
 interface BarCharProps {
   style?: any;
-  widthGraph?: any;
+  widthGraph?: number;
   datasets: Data[][];
   spacing?: number;
   horizontal?: boolean;
