@@ -17,7 +17,12 @@
  */
 
 import React, {useCallback, useEffect, useMemo} from 'react';
-import {FormView, useDispatch, useSelector} from '@axelor/aos-mobile-core';
+import {
+  FormView,
+  useDispatch,
+  useSelector,
+  useTypes,
+} from '@axelor/aos-mobile-core';
 import {useThemeColor} from '@axelor/aos-mobile-ui';
 import {
   clearEquipment,
@@ -25,7 +30,6 @@ import {
   getEquipmentById,
   saveEquipment,
 } from '../../features/equipmentSlice';
-import {Equipment} from '../../types';
 
 const EquipmentFormView = ({navigation, route}) => {
   const idEquipment = route.params.idEquipment;
@@ -33,6 +37,7 @@ const EquipmentFormView = ({navigation, route}) => {
 
   const Colors = useThemeColor();
   const _dispatch = useDispatch();
+  const {Equipment} = useTypes();
 
   const {equipment} = useSelector((state: any) => state.intervention_equipment);
   const {intervention} = useSelector(
@@ -88,10 +93,15 @@ const EquipmentFormView = ({navigation, route}) => {
       : {
           partner: intervention.deliveredPartner,
           inService: true,
-          typeSelect: Equipment.type.equipment,
+          typeSelect: Equipment?.typeSelect.Equipment,
           commissioningDate: new Date().toISOString().split('T')[0],
         };
-  }, [equipment, idEquipment, intervention.deliveredPartner]);
+  }, [
+    Equipment?.typeSelect,
+    equipment,
+    idEquipment,
+    intervention.deliveredPartner,
+  ]);
 
   return (
     <FormView

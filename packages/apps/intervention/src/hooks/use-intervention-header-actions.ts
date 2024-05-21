@@ -20,13 +20,13 @@ import {useEffect} from 'react';
 import {
   headerActionsProvider,
   useDispatch,
+  useNavigation,
   useSelector,
   useTranslator,
-  useNavigation,
+  useTypes,
 } from '@axelor/aos-mobile-core';
 import {useThemeColor} from '@axelor/aos-mobile-ui';
 import {fetchInterventionById} from '../features/interventionSlice';
-import {Equipment} from '../types';
 
 export const useInterventionHeaders = () => {
   useEquipmentFormActions();
@@ -37,6 +37,7 @@ export const useInterventionHeaders = () => {
 const useEquipmentFormActions = () => {
   const I18n = useTranslator();
   const navigation = useNavigation();
+  const {Equipment} = useTypes();
 
   const {mobileSettings} = useSelector((state: any) => state.appConfig);
   const {equipment} = useSelector((state: any) => state.intervention_equipment);
@@ -55,7 +56,7 @@ const useEquipmentFormActions = () => {
           iconName: 'card-list',
           hideIf:
             equipment?.id == null ||
-            equipment?.typeSelect === Equipment.type.place,
+            equipment?.typeSelect === Equipment?.typeSelect.Place,
           onPress: () => navigation.navigate('EquipmentLineListScreen'),
         },
         {
@@ -73,12 +74,12 @@ const useEquipmentFormActions = () => {
           iconName: 'car-front-fill',
           hideIf:
             equipment?.id == null ||
-            equipment?.typeSelect === Equipment.type.place,
+            equipment?.typeSelect === Equipment?.typeSelect.Place,
           onPress: () => navigation.navigate('EquipmentInterventionListScreen'),
         },
       ],
     });
-  }, [mobileSettings, equipment, I18n, navigation]);
+  }, [mobileSettings, equipment, I18n, navigation, Equipment?.typeSelect]);
 };
 
 const useInterventionDetailsActions = () => {

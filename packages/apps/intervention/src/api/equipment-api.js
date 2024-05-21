@@ -21,8 +21,8 @@ import {
   createStandardFetch,
   createStandardSearch,
   getSearchCriterias,
+  getTypes,
 } from '@axelor/aos-mobile-core';
-import {Equipment} from '../types';
 
 const createEquipmentsCriteria = ({
   searchValue,
@@ -31,6 +31,8 @@ const createEquipmentsCriteria = ({
   isPlaceEquipment = false,
   parentPlaceId,
 }) => {
+  const Equipment = getTypes().Equipment;
+
   const criteria = [getSearchCriterias('intervention_equipment', searchValue)];
 
   criteria.push({
@@ -50,7 +52,9 @@ const createEquipmentsCriteria = ({
   criteria.push({
     fieldName: 'typeSelect',
     operator: '=',
-    value: isPlaceEquipment ? Equipment.type.place : Equipment.type.equipment,
+    value: isPlaceEquipment
+      ? Equipment?.typeSelect.Place
+      : Equipment?.typeSelect.Equipment,
   });
 
   if (parentPlaceId != null) {
@@ -210,6 +214,8 @@ const createInterventionEquipmentToLinkCriteria = ({
   equipmentSet,
   partnerId,
 }) => {
+  const Equipment = getTypes().Equipment;
+
   const criteria = [
     getSearchCriterias('intervention_equipment', searchValue),
     {
@@ -220,7 +226,7 @@ const createInterventionEquipmentToLinkCriteria = ({
     {
       fieldName: 'typeSelect',
       operator: '=',
-      value: Equipment.type.equipment,
+      value: Equipment?.typeSelect.Equipment,
     },
   ];
 

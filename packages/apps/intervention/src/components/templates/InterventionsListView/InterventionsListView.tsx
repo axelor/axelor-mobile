@@ -25,11 +25,12 @@ import {
   useNavigation,
   useSelector,
   useTranslator,
+  useTypes,
+  useTypeHelpers,
 } from '@axelor/aos-mobile-core';
-import {ChipSelect, ToggleButton, useThemeColor} from '@axelor/aos-mobile-ui';
+import {ChipSelect, ToggleButton} from '@axelor/aos-mobile-ui';
 import {InterventionDetailCard} from '../../molecules';
 import {fetchIntervention} from '../../../features/interventionSlice';
-import {Intervention} from '../../../types';
 
 interface InterventionsListViewProps {
   statusList: number[];
@@ -41,8 +42,9 @@ const InterventionsListView = ({
   defaultDate,
 }: InterventionsListViewProps) => {
   const I18n = useTranslator();
-  const Colors = useThemeColor();
   const navigation = useNavigation();
+  const {Intervention} = useTypes();
+  const {getSelectionItems} = useTypeHelpers();
 
   const {loading, moreLoading, isListEnd, interventionList} = useSelector(
     (state: any) => state.intervention_intervention,
@@ -69,6 +71,14 @@ const InterventionsListView = ({
       statusList: statusList,
     }),
     [isAssignedToMe, selectedDate, statusList, userId],
+  );
+
+  const interventionStatusList = useMemo(
+    () =>
+      getSelectionItems(Intervention?.statusSelect, selectedStatus).filter(
+        ({value}) => statusList.includes(value as number),
+      ),
+    [Intervention?.statusSelect, getSelectionItems, selectedStatus, statusList],
   );
 
   const handleItemPress = item => {
@@ -112,8 +122,8 @@ const InterventionsListView = ({
       chipComponent={
         <ChipSelect
           mode="multi"
-          onChangeValue={chiplist => setSelectedStatus(chiplist)}
-          selectionItems={Intervention.getStatusList(statusList, Colors, I18n)}
+          onChangeValue={setSelectedStatus}
+          selectionItems={interventionStatusList}
         />
       }
       renderListItem={({item}) => (
