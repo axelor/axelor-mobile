@@ -65,7 +65,7 @@ const KeyboardAvoidingScrollView = ({
       }>
       <ScrollView
         style={globalStyle}
-        keyboardShouldPersistTaps="always"
+        keyboardShouldPersistTaps="handled"
         contentContainerStyle={[
           styles.scrollContent,
           getZIndexStyles(10),
