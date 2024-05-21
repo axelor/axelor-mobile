@@ -151,7 +151,7 @@ const Increment = ({
       valueQty.replace(/.,$/, '');
     }
 
-    if (valueQty === '' || valueQty === null) {
+    if (valueQty === '' || valueQty == null) {
       handleResult(0);
     } else {
       handleResult(parseFloat(valueQty));
@@ -175,7 +175,7 @@ const Increment = ({
         style={[styles.inputLine, isBigButton ? styles.fixedInputWidth : null]}>
         <Input
           style={[styles.input, inputStyle]}
-          value={valueQty !== null ? String(valueQty) : ''}
+          value={valueQty != null ? String(valueQty) : ''}
           onChange={input => setValueQty(input)}
           keyboardType={keyboardType}
           onSelection={onFocus}
