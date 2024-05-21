@@ -1,0 +1,5 @@
+{
+  "title": "FormView: fix an error occuring when emptying date input",
+  "type": "fix",
+  "packages": "core"
+}

@@ -176,12 +176,16 @@ const Field = ({
             mode={_field.type as 'date' | 'datetime' | 'time'}
             defaultDate={value ? new Date(value) : null}
             onDateChange={_date => {
-              const isoDate = _date.toISOString();
-              if (_field.type === 'datetime') {
-                handleChange(isoDate);
+              if (_date) {
+                const isoDate = _date.toISOString();
+                if (_field.type === 'datetime') {
+                  handleChange(isoDate);
+                } else {
+                  const tmp = isoDate?.split('T');
+                  handleChange(_field.type === 'date' ? tmp[0] : tmp[1]);
+                }
               } else {
-                const tmp = isoDate?.split('T');
-                handleChange(_field.type === 'date' ? tmp[0] : tmp[1]);
+                handleChange(null);
               }
             }}
             required={isRequired}
