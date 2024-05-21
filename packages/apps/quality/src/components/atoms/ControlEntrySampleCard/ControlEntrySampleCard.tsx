@@ -18,8 +18,8 @@
 
 import React, {useEffect, useMemo, useRef, useState} from 'react';
 import {StyleSheet} from 'react-native';
-import {Card, ProgressBar, Text, useThemeColor} from '@axelor/aos-mobile-ui';
-import {ControlEntry} from '../../../types';
+import {useTypes, useTypeHelpers} from '@axelor/aos-mobile-core';
+import {Card, ProgressBar, Text} from '@axelor/aos-mobile-ui';
 import {searchControlEntrySampleLineApi} from '../../../api';
 
 interface ControlEntrySampleCardProps {
@@ -34,17 +34,21 @@ const ControlEntrySampleCard = ({
   resultSelect,
   samplefullName,
 }: ControlEntrySampleCardProps) => {
-  const Colors = useThemeColor();
+  const {ControlEntrySample} = useTypes();
+  const {getItemColor} = useTypeHelpers();
 
   const isMounted = useRef(true);
 
   const [numberSampleFilled, setNumberSampleFilled] = useState<number>(0);
 
-  const borderStyle = useMemo(() => {
-    return getStyles(
-      ControlEntry.getSampleResultColor(resultSelect, Colors)?.background,
-    )?.border;
-  }, [Colors, resultSelect]);
+  const borderStyle = useMemo(
+    () =>
+      getStyles(
+        getItemColor(ControlEntrySample?.resultSelect, resultSelect)
+          ?.background,
+      )?.border,
+    [ControlEntrySample?.resultSelect, getItemColor, resultSelect],
+  );
 
   useEffect(() => {
     isMounted.current = true;
@@ -57,7 +61,8 @@ const ControlEntrySampleCard = ({
             const total = controlEntrySampleLineList.length;
             const notControlled = controlEntrySampleLineList.filter(
               sample =>
-                sample.resultSelect === ControlEntry.sampleResult.NotControlled,
+                sample.resultSelect ===
+                ControlEntrySample?.resultSelect.NotControlled,
             ).length;
             setNumberSampleFilled(100 - (notControlled / total) * 100);
           } else {
@@ -74,7 +79,7 @@ const ControlEntrySampleCard = ({
     return () => {
       isMounted.current = false;
     };
-  }, [controlEntrySampleId]);
+  }, [ControlEntrySample?.resultSelect, controlEntrySampleId]);
 
   return (
     <Card style={[styles.container, borderStyle, style]}>

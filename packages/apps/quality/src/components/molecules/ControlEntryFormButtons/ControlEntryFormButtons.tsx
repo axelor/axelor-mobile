@@ -22,9 +22,11 @@ import {
   showToastMessage,
   useSelector,
   useTranslator,
+  useTypes,
+  useTypeHelpers,
 } from '@axelor/aos-mobile-core';
 import {Button, useThemeColor} from '@axelor/aos-mobile-ui';
-import {ControlEntry} from '../../../types';
+import {ControlEntry as ControlEntryType} from '../../../types';
 import {NavigationButton} from '../../atoms';
 
 interface ControlEntryFormButtonsProps {
@@ -50,6 +52,8 @@ const ControlEntryFormButtons = ({
 }: ControlEntryFormButtonsProps) => {
   const Colors = useThemeColor();
   const I18n = useTranslator();
+  const {ControlEntry, ControlEntrySample} = useTypes();
+  const {getItemTitle} = useTypeHelpers();
 
   const {controlEntry} = useSelector((state: any) => state.controlEntry);
   const {sampleLine} = useSelector(
@@ -58,32 +62,39 @@ const ControlEntryFormButtons = ({
 
   const isConformityButton = useMemo(
     () =>
-      controlEntry.statusSelect === ControlEntry.status.Draft ||
-      controlEntry.statusSelect === ControlEntry.status.InProgress,
-    [controlEntry.statusSelect],
+      controlEntry.statusSelect === ControlEntry?.statusSelect.Draft ||
+      controlEntry.statusSelect === ControlEntry?.statusSelect.InProgress,
+    [ControlEntry?.statusSelect, controlEntry.statusSelect],
   );
 
   const {categoryIcon, subCategoryIcon} = useMemo(
-    () => ControlEntry.getMethodIcons(mode),
+    () => ControlEntryType.getMethodIcons(mode),
     [mode],
   );
 
   const handleNotControlled = useCallback(() => {
-    if (sampleLine.resultSelect === ControlEntry.sampleResult.NotControlled) {
+    if (
+      sampleLine.resultSelect === ControlEntrySample?.resultSelect.NotControlled
+    ) {
       showToastMessage({
-        type: ControlEntry.getSampleResultType(
-          ControlEntry.sampleResult.NotControlled,
+        type: ControlEntryType.getSampleResultType(
+          ControlEntrySample?.resultSelect.NotControlled,
         ),
         position: 'bottom',
         bottomOffset: 80,
-        text1: `${I18n.t('Quality_ConformityResult')}`,
-        text2: ControlEntry.getSampleResultTitle(
-          ControlEntry.sampleResult.NotControlled,
-          I18n,
+        text1: I18n.t('Quality_ConformityResult'),
+        text2: getItemTitle(
+          ControlEntrySample?.resultSelect,
+          ControlEntrySample?.resultSelect.NotControlled,
         ),
       });
     }
-  }, [I18n, sampleLine.resultSelect]);
+  }, [
+    ControlEntrySample?.resultSelect,
+    I18n,
+    getItemTitle,
+    sampleLine.resultSelect,
+  ]);
 
   return (
     <View style={styles.container}>

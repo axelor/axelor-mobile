@@ -25,6 +25,8 @@ import {
   usePermitted,
   useSelector,
   useTranslator,
+  useTypes,
+  useTypeHelpers,
 } from '@axelor/aos-mobile-core';
 import {ControlEntryFormButtons, ControlEntryFormHeader} from '../components';
 import {
@@ -32,7 +34,7 @@ import {
   searchControlEntrySampleLineOfControlEntry as searchControlEntrySampleLine,
 } from '../features/controlEntrySampleLineSlice';
 import {fetchControlPlanById} from '../features/controlPlanSlice';
-import {ControlEntry} from '../types';
+import {ControlEntry as ControlEntryType} from '../types';
 import {checkComformity, getProgressValuesApi} from '../api';
 
 const ControlEntryFormScreen = ({navigation, route}) => {
@@ -42,6 +44,8 @@ const ControlEntryFormScreen = ({navigation, route}) => {
   const {readonly} = usePermitted({
     modelName: 'com.axelor.apps.quality.db.ControlEntryPlanLine',
   });
+  const {ControlEntry, ControlEntrySample} = useTypes();
+  const {getItemTitle} = useTypeHelpers();
 
   const {controlEntry} = useSelector(state => state.controlEntry);
   const {controlPlan} = useSelector(state => state.controlPlan);
@@ -62,9 +66,9 @@ const ControlEntryFormScreen = ({navigation, route}) => {
   const isReadonly = useMemo(
     () =>
       readonly ||
-      controlEntry.statusSelect === ControlEntry.status.Completed ||
-      controlEntry.statusSelect === ControlEntry.status.Canceled,
-    [controlEntry.statusSelect, readonly],
+      controlEntry.statusSelect === ControlEntry?.statusSelect.Completed ||
+      controlEntry.statusSelect === ControlEntry?.statusSelect.Canceled,
+    [ControlEntry?.statusSelect, controlEntry.statusSelect, readonly],
   );
 
   useEffect(() => {
@@ -77,7 +81,8 @@ const ControlEntryFormScreen = ({navigation, route}) => {
       const _itemSet = sampleLineOfEntryList
         .map(
           _item =>
-            _item[ControlEntry.getMethodAssociatedAttribut(selectedMode)].id,
+            _item[ControlEntryType.getMethodAssociatedAttribut(selectedMode)]
+              .id,
         )
         .filter((_item, _index, self) => self.indexOf(_item) === _index);
       setCategoryIndex(0);
@@ -107,8 +112,8 @@ const ControlEntryFormScreen = ({navigation, route}) => {
     ) {
       const _itemSet = sampleLineOfEntryList.filter(
         _item =>
-          _item[ControlEntry.getMethodAssociatedAttribut(selectedMode)].id ===
-          categorySet?.[categoryIndex],
+          _item[ControlEntryType.getMethodAssociatedAttribut(selectedMode)]
+            .id === categorySet?.[categoryIndex],
       );
       setCurrentIndex(0);
       setItemSet(_itemSet);
@@ -121,7 +126,7 @@ const ControlEntryFormScreen = ({navigation, route}) => {
     const nbSample = controlEntry?.controlEntrySamplesList?.length;
     const nbCharacteristic = controlPlan?.controlPlanLinesList?.length;
 
-    return ControlEntry.getMethodTotals(
+    return ControlEntryType.getMethodTotals(
       selectedMode,
       nbCharacteristic,
       nbSample,
@@ -186,11 +191,11 @@ const ControlEntryFormScreen = ({navigation, route}) => {
         .then(response => {
           setProgressData({
             bottomProgressBar:
-              selectedMode === ControlEntry.fillingMethod.Sample
+              selectedMode === ControlEntryType.fillingMethod.Sample
                 ? response?.data?.characteristicControlledOnSample
                 : response?.data?.sampleControlledOnCharacteristic,
             topProgressBar:
-              selectedMode === ControlEntry.fillingMethod.Sample
+              selectedMode === ControlEntryType.fillingMethod.Sample
                 ? response?.data?.sampleCompletelyControlled
                 : response?.data?.characteristicCompletelyControlled,
           });
@@ -204,7 +209,7 @@ const ControlEntryFormScreen = ({navigation, route}) => {
 
   useEffect(() => {
     if (
-      selectedMode === ControlEntry.fillingMethod.Sample &&
+      selectedMode === ControlEntryType.fillingMethod.Sample &&
       sampleLine?.controlEntrySample?.id != null
     ) {
       getValuesProgressBar({
@@ -213,7 +218,7 @@ const ControlEntryFormScreen = ({navigation, route}) => {
       });
     }
     if (
-      selectedMode === ControlEntry.fillingMethod.Characteristic &&
+      selectedMode === ControlEntryType.fillingMethod.Characteristic &&
       controlPlan?.controlPlanLinesList != null
     ) {
       getValuesProgressBar({
@@ -267,11 +272,14 @@ const ControlEntryFormScreen = ({navigation, route}) => {
               postActions: async res => {
                 await checkComformity({object: res}).then(result => {
                   showToastMessage({
-                    type: ControlEntry.getSampleResultType(result),
+                    type: ControlEntryType.getSampleResultType(result),
                     position: 'bottom',
                     bottomOffset: 80,
                     text1: `${I18n.t('Quality_ConformityResult')}`,
-                    text2: ControlEntry.getSampleResultTitle(result, I18n),
+                    text2: getItemTitle(
+                      ControlEntrySample?.resultSelect,
+                      result,
+                    ),
                   });
                 });
                 handleValidation();
