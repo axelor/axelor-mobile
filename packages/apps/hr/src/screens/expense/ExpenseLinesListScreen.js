@@ -39,7 +39,7 @@ import {
 } from '../../components';
 import {getNumberExpenseLineByDateApi} from '../../api';
 
-const ExpenseLinesListScreen = ({navigation}) => {
+const ExpenseLinesListScreen = ({navigation, customOnUpload = null}) => {
   const Colors = useThemeColor();
   const I18n = useTranslator();
   const dispatch = useDispatch();
@@ -176,10 +176,13 @@ const ExpenseLinesListScreen = ({navigation}) => {
       {!isSelectionMode && (
         <CameraButton
           cameraKey="expense-line_justication_picture"
-          onUpload={_file =>
-            navigation.navigate('ExpenseLineFormScreen', {
-              justificationMetaFile: _file,
-            })
+          onUpload={
+            customOnUpload != null
+              ? customOnUpload
+              : _file =>
+                  navigation.navigate('ExpenseLineFormScreen', {
+                    justificationMetaFile: _file,
+                  })
           }
           getFileName={({user, extension, dateTime}) =>
             `Expense_${user.name}_${dateTime}.${extension}`
