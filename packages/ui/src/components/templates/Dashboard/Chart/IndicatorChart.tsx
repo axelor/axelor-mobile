@@ -67,22 +67,20 @@ const IndicatorChart = ({
         <>
           <View style={styles.containerOneValue}>
             {isIcon && <Icon size={30} name={datasets[0].icon} />}
-            <View style={styles.containerValueTitle}>
+            <View style={styles.containerOneValueTitle}>
               <Text
-                style={isIcon ? styles.titleIcon : styles.title}
+                style={!isIcon && styles.oneValueTitle}
                 textColor={datasets[0].color ?? Colors.primaryColor.background}
                 writingType="important">
                 {`${datasets[0].value} ${datasets[0].unit}`}
               </Text>
-              <Text
-                numberOfLines={2}
-                style={isIcon ? styles.titleIcon : styles.title}>
+              <Text numberOfLines={2} style={!isIcon && styles.oneValueTitle}>
                 {datasets[0].title}
               </Text>
             </View>
           </View>
           {!checkNullString(title) && (
-            <Text writingType="important" style={styles.title}>
+            <Text writingType="important" style={styles.oneValueTitle}>
               {title}
             </Text>
           )}
@@ -92,34 +90,37 @@ const IndicatorChart = ({
       return (
         <>
           {!checkNullString(title) && (
-            <Text writingType="important" style={styles.groupTitle}>
+            <Text writingType="important" style={styles.containerGroupTitle}>
               {title}
             </Text>
           )}
           {datasets.map((data, index) => {
-            const isIcon = data.icon == null;
+            const isIcon = !checkNullString(data.icon);
             return (
               <View
                 style={[
                   commonStyles.button,
-                  styles.valueContainer,
+                  styles.containerGroupValue,
                   data.color && {
                     backgroundColor: data.color,
                     borderColor: data.color,
                   },
                 ]}
                 key={index}>
-                <View style={styles.groupIconValue}>
-                  {!isIcon && (
-                    <Icon style={styles.icon} size={20} name={data.icon} />
+                <View style={styles.groupTitleValue}>
+                  {isIcon && (
+                    <Icon
+                      style={styles.groupTitleIcon}
+                      size={20}
+                      name={data.icon}
+                    />
                   )}
                   <Text numberOfLines={2} writingType="important">
                     {data.title}
                   </Text>
                 </View>
-                <View style={styles.textUnitContainer}>
+                <View style={styles.groupUnitContainer}>
                   <TextUnit
-                    style={styles.textUnit}
                     unit={data.unit}
                     value={data.value}
                     color={Colors.secondaryColor_dark}
@@ -160,48 +161,38 @@ const getStyles = (color: ThemeColors) =>
       paddingLeft: 5,
       paddingVertical: 10,
     },
-    title: {
-      alignSelf: 'center',
-      textAlign: 'center',
-    },
-    titleIcon: {
-      marginRight: '5%',
-    },
     containerOneValue: {
       flexDirection: 'row',
       justifyContent: 'space-evenly',
     },
-    containerValueTitle: {
-      flexDirection: 'column',
+    containerOneValueTitle: {
       paddingHorizontal: 10,
     },
-    groupTitle: {
+    oneValueTitle: {
+      alignSelf: 'center',
+    },
+    containerGroupTitle: {
       marginHorizontal: 24,
       marginBottom: 10,
     },
-    groupIconValue: {
-      flexDirection: 'row',
-      alignItems: 'center',
-      flex: 2,
-    },
-    icon: {
-      marginRight: '5%',
-    },
-    textUnitContainer: {
-      flex: 1,
-    },
-    textUnit: {
-      alignSelf: 'flex-end',
-    },
-    valueContainer: {
-      backgroundColor: color.primaryColor.background_light,
-      borderColor: color.primaryColor.background_light,
-      paddingVertical: 0,
-      paddingHorizontal: 24,
+    containerGroupValue: {
       width: '90%',
       flexDirection: 'row',
-      alignItems: 'center',
-      justifyContent: 'space-between',
+      paddingVertical: 0,
+      paddingHorizontal: 24,
+      backgroundColor: color.primaryColor.background_light,
+      borderColor: color.primaryColor.background_light,
+    },
+    groupTitleValue: {
+      flex: 2,
+      flexDirection: 'row',
+    },
+    groupTitleIcon: {
+      marginRight: 10,
+    },
+    groupUnitContainer: {
+      flex: 1,
+      alignItems: 'flex-end',
     },
   });
 
