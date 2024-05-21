@@ -16,10 +16,9 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import React from 'react';
-import {useTranslator} from '@axelor/aos-mobile-core';
+import React, {useMemo} from 'react';
+import {useTypes, useTypeHelpers} from '@axelor/aos-mobile-core';
 import {Picker} from '@axelor/aos-mobile-ui';
-import {Question} from '../../../types';
 
 interface QuestionAdvancedMonitoringProps {
   defaultValue?: string;
@@ -34,14 +33,20 @@ const QuestionAdvancedMonitoringAux = ({
   readonly = false,
   required = false,
 }: QuestionAdvancedMonitoringProps) => {
-  const I18n = useTranslator();
+  const {InterventionQuestion} = useTypes();
+  const {getSelectionItems} = useTypeHelpers();
+
+  const advancedMonitoringAnswerList = useMemo(
+    () => getSelectionItems(InterventionQuestion?.advancedMonitoringAnswer),
+    [InterventionQuestion?.advancedMonitoringAnswer, getSelectionItems],
+  );
 
   return (
     <Picker
       defaultValue={defaultValue}
-      listItems={Question.getAdvancedMonitoringAnswers(I18n)}
+      listItems={advancedMonitoringAnswerList}
       labelField="title"
-      valueField="id"
+      valueField="key"
       emptyValue={false}
       onValueChange={onChange}
       required={required}

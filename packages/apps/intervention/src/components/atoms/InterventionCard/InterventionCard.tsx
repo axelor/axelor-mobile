@@ -23,9 +23,10 @@ import {
   useMetafileUri,
   useSelector,
   useTranslator,
+  useTypes,
+  useTypeHelpers,
 } from '@axelor/aos-mobile-core';
 import {Icon, ObjectCard, useThemeColor} from '@axelor/aos-mobile-ui';
-import {Intervention} from '../../../types';
 
 interface InterventionCardProps {
   style?: any;
@@ -55,14 +56,17 @@ const InterventionCard = ({
   const I18n = useTranslator();
   const Colors = useThemeColor();
   const formatMetaFile = useMetafileUri();
+  const {Intervention} = useTypes();
+  const {getItemColor} = useTypeHelpers();
 
   const {userId} = useSelector((state: any) => state.auth);
 
   const borderStyle = useMemo(
     () =>
-      getStyles(Intervention.getStatusColor(statusSelect, Colors)?.background)
-        ?.border,
-    [Colors, statusSelect],
+      getStyles(
+        getItemColor(Intervention?.statusSelect, statusSelect)?.background,
+      )?.border,
+    [Intervention?.statusSelect, getItemColor, statusSelect],
   );
 
   return (

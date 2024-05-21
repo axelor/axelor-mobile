@@ -18,25 +18,30 @@
 
 import React from 'react';
 import {StyleSheet, View} from 'react-native';
-import {DateDisplay, useTranslator} from '@axelor/aos-mobile-core';
-import {Badge, LabelText, Text, useThemeColor} from '@axelor/aos-mobile-ui';
-import {Intervention} from '../../../types';
+import {DateDisplay, useTypes, useTypeHelpers} from '@axelor/aos-mobile-core';
+import {Badge, LabelText, Text} from '@axelor/aos-mobile-ui';
 
 interface InterventionHeaderProps {
   intervention: any;
 }
 
 const InterventionHeader = ({intervention}: InterventionHeaderProps) => {
-  const Colors = useThemeColor();
-  const I18n = useTranslator();
+  const {Intervention} = useTypes();
+  const {getItemColor, getItemTitle} = useTypeHelpers();
 
   return (
     <View style={styles.container}>
       <View style={styles.rowContainer}>
         <Text writingType="title">{intervention.sequence}</Text>
         <Badge
-          title={Intervention.getStatus(intervention.statusSelect, I18n)}
-          color={Intervention.getStatusColor(intervention.statusSelect, Colors)}
+          title={getItemTitle(
+            Intervention?.statusSelect,
+            intervention.statusSelect,
+          )}
+          color={getItemColor(
+            Intervention?.statusSelect,
+            intervention.statusSelect,
+          )}
         />
       </View>
       <View style={styles.rowContainer}>

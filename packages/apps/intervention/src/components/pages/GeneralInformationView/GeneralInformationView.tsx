@@ -26,11 +26,12 @@ import {
   usePermitted,
   useSelector,
   useTranslator,
+  useTypes,
 } from '@axelor/aos-mobile-core';
 import {HeaderContainer, ScrollView} from '@axelor/aos-mobile-ui';
 import {GtCard, InterventionHeader} from '../../molecules';
 import {DropdownCards} from '../../organisms';
-import {Intervention} from '../../../types';
+import {Intervention as InterventionType} from '../../../types';
 import {updateInterventionStatus} from '../../../features/interventionSlice';
 
 const NUMBER_MILLISECONDS_IN_SECOND = 1000;
@@ -41,6 +42,7 @@ const GeneralInformationView = ({}) => {
   const {readonly} = usePermitted({
     modelName: 'com.axelor.apps.intervention.db.Intervention',
   });
+  const {Intervention} = useTypes();
 
   const {intervention} = useSelector(
     (state: any) => state.intervention_intervention,
@@ -57,11 +59,16 @@ const GeneralInformationView = ({}) => {
   }, [intervention]);
 
   const getDuration = useCallback(() => {
-    if (intervention.statusSelect === Intervention.status.Started) {
+    if (intervention.statusSelect === Intervention?.statusSelect.Started) {
       return duration + calculateDiff(lastStart, new Date());
     }
     return duration;
-  }, [duration, intervention.statusSelect, lastStart]);
+  }, [
+    Intervention?.statusSelect,
+    duration,
+    intervention.statusSelect,
+    lastStart,
+  ]);
 
   const updateIntervention = useCallback(
     (targetStatus: number) => {
@@ -77,18 +84,18 @@ const GeneralInformationView = ({}) => {
   );
 
   const handlePlay = useCallback(() => {
-    updateIntervention(Intervention.status.Started);
+    updateIntervention(Intervention?.statusSelect.Started);
     setLastStart(getNowDateZonesISOString());
-  }, [updateIntervention]);
+  }, [Intervention?.statusSelect, updateIntervention]);
 
   const handlePause = useCallback(() => {
-    updateIntervention(Intervention.status.Suspended);
+    updateIntervention(Intervention?.statusSelect.Suspended);
     setDuration(current => current + calculateDiff(lastStart, new Date()));
-  }, [lastStart, updateIntervention]);
+  }, [Intervention?.statusSelect, lastStart, updateIntervention]);
 
   const handleStop = useCallback(() => {
-    updateIntervention(Intervention.status.Finished);
-  }, [updateIntervention]);
+    updateIntervention(Intervention?.statusSelect.Finished);
+  }, [Intervention?.statusSelect, updateIntervention]);
 
   return (
     <View>
@@ -103,7 +110,7 @@ const GeneralInformationView = ({}) => {
           realGt={intervention.customerRequest?.realGit}
           plannedGt={intervention.contract?.guaranteedInterventionTime}
           interventionStatus={intervention.statusSelect}
-          gtStatus={Intervention.status.Started}
+          gtStatus={Intervention?.statusSelect.Started}
         />
         <GtCard
           titleKey={'Intervention_MaxGRT'}
@@ -111,20 +118,22 @@ const GeneralInformationView = ({}) => {
           realGt={intervention.customerRequest?.realGrt}
           plannedGt={intervention.contract?.guaranteedRecoveryTime}
           interventionStatus={intervention.statusSelect}
-          gtStatus={Intervention.status.Finished}
+          gtStatus={Intervention?.statusSelect.Finished}
         />
         <DropdownCards intervention={intervention} />
         <Stopwatch
           style={styles.stopwatch}
           disable={readonly}
           startTime={getDuration()}
-          status={Intervention.getStopwatchStatus(intervention.statusSelect)}
+          status={InterventionType.getStopwatchStatus(
+            intervention.statusSelect,
+          )}
           timerFormat={I18n.t('Intervention_TimerFormat')}
           onPlay={handlePlay}
           onPause={handlePause}
           onStop={handleStop}
           disableStop={
-            intervention.statusSelect !== Intervention.status.Started
+            intervention.statusSelect !== Intervention?.statusSelect.Started
           }
           useObjectStatus
           hideCancel

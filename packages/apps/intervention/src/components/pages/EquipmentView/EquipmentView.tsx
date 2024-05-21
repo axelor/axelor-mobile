@@ -20,12 +20,14 @@ import React, {useCallback, useEffect, useMemo, useState} from 'react';
 import {
   SearchListView,
   useDispatch,
-  useSelector,
-  useTranslator,
   useNavigation,
   usePermitted,
+  useSelector,
+  useTranslator,
+  useTypes,
+  useTypeHelpers,
 } from '@axelor/aos-mobile-core';
-import {ChipSelect, useThemeColor} from '@axelor/aos-mobile-ui';
+import {ChipSelect} from '@axelor/aos-mobile-ui';
 import {EquipmentActionCard, InterventionHeader} from '../../molecules';
 import {EquipmentModeSwitch} from '../../organisms';
 import {LinkEquipmentPopup} from '../../templates';
@@ -35,11 +37,10 @@ import {
   searchInterventionEquipment,
 } from '../../../features/equipmentSlice';
 import {unlinkEquipment} from '../../../features/interventionSlice';
-import {Equipment} from '../../../types';
+import {Equipment as EquipmentType} from '../../../types';
 
 const EquipmentView = ({}) => {
   const I18n = useTranslator();
-  const Colors = useThemeColor();
   const navigation = useNavigation();
   const dispatch = useDispatch();
   const {readonly: interventionReadonly} = usePermitted({
@@ -48,6 +49,8 @@ const EquipmentView = ({}) => {
   const {canCreate, canDelete, readonly} = usePermitted({
     modelName: 'com.axelor.apps.intervention.db.Equipment',
   });
+  const {Equipment} = useTypes();
+  const {getSelectionItems} = useTypeHelpers();
 
   const {intervention} = useSelector(
     (state: any) => state.intervention_intervention,
@@ -64,12 +67,17 @@ const EquipmentView = ({}) => {
   } = useSelector((state: any) => state.intervention_equipment);
 
   const [selectedStatus, setSelectedStatus] = useState([]);
-  const [mode, setMode] = useState(Equipment.mode.intervention);
+  const [mode, setMode] = useState(EquipmentType.mode.intervention);
   const [alertVisible, setAlertVisible] = useState(false);
 
   const isInterventionMode = useMemo(
-    () => mode === Equipment.mode.intervention,
+    () => mode === EquipmentType.mode.intervention,
     [mode],
+  );
+
+  const serviceStatusList = useMemo(
+    () => getSelectionItems(Equipment?.serviceSelect, selectedStatus),
+    [Equipment?.serviceSelect, getSelectionItems, selectedStatus],
   );
 
   const actionList = useMemo(() => {
@@ -195,8 +203,8 @@ const EquipmentView = ({}) => {
         chipComponent={
           <ChipSelect
             mode="switch"
-            onChangeValue={chiplist => setSelectedStatus(chiplist)}
-            selectionItems={Equipment.getStatusList(Colors, I18n)}
+            onChangeValue={setSelectedStatus}
+            selectionItems={serviceStatusList}
           />
         }
         renderListItem={({item}) => (
