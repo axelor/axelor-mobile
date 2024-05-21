@@ -24,8 +24,8 @@ import {
   getNowDateZonesISOString,
   getSearchCriterias,
   getStartOfDay,
+  getTypes,
 } from '@axelor/aos-mobile-core';
-import {Intervention} from '../types';
 
 const createInterventionCriteria = (
   searchValue,
@@ -158,11 +158,13 @@ export async function searchHistoryInterventionByEquipment({
 }
 
 export async function fetchActiveIntervention({userId}) {
+  const Intervention = getTypes().Intervention;
+
   return createStandardSearch({
     model: 'com.axelor.apps.intervention.db.Intervention',
     criteria: createInterventionCriteria(null, userId, null, null, [
-      Intervention.status.Started,
-      Intervention.status.Suspended,
+      Intervention?.statusSelect.Started,
+      Intervention?.statusSelect.Suspended,
     ]),
     fieldKey: 'intervention_intervention',
     sortKey: 'intervention_activeIntervention',

@@ -66,6 +66,8 @@
   "Intervention_QuestionRequired": "Requise",
   "Intervention_QuestionConditional": "Conditionnelle",
   "Intervention_PrivateQuestion": "Question privée",
+  "Intervention_EquipmentType_Equipment": "Équipement",
+  "Intervention_EquipmentType_Place": "Lieu",
   "Intervention_SliceAction_FetchIntervention": "récupération des interventions",
   "Intervention_SliceAction_SearchEquipment": "recherche sur les équipements",
   "Intervention_SliceAction_SearchClientAndProspect": "recherche sur les clients et prospects",

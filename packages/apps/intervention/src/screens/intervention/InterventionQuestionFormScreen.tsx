@@ -23,6 +23,8 @@ import {
   useDispatch,
   useSelector,
   useTranslator,
+  useTypes,
+  useTypeHelpers,
 } from '@axelor/aos-mobile-core';
 import {
   Badge,
@@ -34,12 +36,14 @@ import {
 } from '@axelor/aos-mobile-ui';
 import {InterventionHeader} from '../../components';
 import {fetchQuestionById, updateQuestion} from '../../features/questionSlice';
-import {Question} from '../../types';
+import {Question as QuestionType} from '../../types';
 
 const InterventionQuestionFormScreen = ({route, navigation}) => {
   const Colors = useThemeColor();
   const I18n = useTranslator();
   const dispatch = useDispatch();
+  const {InterventionQuestion} = useTypes();
+  const {getItemColor, getItemTitle} = useTypeHelpers();
 
   const rangeId = route?.params?.rangeId;
   const [questionId] = useState(route?.params?.questionId);
@@ -53,7 +57,7 @@ const InterventionQuestionFormScreen = ({route, navigation}) => {
 
   const questionStatus = useMemo(
     () =>
-      Question.getStatus(
+      QuestionType.getStatus(
         question,
         questionlist.find(
           q => q.id === question.conditionalInterventionQuestion?.id,
@@ -62,10 +66,24 @@ const InterventionQuestionFormScreen = ({route, navigation}) => {
     [question, questionlist],
   );
 
-  const questionBadge = useMemo(
-    () => Question.getBadge(questionStatus, I18n, Colors),
-    [Colors, I18n, questionStatus],
-  );
+  const questionBadge = useMemo(() => {
+    if (
+      questionStatus === InterventionQuestion?.statusSelect.Required ||
+      questionStatus === InterventionQuestion?.statusSelect.Conditional
+    ) {
+      return {
+        title: getItemTitle(InterventionQuestion?.statusSelect, questionStatus),
+        color: getItemColor(InterventionQuestion?.statusSelect, questionStatus),
+      };
+    } else {
+      return null;
+    }
+  }, [
+    InterventionQuestion?.statusSelect,
+    getItemColor,
+    getItemTitle,
+    questionStatus,
+  ]);
 
   useEffect(() => {
     dispatch((fetchQuestionById as any)({questionId}));
@@ -128,7 +146,8 @@ const InterventionQuestionFormScreen = ({route, navigation}) => {
             needValidation: true,
             needRequiredFields: true,
             hideIf: () =>
-              question.answerTypeSelect === Question.answerType.Indication,
+              question.answerTypeSelect ===
+              InterventionQuestion?.answerTypeSelect.Indication,
             customAction: ({objectState}) => {
               updateQuestionAPI(objectState);
             },

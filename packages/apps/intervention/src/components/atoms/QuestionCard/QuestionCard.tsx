@@ -18,9 +18,8 @@
 
 import React, {useMemo} from 'react';
 import {StyleSheet} from 'react-native';
-import {useTranslator} from '@axelor/aos-mobile-core';
+import {useTranslator, useTypes, useTypeHelpers} from '@axelor/aos-mobile-core';
 import {InfoBubble, ObjectCard, useThemeColor} from '@axelor/aos-mobile-ui';
-import {Question} from '../../../types';
 
 interface QuestionCardProps {
   status: number;
@@ -39,13 +38,18 @@ const QuestionCard = ({
 }: QuestionCardProps) => {
   const Colors = useThemeColor();
   const I18n = useTranslator();
+  const {InterventionQuestion} = useTypes();
+  const {getItemColor} = useTypeHelpers();
 
   const styles = useMemo(
-    () => getStyles(Question.getStatusColor(status, Colors)?.background),
-    [Colors, status],
+    () =>
+      getStyles(
+        getItemColor(InterventionQuestion?.statusSelect, status)?.background,
+      ),
+    [InterventionQuestion?.statusSelect, getItemColor, status],
   );
 
-  if (status === Question.status.Hidden) {
+  if (status === InterventionQuestion?.statusSelect.Hidden) {
     return null;
   }
 

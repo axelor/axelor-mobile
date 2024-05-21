@@ -17,12 +17,14 @@
  */
 
 import React, {useMemo, useState} from 'react';
-import {ChipSelect, Screen, useThemeColor} from '@axelor/aos-mobile-ui';
+import {ChipSelect, Screen} from '@axelor/aos-mobile-ui';
 import {
   SearchListView,
   usePermitted,
   useSelector,
   useTranslator,
+  useTypes,
+  useTypeHelpers,
 } from '@axelor/aos-mobile-core';
 import {searchEquipment} from '../../features/equipmentSlice';
 import {
@@ -30,14 +32,14 @@ import {
   EquipmentActionCard,
   PlaceEquipmentSearchBar,
 } from '../../components';
-import {Equipment} from '../../types';
 
 const CustomerParkScreen = ({}) => {
   const I18n = useTranslator();
-  const Colors = useThemeColor();
   const {canDelete, readonly, canCreate} = usePermitted({
     modelName: 'com.axelor.apps.intervention.db.Equipment',
   });
+  const {Equipment} = useTypes();
+  const {getSelectionItems} = useTypeHelpers();
 
   const [selectedStatus, setSelectedStatus] = useState([]);
   const [customer, setCustomer] = useState(null);
@@ -47,9 +49,14 @@ const CustomerParkScreen = ({}) => {
     (state: any) => state.intervention_equipment,
   );
 
+  const serviceStatusList = useMemo(
+    () => getSelectionItems(Equipment?.serviceSelect, selectedStatus),
+    [Equipment?.serviceSelect, getSelectionItems, selectedStatus],
+  );
+
   const sliceFunctionData = useMemo(
     () => ({
-      inService: selectedStatus[0]?.key,
+      inService: selectedStatus[0]?.value,
       partnerId: customer?.id,
       parentPlaceId: parentPlace?.id,
     }),
@@ -100,8 +107,8 @@ const CustomerParkScreen = ({}) => {
         chipComponent={
           <ChipSelect
             mode="switch"
-            onChangeValue={chiplist => setSelectedStatus(chiplist)}
-            selectionItems={Equipment.getStatusList(Colors, I18n)}
+            onChangeValue={setSelectedStatus}
+            selectionItems={serviceStatusList}
           />
         }
       />

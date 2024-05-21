@@ -52,12 +52,12 @@ export interface SelectionHelpers {
   getItemColor: (selection: Selection, value: any) => Color;
   getSelectionItems: (
     selection: Selection,
-    selectedItem: {key: any; [key: string]: any}[],
+    selectedItem?: {key: any; [key: string]: any}[],
   ) => {
     title: string;
     color: Color;
-    value: string | number;
-    key: string | number;
+    value: string | number | boolean;
+    key: string | number | boolean;
     isActive: boolean;
   }[];
   getItemColorFromIndex: (
@@ -71,15 +71,15 @@ export interface SelectionHelpers {
   ) => {
     title: string;
     color: Color;
-    value: string | number;
-    key: string | number;
+    value: string | number | boolean;
+    key: string | number | boolean;
     isActive: boolean;
   }[];
 }
 
 export interface SelectionItem {
   key: string;
-  value: string | number;
+  value: string | number | boolean;
   title: string;
   color?: string;
   order?: number;

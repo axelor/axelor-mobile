@@ -56,9 +56,10 @@ class SelectionProvider {
       modelSelections[name] = {
         list: selectConfig
           .map(_i => {
-            const value = Number.isNaN(Number(_i.value))
-              ? _i.value
-              : Number(_i.value);
+            const value =
+              typeof _i.value === 'boolean' || Number.isNaN(Number(_i.value))
+                ? _i.value
+                : Number(_i.value);
             const moduleContent: SelectionItem = content.find(
               _s => _s.value === value,
             );

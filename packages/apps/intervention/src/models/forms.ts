@@ -16,7 +16,11 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import {FormConfigs, customComponentOptions} from '@axelor/aos-mobile-core';
+import {
+  customComponentOptions,
+  FormConfigs,
+  getTypes,
+} from '@axelor/aos-mobile-core';
 import {
   ClientProspectSearchBar,
   ContractSearchBar,
@@ -29,7 +33,6 @@ import {
   QuestionMeasure,
   TypePicker,
 } from '../components';
-import {Equipment, Question} from '../types';
 
 const CustomerComponentWrapper = component => {
   return ({objectState, ...props}: customComponentOptions) =>
@@ -82,54 +85,70 @@ export const intervention_formsRegister: FormConfigs = {
         titleKey: 'Intervention_EquipmentStatus_InService',
         type: 'boolean',
         widget: 'checkbox',
-        hideIf: ({objectState}) =>
-          objectState?.typeSelect === Equipment.type.place,
+        hideIf: ({objectState}) => {
+          const Equipment = getTypes().Equipment;
+          return objectState?.typeSelect === Equipment?.typeSelect.Place;
+        },
       },
       commissioningDate: {
         titleKey: 'Intervention_CommissioningDate',
         type: 'date',
         widget: 'date',
-        hideIf: ({objectState}) =>
-          objectState?.typeSelect === Equipment.type.place,
+        hideIf: ({objectState}) => {
+          const Equipment = getTypes().Equipment;
+          return objectState?.typeSelect === Equipment?.typeSelect.Place;
+        },
       },
       customerWarrantyOnPartEndDate: {
         titleKey: 'Intervention_CustomerWarrantyOnPartEndDate',
         type: 'date',
         widget: 'date',
-        hideIf: ({objectState}) =>
-          objectState?.typeSelect === Equipment.type.place,
+        hideIf: ({objectState}) => {
+          const Equipment = getTypes().Equipment;
+          return objectState?.typeSelect === Equipment?.typeSelect.Place;
+        },
       },
       equipmentFamily: {
         titleKey: 'Intervention_EquipmentFamily',
         type: 'object',
         widget: 'custom',
-        requiredIf: ({objectState}) =>
-          objectState?.typeSelect === Equipment.type.equipment,
+        requiredIf: ({objectState}) => {
+          const Equipment = getTypes().Equipment;
+          return objectState?.typeSelect === Equipment?.typeSelect.Equipment;
+        },
         customComponent: EquipmentFamilySearchBar,
-        hideIf: ({objectState}) =>
-          objectState?.typeSelect === Equipment.type.place,
+        hideIf: ({objectState}) => {
+          const Equipment = getTypes().Equipment;
+          return objectState?.typeSelect === Equipment?.typeSelect.Place;
+        },
       },
       scheduleOfOperation: {
         titleKey: 'Intervention_ScheduleOfOperation',
         type: 'string',
         widget: 'default',
-        hideIf: ({objectState}) =>
-          objectState?.typeSelect === Equipment.type.place,
+        hideIf: ({objectState}) => {
+          const Equipment = getTypes().Equipment;
+          return objectState?.typeSelect === Equipment?.typeSelect.Place;
+        },
       },
       specificAccessSchedule: {
         titleKey: 'Intervention_SpecificAccessSchedule',
         type: 'string',
         widget: 'default',
-        hideIf: ({objectState}) =>
-          objectState?.typeSelect === Equipment.type.place,
+        hideIf: ({objectState}) => {
+          const Equipment = getTypes().Equipment;
+          return objectState?.typeSelect === Equipment?.typeSelect.Place;
+        },
       },
       contract: {
         titleKey: 'Intervention_Contract',
         type: 'object',
         widget: 'custom',
         customComponent: CustomerComponentWrapper(ContractSearchBar),
-        hideIf: ({objectState}) =>
-          objectState?.typeSelect === Equipment.type.place,
+        hideIf: ({objectState}) => {
+          const Equipment = getTypes().Equipment;
+          return objectState?.typeSelect === Equipment?.typeSelect.Place;
+        },
       },
       comments: {
         titleKey: 'Intervention_Comments',
@@ -190,22 +209,41 @@ export const intervention_formsRegister: FormConfigs = {
         type: 'string',
         widget: 'custom',
         customComponent: QuestionAdvancedMonitoring,
-        requiredIf: ({objectState}) =>
-          objectState.answerTypeSelect ===
-            Question.answerType.AdvancedMonitoring && objectState.isRequired,
-        hideIf: ({objectState}) =>
-          objectState.answerTypeSelect !==
-          Question.answerType.AdvancedMonitoring,
+        requiredIf: ({objectState}) => {
+          const InterventionQuestion = getTypes().InterventionQuestion;
+          return (
+            objectState.answerTypeSelect ===
+              InterventionQuestion?.answerTypeSelect.AdvancedMonitoring &&
+            objectState.isRequired
+          );
+        },
+        hideIf: ({objectState}) => {
+          const InterventionQuestion = getTypes().InterventionQuestion;
+          return (
+            objectState.answerTypeSelect !==
+            InterventionQuestion?.answerTypeSelect.AdvancedMonitoring
+          );
+        },
       },
       checkboxAnswer: {
         type: 'boolean',
         widget: 'custom',
         customComponent: QuestionCheckbox,
-        requiredIf: ({objectState}) =>
-          objectState.answerTypeSelect === Question.answerType.CheckBox &&
-          objectState.isRequired,
-        hideIf: ({objectState}) =>
-          objectState.answerTypeSelect !== Question.answerType.CheckBox,
+        requiredIf: ({objectState}) => {
+          const InterventionQuestion = getTypes().InterventionQuestion;
+          return (
+            objectState.answerTypeSelect ===
+              InterventionQuestion?.answerTypeSelect.CheckBox &&
+            objectState.isRequired
+          );
+        },
+        hideIf: ({objectState}) => {
+          const InterventionQuestion = getTypes().InterventionQuestion;
+          return (
+            objectState.answerTypeSelect !==
+            InterventionQuestion?.answerTypeSelect.CheckBox
+          );
+        },
       },
       dateAnswer: {
         type: 'date',
@@ -213,28 +251,53 @@ export const intervention_formsRegister: FormConfigs = {
         options: {
           popup: true,
         },
-        requiredIf: ({objectState}) =>
-          objectState.answerTypeSelect === Question.answerType.Date &&
-          objectState.isRequired,
-        hideIf: ({objectState}) =>
-          objectState.answerTypeSelect !== Question.answerType.Date,
+        requiredIf: ({objectState}) => {
+          const InterventionQuestion = getTypes().InterventionQuestion;
+          return (
+            objectState.answerTypeSelect ===
+              InterventionQuestion?.answerTypeSelect.Date &&
+            objectState.isRequired
+          );
+        },
+        hideIf: ({objectState}) => {
+          const InterventionQuestion = getTypes().InterventionQuestion;
+          return (
+            objectState.answerTypeSelect !==
+            InterventionQuestion?.answerTypeSelect.Date
+          );
+        },
       },
       indicationText: {
         type: 'string',
         widget: 'default',
         readonly: true,
-        hideIf: ({objectState}) =>
-          objectState.answerTypeSelect !== Question.answerType.Indication,
+        hideIf: ({objectState}) => {
+          const InterventionQuestion = getTypes().InterventionQuestion;
+          return (
+            objectState.answerTypeSelect !==
+            InterventionQuestion?.answerTypeSelect.Indication
+          );
+        },
       },
       measureAnswer: {
         type: 'number',
         widget: 'custom',
         customComponent: QuestionMeasure,
-        requiredIf: ({objectState}) =>
-          objectState.answerTypeSelect === Question.answerType.Measure &&
-          objectState.isRequired,
-        hideIf: ({objectState}) =>
-          objectState.answerTypeSelect !== Question.answerType.Measure,
+        requiredIf: ({objectState}) => {
+          const InterventionQuestion = getTypes().InterventionQuestion;
+          return (
+            objectState.answerTypeSelect ===
+              InterventionQuestion?.answerTypeSelect.Measure &&
+            objectState.isRequired
+          );
+        },
+        hideIf: ({objectState}) => {
+          const InterventionQuestion = getTypes().InterventionQuestion;
+          return (
+            objectState.answerTypeSelect !==
+            InterventionQuestion?.answerTypeSelect.Measure
+          );
+        },
       },
       pictureAnswer: {
         type: 'object',
@@ -243,20 +306,40 @@ export const intervention_formsRegister: FormConfigs = {
           documentTypesAllowed: 'images',
           displayPreview: true,
         },
-        requiredIf: ({objectState}) =>
-          objectState.answerTypeSelect === Question.answerType.Picture &&
-          objectState.isRequired,
-        hideIf: ({objectState}) =>
-          objectState.answerTypeSelect !== Question.answerType.Picture,
+        requiredIf: ({objectState}) => {
+          const InterventionQuestion = getTypes().InterventionQuestion;
+          return (
+            objectState.answerTypeSelect ===
+              InterventionQuestion?.answerTypeSelect.Picture &&
+            objectState.isRequired
+          );
+        },
+        hideIf: ({objectState}) => {
+          const InterventionQuestion = getTypes().InterventionQuestion;
+          return (
+            objectState.answerTypeSelect !==
+            InterventionQuestion?.answerTypeSelect.Picture
+          );
+        },
       },
       signatureAnswer: {
         type: 'object',
         widget: 'signature',
-        requiredIf: ({objectState}) =>
-          objectState.answerTypeSelect === Question.answerType.Signature &&
-          objectState.isRequired,
-        hideIf: ({objectState}) =>
-          objectState.answerTypeSelect !== Question.answerType.Signature,
+        requiredIf: ({objectState}) => {
+          const InterventionQuestion = getTypes().InterventionQuestion;
+          return (
+            objectState.answerTypeSelect ===
+              InterventionQuestion?.answerTypeSelect.Signature &&
+            objectState.isRequired
+          );
+        },
+        hideIf: ({objectState}) => {
+          const InterventionQuestion = getTypes().InterventionQuestion;
+          return (
+            objectState.answerTypeSelect !==
+            InterventionQuestion?.answerTypeSelect.Signature
+          );
+        },
       },
       textAnswer: {
         type: 'string',
@@ -265,21 +348,41 @@ export const intervention_formsRegister: FormConfigs = {
           multiline: true,
           adjustHeightWithLines: true,
         },
-        requiredIf: ({objectState}) =>
-          objectState.answerTypeSelect === Question.answerType.Text &&
-          objectState.isRequired,
-        hideIf: ({objectState}) =>
-          objectState.answerTypeSelect !== Question.answerType.Text,
+        requiredIf: ({objectState}) => {
+          const InterventionQuestion = getTypes().InterventionQuestion;
+          return (
+            objectState.answerTypeSelect ===
+              InterventionQuestion?.answerTypeSelect.Text &&
+            objectState.isRequired
+          );
+        },
+        hideIf: ({objectState}) => {
+          const InterventionQuestion = getTypes().InterventionQuestion;
+          return (
+            objectState.answerTypeSelect !==
+            InterventionQuestion?.answerTypeSelect.Text
+          );
+        },
       },
       listAnswer: {
         type: 'object',
         widget: 'custom',
         customComponent: QuestionList,
-        requiredIf: ({objectState}) =>
-          objectState.answerTypeSelect === Question.answerType.ValueList &&
-          objectState.isRequired,
-        hideIf: ({objectState}) =>
-          objectState.answerTypeSelect !== Question.answerType.ValueList,
+        requiredIf: ({objectState}) => {
+          const InterventionQuestion = getTypes().InterventionQuestion;
+          return (
+            objectState.answerTypeSelect ===
+              InterventionQuestion?.answerTypeSelect.ValueList &&
+            objectState.isRequired
+          );
+        },
+        hideIf: ({objectState}) => {
+          const InterventionQuestion = getTypes().InterventionQuestion;
+          return (
+            objectState.answerTypeSelect !==
+            InterventionQuestion?.answerTypeSelect.ValueList
+          );
+        },
       },
     },
   },
