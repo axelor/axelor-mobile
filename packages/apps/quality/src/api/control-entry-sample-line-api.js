@@ -17,11 +17,11 @@
  */
 
 import {
+  axiosApiProvider,
   createStandardSearch,
   createStandardFetch,
-  axiosApiProvider,
+  getTypes,
 } from '@axelor/aos-mobile-core';
-import {ControlEntry} from '../types';
 
 const createControlEntrySampleLineCriteria = controlEntrySampleId => {
   return [
@@ -78,6 +78,8 @@ export async function fetchControlEntrySampleLine({id}) {
 }
 
 export async function checkComformity({object}) {
+  const ControlEntrySample = getTypes().ControlEntrySample;
+
   return axiosApiProvider
     .post({
       url: 'ws/action',
@@ -103,10 +105,10 @@ export async function checkComformity({object}) {
       if (data?.[0] != null) {
         return data[0].resultSelect;
       } else {
-        return ControlEntry.sampleResult.NotControlled;
+        return ControlEntrySample?.resultSelect.NotControlled;
       }
     })
     .catch(() => {
-      return ControlEntry.sampleResult.NotControlled;
+      return ControlEntrySample?.resultSelect.NotControlled;
     });
 }

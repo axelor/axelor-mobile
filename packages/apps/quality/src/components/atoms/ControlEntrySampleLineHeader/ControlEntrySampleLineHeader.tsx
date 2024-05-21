@@ -18,13 +18,18 @@
 
 import React from 'react';
 import {StyleSheet, View} from 'react-native';
-import {useSelector, useTranslator} from '@axelor/aos-mobile-core';
-import {Badge, Text, useThemeColor} from '@axelor/aos-mobile-ui';
-import {ControlEntry} from '../../../types';
+import {
+  useSelector,
+  useTranslator,
+  useTypes,
+  useTypeHelpers,
+} from '@axelor/aos-mobile-core';
+import {Badge, Text} from '@axelor/aos-mobile-ui';
 
 const ControlEntrySampleLineHeader = ({}) => {
   const I18n = useTranslator();
-  const Colors = useThemeColor();
+  const {ControlEntrySample} = useTypes();
+  const {getItemColor, getItemTitle} = useTypeHelpers();
 
   const {sampleLine} = useSelector(
     (state: any) => state.controlEntrySampleLine,
@@ -41,13 +46,13 @@ const ControlEntrySampleLineHeader = ({}) => {
           sampleLine.controlEntrySample?.fullName
         }`}</Text>
         <Badge
-          color={ControlEntry.getSampleResultColor(
+          color={getItemColor(
+            ControlEntrySample?.resultSelect,
             sampleLine.resultSelect,
-            Colors,
           )}
-          title={ControlEntry.getSampleResultTitle(
+          title={getItemTitle(
+            ControlEntrySample?.resultSelect,
             sampleLine.resultSelect,
-            I18n,
           )}
         />
       </View>

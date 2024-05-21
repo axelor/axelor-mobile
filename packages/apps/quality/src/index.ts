@@ -24,6 +24,7 @@ import {
   quality_modelAPI,
   quality_searchFields,
   quality_sortFields,
+  quality_typeObjects,
 } from './models';
 import * as qualityReducers from './features';
 import {useQualityHeaders} from './hooks/use-quality-header-actions';
@@ -57,6 +58,7 @@ export const QualityModule: Module = {
     sortFields: {...quality_sortFields},
     searchFields: {...quality_searchFields},
     headerRegisters: useQualityHeaders,
+    typeObjects: quality_typeObjects,
   },
 };
 
