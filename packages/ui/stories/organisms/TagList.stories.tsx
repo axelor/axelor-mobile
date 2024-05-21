@@ -58,7 +58,7 @@ storiesOf('ui/organisms/TagList', module).add(
             hidden: args.tag2_hidden,
           },
         ]}
-        translator={args.hideIfNull ? null : defaultTranslator}
+        translator={defaultTranslator}
       />
     );
   },
