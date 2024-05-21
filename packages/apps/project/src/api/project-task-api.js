@@ -29,6 +29,7 @@ const createProjectTaskCriteria = ({
   selectedPriority,
 }) => {
   const criteria = [getSearchCriterias('project_projectTask', searchValue)];
+
   criteria.push({
     fieldName: 'id',
     operator: 'in',
@@ -76,6 +77,10 @@ export async function searchProjectTask({
   selectedStatus,
   selectedPriority,
 }) {
+  if (!Array.isArray(idsProjectTask) || idsProjectTask.length === 0) {
+    return {data: {data: [], total: 0}};
+  }
+
   return createStandardSearch({
     model: 'com.axelor.apps.project.db.ProjectTask',
     criteria: createProjectTaskCriteria({

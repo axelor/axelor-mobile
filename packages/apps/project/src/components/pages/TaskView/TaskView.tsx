@@ -24,6 +24,7 @@ import {
   SearchListView,
   useTypes,
   useTypeHelpers,
+  useTranslator,
 } from '@axelor/aos-mobile-core';
 import {MultiValuePicker, ToggleButton} from '@axelor/aos-mobile-ui';
 import {ProjectHeader, TaskCardIcon} from '../../molecules';
@@ -31,6 +32,7 @@ import {searchProjectTask} from '../../../features/projectTaskSlice';
 
 const TaskView = () => {
   const dispatch = useDispatch();
+  const I18n = useTranslator();
 
   const {ProjectTask} = useTypes();
   const {getSelectionItems} = useTypeHelpers();
@@ -107,12 +109,20 @@ const TaskView = () => {
           </View>
         </View>
       }
+      actionList={[
+        {
+          iconName: 'plus',
+          title: I18n.t('Project_CreateNewTask'),
+          onPress: () => {},
+        },
+      ]}
       list={projectTaskList}
       loading={loading}
       moreLoading={moreLoading}
       isListEnd={isListEnd}
       sliceFunction={searchProjectTask}
       sliceFunctionData={sliceFunctionData}
+      searchPlaceholder={I18n.t('Base_Search')}
       renderListItem={({item}) => (
         <TaskCardIcon
           name={item?.name}

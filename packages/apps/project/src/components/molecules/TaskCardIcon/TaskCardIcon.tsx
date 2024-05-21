@@ -19,6 +19,7 @@
 import React from 'react';
 import {StyleSheet, View} from 'react-native';
 import {InfoButton, useThemeColor} from '@axelor/aos-mobile-ui';
+import {useTranslator} from '@axelor/aos-mobile-core';
 import {TaskCard} from '../../atoms';
 
 interface TaskCardIconProps {
@@ -43,6 +44,7 @@ const TaskCardIcon = ({
   status,
 }: TaskCardIconProps) => {
   const Colors = useThemeColor();
+  const I18n = useTranslator();
 
   return (
     <View style={[styles.container, style]}>
@@ -59,7 +61,7 @@ const TaskCardIcon = ({
       </View>
       <View style={styles.iconContainer}>
         <InfoButton
-          indication="sheesh"
+          indication={I18n.t('Project_LogTime')}
           iconName={'clock-history'}
           iconColor={Colors.secondaryColor_dark.background}
           onPress={() => {}}
