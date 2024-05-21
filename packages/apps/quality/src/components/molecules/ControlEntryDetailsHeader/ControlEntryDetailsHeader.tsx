@@ -19,8 +19,7 @@
 import React, {useEffect, useState} from 'react';
 import {StyleSheet, View} from 'react-native';
 import {Button, ProgressBar} from '@axelor/aos-mobile-ui';
-import {useSelector} from '@axelor/aos-mobile-core';
-import {ControlEntry} from '../../../types';
+import {useSelector, useTypes} from '@axelor/aos-mobile-core';
 import {searchControlEntrySampleApi} from '../../../api';
 import {ControlEntryHeader} from '../../atoms';
 import {FillingMethodAlert} from '../../molecules';
@@ -34,6 +33,7 @@ const ControlEntryDetailsHeader = ({
 }: ControlEntryHeaderProps) => {
   const [numberSampleFilled, setNumberSampleFilled] = useState<number>(0);
   const [showAlert, setShowAlert] = useState(false);
+  const {ControlEntrySample} = useTypes();
 
   const {controlEntry} = useSelector((state: any) => state.controlEntry);
 
@@ -45,7 +45,8 @@ const ControlEntryDetailsHeader = ({
           const total = controlEntrySampleList.length;
           const notControlled = controlEntrySampleList.filter(
             sample =>
-              sample.resultSelect === ControlEntry.sampleResult.NotControlled,
+              sample.resultSelect ===
+              ControlEntrySample?.resultSelect.NotControlled,
           ).length;
 
           setNumberSampleFilled(100 - (notControlled / total) * 100);
@@ -54,7 +55,7 @@ const ControlEntryDetailsHeader = ({
         }
       })
       .catch(() => setNumberSampleFilled(0));
-  }, [controlEntry]);
+  }, [ControlEntrySample?.resultSelect, controlEntry]);
 
   return (
     <View style={styles.container}>
