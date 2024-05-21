@@ -28,6 +28,15 @@ const availableColors = [
     .map(([key]) => key),
 ];
 
+const defaultTranslator = (key, values) => {
+  const translations = {
+    Base_Data: 'data',
+    Base_NoDataAvailable: `No ${values?.title} available.`,
+  };
+
+  return translations[key] || key;
+};
+
 storiesOf('ui/organisms/TagList', module).add(
   'Default',
   args => {
@@ -49,6 +58,7 @@ storiesOf('ui/organisms/TagList', module).add(
             hidden: args.tag2_hidden,
           },
         ]}
+        translator={args.hideIfNull ? null : defaultTranslator}
       />
     );
   },
@@ -65,6 +75,11 @@ storiesOf('ui/organisms/TagList', module).add(
         control: {
           type: 'select',
         },
+      },
+      hideIfNull: {
+        type: 'boolean',
+        defaultValue: true,
+        control: {type: 'boolean'},
       },
       tag1_title: {
         control: {
