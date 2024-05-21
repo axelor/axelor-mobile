@@ -18,8 +18,8 @@
 
 import React, {useMemo} from 'react';
 import {StyleSheet, TouchableOpacity, View} from 'react-native';
-import {Card, Icon} from '../../atoms';
 import {Color, useThemeColor} from '../../../theme';
+import {Card, Icon} from '../../atoms';
 
 interface BranchCardProps {
   onPress: () => void;

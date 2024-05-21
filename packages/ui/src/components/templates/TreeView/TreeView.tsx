@@ -17,10 +17,8 @@
  */
 
 import React, {useState} from 'react';
-import {StyleSheet} from 'react-native';
-import Branch from './Branch';
 import {ActionType, ScrollList} from '../../organisms';
-import {HorizontalRule} from '../../atoms';
+import Branch from './Branch';
 
 interface TreeViewProps {
   style?: any;
@@ -52,7 +50,6 @@ interface TreeViewProps {
   isListEnd: boolean;
   filter?: boolean;
   translator?: (translationKey: string) => string;
-  horizontal?: boolean;
   disabledRefresh?: boolean;
   actionList?: ActionType[];
   verticalActions?: boolean;
@@ -73,7 +70,6 @@ const TreeView = ({
   isListEnd = false,
   filter = false,
   translator,
-  horizontal = false,
   disabledRefresh = false,
   actionList,
   verticalActions,
@@ -81,28 +77,21 @@ const TreeView = ({
   const [openBranches, setOpenBranches] = useState([]);
 
   const _renderItem = ({item, index}) => {
-    return (
-      <>
-        {branchCondition(item) ? (
-          <Branch
-            branch={{item, index}}
-            parentFieldName={parentFieldName}
-            openBranches={openBranches}
-            openBranchesLastIdx={0}
-            setOpenBranches={setOpenBranches}
-            renderBranch={renderBranch}
-            renderLeaf={renderLeaf}
-            fetchBranchData={fetchBranchData}
-            branchCondition={branchCondition}
-            translator={translator}
-          />
-        ) : (
-          renderLeaf({item, index})
-        )}
-        {!!openBranches.find(_branch => _branch.idOpen === item.id) && (
-          <HorizontalRule style={styles.horizontalRule} />
-        )}
-      </>
+    return branchCondition(item) ? (
+      <Branch
+        branch={{item, index}}
+        parentFieldName={parentFieldName}
+        openBranches={openBranches}
+        openBranchesLastIdx={0}
+        setOpenBranches={setOpenBranches}
+        renderBranch={renderBranch}
+        renderLeaf={renderLeaf}
+        fetchBranchData={fetchBranchData}
+        branchCondition={branchCondition}
+        translator={translator}
+      />
+    ) : (
+      renderLeaf({item, index})
     );
   };
 
@@ -118,20 +107,11 @@ const TreeView = ({
       isListEnd={isListEnd}
       filter={filter}
       translator={translator}
-      horizontal={horizontal}
       disabledRefresh={disabledRefresh}
       actionList={actionList}
       verticalActions={verticalActions}
     />
   );
 };
-
-const styles = StyleSheet.create({
-  horizontalRule: {
-    alignSelf: 'center',
-    width: '70%',
-    marginVertical: 10,
-  },
-});
 
 export default TreeView;

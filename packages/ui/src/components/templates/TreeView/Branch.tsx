@@ -16,11 +16,11 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import React, {useCallback, useEffect, useState} from 'react';
+import React, {useCallback, useEffect, useMemo, useState} from 'react';
 import {ActivityIndicator, StyleSheet, View} from 'react-native';
-import BranchCard from './BranchCard';
-import {Label} from '../../molecules';
 import {useThemeColor} from '../../../theme';
+import {Label} from '../../molecules';
+import BranchCard from './BranchCard';
 
 interface SubBranchViewProps {
   parentFieldName: string;
@@ -55,7 +55,7 @@ const SubBranchView = ({
     let isMounted = true;
 
     fetchBranchData(branchId)
-      .then(res => isMounted && setSubBranchData(res.data.data))
+      .then(res => isMounted && setSubBranchData(res?.data?.data))
       .catch(() => setSubBranchData([]));
 
     return () => {
@@ -63,51 +63,50 @@ const SubBranchView = ({
     };
   }, [branchId, fetchBranchData]);
 
-  return (
-    <>
-      {subBranchData &&
-        subBranchData.map((item, index) => {
-          const _openBranchesLastIdx = openBranchesLastIdx + 1;
+  if (!Array.isArray(subBranchData)) {
+    return (
+      <Label
+        style={styles.subBranchInfo}
+        message={translator != null ? translator('Base_NoData') : 'No data.'}
+        type="info"
+      />
+    );
+  }
 
-          return (
-            <View
-              style={openBranchesLastIdx < 3 && styles.marginLeft}
-              key={index}>
-              {branchCondition(item) ? (
-                <Branch
-                  branch={{item, index}}
-                  parentFieldName={parentFieldName}
-                  openBranches={openBranches}
-                  openBranchesLastIdx={_openBranchesLastIdx}
-                  setOpenBranches={setOpenBranches}
-                  renderBranch={renderBranch}
-                  renderLeaf={renderLeaf}
-                  fetchBranchData={fetchBranchData}
-                  branchCondition={branchCondition}
-                  translator={translator}
-                />
-              ) : (
-                renderLeaf({item, index})
-              )}
-            </View>
-          );
-        })}
-      {subBranchData && subBranchData.length === 0 && (
-        <ActivityIndicator
-          style={styles.subBranchInfo}
-          size="large"
-          color={Colors.inverseColor.background}
-        />
-      )}
-      {!subBranchData && (
-        <Label
-          style={styles.subBranchInfo}
-          message={translator != null ? translator('Base_NoData') : 'No data.'}
-          type="info"
-        />
-      )}
-    </>
-  );
+  if (subBranchData.length === 0) {
+    return (
+      <ActivityIndicator
+        style={styles.subBranchInfo}
+        size="large"
+        color={Colors.inverseColor.background}
+      />
+    );
+  }
+
+  return subBranchData.map((item, index) => {
+    const _openBranchesLastIdx = openBranchesLastIdx + 1;
+
+    return (
+      <View style={openBranchesLastIdx < 3 && styles.marginLeft} key={index}>
+        {branchCondition(item) ? (
+          <Branch
+            branch={{item, index}}
+            parentFieldName={parentFieldName}
+            openBranches={openBranches}
+            openBranchesLastIdx={_openBranchesLastIdx}
+            setOpenBranches={setOpenBranches}
+            renderBranch={renderBranch}
+            renderLeaf={renderLeaf}
+            fetchBranchData={fetchBranchData}
+            branchCondition={branchCondition}
+            translator={translator}
+          />
+        ) : (
+          renderLeaf({item, index})
+        )}
+      </View>
+    );
+  });
 };
 
 interface BranchProps {
@@ -135,61 +134,63 @@ const Branch = ({
   branchCondition,
   translator,
 }: BranchProps) => {
-  const handleBranchPress = useCallback(
-    item =>
-      setOpenBranches(current => {
-        const newBranch = {
-          idParent: item[parentFieldName]?.id,
-          idOpen: item.id,
-        };
-        const branchIndex = current.findIndex(
-          _branch => _branch.idOpen === newBranch.idOpen,
+  const handleBranchPress = useCallback(() => {
+    const {item} = branch;
+
+    setOpenBranches(current => {
+      const newBranch = {
+        idParent: item[parentFieldName]?.id,
+        idOpen: item.id,
+      };
+      const branchIndex = current.findIndex(
+        _branch => _branch.idOpen === newBranch.idOpen,
+      );
+
+      if (branchIndex >= 0) {
+        return current.slice(0, branchIndex);
+      } else {
+        const sameParentBranchIndex = current.findIndex(
+          _branch => _branch.idParent === newBranch.idParent,
         );
 
-        if (branchIndex >= 0) {
-          return current.slice(0, branchIndex);
-        } else {
-          const sameParentBranchIndex = current.findIndex(
-            _branch => _branch.idParent === newBranch.idParent,
-          );
-
-          let _current = [...current];
-          if (sameParentBranchIndex >= 0) {
-            _current = _current.slice(0, sameParentBranchIndex);
-          }
-
-          return [..._current, newBranch];
+        let _current = [...current];
+        if (sameParentBranchIndex >= 0) {
+          _current = _current.slice(0, sameParentBranchIndex);
         }
-      }),
-    [parentFieldName, setOpenBranches],
+
+        return [..._current, newBranch];
+      }
+    });
+  }, [branch, parentFieldName, setOpenBranches]);
+
+  const isBranchOpen = useMemo(
+    () =>
+      openBranches.length > openBranchesLastIdx &&
+      openBranches[openBranchesLastIdx].idOpen === branch.item.id,
+    [branch.item.id, openBranches, openBranchesLastIdx],
   );
 
   return (
     <>
       <BranchCard
-        onPress={() => {
-          handleBranchPress(branch.item);
-        }}
+        onPress={handleBranchPress}
         children={renderBranch(branch)}
-        isOpen={
-          !!openBranches.find(_branch => _branch.idOpen === branch.item.id)
-        }
+        isOpen={isBranchOpen}
       />
-      {openBranches.length > openBranchesLastIdx &&
-        openBranches[openBranchesLastIdx].idOpen === branch.item.id && (
-          <SubBranchView
-            parentFieldName={parentFieldName}
-            branchId={openBranches[openBranchesLastIdx].idOpen}
-            openBranches={openBranches}
-            openBranchesLastIdx={openBranchesLastIdx}
-            setOpenBranches={setOpenBranches}
-            renderBranch={renderBranch}
-            renderLeaf={renderLeaf}
-            fetchBranchData={fetchBranchData}
-            branchCondition={branchCondition}
-            translator={translator}
-          />
-        )}
+      {isBranchOpen && (
+        <SubBranchView
+          parentFieldName={parentFieldName}
+          branchId={openBranches[openBranchesLastIdx].idOpen}
+          openBranches={openBranches}
+          openBranchesLastIdx={openBranchesLastIdx}
+          setOpenBranches={setOpenBranches}
+          renderBranch={renderBranch}
+          renderLeaf={renderLeaf}
+          fetchBranchData={fetchBranchData}
+          branchCondition={branchCondition}
+          translator={translator}
+        />
+      )}
     </>
   );
 };
