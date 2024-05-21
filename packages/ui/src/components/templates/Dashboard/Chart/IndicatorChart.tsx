@@ -62,20 +62,21 @@ const IndicatorChart = ({
 
   const renderIndicator = useMemo(() => {
     if (datasets?.length === 1) {
+      const isIcon = !checkNullString(datasets[0].icon);
       return (
         <>
           <View style={styles.containerOneValue}>
-            {!checkNullString(datasets[0].icon) && (
-              <Icon size={30} name={datasets[0].icon} />
-            )}
+            {isIcon && <Icon size={30} name={datasets[0].icon} />}
             <View style={styles.containerValueTitle}>
               <Text
-                style={styles.title}
+                style={isIcon ? styles.titleIcon : styles.title}
                 textColor={datasets[0].color ?? Colors.primaryColor.background}
                 writingType="important">
                 {`${datasets[0].value} ${datasets[0].unit}`}
               </Text>
-              <Text numberOfLines={2} style={styles.title}>
+              <Text
+                numberOfLines={2}
+                style={isIcon ? styles.titleIcon : styles.title}>
                 {datasets[0].title}
               </Text>
             </View>
@@ -162,6 +163,9 @@ const getStyles = (color: ThemeColors) =>
     title: {
       alignSelf: 'center',
       textAlign: 'center',
+    },
+    titleIcon: {
+      marginRight: '5%',
     },
     containerOneValue: {
       flexDirection: 'row',
