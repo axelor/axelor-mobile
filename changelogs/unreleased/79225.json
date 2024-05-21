@@ -1,0 +1,5 @@
+{
+  "title": "KeyboardAvoidingScrollView: hide keyboard when click outside of inputs",
+  "type": "fix",
+  "packages": "ui"
+}
