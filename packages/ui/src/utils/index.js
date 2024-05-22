@@ -28,3 +28,4 @@ export {
   capitalizeFirstLetter,
   sliceString,
 } from './strings';
+export * from './commons-utlis';

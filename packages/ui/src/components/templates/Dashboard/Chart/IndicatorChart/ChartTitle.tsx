@@ -16,8 +16,33 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-export {default as BarChart} from './BarChart';
-export {default as IndicatorChart} from './IndicatorChart/IndicatorChart';
-export {default as ChartRender} from './ChartRender';
-export {default as LineChart} from './LineChart';
-export {default as PieChart} from './PieChart/PieChart';
+import React from 'react';
+import {StyleSheet} from 'react-native';
+import {Text} from '../../../../atoms';
+import {checkNullString} from '../../../../../utils';
+
+interface ChartTitleProps {
+  style?: any;
+  title: string;
+  align?: boolean;
+}
+
+const ChartTitle = ({style, title, align = false}: ChartTitleProps) => {
+  if (checkNullString(title)) {
+    return null;
+  }
+
+  return (
+    <Text writingType="important" style={[align && styles.align, style]}>
+      {title}
+    </Text>
+  );
+};
+
+const styles = StyleSheet.create({
+  align: {
+    alignSelf: 'center',
+  },
+});
+
+export default ChartTitle;
