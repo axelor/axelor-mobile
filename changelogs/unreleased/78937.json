@@ -1,0 +1,5 @@
+{
+  "title": "Consumed products: prevent infinite loading on list screen",
+  "type": "fix",
+  "packages": "manufacturing"
+}

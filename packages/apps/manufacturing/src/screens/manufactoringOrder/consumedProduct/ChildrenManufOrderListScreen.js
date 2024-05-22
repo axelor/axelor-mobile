@@ -59,17 +59,22 @@ const ChildrenManufOrderListScreen = ({route, navigation}) => {
     },
     [selectedStatus],
   );
+
   useEffect(() => {
     setFilteredList(filterOnStatus(childrenManufOrders));
   }, [filterOnStatus, childrenManufOrders]);
 
-  const fetchManufOrdersAPI = useCallback(() => {
-    dispatch(
-      fetchChildrenOfManufacturingOrder({
-        parentManufOrderId: manufOrder?.id,
-      }),
-    );
-  }, [dispatch, manufOrder]);
+  const fetchManufOrdersAPI = useCallback(
+    (page = 0) => {
+      dispatch(
+        fetchChildrenOfManufacturingOrder({
+          parentManufOrderId: manufOrder?.id,
+          page,
+        }),
+      );
+    },
+    [dispatch, manufOrder?.id],
+  );
 
   const handleViewItem = item => {
     if (item != null) {
@@ -167,7 +172,7 @@ const ChildrenManufOrderListScreen = ({route, navigation}) => {
         )}
         fetchData={fetchManufOrdersAPI}
         isListEnd={isListEndChildrenMO}
-        filter={moreLoadingChildrenMO}
+        moreLoading={moreLoadingChildrenMO}
         translator={I18n.t}
       />
     </Screen>
