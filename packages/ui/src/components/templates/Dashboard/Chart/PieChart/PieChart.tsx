@@ -17,7 +17,7 @@
  */
 
 import React, {useCallback, useEffect, useMemo, useState} from 'react';
-import {Dimensions, StyleSheet, View} from 'react-native';
+import {StyleSheet, View} from 'react-native';
 import {PieChart as RNPieChart} from 'react-native-gifted-charts';
 import {useThemeColor} from '../../../../../theme/ThemeContext';
 import {checkNullString} from '../../../../../utils/strings';
@@ -26,8 +26,7 @@ import Chart from '../../chart-type';
 import {Data} from '../../dashboard.helper';
 import ChartLegend from './ChartLegend';
 import LabelView from './LabelView';
-
-const MARGIN = 5;
+import {MARGIN, getContainerMinWidth, getContainerWidth} from '../chart.helper';
 
 interface PieChartProps {
   styleContainer?: any;
@@ -79,9 +78,13 @@ const PieChart = ({
     );
   }, []);
 
-  const _width = useMemo(() => {
-    return widthGraph - MARGIN * 2;
+  const containerWidth = useMemo(() => {
+    return getContainerWidth(widthGraph);
   }, [widthGraph]);
+
+  const containerMinWidth = useMemo(() => {
+    return getContainerMinWidth();
+  }, []);
 
   const styles = useMemo(() => {
     return getStyles(donut, focusOnPress);
@@ -102,7 +105,12 @@ const PieChart = ({
   }, [donut, focusOnPress, innerRadius, selectedItem]);
 
   return (
-    <View style={[styles.container, {width: _width}, styleContainer]}>
+    <View
+      style={[
+        styles.container,
+        {width: containerWidth, minWidth: containerMinWidth},
+        styleContainer,
+      ]}>
       {!donut && renderLabelView()}
       <RNPieChart
         data={dataSet}
@@ -132,10 +140,6 @@ const getStyles = (donut: boolean, focusOnPress: boolean) =>
       justifyContent: 'center',
       alignItems: 'center',
       alignContent: 'center',
-      minWidth:
-        Dimensions.get('window').width > 500
-          ? Dimensions.get('window').width / 4 - MARGIN * 2
-          : Dimensions.get('window').width / 2 - MARGIN * 2,
       margin: MARGIN,
       paddingTop: donut || !focusOnPress ? 0 : 35,
     },
