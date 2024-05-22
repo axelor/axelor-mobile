@@ -1,3 +1,7 @@
 {
-  "Project_Project": "Projet"
+  "Project_Project": "Projet",
+  "Project_BuisnessProjects": "Affaires",
+  "Project_Projects": "Projets",
+  "Project_SliceAction_SearchProject": "recherche sur les projets",
+  "Project_SliceAction_FetchProjectStatus": "récupération des statuts de projet"
 }
