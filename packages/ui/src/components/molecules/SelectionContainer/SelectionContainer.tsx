@@ -167,7 +167,7 @@ const SelectionContainer = ({
 
     const message =
       translator != null
-        ? translator('Base_NoDataPicker', {title: lowerTitle})
+        ? translator('Base_NoDataAvailable', {title: lowerTitle})
         : `No ${lowerTitle} available.`;
 
     return (

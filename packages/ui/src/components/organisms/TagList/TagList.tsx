@@ -16,7 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import React, {useMemo} from 'react';
+import React, {useCallback, useMemo} from 'react';
 import {StyleSheet, View} from 'react-native';
 import {Color, useThemeColor} from '../../../theme';
 import {checkNullString} from '../../../utils';
@@ -35,9 +35,18 @@ interface TagListProps {
   title?: string;
   tags: Tag[];
   defaultColor?: Color;
+  hideIfNull?: boolean;
+  translator?: (key: string, values?: Object) => string;
 }
 
-const TagList = ({style, title, tags, defaultColor}: TagListProps) => {
+const TagList = ({
+  style,
+  title,
+  tags,
+  defaultColor,
+  hideIfNull = true,
+  translator,
+}: TagListProps) => {
   const Colors = useThemeColor();
 
   const visibleSortTags = useMemo(
@@ -52,26 +61,46 @@ const TagList = ({style, title, tags, defaultColor}: TagListProps) => {
     [tags],
   );
 
-  if (visibleSortTags.length === 0) {
+  const isEmpty = useMemo(
+    () => visibleSortTags.length === 0,
+    [visibleSortTags],
+  );
+
+  const renderEmptyState = useCallback(() => {
+    const _title =
+      (checkNullString(title) ? translator?.('Base_Data') : title) ?? 'data';
+    const lowerTitle = _title.toLowerCase();
+
+    const message =
+      translator != null
+        ? translator('Base_NoDataAvailable', {title: lowerTitle})
+        : `No ${lowerTitle} available.`;
+
+    return <Text>{message}</Text>;
+  }, [title, translator]);
+
+  if (isEmpty && hideIfNull) {
     return null;
   }
 
   return (
     <View style={[styles.container, style]}>
       {!checkNullString(title) && <Text style={styles.text}>{title} :</Text>}
-      {visibleSortTags.map((tag, index) => {
-        const color =
-          tag.color != null ? tag.color : defaultColor ?? Colors.infoColor;
+      {isEmpty
+        ? renderEmptyState()
+        : visibleSortTags.map((tag, index) => {
+            const color =
+              tag.color != null ? tag.color : defaultColor ?? Colors.infoColor;
 
-        return (
-          <Badge
-            style={styles.badge}
-            title={tag.title}
-            color={color}
-            key={index}
-          />
-        );
-      })}
+            return (
+              <Badge
+                style={styles.badge}
+                title={tag.title}
+                color={color}
+                key={index}
+              />
+            );
+          })}
     </View>
   );
 };
