@@ -21,7 +21,10 @@ import {
   generateInifiniteScrollCases,
   handlerApiCall,
 } from '@axelor/aos-mobile-core';
-import {searchProject as _searchProject} from '../api/project-api';
+import {
+  fetchProjectStatus as _fetchProjectStatus,
+  searchProject as _searchProject,
+} from '../api/project-api';
 
 export const searchProject = createAsyncThunk(
   'project_project/searchProject',
@@ -36,11 +39,26 @@ export const searchProject = createAsyncThunk(
   },
 );
 
+export const fetchProjectStatus = createAsyncThunk(
+  'project_project/fetchProjectStatus',
+  async function (data, {getState}) {
+    return handlerApiCall({
+      fetchFunction: _fetchProjectStatus,
+      data,
+      action: 'Project_SliceAction_FetchProjectStatus',
+      getState,
+      responseOptions: {isArrayResponse: true},
+    });
+  },
+);
+
 const initialState = {
   loading: true,
   moreLoading: false,
   isListEnd: false,
   projectList: [],
+
+  projectStatusList: [],
 };
 
 const projectSlice = createSlice({
@@ -52,6 +70,9 @@ const projectSlice = createSlice({
       moreLoading: 'moreLoading',
       isListEnd: 'isListEnd',
       list: 'projectList',
+    });
+    builder.addCase(fetchProjectStatus.fulfilled, (state, action) => {
+      state.projectStatusList = action.payload;
     });
   },
 });

@@ -19,5 +19,10 @@
 import {SearchFields} from '@axelor/aos-mobile-core';
 
 export const project_searchFields: SearchFields = {
-  project_project: ['name'],
+  project_project: [
+    'name',
+    'code',
+    'clientPartner.name',
+    'parentProject.fullName',
+  ],
 };

@@ -20,7 +20,7 @@ import {ObjectFields, schemaContructor} from '@axelor/aos-mobile-core';
 
 export const project_modelAPI: ObjectFields = {
   project_project: schemaContructor.object({
-    projectStatus: schemaContructor.subObject(),
+    projectStatus: schemaContructor.subObject('name'),
     name: schemaContructor.string(),
     code: schemaContructor.string(),
     clientPartner: schemaContructor.subObject().concat(
@@ -29,8 +29,12 @@ export const project_modelAPI: ObjectFields = {
         name: schemaContructor.string(),
       }),
     ),
-    company: schemaContructor.subObject(),
-    assignedTo: schemaContructor.subObject(),
-    parentProject: schemaContructor.subObject(),
+    company: schemaContructor.subObject('name'),
+    assignedTo: schemaContructor.subObject('fullName'),
+    parentProject: schemaContructor.subObject('fullName'),
+  }),
+  project_projectStatus: schemaContructor.object({
+    name: schemaContructor.string(),
+    isCompleted: schemaContructor.boolean(),
   }),
 };

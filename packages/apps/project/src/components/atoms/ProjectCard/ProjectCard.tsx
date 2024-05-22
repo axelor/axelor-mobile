@@ -21,7 +21,6 @@ import {StyleSheet} from 'react-native';
 import {
   useMetafileUri,
   useSelector,
-  useTypes,
   useTypeHelpers,
 } from '@axelor/aos-mobile-core';
 import {ObjectCard} from '@axelor/aos-mobile-ui';
@@ -29,57 +28,56 @@ import {ObjectCard} from '@axelor/aos-mobile-ui';
 interface ProjectCardProps {
   style?: any;
   onPress: () => void;
-  customerPicture: any;
-  customerName: string;
+  customer: any;
   name: string;
   code: string;
   company: string;
   assignedTo: string;
-  projectStatus: number;
+  projectStatus: any;
   parentProject: string;
 }
 
 const ProjectCard = ({
   style,
   onPress,
-  customerPicture,
+  customer,
   name,
   code,
-  customerName,
   company,
   assignedTo,
   projectStatus,
   parentProject,
 }: ProjectCardProps) => {
   const formatMetaFile = useMetafileUri();
-  const {Project} = useTypes();
-  const {getItemColor} = useTypeHelpers();
+  const {getItemColorFromIndex} = useTypeHelpers();
 
   const {base: baseConfig} = useSelector(state => state.appConfig);
   const {user} = useSelector(state => state.user);
+  const {projectStatusList} = useSelector(state => state.project_project);
 
   const borderStyle = useMemo(() => {
-    return getStyles(
-      getItemColor(Project?.projectStatus, projectStatus)?.background,
-    )?.border;
-  }, [Project?.projectStatus, getItemColor, projectStatus]);
+    return (
+      projectStatus != null &&
+      getStyles(
+        getItemColorFromIndex(projectStatusList, projectStatus)?.background,
+      )?.border
+    );
+  }, [getItemColorFromIndex, projectStatus, projectStatusList]);
 
-  const noCustomer = useMemo(() => {
-    return customerName == null && customerPicture == null;
-  }, [customerName, customerPicture]);
+  const isCustomerLinked = useMemo(() => customer?.id != null, [customer]);
 
   return (
     <ObjectCard
       onPress={onPress}
       style={[borderStyle, style]}
       image={
-        !noCustomer
+        isCustomerLinked
           ? {
               generalStyle: styles.imageSize,
               imageSize: styles.imageSize,
               resizeMode: 'contain',
               defaultIconSize: 50,
-              source: formatMetaFile(customerPicture?.id),
+              source: formatMetaFile(customer?.picture?.id),
             }
           : null
       }
@@ -91,7 +89,7 @@ const ProjectCard = ({
             hideIfNull: true,
           },
           {
-            indicatorText: customerName,
+            indicatorText: customer?.name,
             hideIfNull: true,
             iconName: 'person-fill',
           },
@@ -122,7 +120,7 @@ const ProjectCard = ({
   );
 };
 
-const getStyles = color =>
+const getStyles = (color: string) =>
   StyleSheet.create({
     border: {
       borderLeftWidth: 7,

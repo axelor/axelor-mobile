@@ -23,23 +23,38 @@ import {
 
 const createProjectCriteria = ({
   searchValue,
-  businessProject,
+  isBusinessProject,
   statusList,
   userId,
 }) => {
   const criteria = [getSearchCriterias('project_project', searchValue)];
 
-  if (businessProject) {
+  if (isBusinessProject) {
     criteria.push({
       fieldName: 'isBusinessProject',
       operator: '=',
       value: true,
     });
+  } else {
+    criteria.push({
+      operator: 'or',
+      criteria: [
+        {
+          fieldName: 'isBusinessProject',
+          operator: '=',
+          value: false,
+        },
+        {
+          fieldName: 'isBusinessProject',
+          operator: 'isNull',
+        },
+      ],
+    });
   }
 
   if (userId != null) {
     criteria.push({
-      fieldName: 'assignedTo.employee.user.id',
+      fieldName: 'assignedTo.id',
       operator: '=',
       value: userId,
     });
@@ -48,10 +63,10 @@ const createProjectCriteria = ({
   if (Array.isArray(statusList) && statusList.length > 0) {
     criteria.push({
       operator: 'or',
-      criteria: statusList.map(status => ({
+      criteria: statusList.map(({key}) => ({
         fieldName: 'projectStatus.id',
         operator: '=',
-        value: status?.key,
+        value: key,
       })),
     });
   }
@@ -62,7 +77,7 @@ const createProjectCriteria = ({
 export async function searchProject({
   searchValue,
   page = 0,
-  businessProject,
+  isBusinessProject = false,
   statusList,
   userId,
 }) {
@@ -70,12 +85,21 @@ export async function searchProject({
     model: 'com.axelor.apps.project.db.Project',
     criteria: createProjectCriteria({
       searchValue,
-      businessProject,
+      isBusinessProject,
       statusList,
       userId,
     }),
     fieldKey: 'project_project',
     sortKey: 'project_project',
     page,
+  });
+}
+
+export async function fetchProjectStatus() {
+  return createStandardSearch({
+    model: 'com.axelor.apps.project.db.ProjectStatus',
+    fieldKey: 'project_projectStatus',
+    numberElementsByPage: null,
+    page: 0,
   });
 }

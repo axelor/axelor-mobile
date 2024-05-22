@@ -16,18 +16,21 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import React, {useMemo, useState} from 'react';
+import React, {useEffect, useMemo, useState} from 'react';
+import {StyleSheet, View} from 'react-native';
 import {
   useSelector,
   useTranslator,
   SearchListView,
-  useTypes,
   useTypeHelpers,
+  useDispatch,
 } from '@axelor/aos-mobile-core';
 import {MultiValuePicker, ToggleButton} from '@axelor/aos-mobile-ui';
-import {searchProject} from '../../../features/projectSlice';
+import {
+  fetchProjectStatus,
+  searchProject,
+} from '../../../features/projectSlice';
 import {ProjectCard} from '../../atoms';
-import {StyleSheet, View} from 'react-native';
 
 interface ProjectListViewListViewProps {
   businessProject?: boolean;
@@ -37,30 +40,33 @@ const ProjectListView = ({
   businessProject = false,
 }: ProjectListViewListViewProps) => {
   const I18n = useTranslator();
-  const {Project} = useTypes();
-  const {getSelectionItems} = useTypeHelpers();
+  const dispatch = useDispatch();
+  const {getCustomSelectionItems} = useTypeHelpers();
 
   const {userId} = useSelector((state: any) => state.auth);
-  const {loading, moreLoading, isListEnd, projectList} = useSelector(
-    (state: any) => state.project_project,
-  );
+  const {loading, moreLoading, isListEnd, projectList, projectStatusList} =
+    useSelector((state: any) => state.project_project);
 
   const [selectedStatus, setSelectedStatus] = useState([]);
   const [isAssignedToMe, setIsAssignedToMe] = useState(true);
 
   const statusList = useMemo(
-    () => getSelectionItems(Project?.projectStatus, selectedStatus),
-    [Project?.projectStatus, getSelectionItems, selectedStatus],
+    () => getCustomSelectionItems(projectStatusList, 'name', selectedStatus),
+    [projectStatusList, getCustomSelectionItems, selectedStatus],
   );
 
   const sliceFunctionData = useMemo(
     () => ({
-      businessProject: businessProject,
+      isBusinessProject: businessProject,
       statusList: selectedStatus,
       userId: isAssignedToMe ? userId : null,
     }),
     [businessProject, isAssignedToMe, selectedStatus, userId],
   );
+
+  useEffect(() => {
+    dispatch(fetchProjectStatus());
+  }, [dispatch]);
 
   return (
     <SearchListView
@@ -92,14 +98,13 @@ const ProjectListView = ({
       renderListItem={({item}) => (
         <ProjectCard
           onPress={() => {}}
-          customerPicture={item?.clientPartner?.picture}
-          name={item?.name}
-          code={item?.code}
-          customerName={item?.clientPartner?.name}
-          company={item?.company?.name}
-          assignedTo={item?.assignedTo?.fullName}
-          projectStatus={item?.projectStatus?.id}
-          parentProject={item?.parentProject?.fullName}
+          customer={item.clientPartner}
+          name={item.name}
+          code={item.code}
+          company={item.company?.name}
+          assignedTo={isAssignedToMe ? null : item.assignedTo?.fullName}
+          projectStatus={item.projectStatus}
+          parentProject={item.parentProject?.fullName}
         />
       )}
     />

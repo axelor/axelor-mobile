@@ -19,4 +19,3 @@
 export {project_modelAPI} from './objectFields';
 export {project_searchFields} from './searchFields';
 export {project_sortFields} from './sortFields';
-export {project_typeObjects} from './typeObjects';

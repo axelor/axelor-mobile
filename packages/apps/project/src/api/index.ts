@@ -16,4 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-export {searchProject as searchProjectApi} from './project-api';
+export {
+  fetchProjectStatus as fetchProjectStatusApi,
+  searchProject as searchProjectApi,
+} from './project-api';

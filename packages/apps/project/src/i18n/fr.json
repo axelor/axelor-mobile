@@ -1,10 +1,7 @@
 {
   "Project_Project": "Projet",
-  "Project_Status_New": "Nouveau",
-  "Project_Status_InProgress": "En cours",
-  "Project_Status_Done": "Réalisé",
-  "Project_Status_Canceled": "Annulé",
   "Project_BuisnessProjects": "Affaires",
   "Project_Projects": "Projets",
-  "Project_SliceAction_SearchProject": "recherche sur les projets"
+  "Project_SliceAction_SearchProject": "recherche sur les projets",
+  "Project_SliceAction_FetchProjectStatus": "récupération des statuts de projet"
 }
