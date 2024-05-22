@@ -17,6 +17,7 @@
  */
 
 export {default as BarChart} from './BarChart';
+export {default as IndicatorChart} from './IndicatorChart/IndicatorChart';
 export {default as ChartRender} from './ChartRender';
 export {default as LineChart} from './LineChart';
 export {default as PieChart} from './PieChart/PieChart';

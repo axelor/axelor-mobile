@@ -23,13 +23,16 @@ import {useThemeColor} from '../../../../theme';
 import {Card, Text} from '../../../atoms';
 import {checkNullString} from '../../../../utils';
 import {Data} from '../dashboard.helper';
-import {initBarData} from './chart.helper';
-
-const MARGIN = 5;
+import {
+  MARGIN,
+  getContainerMinWidth,
+  getContainerWidth,
+  initBarData,
+} from './chart.helper';
 
 interface BarCharProps {
   style?: any;
-  widthGraph?: any;
+  widthGraph?: number;
   datasets: Data[][];
   spacing?: number;
   horizontal?: boolean;
@@ -58,26 +61,35 @@ const BarChart = ({
     return getStyles(rotateLabel);
   }, [rotateLabel]);
 
-  const _containerWidth = useMemo(() => {
-    return widthGraph - MARGIN * 2;
+  const containerWidth = useMemo(() => {
+    return getContainerWidth(widthGraph);
   }, [widthGraph]);
 
+  const containerMinWidth = useMemo(() => {
+    return getContainerMinWidth();
+  }, []);
+
   const _graphWidth = useMemo(() => {
-    return _containerWidth - 50;
-  }, [_containerWidth]);
+    return containerWidth - 50;
+  }, [containerWidth]);
 
   const _spacing = useMemo(() => {
     if (spacing != null) {
       return spacing;
     }
 
-    return Math.max(_containerWidth / barChartData.length, 20);
-  }, [_containerWidth, barChartData.length, spacing]);
+    return Math.max(containerWidth / barChartData.length, 20);
+  }, [containerWidth, barChartData.length, spacing]);
 
   const Container = hideCardBackground ? View : Card;
 
   return (
-    <Container style={[styles.container, {width: _containerWidth}, style]}>
+    <Container
+      style={[
+        styles.container,
+        {width: containerWidth, minWidth: containerMinWidth},
+        style,
+      ]}>
       <RNBarChart
         data={barChartData}
         width={_graphWidth}
@@ -103,10 +115,6 @@ const BarChart = ({
 const getStyles = rotateLabel =>
   StyleSheet.create({
     container: {
-      minWidth:
-        Dimensions.get('window').width > 500
-          ? Dimensions.get('window').width / 4 - MARGIN * 2
-          : Dimensions.get('window').width / 2 - MARGIN * 2,
       margin: MARGIN,
       paddingHorizontal: 0,
       paddingRight: 5,

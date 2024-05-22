@@ -16,9 +16,12 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+import {Dimensions} from 'react-native';
 import {ThemeColors} from '../../../../theme';
 import Chart from '../chart-type';
 import {Data} from '../dashboard.helper';
+
+export const MARGIN = 5;
 
 const mergeDataForGroupedBars = (datasets: any[][]): any[] => {
   const mergedData = [];
@@ -150,4 +153,17 @@ export const initLineData = (
     addLabelTextStyleToDataset(datasets, rotateLabel, spacing, Colors),
     Colors,
   );
+};
+
+export const getContainerMinWidth = () => {
+  const screenWidth = Dimensions.get('window').width;
+  if (screenWidth > 500) {
+    return screenWidth / 4 - MARGIN * 2;
+  } else {
+    return screenWidth / 2 - MARGIN * 2;
+  }
+};
+
+export const getContainerWidth = (widthGraph: number) => {
+  return widthGraph - MARGIN * 2;
 };

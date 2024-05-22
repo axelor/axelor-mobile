@@ -16,49 +16,33 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import React, {useMemo} from 'react';
+import React from 'react';
 import {StyleSheet} from 'react-native';
-import {Text} from '../../atoms';
-import {Color, useThemeColor} from '../../../theme';
+import {Text} from '../../../../atoms';
+import {checkNullString} from '../../../../../utils';
 
-interface TextUnitProps {
-  value: string | number;
-  unit: string;
-  color?: Color;
-  fontSize?: number;
+interface ChartTitleProps {
   style?: any;
-  numberOfLines?: number;
-  defaultColor?: boolean;
+  title: string;
+  align?: boolean;
 }
 
-const TextUnit = ({
-  value,
-  unit,
-  color,
-  fontSize = 22,
-  style,
-  numberOfLines,
-  defaultColor = false,
-}: TextUnitProps) => {
-  const Colors = useThemeColor();
-
-  const _color = useMemo(() => color || Colors.primaryColor, [color, Colors]);
+const ChartTitle = ({style, title, align = false}: ChartTitleProps) => {
+  if (checkNullString(title)) {
+    return null;
+  }
 
   return (
-    <Text
-      textColor={defaultColor ? Colors.text : _color.background}
-      fontSize={fontSize}
-      style={[styles.text, style]}
-      numberOfLines={numberOfLines}>
-      {value} {unit}
+    <Text writingType="important" style={[align && styles.align, style]}>
+      {title}
     </Text>
   );
 };
 
 const styles = StyleSheet.create({
-  text: {
-    fontWeight: '900',
+  align: {
+    alignSelf: 'center',
   },
 });
 
-export default TextUnit;
+export default ChartTitle;
