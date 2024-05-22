@@ -73,13 +73,37 @@ describe('TagList Component', () => {
     });
   });
 
-  it('does not render if all tags are hidden or list is empty', () => {
+  it('does not render if all tags are hidden or list is empty and hideIfNull is true', () => {
     const hiddenTags = tags.map(tag => ({...tag, hidden: true}));
     const wrapper = shallow(<TagList tags={hiddenTags} />);
     const emptyWrapper = shallow(<TagList tags={[]} />);
 
     expect(wrapper.isEmptyRender()).toBe(true);
     expect(emptyWrapper.isEmptyRender()).toBe(true);
+  });
+
+  it('renders empty state message if hideIfNull is false and there are no visible tags', () => {
+    const translator = (_, values) => `Aucun(e) ${values.title} disponible.`;
+    const title = 'Title';
+    const lowerTitle = title.toLowerCase();
+
+    const hiddenTags = tags.map(tag => ({...tag, hidden: true}));
+    const wrapper = shallow(
+      <TagList
+        title={title}
+        tags={hiddenTags}
+        hideIfNull={false}
+        translator={translator}
+      />,
+    );
+    const emptyWrapper = shallow(<TagList tags={[]} hideIfNull={false} />);
+
+    expect(wrapper.find(Text).length).toBe(2);
+    expect(wrapper.find(Text).at(1).prop('children')).toBe(
+      translator(null, {title: lowerTitle}),
+    );
+    expect(emptyWrapper.find(Text).length).toBe(1);
+    expect(emptyWrapper.find(Text).prop('children')).toBe('No data available.');
   });
 
   it('sorts tags based on their order', () => {
