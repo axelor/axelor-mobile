@@ -73,7 +73,7 @@ const ProjectHeader = ({project}: ProjectHeaderProps) => {
             />
           )}
         </View>
-        <View style={styles.columnContainer}>
+        <View style={[styles.columnContainer, styles.alignEnd]}>
           <Badge
             title={getItemTitle(
               Project.projectStatus,
@@ -83,11 +83,13 @@ const ProjectHeader = ({project}: ProjectHeaderProps) => {
               Project.projectStatus,
               project?.projectStatus?.id,
             )}
+            style={styles.badge}
           />
           {project?.isBusinessProject && (
             <Badge
               title={I18n.t('Project_Buisness')}
               color={Colors.infoColor}
+              style={styles.badge}
             />
           )}
         </View>
@@ -111,8 +113,15 @@ const styles = StyleSheet.create({
     alignItems: 'flex-start',
     marginBottom: 3,
   },
+  alignEnd: {
+    alignItems: 'flex-end',
+  },
   labelText: {
     fontSize: 16,
+    marginBottom: 3,
+  },
+  badge: {
+    marginTop: 3,
   },
   flexShrink: {
     flexShrink: 1,
