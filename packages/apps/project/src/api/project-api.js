@@ -117,3 +117,23 @@ export async function fetchProjectById({projectId}) {
     fieldKey: 'project_project',
   });
 }
+
+const createSubProjectCriteria = ({projectId}) => {
+  return [
+    {
+      fieldName: 'parentProject.id',
+      operator: '=',
+      value: projectId,
+    },
+  ];
+};
+
+export async function searchSubProject({page, projectId}) {
+  return createStandardSearch({
+    model: 'com.axelor.apps.project.db.Project',
+    criteria: createSubProjectCriteria({projectId}),
+    fieldKey: 'project_project',
+    sortKey: 'project_project',
+    page,
+  });
+}
