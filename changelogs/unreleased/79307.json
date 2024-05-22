@@ -1,0 +1,5 @@
+{
+  "title": "FormView: avoid keyboard over inputs on Android",
+  "type": "fix",
+  "packages": "core"
+}

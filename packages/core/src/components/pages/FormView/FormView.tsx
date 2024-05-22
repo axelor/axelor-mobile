@@ -336,7 +336,7 @@ const FormView = ({
       <KeyboardAvoidingScrollView
         keyboardOffset={{
           ios: 70,
-          android: 100,
+          android: 125,
         }}
         style={styles.scroll}>
         {Array.isArray(errors) && (
