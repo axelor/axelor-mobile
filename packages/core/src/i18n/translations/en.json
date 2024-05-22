@@ -5,7 +5,7 @@
   "Base_NoMoreItems": "No more items.",
   "Base_Data": "Data",
   "Base_NoData": "No data.",
-  "Base_NoDataPicker": "No {{title}} available.",
+  "Base_NoDataAvailable": "No {{title}} available.",
   "Base_Description": "Description",
   "Base_AllFilters": "All filters",
   "Base_DateFormat": "MM/DD/YYYY",
