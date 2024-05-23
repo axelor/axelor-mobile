@@ -3,6 +3,23 @@ title: 7.1.0
 tags: Changelog
 ---
 
+## [7.1.12] (2024-05-23)
+
+### @axelor/aos-mobile-ui
+
+#### Fixes
+
+- Increment: reset input correctly when user erase content
+- KeyboardAvoidingScrollView: hide keyboard when click outside of inputs
+
+### @axelor/aos-mobile-manufacturing
+
+#### Fixes
+
+- Manufacturing order: prevent display of empty badge when priority doesn't exist
+- Consumed products: prevent infinite loading on list screen
+- Operation order: disable stop button when timer is paused
+
 ## [7.1.11] (2024-05-03)
 
 ### @axelor/aos-mobile-core
@@ -467,6 +484,7 @@ This update breaks the compatability with AOS Stock module under version 7.1 due
 - Add number decimal digit config management system
 - Manage multilines input with auto height resize on FormInput
 
+[7.1.12]: https://github.com/axelor/axelor-mobile/compare/7.1.11...7.1.12
 [7.1.11]: https://github.com/axelor/axelor-mobile/compare/7.1.10...7.1.11
 [7.1.10]: https://github.com/axelor/axelor-mobile/compare/7.1.9...7.1.10
 [7.1.9]: https://github.com/axelor/axelor-mobile/compare/7.1.8...7.1.9

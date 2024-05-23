@@ -1,5 +1,0 @@
-{
-  "title": "Increment: reset input correctly when user erase content",
-  "type": "fix",
-  "packages": "ui"
-}
