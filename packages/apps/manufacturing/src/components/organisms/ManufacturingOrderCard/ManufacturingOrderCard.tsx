@@ -63,6 +63,13 @@ const ManufacturingOrderCard = ({
     )?.border;
   }, [Colors, status]);
 
+  const isPriorityValid = useMemo(
+    () =>
+      priority != null &&
+      Object.values(ManufacturingOrder.priority).includes(priority),
+    [priority],
+  );
+
   const [startDate, endDate] = ManufacturingOrder.getDates(
     status,
     plannedStartDate,
@@ -78,8 +85,7 @@ const ManufacturingOrderCard = ({
       style={[borderStyle, style]}
       sideBadges={{
         items: [
-          {
-            showIf: priority != null,
+          isPriorityValid && {
             color: ManufacturingOrder.getPriorityColor(priority, Colors),
             displayText: ManufacturingOrder.getPriority(priority, I18n),
           },
