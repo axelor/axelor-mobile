@@ -17,7 +17,7 @@
  */
 
 import React from 'react';
-import {ActivityIndicator, View} from 'react-native';
+import {View} from 'react-native';
 import {shallow} from 'enzyme';
 import {ScrollList, TopActions} from '@axelor/aos-mobile-ui';
 
@@ -59,12 +59,6 @@ describe('ScrollList Component', () => {
     });
 
     expect(renderItem).toHaveBeenCalledTimes(props.data.length);
-  });
-
-  it('shows ActivityIndicator when loadingList is true', () => {
-    const _props = {...props, loadingList: true};
-    const wrapper = shallow(<ScrollList {..._props} />);
-    expect(wrapper.find(ActivityIndicator).exists()).toBeTruthy();
   });
 
   it('renders TopActions if actionList is provided', () => {

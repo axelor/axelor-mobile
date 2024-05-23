@@ -1,0 +1,5 @@
+{
+  "title": "ScrollList: remove display of loading indicator",
+  "type": "refactor",
+  "packages": "ui"
+}
