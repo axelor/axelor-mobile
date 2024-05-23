@@ -3,6 +3,37 @@ title: 8.0.0
 tags: Changelog
 ---
 
+## [8.0.5] (2024-05-23)
+
+### @axelor/aos-mobile-core
+
+#### Fixes
+
+- Custom field form: consider value when field type does not contain attrs
+- FormView: fix an error occuring when emptying date input
+
+### @axelor/aos-mobile-ui
+
+#### Fixes
+
+- Increment: reset input correctly when user erase content
+- KeyboardAvoidingScrollView: hide keyboard when click outside of inputs
+
+### @axelor/aos-mobile-hr
+
+#### Changes
+
+- Expense line: add possibility to manage custom upload action
+
+### @axelor/aos-mobile-manufacturing
+
+#### Fixes
+
+- List views: improve chip display
+- Manufacturing order: prevent display of empty badge when priority doesn't exist
+- Consumed products: prevent infinite loading on list screen
+- Operation order: disable stop button when timer is paused
+
 ## [8.0.4] (2024-05-03)
 
 ### @axelor/aos-mobile-core
@@ -262,6 +293,7 @@ Changes has been done to get new core and ui improvements: use of ChipSelect, co
 
 Changes has been done to get new core and ui improvements: use of ChipSelect, color differentiation between success and primary, definition of required configs, use of icons for Bootstrap
 
+[8.0.5]: https://github.com/axelor/axelor-mobile/compare/8.0.4...8.0.5
 [8.0.4]: https://github.com/axelor/axelor-mobile/compare/8.0.3...8.0.4
 [8.0.3]: https://github.com/axelor/axelor-mobile/compare/8.0.2...8.0.3
 [8.0.2]: https://github.com/axelor/axelor-mobile/compare/8.0.1...8.0.2

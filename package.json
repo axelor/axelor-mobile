@@ -1,6 +1,6 @@
 {
   "name": "aos-mobile",
-  "version": "8.0.4",
+  "version": "8.0.5",
   "private": true,
   "workspaces": {
     "packages": [
@@ -31,14 +31,14 @@
     "postinstall": "patch-package"
   },
   "dependencies": {
-    "@axelor/aos-mobile-core": "8.0.4",
-    "@axelor/aos-mobile-crm": "8.0.4",
-    "@axelor/aos-mobile-helpdesk": "8.0.4",
-    "@axelor/aos-mobile-hr": "8.0.4",
-    "@axelor/aos-mobile-manufacturing": "8.0.4",
-    "@axelor/aos-mobile-quality": "8.0.4",
-    "@axelor/aos-mobile-stock": "8.0.4",
-    "@axelor/aos-mobile-ui": "8.0.4",
+    "@axelor/aos-mobile-core": "8.0.5",
+    "@axelor/aos-mobile-crm": "8.0.5",
+    "@axelor/aos-mobile-helpdesk": "8.0.5",
+    "@axelor/aos-mobile-hr": "8.0.5",
+    "@axelor/aos-mobile-manufacturing": "8.0.5",
+    "@axelor/aos-mobile-quality": "8.0.5",
+    "@axelor/aos-mobile-stock": "8.0.5",
+    "@axelor/aos-mobile-ui": "8.0.5",
     "@react-native-clipboard/clipboard": "^1.11.1",
     "@reduxjs/toolkit": "^1.8.1",
     "axios": "^0.26.1",

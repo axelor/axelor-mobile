@@ -1,5 +1,0 @@
-{
-  "title": "Custom field form: consider value when field type does not contain attrs",
-  "type": "fix",
-  "packages": "core"
-}

@@ -1,5 +1,0 @@
-{
-  "title": "Operation order: disable stop button when timer is paused",
-  "type": "fix",
-  "packages": "manufacturing"
-}
