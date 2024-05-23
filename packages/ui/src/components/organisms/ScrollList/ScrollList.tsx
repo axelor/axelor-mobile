@@ -30,7 +30,7 @@ import {Text} from '../../atoms';
 import {CircleButton} from '../../molecules';
 import TopActions from './TopActions';
 
-const DISPLAY_LOADING_DELAY_MILLISECONDS = 3000;
+const DISPLAY_LOADING_DELAY_MILLISECONDS = 1500;
 const BUTTON_SIZE = 40;
 const SCREEN_WIDTH_50_PERCENT = Dimensions.get('window').width * 0.5;
 const SCREEN_HEIGHT_50_PERCENT = Dimensions.get('window').height * 0.5;
@@ -216,7 +216,7 @@ const ScrollList = ({
         style={[styles.scrollView, style]}
         data={data}
         onRefresh={disabledRefresh ? null : updateData}
-        refreshing={loadingList}
+        refreshing={false}
         horizontal={horizontal}
         onEndReached={onEndReached}
         ListFooterComponent={() => {
