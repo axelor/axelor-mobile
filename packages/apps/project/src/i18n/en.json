@@ -4,18 +4,18 @@
   "Project_Projects": "Projects",
   "Project_Buisness": "Business",
   "Project_projects": "Projects",
-  "Project_SliceAction_FetchProjectStatus": "fetch project status",
   "Project_Invoicing": "Invoicing",
   "Project_Members": "Members",
   "Project_Team": "Team",
   "Project_Sites": "Sites",
   "Project_Currency": "Currency",
-  "Project_PriceList": "Price List",
+  "Project_PriceList": "Price list",
   "Project_PackagedTask": "Packaged task",
   "Project_Expenses": "Expenses",
   "Project_Purchases": "Purchases",
   "Project_RefreshProject": "Refresh project",
   "Project_NoRelatedInvoicing": "No element related to invoicing",
-  "Project_SliceAction_SearchProject": "search project",
-  "Project_SliceAction_FetchProjectById": "fetch project by id"
+  "Project_SliceAction_SearchProject": "search projects",
+  "Project_SliceAction_FetchProjectById": "fetch project by id",
+  "Project_SliceAction_FetchProjectStatus": "fetch project status"
 }

@@ -103,8 +103,7 @@ const GeneralInformationView = () => {
           partnerPicture={project.clientPartner?.picture}
           partnerName={project.clientPartner?.name}
           partnerCode={project.clientPartner?.partnerSeq}
-          partnerJob={project.clientPartner?.jobTitleFunction?.name}
-          mainAddress={project.clientPartner?.mainAddress}
+          mainAddress={project.clientPartner?.mainAddress?.fullName}
           partnerId={project.clientPartner?.id}
         />
         <PartnerActionCard
@@ -150,7 +149,8 @@ const styles = StyleSheet.create({
     height: null,
   },
   margin: {
-    marginHorizontal: 24,
+    width: '90%',
+    alignSelf: 'center',
   },
   dateContainer: {
     flexDirection: 'row',

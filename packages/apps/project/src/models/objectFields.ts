@@ -26,7 +26,6 @@ export const project_modelAPI: ObjectFields = {
     clientPartner: schemaContructor.subObject().concat(
       schemaContructor.object({
         picture: schemaContructor.subObject(),
-        jobTitleFunction: schemaContructor.subObject(),
         name: schemaContructor.string(),
         partnerSeq: schemaContructor.string(),
         mainAddress: schemaContructor.subObject('fullName').concat(
@@ -42,7 +41,7 @@ export const project_modelAPI: ObjectFields = {
     contactPartner: schemaContructor.subObject().concat(
       schemaContructor.object({
         picture: schemaContructor.subObject(),
-        jobTitleFunction: schemaContructor.subObject(),
+        jobTitleFunction: schemaContructor.subObject('name'),
         name: schemaContructor.string(),
         fixedPhone: schemaContructor.string(),
         mobilePhone: schemaContructor.string(),
@@ -62,7 +61,11 @@ export const project_modelAPI: ObjectFields = {
     toInvoice: schemaContructor.boolean(),
     isInvoicingExpenses: schemaContructor.boolean(),
     isInvoicingPurchases: schemaContructor.boolean(),
-    currency: schemaContructor.subObject(),
+    currency: schemaContructor.subObject().concat(
+      schemaContructor.object({
+        symbol: schemaContructor.string(),
+      }),
+    ),
     priceList: schemaContructor.subObject(),
   }),
   project_projectStatus: schemaContructor.object({

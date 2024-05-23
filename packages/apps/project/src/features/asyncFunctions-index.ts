@@ -17,7 +17,7 @@
  */
 
 export {
-  fetchProjectStatus,
   fetchProjectById,
+  fetchProjectStatus,
   searchProject,
 } from './projectSlice';

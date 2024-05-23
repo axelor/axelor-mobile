@@ -48,7 +48,7 @@ const useProjectDetailsActions = () => {
       actions: [
         {
           key: 'refreshProject',
-          order: 10,
+          order: 0,
           iconName: 'arrow-repeat',
           title: I18n.t('Project_RefreshProject'),
           iconColor: Colors.primaryColor.background,

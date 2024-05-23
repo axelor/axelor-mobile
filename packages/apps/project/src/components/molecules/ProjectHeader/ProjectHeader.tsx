@@ -42,54 +42,51 @@ const ProjectHeader = ({project}: ProjectHeaderProps) => {
 
   const {base: baseConfig} = useSelector(state => state.appConfig);
   const {user} = useSelector(state => state.user);
-
   const {projectStatusList} = useSelector(state => state.project_project);
 
   return (
     <View style={styles.container}>
-      <View style={styles.rowContainerGlobal}>
-        <View style={[styles.columnContainer, styles.flexShrink]}>
-          <Text writingType="title">{project?.name}</Text>
-          {baseConfig?.enableMultiCompany && user?.companySet?.length > 1 && (
-            <LabelText
-              iconName="building-fill"
-              size={16}
-              title={project?.company?.name}
-              textStyle={styles.labelText}
-            />
-          )}
+      <View style={styles.columnContainer}>
+        <Text writingType="title">{project?.name}</Text>
+        {baseConfig?.enableMultiCompany && user?.companySet?.length > 1 && (
           <LabelText
-            iconName="pin-angle-fill"
+            iconName="building-fill"
             size={16}
-            title={project?.assignedTo?.fullName}
+            title={project?.company?.name}
             textStyle={styles.labelText}
           />
-          {!checkNullString(project?.parentProject?.fullName) && (
-            <LabelText
-              iconName="diagram-3-fill"
-              size={16}
-              title={project?.parentProject?.fullName}
-              textStyle={styles.labelText}
-            />
+        )}
+        <LabelText
+          iconName="pin-angle-fill"
+          size={16}
+          title={project?.assignedTo?.fullName}
+          textStyle={styles.labelText}
+        />
+        {!checkNullString(project?.parentProject?.fullName) && (
+          <LabelText
+            iconName="diagram-3-fill"
+            size={16}
+            title={project?.parentProject?.fullName}
+            textStyle={styles.labelText}
+          />
+        )}
+      </View>
+      <View style={[styles.columnContainer, styles.alignEnd]}>
+        <Badge
+          title={project?.projectStatus?.name}
+          color={getItemColorFromIndex(
+            projectStatusList,
+            project?.projectStatus,
           )}
-        </View>
-        <View style={[styles.columnContainer, styles.alignEnd]}>
+          style={styles.badge}
+        />
+        {project?.isBusinessProject && (
           <Badge
-            title={project?.projectStatus?.name}
-            color={getItemColorFromIndex(
-              projectStatusList,
-              project?.projectStatus,
-            )}
+            title={I18n.t('Project_Buisness')}
+            color={Colors.infoColor}
             style={styles.badge}
           />
-          {project?.isBusinessProject && (
-            <Badge
-              title={I18n.t('Project_Buisness')}
-              color={Colors.infoColor}
-              style={styles.badge}
-            />
-          )}
-        </View>
+        )}
       </View>
     </View>
   );
@@ -99,15 +96,11 @@ const styles = StyleSheet.create({
   container: {
     marginHorizontal: 24,
     marginBottom: 5,
-  },
-  rowContainerGlobal: {
     flexDirection: 'row',
     justifyContent: 'space-between',
-    alignItems: 'flex-start',
   },
   columnContainer: {
     flexDirection: 'column',
-    alignItems: 'flex-start',
     marginBottom: 3,
   },
   alignEnd: {
@@ -119,10 +112,6 @@ const styles = StyleSheet.create({
   },
   badge: {
     marginTop: 3,
-  },
-  flexShrink: {
-    flexShrink: 1,
-    flexWrap: 'wrap',
   },
 });
 

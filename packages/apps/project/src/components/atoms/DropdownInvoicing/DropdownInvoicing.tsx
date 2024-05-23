@@ -48,8 +48,8 @@ const DropdownInvoicing = ({
     <View style={style}>
       <TagList tags={invoiceBoolList} />
       {currency != null && (
-        <Text>{`${I18n.t('Project_Currency')} : ${currency?.name}  (${
-          currency?.code
+        <Text>{`${I18n.t('Project_Currency')} : ${currency?.name} (${
+          currency?.symbol
         })`}</Text>
       )}
       {priceList != null && (

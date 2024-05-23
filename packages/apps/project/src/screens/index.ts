@@ -36,7 +36,7 @@ export default {
     },
   },
   ProjectDetailsScreen: {
-    title: 'Project_projects',
+    title: 'Project_Projects',
     component: ProjectDetailsScreen,
     actionID: 'project_project_details',
     options: {

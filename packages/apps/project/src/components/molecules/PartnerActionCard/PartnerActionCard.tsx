@@ -29,7 +29,7 @@ interface PartnerActionCardProps {
   partnerCode: string;
   partnerJob?: string;
   isContact?: boolean;
-  mainAddress?: any;
+  mainAddress?: string;
   fixedPhone?: string;
   mobilePhone?: string;
   partnerId: number;
@@ -64,18 +64,16 @@ const PartnerActionCard = ({
         partnerId={partnerId}
         isContact={isContact}
       />
-      <View style={styles.iconContainer}>
-        <CardIconButton
-          iconName={isContact ? 'telephone-fill' : 'geo-alt-fill'}
-          iconColor={Colors.secondaryColor_dark.background}
-          onPress={() => {
-            isContact
-              ? linkingProvider.openCallApp(fixedPhone || mobilePhone)
-              : linkingProvider.openMapApp(mainAddress?.fullName);
-          }}
-          style={styles.cardIconButton}
-        />
-      </View>
+      <CardIconButton
+        iconName={isContact ? 'telephone-fill' : 'geo-alt-fill'}
+        iconColor={Colors.secondaryColor_dark.background}
+        onPress={() => {
+          isContact
+            ? linkingProvider.openCallApp(mobilePhone || fixedPhone)
+            : linkingProvider.openMapApp(mainAddress);
+        }}
+        style={styles.cardIconButton}
+      />
     </View>
   );
 };
@@ -85,14 +83,12 @@ const styles = StyleSheet.create({
     width: '96%',
     flexDirection: 'row',
     marginVertical: 2,
+    flex: 1,
+    alignItems: 'center',
   },
   cardContainer: {
     flex: 6,
     margin: 2,
-  },
-  iconContainer: {
-    flexDirection: 'column',
-    flex: 1,
   },
   cardIconButton: {
     flex: 1,
