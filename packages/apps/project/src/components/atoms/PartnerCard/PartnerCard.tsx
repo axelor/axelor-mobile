@@ -16,29 +16,49 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import React from 'react';
+import React, {useCallback} from 'react';
 import {View, StyleSheet} from 'react-native';
 import {ObjectCard} from '@axelor/aos-mobile-ui';
-import {useMetafileUri} from '@axelor/aos-mobile-core';
+import {useMetafileUri, useNavigation} from '@axelor/aos-mobile-core';
 
 interface PartnerCardProps {
   style?: any;
   partnerPicture: any;
   partnerName: string;
+  partnerCode: string;
   partnerJob?: string;
+  isContact: boolean;
+  partnerId: number;
 }
 
 const PartnerCard = ({
   style,
   partnerPicture,
   partnerName,
+  partnerCode,
   partnerJob,
+  isContact,
+  partnerId,
 }: PartnerCardProps) => {
   const formatMetaFile = useMetafileUri();
+  const navigation = useNavigation();
+
+  const handleCardPress = useCallback(() => {
+    if (isContact) {
+      return navigation.navigate('ContactDetailsScreen', {
+        idContact: partnerId,
+      });
+    } else {
+      navigation.navigate('ClientDetailsScreen', {
+        idClient: partnerId,
+      });
+    }
+  }, [isContact, navigation, partnerId]);
 
   return (
     <View style={style}>
       <ObjectCard
+        onPress={handleCardPress}
         image={{
           generalStyle: styles.imageSize,
           imageSize: styles.imageSize,
@@ -53,7 +73,11 @@ const PartnerCard = ({
               isTitle: true,
             },
             {
-              displayText: partnerJob,
+              displayText: partnerCode,
+              hideIfNull: true,
+            },
+            {
+              indicatorText: partnerJob,
               iconName: 'suitcase-lg-fill',
               hideIfNull: true,
             },

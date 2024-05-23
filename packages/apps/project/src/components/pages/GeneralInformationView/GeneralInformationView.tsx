@@ -32,7 +32,7 @@ import {
   TagList,
   ScrollView,
 } from '@axelor/aos-mobile-ui';
-import {PartnerIconCard, ProjectHeader} from '../../molecules';
+import {PartnerActionCard, ProjectHeader} from '../../molecules';
 import {DropdownInvoicing, DropdownMembers} from '../../atoms';
 
 const GeneralInformationView = () => {
@@ -99,18 +99,22 @@ const GeneralInformationView = () => {
           data={project?.description}
           style={styles.notesCard}
         />
-        <PartnerIconCard
+        <PartnerActionCard
           partnerPicture={project.clientPartner?.picture}
           partnerName={project.clientPartner?.name}
-          partnerJob={project.clientPartner?.jobTitleFunction}
+          partnerCode={project.clientPartner?.partnerSeq}
+          partnerJob={project.clientPartner?.jobTitleFunction?.name}
           mainAddress={project.clientPartner?.mainAddress}
+          partnerId={project.clientPartner?.id}
         />
-        <PartnerIconCard
+        <PartnerActionCard
           partnerPicture={project.contactPartner?.picture}
           partnerName={project.contactPartner?.name}
-          partnerJob={project.contactPartner?.jobTitleFunction}
+          partnerCode={project.contactPartner?.partnerSeq}
+          partnerJob={project.contactPartner?.jobTitleFunction?.name}
           fixedPhone={project.contactPartner?.fixedPhone}
           mobilePhone={project.contactPartner?.mobilePhone}
+          partnerId={project.contactPartner?.id}
           isContact={true}
         />
         <DropdownCardSwitch

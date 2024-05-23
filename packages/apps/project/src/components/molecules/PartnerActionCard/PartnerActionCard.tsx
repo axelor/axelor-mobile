@@ -22,27 +22,31 @@ import {CardIconButton, useThemeColor} from '@axelor/aos-mobile-ui';
 import {linkingProvider} from '@axelor/aos-mobile-core';
 import {PartnerCard} from '../../atoms';
 
-interface PartnerIconCardProps {
+interface PartnerActionCardProps {
   style?: any;
   partnerPicture: any;
   partnerName: string;
+  partnerCode: string;
   partnerJob?: string;
   isContact?: boolean;
   mainAddress?: any;
   fixedPhone?: string;
   mobilePhone?: string;
+  partnerId: number;
 }
 
-const PartnerIconCard = ({
+const PartnerActionCard = ({
   style,
   partnerPicture,
   partnerName,
+  partnerCode,
   partnerJob,
   mainAddress,
   fixedPhone,
   mobilePhone,
   isContact = false,
-}: PartnerIconCardProps) => {
+  partnerId,
+}: PartnerActionCardProps) => {
   const Colors = useThemeColor();
 
   if (partnerName == null) {
@@ -55,7 +59,10 @@ const PartnerIconCard = ({
         partnerName={partnerName}
         style={styles.cardContainer}
         partnerPicture={partnerPicture}
+        partnerCode={partnerCode}
         partnerJob={partnerJob}
+        partnerId={partnerId}
+        isContact={isContact}
       />
       <View style={styles.iconContainer}>
         <CardIconButton
@@ -92,4 +99,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default PartnerIconCard;
+export default PartnerActionCard;

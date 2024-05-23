@@ -15,6 +15,7 @@
   "Project_Expenses": "Ndef",
   "Project_Purchases": "Achats",
   "Project_RefreshProject": "Actualiser le projet",
+  "Project_NoRelatedInvoicing": "Pas d'element lié à la facturation",
   "Project_SliceAction_SearchProject": "recherche sur les projets",
   "Project_SliceAction_FetchProjectById": "récupération du projet par id"
 }

@@ -36,6 +36,14 @@ const DropdownInvoicing = ({
 }: DropdownInvoicingProps) => {
   const I18n = useTranslator();
 
+  if (
+    currency == null &&
+    priceList == null &&
+    (invoiceBoolList == null || invoiceBoolList?.length === 0)
+  ) {
+    return <Text>{I18n.t('Project_NoRelatedInvoicing')}</Text>;
+  }
+
   return (
     <View style={style}>
       <TagList tags={invoiceBoolList} />
@@ -44,7 +52,6 @@ const DropdownInvoicing = ({
           currency?.code
         })`}</Text>
       )}
-
       {priceList != null && (
         <Text>{`${I18n.t('Project_PriceList')} : ${priceList?.title}`}</Text>
       )}

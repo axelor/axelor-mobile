@@ -28,6 +28,7 @@ export const project_modelAPI: ObjectFields = {
         picture: schemaContructor.subObject(),
         jobTitleFunction: schemaContructor.subObject(),
         name: schemaContructor.string(),
+        partnerSeq: schemaContructor.string(),
         mainAddress: schemaContructor.subObject('fullName').concat(
           schemaContructor.object({
             addressL4: schemaContructor.string(),
@@ -45,6 +46,7 @@ export const project_modelAPI: ObjectFields = {
         name: schemaContructor.string(),
         fixedPhone: schemaContructor.string(),
         mobilePhone: schemaContructor.string(),
+        partnerSeq: schemaContructor.string(),
       }),
     ),
     company: schemaContructor.subObject('name'),
