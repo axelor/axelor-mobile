@@ -16,7 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import React from 'react';
+import React, {useMemo} from 'react';
 import {StyleSheet, View} from 'react-native';
 import {Badge, LabelText, Text, useThemeColor} from '@axelor/aos-mobile-ui';
 import {useTranslator} from '@axelor/aos-mobile-core';
@@ -38,6 +38,13 @@ const ManufacturingOrderHeader = ({
   const Colors = useThemeColor();
   const I18n = useTranslator();
 
+  const isPriorityValid = useMemo(
+    () =>
+      priority != null &&
+      Object.values(ManufacturingOrder.priority).includes(priority),
+    [priority],
+  );
+
   return (
     <View style={styles.infoContainer}>
       <View style={styles.refContainer}>
@@ -57,13 +64,13 @@ const ManufacturingOrderHeader = ({
             title={ManufacturingOrder.getStatus(status, I18n)}
           />
         )}
-        {priority == null ? (
-          <View style={styles.refContainer} />
-        ) : (
+        {isPriorityValid ? (
           <Badge
             color={ManufacturingOrder.getPriorityColor(priority, Colors)}
             title={ManufacturingOrder.getPriority(priority, I18n)}
           />
+        ) : (
+          <View style={styles.refContainer} />
         )}
       </View>
     </View>
