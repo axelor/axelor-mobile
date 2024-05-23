@@ -3,6 +3,23 @@ title: 7.0.0
 tags: Changelog
 ---
 
+## [7.0.15] (2024-05-23)
+
+### @axelor/aos-mobile-ui
+
+#### Fixes
+
+- Increment: reset input correctly when user erase content
+- KeyboardAvoidingScrollView: hide keyboard when click outside of inputs
+
+### @axelor/aos-mobile-manufacturing
+
+#### Fixes
+
+- Manufacturing order: prevent display of empty badge when priority doesn't exist
+- Consumed products: prevent infinite loading on list screen
+- Operation order: disable stop button when timer is paused
+
 ## [7.0.14] (2024-05-03)
 
 ### @axelor/aos-mobile-core
@@ -549,6 +566,7 @@ The project architecture has also been updated, the example folder has been expl
 - Replace ChipSelect by MultiValuePicker on list screens
 - Add search bar details pop up on screens: add empowered searchBar for objects
 
+[7.0.15]: https://github.com/axelor/axelor-mobile/compare/7.0.14...7.0.15
 [7.0.14]: https://github.com/axelor/axelor-mobile/compare/7.0.13...7.0.14
 [7.0.13]: https://github.com/axelor/axelor-mobile/compare/7.0.12...7.0.13
 [7.0.12]: https://github.com/axelor/axelor-mobile/compare/7.0.11...7.0.12
