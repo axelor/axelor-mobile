@@ -22,7 +22,7 @@ import {
   useSelector,
   useDispatch,
   useTranslator,
-  useNavigation,
+  clipboardProvider,
 } from '@axelor/aos-mobile-core';
 import {
   HeaderContainer,
@@ -37,7 +37,6 @@ import {searchSubProject} from '../../../features/projectSlice';
 const SubProjectView = () => {
   const dispatch = useDispatch();
   const I18n = useTranslator();
-  const navigation = useNavigation();
 
   const {
     project,
@@ -71,55 +70,59 @@ const SubProjectView = () => {
         fixedItems={<ProjectHeader project={project} />}
         expandableFilter={false}
       />
-      <Text
-        style={[styles.title, styles.titleParentProject]}
-        writingType="details">
-        {I18n.t('Project_ParentProject')}
-      </Text>
-      <ProjectCard
-        onPress={() => {
-          navigation.navigate('ProjectDetailsScreen', {
-            projectId: project.id,
-          });
-        }}
-        customerPicture={project?.clientPartner?.picture}
-        name={project?.name}
-        code={project?.code}
-        customerName={project?.clientPartner?.name}
-        company={project?.company?.name}
-        assignedTo={project?.assignedTo?.fullName}
-        projectStatus={project?.projectStatus?.id}
-        parentProject={project?.parentProject?.fullName}
-      />
-      <HorizontalRule style={styles.horizontalRule} />
-      <Text style={styles.title} writingType="details">
-        {I18n.t('Project_ChildProject')}
-      </Text>
-      <ScrollList
-        data={subProjectList}
-        loadingList={loadingSubProject}
-        renderItem={({item}) => (
+      {project.parentProject != null && (
+        <>
+          <Text
+            style={[styles.title, styles.titleParentProject]}
+            writingType="details">
+            {I18n.t('Project_ParentProject')}
+          </Text>
           <ProjectCard
-            onPress={() => {
-              navigation.navigate('ProjectDetailsScreen', {
-                projectId: item.id,
-              });
-            }}
-            customerPicture={item?.clientPartner?.picture}
-            name={item?.name}
-            code={item?.code}
-            customerName={item?.clientPartner?.name}
-            company={item?.company?.name}
-            assignedTo={item?.assignedTo?.fullName}
-            projectStatus={item?.projectStatus?.id}
-            parentProject={item?.parentProject?.fullName}
+            onPress={() =>
+              clipboardProvider.copyToClipboard(project?.parentProject?.name)
+            }
+            customerPicture={project?.parentProject?.clientPartner?.picture}
+            name={project?.parentProject?.name}
+            code={project?.parentProject?.code}
+            customerName={project?.parentProject?.clientPartner?.name}
+            company={project?.parentProject?.company?.name}
+            assignedTo={project?.parentProject?.assignedTo?.fullName}
+            projectStatus={project?.parentProject?.projectStatus?.id}
+            parentProject={project?.parentProject?.parentProject?.fullName}
+            isCopyCard={true}
           />
-        )}
-        fetchData={fetchSubProjectAPI}
-        moreLoading={moreLoadingSubProject}
-        isListEnd={isListEndSubProject}
-        translator={I18n.t}
-      />
+          <HorizontalRule style={styles.horizontalRule} />
+        </>
+      )}
+      {subProjectList != null && subProjectList?.length > 0 && (
+        <>
+          <Text style={styles.title} writingType="details">
+            {I18n.t('Project_ChildProject')}
+          </Text>
+          <ScrollList
+            data={subProjectList}
+            loadingList={loadingSubProject}
+            renderItem={({item}) => (
+              <ProjectCard
+                onPress={() => clipboardProvider.copyToClipboard(item?.name)}
+                customerPicture={item?.clientPartner?.picture}
+                name={item?.name}
+                code={item?.code}
+                customerName={item?.clientPartner?.name}
+                company={item?.company?.name}
+                assignedTo={item?.assignedTo?.fullName}
+                projectStatus={item?.projectStatus?.id}
+                parentProject={item?.parentProject?.fullName}
+                isCopyCard={true}
+              />
+            )}
+            fetchData={fetchSubProjectAPI}
+            moreLoading={moreLoadingSubProject}
+            isListEnd={isListEndSubProject}
+            translator={I18n.t}
+          />
+        </>
+      )}
     </>
   );
 };

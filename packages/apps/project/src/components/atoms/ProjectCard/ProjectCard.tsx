@@ -23,7 +23,7 @@ import {
   useSelector,
   useTypeHelpers,
 } from '@axelor/aos-mobile-core';
-import {ObjectCard} from '@axelor/aos-mobile-ui';
+import {Icon, ObjectCard, useThemeColor} from '@axelor/aos-mobile-ui';
 
 interface ProjectCardProps {
   style?: any;
@@ -35,6 +35,7 @@ interface ProjectCardProps {
   assignedTo: string;
   projectStatus: any;
   parentProject: string;
+  isCopyCard?: boolean;
 }
 
 const ProjectCard = ({
@@ -47,7 +48,9 @@ const ProjectCard = ({
   assignedTo,
   projectStatus,
   parentProject,
+  isCopyCard = false,
 }: ProjectCardProps) => {
+  const Colors = useThemeColor();
   const formatMetaFile = useMetafileUri();
   const {getItemColorFromIndex} = useTypeHelpers();
 
@@ -70,6 +73,7 @@ const ProjectCard = ({
     <ObjectCard
       onPress={onPress}
       style={[borderStyle, style]}
+      showArrow={!isCopyCard}
       image={
         isCustomerLinked
           ? {
@@ -116,6 +120,16 @@ const ProjectCard = ({
           },
         ],
       }}
+      sideBadges={{
+        style: styles.badges,
+        items: [
+          isCopyCard && {
+            customComponent: (
+              <Icon name="copy" color={Colors.secondaryColor.background} />
+            ),
+          },
+        ],
+      }}
     />
   );
 };
@@ -132,6 +146,11 @@ const styles = StyleSheet.create({
   imageSize: {
     height: 50,
     width: 50,
+  },
+  badges: {
+    position: 'absolute',
+    justifyContent: 'flex-end',
+    right: 0,
   },
 });
 
