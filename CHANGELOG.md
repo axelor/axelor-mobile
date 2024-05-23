@@ -3,6 +3,35 @@ title: 7.2.0
 tags: Changelog
 ---
 
+## [7.2.11] (2024-05-23)
+
+### @axelor/aos-mobile-core
+
+#### Fixes
+
+- FormView: fix an error occuring when emptying date input
+
+### @axelor/aos-mobile-ui
+
+#### Fixes
+
+- Increment: reset input correctly when user erase content
+- KeyboardAvoidingScrollView: hide keyboard when click outside of inputs
+
+### @axelor/aos-mobile-hr
+
+#### Changes
+
+- Expense line: add possibility to manage custom upload action
+
+### @axelor/aos-mobile-manufacturing
+
+#### Fixes
+
+- Manufacturing order: prevent display of empty badge when priority doesn't exist
+- Consumed products: prevent infinite loading on list screen
+- Operation order: disable stop button when timer is paused
+
 ## [7.2.10] (2024-05-03)
 
 ### @axelor/aos-mobile-core
@@ -473,6 +502,7 @@ It enables user to manage Expenses through the mobile application. You can creat
 - Remove IconButton component which should be replaced by Button component.
 - Remove Pop-up components which should be replaced by Alert component.
 
+[7.2.11]: https://github.com/axelor/axelor-mobile/compare/7.2.10...7.2.11
 [7.2.10]: https://github.com/axelor/axelor-mobile/compare/7.2.9...7.2.10
 [7.2.9]: https://github.com/axelor/axelor-mobile/compare/7.2.8...7.2.9
 [7.2.8]: https://github.com/axelor/axelor-mobile/compare/7.2.7...7.2.8

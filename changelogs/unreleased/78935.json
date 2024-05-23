@@ -1,5 +1,0 @@
-{
-  "title": "Manufacturing order: prevent display of empty badge when priority doesn't exist",
-  "type": "fix",
-  "packages": "manufacturing"
-}
