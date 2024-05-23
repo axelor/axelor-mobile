@@ -59,6 +59,7 @@ const PartnerCard = ({
     <View style={style}>
       <ObjectCard
         onPress={handleCardPress}
+        style={styles.card}
         image={{
           generalStyle: styles.imageSize,
           imageSize: styles.imageSize,
@@ -92,6 +93,12 @@ const styles = StyleSheet.create({
   imageSize: {
     height: 50,
     width: 50,
+  },
+  card: {
+    margin: 0,
+    padding: 0,
+    marginHorizontal: 0,
+    marginRight: 5,
   },
 });
 

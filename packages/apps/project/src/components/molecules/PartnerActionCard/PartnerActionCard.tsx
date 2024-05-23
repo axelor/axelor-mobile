@@ -80,7 +80,8 @@ const PartnerActionCard = ({
 
 const styles = StyleSheet.create({
   container: {
-    width: '96%',
+    width: '90%',
+    alignSelf: 'center',
     flexDirection: 'row',
     marginVertical: 2,
     flex: 1,
@@ -88,7 +89,6 @@ const styles = StyleSheet.create({
   },
   cardContainer: {
     flex: 6,
-    margin: 2,
   },
   cardIconButton: {
     flex: 1,
