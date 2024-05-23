@@ -61,6 +61,13 @@ const ManufacturingOrderCard = ({
     )?.border;
   }, [Colors, status]);
 
+  const isPriorityValid = useMemo(
+    () =>
+      priority != null &&
+      Object.values(ManufacturingOrder.priority).includes(priority),
+    [priority],
+  );
+
   return (
     <TouchableOpacity onPress={onPress} activeOpacity={0.9}>
       <Card style={[styles.container, borderStyle, style]}>
@@ -83,12 +90,12 @@ const ManufacturingOrderCard = ({
           )}
         </View>
         <View style={styles.rightContainer}>
-          {priority == null ? null : (
+          {isPriorityValid ? (
             <Badge
               color={ManufacturingOrder.getPriorityColor(priority, Colors)}
               title={ManufacturingOrder.getPriority(priority, I18n)}
             />
-          )}
+          ) : null}
           <Icon
             name="chevron-right"
             color={Colors.secondaryColor.background_light}
