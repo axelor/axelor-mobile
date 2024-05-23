@@ -134,6 +134,7 @@ const GeneralInformationView = () => {
               ),
             },
           ]}
+          style={styles.marginBottom}
         />
       </ScrollView>
     </View>
@@ -157,6 +158,9 @@ const styles = StyleSheet.create({
   },
   notesCard: {
     marginTop: 24,
+  },
+  marginBottom: {
+    marginBottom: 100,
   },
 });
 

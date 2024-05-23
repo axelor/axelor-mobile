@@ -19,7 +19,6 @@
 import React from 'react';
 import {StyleSheet, View} from 'react-native';
 import {
-  getTypes,
   useSelector,
   useTranslator,
   useTypeHelpers,
@@ -39,11 +38,12 @@ interface ProjectHeaderProps {
 const ProjectHeader = ({project}: ProjectHeaderProps) => {
   const Colors = useThemeColor();
   const I18n = useTranslator();
-  const Project = getTypes().Project;
-  const {getItemColor, getItemTitle} = useTypeHelpers();
+  const {getItemColorFromIndex} = useTypeHelpers();
 
   const {base: baseConfig} = useSelector(state => state.appConfig);
   const {user} = useSelector(state => state.user);
+
+  const {projectStatusList} = useSelector(state => state.project_project);
 
   return (
     <View style={styles.container}>
@@ -75,13 +75,10 @@ const ProjectHeader = ({project}: ProjectHeaderProps) => {
         </View>
         <View style={[styles.columnContainer, styles.alignEnd]}>
           <Badge
-            title={getItemTitle(
-              Project.projectStatus,
-              project?.projectStatus?.id,
-            )}
-            color={getItemColor(
-              Project.projectStatus,
-              project?.projectStatus?.id,
+            title={project?.projectStatus?.name}
+            color={getItemColorFromIndex(
+              projectStatusList,
+              project?.projectStatus,
             )}
             style={styles.badge}
           />
