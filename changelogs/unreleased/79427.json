@@ -1,5 +1,5 @@
 {
-  "title": "HtmlInput: fix refresh data issue",
+  "title": "HtmlInput: refresh componentn when default input data change",
   "type": "fix",
   "packages": "ui"
 }
