@@ -108,7 +108,7 @@ const ProjectListView = ({
           }}
           name={item.name}
           code={item.code}
-          company={item?.company?.name}
+          company={item.company?.name}
           assignedTo={isAssignedToMe ? null : item.assignedTo?.fullName}
           parentProject={item.parentProject?.fullName}
         />
