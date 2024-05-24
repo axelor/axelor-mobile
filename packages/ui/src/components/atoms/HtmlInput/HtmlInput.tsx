@@ -64,6 +64,12 @@ const HtmlInput = ({
   };
 
   useEffect(() => {
+    if (defaultInput == null || defaultInput === '') {
+      editor.current.setContentHTML('');
+      if (editor.current.isKeyboardOpen) {
+        editor.current.dismissKeyboard();
+      }
+    }
     setKey(defaultInput);
   }, [defaultInput]);
 
