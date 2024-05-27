@@ -84,4 +84,7 @@ export const project_modelAPI: ObjectFields = {
     name: schemaContructor.string(),
     isCompleted: schemaContructor.boolean(),
   }),
+  project_projectPriority: schemaContructor.object({
+    name: schemaContructor.string(),
+  }),
 };

@@ -21,7 +21,11 @@ import {
   generateInifiniteScrollCases,
   handlerApiCall,
 } from '@axelor/aos-mobile-core';
-import {searchProjectTask as _searchProjectTask} from '../api/project-task-api';
+import {
+  searchProjectTask as _searchProjectTask,
+  fetchProjectTaskStatus as _fetchProjectTaskStatus,
+  fetchProjectPriority as _fetchProjectPriority,
+} from '../api/project-task-api';
 
 export const searchProjectTask = createAsyncThunk(
   'project_projectTask/searchProjectTask',
@@ -36,11 +40,41 @@ export const searchProjectTask = createAsyncThunk(
   },
 );
 
+export const fetchProjectTaskStatus = createAsyncThunk(
+  'project_projectTask/fetchProjectTaskStatus',
+  async function (data, {getState}) {
+    return handlerApiCall({
+      fetchFunction: _fetchProjectTaskStatus,
+      data,
+      action: 'Project_SliceAction_FetchProjectTaskStatus',
+      getState,
+      responseOptions: {isArrayResponse: true},
+    });
+  },
+);
+
+export const fetchProjectPriority = createAsyncThunk(
+  'project_projectTask/fetchProjectPriority',
+  async function (data, {getState}) {
+    return handlerApiCall({
+      fetchFunction: _fetchProjectPriority,
+      data,
+      action: 'Project_SliceAction_FetchProjectPriority',
+      getState,
+      responseOptions: {isArrayResponse: true},
+    });
+  },
+);
+
 const initialState = {
   loading: true,
   moreLoading: false,
   isListEnd: false,
   projectTaskList: [],
+
+  projectTaskStatusList: [],
+
+  projectPriorityList: [],
 };
 
 const projectTaskSlice = createSlice({
@@ -52,6 +86,12 @@ const projectTaskSlice = createSlice({
       moreLoading: 'moreLoading',
       isListEnd: 'isListEnd',
       list: 'projectTaskList',
+    });
+    builder.addCase(fetchProjectTaskStatus.fulfilled, (state, action) => {
+      state.projectTaskStatusList = action.payload;
+    });
+    builder.addCase(fetchProjectPriority.fulfilled, (state, action) => {
+      state.projectPriorityList = action.payload;
     });
   },
 });

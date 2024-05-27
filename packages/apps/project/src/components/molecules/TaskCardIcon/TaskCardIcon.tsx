@@ -29,8 +29,8 @@ interface TaskCardIconProps {
   taskDeadline?: string;
   parentTask?: string;
   progress?: number;
-  priority?: number;
-  status?: number;
+  priority?: any;
+  status?: any;
 }
 
 const TaskCardIcon = ({

@@ -18,7 +18,7 @@
 
 import React, {useMemo} from 'react';
 import {StyleSheet, View} from 'react-native';
-import {useTypes, useTypeHelpers} from '@axelor/aos-mobile-core';
+import {useTypeHelpers, useSelector} from '@axelor/aos-mobile-core';
 import {Badge, ObjectCard, ProgressBar} from '@axelor/aos-mobile-ui';
 import {DateDisplay} from '@axelor/aos-mobile-core';
 
@@ -29,8 +29,8 @@ interface TaskCardProps {
   taskDeadline?: string;
   parentTask?: string;
   progress?: number;
-  priority?: number;
-  status?: number;
+  priority?: any;
+  status?: any;
 }
 
 const TaskCard = ({
@@ -43,13 +43,20 @@ const TaskCard = ({
   priority,
   status,
 }: TaskCardProps) => {
-  const {ProjectTask} = useTypes();
-  const {getItemColor, getItemTitle} = useTypeHelpers();
+  const {getItemColorFromIndex} = useTypeHelpers();
+
+  const {projectTaskStatusList, projectPriorityList} = useSelector(
+    (state: any) => state.project_projectTask,
+  );
 
   const borderStyle = useMemo(() => {
-    return getStyles(getItemColor(ProjectTask?.taskStatus, status)?.background)
-      ?.border;
-  }, [getItemColor, ProjectTask?.taskStatus, status]);
+    return (
+      status != null &&
+      getStyles(
+        getItemColorFromIndex(projectTaskStatusList, status)?.background,
+      )?.border
+    );
+  }, [status, getItemColorFromIndex, projectTaskStatusList]);
 
   return (
     <ObjectCard
@@ -88,8 +95,8 @@ const TaskCard = ({
                   styleTxt={styles.textProgressBar}
                 />
                 <Badge
-                  title={getItemTitle(ProjectTask?.priority, priority)}
-                  color={getItemColor(ProjectTask?.priority, priority)}
+                  title={priority?.name}
+                  color={getItemColorFromIndex(projectPriorityList, priority)}
                 />
               </View>
             ),

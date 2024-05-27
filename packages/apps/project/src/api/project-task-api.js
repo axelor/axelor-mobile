@@ -95,3 +95,21 @@ export async function searchProjectTask({
     page,
   });
 }
+
+export async function fetchProjectTaskStatus() {
+  return createStandardSearch({
+    model: 'com.axelor.apps.project.db.TaskStatus',
+    fieldKey: 'project_projectStatus',
+    numberElementsByPage: null,
+    page: 0,
+  });
+}
+
+export async function fetchProjectPriority() {
+  return createStandardSearch({
+    model: 'com.axelor.apps.project.db.ProjectPriority',
+    fieldKey: 'project_projectPriority',
+    numberElementsByPage: null,
+    page: 0,
+  });
+}

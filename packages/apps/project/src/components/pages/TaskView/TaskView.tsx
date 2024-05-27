@@ -22,25 +22,32 @@ import {
   useSelector,
   useDispatch,
   SearchListView,
-  useTypes,
   useTypeHelpers,
   useTranslator,
 } from '@axelor/aos-mobile-core';
 import {MultiValuePicker, ToggleButton} from '@axelor/aos-mobile-ui';
 import {ProjectHeader, TaskCardIcon} from '../../molecules';
-import {searchProjectTask} from '../../../features/projectTaskSlice';
+import {
+  searchProjectTask,
+  fetchProjectTaskStatus,
+  fetchProjectPriority,
+} from '../../../features/projectTaskSlice';
 
 const TaskView = () => {
   const dispatch = useDispatch();
   const I18n = useTranslator();
 
-  const {ProjectTask} = useTypes();
-  const {getSelectionItems} = useTypeHelpers();
+  const {getCustomSelectionItems} = useTypeHelpers();
 
   const {project} = useSelector((state: any) => state.project_project);
-  const {loading, moreLoading, isListEnd, projectTaskList} = useSelector(
-    (state: any) => state.project_projectTask,
-  );
+  const {
+    loading,
+    moreLoading,
+    isListEnd,
+    projectTaskList,
+    projectTaskStatusList,
+    projectPriorityList,
+  } = useSelector((state: any) => state.project_projectTask);
   const {userId} = useSelector((state: any) => state.auth);
 
   const [selectedStatus, setSelectedStatus] = useState([]);
@@ -69,16 +76,20 @@ const TaskView = () => {
 
   useEffect(() => {
     dispatch((searchProjectTask as any)(sliceFunctionData));
+    dispatch((fetchProjectTaskStatus as any)());
+    dispatch((fetchProjectPriority as any)());
   }, [dispatch, sliceFunctionData]);
 
   const statusList = useMemo(
-    () => getSelectionItems(ProjectTask?.taskStatus, selectedStatus),
-    [getSelectionItems, ProjectTask?.taskStatus, selectedStatus],
+    () =>
+      getCustomSelectionItems(projectTaskStatusList, 'name', selectedStatus),
+    [projectTaskStatusList, getCustomSelectionItems, selectedStatus],
   );
 
   const priorityList = useMemo(
-    () => getSelectionItems(ProjectTask?.priority, selectedPriority),
-    [getSelectionItems, ProjectTask?.priority, selectedPriority],
+    () =>
+      getCustomSelectionItems(projectPriorityList, 'name', selectedPriority),
+    [projectPriorityList, getCustomSelectionItems, selectedPriority],
   );
 
   return (
@@ -130,8 +141,8 @@ const TaskView = () => {
           taskDeadline={item?.taskDeadline}
           parentTask={item?.parentTask?.fullName}
           progress={item?.progress}
-          priority={item?.priority?.id}
-          status={item?.status?.id}
+          priority={item?.priority}
+          status={item?.status}
         />
       )}
     />
