@@ -27,11 +27,47 @@ export const project_modelAPI: ObjectFields = {
       schemaContructor.object({
         picture: schemaContructor.subObject(),
         name: schemaContructor.string(),
+        partnerSeq: schemaContructor.string(),
+        mainAddress: schemaContructor.subObject('fullName').concat(
+          schemaContructor.object({
+            addressL4: schemaContructor.string(),
+            addressL7Country: schemaContructor.subObject('symbol'),
+            city: schemaContructor.subObject('name'),
+            zip: schemaContructor.string(),
+          }),
+        ),
+      }),
+    ),
+    contactPartner: schemaContructor.subObject().concat(
+      schemaContructor.object({
+        picture: schemaContructor.subObject(),
+        jobTitleFunction: schemaContructor.subObject('name'),
+        name: schemaContructor.string(),
+        simpleFullName: schemaContructor.string(),
+        fixedPhone: schemaContructor.string(),
+        mobilePhone: schemaContructor.string(),
+        partnerSeq: schemaContructor.string(),
       }),
     ),
     company: schemaContructor.subObject('name'),
     assignedTo: schemaContructor.subObject('fullName'),
     parentProject: schemaContructor.subObject('fullName'),
+    isBusinessProject: schemaContructor.boolean(),
+    fromDate: schemaContructor.string(),
+    toDate: schemaContructor.string(),
+    siteSet: schemaContructor.array().of(schemaContructor.subObject()),
+    description: schemaContructor.string(),
+    team: schemaContructor.subObject(),
+    membersUserSet: schemaContructor.array().of(schemaContructor.subObject()),
+    toInvoice: schemaContructor.boolean(),
+    isInvoicingExpenses: schemaContructor.boolean(),
+    isInvoicingPurchases: schemaContructor.boolean(),
+    currency: schemaContructor.subObject().concat(
+      schemaContructor.object({
+        symbol: schemaContructor.string(),
+      }),
+    ),
+    priceList: schemaContructor.subObject(),
   }),
   project_projectStatus: schemaContructor.object({
     name: schemaContructor.string(),

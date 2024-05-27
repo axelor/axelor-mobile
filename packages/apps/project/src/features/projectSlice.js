@@ -23,6 +23,7 @@ import {
 } from '@axelor/aos-mobile-core';
 import {
   fetchProjectStatus as _fetchProjectStatus,
+  fetchProjectById as _fetchProjectById,
   searchProject as _searchProject,
 } from '../api/project-api';
 
@@ -52,6 +53,19 @@ export const fetchProjectStatus = createAsyncThunk(
   },
 );
 
+export const fetchProjectById = createAsyncThunk(
+  'project_project/fetchProjectById',
+  async function (data, {getState}) {
+    return handlerApiCall({
+      fetchFunction: _fetchProjectById,
+      data,
+      action: 'Project_SliceAction_FetchProjectById',
+      getState,
+      responseOptions: {isArrayResponse: false},
+    });
+  },
+);
+
 const initialState = {
   loading: true,
   moreLoading: false,
@@ -59,6 +73,9 @@ const initialState = {
   projectList: [],
 
   projectStatusList: [],
+
+  loadingProject: true,
+  project: {},
 };
 
 const projectSlice = createSlice({
@@ -73,6 +90,13 @@ const projectSlice = createSlice({
     });
     builder.addCase(fetchProjectStatus.fulfilled, (state, action) => {
       state.projectStatusList = action.payload;
+    });
+    builder.addCase(fetchProjectById.pending, state => {
+      state.loadingProject = true;
+    });
+    builder.addCase(fetchProjectById.fulfilled, (state, action) => {
+      state.loadingProject = false;
+      state.project = action.payload;
     });
   },
 });
