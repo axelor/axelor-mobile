@@ -16,8 +16,8 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-export * from './atoms';
-export * from './molecules';
-export * from './organisms';
-export * from './templates';
-export * from './pages';
+export {default as DropdownInvoicing} from './DropdownInvoicing/DropdownInvoicing';
+export {default as DropdownMembers} from './DropdownMembers/DropdownMembers';
+export {default as PartnerActionCard} from './PartnerActionCard/PartnerActionCard';
+export {default as ProjectHeader} from './ProjectHeader/ProjectHeader';
+export {default as ProjectSiteTags} from './ProjectSiteTags/ProjectSiteTags';
