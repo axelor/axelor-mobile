@@ -52,6 +52,11 @@ export const ProjectModule: Module = {
       icon: 'briefcase-fill',
       screen: 'BuisnessProjectScreen',
     },
+    project_menu_tasks: {
+      title: 'Project_Tasks',
+      icon: 'card-list',
+      screen: 'TaskListScreen',
+    },
   },
   screens: {
     ...ProjectScreens,
