@@ -16,8 +16,25 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-export * from './atoms';
-export * from './molecules';
-export * from './organisms';
-export * from './templates';
-export * from './pages';
+import React, {useMemo} from 'react';
+import {useSelector, useTranslator} from '@axelor/aos-mobile-core';
+import {TagList} from '@axelor/aos-mobile-ui';
+
+const ProjectSiteTags = ({}) => {
+  const I18n = useTranslator();
+
+  const {project} = useSelector((state: any) => state.project_project);
+  const {base: baseConfig} = useSelector(state => state.appConfig);
+
+  const siteSet = useMemo(() => {
+    return project.siteSet?.map(site => ({title: site?.fullName}));
+  }, [project.siteSet]);
+
+  if (!baseConfig?.enableSiteManagementForProject) {
+    return null;
+  }
+
+  return <TagList title={I18n.t('Project_Sites')} tags={siteSet} />;
+};
+
+export default ProjectSiteTags;
