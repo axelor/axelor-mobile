@@ -17,6 +17,7 @@
  */
 
 import BuisnessProjectScreen from './BuisnessProjectScreen';
+import ProjectDetailsScreen from './ProjectDetailsScreen';
 import ProjectScreen from './ProjectScreen';
 
 export default {
@@ -30,6 +31,14 @@ export default {
   ProjectScreen: {
     title: 'Project_Projects',
     component: ProjectScreen,
+    options: {
+      shadedHeader: false,
+    },
+  },
+  ProjectDetailsScreen: {
+    title: 'Project_Projects',
+    component: ProjectDetailsScreen,
+    actionID: 'project_project_details',
     options: {
       shadedHeader: false,
     },
