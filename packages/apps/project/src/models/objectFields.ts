@@ -43,6 +43,7 @@ export const project_modelAPI: ObjectFields = {
         picture: schemaContructor.subObject(),
         jobTitleFunction: schemaContructor.subObject('name'),
         name: schemaContructor.string(),
+        simpleFullName: schemaContructor.string(),
         fixedPhone: schemaContructor.string(),
         mobilePhone: schemaContructor.string(),
         partnerSeq: schemaContructor.string(),

@@ -16,30 +16,43 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import React from 'react';
+import React, {useMemo} from 'react';
 import {View} from 'react-native';
-import {TagList, Text} from '@axelor/aos-mobile-ui';
+import {LabelText, TagList, Text} from '@axelor/aos-mobile-ui';
 import {useTranslator} from '@axelor/aos-mobile-core';
 
 interface DropdownInvoicingProps {
   style?: any;
-  invoiceBoolList: any;
-  currency: any;
+  currency?: any;
   priceList?: any;
+  tasksInvoicing?: boolean;
+  expensesInvoicing?: boolean;
+  purchasesInvoicing?: boolean;
 }
 
 const DropdownInvoicing = ({
   style,
-  invoiceBoolList,
   currency,
   priceList,
+  tasksInvoicing,
+  expensesInvoicing,
+  purchasesInvoicing,
 }: DropdownInvoicingProps) => {
   const I18n = useTranslator();
+
+  const invoiceBoolList = useMemo(
+    () => [
+      {title: I18n.t('Project_PackagedTask'), hidden: !tasksInvoicing},
+      {title: I18n.t('Project_Expenses'), hidden: !expensesInvoicing},
+      {title: I18n.t('Project_Purchases'), hidden: !purchasesInvoicing},
+    ],
+    [I18n, expensesInvoicing, purchasesInvoicing, tasksInvoicing],
+  );
 
   if (
     currency == null &&
     priceList == null &&
-    (invoiceBoolList == null || invoiceBoolList?.length === 0)
+    invoiceBoolList?.filter(({hidden}) => !hidden)?.length === 0
   ) {
     return <Text>{I18n.t('Project_NoRelatedInvoicing')}</Text>;
   }
@@ -48,12 +61,18 @@ const DropdownInvoicing = ({
     <View style={style}>
       <TagList tags={invoiceBoolList} />
       {currency != null && (
-        <Text>{`${I18n.t('Project_Currency')} : ${currency?.name} (${
-          currency?.symbol
-        })`}</Text>
+        <LabelText
+          title={`${I18n.t('Project_Currency')} :`}
+          value={`${currency?.name} (${currency?.symbol})`}
+          textSize={16}
+        />
       )}
       {priceList != null && (
-        <Text>{`${I18n.t('Project_PriceList')} : ${priceList?.title}`}</Text>
+        <LabelText
+          title={`${I18n.t('Project_PriceList')} :`}
+          value={priceList?.title}
+          textSize={16}
+        />
       )}
     </View>
   );

@@ -31,18 +31,16 @@ import {
   useThemeColor,
 } from '@axelor/aos-mobile-ui';
 
-interface ProjectHeaderProps {
-  project: any;
-}
-
-const ProjectHeader = ({project}: ProjectHeaderProps) => {
+const ProjectHeader = ({}) => {
   const Colors = useThemeColor();
   const I18n = useTranslator();
   const {getItemColorFromIndex} = useTypeHelpers();
 
   const {base: baseConfig} = useSelector(state => state.appConfig);
   const {user} = useSelector(state => state.user);
-  const {projectStatusList} = useSelector(state => state.project_project);
+  const {project, projectStatusList} = useSelector(
+    state => state.project_project,
+  );
 
   return (
     <View style={styles.container}>
@@ -72,14 +70,16 @@ const ProjectHeader = ({project}: ProjectHeaderProps) => {
         )}
       </View>
       <View style={[styles.columnContainer, styles.alignEnd]}>
-        <Badge
-          title={project?.projectStatus?.name}
-          color={getItemColorFromIndex(
-            projectStatusList,
-            project?.projectStatus,
-          )}
-          style={styles.badge}
-        />
+        {project?.projectStatus != null && (
+          <Badge
+            title={project?.projectStatus?.name}
+            color={getItemColorFromIndex(
+              projectStatusList,
+              project?.projectStatus,
+            )}
+            style={styles.badge}
+          />
+        )}
         {project?.isBusinessProject && (
           <Badge
             title={I18n.t('Project_Buisness')}

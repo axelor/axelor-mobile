@@ -16,28 +16,25 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import React from 'react';
-import {View} from 'react-native';
-import {TagList, Text, checkNullString} from '@axelor/aos-mobile-ui';
-import {useTranslator} from '@axelor/aos-mobile-core';
+import React, {useMemo} from 'react';
+import {useSelector, useTranslator} from '@axelor/aos-mobile-core';
+import {TagList} from '@axelor/aos-mobile-ui';
 
-interface DropdownMembersProps {
-  style?: any;
-  team: string;
-  members: any;
-}
-
-const DropdownMembers = ({style, team, members}: DropdownMembersProps) => {
+const ProjectSiteTags = ({}) => {
   const I18n = useTranslator();
 
-  return (
-    <View style={style}>
-      {!checkNullString(team) && (
-        <Text>{`${I18n.t('Project_Team')} : ${team}`}</Text>
-      )}
-      <TagList title={I18n.t('Project_Members')} tags={members} />
-    </View>
-  );
+  const {project} = useSelector((state: any) => state.project_project);
+  const {base: baseConfig} = useSelector(state => state.appConfig);
+
+  const siteSet = useMemo(() => {
+    return project.siteSet?.map(site => ({title: site?.fullName}));
+  }, [project.siteSet]);
+
+  if (!baseConfig?.enableSiteManagementForProject) {
+    return null;
+  }
+
+  return <TagList title={I18n.t('Project_Sites')} tags={siteSet} />;
 };
 
-export default DropdownMembers;
+export default ProjectSiteTags;

@@ -16,60 +16,22 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import React, {useMemo} from 'react';
+import React from 'react';
 import {StyleSheet, View} from 'react-native';
+import {isEmpty, useSelector, useTranslator} from '@axelor/aos-mobile-core';
+import {HeaderContainer, NotesCard, ScrollView} from '@axelor/aos-mobile-ui';
+import {DatesDisplay} from '../../atoms';
 import {
-  DateDisplay,
-  isEmpty,
-  useSelector,
-  useTranslator,
-} from '@axelor/aos-mobile-core';
-import {
-  DropdownCardSwitch,
-  HeaderContainer,
-  Icon,
-  NotesCard,
-  TagList,
-  ScrollView,
-} from '@axelor/aos-mobile-ui';
-import {PartnerActionCard, ProjectHeader} from '../../molecules';
-import {DropdownInvoicing, DropdownMembers} from '../../atoms';
+  PartnerActionCard,
+  ProjectHeader,
+  ProjectSiteTags,
+} from '../../molecules';
+import {ProjectDropdownCards} from '../../organisms';
 
 const GeneralInformationView = () => {
   const I18n = useTranslator();
 
   const {project} = useSelector((state: any) => state.project_project);
-  const {base: baseConfig} = useSelector(state => state.appConfig);
-
-  const siteSet = useMemo(() => {
-    return project?.siteSet?.map(site => ({title: site?.fullName}));
-  }, [project?.siteSet]);
-
-  const members = useMemo(() => {
-    return project?.membersUserSet?.map(member => ({title: member?.fullName}));
-  }, [project?.membersUserSet]);
-
-  const invoiceBoolList = useMemo(() => {
-    const booleanArray = [];
-    if (project?.toInvoice) {
-      booleanArray.push({
-        title: `${I18n.t('Project_PackagedTask')}`,
-      });
-    }
-    if (project?.isInvoicingExpenses) {
-      booleanArray.push({title: `${I18n.t('Project_Expenses')}`});
-    }
-    if (project?.isInvoicingPurchases) {
-      booleanArray.push({title: `${I18n.t('Project_Purchases')}`});
-    }
-
-    return booleanArray;
-  }, [
-    I18n,
-    project?.isInvoicingExpenses,
-    project?.isInvoicingPurchases,
-    project?.toInvoice,
-  ]);
 
   if (project == null || isEmpty(project)) {
     return null;
@@ -79,66 +41,20 @@ const GeneralInformationView = () => {
     <View>
       <HeaderContainer
         expandableFilter={false}
-        fixedItems={<ProjectHeader project={project} />}
+        fixedItems={<ProjectHeader />}
       />
       <ScrollView style={styles.scrollView}>
         <View style={styles.margin}>
-          <View style={styles.dateContainer}>
-            <DateDisplay date={project.fromDate} />
-            {project.fromDate != null && project.toDate != null && (
-              <Icon name="arrow-right" size={30} style={styles.icon} />
-            )}
-            <DateDisplay date={project.toDate} />
-          </View>
-          {baseConfig?.enableSiteManagementForProject && (
-            <TagList title={I18n.t('Project_Sites')} tags={siteSet} />
-          )}
+          <DatesDisplay fromDate={project.fromDate} toDate={project.toDate} />
+          <ProjectSiteTags />
         </View>
         <NotesCard
           title={I18n.t('Base_Description')}
-          data={project?.description}
-          style={styles.notesCard}
+          data={project.description}
         />
-        <PartnerActionCard
-          partnerPicture={project.clientPartner?.picture}
-          partnerName={project.clientPartner?.name}
-          partnerCode={project.clientPartner?.partnerSeq}
-          mainAddress={project.clientPartner?.mainAddress?.fullName}
-          partnerId={project.clientPartner?.id}
-        />
-        <PartnerActionCard
-          partnerPicture={project.contactPartner?.picture}
-          partnerName={project.contactPartner?.name}
-          partnerCode={project.contactPartner?.partnerSeq}
-          partnerJob={project.contactPartner?.jobTitleFunction?.name}
-          fixedPhone={project.contactPartner?.fixedPhone}
-          mobilePhone={project.contactPartner?.mobilePhone}
-          partnerId={project.contactPartner?.id}
-          isContact={true}
-        />
-        <DropdownCardSwitch
-          dropdownItems={[
-            {
-              key: 1,
-              title: I18n.t('Project_Invoicing'),
-              childrenComp: (
-                <DropdownInvoicing
-                  currency={project?.currency}
-                  invoiceBoolList={invoiceBoolList}
-                  priceList={project?.priceList}
-                />
-              ),
-            },
-            {
-              key: 2,
-              title: I18n.t('Project_Members'),
-              childrenComp: (
-                <DropdownMembers team={project?.team?.name} members={members} />
-              ),
-            },
-          ]}
-          style={styles.dropdown}
-        />
+        <PartnerActionCard partner={project.clientPartner} />
+        <PartnerActionCard partner={project.contactPartner} isContact />
+        <ProjectDropdownCards />
       </ScrollView>
     </View>
   );
@@ -151,21 +67,6 @@ const styles = StyleSheet.create({
   margin: {
     width: '90%',
     alignSelf: 'center',
-  },
-  dateContainer: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-  },
-  icon: {
-    marginHorizontal: 2,
-  },
-  notesCard: {
-    marginTop: 15,
-  },
-  dropdown: {
-    marginTop: 5,
-    marginBottom: 100,
   },
 });
 

@@ -18,7 +18,7 @@
 
 import React, {useEffect} from 'react';
 import {Screen, BottomBar, useThemeColor} from '@axelor/aos-mobile-ui';
-import {useDispatch} from '@axelor/aos-mobile-core';
+import {useDispatch, useSelector} from '@axelor/aos-mobile-core';
 import {GeneralInformationView} from '../components';
 import {fetchProjectById} from '../features/projectSlice';
 
@@ -28,8 +28,10 @@ const ProjectDetailsScreen = ({route}) => {
   const Colors = useThemeColor();
   const dispatch = useDispatch();
 
+  const {project} = useSelector((state: any) => state.project_project);
+
   useEffect(() => {
-    dispatch((fetchProjectById as any)({projectId: projectId}));
+    dispatch((fetchProjectById as any)({projectId}));
   }, [projectId, dispatch]);
 
   const bottomBarItems = [
@@ -39,6 +41,11 @@ const ProjectDetailsScreen = ({route}) => {
       color: Colors.secondaryColor_dark,
     },
   ];
+
+  if (project?.id !== projectId) {
+    return null;
+  }
+
   return (
     <Screen removeSpaceOnTop={true}>
       <BottomBar items={bottomBarItems} />

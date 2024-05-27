@@ -16,7 +16,6 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-export {default as DropdownInvoicing} from './DropdownInvoicing/DropdownInvoicing';
-export {default as DropdownMembers} from './DropdownMembers/DropdownMembers';
 export {default as PartnerCard} from './PartnerCard/PartnerCard';
 export {default as ProjectCard} from './ProjectCard/ProjectCard';
+export {default as DatesDisplay} from './DatesDisplay/DatesDisplay';

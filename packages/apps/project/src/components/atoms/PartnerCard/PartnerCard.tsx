@@ -23,22 +23,22 @@ import {useMetafileUri, useNavigation} from '@axelor/aos-mobile-core';
 
 interface PartnerCardProps {
   style?: any;
-  partnerPicture: any;
-  partnerName: string;
-  partnerCode: string;
-  partnerJob?: string;
+  picture: any;
+  name: string;
+  code: string;
+  jobName?: string;
+  id: number;
   isContact: boolean;
-  partnerId: number;
 }
 
 const PartnerCard = ({
   style,
-  partnerPicture,
-  partnerName,
-  partnerCode,
-  partnerJob,
+  picture,
+  name,
+  code,
+  jobName,
+  id,
   isContact,
-  partnerId,
 }: PartnerCardProps) => {
   const formatMetaFile = useMetafileUri();
   const navigation = useNavigation();
@@ -46,14 +46,14 @@ const PartnerCard = ({
   const handleCardPress = useCallback(() => {
     if (isContact) {
       return navigation.navigate('ContactDetailsScreen', {
-        idContact: partnerId,
+        idContact: id,
       });
     } else {
       navigation.navigate('ClientDetailsScreen', {
-        idClient: partnerId,
+        idClient: id,
       });
     }
-  }, [isContact, navigation, partnerId]);
+  }, [isContact, navigation, id]);
 
   return (
     <View style={style}>
@@ -65,20 +65,20 @@ const PartnerCard = ({
           imageSize: styles.imageSize,
           resizeMode: 'contain',
           defaultIconSize: 50,
-          source: formatMetaFile(partnerPicture?.id),
+          source: formatMetaFile(picture?.id),
         }}
         upperTexts={{
           items: [
             {
-              displayText: partnerName,
+              displayText: name,
               isTitle: true,
             },
             {
-              displayText: partnerCode,
+              displayText: code,
               hideIfNull: true,
             },
             {
-              indicatorText: partnerJob,
+              indicatorText: jobName,
               iconName: 'suitcase-lg-fill',
               hideIfNull: true,
             },

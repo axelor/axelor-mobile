@@ -16,64 +16,85 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import React from 'react';
+import React, {useMemo} from 'react';
 import {StyleSheet, View} from 'react-native';
 import {CardIconButton, useThemeColor} from '@axelor/aos-mobile-ui';
-import {linkingProvider} from '@axelor/aos-mobile-core';
+import {isEmpty, linkingProvider} from '@axelor/aos-mobile-core';
 import {PartnerCard} from '../../atoms';
+
+interface PartnerProps {
+  id: number;
+  picture: any;
+  simpleFullName: string;
+  name: string;
+  partnerSeq: string;
+  jobTitleFunction?: any;
+  mainAddress?: any;
+  fixedPhone?: string;
+  mobilePhone?: string;
+}
 
 interface PartnerActionCardProps {
   style?: any;
-  partnerPicture: any;
-  partnerName: string;
-  partnerCode: string;
-  partnerJob?: string;
+  partner: PartnerProps;
   isContact?: boolean;
-  mainAddress?: string;
-  fixedPhone?: string;
-  mobilePhone?: string;
-  partnerId: number;
 }
 
 const PartnerActionCard = ({
   style,
-  partnerPicture,
-  partnerName,
-  partnerCode,
-  partnerJob,
-  mainAddress,
-  fixedPhone,
-  mobilePhone,
+  partner,
   isContact = false,
-  partnerId,
 }: PartnerActionCardProps) => {
   const Colors = useThemeColor();
 
-  if (partnerName == null) {
+  const actionConfig = useMemo(() => {
+    if (isContact) {
+      if (partner?.mobilePhone == null && partner?.fixedPhone == null) {
+        return null;
+      }
+
+      return {
+        iconName: 'telephone-fill',
+        onPress: () =>
+          linkingProvider.openCallApp(
+            partner.mobilePhone ?? partner.fixedPhone,
+          ),
+      };
+    } else {
+      if (partner?.mainAddress == null) {
+        return null;
+      }
+
+      return {
+        iconName: 'geo-alt-fill',
+        onPress: () => linkingProvider.openMapApp(partner.mainAddress.fullName),
+      };
+    }
+  }, [isContact, partner]);
+
+  if (isEmpty(partner)) {
     return null;
   }
 
   return (
     <View style={[styles.container, style]}>
       <PartnerCard
-        partnerName={partnerName}
         style={styles.cardContainer}
-        partnerPicture={partnerPicture}
-        partnerCode={partnerCode}
-        partnerJob={partnerJob}
-        partnerId={partnerId}
+        picture={partner.picture}
+        name={isContact ? partner.simpleFullName : partner.name}
+        code={partner.partnerSeq}
+        jobName={partner.jobTitleFunction?.name}
+        id={partner.id}
         isContact={isContact}
       />
-      <CardIconButton
-        iconName={isContact ? 'telephone-fill' : 'geo-alt-fill'}
-        iconColor={Colors.secondaryColor_dark.background}
-        onPress={() => {
-          isContact
-            ? linkingProvider.openCallApp(mobilePhone || fixedPhone)
-            : linkingProvider.openMapApp(mainAddress);
-        }}
-        style={styles.cardIconButton}
-      />
+      {actionConfig != null && (
+        <CardIconButton
+          iconName={actionConfig.iconName}
+          iconColor={Colors.secondaryColor_dark.background}
+          onPress={actionConfig.onPress}
+          style={styles.cardIconButton}
+        />
+      )}
     </View>
   );
 };
