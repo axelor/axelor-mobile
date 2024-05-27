@@ -58,12 +58,30 @@ const TaskView = () => {
     return project.projectTaskList?.map(projectTask => projectTask.id);
   }, [project.projectTaskList]);
 
+  const statusToFilter = useMemo(() => {
+    if (project?.isShowStatus) {
+      return project?.projectTaskStatusSet?.map(status => status.id);
+    } else {
+      return [];
+    }
+  }, [project?.isShowStatus, project?.projectTaskStatusSet]);
+
+  const priorityToFilter = useMemo(() => {
+    if (project?.isShowPriority) {
+      return project?.projectTaskPrioritySet?.map(status => status.id);
+    } else {
+      return [];
+    }
+  }, [project?.isShowPriority, project?.projectTaskPrioritySet]);
+
   const sliceFunctionData = useMemo(() => {
     return {
       idsProjectTask: idsProjectTask,
       isAssignedToMe: isAssignedToMe,
       selectedStatus: selectedStatus,
       selectedPriority: selectedPriority,
+      statusToFilter: statusToFilter,
+      priorityToFilter: priorityToFilter,
       userId: isAssignedToMe ? userId : null,
     };
   }, [
@@ -72,6 +90,8 @@ const TaskView = () => {
     selectedPriority,
     selectedStatus,
     userId,
+    statusToFilter,
+    priorityToFilter,
   ]);
 
   useEffect(() => {

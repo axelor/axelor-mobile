@@ -27,6 +27,8 @@ const createProjectTaskCriteria = ({
   userId,
   selectedStatus,
   selectedPriority,
+  statusToFilter,
+  priorityToFilter,
 }) => {
   const criteria = [getSearchCriterias('project_projectTask', searchValue)];
 
@@ -41,6 +43,28 @@ const createProjectTaskCriteria = ({
       fieldName: 'assignedTo.employee.user.id',
       operator: '=',
       value: userId,
+    });
+  }
+
+  if (Array.isArray(statusToFilter) && statusToFilter.length > 0) {
+    criteria.push({
+      operator: 'or',
+      criteria: statusToFilter.map(status => ({
+        fieldName: 'status.id',
+        operator: '=',
+        value: status,
+      })),
+    });
+  }
+
+  if (Array.isArray(priorityToFilter) && priorityToFilter.length > 0) {
+    criteria.push({
+      operator: 'or',
+      criteria: priorityToFilter.map(priority => ({
+        fieldName: 'priority.id',
+        operator: '=',
+        value: priority,
+      })),
     });
   }
 
@@ -76,6 +100,8 @@ export async function searchProjectTask({
   userId,
   selectedStatus,
   selectedPriority,
+  statusToFilter,
+  priorityToFilter,
 }) {
   if (!Array.isArray(idsProjectTask) || idsProjectTask.length === 0) {
     return {data: {data: [], total: 0}};
@@ -89,6 +115,8 @@ export async function searchProjectTask({
       userId,
       selectedStatus,
       selectedPriority,
+      statusToFilter,
+      priorityToFilter,
     }),
     fieldKey: 'project_projectTask',
     sortKey: 'project_projectTask',

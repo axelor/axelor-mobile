@@ -27,5 +27,7 @@
   "Project_SliceAction_SearchProject": "recherche sur les projets",
   "Project_SliceAction_FetchProjectById": "récupération du projet par id",
   "Project_SliceAction_FetchProjectStatus": "récupération des statuts de projet",
-  "Project_SliceAction_SearchProjectTask": "recherche sur les tâches du projet"
+  "Project_SliceAction_SearchProjectTask": "recherche sur les tâches du projet",
+  "Project_SliceAction_FetchProjectTaskStatus": "récupération des statuts des taches du projet",
+  "Project_SliceAction_FetchProjectPriority": "récupération des priorités du projet"
 }
