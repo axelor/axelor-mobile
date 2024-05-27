@@ -114,7 +114,7 @@ const TaskView = () => {
 
   return (
     <SearchListView
-      headerTopChildren={<ProjectHeader project={project} />}
+      headerTopChildren={<ProjectHeader />}
       headerChildren={
         <View style={styles.headerContainer}>
           <ToggleButton
