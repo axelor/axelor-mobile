@@ -82,7 +82,7 @@ const ProjectHeader = ({}) => {
         )}
         {project?.isBusinessProject && (
           <Badge
-            title={I18n.t('Project_Buisness')}
+            title={I18n.t('Project_Business')}
             color={Colors.infoColor}
             style={styles.badge}
           />
