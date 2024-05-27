@@ -17,6 +17,7 @@
  */
 
 import {
+  createStandardFetch,
   createStandardSearch,
   getSearchCriterias,
 } from '@axelor/aos-mobile-core';
@@ -101,5 +102,13 @@ export async function fetchProjectStatus() {
     fieldKey: 'project_projectStatus',
     numberElementsByPage: null,
     page: 0,
+  });
+}
+
+export async function fetchProjectById({projectId}) {
+  return createStandardFetch({
+    model: 'com.axelor.apps.project.db.Project',
+    id: projectId,
+    fieldKey: 'project_project',
   });
 }
