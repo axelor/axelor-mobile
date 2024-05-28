@@ -95,10 +95,9 @@ const TaskView = () => {
   ]);
 
   useEffect(() => {
-    dispatch((searchProjectTask as any)(sliceFunctionData));
     dispatch((fetchProjectTaskStatus as any)());
     dispatch((fetchProjectPriority as any)());
-  }, [dispatch, sliceFunctionData]);
+  }, [dispatch]);
 
   const statusList = useMemo(() => {
     const _statusList = getCustomSelectionItems(
