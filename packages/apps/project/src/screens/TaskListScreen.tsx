@@ -161,7 +161,9 @@ const TaskListScreen = ({}) => {
             name={item?.name}
             assignedTo={item?.assignedTo?.fullName}
             taskDeadline={item?.taskDeadline}
-            parentTask={item?.parentTask?.fullName}
+            parentTask={
+              project == null ? item?.project?.name : item?.parentTask?.fullName
+            }
             progress={item?.progress}
             priority={item?.priority}
             status={item?.status}

@@ -16,7 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import React, {useCallback, useState} from 'react';
+import React, {useCallback} from 'react';
 import {
   displayItemName,
   useDispatch,
@@ -75,7 +75,7 @@ const ProjectSearchBar = ({
       onChangeValue={onChange}
       fetchData={searchProjectAPI}
       displayValue={displayItemName}
-      placeholder={title}
+      placeholder={I18n.t(title)}
       showDetailsPopup={true}
       loadingList={loading}
       moreLoading={moreLoading}
