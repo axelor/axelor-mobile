@@ -60,7 +60,7 @@ const TaskCard = ({
 
   return (
     <ObjectCard
-      style={[borderStyle, style]}
+      style={[borderStyle, styles.card, style]}
       leftContainerFlex={2}
       upperTexts={{
         items: [
@@ -118,6 +118,12 @@ const styles = StyleSheet.create({
   },
   textProgressBar: {
     display: 'none',
+  },
+  card: {
+    margin: 0,
+    marginVertical: 2,
+    padding: 0,
+    marginRight: 5,
   },
 });
 

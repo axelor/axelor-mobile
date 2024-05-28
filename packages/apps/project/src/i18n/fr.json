@@ -1,13 +1,5 @@
 {
   "Project_Project": "Projet",
-  "Project_Status_New": "Nouveau",
-  "Project_Status_InProgress": "En cours",
-  "Project_Status_Done": "Réalisé",
-  "Project_Status_Canceled": "Annulé",
-  "Project_Priority_Low": "Faible",
-  "Project_Priority_Normal": "Normal",
-  "Project_Priority_High": "Elevé",
-  "Project_Priority_Urgent": "Urgent",
   "Project_BuisnessProjects": "Affaires",
   "Project_Projects": "Projets",
   "Project_Business": "Affaire",
