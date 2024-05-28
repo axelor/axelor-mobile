@@ -16,4 +16,5 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+export {default as ProjectSearchBar} from './ProjectSearchBar/ProjectSearchBar';
 export {default as ProjectListView} from './ProjectListView/ProjectListView';

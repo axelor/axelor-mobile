@@ -26,19 +26,19 @@ import {
   useTranslator,
   useTypeHelpers,
 } from '@axelor/aos-mobile-core';
-import {TaskCardIcon} from '../components';
+import {ProjectSearchBar, TaskCardIcon} from '../components';
 import {
   fetchProjectPriority,
   fetchProjectTaskStatus,
   searchProjectTask,
 } from '../features/projectTaskSlice';
+
 const TaskListScreen = ({}) => {
   const dispatch = useDispatch();
   const I18n = useTranslator();
 
   const {getCustomSelectionItems} = useTypeHelpers();
 
-  const {project} = useSelector((state: any) => state.project_project);
   const {
     loading,
     moreLoading,
@@ -52,6 +52,7 @@ const TaskListScreen = ({}) => {
   const [selectedStatus, setSelectedStatus] = useState([]);
   const [selectedPriority, setSelectedPriority] = useState([]);
   const [isAssignedToMe, setIsAssignedToMe] = useState(true);
+  const [project, setProject] = useState(null);
 
   const statusToFilter = useMemo(() => {
     if (project?.isShowStatus) {
@@ -69,9 +70,13 @@ const TaskListScreen = ({}) => {
     }
   }, [project?.isShowPriority, project?.projectTaskPrioritySet]);
 
+  const idsProjectTask = useMemo(() => {
+    return project?.projectTaskList?.map(projectTask => projectTask.id);
+  }, [project?.projectTaskList]);
+
   const sliceFunctionData = useMemo(() => {
     return {
-      idsProjectTask: null,
+      idsProjectTask: idsProjectTask,
       isAssignedToMe: isAssignedToMe,
       selectedStatus: selectedStatus,
       selectedPriority: selectedPriority,
@@ -81,6 +86,7 @@ const TaskListScreen = ({}) => {
       fetchAllList: true,
     };
   }, [
+    idsProjectTask,
     isAssignedToMe,
     selectedPriority,
     selectedStatus,
@@ -111,16 +117,24 @@ const TaskListScreen = ({}) => {
     <Screen removeSpaceOnTop={true}>
       <SearchListView
         headerChildren={
-          <View style={styles.headerContainer}>
-            <ToggleButton
-              isActive={isAssignedToMe}
-              onPress={() => setIsAssignedToMe(current => !current)}
-              buttonConfig={{
-                iconName: 'person-fill',
-                width: '10%',
-                style: styles.toggleButton,
-              }}
-            />
+          <>
+            <View style={styles.headerContainer}>
+              <ToggleButton
+                isActive={isAssignedToMe}
+                onPress={() => setIsAssignedToMe(current => !current)}
+                buttonConfig={{
+                  iconName: 'person-fill',
+                  width: '10%',
+                  style: styles.toggleButton,
+                }}
+              />
+              <ProjectSearchBar
+                style={styles.searchBar}
+                showTitle={false}
+                onChange={setProject}
+                defaultValue={project}
+              />
+            </View>
             <View style={styles.pickerContainer}>
               <MultiValuePicker
                 style={styles.picker}
@@ -133,7 +147,7 @@ const TaskListScreen = ({}) => {
                 onValueChange={setSelectedPriority}
               />
             </View>
-          </View>
+          </>
         }
         list={projectTaskList}
         loading={loading}
@@ -169,8 +183,11 @@ const styles = StyleSheet.create({
   toggleButton: {
     height: 40,
   },
+  searchBar: {
+    width: '85%',
+  },
   picker: {
-    width: '46%',
+    width: '42%',
   },
   pickerContainer: {
     flexDirection: 'row',
