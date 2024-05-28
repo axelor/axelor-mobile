@@ -236,7 +236,7 @@ export const crm_formsRegister: FormConfigs = {
         customComponent: FunctionSearchBar,
       },
       primaryAddress: {
-        titleKey: 'Crm_Adress',
+        titleKey: 'Crm_Address',
         type: 'string',
         widget: 'default',
       },

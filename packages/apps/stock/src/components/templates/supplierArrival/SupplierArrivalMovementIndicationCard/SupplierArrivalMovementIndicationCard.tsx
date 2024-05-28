@@ -55,7 +55,7 @@ const SupplierArrivalMovementIndicationCard = ({
       {showPopupOnCLick && (
         <Alert
           visible={isPopupVisible}
-          title={I18n.t('Stock_OriginalAdress')}
+          title={I18n.t('Stock_OriginalAddress')}
           confirmButtonConfig={{
             width: 50,
             title: null,
