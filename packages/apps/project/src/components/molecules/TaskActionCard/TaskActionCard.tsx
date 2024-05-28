@@ -22,7 +22,7 @@ import {InfoButton, useThemeColor} from '@axelor/aos-mobile-ui';
 import {useTranslator} from '@axelor/aos-mobile-core';
 import {TaskCard} from '../../atoms';
 
-interface TaskCardIconProps {
+interface TaskActionCardProps {
   style?: any;
   name?: string;
   assignedTo?: string;
@@ -33,7 +33,7 @@ interface TaskCardIconProps {
   status?: any;
 }
 
-const TaskCardIcon = ({
+const TaskActionCard = ({
   style,
   name,
   assignedTo,
@@ -42,7 +42,7 @@ const TaskCardIcon = ({
   progress,
   priority,
   status,
-}: TaskCardIconProps) => {
+}: TaskActionCardProps) => {
   const Colors = useThemeColor();
   const I18n = useTranslator();
 
@@ -91,4 +91,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default TaskCardIcon;
+export default TaskActionCard;

@@ -66,10 +66,6 @@ const TaskCard = ({
         items: [
           {displayText: name, isTitle: true},
           {
-            displayText: 'code',
-            hideIfNull: true,
-          },
-          {
             indicatorText: assignedTo,
             hideIfNull: true,
             iconName: 'pin-angle-fill',

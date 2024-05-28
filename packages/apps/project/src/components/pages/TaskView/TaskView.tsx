@@ -26,7 +26,7 @@ import {
   useTranslator,
 } from '@axelor/aos-mobile-core';
 import {MultiValuePicker, ToggleButton} from '@axelor/aos-mobile-ui';
-import {ProjectHeader, TaskCardIcon} from '../../molecules';
+import {ProjectHeader, TaskActionCard} from '../../molecules';
 import {
   searchProjectTask,
   fetchProjectTaskStatus,
@@ -155,11 +155,11 @@ const TaskView = () => {
       sliceFunctionData={sliceFunctionData}
       searchPlaceholder={I18n.t('Base_Search')}
       renderListItem={({item}) => (
-        <TaskCardIcon
+        <TaskActionCard
           name={item?.name}
           assignedTo={item?.assignedTo?.fullName}
           taskDeadline={item?.taskDeadline}
-          parentTask={item?.parentTask?.fullName}
+          parentTask={item?.parentTask?.name}
           progress={item?.progress}
           priority={item?.priority}
           status={item?.status}

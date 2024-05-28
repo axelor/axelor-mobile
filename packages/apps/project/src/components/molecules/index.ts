@@ -21,4 +21,4 @@ export {default as DropdownMembers} from './DropdownMembers/DropdownMembers';
 export {default as PartnerActionCard} from './PartnerActionCard/PartnerActionCard';
 export {default as ProjectHeader} from './ProjectHeader/ProjectHeader';
 export {default as ProjectSiteTags} from './ProjectSiteTags/ProjectSiteTags';
-export {default as TaskCardIcon} from './TaskCardIcon/TaskCardIcon';
+export {default as TaskActionCard} from './TaskActionCard/TaskActionCard';
