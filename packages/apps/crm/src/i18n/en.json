@@ -91,6 +91,7 @@
   "Crm_Tours": "Tours",
   "Crm_RefreshTour": "Refresh tour",
   "Crm_ScheduledVisits": "{{totalTourLine}} scheduled visits",
+  "Crm_ApiAction_UpdateContactInfo": "update contact information",
   "Crm_SliceAction_FetchCatalog": "fetch catalogs",
   "Crm_SliceAction_FetchCatalogType": "fetch catalog types",
   "Crm_SliceAction_FetchClient": "fetch clients",

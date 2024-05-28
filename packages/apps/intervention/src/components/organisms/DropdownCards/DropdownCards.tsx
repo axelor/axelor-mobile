@@ -18,10 +18,11 @@
 
 import React from 'react';
 import {StyleSheet} from 'react-native';
-import {useTranslator} from '@axelor/aos-mobile-core';
+import {useDispatch, useTranslator} from '@axelor/aos-mobile-core';
 import {DropdownCardSwitch} from '@axelor/aos-mobile-ui';
 import {DropdownContactView} from '@axelor/aos-mobile-crm';
 import {DropdownGeneralView} from '../../molecules';
+import {fetchInterventionById} from '../../../features/interventionSlice';
 
 interface DropdownCardsProps {
   intervention: any;
@@ -29,6 +30,7 @@ interface DropdownCardsProps {
 
 const DropdownCards = ({intervention}: DropdownCardsProps) => {
   const I18n = useTranslator();
+  const dispatch = useDispatch();
 
   return (
     <DropdownCardSwitch
@@ -38,10 +40,18 @@ const DropdownCards = ({intervention}: DropdownCardsProps) => {
           title: I18n.t('Crm_Contact'),
           childrenComp: (
             <DropdownContactView
-              address={intervention.address.fullName}
-              fixedPhone={intervention.contact?.fixedPhone}
-              mobilePhone={intervention.contact?.mobilePhone}
-              emailAddress={intervention.contact?.emailAddress?.address}
+              contact={{
+                ...intervention.contact,
+                version: intervention.contact.$version,
+                address: intervention.address,
+              }}
+              refreshContactInfos={() =>
+                dispatch(
+                  (fetchInterventionById as any)({
+                    interventionId: intervention.id,
+                  }),
+                )
+              }
             />
           ),
           key: 1,
