@@ -98,6 +98,7 @@
   "Crm_ValidateTourStep": "Valider une étape de la tournée",
   "Crm_NoAddressInformation": "Aucune information sur les adresses",
   "Crm_Addresses": "Adresses",
+  "Crm_ApiAction_UpdateContactInfo": "mise à jour d'une information de contact",
   "Crm_SliceAction_FetchCatalog": "récupération des catalogues",
   "Crm_SliceAction_FetchCatalogType": "récupération des types de catalogue",
   "Crm_SliceAction_FetchClient": "récupération des clients",

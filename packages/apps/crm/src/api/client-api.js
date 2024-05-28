@@ -17,12 +17,12 @@
  */
 
 import {
+  axiosApiProvider,
   createStandardFetch,
   createStandardSearch,
-  getActionApi,
   getSearchCriterias,
-  RouterProvider,
 } from '@axelor/aos-mobile-core';
+import {updateEmail} from './contact-info-api';
 
 const createClientCriteria = (searchValue, userId, assigned) => {
   const criteria = [
@@ -94,55 +94,23 @@ export async function updateClient({
   emailId,
   emailVersion,
 }) {
-  const route = await RouterProvider.get('EmailAddress');
-
-  const modelName = route.replace('/ws/rest/', '');
-
-  return getActionApi()
-    .send({
-      url: route,
-      method: 'post',
-      body: {
+  return updateEmail({
+    id: emailId,
+    version: emailVersion,
+    email,
+  }).then(res =>
+    axiosApiProvider.post({
+      url: '/ws/rest/com.axelor.apps.base.db.Partner',
+      data: {
         data: {
-          id: emailId,
-          version: emailVersion,
-          address: email,
+          id,
+          version,
+          name,
+          fixedPhone,
+          website,
+          description,
         },
       },
-      description: 'update client email',
-      matchers: {
-        modelName: modelName,
-        id: emailId,
-        fields: {
-          'data.address': 'address',
-        },
-      },
-    })
-    .then(() =>
-      getActionApi().send({
-        url: '/ws/rest/com.axelor.apps.base.db.Partner',
-        method: 'post',
-        body: {
-          data: {
-            id,
-            version,
-            name,
-            fixedPhone,
-            website,
-            description,
-          },
-        },
-        description: 'update lead',
-        matchers: {
-          modelName: 'com.axelor.apps.base.db.Partner',
-          id: id,
-          fields: {
-            'data.name': 'name',
-            'data.fixedPhone': 'fixedPhone',
-            'data.webSite': 'webSite',
-            'data.description': 'description',
-          },
-        },
-      }),
-    );
+    }),
+  );
 }
