@@ -100,17 +100,37 @@ const TaskView = () => {
     dispatch((fetchProjectPriority as any)());
   }, [dispatch, sliceFunctionData]);
 
-  const statusList = useMemo(
-    () =>
-      getCustomSelectionItems(projectTaskStatusList, 'name', selectedStatus),
-    [projectTaskStatusList, getCustomSelectionItems, selectedStatus],
-  );
+  const statusList = useMemo(() => {
+    const _statusList = getCustomSelectionItems(
+      projectTaskStatusList,
+      'name',
+      selectedStatus,
+    );
+    return statusToFilter.length === 0
+      ? _statusList
+      : _statusList.filter(status => statusToFilter.includes(status.value));
+  }, [
+    getCustomSelectionItems,
+    projectTaskStatusList,
+    selectedStatus,
+    statusToFilter,
+  ]);
 
-  const priorityList = useMemo(
-    () =>
-      getCustomSelectionItems(projectPriorityList, 'name', selectedPriority),
-    [projectPriorityList, getCustomSelectionItems, selectedPriority],
-  );
+  const priorityList = useMemo(() => {
+    const _priorityList = getCustomSelectionItems(
+      projectPriorityList,
+      'name',
+      selectedPriority,
+    );
+    return priorityToFilter.length === 0
+      ? _priorityList
+      : _priorityList.filter(status => priorityToFilter.includes(status.value));
+  }, [
+    getCustomSelectionItems,
+    projectPriorityList,
+    selectedPriority,
+    priorityToFilter,
+  ]);
 
   return (
     <SearchListView
