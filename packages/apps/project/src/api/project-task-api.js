@@ -30,13 +30,14 @@ const createProjectTaskCriteria = ({
   statusToFilter,
   priorityToFilter,
 }) => {
-  const criteria = [getSearchCriterias('project_projectTask', searchValue)];
-
-  criteria.push({
-    fieldName: 'id',
-    operator: 'in',
-    value: idsProjectTask,
-  });
+  const criteria = [
+    getSearchCriterias('project_projectTask', searchValue),
+    {
+      fieldName: 'id',
+      operator: 'in',
+      value: idsProjectTask,
+    },
+  ];
 
   if (userId != null) {
     criteria.push({
