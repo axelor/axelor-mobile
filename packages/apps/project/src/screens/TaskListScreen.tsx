@@ -26,7 +26,7 @@ import {
   useTranslator,
   useTypeHelpers,
 } from '@axelor/aos-mobile-core';
-import {ProjectSearchBar, TaskCardIcon} from '../components';
+import {ProjectSearchBar, TaskActionCard} from '../components';
 import {
   fetchProjectPriority,
   fetchProjectTaskStatus,
@@ -157,7 +157,7 @@ const TaskListScreen = ({}) => {
         sliceFunctionData={sliceFunctionData}
         searchPlaceholder={I18n.t('Base_Search')}
         renderListItem={({item}) => (
-          <TaskCardIcon
+          <TaskActionCard
             name={item?.name}
             assignedTo={item?.assignedTo?.fullName}
             taskDeadline={item?.taskDeadline}
