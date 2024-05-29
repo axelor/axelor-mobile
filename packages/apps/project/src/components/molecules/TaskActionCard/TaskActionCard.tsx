@@ -22,27 +22,23 @@ import {InfoButton, useThemeColor} from '@axelor/aos-mobile-ui';
 import {useTranslator} from '@axelor/aos-mobile-core';
 import {TaskCard} from '../../atoms';
 
-interface TaskActionCardProps {
+interface TaskProps {
   style?: any;
   name?: string;
-  assignedTo?: string;
+  assignedTo?: any;
   taskDeadline?: string;
-  parentTask?: string;
+  parentTask?: any;
   progress?: number;
   priority?: any;
   status?: any;
 }
 
-const TaskActionCard = ({
-  style,
-  name,
-  assignedTo,
-  taskDeadline,
-  parentTask,
-  progress,
-  priority,
-  status,
-}: TaskActionCardProps) => {
+interface TaskActionCardProps {
+  style?: any;
+  task?: TaskProps;
+}
+
+const TaskActionCard = ({style, task}: TaskActionCardProps) => {
   const Colors = useThemeColor();
   const I18n = useTranslator();
 
@@ -50,13 +46,13 @@ const TaskActionCard = ({
     <View style={[styles.container, style]}>
       <View style={styles.cardContainer}>
         <TaskCard
-          name={name}
-          assignedTo={assignedTo}
-          taskDeadline={taskDeadline}
-          parentTask={parentTask}
-          progress={progress}
-          priority={priority}
-          status={status}
+          name={task.name}
+          assignedTo={task.assignedTo?.fullName}
+          taskDeadline={task.taskDeadline}
+          parentTask={task.parentTask?.name}
+          progress={task?.progress}
+          priority={task?.priority}
+          status={task?.status}
         />
       </View>
       <View style={styles.iconContainer}>
@@ -82,7 +78,6 @@ const styles = StyleSheet.create({
     flex: 6,
   },
   iconContainer: {
-    flexDirection: 'column',
     flex: 1,
   },
   infoButton: {

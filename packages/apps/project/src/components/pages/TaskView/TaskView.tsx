@@ -156,17 +156,7 @@ const TaskView = () => {
       sliceFunction={searchProjectTask}
       sliceFunctionData={sliceFunctionData}
       searchPlaceholder={I18n.t('Base_Search')}
-      renderListItem={({item}) => (
-        <TaskActionCard
-          name={item?.name}
-          assignedTo={item?.assignedTo?.fullName}
-          taskDeadline={item?.taskDeadline}
-          parentTask={item?.parentTask?.name}
-          progress={item?.progress}
-          priority={item?.priority}
-          status={item?.status}
-        />
-      )}
+      renderListItem={({item}) => <TaskActionCard task={item} />}
     />
   );
 };
