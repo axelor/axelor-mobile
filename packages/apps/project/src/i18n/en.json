@@ -21,5 +21,5 @@
   "Project_SliceAction_FetchProjectStatus": "fetch project status",
   "Project_SliceAction_SearchProjectTask": "search project tasks",
   "Project_SliceAction_FetchProjectTaskStatus": "fetch project task status",
-  "Project_SliceAction_FetchProjectPriority": "fetch project priority"
+  "Project_SliceAction_FetchProjectPriority": "fetch project priorities"
 }

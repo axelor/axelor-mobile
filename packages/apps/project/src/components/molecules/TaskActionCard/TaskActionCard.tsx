@@ -65,7 +65,7 @@ const TaskActionCard = ({
           iconName={'clock-history'}
           iconColor={Colors.secondaryColor_dark.background}
           onPress={() => {}}
-          style={styles.cardIconButton}
+          style={styles.infoButton}
         />
       </View>
     </View>
@@ -80,13 +80,12 @@ const styles = StyleSheet.create({
   },
   cardContainer: {
     flex: 6,
-    margin: 2,
   },
   iconContainer: {
     flexDirection: 'column',
     flex: 1,
   },
-  cardIconButton: {
+  infoButton: {
     flex: 1,
   },
 });

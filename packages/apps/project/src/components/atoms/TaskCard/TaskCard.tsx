@@ -61,6 +61,7 @@ const TaskCard = ({
   return (
     <ObjectCard
       style={[borderStyle, styles.card, style]}
+      iconLeftMargin={30}
       leftContainerFlex={2}
       upperTexts={{
         items: [
@@ -74,6 +75,7 @@ const TaskCard = ({
             indicatorText: parentTask,
             hideIfNull: true,
             iconName: 'diagram-3-fill',
+            numberOfLines: 2,
           },
         ],
       }}
@@ -82,7 +84,7 @@ const TaskCard = ({
           {
             customComponent: (
               <View>
-                <DateDisplay date={taskDeadline} />
+                <DateDisplay date={taskDeadline} size={16} />
                 <ProgressBar
                   style={styles.progressBar}
                   value={progress}
@@ -124,6 +126,7 @@ const styles = StyleSheet.create({
     marginVertical: 2,
     padding: 0,
     marginRight: 5,
+    paddingRight: 5,
   },
 });
 

@@ -17,7 +17,6 @@
  */
 
 import React, {useEffect, useMemo, useState} from 'react';
-import {StyleSheet, View} from 'react-native';
 import {
   useSelector,
   useDispatch,
@@ -25,8 +24,7 @@ import {
   useTypeHelpers,
   useTranslator,
 } from '@axelor/aos-mobile-core';
-import {MultiValuePicker, ToggleButton} from '@axelor/aos-mobile-ui';
-import {ProjectHeader, TaskActionCard} from '../../molecules';
+import {ProjectHeader, TaskActionCard, TaskHeader} from '../../molecules';
 import {
   searchProjectTask,
   fetchProjectTaskStatus,
@@ -135,29 +133,14 @@ const TaskView = () => {
     <SearchListView
       headerTopChildren={<ProjectHeader />}
       headerChildren={
-        <View style={styles.headerContainer}>
-          <ToggleButton
-            isActive={isAssignedToMe}
-            onPress={() => setIsAssignedToMe(current => !current)}
-            buttonConfig={{
-              iconName: 'person-fill',
-              width: '10%',
-              style: styles.toggleButton,
-            }}
-          />
-          <View style={styles.pickerContainer}>
-            <MultiValuePicker
-              style={styles.picker}
-              listItems={statusList}
-              onValueChange={setSelectedStatus}
-            />
-            <MultiValuePicker
-              style={styles.picker}
-              listItems={priorityList}
-              onValueChange={setSelectedPriority}
-            />
-          </View>
-        </View>
+        <TaskHeader
+          isAssignedToMe={isAssignedToMe}
+          setIsAssignedToMe={setIsAssignedToMe}
+          priorityList={priorityList}
+          setSelectedPriority={setSelectedPriority}
+          setSelectedStatus={setSelectedStatus}
+          statusList={statusList}
+        />
       }
       actionList={[
         {
@@ -187,25 +170,5 @@ const TaskView = () => {
     />
   );
 };
-
-const styles = StyleSheet.create({
-  headerContainer: {
-    width: '90%',
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignSelf: 'center',
-    alignItems: 'center',
-  },
-  toggleButton: {
-    height: 40,
-  },
-  picker: {
-    width: '46%',
-  },
-  pickerContainer: {
-    flexDirection: 'row',
-    justifyContent: 'space-evenly',
-  },
-});
 
 export default TaskView;
