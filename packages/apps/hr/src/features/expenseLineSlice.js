@@ -232,6 +232,7 @@ const expenseLineSlice = createSlice({
     });
     builder.addCase(deleteExpenseLine.fulfilled, (state, action) => {
       if (action?.meta?.arg?.expenseId == null) {
+        state.loadingExpenseLine = false;
         state.expenseLineList = action.payload;
       }
     });
