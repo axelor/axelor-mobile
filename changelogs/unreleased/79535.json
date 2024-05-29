@@ -1,5 +1,5 @@
 {
-  "title": "Expense lines list screen: solve infinite loading after deleting an expense line",
+  "title": "Expense lines list screen: solve infinite loading after updating/deleting an expense line",
   "type": "fix",
   "packages": "hr"
 }
