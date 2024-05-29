@@ -232,6 +232,7 @@ const expenseLineSlice = createSlice({
     });
     builder.addCase(deleteExpenseLine.fulfilled, (state, action) => {
       if (action?.meta?.arg?.expenseId == null) {
+        state.loadingExpenseLine = false;
         state.expenseLineList = action.payload;
       }
     });
@@ -246,7 +247,12 @@ const expenseLineSlice = createSlice({
     });
     builder.addCase(updateExpenseLine.fulfilled, (state, action) => {
       if (action?.meta?.arg?.expenseId == null) {
+        state.loadingExpenseLine = false;
         state.expenseLineList = action.payload;
+      } else if (action?.meta?.arg?.mode === ExpenseLine.modes.general) {
+        state.loadingGeneralExpenseLine = false;
+      } else if (action?.meta?.arg?.mode === ExpenseLine.modes.kilometric) {
+        state.loadingKilometricExpenseLine = false;
       }
     });
   },
