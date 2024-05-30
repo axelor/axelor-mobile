@@ -25,10 +25,8 @@ const createProjectTaskCriteria = ({
   searchValue,
   idsProjectTask,
   userId,
-  selectedStatus,
-  selectedPriority,
-  statusToFilter,
-  priorityToFilter,
+  combinedStatusFilter,
+  combinedPriorityFilter,
 }) => {
   const criteria = [
     getSearchCriterias('project_projectTask', searchValue),
@@ -47,10 +45,10 @@ const createProjectTaskCriteria = ({
     });
   }
 
-  if (Array.isArray(statusToFilter) && statusToFilter.length > 0) {
+  if (Array.isArray(combinedStatusFilter) && combinedStatusFilter.length > 0) {
     criteria.push({
       operator: 'or',
-      criteria: statusToFilter.map(status => ({
+      criteria: combinedStatusFilter.map(status => ({
         fieldName: 'status.id',
         operator: '=',
         value: status,
@@ -58,35 +56,16 @@ const createProjectTaskCriteria = ({
     });
   }
 
-  if (Array.isArray(priorityToFilter) && priorityToFilter.length > 0) {
+  if (
+    Array.isArray(combinedPriorityFilter) &&
+    combinedPriorityFilter.length > 0
+  ) {
     criteria.push({
       operator: 'or',
-      criteria: priorityToFilter.map(priority => ({
+      criteria: combinedPriorityFilter.map(priority => ({
         fieldName: 'priority.id',
         operator: '=',
         value: priority,
-      })),
-    });
-  }
-
-  if (Array.isArray(selectedStatus) && selectedStatus.length > 0) {
-    criteria.push({
-      operator: 'or',
-      criteria: selectedStatus.map(status => ({
-        fieldName: 'status.id',
-        operator: '=',
-        value: status.key,
-      })),
-    });
-  }
-
-  if (Array.isArray(selectedPriority) && selectedPriority.length > 0) {
-    criteria.push({
-      operator: 'or',
-      criteria: selectedPriority.map(priority => ({
-        fieldName: 'priority.id',
-        operator: '=',
-        value: priority.key,
       })),
     });
   }
@@ -108,16 +87,28 @@ export async function searchProjectTask({
     return {data: {data: [], total: 0}};
   }
 
+  const combinedStatusFilter = [
+    ...new Set([
+      ...statusToFilter,
+      ...selectedStatus.map(status => status.key),
+    ]),
+  ];
+
+  const combinedPriorityFilter = [
+    ...new Set([
+      ...priorityToFilter,
+      ...selectedPriority.map(priority => priority.key),
+    ]),
+  ];
+
   return createStandardSearch({
     model: 'com.axelor.apps.project.db.ProjectTask',
     criteria: createProjectTaskCriteria({
       searchValue,
       idsProjectTask,
       userId,
-      selectedStatus,
-      selectedPriority,
-      statusToFilter,
-      priorityToFilter,
+      combinedStatusFilter,
+      combinedPriorityFilter,
     }),
     fieldKey: 'project_projectTask',
     sortKey: 'project_projectTask',
