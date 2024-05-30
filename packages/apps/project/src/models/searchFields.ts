@@ -25,4 +25,5 @@ export const project_searchFields: SearchFields = {
     'clientPartner.name',
     'parentProject.fullName',
   ],
+  project_projectTask: ['name'],
 };
