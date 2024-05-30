@@ -25,8 +25,8 @@ const createProjectTaskCriteria = ({
   searchValue,
   idsProjectTask,
   userId,
-  combinedStatusFilter,
-  combinedPriorityFilter,
+  statusFilter,
+  priorityFilter,
 }) => {
   const criteria = [
     getSearchCriterias('project_projectTask', searchValue),
@@ -45,10 +45,10 @@ const createProjectTaskCriteria = ({
     });
   }
 
-  if (Array.isArray(combinedStatusFilter) && combinedStatusFilter.length > 0) {
+  if (Array.isArray(statusFilter) && statusFilter.length > 0) {
     criteria.push({
       operator: 'or',
-      criteria: combinedStatusFilter.map(status => ({
+      criteria: statusFilter.map(status => ({
         fieldName: 'status.id',
         operator: '=',
         value: status,
@@ -56,13 +56,10 @@ const createProjectTaskCriteria = ({
     });
   }
 
-  if (
-    Array.isArray(combinedPriorityFilter) &&
-    combinedPriorityFilter.length > 0
-  ) {
+  if (Array.isArray(priorityFilter) && priorityFilter.length > 0) {
     criteria.push({
       operator: 'or',
-      criteria: combinedPriorityFilter.map(priority => ({
+      criteria: priorityFilter.map(priority => ({
         fieldName: 'priority.id',
         operator: '=',
         value: priority,
@@ -87,19 +84,15 @@ export async function searchProjectTask({
     return {data: {data: [], total: 0}};
   }
 
-  const combinedStatusFilter = [
-    ...new Set([
-      ...statusToFilter,
-      ...selectedStatus.map(status => status.key),
-    ]),
-  ];
+  const statusFilter =
+    selectedStatus.length > 0
+      ? selectedStatus.map(status => status.key)
+      : statusToFilter;
 
-  const combinedPriorityFilter = [
-    ...new Set([
-      ...priorityToFilter,
-      ...selectedPriority.map(priority => priority.key),
-    ]),
-  ];
+  const priorityFilter =
+    selectedPriority.length > 0
+      ? selectedPriority.map(priority => priority.key)
+      : priorityToFilter;
 
   return createStandardSearch({
     model: 'com.axelor.apps.project.db.ProjectTask',
@@ -107,8 +100,8 @@ export async function searchProjectTask({
       searchValue,
       idsProjectTask,
       userId,
-      combinedStatusFilter,
-      combinedPriorityFilter,
+      statusFilter,
+      priorityFilter,
     }),
     fieldKey: 'project_projectTask',
     sortKey: 'project_projectTask',
