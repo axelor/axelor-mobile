@@ -55,6 +55,7 @@ const HtmlInput = ({
 }: HtmlInputProps) => {
   const Colors = useThemeColor();
   const [editorAttached, setEditorAttached] = useState(false);
+  const [key, setKey] = useState(defaultInput);
 
   const editor = useRef(null);
 
@@ -69,6 +70,7 @@ const HtmlInput = ({
         editor.current.dismissKeyboard();
       }
     }
+    setKey(defaultInput);
   }, [defaultInput]);
 
   return (
@@ -77,6 +79,7 @@ const HtmlInput = ({
         <View>
           {title != null ? <Text>{title}</Text> : null}
           <RichEditor
+            key={key}
             ref={editor}
             placeholder={placeholder}
             androidHardwareAccelerationDisabled={true}
