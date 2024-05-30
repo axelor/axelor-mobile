@@ -16,47 +16,44 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import React, {useMemo, useState} from 'react';
+import React from 'react';
 import {
   useSelector,
   SearchListView,
   useTranslator,
 } from '@axelor/aos-mobile-core';
-import {ProjectHeader, TaskActionCard, TaskFilters} from '../../molecules';
+import {ProjectHeader, TaskActionCard, TaskHeader} from '../../molecules';
 import {searchProjectTask} from '../../../features/projectTaskSlice';
+import {useTaskFilters} from '../../../hooks/use-task-filter';
 
 const TaskView = () => {
   const I18n = useTranslator();
-
-  const {userId} = useSelector((state: any) => state.auth);
   const {project} = useSelector((state: any) => state.project_project);
   const {loading, moreLoading, isListEnd, projectTaskList} = useSelector(
     (state: any) => state.project_projectTask,
   );
 
-  const [selectedStatus, setSelectedStatus] = useState([]);
-  const [selectedPriority, setSelectedPriority] = useState([]);
-  const [isAssignedToMe, setIsAssignedToMe] = useState(false);
-
-  const sliceFunctionData = useMemo(() => {
-    return {
-      projectId: project?.id,
-      isAssignedToMe: isAssignedToMe,
-      selectedStatus: selectedStatus,
-      selectedPriority: selectedPriority,
-      userId: isAssignedToMe ? userId : null,
-    };
-  }, [project?.id, isAssignedToMe, selectedStatus, selectedPriority, userId]);
+  const {
+    setSelectedStatus,
+    setSelectedPriority,
+    isAssignedToMe,
+    setIsAssignedToMe,
+    sliceFunctionData,
+    statusList,
+    priorityList,
+  } = useTaskFilters(project, false);
 
   return (
     <SearchListView
       headerTopChildren={<ProjectHeader />}
       headerChildren={
-        <TaskFilters
+        <TaskHeader
           isAssignedToMe={isAssignedToMe}
           setIsAssignedToMe={setIsAssignedToMe}
+          priorityList={priorityList}
           setSelectedPriority={setSelectedPriority}
           setSelectedStatus={setSelectedStatus}
+          statusList={statusList}
         />
       }
       actionList={[
