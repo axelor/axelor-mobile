@@ -24,6 +24,7 @@ import {
   useSelector,
   useTranslator,
   useTypes,
+  useNavigation,
 } from '@axelor/aos-mobile-core';
 import {
   ControlEntryDetailsButtons,
@@ -32,9 +33,11 @@ import {
 } from '../components';
 import {searchControlEntrySample} from '../features/controlEntrySampleSlice';
 import {fetchControlEntryById} from '../features/controlEntrySlice';
+import {ControlEntry as ControlEntryType} from '../types';
 
 const ControlEntryDetailsScreen = ({route}) => {
   const {controlEntryId} = route.params;
+  const navigation = useNavigation();
 
   const dispatch = useDispatch();
   const I18n = useTranslator();
@@ -67,6 +70,14 @@ const ControlEntryDetailsScreen = ({route}) => {
   if (controlEntry?.id !== controlEntryId) {
     return null;
   }
+
+  const handleSamplePress = sampleId => {
+    navigation.navigate('ControlEntryFormScreen', {
+      controlEntryId: controlEntry.id,
+      selectedMode: ControlEntryType.fillingMethod.Sample,
+      sampleId: sampleId,
+    });
+  };
 
   return (
     <FocusScreen
@@ -102,6 +113,7 @@ const ControlEntryDetailsScreen = ({route}) => {
             controlEntrySampleId={item.id}
             resultSelect={item.resultSelect}
             samplefullName={item.fullName}
+            onPress={() => handleSamplePress(item.id)}
           />
         )}
       />

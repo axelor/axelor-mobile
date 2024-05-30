@@ -38,7 +38,7 @@ import {ControlEntry as ControlEntryType} from '../types';
 import {checkComformity, getProgressValuesApi} from '../api';
 
 const ControlEntryFormScreen = ({navigation, route}) => {
-  const {selectedMode} = route.params;
+  const {selectedMode, sampleId} = route.params;
   const I18n = useTranslator();
   const dispatch = useDispatch();
   const {readonly} = usePermitted({
@@ -85,12 +85,32 @@ const ControlEntryFormScreen = ({navigation, route}) => {
               .id,
         )
         .filter((_item, _index, self) => self.indexOf(_item) === _index);
-      setCategoryIndex(0);
+      if (sampleId == null) {
+        setCategoryIndex(0);
+      } else {
+        const sampleIndex = sampleLineOfEntryList.findIndex(
+          item =>
+            item[ControlEntryType.getMethodAssociatedAttribut(selectedMode)]
+              .id === sampleId,
+        );
+        if (sampleIndex !== -1) {
+          const _categoryIndex = _itemSet.findIndex(
+            id =>
+              id ===
+              sampleLineOfEntryList[sampleIndex][
+                ControlEntryType.getMethodAssociatedAttribut(selectedMode)
+              ].id,
+          );
+          setCategoryIndex(_categoryIndex !== -1 ? _categoryIndex : 0);
+        } else {
+          setCategoryIndex(0);
+        }
+      }
       setCategorySet(_itemSet);
     } else {
       setCategorySet([]);
     }
-  }, [sampleLineOfEntryList, selectedMode]);
+  }, [sampleLineOfEntryList, selectedMode, sampleId]);
 
   useEffect(() => {
     fetchSampleLine(itemSet, currentIndex);
