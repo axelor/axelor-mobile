@@ -44,41 +44,36 @@ const TaskActionCard = ({style, task}: TaskActionCardProps) => {
 
   return (
     <View style={[styles.container, style]}>
-      <View style={styles.cardContainer}>
-        <TaskCard
-          name={task.name}
-          assignedTo={task.assignedTo?.fullName}
-          taskDeadline={task.taskDeadline}
-          parentTask={task.parentTask?.name}
-          progress={task?.progress}
-          priority={task?.priority}
-          status={task?.status}
-        />
-      </View>
-      <View style={styles.iconContainer}>
-        <InfoButton
-          indication={I18n.t('Project_LogTime')}
-          iconName={'clock-history'}
-          iconColor={Colors.secondaryColor_dark.background}
-          onPress={() => {}}
-          style={styles.infoButton}
-        />
-      </View>
+      <TaskCard
+        name={task.name}
+        assignedTo={task.assignedTo?.fullName}
+        taskDeadline={task.taskDeadline}
+        parentTask={task.parentTask?.name}
+        progress={task?.progress}
+        priority={task?.priority}
+        status={task?.status}
+        style={styles.cardContainer}
+      />
+      <InfoButton
+        indication={I18n.t('Project_LogTime')}
+        iconName={'clock-history'}
+        iconColor={Colors.secondaryColor_dark.background}
+        onPress={() => {}}
+        style={styles.infoButton}
+      />
     </View>
   );
 };
 
 const styles = StyleSheet.create({
   container: {
+    flex: 1,
     width: '96%',
     flexDirection: 'row',
     marginVertical: 2,
   },
   cardContainer: {
     flex: 6,
-  },
-  iconContainer: {
-    flex: 1,
   },
   infoButton: {
     flex: 1,

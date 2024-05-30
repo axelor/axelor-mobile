@@ -59,49 +59,51 @@ const TaskCard = ({
   }, [status, getItemColorFromIndex, projectTaskStatusList]);
 
   return (
-    <ObjectCard
-      style={[borderStyle, styles.card, style]}
-      iconLeftMargin={30}
-      leftContainerFlex={2}
-      upperTexts={{
-        items: [
-          {displayText: name, isTitle: true},
-          {
-            indicatorText: assignedTo,
-            hideIfNull: true,
-            iconName: 'pin-angle-fill',
-          },
-          {
-            indicatorText: parentTask,
-            hideIfNull: true,
-            iconName: 'diagram-3-fill',
-            numberOfLines: 2,
-          },
-        ],
-      }}
-      sideBadges={{
-        items: [
-          {
-            customComponent: (
-              <View>
-                <DateDisplay date={taskDeadline} size={16} />
-                <ProgressBar
-                  style={styles.progressBar}
-                  value={progress}
-                  showPercent={false}
-                  height={15}
-                  styleTxt={styles.textProgressBar}
-                />
-                <Badge
-                  title={priority?.name}
-                  color={getItemColorFromIndex(projectPriorityList, priority)}
-                />
-              </View>
-            ),
-          },
-        ],
-      }}
-    />
+    <View style={style}>
+      <ObjectCard
+        style={[borderStyle, styles.card]}
+        iconLeftMargin={30}
+        leftContainerFlex={2}
+        upperTexts={{
+          items: [
+            {displayText: name, isTitle: true},
+            {
+              indicatorText: assignedTo,
+              hideIfNull: true,
+              iconName: 'pin-angle-fill',
+            },
+            {
+              indicatorText: parentTask,
+              hideIfNull: true,
+              iconName: 'diagram-3-fill',
+              numberOfLines: 2,
+            },
+          ],
+        }}
+        sideBadges={{
+          items: [
+            {
+              customComponent: (
+                <View>
+                  <DateDisplay date={taskDeadline} size={16} />
+                  <ProgressBar
+                    style={styles.progressBar}
+                    value={progress}
+                    showPercent={false}
+                    height={15}
+                    styleTxt={styles.textProgressBar}
+                  />
+                  <Badge
+                    title={priority?.name}
+                    color={getItemColorFromIndex(projectPriorityList, priority)}
+                  />
+                </View>
+              ),
+            },
+          ],
+        }}
+      />
+    </View>
   );
 };
 
