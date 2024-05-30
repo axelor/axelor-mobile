@@ -38,13 +38,24 @@ const useUserProfileActions = () => {
   const I18n = useTranslator();
 
   const {user} = useSelector(state => state.user);
+  const {numberUnresolvedProcess} = useLoaderListener();
 
   useEffect(() => {
     headerActionsProvider.registerModel('auth_user_profile', {
       actions: [
         {
-          key: 'settings',
+          key: 'processes',
           order: 10,
+          iconName: 'clock-history',
+          iconColor: Colors.primaryColor.background,
+          indicator: numberUnresolvedProcess,
+          title: I18n.t('User_ProcessHistroy'),
+          onPress: () => navigation.navigate('ProcessesHistroyListScreen'),
+          showInHeader: true,
+        },
+        {
+          key: 'settings',
+          order: 20,
           iconName: 'gear-fill',
           iconColor: Colors.primaryColor.background,
           title: I18n.t('User_Settings'),
@@ -53,7 +64,7 @@ const useUserProfileActions = () => {
         },
       ],
     });
-  }, [Colors, I18n, navigation, user]);
+  }, [numberUnresolvedProcess, user, Colors, I18n, navigation]);
 };
 
 const useAuthHeaderBands = () => {

@@ -20,7 +20,11 @@ import {Module} from '../app/Module';
 import enTranslations from './i18n/en.json';
 import frTranslations from './i18n/fr.json';
 import * as authReducers from './features';
-import {SettingsScreen, UserScreen} from './screens';
+import {
+  ProcessesHistroyListScreen,
+  SettingsScreen,
+  UserScreen,
+} from './screens';
 import {auth_modelAPI} from './models';
 import {useAuthHeaders} from './hooks/use-auth-headers';
 
@@ -47,6 +51,10 @@ export const authModule: Module = {
       title: 'User_Settings',
       component: SettingsScreen,
     },
+    ProcessesHistroyListScreen: {
+      title: 'User_ProcessHistory',
+      component: ProcessesHistroyListScreen,
+    },
   },
   translations: {
     en: enTranslations,
@@ -65,3 +73,4 @@ export const authModule: Module = {
 export * from './screens';
 export * from './api';
 export * from './features/asyncFunctionsIndex';
+export * from './storage/ProcessStorage';
