@@ -17,3 +17,4 @@
  */
 
 export {projectReducer as project_project} from './projectSlice';
+export {projectTaskReducer as project_projectTask} from './projectTaskSlice';
