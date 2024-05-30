@@ -19,7 +19,7 @@
 import React, {useEffect} from 'react';
 import {Screen, BottomBar, useThemeColor} from '@axelor/aos-mobile-ui';
 import {useDispatch, useSelector} from '@axelor/aos-mobile-core';
-import {GeneralInformationView} from '../components';
+import {GeneralInformationView, TaskView} from '../components';
 import {fetchProjectById} from '../features/projectSlice';
 
 const ProjectDetailsScreen = ({route}) => {
@@ -39,6 +39,11 @@ const ProjectDetailsScreen = ({route}) => {
       iconName: 'house',
       viewComponent: <GeneralInformationView />,
       color: Colors.secondaryColor_dark,
+    },
+    {
+      iconName: 'card-list',
+      color: Colors.plannedColor,
+      viewComponent: <TaskView />,
     },
   ];
 
