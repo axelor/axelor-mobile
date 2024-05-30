@@ -21,3 +21,8 @@ export {
   fetchProjectById as fetchProjectByIdApi,
   searchProject as searchProjectApi,
 } from './project-api';
+export {
+  fetchProjectPriority as fetchProjectPriorityApi,
+  fetchProjectTaskStatus as fetchProjectTaskStatusApi,
+  searchProjectTask as searchProjectTaskApi,
+} from './project-task-api';
