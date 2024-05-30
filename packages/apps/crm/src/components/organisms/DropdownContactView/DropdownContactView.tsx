@@ -67,7 +67,7 @@ const DropdownContactView = ({
     <View>
       <ContactInfoCard
         headerIconName={'map-marker-alt'}
-        title={I18n.t('Crm_Adress')}
+        title={I18n.t('Crm_Address')}
         data={address}
         rightIconName={'map-marked-alt'}
         border={

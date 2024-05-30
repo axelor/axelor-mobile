@@ -58,7 +58,7 @@ const DropdownContactPartnerView = ({idContact}) => {
             partnerFullName={item.simpleFullName}
             partnerReference={item.partnerSeq}
             partnerScoring={item.isProspect ? item?.leadScoringSelect : null}
-            partnerAdress={item.mainAddress?.fullName}
+            partnerAddress={item.mainAddress?.fullName}
             partnerFixedPhone={item.fixedPhone}
             partnerEmail={item.emailAddress?.address}
             partnerPicture={item.picture}

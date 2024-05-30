@@ -28,7 +28,7 @@ interface PartnerCardProps {
   partnerReference: string;
   partnerCompany?: string;
   partnerScoring?: number;
-  partnerAdress: string;
+  partnerAddress: string;
   partnerMobilePhone?: string;
   partnerFixedPhone: string;
   partnerEmail: string;
@@ -43,7 +43,7 @@ const PartnerCard = ({
   partnerReference,
   partnerCompany,
   partnerScoring,
-  partnerAdress,
+  partnerAddress,
   partnerMobilePhone,
   partnerFixedPhone,
   partnerEmail,
@@ -103,7 +103,7 @@ const PartnerCard = ({
       lowerTexts={{
         items: [
           {
-            indicatorText: partnerAdress,
+            indicatorText: partnerAddress,
             hideIfNull: true,
             iconName: 'map-marker-alt',
           },
