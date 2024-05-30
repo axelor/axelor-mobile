@@ -1,0 +1,5 @@
+{
+  "title": "HeaderBandList: prevent component to render in status bar on iOS",
+  "type": "fix",
+  "packages": "core"
+}
