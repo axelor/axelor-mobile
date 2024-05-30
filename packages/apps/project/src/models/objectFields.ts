@@ -68,7 +68,6 @@ export const project_modelAPI: ObjectFields = {
       }),
     ),
     priceList: schemaContructor.subObject(),
-    projectTaskList: schemaContructor.array().of(schemaContructor.subObject()),
     isShowStatus: schemaContructor.boolean(),
     projectTaskStatusSet: schemaContructor
       .array()

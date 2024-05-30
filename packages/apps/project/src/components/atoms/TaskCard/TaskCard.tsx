@@ -18,9 +18,12 @@
 
 import React, {useMemo} from 'react';
 import {StyleSheet, View} from 'react-native';
-import {useTypeHelpers, useSelector} from '@axelor/aos-mobile-core';
 import {Badge, ObjectCard, ProgressBar} from '@axelor/aos-mobile-ui';
-import {DateDisplay} from '@axelor/aos-mobile-core';
+import {
+  DateDisplay,
+  useTypeHelpers,
+  useSelector,
+} from '@axelor/aos-mobile-core';
 
 interface TaskCardProps {
   style?: any;

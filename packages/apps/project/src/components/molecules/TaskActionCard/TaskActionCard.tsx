@@ -48,9 +48,9 @@ const TaskActionCard = ({style, task}: TaskActionCardProps) => {
         assignedTo={task.assignedTo?.fullName}
         taskDeadline={task.taskDeadline}
         parentTask={task.parentTask?.name}
-        progress={task?.progress}
-        priority={task?.priority}
-        status={task?.status}
+        progress={task.progress}
+        priority={task.priority}
+        status={task.status}
         style={styles.cardContainer}
       />
       <InfoButton

@@ -73,7 +73,6 @@ const initialState = {
   projectTaskList: [],
 
   projectTaskStatusList: [],
-
   projectPriorityList: [],
 };
 
