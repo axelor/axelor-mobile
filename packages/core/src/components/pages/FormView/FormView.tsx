@@ -57,6 +57,7 @@ import {
 import {isEmpty} from '../../../utils';
 
 interface FormProps {
+  style?: any;
   defaultValue?: any;
   formKey: string;
   isCustom?: boolean;
@@ -65,6 +66,7 @@ interface FormProps {
 }
 
 const FormView = ({
+  style,
   defaultValue,
   formKey,
   isCustom = false,
@@ -354,6 +356,7 @@ const FormView = ({
 
   return (
     <Screen
+      style={style}
       fixedItems={
         actions.length === 0 || isReadonly
           ? undefined
