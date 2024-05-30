@@ -28,18 +28,20 @@ const createEquipmentsCriteria = ({
   searchValue,
   inService,
   partnerId,
-  isPlaceEquipment = false,
+  isPlaceEquipment = null,
   parentPlaceId,
+  noParent,
 }) => {
   const Equipment = getTypes().Equipment;
 
-  const criteria = [getSearchCriterias('intervention_equipment', searchValue)];
-
-  criteria.push({
-    fieldName: 'partner.id',
-    operator: '=',
-    value: partnerId,
-  });
+  const criteria = [
+    {
+      fieldName: 'partner.id',
+      operator: '=',
+      value: partnerId,
+    },
+    getSearchCriterias('intervention_equipment', searchValue),
+  ];
 
   if (inService != null) {
     criteria.push({
@@ -49,19 +51,28 @@ const createEquipmentsCriteria = ({
     });
   }
 
-  criteria.push({
-    fieldName: 'typeSelect',
-    operator: '=',
-    value: isPlaceEquipment
-      ? Equipment?.typeSelect.Place
-      : Equipment?.typeSelect.Equipment,
-  });
+  if (isPlaceEquipment != null) {
+    criteria.push({
+      fieldName: 'typeSelect',
+      operator: '=',
+      value: isPlaceEquipment
+        ? Equipment?.typeSelect.Place
+        : Equipment?.typeSelect.Equipment,
+    });
+  }
 
   if (parentPlaceId != null) {
     criteria.push({
       fieldName: 'parentEquipment.id',
       operator: '=',
       value: parentPlaceId,
+    });
+  }
+
+  if (noParent) {
+    criteria.push({
+      fieldName: 'parentEquipment',
+      operator: 'isNull',
     });
   }
 
@@ -93,11 +104,12 @@ const createInterventionEquipmentCriteria = ({
 };
 
 export async function searchEquipment({
-  searchValue,
+  searchValue = null,
   page = 0,
   inService,
   partnerId,
   parentPlaceId,
+  noParent = false,
   isCountFetch = false,
 }) {
   return createStandardSearch({
@@ -107,6 +119,7 @@ export async function searchEquipment({
       inService,
       partnerId,
       parentPlaceId,
+      noParent,
     }),
     fieldKey: 'intervention_equipment',
     sortKey: 'intervention_equipment',

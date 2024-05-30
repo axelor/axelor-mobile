@@ -17,21 +17,22 @@
  */
 
 import React, {useMemo, useState} from 'react';
-import {ChipSelect, Screen} from '@axelor/aos-mobile-ui';
+import {ChipSelect, Screen, Text} from '@axelor/aos-mobile-ui';
 import {
-  SearchListView,
+  displayItemName,
+  SearchTreeView,
   usePermitted,
   useSelector,
   useTranslator,
   useTypes,
   useTypeHelpers,
 } from '@axelor/aos-mobile-core';
-import {searchEquipment} from '../../features/equipmentSlice';
 import {
-  ClientProspectSearchBar,
-  EquipmentActionCard,
-  PlaceEquipmentSearchBar,
-} from '../../components';
+  searchEquipment,
+  searchPlaceEquipment,
+} from '../../features/equipmentSlice';
+import {searchEquipmentApi} from '../../api';
+import {ClientProspectSearchBar, EquipmentActionCard} from '../../components';
 
 const CustomerParkScreen = ({}) => {
   const I18n = useTranslator();
@@ -43,37 +44,70 @@ const CustomerParkScreen = ({}) => {
 
   const [selectedStatus, setSelectedStatus] = useState([]);
   const [customer, setCustomer] = useState(null);
-  const [parentPlace, setParentPlace] = useState(null);
 
-  const {loadingList, moreLoading, isListEnd, equipmentList} = useSelector(
-    (state: any) => state.intervention_equipment,
-  );
+  const {
+    loadingList,
+    moreLoading,
+    isListEnd,
+    equipmentList,
+    equipmentPlaceList,
+  } = useSelector((state: any) => state.intervention_equipment);
 
   const serviceStatusList = useMemo(
     () => getSelectionItems(Equipment?.serviceSelect, selectedStatus),
     [Equipment?.serviceSelect, getSelectionItems, selectedStatus],
   );
 
+  const sliceParentFunctionData = useMemo(
+    () => ({
+      partnerId: customer?.id,
+    }),
+    [customer?.id],
+  );
+
   const sliceFunctionData = useMemo(
     () => ({
       inService: selectedStatus[0]?.value,
       partnerId: customer?.id,
-      parentPlaceId: parentPlace?.id,
     }),
-    [customer, parentPlace?.id, selectedStatus],
+    [customer?.id, selectedStatus],
   );
 
   return (
     <Screen removeSpaceOnTop={true}>
-      <SearchListView
+      <SearchTreeView
+        parentList={equipmentPlaceList}
         list={equipmentList}
         loading={loadingList}
         moreLoading={moreLoading}
         isListEnd={isListEnd}
+        sliceParentFunction={searchPlaceEquipment}
+        sliceParentFunctionData={sliceParentFunctionData}
         sliceFunction={searchEquipment}
         sliceFunctionData={sliceFunctionData}
+        sliceFunctionDataParentIdName="parentPlaceId"
+        sliceFunctionDataNoParentName="noParent"
+        fetchBranchData={branchId =>
+          searchEquipmentApi({
+            inService: selectedStatus[0]?.key,
+            partnerId: customer?.id,
+            parentPlaceId: branchId,
+          })
+        }
+        branchCondition={item =>
+          item.typeSelect === Equipment?.typeSelect.Place
+        }
+        displayParentSearchValue={displayItemName}
+        searchParentPlaceholder={I18n.t('Intervention_ParentPlace')}
         searchPlaceholder={I18n.t('Base_Search')}
-        renderListItem={({item}) => (
+        parentFieldName="parentEquipment"
+        renderBranch={({item}) => (
+          <>
+            <Text writingType="important">{item.name}</Text>
+            <Text>{item.sequence}</Text>
+          </>
+        )}
+        renderLeaf={({item}) => (
           <EquipmentActionCard
             idEquipment={item.id}
             equipmentVersion={item.version}
@@ -91,18 +125,11 @@ const CustomerParkScreen = ({}) => {
           />
         )}
         headerTopChildren={
-          <>
-            <ClientProspectSearchBar
-              required={true}
-              defaultValue={customer}
-              onChange={setCustomer}
-            />
-            <PlaceEquipmentSearchBar
-              defaultValue={parentPlace}
-              customerId={customer?.id}
-              onChange={setParentPlace}
-            />
-          </>
+          <ClientProspectSearchBar
+            required={true}
+            defaultValue={customer}
+            onChange={setCustomer}
+          />
         }
         chipComponent={
           <ChipSelect

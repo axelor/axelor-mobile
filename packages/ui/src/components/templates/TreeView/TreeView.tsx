@@ -16,7 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {ActionType, ScrollList} from '../../organisms';
 import Branch from './Branch';
 
@@ -26,6 +26,7 @@ interface TreeViewProps {
   loadingList: boolean;
   data: any[];
   parentFieldName: string;
+  branchCardInfoButtonIndication: string;
   /**
    * Function used to display what is inside a branch card.
    */
@@ -46,6 +47,7 @@ interface TreeViewProps {
    * Function used to determine if an element is a branch or a leaf.
    */
   branchCondition: (item: any) => boolean;
+  onBranchFilterPress: (branch: any) => void;
   moreLoading: boolean;
   isListEnd: boolean;
   filter?: boolean;
@@ -61,11 +63,13 @@ const TreeView = ({
   loadingList = false,
   data = [],
   parentFieldName,
+  branchCardInfoButtonIndication,
   renderBranch,
   renderLeaf,
   fetchData = () => [],
   fetchBranchData,
   branchCondition,
+  onBranchFilterPress,
   moreLoading = false,
   isListEnd = false,
   filter = false,
@@ -76,6 +80,10 @@ const TreeView = ({
 }: TreeViewProps) => {
   const [openBranches, setOpenBranches] = useState([]);
 
+  useEffect(() => {
+    Array.isArray(data) && data.length > 0 && setOpenBranches([]);
+  }, [data]);
+
   const _renderItem = ({item, index}) => {
     return branchCondition(item) ? (
       <Branch
@@ -85,9 +93,11 @@ const TreeView = ({
         openBranchesLastIdx={0}
         setOpenBranches={setOpenBranches}
         renderBranch={renderBranch}
+        branchCardInfoButtonIndication={branchCardInfoButtonIndication}
         renderLeaf={renderLeaf}
         fetchBranchData={fetchBranchData}
         branchCondition={branchCondition}
+        onBranchFilterPress={onBranchFilterPress}
         translator={translator}
       />
     ) : (
