@@ -1,0 +1,5 @@
+{
+  "title": "HtmlInput: refresh component when default input data change",
+  "type": "fix",
+  "packages": "ui"
+}
