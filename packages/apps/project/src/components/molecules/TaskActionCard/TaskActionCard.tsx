@@ -30,14 +30,20 @@ interface TaskProps {
   progress?: number;
   priority?: any;
   status?: any;
+  project?: any;
 }
 
 interface TaskActionCardProps {
   style?: any;
   task?: TaskProps;
+  displayParenProjet?: boolean;
 }
 
-const TaskActionCard = ({style, task}: TaskActionCardProps) => {
+const TaskActionCard = ({
+  style,
+  task,
+  displayParenProjet = false,
+}: TaskActionCardProps) => {
   const Colors = useThemeColor();
   const I18n = useTranslator();
 
@@ -47,7 +53,9 @@ const TaskActionCard = ({style, task}: TaskActionCardProps) => {
         name={task.name}
         assignedTo={task.assignedTo?.fullName}
         taskDeadline={task.taskDeadline}
-        parentTask={task.parentTask?.name}
+        parentTask={
+          displayParenProjet ? task?.project?.name : task.parentTask?.name
+        }
         progress={task.progress}
         priority={task.priority}
         status={task.status}

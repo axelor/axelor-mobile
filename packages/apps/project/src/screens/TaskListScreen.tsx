@@ -90,7 +90,9 @@ const TaskListScreen = ({}) => {
         sliceFunction={searchProjectTask}
         sliceFunctionData={sliceFunctionData}
         searchPlaceholder={I18n.t('Base_Search')}
-        renderListItem={({item}) => <TaskActionCard task={item} />}
+        renderListItem={({item}) => (
+          <TaskActionCard task={item} displayParenProjet={project == null} />
+        )}
       />
     </Screen>
   );
