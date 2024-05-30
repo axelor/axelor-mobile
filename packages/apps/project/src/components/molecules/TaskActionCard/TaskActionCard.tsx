@@ -23,7 +23,6 @@ import {useTranslator} from '@axelor/aos-mobile-core';
 import {TaskCard} from '../../atoms';
 
 interface TaskProps {
-  style?: any;
   name?: string;
   assignedTo?: any;
   taskDeadline?: string;
