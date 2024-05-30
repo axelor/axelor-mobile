@@ -55,7 +55,7 @@ const CustomerDeliveryMovementIndicationCard = ({
       {showPopupOnCLick && (
         <Alert
           visible={isPopupVisible}
-          title={I18n.t('Stock_DestinationAdress')}
+          title={I18n.t('Stock_DestinationAddress')}
           confirmButtonConfig={{
             width: 50,
             title: null,
