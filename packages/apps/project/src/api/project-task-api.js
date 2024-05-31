@@ -25,15 +25,12 @@ const createProjectTaskCriteria = ({
   searchValue,
   projectId,
   userId,
-  selectedStatus,
-  selectedPriority,
   statusFilter,
   priorityFilter,
-  fetchAllList,
 }) => {
   const criteria = [getSearchCriterias('project_projectTask', searchValue)];
 
-  if (projectId != null && !fetchAllList) {
+  if (projectId != null) {
     criteria.push({
       fieldName: 'project.id',
       operator: '=',
@@ -49,10 +46,10 @@ const createProjectTaskCriteria = ({
     });
   }
 
-  if (Array.isArray(selectedStatus) && selectedStatus.length > 0) {
+  if (Array.isArray(statusFilter) && statusFilter.length > 0) {
     criteria.push({
       operator: 'or',
-      criteria: selectedStatus.map(status => ({
+      criteria: statusFilter.map(status => ({
         fieldName: 'status.id',
         operator: '=',
         value: status,
@@ -60,10 +57,10 @@ const createProjectTaskCriteria = ({
     });
   }
 
-  if (Array.isArray(selectedPriority) && selectedPriority.length > 0) {
+  if (Array.isArray(priorityFilter) && priorityFilter.length > 0) {
     criteria.push({
       operator: 'or',
-      criteria: selectedPriority.map(priority => ({
+      criteria: priorityFilter.map(priority => ({
         fieldName: 'priority.id',
         operator: '=',
         value: priority,
@@ -83,7 +80,6 @@ export async function searchProjectTask({
   selectedPriority,
   statusToFilter,
   priorityToFilter,
-  fetchAllList = false,
 }) {
   const statusFilter =
     selectedStatus.length > 0
@@ -103,7 +99,6 @@ export async function searchProjectTask({
       userId,
       statusFilter,
       priorityFilter,
-      fetchAllList,
     }),
     fieldKey: 'project_projectTask',
     sortKey: 'project_projectTask',

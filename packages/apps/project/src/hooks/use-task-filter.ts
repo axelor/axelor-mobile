@@ -27,7 +27,7 @@ import {
   fetchProjectPriority,
 } from '../features/projectTaskSlice';
 
-export const useTaskFilters = (project: any, fetchAllList: boolean) => {
+export const useTaskFilters = (project: any) => {
   const dispatch = useDispatch();
 
   const {getCustomSelectionItems} = useTypeHelpers();
@@ -58,30 +58,24 @@ export const useTaskFilters = (project: any, fetchAllList: boolean) => {
       : [];
   }, [project?.isShowPriority, project?.projectTaskPrioritySet]);
 
-  const idsProjectTask = useMemo(() => {
-    return project?.projectTaskList?.map(projectTask => projectTask.id);
-  }, [project?.projectTaskList]);
-
   const sliceFunctionData = useMemo(() => {
     return {
-      idsProjectTask: idsProjectTask,
+      projectId: project?.id,
       isAssignedToMe: isAssignedToMe,
       selectedStatus: selectedStatus,
       selectedPriority: selectedPriority,
       statusToFilter: statusToFilter,
       priorityToFilter: priorityToFilter,
       userId: isAssignedToMe ? userId : null,
-      fetchAllList: fetchAllList,
     };
   }, [
-    idsProjectTask,
+    project,
     isAssignedToMe,
     selectedStatus,
     selectedPriority,
     statusToFilter,
     priorityToFilter,
     userId,
-    fetchAllList,
   ]);
 
   const statusList = useMemo(() => {

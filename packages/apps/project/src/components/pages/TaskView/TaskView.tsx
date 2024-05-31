@@ -41,7 +41,7 @@ const TaskView = () => {
     sliceFunctionData,
     statusList,
     priorityList,
-  } = useTaskFilters(project, false);
+  } = useTaskFilters(project);
 
   return (
     <SearchListView

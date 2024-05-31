@@ -45,7 +45,7 @@ const TaskListScreen = ({}) => {
     sliceFunctionData,
     statusList,
     priorityList,
-  } = useTaskFilters(project, true);
+  } = useTaskFilters(project);
 
   return (
     <Screen removeSpaceOnTop={true}>
@@ -91,7 +91,7 @@ const TaskListScreen = ({}) => {
         sliceFunctionData={sliceFunctionData}
         searchPlaceholder={I18n.t('Base_Search')}
         renderListItem={({item}) => (
-          <TaskActionCard task={item} displayParenProjet={project == null} />
+          <TaskActionCard task={item} displayParentProjet={project == null} />
         )}
       />
     </Screen>
