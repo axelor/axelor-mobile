@@ -17,14 +17,13 @@
  */
 
 import React, {useState} from 'react';
-import {StyleSheet, View} from 'react-native';
-import {MultiValuePicker, Screen, ToggleButton} from '@axelor/aos-mobile-ui';
+import {Screen} from '@axelor/aos-mobile-ui';
 import {
   SearchListView,
   useSelector,
   useTranslator,
 } from '@axelor/aos-mobile-core';
-import {ProjectSearchBar, TaskActionCard} from '../components';
+import {TaskActionCard, TaskSearchHeader} from '../components';
 import {searchProjectTask} from '../features/projectTaskSlice';
 import {useTaskFilters} from '../hooks/use-task-filter';
 
@@ -51,37 +50,16 @@ const TaskListScreen = ({}) => {
     <Screen removeSpaceOnTop={true}>
       <SearchListView
         headerChildren={
-          <>
-            <View style={styles.headerContainer}>
-              <ToggleButton
-                isActive={isAssignedToMe}
-                onPress={() => setIsAssignedToMe(current => !current)}
-                buttonConfig={{
-                  iconName: 'person-fill',
-                  width: '10%',
-                  style: styles.toggleButton,
-                }}
-              />
-              <ProjectSearchBar
-                style={styles.searchBar}
-                showTitle={false}
-                onChange={setProject}
-                defaultValue={project}
-              />
-            </View>
-            <View style={styles.pickerContainer}>
-              <MultiValuePicker
-                style={styles.picker}
-                listItems={statusList}
-                onValueChange={setSelectedStatus}
-              />
-              <MultiValuePicker
-                style={styles.picker}
-                listItems={priorityList}
-                onValueChange={setSelectedPriority}
-              />
-            </View>
-          </>
+          <TaskSearchHeader
+            isAssignedToMe={isAssignedToMe}
+            setIsAssignedToMe={setIsAssignedToMe}
+            priorityList={priorityList}
+            setSelectedPriority={setSelectedPriority}
+            setSelectedStatus={setSelectedStatus}
+            statusList={statusList}
+            project={project}
+            setProject={setProject}
+          />
         }
         list={projectTaskList}
         loading={loading}
@@ -97,28 +75,5 @@ const TaskListScreen = ({}) => {
     </Screen>
   );
 };
-
-const styles = StyleSheet.create({
-  headerContainer: {
-    width: '90%',
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignSelf: 'center',
-    alignItems: 'center',
-  },
-  toggleButton: {
-    height: 40,
-  },
-  searchBar: {
-    width: '85%',
-  },
-  picker: {
-    width: '42%',
-  },
-  pickerContainer: {
-    flexDirection: 'row',
-    justifyContent: 'space-evenly',
-  },
-});
 
 export default TaskListScreen;

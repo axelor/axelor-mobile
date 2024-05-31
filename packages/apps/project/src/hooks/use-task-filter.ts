@@ -46,13 +46,13 @@ export const useTaskFilters = (project: any) => {
     dispatch(fetchProjectPriority());
   }, [dispatch]);
 
-  const statusToFilter = useMemo(() => {
+  const availableStatus = useMemo(() => {
     return project?.isShowStatus
       ? project?.projectTaskStatusSet?.map(status => status.id)
       : [];
   }, [project?.isShowStatus, project?.projectTaskStatusSet]);
 
-  const priorityToFilter = useMemo(() => {
+  const availablePriorities = useMemo(() => {
     return project?.isShowPriority
       ? project?.projectTaskPrioritySet?.map(status => status.id)
       : [];
@@ -64,8 +64,8 @@ export const useTaskFilters = (project: any) => {
       isAssignedToMe: isAssignedToMe,
       selectedStatus: selectedStatus,
       selectedPriority: selectedPriority,
-      statusToFilter: statusToFilter,
-      priorityToFilter: priorityToFilter,
+      statusToFilter: availableStatus,
+      priorityToFilter: availablePriorities,
       userId: isAssignedToMe ? userId : null,
     };
   }, [
@@ -73,8 +73,8 @@ export const useTaskFilters = (project: any) => {
     isAssignedToMe,
     selectedStatus,
     selectedPriority,
-    statusToFilter,
-    priorityToFilter,
+    availableStatus,
+    availablePriorities,
     userId,
   ]);
 
@@ -84,14 +84,14 @@ export const useTaskFilters = (project: any) => {
       'name',
       selectedStatus,
     );
-    return statusToFilter.length === 0
+    return availableStatus.length === 0
       ? _statusList
-      : _statusList.filter(status => statusToFilter.includes(status.value));
+      : _statusList.filter(status => availableStatus.includes(status.value));
   }, [
     getCustomSelectionItems,
     projectTaskStatusList,
     selectedStatus,
-    statusToFilter,
+    availableStatus,
   ]);
 
   const priorityList = useMemo(() => {
@@ -100,14 +100,16 @@ export const useTaskFilters = (project: any) => {
       'name',
       selectedPriority,
     );
-    return priorityToFilter.length === 0
+    return availablePriorities.length === 0
       ? _priorityList
-      : _priorityList.filter(status => priorityToFilter.includes(status.value));
+      : _priorityList.filter(status =>
+          availablePriorities.includes(status.value),
+        );
   }, [
     getCustomSelectionItems,
     projectPriorityList,
     selectedPriority,
-    priorityToFilter,
+    availablePriorities,
   ]);
 
   return {

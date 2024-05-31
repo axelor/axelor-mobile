@@ -22,5 +22,5 @@ export {default as PartnerActionCard} from './PartnerActionCard/PartnerActionCar
 export {default as ProjectHeader} from './ProjectHeader/ProjectHeader';
 export {default as ProjectSiteTags} from './ProjectSiteTags/ProjectSiteTags';
 export {default as TaskActionCard} from './TaskActionCard/TaskActionCard';
-export {default as TaskFilters} from './TaskFilters/TaskFilters';
 export {default as TaskHeader} from './TaskHeader/TaskHeader';
+export {default as TaskSearchHeader} from './TaskSearchHeader/TaskSearchHeader';
