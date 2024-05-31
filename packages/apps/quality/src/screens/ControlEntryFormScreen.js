@@ -85,14 +85,17 @@ const ControlEntryFormScreen = ({navigation, route}) => {
               .id,
         )
         .filter((_item, _index, self) => self.indexOf(_item) === _index);
+      setCategorySet(_itemSet);
+
       if (sampleId == null) {
         setCategoryIndex(0);
       } else {
         const sampleIndex = sampleLineOfEntryList.findIndex(
-          item =>
-            item[ControlEntryType.getMethodAssociatedAttribut(selectedMode)]
+          _item =>
+            _item[ControlEntryType.getMethodAssociatedAttribut(selectedMode)]
               .id === sampleId,
         );
+
         if (sampleIndex !== -1) {
           const _categoryIndex = _itemSet.findIndex(
             id =>
@@ -106,7 +109,6 @@ const ControlEntryFormScreen = ({navigation, route}) => {
           setCategoryIndex(0);
         }
       }
-      setCategorySet(_itemSet);
     } else {
       setCategorySet([]);
     }
