@@ -84,8 +84,9 @@ const PopupCreateSession = ({
           });
         }
       });
+      handleVisibility(false);
     },
-    [dispatch, isMounted],
+    [dispatch, handleVisibility, isMounted],
   );
 
   useEffect(() => {
