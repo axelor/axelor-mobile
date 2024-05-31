@@ -1,0 +1,5 @@
+{
+  "title": "Control entry list view: enable selection of a specific sample",
+  "type": "feat",
+  "packages": "quality"
+}
