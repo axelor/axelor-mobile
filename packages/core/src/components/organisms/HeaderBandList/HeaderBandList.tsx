@@ -17,7 +17,7 @@
  */
 
 import React, {useMemo} from 'react';
-import {Dimensions, StatusBar, StyleSheet, View} from 'react-native';
+import {Dimensions, StyleSheet, View} from 'react-native';
 import {Color} from '@axelor/aos-mobile-ui';
 import {HeaderBand} from '../../molecules';
 import {useHeaderBand, HeaderBandHelper} from '../../../header';
@@ -54,7 +54,6 @@ const HeaderBandList = () => {
 
 const styles = StyleSheet.create({
   container: {
-    marginTop: StatusBar.currentHeight,
     width: Dimensions.get('screen').width,
   },
 });
