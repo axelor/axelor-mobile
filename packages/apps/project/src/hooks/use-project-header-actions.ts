@@ -25,9 +25,11 @@ import {
 } from '@axelor/aos-mobile-core';
 import {useThemeColor} from '@axelor/aos-mobile-ui';
 import {fetchProjectById} from '../features/projectSlice';
+import {fetchProjectTaskById} from '../features/projectTaskSlice';
 
 export const useProjectHeaders = () => {
   useProjectDetailsActions();
+  useProjectTaskDetailsActions();
 };
 
 const useProjectDetailsActions = () => {
@@ -70,5 +72,47 @@ const useProjectDetailsActions = () => {
     mobileSettings?.isTrackerMessageEnabled,
     project?.code,
     project?.id,
+  ]);
+};
+
+const useProjectTaskDetailsActions = () => {
+  const Colors = useThemeColor();
+  const dispatch = useDispatch();
+  const I18n = useTranslator();
+
+  const {projectTask} = useSelector((state: any) => state.project_projectTask);
+  const {mobileSettings} = useSelector((state: any) => state.appConfig);
+
+  useEffect(() => {
+    headerActionsProvider.registerModel('project_projectTask_details', {
+      model: 'com.axelor.apps.project.db.ProjectTask',
+      modelId: projectTask?.id,
+      disableMailMessages: !mobileSettings?.isTrackerMessageEnabled,
+      attachedFileScreenTitle: projectTask?.name,
+      actions: [
+        {
+          key: 'refreshProject',
+          order: 0,
+          iconName: 'arrow-repeat',
+          title: I18n.t('Project_RefreshProjectTask'),
+          iconColor: Colors.primaryColor.background,
+          onPress: () => {
+            dispatch(
+              (fetchProjectTaskById as any)({
+                projecTaskId: projectTask?.id,
+              }),
+            );
+          },
+          showInHeader: true,
+        },
+      ],
+    });
+  }, [
+    Colors,
+    I18n,
+    dispatch,
+    mobileSettings?.isTrackerMessageEnabled,
+    projectTask?.id,
+    projectTask?.name,
   ]);
 };

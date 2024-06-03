@@ -22,9 +22,10 @@ import {
   handlerApiCall,
 } from '@axelor/aos-mobile-core';
 import {
-  searchProjectTask as _searchProjectTask,
-  fetchProjectTaskStatus as _fetchProjectTaskStatus,
   fetchProjectPriority as _fetchProjectPriority,
+  fetchProjectTaskById as _fetchProjectTaskById,
+  fetchProjectTaskStatus as _fetchProjectTaskStatus,
+  searchProjectTask as _searchProjectTask,
 } from '../api/project-task-api';
 
 export const searchProjectTask = createAsyncThunk(
@@ -66,6 +67,19 @@ export const fetchProjectPriority = createAsyncThunk(
   },
 );
 
+export const fetchProjectTaskById = createAsyncThunk(
+  'project_projectTask/fetchProjectTaskById',
+  async function (data, {getState}) {
+    return handlerApiCall({
+      fetchFunction: _fetchProjectTaskById,
+      data,
+      action: 'Project_SliceAction_FetchProjectTaskById',
+      getState,
+      responseOptions: {isArrayResponse: false},
+    });
+  },
+);
+
 const initialState = {
   loading: true,
   moreLoading: false,
@@ -74,6 +88,9 @@ const initialState = {
 
   projectTaskStatusList: [],
   projectPriorityList: [],
+
+  loadingProjectTask: true,
+  projectTask: {},
 };
 
 const projectTaskSlice = createSlice({
@@ -91,6 +108,14 @@ const projectTaskSlice = createSlice({
     });
     builder.addCase(fetchProjectPriority.fulfilled, (state, action) => {
       state.projectPriorityList = action.payload;
+    });
+
+    builder.addCase(fetchProjectTaskById.pending, state => {
+      state.loadingProjectTask = true;
+    });
+    builder.addCase(fetchProjectTaskById.fulfilled, (state, action) => {
+      state.loadingProjectTask = false;
+      state.projectTask = action.payload;
     });
   },
 });

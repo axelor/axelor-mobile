@@ -20,11 +20,14 @@
   "Project_ParentProject": "Projet parent",
   "Project_ChildProjects": "Projets enfants",
   "Project_NoLinkedProjects": "Aucun projet lié.",
+  "Project_Task": "Tâche",
+  "Project_RefreshProjectTask": "Actualiser la tâche du projet",
   "Project_SliceAction_SearchProject": "recherche sur les projets",
   "Project_SliceAction_FetchProjectById": "récupération du projet par id",
   "Project_SliceAction_FetchProjectStatus": "récupération des statuts de projet",
   "Project_SliceAction_SearchProjectTask": "recherche sur les tâches du projet",
   "Project_SliceAction_FetchProjectTaskStatus": "récupération des statuts des tâches du projet",
   "Project_SliceAction_FetchProjectPriority": "récupération des priorités du projet",
-  "Project_SliceAction_SearchSubProject": "recherche sur les sous-projets"
+  "Project_SliceAction_SearchSubProject": "recherche sur les sous-projets",
+  "Project_SliceAction_FetchProjectTaskById": "récupération de la tâche du projet par id"
 }

@@ -107,7 +107,7 @@ export const project_modelAPI: ObjectFields = {
   project_projectTask: schemaContructor.object({
     name: schemaContructor.string(),
     fullName: schemaContructor.string(),
-    assignedTo: schemaContructor.string(),
+    assignedTo: schemaContructor.subObject(),
     status: schemaContructor.subObject(),
     priority: schemaContructor.subObject(),
     progress: schemaContructor.number(),
