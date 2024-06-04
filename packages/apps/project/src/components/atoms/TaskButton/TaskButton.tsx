@@ -16,9 +16,21 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-export {default as DatesDisplay} from './DatesDisplay/DatesDisplay';
-export {default as PartnerCard} from './PartnerCard/PartnerCard';
-export {default as ProjectCard} from './ProjectCard/ProjectCard';
-export {default as ProjectSimpleCard} from './ProjectSimpleCard/ProjectSimpleCard';
-export {default as TaskButton} from './TaskButton/TaskButton';
-export {default as TaskCard} from './TaskCard/TaskCard';
+import React from 'react';
+import {useTranslator} from '@axelor/aos-mobile-core';
+import {Button, useThemeColor} from '@axelor/aos-mobile-ui';
+
+const TaskButton = () => {
+  const Colors = useThemeColor();
+  const I18n = useTranslator();
+
+  return (
+    <Button
+      color={Colors.progressColor}
+      title={I18n.t('Project_LogTime')}
+      iconName="clock-history"
+    />
+  );
+};
+
+export default TaskButton;

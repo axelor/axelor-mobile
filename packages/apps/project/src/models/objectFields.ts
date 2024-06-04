@@ -113,7 +113,23 @@ export const project_modelAPI: ObjectFields = {
     progress: schemaContructor.number(),
     taskDeadline: schemaContructor.string(),
     parentTask: schemaContructor.subObject('name'),
-    project: schemaContructor.subObject('name'),
+    project: schemaContructor.subObject().concat(
+      schemaContructor.object({
+        name: schemaContructor.string(),
+        projectStatus: schemaContructor.subObject(),
+      }),
+    ),
+    projectTaskCategory: schemaContructor.subObject(),
+    projectTaskSection: schemaContructor.subObject(),
+    targetVersion: schemaContructor.subObject(),
+    taskDate: schemaContructor.string(),
+    taskEndDate: schemaContructor.string(),
+    projectTaskTagSet: schemaContructor
+      .array()
+      .of(schemaContructor.subObject()),
+    spentTime: schemaContructor.number(),
+    description: schemaContructor.string(),
+    internalDescription: schemaContructor.string(),
   }),
   project_projectStatus: schemaContructor.object({
     name: schemaContructor.string(),
