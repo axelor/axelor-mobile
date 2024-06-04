@@ -1,0 +1,5 @@
+{
+  "title": "MultiValuePicker: manage display of picker smaller than screen width",
+  "type": "fix",
+  "packages": "ui"
+}
