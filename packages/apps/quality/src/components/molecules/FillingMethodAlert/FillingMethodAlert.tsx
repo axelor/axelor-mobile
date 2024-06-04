@@ -23,16 +23,11 @@ import {Alert, RadioSelect} from '@axelor/aos-mobile-ui';
 import {ControlEntry} from '../../../types';
 
 interface FillingMethodAlertProps {
-  controlEntryId: number;
   visible: boolean;
   setVisible: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
-const FillingMethodAlert = ({
-  controlEntryId,
-  visible,
-  setVisible,
-}: FillingMethodAlertProps) => {
+const FillingMethodAlert = ({visible, setVisible}: FillingMethodAlertProps) => {
   const navigation = useNavigation();
   const I18n = useTranslator();
 
@@ -57,7 +52,6 @@ const FillingMethodAlert = ({
         onPress: () => {
           setVisible(false);
           navigation.navigate('ControlEntryFormScreen', {
-            controlEntryId: controlEntryId,
             selectedMode: selectedMode,
           });
         },
