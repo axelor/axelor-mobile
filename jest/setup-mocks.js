@@ -100,6 +100,7 @@ jest.mock(
 );
 
 jest.mock('react-native-system-navigation-bar', () => ({
+  default: jest.fn(),
   navigationHide: () => jest.fn(),
 }));
 
@@ -138,10 +139,6 @@ jest.mock('react-native-gifted-charts', () => ({
   LineChart: jest.fn(),
   BarChart: jest.fn(),
   PieChart: jest.fn(),
-}));
-
-jest.mock('react-native-system-navigation-bar', () => ({
-  default: jest.fn(),
 }));
 
 jest.mock('react-native-pell-rich-editor', () => ({
