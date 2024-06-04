@@ -50,6 +50,7 @@ const PopupSession = ({
           password,
         }),
       );
+      setIsOpen(false);
     },
     [dispatch, sessionActive],
   );

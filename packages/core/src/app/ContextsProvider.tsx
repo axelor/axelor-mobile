@@ -158,7 +158,7 @@ const ContextsProvider = ({
 
   return (
     <ApplicationContext.Provider value={{}}>
-      <Provider store={store}>
+      <Provider store={store} identityFunctionCheck="never">
         <OutsideAlerterProvider>
           <ThemeProvider
             themes={themes}
