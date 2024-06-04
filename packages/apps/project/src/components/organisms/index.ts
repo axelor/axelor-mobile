@@ -17,3 +17,4 @@
  */
 
 export {default as ProjectDropdownCards} from './ProjectDropdownCards/ProjectDropdownCards';
+export {default as ProjectSearchBar} from './ProjectSearchBar/ProjectSearchBar';
