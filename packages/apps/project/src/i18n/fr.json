@@ -16,6 +16,7 @@
   "Project_NoRelatedInvoicing": "Pas d'élément lié à la facturation",
   "Project_LogTime": "Saisir temps",
   "Project_CreateNewTask": "Créer une nouvelle tâche",
+  "Project_Tasks": "Tâches",
   "Project_SliceAction_SearchProject": "recherche sur les projets",
   "Project_SliceAction_FetchProjectById": "récupération du projet par id",
   "Project_SliceAction_FetchProjectStatus": "récupération des statuts de projet",

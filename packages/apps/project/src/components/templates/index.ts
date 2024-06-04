@@ -17,3 +17,4 @@
  */
 
 export {default as ProjectListView} from './ProjectListView/ProjectListView';
+export {default as TaskFilters} from './TaskFilters/TaskFilters';

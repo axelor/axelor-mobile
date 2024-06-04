@@ -49,10 +49,10 @@ const createProjectTaskCriteria = ({
   if (Array.isArray(selectedStatus) && selectedStatus.length > 0) {
     criteria.push({
       operator: 'or',
-      criteria: selectedStatus.map(status => ({
+      criteria: selectedStatus.map(({key}) => ({
         fieldName: 'status.id',
         operator: '=',
-        value: status,
+        value: key,
       })),
     });
   }
@@ -60,10 +60,10 @@ const createProjectTaskCriteria = ({
   if (Array.isArray(selectedPriority) && selectedPriority.length > 0) {
     criteria.push({
       operator: 'or',
-      criteria: selectedPriority.map(priority => ({
+      criteria: selectedPriority.map(({key}) => ({
         fieldName: 'priority.id',
         operator: '=',
-        value: priority,
+        value: key,
       })),
     });
   }
