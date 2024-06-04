@@ -16,7 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import React, {useEffect} from 'react';
+import React, {useEffect, useMemo} from 'react';
 import {View} from 'react-native';
 import {FormView, useDispatch, useSelector} from '@axelor/aos-mobile-core';
 import {HeaderContainer, ScrollView} from '@axelor/aos-mobile-ui';
@@ -32,6 +32,13 @@ const TimeView = () => {
     dispatch(updateProject(project));
   });
 
+  const defaultValue = useMemo(() => {
+    return {
+      project: project,
+      date: new Date().toISOString().split('T')[0],
+    };
+  }, [project]);
+
   return (
     <View>
       <HeaderContainer
@@ -42,10 +49,7 @@ const TimeView = () => {
         <FormView
           formKey="project_TimesheetLine"
           actions={[]}
-          defaultValue={{
-            project: project,
-            date: new Date().toISOString().split('T')[0],
-          }}
+          defaultValue={defaultValue}
         />
       </ScrollView>
     </View>

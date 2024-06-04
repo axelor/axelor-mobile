@@ -16,7 +16,22 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-export {project_formsRegister} from './forms';
-export {project_modelAPI} from './objectFields';
-export {project_searchFields} from './searchFields';
-export {project_sortFields} from './sortFields';
+import React from 'react';
+import {StyleSheet} from 'react-native';
+import {Button} from '@axelor/aos-mobile-ui';
+import {useTranslator} from '@axelor/aos-mobile-core';
+
+const ValidationTimesheetLineButton = ({}) => {
+  const I18n = useTranslator();
+
+  return <Button style={styles.margin} title={I18n.t('Base_Create')} />;
+};
+
+const styles = StyleSheet.create({
+  margin: {
+    marginTop: 20,
+    marginBottom: 100,
+  },
+});
+
+export default ValidationTimesheetLineButton;
