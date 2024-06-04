@@ -67,17 +67,19 @@ const ControlEntryDetailsScreen = ({route}) => {
     dispatch(fetchControlEntryById({controlEntryId: controlEntryId}));
   }, [controlEntryId, dispatch]);
 
+  const handleSamplePress = useCallback(
+    sampleId => {
+      navigation.navigate('ControlEntryFormScreen', {
+        selectedMode: ControlEntryType.fillingMethod.Sample,
+        sampleId,
+      });
+    },
+    [navigation],
+  );
+
   if (controlEntry?.id !== controlEntryId) {
     return null;
   }
-
-  const handleSamplePress = sampleId => {
-    navigation.navigate('ControlEntryFormScreen', {
-      controlEntryId: controlEntry.id,
-      selectedMode: ControlEntryType.fillingMethod.Sample,
-      sampleId: sampleId,
-    });
-  };
 
   return (
     <FocusScreen
@@ -92,7 +94,6 @@ const ControlEntryDetailsScreen = ({route}) => {
         expandableFilter={false}
         fixedItems={
           <ControlEntryDetailsHeader
-            controlEntryId={controlEntry.id}
             name={controlEntry.name}
             statusSelect={controlEntry.statusSelect}
             entryDateTime={controlEntry.entryDateTime}

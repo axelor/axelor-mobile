@@ -24,13 +24,7 @@ import {searchControlEntrySampleApi} from '../../../api';
 import {ControlEntryHeader} from '../../atoms';
 import {FillingMethodAlert} from '../../molecules';
 
-interface ControlEntryHeaderProps {
-  controlEntryId: number;
-}
-
-const ControlEntryDetailsHeader = ({
-  controlEntryId,
-}: ControlEntryHeaderProps) => {
+const ControlEntryDetailsHeader = ({}) => {
   const [numberSampleFilled, setNumberSampleFilled] = useState<number>(0);
   const [showAlert, setShowAlert] = useState(false);
   const {ControlEntrySample} = useTypes();
@@ -74,11 +68,7 @@ const ControlEntryDetailsHeader = ({
           onPress={() => setShowAlert(true)}
         />
       </View>
-      <FillingMethodAlert
-        controlEntryId={controlEntryId}
-        visible={showAlert}
-        setVisible={setShowAlert}
-      />
+      <FillingMethodAlert visible={showAlert} setVisible={setShowAlert} />
     </View>
   );
 };
