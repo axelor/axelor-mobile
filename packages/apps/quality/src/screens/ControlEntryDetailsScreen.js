@@ -24,6 +24,7 @@ import {
   useSelector,
   useTranslator,
   useTypes,
+  useNavigation,
 } from '@axelor/aos-mobile-core';
 import {
   ControlEntryDetailsButtons,
@@ -32,9 +33,11 @@ import {
 } from '../components';
 import {searchControlEntrySample} from '../features/controlEntrySampleSlice';
 import {fetchControlEntryById} from '../features/controlEntrySlice';
+import {ControlEntry as ControlEntryType} from '../types';
 
 const ControlEntryDetailsScreen = ({route}) => {
   const {controlEntryId} = route.params;
+  const navigation = useNavigation();
 
   const dispatch = useDispatch();
   const I18n = useTranslator();
@@ -64,6 +67,16 @@ const ControlEntryDetailsScreen = ({route}) => {
     dispatch(fetchControlEntryById({controlEntryId: controlEntryId}));
   }, [controlEntryId, dispatch]);
 
+  const handleSamplePress = useCallback(
+    sampleId => {
+      navigation.navigate('ControlEntryFormScreen', {
+        selectedMode: ControlEntryType.fillingMethod.Sample,
+        sampleId,
+      });
+    },
+    [navigation],
+  );
+
   if (controlEntry?.id !== controlEntryId) {
     return null;
   }
@@ -81,7 +94,6 @@ const ControlEntryDetailsScreen = ({route}) => {
         expandableFilter={false}
         fixedItems={
           <ControlEntryDetailsHeader
-            controlEntryId={controlEntry.id}
             name={controlEntry.name}
             statusSelect={controlEntry.statusSelect}
             entryDateTime={controlEntry.entryDateTime}
@@ -102,6 +114,7 @@ const ControlEntryDetailsScreen = ({route}) => {
             controlEntrySampleId={item.id}
             resultSelect={item.resultSelect}
             samplefullName={item.fullName}
+            onPress={() => handleSamplePress(item.id)}
           />
         )}
       />
