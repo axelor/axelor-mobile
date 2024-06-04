@@ -26,13 +26,7 @@ import {Module} from './Module';
 import Translator from '../i18n/component/Translator';
 import {getActiveUserInfo} from '../api/login-api';
 import ErrorScreen from '../screens/ErrorScreen';
-import {
-  Camera,
-  CameraScanner,
-  HeaderBandList,
-  Scanner,
-  Toast,
-} from '../components';
+import {Camera, HeaderBandList, Scanner, Toast} from '../components';
 import {RouterProvider} from '../config';
 import {proxy, releaseConfig, versionCheckConfig} from './types';
 import {useDispatch} from '../redux/hooks';
@@ -84,7 +78,6 @@ const ContextedApplication = ({
   return (
     <>
       <Camera />
-      <CameraScanner />
       <Scanner />
       <Translator />
       <ErrorBoundary

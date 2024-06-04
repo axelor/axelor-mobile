@@ -21,9 +21,10 @@ import {Dimensions, StyleSheet, View} from 'react-native';
 import {useDispatch} from 'react-redux';
 import {
   Camera as PackageCamera,
-  useCameraDevices,
+  useCameraDevice,
+  useCameraPermission,
+  useCodeScanner,
 } from 'react-native-vision-camera';
-import {BarcodeFormat, useScanBarcodes} from 'vision-camera-code-scanner';
 import {Icon, useThemeColor} from '@axelor/aos-mobile-ui';
 import {formatScan} from '../../../utils/formatters';
 import {
@@ -34,58 +35,45 @@ import {
 
 const CameraScanner = () => {
   const {isEnabled: isActive} = useCameraScannerSelector();
-  const [hasPermission, setHasPermission] = useState(false);
-  const devices = useCameraDevices();
-  const device = devices.back;
+  const {hasPermission, requestPermission} = useCameraPermission();
+  const device = useCameraDevice('back');
   const Colors = useThemeColor();
   const dispatch = useDispatch();
 
-  const [frameProcessor, barcodes] = useScanBarcodes(
-    [BarcodeFormat.ALL_FORMATS],
-    {
-      checkInverted: true,
-    },
-  );
-
-  const handleScan = useCallback(
-    barcode => {
-      if (barcode != null) {
-        dispatch(
-          scanBarcode({
-            value: formatScan(
-              barcode.displayValue,
-              BarcodeFormat[barcode.format],
-            ),
-            type: BarcodeFormat[barcode.format],
-          }),
-        );
-      }
-    },
-    [dispatch],
-  );
+  const [shouldClose, setShouldClose] = useState(true);
+  const [barcode, setBarcode] = useState(null);
 
   const handleClose = useCallback(() => {
-    dispatch(disableCameraScanner());
-  }, [dispatch]);
-
-  useEffect(() => {
-    if (barcodes[0] != null) {
-      handleScan(barcodes[0]);
+    if (barcode != null) {
+      dispatch(
+        scanBarcode({
+          value: formatScan(barcode[0].value, barcode[0].type),
+          type: barcode[0].type,
+        }),
+      );
+    } else {
+      dispatch(disableCameraScanner());
     }
-  }, [barcodes, handleScan]);
+  }, [barcode, dispatch]);
 
   useEffect(() => {
     if (isActive) {
-      (async () => {
-        const status = await PackageCamera.requestCameraPermission();
-        setHasPermission(status === 'authorized');
-      })();
+      requestPermission();
+      setShouldClose(false);
+      setBarcode(null);
     }
+  }, [isActive, requestPermission]);
 
-    return () => setHasPermission(false);
-  }, [isActive]);
+  const codeScanner = useCodeScanner({
+    codeTypes: ['qr', 'ean-13'],
+    onCodeScanned: _barcode => {
+      if (Array.isArray(_barcode) && _barcode[0] != null) {
+        setBarcode(_barcode[0]);
+      }
+    },
+  });
 
-  if (!hasPermission && !isActive) {
+  if (!hasPermission || !isActive) {
     return null;
   }
 
@@ -96,15 +84,15 @@ const CameraScanner = () => {
         size={24}
         color={Colors.primaryColor.background}
         touchable={true}
-        onPress={handleClose}
+        onPress={() => setShouldClose(true)}
         style={styles.icon}
       />
       <PackageCamera
         style={styles.camera}
+        onStopped={handleClose}
         device={device}
-        isActive={true}
-        frameProcessor={frameProcessor}
-        frameProcessorFps={5}
+        isActive={!shouldClose && barcode == null}
+        codeScanner={codeScanner}
       />
     </View>
   );
