@@ -16,49 +16,51 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import React, {useState} from 'react';
+import React, {useMemo, useState} from 'react';
 import {Screen} from '@axelor/aos-mobile-ui';
 import {
   SearchListView,
   useSelector,
   useTranslator,
 } from '@axelor/aos-mobile-core';
-import {TaskActionCard, TaskSearchHeader} from '../components';
+import {TaskActionCard, TaskFilters} from '../components';
 import {searchProjectTask} from '../features/projectTaskSlice';
-import {useTaskFilters} from '../hooks/use-task-filter';
 
 const TaskListScreen = ({}) => {
   const I18n = useTranslator();
 
+  const {userId} = useSelector((state: any) => state.auth);
   const {loading, moreLoading, isListEnd, projectTaskList} = useSelector(
     (state: any) => state.project_projectTask,
   );
 
   const [project, setProject] = useState(null);
+  const [selectedStatus, setSelectedStatus] = useState([]);
+  const [selectedPriority, setSelectedPriority] = useState([]);
+  const [isAssignedToMe, setIsAssignedToMe] = useState(false);
 
-  const {
-    setSelectedStatus,
-    setSelectedPriority,
-    isAssignedToMe,
-    setIsAssignedToMe,
-    sliceFunctionData,
-    statusList,
-    priorityList,
-  } = useTaskFilters(project);
+  const sliceFunctionData = useMemo(() => {
+    return {
+      projectId: project?.id,
+      isAssignedToMe: isAssignedToMe,
+      selectedStatus: selectedStatus,
+      selectedPriority: selectedPriority,
+      userId: isAssignedToMe ? userId : null,
+    };
+  }, [project?.id, isAssignedToMe, selectedStatus, selectedPriority, userId]);
 
   return (
     <Screen removeSpaceOnTop={true}>
       <SearchListView
         headerChildren={
-          <TaskSearchHeader
+          <TaskFilters
             isAssignedToMe={isAssignedToMe}
             setIsAssignedToMe={setIsAssignedToMe}
-            priorityList={priorityList}
             setSelectedPriority={setSelectedPriority}
             setSelectedStatus={setSelectedStatus}
-            statusList={statusList}
             project={project}
             setProject={setProject}
+            showProjectSearchBar
           />
         }
         list={projectTaskList}

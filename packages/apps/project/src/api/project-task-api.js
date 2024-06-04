@@ -25,8 +25,8 @@ const createProjectTaskCriteria = ({
   searchValue,
   projectId,
   userId,
-  statusFilter,
-  priorityFilter,
+  selectedStatus,
+  selectedPriority,
 }) => {
   const criteria = [getSearchCriterias('project_projectTask', searchValue)];
 
@@ -46,24 +46,24 @@ const createProjectTaskCriteria = ({
     });
   }
 
-  if (Array.isArray(statusFilter) && statusFilter.length > 0) {
+  if (Array.isArray(selectedStatus) && selectedStatus.length > 0) {
     criteria.push({
       operator: 'or',
-      criteria: statusFilter.map(status => ({
+      criteria: selectedStatus.map(({key}) => ({
         fieldName: 'status.id',
         operator: '=',
-        value: status,
+        value: key,
       })),
     });
   }
 
-  if (Array.isArray(priorityFilter) && priorityFilter.length > 0) {
+  if (Array.isArray(selectedPriority) && selectedPriority.length > 0) {
     criteria.push({
       operator: 'or',
-      criteria: priorityFilter.map(priority => ({
+      criteria: selectedPriority.map(({key}) => ({
         fieldName: 'priority.id',
         operator: '=',
-        value: priority,
+        value: key,
       })),
     });
   }
@@ -78,27 +78,15 @@ export async function searchProjectTask({
   userId,
   selectedStatus,
   selectedPriority,
-  statusToFilter,
-  priorityToFilter,
 }) {
-  const statusFilter =
-    selectedStatus.length > 0
-      ? selectedStatus.map(status => status.key)
-      : statusToFilter;
-
-  const priorityFilter =
-    selectedPriority.length > 0
-      ? selectedPriority.map(priority => priority.key)
-      : priorityToFilter;
-
   return createStandardSearch({
     model: 'com.axelor.apps.project.db.ProjectTask',
     criteria: createProjectTaskCriteria({
       searchValue,
       projectId,
       userId,
-      statusFilter,
-      priorityFilter,
+      selectedStatus,
+      selectedPriority,
     }),
     fieldKey: 'project_projectTask',
     sortKey: 'project_projectTask',

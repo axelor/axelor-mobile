@@ -25,32 +25,35 @@ import {
 const createProjectCriteria = ({
   searchValue,
   isBusinessProject,
+  differentiateBusinessProjects,
   statusList,
   userId,
 }) => {
   const criteria = [getSearchCriterias('project_project', searchValue)];
 
-  if (isBusinessProject) {
-    criteria.push({
-      fieldName: 'isBusinessProject',
-      operator: '=',
-      value: true,
-    });
-  } else {
-    criteria.push({
-      operator: 'or',
-      criteria: [
-        {
-          fieldName: 'isBusinessProject',
-          operator: '=',
-          value: false,
-        },
-        {
-          fieldName: 'isBusinessProject',
-          operator: 'isNull',
-        },
-      ],
-    });
+  if (differentiateBusinessProjects) {
+    if (isBusinessProject) {
+      criteria.push({
+        fieldName: 'isBusinessProject',
+        operator: '=',
+        value: true,
+      });
+    } else {
+      criteria.push({
+        operator: 'or',
+        criteria: [
+          {
+            fieldName: 'isBusinessProject',
+            operator: '=',
+            value: false,
+          },
+          {
+            fieldName: 'isBusinessProject',
+            operator: 'isNull',
+          },
+        ],
+      });
+    }
   }
 
   if (userId != null) {
@@ -79,6 +82,7 @@ export async function searchProject({
   searchValue,
   page = 0,
   isBusinessProject = false,
+  differentiateBusinessProjects = true,
   statusList,
   userId,
 }) {
@@ -87,6 +91,7 @@ export async function searchProject({
     criteria: createProjectCriteria({
       searchValue,
       isBusinessProject,
+      differentiateBusinessProjects,
       statusList,
       userId,
     }),

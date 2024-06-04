@@ -34,6 +34,7 @@ interface ProjectSearchBarProps {
   readonly?: boolean;
   required?: boolean;
   showTitle?: boolean;
+  differentiateBusinessProjects?: boolean;
 }
 
 const ProjectSearchBar = ({
@@ -44,6 +45,7 @@ const ProjectSearchBar = ({
   readonly = false,
   required = false,
   showTitle = true,
+  differentiateBusinessProjects = true,
 }: ProjectSearchBarProps) => {
   const I18n = useTranslator();
   const dispatch = useDispatch();
@@ -58,10 +60,11 @@ const ProjectSearchBar = ({
         (searchProject as any)({
           page,
           searchValue,
+          differentiateBusinessProjects,
         }),
       );
     },
-    [dispatch],
+    [differentiateBusinessProjects, dispatch],
   );
 
   return (
