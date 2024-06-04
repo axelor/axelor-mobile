@@ -72,10 +72,12 @@ const SelectionItem = ({
           }
         />
       )}
-      <Text style={itemStyles.text} numberOfLines={1}>
-        {content}
-      </Text>
-      {itemColor != null && <View style={indicatorStyles.selectedItem} />}
+      <View style={itemStyles.textContainer}>
+        <Text style={itemStyles.text} numberOfLines={1}>
+          {content}
+        </Text>
+        {itemColor != null && <View style={indicatorStyles.selectedItem} />}
+      </View>
     </TouchableOpacity>
   );
 };
@@ -97,11 +99,15 @@ const getItemStyles = isPicker =>
     item: {
       height: 40,
       flexDirection: 'row',
-      justifyContent: 'space-between',
       alignItems: 'center',
-      position: 'relative',
       width: '100%',
       zIndex: 105,
+    },
+    textContainer: {
+      flexDirection: 'row',
+      justifyContent: 'space-between',
+      alignItems: 'center',
+      flex: 1,
     },
     text: {
       width: isPicker ? '85%' : '100%',
@@ -284,8 +290,7 @@ const getStyles = (
       borderBottomColor: Colors.secondaryColor.background,
       borderBottomWidth: 1,
       zIndex: 115,
-      width: '104%',
-      left: -14,
+      width: '100%',
     },
     emptyContainer: {
       alignItems: 'center',
