@@ -17,24 +17,24 @@
  */
 
 import React, {useMemo, useState} from 'react';
+import {Screen} from '@axelor/aos-mobile-ui';
 import {
-  useSelector,
   SearchListView,
+  useSelector,
   useTranslator,
 } from '@axelor/aos-mobile-core';
-import {ProjectHeader, TaskActionCard} from '../../molecules';
-import {TaskFilters} from '../../templates';
-import {searchProjectTask} from '../../../features/projectTaskSlice';
+import {TaskActionCard, TaskFilters} from '../components';
+import {searchProjectTask} from '../features/projectTaskSlice';
 
-const TaskView = () => {
+const TaskListScreen = ({}) => {
   const I18n = useTranslator();
 
   const {userId} = useSelector((state: any) => state.auth);
-  const {project} = useSelector((state: any) => state.project_project);
   const {loading, moreLoading, isListEnd, projectTaskList} = useSelector(
     (state: any) => state.project_projectTask,
   );
 
+  const [project, setProject] = useState(null);
   const [selectedStatus, setSelectedStatus] = useState([]);
   const [selectedPriority, setSelectedPriority] = useState([]);
   const [isAssignedToMe, setIsAssignedToMe] = useState(false);
@@ -50,34 +50,32 @@ const TaskView = () => {
   }, [project?.id, isAssignedToMe, selectedStatus, selectedPriority, userId]);
 
   return (
-    <SearchListView
-      headerTopChildren={<ProjectHeader />}
-      headerChildren={
-        <TaskFilters
-          isAssignedToMe={isAssignedToMe}
-          setIsAssignedToMe={setIsAssignedToMe}
-          setSelectedPriority={setSelectedPriority}
-          setSelectedStatus={setSelectedStatus}
-          project={project}
-        />
-      }
-      actionList={[
-        {
-          iconName: 'plus',
-          title: I18n.t('Project_CreateNewTask'),
-          onPress: () => {},
-        },
-      ]}
-      list={projectTaskList}
-      loading={loading}
-      moreLoading={moreLoading}
-      isListEnd={isListEnd}
-      sliceFunction={searchProjectTask}
-      sliceFunctionData={sliceFunctionData}
-      searchPlaceholder={I18n.t('Base_Search')}
-      renderListItem={({item}) => <TaskActionCard task={item} />}
-    />
+    <Screen removeSpaceOnTop={true}>
+      <SearchListView
+        headerChildren={
+          <TaskFilters
+            isAssignedToMe={isAssignedToMe}
+            setIsAssignedToMe={setIsAssignedToMe}
+            setSelectedPriority={setSelectedPriority}
+            setSelectedStatus={setSelectedStatus}
+            project={project}
+            setProject={setProject}
+            showProjectSearchBar
+          />
+        }
+        list={projectTaskList}
+        loading={loading}
+        moreLoading={moreLoading}
+        isListEnd={isListEnd}
+        sliceFunction={searchProjectTask}
+        sliceFunctionData={sliceFunctionData}
+        searchPlaceholder={I18n.t('Base_Search')}
+        renderListItem={({item}) => (
+          <TaskActionCard task={item} displayParentProjet={project == null} />
+        )}
+      />
+    </Screen>
   );
 };
 
-export default TaskView;
+export default TaskListScreen;
