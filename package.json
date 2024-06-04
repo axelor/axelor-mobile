@@ -61,7 +61,7 @@
     "react-native-screens": "3.18.2",
     "react-native-static-safe-area-insets": "^2.2.0",
     "react-native-svg": "^13.14.0",
-    "react-native-system-navigation-bar": "2.6.4",
+    "react-native-system-navigation-bar": "2.2.0",
     "react-native-toast-message": "2.2.0",
     "react-native-vector-icons": "10.0.3",
     "react-native-vision-camera": "2.15.6",
