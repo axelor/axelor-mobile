@@ -32,28 +32,9 @@ Install the library :
 yarn add @axelor/aos-mobile-core
 ```
 
-Compatibility with React v18.2.x and React Native v0.68.x.
+Compatibility with React v18.2.x and React Native v0.70.x.
 
-This package has a few required libraries as peer dependencies:
-
-- [@react-native-clipboard/clipboard](https://www.npmjs.com/package/@react-native-clipboard/clipboard)
-- [axios](https://www.npmjs.com/package/axios)
-- [i18next](https://www.npmjs.com/package/i18next)
-- [react-i18next](https://www.npmjs.com/package/react-i18next)
-- [react-native-date-picker](https://www.npmjs.com/package/react-native-date-picker)
-- [react-native-datawedge-intents](https://www.npmjs.com/package/react-native-datawedge-intents)
-- [react-native-device-info](https://www.npmjs.com/package/react-native-device-info)
-- [react-native-document-picker](https://www.npmjs.com/package/react-native-document-picker)
-- [react-native-file-viewer](https://www.npmjs.com/package/react-native-file-viewer)
-- [react-native-fs](https://www.npmjs.com/package/react-native-fs)
-- [react-native-gesture-handler](https://www.npmjs.com/package/react-native-gesture-handler)
-- [react-native-mmkv](https://www.npmjs.com/package/react-native-mmkv)
-- [react-native-safe-area-context](https://www.npmjs.com/package/react-native-safe-area-context)
-- [react-native-screens](https://www.npmjs.com/package/react-native-screens)
-- [react-native-static-safe-area-insets](https://www.npmjs.com/package/react-native-static-safe-area-insets)
-- [react-native-toast-message](https://www.npmjs.com/package/react-native-toast-message)
-- [react-native-vision-camera](https://www.npmjs.com/package/react-native-vision-camera)
-- [vision-camera-code-scanner](https://www.npmjs.com/package/vision-camera-code-scanner)
+This package has a few required libraries as peer dependencies, please check package.json for more informations.
 
 ### Create an application
 

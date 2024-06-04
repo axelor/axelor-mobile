@@ -24,23 +24,23 @@
   },
   "peerDependencies": {
     "react": "18.2.0",
-    "react-native": "0.69.12"
+    "react-native": "0.70.15"
   },
   "dependencies": {
     "@axelor/aos-mobile-core": "8.0.5",
     "@axelor/aos-mobile-crm": "8.0.5",
     "@axelor/aos-mobile-ui": "8.0.5",
-    "@reduxjs/toolkit": "^1.8.6"
+    "@reduxjs/toolkit": "^2.2.3"
   },
   "devDependencies": {
     "@babel/runtime": "^7.19.0",
     "@react-native-community/eslint-config": "^2.0.0",
     "@types/react": "18.2.65",
-    "@types/react-native": "0.69.6",
+    "@types/react-native":"0.70.19",
     "eslint": "^7.32.0",
     "prettier": "^2.7.1",
     "react": "18.2.0",
-    "react-native": "0.69.12"
+    "react-native": "0.70.15"
   },
   "resolutions": {
     "@types/react": "18.2.65"
