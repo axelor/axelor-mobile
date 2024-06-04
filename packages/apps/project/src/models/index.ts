@@ -16,6 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+export {project_formsRegister} from './form';
 export {project_modelAPI} from './objectFields';
 export {project_searchFields} from './searchFields';
 export {project_sortFields} from './sortFields';
