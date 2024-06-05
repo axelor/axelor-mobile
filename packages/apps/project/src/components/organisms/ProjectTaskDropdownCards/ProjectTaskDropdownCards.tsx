@@ -73,7 +73,6 @@ const ProjectTaskDropdownCards = () => {
 const styles = StyleSheet.create({
   dropdown: {
     marginTop: 5,
-    marginBottom: 100,
   },
 });
 

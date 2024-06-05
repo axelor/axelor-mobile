@@ -28,3 +28,4 @@ export {
   fetchProjectTaskStatus,
   searchProjectTask,
 } from './projectTaskSlice';
+export {fetchTimesheetLinesByTask} from './timesheetLinesSlice';

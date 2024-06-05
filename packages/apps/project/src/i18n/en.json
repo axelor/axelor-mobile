@@ -33,6 +33,10 @@
   "Project_Tags": "Tags",
   "Project_InternalDescription": "Internal description",
   "Project_TimeSpent": "Time spent",
+  "Project_Date": "Date",
+  "Project_Product": "Product",
+  "Project_Duration": "Duration",
+  "Project_ToInvoice": "To Invoice",
   "Project_SliceAction_SearchProject": "search projects",
   "Project_SliceAction_FetchProjectById": "fetch project by id",
   "Project_SliceAction_FetchProjectStatus": "fetch project status",
@@ -40,5 +44,6 @@
   "Project_SliceAction_FetchProjectTaskStatus": "fetch project task status",
   "Project_SliceAction_FetchProjectPriority": "fetch project priorities",
   "Project_SliceAction_SearchSubProject": "search sub projects",
-  "Project_SliceAction_FetchProjectTaskById": "fetch project task by id"
+  "Project_SliceAction_FetchProjectTaskById": "fetch project task by id",
+  "Project_SliceAction_FetchTimesheetLinesByTask": "fetch timesheet lines by task"
 }

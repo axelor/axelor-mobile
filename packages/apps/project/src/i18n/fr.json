@@ -33,6 +33,10 @@
   "Project_Tags": "Etiquettes",
   "Project_InternalDescription": "Description interne",
   "Project_TimeSpent": "Temps passé",
+  "Project_Date": "Date",
+  "Project_Product": "Activité",
+  "Project_Duration": "Heures",
+  "Project_ToInvoice": "A facturer",
   "Project_SliceAction_SearchProject": "recherche sur les projets",
   "Project_SliceAction_FetchProjectById": "récupération du projet par id",
   "Project_SliceAction_FetchProjectStatus": "récupération des statuts de projet",
@@ -40,5 +44,6 @@
   "Project_SliceAction_FetchProjectTaskStatus": "récupération des statuts des tâches du projet",
   "Project_SliceAction_FetchProjectPriority": "récupération des priorités du projet",
   "Project_SliceAction_SearchSubProject": "recherche sur les sous-projets",
-  "Project_SliceAction_FetchProjectTaskById": "récupération de la tâche du projet par id"
+  "Project_SliceAction_FetchProjectTaskById": "récupération de la tâche du projet par id",
+  "Project_SliceAction_FetchTimesheetLinesByTask": "récupération des lignes de feuille de temps par tâche"
 }
