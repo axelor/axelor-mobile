@@ -117,6 +117,7 @@ const ProjectCard = ({
             indicatorText: parentProject,
             hideIfNull: true,
             iconName: 'diagram-3-fill',
+            numberOfLines: 2,
           },
         ],
       }}
@@ -150,6 +151,7 @@ const styles = StyleSheet.create({
   badges: {
     position: 'absolute',
     justifyContent: 'flex-end',
+    marginTop: 5,
     right: 0,
   },
 });

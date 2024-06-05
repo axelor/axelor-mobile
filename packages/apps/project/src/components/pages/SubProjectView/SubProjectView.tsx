@@ -67,7 +67,7 @@ const SubProjectView = () => {
   return (
     <>
       <HeaderContainer
-        fixedItems={<ProjectHeader project={project} />}
+        fixedItems={<ProjectHeader />}
         expandableFilter={false}
       />
       {project.parentProject != null && (
@@ -81,13 +81,12 @@ const SubProjectView = () => {
             onPress={() =>
               clipboardProvider.copyToClipboard(project?.parentProject?.name)
             }
-            customerPicture={project?.parentProject?.clientPartner?.picture}
+            customer={project?.parentProject?.clientPartner}
             name={project?.parentProject?.name}
             code={project?.parentProject?.code}
-            customerName={project?.parentProject?.clientPartner?.name}
             company={project?.parentProject?.company?.name}
             assignedTo={project?.parentProject?.assignedTo?.fullName}
-            projectStatus={project?.parentProject?.projectStatus?.id}
+            projectStatus={project?.parentProject?.projectStatus}
             parentProject={project?.parentProject?.parentProject?.fullName}
             isCopyCard={true}
           />
@@ -105,13 +104,12 @@ const SubProjectView = () => {
             renderItem={({item}) => (
               <ProjectCard
                 onPress={() => clipboardProvider.copyToClipboard(item?.name)}
-                customerPicture={item?.clientPartner?.picture}
                 name={item?.name}
                 code={item?.code}
-                customerName={item?.clientPartner?.name}
+                customer={item?.clientPartner}
                 company={item?.company?.name}
                 assignedTo={item?.assignedTo?.fullName}
-                projectStatus={item?.projectStatus?.id}
+                projectStatus={item?.projectStatus}
                 parentProject={item?.parentProject?.fullName}
                 isCopyCard={true}
               />
