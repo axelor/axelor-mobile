@@ -22,5 +22,6 @@ export {default as PeriodInput} from './PeriodInput/PeriodInput';
 export {default as PopupApplicationInformation} from './PopupApplicationInformation/PopupApplicationInformation';
 export {default as PopupMinimalRequiredVersion} from './PopupMinimalRequiredVersion/PopupMinimalRequiredVersion';
 export {default as SearchListView} from './SearchListView/SearchListView';
+export {default as SearchTreeView} from './SearchTreeView/SearchTreeView';
 export {default as SocialNetworkLinks} from './SocialNetworkLinks/SocialNetworkLinks';
 export {default as UserSearchBar} from './UserSearchBar/UserSearchBar';
