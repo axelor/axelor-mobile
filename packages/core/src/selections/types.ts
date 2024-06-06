@@ -67,7 +67,7 @@ export interface SelectionHelpers {
   getCustomSelectionItems: (
     selectionList: ObjectSelectionItem[],
     titleField: string,
-    selectedItem: {key: any; [key: string]: any}[],
+    selectedItem?: {key: any; [key: string]: any}[],
   ) => {
     title: string;
     color: Color;
