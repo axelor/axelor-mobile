@@ -1,0 +1,5 @@
+{
+  "title": "SearchTreeView: new component to display a tree view and search through it",
+  "type": "feat",
+  "packages": "core"
+}

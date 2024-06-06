@@ -171,6 +171,7 @@
   "Base_PeriodError": "Caution, start date cannot be more recent than end date.",
   "Base_Yes": "Yes",
   "Base_No": "No",
+  "Base_Filter": "Filter",
   "Base_SliceAction_FetchAttachedFiles": "fetch attached files",
   "Base_SliceAction_FetchFilesDetails": "fetch file details",
   "Base_SliceAction_FetchMetaModule": "fetch meta modules",
