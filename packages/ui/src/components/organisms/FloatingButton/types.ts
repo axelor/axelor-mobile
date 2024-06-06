@@ -28,6 +28,7 @@ export interface FloatingButtonProps {
   onGlobalPress?: () => void;
   translator: (key: string) => string;
   useCircleStyle?: boolean;
+  defaultOpenValue?: boolean;
 }
 
 export interface ActionProps {

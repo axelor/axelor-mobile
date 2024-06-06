@@ -56,6 +56,7 @@ interface FormProps {
   isCustom?: boolean;
   actions: Action[];
   floatingTools?: boolean;
+  defaultEditMode?: boolean;
 }
 
 const FormView = ({
@@ -65,6 +66,7 @@ const FormView = ({
   isCustom = false,
   actions: _actions,
   floatingTools = true,
+  defaultEditMode = false,
 }: FormProps) => {
   const I18n = useTranslator();
   const dispatch = useDispatch();
@@ -73,13 +75,17 @@ const FormView = ({
 
   const storeState = useSelector((state: any) => state);
   const {record} = useSelector((state: any) => state.form);
-  const {canCreate, readonly} = usePermitted({modelName: config?.modelName});
+  const {canCreate, canDelete, readonly} = usePermitted({
+    modelName: config?.modelName,
+  });
 
   const [object, setObject] = useState(
     defaultValue ?? creationDefaultValue ?? {},
   );
   const [errors, setErrors] = useState<any[]>();
-  const [isReadonly, setIsReadonly] = useState<boolean>(floatingTools);
+  const [isReadonly, setIsReadonly] = useState<boolean>(
+    floatingTools && !defaultEditMode,
+  );
   const [buttonHeight, setButtonHeight] = useState<number>(0);
 
   const formContent: (DisplayPanel | DisplayField)[] = useMemo(
@@ -157,11 +163,13 @@ const FormView = ({
           return canCreate;
         case 'update':
           return !readonly;
+        case 'delete':
+          return canDelete;
         default:
           return true;
       }
     },
-    [canCreate, readonly],
+    [canCreate, canDelete, readonly],
   );
 
   const toggleReadonlyMode = () => {
@@ -336,6 +344,7 @@ const FormView = ({
         onCreate={() => setObject(creationDefaultValue)}
         onPressWrapper={handleValidate}
         isDirty={isDirty}
+        defaultOpenValue={defaultEditMode}
       />
     </Screen>
   );

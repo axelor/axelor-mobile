@@ -44,6 +44,7 @@ const FloatingButton = ({
   onGlobalPress,
   translator,
   useCircleStyle = false,
+  defaultOpenValue = false,
 }: FloatingButtonProps) => {
   const Colors = useThemeColor();
 
@@ -52,7 +53,7 @@ const FloatingButton = ({
     wrapperRef,
   });
 
-  const [isOpen, setIsOpen] = useState(false);
+  const [isOpen, setIsOpen] = useState(defaultOpenValue);
   const [expanded, setExpanded] = useState(false);
 
   const styles = useMemo(() => getStyles(Colors), [Colors]);

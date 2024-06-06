@@ -56,6 +56,7 @@ const FloatingTools = ({
   actions,
   onCreate,
   onPressWrapper,
+  defaultOpenValue = false,
 }: {
   style?: any;
   hideIf?: boolean;
@@ -65,6 +66,7 @@ const FloatingTools = ({
   actions: FormatedAction[];
   onCreate?: () => void;
   onPressWrapper: (onPress: () => void, needValidation: boolean) => void;
+  defaultOpenValue?: boolean;
 }) => {
   const I18n = useTranslator();
   const Colors = useThemeColor();
@@ -147,6 +149,7 @@ const FloatingTools = ({
         translator={I18n.t}
         useCircleStyle
         onGlobalPress={toggleReadonly}
+        defaultOpenValue={defaultOpenValue}
       />
     </View>
   );
