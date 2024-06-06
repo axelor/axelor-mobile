@@ -115,6 +115,9 @@ describe('AutoCompleteSearch Component', () => {
     );
 
     expect(wrapper.find(SearchBar).prop('placeholder')).toBe(placeholder);
+
+    wrapper.find(SearchBar).simulate('searchPress');
+
     expect(wrapper.find('SearchDetailsPopUp').prop('placeholder')).toBe(
       placeholder,
     );
@@ -142,7 +145,7 @@ describe('AutoCompleteSearch Component', () => {
   it('should display SearchDetailsPopUp when click on search icon and showDetailsPopup is true', () => {
     const wrapper = shallow(<AutoCompleteSearch {...props} showDetailsPopup />);
 
-    expect(wrapper.find('SearchDetailsPopUp').prop('isVisible')).toBe(false);
+    expect(wrapper.find('SearchDetailsPopUp').exists()).toBe(false);
 
     wrapper.find(SearchBar).simulate('searchPress');
 
@@ -154,7 +157,7 @@ describe('AutoCompleteSearch Component', () => {
       <AutoCompleteSearch {...props} showDetailsPopup={false} />,
     );
 
-    expect(wrapper.find('SearchDetailsPopUp').prop('isVisible')).toBe(false);
+    expect(wrapper.find('SearchDetailsPopUp').exists()).toBe(false);
     expect(wrapper.find(SearchBar).prop('disableSearchPress')).toBe(true);
   });
 

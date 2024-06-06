@@ -29,11 +29,7 @@ import {
   useThemeColor,
 } from '@axelor/aos-mobile-ui';
 import {fetchCompanies} from '../../../features/companySlice';
-import {fetchLocalizations} from '../../../features/localizationSlice';
-import {
-  changeActiveCompany,
-  fetchActiveUser,
-} from '../../../features/userSlice';
+import {changeActiveCompany} from '../../../features/userSlice';
 import {
   logout,
   useBinaryImageUri,
@@ -49,15 +45,12 @@ const UserCard = ({children, style}) => {
   const formatImage = useBinaryImageUri();
 
   const {base: baseConfig} = useSelector((state: any) => state.appConfig);
-  const {userId} = useSelector((state: any) => state.auth);
   const {user, canModifyCompany} = useSelector((state: any) => state.user);
   const {companyList} = useSelector((state: any) => state.company);
 
   useEffect(() => {
-    dispatch((fetchActiveUser as any)(userId));
     dispatch((fetchCompanies as any)());
-    dispatch((fetchLocalizations as any)());
-  }, [dispatch, userId]);
+  }, [dispatch]);
 
   const displayCompanyPicker = useMemo(
     () => baseConfig?.enableMultiCompany && canModifyCompany,

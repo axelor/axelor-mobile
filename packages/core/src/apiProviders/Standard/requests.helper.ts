@@ -49,6 +49,10 @@ class RequestBuilder {
     this.requestLimit = defaultRequestLimit;
   }
 
+  getRequestLimit() {
+    return this.requestLimit;
+  }
+
   createStandardSearch = ({
     model,
     criteria = [],
