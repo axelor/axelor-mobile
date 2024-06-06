@@ -1,0 +1,5 @@
+{
+  "title": "HeaderBand: add automatic scrolling on long text",
+  "type": "feat",
+  "packages": "core"
+}
