@@ -16,7 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import React, {useState, useCallback, useEffect} from 'react';
+import React, {useState, useCallback} from 'react';
 import {Dimensions, StyleSheet, View} from 'react-native';
 import {checkNullString} from '../../../utils/strings';
 import {Alert} from '../../molecules';
@@ -60,10 +60,6 @@ const SearchDetailsPopUp = ({
 }: SearchDetailsPopUpProps) => {
   const [searchText, setSearchText] = useState<string>();
 
-  useEffect(() => {
-    fetchData({page: 0});
-  }, [fetchData]);
-
   const fetchAPI = useCallback(
     ({page = 0, searchValue}: {page?: number; searchValue?: string}) => {
       if (isVisible) {
@@ -74,15 +70,9 @@ const SearchDetailsPopUp = ({
     [fetchData, isVisible],
   );
 
-  const filterAPI = useCallback(
-    ({searchValue}) => fetchAPI({searchValue}),
-    [fetchAPI],
-  );
-  const scrollAPI = useCallback((page: number) => fetchAPI({page}), [fetchAPI]);
+  const filterAPI = useCallback(data => fetchAPI(data), [fetchAPI]);
 
-  if (!isVisible) {
-    return null;
-  }
+  const scrollAPI = useCallback((page: number) => fetchAPI({page}), [fetchAPI]);
 
   return (
     <Alert
@@ -132,18 +122,19 @@ const styles = StyleSheet.create({
     paddingHorizontal: 10,
     paddingRight: 10,
     paddingVertical: 10,
+    paddingTop: 20,
     position: 'absolute',
     top: '5%',
   },
   container: {
-    marginTop: 10,
+    marginTop: 15,
   },
   input: {
-    width: '90%',
+    width: '100%',
   },
   scroll: {
     flexGrow: 0,
-    height: '90%',
+    height: '100%',
   },
 });
 

@@ -22,6 +22,7 @@ import {i18nProvider} from '../i18n';
 import {ActionReducerMapBuilder} from '@reduxjs/toolkit';
 import {apiProviderConfig} from './config';
 import {showToastMessage} from '../utils';
+import {requestBuilder} from './Standard/requests.helper';
 
 export const getApiResponseData = (response, {isArrayResponse = true}) => {
   if (response.data && response.data.object != null) {
@@ -214,23 +215,28 @@ export const manageInfiteScrollState = (
   if (status === 'fulfilled') {
     state[keys.loading] = false;
     state[keys.moreLoading] = false;
-    !checkNullString(keys.total) ? (state[keys.total] = total) : null;
-    if (action.meta.arg.page === 0 || action.meta.arg.page == null) {
-      state[keys.list] = data;
-      state[keys.isListEnd] = false;
-    } else {
-      if (Array.isArray(data) && data.length > 0) {
-        state[keys.isListEnd] = false;
+
+    if (!checkNullString(keys.total)) {
+      state[keys.total] = total;
+    }
+
+    if (Array.isArray(data)) {
+      if (action.meta.arg.page > 0) {
         state[keys.list] = [...state[keys.list], ...data];
       } else {
-        state[keys.isListEnd] = true;
+        state[keys.list] = data;
       }
+
+      state[keys.isListEnd] = data.length < requestBuilder.getRequestLimit();
+    } else {
+      state[keys.isListEnd] = true;
     }
   }
 
   if (status === 'rejected') {
     state[keys.loading] = false;
     state[keys.moreLoading] = false;
+    state[keys.isListEnd] = true;
   }
 
   return state;

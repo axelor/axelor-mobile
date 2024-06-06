@@ -21,7 +21,6 @@ import {Dimensions, StyleSheet} from 'react-native';
 import DeviceInfo from 'react-native-device-info';
 import {Screen, ScrollView, useConfig} from '@axelor/aos-mobile-ui';
 import {useDispatch, useSelector} from '../../index';
-import {fetchCompanies} from '../features/companySlice';
 import {fetchLocalizations} from '../features/localizationSlice';
 import {fetchActiveUser} from '../features/userSlice';
 import {DashboardsCard, ShortcutsCard, UserCard} from '../components';
@@ -40,7 +39,6 @@ const UserScreen = ({children}) => {
 
   useEffect(() => {
     fetchUser();
-    dispatch(fetchCompanies());
     dispatch(fetchLocalizations());
   }, [dispatch, fetchUser, userId]);
 
