@@ -16,15 +16,19 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import React, {useCallback, useMemo, useState} from 'react';
-import {Dimensions, StyleSheet, View} from 'react-native';
+import React, {useCallback, useEffect, useMemo, useRef, useState} from 'react';
 import {
-  Color,
-  SentenceAnimatedScroller,
-  Text,
-  useThemeColor,
-} from '@axelor/aos-mobile-ui';
+  Animated,
+  Dimensions,
+  Easing,
+  ScrollView,
+  StyleSheet,
+  View,
+} from 'react-native';
+import {Color, useThemeColor} from '@axelor/aos-mobile-ui';
 import {HeaderBandHelper} from '../../../header';
+
+const DELAY_BEFORE_ANIMATION = 3000;
 
 interface HeaderBandProps {
   color: Color;
@@ -35,16 +39,39 @@ interface HeaderBandProps {
 const HeaderBand = ({color, text, showIf}: HeaderBandProps) => {
   const Colors = useThemeColor();
 
-  const [numberOfLines, setNumberOfLines] = useState<number>(1);
-
-  const handleTextLayout = useCallback(event => {
-    setNumberOfLines(event.nativeEvent.lines.length);
-  }, []);
+  const screenWidth = Dimensions.get('window').width;
+  const [textWidth, setTextWidth] = useState(0);
+  const textScrollX = useRef(new Animated.Value(0)).current;
 
   const styles = useMemo(
     () => getStyles(color || Colors.secondaryColor),
     [Colors, color],
   );
+
+  const onTextLayout = useCallback(
+    ({
+      nativeEvent: {
+        layout: {width},
+      },
+    }) => setTextWidth(width),
+    [],
+  );
+
+  useEffect(() => {
+    if (textWidth > screenWidth) {
+      Animated.loop(
+        Animated.sequence([
+          Animated.delay(DELAY_BEFORE_ANIMATION),
+          Animated.timing(textScrollX, {
+            toValue: -textWidth,
+            duration: textWidth * 15,
+            easing: Easing.linear,
+            useNativeDriver: true,
+          }),
+        ]),
+      ).start();
+    }
+  }, [textScrollX, textWidth]);
 
   if (!showIf) {
     return null;
@@ -52,13 +79,22 @@ const HeaderBand = ({color, text, showIf}: HeaderBandProps) => {
 
   return (
     <View style={styles.container}>
-      {numberOfLines > 1 ? (
-        <SentenceAnimatedScroller sentence={text} textStyle={styles.text} />
-      ) : (
-        <Text style={styles.text} onTextLayout={handleTextLayout}>
+      <ScrollView
+        horizontal={true}
+        bounces={false}
+        scrollEnabled={false}
+        showsHorizontalScrollIndicator={false}>
+        <Animated.Text
+          onLayout={onTextLayout}
+          style={[
+            styles.text,
+            {
+              transform: [{translateX: textScrollX}],
+            },
+          ]}>
           {text}
-        </Text>
-      )}
+        </Animated.Text>
+      </ScrollView>
     </View>
   );
 };
@@ -66,7 +102,6 @@ const HeaderBand = ({color, text, showIf}: HeaderBandProps) => {
 const getStyles = (color: Color) =>
   StyleSheet.create({
     container: {
-      width: Dimensions.get('screen').width,
       backgroundColor: color.background_light,
       justifyContent: 'center',
       alignItems: 'center',

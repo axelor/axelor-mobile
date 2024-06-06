@@ -52,7 +52,6 @@ export {default as PanelTabs} from './PanelTabs/PanelTabs';
 export {default as RadioSelect} from './RadioSelect/RadioSelect';
 export {default as RightIconButton} from './RightIconButton/RightIconButton';
 export {default as SelectionContainer} from './SelectionContainer/SelectionContainer';
-export {default as SentenceAnimatedScroller} from './SentenceAnimatedScroller/SentenceAnimatedScroller';
 export {default as StarScore} from './StarScore/StarScore';
 export {default as SwitchCard} from './SwitchCard/SwitchCard';
 export {default as TextUnit} from './TextUnit/TextUnit';
