@@ -308,20 +308,22 @@ const AutoCompleteSearch = ({
           handleSelect={handleSelect}
         />
       )}
-      <SearchDetailsPopUp
-        isVisible={isPopupVisible}
-        objectList={objectList}
-        value={searchText}
-        placeholder={placeholder}
-        displayValue={displayValue}
-        onClose={() => setPopupIsVisible(false)}
-        onSelect={handleSelect}
-        fetchData={fetchData}
-        loadingList={loadingList}
-        moreLoading={moreLoading}
-        isListEnd={isListEnd}
-        translator={translator}
-      />
+      {isPopupVisible && (
+        <SearchDetailsPopUp
+          isVisible={isPopupVisible}
+          objectList={objectList}
+          value={searchText}
+          placeholder={placeholder}
+          displayValue={displayValue}
+          onClose={() => setPopupIsVisible(false)}
+          onSelect={handleSelect}
+          fetchData={fetchData}
+          loadingList={loadingList}
+          moreLoading={moreLoading}
+          isListEnd={isListEnd}
+          translator={translator}
+        />
+      )}
     </View>
   );
 };
