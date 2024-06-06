@@ -28,10 +28,12 @@ interface SubBranchViewProps {
   openBranches: any[];
   openBranchesLastIdx: number;
   setOpenBranches: (current: any) => void;
+  branchCardInfoButtonIndication: string;
   renderBranch: (renderParams: any) => any;
   renderLeaf: (renderParams: any) => any;
   fetchBranchData: (idParent: number) => Promise<any>;
   branchCondition: (item: any) => boolean;
+  onBranchFilterPress: (branch: any) => void;
   translator?: (translationKey: string) => string;
 }
 
@@ -41,10 +43,12 @@ const SubBranchView = ({
   openBranches,
   openBranchesLastIdx,
   setOpenBranches,
+  branchCardInfoButtonIndication,
   renderBranch,
   renderLeaf,
   fetchBranchData,
   branchCondition,
+  onBranchFilterPress,
   translator,
 }: SubBranchViewProps) => {
   const Colors = useThemeColor();
@@ -96,9 +100,11 @@ const SubBranchView = ({
             openBranchesLastIdx={_openBranchesLastIdx}
             setOpenBranches={setOpenBranches}
             renderBranch={renderBranch}
+            branchCardInfoButtonIndication={branchCardInfoButtonIndication}
             renderLeaf={renderLeaf}
             fetchBranchData={fetchBranchData}
             branchCondition={branchCondition}
+            onBranchFilterPress={onBranchFilterPress}
             translator={translator}
           />
         ) : (
@@ -115,10 +121,12 @@ interface BranchProps {
   openBranches: any[];
   openBranchesLastIdx: number;
   setOpenBranches: (current: any) => void;
+  branchCardInfoButtonIndication: string;
   renderBranch: (renderParams: any) => any;
   renderLeaf: (renderParams: any) => any;
   fetchBranchData: (idParent: number) => Promise<any>;
   branchCondition: (item: any) => boolean;
+  onBranchFilterPress: (branch: any) => void;
   translator?: (translationKey: string) => string;
 }
 
@@ -128,10 +136,12 @@ const Branch = ({
   openBranches,
   openBranchesLastIdx,
   setOpenBranches,
+  branchCardInfoButtonIndication,
   renderBranch,
   renderLeaf,
   fetchBranchData,
   branchCondition,
+  onBranchFilterPress,
   translator,
 }: BranchProps) => {
   const handleBranchPress = useCallback(() => {
@@ -176,6 +186,9 @@ const Branch = ({
         onPress={handleBranchPress}
         children={renderBranch(branch)}
         isOpen={isBranchOpen}
+        parent={branch.item}
+        onFilterPress={onBranchFilterPress}
+        infoButtonIndication={branchCardInfoButtonIndication}
       />
       {isBranchOpen && (
         <SubBranchView
@@ -185,9 +198,11 @@ const Branch = ({
           openBranchesLastIdx={openBranchesLastIdx}
           setOpenBranches={setOpenBranches}
           renderBranch={renderBranch}
+          branchCardInfoButtonIndication={branchCardInfoButtonIndication}
           renderLeaf={renderLeaf}
           fetchBranchData={fetchBranchData}
           branchCondition={branchCondition}
+          onBranchFilterPress={onBranchFilterPress}
           translator={translator}
         />
       )}
