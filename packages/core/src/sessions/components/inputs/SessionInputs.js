@@ -122,6 +122,7 @@ const SessionInputs = ({
     (value, fieldName) => {
       setForm(_current => {
         const old = _current == null ? {} : {..._current};
+
         if (mode === MODE.unique) {
           return {...old, [fieldName]: value};
         }
@@ -142,7 +143,7 @@ const SessionInputs = ({
 
   const parseQrCode = useCallback(
     scanValue => {
-      if (scanValue.includes('username') === true) {
+      if (scanValue.includes('username')) {
         const parseScannnedData = JSON.parse(scanValue);
         handleFieldChange(parseScannnedData.url, FIELDS.url);
         handleFieldChange(parseScannnedData.username, FIELDS.username);
@@ -160,7 +161,7 @@ const SessionInputs = ({
       dispatch(clearScan());
     } else if (scanData?.value != null) {
       parseQrCode(scanData?.value);
-      dispatch(clearBarcode());
+      setTimeout(() => dispatch(clearBarcode()), 100);
     }
   }, [dispatch, parseQrCode, scanData, scannedValue]);
 

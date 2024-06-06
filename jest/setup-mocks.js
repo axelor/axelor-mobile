@@ -154,3 +154,11 @@ jest.mock('@react-native-clipboard/clipboard', () => ({
 jest.mock('react-native-signature-canvas', () => ({
   Signature: jest.fn(),
 }));
+
+jest.mock('react-native-vision-camera', () => {
+  return {
+    useCameraDevices: jest.fn(),
+    useCameraFormat: jest.fn(),
+    useCodeScanner: jest.fn(),
+  };
+});

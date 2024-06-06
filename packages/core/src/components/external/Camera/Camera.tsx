@@ -21,9 +21,9 @@ import {Dimensions, Platform, StyleSheet, View} from 'react-native';
 import {useDispatch} from 'react-redux';
 import {
   Camera as PackageCamera,
-  frameRateIncluded,
-  sortFormats,
-  useCameraDevices,
+  useCameraDevice,
+  useCameraPermission,
+  useCodeScanner,
 } from 'react-native-vision-camera';
 import StaticSafeAreaInsets from 'react-native-static-safe-area-insets';
 import RNFS from 'react-native-fs';
@@ -34,6 +34,12 @@ import {
   useCameraSelector,
 } from '../../../features/cameraSlice';
 import CaptureButton from './CaptureButton';
+import {
+  disableCameraScanner,
+  scanBarcode,
+  useCameraScannerSelector,
+} from '../../../features/cameraScannerSlice';
+import {formatScan} from '../../../utils/formatters';
 
 const CONTENT_SPACING = 40;
 const PHOTO_TYPE = 'jpeg';
@@ -54,63 +60,32 @@ const BUTTON_SIZE = 40;
 
 const Camera = () => {
   const Colors = useThemeColor();
-  const {isEnabled} = useCameraSelector();
-  const [hasPermission, setHasPermission] = useState(false);
-  const [cameraPosition, setCameraPosition] = useState('back');
-  const [flash, setFlash] = useState('off');
-  const [enableNightMode, setEnableNightMode] = useState(false);
+  const {isEnabled: isScanActive} = useCameraScannerSelector();
+  const {isEnabled: isCameraActive} = useCameraSelector();
+  const {hasPermission, requestPermission} = useCameraPermission();
   const camera = useRef(null);
-  const devices = useCameraDevices();
-  const device = devices[cameraPosition];
   const dispatch = useDispatch();
 
-  const formats = useMemo(() => {
-    if (device?.formats == null) {
-      return [];
-    }
-    return device.formats.sort(sortFormats);
-  }, [device?.formats]);
+  const [cameraPosition, setCameraPosition] = useState<'back' | 'front'>(
+    'back',
+  );
 
-  const fps = useMemo(() => {
-    if (enableNightMode && !device?.supportsLowLightBoost) {
-      // User has enabled Night Mode, but Night Mode is not natively supported, so we simulate it by lowering the frame rate.
-      return 30;
-    }
+  const [flash, setFlash] = useState<'off' | 'on'>('off');
 
-    const supportsHdrAt60Fps = formats.some(
-      f =>
-        f.supportsVideoHDR &&
-        f.frameRateRanges.some(r => frameRateIncluded(r, 60)),
-    );
+  const deviceBack = useCameraDevice('back');
 
-    if (!supportsHdrAt60Fps) {
-      // User has enabled HDR, but HDR is not supported at 60 FPS.
-      return 30;
-    }
+  const deviceFront = useCameraDevice('front');
 
-    const supports60Fps = formats.some(f =>
-      f.frameRateRanges.some(r => frameRateIncluded(r, 60)),
-    );
-
-    if (!supports60Fps) {
-      // 60 FPS is not supported by any format.
-      return 30;
-    }
-
-    // If nothing blocks us from using it, we default to 60 FPS.
-    return 60;
-  }, [device?.supportsLowLightBoost, enableNightMode, formats]);
+  const device = useMemo(() => {
+    return cameraPosition === 'back' ? deviceBack : deviceFront;
+  }, [cameraPosition, deviceBack, deviceFront]);
 
   const supportsCameraFlipping = useMemo(
-    () => devices.back != null && devices.front != null,
-    [devices.back, devices.front],
+    () => deviceBack != null && deviceFront != null,
+    [deviceBack, deviceFront],
   );
 
   const supportsFlash = device?.hasFlash ?? false;
-
-  const canToggleNightMode = enableNightMode
-    ? true
-    : (device?.supportsLowLightBoost ?? false) || fps > 30; // either we have native support, or we can lower the FPS
 
   const onFlipCameraPressed = useCallback(() => {
     setCameraPosition(p => (p === 'back' ? 'front' : 'back'));
@@ -119,6 +94,20 @@ const Camera = () => {
   const onFlashPressed = useCallback(() => {
     setFlash(f => (f === 'off' ? 'on' : 'off'));
   }, []);
+
+  const codeScanner = useCodeScanner({
+    codeTypes: ['qr', 'ean-13'],
+    onCodeScanned: barcode => {
+      if (isScanActive && Array.isArray(barcode) && barcode[0] != null) {
+        dispatch(
+          scanBarcode({
+            value: formatScan(barcode[0].value, barcode[0].type),
+            type: barcode[0].type,
+          }),
+        );
+      }
+    },
+  });
 
   const onMediaCapture = useCallback(
     async photo => {
@@ -141,93 +130,89 @@ const Camera = () => {
     [dispatch],
   );
 
-  useEffect(() => {
-    if (isEnabled) {
-      (async () => {
-        const status = await PackageCamera.requestCameraPermission();
-        setHasPermission(status === 'authorized');
-      })();
+  const handleClose = useCallback(() => {
+    if (isCameraActive) {
+      dispatch(disableCamera());
+    } else {
+      dispatch(disableCameraScanner());
     }
+  }, [dispatch, isCameraActive]);
 
-    return () => setHasPermission(false);
-  }, [isEnabled]);
+  useEffect(() => {
+    if (isCameraActive || isScanActive) {
+      requestPermission();
+    }
+  }, [isCameraActive, isScanActive, requestPermission]);
 
-  if (!hasPermission && !isEnabled) {
-    return null;
-  }
+  const cameraVisible = useMemo(
+    () => (hasPermission ? isCameraActive || isScanActive : false),
+    [hasPermission, isCameraActive, isScanActive],
+  );
 
   return (
-    <View style={styles.container}>
-      {device != null && (
+    <View style={{zIndex: 700 * (cameraVisible ? 1 : -1)}}>
+      {device != null && hasPermission && (
         <PackageCamera
           ref={camera}
-          style={styles.camera}
+          style={[styles.camera, {zIndex: 750 * (cameraVisible ? 1 : -1)}]}
           device={device}
-          isActive={true}
-          photo={true}
+          isActive={cameraVisible}
+          photo={!isScanActive}
+          codeScanner={codeScanner}
         />
       )}
-      <View style={styles.rightButtonRow}>
-        {supportsCameraFlipping && (
+      {cameraVisible ? (
+        <View style={styles.rightButtonRow}>
+          {supportsCameraFlipping && isCameraActive && (
+            <Icon
+              style={styles.button}
+              name="camera-fill"
+              color={Colors.backgroundColor}
+              size={24}
+              touchable={true}
+              onPress={onFlipCameraPressed}
+            />
+          )}
+          {supportsFlash && isCameraActive && (
+            <Icon
+              style={styles.button}
+              name="lightning-fill"
+              color={
+                flash === 'on'
+                  ? Colors.primaryColor.background
+                  : Colors.backgroundColor
+              }
+              size={24}
+              touchable={true}
+              onPress={onFlashPressed}
+            />
+          )}
           <Icon
             style={styles.button}
-            name="camera-fill"
+            name="x-lg"
             color={Colors.backgroundColor}
             size={24}
             touchable={true}
-            onPress={onFlipCameraPressed}
+            onPress={handleClose}
           />
-        )}
-        {supportsFlash && (
-          <Icon
-            style={styles.button}
-            name="lightning-fill"
-            color={
-              flash === 'on'
-                ? Colors.primaryColor.background
-                : Colors.backgroundColor
-            }
-            size={24}
-            touchable={true}
-            onPress={onFlashPressed}
+        </View>
+      ) : null}
+      {cameraVisible && isCameraActive ? (
+        <View style={styles.captureButton}>
+          <CaptureButton
+            camera={camera}
+            onMediaCaptured={onMediaCapture}
+            flash={flash}
+            enabled={isCameraActive}
+            type={PHOTO_TYPE}
           />
-        )}
-        {canToggleNightMode && (
-          <Icon
-            style={styles.button}
-            name={enableNightMode ? 'moon-fill' : 'moon'}
-            color={Colors.backgroundColor}
-            size={24}
-            touchable={true}
-            onPress={() => setEnableNightMode(!enableNightMode)}
-          />
-        )}
-        <Icon
-          style={styles.button}
-          name="x-lg"
-          color={Colors.backgroundColor}
-          size={24}
-          touchable={true}
-          onPress={() => dispatch(disableCamera())}
-        />
-      </View>
-      <View style={styles.captureButton}>
-        <CaptureButton
-          camera={camera}
-          onMediaCaptured={onMediaCapture}
-          flash={flash}
-          enabled={isEnabled}
-          type={PHOTO_TYPE}
-        />
-      </View>
+        </View>
+      ) : null}
     </View>
   );
 };
 
 const styles = StyleSheet.create({
-  container: {
-    zIndex: 700,
-  },
   captureButton: {
     position: 'absolute',
     top: Dimensions.get('window').height - SAFE_AREA_PADDING.paddingBottom * 2,
@@ -239,7 +224,6 @@ const styles = StyleSheet.create({
     width: Dimensions.get('window').width,
     position: 'absolute',
     top: 0,
-    zIndex: 750,
   },
   button: {
     marginBottom: CONTENT_SPACING,

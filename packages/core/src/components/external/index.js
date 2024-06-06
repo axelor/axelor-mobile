@@ -17,7 +17,6 @@
  */
 
 export {default as Camera} from './Camera/Camera';
-export {default as CameraScanner} from './CameraScanner/CameraScanner';
 export {default as CodeHighlighter} from './CodeHighlighter/CodeHighlighter';
 export * from './CodeHighlighter/code-highlighter.helper';
 export {default as PlanningView} from './PlanningView/PlanningView';
