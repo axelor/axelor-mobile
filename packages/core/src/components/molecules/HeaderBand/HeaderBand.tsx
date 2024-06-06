@@ -29,6 +29,7 @@ import {Color, useThemeColor} from '@axelor/aos-mobile-ui';
 import {HeaderBandHelper} from '../../../header';
 
 const DELAY_BEFORE_ANIMATION = 3000;
+const SCREEN_WIDTH = Dimensions.get('window').width;
 
 interface HeaderBandProps {
   color: Color;
@@ -39,7 +40,6 @@ interface HeaderBandProps {
 const HeaderBand = ({color, text, showIf}: HeaderBandProps) => {
   const Colors = useThemeColor();
 
-  const screenWidth = Dimensions.get('window').width;
   const [textWidth, setTextWidth] = useState(0);
   const textScrollX = useRef(new Animated.Value(0)).current;
 
@@ -58,7 +58,7 @@ const HeaderBand = ({color, text, showIf}: HeaderBandProps) => {
   );
 
   useEffect(() => {
-    if (textWidth > screenWidth) {
+    if (textWidth > SCREEN_WIDTH) {
       Animated.loop(
         Animated.sequence([
           Animated.delay(DELAY_BEFORE_ANIMATION),
