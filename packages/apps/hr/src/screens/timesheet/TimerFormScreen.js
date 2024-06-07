@@ -131,6 +131,7 @@ const TimerFormScreen = ({route}) => {
   return (
     <FormView
       defaultValue={loadingCreation ? null : defaultValue}
+      defaultEditMode={creation}
       actions={[
         {
           key: 'update-timer',

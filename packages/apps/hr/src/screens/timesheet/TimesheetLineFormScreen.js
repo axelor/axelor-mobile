@@ -82,9 +82,9 @@ const TimesheetLineFormScreen = ({route, navigation}) => {
     [navigation, timesheetId, timesheetLine],
   );
 
-  const defaultValue = useMemo(() => {
-    if (timesheetLine != null) {
-      return {
+  const defaultValue = useMemo(
+    () =>
+      timesheetLine != null && {
         id: timesheetLine.id,
         project: timesheetLine.project,
         projectTask: timesheetLine.projectTask,
@@ -95,18 +95,23 @@ const TimesheetLineFormScreen = ({route, navigation}) => {
         date: timesheetLine.date,
         hoursDuration: timesheetLine.hoursDuration,
         comments: timesheetLine.comments,
-      };
-    }
+      },
+    [timesheetLine],
+  );
 
-    return {
+  const creationDefaultValue = useMemo(
+    () => ({
       date: new Date().toISOString().split('T')[0],
       product: user?.employee?.product,
-    };
-  }, [timesheetLine, user]);
+    }),
+    [user],
+  );
 
   return (
     <FormView
       defaultValue={defaultValue}
+      creationDefaultValue={creationDefaultValue}
+      defaultEditMode
       actions={[
         {
           key: 'create-timesheetLine',
