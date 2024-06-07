@@ -73,24 +73,30 @@ const OpportunityFormScreen = ({navigation, route}) => {
     [navigation],
   );
 
-  const _defaultValue = useMemo(() => {
-    return idOpportunity != null
-      ? {...opportunity}
-      : {
-          amount: 0,
-          recurrentAmount: 0,
-          opportunityRating: 0,
-          probability: '0',
-          worstCase: '0',
-          expectedDurationOfRecurringRevenue: 0,
-          bestCase: '0',
-        };
-  }, [idOpportunity, opportunity]);
+  const _defaultValue = useMemo(
+    () => idOpportunity != null && {...opportunity},
+    [idOpportunity, opportunity],
+  );
+
+  const _creationDefaultValue = useMemo(
+    () => ({
+      amount: 0,
+      recurrentAmount: 0,
+      opportunityRating: 0,
+      probability: '0',
+      worstCase: '0',
+      expectedDurationOfRecurringRevenue: 0,
+      bestCase: '0',
+    }),
+    [],
+  );
 
   return (
     <FormView
       formKey="crm_opportunity"
       defaultValue={_defaultValue}
+      creationDefaultValue={_creationDefaultValue}
+      defaultEditMode
       actions={[
         {
           key: 'create-opportunity',

@@ -123,8 +123,9 @@ const EventFormScreen = ({navigation, route}) => {
 
   return (
     <FormView
-      defaultValue={defaultValue}
       formKey="crm_event"
+      defaultValue={defaultValue}
+      defaultEditMode
       actions={[
         {
           key: 'create-event',

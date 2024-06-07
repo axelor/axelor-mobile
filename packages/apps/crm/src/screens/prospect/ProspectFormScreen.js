@@ -51,6 +51,7 @@ const ProspectFormScreen = ({navigation}) => {
     <FormView
       formKey="crm_prospect"
       defaultValue={_defaultValue}
+      defaultEditMode
       actions={[
         {
           key: 'update-prospect',

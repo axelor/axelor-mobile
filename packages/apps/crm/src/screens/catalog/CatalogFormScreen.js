@@ -32,6 +32,7 @@ const CatalogFormScreen = ({navigation}) => {
 
   return (
     <FormView
+      defaultEditMode
       actions={[
         {
           key: 'create-catalog',

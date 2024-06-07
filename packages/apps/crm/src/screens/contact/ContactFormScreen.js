@@ -51,6 +51,7 @@ const ContactFormScreen = ({navigation}) => {
     <FormView
       formKey="crm_contact"
       defaultValue={_defaultValue}
+      defaultEditMode
       actions={[
         {
           key: 'update-contact',
