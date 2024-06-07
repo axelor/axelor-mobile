@@ -87,26 +87,27 @@ const EquipmentFormView = ({navigation, route}) => {
     [navigation],
   );
 
-  const _defaultValue = useMemo(() => {
-    return idEquipment
-      ? equipment
-      : {
-          partner: intervention.deliveredPartner,
-          inService: true,
-          typeSelect: Equipment?.typeSelect.Equipment,
-          commissioningDate: new Date().toISOString().split('T')[0],
-        };
-  }, [
-    Equipment?.typeSelect,
-    equipment,
-    idEquipment,
-    intervention.deliveredPartner,
-  ]);
+  const _defaultValue = useMemo(
+    () => idEquipment && equipment,
+    [equipment, idEquipment],
+  );
+
+  const _creationDefaultValue = useMemo(
+    () => ({
+      partner: intervention.deliveredPartner,
+      inService: true,
+      typeSelect: Equipment?.typeSelect.Equipment,
+      commissioningDate: new Date().toISOString().split('T')[0],
+    }),
+    [Equipment?.typeSelect, intervention.deliveredPartner],
+  );
 
   return (
     <FormView
       formKey="intervention_equipment"
       defaultValue={_defaultValue}
+      creationDefaultValue={_creationDefaultValue}
+      defaultEditMode
       actions={[
         {
           key: 'create-equipment',
