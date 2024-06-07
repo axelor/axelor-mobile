@@ -16,8 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import {Module} from '../app';
-import {Compatibility, Menu} from '../app/Module';
+import {Compatibility, Menu, Module} from '../app';
 
 export function checkModulesMenusAccessibility(modules, mobileSettingsApps) {
   if (!Array.isArray(modules) || modules.length === 0) {

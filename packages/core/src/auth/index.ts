@@ -16,7 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import {Module} from '../app/Module';
+import {Module} from '../app';
 import enTranslations from './i18n/en.json';
 import frTranslations from './i18n/fr.json';
 import * as authReducers from './features';

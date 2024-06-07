@@ -16,9 +16,5 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-export {default as Application} from './Application';
-export {default as ContextedApplication} from './ContextedApplication';
-export {default as ContextsProvider} from './ContextsProvider';
-export {schemaContructor} from './module-generation.helper';
-export * from './modules';
-export {default as RootNavigator} from './RootNavigator';
+export * from './types';
+export * from './ModuleProvider';

@@ -18,8 +18,8 @@
 
 import {Reducer} from '@reduxjs/toolkit';
 import {Schema} from 'yup';
-import {FormConfigs} from '../forms/types';
-import {ModuleSelections} from '../selections';
+import {FormConfigs} from '../../forms/types';
+import {ModuleSelections} from '../../selections';
 
 interface MinimumMenuFields {
   title: string;

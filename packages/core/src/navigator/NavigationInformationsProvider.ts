@@ -16,8 +16,11 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import {Menu as DrawerMenu, Screen as NavigationScreen} from '../app';
-import {MenuWithSubMenus} from '../app/Module';
+import {
+  Menu as DrawerMenu,
+  MenuWithSubMenus,
+  Screen as NavigationScreen,
+} from '../app';
 import {isEmpty} from '../utils';
 import {hasSubMenus} from './menu.helper';
 

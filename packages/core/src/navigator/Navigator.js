@@ -62,6 +62,7 @@ import {
   filterAuthorizedWebViewMenus,
 } from '../webViews/menu.helper';
 import {registerTypes} from '../selections';
+import {useModules} from '../app';
 
 const Drawer = createDrawerNavigator();
 const Stack = createStackNavigator();
@@ -72,18 +73,19 @@ export const ModuleNavigatorContext = createContext({
   modulesScreens: {},
 });
 
-const Navigator = ({modules, mainMenu, onRefresh, versionCheckConfig}) => {
+const Navigator = ({mainMenu, onRefresh, versionCheckConfig}) => {
+  const I18n = useTranslator();
+  const Colors = useThemeColor();
+  const dispatch = useDispatch();
+  const {modules} = useModules();
+  const fetchAllPermission = usePermissionsFetcher();
+
   const storeState = useSelector(state => state.appConfig);
   const {user} = useSelector(state => state.user);
   const {dashboardConfigs} = useSelector(state => state.mobileDashboard);
   const {webViewConfigs} = useSelector(state => state.mobileWebView);
   const {mobileSettings} = useSelector(state => state.appConfig);
   const {metaModules} = useSelector(state => state.metaModule);
-
-  const I18n = useTranslator();
-  const Colors = useThemeColor();
-  const dispatch = useDispatch();
-  const fetchAllPermission = usePermissionsFetcher();
 
   const {screens: dashboardScreeens, menus: dashboardMenusConfig} = useMemo(
     () => createDashboardScreens(dashboardConfigs),
