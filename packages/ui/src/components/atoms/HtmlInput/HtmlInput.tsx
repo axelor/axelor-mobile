@@ -84,10 +84,12 @@ const HtmlInput = ({
             initialContentHTML={defaultInput}
             onChange={onChange}
             disabled={readonly}
+            // eslint-disable-next-line react-native/no-inline-styles
             editorStyle={{
               backgroundColor: editorBackgroundColor || Colors.backgroundColor,
               color: Colors.text,
               placeholderColor: Colors.placeholderTextColor,
+              contentCSSText: 'word-wrap: break-word',
             }}
             onHeightChange={onHeightChange}
             onFocus={onFocus}
