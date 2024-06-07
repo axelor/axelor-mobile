@@ -62,7 +62,10 @@ const LeadFormScreen = ({navigation, route}) => {
     [userId, navigation],
   );
 
-  const _defaultValue = useMemo(() => idLead != null && {...lead}, [lead]);
+  const _defaultValue = useMemo(
+    () => idLead != null && {...lead},
+    [idLead, lead],
+  );
 
   const _creationDefaultValue = useMemo(
     () => ({leadScoringSelect: 0, isDoNotSendEmail: false, isDoNotCall: false}),
