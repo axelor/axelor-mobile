@@ -23,6 +23,8 @@ import {useTranslator} from '../../../../i18n';
 import {FormActionType, FormatedAction} from '../../../../forms';
 import {ConfirmationPopup} from '../Alerts';
 
+const CONTAINER_ZINDEX = 50;
+
 const DEFAULT_ALERT_STATE = {
   visible: false,
   onPress: () => {},
@@ -83,7 +85,7 @@ const FloatingTools = ({
   }
 
   return (
-    <View>
+    <View style={{zIndex: CONTAINER_ZINDEX}}>
       <ConfirmationPopup
         visible={alertConfig.visible}
         handleClose={() => setAlertConfig(DEFAULT_ALERT_STATE)}
