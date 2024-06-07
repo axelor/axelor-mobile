@@ -1,0 +1,5 @@
+{
+  "title": "Form: add a floating button to replace bottom actions",
+  "type": "feat",
+  "packages": ["core", "ui"]
+}
