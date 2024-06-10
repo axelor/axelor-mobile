@@ -18,16 +18,22 @@
 
 import React, {useCallback, useEffect, useMemo, useState} from 'react';
 import {SectionList, StyleSheet, View} from 'react-native';
-import {DateDisplay, useSelector} from '@axelor/aos-mobile-core';
+import {DateDisplay, useSelector, useTranslator} from '@axelor/aos-mobile-core';
 import {Badge, Text, useThemeColor} from '@axelor/aos-mobile-ui';
 import {previousProjectActivity} from '../../../api/project-api';
 
 const ActivitiesListView = () => {
   const Colors = useThemeColor();
+  const I18n = useTranslator();
+
   const {project} = useSelector((state: any) => state.project_project);
 
   const [dataList, setDataList] = useState([]);
-  const [startDate, setStartDate] = useState(new Date());
+  const [startDate, setStartDate] = useState(() => {
+    const initialDate = new Date();
+    initialDate.setDate(initialDate.getDate() + 1);
+    return initialDate;
+  });
 
   const dateLimit = useMemo(() => {
     const limitDate = new Date();
@@ -104,29 +110,37 @@ const ActivitiesListView = () => {
     const nowInMs = Date.UTC(now.getFullYear(), now.getMonth(), now.getDate());
 
     const differenceInMilliseconds = nowInMs - dateInMs;
+
     const differenceInDays = Math.floor(
       differenceInMilliseconds / (1000 * 60 * 60 * 24),
     );
 
     if (differenceInDays > 0) {
-      return `modifié il y a ${differenceInDays} jour${
-        differenceInDays > 1 ? 's' : ''
-      }`;
+      return `${I18n.t('Project_UpdatedTimes', {
+        times: `${differenceInDays} ${I18n.t('Project_Day').toLowerCase()}${
+          differenceInDays > 1 ? 's' : ''
+        } `,
+      })}`;
     } else {
+      const _differenceInMilliseconds = now.getTime() - date.getTime();
       const differenceInHours = Math.floor(
-        differenceInMilliseconds / (1000 * 60 * 60),
+        _differenceInMilliseconds / (1000 * 60 * 60),
       );
       if (differenceInHours > 0) {
-        return `modifié il y a ${differenceInHours} heure${
-          differenceInHours > 1 ? 's' : ''
-        }`;
+        return `${I18n.t('Project_UpdatedTimes', {
+          times: `${differenceInHours} ${I18n.t('Project_Hour').toLowerCase()}${
+            differenceInHours > 1 ? 's' : ''
+          } `,
+        })}`;
       } else {
         const differenceInMinutes = Math.floor(
-          differenceInMilliseconds / (1000 * 60),
+          _differenceInMilliseconds / (1000 * 60),
         );
-        return `modifié il y a ${differenceInMinutes} minute${
-          differenceInMinutes > 1 ? 's' : ''
-        }`;
+        return `${I18n.t('Project_UpdatedTimes', {
+          times: `${differenceInMinutes} ${I18n.t(
+            'Project_min',
+          ).toLowerCase()}${differenceInMinutes > 1 ? 's' : ''} `,
+        })}`;
       }
     }
   };
@@ -153,7 +167,7 @@ const ActivitiesListView = () => {
           title={modelName}
           color={
             utilityClass === 'danger'
-              ? Colors.cautionColor
+              ? Colors.errorColor
               : utilityClass === 'success'
               ? Colors.successColor
               : Colors.primaryColor
@@ -165,17 +179,23 @@ const ActivitiesListView = () => {
             <Text>{track.value}</Text>
           </View>
         ))}
-        <Text>{user}</Text>
-        <Text>{calculateTimeDifference(time)}</Text>
+        <Text>{`${I18n.t(
+          'Project_UpdatedBy',
+        )} ${user} ${calculateTimeDifference(time)}`}</Text>
       </View>
     );
   };
 
   const renderSectionHeader = ({section: {title}}) => {
-    const dateToDisplay = convertToDate(title).toString();
+    const dateToDisplay = convertToDate(title);
+
+    const isValidDate = !isNaN(dateToDisplay.getTime());
+
+    const displayDate = isValidDate ? dateToDisplay : new Date();
+
     return (
       <View style={styles.header}>
-        <DateDisplay date={dateToDisplay} displayYear={true} />
+        <DateDisplay date={displayDate.toString()} displayYear={true} />
       </View>
     );
   };
