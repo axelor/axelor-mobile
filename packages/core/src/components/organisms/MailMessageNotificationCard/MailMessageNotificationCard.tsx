@@ -16,7 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import React, {useState} from 'react';
+import React, {ReactElement, useState} from 'react';
 import {StyleSheet, TouchableOpacity, View} from 'react-native';
 import {
   Card,
@@ -42,6 +42,7 @@ interface MailMessageNotificationCardProps {
   tracks?: any[];
   flags?: any;
   style?: any;
+  customTopComponent?: ReactElement<any>;
 }
 
 const MAX_TRACK_ITEMS = 5;
@@ -54,6 +55,7 @@ const MailMessageNotificationCard = ({
   tracks,
   flags,
   style,
+  customTopComponent,
 }: MailMessageNotificationCardProps) => {
   const Colors = useThemeColor();
   const [moreItems, setMoreItems] = useState(false);
@@ -64,6 +66,7 @@ const MailMessageNotificationCard = ({
       disabled={tracks.length < MAX_TRACK_ITEMS}
       activeOpacity={0.9}>
       <Card style={[styles.card, style]}>
+        {customTopComponent && React.cloneElement(customTopComponent)}
         <View style={styles.cardHeader}>
           <LabelText
             iconName="info-circle-fill"

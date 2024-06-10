@@ -18,8 +18,13 @@
 
 import React, {useCallback, useEffect, useMemo, useState} from 'react';
 import {SectionList, StyleSheet, View} from 'react-native';
-import {DateDisplay, useSelector, useTranslator} from '@axelor/aos-mobile-core';
-import {Badge, Text, useThemeColor} from '@axelor/aos-mobile-ui';
+import {
+  DateDisplay,
+  MailMessageNotificationCard,
+  useSelector,
+  useTranslator,
+} from '@axelor/aos-mobile-core';
+import {Badge, Text, sliceString, useThemeColor} from '@axelor/aos-mobile-ui';
 import {previousProjectActivity} from '../../../api/project-api';
 
 const ActivitiesListView = () => {
@@ -119,7 +124,7 @@ const ActivitiesListView = () => {
       return `${I18n.t('Project_UpdatedTimes', {
         times: `${differenceInDays} ${I18n.t('Project_Day').toLowerCase()}${
           differenceInDays > 1 ? 's' : ''
-        } `,
+        }`,
       })}`;
     } else {
       const _differenceInMilliseconds = now.getTime() - date.getTime();
@@ -130,7 +135,7 @@ const ActivitiesListView = () => {
         return `${I18n.t('Project_UpdatedTimes', {
           times: `${differenceInHours} ${I18n.t('Project_Hour').toLowerCase()}${
             differenceInHours > 1 ? 's' : ''
-          } `,
+          }`,
         })}`;
       } else {
         const differenceInMinutes = Math.floor(
@@ -139,7 +144,7 @@ const ActivitiesListView = () => {
         return `${I18n.t('Project_UpdatedTimes', {
           times: `${differenceInMinutes} ${I18n.t(
             'Project_min',
-          ).toLowerCase()}${differenceInMinutes > 1 ? 's' : ''} `,
+          ).toLowerCase()}${differenceInMinutes > 1 ? 's' : ''}`,
         })}`;
       }
     }
@@ -162,26 +167,30 @@ const ActivitiesListView = () => {
 
     return (
       <View style={styles.item}>
-        <Text>{Object.keys(item)?.[0]}</Text>
-        <Badge
-          title={modelName}
-          color={
-            utilityClass === 'danger'
-              ? Colors.errorColor
-              : utilityClass === 'success'
-              ? Colors.successColor
-              : Colors.primaryColor
-          }
-        />
-        {tracks.map((track, index) => (
-          <View key={index} style={styles.trackItem}>
-            <Text writingType="important">{track.title}:</Text>
-            <Text>{track.value}</Text>
-          </View>
-        ))}
-        <Text>{`${I18n.t(
+        <Text style={styles.updatedText}>{`${I18n.t(
           'Project_UpdatedBy',
         )} ${user} ${calculateTimeDifference(time)}`}</Text>
+        <MailMessageNotificationCard
+          relatedModel={''}
+          relatedId={0}
+          title={key}
+          tracks={tracks}
+          customTopComponent={
+            <View style={styles.headerMailMessage}>
+              <Text>{sliceString(key, 25)}</Text>
+              <Badge
+                title={modelName}
+                color={
+                  utilityClass === 'danger'
+                    ? Colors.errorColor
+                    : utilityClass === 'success'
+                    ? Colors.successColor
+                    : Colors.primaryColor
+                }
+              />
+            </View>
+          }
+        />
       </View>
     );
   };
@@ -214,23 +223,18 @@ const ActivitiesListView = () => {
 const styles = StyleSheet.create({
   item: {
     padding: 10,
-    borderBottomWidth: 1,
-    borderBottomColor: '#ccc',
+    alignItems: 'center',
+  },
+  updatedText: {
+    alignSelf: 'flex-start',
+    paddingHorizontal: 15,
   },
   header: {
-    backgroundColor: '#eee',
-    flexDirection: 'row',
-    alignContent: 'center',
     padding: 10,
   },
-  trackItem: {
+  headerMailMessage: {
     flexDirection: 'row',
-    alignItems: 'center',
-    marginVertical: 2,
-  },
-  trackTitle: {
-    fontWeight: 'bold',
-    marginRight: 5,
+    justifyContent: 'space-between',
   },
 });
 
