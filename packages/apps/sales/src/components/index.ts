@@ -16,23 +16,4 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import {Module} from '@axelor/aos-mobile-core';
-import enTranslations from './i18n/en.json';
-import frTranslations from './i18n/fr.json';
-
-export const SalesModule: Module = {
-  name: 'app-sales',
-  title: 'Sales_Sales',
-  subtitle: 'Sales_Sales',
-  icon: 'graph-up-arrow',
-  compatibilityAOS: {
-    moduleName: 'axelor-sale',
-    downToVersion: '8.2.0',
-  },
-  translations: {
-    en: enTranslations,
-    fr: frTranslations,
-  },
-};
-
-export * from './components';
+export * from './atoms';
