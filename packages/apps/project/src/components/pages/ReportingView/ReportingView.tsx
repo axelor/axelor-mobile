@@ -18,12 +18,19 @@
 
 import React, {useCallback, useEffect, useMemo, useState} from 'react';
 import {SectionList, StyleSheet, View} from 'react-native';
-import {useSelector} from '@axelor/aos-mobile-core';
-import {HeaderContainer, Text} from '@axelor/aos-mobile-ui';
+import {DateDisplay, useSelector} from '@axelor/aos-mobile-core';
+import {
+  Badge,
+  HeaderContainer,
+  Text,
+  useThemeColor,
+} from '@axelor/aos-mobile-ui';
 import {ProjectHeader} from '../../molecules';
 import {previousProjectActivity} from '../../../api/project-api';
 
 const ReportingView = () => {
+  const Colors = useThemeColor();
+
   const {project} = useSelector((state: any) => state.project_project);
 
   const [dataList, setDataList] = useState([]);
@@ -82,17 +89,105 @@ const ReportingView = () => {
     return `${month}/${day}/${year}`;
   };
 
-  const renderItem = ({item}) => (
-    <View style={styles.item}>
-      <Text>{JSON.stringify(item)}</Text>
-    </View>
-  );
+  const convertToDate = dateStr => {
+    const [month, day, year] = dateStr.split('/').map(Number);
 
-  const renderSectionHeader = ({section: {title}}) => (
-    <View style={styles.header}>
-      <Text>{title}</Text>
-    </View>
-  );
+    return new Date(year, month - 1, day);
+  };
+
+  const calculateTimeDifference = time => {
+    const date = new Date(time);
+    const now = new Date();
+
+    if (isNaN(date.getTime())) {
+      return;
+    }
+
+    const dateInMs = Date.UTC(
+      date.getFullYear(),
+      date.getMonth(),
+      date.getDate(),
+    );
+    const nowInMs = Date.UTC(now.getFullYear(), now.getMonth(), now.getDate());
+
+    const differenceInMilliseconds = nowInMs - dateInMs;
+    const differenceInDays = Math.floor(
+      differenceInMilliseconds / (1000 * 60 * 60 * 24),
+    );
+
+    if (differenceInDays > 0) {
+      return `modifié il y a ${differenceInDays} jour${
+        differenceInDays > 1 ? 's' : ''
+      }`;
+    } else {
+      const differenceInHours = Math.floor(
+        differenceInMilliseconds / (1000 * 60 * 60),
+      );
+      if (differenceInHours > 0) {
+        return `modifié il y a ${differenceInHours} heure${
+          differenceInHours > 1 ? 's' : ''
+        }`;
+      } else {
+        const differenceInMinutes = Math.floor(
+          differenceInMilliseconds / (1000 * 60),
+        );
+        return `modifié il y a ${differenceInMinutes} minute${
+          differenceInMinutes > 1 ? 's' : ''
+        }`;
+      }
+    }
+  };
+
+  const renderItem = ({item}) => {
+    const key = Object.keys(item)?.[0];
+
+    const activity = item?.[key]?.[0].activity || {};
+
+    const modelName = item?.[key]?.[0]?.modelName;
+
+    const tracks = activity?.tracks || [];
+
+    const time = item?.[key]?.[0].time || '';
+
+    const user = item?.[key]?.[0].user || '';
+
+    const utilityClass = item?.[key]?.[0].utilityClass;
+
+    console.log('modelName', modelName);
+
+    return (
+      <View style={styles.item}>
+        <Text>{Object.keys(item)?.[0]}</Text>
+        <Badge
+          title={modelName}
+          color={
+            utilityClass === 'danger'
+              ? Colors.cautionColor
+              : utilityClass === 'success'
+              ? Colors.successColor
+              : Colors.primaryColor
+          }
+        />
+        {tracks.map((track, index) => (
+          <View key={index} style={styles.trackItem}>
+            <Text writingType="important">{track.title}:</Text>
+            <Text>{track.value}</Text>
+          </View>
+        ))}
+        <Text>{user}</Text>
+        <Text>{calculateTimeDifference(time)}</Text>
+      </View>
+    );
+  };
+
+  const renderSectionHeader = ({section: {title}}) => {
+    const dateToDisplay = convertToDate(title).toString();
+    return (
+      <View style={styles.header}>
+        <DateDisplay date={dateToDisplay} displayYear={true} />
+      </View>
+    );
+  };
 
   return (
     <View>
@@ -119,7 +214,18 @@ const styles = StyleSheet.create({
   },
   header: {
     backgroundColor: '#eee',
+    flexDirection: 'row',
+    alignContent: 'center',
     padding: 10,
+  },
+  trackItem: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginVertical: 2,
+  },
+  trackTitle: {
+    fontWeight: 'bold',
+    marginRight: 5,
   },
 });
 
