@@ -22,7 +22,6 @@ import axios from 'axios';
 import {BlockInteractionMessage, LoadingIndicator} from '@axelor/aos-mobile-ui';
 import {ErrorBoundary} from '@axelor/aos-mobile-error';
 import RootNavigator from './RootNavigator';
-import {Module} from './Module';
 import Translator from '../i18n/component/Translator';
 import {getActiveUserInfo} from '../api/login-api';
 import ErrorScreen from '../screens/ErrorScreen';
@@ -41,14 +40,12 @@ interface instanceConfig {
 }
 
 interface ContextedApplicationProps {
-  modules: Module[];
   mainMenu?: string;
   version: string;
   configuration?: instanceConfig;
 }
 
 const ContextedApplication = ({
-  modules,
   mainMenu,
   version,
   configuration,
@@ -90,7 +87,6 @@ const ContextedApplication = ({
           <LoadingIndicator />
           <BlockInteractionMessage />
           <RootNavigator
-            modules={modules}
             mainMenu={mainMenu}
             onRefresh={() => setRefresh(_current => !_current)}
             configuration={configuration}

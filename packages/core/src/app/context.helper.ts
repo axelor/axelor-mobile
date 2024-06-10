@@ -17,7 +17,13 @@
  */
 
 import {Schema, mixed, number, object} from 'yup';
-import {Models, Module, ObjectFields, SearchFields, SortFields} from './Module';
+import {
+  Models,
+  Module,
+  ObjectFields,
+  SearchFields,
+  SortFields,
+} from './modules';
 import {ModuleSelections} from '../selections';
 
 export const addModuleObjectFields = (

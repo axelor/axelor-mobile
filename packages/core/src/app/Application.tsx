@@ -16,14 +16,14 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import React, {useRef} from 'react';
+import React, {useEffect, useRef} from 'react';
 import {
   Theme,
   ThemeColors,
   Writing,
   WritingStyles,
 } from '@axelor/aos-mobile-ui';
-import {Module} from './Module';
+import {Module, modulesProvider} from './modules';
 import ContextsProvider from './ContextsProvider';
 import ContextedApplication from './ContextedApplication';
 import {authModule} from '../auth';
@@ -84,9 +84,12 @@ const Application = ({
   ApiProviderConfig.allowConnectionBlock =
     configuration.allowInternetConnectionBlock;
 
+  useEffect(() => {
+    modulesProvider.init(modules);
+  }, [modules]);
+
   return (
     <ContextsProvider
-      modules={modules}
       additionalsReducers={additionalsReducers}
       defaultTheme={defaultTheme}
       themes={themes}
@@ -100,7 +103,6 @@ const Application = ({
         configuration?.showModulesSubtitle ?? showModulesSubtitle
       }>
       <ContextedApplication
-        modules={modules}
         mainMenu={mainMenu}
         version={version}
         configuration={{
