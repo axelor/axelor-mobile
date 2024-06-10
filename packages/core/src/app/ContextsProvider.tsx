@@ -28,7 +28,7 @@ import {
   ThemeColors,
   WritingStyles,
 } from '@axelor/aos-mobile-ui';
-import {Models, Module} from './Module';
+import {Models, useModules} from './modules';
 import {configI18n} from '../i18n/i18n';
 import enTranslation from '../i18n/translations/en.json';
 import frTranslation from '../i18n/translations/fr.json';
@@ -45,7 +45,6 @@ import {initSelections} from '../selections';
 const ApplicationContext = createContext(null);
 
 interface ContextsProviderProps {
-  modules: Module[];
   additionalsReducers?: any;
   themes?: Theme[];
   defaultTheme?: Theme;
@@ -60,7 +59,6 @@ interface ContextsProviderProps {
 }
 
 const ContextsProvider = ({
-  modules,
   additionalsReducers,
   themes,
   defaultTheme,
@@ -74,6 +72,7 @@ const ContextsProvider = ({
   showModulesSubtitle = false,
 }: ContextsProviderProps) => {
   const [loading, setLoading] = useState(true);
+  const {modules} = useModules();
 
   const appTranslations = useMemo(
     () =>

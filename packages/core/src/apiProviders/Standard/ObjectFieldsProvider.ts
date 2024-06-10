@@ -17,7 +17,7 @@
  */
 
 import {Schema} from 'yup';
-import {Models, ObjectFields, SearchFields, SortFields} from '../../app/Module';
+import {Models, ObjectFields, SearchFields, SortFields} from '../../app';
 import {CriteriaField, CriteriaGroup} from '../Model';
 import {checkNullString} from '../../utils/string';
 

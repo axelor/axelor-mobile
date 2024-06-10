@@ -30,10 +30,12 @@ import {useTranslator} from '../i18n';
 import {showToastMessage} from '../utils';
 import {logout} from '../features/authSlice';
 import {useSessionExpired} from '../apiProviders/config';
+import {useModules} from './modules';
 
 const {Navigator, Screen} = createNativeStackNavigator();
 
-const RootNavigator = ({modules, mainMenu, onRefresh, configuration}) => {
+const RootNavigator = ({mainMenu, onRefresh, configuration}) => {
+  const {modules} = useModules();
   const Colors = useThemeColor();
   const I18n = useTranslator();
   const dispatch = useDispatch();
@@ -57,13 +59,12 @@ const RootNavigator = ({modules, mainMenu, onRefresh, configuration}) => {
   const AppNavigator = useCallback(
     () => (
       <CoreNavigator
-        modules={modules}
         mainMenu={mainMenu}
         onRefresh={onRefresh}
         versionCheckConfig={configuration?.versionCheckConfig}
       />
     ),
-    [modules, mainMenu, onRefresh, configuration?.versionCheckConfig],
+    [mainMenu, onRefresh, configuration?.versionCheckConfig],
   );
 
   const checkInternetConnection = useCallback(async () => {
