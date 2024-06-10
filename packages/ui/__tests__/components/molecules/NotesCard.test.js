@@ -59,9 +59,7 @@ describe('NotesCard Component', () => {
   it('should render chevron icon when content exceeds maximum height', () => {
     const wrapper = shallow(<NotesCard {...props} />);
 
-    wrapper
-      .find(TouchableOpacity)
-      .simulate('layout', {nativeEvent: {layout: {height: 150}}});
+    wrapper.find(HtmlInput).simulate('heightChange', 150);
 
     expect(wrapper.find(Icon).exists()).toBe(true);
     expect(wrapper.find(Icon).prop('name')).toBe('chevron-down');
