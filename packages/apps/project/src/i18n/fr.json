@@ -36,6 +36,8 @@
   "Project_Product": "Activité",
   "Project_Duration": "Heures",
   "Project_ToInvoice": "À facturer",
+  "Project_Reporting": "Rapports",
+  "Project_Activities": "Activités",
   "Project_SliceAction_SearchProject": "recherche sur les projets",
   "Project_SliceAction_FetchProjectById": "récupération du projet par id",
   "Project_SliceAction_FetchProjectStatus": "récupération des statuts de projet",
