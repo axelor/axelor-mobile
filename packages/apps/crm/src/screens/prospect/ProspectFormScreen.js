@@ -40,12 +40,13 @@ const ProspectFormScreen = ({navigation}) => {
     [navigation],
   );
 
-  const _defaultValue = useMemo(() => {
-    return {
+  const _defaultValue = useMemo(
+    () => ({
       ...prospect,
       email: prospect.emailAddress?.address,
-    };
-  }, [prospect]);
+    }),
+    [prospect],
+  );
 
   return (
     <FormView

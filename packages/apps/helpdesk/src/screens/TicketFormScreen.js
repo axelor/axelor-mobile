@@ -33,10 +33,12 @@ const TicketFormScreen = ({navigation, route}) => {
 
   const defaultValue = useMemo(
     () =>
-      idTicket != null && {
-        ...ticket,
-        duration: ticket.duration || 0,
-      },
+      idTicket != null
+        ? {
+            ...ticket,
+            duration: ticket.duration || 0,
+          }
+        : null,
     [idTicket, ticket],
   );
 

@@ -174,7 +174,7 @@ const ExpenseLineFormScreen = ({route, navigation}) => {
       ? user.activeCompany?.currency
       : undefined;
 
-    return {
+    const _default = {
       manageMode: modeExpense || ExpenseLineType.modes.general,
       isFromExpense: idExpense != null && expenseLine?.id != null,
       hideToggle: false,
@@ -185,23 +185,28 @@ const ExpenseLineFormScreen = ({route, navigation}) => {
       distance: 0,
       currency: defaultCurrency,
     };
+
+    if (justificationMetaFile != null) {
+      return {
+        ..._default,
+        hideToggle: true,
+        justificationMetaFile,
+      };
+    }
+
+    return _default;
   }, [
     _defaultDate,
     expenseLine?.id,
     idExpense,
+    justificationMetaFile,
     mobileSettings?.isMultiCurrencyEnabled,
     modeExpense,
     user.activeCompany,
   ]);
 
   const defaultValue = useMemo(() => {
-    if (justificationMetaFile != null) {
-      return {
-        ...creationDefaultValue,
-        hideToggle: true,
-        justificationMetaFile,
-      };
-    } else if (expenseLine != null) {
+    if (expenseLine != null) {
       const mode = ExpenseLineType.getExpenseMode(expenseLine);
 
       if (mode === ExpenseLineType.modes.general) {
@@ -245,11 +250,11 @@ const ExpenseLineFormScreen = ({route, navigation}) => {
     creationDefaultValue,
     expenseLine,
     getItemTitle,
-    justificationMetaFile,
   ]);
 
   return (
     <FormView
+      formKey="hr_Expenseline"
       defaultValue={defaultValue}
       creationDefaultValue={creationDefaultValue}
       defaultEditMode
@@ -286,7 +291,6 @@ const ExpenseLineFormScreen = ({route, navigation}) => {
           },
         },
       ]}
-      formKey="hr_Expenseline"
     />
   );
 };

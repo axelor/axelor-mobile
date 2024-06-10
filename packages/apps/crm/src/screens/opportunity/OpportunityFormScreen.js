@@ -74,7 +74,7 @@ const OpportunityFormScreen = ({navigation, route}) => {
   );
 
   const _defaultValue = useMemo(
-    () => idOpportunity != null && {...opportunity},
+    () => (idOpportunity != null ? {...opportunity} : null),
     [idOpportunity, opportunity],
   );
 

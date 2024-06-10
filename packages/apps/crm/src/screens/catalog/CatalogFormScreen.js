@@ -32,6 +32,7 @@ const CatalogFormScreen = ({navigation}) => {
 
   return (
     <FormView
+      formKey="crm_catalog"
       defaultEditMode
       actions={[
         {
@@ -43,7 +44,6 @@ const CatalogFormScreen = ({navigation}) => {
             createCatalogAPI(objectState, dispatch),
         },
       ]}
-      formKey="crm_catalog"
     />
   );
 };

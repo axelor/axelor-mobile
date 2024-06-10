@@ -46,7 +46,7 @@ const InterventionNoteFormScreen = ({route, navigation}) => {
   }, [dispatch, noteId]);
 
   const defaultValue = useMemo(
-    () => noteId && interventionNote,
+    () => (noteId ? interventionNote : null),
     [interventionNote, noteId],
   );
 
@@ -85,9 +85,10 @@ const InterventionNoteFormScreen = ({route, navigation}) => {
         fixedItems={<InterventionHeader intervention={intervention} />}
       />
       <FormView
+        formKey="intervention_interventionNote"
         defaultValue={defaultValue}
         creationDefaultValue={creationDefaultValue}
-        defaultEditMode
+        defaultEditMode={noteId == null}
         actions={[
           {
             key: 'create-interventionNote',
@@ -110,7 +111,6 @@ const InterventionNoteFormScreen = ({route, navigation}) => {
             },
           },
         ]}
-        formKey="intervention_interventionNote"
       />
     </Screen>
   );

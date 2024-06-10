@@ -114,7 +114,7 @@ const FormView = ({
   useEffect(() => {
     setObject(_current => {
       if (isEmpty(record)) {
-        const _default = isCreation ? creationDefaultValue : defaultValue;
+        const _default = defaultValue ?? creationDefaultValue ?? {};
         if (_default == null || areObjectsEquals(_current, _default)) {
           return _current;
         } else {

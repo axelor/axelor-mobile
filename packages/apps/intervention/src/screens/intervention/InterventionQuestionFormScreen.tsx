@@ -138,6 +138,7 @@ const InterventionQuestionFormScreen = ({route, navigation}) => {
         )}
       </View>
       <FormView
+        formKey="intervention_interventionQuestion"
         defaultValue={question}
         actions={[
           {
@@ -153,7 +154,6 @@ const InterventionQuestionFormScreen = ({route, navigation}) => {
             },
           },
         ]}
-        formKey="intervention_interventionQuestion"
       />
     </Screen>
   );

@@ -37,7 +37,7 @@ const EventFormScreen = ({navigation, route}) => {
 
   const {user} = useSelector(state => state.user);
 
-  const defaultValue = useMemo(() => {
+  const creationDefaultValue = useMemo(() => {
     const _defaultStartDate = new Date();
     const _defaultEndDate = new Date();
 
@@ -51,12 +51,7 @@ const EventFormScreen = ({navigation, route}) => {
       user: user,
     };
 
-    if (event != null) {
-      return {
-        ..._default,
-        ...event,
-      };
-    } else if (lead != null) {
+    if (lead != null) {
       return {
         ..._default,
         eventLead: lead,
@@ -98,7 +93,18 @@ const EventFormScreen = ({navigation, route}) => {
     }
 
     return _default;
-  }, [Event, user, event, lead, prospect, client, contact]);
+  }, [Event, user, lead, prospect, client, contact]);
+
+  const defaultValue = useMemo(
+    () =>
+      event != null
+        ? {
+            ...creationDefaultValue,
+            ...event,
+          }
+        : null,
+    [event, creationDefaultValue],
+  );
 
   const createEventAPI = useCallback(
     (_event, dispatch) => {
@@ -125,6 +131,7 @@ const EventFormScreen = ({navigation, route}) => {
     <FormView
       formKey="crm_event"
       defaultValue={defaultValue}
+      creationDefaultValue={creationDefaultValue}
       defaultEditMode
       actions={[
         {

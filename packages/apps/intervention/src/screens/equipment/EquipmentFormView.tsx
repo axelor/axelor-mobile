@@ -88,7 +88,7 @@ const EquipmentFormView = ({navigation, route}) => {
   );
 
   const _defaultValue = useMemo(
-    () => idEquipment && equipment,
+    () => (idEquipment != null ? equipment : null),
     [equipment, idEquipment],
   );
 

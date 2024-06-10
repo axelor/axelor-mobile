@@ -84,18 +84,20 @@ const TimesheetLineFormScreen = ({route, navigation}) => {
 
   const defaultValue = useMemo(
     () =>
-      timesheetLine != null && {
-        id: timesheetLine.id,
-        project: timesheetLine.project,
-        projectTask: timesheetLine.projectTask,
-        manufOrder: timesheetLine.manufOrder,
-        operationOrder: timesheetLine.operationOrder,
-        product: timesheetLine.product,
-        toInvoice: timesheetLine.toInvoice,
-        date: timesheetLine.date,
-        hoursDuration: timesheetLine.hoursDuration,
-        comments: timesheetLine.comments,
-      },
+      timesheetLine != null
+        ? {
+            id: timesheetLine.id,
+            project: timesheetLine.project,
+            projectTask: timesheetLine.projectTask,
+            manufOrder: timesheetLine.manufOrder,
+            operationOrder: timesheetLine.operationOrder,
+            product: timesheetLine.product,
+            toInvoice: timesheetLine.toInvoice,
+            date: timesheetLine.date,
+            hoursDuration: timesheetLine.hoursDuration,
+            comments: timesheetLine.comments,
+          }
+        : null,
     [timesheetLine],
   );
 
