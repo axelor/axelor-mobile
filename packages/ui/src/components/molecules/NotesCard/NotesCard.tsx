@@ -21,7 +21,7 @@ import {StyleSheet, TouchableOpacity, View} from 'react-native';
 import {Card, HtmlInput, Icon, Text} from '../../atoms';
 import {useThemeColor} from '../../../theme/ThemeContext';
 
-const MAX_HEIGHT = 70;
+const MAX_HEIGHT = 60;
 
 interface NotesCardProps {
   title: string;
@@ -49,15 +49,12 @@ const NotesCard = ({title, data, style}: NotesCardProps) => {
       <TouchableOpacity
         disabled={chevronHeight < MAX_HEIGHT}
         activeOpacity={0.9}
-        onPress={toggleExpanded}
-        onLayout={event => {
-          const {height} = event.nativeEvent.layout;
-          setChevronHeight(height);
-        }}>
+        onPress={toggleExpanded}>
         <Card style={styles.note}>
           <HtmlInput
             defaultInput={data}
             readonly={true}
+            onHeightChange={setChevronHeight}
             style={!expanded && styles.htmlInput}
           />
           {chevronHeight > MAX_HEIGHT && (
