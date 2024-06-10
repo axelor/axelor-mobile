@@ -124,12 +124,6 @@ export const saveEquipment = createAsyncThunk(
     }).then(equipment => {
       const equipmentId = equipment?.id;
       if (equipmentId != null) {
-        dispatch(
-          searchEquipment({
-            partnerId: data.partnerId,
-          }),
-        );
-
         if (data.isCreation) {
           dispatch(
             fetchNumberClientEquipment({
