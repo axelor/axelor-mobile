@@ -71,35 +71,42 @@ const ContextsProvider = ({
   writingStylesConfig,
   showModulesSubtitle = false,
 }: ContextsProviderProps) => {
-  const [loading, setLoading] = useState(true);
   const {modules} = useModules();
+
+  const [loading, setLoading] = useState(true);
+  const [moduleLoaded, setModuleLoaded] = useState(0);
 
   const appTranslations = useMemo(
     () =>
       modules
         .filter(_module => _module.translations)
         .reduce(
-          (translations, _module) => ({
-            en: {...translations.en, ..._module.translations?.en},
-            fr: {...translations.fr, ..._module.translations?.fr},
-          }),
+          (translations, _module) => {
+            setModuleLoaded(_current => _current + 1);
+            return {
+              en: {...translations.en, ..._module.translations?.en},
+              fr: {...translations.fr, ..._module.translations?.fr},
+            };
+          },
           {en: enTranslation, fr: frTranslation},
         ),
     [modules],
   );
 
   useEffect(() => {
-    configI18n({
-      resources: [
-        {lng: 'en', translationsObject: appTranslations.en},
-        {lng: 'fr', translationsObject: appTranslations.fr},
-      ],
-      defaultLanguage: defaultLanguage,
-    });
-    setLoading(false);
+    if (moduleLoaded === modules?.length) {
+      configI18n({
+        resources: [
+          {lng: 'en', translationsObject: appTranslations.en},
+          {lng: 'fr', translationsObject: appTranslations.fr},
+        ],
+        defaultLanguage: defaultLanguage,
+      });
+      setLoading(false);
+    }
     // NOTE: I18n should be initialize only once
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [moduleLoaded, modules]);
 
   const externalsReducers = useMemo(
     () =>
