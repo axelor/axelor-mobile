@@ -40,17 +40,19 @@ const ProspectFormScreen = ({navigation}) => {
     [navigation],
   );
 
-  const _defaultValue = useMemo(() => {
-    return {
+  const _defaultValue = useMemo(
+    () => ({
       ...prospect,
       email: prospect.emailAddress?.address,
-    };
-  }, [prospect]);
+    }),
+    [prospect],
+  );
 
   return (
     <FormView
       formKey="crm_prospect"
       defaultValue={_defaultValue}
+      defaultEditMode
       actions={[
         {
           key: 'update-prospect',

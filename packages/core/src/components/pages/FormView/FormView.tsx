@@ -21,11 +21,9 @@ import {StyleSheet, View} from 'react-native';
 import {useDispatch, useSelector} from 'react-redux';
 import {
   Button,
-  CircleButton,
   KeyboardAvoidingScrollView,
   Screen,
   WarningCard,
-  useThemeColor,
 } from '@axelor/aos-mobile-ui';
 import {useTranslator} from '../../../i18n';
 import {usePermitted} from '../../../permissions';
@@ -33,62 +31,77 @@ import {
   Action,
   DisplayField,
   DisplayPanel,
-  getButtonTitleKey,
+  FormatedAction,
+  getActionConfig,
   getConfigItems,
   getFields,
   getValidationErrors,
   getZIndexStyle,
   isField,
-  isObjectMissingRequiredField,
   mapErrorWithTranslationKey,
   sortContent,
-  updateRequiredFieldsOfConfig,
   useFormConfig,
   validateSchema,
 } from '../../../forms';
 import {Field as FieldComponent, Panel as PanelComponent} from './Components';
 import {ConstraintsValidatorPopup} from './Alerts';
-import {
-  clearRecord,
-  createRecord,
-  refreshRecord,
-  updateRecord,
-} from '../../../features/formSlice';
-import {isEmpty} from '../../../utils';
+import {clearRecord} from '../../../features/formSlice';
+import {areObjectsEquals, isEmpty} from '../../../utils';
+import {FloatingTools} from './Buttons';
 
 interface FormProps {
   defaultValue?: any;
+  creationDefaultValue?: any;
   formKey: string;
   isCustom?: boolean;
   actions: Action[];
-  readonlyButton?: boolean;
+  floatingTools?: boolean;
+  defaultEditMode?: boolean;
 }
 
 const FormView = ({
   defaultValue,
+  creationDefaultValue,
   formKey,
   isCustom = false,
   actions: _actions,
-  readonlyButton = false,
+  floatingTools = true,
+  defaultEditMode = false,
 }: FormProps) => {
   const I18n = useTranslator();
-  const Colors = useThemeColor();
   const dispatch = useDispatch();
 
   const {config} = useFormConfig(formKey);
 
   const storeState = useSelector((state: any) => state);
   const {record} = useSelector((state: any) => state.form);
-  const {canCreate, readonly} = usePermitted({modelName: config?.modelName});
+  const {canCreate, canDelete, readonly} = usePermitted({
+    modelName: config?.modelName,
+  });
 
-  const [object, setObject] = useState(defaultValue ?? {});
+  const [object, setObject] = useState(
+    defaultValue ?? creationDefaultValue ?? {},
+  );
   const [errors, setErrors] = useState<any[]>();
-  const [isReadonly, setIsReadonly] = useState(readonlyButton);
+  const [isReadonly, setIsReadonly] = useState<boolean>(
+    floatingTools && !defaultEditMode,
+  );
+  const [buttonHeight, setButtonHeight] = useState<number>(0);
 
   const formContent: (DisplayPanel | DisplayField)[] = useMemo(
     () => sortContent(config),
     [config],
   );
+
+  const isCreation = useMemo(() => object?.id == null, [object?.id]);
+
+  const isDirty = useMemo(() => {
+    if (isCreation) {
+      return true;
+    }
+
+    return !areObjectsEquals(defaultValue, object);
+  }, [defaultValue, isCreation, object]);
 
   useEffect(() => {
     mapErrorWithTranslationKey();
@@ -101,10 +114,11 @@ const FormView = ({
   useEffect(() => {
     setObject(_current => {
       if (isEmpty(record)) {
-        if (defaultValue == null || _current === defaultValue) {
+        const _default = defaultValue ?? creationDefaultValue ?? {};
+        if (_default == null || areObjectsEquals(_current, _default)) {
           return _current;
         } else {
-          return defaultValue;
+          return _default;
         }
       }
 
@@ -114,7 +128,7 @@ const FormView = ({
         return record;
       }
     });
-  }, [defaultValue, record]);
+  }, [creationDefaultValue, defaultValue, isCreation, record]);
 
   const handleFieldChange = (newValue: any, fieldName: string) => {
     setObject(_current => {
@@ -122,7 +136,7 @@ const FormView = ({
         return _current;
       }
 
-      const updatedObject = _current != null ? {..._current} : null;
+      const updatedObject = _current != null ? {..._current} : {};
 
       updatedObject[fieldName] = newValue;
 
@@ -142,153 +156,29 @@ const FormView = ({
     });
   };
 
-  const isButtonAuthorized = (_action: Action) => {
-    switch (_action.type) {
-      case 'create':
-        return canCreate;
-      case 'update':
-        return !readonly;
-      default:
-        return true;
-    }
-  };
-
-  const getButtonConfig = (
-    _action: Action,
-  ): {title: string; onPress: (value?: any) => void} => {
-    const buttonConfig: any = {title: getButtonTitleKey(_action)};
-
-    if (_action.customAction != null) {
-      buttonConfig.onPress = () =>
-        _action.customAction({
-          handleObjectChange: setObject,
-          objectState: object,
-          storeState,
-          handleReset,
-          dispatch,
-        });
-    } else {
+  const isButtonAuthorized = useCallback(
+    (_action: Action) => {
       switch (_action.type) {
         case 'create':
-          buttonConfig.onPress = () => {
-            dispatch(
-              (createRecord as any)({
-                modelName: config.modelName,
-                data: object,
-              }),
-            );
-            handleReset();
-          };
-          break;
+          return canCreate;
         case 'update':
-          buttonConfig.onPress = () => {
-            dispatch(
-              (updateRecord as any)({
-                modelName: config.modelName,
-                data: object,
-              }),
-            );
-          };
-          break;
-        case 'refresh':
-          buttonConfig.onPress = () => {
-            dispatch(
-              (refreshRecord as any)({
-                modelName: config.modelName,
-                id: object?.id,
-              }),
-            );
-          };
-          break;
-        case 'reset':
-          buttonConfig.onPress = handleReset;
-          break;
+          return !readonly;
+        case 'delete':
+          return canDelete;
         default:
-          buttonConfig.onPress = () => console.log(object);
-          break;
+          return true;
       }
-    }
-
-    return buttonConfig;
-  };
-
-  const renderAction = (_action: Action) => {
-    if (
-      !isButtonAuthorized(_action) ||
-      _action.hideIf?.({objectState: object, storeState})
-    ) {
-      return null;
-    }
-
-    const buttonConfig = getButtonConfig(_action);
-    const isDisabled =
-      (_action.needRequiredFields
-        ? isObjectMissingRequiredField(
-            object,
-            updateRequiredFieldsOfConfig(config, {
-              objectState: object,
-              storeState,
-            }),
-          )
-        : false) || _action.disabledIf?.({objectState: object, storeState});
-
-    const originalOnPress = buttonConfig.onPress;
-
-    buttonConfig.onPress = () => {
-      originalOnPress();
-      if (_action.readonlyAfterAction) {
-        toggleReadonlyMode();
-      }
-    };
-
-    if (_action.customComponent) {
-      return React.cloneElement(_action.customComponent, {
-        key: _action.key,
-        onPress: () =>
-          handleValidate(buttonConfig.onPress, _action.needValidation),
-        disabled: isDisabled,
-      });
-    }
-
-    return (
-      <Button
-        key={_action.key}
-        iconName={_action.iconName}
-        color={_action.color}
-        title={I18n.t(buttonConfig.title)}
-        onPress={() =>
-          handleValidate(buttonConfig.onPress, _action.needValidation)
-        }
-        disabled={isDisabled}
-      />
-    );
-  };
+    },
+    [canCreate, canDelete, readonly],
+  );
 
   const toggleReadonlyMode = () => {
     setIsReadonly(currentState => !currentState);
   };
 
   const handleReset = useCallback(() => {
-    setObject(defaultValue ?? {});
-  }, [defaultValue]);
-
-  const actions: Action[] = useMemo(() => {
-    return [
-      {
-        key: 'cancel-readonly',
-        titleKey: 'Base_Cancel',
-        type: 'custom',
-        needValidation: true,
-        customAction: () => {
-          toggleReadonlyMode();
-          handleReset();
-        },
-        hideIf: () => !readonlyButton,
-        color: Colors.errorColor,
-      },
-      ...(_actions ?? []),
-    ];
-  }, [Colors.errorColor, _actions, handleReset, readonlyButton]);
+    setObject((isCreation ? creationDefaultValue : defaultValue) ?? {});
+  }, [creationDefaultValue, defaultValue, isCreation]);
 
   const handleValidate = (_action, needValidation) => {
     if (needValidation) {
@@ -305,6 +195,71 @@ const FormView = ({
       _action(object);
       resolve();
     });
+  };
+
+  const actions: FormatedAction[] = useMemo(() => {
+    if (!Array.isArray(_actions) || _actions.length === 0) {
+      return [];
+    }
+
+    return _actions
+      .filter(
+        _action =>
+          isButtonAuthorized(_action) &&
+          _action.hideIf?.({objectState: object, storeState}) !== true,
+      )
+      .map(_action =>
+        getActionConfig(
+          _action,
+          config,
+          {
+            handleObjectChange: setObject,
+            objectState: object,
+            storeState,
+            dispatch,
+            handleReset,
+          },
+          I18n,
+        ),
+      );
+  }, [
+    I18n,
+    _actions,
+    config,
+    dispatch,
+    handleReset,
+    isButtonAuthorized,
+    object,
+    storeState,
+  ]);
+
+  const renderAction = (_action: FormatedAction) => {
+    const onPress = () =>
+      handleValidate(() => {
+        _action.onPress();
+        if (_action.readonlyAfterAction) {
+          toggleReadonlyMode();
+        }
+      }, _action.needValidation);
+
+    if (_action.customComponent) {
+      return React.cloneElement(_action.customComponent, {
+        key: _action.key,
+        onPress: onPress,
+        disabled: _action.isDisabled,
+      });
+    }
+
+    return (
+      <Button
+        key={_action.key}
+        iconName={_action.iconName}
+        color={_action.color}
+        title={_action.title}
+        onPress={onPress}
+        disabled={_action.isDisabled}
+      />
+    );
   };
 
   const renderItem = (item: DisplayPanel | DisplayField) => {
@@ -355,16 +310,20 @@ const FormView = ({
   return (
     <Screen
       fixedItems={
-        actions.length === 0 || isReadonly
-          ? undefined
-          : actions.map(renderAction)
+        <View
+          onLayout={({nativeEvent}) => {
+            setButtonHeight(nativeEvent.layout.height);
+          }}>
+          {isReadonly
+            ? undefined
+            : actions
+                .filter(_action => !floatingTools || _action.type === 'custom')
+                .map(renderAction)}
+        </View>
       }
       removeSpaceOnTop={true}>
       <KeyboardAvoidingScrollView
-        keyboardOffset={{
-          ios: 70,
-          android: 100,
-        }}
+        keyboardOffset={{ios: 70, android: 100}}
         style={styles.scroll}>
         {Array.isArray(errors) && (
           <ConstraintsValidatorPopup
@@ -376,13 +335,17 @@ const FormView = ({
           {formContent.map(renderItem)}
         </View>
       </KeyboardAvoidingScrollView>
-      {readonlyButton && isReadonly && (
-        <CircleButton
-          style={styles.floatingButton}
-          iconName="pencil-fill"
-          onPress={toggleReadonlyMode}
-        />
-      )}
+      <FloatingTools
+        hideIf={!floatingTools}
+        style={{bottom: buttonHeight + 20}}
+        toggleReadonly={toggleReadonlyMode}
+        actions={actions}
+        isCreation={isCreation}
+        onCreate={() => setObject(creationDefaultValue)}
+        onPressWrapper={handleValidate}
+        isDirty={isDirty}
+        defaultOpenValue={defaultEditMode}
+      />
     </Screen>
   );
 };
@@ -393,11 +356,7 @@ const styles = StyleSheet.create({
   },
   container: {
     alignItems: 'center',
-  },
-  floatingButton: {
-    position: 'absolute',
-    bottom: 25,
-    right: 25,
+    paddingBottom: 125,
   },
 });
 

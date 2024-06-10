@@ -149,7 +149,7 @@ export interface Action {
   readonlyAfterAction?: boolean;
 }
 
-interface ActionProps {
+export interface ActionProps {
   handleReset?: () => void;
   objectState?: any;
   storeState?: any;
@@ -161,5 +161,12 @@ export type FormActionType =
   | 'update'
   | 'create'
   | 'reset'
+  | 'delete'
   | 'refresh'
   | 'custom';
+
+export interface FormatedAction extends Action {
+  title?: string;
+  onPress: () => void;
+  isDisabled: boolean;
+}

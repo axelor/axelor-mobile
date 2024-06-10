@@ -31,21 +31,24 @@ const TicketFormScreen = ({navigation, route}) => {
   const {ticket} = useSelector(state => state.ticket);
   const {helpdesk: helpdeskConfig} = useSelector(state => state.appConfig);
 
-  const defaultValue = useMemo(() => {
-    const _default = {
+  const defaultValue = useMemo(
+    () =>
+      idTicket != null
+        ? {
+            ...ticket,
+            duration: ticket.duration || 0,
+          }
+        : null,
+    [idTicket, ticket],
+  );
+
+  const creationDefaultValue = useMemo(
+    () => ({
       duration: 0,
       ticketStatus: helpdeskConfig?.defaultTicketStatus,
-    };
-
-    if (idTicket != null) {
-      return {
-        ...ticket,
-        duration: ticket.duration || _default.duration,
-      };
-    }
-
-    return _default;
-  }, [helpdeskConfig?.defaultTicketStatus, idTicket, ticket]);
+    }),
+    [helpdeskConfig?.defaultTicketStatus],
+  );
 
   const createTicketAPI = useCallback((_ticket, dispatch) => {
     dispatch(
@@ -78,6 +81,8 @@ const TicketFormScreen = ({navigation, route}) => {
     <FormView
       formKey="helpdesk_ticket"
       defaultValue={defaultValue}
+      creationDefaultValue={creationDefaultValue}
+      defaultEditMode
       actions={[
         {
           key: 'create-ticket',

@@ -1,0 +1,5 @@
+{
+  "title": "FloatingButton: improve display of component",
+  "type": "feat",
+  "packages": "ui"
+}

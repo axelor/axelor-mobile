@@ -46,13 +46,15 @@ const InterventionNoteFormScreen = ({route, navigation}) => {
   }, [dispatch, noteId]);
 
   const defaultValue = useMemo(
-    () =>
-      noteId
-        ? interventionNote
-        : {
-            partner: intervention?.deliveredPartner,
-          },
-    [intervention?.deliveredPartner, interventionNote, noteId],
+    () => (noteId ? interventionNote : null),
+    [interventionNote, noteId],
+  );
+
+  const creationDefaultValue = useMemo(
+    () => ({
+      partner: intervention?.deliveredPartner,
+    }),
+    [intervention?.deliveredPartner],
   );
 
   const interventionNoteAPI = useCallback(
@@ -83,7 +85,10 @@ const InterventionNoteFormScreen = ({route, navigation}) => {
         fixedItems={<InterventionHeader intervention={intervention} />}
       />
       <FormView
+        formKey="intervention_interventionNote"
         defaultValue={defaultValue}
+        creationDefaultValue={creationDefaultValue}
+        defaultEditMode={noteId == null}
         actions={[
           {
             key: 'create-interventionNote',
@@ -106,7 +111,6 @@ const InterventionNoteFormScreen = ({route, navigation}) => {
             },
           },
         ]}
-        formKey="intervention_interventionNote"
       />
     </Screen>
   );
