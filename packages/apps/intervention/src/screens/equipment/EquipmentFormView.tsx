@@ -36,7 +36,7 @@ const EquipmentFormView = ({navigation, route}) => {
   const isCreation = route.params.isCreation;
 
   const Colors = useThemeColor();
-  const _dispatch = useDispatch();
+  const _dispatch: any = useDispatch();
   const {Equipment} = useTypes();
 
   const {equipment} = useSelector((state: any) => state.intervention_equipment);
@@ -62,9 +62,7 @@ const EquipmentFormView = ({navigation, route}) => {
           interventionId: route.params.interventionId,
           interventionVersion: route.params.interventionVersion,
         }),
-      );
-
-      navigation.pop();
+      ).then(() => navigation.pop());
     },
     [
       isCreation,
@@ -80,9 +78,7 @@ const EquipmentFormView = ({navigation, route}) => {
         (deleteEquipment as any)({
           equipmentId: _equipment?.id,
         }),
-      );
-
-      navigation.pop();
+      ).then(() => navigation.pop());
     },
     [navigation],
   );
