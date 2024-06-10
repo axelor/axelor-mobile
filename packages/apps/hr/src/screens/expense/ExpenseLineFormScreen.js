@@ -164,9 +164,12 @@ const ExpenseLineFormScreen = ({route, navigation}) => {
     ],
   );
 
-  const defaultValue = useMemo(() => {
-    const _defaultDate = new Date().toISOString().split('T')[0];
+  const _defaultDate = useMemo(
+    () => new Date().toISOString().split('T')[0],
+    [],
+  );
 
+  const creationDefaultValue = useMemo(() => {
     const defaultCurrency = mobileSettings?.isMultiCurrencyEnabled
       ? user.activeCompany?.currency
       : undefined;
@@ -189,26 +192,31 @@ const ExpenseLineFormScreen = ({route, navigation}) => {
         hideToggle: true,
         justificationMetaFile,
       };
-    } else if (expenseLine != null) {
+    }
+
+    return _default;
+  }, [
+    _defaultDate,
+    expenseLine?.id,
+    idExpense,
+    justificationMetaFile,
+    mobileSettings?.isMultiCurrencyEnabled,
+    modeExpense,
+    user.activeCompany,
+  ]);
+
+  const defaultValue = useMemo(() => {
+    if (expenseLine != null) {
       const mode = ExpenseLineType.getExpenseMode(expenseLine);
 
       if (mode === ExpenseLineType.modes.general) {
         return {
-          ..._default,
-          id: expenseLine.id,
-          manageMode: mode,
-          hideToggle: true,
-          expense: expenseLine.expense,
-          expenseDate: expenseLine.expenseDate,
-          project: expenseLine.project,
-          projectTask: expenseLine.projectTask,
-          toInvoice: expenseLine.toInvoice,
-          expenseProduct: expenseLine.expenseProduct,
+          ...creationDefaultValue,
+          ...expenseLine,
           totalAmount: expenseLine.totalAmount || 0,
           totalTax: expenseLine.totalTax || 0,
-          currency: expenseLine.currency,
-          justificationMetaFile: expenseLine.justificationMetaFile,
-          comments: expenseLine.comments,
+          manageMode: mode,
+          hideToggle: true,
         };
       } else if (mode === ExpenseLineType.modes.kilometric) {
         _dispatch(updateExpenseDate(expenseLine?.expenseDate));
@@ -216,19 +224,9 @@ const ExpenseLineFormScreen = ({route, navigation}) => {
         _dispatch(updateToCity(expenseLine?.toCity));
 
         return {
-          ..._default,
-          id: expenseLine.id,
-          manageMode: mode,
-          hideToggle: true,
-          expense: expenseLine.expense,
-          expenseDate: expenseLine.expenseDate,
-          project: expenseLine.project,
-          projectTask: expenseLine.projectTask,
-          toInvoice: expenseLine.toInvoice,
-          fromCity: expenseLine.fromCity,
-          toCity: expenseLine.toCity,
+          ...creationDefaultValue,
+          ...expenseLine,
           distance: expenseLine.distance || 0,
-          kilometricAllowParam: expenseLine.kilometricAllowParam,
           kilometricTypeSelect: {
             key: expenseLine.kilometricTypeSelect,
             title: getItemTitle(
@@ -236,7 +234,8 @@ const ExpenseLineFormScreen = ({route, navigation}) => {
               expenseLine.kilometricTypeSelect,
             ),
           },
-          comments: expenseLine.comments,
+          manageMode: mode,
+          hideToggle: true,
         };
       }
     } else {
@@ -244,24 +243,21 @@ const ExpenseLineFormScreen = ({route, navigation}) => {
       _dispatch(updateFromCity(null));
       _dispatch(updateToCity(null));
     }
-
-    return _default;
   }, [
     ExpenseLine?.kilometricTypeSelect,
+    _defaultDate,
     _dispatch,
+    creationDefaultValue,
     expenseLine,
     getItemTitle,
-    idExpense,
-    justificationMetaFile,
-    mobileSettings?.isMultiCurrencyEnabled,
-    modeExpense,
-    user.activeCompany?.currency,
-    user.activeCompany?.name,
   ]);
 
   return (
     <FormView
+      formKey="hr_Expenseline"
       defaultValue={defaultValue}
+      creationDefaultValue={creationDefaultValue}
+      defaultEditMode
       actions={[
         {
           key: 'create-expenseLine',
@@ -295,7 +291,6 @@ const ExpenseLineFormScreen = ({route, navigation}) => {
           },
         },
       ]}
-      formKey="hr_Expenseline"
     />
   );
 };

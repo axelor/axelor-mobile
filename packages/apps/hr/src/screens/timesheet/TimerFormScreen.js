@@ -70,8 +70,8 @@ const TimerFormScreen = ({route}) => {
     setActivityIndicator(loadingCreation);
   }, [loadingCreation, setActivityIndicator]);
 
-  const defaultValue = useMemo(() => {
-    const DEFAULT = {
+  const creationDefaultValue = useMemo(
+    () => ({
       startDateTime: new Date().toISOString(),
       product: user?.employee?.product,
       stopwatch: {
@@ -79,33 +79,30 @@ const TimerFormScreen = ({route}) => {
           setCreation(false);
         },
       },
-    };
+    }),
+    [user?.employee?.product],
+  );
 
-    if (creation) {
-      return DEFAULT;
-    }
-
-    if (!isEmpty(timer)) {
-      return {
-        id: timer.id,
-        startDateTime: timer.startDateTime,
-        project: timer.project,
-        projectTask: timer.projectTask,
-        product: timer.product,
-        updatedDuration: timer.updatedDuration,
-        comments: timer.comments,
-        stopwatch: {
-          timerId: timer.id,
-          version: timer.version,
-          duration: timer.duration,
-          timerStartDateT: timer.timerStartDateT,
-          status: timer.statusSelect,
-        },
-      };
-    }
-
-    return DEFAULT;
-  }, [creation, timer, user?.employee?.product]);
+  const defaultValue = useMemo(() => {
+    return !creation && !isEmpty(timer)
+      ? {
+          id: timer.id,
+          startDateTime: timer.startDateTime,
+          project: timer.project,
+          projectTask: timer.projectTask,
+          product: timer.product,
+          updatedDuration: timer.updatedDuration,
+          comments: timer.comments,
+          stopwatch: {
+            timerId: timer.id,
+            version: timer.version,
+            duration: timer.duration,
+            timerStartDateT: timer.timerStartDateT,
+            status: timer.statusSelect,
+          },
+        }
+      : null;
+  }, [creation, timer]);
 
   const fieldsComparison = objectState => {
     return (
@@ -138,7 +135,10 @@ const TimerFormScreen = ({route}) => {
 
   return (
     <FormView
+      formKey="hr_Timer"
       defaultValue={loadingCreation ? null : defaultValue}
+      creationDefaultValue={creationDefaultValue}
+      defaultEditMode={creation}
       actions={[
         {
           key: 'update-timer',
@@ -150,7 +150,6 @@ const TimerFormScreen = ({route}) => {
           customAction: ({objectState}) => updateTimerAPI(objectState),
         },
       ]}
-      formKey="hr_Timer"
     />
   );
 };

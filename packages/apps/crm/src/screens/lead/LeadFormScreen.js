@@ -62,16 +62,22 @@ const LeadFormScreen = ({navigation, route}) => {
     [userId, navigation],
   );
 
-  const _defaultValue = useMemo(() => {
-    return idLead != null
-      ? {...lead}
-      : {leadScoringSelect: 0, isDoNotSendEmail: false, isDoNotCall: false};
-  }, [idLead, lead]);
+  const _defaultValue = useMemo(
+    () => (idLead != null ? {...lead} : null),
+    [idLead, lead],
+  );
+
+  const _creationDefaultValue = useMemo(
+    () => ({leadScoringSelect: 0, isDoNotSendEmail: true, isDoNotCall: false}),
+    [],
+  );
 
   return (
     <FormView
       formKey="crm_lead"
       defaultValue={_defaultValue}
+      creationDefaultValue={_creationDefaultValue}
+      defaultEditMode
       actions={[
         {
           key: 'create-lead',
