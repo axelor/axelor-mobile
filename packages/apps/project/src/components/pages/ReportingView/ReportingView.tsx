@@ -17,7 +17,7 @@
  */
 
 import React, {useState} from 'react';
-import {View} from 'react-native';
+import {View, StyleSheet} from 'react-native';
 import {useTranslator} from '@axelor/aos-mobile-core';
 import {HeaderContainer, ToggleSwitch} from '@axelor/aos-mobile-ui';
 import {ProjectHeader} from '../../molecules';
@@ -34,7 +34,7 @@ const ReportingView = () => {
   const [mode, setMode] = useState(modes?.reporting);
 
   return (
-    <View>
+    <View style={styles.container}>
       <HeaderContainer
         expandableFilter={false}
         fixedItems={
@@ -58,5 +58,11 @@ const ReportingView = () => {
     </View>
   );
 };
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+  },
+});
 
 export default ReportingView;
