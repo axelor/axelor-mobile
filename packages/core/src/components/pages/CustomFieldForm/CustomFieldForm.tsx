@@ -138,7 +138,7 @@ const CustomFieldForm = ({
       formKey={FORM_KEY}
       isCustom={true}
       defaultValue={attrsValues == null ? {...defaults} : attrsValues}
-      readonlyButton={readonlyButton}
+      floatingTools={readonlyButton}
     />
   );
 };

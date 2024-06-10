@@ -51,6 +51,7 @@ const ClientFormScreen = ({navigation}) => {
     <FormView
       formKey="crm_client"
       defaultValue={_defaultValue}
+      defaultEditMode
       actions={[
         {
           key: 'update-client',
