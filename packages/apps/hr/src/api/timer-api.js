@@ -19,6 +19,7 @@ import {
   axiosApiProvider,
   createStandardFetch,
   createStandardSearch,
+  getDateZonesISOString,
   getEndOfDay,
   getSearchCriterias,
   getStartOfDay,
@@ -157,14 +158,20 @@ export async function getNumberTimerByDate({userId, date}) {
 export async function createTimer({timer}) {
   return axiosApiProvider.post({
     url: 'ws/aos/timesheet/timer/',
-    data: timer,
+    data:
+      timer.startDateTime != null
+        ? {...timer, startDateTime: getDateZonesISOString(timer.startDateTime)}
+        : timer,
   });
 }
 
 export async function updateTimer({timer}) {
   return axiosApiProvider.put({
     url: `ws/aos/timesheet/timer/update/${timer.id}`,
-    data: timer,
+    data:
+      timer.startDateTime != null
+        ? {...timer, startDateTime: getDateZonesISOString(timer.startDateTime)}
+        : timer,
   });
 }
 
