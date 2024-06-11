@@ -49,8 +49,11 @@ const PopupSession = ({
           username: sessionActive.username,
           password,
         }),
-      );
-      setIsOpen(false);
+      ).then(res => {
+        if (res.error == null) {
+          setIsOpen(false);
+        }
+      });
     },
     [dispatch, sessionActive],
   );

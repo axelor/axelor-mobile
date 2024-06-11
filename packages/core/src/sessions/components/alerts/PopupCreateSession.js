@@ -82,9 +82,9 @@ const PopupCreateSession = ({
           sessionStorage.registerSession({
             session,
           });
+          handleVisibility(false);
         }
       });
-      handleVisibility(false);
     },
     [dispatch, handleVisibility, isMounted],
   );
