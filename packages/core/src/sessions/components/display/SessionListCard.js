@@ -17,7 +17,7 @@
  */
 
 import React, {useMemo} from 'react';
-import {ScrollView, StyleSheet, View, Dimensions} from 'react-native';
+import {ScrollView, StyleSheet, View} from 'react-native';
 import {useThemeColor, Icon} from '@axelor/aos-mobile-ui';
 import {SessionCard} from '../../components';
 
