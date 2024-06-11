@@ -229,6 +229,9 @@ export const manageInfiteScrollState = (
 
       state[keys.isListEnd] = data.length < requestBuilder.getRequestLimit();
     } else {
+      if (!(action.meta.arg.page > 0)) {
+        state[keys.list] = [];
+      }
       state[keys.isListEnd] = true;
     }
   }
