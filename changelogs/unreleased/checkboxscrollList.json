@@ -1,0 +1,5 @@
+{
+  "title": "CheckboxScrollList: avoid crash when selecting all values with empty list",
+  "type": "fix",
+  "packages": "ui"
+}
