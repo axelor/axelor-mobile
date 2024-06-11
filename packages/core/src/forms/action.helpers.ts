@@ -128,6 +128,10 @@ export const getActionConfig = (
   }: ActionProps,
   I18n: TranslatorProps,
 ): FormatedAction => {
+  if (config == null) {
+    return null;
+  }
+
   const title = I18n.t(getActionTittleKey(action));
   const onPress = getActionPress(action, config.modelName, {
     handleObjectChange,
