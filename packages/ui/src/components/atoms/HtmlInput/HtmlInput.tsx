@@ -16,11 +16,11 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import React, {useEffect, useRef, useState} from 'react';
+import React, {useCallback, useEffect, useRef, useState} from 'react';
 import {View, ScrollView} from 'react-native';
-import {useThemeColor} from '../../../theme/ThemeContext';
 import {actions, RichEditor, RichToolbar} from 'react-native-pell-rich-editor';
-import Text from '../Text/Text';
+import {useThemeColor} from '../../../theme';
+import {Text} from '../../atoms';
 
 // NOTE: documentation https://www.npmjs.com/package/react-native-pell-rich-editor
 
@@ -54,14 +54,25 @@ const HtmlInput = ({
   onBlur = () => {},
 }: HtmlInputProps) => {
   const Colors = useThemeColor();
+  const editor = useRef(null);
+
   const [editorAttached, setEditorAttached] = useState(false);
   const [key, setKey] = useState(defaultInput);
-
-  const editor = useRef(null);
+  const [isFocused, setIsFocused] = useState(false);
 
   const editorInitializedCallback = () => {
     setEditorAttached(true);
   };
+
+  const handleFocus = useCallback(() => {
+    setIsFocused(true);
+    onFocus();
+  }, [onFocus]);
+
+  const handleBlur = useCallback(() => {
+    setIsFocused(false);
+    onBlur();
+  }, [onBlur]);
 
   useEffect(() => {
     if (defaultInput == null || defaultInput === '') {
@@ -70,8 +81,10 @@ const HtmlInput = ({
         editor.current.dismissKeyboard();
       }
     }
-    setKey(defaultInput);
-  }, [defaultInput]);
+    if (!isFocused) {
+      setKey(defaultInput);
+    }
+  }, [defaultInput, isFocused]);
 
   return (
     <ScrollView contentContainerStyle={containerStyle}>
@@ -95,8 +108,8 @@ const HtmlInput = ({
               contentCSSText: 'word-wrap: break-word',
             }}
             onHeightChange={onHeightChange}
-            onFocus={onFocus}
-            onBlur={onBlur}
+            onFocus={handleFocus}
+            onBlur={handleBlur}
             editorInitializedCallback={editorInitializedCallback}
           />
         </View>
