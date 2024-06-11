@@ -134,5 +134,9 @@ export const getFullDateItems = (
 };
 
 export const ISODateTimeToDate = (date: string): string => {
+  if (date == null) {
+    return null;
+  }
+
   return date.split('T')[0];
 };

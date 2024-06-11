@@ -1,0 +1,5 @@
+{
+  "title": "Date utils: avoid error when trying to split null date",
+  "type": "fix",
+  "packages": "core"
+}
