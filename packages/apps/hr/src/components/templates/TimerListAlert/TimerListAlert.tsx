@@ -72,7 +72,8 @@ const TimerListAlert = ({
   const [selectedTimers, setSelectedTimers] = useState([]);
 
   const isConfirmButtonDisabled = useMemo(
-    () => errorKey || selectedTimers.length === 0,
+    () =>
+      errorKey || !Array.isArray(selectedTimers) || selectedTimers.length === 0,
     [errorKey, selectedTimers],
   );
 
