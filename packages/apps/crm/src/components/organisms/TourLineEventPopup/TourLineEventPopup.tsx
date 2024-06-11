@@ -61,7 +61,8 @@ const TourLineEventPopup = ({
         ...tourlineData,
       }),
     );
-  }, [dispatch, eventTourLine, tourlineData]);
+    onClose();
+  }, [dispatch, eventTourLine, onClose, tourlineData]);
 
   return (
     <Alert
