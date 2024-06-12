@@ -46,11 +46,13 @@ import {formatSecondsToHours} from '../../../utils';
 interface TimerListAlertProps {
   isAlertVisible: boolean;
   setIsAlertVisible: (visible: boolean) => void;
+  isFromActiveTimer: boolean;
 }
 
 const TimerListAlert = ({
   isAlertVisible,
   setIsAlertVisible,
+  isFromActiveTimer = false,
 }: TimerListAlertProps) => {
   const I18n = useTranslator();
   const Colors = useThemeColor();

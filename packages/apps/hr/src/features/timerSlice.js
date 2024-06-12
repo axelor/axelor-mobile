@@ -80,6 +80,7 @@ export const fetchActiveTimer = createAsyncThunk(
       getState,
       responseOptions: {isArrayResponse: false},
     }).then(res => {
+      console.log('res', res);
       dispatch(fetchTimerById({timerId: res.id}));
     });
   },

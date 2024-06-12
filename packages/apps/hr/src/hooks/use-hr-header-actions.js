@@ -129,6 +129,8 @@ const useActiveTimerAction = () => {
   const I18n = useTranslator();
   const navigation = useNavigation();
 
+  const {timesheet: timesheetConfig} = useSelector(state => state.appConfig);
+
   useEffect(() => {
     headerActionsProvider.registerModel('hr_active_timer', {
       actions: [
@@ -141,8 +143,9 @@ const useActiveTimerAction = () => {
           onPress: () =>
             navigation.navigate('TimerFormScreen', {isCreation: true}),
           showInHeader: true,
+          hideIf: !timesheetConfig?.isMultipleTimerEnabled,
         },
       ],
     });
-  }, [Colors, I18n, navigation]);
+  }, [Colors, I18n, navigation, timesheetConfig?.isMultipleTimerEnabled]);
 };
