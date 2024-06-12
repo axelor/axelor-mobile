@@ -20,6 +20,7 @@ import BuisnessProjectScreen from './BuisnessProjectScreen';
 import ProjectDetailsScreen from './ProjectDetailsScreen';
 import ProjectScreen from './ProjectScreen';
 import TaskDetailsScreen from './TaskDetailsScreen';
+import TaskFormScreen from './TaskFormScreen';
 import TaskListScreen from './TaskListScreen';
 
 export default {
@@ -60,6 +61,15 @@ export default {
       shadedHeader: false,
     },
   },
+  TaskFormScreen: {
+    title: 'Project_Task',
+    component: TaskFormScreen,
+  },
 };
 
 export {ProjectScreen};
+export {BuisnessProjectScreen};
+export {ProjectDetailsScreen};
+export {TaskListScreen};
+export {TaskDetailsScreen};
+export {TaskFormScreen};
