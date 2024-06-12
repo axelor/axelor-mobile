@@ -46,13 +46,13 @@ import {formatSecondsToHours} from '../../../utils';
 interface TimerListAlertProps {
   isAlertVisible: boolean;
   setIsAlertVisible: (visible: boolean) => void;
-  isFromActiveTimer: boolean;
+  defaultTimerId?: number;
 }
 
 const TimerListAlert = ({
   isAlertVisible,
   setIsAlertVisible,
-  isFromActiveTimer = false,
+  defaultTimerId,
 }: TimerListAlertProps) => {
   const I18n = useTranslator();
   const Colors = useThemeColor();
@@ -91,6 +91,17 @@ const TimerListAlert = ({
     },
     [dispatch, fromDate, toDate, userId],
   );
+
+  useEffect(() => {
+    if (defaultTimerId && timerDateIntervalList?.length > 0) {
+      const defaultTimer = timerDateIntervalList.find(
+        timer => timer.id === defaultTimerId,
+      );
+      if (defaultTimer) {
+        setSelectedTimers([defaultTimer]);
+      }
+    }
+  }, [defaultTimerId, timerDateIntervalList]);
 
   useEffect(() => {
     if (timesheet == null && fromDate && toDate) {
@@ -232,6 +243,7 @@ const TimerListAlert = ({
         moreLoading={moreLoadingTimerDateInterval}
         isListEnd={isListEndTimerDateInterval}
         translator={I18n.t}
+        defaultCheckedItems={selectedTimers}
       />
     </Alert>
   );

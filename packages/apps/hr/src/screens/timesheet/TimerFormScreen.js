@@ -180,6 +180,7 @@ const TimerFormScreen = ({route}) => {
         isAlertVisible={isAlertVisible}
         setIsAlertVisible={setIsAlertVisible}
         isFromActiveTimer={true}
+        defaultTimerId={timer?.id}
       />
     </>
   );
