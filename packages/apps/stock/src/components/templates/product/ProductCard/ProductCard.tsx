@@ -68,7 +68,7 @@ const ProductCard = ({
           {
             displayText:
               availableStock == null
-                ? `${I18n.t('Stock_Calculing')}...`
+                ? I18n.t('Stock_Calculing')
                 : availableStock > 0
                 ? I18n.t('Stock_Available')
                 : I18n.t('Stock_Unavailable'),

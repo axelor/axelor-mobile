@@ -16,99 +16,82 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import React from 'react';
-import {View, StyleSheet, ActivityIndicator, Dimensions} from 'react-native';
+import React, {useCallback, useMemo} from 'react';
+import {Dimensions, StyleSheet, View} from 'react-native';
+import {IndicatorChart, useDigitFormat} from '@axelor/aos-mobile-ui';
 import {useTranslator, useSelector} from '@axelor/aos-mobile-core';
-import {CardStockIndicator} from '../../../organisms';
 
 const ProductCardStockIndicatorList = ({}) => {
   const I18n = useTranslator();
+  const formatNumber = useDigitFormat();
 
-  const {loadingProductIndicators, productIndicators} = useSelector(
-    state => state.productIndicators,
+  const {productIndicators} = useSelector(state => state.productIndicators);
+  const {supplychain: supplychainConfig} = useSelector(
+    state => state.appConfig,
   );
 
-  if (loadingProductIndicators) {
-    return <ActivityIndicator size="large" />;
-  }
+  const indicators = useMemo(
+    () => [
+      {titleKey: 'Stock_RealQty', value: productIndicators?.realQty},
+      {titleKey: 'Stock_FutureQty', value: productIndicators?.futureQty},
+      {
+        titleKey: 'Stock_AllocatedQty',
+        value: productIndicators?.allocatedQty,
+        condition: supplychainConfig?.manageStockReservation,
+      },
+      {titleKey: 'Stock_SaleOrderQty', value: productIndicators?.saleOrderQty},
+      {
+        titleKey: 'Stock_PurchaseOrderQty',
+        value: productIndicators?.purchaseOrderQty,
+      },
+      {
+        titleKey: 'Stock_AvailableStock',
+        value: productIndicators?.availableStock,
+      },
+      {titleKey: 'Stock_BuildingQty', value: productIndicators?.buildingQty},
+      {
+        titleKey: 'Stock_ConsumedMOQty',
+        value: productIndicators?.consumeManufOrderQty,
+      },
+      {
+        titleKey: 'Stock_MissingMOQty',
+        value: productIndicators?.missingManufOrderQty,
+      },
+    ],
+    [productIndicators, supplychainConfig?.manageStockReservation],
+  );
+
+  const renderIndicator = useCallback(
+    ({titleKey, value, condition = true}, idx) => {
+      if (value != null && condition) {
+        return (
+          <IndicatorChart
+            key={idx}
+            datasets={[
+              {
+                title: I18n.t(titleKey),
+                value: formatNumber(value),
+              },
+            ]}
+            widthGraph={Dimensions.get('window').width * 0.4}
+          />
+        );
+      }
+    },
+    [I18n, formatNumber],
+  );
 
   return (
-    <View style={styles.row}>
-      <View style={styles.cardStock}>
-        {productIndicators?.realQty ? (
-          <CardStockIndicator
-            title={I18n.t('Stock_RealQty')}
-            number={productIndicators?.realQty}
-          />
-        ) : null}
-        {productIndicators?.futureQty ? (
-          <CardStockIndicator
-            title={I18n.t('Stock_FutureQty')}
-            number={productIndicators?.futureQty}
-          />
-        ) : null}
-        {productIndicators?.allocatedQty ? (
-          <CardStockIndicator
-            title={I18n.t('Stock_AllocatedQty')}
-            number={productIndicators?.allocatedQty}
-          />
-        ) : null}
-      </View>
-      <View style={styles.cardStock}>
-        {productIndicators?.saleOrderQty ? (
-          <CardStockIndicator
-            title={I18n.t('Stock_SaleOrderQty')}
-            number={productIndicators?.saleOrderQty}
-          />
-        ) : null}
-        {productIndicators?.purchaseOrderQty ? (
-          <CardStockIndicator
-            title={I18n.t('Stock_PurchaseOrderQty')}
-            number={productIndicators?.purchaseOrderQty}
-          />
-        ) : null}
-        {productIndicators?.availableStock ? (
-          <CardStockIndicator
-            title={I18n.t('Stock_AvailableStock')}
-            number={productIndicators?.availableStock}
-          />
-        ) : null}
-      </View>
-      <View style={styles.cardStock}>
-        {productIndicators?.buildingQty ? (
-          <CardStockIndicator
-            title={I18n.t('Stock_BuildingQty')}
-            number={productIndicators?.buildingQty}
-          />
-        ) : null}
-        {productIndicators?.consumeManufOrderQty ? (
-          <CardStockIndicator
-            title={I18n.t('Stock_ConsumedMOQty')}
-            number={productIndicators?.consumeManufOrderQty}
-          />
-        ) : null}
-        {productIndicators?.consumeManufOrderQty ? (
-          <CardStockIndicator
-            title={I18n.t('Stock_MissingMOQty')}
-            number={productIndicators?.missingManufOrderQty}
-          />
-        ) : null}
-      </View>
-    </View>
+    <View style={styles.container}>{indicators.map(renderIndicator)}</View>
   );
 };
 
 const styles = StyleSheet.create({
-  cardStock: {
+  container: {
+    justifyContent: 'space-around',
     flexDirection: 'row',
-    justifyContent: 'center',
-    width: Dimensions.get('window').width,
-  },
-  row: {
-    flex: 1,
-    flexDirection: 'row',
+    alignItems: 'center',
     flexWrap: 'wrap',
-    justifyContent: 'center',
   },
 });
 
