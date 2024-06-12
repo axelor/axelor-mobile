@@ -62,7 +62,9 @@ const SimpleIndicator = ({
           isIcon ? styles.maxWidth : styles.align,
         ]}>
         <TextUnit value={value} unit={unit} color={color} />
-        <Text numberOfLines={2}>{title}</Text>
+        <Text numberOfLines={2} style={!isIcon && styles.textAlign}>
+          {title}
+        </Text>
       </View>
     </View>
   );
@@ -83,6 +85,9 @@ const styles = StyleSheet.create({
   maxWidth: {
     width: '80%',
     paddingLeft: 5,
+  },
+  textAlign: {
+    textAlign: 'center',
   },
 });
 
