@@ -67,6 +67,7 @@ const ProductCardStockIndicatorList = ({}) => {
         return (
           <IndicatorChart
             key={idx}
+            style={styles.chart}
             datasets={[
               {
                 title: I18n.t(titleKey),
@@ -92,6 +93,9 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     flexWrap: 'wrap',
+  },
+  chart: {
+    alignSelf: 'stretch',
   },
 });
 
