@@ -17,6 +17,7 @@
  */
 
 import React, {useEffect, useMemo} from 'react';
+import {ScrollView, View} from 'react-native';
 import {GridView, HeaderContainer, Screen} from '@axelor/aos-mobile-ui';
 import {
   CustomFieldForm,
@@ -29,7 +30,6 @@ import {ProjectSimpleCard, TaskButton, TaskDetailsHeader} from '../components';
 import ProjectTaskDropdownCards from '../components/organisms/ProjectTaskDropdownCards/ProjectTaskDropdownCards';
 import {fetchProjectStatus} from '../features/projectSlice';
 import {fetchTimesheetLinesByTask} from '../features/timesheetLinesSlice';
-import {ScrollView, View} from 'react-native';
 
 const TaskDetailsScreen = ({navigation, route}) => {
   const projecTaskId = route?.params?.projecTaskId;
