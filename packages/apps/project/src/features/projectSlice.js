@@ -95,11 +95,18 @@ const initialState = {
 
   loadingProject: true,
   project: {},
+
+  projectForm: {},
 };
 
 const projectSlice = createSlice({
   name: 'project_project',
   initialState,
+  reducers: {
+    updateProject: (state, action) => {
+      state.projectForm = action.payload;
+    },
+  },
   extraReducers: builder => {
     generateInifiniteScrollCases(builder, searchProject, {
       loading: 'loading',
@@ -125,5 +132,7 @@ const projectSlice = createSlice({
     });
   },
 });
+
+export const {updateProject} = projectSlice.actions;
 
 export const projectReducer = projectSlice.reducer;

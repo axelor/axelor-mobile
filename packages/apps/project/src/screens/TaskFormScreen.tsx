@@ -16,11 +16,18 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import React, {useMemo} from 'react';
-import {useSelector, FormView} from '@axelor/aos-mobile-core';
+import React, {useEffect, useMemo} from 'react';
+import {useSelector, FormView, useDispatch} from '@axelor/aos-mobile-core';
+import {updateProject} from '../features/projectSlice';
 
 const TaskFormScreen = ({}) => {
+  const dispatch = useDispatch();
+
   const {projectTask} = useSelector((state: any) => state.project_projectTask);
+
+  useEffect(() => {
+    dispatch(updateProject(projectTask?.project));
+  }, [dispatch, projectTask?.project]);
 
   const _defaultValue = useMemo(() => {
     return {

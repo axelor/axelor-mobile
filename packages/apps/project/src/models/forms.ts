@@ -19,10 +19,15 @@
 import {FormConfigs} from '@axelor/aos-mobile-core';
 import {
   ProductSearchBar,
-  ProjectSearchBar,
+  ProjectSearchBar as HRProjectSearchBar,
   ProjectTaskSearchBar,
 } from '@axelor/aos-mobile-hr';
-import {LogTimeButton, ProjectSearchBar} from '../components';
+import {
+  LogTimeButton,
+  ParentTaskSearchBar,
+  ProjectSearchBar,
+} from '../components';
+import {updateProject} from '../features/projectSlice';
 
 export const project_formsRegister: FormConfigs = {
   project_TimesheetLine: {
@@ -32,7 +37,7 @@ export const project_formsRegister: FormConfigs = {
         titleKey: 'Hr_Project',
         type: 'object',
         widget: 'custom',
-        customComponent: ProjectSearchBar,
+        customComponent: HRProjectSearchBar,
         readonly: true,
       },
       projectTask: {
@@ -123,6 +128,20 @@ export const project_formsRegister: FormConfigs = {
         widget: 'custom',
         customComponent: ProjectSearchBar,
         required: true,
+        options: {
+          differentiateBusinessProjects: false,
+        },
+      },
+      parentTask: {
+        titleKey: 'Project_ParentTask',
+        type: 'object',
+        widget: 'custom',
+        customComponent: ParentTaskSearchBar,
+        dependsOn: {
+          project: ({newValue, dispatch}) => {
+            dispatch(updateProject(newValue));
+          },
+        },
       },
     },
   },

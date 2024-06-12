@@ -38,6 +38,7 @@
   "Project_ToInvoice": "À facturer",
   "Project_Sujet": "Sujet",
   "Project_TicketNumber": "Numéro de ticket",
+  "Project_ParentTask": "Tâche parent",
   "Project_SliceAction_SearchProject": "recherche sur les projets",
   "Project_SliceAction_FetchProjectById": "récupération du projet par id",
   "Project_SliceAction_FetchProjectStatus": "récupération des statuts de projet",
