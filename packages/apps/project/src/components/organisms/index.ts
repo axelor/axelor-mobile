@@ -19,3 +19,4 @@
 export {default as LogTimeButton} from './LogTimeButton/LogTimeButton';
 export {default as ProjectDropdownCards} from './ProjectDropdownCards/ProjectDropdownCards';
 export {default as ProjectSearchBar} from './ProjectSearchBar/ProjectSearchBar';
+export {default as TimeSpentGridView} from './TimeSpentGridView/TimeSpentGridView';
