@@ -17,7 +17,7 @@
  */
 
 import React, {useCallback, useEffect} from 'react';
-import {StyleSheet} from 'react-native';
+import {StyleSheet, View} from 'react-native';
 import {HeaderContainer, Screen, ScrollView} from '@axelor/aos-mobile-ui';
 import {
   CustomFieldForm,
@@ -26,6 +26,7 @@ import {
 } from '@axelor/aos-mobile-core';
 import {
   ProjectSimpleCard,
+  TaskBottom,
   TaskButton,
   TaskDetailsHeader,
   TimeSpentGridView,
@@ -83,6 +84,9 @@ const TaskDetailsScreen = ({navigation, route}) => {
         />
         <TimeSpentGridView />
       </ScrollView>
+      <View>
+        <TaskBottom idTask={projectTask?.id} />
+      </View>
     </Screen>
   );
 };

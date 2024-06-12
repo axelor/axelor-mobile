@@ -22,7 +22,7 @@ import {
   ProjectSearchBar,
   ProjectTaskSearchBar,
 } from '@axelor/aos-mobile-hr';
-import {LogTimeButton} from '../components';
+import {LogTimeButton, ProjectSearchBar} from '../components';
 
 export const project_formsRegister: FormConfigs = {
   project_TimesheetLine: {
@@ -101,6 +101,28 @@ export const project_formsRegister: FormConfigs = {
         type: 'object',
         widget: 'custom',
         customComponent: LogTimeButton,
+      },
+    },
+  },
+  project_task: {
+    modelName: 'com.axelor.apps.project.db.ProjectTask',
+    fields: {
+      name: {
+        titleKey: 'Project_Sujet',
+        type: 'string',
+        required: true,
+      },
+      ticketNumber: {
+        titleKey: 'Project_TicketNumber',
+        type: 'string',
+        readonly: true,
+      },
+      project: {
+        titleKey: 'Project_Project',
+        type: 'object',
+        widget: 'custom',
+        customComponent: ProjectSearchBar,
+        required: true,
       },
     },
   },

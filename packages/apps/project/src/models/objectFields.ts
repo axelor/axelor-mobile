@@ -131,6 +131,7 @@ export const project_modelAPI: ObjectFields = {
     spentTime: schemaContructor.number(),
     description: schemaContructor.string(),
     internalDescription: schemaContructor.string(),
+    ticketNumber: schemaContructor.string(),
   }),
   project_projectStatus: schemaContructor.object({
     name: schemaContructor.string(),

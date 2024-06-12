@@ -16,9 +16,33 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-export {default as LogTimeButton} from './LogTimeButton/LogTimeButton';
-export {default as ProjectDropdownCards} from './ProjectDropdownCards/ProjectDropdownCards';
-export {default as ProjectSearchBar} from './ProjectSearchBar/ProjectSearchBar';
-export {default as ProjectTaskDropdownCards} from './ProjectTaskDropdownCards/ProjectTaskDropdownCards';
-export {default as TaskBottom} from './TaskBottom/TaskBottom';
-export {default as TimeSpentGridView} from './TimeSpentGridView/TimeSpentGridView';
+import React from 'react';
+import {StyleSheet} from 'react-native';
+import {CircleButton} from '@axelor/aos-mobile-ui';
+import {useNavigation} from '@axelor/aos-mobile-core';
+
+const TaskBottom = ({idTask}) => {
+  const navigation = useNavigation();
+
+  return (
+    <CircleButton
+      style={styles.floatingButton}
+      iconName="pencil-fill"
+      onPress={() =>
+        navigation.navigate('TaskFormScreen', {
+          idTask: idTask,
+        })
+      }
+    />
+  );
+};
+
+const styles = StyleSheet.create({
+  floatingButton: {
+    position: 'absolute',
+    bottom: 25,
+    right: 25,
+  },
+});
+
+export default TaskBottom;
