@@ -41,6 +41,19 @@ export const searchProjectTask = createAsyncThunk(
   },
 );
 
+export const searchProjectParentTask = createAsyncThunk(
+  'project_projectTask/searchProjectParentTask',
+  async function (data, {getState}) {
+    return handlerApiCall({
+      fetchFunction: _searchProjectTask,
+      data,
+      action: 'Project_SliceAction_SearchProjectParentTask',
+      getState,
+      responseOptions: {isArrayResponse: true},
+    });
+  },
+);
+
 export const fetchProjectTaskStatus = createAsyncThunk(
   'project_projectTask/fetchProjectTaskStatus',
   async function (data, {getState}) {
@@ -86,6 +99,11 @@ const initialState = {
   isListEnd: false,
   projectTaskList: [],
 
+  loadingParentTask: true,
+  moreLoadingParentTask: false,
+  isListEndParentTask: false,
+  parentTaskList: [],
+
   projectTaskStatusList: [],
   projectPriorityList: [],
 
@@ -102,6 +120,12 @@ const projectTaskSlice = createSlice({
       moreLoading: 'moreLoading',
       isListEnd: 'isListEnd',
       list: 'projectTaskList',
+    });
+    generateInifiniteScrollCases(builder, searchProjectParentTask, {
+      loading: 'loadingParentTask',
+      moreLoading: 'moreLoadingParentTask',
+      isListEnd: 'isListEndParentTask',
+      list: 'parentTaskList',
     });
     builder.addCase(fetchProjectTaskStatus.fulfilled, (state, action) => {
       state.projectTaskStatusList = action.payload;

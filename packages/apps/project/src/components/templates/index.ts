@@ -17,5 +17,7 @@
  */
 
 export {default as ActivityListView} from './ActivityListView/ActivityListView';
+export {default as ParentTaskSearchBar} from './ParentTaskSearchBar/ParentTaskSearchBar';
 export {default as ProjectListView} from './ProjectListView/ProjectListView';
+export {default as ProjectSearchBar} from './ProjectSearchBar/ProjectSearchBar';
 export {default as TaskFilters} from './TaskFilters/TaskFilters';
