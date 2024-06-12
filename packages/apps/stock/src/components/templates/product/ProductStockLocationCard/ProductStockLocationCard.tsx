@@ -87,7 +87,7 @@ const ProductStockLocationCard = ({
                 {
                   displayText:
                     availability == null
-                      ? `${I18n.t('Stock_Calculing')}...`
+                      ? I18n.t('Stock_Calculing')
                       : `${availability} ${unit}`,
                   color:
                     availability == null
