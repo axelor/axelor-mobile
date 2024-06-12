@@ -16,7 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import {FormConfigs} from '@axelor/aos-mobile-core';
+import {FormConfigs, UserSearchBar} from '@axelor/aos-mobile-core';
 import {
   ProductSearchBar,
   ProjectSearchBar as HRProjectSearchBar,
@@ -25,6 +25,7 @@ import {
 import {
   LogTimeButton,
   ParentTaskSearchBar,
+  ProgressFormInput,
   ProjectSearchBar,
 } from '../components';
 import {updateProject} from '../features/projectSlice';
@@ -142,6 +143,28 @@ export const project_formsRegister: FormConfigs = {
             dispatch(updateProject(newValue));
           },
         },
+      },
+      assignedTo: {
+        titleKey: 'Project_AssignedTo',
+        type: 'object',
+        widget: 'custom',
+        customComponent: UserSearchBar,
+      },
+      progress: {
+        titleKey: 'Project_Progress',
+        type: 'number',
+        widget: 'custom',
+        customComponent: ProgressFormInput,
+      },
+      description: {
+        type: 'string',
+        widget: 'HTML',
+        titleKey: 'Base_Description',
+      },
+      internalDescription: {
+        type: 'string',
+        widget: 'HTML',
+        titleKey: 'Project_InternalDescription',
       },
     },
   },

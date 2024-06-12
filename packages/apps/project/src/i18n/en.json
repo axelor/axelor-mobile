@@ -42,6 +42,8 @@
   "Project_Sujet": "Subject",
   "Project_TicketNumber": "Ticket number",
   "Project_ParentTask": "Parent task",
+  "Project_AssignedTo": "Assigned to",
+  "Project_Progress": "Progress",
   "Project_SliceAction_SearchProject": "search projects",
   "Project_SliceAction_FetchProjectById": "fetch project by id",
   "Project_SliceAction_FetchProjectStatus": "fetch project status",

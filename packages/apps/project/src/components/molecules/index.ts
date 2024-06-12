@@ -24,5 +24,6 @@ export {default as DropdownTaskDescription} from './DropdownTaskDescription/Drop
 export {default as PartnerActionCard} from './PartnerActionCard/PartnerActionCard';
 export {default as ProjectHeader} from './ProjectHeader/ProjectHeader';
 export {default as ProjectSiteTags} from './ProjectSiteTags/ProjectSiteTags';
+export {default as ProgressFormInput} from './ProgressFormInput/ProgressFormInput';
 export {default as TaskActionCard} from './TaskActionCard/TaskActionCard';
 export {default as TaskDetailsHeader} from './TaskDetailsHeader/TaskDetailsHeader';
