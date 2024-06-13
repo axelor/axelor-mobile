@@ -18,71 +18,74 @@
 
 import React, {useCallback, useMemo} from 'react';
 import {StyleSheet} from 'react-native';
-import {useThemeColor, ObjectCard} from '@axelor/aos-mobile-ui';
-import {useTranslator} from '../../../../i18n';
+import {ObjectCard, useThemeColor} from '@axelor/aos-mobile-ui';
 import {formatDateTime} from '../../../../utils';
-import {processProvider, ProcessStatus} from '../../../../components';
-import {ProcessHistory} from '../../../types';
+import {useTranslator} from '../../../../i18n';
+import {processProvider} from '../../../ProcessProvider';
+import {getProcessStatusColor} from '../../../helpers';
+import {ProcessStatus} from '../../../types';
 
-interface ProccessHistoryCardProps {
+interface ProcessCardProps {
   style?: any;
   processKey: string;
-  status: ProcessStatus;
   name: string;
+  status: ProcessStatus;
+  executed: boolean;
   startedDate: string;
-  completedDate: string;
-  failedDate: string;
-  completed: boolean;
-  resolved: boolean;
+  endDate: string;
   onSuccess: () => void;
   onError: () => void;
 }
 
-const ProccessHistoryCard = ({
+const ProcessCard = ({
   style,
   processKey,
-  status,
   name,
+  status,
+  executed,
   startedDate,
-  completedDate,
-  failedDate,
-  completed,
-  resolved,
+  endDate,
   onSuccess,
   onError,
-}: ProccessHistoryCardProps) => {
-  const Colors = useThemeColor();
+}: ProcessCardProps) => {
   const I18n = useTranslator();
+  const Colors = useThemeColor();
 
-  const borderStyle = useMemo(() => {
-    return getStyles(ProcessHistory.getStatusColor(status, Colors)?.background)
-      ?.border;
-  }, [Colors, status]);
+  const styles = useMemo(
+    () => getStyles(getProcessStatusColor(status, Colors)?.background),
+    [Colors, status],
+  );
+
+  const isSuccess = useMemo(() => status === ProcessStatus.Success, [status]);
 
   const isTouchable = useMemo(() => {
+    const isCompleted = isSuccess || status === ProcessStatus.Failed;
+
     return (
-      completed &&
-      !resolved &&
+      isCompleted &&
+      !executed &&
       typeof onSuccess === 'function' &&
       typeof onError === 'function'
     );
-  }, [completed, onError, onSuccess, resolved]);
+  }, [executed, isSuccess, onError, onSuccess, status]);
 
   const handleOnPress = useCallback(() => {
-    status === ProcessStatus.COMPLETED ? onSuccess() : onError();
+    status === ProcessStatus.Success ? onSuccess() : onError();
     processProvider.resolveProcess(processKey);
   }, [status, onSuccess, onError, processKey]);
 
   return (
     <ObjectCard
+      style={[styles.card, style]}
+      showArrow={isTouchable}
+      touchable={isTouchable}
       onPress={handleOnPress}
-      style={[borderStyle, style]}
       upperTexts={{
         items: [
           {isTitle: true, displayText: name},
           {
             iconName: 'calendar-event',
-            indicatorText: I18n.t('User_ProcessHistory_StartedOn'),
+            indicatorText: I18n.t('Base_StartedOn'),
             displayText: formatDateTime(
               startedDate,
               I18n.t('Base_DateTimeFormat'),
@@ -90,34 +93,27 @@ const ProccessHistoryCard = ({
             hideIf: startedDate == null,
           },
           {
-            iconName: 'calendar-check',
-            indicatorText: I18n.t('User_ProcessHistory_CompletedOn'),
-            displayText: formatDateTime(
-              completedDate,
-              I18n.t('Base_DateTimeFormat'),
+            iconName: isSuccess ? 'calendar-check' : 'calendar-x',
+            indicatorText: I18n.t(
+              isSuccess ? 'Base_CompletedOn' : 'Base_FaildedOn',
             ),
-            hideIf: status !== ProcessStatus.COMPLETED || completedDate == null,
-          },
-          {
-            iconName: 'calendar-x',
-            indicatorText: I18n.t('User_ProcessHistory_FailedOn'),
-            displayText: formatDateTime(
-              failedDate,
-              I18n.t('Base_DateTimeFormat'),
-            ),
-            hideIf: status !== ProcessStatus.FAILED || failedDate == null,
+            displayText: formatDateTime(endDate, I18n.t('Base_DateTimeFormat')),
+            hideIf: endDate == null,
           },
         ],
       }}
-      showArrow={isTouchable}
-      touchable={isTouchable}
     />
   );
 };
 
 const getStyles = (color: string) =>
   StyleSheet.create({
-    border: {borderLeftWidth: 7, borderLeftColor: color},
+    card: {
+      marginHorizontal: 12,
+      marginVertical: 4,
+      borderLeftWidth: 7,
+      borderLeftColor: color,
+    },
   });
 
-export default ProccessHistoryCard;
+export default ProcessCard;

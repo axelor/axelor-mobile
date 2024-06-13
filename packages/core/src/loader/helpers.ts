@@ -16,7 +16,8 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import {ProcessItem} from '../../components';
+import {Color, ThemeColors} from '@axelor/aos-mobile-ui';
+import {ProcessItem, ProcessStatus} from './types';
 
 const serializeItem = (p: ProcessItem) => {
   return JSON.stringify(p);
@@ -48,5 +49,24 @@ export const deserialize = (data: string) => {
   } catch (e) {
     console.error('Deserialization error:', e);
     return [];
+  }
+};
+
+export const getProcessStatusColor = (
+  status: ProcessStatus,
+  Colors: ThemeColors,
+): Color => {
+  switch (status) {
+    case ProcessStatus.InProgress:
+      return Colors.progressColor;
+    case ProcessStatus.Success:
+      return Colors.successColor;
+    case ProcessStatus.Failed:
+      return Colors.errorColor;
+    default:
+      console.warn(
+        `Status provided with value ${status} is not supported by Process.`,
+      );
+      return null;
   }
 };

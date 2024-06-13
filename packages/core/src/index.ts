@@ -56,6 +56,7 @@ export * from './utils';
 export * from './types';
 export * from './auth';
 export * from './i18n';
+export * from './loader';
 export * from './config';
 export * from './header';
 export * from './forms';

@@ -20,6 +20,7 @@ import AttachedFilesScreen from './AttachedFilesScreen';
 import BarcodeDisplayScreen from './BarcodeDisplayScreen';
 import JsonFieldScreen from './JsonFieldScreen';
 import MailMessageScreen from './MailMessageScreen';
+import ProcessListScreen from './ProcessListScreen';
 
 export default {
   AttachedFilesScreen: {
@@ -53,5 +54,9 @@ export default {
     options: {
       shadedHeader: true,
     },
+  },
+  ProcessListScreen: {
+    title: 'Base_Loader_ProcessList',
+    component: ProcessListScreen,
   },
 };

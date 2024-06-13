@@ -17,7 +17,6 @@
  */
 
 import React, {useCallback, useEffect, useState} from 'react';
-import {StyleSheet} from 'react-native';
 import {
   ChipSelect,
   HeaderContainer,
@@ -26,25 +25,24 @@ import {
   ToggleSwitch,
   useThemeColor,
 } from '@axelor/aos-mobile-ui';
-import {filterChip, isToday} from '../../utils';
+import {filterChip, isToday} from '../utils';
+import {useTranslator} from '../i18n';
 import {
+  getProcessStatusColor,
+  ProcessCard,
   processProvider,
   ProcessStatus,
   useLoaderListener,
-} from '../../components';
-import {ProcessHistoryCard} from '../components';
-import {useTranslator} from '../../i18n';
-import {ProcessHistory} from '../types';
+} from '../loader';
 
-// TODO: add refresh method to the list
-const ProcessHistoryListScreen = () => {
+const ProcessListScreen = () => {
   const I18n = useTranslator();
   const Colors = useThemeColor();
 
   const {processList} = useLoaderListener();
 
   const [filteredList, setFilteredList] = useState(processList);
-  const [today, setToday] = useState(true);
+  const [isTodayProcess, setIsTodayProcess] = useState(true);
   const [selectedStatus, setSelectedStatus] = useState([]);
 
   const filterOnDate = useCallback(
@@ -54,20 +52,22 @@ const ProcessHistoryListScreen = () => {
       } else {
         let _list = list;
 
-        if (today) {
+        if (isTodayProcess) {
           _list = list?.filter(
             item =>
               isToday(item.startedDate) ||
-              item.status === ProcessStatus.PENDING,
+              item.status === ProcessStatus.InProgress,
           );
         }
 
         return _list.sort(
-          (a, b) => new Date(b.startedDate) - new Date(a.startedDate),
+          (a, b) =>
+            new Date(b.startedDate).getTime() -
+            new Date(a.startedDate).getTime(),
         );
       }
     },
-    [today],
+    [isTodayProcess],
   );
 
   const filterOnStatus = useCallback(
@@ -90,39 +90,30 @@ const ProcessHistoryListScreen = () => {
       <HeaderContainer
         fixedItems={
           <ToggleSwitch
-            leftTitle={I18n.t('User_ProcessHistory_Today')}
-            rightTitle={I18n.t('User_ProcessHistory_All')}
-            onSwitch={() => setToday(!today)}
+            leftTitle={I18n.t('Base_Loader_Today')}
+            rightTitle={I18n.t('Base_All')}
+            onSwitch={() => setIsTodayProcess(!isTodayProcess)}
           />
         }
         chipComponent={
           <ChipSelect
             mode="multi"
-            onChangeValue={chiplist => setSelectedStatus(chiplist)}
+            onChangeValue={setSelectedStatus}
             selectionItems={[
               {
-                title: I18n.t('User_ProcessHistory_Status_Running'),
-                color: ProcessHistory.getStatusColor(
-                  ProcessStatus.RUNNING,
-                  Colors,
-                ),
-                key: ProcessStatus.RUNNING,
+                title: I18n.t('Base_Loader_Status_InProgress'),
+                color: getProcessStatusColor(ProcessStatus.InProgress, Colors),
+                key: ProcessStatus.InProgress,
               },
               {
-                title: I18n.t('User_ProcessHistory_Status_Completed'),
-                color: ProcessHistory.getStatusColor(
-                  ProcessStatus.COMPLETED,
-                  Colors,
-                ),
-                key: ProcessStatus.COMPLETED,
+                title: I18n.t('Base_Loader_Status_Success'),
+                color: getProcessStatusColor(ProcessStatus.Success, Colors),
+                key: ProcessStatus.Success,
               },
               {
-                title: I18n.t('User_ProcessHistory_Status_Failed'),
-                color: ProcessHistory.getStatusColor(
-                  ProcessStatus.FAILED,
-                  Colors,
-                ),
-                key: ProcessStatus.FAILED,
+                title: I18n.t('Base_Loader_Status_Failed'),
+                color: getProcessStatusColor(ProcessStatus.Failed, Colors),
+                key: ProcessStatus.Failed,
               },
             ]}
           />
@@ -133,20 +124,18 @@ const ProcessHistoryListScreen = () => {
         loadingList={false}
         data={filteredList}
         renderItem={({item}) => (
-          <ProcessHistoryCard
+          <ProcessCard
             processKey={item.key}
             name={item.name}
             status={item.status}
+            executed={item.executed}
             startedDate={item.startedDate}
-            completedDate={item.completedDate}
-            failedDate={item.failedDate}
-            completed={item.completed}
-            resolved={item.resolved}
+            endDate={item.endDate}
             onSuccess={item.onSuccess}
             onError={item.onError}
-            style={styles.item}
           />
         )}
+        fetchData={() => {}}
         moreLoading={false}
         isListEnd={true}
         translator={I18n.t}
@@ -155,11 +144,4 @@ const ProcessHistoryListScreen = () => {
   );
 };
 
-const styles = StyleSheet.create({
-  item: {
-    marginHorizontal: 12,
-    marginVertical: 4,
-  },
-});
-
-export default ProcessHistoryListScreen;
+export default ProcessListScreen;

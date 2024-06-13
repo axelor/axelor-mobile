@@ -24,7 +24,7 @@ import {useTranslator} from '../../i18n';
 import {useNavigation} from '../../hooks/use-navigation';
 import {useOnline} from '../../features/onlineSlice';
 import {formatDateTime} from '../../utils/formatters';
-import {useLoaderListener} from '../../components';
+import {useLoaderListener} from '../../loader';
 
 export const useAuthHeaders = () => {
   useUserProfileActions();
@@ -49,8 +49,8 @@ const useUserProfileActions = () => {
           iconName: 'bookmark-check',
           iconColor: Colors.primaryColor.background,
           indicator: numberUnreadProcess,
-          title: I18n.t('User_ProcessHistroy'),
-          onPress: () => navigation.navigate('ProcessesHistroyListScreen'),
+          title: I18n.t('Base_Loader_ProcessList'),
+          onPress: () => navigation.navigate('ProcessListScreen'),
           showInHeader: true,
         },
         {

@@ -16,8 +16,4 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-export {default as LoaderPopup} from './LoaderPopup';
-export * from './ProcessProvider';
-export * from './types';
-export {default as useLoaderListener} from './use-loader-listener';
-export {default as useProcessRegister} from './use-process-register';
+export {default as LoaderPopup} from './LoaderPopup/LoaderPopup';
