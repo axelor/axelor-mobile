@@ -18,7 +18,6 @@
 
 export {default as DashboardsCard} from './DashboardsCard/DashboardsCard';
 export {default as NavigationToolsButton} from './NavigationToolsButton/NavigationToolsButton';
-export {default as ProcessHistoryCard} from './ProcessHistoryCard/ProcessHistoryCard';
 export {default as ShortcutsCard} from './ShortcutsCard/ShortcutsCard';
 export {default as TranslationsButton} from './TranslationsButton/TranslationsButton';
 export {default as UserCard} from './UserCard/UserCard';

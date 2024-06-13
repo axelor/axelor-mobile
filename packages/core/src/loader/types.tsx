@@ -16,6 +16,33 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-export const generateUniqueID = () => {
-  return new Date().getTime().toString();
+export type ProcessOption = {
+  name: string;
+  disabled: boolean;
+  process: () => Promise<any>;
+  onSuccess: (response?: any) => void;
+  onError: (error?: any) => void;
+};
+
+export enum ProcessStatus {
+  InProgress = 0,
+  Success = 1,
+  Failed = 2,
+}
+
+export type CallBack = (...args) => void;
+
+export type Event = {
+  [e in ProcessStatus]: CallBack[];
+};
+
+export type ProcessItem = ProcessOption & {
+  key: string;
+  loading: boolean;
+  notifyMe: boolean;
+  response: string;
+  status: number;
+  executed: boolean;
+  startedDate: string;
+  endDate: string;
 };

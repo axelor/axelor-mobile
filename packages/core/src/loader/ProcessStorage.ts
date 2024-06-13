@@ -16,16 +16,16 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import {Storage, storage} from '../../storage/Storage';
-import {ProcessItem} from '../../components';
-import {deserialize, serialize} from './process-storage.helper';
+import {storage, Storage} from '../storage/Storage';
+import {ProcessItem} from './types';
+import {deserialize, serialize} from './helpers';
 
-const PROCESS_LIST_KEY = 'PROCESS_LIST_KEY';
 const NUMBER_UNREAD_PROCESS_KEY = 'NUMBER_UNREAD_PROCESS_KEY';
+const PROCESS_LIST_KEY = 'PROCESS_LIST_KEY';
 
 class ProcessStorage {
-  private processList: ProcessItem[];
   private numberUnreadProcess: number;
+  private processList: ProcessItem[];
   private refreshCallBacks: (({
     numberUnreadProcess,
     processList,
@@ -35,14 +35,9 @@ class ProcessStorage {
   }) => void)[];
 
   constructor(private localStorage: Storage) {
-    this.processList = [];
     this.numberUnreadProcess = 0;
+    this.processList = [];
     this.refreshCallBacks = [];
-  }
-
-  register(callBack) {
-    this.refreshCallBacks.push(callBack);
-    this.updateState();
   }
 
   private updateState() {
@@ -53,6 +48,34 @@ class ProcessStorage {
       };
       this.refreshCallBacks.forEach(callBack => callBack(state));
     }
+  }
+
+  register(callBack) {
+    this.refreshCallBacks.push(callBack);
+    this.updateState();
+  }
+
+  getNumberUnreadProcess(): number {
+    if (this.numberUnreadProcess == null || this.numberUnreadProcess <= 0) {
+      this.numberUnreadProcess =
+        Number(this.localStorage.getItem(NUMBER_UNREAD_PROCESS_KEY)) || 0;
+    }
+
+    return this.numberUnreadProcess;
+  }
+
+  saveNumberUnreadProcess(value: number) {
+    if (value == null) {
+      return;
+    }
+
+    this.numberUnreadProcess = value;
+
+    this.localStorage.setItem(
+      NUMBER_UNREAD_PROCESS_KEY,
+      this.numberUnreadProcess.toString(),
+    );
+    this.updateState();
   }
 
   getProcessList(): ProcessItem[] {
@@ -70,49 +93,18 @@ class ProcessStorage {
       return;
     }
 
-    if (this.processList.find(_item => _item.key === process.key) != null) {
-      this.processList = this.processList.map(_item => {
-        if (_item.key === process.key) {
-          return {..._item, ...process};
+    if (this.processList.find(item => item.key === process.key) != null) {
+      this.processList = this.processList.map(item => {
+        if (item.key === process.key) {
+          return {...item, ...process};
         }
-
-        return _item;
+        return item;
       });
     } else {
       this.processList.push(process);
     }
 
     this.localStorage.setItem(PROCESS_LIST_KEY, serialize(this.processList));
-
-    this.updateState();
-  }
-
-  getNumberUnreadProcess(): number {
-    this.numberUnreadProcess =
-      this.localStorage.getItem(NUMBER_UNREAD_PROCESS_KEY) || 0;
-
-    return this.numberUnreadProcess;
-  }
-
-  saveNumberUnreadProcess(value: number) {
-    this.localStorage.setItem(NUMBER_UNREAD_PROCESS_KEY, value.toString());
-    this.updateState();
-  }
-
-  removeProcess(key: string) {
-    const processList = this.getProcessList();
-
-    if (!Array.isArray(processList) || processList.length === 0) {
-      return;
-    }
-
-    const index = processList.findIndex(p => p.key === key);
-
-    if (index !== -1) {
-      processList.splice(index, 1);
-    }
-
-    this.localStorage.setItem(PROCESS_LIST_KEY, processList);
     this.updateState();
   }
 }

@@ -16,7 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import React, {useCallback, useMemo, useEffect, useRef, useState} from 'react';
+import React, {useCallback, useEffect, useMemo, useRef, useState} from 'react';
 import {ActivityIndicator, StyleSheet, View} from 'react-native';
 import {
   Alert,
@@ -26,18 +26,17 @@ import {
   useConfig,
   useThemeColor,
 } from '@axelor/aos-mobile-ui';
-import {useTranslator} from '../../../i18n';
-import {useNavigation} from '../../../hooks/use-navigation';
-import {processProvider} from './ProcessProvider';
-import {generateUniqueID} from './loader-helper';
-import {EventType, ProcessItem} from './types';
+import {useNavigation} from '../../../../hooks/use-navigation';
+import {useTranslator} from '../../../../i18n';
+import {processProvider} from '../../../ProcessProvider';
+import {ProcessItem, ProcessStatus} from '../../../types';
 
 interface LoaderPopupProps {
   start?: boolean;
   autoLeave?: boolean;
   timeout?: number;
-  disabled?: boolean;
   name: string;
+  disabled?: boolean;
   process: () => Promise<any>;
   onSuccess: () => void;
   onError: () => void;
@@ -53,13 +52,13 @@ const LoaderPopup = ({
   onSuccess,
   onError,
 }: LoaderPopupProps) => {
-  const navigation = useNavigation();
   const I18n = useTranslator();
   const Colors = useThemeColor();
+  const navigation = useNavigation();
   const {setActivityIndicator} = useConfig();
 
-  const [showPopup, setShowPopup] = useState<boolean>(false);
   const [loading, setLoading] = useState<boolean>(false);
+  const [showPopup, setShowPopup] = useState<boolean>(false);
   const [processItem, setProcessItem] = useState<ProcessItem>();
 
   const timeoutRef = useRef(null);
@@ -75,39 +74,46 @@ const LoaderPopup = ({
     [name, disabled, process, onSuccess, onError],
   );
 
-  const onFinish = useCallback(() => setShowPopup(false), []);
+  const onEndProcess = useCallback(() => {
+    setLoading(false);
+    setShowPopup(false);
+  }, []);
 
   const handleNotifyMe = useCallback(() => {
     setShowPopup(false);
     setActivityIndicator(false);
-    processProvider.notifyMe(processItem);
+    processProvider.notifyMe(processItem.key);
     navigation.goBack();
   }, [navigation, processItem, setActivityIndicator]);
 
   useEffect(() => {
     if (start) {
-      const unid = generateUniqueID();
+      const processKey = new Date().getTime().toString();
 
-      const p = processProvider.registerProcess(unid, processOptions);
+      const _process = processProvider.registerProcess(
+        processKey,
+        processOptions,
+      );
+      setProcessItem(_process);
 
-      processProvider.on(unid, EventType.STARTED, () => setLoading(true));
-      processProvider.on(unid, EventType.COMPLETED, () => {
-        setLoading(false);
-        onFinish();
-      });
-      processProvider.on(unid, EventType.FAILED, () => {
-        setLoading(false);
-        onFinish();
-      });
+      processProvider.on(processKey, ProcessStatus.InProgress, () =>
+        setLoading(true),
+      );
+      processProvider.on(processKey, ProcessStatus.Success, () =>
+        onEndProcess(),
+      );
+      processProvider.on(processKey, ProcessStatus.Failed, () =>
+        onEndProcess(),
+      );
 
-      processProvider.runProcess(p, I18n);
-      setProcessItem(p);
+      processProvider.runProcess(processKey, I18n);
     }
-  }, [start, I18n, processOptions, onFinish]);
+  }, [I18n, onEndProcess, processOptions, start]);
 
   useEffect(() => {
     if (loading) {
       setActivityIndicator(true);
+
       timeoutRef.current = setTimeout(() => {
         setActivityIndicator(false);
         autoLeave ? handleNotifyMe() : setShowPopup(true);
@@ -119,12 +125,12 @@ const LoaderPopup = ({
       clearTimeout(timeoutRef.current);
     };
   }, [
-    timeout,
-    loading,
     autoLeave,
+    handleNotifyMe,
+    loading,
     setActivityIndicator,
     setShowPopup,
-    handleNotifyMe,
+    timeout,
   ]);
 
   return (

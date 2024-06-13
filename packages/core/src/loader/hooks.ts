@@ -17,40 +17,37 @@
  */
 
 import {useCallback, useEffect, useMemo, useState} from 'react';
-import {processStorage} from '../../../auth/storage/ProcessStorage';
 import {processProvider} from './ProcessProvider';
+import {processStorage} from './ProcessStorage';
 import {ProcessItem} from './types';
 
-const useLoaderListener = () => {
+export const useLoaderListener = () => {
   const [numberRunningProcesses, setNumberRunningProcesses] =
     useState<number>(0);
   const [numberUnreadProcess, setNumberUnreadProcess] = useState<number>(0);
   const [processList, setProcessList] = useState<ProcessItem[]>([]);
 
   useEffect(() => {
+    setNumberRunningProcesses(processProvider.getNumberRunningProcess());
+
     const handleProcessChange = newNumber => {
       setNumberRunningProcesses(newNumber);
     };
 
-    // Abonnez-vous aux changements de processProvider
-    processProvider.subscribe(handleProcessChange);
+    processProvider.subscribeNRProcess(handleProcessChange);
 
-    // Initialisez avec la valeur actuelle
-    setNumberRunningProcesses(processProvider.getNumberRunningProcess());
-
-    // Nettoyez l'abonnement à la fin
     return () => {
-      processProvider.unsubscribe(handleProcessChange);
+      processProvider.unsubscribeNRProcess(handleProcessChange);
     };
   }, []);
 
   const refreshData = useCallback(
     ({
-      processList: _processList,
       numberUnreadProcess: _numberUnreadProcess,
+      processList: _processList,
     }) => {
-      setProcessList(_processList);
       setNumberUnreadProcess(_numberUnreadProcess);
+      setProcessList(_processList);
     },
     [],
   );
@@ -67,5 +64,3 @@ const useLoaderListener = () => {
     };
   }, [numberRunningProcesses, numberUnreadProcess, processList]);
 };
-
-export default useLoaderListener;
