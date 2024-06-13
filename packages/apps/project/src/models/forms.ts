@@ -24,9 +24,11 @@ import {
 } from '@axelor/aos-mobile-hr';
 import {
   LogTimeButton,
+  CategorySearchBar,
   ParentTaskSearchBar,
   ProgressFormInput,
   ProjectSearchBar,
+  SectionSearchBar,
   TagTaskMultieValuePicker,
   TargetVersionSearchBar,
 } from '../components';
@@ -151,6 +153,18 @@ export const project_formsRegister: FormConfigs = {
         type: 'object',
         widget: 'custom',
         customComponent: UserSearchBar,
+      },
+      projectTaskCategory: {
+        titleKey: 'Project_Category',
+        type: 'object',
+        widget: 'custom',
+        customComponent: CategorySearchBar,
+      },
+      projectTaskSection: {
+        titleKey: 'Project_Section',
+        type: 'object',
+        widget: 'custom',
+        customComponent: SectionSearchBar,
       },
       targetVersion: {
         titleKey: 'Project_TargetVersion',
