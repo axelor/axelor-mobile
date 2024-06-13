@@ -26,7 +26,9 @@ import {
   fetchProjectTaskById as _fetchProjectTaskById,
   fetchProjectTaskStatus as _fetchProjectTaskStatus,
   getProjectTaskTag as _getProjectTaskTag,
+  searchCategory as _searchCategory,
   searchProjectTask as _searchProjectTask,
+  searchSection as _searchSection,
   searchTargetVersion as _searchTargetVersion,
 } from '../api/project-task-api';
 
@@ -121,6 +123,32 @@ export const searchTargetVersion = createAsyncThunk(
   },
 );
 
+export const searchCategory = createAsyncThunk(
+  'project_projectTask/searchCategory',
+  async function (data, {getState}) {
+    return handlerApiCall({
+      fetchFunction: _searchCategory,
+      data,
+      action: 'Project_SliceAction_SearchCategory',
+      getState,
+      responseOptions: {isArrayResponse: true},
+    });
+  },
+);
+
+export const searchSection = createAsyncThunk(
+  'project_projectTask/searchSection',
+  async function (data, {getState}) {
+    return handlerApiCall({
+      fetchFunction: _searchSection,
+      data,
+      action: 'Project_SliceAction_SearchSection',
+      getState,
+      responseOptions: {isArrayResponse: true},
+    });
+  },
+);
+
 const initialState = {
   loading: true,
   moreLoading: false,
@@ -136,6 +164,16 @@ const initialState = {
   moreLoadingTargetVersion: false,
   isListEndTargetVersion: false,
   targetVersionList: [],
+
+  loadingCategory: true,
+  moreLoadingCategory: false,
+  isListEndCategory: false,
+  categoryList: [],
+
+  loadingSection: true,
+  moreLoadingSection: false,
+  isListEndSection: false,
+  sectionList: [],
 
   projectTaskStatusList: [],
   projectPriorityList: [],
@@ -168,6 +206,18 @@ const projectTaskSlice = createSlice({
       moreLoading: 'moreLoadingParentTask',
       isListEnd: 'isListEndParentTask',
       list: 'parentTaskList',
+    });
+    generateInifiniteScrollCases(builder, searchCategory, {
+      loading: 'loadingCategory',
+      moreLoading: 'moreLoadingCategory',
+      isListEnd: 'isListEndCategory',
+      list: 'categoryList',
+    });
+    generateInifiniteScrollCases(builder, searchSection, {
+      loading: 'loadingSection',
+      moreLoading: 'moreLoadingSection',
+      isListEnd: 'isListEndSection',
+      list: 'sectionList',
     });
     builder.addCase(fetchProjectTaskStatus.fulfilled, (state, action) => {
       state.projectTaskStatusList = action.payload;

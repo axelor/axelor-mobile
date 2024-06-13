@@ -142,3 +142,25 @@ export async function searchTargetVersion({searchValue, page = 0, projectId}) {
     domainContext: {project: {id: projectId}},
   });
 }
+
+export async function searchCategory({searchValue, page = 0, projectId}) {
+  return createStandardSearch({
+    model: 'com.axelor.apps.project.db.ProjectTaskCategory',
+    criteria: [getSearchCriterias('project_projectTaskCategory', searchValue)],
+    fieldKey: 'project_projectTaskCategory',
+    sortKey: 'project_projectTaskCategory',
+    page,
+    _domain: 'self.id IN (1)',
+    domainContext: {project: {id: projectId}},
+  });
+}
+
+export async function searchSection({searchValue, page = 0}) {
+  return createStandardSearch({
+    model: 'com.axelor.apps.project.db.ProjectTaskSection',
+    criteria: [getSearchCriterias('project_TaskSection', searchValue)],
+    fieldKey: 'project_TaskSection',
+    sortKey: 'project_TaskSection',
+    page,
+  });
+}

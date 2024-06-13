@@ -17,9 +17,11 @@
  */
 
 export {default as ActivityListView} from './ActivityListView/ActivityListView';
+export {default as CategorySearchBar} from './CategorySearchBar/CategorySearchBar';
 export {default as ParentTaskSearchBar} from './ParentTaskSearchBar/ParentTaskSearchBar';
 export {default as ProjectListView} from './ProjectListView/ProjectListView';
 export {default as ProjectSearchBar} from './ProjectSearchBar/ProjectSearchBar';
+export {default as SectionSearchBar} from './SectionSearchBar/SectionSearchBar';
 export {default as TagTaskMultieValuePicker} from './TagTaskMultieValuePicker/TagTaskMultieValuePicker';
 export {default as TargetVersionSearchBar} from './TargetVersionSearchBar/TargetVersionSearchBar';
 export {default as TaskFilters} from './TaskFilters/TaskFilters';

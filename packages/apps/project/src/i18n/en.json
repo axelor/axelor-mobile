@@ -54,5 +54,7 @@
   "Project_SliceAction_FetchProjectTaskById": "fetch project task by id",
   "Project_SliceAction_FetchTimesheetLinesByTask": "fetch timesheet lines by task",
   "Project_SliceAction_GetProjectTaskTag": "",
-  "Project_SliceAction_SearchTargetVersion": ""
+  "Project_SliceAction_SearchTargetVersion": "",
+  "Project_SliceAction_SearchCategory": "",
+  "Project_SliceAction_SearchSection": ""
 }
