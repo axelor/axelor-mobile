@@ -33,10 +33,10 @@ import {
   createAgendaItems,
   createAgendaSchedule,
   getShortName,
-  isToday,
   mapEntryToItem,
   shouldRenderDetailsCard,
 } from './agenda.helpers';
+import {isToday} from '../../../utils';
 import {useTranslator} from '../../../i18n';
 
 interface PlanningProps {

@@ -115,12 +115,6 @@ export function getShortName(date, lang) {
   return new Intl.DateTimeFormat(lang, {weekday: 'short'}).format(date);
 }
 
-export function isToday(date) {
-  const d = new Date(date);
-  const today = new Date();
-  return sameDate(d, today);
-}
-
 export const createAgendaItems = (
   list: AgendaEvent[],
   I18n: TranslatorProps,

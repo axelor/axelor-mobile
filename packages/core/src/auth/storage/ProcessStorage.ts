@@ -20,34 +20,48 @@ import {Storage, storage} from '../../storage/Storage';
 import {ProcessItem} from '../../components';
 import {deserialize, serialize} from './process-storage.helper';
 
-const PROCESS_HISTORY_KEY = 'PROCESS_HISTORY';
+const PROCESS_LIST_KEY = 'PROCESS_LIST_KEY';
+const NUMBER_UNREAD_PROCESS_KEY = 'NUMBER_UNREAD_PROCESS_KEY';
 
 class ProcessStorage {
   private processList: ProcessItem[];
-  private refreshCallBack: (processList: ProcessItem[]) => void;
+  private numberUnreadProcess: number;
+  private refreshCallBacks: (({
+    numberUnreadProcess,
+    processList,
+  }: {
+    numberUnreadProcess: number;
+    processList: ProcessItem[];
+  }) => void)[];
 
   constructor(private localStorage: Storage) {
     this.processList = [];
-  }
-
-  private updateState() {
-    if (this.refreshCallBack == null) {
-      return;
-    }
-
-    this.refreshCallBack(this.processList);
+    this.numberUnreadProcess = 0;
+    this.refreshCallBacks = [];
   }
 
   register(callBack) {
-    this.refreshCallBack = callBack;
+    this.refreshCallBacks.push(callBack);
+    this.updateState();
+  }
+
+  private updateState() {
+    if (this.refreshCallBacks.length > 0) {
+      const state = {
+        processList: this.getProcessList(),
+        numberUnreadProcess: this.getNumberUnreadProcess(),
+      };
+      this.refreshCallBacks.forEach(callBack => callBack(state));
+    }
   }
 
   getProcessList(): ProcessItem[] {
     if (this.processList == null || this.processList.length === 0) {
       this.processList = deserialize(
-        this.localStorage.getItem(PROCESS_HISTORY_KEY),
+        this.localStorage.getItem(PROCESS_LIST_KEY),
       );
     }
+
     return this.processList;
   }
 
@@ -68,7 +82,20 @@ class ProcessStorage {
       this.processList.push(process);
     }
 
-    this.localStorage.setItem(PROCESS_HISTORY_KEY, serialize(this.processList));
+    this.localStorage.setItem(PROCESS_LIST_KEY, serialize(this.processList));
+
+    this.updateState();
+  }
+
+  getNumberUnreadProcess(): number {
+    this.numberUnreadProcess =
+      this.localStorage.getItem(NUMBER_UNREAD_PROCESS_KEY) || 0;
+
+    return this.numberUnreadProcess;
+  }
+
+  saveNumberUnreadProcess(value: number) {
+    this.localStorage.setItem(NUMBER_UNREAD_PROCESS_KEY, value.toString());
     this.updateState();
   }
 
@@ -85,7 +112,7 @@ class ProcessStorage {
       processList.splice(index, 1);
     }
 
-    this.localStorage.setItem(PROCESS_HISTORY_KEY, processList);
+    this.localStorage.setItem(PROCESS_LIST_KEY, processList);
     this.updateState();
   }
 }

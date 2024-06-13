@@ -30,6 +30,7 @@ export {
   isDate,
   isDateTime,
   ISODateTimeToDate,
+  isToday,
   sameDate,
 } from './date';
 export {displayItemName, displayItemFullname} from './displayers';

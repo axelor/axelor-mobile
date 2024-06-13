@@ -26,6 +26,13 @@ export const isDateTime = (date: string): boolean => {
   return isDate(date) && date?.length > 10;
 };
 
+export const isToday = date => {
+  const d = new Date(date);
+  const today = new Date();
+
+  return sameDate(d, today);
+};
+
 export const getNextMonth = (date: Date): Date => {
   if (date.getMonth() === 11) {
     return new Date(date.getFullYear() + 1, 0, 1);

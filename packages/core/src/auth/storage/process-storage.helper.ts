@@ -19,25 +19,11 @@
 import {ProcessItem} from '../../components';
 
 const serializeItem = (p: ProcessItem) => {
-  return JSON.stringify(p, (k, v) => {
-    if (typeof v === 'function') {
-      return v.toString();
-    }
-
-    return v;
-  });
+  return JSON.stringify(p);
 };
 
 const deserializeItem = (data: string) => {
-  return JSON.parse(data, (k, v) => {
-    if (typeof v === 'string') {
-      if (v.startsWith('function') || v.startsWith('() =>')) {
-        // eslint-disable-next-line no-eval
-        return eval(`(${v})`);
-      }
-    }
-    return v;
-  });
+  return JSON.parse(data);
 };
 
 export const serialize = (list: ProcessItem[]): string => {
