@@ -27,6 +27,8 @@ import {
   ParentTaskSearchBar,
   ProgressFormInput,
   ProjectSearchBar,
+  TagTaskMultieValuePicker,
+  TargetVersionSearchBar,
 } from '../components';
 import {updateProject} from '../features/projectSlice';
 
@@ -149,6 +151,33 @@ export const project_formsRegister: FormConfigs = {
         type: 'object',
         widget: 'custom',
         customComponent: UserSearchBar,
+      },
+      targetVersion: {
+        titleKey: 'Project_TargetVersion',
+        type: 'object',
+        widget: 'custom',
+        customComponent: TargetVersionSearchBar,
+      },
+      taskDate: {
+        titleKey: 'Project_StartDate',
+        type: 'date',
+        widget: 'date',
+      },
+      taskEndDate: {
+        titleKey: 'Project_DueDate',
+        type: 'date',
+        widget: 'date',
+      },
+      taskDeadline: {
+        titleKey: 'Project_Deadline',
+        type: 'date',
+        widget: 'date',
+      },
+      projectTaskTagSet: {
+        titleKey: 'Project_Tags',
+        type: 'array',
+        widget: 'custom',
+        customComponent: TagTaskMultieValuePicker,
       },
       progress: {
         titleKey: 'Project_Progress',

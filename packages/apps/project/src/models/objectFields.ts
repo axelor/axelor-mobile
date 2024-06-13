@@ -150,4 +150,11 @@ export const project_modelAPI: ObjectFields = {
     toInvoice: schemaContructor.boolean(),
     comments: schemaContructor.string(),
   }),
+  project_projectTaskTag: schemaContructor.object({
+    name: schemaContructor.string(),
+    colorSelect: schemaContructor.string(),
+  }),
+  project_projectVersion: schemaContructor.object({
+    title: schemaContructor.subObject(),
+  }),
 };

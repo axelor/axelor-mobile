@@ -16,7 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import React, {useCallback, useMemo} from 'react';
+import React, {useMemo} from 'react';
 import {FormIncrementInput} from '@axelor/aos-mobile-ui';
 
 interface ProgressFormInputProps {
@@ -36,17 +36,10 @@ const ProgressFormInput = ({
   readonly = false,
   onChange,
 }: ProgressFormInputProps) => {
-  const round = useCallback(value => {
-    return Math.round(value / 10) * 10;
-  }, []);
-
-  const _defaultValue = useMemo(
-    () => round(defaultValue).toString(),
-    [defaultValue, round],
-  );
+  const _defaultValue = useMemo(() => defaultValue.toString(), [defaultValue]);
 
   const onChangeValue = value => {
-    onChange(round(value));
+    onChange(value);
   };
 
   return (
@@ -57,7 +50,7 @@ const ProgressFormInput = ({
       defaultValue={_defaultValue}
       onChange={onChangeValue}
       readOnly={readonly}
-      stepSize={10}
+      stepSize={1}
       maxValue={100}
       required={required}
     />
