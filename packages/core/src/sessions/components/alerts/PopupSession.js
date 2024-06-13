@@ -48,12 +48,9 @@ const PopupSession = ({
           url: sessionActive.url,
           username: sessionActive.username,
           password,
+          closePopup: () => setIsOpen(false),
         }),
-      ).then(res => {
-        if (res.error == null) {
-          setIsOpen(false);
-        }
-      });
+      );
     },
     [dispatch, sessionActive],
   );
