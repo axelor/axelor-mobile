@@ -16,39 +16,56 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import {useEffect, useMemo, useState} from 'react';
+import {useCallback, useEffect, useMemo, useState} from 'react';
 import {processStorage} from '../../../auth/storage/ProcessStorage';
 import {processProvider} from './ProcessProvider';
 import {ProcessItem} from './types';
 
 const useLoaderListener = () => {
-  const [numberProcesses, setNumberProcesses] = useState<number>(0);
-  const [numberUnresolvedProcess, setUnresolvedProcess] = useState<number>(0);
+  const [numberRunningProcesses, setNumberRunningProcesses] =
+    useState<number>(0);
+  const [numberUnreadProcess, setNumberUnreadProcess] = useState<number>(0);
   const [processList, setProcessList] = useState<ProcessItem[]>([]);
 
   useEffect(() => {
-    setNumberProcesses(processProvider.numberRunningProcess);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [processProvider.numberRunningProcess]);
+    const handleProcessChange = newNumber => {
+      setNumberRunningProcesses(newNumber);
+    };
 
-  useEffect(() => {
-    setUnresolvedProcess(processProvider.numberUnresolvedProcess);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [processProvider.numberUnresolvedProcess]);
+    // Abonnez-vous aux changements de processProvider
+    processProvider.subscribe(handleProcessChange);
 
-  useEffect(() => {
-    setProcessList(processStorage.getProcessList());
-    processStorage.register(setProcessList);
-  }, [setProcessList]);
+    // Initialisez avec la valeur actuelle
+    setNumberRunningProcesses(processProvider.getNumberRunningProcess());
 
-  return useMemo(
-    () => ({
-      numberProcesses,
-      numberUnresolvedProcess,
-      processList,
-    }),
-    [numberProcesses, numberUnresolvedProcess, processList],
+    // Nettoyez l'abonnement à la fin
+    return () => {
+      processProvider.unsubscribe(handleProcessChange);
+    };
+  }, []);
+
+  const refreshData = useCallback(
+    ({
+      processList: _processList,
+      numberUnreadProcess: _numberUnreadProcess,
+    }) => {
+      setProcessList(_processList);
+      setNumberUnreadProcess(_numberUnreadProcess);
+    },
+    [],
   );
+
+  useEffect(() => {
+    processStorage.register(refreshData);
+  }, [refreshData]);
+
+  return useMemo(() => {
+    return {
+      numberRunningProcesses,
+      numberUnreadProcess,
+      processList,
+    };
+  }, [numberRunningProcesses, numberUnreadProcess, processList]);
 };
 
 export default useLoaderListener;

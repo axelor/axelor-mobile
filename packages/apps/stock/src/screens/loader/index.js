@@ -20,7 +20,7 @@ import {default as LoaderScreen} from './LoaderScreen';
 
 export default {
   LoaderScreen: {
-    title: 'Test Loader',
+    title: 'Test loader',
     component: LoaderScreen,
     options: {
       shadedHeader: false,

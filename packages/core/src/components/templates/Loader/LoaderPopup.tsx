@@ -16,12 +16,11 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import React, {useCallback, useEffect, useRef, useState} from 'react';
-import {ActivityIndicator, Dimensions, StyleSheet, View} from 'react-native';
+import React, {useCallback, useMemo, useEffect, useRef, useState} from 'react';
+import {ActivityIndicator, StyleSheet, View} from 'react-native';
 import {
-  BlockInteractionScreen,
+  Alert,
   Button,
-  Card,
   Label,
   Text,
   useConfig,
@@ -29,27 +28,30 @@ import {
 } from '@axelor/aos-mobile-ui';
 import {useTranslator} from '../../../i18n';
 import {useNavigation} from '../../../hooks/use-navigation';
-import useProcessRegister from './use-process-register';
 import {processProvider} from './ProcessProvider';
+import {generateUniqueID} from './loader-helper';
+import {EventType, ProcessItem} from './types';
 
 interface LoaderPopupProps {
+  start?: boolean;
+  autoLeave?: boolean;
+  timeout?: number;
+  disabled?: boolean;
+  name: string;
   process: () => Promise<any>;
   onSuccess: () => void;
   onError: () => void;
-  start?: boolean;
-  disabled?: boolean;
-  autoLeave?: boolean;
-  timeout?: number;
 }
 
 const LoaderPopup = ({
+  start = false,
+  autoLeave = false,
+  timeout = 1000,
+  name,
+  disabled = false,
   process,
   onSuccess,
   onError,
-  start = false,
-  disabled = false,
-  autoLeave = false,
-  timeout = 100,
 }: LoaderPopupProps) => {
   const navigation = useNavigation();
   const I18n = useTranslator();
@@ -57,40 +59,57 @@ const LoaderPopup = ({
   const {setActivityIndicator} = useConfig();
 
   const [showPopup, setShowPopup] = useState<boolean>(false);
+  const [loading, setLoading] = useState<boolean>(false);
+  const [processItem, setProcessItem] = useState<ProcessItem>();
 
   const timeoutRef = useRef(null);
 
-  const {processItem, loading} = useProcessRegister(
-    {
-      name: 'process #1',
+  const processOptions = useMemo(
+    () => ({
+      name,
       disabled,
       process,
       onSuccess,
       onError,
-    },
-    () => setShowPopup(false),
+    }),
+    [name, disabled, process, onSuccess, onError],
   );
 
+  const onFinish = useCallback(() => setShowPopup(false), []);
+
   const handleNotifyMe = useCallback(() => {
+    setShowPopup(false);
+    setActivityIndicator(false);
     processProvider.notifyMe(processItem);
     navigation.goBack();
-  }, [processItem, navigation]);
+  }, [navigation, processItem, setActivityIndicator]);
 
   useEffect(() => {
     if (start) {
-      processProvider.runProcess(processItem, I18n);
+      const unid = generateUniqueID();
+
+      const p = processProvider.registerProcess(unid, processOptions);
+
+      processProvider.on(unid, EventType.STARTED, () => setLoading(true));
+      processProvider.on(unid, EventType.COMPLETED, () => {
+        setLoading(false);
+        onFinish();
+      });
+      processProvider.on(unid, EventType.FAILED, () => {
+        setLoading(false);
+        onFinish();
+      });
+
+      processProvider.runProcess(p, I18n);
+      setProcessItem(p);
     }
-  }, [start, processItem, I18n]);
+  }, [start, I18n, processOptions, onFinish]);
 
   useEffect(() => {
     if (loading) {
-      if (!showPopup) {
-        setActivityIndicator(true);
-      }
-
+      setActivityIndicator(true);
       timeoutRef.current = setTimeout(() => {
         setActivityIndicator(false);
-
         autoLeave ? handleNotifyMe() : setShowPopup(true);
       }, timeout);
     }
@@ -102,60 +121,45 @@ const LoaderPopup = ({
   }, [
     timeout,
     loading,
-    showPopup,
     autoLeave,
     setActivityIndicator,
     setShowPopup,
     handleNotifyMe,
   ]);
 
-  if (!loading || !showPopup) {
-    return null;
-  }
-
   return (
-    <BlockInteractionScreen hideHeader={true}>
-      <Card style={styles.popupContainer}>
-        <Label
-          type="danger"
-          message={I18n.t('Base_Loader_DoNotCloseTheApp')}
-          iconName="exclamation-triangle-fill"
+    <Alert visible={showPopup}>
+      <Label
+        type="danger"
+        message={I18n.t('Base_Loader_DoNotCloseTheApp')}
+        iconName="exclamation-triangle-fill"
+      />
+      <View style={styles.loadingContainer}>
+        <ActivityIndicator
+          size="large"
+          color={Colors.primaryColor.background}
         />
-        <View style={styles.activityIndicatorContainer}>
-          <ActivityIndicator
-            size="large"
-            color={Colors.primaryColor.background}
-          />
-          <Text writingType="title">
-            {I18n.t('Base_Loader_LoadingInProgress')}
-          </Text>
-        </View>
-        <Button
-          iconName="check-lg"
-          title={I18n.t('Base_Loader_NotifyMe')}
-          onPress={handleNotifyMe}
-        />
-      </Card>
-    </BlockInteractionScreen>
+        <Text style={styles.marginLeft} writingType="title">
+          {I18n.t('Base_Loader_LoadingInProgress')}
+        </Text>
+      </View>
+      <Button
+        iconName="check-lg"
+        title={I18n.t('Base_Loader_NotifyMe')}
+        onPress={handleNotifyMe}
+      />
+    </Alert>
   );
 };
 
 const styles = StyleSheet.create({
-  popupContainer: {
-    position: 'absolute',
-    width: Dimensions.get('window').width * 0.9,
-    top: Dimensions.get('window').height * 0.2,
-    left: Dimensions.get('window').width * 0.05,
-    paddingRight: null,
-    paddingHorizontal: 15,
-    paddingVertical: 10,
-  },
-  activityIndicatorContainer: {
-    flex: 1,
+  loadingContainer: {
     flexDirection: 'row',
-    justifyContent: 'space-evenly',
     alignItems: 'center',
     marginVertical: 15,
+  },
+  marginLeft: {
+    marginLeft: 10,
   },
 });
 

@@ -29,23 +29,24 @@ const useProcessRegister = (
   const [loading, setLoading] = useState<boolean>(false);
   const [processItem, setProcessItem] = useState<ProcessItem>();
 
-  const onFinishCallback = () => {
-    setLoading(false);
-    onFinish();
-  };
-
   useEffect(() => {
     const unid = generateUniqueID();
+
     const p = processProvider.registerProcess(unid, processOptions);
 
     processProvider.on(unid, EventType.STARTED, () => setLoading(true));
-    processProvider.on(unid, EventType.COMPLETED, onFinishCallback);
-    processProvider.on(unid, EventType.FAILED, onFinishCallback);
+    processProvider.on(unid, EventType.COMPLETED, () => {
+      setLoading(false);
+      onFinish();
+    });
+    processProvider.on(unid, EventType.FAILED, () => {
+      setLoading(false);
+      onFinish();
+    });
 
     setKey(unid);
     setProcessItem(p);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [onFinish, processOptions]);
 
   return useMemo(
     () => ({key, processItem, loading}),

@@ -26,12 +26,15 @@ import {
   ToggleSwitch,
   useThemeColor,
 } from '@axelor/aos-mobile-ui';
-import {filterChip} from '../../utils';
-import {ProcessStatus, useLoaderListener} from '../../components';
+import {filterChip, isToday} from '../../utils';
+import {
+  processProvider,
+  ProcessStatus,
+  useLoaderListener,
+} from '../../components';
 import {ProcessHistoryCard} from '../components';
 import {useTranslator} from '../../i18n';
 import {ProcessHistory} from '../types';
-import {isToday} from './process-history-list-screen-helper';
 
 // TODO: add refresh method to the list
 const ProcessHistoryListScreen = () => {
@@ -49,15 +52,19 @@ const ProcessHistoryListScreen = () => {
       if (!Array.isArray(list) || list.length === 0) {
         return [];
       } else {
+        let _list = list;
+
         if (today) {
-          return list?.filter(
+          _list = list?.filter(
             item =>
-              isToday(item?.startedDate) ||
-              item?.status === ProcessStatus.PENDING,
+              isToday(item.startedDate) ||
+              item.status === ProcessStatus.PENDING,
           );
-        } else {
-          return list;
         }
+
+        return _list.sort(
+          (a, b) => new Date(b.startedDate) - new Date(a.startedDate),
+        );
       }
     },
     [today],
@@ -73,6 +80,10 @@ const ProcessHistoryListScreen = () => {
   useEffect(() => {
     setFilteredList(filterOnStatus(filterOnDate(processList)));
   }, [filterOnDate, filterOnStatus, processList]);
+
+  useEffect(() => {
+    processProvider.setNumberUnreadProcess(0);
+  }, []);
 
   return (
     <Screen removeSpaceOnTop={true}>
@@ -123,7 +134,7 @@ const ProcessHistoryListScreen = () => {
         data={filteredList}
         renderItem={({item}) => (
           <ProcessHistoryCard
-            key={item.key}
+            processKey={item.key}
             name={item.name}
             status={item.status}
             startedDate={item.startedDate}

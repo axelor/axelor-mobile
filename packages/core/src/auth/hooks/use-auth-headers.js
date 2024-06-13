@@ -38,7 +38,7 @@ const useUserProfileActions = () => {
   const I18n = useTranslator();
 
   const {user} = useSelector(state => state.user);
-  const {numberUnresolvedProcess} = useLoaderListener();
+  const {numberUnreadProcess} = useLoaderListener();
 
   useEffect(() => {
     headerActionsProvider.registerModel('auth_user_profile', {
@@ -46,9 +46,9 @@ const useUserProfileActions = () => {
         {
           key: 'processes',
           order: 10,
-          iconName: 'clock-history',
+          iconName: 'bookmark-check',
           iconColor: Colors.primaryColor.background,
-          indicator: numberUnresolvedProcess,
+          indicator: numberUnreadProcess,
           title: I18n.t('User_ProcessHistroy'),
           onPress: () => navigation.navigate('ProcessesHistroyListScreen'),
           showInHeader: true,
@@ -64,7 +64,7 @@ const useUserProfileActions = () => {
         },
       ],
     });
-  }, [numberUnresolvedProcess, user, Colors, I18n, navigation]);
+  }, [Colors, I18n, navigation, numberUnreadProcess, user]);
 };
 
 const useAuthHeaderBands = () => {
@@ -113,17 +113,17 @@ const useLoaderHeaderBand = () => {
   const I18n = useTranslator();
 
   const {registerHeaderBand} = useHeaderBand();
-  const {numberProcesses} = useLoaderListener();
+  const {numberRunningProcesses} = useLoaderListener();
 
   useEffect(() => {
     registerHeaderBand({
       key: 'loader',
       text: I18n.t('Base_Loader_ProccessesInBackground', {
-        numberProcesses,
+        numberRunningProcesses,
       }),
       color: Colors.cautionColor,
       order: 15,
-      showIf: numberProcesses > 0,
+      showIf: numberRunningProcesses > 0,
     });
-  }, [I18n, Colors, registerHeaderBand, numberProcesses]);
+  }, [Colors, I18n, numberRunningProcesses, registerHeaderBand]);
 };

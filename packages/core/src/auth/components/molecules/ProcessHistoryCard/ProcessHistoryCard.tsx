@@ -21,11 +21,12 @@ import {StyleSheet} from 'react-native';
 import {useThemeColor, ObjectCard} from '@axelor/aos-mobile-ui';
 import {useTranslator} from '../../../../i18n';
 import {formatDateTime} from '../../../../utils';
-import {ProcessStatus} from '../../../../components';
+import {processProvider, ProcessStatus} from '../../../../components';
 import {ProcessHistory} from '../../../types';
 
 interface ProccessHistoryCardProps {
   style?: any;
+  processKey: string;
   status: ProcessStatus;
   name: string;
   startedDate: string;
@@ -39,6 +40,7 @@ interface ProccessHistoryCardProps {
 
 const ProccessHistoryCard = ({
   style,
+  processKey,
   status,
   name,
   startedDate,
@@ -57,13 +59,23 @@ const ProccessHistoryCard = ({
       ?.border;
   }, [Colors, status]);
 
-  const handleOnProcess = useCallback(() => {
+  const isTouchable = useMemo(() => {
+    return (
+      completed &&
+      !resolved &&
+      typeof onSuccess === 'function' &&
+      typeof onError === 'function'
+    );
+  }, [completed, onError, onSuccess, resolved]);
+
+  const handleOnPress = useCallback(() => {
     status === ProcessStatus.COMPLETED ? onSuccess() : onError();
-  }, [status, onSuccess, onError]);
+    processProvider.resolveProcess(processKey);
+  }, [status, onSuccess, onError, processKey]);
 
   return (
     <ObjectCard
-      onPress={handleOnProcess}
+      onPress={handleOnPress}
       style={[borderStyle, style]}
       upperTexts={{
         items: [
@@ -71,7 +83,10 @@ const ProccessHistoryCard = ({
           {
             iconName: 'calendar-event',
             indicatorText: I18n.t('User_ProcessHistory_StartedOn'),
-            displayText: formatDateTime(startedDate, I18n.t('Base_DateFormat')),
+            displayText: formatDateTime(
+              startedDate,
+              I18n.t('Base_DateTimeFormat'),
+            ),
             hideIf: startedDate == null,
           },
           {
@@ -79,20 +94,23 @@ const ProccessHistoryCard = ({
             indicatorText: I18n.t('User_ProcessHistory_CompletedOn'),
             displayText: formatDateTime(
               completedDate,
-              I18n.t('Base_DateFormat'),
+              I18n.t('Base_DateTimeFormat'),
             ),
             hideIf: status !== ProcessStatus.COMPLETED || completedDate == null,
           },
           {
-            iconName: 'calendar-check',
+            iconName: 'calendar-x',
             indicatorText: I18n.t('User_ProcessHistory_FailedOn'),
-            displayText: formatDateTime(failedDate, I18n.t('Base_DateFormat')),
+            displayText: formatDateTime(
+              failedDate,
+              I18n.t('Base_DateTimeFormat'),
+            ),
             hideIf: status !== ProcessStatus.FAILED || failedDate == null,
           },
         ],
       }}
-      showArrow={completed && !resolved}
-      touchable={completed && !resolved}
+      showArrow={isTouchable}
+      touchable={isTouchable}
     />
   );
 };
