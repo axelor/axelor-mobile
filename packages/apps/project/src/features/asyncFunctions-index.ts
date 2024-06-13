@@ -26,7 +26,9 @@ export {
   fetchProjectPriority,
   fetchProjectTaskById,
   fetchProjectTaskStatus,
+  getProjectTaskTag,
   searchProjectParentTask,
   searchProjectTask,
+  searchTargetVersion,
 } from './projectTaskSlice';
 export {fetchTimesheetLinesByTask} from './timesheetLinesSlice';

@@ -17,6 +17,7 @@
  */
 
 import {
+  axiosApiProvider,
   createStandardFetch,
   createStandardSearch,
   getSearchCriterias,
@@ -121,5 +122,23 @@ export async function fetchProjectTaskById({projecTaskId}) {
     relatedFields: {
       projectTaskTagSet: ['name', 'colorSelect'],
     },
+  });
+}
+
+export async function getProjectTaskTag() {
+  return axiosApiProvider.get({
+    url: 'ws/rest/com.axelor.apps.project.db.ProjectTaskTag/',
+  });
+}
+
+export async function searchTargetVersion({searchValue, page = 0, projectId}) {
+  return createStandardSearch({
+    model: 'com.axelor.apps.businesssupport.db.ProjectVersion',
+    criteria: [getSearchCriterias('project_projectVersion', searchValue)],
+    fieldKey: 'project_projectVersion',
+    sortKey: 'project_projectVersion',
+    page,
+    domain: ':project member of self.projectSet',
+    domainContext: {project: {id: projectId}},
   });
 }

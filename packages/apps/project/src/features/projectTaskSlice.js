@@ -25,7 +25,9 @@ import {
   fetchProjectPriority as _fetchProjectPriority,
   fetchProjectTaskById as _fetchProjectTaskById,
   fetchProjectTaskStatus as _fetchProjectTaskStatus,
+  getProjectTaskTag as _getProjectTaskTag,
   searchProjectTask as _searchProjectTask,
+  searchTargetVersion as _searchTargetVersion,
 } from '../api/project-task-api';
 
 export const searchProjectTask = createAsyncThunk(
@@ -93,6 +95,32 @@ export const fetchProjectTaskById = createAsyncThunk(
   },
 );
 
+export const getProjectTaskTag = createAsyncThunk(
+  'project_projectTask/getProjectTaskTag',
+  async function (data, {getState}) {
+    return handlerApiCall({
+      fetchFunction: _getProjectTaskTag,
+      data,
+      action: 'Project_SliceAction_GetProjectTaskTag',
+      getState,
+      responseOptions: {isArrayResponse: true},
+    });
+  },
+);
+
+export const searchTargetVersion = createAsyncThunk(
+  'project_projectTask/searchTargetVersion',
+  async function (data, {getState}) {
+    return handlerApiCall({
+      fetchFunction: _searchTargetVersion,
+      data,
+      action: 'Project_SliceAction_SearchTargetVersion',
+      getState,
+      responseOptions: {isArrayResponse: true},
+    });
+  },
+);
+
 const initialState = {
   loading: true,
   moreLoading: false,
@@ -104,11 +132,19 @@ const initialState = {
   isListEndParentTask: false,
   parentTaskList: [],
 
+  loadingTargetVersion: true,
+  moreLoadingTargetVersion: false,
+  isListEndTargetVersion: false,
+  targetVersionList: [],
+
   projectTaskStatusList: [],
   projectPriorityList: [],
 
   loadingProjectTask: true,
   projectTask: {},
+
+  loadingTaskTag: true,
+  taskTagList: [],
 };
 
 const projectTaskSlice = createSlice({
@@ -120,6 +156,12 @@ const projectTaskSlice = createSlice({
       moreLoading: 'moreLoading',
       isListEnd: 'isListEnd',
       list: 'projectTaskList',
+    });
+    generateInifiniteScrollCases(builder, searchTargetVersion, {
+      loading: 'loadingTargetVersion',
+      moreLoading: 'moreLoadingTargetVersion',
+      isListEnd: 'isListEndTargetVersion',
+      list: 'targetVersionList',
     });
     generateInifiniteScrollCases(builder, searchProjectParentTask, {
       loading: 'loadingParentTask',
@@ -139,6 +181,13 @@ const projectTaskSlice = createSlice({
     builder.addCase(fetchProjectTaskById.fulfilled, (state, action) => {
       state.loadingProjectTask = false;
       state.projectTask = action.payload;
+    });
+    builder.addCase(getProjectTaskTag.pending, state => {
+      state.loadingTaskTag = true;
+    });
+    builder.addCase(getProjectTaskTag.fulfilled, (state, action) => {
+      state.loadingTaskTag = false;
+      state.taskTagList = action.payload;
     });
   },
 });

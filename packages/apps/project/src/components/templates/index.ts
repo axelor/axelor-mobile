@@ -19,4 +19,6 @@
 export {default as ParentTaskSearchBar} from './ParentTaskSearchBar/ParentTaskSearchBar';
 export {default as ProjectListView} from './ProjectListView/ProjectListView';
 export {default as ProjectSearchBar} from './ProjectSearchBar/ProjectSearchBar';
+export {default as TagTaskMultieValuePicker} from './TagTaskMultieValuePicker/TagTaskMultieValuePicker';
+export {default as TargetVersionSearchBar} from './TargetVersionSearchBar/TargetVersionSearchBar';
 export {default as TaskFilters} from './TaskFilters/TaskFilters';
