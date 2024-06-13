@@ -26,7 +26,7 @@ import {testUrl} from '../utils/api';
 
 export const login = createAsyncThunk(
   'auth/login',
-  async ({url, username, password}) => {
+  async ({url, username, password, closePopup}) => {
     const urlWithProtocol = await testUrl(url);
     const {token, jsessionId, requestInterceptorId, responseInterceptorId} =
       await loginApi(urlWithProtocol, username, password);
@@ -35,6 +35,8 @@ export const login = createAsyncThunk(
     saveUrlInStorage(urlWithProtocol);
 
     apiProviderConfig.setSessionExpired(false);
+
+    closePopup?.();
 
     return {
       url: urlWithProtocol,

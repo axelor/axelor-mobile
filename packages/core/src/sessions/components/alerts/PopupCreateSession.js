@@ -77,12 +77,13 @@ const PopupCreateSession = ({
 
   const onPressLogin = useCallback(
     session => {
-      dispatch(login({...session})).then(res => {
+      dispatch(
+        login({...session, closePopup: () => handleVisibility(false)}),
+      ).then(res => {
         if (res.error == null && isMounted) {
           sessionStorage.registerSession({
             session,
           });
-          handleVisibility(false);
         }
       });
     },
