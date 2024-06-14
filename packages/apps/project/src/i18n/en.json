@@ -56,5 +56,7 @@
   "Project_SliceAction_GetProjectTaskTag": "",
   "Project_SliceAction_SearchTargetVersion": "",
   "Project_SliceAction_SearchCategory": "",
-  "Project_SliceAction_SearchSection": ""
+  "Project_SliceAction_SearchSection": "",
+  "Project_SliceAction_SearchPriority": "",
+  "Project_SliceAction_UpdateProjectTask": ""
 }

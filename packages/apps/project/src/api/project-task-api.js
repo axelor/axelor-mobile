@@ -164,3 +164,24 @@ export async function searchSection({searchValue, page = 0}) {
     page,
   });
 }
+
+export async function searchPriority({searchValue, page = 0, projectId}) {
+  return createStandardSearch({
+    model: 'com.axelor.apps.project.db.ProjectPriority',
+    criteria: [getSearchCriterias('project_projectPriority', searchValue)],
+    fieldKey: 'project_projectPriority',
+    sortKey: 'project_projectPriority',
+    page,
+    _domain: 'self.id IN (1)',
+    domainContext: {project: {id: projectId}},
+  });
+}
+
+export async function updateProjectTask({project}) {
+  return axiosApiProvider.post({
+    url: '/ws/rest/com.axelor.apps.project.db.ProjectTask/',
+    data: {
+      data: project,
+    },
+  });
+}
