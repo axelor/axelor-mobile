@@ -16,5 +16,28 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-export {default as StateBadge} from './StateBadge/StateBadge';
-export {default as TaxModeBadge} from './TaxModeBadge/TaxModeBadge';
+import React from 'react';
+import {Badge, useThemeColor} from '@axelor/aos-mobile-ui';
+import {useTranslator} from '@axelor/aos-mobile-core';
+import {useTaxModeIndicator} from '../../../hooks/use-task-mode';
+
+interface TaxModeBadgeProps {
+  inAti: boolean;
+  type?: 'base' | 'sale';
+}
+
+const TaxModeBadge = ({inAti, type = 'base'}: TaxModeBadgeProps) => {
+  const Colors = useThemeColor();
+  const I18n = useTranslator();
+  const shouldDisplay = useTaxModeIndicator(inAti, type);
+
+  if (!shouldDisplay) {
+    return null;
+  }
+
+  const badgeText = inAti ? I18n.t('Sales_ATI') : I18n.t('Sales_WT');
+
+  return <Badge title={badgeText} color={Colors.infoColor} />;
+};
+
+export default TaxModeBadge;
