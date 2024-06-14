@@ -3,6 +3,34 @@ title: 7.1.0
 tags: Changelog
 ---
 
+## [7.1.13] (2024-06-14)
+
+### @axelor/aos-mobile-core
+
+#### Fixes
+
+- HeaderBandList: prevent component to render in status bar on iOS
+
+### @axelor/aos-mobile-ui
+
+#### Fixes
+
+- HtmlInput: long words break when reach the end of the component
+- HtmlInput: refresh component when default input data change
+- MultiValuePicker: manage display of picker smaller than screen width
+
+### @axelor/aos-mobile-crm
+
+#### Fixes
+
+- Address spelling: added a “d” where one is missing
+
+### @axelor/aos-mobile-stock
+
+#### Fixes
+
+- Address spelling: added a “d” where one is missing
+
 ## [7.1.12] (2024-05-23)
 
 ### @axelor/aos-mobile-ui
@@ -484,6 +512,7 @@ This update breaks the compatability with AOS Stock module under version 7.1 due
 - Add number decimal digit config management system
 - Manage multilines input with auto height resize on FormInput
 
+[7.1.13]: https://github.com/axelor/axelor-mobile/compare/7.1.12...7.1.13
 [7.1.12]: https://github.com/axelor/axelor-mobile/compare/7.1.11...7.1.12
 [7.1.11]: https://github.com/axelor/axelor-mobile/compare/7.1.10...7.1.11
 [7.1.10]: https://github.com/axelor/axelor-mobile/compare/7.1.9...7.1.10
