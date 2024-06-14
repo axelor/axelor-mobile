@@ -16,6 +16,4 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-export {default as PriceDetails} from './PriceDetails/PriceDetails';
-export {default as StateBadge} from './StateBadge/StateBadge';
-export {default as TaxModeBadge} from './TaxModeBadge/TaxModeBadge';
+export {fetchSaleConfig as fetchSaleConfigApi} from './sale-config-api';

@@ -16,31 +16,31 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import {Module} from '@axelor/aos-mobile-core';
-import enTranslations from './i18n/en.json';
-import frTranslations from './i18n/fr.json';
-import * as saleReducers from './features';
-import {sale_modelAPI} from './models';
+import React from 'react';
+import {Badge, useThemeColor} from '@axelor/aos-mobile-ui';
+import {useTranslator} from '@axelor/aos-mobile-core';
+import {useTaxModeIndicator} from '../../../hooks/use-tax-mode-indicator';
 
-export const SalesModule: Module = {
-  name: 'app-sales',
-  title: 'Sales_Sales',
-  subtitle: 'Sales_Sales',
-  icon: 'graph-up-arrow',
-  compatibilityAOS: {
-    moduleName: 'axelor-sale',
-    downToVersion: '8.2.0',
-  },
-  translations: {
-    en: enTranslations,
-    fr: frTranslations,
-  },
-  models: {
-    objectFields: {...sale_modelAPI},
-  },
-  reducers: {...saleReducers},
+interface TaxModeBadgeProps {
+  inAti: boolean;
+  type?: 'base' | 'sale';
+}
+
+const TaxModeBadge = ({inAti, type = 'base'}: TaxModeBadgeProps) => {
+  const Colors = useThemeColor();
+  const I18n = useTranslator();
+  const shouldDisplay = useTaxModeIndicator(inAti, type);
+
+  if (!shouldDisplay) {
+    return null;
+  }
+
+  return (
+    <Badge
+      title={I18n.t(inAti ? 'Sales_ATI' : 'Sales_WT')}
+      color={Colors.infoColor}
+    />
+  );
 };
 
-export * from './api';
-export * from './components';
-export * from './features/asyncFunctions-index';
+export default TaxModeBadge;
