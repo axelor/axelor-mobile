@@ -26,6 +26,8 @@ import {
   useTranslator,
 } from '@axelor/aos-mobile-core';
 import {createTimer, updateTimerStatus} from '../../../features/timerSlice';
+import {Time} from '../../../types';
+import {TimerListAlert} from '../../templates';
 
 const DEFAULT_TIME = 0;
 const TIMER_STATUS = {
@@ -57,11 +59,15 @@ const TimerStopwatch = ({
   objectState,
 }: TimerStopwatchProps) => {
   const I18n = useTranslator();
-  const dispatch = useDispatch();
+  const dispatch: any = useDispatch();
 
   const [time, setTime] = useState(DEFAULT_TIME);
   const [status, setStatus] = useState(DEFAULT_STATUS);
+  const [isAlertVisible, setIsAlertVisible] = useState(false);
 
+  const {timesheet: timesheetConfig} = useSelector(
+    (state: any) => state.appConfig,
+  );
   const {userId} = useSelector((state: any) => state.auth);
 
   const createTimerAPI = useCallback(() => {
@@ -88,7 +94,15 @@ const TimerStopwatch = ({
           version: defaultValue?.version,
           toStatus: toStatus,
         }),
-      );
+      ).then(res => {
+        const _timer = res?.payload?.payload?.[0];
+        if (
+          toStatus === 'stop' &&
+          _timer?.statusSelect === Time.statusSelect.Completed
+        ) {
+          setIsAlertVisible(true);
+        }
+      });
     },
     [defaultValue, dispatch, userId],
   );
@@ -116,21 +130,32 @@ const TimerStopwatch = ({
   }, [getTimerState]);
 
   return (
-    <Stopwatch
-      style={[styles.container, style]}
-      startTime={time}
-      status={status}
-      getTimerState={getTimerState}
-      timerFormat={I18n.t('Hr_TimerFormat')}
-      onPlay={() =>
-        defaultValue?.timerId ? updateTimerStatusAPI('start') : createTimerAPI()
-      }
-      disablePlay={!objectState?.product}
-      onPause={() => updateTimerStatusAPI('pause')}
-      onStop={() => updateTimerStatusAPI('stop')}
-      onCancel={() => updateTimerStatusAPI('reset')}
-      useObjectStatus
-    />
+    <>
+      <Stopwatch
+        style={[styles.container, style]}
+        startTime={time}
+        status={status}
+        getTimerState={getTimerState}
+        timerFormat={I18n.t('Hr_TimerFormat')}
+        onPlay={() =>
+          defaultValue?.timerId
+            ? updateTimerStatusAPI('start')
+            : createTimerAPI()
+        }
+        disablePlay={!objectState?.product}
+        onPause={() => updateTimerStatusAPI('pause')}
+        onStop={() => updateTimerStatusAPI('stop')}
+        onCancel={() => updateTimerStatusAPI('reset')}
+        useObjectStatus
+      />
+      <TimerListAlert
+        isAlertVisible={
+          !timesheetConfig?.isMultipleTimerEnabled && isAlertVisible
+        }
+        setIsAlertVisible={setIsAlertVisible}
+        defaultTimerId={defaultValue?.timerId}
+      />
+    </>
   );
 };
 

@@ -80,7 +80,12 @@ export const fetchActiveTimer = createAsyncThunk(
       getState,
       responseOptions: {isArrayResponse: false},
     }).then(res => {
-      dispatch(fetchTimerById({timerId: res.id}));
+      if (res?.id != null) {
+        dispatch(fetchTimerById({timerId: res.id}));
+        return true;
+      } else {
+        return false;
+      }
     });
   },
 );
@@ -139,9 +144,7 @@ export const updateTimerStatus = createAsyncThunk(
       .then(() => {
         dispatch(fetchTimerById({timerId: data.timerId}));
       })
-      .then(() => {
-        dispatch(fetchTimer({userId: data.userId, page: 0}));
-      });
+      .then(() => dispatch(fetchTimer({userId: data.userId, page: 0})));
   },
 );
 

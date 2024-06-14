@@ -40,14 +40,21 @@ const TimerFormScreen = ({route}) => {
 
   const [creation, setCreation] = useState(isCreation ?? false);
 
+  const {timesheet: timesheetConfig} = useSelector(state => state.appConfig);
   const {user} = useSelector(state => state.user);
   const {timer, loadingCreation} = useSelector(state => state.hr_timer);
 
   useEffect(() => {
-    if (isFocused && !creation && !loadingCreation) {
-      idTimerToUpdate
-        ? dispatch(fetchTimerById({timerId: idTimerToUpdate}))
-        : dispatch(fetchActiveTimer({userId: user?.id}));
+    if (isFocused) {
+      if (!timesheetConfig?.isMultipleTimerEnabled) {
+        dispatch(fetchActiveTimer({userId: user?.id})).then(res => {
+          setCreation(!res?.payload);
+        });
+      } else if (!creation && !loadingCreation) {
+        idTimerToUpdate
+          ? dispatch(fetchTimerById({timerId: idTimerToUpdate}))
+          : dispatch(fetchActiveTimer({userId: user?.id}));
+      }
     }
   }, [
     creation,
@@ -55,6 +62,7 @@ const TimerFormScreen = ({route}) => {
     idTimerToUpdate,
     isFocused,
     loadingCreation,
+    timesheetConfig?.isMultipleTimerEnabled,
     user?.id,
   ]);
 
