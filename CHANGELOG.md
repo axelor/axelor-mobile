@@ -3,6 +3,34 @@ title: 7.0.0
 tags: Changelog
 ---
 
+## [7.0.16] (2024-06-14)
+
+### @axelor/aos-mobile-core
+
+#### Fixes
+
+- HeaderBandList: prevent component to render in status bar on iOS
+
+### @axelor/aos-mobile-ui
+
+#### Fixes
+
+- HtmlInput: long words break when reach the end of the component
+- HtmlInput: refresh component when default input data change
+- MultiValuePicker: manage display of picker smaller than screen width
+
+### @axelor/aos-mobile-crm
+
+#### Fixes
+
+- Address spelling: added a “d” where one is missing
+
+### @axelor/aos-mobile-stock
+
+#### Fixes
+
+- Address spelling: added a “d” where one is missing
+
 ## [7.0.15] (2024-05-23)
 
 ### @axelor/aos-mobile-ui
@@ -566,6 +594,7 @@ The project architecture has also been updated, the example folder has been expl
 - Replace ChipSelect by MultiValuePicker on list screens
 - Add search bar details pop up on screens: add empowered searchBar for objects
 
+[7.0.16]: https://github.com/axelor/axelor-mobile/compare/7.0.15...7.0.16
 [7.0.15]: https://github.com/axelor/axelor-mobile/compare/7.0.14...7.0.15
 [7.0.14]: https://github.com/axelor/axelor-mobile/compare/7.0.13...7.0.14
 [7.0.13]: https://github.com/axelor/axelor-mobile/compare/7.0.12...7.0.13
