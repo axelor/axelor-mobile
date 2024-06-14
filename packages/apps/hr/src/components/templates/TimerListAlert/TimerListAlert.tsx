@@ -93,15 +93,10 @@ const TimerListAlert = ({
   );
 
   useEffect(() => {
-    if (defaultTimerId && timerDateIntervalList?.length > 0) {
-      const defaultTimer = timerDateIntervalList.find(
-        timer => timer.id === defaultTimerId,
-      );
-      if (defaultTimer) {
-        setSelectedTimers([defaultTimer]);
-      }
+    if (defaultTimerId && isAlertVisible) {
+      setSelectedTimers([{id: defaultTimerId}]);
     }
-  }, [defaultTimerId, timerDateIntervalList]);
+  }, [defaultTimerId, isAlertVisible]);
 
   useEffect(() => {
     if (timesheet == null && fromDate && toDate) {
@@ -119,6 +114,8 @@ const TimerListAlert = ({
       } else {
         setErrorKey('Hr_DateIntervalError');
       }
+    } else {
+      setErrorKey(null);
     }
   }, [fromDate, timesheet, toDate, userId]);
 
@@ -172,7 +169,7 @@ const TimerListAlert = ({
 
   return (
     <Alert
-      style={styles.alert}
+      style={!defaultTimerId && styles.alert}
       visible={isAlertVisible}
       title={I18n.t('Hr_SelectTimers')}
       cancelButtonConfig={{
@@ -189,7 +186,7 @@ const TimerListAlert = ({
         <DraftTimesheetPicker
           style={styles.picker}
           onChange={_timesheet => {
-            setSelectedTimers([]);
+            !defaultTimerId && setSelectedTimers([]);
             setTimesheet(_timesheet);
             setFromDate(new Date(_timesheet.fromDate));
             setToDate(new Date(_timesheet.toDate));
@@ -212,7 +209,7 @@ const TimerListAlert = ({
           popup
           defaultDate={fromDate}
           onDateChange={date => {
-            setSelectedTimers([]);
+            !defaultTimerId && setSelectedTimers([]);
             setFromDate(date);
           }}
           readonly={timesheet}
@@ -226,25 +223,26 @@ const TimerListAlert = ({
           popup
           defaultDate={toDate}
           onDateChange={date => {
-            setSelectedTimers([]);
+            !defaultTimerId && setSelectedTimers([]);
             setToDate(date);
           }}
           readonly={timesheet}
           required={timesheet == null}
         />
       </View>
-      <CheckboxScrollList
-        styleTopCheckbox={styles.topCheckbox}
-        loadingList={loadingTimerDateInterval}
-        data={timerDateIntervalList}
-        onCheckedChange={setSelectedTimers}
-        renderItem={renderChexboxItem}
-        fetchData={fetchTimerDateIntervalAPI}
-        moreLoading={moreLoadingTimerDateInterval}
-        isListEnd={isListEndTimerDateInterval}
-        translator={I18n.t}
-        defaultCheckedItems={selectedTimers}
-      />
+      {!defaultTimerId && (
+        <CheckboxScrollList
+          styleTopCheckbox={styles.topCheckbox}
+          loadingList={loadingTimerDateInterval}
+          data={timerDateIntervalList}
+          onCheckedChange={setSelectedTimers}
+          renderItem={renderChexboxItem}
+          fetchData={fetchTimerDateIntervalAPI}
+          moreLoading={moreLoadingTimerDateInterval}
+          isListEnd={isListEndTimerDateInterval}
+          translator={I18n.t}
+        />
+      )}
     </Alert>
   );
 };

@@ -30,14 +30,6 @@ import {
   fetchTimerById,
   updateTimer,
 } from '../../features/timerSlice';
-import {TimerListAlert} from '../../components';
-
-const TIMER_STATUS = {
-  Draft: 1,
-  Start: 2,
-  Pause: 3,
-  Stop: 4,
-};
 
 const TimerFormScreen = ({route}) => {
   const isCreation = route?.params?.isCreation;
@@ -47,23 +39,22 @@ const TimerFormScreen = ({route}) => {
   const {setActivityIndicator} = useConfig();
 
   const [creation, setCreation] = useState(isCreation ?? false);
-  const [isAlertVisible, setIsAlertVisible] = useState(false);
 
   const {timesheet: timesheetConfig} = useSelector(state => state.appConfig);
   const {user} = useSelector(state => state.user);
   const {timer, loadingCreation} = useSelector(state => state.hr_timer);
 
   useEffect(() => {
-    if (isFocused && !timesheetConfig?.isMultipleTimerEnabled) {
-      if (timer?.id) {
-        dispatch(fetchTimerById({timerId: timer?.id}));
-      } else {
-        dispatch(fetchActiveTimer({userId: user?.id}));
+    if (isFocused) {
+      if (!timesheetConfig?.isMultipleTimerEnabled) {
+        dispatch(fetchActiveTimer({userId: user?.id})).then(res => {
+          setCreation(!res?.payload);
+        });
+      } else if (!creation && !loadingCreation) {
+        idTimerToUpdate
+          ? dispatch(fetchTimerById({timerId: idTimerToUpdate}))
+          : dispatch(fetchActiveTimer({userId: user?.id}));
       }
-    } else if (isFocused && !creation && !loadingCreation) {
-      idTimerToUpdate
-        ? dispatch(fetchTimerById({timerId: idTimerToUpdate}))
-        : dispatch(fetchActiveTimer({userId: user?.id}));
     }
   }, [
     creation,
@@ -71,7 +62,6 @@ const TimerFormScreen = ({route}) => {
     idTimerToUpdate,
     isFocused,
     loadingCreation,
-    timer?.id,
     timesheetConfig?.isMultipleTimerEnabled,
     user?.id,
   ]);
@@ -146,43 +136,21 @@ const TimerFormScreen = ({route}) => {
   );
 
   return (
-    <>
-      <FormView
-        defaultValue={loadingCreation ? null : defaultValue}
-        actions={[
-          {
-            key: 'update-timer',
-            type: 'update',
-            needValidation: true,
-            needRequiredFields: true,
-            disabledIf: ({objectState}) => fieldsComparison(objectState),
-            hideIf: () => creation || !timer?.id,
-            customAction: ({objectState}) => updateTimerAPI(objectState),
-          },
-          {
-            key: 'declare-timer',
-            type: 'custom',
-            titleKey: 'Base_Declare',
-            iconName: 'calendar-check',
-            needValidation: true,
-            needRequiredFields: true,
-            disabledIf: () =>
-              !timer?.id || timer.statusSelect !== TIMER_STATUS.Stop,
-            hideIf: () =>
-              (creation || !timer?.id) &&
-              timesheetConfig.isMultipleTimerEnabled,
-            customAction: () => setIsAlertVisible(true),
-          },
-        ]}
-        formKey="hr_Timer"
-      />
-      <TimerListAlert
-        isAlertVisible={isAlertVisible}
-        setIsAlertVisible={setIsAlertVisible}
-        isFromActiveTimer={true}
-        defaultTimerId={timer?.id}
-      />
-    </>
+    <FormView
+      defaultValue={loadingCreation ? null : defaultValue}
+      actions={[
+        {
+          key: 'update-timer',
+          type: 'update',
+          needValidation: true,
+          needRequiredFields: true,
+          disabledIf: ({objectState}) => fieldsComparison(objectState),
+          hideIf: () => creation || !timer?.id,
+          customAction: ({objectState}) => updateTimerAPI(objectState),
+        },
+      ]}
+      formKey="hr_Timer"
+    />
   );
 };
 
