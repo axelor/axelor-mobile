@@ -44,6 +44,7 @@
   "Project_ParentTask": "Tâche parent",
   "Project_AssignedTo": "Assignée à",
   "Project_Progress": "Progression",
+  "Project_Priority": "Priorité",
   "Project_SliceAction_SearchProject": "recherche sur les projets",
   "Project_SliceAction_FetchProjectById": "récupération du projet par id",
   "Project_SliceAction_FetchProjectStatus": "récupération des statuts de projet",
@@ -53,10 +54,10 @@
   "Project_SliceAction_SearchSubProject": "recherche sur les sous-projets",
   "Project_SliceAction_FetchProjectTaskById": "récupération de la tâche du projet par id",
   "Project_SliceAction_FetchTimesheetLinesByTask": "récupération des lignes de feuille de temps par tâche",
-  "Project_SliceAction_GetProjectTaskTag": "",
-  "Project_SliceAction_SearchTargetVersion": "",
-  "Project_SliceAction_SearchCategory": "",
-  "Project_SliceAction_SearchSection": "",
-  "Project_SliceAction_SearchPriority": "",
-  "Project_SliceAction_UpdateProjectTask": ""
+  "Project_SliceAction_GetProjectTaskTag": "récupération des tags des taches du projet",
+  "Project_SliceAction_SearchTargetVersion": "recherche sur les versions cibles",
+  "Project_SliceAction_SearchCategory": "recherche sur les catégories",
+  "Project_SliceAction_SearchSection": "recherche sur les section",
+  "Project_SliceAction_SearchPriority": "recherche sur les priorités",
+  "Project_SliceAction_UpdateProjectTask": "mise à jour de la tâche du projet"
 }

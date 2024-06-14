@@ -21,6 +21,16 @@ import {useDispatch, useSelector} from '@axelor/aos-mobile-core';
 import {MultiValuePicker} from '@axelor/aos-mobile-ui';
 import {getProjectTaskTag} from '../../../features/projectTaskSlice';
 
+const transformTagsToPickerItems = tags => {
+  return (
+    tags?.map(tag => ({
+      title: tag.name,
+      color: tag.colorSelect,
+      key: tag.id,
+    })) || []
+  );
+};
+
 interface TagTaskMultieValuePickeProps {
   style?: any;
   title?: string;
@@ -47,44 +57,38 @@ const TagTaskMultieValuePicker = ({
     dispatch(getProjectTaskTag());
   }, [dispatch]);
 
-  useEffect(() => {
-    if (defaultValue?.length > 0) {
-      setSelectedStatus(
-        defaultValue.map(tag => {
-          return {
-            title: tag.name,
-            color: tag.colorSelect,
-            key: tag.id,
-          };
-        }),
-      );
-    }
-  }, [defaultValue]);
+  const _defaultValue = useMemo(
+    () => transformTagsToPickerItems(defaultValue),
+    [defaultValue],
+  );
 
-  const projectTaskListItems = useMemo(() => {
-    return taskTagList
-      ? taskTagList.map(tag => {
-          return {
-            title: tag.name,
-            color: tag.colorSelect,
-            key: tag.id,
-          };
-        })
-      : [];
-  }, [taskTagList]);
+  const projectTaskListItems = useMemo(
+    () => transformTagsToPickerItems(taskTagList),
+    [taskTagList],
+  );
+
+  const getFullTagsById = selectedItems => {
+    return selectedItems
+      .map(selectedItem => {
+        return taskTagList.find(tag => tag.id === selectedItem.key);
+      })
+      .filter(tag => tag != null);
+  };
+  const handleValueChange = selectedItems => {
+    setSelectedStatus(selectedItems);
+    const fullTags = getFullTagsById(selectedItems);
+    onChange(fullTags);
+  };
 
   return (
     <MultiValuePicker
       style={style}
       title={title}
-      defaultItems={selectedStatus}
+      defaultItems={_defaultValue}
       listItems={projectTaskListItems}
       required={required}
       readonly={readonly}
-      onValueChange={statusList => {
-        setSelectedStatus(statusList);
-        onChange(statusList);
-      }}
+      onValueChange={handleValueChange}
     />
   );
 };

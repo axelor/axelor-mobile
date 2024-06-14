@@ -44,6 +44,7 @@
   "Project_ParentTask": "Parent task",
   "Project_AssignedTo": "Assigned to",
   "Project_Progress": "Progress",
+  "Project_Priority": "Priority",
   "Project_SliceAction_SearchProject": "search projects",
   "Project_SliceAction_FetchProjectById": "fetch project by id",
   "Project_SliceAction_FetchProjectStatus": "fetch project status",
@@ -53,10 +54,10 @@
   "Project_SliceAction_SearchSubProject": "search sub projects",
   "Project_SliceAction_FetchProjectTaskById": "fetch project task by id",
   "Project_SliceAction_FetchTimesheetLinesByTask": "fetch timesheet lines by task",
-  "Project_SliceAction_GetProjectTaskTag": "",
-  "Project_SliceAction_SearchTargetVersion": "",
-  "Project_SliceAction_SearchCategory": "",
-  "Project_SliceAction_SearchSection": "",
-  "Project_SliceAction_SearchPriority": "",
-  "Project_SliceAction_UpdateProjectTask": ""
+  "Project_SliceAction_GetProjectTaskTag": "get project task tag",
+  "Project_SliceAction_SearchTargetVersion": "search target version",
+  "Project_SliceAction_SearchCategory": "search category",
+  "Project_SliceAction_SearchSection": "search section",
+  "Project_SliceAction_SearchPriority": "search priorities",
+  "Project_SliceAction_UpdateProjectTask": "update project task"
 }
