@@ -1,5 +1,8 @@
 {
   "Sales_Sales": "Ventes",
   "Sales_NotState": "Non {{state}}",
-  "Sales_PartiallyState": "Partiellement {{state}}"
+  "Sales_PartiallyState": "Partiellement {{state}}",
+  "Sales_ATI": "T.T.C.",
+  "Sales_WT": "H.T.",
+  "Sales_SliceAction_FetchSaleConfig": "récupération des configurations de vente"
 }
