@@ -107,7 +107,7 @@ const ContactListScreen = ({navigation}) => {
             style={styles.item}
             partnerFullName={item.simpleFullName}
             partnerReference={item.partnerSeq}
-            partnerAdress={item.mainAddress?.fullName}
+            partnerAddress={item.mainAddress?.fullName}
             partnerFixedPhone={item.fixedPhone}
             partnerEmail={
               item['emailAddress.address'] || item.emailAddress?.address

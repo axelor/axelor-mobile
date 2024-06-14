@@ -1,0 +1,5 @@
+{
+  "title": "Address spelling: added a “d” where one is missing",
+  "type": "fix",
+  "packages": ["crm", "stock"]
+}
