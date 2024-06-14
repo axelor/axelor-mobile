@@ -1,6 +1,0 @@
-{
-  "title": "Selections: add new system to manage object selections with override and web config",
-  "type": "feat",
-  "packages": "core",
-  "description": "Documentation has been updated accordingly to explain new system and tools available"
-}

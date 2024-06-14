@@ -1,5 +1,0 @@
-{
-  "title": "SettingsScreen: add app version at the bottom of the screen",
-  "type": "feat",
-  "packages": "core"
-}

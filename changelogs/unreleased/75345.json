@@ -1,5 +1,0 @@
-{
-  "title": "Tour: add tour menu entry",
-  "type": "feat",
-  "packages": ["crm"]
-}

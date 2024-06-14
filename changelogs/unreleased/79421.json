@@ -1,5 +1,0 @@
-{
-  "title": "Infinite scroll: improve management of pages to avoid useless loading",
-  "type": "refactor",
-  "packages": "core"
-}

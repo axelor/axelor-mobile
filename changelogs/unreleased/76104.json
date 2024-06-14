@@ -1,5 +1,0 @@
-{
-  "title": "InfoButton: new component to display indication on long press",
-  "type": "feat",
-  "packages": "ui"
-}

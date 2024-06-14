@@ -1,5 +1,0 @@
-{
-  "title": "Permissions: use new tool to check if user is admin",
-  "type": "refactor",
-  "packages": ["core", "crm"]
-}

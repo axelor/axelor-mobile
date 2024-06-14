@@ -1,5 +1,0 @@
-{
-  "title": "Modules: add new tool to check if package is mounted in the application",
-  "type": "feat",
-  "packages": "core"
-}

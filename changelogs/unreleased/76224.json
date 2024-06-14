@@ -1,5 +1,0 @@
-{
-  "title": "List screens: use SearchListView component and remove local filters",
-  "type": "refactor",
-  "packages": "stock"
-}

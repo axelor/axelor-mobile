@@ -1,5 +1,0 @@
-{
-  "title": "Webview: add menu entries depending on web config",
-  "type": "feat",
-  "packages": "core"
-}

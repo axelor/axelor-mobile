@@ -1,5 +1,0 @@
-{
-  "title": "Product indicators: use new chart component to display quantity indicators",
-  "type": "refactor",
-  "packages": "stock"
-}

@@ -1,5 +1,0 @@
-{
-  "title": "ChartRender: add new component to make switch between chart type components",
-  "type": "feat",
-  "packages": "ui"
-}

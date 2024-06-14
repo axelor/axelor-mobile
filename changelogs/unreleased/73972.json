@@ -1,5 +1,0 @@
-{
-  "title": "Permissions: add new tools to check user permissions on objects",
-  "type": "feat",
-  "packages": "core"
-}

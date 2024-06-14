@@ -1,5 +1,0 @@
-{
-  "title": "Form views: use new form improvements for actions",
-  "type": "refactor",
-  "packages": ["crm", "helpdesk", "hr"]
-}

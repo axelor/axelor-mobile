@@ -1,5 +1,0 @@
-{
-  "title": "AOPChart: add new component to display AOP chart",
-  "type": "feat",
-  "packages": "core"
-}

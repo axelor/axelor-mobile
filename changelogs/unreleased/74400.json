@@ -1,5 +1,0 @@
-{
-  "title": "PeriodInput: new component to manage date intervals",
-  "type": "feat",
-  "packages": "core"
-}

@@ -1,5 +1,0 @@
-{
-  "title": "FormView: check user permissions on standard and custom form views for fields and buttons",
-  "type": "feat",
-  "packages": "core"
-}

@@ -1,5 +1,0 @@
-{
-  "title": "IndicatorChart: add new component to display indicator chart",
-  "type": "feat",
-  "packages": "ui"
-}

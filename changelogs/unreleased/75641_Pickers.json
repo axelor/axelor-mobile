@@ -1,5 +1,0 @@
-{
-  "title": "UserScreen: move language and theme pickers to settings screen",
-  "type": "refactor",
-  "packages": "core"
-}

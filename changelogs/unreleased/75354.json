@@ -1,5 +1,0 @@
-{
-  "title": "WebView: new component to display a web view with a basic link",
-  "type": "feat",
-  "packages": "core"
-}
