@@ -27,9 +27,11 @@ import {
   fetchProjectTaskStatus as _fetchProjectTaskStatus,
   getProjectTaskTag as _getProjectTaskTag,
   searchCategory as _searchCategory,
+  searchPriority as _searchPriority,
   searchProjectTask as _searchProjectTask,
   searchSection as _searchSection,
   searchTargetVersion as _searchTargetVersion,
+  updateProjectTask as _updateProjectTask,
 } from '../api/project-task-api';
 
 export const searchProjectTask = createAsyncThunk(
@@ -149,6 +151,32 @@ export const searchSection = createAsyncThunk(
   },
 );
 
+export const searchPriority = createAsyncThunk(
+  'project_projectTask/searchPriority',
+  async function (data, {getState}) {
+    return handlerApiCall({
+      fetchFunction: _searchPriority,
+      data,
+      action: 'Project_SliceAction_SearchPriority',
+      getState,
+      responseOptions: {isArrayResponse: true},
+    });
+  },
+);
+
+export const updateProjectTask = createAsyncThunk(
+  'project_projectTask/updateProjectTask',
+  async function (data, {getState}) {
+    return handlerApiCall({
+      fetchFunction: _updateProjectTask,
+      data,
+      action: 'Project_SliceAction_UpdateProjectTask',
+      getState,
+      responseOptions: {isArrayResponse: true},
+    });
+  },
+);
+
 const initialState = {
   loading: true,
   moreLoading: false,
@@ -174,6 +202,11 @@ const initialState = {
   moreLoadingSection: false,
   isListEndSection: false,
   sectionList: [],
+
+  loadingPriority: true,
+  moreLoadingPriority: false,
+  isListEndPriority: false,
+  priorityList: [],
 
   projectTaskStatusList: [],
   projectPriorityList: [],
@@ -218,6 +251,12 @@ const projectTaskSlice = createSlice({
       moreLoading: 'moreLoadingSection',
       isListEnd: 'isListEndSection',
       list: 'sectionList',
+    });
+    generateInifiniteScrollCases(builder, searchPriority, {
+      loading: 'loadingPriority',
+      moreLoading: 'moreLoadingPriority',
+      isListEnd: 'isListEndPriority',
+      list: 'priorityList',
     });
     builder.addCase(fetchProjectTaskStatus.fulfilled, (state, action) => {
       state.projectTaskStatusList = action.payload;

@@ -26,6 +26,7 @@ import {
   LogTimeButton,
   CategorySearchBar,
   ParentTaskSearchBar,
+  PrioritySearchBar,
   ProgressFormInput,
   ProjectSearchBar,
   SectionSearchBar,
@@ -171,6 +172,12 @@ export const project_formsRegister: FormConfigs = {
         type: 'object',
         widget: 'custom',
         customComponent: TargetVersionSearchBar,
+      },
+      priority: {
+        titleKey: 'Project_Priority',
+        type: 'object',
+        widget: 'custom',
+        customComponent: PrioritySearchBar,
       },
       taskDate: {
         titleKey: 'Project_StartDate',

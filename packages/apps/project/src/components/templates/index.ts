@@ -18,6 +18,7 @@
 
 export {default as CategorySearchBar} from './CategorySearchBar/CategorySearchBar';
 export {default as ParentTaskSearchBar} from './ParentTaskSearchBar/ParentTaskSearchBar';
+export {default as PrioritySearchBar} from './PrioritySearchBar/PrioritySearchBar';
 export {default as ProjectListView} from './ProjectListView/ProjectListView';
 export {default as ProjectSearchBar} from './ProjectSearchBar/ProjectSearchBar';
 export {default as SectionSearchBar} from './SectionSearchBar/SectionSearchBar';

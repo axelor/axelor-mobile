@@ -16,24 +16,29 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import React, {useEffect, useMemo} from 'react';
+import React, {useCallback, useEffect, useMemo} from 'react';
 import {useSelector, FormView, useDispatch} from '@axelor/aos-mobile-core';
 import {updateProject} from '../features/projectSlice';
+import {updateProjectTask} from '../features/projectTaskSlice';
 
 const TaskFormScreen = ({}) => {
-  const dispatch = useDispatch();
+  const _dispatch = useDispatch();
 
   const {projectTask} = useSelector((state: any) => state.project_projectTask);
 
   useEffect(() => {
-    dispatch(updateProject(projectTask?.project));
-  }, [dispatch, projectTask?.project]);
+    _dispatch(updateProject(projectTask?.project));
+  }, [_dispatch, projectTask?.project]);
 
   const _defaultValue = useMemo(() => {
     return {
       ...projectTask,
     };
   }, [projectTask]);
+
+  const updateTaskAPI = useCallback((objectState, dispatch) => {
+    dispatch((updateProjectTask as any)({project: objectState}));
+  }, []);
 
   return (
     <FormView
@@ -45,7 +50,9 @@ const TaskFormScreen = ({}) => {
           type: 'update',
           needValidation: true,
           needRequiredFields: true,
-          customAction: ({}) => {}, //updateProspectAPI(objectState, dispatch),
+          customAction: ({dispatch, objectState}) => {
+            updateTaskAPI(objectState, dispatch);
+          },
         },
       ]}
     />
