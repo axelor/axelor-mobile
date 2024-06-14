@@ -25,9 +25,9 @@ import {
   usePermitted,
   useSelector,
   useTranslator,
+  useTypes,
 } from '@axelor/aos-mobile-core';
 import {createTimer, updateTimerStatus} from '../../../features/timerSlice';
-import {Time} from '../../../types';
 import {TimerListAlert} from '../../templates';
 
 const DEFAULT_TIME = 0;
@@ -64,6 +64,7 @@ const TimerStopwatch = ({
   const {canCreate, readonly} = usePermitted({
     modelName: 'com.axelor.apps.hr.db.TSTimer',
   });
+  const {Timer} = useTypes();
 
   const [time, setTime] = useState(DEFAULT_TIME);
   const [status, setStatus] = useState(DEFAULT_STATUS);
@@ -102,13 +103,13 @@ const TimerStopwatch = ({
         const _timer = res?.payload?.payload?.[0];
         if (
           toStatus === 'stop' &&
-          _timer?.statusSelect === Time.statusSelect.Completed
+          _timer?.statusSelect === Timer?.statusSelect.Stop
         ) {
           setIsAlertVisible(true);
         }
       });
     },
-    [defaultValue, dispatch, userId],
+    [defaultValue, dispatch, Timer, userId],
   );
 
   const getTimerState = useCallback(() => {
