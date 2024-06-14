@@ -3,6 +3,44 @@ title: 8.0.0
 tags: Changelog
 ---
 
+## [8.0.6] (2024-06-14)
+
+### @axelor/aos-mobile-core
+
+#### Fixes
+
+- HeaderBandList: prevent component to render in status bar on iOS
+- Date utils: avoid error when trying to split null date
+
+### @axelor/aos-mobile-ui
+
+#### Fixes
+
+- HtmlInput: long words break when reach the end of the component
+- HtmlInput: refresh component when default input data change
+- MultiValuePicker: manage display of picker smaller than screen width
+- CheckboxScrollList: avoid crash when selecting all values with empty list
+
+### @axelor/aos-mobile-hr
+
+#### Fixes
+
+- Expense lines list screen: solve infinite loading after updating/deleting an expense line
+- Timer form: format start date time to the right format before sending request
+- Timer: manage config when only one timer is allowed at a time
+
+### @axelor/aos-mobile-crm
+
+#### Fixes
+
+- Address spelling: added a “d” where one is missing
+
+### @axelor/aos-mobile-stock
+
+#### Fixes
+
+- Address spelling: added a “d” where one is missing
+
 ## [8.0.5] (2024-05-23)
 
 ### @axelor/aos-mobile-core
@@ -293,6 +331,7 @@ Changes has been done to get new core and ui improvements: use of ChipSelect, co
 
 Changes has been done to get new core and ui improvements: use of ChipSelect, color differentiation between success and primary, definition of required configs, use of icons for Bootstrap
 
+[8.0.6]: https://github.com/axelor/axelor-mobile/compare/8.0.5...8.0.6
 [8.0.5]: https://github.com/axelor/axelor-mobile/compare/8.0.4...8.0.5
 [8.0.4]: https://github.com/axelor/axelor-mobile/compare/8.0.3...8.0.4
 [8.0.3]: https://github.com/axelor/axelor-mobile/compare/8.0.2...8.0.3
