@@ -16,16 +16,25 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-export * from './components';
-export * from './theme';
-export * from './utils';
-export {default as File} from './types/file';
-export {ConfigProvider, useConfig} from './config/ConfigContext';
-export {
-  OutsideAlerterProvider,
-  useClickOutside,
-  OUTSIDE_INDICATOR,
-} from './hooks/use-click-outside';
-export {animationUtil} from './tools/AnimationUtil';
-export {useDigitFormat} from './hooks/use-digit-format';
-export {usePriceFormat} from './hooks/use-price-format';
+import {useCallback} from 'react';
+import {useConfig} from '../config/ConfigContext';
+import {checkNullString} from '../utils';
+
+export const usePriceFormat = () => {
+  const {nbDecimalDigitForUnitPrice} = useConfig();
+
+  return useCallback(
+    (priceToFormat: number | string) => {
+      if (typeof priceToFormat === 'number') {
+        priceToFormat = priceToFormat.toString();
+      }
+
+      if (checkNullString(priceToFormat)) {
+        return parseFloat('0').toFixed(nbDecimalDigitForUnitPrice);
+      }
+
+      return parseFloat(priceToFormat).toFixed(nbDecimalDigitForUnitPrice);
+    },
+    [nbDecimalDigitForUnitPrice],
+  );
+};
