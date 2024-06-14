@@ -3,6 +3,40 @@ title: 7.2.0
 tags: Changelog
 ---
 
+## [7.2.12] (2024-06-14)
+
+### @axelor/aos-mobile-core
+
+#### Fixes
+
+- HeaderBandList: prevent component to render in status bar on iOS
+
+### @axelor/aos-mobile-ui
+
+#### Fixes
+
+- HtmlInput: long words break when reach the end of the component
+- HtmlInput: refresh component when default input data change
+- MultiValuePicker: manage display of picker smaller than screen width
+
+### @axelor/aos-mobile-hr
+
+#### Fixes
+
+- Expense lines list screen: solve infinite loading after updating/deleting an expense line
+
+### @axelor/aos-mobile-crm
+
+#### Fixes
+
+- Address spelling: added a “d” where one is missing
+
+### @axelor/aos-mobile-stock
+
+#### Fixes
+
+- Address spelling: added a “d” where one is missing
+
 ## [7.2.11] (2024-05-23)
 
 ### @axelor/aos-mobile-core
@@ -502,6 +536,7 @@ It enables user to manage Expenses through the mobile application. You can creat
 - Remove IconButton component which should be replaced by Button component.
 - Remove Pop-up components which should be replaced by Alert component.
 
+[7.2.12]: https://github.com/axelor/axelor-mobile/compare/7.2.11...7.2.12
 [7.2.11]: https://github.com/axelor/axelor-mobile/compare/7.2.10...7.2.11
 [7.2.10]: https://github.com/axelor/axelor-mobile/compare/7.2.9...7.2.10
 [7.2.9]: https://github.com/axelor/axelor-mobile/compare/7.2.8...7.2.9
