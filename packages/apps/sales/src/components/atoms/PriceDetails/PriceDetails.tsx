@@ -36,7 +36,10 @@ export interface PriceDetailsProps {
 
 const PriceDetails = ({style, lineList}: PriceDetailsProps) => {
   const _lineList = useMemo(
-    () => lineList.filter(line => !line.hideIf),
+    () =>
+      Array.isArray(lineList) && lineList.length > 0
+        ? lineList.filter(line => !line.hideIf)
+        : [],
     [lineList],
   );
 
