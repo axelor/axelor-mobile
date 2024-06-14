@@ -34,8 +34,12 @@ const UserScreen = ({children}) => {
   const {loadingUser, isUser} = useSelector(state => state.user);
   const {mobileSettings} = useSelector(state => state.appConfig);
 
-  const {setFilterConfig, setVirtualKeyboardConfig, setNbDecimalDigitForQty} =
-    useConfig();
+  const {
+    setFilterConfig,
+    setVirtualKeyboardConfig,
+    setNbDecimalDigitForQty,
+    setNbDecimalDigitForUnitPrice,
+  } = useConfig();
 
   useEffect(() => {
     fetchUser();
@@ -46,7 +50,10 @@ const UserScreen = ({children}) => {
     if (baseConfig?.nbDecimalDigitForQty != null) {
       setNbDecimalDigitForQty(baseConfig?.nbDecimalDigitForQty);
     }
-  }, [baseConfig, setNbDecimalDigitForQty]);
+    if (baseConfig?.nbDecimalDigitForUnitPrice != null) {
+      setNbDecimalDigitForUnitPrice(baseConfig?.nbDecimalDigitForUnitPrice);
+    }
+  }, [baseConfig, setNbDecimalDigitForQty, setNbDecimalDigitForUnitPrice]);
 
   useEffect(() => {
     const SMALL_SCREEN_HEIGHT = 500;
