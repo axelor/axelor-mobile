@@ -18,7 +18,7 @@
 
 import React, {useMemo} from 'react';
 import {StyleSheet, View} from 'react-native';
-import {Card, HorizontalRule, Text} from '../../atoms';
+import {Card, HorizontalRule, Text} from '@axelor/aos-mobile-ui';
 
 interface Line {
   title: string;
