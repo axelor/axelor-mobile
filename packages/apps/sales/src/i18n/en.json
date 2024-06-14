@@ -1,5 +1,7 @@
 {
   "Sales_Sales": "Sales",
   "Sales_NotState": "Not {{state}}",
-  "Sales_PartiallyState": "Partially {{state}}"
+  "Sales_PartiallyState": "Partially {{state}}",
+  "Sales_ATI": "A.T.I.",
+  "Sales_WT": "W.T."
 }
