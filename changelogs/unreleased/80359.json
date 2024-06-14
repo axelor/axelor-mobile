@@ -1,0 +1,5 @@
+{
+  "title": "Price formatting: add hook to format the decimal digits according to web configuration",
+  "type": "feat",
+  "packages": "ui"
+}
