@@ -28,7 +28,7 @@ export const fetchSaleConfig = createAsyncThunk(
       data,
       action: 'Sales_SliceAction_FetchSaleConfig',
       getState,
-      responseOptions: {isArrayResponse: false},
+      responseOptions: {isArrayResponse: true},
     });
   },
 );
@@ -47,7 +47,7 @@ const saleConfigSlice = createSlice({
     });
     builder.addCase(fetchSaleConfig.fulfilled, (state, action) => {
       state.loadingSaleConfig = false;
-      state.saleConfig = action.payload;
+      state.saleConfig = action.payload[0];
     });
   },
 });

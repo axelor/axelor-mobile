@@ -16,24 +16,10 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import {createStandardSearch} from '@axelor/aos-mobile-core';
+import {ObjectFields, schemaContructor} from '@axelor/aos-mobile-core';
 
-const createSaleConfigCriteria = companyId => {
-  return [
-    {
-      fieldName: 'company.id',
-      operator: '=',
-      value: companyId,
-    },
-  ];
+export const sale_modelAPI: ObjectFields = {
+  sale_saleConfig: schemaContructor.object({
+    saleOrderInAtiSelect: schemaContructor.number(),
+  }),
 };
-
-export async function fetchSaleConfig({companyId}) {
-  return createStandardSearch({
-    model: 'com.axelor.apps.sale.db.SaleConfig',
-    criteria: createSaleConfigCriteria(companyId),
-    fieldKey: 'sale_saleConfig',
-    sortKey: 'sale_saleConfig',
-    page: 0,
-  });
-}

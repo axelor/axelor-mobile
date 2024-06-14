@@ -20,6 +20,7 @@ import {Module} from '@axelor/aos-mobile-core';
 import enTranslations from './i18n/en.json';
 import frTranslations from './i18n/fr.json';
 import * as saleReducers from './features';
+import {sale_modelAPI} from './models';
 
 export const SalesModule: Module = {
   name: 'app-sales',
@@ -33,6 +34,9 @@ export const SalesModule: Module = {
   translations: {
     en: enTranslations,
     fr: frTranslations,
+  },
+  models: {
+    objectFields: {...sale_modelAPI},
   },
   reducers: {...saleReducers},
 };
