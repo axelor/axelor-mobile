@@ -47,7 +47,7 @@ const saleConfigSlice = createSlice({
     });
     builder.addCase(fetchSaleConfig.fulfilled, (state, action) => {
       state.loadingSaleConfig = false;
-      state.saleConfig = action.payload[0];
+      state.saleConfig = action.payload?.[0];
     });
   },
 });
