@@ -16,31 +16,24 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import {Module} from '@axelor/aos-mobile-core';
-import enTranslations from './i18n/en.json';
-import frTranslations from './i18n/fr.json';
-import * as saleReducers from './features';
-import {sale_modelAPI} from './models';
+import {createStandardSearch} from '@axelor/aos-mobile-core';
 
-export const SalesModule: Module = {
-  name: 'app-sales',
-  title: 'Sales_Sales',
-  subtitle: 'Sales_Sales',
-  icon: 'graph-up-arrow',
-  compatibilityAOS: {
-    moduleName: 'axelor-sales',
-    downToVersion: '8.2.0',
-  },
-  translations: {
-    en: enTranslations,
-    fr: frTranslations,
-  },
-  models: {
-    objectFields: {...sale_modelAPI},
-  },
-  reducers: {...saleReducers},
+const createSaleConfigCriteria = companyId => {
+  return [
+    {
+      fieldName: 'company.id',
+      operator: '=',
+      value: companyId,
+    },
+  ];
 };
 
-export * from './api';
-export * from './components';
-export * from './features/asyncFunctions-index';
+export async function fetchSaleConfig({companyId}) {
+  return createStandardSearch({
+    model: 'com.axelor.apps.sale.db.SaleConfig',
+    criteria: createSaleConfigCriteria(companyId),
+    fieldKey: 'sale_saleConfig',
+    sortKey: 'sale_saleConfig',
+    page: 0,
+  });
+}
