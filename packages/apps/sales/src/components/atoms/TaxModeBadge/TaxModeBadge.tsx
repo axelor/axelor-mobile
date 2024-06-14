@@ -19,7 +19,7 @@
 import React from 'react';
 import {Badge, useThemeColor} from '@axelor/aos-mobile-ui';
 import {useTranslator} from '@axelor/aos-mobile-core';
-import {useTaxModeIndicator} from '../../../hooks/use-task-mode';
+import {useTaxModeIndicator} from '../../../hooks/use-tax-mode-indicator';
 
 interface TaxModeBadgeProps {
   inAti: boolean;
@@ -35,9 +35,12 @@ const TaxModeBadge = ({inAti, type = 'base'}: TaxModeBadgeProps) => {
     return null;
   }
 
-  const badgeText = inAti ? I18n.t('Sales_ATI') : I18n.t('Sales_WT');
-
-  return <Badge title={badgeText} color={Colors.infoColor} />;
+  return (
+    <Badge
+      title={I18n.t(inAti ? 'Sales_ATI' : 'Sales_WT')}
+      color={Colors.infoColor}
+    />
+  );
 };
 
 export default TaxModeBadge;

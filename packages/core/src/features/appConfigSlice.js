@@ -60,6 +60,7 @@ const appConfigSlice = createSlice({
     builder.addCase(fetchRequiredConfig.fulfilled, (state, action) => {
       state.loadingConfig = false;
       action.meta.arg.forEach((_configName, index) => {
+        // console.log(_configName);
         state[formatAppName(_configName)] = action.payload[index];
       });
     });

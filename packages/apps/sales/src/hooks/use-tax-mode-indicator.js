@@ -16,19 +16,27 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import {useMemo} from 'react';
-import {useSelector} from '@axelor/aos-mobile-core';
+import {useEffect, useMemo} from 'react';
+import {useDispatch, useSelector} from '@axelor/aos-mobile-core';
+import {fetchSaleConfig} from '../features/saleConfigSlice';
 
 const CONFIG = {
   Always_WT: 1,
   Always_ATI: 2,
   WT_by_default: 3,
-  ATi_by_default: 4,
+  ATI_by_default: 4,
 };
 
 export const useTaxModeIndicator = (inAti, type = 'base') => {
+  const dispatch = useDispatch();
+
   const {base: baseConfig} = useSelector(state => state.appConfig);
-  const {sale: saleConfig} = useSelector(state => state.appConfig);
+  const {saleConfig} = useSelector(state => state.sales_saleConfig);
+  const {user} = useSelector(state => state.user);
+
+  useEffect(() => {
+    dispatch(fetchSaleConfig({companyId: user?.activeCompany?.id}));
+  }, [dispatch, user?.activeCompany?.id]);
 
   const selectedConfig = useMemo(() => {
     return type === 'sale'
@@ -37,17 +45,14 @@ export const useTaxModeIndicator = (inAti, type = 'base') => {
   }, [type, baseConfig, saleConfig]);
 
   const shouldDisplayIndicator = useMemo(() => {
-    if (
+    return (
       (inAti &&
         (selectedConfig === CONFIG.Always_WT ||
           selectedConfig === CONFIG.WT_by_default)) ||
       (!inAti &&
         (selectedConfig === CONFIG.Always_ATI ||
-          selectedConfig === CONFIG.ATi_by_default))
-    ) {
-      return true;
-    }
-    return false;
+          selectedConfig === CONFIG.ATI_by_default))
+    );
   }, [inAti, selectedConfig]);
 
   return shouldDisplayIndicator;
