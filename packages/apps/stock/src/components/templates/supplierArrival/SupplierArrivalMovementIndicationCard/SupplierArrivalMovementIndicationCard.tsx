@@ -43,7 +43,7 @@ const SupplierArrivalMovementIndicationCard = ({
     <View>
       {showPopupOnCLick && (
         <PopUpOneButton
-          title={I18n.t('Stock_OriginalAdress')}
+          title={I18n.t('Stock_OriginalAddress')}
           visible={isPopupVisible}
           data={supplierArrival.fromAddress?.fullName}
           btnTitle={I18n.t('Base_OK')}

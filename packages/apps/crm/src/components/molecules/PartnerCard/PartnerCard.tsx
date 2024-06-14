@@ -35,7 +35,7 @@ interface PartnerCardProps {
   partnerReference: string;
   partnerCompany?: string;
   partnerScoring?: number;
-  partnerAdress: string;
+  partnerAddress: string;
   partnerMobilePhone?: string;
   partnerFixedPhone: string;
   partnerEmail: string;
@@ -48,7 +48,7 @@ const PartnerCard = ({
   partnerReference,
   partnerCompany,
   partnerScoring,
-  partnerAdress,
+  partnerAddress,
   partnerMobilePhone,
   partnerFixedPhone,
   partnerEmail,
@@ -84,8 +84,8 @@ const PartnerCard = ({
           </View>
           <View style={styles.containerBody}>
             <View style={styles.containerTextBody}>
-              {!checkNullString(partnerAdress) && (
-                <LabelText iconName="map-marker-alt" title={partnerAdress} />
+              {!checkNullString(partnerAddress) && (
+                <LabelText iconName="map-marker-alt" title={partnerAddress} />
               )}
               {!checkNullString(partnerMobilePhone) && (
                 <LabelText

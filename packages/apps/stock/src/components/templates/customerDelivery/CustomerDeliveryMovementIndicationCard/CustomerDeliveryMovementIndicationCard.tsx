@@ -39,7 +39,7 @@ const CustomerDeliveryMovementIndicationCard = ({
     <View>
       {showPopupOnCLick && (
         <PopUpOneButton
-          title={I18n.t('Stock_DestinationAdress')}
+          title={I18n.t('Stock_DestinationAddress')}
           data={
             customerDelivery.toAddress?.fullName ||
             customerDelivery.toAddressStr

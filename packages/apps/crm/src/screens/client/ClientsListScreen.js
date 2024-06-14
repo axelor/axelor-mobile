@@ -106,7 +106,7 @@ const CLientsListScreen = ({navigation}) => {
             style={styles.item}
             partnerFullName={item.simpleFullName}
             partnerReference={item.partnerSeq}
-            partnerAdress={item.mainAddress?.fullName}
+            partnerAddress={item.mainAddress?.fullName}
             partnerFixedPhone={item.fixedPhone}
             partnerEmail={item['emailAddress.address']}
             partnerPicture={item.picture}
