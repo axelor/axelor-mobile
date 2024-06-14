@@ -28,7 +28,7 @@ const routes = {
     AppTimesheet: '/ws/rest/com.axelor.apps.base.db.AppTimesheet',
     AppMobileSettings: '/ws/rest/com.axelor.apps.base.db.AppMobileSettings',
     AppProduction: '/ws/rest/com.axelor.apps.base.db.AppProduction',
-    AppSale: '/ws/rest/com.axelor.apps.base.db.AppProduction',
+    AppSale: '/ws/rest/com.axelor.apps.base.db.AppSale',
     TraceBack: '/ws/rest/com.axelor.exception.db.TraceBack',
     EmailAddress: '/ws/rest/com.axelor.apps.message.db.EmailAddress',
     MailMessages: '/ws/rest/com.axelor.mail.db.MailMessage/messages',
