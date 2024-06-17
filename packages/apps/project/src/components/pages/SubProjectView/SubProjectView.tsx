@@ -72,9 +72,7 @@ const SubProjectView = () => {
       />
       {project.parentProject != null && (
         <>
-          <Text
-            style={[styles.title, styles.titleParentProject]}
-            writingType="details">
+          <Text style={styles.title} writingType="details">
             {I18n.t('Project_ParentProject')}
           </Text>
           <ProjectCard
@@ -90,13 +88,13 @@ const SubProjectView = () => {
             parentProject={project?.parentProject?.parentProject?.fullName}
             isCopyCard={true}
           />
-          <HorizontalRule style={styles.horizontalRule} />
         </>
       )}
       {subProjectList != null && subProjectList?.length > 0 && (
         <>
+          <HorizontalRule style={styles.horizontalRule} />
           <Text style={styles.title} writingType="details">
-            {I18n.t('Project_ChildProject')}
+            {I18n.t('Project_ChildProjects')}
           </Text>
           <ScrollList
             data={subProjectList}
@@ -128,14 +126,12 @@ const SubProjectView = () => {
 const styles = StyleSheet.create({
   title: {
     marginHorizontal: 24,
-  },
-  titleParentProject: {
     marginVertical: 10,
   },
   horizontalRule: {
     alignSelf: 'center',
     width: '70%',
-    marginVertical: 10,
+    marginTop: 10,
   },
 });
 

@@ -18,7 +18,7 @@
   "Project_CreateNewTask": "Créer une nouvelle tâche",
   "Project_Tasks": "Tâches",
   "Project_ParentProject": "Projet parent",
-  "Project_ChildProject": "Projets enfants",
+  "Project_ChildProjects": "Projets enfants",
   "Project_SliceAction_SearchProject": "recherche sur les projets",
   "Project_SliceAction_FetchProjectById": "récupération du projet par id",
   "Project_SliceAction_FetchProjectStatus": "récupération des statuts de projet",

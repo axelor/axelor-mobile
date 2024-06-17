@@ -151,7 +151,6 @@ const styles = StyleSheet.create({
   badges: {
     position: 'absolute',
     justifyContent: 'flex-end',
-    marginTop: 5,
     right: 0,
   },
 });

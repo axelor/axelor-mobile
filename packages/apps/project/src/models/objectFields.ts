@@ -53,12 +53,13 @@ export const project_modelAPI: ObjectFields = {
     assignedTo: schemaContructor.subObject('fullName'),
     parentProject: schemaContructor.subObject().concat(
       schemaContructor.object({
+        fullName: schemaContructor.string(),
         name: schemaContructor.string(),
         code: schemaContructor.string(),
         company: schemaContructor.subObject(),
         assignedTo: schemaContructor.subObject(),
         projectStatus: schemaContructor.subObject(),
-        parentProject: schemaContructor.subObject(),
+        parentProject: schemaContructor.subObject('fullName'),
         clientPartner: schemaContructor.subObject().concat(
           schemaContructor.object({
             picture: schemaContructor.subObject(),

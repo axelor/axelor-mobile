@@ -128,7 +128,7 @@ const createSubProjectCriteria = ({projectId}) => {
   ];
 };
 
-export async function searchSubProject({page, projectId}) {
+export async function searchSubProject({page = 0, projectId}) {
   return createStandardSearch({
     model: 'com.axelor.apps.project.db.Project',
     criteria: createSubProjectCriteria({projectId}),
