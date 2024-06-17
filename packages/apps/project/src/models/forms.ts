@@ -16,7 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import {FormConfigs, getTypes} from '@axelor/aos-mobile-core';
+import {FormConfigs} from '@axelor/aos-mobile-core';
 import {
   ProductSearchBar,
   ProjectSearchBar,
