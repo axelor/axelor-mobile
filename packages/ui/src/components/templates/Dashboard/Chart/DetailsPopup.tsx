@@ -61,7 +61,9 @@ const DetailsPopup = ({
       }}>
       {selectedItem && (
         <View>
-          <Text>{`${translate('Base_Label')}: ${selectedItem.label}`}</Text>
+          <Text>{`${translate('Base_Label')}: ${
+            selectedItem.label || selectedItem.title
+          }`}</Text>
           <Text>{`${translate('Base_Value')}: ${selectedItem.value} ${
             checkNullString(unit) ? '' : unit
           }`}</Text>

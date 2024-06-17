@@ -24,7 +24,6 @@ import {MARGIN, getContainerMinWidth, getContainerWidth} from '../chart.helper';
 import IndicatorItem from './IndicatorItem';
 import SimpleIndicator from './SimpleIndicator';
 import ChartTitle from './ChartTitle';
-import {checkNullString} from '../../../../../utils';
 import DetailsPopup from '../DetailsPopup';
 
 interface IndicatorChartProps {
