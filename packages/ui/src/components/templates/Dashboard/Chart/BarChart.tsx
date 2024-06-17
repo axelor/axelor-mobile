@@ -40,7 +40,7 @@ interface BarCharProps {
   title?: string;
   rotateLabel?: boolean;
   hideCardBackground?: boolean;
-  translator?: (translationKey: string) => string;
+  translator: (translationKey: string) => string;
 }
 
 const BarChart = ({

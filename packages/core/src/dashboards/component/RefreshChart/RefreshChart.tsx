@@ -20,6 +20,7 @@ import React, {useEffect, useMemo, useState} from 'react';
 import {StyleSheet, View} from 'react-native';
 import {ChartRender, Icon} from '@axelor/aos-mobile-ui';
 import {fetchChartById} from '../../api.helpers';
+import {useTranslator} from '../../../i18n';
 import AOPChart from '../AOPChart/AOPChart';
 
 const DEFAULT_CONFIG = {
@@ -40,6 +41,8 @@ const RefreshChart = ({
   chartId,
   hideCardBackground = false,
 }: RefreshChartProps) => {
+  const I18n = useTranslator();
+
   const [charConfig, setChartConfig] = useState(DEFAULT_CONFIG);
 
   useEffect(() => {
@@ -80,11 +83,12 @@ const RefreshChart = ({
           title={charConfig.chartName}
           type={charConfig.chartType}
           hideCardBackground={hideCardBackground}
+          translator={I18n.t}
         />
       );
     }
     return null;
-  }, [charConfig, hideCardBackground]);
+  }, [I18n.t, charConfig, hideCardBackground]);
 
   if (content == null) {
     return null;

@@ -32,7 +32,7 @@ interface IndicatorChartProps {
   datasets: Data[];
   title?: string;
   hideCardBackground?: boolean;
-  translator?: (translationKey: string) => string;
+  translator: (translationKey: string) => string;
 }
 
 const IndicatorChart = ({

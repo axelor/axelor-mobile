@@ -43,7 +43,7 @@ interface DashboardProps {
   hideCardBackground?: boolean;
   /** Formatted last update date */
   lastUpdate?: Date;
-  translator?: (translationKey: string) => string;
+  translator: (translationKey: string) => string;
   displayLastUpdate?: boolean;
   chartWidth?: number;
 }

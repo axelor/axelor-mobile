@@ -29,10 +29,7 @@ const BarChartRender = (
   title: string,
   widthGraph: number,
   hideCardBackground: boolean,
-  translator: {
-    (translationKey: string): string;
-    (translationKey: string): string;
-  },
+  translator: (translationKey: string) => string,
 ) => {
   return (
     <BarChart
@@ -50,7 +47,7 @@ const LineChartRender = (
   title: string,
   widthGraph: number,
   hideCardBackground: boolean,
-  translator,
+  translator: (translationKey: string) => string,
 ) => {
   return (
     <LineChart
@@ -92,7 +89,7 @@ const ChartRender = ({
   type: string;
   widthGraph?: number;
   hideCardBackground?: boolean;
-  translator?: (translationKey: string) => string;
+  translator: (translationKey: string) => string;
 }) => {
   switch (type) {
     case Chart.chartType.bar:

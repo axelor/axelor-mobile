@@ -40,7 +40,7 @@ interface LineChartProps {
   rotateLabel?: boolean;
   title?: string;
   hideCardBackground?: boolean;
-  translator?: (translationKey: string) => string;
+  translator: (translationKey: string) => string;
 }
 
 const LineChart = ({

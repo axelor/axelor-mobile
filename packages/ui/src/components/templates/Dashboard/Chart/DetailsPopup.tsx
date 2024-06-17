@@ -30,45 +30,31 @@ const DetailsPopup = ({
   unit,
 }: {
   modalVisible: boolean;
-  translator?: (translationKey: string) => string;
+  translator: (translationKey: string) => string;
   closeModal: () => void;
   selectedItem: any;
   unit?: string;
 }) => {
-  const translate = key => {
-    if (translator) {
-      return translator(key);
-    }
-    switch (key) {
-      case 'Base_Details':
-        return 'Details';
-      case 'Base_Label':
-        return 'Label';
-      case 'Base_Value':
-        return 'Value';
-      default:
-        return key;
-    }
-  };
+  if (selectedItem == null) {
+    return null;
+  }
 
   return (
     <Alert
       visible={modalVisible}
       translator={translator}
-      title={translate('Base_Details')}
+      title={translator('Base_Details')}
       confirmButtonConfig={{
         onPress: closeModal,
       }}>
-      {selectedItem && (
-        <View>
-          <Text>{`${translate('Base_Label')}: ${
-            selectedItem.label || selectedItem.title
-          }`}</Text>
-          <Text>{`${translate('Base_Value')}: ${selectedItem.value} ${
-            checkNullString(unit) ? '' : unit
-          }`}</Text>
-        </View>
-      )}
+      <View>
+        <Text>{`${translator('Base_Label')}: ${
+          selectedItem.label || selectedItem.title
+        }`}</Text>
+        <Text>{`${translator('Base_Value')}: ${selectedItem.value} ${
+          checkNullString(unit) ? '' : unit
+        }`}</Text>
+      </View>
     </Alert>
   );
 };
