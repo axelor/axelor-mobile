@@ -16,7 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import React, {useMemo} from 'react';
+import React, {useCallback, useMemo, useState} from 'react';
 import {StyleSheet, Dimensions, View} from 'react-native';
 import {Card} from '../../../../atoms';
 import {Data} from '../../dashboard.helper';
@@ -24,6 +24,8 @@ import {MARGIN, getContainerMinWidth, getContainerWidth} from '../chart.helper';
 import IndicatorItem from './IndicatorItem';
 import SimpleIndicator from './SimpleIndicator';
 import ChartTitle from './ChartTitle';
+import {checkNullString} from '../../../../../utils';
+import DetailsPopup from '../DetailsPopup';
 
 interface IndicatorChartProps {
   style?: any;
@@ -31,6 +33,7 @@ interface IndicatorChartProps {
   datasets: Data[];
   title?: string;
   hideCardBackground?: boolean;
+  translator?: (translationKey: string) => string;
 }
 
 const IndicatorChart = ({
@@ -39,7 +42,11 @@ const IndicatorChart = ({
   datasets,
   title,
   hideCardBackground = false,
+  translator,
 }: IndicatorChartProps) => {
+  const [selectedIndicator, setSelectedIndicator] = useState(null);
+  const [modalVisible, setModalVisible] = useState(false);
+
   const Container = useMemo(
     () => (hideCardBackground ? View : Card),
     [hideCardBackground],
@@ -53,6 +60,15 @@ const IndicatorChart = ({
     return getContainerMinWidth();
   }, []);
 
+  const handleIndicatorPress = useCallback(indicatorData => {
+    setSelectedIndicator(indicatorData);
+    setModalVisible(true);
+  }, []);
+
+  const closeModal = useCallback(() => {
+    setModalVisible(false);
+  }, []);
+
   const renderIndicator = useMemo(() => {
     if (datasets?.length === 1) {
       const data = datasets[0];
@@ -64,6 +80,7 @@ const IndicatorChart = ({
             color={data.color}
             unit={data.unit}
             value={data.value}
+            onPress={() => handleIndicatorPress(data)}
           />
           <ChartTitle title={title} align />
         </>
@@ -81,11 +98,12 @@ const IndicatorChart = ({
             color={data.color}
             unit={data.unit}
             value={data.value}
+            onPress={() => handleIndicatorPress(data)}
           />
         ))}
       </>
     );
-  }, [datasets, title]);
+  }, [datasets, title, handleIndicatorPress]);
 
   if (!Array.isArray(datasets) || datasets.length === 0) {
     return null;
@@ -99,6 +117,13 @@ const IndicatorChart = ({
         style,
       ]}>
       {renderIndicator}
+      <DetailsPopup
+        closeModal={closeModal}
+        modalVisible={modalVisible}
+        selectedItem={selectedIndicator}
+        unit={selectedIndicator?.unit}
+        translator={translator}
+      />
     </Container>
   );
 };

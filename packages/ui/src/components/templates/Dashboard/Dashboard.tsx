@@ -99,6 +99,7 @@ const Dashboard = ({
                     type={type}
                     widthGraph={widthGraph}
                     hideCardBackground={hideCardBackground}
+                    translator={translator}
                   />
                 );
               },

@@ -16,7 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import React, {useMemo} from 'react';
+import React, {useCallback, useMemo, useState} from 'react';
 import {StyleSheet, View} from 'react-native';
 import {LineChart as RNLineChart} from 'react-native-gifted-charts';
 import {useThemeColor} from '../../../../theme';
@@ -29,6 +29,7 @@ import {
   getContainerWidth,
   initLineData,
 } from './chart.helper';
+import DetailsPopup from './DetailsPopup';
 
 interface LineChartProps {
   style?: any;
@@ -39,6 +40,7 @@ interface LineChartProps {
   rotateLabel?: boolean;
   title?: string;
   hideCardBackground?: boolean;
+  translator?: (translationKey: string) => string;
 }
 
 const LineChart = ({
@@ -50,8 +52,12 @@ const LineChart = ({
   title,
   rotateLabel = true,
   hideCardBackground = false,
+  translator,
 }: LineChartProps) => {
   const Colors = useThemeColor();
+
+  const [selectedPoint, setSelectedPoint] = useState(null);
+  const [modalVisible, setModalVisible] = useState(false);
 
   const chartProps = useMemo(() => {
     return initLineData(datasets, rotateLabel, spacing, Colors);
@@ -83,6 +89,15 @@ const LineChart = ({
 
   const Container = hideCardBackground ? View : Card;
 
+  const handlePointPress = useCallback(pointData => {
+    setSelectedPoint(pointData);
+    setModalVisible(true);
+  }, []);
+
+  const closeModal = useCallback(() => {
+    setModalVisible(false);
+  }, []);
+
   return (
     <Container
       style={[
@@ -102,8 +117,15 @@ const LineChart = ({
         isAnimated={true}
         backgroundColor={backgroundColor}
         {...chartProps}
+        onPress={handlePointPress}
       />
       {!checkNullString(title) && <Text style={styles.title}>{title}</Text>}
+      <DetailsPopup
+        closeModal={closeModal}
+        modalVisible={modalVisible}
+        selectedItem={selectedPoint}
+        translator={translator}
+      />
     </Container>
   );
 };
