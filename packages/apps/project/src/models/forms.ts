@@ -16,15 +16,11 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import {FormConfigs} from '@axelor/aos-mobile-core';
+import {FormConfigs, getTypes} from '@axelor/aos-mobile-core';
 import {
-  ManufOrderSearchBar,
-  OperationOrderSearchBar,
   ProductSearchBar,
   ProjectSearchBar,
   ProjectTaskSearchBar,
-  Timesheet,
-  updateManufOrder,
   updateProject,
 } from '@axelor/aos-mobile-hr';
 import {ValidationTimesheetLineButton} from '../components';
@@ -39,57 +35,19 @@ export const project_formsRegister: FormConfigs = {
         widget: 'custom',
         customComponent: ProjectSearchBar,
         readonly: true,
-        hideIf: ({storeState}) =>
-          storeState.user.user.employee?.timesheetImputationSelect !==
-            Timesheet.imputation.Project ||
-          !storeState.appConfig.mobileSettings.fieldsToShowOnTimesheet.find(
-            (field: string) => field === 'project',
-          ),
       },
       projectTask: {
         titleKey: 'Hr_ProjectTask',
         type: 'object',
         widget: 'custom',
         customComponent: ProjectTaskSearchBar,
-        hideIf: ({objectState, storeState}) =>
-          objectState.project == null ||
-          storeState.user.user.employee?.timesheetImputationSelect !==
-            Timesheet.imputation.Project ||
+        hideIf: ({storeState}) =>
           !storeState.appConfig.mobileSettings.fieldsToShowOnTimesheet.find(
             (field: string) => field === 'projectTask',
           ),
         dependsOn: {
           project: ({newValue, dispatch}) => {
             dispatch(updateProject(newValue));
-          },
-        },
-      },
-      manufOrder: {
-        titleKey: 'Hr_ManufOrder',
-        type: 'object',
-        widget: 'custom',
-        customComponent: ManufOrderSearchBar,
-        hideIf: ({storeState}) =>
-          storeState.user.user.employee?.timesheetImputationSelect !==
-            Timesheet.imputation.ManufOrder ||
-          !storeState.appConfig.mobileSettings.fieldsToShowOnTimesheet.find(
-            (field: string) => field === 'manufOrder',
-          ),
-      },
-      operationOrder: {
-        titleKey: 'Hr_OperationOrder',
-        type: 'object',
-        widget: 'custom',
-        customComponent: OperationOrderSearchBar,
-        hideIf: ({storeState}) =>
-          storeState.user.user.employee?.timesheetImputationSelect !==
-            Timesheet.imputation.ManufOrder ||
-          !storeState.appConfig.mobileSettings.fieldsToShowOnTimesheet.find(
-            (field: string) => field === 'operationOrder',
-          ),
-        dependsOn: {
-          manufOrder: ({newValue, dispatch}) => {
-            dispatch(updateManufOrder(newValue));
           },
         },
       },

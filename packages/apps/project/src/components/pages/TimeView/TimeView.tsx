@@ -30,7 +30,7 @@ const TimeView = () => {
 
   useEffect(() => {
     dispatch(updateProject(project));
-  });
+  }, [dispatch, project]);
 
   const defaultValue = useMemo(() => {
     return {
@@ -50,6 +50,7 @@ const TimeView = () => {
           formKey="project_TimesheetLine"
           actions={[]}
           defaultValue={defaultValue}
+          floatingTools={false}
         />
       </ScrollView>
     </View>

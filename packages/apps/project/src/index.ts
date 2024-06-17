@@ -22,10 +22,10 @@ import frTranslations from './i18n/fr.json';
 import ProjectScreens from './screens/';
 import * as projectReducers from './features';
 import {
+  project_formsRegister,
   project_modelAPI,
   project_searchFields,
   project_sortFields,
-  project_formsRegister,
 } from './models';
 import {useProjectHeaders} from './hooks/use-project-header-actions';
 
