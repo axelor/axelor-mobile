@@ -18,7 +18,7 @@
 
 import React from 'react';
 import {View} from 'react-native';
-import {NotesCard} from '@axelor/aos-mobile-ui';
+import {HtmlInput, Text, checkNullString} from '@axelor/aos-mobile-ui';
 import {useTranslator} from '@axelor/aos-mobile-core';
 
 interface DropdownTaskDescriptionProps {
@@ -36,11 +36,22 @@ const DropdownTaskDescription = ({
 
   return (
     <View style={style}>
-      <NotesCard title={I18n.t('Base_Description')} data={description} />
-      <NotesCard
-        title={I18n.t('Project_InternalDescription')}
-        data={internalDescription}
-      />
+      {!checkNullString(description) && (
+        <>
+          <Text writingType="important">{`${I18n.t(
+            'Base_Description',
+          )}: `}</Text>
+          <HtmlInput defaultInput={description} readonly={true} />
+        </>
+      )}
+      {!checkNullString(internalDescription) && (
+        <>
+          <Text writingType="important">{`${I18n.t(
+            'Project_InternalDescription',
+          )}: `}</Text>
+          <HtmlInput defaultInput={internalDescription} readonly={true} />
+        </>
+      )}
     </View>
   );
 };

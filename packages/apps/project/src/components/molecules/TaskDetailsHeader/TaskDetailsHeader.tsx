@@ -36,7 +36,7 @@ const TaskDetailsHeader = ({}) => {
 
   return (
     <View style={styles.container}>
-      <View style={styles.row}>
+      <View style={styles.rowContainer}>
         <View style={styles.columnContainer}>
           <Text writingType="title">{projectTask?.name}</Text>
           <LabelText
@@ -88,7 +88,7 @@ const styles = StyleSheet.create({
     marginBottom: 5,
     flexDirection: 'column',
   },
-  row: {
+  rowContainer: {
     flexDirection: 'row',
     justifyContent: 'space-between',
   },

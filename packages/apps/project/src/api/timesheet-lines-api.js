@@ -19,17 +19,13 @@
 import {createStandardSearch} from '@axelor/aos-mobile-core';
 
 const createTimesheetLineCriteria = ({projectTaskId}) => {
-  const criteria = [];
-
-  if (projectTaskId != null) {
-    criteria.push({
+  return [
+    {
       fieldName: 'projectTask.id',
       operator: '=',
       value: projectTaskId,
-    });
-  }
-
-  return criteria;
+    },
+  ];
 };
 
 export async function fetchTimesheetLinesByTask({projectTaskId}) {

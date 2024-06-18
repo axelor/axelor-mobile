@@ -18,7 +18,7 @@
 
 export {default as DropdownInvoicing} from './DropdownInvoicing/DropdownInvoicing';
 export {default as DropdownMembers} from './DropdownMembers/DropdownMembers';
-export {default as DropdownTaskCharacteristic} from './DropdownTaskCharacteristic/DropdownTaskCharacteristic';
+export {default as DropdownTaskCharacteristics} from './DropdownTaskCharacteristics/DropdownTaskCharacteristics';
 export {default as DropdownTaskDescription} from './DropdownTaskDescription/DropdownTaskDescription';
 export {default as PartnerActionCard} from './PartnerActionCard/PartnerActionCard';
 export {default as ProjectHeader} from './ProjectHeader/ProjectHeader';

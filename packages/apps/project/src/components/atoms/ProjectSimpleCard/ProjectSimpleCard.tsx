@@ -40,19 +40,19 @@ const ProjectSimpleCard = ({
 
   const {projectStatusList} = useSelector(state => state.project_project);
 
-  const borderStyle = useMemo(() => {
+  const containerStyle = useMemo(() => {
     return (
       projectStatus != null &&
       getStyles(
         getItemColorFromIndex(projectStatusList, projectStatus)?.background,
-      )?.border
+      )?.container
     );
   }, [getItemColorFromIndex, projectStatus, projectStatusList]);
 
   return (
     <ObjectCard
       onPress={onPress}
-      style={[borderStyle, style]}
+      style={[containerStyle, style]}
       upperTexts={{
         items: [
           {displayText: name, isTitle: true},
@@ -68,9 +68,11 @@ const ProjectSimpleCard = ({
 
 const getStyles = (color: string) =>
   StyleSheet.create({
-    border: {
+    container: {
       borderLeftWidth: 7,
       borderLeftColor: color,
+      width: '90%',
+      alignSelf: 'center',
     },
   });
 

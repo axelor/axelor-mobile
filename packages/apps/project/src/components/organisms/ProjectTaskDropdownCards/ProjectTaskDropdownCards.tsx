@@ -21,7 +21,7 @@ import {StyleSheet} from 'react-native';
 import {useSelector, useTranslator} from '@axelor/aos-mobile-core';
 import {DropdownCardSwitch, checkNullString} from '@axelor/aos-mobile-ui';
 import {
-  DropdownTaskCharacteristic,
+  DropdownTaskCharacteristics,
   DropdownTaskDescription,
 } from '../../molecules';
 
@@ -31,22 +31,23 @@ const ProjectTaskDropdownCards = () => {
   const {projectTask} = useSelector((state: any) => state.project_projectTask);
 
   const items = useMemo(() => {
-    const result = [];
-    result.push({
-      key: 1,
-      title: I18n.t('Project_Characteristics'),
-      childrenComp: (
-        <DropdownTaskCharacteristic
-          projectTaskCategory={projectTask?.projectTaskCategory}
-          projectTaskSection={projectTask?.projectTaskSection}
-          targetVersion={projectTask?.targetVersion}
-          taskDate={projectTask?.taskDate}
-          taskEndDate={projectTask?.taskEndDate}
-          taskDeadline={projectTask?.taskDeadline}
-          projectTaskTagSet={projectTask?.projectTaskTagSet}
-        />
-      ),
-    });
+    const result = [
+      {
+        key: 1,
+        title: I18n.t('Project_Characteristics'),
+        childrenComp: (
+          <DropdownTaskCharacteristics
+            projectTaskCategory={projectTask?.projectTaskCategory}
+            projectTaskSection={projectTask?.projectTaskSection}
+            targetVersion={projectTask?.targetVersion}
+            taskDate={projectTask?.taskDate}
+            taskEndDate={projectTask?.taskEndDate}
+            taskDeadline={projectTask?.taskDeadline}
+            projectTaskTagSet={projectTask?.projectTaskTagSet}
+          />
+        ),
+      },
+    ];
 
     if (
       !checkNullString(projectTask?.description) ||

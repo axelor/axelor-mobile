@@ -55,6 +55,7 @@ const TimeSpentGridView = () => {
         {title: I18n.t('Project_ToInvoice'), key: 'toInvoice'},
         {title: I18n.t('Base_Comments'), key: 'comments'},
       ]}
+      translator={I18n.t}
       title={I18n.t('Project_TimeSpent')}
     />
   );

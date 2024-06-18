@@ -30,8 +30,8 @@ import {
   TaskButton,
   TaskDetailsHeader,
   TimeSpentGridView,
+  ProjectTaskDropdownCards,
 } from '../components';
-import ProjectTaskDropdownCards from '../components/organisms/ProjectTaskDropdownCards/ProjectTaskDropdownCards';
 import {fetchProjectStatus} from '../features/projectSlice';
 import {fetchTimesheetLinesByTask} from '../features/timesheetLinesSlice';
 

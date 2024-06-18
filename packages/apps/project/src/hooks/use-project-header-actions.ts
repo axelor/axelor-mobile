@@ -26,6 +26,7 @@ import {
 import {useThemeColor} from '@axelor/aos-mobile-ui';
 import {fetchProjectById} from '../features/projectSlice';
 import {fetchProjectTaskById} from '../features/projectTaskSlice';
+import {fetchTimesheetLinesByTask} from '../features/timesheetLinesSlice';
 
 export const useProjectHeaders = () => {
   useProjectDetailsActions();
@@ -91,7 +92,7 @@ const useProjectTaskDetailsActions = () => {
       attachedFileScreenTitle: projectTask?.name,
       actions: [
         {
-          key: 'refreshProject',
+          key: 'refreshProjectTask',
           order: 0,
           iconName: 'arrow-repeat',
           title: I18n.t('Project_RefreshProjectTask'),
@@ -100,6 +101,11 @@ const useProjectTaskDetailsActions = () => {
             dispatch(
               (fetchProjectTaskById as any)({
                 projecTaskId: projectTask?.id,
+              }),
+            );
+            dispatch(
+              (fetchTimesheetLinesByTask as any)({
+                projectTaskId: projectTask?.id,
               }),
             );
           },

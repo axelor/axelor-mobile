@@ -21,7 +21,7 @@ import {View} from 'react-native';
 import {LabelText, TagList, checkNullString} from '@axelor/aos-mobile-ui';
 import {useTranslator} from '@axelor/aos-mobile-core';
 
-interface DropdownTaskCharacteristicProps {
+interface DropdownTaskCharacteristicsProps {
   style?: any;
   projectTaskCategory?: any;
   projectTaskSection?: any;
@@ -32,7 +32,7 @@ interface DropdownTaskCharacteristicProps {
   projectTaskTagSet?: any;
 }
 
-const DropdownTaskCharacteristic = ({
+const DropdownTaskCharacteristics = ({
   style,
   projectTaskCategory,
   projectTaskSection,
@@ -41,7 +41,7 @@ const DropdownTaskCharacteristic = ({
   taskEndDate,
   taskDeadline,
   projectTaskTagSet,
-}: DropdownTaskCharacteristicProps) => {
+}: DropdownTaskCharacteristicsProps) => {
   const I18n = useTranslator();
 
   const tagsList = useMemo(() => {
@@ -97,4 +97,4 @@ const DropdownTaskCharacteristic = ({
   );
 };
 
-export default DropdownTaskCharacteristic;
+export default DropdownTaskCharacteristics;
