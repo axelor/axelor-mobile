@@ -29,6 +29,7 @@ import {
   HorizontalRule,
   ScrollList,
   Text,
+  Label,
 } from '@axelor/aos-mobile-ui';
 import {ProjectHeader} from '../../molecules';
 import {ProjectCard} from '../../atoms';
@@ -64,12 +65,26 @@ const SubProjectView = () => {
     [dispatch, sliceFunctionData],
   );
 
+  const noProjectSub = useMemo(() => {
+    return (
+      project.parentProject == null &&
+      (subProjectList == null || subProjectList?.length === 0)
+    );
+  }, [project.parentProject, subProjectList]);
+
   return (
     <>
       <HeaderContainer
         fixedItems={<ProjectHeader />}
         expandableFilter={false}
       />
+      {noProjectSub && (
+        <Label
+          style={styles.label}
+          message={I18n.t('Project_NoSubProject')}
+          type="info"
+        />
+      )}
       {project.parentProject != null && (
         <>
           <Text style={styles.title} writingType="details">
@@ -92,12 +107,15 @@ const SubProjectView = () => {
       )}
       {subProjectList != null && subProjectList?.length > 0 && (
         <>
-          <HorizontalRule style={styles.horizontalRule} />
+          {project.parentProject != null && (
+            <HorizontalRule style={styles.horizontalRule} />
+          )}
           <Text style={styles.title} writingType="details">
             {I18n.t('Project_ChildProjects')}
           </Text>
           <ScrollList
             data={subProjectList}
+            style={styles.scrollView}
             loadingList={loadingSubProject}
             renderItem={({item}) => (
               <ProjectCard
@@ -127,6 +145,13 @@ const styles = StyleSheet.create({
   title: {
     marginHorizontal: 24,
     marginVertical: 10,
+  },
+  scrollView: {
+    paddingTop: 0,
+  },
+  label: {
+    width: '90%',
+    alignSelf: 'center',
   },
   horizontalRule: {
     alignSelf: 'center',
