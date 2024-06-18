@@ -1,0 +1,5 @@
+{
+  "title": "TextUnit: add title management",
+  "type": "feat",
+  "packages": "ui"
+}
