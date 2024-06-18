@@ -17,6 +17,7 @@
  */
 
 import React, {useEffect, useMemo} from 'react';
+import {StyleSheet} from 'react-native';
 import {useDispatch, useSelector} from 'react-redux';
 import {useThemeColor} from '@axelor/aos-mobile-ui';
 import {FormView} from '../../pages';
@@ -34,7 +35,6 @@ import {
   mapStudioFieldsWithFormula,
   useFieldPermitter,
 } from '../../../forms';
-import {StyleSheet} from 'react-native';
 
 const FORM_KEY = 'customField-form';
 
