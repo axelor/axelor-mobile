@@ -28,10 +28,10 @@ export const SalesModule: Module = {
   title: 'Sales_Sales',
   subtitle: 'Sales_Sales',
   icon: 'graph-up-arrow',
-  /*compatibilityAOS: {
+  compatibilityAOS: {
     moduleName: 'axelor-sales',
     downToVersion: '8.2.0',
-  },*/
+  },
   translations: {
     en: enTranslations,
     fr: frTranslations,
