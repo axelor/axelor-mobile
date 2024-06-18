@@ -1,3 +1,4 @@
+export {customerReducer as sales_customer} from './customerSlice';
 /*
  * Axelor Business Solutions
  *
@@ -18,3 +19,4 @@
 
 export {productReducer as sales_product} from './productSlice';
 export {saleConfigReducer as sales_saleConfig} from './saleConfigSlice';
+export {saleOrderReducer as sales_saleOrder} from './saleOrderSlice';

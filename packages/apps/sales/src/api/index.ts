@@ -1,3 +1,4 @@
+export {searchCustomer as searchCustomerApi} from './customer-api';
 /*
  * Axelor Business Solutions
  *
@@ -18,3 +19,4 @@
 
 export {fetchSaleConfig as fetchSaleConfigApi} from './sale-config-api';
 export {searchProduct as searchProductApi} from './product-api';
+export {fetchSaleOrder as fetchSaleOrderApi} from './sale-order-api';

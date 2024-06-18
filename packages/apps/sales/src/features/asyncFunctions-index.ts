@@ -1,3 +1,4 @@
+export {searchCustomer} from './customerSlice';
 /*
  * Axelor Business Solutions
  *
@@ -18,3 +19,4 @@
 
 export {fetchSaleConfig} from './saleConfigSlice';
 export {searchProduct} from './productSlice';
+export {fetchSaleOrder} from './saleOrderSlice';
