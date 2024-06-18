@@ -17,5 +17,6 @@
  */
 
 export {default as PriceDetails} from './PriceDetails/PriceDetails';
+export {default as ProductCard} from './ProductCard/ProductCard';
 export {default as StateBadge} from './StateBadge/StateBadge';
 export {default as TaxModeBadge} from './TaxModeBadge/TaxModeBadge';

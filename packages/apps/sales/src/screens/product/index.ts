@@ -1,6 +1,3 @@
-export {
-  searchProduct as searchProductApi,
-} from './product-api';
 /*
  * Axelor Business Solutions
  *
@@ -19,4 +16,16 @@ export {
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-export {fetchSaleConfig as fetchSaleConfigApi} from './sale-config-api';
+import ProductListScreen from './ProductListScreen';
+
+export default {
+  ProductListScreen: {
+    title: 'Sales_ProductService',
+    component: ProductListScreen,
+    options: {
+      shadedHeader: false,
+    },
+  },
+};
+
+export {ProductListScreen};

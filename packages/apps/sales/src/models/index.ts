@@ -17,3 +17,4 @@
  */
 
 export {sale_modelAPI} from './objectFields';
+export {sales_searchFields} from './searchFields';

@@ -19,24 +19,36 @@
 import {Module} from '@axelor/aos-mobile-core';
 import enTranslations from './i18n/en.json';
 import frTranslations from './i18n/fr.json';
+import ProductScreens from './screens/product';
 import * as saleReducers from './features';
-import {sale_modelAPI} from './models';
+import {sale_modelAPI, sales_searchFields} from './models';
 
 export const SalesModule: Module = {
   name: 'app-sales',
   title: 'Sales_Sales',
   subtitle: 'Sales_Sales',
   icon: 'graph-up-arrow',
-  compatibilityAOS: {
+  /*compatibilityAOS: {
     moduleName: 'axelor-sales',
     downToVersion: '8.2.0',
-  },
+  },*/
   translations: {
     en: enTranslations,
     fr: frTranslations,
   },
+  menus: {
+    sales_menu_product: {
+      title: 'Sales_ProductService',
+      icon: 'basket2-fill',
+      screen: 'ProductListScreen',
+    },
+  },
   models: {
     objectFields: {...sale_modelAPI},
+    searchFields: {...sales_searchFields},
+  },
+  screens: {
+    ...ProductScreens,
   },
   reducers: {...saleReducers},
 };

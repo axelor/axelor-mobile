@@ -1,6 +1,3 @@
-export {
-  searchProduct as searchProductApi,
-} from './product-api';
 /*
  * Axelor Business Solutions
  *
@@ -19,4 +16,14 @@ export {
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-export {fetchSaleConfig as fetchSaleConfigApi} from './sale-config-api';
+import {SearchFields} from '@axelor/aos-mobile-core';
+
+export const sales_searchFields: SearchFields = {
+  sales_product: [
+    'name',
+    'code',
+    'productFamily.name',
+    'productCategory.name',
+    'description',
+  ],
+};
