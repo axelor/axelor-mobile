@@ -50,6 +50,7 @@ import {areObjectsEquals, isEmpty} from '../../../utils';
 import {FloatingTools} from './Buttons';
 
 interface FormProps {
+  style?: any;
   defaultValue?: any;
   creationDefaultValue?: any;
   formKey: string;
@@ -60,6 +61,7 @@ interface FormProps {
 }
 
 const FormView = ({
+  style,
   defaultValue,
   creationDefaultValue,
   formKey,
@@ -331,7 +333,7 @@ const FormView = ({
             errors={errors}
           />
         )}
-        <View style={[styles.container, getZIndexStyle(5)]}>
+        <View style={[styles.container, style, getZIndexStyle(5)]}>
           {formContent.map(renderItem)}
         </View>
       </KeyboardAvoidingScrollView>

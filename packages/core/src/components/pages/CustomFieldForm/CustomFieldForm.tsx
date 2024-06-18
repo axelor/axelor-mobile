@@ -34,6 +34,7 @@ import {
   mapStudioFieldsWithFormula,
   useFieldPermitter,
 } from '../../../forms';
+import {StyleSheet} from 'react-native';
 
 const FORM_KEY = 'customField-form';
 
@@ -134,6 +135,7 @@ const CustomFieldForm = ({
 
   return (
     <FormView
+      style={styles.formView}
       actions={_additionalActions}
       formKey={FORM_KEY}
       isCustom={true}
@@ -142,5 +144,11 @@ const CustomFieldForm = ({
     />
   );
 };
+
+const styles = StyleSheet.create({
+  formView: {
+    paddingBottom: 0,
+  },
+});
 
 export default CustomFieldForm;
