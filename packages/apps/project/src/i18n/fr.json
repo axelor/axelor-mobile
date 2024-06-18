@@ -45,5 +45,6 @@
   "Project_SliceAction_FetchProjectPriority": "récupération des priorités du projet",
   "Project_SliceAction_SearchSubProject": "recherche sur les sous-projets",
   "Project_SliceAction_FetchProjectTaskById": "récupération de la tâche du projet par id",
-  "Project_SliceAction_FetchTimesheetLinesByTask": "récupération des lignes de feuille de temps par tâche"
+  "Project_SliceAction_FetchTimesheetLinesByTask": "récupération des lignes de feuille de temps par tâche",
+  "Project_SliceAction_FetchTags": "récupération des tags"
 }

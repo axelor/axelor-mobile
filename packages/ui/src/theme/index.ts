@@ -25,6 +25,7 @@ export {
   Theme,
   ThemeColors,
   Color,
+  bootstrapColors,
 } from './themes';
 export {
   writingDefaultTheme,

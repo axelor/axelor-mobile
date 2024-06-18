@@ -18,8 +18,17 @@
 
 import React, {useMemo} from 'react';
 import {View} from 'react-native';
-import {LabelText, TagList, checkNullString} from '@axelor/aos-mobile-ui';
+import {
+  LabelText,
+  TagList,
+  bootstrapColors,
+  checkNullString,
+} from '@axelor/aos-mobile-ui';
 import {useTranslator} from '@axelor/aos-mobile-core';
+
+const getBootstrapColor = colorSelect => {
+  return bootstrapColors[colorSelect];
+};
 
 interface DropdownTaskCharacteristicsProps {
   style?: any;
@@ -45,7 +54,10 @@ const DropdownTaskCharacteristics = ({
   const I18n = useTranslator();
 
   const tagsList = useMemo(() => {
-    return projectTaskTagSet?.map(tag => ({title: tag?.name}));
+    return projectTaskTagSet?.map(tag => ({
+      title: tag?.name,
+      color: getBootstrapColor(tag?.colorSelect),
+    }));
   }, [projectTaskTagSet]);
 
   return (
