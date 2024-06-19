@@ -17,6 +17,7 @@
  */
 
 export {default as PartnerActionCard} from './PartnerActionCard/PartnerActionCard';
+export {default as ProductHeader} from './ProductHeader/ProductHeader';
 export {default as SaleOrderDropdownCards} from './SaleOrderDropdownCards/SaleOrderDropdownCards';
 export {default as SaleOrderHeader} from './SaleOrderHeader/SaleOrderHeader';
 export {default as SaleOrderPriceDetails} from './SaleOrderPriceDetails/SaleOrderPriceDetails';

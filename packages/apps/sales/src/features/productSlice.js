@@ -21,7 +21,10 @@ import {
   generateInifiniteScrollCases,
   handlerApiCall,
 } from '@axelor/aos-mobile-core';
-import {searchProduct as _searchProduct} from '../api/product-api';
+import {
+  fetchProductById as _fetchProductById,
+  searchProduct as _searchProduct,
+} from '../api/product-api';
 
 export const searchProduct = createAsyncThunk(
   'sales_product/searchProduct',
@@ -36,11 +39,27 @@ export const searchProduct = createAsyncThunk(
   },
 );
 
+export const fetchProductById = createAsyncThunk(
+  'sales_product/fetchProductById',
+  async function (data, {getState}) {
+    return handlerApiCall({
+      fetchFunction: _fetchProductById,
+      data,
+      action: 'Sales_SliceAction_FetchProductById',
+      getState,
+      responseOptions: {isArrayResponse: false},
+    });
+  },
+);
+
 const initialState = {
   loadingList: false,
   moreLoading: false,
   isListEnd: false,
   productList: [],
+
+  loadingProduct: true,
+  product: {},
 };
 
 const productSlice = createSlice({
@@ -52,6 +71,13 @@ const productSlice = createSlice({
       moreLoading: 'moreLoading',
       isListEnd: 'isListEnd',
       list: 'productList',
+    });
+    builder.addCase(fetchProductById.pending, state => {
+      state.loadingProduct = true;
+    });
+    builder.addCase(fetchProductById.fulfilled, (state, action) => {
+      state.loadingProduct = false;
+      state.product = action.payload;
     });
   },
 });

@@ -32,6 +32,7 @@ export const sale_modelAPI: ObjectFields = {
     saleCurrency: schemaContructor.subObject('symbol'),
     picture: schemaContructor.subObject('fileName'),
     configurator: schemaContructor.subObject(),
+    inAti: schemaContructor.boolean(),
   }),
   sale_saleOrder: schemaContructor.object({
     statusSelect: schemaContructor.number(),

@@ -62,5 +62,6 @@
   "Sales_SliceAction_SearchProduct": "recherche sur les produits",
   "Sales_SliceAction_FetchSaleOrderById": "récupération d'une commande client par id",
   "Sales_SliceAction_FetchCustomerDelivery": "récupération d'une livraison client",
-  "Sales_SliceAction_FetchSaleOrderLine": "récupération des lignes d'une commande client"
+  "Sales_SliceAction_FetchSaleOrderLine": "récupération des lignes d'une commande client",
+  "Sales_SliceAction_FetchProductById": ""
 }

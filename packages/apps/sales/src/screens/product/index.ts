@@ -16,12 +16,26 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import ProductListScreen from './ProductListScreen';
+import ProductSalesDetailsScreen from './ProductSalesDetailsScreen';
+import ProductSalesListScreen from './ProductSalesListScreen';
 
 export default {
+<<<<<<< HEAD
   ProductListScreen: {
     title: 'Sales_ArticleService',
     component: ProductListScreen,
+=======
+  ProductSalesListScreen: {
+    title: 'Sales_ProductService',
+    component: ProductSalesListScreen,
+    options: {
+      shadedHeader: false,
+    },
+  },
+  ProductSalesDetailsScreen: {
+    title: 'Sales_ProductService',
+    component: ProductSalesDetailsScreen,
+>>>>>>> feat: add ProductSalesDetailsScreen
     options: {
       shadedHeader: false,
     },
@@ -29,4 +43,5 @@ export default {
   },
 };
 
-export {ProductListScreen};
+export {ProductSalesListScreen};
+export {ProductSalesDetailsScreen};
