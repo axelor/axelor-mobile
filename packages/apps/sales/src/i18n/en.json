@@ -56,6 +56,7 @@
   "Sales_SOLineType_EndOfPack": "End of pack",
   "Sales_UnitPrice": "Unit price",
   "Sales_Unit": "Unit",
+  "Sales_InternalDescription": "Internal description",
   "Sales_SliceAction_FetchSaleConfig": "fetch sale config",
   "Sales_SliceAction_FetchSaleOrder": "fetch sale orders",
   "Sales_SliceAction_SearchCustomer": "search customers",

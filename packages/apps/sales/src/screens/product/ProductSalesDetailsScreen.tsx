@@ -20,10 +20,11 @@ import React, {useEffect} from 'react';
 import {HeaderContainer, Screen} from '@axelor/aos-mobile-ui';
 import {useDispatch} from '@axelor/aos-mobile-core';
 import {fetchProductById} from '../../features/productSlice';
-import {ProductHeader} from '../../components';
+import {ProductDescription, ProductHeader} from '../../components';
 
 const ProductSalesDetailsScreen = ({route}) => {
   const productId = route.params.productId;
+
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -36,6 +37,7 @@ const ProductSalesDetailsScreen = ({route}) => {
         expandableFilter={false}
         fixedItems={<ProductHeader />}
       />
+      <ProductDescription />
     </Screen>
   );
 };
