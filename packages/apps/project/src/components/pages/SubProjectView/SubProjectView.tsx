@@ -65,12 +65,19 @@ const SubProjectView = () => {
     [dispatch, sliceFunctionData],
   );
 
-  const noProjectSub = useMemo(() => {
-    return (
-      project.parentProject == null &&
-      (subProjectList == null || subProjectList?.length === 0)
-    );
-  }, [project.parentProject, subProjectList]);
+  const isParentProjet = useMemo(
+    () => project.parentProject != null,
+    [project.parentProject],
+  );
+
+  const isSubProjects = useMemo(
+    () => Array.isArray(subProjectList) && subProjectList.length > 0,
+    [subProjectList],
+  );
+
+  const noProjects = useMemo(() => {
+    return !isParentProjet && !isSubProjects;
+  }, [isParentProjet, isSubProjects]);
 
   return (
     <>
@@ -78,14 +85,14 @@ const SubProjectView = () => {
         fixedItems={<ProjectHeader />}
         expandableFilter={false}
       />
-      {noProjectSub && (
+      {noProjects && (
         <Label
           style={styles.label}
-          message={I18n.t('Project_NoSubProject')}
+          message={I18n.t('Project_NoProjects')}
           type="info"
         />
       )}
-      {project.parentProject != null && (
+      {isParentProjet && (
         <>
           <Text style={styles.title} writingType="details">
             {I18n.t('Project_ParentProject')}
@@ -105,17 +112,15 @@ const SubProjectView = () => {
           />
         </>
       )}
-      {subProjectList != null && subProjectList?.length > 0 && (
+      {isSubProjects && (
         <>
-          {project.parentProject != null && (
-            <HorizontalRule style={styles.horizontalRule} />
-          )}
+          {isParentProjet && <HorizontalRule style={styles.horizontalRule} />}
           <Text style={styles.title} writingType="details">
             {I18n.t('Project_ChildProjects')}
           </Text>
           <ScrollList
             data={subProjectList}
-            style={styles.scrollView}
+            style={styles.scrollList}
             loadingList={loadingSubProject}
             renderItem={({item}) => (
               <ProjectCard
@@ -146,7 +151,7 @@ const styles = StyleSheet.create({
     marginHorizontal: 24,
     marginVertical: 10,
   },
-  scrollView: {
+  scrollList: {
     paddingTop: 0,
   },
   label: {
