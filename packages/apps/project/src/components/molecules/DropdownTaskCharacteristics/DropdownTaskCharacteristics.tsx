@@ -26,10 +26,6 @@ import {
 } from '@axelor/aos-mobile-ui';
 import {useTranslator} from '@axelor/aos-mobile-core';
 
-const getBootstrapColor = colorSelect => {
-  return bootstrapColors[colorSelect];
-};
-
 interface DropdownTaskCharacteristicsProps {
   style?: any;
   projectTaskCategory?: any;
@@ -56,7 +52,7 @@ const DropdownTaskCharacteristics = ({
   const tagsList = useMemo(() => {
     return projectTaskTagSet?.map(tag => ({
       title: tag?.name,
-      color: getBootstrapColor(tag?.colorSelect),
+      color: bootstrapColors[tag?.colorSelect],
     }));
   }, [projectTaskTagSet]);
 
