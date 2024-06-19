@@ -88,7 +88,7 @@ const SubProjectView = () => {
       {noProjects && (
         <Label
           style={styles.label}
-          message={I18n.t('Project_NoProjects')}
+          message={I18n.t('Project_NoLinkedProjects')}
           type="info"
         />
       )}
