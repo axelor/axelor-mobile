@@ -52,13 +52,13 @@ const PriceDetails = ({style, lineList}: PriceDetailsProps) => {
       {_lineList.map((line, index) => {
         const fontSize = line.size ?? 16;
         return (
-          <>
+          <View key={index}>
             {line.showLine && <HorizontalRule style={styles.rule} />}
             <View style={styles.line} key={index}>
               <Text fontSize={fontSize}>{line.title}</Text>
               <Text fontSize={fontSize}>{`${line.value} ${line.unit}`}</Text>
             </View>
-          </>
+          </View>
         );
       })}
     </Card>
