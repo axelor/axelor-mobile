@@ -16,8 +16,15 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+export {default as DropdownDescriptionsView} from './DropdownDescriptionsView/DropdownDescriptionsView';
+export {default as DropdownFollowUpView} from './DropdownFollowUpView/DropdownFollowUpView';
+export {default as DropdownGeneralView} from './DropdownGeneralView/DropdownGeneralView';
+export {default as DropdownMarginView} from './DropdownMarginView/DropdownMarginView';
+export {default as PartnerCard} from './PartnerCard/PartnerCard';
 export {default as PriceDetails} from './PriceDetails/PriceDetails';
 export {default as ProductCard} from './ProductCard/ProductCard';
+export {default as SaleOrderBottomButton} from './SaleOrderBottomButton/SaleOrderBottomButton';
 export {default as SaleOrderCard} from './SaleOrderCard/SaleOrderCard';
+export {default as SaleOrderSeeLinesButton} from './SaleOrderSeeLinesButton/SaleOrderSeeLinesButton';
 export {default as StateBadge} from './StateBadge/StateBadge';
 export {default as TaxModeBadge} from './TaxModeBadge/TaxModeBadge';

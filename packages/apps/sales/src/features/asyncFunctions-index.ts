@@ -19,4 +19,4 @@
 export {searchCustomer} from './customerSlice';
 export {searchProduct} from './productSlice';
 export {fetchSaleConfig} from './saleConfigSlice';
-export {fetchSaleOrder} from './saleOrderSlice';
+export {fetchSaleOrder, fetchSaleOrderById} from './saleOrderSlice';
