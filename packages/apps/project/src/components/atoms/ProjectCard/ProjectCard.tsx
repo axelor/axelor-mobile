@@ -74,6 +74,7 @@ const ProjectCard = ({
       onPress={onPress}
       style={[borderStyle, style]}
       showArrow={!isCopyCard}
+      leftContainerFlex={9}
       image={
         isCustomerLinked
           ? {
@@ -149,9 +150,8 @@ const styles = StyleSheet.create({
     width: 50,
   },
   badges: {
-    position: 'absolute',
-    justifyContent: 'flex-end',
-    right: 0,
+    flexDirection: 'column-reverse',
+    alignItems: 'flex-end',
   },
 });
 
