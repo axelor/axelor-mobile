@@ -22,4 +22,5 @@ export const sale_sortFields: SortFields = {
   sales_product: ['code', 'name'],
   sale_saleOrder: ['-creationDate'],
   sales_customerDelivery: ['statusSelect', '-estimatedDate'],
+  sale_saleOrderLine: ['sequence'],
 };
