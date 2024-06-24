@@ -19,7 +19,7 @@
 import React, {useEffect} from 'react';
 import {Screen, BottomBar, useThemeColor} from '@axelor/aos-mobile-ui';
 import {useDispatch, useSelector} from '@axelor/aos-mobile-core';
-import {GeneralInformationView, TaskView} from '../components';
+import {GeneralInformationView, SubProjectView, TaskView} from '../components';
 import {fetchProjectById} from '../features/projectSlice';
 
 const ProjectDetailsScreen = ({route}) => {
@@ -44,6 +44,12 @@ const ProjectDetailsScreen = ({route}) => {
       iconName: 'card-list',
       color: Colors.plannedColor,
       viewComponent: <TaskView />,
+    },
+    {
+      iconName: 'diagram-3-fill',
+      color: Colors.infoColor,
+      viewComponent: <SubProjectView />,
+      disabled: !project?.isShowPhasesElements,
     },
   ];
 

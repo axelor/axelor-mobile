@@ -17,4 +17,5 @@
  */
 
 export {default as GeneralInformationView} from './GeneralInformationView/GeneralInformationView';
+export {default as SubProjectView} from './SubProjectView/SubProjectView';
 export {default as TaskView} from './TaskView/TaskView';

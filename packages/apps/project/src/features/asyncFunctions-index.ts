@@ -20,6 +20,7 @@ export {
   fetchProjectById,
   fetchProjectStatus,
   searchProject,
+  searchSubProject,
 } from './projectSlice';
 export {
   fetchProjectPriority,
