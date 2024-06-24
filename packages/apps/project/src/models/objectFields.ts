@@ -51,7 +51,32 @@ export const project_modelAPI: ObjectFields = {
     ),
     company: schemaContructor.subObject('name'),
     assignedTo: schemaContructor.subObject('fullName'),
-    parentProject: schemaContructor.subObject('fullName'),
+    parentProject: schemaContructor.subObject().concat(
+      schemaContructor.object({
+        fullName: schemaContructor.string(),
+        name: schemaContructor.string(),
+        code: schemaContructor.string(),
+        company: schemaContructor.subObject(),
+        assignedTo: schemaContructor.subObject(),
+        projectStatus: schemaContructor.subObject(),
+        parentProject: schemaContructor.subObject('fullName'),
+        clientPartner: schemaContructor.subObject().concat(
+          schemaContructor.object({
+            picture: schemaContructor.subObject(),
+            jobTitleFunction: schemaContructor.subObject(),
+            name: schemaContructor.string(),
+            mainAddress: schemaContructor.subObject('fullName').concat(
+              schemaContructor.object({
+                addressL4: schemaContructor.string(),
+                addressL7Country: schemaContructor.subObject('symbol'),
+                city: schemaContructor.subObject('name'),
+                zip: schemaContructor.string(),
+              }),
+            ),
+          }),
+        ),
+      }),
+    ),
     isBusinessProject: schemaContructor.boolean(),
     fromDate: schemaContructor.string(),
     toDate: schemaContructor.string(),
@@ -76,6 +101,7 @@ export const project_modelAPI: ObjectFields = {
     projectTaskPrioritySet: schemaContructor
       .array()
       .of(schemaContructor.subObject()),
+    isShowPhasesElements: schemaContructor.boolean(),
   }),
   project_projectTask: schemaContructor.object({
     name: schemaContructor.string(),
