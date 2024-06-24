@@ -1,0 +1,5 @@
+{
+  "title": "CustomFieldForm: remove margin under component",
+  "type": "fix",
+  "packages": "core"
+}
