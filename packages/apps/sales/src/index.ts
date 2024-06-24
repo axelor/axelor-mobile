@@ -20,7 +20,7 @@ import {Module} from '@axelor/aos-mobile-core';
 import enTranslations from './i18n/en.json';
 import frTranslations from './i18n/fr.json';
 import ProductScreens from './screens/product';
-import SaleScreens from './screens/sale';
+import SaleOrderScreens from './screens/saleOrder';
 import * as saleReducers from './features';
 import {
   sale_modelAPI,
@@ -59,7 +59,10 @@ export const SalesModule: Module = {
       screen: 'SaleOrders',
     },
   },
-  screens: {...ProductScreens, ...SaleScreens},
+  screens: {
+    ...ProductScreens,
+    ...SaleOrderScreens,
+  },
   models: {
     objectFields: {...sale_modelAPI},
     searchFields: {...sale_searchFields},
@@ -73,4 +76,4 @@ export * from './api';
 export * from './components';
 export * from './features/asyncFunctions-index';
 export * from './screens/product';
-export * from './screens/sale';
+export * from './screens/saleOrder';
