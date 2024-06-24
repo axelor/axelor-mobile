@@ -1,4 +1,3 @@
-export {searchCustomer as searchCustomerApi} from './customer-api';
 /*
  * Axelor Business Solutions
  *
@@ -17,6 +16,7 @@ export {searchCustomer as searchCustomerApi} from './customer-api';
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+export {searchCustomer as searchCustomerApi} from './customer-api';
 export {fetchSaleConfig as fetchSaleConfigApi} from './sale-config-api';
 export {searchProduct as searchProductApi} from './product-api';
 export {fetchSaleOrder as fetchSaleOrderApi} from './sale-order-api';
