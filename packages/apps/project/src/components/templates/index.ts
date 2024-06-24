@@ -18,4 +18,3 @@
 
 export {default as ProjectListView} from './ProjectListView/ProjectListView';
 export {default as TaskFilters} from './TaskFilters/TaskFilters';
-export {default as ValidationTimesheetLineButton} from './ValidationTimesheetLineButton/ValidationTimesheetLineButton';

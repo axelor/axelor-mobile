@@ -17,9 +17,9 @@
  */
 
 import React, {useEffect, useMemo} from 'react';
-import {View} from 'react-native';
+import {StyleSheet, View} from 'react-native';
 import {FormView, useDispatch, useSelector} from '@axelor/aos-mobile-core';
-import {HeaderContainer, ScrollView} from '@axelor/aos-mobile-ui';
+import {HeaderContainer} from '@axelor/aos-mobile-ui';
 import {updateProject} from '@axelor/aos-mobile-hr';
 import {ProjectHeader} from '../../molecules';
 
@@ -45,16 +45,22 @@ const TimeView = () => {
         expandableFilter={false}
         fixedItems={<ProjectHeader />}
       />
-      <ScrollView>
+      <View style={styles.container}>
         <FormView
           formKey="project_TimesheetLine"
           actions={[]}
           defaultValue={defaultValue}
           floatingTools={false}
         />
-      </ScrollView>
+      </View>
     </View>
   );
 };
+
+const styles = StyleSheet.create({
+  container: {
+    height: '100%',
+  },
+});
 
 export default TimeView;

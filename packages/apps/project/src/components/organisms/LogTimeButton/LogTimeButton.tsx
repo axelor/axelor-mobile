@@ -21,10 +21,16 @@ import {StyleSheet} from 'react-native';
 import {Button} from '@axelor/aos-mobile-ui';
 import {useTranslator} from '@axelor/aos-mobile-core';
 
-const ValidationTimesheetLineButton = ({}) => {
+const LogTimeButton = ({}) => {
   const I18n = useTranslator();
 
-  return <Button style={styles.margin} title={I18n.t('Base_Create')} />;
+  return (
+    <Button
+      style={styles.margin}
+      title={I18n.t('Base_Create')}
+      onPress={() => console.log('log time on project')}
+    />
+  );
 };
 
 const styles = StyleSheet.create({
@@ -34,4 +40,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default ValidationTimesheetLineButton;
+export default LogTimeButton;

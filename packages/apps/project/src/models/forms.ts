@@ -21,9 +21,8 @@ import {
   ProductSearchBar,
   ProjectSearchBar,
   ProjectTaskSearchBar,
-  updateProject,
 } from '@axelor/aos-mobile-hr';
-import {ValidationTimesheetLineButton} from '../components';
+import {LogTimeButton} from '../components';
 
 export const project_formsRegister: FormConfigs = {
   project_TimesheetLine: {
@@ -45,11 +44,6 @@ export const project_formsRegister: FormConfigs = {
           !storeState.appConfig.mobileSettings.fieldsToShowOnTimesheet.find(
             (field: string) => field === 'projectTask',
           ),
-        dependsOn: {
-          project: ({newValue, dispatch}) => {
-            dispatch(updateProject(newValue));
-          },
-        },
       },
       product: {
         titleKey: 'Hr_Product',
@@ -106,7 +100,7 @@ export const project_formsRegister: FormConfigs = {
         titleKey: 'Project_Validation',
         type: 'object',
         widget: 'custom',
-        customComponent: ValidationTimesheetLineButton,
+        customComponent: LogTimeButton,
       },
     },
   },
