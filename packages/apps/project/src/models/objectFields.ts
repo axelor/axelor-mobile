@@ -21,6 +21,7 @@ import {ObjectFields, schemaContructor} from '@axelor/aos-mobile-core';
 export const project_modelAPI: ObjectFields = {
   project_project: schemaContructor.object({
     projectStatus: schemaContructor.subObject('name'),
+    fullName: schemaContructor.string(),
     name: schemaContructor.string(),
     code: schemaContructor.string(),
     clientPartner: schemaContructor.subObject().concat(

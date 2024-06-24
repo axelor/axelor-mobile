@@ -19,7 +19,12 @@
 import React, {useEffect} from 'react';
 import {Screen, BottomBar, useThemeColor} from '@axelor/aos-mobile-ui';
 import {useDispatch, useSelector} from '@axelor/aos-mobile-core';
-import {GeneralInformationView, SubProjectView, TaskView} from '../components';
+import {
+  GeneralInformationView,
+  SubProjectView,
+  TaskView,
+  TimeView,
+} from '../components';
 import {fetchProjectById} from '../features/projectSlice';
 
 const ProjectDetailsScreen = ({route}) => {
@@ -50,6 +55,11 @@ const ProjectDetailsScreen = ({route}) => {
       color: Colors.infoColor,
       viewComponent: <SubProjectView />,
       disabled: !project?.isShowPhasesElements,
+    },
+    {
+      iconName: 'clock-history',
+      color: Colors.primaryColor,
+      viewComponent: <TimeView />,
     },
   ];
 
