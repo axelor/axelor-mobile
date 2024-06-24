@@ -34,7 +34,7 @@ import {
 interface Item {
   color: Color;
   title: string;
-  key: string | number;
+  key: string | number | boolean;
 }
 
 interface MultiValuePickerProps {
