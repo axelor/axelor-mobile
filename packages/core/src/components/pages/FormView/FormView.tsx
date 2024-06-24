@@ -56,6 +56,7 @@ import {
 import {isEmpty} from '../../../utils';
 
 interface FormProps {
+  style?: any;
   defaultValue?: any;
   formKey: string;
   actions: Action[];
@@ -63,6 +64,7 @@ interface FormProps {
 }
 
 const FormView = ({
+  style,
   defaultValue,
   formKey,
   actions: _actions,
@@ -345,7 +347,7 @@ const FormView = ({
             errors={errors}
           />
         )}
-        <View style={[styles.container, getZIndexStyle(5)]}>
+        <View style={[styles.container, style, getZIndexStyle(5)]}>
           {formContent.map(renderItem)}
         </View>
       </KeyboardAvoidingScrollView>

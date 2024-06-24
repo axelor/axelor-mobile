@@ -17,9 +17,10 @@
  */
 
 import React, {useEffect, useMemo} from 'react';
+import {StyleSheet} from 'react-native';
+import {useDispatch, useSelector} from 'react-redux';
 import {useThemeColor} from '@axelor/aos-mobile-ui';
 import {FormView} from '../../pages/';
-import {useDispatch, useSelector} from 'react-redux';
 import {
   fetchJsonFieldsOfModel,
   fetchObject,
@@ -125,6 +126,7 @@ const CustomFieldForm = ({
 
   return (
     <FormView
+      style={styles.formView}
       actions={_additionalActions}
       formKey={FORM_KEY}
       defaultValue={attrsValues == null ? {...defaults} : attrsValues}
@@ -132,5 +134,11 @@ const CustomFieldForm = ({
     />
   );
 };
+
+const styles = StyleSheet.create({
+  formView: {
+    paddingBottom: 0,
+  },
+});
 
 export default CustomFieldForm;
