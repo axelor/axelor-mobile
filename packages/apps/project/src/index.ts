@@ -22,6 +22,7 @@ import frTranslations from './i18n/fr.json';
 import ProjectScreens from './screens/';
 import * as projectReducers from './features';
 import {
+  project_formsRegister,
   project_modelAPI,
   project_searchFields,
   project_sortFields,
@@ -68,6 +69,7 @@ export const ProjectModule: Module = {
     objectFields: {...project_modelAPI},
     searchFields: {...project_searchFields},
     sortFields: {...project_sortFields},
+    formsRegister: {...project_formsRegister},
     headerRegisters: useProjectHeaders,
   },
 };
