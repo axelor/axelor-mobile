@@ -25,6 +25,7 @@ import {
   fetchProjectStatus as _fetchProjectStatus,
   fetchProjectById as _fetchProjectById,
   searchProject as _searchProject,
+  searchSubProject as _searchSubProject,
 } from '../api/project-api';
 
 export const searchProject = createAsyncThunk(
@@ -66,6 +67,19 @@ export const fetchProjectById = createAsyncThunk(
   },
 );
 
+export const searchSubProject = createAsyncThunk(
+  'project_project/searchSubProject',
+  async function (data, {getState}) {
+    return handlerApiCall({
+      fetchFunction: _searchSubProject,
+      data,
+      action: 'Project_SliceAction_SearchSubProject',
+      getState,
+      responseOptions: {isArrayResponse: true},
+    });
+  },
+);
+
 const initialState = {
   loading: true,
   moreLoading: false,
@@ -73,6 +87,11 @@ const initialState = {
   projectList: [],
 
   projectStatusList: [],
+
+  loadingSubProject: true,
+  moreLoadingSubProject: false,
+  isListEndSubProject: false,
+  subProjectList: [],
 
   loadingProject: true,
   project: {},
@@ -90,6 +109,12 @@ const projectSlice = createSlice({
     });
     builder.addCase(fetchProjectStatus.fulfilled, (state, action) => {
       state.projectStatusList = action.payload;
+    });
+    generateInifiniteScrollCases(builder, searchSubProject, {
+      loading: 'loadingSubProject',
+      moreLoading: 'moreLoadingSubProject',
+      isListEnd: 'isListEndSubProject',
+      list: 'subProjectList',
     });
     builder.addCase(fetchProjectById.pending, state => {
       state.loadingProject = true;
