@@ -54,5 +54,6 @@
   "Sales_SliceAction_FetchSaleOrder": "fetch sale orders",
   "Sales_SliceAction_SearchCustomer": "search customers",
   "Sales_SliceAction_SearchProduct": "search products",
-  "Sales_SliceAction_FetchSaleOrderById": "fetch sale order by id"
+  "Sales_SliceAction_FetchSaleOrderById": "fetch sale order by id",
+  "Sales_SliceAction_FetchCustomerDelivery": "fetch customer delivery"
 }

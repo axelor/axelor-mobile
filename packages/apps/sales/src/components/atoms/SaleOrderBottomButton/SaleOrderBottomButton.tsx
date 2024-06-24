@@ -16,36 +16,58 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import React from 'react';
-import {useModules, useTranslator, useTypes} from '@axelor/aos-mobile-core';
+import React, {useEffect} from 'react';
+import {
+  useDispatch,
+  useModules,
+  useNavigation,
+  useSelector,
+  useTranslator,
+  useTypes,
+} from '@axelor/aos-mobile-core';
 import {Button, useThemeColor} from '@axelor/aos-mobile-ui';
+import {fetchCustomerDelivery} from '../../../features/customerDeliverySlice';
 
 interface SaleOrderBottomButtonProps {
-  saleOrderStatus: number;
+  saleOrder: any;
 }
 
-const SaleOrderBottomButton = ({
-  saleOrderStatus,
-}: SaleOrderBottomButtonProps) => {
+const SaleOrderBottomButton = ({saleOrder}: SaleOrderBottomButtonProps) => {
   const I18n = useTranslator();
   const Colors = useThemeColor();
   const {SaleOrder} = useTypes();
+  const navigation = useNavigation();
+  const dispatch = useDispatch();
   const {checkModule} = useModules();
 
-  if (saleOrderStatus === SaleOrder?.statusSelect.Draft) {
+  const {customerDelivery} = useSelector(
+    (state: any) => state.sales_customerDelivery,
+  );
+
+  useEffect(() => {
+    dispatch((fetchCustomerDelivery as any)({saleOrderId: saleOrder.id}));
+  }, [dispatch, saleOrder]);
+
+  if (saleOrder.statusSelect === SaleOrder?.statusSelect.Draft) {
     return (
       <Button title={I18n.t('Base_Confirm')} color={Colors.primaryColor} />
     );
   }
 
   if (
-    saleOrderStatus === SaleOrder?.statusSelect.Confirmed &&
-    checkModule('app-stock')
+    saleOrder.statusSelect === SaleOrder?.statusSelect.Confirmed &&
+    checkModule('app-stock') &&
+    customerDelivery?.id != null
   ) {
     return (
       <Button
         title={I18n.t('Sales_CheckCustomerDelivery')}
         color={Colors.infoColor}
+        onPress={() =>
+          navigation.navigate('CustomerDeliveryDetailScreen', {
+            customerDeliveryId: customerDelivery?.id,
+          })
+        }
       />
     );
   }

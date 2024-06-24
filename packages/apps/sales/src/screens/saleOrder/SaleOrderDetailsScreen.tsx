@@ -96,9 +96,7 @@ const SaleOrderDetailsScreen = ({route}) => {
   return (
     <Screen
       removeSpaceOnTop
-      fixedItems={
-        <SaleOrderBottomButton saleOrderStatus={saleOrder.statusSelect} />
-      }>
+      fixedItems={<SaleOrderBottomButton saleOrder={saleOrder} />}>
       <HeaderContainer
         expandableFilter={false}
         fixedItems={<SaleOrderHeader saleOrder={saleOrder} />}
