@@ -29,9 +29,6 @@ export function checkModulesMenusAccessibility(modules, mobileSettingsApps) {
   }
 
   const authorizedModules = [];
-  const restrictedMenus = mobileSettingsApps.flatMap(
-    _app => _app.restrictedMenuList,
-  );
 
   modules.forEach(_module => {
     const mobileConfigForModule = mobileSettingsApps.find(
@@ -39,7 +36,13 @@ export function checkModulesMenusAccessibility(modules, mobileSettingsApps) {
     );
 
     if (mobileConfigForModule == null || mobileConfigForModule?.isAppEnabled) {
-      authorizedModules.push(updateAccessibleMenus(_module, restrictedMenus));
+      authorizedModules.push(
+        updateAccessibleMenus(
+          _module,
+          mobileConfigForModule?.isCustomizeMenuEnabled,
+          mobileConfigForModule?.accessibleMenuList,
+        ),
+      );
     }
   });
 
@@ -118,15 +121,25 @@ export function moduleHasMenus(_module) {
   return _module.menus != null && Object.keys(_module.menus).length > 0;
 }
 
-export function filterEnabledMenus(_module, restrictedMenus) {
+export function filterEnabledMenus(
+  _module,
+  isCustomizeMenuEnabled,
+  accessibleMenus,
+) {
   if (moduleHasMenus(_module)) {
     const enabledMenus = {};
     const {menus} = _module;
     const menuKeys = Object.keys(menus);
 
     menuKeys.forEach(_key => {
-      if (!restrictedMenus.find((menu: string) => menu === _key)) {
+      const accessibleMenu = accessibleMenus?.find(
+        menu => menu.technicalName === _key,
+      );
+      if (!isCustomizeMenuEnabled || accessibleMenu) {
         enabledMenus[_key] = menus[_key];
+        if (accessibleMenu) {
+          enabledMenus[_key].order = accessibleMenu.menuOrder;
+        }
       }
     });
 
@@ -135,10 +148,14 @@ export function filterEnabledMenus(_module, restrictedMenus) {
   return [];
 }
 
-export function updateAccessibleMenus(_module, restrictedMenus) {
+export function updateAccessibleMenus(
+  _module,
+  isCustomizeMenuEnabled,
+  accessibleMenus,
+) {
   return {
     ..._module,
-    menus: filterEnabledMenus(_module, restrictedMenus),
+    menus: filterEnabledMenus(_module, isCustomizeMenuEnabled, accessibleMenus),
   };
 }
 
