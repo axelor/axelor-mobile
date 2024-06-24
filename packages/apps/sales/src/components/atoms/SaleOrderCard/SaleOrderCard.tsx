@@ -27,6 +27,7 @@ import {
   useTypeHelpers,
 } from '@axelor/aos-mobile-core';
 import {ObjectCard, TextUnit, usePriceFormat} from '@axelor/aos-mobile-ui';
+import StateBadge from '../StateBadge/StateBadge';
 import SaleOrderCardTitle from './SaleOrderCardTitle';
 
 interface SaleOrderCardProps {
@@ -66,7 +67,7 @@ const SaleOrderCard = ({
 }: SaleOrderCardProps) => {
   const I18n = useTranslator();
   const {SaleOrder} = useTypes();
-  const {getItemColor, getItemTitle} = useTypeHelpers();
+  const {getItemColor} = useTypeHelpers();
   const formatPrice = usePriceFormat();
 
   const {base: baseConfig} = useSelector((state: any) => state.appConfig);
@@ -101,6 +102,28 @@ const SaleOrderCard = ({
     () => statusSelect > SaleOrder?.statusSelect?.Finalized,
     [SaleOrder?.statusSelect?.Finalized, statusSelect],
   );
+
+  const deliveredStateBadgeType = useMemo(() => {
+    switch (deliveryState) {
+      case SaleOrder?.deliveryState.Delivered:
+        return 'done';
+      case SaleOrder?.deliveryState.PartiallyDelivered:
+        return 'partially';
+      default:
+        return 'not';
+    }
+  }, [deliveryState, SaleOrder?.deliveryState]);
+
+  const invoicedStateBadgeType = useMemo(() => {
+    switch (invoicingState) {
+      case SaleOrder?.invoicingState.Invoiced:
+        return 'done';
+      case SaleOrder?.invoicingState.PartiallyInvoiced:
+        return 'partially';
+      default:
+        return 'not';
+    }
+  }, [invoicingState, SaleOrder?.invoicingState]);
 
   return (
     <View style={style}>
@@ -145,10 +168,10 @@ const SaleOrderCard = ({
             {
               customComponent: (
                 <TextUnit
-                  style={styles.textUnit}
                   title={I18n.t('Sales_WT')}
                   value={formatPrice(WTPrice)}
                   unit={currencySymbol}
+                  fontSize={16}
                   defaultColor
                 />
               ),
@@ -156,10 +179,10 @@ const SaleOrderCard = ({
             {
               customComponent: (
                 <TextUnit
-                  style={styles.textUnit}
                   title={I18n.t('Sales_ATI')}
                   value={formatPrice(ATIPrice)}
                   unit={currencySymbol}
+                  fontSize={16}
                 />
               ),
             },
@@ -167,23 +190,25 @@ const SaleOrderCard = ({
         }}
         lowerBadges={
           displayBadges && {
-            style: styles.badgesContainer,
+            fixedOnRightSide: true,
             items: [
               {
-                displayText: getItemTitle(
-                  SaleOrder?.deliveryState,
-                  deliveryState,
+                customComponent: (
+                  <StateBadge
+                    style={styles.stateBadge}
+                    title={I18n.t('Sales_Delivered')}
+                    type={deliveredStateBadgeType}
+                  />
                 ),
-                color: getItemColor(SaleOrder?.deliveryState, deliveryState),
-                style: styles.badge,
               },
               {
-                displayText: getItemTitle(
-                  SaleOrder?.invoicingState,
-                  invoicingState,
+                customComponent: (
+                  <StateBadge
+                    style={styles.stateBadge}
+                    title={I18n.t('Sales_Invoiced')}
+                    type={invoicedStateBadgeType}
+                  />
                 ),
-                color: getItemColor(SaleOrder?.invoicingState, invoicingState),
-                style: styles.badge,
               },
             ],
           }
@@ -203,16 +228,9 @@ const getStyles = color =>
       borderLeftWidth: 7,
       borderLeftColor: color,
     },
-    textUnit: {
-      fontSize: 16,
-      fontWeight: 'bold',
-    },
-    badgesContainer: {
-      justifyContent: 'flex-end',
-    },
-    badge: {
-      width: null,
-      paddingHorizontal: 5,
+    stateBadge: {
+      marginTop: 5,
+      marginHorizontal: 2,
     },
   });
 
