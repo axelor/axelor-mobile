@@ -63,10 +63,12 @@ const SaleOrderHeader = ({saleOrder}: SaleOrderHeaderProps) => {
             color={Colors.cautionColor}
           />
         )}
-        <Badge
-          title={I18n.t('Sales_Subscription')}
-          color={Colors.plannedColor}
-        />
+        {saleOrder.saleOrderTypeSelect === 2 && (
+          <Badge
+            title={I18n.t('Sales_Subscription')}
+            color={Colors.plannedColor}
+          />
+        )}
         <TaxModeBadge inAti={saleOrder.inAti} type="sale" />
       </View>
     </View>
