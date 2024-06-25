@@ -17,6 +17,7 @@
  */
 
 import {
+  createStandardFetch,
   createStandardSearch,
   getSearchCriterias,
 } from '@axelor/aos-mobile-core';
@@ -58,5 +59,13 @@ export async function fetchSaleOrder({
     fieldKey: 'sale_saleOrder',
     sortKey: 'sale_saleOrder',
     page,
+  });
+}
+
+export async function fetchSaleOrderById({saleOrderId}) {
+  return createStandardFetch({
+    model: 'com.axelor.apps.sale.db.SaleOrder',
+    id: saleOrderId,
+    fieldKey: 'sale_saleOrder',
   });
 }
