@@ -18,7 +18,7 @@
 
 import {SearchFields} from '@axelor/aos-mobile-core';
 
-export const sales_searchFields: SearchFields = {
+export const sale_searchFields: SearchFields = {
   sales_product: [
     'name',
     'code',
@@ -26,4 +26,6 @@ export const sales_searchFields: SearchFields = {
     'productCategory.name',
     'description',
   ],
+  sale_saleOrder: ['saleOrderSeq', 'externalReference'],
+  sale_customer: ['fullName', 'partnerSeq'],
 };
