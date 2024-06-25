@@ -56,7 +56,7 @@ const LabelText = ({
           color={color}
         />
       )}
-      {!checkNullString(title) && (
+      {!checkNullString(title?.toString()) && (
         <Text
           style={[styles.title, textStyle]}
           fontSize={textSize}
@@ -64,7 +64,7 @@ const LabelText = ({
           {title}
         </Text>
       )}
-      {!checkNullString(value) && (
+      {!checkNullString(value?.toString()) && (
         <Text
           style={[styles.txtDetails, textStyle]}
           fontSize={textSize}
