@@ -22,7 +22,7 @@ import {Card, HorizontalRule, Text} from '@axelor/aos-mobile-ui';
 
 interface Line {
   title: string;
-  value: number;
+  value: number | string;
   unit: string;
   size?: number;
   showLine?: boolean;
