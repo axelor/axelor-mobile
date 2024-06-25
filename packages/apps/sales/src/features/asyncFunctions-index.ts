@@ -17,3 +17,4 @@
  */
 
 export {fetchSaleConfig} from './saleConfigSlice';
+export {searchProduct} from './productSlice';
