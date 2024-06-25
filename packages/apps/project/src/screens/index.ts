@@ -19,6 +19,7 @@
 import BuisnessProjectScreen from './BuisnessProjectScreen';
 import ProjectDetailsScreen from './ProjectDetailsScreen';
 import ProjectScreen from './ProjectScreen';
+import TaskDetailsScreen from './TaskDetailsScreen';
 import TaskListScreen from './TaskListScreen';
 
 export default {
@@ -47,6 +48,14 @@ export default {
   TaskListScreen: {
     title: 'Project_Tasks',
     component: TaskListScreen,
+    options: {
+      shadedHeader: false,
+    },
+  },
+  TaskDetailsScreen: {
+    title: 'Project_Task',
+    component: TaskDetailsScreen,
+    actionID: 'project_projectTask_details',
     options: {
       shadedHeader: false,
     },
