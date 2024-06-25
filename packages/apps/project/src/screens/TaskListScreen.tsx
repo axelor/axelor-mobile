@@ -26,7 +26,7 @@ import {
 import {TaskActionCard, TaskFilters} from '../components';
 import {searchProjectTask} from '../features/projectTaskSlice';
 
-const TaskListScreen = ({}) => {
+const TaskListScreen = ({navigation}) => {
   const I18n = useTranslator();
 
   const {userId} = useSelector((state: any) => state.auth);
@@ -71,7 +71,13 @@ const TaskListScreen = ({}) => {
         sliceFunctionData={sliceFunctionData}
         searchPlaceholder={I18n.t('Base_Search')}
         renderListItem={({item}) => (
-          <TaskActionCard task={item} displayParentProjet={project == null} />
+          <TaskActionCard
+            task={item}
+            displayParentProjet={project == null}
+            onPress={() => {
+              navigation.navigate('TaskDetailsScreen', {projecTaskId: item.id});
+            }}
+          />
         )}
       />
     </Screen>

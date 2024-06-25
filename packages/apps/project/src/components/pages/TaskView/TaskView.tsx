@@ -21,6 +21,7 @@ import {
   useSelector,
   SearchListView,
   useTranslator,
+  useNavigation,
 } from '@axelor/aos-mobile-core';
 import {ProjectHeader, TaskActionCard} from '../../molecules';
 import {TaskFilters} from '../../templates';
@@ -28,6 +29,7 @@ import {searchProjectTask} from '../../../features/projectTaskSlice';
 
 const TaskView = () => {
   const I18n = useTranslator();
+  const navigation = useNavigation();
 
   const {userId} = useSelector((state: any) => state.auth);
   const {project} = useSelector((state: any) => state.project_project);
@@ -75,7 +77,14 @@ const TaskView = () => {
       sliceFunction={searchProjectTask}
       sliceFunctionData={sliceFunctionData}
       searchPlaceholder={I18n.t('Base_Search')}
-      renderListItem={({item}) => <TaskActionCard task={item} />}
+      renderListItem={({item}) => (
+        <TaskActionCard
+          task={item}
+          onPress={() => {
+            navigation.navigate('TaskDetailsScreen', {projecTaskId: item.id});
+          }}
+        />
+      )}
     />
   );
 };
