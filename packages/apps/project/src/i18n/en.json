@@ -44,6 +44,5 @@
   "Project_SliceAction_FetchProjectPriority": "fetch project priorities",
   "Project_SliceAction_SearchSubProject": "search sub projects",
   "Project_SliceAction_FetchProjectTaskById": "fetch project task by id",
-  "Project_SliceAction_FetchTimesheetLinesByTask": "fetch timesheet lines by task",
-  "Project_SliceAction_FetchTags": "fetch tags"
+  "Project_SliceAction_FetchTimesheetLinesByTask": "fetch timesheet lines by task"
 }

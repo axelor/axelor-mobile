@@ -28,9 +28,7 @@ import {
 const ProjectTaskDropdownCards = () => {
   const I18n = useTranslator();
 
-  const {projectTask, tagList} = useSelector(
-    (state: any) => state.project_projectTask,
-  );
+  const {projectTask} = useSelector((state: any) => state.project_projectTask);
 
   const items = useMemo(() => {
     const result = [
@@ -39,13 +37,13 @@ const ProjectTaskDropdownCards = () => {
         title: I18n.t('Project_Characteristics'),
         childrenComp: (
           <DropdownTaskCharacteristics
-            projectTaskCategory={projectTask?.projectTaskCategory}
-            projectTaskSection={projectTask?.projectTaskSection}
-            targetVersion={projectTask?.targetVersion}
-            taskDate={projectTask?.taskDate}
-            taskEndDate={projectTask?.taskEndDate}
-            taskDeadline={projectTask?.taskDeadline}
-            projectTaskTagSet={tagList}
+            projectTaskCategory={projectTask.projectTaskCategory}
+            projectTaskSection={projectTask.projectTaskSection}
+            targetVersion={projectTask.targetVersion}
+            taskDate={projectTask.taskDate}
+            taskEndDate={projectTask.taskEndDate}
+            taskDeadline={projectTask.taskDeadline}
+            projectTaskTagSet={projectTask.projectTaskTagSet}
           />
         ),
       },
@@ -68,7 +66,7 @@ const ProjectTaskDropdownCards = () => {
     }
 
     return result;
-  }, [I18n, projectTask, tagList]);
+  }, [I18n, projectTask]);
 
   return <DropdownCardSwitch dropdownItems={items} style={styles.dropdown} />;
 };

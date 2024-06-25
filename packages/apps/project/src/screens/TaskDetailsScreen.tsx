@@ -16,7 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import React, {useCallback, useEffect, useMemo} from 'react';
+import React, {useCallback, useEffect} from 'react';
 import {HeaderContainer, Screen, ScrollView} from '@axelor/aos-mobile-ui';
 import {
   CustomFieldForm,
@@ -32,7 +32,7 @@ import {
 } from '../components';
 import {fetchProjectStatus} from '../features/projectSlice';
 import {fetchTimesheetLinesByTask} from '../features/timesheetLinesSlice';
-import {fetchProjectTaskById, fetchTags} from '../features/projectTaskSlice';
+import {fetchProjectTaskById} from '../features/projectTaskSlice';
 
 const TaskDetailsScreen = ({navigation, route}) => {
   const projecTaskId = route?.params?.projecTaskId;
@@ -43,10 +43,6 @@ const TaskDetailsScreen = ({navigation, route}) => {
     (state: any) => state.project_projectTask,
   );
 
-  const tagsIdList = useMemo(() => {
-    return projectTask.projectTaskTagSet?.map(tag => tag.id);
-  }, [projectTask.projectTaskTagSet]);
-
   const refresh = useCallback(() => {
     dispatch((fetchProjectTaskById as any)({projecTaskId}));
     dispatch(fetchProjectStatus());
@@ -56,12 +52,6 @@ const TaskDetailsScreen = ({navigation, route}) => {
   useEffect(() => {
     refresh();
   }, [refresh]);
-
-  useEffect(() => {
-    if (projectTask.id === projecTaskId) {
-      dispatch((fetchTags as any)({tagIds: tagsIdList}));
-    }
-  }, [dispatch, projecTaskId, projectTask.id, tagsIdList]);
 
   return (
     <Screen removeSpaceOnTop={true} fixedItems={<TaskButton />}>

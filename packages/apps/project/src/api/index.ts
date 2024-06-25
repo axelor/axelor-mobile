@@ -26,7 +26,6 @@ export {
   fetchProjectPriority as fetchProjectPriorityApi,
   fetchProjectTaskById as fetchProjectTaskByIdApi,
   fetchProjectTaskStatus as fetchProjectTaskStatusApi,
-  fetchTags as fetchTagsApi,
   searchProjectTask as searchProjectTaskApi,
 } from './project-task-api';
 export {fetchTimesheetLinesByTask as fetchTimesheetLinesByTaskApi} from './timesheet-lines-api';

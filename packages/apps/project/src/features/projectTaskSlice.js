@@ -25,7 +25,6 @@ import {
   fetchProjectPriority as _fetchProjectPriority,
   fetchProjectTaskById as _fetchProjectTaskById,
   fetchProjectTaskStatus as _fetchProjectTaskStatus,
-  fetchTags as _fetchTags,
   searchProjectTask as _searchProjectTask,
 } from '../api/project-task-api';
 
@@ -81,19 +80,6 @@ export const fetchProjectTaskById = createAsyncThunk(
   },
 );
 
-export const fetchTags = createAsyncThunk(
-  'project_projectTask/fetchTags',
-  async function (data, {getState}) {
-    return handlerApiCall({
-      fetchFunction: _fetchTags,
-      data,
-      action: 'Project_SliceAction_FetchTags',
-      getState,
-      responseOptions: {isArrayResponse: true},
-    });
-  },
-);
-
 const initialState = {
   loading: true,
   moreLoading: false,
@@ -124,9 +110,6 @@ const projectTaskSlice = createSlice({
     });
     builder.addCase(fetchProjectPriority.fulfilled, (state, action) => {
       state.projectPriorityList = action.payload;
-    });
-    builder.addCase(fetchTags.fulfilled, (state, action) => {
-      state.tagList = action.payload;
     });
     builder.addCase(fetchProjectTaskById.pending, state => {
       state.loadingProjectTask = true;

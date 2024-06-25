@@ -72,10 +72,6 @@ const createProjectTaskCriteria = ({
   return criteria;
 };
 
-const createProjectTaskTagCriteria = ({tagIds}) => {
-  return [{fieldName: 'id', operator: 'in', value: tagIds}];
-};
-
 export async function searchProjectTask({
   searchValue,
   page = 0,
@@ -122,19 +118,8 @@ export async function fetchProjectTaskById({projecTaskId}) {
     model: 'com.axelor.apps.project.db.ProjectTask',
     id: projecTaskId,
     fieldKey: 'project_projectTask',
-  });
-}
-
-export async function fetchTags({tagIds}) {
-  if (!Array.isArray(tagIds) || tagIds.length === 0) {
-    return {data: {data: [], total: 0}};
-  }
-
-  return createStandardSearch({
-    model: 'com.axelor.apps.project.db.ProjectTaskTag',
-    fieldKey: 'project_projectTaskTag',
-    page: 0,
-    numberElementsByPage: null,
-    criteria: createProjectTaskTagCriteria({tagIds}),
+    relatedFields: {
+      projectTaskTagSet: ['name', 'colorSelect'],
+    },
   });
 }
