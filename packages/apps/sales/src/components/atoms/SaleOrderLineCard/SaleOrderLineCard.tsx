@@ -142,7 +142,7 @@ const SaleOrderLineCard = ({
       <ObjectCard
         style={[styles.card, style]}
         showArrow={false}
-        onPress={onPress}
+        touchable={false}
         upperTexts={{
           items: [
             {
@@ -170,7 +170,7 @@ const SaleOrderLineCard = ({
       <ObjectCard
         style={[styles.card, style]}
         showArrow={false}
-        onPress={onPress}
+        touchable={false}
         upperTexts={{
           items: [
             {
