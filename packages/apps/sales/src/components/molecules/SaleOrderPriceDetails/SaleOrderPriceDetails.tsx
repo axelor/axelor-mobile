@@ -18,6 +18,7 @@
 
 import React, {useMemo} from 'react';
 import {useTranslator, useTypes} from '@axelor/aos-mobile-core';
+import {usePriceFormat} from '@axelor/aos-mobile-ui';
 import {PriceDetails} from '../../atoms';
 
 interface SaleOrderPriceDetailsProps {
@@ -31,40 +32,41 @@ const SaleOrderPriceDetails = ({
 }: SaleOrderPriceDetailsProps) => {
   const I18n = useTranslator();
   const {SaleOrder} = useTypes();
+  const formatPrice = usePriceFormat();
 
   const priceList = useMemo(
     () => [
       {
         title: I18n.t('Sales_TotalWT'),
-        value: saleOrder.exTaxTotal,
+        value: formatPrice(saleOrder.exTaxTotal),
         unit: saleOrder.currency?.symbol,
       },
       {
         title: I18n.t('Sales_TotalTax'),
-        value: saleOrder.taxTotal,
+        value: formatPrice(saleOrder.taxTotal),
         unit: saleOrder.currency?.symbol,
       },
       {
         title: I18n.t('Sales_TotalATI'),
-        value: saleOrder.inTaxTotal,
+        value: formatPrice(saleOrder.inTaxTotal),
         unit: saleOrder.currency?.symbol,
         size: 20,
         showLine: true,
       },
       {
         title: I18n.t('Sales_AmountInvoiced'),
-        value: saleOrder.amountInvoiced,
+        value: formatPrice(saleOrder.amountInvoiced),
         unit: saleOrder.currency?.symbol,
         hideIf: saleOrder.statusSelect <= SaleOrder?.statusSelect.Finalized,
       },
       {
         title: I18n.t('Sales_AdvanceTotal'),
-        value: saleOrder.advanceTotal,
+        value: formatPrice(saleOrder.advanceTotal),
         unit: saleOrder.currency?.symbol,
         hideIf: saleOrder.statusSelect <= SaleOrder?.statusSelect.Finalized,
       },
     ],
-    [I18n, SaleOrder?.statusSelect.Finalized, saleOrder],
+    [formatPrice, I18n, SaleOrder?.statusSelect.Finalized, saleOrder],
   );
 
   return <PriceDetails style={style} lineList={priceList} />;
