@@ -1,0 +1,5 @@
+{
+  "title": "SearchListView: fix typing issue",
+  "type": "fix",
+  "packages": "core"
+}
