@@ -17,5 +17,6 @@
  */
 
 export {sale_modelAPI} from './objectFields';
-export {sales_searchFields} from './searchFields';
-export {sales_sortFields} from './sortFields';
+export {sale_searchFields} from './searchFields';
+export {sale_sortFields} from './sortFields';
+export {sale_typeObjects} from './typeObjects';

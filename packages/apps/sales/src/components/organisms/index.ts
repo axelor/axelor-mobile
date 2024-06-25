@@ -16,8 +16,4 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-export {default as PriceDetails} from './PriceDetails/PriceDetails';
-export {default as ProductCard} from './ProductCard/ProductCard';
-export {default as SaleOrderCard} from './SaleOrderCard/SaleOrderCard';
-export {default as StateBadge} from './StateBadge/StateBadge';
-export {default as TaxModeBadge} from './TaxModeBadge/TaxModeBadge';
+export {default as CustomerSearchBar} from './CustomerSearchBar/CustomerSearchBar';

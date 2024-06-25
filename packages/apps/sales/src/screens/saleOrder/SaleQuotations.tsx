@@ -16,8 +16,24 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-export {default as PriceDetails} from './PriceDetails/PriceDetails';
-export {default as ProductCard} from './ProductCard/ProductCard';
-export {default as SaleOrderCard} from './SaleOrderCard/SaleOrderCard';
-export {default as StateBadge} from './StateBadge/StateBadge';
-export {default as TaxModeBadge} from './TaxModeBadge/TaxModeBadge';
+import React from 'react';
+import {useTypes} from '@axelor/aos-mobile-core';
+import {Screen} from '@axelor/aos-mobile-ui';
+import {SaleOrderListView} from '../../components';
+
+const SaleQuotations = ({}) => {
+  const {SaleOrder} = useTypes();
+
+  return (
+    <Screen removeSpaceOnTop>
+      <SaleOrderListView
+        statusList={[
+          SaleOrder?.statusSelect.Draft,
+          SaleOrder?.statusSelect.Finalized,
+        ]}
+      />
+    </Screen>
+  );
+};
+
+export default SaleQuotations;
