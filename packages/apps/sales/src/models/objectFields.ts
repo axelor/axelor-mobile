@@ -33,4 +33,22 @@ export const sale_modelAPI: ObjectFields = {
     picture: schemaContructor.subObject('fileName'),
     configurator: schemaContructor.subObject(),
   }),
+  sale_saleOrder: schemaContructor.object({
+    statusSelect: schemaContructor.number(),
+    saleOrderSeq: schemaContructor.string(),
+    orderBeingEdited: schemaContructor.boolean(),
+    externalReference: schemaContructor.string(),
+    clientPartner: schemaContructor.subObject('fullName'),
+    company: schemaContructor.subObject('name'),
+    tradingName: schemaContructor.subObject('name'),
+    orderDate: schemaContructor.string(),
+    exTaxTotal: schemaContructor.number(),
+    inTaxTotal: schemaContructor.number(),
+    currency: schemaContructor.subObject('symbol'),
+    deliveryState: schemaContructor.number(),
+    invoicingState: schemaContructor.number(),
+  }),
+  sale_customer: schemaContructor.object({
+    fullName: schemaContructor.string(),
+  }),
 };

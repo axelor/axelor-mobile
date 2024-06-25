@@ -20,8 +20,10 @@ import React, {useMemo} from 'react';
 import {StyleSheet} from 'react-native';
 import {Text} from '../../atoms';
 import {Color, useThemeColor} from '../../../theme';
+import {checkNullString} from '../../../utils';
 
 interface TextUnitProps {
+  title?: string;
   value: string | number;
   unit: string;
   color?: Color;
@@ -32,6 +34,7 @@ interface TextUnitProps {
 }
 
 const TextUnit = ({
+  title,
   value,
   unit,
   color,
@@ -44,13 +47,18 @@ const TextUnit = ({
 
   const _color = useMemo(() => color || Colors.primaryColor, [color, Colors]);
 
+  const _title = useMemo(
+    () => !checkNullString(title) && `${title} : `,
+    [title],
+  );
+
   return (
     <Text
       textColor={defaultColor ? Colors.text : _color.background}
       fontSize={fontSize}
       style={[styles.text, style]}
       numberOfLines={numberOfLines}>
-      {value} {unit}
+      {_title} {value} {unit}
     </Text>
   );
 };
