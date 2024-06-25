@@ -83,6 +83,7 @@ const styles = StyleSheet.create({
     marginRight: 5,
   },
   txtDetails: {
+    flex: 1,
     fontWeight: 'bold',
   },
   icon: {
