@@ -45,13 +45,18 @@ const TaskDetailsScreen = ({navigation, route}) => {
 
   const refresh = useCallback(() => {
     dispatch((fetchProjectTaskById as any)({projecTaskId}));
-    dispatch(fetchProjectStatus());
-    dispatch((fetchTimesheetLinesByTask as any)({projectTaskId: projecTaskId}));
   }, [dispatch, projecTaskId]);
 
   useEffect(() => {
+    dispatch(
+      (fetchTimesheetLinesByTask as any)({projectTaskId: projectTask?.id}),
+    );
+  }, [dispatch, projectTask]);
+
+  useEffect(() => {
+    dispatch(fetchProjectStatus());
     refresh();
-  }, [refresh]);
+  }, [dispatch, refresh]);
 
   return (
     <Screen removeSpaceOnTop={true} fixedItems={<TaskButton />}>
