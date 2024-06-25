@@ -22,4 +22,15 @@ export const sale_modelAPI: ObjectFields = {
   sale_saleConfig: schemaContructor.object({
     saleOrderInAtiSelect: schemaContructor.number(),
   }),
+  sales_product: schemaContructor.object({
+    name: schemaContructor.string(),
+    code: schemaContructor.string(),
+    productFamily: schemaContructor.subObject('name'),
+    productCategory: schemaContructor.subObject('name'),
+    description: schemaContructor.string(),
+    salePrice: schemaContructor.number(),
+    saleCurrency: schemaContructor.subObject('symbol'),
+    picture: schemaContructor.subObject('fileName'),
+    configurator: schemaContructor.subObject(),
+  }),
 };
