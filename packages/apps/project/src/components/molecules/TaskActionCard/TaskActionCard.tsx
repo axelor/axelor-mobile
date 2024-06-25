@@ -37,12 +37,14 @@ interface TaskActionCardProps {
   style?: any;
   task?: TaskProps;
   displayParentProjet?: boolean;
+  onPress?: () => void;
 }
 
 const TaskActionCard = ({
   style,
   task,
   displayParentProjet = false,
+  onPress,
 }: TaskActionCardProps) => {
   const Colors = useThemeColor();
   const I18n = useTranslator();
@@ -50,6 +52,7 @@ const TaskActionCard = ({
   return (
     <View style={[styles.container, style]}>
       <TaskCard
+        onPress={onPress}
         name={task.name}
         assignedTo={task.assignedTo?.fullName}
         taskDeadline={task.taskDeadline}

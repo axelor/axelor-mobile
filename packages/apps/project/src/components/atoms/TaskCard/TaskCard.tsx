@@ -34,6 +34,7 @@ interface TaskCardProps {
   progress?: number;
   priority?: any;
   status?: any;
+  onPress?: () => void;
 }
 
 const TaskCard = ({
@@ -45,6 +46,7 @@ const TaskCard = ({
   progress,
   priority,
   status,
+  onPress,
 }: TaskCardProps) => {
   const {getItemColorFromIndex} = useTypeHelpers();
 
@@ -64,6 +66,7 @@ const TaskCard = ({
   return (
     <View style={style}>
       <ObjectCard
+        onPress={onPress}
         style={[borderStyle, styles.card]}
         iconLeftMargin={30}
         leftContainerFlex={2}
