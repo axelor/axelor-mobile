@@ -1,8 +1,10 @@
 {
   "Sales_Sales": "Sales",
+  "Sales_ArticleService": "Articles & services",
   "Sales_NotState": "Not {{state}}",
   "Sales_PartiallyState": "Partially {{state}}",
   "Sales_ATI": "A.T.I.",
   "Sales_WT": "W.T.",
-  "Sales_SliceAction_FetchSaleConfig": "fetch sale config"
+  "Sales_SliceAction_FetchSaleConfig": "fetch sale config",
+  "Sales_SliceAction_SearchProduct": "search products"
 }
