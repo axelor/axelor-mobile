@@ -24,7 +24,7 @@ import {
   checkNullString,
   useThemeColor,
 } from '@axelor/aos-mobile-ui';
-import {useTranslator} from '@axelor/aos-mobile-core';
+import {formatDate, useTranslator} from '@axelor/aos-mobile-core';
 
 interface DropdownTaskCharacteristicsProps {
   style?: any;
@@ -57,6 +57,13 @@ const DropdownTaskCharacteristics = ({
     }));
   }, [projectTaskTagSet, Colors]);
 
+  const _formatDate = useCallback(
+    _date => {
+      return _date ? formatDate(_date, I18n.t('Base_DateFormat')) : null;
+    },
+    [I18n],
+  );
+
   const renderLabelText = useCallback(
     (titleKey: string, value: string | number) => {
       if (!checkNullString(value)) {
@@ -78,9 +85,9 @@ const DropdownTaskCharacteristics = ({
       {renderLabelText('Project_Category', projectTaskCategory?.name)}
       {renderLabelText('Project_Section', projectTaskSection?.name)}
       {renderLabelText('Project_TargetVersion', targetVersion?.title)}
-      {renderLabelText('Project_StartDate', taskDate)}
-      {renderLabelText('Project_DueDate', taskEndDate)}
-      {renderLabelText('Project_Deadline', taskDeadline)}
+      {renderLabelText('Project_StartDate', _formatDate(taskDate))}
+      {renderLabelText('Project_DueDate', _formatDate(taskEndDate))}
+      {renderLabelText('Project_Deadline', _formatDate(taskDeadline))}
       <TagList title={I18n.t('Project_Tags')} tags={tagsList} />
     </View>
   );

@@ -91,8 +91,6 @@ const initialState = {
 
   loadingProjectTask: true,
   projectTask: {},
-
-  tagList: [],
 };
 
 const projectTaskSlice = createSlice({

@@ -17,6 +17,7 @@
  */
 
 import React, {useCallback, useEffect} from 'react';
+import {StyleSheet} from 'react-native';
 import {HeaderContainer, Screen, ScrollView} from '@axelor/aos-mobile-ui';
 import {
   CustomFieldForm,
@@ -31,12 +32,10 @@ import {
   ProjectTaskDropdownCards,
 } from '../components';
 import {fetchProjectStatus} from '../features/projectSlice';
-import {fetchTimesheetLinesByTask} from '../features/timesheetLinesSlice';
 import {fetchProjectTaskById} from '../features/projectTaskSlice';
 
 const TaskDetailsScreen = ({navigation, route}) => {
   const projecTaskId = route?.params?.projecTaskId;
-
   const dispatch = useDispatch();
 
   const {projectTask, loadingProjectTask} = useSelector(
@@ -48,17 +47,13 @@ const TaskDetailsScreen = ({navigation, route}) => {
   }, [dispatch, projecTaskId]);
 
   useEffect(() => {
-    if (projecTaskId === projectTask?.id) {
-      dispatch(
-        (fetchTimesheetLinesByTask as any)({projectTaskId: projectTask?.id}),
-      );
-    }
-  }, [dispatch, projecTaskId, projectTask]);
-
-  useEffect(() => {
     dispatch(fetchProjectStatus());
     refresh();
   }, [dispatch, refresh]);
+
+  if (projecTaskId !== projectTask?.id) {
+    return null;
+  }
 
   return (
     <Screen removeSpaceOnTop={true} fixedItems={<TaskButton />}>
@@ -66,7 +61,9 @@ const TaskDetailsScreen = ({navigation, route}) => {
         expandableFilter={false}
         fixedItems={<TaskDetailsHeader />}
       />
-      <ScrollView refresh={{loading: loadingProjectTask, fetcher: refresh}}>
+      <ScrollView
+        style={styles.container}
+        refresh={{loading: loadingProjectTask, fetcher: refresh}}>
         <ProjectSimpleCard
           code={projectTask.project?.code}
           name={projectTask.project?.name}
@@ -82,11 +79,18 @@ const TaskDetailsScreen = ({navigation, route}) => {
           model="com.axelor.apps.project.db.ProjectTask"
           fieldType="attrs"
           modelId={projectTask.id}
+          readonly
         />
         <TimeSpentGridView />
       </ScrollView>
     </Screen>
   );
 };
+
+const styles = StyleSheet.create({
+  container: {
+    height: null,
+  },
+});
 
 export default TaskDetailsScreen;

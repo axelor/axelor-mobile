@@ -75,10 +75,6 @@ const useProjectDetailsActions = () => {
 };
 
 const useProjectTaskDetailsActions = () => {
-  const Colors = useThemeColor();
-  const dispatch = useDispatch();
-  const I18n = useTranslator();
-
   const {projectTask} = useSelector((state: any) => state.project_projectTask);
   const {mobileSettings} = useSelector((state: any) => state.appConfig);
 
@@ -88,12 +84,5 @@ const useProjectTaskDetailsActions = () => {
       modelId: projectTask?.id,
       disableMailMessages: !mobileSettings?.isTrackerMessageEnabled,
     });
-  }, [
-    Colors,
-    I18n,
-    dispatch,
-    mobileSettings?.isTrackerMessageEnabled,
-    projectTask?.id,
-    projectTask?.name,
-  ]);
+  }, [mobileSettings?.isTrackerMessageEnabled, projectTask?.id]);
 };

@@ -16,13 +16,21 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import React, {useMemo} from 'react';
-import {useSelector, useTranslator} from '@axelor/aos-mobile-core';
+import React, {useEffect, useMemo} from 'react';
+import {
+  formatDate,
+  useDispatch,
+  useSelector,
+  useTranslator,
+} from '@axelor/aos-mobile-core';
 import {GridView} from '@axelor/aos-mobile-ui';
+import {fetchTimesheetLinesByTask} from '../../../features/timesheetLinesSlice';
 
 const TimeSpentGridView = () => {
   const I18n = useTranslator();
+  const dispatch = useDispatch();
 
+  const {projectTask} = useSelector((state: any) => state.project_projectTask);
   const {timesheetLineList} = useSelector(
     (state: any) => state.project_timesheetLines,
   );
@@ -30,25 +38,27 @@ const TimeSpentGridView = () => {
   const formattedData = useMemo(() => {
     if (Array.isArray(timesheetLineList) && timesheetLineList.length > 0) {
       return timesheetLineList.map(item => ({
-        project: item.project?.fullName ?? '',
-        date: item.date,
+        date: formatDate(item.date, I18n.t('Base_DateFormat')),
         duration: item.duration,
         product: item.product?.fullName ?? '',
-        projectTask: item.projectTask?.fullName ?? '',
         toInvoice: item.toInvoice ? 'X' : '',
         comments: item.comments ?? '',
       }));
     } else {
       return [];
     }
-  }, [timesheetLineList]);
+  }, [timesheetLineList, I18n]);
+
+  useEffect(() => {
+    dispatch(
+      (fetchTimesheetLinesByTask as any)({projectTaskId: projectTask?.id}),
+    );
+  }, [dispatch, projectTask]);
 
   return (
     <GridView
       data={formattedData}
       columns={[
-        {title: I18n.t('Project_Project'), key: 'project'},
-        {title: I18n.t('Project_Task'), key: 'projectTask'},
         {title: I18n.t('Project_Date'), key: 'date'},
         {title: I18n.t('Project_Product'), key: 'product'},
         {title: I18n.t('Project_Duration'), key: 'duration'},
