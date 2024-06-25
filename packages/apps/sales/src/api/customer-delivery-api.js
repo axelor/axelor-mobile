@@ -16,8 +16,18 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-export {fetchCustomerDelivery} from './customerDeliverySlice';
-export {searchCustomer} from './customerSlice';
-export {searchProduct} from './productSlice';
-export {fetchSaleConfig} from './saleConfigSlice';
-export {fetchSaleOrder, fetchSaleOrderById} from './saleOrderSlice';
+import {createStandardSearch} from '@axelor/aos-mobile-core';
+
+export async function fetchCustomerDelivery({saleOrderId}) {
+  return createStandardSearch({
+    model: 'com.axelor.apps.stock.db.StockMove',
+    domain: ':saleOrder MEMBER OF self.saleOrderSet',
+    domainContext: {
+      saleOrder: {id: saleOrderId},
+    },
+    fieldKey: 'sales_customerDelivery',
+    sortKey: 'sales_customerDelivery',
+    numberElementsByPage: 1,
+    page: 0,
+  });
+}
