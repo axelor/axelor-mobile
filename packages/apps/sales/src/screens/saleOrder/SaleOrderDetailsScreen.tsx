@@ -78,7 +78,6 @@ const SaleOrderDetailsScreen = ({route}) => {
         size: 20,
         showLine: true,
       },
-
       {
         title: I18n.t('Sales_AmountInvoiced'),
         value: formatPrice(saleOrder.amountInvoiced),

@@ -51,5 +51,5 @@ const useSaleOrderDetailsActions = () => {
       disableMailMessages: !mobileSettings?.isTrackerMessageEnabled,
       attachedFileScreenTitle: title,
     });
-  }, [I18n, mobileSettings, saleOrder?.id, title]);
+  }, [mobileSettings, saleOrder?.id, title]);
 };

@@ -22,6 +22,20 @@ export const sale_typeObjects: ModuleSelections = [
   {
     modelName: 'com.axelor.apps.sale.db.SaleOrder',
     fields: {
+      saleOrderTypeSelect: {
+        content: [
+          {
+            key: 'Standard',
+            value: 1,
+            title: null,
+          },
+          {
+            key: 'Subscription',
+            value: 2,
+            title: null,
+          },
+        ],
+      },
       statusSelect: {
         content: [
           {

@@ -45,6 +45,9 @@ const customerDeliverySlice = createSlice({
     builder.addCase(fetchCustomerDelivery.pending, state => {
       state.loadingCustomerDelivery = true;
     });
+    builder.addCase(fetchCustomerDelivery.rejected, state => {
+      state.loadingCustomerDelivery = false;
+    });
     builder.addCase(fetchCustomerDelivery.fulfilled, (state, action) => {
       state.loadingCustomerDelivery = false;
       state.customerDelivery = action.payload;

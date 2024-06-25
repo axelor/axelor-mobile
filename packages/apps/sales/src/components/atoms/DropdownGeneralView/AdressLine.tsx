@@ -34,7 +34,7 @@ const AdressLine = ({address}: AdressLineProps) => {
       <View style={styles.iconContainer}>
         <Icon
           style={styles.marginLeft}
-          name={'pin-map-fill'}
+          name="pin-map-fill"
           touchable={true}
           onPress={() => linkingProvider.openMapApp(_address)}
         />

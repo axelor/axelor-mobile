@@ -63,7 +63,8 @@ const SaleOrderHeader = ({saleOrder}: SaleOrderHeaderProps) => {
             color={Colors.cautionColor}
           />
         )}
-        {saleOrder.saleOrderTypeSelect === 2 && (
+        {saleOrder.saleOrderTypeSelect ===
+          SaleOrder?.saleOrderTypeSelect.Subscription && (
           <Badge
             title={I18n.t('Sales_Subscription')}
             color={Colors.plannedColor}
