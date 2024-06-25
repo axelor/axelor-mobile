@@ -16,15 +16,13 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import React, {useEffect, useMemo} from 'react';
-import {ScrollView} from 'react-native';
-import {HeaderContainer, Screen} from '@axelor/aos-mobile-ui';
+import React, {useCallback, useEffect, useMemo} from 'react';
+import {HeaderContainer, Screen, ScrollView} from '@axelor/aos-mobile-ui';
 import {
   CustomFieldForm,
   useDispatch,
   useSelector,
 } from '@axelor/aos-mobile-core';
-import {fetchProjectTaskById, fetchTags} from '../features/projectTaskSlice';
 import {
   ProjectSimpleCard,
   TaskButton,
@@ -34,27 +32,36 @@ import {
 } from '../components';
 import {fetchProjectStatus} from '../features/projectSlice';
 import {fetchTimesheetLinesByTask} from '../features/timesheetLinesSlice';
+import {fetchProjectTaskById, fetchTags} from '../features/projectTaskSlice';
 
 const TaskDetailsScreen = ({navigation, route}) => {
   const projecTaskId = route?.params?.projecTaskId;
 
   const dispatch = useDispatch();
 
-  const {projectTask} = useSelector((state: any) => state.project_projectTask);
+  const {projectTask, loadingProjectTask} = useSelector(
+    (state: any) => state.project_projectTask,
+  );
 
   const tagsIdList = useMemo(() => {
-    return projectTask?.projectTaskTagSet?.map(tag => tag.id);
-  }, [projectTask?.projectTaskTagSet]);
+    return projectTask.projectTaskTagSet?.map(tag => tag.id);
+  }, [projectTask.projectTaskTagSet]);
 
-  useEffect(() => {
+  const refresh = useCallback(() => {
     dispatch((fetchProjectTaskById as any)({projecTaskId}));
     dispatch(fetchProjectStatus());
     dispatch((fetchTimesheetLinesByTask as any)({projectTaskId: projecTaskId}));
-  }, [projecTaskId, dispatch]);
+  }, [dispatch, projecTaskId]);
 
   useEffect(() => {
-    dispatch((fetchTags as any)({tagIds: tagsIdList}));
-  }, [dispatch, tagsIdList]);
+    refresh();
+  }, [refresh]);
+
+  useEffect(() => {
+    if (projectTask.id === projecTaskId) {
+      dispatch((fetchTags as any)({tagIds: tagsIdList}));
+    }
+  }, [dispatch, projecTaskId, projectTask.id, tagsIdList]);
 
   return (
     <Screen removeSpaceOnTop={true} fixedItems={<TaskButton />}>
@@ -62,14 +69,14 @@ const TaskDetailsScreen = ({navigation, route}) => {
         expandableFilter={false}
         fixedItems={<TaskDetailsHeader />}
       />
-      <ScrollView>
+      <ScrollView refresh={{loading: loadingProjectTask, fetcher: refresh}}>
         <ProjectSimpleCard
-          code={projectTask?.project?.code}
-          name={projectTask?.project?.name}
-          projectStatus={projectTask?.project?.projectStatus}
+          code={projectTask.project?.code}
+          name={projectTask.project?.name}
+          projectStatus={projectTask.project?.projectStatus}
           onPress={() => {
             navigation.navigate('ProjectDetailsScreen', {
-              projectId: projectTask?.project?.id,
+              projectId: projectTask.project?.id,
             });
           }}
         />

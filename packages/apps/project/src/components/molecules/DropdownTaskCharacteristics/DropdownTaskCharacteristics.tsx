@@ -16,13 +16,13 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import React, {useMemo} from 'react';
+import React, {useCallback, useMemo} from 'react';
 import {View} from 'react-native';
 import {
   LabelText,
   TagList,
-  bootstrapColors,
   checkNullString,
+  useThemeColor,
 } from '@axelor/aos-mobile-ui';
 import {useTranslator} from '@axelor/aos-mobile-core';
 
@@ -48,58 +48,39 @@ const DropdownTaskCharacteristics = ({
   projectTaskTagSet,
 }: DropdownTaskCharacteristicsProps) => {
   const I18n = useTranslator();
+  const Colors = useThemeColor();
 
   const tagsList = useMemo(() => {
     return projectTaskTagSet?.map(tag => ({
       title: tag?.name,
-      color: bootstrapColors[tag?.colorSelect],
+      color: Colors[tag?.colorSelect],
     }));
-  }, [projectTaskTagSet]);
+  }, [projectTaskTagSet, Colors]);
+
+  const renderLabelText = useCallback(
+    (titleKey: string, value: string | number) => {
+      if (!checkNullString(value)) {
+        return (
+          <LabelText
+            title={`${I18n.t(titleKey)} :`}
+            value={value}
+            textSize={16}
+          />
+        );
+      }
+      return null;
+    },
+    [I18n],
+  );
 
   return (
     <View style={style}>
-      {projectTaskCategory != null && (
-        <LabelText
-          title={`${I18n.t('Project_Category')} :`}
-          value={projectTaskCategory?.name}
-          textSize={16}
-        />
-      )}
-      {projectTaskSection != null && (
-        <LabelText
-          title={`${I18n.t('Project_Section')} :`}
-          value={projectTaskSection?.name}
-          textSize={16}
-        />
-      )}
-      {targetVersion != null && (
-        <LabelText
-          title={`${I18n.t('Project_TargetVersion')} :`}
-          value={targetVersion?.title}
-          textSize={16}
-        />
-      )}
-      {!checkNullString(taskDate) && (
-        <LabelText
-          title={`${I18n.t('Project_StartDate')} :`}
-          value={taskDate}
-          textSize={16}
-        />
-      )}
-      {!checkNullString(taskEndDate) && (
-        <LabelText
-          title={`${I18n.t('Project_DueDate')} :`}
-          value={taskEndDate}
-          textSize={16}
-        />
-      )}
-      {!checkNullString(taskDeadline) && (
-        <LabelText
-          title={`${I18n.t('Project_Deadline')} :`}
-          value={taskDeadline}
-          textSize={16}
-        />
-      )}
+      {renderLabelText('Project_Category', projectTaskCategory?.name)}
+      {renderLabelText('Project_Section', projectTaskSection?.name)}
+      {renderLabelText('Project_TargetVersion', targetVersion?.title)}
+      {renderLabelText('Project_StartDate', taskDate)}
+      {renderLabelText('Project_DueDate', taskEndDate)}
+      {renderLabelText('Project_Deadline', taskDeadline)}
       <TagList title={I18n.t('Project_Tags')} tags={tagsList} />
     </View>
   );

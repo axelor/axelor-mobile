@@ -16,7 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import React from 'react';
+import React, {useCallback} from 'react';
 import {View} from 'react-native';
 import {HtmlInput, Text, checkNullString} from '@axelor/aos-mobile-ui';
 import {useTranslator} from '@axelor/aos-mobile-core';
@@ -34,24 +34,25 @@ const DropdownTaskDescription = ({
 }: DropdownTaskDescriptionProps) => {
   const I18n = useTranslator();
 
+  const renderDescription = useCallback(
+    (titleKey: string, value: string) => {
+      if (!checkNullString(value)) {
+        return (
+          <>
+            <Text writingType="important">{`${I18n.t(titleKey)}:`}</Text>
+            <HtmlInput defaultInput={value} readonly={true} />
+          </>
+        );
+      }
+      return null;
+    },
+    [I18n],
+  );
+
   return (
     <View style={style}>
-      {!checkNullString(description) && (
-        <>
-          <Text writingType="important">{`${I18n.t(
-            'Base_Description',
-          )}: `}</Text>
-          <HtmlInput defaultInput={description} readonly={true} />
-        </>
-      )}
-      {!checkNullString(internalDescription) && (
-        <>
-          <Text writingType="important">{`${I18n.t(
-            'Project_InternalDescription',
-          )}: `}</Text>
-          <HtmlInput defaultInput={internalDescription} readonly={true} />
-        </>
-      )}
+      {renderDescription('Base_Description', description)}
+      {renderDescription('Project_InternalDescription', internalDescription)}
     </View>
   );
 };

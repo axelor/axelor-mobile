@@ -25,8 +25,6 @@ import {
 } from '@axelor/aos-mobile-core';
 import {useThemeColor} from '@axelor/aos-mobile-ui';
 import {fetchProjectById} from '../features/projectSlice';
-import {fetchProjectTaskById} from '../features/projectTaskSlice';
-import {fetchTimesheetLinesByTask} from '../features/timesheetLinesSlice';
 
 export const useProjectHeaders = () => {
   useProjectDetailsActions();
@@ -89,29 +87,6 @@ const useProjectTaskDetailsActions = () => {
       model: 'com.axelor.apps.project.db.ProjectTask',
       modelId: projectTask?.id,
       disableMailMessages: !mobileSettings?.isTrackerMessageEnabled,
-      attachedFileScreenTitle: projectTask?.name,
-      actions: [
-        {
-          key: 'refreshProjectTask',
-          order: 0,
-          iconName: 'arrow-repeat',
-          title: I18n.t('Project_RefreshProjectTask'),
-          iconColor: Colors.primaryColor.background,
-          onPress: () => {
-            dispatch(
-              (fetchProjectTaskById as any)({
-                projecTaskId: projectTask?.id,
-              }),
-            );
-            dispatch(
-              (fetchTimesheetLinesByTask as any)({
-                projectTaskId: projectTask?.id,
-              }),
-            );
-          },
-          showInHeader: true,
-        },
-      ],
     });
   }, [
     Colors,

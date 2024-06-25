@@ -69,7 +69,7 @@ export interface Theme {
   colors: ThemeColors;
 }
 
-export const bootstrapColors = {
+const bootstrapColors = {
   red: {
     background: '#DC3545',
     background_light: '#EA868F',

@@ -95,6 +95,7 @@ const styles = StyleSheet.create({
   columnContainer: {
     flexDirection: 'column',
     marginBottom: 3,
+    flex: 1,
   },
   alignEnd: {
     alignItems: 'flex-end',
