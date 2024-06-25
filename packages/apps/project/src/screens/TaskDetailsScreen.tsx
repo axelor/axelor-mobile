@@ -48,10 +48,12 @@ const TaskDetailsScreen = ({navigation, route}) => {
   }, [dispatch, projecTaskId]);
 
   useEffect(() => {
-    dispatch(
-      (fetchTimesheetLinesByTask as any)({projectTaskId: projectTask?.id}),
-    );
-  }, [dispatch, projectTask]);
+    if (projecTaskId === projectTask?.id) {
+      dispatch(
+        (fetchTimesheetLinesByTask as any)({projectTaskId: projectTask?.id}),
+      );
+    }
+  }, [dispatch, projecTaskId, projectTask]);
 
   useEffect(() => {
     dispatch(fetchProjectStatus());
