@@ -29,7 +29,7 @@ export const SalesModule: Module = {
   subtitle: 'Sales_Sales',
   icon: 'graph-up-arrow',
   compatibilityAOS: {
-    moduleName: 'axelor-sales',
+    moduleName: 'axelor-sale',
     downToVersion: '8.2.0',
   },
   translations: {
