@@ -17,6 +17,6 @@
  */
 
 export {searchCustomer} from './customerSlice';
-export {fetchSaleConfig} from './saleConfigSlice';
 export {searchProduct} from './productSlice';
+export {fetchSaleConfig} from './saleConfigSlice';
 export {fetchSaleOrder} from './saleOrderSlice';
