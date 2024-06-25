@@ -37,7 +37,7 @@ interface SearchListViewProps {
   sliceFunction: any;
   sliceFunctionData?: Object;
   onChangeSearchValue?: (item: any) => void;
-  displaySearchValue?: () => string;
+  displaySearchValue?: (item: any) => string;
   searchPlaceholder?: string;
   searchNavigate?: boolean;
   scanKeySearch?: string;
