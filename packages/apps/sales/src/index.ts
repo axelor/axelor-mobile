@@ -28,6 +28,7 @@ import {
   sale_sortFields,
   sale_typeObjects,
 } from './models';
+import {useSalesHeaders} from './hooks/use-sales-header-actions';
 
 export const SalesModule: Module = {
   name: 'app-sales',
@@ -67,6 +68,7 @@ export const SalesModule: Module = {
     objectFields: {...sale_modelAPI},
     searchFields: {...sale_searchFields},
     sortFields: {...sale_sortFields},
+    headerRegisters: useSalesHeaders,
     typeObjects: sale_typeObjects,
   },
   reducers: {...saleReducers},
