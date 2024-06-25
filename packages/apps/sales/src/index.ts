@@ -21,7 +21,7 @@ import enTranslations from './i18n/en.json';
 import frTranslations from './i18n/fr.json';
 import ProductScreens from './screens/product';
 import * as saleReducers from './features';
-import {sale_modelAPI, sales_searchFields} from './models';
+import {sale_modelAPI, sales_searchFields, sales_sortFields} from './models';
 
 export const SalesModule: Module = {
   name: 'app-sales',
@@ -38,7 +38,7 @@ export const SalesModule: Module = {
   },
   menus: {
     sales_menu_product: {
-      title: 'Sales_ProductService',
+      title: 'Sales_ArticleService',
       icon: 'basket2-fill',
       screen: 'ProductListScreen',
     },
@@ -46,6 +46,7 @@ export const SalesModule: Module = {
   models: {
     objectFields: {...sale_modelAPI},
     searchFields: {...sales_searchFields},
+    sortFields: {...sales_sortFields},
   },
   screens: {
     ...ProductScreens,
@@ -56,3 +57,4 @@ export const SalesModule: Module = {
 export * from './api';
 export * from './components';
 export * from './features/asyncFunctions-index';
+export * from './screens/product';

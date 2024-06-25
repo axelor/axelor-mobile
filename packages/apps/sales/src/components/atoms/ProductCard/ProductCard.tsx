@@ -35,7 +35,7 @@ export interface ProductCardProps {
   productFamily: string;
   productCategory: string;
   description: string;
-  configuratorIsNull: boolean;
+  isConfigurator: boolean;
   unit: string;
   salePrice: number;
 }
@@ -49,7 +49,7 @@ const ProductCard = ({
   productFamily,
   productCategory,
   description,
-  configuratorIsNull,
+  isConfigurator,
   unit,
   salePrice,
 }: ProductCardProps) => {
@@ -58,11 +58,11 @@ const ProductCard = ({
   const priceFormat = usePriceFormat();
 
   const borderStyle = useMemo(() => {
-    if (configuratorIsNull) {
+    if (isConfigurator) {
       return getStyles(Colors.progressColor.background)?.border;
     }
     return null;
-  }, [Colors.progressColor.background, configuratorIsNull]);
+  }, [Colors.progressColor.background, isConfigurator]);
 
   return (
     <ObjectCard
@@ -97,6 +97,7 @@ const ProductCard = ({
           {
             displayText: description,
             hideIfNull: true,
+            numberOfLines: 2,
           },
         ],
       }}

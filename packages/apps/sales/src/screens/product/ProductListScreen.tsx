@@ -42,7 +42,7 @@ const ProductListScreen = ({}) => {
         moreLoading={moreLoading}
         isListEnd={isListEnd}
         sliceFunction={searchProduct}
-        displaySearchValue={displayItemName as any}
+        displaySearchValue={displayItemName}
         searchPlaceholder={I18n.t('Base_Search')}
         expandableFilter={false}
         renderListItem={({item}) => (
@@ -54,7 +54,7 @@ const ProductListScreen = ({}) => {
             productFamily={item.productFamily?.name}
             productCategory={item.productCategory?.name}
             description={item.description}
-            configuratorIsNull={item?.configurator?.id != null}
+            isConfigurator={item.configurator?.id != null}
             unit={item.saleCurrency?.symbol}
             salePrice={item.salePrice}
           />

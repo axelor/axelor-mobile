@@ -16,16 +16,8 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import ProductListScreen from './ProductListScreen';
+import {SortFields} from '@axelor/aos-mobile-core';
 
-export default {
-  ProductListScreen: {
-    title: 'Sales_ArticleService',
-    component: ProductListScreen,
-    options: {
-      shadedHeader: false,
-    },
-  },
+export const sales_sortFields: SortFields = {
+  sales_product: ['code', 'name'],
 };
-
-export {ProductListScreen};

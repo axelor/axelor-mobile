@@ -1,6 +1,6 @@
 {
   "Sales_Sales": "Sales",
-  "Sales_ProductService": "Products & services",
+  "Sales_ArticleService": "Articles & services",
   "Sales_NotState": "Not {{state}}",
   "Sales_PartiallyState": "Partially {{state}}",
   "Sales_ATI": "A.T.I.",
