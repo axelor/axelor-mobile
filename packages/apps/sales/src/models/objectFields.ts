@@ -148,6 +148,11 @@ export const sale_modelAPI: ObjectFields = {
       schemaContructor.object({
         name: schemaContructor.string(),
         picture: schemaContructor.subObject(),
+        code: schemaContructor.string(),
+        productFamily: schemaContructor.subObject('name'),
+        productCategory: schemaContructor.subObject('name'),
+        description: schemaContructor.string(),
+        configurator: schemaContructor.subObject(),
       }),
     ),
     productName: schemaContructor.string(),

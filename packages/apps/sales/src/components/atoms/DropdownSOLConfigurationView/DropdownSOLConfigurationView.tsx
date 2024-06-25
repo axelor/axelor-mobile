@@ -19,7 +19,7 @@
 import React from 'react';
 import {View} from 'react-native';
 import {useTranslator, useTypes, useTypeHelpers} from '@axelor/aos-mobile-core';
-import {LabelText} from '@axelor/aos-mobile-ui';
+import {checkNullString, LabelText} from '@axelor/aos-mobile-ui';
 
 interface DropdownSOLConfigurationViewProps {
   saleSupplySelect: number;
@@ -40,10 +40,12 @@ const DropdownSOLConfigurationView = ({
         title={I18n.t('Sales_SupplyMethod')}
         value={getItemTitle(SaleOrderLine?.saleSupplySelect, saleSupplySelect)}
       />
-      <LabelText
-        title={I18n.t('Sales_PriceCalculationDetails')}
-        value={pricingScaleLogs}
-      />
+      {!checkNullString(pricingScaleLogs) && (
+        <LabelText
+          title={I18n.t('Sales_PriceCalculationDetails')}
+          value={pricingScaleLogs}
+        />
+      )}
     </View>
   );
 };

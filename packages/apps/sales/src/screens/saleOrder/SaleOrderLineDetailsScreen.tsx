@@ -29,6 +29,7 @@ import {
 } from '@axelor/aos-mobile-ui';
 import {
   PriceDetails,
+  ProductCard,
   SaleOrderHeader,
   SaleOrderLineDropdownCards,
 } from '../../components';
@@ -97,8 +98,20 @@ const SaleOrderLineDetailsScreen = ({route}) => {
         expandableFilter={false}
         fixedItems={<SaleOrderHeader saleOrder={saleOrder} />}
       />
-      <ScrollView>
-        <PriceDetails style={styles.marginTop} lineList={priceList} />
+      <ScrollView style={styles.scrollView}>
+        <PriceDetails style={styles.priceDetails} lineList={priceList} />
+        <ProductCard
+          style={styles.productCard}
+          onPress={() => {}}
+          picture={saleOrderLine.product.picture}
+          name={saleOrderLine.product.name}
+          code={saleOrderLine.product.code}
+          productFamily={saleOrderLine.product.productFamily?.name}
+          productCategory={saleOrderLine.product.productCategory?.name}
+          description={saleOrderLine.product.description}
+          isConfigurator={saleOrderLine.product.configurator?.id != null}
+          displayPrice={false}
+        />
         <NotesCard
           title={I18n.t('Base_Description')}
           data={saleOrderLine.description}
@@ -110,8 +123,15 @@ const SaleOrderLineDetailsScreen = ({route}) => {
 };
 
 const styles = StyleSheet.create({
-  marginTop: {
-    marginTop: 10,
+  scrollView: {
+    height: null,
+  },
+  priceDetails: {
+    marginVertical: 10,
+  },
+  productCard: {
+    width: '90%',
+    alignSelf: 'center',
   },
 });
 
