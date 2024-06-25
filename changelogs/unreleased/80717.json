@@ -1,0 +1,5 @@
+{
+  "title": "Small screen: manage long title with option and fix scrollView in operation order details screen",
+  "type": "fix",
+  "packages": ["core", "manufacturing"]
+}

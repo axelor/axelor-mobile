@@ -90,8 +90,8 @@ const Header = ({mainScreen, title, actionID = null, shadedHeader = true}) => {
         ) : (
           <BackIcon tintColor={Colors.primaryColor.background} />
         )}
-        <View>
-          <Text fontSize={20} adjustsFontSizeToFit={true} numberOfLines={1}>
+        <View style={styles.titleContainer}>
+          <Text style={styles.headerTitle} fontSize={20} numberOfLines={1}>
             {options?.headerTitle || I18n.t(title)}
           </Text>
         </View>
@@ -138,7 +138,10 @@ const getHeaderStyles = Colors =>
     options: {
       flexDirection: 'row',
       alignItems: 'center',
-      alignContent: 'center',
+      flex: 1,
+    },
+    titleContainer: {
+      flex: 1,
     },
   });
 

@@ -17,6 +17,7 @@
  */
 
 import React, {useCallback, useEffect} from 'react';
+import {StyleSheet} from 'react-native';
 import {HeaderContainer, Screen, ScrollView} from '@axelor/aos-mobile-ui';
 import {useDispatch, useSelector} from '@axelor/aos-mobile-core';
 import {
@@ -59,7 +60,9 @@ function OperationOrderDetailsScreen({route}) {
         }
         expandableFilter={false}
       />
-      <ScrollView refresh={{loading: loadingOrder, fetcher: getOperationOrder}}>
+      <ScrollView
+        style={styles.scrollView}
+        refresh={{loading: loadingOrder, fetcher: getOperationOrder}}>
         <OperationOrderDatesCard />
         <OperationOrderLabelTextList />
         <OperationOrderStopwatch />
@@ -67,5 +70,11 @@ function OperationOrderDetailsScreen({route}) {
     </Screen>
   );
 }
+
+const styles = StyleSheet.create({
+  scrollView: {
+    height: null,
+  },
+});
 
 export default OperationOrderDetailsScreen;
