@@ -28,6 +28,7 @@ import {fetchProjectById} from '../features/projectSlice';
 
 export const useProjectHeaders = () => {
   useProjectDetailsActions();
+  useProjectTaskDetailsActions();
 };
 
 const useProjectDetailsActions = () => {
@@ -71,4 +72,17 @@ const useProjectDetailsActions = () => {
     project?.code,
     project?.id,
   ]);
+};
+
+const useProjectTaskDetailsActions = () => {
+  const {projectTask} = useSelector((state: any) => state.project_projectTask);
+  const {mobileSettings} = useSelector((state: any) => state.appConfig);
+
+  useEffect(() => {
+    headerActionsProvider.registerModel('project_projectTask_details', {
+      model: 'com.axelor.apps.project.db.ProjectTask',
+      modelId: projectTask?.id,
+      disableMailMessages: !mobileSettings?.isTrackerMessageEnabled,
+    });
+  }, [mobileSettings?.isTrackerMessageEnabled, projectTask?.id]);
 };

@@ -16,16 +16,21 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-export {
-  fetchProjectStatus as fetchProjectStatusApi,
-  fetchProjectById as fetchProjectByIdApi,
-  searchProject as searchProjectApi,
-  searchSubProject as searchSubProjectApi,
-} from './project-api';
-export {
-  fetchProjectPriority as fetchProjectPriorityApi,
-  fetchProjectTaskById as fetchProjectTaskByIdApi,
-  fetchProjectTaskStatus as fetchProjectTaskStatusApi,
-  searchProjectTask as searchProjectTaskApi,
-} from './project-task-api';
-export {fetchTimesheetLinesByTask as fetchTimesheetLinesByTaskApi} from './timesheet-lines-api';
+import React from 'react';
+import {useTranslator} from '@axelor/aos-mobile-core';
+import {Button, useThemeColor} from '@axelor/aos-mobile-ui';
+
+const TaskButton = () => {
+  const Colors = useThemeColor();
+  const I18n = useTranslator();
+
+  return (
+    <Button
+      color={Colors.progressColor}
+      title={I18n.t('Project_LogTime')}
+      iconName="clock-history"
+    />
+  );
+};
+
+export default TaskButton;
