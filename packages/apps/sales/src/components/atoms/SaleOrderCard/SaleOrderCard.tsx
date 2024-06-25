@@ -130,7 +130,7 @@ const SaleOrderCard = ({
       <ObjectCard
         style={styles.container}
         leftContainerFlex={2}
-        iconLeftMargin={10}
+        iconLeftMargin={5}
         onPress={onPress}
         upperTexts={{
           items: [
@@ -225,6 +225,7 @@ const getStyles = color =>
       width: '96%',
       alignSelf: 'center',
       marginVertical: 3,
+      paddingRight: 5,
       borderLeftWidth: 7,
       borderLeftColor: color,
     },
