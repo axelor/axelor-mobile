@@ -18,6 +18,7 @@
 
 import SaleQuotations from './SaleQuotations';
 import SaleOrders from './SaleOrders';
+import SaleOrderDetailsScreen from './SaleOrderDetailsScreen';
 
 export default {
   SaleQuotations: {
@@ -36,7 +37,16 @@ export default {
     },
     isUsableOnShortcut: true,
   },
+  SaleOrderDetailsScreen: {
+    title: 'Sales_SaleQuotation',
+    actionID: 'sales_saleOrder_details',
+    component: SaleOrderDetailsScreen,
+    options: {
+      shadedHeader: false,
+    },
+  },
 };
 
 export {SaleQuotations};
 export {SaleOrders};
+export {SaleOrderDetailsScreen};

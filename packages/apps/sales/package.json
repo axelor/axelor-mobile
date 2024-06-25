@@ -28,6 +28,7 @@
   },
   "dependencies": {
     "@axelor/aos-mobile-core": "8.1.6",
+    "@axelor/aos-mobile-crm": "8.1.6",
     "@axelor/aos-mobile-ui": "8.1.6",
     "@reduxjs/toolkit": "^2.2.3"
   },

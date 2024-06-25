@@ -21,4 +21,5 @@ import {SortFields} from '@axelor/aos-mobile-core';
 export const sale_sortFields: SortFields = {
   sales_product: ['code', 'name'],
   sale_saleOrder: ['-creationDate'],
+  sales_customerDelivery: ['statusSelect', '-estimatedDate'],
 };
