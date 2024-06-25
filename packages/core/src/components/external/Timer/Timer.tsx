@@ -17,7 +17,7 @@
  */
 
 import React, {useEffect, useCallback, useMemo} from 'react';
-import {StyleSheet, View} from 'react-native';
+import {Dimensions, StyleSheet, View} from 'react-native';
 import {Text, useThemeColor} from '@axelor/aos-mobile-ui';
 import {formatDuration} from '../../../utils/formatters';
 
@@ -77,7 +77,7 @@ const getStyles = Colors =>
       alignItems: 'center',
     },
     text: {
-      fontSize: 36,
+      fontSize: Dimensions.get('window').width > 360 ? 36 : 26,
       fontWeight: 'bold',
       color: Colors.secondaryColor_dark.background,
     },

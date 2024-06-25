@@ -1,0 +1,5 @@
+{
+  "title": "Small screen: fix scrollView in intervention screen && adjust timer time size depends on width screen",
+  "type": "fix",
+  "packages": ["ui", "intervention"]
+}
