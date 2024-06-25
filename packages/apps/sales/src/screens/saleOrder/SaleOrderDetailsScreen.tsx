@@ -24,7 +24,12 @@ import {
   useTranslator,
   useTypes,
 } from '@axelor/aos-mobile-core';
-import {HeaderContainer, Screen, ScrollView} from '@axelor/aos-mobile-ui';
+import {
+  HeaderContainer,
+  Screen,
+  ScrollView,
+  usePriceFormat,
+} from '@axelor/aos-mobile-ui';
 import {
   PartnerActionCard,
   PriceDetails,
@@ -40,6 +45,7 @@ const SaleOrderDetailsScreen = ({route}) => {
   const I18n = useTranslator();
   const {SaleOrder} = useTypes();
   const dispatch = useDispatch();
+  const formatPrice = usePriceFormat();
 
   const {loadingSaleOrder, saleOrder} = useSelector(
     (state: any) => state.sales_saleOrder,
@@ -57,17 +63,17 @@ const SaleOrderDetailsScreen = ({route}) => {
     () => [
       {
         title: I18n.t('Sales_TotalWT'),
-        value: saleOrder.exTaxTotal,
+        value: formatPrice(saleOrder.exTaxTotal),
         unit: saleOrder.currency?.symbol,
       },
       {
         title: I18n.t('Sales_TotalTax'),
-        value: saleOrder.taxTotal,
+        value: formatPrice(saleOrder.taxTotal),
         unit: saleOrder.currency?.symbol,
       },
       {
         title: I18n.t('Sales_TotalATI'),
-        value: saleOrder.inTaxTotal,
+        value: formatPrice(saleOrder.inTaxTotal),
         unit: saleOrder.currency?.symbol,
         size: 20,
         showLine: true,
@@ -75,18 +81,18 @@ const SaleOrderDetailsScreen = ({route}) => {
 
       {
         title: I18n.t('Sales_AmountInvoiced'),
-        value: saleOrder.amountInvoiced,
+        value: formatPrice(saleOrder.amountInvoiced),
         unit: saleOrder.currency?.symbol,
         hideIf: saleOrder.statusSelect <= SaleOrder?.statusSelect.Finalized,
       },
       {
         title: I18n.t('Sales_AdvanceTotal'),
-        value: saleOrder.advanceTotal,
+        value: formatPrice(saleOrder.advanceTotal),
         unit: saleOrder.currency?.symbol,
         hideIf: saleOrder.statusSelect <= SaleOrder?.statusSelect.Finalized,
       },
     ],
-    [I18n, SaleOrder?.statusSelect.Finalized, saleOrder],
+    [formatPrice, I18n, SaleOrder?.statusSelect.Finalized, saleOrder],
   );
 
   if (saleOrder?.id !== saleOrderId) {
