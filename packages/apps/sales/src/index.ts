@@ -19,8 +19,9 @@
 import {Module} from '@axelor/aos-mobile-core';
 import enTranslations from './i18n/en.json';
 import frTranslations from './i18n/fr.json';
+import ProductScreens from './screens/product';
 import * as saleReducers from './features';
-import {sale_modelAPI} from './models';
+import {sale_modelAPI, sales_searchFields, sales_sortFields} from './models';
 
 export const SalesModule: Module = {
   name: 'app-sales',
@@ -35,8 +36,20 @@ export const SalesModule: Module = {
     en: enTranslations,
     fr: frTranslations,
   },
+  menus: {
+    sales_menu_product: {
+      title: 'Sales_ArticleService',
+      icon: 'basket2-fill',
+      screen: 'ProductListScreen',
+    },
+  },
   models: {
     objectFields: {...sale_modelAPI},
+    searchFields: {...sales_searchFields},
+    sortFields: {...sales_sortFields},
+  },
+  screens: {
+    ...ProductScreens,
   },
   reducers: {...saleReducers},
 };
@@ -44,3 +57,4 @@ export const SalesModule: Module = {
 export * from './api';
 export * from './components';
 export * from './features/asyncFunctions-index';
+export * from './screens/product';

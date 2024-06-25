@@ -16,7 +16,14 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-export {default as PriceDetails} from './PriceDetails/PriceDetails';
-export {default as ProductCard} from './ProductCard/ProductCard';
-export {default as StateBadge} from './StateBadge/StateBadge';
-export {default as TaxModeBadge} from './TaxModeBadge/TaxModeBadge';
+import {SearchFields} from '@axelor/aos-mobile-core';
+
+export const sales_searchFields: SearchFields = {
+  sales_product: [
+    'name',
+    'code',
+    'productFamily.name',
+    'productCategory.name',
+    'description',
+  ],
+};
