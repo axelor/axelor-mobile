@@ -20,6 +20,7 @@ import React, {useEffect, useMemo, useState} from 'react';
 import {
   filterChip,
   SearchListView,
+  useNavigation,
   useSelector,
   useTranslator,
   useTypes,
@@ -36,6 +37,7 @@ interface SaleOrderListViewProps {
 
 const SaleOrderListView = ({statusList}: SaleOrderListViewProps) => {
   const I18n = useTranslator();
+  const navigation = useNavigation();
   const {SaleOrder} = useTypes();
   const {getSelectionItems} = useTypeHelpers();
 
@@ -106,7 +108,11 @@ const SaleOrderListView = ({statusList}: SaleOrderListViewProps) => {
           currencySymbol={item.currency?.symbol}
           deliveryState={item.deliveryState}
           invoicingState={item.invoicingState}
-          onPress={() => console.log('Sale order card pressed.')}
+          onPress={() =>
+            navigation.navigate('SaleOrderDetailsScreen', {
+              saleOrderId: item.id,
+            })
+          }
         />
       )}
     />
