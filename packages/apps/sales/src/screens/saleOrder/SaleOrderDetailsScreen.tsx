@@ -16,39 +16,30 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import React, {useCallback, useEffect, useMemo} from 'react';
+import React, {useCallback, useEffect} from 'react';
 import {StyleSheet} from 'react-native';
-import {
-  useDispatch,
-  useSelector,
-  useTranslator,
-  useTypes,
-} from '@axelor/aos-mobile-core';
-import {
-  HeaderContainer,
-  Screen,
-  ScrollView,
-  usePriceFormat,
-} from '@axelor/aos-mobile-ui';
+import {useDispatch, useSelector} from '@axelor/aos-mobile-core';
+import {HeaderContainer, Screen, ScrollView} from '@axelor/aos-mobile-ui';
 import {
   PartnerActionCard,
-  PriceDetails,
   SaleOrderBottomButton,
   SaleOrderDropdownCards,
   SaleOrderHeader,
+  SaleOrderPriceDetails,
   SaleOrderSeeLinesButton,
 } from '../../components';
 import {fetchSaleOrderById} from '../../features/saleOrderSlice';
+import {fetchSaleOrderLine} from '../../features/saleOrderLineSlice';
 
 const SaleOrderDetailsScreen = ({route}) => {
   const {saleOrderId} = route?.params;
-  const I18n = useTranslator();
-  const {SaleOrder} = useTypes();
   const dispatch = useDispatch();
-  const formatPrice = usePriceFormat();
 
   const {loadingSaleOrder, saleOrder} = useSelector(
     (state: any) => state.sales_saleOrder,
+  );
+  const {totalSaleOrderLine} = useSelector(
+    (state: any) => state.sales_saleOrderLine,
   );
 
   const getSaleOrder = useCallback(() => {
@@ -59,40 +50,9 @@ const SaleOrderDetailsScreen = ({route}) => {
     getSaleOrder();
   }, [getSaleOrder]);
 
-  const priceList = useMemo(
-    () => [
-      {
-        title: I18n.t('Sales_TotalWT'),
-        value: formatPrice(saleOrder.exTaxTotal),
-        unit: saleOrder.currency?.symbol,
-      },
-      {
-        title: I18n.t('Sales_TotalTax'),
-        value: formatPrice(saleOrder.taxTotal),
-        unit: saleOrder.currency?.symbol,
-      },
-      {
-        title: I18n.t('Sales_TotalATI'),
-        value: formatPrice(saleOrder.inTaxTotal),
-        unit: saleOrder.currency?.symbol,
-        size: 20,
-        showLine: true,
-      },
-      {
-        title: I18n.t('Sales_AmountInvoiced'),
-        value: formatPrice(saleOrder.amountInvoiced),
-        unit: saleOrder.currency?.symbol,
-        hideIf: saleOrder.statusSelect <= SaleOrder?.statusSelect.Finalized,
-      },
-      {
-        title: I18n.t('Sales_AdvanceTotal'),
-        value: formatPrice(saleOrder.advanceTotal),
-        unit: saleOrder.currency?.symbol,
-        hideIf: saleOrder.statusSelect <= SaleOrder?.statusSelect.Finalized,
-      },
-    ],
-    [formatPrice, I18n, SaleOrder?.statusSelect.Finalized, saleOrder],
-  );
+  useEffect(() => {
+    dispatch((fetchSaleOrderLine as any)({saleOrderId}));
+  }, [dispatch, saleOrderId]);
 
   if (saleOrder?.id !== saleOrderId) {
     return null;
@@ -109,7 +69,10 @@ const SaleOrderDetailsScreen = ({route}) => {
       <ScrollView
         style={styles.scrollView}
         refresh={{loading: loadingSaleOrder, fetcher: getSaleOrder}}>
-        <PriceDetails style={styles.marginBottom} lineList={priceList} />
+        <SaleOrderPriceDetails
+          style={styles.marginBottom}
+          saleOrder={saleOrder}
+        />
         <PartnerActionCard partner={saleOrder.clientPartner} />
         <PartnerActionCard
           style={styles.marginBottom}
@@ -117,7 +80,7 @@ const SaleOrderDetailsScreen = ({route}) => {
           isContact
         />
         <SaleOrderDropdownCards saleOrder={saleOrder} />
-        <SaleOrderSeeLinesButton numberLines={3} />
+        <SaleOrderSeeLinesButton numberLines={totalSaleOrderLine} />
       </ScrollView>
     </Screen>
   );

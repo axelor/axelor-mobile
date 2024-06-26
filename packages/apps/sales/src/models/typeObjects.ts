@@ -104,4 +104,33 @@ export const sale_typeObjects: ModuleSelections = [
       },
     },
   },
+  {
+    modelName: 'com.axelor.apps.sale.db.SaleOrderLine',
+    fields: {
+      typeSelect: {
+        content: [
+          {
+            key: 'Standard',
+            value: 0,
+            title: 'Sales_SOLineType_Standard',
+          },
+          {
+            key: 'Title',
+            value: 1,
+            title: 'Sales_SOLineType_Title',
+          },
+          {
+            key: 'StartOfPack',
+            value: 2,
+            title: 'Sales_SOLineType_StartOfPack',
+          },
+          {
+            key: 'EndOfPack',
+            value: 3,
+            title: 'Sales_SOLineType_EndOfPack',
+          },
+        ],
+      },
+    },
+  },
 ];

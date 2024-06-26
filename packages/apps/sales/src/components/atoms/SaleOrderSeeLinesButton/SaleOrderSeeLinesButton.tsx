@@ -18,7 +18,7 @@
 
 import React, {useMemo} from 'react';
 import {StyleSheet, TouchableOpacity, View} from 'react-native';
-import {useTranslator} from '@axelor/aos-mobile-core';
+import {useNavigation, useTranslator} from '@axelor/aos-mobile-core';
 import {
   Card,
   Icon,
@@ -36,6 +36,7 @@ const SaleOrderSeeLinesButton = ({
 }: SaleOrderSeeLinesButtonProps) => {
   const I18n = useTranslator();
   const Colors = useThemeColor();
+  const navigation = useNavigation();
 
   const styles = useMemo(
     () => getStyles(Colors.secondaryColor.background),
@@ -44,7 +45,7 @@ const SaleOrderSeeLinesButton = ({
 
   return (
     <TouchableOpacity
-      onPress={() => console.log('See lines button pressed.')}
+      onPress={() => navigation.navigate('SaleOrderLineListScreen')}
       activeOpacity={0.9}>
       <Card style={styles.container}>
         <Text style={styles.text}>{I18n.t('Sales_SeeLines')}</Text>
