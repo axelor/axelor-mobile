@@ -25,6 +25,7 @@ export {default as PriceDetails} from './PriceDetails/PriceDetails';
 export {default as ProductCard} from './ProductCard/ProductCard';
 export {default as SaleOrderBottomButton} from './SaleOrderBottomButton/SaleOrderBottomButton';
 export {default as SaleOrderCard} from './SaleOrderCard/SaleOrderCard';
+export {default as SaleOrderLineCard} from './SaleOrderLineCard/SaleOrderLineCard';
 export {default as SaleOrderSeeLinesButton} from './SaleOrderSeeLinesButton/SaleOrderSeeLinesButton';
 export {default as StateBadge} from './StateBadge/StateBadge';
 export {default as TaxModeBadge} from './TaxModeBadge/TaxModeBadge';
