@@ -19,6 +19,7 @@
 import SaleQuotations from './SaleQuotations';
 import SaleOrders from './SaleOrders';
 import SaleOrderDetailsScreen from './SaleOrderDetailsScreen';
+import SaleOrderLineListScreen from './SaleOrderLineListScreen';
 
 export default {
   SaleQuotations: {
@@ -45,8 +46,17 @@ export default {
       shadedHeader: false,
     },
   },
+  SaleOrderLineListScreen: {
+    title: 'Sales_SaleQuotation',
+    actionID: 'sales_saleOrder_details',
+    component: SaleOrderLineListScreen,
+    options: {
+      shadedHeader: false,
+    },
+  },
 };
 
 export {SaleQuotations};
 export {SaleOrders};
 export {SaleOrderDetailsScreen};
+export {SaleOrderLineListScreen};
