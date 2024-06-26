@@ -52,12 +52,12 @@ export const SalesModule: Module = {
     sales_menu_quotations: {
       title: 'Sales_SaleQuotations',
       icon: 'file-earmark-text',
-      screen: 'SaleQuotations',
+      screen: 'SaleQuotationsScreen',
     },
     sales_menu_orders: {
       title: 'Sales_SaleOrders',
       icon: 'file-earmark-ruled',
-      screen: 'SaleOrders',
+      screen: 'SaleOrdersScreen',
     },
   },
   screens: {
