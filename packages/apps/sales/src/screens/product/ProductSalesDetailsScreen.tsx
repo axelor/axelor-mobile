@@ -16,11 +16,12 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import React, {useEffect} from 'react';
+import React, {useEffect, useState} from 'react';
 import {HeaderContainer, Screen} from '@axelor/aos-mobile-ui';
-import {useDispatch} from '@axelor/aos-mobile-core';
+import {useDispatch, useSelector} from '@axelor/aos-mobile-core';
 import {fetchProductById} from '../../features/productSlice';
 import {
+  CompanySearchBar,
   ProductDescription,
   ProductFloatingButton,
   ProductHeader,
@@ -31,9 +32,17 @@ const ProductSalesDetailsScreen = ({route}) => {
 
   const dispatch = useDispatch();
 
+  const [company, setCompany] = useState({});
+
+  const {user} = useSelector((state: any) => state.user);
+
   useEffect(() => {
     dispatch((fetchProductById as any)({productId: productId}));
   }, [dispatch, productId]);
+
+  useEffect(() => {
+    setCompany(user?.activeCompany);
+  }, [user?.activeCompany]);
 
   return (
     <Screen removeSpaceOnTop={true}>
@@ -41,6 +50,7 @@ const ProductSalesDetailsScreen = ({route}) => {
         expandableFilter={false}
         fixedItems={<ProductHeader />}
       />
+      <CompanySearchBar company={company} setCompany={setCompany} />
       <ProductDescription />
       <ProductFloatingButton />
     </Screen>

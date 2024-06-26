@@ -16,8 +16,21 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-export * from './atoms';
-export * from './molecules';
-export * from './organisms';
-export * from './pages';
-export * from './templates';
+import React from 'react';
+import {displayItemName, useSelector} from '@axelor/aos-mobile-core';
+import {AutoCompleteSearch} from '@axelor/aos-mobile-ui';
+
+const CompanySearchBar = ({setCompany, company}) => {
+  const {user} = useSelector((state: any) => state.user);
+
+  return (
+    <AutoCompleteSearch
+      value={company}
+      objectList={user?.companySet}
+      displayValue={displayItemName}
+      onChangeValue={setCompany}
+    />
+  );
+};
+
+export default CompanySearchBar;

@@ -34,6 +34,12 @@ export const sale_modelAPI: ObjectFields = {
     configurator: schemaContructor.subObject(),
     inAti: schemaContructor.boolean(),
     internalDescription: schemaContructor.string(),
+    productCompanyList: schemaContructor
+      .array()
+      .of(schemaContructor.subObject()),
+  }),
+  auth_user: schemaContructor.object({
+    companySet: schemaContructor.array().of(schemaContructor.subObject()),
   }),
   sale_saleOrder: schemaContructor.object({
     statusSelect: schemaContructor.number(),
