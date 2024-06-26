@@ -18,6 +18,7 @@
 
 export {default as PartnerActionCard} from './PartnerActionCard/PartnerActionCard';
 export {default as ProductDescription} from './ProductDescription/ProductDescription';
+export {default as ProductFloatingButton} from './ProductFloatingButton/ProductFloatingButton';
 export {default as ProductHeader} from './ProductHeader/ProductHeader';
 export {default as SaleOrderDropdownCards} from './SaleOrderDropdownCards/SaleOrderDropdownCards';
 export {default as SaleOrderHeader} from './SaleOrderHeader/SaleOrderHeader';

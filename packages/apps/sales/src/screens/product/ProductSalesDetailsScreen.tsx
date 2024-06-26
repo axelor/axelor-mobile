@@ -20,7 +20,11 @@ import React, {useEffect} from 'react';
 import {HeaderContainer, Screen} from '@axelor/aos-mobile-ui';
 import {useDispatch} from '@axelor/aos-mobile-core';
 import {fetchProductById} from '../../features/productSlice';
-import {ProductDescription, ProductHeader} from '../../components';
+import {
+  ProductDescription,
+  ProductFloatingButton,
+  ProductHeader,
+} from '../../components';
 
 const ProductSalesDetailsScreen = ({route}) => {
   const productId = route.params.productId;
@@ -38,6 +42,7 @@ const ProductSalesDetailsScreen = ({route}) => {
         fixedItems={<ProductHeader />}
       />
       <ProductDescription />
+      <ProductFloatingButton />
     </Screen>
   );
 };
