@@ -111,4 +111,21 @@ export const sale_modelAPI: ObjectFields = {
   sale_customer: schemaContructor.object({
     fullName: schemaContructor.string(),
   }),
+  sale_saleOrderLine: schemaContructor.object({
+    typeSelect: schemaContructor.number(),
+    product: schemaContructor.subObject().concat(
+      schemaContructor.object({
+        name: schemaContructor.string(),
+        picture: schemaContructor.subObject(),
+      }),
+    ),
+    productName: schemaContructor.string(),
+    price: schemaContructor.number(),
+    unit: schemaContructor.subObject('name'),
+    qty: schemaContructor.number(),
+    inTaxTotal: schemaContructor.number(),
+    exTaxTotal: schemaContructor.number(),
+    description: schemaContructor.string(),
+    isShowTotal: schemaContructor.boolean(),
+  }),
 };

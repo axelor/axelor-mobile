@@ -20,4 +20,5 @@ export {customerDeliveryReducer as sales_customerDelivery} from './customerDeliv
 export {customerReducer as sales_customer} from './customerSlice';
 export {productReducer as sales_product} from './productSlice';
 export {saleConfigReducer as sales_saleConfig} from './saleConfigSlice';
+export {saleOrderLineReducer as sales_saleOrderLine} from './saleOrderLineSlice';
 export {saleOrderReducer as sales_saleOrder} from './saleOrderSlice';
