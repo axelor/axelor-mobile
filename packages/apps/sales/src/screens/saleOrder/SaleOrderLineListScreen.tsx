@@ -69,6 +69,7 @@ const SaleOrderLineListScreen = ({}) => {
             SOinAti={saleOrder.inAti}
             inTaxTotal={item.inTaxTotal}
             exTaxTotal={item.exTaxTotal}
+            isShowEndOfPackTotal={item.isShowTotal}
             currencySymbol={saleOrder.currency?.symbol}
             description={item.description}
             onPress={() => console.log('Sale order line card pressed.')}
@@ -84,9 +85,6 @@ const SaleOrderLineListScreen = ({}) => {
 };
 
 const styles = StyleSheet.create({
-  scrollView: {
-    height: null,
-  },
   marginVertical: {
     marginVertical: 10,
   },

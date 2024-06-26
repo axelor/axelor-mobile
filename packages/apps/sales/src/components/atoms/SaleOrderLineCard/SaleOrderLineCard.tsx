@@ -17,9 +17,10 @@
  */
 
 import React, {useMemo} from 'react';
-import {StyleSheet} from 'react-native';
+import {StyleSheet, View} from 'react-native';
 import {useMetafileUri, useTranslator, useTypes} from '@axelor/aos-mobile-core';
 import {
+  HtmlInput,
   ObjectCard,
   Text,
   TextUnit,
@@ -39,6 +40,7 @@ interface SaleOrderLineCardProps {
   SOinAti?: boolean;
   inTaxTotal?: number;
   exTaxTotal?: number;
+  isShowEndOfPackTotal?: boolean;
   currencySymbol?: string;
   description?: string;
   onPress?: () => void;
@@ -55,6 +57,7 @@ const SaleOrderLineCard = ({
   SOinAti,
   inTaxTotal,
   exTaxTotal,
+  isShowEndOfPackTotal,
   currencySymbol,
   description,
   onPress,
@@ -74,7 +77,7 @@ const SaleOrderLineCard = ({
   if (typeSelect === SaleOrderLine?.typeSelect.Standard) {
     return (
       <ObjectCard
-        style={[styles.card, style]}
+        style={[styles.card, styles.cardPadding, style]}
         iconLeftMargin={5}
         onPress={onPress}
         image={{
@@ -150,9 +153,11 @@ const SaleOrderLineCard = ({
               isTitle: true,
             },
             {
-              displayText: description,
-              numberOfLines: 2,
-              hideIfNull: true,
+              customComponent: (
+                <View style={styles.htmlInputContainer}>
+                  <HtmlInput defaultInput={description} readonly={true} />
+                </View>
+              ),
             },
           ],
         }}
@@ -169,6 +174,7 @@ const SaleOrderLineCard = ({
     return (
       <ObjectCard
         style={[styles.card, style]}
+        leftContainerFlex={2}
         showArrow={false}
         touchable={false}
         upperTexts={{
@@ -189,16 +195,17 @@ const SaleOrderLineCard = ({
         sideBadges={{
           style: styles.sideContainer,
           items: [
-            !isStartOfPack && {
-              customComponent: (
-                <TextUnit
-                  style={styles.sideText}
-                  value={formatPrice(total)}
-                  unit={currencySymbol}
-                  defaultColor
-                />
-              ),
-            },
+            !isStartOfPack &&
+              isShowEndOfPackTotal && {
+                customComponent: (
+                  <TextUnit
+                    style={styles.sideText}
+                    value={formatPrice(total)}
+                    unit={currencySymbol}
+                    defaultColor
+                  />
+                ),
+              },
           ],
         }}
       />
@@ -212,6 +219,8 @@ const styles = StyleSheet.create({
   card: {
     width: '90%',
     alignSelf: 'center',
+  },
+  cardPadding: {
     paddingRight: 5,
   },
   imageSize: {
@@ -227,6 +236,10 @@ const styles = StyleSheet.create({
   sideText: {
     fontSize: 18,
     fontWeight: 'bold',
+  },
+  htmlInputContainer: {
+    width: '100%',
+    marginLeft: -10,
   },
 });
 

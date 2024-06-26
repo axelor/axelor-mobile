@@ -126,5 +126,6 @@ export const sale_modelAPI: ObjectFields = {
     inTaxTotal: schemaContructor.number(),
     exTaxTotal: schemaContructor.number(),
     description: schemaContructor.string(),
+    isShowTotal: schemaContructor.boolean(),
   }),
 };
