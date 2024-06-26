@@ -16,23 +16,23 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import SaleQuotations from './SaleQuotations';
-import SaleOrders from './SaleOrders';
+import SaleQuotationsScreen from './SaleQuotationsScreen';
+import SaleOrdersScreen from './SaleOrdersScreen';
 import SaleOrderDetailsScreen from './SaleOrderDetailsScreen';
 import SaleOrderLineListScreen from './SaleOrderLineListScreen';
 
 export default {
-  SaleQuotations: {
+  SaleQuotationsScreen: {
     title: 'Sales_SaleQuotations',
-    component: SaleQuotations,
+    component: SaleQuotationsScreen,
     options: {
       shadedHeader: false,
     },
     isUsableOnShortcut: true,
   },
-  SaleOrders: {
+  SaleOrdersScreen: {
     title: 'Sales_SaleOrders',
-    component: SaleOrders,
+    component: SaleOrdersScreen,
     options: {
       shadedHeader: false,
     },
@@ -56,7 +56,7 @@ export default {
   },
 };
 
-export {SaleQuotations};
-export {SaleOrders};
+export {SaleQuotationsScreen};
+export {SaleOrdersScreen};
 export {SaleOrderDetailsScreen};
 export {SaleOrderLineListScreen};

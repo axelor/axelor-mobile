@@ -21,7 +21,7 @@ import {useTypes} from '@axelor/aos-mobile-core';
 import {Screen} from '@axelor/aos-mobile-ui';
 import {SaleOrderListView} from '../../components';
 
-const SaleQuotations = ({}) => {
+const SaleQuotationsScreen = ({}) => {
   const {SaleOrder} = useTypes();
 
   return (
@@ -36,4 +36,4 @@ const SaleQuotations = ({}) => {
   );
 };
 
-export default SaleQuotations;
+export default SaleQuotationsScreen;
