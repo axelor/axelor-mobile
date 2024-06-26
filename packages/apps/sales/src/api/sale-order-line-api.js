@@ -16,7 +16,24 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-export {default as PartnerActionCard} from './PartnerActionCard/PartnerActionCard';
-export {default as SaleOrderDropdownCards} from './SaleOrderDropdownCards/SaleOrderDropdownCards';
-export {default as SaleOrderHeader} from './SaleOrderHeader/SaleOrderHeader';
-export {default as SaleOrderPriceDetails} from './SaleOrderPriceDetails/SaleOrderPriceDetails';
+import {createStandardSearch} from '@axelor/aos-mobile-core';
+
+const createSaleOrderLineCriteria = saleOrderId => {
+  return [
+    {
+      fieldName: 'saleOrder.id',
+      operator: '=',
+      value: saleOrderId,
+    },
+  ];
+};
+
+export async function fetchSaleOrderLine({saleOrderId, page = 0}) {
+  return createStandardSearch({
+    model: 'com.axelor.apps.sale.db.SaleOrderLine',
+    criteria: createSaleOrderLineCriteria(saleOrderId),
+    fieldKey: 'sale_saleOrderLine',
+    sortKey: 'sale_saleOrderLine',
+    page,
+  });
+}
