@@ -17,7 +17,7 @@
  */
 
 import React, {useCallback, useEffect, useMemo, useRef, useState} from 'react';
-import {Dimensions, StyleSheet, View} from 'react-native';
+import {Dimensions, SafeAreaView, StyleSheet, View} from 'react-native';
 import Animated, {
   useAnimatedStyle,
   useSharedValue,
@@ -45,6 +45,7 @@ const BottomBar = ({
   const Colors = useThemeColor();
 
   const [selectedKey, setSelectedKey] = useState<string>();
+  const [windowHeight, setWindowHeight] = useState<number>(WINDOW_HEIGHT);
   const [viewHeight, setViewHeight] = useState<number>(WINDOW_HEIGHT * 0.8);
   const [selectedItemColor, setSelectedItemColor] = useState<any>();
 
@@ -109,14 +110,19 @@ const BottomBar = ({
   }, [selectedKey, visibleItems]);
 
   return (
-    <View style={styles.container}>
+    <SafeAreaView
+      style={styles.container}
+      onLayout={event => {
+        const {height} = event.nativeEvent.layout;
+        setWindowHeight(height + headerHeight);
+      }}>
       <View style={{height: viewHeight}}>
         {visibleItems.find(_item => _item.key === selectedKey)?.viewComponent}
       </View>
       <View
         onLayout={event => {
           const {height: barHeight} = event.nativeEvent.layout;
-          setViewHeight(WINDOW_HEIGHT - headerHeight - barHeight);
+          setViewHeight(windowHeight - headerHeight - barHeight);
         }}>
         <Card style={[styles.bottomContainer, style]}>
           {visibleItems.map(renderItem)}
@@ -134,7 +140,7 @@ const BottomBar = ({
           />
         </Card>
       </View>
-    </View>
+    </SafeAreaView>
   );
 };
 
