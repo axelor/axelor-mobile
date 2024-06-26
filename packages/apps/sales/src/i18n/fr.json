@@ -50,10 +50,17 @@
   "Sales_LastReminder": "Dernière relance",
   "Sales_SeeLines": "Voir les lignes",
   "Sales_CheckCustomerDelivery": "Voir le bon de livraison",
+  "Sales_SOLineType_Standard": "Standard",
+  "Sales_SOLineType_Title": "Titre",
+  "Sales_SOLineType_StartOfPack": "Début du pack",
+  "Sales_SOLineType_EndOfPack": "Fin du pack",
+  "Sales_UnitPrice": "Prix unitaire",
+  "Sales_Unit": "Unité",
   "Sales_SliceAction_FetchSaleConfig": "récupération des configurations de vente",
   "Sales_SliceAction_FetchSaleOrder": "récupération des commandes client",
   "Sales_SliceAction_SearchCustomer": "recherche sur les clients",
   "Sales_SliceAction_SearchProduct": "recherche sur les produits",
   "Sales_SliceAction_FetchSaleOrderById": "récupération d'une commande client par id",
-  "Sales_SliceAction_FetchCustomerDelivery": "récupération d'une livraison client"
+  "Sales_SliceAction_FetchCustomerDelivery": "récupération d'une livraison client",
+  "Sales_SliceAction_FetchSaleOrderLine": "récupération des lignes d'une commande client"
 }
