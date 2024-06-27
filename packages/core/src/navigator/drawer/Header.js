@@ -97,7 +97,7 @@ const Header = ({mainScreen, title, actionID = null, shadedHeader = true}) => {
             fontSize={20}
             numberOfLines={1}
             adjustsFontSizeToFit={
-              Dimensions.get('window').width > SMALL_SCREEN_LIMIT ? true : false
+              Dimensions.get('window').width > SMALL_SCREEN_LIMIT
             }>
             {options?.headerTitle || I18n.t(title)}
           </Text>
