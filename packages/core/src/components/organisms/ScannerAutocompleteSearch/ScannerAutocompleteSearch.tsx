@@ -19,15 +19,20 @@
 import React, {useState, useEffect, useCallback} from 'react';
 import {AutoCompleteSearch, useThemeColor} from '@axelor/aos-mobile-ui';
 import {
+  clearScan,
   useScannedValueByKey,
   useScannerSelector,
 } from '../../../features/scannerSlice';
-import {useCameraScannerValueByKey} from '../../../features/cameraScannerSlice';
+import {
+  clearBarcode,
+  useCameraScannerValueByKey,
+} from '../../../features/cameraScannerSlice';
 import {
   useScanActivator,
   useScannerDeviceActivator,
 } from '../../../hooks/use-scan-activator';
 import {useTranslator} from '../../../i18n';
+import {useDispatch} from '../../../redux/hooks';
 
 interface AutocompleteSearchProps {
   objectList: any[];
@@ -77,6 +82,7 @@ const ScannerAutocompleteSearch = ({
   isScrollViewContainer = false,
 }: AutocompleteSearchProps) => {
   const I18n = useTranslator();
+  const dispatch = useDispatch();
 
   const [searchValue, setSearchValue] = useState(value);
   const {isEnabled, scanKey} = useScannerSelector();
@@ -88,10 +94,12 @@ const ScannerAutocompleteSearch = ({
   useEffect(() => {
     if (scannedValue) {
       setSearchValue(scannedValue);
+      dispatch(clearScan());
     } else if (scanData?.value != null) {
       setSearchValue(scanData.value);
+      dispatch(clearBarcode());
     }
-  }, [scanData, scannedValue]);
+  }, [dispatch, scanData, scannedValue]);
 
   const Colors = useThemeColor();
 
