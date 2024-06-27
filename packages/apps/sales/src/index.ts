@@ -21,6 +21,7 @@ import enTranslations from './i18n/en.json';
 import frTranslations from './i18n/fr.json';
 import ProductScreens from './screens/product';
 import SaleOrderScreens from './screens/saleOrder';
+import ClientScreens from './screens/client';
 import * as saleReducers from './features';
 import {
   sale_modelAPI,
@@ -59,10 +60,16 @@ export const SalesModule: Module = {
       icon: 'file-earmark-ruled',
       screen: 'SaleOrdersScreen',
     },
+    sales_menu_clients: {
+      title: 'Sales_Clients',
+      icon: 'people-fill',
+      screen: 'ClientListScreen',
+    },
   },
   screens: {
     ...ProductScreens,
     ...SaleOrderScreens,
+    ...ClientScreens,
   },
   models: {
     objectFields: {...sale_modelAPI},
@@ -80,3 +87,4 @@ export * from './components';
 export * from './features/asyncFunctions-index';
 export * from './screens/product';
 export * from './screens/saleOrder';
+export * from './screens/client';
