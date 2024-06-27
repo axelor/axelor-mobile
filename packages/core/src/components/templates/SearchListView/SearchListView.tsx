@@ -131,6 +131,7 @@ const SearchListView = ({
         oneFilter={true}
         navigate={searchNavigate}
         scanKeySearch={scanKeySearch}
+        isFocus={scanKeySearch != null}
       />
     );
   }, [

@@ -1,0 +1,5 @@
+{
+  "title": "ScannerAutocompleteSearch: clear value after scan to avoid refresh issue",
+  "type": "fix",
+  "packages": "core"
+}
