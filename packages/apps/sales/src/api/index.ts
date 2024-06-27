@@ -20,6 +20,7 @@ export {searchCustomer as searchCustomerApi} from './customer-api';
 export {fetchCustomerDelivery as fetchCustomerDeliveryApi} from './customer-delivery-api';
 export {
   fetchProductById as fetchProductByIdApi,
+  fetchProductCompanyConfigById as fetchProductCompanyConfigByIdApi,
   searchProduct as searchProductApi,
 } from './product-api';
 export {fetchSaleConfig as fetchSaleConfigApi} from './sale-config-api';

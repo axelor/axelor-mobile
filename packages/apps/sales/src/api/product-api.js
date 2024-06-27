@@ -50,6 +50,13 @@ const createProductCriteria = searchValue => {
   return criteria;
 };
 
+const createProductCompanyCriteria = (companyId, productId) => {
+  return [
+    {fieldName: 'company.id', operator: '=', value: companyId},
+    {fieldName: 'product.id', operator: '=', value: productId},
+  ];
+};
+
 export async function searchProduct({page = 0, searchValue}) {
   return createStandardSearch({
     model: 'com.axelor.apps.base.db.Product',
@@ -67,6 +74,17 @@ export async function fetchProductById({productId}) {
     fieldKey: 'sales_product',
     relatedFields: {
       saleProductMultipleQtyList: ['name', 'multipleQty'],
+      productCompanyList: ['company'],
     },
+  });
+}
+
+export async function fetchProductCompanyConfigById({companyId, productId}) {
+  return createStandardSearch({
+    model: 'com.axelor.apps.base.db.ProductCompany',
+    criteria: createProductCompanyCriteria(companyId, productId),
+    fieldKey: 'sales_company',
+    page: 0,
+    numberElementsByPage: null,
   });
 }

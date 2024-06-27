@@ -75,6 +75,7 @@
   "Sales_LaunchDate": "Date de mise en application",
   "Sales_Unrenewed": "Non renouvelé",
   "Sales_Prototype": "Prototype",
+  "Sales_NoConfigPerCompany": "pas de configuration de produit par société",
   "Sales_QuantitiesAreRestricted": "Sales_QuantitiesAreRestricted",
   "Sales_ProductPulledOfMarket": "Date de fin d'application du produit",
   "Sales_SliceAction_FetchSaleConfig": "récupération des configurations de vente",
@@ -84,5 +85,6 @@
   "Sales_SliceAction_FetchSaleOrderById": "récupération d'une commande client par id",
   "Sales_SliceAction_FetchCustomerDelivery": "récupération d'une livraison client",
   "Sales_SliceAction_FetchSaleOrderLine": "récupération des lignes d'une commande client",
-  "Sales_SliceAction_FetchProductById": "récupération du produit par id"
+  "Sales_SliceAction_FetchProductById": "récupération du produit par id",
+  "Sales_SliceAction_FetchProductCompanyConfigById": "récupération de la configuration de la companie lié au produit"
 }

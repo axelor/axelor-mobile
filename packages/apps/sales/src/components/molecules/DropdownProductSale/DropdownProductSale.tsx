@@ -27,13 +27,14 @@ import {
   useThemeColor,
 } from '@axelor/aos-mobile-ui';
 
-const DropdownProductSale = ({}) => {
+const DropdownProductSale = ({isProductCompanyConfig}) => {
   const I18n = useTranslator();
   const priceFormat = usePriceFormat();
   const Colors = useThemeColor();
 
-  const {product} = useSelector((state: any) => state.sales_product);
-  console.log(product);
+  const {product, productCompany} = useSelector(
+    (state: any) => state.sales_product,
+  );
 
   const _formatDate = useCallback(
     _date => {
@@ -61,8 +62,18 @@ const DropdownProductSale = ({}) => {
   return (
     <View style={styles.container}>
       <View style={styles.labelContainer}>
-        {renderLabelText('Sales_PriceWT', priceFormat(product.salePrice))}
-        {renderLabelText('Sales_SaleCurrency', product.saleCurrency?.symbol)}
+        {renderLabelText(
+          'Sales_PriceWT',
+          isProductCompanyConfig
+            ? priceFormat(productCompany.salePrice)
+            : priceFormat(product.salePrice),
+        )}
+        {renderLabelText(
+          'Sales_SaleCurrency',
+          isProductCompanyConfig
+            ? productCompany?.saleCurrency?.symbol
+            : product.saleCurrency?.symbol,
+        )}
         {renderLabelText('Sales_SaleUnit', product.salesUnit?.name)}
         {renderLabelText('Sales_LaunchDate', _formatDate(product.startDate))}
         {renderLabelText(

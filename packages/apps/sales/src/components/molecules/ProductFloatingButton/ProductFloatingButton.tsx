@@ -17,6 +17,7 @@
  */
 
 import React from 'react';
+import {StyleSheet} from 'react-native';
 import {FloatingButton, useThemeColor} from '@axelor/aos-mobile-ui';
 import {useTranslator} from '@axelor/aos-mobile-core';
 
@@ -26,6 +27,7 @@ const ProductFloatingButton = ({}) => {
 
   return (
     <FloatingButton
+      style={styles.floatingButton}
       translator={I18n.t}
       actions={[
         {
@@ -53,5 +55,11 @@ const ProductFloatingButton = ({}) => {
     />
   );
 };
+
+const styles = StyleSheet.create({
+  floatingButton: {
+    zIndex: 40,
+  },
+});
 
 export default ProductFloatingButton;

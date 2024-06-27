@@ -23,6 +23,7 @@ import {
 } from '@axelor/aos-mobile-core';
 import {
   fetchProductById as _fetchProductById,
+  fetchProductCompanyConfigById as _fetchProductCompanyConfigById,
   searchProduct as _searchProduct,
 } from '../api/product-api';
 
@@ -52,6 +53,19 @@ export const fetchProductById = createAsyncThunk(
   },
 );
 
+export const fetchProductCompanyConfigById = createAsyncThunk(
+  'sales_product/fetchProductCompanyConfigById',
+  async function (data, {getState}) {
+    return handlerApiCall({
+      fetchFunction: _fetchProductCompanyConfigById,
+      data,
+      action: 'Sales_SliceAction_FetchProductCompanyConfigById',
+      getState,
+      responseOptions: {isArrayResponse: false},
+    });
+  },
+);
+
 const initialState = {
   loadingList: false,
   moreLoading: false,
@@ -60,6 +74,8 @@ const initialState = {
 
   loadingProduct: true,
   product: {},
+
+  productCompany: {},
 };
 
 const productSlice = createSlice({
@@ -79,6 +95,12 @@ const productSlice = createSlice({
       state.loadingProduct = false;
       state.product = action.payload;
     });
+    builder.addCase(
+      fetchProductCompanyConfigById.fulfilled,
+      (state, action) => {
+        state.productCompany = action.payload;
+      },
+    );
   },
 });
 

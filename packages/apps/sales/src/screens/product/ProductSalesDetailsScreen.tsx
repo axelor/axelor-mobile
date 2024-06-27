@@ -16,10 +16,14 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import React, {useEffect, useState} from 'react';
-import {HeaderContainer, Screen} from '@axelor/aos-mobile-ui';
-import {useDispatch, useSelector} from '@axelor/aos-mobile-core';
-import {fetchProductById} from '../../features/productSlice';
+import React, {useEffect, useMemo, useState} from 'react';
+import {StyleSheet} from 'react-native';
+import {HeaderContainer, Label, Screen} from '@axelor/aos-mobile-ui';
+import {useDispatch, useSelector, useTranslator} from '@axelor/aos-mobile-core';
+import {
+  fetchProductById,
+  fetchProductCompanyConfigById,
+} from '../../features/productSlice';
 import {
   CompanySearchBar,
   ProductDescription,
@@ -31,15 +35,38 @@ import {
 const ProductSalesDetailsScreen = ({route}) => {
   const productId = route.params.productId;
 
+  const I18n = useTranslator();
   const dispatch = useDispatch();
 
-  const [company, setCompany] = useState({});
+  const [company, setCompany] = useState({} as any);
 
   const {user} = useSelector((state: any) => state.user);
+  const {product} = useSelector((state: any) => state.sales_product);
 
   useEffect(() => {
     dispatch((fetchProductById as any)({productId: productId}));
   }, [dispatch, productId]);
+
+  useEffect(() => {
+    if (company?.id != null) {
+      dispatch(
+        (fetchProductCompanyConfigById as any)({
+          companyId: company.id,
+          productId: product?.id,
+        }),
+      );
+    }
+  }, [company?.id, dispatch, product?.id]);
+
+  const isProductCompanyConfig = useMemo(() => {
+    if (!product?.productCompanyList || !company?.id) {
+      return false;
+    }
+
+    return product.productCompanyList.some(prodCompany => {
+      return prodCompany?.company?.id === company?.id;
+    });
+  }, [product?.productCompanyList, company?.id]);
 
   useEffect(() => {
     setCompany(user?.activeCompany);
@@ -49,14 +76,30 @@ const ProductSalesDetailsScreen = ({route}) => {
     <Screen removeSpaceOnTop={true}>
       <HeaderContainer
         expandableFilter={false}
-        fixedItems={<ProductHeader />}
+        fixedItems={
+          <ProductHeader isProductCompanyConfig={isProductCompanyConfig} />
+        }
       />
+      {!isProductCompanyConfig && (
+        <Label
+          message={I18n.t('Sales_NoConfigPerCompany')}
+          style={styles.label}
+          type="info"
+        />
+      )}
       <CompanySearchBar company={company} setCompany={setCompany} />
       <ProductDescription />
-      <ProductDropdownCard />
+      <ProductDropdownCard isProductCompanyConfig={isProductCompanyConfig} />
       <ProductFloatingButton />
     </Screen>
   );
 };
+
+const styles = StyleSheet.create({
+  label: {
+    width: '90%',
+    alignSelf: 'center',
+  },
+});
 
 export default ProductSalesDetailsScreen;

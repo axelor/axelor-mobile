@@ -50,6 +50,12 @@ export const sale_modelAPI: ObjectFields = {
       .array()
       .of(schemaContructor.subObject()),
   }),
+  sales_company: schemaContructor.object({
+    company: schemaContructor.subObject(),
+    salePrice: schemaContructor.number(),
+    saleCurrency: schemaContructor.subObject('symbol'),
+    procurementMethodSelect: schemaContructor.string(),
+  }),
   auth_user: schemaContructor.object({
     companySet: schemaContructor.array().of(schemaContructor.subObject()),
   }),

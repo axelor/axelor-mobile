@@ -75,6 +75,7 @@
   "Sales_LaunchDate": "Launch date",
   "Sales_Unrenewed": "Unrenewed",
   "Sales_Prototype": "Prototype",
+  "Sales_NoConfigPerCompany": "No product configuration per company",
   "Sales_QuantitiesAreRestricted": "Les quantités sont restreintes",
   "Sales_ProductPulledOfMarket": "Product pulled off market Date",
   "Sales_SliceAction_FetchSaleConfig": "fetch sale config",
@@ -84,5 +85,6 @@
   "Sales_SliceAction_FetchSaleOrderById": "fetch sale order by id",
   "Sales_SliceAction_FetchCustomerDelivery": "fetch customer delivery",
   "Sales_SliceAction_FetchSaleOrderLine": "fetch sale order lines",
-  "Sales_SliceAction_FetchProductById": "fetch product by id"
+  "Sales_SliceAction_FetchProductById": "fetch product by id",
+  "Sales_SliceAction_FetchProductCompanyConfigById": "fetch company config by id"
 }

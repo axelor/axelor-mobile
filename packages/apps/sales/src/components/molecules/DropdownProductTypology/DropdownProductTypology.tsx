@@ -21,10 +21,12 @@ import {View} from 'react-native';
 import {useSelector, useTranslator} from '@axelor/aos-mobile-core';
 import {LabelText, checkNullString} from '@axelor/aos-mobile-ui';
 
-const DropdownProductTypology = ({}) => {
+const DropdownProductTypology = ({isProductCompanyConfig}) => {
   const I18n = useTranslator();
 
-  const {product} = useSelector((state: any) => state.sales_product);
+  const {product, productCompany} = useSelector(
+    (state: any) => state.sales_product,
+  );
 
   const renderLabelText = useCallback(
     (titleKey: string, value: string | number) => {
@@ -44,7 +46,9 @@ const DropdownProductTypology = ({}) => {
       {renderLabelText('Sales_CategoryFamily', product.productCategory?.name)}
       {renderLabelText(
         'Sales_ProcurementMethod',
-        product.procurementMethodSelect,
+        isProductCompanyConfig
+          ? productCompany.procurementMethodSelect
+          : product.procurementMethodSelect,
       )}
     </View>
   );

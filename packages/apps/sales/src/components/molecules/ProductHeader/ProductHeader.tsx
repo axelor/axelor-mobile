@@ -22,11 +22,13 @@ import {useMetafileUri, useSelector} from '@axelor/aos-mobile-core';
 import {Image, Text, TextUnit, usePriceFormat} from '@axelor/aos-mobile-ui';
 import {TaxModeBadge} from '../../atoms';
 
-const ProductHeader = ({}) => {
+const ProductHeader = ({isProductCompanyConfig}) => {
   const formatMetaFile = useMetafileUri();
   const priceFormat = usePriceFormat();
 
-  const {product} = useSelector((state: any) => state.sales_product);
+  const {product, productCompany} = useSelector(
+    (state: any) => state.sales_product,
+  );
 
   return (
     <View style={styles.container}>
@@ -45,8 +47,16 @@ const ProductHeader = ({}) => {
       </View>
       <View style={styles.endContainer}>
         <TextUnit
-          unit={product?.saleCurrency?.symbol}
-          value={priceFormat(product?.salePrice)}
+          unit={
+            isProductCompanyConfig
+              ? productCompany?.saleCurrency?.symbol
+              : product?.saleCurrency?.symbol
+          }
+          value={
+            isProductCompanyConfig
+              ? priceFormat(productCompany?.salePrice)
+              : priceFormat(product?.salePrice)
+          }
         />
         <TaxModeBadge inAti={product.inAti} />
       </View>
