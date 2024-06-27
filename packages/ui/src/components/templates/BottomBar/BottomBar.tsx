@@ -23,6 +23,7 @@ import Animated, {
   useSharedValue,
   withSpring,
 } from 'react-native-reanimated';
+import StaticSafeAreaInsets from 'react-native-static-safe-area-insets';
 import {useConfig} from '../../../config/ConfigContext';
 import {useThemeColor} from '../../../theme';
 import {Card} from '../../atoms';
@@ -116,7 +117,12 @@ const BottomBar = ({
       <View
         onLayout={event => {
           const {height: barHeight} = event.nativeEvent.layout;
-          setViewHeight(WINDOW_HEIGHT - headerHeight - barHeight);
+          setViewHeight(
+            WINDOW_HEIGHT -
+              StaticSafeAreaInsets.safeAreaInsetsTop -
+              headerHeight -
+              barHeight,
+          );
         }}>
         <Card style={[styles.bottomContainer, style]}>
           {visibleItems.map(renderItem)}
