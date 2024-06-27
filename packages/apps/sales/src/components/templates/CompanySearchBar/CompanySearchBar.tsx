@@ -20,11 +20,12 @@ import React from 'react';
 import {displayItemName, useSelector} from '@axelor/aos-mobile-core';
 import {AutoCompleteSearch} from '@axelor/aos-mobile-ui';
 
-const CompanySearchBar = ({setCompany, company}) => {
+const CompanySearchBar = ({style, setCompany, company}) => {
   const {user} = useSelector((state: any) => state.user);
 
   return (
     <AutoCompleteSearch
+      style={style}
       value={company}
       objectList={user?.companySet}
       displayValue={displayItemName}

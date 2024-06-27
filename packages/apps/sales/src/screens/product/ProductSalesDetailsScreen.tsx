@@ -87,7 +87,11 @@ const ProductSalesDetailsScreen = ({route}) => {
           type="info"
         />
       )}
-      <CompanySearchBar company={company} setCompany={setCompany} />
+      <CompanySearchBar
+        company={company}
+        setCompany={setCompany}
+        style={isProductCompanyConfig && styles.searchBar}
+      />
       <ProductDescription />
       <ProductDropdownCard isProductCompanyConfig={isProductCompanyConfig} />
       <ProductFloatingButton />
@@ -99,6 +103,9 @@ const styles = StyleSheet.create({
   label: {
     width: '90%',
     alignSelf: 'center',
+  },
+  searchBar: {
+    marginTop: 10,
   },
 });
 
