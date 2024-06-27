@@ -1,0 +1,5 @@
+{
+  "title": "LabelText: allow value field to be on multiple lines in all containers",
+  "type": "fix",
+  "packages": "ui"
+}
