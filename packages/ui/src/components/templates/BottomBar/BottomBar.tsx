@@ -17,12 +17,13 @@
  */
 
 import React, {useCallback, useEffect, useMemo, useRef, useState} from 'react';
-import {Dimensions, SafeAreaView, StyleSheet, View} from 'react-native';
+import {Dimensions, StyleSheet, View} from 'react-native';
 import Animated, {
   useAnimatedStyle,
   useSharedValue,
   withSpring,
 } from 'react-native-reanimated';
+import StaticSafeAreaInsets from 'react-native-static-safe-area-insets';
 import {useConfig} from '../../../config/ConfigContext';
 import {useThemeColor} from '../../../theme';
 import {Card} from '../../atoms';
@@ -45,7 +46,6 @@ const BottomBar = ({
   const Colors = useThemeColor();
 
   const [selectedKey, setSelectedKey] = useState<string>();
-  const [windowHeight, setWindowHeight] = useState<number>(WINDOW_HEIGHT);
   const [viewHeight, setViewHeight] = useState<number>(WINDOW_HEIGHT * 0.8);
   const [selectedItemColor, setSelectedItemColor] = useState<any>();
 
@@ -110,19 +110,19 @@ const BottomBar = ({
   }, [selectedKey, visibleItems]);
 
   return (
-    <SafeAreaView
-      style={styles.container}
-      onLayout={event => {
-        const {height} = event.nativeEvent.layout;
-        setWindowHeight(height + headerHeight);
-      }}>
+    <View style={styles.container}>
       <View style={{height: viewHeight}}>
         {visibleItems.find(_item => _item.key === selectedKey)?.viewComponent}
       </View>
       <View
         onLayout={event => {
           const {height: barHeight} = event.nativeEvent.layout;
-          setViewHeight(windowHeight - headerHeight - barHeight);
+          setViewHeight(
+            WINDOW_HEIGHT -
+              StaticSafeAreaInsets.safeAreaInsetsTop -
+              headerHeight -
+              barHeight,
+          );
         }}>
         <Card style={[styles.bottomContainer, style]}>
           {visibleItems.map(renderItem)}
@@ -140,7 +140,7 @@ const BottomBar = ({
           />
         </Card>
       </View>
-    </SafeAreaView>
+    </View>
   );
 };
 
