@@ -1,5 +1,5 @@
 {
-  "title": "Small screens: add scroll in intervention screen and adjust timer time size depending on screen width",
+  "title": "Intervention: add scroll on details view",
   "type": "fix",
-  "packages": ["core", "intervention"]
+  "packages": "intervention"
 }
