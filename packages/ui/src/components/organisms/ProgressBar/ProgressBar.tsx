@@ -21,6 +21,8 @@ import {StyleSheet, View, Animated} from 'react-native';
 import {ThemeColors, useThemeColor, Color} from '../../../theme';
 import {Text} from '../../atoms';
 
+const BORDER_RADIUS = 7;
+
 type ProgressBarProps = {
   style?: object;
   styleTxt?: object;
@@ -53,6 +55,7 @@ const ProgressBar = ({
   const animatedStripe = useRef(new Animated.Value(0)).current;
   const animatedWidth = useRef(new Animated.Value(0)).current;
 
+  const [progressBarContainerWidth, setProgressBarContainerWidth] = useState(0);
   const [progressBarWidth, setProgressBarWidth] = useState(0);
   const [textWidth, setTextWidth] = useState(0);
 
@@ -99,6 +102,12 @@ const ProgressBar = ({
     return progressBarWidth - textWidth * 1.3 < 0;
   }, [centeredPercent, progressBarWidth, textWidth]);
 
+  const displayProgressBar = useMemo(() => {
+    const _progressBarWidth = (percent / 100) * progressBarContainerWidth;
+
+    return _progressBarWidth > 2 * BORDER_RADIUS;
+  }, [percent, progressBarContainerWidth]);
+
   const styles = useMemo(
     () =>
       getStyles(Colors, height, color, percent, stripeWidth, progressBarWidth),
@@ -142,36 +151,43 @@ const ProgressBar = ({
   }, [displayText, styles, styleTxt]);
 
   return (
-    <View style={[styles.container, style]}>
+    <View
+      onLayout={event => {
+        const {width} = event.nativeEvent.layout;
+        setProgressBarContainerWidth(width);
+      }}
+      style={[styles.container, style]}>
       {displayTextOutside ? (
         <View style={centeredPercent ? styles.centeredPercent : styles.percent}>
           {renderPercent()}
         </View>
       ) : null}
-      <Animated.View
-        onLayout={event => {
-          const {width} = event.nativeEvent.layout;
-          setProgressBarWidth(width);
-        }}
-        style={[
-          styles.progressBar,
-          {
-            width: animatedWidth.interpolate({
-              inputRange: [0, 100],
-              outputRange: ['0%', '100%'],
-            }),
-          },
-        ]}>
+      {displayProgressBar && (
         <Animated.View
+          onLayout={event => {
+            const {width} = event.nativeEvent.layout;
+            setProgressBarWidth(width);
+          }}
           style={[
-            stripe && percent < 100 ? styles.stripe : styles.none,
+            styles.progressBar,
             {
-              transform: [{translateX}],
+              width: animatedWidth.interpolate({
+                inputRange: [0, 100],
+                outputRange: ['0%', '100%'],
+              }),
             },
-          ]}
-        />
-        {!displayTextOutside ? renderPercent() : null}
-      </Animated.View>
+          ]}>
+          <Animated.View
+            style={[
+              stripe && percent < 100 ? styles.stripe : styles.none,
+              {
+                transform: [{translateX}],
+              },
+            ]}
+          />
+          {!displayTextOutside ? renderPercent() : null}
+        </Animated.View>
+      )}
     </View>
   );
 };
@@ -188,7 +204,7 @@ const getStyles = (
     container: {
       width: '100%',
       height: height + 2,
-      borderRadius: 8,
+      borderRadius: BORDER_RADIUS + 1,
       elevation: 3,
       shadowOpacity: 0.5,
       shadowColor: Colors.secondaryColor.background,
@@ -199,7 +215,7 @@ const getStyles = (
       zIndex: 1,
     },
     progressBar: {
-      borderRadius: 7,
+      borderRadius: BORDER_RADIUS,
       justifyContent: 'center',
       alignItems: 'center',
       backgroundColor: color.background,
