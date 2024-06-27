@@ -44,9 +44,11 @@ const DropdownProductTypology = ({isProductCompanyConfig}) => {
       {renderLabelText('Sales_Type', product.productTypeSelect)}
       {renderLabelText(
         'Sales_SubType',
-        Product.productSubTypeSelect.list.find(
-          item => product.productSubTypeSelect === item.value,
-        ).title,
+        I18n.t(
+          Product.productSubTypeSelect.list.find(
+            item => product.productSubTypeSelect === item.value,
+          ).title,
+        ),
       )}
       {renderLabelText('Sales_ProductFamily', product.productFamily?.name)}
       {renderLabelText('Sales_CategoryFamily', product.productCategory?.name)}
