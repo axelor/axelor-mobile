@@ -18,11 +18,12 @@
 
 import React, {useCallback} from 'react';
 import {View} from 'react-native';
-import {useSelector, useTranslator} from '@axelor/aos-mobile-core';
+import {useSelector, useTranslator, useTypes} from '@axelor/aos-mobile-core';
 import {LabelText, checkNullString} from '@axelor/aos-mobile-ui';
 
 const DropdownProductTypology = ({isProductCompanyConfig}) => {
   const I18n = useTranslator();
+  const {Product} = useTypes();
 
   const {product, productCompany} = useSelector(
     (state: any) => state.sales_product,
@@ -41,7 +42,12 @@ const DropdownProductTypology = ({isProductCompanyConfig}) => {
   return (
     <View>
       {renderLabelText('Sales_Type', product.productTypeSelect)}
-      {renderLabelText('Sales_SubType', product.productSubTypeSelect)}
+      {renderLabelText(
+        'Sales_SubType',
+        Product.productSubTypeSelect.list.find(
+          item => product.productSubTypeSelect === item.value,
+        ).title,
+      )}
       {renderLabelText('Sales_ProductFamily', product.productFamily?.name)}
       {renderLabelText('Sales_CategoryFamily', product.productCategory?.name)}
       {renderLabelText(

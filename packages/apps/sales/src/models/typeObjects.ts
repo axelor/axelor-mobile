@@ -133,4 +133,33 @@ export const sale_typeObjects: ModuleSelections = [
       },
     },
   },
+  {
+    modelName: 'com.axelor.apps.base.db.Product',
+    fields: {
+      productSubTypeSelect: {
+        content: [
+          {
+            key: null,
+            value: 0,
+            title: null,
+          },
+          {
+            key: 'finishedProduct',
+            value: 1,
+            title: 'Sales_finishedProduct',
+          },
+          {
+            key: 'SemiFinishedProduct',
+            value: 2,
+            title: 'Sales_SemiFinishedProduct',
+          },
+          {
+            key: 'Component',
+            value: 3,
+            title: 'Sales_Component',
+          },
+        ],
+      },
+    },
+  },
 ];
