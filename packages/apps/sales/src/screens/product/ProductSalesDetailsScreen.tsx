@@ -23,6 +23,7 @@ import {fetchProductById} from '../../features/productSlice';
 import {
   CompanySearchBar,
   ProductDescription,
+  ProductDropdownCard,
   ProductFloatingButton,
   ProductHeader,
 } from '../../components';
@@ -52,6 +53,7 @@ const ProductSalesDetailsScreen = ({route}) => {
       />
       <CompanySearchBar company={company} setCompany={setCompany} />
       <ProductDescription />
+      <ProductDropdownCard />
       <ProductFloatingButton />
     </Screen>
   );

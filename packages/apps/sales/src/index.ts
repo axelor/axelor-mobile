@@ -72,6 +72,7 @@ export const SalesModule: Module = {
     typeObjects: sale_typeObjects,
   },
   reducers: {...saleReducers},
+  requiredConfig: ['AppSale'],
 };
 
 export * from './api';

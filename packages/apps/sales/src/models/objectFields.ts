@@ -34,6 +34,18 @@ export const sale_modelAPI: ObjectFields = {
     configurator: schemaContructor.subObject(),
     inAti: schemaContructor.boolean(),
     internalDescription: schemaContructor.string(),
+    productTypeSelect: schemaContructor.string(),
+    productSubTypeSelect: schemaContructor.number(),
+    procurementMethodSelect: schemaContructor.string(),
+    startDate: schemaContructor.string(),
+    endDate: schemaContructor.string(),
+    salesUnit: schemaContructor.subObject(),
+    isPrototype: schemaContructor.boolean(),
+    isUnrenewed: schemaContructor.boolean(),
+    allowToForceSaleQty: schemaContructor.boolean(),
+    saleProductMultipleQtyList: schemaContructor
+      .array()
+      .of(schemaContructor.subObject()),
     productCompanyList: schemaContructor
       .array()
       .of(schemaContructor.subObject()),

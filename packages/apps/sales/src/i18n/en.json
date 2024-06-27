@@ -1,6 +1,8 @@
 {
   "Sales_Sales": "Sales",
   "Sales_ArticleService": "Articles & services",
+  "Sales_Sale": "Sale",
+  "Sales_ProductService": "Products & services",
   "Sales_NotState": "Not {{state}}",
   "Sales_PartiallyState": "Partially {{state}}",
   "Sales_ATI": "A.T.I.",
@@ -60,6 +62,21 @@
   "Sales_SeeVariantProducts": "See variant products",
   "Sales_SeePriceLists": "See price lists",
   "Sales_InternalDescription": "Internal description",
+  "Sales_ProductTypology": "Product typology",
+  "Sales_MultipleQuantities": "Multiple quantities",
+  "Sales_Type": "Type",
+  "Sales_SubType": "Sub type",
+  "Sales_ProductFamily": "Product family",
+  "Sales_CategoryFamily": "Category family",
+  "Sales_ProcurementMethod": "Procurement method",
+  "Sales_PriceWT": "Prix de vente HT",
+  "Sales_SaleCurrency": "Sale currency",
+  "Sales_SaleUnit": "Sale unit",
+  "Sales_LaunchDate": "Launch date",
+  "Sales_Unrenewed": "Unrenewed",
+  "Sales_Prototype": "Prototype",
+  "Sales_QuantitiesAreRestricted": "Les quantités sont restreintes",
+  "Sales_ProductPulledOfMarket": "Product pulled off market Date",
   "Sales_SliceAction_FetchSaleConfig": "fetch sale config",
   "Sales_SliceAction_FetchSaleOrder": "fetch sale orders",
   "Sales_SliceAction_SearchCustomer": "search customers",
@@ -67,5 +84,5 @@
   "Sales_SliceAction_FetchSaleOrderById": "fetch sale order by id",
   "Sales_SliceAction_FetchCustomerDelivery": "fetch customer delivery",
   "Sales_SliceAction_FetchSaleOrderLine": "fetch sale order lines",
-  "Sales_SliceAction_FetchProductById": ""
+  "Sales_SliceAction_FetchProductById": "fetch product by id"
 }

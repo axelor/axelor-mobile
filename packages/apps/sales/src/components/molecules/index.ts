@@ -23,3 +23,6 @@ export {default as ProductHeader} from './ProductHeader/ProductHeader';
 export {default as SaleOrderDropdownCards} from './SaleOrderDropdownCards/SaleOrderDropdownCards';
 export {default as SaleOrderHeader} from './SaleOrderHeader/SaleOrderHeader';
 export {default as SaleOrderPriceDetails} from './SaleOrderPriceDetails/SaleOrderPriceDetails';
+export {default as DropdownMultipleQuantities} from './DropdownMultipleQuantities/DropdownMultipleQuantities';
+export {default as DropdownProductSale} from './DropdownProductSale/DropdownProductSale';
+export {default as DropdownProductTypology} from './DropdownProductTypology/DropdownProductTypology';

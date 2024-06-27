@@ -65,5 +65,8 @@ export async function fetchProductById({productId}) {
     model: 'com.axelor.apps.base.db.Product',
     id: productId,
     fieldKey: 'sales_product',
+    relatedFields: {
+      saleProductMultipleQtyList: ['name', 'multipleQty'],
+    },
   });
 }

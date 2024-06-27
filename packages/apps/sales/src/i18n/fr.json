@@ -1,6 +1,8 @@
 {
   "Sales_Sales": "Ventes",
   "Sales_ArticleService": "Articles & prestations",
+  "Sales_Sale": "Vente",
+  "Sales_ProductService": "Articles et prestations",
   "Sales_NotState": "Non {{state}}",
   "Sales_PartiallyState": "Partiellement {{state}}",
   "Sales_ATI": "T.T.C.",
@@ -60,6 +62,21 @@
   "Sales_SeeVariantProducts": "Voir les variants",
   "Sales_SeePriceLists": "Voir les listes de prix",
   "Sales_InternalDescription": "Description interne",
+  "Sales_ProductTypology": "Typologie produit",
+  "Sales_MultipleQuantities": "Quantités multiples",
+  "Sales_Type": "Type",
+  "Sales_SubType": "Sous-type",
+  "Sales_ProductFamily": "Famille de produits",
+  "Sales_CategoryFamily": "Famille de catégories",
+  "Sales_ProcurementMethod": "Méthode d'approvisionnement",
+  "Sales_PriceWT": "Sale price WT",
+  "Sales_SaleCurrency": "Devise de vente",
+  "Sales_SaleUnit": "Unité de vente",
+  "Sales_LaunchDate": "Date de mise en application",
+  "Sales_Unrenewed": "Non renouvelé",
+  "Sales_Prototype": "Prototype",
+  "Sales_QuantitiesAreRestricted": "Sales_QuantitiesAreRestricted",
+  "Sales_ProductPulledOfMarket": "Date de fin d'application du produit",
   "Sales_SliceAction_FetchSaleConfig": "récupération des configurations de vente",
   "Sales_SliceAction_FetchSaleOrder": "récupération des commandes client",
   "Sales_SliceAction_SearchCustomer": "recherche sur les clients",
@@ -67,5 +84,5 @@
   "Sales_SliceAction_FetchSaleOrderById": "récupération d'une commande client par id",
   "Sales_SliceAction_FetchCustomerDelivery": "récupération d'une livraison client",
   "Sales_SliceAction_FetchSaleOrderLine": "récupération des lignes d'une commande client",
-  "Sales_SliceAction_FetchProductById": ""
+  "Sales_SliceAction_FetchProductById": "récupération du produit par id"
 }

@@ -17,3 +17,4 @@
  */
 
 export {default as CustomerSearchBar} from './CustomerSearchBar/CustomerSearchBar';
+export {default as ProductDropdownCard} from './ProductDropdownCard/ProductDropdownCard';
