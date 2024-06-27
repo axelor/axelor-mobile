@@ -1,0 +1,5 @@
+{
+  "title": "SearchListView: add focus on scanner search bar by default",
+  "type": "feat",
+  "packages": "core"
+}
