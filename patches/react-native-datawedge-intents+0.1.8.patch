@@ -1,0 +1,54 @@
+diff --git a/node_modules/react-native-datawedge-intents/android/src/main/java/com/darryncampbell/rndatawedgeintents/RNDataWedgeIntentsModule.java b/node_modules/react-native-datawedge-intents/android/src/main/java/com/darryncampbell/rndatawedgeintents/RNDataWedgeIntentsModule.java
+index 3e486d2..929721f 100644
+--- a/node_modules/react-native-datawedge-intents/android/src/main/java/com/darryncampbell/rndatawedgeintents/RNDataWedgeIntentsModule.java
++++ b/node_modules/react-native-datawedge-intents/android/src/main/java/com/darryncampbell/rndatawedgeintents/RNDataWedgeIntentsModule.java
+@@ -12,6 +12,7 @@ import android.content.BroadcastReceiver;
+ import android.content.Context;
+ import android.content.IntentFilter;
+ import android.os.Bundle;
++import android.os.Build;
+ import org.json.JSONObject;
+ import org.json.JSONException;
+ import org.json.JSONArray;
+@@ -105,7 +106,12 @@ public class RNDataWedgeIntentsModule extends ReactContextBaseJavaModule impleme
+ 
+         IntentFilter filter = new IntentFilter();
+         filter.addAction(ACTION_ENUMERATEDLISET);
+-        reactContext.registerReceiver(myEnumerateScannersBroadcastReceiver, filter);
++        if (Build.VERSION.SDK_INT >= 34 && reactContext.getApplicationInfo().targetSdkVersion >= 34) {
++            reactContext.registerReceiver(myEnumerateScannersBroadcastReceiver, filter, Context.RECEIVER_EXPORTED);
++        } else {
++            reactContext.registerReceiver(myEnumerateScannersBroadcastReceiver, filter);
++        }
++
+ 	    if (this.registeredAction != null)
+           registerReceiver(this.registeredAction, this.registeredCategory);
+           
+@@ -357,7 +363,12 @@ public class RNDataWedgeIntentsModule extends ReactContextBaseJavaModule impleme
+         filter.addAction(action);
+         if (category != null && category.length() > 0)
+           filter.addCategory(category);
+-        this.reactContext.registerReceiver(scannedDataBroadcastReceiver, filter);
++
++        if (Build.VERSION.SDK_INT >= 34 && this.reactContext.getApplicationInfo().targetSdkVersion >= 34) {
++            this.reactContext.registerReceiver(scannedDataBroadcastReceiver, filter, Context.RECEIVER_EXPORTED);
++        } else {
++            this.reactContext.registerReceiver(scannedDataBroadcastReceiver, filter);
++        }
+     }
+ 
+     @ReactMethod
+@@ -389,7 +400,12 @@ public class RNDataWedgeIntentsModule extends ReactContextBaseJavaModule impleme
+                 }
+             }
+         }
+-        this.reactContext.registerReceiver(genericReceiver, filter);
++
++        if (Build.VERSION.SDK_INT >= 34 && this.reactContext.getApplicationInfo().targetSdkVersion >= 34) {
++            this.reactContext.registerReceiver(genericReceiver, filter, Context.RECEIVER_EXPORTED);
++        } else {
++            this.reactContext.registerReceiver(genericReceiver, filter);
++        }
+     }
+ 
+     private void unregisterReceivers() {
