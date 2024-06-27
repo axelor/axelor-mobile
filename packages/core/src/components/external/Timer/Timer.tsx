@@ -17,11 +17,12 @@
  */
 
 import React, {useEffect, useCallback, useMemo} from 'react';
-import {StyleSheet, View} from 'react-native';
+import {Dimensions, StyleSheet, View} from 'react-native';
 import {Text, useThemeColor} from '@axelor/aos-mobile-ui';
 import {formatDuration} from '../../../utils/formatters';
 
 const ONE_SECOND = 1000;
+const SMALL_SCREEN_LIMIT = 360;
 
 interface TimerProps {
   time: number;
@@ -77,7 +78,7 @@ const getStyles = Colors =>
       alignItems: 'center',
     },
     text: {
-      fontSize: 36,
+      fontSize: Dimensions.get('window').width > SMALL_SCREEN_LIMIT ? 36 : 26,
       fontWeight: 'bold',
       color: Colors.secondaryColor_dark.background,
     },
