@@ -117,6 +117,10 @@ const addModuleTypeObjects = (
           : specificKey == null && modelName === _type.modelName,
       );
 
+      if (!newConfig || !newConfig.fields) {
+        return;
+      }
+
       const fields = {..._type.fields};
 
       Object.entries(newConfig.fields).forEach(([fieldName, config]) => {
