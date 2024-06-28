@@ -3,6 +3,29 @@ title: 7.0.0
 tags: Changelog
 ---
 
+## [7.0.17] (2024-06-28)
+
+### @axelor/aos-mobile-core
+
+#### Fixes
+
+- ScannerAutocompleteSearch: clear value after scan to avoid refresh issue
+- Header: cut long title on small screens
+
+### @axelor/aos-mobile-ui
+
+#### Fixes
+
+- MultiValuePicker: allow boolean as item value
+- ProgressBar: only display the percentage when progress is low to avoid visual issues
+- LabelText: allow value field to be on multiple lines in all containers
+
+### @axelor/aos-mobile-manufacturing
+
+#### Fixes
+
+- Operation order: add scroll on details screen
+
 ## [7.0.16] (2024-06-14)
 
 ### @axelor/aos-mobile-core
@@ -594,6 +617,7 @@ The project architecture has also been updated, the example folder has been expl
 - Replace ChipSelect by MultiValuePicker on list screens
 - Add search bar details pop up on screens: add empowered searchBar for objects
 
+[7.0.17]: https://github.com/axelor/axelor-mobile/compare/7.0.16...7.0.17
 [7.0.16]: https://github.com/axelor/axelor-mobile/compare/7.0.15...7.0.16
 [7.0.15]: https://github.com/axelor/axelor-mobile/compare/7.0.14...7.0.15
 [7.0.14]: https://github.com/axelor/axelor-mobile/compare/7.0.13...7.0.14

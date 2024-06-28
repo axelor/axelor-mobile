@@ -1,5 +1,0 @@
-{
-  "title": "MultiValuePicker: allow boolean as item value",
-  "type": "fix",
-  "packages": "ui"
-}
