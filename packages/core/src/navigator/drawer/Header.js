@@ -31,6 +31,7 @@ import {
 } from '../../header';
 
 const TIME_BEFORE_RETRY = 500;
+const SMALL_SCREEN_LIMIT = 360;
 
 const Header = ({mainScreen, title, actionID = null, shadedHeader = true}) => {
   const Colors = useThemeColor();
@@ -90,8 +91,14 @@ const Header = ({mainScreen, title, actionID = null, shadedHeader = true}) => {
         ) : (
           <BackIcon tintColor={Colors.primaryColor.background} />
         )}
-        <View>
-          <Text fontSize={20} adjustsFontSizeToFit={true} numberOfLines={1}>
+        <View style={styles.titleContainer}>
+          <Text
+            style={styles.headerTitle}
+            fontSize={20}
+            numberOfLines={1}
+            adjustsFontSizeToFit={
+              Dimensions.get('window').width > SMALL_SCREEN_LIMIT
+            }>
             {options?.headerTitle || I18n.t(title)}
           </Text>
         </View>
@@ -138,7 +145,10 @@ const getHeaderStyles = Colors =>
     options: {
       flexDirection: 'row',
       alignItems: 'center',
-      alignContent: 'center',
+      flex: 1,
+    },
+    titleContainer: {
+      flex: 1,
     },
   });
 

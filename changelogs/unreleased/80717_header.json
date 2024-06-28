@@ -1,0 +1,5 @@
+{
+  "title": "Header: cut long title on small screens",
+  "type": "fix",
+  "packages": "core"
+}
