@@ -17,8 +17,8 @@
  */
 
 import React, {useEffect} from 'react';
-import {StyleSheet, View} from 'react-native';
-import {HeaderContainer, Screen} from '@axelor/aos-mobile-ui';
+import {StyleSheet} from 'react-native';
+import {HeaderContainer, Screen, ScrollView} from '@axelor/aos-mobile-ui';
 import {useDispatch, useSelector} from '@axelor/aos-mobile-core';
 import {
   OperationOrderDatesCard,
@@ -56,18 +56,18 @@ function OperationOrderDetailsScreen({route}) {
         }
         expandableFilter={false}
       />
-      <View style={styles.contentContainer}>
+      <ScrollView style={styles.scrollView}>
         <OperationOrderDatesCard />
         <OperationOrderLabelTextList />
         <OperationOrderStopwatch />
-      </View>
+      </ScrollView>
     </Screen>
   );
 }
 
 const styles = StyleSheet.create({
-  contentContainer: {
-    paddingTop: 10,
+  scrollView: {
+    height: null,
   },
 });
 
