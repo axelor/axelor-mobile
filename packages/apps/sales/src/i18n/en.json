@@ -89,6 +89,9 @@
   "Sales_ProductPulledOfMarket": "Product pulled off market date",
   "Sales_Clients": "Clients",
   "Sales_Category": "Category",
+  "Sales_Client": "Client",
+  "Sales_Factorized": "Factorized",
+  "Sales_AccountBlocked": "Account blocked",
   "Sales_Quantity": "Quantity",
   "Sales_UnitDiscounted": "Unit discounted",
   "Sales_Tax": "Tax",
@@ -114,5 +117,6 @@
   "Sales_SliceAction_FetchProductById": "fetch product by id",
   "Sales_SliceAction_FetchProductCompanyConfig": "search product company config",
   "Sales_SliceAction_SearchCustomerCategory": "search customer categories",
+  "Sales_SliceAction_FetchCustomerById": "fetch customer by id",
   "Sales_SliceAction_FetchSaleOrderLineById": "fetch sale order line by id"
 }

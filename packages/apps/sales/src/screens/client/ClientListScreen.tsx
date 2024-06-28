@@ -20,6 +20,7 @@ import React, {useMemo, useState} from 'react';
 import {StyleSheet, View} from 'react-native';
 import {
   SearchListView,
+  useNavigation,
   useSelector,
   useTranslator,
 } from '@axelor/aos-mobile-core';
@@ -29,6 +30,7 @@ import {searchCustomer} from '../../features/customerSlice';
 
 const ClientListScreen = ({}) => {
   const I18n = useTranslator();
+  const navigation = useNavigation();
 
   const [isAsssignedToMe, setIsAsssignedToMe] = useState(true);
   const [category, setCategory] = useState(null);
@@ -75,7 +77,9 @@ const ClientListScreen = ({}) => {
         renderListItem={({item}) => (
           <ClientActionCard
             client={item}
-            onPress={() => console.log('Card pressed.')}
+            onPress={() =>
+              navigation.navigate('ClientDetailsScreen', {customerId: item.id})
+            }
           />
         )}
       />

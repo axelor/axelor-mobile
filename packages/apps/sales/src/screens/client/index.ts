@@ -17,6 +17,7 @@
  */
 
 import ClientListScreen from './ClientListScreen';
+import ClientDetailsScreen from './ClientDetailsScreen';
 
 export default {
   ClientListScreen: {
@@ -27,6 +28,15 @@ export default {
     },
     isUsableOnShortcut: true,
   },
+  ClientDetailsScreen: {
+    title: 'Sales_Client',
+    actionID: 'sales_client_details',
+    component: ClientDetailsScreen,
+    options: {
+      shadedHeader: false,
+    },
+  },
 };
 
 export {ClientListScreen};
+export {ClientDetailsScreen};
