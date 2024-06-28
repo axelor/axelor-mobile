@@ -1,5 +1,0 @@
-{
-  "title": "BottomBar: prevent the component from being cut by the bottom of the screen on iOS",
-  "type": "fix",
-  "packages": "ui"
-}

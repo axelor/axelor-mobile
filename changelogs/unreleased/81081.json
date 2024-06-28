@@ -1,5 +1,0 @@
-{
-  "title": "Types: prevent errors when merging configurations between modules",
-  "type": "fix",
-  "packages": "core"
-}

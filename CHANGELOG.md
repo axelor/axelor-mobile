@@ -3,6 +3,46 @@ title: 8.1.0
 tags: Changelog
 ---
 
+## [8.1.1] (2024-06-28)
+
+This version fixes the build for Android 14.
+
+### @axelor/aos-mobile-core
+
+#### Features
+
+- SearchListView: add focus on scanner search bar by default
+
+#### Fixes
+
+- ScannerAutocompleteSearch: clear value after scan to avoid refresh issue
+- CustomFieldForm: remove margin under component
+- Header: cut long title on small screens
+- SearchListView: fix typing issue
+- Types: prevent errors when merging configurations between modules
+
+### @axelor/aos-mobile-ui
+
+#### Fixes
+
+- MultiValuePicker: allow boolean as item value
+- Timer: adjust font size depending on screen width
+- ProgressBar: only display the percentage when progress is low to avoid visual issues
+- LabelText: allow value field to be on multiple lines in all containers
+- BottomBar: prevent the component from being cut by the bottom of the screen on iOS
+
+### @axelor/aos-mobile-intervention
+
+#### Fixes
+
+- Intervention: add scroll on details view
+
+### @axelor/aos-mobile-manufacturing
+
+#### Fixes
+
+- Operation order: add scroll on details screen
+
 ## [8.1.0] (2024-06-14)
 
 This release brings a major update to the project's dependencies, including React Native, which is now at 0.71.x.
@@ -164,4 +204,5 @@ It enables user to manage interventions and customer parc through the mobile app
 - Permissions: check user rights for actions display
 - Selections: use new system and tools instead of type files
 - Product indicators: use new chart component to display quantity indicators
+  [8.1.1]: https://github.com/axelor/axelor-mobile/compare/8.1.0...8.1.1
   [8.1.0]: https://github.com/axelor/axelor-mobile/compare/8.0.6...8.1.0
