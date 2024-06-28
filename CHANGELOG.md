@@ -3,6 +3,30 @@ title: 8.0.0
 tags: Changelog
 ---
 
+## [8.0.7] (2024-06-28)
+
+### @axelor/aos-mobile-core
+
+#### Fixes
+
+- ScannerAutocompleteSearch: clear value after scan to avoid refresh issue
+- CustomFieldForm: remove margin under component
+- Header: cut long title on small screens
+
+### @axelor/aos-mobile-ui
+
+#### Fixes
+
+- MultiValuePicker: allow boolean as item value
+- ProgressBar: only display the percentage when progress is low to avoid visual issues
+- LabelText: allow value field to be on multiple lines in all containers
+
+### @axelor/aos-mobile-manufacturing
+
+#### Fixes
+
+- Operation order: add scroll on details screen
+
 ## [8.0.6] (2024-06-14)
 
 ### @axelor/aos-mobile-core
@@ -331,6 +355,7 @@ Changes has been done to get new core and ui improvements: use of ChipSelect, co
 
 Changes has been done to get new core and ui improvements: use of ChipSelect, color differentiation between success and primary, definition of required configs, use of icons for Bootstrap
 
+[8.0.7]: https://github.com/axelor/axelor-mobile/compare/8.0.6...8.0.7
 [8.0.6]: https://github.com/axelor/axelor-mobile/compare/8.0.5...8.0.6
 [8.0.5]: https://github.com/axelor/axelor-mobile/compare/8.0.4...8.0.5
 [8.0.4]: https://github.com/axelor/axelor-mobile/compare/8.0.3...8.0.4

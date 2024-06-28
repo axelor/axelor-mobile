@@ -1,5 +1,0 @@
-{
-  "title": "ProgressBar: only display the percentage when progress is low to avoid visual issues",
-  "type": "fix",
-  "packages": "ui"
-}
