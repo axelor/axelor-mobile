@@ -17,20 +17,15 @@
  */
 
 import React, {useCallback, useEffect, useMemo, useState} from 'react';
-import {SectionList, StyleSheet, View} from 'react-native';
+import {SectionList, StyleSheet, View, RefreshControl} from 'react-native';
 import {
   DateDisplay,
   MailMessageNotificationCard,
+  formatTime,
   useSelector,
   useTranslator,
 } from '@axelor/aos-mobile-core';
-import {
-  Badge,
-  Text,
-  checkNullString,
-  sliceString,
-  useThemeColor,
-} from '@axelor/aos-mobile-ui';
+import {Badge, Text, useThemeColor} from '@axelor/aos-mobile-ui';
 import {previousProjectActivity} from '../../../api/project-api';
 
 const ActivitiesListView = () => {
@@ -45,10 +40,11 @@ const ActivitiesListView = () => {
     initialDate.setDate(initialDate.getDate() + 1);
     return initialDate;
   });
+  const [refreshing, setRefreshing] = useState(false);
 
   const dateLimit = useMemo(() => {
     const limitDate = new Date();
-    limitDate.setFullYear(limitDate.getFullYear() - 1); //this is for test, need to change with project?createdOn.
+    limitDate.setFullYear(limitDate.getFullYear() - 1); // this is for test, need to change with project.createdOn.
     return limitDate;
   }, []);
 
@@ -101,60 +97,19 @@ const ActivitiesListView = () => {
 
   const convertToDate = dateStr => {
     const [month, day, year] = dateStr.split('/').map(Number);
-
     return new Date(year, month - 1, day);
   };
 
-  const calculateTimeDifference = time => {
-    const date = new Date(time);
-    const now = new Date();
-
-    if (isNaN(date.getTime())) {
-      return;
-    }
-
-    const dateInMs = Date.UTC(
-      date.getFullYear(),
-      date.getMonth(),
-      date.getDate(),
-    );
-    const nowInMs = Date.UTC(now.getFullYear(), now.getMonth(), now.getDate());
-
-    const differenceInMilliseconds = nowInMs - dateInMs;
-
-    const differenceInDays = Math.floor(
-      differenceInMilliseconds / (1000 * 60 * 60 * 24),
-    );
-
-    if (differenceInDays > 0) {
-      return `${I18n.t('Project_UpdatedTimes', {
-        times: `${differenceInDays} ${I18n.t('Project_Day').toLowerCase()}${
-          differenceInDays > 1 ? 's' : ''
-        }`,
-      })}`;
-    } else {
-      const _differenceInMilliseconds = now.getTime() - date.getTime();
-      const differenceInHours = Math.floor(
-        _differenceInMilliseconds / (1000 * 60 * 60),
-      );
-      if (differenceInHours > 0) {
-        return `${I18n.t('Project_UpdatedTimes', {
-          times: `${differenceInHours} ${I18n.t('Project_Hour').toLowerCase()}${
-            differenceInHours > 1 ? 's' : ''
-          }`,
-        })}`;
-      } else {
-        const differenceInMinutes = Math.floor(
-          _differenceInMilliseconds / (1000 * 60),
-        );
-        return `${I18n.t('Project_UpdatedTimes', {
-          times: `${differenceInMinutes} ${I18n.t(
-            'Project_min',
-          ).toLowerCase()}${differenceInMinutes > 1 ? 's' : ''}`,
-        })}`;
-      }
-    }
-  };
+  const onRefresh = useCallback(() => {
+    setRefreshing(true);
+    setStartDate(() => {
+      const newDate = new Date();
+      newDate.setDate(newDate.getDate() + 1);
+      return newDate;
+    });
+    setDataList([]);
+    fetchActivityData(new Date()).finally(() => setRefreshing(false));
+  }, [fetchActivityData]);
 
   const renderItem = ({item}) => {
     const updates = item[Object.keys(item)[0]];
@@ -168,14 +123,13 @@ const ActivitiesListView = () => {
         utilityClass,
         title,
       } = update;
-
       const tracks = activity?.tracks || [];
 
       return (
         <View style={styles.item} key={time}>
           <Text style={styles.updatedText}>{`${I18n.t(
             'Project_UpdatedBy',
-          )} ${user} ${calculateTimeDifference(time)}`}</Text>
+          )} ${user} ${formatTime(time, I18n.t('Base_TimeFormat'))}`}</Text>
           <MailMessageNotificationCard
             relatedModel={''}
             relatedId={0}
@@ -183,9 +137,6 @@ const ActivitiesListView = () => {
             tracks={tracks}
             customTopComponent={
               <View style={styles.headerMailMessage}>
-                {!checkNullString(title) && (
-                  <Text>{sliceString(title, 25)}</Text>
-                )}
                 <Badge
                   title={modelName}
                   color={
@@ -206,9 +157,7 @@ const ActivitiesListView = () => {
 
   const renderSectionHeader = ({section: {title}}) => {
     const dateToDisplay = convertToDate(title);
-
     const isValidDate = !isNaN(dateToDisplay.getTime());
-
     const displayDate = isValidDate ? dateToDisplay : new Date();
 
     return (
@@ -225,6 +174,9 @@ const ActivitiesListView = () => {
       renderItem={({item}) => renderItem({item})}
       renderSectionHeader={renderSectionHeader}
       onEndReached={handlePreviousActivity}
+      refreshControl={
+        <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+      }
     />
   );
 };
@@ -242,7 +194,7 @@ const styles = StyleSheet.create({
     padding: 10,
   },
   headerMailMessage: {
-    flexDirection: 'row',
+    flexDirection: 'row-reverse',
     justifyContent: 'space-between',
   },
 });
