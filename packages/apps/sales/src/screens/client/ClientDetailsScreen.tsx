@@ -25,7 +25,7 @@ import {
   Screen,
   ScrollView,
 } from '@axelor/aos-mobile-ui';
-import {getClientbyId} from '@axelor/aos-mobile-crm';
+import {ClientDropdownCards, getClientbyId} from '@axelor/aos-mobile-crm';
 import {ClientHeader} from '../../components';
 import {fetchCustomerById} from '../../features/customerSlice';
 
@@ -62,6 +62,7 @@ const ClientDetailsScreen = ({route}) => {
         style={styles.scrollView}
         refresh={{loading: loadingCustomer, fetcher: getCustomer}}>
         <NotesCard title={I18n.t('Crm_Notes')} data={customer.description} />
+        <ClientDropdownCards />
       </ScrollView>
     </Screen>
   );
