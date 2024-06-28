@@ -3,6 +3,29 @@ title: 7.1.0
 tags: Changelog
 ---
 
+## [7.1.14] (2024-06-28)
+
+### @axelor/aos-mobile-core
+
+#### Fixes
+
+- ScannerAutocompleteSearch: clear value after scan to avoid refresh issue
+- Header: cut long title on small screens
+
+### @axelor/aos-mobile-ui
+
+#### Fixes
+
+- MultiValuePicker: allow boolean as item value
+- ProgressBar: only display the percentage when progress is low to avoid visual issues
+- LabelText: allow value field to be on multiple lines in all containers
+
+### @axelor/aos-mobile-manufacturing
+
+#### Fixes
+
+- Operation order: add scroll on details screen
+
 ## [7.1.13] (2024-06-14)
 
 ### @axelor/aos-mobile-core
@@ -512,6 +535,7 @@ This update breaks the compatability with AOS Stock module under version 7.1 due
 - Add number decimal digit config management system
 - Manage multilines input with auto height resize on FormInput
 
+[7.1.14]: https://github.com/axelor/axelor-mobile/compare/7.1.13...7.1.14
 [7.1.13]: https://github.com/axelor/axelor-mobile/compare/7.1.12...7.1.13
 [7.1.12]: https://github.com/axelor/axelor-mobile/compare/7.1.11...7.1.12
 [7.1.11]: https://github.com/axelor/axelor-mobile/compare/7.1.10...7.1.11
