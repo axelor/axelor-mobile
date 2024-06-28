@@ -24,7 +24,13 @@ import {
   useSelector,
   useTranslator,
 } from '@axelor/aos-mobile-core';
-import {Badge, Text, sliceString, useThemeColor} from '@axelor/aos-mobile-ui';
+import {
+  Badge,
+  Text,
+  checkNullString,
+  sliceString,
+  useThemeColor,
+} from '@axelor/aos-mobile-ui';
 import {previousProjectActivity} from '../../../api/project-api';
 
 const ActivitiesListView = () => {
@@ -151,48 +157,51 @@ const ActivitiesListView = () => {
   };
 
   const renderItem = ({item}) => {
-    const key = Object.keys(item)?.[0];
+    const updates = item[Object.keys(item)[0]];
 
-    const activity = item?.[key]?.[0].activity || {};
+    return updates.map(update => {
+      const {
+        activity = {},
+        modelName,
+        time,
+        user,
+        utilityClass,
+        title,
+      } = update;
 
-    const modelName = item?.[key]?.[0]?.modelName;
+      const tracks = activity?.tracks || [];
 
-    const tracks = activity?.tracks || [];
-
-    const time = item?.[key]?.[0].time || '';
-
-    const user = item?.[key]?.[0].user || '';
-
-    const utilityClass = item?.[key]?.[0].utilityClass;
-
-    return (
-      <View style={styles.item}>
-        <Text style={styles.updatedText}>{`${I18n.t(
-          'Project_UpdatedBy',
-        )} ${user} ${calculateTimeDifference(time)}`}</Text>
-        <MailMessageNotificationCard
-          relatedModel={''}
-          relatedId={0}
-          title={key}
-          tracks={tracks}
-          customTopComponent={
-            <View style={styles.headerMailMessage}>
-              <Text>{sliceString(key, 25)}</Text>
-              <Badge
-                title={modelName}
-                color={
-                  utilityClass === 'danger'
-                    ? Colors.errorColor
-                    : utilityClass === 'success'
-                    ? Colors.successColor
-                    : Colors.primaryColor
-                }
-              />
-            </View>
-          }
-        />
-      </View>
-    );
+      return (
+        <View style={styles.item} key={time}>
+          <Text style={styles.updatedText}>{`${I18n.t(
+            'Project_UpdatedBy',
+          )} ${user} ${calculateTimeDifference(time)}`}</Text>
+          <MailMessageNotificationCard
+            relatedModel={''}
+            relatedId={0}
+            title={title}
+            tracks={tracks}
+            customTopComponent={
+              <View style={styles.headerMailMessage}>
+                {!checkNullString(title) && (
+                  <Text>{sliceString(title, 25)}</Text>
+                )}
+                <Badge
+                  title={modelName}
+                  color={
+                    utilityClass === 'danger'
+                      ? Colors.errorColor
+                      : utilityClass === 'success'
+                      ? Colors.successColor
+                      : Colors.primaryColor
+                  }
+                />
+              </View>
+            }
+          />
+        </View>
+      );
+    });
   };
 
   const renderSectionHeader = ({section: {title}}) => {
@@ -213,7 +222,7 @@ const ActivitiesListView = () => {
     <SectionList
       sections={dataList}
       keyExtractor={(item, index) => item + index}
-      renderItem={renderItem}
+      renderItem={({item}) => renderItem({item})}
       renderSectionHeader={renderSectionHeader}
       onEndReached={handlePreviousActivity}
     />
