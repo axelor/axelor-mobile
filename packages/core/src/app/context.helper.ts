@@ -117,7 +117,8 @@ const addModuleTypeObjects = (
           : specificKey == null && modelName === _type.modelName,
       );
 
-      if (!newConfig || !newConfig.fields) {
+      if (newConfig?.fields == null) {
+        result.push(_type);
         return;
       }
 
