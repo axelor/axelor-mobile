@@ -1,0 +1,5 @@
+{
+  "title": "addModuleTypeObjects: Prevent errors when merging configurations",
+  "type": "fix",
+  "packages": "core"
+}
