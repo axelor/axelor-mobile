@@ -3,6 +3,29 @@ title: 7.2.0
 tags: Changelog
 ---
 
+## [7.2.13] (2024-06-28)
+
+### @axelor/aos-mobile-core
+
+#### Fixes
+
+- ScannerAutocompleteSearch: clear value after scan to avoid refresh issue
+- Header: cut long title on small screens
+
+### @axelor/aos-mobile-ui
+
+#### Fixes
+
+- MultiValuePicker: allow boolean as item value
+- ProgressBar: only display the percentage when progress is low to avoid visual issues
+- LabelText: allow value field to be on multiple lines in all containers
+
+### @axelor/aos-mobile-manufacturing
+
+#### Fixes
+
+- Operation order: add scroll on details screen
+
 ## [7.2.12] (2024-06-14)
 
 ### @axelor/aos-mobile-core
@@ -536,6 +559,7 @@ It enables user to manage Expenses through the mobile application. You can creat
 - Remove IconButton component which should be replaced by Button component.
 - Remove Pop-up components which should be replaced by Alert component.
 
+[7.2.13]: https://github.com/axelor/axelor-mobile/compare/7.2.12...7.2.13
 [7.2.12]: https://github.com/axelor/axelor-mobile/compare/7.2.11...7.2.12
 [7.2.11]: https://github.com/axelor/axelor-mobile/compare/7.2.10...7.2.11
 [7.2.10]: https://github.com/axelor/axelor-mobile/compare/7.2.9...7.2.10
