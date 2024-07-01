@@ -18,7 +18,7 @@
 
 import React, {useCallback, useEffect, useMemo} from 'react';
 import {useSelector, FormView, useDispatch} from '@axelor/aos-mobile-core';
-import {updateProject} from '../features/projectSlice';
+import {fetchProjectFormById} from '../features/projectSlice';
 import {updateProjectTask} from '../features/projectTaskSlice';
 
 const TaskFormScreen = ({}) => {
@@ -27,7 +27,9 @@ const TaskFormScreen = ({}) => {
   const {projectTask} = useSelector((state: any) => state.project_projectTask);
 
   useEffect(() => {
-    _dispatch(updateProject(projectTask?.project));
+    _dispatch(
+      (fetchProjectFormById as any)({projectId: projectTask?.project?.id}),
+    );
   }, [_dispatch, projectTask?.project]);
 
   const _defaultValue = useMemo(() => {

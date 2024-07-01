@@ -67,6 +67,19 @@ export const fetchProjectById = createAsyncThunk(
   },
 );
 
+export const fetchProjectFormById = createAsyncThunk(
+  'project_project/fetchProjectFormById',
+  async function (data, {getState}) {
+    return handlerApiCall({
+      fetchFunction: _fetchProjectById,
+      data,
+      action: 'Project_SliceAction_FetchProjectById',
+      getState,
+      responseOptions: {isArrayResponse: false},
+    });
+  },
+);
+
 export const searchSubProject = createAsyncThunk(
   'project_project/searchSubProject',
   async function (data, {getState}) {
@@ -129,6 +142,9 @@ const projectSlice = createSlice({
     builder.addCase(fetchProjectById.fulfilled, (state, action) => {
       state.loadingProject = false;
       state.project = action.payload;
+    });
+    builder.addCase(fetchProjectFormById.fulfilled, (state, action) => {
+      state.projectForm = action.payload;
     });
   },
 });
