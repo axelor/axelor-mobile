@@ -17,7 +17,7 @@
  */
 
 import React, {useEffect, useMemo, useState} from 'react';
-import {StyleSheet} from 'react-native';
+import {ScrollView, StyleSheet} from 'react-native';
 import {HeaderContainer, Label, Screen} from '@axelor/aos-mobile-ui';
 import {useDispatch, useSelector, useTranslator} from '@axelor/aos-mobile-core';
 import {
@@ -80,20 +80,22 @@ const ProductSalesDetailsScreen = ({route}) => {
           <ProductHeader isProductCompanyConfig={isProductCompanyConfig} />
         }
       />
-      {!isProductCompanyConfig && (
-        <Label
-          message={I18n.t('Sales_NoConfigPerCompany')}
-          style={styles.label}
-          type="info"
+      <ScrollView>
+        {!isProductCompanyConfig && (
+          <Label
+            message={I18n.t('Sales_NoConfigPerCompany')}
+            style={styles.label}
+            type="info"
+          />
+        )}
+        <CompanySearchBar
+          company={company}
+          setCompany={setCompany}
+          style={isProductCompanyConfig && styles.searchBar}
         />
-      )}
-      <CompanySearchBar
-        company={company}
-        setCompany={setCompany}
-        style={isProductCompanyConfig && styles.searchBar}
-      />
-      <ProductDescription />
-      <ProductDropdownCard isProductCompanyConfig={isProductCompanyConfig} />
+        <ProductDescription />
+        <ProductDropdownCard isProductCompanyConfig={isProductCompanyConfig} />
+      </ScrollView>
       <ProductFloatingButton />
     </Screen>
   );

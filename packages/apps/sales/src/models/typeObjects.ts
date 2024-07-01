@@ -144,9 +144,9 @@ export const sale_typeObjects: ModuleSelections = [
             title: null,
           },
           {
-            key: 'finishedProduct',
+            key: 'FinishedProduct',
             value: 1,
-            title: 'Sales_finishedProduct',
+            title: 'Sales_FinishedProduct',
           },
           {
             key: 'SemiFinishedProduct',

@@ -22,7 +22,11 @@ import {useMetafileUri, useSelector} from '@axelor/aos-mobile-core';
 import {Image, Text, TextUnit, usePriceFormat} from '@axelor/aos-mobile-ui';
 import {TaxModeBadge} from '../../atoms';
 
-const ProductHeader = ({isProductCompanyConfig}) => {
+const ProductHeader = ({
+  isProductCompanyConfig,
+}: {
+  isProductCompanyConfig: boolean;
+}) => {
   const formatMetaFile = useMetafileUri();
   const priceFormat = usePriceFormat();
 
@@ -83,6 +87,7 @@ const styles = StyleSheet.create({
   endContainer: {
     flexDirection: 'column',
     flex: 1,
+    alignItems: 'flex-end',
   },
   imageStyle: {
     height: 50,

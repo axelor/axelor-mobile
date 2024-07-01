@@ -17,7 +17,7 @@
  */
 
 import React from 'react';
-import {StyleSheet, View} from 'react-native';
+import {View} from 'react-native';
 import {useSelector, useTranslator} from '@axelor/aos-mobile-core';
 import {NotesCard} from '@axelor/aos-mobile-ui';
 
@@ -27,7 +27,7 @@ const ProductDescription = ({}) => {
   const {product} = useSelector((state: any) => state.sales_product);
 
   return (
-    <View style={styles.container}>
+    <View>
       <NotesCard
         title={I18n.t('Base_Description')}
         data={product.description}
@@ -39,11 +39,5 @@ const ProductDescription = ({}) => {
     </View>
   );
 };
-
-const styles = StyleSheet.create({
-  container: {
-    alignItems: 'center',
-  },
-});
 
 export default ProductDescription;

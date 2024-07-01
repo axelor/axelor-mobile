@@ -83,7 +83,7 @@ export async function fetchProductCompanyConfigById({companyId, productId}) {
   return createStandardSearch({
     model: 'com.axelor.apps.base.db.ProductCompany',
     criteria: createProductCompanyCriteria(companyId, productId),
-    fieldKey: 'sales_company',
+    fieldKey: 'sales_productCompany',
     page: 0,
     numberElementsByPage: null,
   });

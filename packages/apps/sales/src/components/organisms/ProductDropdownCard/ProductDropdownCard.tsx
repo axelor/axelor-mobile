@@ -17,7 +17,6 @@
  */
 
 import React, {useMemo} from 'react';
-import {StyleSheet, View} from 'react-native';
 import {DropdownCardSwitch} from '@axelor/aos-mobile-ui';
 import {useSelector, useTranslator} from '@axelor/aos-mobile-core';
 import {
@@ -26,7 +25,11 @@ import {
   DropdownProductTypology,
 } from '../../molecules';
 
-const ProductDropdownCard = ({isProductCompanyConfig}) => {
+const ProductDropdownCard = ({
+  isProductCompanyConfig,
+}: {
+  isProductCompanyConfig: boolean;
+}) => {
   const I18n = useTranslator();
 
   const {sale: saleConfig} = useSelector((state: any) => state.appConfig);
@@ -64,17 +67,7 @@ const ProductDropdownCard = ({isProductCompanyConfig}) => {
     return result;
   }, [I18n, isProductCompanyConfig, saleConfig?.manageMultipleSaleQuantity]);
 
-  return (
-    <View style={styles.container}>
-      <DropdownCardSwitch dropdownItems={items} />
-    </View>
-  );
+  return <DropdownCardSwitch dropdownItems={items} />;
 };
 
 export default ProductDropdownCard;
-
-const styles = StyleSheet.create({
-  container: {
-    alignItems: 'center',
-  },
-});

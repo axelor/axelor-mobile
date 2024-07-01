@@ -27,7 +27,11 @@ import {
   useThemeColor,
 } from '@axelor/aos-mobile-ui';
 
-const DropdownProductSale = ({isProductCompanyConfig}) => {
+const DropdownProductSale = ({
+  isProductCompanyConfig,
+}: {
+  isProductCompanyConfig: boolean;
+}) => {
   const I18n = useTranslator();
   const priceFormat = usePriceFormat();
   const Colors = useThemeColor();
@@ -48,7 +52,7 @@ const DropdownProductSale = ({isProductCompanyConfig}) => {
       if (!checkNullString(value)) {
         return (
           <LabelText
-            title={`${I18n.t(titleKey)} :`}
+            title={`${I18n.t(titleKey)} `}
             value={value}
             style={styles.label}
           />
@@ -102,7 +106,7 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
   },
   labelContainer: {
-    maxWidth: '50%',
+    flex: 2,
   },
   label: {
     alignItems: 'center',

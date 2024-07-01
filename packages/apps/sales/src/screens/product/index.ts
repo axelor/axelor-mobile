@@ -21,11 +21,12 @@ import ProductSalesListScreen from './ProductSalesListScreen';
 
 export default {
   ProductSalesListScreen: {
-    title: 'Sales_ProductService',
+    title: 'Sales_ProductsServices',
     component: ProductSalesListScreen,
     options: {
       shadedHeader: false,
     },
+    isUsableOnShortcut: true,
   },
   ProductSalesDetailsScreen: {
     title: 'Sales_ProductService',
@@ -33,7 +34,6 @@ export default {
     options: {
       shadedHeader: false,
     },
-    isUsableOnShortcut: true,
   },
 };
 

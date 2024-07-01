@@ -20,7 +20,17 @@ import React from 'react';
 import {displayItemName, useSelector} from '@axelor/aos-mobile-core';
 import {AutoCompleteSearch} from '@axelor/aos-mobile-ui';
 
-const CompanySearchBar = ({style, setCompany, company}) => {
+interface CompanySearchBarProps {
+  style?: any;
+  setCompany?: (state: any) => any;
+  company?: any;
+}
+
+const CompanySearchBar = ({
+  style,
+  setCompany,
+  company,
+}: CompanySearchBarProps) => {
   const {user} = useSelector((state: any) => state.user);
 
   return (
