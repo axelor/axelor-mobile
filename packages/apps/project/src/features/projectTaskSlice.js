@@ -20,6 +20,7 @@ import {createAsyncThunk, createSlice} from '@reduxjs/toolkit';
 import {
   generateInifiniteScrollCases,
   handlerApiCall,
+  updateAgendaItems,
 } from '@axelor/aos-mobile-core';
 import {
   fetchProjectPriority as _fetchProjectPriority,
@@ -166,13 +167,21 @@ export const searchPriority = createAsyncThunk(
 
 export const updateProjectTask = createAsyncThunk(
   'project_projectTask/updateProjectTask',
-  async function (data, {getState}) {
+  async function (data, {getState, dispatch}) {
     return handlerApiCall({
       fetchFunction: _updateProjectTask,
       data,
       action: 'Project_SliceAction_UpdateProjectTask',
       getState,
       responseOptions: {isArrayResponse: true},
+    }).then(() => {
+      return handlerApiCall({
+        fetchFunction: _fetchProjectTaskById,
+        data: {projecTaskId: data?.projectTask?.id},
+        action: 'Project_SliceAction_FetchProjectTaskById',
+        getState,
+        responseOptions: {isArrayResponse: false},
+      });
     });
   },
 );
@@ -277,6 +286,16 @@ const projectTaskSlice = createSlice({
     builder.addCase(getProjectTaskTag.fulfilled, (state, action) => {
       state.loadingTaskTag = false;
       state.taskTagList = action.payload;
+    });
+    builder.addCase(updateProjectTask.pending, (state, action) => {
+      state.loadingProjectTask = true;
+    });
+    builder.addCase(updateProjectTask.fulfilled, (state, action) => {
+      state.loadingProjectTask = false;
+      state.projectTask = action.payload;
+      state.projectTaskList = updateAgendaItems(state.projectTaskList, [
+        action.payload,
+      ]);
     });
   },
 });
