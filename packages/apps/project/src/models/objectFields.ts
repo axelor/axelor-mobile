@@ -103,6 +103,9 @@ export const project_modelAPI: ObjectFields = {
     projectTaskPrioritySet: schemaContructor
       .array()
       .of(schemaContructor.subObject()),
+    projectTaskCategorySet: schemaContructor
+      .array()
+      .of(schemaContructor.subObject()),
     isShowPhasesElements: schemaContructor.boolean(),
   }),
   project_projectTask: schemaContructor.object({

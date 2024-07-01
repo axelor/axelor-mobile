@@ -33,7 +33,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import React, {useCallback} from 'react';
+import React, {useCallback, useMemo} from 'react';
 import {
   displayItemName,
   useDispatch,
@@ -73,17 +73,22 @@ const CategorySearchBar = ({
   } = useSelector((state: any) => state.project_projectTask);
   const {projectForm} = useSelector((state: any) => state.project_project);
 
+  const categoryIds = useMemo(
+    () => projectForm?.projectTaskCategorySet?.map(priority => priority.id),
+    [projectForm?.projectTaskCategorySet],
+  );
+
   const searcCategoryAPI = useCallback(
     ({page = 0, searchValue}) => {
       dispatch(
         (searchCategory as any)({
           page,
           searchValue,
-          projectId: projectForm?.id,
+          categoryIds: categoryIds,
         }),
       );
     },
-    [dispatch, projectForm?.id],
+    [categoryIds, dispatch],
   );
 
   return (
