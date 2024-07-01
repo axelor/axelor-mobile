@@ -35,7 +35,7 @@ import {
 } from '../../components';
 import {fetchSaleOrderLineById} from '../../features/saleOrderLineSlice';
 
-const SaleOrderLineDetailsScreen = ({route}) => {
+const SaleOrderLineDetailsScreen = ({navigation, route}) => {
   const {saleOrderLineId} = route?.params;
   const I18n = useTranslator();
   const dispatch = useDispatch();
@@ -65,7 +65,7 @@ const SaleOrderLineDetailsScreen = ({route}) => {
       },
       {
         title: I18n.t('Sales_UnitDiscounted'),
-        value: formatNumber(saleOrderLine.priceDiscounted),
+        value: formatPrice(saleOrderLine.priceDiscounted),
         unit: saleOrder.currency?.symbol,
       },
       {
@@ -102,7 +102,11 @@ const SaleOrderLineDetailsScreen = ({route}) => {
         <PriceDetails style={styles.priceDetails} lineList={priceList} />
         <ProductCard
           style={styles.productCard}
-          onPress={() => {}}
+          onPress={() => {
+            navigation.navigate('ProductSalesDetailsScreen', {
+              productId: saleOrderLine.product.id,
+            });
+          }}
           picture={saleOrderLine.product.picture}
           name={saleOrderLine.product.name}
           code={saleOrderLine.product.code}
