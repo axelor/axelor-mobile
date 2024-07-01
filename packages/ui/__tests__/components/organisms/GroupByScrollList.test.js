@@ -98,12 +98,9 @@ describe('GroupByScrollList', () => {
       const isSeparator = !isFirstItem && separatorCondition(prevItem, item);
 
       if (isFirstItem || isLastItem || isSeparator) {
-        if (isFirstItem || isSeparator) {
+        if (isSeparator) {
           expect(renderItemElement.find('TopSeparator').length).toBe(1);
           expect(fetchTopIndicator).toHaveBeenCalledWith(item);
-        }
-
-        if (isSeparator) {
           expect(renderItemElement.find('BottomSeparator').length).toBe(1);
           expect(fetchBottomIndicator).toHaveBeenCalledWith(prevItem);
         }
