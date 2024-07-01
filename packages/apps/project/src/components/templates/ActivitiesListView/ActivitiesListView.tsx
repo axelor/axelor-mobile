@@ -17,7 +17,13 @@
  */
 
 import React, {useCallback, useEffect, useMemo, useState} from 'react';
-import {SectionList, StyleSheet, View, RefreshControl} from 'react-native';
+import {
+  SectionList,
+  StyleSheet,
+  View,
+  RefreshControl,
+  Dimensions,
+} from 'react-native';
 import {
   DateDisplay,
   MailMessageNotificationCard,
@@ -25,14 +31,20 @@ import {
   useSelector,
   useTranslator,
 } from '@axelor/aos-mobile-core';
-import {Badge, Text, useThemeColor} from '@axelor/aos-mobile-ui';
+import {Badge, Image, Text, useThemeColor} from '@axelor/aos-mobile-ui';
 import {previousProjectActivity} from '../../../api/project-api';
+
+const STATES = {
+  Danger: 'danger',
+  Success: 'success',
+};
 
 const ActivitiesListView = () => {
   const Colors = useThemeColor();
   const I18n = useTranslator();
 
   const {project} = useSelector((state: any) => state.project_project);
+  const {baseUrl} = useSelector((state: any) => state.auth);
 
   const [dataList, setDataList] = useState([]);
   const [startDate, setStartDate] = useState(() => {
@@ -44,9 +56,9 @@ const ActivitiesListView = () => {
 
   const dateLimit = useMemo(() => {
     const limitDate = new Date();
-    limitDate.setFullYear(limitDate.getFullYear() - 1); // this is for test, need to change with project.createdOn.
+    limitDate.setFullYear(project.createdOn);
     return limitDate;
-  }, []);
+  }, [project.createdOn]);
 
   const handlePreviousActivity = useCallback(() => {
     setStartDate(prevStartDate => {
@@ -122,34 +134,49 @@ const ActivitiesListView = () => {
         user,
         utilityClass,
         title,
+        userId,
       } = update;
       const tracks = activity?.tracks || [];
 
       return (
         <View style={styles.item} key={time}>
-          <Text style={styles.updatedText}>{`${I18n.t(
-            'Project_UpdatedBy',
-          )} ${user} ${formatTime(time, I18n.t('Base_TimeFormat'))}`}</Text>
-          <MailMessageNotificationCard
-            relatedModel={''}
-            relatedId={0}
-            title={title}
-            tracks={tracks}
-            customTopComponent={
-              <View style={styles.headerMailMessage}>
-                <Badge
-                  title={modelName}
-                  color={
-                    utilityClass === 'danger'
-                      ? Colors.errorColor
-                      : utilityClass === 'success'
-                      ? Colors.successColor
-                      : Colors.primaryColor
-                  }
-                />
-              </View>
-            }
-          />
+          <View style={styles.avatarContainer}>
+            <Image
+              generalStyle={styles.avatar}
+              defaultIconSize={25}
+              resizeMode="contain"
+              source={{
+                uri:
+                  baseUrl +
+                  `ws/rest/com.axelor.auth.db.User/${userId}/image/download?image=true`,
+              }}
+            />
+          </View>
+          <View style={styles.cardContainer}>
+            <Text style={styles.updatedText}>{`${I18n.t(
+              'Project_UpdatedBy',
+            )} ${user} ${formatTime(time, I18n.t('Base_TimeFormat'))}`}</Text>
+            <MailMessageNotificationCard
+              relatedModel={''}
+              relatedId={0}
+              title={title}
+              tracks={tracks}
+              customTopComponent={
+                <View style={styles.headerMailMessage}>
+                  <Badge
+                    title={modelName}
+                    color={
+                      utilityClass === STATES.Danger
+                        ? Colors.errorColor
+                        : utilityClass === STATES.Success
+                        ? Colors.successColor
+                        : Colors.primaryColor
+                    }
+                  />
+                </View>
+              }
+            />
+          </View>
         </View>
       );
     });
@@ -183,8 +210,9 @@ const ActivitiesListView = () => {
 
 const styles = StyleSheet.create({
   item: {
-    padding: 10,
+    paddingLeft: 10,
     alignItems: 'center',
+    flexDirection: 'row',
   },
   updatedText: {
     alignSelf: 'flex-start',
@@ -196,6 +224,22 @@ const styles = StyleSheet.create({
   headerMailMessage: {
     flexDirection: 'row-reverse',
     justifyContent: 'space-between',
+  },
+  avatarContainer: {
+    alignItems: 'center',
+    justifyContent: 'flex-start',
+  },
+  avatar: {
+    alignSelf: 'center',
+    justifyContent: 'center',
+    alignItems: 'center',
+    borderRadius: Dimensions.get('window').width * 0.12,
+    width: Dimensions.get('window').width * 0.12,
+    height: Dimensions.get('window').width * 0.12,
+  },
+  cardContainer: {
+    width: Dimensions.get('window').width * 0.83,
+    overflow: 'hidden',
   },
 });
 
