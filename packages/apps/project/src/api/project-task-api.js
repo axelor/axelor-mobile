@@ -17,6 +17,7 @@
  */
 
 import {
+  axiosApiProvider,
   createStandardFetch,
   createStandardSearch,
   getSearchCriterias,
@@ -72,6 +73,28 @@ const createProjectTaskCriteria = ({
   return criteria;
 };
 
+const createPriorityCriteria = ({searchValue, priorityIds}) => {
+  return [
+    getSearchCriterias('project_projectPriority', searchValue),
+    {
+      fieldName: 'id',
+      operator: 'in',
+      value: priorityIds,
+    },
+  ];
+};
+
+const createCategoryCriteria = ({searchValue, categoryIds}) => {
+  return [
+    getSearchCriterias('project_projectTaskCategory', searchValue),
+    {
+      fieldName: 'id',
+      operator: 'in',
+      value: categoryIds,
+    },
+  ];
+};
+
 export async function searchProjectTask({
   searchValue,
   page = 0,
@@ -120,6 +143,71 @@ export async function fetchProjectTaskById({projecTaskId}) {
     fieldKey: 'project_projectTask',
     relatedFields: {
       projectTaskTagSet: ['name', 'colorSelect'],
+    },
+  });
+}
+
+export async function getProjectTaskTag() {
+  return axiosApiProvider.get({
+    url: 'ws/rest/com.axelor.apps.project.db.ProjectTaskTag/',
+  });
+}
+
+export async function searchTargetVersion({searchValue, page = 0, projectId}) {
+  return createStandardSearch({
+    model: 'com.axelor.apps.businesssupport.db.ProjectVersion',
+    criteria: [getSearchCriterias('project_projectVersion', searchValue)],
+    fieldKey: 'project_projectVersion',
+    sortKey: 'project_projectVersion',
+    page,
+    domain: ':project member of self.projectSet',
+    domainContext: {project: {id: projectId}},
+  });
+}
+
+export async function searchCategory({searchValue, page = 0, categoryIds}) {
+  if (!Array.isArray(categoryIds) || categoryIds.length === 0) {
+    return {data: {data: [], total: 0}};
+  }
+
+  return createStandardSearch({
+    model: 'com.axelor.apps.project.db.ProjectTaskCategory',
+    criteria: createCategoryCriteria({searchValue, categoryIds}),
+    fieldKey: 'project_projectTaskCategory',
+    sortKey: 'project_projectTaskCategory',
+    page,
+  });
+}
+
+export async function searchSection({searchValue, page = 0}) {
+  return createStandardSearch({
+    model: 'com.axelor.apps.project.db.ProjectTaskSection',
+    criteria: [getSearchCriterias('project_TaskSection', searchValue)],
+    fieldKey: 'project_TaskSection',
+    sortKey: 'project_TaskSection',
+    page,
+  });
+}
+
+export async function searchPriority({searchValue, page = 0, priorityIds}) {
+  if (!Array.isArray(priorityIds) || priorityIds.length === 0) {
+    return {data: {data: [], total: 0}};
+  }
+
+  return createStandardSearch({
+    model: 'com.axelor.apps.project.db.ProjectPriority',
+    criteria: createPriorityCriteria({searchValue, priorityIds}),
+    fieldKey: 'project_projectPriority',
+    sortKey: 'project_projectPriority',
+    page,
+  });
+}
+
+export async function updateProjectTask({projectTask}) {
+  return axiosApiProvider.post({
+    url: '/ws/rest/com.axelor.apps.project.db.ProjectTask/',
+    data: {
+      data: projectTask,
     },
   });
 }

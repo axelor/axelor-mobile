@@ -102,6 +102,9 @@ export const project_modelAPI: ObjectFields = {
     projectTaskPrioritySet: schemaContructor
       .array()
       .of(schemaContructor.subObject()),
+    projectTaskCategorySet: schemaContructor
+      .array()
+      .of(schemaContructor.subObject()),
     isShowPhasesElements: schemaContructor.boolean(),
   }),
   project_projectTask: schemaContructor.object({
@@ -130,6 +133,7 @@ export const project_modelAPI: ObjectFields = {
     spentTime: schemaContructor.number(),
     description: schemaContructor.string(),
     internalDescription: schemaContructor.string(),
+    ticketNumber: schemaContructor.string(),
   }),
   project_projectStatus: schemaContructor.object({
     name: schemaContructor.string(),
@@ -147,5 +151,18 @@ export const project_modelAPI: ObjectFields = {
     duration: schemaContructor.number(),
     toInvoice: schemaContructor.boolean(),
     comments: schemaContructor.string(),
+  }),
+  project_projectTaskTag: schemaContructor.object({
+    name: schemaContructor.string(),
+    colorSelect: schemaContructor.string(),
+  }),
+  project_projectVersion: schemaContructor.object({
+    title: schemaContructor.subObject(),
+  }),
+  project_projectTaskCategory: schemaContructor.object({
+    name: schemaContructor.subObject(),
+  }),
+  project_TaskSection: schemaContructor.object({
+    name: schemaContructor.subObject(),
   }),
 };

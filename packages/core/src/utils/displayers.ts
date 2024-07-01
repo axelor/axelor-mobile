@@ -18,3 +18,4 @@
 
 export const displayItemName = (item: any): string => item.name;
 export const displayItemFullname = (item: any): string => item.fullName;
+export const displayItemTitle = (item: any): string => item.title;

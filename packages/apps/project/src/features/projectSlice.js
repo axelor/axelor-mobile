@@ -67,6 +67,19 @@ export const fetchProjectById = createAsyncThunk(
   },
 );
 
+export const fetchProjectFormById = createAsyncThunk(
+  'project_project/fetchProjectFormById',
+  async function (data, {getState}) {
+    return handlerApiCall({
+      fetchFunction: _fetchProjectById,
+      data,
+      action: 'Project_SliceAction_FetchProjectById',
+      getState,
+      responseOptions: {isArrayResponse: false},
+    });
+  },
+);
+
 export const searchSubProject = createAsyncThunk(
   'project_project/searchSubProject',
   async function (data, {getState}) {
@@ -95,11 +108,18 @@ const initialState = {
 
   loadingProject: true,
   project: {},
+
+  projectForm: {},
 };
 
 const projectSlice = createSlice({
   name: 'project_project',
   initialState,
+  reducers: {
+    updateProject: (state, action) => {
+      state.projectForm = action.payload;
+    },
+  },
   extraReducers: builder => {
     generateInifiniteScrollCases(builder, searchProject, {
       loading: 'loading',
@@ -123,7 +143,12 @@ const projectSlice = createSlice({
       state.loadingProject = false;
       state.project = action.payload;
     });
+    builder.addCase(fetchProjectFormById.fulfilled, (state, action) => {
+      state.projectForm = action.payload;
+    });
   },
 });
+
+export const {updateProject} = projectSlice.actions;
 
 export const projectReducer = projectSlice.reducer;

@@ -16,13 +16,24 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import {FormConfigs} from '@axelor/aos-mobile-core';
+import {FormConfigs, UserSearchBar} from '@axelor/aos-mobile-core';
 import {
   ProductSearchBar,
-  ProjectSearchBar,
+  ProjectSearchBar as HRProjectSearchBar,
   ProjectTaskSearchBar,
 } from '@axelor/aos-mobile-hr';
-import {LogTimeButton} from '../components';
+import {
+  LogTimeButton,
+  CategorySearchBar,
+  ParentTaskSearchBar,
+  PrioritySearchBar,
+  ProgressFormInput,
+  ProjectSearchBar,
+  SectionSearchBar,
+  TagTaskMultieValuePicker,
+  TargetVersionSearchBar,
+} from '../components';
+import {updateProject} from '../features/projectSlice';
 
 export const project_formsRegister: FormConfigs = {
   project_TimesheetLine: {
@@ -32,7 +43,7 @@ export const project_formsRegister: FormConfigs = {
         titleKey: 'Hr_Project',
         type: 'object',
         widget: 'custom',
-        customComponent: ProjectSearchBar,
+        customComponent: HRProjectSearchBar,
         readonly: true,
       },
       projectTask: {
@@ -101,6 +112,129 @@ export const project_formsRegister: FormConfigs = {
         type: 'object',
         widget: 'custom',
         customComponent: LogTimeButton,
+      },
+    },
+  },
+  project_task: {
+    modelName: 'com.axelor.apps.project.db.ProjectTask',
+    fields: {
+      name: {
+        titleKey: 'Project_Sujet',
+        type: 'string',
+        required: true,
+      },
+      ticketNumber: {
+        titleKey: 'Project_TicketNumber',
+        type: 'string',
+        readonly: true,
+      },
+      project: {
+        titleKey: 'Project_Project',
+        type: 'object',
+        widget: 'custom',
+        customComponent: ProjectSearchBar,
+        required: true,
+        options: {
+          differentiateBusinessProjects: false,
+        },
+      },
+      parentTask: {
+        titleKey: 'Project_ParentTask',
+        type: 'object',
+        widget: 'custom',
+        customComponent: ParentTaskSearchBar,
+        dependsOn: {
+          project: ({newValue, dispatch}) => {
+            dispatch(updateProject(newValue));
+          },
+        },
+      },
+      assignedTo: {
+        titleKey: 'Project_AssignedTo',
+        type: 'object',
+        widget: 'custom',
+        customComponent: UserSearchBar,
+      },
+      projectTaskCategory: {
+        titleKey: 'Project_Category',
+        type: 'object',
+        widget: 'custom',
+        customComponent: CategorySearchBar,
+        dependsOn: {
+          project: () => {
+            return null;
+          },
+        },
+      },
+      projectTaskSection: {
+        titleKey: 'Project_Section',
+        type: 'object',
+        widget: 'custom',
+        customComponent: SectionSearchBar,
+        dependsOn: {
+          project: () => {
+            return null;
+          },
+        },
+      },
+      targetVersion: {
+        titleKey: 'Project_TargetVersion',
+        type: 'object',
+        widget: 'custom',
+        customComponent: TargetVersionSearchBar,
+        dependsOn: {
+          project: () => {
+            return null;
+          },
+        },
+      },
+      priority: {
+        titleKey: 'Project_Priority',
+        type: 'object',
+        widget: 'custom',
+        customComponent: PrioritySearchBar,
+        dependsOn: {
+          project: () => {
+            return null;
+          },
+        },
+      },
+      taskDate: {
+        titleKey: 'Project_StartDate',
+        type: 'date',
+        widget: 'date',
+      },
+      taskEndDate: {
+        titleKey: 'Project_DueDate',
+        type: 'date',
+        widget: 'date',
+      },
+      taskDeadline: {
+        titleKey: 'Project_Deadline',
+        type: 'date',
+        widget: 'date',
+      },
+      projectTaskTagSet: {
+        titleKey: 'Project_Tags',
+        type: 'array',
+        widget: 'custom',
+        customComponent: TagTaskMultieValuePicker,
+      },
+      progress: {
+        titleKey: 'Project_Progress',
+        type: 'number',
+        widget: 'custom',
+        customComponent: ProgressFormInput,
+      },
+      description: {
+        type: 'string',
+        widget: 'HTML',
+        titleKey: 'Base_Description',
+      },
+      internalDescription: {
+        type: 'string',
+        widget: 'HTML',
+        titleKey: 'Project_InternalDescription',
       },
     },
   },

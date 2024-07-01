@@ -16,23 +16,33 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-export {
-  fetchProjectById,
-  fetchProjectStatus,
-  searchProject,
-  searchSubProject,
-} from './projectSlice';
-export {
-  fetchProjectPriority,
-  fetchProjectTaskById,
-  fetchProjectTaskStatus,
-  getProjectTaskTag,
-  searchCategory,
-  searchPriority,
-  searchProjectParentTask,
-  searchProjectTask,
-  searchSection,
-  searchTargetVersion,
-  updateProjectTask,
-} from './projectTaskSlice';
-export {fetchTimesheetLinesByTask} from './timesheetLinesSlice';
+import React from 'react';
+import {StyleSheet} from 'react-native';
+import {CircleButton} from '@axelor/aos-mobile-ui';
+import {useNavigation} from '@axelor/aos-mobile-core';
+
+const TaskBottom = ({idTask}) => {
+  const navigation = useNavigation();
+
+  return (
+    <CircleButton
+      style={styles.floatingButton}
+      iconName="pencil-fill"
+      onPress={() =>
+        navigation.navigate('TaskFormScreen', {
+          idTask: idTask,
+        })
+      }
+    />
+  );
+};
+
+const styles = StyleSheet.create({
+  floatingButton: {
+    position: 'absolute',
+    bottom: 25,
+    right: 25,
+  },
+});
+
+export default TaskBottom;
