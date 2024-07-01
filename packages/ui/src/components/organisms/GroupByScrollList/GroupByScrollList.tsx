@@ -16,7 +16,8 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import React, {ReactElement} from 'react';
+import React, {ReactElement, useRef, useState} from 'react';
+import {StyleSheet, View} from 'react-native';
 import TopSeparator, {TopIndicator, TopSeparatorProps} from './TopSeparator';
 import BottomSeparator, {
   BottomIndicator,
@@ -43,6 +44,7 @@ interface GroupByScrollListProps {
   customBottomSeparator?: ReactElement<BottomSeparatorProps>;
   actionList?: ActionType[];
   verticalActions?: boolean;
+  displayStickyIndicator?: boolean;
 }
 
 const GroupByScrollList = ({
@@ -64,7 +66,10 @@ const GroupByScrollList = ({
   customBottomSeparator,
   actionList,
   verticalActions,
+  displayStickyIndicator = true,
 }: GroupByScrollListProps) => {
+  const [stickyIndicator, setStickyIndicator] = useState(null);
+
   const renderSeparator = (customSeparator, Separator, props) => {
     return customSeparator ? (
       React.cloneElement(customSeparator, {...props})
@@ -102,6 +107,7 @@ const GroupByScrollList = ({
               bottomIndicator,
             )}
           {topIndicator &&
+            (!isFirstItem || (isFirstItem && !displayStickyIndicator)) &&
             renderSeparator(customTopSeparator, TopSeparator, {
               ...topIndicator,
               isFirstItem: isFirstItem,
@@ -120,23 +126,44 @@ const GroupByScrollList = ({
     return renderItem({item, index});
   };
 
+  const onViewableItemsChanged = useRef(({viewableItems}) => {
+    if (viewableItems.length > 0) {
+      const firstItem = viewableItems[0];
+      setStickyIndicator(fetchTopIndicator?.(firstItem.item));
+    }
+  });
+
   return (
-    <ScrollList
-      style={style}
-      loadingList={loadingList}
-      data={data}
-      renderItem={_renderItem}
-      fetchData={fetchData}
-      moreLoading={moreLoading}
-      isListEnd={isListEnd}
-      filter={filter}
-      translator={translator}
-      horizontal={horizontal}
-      disabledRefresh={disabledRefresh}
-      actionList={actionList}
-      verticalActions={verticalActions}
-    />
+    <View style={styles.container}>
+      <View>
+        {displayStickyIndicator &&
+          stickyIndicator &&
+          renderSeparator(customTopSeparator, TopSeparator, stickyIndicator)}
+      </View>
+      <ScrollList
+        style={style}
+        loadingList={loadingList}
+        data={data}
+        renderItem={_renderItem}
+        fetchData={fetchData}
+        moreLoading={moreLoading}
+        isListEnd={isListEnd}
+        filter={filter}
+        translator={translator}
+        horizontal={horizontal}
+        disabledRefresh={disabledRefresh}
+        actionList={actionList}
+        verticalActions={verticalActions}
+        onViewableItemsChanged={onViewableItemsChanged.current}
+      />
+    </View>
   );
 };
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+  },
+});
 
 export default GroupByScrollList;
