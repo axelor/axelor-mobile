@@ -203,11 +203,11 @@ export async function searchPriority({searchValue, page = 0, priorityIds}) {
   });
 }
 
-export async function updateProjectTask({project}) {
+export async function updateProjectTask({projectTask}) {
   return axiosApiProvider.post({
     url: '/ws/rest/com.axelor.apps.project.db.ProjectTask/',
     data: {
-      data: project,
+      data: projectTask,
     },
   });
 }

@@ -21,7 +21,7 @@ import {useSelector, FormView, useDispatch} from '@axelor/aos-mobile-core';
 import {fetchProjectFormById} from '../features/projectSlice';
 import {updateProjectTask} from '../features/projectTaskSlice';
 
-const TaskFormScreen = ({}) => {
+const TaskFormScreen = ({navigation}) => {
   const _dispatch = useDispatch();
 
   const {projectTask} = useSelector((state: any) => state.project_projectTask);
@@ -38,9 +38,13 @@ const TaskFormScreen = ({}) => {
     };
   }, [projectTask]);
 
-  const updateTaskAPI = useCallback((objectState, dispatch) => {
-    dispatch((updateProjectTask as any)({project: objectState}));
-  }, []);
+  const updateTaskAPI = useCallback(
+    (objectState, dispatch) => {
+      dispatch((updateProjectTask as any)({projectTask: objectState}));
+      navigation.pop();
+    },
+    [navigation],
+  );
 
   return (
     <FormView
