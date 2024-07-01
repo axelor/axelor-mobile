@@ -17,6 +17,7 @@
  */
 
 import {
+  createStandardFetch,
   createStandardSearch,
   getSearchCriterias,
 } from '@axelor/aos-mobile-core';
@@ -49,6 +50,13 @@ const createProductCriteria = searchValue => {
   return criteria;
 };
 
+const createProductCompanyCriteria = (companyId, productId) => {
+  return [
+    {fieldName: 'company.id', operator: '=', value: companyId},
+    {fieldName: 'product.id', operator: '=', value: productId},
+  ];
+};
+
 export async function searchProduct({page = 0, searchValue}) {
   return createStandardSearch({
     model: 'com.axelor.apps.base.db.Product',
@@ -56,5 +64,30 @@ export async function searchProduct({page = 0, searchValue}) {
     fieldKey: 'sales_product',
     sortKey: 'sales_product',
     page,
+  });
+}
+
+export async function fetchProductById({productId}) {
+  return createStandardFetch({
+    model: 'com.axelor.apps.base.db.Product',
+    id: productId,
+    fieldKey: 'sales_product',
+    relatedFields: {
+      saleProductMultipleQtyList: ['name', 'multipleQty'],
+    },
+  });
+}
+
+export async function fetchProductCompanyConfig({companyId, productId}) {
+  if (companyId == null) {
+    return null;
+  }
+
+  return createStandardSearch({
+    model: 'com.axelor.apps.base.db.ProductCompany',
+    criteria: createProductCompanyCriteria(companyId, productId),
+    fieldKey: 'sales_productCompany',
+    page: 0,
+    numberElementsByPage: 1,
   });
 }

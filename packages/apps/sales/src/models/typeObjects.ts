@@ -133,4 +133,62 @@ export const sale_typeObjects: ModuleSelections = [
       },
     },
   },
+  {
+    modelName: 'com.axelor.apps.base.db.Product',
+    specificKey: 'SaleProduct',
+    fields: {
+      productSubTypeSelect: {
+        content: [
+          {
+            key: 'FinishedProduct',
+            value: 1,
+            title: 'Sales_ProductSubType_FinishedProduct',
+          },
+          {
+            key: 'SemiFinishedProduct',
+            value: 2,
+            title: 'Sales_ProductSubType_SemiFinishedProduct',
+          },
+          {
+            key: 'Component',
+            value: 3,
+            title: 'Sales_ProductSubType_Component',
+          },
+        ],
+      },
+      procurementMethodSelect: {
+        content: [
+          {
+            key: 'Buy',
+            value: 'buy',
+            title: 'Sales_ProcurementMethod_Buy',
+          },
+          {
+            key: 'Produce',
+            value: 'produce',
+            title: 'Sales_ProcurementMethod_Produce',
+          },
+          {
+            key: 'BuyAndProduce',
+            value: 'buyAndProduce',
+            title: 'Sales_ProcurementMethod_BuyProduce',
+          },
+        ],
+      },
+      productTypeSelect: {
+        content: [
+          {
+            key: 'Service',
+            value: 'service',
+            title: 'Sales_ProductType_Service',
+          },
+          {
+            key: 'Storable',
+            value: 'storable',
+            title: 'Sales_ProductType_Storable',
+          },
+        ],
+      },
+    },
+  },
 ];

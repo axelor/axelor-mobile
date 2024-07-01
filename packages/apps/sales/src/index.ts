@@ -45,9 +45,9 @@ export const SalesModule: Module = {
   },
   menus: {
     sales_menu_product: {
-      title: 'Sales_ArticleService',
+      title: 'Sales_ProductsServices',
       icon: 'basket2-fill',
-      screen: 'ProductListScreen',
+      screen: 'ProductSalesListScreen',
     },
     sales_menu_quotations: {
       title: 'Sales_SaleQuotations',
@@ -72,6 +72,7 @@ export const SalesModule: Module = {
     typeObjects: sale_typeObjects,
   },
   reducers: {...saleReducers},
+  requiredConfig: ['AppSale'],
 };
 
 export * from './api';

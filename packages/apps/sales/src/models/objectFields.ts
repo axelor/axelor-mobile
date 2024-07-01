@@ -32,6 +32,30 @@ export const sale_modelAPI: ObjectFields = {
     saleCurrency: schemaContructor.subObject('symbol'),
     picture: schemaContructor.subObject('fileName'),
     configurator: schemaContructor.subObject(),
+    inAti: schemaContructor.boolean(),
+    internalDescription: schemaContructor.string(),
+    productTypeSelect: schemaContructor.string(),
+    productSubTypeSelect: schemaContructor.number(),
+    procurementMethodSelect: schemaContructor.string(),
+    startDate: schemaContructor.string(),
+    endDate: schemaContructor.string(),
+    salesUnit: schemaContructor.subObject(),
+    isPrototype: schemaContructor.boolean(),
+    isUnrenewed: schemaContructor.boolean(),
+    allowToForceSaleQty: schemaContructor.boolean(),
+    saleProductMultipleQtyList: schemaContructor
+      .array()
+      .of(schemaContructor.subObject()),
+  }),
+  sales_productCompany: schemaContructor.object({
+    company: schemaContructor.subObject(),
+    product: schemaContructor.subObject(),
+    salePrice: schemaContructor.number(),
+    saleCurrency: schemaContructor.subObject('symbol'),
+    procurementMethodSelect: schemaContructor.string(),
+  }),
+  auth_user: schemaContructor.object({
+    companySet: schemaContructor.array().of(schemaContructor.subObject()),
   }),
   sale_saleOrder: schemaContructor.object({
     statusSelect: schemaContructor.number(),
