@@ -20,7 +20,7 @@ export {fetchCustomerDelivery} from './customerDeliverySlice';
 export {searchCustomer} from './customerSlice';
 export {
   fetchProductById,
-  fetchProductCompanyConfigById,
+  fetchProductCompanyConfig,
   searchProduct,
 } from './productSlice';
 export {fetchSaleConfig} from './saleConfigSlice';

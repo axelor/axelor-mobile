@@ -27,18 +27,12 @@ import {
   useThemeColor,
 } from '@axelor/aos-mobile-ui';
 
-const DropdownProductSale = ({
-  isProductCompanyConfig,
-}: {
-  isProductCompanyConfig: boolean;
-}) => {
+const DropdownProductSale = ({}) => {
   const I18n = useTranslator();
-  const priceFormat = usePriceFormat();
   const Colors = useThemeColor();
+  const formatPrice = usePriceFormat();
 
-  const {product, productCompany} = useSelector(
-    (state: any) => state.sales_product,
-  );
+  const {product} = useSelector((state: any) => state.sales_product);
 
   const _formatDate = useCallback(
     _date => {
@@ -50,13 +44,7 @@ const DropdownProductSale = ({
   const renderLabelText = useCallback(
     (titleKey: string, value: string | number) => {
       if (!checkNullString(value)) {
-        return (
-          <LabelText
-            title={`${I18n.t(titleKey)} `}
-            value={value}
-            style={styles.label}
-          />
-        );
+        return <LabelText title={I18n.t(titleKey)} value={value} />;
       }
       return null;
     },
@@ -65,34 +53,27 @@ const DropdownProductSale = ({
 
   return (
     <View style={styles.container}>
-      <View style={styles.labelContainer}>
-        {renderLabelText(
-          'Sales_PriceWT',
-          isProductCompanyConfig
-            ? priceFormat(productCompany.salePrice)
-            : priceFormat(product.salePrice),
-        )}
-        {renderLabelText(
-          'Sales_SaleCurrency',
-          isProductCompanyConfig
-            ? productCompany?.saleCurrency?.symbol
-            : product.saleCurrency?.symbol,
-        )}
-        {renderLabelText('Sales_SaleUnit', product.salesUnit?.name)}
-        {renderLabelText('Sales_LaunchDate', _formatDate(product.startDate))}
-        {renderLabelText(
-          'Sales_ProductPulledOfMarket',
-          _formatDate(product.endDate),
-        )}
-      </View>
-      <View>
+      {renderLabelText('Sales_PriceWT', formatPrice(product.salePrice))}
+      {renderLabelText('Sales_SaleCurrency', product.saleCurrency?.symbol)}
+      {renderLabelText('Sales_SaleUnit', product.salesUnit?.name)}
+      {renderLabelText('Sales_LaunchDate', _formatDate(product.startDate))}
+      {renderLabelText(
+        'Sales_ProductPulledOfMarket',
+        _formatDate(product.endDate),
+      )}
+      <View style={styles.rowContainer}>
         {product.isPrototype && (
-          <Badge color={Colors.infoColor} title={I18n.t('Sales_Prototype')} />
+          <Badge
+            color={Colors.infoColor}
+            title={I18n.t('Sales_Prototype')}
+            style={styles.badge}
+          />
         )}
         {product.isUnrenewed && (
           <Badge
             color={Colors.cautionColor}
             title={I18n.t('Sales_Unrenewed')}
+            style={styles.badge}
           />
         )}
       </View>
@@ -102,14 +83,17 @@ const DropdownProductSale = ({
 
 const styles = StyleSheet.create({
   container: {
+    flexDirection: 'column',
+    justifyContent: 'flex-start',
+  },
+  rowContainer: {
     flexDirection: 'row',
-    justifyContent: 'space-between',
+    justifyContent: 'flex-end',
+    marginVertical: 3,
   },
-  labelContainer: {
-    flex: 2,
-  },
-  label: {
-    alignItems: 'center',
+  badge: {
+    width: null,
+    paddingHorizontal: 10,
   },
 });
 

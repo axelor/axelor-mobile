@@ -16,16 +16,26 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import React, {useEffect, useMemo, useState} from 'react';
-import {ScrollView, StyleSheet} from 'react-native';
-import {HeaderContainer, Label, Screen} from '@axelor/aos-mobile-ui';
-import {useDispatch, useSelector, useTranslator} from '@axelor/aos-mobile-core';
+import React, {useCallback, useEffect, useMemo, useState} from 'react';
+import {StyleSheet} from 'react-native';
+import {
+  HeaderContainer,
+  Label,
+  Screen,
+  ScrollView,
+} from '@axelor/aos-mobile-ui';
+import {
+  isEmpty,
+  useDispatch,
+  useSelector,
+  useTranslator,
+} from '@axelor/aos-mobile-core';
 import {
   fetchProductById,
-  fetchProductCompanyConfigById,
+  fetchProductCompanyConfig,
 } from '../../features/productSlice';
 import {
-  CompanySearchBar,
+  CompanyPicker,
   ProductDescription,
   ProductDropdownCard,
   ProductFloatingButton,
@@ -34,67 +44,74 @@ import {
 
 const ProductSalesDetailsScreen = ({route}) => {
   const productId = route.params.productId;
-
   const I18n = useTranslator();
   const dispatch = useDispatch();
 
-  const [company, setCompany] = useState({} as any);
-
   const {user} = useSelector((state: any) => state.user);
-  const {product} = useSelector((state: any) => state.sales_product);
+  const {loadingProduct, product, productCompany} = useSelector(
+    (state: any) => state.sales_product,
+  );
 
-  useEffect(() => {
+  const [company, setCompany] = useState<any>(user?.activeCompany);
+
+  const fetchProduct = useCallback(() => {
     dispatch((fetchProductById as any)({productId: productId}));
   }, [dispatch, productId]);
 
-  useEffect(() => {
-    if (company?.id != null) {
-      dispatch(
-        (fetchProductCompanyConfigById as any)({
-          companyId: company.id,
-          productId: product?.id,
-        }),
-      );
-    }
-  }, [company?.id, dispatch, product?.id]);
-
-  const isProductCompanyConfig = useMemo(() => {
-    if (!product?.productCompanyList || !company?.id) {
-      return false;
-    }
-
-    return product.productCompanyList.some(prodCompany => {
-      return prodCompany?.company?.id === company?.id;
-    });
-  }, [product?.productCompanyList, company?.id]);
+  const fetchProductCompany = useCallback(() => {
+    dispatch(
+      (fetchProductCompanyConfig as any)({
+        companyId: company?.id,
+        productId: productId,
+      }),
+    );
+  }, [company?.id, dispatch, productId]);
 
   useEffect(() => {
-    setCompany(user?.activeCompany);
-  }, [user?.activeCompany]);
+    fetchProduct();
+  }, [fetchProduct]);
+
+  useEffect(() => {
+    fetchProductCompany();
+  }, [fetchProductCompany]);
+
+  const noCompanyConfig = useMemo(
+    () => company != null && isEmpty(productCompany),
+    [company, productCompany],
+  );
+
+  if (product?.id !== productId) {
+    return null;
+  }
 
   return (
     <Screen removeSpaceOnTop={true}>
       <HeaderContainer
         expandableFilter={false}
-        fixedItems={
-          <ProductHeader isProductCompanyConfig={isProductCompanyConfig} />
-        }
+        fixedItems={<ProductHeader />}
       />
-      <ScrollView>
-        {!isProductCompanyConfig && (
-          <Label
-            message={I18n.t('Sales_NoConfigPerCompany')}
-            style={styles.label}
-            type="info"
-          />
-        )}
-        <CompanySearchBar
+      <ScrollView
+        style={styles.container}
+        refresh={{
+          loading: loadingProduct,
+          fetcher: () => {
+            fetchProduct();
+            fetchProductCompany();
+          },
+        }}>
+        <Label
+          style={styles.label}
+          message={I18n.t('Sales_NoConfigPerCompany')}
+          type="info"
+          visible={noCompanyConfig}
+        />
+        <CompanyPicker
+          style={!noCompanyConfig && styles.searchBar}
           company={company}
           setCompany={setCompany}
-          style={isProductCompanyConfig && styles.searchBar}
         />
         <ProductDescription />
-        <ProductDropdownCard isProductCompanyConfig={isProductCompanyConfig} />
+        <ProductDropdownCard />
       </ScrollView>
       <ProductFloatingButton />
     </Screen>
@@ -102,6 +119,9 @@ const ProductSalesDetailsScreen = ({route}) => {
 };
 
 const styles = StyleSheet.create({
+  container: {
+    height: null,
+  },
   label: {
     width: '90%',
     alignSelf: 'center',

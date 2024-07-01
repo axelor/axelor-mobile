@@ -52,6 +52,7 @@ export const sale_modelAPI: ObjectFields = {
   }),
   sales_productCompany: schemaContructor.object({
     company: schemaContructor.subObject(),
+    product: schemaContructor.subObject(),
     salePrice: schemaContructor.number(),
     saleCurrency: schemaContructor.subObject('symbol'),
     procurementMethodSelect: schemaContructor.string(),

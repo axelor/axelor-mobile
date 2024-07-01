@@ -79,12 +79,16 @@ export async function fetchProductById({productId}) {
   });
 }
 
-export async function fetchProductCompanyConfigById({companyId, productId}) {
+export async function fetchProductCompanyConfig({companyId, productId}) {
+  if (companyId == null) {
+    return null;
+  }
+
   return createStandardSearch({
     model: 'com.axelor.apps.base.db.ProductCompany',
     criteria: createProductCompanyCriteria(companyId, productId),
     fieldKey: 'sales_productCompany',
     page: 0,
-    numberElementsByPage: null,
+    numberElementsByPage: 1,
   });
 }

@@ -26,24 +26,19 @@ import {
 } from '@axelor/aos-mobile-core';
 import {LabelText, checkNullString} from '@axelor/aos-mobile-ui';
 
-const DropdownProductTypology = ({
-  isProductCompanyConfig,
-}: {
-  isProductCompanyConfig: boolean;
-}) => {
+const DropdownProductTypology = ({}) => {
   const I18n = useTranslator();
-  const {Product} = useTypes();
+  const {SaleProduct: Product} = useTypes();
   const {getItemTitle} = useTypeHelpers();
 
-  const {product, productCompany} = useSelector(
-    (state: any) => state.sales_product,
-  );
+  const {product} = useSelector((state: any) => state.sales_product);
 
   const renderLabelText = useCallback(
     (titleKey: string, value: string | number) => {
       if (!checkNullString(value)) {
-        return <LabelText title={`${I18n.t(titleKey)} `} value={value} />;
+        return <LabelText title={I18n.t(titleKey)} value={value} />;
       }
+
       return null;
     },
     [I18n],
@@ -51,7 +46,10 @@ const DropdownProductTypology = ({
 
   return (
     <View>
-      {renderLabelText('Sales_Type', product.productTypeSelect)}
+      {renderLabelText(
+        'Sales_Type',
+        getItemTitle(Product?.productTypeSelect, product.productTypeSelect),
+      )}
       {renderLabelText(
         'Sales_SubType',
         getItemTitle(
@@ -63,9 +61,10 @@ const DropdownProductTypology = ({
       {renderLabelText('Sales_CategoryFamily', product.productCategory?.name)}
       {renderLabelText(
         'Sales_ProcurementMethod',
-        isProductCompanyConfig
-          ? productCompany.procurementMethodSelect
-          : product.procurementMethodSelect,
+        getItemTitle(
+          Product?.procurementMethodSelect,
+          product.procurementMethodSelect,
+        ),
       )}
     </View>
   );

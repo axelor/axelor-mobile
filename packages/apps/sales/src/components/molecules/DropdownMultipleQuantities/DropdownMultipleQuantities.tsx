@@ -16,34 +16,53 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import React from 'react';
+import React, {useCallback, useMemo} from 'react';
 import {StyleSheet, View} from 'react-native';
 import {useSelector, useTranslator} from '@axelor/aos-mobile-core';
-import {Label, Text, usePriceFormat} from '@axelor/aos-mobile-ui';
+import {Label, Text, useDigitFormat} from '@axelor/aos-mobile-ui';
 
 const DropdownMultipleQuantities = ({}) => {
   const I18n = useTranslator();
-  const priceFormat = usePriceFormat();
+  const formatNumber = useDigitFormat();
 
   const {product} = useSelector((state: any) => state.sales_product);
 
+  const quantities = useMemo(
+    () =>
+      Array.isArray(product.saleProductMultipleQtyList)
+        ? product.saleProductMultipleQtyList
+        : [],
+    [product.saleProductMultipleQtyList],
+  );
+
+  const renderQuantityItem = useCallback(
+    (line, idx) => {
+      return (
+        <View key={idx} style={styles.container}>
+          <Text>{line.name} </Text>
+          <Text writingType="important">{formatNumber(line.multipleQty)}</Text>
+        </View>
+      );
+    },
+    [formatNumber],
+  );
+
   return (
     <View>
-      {!product.allowToForceSaleQty && (
+      <Label
+        type="error"
+        message={I18n.t('Sales_QuantitiesAreRestricted')}
+        iconName="lock-fill"
+        visible={!product.allowToForceSaleQty}
+      />
+      {quantities.length > 0 ? (
+        quantities?.map(renderQuantityItem)
+      ) : (
         <Label
-          type="error"
-          message={I18n.t('Sales_QuantitiesAreRestricted')}
-          iconName="lock-fill"
+          type="info"
+          message={I18n.t('Sales_NoMultipleQuantitiesRegistered')}
         />
       )}
-      {product.saleProductMultipleQtyList?.map((prod, index) => {
-        return (
-          <View key={index} style={styles.container}>
-            <Text>{prod.name} </Text>
-            <Text writingType="important">{priceFormat(prod.multipleQty)}</Text>
-          </View>
-        );
-      })}
     </View>
   );
 };

@@ -25,11 +25,7 @@ import {
   DropdownProductTypology,
 } from '../../molecules';
 
-const ProductDropdownCard = ({
-  isProductCompanyConfig,
-}: {
-  isProductCompanyConfig: boolean;
-}) => {
+const ProductDropdownCard = ({}) => {
   const I18n = useTranslator();
 
   const {sale: saleConfig} = useSelector((state: any) => state.appConfig);
@@ -39,20 +35,12 @@ const ProductDropdownCard = ({
       {
         title: I18n.t('Sales_ProductTypology'),
         key: 0,
-        childrenComp: (
-          <DropdownProductTypology
-            isProductCompanyConfig={isProductCompanyConfig}
-          />
-        ),
+        childrenComp: <DropdownProductTypology />,
       },
       {
         title: I18n.t('Sales_Sale'),
         key: 1,
-        childrenComp: (
-          <DropdownProductSale
-            isProductCompanyConfig={isProductCompanyConfig}
-          />
-        ),
+        childrenComp: <DropdownProductSale />,
       },
     ];
 
@@ -65,7 +53,7 @@ const ProductDropdownCard = ({
     }
 
     return result;
-  }, [I18n, isProductCompanyConfig, saleConfig?.manageMultipleSaleQuantity]);
+  }, [I18n, saleConfig?.manageMultipleSaleQuantity]);
 
   return <DropdownCardSwitch dropdownItems={items} />;
 };

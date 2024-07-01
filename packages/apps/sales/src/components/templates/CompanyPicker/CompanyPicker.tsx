@@ -17,31 +17,33 @@
  */
 
 import React from 'react';
-import {displayItemName, useSelector} from '@axelor/aos-mobile-core';
-import {AutoCompleteSearch} from '@axelor/aos-mobile-ui';
+import {useSelector} from '@axelor/aos-mobile-core';
+import {Picker} from '@axelor/aos-mobile-ui';
 
-interface CompanySearchBarProps {
+interface CompanyPickerProps {
   style?: any;
   setCompany?: (state: any) => any;
   company?: any;
 }
 
-const CompanySearchBar = ({
-  style,
-  setCompany,
-  company,
-}: CompanySearchBarProps) => {
+const CompanyPicker = ({style, setCompany, company}: CompanyPickerProps) => {
   const {user} = useSelector((state: any) => state.user);
 
+  if (!Array.isArray(user?.companySet) || user.companySet.length === 0) {
+    return null;
+  }
+
   return (
-    <AutoCompleteSearch
+    <Picker
       style={style}
-      value={company}
-      objectList={user?.companySet}
-      displayValue={displayItemName}
-      onChangeValue={setCompany}
+      defaultValue={company}
+      listItems={user?.companySet}
+      valueField="id"
+      labelField="name"
+      onValueChange={setCompany}
+      isValueItem
     />
   );
 };
 
-export default CompanySearchBar;
+export default CompanyPicker;

@@ -23,7 +23,7 @@ import {
 } from '@axelor/aos-mobile-core';
 import {
   fetchProductById as _fetchProductById,
-  fetchProductCompanyConfigById as _fetchProductCompanyConfigById,
+  fetchProductCompanyConfig as _fetchProductCompanyConfig,
   searchProduct as _searchProduct,
 } from '../api/product-api';
 
@@ -53,13 +53,13 @@ export const fetchProductById = createAsyncThunk(
   },
 );
 
-export const fetchProductCompanyConfigById = createAsyncThunk(
-  'sales_product/fetchProductCompanyConfigById',
+export const fetchProductCompanyConfig = createAsyncThunk(
+  'sales_product/fetchProductCompanyConfig',
   async function (data, {getState}) {
     return handlerApiCall({
-      fetchFunction: _fetchProductCompanyConfigById,
+      fetchFunction: _fetchProductCompanyConfig,
       data,
-      action: 'Sales_SliceAction_FetchProductCompanyConfigById',
+      action: 'Sales_SliceAction_FetchProductCompanyConfig',
       getState,
       responseOptions: {isArrayResponse: false},
     });
@@ -73,9 +73,10 @@ const initialState = {
   productList: [],
 
   loadingProduct: true,
-  product: {},
+  _product: {},
 
   productCompany: {},
+  product: {},
 };
 
 const productSlice = createSlice({
@@ -93,15 +94,27 @@ const productSlice = createSlice({
     });
     builder.addCase(fetchProductById.fulfilled, (state, action) => {
       state.loadingProduct = false;
-      state.product = action.payload;
+      state.product = mergeConfigs(action.payload, state.productCompany);
+      state._product = action.payload ?? {};
     });
-    builder.addCase(
-      fetchProductCompanyConfigById.fulfilled,
-      (state, action) => {
-        state.productCompany = action.payload;
-      },
-    );
+    builder.addCase(fetchProductCompanyConfig.fulfilled, (state, action) => {
+      state.productCompany = action.payload;
+      state.product = mergeConfigs(state._product, action.payload);
+    });
   },
 });
+
+function mergeConfigs(product, config) {
+  if (product?.id === config?.product?.id) {
+    return {
+      ...product,
+      ...config,
+      id: product.id,
+      version: product.version,
+    };
+  } else {
+    return product ?? {};
+  }
+}
 
 export const productReducer = productSlice.reducer;
