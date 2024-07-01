@@ -31,6 +31,7 @@ export default {
   ProductSalesDetailsScreen: {
     title: 'Sales_ProductService',
     component: ProductSalesDetailsScreen,
+    actionID: 'sales_product_details',
     options: {
       shadedHeader: false,
     },
