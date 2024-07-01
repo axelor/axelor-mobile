@@ -33,7 +33,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import React, {useCallback} from 'react';
+import React, {useCallback, useMemo} from 'react';
 import {
   displayItemName,
   useDispatch,
@@ -73,17 +73,22 @@ const PrioritySearchBar = ({
   } = useSelector((state: any) => state.project_projectTask);
   const {projectForm} = useSelector((state: any) => state.project_project);
 
+  const priorityIds = useMemo(
+    () => projectForm?.projectTaskPrioritySet?.map(priority => priority.id),
+    [projectForm?.projectTaskPrioritySet],
+  );
+
   const searchPriorityAPI = useCallback(
     ({page = 0, searchValue}) => {
       dispatch(
         (searchPriority as any)({
           page,
           searchValue,
-          projectId: projectForm?.id,
+          priorityIds: priorityIds,
         }),
       );
     },
-    [dispatch, projectForm],
+    [dispatch, priorityIds],
   );
 
   return (

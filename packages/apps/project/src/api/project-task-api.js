@@ -73,6 +73,19 @@ const createProjectTaskCriteria = ({
   return criteria;
 };
 
+const createPriorityCriteria = ({searchValue, priorityIds}) => {
+  const criteria = [
+    getSearchCriterias('project_projectPriority', searchValue),
+    {
+      fieldName: 'id',
+      operator: 'in',
+      value: priorityIds,
+    },
+  ];
+
+  return criteria;
+};
+
 export async function searchProjectTask({
   searchValue,
   page = 0,
@@ -165,15 +178,17 @@ export async function searchSection({searchValue, page = 0}) {
   });
 }
 
-export async function searchPriority({searchValue, page = 0, projectId}) {
+export async function searchPriority({searchValue, page = 0, priorityIds}) {
+  if (!Array.isArray(priorityIds) || priorityIds.length === 0) {
+    return {data: {data: [], total: 0}};
+  }
+
   return createStandardSearch({
     model: 'com.axelor.apps.project.db.ProjectPriority',
-    criteria: [getSearchCriterias('project_projectPriority', searchValue)],
+    criteria: createPriorityCriteria({searchValue, priorityIds}),
     fieldKey: 'project_projectPriority',
     sortKey: 'project_projectPriority',
     page,
-    _domain: 'self.id IN (1)',
-    domainContext: {project: {id: projectId}},
   });
 }
 
