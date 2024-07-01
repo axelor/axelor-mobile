@@ -55,7 +55,7 @@ interface SectionSearchBarProps {
 
 const SectionSearchBar = ({
   style = null,
-  title = 'Project_TargetVersion',
+  title = 'Project_Section',
   defaultValue = null,
   onChange = () => {},
   readonly = false,
@@ -68,7 +68,7 @@ const SectionSearchBar = ({
   const {sectionList, loadingSection, moreLoadingSection, isListEndSection} =
     useSelector((state: any) => state.project_projectTask);
 
-  const searchProjectAPI = useCallback(
+  const searchSectionAPI = useCallback(
     ({page = 0, searchValue}) => {
       dispatch(
         (searchSection as any)({
@@ -89,7 +89,7 @@ const SectionSearchBar = ({
       required={required}
       readonly={readonly}
       onChangeValue={onChange}
-      fetchData={searchProjectAPI}
+      fetchData={searchSectionAPI}
       displayValue={displayItemName}
       placeholder={I18n.t(title)}
       showDetailsPopup={true}

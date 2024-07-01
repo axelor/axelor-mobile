@@ -73,7 +73,7 @@ const PrioritySearchBar = ({
   } = useSelector((state: any) => state.project_projectTask);
   const {projectForm} = useSelector((state: any) => state.project_project);
 
-  const searchProjectAPI = useCallback(
+  const searchPriorityAPI = useCallback(
     ({page = 0, searchValue}) => {
       dispatch(
         (searchPriority as any)({
@@ -83,7 +83,7 @@ const PrioritySearchBar = ({
         }),
       );
     },
-    [dispatch, projectForm?.id],
+    [dispatch, projectForm],
   );
 
   return (
@@ -95,7 +95,7 @@ const PrioritySearchBar = ({
       required={required}
       readonly={readonly}
       onChangeValue={onChange}
-      fetchData={searchProjectAPI}
+      fetchData={searchPriorityAPI}
       displayValue={displayItemName}
       placeholder={I18n.t(title)}
       showDetailsPopup={true}

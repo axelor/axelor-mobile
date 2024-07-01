@@ -160,24 +160,44 @@ export const project_formsRegister: FormConfigs = {
         type: 'object',
         widget: 'custom',
         customComponent: CategorySearchBar,
+        dependsOn: {
+          project: () => {
+            return null;
+          },
+        },
       },
       projectTaskSection: {
         titleKey: 'Project_Section',
         type: 'object',
         widget: 'custom',
         customComponent: SectionSearchBar,
+        dependsOn: {
+          project: () => {
+            return null;
+          },
+        },
       },
       targetVersion: {
         titleKey: 'Project_TargetVersion',
         type: 'object',
         widget: 'custom',
         customComponent: TargetVersionSearchBar,
+        dependsOn: {
+          project: () => {
+            return null;
+          },
+        },
       },
       priority: {
         titleKey: 'Project_Priority',
         type: 'object',
         widget: 'custom',
         customComponent: PrioritySearchBar,
+        dependsOn: {
+          project: () => {
+            return null;
+          },
+        },
       },
       taskDate: {
         titleKey: 'Project_StartDate',
