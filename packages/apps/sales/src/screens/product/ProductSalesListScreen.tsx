@@ -27,7 +27,7 @@ import {
 import {searchProduct} from '../../features/productSlice';
 import {ProductCard} from '../../components';
 
-const ProductListScreen = ({}) => {
+const ProductSalesListScreen = ({navigation}) => {
   const I18n = useTranslator();
 
   const {productList, moreLoading, isListEnd, loadingList} = useSelector(
@@ -47,7 +47,11 @@ const ProductListScreen = ({}) => {
         expandableFilter={false}
         renderListItem={({item}) => (
           <ProductCard
-            onPress={() => {}}
+            onPress={() => {
+              navigation.navigate('ProductSalesDetailsScreen', {
+                productId: item.id,
+              });
+            }}
             picture={item.picture}
             name={item.name}
             code={item.code}
@@ -64,4 +68,4 @@ const ProductListScreen = ({}) => {
   );
 };
 
-export default ProductListScreen;
+export default ProductSalesListScreen;
