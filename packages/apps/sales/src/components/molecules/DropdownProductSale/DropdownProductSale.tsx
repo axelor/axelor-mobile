@@ -43,10 +43,11 @@ const DropdownProductSale = ({}) => {
 
   const renderLabelText = useCallback(
     (titleKey: string, value: string | number) => {
-      if (!checkNullString(value)) {
-        return <LabelText title={I18n.t(titleKey)} value={value} />;
+      if (checkNullString(value)) {
+        return null;
       }
-      return null;
+
+      return <LabelText title={I18n.t(titleKey)} value={value} />;
     },
     [I18n],
   );

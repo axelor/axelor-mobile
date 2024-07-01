@@ -46,9 +46,6 @@ export const sale_modelAPI: ObjectFields = {
     saleProductMultipleQtyList: schemaContructor
       .array()
       .of(schemaContructor.subObject()),
-    productCompanyList: schemaContructor
-      .array()
-      .of(schemaContructor.subObject()),
   }),
   sales_productCompany: schemaContructor.object({
     company: schemaContructor.subObject(),

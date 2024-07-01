@@ -74,7 +74,6 @@ export async function fetchProductById({productId}) {
     fieldKey: 'sales_product',
     relatedFields: {
       saleProductMultipleQtyList: ['name', 'multipleQty'],
-      productCompanyList: ['company'],
     },
   });
 }
