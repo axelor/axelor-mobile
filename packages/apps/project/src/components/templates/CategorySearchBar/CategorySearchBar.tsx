@@ -55,7 +55,7 @@ interface CategorySearchBarProps {
 
 const CategorySearchBar = ({
   style = null,
-  title = 'Project_TargetVersion',
+  title = 'Project_Category',
   defaultValue = null,
   onChange = () => {},
   readonly = false,
@@ -73,7 +73,7 @@ const CategorySearchBar = ({
   } = useSelector((state: any) => state.project_projectTask);
   const {projectForm} = useSelector((state: any) => state.project_project);
 
-  const searchProjectAPI = useCallback(
+  const searcCategoryAPI = useCallback(
     ({page = 0, searchValue}) => {
       dispatch(
         (searchCategory as any)({
@@ -95,7 +95,7 @@ const CategorySearchBar = ({
       required={required}
       readonly={readonly}
       onChangeValue={onChange}
-      fetchData={searchProjectAPI}
+      fetchData={searcCategoryAPI}
       displayValue={displayItemName}
       placeholder={I18n.t(title)}
       showDetailsPopup={true}

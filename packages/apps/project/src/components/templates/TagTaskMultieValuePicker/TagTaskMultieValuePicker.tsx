@@ -16,20 +16,10 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import React, {useEffect, useMemo, useState} from 'react';
+import React, {useCallback, useEffect, useMemo} from 'react';
 import {useDispatch, useSelector} from '@axelor/aos-mobile-core';
-import {MultiValuePicker} from '@axelor/aos-mobile-ui';
+import {MultiValuePicker, useThemeColor} from '@axelor/aos-mobile-ui';
 import {getProjectTaskTag} from '../../../features/projectTaskSlice';
-
-const transformTagsToPickerItems = tags => {
-  return (
-    tags?.map(tag => ({
-      title: tag.name,
-      color: tag.colorSelect,
-      key: tag.id,
-    })) || []
-  );
-};
 
 interface TagTaskMultieValuePickeProps {
   style?: any;
@@ -48,10 +38,23 @@ const TagTaskMultieValuePicker = ({
   readonly = false,
   required = false,
 }: TagTaskMultieValuePickeProps) => {
-  const [selectedStatus, setSelectedStatus] = useState([]);
   const dispatch = useDispatch();
+  const Color = useThemeColor();
 
   const {taskTagList} = useSelector((state: any) => state.project_projectTask);
+
+  const transformTagsToPickerItems = useCallback(
+    tags => {
+      return (
+        tags?.map(tag => ({
+          title: tag.name,
+          color: Color[`${tag.colorSelect}`],
+          key: tag.id,
+        })) || []
+      );
+    },
+    [Color],
+  );
 
   useEffect(() => {
     dispatch(getProjectTaskTag());
@@ -59,26 +62,32 @@ const TagTaskMultieValuePicker = ({
 
   const _defaultValue = useMemo(
     () => transformTagsToPickerItems(defaultValue),
-    [defaultValue],
+    [defaultValue, transformTagsToPickerItems],
   );
 
   const projectTaskListItems = useMemo(
     () => transformTagsToPickerItems(taskTagList),
+    [taskTagList, transformTagsToPickerItems],
+  );
+
+  const getFullTagsById = useCallback(
+    selectedItems => {
+      return selectedItems
+        .map(selectedItem => {
+          return taskTagList.find(tag => tag.id === selectedItem.key);
+        })
+        .filter(tag => tag != null);
+    },
     [taskTagList],
   );
 
-  const getFullTagsById = selectedItems => {
-    return selectedItems
-      .map(selectedItem => {
-        return taskTagList.find(tag => tag.id === selectedItem.key);
-      })
-      .filter(tag => tag != null);
-  };
-  const handleValueChange = selectedItems => {
-    setSelectedStatus(selectedItems);
-    const fullTags = getFullTagsById(selectedItems);
-    onChange(fullTags);
-  };
+  const handleValueChange = useCallback(
+    selectedItems => {
+      const fullTags = getFullTagsById(selectedItems);
+      onChange(fullTags);
+    },
+    [getFullTagsById, onChange],
+  );
 
   return (
     <MultiValuePicker

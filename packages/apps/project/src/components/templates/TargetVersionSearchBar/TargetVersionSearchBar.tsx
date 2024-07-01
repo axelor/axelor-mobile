@@ -56,7 +56,7 @@ const TargetVersionSearchBar = ({
   } = useSelector((state: any) => state.project_projectTask);
   const {projectForm} = useSelector((state: any) => state.project_project);
 
-  const searchProjectAPI = useCallback(
+  const searchTargetVersionAPI = useCallback(
     ({page = 0, searchValue}) => {
       dispatch(
         (searchTargetVersion as any)({
@@ -78,7 +78,7 @@ const TargetVersionSearchBar = ({
       required={required}
       readonly={readonly}
       onChangeValue={onChange}
-      fetchData={searchProjectAPI}
+      fetchData={searchTargetVersionAPI}
       displayValue={displayItemTitle}
       placeholder={I18n.t(title)}
       showDetailsPopup={true}

@@ -77,6 +77,19 @@ const MultiValuePicker = ({
   );
 
   useEffect(() => {
+    const newSelectedItemList = getItemsFromList(
+      listItems,
+      'key',
+      defaultItems,
+    );
+    if (
+      JSON.stringify(newSelectedItemList) !== JSON.stringify(selectedItemList)
+    ) {
+      setSelectedItemList(newSelectedItemList);
+    }
+  }, [defaultItems, listItems, selectedItemList]);
+
+  useEffect(() => {
     if (clickOutside === OUTSIDE_INDICATOR && pickerIsOpen) {
       setPickerIsOpen(false);
       setIsFocused(false);
