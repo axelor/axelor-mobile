@@ -16,27 +16,28 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import ProductSalesDetailsScreen from './ProductSalesDetailsScreen';
-import ProductSalesListScreen from './ProductSalesListScreen';
+import React from 'react';
+import {View} from 'react-native';
+import {useSelector, useTranslator} from '@axelor/aos-mobile-core';
+import {NotesCard} from '@axelor/aos-mobile-ui';
 
-export default {
-  ProductSalesListScreen: {
-    title: 'Sales_ProductsServices',
-    component: ProductSalesListScreen,
-    options: {
-      shadedHeader: false,
-    },
-    isUsableOnShortcut: true,
-  },
-  ProductSalesDetailsScreen: {
-    title: 'Sales_ProductService',
-    component: ProductSalesDetailsScreen,
-    actionID: 'sales_product_details',
-    options: {
-      shadedHeader: false,
-    },
-  },
+const ProductDescription = ({}) => {
+  const I18n = useTranslator();
+
+  const {product} = useSelector((state: any) => state.sales_product);
+
+  return (
+    <View>
+      <NotesCard
+        title={I18n.t('Base_Description')}
+        data={product.description}
+      />
+      <NotesCard
+        title={I18n.t('Sales_InternalDescription')}
+        data={product.internalDescription}
+      />
+    </View>
+  );
 };
 
-export {ProductSalesListScreen};
-export {ProductSalesDetailsScreen};
+export default ProductDescription;
