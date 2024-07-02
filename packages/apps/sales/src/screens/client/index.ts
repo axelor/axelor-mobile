@@ -16,6 +16,17 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-export {default as CategorySearchBar} from './CategorySearchBar/CategorySearchBar';
-export {default as CustomerSearchBar} from './CustomerSearchBar/CustomerSearchBar';
-export {default as ProductDropdownCard} from './ProductDropdownCard/ProductDropdownCard';
+import ClientListScreen from './ClientListScreen';
+
+export default {
+  ClientListScreen: {
+    title: 'Sales_Clients',
+    component: ClientListScreen,
+    options: {
+      shadedHeader: false,
+    },
+    isUsableOnShortcut: true,
+  },
+};
+
+export {ClientListScreen};

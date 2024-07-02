@@ -21,7 +21,10 @@ import {
   generateInifiniteScrollCases,
   handlerApiCall,
 } from '@axelor/aos-mobile-core';
-import {searchCustomer as _searchCustomer} from '../api/customer-api';
+import {
+  searchCustomer as _searchCustomer,
+  searchCustomerCategory as _searchCustomerCategory,
+} from '../api/customer-api';
 
 export const searchCustomer = createAsyncThunk(
   'sales_customer/searchCustomer',
@@ -36,11 +39,29 @@ export const searchCustomer = createAsyncThunk(
   },
 );
 
+export const searchCustomerCategory = createAsyncThunk(
+  'sales_customer/searchCustomerCategory',
+  async function (data, {getState}) {
+    return handlerApiCall({
+      fetchFunction: _searchCustomerCategory,
+      data,
+      action: 'Sales_SliceAction_SearchCustomerCategory',
+      getState,
+      responseOptions: {isArrayResponse: true},
+    });
+  },
+);
+
 const initialState = {
   loading: true,
   moreLoading: false,
   isListEnd: false,
   customerList: [],
+
+  loadingCategoryList: true,
+  moreLoadingCategoryList: false,
+  isCategoryListEnd: false,
+  customerCategoryList: [],
 };
 
 const customerSlice = createSlice({
@@ -52,6 +73,12 @@ const customerSlice = createSlice({
       moreLoading: 'moreLoading',
       isListEnd: 'isListEnd',
       list: 'customerList',
+    });
+    generateInifiniteScrollCases(builder, searchCustomerCategory, {
+      loading: 'loadingCategoryList',
+      moreLoading: 'moreLoadingCategoryList',
+      isListEnd: 'isCategoryListEnd',
+      list: 'customerCategoryList',
     });
   },
 });
