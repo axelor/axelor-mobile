@@ -57,7 +57,7 @@ export default {
   },
   SaleOrderLineDetailsScreen: {
     title: 'Sales_SaleQuotation',
-    actionID: 'sales_saleOrder_details',
+    actionID: 'sales_saleOrderLine_details',
     component: SaleOrderLineDetailsScreen,
     options: {
       shadedHeader: false,
