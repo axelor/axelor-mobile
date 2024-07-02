@@ -21,6 +21,7 @@ import {Screen, BottomBar, useThemeColor} from '@axelor/aos-mobile-ui';
 import {useDispatch, useSelector} from '@axelor/aos-mobile-core';
 import {
   GeneralInformationView,
+  ReportingView,
   SubProjectView,
   TaskView,
   TimeView,
@@ -55,6 +56,11 @@ const ProjectDetailsScreen = ({route}) => {
       color: Colors.infoColor,
       viewComponent: <SubProjectView />,
       disabled: !project?.isShowPhasesElements,
+    },
+    {
+      iconName: 'activity',
+      color: Colors.progressColor,
+      viewComponent: <ReportingView />,
     },
     {
       iconName: 'clock-history',

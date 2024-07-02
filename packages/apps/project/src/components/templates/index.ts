@@ -16,5 +16,6 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+export {default as ActivitiesListView} from './ActivitiesListView/ActivitiesListView';
 export {default as ProjectListView} from './ProjectListView/ProjectListView';
 export {default as TaskFilters} from './TaskFilters/TaskFilters';
