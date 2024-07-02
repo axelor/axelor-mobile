@@ -1,0 +1,5 @@
+{
+  "title": "Selections: add refresh in hook function when model selections change",
+  "type": "fix",
+  "packages": "core"
+}
