@@ -16,7 +16,10 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-export {searchCustomer as searchCustomerApi} from './customer-api';
+export {
+  searchCustomer as searchCustomerApi,
+  searchCustomerCategory as searchCustomerCategoryApi,
+} from './customer-api';
 export {fetchCustomerDelivery as fetchCustomerDeliveryApi} from './customer-delivery-api';
 export {
   fetchProductById as fetchProductByIdApi,

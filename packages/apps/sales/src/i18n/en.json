@@ -87,6 +87,8 @@
   "Sales_QuantitiesAreRestricted": "Quantities are restricted.",
   "Sales_NoMultipleQuantitiesRegistered": "No multiple quantities registered",
   "Sales_ProductPulledOfMarket": "Product pulled off market date",
+  "Sales_Clients": "Clients",
+  "Sales_Category": "Category",
   "Sales_SliceAction_FetchSaleConfig": "fetch sale config",
   "Sales_SliceAction_FetchSaleOrder": "fetch sale orders",
   "Sales_SliceAction_SearchCustomer": "search customers",
@@ -95,5 +97,6 @@
   "Sales_SliceAction_FetchCustomerDelivery": "fetch customer delivery",
   "Sales_SliceAction_FetchSaleOrderLine": "fetch sale order lines",
   "Sales_SliceAction_FetchProductById": "fetch product by id",
-  "Sales_SliceAction_FetchProductCompanyConfig": "search product company config"
+  "Sales_SliceAction_FetchProductCompanyConfig": "search product company config",
+  "Sales_SliceAction_SearchCustomerCategory": "search customer categories"
 }
