@@ -87,6 +87,8 @@
   "Sales_QuantitiesAreRestricted": "Les quantités sont restreintes.",
   "Sales_NoMultipleQuantitiesRegistered": "Aucune quantité multiple enregistrée",
   "Sales_ProductPulledOfMarket": "Date de fin d'application du produit",
+  "Sales_Clients": "Clients",
+  "Sales_Category": "Catégorie",
   "Sales_SliceAction_FetchSaleConfig": "récupération des configurations de vente",
   "Sales_SliceAction_FetchSaleOrder": "récupération des commandes client",
   "Sales_SliceAction_SearchCustomer": "recherche sur les clients",
@@ -95,5 +97,6 @@
   "Sales_SliceAction_FetchCustomerDelivery": "récupération d'une livraison client",
   "Sales_SliceAction_FetchSaleOrderLine": "récupération des lignes d'une commande client",
   "Sales_SliceAction_FetchProductById": "récupération du produit par id",
-  "Sales_SliceAction_FetchProductCompanyConfig": "récupération de la configuration du produit lié à la la socitié"
+  "Sales_SliceAction_FetchProductCompanyConfig": "récupération de la configuration du produit lié à la la socitié",
+  "Sales_SliceAction_SearchCustomerCategory": "recherche sur les catégories de client"
 }
