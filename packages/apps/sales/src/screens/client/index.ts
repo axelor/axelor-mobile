@@ -16,17 +16,27 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import ClientListScreen from './ClientListScreen';
+import ClientSaleListScreen from './ClientSaleListScreen';
+import ClientSaleDetailsScreen from './ClientSaleDetailsScreen';
 
 export default {
-  ClientListScreen: {
+  ClientSaleListScreen: {
     title: 'Sales_Clients',
-    component: ClientListScreen,
+    component: ClientSaleListScreen,
     options: {
       shadedHeader: false,
     },
     isUsableOnShortcut: true,
   },
+  ClientSaleDetailsScreen: {
+    title: 'Sales_Client',
+    actionID: 'sales_client_details',
+    component: ClientSaleDetailsScreen,
+    options: {
+      shadedHeader: false,
+    },
+  },
 };
 
-export {ClientListScreen};
+export {ClientSaleListScreen};
+export {ClientSaleDetailsScreen};

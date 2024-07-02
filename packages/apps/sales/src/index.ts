@@ -63,7 +63,7 @@ export const SalesModule: Module = {
     sales_menu_clients: {
       title: 'Sales_Clients',
       icon: 'people-fill',
-      screen: 'ClientListScreen',
+      screen: 'ClientSaleListScreen',
     },
   },
   screens: {

@@ -21,11 +21,11 @@ import {StyleSheet, View} from 'react-native';
 import {useSelector, AOSImageBubble} from '@axelor/aos-mobile-core';
 import {Text} from '@axelor/aos-mobile-ui';
 
-const ClientHeader = ({}) => {
+const ClientHeader = ({style = null}) => {
   const {client} = useSelector(state => state.client);
 
   return (
-    <View style={styles.headerContainerChildren}>
+    <View style={[styles.headerContainerChildren, style]}>
       <AOSImageBubble metaFileId={client?.picture?.id} />
       <View style={styles.headerInfo}>
         <Text style={styles.textTitle} fontSize={16}>
@@ -46,6 +46,7 @@ const styles = StyleSheet.create({
   headerInfo: {
     flexDirection: 'column',
     marginLeft: '7%',
+    flex: 1,
   },
   textTitle: {
     fontWeight: 'bold',

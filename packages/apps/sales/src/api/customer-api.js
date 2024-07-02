@@ -17,6 +17,7 @@
  */
 
 import {
+  createStandardFetch,
   createStandardSearch,
   getSearchCriterias,
 } from '@axelor/aos-mobile-core';
@@ -103,5 +104,13 @@ export async function searchCustomerCategory({searchValue, page = 0}) {
     fieldKey: 'sale_customerCategory',
     sortKey: 'sale_customerCategory',
     page,
+  });
+}
+
+export async function fetchCustomerById({customerId}) {
+  return createStandardFetch({
+    model: 'com.axelor.apps.base.db.Partner',
+    id: customerId,
+    fieldKey: 'sale_customer',
   });
 }
