@@ -34,6 +34,7 @@ interface PickerProps {
   pickerStyle?: any;
   styleTxt?: any;
   title?: string;
+  placeholder?: string;
   onValueChange: (any) => void;
   defaultValue?: string | number;
   listItems: any[];
@@ -53,6 +54,7 @@ const Picker = ({
   pickerStyle,
   styleTxt,
   title,
+  placeholder,
   onValueChange,
   defaultValue = '',
   listItems,
@@ -192,6 +194,7 @@ const Picker = ({
           />
         }
         title={_displayValue(selectedItem)}
+        placeholder={placeholder}
         styleText={styles.textPicker}
         style={[
           commonStyles.filter,

@@ -32,11 +32,13 @@ interface MultiValuePickerButtonProps {
   onPress: () => void;
   listItem: Item[];
   onPressItem?: (item: Item) => void;
+  placeholder?: string;
   readonly?: boolean;
 }
 
 const MultiValuePickerButton = ({
   style,
+  placeholder,
   onPress = () => {},
   listItem,
   onPressItem = () => {},
@@ -50,28 +52,31 @@ const MultiValuePickerButton = ({
     <TouchableOpacity onPress={onPress} activeOpacity={0.9}>
       <Card style={[styles.container, style]}>
         <View style={styles.listItemContainer}>
-          {listItem &&
-            listItem.map((item, index) => (
-              <TouchableOpacity
-                onPress={() => onPressItem(item)}
-                disabled={readonly}
-                key={index}
-                style={[styles.cardItem, getItemColor(item.color)]}
-                activeOpacity={0.9}>
-                <Text
-                  style={styles.text}
-                  fontSize={14}
-                  numberOfLines={1}
-                  textColor={
-                    item.color.foreground || Colors.primaryColor.foreground
-                  }>
-                  {item.title}
-                </Text>
-                {!readonly && (
-                  <Icon name="x-lg" color={item.color.foreground} size={14} />
-                )}
-              </TouchableOpacity>
-            ))}
+          {listItem && listItem.length > 0
+            ? listItem.map((item, index) => (
+                <TouchableOpacity
+                  onPress={() => onPressItem(item)}
+                  disabled={readonly}
+                  key={index}
+                  style={[styles.cardItem, getItemColor(item.color)]}
+                  activeOpacity={0.9}>
+                  <Text
+                    style={styles.text}
+                    fontSize={14}
+                    numberOfLines={1}
+                    textColor={
+                      item.color.foreground || Colors.primaryColor.foreground
+                    }>
+                    {item.title}
+                  </Text>
+                  {!readonly && (
+                    <Icon name="x-lg" color={item.color.foreground} size={14} />
+                  )}
+                </TouchableOpacity>
+              ))
+            : placeholder && (
+                <Text style={styles.placeholderText}>{placeholder}</Text>
+              )}
         </View>
         <Icon
           name="chevron-down"
@@ -116,6 +121,10 @@ const getStyles = (Colors: ThemeColors) =>
       paddingHorizontal: 7,
       height: 22,
       maxWidth: 110,
+    },
+    placeholderText: {
+      color: Colors.placeholderTextColor,
+      marginLeft: 5,
     },
   });
 
