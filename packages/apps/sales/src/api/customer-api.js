@@ -21,8 +21,13 @@ import {
   getSearchCriterias,
 } from '@axelor/aos-mobile-core';
 
-const createCustomerCriteria = searchValue => {
-  return [
+const createCustomerCriteria = (
+  searchValue,
+  isAsssignedToMe,
+  userId,
+  categoryId,
+) => {
+  const criteria = [
     {
       operator: 'and',
       criteria: [
@@ -50,13 +55,53 @@ const createCustomerCriteria = searchValue => {
     },
     getSearchCriterias('sale_customer', searchValue),
   ];
+
+  if (isAsssignedToMe) {
+    criteria.push({
+      fieldName: 'user.id',
+      operator: '=',
+      value: userId,
+    });
+  }
+
+  if (categoryId != null) {
+    criteria.push({
+      fieldName: 'partnerCategory.id',
+      operator: '=',
+      value: categoryId,
+    });
+  }
+
+  return criteria;
 };
 
-export async function searchCustomer({searchValue, page = 0}) {
+export async function searchCustomer({
+  searchValue,
+  isAsssignedToMe,
+  userId,
+  categoryId,
+  page = 0,
+}) {
   return createStandardSearch({
     model: 'com.axelor.apps.base.db.Partner',
-    criteria: createCustomerCriteria(searchValue),
+    criteria: createCustomerCriteria(
+      searchValue,
+      isAsssignedToMe,
+      userId,
+      categoryId,
+    ),
     fieldKey: 'sale_customer',
+    sortKey: 'sale_customer',
+    page,
+  });
+}
+
+export async function searchCustomerCategory({searchValue, page = 0}) {
+  return createStandardSearch({
+    model: 'com.axelor.apps.base.db.PartnerCategory',
+    criteria: [getSearchCriterias('sale_customerCategory', searchValue)],
+    fieldKey: 'sale_customerCategory',
+    sortKey: 'sale_customerCategory',
     page,
   });
 }
