@@ -1,0 +1,5 @@
+{
+  "title": "PeriodInput: add possibility to hide inputs title",
+  "type": "feat",
+  "packages": "core"
+}
