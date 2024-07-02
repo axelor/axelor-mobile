@@ -22,6 +22,7 @@ import {
   handlerApiCall,
 } from '@axelor/aos-mobile-core';
 import {
+  fetchCustomerById as _fetchCustomerById,
   searchCustomer as _searchCustomer,
   searchCustomerCategory as _searchCustomerCategory,
 } from '../api/customer-api';
@@ -52,6 +53,19 @@ export const searchCustomerCategory = createAsyncThunk(
   },
 );
 
+export const fetchCustomerById = createAsyncThunk(
+  'sales_customer/fetchCustomerById',
+  async function (data, {getState}) {
+    return handlerApiCall({
+      fetchFunction: _fetchCustomerById,
+      data,
+      action: 'Sales_SliceAction_FetchCustomerById',
+      getState,
+      responseOptions: {isArrayResponse: false},
+    });
+  },
+);
+
 const initialState = {
   loading: true,
   moreLoading: false,
@@ -62,6 +76,9 @@ const initialState = {
   moreLoadingCategoryList: false,
   isCategoryListEnd: false,
   customerCategoryList: [],
+
+  loadingCustomer: true,
+  customer: {},
 };
 
 const customerSlice = createSlice({
@@ -79,6 +96,13 @@ const customerSlice = createSlice({
       moreLoading: 'moreLoadingCategoryList',
       isListEnd: 'isCategoryListEnd',
       list: 'customerCategoryList',
+    });
+    builder.addCase(fetchCustomerById.pending, state => {
+      state.loadingCustomer = true;
+    });
+    builder.addCase(fetchCustomerById.fulfilled, (state, action) => {
+      state.loadingCustomer = false;
+      state.customer = action.payload;
     });
   },
 });

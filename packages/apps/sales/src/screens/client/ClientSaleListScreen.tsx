@@ -20,6 +20,7 @@ import React, {useMemo, useState} from 'react';
 import {StyleSheet, View} from 'react-native';
 import {
   SearchListView,
+  useNavigation,
   useSelector,
   useTranslator,
 } from '@axelor/aos-mobile-core';
@@ -27,8 +28,9 @@ import {Screen, ToggleButton} from '@axelor/aos-mobile-ui';
 import {CategorySearchBar, ClientActionCard} from '../../components';
 import {searchCustomer} from '../../features/customerSlice';
 
-const ClientListScreen = ({}) => {
+const ClientSaleListScreen = ({}) => {
   const I18n = useTranslator();
+  const navigation = useNavigation();
 
   const [isAsssignedToMe, setIsAsssignedToMe] = useState(true);
   const [category, setCategory] = useState(null);
@@ -75,7 +77,11 @@ const ClientListScreen = ({}) => {
         renderListItem={({item}) => (
           <ClientActionCard
             client={item}
-            onPress={() => console.log('Card pressed.')}
+            onPress={() =>
+              navigation.navigate('ClientSaleDetailsScreen', {
+                customerId: item.id,
+              })
+            }
           />
         )}
       />
@@ -99,4 +105,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default ClientListScreen;
+export default ClientSaleListScreen;
