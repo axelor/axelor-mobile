@@ -16,6 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+import {useEffect, useMemo, useState} from 'react';
 import {fetchMetaConfig} from './api.helpers';
 import {
   ModelSelection,
@@ -28,14 +29,28 @@ import {
 class SelectionProvider {
   private moduleSelections: ModuleSelections;
   private typeconfigs: TypeConfig[];
+  private refreshCallBack: Function[];
 
   constructor() {
     this.moduleSelections = [];
     this.typeconfigs = [];
+    this.refreshCallBack = [];
   }
 
   init(models: ModuleSelections) {
     this.moduleSelections = models;
+  }
+
+  registerCallback(fct) {
+    this.refreshCallBack.push(fct);
+  }
+
+  unregisterCallback(fct) {
+    this.refreshCallBack = this.refreshCallBack.filter(_f => _f !== fct);
+  }
+
+  private updateState() {
+    this.refreshCallBack.forEach(_f => _f(this.typeconfigs));
   }
 
   registerTypes() {
@@ -83,6 +98,8 @@ class SelectionProvider {
       ...this.typeconfigs,
       {modelName, specificKey, selections: modelSelections},
     ];
+
+    this.updateState();
   }
 
   getTypes(): TypeConfig[] {
@@ -102,4 +119,20 @@ export function registerTypes() {
 
 export function getSelectionTypes(): TypeConfig[] {
   return selectionProvider.getTypes();
+}
+
+export function useTypeConfigs(): {typeConfigs: TypeConfig[]} {
+  const [typeConfigs, setTypeConfigs] = useState<TypeConfig[]>(
+    selectionProvider.getTypes(),
+  );
+
+  useEffect(() => {
+    selectionProvider.registerCallback(options => setTypeConfigs([...options]));
+
+    return () => {
+      selectionProvider.unregisterCallback(setTypeConfigs);
+    };
+  }, []);
+
+  return useMemo(() => ({typeConfigs}), [typeConfigs]);
 }

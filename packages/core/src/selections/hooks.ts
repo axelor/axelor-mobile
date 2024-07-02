@@ -26,13 +26,16 @@ import {
   ObjectSelectionItem,
 } from './types';
 import {formatTypes, getRandomColor} from './format.helpers';
+import {getSelectionTypes, useTypeConfigs} from './SelectionProvider';
 
 export const useTypes = (): {[modelKey: string]: SelectionFields} => {
-  return useMemo(() => formatTypes(), []);
+  const {typeConfigs} = useTypeConfigs();
+
+  return useMemo(() => formatTypes(typeConfigs), [typeConfigs]);
 };
 
 export function getTypes(): {[modelKey: string]: SelectionFields} {
-  return formatTypes();
+  return formatTypes(getSelectionTypes());
 }
 
 export const useTypeHelpers = (): SelectionHelpers => {

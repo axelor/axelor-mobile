@@ -17,16 +17,17 @@
  */
 
 import {Color, ThemeColors} from '@axelor/aos-mobile-ui';
-import {getSelectionTypes} from './SelectionProvider';
-import {SelectionFields} from './types';
+import {SelectionFields, TypeConfig} from './types';
 
 function getSelectionTitle(modelName: string) {
   return modelName.split('.').pop();
 }
 
-export function formatTypes(): {[modelKey: string]: SelectionFields} {
+export function formatTypes(typeConfigs: TypeConfig[] = []): {
+  [modelKey: string]: SelectionFields;
+} {
   return Object.fromEntries(
-    getSelectionTypes().map(({modelName, specificKey, selections}) => {
+    typeConfigs.map(({modelName, specificKey, selections}) => {
       const content: SelectionFields = {};
 
       Object.entries(selections).forEach(([_key, _select]) => {
