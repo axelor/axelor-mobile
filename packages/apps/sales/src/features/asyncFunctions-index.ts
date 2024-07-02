@@ -17,7 +17,7 @@
  */
 
 export {fetchCustomerDelivery} from './customerDeliverySlice';
-export {searchCustomer} from './customerSlice';
+export {searchCustomer, searchCustomerCategory} from './customerSlice';
 export {
   fetchProductById,
   fetchProductCompanyConfig,
