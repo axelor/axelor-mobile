@@ -30,6 +30,7 @@ import {
   formatTime,
   useSelector,
   useTranslator,
+  formatDate,
 } from '@axelor/aos-mobile-core';
 import {Badge, Image, Text, useThemeColor} from '@axelor/aos-mobile-ui';
 import {previousProjectActivity} from '../../../api/project-api';
@@ -73,7 +74,7 @@ const ActivitiesListView = () => {
       try {
         const res = await previousProjectActivity({
           projectId: project?.id,
-          startDate: formatDate(_startDate),
+          startDate: formatDate(_startDate, 'MM/DD/YYYY'),
         });
 
         const activityList = res.data.data[0]?.values?.$activityList?.[0] || {};
@@ -99,13 +100,6 @@ const ActivitiesListView = () => {
       fetchActivityData(startDate);
     }
   }, [fetchActivityData, startDate, project?.id]);
-
-  const formatDate = date => {
-    const day = String(date.getDate()).padStart(2, '0');
-    const month = String(date.getMonth() + 1).padStart(2, '0');
-    const year = date.getFullYear();
-    return `${month}/${day}/${year}`;
-  };
 
   const convertToDate = dateStr => {
     const [month, day, year] = dateStr.split('/').map(Number);
@@ -157,8 +151,6 @@ const ActivitiesListView = () => {
               'Project_UpdatedBy',
             )} ${user} ${formatTime(time, I18n.t('Base_TimeFormat'))}`}</Text>
             <MailMessageNotificationCard
-              relatedModel={''}
-              relatedId={0}
               title={title}
               tracks={tracks}
               customTopComponent={
