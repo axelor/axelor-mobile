@@ -28,7 +28,7 @@ import {Screen, ToggleButton} from '@axelor/aos-mobile-ui';
 import {CategorySearchBar, ClientActionCard} from '../../components';
 import {searchCustomer} from '../../features/customerSlice';
 
-const ClientListScreen = ({}) => {
+const ClientSaleListScreen = ({}) => {
   const I18n = useTranslator();
   const navigation = useNavigation();
 
@@ -78,7 +78,9 @@ const ClientListScreen = ({}) => {
           <ClientActionCard
             client={item}
             onPress={() =>
-              navigation.navigate('ClientDetailsScreen', {customerId: item.id})
+              navigation.navigate('ClientSaleDetailsScreen', {
+                customerId: item.id,
+              })
             }
           />
         )}
@@ -103,4 +105,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default ClientListScreen;
+export default ClientSaleListScreen;

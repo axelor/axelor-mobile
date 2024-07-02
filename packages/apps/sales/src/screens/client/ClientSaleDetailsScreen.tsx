@@ -29,7 +29,7 @@ import {ClientDropdownCards, getClientbyId} from '@axelor/aos-mobile-crm';
 import {ClientHeader} from '../../components';
 import {fetchCustomerById} from '../../features/customerSlice';
 
-const ClientDetailsScreen = ({route}) => {
+const ClientSaleDetailsScreen = ({route}) => {
   const {customerId} = route?.params;
   const I18n = useTranslator();
   const dispatch = useDispatch();
@@ -74,4 +74,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default ClientDetailsScreen;
+export default ClientSaleDetailsScreen;

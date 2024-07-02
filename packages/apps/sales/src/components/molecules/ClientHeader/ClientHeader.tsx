@@ -24,31 +24,34 @@ import {ClientHeader as CrmClientHeader} from '@axelor/aos-mobile-crm';
 
 interface ClientHeaderProps {
   customer: any;
+  style?: any;
 }
 
-const ClientHeader = ({customer}: ClientHeaderProps) => {
+const ClientHeader = ({customer, style}: ClientHeaderProps) => {
   const I18n = useTranslator();
   const Colors = useThemeColor();
 
   return (
-    <View style={styles.container}>
-      <CrmClientHeader />
-      <View style={styles.badgesContainer}>
-        {customer.factorizedCustomer && (
-          <Badge
-            style={styles.badge}
-            title={I18n.t('Sales_Factorized')}
-            color={Colors.progressColor}
-          />
-        )}
-        {customer.hasBlockedAccount && (
-          <Badge
-            style={styles.badge}
-            title={I18n.t('Sales_AccountBlocked')}
-            color={Colors.progressColor}
-          />
-        )}
-      </View>
+    <View style={[styles.container, style]}>
+      <CrmClientHeader style={styles.header} />
+      {(customer.factorizedCustomer || customer.hasBlockedAccount) && (
+        <View style={styles.badgesContainer}>
+          {customer.factorizedCustomer && (
+            <Badge
+              style={styles.badge}
+              title={I18n.t('Sales_Factorized')}
+              color={Colors.progressColor}
+            />
+          )}
+          {customer.hasBlockedAccount && (
+            <Badge
+              style={styles.badge}
+              title={I18n.t('Sales_AccountBlocked')}
+              color={Colors.progressColor}
+            />
+          )}
+        </View>
+      )}
     </View>
   );
 };
@@ -58,10 +61,14 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
   },
+  header: {
+    flex: 4,
+  },
   badgesContainer: {
     marginRight: '5%',
     alignItems: 'flex-end',
     justifyContent: 'center',
+    flex: 2,
   },
   badge: {
     width: '100%',
