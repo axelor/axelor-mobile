@@ -28,6 +28,7 @@ export const useSalesHeaders = () => {
   useSaleOrderDetailsActions();
   useSaleOrderLineDetailsActions();
   useProductDetailsActions();
+  useClientDetailsActions();
 };
 
 const useSaleOrderDetailsActions = () => {
@@ -96,4 +97,18 @@ const useProductDetailsActions = () => {
       disableMailMessages: !mobileSettings?.isTrackerMessageEnabled,
     });
   }, [mobileSettings, product?.id]);
+};
+
+const useClientDetailsActions = () => {
+  const {mobileSettings} = useSelector((state: any) => state.appConfig);
+  const {customer} = useSelector((state: any) => state.sales_customer);
+
+  useEffect(() => {
+    headerActionsProvider.registerModel('sales_client_details', {
+      model: 'com.axelor.apps.base.db.Partner',
+      modelId: customer?.id,
+      disableMailMessages: !mobileSettings?.isTrackerMessageEnabled,
+      attachedFileScreenTitle: customer?.name,
+    });
+  }, [customer, mobileSettings]);
 };
