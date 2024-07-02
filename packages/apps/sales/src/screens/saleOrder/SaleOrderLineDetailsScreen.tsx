@@ -16,7 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import React, {useEffect, useMemo} from 'react';
+import React, {useCallback, useEffect} from 'react';
 import {StyleSheet} from 'react-native';
 import {useDispatch, useSelector, useTranslator} from '@axelor/aos-mobile-core';
 import {
@@ -24,14 +24,12 @@ import {
   NotesCard,
   Screen,
   ScrollView,
-  useDigitFormat,
-  usePriceFormat,
 } from '@axelor/aos-mobile-ui';
 import {
-  PriceDetails,
   ProductCard,
   SaleOrderHeader,
   SaleOrderLineDropdownCards,
+  SaleOrderLinePriceDetails,
 } from '../../components';
 import {fetchSaleOrderLineById} from '../../features/saleOrderLineSlice';
 
@@ -39,54 +37,19 @@ const SaleOrderLineDetailsScreen = ({navigation, route}) => {
   const {saleOrderLineId} = route?.params;
   const I18n = useTranslator();
   const dispatch = useDispatch();
-  const formatNumber = useDigitFormat();
-  const formatPrice = usePriceFormat();
 
   const {saleOrder} = useSelector((state: any) => state.sales_saleOrder);
-  const {saleOrderLine} = useSelector(
+  const {loadingSaleOrderLine, saleOrderLine} = useSelector(
     (state: any) => state.sales_saleOrderLine,
   );
 
-  useEffect(() => {
+  const fetchSaleOrderLine = useCallback(() => {
     dispatch((fetchSaleOrderLineById as any)({saleOrderLineId}));
   }, [dispatch, saleOrderLineId]);
 
-  const priceList = useMemo(
-    () => [
-      {
-        title: I18n.t('Sales_Quantity'),
-        value: formatNumber(saleOrderLine.qty),
-        unit: saleOrderLine.unit?.name,
-      },
-      {
-        title: I18n.t('Sales_UnitPrice'),
-        value: formatPrice(saleOrderLine.price),
-        unit: saleOrder.currency?.symbol,
-      },
-      {
-        title: I18n.t('Sales_UnitDiscounted'),
-        value: formatPrice(saleOrderLine.priceDiscounted),
-        unit: saleOrder.currency?.symbol,
-      },
-      {
-        title: I18n.t('Sales_Tax'),
-        value: formatPrice(
-          saleOrderLine.inTaxPrice - saleOrderLine.priceDiscounted,
-        ),
-        unit: saleOrder.currency?.symbol,
-      },
-      {
-        title: I18n.t(saleOrder.inAti ? 'Sales_TotalATI' : 'Sales_TotalWT'),
-        value: formatPrice(
-          saleOrder.inAti ? saleOrderLine.inTaxTotal : saleOrderLine.exTaxTotal,
-        ),
-        unit: saleOrder.currency?.symbol,
-        size: 20,
-        showLine: true,
-      },
-    ],
-    [I18n, formatNumber, formatPrice, saleOrder, saleOrderLine],
-  );
+  useEffect(() => {
+    fetchSaleOrderLine();
+  }, [fetchSaleOrderLine]);
 
   if (saleOrderLine?.id !== saleOrderLineId) {
     return null;
@@ -98,8 +61,14 @@ const SaleOrderLineDetailsScreen = ({navigation, route}) => {
         expandableFilter={false}
         fixedItems={<SaleOrderHeader saleOrder={saleOrder} />}
       />
-      <ScrollView style={styles.scrollView}>
-        <PriceDetails style={styles.priceDetails} lineList={priceList} />
+      <ScrollView
+        style={styles.scrollView}
+        refresh={{loading: loadingSaleOrderLine, fetcher: fetchSaleOrderLine}}>
+        <SaleOrderLinePriceDetails
+          style={styles.priceDetails}
+          saleOrder={saleOrder}
+          saleOrderLine={saleOrderLine}
+        />
         <ProductCard
           style={styles.productCard}
           onPress={() => {
