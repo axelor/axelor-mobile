@@ -18,7 +18,12 @@
 
 import React, {useCallback} from 'react';
 import {StyleSheet} from 'react-native';
-import {useDispatch, useSelector, useTranslator} from '@axelor/aos-mobile-core';
+import {
+  useDispatch,
+  useNavigation,
+  useSelector,
+  useTranslator,
+} from '@axelor/aos-mobile-core';
 import {HeaderContainer, Screen, ScrollList} from '@axelor/aos-mobile-ui';
 import {
   SaleOrderHeader,
@@ -29,6 +34,7 @@ import {fetchSaleOrderLine} from '../../features/saleOrderLineSlice';
 
 const SaleOrderLineListScreen = ({}) => {
   const I18n = useTranslator();
+  const navigation = useNavigation();
   const dispatch = useDispatch();
 
   const {saleOrder} = useSelector((state: any) => state.sales_saleOrder);
@@ -72,7 +78,11 @@ const SaleOrderLineListScreen = ({}) => {
             isShowEndOfPackTotal={item.isShowTotal}
             currencySymbol={saleOrder.currency?.symbol}
             description={item.description}
-            onPress={() => console.log('Sale order line card pressed.')}
+            onPress={() =>
+              navigation.navigate('SaleOrderLineDetailsScreen', {
+                saleOrderLineId: item.id,
+              })
+            }
           />
         )}
         fetchData={fetchSaleOrderLineAPI}

@@ -131,6 +131,35 @@ export const sale_typeObjects: ModuleSelections = [
           },
         ],
       },
+      saleSupplySelect: {
+        content: [
+          {
+            key: 'None',
+            value: 0,
+            title: 'Sales_SaleSupply_None',
+          },
+          {
+            key: 'FromStock',
+            value: 1,
+            title: 'Sales_SaleSupply_FromStock',
+          },
+          {
+            key: 'Purchase',
+            value: 2,
+            title: 'Sales_SaleSupply_Purchase',
+          },
+          {
+            key: 'Produce',
+            value: 3,
+            title: 'Sales_SaleSupply_Produce',
+          },
+          {
+            key: 'StockAndProduce',
+            value: 4,
+            title: 'Sales_SaleSupply_StockAndProduce',
+          },
+        ],
+      },
     },
   },
   {
