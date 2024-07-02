@@ -17,6 +17,7 @@
  */
 
 export {
+  fetchCustomerById as fetchCustomerByIdApi,
   searchCustomer as searchCustomerApi,
   searchCustomerCategory as searchCustomerCategoryApi,
 } from './customer-api';
