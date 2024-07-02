@@ -1,0 +1,5 @@
+{
+  "title": "MailMessageNotificationCard: make props not required",
+  "type": "fix",
+  "packages": "core"
+}

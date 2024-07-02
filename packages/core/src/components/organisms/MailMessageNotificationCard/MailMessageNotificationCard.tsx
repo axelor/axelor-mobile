@@ -35,8 +35,8 @@ interface TagProps {
 }
 
 interface MailMessageNotificationCardProps {
-  relatedModel: string;
-  relatedId: number;
+  relatedModel?: string;
+  relatedId?: number;
   title: string;
   tag?: TagProps;
   tracks?: any[];
