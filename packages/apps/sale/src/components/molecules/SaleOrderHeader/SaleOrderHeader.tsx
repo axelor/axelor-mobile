@@ -16,11 +16,17 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import React from 'react';
+import React, {useMemo} from 'react';
 import {StyleSheet, View} from 'react-native';
 import {useTranslator, useTypes, useTypeHelpers} from '@axelor/aos-mobile-core';
-import {Badge, LabelText, Text, useThemeColor} from '@axelor/aos-mobile-ui';
-import {TaxModeBadge} from '../../atoms';
+import {
+  Badge,
+  InfoBubble,
+  LabelText,
+  Text,
+  useThemeColor,
+} from '@axelor/aos-mobile-ui';
+import {StateBadge, TaxModeBadge} from '../../atoms';
 
 interface SaleOrderHeaderProps {
   saleOrder: any;
@@ -32,10 +38,48 @@ const SaleOrderHeader = ({saleOrder}: SaleOrderHeaderProps) => {
   const {SaleOrder} = useTypes();
   const {getItemColor, getItemTitle} = useTypeHelpers();
 
+  const displayStateBadges = useMemo(
+    () => saleOrder.statusSelect > SaleOrder?.statusSelect.Finalized,
+    [saleOrder.statusSelect, SaleOrder?.statusSelect.Finalized],
+  );
+
+  const deliveredStateBadgeType = useMemo(() => {
+    switch (saleOrder.deliveryState) {
+      case SaleOrder?.deliveryState.Delivered:
+        return 'done';
+      case SaleOrder?.deliveryState.PartiallyDelivered:
+        return 'partially';
+      default:
+        return 'not';
+    }
+  }, [saleOrder.deliveryState, SaleOrder?.deliveryState]);
+
+  const invoicedStateBadgeType = useMemo(() => {
+    switch (saleOrder.invoicingState) {
+      case SaleOrder?.invoicingState.Invoiced:
+        return 'done';
+      case SaleOrder?.invoicingState.PartiallyInvoiced:
+        return 'partially';
+      default:
+        return 'not';
+    }
+  }, [saleOrder.invoicingState, SaleOrder?.invoicingState]);
+
   return (
     <View style={styles.container}>
       <View style={styles.rowContainer}>
-        <Text writingType="title">{saleOrder.saleOrderSeq}</Text>
+        <View style={styles.title}>
+          {saleOrder.orderBeingEdited && (
+            <InfoBubble
+              style={styles.infoBubble}
+              iconName="exclamation-triangle-fill"
+              badgeColor={Colors.warningColor}
+              indication={I18n.t('Sale_OrderBeingEdited')}
+              coloredBubble={false}
+            />
+          )}
+          <Text writingType="title">{saleOrder.saleOrderSeq}</Text>
+        </View>
         <Badge
           title={getItemTitle(SaleOrder?.statusSelect, saleOrder.statusSelect)}
           color={getItemColor(SaleOrder?.statusSelect, saleOrder.statusSelect)}
@@ -72,6 +116,20 @@ const SaleOrderHeader = ({saleOrder}: SaleOrderHeaderProps) => {
         )}
         <TaxModeBadge inAti={saleOrder.inAti} type="sale" />
       </View>
+      {displayStateBadges && (
+        <View style={styles.badgesContainer}>
+          <StateBadge
+            style={styles.stateBadge}
+            title={I18n.t('Sale_Delivered')}
+            type={deliveredStateBadgeType}
+          />
+          <StateBadge
+            style={styles.stateBadge}
+            title={I18n.t('Sale_Invoiced')}
+            type={invoicedStateBadgeType}
+          />
+        </View>
+      )}
     </View>
   );
 };
@@ -86,6 +144,12 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     marginBottom: 3,
   },
+  title: {
+    flexDirection: 'row',
+  },
+  infoBubble: {
+    marginRight: 8,
+  },
   labelText: {
     fontSize: 16,
     fontWeight: 'normal',
@@ -94,6 +158,10 @@ const styles = StyleSheet.create({
   badgesContainer: {
     flexDirection: 'row',
     justifyContent: 'flex-end',
+    marginVertical: 1,
+  },
+  stateBadge: {
+    marginHorizontal: 2,
   },
 });
 
