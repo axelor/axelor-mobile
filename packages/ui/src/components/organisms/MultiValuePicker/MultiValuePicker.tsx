@@ -47,6 +47,7 @@ interface MultiValuePickerProps {
   listItems: Item[];
   readonly?: boolean;
   required?: boolean;
+  placeholder?: string;
   translator?: (key: string, values?: Object) => string;
 }
 
@@ -55,6 +56,7 @@ const MultiValuePicker = ({
   pickerStyle,
   styleTxt,
   title,
+  placeholder,
   onValueChange,
   defaultItems = [],
   listItems = [],
@@ -138,6 +140,7 @@ const MultiValuePicker = ({
       <MultiValuePickerButton
         onPress={togglePicker}
         listItem={selectedItemList}
+        placeholder={placeholder}
         style={[
           commonStyles.filter,
           commonStyles.filterSize,
