@@ -16,7 +16,10 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import {createStandardSearch} from '@axelor/aos-mobile-core';
+import {
+  createStandardFetch,
+  createStandardSearch,
+} from '@axelor/aos-mobile-core';
 
 const createSaleOrderLineCriteria = saleOrderId => {
   return [
@@ -35,5 +38,13 @@ export async function fetchSaleOrderLine({saleOrderId, page = 0}) {
     fieldKey: 'sale_saleOrderLine',
     sortKey: 'sale_saleOrderLine',
     page,
+  });
+}
+
+export async function fetchSaleOrderLineById({saleOrderLineId}) {
+  return createStandardFetch({
+    model: 'com.axelor.apps.sale.db.SaleOrderLine',
+    id: saleOrderLineId,
+    fieldKey: 'sale_saleOrderLine',
   });
 }

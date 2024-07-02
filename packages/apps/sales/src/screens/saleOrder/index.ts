@@ -20,6 +20,7 @@ import SaleQuotationsScreen from './SaleQuotationsScreen';
 import SaleOrdersScreen from './SaleOrdersScreen';
 import SaleOrderDetailsScreen from './SaleOrderDetailsScreen';
 import SaleOrderLineListScreen from './SaleOrderLineListScreen';
+import SaleOrderLineDetailsScreen from './SaleOrderLineDetailsScreen';
 
 export default {
   SaleQuotationsScreen: {
@@ -54,9 +55,18 @@ export default {
       shadedHeader: false,
     },
   },
+  SaleOrderLineDetailsScreen: {
+    title: 'Sales_SaleQuotation',
+    actionID: 'sales_saleOrderLine_details',
+    component: SaleOrderLineDetailsScreen,
+    options: {
+      shadedHeader: false,
+    },
+  },
 };
 
 export {SaleQuotationsScreen};
 export {SaleOrdersScreen};
 export {SaleOrderDetailsScreen};
 export {SaleOrderLineListScreen};
+export {SaleOrderLineDetailsScreen};
