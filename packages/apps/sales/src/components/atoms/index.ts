@@ -21,6 +21,8 @@ export {default as DropdownDescriptionsView} from './DropdownDescriptionsView/Dr
 export {default as DropdownFollowUpView} from './DropdownFollowUpView/DropdownFollowUpView';
 export {default as DropdownGeneralView} from './DropdownGeneralView/DropdownGeneralView';
 export {default as DropdownMarginView} from './DropdownMarginView/DropdownMarginView';
+export {default as DropdownSOLConfigurationView} from './DropdownSOLConfigurationView/DropdownSOLConfigurationView';
+export {default as DropdownSOLMarginView} from './DropdownSOLMarginView/DropdownSOLMarginView';
 export {default as PartnerCard} from './PartnerCard/PartnerCard';
 export {default as PriceDetails} from './PriceDetails/PriceDetails';
 export {default as ProductCard} from './ProductCard/ProductCard';

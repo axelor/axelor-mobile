@@ -21,7 +21,10 @@ import {
   generateInifiniteScrollCases,
   handlerApiCall,
 } from '@axelor/aos-mobile-core';
-import {fetchSaleOrderLine as _fetchSaleOrderLine} from '../api/sale-order-line-api';
+import {
+  fetchSaleOrderLine as _fetchSaleOrderLine,
+  fetchSaleOrderLineById as _fetchSaleOrderLineById,
+} from '../api/sale-order-line-api';
 
 export const fetchSaleOrderLine = createAsyncThunk(
   'sales_saleOrderLine/fetchSaleOrderLine',
@@ -36,12 +39,28 @@ export const fetchSaleOrderLine = createAsyncThunk(
   },
 );
 
+export const fetchSaleOrderLineById = createAsyncThunk(
+  'sales_saleOrderLine/fetchSaleOrderLineById',
+  async function (data, {getState}) {
+    return handlerApiCall({
+      fetchFunction: _fetchSaleOrderLineById,
+      data,
+      action: 'Sales_SliceAction_FetchSaleOrderLineById',
+      getState,
+      responseOptions: {isArrayResponse: false},
+    });
+  },
+);
+
 const initialState = {
   loading: true,
   moreLoading: false,
   isListEnd: false,
   saleOrderLineList: [],
   totalSaleOrderLine: 0,
+
+  loadingSaleOrderLine: true,
+  saleOrderLine: {},
 };
 
 const saleOrderLineSlice = createSlice({
@@ -62,6 +81,13 @@ const saleOrderLineSlice = createSlice({
         manageTotal: true,
       },
     );
+    builder.addCase(fetchSaleOrderLineById.pending, state => {
+      state.loadingSaleOrderLine = true;
+    });
+    builder.addCase(fetchSaleOrderLineById.fulfilled, (state, action) => {
+      state.loadingSaleOrderLine = false;
+      state.saleOrderLine = action.payload;
+    });
   },
 });
 
