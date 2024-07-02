@@ -27,5 +27,6 @@ export const sale_searchFields: SearchFields = {
     'description',
   ],
   sale_saleOrder: ['saleOrderSeq', 'externalReference'],
-  sale_customer: ['fullName', 'partnerSeq'],
+  sale_customer: ['fullName', 'name', 'partnerSeq'],
+  sale_customerCategory: ['name'],
 };

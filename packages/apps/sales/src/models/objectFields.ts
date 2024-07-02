@@ -134,6 +134,13 @@ export const sale_modelAPI: ObjectFields = {
   }),
   sale_customer: schemaContructor.object({
     fullName: schemaContructor.string(),
+    picture: schemaContructor.subObject(),
+    name: schemaContructor.string(),
+    partnerSeq: schemaContructor.string(),
+    mainAddress: schemaContructor.subObject('fullName'),
+    mobilePhone: schemaContructor.string(),
+    fixedPhone: schemaContructor.string(),
+    emailAddress: schemaContructor.subObject('address'),
   }),
   sale_saleOrderLine: schemaContructor.object({
     typeSelect: schemaContructor.number(),
@@ -151,5 +158,8 @@ export const sale_modelAPI: ObjectFields = {
     exTaxTotal: schemaContructor.number(),
     description: schemaContructor.string(),
     isShowTotal: schemaContructor.boolean(),
+  }),
+  sale_customerCategory: schemaContructor.object({
+    name: schemaContructor.string(),
   }),
 };

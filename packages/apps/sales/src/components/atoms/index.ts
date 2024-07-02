@@ -16,6 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+export {default as ClientCard} from './ClientCard/ClientCard';
 export {default as DropdownDescriptionsView} from './DropdownDescriptionsView/DropdownDescriptionsView';
 export {default as DropdownFollowUpView} from './DropdownFollowUpView/DropdownFollowUpView';
 export {default as DropdownGeneralView} from './DropdownGeneralView/DropdownGeneralView';
