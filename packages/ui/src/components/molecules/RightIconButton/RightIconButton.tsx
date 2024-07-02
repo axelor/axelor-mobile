@@ -19,7 +19,7 @@
 import React, {useMemo} from 'react';
 import {Dimensions, StyleSheet, TouchableOpacity} from 'react-native';
 import {Card, Text} from '../../atoms';
-import {ThemeColors, useThemeColor} from '../../../theme';
+import {useThemeColor} from '../../../theme';
 import {checkNullString} from '../../../utils';
 
 interface RightIconProps {
@@ -41,8 +41,6 @@ const RightIconButton = ({
 }: RightIconProps) => {
   const Colors = useThemeColor();
 
-  const styles = useMemo(() => getStyles(Colors), [Colors]);
-
   const displayPlaceholder = useMemo(() => {
     return checkNullString(title) && !checkNullString(placeholder);
   }, [placeholder, title]);
@@ -51,11 +49,8 @@ const RightIconButton = ({
     <TouchableOpacity onPress={onPress} activeOpacity={0.9}>
       <Card style={[styles.container, style]}>
         <Text
-          style={[
-            styleText,
-            styles.text,
-            displayPlaceholder && styles.placeholder,
-          ]}
+          style={[styleText, styles.text]}
+          textColor={displayPlaceholder && Colors.placeholderTextColor}
           numberOfLines={2}>
           {!checkNullString(title) ? title : displayPlaceholder && placeholder}
         </Text>
@@ -64,27 +59,23 @@ const RightIconButton = ({
     </TouchableOpacity>
   );
 };
-const getStyles = (Colors: ThemeColors) =>
-  StyleSheet.create({
-    container: {
-      width: Dimensions.get('window').width * 0.35,
-      height: 50,
-      flexDirection: 'row',
-      justifyContent: 'space-between',
-      alignItems: 'center',
-      paddingLeft: 20,
-      paddingRight: 15,
-      paddingVertical: 5,
-      marginVertical: 4,
-      marginRight: 16,
-      borderRadius: 7,
-    },
-    text: {
-      textAlign: 'center',
-    },
-    placeholder: {
-      color: Colors.placeholderTextColor,
-    },
-  });
+const styles = StyleSheet.create({
+  container: {
+    width: Dimensions.get('window').width * 0.35,
+    height: 50,
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    paddingLeft: 20,
+    paddingRight: 15,
+    paddingVertical: 5,
+    marginVertical: 4,
+    marginRight: 16,
+    borderRadius: 7,
+  },
+  text: {
+    textAlign: 'center',
+  },
+});
 
 export default RightIconButton;

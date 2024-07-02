@@ -75,7 +75,11 @@ const MultiValuePickerButton = ({
                 </TouchableOpacity>
               ))
             : placeholder && (
-                <Text style={styles.placeholderText}>{placeholder}</Text>
+                <Text
+                  textColor={Colors.placeholderTextColor}
+                  style={styles.placeholderText}>
+                  {placeholder}
+                </Text>
               )}
         </View>
         <Icon
@@ -123,7 +127,6 @@ const getStyles = (Colors: ThemeColors) =>
       maxWidth: 110,
     },
     placeholderText: {
-      color: Colors.placeholderTextColor,
       marginLeft: 5,
     },
   });
