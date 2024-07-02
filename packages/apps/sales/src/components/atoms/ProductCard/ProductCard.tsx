@@ -36,8 +36,9 @@ export interface ProductCardProps {
   productCategory: string;
   description: string;
   isConfigurator: boolean;
-  unit: string;
-  salePrice: number;
+  unit?: string;
+  salePrice?: number;
+  displayPrice?: boolean;
 }
 
 const ProductCard = ({
@@ -52,6 +53,7 @@ const ProductCard = ({
   isConfigurator,
   unit,
   salePrice,
+  displayPrice = true,
 }: ProductCardProps) => {
   const Colors = useThemeColor();
   const formatMetaFile = useMetafileUri();
@@ -103,7 +105,7 @@ const ProductCard = ({
       }}
       upperBadges={{
         items: [
-          {
+          displayPrice && {
             customComponent: (
               <TextUnit unit={unit} value={priceFormat(salePrice)} />
             ),

@@ -26,6 +26,7 @@ import {
 
 export const useSalesHeaders = () => {
   useSaleOrderDetailsActions();
+  useSaleOrderLineDetailsActions();
   useProductDetailsActions();
 };
 
@@ -53,6 +54,35 @@ const useSaleOrderDetailsActions = () => {
       attachedFileScreenTitle: title,
     });
   }, [mobileSettings, saleOrder?.id, title]);
+};
+
+const useSaleOrderLineDetailsActions = () => {
+  const I18n = useTranslator();
+  const {SaleOrder} = useTypes();
+
+  const {mobileSettings} = useSelector((state: any) => state.appConfig);
+  const {saleOrder} = useSelector((state: any) => state.sales_saleOrder);
+  const {saleOrderLine} = useSelector(
+    (state: any) => state.sales_saleOrderLine,
+  );
+
+  const title = useMemo(
+    () =>
+      saleOrder?.statusSelect > SaleOrder?.statusSelect.Finalized
+        ? I18n.t('Sales_SaleOrder')
+        : I18n.t('Sales_SaleQuotation'),
+    [I18n, saleOrder, SaleOrder?.statusSelect.Finalized],
+  );
+
+  useEffect(() => {
+    headerActionsProvider.registerModel('sales_saleOrderLine_details', {
+      model: 'com.axelor.apps.sale.db.SaleOrderLine',
+      modelId: saleOrderLine?.id,
+      headerTitle: title,
+      disableMailMessages: !mobileSettings?.isTrackerMessageEnabled,
+      attachedFileScreenTitle: title,
+    });
+  }, [mobileSettings, saleOrderLine?.id, title]);
 };
 
 const useProductDetailsActions = () => {
