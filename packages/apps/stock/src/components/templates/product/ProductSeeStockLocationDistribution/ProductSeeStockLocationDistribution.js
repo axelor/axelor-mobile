@@ -50,7 +50,9 @@ const ProductSeeStockLocationDistribution = ({
       parseInt(productIndicators?.futureQty, 10) !== 0)
   ) {
     return (
-      <TouchableOpacity onPress={navigateStockLocationDetails}>
+      <TouchableOpacity
+        onPress={navigateStockLocationDetails}
+        style={styles.container}>
         <View style={styles.arrowContainer}>
           <Text>{I18n.t('Stock_SeeDistributionStockLocation')}</Text>
           <Icon
@@ -68,11 +70,12 @@ const ProductSeeStockLocationDistribution = ({
 };
 
 const styles = StyleSheet.create({
+  container: {
+    marginHorizontal: 16,
+  },
   arrowContainer: {
     flexDirection: 'row',
-    justifyContent: 'flex-end',
     alignItems: 'center',
-    marginHorizontal: 16,
     width: '90%',
   },
   arrowIcon: {
