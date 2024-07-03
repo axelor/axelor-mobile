@@ -1,5 +1,5 @@
 {
-  "title": "Picker: possiblity to add placeholder on all picker type",
+  "title": "Picker: add possibility to display a placeholder",
   "type": "feat",
   "packages": "ui"
 }
