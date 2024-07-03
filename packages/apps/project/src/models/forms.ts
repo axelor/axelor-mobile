@@ -27,7 +27,6 @@ import {
   CategorySearchBar,
   ParentTaskSearchBar,
   PrioritySearchBar,
-  ProgressFormInput,
   ProjectSearchBar,
   SectionSearchBar,
   TagTaskMultieValuePicker,
@@ -119,7 +118,7 @@ export const project_formsRegister: FormConfigs = {
     modelName: 'com.axelor.apps.project.db.ProjectTask',
     fields: {
       name: {
-        titleKey: 'Project_Sujet',
+        titleKey: 'Project_Subject',
         type: 'string',
         required: true,
       },
@@ -223,8 +222,7 @@ export const project_formsRegister: FormConfigs = {
       progress: {
         titleKey: 'Project_Progress',
         type: 'number',
-        widget: 'custom',
-        customComponent: ProgressFormInput,
+        widget: 'increment',
       },
       description: {
         type: 'string',

@@ -34,7 +34,6 @@ interface ParentTaskSearchBarProps {
   readonly?: boolean;
   required?: boolean;
   showTitle?: boolean;
-  differentiateBusinessProjects?: boolean;
 }
 
 const ParentTaskSearchBar = ({

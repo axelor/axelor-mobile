@@ -39,7 +39,7 @@
   "Project_Reporting": "Reporting",
   "Project_Activities": "Activities",
   "Project_ActivityUpdateInformation": "Updated by {{userName}} at {{time}}",
-  "Project_Sujet": "Subject",
+  "Project_Subject": "Subject",
   "Project_TicketNumber": "Ticket number",
   "Project_ParentTask": "Parent task",
   "Project_AssignedTo": "Assigned to",
@@ -54,10 +54,10 @@
   "Project_SliceAction_SearchSubProject": "search sub projects",
   "Project_SliceAction_FetchProjectTaskById": "fetch project task by id",
   "Project_SliceAction_FetchTimesheetLinesByTask": "fetch timesheet lines by task",
-  "Project_SliceAction_GetProjectTaskTag": "get project task tag",
-  "Project_SliceAction_SearchTargetVersion": "search target version",
-  "Project_SliceAction_SearchCategory": "search category",
-  "Project_SliceAction_SearchSection": "search section",
+  "Project_SliceAction_GetProjectTaskTag": "get project task tags",
+  "Project_SliceAction_SearchTargetVersion": "search target versions",
+  "Project_SliceAction_SearchCategory": "search categories",
+  "Project_SliceAction_SearchSection": "search sections",
   "Project_SliceAction_SearchPriority": "search priorities",
   "Project_SliceAction_UpdateProjectTask": "update project task"
 }

@@ -78,7 +78,7 @@ const CategorySearchBar = ({
     [projectForm?.projectTaskCategorySet],
   );
 
-  const searcCategoryAPI = useCallback(
+  const searchCategoryAPI = useCallback(
     ({page = 0, searchValue}) => {
       dispatch(
         (searchCategory as any)({
@@ -100,7 +100,7 @@ const CategorySearchBar = ({
       required={required}
       readonly={readonly}
       onChangeValue={onChange}
-      fetchData={searcCategoryAPI}
+      fetchData={searchCategoryAPI}
       displayValue={displayItemName}
       placeholder={I18n.t(title)}
       showDetailsPopup={true}

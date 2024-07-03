@@ -17,7 +17,7 @@
  */
 
 import React from 'react';
-import {StyleSheet} from 'react-native';
+import {StyleSheet, View} from 'react-native';
 import {CircleButton} from '@axelor/aos-mobile-ui';
 import {useNavigation} from '@axelor/aos-mobile-core';
 
@@ -25,15 +25,17 @@ const TaskBottom = ({idTask}) => {
   const navigation = useNavigation();
 
   return (
-    <CircleButton
-      style={styles.floatingButton}
-      iconName="pencil-fill"
-      onPress={() =>
-        navigation.navigate('TaskFormScreen', {
-          idTask: idTask,
-        })
-      }
-    />
+    <View>
+      <CircleButton
+        style={styles.floatingButton}
+        iconName="pencil-fill"
+        onPress={() =>
+          navigation.navigate('TaskFormScreen', {
+            idTask: idTask,
+          })
+        }
+      />
+    </View>
   );
 };
 
