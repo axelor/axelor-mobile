@@ -18,6 +18,7 @@
 
 import ProductSaleDetailsScreen from './ProductSaleDetailsScreen';
 import ProductSaleListScreen from './ProductSaleListScreen';
+import ComplementaryProductsScreen from './ComplementaryProductsScreen';
 
 export default {
   ProductSaleListScreen: {
@@ -36,7 +37,15 @@ export default {
       shadedHeader: false,
     },
   },
+  ComplementaryProductsScreen: {
+    title: 'Sale_ComplementaryProducts',
+    component: ComplementaryProductsScreen,
+    options: {
+      shadedHeader: false,
+    },
+  },
 };
 
 export {ProductSaleListScreen};
 export {ProductSaleDetailsScreen};
+export {ComplementaryProductsScreen};

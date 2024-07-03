@@ -107,6 +107,7 @@
   "Sale_SubTotalMarkup": "Sub total markup",
   "Sale_SupplyMethod": "Supply method",
   "Sale_PriceCalculationDetails": "Price calculation details",
+  "Sale_ComplementaryProducts": "Complementary products",
   "Sale_SliceAction_FetchSaleConfig": "fetch sale config",
   "Sale_SliceAction_FetchSaleOrder": "fetch sale orders",
   "Sale_SliceAction_SearchCustomer": "search customers",
@@ -118,5 +119,6 @@
   "Sale_SliceAction_FetchProductCompanyConfig": "search product company config",
   "Sale_SliceAction_SearchCustomerCategory": "search customer categories",
   "Sale_SliceAction_FetchCustomerById": "fetch customer by id",
-  "Sale_SliceAction_FetchSaleOrderLineById": "fetch sale order line by id"
+  "Sale_SliceAction_FetchSaleOrderLineById": "fetch sale order line by id",
+  "Sale_SliceAction_FetchComplementaryProduct ": "fetch complementary products"
 }
