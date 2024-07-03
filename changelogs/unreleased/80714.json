@@ -1,0 +1,5 @@
+{
+  "title": "ProductSeeStockLocationDistribution: ajust component margin for small screen",
+  "type": "fix",
+  "packages": "stock"
+}
