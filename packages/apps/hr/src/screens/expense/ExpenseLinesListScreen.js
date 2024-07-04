@@ -78,6 +78,20 @@ const ExpenseLinesListScreen = ({navigation, customOnUpload = null}) => {
     [dispatch, userId],
   );
 
+  const handleModeChange = useCallback((itemId = null) => {
+    setIsSelectionMode(current => {
+      const mode = !current;
+
+      if (mode && itemId != null) {
+        setSelectedItems([itemId]);
+      } else {
+        setSelectedItems([]);
+      }
+
+      return mode;
+    });
+  }, []);
+
   useEffect(() => {
     headerActionsProvider.registerModel('hr_expenseLine_list', {
       actions: [
@@ -97,7 +111,7 @@ const ExpenseLinesListScreen = ({navigation, customOnUpload = null}) => {
           iconName: 'person-fill',
           hideIf: isSelectionMode,
           title: I18n.t('Hr_OpenSelectionMode'),
-          onPress: handleModeChange,
+          onPress: () => handleModeChange(),
           showInHeader: true,
           customComponent: (
             <DoubleIcon
@@ -117,21 +131,7 @@ const ExpenseLinesListScreen = ({navigation, customOnUpload = null}) => {
         },
       ],
     });
-  }, [Colors, I18n, navigation, isSelectionMode, canCreate]);
-
-  const handleModeChange = (itemId = null) => {
-    setIsSelectionMode(current => {
-      const mode = !current;
-
-      if (mode && itemId != null) {
-        setSelectedItems([itemId]);
-      } else {
-        setSelectedItems([]);
-      }
-
-      return mode;
-    });
-  };
+  }, [Colors, I18n, navigation, isSelectionMode, canCreate, handleModeChange]);
 
   return (
     <Screen
