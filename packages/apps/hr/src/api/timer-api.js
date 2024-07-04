@@ -75,12 +75,12 @@ const createActiveTimerCriteria = userId => {
       {
         fieldName: 'statusSelect',
         operator: '=',
-        value: Timer?.statusSelect.InProgress,
+        value: Timer?.statusSelect.Start,
       },
       {
         fieldName: 'statusSelect',
         operator: '=',
-        value: Timer?.statusSelect.Paused,
+        value: Timer?.statusSelect.Pause,
       },
     ],
   });

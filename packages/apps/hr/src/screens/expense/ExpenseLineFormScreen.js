@@ -24,6 +24,7 @@ import {
   useSelector,
   useTypes,
   useTypeHelpers,
+  headerActionsProvider,
 } from '@axelor/aos-mobile-core';
 import {
   createExpenseLine,
@@ -251,6 +252,14 @@ const ExpenseLineFormScreen = ({route, navigation}) => {
     expenseLine,
     getItemTitle,
   ]);
+
+  useEffect(() => {
+    headerActionsProvider.registerModel('hr_expenseLine_details', {
+      model: 'com.axelor.apps.hr.db.ExpenseLine',
+      modelId: expenseLine?.id,
+      disableMailMessages: !mobileSettings?.isTrackerMessageEnabled,
+    });
+  }, [expenseLine?.id, mobileSettings]);
 
   return (
     <FormView

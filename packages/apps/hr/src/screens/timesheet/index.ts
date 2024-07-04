@@ -41,10 +41,12 @@ export default {
   TimesheetLineFormScreen: {
     title: 'Hr_TimesheetLine',
     component: TimesheetLineFormScreen,
+    actionID: 'hr_timesheetLine_details',
   },
   TimesheetDetailsScreen: {
     title: 'Hr_Timesheets',
     component: TimesheetDetailsScreen,
+    actionID: 'hr_timesheet_details',
     options: {
       shadedHeader: false,
     },
@@ -58,6 +60,7 @@ export default {
   TimerFormScreen: {
     title: 'Hr_Timer',
     component: TimerFormScreen,
+    actionID: 'hr_timer_details',
     isUsableOnShortcut: true,
   },
 };
