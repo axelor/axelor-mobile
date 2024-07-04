@@ -44,6 +44,7 @@ import {
   updateToCity,
 } from '../features/distanceSlice';
 import {ExpenseLine, Timesheet} from '../types';
+import {checkUserImputationMode} from '../utils';
 
 export const hr_formsRegister: FormConfigs = {
   hr_Expenseline: {
@@ -240,8 +241,7 @@ export const hr_formsRegister: FormConfigs = {
         widget: 'custom',
         customComponent: ProjectSearchBar,
         hideIf: ({storeState}) =>
-          storeState.user.user.employee?.timesheetImputationSelect !==
-            Timesheet.imputation.Project ||
+          checkUserImputationMode(storeState, Timesheet.imputation.Project) ||
           !storeState.appConfig.mobileSettings.fieldsToShowOnTimesheet.find(
             (field: string) => field === 'project',
           ),
@@ -253,8 +253,7 @@ export const hr_formsRegister: FormConfigs = {
         customComponent: ProjectTaskSearchBar,
         hideIf: ({objectState, storeState}) =>
           objectState.project == null ||
-          storeState.user.user.employee?.timesheetImputationSelect !==
-            Timesheet.imputation.Project ||
+          checkUserImputationMode(storeState, Timesheet.imputation.Project) ||
           !storeState.appConfig.mobileSettings.fieldsToShowOnTimesheet.find(
             (field: string) => field === 'projectTask',
           ),
@@ -270,8 +269,10 @@ export const hr_formsRegister: FormConfigs = {
         widget: 'custom',
         customComponent: ManufOrderSearchBar,
         hideIf: ({storeState}) =>
-          storeState.user.user.employee?.timesheetImputationSelect !==
-            Timesheet.imputation.ManufOrder ||
+          checkUserImputationMode(
+            storeState,
+            Timesheet.imputation.ManufOrder,
+          ) ||
           !storeState.appConfig.mobileSettings.fieldsToShowOnTimesheet.find(
             (field: string) => field === 'manufOrder',
           ),
@@ -282,8 +283,10 @@ export const hr_formsRegister: FormConfigs = {
         widget: 'custom',
         customComponent: OperationOrderSearchBar,
         hideIf: ({storeState}) =>
-          storeState.user.user.employee?.timesheetImputationSelect !==
-            Timesheet.imputation.ManufOrder ||
+          checkUserImputationMode(
+            storeState,
+            Timesheet.imputation.ManufOrder,
+          ) ||
           !storeState.appConfig.mobileSettings.fieldsToShowOnTimesheet.find(
             (field: string) => field === 'operationOrder',
           ),
@@ -361,8 +364,7 @@ export const hr_formsRegister: FormConfigs = {
         widget: 'custom',
         customComponent: ProjectSearchBar,
         hideIf: ({storeState}) =>
-          storeState.user.user.employee?.timesheetImputationSelect !==
-            Timesheet.imputation.Project ||
+          checkUserImputationMode(storeState, Timesheet.imputation.Project) ||
           !storeState.appConfig.mobileSettings.fieldsToShowOnTimesheet.find(
             (field: string) => field === 'project',
           ),
@@ -376,8 +378,7 @@ export const hr_formsRegister: FormConfigs = {
           isAssignedToRequired: true,
         },
         hideIf: ({storeState}) =>
-          storeState.user.user.employee?.timesheetImputationSelect !==
-            Timesheet.imputation.Project ||
+          checkUserImputationMode(storeState, Timesheet.imputation.Project) ||
           !storeState.appConfig.mobileSettings.fieldsToShowOnTimesheet.find(
             (field: string) => field === 'projectTask',
           ),
