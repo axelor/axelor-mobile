@@ -29,6 +29,7 @@ const createProjectTaskCriteria = ({
   userId,
   selectedStatus,
   selectedPriority,
+  projectTaskId,
 }) => {
   const criteria = [getSearchCriterias('project_projectTask', searchValue)];
 
@@ -37,6 +38,14 @@ const createProjectTaskCriteria = ({
       fieldName: 'project.id',
       operator: '=',
       value: projectId,
+    });
+  }
+
+  if (projectTaskId != null) {
+    criteria.push({
+      fieldName: 'id',
+      operator: '!=',
+      value: projectTaskId,
     });
   }
 
@@ -102,6 +111,7 @@ export async function searchProjectTask({
   userId,
   selectedStatus,
   selectedPriority,
+  projectTaskId,
 }) {
   return createStandardSearch({
     model: 'com.axelor.apps.project.db.ProjectTask',
@@ -111,6 +121,7 @@ export async function searchProjectTask({
       userId,
       selectedStatus,
       selectedPriority,
+      projectTaskId,
     }),
     fieldKey: 'project_projectTask',
     sortKey: 'project_projectTask',

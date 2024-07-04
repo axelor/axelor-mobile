@@ -49,6 +49,7 @@ const ParentTaskSearchBar = ({
   const dispatch = useDispatch();
 
   const {
+    projectTask,
     parentTaskList,
     loadingParentTask,
     moreLoadingParentTask,
@@ -63,10 +64,11 @@ const ParentTaskSearchBar = ({
           page,
           searchValue,
           projectId: projectForm?.id,
+          projectTaskId: projectTask?.id,
         }),
       );
     },
-    [dispatch, projectForm?.id],
+    [dispatch, projectForm?.id, projectTask?.id],
   );
 
   return (

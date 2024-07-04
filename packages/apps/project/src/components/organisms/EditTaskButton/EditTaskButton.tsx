@@ -21,7 +21,7 @@ import {StyleSheet, View} from 'react-native';
 import {CircleButton} from '@axelor/aos-mobile-ui';
 import {useNavigation} from '@axelor/aos-mobile-core';
 
-const TaskBottom = ({idTask}) => {
+const EditTaskButton = ({idTask}) => {
   const navigation = useNavigation();
 
   return (
@@ -47,4 +47,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default TaskBottom;
+export default EditTaskButton;
