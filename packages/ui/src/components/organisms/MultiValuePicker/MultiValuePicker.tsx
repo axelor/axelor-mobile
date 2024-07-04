@@ -21,11 +21,7 @@ import {Platform, StyleSheet, View} from 'react-native';
 import {Color, ThemeColors, useThemeColor} from '../../../theme';
 import {Text} from '../../atoms';
 import {SelectionContainer, MultiValuePickerButton} from '../../molecules';
-import {
-  checkNullString,
-  getCommonStyles,
-  getItemsFromList,
-} from '../../../utils';
+import {checkNullString, getCommonStyles} from '../../../utils';
 import {
   OUTSIDE_INDICATOR,
   useClickOutside,
