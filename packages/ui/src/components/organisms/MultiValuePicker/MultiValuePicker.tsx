@@ -72,22 +72,7 @@ const MultiValuePicker = ({
     wrapperRef,
   });
 
-  const [selectedItemList, setSelectedItemList] = useState(
-    getItemsFromList(listItems, 'key', defaultItems),
-  );
-
-  useEffect(() => {
-    const newSelectedItemList = getItemsFromList(
-      listItems,
-      'key',
-      defaultItems,
-    );
-    if (
-      JSON.stringify(newSelectedItemList) !== JSON.stringify(selectedItemList)
-    ) {
-      setSelectedItemList(newSelectedItemList);
-    }
-  }, [defaultItems, listItems, selectedItemList]);
+  const [selectedItemList, setSelectedItemList] = useState(defaultItems as any);
 
   useEffect(() => {
     if (clickOutside === OUTSIDE_INDICATOR && pickerIsOpen) {
