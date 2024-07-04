@@ -16,8 +16,12 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import React, {useCallback, useMemo} from 'react';
-import {FormView, useSelector} from '@axelor/aos-mobile-core';
+import React, {useCallback, useEffect, useMemo} from 'react';
+import {
+  FormView,
+  headerActionsProvider,
+  useSelector,
+} from '@axelor/aos-mobile-core';
 import {
   createTimesheetLine,
   updateTimesheetLine,
@@ -26,6 +30,7 @@ import {
 const TimesheetLineFormScreen = ({route, navigation}) => {
   const {timesheetId, timesheetLine} = route?.params;
 
+  const {mobileSettings} = useSelector(state => state.appConfig);
   const {user} = useSelector(state => state.user);
 
   const createTimesheetLineAPI = useCallback(
@@ -108,6 +113,14 @@ const TimesheetLineFormScreen = ({route, navigation}) => {
     }),
     [user],
   );
+
+  useEffect(() => {
+    headerActionsProvider.registerModel('hr_timesheetLine_details', {
+      model: 'com.axelor.apps.hr.db.TimesheetLine',
+      modelId: timesheetLine?.id,
+      disableMailMessages: !mobileSettings?.isTrackerMessageEnabled,
+    });
+  }, [timesheetLine?.id, mobileSettings]);
 
   return (
     <FormView

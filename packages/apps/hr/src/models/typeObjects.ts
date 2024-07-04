@@ -84,7 +84,8 @@ export const hr_typeObjects: ModuleSelections = [
     },
   },
   {
-    modelName: 'com.axelor.apps.base.db.Timer',
+    modelName: 'com.axelor.apps.hr.db.TSTimer',
+    specificKey: 'Timer',
     fields: {
       statusSelect: {
         content: [
