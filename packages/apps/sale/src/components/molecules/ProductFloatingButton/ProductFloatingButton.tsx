@@ -16,43 +16,58 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import React from 'react';
+import React, {useMemo} from 'react';
 import {StyleSheet} from 'react-native';
 import {FloatingButton, useThemeColor} from '@axelor/aos-mobile-ui';
-import {useNavigation, useTranslator} from '@axelor/aos-mobile-core';
+import {
+  useNavigation,
+  useSelector,
+  useTranslator,
+} from '@axelor/aos-mobile-core';
 
 const ProductFloatingButton = ({}) => {
   const I18n = useTranslator();
   const Colors = useThemeColor();
   const navigation = useNavigation();
 
+  const {product} = useSelector((state: any) => state.sale_product);
+
+  const actions = useMemo(() => {
+    const _actions = [
+      {
+        key: 1,
+        title: 'Sale_SeeComplementaryProducts',
+        onPress: () => navigation.navigate('ComplementaryProductsScreen'),
+        iconName: 'diagram-3-fill',
+        color: Colors.plannedColor,
+      },
+      {
+        key: 2,
+        title: 'Sale_SeePriceLists',
+        onPress: () => navigation.navigate('ProductSalePriceListsScreen'),
+        iconName: 'currency-dollar',
+        color: Colors.progressColor,
+      },
+    ];
+
+    if (product?.productVariant != null) {
+      _actions.push({
+        key: 3,
+        title: 'Sale_SeeVariantProducts',
+        onPress: () => navigation.navigate('VariantProductsScreen'),
+        iconName: 'palette2',
+        color: Colors.priorityColor,
+      });
+    }
+
+    return _actions;
+  }, [Colors, navigation, product?.productVariant]);
+
   return (
     <FloatingButton
       style={styles.floatingButton}
       translator={I18n.t}
-      actions={[
-        {
-          key: 1,
-          title: 'Sale_SeeComplementaryProducts',
-          onPress: () => navigation.navigate('ComplementaryProductsScreen'),
-          iconName: 'diagram-3-fill',
-          color: Colors.plannedColor,
-        },
-        {
-          key: 2,
-          title: 'Sale_SeeVariantProducts',
-          onPress: () => {},
-          iconName: 'palette2',
-          color: Colors.priorityColor,
-        },
-        {
-          key: 3,
-          title: 'Sale_SeePriceLists',
-          onPress: () => navigation.navigate('ProductSalePriceListsScreen'),
-          iconName: 'currency-dollar',
-          color: Colors.progressColor,
-        },
-      ]}
+      actions={actions}
     />
   );
 };

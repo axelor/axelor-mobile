@@ -27,6 +27,8 @@ export {fetchPriceListLine} from './priceListLineSlice';
 export {
   fetchProductById,
   fetchProductCompanyConfig,
+  fetchVariantProduct,
+  getVariantAttributes,
   searchProduct,
 } from './productSlice';
 export {fetchSaleConfig} from './saleConfigSlice';

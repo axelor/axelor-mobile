@@ -117,6 +117,10 @@
   "Sale_PriceListType_CustomerContract": "Customer contract",
   "Sale_PriceListType_SupplierContract": "Supplier contract",
   "Sale_NonNegotiable": "Non-negotiable",
+  "Sale_Variants": "Variants",
+  "Sale_Application_SalePrice": "Sale price",
+  "Sale_Application_CostPrice": "Cost price",
+  "Sale_Application_PurchasePrice": "Purchase price",
   "Sale_SliceAction_FetchSaleConfig": "fetch sale config",
   "Sale_SliceAction_FetchSaleOrder": "fetch sale orders",
   "Sale_SliceAction_SearchCustomer": "search customers",
@@ -130,5 +134,7 @@
   "Sale_SliceAction_FetchCustomerById": "fetch customer by id",
   "Sale_SliceAction_FetchSaleOrderLineById": "fetch sale order line by id",
   "Sale_SliceAction_FetchComplementaryProduct": "fetch complementary products",
-  "Sale_SliceAction_FetchPriceListLine": "fetch price list lines"
+  "Sale_SliceAction_FetchPriceListLine": "fetch price list lines",
+  "Sale_SliceAction_FetchVariantProduct": "fetch variant products",
+  "Sale_SliceAction_FetchVariantAttributes": "fetch variant attributes"
 }

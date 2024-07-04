@@ -17,6 +17,7 @@
  */
 
 import {
+  axiosApiProvider,
   createStandardFetch,
   createStandardSearch,
   getSearchCriterias,
@@ -57,6 +58,17 @@ const createProductCompanyCriteria = (companyId, productId) => {
   ];
 };
 
+const createVariantProductCriteria = (searchValue, parentProductId) => {
+  return [
+    {
+      fieldName: 'parentProduct.id',
+      operator: '=',
+      value: parentProductId,
+    },
+    getSearchCriterias('sale_product', searchValue),
+  ];
+};
+
 export async function searchProduct({page = 0, searchValue}) {
   return createStandardSearch({
     model: 'com.axelor.apps.base.db.Product',
@@ -89,5 +101,26 @@ export async function fetchProductCompanyConfig({companyId, productId}) {
     fieldKey: 'sale_productCompany',
     page: 0,
     numberElementsByPage: 1,
+  });
+}
+
+export async function fetchVariantProduct({
+  searchValue,
+  parentProductId,
+  page = 0,
+}) {
+  return createStandardSearch({
+    model: 'com.axelor.apps.base.db.Product',
+    criteria: createVariantProductCriteria(searchValue, parentProductId),
+    fieldKey: 'sale_product',
+    sortKey: 'sale_product',
+    page,
+  });
+}
+
+export async function fetchVariantAttributes({productVariantId, version}) {
+  return axiosApiProvider.post({
+    url: `/ws/aos/stock-product/get-variant-attributes/${productVariantId}`,
+    data: {version: version},
   });
 }

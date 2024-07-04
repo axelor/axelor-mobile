@@ -34,3 +34,4 @@ export {default as SaleOrderLineCard} from './SaleOrderLineCard/SaleOrderLineCar
 export {default as SaleOrderSeeLinesButton} from './SaleOrderSeeLinesButton/SaleOrderSeeLinesButton';
 export {default as StateBadge} from './StateBadge/StateBadge';
 export {default as TaxModeBadge} from './TaxModeBadge/TaxModeBadge';
+export {default as VariantProductCard} from './VariantProductCard/VariantProductCard';

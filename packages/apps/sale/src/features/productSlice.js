@@ -24,6 +24,8 @@ import {
 import {
   fetchProductById as _fetchProductById,
   fetchProductCompanyConfig as _fetchProductCompanyConfig,
+  fetchVariantAttributes as _fetchVariantAttributes,
+  fetchVariantProduct as _fetchVariantProduct,
   searchProduct as _searchProduct,
 } from '../api/product-api';
 
@@ -66,6 +68,49 @@ export const fetchProductCompanyConfig = createAsyncThunk(
   },
 );
 
+export const fetchVariantProduct = createAsyncThunk(
+  'sale_product/fetchVariantProduct',
+  async function (data, {getState}) {
+    return handlerApiCall({
+      fetchFunction: _fetchVariantProduct,
+      data,
+      action: 'Sale_SliceAction_FetchVariantProduct',
+      getState,
+      responseOptions: {isArrayResponse: true},
+    });
+  },
+);
+
+const fetchVariantAttributes = async (data, {getState}) => {
+  return handlerApiCall({
+    fetchFunction: _fetchVariantAttributes,
+    data,
+    action: 'Sale_SliceAction_FetchVariantAttributes',
+    getState,
+    responseOptions: {isArrayResponse: true},
+  });
+};
+
+async function fetchData(data, {getState}) {
+  return await fetchVariantAttributes(data, {getState});
+}
+
+export const getVariantAttributes = createAsyncThunk(
+  'sale_product/getVariantAttributes',
+  async function (data, {getState}) {
+    let promises = [];
+    data.variantProductList.forEach(product => {
+      promises.push(
+        fetchData(
+          {productVariantId: product.id, version: product.version},
+          {getState},
+        ),
+      );
+    });
+    return Promise.all(promises);
+  },
+);
+
 const initialState = {
   loadingList: false,
   moreLoading: false,
@@ -77,6 +122,14 @@ const initialState = {
 
   productCompany: {},
   product: {},
+
+  loadingVariantList: false,
+  moreLoadingVariantList: false,
+  isVariantListEnd: false,
+  variantProductList: [],
+
+  loadinVariantAttributes: false,
+  listVariantAttributes: [],
 };
 
 const productSlice = createSlice({
@@ -89,6 +142,12 @@ const productSlice = createSlice({
       isListEnd: 'isListEnd',
       list: 'productList',
     });
+    generateInifiniteScrollCases(builder, fetchVariantProduct, {
+      loading: 'loadingVariantList',
+      moreLoading: 'moreLoadingVariantList',
+      isListEnd: 'isVariantListEnd',
+      list: 'variantProductList',
+    });
     builder.addCase(fetchProductById.pending, state => {
       state.loadingProduct = true;
     });
@@ -100,6 +159,13 @@ const productSlice = createSlice({
     builder.addCase(fetchProductCompanyConfig.fulfilled, (state, action) => {
       state.productCompany = action.payload;
       state.product = mergeConfigs(state._product, action.payload);
+    });
+    builder.addCase(getVariantAttributes.pending, state => {
+      state.loadinVariantAttributes = true;
+    });
+    builder.addCase(getVariantAttributes.fulfilled, (state, action) => {
+      state.loadinVariantAttributes = false;
+      state.listVariantAttributes = action.payload;
     });
   },
 });
