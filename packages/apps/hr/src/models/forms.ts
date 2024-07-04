@@ -16,7 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import {FormConfigs, getTypes} from '@axelor/aos-mobile-core';
+import {FormConfigs} from '@axelor/aos-mobile-core';
 import {DurationInput} from '@axelor/aos-mobile-ui';
 import {
   BillableSwitchCard,
@@ -44,6 +44,7 @@ import {
   updateToCity,
 } from '../features/distanceSlice';
 import {ExpenseLine} from '../types';
+import {checkUserImputationMode, getImputationMode} from '../utils';
 
 export const hr_formsRegister: FormConfigs = {
   hr_Expenseline: {
@@ -256,8 +257,7 @@ export const hr_formsRegister: FormConfigs = {
         widget: 'custom',
         customComponent: ProjectSearchBar,
         hideIf: ({storeState}) =>
-          storeState.user.user.employee?.timesheetImputationSelect !==
-            getTypes()?.Employee?.timesheetImputationSelect.Project ||
+          checkUserImputationMode(storeState, getImputationMode().Project) ||
           !storeState.appConfig.mobileSettings.fieldsToShowOnTimesheet.find(
             (field: string) => field === 'project',
           ),
@@ -269,8 +269,7 @@ export const hr_formsRegister: FormConfigs = {
         customComponent: ProjectTaskSearchBar,
         hideIf: ({objectState, storeState}) =>
           objectState.project == null ||
-          storeState.user.user.employee?.timesheetImputationSelect !==
-            getTypes()?.Employee?.timesheetImputationSelect.Project ||
+          checkUserImputationMode(storeState, getImputationMode().Project) ||
           !storeState.appConfig.mobileSettings.fieldsToShowOnTimesheet.find(
             (field: string) => field === 'projectTask',
           ),
@@ -286,8 +285,7 @@ export const hr_formsRegister: FormConfigs = {
         widget: 'custom',
         customComponent: ManufOrderSearchBar,
         hideIf: ({storeState}) =>
-          storeState.user.user.employee?.timesheetImputationSelect !==
-            getTypes()?.Employee?.timesheetImputationSelect.ManufOrder ||
+          checkUserImputationMode(storeState, getImputationMode().ManufOrder) ||
           !storeState.appConfig.mobileSettings.fieldsToShowOnTimesheet.find(
             (field: string) => field === 'manufOrder',
           ),
@@ -298,8 +296,7 @@ export const hr_formsRegister: FormConfigs = {
         widget: 'custom',
         customComponent: OperationOrderSearchBar,
         hideIf: ({storeState}) =>
-          storeState.user.user.employee?.timesheetImputationSelect !==
-            getTypes()?.Employee?.timesheetImputationSelect.ManufOrder ||
+          checkUserImputationMode(storeState, getImputationMode().ManufOrder) ||
           !storeState.appConfig.mobileSettings.fieldsToShowOnTimesheet.find(
             (field: string) => field === 'operationOrder',
           ),
@@ -377,8 +374,7 @@ export const hr_formsRegister: FormConfigs = {
         widget: 'custom',
         customComponent: ProjectSearchBar,
         hideIf: ({storeState}) =>
-          storeState.user.user.employee?.timesheetImputationSelect !==
-            getTypes()?.Employee?.timesheetImputationSelect.Project ||
+          checkUserImputationMode(storeState, getImputationMode().Project) ||
           !storeState.appConfig.mobileSettings.fieldsToShowOnTimesheet.find(
             (field: string) => field === 'project',
           ),
@@ -392,8 +388,7 @@ export const hr_formsRegister: FormConfigs = {
           isAssignedToRequired: true,
         },
         hideIf: ({storeState}) =>
-          storeState.user.user.employee?.timesheetImputationSelect !==
-            getTypes()?.Employee?.timesheetImputationSelect.Project ||
+          checkUserImputationMode(storeState, getImputationMode().Project) ||
           !storeState.appConfig.mobileSettings.fieldsToShowOnTimesheet.find(
             (field: string) => field === 'projectTask',
           ),
