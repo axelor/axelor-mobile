@@ -23,6 +23,7 @@ export {
   searchSubProject,
 } from './projectSlice';
 export {
+  createProjectTask,
   fetchProjectPriority,
   fetchProjectTaskById,
   fetchProjectTaskStatus,

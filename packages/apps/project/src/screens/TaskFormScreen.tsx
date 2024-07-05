@@ -19,7 +19,10 @@
 import React, {useCallback, useEffect, useMemo} from 'react';
 import {useSelector, FormView, useDispatch} from '@axelor/aos-mobile-core';
 import {fetchProjectFormById} from '../features/projectSlice';
-import {updateProjectTask} from '../features/projectTaskSlice';
+import {
+  createProjectTask,
+  updateProjectTask,
+} from '../features/projectTaskSlice';
 
 const TaskFormScreen = ({navigation, route}) => {
   const {isCreation} = route.params;
@@ -60,7 +63,7 @@ const TaskFormScreen = ({navigation, route}) => {
 
   const createTaskAPI = useCallback(
     (objectState, dispatch) => {
-      dispatch((updateProjectTask as any)({projectTask: objectState}));
+      dispatch((createProjectTask as any)({projectTask: objectState}));
       navigation.pop();
     },
     [navigation],

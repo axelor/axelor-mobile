@@ -200,6 +200,19 @@ export const updateProjectTask = createAsyncThunk(
   },
 );
 
+export const createProjectTask = createAsyncThunk(
+  'project_projectTask/createProjectTask',
+  async function (data, {getState}) {
+    return handlerApiCall({
+      fetchFunction: _updateProjectTask,
+      data,
+      action: 'Project_SliceAction_CreateProjectTask',
+      getState,
+      responseOptions: {isArrayResponse: false},
+    });
+  },
+);
+
 const initialState = {
   loading: true,
   moreLoading: false,
@@ -318,6 +331,15 @@ const projectTaskSlice = createSlice({
     builder.addCase(updateProjectTask.fulfilled, (state, action) => {
       state.loadingProjectTask = false;
       state.projectTask = action.payload;
+      state.projectTaskList = updateAgendaItems(state.projectTaskList, [
+        action.payload,
+      ]);
+    });
+    builder.addCase(createProjectTask.pending, (state, action) => {
+      state.loadingProjectTask = true;
+    });
+    builder.addCase(createProjectTask.fulfilled, (state, action) => {
+      state.loadingProjectTask = false;
       state.projectTaskList = updateAgendaItems(state.projectTaskList, [
         action.payload,
       ]);
