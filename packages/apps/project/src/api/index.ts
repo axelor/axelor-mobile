@@ -36,4 +36,5 @@ export {
   searchTargetVersion as searchTargetVersionApi,
   saveProjectTask as saveProjectTaskApi,
 } from './project-task-api';
+export {getReportingData as getReportingDataApi} from './reporting-api';
 export {fetchTimesheetLinesByTask as fetchTimesheetLinesByTaskApi} from './timesheet-lines-api';

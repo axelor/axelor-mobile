@@ -64,5 +64,6 @@
   "Project_SliceAction_SearchPriority": "recherche sur les priorités",
   "Project_SliceAction_SaveProjectTask": "enregistrement de la tâche du projet",
   "Project_SliceAction_SearchStatus": "recherche sur les statuts",
-  "Project_SliceAction_SearchParentTask": "recherche sur la tâche parente"
+  "Project_SliceAction_SearchParentTask": "recherche sur la tâche parente",
+  "Project_SliceAction_GetReportingData": ""
 }
