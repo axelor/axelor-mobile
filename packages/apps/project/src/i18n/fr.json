@@ -45,6 +45,7 @@
   "Project_AssignedTo": "Assignée à",
   "Project_Progress": "Progression",
   "Project_Priority": "Priorité",
+  "Project_Status": "Statut",
   "Project_SliceAction_SearchProject": "recherche sur les projets",
   "Project_SliceAction_FetchProjectById": "récupération du projet par id",
   "Project_SliceAction_FetchProjectStatus": "récupération des statuts de projet",
@@ -59,5 +60,6 @@
   "Project_SliceAction_SearchCategory": "recherche sur les catégories",
   "Project_SliceAction_SearchSection": "recherche sur les sections",
   "Project_SliceAction_SearchPriority": "recherche sur les priorités",
-  "Project_SliceAction_UpdateProjectTask": "mise à jour de la tâche du projet"
+  "Project_SliceAction_UpdateProjectTask": "mise à jour de la tâche du projet",
+  "Project_SliceAction_SearchStatus": "recherche sur les statuts"
 }

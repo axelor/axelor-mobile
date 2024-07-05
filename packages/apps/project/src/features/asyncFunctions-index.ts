@@ -32,6 +32,7 @@ export {
   searchProjectParentTask,
   searchProjectTask,
   searchSection,
+  searchStatus,
   searchTargetVersion,
   updateProjectTask,
 } from './projectTaskSlice';

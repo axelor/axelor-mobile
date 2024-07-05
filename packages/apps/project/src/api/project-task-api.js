@@ -93,6 +93,17 @@ const createPriorityCriteria = ({searchValue, priorityIds}) => {
   ];
 };
 
+const createStatusCriteria = ({searchValue, statusIds}) => {
+  return [
+    getSearchCriterias('project_taskStatus', searchValue),
+    {
+      fieldName: 'id',
+      operator: 'in',
+      value: statusIds,
+    },
+  ];
+};
+
 const createCategoryCriteria = ({searchValue, categoryIds}) => {
   return [
     getSearchCriterias('project_projectTaskCategory', searchValue),
@@ -210,6 +221,20 @@ export async function searchPriority({searchValue, page = 0, priorityIds}) {
     criteria: createPriorityCriteria({searchValue, priorityIds}),
     fieldKey: 'project_projectPriority',
     sortKey: 'project_projectPriority',
+    page,
+  });
+}
+
+export async function searchStatus({searchValue, page = 0, statusIds}) {
+  if (!Array.isArray(statusIds) || statusIds.length === 0) {
+    return {data: {data: [], total: 0}};
+  }
+
+  return createStandardSearch({
+    model: 'com.axelor.apps.project.db.TaskStatus',
+    criteria: createStatusCriteria({searchValue, statusIds}),
+    fieldKey: 'project_taskStatus',
+    sortKey: 'project_taskStatus',
     page,
   });
 }

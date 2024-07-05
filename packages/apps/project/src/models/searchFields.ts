@@ -29,4 +29,5 @@ export const project_searchFields: SearchFields = {
   project_projectTaskCategory: ['name'],
   project_projectTaskSection: ['name'],
   project_projectPriority: ['name'],
+  project_taskStatus: ['name'],
 };

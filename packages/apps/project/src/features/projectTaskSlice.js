@@ -33,6 +33,7 @@ import {
   searchSection as _searchSection,
   searchTargetVersion as _searchTargetVersion,
   updateProjectTask as _updateProjectTask,
+  searchStatus as _searchStatus,
 } from '../api/project-task-api';
 
 export const searchProjectTask = createAsyncThunk(
@@ -165,9 +166,22 @@ export const searchPriority = createAsyncThunk(
   },
 );
 
+export const searchStatus = createAsyncThunk(
+  'project_projectTask/searchStatus',
+  async function (data, {getState}) {
+    return handlerApiCall({
+      fetchFunction: _searchStatus,
+      data,
+      action: 'Project_SliceAction_SearchStatus',
+      getState,
+      responseOptions: {isArrayResponse: true},
+    });
+  },
+);
+
 export const updateProjectTask = createAsyncThunk(
   'project_projectTask/updateProjectTask',
-  async function (data, {getState, dispatch}) {
+  async function (data, {getState}) {
     return handlerApiCall({
       fetchFunction: _updateProjectTask,
       data,
@@ -216,6 +230,11 @@ const initialState = {
   moreLoadingPriority: false,
   isListEndPriority: false,
   priorityList: [],
+
+  loadingstatus: true,
+  moreLoadingstatus: false,
+  isListEndstatus: false,
+  statusList: [],
 
   projectTaskStatusList: [],
   projectPriorityList: [],
@@ -266,6 +285,12 @@ const projectTaskSlice = createSlice({
       moreLoading: 'moreLoadingPriority',
       isListEnd: 'isListEndPriority',
       list: 'priorityList',
+    });
+    generateInifiniteScrollCases(builder, searchStatus, {
+      loading: 'loadingStatus',
+      moreLoading: 'moreLoadingStatus',
+      isListEnd: 'isListEndStatus',
+      list: 'statusList',
     });
     builder.addCase(fetchProjectTaskStatus.fulfilled, (state, action) => {
       state.projectTaskStatusList = action.payload;

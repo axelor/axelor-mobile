@@ -143,6 +143,9 @@ export const project_modelAPI: ObjectFields = {
   project_projectPriority: schemaContructor.object({
     name: schemaContructor.string(),
   }),
+  project_taskStatus: schemaContructor.object({
+    name: schemaContructor.string(),
+  }),
   project_timesheetLine: schemaContructor.object({
     project: schemaContructor.subObject(),
     projectTask: schemaContructor.subObject(),

@@ -31,6 +31,7 @@ import {
   SectionSearchBar,
   TagTaskMultieValuePicker,
   TargetVersionSearchBar,
+  TaskStatusSearchBar,
 } from '../components';
 import {updateProject} from '../features/projectSlice';
 
@@ -137,6 +138,18 @@ export const project_formsRegister: FormConfigs = {
           differentiateBusinessProjects: false,
         },
       },
+      status: {
+        titleKey: 'Project_Status',
+        type: 'object',
+        widget: 'custom',
+        customComponent: TaskStatusSearchBar,
+        required: true,
+        dependsOn: {
+          project: () => {
+            return null;
+          },
+        },
+      },
       parentTask: {
         titleKey: 'Project_ParentTask',
         type: 'object',
@@ -191,6 +204,7 @@ export const project_formsRegister: FormConfigs = {
         titleKey: 'Project_Priority',
         type: 'object',
         widget: 'custom',
+        required: true,
         customComponent: PrioritySearchBar,
         dependsOn: {
           project: () => {

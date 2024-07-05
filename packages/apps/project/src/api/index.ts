@@ -32,6 +32,7 @@ export {
   searchPriority as searchPriorityApi,
   searchProjectTask as searchProjectTaskApi,
   searchSection as searchSectionApi,
+  searchStatus as searchStatusApi,
   searchTargetVersion as searchTargetVersionApi,
   updateProjectTask as updateProjectTaskApi,
 } from './project-task-api';

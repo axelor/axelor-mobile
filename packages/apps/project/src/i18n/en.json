@@ -45,6 +45,7 @@
   "Project_AssignedTo": "Assigned to",
   "Project_Progress": "Progress",
   "Project_Priority": "Priority",
+  "Project_Status": "Status",
   "Project_SliceAction_SearchProject": "search projects",
   "Project_SliceAction_FetchProjectById": "fetch project by id",
   "Project_SliceAction_FetchProjectStatus": "fetch project status",
@@ -59,5 +60,6 @@
   "Project_SliceAction_SearchCategory": "search categories",
   "Project_SliceAction_SearchSection": "search sections",
   "Project_SliceAction_SearchPriority": "search priorities",
-  "Project_SliceAction_UpdateProjectTask": "update project task"
+  "Project_SliceAction_UpdateProjectTask": "update project task",
+  "Project_SliceAction_SearchStatus": "search status"
 }

@@ -21,24 +21,44 @@ import {useSelector, FormView, useDispatch} from '@axelor/aos-mobile-core';
 import {fetchProjectFormById} from '../features/projectSlice';
 import {updateProjectTask} from '../features/projectTaskSlice';
 
-const TaskFormScreen = ({navigation}) => {
+const TaskFormScreen = ({navigation, route}) => {
+  const {isCreation} = route.params;
   const _dispatch = useDispatch();
 
   const {projectTask} = useSelector((state: any) => state.project_projectTask);
+  const {project} = useSelector((state: any) => state.project_project);
 
   useEffect(() => {
-    _dispatch(
-      (fetchProjectFormById as any)({projectId: projectTask?.project?.id}),
-    );
-  }, [_dispatch, projectTask?.project]);
+    if (isCreation) {
+      _dispatch((fetchProjectFormById as any)({projectId: project?.id}));
+    } else {
+      _dispatch(
+        (fetchProjectFormById as any)({projectId: projectTask?.project?.id}),
+      );
+    }
+  }, [_dispatch, isCreation, project?.id, projectTask?.project]);
 
   const _defaultValue = useMemo(() => {
-    return {
-      ...projectTask,
-    };
-  }, [projectTask]);
+    if (isCreation) {
+      return {
+        project: project,
+      };
+    } else {
+      return {
+        ...projectTask,
+      };
+    }
+  }, [isCreation, project, projectTask]);
 
   const updateTaskAPI = useCallback(
+    (objectState, dispatch) => {
+      dispatch((updateProjectTask as any)({projectTask: objectState}));
+      navigation.pop();
+    },
+    [navigation],
+  );
+
+  const createTaskAPI = useCallback(
     (objectState, dispatch) => {
       dispatch((updateProjectTask as any)({projectTask: objectState}));
       navigation.pop();
@@ -52,13 +72,24 @@ const TaskFormScreen = ({navigation}) => {
       defaultValue={_defaultValue}
       actions={[
         {
-          key: 'update-prospect',
+          key: 'update-project-task',
           type: 'update',
           needValidation: true,
           needRequiredFields: true,
           customAction: ({dispatch, objectState}) => {
             updateTaskAPI(objectState, dispatch);
           },
+          hideIf: () => isCreation,
+        },
+        {
+          key: 'create-project-task',
+          type: 'create',
+          needValidation: true,
+          needRequiredFields: true,
+          customAction: ({dispatch, objectState}) => {
+            createTaskAPI(objectState, dispatch);
+          },
+          hideIf: () => !isCreation,
         },
       ]}
     />
