@@ -61,5 +61,6 @@
   "Project_SliceAction_SearchSection": "recherche sur les sections",
   "Project_SliceAction_SearchPriority": "recherche sur les priorités",
   "Project_SliceAction_UpdateProjectTask": "mise à jour de la tâche du projet",
-  "Project_SliceAction_SearchStatus": "recherche sur les statuts"
+  "Project_SliceAction_SearchStatus": "recherche sur les statuts",
+  "Project_SliceAction_CreateProjectTask": "création d'une tâche de projet"
 }

@@ -61,5 +61,6 @@
   "Project_SliceAction_SearchSection": "search sections",
   "Project_SliceAction_SearchPriority": "search priorities",
   "Project_SliceAction_UpdateProjectTask": "update project task",
-  "Project_SliceAction_SearchStatus": "search status"
+  "Project_SliceAction_SearchStatus": "search status",
+  "Project_SliceAction_CreateProjectTask": "create project task"
 }
