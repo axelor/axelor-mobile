@@ -239,7 +239,7 @@ export async function searchStatus({searchValue, page = 0, statusIds}) {
   });
 }
 
-export async function updateProjectTask({projectTask}) {
+export async function updateCreateProjectTask({projectTask}) {
   return axiosApiProvider.post({
     url: '/ws/rest/com.axelor.apps.project.db.ProjectTask/',
     data: {

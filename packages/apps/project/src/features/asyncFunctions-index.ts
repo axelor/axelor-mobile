@@ -23,7 +23,6 @@ export {
   searchSubProject,
 } from './projectSlice';
 export {
-  createProjectTask,
   fetchProjectPriority,
   fetchProjectTaskById,
   fetchProjectTaskStatus,
@@ -35,6 +34,6 @@ export {
   searchSection,
   searchStatus,
   searchTargetVersion,
-  updateProjectTask,
+  updateCreateProjectTask,
 } from './projectTaskSlice';
 export {fetchTimesheetLinesByTask} from './timesheetLinesSlice';

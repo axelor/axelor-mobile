@@ -19,10 +19,7 @@
 import React, {useCallback, useEffect, useMemo} from 'react';
 import {useSelector, FormView, useDispatch} from '@axelor/aos-mobile-core';
 import {fetchProjectFormById} from '../features/projectSlice';
-import {
-  createProjectTask,
-  updateProjectTask,
-} from '../features/projectTaskSlice';
+import {updateCreateProjectTask} from '../features/projectTaskSlice';
 
 const TaskFormScreen = ({navigation, route}) => {
   const {isCreation} = route.params;
@@ -42,20 +39,24 @@ const TaskFormScreen = ({navigation, route}) => {
   }, [_dispatch, isCreation, project?.id, projectTask?.project]);
 
   const _defaultValue = useMemo(() => {
-    if (isCreation) {
-      return {
-        project: project,
-      };
-    } else {
+    if (!isCreation) {
       return {
         ...projectTask,
       };
+    } else {
+      return null;
     }
-  }, [isCreation, project, projectTask]);
+  }, [isCreation, projectTask]);
+
+  const creationDefaultValue = useMemo(() => {
+    return {
+      project: project,
+    };
+  }, [project]);
 
   const updateTaskAPI = useCallback(
     (objectState, dispatch) => {
-      dispatch((updateProjectTask as any)({projectTask: objectState}));
+      dispatch((updateCreateProjectTask as any)({projectTask: objectState}));
       navigation.pop();
     },
     [navigation],
@@ -63,16 +64,23 @@ const TaskFormScreen = ({navigation, route}) => {
 
   const createTaskAPI = useCallback(
     (objectState, dispatch) => {
-      dispatch((createProjectTask as any)({projectTask: objectState}));
+      dispatch(
+        (updateCreateProjectTask as any)({
+          projectTask: objectState,
+          isCreation: isCreation,
+        }),
+      );
       navigation.pop();
     },
-    [navigation],
+    [isCreation, navigation],
   );
 
   return (
     <FormView
       formKey="project_task"
       defaultValue={_defaultValue}
+      creationDefaultValue={creationDefaultValue}
+      defaultEditMode={isCreation}
       actions={[
         {
           key: 'update-project-task',

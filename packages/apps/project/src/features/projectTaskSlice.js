@@ -32,7 +32,7 @@ import {
   searchProjectTask as _searchProjectTask,
   searchSection as _searchSection,
   searchTargetVersion as _searchTargetVersion,
-  updateProjectTask as _updateProjectTask,
+  updateCreateProjectTask as _updateCreateProjectTask,
   searchStatus as _searchStatus,
 } from '../api/project-task-api';
 
@@ -179,36 +179,27 @@ export const searchStatus = createAsyncThunk(
   },
 );
 
-export const updateProjectTask = createAsyncThunk(
-  'project_projectTask/updateProjectTask',
+export const updateCreateProjectTask = createAsyncThunk(
+  'project_projectTask/updateCreateProjectTask',
   async function (data, {getState}) {
     return handlerApiCall({
-      fetchFunction: _updateProjectTask,
+      fetchFunction: _updateCreateProjectTask,
       data,
-      action: 'Project_SliceAction_UpdateProjectTask',
+      action: 'Project_SliceAction_UpdateCreateProjectTask',
       getState,
       responseOptions: {isArrayResponse: true},
-    }).then(() => {
-      return handlerApiCall({
-        fetchFunction: _fetchProjectTaskById,
-        data: {projecTaskId: data?.projectTask?.id},
-        action: 'Project_SliceAction_FetchProjectTaskById',
-        getState,
-        responseOptions: {isArrayResponse: false},
-      });
-    });
-  },
-);
-
-export const createProjectTask = createAsyncThunk(
-  'project_projectTask/createProjectTask',
-  async function (data, {getState}) {
-    return handlerApiCall({
-      fetchFunction: _updateProjectTask,
-      data,
-      action: 'Project_SliceAction_CreateProjectTask',
-      getState,
-      responseOptions: {isArrayResponse: false},
+    }).then(res => {
+      if (data.isCreation) {
+        return res;
+      } else {
+        return handlerApiCall({
+          fetchFunction: _fetchProjectTaskById,
+          data: {projecTaskId: data?.projectTask?.id},
+          action: 'Project_SliceAction_FetchProjectTaskById',
+          getState,
+          responseOptions: {isArrayResponse: false},
+        });
+      }
     });
   },
 );
@@ -325,20 +316,13 @@ const projectTaskSlice = createSlice({
       state.loadingTaskTag = false;
       state.taskTagList = action.payload;
     });
-    builder.addCase(updateProjectTask.pending, (state, action) => {
+    builder.addCase(updateCreateProjectTask.pending, (state, action) => {
       state.loadingProjectTask = true;
     });
-    builder.addCase(updateProjectTask.fulfilled, (state, action) => {
-      state.loadingProjectTask = false;
-      state.projectTask = action.payload;
-      state.projectTaskList = updateAgendaItems(state.projectTaskList, [
-        action.payload,
-      ]);
-    });
-    builder.addCase(createProjectTask.pending, (state, action) => {
-      state.loadingProjectTask = true;
-    });
-    builder.addCase(createProjectTask.fulfilled, (state, action) => {
+    builder.addCase(updateCreateProjectTask.fulfilled, (state, action) => {
+      if (!action.meta.arg?.isCreation) {
+        state.projectTask = action.payload;
+      }
       state.loadingProjectTask = false;
       state.projectTaskList = updateAgendaItems(state.projectTaskList, [
         action.payload,
