@@ -17,10 +17,10 @@
  */
 
 import {
-  axiosApiProvider,
   createStandardFetch,
   createStandardSearch,
   formatRequestBody,
+  getActionApi,
   getNextMonth,
   getPreviousMonth,
   getSearchCriterias,
@@ -148,19 +148,29 @@ export async function getEvent({eventId}) {
 }
 
 export async function createEvent({event}) {
-  return axiosApiProvider.put({
+  const {formattedData, matchers} = formatRequestBody(event);
+
+  return getActionApi().send({
     url: '/ws/rest/com.axelor.apps.crm.db.Event',
-    data: {
-      data: formatRequestBody(event),
+    method: 'put',
+    body: {
+      data: formattedData,
     },
+    description: 'create event',
+    matchers,
   });
 }
 
 export async function updateEvent({event}) {
-  return axiosApiProvider.post({
+  const {formattedData, matchers} = formatRequestBody(event);
+
+  return getActionApi().send({
     url: '/ws/rest/com.axelor.apps.crm.db.Event',
-    data: {
-      data: formatRequestBody(event),
+    method: 'post',
+    body: {
+      data: formattedData,
     },
+    description: 'update event',
+    matchers,
   });
 }

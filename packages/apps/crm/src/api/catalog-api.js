@@ -19,6 +19,7 @@
 import {
   axiosApiProvider,
   createStandardSearch,
+  getActionApi,
   getSearchCriterias,
 } from '@axelor/aos-mobile-core';
 
@@ -33,6 +34,7 @@ export async function searchCatalog({searchValue, page = 0}) {
     fieldKey: 'crm_catalog',
     sortKey: 'crm_catalog',
     page,
+    provider: 'model',
   });
 }
 
@@ -49,9 +51,10 @@ export async function createCatalog({
   image,
   description,
 }) {
-  return axiosApiProvider.put({
-    url: '/ws/rest/com.axelor.apps.crm.db.Catalog/',
-    data: {
+  return getActionApi().send({
+    url: '/ws/rest/com.axelor.apps.crm.db.Catalog',
+    method: 'put',
+    body: {
       data: {
         name,
         catalogType,
@@ -59,6 +62,14 @@ export async function createCatalog({
         image,
         description,
       },
+    },
+    description: 'create catalog',
+    matchers: {
+      name: 'data.name',
+      catalogType: 'data.catalogType',
+      pdfFile: 'data.pdfFile',
+      image: 'data.image',
+      description: 'data.description',
     },
   });
 }

@@ -72,6 +72,7 @@ export async function getProspectStatus() {
     fieldKey: 'crm_prospectStatus',
     numberElementsByPage: null,
     page: 0,
+    provider: 'model',
   });
 }
 

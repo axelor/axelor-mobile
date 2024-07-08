@@ -23,5 +23,6 @@ export async function getCompany({companyId}) {
     model: 'com.axelor.apps.base.db.Company',
     id: companyId,
     fieldKey: 'crm_company',
+    provider: 'model',
   });
 }
