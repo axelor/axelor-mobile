@@ -123,6 +123,9 @@ const mapStudioWidgetToWidget = (
     case 'Password':
       result.widget = 'password';
       break;
+    case 'Drawing':
+      result.widget = 'signature';
+      break;
     default:
       break;
   }
@@ -316,7 +319,7 @@ const manageContentOfModel = (
             config.options = {item};
           }
 
-          if (fieldType === 'object') {
+          if (fieldType === 'object' && widget !== 'signature') {
             config.widget = 'custom';
             config.customComponent = CustomSearchBar;
             config.options = {item};
