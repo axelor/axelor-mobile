@@ -96,7 +96,7 @@ const Application = ({
       configuration?.isDemoSession,
       configuration?.demoSession,
     );
-  }, []);
+  }, [configuration?.demoSession, configuration?.isDemoSession]);
 
   return (
     <ContextsProvider
