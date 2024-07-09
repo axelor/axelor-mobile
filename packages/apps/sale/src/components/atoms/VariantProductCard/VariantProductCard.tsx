@@ -16,7 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import React, {useCallback} from 'react';
+import React, {useMemo} from 'react';
 import {StyleSheet, View} from 'react-native';
 import {
   useMetafileUri,
@@ -67,7 +67,7 @@ const VariantProductCard = ({
   const formatPrice = usePriceFormat();
   const formatNumber = useDigitFormat();
 
-  const renderAttributes = useCallback(() => {
+  const attributes = useMemo(() => {
     if (
       !Array.isArray(attributesList?.attributes) ||
       attributesList?.attributes.length === 0
@@ -129,7 +129,7 @@ const VariantProductCard = ({
             },
           ],
         }}
-        lowerTexts={renderAttributes()}
+        lowerTexts={attributes}
         sideBadges={{
           style: styles.sideContainer,
           items: [
