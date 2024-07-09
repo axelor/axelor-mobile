@@ -202,12 +202,12 @@ const ConsumedProductListScreen = ({route, navigation}) => {
                 key: 'missingStatus',
               },
               {
-                title: I18n.t('Manufacturing_Status_Planned'),
+                title: I18n.t('Manufacturing_Status_ToPick'),
                 color: Colors.plannedColor,
                 key: 'partiallyStatus',
               },
               {
-                title: I18n.t('Manufacturing_Status_Finished'),
+                title: I18n.t('Manufacturing_Status_Consumed'),
                 color: Colors.primaryColor,
                 key: 'finishedStatus',
               },
