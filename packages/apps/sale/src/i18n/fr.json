@@ -107,6 +107,7 @@
   "Sale_SubTotalMarkup": "Sous-total : taux de marge",
   "Sale_SupplyMethod": "Mode d'approvisionnement",
   "Sale_PriceCalculationDetails": "Détails du calcul du prix",
+  "Sale_ComplementaryProducts": "Produits complémentaires",
   "Sale_SliceAction_FetchSaleConfig": "récupération des configurations de vente",
   "Sale_SliceAction_FetchSaleOrder": "récupération des commandes client",
   "Sale_SliceAction_SearchCustomer": "recherche sur les clients",
@@ -118,5 +119,6 @@
   "Sale_SliceAction_FetchProductCompanyConfig": "récupération de la configuration du produit lié à la la socitié",
   "Sale_SliceAction_SearchCustomerCategory": "recherche sur les catégories de client",
   "Sale_SliceAction_FetchCustomerById": "récupération d'un client par id",
-  "Sale_SliceAction_FetchSaleOrderLineById": "récupération d'une ligne de commande client par id"
+  "Sale_SliceAction_FetchSaleOrderLineById": "récupération d'une ligne de commande client par id",
+  "Sale_SliceAction_FetchComplementaryProduct": "récupération des produits complémentaires"
 }
