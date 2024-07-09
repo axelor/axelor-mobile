@@ -25,4 +25,5 @@ export const sale_sortFields: SortFields = {
   sale_customerDelivery: ['statusSelect', '-estimatedDate'],
   sale_saleOrderLine: ['sequence'],
   sale_customerCategory: ['name'],
+  sale_complementaryProduct: ['optional'],
 };
