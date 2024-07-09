@@ -9,6 +9,8 @@
   "Manufacturing_Status_Merged": "Fusionné",
   "Manufacturing_Status_Canceled": "Annulé",
   "Manufacturing_Status_Realized": "Réalisé",
+  "Manufacturing_Status_ToPick": "À récupérer",
+  "Manufacturing_Status_Consumed": "Consommé",
   "Manufacturing_Priority_Low": "Faible",
   "Manufacturing_Priority_Normal": "Normal",
   "Manufacturing_Priority_High": "Elevé",
