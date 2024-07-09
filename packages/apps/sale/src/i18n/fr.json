@@ -108,6 +108,15 @@
   "Sale_SupplyMethod": "Mode d'approvisionnement",
   "Sale_PriceCalculationDetails": "Détails du calcul du prix",
   "Sale_ComplementaryProducts": "Produits complémentaires",
+  "Sale_ProductPriceLists": "Listes de prix",
+  "Sale_Active": "Actif",
+  "Sale_Unactive": "Inactif",
+  "Sale_MinimalQuantity": "Quantité minimale",
+  "Sale_PriceListType_Sale": "Vente",
+  "Sale_PriceListType_Purchase": "Achat",
+  "Sale_PriceListType_CustomerContract": "Contrat client",
+  "Sale_PriceListType_SupplierContract": "Contrat fournisseur",
+  "Sale_NonNegotiable": "Non négociable",
   "Sale_SliceAction_FetchSaleConfig": "récupération des configurations de vente",
   "Sale_SliceAction_FetchSaleOrder": "récupération des commandes client",
   "Sale_SliceAction_SearchCustomer": "recherche sur les clients",
@@ -120,5 +129,6 @@
   "Sale_SliceAction_SearchCustomerCategory": "recherche sur les catégories de client",
   "Sale_SliceAction_FetchCustomerById": "récupération d'un client par id",
   "Sale_SliceAction_FetchSaleOrderLineById": "récupération d'une ligne de commande client par id",
-  "Sale_SliceAction_FetchComplementaryProduct": "récupération des produits complémentaires"
+  "Sale_SliceAction_FetchComplementaryProduct": "récupération des produits complémentaires",
+  "Sale_SliceAction_FetchPriceListLine": "récupération des lignes d'une liste de prix"
 }

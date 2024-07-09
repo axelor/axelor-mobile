@@ -108,6 +108,15 @@
   "Sale_SupplyMethod": "Supply method",
   "Sale_PriceCalculationDetails": "Price calculation details",
   "Sale_ComplementaryProducts": "Complementary products",
+  "Sale_ProductPriceLists": "Price lists",
+  "Sale_Active": "Active",
+  "Sale_Unactive": "Unactive",
+  "Sale_MinimalQuantity": "Minimal quantity",
+  "Sale_PriceListType_Sale": "Sale",
+  "Sale_PriceListType_Purchase": "Purchase",
+  "Sale_PriceListType_CustomerContract": "Customer contract",
+  "Sale_PriceListType_SupplierContract": "Supplier contract",
+  "Sale_NonNegotiable": "Non-negotiable",
   "Sale_SliceAction_FetchSaleConfig": "fetch sale config",
   "Sale_SliceAction_FetchSaleOrder": "fetch sale orders",
   "Sale_SliceAction_SearchCustomer": "search customers",
@@ -120,5 +129,6 @@
   "Sale_SliceAction_SearchCustomerCategory": "search customer categories",
   "Sale_SliceAction_FetchCustomerById": "fetch customer by id",
   "Sale_SliceAction_FetchSaleOrderLineById": "fetch sale order line by id",
-  "Sale_SliceAction_FetchComplementaryProduct": "fetch complementary products"
+  "Sale_SliceAction_FetchComplementaryProduct": "fetch complementary products",
+  "Sale_SliceAction_FetchPriceListLine": "fetch price list lines"
 }
