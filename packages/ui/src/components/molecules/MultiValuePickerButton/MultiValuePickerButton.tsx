@@ -75,7 +75,9 @@ const MultiValuePickerButton = ({
                 </TouchableOpacity>
               ))
             : placeholder && (
-                <Text textColor={Colors.placeholderTextColor}>
+                <Text
+                  textColor={Colors.placeholderTextColor}
+                  style={styles.placeHolder}>
                   {placeholder}
                 </Text>
               )}
@@ -103,6 +105,10 @@ const getStyles = (Colors: ThemeColors) =>
     text: {
       textAlign: 'center',
       marginRight: 5,
+    },
+    placeHolder: {
+      paddingLeft: 4,
+      fontSize: 15,
     },
     listItemContainer: {
       flexDirection: 'row',

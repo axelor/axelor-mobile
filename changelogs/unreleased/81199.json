@@ -1,5 +1,5 @@
 {
-  "title": "Picker: add possibility to display a placeholder",
+  "title": "Picker components: add possibility to display a placeholder",
   "type": "feat",
   "packages": "ui"
 }

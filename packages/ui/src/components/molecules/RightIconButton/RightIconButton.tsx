@@ -16,11 +16,9 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import React, {useMemo} from 'react';
+import React from 'react';
 import {Dimensions, StyleSheet, TouchableOpacity} from 'react-native';
 import {Card, Text} from '../../atoms';
-import {useThemeColor} from '../../../theme';
-import {checkNullString} from '../../../utils';
 
 interface RightIconProps {
   style?: any;
@@ -37,22 +35,12 @@ const RightIconButton = ({
   onPress = () => {},
   title = null,
   icon,
-  placeholder,
 }: RightIconProps) => {
-  const Colors = useThemeColor();
-
-  const displayPlaceholder = useMemo(() => {
-    return checkNullString(title) && !checkNullString(placeholder);
-  }, [placeholder, title]);
-
   return (
     <TouchableOpacity onPress={onPress} activeOpacity={0.9}>
       <Card style={[styles.container, style]}>
-        <Text
-          style={[styleText, styles.text]}
-          textColor={displayPlaceholder && Colors.placeholderTextColor}
-          numberOfLines={2}>
-          {!checkNullString(title) ? title : displayPlaceholder && placeholder}
+        <Text style={[styleText, styles.text]} numberOfLines={2}>
+          {title != null ? title : ''}
         </Text>
         {icon}
       </Card>

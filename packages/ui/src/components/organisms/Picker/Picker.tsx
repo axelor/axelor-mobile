@@ -141,11 +141,6 @@ const Picker = ({
     [Colors, _required],
   );
 
-  const styles = useMemo(
-    () => getStyles(Colors, _required, marginBottom, isOpen),
-    [Colors, _required, marginBottom, isOpen],
-  );
-
   const _displayValue = useCallback(
     item => {
       if (item == null) {
@@ -161,6 +156,19 @@ const Picker = ({
       }
     },
     [displayValue, labelField, valueField],
+  );
+
+  const displayPlaceholder = useMemo(() => {
+    return (
+      checkNullString(_displayValue(selectedItem)) &&
+      !checkNullString(placeholder)
+    );
+  }, [_displayValue, placeholder, selectedItem]);
+
+  const styles = useMemo(
+    () =>
+      getStyles(Colors, _required, marginBottom, isOpen, displayPlaceholder),
+    [Colors, _required, marginBottom, isOpen, displayPlaceholder],
   );
 
   if (readonly) {
@@ -193,7 +201,7 @@ const Picker = ({
             color={Colors.secondaryColor_dark.background}
           />
         }
-        title={_displayValue(selectedItem)}
+        title={displayPlaceholder ? placeholder : _displayValue(selectedItem)}
         placeholder={placeholder}
         styleText={styles.textPicker}
         style={[
@@ -228,6 +236,7 @@ const getStyles = (
   _required: boolean,
   marginBottom: number,
   isOpen: boolean,
+  displayPlaceholder: boolean,
 ) =>
   StyleSheet.create({
     container: {
@@ -246,9 +255,11 @@ const getStyles = (
       borderWidth: 1,
       marginHorizontal: 0,
       minHeight: 40,
+      paddingLeft: displayPlaceholder ? 9 : 20,
     },
     textPicker: {
-      left: '-20%',
+      color: displayPlaceholder ? Colors.placeholderTextColor : Colors.text,
+      fontSize: displayPlaceholder ? 15 : 16,
     },
     title: {
       marginLeft: 10,
