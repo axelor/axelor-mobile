@@ -76,8 +76,7 @@ const ActionCard = ({
       Array.isArray(actionList) && actionList.length > 0
         ? actionList
             .filter(action => !action.hidden)
-            .map(action => (action.large ? [action, null] : action))
-            .flat()
+            .flatMap(action => (action.large ? [action, null] : action))
         : [],
     [actionList],
   );
@@ -101,17 +100,10 @@ const ActionCard = ({
   }, [_actionList]);
 
   useEffect(() => {
-    if (
-      _actionList.length > 2 ||
-      _actionList[0]?.large ||
-      _actionList[1]?.large
-    ) {
-      setDisplaySeeActionsButton(true);
-      setIsActionsVisible(false);
-    } else {
-      setDisplaySeeActionsButton(false);
-      setIsActionsVisible(true);
-    }
+    const shouldDisplay =
+      _actionList.length > 2 || _actionList[0]?.large || _actionList[1]?.large;
+    setDisplaySeeActionsButton(shouldDisplay);
+    setIsActionsVisible(!shouldDisplay);
   }, [_actionList]);
 
   const styles = useMemo(
@@ -119,7 +111,7 @@ const ActionCard = ({
     [isMoreThanOneAction],
   );
 
-  const getIconColor = action => {
+  const getIconColor = (action: Action) => {
     return action.iconColor ?? Colors.secondaryColor_dark.background;
   };
 
@@ -256,7 +248,7 @@ const getStyles = (isMoreThanOneAction: boolean) =>
     },
   });
 
-const getVerticalActionStyle = isLargeAction =>
+const getVerticalActionStyle = (isLargeAction: boolean) =>
   StyleSheet.create({
     action: {
       height: isLargeAction ? '100%' : '50%',
