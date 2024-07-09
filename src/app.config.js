@@ -21,6 +21,18 @@ export const app_config = {
   },
 
   /*
+   * This configuration is used to create a default
+   * session for demo when the application is running
+   * for the first time.
+   */
+  isDemoSession: false,
+  demoSession: {
+    name: '',
+    url: '',
+    username: '',
+  },
+
+  /*
    * This setting is used to define the default language of the application.
    * This value is automatically overwritten by the user's default language
    * once logged in if the latter is set.
