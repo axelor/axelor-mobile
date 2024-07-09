@@ -17,7 +17,7 @@
  */
 
 import React from 'react';
-import {StyleSheet, View, TouchableOpacity} from 'react-native';
+import {StyleSheet, TouchableOpacity} from 'react-native';
 import {
   useTranslator,
   useSelector,
@@ -45,16 +45,16 @@ const ProductSeeStockLocationDistribution = ({product, companyId}) => {
     parseInt(productIndicators?.futureQty, 10) !== 0
   ) {
     return (
-      <TouchableOpacity onPress={navigateStockLocationDetails}>
-        <View style={styles.arrowContainer}>
-          <Text>{I18n.t('Stock_SeeDistributionStockLocation')}</Text>
-          <Icon
+      <TouchableOpacity
+        onPress={navigateStockLocationDetails}
+        style={styles.container}>
+        <Text>{I18n.t('Stock_SeeDistributionStockLocation')}</Text>
+        <Icon
             name="angle-right"
             size={24}
             color={Colors.primaryColor.background}
-            style={styles.arrowIcon}
-          />
-        </View>
+          style={styles.icon}
+        />
       </TouchableOpacity>
     );
   }
@@ -63,16 +63,15 @@ const ProductSeeStockLocationDistribution = ({product, companyId}) => {
 };
 
 const styles = StyleSheet.create({
-  arrowContainer: {
+  container: {
     flexDirection: 'row',
-    justifyContent: 'flex-end',
     alignItems: 'center',
-    marginHorizontal: 32,
-    width: '80%',
+    width: '90%',
+    alignSelf: 'center',
+    flex: 1,
   },
-  arrowIcon: {
-    marginRight: -6,
-    marginLeft: 5,
+  icon: {
+    flex: 1,
   },
 });
 
