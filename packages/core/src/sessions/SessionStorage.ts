@@ -33,6 +33,12 @@ class SessionStorage {
 
   constructor(private localStorage: Storage) {}
 
+  init(isDemoSession: boolean, demoSession: Session) {
+    if (isDemoSession && this.localStorage.getItem(SESSION_KEY) == null) {
+      this.registerSession({session: demoSession});
+    }
+  }
+
   register(callBack) {
     this.refreshCallBack = callBack;
   }

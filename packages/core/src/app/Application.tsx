@@ -31,10 +31,13 @@ import {RouterProvider} from '../config';
 import {ApiProviderConfig} from '../apiProviders/config';
 import {proxy, releaseConfig, versionCheckConfig} from './types';
 import {RouteSwitcher} from '../config/RouterProvider';
+import {Session, sessionStorage} from '../sessions';
 
 interface appConfig {
   testInstanceConfig: proxy;
   releaseInstanceConfig: releaseConfig;
+  isDemoSession: boolean;
+  demoSession: Session;
   defaultLanguage: string;
   defaultRequestLimit: number;
   enableConnectionSessions: boolean;
@@ -89,6 +92,13 @@ const Application = ({
   useEffect(() => {
     modulesProvider.init(modules);
   }, [modules]);
+
+  useEffect(() => {
+    sessionStorage.init(
+      configuration?.isDemoSession,
+      configuration?.demoSession,
+    );
+  }, [configuration?.demoSession, configuration?.isDemoSession]);
 
   return (
     <ContextsProvider
