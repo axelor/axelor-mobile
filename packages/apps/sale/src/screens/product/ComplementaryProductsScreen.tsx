@@ -60,7 +60,7 @@ const ComplementaryProductsScreen = ({}) => {
             code={item.product?.code}
             qty={item.qty}
             price={item.product?.salePrice}
-            unit={item.product?.saleCurrency?.symbol}
+            currency={item.product?.saleCurrency?.symbol}
           />
         )}
       />

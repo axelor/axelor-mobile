@@ -24,12 +24,12 @@ import {
 import {fetchComplementaryProduct as _fetchComplementaryProduct} from '../api/complementary-product-api';
 
 export const fetchComplementaryProduct = createAsyncThunk(
-  'sale_complementaryProduct/fetchComplementaryProduct ',
+  'sale_complementaryProduct/fetchComplementaryProduct',
   async function (data, {getState}) {
     return handlerApiCall({
       fetchFunction: _fetchComplementaryProduct,
       data,
-      action: 'Sale_SliceAction_FetchComplementaryProduct ',
+      action: 'Sale_SliceAction_FetchComplementaryProduct',
       getState,
       responseOptions: {isArrayResponse: true},
     });

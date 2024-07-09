@@ -120,5 +120,5 @@
   "Sale_SliceAction_SearchCustomerCategory": "search customer categories",
   "Sale_SliceAction_FetchCustomerById": "fetch customer by id",
   "Sale_SliceAction_FetchSaleOrderLineById": "fetch sale order line by id",
-  "Sale_SliceAction_FetchComplementaryProduct ": "fetch complementary products"
+  "Sale_SliceAction_FetchComplementaryProduct": "fetch complementary products"
 }

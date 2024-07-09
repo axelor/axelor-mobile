@@ -35,7 +35,7 @@ interface ComplementaryProductCardProps {
   code: string;
   qty: number;
   price: number;
-  unit: string;
+  currency: string;
 }
 
 const ComplementaryProductCard = ({
@@ -46,7 +46,7 @@ const ComplementaryProductCard = ({
   code,
   qty,
   price,
-  unit,
+  currency,
 }: ComplementaryProductCardProps) => {
   const I18n = useTranslator();
   const Colors = useThemeColor();
@@ -96,7 +96,7 @@ const ComplementaryProductCard = ({
           items: [
             {
               customComponent: (
-                <TextUnit value={formatPrice(price)} unit={unit} />
+                <TextUnit value={formatPrice(price)} unit={currency} />
               ),
             },
           ],

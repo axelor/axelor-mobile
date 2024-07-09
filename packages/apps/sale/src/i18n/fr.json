@@ -120,5 +120,5 @@
   "Sale_SliceAction_SearchCustomerCategory": "recherche sur les catégories de client",
   "Sale_SliceAction_FetchCustomerById": "récupération d'un client par id",
   "Sale_SliceAction_FetchSaleOrderLineById": "récupération d'une ligne de commande client par id",
-  "Sale_SliceAction_FetchComplementaryProduct ": "récupération des produits complémentaires"
+  "Sale_SliceAction_FetchComplementaryProduct": "récupération des produits complémentaires"
 }
