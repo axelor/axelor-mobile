@@ -220,4 +220,76 @@ export const sale_typeObjects: ModuleSelections = [
       },
     },
   },
+  {
+    modelName: 'com.axelor.apps.base.db.PriceList',
+    fields: {
+      typeSelect: {
+        content: [
+          {
+            key: 'Sale',
+            value: 1,
+            title: 'Sale_PriceListType_Sale',
+          },
+          {
+            key: 'Purchase',
+            value: 2,
+            title: 'Sale_PriceListType_Purchase',
+          },
+          {
+            key: 'CustomerContract',
+            value: 3,
+            title: 'Sale_PriceListType_CustomerContract',
+          },
+          {
+            key: 'SupplierContract',
+            value: 4,
+            title: 'Sale_PriceListType_SupplierContract',
+          },
+        ],
+      },
+    },
+  },
+  {
+    modelName: 'com.axelor.apps.base.db.PriceListLine',
+    fields: {
+      typeSelect: {
+        content: [
+          {
+            key: 'Discount',
+            value: 1,
+            title: null,
+          },
+          {
+            key: 'Increase',
+            value: 2,
+            title: null,
+          },
+          {
+            key: 'Replace',
+            value: 3,
+            title: null,
+          },
+        ],
+      },
+      amountTypeSelect: {
+        content: [
+          {
+            key: 'NoDiscount',
+            value: 0,
+            title: null,
+          },
+          {
+            key: 'InPercent',
+            value: 1,
+            title: null,
+          },
+          {
+            key: 'Fixed',
+            value: 2,
+            title: null,
+          },
+        ],
+      },
+    },
+  },
 ];

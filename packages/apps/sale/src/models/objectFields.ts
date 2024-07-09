@@ -191,4 +191,20 @@ export const sale_modelAPI: ObjectFields = {
     optional: schemaContructor.boolean(),
     qty: schemaContructor.number(),
   }),
+  sale_priceListLine: schemaContructor.object({
+    priceList: schemaContructor.subObject().concat(
+      schemaContructor.object({
+        isActive: schemaContructor.boolean(),
+        title: schemaContructor.string(),
+        applicationBeginDate: schemaContructor.string(),
+        applicationEndDate: schemaContructor.string(),
+        typeSelect: schemaContructor.number(),
+        nonNegotiable: schemaContructor.boolean(),
+      }),
+    ),
+    minQty: schemaContructor.number(),
+    typeSelect: schemaContructor.number(),
+    amountTypeSelect: schemaContructor.number(),
+    amount: schemaContructor.number(),
+  }),
 };

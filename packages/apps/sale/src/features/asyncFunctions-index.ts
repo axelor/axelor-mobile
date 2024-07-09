@@ -23,6 +23,7 @@ export {
   searchCustomer,
   searchCustomerCategory,
 } from './customerSlice';
+export {fetchPriceListLine} from './priceListLineSlice';
 export {
   fetchProductById,
   fetchProductCompanyConfig,
