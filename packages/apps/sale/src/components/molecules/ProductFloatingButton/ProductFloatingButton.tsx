@@ -19,11 +19,12 @@
 import React from 'react';
 import {StyleSheet} from 'react-native';
 import {FloatingButton, useThemeColor} from '@axelor/aos-mobile-ui';
-import {useTranslator} from '@axelor/aos-mobile-core';
+import {useNavigation, useTranslator} from '@axelor/aos-mobile-core';
 
 const ProductFloatingButton = ({}) => {
   const I18n = useTranslator();
   const Colors = useThemeColor();
+  const navigation = useNavigation();
 
   return (
     <FloatingButton
@@ -33,7 +34,7 @@ const ProductFloatingButton = ({}) => {
         {
           key: 1,
           title: 'Sale_SeeComplementaryProducts',
-          onPress: () => {},
+          onPress: () => navigation.navigate('ComplementaryProductsScreen'),
           iconName: 'diagram-3-fill',
           color: Colors.plannedColor,
         },

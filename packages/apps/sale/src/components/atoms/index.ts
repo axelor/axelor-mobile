@@ -17,6 +17,7 @@
  */
 
 export {default as ClientCard} from './ClientCard/ClientCard';
+export {default as ComplementaryProductCard} from './ComplementaryProductCard/ComplementaryProductCard';
 export {default as DropdownDescriptionsView} from './DropdownDescriptionsView/DropdownDescriptionsView';
 export {default as DropdownFollowUpView} from './DropdownFollowUpView/DropdownFollowUpView';
 export {default as DropdownGeneralView} from './DropdownGeneralView/DropdownGeneralView';
