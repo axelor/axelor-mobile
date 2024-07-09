@@ -38,6 +38,7 @@ interface dateInputConfig {
 interface PeriodInputProps {
   startDateConfig: dateInputConfig;
   endDateConfig: dateInputConfig;
+  showTitle?: boolean;
   horizontal?: boolean;
   style?: any;
 }
@@ -45,6 +46,7 @@ interface PeriodInputProps {
 const PeriodInput = ({
   startDateConfig,
   endDateConfig,
+  showTitle = true,
   horizontal = true,
   style,
 }: PeriodInputProps) => {
@@ -83,7 +85,7 @@ const PeriodInput = ({
       return (
         <DateInput
           style={styles.dateInput}
-          title={I18n.t(translationKey)}
+          title={showTitle && I18n.t(translationKey)}
           mode="date"
           nullable
           popup={horizontal}
@@ -102,6 +104,7 @@ const PeriodInput = ({
       endDateConfig,
       horizontal,
       I18n,
+      showTitle,
       startDate,
       startDateConfig,
       styles.dateInput,
