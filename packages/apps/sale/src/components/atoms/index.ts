@@ -26,6 +26,7 @@ export {default as DropdownSOLConfigurationView} from './DropdownSOLConfiguratio
 export {default as DropdownSOLMarginView} from './DropdownSOLMarginView/DropdownSOLMarginView';
 export {default as PartnerCard} from './PartnerCard/PartnerCard';
 export {default as PriceDetails} from './PriceDetails/PriceDetails';
+export {default as PriceListCard} from './PriceListCard/PriceListCard';
 export {default as ProductCard} from './ProductCard/ProductCard';
 export {default as SaleOrderBottomButton} from './SaleOrderBottomButton/SaleOrderBottomButton';
 export {default as SaleOrderCard} from './SaleOrderCard/SaleOrderCard';

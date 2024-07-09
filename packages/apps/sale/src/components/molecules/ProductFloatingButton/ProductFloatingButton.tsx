@@ -48,7 +48,7 @@ const ProductFloatingButton = ({}) => {
         {
           key: 3,
           title: 'Sale_SeePriceLists',
-          onPress: () => {},
+          onPress: () => navigation.navigate('ProductSalePriceListsScreen'),
           iconName: 'currency-dollar',
           color: Colors.progressColor,
         },
