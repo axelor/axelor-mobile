@@ -16,6 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+export {complementaryProductReducer as sale_complementaryProduct} from './complementaryProductSlice';
 export {customerDeliveryReducer as sale_customerDelivery} from './customerDeliverySlice';
 export {customerReducer as sale_customer} from './customerSlice';
 export {productReducer as sale_product} from './productSlice';

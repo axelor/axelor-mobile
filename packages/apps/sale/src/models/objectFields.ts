@@ -178,4 +178,17 @@ export const sale_modelAPI: ObjectFields = {
   sale_customerCategory: schemaContructor.object({
     name: schemaContructor.string(),
   }),
+  sale_complementaryProduct: schemaContructor.object({
+    product: schemaContructor.subObject().concat(
+      schemaContructor.object({
+        picture: schemaContructor.subObject(),
+        name: schemaContructor.string(),
+        code: schemaContructor.string(),
+        salePrice: schemaContructor.number(),
+        saleCurrency: schemaContructor.subObject('symbol'),
+      }),
+    ),
+    optional: schemaContructor.boolean(),
+    qty: schemaContructor.number(),
+  }),
 };
