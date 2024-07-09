@@ -17,7 +17,7 @@
  */
 
 import React from 'react';
-import {StyleSheet, View, TouchableOpacity} from 'react-native';
+import {StyleSheet, TouchableOpacity} from 'react-native';
 import {
   useTranslator,
   useSelector,
@@ -53,15 +53,13 @@ const ProductSeeStockLocationDistribution = ({
       <TouchableOpacity
         onPress={navigateStockLocationDetails}
         style={styles.container}>
-        <View style={styles.arrowContainer}>
-          <Text>{I18n.t('Stock_SeeDistributionStockLocation')}</Text>
-          <Icon
-            name="chevron-right"
-            size={24}
-            color={Colors.primaryColor.background}
-            style={styles.arrowIcon}
-          />
-        </View>
+        <Text>{I18n.t('Stock_SeeDistributionStockLocation')}</Text>
+        <Icon
+          name="chevron-right"
+          size={18}
+          color={Colors.primaryColor.background}
+          style={styles.icon}
+        />
       </TouchableOpacity>
     );
   }
@@ -71,15 +69,14 @@ const ProductSeeStockLocationDistribution = ({
 
 const styles = StyleSheet.create({
   container: {
-    marginHorizontal: 16,
-  },
-  arrowContainer: {
     flexDirection: 'row',
     alignItems: 'center',
     width: '90%',
+    alignSelf: 'center',
+    flex: 1,
   },
-  arrowIcon: {
-    marginLeft: 5,
+  icon: {
+    flex: 1,
   },
 });
 
