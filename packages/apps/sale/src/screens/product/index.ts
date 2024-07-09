@@ -19,6 +19,7 @@
 import ProductSaleDetailsScreen from './ProductSaleDetailsScreen';
 import ProductSaleListScreen from './ProductSaleListScreen';
 import ComplementaryProductsScreen from './ComplementaryProductsScreen';
+import ProductSalePriceListsScreen from './ProductSalePriceListsScreen';
 
 export default {
   ProductSaleListScreen: {
@@ -44,8 +45,16 @@ export default {
       shadedHeader: false,
     },
   },
+  ProductSalePriceListsScreen: {
+    title: 'Sale_ProductPriceLists',
+    component: ProductSalePriceListsScreen,
+    options: {
+      shadedHeader: false,
+    },
+  },
 };
 
 export {ProductSaleListScreen};
 export {ProductSaleDetailsScreen};
 export {ComplementaryProductsScreen};
+export {ProductSalePriceListsScreen};
