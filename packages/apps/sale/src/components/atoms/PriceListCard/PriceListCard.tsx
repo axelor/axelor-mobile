@@ -45,6 +45,7 @@ interface PriceListCardProps {
   lineTypeSelect: number;
   amountTypeSelect: number;
   currency: string;
+  nonNegotiable: boolean;
 }
 
 const PriceListCard = ({
@@ -59,6 +60,7 @@ const PriceListCard = ({
   lineTypeSelect,
   amountTypeSelect,
   currency,
+  nonNegotiable,
 }: PriceListCardProps) => {
   const I18n = useTranslator();
   const Colors = useThemeColor();
@@ -163,6 +165,7 @@ const PriceListCard = ({
               displayText: I18n.t('Sale_NonNegotiable'),
               color: Colors.warningColor,
               style: styles.badge,
+              showIf: nonNegotiable,
             },
           ],
         }}
@@ -189,6 +192,7 @@ const getStyles = color =>
     },
     badge: {
       width: null,
+      paddingHorizontal: 5,
     },
   });
 

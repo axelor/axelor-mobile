@@ -199,6 +199,7 @@ export const sale_modelAPI: ObjectFields = {
         applicationBeginDate: schemaContructor.string(),
         applicationEndDate: schemaContructor.string(),
         typeSelect: schemaContructor.number(),
+        nonNegotiable: schemaContructor.boolean(),
       }),
     ),
     minQty: schemaContructor.number(),

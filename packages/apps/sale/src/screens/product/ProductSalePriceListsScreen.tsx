@@ -113,6 +113,7 @@ const ProductSalePriceListsScreen = ({}) => {
             lineTypeSelect={item.typeSelect}
             amountTypeSelect={item.amountTypeSelect}
             currency={product.saleCurrency?.symbol}
+            nonNegotiable={item.priceList?.nonNegotiable}
           />
         )}
       />
