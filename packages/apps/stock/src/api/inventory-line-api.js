@@ -58,9 +58,9 @@ export async function updateInventoryLineDetails({
     url: `/ws/aos/inventory-line/${inventoryLineId}`,
     method: 'put',
     body: {
-      version: version,
-      realQty: realQty,
-      description: description,
+      version,
+      realQty,
+      description,
     },
     description: 'update inventory line details',
     matchers: {
@@ -111,9 +111,11 @@ export async function addTrackingNumber({
     url: `/ws/rest/com.axelor.apps.stock.db.InventoryLine/${inventoryLineId}`,
     method: 'post',
     body: {
-      id: inventoryLineId,
-      version,
-      trackingNumber,
+      data: {
+        id: inventoryLineId,
+        version,
+        trackingNumber,
+      },
     },
     description: 'add trackingNumber on inventory line',
     matchers: {

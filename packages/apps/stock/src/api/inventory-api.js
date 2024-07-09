@@ -69,9 +69,11 @@ export async function modifyDescriptionInventory({
     url: `/ws/rest/com.axelor.apps.stock.db.Inventory/${inventoryId}`,
     method: 'post',
     body: {
-      id: inventoryId,
-      description: description,
-      version: version,
+      data: {
+        id: inventoryId,
+        description: description,
+        version: version,
+      },
     },
     description: 'modify inventory description',
     matchers: {

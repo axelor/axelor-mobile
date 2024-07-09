@@ -58,8 +58,8 @@ export async function createTrackingNumber({qty, product, trackingNumberSeq}) {
     body: {
       data: {
         counter: qty,
-        product: product,
-        trackingNumberSeq: trackingNumberSeq,
+        product,
+        trackingNumberSeq,
       },
     },
     description: 'create tracking number',
@@ -84,11 +84,9 @@ export async function updateStockMoveLineTrackingNumber({
     url: `/ws/aos/stock-move-line/${stockMoveLineId}`,
     method: 'put',
     body: {
-      data: {
-        id: stockMoveLineId,
-        version: stockMoveLineVersion,
-        trackingNumber: trackingNumber,
-      },
+      id: stockMoveLineId,
+      version: stockMoveLineVersion,
+      trackingNumber,
     },
     description: 'add tracking number on stock move line',
     matchers: {

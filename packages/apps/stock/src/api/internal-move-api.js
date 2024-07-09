@@ -75,7 +75,7 @@ export async function createInternalStockMove({
   return getActionApi().send({
     url: 'ws/aos/stock-move/internal/',
     method: 'post',
-    data: {
+    body: {
       companyId,
       fromStockLocationId,
       toStockLocationId,
@@ -102,7 +102,7 @@ export async function realizeInternalMove({stockMoveId, version}) {
     url: `/ws/aos/stock-move/realize/${stockMoveId}`,
     method: 'put',
     body: {
-      version: version,
+      version,
     },
     description: 'realize internal move',
     matchers: {
@@ -122,7 +122,7 @@ export async function modifyInternalMoveNotes({
     url: `/ws/rest/com.axelor.apps.stock.db.StockMove/${internalMoveId}`,
     method: 'post',
     body: {
-      version: version,
+      version,
       note: notes,
     },
     description: 'modify internal move notes',

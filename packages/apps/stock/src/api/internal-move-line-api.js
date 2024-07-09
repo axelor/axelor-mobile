@@ -59,7 +59,7 @@ export async function updateInternalMoveLine({
   return getActionApi().send({
     url: `/ws/aos/stock-move-line/${stockMoveLineId}`,
     method: 'put',
-    data: {
+    body: {
       version,
       realQty,
       unitId,

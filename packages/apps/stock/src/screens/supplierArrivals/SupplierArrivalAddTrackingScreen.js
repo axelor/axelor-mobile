@@ -63,7 +63,7 @@ const SupplierArrivalAddTrackingScreen = ({route, navigation}) => {
   }, [dispatch, product, sequence, supplierArrivalLine, trackingQty]);
 
   useEffect(() => {
-    if (!loading && createdTrackingNumber != null) {
+    if (false) {
       navigation.navigate('SupplierArrivalLineDetailScreen', {
         supplierArrivalLineId: supplierArrivalLine?.id,
         supplierArrival: supplierArrival,

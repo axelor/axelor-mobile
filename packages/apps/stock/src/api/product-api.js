@@ -17,7 +17,6 @@
  */
 
 import {
-  axiosApiProvider,
   createStandardSearch,
   createStandardFetch,
   getSearchCriterias,
@@ -115,19 +114,35 @@ export async function getProductStockIndicators({
   stockLocationId,
   version,
 }) {
-  return axiosApiProvider.post({
+  return getActionApi().send({
     url: `/ws/aos/stock-product/fetch-product-with-stock/${productId}`,
-    data: {
-      companyId: companyId,
-      stockLocationId: stockLocationId,
-      version: version,
+    method: 'post',
+    body: {
+      companyId,
+      stockLocationId,
+      version,
+    },
+    description: 'get product stock indicators',
+    matchers: {
+      modelName: 'com.axelor.apps.base.db.Product',
+      id: productId,
+      fields: {},
     },
   });
 }
 
 export async function fetchVariantAttributes({productVariantId, version}) {
-  return axiosApiProvider.post({
+  return getActionApi().send({
     url: `/ws/aos/stock-product/get-variant-attributes/${productVariantId}`,
-    data: {version: version},
+    method: 'post',
+    body: {
+      version,
+    },
+    description: 'fetch variant attributes',
+    matchers: {
+      modelName: 'com.axelor.apps.base.db.ProductVariant',
+      id: productVariantId,
+      fields: {},
+    },
   });
 }

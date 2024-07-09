@@ -89,13 +89,13 @@ export async function addLineStockMove({
     url: `/ws/aos/stock-move/add-line/${stockMoveId}`,
     method: 'post',
     body: {
-      productId: productId,
-      unitId: unitId,
-      trackingNumberId: trackingNumberId,
-      expectedQty: expectedQty,
-      realQty: realQty,
+      productId,
+      unitId,
+      trackingNumberId,
+      expectedQty,
+      realQty,
       conformity: StockMove.conformity.None,
-      version: version,
+      version,
       fromStockLocationId,
     },
     description: 'add new customer delivery line',
@@ -118,7 +118,7 @@ export async function realizeSockMove({stockMoveId, version}) {
     url: `/ws/aos/stock-move/realize/${stockMoveId}`,
     method: 'put',
     body: {
-      version: version,
+      version,
     },
     description: 'realize customer delivery',
     matchers: {

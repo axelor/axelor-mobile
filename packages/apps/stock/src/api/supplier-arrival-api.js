@@ -90,12 +90,12 @@ export async function addLineStockMove({
     url: `/ws/aos/stock-move/add-line/${stockMoveId}`,
     method: 'post',
     body: {
-      productId: productId,
-      unitId: unitId,
-      trackingNumberId: trackingNumberId,
-      expectedQty: expectedQty,
-      realQty: realQty,
-      conformity: conformity,
+      productId,
+      unitId,
+      trackingNumberId,
+      expectedQty,
+      realQty,
+      conformity,
       version,
       toStockLocationId,
     },
@@ -119,7 +119,7 @@ export async function realizeSockMove({stockMoveId, version}) {
     url: `/ws/aos/stock-move/realize/${stockMoveId}`,
     method: 'put',
     body: {
-      version: version,
+      version,
     },
     description: 'realize sipplier arrival',
     matchers: {
