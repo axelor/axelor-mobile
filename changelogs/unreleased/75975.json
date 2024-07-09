@@ -1,0 +1,6 @@
+{
+  "title": "Consumed products: change status translations",
+  "type": "fix",
+  "packages": "manufacturing",
+  "description": "'Planned' status has been changed to 'To pick' and 'Finished' status to 'Consumed' to make it more clear and consistent with associated StokMove"
+}
