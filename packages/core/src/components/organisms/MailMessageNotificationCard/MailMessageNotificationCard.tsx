@@ -16,7 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import React, {useState} from 'react';
+import React, {useMemo, useState} from 'react';
 import {StyleSheet, TouchableOpacity, View} from 'react-native';
 import {
   Card,
@@ -58,6 +58,11 @@ const MailMessageNotificationCard = ({
   const Colors = useThemeColor();
   const [moreItems, setMoreItems] = useState(false);
 
+  const displayFlags = useMemo(
+    () => relatedModel != null && relatedId != null && flags != null,
+    [flags, relatedId, relatedModel],
+  );
+
   return (
     <TouchableOpacity
       onPress={() => setMoreItems(!moreItems)}
@@ -85,7 +90,7 @@ const MailMessageNotificationCard = ({
               />
             </View>
           )}
-          {flags != null && (
+          {displayFlags && (
             <MailMessageReadIcon
               mailMessageFlag={flags}
               model={relatedModel}
