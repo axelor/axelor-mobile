@@ -1,0 +1,5 @@
+{
+  "title": "Product stock details: adjust margin of see distribution button for small screens",
+  "type": "fix",
+  "packages": "stock"
+}
