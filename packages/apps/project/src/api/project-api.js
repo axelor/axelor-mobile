@@ -17,6 +17,7 @@
  */
 
 import {
+  axiosApiProvider,
   createStandardFetch,
   createStandardSearch,
   getSearchCriterias,
@@ -135,5 +136,25 @@ export async function searchSubProject({page = 0, projectId}) {
     fieldKey: 'project_project',
     sortKey: 'project_project',
     page,
+  });
+}
+
+export async function previousProjectActivity({projectId, startDate}) {
+  return axiosApiProvider.post({
+    url: 'ws/action/',
+    data: {
+      action: 'action-project-activity-dashboard-method-previous-on-click',
+      data: {
+        context: {
+          id: projectId,
+          startDate: startDate,
+          _source: 'previousBtn',
+          _signal: 'previousBtn',
+        },
+      },
+      model: 'com.axelor.apps.project.db.Project',
+      _signal: 'previousBtn',
+      _source: 'previousBtn',
+    },
   });
 }

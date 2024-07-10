@@ -1,0 +1,5 @@
+{
+  "title": "MailMessageNotificationCard: add possibility to display custom component in header",
+  "type": "feat",
+  "packages": "core"
+}

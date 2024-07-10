@@ -38,11 +38,15 @@ export const useBinaryImageUri = () => {
 
   return useCallback(
     (id: number, version: number, model: string) =>
-      id != null && version != null && model != null
-        ? {
-            uri: `${baseUrl}ws/rest/${model}/${id}/image/download?v=${version}&parentId=${id}&parentModel=${model}&image=true`,
-          }
-        : null,
+      id == null || model == null
+        ? null
+        : {
+            uri: `${baseUrl}ws/rest/${model}/${id}/image/download?${
+              version != null
+                ? `v=${version}&parentId=${id}&parentModel=${model}&`
+                : ''
+            }image=true`,
+          },
     [baseUrl],
   );
 };

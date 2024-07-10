@@ -16,6 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+export {default as ActivityCard} from './ActivityCard/ActivityCard';
 export {default as DropdownInvoicing} from './DropdownInvoicing/DropdownInvoicing';
 export {default as DropdownMembers} from './DropdownMembers/DropdownMembers';
 export {default as DropdownTaskCharacteristics} from './DropdownTaskCharacteristics/DropdownTaskCharacteristics';
