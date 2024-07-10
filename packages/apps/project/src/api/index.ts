@@ -19,6 +19,7 @@
 export {
   fetchProjectStatus as fetchProjectStatusApi,
   fetchProjectById as fetchProjectByIdApi,
+  previousProjectActivity as previousProjectActivityApi,
   searchProject as searchProjectApi,
   searchSubProject as searchSubProjectApi,
 } from './project-api';
