@@ -16,25 +16,20 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import React, {useEffect, useMemo} from 'react';
+import React, {useMemo} from 'react';
 import {
   SearchListView,
-  useDispatch,
   useNavigation,
   useSelector,
   useTranslator,
 } from '@axelor/aos-mobile-core';
 import {Screen} from '@axelor/aos-mobile-ui';
 import {ProductHeader, VariantProductCard} from '../../components';
-import {
-  fetchVariantProduct,
-  getVariantAttributes,
-} from '../../features/productSlice';
+import {fetchVariantProduct} from '../../features/productSlice';
 
 const VariantProductsScreen = ({}) => {
   const I18n = useTranslator();
   const navigation = useNavigation();
-  const dispatch = useDispatch();
 
   const {product} = useSelector((state: any) => state.sale_product);
   const {
@@ -42,14 +37,7 @@ const VariantProductsScreen = ({}) => {
     moreLoadingVariantList,
     isVariantListEnd,
     variantProductList,
-    listVariantAttributes,
   } = useSelector((state: any) => state.sale_product);
-
-  useEffect(() => {
-    if (Array.isArray(variantProductList) && variantProductList.length > 0) {
-      dispatch((getVariantAttributes as any)({variantProductList}));
-    }
-  }, [dispatch, variantProductList]);
 
   const sliceFunctionData = useMemo(
     () => ({
@@ -70,7 +58,7 @@ const VariantProductsScreen = ({}) => {
         searchPlaceholder={I18n.t('Base_Search')}
         topFixedItems={<ProductHeader />}
         expandableFilter={false}
-        renderListItem={({item, index}) => (
+        renderListItem={({item}) => (
           <VariantProductCard
             picture={item.picture}
             name={item.name}
@@ -78,9 +66,8 @@ const VariantProductsScreen = ({}) => {
             price={item.salePrice}
             unit={item.saleCurrency?.symbol}
             inAti={item.inAti}
-            attributesList={
-              listVariantAttributes ? listVariantAttributes[index] : null
-            }
+            id={item.id}
+            version={item.version}
             onPress={() =>
               navigation.navigate('ProductSaleDetailsScreen', {
                 productId: item.id,

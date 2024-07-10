@@ -16,7 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import React, {useMemo} from 'react';
+import React, {useEffect, useMemo, useRef, useState} from 'react';
 import {StyleSheet, View} from 'react-native';
 import {
   useMetafileUri,
@@ -29,36 +29,32 @@ import {
   useDigitFormat,
   usePriceFormat,
 } from '@axelor/aos-mobile-ui';
-import TaxModeBadge from '../TaxModeBadge/TaxModeBadge';
-
-interface Attribute {
-  attrName: string;
-  attrValue: string;
-  priceExtra: number;
-  applicationPriceSelect: number;
-}
+import {TaxModeBadge} from '../../atoms';
+import {fetchVariantAttributes} from '../../../api/product-api';
 
 interface VariantProductCardProps {
   style?: any;
+  id: number;
+  version: number;
   picture: any;
   name: string;
   code: string;
   price: number;
   unit: string;
   inAti: boolean;
-  attributesList: {attributes: Attribute[]};
   onPress: () => void;
 }
 
 const VariantProductCard = ({
   style,
+  id,
+  version,
   picture,
   name,
   code,
   price,
   unit,
   inAti,
-  attributesList,
   onPress,
 }: VariantProductCardProps) => {
   const {ProductVariant} = useTypes();
@@ -67,19 +63,40 @@ const VariantProductCard = ({
   const formatPrice = usePriceFormat();
   const formatNumber = useDigitFormat();
 
+  const isMounted = useRef(true);
+
+  const [attributesList, setAttributesList] = useState([]);
+
+  useEffect(() => {
+    isMounted.current = true;
+    if (id != null && version != null) {
+      fetchVariantAttributes({productVariantId: id, version})
+        .then(res => res?.data?.object?.attributes)
+        .then(data => {
+          if (isMounted.current) {
+            setAttributesList(data);
+          }
+        })
+        .catch(() => {
+          if (isMounted.current) {
+            setAttributesList([]);
+          }
+        });
+    }
+
+    return () => {
+      isMounted.current = false;
+    };
+  }, [id, version]);
+
   const attributes = useMemo(() => {
-    if (
-      !Array.isArray(attributesList?.attributes) ||
-      attributesList?.attributes.length === 0
-    ) {
+    if (!Array.isArray(attributesList) || attributesList?.length === 0) {
       return null;
     }
 
     let items = [];
 
-    for (let index = 0; index < attributesList?.attributes.length; index++) {
-      const attr = attributesList?.attributes[index];
-
+    for (const attr of attributesList) {
       if (attr != null) {
         items.push({
           displayText: `${attr.attrName} : ${attr.attrValue} ${
@@ -97,7 +114,7 @@ const VariantProductCard = ({
 
     return items?.length > 0 ? {items} : null;
   }, [
-    attributesList?.attributes,
+    attributesList,
     formatNumber,
     getItemTitle,
     ProductVariant?.applicationPriceSelect,

@@ -28,7 +28,6 @@ export {
   fetchProductById,
   fetchProductCompanyConfig,
   fetchVariantProduct,
-  getVariantAttributes,
   searchProduct,
 } from './productSlice';
 export {fetchSaleConfig} from './saleConfigSlice';
