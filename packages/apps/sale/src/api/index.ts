@@ -27,6 +27,8 @@ export {fetchPriceListLine as fetchPriceListLineApi} from './price-list-line-api
 export {
   fetchProductById as fetchProductByIdApi,
   fetchProductCompanyConfig as fetchProductCompanyConfigApi,
+  fetchVariantAttributes as fetchVariantAttributesApi,
+  fetchVariantProduct as fetchVariantProductApi,
   searchProduct as searchProductApi,
 } from './product-api';
 export {fetchSaleConfig as fetchSaleConfigApi} from './sale-config-api';
