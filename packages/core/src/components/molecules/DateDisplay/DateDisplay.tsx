@@ -25,9 +25,14 @@ import {getFullDateItems} from '../../../utils';
 interface DateDisplayProps {
   date: string;
   size?: number;
+  displayYear?: boolean;
 }
 
-const DateDisplay = ({date, size = 18}: DateDisplayProps) => {
+const DateDisplay = ({
+  date,
+  size = 18,
+  displayYear = false,
+}: DateDisplayProps) => {
   const I18n = useTranslator();
   const Colors = useThemeColor();
 
@@ -49,6 +54,11 @@ const DateDisplay = ({date, size = 18}: DateDisplayProps) => {
       <Text writingType="important" fontSize={size}>
         {` ${_date.date} ${_date.month}`}
       </Text>
+      {displayYear && (
+        <Text writingType="important" fontSize={size}>
+          {` ${_date.year}`}
+        </Text>
+      )}
     </View>
   );
 };
