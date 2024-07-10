@@ -20,6 +20,7 @@ import ProductSaleDetailsScreen from './ProductSaleDetailsScreen';
 import ProductSaleListScreen from './ProductSaleListScreen';
 import ComplementaryProductsScreen from './ComplementaryProductsScreen';
 import ProductSalePriceListsScreen from './ProductSalePriceListsScreen';
+import VariantProductsScreen from './VariantProductsScreen';
 
 export default {
   ProductSaleListScreen: {
@@ -52,9 +53,17 @@ export default {
       shadedHeader: false,
     },
   },
+  VariantProductsScreen: {
+    title: 'Sale_Variants',
+    component: VariantProductsScreen,
+    options: {
+      shadedHeader: false,
+    },
+  },
 };
 
 export {ProductSaleListScreen};
 export {ProductSaleDetailsScreen};
 export {ComplementaryProductsScreen};
 export {ProductSalePriceListsScreen};
+export {VariantProductsScreen};
