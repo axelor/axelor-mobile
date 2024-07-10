@@ -36,6 +36,7 @@ storiesOf('ui/organisms/Picker', module).add(
         listItems={listItems}
         labelField="label"
         valueField="id"
+        placeholder={'Select an item'}
         {...args}
       />
     );
@@ -43,6 +44,11 @@ storiesOf('ui/organisms/Picker', module).add(
   {
     argTypes: {
       title: {
+        type: 'string',
+        defaultValue: 'Select an item',
+        control: {type: 'text'},
+      },
+      placeholder: {
         type: 'string',
         defaultValue: 'Select an item',
         control: {type: 'text'},
