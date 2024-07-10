@@ -64,6 +64,15 @@ describe('MultiValuePicker Component', () => {
     );
   });
 
+  it('should display the placeholder if provided and no value is selected', () => {
+    const placeholder = 'Select items';
+    const wrapper = shallow(
+      <MultiValuePicker {...props} placeholder={placeholder} />,
+    );
+    const title = wrapper.find(MultiValuePickerButton).prop('placeholder');
+    expect(title).toBe(placeholder);
+  });
+
   it('should give defaultItems to MultiValuePickerButton', () => {
     const defaultItems = [props.listItems[0]];
     const wrapper = shallow(

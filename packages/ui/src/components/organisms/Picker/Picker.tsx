@@ -202,7 +202,6 @@ const Picker = ({
           />
         }
         title={displayPlaceholder ? placeholder : _displayValue(selectedItem)}
-        placeholder={placeholder}
         styleText={styles.textPicker}
         style={[
           commonStyles.filter,
@@ -258,6 +257,7 @@ const getStyles = (
       paddingLeft: displayPlaceholder ? 9 : 20,
     },
     textPicker: {
+      left: displayPlaceholder ? 0 : '-20%',
       color: displayPlaceholder ? Colors.placeholderTextColor : Colors.text,
       fontSize: displayPlaceholder ? 15 : 16,
     },

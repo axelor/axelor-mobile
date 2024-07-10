@@ -26,7 +26,6 @@ interface RightIconProps {
   onPress: (any) => void;
   title?: string;
   icon: React.ReactNode;
-  placeholder?: string;
 }
 
 const RightIconButton = ({
@@ -47,6 +46,7 @@ const RightIconButton = ({
     </TouchableOpacity>
   );
 };
+
 const styles = StyleSheet.create({
   container: {
     width: Dimensions.get('window').width * 0.35,
