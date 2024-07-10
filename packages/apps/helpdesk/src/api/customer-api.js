@@ -44,6 +44,7 @@ export async function searchCustomer({searchValue, page = 0}) {
     fieldKey: 'helpdesk_customer',
     sortKey: 'helpdesk_customer',
     page: page,
+    provider: 'model',
   });
 }
 
@@ -54,6 +55,7 @@ export async function searchCustomerContact({searchValue, page = 0}) {
     fieldKey: 'helpdesk_customerContact',
     sortKey: 'helpdesk_customerContact',
     page: page,
+    provider: 'model',
   });
 }
 
@@ -66,5 +68,6 @@ export async function getCustomer({customerId}) {
     model: 'com.axelor.apps.base.db.Partner',
     id: customerId,
     fieldKey: 'helpdesk_customer',
+    provider: 'model',
   });
 }

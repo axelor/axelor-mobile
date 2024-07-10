@@ -18,9 +18,9 @@
 
 import {
   createStandardSearch,
+  getActionApi,
   getSearchCriterias,
   createStandardFetch,
-  axiosApiProvider,
 } from '@axelor/aos-mobile-core';
 
 const createTicketCriteria = (searchValue, userId, userTeam) => {
@@ -57,6 +57,7 @@ export async function searchTickets({searchValue, userId, page = 0, userTeam}) {
     fieldKey: 'helpdesk_ticket',
     sortKey: 'helpdesk_ticket',
     page,
+    provider: 'model',
   });
 }
 
@@ -65,6 +66,7 @@ export async function getTicket({ticketId}) {
     model: 'com.axelor.apps.helpdesk.db.Ticket',
     id: ticketId,
     fieldKey: 'helpdesk_ticket',
+    provider: 'model',
   });
 }
 
@@ -74,6 +76,7 @@ export async function getTicketType() {
     fieldKey: 'helpdesk_ticketType',
     numberElementsByPage: null,
     page: 0,
+    provider: 'model',
   });
 }
 
@@ -83,6 +86,7 @@ export async function getTicketStatus() {
     fieldKey: 'helpdesk_ticketStatus',
     numberElementsByPage: null,
     page: 0,
+    provider: 'model',
   });
 }
 
@@ -93,6 +97,7 @@ export async function searchTicketType({searchValue, page = 0}) {
     fieldKey: 'helpdesk_ticketType',
     sortKey: 'helpdesk_ticketType',
     page: page,
+    provider: 'model',
   });
 }
 
@@ -103,6 +108,7 @@ export async function searchTicketStatus({searchValue, page = 0}) {
     fieldKey: 'helpdesk_ticketStatus',
     sortKey: 'helpdesk_ticketStatus',
     page: page,
+    provider: 'model',
   });
 }
 
@@ -112,30 +118,51 @@ export async function updateStatusTicket({
   targetStatus,
   ticketId,
 }) {
-  return axiosApiProvider.put({
+  return getActionApi().send({
     url: `ws/aos/ticket/${ticketId}`,
-    data: {
-      version: version,
-      dateTime: dateTime,
-      targetStatus: targetStatus,
+    method: 'put',
+    body: {
+      version,
+      dateTime,
+      targetStatus,
+    },
+    description: 'update status ticket',
+    matchers: {
+      id: ticketId,
+      modelName: 'com.axelor.apps.helpdesk.db.Ticket',
+      fields: {},
     },
   });
 }
 
 export async function updateTicket({ticket}) {
-  return axiosApiProvider.post({
+  return getActionApi().send({
     url: '/ws/rest/com.axelor.apps.helpdesk.db.Ticket',
-    data: {
+    method: 'post',
+    body: {
       data: ticket,
+    },
+    description: 'update ticket',
+    matchers: {
+      id: ticket?.id,
+      modelName: 'com.axelor.apps.helpdesk.db.Ticket',
+      fields: {},
     },
   });
 }
 
 export async function createTicket({ticket}) {
-  return axiosApiProvider.put({
+  return getActionApi().send({
     url: '/ws/rest/com.axelor.apps.helpdesk.db.Ticket',
-    data: {
+    method: 'put',
+    body: {
       data: ticket,
+    },
+    description: 'create ticket',
+    matchers: {
+      id: Date.now(),
+      modelName: 'com.axelor.apps.helpdesk.db.Ticket',
+      fields: {},
     },
   });
 }
