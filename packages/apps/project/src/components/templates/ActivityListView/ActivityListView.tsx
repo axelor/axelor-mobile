@@ -22,7 +22,7 @@ import {DateDisplay, useSelector, formatDate} from '@axelor/aos-mobile-core';
 import {previousProjectActivity} from '../../../api/project-api';
 import {ActivityCard} from '../../molecules';
 
-const ActivitiesListView = () => {
+const ActivityListView = () => {
   const {project} = useSelector((state: any) => state.project_project);
 
   const [refreshing, setRefreshing] = useState(false);
@@ -157,4 +157,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default ActivitiesListView;
+export default ActivityListView;

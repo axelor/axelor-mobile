@@ -21,7 +21,7 @@ import {View, StyleSheet} from 'react-native';
 import {useTranslator} from '@axelor/aos-mobile-core';
 import {HeaderContainer, ToggleSwitch} from '@axelor/aos-mobile-ui';
 import {ProjectHeader} from '../../molecules';
-import {ActivitiesListView} from '../../templates';
+import {ActivityListView} from '../../templates';
 
 const modes = {
   reporting: 'reporting',
@@ -54,7 +54,7 @@ const ReportingView = () => {
           </>
         }
       />
-      {mode === modes.activities ? <ActivitiesListView /> : null}
+      {mode === modes.activities ? <ActivityListView /> : null}
     </View>
   );
 };
