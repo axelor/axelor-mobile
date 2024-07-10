@@ -292,4 +292,29 @@ export const sale_typeObjects: ModuleSelections = [
       },
     },
   },
+  {
+    modelName: 'com.axelor.apps.base.db.ProductVariantValue',
+    specificKey: 'ProductVariant',
+    fields: {
+      applicationPriceSelect: {
+        content: [
+          {
+            key: 'SalePrice',
+            value: 0,
+            title: 'Sale_Application_SalePrice',
+          },
+          {
+            key: 'CostPrice',
+            value: 1,
+            title: 'Sale_Application_CostPrice',
+          },
+          {
+            key: 'PurchasePrice',
+            value: 2,
+            title: 'Sale_Application_PurchasePrice',
+          },
+        ],
+      },
+    },
+  },
 ];

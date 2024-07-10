@@ -24,6 +24,7 @@ import {
 import {
   fetchProductById as _fetchProductById,
   fetchProductCompanyConfig as _fetchProductCompanyConfig,
+  fetchVariantProduct as _fetchVariantProduct,
   searchProduct as _searchProduct,
 } from '../api/product-api';
 
@@ -66,6 +67,19 @@ export const fetchProductCompanyConfig = createAsyncThunk(
   },
 );
 
+export const fetchVariantProduct = createAsyncThunk(
+  'sale_product/fetchVariantProduct',
+  async function (data, {getState}) {
+    return handlerApiCall({
+      fetchFunction: _fetchVariantProduct,
+      data,
+      action: 'Sale_SliceAction_FetchVariantProduct',
+      getState,
+      responseOptions: {isArrayResponse: true},
+    });
+  },
+);
+
 const initialState = {
   loadingList: false,
   moreLoading: false,
@@ -77,6 +91,11 @@ const initialState = {
 
   productCompany: {},
   product: {},
+
+  loadingVariantList: false,
+  moreLoadingVariantList: false,
+  isVariantListEnd: false,
+  variantProductList: [],
 };
 
 const productSlice = createSlice({
@@ -88,6 +107,12 @@ const productSlice = createSlice({
       moreLoading: 'moreLoading',
       isListEnd: 'isListEnd',
       list: 'productList',
+    });
+    generateInifiniteScrollCases(builder, fetchVariantProduct, {
+      loading: 'loadingVariantList',
+      moreLoading: 'moreLoadingVariantList',
+      isListEnd: 'isVariantListEnd',
+      list: 'variantProductList',
     });
     builder.addCase(fetchProductById.pending, state => {
       state.loadingProduct = true;
