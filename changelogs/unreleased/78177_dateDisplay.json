@@ -1,0 +1,5 @@
+{
+  "title": "DateDisplay: add possibility to display the year",
+  "type": "feat",
+  "packages": "core"
+}
