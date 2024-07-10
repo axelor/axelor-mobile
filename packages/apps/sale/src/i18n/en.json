@@ -135,6 +135,5 @@
   "Sale_SliceAction_FetchSaleOrderLineById": "fetch sale order line by id",
   "Sale_SliceAction_FetchComplementaryProduct": "fetch complementary products",
   "Sale_SliceAction_FetchPriceListLine": "fetch price list lines",
-  "Sale_SliceAction_FetchVariantProduct": "fetch variant products",
-  "Sale_SliceAction_FetchVariantAttributes": "fetch variant attributes"
+  "Sale_SliceAction_FetchVariantProduct": "fetch variant products"
 }

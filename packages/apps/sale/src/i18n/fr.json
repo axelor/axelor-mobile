@@ -135,6 +135,5 @@
   "Sale_SliceAction_FetchSaleOrderLineById": "récupération d'une ligne de commande client par id",
   "Sale_SliceAction_FetchComplementaryProduct": "récupération des produits complémentaires",
   "Sale_SliceAction_FetchPriceListLine": "récupération des lignes d'une liste de prix",
-  "Sale_SliceAction_FetchVariantProduct": "récupération des produits variants",
-  "Sale_SliceAction_FetchVariantAttributes": "récupération des attributs des variants"
+  "Sale_SliceAction_FetchVariantProduct": "récupération des produits variants"
 }
