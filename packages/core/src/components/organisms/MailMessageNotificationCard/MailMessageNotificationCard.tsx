@@ -66,7 +66,6 @@ const MailMessageNotificationCard = ({
       disabled={tracks.length < MAX_TRACK_ITEMS}
       activeOpacity={0.9}>
       <Card style={[styles.card, style]}>
-        {customTopComponent && React.cloneElement(customTopComponent)}
         <View style={styles.cardHeader}>
           <LabelText
             iconName="info-circle-fill"
@@ -76,6 +75,7 @@ const MailMessageNotificationCard = ({
             textStyle={styles.title}
             color={Colors.primaryColor.background}
           />
+          {customTopComponent && React.cloneElement(customTopComponent)}
           {tag && (
             <View style={styles.tagContainer}>
               <Badge
