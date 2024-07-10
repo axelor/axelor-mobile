@@ -17,43 +17,21 @@
  */
 
 import React, {useCallback, useEffect, useMemo, useState} from 'react';
-import {
-  SectionList,
-  StyleSheet,
-  View,
-  RefreshControl,
-  Dimensions,
-} from 'react-native';
-import {
-  DateDisplay,
-  MailMessageNotificationCard,
-  formatTime,
-  useSelector,
-  useTranslator,
-  formatDate,
-} from '@axelor/aos-mobile-core';
-import {Badge, Image, Text, useThemeColor} from '@axelor/aos-mobile-ui';
+import {SectionList, StyleSheet, View, RefreshControl} from 'react-native';
+import {DateDisplay, useSelector, formatDate} from '@axelor/aos-mobile-core';
 import {previousProjectActivity} from '../../../api/project-api';
-
-const STATES = {
-  Danger: 'danger',
-  Success: 'success',
-};
+import {ActivityCard} from '../../molecules';
 
 const ActivitiesListView = () => {
-  const Colors = useThemeColor();
-  const I18n = useTranslator();
-
   const {project} = useSelector((state: any) => state.project_project);
-  const {baseUrl} = useSelector((state: any) => state.auth);
 
+  const [refreshing, setRefreshing] = useState(false);
   const [dataList, setDataList] = useState([]);
   const [startDate, setStartDate] = useState(() => {
     const initialDate = new Date();
     initialDate.setDate(initialDate.getDate() + 1);
     return initialDate;
   });
-  const [refreshing, setRefreshing] = useState(false);
 
   const dateLimit = useMemo(() => {
     const limitDate = new Date();
@@ -133,43 +111,16 @@ const ActivitiesListView = () => {
       const tracks = activity?.tracks || [];
 
       return (
-        <View style={styles.item} key={time}>
-          <View style={styles.avatarContainer}>
-            <Image
-              generalStyle={styles.avatar}
-              defaultIconSize={25}
-              resizeMode="contain"
-              source={{
-                uri:
-                  baseUrl +
-                  `ws/rest/com.axelor.auth.db.User/${userId}/image/download?image=true`,
-              }}
-            />
-          </View>
-          <View style={styles.cardContainer}>
-            <Text style={styles.updatedText}>{`${I18n.t(
-              'Project_UpdatedBy',
-            )} ${user} ${formatTime(time, I18n.t('Base_TimeFormat'))}`}</Text>
-            <MailMessageNotificationCard
-              title={title}
-              tracks={tracks}
-              customTopComponent={
-                <View style={styles.headerMailMessage}>
-                  <Badge
-                    title={modelName}
-                    color={
-                      utilityClass === STATES.Danger
-                        ? Colors.errorColor
-                        : utilityClass === STATES.Success
-                        ? Colors.successColor
-                        : Colors.primaryColor
-                    }
-                  />
-                </View>
-              }
-            />
-          </View>
-        </View>
+        <ActivityCard
+          key={time}
+          userId={userId}
+          userName={user}
+          time={time}
+          title={title}
+          tracks={tracks}
+          modelName={modelName}
+          utilityClass={utilityClass}
+        />
       );
     });
   };
@@ -190,7 +141,7 @@ const ActivitiesListView = () => {
     <SectionList
       sections={dataList}
       keyExtractor={(item, index) => item + index}
-      renderItem={({item}) => renderItem({item})}
+      renderItem={renderItem}
       renderSectionHeader={renderSectionHeader}
       onEndReached={handlePreviousActivity}
       refreshControl={
@@ -201,37 +152,8 @@ const ActivitiesListView = () => {
 };
 
 const styles = StyleSheet.create({
-  item: {
-    paddingLeft: 10,
-    alignItems: 'center',
-    flexDirection: 'row',
-  },
-  updatedText: {
-    alignSelf: 'flex-start',
-    paddingHorizontal: 15,
-  },
   header: {
     padding: 10,
-  },
-  headerMailMessage: {
-    flexDirection: 'row-reverse',
-    justifyContent: 'space-between',
-  },
-  avatarContainer: {
-    alignItems: 'center',
-    justifyContent: 'flex-start',
-  },
-  avatar: {
-    alignSelf: 'center',
-    justifyContent: 'center',
-    alignItems: 'center',
-    borderRadius: Dimensions.get('window').width * 0.12,
-    width: Dimensions.get('window').width * 0.12,
-    height: Dimensions.get('window').width * 0.12,
-  },
-  cardContainer: {
-    width: Dimensions.get('window').width * 0.83,
-    overflow: 'hidden',
   },
 });
 
