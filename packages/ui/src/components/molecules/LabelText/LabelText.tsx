@@ -81,6 +81,7 @@ const LabelText = ({
 const styles = StyleSheet.create({
   container: {
     flexDirection: 'row',
+    alignItems: 'center',
   },
   title: {
     marginRight: 5,
