@@ -35,6 +35,7 @@ storiesOf('ui/organisms/MultiValuePicker', module).add(
         title="Select options"
         listItems={listItem}
         defaultItems={[listItem[0], listItem[2]]}
+        placeholder="Select options"
         {...args}
       />
     );
@@ -42,6 +43,12 @@ storiesOf('ui/organisms/MultiValuePicker', module).add(
   {
     argTypes: {
       title: {
+        control: {
+          type: 'text',
+        },
+        defaultValue: 'Select options',
+      },
+      placeholder: {
         control: {
           type: 'text',
         },

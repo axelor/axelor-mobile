@@ -92,4 +92,19 @@ describe('MultiValuePickerButton Component', () => {
       expect(wrapper.find(TouchableOpacity).at(i).prop('disabled')).toBe(true);
     }
   });
+
+  it('should display placeholder when no items are selected', () => {
+    const placeholder = 'Select items';
+    const wrapper = shallow(
+      <MultiValuePickerButton
+        {...props}
+        listItem={[]}
+        placeholder={placeholder}
+      />,
+    );
+
+    const placeholderText = wrapper.find(Text).at(0);
+    expect(placeholderText.prop('children')).toBe(placeholder);
+    expect(placeholderText.prop('textColor')).toBe(Colors.placeholderTextColor);
+  });
 });
