@@ -19,12 +19,18 @@
 import React from 'react';
 import {StyleSheet} from 'react-native';
 import {FloatingButton, useThemeColor} from '@axelor/aos-mobile-ui';
-import {useNavigation, useTranslator} from '@axelor/aos-mobile-core';
+import {
+  useNavigation,
+  useSelector,
+  useTranslator,
+} from '@axelor/aos-mobile-core';
 
 const ProductFloatingButton = ({}) => {
   const I18n = useTranslator();
   const Colors = useThemeColor();
   const navigation = useNavigation();
+
+  const {product} = useSelector((state: any) => state.sale_product);
 
   return (
     <FloatingButton
@@ -40,17 +46,18 @@ const ProductFloatingButton = ({}) => {
         },
         {
           key: 2,
-          title: 'Sale_SeeVariantProducts',
-          onPress: () => {},
-          iconName: 'palette2',
-          color: Colors.priorityColor,
-        },
-        {
-          key: 3,
           title: 'Sale_SeePriceLists',
           onPress: () => navigation.navigate('ProductSalePriceListsScreen'),
           iconName: 'currency-dollar',
           color: Colors.progressColor,
+        },
+        {
+          key: 3,
+          title: 'Sale_SeeVariantProducts',
+          onPress: () => navigation.navigate('VariantProductsScreen'),
+          iconName: 'palette2',
+          color: Colors.priorityColor,
+          hideIf: product?.productVariant == null,
         },
       ]}
     />
