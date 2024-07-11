@@ -22,6 +22,7 @@ import {
   FormView,
   useDispatch,
   isEmpty,
+  useTypes,
 } from '@axelor/aos-mobile-core';
 import {fetchProjectFormById} from '../features/projectSlice';
 import {saveProjectTask} from '../features/projectTaskSlice';
@@ -29,6 +30,7 @@ import {saveProjectTask} from '../features/projectTaskSlice';
 const TaskFormScreen = ({navigation, route}) => {
   const {isCreation} = route.params;
   const _dispatch = useDispatch();
+  const {ProjectTask} = useTypes();
 
   const {projectTask} = useSelector((state: any) => state.project_projectTask);
   const {project} = useSelector((state: any) => state.project_project);
@@ -57,8 +59,9 @@ const TaskFormScreen = ({navigation, route}) => {
       projectReadonly: true,
       taskDate: new Date().toISOString().split('T')[0],
       progress: 0,
+      typeSelect: ProjectTask?.typeSelect.Task,
     }),
-    [project],
+    [project, ProjectTask?.typeSelect],
   );
 
   const saveTaskAPI = useCallback(
