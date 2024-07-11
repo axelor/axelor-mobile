@@ -21,7 +21,7 @@ import {useDispatch, useSelector} from '@axelor/aos-mobile-core';
 import {MultiValuePicker, useThemeColor} from '@axelor/aos-mobile-ui';
 import {getProjectTaskTag} from '../../../features/projectTaskSlice';
 
-interface TagTaskMultieValuePickeProps {
+interface TaskTagMultiValuePickerProps {
   style?: any;
   title?: string;
   defaultValue?: any;
@@ -30,14 +30,14 @@ interface TagTaskMultieValuePickeProps {
   required?: boolean;
 }
 
-const TagTaskMultieValuePicker = ({
+const TaskTagMultiValuePickerAux = ({
   style = null,
   title = 'Project_Tags',
   defaultValue = null,
   onChange = () => {},
   readonly = false,
   required = false,
-}: TagTaskMultieValuePickeProps) => {
+}: TaskTagMultiValuePickerProps) => {
   const dispatch = useDispatch();
   const Color = useThemeColor();
 
@@ -47,6 +47,7 @@ const TagTaskMultieValuePicker = ({
     tags => {
       return (
         tags?.map(tag => ({
+          ...tag,
           title: tag.name,
           color: Color[`${tag.colorSelect}`],
           key: tag.id,
@@ -70,25 +71,6 @@ const TagTaskMultieValuePicker = ({
     [taskTagList, transformTagsToPickerItems],
   );
 
-  const getFullTagsById = useCallback(
-    selectedItems => {
-      return selectedItems
-        .map(selectedItem => {
-          return taskTagList.find(tag => tag.id === selectedItem.key);
-        })
-        .filter(tag => tag != null);
-    },
-    [taskTagList],
-  );
-
-  const handleValueChange = useCallback(
-    selectedItems => {
-      const fullTags = getFullTagsById(selectedItems);
-      onChange(fullTags);
-    },
-    [getFullTagsById, onChange],
-  );
-
   return (
     <MultiValuePicker
       style={style}
@@ -97,9 +79,29 @@ const TagTaskMultieValuePicker = ({
       listItems={projectTaskListItems}
       required={required}
       readonly={readonly}
-      onValueChange={handleValueChange}
+      onValueChange={onChange}
     />
   );
 };
 
-export default TagTaskMultieValuePicker;
+const TaskTagMultiValuePicker = ({
+  style = null,
+  title = 'Project_Tags',
+  defaultValue = null,
+  onChange = () => {},
+  readonly = false,
+  required = false,
+}: TaskTagMultiValuePickerProps) => {
+  return (
+    <TaskTagMultiValuePickerAux
+      style={style}
+      title={title}
+      defaultValue={defaultValue}
+      required={required}
+      readonly={readonly}
+      onChange={onChange}
+    />
+  );
+};
+
+export default TaskTagMultiValuePicker;

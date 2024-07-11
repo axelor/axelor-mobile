@@ -23,7 +23,7 @@ export {default as PrioritySearchBar} from './PrioritySearchBar/PrioritySearchBa
 export {default as ProjectListView} from './ProjectListView/ProjectListView';
 export {default as ProjectSearchBar} from './ProjectSearchBar/ProjectSearchBar';
 export {default as SectionSearchBar} from './SectionSearchBar/SectionSearchBar';
-export {default as TagTaskMultieValuePicker} from './TagTaskMultieValuePicker/TagTaskMultieValuePicker';
 export {default as TargetVersionSearchBar} from './TargetVersionSearchBar/TargetVersionSearchBar';
 export {default as TaskFilters} from './TaskFilters/TaskFilters';
 export {default as TaskStatusSearchBar} from './TaskStatusSearchBar/TaskStatusSearchBar';
+export {default as TaskTagMultiValuePicker} from './TaskTagMultiValuePicker/TaskTagMultiValuePicker';

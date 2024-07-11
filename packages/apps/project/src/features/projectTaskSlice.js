@@ -32,7 +32,7 @@ import {
   searchProjectTask as _searchProjectTask,
   searchSection as _searchSection,
   searchTargetVersion as _searchTargetVersion,
-  updateCreateProjectTask as _updateCreateProjectTask,
+  saveProjectTask as _saveProjectTask,
   searchStatus as _searchStatus,
 } from '../api/project-task-api';
 
@@ -49,13 +49,13 @@ export const searchProjectTask = createAsyncThunk(
   },
 );
 
-export const searchProjectParentTask = createAsyncThunk(
-  'project_projectTask/searchProjectParentTask',
+export const searchParentTask = createAsyncThunk(
+  'project_projectTask/searchParentTask',
   async function (data, {getState}) {
     return handlerApiCall({
       fetchFunction: _searchProjectTask,
       data,
-      action: 'Project_SliceAction_SearchProjectParentTask',
+      action: 'Project_SliceAction_SearchParentTask',
       getState,
       responseOptions: {isArrayResponse: true},
     });
@@ -179,17 +179,17 @@ export const searchStatus = createAsyncThunk(
   },
 );
 
-export const updateCreateProjectTask = createAsyncThunk(
-  'project_projectTask/updateCreateProjectTask',
+export const saveProjectTask = createAsyncThunk(
+  'project_projectTask/saveProjectTask',
   async function (data, {getState}) {
     return handlerApiCall({
-      fetchFunction: _updateCreateProjectTask,
+      fetchFunction: _saveProjectTask,
       data,
-      action: 'Project_SliceAction_UpdateCreateProjectTask',
+      action: 'Project_SliceAction_SaveProjectTask',
       getState,
-      responseOptions: {isArrayResponse: true},
+      responseOptions: {isArrayResponse: false},
     }).then(res => {
-      if (data.isCreation) {
+      if (data.projectTask?.id == null) {
         return res;
       } else {
         return handlerApiCall({
@@ -235,9 +235,9 @@ const initialState = {
   isListEndPriority: false,
   priorityList: [],
 
-  loadingstatus: true,
-  moreLoadingstatus: false,
-  isListEndstatus: false,
+  loadingStatus: true,
+  moreLoadingStatus: false,
+  isListEndStatus: false,
   statusList: [],
 
   projectTaskStatusList: [],
@@ -266,7 +266,7 @@ const projectTaskSlice = createSlice({
       isListEnd: 'isListEndTargetVersion',
       list: 'targetVersionList',
     });
-    generateInifiniteScrollCases(builder, searchProjectParentTask, {
+    generateInifiniteScrollCases(builder, searchParentTask, {
       loading: 'loadingParentTask',
       moreLoading: 'moreLoadingParentTask',
       isListEnd: 'isListEndParentTask',
@@ -316,10 +316,10 @@ const projectTaskSlice = createSlice({
       state.loadingTaskTag = false;
       state.taskTagList = action.payload;
     });
-    builder.addCase(updateCreateProjectTask.pending, (state, action) => {
+    builder.addCase(saveProjectTask.pending, (state, action) => {
       state.loadingProjectTask = true;
     });
-    builder.addCase(updateCreateProjectTask.fulfilled, (state, action) => {
+    builder.addCase(saveProjectTask.fulfilled, (state, action) => {
       if (!action.meta.arg?.isCreation) {
         state.projectTask = action.payload;
       }

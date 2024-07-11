@@ -34,6 +34,6 @@ export {
   searchSection as searchSectionApi,
   searchStatus as searchStatusApi,
   searchTargetVersion as searchTargetVersionApi,
-  updateCreateProjectTask as updateCreateProjectTaskApi,
+  saveProjectTask as saveProjectTaskApi,
 } from './project-task-api';
 export {fetchTimesheetLinesByTask as fetchTimesheetLinesByTaskApi} from './timesheet-lines-api';

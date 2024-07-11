@@ -36,7 +36,7 @@ interface TaskStatusSearchBarProps {
   showTitle?: boolean;
 }
 
-const TaskStatusSearchBar = ({
+const TaskStatusSearchBarAux = ({
   style = null,
   title = 'Project_Status',
   defaultValue = null,
@@ -48,9 +48,8 @@ const TaskStatusSearchBar = ({
   const I18n = useTranslator();
   const dispatch = useDispatch();
 
-  const {loadingstatus, moreLoadingstatus, isListEndstatus, statusList} =
+  const {loadingStatus, moreLoadingStatus, isListEndStatus, statusList} =
     useSelector((state: any) => state.project_projectTask);
-
   const {projectForm} = useSelector((state: any) => state.project_project);
 
   const statusIds = useMemo(
@@ -84,11 +83,33 @@ const TaskStatusSearchBar = ({
       displayValue={displayItemName}
       placeholder={I18n.t(title)}
       showDetailsPopup={true}
-      loadingList={loadingstatus}
-      moreLoading={moreLoadingstatus}
-      isListEnd={isListEndstatus}
+      loadingList={loadingStatus}
+      moreLoading={moreLoadingStatus}
+      isListEnd={isListEndStatus}
       navigate={false}
       oneFilter={false}
+    />
+  );
+};
+
+const TaskStatusSearchBar = ({
+  style = null,
+  title = 'Project_Status',
+  defaultValue = null,
+  onChange = () => {},
+  required = false,
+  readonly = false,
+  showTitle = true,
+}: TaskStatusSearchBarProps) => {
+  return (
+    <TaskStatusSearchBarAux
+      style={style}
+      title={title}
+      defaultValue={defaultValue}
+      required={required}
+      readonly={readonly}
+      onChange={onChange}
+      showTitle={showTitle}
     />
   );
 };

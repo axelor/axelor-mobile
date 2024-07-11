@@ -24,7 +24,7 @@ import {
   useTranslator,
 } from '@axelor/aos-mobile-core';
 import {AutoCompleteSearch} from '@axelor/aos-mobile-ui';
-import {searchProjectParentTask} from '../../../features/projectTaskSlice';
+import {searchParentTask} from '../../../features/projectTaskSlice';
 
 interface ParentTaskSearchBarProps {
   style?: any;
@@ -36,7 +36,7 @@ interface ParentTaskSearchBarProps {
   showTitle?: boolean;
 }
 
-const ParentTaskSearchBar = ({
+const ParentTaskSearchBarAux = ({
   style = null,
   title = 'Project_ParentTask',
   defaultValue = null,
@@ -60,7 +60,7 @@ const ParentTaskSearchBar = ({
   const searchParentTaskAPI = useCallback(
     ({page = 0, searchValue}) => {
       dispatch(
-        (searchProjectParentTask as any)({
+        (searchParentTask as any)({
           page,
           searchValue,
           projectId: projectForm?.id,
@@ -89,6 +89,28 @@ const ParentTaskSearchBar = ({
       isListEnd={isListEndParentTask}
       navigate={false}
       oneFilter={false}
+    />
+  );
+};
+
+const ParentTaskSearchBar = ({
+  style = null,
+  title = 'Project_ParentTask',
+  defaultValue = null,
+  onChange = () => {},
+  readonly = false,
+  required = false,
+  showTitle = true,
+}: ParentTaskSearchBarProps) => {
+  return (
+    <ParentTaskSearchBarAux
+      style={style}
+      title={title}
+      defaultValue={defaultValue}
+      required={required}
+      readonly={readonly}
+      onChange={onChange}
+      showTitle={showTitle}
     />
   );
 };

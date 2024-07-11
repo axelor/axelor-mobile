@@ -17,9 +17,14 @@
  */
 
 import React, {useCallback, useEffect, useMemo} from 'react';
-import {useSelector, FormView, useDispatch} from '@axelor/aos-mobile-core';
+import {
+  useSelector,
+  FormView,
+  useDispatch,
+  isEmpty,
+} from '@axelor/aos-mobile-core';
 import {fetchProjectFormById} from '../features/projectSlice';
-import {updateCreateProjectTask} from '../features/projectTaskSlice';
+import {saveProjectTask} from '../features/projectTaskSlice';
 
 const TaskFormScreen = ({navigation, route}) => {
   const {isCreation} = route.params;
@@ -29,17 +34,15 @@ const TaskFormScreen = ({navigation, route}) => {
   const {project} = useSelector((state: any) => state.project_project);
 
   useEffect(() => {
-    if (isCreation) {
-      _dispatch((fetchProjectFormById as any)({projectId: project?.id}));
-    } else {
-      _dispatch(
-        (fetchProjectFormById as any)({projectId: projectTask?.project?.id}),
-      );
-    }
+    _dispatch(
+      (fetchProjectFormById as any)({
+        projectId: isCreation ? project?.id : projectTask?.project?.id,
+      }),
+    );
   }, [_dispatch, isCreation, project?.id, projectTask?.project]);
 
   const _defaultValue = useMemo(() => {
-    if (!isCreation) {
+    if (!isCreation && !isEmpty(projectTask)) {
       return {
         ...projectTask,
       };
@@ -48,31 +51,22 @@ const TaskFormScreen = ({navigation, route}) => {
     }
   }, [isCreation, projectTask]);
 
-  const creationDefaultValue = useMemo(() => {
-    return {
-      project: project,
-    };
-  }, [project]);
+  const creationDefaultValue = useMemo(
+    () => ({
+      project,
+      projectReadonly: true,
+      taskDate: new Date().toISOString().split('T')[0],
+      progress: 0,
+    }),
+    [project],
+  );
 
-  const updateTaskAPI = useCallback(
+  const saveTaskAPI = useCallback(
     (objectState, dispatch) => {
-      dispatch((updateCreateProjectTask as any)({projectTask: objectState}));
+      dispatch((saveProjectTask as any)({projectTask: objectState}));
       navigation.pop();
     },
     [navigation],
-  );
-
-  const createTaskAPI = useCallback(
-    (objectState, dispatch) => {
-      dispatch(
-        (updateCreateProjectTask as any)({
-          projectTask: objectState,
-          isCreation: isCreation,
-        }),
-      );
-      navigation.pop();
-    },
-    [isCreation, navigation],
   );
 
   return (
@@ -88,7 +82,7 @@ const TaskFormScreen = ({navigation, route}) => {
           needValidation: true,
           needRequiredFields: true,
           customAction: ({dispatch, objectState}) => {
-            updateTaskAPI(objectState, dispatch);
+            saveTaskAPI(objectState, dispatch);
           },
           hideIf: () => isCreation,
         },
@@ -98,7 +92,7 @@ const TaskFormScreen = ({navigation, route}) => {
           needValidation: true,
           needRequiredFields: true,
           customAction: ({dispatch, objectState}) => {
-            createTaskAPI(objectState, dispatch);
+            saveTaskAPI(objectState, dispatch);
           },
           hideIf: () => !isCreation,
         },

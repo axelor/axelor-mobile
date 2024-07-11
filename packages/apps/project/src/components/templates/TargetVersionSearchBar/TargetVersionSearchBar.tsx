@@ -36,7 +36,7 @@ interface TargetVersionSearchBarProps {
   showTitle?: boolean;
 }
 
-const TargetVersionSearchBar = ({
+const TargetVersionSearchBarAux = ({
   style = null,
   title = 'Project_TargetVersion',
   defaultValue = null,
@@ -87,6 +87,28 @@ const TargetVersionSearchBar = ({
       isListEnd={isListEndTargetVersion}
       navigate={false}
       oneFilter={false}
+    />
+  );
+};
+
+const TargetVersionSearchBar = ({
+  style = null,
+  title = 'Project_TargetVersion',
+  defaultValue = null,
+  onChange = () => {},
+  readonly = false,
+  required = false,
+  showTitle = true,
+}: TargetVersionSearchBarProps) => {
+  return (
+    <TargetVersionSearchBarAux
+      style={style}
+      title={title}
+      defaultValue={defaultValue}
+      required={required}
+      readonly={readonly}
+      onChange={onChange}
+      showTitle={showTitle}
     />
   );
 };

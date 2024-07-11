@@ -37,7 +37,7 @@ interface ProjectSearchBarProps {
   differentiateBusinessProjects?: boolean;
 }
 
-const ProjectSearchBar = ({
+const ProjectSearchBarAux = ({
   style = null,
   title = 'Project_Project',
   defaultValue = null,
@@ -85,6 +85,30 @@ const ProjectSearchBar = ({
       isListEnd={isListEnd}
       navigate={false}
       oneFilter={false}
+    />
+  );
+};
+
+const ProjectSearchBar = ({
+  style = null,
+  title = 'Project_Project',
+  defaultValue = null,
+  onChange = () => {},
+  readonly = false,
+  required = false,
+  showTitle = true,
+  differentiateBusinessProjects = true,
+}: ProjectSearchBarProps) => {
+  return (
+    <ProjectSearchBarAux
+      style={style}
+      title={title}
+      defaultValue={defaultValue}
+      required={required}
+      readonly={readonly}
+      onChange={onChange}
+      showTitle={showTitle}
+      differentiateBusinessProjects={differentiateBusinessProjects}
     />
   );
 };

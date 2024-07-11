@@ -16,7 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import {FormConfigs, UserSearchBar} from '@axelor/aos-mobile-core';
+import {FormConfigs, isEmpty, UserSearchBar} from '@axelor/aos-mobile-core';
 import {
   ProductSearchBar,
   ProjectSearchBar as HRProjectSearchBar,
@@ -29,7 +29,7 @@ import {
   PrioritySearchBar,
   ProjectSearchBar,
   SectionSearchBar,
-  TagTaskMultieValuePicker,
+  TaskTagMultiValuePicker,
   TargetVersionSearchBar,
   TaskStatusSearchBar,
 } from '../components';
@@ -117,83 +117,71 @@ export const project_formsRegister: FormConfigs = {
   },
   project_task: {
     modelName: 'com.axelor.apps.project.db.ProjectTask',
+    panels: {
+      contextContainer: {
+        direction: 'row',
+        colSpan: 12,
+        order: 2,
+      },
+      projectContainer: {
+        direction: 'row',
+        colSpan: 6,
+        parent: 'contextContainer',
+      },
+      parentContainer: {
+        direction: 'row',
+        colSpan: 6,
+        parent: 'contextContainer',
+      },
+    },
     fields: {
       name: {
         titleKey: 'Project_Subject',
         type: 'string',
         required: true,
+        order: 0,
       },
       ticketNumber: {
         titleKey: 'Project_TicketNumber',
         type: 'string',
         readonly: true,
+        order: 1,
       },
       project: {
         titleKey: 'Project_Project',
         type: 'object',
         widget: 'custom',
         customComponent: ProjectSearchBar,
+        readonlyIf: ({objectState}) => objectState?.projectReadonly,
         required: true,
         options: {
           differentiateBusinessProjects: false,
         },
-      },
-      status: {
-        titleKey: 'Project_Status',
-        type: 'object',
-        widget: 'custom',
-        customComponent: TaskStatusSearchBar,
-        required: true,
-        dependsOn: {
-          project: () => {
-            return null;
-          },
-        },
+        parentPanel: 'projectContainer',
       },
       parentTask: {
         titleKey: 'Project_ParentTask',
         type: 'object',
         widget: 'custom',
         customComponent: ParentTaskSearchBar,
+        readonlyIf: ({storeState}) =>
+          isEmpty(storeState.project_project.projectForm),
         dependsOn: {
           project: ({newValue, dispatch}) => {
             dispatch(updateProject(newValue));
-          },
-        },
-      },
-      assignedTo: {
-        titleKey: 'Project_AssignedTo',
-        type: 'object',
-        widget: 'custom',
-        customComponent: UserSearchBar,
-      },
-      projectTaskCategory: {
-        titleKey: 'Project_Category',
-        type: 'object',
-        widget: 'custom',
-        customComponent: CategorySearchBar,
-        dependsOn: {
-          project: () => {
             return null;
           },
         },
+        parentPanel: 'parentContainer',
       },
-      projectTaskSection: {
-        titleKey: 'Project_Section',
+      status: {
+        titleKey: 'Project_Status',
         type: 'object',
         widget: 'custom',
-        customComponent: SectionSearchBar,
-        dependsOn: {
-          project: () => {
-            return null;
-          },
-        },
-      },
-      targetVersion: {
-        titleKey: 'Project_TargetVersion',
-        type: 'object',
-        widget: 'custom',
-        customComponent: TargetVersionSearchBar,
+        customComponent: TaskStatusSearchBar,
+        hideIf: ({storeState}) =>
+          !storeState.project_project.projectForm?.isShowStatus,
+        required: true,
         dependsOn: {
           project: () => {
             return null;
@@ -206,6 +194,52 @@ export const project_formsRegister: FormConfigs = {
         widget: 'custom',
         required: true,
         customComponent: PrioritySearchBar,
+        hideIf: ({storeState}) =>
+          !storeState.project_project.projectForm?.isShowPriority,
+        dependsOn: {
+          project: () => {
+            return null;
+          },
+        },
+      },
+      assignedTo: {
+        titleKey: 'Project_AssignedTo',
+        type: 'object',
+        widget: 'custom',
+        customComponent: UserSearchBar,
+        required: true,
+      },
+      projectTaskCategory: {
+        titleKey: 'Project_Category',
+        type: 'object',
+        widget: 'custom',
+        customComponent: CategorySearchBar,
+        hideIf: ({storeState}) =>
+          !storeState.project_project.projectForm?.isShowTaskCategory,
+        dependsOn: {
+          project: () => {
+            return null;
+          },
+        },
+      },
+      projectTaskSection: {
+        titleKey: 'Project_Section',
+        type: 'object',
+        widget: 'custom',
+        customComponent: SectionSearchBar,
+        hideIf: ({storeState}) =>
+          !storeState.project_project.projectForm?.isShowSection,
+        dependsOn: {
+          project: () => {
+            return null;
+          },
+        },
+      },
+      targetVersion: {
+        titleKey: 'Project_TargetVersion',
+        type: 'object',
+        widget: 'custom',
+        customComponent: TargetVersionSearchBar,
         dependsOn: {
           project: () => {
             return null;
@@ -231,12 +265,14 @@ export const project_formsRegister: FormConfigs = {
         titleKey: 'Project_Tags',
         type: 'array',
         widget: 'custom',
-        customComponent: TagTaskMultieValuePicker,
+        customComponent: TaskTagMultiValuePicker,
       },
       progress: {
         titleKey: 'Project_Progress',
         type: 'number',
         widget: 'increment',
+        hideIf: ({storeState}) =>
+          !storeState.project_project.projectForm?.isShowProgress,
       },
       description: {
         type: 'string',

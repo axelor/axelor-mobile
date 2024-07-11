@@ -29,11 +29,11 @@ export {
   getProjectTaskTag,
   searchCategory,
   searchPriority,
-  searchProjectParentTask,
+  searchParentTask,
   searchProjectTask,
   searchSection,
   searchStatus,
   searchTargetVersion,
-  updateCreateProjectTask,
+  saveProjectTask,
 } from './projectTaskSlice';
 export {fetchTimesheetLinesByTask} from './timesheetLinesSlice';
