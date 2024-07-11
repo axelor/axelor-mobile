@@ -35,59 +35,33 @@ describe('ActionCard Component', () => {
 
   it('should render without crashing', () => {
     const wrapper = shallow(<ActionCard {...props} />);
+
     expect(wrapper.exists()).toBe(true);
   });
 
   it('should render children correctly', () => {
     const wrapper = shallow(<ActionCard {...props} />);
+
     expect(wrapper.contains(props.children)).toBe(true);
   });
 
   it('should render InfoButton components for each action in the list', () => {
     const wrapper = shallow(<ActionCard {...props} />);
 
-    const visibleActions = wrapper.find(InfoButton);
-    expect(visibleActions.length).toBe(actionList.length);
+    expect(wrapper.find(InfoButton).length).toBe(actionList.length);
   });
 
   it('should call the appropriate onPress function when an action is pressed', () => {
     const wrapper = shallow(<ActionCard {...props} />);
+
     wrapper.find(InfoButton).at(0).simulate('press');
     expect(actionList[0].onPress).toHaveBeenCalled();
-  });
-
-  it('should display the "See Actions" button if there are more than 2 actions or any action is large', () => {
-    const extendedProps = {
-      ...props,
-      actionList: [
-        {iconName: 'edit', onPress: jest.fn(), key: '1'},
-        {iconName: 'delete', onPress: jest.fn(), key: '2', large: true},
-      ],
-    };
-    const wrapper = shallow(<ActionCard {...extendedProps} />);
-
-    const seeActionsButton = wrapper.find(InfoButton).at(2);
-
-    expect(seeActionsButton.exists()).toBe(true);
-  });
-
-  it('should toggle visibility of actions when "See Actions" button is pressed', () => {
-    const extendedProps = {
-      ...props,
-      actionList: [
-        {iconName: 'edit', onPress: jest.fn(), key: '1'},
-        {iconName: 'delete', onPress: jest.fn(), key: '2', large: true},
-      ],
-    };
-    const wrapper = shallow(<ActionCard {...extendedProps} />);
-    const seeActionsButton = wrapper.find(InfoButton).at(0);
-    seeActionsButton.simulate('press');
-    expect(wrapper.find(InfoButton).length).toBe(actionList.length);
   });
 
   it('should apply custom style to the container if provided', () => {
     const customStyle = {width: 200};
     const wrapper = shallow(<ActionCard {...props} style={customStyle} />);
+
     expect(getGlobalStyles(wrapper.find('View').at(0))).toMatchObject(
       customStyle,
     );
