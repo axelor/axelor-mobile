@@ -39,6 +39,13 @@
   "Project_Reporting": "Reporting",
   "Project_Activities": "Activities",
   "Project_ActivityUpdateInformation": "Updated by {{userName}} at {{time}}",
+  "Project_Subject": "Subject",
+  "Project_TicketNumber": "Ticket number",
+  "Project_ParentTask": "Parent task",
+  "Project_AssignedTo": "Assigned to",
+  "Project_Progress": "Progress",
+  "Project_Priority": "Priority",
+  "Project_Status": "Status",
   "Project_SliceAction_SearchProject": "search projects",
   "Project_SliceAction_FetchProjectById": "fetch project by id",
   "Project_SliceAction_FetchProjectStatus": "fetch project status",
@@ -47,5 +54,13 @@
   "Project_SliceAction_FetchProjectPriority": "fetch project priorities",
   "Project_SliceAction_SearchSubProject": "search sub projects",
   "Project_SliceAction_FetchProjectTaskById": "fetch project task by id",
-  "Project_SliceAction_FetchTimesheetLinesByTask": "fetch timesheet lines by task"
+  "Project_SliceAction_FetchTimesheetLinesByTask": "fetch timesheet lines by task",
+  "Project_SliceAction_GetProjectTaskTag": "get project task tags",
+  "Project_SliceAction_SearchTargetVersion": "search target versions",
+  "Project_SliceAction_SearchCategory": "search categories",
+  "Project_SliceAction_SearchSection": "search sections",
+  "Project_SliceAction_SearchPriority": "search priorities",
+  "Project_SliceAction_SaveProjectTask": "save project task",
+  "Project_SliceAction_SearchStatus": "search status",
+  "Project_SliceAction_SearchParentTask": "search parent task"
 }

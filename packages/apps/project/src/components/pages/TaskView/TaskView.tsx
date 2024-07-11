@@ -67,7 +67,9 @@ const TaskView = () => {
         {
           iconName: 'plus',
           title: I18n.t('Project_CreateNewTask'),
-          onPress: () => {},
+          onPress: () => {
+            navigation.navigate('TaskFormScreen', {isCreation: true});
+          },
         },
       ]}
       list={projectTaskList}
