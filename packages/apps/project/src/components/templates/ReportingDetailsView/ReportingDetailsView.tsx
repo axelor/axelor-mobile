@@ -17,10 +17,9 @@
  */
 
 import React, {useEffect, useState} from 'react';
-import {View, ScrollView} from 'react-native';
+import {Dimensions, ScrollView, StyleSheet, View} from 'react-native';
 import {useSelector} from '@axelor/aos-mobile-core';
-import {HeaderContainer, IndicatorChart} from '@axelor/aos-mobile-ui';
-import {ProjectHeader} from '../../molecules';
+import {IndicatorChart} from '@axelor/aos-mobile-ui';
 import {getReportingData, getReportingData2} from '../../../api/reporting-api';
 
 const ReportingDetailsView = () => {
@@ -42,29 +41,42 @@ const ReportingDetailsView = () => {
     return Object.keys(data).map(key => ({
       title: key,
       value: data[key],
-      //unit: '',
-      //color: '',
-      //icon: '',
     }));
   };
+
   return (
     <ScrollView>
-      {reportingData.map((data, index) => (
-        <IndicatorChart
-          key={index}
-          datasets={dataToIndicators(data) as any}
-          title={`Indicator Chart ${index + 1}`}
-        />
-      ))}
-      {reportingData2.map((data, index) => (
-        <IndicatorChart
-          key={index}
-          datasets={dataToIndicators(data) as any}
-          title={`Indicator Chart ${index + 2}`}
-        />
-      ))}
+      <View style={styles.container}>
+        {reportingData.map((data, index) =>
+          dataToIndicators(data).map((indicatorData, idx) => (
+            <IndicatorChart
+              key={`${index}-${idx}`}
+              datasets={[indicatorData] as any}
+              title={`Indicator Chart ${index + 1}`}
+              widthGraph={Dimensions.get('window').width / 2}
+            />
+          )),
+        )}
+        {reportingData2.map((data, index) =>
+          dataToIndicators(data).map((indicatorData, idx) => (
+            <IndicatorChart
+              key={`${index + reportingData.length}-${idx}`}
+              datasets={[indicatorData] as any}
+              title={`Indicator Chart ${index + reportingData.length + 1}`}
+              widthGraph={Dimensions.get('window').width / 2}
+            />
+          )),
+        )}
+      </View>
     </ScrollView>
   );
 };
+
+const styles = StyleSheet.create({
+  container: {
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+  },
+});
 
 export default ReportingDetailsView;
