@@ -17,7 +17,7 @@
  */
 
 import React, {useCallback, useEffect, useMemo, useRef, useState} from 'react';
-import {Dimensions, StyleSheet, View} from 'react-native';
+import {Dimensions, PanResponder, StyleSheet, View} from 'react-native';
 import Animated, {
   useAnimatedStyle,
   useSharedValue,
@@ -109,6 +109,40 @@ const BottomBar = ({
     }
   }, [selectedKey, visibleItems]);
 
+  const panResponder = useMemo(
+    () =>
+      PanResponder.create({
+        onMoveShouldSetPanResponder: (evt, gestureState) => {
+          return (
+            Math.abs(gestureState.dx) > Math.abs(gestureState.dy) &&
+            Math.abs(gestureState.dx) > 10
+          );
+        },
+        onPanResponderRelease: (evt, gestureState) => {
+          if (Math.abs(gestureState.dx) > 10) {
+            if (gestureState.dx < 0) {
+              const currentIndex = visibleItems.findIndex(
+                item => item.key === selectedKey,
+              );
+              if (currentIndex < visibleItems.length - 1) {
+                setSelectedKey(visibleItems[currentIndex + 1].key);
+                setSelectedItemColor(visibleItems[currentIndex + 1].color);
+              }
+            } else if (gestureState.dx > 0) {
+              const currentIndex = visibleItems.findIndex(
+                item => item.key === selectedKey,
+              );
+              if (currentIndex > 0) {
+                setSelectedKey(visibleItems[currentIndex - 1].key);
+                setSelectedItemColor(visibleItems[currentIndex - 1].color);
+              }
+            }
+          }
+        },
+      }),
+    [selectedKey, visibleItems],
+  );
+
   return (
     <View style={styles.container}>
       <View style={{height: viewHeight}}>
@@ -123,7 +157,8 @@ const BottomBar = ({
               headerHeight -
               barHeight,
           );
-        }}>
+        }}
+        {...panResponder.panHandlers}>
         <Card style={[styles.bottomContainer, style]}>
           {visibleItems.map(renderItem)}
           <Animated.View
