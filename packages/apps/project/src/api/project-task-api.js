@@ -17,6 +17,7 @@
  */
 
 import {
+  axiosApiProvider,
   createStandardFetch,
   createStandardSearch,
   getSearchCriterias,
@@ -28,6 +29,7 @@ const createProjectTaskCriteria = ({
   userId,
   selectedStatus,
   selectedPriority,
+  projectTaskId,
 }) => {
   const criteria = [getSearchCriterias('project_projectTask', searchValue)];
 
@@ -36,6 +38,14 @@ const createProjectTaskCriteria = ({
       fieldName: 'project.id',
       operator: '=',
       value: projectId,
+    });
+  }
+
+  if (projectTaskId != null) {
+    criteria.push({
+      fieldName: 'id',
+      operator: '!=',
+      value: projectTaskId,
     });
   }
 
@@ -72,6 +82,39 @@ const createProjectTaskCriteria = ({
   return criteria;
 };
 
+const createPriorityCriteria = ({searchValue, priorityIds}) => {
+  return [
+    getSearchCriterias('project_projectPriority', searchValue),
+    {
+      fieldName: 'id',
+      operator: 'in',
+      value: priorityIds,
+    },
+  ];
+};
+
+const createStatusCriteria = ({searchValue, statusIds}) => {
+  return [
+    getSearchCriterias('project_taskStatus', searchValue),
+    {
+      fieldName: 'id',
+      operator: 'in',
+      value: statusIds,
+    },
+  ];
+};
+
+const createCategoryCriteria = ({searchValue, categoryIds}) => {
+  return [
+    getSearchCriterias('project_projectTaskCategory', searchValue),
+    {
+      fieldName: 'id',
+      operator: 'in',
+      value: categoryIds,
+    },
+  ];
+};
+
 export async function searchProjectTask({
   searchValue,
   page = 0,
@@ -79,6 +122,7 @@ export async function searchProjectTask({
   userId,
   selectedStatus,
   selectedPriority,
+  projectTaskId,
 }) {
   return createStandardSearch({
     model: 'com.axelor.apps.project.db.ProjectTask',
@@ -88,6 +132,7 @@ export async function searchProjectTask({
       userId,
       selectedStatus,
       selectedPriority,
+      projectTaskId,
     }),
     fieldKey: 'project_projectTask',
     sortKey: 'project_projectTask',
@@ -120,6 +165,85 @@ export async function fetchProjectTaskById({projecTaskId}) {
     fieldKey: 'project_projectTask',
     relatedFields: {
       projectTaskTagSet: ['name', 'colorSelect'],
+    },
+  });
+}
+
+export async function getProjectTaskTag() {
+  return axiosApiProvider.get({
+    url: 'ws/rest/com.axelor.apps.project.db.ProjectTaskTag/',
+  });
+}
+
+export async function searchTargetVersion({searchValue, page = 0, projectId}) {
+  return createStandardSearch({
+    model: 'com.axelor.apps.businesssupport.db.ProjectVersion',
+    criteria: [getSearchCriterias('project_projectVersion', searchValue)],
+    fieldKey: 'project_projectVersion',
+    sortKey: 'project_projectVersion',
+    page,
+    domain: ':project member of self.projectSet',
+    domainContext: {project: {id: projectId}},
+  });
+}
+
+export async function searchCategory({searchValue, page = 0, categoryIds}) {
+  if (!Array.isArray(categoryIds) || categoryIds.length === 0) {
+    return {data: {data: [], total: 0}};
+  }
+
+  return createStandardSearch({
+    model: 'com.axelor.apps.project.db.ProjectTaskCategory',
+    criteria: createCategoryCriteria({searchValue, categoryIds}),
+    fieldKey: 'project_projectTaskCategory',
+    sortKey: 'project_projectTaskCategory',
+    page,
+  });
+}
+
+export async function searchSection({searchValue, page = 0}) {
+  return createStandardSearch({
+    model: 'com.axelor.apps.project.db.ProjectTaskSection',
+    criteria: [getSearchCriterias('project_projectTaskSection', searchValue)],
+    fieldKey: 'project_projectTaskSection',
+    sortKey: 'project_projectTaskSection',
+    page,
+  });
+}
+
+export async function searchPriority({searchValue, page = 0, priorityIds}) {
+  if (!Array.isArray(priorityIds) || priorityIds.length === 0) {
+    return {data: {data: [], total: 0}};
+  }
+
+  return createStandardSearch({
+    model: 'com.axelor.apps.project.db.ProjectPriority',
+    criteria: createPriorityCriteria({searchValue, priorityIds}),
+    fieldKey: 'project_projectPriority',
+    sortKey: 'project_projectPriority',
+    page,
+  });
+}
+
+export async function searchStatus({searchValue, page = 0, statusIds}) {
+  if (!Array.isArray(statusIds) || statusIds.length === 0) {
+    return {data: {data: [], total: 0}};
+  }
+
+  return createStandardSearch({
+    model: 'com.axelor.apps.project.db.TaskStatus',
+    criteria: createStatusCriteria({searchValue, statusIds}),
+    fieldKey: 'project_taskStatus',
+    sortKey: 'project_taskStatus',
+    page,
+  });
+}
+
+export async function saveProjectTask({projectTask}) {
+  return axiosApiProvider.post({
+    url: '/ws/rest/com.axelor.apps.project.db.ProjectTask/',
+    data: {
+      data: projectTask,
     },
   });
 }

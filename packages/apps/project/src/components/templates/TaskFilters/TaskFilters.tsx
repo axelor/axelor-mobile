@@ -28,7 +28,7 @@ import {
   fetchProjectTaskStatus,
   fetchProjectPriority,
 } from '../../../features/projectTaskSlice';
-import {ProjectSearchBar} from '../../organisms';
+import {ProjectSearchBar} from '../../templates';
 
 const filterAvailableSet = (allowValues, _set) => {
   const _availableSet = allowValues?.map(({id}) => id);
