@@ -3,6 +3,30 @@ title: 7.1.0
 tags: Changelog
 ---
 
+## [7.1.15] (2024-07-11)
+
+### @axelor/aos-mobile-ui
+
+#### Fixes
+
+- LabelText: align items to avoid flex display issue
+
+### @axelor/aos-mobile-manufacturing
+
+#### Fixes
+
+- Consumed products: change status translations
+
+<details>
+'Planned' status has been changed to 'To pick' and 'Finished' status to 'Consumed' to make it more clear and consistent with associated StokMove
+</details>
+
+### @axelor/aos-mobile-stock
+
+#### Fixes
+
+- Product stock details: adjust margin of see distribution button for small screens
+
 ## [7.1.14] (2024-06-28)
 
 ### @axelor/aos-mobile-core
@@ -535,6 +559,7 @@ This update breaks the compatability with AOS Stock module under version 7.1 due
 - Add number decimal digit config management system
 - Manage multilines input with auto height resize on FormInput
 
+[7.1.15]: https://github.com/axelor/axelor-mobile/compare/7.1.14...7.1.15
 [7.1.14]: https://github.com/axelor/axelor-mobile/compare/7.1.13...7.1.14
 [7.1.13]: https://github.com/axelor/axelor-mobile/compare/7.1.12...7.1.13
 [7.1.12]: https://github.com/axelor/axelor-mobile/compare/7.1.11...7.1.12
