@@ -21,6 +21,7 @@ import {
   createStandardFetch,
   createStandardSearch,
   getSearchCriterias,
+  getTypes,
 } from '@axelor/aos-mobile-core';
 
 const createProjectTaskCriteria = ({
@@ -31,7 +32,16 @@ const createProjectTaskCriteria = ({
   selectedPriority,
   projectTaskId,
 }) => {
-  const criteria = [getSearchCriterias('project_projectTask', searchValue)];
+  const ProjectTask = getTypes().ProjectTask;
+
+  const criteria = [
+    {
+      fieldName: 'typeSelect',
+      operator: '=',
+      value: ProjectTask?.typeSelect.Task,
+    },
+    getSearchCriterias('project_projectTask', searchValue),
+  ];
 
   if (projectId != null) {
     criteria.push({
