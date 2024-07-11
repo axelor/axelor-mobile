@@ -33,7 +33,11 @@ export {
   isToday,
   sameDate,
 } from './date';
-export {displayItemName, displayItemFullname} from './displayers';
+export {
+  displayItemName,
+  displayItemFullname,
+  displayItemTitle,
+} from './displayers';
 export {
   formatDate,
   formatDateTime,

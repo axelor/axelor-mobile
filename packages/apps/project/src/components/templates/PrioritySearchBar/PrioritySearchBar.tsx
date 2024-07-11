@@ -16,7 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import React, {useCallback} from 'react';
+import React, {useCallback, useMemo} from 'react';
 import {
   displayItemName,
   useDispatch,
@@ -24,9 +24,9 @@ import {
   useTranslator,
 } from '@axelor/aos-mobile-core';
 import {AutoCompleteSearch} from '@axelor/aos-mobile-ui';
-import {searchProject} from '../../../features/projectSlice';
+import {searchPriority} from '../../../features/projectTaskSlice';
 
-interface ProjectSearchBarProps {
+interface PrioritySearchBarProps {
   style?: any;
   title?: string;
   defaultValue?: string;
@@ -34,59 +34,88 @@ interface ProjectSearchBarProps {
   readonly?: boolean;
   required?: boolean;
   showTitle?: boolean;
-  differentiateBusinessProjects?: boolean;
 }
 
-const ProjectSearchBar = ({
+const PrioritySearchBarAux = ({
   style = null,
-  title = 'Project_Project',
+  title = 'Project_Priority',
   defaultValue = null,
   onChange = () => {},
   readonly = false,
   required = false,
   showTitle = true,
-  differentiateBusinessProjects = true,
-}: ProjectSearchBarProps) => {
+}: PrioritySearchBarProps) => {
   const I18n = useTranslator();
   const dispatch = useDispatch();
 
-  const {projectList, loading, moreLoading, isListEnd} = useSelector(
-    (state: any) => state.project_project,
+  const {
+    priorityList,
+    loadingPriority,
+    moreLoadingPriority,
+    isListEndPriority,
+  } = useSelector((state: any) => state.project_projectTask);
+  const {projectForm} = useSelector((state: any) => state.project_project);
+
+  const priorityIds = useMemo(
+    () => projectForm?.projectTaskPrioritySet?.map(priority => priority.id),
+    [projectForm?.projectTaskPrioritySet],
   );
 
-  const searchProjectAPI = useCallback(
+  const searchPriorityAPI = useCallback(
     ({page = 0, searchValue}) => {
       dispatch(
-        (searchProject as any)({
+        (searchPriority as any)({
           page,
           searchValue,
-          differentiateBusinessProjects,
+          priorityIds: priorityIds,
         }),
       );
     },
-    [differentiateBusinessProjects, dispatch],
+    [dispatch, priorityIds],
   );
 
   return (
     <AutoCompleteSearch
       style={style}
       title={showTitle && I18n.t(title)}
-      objectList={projectList}
+      objectList={priorityList}
       value={defaultValue}
       required={required}
       readonly={readonly}
       onChangeValue={onChange}
-      fetchData={searchProjectAPI}
+      fetchData={searchPriorityAPI}
       displayValue={displayItemName}
       placeholder={I18n.t(title)}
       showDetailsPopup={true}
-      loadingList={loading}
-      moreLoading={moreLoading}
-      isListEnd={isListEnd}
+      loadingList={loadingPriority}
+      moreLoading={moreLoadingPriority}
+      isListEnd={isListEndPriority}
       navigate={false}
       oneFilter={false}
     />
   );
 };
 
-export default ProjectSearchBar;
+const PrioritySearchBar = ({
+  style = null,
+  title = 'Project_Priority',
+  defaultValue = null,
+  onChange = () => {},
+  readonly = false,
+  required = false,
+  showTitle = true,
+}: PrioritySearchBarProps) => {
+  return (
+    <PrioritySearchBarAux
+      style={style}
+      title={title}
+      defaultValue={defaultValue}
+      required={required}
+      readonly={readonly}
+      onChange={onChange}
+      showTitle={showTitle}
+    />
+  );
+};
+
+export default PrioritySearchBar;
