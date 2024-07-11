@@ -25,6 +25,7 @@ import {
   getChartParameter,
 } from './api.helpers';
 import {transformData} from './format.helpers';
+import {useTranslator} from '../../../i18n';
 
 const DEFAULT_CHART_CONFIG = {type: '', dataset: [], title: ''};
 
@@ -35,6 +36,7 @@ const AOPChart = ({
   actionViewName: string;
   widthGraph?: number;
 }) => {
+  const I18n = useTranslator();
   const [chart, setChart] = useState(DEFAULT_CHART_CONFIG);
 
   useEffect(() => {
@@ -90,6 +92,7 @@ const AOPChart = ({
       title={chart.title}
       type={chart.type}
       widthGraph={widthGraph}
+      translator={I18n.t}
     />
   );
 };

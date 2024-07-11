@@ -17,7 +17,7 @@
  */
 
 import React, {useMemo} from 'react';
-import {StyleSheet, View} from 'react-native';
+import {StyleSheet, TouchableOpacity, View} from 'react-native';
 import {Color, useThemeColor} from '../../../../../theme';
 import {Icon, Text} from '../../../../atoms';
 import {TextUnit} from '../../../../molecules';
@@ -29,6 +29,7 @@ interface SimpleIndicatorProps {
   value: number;
   unit: string;
   title: string;
+  onPress?: () => void;
 }
 
 const SimpleIndicator = ({
@@ -37,6 +38,7 @@ const SimpleIndicator = ({
   value,
   unit,
   title,
+  onPress,
 }: SimpleIndicatorProps) => {
   const Colors = useThemeColor();
 
@@ -54,7 +56,7 @@ const SimpleIndicator = ({
   }, [Colors, _color]);
 
   return (
-    <View style={styles.container}>
+    <TouchableOpacity onPress={onPress} style={styles.container}>
       <Icon size={30} name={icon} visible={isIcon} />
       <View
         style={[
@@ -66,7 +68,7 @@ const SimpleIndicator = ({
           {title}
         </Text>
       </View>
-    </View>
+    </TouchableOpacity>
   );
 };
 

@@ -24,29 +24,48 @@ import LineChart from './LineChart';
 import PieChart from './PieChart/PieChart';
 import {Data} from '../dashboard.helper';
 
-const BarChartRender = (datasets, title, widthGraph, hideCardBackground) => {
+const BarChartRender = (
+  datasets: Data[][],
+  title: string,
+  widthGraph: number,
+  hideCardBackground: boolean,
+  translator: (translationKey: string) => string,
+) => {
   return (
     <BarChart
       title={title}
       datasets={datasets}
       widthGraph={widthGraph}
       hideCardBackground={hideCardBackground}
+      translator={translator}
     />
   );
 };
 
-const LineChartRender = (datasets, title, widthGraph, hideCardBackground) => {
+const LineChartRender = (
+  datasets: Data[][],
+  title: string,
+  widthGraph: number,
+  hideCardBackground: boolean,
+  translator: (translationKey: string) => string,
+) => {
   return (
     <LineChart
       title={title}
       datasets={datasets}
       widthGraph={widthGraph}
       hideCardBackground={hideCardBackground}
+      translator={translator}
     />
   );
 };
 
-const PieChartRender = (datasets, title, widthGraph, type) => {
+const PieChartRender = (
+  datasets: Data[][],
+  title: string,
+  widthGraph: number,
+  type: string,
+) => {
   return (
     <PieChart
       title={title}
@@ -63,18 +82,32 @@ const ChartRender = ({
   type,
   widthGraph = Dimensions.get('window').width,
   hideCardBackground = false,
+  translator,
 }: {
   dataList: Data[][];
   title: string;
   type: string;
   widthGraph?: number;
   hideCardBackground?: boolean;
+  translator: (translationKey: string) => string;
 }) => {
   switch (type) {
     case Chart.chartType.bar:
-      return BarChartRender(dataList, title, widthGraph, hideCardBackground);
+      return BarChartRender(
+        dataList,
+        title,
+        widthGraph,
+        hideCardBackground,
+        translator,
+      );
     case Chart.chartType.line:
-      return LineChartRender(dataList, title, widthGraph, hideCardBackground);
+      return LineChartRender(
+        dataList,
+        title,
+        widthGraph,
+        hideCardBackground,
+        translator,
+      );
     case Chart.chartType.pie:
     case Chart.chartType.donut:
       return PieChartRender(dataList, title, widthGraph, type);

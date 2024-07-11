@@ -16,7 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import React, {useMemo} from 'react';
+import React, {useCallback, useMemo, useState} from 'react';
 import {StyleSheet, Dimensions, View} from 'react-native';
 import {BarChart as RNBarChart} from 'react-native-gifted-charts';
 import {useThemeColor} from '../../../../theme';
@@ -29,6 +29,7 @@ import {
   getContainerWidth,
   initBarData,
 } from './chart.helper';
+import DetailsPopup from './DetailsPopup';
 
 interface BarCharProps {
   style?: any;
@@ -39,6 +40,7 @@ interface BarCharProps {
   title?: string;
   rotateLabel?: boolean;
   hideCardBackground?: boolean;
+  translator: (translationKey: string) => string;
 }
 
 const BarChart = ({
@@ -50,8 +52,12 @@ const BarChart = ({
   title,
   rotateLabel = true,
   hideCardBackground = false,
+  translator,
 }: BarCharProps) => {
   const Colors = useThemeColor();
+
+  const [selectedBar, setSelectedBar] = useState(null);
+  const [modalVisible, setModalVisible] = useState(false);
 
   const barChartData = useMemo(() => {
     return initBarData(datasets, rotateLabel, spacing, Colors);
@@ -83,6 +89,15 @@ const BarChart = ({
 
   const Container = hideCardBackground ? View : Card;
 
+  const handleBarPress = useCallback(barData => {
+    setSelectedBar(barData);
+    setModalVisible(true);
+  }, []);
+
+  const closeModal = useCallback(() => {
+    setModalVisible(false);
+  }, []);
+
   return (
     <Container
       style={[
@@ -103,11 +118,17 @@ const BarChart = ({
         spacing={_spacing}
         endSpacing={_spacing}
         horizontal={horizontal}
-        disablePress={true}
+        onPress={handleBarPress}
         yAxisTextStyle={{color: Colors.secondaryColor_dark.background}}
         xAxisLabelTextStyle={{color: Colors.secondaryColor_dark.background}}
       />
       {!checkNullString(title) && <Text style={styles.title}>{title}</Text>}
+      <DetailsPopup
+        closeModal={closeModal}
+        modalVisible={modalVisible}
+        selectedItem={selectedBar}
+        translator={translator}
+      />
     </Container>
   );
 };

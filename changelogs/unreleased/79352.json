@@ -1,0 +1,5 @@
+{
+  "title": "Dashboard: add details on click on chart",
+  "type": "feat",
+  "packages": "ui"
+}
