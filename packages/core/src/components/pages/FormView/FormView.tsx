@@ -279,6 +279,7 @@ const FormView = ({
               config.readonlyIf({objectState: object, storeState}))
           }
           formContent={getConfigItems(config)}
+          isCustom={isCustom}
         />
       );
     }

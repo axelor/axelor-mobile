@@ -53,6 +53,7 @@ interface FieldProps {
   globalReadonly?: (values?: States) => boolean;
   formContent: (DisplayPanel | DisplayField)[];
   modelName: string;
+  isCustom?: boolean;
 }
 
 const Field = ({
@@ -62,6 +63,7 @@ const Field = ({
   globalReadonly = () => false,
   formContent,
   modelName,
+  isCustom = false,
 }: FieldProps) => {
   const I18n = useTranslator();
   const Colors = useThemeColor();
@@ -213,6 +215,7 @@ const Field = ({
             required={isRequired}
             readonly={isReadonly}
             nullable={true}
+            popup={isCustom}
             {..._field.options}
           />
         );
