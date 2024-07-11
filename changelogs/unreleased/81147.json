@@ -1,5 +1,0 @@
-{
-  "title": "FloatingButton: adjust action container size when title is too long",
-  "type": "fix",
-  "packages": "ui"
-}

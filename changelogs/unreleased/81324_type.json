@@ -1,5 +1,0 @@
-{
-  "title": "Timer: use correct status values to fetch active timer",
-  "type": "fix",
-  "packages": "hr"
-}

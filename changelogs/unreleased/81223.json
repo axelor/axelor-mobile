@@ -1,5 +1,0 @@
-{
-  "title": "MailMessageNotificationCard: enable display without object link",
-  "type": "refactor",
-  "packages": "core"
-}

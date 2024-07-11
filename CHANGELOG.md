@@ -3,6 +3,62 @@ title: 8.1.0
 tags: Changelog
 ---
 
+## [8.1.2] (2024-07-11)
+
+### @axelor/aos-mobile-core
+
+#### Features
+
+- Custom form: manage Drawing widget
+
+#### Changes
+
+- MailMessageNotificationCard: enable display without object link
+
+#### Fixes
+
+- Selections: add refresh in hook function when model selections change
+- Custom forms: change display behavior of date time inputs
+- Custom forms: remove bottom buttons
+
+### @axelor/aos-mobile-ui
+
+#### Features
+
+- Dashboard: add details on click on chart
+- Picker components: add possibility to display a placeholder
+
+#### Fixes
+
+- LabelText: align items to avoid flex display issue
+- FloatingButton: adjust action container size when title is too long
+
+### @axelor/aos-mobile-hr
+
+#### Fixes
+
+- Timesheet: show project fields event when imputation mode is empty
+- Expense line: empty the list when opening the selection mode from header action
+- Details views: add basic header actions
+- Timer: use correct status values to fetch active timer
+- Form: add null check on mobileSettings in conditions
+
+### @axelor/aos-mobile-manufacturing
+
+#### Fixes
+
+- Consumed products: change status translations
+
+<details>
+'Planned' status has been changed to 'To pick' and 'Finished' status to 'Consumed' to make it more clear and consistent with associated StokMove
+</details>
+
+### @axelor/aos-mobile-stock
+
+#### Fixes
+
+- Product stock details: adjust margin of see distribution button for small screens
+
 ## [8.1.1] (2024-06-28)
 
 This version fixes the build for Android 14.
@@ -204,5 +260,6 @@ It enables user to manage interventions and customer parc through the mobile app
 - Permissions: check user rights for actions display
 - Selections: use new system and tools instead of type files
 - Product indicators: use new chart component to display quantity indicators
+  [8.1.2]: https://github.com/axelor/axelor-mobile/compare/8.1.1...8.1.2
   [8.1.1]: https://github.com/axelor/axelor-mobile/compare/8.1.0...8.1.1
   [8.1.0]: https://github.com/axelor/axelor-mobile/compare/8.0.6...8.1.0
