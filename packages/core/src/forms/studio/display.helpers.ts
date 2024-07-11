@@ -316,6 +316,14 @@ const manageContentOfModel = (
             );
           }
 
+          if (
+            item.type === 'date' ||
+            item.type === 'datetime' ||
+            item.type === 'time'
+          ) {
+            config.options = {popup: true};
+          }
+
           formFields[item.name] = config;
 
           break;
