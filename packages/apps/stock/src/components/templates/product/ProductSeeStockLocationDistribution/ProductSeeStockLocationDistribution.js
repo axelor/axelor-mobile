@@ -50,9 +50,9 @@ const ProductSeeStockLocationDistribution = ({product, companyId}) => {
         style={styles.container}>
         <Text>{I18n.t('Stock_SeeDistributionStockLocation')}</Text>
         <Icon
-            name="angle-right"
-            size={24}
-            color={Colors.primaryColor.background}
+          name="angle-right"
+          size={24}
+          color={Colors.primaryColor.background}
           style={styles.icon}
         />
       </TouchableOpacity>

@@ -3,6 +3,30 @@ title: 7.0.0
 tags: Changelog
 ---
 
+## [7.0.18] (2024-07-11)
+
+### @axelor/aos-mobile-ui
+
+#### Fixes
+
+- LabelText: align items to avoid flex display issue
+
+### @axelor/aos-mobile-manufacturing
+
+#### Fixes
+
+- Consumed products: change status translations
+
+<details>
+'Planned' status has been changed to 'To pick' and 'Finished' status to 'Consumed' to make it more clear and consistent with associated StokMove
+</details>
+
+### @axelor/aos-mobile-stock
+
+#### Fixes
+
+- Product stock details: adjust margin of see distribution button for small screens
+
 ## [7.0.17] (2024-06-28)
 
 ### @axelor/aos-mobile-core
@@ -617,6 +641,7 @@ The project architecture has also been updated, the example folder has been expl
 - Replace ChipSelect by MultiValuePicker on list screens
 - Add search bar details pop up on screens: add empowered searchBar for objects
 
+[7.0.18]: https://github.com/axelor/axelor-mobile/compare/7.0.17...7.0.18
 [7.0.17]: https://github.com/axelor/axelor-mobile/compare/7.0.16...7.0.17
 [7.0.16]: https://github.com/axelor/axelor-mobile/compare/7.0.15...7.0.16
 [7.0.15]: https://github.com/axelor/axelor-mobile/compare/7.0.14...7.0.15
