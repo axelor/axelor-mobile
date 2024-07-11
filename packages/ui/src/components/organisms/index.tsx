@@ -16,6 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+export {default as ActionCard} from './ActionCard/ActionCard';
 export {default as AutoCompleteSearch} from './AutoCompleteSearch/AutoCompleteSearch';
 export {default as CheckboxScrollList} from './CheckboxScrollList/CheckboxScrollList';
 export {default as ChipSelect} from './ChipSelect/ChipSelect';
