@@ -1,5 +1,0 @@
-{
-  "title": "Timesheet: show project fields event when imputation mode is empty",
-  "type": "fix",
-  "packages": "hr"
-}

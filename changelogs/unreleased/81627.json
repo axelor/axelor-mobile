@@ -1,5 +1,0 @@
-{
-  "title": "Form: add null check on mobileSettings in conditions",
-  "type": "fix",
-  "packages": "hr"
-}

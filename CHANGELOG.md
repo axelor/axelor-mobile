@@ -3,6 +3,45 @@ title: 8.0.0
 tags: Changelog
 ---
 
+## [8.0.8] (2024-07-11)
+
+### @axelor/aos-mobile-core
+
+#### Fixes
+
+- Custom forms: change display behavior of date time inputs
+
+### @axelor/aos-mobile-ui
+
+#### Fixes
+
+- LabelText: align items to avoid flex display issue
+
+### @axelor/aos-mobile-hr
+
+#### Fixes
+
+- Timesheet: show project fields event when imputation mode is empty
+- Expense line: empty the list when opening the selection mode from header action
+- Details views: add basic header actions
+- Form: add null check on mobileSettings in conditions
+
+### @axelor/aos-mobile-manufacturing
+
+#### Fixes
+
+- Consumed products: change status translations
+
+<details>
+'Planned' status has been changed to 'To pick' and 'Finished' status to 'Consumed' to make it more clear and consistent with associated StokMove
+</details>
+
+### @axelor/aos-mobile-stock
+
+#### Fixes
+
+- Product stock details: adjust margin of see distribution button for small screens
+
 ## [8.0.7] (2024-06-28)
 
 ### @axelor/aos-mobile-core
@@ -355,6 +394,7 @@ Changes has been done to get new core and ui improvements: use of ChipSelect, co
 
 Changes has been done to get new core and ui improvements: use of ChipSelect, color differentiation between success and primary, definition of required configs, use of icons for Bootstrap
 
+[8.0.8]: https://github.com/axelor/axelor-mobile/compare/8.0.7...8.0.8
 [8.0.7]: https://github.com/axelor/axelor-mobile/compare/8.0.6...8.0.7
 [8.0.6]: https://github.com/axelor/axelor-mobile/compare/8.0.5...8.0.6
 [8.0.5]: https://github.com/axelor/axelor-mobile/compare/8.0.4...8.0.5

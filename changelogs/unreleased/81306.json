@@ -1,5 +1,0 @@
-{
-  "title": "Expense line: empty the list when opening the selection mode from header action",
-  "type": "fix",
-  "packages": "hr"
-}
