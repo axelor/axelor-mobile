@@ -99,10 +99,15 @@ const TaskCard = ({
                     height={15}
                     styleTxt={styles.textProgressBar}
                   />
-                  <Badge
-                    title={priority?.name}
-                    color={getItemColorFromIndex(projectPriorityList, priority)}
-                  />
+                  {priority != null && (
+                    <Badge
+                      title={priority?.name}
+                      color={getItemColorFromIndex(
+                        projectPriorityList,
+                        priority,
+                      )}
+                    />
+                  )}
                 </View>
               ),
             },
