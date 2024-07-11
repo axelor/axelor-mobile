@@ -342,7 +342,7 @@ const FormView = ({
         style={{bottom: buttonHeight + 20}}
         toggleReadonly={toggleReadonlyMode}
         actions={actions}
-        isCreation={isCreation}
+        isCreation={isCreation && !isCustom}
         onCreate={() => setObject(creationDefaultValue)}
         onPressWrapper={handleValidate}
         isDirty={isDirty}

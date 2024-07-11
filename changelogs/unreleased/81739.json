@@ -1,0 +1,5 @@
+{
+  "title": "Custom forms: remove bottom buttons",
+  "type": "fix",
+  "packages": "core"
+}
