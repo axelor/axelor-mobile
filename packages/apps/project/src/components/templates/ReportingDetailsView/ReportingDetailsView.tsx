@@ -16,26 +16,27 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import React, {useEffect, useState} from 'react';
+import React, {useEffect} from 'react';
 import {Dimensions, ScrollView, StyleSheet, View} from 'react-native';
-import {useSelector} from '@axelor/aos-mobile-core';
+import {useDispatch, useSelector} from '@axelor/aos-mobile-core';
 import {IndicatorChart} from '@axelor/aos-mobile-ui';
-import {getReportingData, getReportingData2} from '../../../api/reporting-api';
+import {
+  getProjectTimeData,
+  getProjectFinancialData,
+} from '../../../features/reportingSlice';
 
 const ReportingDetailsView = () => {
-  const {project} = useSelector((state: any) => state.project_project);
+  const dispatch = useDispatch();
 
-  const [reportingData, setReportingData] = useState<any[]>([]);
-  const [reportingData2, setReportingData2] = useState<any[]>([]);
+  const {project} = useSelector((state: any) => state.project_project);
+  const {reportingTimeData, reportingFinancialData} = useSelector(
+    (state: any) => state.project_reporting,
+  );
 
   useEffect(() => {
-    getReportingData({projetId: project?.id}).then(res => {
-      setReportingData(res?.data?.data?.dataset || []);
-    });
-    getReportingData2({projetId: project?.id}).then(res => {
-      setReportingData2(res?.data?.data?.dataset || []);
-    });
-  }, [project?.id]);
+    dispatch((getProjectTimeData as any)({projetId: project?.id}));
+    dispatch((getProjectFinancialData as any)({projetId: project?.id}));
+  }, [dispatch, project?.id]);
 
   const dataToIndicators = (data: any) => {
     return Object.keys(data).map(key => ({
@@ -47,22 +48,20 @@ const ReportingDetailsView = () => {
   return (
     <ScrollView>
       <View style={styles.container}>
-        {reportingData.map((data, index) =>
+        {reportingTimeData?.dataset?.map((data, index) =>
           dataToIndicators(data).map((indicatorData, idx) => (
             <IndicatorChart
               key={`${index}-${idx}`}
               datasets={[indicatorData] as any}
-              title={`Indicator Chart ${index + 1}`}
               widthGraph={Dimensions.get('window').width / 2}
             />
           )),
         )}
-        {reportingData2.map((data, index) =>
+        {reportingFinancialData?.dataset?.map((data, index) =>
           dataToIndicators(data).map((indicatorData, idx) => (
             <IndicatorChart
-              key={`${index + reportingData.length}-${idx}`}
+              key={`${index + reportingTimeData?.dataset.length}-${idx}`}
               datasets={[indicatorData] as any}
-              title={`Indicator Chart ${index + reportingData.length + 1}`}
               widthGraph={Dimensions.get('window').width / 2}
             />
           )),

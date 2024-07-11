@@ -65,5 +65,6 @@
   "Project_SliceAction_SaveProjectTask": "enregistrement de la tâche du projet",
   "Project_SliceAction_SearchStatus": "recherche sur les statuts",
   "Project_SliceAction_SearchParentTask": "recherche sur la tâche parente",
-  "Project_SliceAction_GetReportingData": ""
+  "Project_SliceAction_GetProjectTimeData": "recupération des données de temps du projet",
+  "Project_SliceAction_GetProjectFinancialData": "recupération des données financières du projet"
 }
