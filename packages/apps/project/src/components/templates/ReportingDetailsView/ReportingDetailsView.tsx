@@ -48,24 +48,26 @@ const ReportingDetailsView = () => {
   return (
     <ScrollView>
       <View style={styles.container}>
-        {reportingTimeData?.dataset?.map((data, index) =>
-          dataToIndicators(data).map((indicatorData, idx) => (
-            <IndicatorChart
-              key={`${index}-${idx}`}
-              datasets={[indicatorData] as any}
-              widthGraph={Dimensions.get('window').width / 2}
-            />
-          )),
-        )}
-        {reportingFinancialData?.dataset?.map((data, index) =>
-          dataToIndicators(data).map((indicatorData, idx) => (
-            <IndicatorChart
-              key={`${index + reportingTimeData?.dataset.length}-${idx}`}
-              datasets={[indicatorData] as any}
-              widthGraph={Dimensions.get('window').width / 2}
-            />
-          )),
-        )}
+        {Array.isArray(reportingTimeData?.dataset) &&
+          dataToIndicators(reportingTimeData?.dataset?.[0]).map(
+            (indicatorData, idx) => (
+              <IndicatorChart
+                key={`reportingTimeData${idx}`}
+                datasets={[indicatorData] as any}
+                widthGraph={Dimensions.get('window').width / 2}
+              />
+            ),
+          )}
+        {Array.isArray(reportingFinancialData?.dataset) &&
+          dataToIndicators(reportingFinancialData?.dataset?.[0]).map(
+            (indicatorData, idx) => (
+              <IndicatorChart
+                key={`reportingFinancialData${idx}`}
+                datasets={[indicatorData] as any}
+                widthGraph={Dimensions.get('window').width / 2}
+              />
+            ),
+          )}
       </View>
     </ScrollView>
   );
