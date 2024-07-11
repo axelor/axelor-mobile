@@ -26,6 +26,7 @@ import {
 } from '@axelor/aos-mobile-core';
 import {
   ProjectSimpleCard,
+  EditTaskButton,
   TaskButton,
   TaskDetailsHeader,
   TimeSpentGridView,
@@ -83,6 +84,7 @@ const TaskDetailsScreen = ({navigation, route}) => {
         />
         <TimeSpentGridView />
       </ScrollView>
+      <EditTaskButton idTask={projectTask?.id} />
     </Screen>
   );
 };
