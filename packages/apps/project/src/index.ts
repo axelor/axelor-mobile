@@ -26,6 +26,7 @@ import {
   project_modelAPI,
   project_searchFields,
   project_sortFields,
+  project_typeObjects,
 } from './models';
 import {useProjectHeaders} from './hooks/use-project-header-actions';
 
@@ -71,6 +72,7 @@ export const ProjectModule: Module = {
     sortFields: {...project_sortFields},
     formsRegister: {...project_formsRegister},
     headerRegisters: useProjectHeaders,
+    typeObjects: project_typeObjects,
   },
 };
 
