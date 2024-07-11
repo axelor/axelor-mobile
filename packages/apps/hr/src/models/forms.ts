@@ -72,7 +72,7 @@ export const hr_formsRegister: FormConfigs = {
         customComponent: ToggleSwitchMode,
         hideIf: ({objectState, storeState}) =>
           objectState.hideToggle ||
-          !storeState.appConfig.mobileSettings.isKilometricExpenseLineAllowed,
+          !storeState.appConfig.mobileSettings?.isKilometricExpenseLineAllowed,
       },
       justificationMetaFile: {
         titleKey: 'Hr_Justification',
@@ -96,7 +96,8 @@ export const hr_formsRegister: FormConfigs = {
         widget: 'custom',
         customComponent: ProjectSearchBar,
         hideIf: ({storeState}) =>
-          !storeState.appConfig.mobileSettings.isExpenseProjectInvoicingEnabled,
+          !storeState.appConfig.mobileSettings
+            ?.isExpenseProjectInvoicingEnabled,
       },
       toInvoice: {
         titleKey: 'Hr_ToInvoice',
@@ -104,7 +105,8 @@ export const hr_formsRegister: FormConfigs = {
         widget: 'custom',
         customComponent: BillableSwitchCard,
         hideIf: ({storeState}) =>
-          !storeState.appConfig.mobileSettings.isExpenseProjectInvoicingEnabled,
+          !storeState.appConfig.mobileSettings
+            ?.isExpenseProjectInvoicingEnabled,
       },
       expenseProduct: {
         titleKey: 'Hr_ExpenseType',
@@ -193,7 +195,7 @@ export const hr_formsRegister: FormConfigs = {
         customComponent: CurrencySearchBar,
         hideIf: ({objectState, storeState}) =>
           objectState.manageMode !== ExpenseLine.modes.general ||
-          !storeState.appConfig.mobileSettings.isMultiCurrencyEnabled,
+          !storeState.appConfig.mobileSettings?.isMultiCurrencyEnabled,
       },
       totalAmount: {
         titleKey: 'Hr_TotalATI',
@@ -242,7 +244,7 @@ export const hr_formsRegister: FormConfigs = {
         customComponent: ProjectSearchBar,
         hideIf: ({storeState}) =>
           checkUserImputationMode(storeState, Timesheet.imputation.Project) ||
-          !storeState.appConfig.mobileSettings.fieldsToShowOnTimesheet.find(
+          !storeState.appConfig.mobileSettings?.fieldsToShowOnTimesheet.find(
             (field: string) => field === 'project',
           ),
       },
@@ -254,7 +256,7 @@ export const hr_formsRegister: FormConfigs = {
         hideIf: ({objectState, storeState}) =>
           objectState.project == null ||
           checkUserImputationMode(storeState, Timesheet.imputation.Project) ||
-          !storeState.appConfig.mobileSettings.fieldsToShowOnTimesheet.find(
+          !storeState.appConfig.mobileSettings?.fieldsToShowOnTimesheet.find(
             (field: string) => field === 'projectTask',
           ),
         dependsOn: {
@@ -273,7 +275,7 @@ export const hr_formsRegister: FormConfigs = {
             storeState,
             Timesheet.imputation.ManufOrder,
           ) ||
-          !storeState.appConfig.mobileSettings.fieldsToShowOnTimesheet.find(
+          !storeState.appConfig.mobileSettings?.fieldsToShowOnTimesheet.find(
             (field: string) => field === 'manufOrder',
           ),
       },
@@ -287,7 +289,7 @@ export const hr_formsRegister: FormConfigs = {
             storeState,
             Timesheet.imputation.ManufOrder,
           ) ||
-          !storeState.appConfig.mobileSettings.fieldsToShowOnTimesheet.find(
+          !storeState.appConfig.mobileSettings?.fieldsToShowOnTimesheet.find(
             (field: string) => field === 'operationOrder',
           ),
         dependsOn: {
@@ -302,7 +304,7 @@ export const hr_formsRegister: FormConfigs = {
         widget: 'custom',
         customComponent: ProductSearchBar,
         hideIf: ({storeState}) =>
-          !storeState.appConfig.mobileSettings.fieldsToShowOnTimesheet.find(
+          !storeState.appConfig.mobileSettings?.fieldsToShowOnTimesheet.find(
             (field: string) => field === 'product',
           ),
         dependsOn: {
@@ -321,14 +323,14 @@ export const hr_formsRegister: FormConfigs = {
         },
         hideIf: ({storeState}) =>
           !storeState.appConfig.mobileSettings
-            .isTimesheetProjectInvoicingEnabled,
+            ?.isTimesheetProjectInvoicingEnabled,
       },
       date: {
         titleKey: 'Hr_Date',
         type: 'date',
         widget: 'date',
         readonlyIf: ({storeState}) =>
-          !storeState.appConfig.mobileSettings.isEditionOfDateAllowed,
+          !storeState.appConfig.mobileSettings?.isEditionOfDateAllowed,
         required: true,
       },
       hoursDuration: {
@@ -365,7 +367,7 @@ export const hr_formsRegister: FormConfigs = {
         customComponent: ProjectSearchBar,
         hideIf: ({storeState}) =>
           checkUserImputationMode(storeState, Timesheet.imputation.Project) ||
-          !storeState.appConfig.mobileSettings.fieldsToShowOnTimesheet.find(
+          !storeState.appConfig.mobileSettings?.fieldsToShowOnTimesheet.find(
             (field: string) => field === 'project',
           ),
       },
@@ -379,7 +381,7 @@ export const hr_formsRegister: FormConfigs = {
         },
         hideIf: ({storeState}) =>
           checkUserImputationMode(storeState, Timesheet.imputation.Project) ||
-          !storeState.appConfig.mobileSettings.fieldsToShowOnTimesheet.find(
+          !storeState.appConfig.mobileSettings?.fieldsToShowOnTimesheet.find(
             (field: string) => field === 'projectTask',
           ),
         dependsOn: {
@@ -394,7 +396,7 @@ export const hr_formsRegister: FormConfigs = {
         widget: 'custom',
         customComponent: ProductSearchBar,
         hideIf: ({storeState}) =>
-          !storeState.appConfig.mobileSettings.fieldsToShowOnTimesheet.find(
+          !storeState.appConfig.mobileSettings?.fieldsToShowOnTimesheet.find(
             (field: string) => field === 'product',
           ),
         dependsOn: {
