@@ -3,6 +3,37 @@ title: 7.2.0
 tags: Changelog
 ---
 
+## [7.2.14] (2024-07-11)
+
+### @axelor/aos-mobile-ui
+
+#### Fixes
+
+- LabelText: align items to avoid flex display issue
+
+### @axelor/aos-mobile-hr
+
+#### Fixes
+
+- Expense line: empty the list when opening the selection mode from header action
+- Form: add null check on mobileSettings in conditions
+
+### @axelor/aos-mobile-manufacturing
+
+#### Fixes
+
+- Consumed products: change status translations
+
+<details>
+'Planned' status has been changed to 'To pick' and 'Finished' status to 'Consumed' to make it more clear and consistent with associated StokMove
+</details>
+
+### @axelor/aos-mobile-stock
+
+#### Fixes
+
+- Product stock details: adjust margin of see distribution button for small screens
+
 ## [7.2.13] (2024-06-28)
 
 ### @axelor/aos-mobile-core
@@ -559,6 +590,7 @@ It enables user to manage Expenses through the mobile application. You can creat
 - Remove IconButton component which should be replaced by Button component.
 - Remove Pop-up components which should be replaced by Alert component.
 
+[7.2.14]: https://github.com/axelor/axelor-mobile/compare/7.2.13...7.2.14
 [7.2.13]: https://github.com/axelor/axelor-mobile/compare/7.2.12...7.2.13
 [7.2.12]: https://github.com/axelor/axelor-mobile/compare/7.2.11...7.2.12
 [7.2.11]: https://github.com/axelor/axelor-mobile/compare/7.2.10...7.2.11
