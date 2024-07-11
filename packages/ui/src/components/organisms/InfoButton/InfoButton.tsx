@@ -27,6 +27,7 @@ interface InfoButtonProps {
   iconColor: string;
   indication: string;
   position?: 'left' | 'right';
+  disabled?: boolean;
   onPress: () => void;
   space?: number;
 }
@@ -38,6 +39,7 @@ const InfoButton = ({
   iconColor,
   indication,
   position = 'left',
+  disabled = false,
   onPress = () => {},
   space = Dimensions.get('window').width * 0.15,
 }: InfoButtonProps) => {
@@ -55,6 +57,7 @@ const InfoButton = ({
       <CardIconButton
         iconName={iconName}
         iconColor={iconColor}
+        disabled={disabled}
         onPress={() => {
           onPress();
           setIsVisible(false);
