@@ -16,8 +16,26 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-export {project_formsRegister} from './forms';
-export {project_modelAPI} from './objectFields';
-export {project_searchFields} from './searchFields';
-export {project_sortFields} from './sortFields';
-export {project_typeObjects} from './typeObjects';
+import {ModuleSelections} from '@axelor/aos-mobile-core';
+
+export const project_typeObjects: ModuleSelections = [
+  {
+    modelName: 'com.axelor.apps.project.db.ProjectTask',
+    fields: {
+      typeSelect: {
+        content: [
+          {
+            key: 'Task',
+            value: 'task',
+            title: null,
+          },
+          {
+            key: 'Ticket',
+            value: 'ticket',
+            title: null,
+          },
+        ],
+      },
+    },
+  },
+];
