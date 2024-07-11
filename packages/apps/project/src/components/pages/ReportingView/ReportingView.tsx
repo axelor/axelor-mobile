@@ -16,9 +16,9 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {View, StyleSheet} from 'react-native';
-import {useTranslator} from '@axelor/aos-mobile-core';
+import {useSelector, useTranslator} from '@axelor/aos-mobile-core';
 import {HeaderContainer, ToggleSwitch} from '@axelor/aos-mobile-ui';
 import {ProjectHeader} from '../../molecules';
 import {ActivityListView, ReportingDetailsView} from '../../templates';
@@ -31,7 +31,15 @@ const modes = {
 const ReportingView = () => {
   const I18n = useTranslator();
 
+  const {project} = useSelector((state: any) => state.project_project);
+
   const [mode, setMode] = useState(modes?.reporting);
+
+  useEffect(() => {
+    if (!project?.isBusinessProject) {
+      setMode(modes.activities);
+    }
+  }, [project?.isBusinessProject]);
 
   return (
     <View style={styles.container}>
@@ -40,17 +48,19 @@ const ReportingView = () => {
         fixedItems={
           <>
             <ProjectHeader />
-            <ToggleSwitch
-              leftTitle={I18n.t('Project_Reporting')}
-              rightTitle={I18n.t('Project_Activities')}
-              onSwitch={() =>
-                setMode(_mode => {
-                  return _mode === modes.activities
-                    ? modes.reporting
-                    : modes.activities;
-                })
-              }
-            />
+            {project?.isBusinessProject && (
+              <ToggleSwitch
+                leftTitle={I18n.t('Project_Reporting')}
+                rightTitle={I18n.t('Project_Activities')}
+                onSwitch={() =>
+                  setMode(_mode => {
+                    return _mode === modes.activities
+                      ? modes.reporting
+                      : modes.activities;
+                  })
+                }
+              />
+            )}
           </>
         }
       />
