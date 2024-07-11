@@ -95,7 +95,10 @@ const FormView = ({
     [config],
   );
 
-  const isCreation = useMemo(() => object?.id == null, [object?.id]);
+  const isCreation = useMemo(
+    () => !isCustom && object?.id == null,
+    [isCustom, object?.id],
+  );
 
   const isDirty = useMemo(() => {
     if (isCreation) {

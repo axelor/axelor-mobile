@@ -63,7 +63,7 @@ const JsonFieldScreen = ({route}) => {
       additionalActions={[
         {
           key: 'validateChanges',
-          type: 'custom',
+          type: 'update',
           useDefaultAction: true,
           readonlyAfterAction: true,
         },
