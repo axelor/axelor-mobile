@@ -18,7 +18,7 @@
 
 import {axiosApiProvider} from '@axelor/aos-mobile-core';
 
-export async function getReportingData({projetId}) {
+export async function getProjectTimeData({projetId}) {
   return axiosApiProvider.post({
     url: 'ws/meta/custom/project-spent-time-custom',
     data: {
@@ -32,7 +32,7 @@ export async function getReportingData({projetId}) {
   });
 }
 
-export async function getReportingData2({projetId}) {
+export async function getProjectFinancialData({projetId}) {
   return axiosApiProvider.post({
     url: 'ws/meta/custom/project-total-invoiced-custom',
     data: {
