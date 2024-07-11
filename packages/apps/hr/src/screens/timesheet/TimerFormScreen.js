@@ -20,6 +20,7 @@ import React, {useCallback, useEffect, useMemo, useState} from 'react';
 import {useConfig} from '@axelor/aos-mobile-ui';
 import {
   FormView,
+  headerActionsProvider,
   isEmpty,
   useDispatch,
   useIsFocused,
@@ -41,6 +42,7 @@ const TimerFormScreen = ({route}) => {
   const [creation, setCreation] = useState(isCreation ?? false);
 
   const {timesheet: timesheetConfig} = useSelector(state => state.appConfig);
+  const {mobileSettings} = useSelector(state => state.appConfig);
   const {user} = useSelector(state => state.user);
   const {timer, loadingCreation} = useSelector(state => state.hr_timer);
 
@@ -65,6 +67,20 @@ const TimerFormScreen = ({route}) => {
     timesheetConfig?.isMultipleTimerEnabled,
     user?.id,
   ]);
+
+  useEffect(() => {
+    headerActionsProvider.registerModel('hr_active_timer', {
+      model: 'com.axelor.apps.hr.db.TSTimer',
+      modelId: !creation ? timer?.id : null,
+      disableMailMessages: !mobileSettings?.isTrackerMessageEnabled,
+    });
+
+    headerActionsProvider.registerModel('hr_timer_details', {
+      model: 'com.axelor.apps.hr.db.TSTimer',
+      modelId: !creation ? timer?.id : null,
+      disableMailMessages: !mobileSettings?.isTrackerMessageEnabled,
+    });
+  }, [creation, mobileSettings?.isTrackerMessageEnabled, timer?.id]);
 
   useEffect(() => {
     setActivityIndicator(loadingCreation);

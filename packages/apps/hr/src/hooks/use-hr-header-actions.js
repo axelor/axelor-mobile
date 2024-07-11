@@ -33,6 +33,7 @@ export const useHrHeaders = () => {
   useExpenseDetailsAction();
   useTimerListAction();
   useActiveTimerAction();
+  useTimesheetDetailsAction();
 };
 
 const useExpenseAction = () => {
@@ -148,4 +149,17 @@ const useActiveTimerAction = () => {
       ],
     });
   }, [Colors, I18n, navigation, timesheetConfig?.isMultipleTimerEnabled]);
+};
+
+const useTimesheetDetailsAction = () => {
+  const {timesheet} = useSelector(state => state.timesheet);
+  const {mobileSettings} = useSelector(state => state.appConfig);
+
+  useEffect(() => {
+    headerActionsProvider.registerModel('hr_timesheet_details', {
+      model: 'com.axelor.apps.hr.db.Timesheet',
+      modelId: timesheet?.id,
+      disableMailMessages: !mobileSettings?.isTrackerMessageEnabled,
+    });
+  }, [timesheet, mobileSettings]);
 };

@@ -46,6 +46,7 @@ export default {
   ExpenseLineFormScreen: {
     title: 'Hr_CreateExpenseLine',
     component: ExpenseLineFormScreen,
+    actionID: 'hr_expenseLine_details',
   },
 };
 
