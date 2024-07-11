@@ -16,14 +16,16 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import React from 'react';
+import React, {useMemo} from 'react';
 import {StyleSheet, TouchableOpacity} from 'react-native';
 import {Card, Icon} from '../../atoms';
+import {useThemeColor} from '../../../theme';
 
 interface CardIconButtonProps {
   style?: any;
   iconName: string;
   iconColor: string;
+  disabled?: boolean;
   onPress: (any) => void;
   onLongPress?: (any) => void;
 }
@@ -32,17 +34,26 @@ const CardIconButton = ({
   style,
   iconName,
   iconColor,
+  disabled = false,
   onPress = () => {},
   onLongPress = () => {},
 }: CardIconButtonProps) => {
+  const Colors = useThemeColor();
+
+  const _iconColor = useMemo(
+    () => (disabled ? Colors.secondaryColor.background : iconColor),
+    [Colors.secondaryColor, disabled, iconColor],
+  );
+
   return (
     <TouchableOpacity
       style={[styles.container, style]}
+      disabled={disabled}
       onLongPress={onLongPress}
       onPress={onPress}
       activeOpacity={0.9}>
       <Card style={styles.cardContainer}>
-        <Icon size={20} name={iconName} color={iconColor} />
+        <Icon size={20} name={iconName} color={_iconColor} />
       </Card>
     </TouchableOpacity>
   );

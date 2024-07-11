@@ -203,6 +203,7 @@
   "Base_Loader_Status_Success": "Success",
   "Base_Loader_Status_Failed": "Failed",
   "Base_MoreResults": "More results...",
+  "Base_SeeActions": "See actions",
   "Base_SliceAction_FetchAttachedFiles": "fetch attached files",
   "Base_SliceAction_FetchFilesDetails": "fetch file details",
   "Base_SliceAction_FetchMetaModule": "fetch meta modules",
