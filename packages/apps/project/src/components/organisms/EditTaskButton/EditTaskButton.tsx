@@ -16,6 +16,35 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-export const displayItemName = (item: any): string => item.name;
-export const displayItemFullname = (item: any): string => item.fullName;
-export const displayItemTitle = (item: any): string => item.title;
+import React from 'react';
+import {StyleSheet, View} from 'react-native';
+import {CircleButton} from '@axelor/aos-mobile-ui';
+import {useNavigation} from '@axelor/aos-mobile-core';
+
+const EditTaskButton = ({idTask}) => {
+  const navigation = useNavigation();
+
+  return (
+    <View>
+      <CircleButton
+        style={styles.floatingButton}
+        iconName="pencil-fill"
+        onPress={() =>
+          navigation.navigate('TaskFormScreen', {
+            idTask: idTask,
+          })
+        }
+      />
+    </View>
+  );
+};
+
+const styles = StyleSheet.create({
+  floatingButton: {
+    position: 'absolute',
+    bottom: 25,
+    right: 25,
+  },
+});
+
+export default EditTaskButton;
