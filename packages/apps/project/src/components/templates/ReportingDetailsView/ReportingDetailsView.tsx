@@ -45,15 +45,18 @@ const ReportingDetailsView = () => {
     }));
   };
 
-  const displayData = dataset => {
-    return Array.isArray(dataset) && dataset.length > 0;
+  const formattedData = dataset => {
+    if (Array.isArray(dataset) && dataset.length > 0) {
+      return dataToIndicators(dataset[0]);
+    } else {
+      return null;
+    }
   };
 
   return (
     <ScrollView>
       <View style={styles.container}>
-        {displayData(reportingTimeData?.dataset) &&
-          dataToIndicators(reportingTimeData?.dataset?.[0]).map(
+        {formattedData(reportingTimeData?.dataset)?.map(
             (indicatorData, idx) => (
               <IndicatorChart
                 key={`reportingTimeData${idx}`}
@@ -62,8 +65,7 @@ const ReportingDetailsView = () => {
               />
             ),
           )}
-        {displayData(reportingFinancialData?.dataset) &&
-          dataToIndicators(reportingFinancialData?.dataset?.[0]).map(
+        {formattedData(reportingFinancialData?.dataset)?.map(
             (indicatorData, idx) => (
               <IndicatorChart
                 key={`reportingFinancialData${idx}`}
