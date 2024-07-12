@@ -23,7 +23,6 @@ export async function getProjectTimeData({projetId}) {
     url: 'ws/meta/custom/project-spent-time-custom',
     data: {
       data: {
-        _id: projetId,
         _model: 'com.axelor.apps.project.db.Project',
         _domainAction: 'action-project-view-spent-time-custom',
         id: projetId,
@@ -37,7 +36,6 @@ export async function getProjectFinancialData({projetId}) {
     url: 'ws/meta/custom/project-total-invoiced-custom',
     data: {
       data: {
-        _id: projetId,
         _model: 'com.axelor.apps.project.db.Project',
         _domainAction: 'action-project-view-total-invoiced-custom',
         id: projetId,
