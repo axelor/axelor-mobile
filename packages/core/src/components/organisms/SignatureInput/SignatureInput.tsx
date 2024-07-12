@@ -25,6 +25,7 @@ import {
   Text,
   ThemeColors,
   getCommonStyles,
+  useScroll,
   useThemeColor,
 } from '@axelor/aos-mobile-ui';
 import {handleDocumentSelection} from '../../../tools';
@@ -65,6 +66,7 @@ const SignatureInput = ({
 }) => {
   const ref = useRef<SignatureViewRef>();
   const Colors = useThemeColor();
+  const {setScrollEnabled} = useScroll();
 
   const {baseUrl, jsessionId, token} = useSelector((state: any) => state.auth);
 
@@ -210,7 +212,11 @@ const SignatureInput = ({
               dataURL={returnBase64String ? defaultValue : null}
               ref={ref}
               onOK={handleSignature}
-              onBegin={() => setUnsavedChanges(true)}
+              onBegin={() => {
+                setScrollEnabled(false);
+                setUnsavedChanges(true);
+              }}
+              onEnd={() => setScrollEnabled(true)}
               autoClear={false}
             />
           </View>

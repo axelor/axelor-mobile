@@ -1,0 +1,5 @@
+{
+  "title": "Signature input: disable scrolling while signing to avoid moves on scroll view",
+  "type": "fix",
+  "packages": ["core", "ui"]
+}

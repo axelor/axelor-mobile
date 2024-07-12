@@ -23,6 +23,7 @@ import {
   RefreshControl,
   StyleSheet,
 } from 'react-native';
+import {useScroll} from './use-scroll';
 
 interface Refresh {
   loading: boolean;
@@ -36,6 +37,8 @@ interface ScrollViewProps {
 }
 
 const ScrollView = ({style, children, refresh}: ScrollViewProps) => {
+  const {scrollEnabled} = useScroll();
+
   return (
     <ReactNativeScrollView
       contentContainerStyle={[
@@ -50,7 +53,8 @@ const ScrollView = ({style, children, refresh}: ScrollViewProps) => {
             onRefresh={refresh.fetcher}
           />
         )
-      }>
+      }
+      scrollEnabled={scrollEnabled}>
       {children}
     </ReactNativeScrollView>
   );
