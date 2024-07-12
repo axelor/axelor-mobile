@@ -16,7 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import React, {useEffect, useMemo} from 'react';
+import React, {useCallback, useEffect, useMemo} from 'react';
 import {Dimensions, ScrollView, StyleSheet, View} from 'react-native';
 import {useDispatch, useSelector, useTranslator} from '@axelor/aos-mobile-core';
 import {IndicatorChart, Label} from '@axelor/aos-mobile-ui';
@@ -46,19 +46,22 @@ const ReportingDetailsView = () => {
     }));
   };
 
-  const formattedData = dataset => {
+  const formattedData = useCallback(dataset => {
     if (Array.isArray(dataset) && dataset.length > 0) {
       return dataToIndicators(dataset[0]);
     } else {
       return null;
     }
-  };
+  }, []);
 
-  const timeData = useMemo(() => formattedData(reportingTimeData?.dataset), []);
+  const timeData = useMemo(
+    () => formattedData(reportingTimeData?.dataset),
+    [formattedData, reportingTimeData?.dataset],
+  );
 
   const financialData = useMemo(
     () => formattedData(reportingFinancialData?.dataset),
-    [],
+    [formattedData, reportingFinancialData?.dataset],
   );
 
   return (
