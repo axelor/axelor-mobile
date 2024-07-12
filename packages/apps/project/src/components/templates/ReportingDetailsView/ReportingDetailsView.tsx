@@ -16,16 +16,17 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import React, {useEffect} from 'react';
+import React, {useEffect, useMemo} from 'react';
 import {Dimensions, ScrollView, StyleSheet, View} from 'react-native';
-import {useDispatch, useSelector} from '@axelor/aos-mobile-core';
-import {IndicatorChart} from '@axelor/aos-mobile-ui';
+import {useDispatch, useSelector, useTranslator} from '@axelor/aos-mobile-core';
+import {IndicatorChart, Label} from '@axelor/aos-mobile-ui';
 import {
   getProjectTimeData,
   getProjectFinancialData,
 } from '../../../features/reportingSlice';
 
 const ReportingDetailsView = () => {
+  const I18n = useTranslator();
   const dispatch = useDispatch();
 
   const {project} = useSelector((state: any) => state.project_project);
@@ -53,34 +54,48 @@ const ReportingDetailsView = () => {
     }
   };
 
+  const timeData = useMemo(() => formattedData(reportingTimeData?.dataset), []);
+
+  const financialData = useMemo(
+    () => formattedData(reportingFinancialData?.dataset),
+    [],
+  );
+
   return (
     <ScrollView>
-      <View style={styles.container}>
-        {formattedData(reportingTimeData?.dataset)?.map(
-            (indicatorData, idx) => (
-              <IndicatorChart
-                key={`reportingTimeData${idx}`}
-                datasets={[indicatorData]}
-                widthGraph={Dimensions.get('window').width / 2}
-              />
-            ),
-          )}
-        {formattedData(reportingFinancialData?.dataset)?.map(
-            (indicatorData, idx) => (
-              <IndicatorChart
-                key={`reportingFinancialData${idx}`}
-                datasets={[indicatorData]}
-                widthGraph={Dimensions.get('window').width / 2}
-              />
-            ),
-          )}
+      {!timeData && !financialData && (
+        <Label
+          style={styles.label}
+          message={I18n.t('Base_NoData')}
+          type="info"
+        />
+      )}
+      <View style={styles.dataContainer}>
+        {timeData?.map((indicatorData, idx) => (
+          <IndicatorChart
+            key={`reportingTimeData${idx}`}
+            datasets={[indicatorData]}
+            widthGraph={Dimensions.get('window').width / 2}
+          />
+        ))}
+        {financialData?.map((indicatorData, idx) => (
+          <IndicatorChart
+            key={`reportingFinancialData${idx}`}
+            datasets={[indicatorData]}
+            widthGraph={Dimensions.get('window').width / 2}
+          />
+        ))}
       </View>
     </ScrollView>
   );
 };
 
 const styles = StyleSheet.create({
-  container: {
+  label: {
+    width: '90%',
+    alignSelf: 'center',
+  },
+  dataContainer: {
     flexDirection: 'row',
     flexWrap: 'wrap',
   },
