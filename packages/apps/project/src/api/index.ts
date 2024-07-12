@@ -37,7 +37,7 @@ export {
   saveProjectTask as saveProjectTaskApi,
 } from './project-task-api';
 export {
-  getProjectTimeData as getProjectTimeDataApi,
   getProjectFinancialData as getProjectFinancialDataApi,
+  getProjectTimeData as getProjectTimeDataApi,
 } from './reporting-api';
 export {fetchTimesheetLinesByTask as fetchTimesheetLinesByTaskApi} from './timesheet-lines-api';

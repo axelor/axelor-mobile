@@ -19,16 +19,24 @@
 import React, {useMemo} from 'react';
 import {StyleSheet, Dimensions, View} from 'react-native';
 import {Card} from '../../../../atoms';
-import {Data} from '../../dashboard.helper';
 import {MARGIN, getContainerMinWidth, getContainerWidth} from '../chart.helper';
 import IndicatorItem from './IndicatorItem';
 import SimpleIndicator from './SimpleIndicator';
 import ChartTitle from './ChartTitle';
 
+interface DataIndicator {
+  title?: string;
+  icon?: string;
+  value: number;
+  unit?: string;
+  color?: string;
+  [key: string]: any;
+}
+
 interface IndicatorChartProps {
   style?: any;
   widthGraph?: number;
-  datasets: Data[];
+  datasets: DataIndicator[];
   title?: string;
   hideCardBackground?: boolean;
 }

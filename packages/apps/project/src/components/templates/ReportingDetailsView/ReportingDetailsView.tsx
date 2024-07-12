@@ -45,25 +45,29 @@ const ReportingDetailsView = () => {
     }));
   };
 
+  const displayData = dataset => {
+    return Array.isArray(dataset) && dataset.length > 0;
+  };
+
   return (
     <ScrollView>
       <View style={styles.container}>
-        {Array.isArray(reportingTimeData?.dataset) &&
+        {displayData(reportingTimeData?.dataset) &&
           dataToIndicators(reportingTimeData?.dataset?.[0]).map(
             (indicatorData, idx) => (
               <IndicatorChart
                 key={`reportingTimeData${idx}`}
-                datasets={[indicatorData] as any}
+                datasets={[indicatorData]}
                 widthGraph={Dimensions.get('window').width / 2}
               />
             ),
           )}
-        {Array.isArray(reportingFinancialData?.dataset) &&
+        {displayData(reportingFinancialData?.dataset) &&
           dataToIndicators(reportingFinancialData?.dataset?.[0]).map(
             (indicatorData, idx) => (
               <IndicatorChart
                 key={`reportingFinancialData${idx}`}
-                datasets={[indicatorData] as any}
+                datasets={[indicatorData]}
                 widthGraph={Dimensions.get('window').width / 2}
               />
             ),
