@@ -1,0 +1,5 @@
+{
+  "title": "manufacturing screens: replace cards with new actionCard component",
+  "type": "feat",
+  "packages": "manufacturing"
+}
