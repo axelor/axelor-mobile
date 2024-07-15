@@ -84,7 +84,7 @@ const styles = StyleSheet.create({
   container: {
     minHeight: 100,
     marginHorizontal: 1,
-    marginVertical: 1,
+    marginVertical: 2,
   },
   marginBottom: {
     marginBottom: 5,

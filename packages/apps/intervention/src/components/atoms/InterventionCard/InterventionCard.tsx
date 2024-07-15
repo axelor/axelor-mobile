@@ -143,7 +143,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     marginHorizontal: 1,
-    marginVertical: 1,
+    marginVertical: 2,
   },
   imageSize: {
     height: 50,

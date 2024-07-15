@@ -17,8 +17,7 @@
  */
 
 import React from 'react';
-import {StyleSheet, View} from 'react-native';
-import {InfoButton, useThemeColor} from '@axelor/aos-mobile-ui';
+import {ActionCard, useThemeColor} from '@axelor/aos-mobile-ui';
 import {
   useDispatch,
   useNavigation,
@@ -69,101 +68,68 @@ const EquipmentActionCard = ({
   const dispatch = useDispatch();
 
   return (
-    <View style={styles.globalContainer}>
+    <ActionCard
+      translator={I18n.t}
+      actionList={[
+        {
+          iconName: 'x-lg',
+          helper: 'Intervention_Unlink',
+          onPress: handleUnlink,
+          hidden: !isUnlinkAction,
+        },
+        {
+          iconName: 'front',
+          helper: 'Intervention_Duplicate',
+          onPress: () =>
+            (dispatch as any)(
+              (copyEquipment as any)({
+                equipmentId: idEquipment,
+              }),
+            ).then(({payload}) => {
+              const equipmentId = payload?.id;
+              if (equipmentId != null) {
+                handleDuplicate != null
+                  ? handleDuplicate(equipmentId)
+                  : navigation.navigate('EquipmentFormView', {
+                      idEquipment: equipmentId,
+                      isCreation: true,
+                    });
+              }
+            }),
+          hidden: !canCopy,
+        },
+
+        {
+          iconName: canEdit ? 'pencil-fill' : 'file-earmark-text',
+          helper: 'Intervention_Edit',
+          onPress: () =>
+            navigation.navigate('EquipmentFormView', {
+              idEquipment,
+            }),
+        },
+        {
+          iconName: 'archive-fill',
+          iconColor: Colors.errorColor.background,
+          helper: 'Intervention_Archive',
+          onPress: () =>
+            (dispatch as any)(
+              (archiveEquipment as any)({
+                equipmentId: idEquipment,
+                equipmentVersion,
+              }),
+            ).then(() => handleArchive()),
+          hidden: !canArchive,
+        },
+      ]}>
       <EquipmentCard
-        style={styles.objectCardContainer}
         sequence={sequence}
         name={name}
         code={code}
         equipmentFamily={equipmentFamily}
         inService={inService}
       />
-      {(isUnlinkAction || canCopy) && (
-        <View style={styles.flexOne}>
-          {isUnlinkAction && (
-            <InfoButton
-              style={styles.flexOne}
-              iconName="x-lg"
-              iconColor={Colors.secondaryColor_dark.background}
-              onPress={handleUnlink}
-              indication={I18n.t('Intervention_Unlink')}
-            />
-          )}
-          {canCopy && (
-            <InfoButton
-              style={styles.flexOne}
-              iconName="front"
-              iconColor={Colors.secondaryColor_dark.background}
-              onPress={() =>
-                (dispatch as any)(
-                  (copyEquipment as any)({
-                    equipmentId: idEquipment,
-                  }),
-                ).then(({payload}) => {
-                  const equipmentId = payload?.id;
-                  if (equipmentId != null) {
-                    handleDuplicate != null
-                      ? handleDuplicate(equipmentId)
-                      : navigation.navigate('EquipmentFormView', {
-                          idEquipment: equipmentId,
-                          isCreation: true,
-                        });
-                  }
-                })
-              }
-              indication={I18n.t('Intervention_Duplicate')}
-            />
-          )}
-        </View>
-      )}
-      <View style={styles.flexOne}>
-        <InfoButton
-          style={styles.flexOne}
-          iconName={canEdit ? 'pencil-fill' : 'file-earmark-text'}
-          iconColor={Colors.secondaryColor_dark.background}
-          onPress={() => {
-            navigation.navigate('EquipmentFormView', {
-              idEquipment,
-            });
-          }}
-          indication={I18n.t('Intervention_Edit')}
-        />
-        {canArchive && (
-          <InfoButton
-            style={styles.flexOne}
-            iconName="archive-fill"
-            iconColor={Colors.errorColor.background}
-            onPress={() =>
-              (dispatch as any)(
-                (archiveEquipment as any)({
-                  equipmentId: idEquipment,
-                  equipmentVersion,
-                }),
-              ).then(() => handleArchive())
-            }
-            indication={I18n.t('Intervention_Archive')}
-          />
-        )}
-      </View>
-    </View>
+    </ActionCard>
   );
 };
-
-const styles = StyleSheet.create({
-  globalContainer: {
-    display: 'flex',
-    flexDirection: 'row',
-    marginHorizontal: 10,
-    marginVertical: 2,
-    flex: 1,
-  },
-  objectCardContainer: {
-    flex: 7,
-    marginVertical: 2,
-  },
-  flexOne: {
-    flex: 1,
-  },
-});
 
 export default EquipmentActionCard;
