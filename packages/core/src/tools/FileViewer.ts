@@ -25,6 +25,7 @@ interface fileItemProps {
   fileName: string;
   id: number;
   isMetaFile?: boolean;
+  path?: string;
 }
 
 interface ConnexionNeed {
@@ -39,15 +40,23 @@ export const openFileInExternalApp = async (
   I18n: TranslatorProps,
 ) => {
   const localFile = `${RNFS.DocumentDirectoryPath}/${file?.fileName}`;
+
+  const fromUrl = file.path
+    ? `${authentification.baseUrl}${file.path}`
+    : file.isMetaFile
+    ? `${authentification.baseUrl}ws/rest/com.axelor.meta.db.MetaFile/${file?.id}/content/download`
+    : `${authentification.baseUrl}ws/dms/inline/${file?.id}`;
+
   const options = {
-    fromUrl: file.isMetaFile
-      ? `${authentification.baseUrl}ws/rest/com.axelor.meta.db.MetaFile/${file?.id}/content/download`
-      : `${authentification.baseUrl}ws/dms/inline/${file?.id}`,
+    fromUrl: fromUrl,
     toFile: localFile,
     headers: {
       Cookie: `CSRF-TOKEN=${authentification.token}; ${authentification.jsessionId}`,
     },
   };
+
+  console.log('Downloading file from URL:', fromUrl);
+  console.log('Saving file to:', localFile);
 
   RNFS.downloadFile(options)
     .promise.then(() => FileViewer.open(localFile, {showOpenWithDialog: true}))

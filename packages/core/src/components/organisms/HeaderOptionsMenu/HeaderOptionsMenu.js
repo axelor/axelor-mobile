@@ -21,6 +21,7 @@ import {Dimensions, StyleSheet, View} from 'react-native';
 import {DropdownMenu, DropdownMenuItem} from '@axelor/aos-mobile-ui';
 import {HeaderOptionMenuItem} from '../../molecules';
 import {useBasicActions} from '../../../header';
+import PopupPrintTemplate from '../PopupPrintTemplate/PopupPrintTemplate';
 
 const SMALLEST_WINDOW_WIDTH = 300;
 
@@ -37,7 +38,10 @@ const HeaderOptionsMenu = ({
     mailMessagesAction,
     attachedFilesAction,
     barcodeAction,
+    printAction,
     jsonFieldsAction,
+    showPrintTemplateSelector,
+    closePrintTemplateSelector,
   } = useBasicActions({
     model,
     modelId,
@@ -62,6 +66,7 @@ const HeaderOptionsMenu = ({
       [
         attachedFilesAction,
         mailMessagesAction,
+        printAction,
         barcodeAction,
         jsonFieldsAction,
         ...actions,
@@ -71,6 +76,7 @@ const HeaderOptionsMenu = ({
     [
       actions,
       attachedFilesAction,
+      printAction,
       barcodeAction,
       jsonFieldsAction,
       mailMessagesAction,
@@ -93,36 +99,46 @@ const HeaderOptionsMenu = ({
   const HeaderItemList = useMemo(
     () =>
       headerActions.map((_action, index) => (
-        <MenuItem
-          key={_action.key + index}
-          icon={_action.iconName}
-          color={_action.iconColor}
-          indicator={_action.indicator}
-          placeholder={_action.title}
-          hideIf={_action.hideIf}
-          disableIf={_action.disableIf}
-          onPress={_action.onPress}
-          customComponent={_action.customComponent}
-        />
+        <View key={_action.key + index}>
+          <MenuItem
+            icon={_action.iconName}
+            color={_action.iconColor}
+            indicator={_action.indicator}
+            placeholder={_action.title}
+            hideIf={_action.hideIf}
+            disableIf={_action.disableIf}
+            onPress={_action.onPress}
+            customComponent={_action.customComponent}
+          />
+          <PopupPrintTemplate
+            visible={showPrintTemplateSelector}
+            onClose={closePrintTemplateSelector}
+          />
+        </View>
       )),
-    [headerActions],
+    [headerActions, showPrintTemplateSelector, closePrintTemplateSelector],
   );
 
   const MenuItemList = useMemo(
     () =>
       menuActions.map((_action, index) => (
-        <DropdownMenuItem
-          key={_action.key + index}
-          icon={_action.iconName}
-          indicator={_action.indicator}
-          placeholder={_action.title}
-          hideIf={_action.hideIf}
-          disableIf={_action.disableIf}
-          onPress={_action.onPress}
-          customComponent={_action.customComponent}
-        />
+        <View key={_action.key + index}>
+          <DropdownMenuItem
+            icon={_action.iconName}
+            indicator={_action.indicator}
+            placeholder={_action.title}
+            hideIf={_action.hideIf}
+            disableIf={_action.disableIf}
+            onPress={_action.onPress}
+            customComponent={_action.customComponent}
+          />
+          <PopupPrintTemplate
+            visible={showPrintTemplateSelector}
+            onClose={closePrintTemplateSelector}
+          />
+        </View>
       )),
-    [menuActions],
+    [menuActions, showPrintTemplateSelector, closePrintTemplateSelector],
   );
 
   if (allActions.length === 0) {

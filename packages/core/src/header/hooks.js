@@ -51,11 +51,17 @@ export const useBasicActions = ({
   const [disableBarcode, setDisableBarcode] = useState(true);
   const [disableCustomView, setDisableCustomView] = useState(true);
   const [isConnected, setIsConnected] = useState(true);
+  const [showPrintTemplateSelector, setShowPrintTemplateSelector] =
+    useState(false);
 
   const modelConfigured = useMemo(
     () => !checkNullString(model) && modelId != null,
     [model, modelId],
   );
+
+  const closePrintTemplateSelector = useCallback(() => {
+    setShowPrintTemplateSelector(false);
+  }, []);
 
   const countUnreadMessagesAPI = useCallback(() => {
     if (modelConfigured) {
@@ -129,6 +135,20 @@ export const useBasicActions = ({
       showInHeader: true,
     };
   }, [I18n, disableMailMessages, model, modelId, navigation, unreadMessages]);
+
+  const printAction = useMemo(() => {
+    return {
+      key: 'printer-fill',
+      order: 40,
+      onPress: () => {
+        setShowPrintTemplateSelector(true);
+      },
+      indicator: 'print',
+      iconName: 'printer-fill',
+      title: I18n.t('Base_PrintTemplate'),
+      showInHeader: true,
+    };
+  }, [I18n]);
 
   const attachedFilesAction = useMemo(() => {
     return {
@@ -207,22 +227,29 @@ export const useBasicActions = ({
       return {
         mailMessagesAction,
         attachedFilesAction,
+        printAction,
         barcodeAction,
         jsonFieldsAction,
+        showPrintTemplateSelector,
+        closePrintTemplateSelector,
       };
     }
 
     return {
       mailMessagesAction: {key: 'mailMessages', hideIf: true},
       attachedFilesAction: {key: 'attachedFiles', hideIf: true},
+      printAction: {key: 'print', hideIf: true},
       barcodeAction: {key: 'barcode', hideIf: true},
       jsonFieldsAction: {key: 'metaJsonFields', hideIf: true},
     };
   }, [
+    modelConfigured,
+    mailMessagesAction,
     attachedFilesAction,
+    printAction,
     barcodeAction,
     jsonFieldsAction,
-    mailMessagesAction,
-    modelConfigured,
+    showPrintTemplateSelector,
+    closePrintTemplateSelector,
   ]);
 };
