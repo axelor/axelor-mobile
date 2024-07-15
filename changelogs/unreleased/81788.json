@@ -1,0 +1,5 @@
+{
+  "title": "Crm screens: replace cards with actions by ActionCard",
+  "type": "feat",
+  "packages": "crm"
+}

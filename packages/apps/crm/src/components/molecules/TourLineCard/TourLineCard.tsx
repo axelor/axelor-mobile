@@ -91,7 +91,7 @@ const styles = StyleSheet.create({
   objectCard: {
     marginHorizontal: 0,
     marginRight: 2,
-    marginVertical: 0,
+    marginVertical: 2,
     paddingBottom: 5,
     paddingRight: 10,
   },
