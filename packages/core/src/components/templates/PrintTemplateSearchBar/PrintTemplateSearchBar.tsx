@@ -22,6 +22,17 @@ import {searchPrintingTemplate} from '../../../features/printTemplateSlice';
 import {useTranslator} from '../../../i18n';
 import {useDispatch, useSelector} from '../../../redux/hooks';
 import {displayItemName} from '../../../utils';
+
+interface PrintTemplateSearchBarProps {
+  style?: any;
+  title?: string;
+  defaultValue?: any;
+  onChange?: (value: any) => void;
+  required?: boolean;
+  readonly?: boolean;
+  idList: number[];
+}
+
 const PrintTemplateSearchBar = ({
   style = null,
   title = 'Base_PrintTemplate',
@@ -30,7 +41,7 @@ const PrintTemplateSearchBar = ({
   required = true,
   readonly = false,
   idList,
-}) => {
+}: PrintTemplateSearchBarProps) => {
   const I18n = useTranslator();
   const dispatch = useDispatch();
 

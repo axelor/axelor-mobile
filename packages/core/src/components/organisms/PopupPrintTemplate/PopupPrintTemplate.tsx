@@ -26,6 +26,7 @@ import {
 } from '../../../api/print-template-api';
 import {openFileInExternalApp} from '../../../tools';
 import {PrintTemplateSearchBar} from '../../templates';
+import {showToastMessage} from '../../../utils';
 
 interface PopupPrintTemplateProps {
   visible: boolean;
@@ -64,20 +65,35 @@ const PopupPrintTemplate = ({
   );
 
   useEffect(() => {
-    fetchActionPrint({id: modelId, model: model}).then(res => {
-      const printingTemplateIdList =
-        res?.data?.data[0]?.view?.context?._printingTemplateIdList;
+    fetchActionPrint({id: modelId, model: model})
+      .then(res => {
+        const printingTemplateIdList =
+          res?.data?.data[0]?.view?.context?._printingTemplateIdList;
 
-      if (printingTemplateIdList) {
-        setTemplateIdList(printingTemplateIdList);
-      } else {
-        const fileName = res?.data?.data[0].view?.views[0].name;
-        if (fileName) {
-          handleShowFile(fileName);
-          onClose();
+        if (printingTemplateIdList) {
+          setTemplateIdList(printingTemplateIdList);
+        } else {
+          const fileName = res?.data?.data[0].view?.views[0].name;
+          if (fileName) {
+            handleShowFile(fileName);
+            onClose();
+          } else {
+            showToastMessage({
+              type: 'error',
+              position: 'bottom',
+              text1: 'Error',
+              text2: `${res?.data?.data[0]?.error?.message}`,
+              onPress: () => {},
+            });
+            onClose();
+          }
         }
-      }
-    });
+      })
+      .catch(() => {
+        setTemplateIdList([]);
+        setSelectedTemplate(null);
+        onClose();
+      });
   }, [handleShowFile, model, modelId, onClose]);
 
   const OpenFile = useCallback(() => {
@@ -85,11 +101,17 @@ const PopupPrintTemplate = ({
       printingTemplate: selectedTemplate,
       id: modelId,
       model: model,
-    }).then(res => {
-      const file = res?.data?.data[0].view?.views[0].name;
-      handleShowFile(file);
-    });
-  }, [handleShowFile, model, modelId, selectedTemplate]);
+    })
+      .then(res => {
+        const file = res?.data?.data[0].view?.views[0].name;
+        handleShowFile(file);
+      })
+      .catch(() => {
+        setTemplateIdList([]);
+        setSelectedTemplate(null);
+        onClose();
+      });
+  }, [handleShowFile, model, modelId, selectedTemplate, onClose]);
 
   return (
     <Alert
@@ -100,7 +122,7 @@ const PopupPrintTemplate = ({
       <PrintTemplateSearchBar
         idList={templateIdList}
         defaultValue={selectedTemplate}
-        onChange={setSelectedTemplate as any}
+        onChange={setSelectedTemplate}
       />
     </Alert>
   );

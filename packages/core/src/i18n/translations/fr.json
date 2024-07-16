@@ -175,6 +175,8 @@
   "Base_No": "Non",
   "Base_Filter": "Filtrer",
   "Base_SeeActions": "Voir les actions",
+  "Base_Print": "Imprimer",
+  "Base_PrintTemplate": "Modèle d'impression",
   "Base_SliceAction_FetchAttachedFiles": "récupération des fichiers joints",
   "Base_SliceAction_FetchFilesDetails": "récupération des détails du fichier",
   "Base_SliceAction_FetchMetaModule": "récupération des modules",
@@ -199,5 +201,6 @@
   "Base_SliceAction_FetchAnomalies": "récupération des anomalies d'un object",
   "Base_SliceAction_SearchUser": "récupération des utilisateurs",
   "Base_SliceAction_FetchDashboardConfigs": "récupération des configurations de tableaux de bord",
-  "Base_SliceAction_FetchWebViewConfigs": "récupération des configurations de vues web"
+  "Base_SliceAction_FetchWebViewConfigs": "récupération des configurations de vues web",
+  "Base_SliceAction_SearchPrintingTemplate": "rechercher un modèle d'impression"
 }

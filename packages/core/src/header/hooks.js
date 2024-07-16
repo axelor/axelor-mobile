@@ -138,14 +138,13 @@ export const useBasicActions = ({
 
   const printAction = useMemo(() => {
     return {
-      key: 'printer-fill',
+      key: 'printTemplate',
       order: 40,
       onPress: () => {
         setShowPrintTemplateSelector(true);
       },
-      indicator: 'print',
       iconName: 'printer-fill',
-      title: I18n.t('Base_PrintTemplate'),
+      title: I18n.t('Base_Print'),
       showInHeader: true,
     };
   }, [I18n]);
