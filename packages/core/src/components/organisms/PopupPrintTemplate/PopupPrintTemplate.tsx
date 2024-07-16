@@ -65,13 +65,22 @@ const PopupPrintTemplate = ({
 
   useEffect(() => {
     fetchActionPrint({id: modelId, model: model}).then(res => {
-      setTemplateIdList(
-        res?.data?.data[0]?.view?.context?._printingTemplateIdList,
-      );
-    });
-  }, [model, modelId]);
+      const printingTemplateIdList =
+        res?.data?.data[0]?.view?.context?._printingTemplateIdList;
 
-  const OpenFile = () => {
+      if (printingTemplateIdList) {
+        setTemplateIdList(printingTemplateIdList);
+      } else {
+        const fileName = res?.data?.data[0].view?.views[0].name;
+        if (fileName) {
+          handleShowFile(fileName);
+          onClose();
+        }
+      }
+    });
+  }, [handleShowFile, model, modelId, onClose]);
+
+  const OpenFile = useCallback(() => {
     fetchFileToPrint({
       printingTemplate: selectedTemplate,
       id: modelId,
@@ -80,7 +89,7 @@ const PopupPrintTemplate = ({
       const file = res?.data?.data[0].view?.views[0].name;
       handleShowFile(file);
     });
-  };
+  }, [handleShowFile, model, modelId, selectedTemplate]);
 
   return (
     <Alert
