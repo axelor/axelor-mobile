@@ -87,8 +87,6 @@ export async function fetchFileToPrint({id, model, printingTemplate}) {
           ],
           _model: 'com.axelor.utils.db.Wizard',
           printingTemplate: printingTemplate,
-          _source: 'printBtn',
-          _signal: 'printBtn',
         },
       },
     },

@@ -50,7 +50,7 @@ const PopupPrintTemplate = ({
   const {baseUrl, token, jsessionId} = useSelector((state: any) => state.auth);
 
   const handleShowFile = useCallback(
-    async file => {
+    async (file: string) => {
       const fileName = file.split('=')[1];
       await openFileInExternalApp(
         {
@@ -71,6 +71,7 @@ const PopupPrintTemplate = ({
         .then(res => {
           const printingTemplateIdList =
             res?.data?.data[0]?.view?.context?._printingTemplateIdList;
+          const fileName = res?.data?.data[0].view?.views[0]?.name;
 
           if (
             Array.isArray(printingTemplateIdList) &&
@@ -78,21 +79,18 @@ const PopupPrintTemplate = ({
           ) {
             setTemplateIdList(printingTemplateIdList);
             setShowPopup(true);
+          } else if (fileName) {
+            handleShowFile(fileName);
+            onClose();
           } else {
-            const fileName = res?.data?.data[0].view?.views[0].name;
-            if (fileName) {
-              handleShowFile(fileName);
-              onClose();
-            } else {
-              showToastMessage({
-                type: 'error',
-                position: 'bottom',
-                text1: 'Error',
-                text2: `${res?.data?.data[0]?.error?.message}`,
-                onPress: () => {},
-              });
-              onClose();
-            }
+            showToastMessage({
+              type: 'error',
+              position: 'bottom',
+              text1: 'Error',
+              text2: `${res?.data?.data[0]?.error?.message}`,
+              onPress: () => {},
+            });
+            onClose();
           }
         })
         .catch(() => {

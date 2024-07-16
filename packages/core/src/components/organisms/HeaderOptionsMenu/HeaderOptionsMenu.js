@@ -110,23 +110,9 @@ const HeaderOptionsMenu = ({
             onPress={_action.onPress}
             customComponent={_action.customComponent}
           />
-          {showPrintTemplateSelector && (
-            <PopupPrintTemplate
-              visible={showPrintTemplateSelector}
-              onClose={closePrintTemplateSelector}
-              model={model}
-              modelId={modelId}
-            />
-          )}
         </View>
       )),
-    [
-      headerActions,
-      showPrintTemplateSelector,
-      closePrintTemplateSelector,
-      model,
-      modelId,
-    ],
+    [headerActions],
   );
 
   const MenuItemList = useMemo(
@@ -142,23 +128,9 @@ const HeaderOptionsMenu = ({
             onPress={_action.onPress}
             customComponent={_action.customComponent}
           />
-          {showPrintTemplateSelector && (
-            <PopupPrintTemplate
-              visible={showPrintTemplateSelector}
-              onClose={closePrintTemplateSelector}
-              model={model}
-              modelId={modelId}
-            />
-          )}
         </View>
       )),
-    [
-      menuActions,
-      showPrintTemplateSelector,
-      closePrintTemplateSelector,
-      model,
-      modelId,
-    ],
+    [menuActions],
   );
 
   if (allActions.length === 0) {
@@ -169,6 +141,14 @@ const HeaderOptionsMenu = ({
     return (
       <View style={styles.container}>
         <DropdownMenu>{[...HeaderItemList, ...MenuItemList]}</DropdownMenu>
+        {showPrintTemplateSelector && (
+          <PopupPrintTemplate
+            visible={showPrintTemplateSelector}
+            onClose={closePrintTemplateSelector}
+            model={model}
+            modelId={modelId}
+          />
+        )}
       </View>
     );
   }
@@ -177,6 +157,14 @@ const HeaderOptionsMenu = ({
     <View style={styles.container}>
       {HeaderItemList}
       {menuActions.length !== 0 && <DropdownMenu>{MenuItemList}</DropdownMenu>}
+      {showPrintTemplateSelector && (
+        <PopupPrintTemplate
+          visible={showPrintTemplateSelector}
+          onClose={closePrintTemplateSelector}
+          model={model}
+          modelId={modelId}
+        />
+      )}
     </View>
   );
 };

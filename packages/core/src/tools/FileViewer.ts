@@ -55,9 +55,6 @@ export const openFileInExternalApp = async (
     },
   };
 
-  console.log('Downloading file from URL:', fromUrl);
-  console.log('Saving file to:', localFile);
-
   RNFS.downloadFile(options)
     .promise.then(() => FileViewer.open(localFile, {showOpenWithDialog: true}))
     .then(() => {
