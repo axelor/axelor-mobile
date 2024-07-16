@@ -98,7 +98,6 @@ const EquipmentActionCard = ({
             }),
           hidden: !canCopy,
         },
-
         {
           iconName: canEdit ? 'pencil-fill' : 'file-earmark-text',
           helper: 'Intervention_Edit',
