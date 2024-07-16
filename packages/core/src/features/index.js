@@ -30,5 +30,6 @@ export {mobileDashboardReducer as mobileDashboard} from './mobileDashboardSlice'
 export {mobileWebViewReducer as mobileWebView} from './mobileWebViewSlice';
 export {onlineReducer as online} from './onlineSlice';
 export {permissionReducer as permission} from './permissionSlice';
+export {printTemplateSliceReducer as printTemplate} from './printTemplateSlice';
 export {default as scanner} from './scannerSlice';
 export {userListReducer as userList} from './userSlice';

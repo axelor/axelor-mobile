@@ -16,21 +16,83 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import React from 'react';
-import {Alert, Text} from '@axelor/aos-mobile-ui';
+import React, {useCallback, useEffect, useState} from 'react';
+import {Alert} from '@axelor/aos-mobile-ui';
+import {useTranslator} from '../../../i18n';
+import {useSelector} from '../../../redux/hooks';
+import {
+  fetchActionPrint,
+  fetchFileToPrint,
+} from '../../../api/print-template-api';
+import {openFileInExternalApp} from '../../../tools';
+import {PrintTemplateSearchBar} from '../../templates';
 
 interface PopupPrintTemplateProps {
   visible: boolean;
   onClose: () => void;
+  model: string;
+  modelId: number;
 }
 
 const PopupPrintTemplate = ({
   visible = false,
   onClose,
+  model,
+  modelId,
 }: PopupPrintTemplateProps) => {
+  const I18n = useTranslator();
+
+  const [templateIdList, setTemplateIdList] = useState([]);
+  const [selectedTemplate, setSelectedTemplate] = useState(null);
+
+  const {baseUrl, token, jsessionId} = useSelector((state: any) => state.auth);
+
+  const handleShowFile = useCallback(
+    async file => {
+      const fileName = file.split('=')[1];
+      await openFileInExternalApp(
+        {
+          fileName: fileName,
+          id: 0,
+          path: file,
+        },
+        {baseUrl: baseUrl, token: token, jsessionId: jsessionId},
+        I18n,
+      );
+    },
+    [I18n, baseUrl, jsessionId, token],
+  );
+
+  useEffect(() => {
+    fetchActionPrint({id: modelId, model: model}).then(res => {
+      setTemplateIdList(
+        res?.data?.data[0]?.view?.context?._printingTemplateIdList,
+      );
+    });
+  }, [model, modelId]);
+
+  const OpenFile = () => {
+    fetchFileToPrint({
+      printingTemplate: selectedTemplate,
+      id: modelId,
+      model: model,
+    }).then(res => {
+      const file = res?.data?.data[0].view?.views[0].name;
+      handleShowFile(file);
+    });
+  };
+
   return (
-    <Alert visible={visible} cancelButtonConfig={{onPress: onClose}}>
-      <Text>test</Text>
+    <Alert
+      visible={visible}
+      cancelButtonConfig={{onPress: onClose}}
+      confirmButtonConfig={{onPress: OpenFile}}
+      translator={I18n.t}>
+      <PrintTemplateSearchBar
+        idList={templateIdList}
+        defaultValue={selectedTemplate}
+        onChange={setSelectedTemplate as any}
+      />
     </Alert>
   );
 };

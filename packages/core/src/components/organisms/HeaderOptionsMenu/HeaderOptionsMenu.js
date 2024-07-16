@@ -110,13 +110,23 @@ const HeaderOptionsMenu = ({
             onPress={_action.onPress}
             customComponent={_action.customComponent}
           />
-          <PopupPrintTemplate
-            visible={showPrintTemplateSelector}
-            onClose={closePrintTemplateSelector}
-          />
+          {showPrintTemplateSelector && (
+            <PopupPrintTemplate
+              visible={showPrintTemplateSelector}
+              onClose={closePrintTemplateSelector}
+              model={model}
+              modelId={modelId}
+            />
+          )}
         </View>
       )),
-    [headerActions, showPrintTemplateSelector, closePrintTemplateSelector],
+    [
+      headerActions,
+      showPrintTemplateSelector,
+      closePrintTemplateSelector,
+      model,
+      modelId,
+    ],
   );
 
   const MenuItemList = useMemo(
@@ -132,13 +142,23 @@ const HeaderOptionsMenu = ({
             onPress={_action.onPress}
             customComponent={_action.customComponent}
           />
-          <PopupPrintTemplate
-            visible={showPrintTemplateSelector}
-            onClose={closePrintTemplateSelector}
-          />
+          {showPrintTemplateSelector && (
+            <PopupPrintTemplate
+              visible={showPrintTemplateSelector}
+              onClose={closePrintTemplateSelector}
+              model={model}
+              modelId={modelId}
+            />
+          )}
         </View>
       )),
-    [menuActions, showPrintTemplateSelector, closePrintTemplateSelector],
+    [
+      menuActions,
+      showPrintTemplateSelector,
+      closePrintTemplateSelector,
+      model,
+      modelId,
+    ],
   );
 
   if (allActions.length === 0) {
