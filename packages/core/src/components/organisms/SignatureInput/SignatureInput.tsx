@@ -22,9 +22,11 @@ import Signature, {SignatureViewRef} from 'react-native-signature-canvas';
 import {
   checkNullString,
   Icon,
+  OUTSIDE_INDICATOR,
   Text,
   ThemeColors,
   getCommonStyles,
+  useClickOutside,
   useScroll,
   useThemeColor,
 } from '@axelor/aos-mobile-ui';
@@ -74,6 +76,18 @@ const SignatureInput = ({
   const [editSignature, setEditSignature] = useState<boolean>(
     !readonly && defaultValue?.id == null,
   );
+  const timeoutRef = useRef(null);
+
+  const wrapperRef = useRef(null);
+  const clickOutside = useClickOutside({
+    wrapperRef,
+  });
+
+  useEffect(() => {
+    if (clickOutside === OUTSIDE_INDICATOR) {
+      setScrollEnabled(true);
+    }
+  }, [clickOutside, setScrollEnabled]);
 
   useEffect(() => {
     setEditSignature(!readonly && defaultValue?.id == null);
@@ -201,7 +215,7 @@ const SignatureInput = ({
   );
 
   return (
-    <View style={[styles.container, style]}>
+    <View style={[styles.container, style]} ref={wrapperRef}>
       {!checkNullString(title) && <Text style={styles.title}>{title}</Text>}
       {editSignature ? (
         <View style={containerStyle}>
@@ -213,10 +227,16 @@ const SignatureInput = ({
               ref={ref}
               onOK={handleSignature}
               onBegin={() => {
+                clearTimeout(timeoutRef.current);
                 setScrollEnabled(false);
                 setUnsavedChanges(true);
               }}
-              onEnd={() => setScrollEnabled(true)}
+              onEnd={() =>
+                (timeoutRef.current = setTimeout(
+                  () => setScrollEnabled(true),
+                  1000,
+                ))
+              }
               autoClear={false}
             />
           </View>
