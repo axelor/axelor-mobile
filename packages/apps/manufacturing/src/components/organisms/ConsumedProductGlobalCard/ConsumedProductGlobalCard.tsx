@@ -17,8 +17,7 @@
  */
 
 import React, {useCallback, useEffect, useRef, useState} from 'react';
-import {StyleSheet, View} from 'react-native';
-import {ActionCard, useThemeColor} from '@axelor/aos-mobile-ui';
+import {ActionCard} from '@axelor/aos-mobile-ui';
 import {useTranslator} from '@axelor/aos-mobile-core';
 import ConsumedProductCard from '../ConsumedProductCard/ConsumedProductCard';
 
@@ -55,7 +54,6 @@ const ConsumedProductGlobalCard = ({
   onSubOfPress,
   isSubOF = false,
 }: ConsumedProductGlobalCardProps) => {
-  const Colors = useThemeColor();
   const I18n = useTranslator();
 
   const [addedQty, setAddedQty] = useState(0);
@@ -87,59 +85,37 @@ const ConsumedProductGlobalCard = ({
   }, [handleTimeOut, incrementVisible, addedQty]);
 
   return (
-    <View style={styles.globalContainer}>
-      <ActionCard
-        translator={I18n.t}
-        actionList={[
-          {
-            iconName: 'geo-alt-fill',
-            iconColor: Colors.secondaryColor.background,
-            onPress: onLocationPress,
-          },
-          {
-            iconName: 'diagram-3-fill',
-            iconColor: Colors.secondaryColor.background,
-            onPress: onSubOfPress,
-            hidden: !isSubOF,
-          },
-          {
-            iconName: 'plus-lg',
-            iconColor: Colors.primaryColor.background,
-            onPress: handleIncrement,
-            hidden: disableMore,
-          },
-        ]}>
-        <ConsumedProductCard
-          style={styles.consumedCard}
-          productName={productName}
-          plannedQty={plannedQty}
-          consumedQty={consumedQty}
-          missingQty={missingQty}
-          availableQty={availableQty}
-          unitName={unitName}
-          trackingNumber={trackingNumber}
-          onPress={onPress}
-          increment={{addedQty, incrementVisible}}
-        />
-      </ActionCard>
-    </View>
+    <ActionCard
+      translator={I18n.t}
+      actionList={[
+        {
+          iconName: 'geo-alt-fill',
+          onPress: onLocationPress,
+        },
+        {
+          iconName: 'diagram-3-fill',
+          onPress: onSubOfPress,
+          hidden: !isSubOF,
+        },
+        {
+          iconName: 'plus-lg',
+          onPress: handleIncrement,
+          hidden: disableMore,
+        },
+      ]}>
+      <ConsumedProductCard
+        productName={productName}
+        plannedQty={plannedQty}
+        consumedQty={consumedQty}
+        missingQty={missingQty}
+        availableQty={availableQty}
+        unitName={unitName}
+        trackingNumber={trackingNumber}
+        onPress={onPress}
+        increment={{addedQty, incrementVisible}}
+      />
+    </ActionCard>
   );
 };
-
-const styles = StyleSheet.create({
-  globalContainer: {
-    display: 'flex',
-    flex: 1,
-    width: '92%',
-    flexDirection: 'row',
-    justifyContent: 'space-evenly',
-    alignItems: 'center',
-    marginHorizontal: 14,
-  },
-  consumedCard: {
-    flex: 5,
-    margin: 2,
-  },
-});
 
 export default ConsumedProductGlobalCard;
