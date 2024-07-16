@@ -45,6 +45,7 @@ const PopupPrintTemplate = ({
 
   const [templateIdList, setTemplateIdList] = useState([]);
   const [selectedTemplate, setSelectedTemplate] = useState(null);
+  const [showPopup, setShowPopup] = useState(false);
 
   const {baseUrl, token, jsessionId} = useSelector((state: any) => state.auth);
 
@@ -65,36 +66,42 @@ const PopupPrintTemplate = ({
   );
 
   useEffect(() => {
-    fetchActionPrint({id: modelId, model: model})
-      .then(res => {
-        const printingTemplateIdList =
-          res?.data?.data[0]?.view?.context?._printingTemplateIdList;
+    if (visible) {
+      fetchActionPrint({id: modelId, model: model})
+        .then(res => {
+          const printingTemplateIdList =
+            res?.data?.data[0]?.view?.context?._printingTemplateIdList;
 
-        if (printingTemplateIdList) {
-          setTemplateIdList(printingTemplateIdList);
-        } else {
-          const fileName = res?.data?.data[0].view?.views[0].name;
-          if (fileName) {
-            handleShowFile(fileName);
-            onClose();
+          if (
+            Array.isArray(printingTemplateIdList) &&
+            printingTemplateIdList.length > 0
+          ) {
+            setTemplateIdList(printingTemplateIdList);
+            setShowPopup(true);
           } else {
-            showToastMessage({
-              type: 'error',
-              position: 'bottom',
-              text1: 'Error',
-              text2: `${res?.data?.data[0]?.error?.message}`,
-              onPress: () => {},
-            });
-            onClose();
+            const fileName = res?.data?.data[0].view?.views[0].name;
+            if (fileName) {
+              handleShowFile(fileName);
+              onClose();
+            } else {
+              showToastMessage({
+                type: 'error',
+                position: 'bottom',
+                text1: 'Error',
+                text2: `${res?.data?.data[0]?.error?.message}`,
+                onPress: () => {},
+              });
+              onClose();
+            }
           }
-        }
-      })
-      .catch(() => {
-        setTemplateIdList([]);
-        setSelectedTemplate(null);
-        onClose();
-      });
-  }, [handleShowFile, model, modelId, onClose]);
+        })
+        .catch(() => {
+          setTemplateIdList([]);
+          setSelectedTemplate(null);
+          onClose();
+        });
+    }
+  }, [handleShowFile, model, modelId, onClose, visible]);
 
   const OpenFile = useCallback(() => {
     fetchFileToPrint({
@@ -115,7 +122,7 @@ const PopupPrintTemplate = ({
 
   return (
     <Alert
-      visible={visible}
+      visible={showPopup}
       cancelButtonConfig={{onPress: onClose}}
       confirmButtonConfig={{onPress: OpenFile}}
       translator={I18n.t}>
