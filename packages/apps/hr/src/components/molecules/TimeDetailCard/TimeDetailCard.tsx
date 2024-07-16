@@ -17,8 +17,8 @@
  */
 
 import React from 'react';
-import {StyleSheet, View} from 'react-native';
-import {CardIconButton, useThemeColor} from '@axelor/aos-mobile-ui';
+import {useTranslator} from '@axelor/aos-mobile-core';
+import {ActionCard, useThemeColor} from '@axelor/aos-mobile-ui';
 import {TimeCard} from '../../atoms';
 
 interface TimeDetailCardProps {
@@ -36,7 +36,6 @@ interface TimeDetailCardProps {
   isActions?: boolean;
   canEdit?: boolean;
   showTrash?: boolean;
-  style?: any;
   onEdit?: () => void;
   onDelete?: () => void;
 }
@@ -56,14 +55,28 @@ const TimeDetailCard = ({
   showTrash = true,
   canEdit = true,
   isActions = true,
-  style,
   onEdit = () => {},
   onDelete = () => {},
 }: TimeDetailCardProps) => {
+  const I18n = useTranslator();
   const Colors = useThemeColor();
 
   return (
-    <View style={[styles.container, style]}>
+    <ActionCard
+      translator={I18n.t}
+      actionList={[
+        {
+          iconName: canEdit ? 'pencil-fill' : 'file-earmark-text',
+          onPress: onEdit,
+          hidden: !isActions,
+        },
+        {
+          iconName: 'trash3-fill',
+          iconColor: Colors.errorColor.background,
+          onPress: onDelete,
+          hidden: !isActions || !showTrash,
+        },
+      ]}>
       <TimeCard
         mode={mode}
         statusSelect={statusSelect}
@@ -76,48 +89,9 @@ const TimeDetailCard = ({
         duration={duration}
         durationUnit={durationUnit}
         isSmallCard={isSmallCard}
-        style={styles.cardContainer}
       />
-      {isActions && (
-        <View style={styles.iconContainer}>
-          <CardIconButton
-            iconName={canEdit ? 'pencil-fill' : 'file-earmark-text'}
-            iconColor={Colors.secondaryColor_dark.background}
-            onPress={onEdit}
-            style={styles.cardIconButton}
-          />
-          {showTrash && (
-            <CardIconButton
-              iconName={'trash3-fill'}
-              iconColor={Colors.errorColor.background}
-              onPress={onDelete}
-              style={styles.cardIconButton}
-            />
-          )}
-        </View>
-      )}
-    </View>
+    </ActionCard>
   );
 };
-
-const styles = StyleSheet.create({
-  container: {
-    width: '96%',
-    flexDirection: 'row',
-    alignSelf: 'center',
-    marginVertical: 2,
-  },
-  cardContainer: {
-    flex: 6,
-    margin: 2,
-  },
-  iconContainer: {
-    flexDirection: 'column',
-    flex: 1,
-  },
-  cardIconButton: {
-    flex: 1,
-  },
-});
 
 export default TimeDetailCard;

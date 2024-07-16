@@ -128,7 +128,7 @@ const getStyles = (color: string, isSmallCard: boolean) =>
       minHeight: isSmallCard ? 'auto' : 100,
       justifyContent: 'center',
       marginHorizontal: 1,
-      marginVertical: 1,
+      marginVertical: 2,
     },
     borderColor: {
       borderLeftWidth: 7,

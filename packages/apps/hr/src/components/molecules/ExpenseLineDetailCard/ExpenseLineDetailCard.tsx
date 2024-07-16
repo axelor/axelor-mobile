@@ -18,7 +18,7 @@
 
 import React, {useCallback, useEffect, useMemo, useRef, useState} from 'react';
 import {Animated, StyleSheet, View} from 'react-native';
-import {useThemeColor, CardIconButton, Checkbox} from '@axelor/aos-mobile-ui';
+import {ActionCard, Checkbox, useThemeColor} from '@axelor/aos-mobile-ui';
 import {
   openFileInExternalApp,
   useDispatch,
@@ -122,7 +122,34 @@ const ExpenseLineDetailCard = ({
           },
         ]}>
         <View style={styles.container}>
-          <View style={styles.containerCard}>
+          <ActionCard
+            translator={I18n.t}
+            actionList={[
+              {
+                iconName: 'arrows-angle-expand',
+                onPress: handleShowFile,
+                hidden:
+                  ExpenseLineType.getExpenseMode(item) !==
+                    ExpenseLineType.modes.general ||
+                  item.justificationMetaFile == null,
+              },
+              {
+                iconName: readonly ? 'file-earmark-text' : 'pencil-fill',
+                onPress: onEdit,
+                hidden:
+                  expense != null &&
+                  expense.statusSelect !== Expense?.statusSelect.Draft,
+              },
+              {
+                iconName: 'trash3-fill',
+                iconColor: Colors.errorColor.background,
+                onPress: handleDelete,
+                hidden:
+                  (expense != null &&
+                    expense.statusSelect !== Expense?.statusSelect.Draft) ||
+                  !canDelete,
+              },
+            ]}>
             <ExpenseLineCard
               expenseId={item.id}
               expenseDate={item.expenseDate}
@@ -144,38 +171,7 @@ const ExpenseLineDetailCard = ({
               onLongPress={onLongPress}
               setCardHeight={setCardHeight}
             />
-          </View>
-          {ExpenseLineType.getExpenseMode(item) ===
-            ExpenseLineType.modes.general &&
-            item.justificationMetaFile != null && (
-              <View style={styles.flexOne}>
-                <CardIconButton
-                  iconName="arrows-angle-expand"
-                  iconColor={Colors.secondaryColor_dark.background}
-                  onPress={handleShowFile}
-                  style={styles.flexOne}
-                />
-              </View>
-            )}
-          {expense == null ||
-          expense.statusSelect === Expense?.statusSelect.Draft ? (
-            <View style={styles.flexOne}>
-              <CardIconButton
-                iconName={readonly ? 'file-earmark-text' : 'pencil-fill'}
-                iconColor={Colors.secondaryColor_dark.background}
-                onPress={onEdit}
-                style={styles.flexOne}
-              />
-              {canDelete && (
-                <CardIconButton
-                  iconName="trash3-fill"
-                  iconColor={Colors.errorColor.background}
-                  onPress={handleDelete}
-                  style={styles.flexOne}
-                />
-              )}
-            </View>
-          ) : null}
+          </ActionCard>
         </View>
       </Animated.View>
     </View>
@@ -201,19 +197,7 @@ const styles = StyleSheet.create({
     width: '100%',
   },
   container: {
-    display: 'flex',
     flexDirection: 'row',
-    alignItems: 'center',
-    alignSelf: 'center',
-    flex: 1,
-    marginVertical: 4,
-  },
-  containerCard: {
-    flex: 6,
-    margin: 2,
-  },
-  flexOne: {
-    flex: 1,
   },
 });
 

@@ -187,7 +187,7 @@ const getStyles = Colors =>
       borderLeftWidth: 7,
       borderLeftColor: Colors.secondaryColor.background,
       marginHorizontal: 0,
-      marginVertical: 0,
+      marginVertical: 2,
       paddingRight: 5,
     },
     anoBubble: {
