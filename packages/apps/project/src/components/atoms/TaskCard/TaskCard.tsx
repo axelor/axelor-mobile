@@ -89,26 +89,25 @@ const TaskCard = ({
         sideBadges={{
           items: [
             {
+              customComponent: <DateDisplay date={taskDeadline} size={16} />,
+            },
+            {
               customComponent: (
-                <View>
-                  <DateDisplay date={taskDeadline} size={16} />
-                  <ProgressBar
-                    style={styles.progressBar}
-                    value={progress}
-                    showPercent={false}
-                    height={15}
-                    styleTxt={styles.textProgressBar}
-                  />
-                  {priority != null && (
-                    <Badge
-                      title={priority?.name}
-                      color={getItemColorFromIndex(
-                        projectPriorityList,
-                        priority,
-                      )}
-                    />
-                  )}
-                </View>
+                <ProgressBar
+                  style={styles.progressBar}
+                  value={progress}
+                  showPercent={false}
+                  height={15}
+                  styleTxt={styles.textProgressBar}
+                />
+              ),
+            },
+            priority != null && {
+              customComponent: (
+                <Badge
+                  title={priority?.name}
+                  color={getItemColorFromIndex(projectPriorityList, priority)}
+                />
               ),
             },
           ],
@@ -127,19 +126,19 @@ const getStyles = color =>
   });
 
 const styles = StyleSheet.create({
-  progressBar: {
-    borderRadius: 20,
-    marginVertical: 5,
-  },
-  textProgressBar: {
-    display: 'none',
-  },
   card: {
     margin: 0,
     marginVertical: 2,
     padding: 0,
     marginRight: 5,
     paddingRight: 5,
+  },
+  progressBar: {
+    borderRadius: 20,
+    marginVertical: 5,
+  },
+  textProgressBar: {
+    display: 'none',
   },
 });
 
