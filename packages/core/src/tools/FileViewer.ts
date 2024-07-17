@@ -23,7 +23,7 @@ import {showToastMessage} from '../utils/show-toast-message';
 
 interface fileItemProps {
   fileName: string;
-  id: number;
+  id?: number;
   isMetaFile?: boolean;
   path?: string;
 }

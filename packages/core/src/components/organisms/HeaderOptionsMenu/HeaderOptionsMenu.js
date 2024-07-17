@@ -31,6 +31,7 @@ const HeaderOptionsMenu = ({
   actions = [],
   disableMailMessages,
   disableJsonFields,
+  disablePrint,
   attachedFileScreenTitle,
   barcodeFieldname,
 }) => {
@@ -46,6 +47,7 @@ const HeaderOptionsMenu = ({
     model,
     modelId,
     disableMailMessages,
+    disablePrint,
     barcodeFieldname,
     disableJsonFields,
     attachedFileScreenTitle,
@@ -99,18 +101,17 @@ const HeaderOptionsMenu = ({
   const HeaderItemList = useMemo(
     () =>
       headerActions.map((_action, index) => (
-        <View key={_action.key + index}>
-          <MenuItem
-            icon={_action.iconName}
-            color={_action.iconColor}
-            indicator={_action.indicator}
-            placeholder={_action.title}
-            hideIf={_action.hideIf}
-            disableIf={_action.disableIf}
-            onPress={_action.onPress}
-            customComponent={_action.customComponent}
-          />
-        </View>
+        <MenuItem
+          key={_action.key + index}
+          icon={_action.iconName}
+          color={_action.iconColor}
+          indicator={_action.indicator}
+          placeholder={_action.title}
+          hideIf={_action.hideIf}
+          disableIf={_action.disableIf}
+          onPress={_action.onPress}
+          customComponent={_action.customComponent}
+        />
       )),
     [headerActions],
   );
@@ -118,17 +119,16 @@ const HeaderOptionsMenu = ({
   const MenuItemList = useMemo(
     () =>
       menuActions.map((_action, index) => (
-        <View key={_action.key + index}>
-          <DropdownMenuItem
-            icon={_action.iconName}
-            indicator={_action.indicator}
-            placeholder={_action.title}
-            hideIf={_action.hideIf}
-            disableIf={_action.disableIf}
-            onPress={_action.onPress}
-            customComponent={_action.customComponent}
-          />
-        </View>
+        <DropdownMenuItem
+          key={_action.key + index}
+          icon={_action.iconName}
+          indicator={_action.indicator}
+          placeholder={_action.title}
+          hideIf={_action.hideIf}
+          disableIf={_action.disableIf}
+          onPress={_action.onPress}
+          customComponent={_action.customComponent}
+        />
       )),
     [menuActions],
   );

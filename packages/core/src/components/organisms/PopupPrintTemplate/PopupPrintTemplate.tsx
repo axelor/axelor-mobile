@@ -55,7 +55,6 @@ const PopupPrintTemplate = ({
       await openFileInExternalApp(
         {
           fileName: fileName,
-          id: 0,
           path: file,
         },
         {baseUrl: baseUrl, token: token, jsessionId: jsessionId},

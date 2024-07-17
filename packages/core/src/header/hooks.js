@@ -33,6 +33,7 @@ export const useBasicActions = ({
   model,
   modelId,
   disableMailMessages,
+  disablePrint,
   disableJsonFields = false,
   attachedFileScreenTitle,
   barcodeFieldname = 'barCode',
@@ -144,10 +145,11 @@ export const useBasicActions = ({
         setShowPrintTemplateSelector(true);
       },
       iconName: 'printer-fill',
+      hideIf: disablePrint,
       title: I18n.t('Base_Print'),
       showInHeader: true,
     };
-  }, [I18n]);
+  }, [I18n, disablePrint]);
 
   const attachedFilesAction = useMemo(() => {
     return {
@@ -237,7 +239,7 @@ export const useBasicActions = ({
     return {
       mailMessagesAction: {key: 'mailMessages', hideIf: true},
       attachedFilesAction: {key: 'attachedFiles', hideIf: true},
-      printAction: {key: 'print', hideIf: true},
+      printAction: {key: 'printTemplate', hideIf: true},
       barcodeAction: {key: 'barcode', hideIf: true},
       jsonFieldsAction: {key: 'metaJsonFields', hideIf: true},
     };
