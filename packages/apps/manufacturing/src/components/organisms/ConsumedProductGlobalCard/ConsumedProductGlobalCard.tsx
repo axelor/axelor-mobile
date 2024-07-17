@@ -93,11 +93,13 @@ const ConsumedProductGlobalCard = ({
           iconName: 'geo-alt-fill',
           onPress: onLocationPress,
           large: !isSubOF,
+          helper: I18n.t('Manufacturing_SeeAvailability'),
         },
         {
           iconName: 'diagram-3-fill',
           onPress: onSubOfPress,
           hidden: !isSubOF,
+          helper: I18n.t('Manufacturing_SeeSubMO'),
         },
         {
           iconName: 'plus-lg',
@@ -105,6 +107,7 @@ const ConsumedProductGlobalCard = ({
           hidden: disableMore,
           iconColor: Colors.primaryColor.background,
           large: true,
+          helper: I18n.t('Manufacturing_IncrementQuantity'),
         },
       ]}>
       <ConsumedProductCard
