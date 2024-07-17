@@ -1,5 +1,5 @@
 {
-  "title": "Crm screens: replace cards with actions by ActionCard",
-  "type": "feat",
+  "title": "Card display: replace cards with actions by ActionCard component",
+  "type": "refactor",
   "packages": "crm"
 }
