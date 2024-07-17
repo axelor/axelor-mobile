@@ -16,9 +16,9 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 import {
-  axiosApiProvider,
   createStandardFetch,
   createStandardSearch,
+  getActionApi,
   getDateZonesISOString,
   getEndOfDay,
   getSearchCriterias,
@@ -123,6 +123,7 @@ export async function fetchTimer({
     fieldKey: 'hr_timer',
     sortKey: 'hr_timer',
     page,
+    provider: 'model',
   });
 }
 
@@ -131,6 +132,7 @@ export async function fetchTimerById({timerId}) {
     model: 'com.axelor.apps.hr.db.TSTimer',
     id: timerId,
     fieldKey: 'hr_timer',
+    provider: 'model',
   });
 }
 
@@ -142,6 +144,7 @@ export async function fetchActiveTimer({userId}) {
     sortKey: 'hr_activeTimer',
     numberElementsByPage: 1,
     page: 0,
+    provider: 'model',
   });
 }
 
@@ -152,41 +155,58 @@ export async function getNumberTimerByDate({userId, date}) {
     fieldKey: 'hr_timer',
     numberElementsByPage: null,
     page: 0,
+    provider: 'model',
   });
 }
 
 export async function createTimer({timer}) {
-  return axiosApiProvider.post({
+  const formattedTimer =
+    timer.startDateTime != null
+      ? {...timer, startDateTime: getDateZonesISOString(timer.startDateTime)}
+      : timer;
+
+  return getActionApi().send({
     url: 'ws/aos/timesheet/timer/',
-    data:
-      timer.startDateTime != null
-        ? {...timer, startDateTime: getDateZonesISOString(timer.startDateTime)}
-        : timer,
+    method: 'post',
+    body: formattedTimer,
+    description: 'create timer',
   });
 }
 
 export async function updateTimer({timer}) {
-  return axiosApiProvider.put({
+  const formattedTimer =
+    timer.startDateTime != null
+      ? {...timer, startDateTime: getDateZonesISOString(timer.startDateTime)}
+      : timer;
+
+  return getActionApi().send({
     url: `ws/aos/timesheet/timer/update/${timer.id}`,
-    data:
-      timer.startDateTime != null
-        ? {...timer, startDateTime: getDateZonesISOString(timer.startDateTime)}
-        : timer,
+    method: 'put',
+    body: formattedTimer,
+    description: 'update timer',
   });
 }
 
 export async function updateTimerStatus({timerId, version, toStatus}) {
-  return axiosApiProvider.put({
+  return getActionApi().send({
     url: `ws/aos/timesheet/timer/status/${timerId}`,
-    data: {
+    method: 'put',
+    body: {
       version: version,
       toStatus: toStatus,
     },
+    description: 'update timer status',
   });
 }
 
 export async function deleteTimer({timerId}) {
-  return axiosApiProvider.delete({
+  return getActionApi().send({
     url: `ws/rest/com.axelor.apps.hr.db.TSTimer/${timerId}`,
+    method: 'delete',
+    description: 'delete timer',
+    matchers: {
+      modelName: 'com.axelor.apps.hr.db.TSTimer',
+      id: timerId,
+    },
   });
 }

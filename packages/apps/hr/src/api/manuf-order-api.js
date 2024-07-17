@@ -60,6 +60,7 @@ export async function searchManufOrder({
     fieldKey: 'hr_manufOrder',
     sortKey: 'hr_manufOrder',
     page,
+    provider: 'model',
   });
 }
 
@@ -74,5 +75,6 @@ export async function searchOperationOrder({
     fieldKey: 'hr_operationOrder',
     sortKey: 'hr_operationOrder',
     page,
+    provider: 'model',
   });
 }
