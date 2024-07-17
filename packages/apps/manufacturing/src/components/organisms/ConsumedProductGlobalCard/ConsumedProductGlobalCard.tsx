@@ -17,7 +17,7 @@
  */
 
 import React, {useCallback, useEffect, useRef, useState} from 'react';
-import {ActionCard} from '@axelor/aos-mobile-ui';
+import {ActionCard, useThemeColor} from '@axelor/aos-mobile-ui';
 import {useTranslator} from '@axelor/aos-mobile-core';
 import ConsumedProductCard from '../ConsumedProductCard/ConsumedProductCard';
 
@@ -55,6 +55,7 @@ const ConsumedProductGlobalCard = ({
   isSubOF = false,
 }: ConsumedProductGlobalCardProps) => {
   const I18n = useTranslator();
+  const Colors = useThemeColor();
 
   const [addedQty, setAddedQty] = useState(0);
   const [incrementVisible, setIncrementVisible] = useState(false);
@@ -91,6 +92,7 @@ const ConsumedProductGlobalCard = ({
         {
           iconName: 'geo-alt-fill',
           onPress: onLocationPress,
+          large: !isSubOF,
         },
         {
           iconName: 'diagram-3-fill',
@@ -101,6 +103,8 @@ const ConsumedProductGlobalCard = ({
           iconName: 'plus-lg',
           onPress: handleIncrement,
           hidden: disableMore,
+          iconColor: Colors.primaryColor.background,
+          large: true,
         },
       ]}>
       <ConsumedProductCard
