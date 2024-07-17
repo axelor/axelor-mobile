@@ -17,8 +17,8 @@
  */
 
 import React, {useCallback, useEffect, useRef, useState} from 'react';
-import {StyleSheet, View} from 'react-native';
-import {CardIconButton, useThemeColor} from '@axelor/aos-mobile-ui';
+import {ActionCard, useThemeColor} from '@axelor/aos-mobile-ui';
+import {useTranslator} from '@axelor/aos-mobile-core';
 import ConsumedProductCard from '../ConsumedProductCard/ConsumedProductCard';
 
 interface ConsumedProductGlobalCardProps {
@@ -54,7 +54,9 @@ const ConsumedProductGlobalCard = ({
   onSubOfPress,
   isSubOF = false,
 }: ConsumedProductGlobalCardProps) => {
+  const I18n = useTranslator();
   const Colors = useThemeColor();
+
   const [addedQty, setAddedQty] = useState(0);
   const [incrementVisible, setIncrementVisible] = useState(false);
   let timeOutIncrement = useRef<number>();
@@ -84,9 +86,31 @@ const ConsumedProductGlobalCard = ({
   }, [handleTimeOut, incrementVisible, addedQty]);
 
   return (
-    <View style={styles.globalContainer}>
+    <ActionCard
+      translator={I18n.t}
+      actionList={[
+        {
+          iconName: 'geo-alt-fill',
+          onPress: onLocationPress,
+          large: !isSubOF,
+          helper: I18n.t('Manufacturing_SeeAvailability'),
+        },
+        {
+          iconName: 'diagram-3-fill',
+          onPress: onSubOfPress,
+          hidden: !isSubOF,
+          helper: I18n.t('Manufacturing_SeeSubMO'),
+        },
+        {
+          iconName: 'plus-lg',
+          onPress: handleIncrement,
+          hidden: disableMore,
+          iconColor: Colors.primaryColor.background,
+          large: true,
+          helper: I18n.t('Manufacturing_IncrementQuantity'),
+        },
+      ]}>
       <ConsumedProductCard
-        style={styles.consumedCard}
         productName={productName}
         plannedQty={plannedQty}
         consumedQty={consumedQty}
@@ -97,53 +121,8 @@ const ConsumedProductGlobalCard = ({
         onPress={onPress}
         increment={{addedQty, incrementVisible}}
       />
-      <View style={styles.flexOne}>
-        <CardIconButton
-          style={styles.flexOne}
-          iconName="geo-alt-fill"
-          iconColor={Colors.secondaryColor.background}
-          onPress={onLocationPress}
-        />
-        {isSubOF ? (
-          <CardIconButton
-            style={styles.flexOne}
-            iconName="diagram-3-fill"
-            iconColor={Colors.secondaryColor.background}
-            onPress={onSubOfPress}
-          />
-        ) : null}
-      </View>
-      {!disableMore && (
-        <View style={styles.flexOne}>
-          <CardIconButton
-            style={styles.flexOne}
-            iconName="plus-lg"
-            iconColor={Colors.primaryColor.background}
-            onPress={handleIncrement}
-          />
-        </View>
-      )}
-    </View>
+    </ActionCard>
   );
 };
-
-const styles = StyleSheet.create({
-  globalContainer: {
-    display: 'flex',
-    flex: 1,
-    width: '92%',
-    flexDirection: 'row',
-    justifyContent: 'space-evenly',
-    alignItems: 'center',
-    marginHorizontal: 14,
-  },
-  flexOne: {
-    flex: 1,
-  },
-  consumedCard: {
-    flex: 5,
-    margin: 2,
-  },
-});
 
 export default ConsumedProductGlobalCard;
