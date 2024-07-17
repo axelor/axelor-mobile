@@ -17,12 +17,18 @@
  */
 
 import React, {useCallback, useMemo} from 'react';
-import {Dimensions, StyleSheet, View} from 'react-native';
+import {Dimensions, StyleSheet, TouchableOpacity, View} from 'react-native';
 import {IndicatorChart, useDigitFormat} from '@axelor/aos-mobile-ui';
-import {useTranslator, useSelector} from '@axelor/aos-mobile-core';
+import {
+  useTranslator,
+  useSelector,
+  useNavigation,
+} from '@axelor/aos-mobile-core';
+import {StockIndicator} from '../../../../types';
 
-const ProductCardStockIndicatorList = ({}) => {
+const ProductCardStockIndicatorList = ({stockLocationId, companyId}) => {
   const I18n = useTranslator();
+  const navigation = useNavigation();
   const formatNumber = useDigitFormat();
 
   const {productIndicators} = useSelector(state => state.productIndicators);
@@ -32,28 +38,49 @@ const ProductCardStockIndicatorList = ({}) => {
 
   const indicators = useMemo(
     () => [
-      {titleKey: 'Stock_RealQty', value: productIndicators?.realQty},
-      {titleKey: 'Stock_FutureQty', value: productIndicators?.futureQty},
       {
+        type: StockIndicator.type.RealQty,
+        titleKey: 'Stock_RealQty',
+        value: productIndicators?.realQty,
+      },
+      {
+        type: StockIndicator.type.FutureQty,
+        titleKey: 'Stock_FutureQty',
+        value: productIndicators?.futureQty,
+      },
+      {
+        type: StockIndicator.type.AllocatedQty,
         titleKey: 'Stock_AllocatedQty',
         value: productIndicators?.allocatedQty,
         condition: supplychainConfig?.manageStockReservation,
       },
-      {titleKey: 'Stock_SaleOrderQty', value: productIndicators?.saleOrderQty},
       {
+        type: StockIndicator.type.SaleOrderQty,
+        titleKey: 'Stock_SaleOrderQty',
+        value: productIndicators?.saleOrderQty,
+      },
+      {
+        type: StockIndicator.type.PurchaseOrderQty,
         titleKey: 'Stock_PurchaseOrderQty',
         value: productIndicators?.purchaseOrderQty,
       },
       {
+        type: StockIndicator.type.AvailableStock,
         titleKey: 'Stock_AvailableStock',
         value: productIndicators?.availableStock,
       },
-      {titleKey: 'Stock_BuildingQty', value: productIndicators?.buildingQty},
       {
+        type: StockIndicator.type.BuildingQty,
+        titleKey: 'Stock_BuildingQty',
+        value: productIndicators?.buildingQty,
+      },
+      {
+        type: StockIndicator.type.ConsumedMOQty,
         titleKey: 'Stock_ConsumedMOQty',
         value: productIndicators?.consumeManufOrderQty,
       },
       {
+        type: StockIndicator.type.MissingMOQty,
         titleKey: 'Stock_MissingMOQty',
         value: productIndicators?.missingManufOrderQty,
       },
@@ -62,24 +89,35 @@ const ProductCardStockIndicatorList = ({}) => {
   );
 
   const renderIndicator = useCallback(
-    ({titleKey, value, condition = true}, idx) => {
+    ({type, titleKey, value, condition = true}, idx) => {
       if (value != null && condition) {
         return (
-          <IndicatorChart
-            key={idx}
-            style={styles.chart}
-            datasets={[
-              {
-                title: I18n.t(titleKey),
-                value: formatNumber(value),
-              },
-            ]}
-            widthGraph={Dimensions.get('window').width * 0.4}
-          />
+          <TouchableOpacity
+            style={styles.chartContainer}
+            onPress={() =>
+              navigation.navigate('ProductStockIndicatorDetails', {
+                type,
+                stockLocationId,
+                companyId,
+              })
+            }
+            activeOpacity={0.9}
+            key={idx}>
+            <IndicatorChart
+              style={styles.chart}
+              datasets={[
+                {
+                  title: I18n.t(titleKey),
+                  value: formatNumber(value),
+                },
+              ]}
+              widthGraph={Dimensions.get('window').width * 0.4}
+            />
+          </TouchableOpacity>
         );
       }
     },
-    [I18n, formatNumber],
+    [I18n, companyId, formatNumber, navigation, stockLocationId],
   );
 
   return (
@@ -91,8 +129,11 @@ const styles = StyleSheet.create({
   container: {
     justifyContent: 'space-around',
     flexDirection: 'row',
-    alignItems: 'center',
     flexWrap: 'wrap',
+  },
+  chartContainer: {
+    width: '50%',
+    flexDirection: 'row',
   },
   chart: {
     alignSelf: 'stretch',

@@ -145,7 +145,10 @@ const ProductStockDetailsScreen = ({route}) => {
             }
           />
         )}
-        <ProductCardStockIndicatorList />
+        <ProductCardStockIndicatorList
+          stockLocationId={stockLocation?.id}
+          companyId={companyId}
+        />
       </ScrollView>
     </Screen>
   );

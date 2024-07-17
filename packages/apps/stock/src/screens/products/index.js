@@ -21,6 +21,7 @@ import ProductImageScreen from './ProductImageScreen';
 import ProductListScreen from './ProductListScreen';
 import ProductListVariantScreen from './ProductListVariantScreen';
 import ProductStockDetailsScreen from './ProductStockDetailsScreen';
+import ProductStockIndicatorDetails from './ProductStockIndicatorDetails';
 import ProductStockLocationDetailsScreen from './ProductStockLocationDetailsScreen';
 
 export default {
@@ -57,6 +58,10 @@ export default {
     title: 'Stock_Variants',
     component: ProductListVariantScreen,
   },
+  ProductStockIndicatorDetails: {
+    title: 'Stock_Product',
+    component: ProductStockIndicatorDetails,
+  },
 };
 
 export {ProductDetailsScreen};
@@ -64,4 +69,5 @@ export {ProductImageScreen};
 export {ProductListScreen};
 export {ProductListVariantScreen};
 export {ProductStockDetailsScreen};
+export {ProductStockIndicatorDetails};
 export {ProductStockLocationDetailsScreen};

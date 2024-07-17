@@ -16,8 +16,4 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-export {default as InternalMoveCreation} from './internal-move-creation';
-export {default as Inventory} from './inventory';
-export {default as StockIndicator} from './stock-indicator';
-export {default as StockMoveLine} from './stock-move-line';
-export {default as StockMove} from './stock-move';
+export {default as StockQtyIndicatorCard} from './StockQtyIndicatorCard/StockQtyIndicatorCard';
