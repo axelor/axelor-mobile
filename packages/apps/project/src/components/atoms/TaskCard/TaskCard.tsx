@@ -18,7 +18,7 @@
 
 import React, {useMemo} from 'react';
 import {StyleSheet, View} from 'react-native';
-import {Badge, ObjectCard, ProgressBar} from '@axelor/aos-mobile-ui';
+import {ObjectCard, ProgressBar} from '@axelor/aos-mobile-ui';
 import {
   DateDisplay,
   useTypeHelpers,
@@ -102,13 +102,10 @@ const TaskCard = ({
                 />
               ),
             },
-            priority != null && {
-              customComponent: (
-                <Badge
-                  title={priority?.name}
-                  color={getItemColorFromIndex(projectPriorityList, priority)}
-                />
-              ),
+            {
+              displayText: priority?.name,
+              color: getItemColorFromIndex(projectPriorityList, priority),
+              showIf: priority != null,
             },
           ],
         }}
