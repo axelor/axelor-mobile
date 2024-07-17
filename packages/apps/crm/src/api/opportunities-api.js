@@ -86,9 +86,12 @@ export async function updateOpportunityScoring({
     },
     description: 'update opportunity scoring',
     matchers: {
-      id: 'data.id',
-      version: 'data.version',
-      opportunityRating: 'data.opportunityRating',
+      modelName: 'com.axelor.apps.crm.db.Opportunity',
+      id: opportunityId,
+      fields: {
+        version: 'version',
+        opportunityRating: 'opportunityRating',
+      },
     },
   });
 }
@@ -112,9 +115,12 @@ export async function updateOpportunityStatus({
     },
     description: 'update opportunity status',
     matchers: {
-      id: 'data.id',
-      version: 'data.version',
-      opportunityStatus: 'data.opportunityStatus',
+      modelName: 'com.axelor.apps.crm.db.Opportunity',
+      id: opportunityId,
+      fields: {
+        version: 'version',
+        opportunityStatus: 'opportunityStatus',
+      },
     },
   });
 }
@@ -128,16 +134,19 @@ export async function updateOpportunity({opportunity}) {
     },
     description: 'update opportunity',
     matchers: {
-      id: 'data.id',
-      version: 'data.version',
-      amount: 'data.amount',
-      recurrentAmount: 'data.recurrentAmount',
-      description: 'data.description',
-      opportunityStatus: 'data.opportunityStatus',
-      partner: 'data.partner',
-      contact: 'data.contact',
-      expectedCloseDate: 'data.expectedCloseDate',
-      opportunityRating: 'data.opportunityRating',
+      modelName: 'com.axelor.apps.crm.db.Opportunity',
+      id: opportunity.id,
+      fields: {
+        version: 'version',
+        amount: 'amount',
+        recurrentAmount: 'recurrentAmount',
+        description: 'description',
+        opportunityStatus: 'opportunityStatus',
+        partner: 'partner',
+        contact: 'contact',
+        expectedCloseDate: 'expectedCloseDate',
+        opportunityRating: 'opportunityRating',
+      },
     },
   });
 }
@@ -151,16 +160,20 @@ export async function createOpportunity({opportunity}) {
     },
     description: 'create opportunity',
     matchers: {
-      amount: 'data.amount',
-      recurrentAmount: 'data.recurrentAmount',
-      description: 'data.description',
-      opportunityStatus: 'data.opportunityStatus',
-      partner: 'data.partner',
-      contact: 'data.contact',
-      expectedCloseDate: 'data.expectedCloseDate',
-      opportunityRating: 'data.opportunityRating',
-      user: 'data.user',
-      name: 'data.name',
+      modelName: 'com.axelor.apps.crm.db.Opportunity',
+      id: Date.now(),
+      fields: {
+        amount: 'amount',
+        recurrentAmount: 'recurrentAmount',
+        description: 'description',
+        opportunityStatus: 'opportunityStatus',
+        partner: 'partner',
+        contact: 'contact',
+        expectedCloseDate: 'expectedCloseDate',
+        opportunityRating: 'opportunityRating',
+        user: 'user',
+        name: 'name',
+      },
     },
   });
 }
@@ -178,5 +191,6 @@ export async function getPartnerOpportunities({partnerId}) {
     fieldKey: 'crm_opportunity',
     numberElementsByPage: null,
     page: 0,
+    provider: 'model',
   });
 }

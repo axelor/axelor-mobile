@@ -119,6 +119,7 @@ export async function searchPartner({searchValue, page = 0}) {
     criteria: createPartnerCriteria(searchValue),
     fieldKey: 'crm_partner',
     page,
+    provider: 'model',
   });
 }
 
@@ -139,5 +140,6 @@ export async function searchLinkedPartnersOfContact({contactId}) {
     fieldKey: 'crm_partner',
     page: 0,
     numberElementsByPage: null,
+    provider: 'model',
   });
 }

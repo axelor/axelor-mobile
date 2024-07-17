@@ -72,6 +72,7 @@ export async function getProspectStatus() {
     fieldKey: 'crm_prospectStatus',
     numberElementsByPage: null,
     page: 0,
+    provider: 'model',
   });
 }
 
@@ -92,9 +93,12 @@ export async function updateProspectScoring({
     },
     description: 'update prospect scoring',
     matchers: {
-      id: 'data.id',
-      version: 'data.version',
-      leadScoringSelect: 'data.leadScoringSelect',
+      modelName: 'com.axelor.apps.base.db.Partner',
+      id: partnerId,
+      fields: {
+        version: 'version',
+        leadScoringSelect: 'leadScoringSelect',
+      },
     },
   });
 }
@@ -113,6 +117,8 @@ export async function updateProspect({
 }) {
   const route = await RouterProvider.get('EmailAddress');
 
+  const modelName = route.replace('/ws/rest/', '');
+
   return getActionApi()
     .send({
       url: route,
@@ -126,9 +132,12 @@ export async function updateProspect({
       },
       description: 'update prospect email',
       matchers: {
-        id: 'data.id',
-        version: 'data.version',
-        address: 'data.address',
+        modelName: modelName,
+        id: emailId,
+        fields: {
+          version: 'version',
+          address: 'address',
+        },
       },
     })
     .then(() =>
@@ -148,13 +157,16 @@ export async function updateProspect({
         },
         description: 'update prospect',
         matchers: {
-          id: 'data.id',
-          version: 'data.version',
-          leadScoringSelect: 'data.leadScoringSelect',
-          name: 'data.name',
-          fixedPhone: 'data.fixedPhone',
-          webSite: 'data.webSite',
-          description: 'data.description',
+          modelName: 'com.axelor.apps.base.db.Partner',
+          id: id,
+          fields: {
+            version: 'version',
+            leadScoringSelect: 'leadScoringSelect',
+            name: 'name',
+            fixedPhone: 'fixedPhone',
+            webSite: 'webSite',
+            description: 'description',
+          },
         },
       }),
     );

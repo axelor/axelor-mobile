@@ -109,6 +109,8 @@ export async function updateContact({
 }) {
   const route = await RouterProvider.get('EmailAddress');
 
+  const modelName = route.replace('/ws/rest/', '');
+
   return getActionApi()
     .send({
       url: route,
@@ -122,9 +124,12 @@ export async function updateContact({
       },
       description: 'update contact email',
       matchers: {
-        id: 'data.id',
-        version: 'data.version',
-        address: 'data.address',
+        modelName: modelName,
+        id: emailId,
+        fields: {
+          version: 'version',
+          address: 'address',
+        },
       },
     })
     .then(() =>
@@ -147,16 +152,19 @@ export async function updateContact({
         },
         description: 'update contact',
         matchers: {
-          id: 'data.id',
-          version: 'data.version',
-          titleSelect: 'data.titleSelect',
-          firstName: 'data.firstName',
-          name: 'data.name',
-          fixedPhone: 'data.fixedPhone',
-          mobilePhone: 'data.mobilePhone',
-          webSite: 'data.webSite',
-          description: 'data.description',
-          mainPartner: 'data.mainPartner',
+          modelName: 'com.axelor.apps.base.db.Partner',
+          id: id,
+          fields: {
+            version: 'version',
+            titleSelect: 'titleSelect',
+            firstName: 'firstName',
+            name: 'name',
+            fixedPhone: 'fixedPhone',
+            mobilePhone: 'mobilePhone',
+            webSite: 'webSite',
+            description: 'description',
+            mainPartner: 'mainPartner',
+          },
         },
       }),
     );

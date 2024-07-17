@@ -25,6 +25,9 @@ export const crm_modelAPI: ObjectFields = {
     description: schemaContructor.string(),
     catalogType: schemaContructor.subObject('name'),
   }),
+  crm_catologType: schemaContructor.object({
+    name: schemaContructor.string(),
+  }),
   crm_client: schemaContructor.object({
     simpleFullName: schemaContructor.string(),
     name: schemaContructor.string(),

@@ -85,15 +85,21 @@ export async function updateLeadScoring({leadId, leadVersion, newScore}) {
     },
     description: 'update lead scoring',
     matchers: {
-      id: 'data.id',
-      version: 'data.version',
-      leadScoringSelect: 'data.leadScoringSelect',
+      modelName: 'com.axelor.apps.crm.db.Lead',
+      id: leadId,
+      fields: {
+        version: 'version',
+        leadScoringSelect: 'leadScoringSelect',
+      },
     },
   });
 }
 
 export async function updateLead({lead, emailId, emailVersion}) {
   const route = await RouterProvider.get('EmailAddress');
+
+  const modelName = route.replace('/ws/rest/', '');
+
   return getActionApi()
     .send({
       url: route,
@@ -107,9 +113,12 @@ export async function updateLead({lead, emailId, emailVersion}) {
       },
       description: 'update lead email',
       matchers: {
-        id: 'data.id',
-        version: 'data.version',
-        address: 'data.address',
+        modelName: modelName,
+        id: emailId,
+        fields: {
+          version: 'version',
+          address: 'address',
+        },
       },
     })
     .then(() =>
@@ -121,21 +130,24 @@ export async function updateLead({lead, emailId, emailVersion}) {
         },
         description: 'update lead',
         matchers: {
-          id: 'data.id',
-          version: 'data.version',
-          leadScoringSelect: 'data.leadScoringSelect',
-          titleSelect: 'data.titleSelect',
-          firstName: 'data.firstName',
-          name: 'data.name',
-          isDoNotSendEmail: 'data.isDoNotSendEmail',
-          isDoNotCall: 'data.isDoNotCall',
-          enterpriseName: 'data.enterpriseName',
-          primaryAddress: 'data.primaryAddress',
-          jobTitleFunction: 'data.jobTitleFunction',
-          fixedPhone: 'data.fixedPhone',
-          mobilePhone: 'data.mobilePhone',
-          webSite: 'data.webSite',
-          description: 'data.description',
+          modelName: 'com.axelor.apps.crm.db.Lead',
+          id: lead.id,
+          fields: {
+            version: 'version',
+            leadScoringSelect: 'leadScoringSelect',
+            titleSelect: 'titleSelect',
+            firstName: 'firstName',
+            name: 'name',
+            isDoNotSendEmail: 'isDoNotSendEmail',
+            isDoNotCall: 'isDoNotCall',
+            enterpriseName: 'enterpriseName',
+            primaryAddress: 'primaryAddress',
+            jobTitleFunction: 'jobTitleFunction',
+            fixedPhone: 'fixedPhone',
+            mobilePhone: 'mobilePhone',
+            webSite: 'webSite',
+            description: 'description',
+          },
         },
       }),
     );
@@ -150,22 +162,26 @@ export async function createLead({lead}) {
     },
     description: 'create lead',
     matchers: {
-      leadScoringSelect: 'data.leadScoringSelect',
-      titleSelect: 'data.titleSelect',
-      firstName: 'data.firstName',
-      name: 'data.name',
-      isDoNotSendEmail: 'data.isDoNotSendEmail',
-      isDoNotCall: 'data.isDoNotCall',
-      enterpriseName: 'data.enterpriseName',
-      primaryAddress: 'data.primaryAddress',
-      jobTitleFunction: 'data.jobTitleFunction',
-      fixedPhone: 'data.fixedPhone',
-      mobilePhone: 'data.mobilePhone',
-      webSite: 'data.webSite',
-      description: 'data.description',
-      contactDate: 'data.contactDate',
-      user: 'data.user',
-      emailAddress: 'data.emailAddress',
+      modelName: 'com.axelor.apps.crm.db.Lead',
+      id: Date.now(),
+      fields: {
+        leadScoringSelect: 'leadScoringSelect',
+        titleSelect: 'titleSelect',
+        firstName: 'firstName',
+        name: 'name',
+        isDoNotSendEmail: 'isDoNotSendEmail',
+        isDoNotCall: 'isDoNotCall',
+        enterpriseName: 'enterpriseName',
+        primaryAddress: 'primaryAddress',
+        jobTitleFunction: 'jobTitleFunction',
+        fixedPhone: 'fixedPhone',
+        mobilePhone: 'mobilePhone',
+        webSite: 'webSite',
+        description: 'description',
+        contactDate: 'contactDate',
+        user: 'user',
+        emailAddress: 'emailAddress',
+      },
     },
   });
 }
