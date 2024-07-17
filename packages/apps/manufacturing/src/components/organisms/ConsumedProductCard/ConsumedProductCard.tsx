@@ -126,8 +126,8 @@ const getBorderStyles = color =>
     border: {
       borderLeftWidth: 7,
       borderLeftColor: color,
-      marginHorizontal: 0,
-      marginVertical: 0,
+      marginHorizontal: 2,
+      marginVertical: 2,
     },
   });
 
