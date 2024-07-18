@@ -109,7 +109,8 @@ const ConsumedProductGlobalCard = ({
           large: true,
           helper: I18n.t('Manufacturing_IncrementQuantity'),
         },
-      ]}>
+      ]}
+      forceActionsDisplay>
       <ConsumedProductCard
         productName={productName}
         plannedQty={plannedQty}
