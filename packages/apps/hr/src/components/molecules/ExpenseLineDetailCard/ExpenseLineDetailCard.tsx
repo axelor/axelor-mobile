@@ -79,7 +79,7 @@ const ExpenseLineDetailCard = ({
       isSelectionMode
         ? translateXAnim.interpolate({
             inputRange: [0, 10],
-            outputRange: ['0%', '10%'],
+            outputRange: ['0%', '13%'],
           })
         : 0,
     [isSelectionMode, translateXAnim],
@@ -127,6 +127,8 @@ const ExpenseLineDetailCard = ({
             actionList={[
               {
                 iconName: 'arrows-angle-expand',
+                helper: I18n.t('Hr_ShowJustification'),
+                large: true,
                 onPress: handleShowFile,
                 hidden:
                   ExpenseLineType.getExpenseMode(item) !==
@@ -135,6 +137,7 @@ const ExpenseLineDetailCard = ({
               },
               {
                 iconName: readonly ? 'file-earmark-text' : 'pencil-fill',
+                helper: I18n.t(readonly ? 'Hr_See' : 'Hr_Edit'),
                 onPress: onEdit,
                 hidden:
                   expense != null &&
@@ -143,6 +146,7 @@ const ExpenseLineDetailCard = ({
               {
                 iconName: 'trash3-fill',
                 iconColor: Colors.errorColor.background,
+                helper: I18n.t('Hr_Delete'),
                 onPress: handleDelete,
                 hidden:
                   (expense != null &&

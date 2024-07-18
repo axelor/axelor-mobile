@@ -67,12 +67,14 @@ const TimeDetailCard = ({
       actionList={[
         {
           iconName: canEdit ? 'pencil-fill' : 'file-earmark-text',
+          helper: I18n.t(canEdit ? 'Hr_Edit' : 'Hr_See'),
           onPress: onEdit,
           hidden: !isActions,
         },
         {
           iconName: 'trash3-fill',
           iconColor: Colors.errorColor.background,
+          helper: I18n.t('Hr_Delete'),
           onPress: onDelete,
           hidden: !isActions || !showTrash,
         },

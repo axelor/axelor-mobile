@@ -104,12 +104,14 @@ const ExpenseCard = ({
       actionList={[
         {
           iconName: 'send-fill',
+          helper: I18n.t('Hr_Send'),
           onPress: onSend,
           hidden:
             isDefaultDisplay || statusSelect !== Expense?.statusSelect.Draft,
         },
         {
           iconName: 'check-lg',
+          helper: I18n.t('Hr_Validate'),
           onPress: onValidate,
           hidden:
             isDefaultDisplay || statusSelect === Expense?.statusSelect.Draft,

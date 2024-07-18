@@ -99,20 +99,22 @@ const TimesheetDetailCard = ({
   return (
     <ActionCard
       translator={I18n.t}
-      actionList={[
-        {
-          iconName: 'send-fill',
-          onPress: onSend,
-          hidden:
-            !_isActions || _statusSelect !== Timesheet?.statusSelect.Draft,
-        },
-        {
-          iconName: 'check-lg',
-          onPress: onValidate,
-          hidden:
-            !_isActions || _statusSelect === Timesheet?.statusSelect.Draft,
-        },
-      ]}>
+      actionList={
+        _isActions && [
+          {
+            iconName: 'send-fill',
+            helper: I18n.t('Hr_Send'),
+            onPress: onSend,
+            hidden: _statusSelect !== Timesheet?.statusSelect.Draft,
+          },
+          {
+            iconName: 'check-lg',
+            helper: I18n.t('Hr_Validate'),
+            onPress: onValidate,
+            hidden: _statusSelect === Timesheet?.statusSelect.Draft,
+          },
+        ]
+      }>
       <TimesheetCard
         statusSelect={_statusSelect}
         startDate={item.fromDate}
