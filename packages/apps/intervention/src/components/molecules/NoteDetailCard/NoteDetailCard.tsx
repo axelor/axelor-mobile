@@ -17,7 +17,6 @@
  */
 
 import React from 'react';
-import {StyleSheet, View} from 'react-native';
 import {
   openFileInExternalApp,
   useDispatch,
@@ -25,7 +24,7 @@ import {
   useSelector,
   useTranslator,
 } from '@axelor/aos-mobile-core';
-import {InfoButton, useThemeColor} from '@axelor/aos-mobile-ui';
+import {ActionCard, useThemeColor} from '@axelor/aos-mobile-ui';
 import {NoteCard} from '../../atoms';
 import {deleteInterventionNote} from '../../../features/interventionNoteSlice';
 
@@ -48,7 +47,6 @@ interface NoteDetailCardProps {
 }
 
 const NoteDetailCard = ({
-  style,
   note,
   canDelete = true,
   canEdit = true,
@@ -73,65 +71,41 @@ const NoteDetailCard = ({
   };
 
   return (
-    <View style={[styles.container, style]}>
-      <NoteCard style={styles.cardContainer} {...note} />
-      {note.metaFile && (
-        <InfoButton
-          style={styles.flexOne}
-          iconName="arrows-angle-expand"
-          iconColor={Colors.secondaryColor_dark.background}
-          onPress={handleOpenFile}
-          indication={I18n.t('Intervention_OpenFile')}
-        />
-      )}
-      <View style={styles.flexOne}>
-        <InfoButton
-          style={styles.flexOne}
-          iconName={canEdit ? 'pencil-fill' : 'file-earmark-text'}
-          iconColor={Colors.secondaryColor_dark.background}
-          onPress={() =>
+    <ActionCard
+      translator={I18n.t}
+      actionList={[
+        {
+          iconName: 'arrows-angle-expand',
+          helper: I18n.t('Intervention_OpenFile'),
+          large: true,
+          onPress: handleOpenFile,
+          hidden: !note.metaFile,
+        },
+        {
+          iconName: canEdit ? 'pencil-fill' : 'file-earmark-text',
+          helper: I18n.t('Intervention_Edit'),
+          onPress: () =>
             navigation.navigate('InterventionNoteFormScreen', {
               noteId: note.id,
-            })
-          }
-          indication={I18n.t('Intervention_Edit')}
-        />
-        {canDelete && (
-          <InfoButton
-            style={styles.flexOne}
-            iconName="trash3-fill"
-            iconColor={Colors.errorColor.background}
-            onPress={() =>
-              dispatch(
-                (deleteInterventionNote as any)({
-                  interventionNoteId: note.id,
-                  deliveredPartnerId: note.partner.id,
-                }),
-              )
-            }
-            indication={I18n.t('Intervention_Delete')}
-          />
-        )}
-      </View>
-    </View>
+            }),
+        },
+        {
+          iconName: 'trash3-fill',
+          iconColor: Colors.errorColor.background,
+          helper: I18n.t('Intervention_Delete'),
+          onPress: () =>
+            dispatch(
+              (deleteInterventionNote as any)({
+                interventionNoteId: note.id,
+                deliveredPartnerId: note.partner.id,
+              }),
+            ),
+          hidden: !canDelete,
+        },
+      ]}>
+      <NoteCard {...note} />
+    </ActionCard>
   );
 };
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    width: '96%',
-    flexDirection: 'row',
-    alignSelf: 'center',
-    marginVertical: 2,
-  },
-  cardContainer: {
-    flex: 6,
-    margin: 2,
-  },
-  flexOne: {
-    flex: 1,
-  },
-});
 
 export default NoteDetailCard;
