@@ -16,7 +16,17 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-export {core_formsRegister} from './forms';
-export {core_modelAPI} from './objectFields';
-export {core_searchFields} from './searchFields';
-export {core_sortFields} from './sortFields';
+import {FormConfigs} from '../forms';
+
+export const core_formsRegister: FormConfigs = {
+  core_aopChart: {
+    modelName: 'com.axelor.meta.db.MetaAction',
+    fields: {
+      test: {
+        titleKey: 'test',
+        type: 'string',
+        widget: 'default',
+      },
+    },
+  },
+};
