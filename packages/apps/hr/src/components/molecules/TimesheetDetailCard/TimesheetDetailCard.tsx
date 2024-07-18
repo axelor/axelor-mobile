@@ -17,9 +17,8 @@
  */
 
 import React, {useEffect, useMemo, useState} from 'react';
-import {StyleSheet, View} from 'react-native';
-import {useSelector, useTypes} from '@axelor/aos-mobile-core';
-import {CardIconButton, useThemeColor} from '@axelor/aos-mobile-ui';
+import {useSelector, useTranslator, useTypes} from '@axelor/aos-mobile-core';
+import {ActionCard} from '@axelor/aos-mobile-ui';
 import {TimesheetCard} from '../../atoms';
 import {convertPeriodTimesheet} from '../../../api/timesheet-api';
 import {Timesheet as TimesheetType} from '../../../types';
@@ -28,7 +27,6 @@ interface TimesheetDetailCardProps {
   item: any;
   isValidationMode?: boolean;
   isActions?: boolean;
-  style?: any;
   onPress: () => void;
   onSend: () => void;
   onValidate: () => void;
@@ -38,12 +36,11 @@ const TimesheetDetailCard = ({
   item,
   isValidationMode = false,
   isActions = true,
-  style,
   onPress,
   onSend,
   onValidate,
 }: TimesheetDetailCardProps) => {
-  const Colors = useThemeColor();
+  const I18n = useTranslator();
   const {Timesheet} = useTypes();
 
   const {timesheet: timesheetConfig} = useSelector(
@@ -100,7 +97,24 @@ const TimesheetDetailCard = ({
   }, [item.id]);
 
   return (
-    <View style={[styles.container, style]}>
+    <ActionCard
+      translator={I18n.t}
+      actionList={
+        _isActions && [
+          {
+            iconName: 'send-fill',
+            helper: I18n.t('Hr_Send'),
+            onPress: onSend,
+            hidden: _statusSelect !== Timesheet?.statusSelect.Draft,
+          },
+          {
+            iconName: 'check-lg',
+            helper: I18n.t('Hr_Validate'),
+            onPress: onValidate,
+            hidden: _statusSelect === Timesheet?.statusSelect.Draft,
+          },
+        ]
+      }>
       <TimesheetCard
         statusSelect={_statusSelect}
         startDate={item.fromDate}
@@ -109,43 +123,10 @@ const TimesheetDetailCard = ({
         totalDuration={convertedPeriod}
         durationUnit={item.timeLoggingPreferenceSelect}
         employeeName={isValidationMode ? item.employee?.name : null}
-        style={styles.cardContainer}
         onPress={onPress}
       />
-      {_isActions && (
-        <CardIconButton
-          iconName={
-            _statusSelect === Timesheet?.statusSelect.Draft
-              ? 'send-fill'
-              : 'check-lg'
-          }
-          iconColor={Colors.secondaryColor_dark.background}
-          onPress={() => {
-            _statusSelect === Timesheet?.statusSelect.Draft
-              ? onSend()
-              : onValidate();
-          }}
-          style={styles.flexOneContainer}
-        />
-      )}
-    </View>
+    </ActionCard>
   );
 };
-
-const styles = StyleSheet.create({
-  container: {
-    width: '96%',
-    flexDirection: 'row',
-    alignSelf: 'center',
-    marginVertical: 2,
-    flex: 1,
-  },
-  cardContainer: {
-    flex: 6,
-  },
-  flexOneContainer: {
-    flex: 1,
-  },
-});
 
 export default TimesheetDetailCard;
