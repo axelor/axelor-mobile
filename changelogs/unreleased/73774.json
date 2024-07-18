@@ -1,0 +1,5 @@
+{
+  "title": "GroupByScrollList: add possibility to display a sticky top indicator for current group",
+  "type": "feat",
+  "packages": "ui"
+}
