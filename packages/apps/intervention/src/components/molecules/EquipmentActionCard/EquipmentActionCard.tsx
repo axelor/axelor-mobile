@@ -73,13 +73,15 @@ const EquipmentActionCard = ({
       actionList={[
         {
           iconName: 'x-lg',
-          helper: 'Intervention_Unlink',
+          helper: I18n.t('Intervention_Unlink'),
+          large: !canCopy,
           onPress: handleUnlink,
           hidden: !isUnlinkAction,
         },
         {
           iconName: 'front',
-          helper: 'Intervention_Duplicate',
+          helper: I18n.t('Intervention_Duplicate'),
+          large: !isUnlinkAction,
           onPress: () =>
             (dispatch as any)(
               (copyEquipment as any)({
@@ -100,7 +102,7 @@ const EquipmentActionCard = ({
         },
         {
           iconName: canEdit ? 'pencil-fill' : 'file-earmark-text',
-          helper: 'Intervention_Edit',
+          helper: I18n.t('Intervention_Edit'),
           onPress: () =>
             navigation.navigate('EquipmentFormView', {
               idEquipment,
@@ -109,7 +111,7 @@ const EquipmentActionCard = ({
         {
           iconName: 'archive-fill',
           iconColor: Colors.errorColor.background,
-          helper: 'Intervention_Archive',
+          helper: I18n.t('Intervention_Archive'),
           onPress: () =>
             (dispatch as any)(
               (archiveEquipment as any)({

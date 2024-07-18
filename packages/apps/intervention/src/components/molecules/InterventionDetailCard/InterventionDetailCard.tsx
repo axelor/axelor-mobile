@@ -63,13 +63,13 @@ const InterventionDetailCard = ({
       actionList={[
         {
           iconName: 'geo-alt-fill',
-          helper: 'Intervention_OpenMap',
+          helper: I18n.t('Intervention_OpenMap'),
           onPress: () => linkingProvider.openMapApp(address),
           hidden: !address,
         },
         {
           iconName: 'telephone-fill',
-          helper: 'Intervention_OpenPhone',
+          helper: I18n.t('Intervention_OpenPhone'),
           onPress: () => linkingProvider.openCallApp(phone),
           hidden: !phone,
         },

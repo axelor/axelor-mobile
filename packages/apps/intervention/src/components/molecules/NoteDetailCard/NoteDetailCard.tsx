@@ -76,13 +76,14 @@ const NoteDetailCard = ({
       actionList={[
         {
           iconName: 'arrows-angle-expand',
-          helper: 'Intervention_OpenFile',
+          helper: I18n.t('Intervention_OpenFile'),
+          large: true,
           onPress: handleOpenFile,
           hidden: !note.metaFile,
         },
         {
           iconName: canEdit ? 'pencil-fill' : 'file-earmark-text',
-          helper: 'Intervention_Edit',
+          helper: I18n.t('Intervention_Edit'),
           onPress: () =>
             navigation.navigate('InterventionNoteFormScreen', {
               noteId: note.id,
@@ -91,7 +92,7 @@ const NoteDetailCard = ({
         {
           iconName: 'trash3-fill',
           iconColor: Colors.errorColor.background,
-          helper: 'Intervention_Delete',
+          helper: I18n.t('Intervention_Delete'),
           onPress: () =>
             dispatch(
               (deleteInterventionNote as any)({
