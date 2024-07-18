@@ -17,7 +17,7 @@
  */
 
 import React, {useMemo} from 'react';
-import {StyleSheet, View} from 'react-native';
+import {StyleSheet} from 'react-native';
 import {
   formatDateTime,
   useMetafileUri,
@@ -70,64 +70,62 @@ const InterventionCard = ({
   );
 
   return (
-    <View style={style}>
-      <ObjectCard
-        style={[styles.container, borderStyle]}
-        showArrow={!isCopyCard}
-        leftContainerFlex={6}
-        onPress={onPress}
-        image={{
-          defaultIconSize: 50,
-          imageSize: styles.imageSize,
-          resizeMode: 'contain',
-          source: formatMetaFile(deliveredPartner.picture?.id),
-        }}
-        upperTexts={{
-          items: [
-            {displayText: sequence, isTitle: true},
-            {
-              displayText: deliveredPartner.fullName,
-              numberOfLines: 2,
-            },
-          ],
-        }}
-        lowerTexts={{
-          items: [
-            {
-              indicatorText: formatDateTime(
-                planifStartDateTime,
-                I18n.t('Base_DateTimeFormat'),
-              ),
-              iconName: 'calendar-event',
-            },
-            {
-              indicatorText: interventionType.name,
-              iconName: 'tools',
-            },
-            {
-              indicatorText: address.fullName,
-              iconName: 'geo-alt-fill',
-              hideIfNull: true,
-            },
-            {
-              indicatorText: assignedTo.fullName,
-              iconName: 'person-fill',
-              hideIf: assignedTo.id === userId,
-            },
-          ],
-        }}
-        sideBadges={{
-          style: styles.badges,
-          items: [
-            isCopyCard && {
-              customComponent: (
-                <Icon name="copy" color={Colors.secondaryColor.background} />
-              ),
-            },
-          ],
-        }}
-      />
-    </View>
+    <ObjectCard
+      style={[styles.container, borderStyle, style]}
+      showArrow={!isCopyCard}
+      leftContainerFlex={6}
+      onPress={onPress}
+      image={{
+        defaultIconSize: 50,
+        imageSize: styles.imageSize,
+        resizeMode: 'contain',
+        source: formatMetaFile(deliveredPartner.picture?.id),
+      }}
+      upperTexts={{
+        items: [
+          {displayText: sequence, isTitle: true},
+          {
+            displayText: deliveredPartner.fullName,
+            numberOfLines: 2,
+          },
+        ],
+      }}
+      lowerTexts={{
+        items: [
+          {
+            indicatorText: formatDateTime(
+              planifStartDateTime,
+              I18n.t('Base_DateTimeFormat'),
+            ),
+            iconName: 'calendar-event',
+          },
+          {
+            indicatorText: interventionType.name,
+            iconName: 'tools',
+          },
+          {
+            indicatorText: address.fullName,
+            iconName: 'geo-alt-fill',
+            hideIfNull: true,
+          },
+          {
+            indicatorText: assignedTo.fullName,
+            iconName: 'person-fill',
+            hideIf: assignedTo.id === userId,
+          },
+        ],
+      }}
+      sideBadges={{
+        style: styles.badges,
+        items: [
+          isCopyCard && {
+            customComponent: (
+              <Icon name="copy" color={Colors.secondaryColor.background} />
+            ),
+          },
+        ],
+      }}
+    />
   );
 };
 

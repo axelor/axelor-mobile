@@ -17,7 +17,7 @@
  */
 
 import React from 'react';
-import {StyleSheet, View} from 'react-native';
+import {StyleSheet} from 'react-native';
 import {formatDate, useTranslator} from '@axelor/aos-mobile-core';
 import {ObjectCard} from '@axelor/aos-mobile-ui';
 
@@ -43,40 +43,38 @@ const NoteCard = ({
   const I18n = useTranslator();
 
   return (
-    <View style={style}>
-      <ObjectCard
-        style={styles.container}
-        touchable={false}
-        showArrow={false}
-        upperTexts={{
-          items: [
-            {
-              displayText: metaFile ? metaFile.fileName : description,
-              isTitle: true,
-              style: styles.marginBottom,
-            },
-            {
-              indicatorText: I18n.t('Intervention_CreatedOn'),
-              displayText: formatDate(createdOn, I18n.t('Base_DateFormat')),
-            },
-            {
-              indicatorText: I18n.t('Intervention_UpdatedOn'),
-              displayText: formatDate(updatedOn, I18n.t('Base_DateFormat')),
-              hideIf: updatedOn == null,
-            },
-            {
-              indicatorText: I18n.t('Intervention_CreatedBy'),
-              displayText: createdBy?.fullName,
-            },
-            {
-              indicatorText: I18n.t('Intervention_UpdatedBy'),
-              displayText: updatedBy?.fullName,
-              hideIf: updatedBy?.fullName == null,
-            },
-          ],
-        }}
-      />
-    </View>
+    <ObjectCard
+      style={[styles.container, style]}
+      touchable={false}
+      showArrow={false}
+      upperTexts={{
+        items: [
+          {
+            displayText: metaFile ? metaFile.fileName : description,
+            isTitle: true,
+            style: styles.marginBottom,
+          },
+          {
+            indicatorText: I18n.t('Intervention_CreatedOn'),
+            displayText: formatDate(createdOn, I18n.t('Base_DateFormat')),
+          },
+          {
+            indicatorText: I18n.t('Intervention_UpdatedOn'),
+            displayText: formatDate(updatedOn, I18n.t('Base_DateFormat')),
+            hideIf: updatedOn == null,
+          },
+          {
+            indicatorText: I18n.t('Intervention_CreatedBy'),
+            displayText: createdBy?.fullName,
+          },
+          {
+            indicatorText: I18n.t('Intervention_UpdatedBy'),
+            displayText: updatedBy?.fullName,
+            hideIf: updatedBy?.fullName == null,
+          },
+        ],
+      }}
+    />
   );
 };
 
