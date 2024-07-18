@@ -26,7 +26,7 @@ import {
 } from '../../../hooks/use-click-outside';
 
 const ACTION_WIDTH = 40;
-const ACTIONS_MIN_HEIGHT = 84;
+const TWO_ACTIONS_HEIGHT = 84;
 
 interface Action {
   iconName: string;
@@ -111,12 +111,17 @@ const ActionCard = ({
   useEffect(() => {
     const shouldDisplay =
       (_actionList.length > 2 ||
-        _actionList[0]?.large ||
+        (_actionList[0]?.large && horizontal) ||
         _actionList[1]?.large) &&
       !forceActionsDisplay;
     setDisplaySeeActionsButton(shouldDisplay);
     setIsActionsVisible(!shouldDisplay);
-  }, [_actionList, forceActionsDisplay]);
+  }, [_actionList, forceActionsDisplay, horizontal]);
+
+  const isCardMinHeight = useMemo(
+    () => _actionList.length > 1 || _actionList[0]?.large,
+    [_actionList],
+  );
 
   const styles = useMemo(
     () => getStyles(isMoreThanOneAction),
@@ -195,7 +200,9 @@ const ActionCard = ({
   return (
     <View style={[styles.container, style]} ref={wrapperRef}>
       <View style={styles.cardContainer}>
-        {React.cloneElement(children, {style: {minHeight: ACTIONS_MIN_HEIGHT}})}
+        {React.cloneElement(children, {
+          style: {minHeight: isCardMinHeight && TWO_ACTIONS_HEIGHT},
+        })}
       </View>
       {_actionList.length > 0 &&
         (displaySeeActionsButton && !isActionsVisible ? (
