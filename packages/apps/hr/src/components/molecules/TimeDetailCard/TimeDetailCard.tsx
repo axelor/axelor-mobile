@@ -64,21 +64,22 @@ const TimeDetailCard = ({
   return (
     <ActionCard
       translator={I18n.t}
-      actionList={[
-        {
-          iconName: canEdit ? 'pencil-fill' : 'file-earmark-text',
-          helper: I18n.t(canEdit ? 'Hr_Edit' : 'Hr_See'),
-          onPress: onEdit,
-          hidden: !isActions,
-        },
-        {
-          iconName: 'trash3-fill',
-          iconColor: Colors.errorColor.background,
-          helper: I18n.t('Hr_Delete'),
-          onPress: onDelete,
-          hidden: !isActions || !showTrash,
-        },
-      ]}>
+      actionList={
+        isActions && [
+          {
+            iconName: canEdit ? 'pencil-fill' : 'file-earmark-text',
+            helper: I18n.t(canEdit ? 'Hr_Edit' : 'Hr_See'),
+            onPress: onEdit,
+          },
+          {
+            iconName: 'trash3-fill',
+            iconColor: Colors.errorColor.background,
+            helper: I18n.t('Hr_Delete'),
+            onPress: onDelete,
+            hidden: !showTrash,
+          },
+        ]
+      }>
       <TimeCard
         mode={mode}
         statusSelect={statusSelect}

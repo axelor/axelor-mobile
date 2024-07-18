@@ -186,7 +186,7 @@ const getStyles = Colors =>
     border: {
       borderLeftWidth: 7,
       borderLeftColor: Colors.secondaryColor.background,
-      marginHorizontal: 0,
+      marginHorizontal: 2,
       marginVertical: 2,
       paddingRight: 5,
     },

@@ -101,22 +101,22 @@ const ExpenseCard = ({
   return (
     <ActionCard
       translator={I18n.t}
-      actionList={[
-        {
-          iconName: 'send-fill',
-          helper: I18n.t('Hr_Send'),
-          onPress: onSend,
-          hidden:
-            isDefaultDisplay || statusSelect !== Expense?.statusSelect.Draft,
-        },
-        {
-          iconName: 'check-lg',
-          helper: I18n.t('Hr_Validate'),
-          onPress: onValidate,
-          hidden:
-            isDefaultDisplay || statusSelect === Expense?.statusSelect.Draft,
-        },
-      ]}>
+      actionList={
+        !isDefaultDisplay && [
+          {
+            iconName: 'send-fill',
+            helper: I18n.t('Hr_Send'),
+            onPress: onSend,
+            hidden: statusSelect !== Expense?.statusSelect.Draft,
+          },
+          {
+            iconName: 'check-lg',
+            helper: I18n.t('Hr_Validate'),
+            onPress: onValidate,
+            hidden: statusSelect === Expense?.statusSelect.Draft,
+          },
+        ]
+      }>
       <ObjectCard
         onPress={onPress}
         style={borderStyle}
