@@ -17,17 +17,14 @@
  */
 
 import React, {useCallback, useEffect, useMemo, useRef, useState} from 'react';
-import {Dimensions, StyleSheet, View} from 'react-native';
+import {Dimensions, Modal, StyleSheet, View} from 'react-native';
 import Signature, {SignatureViewRef} from 'react-native-signature-canvas';
 import {
   checkNullString,
   Icon,
-  OUTSIDE_INDICATOR,
   Text,
   ThemeColors,
   getCommonStyles,
-  useClickOutside,
-  useScroll,
   useThemeColor,
 } from '@axelor/aos-mobile-ui';
 import {handleDocumentSelection} from '../../../tools';
@@ -38,6 +35,7 @@ import {AOSImage} from '../../organisms';
 import PictureIcon from './PictureIcon';
 
 const CANVA_HEIGHT = 300;
+const POPUP_INPUT_HEIGHT = 100;
 
 const SignatureInput = ({
   style,
@@ -52,6 +50,7 @@ const SignatureInput = ({
   canvaSize = Dimensions.get('window').width * 0.75,
   returnBase64String = false,
   iconSize = 25,
+  popup = false,
 }: {
   style?: any;
   title?: string;
@@ -65,32 +64,23 @@ const SignatureInput = ({
   canvaSize?: any;
   returnBase64String?: boolean;
   iconSize?: number;
+  /**
+   * Use this option to use this widget inside a scrollable view to avoid conflicts.
+   * Default value is false.
+   */
+  popup?: boolean;
 }) => {
   const ref = useRef<SignatureViewRef>();
   const Colors = useThemeColor();
-  const {setScrollEnabled} = useScroll();
 
   const {baseUrl, jsessionId, token} = useSelector((state: any) => state.auth);
 
   const [unsavedChanges, setUnsavedChanges] = useState(false);
-  const [editSignature, setEditSignature] = useState<boolean>(
-    !readonly && defaultValue?.id == null,
-  );
-  const timeoutRef = useRef(null);
-
-  const wrapperRef = useRef(null);
-  const clickOutside = useClickOutside({
-    wrapperRef,
-  });
+  const [editSignature, setEditSignature] = useState<boolean>(false);
+  const [popupIsOpen, setPopupIsOpen] = useState(false);
 
   useEffect(() => {
-    if (clickOutside === OUTSIDE_INDICATOR) {
-      setScrollEnabled(true);
-    }
-  }, [clickOutside, setScrollEnabled]);
-
-  useEffect(() => {
-    setEditSignature(!readonly && defaultValue?.id == null);
+    setEditSignature(false);
   }, [defaultValue?.id, readonly]);
 
   const _required = useMemo(
@@ -114,9 +104,10 @@ const SignatureInput = ({
   );
 
   const handleClose = useCallback(() => {
+    popup && setPopupIsOpen(false);
     setEditSignature(false);
     setUnsavedChanges(false);
-  }, []);
+  }, [popup]);
 
   const handleSave = useCallback(() => {
     ref.current.readSignature();
@@ -214,85 +205,96 @@ const SignatureInput = ({
     [commonStyles, styles, unsavedChanges],
   );
 
-  return (
-    <View style={[styles.container, style]} ref={wrapperRef}>
-      {!checkNullString(title) && <Text style={styles.title}>{title}</Text>}
-      {editSignature ? (
-        <View style={containerStyle}>
-          <View style={styles.signatureContainer}>
-            <Signature
-              webStyle={canvaStyle}
-              backgroundColor={Colors.screenBackgroundColor}
-              dataURL={returnBase64String ? defaultValue : null}
-              ref={ref}
-              onOK={handleSignature}
-              onBegin={() => {
-                clearTimeout(timeoutRef.current);
-                setScrollEnabled(false);
-                setUnsavedChanges(true);
-              }}
-              onEnd={() =>
-                (timeoutRef.current = setTimeout(
-                  () => setScrollEnabled(true),
-                  1000,
-                ))
-              }
-              autoClear={false}
-            />
-          </View>
-          <View style={styles.iconContainer}>
-            <Icon
-              name="x-lg"
-              size={iconSize}
-              touchable={true}
-              onPress={handleClose}
-              style={styles.icon}
-            />
-            <View style={styles.icon} />
-            <Icon
-              name="upload"
-              size={iconSize}
-              style={styles.icon}
-              touchable={true}
-              visible={enableFileSelection}
-              onPress={() => handleDocumentSelection(handleUpload)}
-            />
-            {enablePicture && (
-              <PictureIcon
-                style={styles.icon}
-                size={iconSize}
-                cameraKey={cameraKey}
-                onChange={handleUpload}
-              />
-            )}
-            <Icon
-              name="eraser"
-              size={iconSize}
-              touchable={true}
-              onPress={handleClear}
-              style={styles.icon}
-            />
-            <Icon
-              name="check-lg"
-              size={iconSize}
-              touchable={unsavedChanges}
-              color={
-                unsavedChanges
-                  ? Colors.successColor.background
-                  : Colors.secondaryColor.background
-              }
-              onPress={handleSave}
-              style={styles.icon}
-            />
-          </View>
+  const renderSignatureCanva = () => {
+    return (
+      <View style={containerStyle}>
+        <View style={styles.signatureContainer}>
+          <Signature
+            webStyle={canvaStyle}
+            backgroundColor={Colors.screenBackgroundColor}
+            dataURL={returnBase64String ? defaultValue : null}
+            ref={ref}
+            onOK={handleSignature}
+            onBegin={() => setUnsavedChanges(true)}
+            autoClear={false}
+          />
         </View>
-      ) : (
+        <View style={styles.iconContainer}>
+          <Icon
+            name="x-lg"
+            size={iconSize}
+            touchable={true}
+            onPress={handleClose}
+            style={styles.icon}
+          />
+          <View style={styles.icon} />
+          <Icon
+            name="upload"
+            size={iconSize}
+            style={styles.icon}
+            touchable={true}
+            visible={enableFileSelection}
+            onPress={() => handleDocumentSelection(handleUpload)}
+          />
+          {enablePicture && (
+            <PictureIcon
+              style={styles.icon}
+              size={iconSize}
+              cameraKey={cameraKey}
+              onChange={handleUpload}
+            />
+          )}
+          <Icon
+            name="eraser"
+            size={iconSize}
+            touchable={true}
+            onPress={handleClear}
+            style={styles.icon}
+          />
+          <Icon
+            name="check-lg"
+            size={iconSize}
+            touchable={unsavedChanges}
+            color={
+              unsavedChanges
+                ? Colors.successColor.background
+                : Colors.secondaryColor.background
+            }
+            onPress={handleSave}
+            style={styles.icon}
+          />
+        </View>
+      </View>
+    );
+  };
+
+  return (
+    <View style={[styles.container, style]}>
+      {!checkNullString(title) && <Text style={styles.title}>{title}</Text>}
+      {editSignature &&
+        (popup ? (
+          <Modal visible={popupIsOpen} transparent animationType="fade">
+            <View style={styles.modalBackground}>{renderSignatureCanva()}</View>
+          </Modal>
+        ) : (
+          renderSignatureCanva()
+        ))}
+      {(!editSignature || popup) && (
         <View style={containerStyle}>
-          <View style={styles.signatureContainer}>
+          <View
+            style={[
+              styles.signatureContainer,
+              popup && {height: POPUP_INPUT_HEIGHT},
+            ]}>
             <AOSImage
-              imageSize={styles.signatureContainer}
+              imageSize={[
+                styles.signatureContainer,
+                popup && {height: POPUP_INPUT_HEIGHT},
+              ]}
               metaFile={returnBase64String ? null : defaultValue}
-              defaultIconSize={canvaSize * 0.5}
+              defaultIconSize={
+                popup ? POPUP_INPUT_HEIGHT * 0.5 : canvaSize * 0.5
+              }
               enableImageViewer={true}
               resizeMode="contain"
             />
@@ -303,7 +305,10 @@ const SignatureInput = ({
                 name="vector-pen"
                 size={iconSize}
                 touchable={true}
-                onPress={() => setEditSignature(true)}
+                onPress={() => {
+                  popup && setPopupIsOpen(true);
+                  setEditSignature(true);
+                }}
                 style={styles.icon}
               />
               <Icon
@@ -349,12 +354,19 @@ const getStyles = (Colors: ThemeColors, canvaSize: any, required: boolean) =>
       justifyContent: 'flex-start',
       alignItems: 'center',
       height: '100%',
+      marginLeft: 5,
     },
     icon: {
       marginVertical: 5,
     },
     title: {
       marginLeft: 10,
+    },
+    modalBackground: {
+      flex: 1,
+      justifyContent: 'center',
+      alignItems: 'center',
+      backgroundColor: 'rgba(0,0,0,0.5)',
     },
   });
 

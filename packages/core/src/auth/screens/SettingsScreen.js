@@ -40,6 +40,7 @@ import {updateActiveUser} from '../features/userSlice';
 import {ApiProviderConfig} from '../../apiProviders/config';
 import {NavigationToolsButton, TranslationsButton} from '../components';
 import {useIsAdmin} from '../../permissions';
+import {SignatureInput} from '../../components';
 
 const SettingsScreen = ({children}) => {
   const I18n = useTranslator();
@@ -122,7 +123,10 @@ const SettingsScreen = ({children}) => {
 
   return (
     <Screen style={styles.screen}>
-      <ScrollView contentContainerStyle={styles.container}>
+      <ScrollView
+        style={{height: null}}
+        contentContainerStyle={styles.container}>
+        <SignatureInput popup={false} />
         {isLanguagePicker && (
           <Picker
             title={I18n.t('User_Language')}

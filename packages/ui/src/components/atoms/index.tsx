@@ -27,6 +27,6 @@ export {default as Input} from './Input/Input';
 export {default as KeyboardAvoidingScrollView} from './KeyboardAvoidingScrollView/KeyboardAvoidingScrollView';
 export {default as RadioButton} from './RadioButton/RadioButton';
 export {default as Screen} from './Screen/Screen';
-export * from './ScrollView';
+export {default as ScrollView} from './ScrollView/ScrollView';
 export {default as Switch} from './Switch/Switch';
 export {default as Text} from './Text/Text';

@@ -1,5 +1,5 @@
 {
-  "title": "Signature input: disable scrolling while signing to avoid moves on scroll view",
+  "title": "Signature input: add option to use this widget inside a scrollable view to avoid conflicts",
   "type": "fix",
-  "packages": ["core", "ui"]
+  "packages": "core"
 }
