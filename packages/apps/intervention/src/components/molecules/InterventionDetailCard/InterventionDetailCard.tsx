@@ -17,9 +17,8 @@
  */
 
 import React, {useMemo} from 'react';
-import {StyleSheet, View} from 'react-native';
 import {linkingProvider, useTranslator} from '@axelor/aos-mobile-core';
-import {InfoButton, useThemeColor} from '@axelor/aos-mobile-ui';
+import {ActionCard} from '@axelor/aos-mobile-ui';
 import {InterventionCard} from '../../atoms';
 
 interface InterventionContent {
@@ -41,13 +40,11 @@ interface InterventionDetailCardProps {
 }
 
 const InterventionDetailCard = ({
-  style,
   intervention,
   isCopyCard,
   onPress,
 }: InterventionDetailCardProps) => {
   const I18n = useTranslator();
-  const Colors = useThemeColor();
 
   const address = useMemo(
     () => intervention?.address?.fullName,
@@ -61,53 +58,29 @@ const InterventionDetailCard = ({
   );
 
   return (
-    <View style={[styles.container, style]}>
+    <ActionCard
+      translator={I18n.t}
+      actionList={[
+        {
+          iconName: 'geo-alt-fill',
+          helper: I18n.t('Intervention_OpenMap'),
+          onPress: () => linkingProvider.openMapApp(address),
+          hidden: !address,
+        },
+        {
+          iconName: 'telephone-fill',
+          helper: I18n.t('Intervention_OpenPhone'),
+          onPress: () => linkingProvider.openCallApp(phone),
+          hidden: !phone,
+        },
+      ]}>
       <InterventionCard
-        style={styles.cardContainer}
         {...intervention}
         isCopyCard={isCopyCard}
         onPress={onPress}
       />
-      {(address || phone) && (
-        <View style={styles.flexOne}>
-          {address && (
-            <InfoButton
-              style={styles.flexOne}
-              iconName={'geo-alt-fill'}
-              iconColor={Colors.secondaryColor_dark.background}
-              indication={I18n.t('Intervention_OpenMap')}
-              onPress={() => linkingProvider.openMapApp(address)}
-            />
-          )}
-          {phone && (
-            <InfoButton
-              style={styles.flexOne}
-              iconName={'telephone-fill'}
-              iconColor={Colors.secondaryColor_dark.background}
-              indication={I18n.t('Intervention_OpenPhone')}
-              onPress={() => linkingProvider.openCallApp(phone)}
-            />
-          )}
-        </View>
-      )}
-    </View>
+    </ActionCard>
   );
 };
-
-const styles = StyleSheet.create({
-  container: {
-    width: '96%',
-    flexDirection: 'row',
-    alignSelf: 'center',
-    marginVertical: 2,
-  },
-  cardContainer: {
-    flex: 6,
-    margin: 2,
-  },
-  flexOne: {
-    flex: 1,
-  },
-});
 
 export default InterventionDetailCard;
