@@ -94,7 +94,7 @@ const ProjectHeader = ({}) => {
 
 const styles = StyleSheet.create({
   container: {
-    marginHorizontal: 24,
+    marginHorizontal: 15,
     marginBottom: 5,
     flexDirection: 'row',
     justifyContent: 'space-between',
