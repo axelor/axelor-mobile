@@ -63,10 +63,12 @@ const TourLineActionCard = ({
         actionList={[
           {
             iconName: 'geo-alt-fill',
+            helper: I18n.t('Crm_OpenMap'),
             onPress: () => linkingProvider.openMapApp(address),
           },
           {
             iconName: 'calendar-event',
+            helper: I18n.t('Crm_SeeEvent'),
             onPress: () =>
               navigation.navigate('EventDetailsScreen', {
                 eventId: eventId,
@@ -75,12 +77,14 @@ const TourLineActionCard = ({
           },
           {
             iconName: 'calendar2-plus',
+            helper: I18n.t('Crm_AddEvent'),
             onPress: () => setAddPopupIsVisible(true),
             hidden: eventId != null,
           },
           {
             iconName: 'check-lg',
             iconColor: Colors.successColor.background,
+            helper: I18n.t('Crm_ValidateTourStep'),
             onPress: () =>
               dispatch(
                 (validateTourLine as any)({
