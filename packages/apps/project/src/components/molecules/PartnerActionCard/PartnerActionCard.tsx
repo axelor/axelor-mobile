@@ -17,8 +17,8 @@
  */
 
 import React, {useMemo} from 'react';
-import {StyleSheet, View} from 'react-native';
-import {CardIconButton, useThemeColor} from '@axelor/aos-mobile-ui';
+import {StyleSheet} from 'react-native';
+import {ActionCard, useThemeColor} from '@axelor/aos-mobile-ui';
 import {isEmpty, linkingProvider} from '@axelor/aos-mobile-core';
 import {PartnerCard} from '../../atoms';
 
@@ -47,39 +47,50 @@ const PartnerActionCard = ({
 }: PartnerActionCardProps) => {
   const Colors = useThemeColor();
 
-  const actionConfig = useMemo(() => {
+  const actionList = useMemo(() => {
     if (isContact) {
       if (partner?.mobilePhone == null && partner?.fixedPhone == null) {
-        return null;
+        return [];
       }
 
-      return {
-        iconName: 'telephone-fill',
-        onPress: () =>
-          linkingProvider.openCallApp(
-            partner.mobilePhone ?? partner.fixedPhone,
-          ),
-      };
+      return [
+        {
+          iconName: 'telephone-fill',
+          iconColor: Colors.secondaryColor_dark.background,
+          helper: 'Call',
+          onPress: () =>
+            linkingProvider.openCallApp(
+              partner.mobilePhone ?? partner.fixedPhone,
+            ),
+        },
+      ];
     } else {
       if (partner?.mainAddress == null) {
-        return null;
+        return [];
       }
 
-      return {
-        iconName: 'geo-alt-fill',
-        onPress: () => linkingProvider.openMapApp(partner.mainAddress.fullName),
-      };
+      return [
+        {
+          iconName: 'geo-alt-fill',
+          iconColor: Colors.secondaryColor_dark.background,
+          helper: 'Open Map',
+          onPress: () =>
+            linkingProvider.openMapApp(partner.mainAddress.fullName),
+        },
+      ];
     }
-  }, [isContact, partner]);
+  }, [isContact, partner, Colors.secondaryColor_dark.background]);
 
   if (isEmpty(partner)) {
     return null;
   }
 
   return (
-    <View style={[styles.container, style]}>
+    <ActionCard
+      style={[styles.container, style]}
+      actionList={actionList}
+      translator={key => key}>
       <PartnerCard
-        style={styles.cardContainer}
         picture={partner.picture}
         name={isContact ? partner.simpleFullName : partner.name}
         code={partner.partnerSeq}
@@ -87,32 +98,13 @@ const PartnerActionCard = ({
         id={partner.id}
         isContact={isContact}
       />
-      {actionConfig != null && (
-        <CardIconButton
-          iconName={actionConfig.iconName}
-          iconColor={Colors.secondaryColor_dark.background}
-          onPress={actionConfig.onPress}
-          style={styles.cardIconButton}
-        />
-      )}
-    </View>
+    </ActionCard>
   );
 };
 
 const styles = StyleSheet.create({
   container: {
     width: '90%',
-    alignSelf: 'center',
-    flexDirection: 'row',
-    marginVertical: 2,
-    flex: 1,
-    alignItems: 'center',
-  },
-  cardContainer: {
-    flex: 6,
-  },
-  cardIconButton: {
-    flex: 1,
   },
 });
 
