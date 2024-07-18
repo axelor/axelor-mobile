@@ -17,7 +17,7 @@
  */
 
 import React, {useMemo} from 'react';
-import {StyleSheet, View} from 'react-native';
+import {StyleSheet} from 'react-native';
 import {useTypes, useTypeHelpers} from '@axelor/aos-mobile-core';
 import {ObjectCard} from '@axelor/aos-mobile-ui';
 
@@ -48,30 +48,28 @@ const EquipmentCard = ({
   }, [Equipment?.serviceSelect, getItemColor, inService]);
 
   return (
-    <View style={style}>
-      <ObjectCard
-        showArrow={false}
-        style={[styles.objectCard, borderStyle]}
-        upperTexts={{
-          items: [
-            {displayText: sequence, isTitle: true, numberOfLines: 1},
-            {
-              indicatorText: code,
-              hideIfNull: true,
-            },
-            {
-              displayText: name,
-              hideIfNull: true,
-            },
-            {
-              indicatorText: equipmentFamily,
-              hideIfNull: true,
-              iconName: 'palette2',
-            },
-          ],
-        }}
-      />
-    </View>
+    <ObjectCard
+      showArrow={false}
+      style={[styles.objectCard, borderStyle, style]}
+      upperTexts={{
+        items: [
+          {displayText: sequence, isTitle: true, numberOfLines: 1},
+          {
+            indicatorText: code,
+            hideIfNull: true,
+          },
+          {
+            displayText: name,
+            hideIfNull: true,
+          },
+          {
+            indicatorText: equipmentFamily,
+            hideIfNull: true,
+            iconName: 'palette2',
+          },
+        ],
+      }}
+    />
   );
 };
 
@@ -88,7 +86,7 @@ const styles = StyleSheet.create({
     minHeight: 100,
     marginHorizontal: 0,
     marginRight: 2,
-    marginVertical: 0,
+    marginVertical: 2,
     paddingRight: 10,
   },
 });
