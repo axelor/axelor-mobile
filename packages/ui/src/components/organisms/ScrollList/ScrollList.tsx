@@ -59,6 +59,7 @@ interface ScrollListProps {
   disabledRefresh?: boolean;
   actionList?: Action[];
   verticalActions?: boolean;
+  onViewableItemsChanged?: (viewableItems: any) => void;
 }
 
 const ScrollList = ({
@@ -76,6 +77,7 @@ const ScrollList = ({
   disabledRefresh = false,
   actionList,
   verticalActions = true,
+  onViewableItemsChanged,
 }: ScrollListProps) => {
   const [, setPage] = useState(0);
   const [isLoading, setIsLoading] = useState(false);
@@ -239,6 +241,10 @@ const ScrollList = ({
         }}
         renderItem={_renderItem}
         onScroll={handleScroll}
+        onViewableItemsChanged={onViewableItemsChanged}
+        viewabilityConfig={{
+          itemVisiblePercentThreshold: 1,
+        }}
       />
     </View>
   );
