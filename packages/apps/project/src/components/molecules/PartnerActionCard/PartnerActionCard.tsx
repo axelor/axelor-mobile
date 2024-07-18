@@ -18,8 +18,8 @@
 
 import React, {useMemo} from 'react';
 import {StyleSheet} from 'react-native';
-import {ActionCard, useThemeColor} from '@axelor/aos-mobile-ui';
-import {isEmpty, linkingProvider} from '@axelor/aos-mobile-core';
+import {ActionCard} from '@axelor/aos-mobile-ui';
+import {isEmpty, linkingProvider, useTranslator} from '@axelor/aos-mobile-core';
 import {PartnerCard} from '../../atoms';
 
 interface PartnerProps {
@@ -45,7 +45,7 @@ const PartnerActionCard = ({
   partner,
   isContact = false,
 }: PartnerActionCardProps) => {
-  const Colors = useThemeColor();
+  const I18n = useTranslator();
 
   const actionList = useMemo(() => {
     if (isContact) {
@@ -56,8 +56,7 @@ const PartnerActionCard = ({
       return [
         {
           iconName: 'telephone-fill',
-          iconColor: Colors.secondaryColor_dark.background,
-          helper: 'Call',
+          helper: I18n.t('Project_Call'),
           onPress: () =>
             linkingProvider.openCallApp(
               partner.mobilePhone ?? partner.fixedPhone,
@@ -72,14 +71,13 @@ const PartnerActionCard = ({
       return [
         {
           iconName: 'geo-alt-fill',
-          iconColor: Colors.secondaryColor_dark.background,
-          helper: 'Open Map',
+          helper: I18n.t('Project_OpenMap'),
           onPress: () =>
             linkingProvider.openMapApp(partner.mainAddress.fullName),
         },
       ];
     }
-  }, [isContact, partner, Colors.secondaryColor_dark.background]);
+  }, [I18n, isContact, partner]);
 
   if (isEmpty(partner)) {
     return null;
