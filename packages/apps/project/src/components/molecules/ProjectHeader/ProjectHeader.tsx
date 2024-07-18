@@ -44,7 +44,7 @@ const ProjectHeader = ({}) => {
 
   return (
     <View style={styles.container}>
-      <View style={styles.columnContainer}>
+      <View style={styles.leftContainer}>
         <Text writingType="title">{project?.name}</Text>
         {baseConfig?.enableMultiCompany && user?.companySet?.length > 1 && (
           <LabelText
@@ -69,7 +69,7 @@ const ProjectHeader = ({}) => {
           />
         )}
       </View>
-      <View style={[styles.columnContainer, styles.alignEnd]}>
+      <View style={styles.rightContainer}>
         {project?.projectStatus != null && (
           <Badge
             title={project?.projectStatus?.name}
@@ -94,16 +94,18 @@ const ProjectHeader = ({}) => {
 
 const styles = StyleSheet.create({
   container: {
-    marginHorizontal: 24,
+    marginHorizontal: 15,
     marginBottom: 5,
     flexDirection: 'row',
     justifyContent: 'space-between',
   },
-  columnContainer: {
+  leftContainer: {
+    flex: 1,
     flexDirection: 'column',
     marginBottom: 3,
   },
-  alignEnd: {
+  rightContainer: {
+    flexDirection: 'column',
     alignItems: 'flex-end',
   },
   labelText: {
