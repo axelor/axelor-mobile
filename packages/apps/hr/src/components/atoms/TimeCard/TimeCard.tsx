@@ -17,7 +17,7 @@
  */
 
 import React, {useMemo} from 'react';
-import {StyleSheet, View} from 'react-native';
+import {StyleSheet} from 'react-native';
 import {ObjectCard, TextUnit} from '@axelor/aos-mobile-ui';
 import {
   DateDisplay,
@@ -73,52 +73,50 @@ const TimeCard = ({
   }, [Timer, Timesheet, getItemColor, isSmallCard, mode, statusSelect]);
 
   return (
-    <View style={style}>
-      <ObjectCard
-        touchable={false}
-        showArrow={false}
-        leftContainerFlex={1.3}
-        style={[styles.container, isBorderColor && styles.borderColor]}
-        upperTexts={{
-          items: [
-            {
-              displayText: (project || manufOrder) ?? '-',
-              isTitle: true,
-              numberOfLines: 2,
-            },
-            {
-              displayText: !isSmallCard && ((task || operation) ?? '-'),
-              numberOfLines: 2,
-              hideIfNull: true,
-              style: styles.subTitle,
-            },
-            {
-              displayText: !isSmallCard && comments,
-              numberOfLines: 2,
-              hideIfNull: true,
-              style: styles.subTitle,
-            },
-          ],
-        }}
-        sideBadges={{
-          style: styles.badges,
-          items: [
-            {
-              customComponent: <DateDisplay date={date} />,
-            },
-            {
-              customComponent: (
-                <TextUnit
-                  value={duration}
-                  unit={getDurationUnit(durationUnit, I18n)}
-                  style={styles.textUnit}
-                />
-              ),
-            },
-          ],
-        }}
-      />
-    </View>
+    <ObjectCard
+      touchable={false}
+      showArrow={false}
+      leftContainerFlex={1.3}
+      style={[styles.container, isBorderColor && styles.borderColor, style]}
+      upperTexts={{
+        items: [
+          {
+            displayText: (project || manufOrder) ?? '-',
+            isTitle: true,
+            numberOfLines: 2,
+          },
+          {
+            displayText: !isSmallCard && ((task || operation) ?? '-'),
+            numberOfLines: 2,
+            hideIfNull: true,
+            style: styles.subTitle,
+          },
+          {
+            displayText: !isSmallCard && comments,
+            numberOfLines: 2,
+            hideIfNull: true,
+            style: styles.subTitle,
+          },
+        ],
+      }}
+      sideBadges={{
+        style: styles.badges,
+        items: [
+          {
+            customComponent: <DateDisplay date={date} />,
+          },
+          {
+            customComponent: (
+              <TextUnit
+                value={duration}
+                unit={getDurationUnit(durationUnit, I18n)}
+                style={styles.textUnit}
+              />
+            ),
+          },
+        ],
+      }}
+    />
   );
 };
 
@@ -128,7 +126,7 @@ const getStyles = (color: string, isSmallCard: boolean) =>
       minHeight: isSmallCard ? 'auto' : 100,
       justifyContent: 'center',
       marginHorizontal: 1,
-      marginVertical: 1,
+      marginVertical: 2,
     },
     borderColor: {
       borderLeftWidth: 7,
