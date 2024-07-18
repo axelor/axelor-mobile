@@ -17,7 +17,7 @@
  */
 
 import React, {useMemo} from 'react';
-import {StyleSheet, View} from 'react-native';
+import {StyleSheet} from 'react-native';
 import {ObjectCard, TextUnit} from '@axelor/aos-mobile-ui';
 import {
   PeriodDisplay,
@@ -63,52 +63,50 @@ const TimesheetCard = ({
   );
 
   return (
-    <View style={style}>
-      <ObjectCard
-        style={[styles.container, styles.borderColor]}
-        leftContainerFlex={2}
-        onPress={onPress}
-        upperTexts={{
-          items: [
-            {
-              customComponent: (
-                <PeriodDisplay
-                  startDate={startDate}
-                  endDate={endDate}
-                  style={styles.datesInterval}
-                />
-              ),
-            },
-            {
-              iconName: 'building-fill',
-              displayText: company,
-              numberOfLines: 2,
-              style: styles.iconText,
-            },
+    <ObjectCard
+      style={[styles.container, styles.borderColor, style]}
+      leftContainerFlex={2}
+      onPress={onPress}
+      upperTexts={{
+        items: [
+          {
+            customComponent: (
+              <PeriodDisplay
+                startDate={startDate}
+                endDate={endDate}
+                style={styles.datesInterval}
+              />
+            ),
+          },
+          {
+            iconName: 'building-fill',
+            displayText: company,
+            numberOfLines: 2,
+            style: styles.iconText,
+          },
 
-            {
-              iconName: 'person-fill',
-              displayText: employeeName,
-              style: styles.iconText,
-              hideIfNull: true,
-            },
-          ],
-        }}
-        sideBadges={{
-          items: [
-            {
-              customComponent: (
-                <TextUnit
-                  value={totalDuration}
-                  unit={getDurationUnit(durationUnit, I18n)}
-                  style={styles.textUnit}
-                />
-              ),
-            },
-          ],
-        }}
-      />
-    </View>
+          {
+            iconName: 'person-fill',
+            displayText: employeeName,
+            style: styles.iconText,
+            hideIfNull: true,
+          },
+        ],
+      }}
+      sideBadges={{
+        items: [
+          {
+            customComponent: (
+              <TextUnit
+                value={totalDuration}
+                unit={getDurationUnit(durationUnit, I18n)}
+                style={styles.textUnit}
+              />
+            ),
+          },
+        ],
+      }}
+    />
   );
 };
 

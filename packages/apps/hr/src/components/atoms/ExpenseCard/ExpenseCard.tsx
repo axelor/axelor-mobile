@@ -19,11 +19,10 @@
 import React, {useMemo} from 'react';
 import {StyleSheet, View} from 'react-native';
 import {
-  Text,
-  useThemeColor,
+  ActionCard,
   checkNullString,
-  CardIconButton,
   ObjectCard,
+  Text,
 } from '@axelor/aos-mobile-ui';
 import {
   AnomalyBubble,
@@ -35,7 +34,6 @@ import {
 } from '@axelor/aos-mobile-core';
 
 interface ExpenseCardProps {
-  style?: any;
   statusSelect: number;
   expenseId: number;
   expenseSeq: string;
@@ -49,7 +47,6 @@ interface ExpenseCardProps {
 }
 
 const ExpenseCard = ({
-  style,
   onPress,
   onValidate = () => {},
   onSend = () => {},
@@ -61,7 +58,6 @@ const ExpenseCard = ({
   employeeManagerId,
   employeeName,
 }: ExpenseCardProps) => {
-  const Colors = useThemeColor();
   const I18n = useTranslator();
   const {readonly} = usePermitted({
     modelName: 'com.axelor.apps.hr.db.Expense',
@@ -103,74 +99,71 @@ const ExpenseCard = ({
   }, [Expense?.statusSelect, getItemColor, statusSelect]);
 
   return (
-    <View style={[styles.container, style]}>
-      <View style={styles.containerCard}>
-        <ObjectCard
-          onPress={onPress}
-          style={borderStyle}
-          leftContainerFlex={2}
-          iconLeftMargin={10}
-          upperTexts={{
-            items: [
-              {
-                customComponent: (
-                  <View style={styles.titleContainer}>
-                    <AnomalyBubble
-                      objectName="expense"
-                      objectId={expenseId}
-                      isIndicationDisabled
-                    />
-                    <Text writingType="title" style={styles.titleText}>
-                      {expenseSeq}
-                    </Text>
-                  </View>
-                ),
-              },
-              {
-                displayText: `${I18n.t('Hr_Period')} : ${periodeCode}`,
-                hideIf: checkNullString(periodeCode),
-              },
-              {
-                iconName: 'person-fill',
-                indicatorText: employeeName,
-                hideIfNull: true,
-              },
-            ],
-          }}
-          sideBadges={{
-            items: [
-              {
-                customComponent: !checkNullString(inTaxTotal) && (
-                  <Text style={styles.price}>{`${inTaxTotal} ${
-                    user?.activeCompany?.currency?.symbol != null
-                      ? user?.activeCompany?.currency?.symbol
-                      : user?.activeCompany?.currency?.code
-                  }`}</Text>
-                ),
-              },
-            ],
-          }}
-        />
-      </View>
-      {!isDefaultDisplay && (
-        <View style={styles.iconContainer}>
-          <CardIconButton
-            iconName={
-              statusSelect === Expense?.statusSelect.Draft
-                ? 'send-fill'
-                : 'check-lg'
-            }
-            iconColor={Colors.primaryColor.foreground}
-            onPress={() => {
-              statusSelect === Expense?.statusSelect.Draft
-                ? onSend()
-                : onValidate();
-            }}
-            style={styles.cardIconButton}
-          />
-        </View>
-      )}
-    </View>
+    <ActionCard
+      translator={I18n.t}
+      actionList={
+        !isDefaultDisplay && [
+          {
+            iconName: 'send-fill',
+            helper: I18n.t('Hr_Send'),
+            onPress: onSend,
+            hidden: statusSelect !== Expense?.statusSelect.Draft,
+          },
+          {
+            iconName: 'check-lg',
+            helper: I18n.t('Hr_Validate'),
+            onPress: onValidate,
+            hidden: statusSelect === Expense?.statusSelect.Draft,
+          },
+        ]
+      }>
+      <ObjectCard
+        onPress={onPress}
+        style={borderStyle}
+        leftContainerFlex={2}
+        iconLeftMargin={10}
+        upperTexts={{
+          items: [
+            {
+              customComponent: (
+                <View style={styles.titleContainer}>
+                  <AnomalyBubble
+                    objectName="expense"
+                    objectId={expenseId}
+                    isIndicationDisabled
+                  />
+                  <Text writingType="title" style={styles.titleText}>
+                    {expenseSeq}
+                  </Text>
+                </View>
+              ),
+            },
+            {
+              displayText: `${I18n.t('Hr_Period')} : ${periodeCode}`,
+              hideIf: checkNullString(periodeCode),
+            },
+            {
+              iconName: 'person-fill',
+              indicatorText: employeeName,
+              hideIfNull: true,
+            },
+          ],
+        }}
+        sideBadges={{
+          items: [
+            {
+              customComponent: !checkNullString(inTaxTotal) && (
+                <Text style={styles.price}>{`${inTaxTotal} ${
+                  user?.activeCompany?.currency?.symbol != null
+                    ? user?.activeCompany?.currency?.symbol
+                    : user?.activeCompany?.currency?.code
+                }`}</Text>
+              ),
+            },
+          ],
+        }}
+      />
+    </ActionCard>
   );
 };
 
@@ -180,32 +173,11 @@ const getBorderStyle = (color: string) =>
       borderLeftWidth: 7,
       borderLeftColor: color,
       marginHorizontal: 0,
-      marginVertical: 0,
+      marginVertical: 2,
     },
   });
 
 const styles = StyleSheet.create({
-  container: {
-    display: 'flex',
-    flexDirection: 'row',
-    alignItems: 'center',
-    flex: 1,
-    width: '92%',
-    marginHorizontal: 14,
-    justifyContent: 'space-evenly',
-    alignSelf: 'center',
-  },
-  containerCard: {
-    flex: 6,
-  },
-  cardIconButton: {
-    flex: 1,
-    margin: 0,
-    marginLeft: 5,
-  },
-  iconContainer: {
-    flex: 1,
-  },
   titleContainer: {
     flexDirection: 'row',
   },
