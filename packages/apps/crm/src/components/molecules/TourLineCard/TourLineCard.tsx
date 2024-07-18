@@ -43,39 +43,37 @@ const TourLineCard = ({
   }, [Colors, isValidated]);
 
   return (
-    <View style={style}>
-      <ObjectCard
-        showArrow={false}
-        touchable={true}
-        onPress={() => clipboardProvider.copyToClipboard(`${name} ${address}`)}
-        style={[styles.objectCard, borderStyle]}
-        upperTexts={{
-          items: [
-            {displayText: name, isTitle: true, numberOfLines: 1},
-            {
-              indicatorText: address,
-              hideIfNull: true,
-              iconName: 'geo-alt-fill',
-            },
-          ],
-        }}
-        lowerBadges={{
-          style: styles.badgesContainer,
-          items: [
-            {
-              customComponent: (
-                <Icon
-                  name="copy"
-                  size={16}
-                  color={Colors.secondaryColor.background}
-                />
-              ),
-            },
-          ],
-          fixedOnRightSide: true,
-        }}
-      />
-    </View>
+    <ObjectCard
+      showArrow={false}
+      touchable={true}
+      onPress={() => clipboardProvider.copyToClipboard(`${name} ${address}`)}
+      style={[styles.objectCard, borderStyle, style]}
+      upperTexts={{
+        items: [
+          {displayText: name, isTitle: true, numberOfLines: 1},
+          {
+            indicatorText: address,
+            hideIfNull: true,
+            iconName: 'geo-alt-fill',
+          },
+        ],
+      }}
+      lowerBadges={{
+        style: styles.badgesContainer,
+        items: [
+          {
+            customComponent: (
+              <Icon
+                name="copy"
+                size={16}
+                color={Colors.secondaryColor.background}
+              />
+            ),
+          },
+        ],
+        fixedOnRightSide: true,
+      }}
+    />
   );
 };
 

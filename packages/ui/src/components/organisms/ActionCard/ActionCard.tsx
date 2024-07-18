@@ -26,6 +26,7 @@ import {
 } from '../../../hooks/use-click-outside';
 
 const ACTION_WIDTH = 40;
+const ACTIONS_MIN_HEIGHT = 84;
 
 interface Action {
   iconName: string;
@@ -193,7 +194,9 @@ const ActionCard = ({
 
   return (
     <View style={[styles.container, style]} ref={wrapperRef}>
-      <View style={styles.cardContainer}>{children}</View>
+      <View style={styles.cardContainer}>
+        {React.cloneElement(children, {style: {minHeight: ACTIONS_MIN_HEIGHT}})}
+      </View>
       {_actionList.length > 0 &&
         (displaySeeActionsButton && !isActionsVisible ? (
           <InfoButton
