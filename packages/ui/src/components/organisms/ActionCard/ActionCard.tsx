@@ -42,6 +42,7 @@ interface ActionCardProps {
   children: any;
   actionList: Action[];
   horizontal?: boolean;
+  forceActionsDisplay?: boolean;
   translator: (key: string) => string;
 }
 
@@ -50,6 +51,7 @@ const ActionCard = ({
   children,
   actionList,
   horizontal = false,
+  forceActionsDisplay = false,
   translator,
 }: ActionCardProps) => {
   const Colors = useThemeColor();
@@ -65,11 +67,17 @@ const ActionCard = ({
     if (
       clickOutside === OUTSIDE_INDICATOR &&
       displaySeeActionsButton &&
-      isActionsVisible
+      isActionsVisible &&
+      !forceActionsDisplay
     ) {
       setIsActionsVisible(false);
     }
-  }, [clickOutside, displaySeeActionsButton, isActionsVisible]);
+  }, [
+    clickOutside,
+    displaySeeActionsButton,
+    forceActionsDisplay,
+    isActionsVisible,
+  ]);
 
   const _actionList = useMemo(
     () =>
@@ -101,10 +109,13 @@ const ActionCard = ({
 
   useEffect(() => {
     const shouldDisplay =
-      _actionList.length > 2 || _actionList[0]?.large || _actionList[1]?.large;
+      (_actionList.length > 2 ||
+        _actionList[0]?.large ||
+        _actionList[1]?.large) &&
+      !forceActionsDisplay;
     setDisplaySeeActionsButton(shouldDisplay);
     setIsActionsVisible(!shouldDisplay);
-  }, [_actionList]);
+  }, [_actionList, forceActionsDisplay]);
 
   const styles = useMemo(
     () => getStyles(isMoreThanOneAction),
