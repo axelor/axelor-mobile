@@ -16,7 +16,8 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import React, {useEffect, useState} from 'react';
+import React, {useEffect, useState, useCallback} from 'react';
+import {Button, View} from 'react-native';
 import {ChartRender} from '@axelor/aos-mobile-ui';
 import {
   fetchActionView,
@@ -26,6 +27,7 @@ import {
 } from './api.helpers';
 import {transformData} from './format.helpers';
 import {useTranslator} from '../../../i18n';
+import DynamicSearchForm from './DynamicSearchForm';
 
 const DEFAULT_CHART_CONFIG = {type: '', dataset: [], title: ''};
 
@@ -38,62 +40,79 @@ const AOPChart = ({
 }) => {
   const I18n = useTranslator();
   const [chart, setChart] = useState(DEFAULT_CHART_CONFIG);
+  const [searchFields, setSearchFields] = useState([]);
+  const [searchValues, setSearchValues] = useState({});
 
-  useEffect(() => {
-    const fetchChartData = async () => {
-      let result = {...DEFAULT_CHART_CONFIG};
+  const handleSearchChange = (name, value) => {
+    setSearchValues(prevValues => ({...prevValues, [name]: value}));
+  };
 
-      try {
-        const actionViewResponse = await fetchActionView({
-          actionViewName: actionViewName,
-        });
+  const fetchChartData = useCallback(async () => {
+    let result = {...DEFAULT_CHART_CONFIG};
 
-        const context = actionViewResponse?.data?.data[0]?.view?.context;
-        const chartName = actionViewResponse?.data?.data[0]?.view.views[0].name;
+    try {
+      const actionViewResponse = await fetchActionView({
+        actionViewName: actionViewName,
+      });
 
-        const typeResponse = await fetchTypeChart({chartName: chartName});
-        result.title = typeResponse?.data?.data?.title;
-        result.type = typeResponse?.data?.data?.series[0].type;
-        const onInit = typeResponse?.data?.data?.onInit;
+      const context = actionViewResponse?.data?.data[0]?.view?.context;
+      const chartName = actionViewResponse?.data?.data[0]?.view.views[0].name;
 
-        let parameter = null;
-        if (onInit) {
-          const paramResponse = await getChartParameter({
-            chartName,
-            action: onInit,
-            context: context,
-          });
-          parameter = paramResponse?.data?.data[0].values;
-        }
+      const typeResponse = await fetchTypeChart({chartName: chartName});
+      result.title = typeResponse?.data?.data?.title;
+      result.type = typeResponse?.data?.data?.series[0].type;
+      const onInit = typeResponse?.data?.data?.onInit;
 
-        const datasetResponse = await fetchChartDataset({
+      const searchFieldsList = typeResponse?.data?.data?.search || [];
+      setSearchFields(searchFieldsList);
+
+      let parameter = null;
+      if (onInit) {
+        const paramResponse = await getChartParameter({
           chartName,
-          parameter,
-          context,
+          action: onInit,
+          context: context,
         });
-        result.dataset = datasetResponse?.data?.data?.dataset;
-      } catch (error) {
-        result = {...DEFAULT_CHART_CONFIG};
+        parameter = paramResponse?.data?.data[0].values;
       }
 
-      setChart(result);
-    };
+      const datasetResponse = await fetchChartDataset({
+        chartName,
+        parameter: {...parameter, ...searchValues},
+        context,
+      });
+      result.dataset = datasetResponse?.data?.data?.dataset;
+    } catch (error) {
+      result = {...DEFAULT_CHART_CONFIG};
+    }
 
+    setChart(result);
+  }, [actionViewName, searchValues]);
+
+  useEffect(() => {
     fetchChartData();
-  }, [actionViewName]);
+  }, [fetchChartData]);
 
   if (chart.dataset?.length <= 0) {
     return null;
   }
 
   return (
-    <ChartRender
-      dataList={transformData(chart.dataset)}
-      title={chart.title}
-      type={chart.type}
-      widthGraph={widthGraph}
-      translator={I18n.t}
-    />
+    <View style={{width: widthGraph}}>
+      <DynamicSearchForm
+        fields={searchFields}
+        values={searchValues}
+        onChange={handleSearchChange}
+      />
+      <Button title="Search" onPress={fetchChartData} />
+      <ChartRender
+        dataList={transformData(chart.dataset)}
+        title={chart.title}
+        type={chart.type}
+        widthGraph={widthGraph}
+        translator={I18n.t}
+      />
+    </View>
   );
 };
 
