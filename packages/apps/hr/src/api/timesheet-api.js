@@ -234,6 +234,14 @@ export async function updateTimesheetStatus({
       groundForRefusal,
     },
     description: 'update timesheet status',
+    matchers: {
+      modelName: 'com.axelor.apps.hr.db.Timesheet',
+      id: timesheetId,
+      fields: {
+        toStatus: 'statusSelect',
+        groundForRefusal,
+      },
+    },
   });
 }
 

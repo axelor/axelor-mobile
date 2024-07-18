@@ -73,6 +73,8 @@ export async function createStockCorrection({
         reasonId: 'reason.id',
         trackingNumberId: 'trackingNumber.id',
         status: 'statusSelect',
+        realQty,
+        comments,
       },
     },
   });
@@ -103,6 +105,8 @@ export async function updateStockCorrection({
       fields: {
         reasonId: 'reason.id',
         status: 'statusSelect',
+        realQty,
+        comments,
       },
     },
   });

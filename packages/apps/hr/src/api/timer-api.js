@@ -192,10 +192,17 @@ export async function updateTimerStatus({timerId, version, toStatus}) {
     url: `ws/aos/timesheet/timer/status/${timerId}`,
     method: 'put',
     body: {
-      version: version,
-      toStatus: toStatus,
+      version,
+      toStatus,
     },
     description: 'update timer status',
+    matchers: {
+      modelName: 'com.axelor.apps.hr.db.TSTimer',
+      id: timerId,
+      fields: {
+        toStatus: 'statusSelect',
+      },
+    },
   });
 }
 

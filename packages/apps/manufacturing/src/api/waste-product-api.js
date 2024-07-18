@@ -84,11 +84,6 @@ export async function createManufacturingOrderWasteProduct({
       qty,
     },
     description: 'create manufacturing order waste product',
-    matchers: {
-      id: Date.now(),
-      modelName: 'com.axelor.apps.production.db.ProdProduct',
-      fields: {},
-    },
   });
 }
 
@@ -108,7 +103,7 @@ export async function updateManufacturingOrderWasteProduct({
     matchers: {
       id: prodProductId,
       modelName: 'com.axelor.apps.production.db.ProdProduct',
-      fields: {},
+      fields: {qty},
     },
   });
 }

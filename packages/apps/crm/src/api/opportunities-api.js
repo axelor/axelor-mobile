@@ -19,6 +19,7 @@
 import {
   createStandardFetch,
   createStandardSearch,
+  formatRequestBody,
   getActionApi,
   getSearchCriterias,
 } from '@axelor/aos-mobile-core';
@@ -89,8 +90,7 @@ export async function updateOpportunityScoring({
       modelName: 'com.axelor.apps.crm.db.Opportunity',
       id: opportunityId,
       fields: {
-        version: 'version',
-        opportunityRating: 'opportunityRating',
+        'data.opportunityRating': 'opportunityRating',
       },
     },
   });
@@ -118,14 +118,15 @@ export async function updateOpportunityStatus({
       modelName: 'com.axelor.apps.crm.db.Opportunity',
       id: opportunityId,
       fields: {
-        version: 'version',
-        opportunityStatus: 'opportunityStatus',
+        'data.opportunityStatus': 'opportunityStatus',
       },
     },
   });
 }
 
 export async function updateOpportunity({opportunity}) {
+  const {matchers} = formatRequestBody(opportunity, 'data');
+
   return getActionApi().send({
     url: '/ws/rest/com.axelor.apps.crm.db.Opportunity',
     method: 'post',
@@ -136,22 +137,14 @@ export async function updateOpportunity({opportunity}) {
     matchers: {
       modelName: 'com.axelor.apps.crm.db.Opportunity',
       id: opportunity.id,
-      fields: {
-        version: 'version',
-        amount: 'amount',
-        recurrentAmount: 'recurrentAmount',
-        description: 'description',
-        opportunityStatus: 'opportunityStatus',
-        partner: 'partner',
-        contact: 'contact',
-        expectedCloseDate: 'expectedCloseDate',
-        opportunityRating: 'opportunityRating',
-      },
+      fields: matchers,
     },
   });
 }
 
 export async function createOpportunity({opportunity}) {
+  const {matchers} = formatRequestBody(opportunity, 'data');
+
   return getActionApi().send({
     url: '/ws/rest/com.axelor.apps.crm.db.Opportunity',
     method: 'put',
@@ -162,18 +155,7 @@ export async function createOpportunity({opportunity}) {
     matchers: {
       modelName: 'com.axelor.apps.crm.db.Opportunity',
       id: Date.now(),
-      fields: {
-        amount: 'amount',
-        recurrentAmount: 'recurrentAmount',
-        description: 'description',
-        opportunityStatus: 'opportunityStatus',
-        partner: 'partner',
-        contact: 'contact',
-        expectedCloseDate: 'expectedCloseDate',
-        opportunityRating: 'opportunityRating',
-        user: 'user',
-        name: 'name',
-      },
+      fields: matchers,
     },
   });
 }

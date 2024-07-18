@@ -157,12 +157,12 @@ export const formatRequestBody = (
 
   Object.entries(data).forEach(([_key, _value]) => {
     const matcherKey = `${matcherPrefix ? matcherPrefix + '.' : ''}${_key}`;
+    matchers[matcherKey] = _key;
+
     if (_value != null && typeof _value === 'object') {
       _data[_key] = {id: _value.id};
-      matchers[_key] = `${matcherKey}.id`;
     } else {
       _data[_key] = _value;
-      matchers[_key] = matcherKey;
     }
   });
 

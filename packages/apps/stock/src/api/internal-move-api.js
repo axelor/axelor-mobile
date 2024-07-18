@@ -89,11 +89,6 @@ export async function createInternalStockMove({
       })),
     },
     description: 'create internal move',
-    matchers: {
-      modelName: 'com.axelor.apps.stock.db.StockMove',
-      id: null,
-      fields: {},
-    },
   });
 }
 
@@ -105,11 +100,6 @@ export async function realizeInternalMove({stockMoveId, version}) {
       version,
     },
     description: 'realize internal move',
-    matchers: {
-      modelName: 'com.axelor.apps.stock.db.StockMove',
-      id: stockMoveId,
-      fields: {},
-    },
   });
 }
 
@@ -122,14 +112,18 @@ export async function modifyInternalMoveNotes({
     url: `/ws/rest/com.axelor.apps.stock.db.StockMove/${internalMoveId}`,
     method: 'post',
     body: {
-      version,
-      note: notes,
+      data: {
+        version,
+        note: notes,
+      },
     },
     description: 'modify internal move notes',
     matchers: {
       modelName: 'com.axelor.apps.stock.db.StockMove',
       id: internalMoveId,
-      fields: {},
+      fields: {
+        'data.note': 'note',
+      },
     },
   });
 }

@@ -114,7 +114,7 @@ export async function updateControlEntry({controlEntry}) {
       id: controlEntry.id,
       modelName: 'com.axelor.apps.quality.db.ControlEntry',
       fields: {
-        statusSelect: 'statusSelect',
+        'data.statusSelect': 'statusSelect',
       },
     },
   });

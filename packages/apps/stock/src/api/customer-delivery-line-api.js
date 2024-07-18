@@ -66,7 +66,10 @@ export async function updateLine({
     matchers: {
       modelName: 'com.axelor.apps.stock.db.StockMoveLine',
       id: stockMoveLineId,
-      fields: {},
+      fields: {
+        fromStockLocationId: 'fromStockLocation.id',
+        realQty,
+      },
     },
   });
 }

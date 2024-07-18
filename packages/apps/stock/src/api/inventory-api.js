@@ -71,15 +71,17 @@ export async function modifyDescriptionInventory({
     body: {
       data: {
         id: inventoryId,
-        description: description,
-        version: version,
+        description,
+        version,
       },
     },
     description: 'modify inventory description',
     matchers: {
       modelName: 'com.axelor.apps.stock.db.Inventory',
       id: inventoryId,
-      fields: {},
+      fields: {
+        'data.description': 'description',
+      },
     },
   });
 }

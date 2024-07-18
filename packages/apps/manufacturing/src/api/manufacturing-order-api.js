@@ -217,7 +217,7 @@ export async function updateManufacturingOrderStatus({
       id: manufOrderId,
       modelName: 'com.axelor.apps.production.db.ManufOrder',
       fields: {
-        statusSelect: 'status',
+        status: 'statusSelect',
       },
     },
   });

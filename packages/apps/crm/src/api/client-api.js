@@ -96,8 +96,7 @@ export async function updateClient({
         modelName: modelName,
         id: emailId,
         fields: {
-          version: 'version',
-          address: 'address',
+          'data.address': 'address',
         },
       },
     })
@@ -120,11 +119,10 @@ export async function updateClient({
           modelName: 'com.axelor.apps.base.db.Partner',
           id: id,
           fields: {
-            version: 'version',
-            name: 'name',
-            fixedPhone: 'fixedPhone',
-            webSite: 'webSite',
-            description: 'description',
+            'data.name': 'name',
+            'data.fixedPhone': 'fixedPhone',
+            'data.webSite': 'webSite',
+            'data.description': 'description',
           },
         },
       }),

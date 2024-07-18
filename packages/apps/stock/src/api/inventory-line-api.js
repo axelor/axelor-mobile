@@ -66,7 +66,7 @@ export async function updateInventoryLineDetails({
     matchers: {
       modelName: 'com.axelor.apps.stock.db.InventoryLine',
       id: inventoryLineId,
-      fields: {},
+      fields: {description, realQty},
     },
   });
 }
@@ -83,12 +83,12 @@ export async function createInventoryLine({
     url: '/ws/aos/inventory-line/',
     method: 'post',
     body: {
-      inventoryId: inventoryId,
-      inventoryVersion: inventoryVersion,
-      productId: productId,
-      trackingNumberId: trackingNumberId,
-      rack: rack,
-      realQty: realQty,
+      inventoryId,
+      inventoryVersion,
+      productId,
+      trackingNumberId,
+      rack,
+      realQty,
     },
     description: 'create inventory line',
     matchers: {
@@ -97,6 +97,9 @@ export async function createInventoryLine({
       fields: {
         productId: 'product.id',
         trackingNumberId: 'trackingNumber.id',
+        inventoryId: 'inventory.id',
+        rack,
+        realQty,
       },
     },
   });
@@ -121,7 +124,9 @@ export async function addTrackingNumber({
     matchers: {
       modelName: 'com.axelor.apps.stock.db.InventoryLine',
       id: inventoryLineId,
-      fields: {},
+      fields: {
+        'data.trackingNumber': 'trackingNumber',
+      },
     },
   });
 }

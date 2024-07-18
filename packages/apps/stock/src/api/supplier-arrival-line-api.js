@@ -78,6 +78,8 @@ export async function updateLine({
       id: stockMoveLineId,
       fields: {
         conformity: 'conformitySelect',
+        realQty,
+        toStockLocationId: 'toStockLocation.id',
       },
     },
   });

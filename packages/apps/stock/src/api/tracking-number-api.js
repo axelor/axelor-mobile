@@ -67,9 +67,9 @@ export async function createTrackingNumber({qty, product, trackingNumberSeq}) {
       modelName: 'com.axelor.apps.stock.db.TrackingNumber',
       id: Date.now(),
       fields: {
-        counter: 'data.counter',
-        product: 'data.product',
-        trackingNumberSeq: 'data.trackingNumberSeq',
+        'data.counter': 'counter',
+        'data.product': 'product',
+        'data.trackingNumberSeq': 'trackingNumberSeq',
       },
     },
   });
@@ -93,7 +93,7 @@ export async function updateStockMoveLineTrackingNumber({
       modelName: 'com.axelor.apps.stock.db.StockMoveLine',
       id: stockMoveLineId,
       fields: {
-        trackingNumber: 'data.trackingNumber',
+        'data.trackingNumber': 'trackingNumber',
       },
     },
   });

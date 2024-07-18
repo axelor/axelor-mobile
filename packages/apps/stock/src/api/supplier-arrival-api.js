@@ -108,7 +108,9 @@ export async function addLineStockMove({
         unitId: 'unit.id',
         trackingNumberId: 'trackingNumber.id',
         qty: 'expectedQty',
+        realQty,
         conformity: 'conformitySelect',
+        toStockLocationId: 'toStockLocation.id',
       },
     },
   });
@@ -122,10 +124,5 @@ export async function realizeSockMove({stockMoveId, version}) {
       version,
     },
     description: 'realize sipplier arrival',
-    matchers: {
-      modelName: 'com.axelor.apps.stock.db.StockMove',
-      id: stockMoveId,
-      fields: {},
-    },
   });
 }

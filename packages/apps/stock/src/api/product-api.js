@@ -84,11 +84,6 @@ export async function updateLocker({
       version: version,
     },
     description: 'modify product locker',
-    matchers: {
-      modelName: 'com.axelor.apps.base.db.Product',
-      id: null,
-      fields: {},
-    },
   });
 }
 
@@ -123,11 +118,6 @@ export async function getProductStockIndicators({
       version,
     },
     description: 'get product stock indicators',
-    matchers: {
-      modelName: 'com.axelor.apps.base.db.Product',
-      id: productId,
-      fields: {},
-    },
   });
 }
 
@@ -139,10 +129,5 @@ export async function fetchVariantAttributes({productVariantId, version}) {
       version,
     },
     description: 'fetch variant attributes',
-    matchers: {
-      modelName: 'com.axelor.apps.base.db.ProductVariant',
-      id: productVariantId,
-      fields: {},
-    },
   });
 }

@@ -72,6 +72,9 @@ export async function updateInternalMoveLine({
       id: stockMoveLineId,
       fields: {
         unitId: 'unit.id',
+        fromStockLocationId: 'fromStockLocation.id',
+        toStockLocationId: 'toStockLocation.id',
+        realQty,
       },
     },
   });

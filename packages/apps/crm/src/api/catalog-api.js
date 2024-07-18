@@ -72,11 +72,11 @@ export async function createCatalog({
       modelName: '/ws/rest/com.axelor.apps.crm.db.Catalog',
       id: Date.now(),
       fields: {
-        name: 'name',
-        catalogType: 'catalogType',
-        pdfFile: 'pdfFile',
-        image: 'image',
-        description: 'description',
+        'data.name': 'name',
+        'data.catalogType': 'catalogType',
+        'data.pdfFile': 'pdfFile',
+        'data.image': 'image',
+        'data.description': 'description',
       },
     },
   });

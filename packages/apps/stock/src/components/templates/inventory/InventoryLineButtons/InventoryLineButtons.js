@@ -95,7 +95,7 @@ const InventoryLineButtons = ({
     return null;
   }
 
-  if (inventoryLine?.id == null) {
+  if (inventoryLine == null) {
     return <Button title={I18n.t('Base_Add')} onPress={handleNewLine} />;
   }
 

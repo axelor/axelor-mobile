@@ -21,6 +21,7 @@ import {
   getActionApi,
   getSearchCriterias,
   createStandardFetch,
+  formatRequestBody,
 } from '@axelor/aos-mobile-core';
 
 const createTicketCriteria = (searchValue, userId, userTeam) => {
@@ -127,15 +128,12 @@ export async function updateStatusTicket({
       targetStatus,
     },
     description: 'update status ticket',
-    matchers: {
-      id: ticketId,
-      modelName: 'com.axelor.apps.helpdesk.db.Ticket',
-      fields: {},
-    },
   });
 }
 
 export async function updateTicket({ticket}) {
+  const {matchers} = formatRequestBody(ticket, 'data');
+
   return getActionApi().send({
     url: '/ws/rest/com.axelor.apps.helpdesk.db.Ticket',
     method: 'post',
@@ -146,12 +144,14 @@ export async function updateTicket({ticket}) {
     matchers: {
       id: ticket?.id,
       modelName: 'com.axelor.apps.helpdesk.db.Ticket',
-      fields: {},
+      fields: matchers,
     },
   });
 }
 
 export async function createTicket({ticket}) {
+  const {matchers} = formatRequestBody(ticket, 'data');
+
   return getActionApi().send({
     url: '/ws/rest/com.axelor.apps.helpdesk.db.Ticket',
     method: 'put',
@@ -162,7 +162,7 @@ export async function createTicket({ticket}) {
     matchers: {
       id: Date.now(),
       modelName: 'com.axelor.apps.helpdesk.db.Ticket',
-      fields: {},
+      fields: matchers,
     },
   });
 }

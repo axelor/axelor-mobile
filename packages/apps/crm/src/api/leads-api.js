@@ -19,6 +19,7 @@
 import {
   createStandardFetch,
   createStandardSearch,
+  formatRequestBody,
   getActionApi,
   getSearchCriterias,
   RouterProvider,
@@ -88,8 +89,7 @@ export async function updateLeadScoring({leadId, leadVersion, newScore}) {
       modelName: 'com.axelor.apps.crm.db.Lead',
       id: leadId,
       fields: {
-        version: 'version',
-        leadScoringSelect: 'leadScoringSelect',
+        'data.leadScoringSelect': 'leadScoringSelect',
       },
     },
   });
@@ -116,13 +116,14 @@ export async function updateLead({lead, emailId, emailVersion}) {
         modelName: modelName,
         id: emailId,
         fields: {
-          version: 'version',
-          address: 'address',
+          'data.address': 'address',
         },
       },
     })
-    .then(() =>
-      getActionApi().send({
+    .then(() => {
+      const {matchers} = formatRequestBody(lead, 'data');
+
+      return getActionApi().send({
         url: '/ws/rest/com.axelor.apps.crm.db.Lead',
         method: 'post',
         body: {
@@ -132,28 +133,16 @@ export async function updateLead({lead, emailId, emailVersion}) {
         matchers: {
           modelName: 'com.axelor.apps.crm.db.Lead',
           id: lead.id,
-          fields: {
-            version: 'version',
-            leadScoringSelect: 'leadScoringSelect',
-            titleSelect: 'titleSelect',
-            firstName: 'firstName',
-            name: 'name',
-            isDoNotSendEmail: 'isDoNotSendEmail',
-            isDoNotCall: 'isDoNotCall',
-            enterpriseName: 'enterpriseName',
-            primaryAddress: 'primaryAddress',
-            jobTitleFunction: 'jobTitleFunction',
-            fixedPhone: 'fixedPhone',
-            mobilePhone: 'mobilePhone',
-            webSite: 'webSite',
-            description: 'description',
-          },
+          fields: matchers,
         },
-      }),
-    );
+      });
+    });
 }
 
 export async function createLead({lead}) {
+  const {matchers} = formatRequestBody(lead, 'data');
+  console.log(matchers);
+
   return getActionApi().send({
     url: '/ws/rest/com.axelor.apps.crm.db.Lead',
     method: 'put',
@@ -164,24 +153,7 @@ export async function createLead({lead}) {
     matchers: {
       modelName: 'com.axelor.apps.crm.db.Lead',
       id: Date.now(),
-      fields: {
-        leadScoringSelect: 'leadScoringSelect',
-        titleSelect: 'titleSelect',
-        firstName: 'firstName',
-        name: 'name',
-        isDoNotSendEmail: 'isDoNotSendEmail',
-        isDoNotCall: 'isDoNotCall',
-        enterpriseName: 'enterpriseName',
-        primaryAddress: 'primaryAddress',
-        jobTitleFunction: 'jobTitleFunction',
-        fixedPhone: 'fixedPhone',
-        mobilePhone: 'mobilePhone',
-        webSite: 'webSite',
-        description: 'description',
-        contactDate: 'contactDate',
-        user: 'user',
-        emailAddress: 'emailAddress',
-      },
+      fields: matchers,
     },
   });
 }

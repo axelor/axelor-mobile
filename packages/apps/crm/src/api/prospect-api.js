@@ -96,8 +96,7 @@ export async function updateProspectScoring({
       modelName: 'com.axelor.apps.base.db.Partner',
       id: partnerId,
       fields: {
-        version: 'version',
-        leadScoringSelect: 'leadScoringSelect',
+        'data.leadScoringSelect': 'leadScoringSelect',
       },
     },
   });
@@ -135,8 +134,7 @@ export async function updateProspect({
         modelName: modelName,
         id: emailId,
         fields: {
-          version: 'version',
-          address: 'address',
+          'data.address': 'address',
         },
       },
     })
@@ -160,12 +158,11 @@ export async function updateProspect({
           modelName: 'com.axelor.apps.base.db.Partner',
           id: id,
           fields: {
-            version: 'version',
-            leadScoringSelect: 'leadScoringSelect',
-            name: 'name',
-            fixedPhone: 'fixedPhone',
-            webSite: 'webSite',
-            description: 'description',
+            'data.leadScoringSelect': 'leadScoringSelect',
+            'data.name': 'name',
+            'data.fixedPhone': 'fixedPhone',
+            'data.webSite': 'webSite',
+            'data.description': 'description',
           },
         },
       }),

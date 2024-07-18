@@ -30,11 +30,6 @@ export async function fetchManufacturingOrderConsumedProducts({
       manufOrderVersion,
     },
     description: 'fetch manufacturing order consumed products',
-    matchers: {
-      id: null,
-      modelName: 'com.axelor.apps.stock.db.StockMoveLine',
-      fields: {},
-    },
   });
 }
 
@@ -50,11 +45,6 @@ export async function fetchManufacturingOrderProducedProducts({
       manufOrderVersion,
     },
     description: 'fetch manufacturing order produced products',
-    matchers: {
-      id: null,
-      modelName: 'com.axelor.apps.stock.db.StockMoveLine',
-      fields: {},
-    },
   });
 }
 
@@ -86,11 +76,6 @@ export async function createProdProduct({
       productType,
     },
     description: 'create prod product',
-    matchers: {
-      id: Date.now(),
-      modelName: 'com.axelor.apps.stock.db.StockMoveLine',
-      fields: {},
-    },
   });
 }
 
@@ -108,10 +93,5 @@ export async function updateProdProduct({
       prodProductQty,
     },
     description: 'update prod product',
-    matchers: {
-      id: stockMoveLineId,
-      modelName: 'com.axelor.apps.stock.db.StockMoveLine',
-      fields: {},
-    },
   });
 }

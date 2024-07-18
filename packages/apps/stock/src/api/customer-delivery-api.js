@@ -106,8 +106,9 @@ export async function addLineStockMove({
         productId: 'product.id',
         unitId: 'unit.id',
         trackingNumberId: 'trackingNumber.id',
-        qty: 'expectedQty',
+        realQty: 'realQty',
         conformity: 'conformitySelect',
+        fromStockLocationId: 'fromStockLocation.id',
       },
     },
   });
@@ -121,10 +122,5 @@ export async function realizeSockMove({stockMoveId, version}) {
       version,
     },
     description: 'realize customer delivery',
-    matchers: {
-      modelName: 'com.axelor.apps.stock.db.StockMove',
-      id: stockMoveId,
-      fields: {},
-    },
   });
 }

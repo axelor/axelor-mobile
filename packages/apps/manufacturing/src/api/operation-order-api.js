@@ -171,7 +171,7 @@ export async function updateOperationOrderStatus({
       id: operationOrderId,
       modelName: 'com.axelor.apps.production.db.OperationOrder',
       fields: {
-        statusSelect: 'status',
+        status: 'statusSelect',
       },
     },
   });
