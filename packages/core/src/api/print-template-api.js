@@ -59,7 +59,7 @@ export async function searchPrintingTemplate({
   }
 
   return createStandardSearch({
-    model: 'com.axelor.apps.base.db.PrintingTemplate/',
+    model: 'com.axelor.apps.base.db.PrintingTemplate',
     criteria: createPrintingTemplateCriteria({idList, searchValue}),
     fieldKey: 'core_printTemplate',
     page,
@@ -70,7 +70,7 @@ export async function fetchFileToPrint({id, model, printingTemplate}) {
   return axiosApiProvider.post({
     url: 'ws/action',
     data: {
-      action: 'action-method-printing-template-config-wizard-print,close',
+      action: 'action-method-printing-template-config-wizard-print',
       model: 'com.axelor.utils.db.Wizard',
       data: {
         context: {

@@ -87,7 +87,6 @@ const PopupPrintTemplate = ({
               position: 'bottom',
               text1: 'Error',
               text2: `${res?.data?.data[0]?.error?.message}`,
-              onPress: () => {},
             });
             onClose();
           }
@@ -100,7 +99,7 @@ const PopupPrintTemplate = ({
     }
   }, [handleShowFile, model, modelId, onClose, visible]);
 
-  const OpenFile = useCallback(() => {
+  const openFile = useCallback(() => {
     fetchFileToPrint({
       printingTemplate: selectedTemplate,
       id: modelId,
@@ -121,7 +120,7 @@ const PopupPrintTemplate = ({
     <Alert
       visible={showPopup}
       cancelButtonConfig={{onPress: onClose}}
-      confirmButtonConfig={{onPress: OpenFile}}
+      confirmButtonConfig={{onPress: openFile}}
       translator={I18n.t}>
       <PrintTemplateSearchBar
         idList={templateIdList}

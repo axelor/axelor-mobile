@@ -98,6 +98,15 @@ const HeaderOptionsMenu = ({
     [allActions, headerActions],
   );
 
+  const renderPopupPrintTemplate = () => (
+    <PopupPrintTemplate
+      visible={showPrintTemplateSelector}
+      onClose={closePrintTemplateSelector}
+      model={model}
+      modelId={modelId}
+    />
+  );
+
   const HeaderItemList = useMemo(
     () =>
       headerActions.map((_action, index) => (
@@ -141,14 +150,7 @@ const HeaderOptionsMenu = ({
     return (
       <View style={styles.container}>
         <DropdownMenu>{[...HeaderItemList, ...MenuItemList]}</DropdownMenu>
-        {showPrintTemplateSelector && (
-          <PopupPrintTemplate
-            visible={showPrintTemplateSelector}
-            onClose={closePrintTemplateSelector}
-            model={model}
-            modelId={modelId}
-          />
-        )}
+        {showPrintTemplateSelector && renderPopupPrintTemplate()}
       </View>
     );
   }
@@ -157,14 +159,7 @@ const HeaderOptionsMenu = ({
     <View style={styles.container}>
       {HeaderItemList}
       {menuActions.length !== 0 && <DropdownMenu>{MenuItemList}</DropdownMenu>}
-      {showPrintTemplateSelector && (
-        <PopupPrintTemplate
-          visible={showPrintTemplateSelector}
-          onClose={closePrintTemplateSelector}
-          model={model}
-          modelId={modelId}
-        />
-      )}
+      {showPrintTemplateSelector && renderPopupPrintTemplate()}
     </View>
   );
 };

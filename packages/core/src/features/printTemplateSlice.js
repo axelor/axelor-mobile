@@ -57,4 +57,4 @@ const printTemplateSliceSlice = createSlice({
   },
 });
 
-export const printTemplateSliceReducer = printTemplateSliceSlice.reducer;
+export const printTemplateReducer = printTemplateSliceSlice.reducer;

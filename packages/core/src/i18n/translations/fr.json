@@ -202,5 +202,5 @@
   "Base_SliceAction_SearchUser": "récupération des utilisateurs",
   "Base_SliceAction_FetchDashboardConfigs": "récupération des configurations de tableaux de bord",
   "Base_SliceAction_FetchWebViewConfigs": "récupération des configurations de vues web",
-  "Base_SliceAction_SearchPrintingTemplate": "rechercher un modèle d'impression"
+  "Base_SliceAction_SearchPrintingTemplate": "recherche sur les modèles d'impression"
 }
