@@ -124,7 +124,7 @@ const getStyles = color =>
 
 const styles = StyleSheet.create({
   card: {
-    margin: 0,
+    marginHorizontal: 2,
     marginVertical: 2,
     padding: 0,
     marginRight: 5,
