@@ -44,7 +44,7 @@ const initialState = {
   loadingList: true,
 };
 
-const printTemplateSliceSlice = createSlice({
+const printTemplateSlice = createSlice({
   name: 'printTemplate',
   initialState,
   extraReducers: builder => {
@@ -57,4 +57,4 @@ const printTemplateSliceSlice = createSlice({
   },
 });
 
-export const printTemplateReducer = printTemplateSliceSlice.reducer;
+export const printTemplateReducer = printTemplateSlice.reducer;
