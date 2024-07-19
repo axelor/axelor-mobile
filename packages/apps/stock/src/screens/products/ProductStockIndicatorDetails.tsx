@@ -23,7 +23,7 @@ import {
   useTranslator,
   useTypes,
 } from '@axelor/aos-mobile-core';
-import {Screen, ScrollList, Text} from '@axelor/aos-mobile-ui';
+import {Screen, ScrollList} from '@axelor/aos-mobile-ui';
 import {
   fetchAvailableStockIndicator,
   fetchPurchaseOrderQtyIndicator,
