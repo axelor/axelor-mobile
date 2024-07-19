@@ -87,7 +87,7 @@ const PartnerActionCard = ({
     <ActionCard
       style={[styles.container, style]}
       actionList={actionList}
-      translator={key => key}>
+      translator={I18n.t}>
       <PartnerCard
         picture={partner.picture}
         name={isContact ? partner.simpleFullName : partner.name}
