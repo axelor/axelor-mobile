@@ -50,6 +50,7 @@ export {
 export * from './partner-api';
 export * from './product-api';
 export {
+  fetchAvailableStockIndicator as fetchAvailableStockIndicatorApi,
   fetchPurchaseOrderQtyIndicator as fetchPurchaseOrderQtyIndicatorApi,
   fetchSaleOrderQtyIndicator as fetchSaleOrderQtyIndicatorApi,
   fetchStockQtyIndicator as fetchStockQtyIndicatorApi,

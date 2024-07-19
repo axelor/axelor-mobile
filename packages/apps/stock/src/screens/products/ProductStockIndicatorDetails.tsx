@@ -25,11 +25,16 @@ import {
 } from '@axelor/aos-mobile-core';
 import {Screen, ScrollList, Text} from '@axelor/aos-mobile-ui';
 import {
+  fetchAvailableStockIndicator,
   fetchPurchaseOrderQtyIndicator,
   fetchSaleOrderQtyIndicator,
   fetchStockQtyIndicator,
 } from '../../features/productIndicatorsSlice';
-import {StockQtyIndicatorCard} from '../../components';
+import {
+  OrderQtyIndicatorCard,
+  ProductStockLocationCard,
+  StockQtyIndicatorCard,
+} from '../../components';
 import {StockIndicator} from '../../types';
 
 const ProductStockIndicatorDetails = ({route}) => {
@@ -56,7 +61,15 @@ const ProductStockIndicatorDetails = ({route}) => {
     moreLoadingPurchaseOrderQty,
     isListEndPurchaseOrderQty,
     purchaseOrderQtyList,
+
+    loadingAvailableStock,
+    moreLoadingAvailableStock,
+    isListEndAvailableStock,
+    availableStockList,
   } = useSelector((state: any) => state.productIndicators);
+  const {supplychain: supplychainConfig} = useSelector(
+    state => state.appConfig,
+  );
 
   const stockQtyStatus = useMemo(
     () =>
@@ -89,12 +102,23 @@ const ProductStockIndicatorDetails = ({route}) => {
     ],
   );
 
-  const fetchQtyIndicatorAPI = useCallback(
+  const fetchIndicatorAPI = useCallback(
     (page = 0) => {
-      const sliceFunction =
-        indicatorType === StockIndicator.type.SaleOrderQty
-          ? fetchSaleOrderQtyIndicator
-          : fetchPurchaseOrderQtyIndicator;
+      let sliceFunction = null;
+      switch (indicatorType) {
+        case StockIndicator.type.SaleOrderQty:
+          sliceFunction = fetchSaleOrderQtyIndicator;
+          break;
+        case StockIndicator.type.PurchaseOrderQty:
+          sliceFunction = fetchPurchaseOrderQtyIndicator;
+          break;
+        case StockIndicator.type.AvailableStock:
+          sliceFunction = fetchAvailableStockIndicator;
+          break;
+        default:
+          return null;
+      }
+
       dispatch((sliceFunction as any)({productId: product?.id, page}));
     },
     [dispatch, indicatorType, product?.id],
@@ -125,8 +149,8 @@ const ProductStockIndicatorDetails = ({route}) => {
           data: saleOrderQtyList,
           moreLoading: moreLoadingSaleOrderQty,
           isListEnd: isListEndSaleOrderQty,
-          fetchData: fetchQtyIndicatorAPI,
-          renderItem: ({item}) => <Text>{item.saleOrder?.saleOrderSeq}</Text>,
+          fetchData: fetchIndicatorAPI,
+          renderItem: ({item}) => <OrderQtyIndicatorCard {...item} />,
         };
       case StockIndicator.type.PurchaseOrderQty:
         return {
@@ -134,30 +158,53 @@ const ProductStockIndicatorDetails = ({route}) => {
           data: purchaseOrderQtyList,
           moreLoading: moreLoadingPurchaseOrderQty,
           isListEnd: isListEndPurchaseOrderQty,
-          fetchData: fetchQtyIndicatorAPI,
+          fetchData: fetchIndicatorAPI,
+          renderItem: ({item}) => <OrderQtyIndicatorCard {...item} />,
+        };
+      case StockIndicator.type.AvailableStock:
+        return {
+          loadingList: loadingAvailableStock,
+          data: availableStockList,
+          moreLoading: moreLoadingAvailableStock,
+          isListEnd: isListEndAvailableStock,
+          fetchData: fetchIndicatorAPI,
           renderItem: ({item}) => (
-            <Text>{item.purchaseOrder?.purchaseOrderSeq}</Text>
+            <ProductStockLocationCard
+              stockLocationName={item.stockLocation?.name}
+              realQty={item.currentQty}
+              futureQty={item.futureQty}
+              reservedQty={
+                supplychainConfig?.manageStockReservation && item.reservedQty
+              }
+              availability={3}
+              unit={item.unit?.name}
+            />
           ),
         };
       default:
         return null;
     }
   }, [
-    fetchQtyIndicatorAPI,
+    availableStockList,
+    fetchIndicatorAPI,
     fetchStockQtyIndicatorAPI,
     indicatorType,
+    isListEndAvailableStock,
     isListEndPurchaseOrderQty,
     isListEndSaleOrderQty,
     isListEndStockQty,
+    loadingAvailableStock,
     loadingPurchaseOrderQty,
     loadingSaleOrderQty,
     loadingStockQty,
+    moreLoadingAvailableStock,
     moreLoadingPurchaseOrderQty,
     moreLoadingSaleOrderQty,
     moreLoadingStockQty,
     purchaseOrderQtyList,
     saleOrderQtyList,
     stockQtyList,
+    supplychainConfig?.manageStockReservation,
   ]);
 
   if (scrollListData == null) {

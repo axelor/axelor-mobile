@@ -23,6 +23,7 @@ import {
 } from '@axelor/aos-mobile-core';
 import {getProductStockIndicators} from '../api/product-api';
 import {
+  fetchAvailableStockIndicator as _fetchAvailableStockIndicator,
   fetchPurchaseOrderQtyIndicator as _fetchPurchaseOrderQtyIndicator,
   fetchSaleOrderQtyIndicator as _fetchSaleOrderQtyIndicator,
   fetchStockQtyIndicator as _fetchStockQtyIndicator,
@@ -136,6 +137,19 @@ export const fetchPurchaseOrderQtyIndicator = createAsyncThunk(
   },
 );
 
+export const fetchAvailableStockIndicator = createAsyncThunk(
+  'stock_productIndicators/fetchAvailableStockIndicator',
+  async function (data, {getState}) {
+    return handlerApiCall({
+      fetchFunction: _fetchAvailableStockIndicator,
+      data,
+      action: 'Stock_SliceAction_FetchAvailableStockIndicator',
+      getState,
+      responseOptions: {isArrayResponse: true},
+    });
+  },
+);
+
 const initialState = {
   loading: false,
   loadingProductIndicators: false,
@@ -157,6 +171,11 @@ const initialState = {
   moreLoadingPurchaseOrderQty: false,
   isListEndPurchaseOrderQty: false,
   purchaseOrderQtyList: [],
+
+  loadingAvailableStock: false,
+  moreLoadingAvailableStock: false,
+  isListEndAvailableStock: false,
+  availableStockList: [],
 };
 
 const productIndicators = createSlice({
@@ -180,6 +199,12 @@ const productIndicators = createSlice({
       moreLoading: 'moreLoadingPurchaseOrderQty',
       isListEnd: 'isListEndPurchaseOrderQty',
       list: 'purchaseOrderQtyList',
+    });
+    generateInifiniteScrollCases(builder, fetchAvailableStockIndicator, {
+      loading: 'loadingAvailableStock',
+      moreLoading: 'moreLoadingAvailableStock',
+      isListEnd: 'isListEndAvailableStock',
+      list: 'availableStockList',
     });
     builder.addCase(fetchProductIndicators.pending, state => {
       state.loadingProductIndicators = true;

@@ -125,6 +125,45 @@ const createPurchaseOrderQtyCriteria = productId => {
   return criteria;
 };
 
+const createAvailableStockCriteria = productId => {
+  const StockLocation = getTypes().StockLocation;
+
+  const criteria = [
+    {
+      fieldName: 'stockLocation.typeSelect',
+      operator: '!=',
+      value: StockLocation?.typeSelect.virtual,
+    },
+    {
+      fieldName: 'stockLocation.isNotInCalculStock',
+      operator: '=',
+      value: false,
+    },
+    {
+      operator: 'or',
+      criteria: [
+        {
+          fieldName: 'currentQty',
+          operator: '>',
+          value: 0,
+        },
+        {
+          fieldName: 'futureQty',
+          operator: '>',
+          value: 0,
+        },
+      ],
+    },
+    {
+      fieldName: 'product.id',
+      operator: '=',
+      value: productId,
+    },
+  ];
+
+  return criteria;
+};
+
 export async function fetchStockQtyIndicator({
   status,
   isAllocatedQty,
@@ -161,6 +200,15 @@ export async function fetchPurchaseOrderQtyIndicator({productId, page = 0}) {
     model: 'com.axelor.apps.purchase.db.PurchaseOrderLine',
     criteria: createPurchaseOrderQtyCriteria(productId),
     fieldKey: 'stock_purchaseOrderQtyIndicator',
+    page,
+  });
+}
+
+export async function fetchAvailableStockIndicator({productId, page = 0}) {
+  return createStandardSearch({
+    model: 'com.axelor.apps.stock.db.StockLocationLine',
+    criteria: createAvailableStockCriteria(productId),
+    fieldKey: 'stock_stockLocationLine',
     page,
   });
 }

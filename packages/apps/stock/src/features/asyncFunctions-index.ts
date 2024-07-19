@@ -55,6 +55,7 @@ export {
 } from './inventorySlice';
 export {filterClients, filterSuppliers} from './partnerSlice';
 export {
+  fetchAvailableStockIndicator,
   fetchProductDistribution,
   fetchProductIndicators,
   fetchProductsAvailability,
