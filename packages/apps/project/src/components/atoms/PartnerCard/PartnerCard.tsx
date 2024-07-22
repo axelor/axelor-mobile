@@ -17,7 +17,7 @@
  */
 
 import React, {useCallback} from 'react';
-import {View, StyleSheet} from 'react-native';
+import {StyleSheet} from 'react-native';
 import {ObjectCard} from '@axelor/aos-mobile-ui';
 import {useMetafileUri, useNavigation} from '@axelor/aos-mobile-core';
 
@@ -56,36 +56,34 @@ const PartnerCard = ({
   }, [isContact, navigation, id]);
 
   return (
-    <View style={style}>
-      <ObjectCard
-        onPress={handleCardPress}
-        style={styles.card}
-        image={{
-          generalStyle: styles.imageSize,
-          imageSize: styles.imageSize,
-          resizeMode: 'contain',
-          defaultIconSize: 50,
-          source: formatMetaFile(picture?.id),
-        }}
-        upperTexts={{
-          items: [
-            {
-              displayText: name,
-              isTitle: true,
-            },
-            {
-              displayText: code,
-              hideIfNull: true,
-            },
-            {
-              indicatorText: jobName,
-              iconName: 'suitcase-lg-fill',
-              hideIfNull: true,
-            },
-          ],
-        }}
-      />
-    </View>
+    <ObjectCard
+      onPress={handleCardPress}
+      style={[styles.card, style]}
+      image={{
+        generalStyle: styles.imageSize,
+        imageSize: styles.imageSize,
+        resizeMode: 'contain',
+        defaultIconSize: 50,
+        source: formatMetaFile(picture?.id),
+      }}
+      upperTexts={{
+        items: [
+          {
+            displayText: name,
+            isTitle: true,
+          },
+          {
+            displayText: code,
+            hideIfNull: true,
+          },
+          {
+            indicatorText: jobName,
+            iconName: 'suitcase-lg-fill',
+            hideIfNull: true,
+          },
+        ],
+      }}
+    />
   );
 };
 
@@ -95,10 +93,9 @@ const styles = StyleSheet.create({
     width: 50,
   },
   card: {
-    margin: 0,
     marginVertical: 2,
     padding: 0,
-    marginHorizontal: 0,
+    marginHorizontal: 2,
     marginRight: 5,
   },
 });
