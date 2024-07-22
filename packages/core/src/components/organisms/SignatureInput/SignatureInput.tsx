@@ -37,21 +37,7 @@ import PictureIcon from './PictureIcon';
 const CANVA_HEIGHT = 300;
 const POPUP_INPUT_HEIGHT = 100;
 
-const SignatureInput = ({
-  style,
-  title,
-  defaultValue,
-  readonly = false,
-  required = false,
-  onChange = () => {},
-  enableFileSelection = true,
-  enablePicture = true,
-  cameraKey = 'signature_answer',
-  canvaSize = Dimensions.get('window').width * 0.75,
-  returnBase64String = false,
-  iconSize = 25,
-  popup = false,
-}: {
+interface SignatureInputProps {
   style?: any;
   title?: string;
   defaultValue?: any;
@@ -69,15 +55,31 @@ const SignatureInput = ({
    * Default value is false.
    */
   popup?: boolean;
-}) => {
+}
+
+const SignatureInput = ({
+  style,
+  title,
+  defaultValue,
+  readonly = false,
+  required = false,
+  onChange = () => {},
+  enableFileSelection = true,
+  enablePicture = true,
+  cameraKey = 'signature_answer',
+  canvaSize = Dimensions.get('window').width * 0.75,
+  returnBase64String = false,
+  iconSize = 25,
+  popup = false,
+}: SignatureInputProps) => {
   const ref = useRef<SignatureViewRef>();
   const Colors = useThemeColor();
 
   const {baseUrl, jsessionId, token} = useSelector((state: any) => state.auth);
 
-  const [unsavedChanges, setUnsavedChanges] = useState(false);
+  const [unsavedChanges, setUnsavedChanges] = useState<boolean>(false);
   const [editSignature, setEditSignature] = useState<boolean>(false);
-  const [popupIsOpen, setPopupIsOpen] = useState(false);
+  const [popupIsOpen, setPopupIsOpen] = useState<boolean>(false);
 
   useEffect(() => {
     setEditSignature(false);
