@@ -17,21 +17,14 @@
  */
 
 import React, {useMemo} from 'react';
-import {StyleSheet, View} from 'react-native';
+import {ActionCard} from '@axelor/aos-mobile-ui';
 import {
-  ActionCard,
-  checkNullString,
-  ObjectCard,
-  Text,
-} from '@axelor/aos-mobile-ui';
-import {
-  AnomalyBubble,
   useTranslator,
   useSelector,
   usePermitted,
   useTypes,
-  useTypeHelpers,
 } from '@axelor/aos-mobile-core';
+import LiteExpenseCard from './LiteExpenceCard';
 
 interface ExpenseCardProps {
   statusSelect: number;
@@ -63,7 +56,6 @@ const ExpenseCard = ({
     modelName: 'com.axelor.apps.hr.db.Expense',
   });
   const {Expense} = useTypes();
-  const {getItemColor} = useTypeHelpers();
 
   const {user} = useSelector((state: any) => state.user);
 
@@ -92,12 +84,6 @@ const ExpenseCard = ({
     );
   }, [Expense?.statusSelect, readonly, statusSelect, userCanValidate]);
 
-  const borderStyle = useMemo(() => {
-    return getBorderStyle(
-      getItemColor(Expense?.statusSelect, statusSelect)?.background,
-    ).border;
-  }, [Expense?.statusSelect, getItemColor, statusSelect]);
-
   return (
     <ActionCard
       translator={I18n.t}
@@ -117,77 +103,17 @@ const ExpenseCard = ({
           },
         ]
       }>
-      <ObjectCard
+      <LiteExpenseCard
         onPress={onPress}
-        style={borderStyle}
-        leftContainerFlex={2}
-        iconLeftMargin={10}
-        upperTexts={{
-          items: [
-            {
-              customComponent: (
-                <View style={styles.titleContainer}>
-                  <AnomalyBubble
-                    objectName="expense"
-                    objectId={expenseId}
-                    isIndicationDisabled
-                  />
-                  <Text writingType="title" style={styles.titleText}>
-                    {expenseSeq}
-                  </Text>
-                </View>
-              ),
-            },
-            {
-              displayText: `${I18n.t('Hr_Period')} : ${periodeCode}`,
-              hideIf: checkNullString(periodeCode),
-            },
-            {
-              iconName: 'person-fill',
-              indicatorText: employeeName,
-              hideIfNull: true,
-            },
-          ],
-        }}
-        sideBadges={{
-          items: [
-            {
-              customComponent: !checkNullString(inTaxTotal) && (
-                <Text style={styles.price}>{`${inTaxTotal} ${
-                  user?.activeCompany?.currency?.symbol != null
-                    ? user?.activeCompany?.currency?.symbol
-                    : user?.activeCompany?.currency?.code
-                }`}</Text>
-              ),
-            },
-          ],
-        }}
+        statusSelect={statusSelect}
+        expenseId={expenseId}
+        expenseSeq={expenseSeq}
+        periodeCode={periodeCode}
+        inTaxTotal={inTaxTotal}
+        employeeName={employeeName}
       />
     </ActionCard>
   );
 };
-
-const getBorderStyle = (color: string) =>
-  StyleSheet.create({
-    border: {
-      borderLeftWidth: 7,
-      borderLeftColor: color,
-      marginHorizontal: 0,
-      marginVertical: 2,
-    },
-  });
-
-const styles = StyleSheet.create({
-  titleContainer: {
-    flexDirection: 'row',
-  },
-  titleText: {
-    alignSelf: 'center',
-    marginLeft: 5,
-  },
-  price: {
-    textAlign: 'right',
-  },
-});
 
 export default ExpenseCard;
