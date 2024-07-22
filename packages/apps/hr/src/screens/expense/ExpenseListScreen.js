@@ -225,7 +225,6 @@ const ExpenseListScreen = ({navigation}) => {
                 expenseMode: mode,
               })
             }
-            style={styles.item}
             statusSelect={item.statusSelect}
             expenseId={item.id}
             expenseSeq={item.expenseSeq}
@@ -249,9 +248,6 @@ const ExpenseListScreen = ({navigation}) => {
 };
 
 const styles = StyleSheet.create({
-  item: {
-    marginVertical: 4,
-  },
   headerContainer: {
     alignItems: 'center',
   },
