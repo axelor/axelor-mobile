@@ -17,9 +17,8 @@
  */
 
 import React, {useMemo} from 'react';
-import {StyleSheet, View} from 'react-native';
-import {linkingProvider} from '@axelor/aos-mobile-core';
-import {CardIconButton, useThemeColor} from '@axelor/aos-mobile-ui';
+import {linkingProvider, useTranslator} from '@axelor/aos-mobile-core';
+import {useThemeColor, ActionCard} from '@axelor/aos-mobile-ui';
 import {ClientCard} from '../../atoms';
 
 interface ClientActionCardProps {
@@ -30,6 +29,7 @@ interface ClientActionCardProps {
 
 const ClientActionCard = ({style, client, onPress}: ClientActionCardProps) => {
   const Colors = useThemeColor();
+  const I18n = useTranslator();
 
   const address = useMemo(
     () => client?.mainAddress?.fullName,
@@ -41,53 +41,40 @@ const ClientActionCard = ({style, client, onPress}: ClientActionCardProps) => {
     [client?.mobilePhone, client?.fixedPhone],
   );
 
+  const actions = useMemo(() => {
+    const actionList = [];
+
+    if (address) {
+      actionList.push({
+        iconName: 'geo-alt-fill',
+        helper: I18n.t('Sale_OpenMap'),
+        iconColor: Colors.secondaryColor_dark.background,
+        onPress: () => linkingProvider.openMapApp(address),
+      });
+    }
+
+    if (phone) {
+      actionList.push({
+        iconName: 'telephone-fill',
+        helper: I18n.t('Sale_Call'),
+        iconColor: Colors.secondaryColor_dark.background,
+        onPress: () => linkingProvider.openCallApp(phone),
+      });
+    }
+
+    return actionList;
+  }, [address, phone, Colors.secondaryColor_dark.background, I18n]);
+
   return (
-    <View style={[styles.container, style]}>
+    <ActionCard style={style} actionList={actions} translator={I18n.t}>
       <ClientCard
-        style={styles.cardContainer}
         {...client}
         address={address}
         phone={phone}
         onPress={onPress}
       />
-      {(address || phone) && (
-        <View style={styles.flexOne}>
-          {address && (
-            <CardIconButton
-              style={styles.flexOne}
-              iconName="geo-alt-fill"
-              iconColor={Colors.secondaryColor_dark.background}
-              onPress={() => linkingProvider.openMapApp(address)}
-            />
-          )}
-          {phone && (
-            <CardIconButton
-              style={styles.flexOne}
-              iconName="telephone-fill"
-              iconColor={Colors.secondaryColor_dark.background}
-              onPress={() => linkingProvider.openCallApp(phone)}
-            />
-          )}
-        </View>
-      )}
-    </View>
+    </ActionCard>
   );
 };
-
-const styles = StyleSheet.create({
-  container: {
-    width: '96%',
-    flexDirection: 'row',
-    alignSelf: 'center',
-    marginVertical: 2,
-  },
-  cardContainer: {
-    flex: 6,
-    margin: 2,
-  },
-  flexOne: {
-    flex: 1,
-  },
-});
 
 export default ClientActionCard;
