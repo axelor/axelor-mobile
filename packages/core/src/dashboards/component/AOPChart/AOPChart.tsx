@@ -17,7 +17,7 @@
  */
 
 import React, {useEffect, useState, useCallback} from 'react';
-import {Button, View} from 'react-native';
+import {StyleSheet, View} from 'react-native';
 import {ChartRender} from '@axelor/aos-mobile-ui';
 import {
   fetchActionView,
@@ -74,6 +74,8 @@ const AOPChart = ({
         parameter = paramResponse?.data?.data[0].values;
       }
 
+      console.log('parmameters', parameter);
+
       const datasetResponse = await fetchChartDataset({
         chartName,
         parameter: {...parameter, ...searchValues},
@@ -96,21 +98,33 @@ const AOPChart = ({
   }
 
   return (
-    <View style={{width: widthGraph}}>
-      <DynamicSearchForm
-        fields={searchFields}
-        values={searchValues}
-        onChange={handleSearchChange}
-      />
-      <Button title="Search" onPress={fetchChartData} />
-      <ChartRender
-        dataList={transformData(chart.dataset)}
-        title={chart.title}
-        type={chart.type}
-        widthGraph={widthGraph}
-      />
+    <View
+      style={{
+        width: widthGraph,
+      }}>
+      <View style={styles.flex}>
+        <DynamicSearchForm
+          fields={searchFields}
+          values={searchValues}
+          onChange={handleSearchChange}
+        />
+      </View>
+      <View style={styles.flex}>
+        <ChartRender
+          dataList={transformData(chart.dataset)}
+          title={chart.title}
+          type={chart.type}
+          widthGraph={widthGraph}
+        />
+      </View>
     </View>
   );
 };
+
+const styles = StyleSheet.create({
+  flex: {
+    flex: 1,
+  },
+});
 
 export default AOPChart;
