@@ -17,8 +17,7 @@
  */
 
 import React from 'react';
-import {StyleSheet, View} from 'react-native';
-import {InfoButton, useThemeColor} from '@axelor/aos-mobile-ui';
+import {ActionCard} from '@axelor/aos-mobile-ui';
 import {useTranslator} from '@axelor/aos-mobile-core';
 import {TaskCard} from '../../atoms';
 
@@ -46,11 +45,19 @@ const TaskActionCard = ({
   displayParentProjet = false,
   onPress,
 }: TaskActionCardProps) => {
-  const Colors = useThemeColor();
   const I18n = useTranslator();
 
   return (
-    <View style={[styles.container, style]}>
+    <ActionCard
+      style={style}
+      actionList={[
+        {
+          iconName: 'clock-history',
+          helper: I18n.t('Project_LogTime'),
+          onPress: () => {},
+        },
+      ]}
+      translator={I18n.t}>
       <TaskCard
         onPress={onPress}
         name={task.name}
@@ -62,32 +69,9 @@ const TaskActionCard = ({
         progress={task.progress}
         priority={task.priority}
         status={task.status}
-        style={styles.cardContainer}
       />
-      <InfoButton
-        indication={I18n.t('Project_LogTime')}
-        iconName={'clock-history'}
-        iconColor={Colors.secondaryColor_dark.background}
-        onPress={() => {}}
-        style={styles.infoButton}
-      />
-    </View>
+    </ActionCard>
   );
 };
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    width: '96%',
-    flexDirection: 'row',
-    marginVertical: 2,
-  },
-  cardContainer: {
-    flex: 6,
-  },
-  infoButton: {
-    flex: 1,
-  },
-});
 
 export default TaskActionCard;
