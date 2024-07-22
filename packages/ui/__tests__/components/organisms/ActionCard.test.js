@@ -28,7 +28,7 @@ describe('ActionCard Component', () => {
     {iconName: 'share', onPress: jest.fn(), key: '3'},
   ];
   const props = {
-    children: <Card>Card Content</Card>,
+    children: <Card testID="childrenComponent">Card Content</Card>,
     actionList,
     translator: jest.fn(key => key),
   };
@@ -42,7 +42,7 @@ describe('ActionCard Component', () => {
   it('should render children correctly', () => {
     const wrapper = shallow(<ActionCard {...props} />);
 
-    expect(wrapper.contains(props.children)).toBe(true);
+    expect(wrapper.find('[testID="childrenComponent"]')).toHaveLength(1);
   });
 
   it('should render InfoButton components for each action in the list', () => {
