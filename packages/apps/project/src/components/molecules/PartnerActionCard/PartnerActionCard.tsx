@@ -47,37 +47,28 @@ const PartnerActionCard = ({
 }: PartnerActionCardProps) => {
   const I18n = useTranslator();
 
-  const actionList = useMemo(() => {
-    if (isContact) {
-      if (partner?.mobilePhone == null && partner?.fixedPhone == null) {
-        return [];
-      }
-
-      return [
-        {
-          iconName: 'telephone-fill',
-          helper: I18n.t('Project_Call'),
-          onPress: () =>
-            linkingProvider.openCallApp(
-              partner.mobilePhone ?? partner.fixedPhone,
-            ),
-        },
-      ];
-    } else {
-      if (partner?.mainAddress == null) {
-        return [];
-      }
-
-      return [
-        {
-          iconName: 'geo-alt-fill',
-          helper: I18n.t('Project_OpenMap'),
-          onPress: () =>
-            linkingProvider.openMapApp(partner.mainAddress.fullName),
-        },
-      ];
-    }
-  }, [I18n, isContact, partner]);
+  const actionList = useMemo(
+    () => [
+      {
+        iconName: 'telephone-fill',
+        helper: I18n.t('Project_Call'),
+        hidden:
+          !isContact ||
+          (partner?.mobilePhone == null && partner?.fixedPhone == null),
+        onPress: () =>
+          linkingProvider.openCallApp(
+            partner.mobilePhone ?? partner.fixedPhone,
+          ),
+      },
+      {
+        iconName: 'geo-alt-fill',
+        helper: I18n.t('Project_OpenMap'),
+        hidden: partner?.mainAddress == null,
+        onPress: () => linkingProvider.openMapApp(partner.mainAddress.fullName),
+      },
+    ],
+    [I18n, isContact, partner],
+  );
 
   if (isEmpty(partner)) {
     return null;

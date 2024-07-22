@@ -17,7 +17,7 @@
  */
 
 import React, {useMemo} from 'react';
-import {StyleSheet, View} from 'react-native';
+import {StyleSheet} from 'react-native';
 import {ObjectCard, ProgressBar} from '@axelor/aos-mobile-ui';
 import {
   DateDisplay,
@@ -64,53 +64,51 @@ const TaskCard = ({
   }, [status, getItemColorFromIndex, projectTaskStatusList]);
 
   return (
-    <View style={style}>
-      <ObjectCard
-        onPress={onPress}
-        style={[borderStyle, styles.card]}
-        iconLeftMargin={30}
-        leftContainerFlex={2}
-        upperTexts={{
-          items: [
-            {displayText: name, isTitle: true},
-            {
-              indicatorText: assignedTo,
-              hideIfNull: true,
-              iconName: 'pin-angle-fill',
-            },
-            {
-              indicatorText: parentTask,
-              hideIfNull: true,
-              iconName: 'diagram-3-fill',
-              numberOfLines: 2,
-            },
-          ],
-        }}
-        sideBadges={{
-          items: [
-            {
-              customComponent: <DateDisplay date={taskDeadline} size={16} />,
-            },
-            {
-              customComponent: (
-                <ProgressBar
-                  style={styles.progressBar}
-                  value={progress}
-                  showPercent={false}
-                  height={15}
-                  styleTxt={styles.textProgressBar}
-                />
-              ),
-            },
-            {
-              displayText: priority?.name,
-              color: getItemColorFromIndex(projectPriorityList, priority),
-              showIf: priority != null,
-            },
-          ],
-        }}
-      />
-    </View>
+    <ObjectCard
+      onPress={onPress}
+      style={[borderStyle, styles.card, style]}
+      iconLeftMargin={30}
+      leftContainerFlex={2}
+      upperTexts={{
+        items: [
+          {displayText: name, isTitle: true},
+          {
+            indicatorText: assignedTo,
+            hideIfNull: true,
+            iconName: 'pin-angle-fill',
+          },
+          {
+            indicatorText: parentTask,
+            hideIfNull: true,
+            iconName: 'diagram-3-fill',
+            numberOfLines: 2,
+          },
+        ],
+      }}
+      sideBadges={{
+        items: [
+          {
+            customComponent: <DateDisplay date={taskDeadline} size={16} />,
+          },
+          {
+            customComponent: (
+              <ProgressBar
+                style={styles.progressBar}
+                value={progress}
+                showPercent={false}
+                height={15}
+                styleTxt={styles.textProgressBar}
+              />
+            ),
+          },
+          {
+            displayText: priority?.name,
+            color: getItemColorFromIndex(projectPriorityList, priority),
+            showIf: priority != null,
+          },
+        ],
+      }}
+    />
   );
 };
 
