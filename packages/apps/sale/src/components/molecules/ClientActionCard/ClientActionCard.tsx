@@ -18,7 +18,7 @@
 
 import React, {useMemo} from 'react';
 import {linkingProvider, useTranslator} from '@axelor/aos-mobile-core';
-import {useThemeColor, ActionCard} from '@axelor/aos-mobile-ui';
+import {ActionCard} from '@axelor/aos-mobile-ui';
 import {ClientCard} from '../../atoms';
 
 interface ClientActionCardProps {
@@ -28,7 +28,6 @@ interface ClientActionCardProps {
 }
 
 const ClientActionCard = ({style, client, onPress}: ClientActionCardProps) => {
-  const Colors = useThemeColor();
   const I18n = useTranslator();
 
   const address = useMemo(
@@ -48,7 +47,6 @@ const ClientActionCard = ({style, client, onPress}: ClientActionCardProps) => {
       actionList.push({
         iconName: 'geo-alt-fill',
         helper: I18n.t('Sale_OpenMap'),
-        iconColor: Colors.secondaryColor_dark.background,
         onPress: () => linkingProvider.openMapApp(address),
       });
     }
@@ -57,13 +55,12 @@ const ClientActionCard = ({style, client, onPress}: ClientActionCardProps) => {
       actionList.push({
         iconName: 'telephone-fill',
         helper: I18n.t('Sale_Call'),
-        iconColor: Colors.secondaryColor_dark.background,
         onPress: () => linkingProvider.openCallApp(phone),
       });
     }
 
     return actionList;
-  }, [address, phone, Colors.secondaryColor_dark.background, I18n]);
+  }, [address, phone, I18n]);
 
   return (
     <ActionCard style={style} actionList={actions} translator={I18n.t}>
