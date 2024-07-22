@@ -17,12 +17,12 @@
  */
 
 import React, {useState} from 'react';
-import {StyleSheet, View} from 'react-native';
-import {CardIconButton, useThemeColor} from '@axelor/aos-mobile-ui';
+import {ActionCard, useThemeColor} from '@axelor/aos-mobile-ui';
 import {
-  useDispatch,
   linkingProvider,
+  useDispatch,
   useNavigation,
+  useTranslator,
 } from '@axelor/aos-mobile-core';
 import {validateTourLine} from '../../../features/tourLineSlice';
 import TourLineEventPopup from '../TourLineEventPopup/TourLineEventPopup';
@@ -49,6 +49,7 @@ const TourLineActionCard = ({
   version,
   selectedStatus,
 }: TourLineActionCardProps) => {
+  const I18n = useTranslator();
   const Colors = useThemeColor();
   const dispatch = useDispatch();
   const navigation = useNavigation();
@@ -56,57 +57,50 @@ const TourLineActionCard = ({
   const [addPopupIsVisible, setAddPopupIsVisible] = useState(false);
 
   return (
-    <View style={styles.globalContainer}>
-      <TourLineCard
-        style={styles.objectCardContainer}
-        name={partner?.fullName}
-        address={address}
-        isValidated={isValidated}
-      />
-      <View style={styles.flexOne}>
-        <CardIconButton
-          style={styles.flexOne}
-          iconName="geo-alt-fill"
-          iconColor={Colors.primaryColor.foreground}
-          onPress={() => linkingProvider.openMapApp(address)}
-        />
-        {eventId != null ? (
-          <CardIconButton
-            style={styles.flexOne}
-            iconName="calendar-event"
-            iconColor={Colors.primaryColor.foreground}
-            onPress={() =>
+    <>
+      <ActionCard
+        translator={I18n.t}
+        actionList={[
+          {
+            iconName: 'geo-alt-fill',
+            helper: I18n.t('Crm_OpenMap'),
+            onPress: () => linkingProvider.openMapApp(address),
+          },
+          {
+            iconName: 'calendar-event',
+            helper: I18n.t('Crm_SeeEvent'),
+            onPress: () =>
               navigation.navigate('EventDetailsScreen', {
                 eventId: eventId,
-              })
-            }
-          />
-        ) : (
-          <CardIconButton
-            style={styles.flexOne}
-            iconName="calendar2-plus"
-            iconColor={Colors.primaryColor.foreground}
-            onPress={() => setAddPopupIsVisible(true)}
-          />
-        )}
-      </View>
-      {!isValidated && (
-        <View style={styles.flexOne}>
-          <CardIconButton
-            style={styles.flexOne}
-            iconName="check-lg"
-            iconColor={Colors.successColor.background}
-            onPress={() => {
+              }),
+            hidden: eventId == null,
+          },
+          {
+            iconName: 'calendar2-plus',
+            helper: I18n.t('Crm_AddEvent'),
+            onPress: () => setAddPopupIsVisible(true),
+            hidden: eventId != null,
+          },
+          {
+            iconName: 'check-lg',
+            iconColor: Colors.successColor.background,
+            helper: I18n.t('Crm_ValidateTourStep'),
+            onPress: () =>
               dispatch(
                 (validateTourLine as any)({
                   tourLineId: id,
                   tourId: tourId,
                 }),
-              );
-            }}
-          />
-        </View>
-      )}
+              ),
+            hidden: isValidated,
+          },
+        ]}>
+        <TourLineCard
+          name={partner?.fullName}
+          address={address}
+          isValidated={isValidated}
+        />
+      </ActionCard>
       <TourLineEventPopup
         visible={addPopupIsVisible}
         partner={partner}
@@ -118,25 +112,8 @@ const TourLineActionCard = ({
           tourLineId: id,
         }}
       />
-    </View>
+    </>
   );
 };
-
-const styles = StyleSheet.create({
-  globalContainer: {
-    display: 'flex',
-    flexDirection: 'row',
-    marginHorizontal: 10,
-    marginVertical: 2,
-    flex: 1,
-  },
-  objectCardContainer: {
-    flex: 7,
-    marginVertical: 2,
-  },
-  flexOne: {
-    flex: 1,
-  },
-});
 
 export default TourLineActionCard;

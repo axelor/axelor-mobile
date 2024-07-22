@@ -17,7 +17,7 @@
  */
 
 import React, {useMemo} from 'react';
-import {StyleSheet, View} from 'react-native';
+import {StyleSheet} from 'react-native';
 import {Icon, ObjectCard, useThemeColor} from '@axelor/aos-mobile-ui';
 import {clipboardProvider} from '@axelor/aos-mobile-core';
 import {TourLine} from '../../../types';
@@ -43,39 +43,37 @@ const TourLineCard = ({
   }, [Colors, isValidated]);
 
   return (
-    <View style={style}>
-      <ObjectCard
-        showArrow={false}
-        touchable={true}
-        onPress={() => clipboardProvider.copyToClipboard(`${name} ${address}`)}
-        style={[styles.objectCard, borderStyle]}
-        upperTexts={{
-          items: [
-            {displayText: name, isTitle: true, numberOfLines: 1},
-            {
-              indicatorText: address,
-              hideIfNull: true,
-              iconName: 'geo-alt-fill',
-            },
-          ],
-        }}
-        lowerBadges={{
-          style: styles.badgesContainer,
-          items: [
-            {
-              customComponent: (
-                <Icon
-                  name="copy"
-                  size={16}
-                  color={Colors.secondaryColor.background}
-                />
-              ),
-            },
-          ],
-          fixedOnRightSide: true,
-        }}
-      />
-    </View>
+    <ObjectCard
+      showArrow={false}
+      touchable={true}
+      onPress={() => clipboardProvider.copyToClipboard(`${name} ${address}`)}
+      style={[styles.objectCard, borderStyle, style]}
+      upperTexts={{
+        items: [
+          {displayText: name, isTitle: true, numberOfLines: 1},
+          {
+            indicatorText: address,
+            hideIfNull: true,
+            iconName: 'geo-alt-fill',
+          },
+        ],
+      }}
+      lowerBadges={{
+        style: styles.badgesContainer,
+        items: [
+          {
+            customComponent: (
+              <Icon
+                name="copy"
+                size={16}
+                color={Colors.secondaryColor.background}
+              />
+            ),
+          },
+        ],
+        fixedOnRightSide: true,
+      }}
+    />
   );
 };
 
@@ -91,7 +89,7 @@ const styles = StyleSheet.create({
   objectCard: {
     marginHorizontal: 0,
     marginRight: 2,
-    marginVertical: 0,
+    marginVertical: 2,
     paddingBottom: 5,
     paddingRight: 10,
   },
