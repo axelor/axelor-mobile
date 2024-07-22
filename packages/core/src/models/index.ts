@@ -16,7 +16,6 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-export {core_formsRegister} from './forms';
 export {core_modelAPI} from './objectFields';
 export {core_searchFields} from './searchFields';
 export {core_sortFields} from './sortFields';
