@@ -26,15 +26,23 @@ const DynamicFormField = ({field, value, onChange}) => {
     onChange(field.name, newValue);
   };
 
-  console.log('field', field);
-  console.log('fieldType', field.type);
+  const _field = {
+    ...field,
+  };
+
+  if (field.selectionList && field.selectionList.length > 0) {
+    _field.type = 'string';
+  }
+
+  console.log('field', _field);
+  console.log('fieldType', _field.type);
   console.log('value', value);
 
-  switch (field.type) {
+  switch (_field.type) {
     case 'date':
       return (
         <View>
-          <Text>{field.title}</Text>
+          <Text>{_field.title}</Text>
           <DateInput
             onDateChange={handleChange}
             mode="date"
@@ -42,13 +50,24 @@ const DynamicFormField = ({field, value, onChange}) => {
           />
         </View>
       );
+    case 'datetime':
+      return (
+        <View>
+          <Text>{_field.title}</Text>
+          <DateInput
+            onDateChange={handleChange}
+            mode="datetime"
+            defaultDate={value && new Date(value)}
+          />
+        </View>
+      );
     case 'string':
-      if (field.selectionList && field.selectionList.length > 0) {
+      if (_field.selectionList && _field.selectionList.length > 0) {
         return (
           <View>
-            <Text>{field.title}</Text>
+            <Text>{_field.title}</Text>
             <Picker
-              listItems={field.selectionList}
+              listItems={_field.selectionList}
               valueField="value"
               labelField="title"
               onValueChange={handleChange}
@@ -59,11 +78,11 @@ const DynamicFormField = ({field, value, onChange}) => {
       }
       return (
         <View>
-          <Text>{field.title}</Text>
+          <Text>{_field.title}</Text>
           <Input
             value={value}
             onChange={handleChange}
-            placeholder={field.title}
+            placeholder={_field.title}
           />
         </View>
       );
@@ -71,11 +90,11 @@ const DynamicFormField = ({field, value, onChange}) => {
     default:
       return (
         <View>
-          <Text>{field.title}</Text>
+          <Text>{_field.title}</Text>
           <Input
             value={value}
             onChange={handleChange}
-            placeholder={field.title}
+            placeholder={_field.title}
           />
         </View>
       );

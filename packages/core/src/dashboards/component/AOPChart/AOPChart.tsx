@@ -86,7 +86,12 @@ const AOPChart = ({
           parameter: {...parameter, ...searchValues},
           context,
         });
-        result.dataset = datasetResponse?.data?.data?.dataset;
+
+        if (datasetResponse?.data?.data?.dataset != null) {
+          result.dataset = datasetResponse?.data?.data?.dataset;
+        } else {
+          result = {...DEFAULT_CHART_CONFIG};
+        }
       } catch (error) {
         result = {...DEFAULT_CHART_CONFIG};
       }
