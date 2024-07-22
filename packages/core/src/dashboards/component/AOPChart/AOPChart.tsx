@@ -42,58 +42,72 @@ const AOPChart = ({
   const [chart, setChart] = useState(DEFAULT_CHART_CONFIG);
   const [searchFields, setSearchFields] = useState([]);
   const [searchValues, setSearchValues] = useState({});
+  const [initialLoad, setInitialLoad] = useState(true);
 
   const handleSearchChange = (name, value) => {
     setSearchValues(prevValues => ({...prevValues, [name]: value}));
   };
 
-  const fetchChartData = useCallback(async () => {
-    let result = {...DEFAULT_CHART_CONFIG};
+  const fetchChartData = useCallback(
+    async (initial = false) => {
+      let result = {...DEFAULT_CHART_CONFIG};
 
-    try {
-      const actionViewResponse = await fetchActionView({
-        actionViewName: actionViewName,
-      });
-
-      const context = actionViewResponse?.data?.data[0]?.view?.context;
-      const chartName = actionViewResponse?.data?.data[0]?.view.views[0].name;
-
-      const typeResponse = await fetchTypeChart({chartName: chartName});
-      result.title = typeResponse?.data?.data?.title;
-      result.type = typeResponse?.data?.data?.series[0].type;
-      const onInit = typeResponse?.data?.data?.onInit;
-
-      const searchFieldsList = typeResponse?.data?.data?.search || [];
-      setSearchFields(searchFieldsList);
-
-      let parameter = null;
-      if (onInit) {
-        const paramResponse = await getChartParameter({
-          chartName,
-          action: onInit,
-          context: context,
+      try {
+        const actionViewResponse = await fetchActionView({
+          actionViewName: actionViewName,
         });
-        parameter = paramResponse?.data?.data[0].values;
+
+        const context = actionViewResponse?.data?.data[0]?.view?.context;
+        const chartName = actionViewResponse?.data?.data[0]?.view.views[0].name;
+
+        const typeResponse = await fetchTypeChart({chartName: chartName});
+        result.title = typeResponse?.data?.data?.title;
+        result.type = typeResponse?.data?.data?.series[0].type;
+        const onInit = typeResponse?.data?.data?.onInit;
+
+        const searchFieldsList = typeResponse?.data?.data?.search || [];
+        setSearchFields(searchFieldsList);
+
+        let parameter = null;
+        if (onInit) {
+          const paramResponse = await getChartParameter({
+            chartName,
+            action: onInit,
+            context: context,
+          });
+          parameter = paramResponse?.data?.data[0].values;
+          if (initial) {
+            setSearchValues(parameter);
+          }
+        }
+
+        const datasetResponse = await fetchChartDataset({
+          chartName,
+          parameter: {...parameter, ...searchValues},
+          context,
+        });
+        result.dataset = datasetResponse?.data?.data?.dataset;
+      } catch (error) {
+        result = {...DEFAULT_CHART_CONFIG};
       }
 
-      console.log('parmameters', parameter);
-
-      const datasetResponse = await fetchChartDataset({
-        chartName,
-        parameter: {...parameter, ...searchValues},
-        context,
-      });
-      result.dataset = datasetResponse?.data?.data?.dataset;
-    } catch (error) {
-      result = {...DEFAULT_CHART_CONFIG};
-    }
-
-    setChart(result);
-  }, [actionViewName, searchValues]);
+      setChart(result);
+    },
+    [actionViewName, searchValues],
+  );
 
   useEffect(() => {
-    fetchChartData();
-  }, [fetchChartData]);
+    if (initialLoad) {
+      fetchChartData(true);
+      setInitialLoad(false);
+    }
+  }, [initialLoad, fetchChartData]);
+
+  useEffect(() => {
+    if (!initialLoad) {
+      fetchChartData();
+    }
+  }, [fetchChartData, initialLoad, searchValues]);
 
   if (chart.dataset?.length <= 0) {
     return null;

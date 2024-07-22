@@ -17,7 +17,7 @@
  */
 
 import React from 'react';
-import {View} from 'react-native';
+import {StyleSheet, View} from 'react-native';
 import {DateInput} from '../../../components';
 import {Input, Picker, Text} from '@axelor/aos-mobile-ui';
 
@@ -35,7 +35,11 @@ const DynamicFormField = ({field, value, onChange}) => {
       return (
         <View>
           <Text>{field.title}</Text>
-          <DateInput onDateChange={handleChange} mode="date" />
+          <DateInput
+            onDateChange={handleChange}
+            mode="date"
+            defaultDate={value && new Date(value)}
+          />
         </View>
       );
     case 'string':
@@ -48,7 +52,7 @@ const DynamicFormField = ({field, value, onChange}) => {
               valueField="value"
               labelField="title"
               onValueChange={handleChange}
-              defaultValue={value}
+              defaultValue={value?.toString()}
             />
           </View>
         );
@@ -80,8 +84,7 @@ const DynamicFormField = ({field, value, onChange}) => {
 
 const DynamicSearchForm = ({fields, values, onChange}) => {
   return (
-    // eslint-disable-next-line react-native/no-inline-styles
-    <View style={{marginHorizontal: 10}}>
+    <View style={styles.form}>
       {fields.map(field => (
         <DynamicFormField
           key={field.name}
@@ -93,5 +96,9 @@ const DynamicSearchForm = ({fields, values, onChange}) => {
     </View>
   );
 };
+
+const styles = StyleSheet.create({
+  form: {marginHorizontal: 10},
+});
 
 export default DynamicSearchForm;
