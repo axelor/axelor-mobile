@@ -16,10 +16,10 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import React from 'react';
-import {StyleSheet, View} from 'react-native';
+import React, {useState} from 'react';
+import {StyleSheet, View, TouchableOpacity} from 'react-native';
 import {DateInput} from '../../../components';
-import {Input, Picker, Text} from '@axelor/aos-mobile-ui';
+import {Input, Picker, Text, Icon} from '@axelor/aos-mobile-ui';
 
 const DynamicFormField = ({field, value, onChange}) => {
   const handleChange = newValue => {
@@ -102,22 +102,49 @@ const DynamicFormField = ({field, value, onChange}) => {
 };
 
 const DynamicSearchForm = ({fields, values, onChange}) => {
+  const [showOptionalFields, setShowOptionalFields] = useState(false);
+
+  const toggleOptionalFields = () => {
+    setShowOptionalFields(!showOptionalFields);
+  };
+
   return (
     <View style={styles.form}>
-      {fields.map(field => (
-        <DynamicFormField
-          key={field.name}
-          field={field}
-          value={values[field.name] || ''}
-          onChange={onChange}
-        />
-      ))}
+      {fields.map(field => {
+        const isRequired = field.widgetAttrs?.required;
+        const shouldRender = isRequired || showOptionalFields;
+
+        if (!shouldRender) {
+          return null;
+        }
+
+        return (
+          <DynamicFormField
+            key={field.name}
+            field={field}
+            value={values[field.name] || ''}
+            onChange={onChange}
+          />
+        );
+      })}
+      {fields.some(field => !field.widgetAttrs?.required) && (
+        <TouchableOpacity
+          onPress={toggleOptionalFields}
+          style={styles.chevronContainer}>
+          <Icon name={showOptionalFields ? 'chevron-up' : 'chevron-down'} />
+        </TouchableOpacity>
+      )}
     </View>
   );
 };
 
 const styles = StyleSheet.create({
   form: {marginHorizontal: 10},
+  chevronContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginVertical: 10,
+  },
 });
 
 export default DynamicSearchForm;
