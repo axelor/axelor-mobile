@@ -20,4 +20,5 @@ import {SearchFields} from '../app';
 
 export const core_searchFields: SearchFields = {
   core_user: ['fullName'],
+  core_printTemplate: ['name'],
 };
