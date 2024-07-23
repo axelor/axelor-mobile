@@ -17,7 +17,7 @@
  */
 
 import React from 'react';
-import {View, StyleSheet} from 'react-native';
+import {StyleSheet} from 'react-native';
 import {ObjectCard} from '@axelor/aos-mobile-ui';
 import {useMetafileUri} from '@axelor/aos-mobile-core';
 
@@ -45,58 +45,55 @@ const ClientCard = ({
   const formatMetaFile = useMetafileUri();
 
   return (
-    <View style={style}>
-      <ObjectCard
-        style={styles.container}
-        onPress={onPress}
-        image={{
-          generalStyle: styles.imageSize,
-          imageSize: styles.imageSize,
-          resizeMode: 'contain',
-          defaultIconSize: 50,
-          source: formatMetaFile(picture?.id),
-        }}
-        upperTexts={{
-          items: [
-            {
-              displayText: name,
-              isTitle: true,
-            },
-            {
-              displayText: partnerSeq,
-              hideIfNull: true,
-            },
-          ],
-        }}
-        lowerTexts={{
-          items: [
-            {
-              indicatorText: address,
-              iconName: 'geo-alt-fill',
-              hideIfNull: true,
-            },
-            {
-              indicatorText: phone,
-              iconName: 'telephone-fill',
-              hideIfNull: true,
-            },
-            {
-              indicatorText: emailAddress?.address,
-              iconName: 'geo-alt-fill',
-              hideIfNull: true,
-            },
-          ],
-        }}
-      />
-    </View>
+    <ObjectCard
+      style={[styles.container, style]}
+      onPress={onPress}
+      image={{
+        generalStyle: styles.imageSize,
+        imageSize: styles.imageSize,
+        resizeMode: 'contain',
+        defaultIconSize: 50,
+        source: formatMetaFile(picture?.id),
+      }}
+      upperTexts={{
+        items: [
+          {
+            displayText: name,
+            isTitle: true,
+          },
+          {
+            displayText: partnerSeq,
+            hideIfNull: true,
+          },
+        ],
+      }}
+      lowerTexts={{
+        items: [
+          {
+            indicatorText: address,
+            iconName: 'geo-alt-fill',
+            hideIfNull: true,
+          },
+          {
+            indicatorText: phone,
+            iconName: 'telephone-fill',
+            hideIfNull: true,
+          },
+          {
+            indicatorText: emailAddress?.address,
+            iconName: 'geo-alt-fill',
+            hideIfNull: true,
+          },
+        ],
+      }}
+    />
   );
 };
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
-    marginHorizontal: 1,
-    marginVertical: 1,
+    marginHorizontal: 2,
+    marginVertical: 2,
   },
   imageSize: {
     height: 50,
