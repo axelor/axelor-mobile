@@ -45,7 +45,7 @@ const PartnerCard = ({
 
   const handleCardPress = useCallback(() => {
     if (isContact) {
-      return navigation.navigate('ContactDetailsScreen', {
+      navigation.navigate('ContactDetailsScreen', {
         idContact: id,
       });
     } else {
@@ -88,15 +88,13 @@ const PartnerCard = ({
 };
 
 const styles = StyleSheet.create({
+  card: {
+    marginVertical: 2,
+    marginHorizontal: 2,
+  },
   imageSize: {
     height: 50,
     width: 50,
-  },
-  card: {
-    marginVertical: 2,
-    padding: 0,
-    marginHorizontal: 2,
-    marginRight: 5,
   },
 });
 

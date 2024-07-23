@@ -40,30 +40,24 @@ const ClientActionCard = ({style, client, onPress}: ClientActionCardProps) => {
     [client?.mobilePhone, client?.fixedPhone],
   );
 
-  const actions = useMemo(() => {
-    const actionList = [];
-
-    if (address) {
-      actionList.push({
-        iconName: 'geo-alt-fill',
-        helper: I18n.t('Sale_OpenMap'),
-        onPress: () => linkingProvider.openMapApp(address),
-      });
-    }
-
-    if (phone) {
-      actionList.push({
-        iconName: 'telephone-fill',
-        helper: I18n.t('Sale_Call'),
-        onPress: () => linkingProvider.openCallApp(phone),
-      });
-    }
-
-    return actionList;
-  }, [address, phone, I18n]);
-
   return (
-    <ActionCard style={style} actionList={actions} translator={I18n.t}>
+    <ActionCard
+      style={style}
+      actionList={[
+        {
+          iconName: 'geo-alt-fill',
+          helper: I18n.t('Sale_OpenMap'),
+          onPress: () => linkingProvider.openMapApp(address),
+          hidden: address == null,
+        },
+        {
+          iconName: 'telephone-fill',
+          helper: I18n.t('Sale_Call'),
+          onPress: () => linkingProvider.openCallApp(phone),
+          hidden: phone == null,
+        },
+      ]}
+      translator={I18n.t}>
       <ClientCard
         {...client}
         address={address}

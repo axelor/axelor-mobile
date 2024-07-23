@@ -46,7 +46,7 @@ const ClientCard = ({
 
   return (
     <ObjectCard
-      style={[styles.card, style]}
+      style={[styles.container, style]}
       onPress={onPress}
       image={{
         generalStyle: styles.imageSize,
@@ -91,15 +91,13 @@ const ClientCard = ({
 };
 
 const styles = StyleSheet.create({
+  container: {
+    marginHorizontal: 2,
+    marginVertical: 2,
+  },
   imageSize: {
     height: 50,
     width: 50,
-  },
-  card: {
-    marginVertical: 2,
-    padding: 0,
-    marginHorizontal: 2,
-    marginRight: 5,
   },
 });
 
