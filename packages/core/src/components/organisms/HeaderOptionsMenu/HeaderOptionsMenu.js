@@ -16,11 +16,12 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import React, {useMemo} from 'react';
+import React, {useCallback, useMemo} from 'react';
 import {Dimensions, StyleSheet, View} from 'react-native';
 import {DropdownMenu, DropdownMenuItem} from '@axelor/aos-mobile-ui';
 import {HeaderOptionMenuItem} from '../../molecules';
 import {useBasicActions} from '../../../header';
+import PopupPrintTemplate from '../PopupPrintTemplate/PopupPrintTemplate';
 
 const SMALLEST_WINDOW_WIDTH = 300;
 
@@ -30,6 +31,7 @@ const HeaderOptionsMenu = ({
   actions = [],
   disableMailMessages,
   disableJsonFields,
+  disablePrint,
   attachedFileScreenTitle,
   barcodeFieldname,
 }) => {
@@ -37,11 +39,15 @@ const HeaderOptionsMenu = ({
     mailMessagesAction,
     attachedFilesAction,
     barcodeAction,
+    printAction,
     jsonFieldsAction,
+    isTemplateSelectorVisible,
+    closePrintTemplateSelector,
   } = useBasicActions({
     model,
     modelId,
     disableMailMessages,
+    disablePrint,
     barcodeFieldname,
     disableJsonFields,
     attachedFileScreenTitle,
@@ -62,6 +68,7 @@ const HeaderOptionsMenu = ({
       [
         attachedFilesAction,
         mailMessagesAction,
+        printAction,
         barcodeAction,
         jsonFieldsAction,
         ...actions,
@@ -71,6 +78,7 @@ const HeaderOptionsMenu = ({
     [
       actions,
       attachedFilesAction,
+      printAction,
       barcodeAction,
       jsonFieldsAction,
       mailMessagesAction,
@@ -88,6 +96,19 @@ const HeaderOptionsMenu = ({
         _action => !headerActions.some(_header => _header.key === _action.key),
       ),
     [allActions, headerActions],
+  );
+
+  const renderPopupPrintTemplate = useCallback(
+    () =>
+      isTemplateSelectorVisible ? (
+        <PopupPrintTemplate
+          visible={isTemplateSelectorVisible}
+          onClose={closePrintTemplateSelector}
+          model={model}
+          modelId={modelId}
+        />
+      ) : null,
+    [closePrintTemplateSelector, isTemplateSelectorVisible, model, modelId],
   );
 
   const HeaderItemList = useMemo(
@@ -133,6 +154,7 @@ const HeaderOptionsMenu = ({
     return (
       <View style={styles.container}>
         <DropdownMenu>{[...HeaderItemList, ...MenuItemList]}</DropdownMenu>
+        {renderPopupPrintTemplate()}
       </View>
     );
   }
@@ -141,6 +163,7 @@ const HeaderOptionsMenu = ({
     <View style={styles.container}>
       {HeaderItemList}
       {menuActions.length !== 0 && <DropdownMenu>{MenuItemList}</DropdownMenu>}
+      {renderPopupPrintTemplate()}
     </View>
   );
 };
