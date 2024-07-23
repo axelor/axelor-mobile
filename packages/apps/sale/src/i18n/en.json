@@ -118,6 +118,8 @@
   "Sale_PriceListType_SupplierContract": "Supplier contract",
   "Sale_NonNegotiable": "Non-negotiable",
   "Sale_Variants": "Variants",
+  "Sale_Call": "Call",
+  "Sale_OpenMap": "Open map",
   "Sale_Application_SalePrice": "Sale price",
   "Sale_Application_CostPrice": "Cost price",
   "Sale_Application_PurchasePrice": "Purchase price",
