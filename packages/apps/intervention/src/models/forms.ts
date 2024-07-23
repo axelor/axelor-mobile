@@ -340,9 +340,6 @@ export const intervention_formsRegister: FormConfigs = {
             InterventionQuestion?.answerTypeSelect.Signature
           );
         },
-        options: {
-          popup: true,
-        },
       },
       textAnswer: {
         type: 'string',
