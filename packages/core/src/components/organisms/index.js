@@ -27,5 +27,6 @@ export {default as LogoImage} from '../../sessions/components/display/LogoImage'
 export {default as MailMessageCard} from './MailMessageCard/MailMessageCard';
 export {default as MailMessageCommentCard} from './MailMessageCommentCard/MailMessageCommentCard';
 export {default as MailMessageNotificationCard} from './MailMessageNotificationCard/MailMessageNotificationCard';
+export {default as PopupPrintTemplate} from './PopupPrintTemplate/PopupPrintTemplate';
 export {default as SignatureInput} from './SignatureInput/SignatureInput';
 export {default as ScannerAutocompleteSearch} from './ScannerAutocompleteSearch/ScannerAutocompleteSearch';

@@ -175,6 +175,8 @@
   "Base_No": "No",
   "Base_Filter": "Filter",
   "Base_SeeActions": "See actions",
+  "Base_Print": "Print",
+  "Base_PrintTemplate": "Print template",
   "Base_SliceAction_FetchAttachedFiles": "fetch attached files",
   "Base_SliceAction_FetchFilesDetails": "fetch file details",
   "Base_SliceAction_FetchMetaModule": "fetch meta modules",
@@ -199,5 +201,6 @@
   "Base_SliceAction_FetchAnomalies": "fetch anomalies of object",
   "Base_SliceAction_SearchUser": "search user",
   "Base_SliceAction_FetchDashboardConfigs": "fetch dashboard configurations",
-  "Base_SliceAction_FetchWebViewConfigs": "fetch webView configurations"
+  "Base_SliceAction_FetchWebViewConfigs": "fetch webView configurations",
+  "Base_SliceAction_SearchPrintingTemplate": "search printing template"
 }
