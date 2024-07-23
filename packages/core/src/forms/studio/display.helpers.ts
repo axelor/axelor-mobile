@@ -325,6 +325,10 @@ const manageContentOfModel = (
             config.options = {item};
           }
 
+          if (widget === 'signature') {
+            config.options = {popup: true};
+          }
+
           if (item.valueExpr != null) {
             config.dependsOn = manageDependsOnFormula(
               item.valueExpr,
