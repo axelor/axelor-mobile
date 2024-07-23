@@ -1,0 +1,5 @@
+{
+  "title": "Print: Add option to print from a template in header actions",
+  "type": "feat",
+  "packages": "core"
+}

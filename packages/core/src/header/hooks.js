@@ -28,11 +28,13 @@ import {useOnline} from '../features/onlineSlice';
 import {getNetInfo} from '../api/net-info-utils';
 import {fetchJsonFieldsOfModel} from '../forms';
 import {useIsFocused} from '../hooks/use-navigation';
+import {fetchActionPrint} from '../api/print-template-api';
 
 export const useBasicActions = ({
   model,
   modelId,
   disableMailMessages,
+  disablePrint,
   disableJsonFields = false,
   attachedFileScreenTitle,
   barcodeFieldname = 'barCode',
@@ -50,12 +52,19 @@ export const useBasicActions = ({
   const [disableAttachementFiles, setDisableAttachementFiles] = useState(true);
   const [disableBarcode, setDisableBarcode] = useState(true);
   const [disableCustomView, setDisableCustomView] = useState(true);
+  const [disablePrinting, setDisablePrinting] = useState(true);
   const [isConnected, setIsConnected] = useState(true);
+  const [isTemplateSelectorVisible, setTemplateSelectorVisible] =
+    useState(false);
 
   const modelConfigured = useMemo(
     () => !checkNullString(model) && modelId != null,
     [model, modelId],
   );
+
+  const closePrintTemplateSelector = useCallback(() => {
+    setTemplateSelectorVisible(false);
+  }, []);
 
   const countUnreadMessagesAPI = useCallback(() => {
     if (modelConfigured) {
@@ -96,6 +105,14 @@ export const useBasicActions = ({
         setDisableCustomView(res?.data?.total == null || res.data.total === 0);
       });
   }, [model]);
+
+  useEffect(() => {
+    fetchActionPrint({model, id: modelId})
+      .catch(() => setDisablePrinting(true))
+      .then(({templateSet, fileName}) => {
+        setDisablePrinting(templateSet == null && fileName == null);
+      });
+  }, [model, modelId]);
 
   const checkInternetConnection = useCallback(async () => {
     const {isConnected: _isConnected} = await getNetInfo();
@@ -202,27 +219,49 @@ export const useBasicActions = ({
     modelId,
   ]);
 
-  return useMemo(() => {
-    if (modelConfigured) {
-      return {
-        mailMessagesAction,
-        attachedFilesAction,
-        barcodeAction,
-        jsonFieldsAction,
-      };
-    }
-
+  const printAction = useMemo(() => {
     return {
-      mailMessagesAction: {key: 'mailMessages', hideIf: true},
-      attachedFilesAction: {key: 'attachedFiles', hideIf: true},
-      barcodeAction: {key: 'barcode', hideIf: true},
-      jsonFieldsAction: {key: 'metaJsonFields', hideIf: true},
+      key: 'printTemplate',
+      order: 40,
+      onPress: () => {
+        setTemplateSelectorVisible(true);
+      },
+      iconName: 'printer-fill',
+      hideIf:
+        disablePrint || disablePrinting || !online.isEnabled || !isConnected,
+      title: I18n.t('Base_Print'),
+      showInHeader: true,
+    };
+  }, [I18n, disablePrint, disablePrinting, isConnected, online.isEnabled]);
+
+  return useMemo(() => {
+    return {
+      isTemplateSelectorVisible,
+      closePrintTemplateSelector,
+      ...(modelConfigured
+        ? {
+            mailMessagesAction,
+            attachedFilesAction,
+            printAction,
+            barcodeAction,
+            jsonFieldsAction,
+          }
+        : {
+            mailMessagesAction: {key: 'mailMessages', hideIf: true},
+            attachedFilesAction: {key: 'attachedFiles', hideIf: true},
+            printAction: {key: 'printTemplate', hideIf: true},
+            barcodeAction: {key: 'barcode', hideIf: true},
+            jsonFieldsAction: {key: 'metaJsonFields', hideIf: true},
+          }),
     };
   }, [
+    modelConfigured,
+    mailMessagesAction,
     attachedFilesAction,
+    printAction,
     barcodeAction,
     jsonFieldsAction,
-    mailMessagesAction,
-    modelConfigured,
+    isTemplateSelectorVisible,
+    closePrintTemplateSelector,
   ]);
 };
