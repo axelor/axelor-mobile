@@ -118,6 +118,8 @@
   "Sale_PriceListType_SupplierContract": "Contrat fournisseur",
   "Sale_NonNegotiable": "Non négociable",
   "Sale_Variants": "Variants",
+  "Sale_Call": "Appeler",
+  "Sale_OpenMap": "Ouvrir la carte",
   "Sale_Application_SalePrice": "Prix de vente",
   "Sale_Application_CostPrice": "Prix de revient",
   "Sale_Application_PurchasePrice": "Prix d'achat",
