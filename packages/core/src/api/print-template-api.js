@@ -34,19 +34,28 @@ const createPrintingTemplateCriteria = ({searchValue, idList}) => {
 };
 
 export async function fetchActionPrint({id, model}) {
-  return axiosApiProvider.post({
-    url: 'ws/action',
-    data: {
-      action: 'action-method-print-template',
-      model: model,
+  return axiosApiProvider
+    .post({
+      url: 'ws/action',
       data: {
-        context: {
-          id: id,
-          _model: model,
+        action: 'action-method-print-template',
+        model: model,
+        data: {
+          context: {
+            id: id,
+            _model: model,
+          },
         },
       },
-    },
-  });
+    })
+    .then(res => res?.data?.data?.[0])
+    .then(res => {
+      const templateSet = res?.view?.context?._printingTemplateIdList;
+      const fileName = res.view?.views?.[0]?.name;
+      const error = res?.error?.message;
+
+      return {templateSet, fileName, error};
+    });
 }
 
 export async function searchPrintingTemplate({
@@ -67,28 +76,34 @@ export async function searchPrintingTemplate({
 }
 
 export async function fetchFileToPrint({id, model, printingTemplate}) {
-  return axiosApiProvider.post({
-    url: 'ws/action',
-    data: {
-      action: 'action-method-printing-template-config-wizard-print',
-      model: 'com.axelor.utils.db.Wizard',
+  return axiosApiProvider
+    .post({
+      url: 'ws/action',
       data: {
-        context: {
-          _modelId: id,
-          _fromTestWizard: false,
-          _modelClass: model,
-          _viewType: 'form',
-          _viewName: 'printing-template-print-config-wizard',
-          _views: [
-            {
-              name: 'printing-template-print-config-wizard',
-              type: 'form',
-            },
-          ],
-          _model: 'com.axelor.utils.db.Wizard',
-          printingTemplate: printingTemplate,
+        action: 'action-method-printing-template-config-wizard-print',
+        model: 'com.axelor.utils.db.Wizard',
+        data: {
+          context: {
+            _modelId: id,
+            _fromTestWizard: false,
+            _modelClass: model,
+            _viewType: 'form',
+            _viewName: 'printing-template-print-config-wizard',
+            _views: [
+              {
+                name: 'printing-template-print-config-wizard',
+                type: 'form',
+              },
+            ],
+            _model: 'com.axelor.utils.db.Wizard',
+            printingTemplate: printingTemplate,
+          },
         },
       },
-    },
-  });
+    })
+    .then(res => res?.data?.data?.[0])
+    .then(res => ({
+      error: res?.error?.message,
+      fileName: res.view?.views?.[0]?.name,
+    }));
 }

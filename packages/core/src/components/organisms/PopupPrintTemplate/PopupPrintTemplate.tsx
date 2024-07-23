@@ -43,78 +43,73 @@ const PopupPrintTemplate = ({
 }: PopupPrintTemplateProps) => {
   const I18n = useTranslator();
 
+  const {baseUrl, token, jsessionId} = useSelector((state: any) => state.auth);
+
   const [templateIdList, setTemplateIdList] = useState([]);
   const [selectedTemplate, setSelectedTemplate] = useState(null);
   const [showPopup, setShowPopup] = useState(false);
 
-  const {baseUrl, token, jsessionId} = useSelector((state: any) => state.auth);
-
   const handleShowFile = useCallback(
     async (file: string) => {
       const fileName = file.split('=')[1];
+
       await openFileInExternalApp(
-        {
-          fileName: fileName,
-          path: file,
-        },
-        {baseUrl: baseUrl, token: token, jsessionId: jsessionId},
+        {fileName, path: file},
+        {baseUrl, token, jsessionId},
         I18n,
       );
+
+      onClose();
     },
-    [I18n, baseUrl, jsessionId, token],
+    [I18n, baseUrl, jsessionId, onClose, token],
   );
+
+  const handleCancel = useCallback(() => {
+    setTemplateIdList([]);
+    setSelectedTemplate(null);
+    onClose();
+  }, [onClose]);
 
   useEffect(() => {
     if (visible) {
       fetchActionPrint({id: modelId, model: model})
-        .then(res => {
-          const printingTemplateIdList =
-            res?.data?.data[0]?.view?.context?._printingTemplateIdList;
-          const fileName = res?.data?.data[0].view?.views[0]?.name;
-
-          if (
-            Array.isArray(printingTemplateIdList) &&
-            printingTemplateIdList.length > 0
-          ) {
-            setTemplateIdList(printingTemplateIdList);
+        .then(({templateSet, fileName, error}) => {
+          if (Array.isArray(templateSet) && templateSet.length > 0) {
+            setTemplateIdList(templateSet);
             setShowPopup(true);
           } else if (fileName) {
             handleShowFile(fileName);
-            onClose();
           } else {
             showToastMessage({
               type: 'error',
               position: 'bottom',
               text1: 'Error',
-              text2: `${res?.data?.data[0]?.error?.message}`,
+              text2: error,
             });
             onClose();
           }
         })
-        .catch(() => {
-          setTemplateIdList([]);
-          setSelectedTemplate(null);
-          onClose();
-        });
+        .catch(handleCancel);
     }
-  }, [handleShowFile, model, modelId, onClose, visible]);
+  }, [handleCancel, handleShowFile, model, modelId, onClose, visible]);
 
   const openFile = useCallback(() => {
-    fetchFileToPrint({
-      printingTemplate: selectedTemplate,
-      id: modelId,
-      model: model,
-    })
-      .then(res => {
-        const file = res?.data?.data[0].view?.views[0].name;
-        handleShowFile(file);
+    fetchFileToPrint({printingTemplate: selectedTemplate, id: modelId, model})
+      .then(({error, fileName}) => {
+        if (fileName == null) {
+          showToastMessage({
+            type: 'error',
+            position: 'bottom',
+            text1: 'Error',
+            text2: error,
+          });
+          handleCancel();
+        } else {
+          handleShowFile(fileName);
+        }
       })
-      .catch(() => {
-        setTemplateIdList([]);
-        setSelectedTemplate(null);
-        onClose();
-      });
-  }, [handleShowFile, model, modelId, selectedTemplate, onClose]);
+      .catch(handleCancel);
+  }, [selectedTemplate, modelId, model, handleCancel, handleShowFile]);
 
   return (
     <Alert

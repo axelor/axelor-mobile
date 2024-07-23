@@ -21,11 +21,15 @@ import RNFS from 'react-native-fs';
 import {TranslatorProps} from '../i18n/hooks/use-translator';
 import {showToastMessage} from '../utils/show-toast-message';
 
-interface fileItemProps {
+interface FileItem {
   fileName: string;
-  id?: number;
+  id: number;
   isMetaFile?: boolean;
-  path?: string;
+}
+
+interface PathItem {
+  fileName: string;
+  path: string;
 }
 
 interface ConnexionNeed {
@@ -35,17 +39,24 @@ interface ConnexionNeed {
 }
 
 export const openFileInExternalApp = async (
-  file: fileItemProps,
+  file: FileItem | PathItem,
   authentification: ConnexionNeed,
   I18n: TranslatorProps,
 ) => {
-  const localFile = `${RNFS.DocumentDirectoryPath}/${file?.fileName}`;
+  if (file == null) {
+    return;
+  }
 
-  const fromUrl = file.path
-    ? `${authentification.baseUrl}${file.path}`
-    : file.isMetaFile
-    ? `${authentification.baseUrl}ws/rest/com.axelor.meta.db.MetaFile/${file?.id}/content/download`
-    : `${authentification.baseUrl}ws/dms/inline/${file?.id}`;
+  const localFile = `${RNFS.DocumentDirectoryPath}/${file.fileName}`;
+
+  const fromUrl =
+    (file as PathItem).path != null
+      ? `${authentification.baseUrl}${(file as PathItem).path}`
+      : (file as FileItem).isMetaFile
+      ? `${authentification.baseUrl}ws/rest/com.axelor.meta.db.MetaFile/${
+          (file as FileItem).id
+        }/content/download`
+      : `${authentification.baseUrl}ws/dms/inline/${(file as FileItem).id}`;
 
   const options = {
     fromUrl: fromUrl,

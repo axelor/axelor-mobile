@@ -16,7 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import React, {useMemo} from 'react';
+import React, {useCallback, useMemo} from 'react';
 import {Dimensions, StyleSheet, View} from 'react-native';
 import {DropdownMenu, DropdownMenuItem} from '@axelor/aos-mobile-ui';
 import {HeaderOptionMenuItem} from '../../molecules';
@@ -41,7 +41,7 @@ const HeaderOptionsMenu = ({
     barcodeAction,
     printAction,
     jsonFieldsAction,
-    showPrintTemplateSelector,
+    isTemplateSelectorVisible,
     closePrintTemplateSelector,
   } = useBasicActions({
     model,
@@ -98,13 +98,17 @@ const HeaderOptionsMenu = ({
     [allActions, headerActions],
   );
 
-  const renderPopupPrintTemplate = () => (
-    <PopupPrintTemplate
-      visible={showPrintTemplateSelector}
-      onClose={closePrintTemplateSelector}
-      model={model}
-      modelId={modelId}
-    />
+  const renderPopupPrintTemplate = useCallback(
+    () =>
+      isTemplateSelectorVisible ? (
+        <PopupPrintTemplate
+          visible={isTemplateSelectorVisible}
+          onClose={closePrintTemplateSelector}
+          model={model}
+          modelId={modelId}
+        />
+      ) : null,
+    [closePrintTemplateSelector, isTemplateSelectorVisible, model, modelId],
   );
 
   const HeaderItemList = useMemo(
@@ -150,7 +154,7 @@ const HeaderOptionsMenu = ({
     return (
       <View style={styles.container}>
         <DropdownMenu>{[...HeaderItemList, ...MenuItemList]}</DropdownMenu>
-        {showPrintTemplateSelector && renderPopupPrintTemplate()}
+        {renderPopupPrintTemplate()}
       </View>
     );
   }
@@ -159,7 +163,7 @@ const HeaderOptionsMenu = ({
     <View style={styles.container}>
       {HeaderItemList}
       {menuActions.length !== 0 && <DropdownMenu>{MenuItemList}</DropdownMenu>}
-      {showPrintTemplateSelector && renderPopupPrintTemplate()}
+      {renderPopupPrintTemplate()}
     </View>
   );
 };
