@@ -34,10 +34,6 @@ const DynamicFormField = ({field, value, onChange}) => {
     _field.type = 'string';
   }
 
-  console.log('field', _field);
-  console.log('fieldType', _field.type);
-  console.log('value', value);
-
   switch (_field.type) {
     case 'date':
       return (

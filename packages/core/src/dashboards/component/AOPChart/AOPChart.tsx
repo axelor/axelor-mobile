@@ -18,7 +18,7 @@
 
 import React, {useEffect, useState, useCallback} from 'react';
 import {StyleSheet, View} from 'react-native';
-import {ChartRender} from '@axelor/aos-mobile-ui';
+import {ChartRender, Text} from '@axelor/aos-mobile-ui';
 import {
   fetchActionView,
   fetchChartDataset,
@@ -34,9 +34,11 @@ const DEFAULT_CHART_CONFIG = {type: '', dataset: [], title: ''};
 const AOPChart = ({
   actionViewName,
   widthGraph,
+  translator,
 }: {
   actionViewName: string;
   widthGraph?: number;
+  translator?: (key: string) => string;
 }) => {
   const I18n = useTranslator();
   const [chart, setChart] = useState(DEFAULT_CHART_CONFIG);
@@ -114,10 +116,6 @@ const AOPChart = ({
     }
   }, [fetchChartData, initialLoad, searchValues]);
 
-  if (chart.dataset?.length <= 0) {
-    return null;
-  }
-
   return (
     <View
       style={{
@@ -131,13 +129,16 @@ const AOPChart = ({
         />
       </View>
       <View style={styles.flex}>
-        <ChartRender
-          dataList={transformData(chart.dataset)}
-          title={chart.title}
-          type={chart.type}
-          widthGraph={widthGraph}
-          translator={I18n.t}
-        />
+        {chart.dataset?.length > 0 ? (
+          <ChartRender
+            dataList={transformData(chart.dataset)}
+            title={chart.title}
+            type={chart.type}
+            widthGraph={widthGraph}
+          />
+        ) : (
+          <Text style={styles.text}>{translator('Base_NoRecordsFound')}</Text>
+        )}
       </View>
     </View>
   );
@@ -146,6 +147,11 @@ const AOPChart = ({
 const styles = StyleSheet.create({
   flex: {
     flex: 1,
+  },
+  text: {
+    flex: 1,
+    alignSelf: 'center',
+    padding: 15,
   },
 });
 
