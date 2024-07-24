@@ -19,6 +19,7 @@
 import React, {useCallback, useMemo} from 'react';
 import {
   useDispatch,
+  useNavigation,
   useSelector,
   useTranslator,
   useTypes,
@@ -43,6 +44,7 @@ const ProductStockIndicatorDetails = ({route}) => {
   const companyId = route?.params?.companyId;
   const I18n = useTranslator();
   const {StockMove} = useTypes();
+  const navigation = useNavigation();
   const dispatch = useDispatch();
 
   const {productFromId: product} = useSelector(state => state.product);
@@ -69,6 +71,33 @@ const ProductStockIndicatorDetails = ({route}) => {
   } = useSelector((state: any) => state.productIndicators);
   const {supplychain: supplychainConfig} = useSelector(
     state => state.appConfig,
+  );
+
+  const handleOnPressStockQty = useCallback(
+    stockMove => {
+      switch (stockMove?.typeSelect) {
+        case StockMove?.typeSelect.internal:
+          return navigation.navigate('InternalMoveDetailsGeneralScreen', {
+            internalMoveId: stockMove?.id,
+          });
+        case StockMove?.typeSelect.outgoing:
+          return navigation.navigate('CustomerDeliveryDetailScreen', {
+            customerDeliveryId: stockMove?.id,
+          });
+        case StockMove?.typeSelect.incoming:
+          return navigation.navigate('SupplierArrivalDetailsScreen', {
+            supplierArrivalId: stockMove?.id,
+          });
+        default:
+          return null;
+      }
+    },
+    [
+      StockMove?.typeSelect.internal,
+      StockMove?.typeSelect.outgoing,
+      StockMove?.typeSelect.incoming,
+      navigation,
+    ],
   );
 
   const stockQtyStatus = useMemo(
@@ -139,7 +168,7 @@ const ProductStockIndicatorDetails = ({route}) => {
             <StockQtyIndicatorCard
               indicatorType={indicatorType}
               {...item}
-              onPress={() => console.log('TEST')}
+              onPress={() => handleOnPressStockQty(item.stockMove)}
             />
           ),
         };
@@ -188,6 +217,7 @@ const ProductStockIndicatorDetails = ({route}) => {
     availableStockList,
     fetchIndicatorAPI,
     fetchStockQtyIndicatorAPI,
+    handleOnPressStockQty,
     indicatorType,
     isListEndAvailableStock,
     isListEndPurchaseOrderQty,
