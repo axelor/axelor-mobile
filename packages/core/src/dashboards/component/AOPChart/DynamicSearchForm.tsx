@@ -21,7 +21,7 @@ import {StyleSheet, View, TouchableOpacity} from 'react-native';
 import {DateInput} from '../../../components';
 import {Input, Picker, Text, Icon} from '@axelor/aos-mobile-ui';
 
-const DynamicFormField = ({field, value, onChange}) => {
+const AOPFormField = ({field, value, onChange}) => {
   const handleChange = newValue => {
     onChange(field.name, newValue);
   };
@@ -97,7 +97,7 @@ const DynamicFormField = ({field, value, onChange}) => {
   }
 };
 
-const DynamicSearchForm = ({fields, values, onChange}) => {
+const AOPSearchForm = ({fields, values, onChange}) => {
   const [showOptionalFields, setShowOptionalFields] = useState(false);
 
   const toggleOptionalFields = () => {
@@ -115,7 +115,7 @@ const DynamicSearchForm = ({fields, values, onChange}) => {
         }
 
         return (
-          <DynamicFormField
+          <AOPFormField
             key={field.name}
             field={field}
             value={values[field.name] || ''}
@@ -135,7 +135,9 @@ const DynamicSearchForm = ({fields, values, onChange}) => {
 };
 
 const styles = StyleSheet.create({
-  form: {marginHorizontal: 10},
+  form: {
+    marginHorizontal: 10,
+  },
   chevronContainer: {
     flexDirection: 'row',
     alignItems: 'center',
@@ -143,4 +145,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default DynamicSearchForm;
+export default AOPSearchForm;
