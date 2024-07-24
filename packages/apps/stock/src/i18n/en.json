@@ -15,7 +15,6 @@
   "Stock_SupplierArrivalLines": "Supplier arrival lines",
   "Stock_Inventory": "Inventory",
   "Stock_InventoryLines": "Inventory lines",
-  "Stock_QuantityStockLocation": "Quantity per stock location",
   "Stock_SeeDistributionStockLocation": "See distribution per stock location",
   "Stock_Variants": "Variants",
   "Stock_ProductDetails": "Product details",

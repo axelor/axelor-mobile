@@ -126,10 +126,7 @@ const ProductStockDetailsScreen = ({route}) => {
           />
         )}
         {!hidden && (
-          <ProductSeeStockLocationDistribution
-            companyId={companyId}
-            product={product}
-          />
+          <ProductSeeStockLocationDistribution companyId={companyId} />
         )}
         <StockLocationSearchBar
           scanKey={stockLocationScanKey}

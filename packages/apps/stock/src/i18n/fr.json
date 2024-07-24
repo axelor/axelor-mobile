@@ -15,7 +15,6 @@
   "Stock_SupplierArrivalLines": "Lignes de réception fournisseur",
   "Stock_Inventory": "Inventaire",
   "Stock_InventoryLines": "Lignes d'inventaire",
-  "Stock_QuantityStockLocation": "Distribution par emplacement de stock",
   "Stock_SeeDistributionStockLocation": "Voir la répartition par emplacement de stock",
   "Stock_Variants": "Variantes",
   "Stock_ProductDetails": "Détails du produit",

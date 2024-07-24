@@ -16,7 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import React, {useCallback, useMemo} from 'react';
+import React, {useCallback, useEffect, useMemo} from 'react';
 import {
   useDispatch,
   useNavigation,
@@ -25,6 +25,7 @@ import {
   useTypes,
 } from '@axelor/aos-mobile-core';
 import {Screen, ScrollList} from '@axelor/aos-mobile-ui';
+import {fetchProductWithId} from '../../features/productSlice';
 import {
   fetchAvailableStockIndicator,
   fetchPurchaseOrderQtyIndicator,
@@ -32,14 +33,16 @@ import {
   fetchStockQtyIndicator,
 } from '../../features/productIndicatorsSlice';
 import {
+  AvailableStockIndicatorCard,
   OrderQtyIndicatorCard,
-  ProductStockLocationCard,
   StockQtyIndicatorCard,
 } from '../../components';
+import {useStockListWithAvailability} from '../../hooks';
 import {StockIndicator} from '../../types';
 
 const ProductStockIndicatorDetails = ({route}) => {
   const indicatorType = route?.params?.type;
+  const productId = route?.params?.productId;
   const stockLocationId = route?.params?.stockLocationId;
   const companyId = route?.params?.companyId;
   const I18n = useTranslator();
@@ -67,11 +70,17 @@ const ProductStockIndicatorDetails = ({route}) => {
     loadingAvailableStock,
     moreLoadingAvailableStock,
     isListEndAvailableStock,
-    availableStockList,
   } = useSelector((state: any) => state.productIndicators);
+  const {availableStockList} = useStockListWithAvailability(companyId, product);
   const {supplychain: supplychainConfig} = useSelector(
     state => state.appConfig,
   );
+
+  useEffect(() => {
+    if (productId != null && productId !== product?.id) {
+      dispatch((fetchProductWithId as any)(productId));
+    }
+  }, [dispatch, product?.id, productId]);
 
   const handleOnPressStockQty = useCallback(
     stockMove => {
@@ -198,14 +207,14 @@ const ProductStockIndicatorDetails = ({route}) => {
           isListEnd: isListEndAvailableStock,
           fetchData: fetchIndicatorAPI,
           renderItem: ({item}) => (
-            <ProductStockLocationCard
+            <AvailableStockIndicatorCard
               stockLocationName={item.stockLocation?.name}
               realQty={item.currentQty}
               futureQty={item.futureQty}
               reservedQty={
                 supplychainConfig?.manageStockReservation && item.reservedQty
               }
-              availability={3}
+              availability={item?.availableStock}
               unit={item.unit?.name}
             />
           ),

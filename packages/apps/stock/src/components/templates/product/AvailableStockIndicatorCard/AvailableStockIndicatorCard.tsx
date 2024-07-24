@@ -21,7 +21,7 @@ import {StyleSheet} from 'react-native';
 import {ObjectCard, useDigitFormat, useThemeColor} from '@axelor/aos-mobile-ui';
 import {useTranslator} from '@axelor/aos-mobile-core';
 
-interface ProductStockLocationCardProps {
+interface AvailableStockIndicatorCardProps {
   stockLocationName: string;
   unit: string;
   realQty: number;
@@ -30,14 +30,14 @@ interface ProductStockLocationCardProps {
   availability: number;
 }
 
-const ProductStockLocationCard = ({
+const AvailableStockIndicatorCard = ({
   stockLocationName,
   unit,
   realQty,
   futureQty,
   reservedQty,
   availability,
-}: ProductStockLocationCardProps) => {
+}: AvailableStockIndicatorCardProps) => {
   const Colors = useThemeColor();
   const I18n = useTranslator();
   const formatNumber = useDigitFormat();
@@ -118,4 +118,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default ProductStockLocationCard;
+export default AvailableStockIndicatorCard;
