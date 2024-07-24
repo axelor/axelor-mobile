@@ -41,6 +41,7 @@ interface PeriodInputProps {
   showTitle?: boolean;
   horizontal?: boolean;
   style?: any;
+  defaultInterval?: number;
 }
 
 const PeriodInput = ({
@@ -49,12 +50,16 @@ const PeriodInput = ({
   showTitle = true,
   horizontal = true,
   style,
+  defaultInterval = 0,
 }: PeriodInputProps) => {
   const I18n = useTranslator();
 
   const [startDate, setStartDate] = useState(startDateConfig.date);
   const [endDate, setEndDate] = useState(endDateConfig.date);
   const [isPeriodError, setIsPeriodError] = useState(false);
+  const [interval, setInterval] = useState(
+    defaultInterval * 24 * 60 * 60 * 1000,
+  );
 
   useEffect(() => {
     setStartDate(startDateConfig.date);
@@ -74,12 +79,25 @@ const PeriodInput = ({
     return getStyles(horizontal);
   }, [horizontal]);
 
+  const updateDates = useCallback(
+    (newStartDate: Date, newEndDate: Date) => {
+      if (newStartDate && newEndDate) {
+        const newInterval = newEndDate.getTime() - newStartDate.getTime();
+        setInterval(newInterval);
+      }
+      setStartDate(newStartDate);
+      setEndDate(newEndDate);
+      startDateConfig.onDateChange(newStartDate);
+      endDateConfig.onDateChange(newEndDate);
+    },
+    [startDateConfig, endDateConfig],
+  );
+
   const renderDateInput = useCallback(
     (mode: number) => {
       const isStartDate = mode === DATE_INPUT_MODE.startDate;
       const translationKey = isStartDate ? 'Base_StartDate' : 'Base_EndDate';
       const date = isStartDate ? startDate : endDate;
-      const setDate = isStartDate ? setStartDate : setEndDate;
       const dateConfig = isStartDate ? startDateConfig : endDateConfig;
 
       return (
@@ -91,8 +109,17 @@ const PeriodInput = ({
           popup={horizontal}
           defaultDate={date}
           onDateChange={_date => {
-            setDate(_date);
-            dateConfig.onDateChange(_date);
+            if (isStartDate) {
+              const newEndDate = _date
+                ? new Date(_date.getTime() + interval)
+                : null;
+              updateDates(_date, newEndDate);
+            } else {
+              const newStartDate = _date
+                ? new Date(_date.getTime() - interval)
+                : null;
+              updateDates(newStartDate, _date);
+            }
           }}
           readonly={dateConfig.readonly}
           required={dateConfig.required}
@@ -101,13 +128,15 @@ const PeriodInput = ({
     },
     [
       endDate,
-      endDateConfig,
       horizontal,
       I18n,
+      interval,
       showTitle,
       startDate,
       startDateConfig,
+      endDateConfig,
       styles.dateInput,
+      updateDates,
     ],
   );
 
