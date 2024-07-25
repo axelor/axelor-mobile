@@ -50,7 +50,7 @@ const PeriodInput = ({
   showTitle = true,
   horizontal = true,
   style,
-  defaultInterval = 0,
+  defaultInterval,
 }: PeriodInputProps) => {
   const I18n = useTranslator();
 
@@ -58,7 +58,7 @@ const PeriodInput = ({
   const [endDate, setEndDate] = useState(endDateConfig.date);
   const [isPeriodError, setIsPeriodError] = useState(false);
   const [interval, setInterval] = useState(
-    defaultInterval * 24 * 60 * 60 * 1000,
+    defaultInterval !== null ? defaultInterval * 60 * 60 * 1000 : null,
   );
 
   useEffect(() => {
@@ -110,14 +110,16 @@ const PeriodInput = ({
           defaultDate={date}
           onDateChange={_date => {
             if (isStartDate) {
-              const newEndDate = _date
-                ? new Date(_date.getTime() + interval)
-                : null;
+              const newEndDate =
+                _date && interval !== null
+                  ? new Date(_date.getTime() + interval)
+                  : null;
               updateDates(_date, newEndDate);
             } else {
-              const newStartDate = _date
-                ? new Date(_date.getTime() - interval)
-                : null;
+              const newStartDate =
+                _date && interval !== null
+                  ? new Date(_date.getTime() - interval)
+                  : null;
               updateDates(newStartDate, _date);
             }
           }}

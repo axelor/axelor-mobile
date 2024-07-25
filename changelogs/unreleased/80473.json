@@ -1,0 +1,5 @@
+{
+  "title": "PeriodInput: add defaultInterval to set a default interval between start and end dates",
+  "type": "feat",
+  "packages": "core"
+}
