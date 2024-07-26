@@ -18,7 +18,7 @@
 
 import {createStandardSearch, getTypes} from '@axelor/aos-mobile-core';
 
-const createStockMoveQtyCriteria = (
+const createStockQtyCriteria = (
   status,
   isAllocatedQty,
   productId,
@@ -174,7 +174,7 @@ export async function fetchStockQtyIndicator({
 }) {
   return createStandardSearch({
     model: 'com.axelor.apps.stock.db.StockMoveLine',
-    criteria: createStockMoveQtyCriteria(
+    criteria: createStockQtyCriteria(
       status,
       isAllocatedQty,
       productId,

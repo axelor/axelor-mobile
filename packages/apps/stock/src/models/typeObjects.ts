@@ -256,6 +256,30 @@ export const stock_typeObjects: ModuleSelections = [
     },
   },
   {
+    modelName: 'com.axelor.apps.stock.db.StockMoveLine',
+    fields: {
+      availableStatus: {
+        content: [
+          {
+            key: 'Available',
+            value: 1,
+            title: null,
+          },
+          {
+            key: 'AvailableForProduct',
+            value: 2,
+            title: null,
+          },
+          {
+            key: 'Missing',
+            value: 3,
+            title: null,
+          },
+        ],
+      },
+    },
+  },
+  {
     modelName: 'com.axelor.apps.sale.db.SaleOrder',
     fields: {
       statusSelect: {

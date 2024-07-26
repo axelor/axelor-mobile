@@ -40,7 +40,7 @@ import {
 
 const stockLocationScanKey = 'stock-location_product-indicators';
 
-const ProductStockDetailsScreen = ({route}) => {
+const ProductStockDetailsScreen = ({route, addtionalIndicators}) => {
   const productId = route.params.product?.id;
   const I18n = useTranslator();
   const dispatch = useDispatch();
@@ -145,6 +145,7 @@ const ProductStockDetailsScreen = ({route}) => {
         <ProductCardStockIndicatorList
           stockLocationId={stockLocation?.id}
           companyId={companyId}
+          addtionalIndicators={addtionalIndicators}
         />
       </ScrollView>
     </Screen>

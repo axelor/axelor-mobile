@@ -97,4 +97,27 @@ export const manufacturing_modelAPI: ObjectFields = {
     code: schemaContructor.string(),
     name: schemaContructor.string(),
   }),
+  manufacturing_manufacturingQtyIndicator: schemaContructor.object({
+    producedManufOrder: schemaContructor.subObject().concat(
+      schemaContructor.object({
+        manufOrderSeq: schemaContructor.string(),
+      }),
+    ),
+    consumedManufOrder: schemaContructor.subObject().concat(
+      schemaContructor.object({
+        manufOrderSeq: schemaContructor.string(),
+      }),
+    ),
+    consumedOperationOrder: schemaContructor.subObject(),
+    stockMove: schemaContructor.subObject().concat(
+      schemaContructor.object({
+        stockMoveSeq: schemaContructor.string(),
+        realDate: schemaContructor.string(),
+        statusSelect: schemaContructor.number(),
+      }),
+    ),
+    realQty: schemaContructor.number(),
+    unit: schemaContructor.subObject('name'),
+    trackingNumber: schemaContructor.string(),
+  }),
 };

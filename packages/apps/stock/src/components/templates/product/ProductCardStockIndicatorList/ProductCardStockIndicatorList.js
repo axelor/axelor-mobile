@@ -26,7 +26,11 @@ import {
 } from '@axelor/aos-mobile-core';
 import {StockIndicator} from '../../../../types';
 
-const ProductCardStockIndicatorList = ({stockLocationId, companyId}) => {
+const ProductCardStockIndicatorList = ({
+  stockLocationId,
+  companyId,
+  addtionalIndicators = [],
+}) => {
   const I18n = useTranslator();
   const navigation = useNavigation();
   const formatNumber = useDigitFormat();
@@ -36,71 +40,66 @@ const ProductCardStockIndicatorList = ({stockLocationId, companyId}) => {
     state => state.appConfig,
   );
 
-  const indicators = useMemo(
-    () => [
+  const indicatorOnPress = useCallback(
+    type =>
+      navigation.navigate('ProductStockIndicatorDetails', {
+        type,
+        stockLocationId,
+        companyId,
+      }),
+    [companyId, navigation, stockLocationId],
+  );
+
+  const indicators = useMemo(() => {
+    const _indicators = [
       {
-        type: StockIndicator.type.RealQty,
         titleKey: 'Stock_RealQty',
         value: productIndicators?.realQty,
+        onPress: () => indicatorOnPress(StockIndicator.type.RealQty),
       },
       {
-        type: StockIndicator.type.FutureQty,
         titleKey: 'Stock_FutureQty',
         value: productIndicators?.futureQty,
+        onPress: () => indicatorOnPress(StockIndicator.type.FutureQty),
       },
       {
-        type: StockIndicator.type.AllocatedQty,
         titleKey: 'Stock_AllocatedQty',
         value: productIndicators?.allocatedQty,
         condition: supplychainConfig?.manageStockReservation,
+        onPress: () => indicatorOnPress(StockIndicator.type.AllocatedQty),
       },
       {
-        type: StockIndicator.type.SaleOrderQty,
         titleKey: 'Stock_SaleOrderQty',
         value: productIndicators?.saleOrderQty,
+        onPress: () => indicatorOnPress(StockIndicator.type.SaleOrderQty),
       },
       {
-        type: StockIndicator.type.PurchaseOrderQty,
         titleKey: 'Stock_PurchaseOrderQty',
         value: productIndicators?.purchaseOrderQty,
+        onPress: () => indicatorOnPress(StockIndicator.type.PurchaseOrderQty),
       },
       {
-        type: StockIndicator.type.AvailableStock,
         titleKey: 'Stock_AvailableStock',
         value: productIndicators?.availableStock,
+        onPress: () => indicatorOnPress(StockIndicator.type.AvailableStock),
       },
-      {
-        type: StockIndicator.type.BuildingQty,
-        titleKey: 'Stock_BuildingQty',
-        value: productIndicators?.buildingQty,
-      },
-      {
-        type: StockIndicator.type.ConsumedMOQty,
-        titleKey: 'Stock_ConsumedMOQty',
-        value: productIndicators?.consumeManufOrderQty,
-      },
-      {
-        type: StockIndicator.type.MissingMOQty,
-        titleKey: 'Stock_MissingMOQty',
-        value: productIndicators?.missingManufOrderQty,
-      },
-    ],
-    [productIndicators, supplychainConfig?.manageStockReservation],
-  );
+    ];
+
+    return _indicators.concat(addtionalIndicators);
+  }, [
+    addtionalIndicators,
+    indicatorOnPress,
+    productIndicators,
+    supplychainConfig?.manageStockReservation,
+  ]);
 
   const renderIndicator = useCallback(
-    ({type, titleKey, value, condition = true}, idx) => {
+    ({titleKey, value, condition = true, onPress}, idx) => {
       if (value != null && condition) {
         return (
           <TouchableOpacity
             style={styles.chartContainer}
-            onPress={() =>
-              navigation.navigate('ProductStockIndicatorDetails', {
-                type,
-                stockLocationId,
-                companyId,
-              })
-            }
+            onPress={onPress}
             activeOpacity={0.9}
             key={idx}>
             <IndicatorChart
@@ -117,7 +116,7 @@ const ProductCardStockIndicatorList = ({stockLocationId, companyId}) => {
         );
       }
     },
-    [I18n, companyId, formatNumber, navigation, stockLocationId],
+    [I18n, formatNumber],
   );
 
   return (

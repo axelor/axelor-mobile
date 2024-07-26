@@ -47,6 +47,9 @@
   "Manufacturing_SeeAvailability": "Voir la disponibilité",
   "Manufacturing_SeeSubMO": "Voir les sous OF",
   "Manufacturing_IncrementQuantity": "Augmenter la quantité",
+  "Manufacturing_NavigateToMO": "Aller à l'ordre de fabrication",
+  "Manufacturing_NavigateToOO": "Aller à l'opération de fabrication",
+  "Manufacturing_NavigateToIM": "Aller au mouvement interne",
   "Manufacturing_SliceAction_FilterMachines": "filtre des machines",
   "Manufacturing_SliceAction_FetchManufacturingOrders": "récupération des ordres de fabrication",
   "Manufacturing_SliceAction_FetchManufacturingOrdersFromId": "récupération d'un ordre de fabrication par id",
@@ -70,5 +73,6 @@
   "Manufacturing_SliceAction_AddTrackingNumberToConsumedProductStockMoveLine": "ajouter un numéro de suivi à la ligne de déplacement du stock de produits consommés",
   "Manufacturing_SliceAction_FetchConsumedProductWithId": "récupération du produit consommé avec id",
   "Manufacturing_SliceAction_FetchProducedProductWithId": "récupération du produit fini avec id",
-  "Manufacturing_SliceAction_FetchProdProductWithId": "récuperation du produit de production avec id"
+  "Manufacturing_SliceAction_FetchProdProductWithId": "récuperation du produit de production avec id",
+  "Manufacturing_SliceAction_FetchManufacturingQtyIndicator": "récupération des données de l'indicateur sur la quantité en production"
 }
