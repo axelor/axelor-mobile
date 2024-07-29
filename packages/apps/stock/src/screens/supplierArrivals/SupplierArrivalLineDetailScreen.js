@@ -17,12 +17,14 @@
  */
 
 import React, {useCallback, useEffect, useMemo, useState} from 'react';
-import {StyleSheet} from 'react-native';
+import {StyleSheet, TouchableOpacity} from 'react-native';
 import {
   HeaderContainer,
   Picker,
   Screen,
   KeyboardAvoidingScrollView,
+  Icon,
+  Text,
 } from '@axelor/aos-mobile-ui';
 import {
   useDispatch,
@@ -149,6 +151,14 @@ const SupplierArrivalLineDetailScreen = ({route, navigation}) => {
     });
   };
 
+  const handleAddTrackingNumber = () => {
+    navigation.navigate('SupplierArrivalAddTrackingScreen', {
+      supplierArrival: supplierArrival,
+      supplierArrivalLine: supplierArrivalLine,
+      product: product,
+    });
+  };
+
   const conformityList = useMemo(() => {
     const conformityToDisplay = [
       StockMove?.conformitySelect.Compliant,
@@ -234,6 +244,15 @@ const SupplierArrivalLineDetailScreen = ({route, navigation}) => {
           }
           isScrollViewContainer={true}
         />
+        <TouchableOpacity
+          style={styles.trackingNumberContainer}
+          onPress={handleAddTrackingNumber}
+          disabled={readonly}>
+          <Text writingType="important" style={styles.trackingNumberText}>
+            {I18n.t('Stock_AddTrackingNumber')}
+          </Text>
+          <Icon name="plus-lg" size={24} style={styles.action} />
+        </TouchableOpacity>
       </KeyboardAvoidingScrollView>
     </Screen>
   );
@@ -243,6 +262,15 @@ const styles = StyleSheet.create({
   container: {
     alignItems: 'center',
     paddingBottom: 100,
+  },
+  trackingNumberContainer: {
+    flexDirection: 'row',
+    alignSelf: 'flex-start',
+    marginHorizontal: 24,
+    marginTop: 10,
+  },
+  action: {
+    marginLeft: 10,
   },
 });
 

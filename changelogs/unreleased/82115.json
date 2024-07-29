@@ -1,0 +1,5 @@
+{
+  "title": "SupplierArrivalLineDetailScreen: possibility to add tracking number without verification",
+  "type": "feat",
+  "packages": "stock"
+}
