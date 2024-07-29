@@ -64,10 +64,15 @@ const IndicatorChartRender = (
   widthGraph,
   hideCardBackground,
 ) => {
+  const formattedData = datasets[0].map(data => ({
+    ...data,
+    title: data.label,
+  }));
+
   return (
     <IndicatorChart
       title={title}
-      datasets={datasets}
+      datasets={formattedData}
       widthGraph={widthGraph}
       hideCardBackground={hideCardBackground}
     />
