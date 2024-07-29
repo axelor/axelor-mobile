@@ -47,7 +47,7 @@ export const SaleModule: Module = {
   menus: {
     sale_menu_product: {
       title: 'Sale_ProductsServices',
-      icon: 'basket2-fill',
+      icon: 'tags',
       screen: 'ProductSaleListScreen',
     },
     sale_menu_quotations: {
