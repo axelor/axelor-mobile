@@ -41,10 +41,12 @@ import {useStockListWithAvailability} from '../../hooks';
 import {StockIndicator} from '../../types';
 
 const ProductStockIndicatorDetails = ({route}) => {
-  const indicatorType = route?.params?.type;
-  const productId = route?.params?.productId;
-  const stockLocationId = route?.params?.stockLocationId;
-  const companyId = route?.params?.companyId;
+  const {
+    type: indicatorType,
+    productId,
+    stockLocationId,
+    companyId,
+  } = route?.params ?? {};
   const I18n = useTranslator();
   const {StockMove} = useTypes();
   const navigation = useNavigation();
@@ -72,9 +74,6 @@ const ProductStockIndicatorDetails = ({route}) => {
     isListEndAvailableStock,
   } = useSelector((state: any) => state.productIndicators);
   const {availableStockList} = useStockListWithAvailability(companyId, product);
-  const {supplychain: supplychainConfig} = useSelector(
-    state => state.appConfig,
-  );
 
   useEffect(() => {
     if (productId != null && productId !== product?.id) {
@@ -101,27 +100,17 @@ const ProductStockIndicatorDetails = ({route}) => {
           return null;
       }
     },
-    [
-      StockMove?.typeSelect.internal,
-      StockMove?.typeSelect.outgoing,
-      StockMove?.typeSelect.incoming,
-      navigation,
-    ],
-  );
-
-  const stockQtyStatus = useMemo(
-    () =>
-      indicatorType === StockIndicator.type.RealQty
-        ? StockMove?.statusSelect.Realized
-        : StockMove?.statusSelect.Planned,
-    [indicatorType, StockMove?.statusSelect],
+    [StockMove, navigation],
   );
 
   const fetchStockQtyIndicatorAPI = useCallback(
     (page = 0) => {
       dispatch(
         (fetchStockQtyIndicator as any)({
-          status: stockQtyStatus,
+          status:
+            indicatorType === StockIndicator.type.RealQty
+              ? StockMove?.statusSelect.Realized
+              : StockMove?.statusSelect.Planned,
           isAllocatedQty: indicatorType === StockIndicator.type.AllocatedQty,
           productId: product?.id,
           stockLocationId,
@@ -131,12 +120,12 @@ const ProductStockIndicatorDetails = ({route}) => {
       );
     },
     [
+      StockMove,
       companyId,
       dispatch,
       indicatorType,
       product?.id,
       stockLocationId,
-      stockQtyStatus,
     ],
   );
 
@@ -206,18 +195,7 @@ const ProductStockIndicatorDetails = ({route}) => {
           moreLoading: moreLoadingAvailableStock,
           isListEnd: isListEndAvailableStock,
           fetchData: fetchIndicatorAPI,
-          renderItem: ({item}) => (
-            <AvailableStockIndicatorCard
-              stockLocationName={item.stockLocation?.name}
-              realQty={item.currentQty}
-              futureQty={item.futureQty}
-              reservedQty={
-                supplychainConfig?.manageStockReservation && item.reservedQty
-              }
-              availability={item?.availableStock}
-              unit={item.unit?.name}
-            />
-          ),
+          renderItem: ({item}) => <AvailableStockIndicatorCard {...item} />,
         };
       default:
         return null;
@@ -243,7 +221,6 @@ const ProductStockIndicatorDetails = ({route}) => {
     purchaseOrderQtyList,
     saleOrderQtyList,
     stockQtyList,
-    supplychainConfig?.manageStockReservation,
   ]);
 
   if (scrollListData == null) {
@@ -251,7 +228,7 @@ const ProductStockIndicatorDetails = ({route}) => {
   }
 
   return (
-    <Screen>
+    <Screen removeSpaceOnTop>
       <ScrollList {...scrollListData} translator={I18n.t} />
     </Screen>
   );

@@ -281,6 +281,7 @@ export const stock_typeObjects: ModuleSelections = [
   },
   {
     modelName: 'com.axelor.apps.sale.db.SaleOrder',
+    specificKey: 'Stock_SaleOrder',
     fields: {
       statusSelect: {
         content: [
@@ -315,6 +316,7 @@ export const stock_typeObjects: ModuleSelections = [
   },
   {
     modelName: 'com.axelor.apps.sale.db.SaleOrderLine',
+    specificKey: 'Stock_SaleOrderLine',
     fields: {
       deliveryState: {
         content: [
@@ -342,6 +344,7 @@ export const stock_typeObjects: ModuleSelections = [
   },
   {
     modelName: 'com.axelor.apps.purchase.db.PurchaseOrder',
+    specificKey: 'Stock_PurchaseOrder',
     fields: {
       statusSelect: {
         content: [
@@ -376,6 +379,7 @@ export const stock_typeObjects: ModuleSelections = [
   },
   {
     modelName: 'com.axelor.apps.purchase.db.PurchaseOrderLine',
+    specificKey: 'Stock_PurchaseOrderLine',
     fields: {
       receiptState: {
         content: [

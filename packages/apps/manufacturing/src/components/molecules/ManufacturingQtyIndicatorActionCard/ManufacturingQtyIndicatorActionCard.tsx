@@ -29,7 +29,7 @@ interface ManufacturingQtyIndicatorActionCardProps {
   stockMove: any;
   realQty: number;
   unit: any;
-  trackingNumber: string;
+  trackingNumber: any;
 }
 
 const ManufacturingQtyIndicatorActionCard = ({
@@ -63,7 +63,9 @@ const ManufacturingQtyIndicatorActionCard = ({
         {
           iconName: 'gear-fill',
           helper: I18n.t(
-            true ? 'Manufacturing_NavigateToMO' : 'Manufacturing_NavigateToOO',
+            consumedOperationOrder?.id == null
+              ? 'Manufacturing_NavigateToMO'
+              : 'Manufacturing_NavigateToOO',
           ),
           onPress: handleManufacturingNavigation,
         },
@@ -84,7 +86,7 @@ const ManufacturingQtyIndicatorActionCard = ({
         date={stockMove?.realDate}
         realQty={realQty}
         unitName={unit?.name}
-        trackingNumber={trackingNumber}
+        trackingNumber={trackingNumber?.trackingNumberSeq}
         statusSelect={stockMove?.statusSelect}
       />
     </ActionCard>

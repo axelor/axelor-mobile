@@ -24,6 +24,7 @@ import {
   useDispatch,
   useTranslator,
   usePermitted,
+  useIsFocused,
 } from '@axelor/aos-mobile-core';
 import {
   ProductCardStockIndicatorList,
@@ -43,6 +44,7 @@ const stockLocationScanKey = 'stock-location_product-indicators';
 const ProductStockDetailsScreen = ({route, addtionalIndicators}) => {
   const productId = route.params.product?.id;
   const I18n = useTranslator();
+  const isFocused = useIsFocused();
   const dispatch = useDispatch();
   const {readonly, hidden} = usePermitted({
     modelName: 'com.axelor.apps.stock.db.StockLocationLine',
@@ -66,8 +68,10 @@ const ProductStockDetailsScreen = ({route, addtionalIndicators}) => {
   }, [dispatch, productId]);
 
   useEffect(() => {
-    fetchProductFromId();
-  }, [fetchProductFromId]);
+    if (isFocused) {
+      fetchProductFromId();
+    }
+  }, [fetchProductFromId, isFocused]);
 
   useEffect(() => {
     if (product?.id != null) {

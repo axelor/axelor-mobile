@@ -16,9 +16,13 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import React from 'react';
-import {StyleSheet, View} from 'react-native';
-import {useTranslator, useTypeHelpers, useTypes} from '@axelor/aos-mobile-core';
+import React, {useCallback} from 'react';
+import {
+  DateDisplay,
+  useTranslator,
+  useTypeHelpers,
+  useTypes,
+} from '@axelor/aos-mobile-core';
 import {ObjectCard, useDigitFormat} from '@axelor/aos-mobile-ui';
 
 interface SaleOrderQtyIndicatorCardProps {
@@ -51,86 +55,79 @@ const SaleOrderQtyIndicatorCard = ({
   receiptState,
 }: SaleOrderQtyIndicatorCardProps) => {
   const I18n = useTranslator();
-  const {PurchaseOrderLine, SaleOrderLine} = useTypes();
+  const {
+    Stock_PurchaseOrderLine: PurchaseOrderLine,
+    Stock_SaleOrderLine: SaleOrderLine,
+  } = useTypes();
   const {getItemColor, getItemTitle} = useTypeHelpers();
   const formatNumber = useDigitFormat();
 
+  const formatQty = useCallback(
+    (_qty, titleKey) => {
+      return {
+        displayText: `${formatNumber(_qty)} ${unit?.name}`,
+        indicatorText: `${I18n.t(titleKey)} :`,
+        hideIf: _qty == null,
+      };
+    },
+    [I18n, formatNumber, unit?.name],
+  );
+
   return (
-    <View style={style}>
-      <ObjectCard
-        style={styles.container}
-        showArrow={false}
-        touchable={false}
-        upperTexts={{
-          items: [
-            {
-              displayText:
-                saleOrder?.saleOrderSeq ?? purchaseOrder?.purchaseOrderSeq,
-              isTitle: true,
-            },
-            {
-              iconName: 'house',
-              indicatorText:
-                saleOrder?.stockLocation ?? purchaseOrder?.stockLocation,
-              hideIfNull: true,
-            },
-            {
-              displayText: `${formatNumber(qty)} ${unit?.name}`,
-              indicatorText: `${I18n.t('Stock_Quantity')} :`,
-            },
-            {
-              displayText: `${formatNumber(deliveredQty)} ${unit?.name}`,
-              indicatorText: `${I18n.t('Stock_DeliveredQty')} :`,
-              hideIf: deliveredQty == null,
-            },
-            {
-              displayText: `${formatNumber(reservedQty)} ${unit?.name}`,
-              indicatorText: `${I18n.t('Stock_AllocatedQty')} :`,
-              hideIf: reservedQty == null,
-            },
-            {
-              displayText: `${formatNumber(receivedQty)} ${unit?.name}`,
-              indicatorText: `${I18n.t('Stock_ReceivedQty')} :`,
-              hideIf: receivedQty == null,
-            },
-            {
-              iconName: 'calendar-event',
-              indicatorText: estimatedShippingDate ?? estimatedReceiptDate,
-              hideIfNull: true,
-            },
-          ],
-        }}
-        sideBadges={{
-          items: [
-            deliveryState != null && {
-              displayText: getItemTitle(
-                SaleOrderLine?.deliveryState,
-                deliveryState,
-              ),
-              color: getItemColor(SaleOrderLine?.deliveryState, deliveryState),
-            },
-            receiptState != null && {
-              displayText: getItemTitle(
-                PurchaseOrderLine?.receiptState,
-                receiptState,
-              ),
-              color: getItemColor(
-                PurchaseOrderLine?.receiptState,
-                receiptState,
-              ),
-            },
-          ],
-        }}
-      />
-    </View>
+    <ObjectCard
+      style={style}
+      showArrow={false}
+      touchable={false}
+      upperTexts={{
+        items: [
+          {
+            displayText:
+              saleOrder?.saleOrderSeq ?? purchaseOrder?.purchaseOrderSeq,
+            isTitle: true,
+          },
+          {
+            iconName: 'house',
+            indicatorText:
+              saleOrder?.stockLocation ?? purchaseOrder?.stockLocation,
+            hideIfNull: true,
+          },
+          {...formatQty(qty, 'Stock_Quantity')},
+          {...formatQty(deliveredQty, 'Stock_DeliveredQty')},
+          {...formatQty(reservedQty, 'Stock_AllocatedQty')},
+          {...formatQty(receivedQty, 'Stock_ReceivedQty')},
+          {
+            customComponent: (
+              <DateDisplay
+                date={estimatedShippingDate ?? estimatedReceiptDate}
+                size={14}
+                displayYear
+              />
+            ),
+          },
+        ],
+      }}
+      sideBadges={{
+        items: [
+          {
+            displayText: getItemTitle(
+              SaleOrderLine?.deliveryState,
+              deliveryState,
+            ),
+            color: getItemColor(SaleOrderLine?.deliveryState, deliveryState),
+            showIf: deliveryState == null,
+          },
+          {
+            displayText: getItemTitle(
+              PurchaseOrderLine?.receiptState,
+              receiptState,
+            ),
+            color: getItemColor(PurchaseOrderLine?.receiptState, receiptState),
+            showIf: receiptState == null,
+          },
+        ],
+      }}
+    />
   );
 };
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    marginVertical: 2,
-  },
-});
 
 export default SaleOrderQtyIndicatorCard;

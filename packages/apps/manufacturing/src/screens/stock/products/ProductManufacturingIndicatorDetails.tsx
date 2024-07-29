@@ -22,8 +22,9 @@ import {Screen, ScrollList} from '@axelor/aos-mobile-ui';
 import {ManufacturingQtyIndicatorActionCard} from '../../../components';
 import {fetchManufacturingQtyIndicator} from '../../../features/productIndicatorsSlice';
 
-const ProductStockIndicatorDetails = ({route}) => {
+const ProductManufacturingIndicatorDetails = ({route}) => {
   const indicatorType = route?.params?.type;
+  const productId = route?.params?.productId;
   const I18n = useTranslator();
   const dispatch = useDispatch();
 
@@ -33,23 +34,22 @@ const ProductStockIndicatorDetails = ({route}) => {
     isListEndManufacturingQty,
     manufacturingQtyList,
   } = useSelector((state: any) => state.manufacturing_productIndicators);
-  const {productFromId: product} = useSelector(state => state.product);
 
   const fetchManufacturingQtyIndicatorAPI = useCallback(
     (page = 0) => {
       dispatch(
         (fetchManufacturingQtyIndicator as any)({
           indicatorType,
-          productId: product?.id,
+          productId: productId,
           page,
         }),
       );
     },
-    [dispatch, indicatorType, product?.id],
+    [dispatch, indicatorType, productId],
   );
 
   return (
-    <Screen>
+    <Screen removeSpaceOnTop>
       <ScrollList
         loadingList={loadingManufacturingQty}
         data={manufacturingQtyList}
@@ -65,4 +65,4 @@ const ProductStockIndicatorDetails = ({route}) => {
   );
 };
 
-export default ProductStockIndicatorDetails;
+export default ProductManufacturingIndicatorDetails;

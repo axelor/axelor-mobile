@@ -17,7 +17,7 @@
  */
 
 import {createStandardSearch, getTypes} from '@axelor/aos-mobile-core';
-import {StockIndicator} from '@axelor/aos-mobile-stock';
+import {ProductIndicator} from '../types';
 
 const createManufacturingQtyCriteria = (indicatorType, productId) => {
   const StockMove = getTypes().StockMove;
@@ -39,58 +39,58 @@ const createManufacturingQtyCriteria = (indicatorType, productId) => {
     },
   ];
 
-  const buildingCriteria = [
-    {
-      fieldName: 'toStockLocation.typeSelect',
-      operator: '!=',
-      value: StockLocation?.typeSelect.virtual,
-    },
-    {
-      fieldName: 'producedManufOrder.statusSelect',
-      operator: 'in',
-      value: [
-        ManufOrder?.statusSelect.Planned,
-        ManufOrder?.statusSelect.InProgress,
-        ManufOrder?.statusSelect.StandBy,
-      ],
-    },
-  ];
+  if (indicatorType === ProductIndicator.type.BuildingQty) {
+    const buildingCriteria = [
+      {
+        fieldName: 'toStockLocation.typeSelect',
+        operator: '!=',
+        value: StockLocation?.typeSelect.virtual,
+      },
+      {
+        fieldName: 'producedManufOrder.statusSelect',
+        operator: 'in',
+        value: [
+          ManufOrder?.statusSelect.Planned,
+          ManufOrder?.statusSelect.InProgress,
+          ManufOrder?.statusSelect.StandBy,
+        ],
+      },
+    ];
 
-  const MOCriteria = [
-    {
-      fieldName: 'fromStockLocation.typeSelect',
-      operator: '!=',
-      value: StockLocation?.typeSelect.virtual,
-    },
-    {
-      operator: 'or',
-      criteria: [
-        {
-          fieldName: 'consumedManufOrder.statusSelect',
-          operator: 'in',
-          value: [
-            ManufOrder?.statusSelect.Planned,
-            ManufOrder?.statusSelect.InProgress,
-            ManufOrder?.statusSelect.StandBy,
-          ],
-        },
-        {
-          fieldName: 'consumedOperationOrder.statusSelect',
-          operator: 'in',
-          value: [
-            OperationOrder?.statusSelect.Planned,
-            OperationOrder?.statusSelect.InProgress,
-            OperationOrder?.statusSelect.StandBy,
-          ],
-        },
-      ],
-    },
-  ];
-
-  if (indicatorType === StockIndicator.type.BuildingQty) {
     return defaultCriteria.concat(buildingCriteria);
   } else {
-    if (indicatorType === StockIndicator.type.MissingMOQty) {
+    const MOCriteria = [
+      {
+        fieldName: 'fromStockLocation.typeSelect',
+        operator: '!=',
+        value: StockLocation?.typeSelect.virtual,
+      },
+      {
+        operator: 'or',
+        criteria: [
+          {
+            fieldName: 'consumedManufOrder.statusSelect',
+            operator: 'in',
+            value: [
+              ManufOrder?.statusSelect.Planned,
+              ManufOrder?.statusSelect.InProgress,
+              ManufOrder?.statusSelect.StandBy,
+            ],
+          },
+          {
+            fieldName: 'consumedOperationOrder.statusSelect',
+            operator: 'in',
+            value: [
+              OperationOrder?.statusSelect.Planned,
+              OperationOrder?.statusSelect.InProgress,
+              OperationOrder?.statusSelect.StandBy,
+            ],
+          },
+        ],
+      },
+    ];
+
+    if (indicatorType === ProductIndicator.type.MissingMOQty) {
       MOCriteria.push({
         fieldName: 'availableStatus',
         operator: '=',

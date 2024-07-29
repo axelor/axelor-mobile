@@ -76,8 +76,8 @@ const createStockQtyCriteria = (
 };
 
 const createSaleOrderQtyCriteria = productId => {
-  const SaleOrder = getTypes().SaleOrder;
-  const SaleOrderLine = getTypes().SaleOrderLine;
+  const SaleOrder = getTypes().Stock_SaleOrder;
+  const SaleOrderLine = getTypes().Stock_SaleOrderLine;
 
   const criteria = [
     {
@@ -101,8 +101,8 @@ const createSaleOrderQtyCriteria = productId => {
 };
 
 const createPurchaseOrderQtyCriteria = productId => {
-  const PurchaseOrder = getTypes().PurchaseOrder;
-  const PurchaseOrderLine = getTypes().PurchaseOrderLine;
+  const PurchaseOrder = getTypes().Stock_PurchaseOrder;
+  const PurchaseOrderLine = getTypes().Stock_PurchaseOrderLine;
 
   const criteria = [
     {

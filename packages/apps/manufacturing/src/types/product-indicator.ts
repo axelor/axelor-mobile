@@ -16,15 +16,12 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-class StockIndicator {
+class ProductIndicator {
   static type = {
-    RealQty: 0,
-    FutureQty: 1,
-    AllocatedQty: 2,
-    SaleOrderQty: 3,
-    PurchaseOrderQty: 4,
-    AvailableStock: 5,
+    BuildingQty: 6,
+    ConsumedMOQty: 7,
+    MissingMOQty: 8,
   };
 }
 
-export default StockIndicator;
+export default ProductIndicator;

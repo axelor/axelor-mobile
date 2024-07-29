@@ -18,22 +18,22 @@
 
 import React, {useCallback, useMemo} from 'react';
 import {useNavigation, useSelector} from '@axelor/aos-mobile-core';
-import {
-  ProductStockDetailsScreen as StockProductDetailsScreen,
-  StockIndicator,
-} from '@axelor/aos-mobile-stock';
+import {ProductStockDetailsScreen as StockProductDetailsScreen} from '@axelor/aos-mobile-stock';
+import {ProductIndicator} from '../../../types';
 
 const ProductStockDetailsScreen = ({route}) => {
   const navigation = useNavigation();
 
   const {productIndicators} = useSelector(state => state.productIndicators);
+  const {productFromId: product} = useSelector(state => state.product);
 
   const addtionalIndicatorOnPress = useCallback(
     type =>
       navigation.navigate('ProductManufacturingIndicatorDetails', {
         type,
+        productId: product?.id,
       }),
-    [navigation],
+    [navigation, product?.id],
   );
 
   const addtionalIndicators = useMemo(
@@ -42,19 +42,19 @@ const ProductStockDetailsScreen = ({route}) => {
         titleKey: 'Stock_BuildingQty',
         value: productIndicators?.buildingQty,
         onPress: () =>
-          addtionalIndicatorOnPress(StockIndicator.type.BuildingQty),
+          addtionalIndicatorOnPress(ProductIndicator.type.BuildingQty),
       },
       {
         titleKey: 'Stock_ConsumedMOQty',
         value: productIndicators?.consumeManufOrderQty,
         onPress: () =>
-          addtionalIndicatorOnPress(StockIndicator.type.ConsumedMOQty),
+          addtionalIndicatorOnPress(ProductIndicator.type.ConsumedMOQty),
       },
       {
         titleKey: 'Stock_MissingMOQty',
         value: productIndicators?.missingManufOrderQty,
         onPress: () =>
-          addtionalIndicatorOnPress(StockIndicator.type.MissingMOQty),
+          addtionalIndicatorOnPress(ProductIndicator.type.MissingMOQty),
       },
     ],
     [addtionalIndicatorOnPress, productIndicators],

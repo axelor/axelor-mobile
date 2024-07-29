@@ -17,7 +17,7 @@
  */
 
 import React from 'react';
-import {StyleSheet, View} from 'react-native';
+import {StyleSheet} from 'react-native';
 import {
   DateDisplay,
   useTranslator,
@@ -53,54 +53,52 @@ const ManufacturingQtyIndicatorCard = ({
   const formatNumber = useDigitFormat();
 
   return (
-    <View style={style}>
-      <ObjectCard
-        style={styles.container}
-        leftContainerFlex={2}
-        showArrow={false}
-        touchable={false}
-        upperTexts={{
-          items: [
-            {
-              displayText: refMO,
-              isTitle: true,
-            },
-            {
-              displayText: refIM,
-              isTitle: true,
-            },
-            {
-              customComponent: <DateDisplay date={date} size={14} />,
-            },
-            {
-              displayText: `${formatNumber(realQty)} ${unitName}`,
-              indicatorText: `${I18n.t('Stock_RealQty')} :`,
-            },
-            {
-              iconName: 'qr-code',
-              displayText: trackingNumber,
-              indicatorText: `${I18n.t('Manufacturing_TrackingNumber')}:`,
-              hideIf: trackingNumber == null,
-            },
-          ],
-        }}
-        sideBadges={{
-          items: [
-            {
-              displayText: getItemTitle(StockMove?.statusSelect, statusSelect),
-              color: getItemColor(StockMove?.statusSelect, statusSelect),
-            },
-          ],
-        }}
-      />
-    </View>
+    <ObjectCard
+      style={style}
+      leftContainerFlex={2}
+      showArrow={false}
+      touchable={false}
+      upperTexts={{
+        items: [
+          {
+            displayText: refMO,
+            isTitle: true,
+          },
+          {
+            displayText: refIM,
+            isTitle: true,
+          },
+          {
+            customComponent: <DateDisplay date={date} size={14} />,
+          },
+          {
+            displayText: `${formatNumber(realQty)} ${unitName}`,
+            indicatorText: `${I18n.t('Stock_RealQty')} :`,
+          },
+          {
+            iconName: 'qr-code',
+            displayText: trackingNumber,
+            indicatorText: `${I18n.t('Manufacturing_TrackingNumber')}:`,
+            hideIf: trackingNumber == null,
+          },
+        ],
+      }}
+      sideBadges={{
+        style: styles.badgeContainer,
+        items: [
+          {
+            displayText: getItemTitle(StockMove?.statusSelect, statusSelect),
+            color: getItemColor(StockMove?.statusSelect, statusSelect),
+          },
+        ],
+      }}
+    />
   );
 };
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    marginVertical: 2,
+  badgeContainer: {
+    alignItems: 'flex-end',
   },
 });
 

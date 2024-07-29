@@ -17,32 +17,26 @@
  */
 
 import React, {useMemo} from 'react';
-import {StyleSheet, View} from 'react-native';
 import {
   DateDisplay,
   useTranslator,
   useTypeHelpers,
   useTypes,
 } from '@axelor/aos-mobile-core';
-import {
-  ObjectCard,
-  TextUnit,
-  useDigitFormat,
-  useThemeColor,
-} from '@axelor/aos-mobile-ui';
+import {ObjectCard, TextUnit, useDigitFormat} from '@axelor/aos-mobile-ui';
 import {StockIndicator} from '../../../types';
 
 interface RealQtyIndicatorCardProps {
   style?: any;
   indicatorType: number;
   name: string;
+  statusSelect?: number;
   stockMove: any;
   realQty: number;
   qty: number;
   reservedQty: number;
   unit: any;
   trackingNumber: any;
-  qtyInvoiced: number;
   onPress: () => void;
 }
 
@@ -50,19 +44,18 @@ const RealQtyIndicatorCard = ({
   style,
   indicatorType,
   name,
+  statusSelect,
   stockMove,
   realQty,
   qty,
   reservedQty,
   unit,
   trackingNumber,
-  qtyInvoiced,
   onPress,
 }: RealQtyIndicatorCardProps) => {
   const I18n = useTranslator();
-  const Colors = useThemeColor();
   const {StockMove} = useTypes();
-  const {getItemTitle} = useTypeHelpers();
+  const {getItemTitle, getItemColor} = useTypeHelpers();
   const formatNumber = useDigitFormat();
 
   const date = useMemo(
@@ -80,73 +73,56 @@ const RealQtyIndicatorCard = ({
     }
   }, [indicatorType, qty, realQty, reservedQty]);
 
-  const status = useMemo(
-    () =>
-      StockIndicator.getStockMoveLineInvoicedBadge(
-        qtyInvoiced,
-        realQty,
-        I18n,
-        Colors,
-      ),
-    [Colors, I18n, qtyInvoiced, realQty],
-  );
-
   return (
-    <View style={style}>
-      <ObjectCard
-        style={styles.container}
-        leftContainerFlex={2}
-        iconLeftMargin={5}
-        onPress={onPress}
-        upperTexts={{
-          items: [
-            {displayText: name, isTitle: true},
-            {
-              indicatorText: I18n.t('Stock_Type'),
-              displayText: getItemTitle(
-                StockMove?.typeSelect,
-                stockMove?.typeSelect,
-              ),
-              numberOfLines: 2,
-            },
-            {customComponent: <DateDisplay date={date} size={14} />},
-            {
-              iconName: 'house-down',
-              indicatorText: stockMove?.fromStockLocation,
-              hideIfNull: true,
-            },
-            {
-              iconName: 'house-up',
-              indicatorText: stockMove?.toStockLocation,
-              hideIfNull: true,
-            },
-            {displayText: trackingNumber?.trackingNumberSeq, hideIfNull: true},
-          ],
-        }}
-        sideBadges={{
-          items: [
-            {
-              customComponent: (
-                <TextUnit value={formatNumber(quantity)} unit={unit?.name} />
-              ),
-            },
-            {
-              displayText: status?.title,
-              color: status?.color,
-            },
-          ],
-        }}
-      />
-    </View>
+    <ObjectCard
+      style={style}
+      leftContainerFlex={2}
+      iconLeftMargin={5}
+      onPress={onPress}
+      upperTexts={{
+        items: [
+          {displayText: name, isTitle: true},
+          {
+            indicatorText: I18n.t('Stock_Type'),
+            displayText: getItemTitle(
+              StockMove?.typeSelect,
+              stockMove?.typeSelect,
+            ),
+            numberOfLines: 2,
+          },
+          {customComponent: <DateDisplay date={date} size={14} displayYear />},
+          {
+            iconName: 'house-down',
+            indicatorText: stockMove?.fromStockLocation?.name,
+            hideIfNull: true,
+          },
+          {
+            iconName: 'house-up',
+            indicatorText: stockMove?.toStockLocation?.name,
+            hideIfNull: true,
+          },
+          {displayText: trackingNumber?.trackingNumberSeq, hideIfNull: true},
+        ],
+      }}
+      sideBadges={{
+        items: [
+          {
+            customComponent: (
+              <TextUnit
+                value={formatNumber(quantity)}
+                unit={unit?.name}
+                fontSize={18}
+              />
+            ),
+          },
+          {
+            displayText: getItemTitle(StockMove.statusSelect, statusSelect),
+            color: getItemColor(StockMove.statusSelect, statusSelect),
+          },
+        ],
+      }}
+    />
   );
 };
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    marginVertical: 2,
-    paddingRight: 5,
-  },
-});
 
 export default RealQtyIndicatorCard;

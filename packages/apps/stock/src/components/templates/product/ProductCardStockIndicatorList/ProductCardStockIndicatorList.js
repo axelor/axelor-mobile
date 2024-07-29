@@ -101,6 +101,7 @@ const ProductCardStockIndicatorList = ({
             style={styles.chartContainer}
             onPress={onPress}
             activeOpacity={0.9}
+            disabled={parseFloat(value) === 0}
             key={idx}>
             <IndicatorChart
               style={styles.chart}
