@@ -48,7 +48,6 @@ const SupplierArrivalTrackingNumberSelection = ({
           size={24}
           style={styles.action}
           touchable={true}
-          onPress={onAddTrackingNumber}
         />
       </TouchableOpacity>
       <TrackingNumberSearchBar

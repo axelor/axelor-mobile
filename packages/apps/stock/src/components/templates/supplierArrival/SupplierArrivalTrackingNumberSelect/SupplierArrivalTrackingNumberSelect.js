@@ -21,8 +21,6 @@ import {View} from 'react-native';
 import {useNavigation, usePermitted} from '@axelor/aos-mobile-core';
 import SupplierArrivalTrackingNumberSelection from '../SupplierArrivalTrackingNumberSelection/SupplierArrivalTrackingNumberSelection';
 
-const trackingScanKey = 'tracking_supplier-arrival-select';
-
 const SupplierArrivalTrackingNumberSelect = ({
   product,
   supplierArrivalLine,
@@ -67,8 +65,6 @@ const SupplierArrivalTrackingNumberSelect = ({
           onSelectTrackingNumber={handleTrackingNumberSelection}
           onAddTrackingNumber={handleAddTrackingNumber}
           product={product}
-          readonly={!canCreate}
-          scanKey={trackingScanKey}
         />
       )}
     </View>
