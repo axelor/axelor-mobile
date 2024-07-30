@@ -36,6 +36,7 @@ import {
   useTranslator,
   useTypes,
 } from '@axelor/aos-mobile-core';
+import {StockIndicator} from '@axelor/aos-mobile-stock';
 import {
   ManufacturingOrderHeader,
   ConsumedProductGlobalCard,
@@ -152,8 +153,9 @@ const ConsumedProductListScreen = ({route, navigation}) => {
   };
 
   const handleViewAvailability = item => {
-    navigation.navigate('ProductStockLocationDetailsScreen', {
-      product: {id: item.productId, version: item.version},
+    navigation.navigate('ProductStockIndicatorDetails', {
+      type: StockIndicator.type.AvailableStock,
+      productId: item.productId,
       companyId: manufOrder?.company?.id,
     });
   };

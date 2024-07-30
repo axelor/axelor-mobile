@@ -40,6 +40,7 @@ export {
   fetchProducedProductWithId,
   updateProdProductOfManufOrder,
 } from './prodProductSlice';
+export {fetchManufacturingQtyIndicator} from './productIndicatorsSlice';
 export {fetchProductionFile} from './productionFileSlice';
 export {
   addWasteProductToManufOrder,

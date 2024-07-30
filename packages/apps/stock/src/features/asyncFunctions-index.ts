@@ -55,9 +55,13 @@ export {
 } from './inventorySlice';
 export {filterClients, filterSuppliers} from './partnerSlice';
 export {
-  fetchProductsAvailability,
+  fetchAvailableStockIndicator,
   fetchProductDistribution,
   fetchProductIndicators,
+  fetchProductsAvailability,
+  fetchPurchaseOrderQtyIndicator,
+  fetchSaleOrderQtyIndicator,
+  fetchStockQtyIndicator,
 } from './productIndicatorsSlice';
 export {
   fetchProductWithId,
