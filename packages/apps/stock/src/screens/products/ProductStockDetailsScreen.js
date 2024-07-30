@@ -30,6 +30,7 @@ import {
   usePermitted,
   useSelector,
   useTranslator,
+  useIsFocused,
 } from '@axelor/aos-mobile-core';
 import {
   ProductCardStockIndicatorList,
@@ -46,9 +47,10 @@ import {
 
 const stockLocationScanKey = 'stock-location_product-indicators';
 
-const ProductStockDetailsScreen = ({route}) => {
+const ProductStockDetailsScreen = ({route, addtionalIndicators}) => {
   const productId = route.params.product?.id;
   const I18n = useTranslator();
+  const isFocused = useIsFocused();
   const dispatch = useDispatch();
   const {readonly, hidden} = usePermitted({
     modelName: 'com.axelor.apps.stock.db.StockLocationLine',
@@ -73,8 +75,10 @@ const ProductStockDetailsScreen = ({route}) => {
   }, [dispatch, productId]);
 
   useEffect(() => {
-    fetchProductFromId();
-  }, [fetchProductFromId]);
+    if (isFocused) {
+      fetchProductFromId();
+    }
+  }, [fetchProductFromId, isFocused]);
 
   useEffect(() => {
     if (product?.id != null) {
@@ -142,10 +146,7 @@ const ProductStockDetailsScreen = ({route}) => {
           />
         )}
         {!hidden && (
-          <ProductSeeStockLocationDistribution
-            companyId={companyId}
-            product={product}
-          />
+          <ProductSeeStockLocationDistribution companyId={companyId} />
         )}
         <StockLocationSearchBar
           scanKey={stockLocationScanKey}
@@ -161,7 +162,11 @@ const ProductStockDetailsScreen = ({route}) => {
             }
           />
         )}
-        <ProductCardStockIndicatorList />
+        <ProductCardStockIndicatorList
+          stockLocationId={stockLocation?.id}
+          companyId={companyId}
+          addtionalIndicators={addtionalIndicators}
+        />
       </ScrollView>
     </Screen>
   );

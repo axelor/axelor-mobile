@@ -20,22 +20,19 @@ import {useEffect, useMemo} from 'react';
 import {useDispatch, useSelector} from '@axelor/aos-mobile-core';
 import {fetchProductDistribution} from '../features/productIndicatorsSlice';
 
-export const useStockLocationLinesWithAvailability = (companyId, product) => {
+export const useStockListWithAvailability = (companyId, product) => {
   const dispatch = useDispatch();
 
   const {user} = useSelector(state => state.user);
-  const {stockLocationLine: stockLocationLinelist} = useSelector(
-    state => state.stockLocationLine,
-  );
-  const {listAvailabiltyDistribution} = useSelector(
+  const {availableStockList, listAvailabiltyDistribution} = useSelector(
     state => state.productIndicators,
   );
 
   useEffect(() => {
-    if (stockLocationLinelist != null) {
+    if (availableStockList != null) {
       dispatch(
         fetchProductDistribution({
-          stockLocationList: stockLocationLinelist?.map(
+          stockLocationList: availableStockList?.map(
             _item => _item.stockLocation,
           ),
           product: product,
@@ -44,25 +41,25 @@ export const useStockLocationLinesWithAvailability = (companyId, product) => {
       );
     }
   }, [
+    availableStockList,
     dispatch,
     product,
-    stockLocationLinelist,
     companyId,
     user.activeCompany?.id,
   ]);
 
   const updatedList = useMemo(() => {
-    return stockLocationLinelist?.map((item, index) => {
+    return availableStockList?.map((item, index) => {
       return {
         ...item,
         availableStock: listAvailabiltyDistribution?.[index]?.availableStock,
       };
     });
-  }, [stockLocationLinelist, listAvailabiltyDistribution]);
+  }, [availableStockList, listAvailabiltyDistribution]);
 
   return useMemo(
     () => ({
-      stockLocationLinelist: updatedList,
+      availableStockList: updatedList,
     }),
     [updatedList],
   );

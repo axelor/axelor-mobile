@@ -16,6 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+export {default as AvailableStockIndicatorCard} from './AvailableStockIndicatorCard/AvailableStockIndicatorCard';
 export {default as ProductCard} from './ProductCard/ProductCard';
 export {default as ProductCardInfo} from './ProductCardInfo/ProductCardInfo';
 export {default as ProductCardStockIndicatorList} from './ProductCardStockIndicatorList/ProductCardStockIndicatorList';
@@ -24,7 +25,6 @@ export {default as ProductPackingInformations} from './ProductPackingInformation
 export {default as ProductSeeStockLocationDistribution} from './ProductSeeStockLocationDistribution/ProductSeeStockLocationDistribution';
 export {default as ProductUnitInformations} from './ProductUnitInformations/ProductUnitInformations';
 export {default as ProductStockHeader} from './ProductStockHeader/ProductStockHeader';
-export {default as ProductStockLocationCard} from './ProductStockLocationCard/ProductStockLocationCard';
 export {default as ProductTrackingNumberSelect} from './ProductTrackingNumberSelect/ProductTrackingNumberSelect';
 export {default as ProductVariantButton} from './ProductVariantButton/ProductVariantButton';
 export {default as ProductVariantCard} from './ProductVariantCard/ProductVariantCard';

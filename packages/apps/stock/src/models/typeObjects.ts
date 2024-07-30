@@ -193,17 +193,17 @@ export const stock_typeObjects: ModuleSelections = [
           {
             key: 'internal',
             value: 1,
-            title: null,
+            title: 'Stock_InternalMove',
           },
           {
             key: 'outgoing',
             value: 2,
-            title: null,
+            title: 'Stock_OutgoingMove',
           },
           {
             key: 'incoming',
             value: 3,
-            title: null,
+            title: 'Stock_IncomingMove',
           },
         ],
       },
@@ -250,6 +250,156 @@ export const stock_typeObjects: ModuleSelections = [
             key: 'Non_Compliant',
             value: 3,
             title: 'Stock_NonCompliant',
+          },
+        ],
+      },
+    },
+  },
+  {
+    modelName: 'com.axelor.apps.stock.db.StockMoveLine',
+    fields: {
+      availableStatus: {
+        content: [
+          {
+            key: 'Available',
+            value: 1,
+            title: null,
+          },
+          {
+            key: 'AvailableForProduct',
+            value: 2,
+            title: null,
+          },
+          {
+            key: 'Missing',
+            value: 3,
+            title: null,
+          },
+        ],
+      },
+    },
+  },
+  {
+    modelName: 'com.axelor.apps.sale.db.SaleOrder',
+    specificKey: 'Stock_SaleOrder',
+    fields: {
+      statusSelect: {
+        content: [
+          {
+            key: 'DraftQuotation',
+            value: 1,
+            title: null,
+          },
+          {
+            key: 'FinalizedQuotation',
+            value: 2,
+            title: null,
+          },
+          {
+            key: 'OrderConfirmed',
+            value: 3,
+            title: null,
+          },
+          {
+            key: 'OrderCompleted',
+            value: 4,
+            title: null,
+          },
+          {
+            key: 'Canceled',
+            value: 5,
+            title: null,
+          },
+        ],
+      },
+    },
+  },
+  {
+    modelName: 'com.axelor.apps.sale.db.SaleOrderLine',
+    specificKey: 'Stock_SaleOrderLine',
+    fields: {
+      deliveryState: {
+        content: [
+          {
+            key: 'NotDelivered',
+            value: 1,
+            title: 'Stock_Status_NotDelivered',
+            color: 'errorColor',
+          },
+          {
+            key: 'PariallyDelivered',
+            value: 2,
+            title: 'Stock_Status_PariallyDelivered',
+            color: 'cautionColor',
+          },
+          {
+            key: 'Delivered',
+            value: 3,
+            title: 'Stock_Status_Delivered',
+            color: 'successColor',
+          },
+        ],
+      },
+    },
+  },
+  {
+    modelName: 'com.axelor.apps.purchase.db.PurchaseOrder',
+    specificKey: 'Stock_PurchaseOrder',
+    fields: {
+      statusSelect: {
+        content: [
+          {
+            key: 'Draft',
+            value: 1,
+            title: null,
+          },
+          {
+            key: 'Requested',
+            value: 2,
+            title: null,
+          },
+          {
+            key: 'Validated',
+            value: 3,
+            title: null,
+          },
+          {
+            key: 'Finished',
+            value: 4,
+            title: null,
+          },
+          {
+            key: 'Canceled',
+            value: 5,
+            title: null,
+          },
+        ],
+      },
+    },
+  },
+  {
+    modelName: 'com.axelor.apps.purchase.db.PurchaseOrderLine',
+    specificKey: 'Stock_PurchaseOrderLine',
+    fields: {
+      receiptState: {
+        content: [
+          {
+            key: 'NotReceived',
+            value: 1,
+            title: 'Stock_Status_NotReceived',
+            color: 'errorColor',
+          },
+          {
+            key: 'PariallyReceived',
+            value: 2,
+            title: 'Stock_Status_PariallyReceived',
+            color: 'cautionColor',
+          },
+          {
+            key: 'Received',
+            value: 3,
+            title: 'Stock_Status_Received',
+            color: 'successColor',
           },
         ],
       },

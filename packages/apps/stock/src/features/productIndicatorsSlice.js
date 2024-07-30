@@ -17,8 +17,17 @@
  */
 
 import {createAsyncThunk, createSlice} from '@reduxjs/toolkit';
-import {handlerApiCall} from '@axelor/aos-mobile-core';
+import {
+  generateInifiniteScrollCases,
+  handlerApiCall,
+} from '@axelor/aos-mobile-core';
 import {getProductStockIndicators} from '../api/product-api';
+import {
+  fetchAvailableStockIndicator as _fetchAvailableStockIndicator,
+  fetchPurchaseOrderQtyIndicator as _fetchPurchaseOrderQtyIndicator,
+  fetchSaleOrderQtyIndicator as _fetchSaleOrderQtyIndicator,
+  fetchStockQtyIndicator as _fetchStockQtyIndicator,
+} from '../api/product-indicators-api';
 
 export const fetchProductIndicators = createAsyncThunk(
   'product/fetchProductIndicators',
@@ -89,18 +98,114 @@ export const fetchProductDistribution = createAsyncThunk(
   },
 );
 
+export const fetchStockQtyIndicator = createAsyncThunk(
+  'stock_productIndicators/fetchStockQtyIndicator',
+  async function (data, {getState}) {
+    return handlerApiCall({
+      fetchFunction: _fetchStockQtyIndicator,
+      data,
+      action: 'Stock_SliceAction_FetchStockQtyIndicator',
+      getState,
+      responseOptions: {isArrayResponse: true},
+    });
+  },
+);
+
+export const fetchSaleOrderQtyIndicator = createAsyncThunk(
+  'stock_productIndicators/fetchSaleOrderQtyIndicator',
+  async function (data, {getState}) {
+    return handlerApiCall({
+      fetchFunction: _fetchSaleOrderQtyIndicator,
+      data,
+      action: 'Stock_SliceAction_FetchSaleOrderQtyIndicator',
+      getState,
+      responseOptions: {isArrayResponse: true},
+    });
+  },
+);
+
+export const fetchPurchaseOrderQtyIndicator = createAsyncThunk(
+  'stock_productIndicators/fetchPurchaseOrderQtyIndicator',
+  async function (data, {getState}) {
+    return handlerApiCall({
+      fetchFunction: _fetchPurchaseOrderQtyIndicator,
+      data,
+      action: 'Stock_SliceAction_FetchPurchaseOrderQtyIndicator',
+      getState,
+      responseOptions: {isArrayResponse: true},
+    });
+  },
+);
+
+export const fetchAvailableStockIndicator = createAsyncThunk(
+  'stock_productIndicators/fetchAvailableStockIndicator',
+  async function (data, {getState}) {
+    return handlerApiCall({
+      fetchFunction: _fetchAvailableStockIndicator,
+      data,
+      action: 'Stock_SliceAction_FetchAvailableStockIndicator',
+      getState,
+      responseOptions: {isArrayResponse: true},
+    });
+  },
+);
+
 const initialState = {
   loading: false,
   loadingProductIndicators: false,
   productIndicators: {},
   listAvailabilty: [],
   listAvailabiltyDistribution: [],
+
+  loadingStockQty: false,
+  moreLoadingStockQty: false,
+  isListEndStockQty: false,
+  stockQtyList: [],
+
+  loadingSaleOrderQty: false,
+  moreLoadingSaleOrderQty: false,
+  isListEndSaleOrderQty: false,
+  saleOrderQtyList: [],
+
+  loadingPurchaseOrderQty: false,
+  moreLoadingPurchaseOrderQty: false,
+  isListEndPurchaseOrderQty: false,
+  purchaseOrderQtyList: [],
+
+  loadingAvailableStock: false,
+  moreLoadingAvailableStock: false,
+  isListEndAvailableStock: false,
+  availableStockList: [],
 };
 
 const productIndicators = createSlice({
   name: 'productIndicators',
   initialState,
   extraReducers: builder => {
+    generateInifiniteScrollCases(builder, fetchStockQtyIndicator, {
+      loading: 'loadingStockQty',
+      moreLoading: 'moreLoadingStockQty',
+      isListEnd: 'isListEndStockQty',
+      list: 'stockQtyList',
+    });
+    generateInifiniteScrollCases(builder, fetchSaleOrderQtyIndicator, {
+      loading: 'loadingSaleOrderQty',
+      moreLoading: 'moreLoadingSaleOrderQty',
+      isListEnd: 'isListEndSaleOrderQty',
+      list: 'saleOrderQtyList',
+    });
+    generateInifiniteScrollCases(builder, fetchPurchaseOrderQtyIndicator, {
+      loading: 'loadingPurchaseOrderQty',
+      moreLoading: 'moreLoadingPurchaseOrderQty',
+      isListEnd: 'isListEndPurchaseOrderQty',
+      list: 'purchaseOrderQtyList',
+    });
+    generateInifiniteScrollCases(builder, fetchAvailableStockIndicator, {
+      loading: 'loadingAvailableStock',
+      moreLoading: 'moreLoadingAvailableStock',
+      isListEnd: 'isListEndAvailableStock',
+      list: 'availableStockList',
+    });
     builder.addCase(fetchProductIndicators.pending, state => {
       state.loadingProductIndicators = true;
     });

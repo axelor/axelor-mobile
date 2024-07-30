@@ -17,12 +17,22 @@
  */
 
 import React, {useCallback, useMemo} from 'react';
-import {Dimensions, StyleSheet, View} from 'react-native';
+import {Dimensions, StyleSheet, TouchableOpacity, View} from 'react-native';
 import {IndicatorChart, useDigitFormat} from '@axelor/aos-mobile-ui';
-import {useTranslator, useSelector} from '@axelor/aos-mobile-core';
+import {
+  useTranslator,
+  useSelector,
+  useNavigation,
+} from '@axelor/aos-mobile-core';
+import {StockIndicator} from '../../../../types';
 
-const ProductCardStockIndicatorList = ({}) => {
+const ProductCardStockIndicatorList = ({
+  stockLocationId,
+  companyId,
+  addtionalIndicators = [],
+}) => {
   const I18n = useTranslator();
+  const navigation = useNavigation();
   const formatNumber = useDigitFormat();
 
   const {productIndicators} = useSelector(state => state.productIndicators);
@@ -30,53 +40,81 @@ const ProductCardStockIndicatorList = ({}) => {
     state => state.appConfig,
   );
 
-  const indicators = useMemo(
-    () => [
-      {titleKey: 'Stock_RealQty', value: productIndicators?.realQty},
-      {titleKey: 'Stock_FutureQty', value: productIndicators?.futureQty},
+  const indicatorOnPress = useCallback(
+    type =>
+      navigation.navigate('ProductStockIndicatorDetails', {
+        type,
+        stockLocationId,
+        companyId,
+      }),
+    [companyId, navigation, stockLocationId],
+  );
+
+  const indicators = useMemo(() => {
+    const _indicators = [
+      {
+        titleKey: 'Stock_RealQty',
+        value: productIndicators?.realQty,
+        onPress: () => indicatorOnPress(StockIndicator.type.RealQty),
+      },
+      {
+        titleKey: 'Stock_FutureQty',
+        value: productIndicators?.futureQty,
+        onPress: () => indicatorOnPress(StockIndicator.type.FutureQty),
+      },
       {
         titleKey: 'Stock_AllocatedQty',
         value: productIndicators?.allocatedQty,
         condition: supplychainConfig?.manageStockReservation,
+        onPress: () => indicatorOnPress(StockIndicator.type.AllocatedQty),
       },
-      {titleKey: 'Stock_SaleOrderQty', value: productIndicators?.saleOrderQty},
+      {
+        titleKey: 'Stock_SaleOrderQty',
+        value: productIndicators?.saleOrderQty,
+        onPress: () => indicatorOnPress(StockIndicator.type.SaleOrderQty),
+      },
       {
         titleKey: 'Stock_PurchaseOrderQty',
         value: productIndicators?.purchaseOrderQty,
+        onPress: () => indicatorOnPress(StockIndicator.type.PurchaseOrderQty),
       },
       {
         titleKey: 'Stock_AvailableStock',
         value: productIndicators?.availableStock,
+        onPress: () => indicatorOnPress(StockIndicator.type.AvailableStock),
       },
-      {titleKey: 'Stock_BuildingQty', value: productIndicators?.buildingQty},
-      {
-        titleKey: 'Stock_ConsumedMOQty',
-        value: productIndicators?.consumeManufOrderQty,
-      },
-      {
-        titleKey: 'Stock_MissingMOQty',
-        value: productIndicators?.missingManufOrderQty,
-      },
-    ],
-    [productIndicators, supplychainConfig?.manageStockReservation],
-  );
+    ];
+
+    return _indicators.concat(addtionalIndicators);
+  }, [
+    addtionalIndicators,
+    indicatorOnPress,
+    productIndicators,
+    supplychainConfig?.manageStockReservation,
+  ]);
 
   const renderIndicator = useCallback(
-    ({titleKey, value, condition = true}, idx) => {
+    ({titleKey, value, condition = true, onPress}, idx) => {
       if (value != null && condition) {
         return (
-          <IndicatorChart
-            key={idx}
-            style={styles.chart}
-            datasets={[
-              {
-                title: I18n.t(titleKey),
-                value: formatNumber(value),
-              },
-            ]}
-            widthGraph={Dimensions.get('window').width * 0.4}
-            translator={I18n.t}
-          />
+          <TouchableOpacity
+            style={styles.chartContainer}
+            onPress={onPress}
+            activeOpacity={0.9}
+            disabled={parseFloat(value) === 0}
+            key={idx}>
+            <IndicatorChart
+              style={styles.chart}
+              datasets={[
+                {
+                  title: I18n.t(titleKey),
+                  value: formatNumber(value),
+                },
+              ]}
+              widthGraph={Dimensions.get('window').width * 0.4}
+              translator={I18n.t}
+            />
+          </TouchableOpacity>
         );
       }
     },
@@ -92,8 +130,11 @@ const styles = StyleSheet.create({
   container: {
     justifyContent: 'space-around',
     flexDirection: 'row',
-    alignItems: 'center',
     flexWrap: 'wrap',
+  },
+  chartContainer: {
+    width: '50%',
+    flexDirection: 'row',
   },
   chart: {
     alignSelf: 'stretch',

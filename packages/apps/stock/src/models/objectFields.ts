@@ -257,4 +257,49 @@ export const stock_modelAPI: ObjectFields = {
   stock_unit: schemaContructor.object({
     name: schemaContructor.string(),
   }),
+  stock_stockQtyIndicator: schemaContructor.object({
+    name: schemaContructor.string(),
+    stockMove: schemaContructor.subObject().concat(
+      schemaContructor.object({
+        estimatedDate: schemaContructor.string(),
+        realDate: schemaContructor.string(),
+        typeSelect: schemaContructor.number(),
+        fromStockLocation: schemaContructor.subObject('name'),
+        toStockLocation: schemaContructor.subObject('name'),
+      }),
+    ),
+    realQty: schemaContructor.number(),
+    qty: schemaContructor.number(),
+    reservedQty: schemaContructor.number(),
+    unit: schemaContructor.subObject('name'),
+    trackingNumber: schemaContructor.subObject('trackingNumberSeq'),
+    qtyInvoiced: schemaContructor.number(),
+  }),
+  stock_saleOrderQtyIndicator: schemaContructor.object({
+    saleOrder: schemaContructor.subObject().concat(
+      schemaContructor.object({
+        saleOrderSeq: schemaContructor.string(),
+        stockLocation: schemaContructor.subObject('name'),
+      }),
+    ),
+    qty: schemaContructor.number(),
+    deliveredQty: schemaContructor.number(),
+    reservedQty: schemaContructor.number(),
+    unit: schemaContructor.subObject('name'),
+    estimatedShippingDate: schemaContructor.string(),
+    deliveryState: schemaContructor.number(),
+  }),
+  stock_purchaseOrderQtyIndicator: schemaContructor.object({
+    purchaseOrder: schemaContructor.subObject().concat(
+      schemaContructor.object({
+        purchaseOrderSeq: schemaContructor.string(),
+        stockLocation: schemaContructor.subObject('name'),
+      }),
+    ),
+    qty: schemaContructor.number(),
+    receivedQty: schemaContructor.number(),
+    unit: schemaContructor.subObject('name'),
+    estimatedReceiptDate: schemaContructor.string(),
+    receiptState: schemaContructor.number(),
+  }),
 };
