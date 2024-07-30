@@ -1,5 +1,0 @@
-{
-  "title": "Product indicators: improve display",
-  "type": "feat",
-  "packages": ["stock", "manufacturing"]
-}

@@ -53,12 +53,12 @@ const createStockQtyCriteria = (
         {
           fieldName: 'toStockLocation.id',
           operator: '=',
-          value: stockLocationId.id,
+          value: stockLocationId,
         },
         {
           fieldName: 'fromStockLocation.id',
           operator: '=',
-          value: stockLocationId.id,
+          value: stockLocationId,
         },
       ],
     });

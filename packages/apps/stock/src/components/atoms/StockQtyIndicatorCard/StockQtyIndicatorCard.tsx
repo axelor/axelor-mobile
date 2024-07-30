@@ -69,7 +69,7 @@ const RealQtyIndicatorCard = ({
     } else if (indicatorType === StockIndicator.type.FutureQty) {
       return qty;
     } else {
-      reservedQty;
+      return reservedQty;
     }
   }, [indicatorType, qty, realQty, reservedQty]);
 
