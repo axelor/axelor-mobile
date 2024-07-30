@@ -21,7 +21,7 @@ import ProductImageScreen from './ProductImageScreen';
 import ProductListScreen from './ProductListScreen';
 import ProductListVariantScreen from './ProductListVariantScreen';
 import ProductStockDetailsScreen from './ProductStockDetailsScreen';
-import ProductStockLocationDetailsScreen from './ProductStockLocationDetailsScreen';
+import ProductStockIndicatorDetails from './ProductStockIndicatorDetails';
 
 export default {
   ProductListScreen: {
@@ -37,13 +37,6 @@ export default {
     component: ProductStockDetailsScreen,
     actionID: 'stock_product_stockDetails',
   },
-  ProductStockLocationDetailsScreen: {
-    title: 'Stock_QuantityStockLocation',
-    component: ProductStockLocationDetailsScreen,
-    options: {
-      shadedHeader: false,
-    },
-  },
   ProductDetailsScreen: {
     title: 'Stock_ProductDetails',
     component: ProductDetailsScreen,
@@ -57,6 +50,10 @@ export default {
     title: 'Stock_Variants',
     component: ProductListVariantScreen,
   },
+  ProductStockIndicatorDetails: {
+    title: 'Stock_Product',
+    component: ProductStockIndicatorDetails,
+  },
 };
 
 export {ProductDetailsScreen};
@@ -64,4 +61,4 @@ export {ProductImageScreen};
 export {ProductListScreen};
 export {ProductListVariantScreen};
 export {ProductStockDetailsScreen};
-export {ProductStockLocationDetailsScreen};
+export {ProductStockIndicatorDetails};

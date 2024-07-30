@@ -50,6 +50,12 @@ export {
 export * from './partner-api';
 export * from './product-api';
 export {
+  fetchAvailableStockIndicator as fetchAvailableStockIndicatorApi,
+  fetchPurchaseOrderQtyIndicator as fetchPurchaseOrderQtyIndicatorApi,
+  fetchSaleOrderQtyIndicator as fetchSaleOrderQtyIndicatorApi,
+  fetchStockQtyIndicator as fetchStockQtyIndicatorApi,
+} from './product-indicators-api';
+export {
   createStockCorrection,
   fetchStockCorrection as fetchStockCorrectionApi,
   searchStockCorrection,

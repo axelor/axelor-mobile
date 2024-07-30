@@ -17,4 +17,5 @@
  */
 
 export {default as ManufacturingOrderDatesCard} from './ManufacturingOrderDatesCard/ManufacturingOrderDatesCard';
+export {default as ManufacturingQtyIndicatorActionCard} from './ManufacturingQtyIndicatorActionCard/ManufacturingQtyIndicatorActionCard';
 export {default as OperationOrderDatesCard} from './OperationOrderDatesCard/OperationOrderDatesCard';
