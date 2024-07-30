@@ -1,5 +1,5 @@
 {
-  "title": "SupplierArrivalLineDetailScreen: possibility to add tracking number without verification",
+  "title": "Supplier arrival: add possibility to register a tracking number when the line is incomplete.",
   "type": "feat",
   "packages": "stock"
 }

@@ -17,14 +17,12 @@
  */
 
 import React, {useCallback, useEffect, useMemo, useState} from 'react';
-import {StyleSheet, TouchableOpacity} from 'react-native';
+import {StyleSheet} from 'react-native';
 import {
   HeaderContainer,
   Picker,
   Screen,
   KeyboardAvoidingScrollView,
-  Icon,
-  Text,
 } from '@axelor/aos-mobile-ui';
 import {
   useDispatch,
@@ -41,10 +39,12 @@ import {
   SupplierArrivalLineQuantityCard,
   SupplierProductInfo,
   StockLocationSearchBar,
+  SupplierArrivalTrackingNumberSelection,
 } from '../../components';
 import {fetchProductWithId} from '../../features/productSlice';
 import {fetchProductForSupplier} from '../../features/supplierCatalogSlice';
 import {fetchSupplierArrivalLine} from '../../features/supplierArrivalLineSlice';
+import {updateStockMoveLineTrackingNumber} from '../../features/trackingNumberSlice';
 import {StockMove as StockMoveType, StockMoveLine} from '../../types';
 
 const stockLocationScanKey = 'to-stock-location_supplier-arrival-line-update';
@@ -159,6 +159,18 @@ const SupplierArrivalLineDetailScreen = ({route, navigation}) => {
     });
   };
 
+  const handleTrackingNumberSelection = item => {
+    if (item !== null) {
+      dispatch(
+        updateStockMoveLineTrackingNumber({
+          trackingNumber: item,
+          stockMoveLineId: supplierArrivalLine.id,
+          stockMoveLineVersion: supplierArrivalLine.version,
+        }),
+      );
+    }
+  };
+
   const conformityList = useMemo(() => {
     const conformityToDisplay = [
       StockMove?.conformitySelect.Compliant,
@@ -209,6 +221,15 @@ const SupplierArrivalLineDetailScreen = ({route, navigation}) => {
           name={product?.name}
           trackingNumber={trackingNumber?.trackingNumberSeq}
         />
+        {product.trackingNumberConfiguration != null &&
+          trackingNumber == null && (
+            <SupplierArrivalTrackingNumberSelection
+              onSelectTrackingNumber={handleTrackingNumberSelection}
+              onAddTrackingNumber={handleAddTrackingNumber}
+              product={product}
+              readonly={readonly}
+            />
+          )}
         <SupplierProductInfo />
         <SupplierArrivalLineQuantityCard
           realQty={realQty}
@@ -244,15 +265,6 @@ const SupplierArrivalLineDetailScreen = ({route, navigation}) => {
           }
           isScrollViewContainer={true}
         />
-        <TouchableOpacity
-          style={styles.trackingNumberContainer}
-          onPress={handleAddTrackingNumber}
-          disabled={readonly}>
-          <Text writingType="important" style={styles.trackingNumberText}>
-            {I18n.t('Stock_AddTrackingNumber')}
-          </Text>
-          <Icon name="plus-lg" size={24} style={styles.action} />
-        </TouchableOpacity>
       </KeyboardAvoidingScrollView>
     </Screen>
   );
