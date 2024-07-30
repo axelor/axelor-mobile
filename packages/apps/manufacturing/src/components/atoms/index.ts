@@ -16,11 +16,4 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-export * from './machine-api';
-export * from './manufacturing-order-api';
-export * from './operation-order-api';
-export * from './prod-product-api';
-export {fetchManufacturingQtyIndicator as fetchManufacturingQtyIndicatorApi} from './product-indicators-api';
-export * from './production-file-api';
-export * from './waste-product-api';
-export * from './work-center-api';
+export {default as ManufacturingQtyIndicatorCard} from './ManufacturingQtyIndicatorCard/ManufacturingQtyIndicatorCard';

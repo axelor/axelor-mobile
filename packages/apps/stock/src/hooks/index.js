@@ -18,5 +18,5 @@
 
 export {useCustomerLinesWithRacks} from './customer-delivery-lines';
 export {useInternalLinesWithRacks} from './internal-move-lines';
-export {useStockLocationLinesWithAvailability} from './stock-location-lines-availability';
+export {useStockListWithAvailability} from './stock-list-availability';
 export {useSupplierLinesWithRacks} from './supplier-arrival-lines';

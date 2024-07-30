@@ -49,6 +49,9 @@
   "Manufacturing_SeeAvailability": "See availability",
   "Manufacturing_SeeSubMO": "See sub MO",
   "Manufacturing_IncrementQuantity": "Increment quantity",
+  "Manufacturing_NavigateToMO": "Navigate to manufacturing order",
+  "Manufacturing_NavigateToOO": "Navigate to operation order",
+  "Manufacturing_NavigateToIM": "Navigate to internal move",
   "Manufacturing_SliceAction_FilterMachines": "filter machines",
   "Manufacturing_SliceAction_FetchManufacturingOrders": "fetch manufacturing orders",
   "Manufacturing_SliceAction_FetchManufacturingOrdersFromId": "fetch manufacturing order by id",
@@ -72,5 +75,6 @@
   "Manufacturing_SliceAction_AddTrackingNumberToConsumedProductStockMoveLine": "add tracking number to consumed product stock move line",
   "Manufacturing_SliceAction_FetchConsumedProductWithId": "fetch consumed product with id",
   "Manufacturing_SliceAction_FetchProducedProductWithId": "fetch produced product with id",
-  "Manufacturing_SliceAction_FetchProdProductWithId": "fetch prod product with id"
+  "Manufacturing_SliceAction_FetchProdProductWithId": "fetch prod product with id",
+  "Manufacturing_SliceAction_FetchManufacturingQtyIndicator": "fetch data of manufacturing qty indicator"
 }
