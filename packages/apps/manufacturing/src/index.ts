@@ -19,6 +19,7 @@
 import {Module} from '@axelor/aos-mobile-core';
 import ManufacturingOrderScreens from './screens/manufactoringOrder';
 import OperationOrderScreens from './screens/operationOrder';
+import StockScreens from './screens/stock';
 import enTranslations from './i18n/en.json';
 import frTranslations from './i18n/fr.json';
 import * as manufacturingReducers from './features';
@@ -59,6 +60,7 @@ export const ManufacturingModule: Module = {
   screens: {
     ...ManufacturingOrderScreens,
     ...OperationOrderScreens,
+    ...StockScreens,
   },
   translations: {
     en: enTranslations,
@@ -85,5 +87,8 @@ export * from './screens/manufactoringOrder/producedProduct';
 export * from './screens/manufactoringOrder/wasteProduct';
 export * from './screens/manufactoringOrder';
 export * from './screens/operationOrder';
+export * from './screens/operationOrder';
+export * from './screens/stock/products/';
+export * from './screens/stock';
 export * from './types';
 export * from './utils';

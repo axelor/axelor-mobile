@@ -24,9 +24,9 @@ import {
   useNavigation,
 } from '@axelor/aos-mobile-core';
 import {Text, useThemeColor, Icon} from '@axelor/aos-mobile-ui';
+import {StockIndicator} from '../../../../types';
 
 const ProductSeeStockLocationDistribution = ({
-  product,
   companyId,
   forceShow = false,
 }) => {
@@ -37,8 +37,8 @@ const ProductSeeStockLocationDistribution = ({
   const {productIndicators} = useSelector(state => state.productIndicators);
 
   const navigateStockLocationDetails = () => {
-    navigation.navigate('ProductStockLocationDetailsScreen', {
-      product: product,
+    navigation.navigate('ProductStockIndicatorDetails', {
+      type: StockIndicator.type.AvailableStock,
       companyId: companyId,
     });
   };

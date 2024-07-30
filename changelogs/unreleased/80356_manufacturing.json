@@ -1,0 +1,5 @@
+{
+  "title": "Product indicators: add override from stock screen to add manufacturing indicators",
+  "type": "feat",
+  "packages": "manufacturing"
+}
