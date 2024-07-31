@@ -83,6 +83,7 @@ const ProductSalePriceListsScreen = ({}) => {
         headerChildren={
           <PeriodInput
             style={styles.periodInput}
+            defaultIntervalHours={48}
             startDateConfig={{
               date: fromDate,
               onDateChange: date => setFromDate(date),

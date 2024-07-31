@@ -23,6 +23,8 @@ import {DateInput} from '../../organisms';
 import {getEndOfDay, getStartOfDay} from '../../../utils';
 import {useTranslator} from '../../../i18n';
 
+const hoursToMilliseconds = (hours: number) => hours * 60 * 60 * 1000;
+
 const DATE_INPUT_MODE = {
   startDate: 0,
   endDate: 1,
@@ -41,7 +43,7 @@ interface PeriodInputProps {
   showTitle?: boolean;
   horizontal?: boolean;
   style?: any;
-  defaultInterval?: number;
+  defaultIntervalHours?: number;
 }
 
 const PeriodInput = ({
@@ -50,7 +52,7 @@ const PeriodInput = ({
   showTitle = true,
   horizontal = true,
   style,
-  defaultInterval = null,
+  defaultIntervalHours = null,
 }: PeriodInputProps) => {
   const I18n = useTranslator();
 
@@ -58,7 +60,9 @@ const PeriodInput = ({
   const [endDate, setEndDate] = useState(endDateConfig.date);
   const [isPeriodError, setIsPeriodError] = useState(false);
   const [interval, setInterval] = useState(
-    defaultInterval !== null ? defaultInterval * 60 * 60 * 1000 : null,
+    defaultIntervalHours !== null
+      ? hoursToMilliseconds(defaultIntervalHours)
+      : null,
   );
 
   useEffect(() => {
@@ -68,6 +72,14 @@ const PeriodInput = ({
   useEffect(() => {
     setEndDate(endDateConfig.date);
   }, [endDateConfig.date]);
+
+  useEffect(() => {
+    if (startDate && !endDate && interval) {
+      setEndDate(new Date(startDate.getTime() + interval));
+    } else if (endDate && !startDate && interval) {
+      setStartDate(new Date(endDate.getTime() - interval));
+    }
+  }, [startDate, endDate, interval]);
 
   useEffect(() => {
     setIsPeriodError(
@@ -94,18 +106,18 @@ const PeriodInput = ({
   );
 
   const handleDateChange = useCallback(
-    (mode: number, date: Date) => {
-      const isStartDate = mode === DATE_INPUT_MODE.startDate;
+    (isStartDate: boolean, date: Date) => {
       if (interval != null) {
         if (isStartDate) {
           const newEndDate = date ? new Date(date.getTime() + interval) : null;
           updateDates(date, newEndDate);
         } else {
+          const newInterval =
+            date && startDate instanceof Date
+              ? date.getTime() - startDate.getTime()
+              : null;
           setEndDate(date);
-          const newInterval = date
-            ? date.getTime() - (startDate ? startDate.getTime() : 0)
-            : null;
-          setInterval(newInterval);
+          newInterval && setInterval(newInterval);
           endDateConfig.onDateChange(date);
         }
       } else {
@@ -136,7 +148,7 @@ const PeriodInput = ({
           nullable
           popup={horizontal}
           defaultDate={date}
-          onDateChange={_date => handleDateChange(mode, _date)}
+          onDateChange={_date => handleDateChange(isStartDate, _date)}
           readonly={dateConfig.readonly}
           required={dateConfig.required}
         />
