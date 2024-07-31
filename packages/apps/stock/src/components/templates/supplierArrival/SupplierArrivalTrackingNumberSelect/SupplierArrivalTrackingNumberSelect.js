@@ -17,7 +17,6 @@
  */
 
 import React from 'react';
-import {View} from 'react-native';
 import {useNavigation, usePermitted} from '@axelor/aos-mobile-core';
 import SupplierArrivalTrackingNumberSelection from '../SupplierArrivalTrackingNumberSelection/SupplierArrivalTrackingNumberSelection';
 
@@ -58,16 +57,16 @@ const SupplierArrivalTrackingNumberSelect = ({
     }
   };
 
+  if (!canCreate) {
+    return null;
+  }
+
   return (
-    <View>
-      {canCreate && (
-        <SupplierArrivalTrackingNumberSelection
-          onSelectTrackingNumber={handleTrackingNumberSelection}
-          onAddTrackingNumber={handleAddTrackingNumber}
-          product={product}
-        />
-      )}
-    </View>
+    <SupplierArrivalTrackingNumberSelection
+      onSelectTrackingNumber={handleTrackingNumberSelection}
+      onAddTrackingNumber={handleAddTrackingNumber}
+      product={product}
+    />
   );
 };
 

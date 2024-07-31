@@ -22,6 +22,8 @@ import {Icon, Text, useThemeColor} from '@axelor/aos-mobile-ui';
 import {useTranslator} from '@axelor/aos-mobile-core';
 import TrackingNumberSearchBar from '../../TrackingNumberSearchBar/TrackingNumberSearchBar';
 
+const trackingScanKey = 'tracking_supplier-arrival-select';
+
 const SupplierArrivalTrackingNumberSelection = ({
   onSelectTrackingNumber,
   onAddTrackingNumber,
@@ -31,17 +33,13 @@ const SupplierArrivalTrackingNumberSelection = ({
   const Colors = useThemeColor();
   const I18n = useTranslator();
 
-  const trackingScanKey = 'tracking_supplier-arrival-select';
-
   return (
     <>
       <TouchableOpacity
         style={styles.trackingNumberContainer}
         onPress={onAddTrackingNumber}
         disabled={readonly}>
-        <Text style={styles.text_secondary}>
-          {I18n.t('Stock_AddTrackingNumber')}
-        </Text>
+        <Text style={styles.text}>{I18n.t('Stock_AddTrackingNumber')}</Text>
         <Icon
           name="plus-lg"
           color={Colors.primaryColor.background}
@@ -68,7 +66,7 @@ const styles = StyleSheet.create({
     marginHorizontal: 24,
     marginTop: 10,
   },
-  text_secondary: {
+  text: {
     fontSize: 14,
   },
   action: {

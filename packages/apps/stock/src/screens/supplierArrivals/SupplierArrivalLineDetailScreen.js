@@ -275,15 +275,6 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     paddingBottom: 100,
   },
-  trackingNumberContainer: {
-    flexDirection: 'row',
-    alignSelf: 'flex-start',
-    marginHorizontal: 24,
-    marginTop: 10,
-  },
-  action: {
-    marginLeft: 10,
-  },
 });
 
 export default SupplierArrivalLineDetailScreen;
