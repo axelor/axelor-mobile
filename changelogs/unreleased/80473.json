@@ -1,5 +1,5 @@
 {
-  "title": "PeriodInput: add interval in between start and end dates with possibility to define a default one in hours with props",
+  "title": "PeriodInput: add interval between start and end dates with possibility to define a default one in hours with props",
   "type": "feat",
   "packages": "core"
 }

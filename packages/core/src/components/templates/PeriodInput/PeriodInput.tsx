@@ -74,10 +74,12 @@ const PeriodInput = ({
   }, [endDateConfig.date]);
 
   useEffect(() => {
-    if (startDate && !endDate && interval) {
-      setEndDate(new Date(startDate.getTime() + interval));
-    } else if (endDate && !startDate && interval) {
-      setStartDate(new Date(endDate.getTime() - interval));
+    if (interval) {
+      if (startDate && !endDate) {
+        setEndDate(new Date(startDate.getTime() + interval));
+      } else if (endDate && !startDate) {
+        setStartDate(new Date(endDate.getTime() - interval));
+      }
     }
   }, [startDate, endDate, interval]);
 
