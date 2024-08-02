@@ -1,0 +1,5 @@
+{
+  "title": "Dashboard: add Indicator chart type",
+  "type": "feat",
+  "packages": "ui"
+}
