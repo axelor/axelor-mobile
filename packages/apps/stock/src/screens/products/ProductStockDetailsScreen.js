@@ -18,12 +18,18 @@
 
 import React, {useCallback, useEffect, useState} from 'react';
 import {StyleSheet, View, Dimensions} from 'react-native';
-import {EditableInput, Picker, Screen, ScrollView} from '@axelor/aos-mobile-ui';
 import {
-  useSelector,
+  EditableInput,
+  Picker,
+  Screen,
+  ScrollView,
+  useConfig,
+} from '@axelor/aos-mobile-ui';
+import {
   useDispatch,
-  useTranslator,
   usePermitted,
+  useSelector,
+  useTranslator,
 } from '@axelor/aos-mobile-core';
 import {
   ProductCardStockIndicatorList,
@@ -47,6 +53,7 @@ const ProductStockDetailsScreen = ({route}) => {
   const {readonly, hidden} = usePermitted({
     modelName: 'com.axelor.apps.stock.db.StockLocationLine',
   });
+  const {setActivityIndicator} = useConfig();
 
   const {loadingProductFromId, productFromId: product} = useSelector(
     state => state.product,
@@ -91,6 +98,11 @@ const ProductStockDetailsScreen = ({route}) => {
     }
   }, [companyId, dispatch, product, stockLocation]);
 
+  useEffect(() => {
+    const isActivityIndicator = loadingProductFromId && product?.id == null;
+    setActivityIndicator(isActivityIndicator);
+  }, [loadingProductFromId, product, setActivityIndicator]);
+
   const handleLockerChange = input => {
     if (stockLocation != null) {
       dispatch(
@@ -103,6 +115,10 @@ const ProductStockDetailsScreen = ({route}) => {
       );
     }
   };
+
+  if (product?.id !== productId) {
+    return null;
+  }
 
   return (
     <Screen>
