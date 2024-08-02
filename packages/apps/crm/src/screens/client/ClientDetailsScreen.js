@@ -17,6 +17,7 @@
  */
 
 import React, {useCallback, useEffect} from 'react';
+import {StyleSheet} from 'react-native';
 import {
   Screen,
   HeaderContainer,
@@ -61,7 +62,9 @@ const ClientDetailsScreen = ({route}) => {
   return (
     <Screen removeSpaceOnTop={true}>
       <HeaderContainer expandableFilter={false} fixedItems={<ClientHeader />} />
-      <ScrollView refresh={{loadingClient, fetcher: getClient}}>
+      <ScrollView
+        refresh={{loadingClient, fetcher: getClient}}
+        style={styles.scrollView}>
         <NotesCard title={I18n.t('Crm_Notes')} data={client.description} />
         <ClientDropdownCards />
       </ScrollView>
@@ -69,5 +72,11 @@ const ClientDetailsScreen = ({route}) => {
     </Screen>
   );
 };
+
+const styles = StyleSheet.create({
+  scrollView: {
+    height: null,
+  },
+});
 
 export default ClientDetailsScreen;
