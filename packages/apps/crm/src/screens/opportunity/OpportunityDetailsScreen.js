@@ -17,6 +17,7 @@
  */
 
 import React, {useCallback, useEffect} from 'react';
+import {StyleSheet} from 'react-native';
 import {
   Screen,
   HeaderContainer,
@@ -65,7 +66,8 @@ const OpportunityDetailsScreen = ({route}) => {
         fixedItems={<OpportunityHeader />}
       />
       <ScrollView
-        refresh={{loading: loadingOpportunity, fetcher: getOpportunityAPI}}>
+        refresh={{loading: loadingOpportunity, fetcher: getOpportunityAPI}}
+        style={styles.scrollView}>
         <OpportunityPartnerCard />
         <OpportunityDropdownInfo />
         <NotesCard
@@ -78,5 +80,11 @@ const OpportunityDetailsScreen = ({route}) => {
     </Screen>
   );
 };
+
+const styles = StyleSheet.create({
+  scrollView: {
+    height: null,
+  },
+});
 
 export default OpportunityDetailsScreen;
