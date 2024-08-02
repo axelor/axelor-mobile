@@ -22,6 +22,7 @@ import Chart from '../chart-type';
 import BarChart from './BarChart';
 import LineChart from './LineChart';
 import PieChart from './PieChart/PieChart';
+import IndicatorChart from './IndicatorChart/IndicatorChart';
 import {Data} from '../dashboard.helper';
 
 const BarChartRender = (datasets, title, widthGraph, hideCardBackground) => {
@@ -57,6 +58,27 @@ const PieChartRender = (datasets, title, widthGraph, type) => {
   );
 };
 
+const IndicatorChartRender = (
+  datasets,
+  title,
+  widthGraph,
+  hideCardBackground,
+) => {
+  const formattedData = datasets[0].map(data => ({
+    ...data,
+    title: data.label,
+  }));
+
+  return (
+    <IndicatorChart
+      title={title}
+      datasets={formattedData}
+      widthGraph={widthGraph}
+      hideCardBackground={hideCardBackground}
+    />
+  );
+};
+
 const ChartRender = ({
   dataList,
   title,
@@ -78,6 +100,13 @@ const ChartRender = ({
     case Chart.chartType.pie:
     case Chart.chartType.donut:
       return PieChartRender(dataList, title, widthGraph, type);
+    case Chart.chartType.indicator:
+      return IndicatorChartRender(
+        dataList,
+        title,
+        widthGraph,
+        hideCardBackground,
+      );
     default:
       return null;
   }
