@@ -18,7 +18,13 @@
 
 import React, {useEffect, useState} from 'react';
 import {StyleSheet, View, Dimensions} from 'react-native';
-import {EditableInput, Picker, Screen, ScrollView} from '@axelor/aos-mobile-ui';
+import {
+  EditableInput,
+  Picker,
+  Screen,
+  ScrollView,
+  useConfig,
+} from '@axelor/aos-mobile-ui';
 import {useSelector, useDispatch, useTranslator} from '@axelor/aos-mobile-core';
 import {
   ProductCardStockIndicatorList,
@@ -39,8 +45,11 @@ const ProductStockDetailsScreen = ({route}) => {
   const routeProduct = route.params.product;
   const I18n = useTranslator();
   const dispatch = useDispatch();
+  const {setActivityIndicator} = useConfig();
 
-  const {productFromId: product} = useSelector(state => state.product);
+  const {loadingProductFromId, productFromId: product} = useSelector(
+    state => state.product,
+  );
   const {user, canModifyCompany} = useSelector(state => state.user);
   const {companyList} = useSelector(state => state.company);
   const {stockLocationLine} = useSelector(state => state.stockLocationLine);
@@ -74,6 +83,11 @@ const ProductStockDetailsScreen = ({route}) => {
     }
   }, [companyId, dispatch, routeProduct, stockLocation]);
 
+  useEffect(() => {
+    const isActivityIndicator = loadingProductFromId && product?.id == null;
+    setActivityIndicator(isActivityIndicator);
+  }, [loadingProductFromId, product, setActivityIndicator]);
+
   const handleLockerChange = input => {
     if (stockLocation != null) {
       dispatch(
@@ -86,6 +100,10 @@ const ProductStockDetailsScreen = ({route}) => {
       );
     }
   };
+
+  if (product?.id !== routeProduct?.id) {
+    return null;
+  }
 
   return (
     <Screen>

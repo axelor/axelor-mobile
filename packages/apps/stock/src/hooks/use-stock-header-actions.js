@@ -225,7 +225,7 @@ const useProductDetailsActions = () => {
       model: 'com.axelor.apps.base.db.Product',
       modelId: product?.id,
       disableMailMessages: !mobileSettings?.isTrackerMessageEnabled,
-      attachedFileScreenTitle: product.name,
+      attachedFileScreenTitle: product?.name,
     });
   }, [mobileSettings, product]);
 };
@@ -239,7 +239,7 @@ const useProductStockDetailsActions = () => {
       model: 'com.axelor.apps.base.db.Product',
       modelId: product?.id,
       disableMailMessages: !mobileSettings?.isTrackerMessageEnabled,
-      attachedFileScreenTitle: product.name,
+      attachedFileScreenTitle: product?.name,
     });
   }, [mobileSettings, product]);
 };
