@@ -71,13 +71,13 @@ export const calculateDiff = (start, end) => {
     return 0;
   }
 
-  let startDate = new Date(start).getTime();
+  let startDate = new Date(start);
   let endDate;
 
   if (end == null) {
-    endDate = new Date().getTime();
+    endDate = new Date();
   } else {
-    endDate = new Date(end).getTime();
+    endDate = new Date(end);
   }
 
   //ignore light difference (< 5000 milliseconds) due to the async await
