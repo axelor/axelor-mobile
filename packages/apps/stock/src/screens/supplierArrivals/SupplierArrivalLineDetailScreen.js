@@ -39,7 +39,6 @@ import {
   SupplierArrivalLineQuantityCard,
   SupplierProductInfo,
   StockLocationSearchBar,
-  SupplierArrivalTrackingNumberSelection,
   SupplierArrivalTrackingNumberSelect,
 } from '../../components';
 import {fetchProductWithId} from '../../features/productSlice';
@@ -148,14 +147,6 @@ const SupplierArrivalLineDetailScreen = ({route, navigation}) => {
 
   const handleShowProduct = () => {
     navigation.navigate('ProductStockDetailsScreen', {
-      product: product,
-    });
-  };
-
-  const handleAddTrackingNumber = () => {
-    navigation.navigate('SupplierArrivalAddTrackingScreen', {
-      supplierArrival: supplierArrival,
-      supplierArrivalLine: supplierArrivalLine,
       product: product,
     });
   };
