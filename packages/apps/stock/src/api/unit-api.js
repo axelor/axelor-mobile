@@ -16,8 +16,14 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import {axiosApiProvider} from '@axelor/aos-mobile-core';
+import {createStandardSearch} from '@axelor/aos-mobile-core';
 
 export async function searchUnit() {
-  return axiosApiProvider.get({url: '/ws/rest/com.axelor.apps.base.db.Unit'});
+  return createStandardSearch({
+    model: 'com.axelor.apps.base.db.Unit',
+    fieldKey: 'stock_unit',
+    page: 0,
+    numberElementsByPage: null,
+    provider: 'model',
+  });
 }

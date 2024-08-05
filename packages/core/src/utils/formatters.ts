@@ -144,14 +144,21 @@ export const getDateZonesISOString = (dateString: string) => {
   return `${date}T${time}`;
 };
 
-export const formatRequestBody = (data: object) => {
+export const formatRequestBody = (
+  data: object,
+  matcherPrefix: string = null,
+) => {
   if (isEmpty(data)) {
-    return null;
+    return {formattedData: null, matchers: {}};
   }
 
   let _data = {};
+  let matchers = {};
 
-  Object.entries(data).map(([_key, _value]) => {
+  Object.entries(data).forEach(([_key, _value]) => {
+    const matcherKey = `${matcherPrefix ? matcherPrefix + '.' : ''}${_key}`;
+    matchers[matcherKey] = _key;
+
     if (_value != null && typeof _value === 'object') {
       _data[_key] = {id: _value.id};
     } else {
@@ -159,5 +166,5 @@ export const formatRequestBody = (data: object) => {
     }
   });
 
-  return _data;
+  return {formattedData: _data, matchers};
 };

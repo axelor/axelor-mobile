@@ -17,9 +17,9 @@
  */
 
 import {
-  axiosApiProvider,
   createStandardFetch,
   createStandardSearch,
+  getActionApi,
   getSearchCriterias,
   getTypes,
 } from '@axelor/aos-mobile-core';
@@ -100,6 +100,7 @@ export async function searchInternalMoveFilter({
     fieldKey: 'stock_internalMove',
     sortKey: 'stock_internalMove',
     page,
+    provider: 'model',
   });
 }
 
@@ -108,6 +109,7 @@ export async function fetchInternalMove({internalMoveId}) {
     model: 'com.axelor.apps.stock.db.StockMove',
     id: internalMoveId,
     fieldKey: 'stock_internalMove',
+    provider: 'model',
   });
 }
 
@@ -117,9 +119,10 @@ export async function createInternalStockMove({
   toStockLocationId,
   lineItems,
 }) {
-  return axiosApiProvider.post({
+  return getActionApi().send({
     url: 'ws/aos/stock-move/internal/',
-    data: {
+    method: 'post',
+    body: {
       companyId,
       fromStockLocationId,
       toStockLocationId,
@@ -132,15 +135,18 @@ export async function createInternalStockMove({
         toStockLocationId: _item.toStockLocation?.id,
       })),
     },
+    description: 'create internal move',
   });
 }
 
 export async function realizeInternalMove({stockMoveId, version}) {
-  return axiosApiProvider.put({
+  return getActionApi().send({
     url: `/ws/aos/stock-move/realize/${stockMoveId}`,
-    data: {
-      version: version,
+    method: 'put',
+    body: {
+      version,
     },
+    description: 'realize internal move',
   });
 }
 
@@ -149,12 +155,21 @@ export async function modifyInternalMoveNotes({
   version,
   notes,
 }) {
-  return axiosApiProvider.post({
+  return getActionApi().send({
     url: `/ws/rest/com.axelor.apps.stock.db.StockMove/${internalMoveId}`,
-    data: {
+    method: 'post',
+    body: {
       data: {
-        version: version,
+        version,
         note: notes,
+      },
+    },
+    description: 'modify internal move notes',
+    matchers: {
+      modelName: 'com.axelor.apps.stock.db.StockMove',
+      id: internalMoveId,
+      fields: {
+        'data.note': 'note',
       },
     },
   });

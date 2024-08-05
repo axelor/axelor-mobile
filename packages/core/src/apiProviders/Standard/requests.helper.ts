@@ -16,7 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import {Criteria} from '../Model';
+import {Criteria, getModelApi} from '../Model';
 import {axiosApiProvider} from './AxiosProvider';
 import {getObjectFields, getSortFields} from './ObjectFieldsProvider';
 
@@ -29,6 +29,7 @@ interface SearchProps {
   sortKey?: string;
   page: number;
   numberElementsByPage?: number;
+  provider?: 'axios' | 'model';
 }
 
 interface FetchProps {
@@ -36,6 +37,7 @@ interface FetchProps {
   fieldKey: string;
   id: number;
   relatedFields?: any;
+  provider?: 'axios' | 'model';
 }
 
 class RequestBuilder {
@@ -62,6 +64,7 @@ class RequestBuilder {
     sortKey,
     page = 0,
     numberElementsByPage,
+    provider = 'axios',
   }: SearchProps): Promise<any> => {
     if (model == null || fieldKey == null) {
       return null;
@@ -86,15 +89,28 @@ class RequestBuilder {
       data._domainContext = domainContext;
     }
 
-    return axiosApiProvider.post({
-      url: `/ws/rest/${model}/search`,
-      data: {
+    if (provider === 'axios') {
+      axiosApiProvider.post({
+        url: `/ws/rest/${model}/search`,
+        data: {
+          data: data,
+          fields: getObjectFields(fieldKey),
+          sortBy: sortKey ? getSortFields(sortKey) : ['id'],
+          limit: limit,
+          offset: limit * page,
+          translate: true,
+        },
+      });
+    }
+
+    return getModelApi().search({
+      modelName: model,
+      query: {
         data: data,
         fields: getObjectFields(fieldKey),
         sortBy: sortKey ? getSortFields(sortKey) : ['id'],
         limit: limit,
         offset: limit * page,
-        translate: true,
       },
     });
   };
@@ -104,17 +120,29 @@ class RequestBuilder {
     fieldKey,
     id,
     relatedFields = {},
+    provider = 'axios',
   }: FetchProps): Promise<any> => {
     if (model == null || fieldKey == null) {
       return null;
     }
 
-    return axiosApiProvider.post({
-      url: `/ws/rest/${model}/${id}/fetch`,
-      data: {
+    if (provider === 'axios') {
+      axiosApiProvider.post({
+        url: `/ws/rest/${model}/${id}/fetch`,
+        data: {
+          fields: getObjectFields(fieldKey),
+          related: relatedFields,
+          translate: true,
+        },
+      });
+    }
+
+    return getModelApi().fetch({
+      modelName: model,
+      id: id,
+      query: {
         fields: getObjectFields(fieldKey),
         related: relatedFields,
-        translate: true,
       },
     });
   };

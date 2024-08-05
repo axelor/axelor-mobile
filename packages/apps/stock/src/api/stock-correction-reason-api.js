@@ -16,10 +16,14 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import {axiosApiProvider} from '@axelor/aos-mobile-core';
+import {createStandardSearch} from '@axelor/aos-mobile-core';
 
 export async function searchStockCorrectionReason() {
-  return axiosApiProvider.get({
-    url: '/ws/rest/com.axelor.apps.stock.db.StockCorrectionReason',
+  return createStandardSearch({
+    model: 'com.axelor.apps.stock.db.StockCorrectionReason',
+    fieldKey: 'stock_stockCorrectionReason',
+    page: 0,
+    numberElementsByPage: null,
+    provider: 'model',
   });
 }

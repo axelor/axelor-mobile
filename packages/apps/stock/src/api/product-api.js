@@ -17,10 +17,10 @@
  */
 
 import {
-  axiosApiProvider,
   createStandardSearch,
   createStandardFetch,
   getSearchCriterias,
+  getActionApi,
 } from '@axelor/aos-mobile-core';
 
 const createProductCriteria = searchValue => {
@@ -56,6 +56,7 @@ export async function searchProductsFilter({searchValue, page = 0}) {
     fieldKey: 'stock_product',
     sortKey: 'stock_product',
     page,
+    provider: 'model',
   });
 }
 
@@ -64,6 +65,7 @@ export async function searchProductWithId(productId) {
     model: 'com.axelor.apps.base.db.Product',
     id: productId,
     fieldKey: 'stock_product',
+    provider: 'model',
   });
 }
 
@@ -73,13 +75,15 @@ export async function updateLocker({
   newLocker,
   version,
 }) {
-  return axiosApiProvider.put({
+  return getActionApi().send({
     url: `/ws/aos/stock-product/modify-locker/${productId}`,
-    data: {
+    method: 'put',
+    body: {
       stockLocationId: stockLocationId,
       newLocker: newLocker,
       version: version,
     },
+    description: 'modify product locker',
   });
 }
 
@@ -95,6 +99,7 @@ export async function fetchVariants({productVariantParentId, page = 0}) {
     ],
     fieldKey: 'stock_product',
     page,
+    provider: 'model',
   });
 }
 
@@ -104,19 +109,25 @@ export async function getProductStockIndicators({
   stockLocationId,
   version,
 }) {
-  return axiosApiProvider.post({
+  return getActionApi().send({
     url: `/ws/aos/stock-product/fetch-product-with-stock/${productId}`,
-    data: {
-      companyId: companyId,
-      stockLocationId: stockLocationId,
-      version: version,
+    method: 'post',
+    body: {
+      companyId,
+      stockLocationId,
+      version,
     },
+    description: 'get product stock indicators',
   });
 }
 
 export async function fetchVariantAttributes({productVariantId, version}) {
-  return axiosApiProvider.post({
+  return getActionApi().send({
     url: `/ws/aos/stock-product/get-variant-attributes/${productVariantId}`,
-    data: {version: version},
+    method: 'post',
+    body: {
+      version,
+    },
+    description: 'fetch variant attributes',
   });
 }

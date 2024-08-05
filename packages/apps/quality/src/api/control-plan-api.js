@@ -23,5 +23,6 @@ export async function fetchControlPlanById({id}) {
     model: 'com.axelor.apps.quality.db.ControlPlan',
     id,
     fieldKey: 'quality_controlPlan',
+    provider: 'model',
   });
 }

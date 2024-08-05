@@ -57,5 +57,6 @@ export async function searchExpenseType({searchValue = null, page = 0, user}) {
     fieldKey: 'hr_expenseType',
     sortKey: 'hr_expenseType',
     page,
+    provider: 'model',
   });
 }

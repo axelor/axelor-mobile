@@ -16,18 +16,20 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import {axiosApiProvider, createStandardFetch} from '@axelor/aos-mobile-core';
+import {createStandardFetch, getActionApi} from '@axelor/aos-mobile-core';
 
 export async function fetchManufacturingOrderConsumedProducts({
   manufOrderId,
   manufOrderVersion,
 }) {
-  return axiosApiProvider.post({
+  return getActionApi().send({
     url: '/ws/aos/manuf-order/consumed-products/fetch',
-    data: {
-      manufOrderId: manufOrderId,
-      manufOrderVersion: manufOrderVersion,
+    method: 'post',
+    body: {
+      manufOrderId,
+      manufOrderVersion,
     },
+    description: 'fetch manufacturing order consumed products',
   });
 }
 
@@ -35,12 +37,14 @@ export async function fetchManufacturingOrderProducedProducts({
   manufOrderId,
   manufOrderVersion,
 }) {
-  return axiosApiProvider.post({
+  return getActionApi().send({
     url: '/ws/aos/manuf-order/produced-products/fetch',
-    data: {
-      manufOrderId: manufOrderId,
-      manufOrderVersion: manufOrderVersion,
+    method: 'post',
+    body: {
+      manufOrderId,
+      manufOrderVersion,
     },
+    description: 'fetch manufacturing order produced products',
   });
 }
 
@@ -49,6 +53,7 @@ export async function searchProdProductWithId({productId}) {
     model: 'com.axelor.apps.production.db.ProdProduct',
     id: productId,
     fieldKey: 'manufacturing_prodProduct',
+    provider: 'model',
   });
 }
 
@@ -60,15 +65,17 @@ export async function createProdProduct({
   qty,
   productType,
 }) {
-  return axiosApiProvider.post({
+  return getActionApi().send({
     url: `ws/aos/manuf-order/${manufOrderId}/add-product`,
-    data: {
+    method: 'post',
+    body: {
       version: manufOrderVersion,
-      productId: productId,
-      trackingNumberId: trackingNumberId,
-      qty: qty,
-      productType: productType,
+      productId,
+      trackingNumberId,
+      qty,
+      productType,
     },
+    description: 'create prod product',
   });
 }
 
@@ -77,12 +84,14 @@ export async function updateProdProduct({
   stockMoveLineId,
   prodProductQty,
 }) {
-  return axiosApiProvider.put({
+  return getActionApi().send({
     url: 'ws/aos/manuf-order/update-product-qty',
-    data: {
+    method: 'put',
+    body: {
       version: stockMoveLineVersion,
-      stockMoveLineId: stockMoveLineId,
-      prodProductQty: prodProductQty,
+      stockMoveLineId,
+      prodProductQty,
     },
+    description: 'update prod product',
   });
 }

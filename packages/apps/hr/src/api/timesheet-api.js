@@ -20,6 +20,7 @@ import {
   axiosApiProvider,
   createStandardFetch,
   createStandardSearch,
+  getActionApi,
   getSearchCriterias,
   getTypes,
 } from '@axelor/aos-mobile-core';
@@ -148,6 +149,7 @@ export async function fetchTimesheet({searchValue = null, userId, page = 0}) {
     fieldKey: 'hr_timesheet',
     sortKey: 'hr_timesheet',
     page,
+    provider: 'model',
   });
 }
 
@@ -162,6 +164,7 @@ export async function fetchTimesheetToValidate({
     fieldKey: 'hr_timesheet',
     sortKey: 'hr_timesheet',
     page,
+    provider: 'model',
   });
 }
 
@@ -170,6 +173,7 @@ export async function fetchTimesheetById({timesheetId}) {
     model: 'com.axelor.apps.hr.db.Timesheet',
     id: timesheetId,
     fieldKey: 'hr_timesheet',
+    provider: 'model',
   });
 }
 
@@ -190,27 +194,32 @@ export async function fetchDraftTimesheet({
     fieldKey: 'hr_timesheet',
     numberElementsByPage: null,
     page: 0,
+    provider: 'model',
   });
 }
 
 export async function createTimesheet({fromDate, toDate, timerIdList}) {
-  return axiosApiProvider.post({
+  return getActionApi().send({
     url: 'ws/aos/timesheet',
-    data: {
+    method: 'post',
+    body: {
       fromDate,
       toDate,
       timerIdList,
     },
+    description: 'create timesheet',
   });
 }
 
 export async function addTimerTimesheet({timesheetId, version, timerIdList}) {
-  return axiosApiProvider.put({
+  return getActionApi().send({
     url: `ws/aos/timesheet/add-timer/${timesheetId}`,
-    data: {
+    method: 'put',
+    body: {
       version,
       timerIdList,
     },
+    description: 'add timer to timesheet',
   });
 }
 
@@ -220,19 +229,35 @@ export async function updateTimesheetStatus({
   toStatus,
   groundForRefusal,
 }) {
-  return axiosApiProvider.put({
+  return getActionApi().send({
     url: `ws/aos/timesheet/status/${timesheetId}`,
-    data: {
+    method: 'put',
+    body: {
       version,
       toStatus,
       groundForRefusal,
+    },
+    description: 'update timesheet status',
+    matchers: {
+      modelName: 'com.axelor.apps.hr.db.Timesheet',
+      id: timesheetId,
+      fields: {
+        toStatus: 'statusSelect',
+        groundForRefusal,
+      },
     },
   });
 }
 
 export async function deleteTimesheet({timesheetId}) {
-  return axiosApiProvider.delete({
+  return getActionApi().send({
     url: `ws/rest/com.axelor.apps.hr.db.Timesheet/${timesheetId}`,
+    method: 'delete',
+    description: 'delete timesheet',
+    matchers: {
+      modelName: 'com.axelor.apps.hr.db.Timesheet',
+      id: timesheetId,
+    },
   });
 }
 

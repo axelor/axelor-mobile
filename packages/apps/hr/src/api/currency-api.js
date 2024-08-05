@@ -34,5 +34,6 @@ export async function searchCurrencies({searchValue = null, page = 0}) {
     fieldKey: 'hr_currency',
     sortKey: 'hr_currency',
     page,
+    provider: 'model',
   });
 }

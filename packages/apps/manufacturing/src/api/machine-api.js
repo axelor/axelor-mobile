@@ -27,5 +27,6 @@ export async function searchMachineFilter({searchValue = null, page = 0}) {
     criteria: [getSearchCriterias('manufacturing_machine', searchValue)],
     fieldKey: 'manufacturing_machine',
     page: page,
+    provider: 'model',
   });
 }

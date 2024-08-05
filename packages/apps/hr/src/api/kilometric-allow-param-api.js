@@ -52,5 +52,6 @@ export async function searchKilometricAllowParam({
     fieldKey: 'hr_kilomectricAllowParam',
     sortKey: 'hr_kilomectricAllowParam',
     page,
+    provider: 'model',
   });
 }

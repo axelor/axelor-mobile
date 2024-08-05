@@ -109,6 +109,7 @@ export async function getPartner({partnerId}) {
     model: 'com.axelor.apps.base.db.Partner',
     id: partnerId,
     fieldKey: 'crm_partner',
+    provider: 'model',
   });
 }
 
@@ -118,6 +119,7 @@ export async function searchPartner({searchValue, page = 0}) {
     criteria: createPartnerCriteria(searchValue),
     fieldKey: 'crm_partner',
     page,
+    provider: 'model',
   });
 }
 
@@ -127,6 +129,7 @@ export async function searchClientAndProspect({searchValue, page = 0}) {
     criteria: createClientAndProspectCriteria(searchValue),
     fieldKey: 'crm_partner',
     page,
+    provider: 'model',
   });
 }
 
@@ -137,5 +140,6 @@ export async function searchLinkedPartnersOfContact({contactId}) {
     fieldKey: 'crm_partner',
     page: 0,
     numberElementsByPage: null,
+    provider: 'model',
   });
 }

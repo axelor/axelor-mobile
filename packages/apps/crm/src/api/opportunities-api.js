@@ -17,9 +17,10 @@
  */
 
 import {
-  axiosApiProvider,
   createStandardFetch,
   createStandardSearch,
+  formatRequestBody,
+  getActionApi,
   getSearchCriterias,
 } from '@axelor/aos-mobile-core';
 
@@ -71,6 +72,7 @@ export async function searchOpportunities({
     fieldKey: 'crm_opportunity',
     sortKey: 'crm_opportunity',
     page,
+    provider: 'model',
   });
 }
 
@@ -81,6 +83,7 @@ export async function getOpportunityStatus() {
     sortKey: 'crm_opportunityStatus',
     numberElementsByPage: null,
     page: 0,
+    provider: 'model',
   });
 }
 
@@ -100,6 +103,7 @@ export async function getOpportunity({opportunityId}) {
       ],
       user: ['name'],
     },
+    provider: 'model',
   });
 }
 
@@ -108,13 +112,22 @@ export async function updateOpportunityScoring({
   opportunityVersion,
   newScore,
 }) {
-  return axiosApiProvider.post({
+  return getActionApi().send({
     url: '/ws/rest/com.axelor.apps.crm.db.Opportunity',
-    data: {
+    method: 'post',
+    body: {
       data: {
         id: opportunityId,
         version: opportunityVersion,
         opportunityRating: newScore,
+      },
+    },
+    description: 'update opportunity scoring',
+    matchers: {
+      modelName: 'com.axelor.apps.crm.db.Opportunity',
+      id: opportunityId,
+      fields: {
+        'data.opportunityRating': 'opportunityRating',
       },
     },
   });
@@ -125,9 +138,10 @@ export async function updateOpportunityStatus({
   version,
   opportunityStatusId,
 }) {
-  return axiosApiProvider.post({
+  return getActionApi().send({
     url: '/ws/rest/com.axelor.apps.crm.db.Opportunity',
-    data: {
+    method: 'post',
+    body: {
       data: {
         id: opportunityId,
         version: version,
@@ -136,23 +150,49 @@ export async function updateOpportunityStatus({
         },
       },
     },
+    description: 'update opportunity status',
+    matchers: {
+      modelName: 'com.axelor.apps.crm.db.Opportunity',
+      id: opportunityId,
+      fields: {
+        'data.opportunityStatus': 'opportunityStatus',
+      },
+    },
   });
 }
 
 export async function updateOpportunity({opportunity}) {
-  return axiosApiProvider.post({
+  const {matchers} = formatRequestBody(opportunity, 'data');
+
+  return getActionApi().send({
     url: '/ws/rest/com.axelor.apps.crm.db.Opportunity',
-    data: {
+    method: 'post',
+    body: {
       data: opportunity,
+    },
+    description: 'update opportunity',
+    matchers: {
+      modelName: 'com.axelor.apps.crm.db.Opportunity',
+      id: opportunity.id,
+      fields: matchers,
     },
   });
 }
 
 export async function createOpportunity({opportunity}) {
-  return axiosApiProvider.put({
+  const {matchers} = formatRequestBody(opportunity, 'data');
+
+  return getActionApi().send({
     url: '/ws/rest/com.axelor.apps.crm.db.Opportunity',
-    data: {
+    method: 'put',
+    body: {
       data: opportunity,
+    },
+    description: 'create opportunity',
+    matchers: {
+      modelName: 'com.axelor.apps.crm.db.Opportunity',
+      id: Date.now(),
+      fields: matchers,
     },
   });
 }
@@ -170,5 +210,6 @@ export async function getPartnerOpportunities({partnerId}) {
     fieldKey: 'crm_opportunity',
     numberElementsByPage: null,
     page: 0,
+    provider: 'model',
   });
 }
