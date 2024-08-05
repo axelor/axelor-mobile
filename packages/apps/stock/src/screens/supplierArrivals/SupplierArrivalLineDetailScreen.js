@@ -40,6 +40,7 @@ import {
   SupplierProductInfo,
   StockLocationSearchBar,
   SupplierArrivalTrackingNumberSelection,
+  SupplierArrivalTrackingNumberSelect,
 } from '../../components';
 import {fetchProductWithId} from '../../features/productSlice';
 import {fetchProductForSupplier} from '../../features/supplierCatalogSlice';
@@ -223,9 +224,10 @@ const SupplierArrivalLineDetailScreen = ({route, navigation}) => {
         />
         {product.trackingNumberConfiguration != null &&
           trackingNumber == null && (
-            <SupplierArrivalTrackingNumberSelection
-              onSelectTrackingNumber={handleTrackingNumberSelection}
-              onAddTrackingNumber={handleAddTrackingNumber}
+            <SupplierArrivalTrackingNumberSelect
+              supplierArrival={supplierArrival}
+              supplierArrivalLine={supplierArrivalLine}
+              handleTrackingNumberSelection={handleTrackingNumberSelection}
               product={product}
               readonly={readonly}
             />

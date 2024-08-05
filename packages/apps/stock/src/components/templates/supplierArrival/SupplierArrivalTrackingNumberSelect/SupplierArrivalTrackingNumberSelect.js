@@ -17,15 +17,27 @@
  */
 
 import React from 'react';
-import {useNavigation, usePermitted} from '@axelor/aos-mobile-core';
-import SupplierArrivalTrackingNumberSelection from '../SupplierArrivalTrackingNumberSelection/SupplierArrivalTrackingNumberSelection';
+import {
+  useNavigation,
+  usePermitted,
+  useTranslator,
+} from '@axelor/aos-mobile-core';
+import {Icon, Text, useThemeColor} from '@axelor/aos-mobile-ui';
+import TrackingNumberSearchBar from '../../TrackingNumberSearchBar/TrackingNumberSearchBar';
+import {StyleSheet, TouchableOpacity} from 'react-native';
+
+const trackingScanKey = 'tracking_supplier-arrival-select';
 
 const SupplierArrivalTrackingNumberSelect = ({
   product,
   supplierArrivalLine,
   supplierArrival,
-  setVisible,
+  readonly,
+  handleTrackingNumberSelection,
 }) => {
+  const Colors = useThemeColor();
+  const I18n = useTranslator();
+
   const navigation = useNavigation();
   const {canCreate} = usePermitted({
     modelName: 'com.axelor.apps.stock.db.TrackingNumber',
@@ -39,35 +51,47 @@ const SupplierArrivalTrackingNumberSelect = ({
     });
   };
 
-  const handleTrackingNumberSelection = item => {
-    if (item !== null) {
-      if (
-        supplierArrivalLine != null &&
-        item.id !== supplierArrivalLine.trackingNumber?.id
-      ) {
-        setVisible(true);
-      } else {
-        navigation.navigate('SupplierArrivalLineDetailScreen', {
-          supplierArrivalLineId: supplierArrivalLine?.id,
-          supplierArrival: supplierArrival,
-          productId: product?.id,
-          trackingNumber: item,
-        });
-      }
-    }
-  };
-
-  if (!canCreate) {
-    return null;
-  }
-
   return (
-    <SupplierArrivalTrackingNumberSelection
-      onSelectTrackingNumber={handleTrackingNumberSelection}
-      onAddTrackingNumber={handleAddTrackingNumber}
-      product={product}
-    />
+    <>
+      {canCreate && (
+        <TouchableOpacity
+          style={styles.trackingNumberContainer}
+          onPress={handleAddTrackingNumber}
+          disabled={readonly}>
+          <Text style={styles.text}>{I18n.t('Stock_AddTrackingNumber')}</Text>
+          <Icon
+            name="plus-lg"
+            color={Colors.primaryColor.background}
+            size={24}
+            style={styles.action}
+            touchable={true}
+          />
+        </TouchableOpacity>
+      )}
+      <TrackingNumberSearchBar
+        scanKey={trackingScanKey}
+        onChange={handleTrackingNumberSelection}
+        isFocus={true}
+        changeScreenAfter={true}
+        product={product}
+      />
+    </>
   );
 };
+
+const styles = StyleSheet.create({
+  trackingNumberContainer: {
+    flexDirection: 'row',
+    alignSelf: 'flex-start',
+    marginHorizontal: 24,
+    marginTop: 10,
+  },
+  text: {
+    fontSize: 14,
+  },
+  action: {
+    marginLeft: 10,
+  },
+});
 
 export default SupplierArrivalTrackingNumberSelect;

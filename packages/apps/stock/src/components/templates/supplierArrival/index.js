@@ -27,5 +27,4 @@ export {default as SupplierArrivalMovementIndicationCard} from './SupplierArriva
 export {default as SupplierArrivalProductName} from './SupplierArrivalProductName/SupplierArrivalProductName';
 export {default as SupplierArrivalSearchLineContainer} from './SupplierArrivalSearchLineContainer/SupplierArrivalSearchLineContainer';
 export {default as SupplierArrivalTrackingNumberSelect} from './SupplierArrivalTrackingNumberSelect/SupplierArrivalTrackingNumberSelect';
-export {default as SupplierArrivalTrackingNumberSelection} from './SupplierArrivalTrackingNumberSelection/SupplierArrivalTrackingNumberSelection';
 export {default as SupplierProductInfo} from './SupplierProductInfo/SupplierProductInfo';
