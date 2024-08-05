@@ -24,10 +24,12 @@ import {useTranslator} from '../../i18n';
 import {useNavigation} from '../../hooks/use-navigation';
 import {useOnline} from '../../features/onlineSlice';
 import {formatDateTime} from '../../utils/formatters';
+import {useLoaderListener} from '../../loader';
 
 export const useAuthHeaders = () => {
   useUserProfileActions();
   useAuthHeaderBands();
+  useLoaderHeaderBand();
 };
 
 const useUserProfileActions = () => {
@@ -36,13 +38,24 @@ const useUserProfileActions = () => {
   const I18n = useTranslator();
 
   const {user} = useSelector(state => state.user);
+  const {numberUnreadProcess} = useLoaderListener();
 
   useEffect(() => {
     headerActionsProvider.registerModel('auth_user_profile', {
       actions: [
         {
-          key: 'settings',
+          key: 'processes',
           order: 10,
+          iconName: 'bookmark-check',
+          iconColor: Colors.primaryColor.background,
+          indicator: numberUnreadProcess,
+          title: I18n.t('Base_Loader_ProcessList'),
+          onPress: () => navigation.navigate('ProcessListScreen'),
+          showInHeader: true,
+        },
+        {
+          key: 'settings',
+          order: 20,
           iconName: 'gear-fill',
           iconColor: Colors.primaryColor.background,
           title: I18n.t('User_Settings'),
@@ -51,7 +64,7 @@ const useUserProfileActions = () => {
         },
       ],
     });
-  }, [Colors, I18n, navigation, user]);
+  }, [Colors, I18n, navigation, numberUnreadProcess, user]);
 };
 
 const useAuthHeaderBands = () => {
@@ -93,4 +106,24 @@ const useAuthHeaderBands = () => {
       showIf: online.isEnabled === false,
     });
   }, [I18n, Colors, registerHeaderBand, online.isEnabled]);
+};
+
+const useLoaderHeaderBand = () => {
+  const Colors = useThemeColor();
+  const I18n = useTranslator();
+
+  const {registerHeaderBand} = useHeaderBand();
+  const {numberRunningProcesses} = useLoaderListener();
+
+  useEffect(() => {
+    registerHeaderBand({
+      key: 'loader',
+      text: I18n.t('Base_Loader_ProccessesInBackground', {
+        numberRunningProcesses,
+      }),
+      color: Colors.cautionColor,
+      order: 15,
+      showIf: numberRunningProcesses > 0,
+    });
+  }, [Colors, I18n, numberRunningProcesses, registerHeaderBand]);
 };
