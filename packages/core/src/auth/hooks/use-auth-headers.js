@@ -38,7 +38,7 @@ const useUserProfileActions = () => {
   const I18n = useTranslator();
 
   const {user} = useSelector(state => state.user);
-  const {numberUnreadProcess} = useLoaderListener();
+  const {numberUnreadProcess, processList} = useLoaderListener();
 
   useEffect(() => {
     headerActionsProvider.registerModel('auth_user_profile', {
@@ -52,6 +52,7 @@ const useUserProfileActions = () => {
           title: I18n.t('Base_Loader_ProcessList'),
           onPress: () => navigation.navigate('ProcessListScreen'),
           showInHeader: true,
+          hideIf: processList?.length === 0,
         },
         {
           key: 'settings',
@@ -64,7 +65,14 @@ const useUserProfileActions = () => {
         },
       ],
     });
-  }, [Colors, I18n, navigation, numberUnreadProcess, user]);
+  }, [
+    Colors,
+    I18n,
+    navigation,
+    numberUnreadProcess,
+    processList?.length,
+    user,
+  ]);
 };
 
 const useAuthHeaderBands = () => {
