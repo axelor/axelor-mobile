@@ -17,9 +17,9 @@
  */
 
 import {
-  axiosApiProvider,
   createStandardFetch,
   createStandardSearch,
+  getActionApi,
   getSearchCriterias,
 } from '@axelor/aos-mobile-core';
 import StockMove from '../types/stock-move';
@@ -62,6 +62,7 @@ export async function searchSupplierArrivalFilter({searchValue, page = 0}) {
     fieldKey: 'stock_supplierArrival',
     sortKey: 'stock_supplierArrival',
     page,
+    provider: 'model',
   });
 }
 
@@ -70,6 +71,7 @@ export async function fetchSupplierArrival({supplierArrivalId}) {
     model: 'com.axelor.apps.stock.db.StockMove',
     id: supplierArrivalId,
     fieldKey: 'stock_supplierArrival',
+    provider: 'model',
   });
 }
 
@@ -84,26 +86,43 @@ export async function addLineStockMove({
   version,
   toStockLocationId,
 }) {
-  return axiosApiProvider.post({
+  return getActionApi().send({
     url: `/ws/aos/stock-move/add-line/${stockMoveId}`,
-    data: {
-      productId: productId,
-      unitId: unitId,
-      trackingNumberId: trackingNumberId,
-      expectedQty: expectedQty,
-      realQty: realQty,
-      conformity: conformity,
+    method: 'post',
+    body: {
+      productId,
+      unitId,
+      trackingNumberId,
+      expectedQty,
+      realQty,
+      conformity,
       version,
       toStockLocationId,
+    },
+    description: 'add new supplier arrival line',
+    matchers: {
+      modelName: 'com.axelor.apps.stock.db.StockMoveLine',
+      id: Date.now(),
+      fields: {
+        productId: 'product.id',
+        unitId: 'unit.id',
+        trackingNumberId: 'trackingNumber.id',
+        qty: 'expectedQty',
+        realQty,
+        conformity: 'conformitySelect',
+        toStockLocationId: 'toStockLocation.id',
+      },
     },
   });
 }
 
 export async function realizeSockMove({stockMoveId, version}) {
-  return axiosApiProvider.put({
+  return getActionApi().send({
     url: `/ws/aos/stock-move/realize/${stockMoveId}`,
-    data: {
-      version: version,
+    method: 'put',
+    body: {
+      version,
     },
+    description: 'realize sipplier arrival',
   });
 }

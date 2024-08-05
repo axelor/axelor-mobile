@@ -27,5 +27,6 @@ export async function searchWorkCenterFilter({searchValue = null, page = 0}) {
     criteria: [getSearchCriterias('manufacturing_workCenter', searchValue)],
     fieldKey: 'manufacturing_workCenter',
     page: page,
+    provider: 'model',
   });
 }

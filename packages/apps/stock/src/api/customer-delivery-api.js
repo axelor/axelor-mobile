@@ -17,9 +17,9 @@
  */
 
 import {
-  axiosApiProvider,
   createStandardFetch,
   createStandardSearch,
+  getActionApi,
   getSearchCriterias,
 } from '@axelor/aos-mobile-core';
 import StockMove from '../types/stock-move';
@@ -62,6 +62,7 @@ export async function searchDeliveryFilter({searchValue = null, page = 0}) {
     fieldKey: 'stock_customerDelivery',
     sortKey: 'stock_customerDelivery',
     page,
+    provider: 'model',
   });
 }
 
@@ -70,6 +71,7 @@ export async function fetchCustomerDelivery({customerDeliveryId}) {
     model: 'com.axelor.apps.stock.db.StockMove',
     id: customerDeliveryId,
     fieldKey: 'stock_customerDelivery',
+    provider: 'model',
   });
 }
 
@@ -83,26 +85,42 @@ export async function addLineStockMove({
   version,
   fromStockLocationId,
 }) {
-  return axiosApiProvider.post({
+  return getActionApi().send({
     url: `/ws/aos/stock-move/add-line/${stockMoveId}`,
-    data: {
-      productId: productId,
-      unitId: unitId,
-      trackingNumberId: trackingNumberId,
-      expectedQty: expectedQty,
-      realQty: realQty,
+    method: 'post',
+    body: {
+      productId,
+      unitId,
+      trackingNumberId,
+      expectedQty,
+      realQty,
       conformity: StockMove.conformity.None,
-      version: version,
+      version,
       fromStockLocationId,
+    },
+    description: 'add new customer delivery line',
+    matchers: {
+      modelName: 'com.axelor.apps.stock.db.StockMoveLine',
+      id: Date.now(),
+      fields: {
+        productId: 'product.id',
+        unitId: 'unit.id',
+        trackingNumberId: 'trackingNumber.id',
+        realQty: 'realQty',
+        conformity: 'conformitySelect',
+        fromStockLocationId: 'fromStockLocation.id',
+      },
     },
   });
 }
 
 export async function realizeSockMove({stockMoveId, version}) {
-  return axiosApiProvider.put({
+  return getActionApi().send({
     url: `/ws/aos/stock-move/realize/${stockMoveId}`,
-    data: {
-      version: version,
+    method: 'put',
+    body: {
+      version,
     },
+    description: 'realize customer delivery',
   });
 }

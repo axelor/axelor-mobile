@@ -17,9 +17,9 @@
  */
 
 import {
-  axiosApiProvider,
   createStandardFetch,
   createStandardSearch,
+  getActionApi,
   getSearchCriterias,
 } from '@axelor/aos-mobile-core';
 import StockMove from '../types/stock-move';
@@ -45,6 +45,7 @@ export async function searchSupplierArrivalLines({
     criteria: createSearchCriteria(supplierArrivalId, searchValue),
     fieldKey: 'stock_supplierArrivalLine',
     page,
+    provider: 'model',
   });
 }
 
@@ -55,9 +56,10 @@ export async function updateLine({
   conformity = StockMove.conformity.None,
   toStockLocationId,
 }) {
-  return axiosApiProvider.put({
+  return getActionApi().send({
     url: `/ws/aos/stock-move-line/${stockMoveLineId}`,
-    data:
+    method: 'put',
+    body:
       conformity > StockMove.conformity.None
         ? {
             version,
@@ -70,6 +72,16 @@ export async function updateLine({
             realQty,
             toStockLocationId,
           },
+    description: 'update supplier arrival line',
+    matchers: {
+      modelName: 'com.axelor.apps.stock.db.StockMoveLine',
+      id: stockMoveLineId,
+      fields: {
+        conformity: 'conformitySelect',
+        realQty,
+        toStockLocationId: 'toStockLocation.id',
+      },
+    },
   });
 }
 
@@ -78,5 +90,6 @@ export async function fetchSupplierArrivalLine({supplierArrivalLineId}) {
     model: 'com.axelor.apps.stock.db.StockMoveLine',
     id: supplierArrivalLineId,
     fieldKey: 'stock_supplierArrivalLine',
+    provider: 'model',
   });
 }

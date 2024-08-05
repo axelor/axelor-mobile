@@ -35,5 +35,6 @@ export async function searchControlEntrySample({page = 0, controlEntryId}) {
     fieldKey: 'quality_controlEntrySample',
     sortKey: 'quality_controlEntrySample',
     page: page,
+    provider: 'model',
   });
 }

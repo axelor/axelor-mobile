@@ -32,5 +32,6 @@ export async function searchProject({searchValue, page = 0}) {
     fieldKey: 'helpdesk_project',
     sortKey: 'helpdesk_project',
     page: page,
+    provider: 'model',
   });
 }

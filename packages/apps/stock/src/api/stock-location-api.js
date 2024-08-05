@@ -80,5 +80,6 @@ export async function searchStockLocationsFilter({
     }),
     fieldKey: 'stock_stockLocation',
     page,
+    provider: 'model',
   });
 }

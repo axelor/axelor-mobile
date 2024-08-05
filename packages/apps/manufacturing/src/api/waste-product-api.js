@@ -16,7 +16,11 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import {axiosApiProvider, createStandardSearch} from '@axelor/aos-mobile-core';
+import {
+  createStandardFetch,
+  createStandardSearch,
+  getActionApi,
+} from '@axelor/aos-mobile-core';
 import {fetchManufacturingOrder} from './manufacturing-order-api';
 
 const createWasteProductCriteria = wasteProdProductList => {
@@ -40,27 +44,29 @@ export async function fetchManufacturingOrderWasteProducts({
   manufOrderId,
   page,
 }) {
-  return axiosApiProvider
-    .get({
-      url: `/ws/rest/com.axelor.apps.production.db.ManufOrder/${manufOrderId}`,
-    })
-    .then(res => {
-      const manufOrder = res?.data?.data ? res?.data?.data[0] : null;
-      if (
-        manufOrder != null &&
-        manufOrder.wasteProdProductList != null &&
-        manufOrder.wasteProdProductList.length > 0
-      ) {
-        return createStandardSearch({
-          model: 'com.axelor.apps.production.db.ProdProduct',
-          criteria: createWasteProductCriteria(manufOrder.wasteProdProductList),
-          fieldKey: 'manufacturing_prodProduct',
-          page,
-        });
-      } else {
-        return {data: {data: []}};
-      }
-    });
+  return createStandardFetch({
+    model: 'com.axelor.apps.production.db.ManufOrder',
+    id: manufOrderId,
+    fieldKey: 'manufacturing_manufacturingOrder',
+    provider: 'model',
+  }).then(res => {
+    const manufOrder = res?.data?.data ? res?.data?.data[0] : null;
+    if (
+      manufOrder != null &&
+      manufOrder.wasteProdProductList != null &&
+      manufOrder.wasteProdProductList.length > 0
+    ) {
+      return createStandardSearch({
+        model: 'com.axelor.apps.production.db.ProdProduct',
+        criteria: createWasteProductCriteria(manufOrder.wasteProdProductList),
+        fieldKey: 'manufacturing_prodProduct',
+        page,
+        provider: 'model',
+      });
+    } else {
+      return {data: {data: []}};
+    }
+  });
 }
 
 export async function createManufacturingOrderWasteProduct({
@@ -69,13 +75,15 @@ export async function createManufacturingOrderWasteProduct({
   productId,
   qty,
 }) {
-  return axiosApiProvider.post({
+  return getActionApi().send({
     url: `ws/aos/manuf-order/${manufOrderId}/waste-product`,
-    data: {
+    method: 'post',
+    body: {
       version: manufOrderVersion,
-      productId: productId,
-      qty: qty,
+      productId,
+      qty,
     },
+    description: 'create manufacturing order waste product',
   });
 }
 
@@ -84,11 +92,18 @@ export async function updateManufacturingOrderWasteProduct({
   prodProductId,
   qty,
 }) {
-  return axiosApiProvider.put({
+  return getActionApi().send({
     url: `ws/aos/manuf-order/waste-product/${prodProductId}`,
-    data: {
+    method: 'put',
+    body: {
       version: prodProductVersion,
-      qty: qty,
+      qty,
+    },
+    description: 'update manufacturing order waste product',
+    matchers: {
+      id: prodProductId,
+      modelName: 'com.axelor.apps.production.db.ProdProduct',
+      fields: {qty},
     },
   });
 }
@@ -97,10 +112,11 @@ export async function declareManufacturingOrderWasteProduct({
   manufOrderVersion,
   manufOrderId,
 }) {
-  return axiosApiProvider
-    .post({
+  return getActionApi()
+    .send({
       url: 'ws/action/',
-      data: {
+      method: 'post',
+      body: {
         action:
           'com.axelor.apps.production.web.ManufOrderController:generateWasteStockMove',
         data: {
@@ -112,6 +128,7 @@ export async function declareManufacturingOrderWasteProduct({
         },
         model: 'com.axelor.apps.production.db.ManufOrder',
       },
+      description: 'declare manufacturing order waste product',
     })
     .then(result => {
       if (result?.data?.status === 0) {

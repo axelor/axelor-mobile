@@ -16,14 +16,19 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import {axiosApiProvider} from '@axelor/aos-mobile-core';
+import {getActionApi} from '@axelor/aos-mobile-core';
 
 export async function getDistance({fromCity, toCity}) {
   if (fromCity != null && toCity != null) {
-    return axiosApiProvider
-      .post({
+    return getActionApi()
+      .send({
         url: 'ws/aos/kilometric/distance',
-        data: {fromCity, toCity},
+        method: 'post',
+        body: {
+          fromCity,
+          toCity,
+        },
+        description: 'get distance',
       })
       .catch(e => {
         if (e?.response?.data?.codeStatus === 500) {
