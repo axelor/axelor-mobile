@@ -20,10 +20,8 @@ import React, {useCallback, useEffect, useMemo, useState} from 'react';
 import {StyleSheet, View} from 'react-native';
 import {Label} from '@axelor/aos-mobile-ui';
 import {DateInput} from '../../organisms';
-import {getEndOfDay, getStartOfDay} from '../../../utils';
+import {getEndOfDay, getStartOfDay, hoursToMilliseconds} from '../../../utils';
 import {useTranslator} from '../../../i18n';
-
-const hoursToMilliseconds = (hours: number) => hours * 60 * 60 * 1000;
 
 const DATE_INPUT_MODE = {
   startDate: 0,
