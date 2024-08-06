@@ -30,11 +30,13 @@ import {
   SupplierArrivalLineButtons,
   SupplierArrivalLineQuantityCard,
   SupplierProductInfo,
+  SupplierArrivalTrackingNumberSelect,
 } from '../../components';
 import {fetchProductWithId} from '../../features/productSlice';
 import {fetchProductForSupplier} from '../../features/supplierCatalogSlice';
 import {fetchSupplierArrivalLine} from '../../features/supplierArrivalLineSlice';
 import {StockMove, StockMoveLine} from '../../types';
+import {updateStockMoveLineTrackingNumber} from '../../features/trackingNumberSlice';
 
 const SupplierArrivalLineDetailScreen = ({route, navigation}) => {
   const {supplierArrival, supplierArrivalLineId, productId} = route.params;
@@ -119,6 +121,18 @@ const SupplierArrivalLineDetailScreen = ({route, navigation}) => {
     });
   };
 
+  const handleTrackingNumberSelection = item => {
+    if (item !== null) {
+      dispatch(
+        updateStockMoveLineTrackingNumber({
+          trackingNumber: item,
+          stockMoveLineId: supplierArrivalLine.id,
+          stockMoveLineVersion: supplierArrivalLine.version,
+        }),
+      );
+    }
+  };
+
   return (
     <Screen
       removeSpaceOnTop={true}
@@ -162,6 +176,15 @@ const SupplierArrivalLineDetailScreen = ({route, navigation}) => {
           name={product?.name}
           trackingNumber={trackingNumber?.trackingNumberSeq}
         />
+        {product.trackingNumberConfiguration != null &&
+          trackingNumber == null && (
+            <SupplierArrivalTrackingNumberSelect
+              supplierArrival={supplierArrival}
+              supplierArrivalLine={supplierArrivalLine}
+              handleTrackingNumberSelection={handleTrackingNumberSelection}
+              product={product}
+            />
+          )}
         <SupplierProductInfo />
         <SupplierArrivalLineQuantityCard
           realQty={realQty}
