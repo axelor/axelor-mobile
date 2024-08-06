@@ -33,6 +33,24 @@ const SupplierArrivalSelectTrackingScreen = ({route, navigation}) => {
   const product = route.params.product;
   const [isVisible, setVisible] = useState(false);
 
+  const handleTrackingNumberSelection = item => {
+    if (item !== null) {
+      if (
+        supplierArrivalLine != null &&
+        item.id !== supplierArrivalLine.trackingNumber?.id
+      ) {
+        setVisible(true);
+      } else {
+        navigation.navigate('SupplierArrivalLineDetailScreen', {
+          supplierArrivalLineId: supplierArrivalLine?.id,
+          supplierArrival: supplierArrival,
+          productId: product?.id,
+          trackingNumber: item,
+        });
+      }
+    }
+  };
+
   return (
     <Screen removeSpaceOnTop={true}>
       <HeaderContainer
@@ -56,8 +74,8 @@ const SupplierArrivalSelectTrackingScreen = ({route, navigation}) => {
       <SupplierArrivalProductName product={product} />
       <SupplierArrivalTrackingNumberSelect
         product={product}
-        setVisible={setVisible}
         supplierArrival={supplierArrival}
+        handleTrackingNumberSelection={handleTrackingNumberSelection}
         supplierArrivalLine={supplierArrivalLine}
       />
       <PopUpOneButton
