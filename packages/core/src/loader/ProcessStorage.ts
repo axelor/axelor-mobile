@@ -107,6 +107,16 @@ class ProcessStorage {
     this.localStorage.setItem(PROCESS_LIST_KEY, serialize(this.processList));
     this.updateState();
   }
+
+  saveProcessList(_processList: ProcessItem[]) {
+    if (!Array.isArray(_processList)) {
+      return;
+    }
+
+    this.processList = _processList;
+    this.localStorage.setItem(PROCESS_LIST_KEY, serialize(_processList));
+    this.updateState();
+  }
 }
 
 export const processStorage = new ProcessStorage(storage);
