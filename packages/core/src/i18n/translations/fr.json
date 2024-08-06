@@ -153,6 +153,7 @@
   "Base_FormAction_Update": "Mettre à jour",
   "Base_FormAction_Refresh": "Actualiser",
   "Base_FormAction_Reset": "Réinitialiser",
+  "Base_MoreResults": "Plus de résultats...",
   "Base_SliceAction_FetchAttachedFiles": "récupération des fichiers joints",
   "Base_SliceAction_FetchFilesDetails": "récupération des détails du fichier",
   "Base_SliceAction_FetchMetaModule": "récupération des modules",
