@@ -52,9 +52,9 @@ export class GatewayActionApi implements ActionApi {
     return _actionApi.send(request);
   }
 
-  async synchronize(): Promise<void> {
+  async synchronize(onEnd?: () => void): Promise<void> {
     for (const _actionApi of this.actionsApi) {
-      _actionApi.synchronize();
+      _actionApi.synchronize(onEnd);
     }
   }
 }
