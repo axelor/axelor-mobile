@@ -17,14 +17,14 @@
  */
 
 import React from 'react';
-import {StyleSheet, View} from 'react-native';
+import {StyleSheet, TouchableOpacity, View} from 'react-native';
 import {
-  useTranslator,
   useNavigation,
   usePermitted,
+  useTranslator,
 } from '@axelor/aos-mobile-core';
-import {Text, useThemeColor, Icon} from '@axelor/aos-mobile-ui';
-import TrackingNumberSearchBar from '../../TrackingNumberSearchBar/TrackingNumberSearchBar';
+import {Icon, Text, useThemeColor} from '@axelor/aos-mobile-ui';
+import {TrackingNumberSearchBar} from '../../../templates';
 
 const trackingScanKey = 'tracking_supplier-arrival-select';
 
@@ -32,7 +32,7 @@ const SupplierArrivalTrackingNumberSelect = ({
   product,
   supplierArrivalLine,
   supplierArrival,
-  setVisible,
+  handleTrackingNumberSelection,
 }) => {
   const I18n = useTranslator();
   const Colors = useThemeColor();
@@ -49,40 +49,20 @@ const SupplierArrivalTrackingNumberSelect = ({
     });
   };
 
-  const handleTrackingNumberSelection = item => {
-    if (item !== null) {
-      if (
-        supplierArrivalLine != null &&
-        item.id !== supplierArrivalLine.trackingNumber?.id
-      ) {
-        setVisible(true);
-      } else {
-        navigation.navigate('SupplierArrivalLineDetailScreen', {
-          supplierArrivalLineId: supplierArrivalLine?.id,
-          supplierArrival: supplierArrival,
-          productId: product?.id,
-          trackingNumber: item,
-        });
-      }
-    }
-  };
-
   return (
     <View>
       {canCreate && (
-        <View style={styles.trackingNumber}>
-          <Text style={styles.text_secondary}>
-            {I18n.t('Stock_AddTrackingNumber')}
-          </Text>
+        <TouchableOpacity
+          style={styles.trackingNumberContainer}
+          onPress={handleAddTrackingNumber}>
+          <Text fontSize={14}>{I18n.t('Stock_AddTrackingNumber')}</Text>
           <Icon
             name="plus-lg"
             color={Colors.primaryColor.background}
             size={24}
             style={styles.action}
-            touchable={true}
-            onPress={handleAddTrackingNumber}
           />
-        </View>
+        </TouchableOpacity>
       )}
       <TrackingNumberSearchBar
         scanKey={trackingScanKey}
@@ -96,15 +76,12 @@ const SupplierArrivalTrackingNumberSelect = ({
 };
 
 const styles = StyleSheet.create({
-  trackingNumber: {
+  trackingNumberContainer: {
     flexDirection: 'row',
-    justifyContent: 'flex-end',
+    alignSelf: 'flex-end',
     alignItems: 'center',
-    marginRight: 16,
-    marginBottom: 5,
-  },
-  text_secondary: {
-    fontSize: 14,
+    marginHorizontal: 24,
+    marginTop: 10,
   },
   action: {
     marginLeft: 10,
