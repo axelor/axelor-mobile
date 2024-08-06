@@ -55,6 +55,7 @@ export {
   formatTwoNumber,
   getIntegerPart,
   formatDurationToMiliseconds,
+  hoursToMilliseconds,
 } from './time';
 export {
   areObjectsEquals,

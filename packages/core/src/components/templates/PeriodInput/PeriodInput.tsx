@@ -20,7 +20,7 @@ import React, {useCallback, useEffect, useMemo, useState} from 'react';
 import {StyleSheet, View} from 'react-native';
 import {Label} from '@axelor/aos-mobile-ui';
 import {DateInput} from '../../organisms';
-import {getEndOfDay, getStartOfDay} from '../../../utils';
+import {getEndOfDay, getStartOfDay, hoursToMilliseconds} from '../../../utils';
 import {useTranslator} from '../../../i18n';
 
 const DATE_INPUT_MODE = {
@@ -41,6 +41,7 @@ interface PeriodInputProps {
   showTitle?: boolean;
   horizontal?: boolean;
   style?: any;
+  defaultIntervalHours?: number;
 }
 
 const PeriodInput = ({
@@ -49,12 +50,18 @@ const PeriodInput = ({
   showTitle = true,
   horizontal = true,
   style,
+  defaultIntervalHours = null,
 }: PeriodInputProps) => {
   const I18n = useTranslator();
 
   const [startDate, setStartDate] = useState(startDateConfig.date);
   const [endDate, setEndDate] = useState(endDateConfig.date);
   const [isPeriodError, setIsPeriodError] = useState(false);
+  const [interval, setInterval] = useState(
+    defaultIntervalHours !== null
+      ? hoursToMilliseconds(defaultIntervalHours)
+      : null,
+  );
 
   useEffect(() => {
     setStartDate(startDateConfig.date);
@@ -63,6 +70,20 @@ const PeriodInput = ({
   useEffect(() => {
     setEndDate(endDateConfig.date);
   }, [endDateConfig.date]);
+
+  useEffect(() => {
+    if (interval) {
+      if (startDate && !endDate) {
+        const newEndDate = new Date(startDate.getTime() + interval);
+        setEndDate(newEndDate);
+        endDateConfig.onDateChange(newEndDate);
+      } else if (endDate && !startDate) {
+        const newStartDate = new Date(endDate.getTime() - interval);
+        setStartDate(newStartDate);
+        startDateConfig.onDateChange(newStartDate);
+      }
+    }
+  }, [startDate, endDate, interval, startDateConfig, endDateConfig]);
 
   useEffect(() => {
     setIsPeriodError(
@@ -74,12 +95,53 @@ const PeriodInput = ({
     return getStyles(horizontal);
   }, [horizontal]);
 
+  const updateDates = useCallback(
+    (newStartDate: Date, newEndDate: Date) => {
+      if (newStartDate && newEndDate) {
+        const newInterval = newEndDate.getTime() - newStartDate.getTime();
+        setInterval(newInterval);
+      }
+      setStartDate(newStartDate);
+      setEndDate(newEndDate);
+      startDateConfig.onDateChange(newStartDate);
+      endDateConfig.onDateChange(newEndDate);
+    },
+    [startDateConfig, endDateConfig],
+  );
+
+  const handleDateChange = useCallback(
+    (isStartDate: boolean, date: Date) => {
+      if (interval != null) {
+        if (isStartDate) {
+          const newEndDate = date ? new Date(date.getTime() + interval) : null;
+          updateDates(date, newEndDate);
+        } else {
+          const newInterval =
+            date && startDate instanceof Date
+              ? date.getTime() - startDate.getTime()
+              : null;
+          setEndDate(date);
+          newInterval && setInterval(newInterval);
+          endDateConfig.onDateChange(date);
+        }
+      } else {
+        if (isStartDate) {
+          setStartDate(date);
+          startDateConfig.onDateChange(date);
+        } else {
+          setEndDate(date);
+          endDateConfig.onDateChange(date);
+        }
+      }
+    },
+    [interval, updateDates, startDate, startDateConfig, endDateConfig],
+  );
+
   const renderDateInput = useCallback(
     (mode: number) => {
       const isStartDate = mode === DATE_INPUT_MODE.startDate;
       const translationKey = isStartDate ? 'Base_StartDate' : 'Base_EndDate';
       const date = isStartDate ? startDate : endDate;
-      const setDate = isStartDate ? setStartDate : setEndDate;
       const dateConfig = isStartDate ? startDateConfig : endDateConfig;
 
       return (
@@ -90,24 +152,22 @@ const PeriodInput = ({
           nullable
           popup={horizontal}
           defaultDate={date}
-          onDateChange={_date => {
-            setDate(_date);
-            dateConfig.onDateChange(_date);
-          }}
+          onDateChange={_date => handleDateChange(isStartDate, _date)}
           readonly={dateConfig.readonly}
           required={dateConfig.required}
         />
       );
     },
     [
-      endDate,
-      endDateConfig,
-      horizontal,
-      I18n,
-      showTitle,
       startDate,
+      endDate,
       startDateConfig,
+      endDateConfig,
       styles.dateInput,
+      showTitle,
+      I18n,
+      horizontal,
+      handleDateChange,
     ],
   );
 
