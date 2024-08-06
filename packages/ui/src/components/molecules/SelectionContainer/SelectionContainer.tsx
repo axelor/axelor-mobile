@@ -170,7 +170,7 @@ const SelectionContainer = ({
         return objectList.length;
       } else {
         setIsMoreResultsItem(!isPicker);
-        return MAX_LIST_LENGTH - 1;
+        return isPicker ? MAX_LIST_LENGTH : MAX_LIST_LENGTH - 1;
       }
     }
   }, [isPicker, objectList]);
