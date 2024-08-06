@@ -83,6 +83,7 @@ const styles = StyleSheet.create({
   trackingNumberContainer: {
     flexDirection: 'row',
     alignSelf: 'flex-start',
+    alignItems: 'center',
     marginHorizontal: 24,
     marginTop: 10,
   },
