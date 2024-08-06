@@ -93,3 +93,5 @@ export const calculateDiff = (start, end) => {
 
   return endDate - startDate;
 };
+
+export const hoursToMilliseconds = hours => hours * 60 * 60 * 1000;
