@@ -110,6 +110,7 @@
   "Base_Month_Oct": "Oct",
   "Base_Month_Nov": "Nov",
   "Base_Month_Dec": "Dec",
+  "Base_MoreResults": "More results...",
   "Base_SliceAction_FetchAttachedFiles": "fetch attached files",
   "Base_SliceAction_FetchFilesDetails": "fetch file details",
   "Base_SliceAction_FetchMetaModule": "fetch meta modules",

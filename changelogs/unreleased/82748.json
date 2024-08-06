@@ -1,0 +1,5 @@
+{
+  "title": "Search bar: add a more results indicator on selection container",
+  "type": "feat",
+  "packages": "ui"
+}

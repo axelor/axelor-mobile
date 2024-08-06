@@ -16,11 +16,13 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import React, {useCallback, useMemo} from 'react';
+import React, {useCallback, useMemo, useState} from 'react';
 import {ScrollView, StyleSheet, TouchableOpacity, View} from 'react-native';
 import {Color, ThemeColors, useThemeColor} from '../../../theme';
 import {Icon, Text} from '../../atoms';
 import {checkNullString} from '../../../utils';
+
+const MAX_LIST_LENGTH = 5;
 
 interface SelectionItemProps {
   style?: any;
@@ -29,6 +31,7 @@ interface SelectionItemProps {
   isPicker?: boolean;
   itemColor?: Color;
   isSelectedItem?: boolean;
+  isMoreResultsItem?: boolean;
 }
 
 const SelectionItem = ({
@@ -38,6 +41,7 @@ const SelectionItem = ({
   isPicker = false,
   itemColor,
   isSelectedItem = false,
+  isMoreResultsItem = false,
 }: SelectionItemProps) => {
   const Colors = useThemeColor();
 
@@ -51,7 +55,10 @@ const SelectionItem = ({
     [_itemColor],
   );
 
-  const itemStyles = useMemo(() => getItemStyles(isPicker), [isPicker]);
+  const itemStyles = useMemo(
+    () => getItemStyles(isPicker, isMoreResultsItem),
+    [isMoreResultsItem, isPicker],
+  );
 
   return (
     <TouchableOpacity style={[itemStyles.item, style]} onPress={onPress}>
@@ -64,7 +71,10 @@ const SelectionItem = ({
         />
       )}
       <View style={itemStyles.textContainer}>
-        <Text style={itemStyles.text} numberOfLines={1}>
+        <Text
+          style={itemStyles.text}
+          numberOfLines={1}
+          writingType={isMoreResultsItem ? 'title' : null}>
           {content}
         </Text>
         {itemColor != null && <View style={indicatorStyles.selectedItem} />}
@@ -73,7 +83,7 @@ const SelectionItem = ({
   );
 };
 
-const getIndicatorColor = color => {
+const getIndicatorColor = (color: string) => {
   return StyleSheet.create({
     selectedItem: {
       backgroundColor: color,
@@ -85,7 +95,7 @@ const getIndicatorColor = color => {
   });
 };
 
-const getItemStyles = isPicker =>
+const getItemStyles = (isPicker: boolean, isMoreResultsItem: boolean) =>
   StyleSheet.create({
     item: {
       height: 40,
@@ -96,12 +106,12 @@ const getItemStyles = isPicker =>
     },
     textContainer: {
       flexDirection: 'row',
-      justifyContent: 'space-between',
+      justifyContent: isMoreResultsItem ? 'center' : 'space-between',
       alignItems: 'center',
       flex: 1,
     },
     text: {
-      width: isPicker ? '85%' : '100%',
+      width: isPicker ? '85%' : isMoreResultsItem ? null : '100%',
       marginVertical: 5,
       marginLeft: isPicker ? 0 : 10,
       fontSize: 16,
@@ -114,8 +124,9 @@ const getItemStyles = isPicker =>
 interface SelectionContainerProps {
   style?: any;
   objectList: any[];
-  displayValue?: (any) => string;
-  handleSelect?: (any) => void;
+  displayValue?: (item: any) => string;
+  handleSelect?: (item: any) => void;
+  handleMoreResult?: () => void;
   keyField?: string;
   emptyValue?: boolean;
   isPicker?: boolean;
@@ -129,6 +140,7 @@ const SelectionContainer = ({
   objectList,
   displayValue,
   handleSelect,
+  handleMoreResult,
   keyField = 'id',
   emptyValue = false,
   isPicker = false,
@@ -138,17 +150,24 @@ const SelectionContainer = ({
 }: SelectionContainerProps) => {
   const Colors = useThemeColor();
 
+  const [isMoreResultsItem, setIsMoreResultsItem] = useState(false);
+
   const listLength = useMemo(() => {
     if (objectList == null || objectList.length === 0) {
       return 1;
     } else {
-      return objectList.length <= 5 ? objectList.length : 5;
+      if (objectList.length <= MAX_LIST_LENGTH) {
+        return objectList.length;
+      } else {
+        setIsMoreResultsItem(!isPicker);
+        return isPicker ? MAX_LIST_LENGTH : MAX_LIST_LENGTH - 1;
+      }
     }
-  }, [objectList]);
+  }, [isPicker, objectList]);
 
   const styles = useMemo(
-    () => getStyles(Colors, listLength, emptyValue),
-    [Colors, listLength, emptyValue],
+    () => getStyles(Colors, listLength, emptyValue || isMoreResultsItem),
+    [Colors, listLength, emptyValue, isMoreResultsItem],
   );
 
   const selectedKeys = useMemo(
@@ -182,36 +201,56 @@ const SelectionContainer = ({
       ? objectList
       : objectList.slice(0, listLength);
 
-    return visibleObjects.map((item, index) => (
-      <View key={'item' + index}>
-        <SelectionItem
-          key={item[keyField]?.toString()}
-          content={displayValue(item)}
-          onPress={() => handleSelect(item)}
-          itemColor={item?.color}
-          isPicker={isPicker}
-          isSelectedItem={selectedKeys.includes(item[keyField])}
-        />
-        <View
-          key={'border' + index}
-          style={
-            index + 1 === objectList?.length ||
-            (!isPicker && index + 1 === listLength)
-              ? null
-              : styles.border
-          }
-        />
-      </View>
-    ));
+    const moreResultsItemContent =
+      translator != null ? translator('Base_MoreResults') : 'More results...';
+
+    return (
+      <>
+        {visibleObjects.map((item, index) => (
+          <View key={'item' + index}>
+            <SelectionItem
+              key={item[keyField]?.toString()}
+              content={displayValue(item)}
+              onPress={() => handleSelect(item)}
+              itemColor={item?.color}
+              isPicker={isPicker}
+              isSelectedItem={selectedKeys.includes(item[keyField])}
+            />
+            <View
+              key={'border' + index}
+              style={
+                index + 1 === objectList?.length ||
+                (!isPicker && index + 1 === listLength)
+                  ? null
+                  : styles.border
+              }
+            />
+          </View>
+        ))}
+        {isMoreResultsItem && (
+          <View>
+            <View style={styles.border} />
+            <SelectionItem
+              content={moreResultsItemContent}
+              onPress={handleMoreResult}
+              isMoreResultsItem={isMoreResultsItem}
+            />
+          </View>
+        )}
+      </>
+    );
   }, [
     displayValue,
+    handleMoreResult,
     handleSelect,
+    isMoreResultsItem,
     isPicker,
     keyField,
     listLength,
     objectList,
     selectedKeys,
     styles.border,
+    translator,
   ]);
 
   const renderListItemContainerPicker = useCallback(() => {
@@ -245,14 +284,10 @@ const SelectionContainer = ({
   );
 };
 
-const getStyles = (
-  Colors: ThemeColors,
-  listLength: number,
-  emptyValue: boolean,
-) =>
+const getStyles = (Colors: ThemeColors, listLength: number, addItem: boolean) =>
   StyleSheet.create({
     flatListContainer: {
-      height: emptyValue ? listLength * 40 + 45 : listLength * 40 + 5,
+      height: addItem ? listLength * 40 + 45 : listLength * 40 + 5,
       width: '90%',
       position: 'absolute',
       top: '95%',

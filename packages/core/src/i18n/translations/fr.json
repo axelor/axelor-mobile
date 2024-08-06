@@ -110,6 +110,7 @@
   "Base_Month_Oct": "Oct.",
   "Base_Month_Nov": "Nov.",
   "Base_Month_Dec": "Déc.",
+  "Base_MoreResults": "Plus de résultats...",
   "Base_SliceAction_FetchAttachedFiles": "récupération des fichiers joints",
   "Base_SliceAction_FetchFilesDetails": "récupération des détails du fichier",
   "Base_SliceAction_FetchMetaModule": "récupération des modules",

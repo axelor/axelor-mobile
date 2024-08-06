@@ -292,6 +292,8 @@ const AutoCompleteSearch = ({
           objectList={objectList}
           displayValue={displayValue}
           handleSelect={handleSelect}
+          handleMoreResult={handleDetailsView}
+          translator={translator}
         />
       )}
       <SearchDetailsPopUp
