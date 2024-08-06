@@ -189,6 +189,7 @@
   "Base_Loader_Status_InProgress": "En cours",
   "Base_Loader_Status_Success": "Succès",
   "Base_Loader_Status_Failed": "Échoué",
+  "Base_MoreResults": "Plus de résultats...",
   "Base_SliceAction_FetchAttachedFiles": "récupération des fichiers joints",
   "Base_SliceAction_FetchFilesDetails": "récupération des détails du fichier",
   "Base_SliceAction_FetchMetaModule": "récupération des modules",
