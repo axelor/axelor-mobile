@@ -27,9 +27,14 @@ export const getApiResponseData = (response, {isArrayResponse = true}) => {
   if (response.data && response.data.object != null) {
     return response.data.object;
   }
+
+  const result = response?.data?.data;
+
   return isArrayResponse
-    ? response?.data?.data
-    : getFirstData(response?.data?.data);
+    ? Array.isArray(result)
+      ? result
+      : []
+    : getFirstData(result);
 };
 
 const getApiResponseMessage = response =>
