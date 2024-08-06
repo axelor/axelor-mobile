@@ -220,7 +220,6 @@ const SupplierArrivalLineDetailScreen = ({route, navigation}) => {
               supplierArrivalLine={supplierArrivalLine}
               handleTrackingNumberSelection={handleTrackingNumberSelection}
               product={product}
-              readonly={readonly}
             />
           )}
         <SupplierProductInfo />
