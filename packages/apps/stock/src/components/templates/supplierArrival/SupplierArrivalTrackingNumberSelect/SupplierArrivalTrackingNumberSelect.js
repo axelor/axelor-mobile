@@ -61,7 +61,6 @@ const SupplierArrivalTrackingNumberSelect = ({
             color={Colors.primaryColor.background}
             size={24}
             style={styles.action}
-            touchable={true}
           />
         </TouchableOpacity>
       )}
