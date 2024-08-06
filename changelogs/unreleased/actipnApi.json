@@ -1,0 +1,5 @@
+{
+  "title": "Action api provider: add onEnd action as argument of synchronize function",
+  "type": "feat",
+  "packages": "core"
+}
