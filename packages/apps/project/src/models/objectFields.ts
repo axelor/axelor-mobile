@@ -107,6 +107,9 @@ export const project_modelAPI: ObjectFields = {
       .array()
       .of(schemaContructor.subObject()),
     isShowPhasesElements: schemaContructor.boolean(),
+    isShowTaskCategory: schemaContructor.boolean(),
+    isShowProgress: schemaContructor.boolean(),
+    isShowSection: schemaContructor.boolean(),
   }),
   project_projectTask: schemaContructor.object({
     name: schemaContructor.string(),
