@@ -58,5 +58,8 @@ export default {
   ProcessListScreen: {
     title: 'Base_Loader_ProcessList',
     component: ProcessListScreen,
+    options: {
+      shadedHeader: false,
+    },
   },
 };

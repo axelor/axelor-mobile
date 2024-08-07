@@ -40,6 +40,7 @@ import {requestBuilder} from '../apiProviders/Standard/requests.helper';
 import {core_modelAPI, core_searchFields, core_sortFields} from '../models';
 import {HeaderBandProvider} from '../header';
 import {addModuleForms, formConfigsProvider} from '../forms';
+import {processProvider} from '../loader';
 
 const ApplicationContext = createContext(null);
 
@@ -112,9 +113,13 @@ const ContextsProvider = ({
   );
 
   const modulesBackgroundFunctions = useMemo(() => {
-    return modules
+    const backgroundFunctions = modules
       .filter(_module => _module.backgroundFunctions)
       .flatMap(_module => _module.backgroundFunctions);
+
+    backgroundFunctions.push(processProvider.removeOldProcesses);
+
+    return backgroundFunctions;
   }, [modules]);
 
   const store = useMemo(

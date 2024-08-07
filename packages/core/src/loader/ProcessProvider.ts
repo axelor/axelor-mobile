@@ -46,6 +46,7 @@ class ProcessProvider {
     this._NRProcessSubscribers = [];
     this._numberUnreadProcess = processStorage.getNumberUnreadProcess();
     this.onCompleted = this.onCompleted.bind(this);
+    this.removeOldProcesses = this.removeOldProcesses.bind(this);
   }
 
   getNumberRunningProcess() {
@@ -251,6 +252,33 @@ class ProcessProvider {
     process.notifyMe = true;
     this._processMap.set(key, process);
     processStorage.saveProcess(process);
+  }
+
+  removeOldProcesses() {
+    const now = new Date();
+    const processList = processStorage.getProcessList();
+    const processSortedByDate = processList.sort((a, b) =>
+      new Date(a.startedDate) <= new Date(b.startedDate) ? 1 : -1,
+    );
+
+    let processesLessThanOneMonthOld = [];
+
+    for (const process of processSortedByDate) {
+      const removeDate = new Date(process.startedDate);
+      removeDate.setMonth(removeDate.getMonth() + 1);
+
+      if (removeDate >= now) {
+        processesLessThanOneMonthOld.push(process);
+      } else {
+        break;
+      }
+    }
+
+    if (this._numberRunningProcess > processesLessThanOneMonthOld.length) {
+      this.setNumberUnreadProcess(processesLessThanOneMonthOld.length);
+    }
+
+    processStorage.saveProcessList(processesLessThanOneMonthOld);
   }
 }
 
