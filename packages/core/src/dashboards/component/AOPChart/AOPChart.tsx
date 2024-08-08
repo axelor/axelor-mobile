@@ -16,8 +16,9 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import React, {useEffect, useState} from 'react';
-import {ChartRender} from '@axelor/aos-mobile-ui';
+import React, {useEffect, useState, useCallback} from 'react';
+import {StyleSheet, View} from 'react-native';
+import {ChartRender, Text} from '@axelor/aos-mobile-ui';
 import {
   fetchActionView,
   fetchChartDataset,
@@ -25,20 +26,30 @@ import {
   getChartParameter,
 } from './api.helpers';
 import {transformData} from './format.helpers';
+import DynamicSearchForm from './DynamicSearchForm';
 
 const DEFAULT_CHART_CONFIG = {type: '', dataset: [], title: ''};
 
 const AOPChart = ({
   actionViewName,
   widthGraph,
+  translator,
 }: {
   actionViewName: string;
   widthGraph?: number;
+  translator?: (key: string) => string;
 }) => {
   const [chart, setChart] = useState(DEFAULT_CHART_CONFIG);
+  const [searchFields, setSearchFields] = useState([]);
+  const [searchValues, setSearchValues] = useState({});
+  const [initialLoad, setInitialLoad] = useState(true);
 
-  useEffect(() => {
-    const fetchChartData = async () => {
+  const handleSearchChange = (name, value) => {
+    setSearchValues(prevValues => ({...prevValues, [name]: value}));
+  };
+
+  const fetchChartData = useCallback(
+    async (initial = false) => {
       let result = {...DEFAULT_CHART_CONFIG};
 
       try {
@@ -54,6 +65,9 @@ const AOPChart = ({
         result.type = typeResponse?.data?.data?.series[0].type;
         const onInit = typeResponse?.data?.data?.onInit;
 
+        const searchFieldsList = typeResponse?.data?.data?.search || [];
+        setSearchFields(searchFieldsList);
+
         let parameter = null;
         if (onInit) {
           const paramResponse = await getChartParameter({
@@ -62,36 +76,81 @@ const AOPChart = ({
             context: context,
           });
           parameter = paramResponse?.data?.data[0].values;
+          if (initial) {
+            setSearchValues(parameter);
+          }
         }
 
         const datasetResponse = await fetchChartDataset({
           chartName,
-          parameter,
+          parameter: {...parameter, ...searchValues},
           context,
         });
-        result.dataset = datasetResponse?.data?.data?.dataset;
+
+        if (datasetResponse?.data?.data?.dataset != null) {
+          result.dataset = datasetResponse?.data?.data?.dataset;
+        } else {
+          result = {...DEFAULT_CHART_CONFIG};
+        }
       } catch (error) {
         result = {...DEFAULT_CHART_CONFIG};
       }
 
       setChart(result);
-    };
+    },
+    [actionViewName, searchValues],
+  );
 
-    fetchChartData();
-  }, [actionViewName]);
+  useEffect(() => {
+    if (initialLoad) {
+      fetchChartData(true);
+      setInitialLoad(false);
+    }
+  }, [initialLoad, fetchChartData]);
 
-  if (chart.dataset?.length <= 0) {
-    return null;
-  }
+  useEffect(() => {
+    if (!initialLoad) {
+      fetchChartData();
+    }
+  }, [fetchChartData, initialLoad, searchValues]);
 
   return (
-    <ChartRender
-      dataList={transformData(chart.dataset)}
-      title={chart.title}
-      type={chart.type}
-      widthGraph={widthGraph}
-    />
+    <View
+      style={{
+        width: widthGraph,
+      }}>
+      <View style={styles.flex}>
+        <DynamicSearchForm
+          fields={searchFields}
+          values={searchValues}
+          onChange={handleSearchChange}
+        />
+      </View>
+      <View style={styles.flex}>
+        {chart.dataset?.length > 0 ? (
+          <ChartRender
+            dataList={transformData(chart.dataset)}
+            title={chart.title}
+            type={chart.type}
+            widthGraph={widthGraph}
+          />
+        ) : (
+          <Text style={styles.text}>{translator('Base_NoRecordsFound')}</Text>
+        )}
+      </View>
+    </View>
   );
 };
+
+const styles = StyleSheet.create({
+  flex: {
+    flex: 1,
+  },
+  text: {
+    flex: 1,
+    alignSelf: 'center',
+    padding: 15,
+  },
+});
 
 export default AOPChart;
