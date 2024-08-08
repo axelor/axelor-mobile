@@ -1,5 +1,6 @@
 import React from 'react';
 import {Platform} from 'react-native';
+import type {Preview} from '@storybook/react';
 import {
   OutsideAlerterProvider,
   ThemeProvider,
@@ -28,33 +29,27 @@ if (Platform.OS === 'web') {
   document.head.appendChild(style);
 }
 
-export const parameters = {
-  actions: {argTypesRegex: '^on[A-Z].*'},
-  controls: {
-    matchers: {
-      color: /(background|color)$/i,
-      date: /Date$/,
+const preview: Preview = {
+  decorators: [
+    Story => (
+      <OutsideAlerterProvider>
+        <ThemeProvider themes={[lightTheme]} defaultTheme={lightTheme}>
+          <WritingThemeProvider
+            themes={[writingDefaultTheme]}
+            defaultTheme={writingDefaultTheme}>
+            <ConfigProvider>
+              <Story />
+            </ConfigProvider>
+          </WritingThemeProvider>
+        </ThemeProvider>
+      </OutsideAlerterProvider>
+    ),
+  ],
+  parameters: {
+    viewport: {
+      defaultViewport: 'mobile1',
     },
-  },
-  viewport: {
-    defaultViewport: 'mobile1',
   },
 };
 
-export const decorators = [
-  Story => (
-    <OutsideAlerterProvider>
-      <ThemeProvider themes={[lightTheme]} defaultTheme={lightTheme}>
-        <WritingThemeProvider
-          themes={[writingDefaultTheme]}
-          defaultTheme={writingDefaultTheme}>
-          <ConfigProvider>
-            <div>
-              <Story />
-            </div>
-          </ConfigProvider>
-        </WritingThemeProvider>
-      </ThemeProvider>
-    </OutsideAlerterProvider>
-  ),
-];
+export default preview;

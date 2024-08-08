@@ -16,44 +16,32 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import React from 'react';
-import {storiesOf} from '@storybook/react-native';
-import {Icon} from '../../src/components/atoms';
-import {lightTheme} from '../../src/theme';
+import type {StoryObj, Meta} from '@storybook/react';
+import {Icon as Component} from '../../src/components/atoms';
+import {colorPicker, disabledControl} from '../utils/control-type.helpers';
 
-const stories = storiesOf('ui/atoms/Icon', module);
+const meta: Meta<typeof Component> = {
+  title: 'ui/atoms/Icon',
+  component: Component,
+};
 
-stories.add(
-  'Default',
-  args => {
-    return <Icon {...args} color={lightTheme.colors[args.color].background} />;
+export default meta;
+
+type Story = StoryObj<typeof Component>;
+
+export const Icon: Story = {
+  args: {
+    size: 50,
+    name: 'heart-fill',
+    touchable: false,
+    visible: true,
+    color: 'plannedColor',
   },
-  {
-    argTypes: {
-      size: {
-        control: {type: 'number', min: 10, max: 50},
-        defaultValue: 20,
-      },
-      name: {
-        type: 'string',
-        defaultValue: 'heart',
-        control: {type: 'text'},
-      },
-      touchable: {
-        type: 'boolean',
-      },
-      visible: {
-        type: 'boolean',
-      },
-      color: {
-        options: Object.entries(lightTheme.colors)
-          .filter(([, _color]) => typeof _color !== 'string')
-          .map(([key]) => key),
-        defaultValue: 'plannedColor',
-        control: {
-          type: 'select',
-        },
-      },
-    },
+  argTypes: {
+    size: {control: {type: 'number', min: 10, max: 50}},
+    color: colorPicker,
+    onPress: disabledControl,
+    isFontAwesome4: disabledControl,
+    isFontAwesome5: disabledControl,
   },
-);
+};

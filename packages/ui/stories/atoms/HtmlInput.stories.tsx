@@ -17,38 +17,37 @@
  */
 
 import React from 'react';
-import {View, StyleSheet} from 'react-native';
-import {storiesOf} from '@storybook/react-native';
-import {HtmlInput} from '../../src/components/atoms';
+import {StyleSheet, View} from 'react-native';
+import type {StoryObj, Meta} from '@storybook/react';
+import {HtmlInput as Component} from '../../src/components/atoms';
 
-storiesOf('ui/atoms/HtmlInput', module).add(
-  'Default',
-  args => {
+const meta: Meta<typeof Component> = {
+  title: 'ui/atoms/HtmlInput',
+  component: Component,
+};
+
+export default meta;
+
+type Story = StoryObj<typeof Component>;
+
+export const HtmlInput: Story = {
+  args: {
+    title: 'Description',
+    defaultInput: '<p>Hello World!<b>This text is bold.</b></p>',
+  },
+  argTypes: {
+    editorBackgroundColor: {control: 'color'},
+    placeholder: {control: 'text'},
+    readonly: {control: 'boolean'},
+  },
+  render: args => {
     return (
       <View style={styles.container}>
-        <HtmlInput
-          title="Description"
-          defaultInput="<p>Hello World!<b>This text is bold.</b></p>"
-          onChange={console.log}
-          {...args}
-        />
+        <Component {...args} />
       </View>
     );
   },
-  {
-    argTypes: {
-      style: {control: 'object'},
-      styleToolbar: {control: 'object'},
-      containerStyle: {control: 'object'},
-      editorBackgroundColor: {control: 'color'},
-      title: {control: 'text'},
-      placeholder: {control: 'text'},
-      defaultInput: {control: 'text'},
-      readonly: {control: 'boolean'},
-      onHeightChange: {action: 'onHeightChange'},
-    },
-  },
-);
+};
 
 const styles = StyleSheet.create({
   container: {

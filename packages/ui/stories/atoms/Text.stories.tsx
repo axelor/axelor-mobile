@@ -16,60 +16,49 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import React from 'react';
-import {storiesOf} from '@storybook/react-native';
-import {Text} from '../../src/components/atoms';
+import type {StoryObj, Meta} from '@storybook/react';
+import {Text as Component} from '../../src/components/atoms';
+import {
+  colorPicker,
+  disabledControl,
+  writingPicker,
+} from '../utils/control-type.helpers';
 
-storiesOf('ui/atoms/Text', module).add(
-  'Default',
-  args => {
-    return <Text {...args}>Lorem ipsum dolor sit amet</Text>;
+const meta: Meta<typeof Component> = {
+  title: 'ui/atoms/Text',
+  component: Component,
+};
+
+export default meta;
+
+type Story = StoryObj<typeof Component>;
+
+export const Text: Story = {
+  args: {
+    numberOfLines: 1,
+    adjustsFontSizeToFit: false,
+    fontSize: 14,
+    children: 'Lorem ipsum dolor sit amet',
   },
-  {
-    argTypes: {
-      style: {
-        control: {
-          type: 'object',
-        },
-        defaultValue: {textAlign: 'center'},
-      },
-      numberOfLines: {
-        control: {
-          type: 'number',
-          min: 1,
-          max: 10,
-          step: 1,
-        },
-        defaultValue: 1,
-      },
-      adjustsFontSizeToFit: {
-        control: {
-          type: 'boolean',
-        },
-        defaultValue: false,
-      },
-      textColor: {
-        control: {
-          type: 'color',
-        },
-        defaultValue: '#000000',
-      },
-      fontSize: {
-        control: {
-          type: 'number',
-          min: 10,
-          max: 50,
-          step: 1,
-        },
-        defaultValue: 14,
-      },
-      writingType: {
-        options: ['title', 'subtitle', 'important', 'details', undefined],
-        control: {
-          type: 'select',
-        },
-        defaultValue: undefined,
+  argTypes: {
+    numberOfLines: {
+      control: {
+        type: 'number',
+        min: 1,
+        max: 10,
+        step: 1,
       },
     },
+    fontSize: {
+      control: {
+        type: 'number',
+        min: 10,
+        max: 50,
+        step: 1,
+      },
+    },
+    textColor: colorPicker,
+    writingType: writingPicker,
+    onTextLayout: disabledControl,
   },
-);
+};
