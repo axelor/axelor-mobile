@@ -35,6 +35,7 @@ interface ConsumedProductGlobalCardProps {
   onLocationPress: () => void;
   onSubOfPress: () => void;
   isSubOF: boolean;
+  stockMoveLineId: number;
 }
 
 const TIME_DISPLAY_INCREMENT = 2000;
@@ -53,6 +54,7 @@ const ConsumedProductGlobalCard = ({
   onLocationPress,
   onSubOfPress,
   isSubOF = false,
+  stockMoveLineId,
 }: ConsumedProductGlobalCardProps) => {
   const I18n = useTranslator();
   const Colors = useThemeColor();
@@ -121,6 +123,7 @@ const ConsumedProductGlobalCard = ({
         trackingNumber={trackingNumber}
         onPress={onPress}
         increment={{addedQty, incrementVisible}}
+        stockMoveLineId={stockMoveLineId}
       />
     </ActionCard>
   );
