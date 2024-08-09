@@ -16,36 +16,25 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import React from 'react';
-import {storiesOf} from '@storybook/react-native';
-import {ClearableCard} from '../../src/components/molecules';
+import type {StoryObj, Meta} from '@storybook/react';
+import {ClearableCard as Component} from '../../src/components';
+import {disabledControl} from '../utils/control-type.helpers';
 
-storiesOf('ui/molecules/ClearableCard', module).add(
-  'Default',
-  args => {
-    return (
-      <ClearableCard
-        valueTxt="Some text"
-        onClearPress={console.log}
-        clearable={true}
-        {...args}
-      />
-    );
+const meta: Meta<typeof Component> = {
+  title: 'ui/molecules/ClearableCard',
+  component: Component,
+};
+
+export default meta;
+
+type Story = StoryObj<typeof Component>;
+
+export const ClearableCard: Story = {
+  args: {
+    valueTxt: 'Value',
+    clearable: true,
   },
-  {
-    argTypes: {
-      valueTxt: {
-        control: {
-          type: 'text',
-        },
-        defaultValue: 'Some text',
-      },
-      clearable: {
-        control: {
-          type: 'boolean',
-        },
-        defaultValue: true,
-      },
-    },
+  argTypes: {
+    onClearPress: disabledControl,
   },
-);
+};

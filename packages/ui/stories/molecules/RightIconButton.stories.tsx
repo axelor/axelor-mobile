@@ -17,34 +17,27 @@
  */
 
 import React from 'react';
-import {storiesOf} from '@storybook/react-native';
-import {Icon} from '../../src/components/atoms';
-import {RightIconButton} from '../../src/components/molecules';
+import type {StoryObj, Meta} from '@storybook/react';
+import {RightIconButton as Component, Icon} from '../../src/components';
+import {disabledControl} from '../utils/control-type.helpers';
 
-storiesOf('ui/molecules/RightIconButton', module).add(
-  'Default',
-  args => {
-    return (
-      <RightIconButton
-        icon={<Icon name={args.iconName} />}
-        onPress={console.log}
-        title={'Press me'}
-        {...args}
-      />
-    );
+const meta: Meta<typeof Component> = {
+  title: 'ui/molecules/RightIconButton',
+  component: Component,
+};
+
+export default meta;
+
+type Story = StoryObj<typeof Component>;
+
+export const RightIconButton: Story = {
+  args: {
+    title: 'Title',
+    iconName: 'heart',
   },
-  {
-    argTypes: {
-      title: {
-        type: 'string',
-        defaultValue: 'Press me',
-        control: {type: 'text'},
-      },
-      iconName: {
-        type: 'string',
-        defaultValue: 'heart',
-        control: {type: 'text'},
-      },
-    },
+  argTypes: {
+    onPress: disabledControl,
+    icon: disabledControl,
   },
-);
+  render: args => <Component icon={<Icon name={args.iconName} />} {...args} />,
+};

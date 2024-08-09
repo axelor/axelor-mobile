@@ -16,28 +16,26 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import React from 'react';
-import {storiesOf} from '@storybook/react-native';
-import {SwitchCard} from '../../src/components/molecules';
+import type {StoryObj, Meta} from '@storybook/react';
+import {SwitchCard as Component} from '../../src/components';
+import {disabledControl} from '../utils/control-type.helpers';
 
-storiesOf('ui/molecules/SwitchCard', module).add(
-  'Default',
-  args => {
-    return <SwitchCard onToggle={console.log} {...args} />;
+const meta: Meta<typeof Component> = {
+  title: 'ui/molecules/SwitchCard',
+  component: Component,
+};
+
+export default meta;
+
+type Story = StoryObj<typeof Component>;
+
+export const SwitchCard: Story = {
+  args: {
+    title: 'Title',
+    defaultValue: true,
+    readonly: false,
   },
-  {
-    argTypes: {
-      title: {
-        type: 'string',
-        defaultValue: 'Press me',
-        control: {type: 'text'},
-      },
-      defaultValue: {
-        control: {
-          type: 'boolean',
-        },
-        defaultValue: true,
-      },
-    },
+  argTypes: {
+    onToggle: disabledControl,
   },
-);
+};

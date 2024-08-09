@@ -17,12 +17,24 @@
  */
 
 import React from 'react';
-import {storiesOf} from '@storybook/react-native';
-import {LoadingIndicator} from '../../src/components/molecules';
+import type {StoryObj, Meta} from '@storybook/react';
+import {LoadingIndicator as Component} from '../../src/components';
 import {useConfig} from '../../src/config/ConfigContext';
 
-storiesOf('ui/molecules/LoadingIndicator', module).add('custom', () => {
-  const {setActivityIndicator} = useConfig();
-  setActivityIndicator(true);
-  return <LoadingIndicator />;
-});
+const meta: Meta<typeof Component> = {
+  title: 'ui/molecules/LoadingIndicator',
+  component: Component,
+};
+
+export default meta;
+
+type Story = StoryObj<typeof Component>;
+
+export const LoadingIndicator: Story = {
+  render: function Render() {
+    const {setActivityIndicator} = useConfig();
+    setActivityIndicator(true);
+
+    return <Component />;
+  },
+};

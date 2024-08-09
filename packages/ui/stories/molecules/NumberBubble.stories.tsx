@@ -16,52 +16,27 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import React from 'react';
-import {storiesOf} from '@storybook/react-native';
-import {lightTheme} from '../../src/theme';
-import {NumberBubble} from '../../src/components';
+import type {StoryObj, Meta} from '@storybook/react';
+import {NumberBubble as Component} from '../../src/components';
+import {colorPicker} from '../utils/control-type.helpers';
 
-storiesOf('ui/molecules/NumberBubble', module).add(
-  'default',
-  args => {
-    return (
-      <NumberBubble
-        number={0}
-        isNeutralBackground
-        {...args}
-        color={lightTheme.colors[args._color]}
-      />
-    );
+const meta: Meta<typeof Component> = {
+  title: 'ui/molecules/NumberBubble',
+  component: Component,
+};
+
+export default meta;
+
+type Story = StoryObj<typeof Component>;
+
+export const NumberBubble: Story = {
+  args: {
+    number: 1,
+    color: 'primaryColor',
+    isNeutralBackground: false,
+    size: 20,
   },
-  {
-    argTypes: {
-      number: {
-        control: {
-          type: 'number',
-        },
-        defaultValue: 0,
-      },
-      _color: {
-        control: {
-          type: 'select',
-        },
-        options: Object.entries(lightTheme.colors)
-          .filter(([, _color]) => typeof _color !== 'string')
-          .map(([key]) => key),
-        defaultValue: 'primaryColor',
-      },
-      isNeutralBackground: {
-        control: {
-          type: 'boolean',
-        },
-        defaultValue: true,
-      },
-      size: {
-        control: {
-          type: 'number',
-        },
-        defaultValue: 50,
-      },
-    },
+  argTypes: {
+    color: colorPicker,
   },
-);
+};

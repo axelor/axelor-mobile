@@ -16,42 +16,28 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import React from 'react';
-import {storiesOf} from '@storybook/react-native';
-import {TextUnit} from '../../src/components/molecules';
-import {lightTheme} from '../../src/theme';
+import type {StoryObj, Meta} from '@storybook/react';
+import {TextUnit as Component} from '../../src/components';
+import {colorPicker} from '../utils/control-type.helpers';
 
-storiesOf('ui/molecules/TextUnit', module).add(
-  'Default',
-  args => {
-    return <TextUnit {...args} color={lightTheme.colors[args.color]} />;
+const meta: Meta<typeof Component> = {
+  title: 'ui/molecules/TextUnit',
+  component: Component,
+};
+
+export default meta;
+
+type Story = StoryObj<typeof Component>;
+
+export const TextUnit: Story = {
+  args: {
+    title: 'Length',
+    value: '400',
+    unit: 'm',
+    color: 'primaryColor',
+    fontSize: 22,
   },
-  {
-    argTypes: {
-      value: {
-        type: 'string',
-        defaultValue: '400',
-        control: {type: 'text'},
-      },
-      unit: {
-        type: 'string',
-        defaultValue: 'm',
-        control: {type: 'text'},
-      },
-      color: {
-        options: Object.entries(lightTheme.colors)
-          .filter(([, _color]) => typeof _color !== 'string')
-          .map(([key]) => key),
-        defaultValue: 'primaryColor',
-        control: {
-          type: 'select',
-        },
-      },
-      fontSize: {
-        type: 'number',
-        defaultValue: 22,
-        control: {type: 'number'},
-      },
-    },
+  argTypes: {
+    color: colorPicker,
   },
-);
+};

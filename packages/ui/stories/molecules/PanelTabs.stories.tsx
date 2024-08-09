@@ -17,30 +17,41 @@
  */
 
 import React from 'react';
-import {storiesOf} from '@storybook/react-native';
-import {Text} from '../../src/components/atoms';
-import {PanelTabs} from '../../src/components/molecules';
+import type {StoryObj, Meta} from '@storybook/react';
+import {PanelTabs as Component, Text} from '../../src/components';
+import {disabledControl} from '../utils/control-type.helpers';
 
-storiesOf('ui/molecules/PanelTabs', module).add('custom', () => {
-  const I18n = value => value;
-  return (
-    <PanelTabs
+const meta: Meta<typeof Component> = {
+  title: 'ui/molecules/PanelTabs',
+  component: Component,
+};
+
+export default meta;
+
+type Story = StoryObj<typeof Component>;
+
+export const PanelTabs: Story = {
+  render: () => (
+    <Component
       tabs={[
         {
           key: 1,
           title: 'Page1',
           isActive: true,
-          translator: I18n,
+          translator: value => value,
           component: <Text>Page1</Text>,
         },
         {
           key: 2,
           title: 'Page2',
           isActive: false,
-          translator: I18n,
+          translator: value => value,
           component: <Text>Page2</Text>,
         },
       ]}
     />
-  );
-});
+  ),
+  argTypes: {
+    tabs: disabledControl,
+  },
+};

@@ -17,24 +17,28 @@
  */
 
 import React from 'react';
-import {storiesOf} from '@storybook/react-native';
-import {BlockInteractionScreen, Text} from '../../src/components/atoms';
+import type {StoryObj, Meta} from '@storybook/react';
+import {
+  BlockInteractionScreen as Component,
+  Text,
+} from '../../src/components/atoms';
 
-storiesOf('ui/atoms/BlockInteractionScreen', module).add(
-  'default',
-  args => (
-    <BlockInteractionScreen {...args}>
-      <Text>Example content</Text>
-    </BlockInteractionScreen>
-  ),
-  {
-    argTypes: {
-      hideHeader: {
-        control: {
-          type: 'boolean',
-        },
-        defaultValue: false,
-      },
-    },
+const meta: Meta<typeof Component> = {
+  title: 'ui/atoms/BlockInteractionScreen',
+  component: Component,
+};
+
+export default meta;
+
+type Story = StoryObj<typeof Component>;
+
+export const BlockInteractionScreen: Story = {
+  args: {hideHeader: false},
+  render: args => {
+    return (
+      <Component {...args}>
+        <Text>Example content</Text>
+      </Component>
+    );
   },
-);
+};

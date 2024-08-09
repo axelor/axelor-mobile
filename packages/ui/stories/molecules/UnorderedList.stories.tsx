@@ -17,34 +17,41 @@
  */
 
 import React from 'react';
-import {storiesOf} from '@storybook/react-native';
-import {Text} from '../../src/components/atoms';
-import {UnorderedList} from '../../src/components/molecules';
+import type {StoryObj, Meta} from '@storybook/react';
+import {UnorderedList as Component, Text} from '../../src/components';
+import {disabledControl} from '../utils/control-type.helpers';
 
-const items = [
-  {id: 1, text: 'Item 1'},
-  {id: 2, text: 'Item 2'},
-  {id: 3, text: 'Item 3'},
-  {id: 4, text: 'Item 4'},
-];
+const meta: Meta<typeof Component> = {
+  title: 'ui/molecules/UnorderedList',
+  component: Component,
+};
 
-storiesOf('ui/molecules/UnorderedList', module)
-  .add('default', () => (
-    <UnorderedList
-      data={items}
+export default meta;
+
+type Story = StoryObj<typeof Component>;
+
+export const UnorderedList: Story = {
+  args: {
+    empty_list: false,
+  },
+  argTypes: {
+    data: disabledControl,
+    renderItem: disabledControl,
+  },
+  render: args => (
+    <Component
+      {...args}
+      data={
+        args.empty_list
+          ? []
+          : [
+              {id: 1, text: 'Item 1'},
+              {id: 2, text: 'Item 2'},
+              {id: 3, text: 'Item 3'},
+              {id: 4, text: 'Item 4'},
+            ]
+      }
       renderItem={({item}) => <Text>{item.text}</Text>}
     />
-  ))
-  .add('with 0 items', () => (
-    <UnorderedList
-      data={[]}
-      renderItem={({item}) => <Text>{item.text}</Text>}
-    />
-  ))
-  .add('with 2 items', () => (
-    <UnorderedList
-      data={items}
-      numberOfItems={2}
-      renderItem={({item}) => <Text>{item.text}</Text>}
-    />
-  ));
+  ),
+};

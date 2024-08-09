@@ -16,74 +16,35 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import React from 'react';
-import {storiesOf} from '@storybook/react-native';
-import {Increment} from '../../src/components/molecules';
+import type {StoryObj, Meta} from '@storybook/react';
+import {Increment as Component} from '../../src/components';
+import {disabledControl} from '../utils/control-type.helpers';
 
-storiesOf('ui/molecules/Increment', module).add(
-  'default',
-  args => {
-    return <Increment value="" onValueChange={() => {}} {...args} />;
+const meta: Meta<typeof Component> = {
+  title: 'ui/molecules/Increment',
+  component: Component,
+};
+
+export default meta;
+
+type Story = StoryObj<typeof Component>;
+
+export const Increment: Story = {
+  args: {
+    value: '30',
+    decimalSpacer: ',',
+    thousandSpacer: '.',
+    defaultFormatting: true,
+    stepSize: 1,
+    minValue: 0,
+    maxValue: null,
+    readonly: false,
+    required: false,
+    isBigButton: false,
   },
-  {
-    argTypes: {
-      value: {
-        control: {
-          type: 'text',
-        },
-      },
-      decimalSpacer: {
-        control: {
-          type: 'text',
-        },
-      },
-      thousandSpacer: {
-        control: {
-          type: 'text',
-        },
-      },
-      readonly: {
-        control: {
-          type: 'boolean',
-        },
-        defaultValue: false,
-      },
-      defaultFormatting: {
-        control: {
-          type: 'boolean',
-        },
-        defaultValue: true,
-      },
-      stepSize: {
-        control: {
-          type: 'number',
-        },
-        defaultValue: 1,
-      },
-      minValue: {
-        control: {
-          type: 'number',
-        },
-        defaultValue: 0,
-      },
-      maxValue: {
-        control: {
-          type: 'number',
-        },
-        defaultValue: null,
-      },
-      isBigButton: {
-        control: {
-          type: 'boolean',
-        },
-        defaultValue: false,
-      },
-      scale: {
-        control: {
-          type: 'number',
-        },
-        defaultValue: null,
-      },
-    },
+  argTypes: {
+    onBlur: disabledControl,
+    onFocus: disabledControl,
+    onValueChange: disabledControl,
   },
-);
+};

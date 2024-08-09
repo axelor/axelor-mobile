@@ -17,159 +17,102 @@
  */
 
 import React from 'react';
-import {storiesOf} from '@storybook/react-native';
-import {DoubleIcon} from '../../src/components/molecules';
-import {lightTheme} from '../../src/theme';
+import type {StoryObj, Meta} from '@storybook/react';
+import {DoubleIcon as Component} from '../../src/components';
+import {colorPicker, disabledControl} from '../utils/control-type.helpers';
 
-const Colors = lightTheme.colors;
+const meta: Meta<typeof Component> = {
+  title: 'ui/molecules/DoubleIcon',
+  component: Component,
+};
 
-storiesOf('ui/molecules/DoubleIcon', module)
-  .add(
-    'with pre-defined position',
-    args => {
-      return (
-        <DoubleIcon
-          style={{
-            width: args.configBottomIcon_size,
-            height: args.configBottomIcon_size,
-            margin: args.configTopIcon_size,
-          }}
-          topIconConfig={{
-            name: args.configTopIcon_name,
-            size: args.configTopIcon_size,
-            color: Colors[args.configTopIcon_color].background,
-          }}
-          bottomIconConfig={{
-            name: args.configBottomIcon_name,
-            size: args.configBottomIcon_size,
-            color: Colors[args.configBottomIcon_color].background,
-          }}
-          {...args}
-        />
-      );
-    },
-    {
-      argTypes: {
-        predefinedPosition: {
-          options: [
-            'bottom-left',
-            'top-right',
-            'top-left',
-            'bottom-right',
-            'bottom',
-            'right',
-            'top',
-            'left',
-          ],
-          defaultValue: 'top-left',
-          control: {
-            type: 'select',
-          },
-        },
-        configTopIcon_name: {
-          type: 'string',
-          defaultValue: 'heart-fill',
-          control: {type: 'text'},
-        },
-        configTopIcon_color: {
-          options: Object.entries(Colors)
-            .filter(([, _color]) => typeof _color !== 'string')
-            .map(([key]) => key),
-          defaultValue: 'importantColor',
-          control: {
-            type: 'select',
-          },
-        },
-        configTopIcon_size: {
-          control: {type: 'number', min: 10, max: 50},
-          description: 'sizeTop',
-          defaultValue: 15,
-        },
+export default meta;
 
-        configBottomIcon_name: {
-          type: 'string',
-          defaultValue: 'person-fill',
-          control: {type: 'text'},
-        },
-        configBottomIcon_color: {
-          options: Object.entries(Colors)
-            .filter(([, _color]) => typeof _color !== 'string')
-            .map(([key]) => key),
-          defaultValue: 'primaryColor',
-          control: {
-            type: 'select',
-          },
-        },
-        configBottomIcon_size: {
-          control: {type: 'number', min: 10, max: 50},
-          description: 'sizeBottom',
-          defaultValue: 22,
-        },
-        touchable: {
-          control: {type: 'boolean'},
-          defaultValue: false,
-        },
-      },
-    },
-  )
-  .add(
-    'with custom position',
-    args => (
-      <DoubleIcon
-        size={30}
-        topIconPosition={{
-          top: args.top,
-          right: args.right,
-          left: args.left,
-          bottom: args.bottom,
-        }}
-        topIconConfig={{
-          name: 'heart-fill',
-          color: Colors.plannedColor.background,
-        }}
-        bottomIconConfig={{
-          name: 'person-fill',
-        }}
-      />
-    ),
-    {
-      argTypes: {
-        top: {
-          control: {
-            type: 'range',
-            min: -100,
-            max: 100,
-            step: 1,
-          },
-          defaultValue: 0,
-        },
-        right: {
-          control: {
-            type: 'range',
-            min: -100,
-            max: 100,
-            step: 1,
-          },
-          defaultValue: 0,
-        },
-        left: {
-          control: {
-            type: 'range',
-            min: -100,
-            max: 100,
-            step: 1,
-          },
-          defaultValue: 0,
-        },
-        bottom: {
-          control: {
-            type: 'range',
-            min: -100,
-            max: 100,
-            step: 1,
-          },
-          defaultValue: 0,
-        },
-      },
-    },
-  );
+type Story = StoryObj<typeof Component>;
+
+export const Story1: Story = {
+  name: 'with pre-defined position',
+  args: {
+    predefinedPosition: 'bottom',
+    configTopIcon_name: 'heart-fill',
+    configTopIcon_color: 'importantColor',
+    configTopIcon_size: 15,
+    configBottomIcon_name: 'person-fill',
+    configBottomIcon_color: 'primaryColor',
+    configBottomIcon_size: 22,
+    touchable: false,
+  },
+  argTypes: {
+    configTopIcon_color: colorPicker,
+    configBottomIcon_color: colorPicker,
+    topIconConfig: disabledControl,
+    topIconPosition: disabledControl,
+    bottomIconConfig: disabledControl,
+    size: disabledControl,
+    onPress: disabledControl,
+  },
+  render: args => (
+    <Component
+      {...args}
+      style={{
+        width: args.configBottomIcon_size,
+        height: args.configBottomIcon_size,
+        margin: args.configTopIcon_size,
+      }}
+      topIconConfig={{
+        name: args.configTopIcon_name,
+        size: args.configTopIcon_size,
+        color: args.configTopIcon_color.background,
+      }}
+      bottomIconConfig={{
+        name: args.configBottomIcon_name,
+        size: args.configBottomIcon_size,
+        color: args.configBottomIcon_color.background,
+      }}
+    />
+  ),
+};
+
+export const Story2: Story = {
+  name: 'with custom position',
+  args: {
+    top: 0,
+    right: 0,
+    left: 0,
+    bottom: 0,
+    size: 30,
+    configTopIcon_name: 'heart-fill',
+    configTopIcon_color: 'importantColor',
+    configBottomIcon_name: 'person-fill',
+    configBottomIcon_color: 'primaryColor',
+    touchable: false,
+  },
+  argTypes: {
+    configTopIcon_color: colorPicker,
+    configBottomIcon_color: colorPicker,
+    topIconConfig: disabledControl,
+    topIconPosition: disabledControl,
+    bottomIconConfig: disabledControl,
+    onPress: disabledControl,
+    predefinedPosition: disabledControl,
+  },
+  render: args => (
+    <Component
+      {...args}
+      topIconPosition={{
+        top: args.top,
+        right: args.right,
+        left: args.left,
+        bottom: args.bottom,
+      }}
+      topIconConfig={{
+        name: args.configTopIcon_name,
+        color: args.configTopIcon_color.background,
+      }}
+      bottomIconConfig={{
+        name: args.configBottomIcon_name,
+        color: args.configBottomIcon_color.background,
+      }}
+    />
+  ),
+};

@@ -17,51 +17,30 @@
  */
 
 import React from 'react';
-import {storiesOf} from '@storybook/react-native';
-import {LabelText} from '../../src/components/molecules';
+import type {StoryObj, Meta} from '@storybook/react';
+import {LabelText as Component} from '../../src/components';
+import {colorPicker} from '../utils/control-type.helpers';
 
-storiesOf('ui/molecules/LabelText', module).add(
-  'Default',
-  args => {
-    return <LabelText title="Title" {...args} />;
+const meta: Meta<typeof Component> = {
+  title: 'ui/molecules/LabelText',
+  component: Component,
+};
+
+export default meta;
+
+type Story = StoryObj<typeof Component>;
+
+export const LabelText: Story = {
+  args: {
+    title: 'Title',
+    value: 'value',
+    size: 20,
+    textSize: 20,
+    iconName: 'heart-fill',
+    onlyOneLine: false,
   },
-  {
-    argTypes: {
-      title: {
-        type: 'string',
-        defaultValue: 'Title',
-        control: {type: 'text'},
-      },
-      value: {
-        type: 'string',
-        defaultValue: 'Value',
-        control: {type: 'text'},
-      },
-      size: {
-        control: {
-          type: 'range',
-          min: 10,
-          max: 50,
-          step: 5,
-        },
-        defaultValue: 15,
-      },
-      color: {
-        control: {
-          type: 'color',
-        },
-        defaultValue: '#000000',
-      },
-      iconName: {
-        type: 'string',
-        defaultValue: 'car',
-        control: {type: 'text'},
-      },
-      onlyOneLine: {
-        type: 'boolean',
-        defaultValue: false,
-        control: {type: 'boolean'},
-      },
-    },
+  argTypes: {
+    color: colorPicker,
   },
-);
+  render: args => <Component {...args} color={args.color?.background} />,
+};

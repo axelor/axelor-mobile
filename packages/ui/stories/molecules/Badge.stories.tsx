@@ -16,44 +16,26 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import React from 'react';
-import {storiesOf} from '@storybook/react-native';
-import {Badge} from '../../src/components/molecules';
-import {lightTheme} from '../../src/theme';
+import type {StoryObj, Meta} from '@storybook/react';
+import {Badge as Component} from '../../src/components';
+import {colorPicker} from '../utils/control-type.helpers';
 
-storiesOf('ui/molecules/Badge', module).add(
-  'Default',
-  args => {
-    return <Badge title={''} {...args} />;
+const meta: Meta<typeof Component> = {
+  title: 'ui/molecules/Badge',
+  component: Component,
+};
+
+export default meta;
+
+type Story = StoryObj<typeof Component>;
+
+export const Badge: Story = {
+  args: {
+    title: 'Title',
+    numberOfLines: 1,
+    color: 'primaryColor',
   },
-  {
-    argTypes: {
-      title: {
-        control: {
-          type: 'text',
-        },
-        defaultValue: 'Badge',
-      },
-      color: {
-        options: Object.keys(lightTheme.colors),
-        mapping: lightTheme.colors,
-        control: {
-          type: 'select',
-          labels: {
-            primary: 'Primary',
-            caution: 'Caution',
-          },
-        },
-      },
-      numberOfLines: {
-        control: {
-          type: 'range',
-          min: 1,
-          max: 5,
-          step: 1,
-        },
-        defaultValue: 1,
-      },
-    },
+  argTypes: {
+    color: colorPicker,
   },
-);
+};

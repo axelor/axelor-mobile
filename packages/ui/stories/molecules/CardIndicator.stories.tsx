@@ -18,54 +18,42 @@
 
 import React from 'react';
 import {Dimensions, StyleSheet, View} from 'react-native';
-import {storiesOf} from '@storybook/react-native';
-import {CardIndicator, Text} from '../../src/components';
+import type {StoryObj, Meta} from '@storybook/react';
+import {CardIndicator as Component, Text} from '../../src/components';
+import {disabledControl} from '../utils/control-type.helpers';
 
-storiesOf('ui/molecules/CardIndicator', module).add(
-  'Default',
-  args => {
+const meta: Meta<typeof Component> = {
+  title: 'ui/molecules/CardIndicator',
+  component: Component,
+};
+
+export default meta;
+
+type Story = StoryObj<typeof Component>;
+
+export const CardIndicator: Story = {
+  args: {
+    indication: 'this is an indication',
+    position: 'right',
+    space: 50,
+    isVisible: true,
+  },
+  argTypes: {
+    handleClose: disabledControl,
+  },
+  render: args => {
     return (
       <View style={styles.view}>
-        <CardIndicator {...args} handleClose={() => {}}>
+        <Component {...args} handleClose={() => {}}>
           <Text>Test</Text>
-        </CardIndicator>
+        </Component>
       </View>
     );
   },
-  {
-    argTypes: {
-      indication: {
-        control: {
-          type: 'text',
-        },
-        defaultValue: 'this is an indication',
-      },
-      position: {
-        control: {
-          type: 'select',
-        },
-        options: ['right', 'left'],
-        defaultValue: 'right',
-      },
-      space: {
-        control: {
-          type: 'number',
-        },
-        defaultValue: 50,
-      },
-      isVisible: {
-        control: {
-          type: 'boolean',
-        },
-        defaultValue: true,
-      },
-    },
-  },
-);
+};
 
 const styles = StyleSheet.create({
   view: {
-    backgroundColor: 'rgba(140, 140, 140, 0.3)',
     height: Dimensions.get('window').height,
     flexDirection: 'column',
     alignItems: 'center',

@@ -17,48 +17,45 @@
  */
 
 import React from 'react';
-import {storiesOf} from '@storybook/react-native';
-import {Text} from '../../src/components/atoms';
-import {ViewAllContainer} from '../../src/components/molecules';
+import type {StoryObj, Meta} from '@storybook/react';
+import {ViewAllContainer as Component, Text} from '../../src/components';
+import {disabledControl} from '../utils/control-type.helpers';
 
-const data = [
-  {id: '1', name: 'Item 1'},
-  {id: '2', name: 'Item 2'},
-  {id: '3', name: 'Item 3'},
-  {id: '4', name: 'Item 4'},
-  {id: '5', name: 'Item 5'},
-];
+const meta: Meta<typeof Component> = {
+  title: 'ui/molecules/ViewAllContainer',
+  component: Component,
+};
 
-storiesOf('ui/molecules/ViewAllContainer', module).add(
-  'default',
-  args => {
-    return (
-      <ViewAllContainer
-        data={data}
-        children={<Text>Children</Text>}
-        onViewPress={() => console.log('View all pressed.')}
-        renderFirstTwoItems={item => <Text>{item.name}</Text>}
-        {...args}
-      />
-    );
+export default meta;
+
+type Story = StoryObj<typeof Component>;
+
+export const ViewAllContainer: Story = {
+  args: {
+    title: 'Title',
+    disabled: false,
+    isHeaderExist: false,
   },
-  {
-    argTypes: {
-      title: {
-        type: 'string',
-        defaultValue: 'Title',
-        control: {type: 'text'},
-      },
-      disabled: {
-        type: 'boolean',
-        defaultValue: false,
-        control: {type: 'boolean'},
-      },
-      isHeaderExist: {
-        type: 'boolean',
-        defaultValue: false,
-        control: {type: 'boolean'},
-      },
-    },
+  argTypes: {
+    translator: disabledControl,
+    onNewIcon: disabledControl,
+    onViewPress: disabledControl,
+    renderFirstTwoItems: disabledControl,
+    data: disabledControl,
   },
-);
+  render: args => (
+    <Component
+      data={[
+        {id: '1', name: 'Item 1'},
+        {id: '2', name: 'Item 2'},
+        {id: '3', name: 'Item 3'},
+        {id: '4', name: 'Item 4'},
+        {id: '5', name: 'Item 5'},
+      ]}
+      children={<Text>Children</Text>}
+      onViewPress={() => console.log('View all pressed.')}
+      renderFirstTwoItems={item => <Text>{item.name}</Text>}
+      {...args}
+    />
+  ),
+};

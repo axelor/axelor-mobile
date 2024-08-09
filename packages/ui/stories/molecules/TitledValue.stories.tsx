@@ -16,27 +16,21 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import React from 'react';
-import {storiesOf} from '@storybook/react-native';
-import {TitledValue} from '../../src/components/molecules';
+import type {StoryObj, Meta} from '@storybook/react';
+import {TitledValue as Component} from '../../src/components';
 
-storiesOf('ui/molecules/TitledValue', module).add(
-  'Default',
-  args => {
-    return <TitledValue {...args} />;
+const meta: Meta<typeof Component> = {
+  title: 'ui/molecules/TitledValue',
+  component: Component,
+};
+
+export default meta;
+
+type Story = StoryObj<typeof Component>;
+
+export const TitledValue: Story = {
+  args: {
+    title: 'Title',
+    value: 'value',
   },
-  {
-    argTypes: {
-      title: {
-        type: 'string',
-        defaultValue: 'title',
-        control: {type: 'text'},
-      },
-      value: {
-        type: 'string',
-        defaultValue: 'value',
-        control: {type: 'text'},
-      },
-    },
-  },
-);
+};

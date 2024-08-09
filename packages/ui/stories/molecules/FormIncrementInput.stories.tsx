@@ -16,98 +16,32 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import React from 'react';
-import {storiesOf} from '@storybook/react-native';
-import {FormIncrementInput} from '../../src/components/molecules';
+import type {StoryObj, Meta} from '@storybook/react';
+import {FormIncrementInput as Component} from '../../src/components';
+import {disabledControl} from '../utils/control-type.helpers';
 
-storiesOf('ui/molecules/FormIncrementInput', module).add(
-  'Default',
-  args => {
-    return (
-      <FormIncrementInput
-        title="Increment Input"
-        defaultValue="0"
-        decimalSpacer=","
-        thousandSpacer="."
-        onChange={console.log}
-        {...args}
-      />
-    );
+const meta: Meta<typeof Component> = {
+  title: 'ui/molecules/FormIncrementInput',
+  component: Component,
+};
+
+export default meta;
+
+type Story = StoryObj<typeof Component>;
+
+export const FormIncrementInput: Story = {
+  args: {
+    title: 'Title',
+    defaultValue: '2',
+    decimalSpacer: ',',
+    thousandSpacer: '.',
+    defaultFormatting: true,
+    stepSize: 1,
+    minValue: 0,
+    maxValue: null,
+    readOnly: false,
+    required: false,
+    isBigButton: false,
   },
-  {
-    argTypes: {
-      title: {
-        control: {
-          type: 'text',
-        },
-        defaultValue: 'Increment Input',
-      },
-      readOnly: {
-        control: {
-          type: 'boolean',
-        },
-        defaultValue: false,
-      },
-      required: {
-        control: {
-          type: 'boolean',
-        },
-        defaultValue: false,
-      },
-      defaultValue: {
-        control: {
-          type: 'text',
-        },
-        defaultValue: '0',
-      },
-      decimalSpacer: {
-        control: {
-          type: 'text',
-        },
-        defaultValue: ',',
-      },
-      thousandSpacer: {
-        control: {
-          type: 'text',
-        },
-        defaultValue: '.',
-      },
-      defaultFormatting: {
-        control: {
-          type: 'boolean',
-        },
-        defaultValue: true,
-      },
-      stepSize: {
-        control: {
-          type: 'number',
-        },
-        defaultValue: 1,
-      },
-      minValue: {
-        control: {
-          type: 'number',
-        },
-        defaultValue: 0,
-      },
-      maxValue: {
-        control: {
-          type: 'number',
-        },
-        defaultValue: null,
-      },
-      isBigButton: {
-        control: {
-          type: 'boolean',
-        },
-        defaultValue: false,
-      },
-      scale: {
-        control: {
-          type: 'number',
-        },
-        defaultValue: null,
-      },
-    },
-  },
-);
+  argTypes: {onChange: disabledControl},
+};

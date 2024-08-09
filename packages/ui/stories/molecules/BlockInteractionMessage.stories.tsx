@@ -17,28 +17,39 @@
  */
 
 import React from 'react';
-import {storiesOf} from '@storybook/react-native';
-import {BlockInteractionMessage} from '../../src/components/molecules';
+import type {StoryObj, Meta} from '@storybook/react';
+import {BlockInteractionMessage as Component} from '../../src/components';
 import {useConfig} from '../../src/config/ConfigContext';
 
-storiesOf('ui/molecules/BlockInteractionMessage', module).add('custom', () => {
-  const {setBlockInteractionConfig} = useConfig();
+const meta: Meta<typeof Component> = {
+  title: 'ui/molecules/BlockInteractionMessage',
+  component: Component,
+};
 
-  setBlockInteractionConfig({
-    visible: true,
-    message: 'Error message',
-    actionItems: [
-      {
-        iconName: 'undo',
-        title: 'Action 1',
-        onPress: () => {},
-      },
-      {
-        title: 'Action 2',
-        onPress: () => {},
-      },
-    ],
-  });
+export default meta;
 
-  return <BlockInteractionMessage />;
-});
+type Story = StoryObj<typeof Component>;
+
+export const BlockInteractionMessage: Story = {
+  render: function Render() {
+    const {setBlockInteractionConfig} = useConfig();
+
+    setBlockInteractionConfig({
+      visible: true,
+      message: 'Error message',
+      actionItems: [
+        {
+          iconName: 'x',
+          title: 'Action 1',
+          onPress: () => {},
+        },
+        {
+          title: 'Action 2',
+          onPress: () => {},
+        },
+      ],
+    });
+
+    return <Component />;
+  },
+};

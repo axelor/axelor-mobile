@@ -17,33 +17,31 @@
  */
 
 import React from 'react';
-import {storiesOf} from '@storybook/react-native';
-import {Text} from '../../src/components/atoms';
-import {DropdownCard} from '../../src/components/molecules';
+import type {StoryObj, Meta} from '@storybook/react';
+import {DropdownCard as Component, Text} from '../../src/components';
+import {disabledControl} from '../utils/control-type.helpers';
 
-const children = <Text>Some content in the dropdown</Text>;
+const meta: Meta<typeof Component> = {
+  title: 'ui/molecules/DropdownCard',
+  component: Component,
+};
 
-storiesOf('ui/molecules/DropdownCard', module).add(
-  'default',
-  args => (
-    <DropdownCard title="DropdownCard title" {...args}>
-      {children}
-    </DropdownCard>
-  ),
-  {
-    argTypes: {
-      title: {
-        control: {
-          type: 'text',
-        },
-        defaultValue: 'DropdownCard title',
-      },
-      dropdownIsOpen: {
-        control: {
-          type: 'boolean',
-        },
-        defaultValue: false,
-      },
-    },
+export default meta;
+
+type Story = StoryObj<typeof Component>;
+
+export const DropdownCard: Story = {
+  args: {
+    title: 'Title',
+    dropdownIsOpen: false,
+    showIcon: true,
   },
-);
+  argTypes: {
+    onPress: disabledControl,
+  },
+  render: args => (
+    <Component {...args}>
+      <Text>Some content in the dropdown</Text>{' '}
+    </Component>
+  ),
+};

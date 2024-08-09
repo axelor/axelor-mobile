@@ -17,20 +17,51 @@
  */
 
 import React from 'react';
-import {storiesOf} from '@storybook/react-native';
-import {Alert, Text} from '../../src/components';
-import {lightTheme} from '../../src/theme';
+import type {StoryObj, Meta} from '@storybook/react';
+import {Alert as Component, Text} from '../../src/components';
+import {colorPicker, disabledControl} from '../utils/control-type.helpers';
 
-storiesOf('ui/molecules/Alert', module).add(
-  'Default',
-  args => {
+const meta: Meta<typeof Component> = {
+  title: 'ui/molecules/Alert',
+  component: Component,
+};
+
+export default meta;
+
+type Story = StoryObj<typeof Component>;
+
+export const Alert: Story = {
+  args: {
+    visible: true,
+    title: 'Title',
+    cancelButtonConfig_title: 'Cancel',
+    cancelButtonConfig_color: 'errorColor',
+    cancelButtonConfig_iconName: 'x',
+    cancelButtonConfig_hide: false,
+    cancelButtonConfig_showInHeader: false,
+    cancelButtonConfig_width: 115,
+    confirmButtonConfig_title: 'Ok',
+    confirmButtonConfig_color: 'primaryColor',
+    confirmButtonConfig_iconName: 'check',
+    confirmButtonConfig_hide: false,
+    confirmButtonConfig_width: 115,
+    noBoldTitle: false,
+  },
+  argTypes: {
+    cancelButtonConfig_color: colorPicker,
+    confirmButtonConfig_color: colorPicker,
+    cancelButtonConfig: disabledControl,
+    confirmButtonConfig: disabledControl,
+    translator: disabledControl,
+  },
+  render: args => {
     return (
-      <Alert
+      <Component
         visible
         {...args}
         cancelButtonConfig={{
           title: args.cancelButtonConfig_title,
-          color: lightTheme.colors[args.cancelButtonConfig_color],
+          color: args.cancelButtonConfig_color,
           iconName: args.cancelButtonConfig_iconName,
           hide: args.cancelButtonConfig_hide,
           showInHeader: args.cancelButtonConfig_showInHeader,
@@ -38,90 +69,13 @@ storiesOf('ui/molecules/Alert', module).add(
         }}
         confirmButtonConfig={{
           title: args.confirmButtonConfig_title,
-          color: lightTheme.colors[args.confirmButtonConfig_color],
+          color: args.confirmButtonConfig_color,
           iconName: args.confirmButtonConfig_iconName,
           hide: args.confirmButtonConfig_hide,
           width: args.confirmButtonConfig_width,
         }}>
         <Text>TEST</Text>
-      </Alert>
+      </Component>
     );
   },
-  {
-    argTypes: {
-      visible: {
-        type: 'boolean',
-        defaultValue: true,
-        control: {type: 'boolean'},
-      },
-      title: {
-        type: 'string',
-        defaultValue: 'Title',
-        control: {type: 'text'},
-      },
-      cancelButtonConfig_title: {
-        type: 'string',
-        defaultValue: 'Cancel',
-        control: {type: 'text'},
-      },
-      cancelButtonConfig_color: {
-        options: Object.entries(lightTheme.colors)
-          .filter(([, _color]) => typeof _color !== 'string')
-          .map(([key]) => key),
-        defaultValue: 'errorColor',
-        control: {
-          type: 'select',
-        },
-      },
-      cancelButtonConfig_iconName: {
-        type: 'string',
-        defaultValue: 'x',
-        control: {type: 'text'},
-      },
-      cancelButtonConfig_hide: {
-        type: 'boolean',
-        defaultValue: false,
-        control: {type: 'boolean'},
-      },
-      cancelButtonConfig_showInHeader: {
-        type: 'boolean',
-        defaultValue: false,
-        control: {type: 'boolean'},
-      },
-      cancelButtonConfig_width: {
-        type: 'number',
-        defaultValue: 115,
-        control: {type: 'number'},
-      },
-      confirmButtonConfig_title: {
-        type: 'string',
-        defaultValue: 'Ok',
-        control: {type: 'text'},
-      },
-      confirmButtonConfig_color: {
-        options: Object.entries(lightTheme.colors)
-          .filter(([, _color]) => typeof _color !== 'string')
-          .map(([key]) => key),
-        defaultValue: 'primaryColor',
-        control: {
-          type: 'select',
-        },
-      },
-      confirmButtonConfig_iconName: {
-        type: 'string',
-        defaultValue: 'check',
-        control: {type: 'text'},
-      },
-      confirmButtonConfig_hide: {
-        type: 'boolean',
-        defaultValue: false,
-        control: {type: 'boolean'},
-      },
-      confirmButtonConfig_width: {
-        type: 'number',
-        defaultValue: 115,
-        control: {type: 'number'},
-      },
-    },
-  },
-);
+};

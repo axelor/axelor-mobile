@@ -17,40 +17,50 @@
  */
 
 import React from 'react';
-import {storiesOf} from '@storybook/react-native';
-import {action} from '@storybook/addon-actions';
-import {MovementIndicationCard} from '../../src/components/molecules';
-import {Icon} from '../../src/components/atoms';
-import {lightTheme} from '../../src/theme';
+import type {StoryObj, Meta} from '@storybook/react';
+import {MovementIndicationCard as Component, Icon} from '../../src/components';
+import {colorPicker, disabledControl} from '../utils/control-type.helpers';
 
-storiesOf('ui/molecules/MovementIndicationCard', module).add(
-  'custom',
-  args => (
-    <MovementIndicationCard
-      titleTop={'titleTop'}
-      iconTop={
-        <Icon name="truck" color={lightTheme.colors.primaryColor.background} />
-      }
-      titleDown={'titleDown'}
-      iconDown={<Icon name="geo-alt-fill" />}
-      disabledDown={false}
-      onPressTitleTop={() => action('onPressTitleTop')}
-      onPressTitleDown={() => action('onPressTitleDown')}
+const meta: Meta<typeof Component> = {
+  title: 'ui/molecules/MovementIndicationCard',
+  component: Component,
+};
+
+export default meta;
+
+type Story = StoryObj<typeof Component>;
+
+export const MovementIndicationCard: Story = {
+  args: {
+    titleTop: 'Title top',
+    disabledTop: false,
+    topIcon_name: 'truck',
+    topIcon_color: 'primaryColor',
+    titleDown: 'Title down',
+    disabledDown: false,
+    downIcon_name: 'geo-alt',
+    downIcon_color: 'plannedColor',
+  },
+  argTypes: {
+    topIcon_color: colorPicker,
+    downIcon_color: colorPicker,
+    iconDown: disabledControl,
+    iconTop: disabledControl,
+    onPressTitleDown: disabledControl,
+    onPressTitleTop: disabledControl,
+  },
+  render: args => (
+    <Component
       {...args}
+      iconTop={
+        <Icon name={args.topIcon_name} color={args.topIcon_color?.background} />
+      }
+      iconDown={
+        <Icon
+          name={args.downIcon_name}
+          color={args.downIcon_color?.background}
+        />
+      }
     />
   ),
-  {
-    argTypes: {
-      titleTop: {
-        control: 'text',
-        defaultValue: 'Title top',
-      },
-      titleDown: {
-        control: 'text',
-        defaultValue: 'Title down',
-      },
-      disabledTop: {control: 'boolean', defaultValue: false},
-      disabledDown: {control: 'boolean', defaultValue: false},
-    },
-  },
-);
+};

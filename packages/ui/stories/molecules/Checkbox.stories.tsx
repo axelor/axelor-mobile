@@ -17,61 +17,33 @@
  */
 
 import React from 'react';
-import {storiesOf} from '@storybook/react-native';
-import {Checkbox} from '../../src/components/molecules';
-import {lightTheme} from '../../src/theme';
+import type {StoryObj, Meta} from '@storybook/react';
+import {Checkbox as Component} from '../../src/components';
+import {colorPicker, disabledControl} from '../utils/control-type.helpers';
 
-storiesOf('ui/molecules/Checkbox', module).add(
-  'Default',
-  args => {
-    return (
-      <Checkbox
-        title="Check me"
-        isDefaultChecked={false}
-        onChange={console.log}
-        {...args}
-        iconColor={lightTheme.colors[args._iconColor]?.background}
-      />
-    );
+const meta: Meta<typeof Component> = {
+  title: 'ui/molecules/Checkbox',
+  component: Component,
+};
+
+export default meta;
+
+type Story = StoryObj<typeof Component>;
+
+export const Checkbox: Story = {
+  args: {
+    title: 'Check me',
+    isDefaultChecked: false,
+    isDefaultPartialChecked: false,
+    disabled: false,
+    iconSize: 20,
+    iconColor: 'primaryColor',
   },
-  {
-    argTypes: {
-      title: {
-        control: {
-          type: 'text',
-        },
-        defaultValue: 'Checkbox Title',
-      },
-      isDefaultChecked: {
-        control: {
-          type: 'boolean',
-        },
-        defaultValue: false,
-      },
-      disabled: {
-        control: {
-          type: 'boolean',
-        },
-        defaultValue: false,
-      },
-      iconSize: {
-        control: {
-          type: 'range',
-          min: 10,
-          max: 50,
-          step: 2,
-        },
-        defaultValue: 30,
-      },
-      _iconColor: {
-        options: Object.entries(lightTheme.colors)
-          .filter(([, _color]) => typeof _color !== 'string')
-          .map(([key]) => key),
-        defaultValue: 'primaryColor',
-        control: {
-          type: 'select',
-        },
-      },
-    },
+  argTypes: {
+    iconColor: colorPicker,
+    onChange: disabledControl,
   },
-);
+  render: args => (
+    <Component {...args} iconColor={args.iconColor?.background} />
+  ),
+};

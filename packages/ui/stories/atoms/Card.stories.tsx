@@ -17,47 +17,32 @@
  */
 
 import React from 'react';
-import {View, StyleSheet} from 'react-native';
-import {storiesOf} from '@storybook/react-native';
-import {Card, Text} from '../../src/components/atoms';
+import type {StoryObj, Meta} from '@storybook/react';
+import {Card as Component, Text} from '../../src/components/atoms';
 
-storiesOf('ui/atoms/Card', module)
-  .add('Default', () => (
-    <Card>
-      <View />
-    </Card>
-  ))
-  .add('Text', () => (
-    <Card>
-      <Text>Text</Text>
-    </Card>
-  ))
-  .add(
-    'Custom Style',
-    args => (
-      <Card {...args}>
-        <View style={styles.defaultCustom} />
-      </Card>
-    ),
-    {
-      argTypes: {
-        style: {
-          control: {
-            type: 'object',
-          },
-          defaultValue: {
-            width: 0,
-            height: 5,
-            backgroundColor: 'green',
-          },
-        },
-      },
+const meta: Meta<typeof Component> = {
+  title: 'ui/atoms/Card',
+  component: Component,
+};
+
+export default meta;
+
+type Story = StoryObj<typeof Component>;
+
+export const Card: Story = {
+  args: {
+    style: {
+      backgroundColor: 'green',
+      margin: 5,
+      padding: 15,
+      width: '80%',
     },
-  );
-
-const styles = StyleSheet.create({
-  defaultCustom: {
-    height: 100,
-    backgroundColor: '#B4503B',
   },
-});
+  render: args => {
+    return (
+      <Component {...args}>
+        <Text>Card Content</Text>
+      </Component>
+    );
+  },
+};
