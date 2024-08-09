@@ -1,5 +1,0 @@
-{
-  "title": "API : use model and action providers",
-  "type": "refactor",
-  "packages": ["stock", "manufacturing", "crm", "helpdesk", "hr", "quality"]
-}

@@ -3,6 +3,70 @@ title: 8.0.0
 tags: Changelog
 ---
 
+## [8.0.9] (2024-08-09)
+
+### @axelor/aos-mobile-core
+
+#### Features
+
+- Loader: add new component for background processes and internal notifications
+- Action api provider: add onEnd action as argument of synchronize function
+
+### @axelor/aos-mobile-ui
+
+#### Features
+
+- Search bar: add a more results indicator on selection container
+
+### @axelor/aos-mobile-quality
+
+#### Changes
+
+- API : use model and action providers
+
+### @axelor/aos-mobile-hr
+
+#### Changes
+
+- API : use model and action providers
+
+### @axelor/aos-mobile-helpdesk
+
+#### Changes
+
+- API : use model and action providers
+
+### @axelor/aos-mobile-crm
+
+#### Changes
+
+- API : use model and action providers
+
+#### Fixes
+
+- Details screens: manage scroll style for small screens
+
+### @axelor/aos-mobile-manufacturing
+
+#### Changes
+
+- API : use model and action providers
+
+### @axelor/aos-mobile-stock
+
+#### Features
+
+- Supplier arrival: add possibility to register a tracking number when the line is incomplete.
+- TrackingNumber: add possibility to search on origin field
+
+#### Changes
+
+- API : use model and action providers
+
+#### Fixes
+
+- Product details: add activity indicator when product is null to avoid errors
+
 ## [8.0.8] (2024-07-11)
 
 ### @axelor/aos-mobile-core
@@ -394,6 +458,7 @@ Changes has been done to get new core and ui improvements: use of ChipSelect, co
 
 Changes has been done to get new core and ui improvements: use of ChipSelect, color differentiation between success and primary, definition of required configs, use of icons for Bootstrap
 
+[8.0.9]: https://github.com/axelor/axelor-mobile/compare/8.0.8...8.0.9
 [8.0.8]: https://github.com/axelor/axelor-mobile/compare/8.0.7...8.0.8
 [8.0.7]: https://github.com/axelor/axelor-mobile/compare/8.0.6...8.0.7
 [8.0.6]: https://github.com/axelor/axelor-mobile/compare/8.0.5...8.0.6
