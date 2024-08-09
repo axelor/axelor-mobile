@@ -1,5 +1,0 @@
-{
-  "title": "Product details: add activity indicator when product is null to avoid errors",
-  "type": "fix",
-  "packages": "stock"
-}
