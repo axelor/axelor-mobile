@@ -1,5 +1,0 @@
-{
-  "title": "Signature input: add option to use this widget inside a scrollable view to avoid conflicts",
-  "type": "fix",
-  "packages": "core"
-}

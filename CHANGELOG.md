@@ -3,6 +3,43 @@ title: 8.1.0
 tags: Changelog
 ---
 
+## [8.1.3] (2024-08-09)
+
+### @axelor/aos-mobile-core
+
+#### Features
+
+- Loader: add new component for background processes and internal notifications
+- Action api provider: add onEnd action as argument of synchronize function
+
+#### Fixes
+
+- Signature input: add option to use this widget inside a scrollable view to avoid conflicts
+- Settings: add scrollable view
+
+### @axelor/aos-mobile-ui
+
+#### Features
+
+- Search bar: add a more results indicator on selection container
+
+### @axelor/aos-mobile-crm
+
+#### Fixes
+
+- Details screens: manage scroll style for small screens
+
+### @axelor/aos-mobile-stock
+
+#### Features
+
+- Supplier arrival: add possibility to register a tracking number when the line is incomplete.
+- TrackingNumber: add possibility to search on origin field
+
+#### Fixes
+
+- Product details: add activity indicator when product is null to avoid errors
+
 ## [8.1.2] (2024-07-11)
 
 ### @axelor/aos-mobile-core
@@ -260,6 +297,7 @@ It enables user to manage interventions and customer parc through the mobile app
 - Permissions: check user rights for actions display
 - Selections: use new system and tools instead of type files
 - Product indicators: use new chart component to display quantity indicators
-  [8.1.2]: https://github.com/axelor/axelor-mobile/compare/8.1.1...8.1.2
+  [8.1.3]: https://github.com/axelor/axelor-mobile/compare/8.1.2...8.1.3
+[8.1.2]: https://github.com/axelor/axelor-mobile/compare/8.1.1...8.1.2
   [8.1.1]: https://github.com/axelor/axelor-mobile/compare/8.1.0...8.1.1
   [8.1.0]: https://github.com/axelor/axelor-mobile/compare/8.0.6...8.1.0

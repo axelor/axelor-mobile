@@ -1,5 +1,0 @@
-{
-  "title": "Loader: add new component for background processes and internal notifications",
-  "type": "feat",
-  "packages": "core"
-}
