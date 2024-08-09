@@ -95,3 +95,11 @@ export async function updateProdProduct({
     description: 'update prod product',
   });
 }
+
+export async function fetchStockMoveStatus({stockMoveLineId}) {
+  return createStandardFetch({
+    model: 'com.axelor.apps.stock.db.StockMoveLine',
+    id: stockMoveLineId,
+    fieldKey: 'manufacturing_stockMoveStatus',
+  });
+}

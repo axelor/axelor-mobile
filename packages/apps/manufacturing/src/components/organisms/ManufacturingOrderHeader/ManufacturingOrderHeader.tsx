@@ -46,31 +46,29 @@ const ManufacturingOrderHeader = ({
   );
 
   return (
-    <View style={styles.infoContainer}>
+    <View style={styles.container}>
       <View style={styles.refContainer}>
-        {reference != null && (
-          <Text style={styles.text_important}>{reference}</Text>
-        )}
+        {reference != null && <Text writingType="important">{reference}</Text>}
         {parentMO != null && (
-          <LabelText iconName="diagram-3-fill" title={parentMO.manufOrderSeq} />
-        )}
-      </View>
-      <View style={styles.badgeContainer}>
-        {status == null ? (
-          <View style={styles.refContainer} />
-        ) : (
-          <Badge
-            color={getItemColor(ManufOrder?.statusSelect, status)}
-            title={getItemTitle(ManufOrder?.statusSelect, status)}
+          <LabelText
+            style={styles.manufOrderSeq}
+            iconName="diagram-3-fill"
+            title={parentMO.manufOrderSeq}
           />
         )}
-        {isPriorityValid ? (
+      </View>
+      <View style={[styles.badgesContainer]}>
+        {isPriorityValid && (
           <Badge
             color={getItemColor(ManufOrder?.prioritySelect, priority)}
             title={getItemTitle(ManufOrder?.prioritySelect, priority)}
           />
-        ) : (
-          <View style={styles.refContainer} />
+        )}
+        {status != null && (
+          <Badge
+            color={getItemColor(ManufOrder?.statusSelect, status)}
+            title={getItemTitle(ManufOrder?.statusSelect, status)}
+          />
         )}
       </View>
     </View>
@@ -78,33 +76,21 @@ const ManufacturingOrderHeader = ({
 };
 
 const styles = StyleSheet.create({
-  infoContainer: {
+  container: {
     flexDirection: 'row',
-    justifyContent: 'space-around',
-    alignItems: 'center',
-    marginBottom: '2%',
+    justifyContent: 'space-between',
+    marginHorizontal: 24,
   },
   refContainer: {
-    flex: 1,
     flexDirection: 'row',
     alignItems: 'center',
-    marginLeft: 24,
   },
-  badgeContainer: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    marginTop: '2%',
-    marginHorizontal: 32,
-    flexDirection: 'row-reverse',
+  badgesContainer: {
+    flexDirection: 'row',
+    alignContent: 'flex-end',
   },
-  text_important: {
-    marginRight: 8,
-    fontSize: 16,
-    fontWeight: 'bold',
-  },
-  text_secondary: {
-    fontSize: 14,
+  manufOrderSeq: {
+    marginLeft: 8,
   },
 });
 

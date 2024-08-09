@@ -16,10 +16,11 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import React, {useMemo} from 'react';
+import React, {useEffect, useMemo, useState} from 'react';
 import {StyleSheet, View} from 'react-native';
+import {useTranslator, useTypeHelpers, useTypes} from '@axelor/aos-mobile-core';
 import {ObjectCard, useDigitFormat, useThemeColor} from '@axelor/aos-mobile-ui';
-import {useTranslator} from '@axelor/aos-mobile-core';
+import {fetchStockMoveStatus} from '../../../api';
 
 interface ConsumedProductCardProps {
   style?: any;
@@ -32,6 +33,7 @@ interface ConsumedProductCardProps {
   trackingNumber?: string;
   onPress: () => void;
   increment: {addedQty: number; incrementVisible: boolean};
+  stockMoveLineId: number;
 }
 
 const ConsumedProductCard = ({
@@ -45,10 +47,15 @@ const ConsumedProductCard = ({
   trackingNumber = null,
   onPress = () => {},
   increment = {addedQty: 0, incrementVisible: false},
+  stockMoveLineId,
 }: ConsumedProductCardProps) => {
   const Colors = useThemeColor();
   const I18n = useTranslator();
   const formatNumber = useDigitFormat();
+  const {StockMove} = useTypes();
+  const {getItemColor, getItemTitle} = useTypeHelpers();
+
+  const [stockMoveStatus, setStockMoveStatus] = useState(null);
 
   const borderStyle = useMemo(() => {
     if (missingQty > 0) {
@@ -63,6 +70,13 @@ const ConsumedProductCard = ({
       return getBorderStyles(Colors.successColor.background)?.border;
     }
   }, [Colors, consumedQty, missingQty, plannedQty]);
+
+  useEffect(() => {
+    (async () => {
+      const res = await fetchStockMoveStatus({stockMoveLineId});
+      setStockMoveStatus(res.data.data[0]?.stockMove?.statusSelect);
+    })();
+  }, [stockMoveLineId]);
 
   return (
     <View style={style}>
@@ -113,6 +127,13 @@ const ConsumedProductCard = ({
                     ? Colors.cautionColor
                     : Colors.successColor
                   : Colors.errorColor,
+            },
+            {
+              displayText: getItemTitle(
+                StockMove?.statusSelect,
+                stockMoveStatus,
+              ),
+              color: getItemColor(StockMove?.statusSelect, stockMoveStatus),
             },
           ],
         }}
