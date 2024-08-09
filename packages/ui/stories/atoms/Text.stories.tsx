@@ -16,6 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+import React from 'react';
 import type {StoryObj, Meta} from '@storybook/react';
 import {Text as Component} from '../../src/components/atoms';
 import {
@@ -61,4 +62,5 @@ export const Text: Story = {
     writingType: writingPicker,
     onTextLayout: disabledControl,
   },
+  render: args => <Component {...args} textColor={args.color?.background} />,
 };

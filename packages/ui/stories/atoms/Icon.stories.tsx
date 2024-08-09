@@ -16,6 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+import React from 'react';
 import type {StoryObj, Meta} from '@storybook/react';
 import {Icon as Component} from '../../src/components/atoms';
 import {colorPicker, disabledControl} from '../utils/control-type.helpers';
@@ -44,4 +45,5 @@ export const Icon: Story = {
     isFontAwesome4: disabledControl,
     isFontAwesome5: disabledControl,
   },
+  render: args => <Component {...args} color={args.color?.background} />,
 };

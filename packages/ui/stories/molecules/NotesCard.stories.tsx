@@ -16,23 +16,21 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import React from 'react';
-import {storiesOf} from '@storybook/react-native';
-import {NotesCard} from '../../src/components/molecules';
+import type {StoryObj, Meta} from '@storybook/react';
+import {NotesCard as Component} from '../../src/components';
 
-storiesOf('ui/molecules/NotesCard', module).add(
-  'custom',
-  args => <NotesCard {...args} />,
-  {
-    argTypes: {
-      title: {
-        control: 'text',
-        defaultValue: 'title',
-      },
-      data: {
-        control: 'text',
-        defaultValue: 'data',
-      },
-    },
+const meta: Meta<typeof Component> = {
+  title: 'ui/molecules/NotesCard',
+  component: Component,
+};
+
+export default meta;
+
+type Story = StoryObj<typeof Component>;
+
+export const NotesCard: Story = {
+  args: {
+    title: 'Title',
+    data: 'Description',
   },
-);
+};

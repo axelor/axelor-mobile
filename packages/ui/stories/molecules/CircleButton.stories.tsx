@@ -15,59 +15,31 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
+import type {StoryObj, Meta} from '@storybook/react';
+import {CircleButton as Component} from '../../src/components';
+import {colorPicker, disabledControl} from '../utils/control-type.helpers';
 
-import React from 'react';
-import {storiesOf} from '@storybook/react-native';
-import {CircleButton} from '../../src/components/molecules';
-import {lightTheme} from '../../src/theme';
+const meta: Meta<typeof Component> = {
+  title: 'ui/molecules/CircleButton',
+  component: Component,
+};
 
-storiesOf('ui/molecules/CircleButton', module).add(
-  'Default',
-  args => {
-    return (
-      <CircleButton
-        iconName="pen-fill"
-        {...args}
-        color={lightTheme.colors[args.color]}
-      />
-    );
+export default meta;
+
+type Story = StoryObj<typeof Component>;
+
+export const CircleButton: Story = {
+  args: {
+    color: 'primaryColor',
+    square: false,
+    size: 50,
+    isNeutralBackground: false,
+    iconName: 'pen-fill',
+    disabled: false,
   },
-  {
-    argTypes: {
-      square: {
-        type: 'boolean',
-        defaultValue: true,
-        control: {type: 'boolean'},
-      },
-      size: {
-        type: 'number',
-        defaultValue: 50,
-        control: {type: 'number'},
-      },
-      color: {
-        options: Object.entries(lightTheme.colors)
-          .filter(([, _color]) => typeof _color !== 'string')
-          .map(([key]) => key),
-        defaultValue: 'primaryColor',
-        control: {
-          type: 'select',
-        },
-      },
-      isNeutralBackground: {
-        type: 'boolean',
-        defaultValue: false,
-        control: {type: 'boolean'},
-      },
-      iconName: {
-        type: 'string',
-        defaultValue: 'pen-fill',
-        control: {type: 'text'},
-      },
-      disabled: {
-        type: 'boolean',
-        defaultValue: false,
-        control: {type: 'boolean'},
-      },
-    },
+  argTypes: {
+    color: colorPicker,
+    onDisabledPress: disabledControl,
+    onPress: disabledControl,
   },
-);
+};

@@ -16,56 +16,29 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import React from 'react';
-import {storiesOf} from '@storybook/react-native';
-import {Label} from '../../src/components/molecules';
-import {lightTheme} from '../../src/theme/themes';
+import type {StoryObj, Meta} from '@storybook/react';
+import {Label as Component} from '../../src/components';
+import {colorPicker, disabledControl} from '../utils/control-type.helpers';
 
-storiesOf('ui/molecules/Label', module).add(
-  'default',
-  args => {
-    return (
-      <Label
-        message="This is an indication"
-        {...args}
-        color={
-          args.labelColor != null ? lightTheme.colors[args.labelColor] : null
-        }
-      />
-    );
+const meta: Meta<typeof Component> = {
+  title: 'ui/molecules/Label',
+  component: Component,
+};
+
+export default meta;
+
+type Story = StoryObj<typeof Component>;
+
+export const Label: Story = {
+  args: {
+    type: 'info',
+    message: 'This is an indication',
+    color: null,
+    visible: true,
+    showClose: false,
   },
-  {
-    argTypes: {
-      type: {
-        control: {
-          type: 'radio',
-        },
-        defaultValue: 'info',
-        options: ['info', 'success', 'danger', 'error'],
-      },
-      iconName: {
-        control: {
-          type: 'text',
-        },
-      },
-      labelColor: {
-        control: {
-          type: 'select',
-        },
-        options: [
-          null,
-          ...Object.entries(lightTheme.colors)
-            .filter(([, _color]) => typeof _color !== 'string')
-            .map(([key]) => key),
-        ],
-        defaultValue: 'primaryColor',
-      },
-      message: {
-        control: {
-          type: 'text',
-        },
-        defaultValue: 'This is an indication',
-      },
-    },
+  argTypes: {
+    color: colorPicker,
+    onClose: disabledControl,
   },
-);
+};
