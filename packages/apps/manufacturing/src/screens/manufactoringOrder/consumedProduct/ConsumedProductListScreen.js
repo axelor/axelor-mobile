@@ -244,6 +244,7 @@ const ConsumedProductListScreen = ({route, navigation}) => {
             onLocationPress={() => handleViewAvailability(item)}
             isSubOF={item.subManufOrderId != null}
             onSubOfPress={handleViewSubOF}
+            stockMoveLineId={item.stockMoveLineId}
           />
         )}
         fetchData={fetchConsumedProductsAPI}
