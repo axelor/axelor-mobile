@@ -49,6 +49,15 @@ const preview: Preview = {
     viewport: {
       defaultViewport: 'mobile1',
     },
+    backgrounds: {
+      default: 'light',
+      values: [
+        {
+          name: 'light',
+          value: '#F2F2F2',
+        },
+      ],
+    },
   },
 };
 

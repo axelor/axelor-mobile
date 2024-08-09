@@ -1,5 +1,5 @@
 module.exports = {
-  stories: ['../packages/ui/stories/atoms/*'],
+  stories: ['../packages/ui/stories/molecules/*.stories.tsx'],
   addons: ['@storybook/addon-essentials', '@storybook/addon-react-native-web'],
   framework: {
     name: '@storybook/react-webpack5',
