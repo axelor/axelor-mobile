@@ -3,6 +3,25 @@ title: 7.0.0
 tags: Changelog
 ---
 
+## [7.0.19] (2024-08-09)
+
+### @axelor/aos-mobile-ui
+
+#### Features
+
+- Search bar: add a more results indicator on selection container
+
+### @axelor/aos-mobile-stock
+
+#### Features
+
+- Supplier arrival: add possibility to register a tracking number when the line is incomplete.
+- TrackingNumber: add possibility to search on origin field
+
+#### Fixes
+
+- Product details: add activity indicator when product is null to avoid errors
+
 ## [7.0.18] (2024-07-11)
 
 ### @axelor/aos-mobile-ui
@@ -641,6 +660,7 @@ The project architecture has also been updated, the example folder has been expl
 - Replace ChipSelect by MultiValuePicker on list screens
 - Add search bar details pop up on screens: add empowered searchBar for objects
 
+[7.0.19]: https://github.com/axelor/axelor-mobile/compare/7.0.18...7.0.19
 [7.0.18]: https://github.com/axelor/axelor-mobile/compare/7.0.17...7.0.18
 [7.0.17]: https://github.com/axelor/axelor-mobile/compare/7.0.16...7.0.17
 [7.0.16]: https://github.com/axelor/axelor-mobile/compare/7.0.15...7.0.16
