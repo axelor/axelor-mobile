@@ -120,4 +120,7 @@ export const manufacturing_modelAPI: ObjectFields = {
     unit: schemaContructor.subObject('name'),
     trackingNumber: schemaContructor.string(),
   }),
+  manufacturing_stockMoveStatus: schemaContructor.object({
+    stockMove: schemaContructor.subObject('statusSelect'),
+  }),
 };
