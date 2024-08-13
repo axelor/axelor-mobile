@@ -224,7 +224,7 @@ export const manageInfiteScrollState = (
       state[keys.list] = data;
       state[keys.isListEnd] = false;
     } else {
-      if (Array.isArray(data)) {
+      if (Array.isArray(data) && data.length > 0) {
         state[keys.isListEnd] = false;
         state[keys.list] = [...state[keys.list], ...data];
       } else {
