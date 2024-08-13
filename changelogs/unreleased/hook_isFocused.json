@@ -1,5 +1,0 @@
-{
-  "title": "Navigation: add hook to know if current screen is focused by user",
-  "type": "feat",
-  "packages": "core"
-}

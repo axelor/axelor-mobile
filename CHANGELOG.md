@@ -3,6 +3,14 @@ title: 7.1.0
 tags: Changelog
 ---
 
+## [7.1.17] (2024-08-13)
+
+### @axelor/aos-mobile-core
+
+#### Features
+
+- Navigation: add hook to know if current screen is focused by user
+
 ## [7.1.16] (2024-08-09)
 
 ### @axelor/aos-mobile-core
@@ -584,6 +592,7 @@ This update breaks the compatability with AOS Stock module under version 7.1 due
 - Add number decimal digit config management system
 - Manage multilines input with auto height resize on FormInput
 
+[7.1.17]: https://github.com/axelor/axelor-mobile/compare/7.1.16...7.1.17
 [7.1.16]: https://github.com/axelor/axelor-mobile/compare/7.1.15...7.1.16
 [7.1.15]: https://github.com/axelor/axelor-mobile/compare/7.1.14...7.1.15
 [7.1.14]: https://github.com/axelor/axelor-mobile/compare/7.1.13...7.1.14
