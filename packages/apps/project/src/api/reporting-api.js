@@ -18,28 +18,8 @@
 
 import {axiosApiProvider} from '@axelor/aos-mobile-core';
 
-export async function getProjectTimeData({projetId}) {
-  return axiosApiProvider.post({
-    url: 'ws/meta/custom/project-spent-time-custom',
-    data: {
-      data: {
-        _model: 'com.axelor.apps.project.db.Project',
-        _domainAction: 'action-project-view-spent-time-custom',
-        id: projetId,
-      },
-    },
-  });
-}
-
-export async function getProjectFinancialData({projetId}) {
-  return axiosApiProvider.post({
-    url: 'ws/meta/custom/project-total-invoiced-custom',
-    data: {
-      data: {
-        _model: 'com.axelor.apps.project.db.Project',
-        _domainAction: 'action-project-view-total-invoiced-custom',
-        id: projetId,
-      },
-    },
+export async function fetchIndicator({projectId}) {
+  return axiosApiProvider.get({
+    url: `ws/aos/project/reporting-values/${projectId}`,
   });
 }

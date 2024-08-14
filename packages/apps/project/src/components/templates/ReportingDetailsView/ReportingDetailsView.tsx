@@ -16,91 +16,53 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import React, {useCallback, useEffect, useMemo} from 'react';
-import {Dimensions, ScrollView, StyleSheet, View} from 'react-native';
+import React, {useCallback, useEffect} from 'react';
+import {StyleSheet} from 'react-native';
 import {useDispatch, useSelector, useTranslator} from '@axelor/aos-mobile-core';
-import {IndicatorChart, Label} from '@axelor/aos-mobile-ui';
-import {
-  getProjectTimeData,
-  getProjectFinancialData,
-} from '../../../features/reportingSlice';
+import {Label, ScrollView} from '@axelor/aos-mobile-ui';
+import {getProjectReportingIndicator} from '../../../features/reportingSlice';
+import IndicatorCategory from './IndicatorCategory';
 
 const ReportingDetailsView = () => {
   const I18n = useTranslator();
   const dispatch = useDispatch();
 
-  const {project} = useSelector((state: any) => state.project_project);
-  const {reportingTimeData, reportingFinancialData} = useSelector(
-    (state: any) => state.project_reporting,
-  );
+  const {project} = useSelector(state => state.project_project);
+  const {reportingIndicator} = useSelector(state => state.project_reporting);
 
-  useEffect(() => {
-    dispatch((getProjectTimeData as any)({projetId: project?.id}));
-    dispatch((getProjectFinancialData as any)({projetId: project?.id}));
+  const fetchIndicators = useCallback(() => {
+    dispatch((getProjectReportingIndicator as any)({projectId: project?.id}));
   }, [dispatch, project?.id]);
 
-  const dataToIndicators = (data: any) => {
-    return Object.keys(data).map(key => ({
-      title: key,
-      value: data[key],
-    }));
-  };
-
-  const formattedData = useCallback(dataset => {
-    if (Array.isArray(dataset) && dataset.length > 0) {
-      return dataToIndicators(dataset[0]);
-    } else {
-      return null;
-    }
-  }, []);
-
-  const timeData = useMemo(
-    () => formattedData(reportingTimeData?.dataset),
-    [formattedData, reportingTimeData?.dataset],
-  );
-
-  const financialData = useMemo(
-    () => formattedData(reportingFinancialData?.dataset),
-    [formattedData, reportingFinancialData?.dataset],
-  );
+  useEffect(() => {
+    fetchIndicators();
+  }, [fetchIndicators]);
 
   return (
-    <ScrollView>
-      {!timeData && !financialData && (
+    <ScrollView
+      style={styles.scroll}
+      refresh={{fetcher: fetchIndicators, loading: false}}>
+      {!reportingIndicator && (
         <Label
           style={styles.label}
           message={I18n.t('Base_NoData')}
           type="info"
         />
       )}
-      <View style={styles.dataContainer}>
-        {timeData?.map((indicatorData, idx) => (
-          <IndicatorChart
-            key={`reportingTimeData${idx}`}
-            datasets={[indicatorData]}
-            widthGraph={Dimensions.get('window').width / 2}
-          />
-        ))}
-        {financialData?.map((indicatorData, idx) => (
-          <IndicatorChart
-            key={`reportingFinancialData${idx}`}
-            datasets={[indicatorData]}
-            widthGraph={Dimensions.get('window').width / 2}
-          />
-        ))}
-      </View>
+      {reportingIndicator.map((data, idx) => (
+        <IndicatorCategory {...data} key={`${data.title}-${idx}`} />
+      ))}
     </ScrollView>
   );
 };
 
 const styles = StyleSheet.create({
+  scroll: {
+    height: null,
+  },
   label: {
     width: '90%',
     alignSelf: 'center',
-  },
-  dataContainer: {
-    flexDirection: 'row',
-    flexWrap: 'wrap',
   },
 });
 

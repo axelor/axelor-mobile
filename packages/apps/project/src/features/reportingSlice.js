@@ -18,51 +18,31 @@
 
 import {createAsyncThunk, createSlice} from '@reduxjs/toolkit';
 import {handlerApiCall} from '@axelor/aos-mobile-core';
-import {
-  getProjectTimeData as _getProjectTimeData,
-  getProjectFinancialData as _getProjectFinancialData,
-} from '../api/reporting-api';
+import {fetchIndicator as _fetchIndicator} from '../api/reporting-api';
 
-export const getProjectTimeData = createAsyncThunk(
-  'project_reporting/getProjectTimeData',
+export const getProjectReportingIndicator = createAsyncThunk(
+  'project_reporting/getProjectReportingIndicator',
   async function (data, {getState}) {
     return handlerApiCall({
-      fetchFunction: _getProjectTimeData,
+      fetchFunction: _fetchIndicator,
       data,
-      action: 'Project_SliceAction_GetProjectTimeData',
+      action: 'Project_SliceAction_GetProjectReportingIndicator',
       getState,
-      responseOptions: {isArrayResponse: true},
-    });
-  },
-);
-
-export const getProjectFinancialData = createAsyncThunk(
-  'project_reporting/getProjectFinancialData',
-  async function (data, {getState}) {
-    return handlerApiCall({
-      fetchFunction: _getProjectFinancialData,
-      data,
-      action: 'Project_SliceAction_GetProjectFinancialData',
-      getState,
-      responseOptions: {isArrayResponse: true},
+      responseOptions: {isArrayResponse: false},
     });
   },
 );
 
 const initialState = {
-  reportingTimeData: [],
-  reportingFinancialData: [],
+  reportingIndicator: [],
 };
 
 const reportingSlice = createSlice({
   name: 'project_reporting',
   initialState,
   extraReducers: builder => {
-    builder.addCase(getProjectTimeData.fulfilled, (state, action) => {
-      state.reportingTimeData = action.payload;
-    });
-    builder.addCase(getProjectFinancialData.fulfilled, (state, action) => {
-      state.reportingFinancialData = action.payload;
+    builder.addCase(getProjectReportingIndicator.fulfilled, (state, action) => {
+      state.reportingIndicator = action.payload?.categoryList;
     });
   },
 });

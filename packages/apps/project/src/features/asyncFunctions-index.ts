@@ -36,5 +36,5 @@ export {
   searchTargetVersion,
   saveProjectTask,
 } from './projectTaskSlice';
-export {getProjectFinancialData, getProjectTimeData} from './reportingSlice';
+export {getProjectReportingIndicator} from './reportingSlice';
 export {fetchTimesheetLinesByTask} from './timesheetLinesSlice';
