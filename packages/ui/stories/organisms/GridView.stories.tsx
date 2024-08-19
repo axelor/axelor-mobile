@@ -17,9 +17,10 @@
  */
 
 import React from 'react';
-import {storiesOf} from '@storybook/react-native';
-import {GridView} from '../../src/components/organisms';
 import {Dimensions, StyleSheet, View} from 'react-native';
+import type {StoryObj, Meta} from '@storybook/react';
+import {GridView as Component} from '../../src/components';
+import {disabledControl} from '../utils/control-type.helpers';
 
 const data = [
   {id: 1, name: 'Test 1', code: 'hehe', fullName: 'hehe - Test 1'},
@@ -27,64 +28,53 @@ const data = [
   {id: 3, name: 'Test 3', code: 'ui', fullName: 'ui - Test 3'},
 ];
 
-storiesOf('ui/organisms/GridView', module).add(
-  'Default',
-  args => {
-    return (
-      <View style={styles.view}>
-        <GridView
-          columns={[
-            {title: 'Name', key: 'name'},
-            {title: 'Code', key: 'code'},
-            {
-              title: 'Complete name',
-              key: 'fullName',
-              width: args.fullName_useCustomWidth
-                ? args.fullName_width
-                : undefined,
-              getValue: row => row.code + ' - ' + row.name,
-            },
-          ]}
-          data={data}
-          {...args}
-        />
-      </View>
-    );
+const meta: Meta<typeof Component> = {
+  title: 'ui/organisms/GridView',
+  component: Component,
+};
+
+export default meta;
+
+type Story = StoryObj<typeof Component>;
+
+export const GridView: Story = {
+  args: {
+    title: 'Array component',
+    fullName_useCustomWidth: false,
+    fullName_width: 100,
   },
-  {
-    argTypes: {
-      title: {
-        type: 'string',
-        defaultValue: 'Array component',
-        control: {type: 'text'},
-      },
-      fullName_useCustomWidth: {
-        type: 'boolean',
-        defaultValue: false,
-        control: {type: 'boolean'},
-      },
-      fullName_width: {
-        control: {
-          type: 'number',
-          min: 50,
-          max: 500,
-          step: 1,
-        },
-        defaultValue: 100,
-      },
-    },
+  argTypes: {
+    translator: disabledControl,
+    columns: disabledControl,
+    data: disabledControl,
   },
-);
+  render: args => (
+    <View style={styles.view}>
+      <Component
+        columns={[
+          {title: 'Name', key: 'name'},
+          {title: 'Code', key: 'code'},
+          {
+            title: 'Complete name',
+            key: 'fullName',
+            width: args.fullName_useCustomWidth
+              ? args.fullName_width
+              : undefined,
+            getValue: row => row.code + ' - ' + row.name,
+          },
+        ]}
+        data={data}
+        {...args}
+      />
+    </View>
+  ),
+};
 
 const styles = StyleSheet.create({
   view: {
-    backgroundColor: 'rgba(140, 140, 140, 0.3)',
     height: Dimensions.get('window').height,
     flexDirection: 'column',
     alignItems: 'center',
     justifyContent: 'flex-start',
-  },
-  container: {
-    width: 50,
   },
 });

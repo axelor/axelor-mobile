@@ -16,95 +16,49 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import React from 'react';
-import {storiesOf} from '@storybook/react-native';
-import {Input} from '../../src/components/atoms';
+import type {StoryObj, Meta} from '@storybook/react';
+import {Input as Component} from '../../src/components/atoms';
+import {
+  disabledControl,
+  keyboardPicker,
+  writingPicker,
+} from '../utils/control-type.helpers';
 
-const writingTypeOptions = ['title', 'subtitle', 'important', 'details'];
+const meta: Meta<typeof Component> = {
+  title: 'ui/atoms/Input',
+  component: Component,
+};
 
-storiesOf('ui/atoms/Input', module).add(
-  'Default',
-  args => {
-    return (
-      <Input
-        value=""
-        onChange={console.log}
-        placeholder="Enter text here"
-        {...args}
-      />
-    );
+export default meta;
+
+type Story = StoryObj<typeof Component>;
+
+export const Input: Story = {
+  args: {
+    placeholder: 'Enter text here',
+    secureTextEntry: false,
+    readOnly: false,
+    multiline: false,
+    value: '',
+    numberOfLines: 1,
+    keyboardType: 'default',
+    isFocus: false,
   },
-  {
-    argTypes: {
-      value: {
-        control: {
-          type: 'text',
-        },
-        defaultValue: '',
-      },
-      onChange: {
-        action: 'onChange',
-      },
-      placeholder: {
-        control: {
-          type: 'text',
-        },
-        defaultValue: 'Enter text here',
-      },
-      secureTextEntry: {
-        control: {
-          type: 'boolean',
-        },
-        defaultValue: false,
-      },
-      readOnly: {
-        control: {
-          type: 'boolean',
-        },
-        defaultValue: false,
-      },
-      multiline: {
-        control: {
-          type: 'boolean',
-        },
-        defaultValue: false,
-      },
-      numberOfLines: {
-        control: {
-          type: 'number',
-          min: 1,
-          max: 10,
-          step: 1,
-        },
-        defaultValue: 1,
-      },
-      keyboardType: {
-        control: {
-          type: 'select',
-          options: [
-            'default',
-            'email-address',
-            'numeric',
-            'phone-pad',
-            'ascii-capable',
-            'numbers-and-punctuation',
-            'url',
-            'number-pad',
-            'name-phone-pad',
-            'decimal-pad',
-            'twitter',
-            'web-search',
-            'visible-password',
-          ],
-        },
-        defaultValue: 'default',
-      },
-      writingType: {
-        control: {
-          type: 'select',
-          options: writingTypeOptions,
-        },
+  argTypes: {
+    numberOfLines: {
+      control: {
+        type: 'number',
+        min: 1,
+        max: 10,
+        step: 1,
       },
     },
+    keyboardType: keyboardPicker,
+    writingType: writingPicker,
+    onChange: disabledControl,
+    onContentSizeChange: disabledControl,
+    onEndFocus: disabledControl,
+    onSelection: disabledControl,
+    inputRef: disabledControl,
   },
-);
+};

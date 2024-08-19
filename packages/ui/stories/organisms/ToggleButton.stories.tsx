@@ -17,79 +17,45 @@
  */
 
 import React from 'react';
-import {storiesOf} from '@storybook/react-native';
-import {ToggleButton} from '../../src/components/organisms';
-import {lightTheme} from '../../src/theme';
+import type {StoryObj, Meta} from '@storybook/react';
+import {ToggleButton as Component} from '../../src/components';
+import {colorPicker, disabledControl} from '../utils/control-type.helpers';
 
-storiesOf('ui/organisms/ToggleButton', module).add(
-  'Default',
-  args => {
-    return (
-      <ToggleButton
-        {...args}
-        buttonConfig={{
-          title: args.buttonTitle,
-          disabled: args.buttonDisabled,
-          width: args.buttonWidth,
-          iconName: args.buttonIconName,
-        }}
-        activeColor={lightTheme.colors[args.activeColor]}
-        inactiveColor={lightTheme.colors[args.inactiveColor]}
-      />
-    );
+const meta: Meta<typeof Component> = {
+  title: 'ui/organisms/ToggleButton',
+  component: Component,
+};
+
+export default meta;
+
+type Story = StoryObj<typeof Component>;
+
+export const ToggleButton: Story = {
+  args: {
+    isActive: false,
+    isNeutralBackground: true,
+    activeColor: 'primaryColor',
+    inactiveColor: 'secondaryColor',
+    button_iconName: 'car-front',
+    button_title: 'Press me',
+    button_width: 300,
+    button_disabled: false,
   },
-  {
-    argTypes: {
-      isActive: {
-        defaultValue: false,
-        control: {
-          type: 'boolean',
-        },
-      },
-      isNeutralBackground: {
-        defaultValue: true,
-        control: {
-          type: 'boolean',
-        },
-      },
-      activeColor: {
-        options: Object.entries(lightTheme.colors)
-          .filter(([, _color]) => typeof _color !== 'string')
-          .map(([key]) => key),
-        defaultValue: 'primaryColor',
-        control: {
-          type: 'select',
-        },
-      },
-      inactiveColor: {
-        options: Object.entries(lightTheme.colors)
-          .filter(([, _color]) => typeof _color !== 'string')
-          .map(([key]) => key),
-        defaultValue: 'secondaryColor',
-        control: {
-          type: 'select',
-        },
-      },
-      buttonDisabled: {
-        type: 'boolean',
-        defaultValue: false,
-        control: {type: 'boolean'},
-      },
-      buttonIconName: {
-        type: 'string',
-        defaultValue: 'heart',
-        control: {type: 'text'},
-      },
-      buttonTitle: {
-        type: 'string',
-        defaultValue: 'Press me',
-        control: {type: 'text'},
-      },
-      buttonWidth: {
-        type: 'number',
-        defaultValue: 300,
-        control: {type: 'number'},
-      },
-    },
+  argTypes: {
+    activeColor: colorPicker,
+    inactiveColor: colorPicker,
+    buttonConfig: disabledControl,
+    onPress: disabledControl,
   },
-);
+  render: args => (
+    <Component
+      {...args}
+      buttonConfig={{
+        title: args.button_title,
+        iconName: args.button_iconName,
+        disabled: args.button_disabled,
+        width: args.button_width,
+      }}
+    />
+  ),
+};

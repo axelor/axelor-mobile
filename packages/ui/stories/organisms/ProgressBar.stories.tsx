@@ -17,61 +17,58 @@
  */
 
 import React from 'react';
-import {storiesOf} from '@storybook/react-native';
-import {ProgressBar} from '../../src/components/organisms';
+import type {StoryObj, Meta} from '@storybook/react';
+import {ProgressBar as Component} from '../../src/components';
+import {colorPicker, disabledControl} from '../utils/control-type.helpers';
 
-storiesOf('ui/organisms/ProgressBar', module).add(
-  'Default',
-  args => {
-    return <ProgressBar value={50} total={100} {...args} />;
+const meta: Meta<typeof Component> = {
+  title: 'ui/organisms/ProgressBar',
+  component: Component,
+};
+
+export default meta;
+
+type Story = StoryObj<typeof Component>;
+
+export const ProgressBar: Story = {
+  args: {
+    value: 50,
+    total: 100,
+    showPercent: true,
+    centeredPercent: false,
+    stripe: true,
+    stripeDuration: 8000,
+    stripeWidth: 10,
+    height: 30,
+    part1_color: 'errorColor',
+    part1_start: 0,
+    part2_color: 'cautionColor',
+    part2_start: 25,
+    part3_color: 'progressColor',
+    part3_start: 50,
+    part4_color: 'priorityColor',
+    part4_start: 75,
+    part5_color: 'successColor',
+    part5_start: 100,
   },
-  {
-    argTypes: {
-      value: {
-        type: 'number',
-        defaultValue: 50,
-        control: {type: 'range', min: 0, max: 100, step: 1},
-      },
-      total: {
-        type: 'number',
-        defaultValue: 100,
-        control: {type: 'number'},
-      },
-      showPercent: {
-        type: 'boolean',
-        defaultValue: true,
-        control: {type: 'boolean'},
-      },
-      centredPercent: {
-        type: 'boolean',
-        defaultValue: false,
-        control: {type: 'boolean'},
-      },
-      stripe: {
-        type: 'boolean',
-        defaultValue: true,
-        control: {type: 'boolean'},
-      },
-      stripeDuration: {
-        type: 'number',
-        defaultValue: 60000,
-        control: {type: 'number'},
-      },
-      stripeWidth: {
-        type: 'number',
-        defaultValue: 40,
-        control: {type: 'number'},
-      },
-      colorRepartition: {
-        type: 'object',
-        defaultValue: {},
-        control: {type: 'object'},
-      },
-      height: {
-        type: 'number',
-        defaultValue: 30,
-        control: {type: 'number'},
-      },
-    },
+  argTypes: {
+    part1_color: colorPicker,
+    part2_color: colorPicker,
+    part3_color: colorPicker,
+    part4_color: colorPicker,
+    part5_color: colorPicker,
+    colorRepartition: disabledControl,
   },
-);
+  render: args => (
+    <Component
+      {...args}
+      colorRepartition={{
+        [args.part1_start]: args.part1_color,
+        [args.part2_start]: args.part2_color,
+        [args.part3_start]: args.part3_color,
+        [args.part4_start]: args.part4_color,
+        [args.part5_start]: args.part5_color,
+      }}
+    />
+  ),
+};

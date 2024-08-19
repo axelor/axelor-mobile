@@ -17,35 +17,41 @@
  */
 
 import React from 'react';
-import {storiesOf} from '@storybook/react-native';
-import {MultiValuePickerButton} from '../../src/components/molecules';
-import {lightTheme} from '../../src/theme';
+import type {StoryObj, Meta} from '@storybook/react';
+import {MultiValuePickerButton as Component} from '../../src/components';
+import {colorPicker, disabledControl} from '../utils/control-type.helpers';
 
-storiesOf('ui/molecules/MultiValuePickerButton', module).add(
-  'Default',
-  args => {
-    const listItem = [
-      {color: lightTheme.colors.secondaryColor, title: 'TEST 1', key: 1},
-      {color: lightTheme.colors.progressColor, title: 'TEST 2', key: 2},
-      {color: lightTheme.colors.primaryColor, title: 'TEST 3', key: 3},
-    ];
+const meta: Meta<typeof Component> = {
+  title: 'ui/molecules/MultiValuePickerButton',
+  component: Component,
+};
 
-    return (
-      <MultiValuePickerButton
-        onPress={console.log}
-        listItem={listItem}
-        {...args}
-      />
-    );
+export default meta;
+
+type Story = StoryObj<typeof Component>;
+
+export const MultiValuePickerButton: Story = {
+  args: {
+    readonly: false,
+    item1_title: 'Test 1',
+    item1_color: 'secondaryColor',
+    item2_title: 'Test 2',
+    item2_color: 'primaryColor',
   },
-  {
-    argTypes: {
-      readonly: {
-        control: {
-          type: 'boolean',
-        },
-        defaultValue: false,
-      },
-    },
+  argTypes: {
+    item1_color: colorPicker,
+    item2_color: colorPicker,
+    onPress: disabledControl,
+    onPressItem: disabledControl,
+    listItem: disabledControl,
   },
-);
+  render: args => (
+    <Component
+      listItem={[
+        {color: args.item1_color, title: args.item1_title, key: 1},
+        {color: args.item2_color, title: args.item2_title, key: 2},
+      ]}
+      {...args}
+    />
+  ),
+};

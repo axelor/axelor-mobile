@@ -16,52 +16,31 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import React from 'react';
-import {storiesOf} from '@storybook/react-native';
-import {Button} from '../../src/components/molecules';
-import {lightTheme} from '../../src/theme';
+import type {StoryObj, Meta} from '@storybook/react';
+import {Button as Component} from '../../src/components';
+import {colorPicker, disabledControl} from '../utils/control-type.helpers';
 
-storiesOf('ui/molecules/Button', module).add(
-  'Default',
-  args => {
-    return <Button {...args} color={lightTheme.colors[args.color]} />;
+const meta: Meta<typeof Component> = {
+  title: 'ui/molecules/Button',
+  component: Component,
+};
+
+export default meta;
+
+type Story = StoryObj<typeof Component>;
+
+export const Button: Story = {
+  args: {
+    disabled: false,
+    iconName: 'heart',
+    isNeutralBackground: false,
+    color: 'primaryColor',
+    title: 'Title',
+    width: 300,
   },
-  {
-    argTypes: {
-      color: {
-        options: Object.entries(lightTheme.colors)
-          .filter(([, _color]) => typeof _color !== 'string')
-          .map(([key]) => key),
-        defaultValue: 'primaryColor',
-        control: {
-          type: 'select',
-        },
-      },
-      disabled: {
-        type: 'boolean',
-        defaultValue: false,
-        control: {type: 'boolean'},
-      },
-      iconName: {
-        type: 'string',
-        defaultValue: 'car-front',
-        control: {type: 'text'},
-      },
-      isNeutralBackground: {
-        type: 'boolean',
-        defaultValue: false,
-        control: {type: 'boolean'},
-      },
-      title: {
-        type: 'string',
-        defaultValue: 'Press me',
-        control: {type: 'text'},
-      },
-      width: {
-        type: 'number',
-        defaultValue: 300,
-        control: {type: 'number'},
-      },
-    },
+  argTypes: {
+    color: colorPicker,
+    onDisabledPress: disabledControl,
+    onPress: disabledControl,
   },
-);
+};

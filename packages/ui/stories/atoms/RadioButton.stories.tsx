@@ -16,38 +16,29 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import React from 'react';
-import {storiesOf} from '@storybook/react-native';
-import {RadioButton} from '../../src/components';
+import type {StoryObj, Meta} from '@storybook/react';
+import {RadioButton as Component} from '../../src/components/atoms';
+import {disabledControl} from '../utils/control-type.helpers';
 
-storiesOf('ui/atoms/RadioButton', module).add(
-  'Default',
-  args => {
-    return (
-      <RadioButton
-        selected={false}
-        onPress={() => {}}
-        title={'Option title'}
-        {...args}
-      />
-    );
-  },
-  {
-    argTypes: {
-      selected: {
-        control: {
-          type: 'boolean',
-        },
-        defaultValue: false,
-      },
-      size: {
-        control: {
-          type: 'number',
-          min: 5,
-          step: 5,
-        },
-        defaultValue: 20,
+const meta: Meta<typeof Component> = {
+  title: 'ui/atoms/RadioButton',
+  component: Component,
+};
+
+export default meta;
+
+type Story = StoryObj<typeof Component>;
+
+export const RadioButton: Story = {
+  args: {title: 'Option', selected: false, size: 20, readonly: false},
+  argTypes: {
+    size: {
+      control: {
+        type: 'number',
+        min: 5,
+        step: 5,
       },
     },
+    onPress: disabledControl,
   },
-);
+};

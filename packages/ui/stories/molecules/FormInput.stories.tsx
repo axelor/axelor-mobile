@@ -16,53 +16,31 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import React from 'react';
-import {storiesOf} from '@storybook/react-native';
-import {FormInput} from '../../src/components/molecules';
+import type {StoryObj, Meta} from '@storybook/react';
+import {FormInput as Component} from '../../src/components';
+import {disabledControl} from '../utils/control-type.helpers';
 
-storiesOf('ui/molecules/FormInput', module).add(
-  'Default',
-  args => {
-    return <FormInput title="Input Title" {...args} />;
+const meta: Meta<typeof Component> = {
+  title: 'ui/molecules/FormInput',
+  component: Component,
+};
+
+export default meta;
+
+type Story = StoryObj<typeof Component>;
+
+export const FormInput: Story = {
+  args: {
+    title: 'Title',
+    defaultValue: '2',
+    readOnly: false,
+    required: false,
+    multiline: false,
+    adjustHeightWithLines: false,
   },
-  {
-    argTypes: {
-      title: {
-        control: {
-          type: 'text',
-        },
-        defaultValue: 'Input Title',
-      },
-      defaultValue: {
-        control: {
-          type: 'text',
-        },
-        defaultValue: '',
-      },
-      readOnly: {
-        control: {
-          type: 'boolean',
-        },
-        defaultValue: false,
-      },
-      required: {
-        control: {
-          type: 'boolean',
-        },
-        defaultValue: true,
-      },
-      multiline: {
-        control: {
-          type: 'boolean',
-        },
-        defaultValue: false,
-      },
-      adjustHeightWithLines: {
-        control: {
-          type: 'boolean',
-        },
-        defaultValue: false,
-      },
-    },
+  argTypes: {
+    onChange: disabledControl,
+    onSelection: disabledControl,
+    onEndFocus: disabledControl,
   },
-);
+};

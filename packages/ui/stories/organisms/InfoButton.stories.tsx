@@ -18,64 +18,45 @@
 
 import React from 'react';
 import {Dimensions, StyleSheet, View} from 'react-native';
-import {storiesOf} from '@storybook/react-native';
-import InfoButton from '../../src/components/organisms/InfoButton/InfoButton';
-import {lightTheme} from '../../src/theme';
+import type {StoryObj, Meta} from '@storybook/react';
+import {InfoButton as Component} from '../../src/components';
+import {colorPicker, disabledControl} from '../utils/control-type.helpers';
 
-storiesOf('ui/organisms/InfoButton', module).add(
-  'Default',
-  args => (
+const meta: Meta<typeof Component> = {
+  title: 'ui/organisms/InfoButton',
+  component: Component,
+};
+
+export default meta;
+
+type Story = StoryObj<typeof Component>;
+
+export const InfoButton: Story = {
+  args: {
+    iconName: 'heart',
+    iconColor: 'primaryColor',
+    indication: 'Indication',
+    space: 50,
+    position: 'right',
+    disabled: false,
+  },
+  argTypes: {
+    iconColor: colorPicker,
+    onPress: disabledControl,
+  },
+  render: args => (
     <View style={styles.view}>
-      <InfoButton
+      <Component
         style={styles.container}
         {...args}
-        iconColor={lightTheme.colors[args.iconColor].background}
+        iconColor={args.iconColor?.background}
       />
     </View>
   ),
-  {
-    argTypes: {
-      iconName: {
-        control: {
-          type: 'text',
-        },
-        defaultValue: 'info',
-      },
-      iconColor: {
-        options: Object.entries(lightTheme.colors)
-          .filter(([, _color]) => typeof _color !== 'string')
-          .map(([key]) => key),
-        defaultValue: 'primaryColor',
-        control: {
-          type: 'select',
-        },
-      },
-      indication: {
-        control: {
-          type: 'text',
-        },
-        defaultValue: 'this is an indication',
-      },
-      position: {
-        control: {
-          type: 'select',
-        },
-        options: ['right', 'left'],
-        defaultValue: 'right',
-      },
-      space: {
-        control: {
-          type: 'number',
-        },
-        defaultValue: 50,
-      },
-    },
-  },
-);
+};
 
 const styles = StyleSheet.create({
   view: {
-    backgroundColor: 'rgba(140, 140, 140, 0.3)',
     height: Dimensions.get('window').height,
     flexDirection: 'column',
     alignItems: 'center',

@@ -16,47 +16,31 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import React from 'react';
-import {storiesOf} from '@storybook/react-native';
-import {NumberChevronInput} from '../../src/components/molecules';
+import type {StoryObj, Meta} from '@storybook/react';
+import {NumberChevronInput as Component} from '../../src/components';
+import {disabledControl} from '../utils/control-type.helpers';
 
-storiesOf('ui/molecules/NumberChevronInput', module).add(
-  'Default',
-  args => {
-    return <NumberChevronInput {...args} />;
+const meta: Meta<typeof Component> = {
+  title: 'ui/molecules/NumberChevronInput',
+  component: Component,
+};
+
+export default meta;
+
+type Story = StoryObj<typeof Component>;
+
+export const NumberChevronInput: Story = {
+  args: {
+    defaultValue: 5,
+    stepSize: 1,
+    minValue: 0,
+    maxValue: 9,
+    readonly: false,
+    required: false,
   },
-  {
-    argTypes: {
-      defaultValue: {
-        type: 'number',
-        defaultValue: 5,
-        control: {type: 'number'},
-      },
-      stepSize: {
-        type: 'number',
-        defaultValue: 1,
-        control: {type: 'number'},
-      },
-      minValue: {
-        type: 'number',
-        defaultValue: 0,
-        control: {type: 'number'},
-      },
-      maxValue: {
-        type: 'number',
-        defaultValue: 9,
-        control: {type: 'number'},
-      },
-      required: {
-        type: 'boolean',
-        defaultValue: false,
-        control: {type: 'boolean'},
-      },
-      readonly: {
-        type: 'boolean',
-        defaultValue: false,
-        control: {type: 'boolean'},
-      },
-    },
+  argTypes: {
+    inputRef: disabledControl,
+    onEndFocus: disabledControl,
+    onValueChange: disabledControl,
   },
-);
+};
