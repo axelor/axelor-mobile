@@ -17,63 +17,38 @@
  */
 
 import React from 'react';
-import {storiesOf} from '@storybook/react-native';
-import {action} from '@storybook/addon-actions';
-import {DropdownMenuItem} from '../../src/components/organisms';
-import {lightTheme} from '../../src/theme';
+import type {StoryObj, Meta} from '@storybook/react';
+import {DropdownMenuItem as Component} from '../../src/components';
+import {colorPicker, disabledControl} from '../utils/control-type.helpers';
 
-storiesOf('ui/organisms/DropdownMenuItem', module).add(
-  'default',
-  args => {
-    return (
-      <DropdownMenuItem
-        placeholder="Placeholder"
-        onPress={action('onPress')}
-        {...args}
-        color={lightTheme.colors[args.color].background}
-      />
-    );
+const meta: Meta<typeof Component> = {
+  title: 'ui/organisms/DropdownMenuItem',
+  component: Component,
+};
+
+export default meta;
+
+type Story = StoryObj<typeof Component>;
+
+export const DropdownMenuItem: Story = {
+  args: {
+    icon: 'truck',
+    placeholder: 'Placeholder',
+    indicator: 0,
+    hideIf: false,
+    disableIf: false,
   },
-  {
-    argTypes: {
-      icon: {
-        type: 'string',
-        defaultValue: 'truck',
-        control: {type: 'text'},
-      },
-      color: {
-        options: Object.entries(lightTheme.colors)
-          .filter(([, _color]) => typeof _color !== 'string')
-          .map(([key]) => key),
-        defaultValue: 'primaryColor',
-        control: {
-          type: 'select',
-        },
-      },
-      placeholder: {
-        type: 'string',
-        defaultValue: 'Placeholder',
-        control: {type: 'text'},
-      },
-      indicator: {
-        control: {
-          type: 'range',
-          min: 0,
-          max: 10,
-          step: 1,
-        },
-        defaultValue: 0,
-      },
-      hideIf: {
-        type: 'boolean',
-        defaultValue: false,
-        control: {type: 'boolean'},
-      },
-      disableIf: {
-        type: 'boolean',
-        defaultValue: false,
-        control: {type: 'boolean'},
-      },
-    },
+  argTypes: {
+    color: colorPicker,
+    onPress: disabledControl,
+    customComponent: disabledControl,
   },
-);
+  render: args => (
+    <Component
+      placeholder="Placeholder"
+      onPress={() => {}}
+      {...args}
+      color={args.color?.background}
+    />
+  ),
+};

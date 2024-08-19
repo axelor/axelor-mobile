@@ -17,55 +17,40 @@
  */
 
 import React from 'react';
-import {storiesOf} from '@storybook/react-native';
-import {action} from '@storybook/addon-actions';
-import {SearchBar} from '../../src/components/organisms';
+import type {StoryObj, Meta} from '@storybook/react';
+import {SearchBar as Component} from '../../src/components';
+import {colorPicker, disabledControl} from '../utils/control-type.helpers';
 
-storiesOf('ui/organisms/SearchBar', module).add(
-  'Default',
-  args => {
-    return (
-      <SearchBar
-        valueTxt={''}
-        placeholder={'Search'}
-        onClearPress={action('onClearPress')}
-        onChangeTxt={action('onChangeTxt')}
-        {...args}
-      />
-    );
+const meta: Meta<typeof Component> = {
+  title: 'ui/organisms/SearchBar',
+  component: Component,
+};
+
+export default meta;
+
+type Story = StoryObj<typeof Component>;
+
+export const SearchBar: Story = {
+  args: {
+    title: 'Title',
+    valueTxt: '',
+    placeholder: 'Search',
+    readonly: false,
+    required: false,
+    disableSearchPress: false,
   },
-  {
-    argTypes: {
-      title: {
-        type: 'string',
-        defaultValue: 'Select an item',
-        control: {type: 'text'},
-      },
-      valueTxt: {
-        type: 'string',
-        defaultValue: '',
-        control: {type: 'text'},
-      },
-      placeholder: {
-        type: 'string',
-        defaultValue: 'Search',
-        control: {type: 'text'},
-      },
-      required: {
-        type: 'boolean',
-        defaultValue: false,
-        control: {type: 'boolean'},
-      },
-      readonly: {
-        type: 'boolean',
-        defaultValue: false,
-        control: {type: 'boolean'},
-      },
-      disableSearchPress: {
-        type: 'boolean',
-        defaultValue: false,
-        control: {type: 'boolean'},
-      },
-    },
+  argTypes: {
+    scanIconColor: colorPicker,
+    inputRef: disabledControl,
+    onChangeTxt: disabledControl,
+    onClearPress: disabledControl,
+    onEndFocus: disabledControl,
+    onScanPress: disabledControl,
+    onSearchPress: disabledControl,
+    onSelection: disabledControl,
+    selected: disabledControl,
   },
-);
+  render: args => (
+    <Component {...args} scanIconColor={args.scanIconColor?.background} />
+  ),
+};

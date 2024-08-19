@@ -17,84 +17,63 @@
  */
 
 import React from 'react';
-import {StyleSheet} from 'react-native';
-import {storiesOf} from '@storybook/react-native';
-import {ActionCard, Card, Text} from '../../src/components';
-import {lightTheme} from '../../src/theme';
+import type {StoryObj, Meta} from '@storybook/react';
+import {ActionCard as Component, Card, Text} from '../../src/components';
+import {colorPicker, disabledControl} from '../utils/control-type.helpers';
 
-storiesOf('ui/organisms/ActionCard', module).add(
-  'Default',
-  args => {
-    return (
-      <ActionCard
-        children={
-          <Card style={styles.card}>
-            <Text>TEST</Text>
-          </Card>
-        }
-        translator={key => key}
-        {...args}
-        actionList={[
-          {
-            iconName: 'car-front',
-            helper: 'Car',
-            large: args.carLarge,
-            onPress: () => {},
-          },
-          {
-            iconName: 'bus-front',
-            iconColor: lightTheme.colors[args.busColor].background,
-            helper: 'Bus',
-            onPress: () => {},
-          },
-          {
-            iconName: 'truck',
-            helper: 'Truck',
-            onPress: () => {},
-            hidden: args.truckHidden,
-            disabled: args.truckDisabled,
-          },
-        ]}
-      />
-    );
+const meta: Meta<typeof Component> = {
+  title: 'ui/organisms/ActionCard',
+  component: Component,
+};
+
+export default meta;
+
+type Story = StoryObj<typeof Component>;
+
+export const ActionCard: Story = {
+  args: {
+    horizontal: false,
+    carLarge: false,
+    busColor: 'primaryColor',
+    truckHidden: false,
+    truckDisabled: false,
   },
-  {
-    argTypes: {
-      horizontal: {
-        type: 'boolean',
-        defaultValue: true,
-        control: {type: 'boolean'},
-      },
-      carLarge: {
-        type: 'boolean',
-        defaultValue: false,
-        control: {type: 'boolean'},
-      },
-      busColor: {
-        options: Object.entries(lightTheme.colors)
-          .filter(([, _color]) => typeof _color !== 'string')
-          .map(([key]) => key),
-        defaultValue: 'primaryColor',
-        control: {
-          type: 'select',
+  argTypes: {
+    busColor: colorPicker,
+    actionList: disabledControl,
+    forceActionsDisplay: disabledControl,
+    translator: disabledControl,
+  },
+  render: args => (
+    <Component
+      children={
+        <Card>
+          <Text>TEST</Text>
+        </Card>
+      }
+      translator={key => key}
+      {...args}
+      actionList={[
+        {
+          iconName: 'car-front',
+          helper: 'Car',
+          large: args.carLarge,
+          onPress: () => {},
         },
-      },
-      truckHidden: {
-        type: 'boolean',
-        defaultValue: false,
-        control: {type: 'boolean'},
-      },
-      truckDisabled: {
-        type: 'boolean',
-        defaultValue: false,
-        control: {type: 'boolean'},
-      },
-    },
-  },
-);
-
-const styles = StyleSheet.create({
-  card: {
-    height: '100%',
-  },
-});
+        {
+          iconName: 'bus-front',
+          iconColor: args.busColor?.background,
+          helper: 'Bus',
+          onPress: () => {},
+        },
+        {
+          iconName: 'truck',
+          helper: 'Truck',
+          onPress: () => {},
+          hidden: args.truckHidden,
+          disabled: args.truckDisabled,
+        },
+      ]}
+    />
+  ),
+};

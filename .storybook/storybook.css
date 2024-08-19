@@ -1,4 +1,4 @@
-#root > div:first-child {
+#storybook-root > div:first-child {
   width: 100%;
   height: 100%;
 }

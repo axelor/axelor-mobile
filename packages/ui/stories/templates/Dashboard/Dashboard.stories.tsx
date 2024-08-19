@@ -18,198 +18,12 @@
 
 import React from 'react';
 import {Dimensions} from 'react-native';
-import {storiesOf} from '@storybook/react-native';
-import {Screen} from '../../../src/components/atoms';
-import {Dashboard} from '../../../src/components/templates';
-import Chart from '../../../src/components/templates/Dashboard/chart-type';
-
-storiesOf('ui/templates/Dashboard/Dashboard', module)
-  .addParameters({
-    viewport: {
-      defaultViewport: 'responsive',
-    },
-  })
-  .add(
-    'Default',
-    args => {
-      return (
-        <Screen style={{width: Dimensions.get('window').width}}>
-          <Dashboard lineList={createDashboardConfig(args)} />
-        </Screen>
-      );
-    },
-    {
-      argTypes: {
-        line1_graph1_type: {
-          options: Object.keys(Chart.chartType),
-          defaultValue: 'bar',
-          control: {
-            type: 'select',
-          },
-        },
-        line1_graph1_title: {
-          control: 'text',
-          defaultValue: 'Title',
-        },
-        line1_graph1_isDisplay: {
-          control: 'boolean',
-          defaultValue: true,
-        },
-        line1_graph2_type: {
-          options: Object.keys(Chart.chartType),
-          defaultValue: 'pie',
-          control: {
-            type: 'select',
-          },
-        },
-        line1_graph2_title: {
-          control: 'text',
-          defaultValue: 'Title',
-        },
-        line1_graph2_isDisplay: {
-          control: 'boolean',
-          defaultValue: true,
-        },
-        line1_graph3_type: {
-          options: Object.keys(Chart.chartType),
-          defaultValue: 'bar',
-          control: {
-            type: 'select',
-          },
-        },
-        line1_graph3_title: {
-          control: 'text',
-          defaultValue: 'Title',
-        },
-        line1_graph3_isDisplay: {
-          control: 'boolean',
-          defaultValue: false,
-        },
-        line1_graph4_type: {
-          options: Object.keys(Chart.chartType),
-          defaultValue: 'line',
-          control: {
-            type: 'select',
-          },
-        },
-        line1_graph4_title: {
-          control: 'text',
-          defaultValue: 'Title',
-        },
-        line1_graph4_isDisplay: {
-          control: 'boolean',
-          defaultValue: true,
-        },
-        line2_graph1_type: {
-          options: Object.keys(Chart.chartType),
-          defaultValue: 'bar',
-          control: {
-            type: 'select',
-          },
-        },
-        line2_graph1_title: {
-          control: 'text',
-          defaultValue: 'Title',
-        },
-        line2_graph1_isDisplay: {
-          control: 'boolean',
-          defaultValue: true,
-        },
-        line2_graph2_type: {
-          options: Object.keys(Chart.chartType),
-          defaultValue: 'line',
-          control: {
-            type: 'select',
-          },
-        },
-        line2_graph2_title: {
-          control: 'text',
-          defaultValue: 'Title',
-        },
-        line2_graph2_isDisplay: {
-          control: 'boolean',
-          defaultValue: true,
-        },
-        line2_graph3_type: {
-          options: Object.keys(Chart.chartType),
-          defaultValue: 'pie',
-          control: {
-            type: 'select',
-          },
-        },
-        line2_graph3_title: {
-          control: 'text',
-          defaultValue: 'Title',
-        },
-        line2_graph3_isDisplay: {
-          control: 'boolean',
-          defaultValue: true,
-        },
-        line2_graph4_type: {
-          options: Object.keys(Chart.chartType),
-          defaultValue: 'donut',
-          control: {
-            type: 'select',
-          },
-        },
-        line2_graph4_title: {
-          control: 'text',
-          defaultValue: 'Title',
-        },
-        line2_graph4_isDisplay: {
-          control: 'boolean',
-          defaultValue: true,
-        },
-      },
-    },
-  );
-
-const DEFAULT_DATASET = [
-  [
-    {
-      label: 'T0001 - APOLLO',
-      value: 14,
-    },
-    {
-      label: 'T0002 - MICHEL Loic',
-      value: 18,
-    },
-    {
-      label: 'Loic',
-      value: 15,
-    },
-    {
-      label: 'Michel',
-      value: 18,
-    },
-    {
-      label: 'Jean',
-      value: 14,
-    },
-  ],
-  [
-    {
-      label: 'T0001 - APOLLO',
-      value: 14,
-    },
-    {
-      label: 'T0002 - MICHEL Loic',
-      value: 10,
-    },
-    {
-      label: 'Loic',
-      value: 6,
-    },
-    {
-      label: 'Michel',
-      value: 10,
-    },
-    {
-      label: 'Jean',
-      value: 14,
-    },
-  ],
-];
+import type {StoryObj, Meta} from '@storybook/react';
+import {Dashboard as Component, Screen} from '../../../src/components';
+import {
+  chartTypePicker,
+  disabledControl,
+} from '../../utils/control-type.helpers';
 
 const createDashboardConfig = args => {
   const NUMBER_PROPS_PER_GRAPH = 3;
@@ -235,7 +49,30 @@ const createDashboardConfig = args => {
         graphs.push({
           title: args[`${keyStart}title`],
           type: args[`${keyStart}type`],
-          dataList: DEFAULT_DATASET,
+          dataList: [
+            [
+              {
+                label: 'T0001 - APOLLO',
+                value: 14,
+              },
+              {
+                label: 'T0002 - MICHEL Loic',
+                value: 18,
+              },
+              {
+                label: 'Loic',
+                value: 15,
+              },
+              {
+                label: 'Michel',
+                value: 18,
+              },
+              {
+                label: 'Jean',
+                value: 14,
+              },
+            ],
+          ],
         });
       }
     }
@@ -246,4 +83,67 @@ const createDashboardConfig = args => {
   }
 
   return lines;
+};
+
+const meta: Meta<typeof Component> = {
+  title: 'ui/templates/Dashboard/Dashboard',
+  component: Component,
+  parameters: {
+    viewport: {
+      defaultViewport: 'responsive',
+    },
+  },
+};
+
+export default meta;
+
+type Story = StoryObj<typeof Component>;
+
+export const Dashboard: Story = {
+  args: {
+    hideCardBackground: false,
+    line1_graph1_type: 'bar',
+    line1_graph1_title: 'Title',
+    line1_graph1_isDisplay: true,
+    line1_graph2_type: 'pie',
+    line1_graph2_title: 'Title',
+    line1_graph2_isDisplay: true,
+    line1_graph3_type: 'bar',
+    line1_graph3_title: 'Title',
+    line1_graph3_isDisplay: true,
+    line1_graph4_type: 'line',
+    line1_graph4_title: 'Title',
+    line1_graph4_isDisplay: true,
+    line2_graph1_type: 'bar',
+    line2_graph1_title: 'Title',
+    line2_graph1_isDisplay: true,
+    line2_graph2_type: 'line',
+    line2_graph2_title: 'Title',
+    line2_graph2_isDisplay: true,
+    line2_graph3_type: 'pie',
+    line2_graph3_title: 'Title',
+    line2_graph3_isDisplay: true,
+    line2_graph4_type: 'donut',
+    line2_graph4_title: 'Title',
+    line2_graph4_isDisplay: true,
+  },
+  argTypes: {
+    line1_graph1_type: chartTypePicker,
+    line1_graph2_type: chartTypePicker,
+    line1_graph3_type: chartTypePicker,
+    line1_graph4_type: chartTypePicker,
+    line2_graph1_type: chartTypePicker,
+    line2_graph2_type: chartTypePicker,
+    line2_graph3_type: chartTypePicker,
+    line2_graph4_type: chartTypePicker,
+    lineList: disabledControl,
+    lastUpdate: disabledControl,
+    translator: disabledControl,
+    displayLastUpdate: disabledControl,
+  },
+  render: args => (
+    <Screen style={{width: Dimensions.get('window').width}}>
+      <Component lineList={createDashboardConfig(args)} {...args} />
+    </Screen>
+  ),
 };

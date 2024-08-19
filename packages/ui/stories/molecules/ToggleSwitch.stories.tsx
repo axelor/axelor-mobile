@@ -16,27 +16,27 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import React from 'react';
-import {storiesOf} from '@storybook/react-native';
-import {ToggleSwitch} from '../../src/components/molecules';
+import type {StoryObj, Meta} from '@storybook/react';
+import {ToggleSwitch as Component} from '../../src/components';
+import {disabledControl} from '../utils/control-type.helpers';
 
-storiesOf('ui/molecules/ToggleSwitch', module).add(
-  'Default',
-  args => {
-    return <ToggleSwitch onSwitch={console.log} {...args} />;
+const meta: Meta<typeof Component> = {
+  title: 'ui/molecules/ToggleSwitch',
+  component: Component,
+};
+
+export default meta;
+
+type Story = StoryObj<typeof Component>;
+
+export const ToggleSwitch: Story = {
+  args: {
+    leftTitle: 'Left title',
+    rightTitle: 'Right title',
   },
-  {
-    argTypes: {
-      leftTitle: {
-        type: 'string',
-        defaultValue: 'leftTitle',
-        control: {type: 'text'},
-      },
-      rightTitle: {
-        type: 'string',
-        defaultValue: 'rightTitle',
-        control: {type: 'text'},
-      },
-    },
+  argTypes: {
+    leftElement: disabledControl,
+    rigthElement: disabledControl,
+    onSwitch: disabledControl,
   },
-);
+};

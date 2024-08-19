@@ -17,49 +17,37 @@
  */
 
 import React from 'react';
-import {storiesOf} from '@storybook/react-native';
-import {Image} from '../../src/components/molecules';
+import type {StoryObj, Meta} from '@storybook/react';
+import {Image as Component} from '../../src/components';
+import {disabledControl} from '../utils/control-type.helpers';
 
-const IMAGE_URI =
-  'https://images.unsplash.com/photo-1494790108377-be9c29b29330?ixlib=rb-1.2.1&q=80&fm=jpg&crop=entropy&cs=tinysrgb&dl=brooke-cagle-395b55a9fa4c.jpg';
+const IMAGE_URI = 'https://picsum.photos/200/300';
 
-storiesOf('ui/molecules/Image', module).add(
-  'Default',
-  args => {
-    return (
-      <Image
-        source={{uri: IMAGE_URI}}
-        resizeMode="contain"
-        imageSize={{width: 200, height: 200}}
-        {...args}
-      />
-    );
+const meta: Meta<typeof Component> = {
+  title: 'ui/molecules/Image',
+  component: Component,
+};
+
+export default meta;
+
+type Story = StoryObj<typeof Component>;
+
+export const Image: Story = {
+  args: {
+    source_uri: IMAGE_URI,
+    resizeMode: 'contain',
+    defaultIconSize: 30,
+    image_size: 200,
   },
-  {
-    argTypes: {
-      source: {
-        control: {
-          type: 'select',
-          options: [{uri: IMAGE_URI}, 'Invalid source'],
-        },
-        defaultValue: {uri: IMAGE_URI},
-      },
-      resizeMode: {
-        control: {
-          type: 'select',
-          options: ['cover', 'contain', 'stretch', 'repeat', 'center'],
-        },
-        defaultValue: 'contain',
-      },
-      defaultIconSize: {
-        control: {
-          type: 'range',
-          min: 15,
-          max: 150,
-          step: 10,
-        },
-        defaultValue: 30,
-      },
-    },
+  argTypes: {
+    source: disabledControl,
+    imageSize: disabledControl,
   },
-);
+  render: args => (
+    <Component
+      {...args}
+      source={{uri: args.source_uri}}
+      imageSize={{height: args.image_size, width: args.image_size}}
+    />
+  ),
+};

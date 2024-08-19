@@ -17,43 +17,38 @@
  */
 
 import React from 'react';
-import {storiesOf} from '@storybook/react-native';
-import {RadioSelect} from '../../src/components';
+import type {StoryObj, Meta} from '@storybook/react';
+import {RadioSelect as Component} from '../../src/components';
+import {disabledControl} from '../utils/control-type.helpers';
 
-storiesOf('ui/molecules/RadioSelect', module).add(
-  'Default',
-  args => {
-    return (
-      <RadioSelect
-        items={[
-          {id: '0', title: 'Option 1'},
-          {id: '1', title: 'Option 2'},
-        ]}
-        {...args}
-      />
-    );
+const meta: Meta<typeof Component> = {
+  title: 'ui/molecules/RadioSelect',
+  component: Component,
+};
+
+export default meta;
+
+type Story = StoryObj<typeof Component>;
+
+export const RadioSelect: Story = {
+  args: {
+    question: 'Question title',
+    radioSize: 20,
+    direction: 'row',
+    readonly: false,
   },
-  {
-    argTypes: {
-      question: {
-        control: {
-          type: 'text',
-        },
-        defaultValue: 'Question title',
-      },
-      radioSize: {
-        control: {
-          type: 'number',
-          min: 5,
-          step: 5,
-        },
-        defaultValue: 20,
-      },
-      direction: {
-        control: 'radio',
-        options: ['row', 'column'],
-        defaultValue: 'row',
-      },
-    },
+  argTypes: {
+    onChange: disabledControl,
+    items: disabledControl,
+    defaultValue: disabledControl,
   },
-);
+  render: args => (
+    <Component
+      items={[
+        {id: '0', title: 'Option 1'},
+        {id: '1', title: 'Option 2'},
+      ]}
+      {...args}
+    />
+  ),
+};

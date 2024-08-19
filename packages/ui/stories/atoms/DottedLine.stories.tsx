@@ -16,30 +16,16 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import React from 'react';
-import {View} from 'react-native';
-import {storiesOf} from '@storybook/react-native';
-import {DottedLine} from '../../src/components/atoms';
+import type {StoryObj, Meta} from '@storybook/react';
+import {DottedLine as Component} from '../../src/components/atoms';
 
-storiesOf('ui/atoms/DottedLine', module).add(
-  'default',
-  args => (
-    <View {...args}>
-      <DottedLine />
-    </View>
-  ),
-  {
-    argTypes: {
-      style: {
-        control: {
-          type: 'object',
-        },
-        defaultValue: {
-          flex: 1,
-          justifyContent: 'center',
-          alignItems: 'center',
-        },
-      },
-    },
-  },
-);
+const meta: Meta<typeof Component> = {
+  title: 'ui/atoms/DottedLine',
+  component: Component,
+};
+
+export default meta;
+
+type Story = StoryObj<typeof Component>;
+
+export const DottedLine: Story = {};
