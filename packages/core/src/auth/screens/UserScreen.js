@@ -19,7 +19,13 @@
 import React, {useCallback, useEffect} from 'react';
 import {Dimensions, StyleSheet} from 'react-native';
 import DeviceInfo from 'react-native-device-info';
-import {Screen, ScrollView, useConfig} from '@axelor/aos-mobile-ui';
+import {
+  Button,
+  DraggableWrapper,
+  Screen,
+  ScrollView,
+  useConfig,
+} from '@axelor/aos-mobile-ui';
 import {useDispatch, useSelector} from '../../index';
 import {fetchLocalizations} from '../features/localizationSlice';
 import {fetchActiveUser} from '../features/userSlice';
@@ -79,6 +85,12 @@ const UserScreen = ({children}) => {
           style={styles.marginCard}
           horizontal={mobileSettings?.isOneLineShortcut}
         />
+        <DraggableWrapper>
+          <Button
+            title="Draggable button"
+            onPress={() => console.log('Button is pressable.')}
+          />
+        </DraggableWrapper>
         <DashboardsCard />
       </ScrollView>
       <PopupApplicationInformation

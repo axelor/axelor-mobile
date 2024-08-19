@@ -21,6 +21,7 @@ export {default as AutoCompleteSearch} from './AutoCompleteSearch/AutoCompleteSe
 export {default as CheckboxScrollList} from './CheckboxScrollList/CheckboxScrollList';
 export {default as ChipSelect} from './ChipSelect/ChipSelect';
 export {default as DistributionBar} from './DistributionBar/DistributionBar';
+export {default as DraggableWrapper} from './DraggableWrapper/DraggableWrapper';
 export {default as DropdownCardSwitch} from './DropdownCardSwitch/DropdownCardSwitch';
 export {default as DropdownMenuItem} from './DropdownMenuItem/DropdownMenuItem';
 export {default as DurationInput} from './DurationInput/DurationInput';
