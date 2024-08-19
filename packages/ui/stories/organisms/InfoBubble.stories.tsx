@@ -17,64 +17,44 @@
  */
 
 import React from 'react';
-import {storiesOf} from '@storybook/react-native';
-import {InfoBubble} from '../../src/components';
-import {lightTheme} from '../../src/theme/themes';
+import {Dimensions, StyleSheet, View} from 'react-native';
+import type {StoryObj, Meta} from '@storybook/react';
+import {InfoBubble as Component} from '../../src/components';
+import {colorPicker} from '../utils/control-type.helpers';
 
-storiesOf('ui/organisms/InfoBubble', module).add(
-  'default',
-  args => {
-    return (
-      <InfoBubble
-        iconName="info"
-        indication="This is an indication"
-        {...args}
-        badgeColor={lightTheme.colors[args.color]}
-      />
-    );
+const meta: Meta<typeof Component> = {
+  title: 'ui/organisms/InfoBubble',
+  component: Component,
+};
+
+export default meta;
+
+type Story = StoryObj<typeof Component>;
+
+export const InfoBubble: Story = {
+  args: {
+    iconName: 'heart',
+    badgeColor: 'primaryColor',
+    indication: 'Indication',
+    size: 25,
+    position: 'right',
+    coloredBubble: true,
   },
-  {
-    argTypes: {
-      iconName: {
-        control: {
-          type: 'text',
-        },
-        defaultValue: 'info',
-      },
-      color: {
-        control: {
-          type: 'select',
-        },
-        options: Object.entries(lightTheme.colors)
-          .filter(([, _color]) => typeof _color !== 'string')
-          .map(([key]) => key),
-        defaultValue: 'primaryColor',
-      },
-      indication: {
-        control: {
-          type: 'text',
-        },
-        defaultValue: 'This is an indication',
-      },
-      size: {
-        control: {
-          type: 'number',
-        },
-        defaultValue: 25,
-      },
-      position: {
-        control: {
-          type: 'select',
-        },
-        options: ['right', 'left'],
-        defaultValue: 'right',
-      },
-      coloredBubble: {
-        control: {
-          type: 'boolean',
-        },
-        defaultValue: true,
-      },
-    },
+  argTypes: {
+    badgeColor: colorPicker,
   },
-);
+  render: args => (
+    <View style={styles.view}>
+      <Component {...args} />
+    </View>
+  ),
+};
+
+const styles = StyleSheet.create({
+  view: {
+    height: Dimensions.get('window').height,
+    flexDirection: 'column',
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+});

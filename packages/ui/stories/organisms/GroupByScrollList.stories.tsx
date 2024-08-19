@@ -18,10 +18,9 @@
 
 import React from 'react';
 import {StyleSheet, View} from 'react-native';
-import {storiesOf} from '@storybook/react-native';
-import {Text} from '../../src/components/atoms';
-import {GroupByScrollList} from '../../src/components/organisms';
-import {lightTheme} from '../../src/theme';
+import type {StoryObj, Meta} from '@storybook/react';
+import {GroupByScrollList as Component, Text} from '../../src/components';
+import {colorPicker, disabledControl} from '../utils/control-type.helpers';
 
 const DATA = [
   {id: '1', title: 'A. Item 1'},
@@ -31,14 +30,12 @@ const DATA = [
   {id: '5', title: 'C. Item 5'},
 ];
 
-const Item = ({title}: {title: string}) => (
-  <View style={styles.item}>
-    <Text>{title}</Text>
-  </View>
-);
-
 const renderItem = ({item}: {item: any}) => {
-  return <Item title={item.title} />;
+  return (
+    <View style={styles.item}>
+      <Text>{item.title}</Text>
+    </View>
+  );
 };
 
 const separatorCondition = (prevItem: any, currentItem: any) => {
@@ -50,24 +47,24 @@ const fetchTopIndicator = (
   position?: 'left' | 'center' | 'right' | 'separate',
   iconName?: string,
   iconSize?: number,
-  iconColorIndex?: number,
+  iconColor?: number,
   iconText?: string,
   titleSize?: number,
   numberSize?: number,
   loadingNumber?: boolean,
 ) => {
   return {
-    position: position,
-    iconName: iconName,
-    iconSize: iconSize,
-    iconColor: lightTheme.colors[iconColorIndex],
-    iconText: iconText,
+    position,
+    iconName,
+    iconSize,
+    iconColor,
+    iconText,
     title: currentItem.title[0].toUpperCase(),
-    titleSize: titleSize,
+    titleSize,
     numberItems: DATA.filter(item => item.title[0] === currentItem.title[0])
       .length,
     numberSize: numberSize || 30,
-    loadingNumber: loadingNumber,
+    loadingNumber,
   };
 };
 
@@ -81,126 +78,82 @@ const fetchBottomIndicator = (prevItem: any, showBottomIndicator: boolean) => {
   };
 };
 
-storiesOf('ui/organisms/GroupByScrollList', module).add(
-  'default',
-  args => {
-    return (
-      <GroupByScrollList
-        data={DATA}
-        loadingList={false}
-        moreLoading={false}
-        isListEnd={false}
-        renderItem={renderItem}
-        fetchData={() => {}}
-        filter={false}
-        separatorCondition={separatorCondition}
-        fetchTopIndicator={currentItem =>
-          fetchTopIndicator(
-            currentItem,
-            args.indicatorPosition,
-            args.indicatorIcon,
-            args.indicatorIconSize,
-            args.indicatorIconColor,
-            args.indicatorIconText,
-            args.indicatorTitleSize,
-            args.indicatorSize,
-            args.loadingIndicator,
-          )
-        }
-        fetchBottomIndicator={prevItem =>
-          fetchBottomIndicator(prevItem, args.showBottomIndicator)
-        }
-        {...args}
-      />
-    );
+const meta: Meta<typeof Component> = {
+  title: 'ui/organisms/GroupByScrollList',
+  component: Component,
+};
+
+export default meta;
+
+type Story = StoryObj<typeof Component>;
+
+export const GroupByScrollList: Story = {
+  args: {
+    loadingList: false,
+    moreLoading: false,
+    isListEnd: false,
+    horizontal: false,
+    indicatorPosition: 'left',
+    indicatorIcon: 'info',
+    indicatorIconSize: 30,
+    indicatorIconColor: 'primaryColor',
+    indicatorIconText: 'Text',
+    indicatorTitleSize: 18,
+    indicatorSize: 30,
+    loadingIndicator: false,
+    showBottomIndicator: false,
+    displayStickyIndicator: false,
+    disabledRefresh: false,
   },
-  {
-    argTypes: {
-      loadingList: {
-        type: 'boolean',
-        defaultValue: false,
-        control: {type: 'boolean'},
-      },
-      moreLoading: {
-        type: 'boolean',
-        defaultValue: false,
-        control: {type: 'boolean'},
-      },
-      isListEnd: {
-        type: 'boolean',
-        defaultValue: false,
-        control: {type: 'boolean'},
-      },
-      horizontal: {
-        type: 'boolean',
-        defaultValue: false,
-        control: {type: 'boolean'},
-      },
-      indicatorPosition: {
-        control: {
-          type: 'select',
-          options: ['left', 'center', 'right', 'separate'],
-        },
-      },
-      indicatorIcon: {
-        type: 'string',
-        defaultValue: 'info',
-        control: {type: 'text'},
-      },
-      indicatorIconSize: {
-        control: {
-          type: 'range',
-          min: 10,
-          max: 50,
-          step: 2,
-        },
-        defaultValue: 30,
-      },
-      indicatorIconColor: {
-        options: Object.entries(lightTheme.colors)
-          .filter(([, _color]) => typeof _color !== 'string')
-          .map(([key]) => key),
-        defaultValue: 'primaryColor',
-        control: {
-          type: 'select',
-        },
-      },
-      indicatorIconText: {
-        type: 'string',
-        defaultValue: 'Text',
-        control: {type: 'text'},
-      },
-      indicatorTitleSize: {
-        control: {
-          type: 'range',
-          min: 10,
-          max: 50,
-          step: 2,
-        },
-        defaultValue: 18,
-      },
-      indicatorSize: {
-        control: {
-          type: 'range',
-          min: 10,
-          max: 50,
-          step: 2,
-        },
-        defaultValue: 30,
-      },
-      loadingIndicator: {
-        type: 'boolean',
-        defaultValue: false,
-        control: {type: 'boolean'},
-      },
-      showBottomIndicator: {
-        type: 'boolean',
-        defaultValue: false,
-        control: {type: 'boolean'},
-      },
+  argTypes: {
+    indicatorPosition: {
+      control: {type: 'select'},
+      options: ['left', 'center', 'right', 'separate'],
     },
+    indicatorIconColor: colorPicker,
+    data: disabledControl,
+    renderItem: disabledControl,
+    fetchData: disabledControl,
+    fetchBottomIndicator: disabledControl,
+    fetchTopIndicator: disabledControl,
+    separatorCondition: disabledControl,
+    customBottomSeparator: disabledControl,
+    customTopSeparator: disabledControl,
+    actionList: disabledControl,
+    verticalActions: disabledControl,
+    translator: disabledControl,
+    filter: disabledControl,
   },
-);
+  render: args => (
+    <Component
+      data={DATA}
+      loadingList={false}
+      moreLoading={false}
+      isListEnd={false}
+      renderItem={renderItem}
+      fetchData={() => {}}
+      filter={false}
+      separatorCondition={separatorCondition}
+      fetchTopIndicator={currentItem =>
+        fetchTopIndicator(
+          currentItem,
+          args.indicatorPosition,
+          args.indicatorIcon,
+          args.indicatorIconSize,
+          args.indicatorIconColor,
+          args.indicatorIconText,
+          args.indicatorTitleSize,
+          args.indicatorSize,
+          args.loadingIndicator,
+        )
+      }
+      fetchBottomIndicator={prevItem =>
+        fetchBottomIndicator(prevItem, args.showBottomIndicator)
+      }
+      {...args}
+    />
+  ),
+};
 
 const styles = StyleSheet.create({
   item: {

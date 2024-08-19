@@ -17,53 +17,59 @@
  */
 
 import React from 'react';
-import {View, StyleSheet} from 'react-native';
-import {storiesOf} from '@storybook/react-native';
-import {Text} from '../../src/components/atoms';
-import {HeaderContainer} from '../../src/components/organisms';
+import {StyleSheet, View} from 'react-native';
+import type {StoryObj, Meta} from '@storybook/react';
+import {HeaderContainer as Component, Text} from '../../src/components';
+import {disabledControl} from '../utils/control-type.helpers';
+import {hexToRgb} from '../../src/utils';
 
-storiesOf('ui/organisms/HeaderContainer', module).add(
-  'default',
-  args => {
-    return (
-      <HeaderContainer
-        fixedItems={
-          <View style={styles.container}>
-            <Text>Fixed item</Text>
-          </View>
-        }
-        chipComponent={
-          <View style={styles.container}>
-            <Text>Chip component</Text>
-          </View>
-        }
-        {...args}>
-        <View style={styles.container}>
-          <Text>Chilren</Text>
-        </View>
-      </HeaderContainer>
-    );
+const Content = ({content, color}: {content: string; color: string}) => {
+  return (
+    <View
+      style={[
+        styles.container,
+        {backgroundColor: `rgba(${hexToRgb(color)}, 0.3)`},
+      ]}>
+      <Text>{content}</Text>
+    </View>
+  );
+};
+
+const meta: Meta<typeof Component> = {
+  title: 'ui/organisms/HeaderContainer',
+  component: Component,
+};
+
+export default meta;
+
+type Story = StoryObj<typeof Component>;
+
+export const HeaderContainer: Story = {
+  args: {
+    expandableFilter: true,
+    forceHideByDefault: false,
   },
-  {
-    argTypes: {
-      expandableFilter: {
-        type: 'boolean',
-        defaultValue: true,
-        control: {type: 'boolean'},
-      },
-      forceHideByDefault: {
-        type: 'boolean',
-        defaultValue: false,
-        control: {type: 'boolean'},
-      },
-    },
+  argTypes: {
+    fixedItems: disabledControl,
+    children: disabledControl,
+    chipComponent: disabledControl,
+    topChildren: disabledControl,
   },
-);
+  render: args => (
+    <Component
+      topChildren={<Content content="Top children item" color="#03A9F4" />}
+      fixedItems={<Content content="Fixed item" color="#198754" />}
+      chipComponent={<Content content="Chip component" color="#FFC107" />}
+      children={<Content content="Children" color="#673AB7" />}
+      {...args}
+    />
+  ),
+};
 
 const styles = StyleSheet.create({
   container: {
     alignItems: 'center',
     justifyContent: 'center',
-    padding: 20,
+    padding: 5,
   },
 });

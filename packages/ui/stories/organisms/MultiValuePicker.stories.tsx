@@ -17,48 +17,53 @@
  */
 
 import React from 'react';
-import {storiesOf} from '@storybook/react-native';
-import {MultiValuePicker} from '../../src/components/organisms';
-import {lightTheme} from '../../src/theme';
+import type {StoryObj, Meta} from '@storybook/react';
+import {MultiValuePicker as Component} from '../../src/components';
+import {colorPicker, disabledControl} from '../utils/control-type.helpers';
 
-storiesOf('ui/organisms/MultiValuePicker', module).add(
-  'Default',
-  args => {
+const meta: Meta<typeof Component> = {
+  title: 'ui/organisms/MultiValuePicker',
+  component: Component,
+};
+
+export default meta;
+
+type Story = StoryObj<typeof Component>;
+
+export const MultiValuePicker: Story = {
+  args: {
+    title: 'Select options',
+    readonly: false,
+    required: false,
+    item1_color: 'primaryColor',
+    item1_title: 'Item 1',
+    item2_color: 'secondaryColor',
+    item2_title: 'Item 2',
+    item3_color: 'cautionColor',
+    item3_title: 'Item 3',
+  },
+  argTypes: {
+    item1_color: colorPicker,
+    item2_color: colorPicker,
+    item3_color: colorPicker,
+    onValueChange: disabledControl,
+    listItems: disabledControl,
+    defaultItems: disabledControl,
+    translator: disabledControl,
+  },
+  render: args => {
     const listItem = [
-      {color: lightTheme.colors.secondaryColor, title: 'TEST 1', key: 1},
-      {color: lightTheme.colors.progressColor, title: 'TEST 2', key: 2},
-      {color: lightTheme.colors.primaryColor, title: 'TEST 3', key: 3},
+      {color: args.item1_color, title: args.item1_title, key: 1},
+      {color: args.item2_color, title: args.item2_title, key: 2},
+      {color: args.item3_color, title: args.item3_title, key: 3},
     ];
 
     return (
-      <MultiValuePicker
-        title="Select options"
+      <Component
         listItems={listItem}
         defaultItems={[listItem[0], listItem[2]]}
         {...args}
       />
     );
   },
-  {
-    argTypes: {
-      title: {
-        control: {
-          type: 'text',
-        },
-        defaultValue: 'Select options',
-      },
-      readonly: {
-        control: {
-          type: 'boolean',
-        },
-        defaultValue: false,
-      },
-      required: {
-        control: {
-          type: 'boolean',
-        },
-        defaultValue: false,
-      },
-    },
-  },
-);
+};

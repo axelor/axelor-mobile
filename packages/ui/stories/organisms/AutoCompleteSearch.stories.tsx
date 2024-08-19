@@ -17,72 +17,59 @@
  */
 
 import React from 'react';
-import {storiesOf} from '@storybook/react-native';
-import {AutoCompleteSearch} from '../../src/components/organisms';
+import type {StoryObj, Meta} from '@storybook/react';
+import {AutoCompleteSearch as Component} from '../../src/components';
+import {colorPicker, disabledControl} from '../utils/control-type.helpers';
 
-const objectList = [
-  {id: 1, name: 'John'},
-  {id: 2, name: 'Jane'},
-  {id: 3, name: 'Mark'},
-  {id: 4, name: 'Lucy'},
-  {id: 5, name: 'Mike'},
-];
+const meta: Meta<typeof Component> = {
+  title: 'ui/organisms/AutoCompleteSearch',
+  component: Component,
+};
 
-const displayValue = item => item.name;
+export default meta;
 
-storiesOf('ui/organisms/AutoCompleteSearch', module).add(
-  'Default',
-  args => {
-    return (
-      <AutoCompleteSearch
-        objectList={objectList}
-        displayValue={displayValue}
-        {...args}
-      />
-    );
+type Story = StoryObj<typeof Component>;
+
+export const AutoCompleteSearch: Story = {
+  args: {
+    title: 'Title',
+    value: '',
+    placeholder: 'Search',
+    readonly: false,
+    required: false,
+    oneFilter: false,
+    selectLastItem: true,
+    showDetailsPopup: true,
   },
-  {
-    argTypes: {
-      title: {
-        type: 'string',
-        defaultValue: 'Select an item',
-        control: {type: 'text'},
-      },
-      value: {
-        type: 'string',
-        defaultValue: '',
-        control: {type: 'text'},
-      },
-      placeholder: {
-        type: 'string',
-        defaultValue: 'Search',
-        control: {type: 'text'},
-      },
-      required: {
-        type: 'boolean',
-        defaultValue: false,
-        control: {type: 'boolean'},
-      },
-      readonly: {
-        type: 'boolean',
-        defaultValue: false,
-        control: {type: 'boolean'},
-      },
-      oneFilter: {
-        type: 'boolean',
-        defaultValue: false,
-        control: {type: 'boolean'},
-      },
-      selectLastItem: {
-        type: 'boolean',
-        defaultValue: true,
-        control: {type: 'boolean'},
-      },
-      showDetailsPopup: {
-        type: 'boolean',
-        defaultValue: false,
-        control: {type: 'boolean'},
-      },
-    },
+  argTypes: {
+    scanIconColor: colorPicker,
+    objectList: disabledControl,
+    onChangeValue: disabledControl,
+    onScanPress: disabledControl,
+    onSelection: disabledControl,
+    fetchData: disabledControl,
+    displayValue: disabledControl,
+    changeScreenAfter: disabledControl,
+    navigate: disabledControl,
+    loadingList: disabledControl,
+    moreLoading: disabledControl,
+    isListEnd: disabledControl,
+    translator: disabledControl,
+    isScrollViewContainer: disabledControl,
   },
-);
+  render: args => (
+    <Component
+      objectList={[
+        {id: 1, name: 'John'},
+        {id: 2, name: 'Jane'},
+        {id: 3, name: 'Mark'},
+        {id: 4, name: 'Lucy'},
+        {id: 5, name: 'Mike'},
+        {id: 6, name: 'Joe'},
+      ]}
+      displayValue={item => item.name}
+      {...args}
+      scanIconColor={args.scanIconColor?.background}
+    />
+  ),
+};
