@@ -17,8 +17,9 @@
  */
 
 import React from 'react';
-import {storiesOf} from '@storybook/react-native';
-import {BarChart} from '../../../src/components/templates';
+import type {StoryObj, Meta} from '@storybook/react';
+import {BarChart as Component} from '../../../src/components';
+import {disabledControl} from '../../utils/control-type.helpers';
 
 const datasets = [
   [
@@ -43,35 +44,29 @@ const datasets = [
   ],
 ];
 
-storiesOf('ui/templates/Dashboard/BarChart', module)
-  .addParameters({
+const meta: Meta<typeof Component> = {
+  title: 'ui/templates/Dashboard/BarChart',
+  component: Component,
+  parameters: {
     viewport: {
       defaultViewport: 'responsive',
     },
-  })
-  .add(
-    'Default',
-    args => {
-      return <BarChart datasets={datasets} {...args} />;
-    },
-    {
-      argTypes: {
-        widthGraph: {
-          control: {type: 'number'},
-          defaultValue: 300,
-        },
-        spacing: {
-          control: {type: 'number'},
-          defaultValue: 50,
-        },
-        horizontal: {
-          control: 'boolean',
-          defaultValue: false,
-        },
-        title: {
-          control: 'text',
-          defaultValue: 'title',
-        },
-      },
-    },
-  );
+  },
+};
+
+export default meta;
+
+type Story = StoryObj<typeof Component>;
+
+export const BarChart: Story = {
+  args: {
+    title: 'Chart title',
+    rotateLabel: false,
+    hideCardBackground: false,
+    widthGraph: undefined,
+    spacing: 50,
+    horizontal: false,
+  },
+  argTypes: {datasets: disabledControl},
+  render: args => <Component datasets={datasets} {...args} />,
+};

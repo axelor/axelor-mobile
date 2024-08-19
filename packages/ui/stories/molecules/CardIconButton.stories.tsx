@@ -17,42 +17,31 @@
  */
 
 import React from 'react';
-import {storiesOf} from '@storybook/react-native';
-import {CardIconButton} from '../../src/components/molecules';
+import type {StoryObj, Meta} from '@storybook/react';
+import {CardIconButton as Component} from '../../src/components';
+import {colorPicker, disabledControl} from '../utils/control-type.helpers';
 
-const iconNames = [
-  'suit-heart-fill',
-  'arrow-through-heart-fill',
-  'heartbreak-fill',
-];
+const meta: Meta<typeof Component> = {
+  title: 'ui/molecules/CardIconButton',
+  component: Component,
+};
 
-storiesOf('ui/molecules/CardIconButton', module).add(
-  'Default',
-  args => {
-    return (
-      <CardIconButton
-        iconName={iconNames[0]}
-        iconColor="#000000"
-        onPress={() => console.log('Button pressed')}
-        {...args}
-      />
-    );
+export default meta;
+
+type Story = StoryObj<typeof Component>;
+
+export const CardIconButton: Story = {
+  args: {
+    iconName: 'heart',
+    iconColor: 'primaryColor',
+    disabled: false,
   },
-  {
-    argTypes: {
-      iconName: {
-        control: {
-          type: 'select',
-          options: iconNames,
-        },
-        defaultValue: iconNames[0],
-      },
-      iconColor: {
-        control: {
-          type: 'color',
-        },
-        defaultValue: '#000000',
-      },
-    },
+  argTypes: {
+    iconColor: colorPicker,
+    onLongPress: disabledControl,
+    onPress: disabledControl,
   },
-);
+  render: args => {
+    return <Component {...args} iconColor={args.iconColor?.background} />;
+  },
+};

@@ -16,30 +16,20 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import React from 'react';
-import {storiesOf} from '@storybook/react-native';
-import {Switch} from '../../src/components/atoms';
+import type {StoryObj, Meta} from '@storybook/react';
+import {Switch as Component} from '../../src/components/atoms';
+import {disabledControl} from '../utils/control-type.helpers';
 
-const handleToggle = (isEnabled: boolean) => {
-  console.log(`Switch toggled: ${isEnabled}`);
+const meta: Meta<typeof Component> = {
+  title: 'ui/atoms/Switch',
+  component: Component,
 };
 
-storiesOf('ui/atoms/Switch', module).add(
-  'Default',
-  args => {
-    return <Switch isEnabled={false} handleToggle={handleToggle} {...args} />;
-  },
-  {
-    argTypes: {
-      isEnabled: {
-        control: {
-          type: 'boolean',
-        },
-        defaultValue: false,
-      },
-      handleToggle: {
-        action: 'handleToggle',
-      },
-    },
-  },
-);
+export default meta;
+
+type Story = StoryObj<typeof Component>;
+
+export const Switch: Story = {
+  args: {isEnabled: false, readonly: false},
+  argTypes: {handleToggle: disabledControl},
+};

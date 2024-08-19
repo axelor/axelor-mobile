@@ -67,46 +67,80 @@ There can then be two types of stories: fixed stories in the style of a catalog,
 
 ```tsx
 import React from 'react';
-import {storiesOf} from '@storybook/react-native';
-import {Component} from '../../src/components';
+import type {StoryObj, Meta} from '@storybook/react';
+import {ComponentName as Component} from '../../src/components';
+import {disabledControl} from '../utils/control-type.helpers';
 
-storiesOf('ui/<type>/<Component>', module)
-  .add('default', () => (
-    <Component>
-      <View />
-    </Component>
-  ))
-  .add('Text', () => (
-    <Component>
-      <Text>Text</Text>
-    </Component>
-  ));
+const meta: Meta<typeof Component> = {
+  title: 'ui/<type>/ComponentName',
+  component: Component,
+};
+
+export default meta;
+
+type Story = StoryObj<typeof Component>;
+
+export const Story1: Story = {
+  name: 'with pre-defined position',
+  args: {
+    predefinedPosition: 'bottom',
+  },
+  argTypes: {
+    onPress: disabledControl,
+  },
+  render: args => <Component {...args} />,
+};
+
+export const Story2: Story = {
+  name: 'with custom position',
+  args: {
+    top: 0,
+    right: 0,
+    left: 0,
+    bottom: 0,
+  },
+  argTypes: {
+    onPress: disabledControl,
+    predefinedPosition: disabledControl,
+  },
+  render: args => <Component {...args} />,
+};
 ```
 
 ```tsx
 import React from 'react';
-import {storiesOf} from '@storybook/react-native';
-import {Component} from '../../src/components';
+import type {StoryObj, Meta} from '@storybook/react';
+import {ComponentName as Component} from '../../src/components/atoms';
+import {colorPicker, disabledControl} from '../utils/control-type.helpers';
 
-storiesOf('ui/<type>/<Component>', module).add(
-  'default',
-  args => <Component {...args} />,
-  {
-    argTypes: {
-      propsName: {
-        control: {
-          type: 'boolean',
-        },
-        defaultValue: false,
-      },
-    },
+const meta: Meta<typeof Component> = {
+  title: 'ui/<type>/ComponentName',
+  component: Component,
+};
+
+export default meta;
+
+type Story = StoryObj<typeof Component>;
+
+export const ComponentName: Story = {
+  args: {
+    size: 50,
+    name: 'heart-fill',
+    touchable: false,
+    visible: true,
+    color: 'plannedColor',
   },
-);
+  argTypes: {
+    color: colorPicker,
+    onPress: disabledControl,
+  },
+  render: args => <Component {...args} color={args.color?.background} />,
+};
 ```
 
-It is then possible to add as many fixed stories as required, and also to mix fixed and customizable stories. However, a "default" story must always be added for the storybook to compile correctly. For parametrizable stories, it is possible to add as many atttributes as required.
+It is then possible to add as many fixed stories as required, and also to mix fixed and customizable stories. For parametrizable stories, it is possible to add as many atttributes as required.
 
-The [different types of argument available](https://storybook.js.org/docs/react/essentials/controls#configuration):
+The [different types of argument available](https://storybook.js.org/docs/7/essentials/controls):
 
 - no additional configuration required: text, boolean, object
 - possibility of adding options: number / range (definition of min, max, step)
@@ -125,6 +159,8 @@ size: {
 },
 
 // Basic select
+// When component is fully type, it's not necessary to define the select options.
+// The storybook will get values with props type.
 position: {
   control: {
     type: 'radio',
@@ -133,17 +169,9 @@ position: {
   defaultValue: 'right',
 },
 
-// Work with the application theme. Don't forget to do the mapping
-// afterwards in the component props: color={lightTheme.colors[args._color]}
-_color: {
-  control: {
-    type: 'select',
-  },
-  options: Object.entries(lightTheme.colors)
-    .filter(([, value]) => typeof value !== 'string')
-    .map(([key]) => key),
-  defaultValue: 'primaryColor',
-},
+// Work with the application theme. An helper was created to simplify integration, don't forget to make the
+// mapping if only a string color is wanted and not the complete object: color={args.color?.background}
+color: colorPicker,
 ```
 
 :::caution
@@ -156,22 +184,22 @@ icon ?: {
 	name: string;
 }
 
-// Parameters creation for the story
-_iconColor: {
-  control: {
-    type: 'text',
+// Parameters creation for the story and mapping in render
+export const ComponentName: Story = {
+  args: {
+    _iconName: 'qrCode',
+    _iconColor: 'primaryColor',
   },
-  defaultValue: '#000000',
-},
-_iconName: {
-  control: {
-    type: 'text',
+  argTypes: {
+    _iconColor: colorPicker
   },
-  defaultValue: 'qrCode',
-},
-
-// Component props mapping
-<Component {...args} icon={{name: args._iconName, color: args._iconColor}} />
+  render: args => (
+    <Component
+      {...args}
+      icon={{name: args._iconName, color: args._iconColor}}
+    />
+  ),
+};
 ```
 
 :::
@@ -179,7 +207,7 @@ _iconName: {
 Some important commands to run in the project root for the storybook :
 
 - open storybook : `yarn storybook`
-- build storybook : `yarn build-storybook`
+- build storybook : `yarn storybook:build`
 
 :::info
 Don't hesitate to look at existing stories when creating a new one, as they already represent a number of use cases that may be useful.

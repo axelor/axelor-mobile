@@ -17,20 +17,27 @@
  */
 
 import React from 'react';
-import {StyleSheet} from 'react-native';
-import {storiesOf} from '@storybook/react-native';
-import {HorizontalRule, Text} from '../../src/components/atoms';
+import type {StoryObj, Meta} from '@storybook/react';
+import {HorizontalRule as Component, Text} from '../../src/components/atoms';
 
-storiesOf('ui/atoms/HorizontalRule', module).add('default', () => (
-  <>
-    <Text>Before rule</Text>
-    <HorizontalRule style={styles.container} />
-    <Text>After rule</Text>
-  </>
-));
+const meta: Meta<typeof Component> = {
+  title: 'ui/atoms/HorizontalRule',
+  component: Component,
+};
 
-const styles = StyleSheet.create({
-  container: {
-    marginVertical: 10,
+export default meta;
+
+type Story = StoryObj<typeof Component>;
+
+export const HorizontalRule: Story = {
+  render: () => {
+    const style = {marginVertical: 10};
+    return (
+      <>
+        <Text>Before rule</Text>
+        <Component style={style} />
+        <Text>After rule</Text>
+      </>
+    );
   },
-});
+};
