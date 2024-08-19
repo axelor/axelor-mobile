@@ -17,18 +17,51 @@
  */
 
 import React from 'react';
-import {storiesOf} from '@storybook/react-native';
-import {Text} from '../../src/components/atoms';
-import {ImageBubble} from '../../src/components/organisms';
+import type {StoryObj, Meta} from '@storybook/react';
+import {ImageBubble as Component, InfoBubble} from '../../src/components';
+import {colorPicker, disabledControl} from '../utils/control-type.helpers';
 
-storiesOf('ui/organisms/ImageBubble', module).add('Default', () => (
-  <ImageBubble
-    source={{
-      uri: 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?ixlib=rb-1.2.1&q=80&fm=jpg&crop=entropy&cs=tinysrgb&dl=brooke-cagle-395b55a9fa4c.jpg',
-    }}
-    listComponent={[
-      <Text key="1">Text Component 1</Text>,
-      <Text key="2">Text Component 2</Text>,
-    ]}
-  />
-));
+const IMAGE_URI = 'https://picsum.photos/300/300';
+
+const meta: Meta<typeof Component> = {
+  title: 'ui/organisms/ImageBubble',
+  component: Component,
+};
+
+export default meta;
+
+type Story = StoryObj<typeof Component>;
+
+export const ImageBubble: Story = {
+  args: {
+    source_uri: IMAGE_URI,
+    item1_icon: 'heart',
+    item1_color: 'primaryColor',
+    item2_icon: 'plus-lg',
+    item2_color: 'primaryColor',
+    item3_icon: 'pencil',
+    item3_color: 'primaryColor',
+  },
+  argTypes: {
+    item1_color: colorPicker,
+    item2_color: colorPicker,
+    item3_color: colorPicker,
+    listComponent: disabledControl,
+    source: disabledControl,
+    imageSize: disabledControl,
+    defaultIconSize: disabledControl,
+  },
+  render: args => (
+    <Component
+      source={{uri: args.source_uri}}
+      listComponent={[
+        <InfoBubble iconName={args.item1_icon} badgeColor={args.item1_color} />,
+        null,
+        <InfoBubble iconName={args.item2_icon} badgeColor={args.item1_color} />,
+        null,
+        null,
+        <InfoBubble iconName={args.item3_icon} badgeColor={args.item1_color} />,
+      ]}
+    />
+  ),
+};

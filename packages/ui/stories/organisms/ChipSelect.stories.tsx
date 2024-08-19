@@ -17,81 +17,59 @@
  */
 
 import React from 'react';
-import {storiesOf} from '@storybook/react-native';
-import {action} from '@storybook/addon-actions';
-import {ChipSelect} from '../../src/components/organisms';
-import {lightTheme} from '../../src/theme';
+import type {StoryObj, Meta} from '@storybook/react';
+import {ChipSelect as Component} from '../../src/components';
+import {colorPicker, disabledControl} from '../utils/control-type.helpers';
 
-const items = [
-  {
-    title: 'Option 1',
-    color: lightTheme.colors.primaryColor,
-    key: 'option1',
-  },
-  {
-    title: 'Option 2',
-    color: lightTheme.colors.cautionColor,
-    key: 'option2',
-    isActive: true,
-  },
-  {
-    title: 'Option 3',
-    color: lightTheme.colors.infoColor,
-    key: 'option3',
-  },
-];
+const meta: Meta<typeof Component> = {
+  title: 'ui/organisms/ChipSelect',
+  component: Component,
+};
 
-storiesOf('ui/organisms/ChipSelect', module)
-  .add('multi-select', () => (
-    <ChipSelect
-      selectionItems={items}
-      mode="multi"
-      onChangeValue={action('onChangeValue')}
-      width={100}
+export default meta;
+
+type Story = StoryObj<typeof Component>;
+
+export const ChipSelect: Story = {
+  args: {
+    mode: 'switch',
+    option1_title: 'Option 1',
+    option1_color: 'primaryColor',
+    option2_title: 'Option 2',
+    option2_color: 'plannedColor',
+    option3_title: 'Option 3',
+    option3_color: 'infoColor',
+  },
+  argTypes: {
+    option1_color: colorPicker,
+    option2_color: colorPicker,
+    option3_color: colorPicker,
+    selectionItems: disabledControl,
+    isRefresh: disabledControl,
+    onChangeValue: disabledControl,
+  },
+  render: args => (
+    <Component
+      selectionItems={[
+        {
+          title: args.option1_title,
+          color: args.option1_color,
+          key: 'option1',
+        },
+        {
+          title: args.option2_title,
+          color: args.option2_color,
+          key: 'option2',
+          isActive: true,
+        },
+        {
+          title: args.option3_title,
+          color: args.option3_color,
+          key: 'option3',
+        },
+      ]}
+      onChangeValue={() => {}}
+      {...args}
     />
-  ))
-  .add('switch-select', () => (
-    <ChipSelect
-      selectionItems={items}
-      mode="switch"
-      onChangeValue={action('onChangeValue')}
-      width={100}
-    />
-  ))
-  .add(
-    'custom',
-    args => (
-      <ChipSelect
-        selectionItems={items}
-        mode="switch"
-        onChangeValue={action('onChangeValue')}
-        {...args}
-      />
-    ),
-    {
-      argTypes: {
-        width: {
-          control: {
-            type: 'range',
-            min: 100,
-            max: 500,
-            step: 10,
-          },
-          defaultValue: 200,
-        },
-        marginHorizontal: {
-          control: {
-            type: 'range',
-            min: 0,
-            max: 50,
-            step: 2,
-          },
-          defaultValue: 12,
-        },
-        mode: {
-          options: ['multi', 'switch'],
-          control: {type: 'radio'},
-        },
-      },
-    },
-  );
+  ),
+};

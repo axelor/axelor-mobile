@@ -17,9 +17,9 @@
  */
 
 import React from 'react';
-import {storiesOf} from '@storybook/react-native';
-import {LineChart} from '../../../src/components/templates';
-import {lightTheme} from '../../../src/theme';
+import type {StoryObj, Meta} from '@storybook/react';
+import {LineChart as Component} from '../../../src/components';
+import {disabledControl} from '../../utils/control-type.helpers';
 
 const datasets = [
   [
@@ -68,46 +68,31 @@ const datasets = [
   ],
 ];
 
-storiesOf('ui/templates/Dashboard/LineChart', module)
-  .addParameters({
+const meta: Meta<typeof Component> = {
+  title: 'ui/templates/Dashboard/LineChart',
+  component: Component,
+  parameters: {
     viewport: {
       defaultViewport: 'responsive',
     },
-  })
-  .add(
-    'Default',
-    args => {
-      return (
-        <LineChart
-          datasets={datasets}
-          backgroundColor={lightTheme.colors[args.color]?.background}
-          {...args}
-        />
-      );
-    },
-    {
-      argTypes: {
-        widthGraph: {
-          control: {type: 'number'},
-          defaultValue: 400,
-        },
-        spacing: {
-          control: {type: 'number'},
-          defaultValue: 50,
-        },
-        title: {
-          control: 'text',
-          defaultValue: 'title',
-        },
-        color: {
-          options: Object.entries(lightTheme.colors)
-            .filter(([, _color]) => typeof _color !== 'string')
-            .map(([key]) => key),
-          defaultValue: 'plannedColor',
-          control: {
-            type: 'select',
-          },
-        },
-      },
-    },
-  );
+  },
+};
+
+export default meta;
+
+type Story = StoryObj<typeof Component>;
+
+export const LineChart: Story = {
+  args: {
+    title: 'Chart title',
+    rotateLabel: false,
+    hideCardBackground: false,
+    widthGraph: 350,
+    spacing: 50,
+  },
+  argTypes: {
+    backgroundColor: disabledControl,
+    datasets: disabledControl,
+  },
+  render: args => <Component datasets={datasets} {...args} />,
+};

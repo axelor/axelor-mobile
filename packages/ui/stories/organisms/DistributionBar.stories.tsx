@@ -17,87 +17,53 @@
  */
 
 import React from 'react';
-import {storiesOf} from '@storybook/react-native';
-import {DistributionBar} from '../../src/components/organisms';
-import {lightTheme} from '../../src/theme';
+import type {StoryObj, Meta} from '@storybook/react';
+import {DistributionBar as Component} from '../../src/components';
+import {colorPicker, disabledControl} from '../utils/control-type.helpers';
 
-storiesOf('ui/organisms/DistributionBar', module).add(
-  'Default',
-  args => {
-    return (
-      <DistributionBar
-        {...args}
-        distribution={[
-          {
-            value: args.group1_value,
-            color: lightTheme.colors[args.group1_color],
-          },
-          {
-            value: args.group2_value,
-            color: lightTheme.colors[args.group2_color],
-          },
-          {
-            value: args.group3_value,
-            color: lightTheme.colors[args.group3_color],
-          },
-        ]}
-      />
-    );
+const meta: Meta<typeof Component> = {
+  title: 'ui/organisms/DistributionBar',
+  component: Component,
+};
+
+export default meta;
+
+type Story = StoryObj<typeof Component>;
+
+export const DistributionBar: Story = {
+  args: {
+    total: 10,
+    height: 30,
+    group1_value: 3,
+    group1_color: 'errorColor',
+    group2_value: 3,
+    group2_color: 'primaryColor',
+    group3_value: 3,
+    group3_color: 'progressColor',
   },
-  {
-    argTypes: {
-      total: {
-        type: 'number',
-        defaultValue: 10,
-        control: {type: 'number'},
-      },
-      height: {
-        type: 'number',
-        defaultValue: 30,
-        control: {type: 'number'},
-      },
-      group1_value: {
-        type: 'number',
-        defaultValue: 3,
-        control: {type: 'number'},
-      },
-      group1_color: {
-        options: Object.entries(lightTheme.colors)
-          .filter(([, _color]) => typeof _color !== 'string')
-          .map(([key]) => key),
-        defaultValue: 'errorColor',
-        control: {
-          type: 'select',
-        },
-      },
-      group2_value: {
-        type: 'number',
-        defaultValue: 2,
-        control: {type: 'number'},
-      },
-      group2_color: {
-        options: Object.entries(lightTheme.colors)
-          .filter(([, _color]) => typeof _color !== 'string')
-          .map(([key]) => key),
-        defaultValue: 'cautionColor',
-        control: {
-          type: 'select',
-        },
-      },
-      group3_value: {
-        type: 'number',
-        defaultValue: 5,
-        control: {type: 'number'},
-      },
-      group3_color: {
-        options: Object.entries(lightTheme.colors)
-          .filter(([, _color]) => typeof _color !== 'string')
-          .map(([key]) => key),
-        defaultValue: 'successColor',
-        control: {
-          type: 'select',
-        },
-      },
-    },
+  argTypes: {
+    group1_color: colorPicker,
+    group2_color: colorPicker,
+    group3_color: colorPicker,
+    distribution: disabledControl,
   },
-);
+  render: args => (
+    <Component
+      {...args}
+      distribution={[
+        {
+          value: args.group1_value,
+          color: args.group1_color,
+        },
+        {
+          value: args.group2_value,
+          color: args.group2_color,
+        },
+        {
+          value: args.group3_value,
+          color: args.group3_color,
+        },
+      ]}
+    />
+  ),
+};

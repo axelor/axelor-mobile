@@ -17,119 +17,71 @@
  */
 
 import React from 'react';
-import {storiesOf} from '@storybook/react-native';
-import {TagList} from '../../src/components';
-import {lightTheme} from '../../src/theme';
+import type {StoryObj, Meta} from '@storybook/react';
+import {TagList as Component} from '../../src/components';
+import {colorPicker, disabledControl} from '../utils/control-type.helpers';
 
-const availableColors = [
-  'undefined',
-  ...Object.entries(lightTheme.colors)
-    .filter(([, _color]) => typeof _color !== 'string')
-    .map(([key]) => key),
-];
-
-const defaultTranslator = (key, values) => {
-  const translations = {
-    Base_Data: 'data',
-    Base_NoDataAvailable: `No ${values?.title} available.`,
-  };
-
-  return translations[key] || key;
+const meta: Meta<typeof Component> = {
+  title: 'ui/organisms/TagList',
+  component: Component,
 };
 
-storiesOf('ui/organisms/TagList', module).add(
-  'Default',
-  args => {
-    return (
-      <TagList
-        {...args}
-        defaultColor={lightTheme.colors[args.defaultColor]}
-        tags={[
-          {
-            title: args.tag1_title,
-            color: lightTheme.colors[args.tag1_color],
-            order: args.tag1_order,
-            hidden: args.tag1_hidden,
-          },
-          {
-            title: args.tag2_title,
-            color: lightTheme.colors[args.tag2_color],
-            order: args.tag2_order,
-            hidden: args.tag2_hidden,
-          },
-        ]}
-        translator={defaultTranslator}
-      />
-    );
+export default meta;
+
+type Story = StoryObj<typeof Component>;
+
+export const TagList: Story = {
+  args: {
+    title: 'Title',
+    defaultColor: 'primaryColor',
+    hideIfNull: false,
+    emptyList: false,
+    tag1_title: 'Tag 1',
+    tag1_color: 'primaryColor',
+    tag1_order: 0,
+    tag1_hidden: false,
+    tag2_title: 'Tag 2',
+    tag2_color: 'infoColor',
+    tag2_order: 10,
+    tag2_hidden: false,
   },
-  {
-    argTypes: {
-      title: {
-        control: {
-          type: 'text',
-        },
-        defaultValue: 'Title',
-      },
-      defaultColor: {
-        options: availableColors,
-        control: {
-          type: 'select',
-        },
-      },
-      hideIfNull: {
-        type: 'boolean',
-        defaultValue: true,
-        control: {type: 'boolean'},
-      },
-      tag1_title: {
-        control: {
-          type: 'text',
-        },
-        defaultValue: 'Tag 1',
-      },
-      tag1_color: {
-        options: availableColors,
-        defaultValue: 'primaryColor',
-        control: {
-          type: 'select',
-        },
-      },
-      tag1_order: {
-        type: 'number',
-        defaultValue: 0,
-        control: {
-          type: 'number',
-        },
-      },
-      tag1_hidden: {
-        type: 'boolean',
-        defaultValue: false,
-        control: {type: 'boolean'},
-      },
-      tag2_title: {
-        control: {
-          type: 'text',
-        },
-        defaultValue: 'Tag 2',
-      },
-      tag2_color: {
-        options: availableColors,
-        control: {
-          type: 'select',
-        },
-      },
-      tag2_order: {
-        type: 'number',
-        defaultValue: 10,
-        control: {
-          type: 'number',
-        },
-      },
-      tag2_hidden: {
-        type: 'boolean',
-        defaultValue: false,
-        control: {type: 'boolean'},
-      },
-    },
+  argTypes: {
+    defaultColor: colorPicker,
+    tag1_color: colorPicker,
+    tag2_color: colorPicker,
+    tags: disabledControl,
+    translator: disabledControl,
   },
-);
+  render: args => (
+    <Component
+      translator={(key, values) => {
+        const translations = {
+          Base_Data: 'data',
+          Base_NoDataAvailable: `No ${values?.title} available.`,
+        };
+
+        return translations[key] || key;
+      }}
+      defaultColor={args.defaultColor}
+      tags={
+        args.emptyList
+          ? []
+          : [
+              {
+                title: args.tag1_title,
+                color: args.tag1_color,
+                order: args.tag1_order,
+                hidden: args.tag1_hidden,
+              },
+              {
+                title: args.tag2_title,
+                color: args.tag2_color,
+                order: args.tag2_order,
+                hidden: args.tag2_hidden,
+              },
+            ]
+      }
+      {...args}
+    />
+  ),
+};

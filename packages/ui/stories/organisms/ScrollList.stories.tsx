@@ -18,25 +18,9 @@
 
 import React from 'react';
 import {StyleSheet, View} from 'react-native';
-import {storiesOf} from '@storybook/react-native';
-import {Text} from '../../src/components/atoms';
-import {ScrollList} from '../../src/components/organisms';
-
-const DATA = [
-  {id: '1', title: 'Item 1'},
-  {id: '2', title: 'Item 2'},
-  {id: '3', title: 'Item 3'},
-  {id: '4', title: 'Item 4'},
-  {id: '5', title: 'Item 5'},
-];
-
-const Item = ({title}: {title: string}) => (
-  <View style={styles.item}>
-    <Text>{title}</Text>
-  </View>
-);
-
-const renderItem = ({item}: {item: any}) => <Item title={item.title} />;
+import type {StoryObj, Meta} from '@storybook/react';
+import {ScrollList as Component, Text} from '../../src/components';
+import {disabledControl} from '../utils/control-type.helpers';
 
 const actionList = [
   {
@@ -56,53 +40,52 @@ const actionList = [
   },
 ];
 
-storiesOf('ui/organisms/ScrollList', module).add(
-  'default',
-  args => {
-    return (
-      <ScrollList
-        loadingList={false}
-        data={DATA}
-        renderItem={renderItem}
-        fetchData={() => {}}
-        moreLoading={false}
-        isListEnd={false}
-        filter={false}
-        actionList={actionList}
-        {...args}
-      />
-    );
+const meta: Meta<typeof Component> = {
+  title: 'ui/organisms/ScrollList',
+  component: Component,
+};
+
+export default meta;
+
+type Story = StoryObj<typeof Component>;
+
+export const ScrollList: Story = {
+  args: {
+    loadingList: false,
+    moreLoading: false,
+    isListEnd: true,
+    horizontal: false,
+    verticalActions: true,
   },
-  {
-    argTypes: {
-      loadingList: {
-        type: 'boolean',
-        defaultValue: false,
-        control: {type: 'boolean'},
-      },
-      moreLoading: {
-        type: 'boolean',
-        defaultValue: false,
-        control: {type: 'boolean'},
-      },
-      isListEnd: {
-        type: 'boolean',
-        defaultValue: false,
-        control: {type: 'boolean'},
-      },
-      horizontal: {
-        type: 'boolean',
-        defaultValue: false,
-        control: {type: 'boolean'},
-      },
-      verticalAction: {
-        type: 'boolean',
-        defaultValue: false,
-        control: {type: 'boolean'},
-      },
-    },
+  argTypes: {
+    data: disabledControl,
+    renderItem: disabledControl,
+    fetchData: disabledControl,
+    translator: disabledControl,
+    disabledRefresh: disabledControl,
+    filter: disabledControl,
+    actionList: disabledControl,
+    onViewableItemsChanged: disabledControl,
   },
-);
+  render: args => (
+    <Component
+      data={[
+        {id: '1', title: 'A. Item 1'},
+        {id: '2', title: 'B. Item 2'},
+        {id: '3', title: 'C. Item 3'},
+        {id: '4', title: 'D. Item 4'},
+        {id: '5', title: 'E. Item 5'},
+      ]}
+      actionList={actionList}
+      renderItem={({item}: {item: any}) => (
+        <View style={styles.item}>
+          <Text>{item.title}</Text>
+        </View>
+      )}
+      {...args}
+    />
+  ),
+};
 
 const styles = StyleSheet.create({
   item: {

@@ -18,14 +18,25 @@
 
 import React from 'react';
 import {View, StyleSheet} from 'react-native';
-import {storiesOf} from '@storybook/react-native';
-import {Screen, Text} from '../../src/components/atoms';
+import type {StoryObj, Meta} from '@storybook/react';
+import {Screen as Component, Text} from '../../src/components/atoms';
+import {disabledControl} from '../utils/control-type.helpers';
 
-storiesOf('ui/atoms/Screen', module).add(
-  'Default',
-  args => {
+const meta: Meta<typeof Component> = {
+  title: 'ui/atoms/Screen',
+  component: Component,
+};
+
+export default meta;
+
+type Story = StoryObj<typeof Component>;
+
+export const Screen: Story = {
+  args: {removeSpaceOnTop: false, loading: false},
+  argTypes: {fixedItems: disabledControl},
+  render: args => {
     return (
-      <Screen
+      <Component
         fixedItems={
           <View style={styles.container}>
             <Text>Fixed item</Text>
@@ -35,26 +46,10 @@ storiesOf('ui/atoms/Screen', module).add(
         <View style={styles.container}>
           <Text>Hello World!</Text>
         </View>
-      </Screen>
+      </Component>
     );
   },
-  {
-    argTypes: {
-      removeSpaceOnTop: {
-        control: {
-          type: 'boolean',
-        },
-        defaultValue: false,
-      },
-      loading: {
-        control: {
-          type: 'boolean',
-        },
-        defaultValue: false,
-      },
-    },
-  },
-);
+};
 
 const styles = StyleSheet.create({
   container: {
