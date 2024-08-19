@@ -16,6 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+import {Chart} from '../../src/components/templates/Dashboard';
 import {lightTheme} from '../../src/theme';
 
 const colorKeys = Object.entries(lightTheme.colors)
@@ -28,6 +29,11 @@ export const colorPicker = {
   mapping: {
     ...Object.fromEntries(colorKeys.map(_k => [_k, lightTheme.colors[_k]])),
   },
+};
+
+export const chartTypePicker = {
+  control: {type: 'select'},
+  options: Object.keys(Chart.chartType),
 };
 
 export const writingPicker = {

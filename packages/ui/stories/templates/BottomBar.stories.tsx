@@ -17,57 +17,93 @@
  */
 
 import React from 'react';
-import {Dimensions, View} from 'react-native';
-import {storiesOf} from '@storybook/react-native';
-import {BottomBar, Text} from '../../src/components';
-import {lightTheme} from '../../src/theme';
+import type {StoryObj, Meta} from '@storybook/react';
+import {BottomBar as Component, Text} from '../../src/components';
+import {colorPicker, disabledControl} from '../utils/control-type.helpers';
 
-const Colors = lightTheme.colors;
-const Screen = ({title}) => (
-  <View style={{height: Dimensions.get('screen').height * 0.42}}>
-    <Text>{title}</Text>
-  </View>
-);
+const viewContent = <Text>View Content</Text>;
 
-const EXEMPLE = [
-  {
-    iconName: 'house',
-    viewComponent: <Screen title="House view component" />,
-    color: Colors.secondaryColor_dark,
-  },
-  {
-    iconName: 'clock-history',
-    viewComponent: <Screen title="Clock history view component" />,
-    indicator: 5,
-    color: Colors.plannedColor,
-  },
-  {
-    iconName: 'trash',
-    viewComponent: <Screen title="Trash view component" />,
-    color: Colors.infoColor,
-  },
-  {
-    iconName: 'x-lg',
-    viewComponent: <Screen title="X view component" />,
-    color: Colors.progressColor,
-  },
-  {
-    iconName: 'person-fill',
-    viewComponent: <Screen title="Person view component" />,
-  },
-];
+const meta: Meta<typeof Component> = {
+  title: 'ui/templates/BottomBar',
+  component: Component,
+};
 
-storiesOf('ui/templates/BottomBar', module).add(
-  'Default',
-  args => <BottomBar items={EXEMPLE} {...args} />,
-  {
-    argTypes: {
-      itemSize: {
-        control: {
-          type: 'number',
+export default meta;
+
+type Story = StoryObj<typeof Component>;
+
+export const BottomBar: Story = {
+  args: {
+    itemSize: 50,
+    item1_iconName: 'house',
+    item1_color: 'secondaryColor_dark',
+    item1_indicator: 0,
+    item1_disabled: false,
+    item2_iconName: 'clock-history',
+    item2_color: 'plannedColor',
+    item2_indicator: 0,
+    item2_disabled: false,
+    item3_iconName: 'trash',
+    item3_color: 'infoColor',
+    item3_indicator: 0,
+    item3_disabled: false,
+    item4_iconName: 'x-lg',
+    item4_color: 'progressColor',
+    item4_indicator: 0,
+    item4_disabled: false,
+    item5_iconName: 'person-fill',
+    item5_color: undefined,
+    item5_indicator: 0,
+    item5_disabled: false,
+  },
+  argTypes: {
+    item1_color: colorPicker,
+    item2_color: colorPicker,
+    item3_color: colorPicker,
+    item4_color: colorPicker,
+    item5_color: colorPicker,
+    items: disabledControl,
+  },
+  render: args => (
+    <Component
+      items={[
+        {
+          iconName: args.item1_iconName,
+          viewComponent: viewContent,
+          indicator: args.item1_indicator,
+          color: args.item1_color,
+          disabled: args.item1_disabled,
         },
-        defaultValue: 50,
-      },
-    },
-  },
-);
+        {
+          iconName: args.item2_iconName,
+          viewComponent: viewContent,
+          indicator: args.item2_indicator,
+          color: args.item2_color,
+          disabled: args.item2_disabled,
+        },
+        {
+          iconName: args.item3_iconName,
+          viewComponent: viewContent,
+          indicator: args.item3_indicator,
+          color: args.item3_color,
+          disabled: args.item3_disabled,
+        },
+        {
+          iconName: args.item4_iconName,
+          viewComponent: viewContent,
+          indicator: args.item4_indicator,
+          color: args.item4_color,
+          disabled: args.item4_disabled,
+        },
+        {
+          iconName: args.item5_iconName,
+          viewComponent: viewContent,
+          indicator: args.item5_indicator,
+          color: args.item5_color,
+          disabled: args.item5_disabled,
+        },
+      ]}
+      {...args}
+    />
+  ),
+};
