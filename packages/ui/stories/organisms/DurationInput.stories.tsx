@@ -17,37 +17,28 @@
  */
 
 import React from 'react';
-import {storiesOf} from '@storybook/react-native';
-import {action} from '@storybook/addon-actions';
-import {DurationInput} from '../../src/components/organisms';
+import type {StoryObj, Meta} from '@storybook/react';
+import {DurationInput as Component} from '../../src/components';
+import {disabledControl} from '../utils/control-type.helpers';
 
-storiesOf('ui/organisms/DurationInput', module).add(
-  'Default',
-  args => {
-    return <DurationInput onChange={action('onChange')} {...args} />;
+const meta: Meta<typeof Component> = {
+  title: 'ui/organisms/DurationInput',
+  component: Component,
+};
+
+export default meta;
+
+type Story = StoryObj<typeof Component>;
+
+export const DurationInput: Story = {
+  args: {
+    title: 'Title',
+    defaultValue: 50000,
+    readonly: false,
+    required: false,
   },
-  {
-    argTypes: {
-      title: {
-        type: 'string',
-        defaultValue: 'Input Title',
-        control: {type: 'text'},
-      },
-      defaultValue: {
-        type: 'number',
-        defaultValue: 50000,
-        control: {type: 'number'},
-      },
-      required: {
-        type: 'boolean',
-        defaultValue: false,
-        control: {type: 'boolean'},
-      },
-      readonly: {
-        type: 'boolean',
-        defaultValue: false,
-        control: {type: 'boolean'},
-      },
-    },
+  argTypes: {
+    onChange: disabledControl,
   },
-);
+  render: args => <Component onChange={() => {}} {...args} />,
+};

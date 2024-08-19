@@ -16,73 +16,30 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import React from 'react';
-import {storiesOf} from '@storybook/react-native';
-import {Chip} from '../../src/components/molecules';
-import {lightTheme} from '../../src/theme';
+import type {StoryObj, Meta} from '@storybook/react';
+import {Chip as Component} from '../../src/components';
+import {colorPicker, disabledControl} from '../utils/control-type.helpers';
 
-storiesOf('ui/molecules/Chip', module).add(
-  'Default',
-  args => {
-    return (
-      <Chip
-        title="Press me"
-        selected={false}
-        onPress={console.log}
-        selectedColor={lightTheme.colors.primaryColor}
-        {...args}
-      />
-    );
+const meta: Meta<typeof Component> = {
+  title: 'ui/molecules/Chip',
+  component: Component,
+};
+
+export default meta;
+
+type Story = StoryObj<typeof Component>;
+
+export const Chip: Story = {
+  args: {
+    title: 'Title',
+    selected: true,
+    selectedColor: 'primaryColor',
+    width: 200,
+    marginHorizontal: 12,
+    readonly: false,
   },
-  {
-    argTypes: {
-      title: {
-        control: {
-          type: 'text',
-        },
-        defaultValue: 'Chip Title',
-      },
-      readonly: {
-        control: {
-          type: 'boolean',
-        },
-        defaultValue: false,
-      },
-      selected: {
-        control: {
-          type: 'boolean',
-        },
-        defaultValue: false,
-      },
-      selectedColor: {
-        options: Object.keys(lightTheme.colors),
-        mapping: lightTheme.colors,
-        control: {
-          type: 'select',
-          labels: {
-            primary: 'Primary',
-            caution: 'Caution',
-          },
-        },
-      },
-      width: {
-        control: {
-          type: 'range',
-          min: 100,
-          max: 500,
-          step: 10,
-        },
-        defaultValue: 200,
-      },
-      marginHorizontal: {
-        control: {
-          type: 'range',
-          min: 0,
-          max: 50,
-          step: 2,
-        },
-        defaultValue: 12,
-      },
-    },
+  argTypes: {
+    selectedColor: colorPicker,
+    onPress: disabledControl,
   },
-);
+};

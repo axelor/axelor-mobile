@@ -17,8 +17,9 @@
  */
 
 import React from 'react';
-import {storiesOf} from '@storybook/react-native';
-import {PieChart} from '../../../src/components/templates';
+import type {StoryObj, Meta} from '@storybook/react';
+import {PieChart as Component} from '../../../src/components';
+import {disabledControl} from '../../utils/control-type.helpers';
 
 const datasets = [
   {
@@ -43,47 +44,34 @@ const datasets = [
   },
 ];
 
-storiesOf('ui/templates/Dashboard/PieChart', module)
-  .addParameters({
+const meta: Meta<typeof Component> = {
+  title: 'ui/templates/Dashboard/PieChart',
+  component: Component,
+  parameters: {
     viewport: {
       defaultViewport: 'responsive',
     },
-  })
-  .add(
-    'Default',
-    args => {
-      return <PieChart datasets={datasets} {...args} />;
-    },
-    {
-      argTypes: {
-        widthGraph: {
-          control: {type: 'number'},
-          defaultValue: 425,
-        },
-        radius: {
-          control: {type: 'number'},
-          defaultValue: 90,
-        },
-        innerRadius: {
-          control: {type: 'number'},
-          defaultValue: 60,
-        },
-        legend: {
-          control: {type: 'boolean'},
-          defaultValue: false,
-        },
-        donut: {
-          control: {type: 'boolean'},
-          defaultValue: false,
-        },
-        showGradient: {
-          control: {type: 'boolean'},
-          defaultValue: false,
-        },
-        title: {
-          control: 'text',
-          defaultValue: 'Title',
-        },
-      },
-    },
-  );
+  },
+};
+
+export default meta;
+
+type Story = StoryObj<typeof Component>;
+
+export const PieChart: Story = {
+  args: {
+    title: 'Chart title',
+    legend: false,
+    donut: false,
+    widthGraph: 350,
+    radius: 90,
+    innerRadius: 60,
+    showGradient: false,
+  },
+  argTypes: {
+    sectionAutoFocus: disabledControl,
+    focusOnPress: disabledControl,
+    datasets: disabledControl,
+  },
+  render: args => <Component datasets={datasets} {...args} />,
+};

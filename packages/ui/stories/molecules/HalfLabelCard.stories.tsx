@@ -16,35 +16,25 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import React from 'react';
-import {storiesOf} from '@storybook/react-native';
-import {action} from '@storybook/addon-actions';
-import {HalfLabelCard} from '../../src/components/molecules';
+import type {StoryObj, Meta} from '@storybook/react';
+import {HalfLabelCard as Component} from '../../src/components';
+import {disabledControl} from '../utils/control-type.helpers';
 
-storiesOf('ui/molecules/HalfLabelCard', module).add(
-  'Default',
-  args => {
-    return (
-      <HalfLabelCard
-        iconName="backpack"
-        title="Profile"
-        onPress={action('Card pressed')}
-        {...args}
-      />
-    );
+const meta: Meta<typeof Component> = {
+  title: 'ui/molecules/HalfLabelCard',
+  component: Component,
+};
+
+export default meta;
+
+type Story = StoryObj<typeof Component>;
+
+export const HalfLabelCard: Story = {
+  args: {
+    iconName: 'backpack',
+    title: 'Title',
   },
-  {
-    argTypes: {
-      iconName: {
-        type: 'string',
-        defaultValue: 'backpack',
-        control: {type: 'text'},
-      },
-      title: {
-        type: 'string',
-        defaultValue: 'Title',
-        control: {type: 'text'},
-      },
-    },
+  argTypes: {
+    onPress: disabledControl,
   },
-);
+};

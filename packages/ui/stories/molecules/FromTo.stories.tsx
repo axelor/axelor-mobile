@@ -17,12 +17,33 @@
  */
 
 import React from 'react';
-import {storiesOf} from '@storybook/react-native';
-import {FromTo} from '../../src/components/molecules';
-import {Text} from '../../src/components/atoms';
+import type {StoryObj, Meta} from '@storybook/react';
+import {FromTo as Component, Text} from '../../src/components';
+import {disabledControl} from '../utils/control-type.helpers';
 
-storiesOf('ui/molecules/FromTo', module).add('Default', () => {
-  return (
-    <FromTo fromComponent={<Text>From</Text>} toComponent={<Text>To</Text>} />
-  );
-});
+const meta: Meta<typeof Component> = {
+  title: 'ui/molecules/FromTo',
+  component: Component,
+};
+
+export default meta;
+
+type Story = StoryObj<typeof Component>;
+
+export const FromTo: Story = {
+  args: {
+    from: 'Origin',
+    to: 'Destination',
+  },
+  argTypes: {
+    fromComponent: disabledControl,
+    toComponent: disabledControl,
+  },
+  render: args => (
+    <Component
+      {...args}
+      fromComponent={<Text>{args.from}</Text>}
+      toComponent={<Text>{args.to}</Text>}
+    />
+  ),
+};

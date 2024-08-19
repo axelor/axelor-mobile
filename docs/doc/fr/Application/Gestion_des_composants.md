@@ -68,46 +68,80 @@ Il peut ensuite y avoir deux types de stories : les stories fixes dans le style 
 
 ```tsx
 import React from 'react';
-import {storiesOf} from '@storybook/react-native';
-import {Component} from '../../src/components';
+import type {StoryObj, Meta} from '@storybook/react';
+import {ComponentName as Component} from '../../src/components';
+import {disabledControl} from '../utils/control-type.helpers';
 
-storiesOf('ui/<type>/<Component>', module)
-  .add('default', () => (
-    <Component>
-      <View />
-    </Component>
-  ))
-  .add('Text', () => (
-    <Component>
-      <Text>Text</Text>
-    </Component>
-  ));
+const meta: Meta<typeof Component> = {
+  title: 'ui/<type>/ComponentName',
+  component: Component,
+};
+
+export default meta;
+
+type Story = StoryObj<typeof Component>;
+
+export const Story1: Story = {
+  name: 'with pre-defined position',
+  args: {
+    predefinedPosition: 'bottom',
+  },
+  argTypes: {
+    onPress: disabledControl,
+  },
+  render: args => <Component {...args} />,
+};
+
+export const Story2: Story = {
+  name: 'with custom position',
+  args: {
+    top: 0,
+    right: 0,
+    left: 0,
+    bottom: 0,
+  },
+  argTypes: {
+    onPress: disabledControl,
+    predefinedPosition: disabledControl,
+  },
+  render: args => <Component {...args} />,
+};
 ```
 
 ```tsx
 import React from 'react';
-import {storiesOf} from '@storybook/react-native';
-import {Component} from '../../src/components';
+import type {StoryObj, Meta} from '@storybook/react';
+import {ComponentName as Component} from '../../src/components/atoms';
+import {colorPicker, disabledControl} from '../utils/control-type.helpers';
 
-storiesOf('ui/<type>/<Component>', module).add(
-  'default',
-  args => <Component {...args} />,
-  {
-    argTypes: {
-      propsName: {
-        control: {
-          type: 'boolean',
-        },
-        defaultValue: false,
-      },
-    },
+const meta: Meta<typeof Component> = {
+  title: 'ui/<type>/ComponentName',
+  component: Component,
+};
+
+export default meta;
+
+type Story = StoryObj<typeof Component>;
+
+export const ComponentName: Story = {
+  args: {
+    size: 50,
+    name: 'heart-fill',
+    touchable: false,
+    visible: true,
+    color: 'plannedColor',
   },
-);
+  argTypes: {
+    color: colorPicker,
+    onPress: disabledControl,
+  },
+  render: args => <Component {...args} color={args.color?.background} />,
+};
 ```
 
-Il est ensuite possible d’ajouter autant de stories fixes que nécessaire mais également de mélanger stories fixes et paramétrables. Cependant, il faut toujours ajouter une storie “default” pour que la storybook puisse compiler correctement. Pour les stories paramétrables, il est possible d’ajouter autant d’atttribut en argument que nécessaire.
+Il est ensuite possible d’ajouter autant de stories fixes que nécessaire mais également de mélanger stories fixes et paramétrables. Pour les stories paramétrables, il est possible d’ajouter autant d’atttribut en argument que nécessaire.
 
-Les [différents types d’argument disponibles](https://storybook.js.org/docs/react/essentials/controls#configuration) :
+Les [différents types d’argument disponibles](https://storybook.js.org/docs/7/essentials/controls) :
 
 - sans besoin de configuration supplémentaire : text, boolean, object
 - possibilité d'ajouter des options : number / range (définition du min, max, step)
@@ -126,6 +160,8 @@ size: {
 },
 
 // Select basique
+// Lorsque le composant est entièrement typé, il n'est pas nécessaire de définir les options de sélection.
+// Le storybook obtiendra les valeurs directement auprès du composant.
 position: {
   control: {
     type: 'radio',
@@ -134,17 +170,10 @@ position: {
   defaultValue: 'right',
 },
 
-// Travail avec le thème de l'application. Bien penser à faire le mapping ensuite
-// dans les props du composant : color={lightTheme.colors[args._color]}
-_color: {
-  control: {
-    type: 'select',
-  },
-  options: Object.entries(lightTheme.colors)
-    .filter(([, value]) => typeof value !== 'string')
-    .map(([key]) => key),
-  defaultValue: 'primaryColor',
-},
+// Travail avec le thème de l'application. Un assistant a été créé pour simplifier l'intégration,
+// n'oubliez pas de faire le mappage si seule une couleur est souhaitée et non l'objet complet :
+// color={args.color?.background}
+_color: colorPicker,
 ```
 
 :::caution
@@ -157,22 +186,22 @@ icon ?: {
 	name: string;
 }
 
-// Création des paramètres pour la storie
-_iconColor: {
-  control: {
-    type: 'text',
+// Création des paramètres pour la story et mapping dans le rendu
+export const ComponentName: Story = {
+  args: {
+    _iconName: 'qrCode',
+    _iconColor: 'primaryColor',
   },
-  defaultValue: '#000000',
-},
-_iconName: {
-  control: {
-    type: 'text',
+  argTypes: {
+    _iconColor: colorPicker
   },
-  defaultValue: 'qrCode',
-},
-
-// Mapping dans les props du composant
-<Component {...args} icon={{name: args._iconName, color: args._iconColor}} />
+  render: args => (
+    <Component
+      {...args}
+      icon={{name: args._iconName, color: args._iconColor}}
+    />
+  ),
+};
 ```
 
 :::
@@ -180,7 +209,7 @@ _iconName: {
 Quelques commandes importantes à exécuter à la racine du projet pour la storybook :
 
 - ouvrir la storybook : `yarn storybook`
-- build la storybook : `yarn build-storybook`
+- build la storybook : `yarn storybook:build`
 
 :::info
 💡 Ne pas hésiter à regarder les stories existantes lors de la création d’une nouvelle storie, elles représentent déjà un certain nombre de cas d’utilisation qui peuvent être utiles.
