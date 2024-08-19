@@ -16,49 +16,34 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import React from 'react';
-import {storiesOf} from '@storybook/react-native';
-import {StarScore} from '../../src/components/molecules';
-import {lightTheme} from '../../src/theme';
+import type {StoryObj, Meta} from '@storybook/react';
+import {StarScore as Component} from '../../src/components';
+import {colorPicker, disabledControl} from '../utils/control-type.helpers';
 
-const stories = storiesOf('ui/molecules/StarScore', module);
+const meta: Meta<typeof Component> = {
+  title: 'ui/molecules/StarScore',
+  component: Component,
+};
 
-stories.add(
-  'Default',
-  args => {
-    return <StarScore {...args} color={lightTheme.colors[args.color]} />;
+export default meta;
+
+type Story = StoryObj<typeof Component>;
+
+export const StarScore: Story = {
+  args: {
+    score: 0,
+    showHalfStar: true,
+    showMissingStar: true,
+    size: 20,
   },
-  {
-    argTypes: {
-      score: {
-        control: {type: 'number', min: 0, max: 5, step: 0.5},
-        description: 'The score to display',
-        defaultValue: 3,
-      },
-      showHalfStar: {
-        control: 'boolean',
-        description: 'Whether to show half stars',
-        defaultValue: true,
-      },
-      showMissingStar: {
-        control: 'boolean',
-        description: 'Whether to show missing stars',
-        defaultValue: true,
-      },
-      size: {
-        control: {type: 'number', min: 10, max: 50},
-        description: 'The size of the stars',
-        defaultValue: 20,
-      },
-      color: {
-        options: Object.entries(lightTheme.colors)
-          .filter(([, _color]) => typeof _color !== 'string')
-          .map(([key]) => key),
-        defaultValue: 'primaryColor',
-        control: {
-          type: 'select',
-        },
-      },
+  argTypes: {
+    score: {
+      control: {type: 'number', min: 0, max: 5, step: 0.5},
+      description: 'The score to display',
+      defaultValue: 3,
     },
+    color: colorPicker,
+    editMode: disabledControl,
+    onPress: disabledControl,
   },
-);
+};

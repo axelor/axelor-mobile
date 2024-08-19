@@ -16,29 +16,28 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import React from 'react';
-import {storiesOf} from '@storybook/react-native';
-import {FormHtmlInput} from '../../src/components/molecules';
+import type {StoryObj, Meta} from '@storybook/react';
+import {FormHtmlInput as Component} from '../../src/components';
+import {disabledControl} from '../utils/control-type.helpers';
 
-storiesOf('ui/molecules/FormHtmlInput', module)
-  .add('default', () => (
-    <FormHtmlInput
-      title="Description"
-      defaultValue="<p>This is the default value</p>"
-      placeholder="Enter a description"
-    />
-  ))
-  .add('with required field', () => (
-    <FormHtmlInput
-      title="Required Field"
-      placeholder="This field is required"
-      required
-    />
-  ))
-  .add('read-only', () => (
-    <FormHtmlInput
-      title="Read-Only Field"
-      defaultValue="<p>This field is read-only</p>"
-      readonly
-    />
-  ));
+const meta: Meta<typeof Component> = {
+  title: 'ui/molecules/FormHtmlInput',
+  component: Component,
+};
+
+export default meta;
+
+type Story = StoryObj<typeof Component>;
+
+export const FormHtmlInput: Story = {
+  args: {
+    title: 'Title',
+    placeholder: 'Enter your value',
+    defaultValue: 'Value..',
+    readonly: false,
+    required: false,
+  },
+  argTypes: {
+    onChange: disabledControl,
+  },
+};

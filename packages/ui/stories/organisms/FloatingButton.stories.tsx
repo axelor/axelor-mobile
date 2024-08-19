@@ -17,83 +17,91 @@
  */
 
 import React from 'react';
-import {storiesOf} from '@storybook/react-native';
-import {action} from '@storybook/addon-actions';
-import {FloatingButton} from '../../src/components/organisms';
-import {lightTheme} from '../../src/theme';
+import type {StoryObj, Meta} from '@storybook/react';
+import {FloatingButton as Component} from '../../src/components';
+import {colorPicker, disabledControl} from '../utils/control-type.helpers';
 
-storiesOf('ui/organisms/FloatingButton', module).add(
-  'Default',
-  args => {
-    return (
-      <FloatingButton
-        actions={[
-          {
-            key: 1,
-            title: args.showTitles ? 'Add' : null,
-            iconName: 'plus',
-            color: lightTheme.colors.infoColor,
-            hideIf: args.hideAdd,
-            onPress: action('Add button pressed'),
-          },
-          {
-            key: 2,
-            title: args.showTitles ? 'Edit' : null,
-            iconName: 'pencil',
-            color: lightTheme.colors.progressColor,
-            indicator: args.showIndicatorOnEdit,
-            onPress: action('Edit button pressed'),
-          },
-          {
-            key: 3,
-            title: args.showTitles ? 'Delete' : null,
-            iconName: 'trash-fill',
-            color: lightTheme.colors.errorColor,
-            disabled: args.disableDelete,
-            onPress: action('Delete button pressed'),
-          },
-        ]}
-        translator={key => key}
-        {...args}
-      />
-    );
+const meta: Meta<typeof Component> = {
+  title: 'ui/organisms/FloatingButton',
+  component: Component,
+};
+
+export default meta;
+
+type Story = StoryObj<typeof Component>;
+
+export const FloatingButton: Story = {
+  args: {
+    iconName: 'pen-fill',
+    closeIconName: 'x-lg',
+    size: 50,
+    useCircleStyle: false,
+    showTitles: false,
+    action1_title: 'Add',
+    action1_icon: 'plus-lg',
+    action1_color: 'infoColor',
+    action1_hidden: false,
+    action1_disabled: false,
+    action1_indicator: 0,
+    action2_title: 'Edit',
+    action2_icon: 'pencil',
+    action2_color: 'progressColor',
+    action2_hidden: false,
+    action2_disabled: true,
+    action2_indicator: 0,
+    action3_title: 'Delete',
+    action3_icon: 'trash-fill',
+    action3_color: 'errorColor',
+    action3_hidden: false,
+    action3_disabled: false,
+    action3_indicator: 3,
   },
-  {
-    argTypes: {
-      iconName: {
-        type: 'string',
-        defaultValue: 'pen-fill',
-        control: {type: 'text'},
-      },
-      closeIconName: {
-        type: 'string',
-        defaultValue: 'x-lg',
-        control: {type: 'text'},
-      },
-      size: {
-        control: {type: 'range', min: 30, max: 100, step: 5},
-        defaultValue: 60,
-      },
-      useCircleStyle: {
-        type: 'boolean',
-        defaultValue: false,
-      },
-      showTitles: {
-        type: 'boolean',
-        defaultValue: true,
-      },
-      showIndicatorOnEdit: {
-        type: 'boolean',
-        defaultValue: false,
-      },
-      disableDelete: {
-        type: 'boolean',
-        defaultValue: false,
-      },
-      hideAdd: {
-        type: 'boolean',
-        defaultValue: false,
-      },
-    },
+  argTypes: {
+    action1_color: colorPicker,
+    action2_color: colorPicker,
+    action3_color: colorPicker,
+    onGlobalPress: disabledControl,
+    actions: disabledControl,
+    closeOnOutsideClick: disabledControl,
+    translator: disabledControl,
+    defaultOpenValue: disabledControl,
   },
-);
+  render: args => (
+    <Component
+      actions={[
+        {
+          key: 1,
+          title: args.showTitles ? args.action1_title : null,
+          iconName: args.action1_icon,
+          color: args.action1_color,
+          hideIf: args.action1_hidden,
+          disabled: args.action1_disabled,
+          indicator: args.action1_indicator,
+          onPress: () => {},
+        },
+        {
+          key: 2,
+          title: args.showTitles ? args.action2_title : null,
+          iconName: args.action2_icon,
+          color: args.action2_color,
+          hideIf: args.action2_hidden,
+          disabled: args.action2_disabled,
+          indicator: args.action2_indicator,
+          onPress: () => {},
+        },
+        {
+          key: 3,
+          title: args.showTitles ? args.action3_title : null,
+          iconName: args.action3_icon,
+          color: args.action3_color,
+          hideIf: args.action3_hidden,
+          disabled: args.action3_disabled,
+          indicator: args.action3_indicator,
+          onPress: () => {},
+        },
+      ]}
+      translator={key => key}
+      {...args}
+    />
+  ),
+};

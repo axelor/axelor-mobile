@@ -17,60 +17,50 @@
  */
 
 import React from 'react';
-import {StyleSheet} from 'react-native';
-import {storiesOf} from '@storybook/react-native';
-import {SelectionContainer} from '../../src/components/molecules';
+import type {StoryObj, Meta} from '@storybook/react';
+import {SelectionContainer as Component} from '../../src/components';
+import {disabledControl} from '../utils/control-type.helpers';
 
-const objectList = [
-  {id: 1, name: 'Option 1'},
-  {id: 2, name: 'Option 2'},
-  {id: 3, name: 'Option 3'},
-  {id: 4, name: 'Option 4'},
-  {id: 5, name: 'Option 5'},
-];
+const meta: Meta<typeof Component> = {
+  title: 'ui/molecules/SelectionContainer',
+  component: Component,
+};
 
-const displayValue = item => item.name;
+export default meta;
 
-const handleSelect = item =>
-  console.log(`Selected item: ${JSON.stringify(item)}`);
+type Story = StoryObj<typeof Component>;
 
-storiesOf('ui/molecules/SelectionContainer', module).add(
-  'Default',
-  args => {
+export const SelectionContainer: Story = {
+  args: {
+    emptyValue: false,
+    isPicker: false,
+    readonly: false,
+    display_empty: false,
+  },
+  argTypes: {
+    objectList: disabledControl,
+    displayValue: disabledControl,
+    handleSelect: disabledControl,
+    selectedItem: disabledControl,
+    translator: disabledControl,
+    keyField: disabledControl,
+    title: disabledControl,
+  },
+  render: args => {
+    const objectList = [
+      {id: 1, name: 'Option 1'},
+      {id: 2, name: 'Option 2'},
+      {id: 3, name: 'Option 3'},
+      {id: 4, name: 'Option 4'},
+      {id: 5, name: 'Option 5'},
+    ];
     return (
-      <SelectionContainer
-        style={styles.container}
-        objectList={objectList}
-        displayValue={displayValue}
-        handleSelect={handleSelect}
+      <Component
+        objectList={args.display_empty ? [] : objectList}
         selectedItem={[objectList[0]]}
+        displayValue={item => item.name}
         {...args}
       />
     );
   },
-  {
-    argTypes: {
-      emptyValue: {
-        type: 'boolean',
-        defaultValue: false,
-        control: {type: 'boolean'},
-      },
-      isPicker: {
-        type: 'boolean',
-        defaultValue: false,
-        control: {type: 'boolean'},
-      },
-      readonly: {
-        type: 'boolean',
-        defaultValue: false,
-        control: {type: 'boolean'},
-      },
-    },
-  },
-);
-
-const styles = StyleSheet.create({
-  container: {
-    top: 0,
-  },
-});
+};

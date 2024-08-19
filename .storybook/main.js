@@ -1,20 +1,10 @@
-const path = require('path');
-
 module.exports = {
-  stories: [
-    '../packages/**/*.stories.@(js|jsx|ts|tsx|mdx)',
-    './**/*.stories.mdx',
-  ],
-  addons: [
-    '@storybook/addon-links',
-    '@storybook/addon-essentials',
-    '@storybook/addon-interactions',
-    '@storybook/addon-knobs',
-    {
-      name: '@storybook/addon-react-native-web',
-    },
-  ],
-  framework: '@storybook/react',
+  stories: ['../packages/ui/stories/**/*.stories.tsx'],
+  addons: ['@storybook/addon-essentials', '@storybook/addon-react-native-web'],
+  framework: {
+    name: '@storybook/react-webpack5',
+    options: {},
+  },
   webpackFinal: async config => {
     config.resolve.alias = {
       ...config.resolve.alias,

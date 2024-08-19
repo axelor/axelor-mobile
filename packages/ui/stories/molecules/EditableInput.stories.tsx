@@ -16,47 +16,27 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import React from 'react';
-import {storiesOf} from '@storybook/react-native';
-import {EditableInput} from '../../src/components/molecules';
+import type {StoryObj, Meta} from '@storybook/react';
+import {EditableInput as Component} from '../../src/components';
+import {disabledControl} from '../utils/control-type.helpers';
 
-storiesOf('ui/molecules/EditableInput', module).add(
-  'Default',
-  args => {
-    return (
-      <EditableInput
-        placeholder="Enter text here"
-        onValidate={console.log}
-        defaultValue={args.defaultValue}
-        multiline={args.multiline}
-        numberOfLines={args.numberOfLines}
-        {...args}
-      />
-    );
+const meta: Meta<typeof Component> = {
+  title: 'ui/molecules/EditableInput',
+  component: Component,
+};
+
+export default meta;
+
+type Story = StoryObj<typeof Component>;
+
+export const EditableInput: Story = {
+  args: {
+    defaultValue: 'Value...',
+    multiline: false,
+    numberOfLines: 1,
+    placeholder: 'Enter your value',
   },
-  {
-    argTypes: {
-      defaultValue: {
-        control: {
-          type: 'text',
-        },
-        defaultValue: '',
-      },
-      multiline: {
-        control: {
-          type: 'boolean',
-        },
-        defaultValue: false,
-      },
-      numberOfLines: {
-        control: {
-          type: 'range',
-          min: 1,
-          max: 10,
-          step: 1,
-        },
-        defaultValue: 1,
-      },
-    },
+  argTypes: {
+    onValidate: disabledControl,
   },
-);
+};

@@ -17,116 +17,270 @@
  */
 
 import React from 'react';
-import {storiesOf} from '@storybook/react-native';
-import {ObjectCard} from '../../src/components';
-import {lightTheme} from '../../src/theme';
+import type {StoryObj, Meta} from '@storybook/react';
+import {ObjectCard as Component} from '../../src/components';
+import {colorPicker, disabledControl} from '../utils/control-type.helpers';
 
-const upperTextItems = [
-  {
-    order: 1,
-    displayText: 'Lorem',
-    iconName: 'play',
-    indicatorText: 'ipsum',
+const meta: Meta<typeof Component> = {
+  title: 'ui/templates/ObjectCard',
+  component: Component,
+};
+
+export default meta;
+
+type Story = StoryObj<typeof Component>;
+
+export const ObjectCard: Story = {
+  args: {
+    showArrow: true,
+    iconLeftMargin: 20,
+    leftContainerFlex: 3,
+    image_hidden: false,
+    image_uri: 'https://picsum.photos/70',
+    sideBadges_hidden: false,
+    badge1_title: 'Badge 1',
+    badge1_color: 'pink',
+    badge1_order: 1,
+    badge1_hidden: false,
+    badge2_title: 'Badge 2',
+    badge2_color: 'amber',
+    badge2_order: 2,
+    badge2_hidden: false,
+    lowerBadges_hidden: false,
+    lowerBadges_reverse: false,
+    badge3_title: 'Badge 3',
+    badge3_color: 'indigo',
+    badge3_order: 3,
+    badge3_hidden: false,
+    badge4_title: 'Badge 4',
+    badge4_color: 'primaryColor',
+    badge4_order: 4,
+    badge4_hidden: false,
+    upperBadges_hidden: false,
+    upperBadges_reverse: false,
+    badge5_title: 'Badge 5',
+    badge5_color: 'infoColor',
+    badge5_order: 5,
+    badge5_hidden: false,
+    badge6_title: 'Badge 6',
+    badge6_color: 'brown',
+    badge6_order: 6,
+    badge6_hidden: false,
+    upperTexts_hidden: false,
+    lowerTexts_hidden: false,
   },
-  {
-    order: -2,
-    displayText:
-      'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Mauris elementum.',
-    isTitle: true,
+  argTypes: {
+    image_uri: {
+      control: 'text',
+      if: {arg: 'image_hidden', truthy: false},
+    },
+    badge1_title: {
+      control: 'text',
+      if: {arg: 'sideBadges_hidden', truthy: false},
+    },
+    badge1_color: {
+      ...colorPicker,
+      if: {arg: 'sideBadges_hidden', truthy: false},
+    },
+    badge1_order: {
+      control: 'number',
+      if: {arg: 'sideBadges_hidden', truthy: false},
+    },
+    badge1_hidden: {
+      control: 'boolean',
+      if: {arg: 'sideBadges_hidden', truthy: false},
+    },
+    badge2_title: {
+      control: 'text',
+      if: {arg: 'sideBadges_hidden', truthy: false},
+    },
+    badge2_color: {
+      ...colorPicker,
+      if: {arg: 'sideBadges_hidden', truthy: false},
+    },
+    badge2_order: {
+      control: 'number',
+      if: {arg: 'sideBadges_hidden', truthy: false},
+    },
+    badge2_hidden: {
+      control: 'boolean',
+      if: {arg: 'sideBadges_hidden', truthy: false},
+    },
+    lowerBadges_reverse: {
+      control: 'boolean',
+      if: {arg: 'lowerBadges_hidden', truthy: false},
+    },
+    badge3_title: {
+      control: 'text',
+      if: {arg: 'lowerBadges_hidden', truthy: false},
+    },
+    badge3_color: {
+      ...colorPicker,
+      if: {arg: 'lowerBadges_hidden', truthy: false},
+    },
+    badge3_order: {
+      control: 'number',
+      if: {arg: 'lowerBadges_hidden', truthy: false},
+    },
+    badge3_hidden: {
+      control: 'boolean',
+      if: {arg: 'lowerBadges_hidden', truthy: false},
+    },
+    badge4_title: {
+      control: 'text',
+      if: {arg: 'lowerBadges_hidden', truthy: false},
+    },
+    badge4_color: {
+      ...colorPicker,
+      if: {arg: 'lowerBadges_hidden', truthy: false},
+    },
+    badge4_order: {
+      control: 'number',
+      if: {arg: 'lowerBadges_hidden', truthy: false},
+    },
+    badge4_hidden: {
+      control: 'boolean',
+      if: {arg: 'lowerBadges_hidden', truthy: false},
+    },
+    upperBadges_reverse: {
+      control: 'boolean',
+      if: {arg: 'upperBadges_hidden', truthy: false},
+    },
+    badge5_title: {
+      control: 'text',
+      if: {arg: 'upperBadges_hidden', truthy: false},
+    },
+    badge5_color: {
+      ...colorPicker,
+      if: {arg: 'upperBadges_hidden', truthy: false},
+    },
+    badge5_order: {
+      control: 'number',
+      if: {arg: 'upperBadges_hidden', truthy: false},
+    },
+    badge5_hidden: {
+      control: 'boolean',
+      if: {arg: 'upperBadges_hidden', truthy: false},
+    },
+    badge6_title: {
+      control: 'text',
+      if: {arg: 'upperBadges_hidden', truthy: false},
+    },
+    badge6_color: {
+      ...colorPicker,
+      if: {arg: 'upperBadges_hidden', truthy: false},
+    },
+    badge6_order: {
+      control: 'number',
+      if: {arg: 'upperBadges_hidden', truthy: false},
+    },
+    badge6_hidden: {
+      control: 'boolean',
+      if: {arg: 'upperBadges_hidden', truthy: false},
+    },
+    touchable: disabledControl,
+    onPress: disabledControl,
+    image: disabledControl,
+    upperBadges: disabledControl,
+    lowerBadges: disabledControl,
+    sideBadges: disabledControl,
+    upperTexts: disabledControl,
+    lowerTexts: disabledControl,
   },
-  {
-    order: 3,
-    displayText:
-      'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Mauris elementum.',
-    isTitle: true,
-    numberOfLines: 2,
-  },
-  {order: 3, displayText: null, hideIfNull: true},
-  {order: 4, displayText: 'Lorem'},
-];
-
-const lowerTextItems = [
-  {order: 2, displayText: 'Lorem'},
-  {
-    order: 1,
-    displayText:
-      'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Mauris elementum.',
-  },
-];
-
-const upperBadgeItems = [
-  {order: 2, displayText: 'Lorem'},
-  {order: 1, displayText: 'Lorem'},
-];
-
-const sideBadgeItems = [
-  {order: 2, displayText: 'Lorem', color: lightTheme.colors.infoColor},
-  {order: 1, displayText: 'Lorem', color: lightTheme.colors.errorColor},
-];
-
-const simpleArgs = {
-  touchable: true,
-  onPress: () => console.log('Pressed'),
-  showArrow: false,
-  image: {source: {uri: 'https://picsum.photos/70'}},
-  upperTexts: {items: upperTextItems},
+  render: args => (
+    <Component
+      {...args}
+      image={args.image_hidden ? undefined : {source: {uri: args.image_uri}}}
+      lowerTexts={
+        args.lowerTexts_hidden
+          ? undefined
+          : {
+              items: [
+                {displayText: 'Lorem ipsum dolor sit amet'},
+                {displayText: 'Lorem'},
+              ],
+            }
+      }
+      upperTexts={
+        args.upperTexts_hidden
+          ? undefined
+          : {
+              items: [
+                {
+                  displayText: 'Lorem ipsum dolor sit amet',
+                  isTitle: true,
+                },
+                {
+                  iconName: 'play',
+                  indicatorText: 'Lorem',
+                  displayText: 'ipsum',
+                },
+                {displayText: 'Lorem'},
+              ],
+            }
+      }
+      sideBadges={
+        args.sideBadges_hidden
+          ? undefined
+          : {
+              items: [
+                {
+                  order: args.badge1_order,
+                  displayText: args.badge1_title,
+                  color: args.badge1_color,
+                  showIf: !args.badge1_hidden,
+                },
+                {
+                  order: args.badge2_order,
+                  displayText: args.badge2_title,
+                  color: args.badge2_color,
+                  showIf: !args.badge2_hidden,
+                },
+              ],
+            }
+      }
+      lowerBadges={
+        args.lowerBadges_hidden
+          ? undefined
+          : {
+              items: [
+                {
+                  order: args.badge3_order,
+                  displayText: args.badge3_title,
+                  color: args.badge3_color,
+                  showIf: !args.badge3_hidden,
+                },
+                {
+                  order: args.badge4_order,
+                  displayText: args.badge4_title,
+                  color: args.badge4_color,
+                  showIf: !args.badge4_hidden,
+                },
+              ],
+              fixedOnRightSide: args.lowerBadges_reverse,
+            }
+      }
+      upperBadges={
+        args.upperBadges_hidden
+          ? undefined
+          : {
+              items: [
+                {
+                  order: args.badge5_order,
+                  displayText: args.badge5_title,
+                  color: args.badge5_color,
+                  showIf: !args.badge5_hidden,
+                },
+                {
+                  order: args.badge6_order,
+                  displayText: args.badge6_title,
+                  color: args.badge6_color,
+                  showIf: !args.badge6_hidden,
+                },
+              ],
+              fixedOnRightSide: args.upperBadges_reverse,
+            }
+      }
+    />
+  ),
 };
-
-const simpleArrowArgs = {
-  ...simpleArgs,
-  showArrow: true,
-};
-
-const simpleBadgeArgs = {
-  ...simpleArrowArgs,
-  sideBadges: {items: sideBadgeItems},
-};
-
-const allTextsArgs = {
-  ...simpleBadgeArgs,
-  lowerTexts: {items: lowerTextItems},
-};
-
-const onlyLowerTextArgs = {
-  ...allTextsArgs,
-  upperTexts: null,
-  image: null,
-};
-
-const upperBadgesArgs = {
-  ...allTextsArgs,
-  upperBadges: {items: upperBadgeItems},
-};
-
-const upperBadgesReverseArgs = {
-  ...allTextsArgs,
-  upperBadges: {items: upperBadgeItems, fixedOnRightSide: true},
-};
-
-const lowerBadgesArgs = {
-  ...allTextsArgs,
-  lowerBadges: {items: upperBadgeItems},
-};
-
-const lowerBadgesReverseArgs = {
-  ...allTextsArgs,
-  lowerBadges: {items: upperBadgeItems, fixedOnRightSide: true},
-};
-
-const defaultArgs = {
-  ...upperBadgesArgs,
-  lowerBadges: {items: upperBadgeItems},
-};
-
-storiesOf('ui/templates/ObjectCard', module)
-  .add('Default', () => <ObjectCard {...defaultArgs} />)
-  .add('Simple card', () => <ObjectCard {...simpleArgs} />)
-  .add('Simple card with arrow', () => <ObjectCard {...simpleArrowArgs} />)
-  .add('Side badges', () => <ObjectCard {...simpleBadgeArgs} />)
-  .add('Both texts card', () => <ObjectCard {...allTextsArgs} />)
-  .add('Only lower text', () => <ObjectCard {...onlyLowerTextArgs} />)
-  .add('Upper badges basic', () => <ObjectCard {...upperBadgesArgs} />)
-  .add('Upper badges reverse', () => <ObjectCard {...upperBadgesReverseArgs} />)
-  .add('Lower badges basic', () => <ObjectCard {...lowerBadgesArgs} />)
-  .add('Lower badges reverse', () => <ObjectCard {...lowerBadgesReverseArgs} />)
-  .add('Lower badges basic', () => <ObjectCard {...lowerBadgesArgs} />);

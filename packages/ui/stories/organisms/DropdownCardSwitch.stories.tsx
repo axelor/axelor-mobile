@@ -17,37 +17,43 @@
  */
 
 import React from 'react';
-import {storiesOf} from '@storybook/react-native';
-import {Text} from '../../src/components/atoms';
-import {DropdownCardSwitch} from '../../src/components/organisms';
+import type {StoryObj, Meta} from '@storybook/react';
+import {DropdownCardSwitch as Component, Text} from '../../src/components';
+import {disabledControl} from '../utils/control-type.helpers';
 
-const dropdownItems = [
-  {
-    key: 1,
-    title: 'Dropdown 1',
-    childrenComp: <Text>Dropdown 1 Content</Text>,
-    isDefaultVisible: true,
-  },
-  {
-    key: 2,
-    title: 'Dropdown 2',
-    childrenComp: <Text>Dropdown 2 Content</Text>,
-    isDefaultVisible: false,
-  },
-];
+const viewContent = <Text>Dropdown Content</Text>;
 
-storiesOf('ui/organisms/DropdownCardSwitch', module).add(
-  'Default',
-  args => {
-    return <DropdownCardSwitch dropdownItems={dropdownItems} {...args} />;
+const meta: Meta<typeof Component> = {
+  title: 'ui/organisms/DropdownCardSwitch',
+  component: Component,
+};
+
+export default meta;
+
+type Story = StoryObj<typeof Component>;
+
+export const DropdownCardSwitch: Story = {
+  args: {multiSelection: false},
+  argTypes: {dropdownItems: disabledControl},
+  render: args => {
+    return (
+      <Component
+        dropdownItems={[
+          {
+            key: 1,
+            title: 'Dropdown 1',
+            childrenComp: viewContent,
+            isDefaultVisible: true,
+          },
+          {
+            key: 2,
+            title: 'Dropdown 2',
+            childrenComp: viewContent,
+            isDefaultVisible: false,
+          },
+        ]}
+        {...args}
+      />
+    );
   },
-  {
-    argTypes: {
-      multiSelection: {
-        type: 'boolean',
-        defaultValue: false,
-        control: {type: 'boolean'},
-      },
-    },
-  },
-);
+};

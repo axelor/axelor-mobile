@@ -17,61 +17,60 @@
  */
 
 import React from 'react';
-import {storiesOf} from '@storybook/react-native';
-import {action} from '@storybook/addon-actions';
-import {Picker} from '../../src/components/organisms';
+import type {StoryObj, Meta} from '@storybook/react';
+import {Picker as Component} from '../../src/components';
+import {colorPicker, disabledControl} from '../utils/control-type.helpers';
 
-const listItems = [
-  {id: '1', label: 'Item 1'},
-  {id: '2', label: 'Item 2'},
-  {id: '3', label: 'Item 3'},
-];
-storiesOf('ui/organisms/Picker', module).add(
-  'Default',
-  args => {
+const meta: Meta<typeof Component> = {
+  title: 'ui/organisms/Picker',
+  component: Component,
+};
+
+export default meta;
+
+type Story = StoryObj<typeof Component>;
+
+export const Picker: Story = {
+  args: {
+    title: 'Select an item',
+    emptyValue: true,
+    readonly: false,
+    required: false,
+    item1_color: 'primaryColor',
+    item1_title: 'Item 1',
+    item2_color: 'secondaryColor',
+    item2_title: 'Item 2',
+    item3_color: 'cautionColor',
+    item3_title: 'Item 3',
+  },
+  argTypes: {
+    item1_color: colorPicker,
+    item2_color: colorPicker,
+    item3_color: colorPicker,
+    onValueChange: disabledControl,
+    listItems: disabledControl,
+    isValueItem: disabledControl,
+    isScrollViewContainer: disabledControl,
+    translator: disabledControl,
+    defaultValue: disabledControl,
+    labelField: disabledControl,
+    valueField: disabledControl,
+    displayValue: disabledControl,
+  },
+  render: args => {
+    const listItem = [
+      {color: args.item1_color, title: args.item1_title, key: 1},
+      {color: args.item2_color, title: args.item2_title, key: 2},
+      {color: args.item3_color, title: args.item3_title, key: 3},
+    ];
+
     return (
-      <Picker
-        title={'Select an item'}
-        onValueChange={action('onValueChange')}
-        listItems={listItems}
-        labelField="label"
-        valueField="id"
+      <Component
+        labelField="title"
+        valueField="key"
+        listItems={listItem}
         {...args}
       />
     );
   },
-  {
-    argTypes: {
-      title: {
-        type: 'string',
-        defaultValue: 'Select an item',
-        control: {type: 'text'},
-      },
-      emptyValue: {
-        type: 'boolean',
-        defaultValue: true,
-        control: {type: 'boolean'},
-      },
-      isValueItem: {
-        type: 'boolean',
-        defaultValue: false,
-        control: {type: 'boolean'},
-      },
-      required: {
-        type: 'boolean',
-        defaultValue: false,
-        control: {type: 'boolean'},
-      },
-      readonly: {
-        type: 'boolean',
-        defaultValue: false,
-        control: {type: 'boolean'},
-      },
-      disabledValue: {
-        type: 'string',
-        defaultValue: 'Disabled',
-        control: {type: 'text'},
-      },
-    },
-  },
-);
+};
