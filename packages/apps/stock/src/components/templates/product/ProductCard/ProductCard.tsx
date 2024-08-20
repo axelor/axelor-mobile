@@ -70,14 +70,14 @@ const ProductCard = ({
               availableStock == null
                 ? I18n.t('Stock_Calculing')
                 : availableStock > 0
-                ? I18n.t('Stock_Available')
-                : I18n.t('Stock_Unavailable'),
+                  ? I18n.t('Stock_Available')
+                  : I18n.t('Stock_Unavailable'),
             color:
               availableStock == null
                 ? Colors.secondaryColor
                 : availableStock > 0
-                ? Colors.successColor
-                : Colors.errorColor,
+                  ? Colors.successColor
+                  : Colors.errorColor,
           },
         ],
       }}

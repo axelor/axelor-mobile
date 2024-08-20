@@ -1,5 +1,5 @@
 module.exports = {
   root: true,
   extends: ['@react-native', 'prettier'],
-  ignorePatterns: ['jest/'],
+  ignorePatterns: ['__tests__/', 'lib/'],
 };
