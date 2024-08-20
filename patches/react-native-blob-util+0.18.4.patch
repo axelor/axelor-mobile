@@ -1,8 +1,8 @@
 diff --git a/node_modules/react-native-blob-util/android/src/main/java/com/ReactNativeBlobUtil/ReactNativeBlobUtilReq.java b/node_modules/react-native-blob-util/android/src/main/java/com/ReactNativeBlobUtil/ReactNativeBlobUtilReq.java
-index 4b41402..e836f61 100644
+index 9aee829..ca5d8cd 100644
 --- a/node_modules/react-native-blob-util/android/src/main/java/com/ReactNativeBlobUtil/ReactNativeBlobUtilReq.java
 +++ b/node_modules/react-native-blob-util/android/src/main/java/com/ReactNativeBlobUtil/ReactNativeBlobUtilReq.java
-@@ -279,7 +279,13 @@ public class ReactNativeBlobUtilReq extends BroadcastReceiver implements Runnabl
+@@ -292,7 +292,13 @@ public class ReactNativeBlobUtilReq extends BroadcastReceiver implements Runnabl
                  DownloadManager dm = (DownloadManager) appCtx.getSystemService(Context.DOWNLOAD_SERVICE);
                  downloadManagerId = dm.enqueue(req);
                  androidDownloadManagerTaskTable.put(taskId, Long.valueOf(downloadManagerId));

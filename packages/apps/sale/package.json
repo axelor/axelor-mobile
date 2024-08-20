@@ -30,7 +30,7 @@
     "@axelor/aos-mobile-crm": "8.1.1",
     "@axelor/aos-mobile-core": "8.1.1",
     "@axelor/aos-mobile-ui": "8.1.1",
-    "@reduxjs/toolkit": "^2.2.3"
+    "@reduxjs/toolkit": "^2.2.7"
   },
   "devDependencies": {
     "@babel/runtime": "^7.20.0",
