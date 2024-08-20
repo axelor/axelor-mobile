@@ -209,4 +209,21 @@ export const sale_modelAPI: ObjectFields = {
     amountTypeSelect: schemaContructor.number(),
     amount: schemaContructor.number(),
   }),
+  sale_cart: schemaContructor.object({
+    partner: schemaContructor.subObject(),
+    company: schemaContructor.subObject(),
+  }),
+  sale_cartLine: schemaContructor.object({
+    product: schemaContructor.subObject().concat(
+      schemaContructor.object({
+        name: schemaContructor.string(),
+        code: schemaContructor.string(),
+        picture: schemaContructor.subObject('fileName'),
+        salePrice: schemaContructor.number(),
+        saleCurrency: schemaContructor.subObject('symbol'),
+        productVariant: schemaContructor.subObject('name'),
+      }),
+    ),
+    qty: schemaContructor.number(),
+  }),
 };

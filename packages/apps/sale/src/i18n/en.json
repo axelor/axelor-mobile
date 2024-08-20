@@ -1,6 +1,8 @@
 {
   "Sale_Sales": "Sales",
   "Sale_Sale": "Sale",
+  "Sale_Cart": "Cart",
+  "Sale_ActiveCart": "Active Cart",
   "Sale_ProductsServices": "Products & services",
   "Sale_ProductService": "Produit & service",
   "Sale_NotState": "Not {{state}}",
@@ -28,6 +30,7 @@
   "Sale_AmountInvoiced": "Amount invoiced W.T.",
   "Sale_AdvanceTotal": "Advance payment A.T.I total",
   "Sale_General": "General",
+  "Sale_SalesFollowUp": "Sales follow-up",
   "Sale_FollowUp": "Follow-up",
   "Sale_Margin": "Margin",
   "Sale_Descriptions": "Descriptions",
@@ -137,5 +140,7 @@
   "Sale_SliceAction_FetchSaleOrderLineById": "fetch sale order line by id",
   "Sale_SliceAction_FetchComplementaryProduct": "fetch complementary products",
   "Sale_SliceAction_FetchPriceListLine": "fetch price list lines",
-  "Sale_SliceAction_FetchVariantProduct": "fetch variant products"
+  "Sale_SliceAction_FetchVariantProduct": "fetch variant products",
+  "Sale_SliceAction_SearchCart": "",
+  "Sale_SliceAction_SearchCartLine": ""
 }

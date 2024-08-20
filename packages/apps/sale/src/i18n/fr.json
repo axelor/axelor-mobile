@@ -1,6 +1,8 @@
 {
   "Sale_Sales": "Ventes",
   "Sale_Sale": "Vente",
+  "Sale_Cart": "Panier",
+  "Sale_ActiveCart": "Panier actif",
   "Sale_ProductsServices": "Articles et prestations",
   "Sale_ProductService": "Article et prestation",
   "Sale_NotState": "Non {{state}}",
@@ -28,6 +30,7 @@
   "Sale_AmountInvoiced": "Montant facturé H.T.",
   "Sale_AdvanceTotal": "Total acompte T.T.C.",
   "Sale_General": "Général",
+  "Sale_SalesFollowUp": "Suivi commercial",
   "Sale_FollowUp": "Suivi",
   "Sale_Margin": "Marge",
   "Sale_Descriptions": "Descriptions",
@@ -137,5 +140,7 @@
   "Sale_SliceAction_FetchSaleOrderLineById": "récupération d'une ligne de commande client par id",
   "Sale_SliceAction_FetchComplementaryProduct": "récupération des produits complémentaires",
   "Sale_SliceAction_FetchPriceListLine": "récupération des lignes d'une liste de prix",
-  "Sale_SliceAction_FetchVariantProduct": "récupération des produits variants"
+  "Sale_SliceAction_FetchVariantProduct": "récupération des produits variants",
+  "Sale_SliceAction_SearchCart": "",
+  "Sale_SliceAction_SearchCartLine": ""
 }

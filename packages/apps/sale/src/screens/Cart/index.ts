@@ -16,21 +16,17 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-export {searchCart, searchCartLine} from './cartSlice';
-export {fetchComplementaryProduct} from './complementaryProductSlice';
-export {fetchCustomerDelivery} from './customerDeliverySlice';
-export {
-  fetchCustomerById,
-  searchCustomer,
-  searchCustomerCategory,
-} from './customerSlice';
-export {fetchPriceListLine} from './priceListLineSlice';
-export {
-  fetchProductById,
-  fetchProductCompanyConfig,
-  fetchVariantProduct,
-  searchProduct,
-} from './productSlice';
-export {fetchSaleConfig} from './saleConfigSlice';
-export {fetchSaleOrderLine, fetchSaleOrderLineById} from './saleOrderLineSlice';
-export {fetchSaleOrder, fetchSaleOrderById} from './saleOrderSlice';
+import ActiveCartScreen from './ActiveCartScreen';
+
+export default {
+  ActiveCartScreen: {
+    title: 'Sale_Cart',
+    component: ActiveCartScreen,
+    options: {
+      shadedHeader: false,
+    },
+    isUsableOnShortcut: true,
+  },
+};
+
+export {ActiveCartScreen};

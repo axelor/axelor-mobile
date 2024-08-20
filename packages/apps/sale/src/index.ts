@@ -19,6 +19,7 @@
 import {Module} from '@axelor/aos-mobile-core';
 import enTranslations from './i18n/en.json';
 import frTranslations from './i18n/fr.json';
+import CartScreens from './screens/Cart';
 import ProductScreens from './screens/product';
 import SaleOrderScreens from './screens/saleOrder';
 import ClientScreens from './screens/client';
@@ -45,6 +46,21 @@ export const SaleModule: Module = {
     fr: frTranslations,
   },
   menus: {
+    sale_menu_cartSeparator: {
+      title: 'Sale_Cart',
+      separator: true,
+      hideIf: store => !store.sale?.isCartManagementEnabled,
+    },
+    sale_menu_activeCart: {
+      title: 'Sale_ActiveCart',
+      icon: 'basket2-fill',
+      screen: 'ActiveCartScreen',
+      hideIf: store => !store.sale?.isCartManagementEnabled,
+    },
+    sale_menu_salesFollowUpSeparator: {
+      title: 'Sale_SalesFollowUp',
+      separator: true,
+    },
     sale_menu_product: {
       title: 'Sale_ProductsServices',
       icon: 'tags',
@@ -70,6 +86,7 @@ export const SaleModule: Module = {
     ...ProductScreens,
     ...SaleOrderScreens,
     ...ClientScreens,
+    ...CartScreens,
   },
   models: {
     objectFields: {...sale_modelAPI},
