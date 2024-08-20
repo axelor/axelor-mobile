@@ -72,19 +72,25 @@ type Story = StoryObj<typeof Component>;
 export const MultipleIndicators: Story = {
   args: {
     title: 'Financial Overview',
-    widthGraph: undefined,
+    widthGraph: 350,
     hideCardBackground: false,
   },
-  argTypes: {datasets: disabledControl},
+  argTypes: {
+    style: disabledControl,
+    datasets: disabledControl,
+  },
   render: args => <Component datasets={multipleDatasets} {...args} />,
 };
 
 export const SingleIndicator: Story = {
   args: {
     title: 'Single Indicator',
-    widthGraph: undefined,
+    widthGraph: 350,
     hideCardBackground: false,
   },
-  argTypes: {datasets: disabledControl},
+  argTypes: {
+    style: disabledControl,
+    datasets: disabledControl,
+  },
   render: args => <Component datasets={singleDataset} {...args} />,
 };
