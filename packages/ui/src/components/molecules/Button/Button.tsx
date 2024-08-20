@@ -17,14 +17,14 @@
  */
 
 import React, {useMemo} from 'react';
-import {StyleSheet, TouchableOpacity} from 'react-native';
+import {DimensionValue, StyleSheet, TouchableOpacity} from 'react-native';
 import {getCommonStyles} from '../../../utils/commons-styles';
 import {useThemeColor} from '../../../theme/ThemeContext';
 import {Icon, Text} from '../../atoms';
 import {Color} from '../../../theme/themes';
 
 export interface ButtonProps {
-  width?: string | number;
+  width?: DimensionValue;
   color?: Color;
   isNeutralBackground?: boolean;
   iconName?: string;
@@ -110,7 +110,7 @@ const Button = ({
   );
 };
 
-const getStyles = (color: Color, width: string | number) =>
+const getStyles = (color: Color, width: DimensionValue) =>
   StyleSheet.create({
     colorButton: {
       backgroundColor: color.background_light,
