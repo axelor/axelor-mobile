@@ -225,5 +225,6 @@ export const sale_modelAPI: ObjectFields = {
       }),
     ),
     qty: schemaContructor.number(),
+    unit: schemaContructor.subObject(),
   }),
 };

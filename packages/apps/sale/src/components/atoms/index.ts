@@ -16,6 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+export {default as CartLineCard} from './CartLineCard/CartLineCard';
 export {default as ClientCard} from './ClientCard/ClientCard';
 export {default as ComplementaryProductCard} from './ComplementaryProductCard/ComplementaryProductCard';
 export {default as DropdownDescriptionsView} from './DropdownDescriptionsView/DropdownDescriptionsView';

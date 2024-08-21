@@ -17,7 +17,7 @@
  */
 
 import React, {useEffect, useMemo} from 'react';
-import {Screen, Text} from '@axelor/aos-mobile-ui';
+import {Button, LabelText, Screen} from '@axelor/aos-mobile-ui';
 import {
   SearchListView,
   useDispatch,
@@ -25,6 +25,8 @@ import {
   useTranslator,
 } from '@axelor/aos-mobile-core';
 import {searchCart, searchCartLine} from '../../features/cartSlice';
+import {CartLineActionCard} from '../../components';
+import {StyleSheet} from 'react-native';
 
 const ActiveCartScreen = ({}) => {
   const dispatch = useDispatch();
@@ -34,9 +36,6 @@ const ActiveCartScreen = ({}) => {
     (state: any) => state.sale_cart,
   );
   const {userId} = useSelector((state: any) => state.auth);
-
-  console.log('cartList', cartList);
-  console.log('carLineList', carLineList);
 
   useEffect(() => {
     dispatch((searchCart as any)({userId}));
@@ -52,8 +51,23 @@ const ActiveCartScreen = ({}) => {
   );
 
   return (
-    <Screen removeSpaceOnTop>
+    <Screen
+      removeSpaceOnTop
+      fixedItems={
+        <Button
+          iconName="check-lg"
+          title={I18n.t('Base_Validate')}
+          onPress={() => {}}
+        />
+      }>
       <SearchListView
+        actionList={[
+          {
+            iconName: 'plus-lg',
+            title: I18n.t('Sale_AddProduct'),
+            onPress: () => {},
+          },
+        ]}
         list={carLineList}
         loading={loading}
         moreLoading={moreLoading}
@@ -61,18 +75,26 @@ const ActiveCartScreen = ({}) => {
         sliceFunction={searchCartLine}
         sliceFunctionData={sliceFunctionData}
         searchPlaceholder={I18n.t('Base_Search')}
-        fixedItems={<Text>Header</Text>}
         topFixedItems={
-          <Text>
-            {activeCart?.company?.name}
-            {activeCart?.company?.name}
-          </Text>
+          <LabelText
+            style={styles.container}
+            iconName="building"
+            size={16}
+            title={activeCart?.company?.name}
+          />
         }
         expandableFilter={false}
-        renderListItem={({item}) => <Text>CartLineCard</Text>}
+        renderListItem={({item}) => <CartLineActionCard cartLine={item} />}
       />
     </Screen>
   );
 };
+
+const styles = StyleSheet.create({
+  container: {
+    marginHorizontal: 24,
+    marginBottom: 5,
+  },
+});
 
 export default ActiveCartScreen;

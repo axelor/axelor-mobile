@@ -21,6 +21,7 @@ import ActiveCartScreen from './ActiveCartScreen';
 export default {
   ActiveCartScreen: {
     title: 'Sale_Cart',
+    actionID: 'sale_active_cart',
     component: ActiveCartScreen,
     options: {
       shadedHeader: false,

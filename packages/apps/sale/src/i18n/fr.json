@@ -126,6 +126,13 @@
   "Sale_Application_SalePrice": "Prix de vente",
   "Sale_Application_CostPrice": "Prix de revient",
   "Sale_Application_PurchasePrice": "Prix d'achat",
+  "Sale_SeeVariants": "Voir les variants",
+  "Sale_RemoveFromCart": "Retirer du panier",
+  "Sale_AddOne": "Ajouter un",
+  "Sale_RemoveOne": "Retirer un",
+  "Sale_AddProduct": "Ajouter un produit",
+  "Sale_SetAside": "Mettre de côté",
+  "Sale_EmptyCart": "Vider le panier",
   "Sale_SliceAction_FetchSaleConfig": "récupération des configurations de vente",
   "Sale_SliceAction_FetchSaleOrder": "récupération des commandes client",
   "Sale_SliceAction_SearchCustomer": "recherche sur les clients",
@@ -141,6 +148,6 @@
   "Sale_SliceAction_FetchComplementaryProduct": "récupération des produits complémentaires",
   "Sale_SliceAction_FetchPriceListLine": "récupération des lignes d'une liste de prix",
   "Sale_SliceAction_FetchVariantProduct": "récupération des produits variants",
-  "Sale_SliceAction_SearchCart": "",
-  "Sale_SliceAction_SearchCartLine": ""
+  "Sale_SliceAction_SearchCart": "recherche sur les paniers",
+  "Sale_SliceAction_SearchCartLine": "recherche des lignes de panier"
 }
