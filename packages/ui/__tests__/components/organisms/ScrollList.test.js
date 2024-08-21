@@ -45,9 +45,7 @@ describe('ScrollList Component', () => {
   it('passes the correct props to FlatList', () => {
     const renderItem = jest.fn();
     const wrapper = shallow(<ScrollList {...props} renderItem={renderItem} />);
-    const animatedFlatList = wrapper
-      .find('ForwardRef(AnimatedComponentWrapper)')
-      .at(1);
+    const animatedFlatList = wrapper.find('ForwardRef').at(1);
 
     expect(animatedFlatList.props()).toMatchObject({
       data: props.data,
@@ -64,9 +62,7 @@ describe('ScrollList Component', () => {
   it('renders TopActions if actionList is provided', () => {
     const wrapper = shallow(<ScrollList {...props} />);
 
-    const animatedFlatList = wrapper
-      .find('ForwardRef(AnimatedComponentWrapper)')
-      .at(1);
+    const animatedFlatList = wrapper.find('ForwardRef').at(1);
 
     props.data.forEach((item, index) => {
       const itemWrapper = animatedFlatList.props().renderItem({item, index});
@@ -99,9 +95,7 @@ describe('ScrollList Component', () => {
   it('does not render TopActions if actionList is empty', () => {
     const wrapper = shallow(<ScrollList {...props} actionList={[]} />);
 
-    const animatedFlatList = wrapper
-      .find('ForwardRef(AnimatedComponentWrapper)')
-      .at(1);
+    const animatedFlatList = wrapper.find('ForwardRef').at(1);
 
     props.data.forEach((item, index) => {
       const itemWrapper = animatedFlatList.props().renderItem({item, index});
