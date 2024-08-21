@@ -23,6 +23,7 @@ export {expenseLineReducer as expenseLine} from './expenseLineSlice';
 export {expenseReducer as expense} from './expenseSlice';
 export {expenseTypeReducer as expenseType} from './expenseTypeSlice';
 export {kilometricAllowParamReducer as kilometricAllowParam} from './kilometricAllowParamSlice';
+export {leaveReducer as hr_leave} from './leaveSlice';
 export {manufOrderReducer as hr_manufOrder} from './manufOrderSlice';
 export {projectReducer as hr_project} from './projectSlice';
 export {timerReducer as hr_timer} from './timerSlice';
