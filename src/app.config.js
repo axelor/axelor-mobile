@@ -5,9 +5,9 @@ export const app_config = {
    * when the application is running in debug mode
    */
   testInstanceConfig: {
-    defaultUrl: 'test.axelor.com/open-suite-wip',
-    defaultUsername: 'admin',
-    defaultPassword: '@axadmin',
+    defaultUrl: '',
+    defaultUsername: '',
+    defaultPassword: '',
   },
 
   /*
