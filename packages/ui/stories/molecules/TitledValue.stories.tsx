@@ -18,6 +18,7 @@
 
 import type {Meta} from '@storybook/react';
 import {TitledValue as Component} from '../../src/components';
+import {Story} from '../utils/control-type.helpers';
 
 const meta: Meta<typeof Component> = {
   title: 'ui/molecules/TitledValue',

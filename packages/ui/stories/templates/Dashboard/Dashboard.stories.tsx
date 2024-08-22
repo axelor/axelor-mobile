@@ -23,6 +23,7 @@ import {Dashboard as Component, Screen} from '../../../src/components';
 import {
   chartTypePicker,
   disabledControl,
+  Story,
 } from '../../utils/control-type.helpers';
 
 const createDashboardConfig = args => {

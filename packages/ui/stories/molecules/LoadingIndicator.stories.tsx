@@ -20,6 +20,7 @@ import React from 'react';
 import type {Meta} from '@storybook/react';
 import {LoadingIndicator as Component} from '../../src/components';
 import {useConfig} from '../../src/config/ConfigContext';
+import {Story} from '../utils/control-type.helpers';
 
 const meta: Meta<typeof Component> = {
   title: 'ui/molecules/LoadingIndicator',

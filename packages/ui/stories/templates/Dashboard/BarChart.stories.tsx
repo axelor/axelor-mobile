@@ -19,7 +19,7 @@
 import React from 'react';
 import type {Meta} from '@storybook/react';
 import {BarChart as Component} from '../../../src/components';
-import {disabledControl} from '../../utils/control-type.helpers';
+import {disabledControl, Story} from '../../utils/control-type.helpers';
 
 const datasets = [
   [
