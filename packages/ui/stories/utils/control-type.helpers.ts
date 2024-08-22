@@ -62,13 +62,13 @@ export const keyboardPicker = {
 };
 
 export type Story<T> = StoryObj<T> & {
-  args: {
+  args?: {
     [key: string]: any;
   };
-  argTypes: {
+  argTypes?: {
     [key: string]: any;
   };
-  render: (args: any) => any;
+  render?: (args: any) => any;
 };
 
 export const disabledControl = {table: {disable: true}};

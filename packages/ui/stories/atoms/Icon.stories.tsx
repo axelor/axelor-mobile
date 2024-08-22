@@ -17,9 +17,13 @@
  */
 
 import React from 'react';
-import type {StoryObj, Meta} from '@storybook/react';
+import type {Meta} from '@storybook/react';
 import {Icon as Component} from '../../src/components/atoms';
-import {colorPicker, disabledControl} from '../utils/control-type.helpers';
+import {
+  colorPicker,
+  disabledControl,
+  Story,
+} from '../utils/control-type.helpers';
 
 const meta: Meta<typeof Component> = {
   title: 'ui/atoms/Icon',
@@ -28,9 +32,7 @@ const meta: Meta<typeof Component> = {
 
 export default meta;
 
-type Story = StoryObj<typeof Component>;
-
-export const Icon: Story = {
+export const Icon: Story<typeof Component> = {
   args: {
     size: 50,
     name: 'heart-fill',

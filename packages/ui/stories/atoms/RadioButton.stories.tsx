@@ -16,9 +16,9 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import type {StoryObj, Meta} from '@storybook/react';
+import type {Meta} from '@storybook/react';
 import {RadioButton as Component} from '../../src/components/atoms';
-import {disabledControl} from '../utils/control-type.helpers';
+import {disabledControl, Story} from '../utils/control-type.helpers';
 
 const meta: Meta<typeof Component> = {
   title: 'ui/atoms/RadioButton',
@@ -27,9 +27,7 @@ const meta: Meta<typeof Component> = {
 
 export default meta;
 
-type Story = StoryObj<typeof Component>;
-
-export const RadioButton: Story = {
+export const RadioButton: Story<typeof Component> = {
   args: {title: 'Option', selected: false, size: 20, readonly: false},
   argTypes: {
     size: {

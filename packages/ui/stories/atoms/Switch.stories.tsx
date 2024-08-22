@@ -16,9 +16,9 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import type {StoryObj, Meta} from '@storybook/react';
+import type {Meta} from '@storybook/react';
 import {Switch as Component} from '../../src/components/atoms';
-import {disabledControl} from '../utils/control-type.helpers';
+import {disabledControl, Story} from '../utils/control-type.helpers';
 
 const meta: Meta<typeof Component> = {
   title: 'ui/atoms/Switch',
@@ -27,9 +27,7 @@ const meta: Meta<typeof Component> = {
 
 export default meta;
 
-type Story = StoryObj<typeof Component>;
-
-export const Switch: Story = {
+export const Switch: Story<typeof Component> = {
   args: {isEnabled: false, readonly: false},
   argTypes: {handleToggle: disabledControl},
 };

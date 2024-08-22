@@ -18,9 +18,9 @@
 
 import React from 'react';
 import {View, StyleSheet} from 'react-native';
-import type {StoryObj, Meta} from '@storybook/react';
+import type {Meta} from '@storybook/react';
 import {Screen as Component, Text} from '../../src/components/atoms';
-import {disabledControl} from '../utils/control-type.helpers';
+import {disabledControl, Story} from '../utils/control-type.helpers';
 
 const meta: Meta<typeof Component> = {
   title: 'ui/atoms/Screen',
@@ -29,9 +29,7 @@ const meta: Meta<typeof Component> = {
 
 export default meta;
 
-type Story = StoryObj<typeof Component>;
-
-export const Screen: Story = {
+export const Screen: Story<typeof Component> = {
   args: {removeSpaceOnTop: false, loading: false},
   argTypes: {fixedItems: disabledControl},
   render: args => {
