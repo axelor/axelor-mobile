@@ -1,0 +1,49 @@
+diff --git a/node_modules/react-native-device-info/android/src/main/java/com/learnium/RNDeviceInfo/RNDeviceModule.java b/node_modules/react-native-device-info/android/src/main/java/com/learnium/RNDeviceInfo/RNDeviceModule.java
+index c560889..1861ddf 100644
+--- a/node_modules/react-native-device-info/android/src/main/java/com/learnium/RNDeviceInfo/RNDeviceModule.java
++++ b/node_modules/react-native-device-info/android/src/main/java/com/learnium/RNDeviceInfo/RNDeviceModule.java
+@@ -509,7 +509,13 @@ public class RNDeviceModule extends ReactContextBaseJavaModule {
+   @ReactMethod(isBlockingSynchronousMethod = true)
+   public boolean isBatteryChargingSync(){
+     IntentFilter ifilter = new IntentFilter(Intent.ACTION_BATTERY_CHANGED);
+-    Intent batteryStatus = getReactApplicationContext().registerReceiver(null, ifilter);
++    Intent batteryStatus;
++    if (Build.VERSION.SDK_INT >= 34 && getReactApplicationContext().getApplicationInfo().targetSdkVersion >= 34) {
++      batteryStatus = getReactApplicationContext().registerReceiver(null, ifilter, Context.RECEIVER_EXPORTED);
++    } else {
++      batteryStatus = getReactApplicationContext().registerReceiver(null, ifilter);
++    }    
++    
+     int status = 0;
+     if (batteryStatus != null) {
+       status = batteryStatus.getIntExtra(BatteryManager.EXTRA_STATUS, -1);
+@@ -545,7 +551,13 @@ public class RNDeviceModule extends ReactContextBaseJavaModule {
+ 
+   @ReactMethod(isBlockingSynchronousMethod = true)
+   public WritableMap getPowerStateSync() {
+-    Intent intent = getReactApplicationContext().registerReceiver(null, new IntentFilter(Intent.ACTION_BATTERY_CHANGED));
++  Intent intent;
++    if (Build.VERSION.SDK_INT >= 34 && getReactApplicationContext().getApplicationInfo().targetSdkVersion >= 34) {
++      intent = getReactApplicationContext().registerReceiver(null, new IntentFilter(Intent.ACTION_BATTERY_CHANGED), Context.RECEIVER_EXPORTED);
++    } else {
++      intent = getReactApplicationContext().registerReceiver(null, new IntentFilter(Intent.ACTION_BATTERY_CHANGED));
++    }    
++    
+     return getPowerStateFromIntent(intent);
+   }
+ 
+@@ -554,7 +566,13 @@ public class RNDeviceModule extends ReactContextBaseJavaModule {
+ 
+   @ReactMethod(isBlockingSynchronousMethod = true)
+   public double getBatteryLevelSync() {
+-    Intent intent = getReactApplicationContext().registerReceiver(null, new IntentFilter(Intent.ACTION_BATTERY_CHANGED));
++    Intent intent;
++    if (Build.VERSION.SDK_INT >= 34 && getReactApplicationContext().getApplicationInfo().targetSdkVersion >= 34) {
++      intent = getReactApplicationContext().registerReceiver(null, new IntentFilter(Intent.ACTION_BATTERY_CHANGED), Context.RECEIVER_EXPORTED);
++    } else {
++      intent = getReactApplicationContext().registerReceiver(null, new IntentFilter(Intent.ACTION_BATTERY_CHANGED));
++    }    
++    
+     WritableMap powerState = getPowerStateFromIntent(intent);
+ 
+     if(powerState == null) {
