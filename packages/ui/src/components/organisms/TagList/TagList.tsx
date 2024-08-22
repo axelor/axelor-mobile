@@ -90,7 +90,9 @@ const TagList = ({
         ? renderEmptyState()
         : visibleSortTags.map((tag, index) => {
             const color =
-              tag.color != null ? tag.color : defaultColor ?? Colors.infoColor;
+              tag.color != null
+                ? tag.color
+                : (defaultColor ?? Colors.infoColor);
 
             return (
               <Badge
