@@ -122,8 +122,8 @@ const CustomerDeliveryListScreen = ({navigation}) => {
               item.statusSelect === StockMove?.statusSelect.Draft
                 ? item.createdOn
                 : item.statusSelect === StockMove?.statusSelect.Planned
-                ? item.estimatedDate
-                : item.realDate
+                  ? item.estimatedDate
+                  : item.realDate
             }
             origin={item.origin}
             availability={item.availableStatusSelect}

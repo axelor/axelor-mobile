@@ -28,7 +28,7 @@ const CellView = ({showRight = false, showBottom = false, width, ...props}) => {
       ({
         [`border${side}Color`]: Colors.secondaryColor.background,
         [`border${side}Width`]: 1,
-      } as StyleProp<ViewStyle>),
+      }) as StyleProp<ViewStyle>,
     [Colors],
   );
 

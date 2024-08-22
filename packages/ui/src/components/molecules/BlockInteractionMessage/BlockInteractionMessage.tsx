@@ -40,7 +40,7 @@ import WarningCard from '../WarningCard/WarningCard';
  *           })
  */
 
-const BlockInteractionMessage = ({}) => {
+const BlockInteractionMessage = () => {
   const {blockInteractionConfig} = useConfig();
 
   if (!blockInteractionConfig?.visible) {
