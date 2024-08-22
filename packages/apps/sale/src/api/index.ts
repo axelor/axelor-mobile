@@ -20,6 +20,8 @@ export {
   searchCart as searchCartApi,
   searchCartLine as searchCartLineApi,
   updateCart as updateCartApi,
+  updateCartLine as updateCartLineApi,
+  deleteCartLine as deleteCartLineApi,
 } from './cart-api';
 export {fetchComplementaryProduct as fetchComplementaryProductApi} from './complementary-product-api';
 export {

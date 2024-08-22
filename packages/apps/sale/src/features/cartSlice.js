@@ -75,7 +75,7 @@ export const deleteCartLine = createAsyncThunk(
     return handlerApiCall({
       fetchFunction: _deleteCartLine,
       data,
-      action: 'Sale_SliceAction_UpdateCart',
+      action: 'Sale_SliceAction_DeleteCartLine',
       getState,
       responseOptions: {isArrayResponse: true},
     }).then(() => {

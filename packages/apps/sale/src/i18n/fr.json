@@ -153,5 +153,7 @@
   "Sale_SliceAction_FetchVariantProduct": "récupération des produits variants",
   "Sale_SliceAction_SearchCart": "recherche sur les paniers",
   "Sale_SliceAction_SearchCartLine": "recherche des lignes de panier",
-  "Sale_SliceAction_UpdateCart": "mise à jour du panier"
+  "Sale_SliceAction_UpdateCart": "mise à jour du panier",
+  "Sale_SliceAction_DeleteCartLine": "supprimer la ligne du panier",
+  "Sale_SliceAction_UpdateCartLine": "mise à jour de la ligne du panier"
 }
