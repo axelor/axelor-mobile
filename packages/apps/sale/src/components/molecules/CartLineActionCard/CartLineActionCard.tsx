@@ -17,18 +17,25 @@
  */
 
 import React from 'react';
-import {useTranslator} from '@axelor/aos-mobile-core';
+import {useDispatch, useTranslator} from '@axelor/aos-mobile-core';
 import {ActionCard, useThemeColor} from '@axelor/aos-mobile-ui';
 import {CartLineCard} from '../../atoms';
+import {updateCartLine} from '../../../features/cartSlice';
 
 interface CartLineActionCardProps {
   style?: any;
   cartLine: any;
+  cartId: number;
 }
 
-const CartLineActionCard = ({style, cartLine}: CartLineActionCardProps) => {
+const CartLineActionCard = ({
+  style,
+  cartLine,
+  cartId,
+}: CartLineActionCardProps) => {
   const I18n = useTranslator();
   const Colors = useThemeColor();
+  const dispatch = useDispatch();
 
   return (
     <ActionCard
@@ -50,12 +57,28 @@ const CartLineActionCard = ({style, cartLine}: CartLineActionCardProps) => {
         {
           iconName: 'plus-lg',
           helper: I18n.t('Sale_AddOne'),
-          onPress: () => {},
+          onPress: () => {
+            dispatch(
+              (updateCartLine as any)({
+                cartLine,
+                qty: parseInt(cartLine.qty, 10) + 1,
+                cartId: cartId,
+              }),
+            );
+          },
         },
         {
           iconName: 'dash-lg',
           helper: I18n.t('Sale_RemoveOne'),
-          onPress: () => {},
+          onPress: () => {
+            dispatch(
+              (updateCartLine as any)({
+                cartLine,
+                qty: parseInt(cartLine.qty, 10) - 1,
+                cartId: cartId,
+              }),
+            );
+          },
         },
       ]}
       translator={I18n.t}>

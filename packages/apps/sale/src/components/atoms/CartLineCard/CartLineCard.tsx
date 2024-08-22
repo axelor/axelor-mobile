@@ -59,7 +59,7 @@ const CartLineCard = ({style, product, qty, unit}: CartLineCardProps) => {
           {
             customComponent: (
               <View style={styles.title}>
-                {product.unvailable && (
+                {product?.unvailable && (
                   <InfoBubble
                     iconName="exclamation-triangle-fill"
                     badgeColor={Colors.errorColor}

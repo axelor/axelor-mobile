@@ -81,3 +81,15 @@ export async function updateCart({cart, partnerId}) {
     },
   });
 }
+
+export async function updateCartLine({cartLine, qty}) {
+  return axiosApiProvider.post({
+    url: '/ws/rest/com.axelor.apps.sale.db.CartLine',
+    data: {
+      data: {
+        ...cartLine,
+        qty,
+      },
+    },
+  });
+}

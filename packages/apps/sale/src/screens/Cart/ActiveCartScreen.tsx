@@ -113,7 +113,9 @@ const ActiveCartScreen = ({}) => {
           </>
         }
         expandableFilter={false}
-        renderListItem={({item}) => <CartLineActionCard cartLine={item} />}
+        renderListItem={({item}) => (
+          <CartLineActionCard cartLine={item} cartId={activeCart?.id} />
+        )}
       />
     </Screen>
   );

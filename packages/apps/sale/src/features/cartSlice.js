@@ -26,6 +26,7 @@ import {
   searchCart as _searchCart,
   searchCartLine as _searchCartLine,
   updateCart as _updateCart,
+  updateCartLine as _updateCartLine,
 } from '../api/cart-api';
 
 export const searchCart = createAsyncThunk(
@@ -42,7 +43,7 @@ export const searchCart = createAsyncThunk(
 );
 
 export const searchCartLine = createAsyncThunk(
-  'sale_cart/searchCartLine',
+  'sale_cartLine/searchCartLine',
   async function (data, {getState}) {
     return handlerApiCall({
       fetchFunction: _searchCartLine,
@@ -63,6 +64,27 @@ export const updateCart = createAsyncThunk(
       action: 'Sale_SliceAction_UpdateCart',
       getState,
       responseOptions: {isArrayResponse: true},
+    });
+  },
+);
+
+export const updateCartLine = createAsyncThunk(
+  'sale_cartLine/updateCartLine',
+  async function (data, {getState}) {
+    return handlerApiCall({
+      fetchFunction: _updateCartLine,
+      data,
+      action: 'Sale_SliceAction_UpdateCartLine',
+      getState,
+      responseOptions: {isArrayResponse: true},
+    }).then(() => {
+      return handlerApiCall({
+        fetchFunction: _searchCartLine,
+        data: {cartId: data.cartId},
+        action: 'Sale_SliceAction_SearchCartLine',
+        getState,
+        responseOptions: {isArrayResponse: true},
+      });
     });
   },
 );
@@ -97,6 +119,12 @@ const cartSlice = createSlice({
     });
     builder.addCase(updateCart.fulfilled, (state, action) => {
       state.cartList = updateAgendaItems(state.cartList, [action.payload]);
+    });
+    builder.addCase(updateCartLine.pending, state => {
+      state.loading = false;
+    });
+    builder.addCase(updateCartLine.fulfilled, (state, action) => {
+      state.carLineList = action.payload;
     });
   },
 });
