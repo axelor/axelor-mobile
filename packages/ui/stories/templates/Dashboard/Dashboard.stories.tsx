@@ -18,7 +18,7 @@
 
 import React from 'react';
 import {Dimensions} from 'react-native';
-import type {StoryObj, Meta} from '@storybook/react';
+import type {Meta} from '@storybook/react';
 import {Dashboard as Component, Screen} from '../../../src/components';
 import {
   chartTypePicker,
@@ -97,9 +97,7 @@ const meta: Meta<typeof Component> = {
 
 export default meta;
 
-type Story = StoryObj<typeof Component>;
-
-export const Dashboard: Story = {
+export const Dashboard: Story<typeof Component> = {
   args: {
     hideCardBackground: false,
     line1_graph1_type: 'bar',

@@ -18,9 +18,9 @@
 
 import React from 'react';
 import {Dimensions, StyleSheet, View} from 'react-native';
-import type {StoryObj, Meta} from '@storybook/react';
+import type {Meta} from '@storybook/react';
 import {GridView as Component} from '../../src/components';
-import {disabledControl} from '../utils/control-type.helpers';
+import {disabledControl, Story} from '../utils/control-type.helpers';
 
 const data = [
   {id: 1, name: 'Test 1', code: 'hehe', fullName: 'hehe - Test 1'},
@@ -35,9 +35,7 @@ const meta: Meta<typeof Component> = {
 
 export default meta;
 
-type Story = StoryObj<typeof Component>;
-
-export const GridView: Story = {
+export const GridView: Story<typeof Component> = {
   args: {
     title: 'Array component',
     fullName_useCustomWidth: false,

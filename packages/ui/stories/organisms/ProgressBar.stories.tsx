@@ -17,9 +17,13 @@
  */
 
 import React from 'react';
-import type {StoryObj, Meta} from '@storybook/react';
+import type {Meta} from '@storybook/react';
 import {ProgressBar as Component} from '../../src/components';
-import {colorPicker, disabledControl} from '../utils/control-type.helpers';
+import {
+  colorPicker,
+  disabledControl,
+  Story,
+} from '../utils/control-type.helpers';
 
 const meta: Meta<typeof Component> = {
   title: 'ui/organisms/ProgressBar',
@@ -28,9 +32,7 @@ const meta: Meta<typeof Component> = {
 
 export default meta;
 
-type Story = StoryObj<typeof Component>;
-
-export const ProgressBar: Story = {
+export const ProgressBar: Story<typeof Component> = {
   args: {
     value: 50,
     total: 100,

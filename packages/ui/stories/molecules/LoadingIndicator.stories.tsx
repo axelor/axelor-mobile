@@ -17,7 +17,7 @@
  */
 
 import React from 'react';
-import type {StoryObj, Meta} from '@storybook/react';
+import type {Meta} from '@storybook/react';
 import {LoadingIndicator as Component} from '../../src/components';
 import {useConfig} from '../../src/config/ConfigContext';
 
@@ -28,9 +28,7 @@ const meta: Meta<typeof Component> = {
 
 export default meta;
 
-type Story = StoryObj<typeof Component>;
-
-export const LoadingIndicator: Story = {
+export const LoadingIndicator: Story<typeof Component> = {
   render: function Render() {
     const {setActivityIndicator} = useConfig();
     setActivityIndicator(true);

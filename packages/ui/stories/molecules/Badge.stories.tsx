@@ -16,9 +16,9 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import type {StoryObj, Meta} from '@storybook/react';
+import type {Meta} from '@storybook/react';
 import {Badge as Component} from '../../src/components';
-import {colorPicker} from '../utils/control-type.helpers';
+import {colorPicker, Story} from '../utils/control-type.helpers';
 
 const meta: Meta<typeof Component> = {
   title: 'ui/molecules/Badge',
@@ -27,9 +27,7 @@ const meta: Meta<typeof Component> = {
 
 export default meta;
 
-type Story = StoryObj<typeof Component>;
-
-export const Badge: Story = {
+export const Badge: Story<typeof Component> = {
   args: {
     title: 'Title',
     numberOfLines: 1,
