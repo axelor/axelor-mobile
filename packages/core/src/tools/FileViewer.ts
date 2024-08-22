@@ -53,10 +53,10 @@ export const openFileInExternalApp = async (
     (file as PathItem).path != null
       ? `${authentification.baseUrl}${(file as PathItem).path}`
       : (file as FileItem).isMetaFile
-      ? `${authentification.baseUrl}ws/rest/com.axelor.meta.db.MetaFile/${
-          (file as FileItem).id
-        }/content/download`
-      : `${authentification.baseUrl}ws/dms/inline/${(file as FileItem).id}`;
+        ? `${authentification.baseUrl}ws/rest/com.axelor.meta.db.MetaFile/${
+            (file as FileItem).id
+          }/content/download`
+        : `${authentification.baseUrl}ws/dms/inline/${(file as FileItem).id}`;
 
   const options = {
     fromUrl: fromUrl,

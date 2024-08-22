@@ -51,8 +51,8 @@ const AvailableStockIndicatorCard = ({
       availableStock == null
         ? Colors.secondaryColor
         : availableStock > 0
-        ? Colors.successColor
-        : Colors.errorColor;
+          ? Colors.successColor
+          : Colors.errorColor;
 
     return getStyles(_color.background).container;
   }, [Colors, availableStock]);
