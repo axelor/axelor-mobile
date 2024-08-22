@@ -20,7 +20,7 @@ import React from 'react';
 import {useDispatch, useTranslator} from '@axelor/aos-mobile-core';
 import {ActionCard, useThemeColor} from '@axelor/aos-mobile-ui';
 import {CartLineCard} from '../../atoms';
-import {updateCartLine} from '../../../features/cartSlice';
+import {deleteCartLine, updateCartLine} from '../../../features/cartSlice';
 
 interface CartLineActionCardProps {
   style?: any;
@@ -50,7 +50,14 @@ const CartLineActionCard = ({
         {
           iconName: 'trash3-fill',
           helper: I18n.t('Sale_RemoveFromCart'),
-          onPress: () => {},
+          onPress: () => {
+            dispatch(
+              (deleteCartLine as any)({
+                cartLineId: cartLine?.id,
+                cartId: cartId,
+              }),
+            );
+          },
           iconColor: Colors.errorColor.background,
           large: true,
         },

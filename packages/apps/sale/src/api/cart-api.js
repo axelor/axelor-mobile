@@ -93,3 +93,9 @@ export async function updateCartLine({cartLine, qty}) {
     },
   });
 }
+
+export async function deleteCartLine({cartLineId}) {
+  return axiosApiProvider.delete({
+    url: `/ws/rest/com.axelor.apps.sale.db.CartLine/${cartLineId}`,
+  });
+}

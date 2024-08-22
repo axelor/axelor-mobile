@@ -27,6 +27,7 @@ import {
   searchCartLine as _searchCartLine,
   updateCart as _updateCart,
   updateCartLine as _updateCartLine,
+  deleteCartLine as _deleteCartLine,
 } from '../api/cart-api';
 
 export const searchCart = createAsyncThunk(
@@ -64,6 +65,27 @@ export const updateCart = createAsyncThunk(
       action: 'Sale_SliceAction_UpdateCart',
       getState,
       responseOptions: {isArrayResponse: true},
+    });
+  },
+);
+
+export const deleteCartLine = createAsyncThunk(
+  'sale_cartLine/deleteCartLine',
+  async function (data, {getState}) {
+    return handlerApiCall({
+      fetchFunction: _deleteCartLine,
+      data,
+      action: 'Sale_SliceAction_UpdateCart',
+      getState,
+      responseOptions: {isArrayResponse: true},
+    }).then(() => {
+      return handlerApiCall({
+        fetchFunction: _searchCartLine,
+        data: {cartId: data.cartId},
+        action: 'Sale_SliceAction_SearchCartLine',
+        getState,
+        responseOptions: {isArrayResponse: true},
+      });
     });
   },
 );
@@ -124,6 +146,9 @@ const cartSlice = createSlice({
       state.loading = false;
     });
     builder.addCase(updateCartLine.fulfilled, (state, action) => {
+      state.carLineList = action.payload;
+    });
+    builder.addCase(deleteCartLine.fulfilled, (state, action) => {
       state.carLineList = action.payload;
     });
   },
