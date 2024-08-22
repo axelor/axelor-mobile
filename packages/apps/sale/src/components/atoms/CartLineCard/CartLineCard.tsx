@@ -17,9 +17,16 @@
  */
 
 import React from 'react';
-import {StyleSheet} from 'react-native';
-import {ObjectCard, TextUnit, usePriceFormat} from '@axelor/aos-mobile-ui';
-import {useMetafileUri} from '@axelor/aos-mobile-core';
+import {StyleSheet, View} from 'react-native';
+import {
+  InfoBubble,
+  ObjectCard,
+  Text,
+  TextUnit,
+  usePriceFormat,
+  useThemeColor,
+} from '@axelor/aos-mobile-ui';
+import {useMetafileUri, useTranslator} from '@axelor/aos-mobile-core';
 
 interface CartLineCardProps {
   style?: any;
@@ -31,12 +38,15 @@ interface CartLineCardProps {
 const CartLineCard = ({style, product, qty, unit}: CartLineCardProps) => {
   const formatMetaFile = useMetafileUri();
   const priceFormat = usePriceFormat();
+  const I18n = useTranslator();
+  const Colors = useThemeColor();
 
   return (
     <ObjectCard
       style={[styles.container, style]}
       touchable={false}
       showArrow={false}
+      leftContainerFlex={2}
       image={{
         generalStyle: styles.imageSize,
         imageSize: styles.imageSize,
@@ -47,6 +57,18 @@ const CartLineCard = ({style, product, qty, unit}: CartLineCardProps) => {
       upperTexts={{
         items: [
           {
+            customComponent: (
+              <View style={styles.title}>
+                {product.unvailable && (
+                  <InfoBubble
+                    iconName="exclamation-triangle-fill"
+                    badgeColor={Colors.errorColor}
+                    indication={I18n.t('Sale_ProductUnavailable')}
+                  />
+                )}
+                <Text writingType="title">{product?.name}</Text>
+              </View>
+            ),
             displayText: product?.name,
             isTitle: true,
           },
@@ -65,8 +87,9 @@ const CartLineCard = ({style, product, qty, unit}: CartLineCardProps) => {
                 <TextUnit
                   unit={product?.saleCurrency?.symbol}
                   value={priceFormat(product?.salePrice)}
+                  numberOfLines={1}
                 />
-                <TextUnit unit={unit} value={qty} />
+                <TextUnit unit={unit} value={qty} numberOfLines={1} />
               </>
             ),
           },
@@ -80,6 +103,9 @@ const styles = StyleSheet.create({
   container: {
     marginHorizontal: 2,
     marginVertical: 2,
+  },
+  title: {
+    flexDirection: 'row',
   },
   badges: {
     alignItems: 'flex-end',

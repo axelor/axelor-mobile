@@ -18,7 +18,7 @@
 
 import React from 'react';
 import {useTranslator} from '@axelor/aos-mobile-core';
-import {ActionCard} from '@axelor/aos-mobile-ui';
+import {ActionCard, useThemeColor} from '@axelor/aos-mobile-ui';
 import {CartLineCard} from '../../atoms';
 
 interface CartLineActionCardProps {
@@ -28,6 +28,7 @@ interface CartLineActionCardProps {
 
 const CartLineActionCard = ({style, cartLine}: CartLineActionCardProps) => {
   const I18n = useTranslator();
+  const Colors = useThemeColor();
 
   return (
     <ActionCard
@@ -37,11 +38,14 @@ const CartLineActionCard = ({style, cartLine}: CartLineActionCardProps) => {
           iconName: 'palette2',
           helper: I18n.t('Sale_SeeVariants'),
           onPress: () => {},
+          hidden: cartLine.product?.productVariant == null,
         },
         {
           iconName: 'trash3-fill',
           helper: I18n.t('Sale_RemoveFromCart'),
           onPress: () => {},
+          iconColor: Colors.errorColor.background,
+          large: true,
         },
         {
           iconName: 'plus-lg',

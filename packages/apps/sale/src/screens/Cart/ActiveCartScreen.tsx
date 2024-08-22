@@ -17,7 +17,7 @@
  */
 
 import React, {useEffect, useMemo} from 'react';
-import {Button, LabelText, Screen} from '@axelor/aos-mobile-ui';
+import {Button, Label, LabelText, Screen} from '@axelor/aos-mobile-ui';
 import {
   SearchListView,
   useDispatch,
@@ -50,13 +50,17 @@ const ActiveCartScreen = ({}) => {
     [activeCart?.id],
   );
 
+  if (activeCart == null) {
+    return <Label type="info" message={I18n.t('Sale_NoCartAvailable')} />;
+  }
+
   return (
     <Screen
       removeSpaceOnTop
       fixedItems={
         <Button
           iconName="check-lg"
-          title={I18n.t('Base_Validate')}
+          title={I18n.t('Sale_ValidateCart')}
           onPress={() => {}}
         />
       }>
