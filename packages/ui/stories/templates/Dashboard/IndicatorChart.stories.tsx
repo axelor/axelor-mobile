@@ -21,7 +21,7 @@ import type {StoryObj, Meta} from '@storybook/react';
 import {IndicatorChart as Component} from '../../../src/components';
 import {disabledControl} from '../../utils/control-type.helpers';
 
-const multipleDatasets = [
+const datasets = [
   {
     title: 'Revenue',
     value: 150000,
@@ -45,16 +45,6 @@ const multipleDatasets = [
   },
 ];
 
-const singleDataset = [
-  {
-    title: 'Revenue',
-    value: 150000,
-    unit: '€',
-    icon: 'dollar-sign',
-    color: 'green',
-  },
-];
-
 const meta: Meta<typeof Component> = {
   title: 'ui/templates/Dashboard/IndicatorChart',
   component: Component,
@@ -69,28 +59,23 @@ export default meta;
 
 type Story = StoryObj<typeof Component>;
 
-export const MultipleIndicators: Story = {
+export const IndicatorChart: Story = {
   args: {
     title: 'Financial Overview',
     widthGraph: 350,
     hideCardBackground: false,
+    // @ts-ignore
+    singleIndicator: false,
   },
   argTypes: {
     style: disabledControl,
     datasets: disabledControl,
   },
-  render: args => <Component datasets={multipleDatasets} {...args} />,
-};
-
-export const SingleIndicator: Story = {
-  args: {
-    title: 'Single Indicator',
-    widthGraph: 350,
-    hideCardBackground: false,
-  },
-  argTypes: {
-    style: disabledControl,
-    datasets: disabledControl,
-  },
-  render: args => <Component datasets={singleDataset} {...args} />,
+  render: args => (
+    <Component
+      {...args}
+      // @ts-ignore
+      datasets={args.singleIndicator ? [datasets[0]] : datasets}
+    />
+  ),
 };
