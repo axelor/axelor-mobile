@@ -17,7 +17,11 @@
  */
 
 import React from 'react';
-import {useDispatch, useTranslator} from '@axelor/aos-mobile-core';
+import {
+  useDispatch,
+  useNavigation,
+  useTranslator,
+} from '@axelor/aos-mobile-core';
 import {ActionCard, useThemeColor} from '@axelor/aos-mobile-ui';
 import {CartLineCard} from '../../atoms';
 import {deleteCartLine, updateCartLine} from '../../../features/cartSlice';
@@ -35,6 +39,7 @@ const CartLineActionCard = ({
 }: CartLineActionCardProps) => {
   const I18n = useTranslator();
   const Colors = useThemeColor();
+  const navigation = useNavigation();
   const dispatch = useDispatch();
 
   return (
@@ -44,8 +49,12 @@ const CartLineActionCard = ({
         {
           iconName: 'palette2',
           helper: I18n.t('Sale_SeeVariants'),
-          onPress: () => {},
-          hidden: cartLine.product?.productVariant == null,
+          onPress: () => {
+            navigation.navigate('ProductSaleDetailsScreen', {
+              productId: cartLine?.variantProduct.id,
+            });
+          },
+          hidden: cartLine?.variantProduct == null,
         },
         {
           iconName: 'trash3-fill',
@@ -59,7 +68,7 @@ const CartLineActionCard = ({
             );
           },
           iconColor: Colors.errorColor.background,
-          large: true,
+          large: cartLine?.variantProduct == null,
         },
         {
           iconName: 'plus-lg',
