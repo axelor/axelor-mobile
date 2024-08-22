@@ -64,17 +64,15 @@ export const IndicatorChart: Story = {
     title: 'Financial Overview',
     widthGraph: 350,
     hideCardBackground: false,
-    // @ts-ignore
     singleIndicator: false,
   },
   argTypes: {
     style: disabledControl,
     datasets: disabledControl,
   },
-  render: args => (
+  render: (args: any) => (
     <Component
       {...args}
-      // @ts-ignore
       datasets={args.singleIndicator ? [datasets[0]] : datasets}
     />
   ),
