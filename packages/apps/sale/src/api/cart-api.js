@@ -16,6 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 import {
+  axiosApiProvider,
   createStandardSearch,
   getSearchCriterias,
 } from '@axelor/aos-mobile-core';
@@ -64,5 +65,19 @@ export async function searchCartLine({searchValue, page = 0, cartId}) {
     fieldKey: 'sale_cartLine',
     sortKey: 'sale_cartLine',
     page: page,
+  });
+}
+
+export async function updateCart({cart, partnerId}) {
+  return axiosApiProvider.post({
+    url: '/ws/rest/com.axelor.apps.sale.db.Cart',
+    data: {
+      data: {
+        ...cart,
+        partner: {
+          id: partnerId,
+        },
+      },
+    },
   });
 }

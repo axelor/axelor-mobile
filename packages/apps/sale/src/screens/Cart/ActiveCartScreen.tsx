@@ -16,7 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import React, {useEffect, useMemo} from 'react';
+import React, {useCallback, useEffect, useMemo, useState} from 'react';
 import {Button, Label, LabelText, Screen} from '@axelor/aos-mobile-ui';
 import {
   SearchListView,
@@ -24,8 +24,8 @@ import {
   useSelector,
   useTranslator,
 } from '@axelor/aos-mobile-core';
-import {searchCart, searchCartLine} from '../../features/cartSlice';
-import {CartLineActionCard} from '../../components';
+import {searchCart, searchCartLine, updateCart} from '../../features/cartSlice';
+import {CartLineActionCard, CustomerSearchBar} from '../../components';
 import {StyleSheet} from 'react-native';
 
 const ActiveCartScreen = ({}) => {
@@ -37,6 +37,8 @@ const ActiveCartScreen = ({}) => {
   );
   const {userId} = useSelector((state: any) => state.auth);
 
+  const [selectedCustomer, setSelectedCustomer] = useState(null);
+
   useEffect(() => {
     dispatch((searchCart as any)({userId}));
   }, [dispatch, userId]);
@@ -44,6 +46,22 @@ const ActiveCartScreen = ({}) => {
   const activeCart = useMemo(() => {
     return cartList[0];
   }, [cartList]);
+
+  useEffect(() => {
+    setSelectedCustomer(activeCart?.partner);
+  }, [activeCart?.partner]);
+
+  const handleChangeCustomer = useCallback(
+    newCustomer => {
+      setSelectedCustomer(newCustomer);
+      if (newCustomer != null) {
+        dispatch(
+          (updateCart as any)({partnerId: newCustomer?.id, cart: activeCart}),
+        );
+      }
+    },
+    [activeCart, dispatch],
+  );
 
   const sliceFunctionData = useMemo(
     () => ({cartId: activeCart?.id}),
@@ -72,6 +90,7 @@ const ActiveCartScreen = ({}) => {
             onPress: () => {},
           },
         ]}
+        isHideableSearch={true}
         list={carLineList}
         loading={loading}
         moreLoading={moreLoading}
@@ -80,12 +99,18 @@ const ActiveCartScreen = ({}) => {
         sliceFunctionData={sliceFunctionData}
         searchPlaceholder={I18n.t('Base_Search')}
         topFixedItems={
-          <LabelText
-            style={styles.container}
-            iconName="building"
-            size={16}
-            title={activeCart?.company?.name}
-          />
+          <>
+            <LabelText
+              style={styles.container}
+              iconName="building"
+              size={16}
+              title={activeCart?.company?.name}
+            />
+            <CustomerSearchBar
+              onChange={handleChangeCustomer}
+              defaultValue={selectedCustomer}
+            />
+          </>
         }
         expandableFilter={false}
         renderListItem={({item}) => <CartLineActionCard cartLine={item} />}

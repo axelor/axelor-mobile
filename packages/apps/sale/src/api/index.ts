@@ -19,6 +19,7 @@
 export {
   searchCart as searchCartApi,
   searchCartLine as searchCartLineApi,
+  updateCart as updateCartApi,
 } from './cart-api';
 export {fetchComplementaryProduct as fetchComplementaryProductApi} from './complementary-product-api';
 export {

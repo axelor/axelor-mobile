@@ -20,10 +20,12 @@ import {createAsyncThunk, createSlice} from '@reduxjs/toolkit';
 import {
   generateInifiniteScrollCases,
   handlerApiCall,
+  updateAgendaItems,
 } from '@axelor/aos-mobile-core';
 import {
   searchCart as _searchCart,
   searchCartLine as _searchCartLine,
+  updateCart as _updateCart,
 } from '../api/cart-api';
 
 export const searchCart = createAsyncThunk(
@@ -46,6 +48,19 @@ export const searchCartLine = createAsyncThunk(
       fetchFunction: _searchCartLine,
       data,
       action: 'Sale_SliceAction_SearchCartLine',
+      getState,
+      responseOptions: {isArrayResponse: true},
+    });
+  },
+);
+
+export const updateCart = createAsyncThunk(
+  'sale_cart/updateCart',
+  async function (data, {getState}) {
+    return handlerApiCall({
+      fetchFunction: _updateCart,
+      data,
+      action: 'Sale_SliceAction_UpdateCart',
       getState,
       responseOptions: {isArrayResponse: true},
     });
@@ -79,6 +94,9 @@ const cartSlice = createSlice({
       moreLoading: 'moreLoading',
       isListEnd: 'isListEnd',
       list: 'carLineList',
+    });
+    builder.addCase(updateCart.fulfilled, (state, action) => {
+      state.cartList = updateAgendaItems(state.cartList, [action.payload]);
     });
   },
 });
