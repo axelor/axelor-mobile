@@ -103,14 +103,14 @@ const PopupCreateSession = ({
         _session != null
           ? _session
           : modeDebug
-          ? {
-              name: DeviceInfo.getApplicationName(),
-              url: defaultUrl,
-              username: testInstanceConfig?.defaultUsername,
-              password: testInstanceConfig?.defaultPassword,
-              isDefault: false,
-            }
-          : {url: defaultUrl, isDefault: false},
+            ? {
+                name: DeviceInfo.getApplicationName(),
+                url: defaultUrl,
+                username: testInstanceConfig?.defaultUsername,
+                password: testInstanceConfig?.defaultPassword,
+                isDefault: false,
+              }
+            : {url: defaultUrl, isDefault: false},
       showUrlInput,
       loading,
       mode: 'creation',

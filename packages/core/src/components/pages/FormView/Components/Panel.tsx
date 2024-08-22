@@ -49,8 +49,8 @@ const Panel = ({renderItem, formContent, _panel}: PanelProps) => {
         _panel.colSpan > 0 && _panel.colSpan < 12
           ? (Math.min(_panel.colSpan, DEFAULT_COLSPAN) / DEFAULT_COLSPAN) * 100
           : _panel.parent == null
-          ? 100
-          : 90
+            ? 100
+            : 90
       }%`,
       paddingHorizontal: _panel.parent != null ? null : 17,
       paddingLeft: _panel.parent != null ? 5 : null,

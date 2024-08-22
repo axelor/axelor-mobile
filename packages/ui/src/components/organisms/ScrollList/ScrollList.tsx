@@ -194,6 +194,25 @@ const ScrollList = ({
     };
   }, [loadingList]);
 
+  const renderFooter = useCallback(() => {
+    return (
+      <View style={[styles.footerText, styleFooter]}>
+        {moreLoading && <ActivityIndicator size="large" color="black" />}
+        {isListEnd && (
+          <Text>
+            {data == null || data?.length === 0
+              ? translator != null
+                ? translator('Base_NoData')
+                : 'No data.'
+              : translator != null
+                ? translator('Base_NoMoreItems')
+                : 'No more items.'}
+          </Text>
+        )}
+      </View>
+    );
+  }, [data, isListEnd, moreLoading, styleFooter, translator]);
+
   if (isLoading) {
     return (
       <View style={styles.loadingContainer}>
@@ -221,24 +240,7 @@ const ScrollList = ({
         refreshing={false}
         horizontal={horizontal}
         onEndReached={onEndReached}
-        ListFooterComponent={() => {
-          return (
-            <View style={[styles.footerText, styleFooter]}>
-              {moreLoading && <ActivityIndicator size="large" color="black" />}
-              {isListEnd && (
-                <Text>
-                  {data == null || data?.length === 0
-                    ? translator != null
-                      ? translator('Base_NoData')
-                      : 'No data.'
-                    : translator != null
-                    ? translator('Base_NoMoreItems')
-                    : 'No more items.'}
-                </Text>
-              )}
-            </View>
-          );
-        }}
+        ListFooterComponent={renderFooter}
         renderItem={_renderItem}
         onScroll={handleScroll}
         onViewableItemsChanged={onViewableItemsChanged}

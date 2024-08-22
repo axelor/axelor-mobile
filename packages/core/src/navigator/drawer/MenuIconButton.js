@@ -66,8 +66,8 @@ const MenuIconButton = ({
             backgroundColor: disabled
               ? Colors.secondaryColor.background_light
               : color
-              ? color
-              : Colors.backgroundColor,
+                ? color
+                : Colors.backgroundColor,
           },
           style,
         ]}>
