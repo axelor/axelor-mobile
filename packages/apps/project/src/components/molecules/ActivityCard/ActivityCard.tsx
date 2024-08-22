@@ -59,8 +59,8 @@ const ActivityCard = ({
       utilityClass === STATES.Danger
         ? Colors.errorColor
         : utilityClass === STATES.Success
-        ? Colors.successColor
-        : Colors.primaryColor,
+          ? Colors.successColor
+          : Colors.primaryColor,
     [Colors, utilityClass],
   );
 

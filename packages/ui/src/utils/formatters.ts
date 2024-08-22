@@ -61,7 +61,7 @@ export function formatNumber(
   let result = '';
   let counter = 0;
 
-  for (var i = integerPart.length - 1; i >= 0; i--) {
+  for (let i = integerPart.length - 1; i >= 0; i--) {
     result =
       counter !== 0 && counter % 3 === 0
         ? integerPart[i] + thousandSpacer + result
