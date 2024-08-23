@@ -48,6 +48,7 @@ interface ConfigContextState {
   blockInteractionConfig: BlockInteractionConfig;
   nbDecimalDigitForQty: number;
   nbDecimalDigitForUnitPrice: number;
+  isScrollEnabled: boolean;
   setBlockInteractionConfig: (config: BlockInteractionConfig) => void;
   setNbDecimalDigitForQty: (option: number) => void;
   setNbDecimalDigitForUnitPrice: (option: number) => void;
@@ -58,6 +59,7 @@ interface ConfigContextState {
   setVirtualKeyboardConfig: (option: boolean) => void;
   toggleVirtualKeyboardConfig: () => void;
   setHeaderHeight: (height: number) => void;
+  setIsScrollEnabled: (option: boolean) => void;
 }
 
 interface ConfigAction {
@@ -78,6 +80,7 @@ const defaultConfigContext = {
   },
   nbDecimalDigitForQty: 2,
   nbDecimalDigitForUnitPrice: 2,
+  isScrollEnabled: true,
   setBlockInteractionConfig: () => {
     throw new Error(
       'ConfigProvider should be mounted to set blockInteractionConfig config',
@@ -120,6 +123,11 @@ const defaultConfigContext = {
       'ConfigProvider should be mounted to set header height config',
     );
   },
+  setIsScrollEnabled: () => {
+    throw new Error(
+      'ConfigProvider should be mounted to set isScrollEnabled config',
+    );
+  },
 };
 
 const ConfigContext = createContext<ConfigContextState>(defaultConfigContext);
@@ -135,6 +143,7 @@ const actionTypes = {
   setBlockInteractionConfig: 'setBlockInteractionConfig',
   setNbDecimalDigitForQty: 'setNbDecimalDigitForQty',
   setNbDecimalDigitForUnitPrice: 'setNbDecimalDigitForUnitPrice',
+  setIsScrollEnabled: 'setIsScrollEnabled',
 };
 
 const configReducer = (
@@ -202,6 +211,12 @@ const configReducer = (
         headerHeight: action.payload as number,
       };
     }
+    case actionTypes.setIsScrollEnabled: {
+      return {
+        ...state,
+        isScrollEnabled: action.payload as boolean,
+      };
+    }
   }
 };
 
@@ -245,6 +260,10 @@ const actions = {
   setHeaderHeight: value => ({
     type: actionTypes.setHeaderHeight,
     payload: value,
+  }),
+  setIsScrollEnabled: option => ({
+    type: actionTypes.setIsScrollEnabled,
+    payload: option,
   }),
 };
 
@@ -294,6 +313,10 @@ export const ConfigProvider = ({children, showModulesSubtitle}) => {
     value => dispatch(actions.setHeaderHeight(value)),
     [],
   );
+  const setIsScrollEnabled = useCallback(
+    option => dispatch(actions.setIsScrollEnabled(option)),
+    [],
+  );
   const configContextState = useMemo<ConfigContextState>(
     () => ({
       ...state,
@@ -307,19 +330,21 @@ export const ConfigProvider = ({children, showModulesSubtitle}) => {
       toggleVirtualKeyboardConfig,
       setHeaderHeight,
       setBlockInteractionConfig,
+      setIsScrollEnabled,
     }),
     [
-      setActivityIndicator,
+      state,
       setNbDecimalDigitForQty,
       setNbDecimalDigitForUnitPrice,
+      setActivityIndicator,
       setShowSubtitles,
       setFilterConfig,
-      setVirtualKeyboardConfig,
-      state,
       toggleFilterConfig,
+      setVirtualKeyboardConfig,
       toggleVirtualKeyboardConfig,
       setHeaderHeight,
       setBlockInteractionConfig,
+      setIsScrollEnabled,
     ],
   );
 
