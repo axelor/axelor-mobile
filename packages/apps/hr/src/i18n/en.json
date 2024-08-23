@@ -60,7 +60,7 @@
   "Hr_ManufOrder": "Manufacturing order",
   "Hr_OperationOrder": "Operation order",
   "Hr_Date": "Date",
-  "Hr_Duration": "Duration (hours)",
+  "Hr_DurationHours": "Duration (hours)",
   "Hr_UpdatedDuration": "Updated duration",
   "Hr_TotalDuration": "Total duration",
   "Hr_ActiveTimer": "Active timer",
@@ -80,6 +80,14 @@
   "Hr_LeaveRequests": "Leave requests",
   "Hr_Leaves": "Leaves",
   "Hr_MyLeaves": "My leaves",
+  "Hr_LeaveRequest": "Leave request",
+  "Hr_StartOn_Morning": "Morning",
+  "Hr_StartOn_Afternoon": "Afternoon",
+  "Hr_Available": "Available",
+  "Hr_Duration": "Duration",
+  "Hr_SendOn": "Send on",
+  "Hr_ValidatedOnBy": "Validated on {{date}} by {{name}}",
+  "Hr_RejectedOnBy": "Rejected on {{date}} by {{name}}",
   "Hr_SliceAction_FetchExpenseLines": "fetch expense lines",
   "Hr_SliceAction_SearchDraftExpense": "fetch draft expenses",
   "Hr_SliceAction_FetchExpense": "fetch expenses",
@@ -132,5 +140,6 @@
   "Hr_SliceAction_UpdateTimerStatus": "update timer status",
   "Hr_SliceAction_DeleteTimer": "delete timer",
   "Hr_SliceAction_FetchLeave": "fetch leave",
-  "Hr_SliceAction_FetchLeaveToValidate": "fetch leave to validate"
+  "Hr_SliceAction_FetchLeaveToValidate": "fetch leave to validate",
+  "Hr_SliceAction_FetchLeaveById": "fetch leave request by id"
 }

@@ -345,7 +345,7 @@ export const hr_formsRegister: FormConfigs = {
         required: true,
       },
       hoursDuration: {
-        titleKey: 'Hr_Duration',
+        titleKey: 'Hr_DurationHours',
         type: 'number',
         widget: 'increment',
         required: true,

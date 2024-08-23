@@ -17,6 +17,7 @@
  */
 
 import LeaveListScreen from './LeaveListScreen';
+import LeaveDetailsScreen from './LeaveDetailsScreen';
 
 export default {
   LeaveListScreen: {
@@ -27,6 +28,14 @@ export default {
     },
     isUsableOnShortcut: true,
   },
+  LeaveDetailsScreen: {
+    title: 'Hr_LeaveRequest',
+    component: LeaveDetailsScreen,
+    options: {
+      shadedHeader: false,
+    },
+  },
 };
 
 export {LeaveListScreen};
+export {LeaveDetailsScreen};

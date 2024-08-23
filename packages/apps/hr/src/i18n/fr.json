@@ -60,7 +60,7 @@
   "Hr_ManufOrder": "Ordre de fabrication",
   "Hr_OperationOrder": "Opération de fabrication",
   "Hr_Date": "Date",
-  "Hr_Duration": "Duration (heures)",
+  "Hr_DurationHours": "Durée (heures)",
   "Hr_UpdatedDuration": "Durée mise à jour",
   "Hr_TotalDuration": "Durée totale",
   "Hr_ActiveTimer": "Chronomètre actif",
@@ -80,6 +80,14 @@
   "Hr_LeaveRequests": "Demandes de congés",
   "Hr_Leaves": "Congés",
   "Hr_MyLeaves": "Mes congés",
+  "Hr_LeaveRequest": "Demande de congés",
+  "Hr_StartOn_Morning": "Le matin",
+  "Hr_StartOn_Afternoon": "L'après-midi",
+  "Hr_Available": "Disponible",
+  "Hr_Duration": "Durée",
+  "Hr_SendOn": "Envoyé le",
+  "Hr_ValidatedOnBy": "Validé le {{date}} par {{name}}",
+  "Hr_RejectedOnBy": "Refusé le {{date}} par {{name}}",
   "Hr_SliceAction_FetchExpenseLines": "récupération des lignes de frais",
   "Hr_SliceAction_SearchDraftExpense": "récupération des notes de frais brouillon",
   "Hr_SliceAction_FetchExpense": "récupération des notes de frais",
@@ -132,5 +140,6 @@
   "Hr_SliceAction_UpdateTimerStatus": "mise à jour du statut d'un chronomètre",
   "Hr_SliceAction_DeleteTimer": "suppression d'un chronomètre",
   "Hr_SliceAction_FetchLeave": "récupération des congés",
-  "Hr_SliceAction_FetchLeaveToValidate": "récupération des congés à valider"
+  "Hr_SliceAction_FetchLeaveToValidate": "récupération des congés à valider",
+  "Hr_SliceAction_FetchLeaveById": "récupération d'une demande de congés par id"
 }
