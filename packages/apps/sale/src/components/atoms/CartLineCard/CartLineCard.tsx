@@ -69,8 +69,6 @@ const CartLineCard = ({style, product, qty, unit}: CartLineCardProps) => {
                 <Text writingType="title">{product?.name}</Text>
               </View>
             ),
-            displayText: product?.name,
-            isTitle: true,
           },
           {
             displayText: product?.code,
@@ -79,18 +77,20 @@ const CartLineCard = ({style, product, qty, unit}: CartLineCardProps) => {
         ],
       }}
       sideBadges={{
+        style: styles.badges,
         items: [
           {
-            style: styles.badges,
             customComponent: (
-              <>
-                <TextUnit
-                  unit={product?.saleCurrency?.symbol}
-                  value={priceFormat(product?.salePrice)}
-                  numberOfLines={1}
-                />
-                <TextUnit unit={unit} value={qty} numberOfLines={1} />
-              </>
+              <TextUnit
+                unit={product?.saleCurrency?.symbol}
+                value={priceFormat(product?.salePrice)}
+                numberOfLines={1}
+              />
+            ),
+          },
+          {
+            customComponent: (
+              <TextUnit unit={unit} value={qty} numberOfLines={1} />
             ),
           },
         ],

@@ -17,7 +17,7 @@
  */
 
 export {
-  searchCart,
+  fetchActiveCart,
   searchCartLine,
   updateCart,
   updateCartLine,

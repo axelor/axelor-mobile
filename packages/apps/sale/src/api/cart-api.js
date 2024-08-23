@@ -42,7 +42,7 @@ const createCartLineCriteria = (searchValue, cartId) => {
       operator: '=',
       value: cartId,
     },
-    getSearchCriterias('sale_cart', searchValue),
+    getSearchCriterias('sale_cartLine', searchValue),
   ];
 };
 
@@ -72,9 +72,12 @@ export async function updateCart({cart, partnerId}) {
     data: {
       data: {
         ...cart,
-        partner: {
-          id: partnerId,
-        },
+        partner:
+          partnerId != null
+            ? {
+                id: partnerId,
+              }
+            : null,
       },
     },
   });

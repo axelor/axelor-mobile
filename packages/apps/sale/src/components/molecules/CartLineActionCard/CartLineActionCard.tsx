@@ -86,6 +86,7 @@ const CartLineActionCard = ({
         {
           iconName: 'dash-lg',
           helper: I18n.t('Sale_RemoveOne'),
+          disabled: cartLine.qty <= 1,
           onPress: () => {
             dispatch(
               (updateCartLine as any)({

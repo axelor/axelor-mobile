@@ -16,6 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+export {default as CartHeader} from './CartHeader/CartHeader';
 export {default as CartLineActionCard} from './CartLineActionCard/CartLineActionCard';
 export {default as ClientActionCard} from './ClientActionCard/ClientActionCard';
 export {default as ClientHeader} from './ClientHeader/ClientHeader';

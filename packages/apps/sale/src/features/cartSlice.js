@@ -23,22 +23,22 @@ import {
   updateAgendaItems,
 } from '@axelor/aos-mobile-core';
 import {
-  searchCart as _searchCart,
+  searchCart,
   searchCartLine as _searchCartLine,
   updateCart as _updateCart,
   updateCartLine as _updateCartLine,
   deleteCartLine as _deleteCartLine,
 } from '../api/cart-api';
 
-export const searchCart = createAsyncThunk(
+export const fetchActiveCart = createAsyncThunk(
   'sale_cart/searchCart',
   async function (data, {getState}) {
     return handlerApiCall({
-      fetchFunction: _searchCart,
+      fetchFunction: searchCart,
       data,
       action: 'Sale_SliceAction_SearchCart',
       getState,
-      responseOptions: {isArrayResponse: true},
+      responseOptions: {isArrayResponse: false},
     });
   },
 );
@@ -65,6 +65,14 @@ export const updateCart = createAsyncThunk(
       action: 'Sale_SliceAction_UpdateCart',
       getState,
       responseOptions: {isArrayResponse: true},
+    }).then(() => {
+      handlerApiCall({
+        fetchFunction: searchCart,
+        data,
+        action: 'Sale_SliceAction_SearchCart',
+        getState,
+        responseOptions: {isArrayResponse: false},
+      });
     });
   },
 );
@@ -119,7 +127,7 @@ const initialState = {
   loading: true,
   moreLoading: false,
   isListEnd: false,
-  cartList: [],
+  activeCart: {},
   carLineList: [],
 };
 
@@ -127,11 +135,8 @@ const cartSlice = createSlice({
   name: 'sale_cart',
   initialState,
   extraReducers: builder => {
-    generateInifiniteScrollCases(builder, searchCart, {
-      loading: 'loadingCart',
-      moreLoading: 'moreLoadingCart',
-      isListEnd: 'isListEndCart',
-      list: 'cartList',
+    builder.addCase(fetchActiveCart.fulfilled, (state, action) => {
+      state.activeCart = action.payload;
     });
     generateInifiniteScrollCases(builder, searchCartLine, {
       loading: 'loading',
@@ -141,9 +146,6 @@ const cartSlice = createSlice({
     });
     builder.addCase(updateCart.fulfilled, (state, action) => {
       state.cartList = updateAgendaItems(state.cartList, [action.payload]);
-    });
-    builder.addCase(updateCartLine.pending, state => {
-      state.loading = false;
     });
     builder.addCase(updateCartLine.fulfilled, (state, action) => {
       state.carLineList = action.payload;

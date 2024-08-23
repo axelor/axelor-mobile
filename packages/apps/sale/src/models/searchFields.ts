@@ -31,4 +31,5 @@ export const sale_searchFields: SearchFields = {
   sale_customerCategory: ['name'],
   sale_complementaryProduct: ['product.name', 'product.code'],
   sale_priceListLine: ['priceList.title'],
+  sale_cartLine: ['product.name', 'product.code'],
 };
