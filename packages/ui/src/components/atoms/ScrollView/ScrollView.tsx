@@ -23,6 +23,7 @@ import {
   RefreshControl,
   StyleSheet,
 } from 'react-native';
+import {useConfig} from '../../../config/ConfigContext';
 
 interface Refresh {
   loading: boolean;
@@ -36,6 +37,8 @@ interface ScrollViewProps {
 }
 
 const ScrollView = ({style, children, refresh}: ScrollViewProps) => {
+  const {isScrollEnabled} = useConfig();
+
   return (
     <ReactNativeScrollView
       contentContainerStyle={[
@@ -48,9 +51,11 @@ const ScrollView = ({style, children, refresh}: ScrollViewProps) => {
           <RefreshControl
             refreshing={refresh.loading}
             onRefresh={refresh.fetcher}
+            enabled={isScrollEnabled}
           />
         )
-      }>
+      }
+      scrollEnabled={isScrollEnabled}>
       {children}
     </ReactNativeScrollView>
   );
