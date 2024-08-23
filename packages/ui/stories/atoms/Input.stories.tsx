@@ -16,11 +16,12 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import type {StoryObj, Meta} from '@storybook/react';
+import type {Meta} from '@storybook/react';
 import {Input as Component} from '../../src/components/atoms';
 import {
   disabledControl,
   keyboardPicker,
+  Story,
   writingPicker,
 } from '../utils/control-type.helpers';
 
@@ -31,9 +32,7 @@ const meta: Meta<typeof Component> = {
 
 export default meta;
 
-type Story = StoryObj<typeof Component>;
-
-export const Input: Story = {
+export const Input: Story<typeof Component> = {
   args: {
     placeholder: 'Enter text here',
     secureTextEntry: false,

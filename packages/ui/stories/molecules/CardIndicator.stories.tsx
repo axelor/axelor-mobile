@@ -18,9 +18,9 @@
 
 import React from 'react';
 import {Dimensions, StyleSheet, View} from 'react-native';
-import type {StoryObj, Meta} from '@storybook/react';
+import type {Meta} from '@storybook/react';
 import {CardIndicator as Component, Text} from '../../src/components';
-import {disabledControl} from '../utils/control-type.helpers';
+import {disabledControl, Story} from '../utils/control-type.helpers';
 
 const meta: Meta<typeof Component> = {
   title: 'ui/molecules/CardIndicator',
@@ -29,9 +29,7 @@ const meta: Meta<typeof Component> = {
 
 export default meta;
 
-type Story = StoryObj<typeof Component>;
-
-export const CardIndicator: Story = {
+export const CardIndicator: Story<typeof Component> = {
   args: {
     indication: 'this is an indication',
     position: 'right',

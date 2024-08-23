@@ -68,9 +68,9 @@ Il peut ensuite y avoir deux types de stories : les stories fixes dans le style 
 
 ```tsx
 import React from 'react';
-import type {StoryObj, Meta} from '@storybook/react';
+import type {Meta} from '@storybook/react';
 import {ComponentName as Component} from '../../src/components';
-import {disabledControl} from '../utils/control-type.helpers';
+import {disabledControl, Story} from '../utils/control-type.helpers';
 
 const meta: Meta<typeof Component> = {
   title: 'ui/<type>/ComponentName',
@@ -79,9 +79,7 @@ const meta: Meta<typeof Component> = {
 
 export default meta;
 
-type Story = StoryObj<typeof Component>;
-
-export const Story1: Story = {
+export const Story1: Story<typeof Component> = {
   name: 'with pre-defined position',
   args: {
     predefinedPosition: 'bottom',
@@ -92,7 +90,7 @@ export const Story1: Story = {
   render: args => <Component {...args} />,
 };
 
-export const Story2: Story = {
+export const Story2: Story<typeof Component> = {
   name: 'with custom position',
   args: {
     top: 0,
@@ -110,9 +108,13 @@ export const Story2: Story = {
 
 ```tsx
 import React from 'react';
-import type {StoryObj, Meta} from '@storybook/react';
+import type {Meta} from '@storybook/react';
 import {ComponentName as Component} from '../../src/components/atoms';
-import {colorPicker, disabledControl} from '../utils/control-type.helpers';
+import {
+  colorPicker,
+  disabledControl,
+  Story,
+} from '../utils/control-type.helpers';
 
 const meta: Meta<typeof Component> = {
   title: 'ui/<type>/ComponentName',
@@ -121,9 +123,7 @@ const meta: Meta<typeof Component> = {
 
 export default meta;
 
-type Story = StoryObj<typeof Component>;
-
-export const ComponentName: Story = {
+export const ComponentName: Story<typeof Component> = {
   args: {
     size: 50,
     name: 'heart-fill',
@@ -187,7 +187,7 @@ icon ?: {
 }
 
 // Création des paramètres pour la story et mapping dans le rendu
-export const ComponentName: Story = {
+export const ComponentName: Story<typeof Component> = {
   args: {
     _iconName: 'qrCode',
     _iconColor: 'primaryColor',
