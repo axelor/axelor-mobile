@@ -18,9 +18,9 @@
 
 import React from 'react';
 import {StyleSheet, View} from 'react-native';
-import type {StoryObj, Meta} from '@storybook/react';
+import type {Meta} from '@storybook/react';
 import {CheckboxScrollList as Component, Text} from '../../src/components';
-import {disabledControl} from '../utils/control-type.helpers';
+import {disabledControl, Story} from '../utils/control-type.helpers';
 
 const meta: Meta<typeof Component> = {
   title: 'ui/organisms/CheckboxScrollList',
@@ -29,9 +29,7 @@ const meta: Meta<typeof Component> = {
 
 export default meta;
 
-type Story = StoryObj<typeof Component>;
-
-export const CheckboxScrollList: Story = {
+export const CheckboxScrollList: Story<typeof Component> = {
   args: {
     loadingList: false,
     moreLoading: false,

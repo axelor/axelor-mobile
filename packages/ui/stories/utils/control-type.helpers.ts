@@ -16,6 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+import {StoryObj} from '@storybook/react';
 import {Chart} from '../../src/components/templates/Dashboard';
 import {lightTheme} from '../../src/theme';
 
@@ -58,6 +59,16 @@ export const keyboardPicker = {
     'web-search',
     'visible-password',
   ],
+};
+
+export type Story<T> = StoryObj<T> & {
+  args?: {
+    [key: string]: any;
+  };
+  argTypes?: {
+    [key: string]: any;
+  };
+  render?: (args: any) => any;
 };
 
 export const disabledControl = {table: {disable: true}};
