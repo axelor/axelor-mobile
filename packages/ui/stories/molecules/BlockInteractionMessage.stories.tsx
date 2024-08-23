@@ -17,9 +17,10 @@
  */
 
 import React from 'react';
-import type {StoryObj, Meta} from '@storybook/react';
+import type {Meta} from '@storybook/react';
 import {BlockInteractionMessage as Component} from '../../src/components';
 import {useConfig} from '../../src/config/ConfigContext';
+import {Story} from '../utils/control-type.helpers';
 
 const meta: Meta<typeof Component> = {
   title: 'ui/molecules/BlockInteractionMessage',
@@ -28,9 +29,7 @@ const meta: Meta<typeof Component> = {
 
 export default meta;
 
-type Story = StoryObj<typeof Component>;
-
-export const BlockInteractionMessage: Story = {
+export const BlockInteractionMessage: Story<typeof Component> = {
   render: function Render() {
     const {setBlockInteractionConfig} = useConfig();
 

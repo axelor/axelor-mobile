@@ -17,9 +17,13 @@
  */
 
 import React from 'react';
-import type {StoryObj, Meta} from '@storybook/react';
+import type {Meta} from '@storybook/react';
 import {ImageBubble as Component, InfoBubble} from '../../src/components';
-import {colorPicker, disabledControl} from '../utils/control-type.helpers';
+import {
+  colorPicker,
+  disabledControl,
+  Story,
+} from '../utils/control-type.helpers';
 
 const IMAGE_URI = 'https://picsum.photos/300/300';
 
@@ -30,9 +34,7 @@ const meta: Meta<typeof Component> = {
 
 export default meta;
 
-type Story = StoryObj<typeof Component>;
-
-export const ImageBubble: Story = {
+export const ImageBubble: Story<typeof Component> = {
   args: {
     source_uri: IMAGE_URI,
     item1_icon: 'heart',

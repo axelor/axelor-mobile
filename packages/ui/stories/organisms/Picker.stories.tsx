@@ -17,9 +17,13 @@
  */
 
 import React from 'react';
-import type {StoryObj, Meta} from '@storybook/react';
+import type {Meta} from '@storybook/react';
 import {Picker as Component} from '../../src/components';
-import {colorPicker, disabledControl} from '../utils/control-type.helpers';
+import {
+  colorPicker,
+  disabledControl,
+  Story,
+} from '../utils/control-type.helpers';
 
 const meta: Meta<typeof Component> = {
   title: 'ui/organisms/Picker',
@@ -28,9 +32,7 @@ const meta: Meta<typeof Component> = {
 
 export default meta;
 
-type Story = StoryObj<typeof Component>;
-
-export const Picker: Story = {
+export const Picker: Story<typeof Component> = {
   args: {
     title: 'Select an item',
     placeholder: 'Placeholder',

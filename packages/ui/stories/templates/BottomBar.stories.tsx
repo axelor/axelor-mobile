@@ -17,9 +17,13 @@
  */
 
 import React from 'react';
-import type {StoryObj, Meta} from '@storybook/react';
+import type {Meta} from '@storybook/react';
 import {BottomBar as Component, Text} from '../../src/components';
-import {colorPicker, disabledControl} from '../utils/control-type.helpers';
+import {
+  colorPicker,
+  disabledControl,
+  Story,
+} from '../utils/control-type.helpers';
 
 const viewContent = <Text>View Content</Text>;
 
@@ -30,9 +34,7 @@ const meta: Meta<typeof Component> = {
 
 export default meta;
 
-type Story = StoryObj<typeof Component>;
-
-export const BottomBar: Story = {
+export const BottomBar: Story<typeof Component> = {
   args: {
     itemSize: 50,
     item1_iconName: 'house',
