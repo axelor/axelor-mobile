@@ -29,6 +29,7 @@ import {Color} from '../../../theme';
 import {Text} from '../../atoms';
 import {CircleButton} from '../../molecules';
 import TopActions from './TopActions';
+import {useConfig} from '../../../config/ConfigContext';
 
 const DISPLAY_LOADING_DELAY_MILLISECONDS = 1500;
 const BUTTON_SIZE = 40;
@@ -79,6 +80,8 @@ const ScrollList = ({
   verticalActions = true,
   onViewableItemsChanged,
 }: ScrollListProps) => {
+  const {isScrollEnabled} = useConfig();
+
   const [, setPage] = useState(0);
   const [isLoading, setIsLoading] = useState(false);
 
@@ -247,6 +250,7 @@ const ScrollList = ({
         viewabilityConfig={{
           itemVisiblePercentThreshold: 1,
         }}
+        scrollEnabled={isScrollEnabled}
       />
     </View>
   );
