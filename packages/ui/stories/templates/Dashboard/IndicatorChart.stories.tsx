@@ -17,30 +17,34 @@
  */
 
 import React from 'react';
-import type {StoryObj, Meta} from '@storybook/react';
+import type {Meta} from '@storybook/react';
 import {IndicatorChart as Component} from '../../../src/components';
-import {disabledControl} from '../../utils/control-type.helpers';
+import {
+  colorPicker,
+  disabledControl,
+  Story,
+} from '../../utils/control-type.helpers';
 
 const datasets = [
   {
     title: 'Revenue',
-    value: 150000,
+    value: 1500,
     unit: '€',
-    icon: 'dollar-sign',
+    icon: 'currency-dollar',
     color: 'green',
   },
   {
     title: 'Expenses',
-    value: 50000,
+    value: 200,
     unit: '€',
-    icon: 'dollar-sign',
+    icon: 'receipt',
     color: 'red',
   },
   {
     title: 'Profit',
-    value: 100000,
+    value: 10,
     unit: '€',
-    icon: 'dollar-sign',
+    icon: 'graph-up-arrow',
     color: 'blue',
   },
 ];
@@ -57,23 +61,41 @@ const meta: Meta<typeof Component> = {
 
 export default meta;
 
-type Story = StoryObj<typeof Component>;
-
-export const IndicatorChart: Story = {
+export const IndicatorChart: Story<typeof Component> = {
   args: {
     title: 'Financial Overview',
     widthGraph: 350,
     hideCardBackground: false,
     singleIndicator: false,
+    display_icon: true,
+    indicator_color: 'primaryColor',
   },
   argTypes: {
+    display_icon: {
+      control: 'boolean',
+      if: {arg: 'singleIndicator', truthy: true},
+    },
+    indicator_color: {
+      ...colorPicker,
+      if: {arg: 'singleIndicator', truthy: true},
+    },
     style: disabledControl,
     datasets: disabledControl,
   },
   render: (args: any) => (
     <Component
       {...args}
-      datasets={args.singleIndicator ? [datasets[0]] : datasets}
+      datasets={
+        args.singleIndicator
+          ? [
+              {
+                ...datasets[0],
+                icon: args.display_icon ? 'currency-dollar' : null,
+                color: args.indicator_color?.background,
+              },
+            ]
+          : datasets
+      }
     />
   ),
 };
