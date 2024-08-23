@@ -18,9 +18,9 @@
 
 import React from 'react';
 import {Dimensions, StyleSheet, View} from 'react-native';
-import type {StoryObj, Meta} from '@storybook/react';
+import type {Meta} from '@storybook/react';
 import {InfoBubble as Component} from '../../src/components';
-import {colorPicker} from '../utils/control-type.helpers';
+import {colorPicker, Story} from '../utils/control-type.helpers';
 
 const meta: Meta<typeof Component> = {
   title: 'ui/organisms/InfoBubble',
@@ -29,9 +29,7 @@ const meta: Meta<typeof Component> = {
 
 export default meta;
 
-type Story = StoryObj<typeof Component>;
-
-export const InfoBubble: Story = {
+export const InfoBubble: Story<typeof Component> = {
   args: {
     iconName: 'heart',
     badgeColor: 'primaryColor',

@@ -18,9 +18,9 @@
 
 import React from 'react';
 import {StyleSheet, View} from 'react-native';
-import type {StoryObj, Meta} from '@storybook/react';
+import type {Meta} from '@storybook/react';
 import {ScrollList as Component, Text} from '../../src/components';
-import {disabledControl} from '../utils/control-type.helpers';
+import {disabledControl, Story} from '../utils/control-type.helpers';
 
 const actionList = [
   {
@@ -47,9 +47,7 @@ const meta: Meta<typeof Component> = {
 
 export default meta;
 
-type Story = StoryObj<typeof Component>;
-
-export const ScrollList: Story = {
+export const ScrollList: Story<typeof Component> = {
   args: {
     loadingList: false,
     moreLoading: false,

@@ -17,9 +17,9 @@
  */
 
 import React from 'react';
-import type {StoryObj, Meta} from '@storybook/react';
+import type {Meta} from '@storybook/react';
 import {TabsScreen as Component, Text} from '../../src/components';
-import {disabledControl} from '../utils/control-type.helpers';
+import {disabledControl, Story} from '../utils/control-type.helpers';
 
 const viewContent = <Text>Tab Content</Text>;
 
@@ -30,9 +30,7 @@ const meta: Meta<typeof Component> = {
 
 export default meta;
 
-type Story = StoryObj<typeof Component>;
-
-export const TabsScreen: Story = {
+export const TabsScreen: Story<typeof Component> = {
   args: {
     position: 'top',
     tabHeight: 60,

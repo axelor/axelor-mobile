@@ -17,9 +17,13 @@
  */
 
 import React from 'react';
-import type {StoryObj, Meta} from '@storybook/react';
+import type {Meta} from '@storybook/react';
 import {ObjectCard as Component} from '../../src/components';
-import {colorPicker, disabledControl} from '../utils/control-type.helpers';
+import {
+  colorPicker,
+  disabledControl,
+  Story,
+} from '../utils/control-type.helpers';
 
 const meta: Meta<typeof Component> = {
   title: 'ui/templates/ObjectCard',
@@ -28,9 +32,7 @@ const meta: Meta<typeof Component> = {
 
 export default meta;
 
-type Story = StoryObj<typeof Component>;
-
-export const ObjectCard: Story = {
+export const ObjectCard: Story<typeof Component> = {
   args: {
     showArrow: true,
     iconLeftMargin: 20,

@@ -18,9 +18,9 @@
 
 import React from 'react';
 import {View} from 'react-native';
-import type {StoryObj, Meta} from '@storybook/react';
+import type {Meta} from '@storybook/react';
 import {Card, Text, TreeView as Component} from '../../src/components';
-import {disabledControl} from '../utils/control-type.helpers';
+import {disabledControl, Story} from '../utils/control-type.helpers';
 
 const branchData = [
   {id: 2, parent: {id: 1}, isBranch: false, title: 'Leaf 1'},
@@ -54,9 +54,7 @@ const meta: Meta<typeof Component> = {
 
 export default meta;
 
-type Story = StoryObj<typeof Component>;
-
-export const TreeView: Story = {
+export const TreeView: Story<typeof Component> = {
   args: {
     loadingList: false,
     data: [{id: 1, parent: null, isBranch: true, title: 'Branch 1'}],

@@ -17,9 +17,9 @@
  */
 
 import React from 'react';
-import type {StoryObj, Meta} from '@storybook/react';
+import type {Meta} from '@storybook/react';
 import {DropdownCardSwitch as Component, Text} from '../../src/components';
-import {disabledControl} from '../utils/control-type.helpers';
+import {disabledControl, Story} from '../utils/control-type.helpers';
 
 const viewContent = <Text>Dropdown Content</Text>;
 
@@ -30,9 +30,7 @@ const meta: Meta<typeof Component> = {
 
 export default meta;
 
-type Story = StoryObj<typeof Component>;
-
-export const DropdownCardSwitch: Story = {
+export const DropdownCardSwitch: Story<typeof Component> = {
   args: {multiSelection: false},
   argTypes: {dropdownItems: disabledControl},
   render: args => {
