@@ -17,11 +17,12 @@
  */
 
 import React from 'react';
-import type {StoryObj, Meta} from '@storybook/react';
+import type {Meta} from '@storybook/react';
 import {Text as Component} from '../../src/components/atoms';
 import {
   colorPicker,
   disabledControl,
+  Story,
   writingPicker,
 } from '../utils/control-type.helpers';
 
@@ -32,9 +33,7 @@ const meta: Meta<typeof Component> = {
 
 export default meta;
 
-type Story = StoryObj<typeof Component>;
-
-export const Text: Story = {
+export const Text: Story<typeof Component> = {
   args: {
     numberOfLines: 1,
     adjustsFontSizeToFit: false,

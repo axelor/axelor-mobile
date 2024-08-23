@@ -17,9 +17,9 @@
  */
 
 import React from 'react';
-import type {StoryObj, Meta} from '@storybook/react';
+import type {Meta} from '@storybook/react';
 import {LabelText as Component} from '../../src/components';
-import {colorPicker} from '../utils/control-type.helpers';
+import {colorPicker, Story} from '../utils/control-type.helpers';
 
 const meta: Meta<typeof Component> = {
   title: 'ui/molecules/LabelText',
@@ -28,9 +28,7 @@ const meta: Meta<typeof Component> = {
 
 export default meta;
 
-type Story = StoryObj<typeof Component>;
-
-export const LabelText: Story = {
+export const LabelText: Story<typeof Component> = {
   args: {
     title: 'Title',
     value: 'value',

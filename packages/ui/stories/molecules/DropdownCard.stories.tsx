@@ -17,9 +17,9 @@
  */
 
 import React from 'react';
-import type {StoryObj, Meta} from '@storybook/react';
+import type {Meta} from '@storybook/react';
 import {DropdownCard as Component, Text} from '../../src/components';
-import {disabledControl} from '../utils/control-type.helpers';
+import {disabledControl, Story} from '../utils/control-type.helpers';
 
 const meta: Meta<typeof Component> = {
   title: 'ui/molecules/DropdownCard',
@@ -28,9 +28,7 @@ const meta: Meta<typeof Component> = {
 
 export default meta;
 
-type Story = StoryObj<typeof Component>;
-
-export const DropdownCard: Story = {
+export const DropdownCard: Story<typeof Component> = {
   args: {
     title: 'Title',
     dropdownIsOpen: false,

@@ -17,9 +17,9 @@
  */
 
 import React from 'react';
-import type {StoryObj, Meta} from '@storybook/react';
+import type {Meta} from '@storybook/react';
 import {SelectionContainer as Component} from '../../src/components';
-import {disabledControl} from '../utils/control-type.helpers';
+import {disabledControl, Story} from '../utils/control-type.helpers';
 
 const meta: Meta<typeof Component> = {
   title: 'ui/molecules/SelectionContainer',
@@ -28,9 +28,7 @@ const meta: Meta<typeof Component> = {
 
 export default meta;
 
-type Story = StoryObj<typeof Component>;
-
-export const SelectionContainer: Story = {
+export const SelectionContainer: Story<typeof Component> = {
   args: {
     emptyValue: false,
     isPicker: false,

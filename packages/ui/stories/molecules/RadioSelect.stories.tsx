@@ -17,9 +17,9 @@
  */
 
 import React from 'react';
-import type {StoryObj, Meta} from '@storybook/react';
+import type {Meta} from '@storybook/react';
 import {RadioSelect as Component} from '../../src/components';
-import {disabledControl} from '../utils/control-type.helpers';
+import {disabledControl, Story} from '../utils/control-type.helpers';
 
 const meta: Meta<typeof Component> = {
   title: 'ui/molecules/RadioSelect',
@@ -28,9 +28,7 @@ const meta: Meta<typeof Component> = {
 
 export default meta;
 
-type Story = StoryObj<typeof Component>;
-
-export const RadioSelect: Story = {
+export const RadioSelect: Story<typeof Component> = {
   args: {
     question: 'Question title',
     radioSize: 20,

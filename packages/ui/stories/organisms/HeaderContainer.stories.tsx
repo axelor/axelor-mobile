@@ -18,9 +18,10 @@
 
 import React from 'react';
 import {StyleSheet, View} from 'react-native';
-import type {StoryObj, Meta} from '@storybook/react';
+import type {Meta} from '@storybook/react';
 import {HeaderContainer as Component, Text} from '../../src/components';
-import {disabledControl} from '../utils/control-type.helpers';
+import {disabledControl, Story} from '../utils/control-type.helpers';
+
 import {hexToRgb} from '../../src/utils';
 
 const Content = ({content, color}: {content: string; color: string}) => {
@@ -42,9 +43,7 @@ const meta: Meta<typeof Component> = {
 
 export default meta;
 
-type Story = StoryObj<typeof Component>;
-
-export const HeaderContainer: Story = {
+export const HeaderContainer: Story<typeof Component> = {
   args: {
     expandableFilter: true,
     forceHideByDefault: false,
