@@ -36,7 +36,7 @@ const createCartCriteria = (searchValue, userId) => {
 };
 
 const createCartLineCriteria = (searchValue, cartId) => {
-  const criteria = [
+  return [
     {
       fieldName: 'cart.id',
       operator: '=',
@@ -44,8 +44,6 @@ const createCartLineCriteria = (searchValue, cartId) => {
     },
     getSearchCriterias('sale_cart', searchValue),
   ];
-
-  return criteria;
 };
 
 export async function searchCart({searchValue, page = 0, userId}) {
