@@ -117,7 +117,6 @@ const HeaderOptionsMenu = ({
         <MenuItem
           key={_action.key + index}
           icon={_action.iconName}
-          secondaryIcon={_action.secondaryIcon}
           color={_action.iconColor}
           indicator={_action.indicator}
           placeholder={_action.title}
@@ -136,7 +135,6 @@ const HeaderOptionsMenu = ({
         <DropdownMenuItem
           key={_action.key + index}
           icon={_action.iconName}
-          secondaryIcon={_action.secondaryIcon}
           indicator={_action.indicator}
           placeholder={_action.title}
           hideIf={_action.hideIf}

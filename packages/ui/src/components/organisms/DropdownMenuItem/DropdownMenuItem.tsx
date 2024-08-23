@@ -20,11 +20,10 @@ import React, {ReactElement, useMemo} from 'react';
 import {StyleSheet, TouchableOpacity, View} from 'react-native';
 import {useThemeColor} from '../../../theme';
 import {Icon, Text} from '../../atoms';
-import {Badge, DoubleIcon} from '../../molecules';
+import {Badge} from '../../molecules';
 
 interface DropdownMenuItemProps {
   icon?: string;
-  secondaryIcon?: string;
   color?: string;
   placeholder: string;
   indicator?: number;
@@ -38,7 +37,6 @@ const BADGE_SIZE = 12;
 
 const DropdownMenuItem = ({
   icon = 'paperclip',
-  secondaryIcon = null,
   color,
   placeholder,
   indicator = 0,
@@ -73,12 +71,6 @@ const DropdownMenuItem = ({
       <View style={styles.iconContainer}>
         {customComponent != null ? (
           React.cloneElement(customComponent)
-        ) : secondaryIcon ? (
-          <DoubleIcon
-            topIconConfig={{name: secondaryIcon}}
-            bottomIconConfig={{name: icon}}
-            predefinedPosition="bottom-right"
-          />
         ) : (
           <Icon name={icon} color={_color} size={15} />
         )}

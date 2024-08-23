@@ -29,7 +29,6 @@ export const useSaleHeaders = () => {
   useSaleOrderLineDetailsActions();
   useProductDetailsActions();
   useClientDetailsActions();
-  useActiveCartActions();
 };
 
 const useSaleOrderDetailsActions = () => {
@@ -110,43 +109,4 @@ const useClientDetailsActions = () => {
       attachedFileScreenTitle: customer?.name,
     });
   }, [customer, mobileSettings]);
-};
-
-const useActiveCartActions = () => {
-  const {mobileSettings} = useSelector((state: any) => state.appConfig);
-  const {cartList} = useSelector((state: any) => state.sale_cart);
-  const I18n = useTranslator();
-
-  const activeCart = useMemo(() => {
-    return cartList[0];
-  }, [cartList]);
-
-  useEffect(() => {
-    if (activeCart) {
-      headerActionsProvider.registerModel('sale_active_cart', {
-        model: 'com.axelor.apps.sale.db.Cart',
-        modelId: activeCart?.id,
-        disableMailMessages: !mobileSettings?.isTrackerMessageEnabled,
-        attachedFileScreenTitle: activeCart?.name,
-        actions: [
-          {
-            iconName: 'basket2-fill',
-            secondaryIcon: 'plus-lg',
-            key: 'setAside',
-            order: 10,
-            title: I18n.t('Sale_SetAside'),
-            onPress: () => {},
-          },
-          {
-            iconName: 'basket2-fill',
-            secondaryIcon: 'trash3-fill',
-            key: 'emptyCart',
-            order: 20,
-            title: I18n.t('Sale_EmptyCart'),
-            onPress: () => {},
-          },
-        ],
-      });
-    }
-  }, [I18n, activeCart, mobileSettings]);
 };

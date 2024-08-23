@@ -40,7 +40,6 @@ export interface ActionType {
   order: number;
   title: string;
   iconName: string;
-  secondaryIcon?: string;
   iconColor?: string;
   indicator?: number;
   hideIf?: boolean;

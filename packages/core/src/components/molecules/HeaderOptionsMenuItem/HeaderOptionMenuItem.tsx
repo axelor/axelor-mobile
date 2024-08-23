@@ -18,11 +18,10 @@
 
 import React, {ReactElement, useMemo} from 'react';
 import {StyleSheet, TouchableOpacity} from 'react-native';
-import {Badge, DoubleIcon, Icon, useThemeColor} from '@axelor/aos-mobile-ui';
+import {Badge, Icon, useThemeColor} from '@axelor/aos-mobile-ui';
 
 interface HeaderOptionMenuItemProps {
   icon: string;
-  secondaryIcon?: string;
   color?: string;
   indicator?: number;
   hideIf: boolean;
@@ -35,7 +34,6 @@ const BADGE_SIZE = 16;
 
 const HeaderOptionMenuItem = ({
   icon,
-  secondaryIcon = null,
   color,
   indicator = 0,
   hideIf = false,
@@ -69,12 +67,6 @@ const HeaderOptionMenuItem = ({
       activeOpacity={0.7}>
       {customComponent != null ? (
         React.cloneElement(customComponent)
-      ) : secondaryIcon ? (
-        <DoubleIcon
-          topIconConfig={{name: secondaryIcon}}
-          bottomIconConfig={{name: icon}}
-          predefinedPosition="bottom-right"
-        />
       ) : (
         <Icon name={icon} color={_color} size={22} />
       )}

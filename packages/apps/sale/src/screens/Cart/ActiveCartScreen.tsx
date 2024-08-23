@@ -17,8 +17,16 @@
  */
 
 import React, {useCallback, useEffect, useMemo, useState} from 'react';
-import {Button, Label, LabelText, Screen} from '@axelor/aos-mobile-ui';
 import {
+  Button,
+  DoubleIcon,
+  Label,
+  LabelText,
+  Screen,
+  useThemeColor,
+} from '@axelor/aos-mobile-ui';
+import {
+  headerActionsProvider,
   SearchListView,
   useDispatch,
   useSelector,
@@ -30,8 +38,10 @@ import {StyleSheet} from 'react-native';
 
 const ActiveCartScreen = ({}) => {
   const dispatch = useDispatch();
+  const Colors = useThemeColor();
   const I18n = useTranslator();
 
+  const {mobileSettings} = useSelector((state: any) => state.appConfig);
   const {loading, moreLoading, isListEnd, cartList, carLineList} = useSelector(
     (state: any) => state.sale_cart,
   );
@@ -50,6 +60,70 @@ const ActiveCartScreen = ({}) => {
   useEffect(() => {
     setSelectedCustomer(activeCart?.partner);
   }, [activeCart?.partner]);
+
+  useEffect(() => {
+    if (activeCart) {
+      headerActionsProvider.registerModel('sale_active_cart', {
+        model: 'com.axelor.apps.sale.db.Cart',
+        modelId: activeCart?.id,
+        disableMailMessages: !mobileSettings?.isTrackerMessageEnabled,
+        attachedFileScreenTitle: activeCart?.name,
+        actions: [
+          {
+            customComponent: (
+              <DoubleIcon
+                topIconConfig={{
+                  name: 'plus-lg',
+                  color: Colors.primaryColor.background,
+                  size: 13,
+                }}
+                bottomIconConfig={{
+                  name: 'basket2-fill',
+                  color: Colors.secondaryColor_dark.background,
+                }}
+                predefinedPosition={'bottom-right'}
+                topIconPosition={{bottom: -7, right: -7}}
+              />
+            ),
+            iconName: 'basket2-fill',
+            key: 'setAside',
+            order: 10,
+            title: I18n.t('Sale_SetAside'),
+            onPress: () => {},
+          },
+          {
+            customComponent: (
+              <DoubleIcon
+                topIconConfig={{
+                  name: 'trash3-fill',
+                  color: Colors.errorColor.background,
+                  size: 13,
+                }}
+                bottomIconConfig={{
+                  name: 'basket2-fill',
+                  color: Colors.secondaryColor_dark.background,
+                }}
+                predefinedPosition={'bottom-right'}
+                topIconPosition={{bottom: -7, right: -7}}
+              />
+            ),
+            iconName: 'basket2-fill',
+            key: 'emptyCart',
+            order: 20,
+            title: I18n.t('Sale_EmptyCart'),
+            onPress: () => {},
+          },
+        ],
+      });
+    }
+  }, [
+    Colors.errorColor.background,
+    Colors.primaryColor.background,
+    Colors.secondaryColor_dark.background,
+    I18n,
+    activeCart,
+    mobileSettings,
+  ]);
 
   const handleChangeCustomer = useCallback(
     newCustomer => {
