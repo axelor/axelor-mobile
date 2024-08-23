@@ -17,9 +17,9 @@
  */
 
 import React from 'react';
-import type {StoryObj, Meta} from '@storybook/react';
+import type {Meta} from '@storybook/react';
 import {Image as Component} from '../../src/components';
-import {disabledControl} from '../utils/control-type.helpers';
+import {disabledControl, Story} from '../utils/control-type.helpers';
 
 const IMAGE_URI = 'https://picsum.photos/200/300';
 
@@ -30,9 +30,7 @@ const meta: Meta<typeof Component> = {
 
 export default meta;
 
-type Story = StoryObj<typeof Component>;
-
-export const Image: Story = {
+export const Image: Story<typeof Component> = {
   args: {
     source_uri: IMAGE_URI,
     resizeMode: 'contain',

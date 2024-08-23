@@ -18,8 +18,9 @@
 
 import React from 'react';
 import {StyleSheet, View} from 'react-native';
-import type {StoryObj, Meta} from '@storybook/react';
+import type {Meta} from '@storybook/react';
 import {HtmlInput as Component} from '../../src/components/atoms';
+import {Story} from '../utils/control-type.helpers';
 
 const meta: Meta<typeof Component> = {
   title: 'ui/atoms/HtmlInput',
@@ -28,9 +29,7 @@ const meta: Meta<typeof Component> = {
 
 export default meta;
 
-type Story = StoryObj<typeof Component>;
-
-export const HtmlInput: Story = {
+export const HtmlInput: Story<typeof Component> = {
   args: {
     title: 'Description',
     defaultInput: '<p>Hello World!<b>This text is bold.</b></p>',
