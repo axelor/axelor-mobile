@@ -16,7 +16,10 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-export {projectReducer as project_project} from './projectSlice';
-export {projectTaskReducer as project_projectTask} from './projectTaskSlice';
-export {reportingReducer as project_reporting} from './reportingSlice';
-export {timesheetLinesReducer as project_timesheetLines} from './timesheetLinesSlice';
+import {axiosApiProvider} from '@axelor/aos-mobile-core';
+
+export async function fetchIndicator({projectId}) {
+  return axiosApiProvider.get({
+    url: `ws/aos/project/reporting-values/${projectId}`,
+  });
+}
