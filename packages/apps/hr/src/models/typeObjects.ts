@@ -215,12 +215,12 @@ export const hr_typeObjects: ModuleSelections = [
       startOnSelect: {
         content: [
           {
-            key: 'Draft',
+            key: 'Morning',
             value: 1,
             title: 'Hr_StartOn_Morning',
           },
           {
-            key: 'WaitingValidation',
+            key: 'Afternoon',
             value: 2,
             title: 'Hr_StartOn_Afternoon',
           },
