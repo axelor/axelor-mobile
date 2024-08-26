@@ -107,6 +107,11 @@ const CartLineActionCard = ({
         product={cartLine.product}
         qty={cartLine.qty}
         unit={cartLine.unit?.name}
+        onPress={() => {
+          navigation.navigate('CartLineDetailsScreen', {
+            cartLineId: cartLine.id,
+          });
+        }}
       />
     </ActionCard>
   );

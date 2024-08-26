@@ -34,6 +34,7 @@ interface CartLineCardProps {
   isAvailable?: boolean;
   qty: number;
   unit: string;
+  onPress: () => void;
 }
 
 const CartLineCard = ({
@@ -42,6 +43,7 @@ const CartLineCard = ({
   isAvailable = true,
   qty,
   unit,
+  onPress,
 }: CartLineCardProps) => {
   const formatMetaFile = useMetafileUri();
   const priceFormat = usePriceFormat();
@@ -51,8 +53,8 @@ const CartLineCard = ({
   return (
     <ObjectCard
       style={[styles.container, style]}
-      touchable={false}
       showArrow={false}
+      onPress={onPress}
       leftContainerFlex={2}
       image={{
         generalStyle: styles.imageSize,

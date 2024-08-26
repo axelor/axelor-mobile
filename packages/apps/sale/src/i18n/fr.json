@@ -155,5 +155,6 @@
   "Sale_SliceAction_UpdateCart": "mise à jour du panier",
   "Sale_SliceAction_SearchCartLine": "recherche des lignes de panier",
   "Sale_SliceAction_DeleteCartLine": "suppression de la ligne du panier",
-  "Sale_SliceAction_UpdateCartLine": "mise à jour de la ligne du panier"
+  "Sale_SliceAction_UpdateCartLine": "mise à jour de la ligne du panier",
+  "Sale_SliceAction_Fetch cartLineById": ""
 }

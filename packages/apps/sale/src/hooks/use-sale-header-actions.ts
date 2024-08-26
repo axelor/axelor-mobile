@@ -29,6 +29,7 @@ export const useSaleHeaders = () => {
   useSaleOrderLineDetailsActions();
   useProductDetailsActions();
   useClientDetailsActions();
+  useCartLineDetailsActions();
 };
 
 const useSaleOrderDetailsActions = () => {
@@ -109,4 +110,17 @@ const useClientDetailsActions = () => {
       attachedFileScreenTitle: customer?.name,
     });
   }, [customer, mobileSettings]);
+};
+
+const useCartLineDetailsActions = () => {
+  const {mobileSettings} = useSelector((state: any) => state.appConfig);
+  const {cartLine} = useSelector((state: any) => state.sale_cart);
+
+  useEffect(() => {
+    headerActionsProvider.registerModel('sale_details_cart_line', {
+      model: 'com.axelor.apps.sale.db.CartLine',
+      modelId: cartLine?.id,
+      disableMailMessages: !mobileSettings?.isTrackerMessageEnabled,
+    });
+  }, [cartLine?.id, mobileSettings]);
 };

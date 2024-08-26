@@ -17,6 +17,7 @@
  */
 
 import ActiveCartScreen from './ActiveCartScreen';
+import CartLineDetailsScreen from './CartLineDetailsScreen';
 
 export default {
   ActiveCartScreen: {
@@ -28,6 +29,15 @@ export default {
     },
     isUsableOnShortcut: true,
   },
+  CartLineDetailsScreen: {
+    title: 'Sale_Cart',
+    actionID: 'sale_details_cart_line',
+    component: CartLineDetailsScreen,
+    options: {
+      shadedHeader: false,
+    },
+  },
 };
 
+export {CartLineDetailsScreen};
 export {ActiveCartScreen};
