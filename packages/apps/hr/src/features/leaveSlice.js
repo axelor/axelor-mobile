@@ -23,6 +23,7 @@ import {
 } from '@axelor/aos-mobile-core';
 import {
   fetchLeave as _fetchLeave,
+  fetchLeaveById as _fetchLeaveById,
   fetchLeaveToValidate as _fetchLeaveToValidate,
 } from '../api/leave-api';
 
@@ -52,6 +53,19 @@ export const fetchLeaveToValidate = createAsyncThunk(
   },
 );
 
+export const fetchLeaveById = createAsyncThunk(
+  'hr_leave/fetchLeaveById',
+  async function (data, {getState}) {
+    return handlerApiCall({
+      fetchFunction: _fetchLeaveById,
+      data,
+      action: 'Hr_SliceAction_FetchLeaveById',
+      getState,
+      responseOptions: {isArrayResponse: false},
+    });
+  },
+);
+
 const initialState = {
   loadingMyLeave: true,
   moreLoadingMyLeave: false,
@@ -63,6 +77,9 @@ const initialState = {
   isListEndLeaveToValidate: false,
   leaveToValidateList: [],
   totalNumberLeaveToValidate: 0,
+
+  loadingLeave: true,
+  leave: {},
 };
 
 const leaveSlice = createSlice({
@@ -89,6 +106,13 @@ const leaveSlice = createSlice({
         manageTotal: true,
       },
     );
+    builder.addCase(fetchLeaveById.pending, state => {
+      state.loadingLeave = true;
+    });
+    builder.addCase(fetchLeaveById.fulfilled, (state, action) => {
+      state.loadingLeave = false;
+      state.leave = action.payload;
+    });
   },
 });
 

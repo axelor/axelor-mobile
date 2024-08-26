@@ -42,7 +42,7 @@ export {
 } from './expenseSlice';
 export {searchExpenseType} from './expenseTypeSlice';
 export {searchKilometricAllowParam} from './kilometricAllowParamSlice';
-export {fetchLeave, fetchLeaveToValidate} from './leaveSlice';
+export {fetchLeave, fetchLeaveById, fetchLeaveToValidate} from './leaveSlice';
 export {
   searchManufOrder,
   searchOperationOrder,
