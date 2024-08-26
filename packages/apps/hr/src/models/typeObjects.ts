@@ -212,6 +212,34 @@ export const hr_typeObjects: ModuleSelections = [
           },
         ],
       },
+      startOnSelect: {
+        content: [
+          {
+            key: 'Draft',
+            value: 1,
+            title: 'Hr_StartOn_Morning',
+          },
+          {
+            key: 'WaitingValidation',
+            value: 2,
+            title: 'Hr_StartOn_Afternoon',
+          },
+        ],
+      },
+      endOnSelect: {
+        content: [
+          {
+            key: 'Draft',
+            value: 1,
+            title: 'Hr_EndOn_Morning',
+          },
+          {
+            key: 'WaitingValidation',
+            value: 2,
+            title: 'Hr_EndOn_Afternoon',
+          },
+        ],
+      },
     },
   },
   {
