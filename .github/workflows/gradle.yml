@@ -16,11 +16,11 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
-      - name: Set up JDK 1.11
+      - name: Set up JDK 1.17
         uses: actions/setup-java@v3
         with:
           distribution: 'zulu'
-          java-version: '11'
+          java-version: '17'
       - uses: actions/setup-node@v3
         with:
           node-version: '18.x'
@@ -38,11 +38,11 @@ jobs:
     needs: format
     steps:
       - uses: actions/checkout@v3
-      - name: Set up JDK 1.11
+      - name: Set up JDK 1.17
         uses: actions/setup-java@v3
         with:
           distribution: 'zulu'
-          java-version: '11'
+          java-version: '17'
       - uses: actions/setup-node@v3
         with:
           node-version: '18.x'
@@ -69,11 +69,11 @@ jobs:
     needs: format
     steps:
       - uses: actions/checkout@v3
-      - name: Set up JDK 1.11
+      - name: Set up JDK 1.17
         uses: actions/setup-java@v3
         with:
           distribution: 'zulu'
-          java-version: '11'
+          java-version: '17'
       - uses: actions/setup-node@v3
         with:
           node-version: '18.x'
