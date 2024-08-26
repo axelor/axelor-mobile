@@ -175,4 +175,62 @@ export const hr_typeObjects: ModuleSelections = [
       },
     },
   },
+  {
+    modelName: 'com.axelor.apps.hr.db.LeaveRequest',
+    fields: {
+      statusSelect: {
+        content: [
+          {
+            key: 'Draft',
+            value: 1,
+            title: 'Hr_Status_Draft',
+            color: 'secondaryColor',
+          },
+          {
+            key: 'WaitingValidation',
+            value: 2,
+            title: 'Hr_Status_WaitingValidation',
+            color: 'cautionColor',
+          },
+          {
+            key: 'Validate',
+            value: 3,
+            title: 'Hr_Status_Validate',
+            color: 'successColor',
+          },
+          {
+            key: 'Refused',
+            value: 4,
+            title: 'Hr_Status_Refused',
+            color: 'importantColor',
+          },
+          {
+            key: 'Canceled',
+            value: 5,
+            title: 'Hr_Status_Canceled',
+            color: 'plannedColor',
+          },
+        ],
+      },
+    },
+  },
+  {
+    modelName: 'com.axelor.apps.hr.db.LeaveReason',
+    fields: {
+      unitSelect: {
+        content: [
+          {
+            key: 'Days',
+            value: 1,
+            title: 'Hr_TimeUnit_Days',
+          },
+          {
+            key: 'Hours',
+            value: 2,
+            title: 'Hr_TimeUnit_Hours',
+          },
+        ],
+      },
+    },
+  },
 ];
