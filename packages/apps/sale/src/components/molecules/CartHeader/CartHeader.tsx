@@ -37,12 +37,13 @@ const CartHeader = ({style}: CartHeaderProps) => {
       dispatch(
         (updateCart as any)({
           partnerId: newCustomer?.id,
-          cart: activeCart,
+          cartId: activeCart?.id,
+          cartVersion: activeCart?.version,
           userId,
         }),
       );
     },
-    [activeCart, dispatch, userId],
+    [activeCart?.id, activeCart?.version, dispatch, userId],
   );
 
   return (
