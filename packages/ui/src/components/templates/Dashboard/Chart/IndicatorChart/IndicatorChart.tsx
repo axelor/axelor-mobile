@@ -34,15 +34,6 @@ interface DataIndicator {
   [key: string]: any;
 }
 
-interface DataIndicator {
-  title?: string;
-  icon?: string;
-  value: number;
-  unit?: string;
-  color?: string;
-  [key: string]: any;
-}
-
 interface IndicatorChartProps {
   style?: any;
   widthGraph?: number;

@@ -48,6 +48,7 @@ const IndicatorCategory = ({title, indicatorList, subCategoryList}) => {
             },
           ]}
           widthGraph={Dimensions.get('window').width / 2}
+          translator={I18n.t}
         />
       );
     },
