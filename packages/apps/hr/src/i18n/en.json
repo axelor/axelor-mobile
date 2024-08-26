@@ -77,6 +77,9 @@
   "Hr_ShowJustification": "Show justification",
   "Hr_See": "See",
   "Hr_Edit": "Edit",
+  "Hr_LeaveRequests": "Leave requests",
+  "Hr_Leaves": "Leaves",
+  "Hr_MyLeaves": "My leaves",
   "Hr_SliceAction_FetchExpenseLines": "fetch expense lines",
   "Hr_SliceAction_SearchDraftExpense": "fetch draft expenses",
   "Hr_SliceAction_FetchExpense": "fetch expenses",
@@ -127,5 +130,7 @@
   "Hr_SliceAction_CreateTimer": "create timer",
   "Hr_SliceAction_UpdateTimer": "update timer",
   "Hr_SliceAction_UpdateTimerStatus": "update timer status",
-  "Hr_SliceAction_DeleteTimer": "delete timer"
+  "Hr_SliceAction_DeleteTimer": "delete timer",
+  "Hr_SliceAction_FetchLeave": "fetch leave",
+  "Hr_SliceAction_FetchLeaveToValidate": "fetch leave to validate"
 }
