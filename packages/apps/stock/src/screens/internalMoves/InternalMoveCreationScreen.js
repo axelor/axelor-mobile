@@ -17,13 +17,16 @@
  */
 
 import React, {useCallback, useEffect, useMemo, useState} from 'react';
-import {KeyboardAvoidingScrollView, Screen} from '@axelor/aos-mobile-ui';
+import {useTranslator} from '@axelor/aos-mobile-core';
+import {
+  KeyboardAvoidingScrollView,
+  Screen,
+  ViewAllEditList,
+} from '@axelor/aos-mobile-ui';
 import {
   AvailableProductsSearchBar,
-  InternalMoveCreationAlert,
   InternalMoveCreationButtons,
   InternalMoveCreationQuantityCard,
-  InternalMoveCreationViewAll,
   StockLocationSearchBar,
 } from '../../components';
 
@@ -34,6 +37,8 @@ const itemScanKey = 'product-tracking-number_internal-move-creation';
 const toStockLocationScanKey = 'to-stock-location_internal-move-creation';
 
 const InternalMoveCreationScreen = () => {
+  const I18n = useTranslator();
+
   const [currentStep, setCurrentStep] = useState(
     InternalMoveCreation.step.fromStockLocation,
   );
@@ -42,7 +47,6 @@ const InternalMoveCreationScreen = () => {
   const [newLine, setNewLine] = useState(null);
   const [toStockLocation, setToStockLocation] = useState(null);
   const [movedQty, setMovedQty] = useState(0);
-  const [isAlertVisible, setIsAlertVisible] = useState(false);
 
   const handleAddLine = () => {
     setLines(prevLines => {
@@ -172,12 +176,21 @@ const InternalMoveCreationScreen = () => {
           isScrollViewContainer={true}
         />
         {currentStep >= InternalMoveCreation.step.addLine && (
-          <InternalMoveCreationViewAll
-            lines={lines}
+          <ViewAllEditList
+            title={I18n.t('Stock_Products')}
+            lines={lines.map(line => ({
+              ...line,
+              name: line.product?.name,
+              nameDetails: line.trackingNumber?.trackingNumberSeq,
+              qty: line.realQty,
+              unitName: line.unit?.name,
+            }))}
             currentLineId={isEditionMode ? newLine.id : null}
-            setLines={setLines}
-            setIsAlertVisible={setIsAlertVisible}
+            setLines={_lines =>
+              setLines(_lines.map(line => ({...line, realQty: line.qty})))
+            }
             handleEditLine={handleEditLine}
+            translator={I18n.t}
           />
         )}
         {currentStep === InternalMoveCreation.step.addLine && (
@@ -212,13 +225,6 @@ const InternalMoveCreationScreen = () => {
             isScrollViewContainer={true}
           />
         )}
-        <InternalMoveCreationAlert
-          isAlertVisible={isAlertVisible}
-          setIsAlertVisible={setIsAlertVisible}
-          lines={lines}
-          setLines={setLines}
-          handleEditLine={handleEditLine}
-        />
       </KeyboardAvoidingScrollView>
     </Screen>
   );

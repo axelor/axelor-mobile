@@ -1,0 +1,5 @@
+{
+  "title": "ViewAllEditList: new component which display an editable list whith an Alert to show all the items",
+  "type": "feat",
+  "packages": "ui"
+}

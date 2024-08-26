@@ -18,19 +18,25 @@
 
 import React from 'react';
 import {StyleSheet, View} from 'react-native';
-import {Icon, Text, useThemeColor} from '@axelor/aos-mobile-ui';
+import {Icon, Text} from '../../atoms';
+import {useThemeColor} from '../../../theme';
+import {Line} from './ViewAllEditList';
+
+interface LineComponentProps {
+  line: Line;
+  isSelected: boolean;
+  lines: Line[];
+  setLines: (lines: Line[]) => void;
+  handleEditLine: (line: Line) => void;
+}
 
 const LineComponent = ({
   line,
   isSelected,
+  lines,
   setLines,
   handleEditLine,
-}: {
-  line: any;
-  isSelected: boolean;
-  setLines: (fct: (lines: any[]) => any[]) => void;
-  handleEditLine: (line: any) => void;
-}) => {
+}: LineComponentProps) => {
   const Colors = useThemeColor();
 
   return (
@@ -40,14 +46,14 @@ const LineComponent = ({
         writingType={isSelected ? 'title' : null}
         textColor={isSelected ? Colors.secondaryColor.background : null}
         fontSize={16}>
-        {line.product.name}
+        {line.name}
       </Text>
       <Text
         style={styles.productQty}
         writingType={isSelected ? 'title' : null}
         textColor={isSelected ? Colors.secondaryColor.background : null}
         fontSize={16}>
-        {line.realQty} {line.unit.name}
+        {line.qty} {line.unitName}
       </Text>
       <Icon
         style={styles.icon}
@@ -62,9 +68,7 @@ const LineComponent = ({
         name="x-lg"
         size={20}
         touchable
-        onPress={() =>
-          setLines(prevLines => prevLines.filter(_line => _line.id !== line.id))
-        }
+        onPress={() => setLines(lines.filter(_line => _line.id !== line.id))}
       />
     </View>
   );
