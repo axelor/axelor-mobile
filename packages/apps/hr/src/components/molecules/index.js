@@ -20,6 +20,7 @@ export {default as ExpenseAddPopup} from './ExpenseAddPopup/ExpenseAddPopup';
 export {default as ExpenseDetailsValidationButton} from './ExpenseDetailsValidationButton/ExpenseDetailsValidationButton';
 export {default as ExpenseLineDetailCard} from './ExpenseLineDetailCard/ExpenseLineDetailCard';
 export {default as ExpenseLineValidationButton} from './ExpenseLineValidationButton/ExpenseLineValidationButton';
+export {default as LeaveActionCard} from './LeaveActionCard/LeaveActionCard';
 export {default as RefusalPopup} from './RefusalPopup/RefusalPopup';
 export {default as TimeDetailCard} from './TimeDetailCard/TimeDetailCard';
 export {default as TimerDeclareButton} from './TimerDeclareButton/TimerDeclareButton';

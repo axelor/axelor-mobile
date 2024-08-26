@@ -44,6 +44,10 @@ export {
 export {searchExpenseType as searchExpenseTypeApi} from './expense-type-api';
 export {searchKilometricAllowParam as searchKilometricAllowParamApi} from './kilometric-allow-param-api';
 export {
+  fetchLeave as fetchLeaveApi,
+  fetchLeaveToValidate as fetchLeaveToValidateApi,
+} from './leave-api';
+export {
   searchManufOrder as searchManufOrderApi,
   searchOperationOrder as searchOperationOrderApi,
 } from './manuf-order-api';
