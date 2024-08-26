@@ -18,6 +18,7 @@
 
 import LeaveListScreen from './LeaveListScreen';
 import LeaveDetailsScreen from './LeaveDetailsScreen';
+import CompleteRequestScreen from './CompleteRequestScreen';
 
 export default {
   LeaveListScreen: {
@@ -36,7 +37,12 @@ export default {
       shadedHeader: false,
     },
   },
+  CompleteRequestScreen: {
+    title: 'Hr_CompleteRequest',
+    component: CompleteRequestScreen,
+  },
 };
 
 export {LeaveListScreen};
 export {LeaveDetailsScreen};
+export {CompleteRequestScreen};

@@ -90,6 +90,7 @@
   "Hr_SendOn": "Send on",
   "Hr_ValidatedOnBy": "Validated on {{date}} by {{name}}",
   "Hr_RejectedOnBy": "Rejected on {{date}} by {{name}}",
+  "Hr_CompleteRequest": "Complete request",
   "Hr_SliceAction_FetchExpenseLines": "fetch expense lines",
   "Hr_SliceAction_SearchDraftExpense": "fetch draft expenses",
   "Hr_SliceAction_FetchExpense": "fetch expenses",

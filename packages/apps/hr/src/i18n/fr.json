@@ -90,6 +90,7 @@
   "Hr_SendOn": "Envoyé le",
   "Hr_ValidatedOnBy": "Validé le {{date}} par {{name}}",
   "Hr_RejectedOnBy": "Refusé le {{date}} par {{name}}",
+  "Hr_CompleteRequest": "Compléter une demande",
   "Hr_SliceAction_FetchExpenseLines": "récupération des lignes de frais",
   "Hr_SliceAction_SearchDraftExpense": "récupération des notes de frais brouillon",
   "Hr_SliceAction_FetchExpense": "récupération des notes de frais",
