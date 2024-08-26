@@ -45,6 +45,7 @@ export {searchExpenseType as searchExpenseTypeApi} from './expense-type-api';
 export {searchKilometricAllowParam as searchKilometricAllowParamApi} from './kilometric-allow-param-api';
 export {
   fetchLeave as fetchLeaveApi,
+  fetchLeaveById as fetchLeaveByIdApi,
   fetchLeaveToValidate as fetchLeaveToValidateApi,
 } from './leave-api';
 export {
