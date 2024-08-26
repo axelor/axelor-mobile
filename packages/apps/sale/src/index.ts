@@ -19,7 +19,7 @@
 import {Module} from '@axelor/aos-mobile-core';
 import enTranslations from './i18n/en.json';
 import frTranslations from './i18n/fr.json';
-import CartScreens from './screens/Cart';
+import CartScreens from './screens/cart';
 import ProductScreens from './screens/product';
 import SaleOrderScreens from './screens/saleOrder';
 import ClientScreens from './screens/client';
@@ -102,6 +102,7 @@ export const SaleModule: Module = {
 export * from './api';
 export * from './components';
 export * from './features/asyncFunctions-index';
+export * from './screens/cart';
 export * from './screens/product';
 export * from './screens/saleOrder';
 export * from './screens/client';

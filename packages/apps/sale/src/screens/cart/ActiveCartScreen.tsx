@@ -31,18 +31,21 @@ import {
   useSelector,
   useTranslator,
 } from '@axelor/aos-mobile-core';
-import {fetchActiveCart, searchCartLine} from '../../features/cartSlice';
 import {CartHeader, CartLineActionCard} from '../../components';
+import {fetchActiveCart} from '../../features/cartSlice';
+import {searchCartLine} from '../../features/cartLineSlice';
 
 const ActiveCartScreen = ({}) => {
   const dispatch = useDispatch();
   const Colors = useThemeColor();
   const I18n = useTranslator();
 
-  const {mobileSettings} = useSelector((state: any) => state.appConfig);
-  const {loading, moreLoading, isListEnd, activeCart, carLineList} =
-    useSelector((state: any) => state.sale_cart);
   const {userId} = useSelector((state: any) => state.auth);
+  const {mobileSettings} = useSelector((state: any) => state.appConfig);
+  const {activeCart} = useSelector((state: any) => state.sale_cart);
+  const {loading, moreLoading, isListEnd, carLineList} = useSelector(
+    (state: any) => state.sale_cartLine,
+  );
 
   useEffect(() => {
     dispatch((fetchActiveCart as any)({userId}));
@@ -63,16 +66,12 @@ const ActiveCartScreen = ({}) => {
                   color: Colors.primaryColor.background,
                   size: 13,
                 }}
-                bottomIconConfig={{
-                  name: 'basket2-fill',
-                  color: Colors.secondaryColor_dark.background,
-                }}
-                predefinedPosition={'bottom-right'}
+                bottomIconConfig={{name: 'basket2-fill'}}
                 topIconPosition={{bottom: -7, right: -7}}
               />
             ),
-            iconName: 'basket2-fill',
-            key: 'setAside',
+            iconName: null,
+            key: 'activeCart_setAside',
             order: 10,
             title: I18n.t('Sale_SetAside'),
             onPress: () => {},
@@ -85,16 +84,12 @@ const ActiveCartScreen = ({}) => {
                   color: Colors.errorColor.background,
                   size: 13,
                 }}
-                bottomIconConfig={{
-                  name: 'basket2-fill',
-                  color: Colors.secondaryColor_dark.background,
-                }}
-                predefinedPosition={'bottom-right'}
+                bottomIconConfig={{name: 'basket2-fill'}}
                 topIconPosition={{bottom: -7, right: -7}}
               />
             ),
-            iconName: 'basket2-fill',
-            key: 'emptyCart',
+            iconName: null,
+            key: 'activeCart_emptyCart',
             order: 20,
             title: I18n.t('Sale_EmptyCart'),
             onPress: () => {},
@@ -102,14 +97,7 @@ const ActiveCartScreen = ({}) => {
         ],
       });
     }
-  }, [
-    Colors.errorColor.background,
-    Colors.primaryColor.background,
-    Colors.secondaryColor_dark.background,
-    I18n,
-    activeCart,
-    mobileSettings,
-  ]);
+  }, [Colors, I18n, activeCart, mobileSettings]);
 
   const sliceFunctionData = useMemo(
     () => ({cartId: activeCart?.id}),

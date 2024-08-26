@@ -31,11 +31,18 @@ import {useMetafileUri, useTranslator} from '@axelor/aos-mobile-core';
 interface CartLineCardProps {
   style?: any;
   product: any;
+  isAvailable?: boolean;
   qty: number;
   unit: string;
 }
 
-const CartLineCard = ({style, product, qty, unit}: CartLineCardProps) => {
+const CartLineCard = ({
+  style,
+  product,
+  isAvailable = true,
+  qty,
+  unit,
+}: CartLineCardProps) => {
   const formatMetaFile = useMetafileUri();
   const priceFormat = usePriceFormat();
   const I18n = useTranslator();
@@ -59,7 +66,7 @@ const CartLineCard = ({style, product, qty, unit}: CartLineCardProps) => {
           {
             customComponent: (
               <View style={styles.title}>
-                {product?.unvailable && (
+                {!isAvailable && (
                   <InfoBubble
                     iconName="exclamation-triangle-fill"
                     badgeColor={Colors.errorColor}

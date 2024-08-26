@@ -29,6 +29,7 @@ interface CartHeaderProps {
 
 const CartHeader = ({style}: CartHeaderProps) => {
   const dispatch = useDispatch();
+
   const {activeCart} = useSelector((state: any) => state.sale_cart);
   const {userId} = useSelector((state: any) => state.auth);
 

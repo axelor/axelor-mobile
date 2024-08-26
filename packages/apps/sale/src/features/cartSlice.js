@@ -17,17 +17,8 @@
  */
 
 import {createAsyncThunk, createSlice} from '@reduxjs/toolkit';
-import {
-  generateInifiniteScrollCases,
-  handlerApiCall,
-} from '@axelor/aos-mobile-core';
-import {
-  searchCart,
-  searchCartLine as _searchCartLine,
-  updateCart as _updateCart,
-  updateCartLine as _updateCartLine,
-  deleteCartLine as _deleteCartLine,
-} from '../api/cart-api';
+import {handlerApiCall} from '@axelor/aos-mobile-core';
+import {searchCart, updateCart as _updateCart} from '../api/cart-api';
 
 export const fetchActiveCart = createAsyncThunk(
   'sale_cart/searchCart',
@@ -42,22 +33,9 @@ export const fetchActiveCart = createAsyncThunk(
   },
 );
 
-export const searchCartLine = createAsyncThunk(
-  'sale_cartLine/searchCartLine',
-  async function (data, {getState}) {
-    return handlerApiCall({
-      fetchFunction: _searchCartLine,
-      data,
-      action: 'Sale_SliceAction_SearchCartLine',
-      getState,
-      responseOptions: {isArrayResponse: true},
-    });
-  },
-);
-
 export const updateCart = createAsyncThunk(
   'sale_cart/updateCart',
-  async function (data, {getState}) {
+  async function (data, {getState, dispatch}) {
     return handlerApiCall({
       fetchFunction: _updateCart,
       data,
@@ -65,69 +43,13 @@ export const updateCart = createAsyncThunk(
       getState,
       responseOptions: {isArrayResponse: true},
     }).then(() => {
-      return handlerApiCall({
-        fetchFunction: searchCart,
-        data,
-        action: 'Sale_SliceAction_SearchCart',
-        getState,
-        responseOptions: {isArrayResponse: false},
-      });
-    });
-  },
-);
-
-export const deleteCartLine = createAsyncThunk(
-  'sale_cartLine/deleteCartLine',
-  async function (data, {getState}) {
-    return handlerApiCall({
-      fetchFunction: _deleteCartLine,
-      data,
-      action: 'Sale_SliceAction_DeleteCartLine',
-      getState,
-      responseOptions: {isArrayResponse: true},
-    }).then(() => {
-      return handlerApiCall({
-        fetchFunction: _searchCartLine,
-        data: {cartId: data.cartId},
-        action: 'Sale_SliceAction_SearchCartLine',
-        getState,
-        responseOptions: {isArrayResponse: true},
-      });
-    });
-  },
-);
-
-export const updateCartLine = createAsyncThunk(
-  'sale_cartLine/updateCartLine',
-  async function (data, {getState}) {
-    return handlerApiCall({
-      fetchFunction: _updateCartLine,
-      data,
-      action: 'Sale_SliceAction_UpdateCartLine',
-      getState,
-      responseOptions: {isArrayResponse: true},
-    }).then(() => {
-      return handlerApiCall({
-        fetchFunction: _searchCartLine,
-        data: {cartId: data.cartId},
-        action: 'Sale_SliceAction_SearchCartLine',
-        getState,
-        responseOptions: {isArrayResponse: true},
-      });
+      dispatch(fetchActiveCart(data));
     });
   },
 );
 
 const initialState = {
-  loadingCart: true,
-  moreLoadingCart: false,
-  isListEndCart: false,
-
-  loading: true,
-  moreLoading: false,
-  isListEnd: false,
   activeCart: {},
-  carLineList: [],
 };
 
 const cartSlice = createSlice({
@@ -136,21 +58,6 @@ const cartSlice = createSlice({
   extraReducers: builder => {
     builder.addCase(fetchActiveCart.fulfilled, (state, action) => {
       state.activeCart = action.payload;
-    });
-    generateInifiniteScrollCases(builder, searchCartLine, {
-      loading: 'loading',
-      moreLoading: 'moreLoading',
-      isListEnd: 'isListEnd',
-      list: 'carLineList',
-    });
-    builder.addCase(updateCart.fulfilled, (state, action) => {
-      state.activeCart = action.payload;
-    });
-    builder.addCase(updateCartLine.fulfilled, (state, action) => {
-      state.carLineList = action.payload;
-    });
-    builder.addCase(deleteCartLine.fulfilled, (state, action) => {
-      state.carLineList = action.payload;
     });
   },
 });

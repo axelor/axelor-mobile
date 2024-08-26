@@ -24,7 +24,8 @@ import {
 } from '@axelor/aos-mobile-core';
 import {ActionCard, useThemeColor} from '@axelor/aos-mobile-ui';
 import {CartLineCard} from '../../atoms';
-import {deleteCartLine, updateCartLine} from '../../../features/cartSlice';
+import {deleteCartLine, updateCartLine} from '../../../features/cartLineSlice';
+import {fetchProductById} from '../../../features/productSlice';
 
 interface CartLineActionCardProps {
   style?: any;
@@ -50,9 +51,12 @@ const CartLineActionCard = ({
           iconName: 'palette2',
           helper: I18n.t('Sale_SeeVariants'),
           onPress: () => {
-            navigation.navigate('ProductSaleDetailsScreen', {
-              productId: cartLine?.variantProduct.id,
-            });
+            dispatch(
+              (fetchProductById as any)({
+                productId: cartLine?.variantProduct.id,
+              }),
+            );
+            navigation.navigate('VariantProductsScreen');
           },
           hidden: cartLine?.variantProduct == null,
         },
