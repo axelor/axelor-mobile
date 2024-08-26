@@ -16,6 +16,15 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+export {
+  searchCart as searchCartApi,
+  updateCart as updateCartApi,
+} from './cart-api';
+export {
+  searchCartLine as searchCartLineApi,
+  updateCartLine as updateCartLineApi,
+  deleteCartLine as deleteCartLineApi,
+} from './cart-line-api';
 export {fetchComplementaryProduct as fetchComplementaryProductApi} from './complementary-product-api';
 export {
   fetchCustomerById as fetchCustomerByIdApi,
