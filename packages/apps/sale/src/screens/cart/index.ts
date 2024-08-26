@@ -16,20 +16,18 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import {SearchFields} from '@axelor/aos-mobile-core';
+import ActiveCartScreen from './ActiveCartScreen';
 
-export const sale_searchFields: SearchFields = {
-  sale_product: [
-    'name',
-    'code',
-    'productFamily.name',
-    'productCategory.name',
-    'description',
-  ],
-  sale_saleOrder: ['saleOrderSeq', 'externalReference'],
-  sale_customer: ['fullName', 'name', 'partnerSeq'],
-  sale_customerCategory: ['name'],
-  sale_complementaryProduct: ['product.name', 'product.code'],
-  sale_priceListLine: ['priceList.title'],
-  sale_cartLine: ['product.name', 'product.code'],
+export default {
+  ActiveCartScreen: {
+    title: 'Sale_Cart',
+    actionID: 'sale_active_cart',
+    component: ActiveCartScreen,
+    options: {
+      shadedHeader: false,
+    },
+    isUsableOnShortcut: true,
+  },
 };
+
+export {ActiveCartScreen};
