@@ -35,6 +35,7 @@ export const useHrHeaders = () => {
   useTimerListAction();
   useActiveTimerAction();
   useTimesheetDetailsAction();
+  useLeaveDetailsAction();
 };
 
 const useExpenseAction = () => {
@@ -180,4 +181,17 @@ const useTimesheetDetailsAction = () => {
       disableMailMessages: !mobileSettings?.isTrackerMessageEnabled,
     });
   }, [timesheet, mobileSettings]);
+};
+
+const useLeaveDetailsAction = () => {
+  const {leave} = useSelector(state => state.hr_leave);
+  const {mobileSettings} = useSelector(state => state.appConfig);
+
+  useEffect(() => {
+    headerActionsProvider.registerModel('hr_leave_details', {
+      model: 'com.axelor.apps.hr.db.LeaveRequest',
+      modelId: leave?.id,
+      disableMailMessages: !mobileSettings?.isTrackerMessageEnabled,
+    });
+  }, [leave, mobileSettings]);
 };
