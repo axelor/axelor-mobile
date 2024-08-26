@@ -21,6 +21,7 @@ import enTranslations from './i18n/en.json';
 import frTranslations from './i18n/fr.json';
 import ExpenseScreens from './screens/expense';
 import TimesheetScreens from './screens/timesheet';
+import LeaveScreens from './screens/leaveRequests';
 import {
   hr_modelAPI,
   hr_searchFields,
@@ -91,10 +92,20 @@ export const HrModule: Module = {
       icon: 'credit-card-fill',
       screen: 'ExpenseListScreen',
     },
+    hr_menu_leaveRequestsSeparator: {
+      title: 'Hr_LeaveRequests',
+      separator: true,
+    },
+    hr_menu_leaves: {
+      title: 'Hr_Leaves',
+      icon: 'suitcase-fill',
+      screen: 'LeaveListScreen',
+    },
   },
   screens: {
     ...ExpenseScreens,
     ...TimesheetScreens,
+    ...LeaveScreens,
   },
   reducers: {...hrReducers},
   models: {
@@ -113,5 +124,6 @@ export * from './components';
 export * from './features/asyncFunctions-index';
 export * from './screens/expense';
 export * from './screens/timesheet';
+export * from './screens/leaveRequests';
 export * from './types';
 export * from './utils';

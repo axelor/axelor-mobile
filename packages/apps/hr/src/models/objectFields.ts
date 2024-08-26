@@ -152,4 +152,18 @@ export const hr_modelAPI: ObjectFields = {
       }),
     ),
   }),
+  hr_leave: schemaContructor.object({
+    statusSelect: schemaContructor.number(),
+    fromDateT: schemaContructor.string(),
+    toDateT: schemaContructor.string(),
+    duration: schemaContructor.number(),
+    leaveReason: schemaContructor.subObject().concat(
+      schemaContructor.object({
+        name: schemaContructor.string(),
+        unitSelect: schemaContructor.number(),
+      }),
+    ),
+    company: schemaContructor.subObject('name'),
+    employee: schemaContructor.subObject('name'),
+  }),
 };
