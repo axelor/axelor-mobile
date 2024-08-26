@@ -17,6 +17,7 @@
  */
 
 import {
+  createStandardFetch,
   createStandardSearch,
   getTypes,
   getSearchCriterias,
@@ -87,5 +88,13 @@ export async function fetchLeaveToValidate({searchValue, user, page = 0}) {
     fieldKey: 'hr_leave',
     sortKey: 'hr_leave',
     page,
+  });
+}
+
+export async function fetchLeaveById({leaveId}) {
+  return createStandardFetch({
+    model: 'com.axelor.apps.hr.db.LeaveRequest',
+    id: leaveId,
+    fieldKey: 'hr_leave',
   });
 }

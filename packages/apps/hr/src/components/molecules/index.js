@@ -21,6 +21,8 @@ export {default as ExpenseDetailsValidationButton} from './ExpenseDetailsValidat
 export {default as ExpenseLineDetailCard} from './ExpenseLineDetailCard/ExpenseLineDetailCard';
 export {default as ExpenseLineValidationButton} from './ExpenseLineValidationButton/ExpenseLineValidationButton';
 export {default as LeaveActionCard} from './LeaveActionCard/LeaveActionCard';
+export {default as LeaveDetailsButtons} from './LeaveDetailsButtons/LeaveDetailsButtons';
+export {default as LeaveDetailsHeader} from './LeaveDetailsHeader/LeaveDetailsHeader';
 export {default as RefusalPopup} from './RefusalPopup/RefusalPopup';
 export {default as TimeDetailCard} from './TimeDetailCard/TimeDetailCard';
 export {default as TimerDeclareButton} from './TimerDeclareButton/TimerDeclareButton';

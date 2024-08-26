@@ -17,7 +17,12 @@
  */
 
 import React, {useCallback, useMemo, useState} from 'react';
-import {useDispatch, useSelector, useTranslator} from '@axelor/aos-mobile-core';
+import {
+  useDispatch,
+  useNavigation,
+  useSelector,
+  useTranslator,
+} from '@axelor/aos-mobile-core';
 import {HeaderContainer, Screen, ScrollList} from '@axelor/aos-mobile-ui';
 import {LeaveActionCard, LeaveFilters} from '../../components';
 import {fetchLeave, fetchLeaveToValidate} from '../../features/leaveSlice';
@@ -25,6 +30,7 @@ import {Leave} from '../../types';
 
 const LeaveListScreen = ({}) => {
   const I18n = useTranslator();
+  const navigation = useNavigation();
   const dispatch = useDispatch();
 
   const [mode, setMode] = useState(Leave.mode.myLeaves);
@@ -107,7 +113,9 @@ const LeaveListScreen = ({}) => {
           <LeaveActionCard
             mode={mode}
             leave={item}
-            onPress={() => console.log('Card pressed.')}
+            onPress={() =>
+              navigation.navigate('LeaveDetailsScreen', {leaveId: item.id})
+            }
             onSend={() => console.log('Card send button pressed.')}
             onValidate={() => console.log('Card validate button pressed.')}
           />
