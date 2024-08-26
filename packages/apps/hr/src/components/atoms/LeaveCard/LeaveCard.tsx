@@ -17,10 +17,10 @@
  */
 
 import React, {useMemo} from 'react';
+import {StyleSheet} from 'react-native';
 import {PeriodDisplay, useTypeHelpers, useTypes} from '@axelor/aos-mobile-core';
 import {ObjectCard, TextUnit} from '@axelor/aos-mobile-ui';
 import {Leave} from '../../../types';
-import {StyleSheet} from 'react-native';
 
 interface LeaveCardProps {
   style?: any;

@@ -31,9 +31,9 @@ import {
   ToggleSwitch,
   useThemeColor,
 } from '@axelor/aos-mobile-ui';
-import LeaveWaitingValidationSearchBar from '../LeaveWaitingValidationSearchBar/LeaveWaitingValidationSearchBar';
 import {fetchLeaveToValidate} from '../../../features/leaveSlice';
 import {Leave} from '../../../types';
+import {LeaveWaitingValidationSearchBar} from '../../templates';
 
 interface LeaveFiltersProps {
   mode: number;
