@@ -94,7 +94,7 @@ interface Field {
   widget?: Widget;
   customComponent?: (
     options?: customComponentOptions,
-  ) => ReactElement | JSX.Element;
+  ) => ReactElement | React.JSX.Element;
   options?: {
     [propsKey: string]: any;
   };
