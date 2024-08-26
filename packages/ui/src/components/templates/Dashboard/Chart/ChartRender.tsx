@@ -78,10 +78,11 @@ const PieChartRender = (
 };
 
 const IndicatorChartRender = (
-  datasets,
-  title,
-  widthGraph,
-  hideCardBackground,
+  datasets: Data[][],
+  title: string,
+  widthGraph: number,
+  hideCardBackground: boolean,
+  translator: (translationKey: string) => string,
 ) => {
   const formattedData = datasets[0].map(data => ({
     ...data,
@@ -94,6 +95,7 @@ const IndicatorChartRender = (
       datasets={formattedData}
       widthGraph={widthGraph}
       hideCardBackground={hideCardBackground}
+      translator={translator}
     />
   );
 };
@@ -139,6 +141,7 @@ const ChartRender = ({
         title,
         widthGraph,
         hideCardBackground,
+        translator,
       );
     default:
       return null;
