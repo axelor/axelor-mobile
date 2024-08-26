@@ -27,8 +27,8 @@ import {
   useTypes,
 } from '@axelor/aos-mobile-core';
 import {
-  FormInput,
   HeaderContainer,
+  NotesCard,
   Screen,
   ScrollView,
   Text,
@@ -111,13 +111,10 @@ const LeaveDetailsScreen = ({route}) => {
             })}
           </Text>
         )}
-        <FormInput
+        <NotesCard
           style={styles.marginTop}
-          multiline={true}
-          adjustHeightWithLines={true}
           title={I18n.t('Hr_Comments')}
-          defaultValue={leave.comments}
-          onChange={value => console.log('New comments input value: ', value)}
+          data={leave.comments}
         />
       </ScrollView>
     </Screen>

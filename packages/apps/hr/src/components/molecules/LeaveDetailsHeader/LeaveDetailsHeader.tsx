@@ -45,6 +45,7 @@ const LeaveDetailsHeader = ({leave}: LeaveDetailsHeaderProps) => {
           textStyle={styles.labelText}
         />
         <Badge
+          style={styles.statusBadge}
           title={getItemTitle(LeaveRequest?.statusSelect, leave.statusSelect)}
           color={getItemColor(LeaveRequest?.statusSelect, leave.statusSelect)}
         />
@@ -79,6 +80,10 @@ const styles = StyleSheet.create({
   },
   labelText: {
     fontSize: 16,
+  },
+  statusBadge: {
+    width: undefined,
+    paddingHorizontal: 10,
   },
 });
 

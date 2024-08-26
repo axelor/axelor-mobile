@@ -83,6 +83,8 @@
   "Hr_LeaveRequest": "Leave request",
   "Hr_StartOn_Morning": "Morning",
   "Hr_StartOn_Afternoon": "Afternoon",
+  "Hr_EndOn_Morning": "Morning",
+  "Hr_EndOn_Afternoon": "Afternoon",
   "Hr_Available": "Available",
   "Hr_Duration": "Duration",
   "Hr_SendOn": "Send on",

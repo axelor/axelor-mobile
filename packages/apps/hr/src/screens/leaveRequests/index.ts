@@ -31,6 +31,7 @@ export default {
   LeaveDetailsScreen: {
     title: 'Hr_LeaveRequest',
     component: LeaveDetailsScreen,
+    actionID: 'hr_leave_details',
     options: {
       shadedHeader: false,
     },

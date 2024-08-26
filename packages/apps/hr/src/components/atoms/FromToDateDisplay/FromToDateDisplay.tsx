@@ -16,7 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import React from 'react';
+import React, {useCallback} from 'react';
 import {StyleSheet, View} from 'react-native';
 import {DateDisplay, useTypeHelpers, useTypes} from '@axelor/aos-mobile-core';
 import {Icon, Text} from '@axelor/aos-mobile-ui';
@@ -37,17 +37,23 @@ const FromToDateDisplay = ({
   const {LeaveRequest} = useTypes();
   const {getItemTitle} = useTypeHelpers();
 
+  const renderDate = useCallback((date: string, subtitle: string) => {
+    return (
+      <View style={styles.dateContainer}>
+        <DateDisplay date={date} />
+        <Text>{subtitle}</Text>
+      </View>
+    );
+  }, []);
+
   return (
     <View style={styles.container}>
-      <View>
-        <DateDisplay date={fromDate} />
-        <Text>{getItemTitle(LeaveRequest?.startOnSelect, startOnSelect)}</Text>
-      </View>
+      {renderDate(
+        fromDate,
+        getItemTitle(LeaveRequest?.startOnSelect, startOnSelect),
+      )}
       <Icon name="arrow-right" size={30} />
-      <View>
-        <DateDisplay date={toDate} />
-        <Text>{getItemTitle(LeaveRequest?.startOnSelect, endOnSelect)}</Text>
-      </View>
+      {renderDate(toDate, getItemTitle(LeaveRequest?.endOnSelect, endOnSelect))}
     </View>
   );
 };
@@ -57,6 +63,10 @@ const styles = StyleSheet.create({
     width: '90%',
     flexDirection: 'row',
     justifyContent: 'space-between',
+    alignItems: 'center',
+  },
+  dateContainer: {
+    flexDirection: 'column',
     alignItems: 'center',
   },
 });

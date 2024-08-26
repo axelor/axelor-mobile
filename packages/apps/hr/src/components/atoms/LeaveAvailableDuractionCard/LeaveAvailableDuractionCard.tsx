@@ -63,7 +63,7 @@ const LeaveAvailableDuractionCard = ({
       />
       <View style={styles.container}>
         <View style={styles.leaveContainer}>
-          <Text>{I18n.t('Hr_Available')}</Text>
+          <Text style={styles.titleText}>{I18n.t('Hr_Available')}</Text>
           <TextUnit
             fontSize={30}
             value={formatNumber(availableLeave)}
@@ -72,7 +72,7 @@ const LeaveAvailableDuractionCard = ({
         </View>
         <View style={styles.horizontalRule} />
         <View style={styles.leaveContainer}>
-          <Text>{I18n.t('Hr_Duration')}</Text>
+          <Text style={styles.titleText}>{I18n.t('Hr_Duration')}</Text>
           <TextUnit
             fontSize={30}
             value={formatNumber(durationLeave)}
@@ -104,6 +104,9 @@ const getStyles = (ruleColor: string) =>
     horizontalRule: {
       borderWidth: 0.5,
       borderColor: ruleColor,
+    },
+    titleText: {
+      paddingHorizontal: 10,
     },
   });
 
