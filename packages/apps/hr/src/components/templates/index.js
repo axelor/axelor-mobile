@@ -31,6 +31,8 @@ export {default as ExpenseTypeSearchBar} from './ExpenseTypeSearchBar/ExpenseTyp
 export {default as ExpenseWaitingValidationSearchBar} from './ExpenseWaitingValidationSearchBar/ExpenseWaitingValidationSearchBar';
 export {default as KilometricAllowParamSearchBar} from './KilometricAllowParamSearchBar/KilometricAllowParamSearchBar';
 export {default as KilometricTypeSelectPicker} from './KilometricTypeSelectPicker/KilometricTypeSelectPicker';
+export {default as LeaveFilters} from './LeaveFilters/LeaveFilters';
+export {default as LeaveWaitingValidationSearchBar} from './LeaveWaitingValidationSearchBar/LeaveWaitingValidationSearchBar';
 export {default as ManufOrderSearchBar} from './ManufOrderSearchBar/ManufOrderSearchBar';
 export {default as OperationOrderSearchBar} from './OperationOrderSearchBar/OperationOrderSearchBar';
 export {default as ProductSearchBar} from './ProductSearchBar/ProductSearchBar';

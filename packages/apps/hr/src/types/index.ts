@@ -18,5 +18,6 @@
 
 export {default as Expense} from './expense';
 export {default as ExpenseLine} from './expenseLine';
+export {default as Leave} from './leave';
 export {default as Time} from './time';
 export {default as Timesheet} from './timesheet';
