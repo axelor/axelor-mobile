@@ -19,14 +19,6 @@
 import {createAsyncThunk, createSlice} from '@reduxjs/toolkit';
 import {handlerApiCall} from '@axelor/aos-mobile-core';
 import {searchCart, updateCart as _updateCart} from '../api/cart-api';
-import {handlerApiCall} from '@axelor/aos-mobile-core';
-import {
-  deleteCartLine as _deleteCartLine,
-  searchCart,
-  searchCartLine as _searchCartLine,
-  updateCart as _updateCart,
-  updateCartLine as _updateCartLine,
-} from '../api/cart-api';
 
 export const fetchActiveCart = createAsyncThunk(
   'sale_cart/searchCart',

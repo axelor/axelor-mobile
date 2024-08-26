@@ -19,7 +19,7 @@
 import React, {useEffect} from 'react';
 import {Screen} from '@axelor/aos-mobile-ui';
 import {useDispatch, useSelector} from '@axelor/aos-mobile-core';
-import {fetchCartLineById} from '../../features/cartSlice';
+import {fetchCartLineById} from '../../features/cartLineSlice';
 import {CartLineActionCard, QuantityCard} from '../../components';
 
 const CartLineDetailsScreen = ({route}) => {
@@ -27,7 +27,8 @@ const CartLineDetailsScreen = ({route}) => {
 
   const dispatch = useDispatch();
 
-  const {cartLine, activeCart} = useSelector((state: any) => state.sale_cart);
+  const { activeCart} = useSelector((state: any) => state.sale_cart);
+  const {cartLine} = useSelector((state: any) => state.sale_cartLine);
 
   console.log(cartLine);
 
