@@ -16,7 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import React, {useMemo,ReactElement, useState} from 'react';
+import React, {useMemo, ReactElement, useState} from 'react';
 import {StyleSheet, TouchableOpacity, View} from 'react-native';
 import {
   Card,
