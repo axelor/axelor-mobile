@@ -51,6 +51,7 @@ export {
   searchKilometricAllowParam,
   updateExpenseDate,
 } from './kilometricAllowParamSlice';
+export {fetchLeave, fetchLeaveToValidate} from './leaveSlice';
 export {
   searchManufOrder,
   searchOperationOrder,

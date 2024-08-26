@@ -1,7 +1,7 @@
 /*
  * Axelor Business Solutions
  *
- * Copyright (C) 2025 Axelor (<http://axelor.com>).
+ * Copyright (C) 2024 Axelor (<http://axelor.com>).
  *
  * This program is free software: you can redistribute it and/or  modify
  * it under the terms of the GNU Affero General Public License, version 3,
@@ -16,8 +16,11 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-export {default as Expense} from './expense';
-export {default as ExpenseLine} from './expenseLine';
-export {default as Leave} from './leave';
-export {default as Time} from './time';
-export {default as Timesheet} from './timesheet';
+class LeaveType {
+  static mode = {
+    myLeaves: 0,
+    leavesToValidate: 1,
+  };
+}
+
+export default LeaveType;
