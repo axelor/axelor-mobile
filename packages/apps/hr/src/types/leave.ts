@@ -16,22 +16,11 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import {SortFields} from '@axelor/aos-mobile-core';
+class LeaveType {
+  static mode = {
+    myLeaves: 0,
+    leavesToValidate: 1,
+  };
+}
 
-export const hr_sortFields: SortFields = {
-  hr_currency: ['name'],
-  hr_expense: ['-createdOn'],
-  hr_expenseLines: ['-expenseDate', '-createdOn'],
-  hr_expenseType: ['name', 'fullName'],
-  hr_kilomectricAllowParam: ['name', 'code'],
-  hr_manufOrder: ['manufOrderSeq'],
-  hr_operationOrder: ['name'],
-  hr_project: ['name', 'fullName'],
-  hr_projectTask: ['name', 'fullName'],
-  hr_product: ['name', 'fullName'],
-  hr_timer: ['-startDateTime'],
-  hr_activeTimer: ['-updatedOn'],
-  hr_timesheet: ['-fromDate', '-toDate'],
-  hr_timesheetLine: ['-date', '-duration'],
-  hr_leave: ['-fromDateT', '-startOnSelect'],
-};
+export default LeaveType;
