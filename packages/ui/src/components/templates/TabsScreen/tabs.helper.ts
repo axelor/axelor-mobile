@@ -19,7 +19,7 @@
 export interface Tab {
   key: number;
   title: string;
-  view?: JSX.Element;
+  view?: React.JSX.Element;
   hidden?: boolean;
   isActive?: boolean;
   disabled?: boolean;

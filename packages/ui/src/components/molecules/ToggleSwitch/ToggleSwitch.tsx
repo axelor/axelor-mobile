@@ -26,9 +26,9 @@ interface ToggleSwitchProps {
   styleContainer?: any;
   styleToogle?: any;
   leftTitle: string;
-  leftElement?: ReactElement | JSX.Element;
+  leftElement?: ReactElement | React.JSX.Element;
   rightTitle: string;
-  rigthElement?: ReactElement | JSX.Element;
+  rigthElement?: ReactElement | React.JSX.Element;
   onSwitch: () => void;
 }
 

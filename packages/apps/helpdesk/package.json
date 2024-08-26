@@ -24,7 +24,7 @@
   },
   "peerDependencies": {
     "react": "18.2.0",
-    "react-native": "0.72.15"
+    "react-native": "0.73.9"
   },
   "dependencies": {
     "@axelor/aos-mobile-core": "8.1.5",
@@ -33,14 +33,15 @@
   },
   "devDependencies": {
     "@babel/runtime": "^7.20.0",
-    "@react-native/eslint-config": "^0.72.2",
-    "@types/react": "18.2.65",
+    "@react-native/babel-preset": "0.73.21",
+    "@react-native/eslint-config": "0.73.2",
+    "@types/react": "^18.2.6",
     "eslint": "8.57.0",
     "prettier": "^3.3.3",
     "react": "18.2.0",
-    "react-native": "0.72.15"
+    "react-native": "0.73.9"
   },
   "resolutions": {
-    "@types/react": "18.2.65"
+    "@types/react": "^18.2.6"
   }
 }
