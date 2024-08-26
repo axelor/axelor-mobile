@@ -16,6 +16,8 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+export {fetchActiveCart, updateCart} from './cartSlice';
+export {searchCartLine, updateCartLine, deleteCartLine} from './cartLineSlice';
 export {fetchComplementaryProduct} from './complementaryProductSlice';
 export {fetchCustomerDelivery} from './customerDeliverySlice';
 export {
