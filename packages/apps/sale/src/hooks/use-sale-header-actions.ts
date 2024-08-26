@@ -114,7 +114,7 @@ const useClientDetailsActions = () => {
 
 const useCartLineDetailsActions = () => {
   const {mobileSettings} = useSelector((state: any) => state.appConfig);
-  const {cartLine} = useSelector((state: any) => state.sale_cart);
+  const {cartLine} = useSelector((state: any) => state.sale_cartLine);
 
   useEffect(() => {
     headerActionsProvider.registerModel('sale_details_cart_line', {

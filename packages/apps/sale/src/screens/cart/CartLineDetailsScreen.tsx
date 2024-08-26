@@ -17,37 +17,72 @@
  */
 
 import React, {useEffect} from 'react';
-import {Screen} from '@axelor/aos-mobile-ui';
-import {useDispatch, useSelector} from '@axelor/aos-mobile-core';
+import {StyleSheet} from 'react-native';
+import {Screen, ScrollView, usePriceFormat} from '@axelor/aos-mobile-ui';
+import {useDispatch, useSelector, useTranslator} from '@axelor/aos-mobile-core';
 import {fetchCartLineById} from '../../features/cartLineSlice';
-import {CartLineActionCard, QuantityCard} from '../../components';
+import {
+  CartLineActionCard,
+  CartLineValidationButton,
+  PriceDetails,
+  QuantityCard,
+} from '../../components';
 
 const CartLineDetailsScreen = ({route}) => {
   const {cartLineId} = route.params;
 
+  const I18n = useTranslator();
   const dispatch = useDispatch();
+  const formatPrice = usePriceFormat();
 
-  const { activeCart} = useSelector((state: any) => state.sale_cart);
+  const {activeCart} = useSelector((state: any) => state.sale_cart);
   const {cartLine} = useSelector((state: any) => state.sale_cartLine);
-
-  console.log(cartLine);
 
   useEffect(() => {
     dispatch((fetchCartLineById as any)({cartLineId}));
   }, [cartLineId, dispatch]);
 
   return (
-    <Screen removeSpaceOnTop>
-      <CartLineActionCard cartLine={cartLine} cartId={activeCart?.id} />
-      <QuantityCard
-        defaultValue={0}
-        labelQty="r"
-        editable={true}
-        onValueChange={() => {}}
-        isBigButton={true}
-      />
+    <Screen removeSpaceOnTop fixedItems={<CartLineValidationButton />}>
+      <ScrollView style={styles.scrollView}>
+        <CartLineActionCard
+          cartLine={cartLine}
+          cartId={activeCart?.id}
+          hideIncrement={true}
+          hideDelete={true}
+        />
+        <QuantityCard
+          defaultValue={cartLine?.qty}
+          labelQty={I18n.t('Sale_Quantity')}
+          onValueChange={() => {}}
+        />
+        <PriceDetails
+          lineList={[
+            {
+              title: I18n.t('Sale_Quantity'),
+              value: formatPrice(cartLine?.qty),
+              unit: cartLine?.unit?.name,
+            },
+            {
+              title: I18n.t('Sale_Quantity'),
+              value: formatPrice(cartLine?.qty),
+              unit: cartLine?.unit?.name,
+            },
+            {
+              showLine: true,
+              title: I18n.t('Sale_Quantity'),
+              value: formatPrice(cartLine?.qty),
+              unit: cartLine?.unit?.name,
+            },
+          ]}
+        />
+      </ScrollView>
     </Screen>
   );
 };
+
+const styles = StyleSheet.create({
+  scrollView: {height: null},
+});
 
 export default CartLineDetailsScreen;

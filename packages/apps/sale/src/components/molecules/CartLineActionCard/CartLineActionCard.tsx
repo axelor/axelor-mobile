@@ -31,12 +31,16 @@ interface CartLineActionCardProps {
   style?: any;
   cartLine: any;
   cartId: number;
+  hideIncrement?: boolean;
+  hideDelete?: boolean;
 }
 
 const CartLineActionCard = ({
   style,
   cartLine,
   cartId,
+  hideIncrement,
+  hideDelete,
 }: CartLineActionCardProps) => {
   const I18n = useTranslator();
   const Colors = useThemeColor();
@@ -73,6 +77,7 @@ const CartLineActionCard = ({
           },
           iconColor: Colors.errorColor.background,
           large: cartLine?.variantProduct == null,
+          hidden: hideDelete,
         },
         {
           iconName: 'plus-lg',
@@ -86,6 +91,7 @@ const CartLineActionCard = ({
               }),
             );
           },
+          hidden: hideIncrement,
         },
         {
           iconName: 'dash-lg',
@@ -100,6 +106,7 @@ const CartLineActionCard = ({
               }),
             );
           },
+          hidden: hideIncrement,
         },
       ]}
       translator={I18n.t}>
