@@ -78,7 +78,9 @@ const CartLineDetailsScreen = ({route}) => {
               title: I18n.t(
                 cartLine?.product?.inAti ? 'Sale_TotalATI' : 'Sale_TotalWT',
               ),
-              value: formatPrice(cartLine?.product?.purchasePrice),
+              value:
+                parseInt(cartLine?.qty, 10) *
+                parseInt(cartLine?.product?.salePrice, 10),
               unit: cartLine?.product?.saleCurrency?.symbol,
             },
           ]}
