@@ -25,17 +25,15 @@ import {Line} from './ViewAllEditList';
 interface LineComponentProps {
   line: Line;
   isSelected: boolean;
-  lines: Line[];
-  setLines: (lines: Line[]) => void;
   handleEditLine: (line: Line) => void;
+  handleDeleteLine: (lineId: number) => void;
 }
 
 const LineComponent = ({
   line,
   isSelected,
-  lines,
-  setLines,
   handleEditLine,
+  handleDeleteLine,
 }: LineComponentProps) => {
   const Colors = useThemeColor();
 
@@ -68,7 +66,7 @@ const LineComponent = ({
         name="x-lg"
         size={20}
         touchable
-        onPress={() => setLines(lines.filter(_line => _line.id !== line.id))}
+        onPress={() => handleDeleteLine(line.id)}
       />
     </View>
   );

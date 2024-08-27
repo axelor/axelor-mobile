@@ -18,11 +18,11 @@
 
 import React, {useState} from 'react';
 import {StyleSheet, View} from 'react-native';
-import AllLinesAlert from './AllLinesAlert';
-import LineComponent from './LineComponent';
 import {Text} from '../../atoms';
 import {NumberBubble, ViewAllContainer} from '../../molecules';
 import {useThemeColor} from '../../../theme';
+import AllLinesAlert from './AllLinesAlert';
+import LineComponent from './LineComponent';
 
 export interface Line {
   id: number;
@@ -75,9 +75,10 @@ const ViewAllEditList = ({
               key={index}
               line={line}
               isSelected={currentLineId === line.id}
-              lines={lines}
-              setLines={setLines}
               handleEditLine={handleEditLine}
+              handleDeleteLine={lineId =>
+                setLines(lines.filter(_line => _line.id !== lineId))
+              }
             />
           );
         })}
