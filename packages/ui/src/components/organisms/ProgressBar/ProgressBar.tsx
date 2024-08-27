@@ -59,10 +59,25 @@ const ProgressBar = ({
   const [progressBarWidth, setProgressBarWidth] = useState(0);
   const [textWidth, setTextWidth] = useState(0);
 
-  const percent = useMemo(
-    () => (total !== 0 ? (value / total) * 100 : 0),
-    [total, value],
-  );
+  const percent = useMemo(() => {
+    if (total !== 0 && progressBarContainerWidth !== 0) {
+      let _progressBarWidth = (value / total) * progressBarContainerWidth;
+
+      if (_progressBarWidth < 2 * BORDER_RADIUS) {
+        _progressBarWidth = 2 * BORDER_RADIUS;
+      }
+
+      return {
+        real: (value / total) * 100,
+        progressBar: (_progressBarWidth / progressBarContainerWidth) * 100,
+      };
+    } else {
+      return {
+        real: 0,
+        progressBar: 0,
+      };
+    }
+  }, [progressBarContainerWidth, total, value]);
 
   const progressColors = useMemo(() => {
     if (Object.keys(colorRepartition).length === 0) {
@@ -81,14 +96,14 @@ const ProgressBar = ({
   let color: Color = Colors.cautionColor;
   Object.keys(progressColors).forEach(key => {
     const threshold = parseInt(key, 10);
-    if (percent >= threshold && progressColors[threshold]) {
+    if (percent.real >= threshold && progressColors[threshold]) {
       color = progressColors[threshold];
     }
   });
 
   const displayText = useMemo(() => {
     if (showPercent) {
-      return `${percent.toFixed(2)}%`;
+      return `${percent.real.toFixed(2)}%`;
     }
 
     return `${value}/${total}`;
@@ -102,21 +117,22 @@ const ProgressBar = ({
     return progressBarWidth - textWidth * 1.3 < 0;
   }, [centeredPercent, progressBarWidth, textWidth]);
 
-  const displayProgressBar = useMemo(() => {
-    const _progressBarWidth = (percent / 100) * progressBarContainerWidth;
-
-    return _progressBarWidth > 2 * BORDER_RADIUS;
-  }, [percent, progressBarContainerWidth]);
-
   const styles = useMemo(
     () =>
-      getStyles(Colors, height, color, percent, stripeWidth, progressBarWidth),
+      getStyles(
+        Colors,
+        height,
+        color,
+        percent.progressBar,
+        stripeWidth,
+        progressBarWidth,
+      ),
     [Colors, height, color, percent, stripeWidth, progressBarWidth],
   );
 
   useEffect(() => {
     Animated.timing(animatedWidth, {
-      toValue: percent,
+      toValue: percent.progressBar,
       duration: 500,
       useNativeDriver: false,
     }).start();
@@ -162,32 +178,30 @@ const ProgressBar = ({
           {renderPercent()}
         </View>
       ) : null}
-      {displayProgressBar && (
+      <Animated.View
+        onLayout={event => {
+          const {width} = event.nativeEvent.layout;
+          setProgressBarWidth(width);
+        }}
+        style={[
+          styles.progressBar,
+          {
+            width: animatedWidth.interpolate({
+              inputRange: [0, 100],
+              outputRange: ['0%', '100%'],
+            }),
+          },
+        ]}>
         <Animated.View
-          onLayout={event => {
-            const {width} = event.nativeEvent.layout;
-            setProgressBarWidth(width);
-          }}
           style={[
-            styles.progressBar,
+            stripe && percent.progressBar < 100 ? styles.stripe : styles.none,
             {
-              width: animatedWidth.interpolate({
-                inputRange: [0, 100],
-                outputRange: ['0%', '100%'],
-              }),
+              transform: [{translateX}],
             },
-          ]}>
-          <Animated.View
-            style={[
-              stripe && percent < 100 ? styles.stripe : styles.none,
-              {
-                transform: [{translateX}],
-              },
-            ]}
-          />
-          {!displayTextOutside ? renderPercent() : null}
-        </Animated.View>
-      )}
+          ]}
+        />
+        {!displayTextOutside ? renderPercent() : null}
+      </Animated.View>
     </View>
   );
 };
