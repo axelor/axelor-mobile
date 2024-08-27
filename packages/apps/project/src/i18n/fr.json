@@ -48,6 +48,7 @@
   "Project_Status": "Statut",
   "Project_OpenMap": "Ouvrir la carte",
   "Project_Call": "Appeler",
+  "Project_NoActivity": "Pas d'activité",
   "Project_SliceAction_SearchProject": "recherche sur les projets",
   "Project_SliceAction_FetchProjectById": "récupération du projet par id",
   "Project_SliceAction_FetchProjectStatus": "récupération des statuts de projet",

@@ -18,11 +18,19 @@
 
 import React, {useCallback, useEffect, useMemo, useState} from 'react';
 import {SectionList, StyleSheet, View, RefreshControl} from 'react-native';
-import {DateDisplay, useSelector, formatDate} from '@axelor/aos-mobile-core';
+import {
+  DateDisplay,
+  formatDate,
+  useSelector,
+  useTranslator,
+} from '@axelor/aos-mobile-core';
+import {Label} from '@axelor/aos-mobile-ui';
 import {previousProjectActivity} from '../../../api/project-api';
 import {ActivityCard} from '../../molecules';
 
 const ActivityListView = () => {
+  const I18n = useTranslator();
+
   const {project} = useSelector((state: any) => state.project_project);
 
   const [refreshing, setRefreshing] = useState(false);
@@ -77,7 +85,7 @@ const ActivityListView = () => {
     if (project?.id) {
       fetchActivityData(startDate);
     }
-  }, [fetchActivityData, startDate, project?.id]);
+  }, [fetchActivityData, startDate, project]);
 
   const convertToDate = dateStr => {
     const [month, day, year] = dateStr.split('/').map(Number);
@@ -137,6 +145,16 @@ const ActivityListView = () => {
     );
   };
 
+  if (dataList.length === 0) {
+    return (
+      <Label
+        style={styles.label}
+        type="info"
+        message={I18n.t('Project_NoActivity')}
+      />
+    );
+  }
+
   return (
     <SectionList
       sections={dataList}
@@ -154,6 +172,10 @@ const ActivityListView = () => {
 const styles = StyleSheet.create({
   header: {
     padding: 10,
+  },
+  label: {
+    width: '90%',
+    alignSelf: 'center',
   },
 });
 
