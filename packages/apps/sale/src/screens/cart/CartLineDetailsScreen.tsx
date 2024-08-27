@@ -44,6 +44,10 @@ const CartLineDetailsScreen = ({route}) => {
     dispatch((fetchCartLineById as any)({cartLineId}));
   }, [cartLineId, dispatch]);
 
+  useEffect(() => {
+    setNewQty(cartLine?.qty);
+  }, [cartLine?.qty]);
+
   return (
     <Screen
       removeSpaceOnTop
