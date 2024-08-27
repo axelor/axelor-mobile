@@ -77,7 +77,7 @@ const TaskFormScreen = ({navigation, route}) => {
       formKey="project_task"
       defaultValue={_defaultValue}
       creationDefaultValue={creationDefaultValue}
-      defaultEditMode={isCreation}
+      defaultEditMode={true}
       actions={[
         {
           key: 'update-project-task',
