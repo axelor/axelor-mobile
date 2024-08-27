@@ -85,7 +85,7 @@ const ActivityListView = () => {
     if (project?.id) {
       fetchActivityData(startDate);
     }
-  }, [fetchActivityData, startDate, project?.id]);
+  }, [fetchActivityData, startDate, project]);
 
   const convertToDate = dateStr => {
     const [month, day, year] = dateStr.split('/').map(Number);
