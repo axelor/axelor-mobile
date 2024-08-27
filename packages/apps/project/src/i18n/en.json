@@ -48,6 +48,7 @@
   "Project_Status": "Status",
   "Project_OpenMap": "Open map",
   "Project_Call": "Call",
+  "Project_NoActivity": "No activity",
   "Project_SliceAction_SearchProject": "search projects",
   "Project_SliceAction_FetchProjectById": "fetch project by id",
   "Project_SliceAction_FetchProjectStatus": "fetch project status",
