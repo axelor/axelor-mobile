@@ -43,8 +43,8 @@ const QuantityCard = ({
   );
 
   return (
-    <Card style={[styles.noChildrenContainer, style]}>
-      <Text style={styles.noChildrenTextField}>{labelQty}</Text>
+    <Card style={[styles.container, style]}>
+      <Text style={styles.textField}>{labelQty}</Text>
       <Increment
         value={_defaultValue}
         decimalSpacer={I18n.t('Base_DecimalSpacer')}
@@ -58,18 +58,14 @@ const QuantityCard = ({
 };
 
 const styles = StyleSheet.create({
-  noChildrenContainer: {
+  container: {
     flexDirection: 'column',
     marginHorizontal: 16,
     marginBottom: '2%',
     alignItems: 'center',
   },
-  noChildrenTextField: {
+  textField: {
     fontSize: 16,
-  },
-  noChildrenTextValue: {
-    fontSize: 16,
-    fontWeight: 'bold',
   },
 });
 

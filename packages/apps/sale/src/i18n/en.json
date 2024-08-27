@@ -157,5 +157,5 @@
   "Sale_SliceAction_SearchCartLine": "search cart lines",
   "Sale_SliceAction_DeleteCartLine": "delete cart line",
   "Sale_SliceAction_UpdateCartLine": "update cart line",
-  "Sale_SliceAction_Fetch cartLineById": ""
+  "Sale_SliceAction_FetchCartLineById": "fetch cart line by id"
 }
