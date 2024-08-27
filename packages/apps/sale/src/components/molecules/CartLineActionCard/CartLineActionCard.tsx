@@ -33,6 +33,7 @@ interface CartLineActionCardProps {
   cartId: number;
   hideIncrement?: boolean;
   hideDelete?: boolean;
+  hideBadgeInformation?: boolean;
 }
 
 const CartLineActionCard = ({
@@ -41,6 +42,7 @@ const CartLineActionCard = ({
   cartId,
   hideIncrement,
   hideDelete,
+  hideBadgeInformation,
 }: CartLineActionCardProps) => {
   const I18n = useTranslator();
   const Colors = useThemeColor();
@@ -114,6 +116,7 @@ const CartLineActionCard = ({
         product={cartLine.product}
         qty={cartLine.qty}
         unit={cartLine.unit?.name}
+        hideBadgeInformation={hideBadgeInformation}
         onPress={() => {
           navigation.navigate('CartLineDetailsScreen', {
             cartLineId: cartLine.id,

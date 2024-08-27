@@ -34,6 +34,7 @@ interface CartLineCardProps {
   isAvailable?: boolean;
   qty: number;
   unit: string;
+  hideBadgeInformation?: boolean;
   onPress: () => void;
 }
 
@@ -43,6 +44,7 @@ const CartLineCard = ({
   isAvailable = true,
   qty,
   unit,
+  hideBadgeInformation,
   onPress,
 }: CartLineCardProps) => {
   const formatMetaFile = useMetafileUri();
@@ -85,25 +87,27 @@ const CartLineCard = ({
           },
         ],
       }}
-      sideBadges={{
-        style: styles.badges,
-        items: [
-          {
-            customComponent: (
-              <TextUnit
-                unit={product?.saleCurrency?.symbol}
-                value={priceFormat(product?.salePrice)}
-                numberOfLines={1}
-              />
-            ),
-          },
-          {
-            customComponent: (
-              <TextUnit unit={unit} value={qty} numberOfLines={1} />
-            ),
-          },
-        ],
-      }}
+      sideBadges={
+        !hideBadgeInformation && {
+          style: styles.badges,
+          items: [
+            {
+              customComponent: (
+                <TextUnit
+                  unit={product?.saleCurrency?.symbol}
+                  value={priceFormat(product?.salePrice)}
+                  numberOfLines={1}
+                />
+              ),
+            },
+            {
+              customComponent: (
+                <TextUnit unit={unit} value={qty} numberOfLines={1} />
+              ),
+            },
+          ],
+        }
+      }
     />
   );
 };
