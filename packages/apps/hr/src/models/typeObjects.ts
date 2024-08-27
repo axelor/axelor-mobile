@@ -259,6 +259,25 @@ export const hr_typeObjects: ModuleSelections = [
           },
         ],
       },
+      leaveReasonTypeSelect: {
+        content: [
+          {
+            key: 'LeaveManagedEveryMonth',
+            value: 1,
+            title: null,
+          },
+          {
+            key: 'ExceptionalLeave',
+            value: 2,
+            title: null,
+          },
+          {
+            key: 'LeaveManagedEveryYear',
+            value: 3,
+            title: null,
+          },
+        ],
+      },
     },
   },
 ];

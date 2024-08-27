@@ -16,23 +16,36 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import React, {useState} from 'react';
+import React, {useMemo, useState} from 'react';
 import {StyleSheet} from 'react-native';
-import {PeriodInput} from '@axelor/aos-mobile-core';
-import {KeyboardAvoidingScrollView, Screen} from '@axelor/aos-mobile-ui';
-import {LeaveStartEndOn} from '../../components';
+import {PeriodInput, useTranslator} from '@axelor/aos-mobile-core';
+import {
+  KeyboardAvoidingScrollView,
+  Screen,
+  ViewAllEditList,
+} from '@axelor/aos-mobile-ui';
+import {LeaveReasonSearchBar, LeaveStartEndOn} from '../../components';
 
 const CompleteRequestScreen = ({}) => {
+  const I18n = useTranslator();
+
   const [fromDate, setFromDate] = useState(new Date());
   const [toDate, setToDate] = useState(null);
   const [startOn, setStartOn] = useState(null);
   const [endOn, setEndOn] = useState(null);
+  const [lines, setLines] = useState([]);
+  const [newLine, setNewLine] = useState(null);
+
+  const isEditionMode = useMemo(
+    () => newLine?.qty > 0 && lines.find(({id}) => id === newLine.id) != null,
+    [lines, newLine],
+  );
 
   return (
     <Screen>
       <KeyboardAvoidingScrollView
         keyboardOffset={{ios: 70, android: 100}}
-        style={styles.scroll}>
+        style={styles.container}>
         <PeriodInput
           startDateConfig={{
             date: fromDate,
@@ -47,15 +60,25 @@ const CompleteRequestScreen = ({}) => {
           onStartOnChange={setStartOn}
           onEndOnChange={setEndOn}
         />
+        <ViewAllEditList
+          title={I18n.t('Hr_Distribution')}
+          lines={lines}
+          currentLineId={isEditionMode ? newLine.id : null}
+          setLines={_lines =>
+            setLines(_lines.map(line => ({...line, realQty: line.qty})))
+          }
+          handleEditLine={line => setNewLine(line)}
+          translator={I18n.t}
+        />
+        <LeaveReasonSearchBar defaultValue={newLine} onChange={setNewLine} />
       </KeyboardAvoidingScrollView>
     </Screen>
   );
 };
 
 const styles = StyleSheet.create({
-  scroll: {
+  container: {
     alignItems: 'center',
-    height: null,
   },
 });
 

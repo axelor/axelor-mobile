@@ -33,4 +33,5 @@ export const hr_searchFields: SearchFields = {
   hr_timesheet: ['employee.name'],
   hr_timesheetLine: ['project.fullName', 'manufOrder.fullName'],
   hr_leave: ['employee.name'],
+  hr_leaveReason: ['name'],
 };

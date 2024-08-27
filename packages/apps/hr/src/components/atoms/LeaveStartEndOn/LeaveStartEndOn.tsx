@@ -18,12 +18,12 @@
 
 import React, {useCallback, useMemo} from 'react';
 import {StyleSheet, View} from 'react-native';
+import {useTranslator, useTypes, useTypeHelpers} from '@axelor/aos-mobile-core';
 import {Picker} from '@axelor/aos-mobile-ui';
-import {useTypes, useTypeHelpers} from '@axelor/aos-mobile-core';
 
 const PICKER_MODE = {
   startOn: 1,
-  endOn: 1,
+  endOn: 2,
 };
 
 interface LeaveStartEndOnProps {
@@ -35,12 +35,18 @@ const LeaveStartEndOn = ({
   onStartOnChange,
   onEndOnChange,
 }: LeaveStartEndOnProps) => {
+  const I18n = useTranslator();
   const {LeaveRequest} = useTypes();
   const {getSelectionItems} = useTypeHelpers();
 
   const leaveStartOnList = useMemo(
     () => getSelectionItems(LeaveRequest?.startOnSelect),
     [getSelectionItems, LeaveRequest?.startOnSelect],
+  );
+
+  const leaveEndOnList = useMemo(
+    () => getSelectionItems(LeaveRequest?.endOnSelect),
+    [getSelectionItems, LeaveRequest?.endOnSelect],
   );
 
   const renderPicker = useCallback(
@@ -50,7 +56,8 @@ const LeaveStartEndOn = ({
       return (
         <Picker
           style={styles.picker}
-          listItems={leaveStartOnList}
+          placeholder={I18n.t(isStartOn ? 'Hr_StartOn' : 'Hr_EndOn')}
+          listItems={isStartOn ? leaveStartOnList : leaveEndOnList}
           onValueChange={value =>
             isStartOn ? onStartOnChange(value) : onEndOnChange(value)
           }
@@ -60,7 +67,7 @@ const LeaveStartEndOn = ({
         />
       );
     },
-    [leaveStartOnList, onStartOnChange, onEndOnChange],
+    [I18n, leaveStartOnList, leaveEndOnList, onStartOnChange, onEndOnChange],
   );
 
   return (

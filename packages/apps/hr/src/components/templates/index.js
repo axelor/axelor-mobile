@@ -32,6 +32,7 @@ export {default as ExpenseWaitingValidationSearchBar} from './ExpenseWaitingVali
 export {default as KilometricAllowParamSearchBar} from './KilometricAllowParamSearchBar/KilometricAllowParamSearchBar';
 export {default as KilometricTypeSelectPicker} from './KilometricTypeSelectPicker/KilometricTypeSelectPicker';
 export {default as LeaveFilters} from './LeaveFilters/LeaveFilters';
+export {default as LeaveReasonSearchBar} from './LeaveReasonSearchBar/LeaveReasonSearchBar';
 export {default as LeaveWaitingValidationSearchBar} from './LeaveWaitingValidationSearchBar/LeaveWaitingValidationSearchBar';
 export {default as ManufOrderSearchBar} from './ManufOrderSearchBar/ManufOrderSearchBar';
 export {default as OperationOrderSearchBar} from './OperationOrderSearchBar/OperationOrderSearchBar';

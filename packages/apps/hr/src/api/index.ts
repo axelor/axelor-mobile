@@ -46,6 +46,7 @@ export {searchKilometricAllowParam as searchKilometricAllowParamApi} from './kil
 export {
   fetchLeave as fetchLeaveApi,
   fetchLeaveById as fetchLeaveByIdApi,
+  fetchLeaveReason as fetchLeaveReasonApi,
   fetchLeaveToValidate as fetchLeaveToValidateApi,
 } from './leave-api';
 export {

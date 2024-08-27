@@ -91,6 +91,10 @@
   "Hr_ValidatedOnBy": "Validé le {{date}} par {{name}}",
   "Hr_RejectedOnBy": "Refusé le {{date}} par {{name}}",
   "Hr_CompleteRequest": "Compléter une demande",
+  "Hr_Distribution": "Distribution",
+  "Hr_StartOn": "Commence le ...",
+  "Hr_EndOn": "Se termine le ...",
+  "Hr_LeaveReason": "Motif",
   "Hr_SliceAction_FetchExpenseLines": "récupération des lignes de frais",
   "Hr_SliceAction_SearchDraftExpense": "récupération des notes de frais brouillon",
   "Hr_SliceAction_FetchExpense": "récupération des notes de frais",
@@ -144,5 +148,6 @@
   "Hr_SliceAction_DeleteTimer": "suppression d'un chronomètre",
   "Hr_SliceAction_FetchLeave": "récupération des congés",
   "Hr_SliceAction_FetchLeaveToValidate": "récupération des congés à valider",
-  "Hr_SliceAction_FetchLeaveById": "récupération d'une demande de congés par id"
+  "Hr_SliceAction_FetchLeaveById": "récupération d'une demande de congés par id",
+  "Hr_SliceAction_FetchLeaveReason": "récupération des motif de congés"
 }

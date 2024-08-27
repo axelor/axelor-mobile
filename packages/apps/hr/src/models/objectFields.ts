@@ -176,4 +176,7 @@ export const hr_modelAPI: ObjectFields = {
     refusalDateTime: schemaContructor.string(),
     refusedBy: schemaContructor.subObject('name'),
   }),
+  hr_leaveReason: schemaContructor.object({
+    name: schemaContructor.string(),
+  }),
 };
