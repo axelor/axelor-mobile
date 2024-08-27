@@ -18,32 +18,32 @@
 
 import React, {useState} from 'react';
 import {StyleSheet, View} from 'react-native';
-import {useTranslator} from '@axelor/aos-mobile-core';
-import {
-  Alert,
-  CheckboxScrollList,
-  Icon,
-  Text,
-  useThemeColor,
-} from '@axelor/aos-mobile-ui';
+import {Icon, Text} from '../../atoms';
+import {Alert} from '../../molecules';
+import {CheckboxScrollList} from '../../organisms';
+import {useThemeColor} from '../../../theme';
+import {Line} from './ViewAllEditList';
 
-interface InternalMoveCreationAlertProps {
+interface AllLinesAlertProps {
+  title: string;
   isAlertVisible: boolean;
   setIsAlertVisible: (visible: boolean) => void;
-  lines: any[];
-  setLines: (lines: any[]) => void;
-  handleEditLine: (line: any) => void;
+  lines: Line[];
+  setLines: (lines: Line[]) => void;
+  handleEditLine: (line: Line) => void;
+  translator: (key: string) => string;
 }
 
-const InternalMoveCreationAlert = ({
+const AllLinesAlert = ({
+  title,
   isAlertVisible,
   setIsAlertVisible,
   lines,
   setLines,
   handleEditLine,
-}: InternalMoveCreationAlertProps) => {
+  translator,
+}: AllLinesAlertProps) => {
   const Colors = useThemeColor();
-  const I18n = useTranslator();
 
   const [selectedLines, setSelectedLines] = useState([]);
 
@@ -52,10 +52,10 @@ const InternalMoveCreationAlert = ({
       <View style={styles.renderContainer}>
         <View style={styles.renderFirstLine}>
           <Text style={styles.productName} writingType="important">
-            {item.product?.name}
+            {item.name}
           </Text>
           <Text style={styles.productQty}>
-            {item.realQty} {item.unit?.name}
+            {item.qty} {item.unitName}
           </Text>
           <Icon
             name="pencil-fill"
@@ -67,10 +67,8 @@ const InternalMoveCreationAlert = ({
             }}
           />
         </View>
-        {item.trackingNumber?.trackingNumberSeq && (
-          <Text writingType="details">
-            {item.trackingNumber?.trackingNumberSeq}
-          </Text>
+        {item.nameDetails && (
+          <Text writingType="details">{item.nameDetails}</Text>
         )}
       </View>
     );
@@ -80,13 +78,13 @@ const InternalMoveCreationAlert = ({
     <Alert
       style={styles.alertContainer}
       visible={isAlertVisible}
-      title={I18n.t('Stock_Products')}
+      title={title}
       cancelButtonConfig={{
         showInHeader: true,
         onPress: () => setIsAlertVisible(false),
       }}
       confirmButtonConfig={{
-        title: I18n.t('Stock_Remove'),
+        title: translator('Base_Remove'),
         iconName: 'trash3-fill',
         width: '45%',
         color: Colors.warningColor,
@@ -102,12 +100,12 @@ const InternalMoveCreationAlert = ({
           setIsAlertVisible(false);
         },
       }}
-      translator={I18n.t}>
+      translator={translator}>
       <CheckboxScrollList
         data={lines}
         onCheckedChange={setSelectedLines}
         renderItem={renderChexboxItem}
-        translator={I18n.t}
+        translator={translator}
       />
     </Alert>
   );
@@ -134,4 +132,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default InternalMoveCreationAlert;
+export default AllLinesAlert;

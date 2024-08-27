@@ -39,3 +39,4 @@ export {ActionType, ScrollList, TopActions} from './ScrollList';
 export {default as SearchBar} from './SearchBar/SearchBar';
 export {default as TagList} from './TagList/TagList';
 export {default as ToggleButton} from './ToggleButton/ToggleButton';
+export {default as ViewAllEditList} from './ViewAllEditList/ViewAllEditList';
