@@ -18,16 +18,11 @@
 
 import React, {useMemo} from 'react';
 import {StyleSheet, View} from 'react-native';
-import {
-  Card,
-  getCommonStyles,
-  Icon,
-  Increment,
-  Text,
-  useDigitFormat,
-  useThemeColor,
-} from '@axelor/aos-mobile-ui';
-import {useTranslator} from '@axelor/aos-mobile-core';
+import {Card, Icon, Text} from '../../atoms';
+import {Increment} from '../../molecules';
+import {getCommonStyles} from '../../../utils/commons-styles';
+import {useDigitFormat} from '../../../hooks/use-digit-format';
+import {useThemeColor} from '../../../theme';
 
 interface QuantityCardProps {
   style?: any;
@@ -40,6 +35,7 @@ interface QuantityCardProps {
   iconName?: string;
   onPressActionQty?: () => void;
   isBigButton?: boolean;
+  translator: (key: string) => string;
 }
 
 const QuantityCard = ({
@@ -53,8 +49,8 @@ const QuantityCard = ({
   iconName = 'pencil-fill',
   onPressActionQty = () => {},
   isBigButton = false,
+  translator,
 }: QuantityCardProps) => {
-  const I18n = useTranslator();
   const Colors = useThemeColor();
   const formatNumber = useDigitFormat();
 
@@ -72,8 +68,8 @@ const QuantityCard = ({
         {editable ? (
           <Increment
             value={_defaultValue}
-            decimalSpacer={I18n.t('Base_DecimalSpacer')}
-            thousandSpacer={I18n.t('Base_ThousandSpacer')}
+            decimalSpacer={translator('Base_DecimalSpacer')}
+            thousandSpacer={translator('Base_ThousandSpacer')}
             onValueChange={onValueChange}
             isBigButton={isBigButton}
           />
@@ -106,8 +102,8 @@ const QuantityCard = ({
         {editable ? (
           <Increment
             value={_defaultValue}
-            decimalSpacer={I18n.t('Base_DecimalSpacer')}
-            thousandSpacer={I18n.t('Base_ThousandSpacer')}
+            decimalSpacer={translator('Base_DecimalSpacer')}
+            thousandSpacer={translator('Base_ThousandSpacer')}
             onValueChange={onValueChange}
             isBigButton={isBigButton}
           />
