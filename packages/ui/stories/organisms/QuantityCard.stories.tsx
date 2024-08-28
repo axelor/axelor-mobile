@@ -32,9 +32,10 @@ export const QuantityCard: Story<typeof Component> = {
     labelQty: 'Label qty',
     defaultValue: 5,
     editable: false,
+    isBigButton: false,
     actionQty: true,
     iconName: 'pencil-fill',
-    isBigButton: false,
+    showChildren: false,
     translator: key => {
       const translations = {
         Base_DecimalSpacer: ',',
@@ -51,5 +52,10 @@ export const QuantityCard: Story<typeof Component> = {
     onPressActionQty: disabledControl,
     translator: disabledControl,
   },
-  render: args => <Component children={<Text>Title</Text>} {...args} />,
+  render: args => (
+    <Component
+      {...args}
+      children={args.showChildren ? <Text>Title</Text> : undefined}
+    />
+  ),
 };
