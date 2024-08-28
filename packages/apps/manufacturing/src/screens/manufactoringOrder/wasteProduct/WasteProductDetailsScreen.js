@@ -20,6 +20,7 @@ import React, {useCallback, useEffect, useMemo, useState} from 'react';
 import {StyleSheet} from 'react-native';
 import {
   Picker,
+  QuantityCard,
   Screen,
   ScrollView,
   HeaderContainer,
@@ -31,11 +32,7 @@ import {
   useTranslator,
   useTypes,
 } from '@axelor/aos-mobile-core';
-import {
-  fetchUnit,
-  ProductCardInfo,
-  QuantityCard,
-} from '@axelor/aos-mobile-stock';
+import {fetchUnit, ProductCardInfo} from '@axelor/aos-mobile-stock';
 import {
   ManufacturingOrderHeader,
   ProdProductFixedItems,
@@ -177,6 +174,7 @@ const WasteProductDetailsScreen = ({route, navigation}) => {
           }
           onValueChange={setWasteQty}
           isBigButton={true}
+          translator={I18n.t}
         />
         <Picker
           title={I18n.t('Stock_Unit')}

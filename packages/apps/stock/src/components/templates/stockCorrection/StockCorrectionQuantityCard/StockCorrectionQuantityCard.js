@@ -19,8 +19,7 @@
 import React from 'react';
 import {StyleSheet} from 'react-native';
 import {useTranslator, useTypes} from '@axelor/aos-mobile-core';
-import {Text, useDigitFormat} from '@axelor/aos-mobile-ui';
-import {QuantityCard} from '../../../organisms';
+import {QuantityCard, Text, useDigitFormat} from '@axelor/aos-mobile-ui';
 
 const StockCorrectionQuantityCard = ({
   stockProduct,
@@ -46,7 +45,8 @@ const StockCorrectionQuantityCard = ({
       defaultValue={realQty}
       onValueChange={handleQtyChange}
       editable={!readonly && status === StockCorrection?.statusSelect.Draft}
-      isBigButton={true}>
+      isBigButton={true}
+      translator={I18n.t}>
       <Text style={styles.text}>
         {`${I18n.t('Stock_DatabaseQty')}: ${formatNumber(databaseQty)} ${
           stockProduct?.unit?.name
