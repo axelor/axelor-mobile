@@ -16,16 +16,20 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import React, {useEffect, useState} from 'react';
+import React, {useEffect, useState, useMemo} from 'react';
 import {StyleSheet} from 'react-native';
-import {Screen, ScrollView, usePriceFormat} from '@axelor/aos-mobile-ui';
+import {
+  QuantityCard,
+  Screen,
+  ScrollView,
+  usePriceFormat,
+} from '@axelor/aos-mobile-ui';
 import {useDispatch, useSelector, useTranslator} from '@axelor/aos-mobile-core';
 import {fetchCartLineById} from '../../features/cartLineSlice';
 import {
   CartLineActionCard,
   CartLineValidationButton,
   PriceDetails,
-  QuantityCard,
 } from '../../components';
 
 const CartLineDetailsScreen = ({route}) => {
@@ -48,28 +52,34 @@ const CartLineDetailsScreen = ({route}) => {
     setNewQty(cartLine?.qty);
   }, [cartLine?.qty]);
 
+  const totalPrice = useMemo(() => {
+    return newQty * parseInt(cartLine?.product?.salePrice, 10);
+  }, [newQty, cartLine?.product?.salePrice]);
+
   return (
-    <Screen
-      removeSpaceOnTop
-      fixedItems={<CartLineValidationButton newQty={newQty} />}>
-      <ScrollView style={styles.scrollView}>
+    <Screen fixedItems={<CartLineValidationButton newQty={newQty} />}>
+      <ScrollView style={styles.container}>
         <CartLineActionCard
           cartLine={cartLine}
           cartId={activeCart?.id}
           hideIncrement={true}
           hideDelete={true}
           hideBadgeInformation={true}
+          style={styles.card}
         />
         <QuantityCard
+          editable={true}
+          translator={I18n.t}
           defaultValue={cartLine?.qty}
           labelQty={I18n.t('Sale_Quantity')}
           onValueChange={setNewQty}
+          style={styles.card}
         />
         <PriceDetails
           lineList={[
             {
               title: I18n.t('Sale_Quantity'),
-              value: formatPrice(cartLine?.qty),
+              value: formatPrice(newQty),
               unit: cartLine?.unit?.name,
             },
             {
@@ -82,12 +92,11 @@ const CartLineDetailsScreen = ({route}) => {
               title: I18n.t(
                 cartLine?.product?.inAti ? 'Sale_TotalATI' : 'Sale_TotalWT',
               ),
-              value:
-                parseInt(cartLine?.qty, 10) *
-                parseInt(cartLine?.product?.salePrice, 10),
+              value: totalPrice,
               unit: cartLine?.product?.saleCurrency?.symbol,
             },
           ]}
+          style={styles.card}
         />
       </ScrollView>
     </Screen>
@@ -95,7 +104,15 @@ const CartLineDetailsScreen = ({route}) => {
 };
 
 const styles = StyleSheet.create({
-  scrollView: {height: null},
+  container: {
+    height: null,
+    alignItems: 'center',
+    marginHorizontal: 5,
+  },
+  card: {
+    width: '90%',
+    marginVertical: 5,
+  },
 });
 
 export default CartLineDetailsScreen;

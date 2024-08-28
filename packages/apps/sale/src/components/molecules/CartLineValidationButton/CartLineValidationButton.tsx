@@ -71,7 +71,7 @@ const CartLineValidationButton = ({newQty}) => {
         title={I18n.t('Base_Validate')}
         onPress={_updateCartLine}
         width="45%"
-        iconName="send-fill"
+        iconName="check-lg"
       />
     </View>
   );

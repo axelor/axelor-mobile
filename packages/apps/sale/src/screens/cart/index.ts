@@ -33,9 +33,6 @@ export default {
     title: 'Sale_Cart',
     actionID: 'sale_details_cart_line',
     component: CartLineDetailsScreen,
-    options: {
-      shadedHeader: false,
-    },
   },
 };
 
