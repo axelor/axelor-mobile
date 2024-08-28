@@ -149,6 +149,9 @@ export const hr_modelAPI: ObjectFields = {
           .of(schemaContructor.subObject()),
         product: schemaContructor.subObject('name'),
         timesheetImputationSelect: schemaContructor.number(),
+        leaveLineList: schemaContructor
+          .array()
+          .of(schemaContructor.subObject()),
       }),
     ),
   }),
@@ -178,5 +181,6 @@ export const hr_modelAPI: ObjectFields = {
   }),
   hr_leaveReason: schemaContructor.object({
     name: schemaContructor.string(),
+    unitSelect: schemaContructor.number(),
   }),
 };

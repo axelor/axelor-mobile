@@ -29,7 +29,7 @@ import {fetchLeaveReason} from '../../../features/leaveSlice';
 interface LeaveReasonSearchBarProps {
   placeholderKey?: string;
   defaultValue?: string;
-  onChange: (value: any) => void;
+  onChange: (leaveReason: any) => void;
 }
 
 const LeaveReasonSearchBar = ({
