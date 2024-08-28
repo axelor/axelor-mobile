@@ -18,6 +18,7 @@
 
 import ActiveCartScreen from './ActiveCartScreen';
 import CartLineDetailsScreen from './CartLineDetailsScreen';
+import CatalogScreen from './CatalogScreen';
 
 export default {
   ActiveCartScreen: {
@@ -33,6 +34,14 @@ export default {
     title: 'Sale_Cart',
     actionID: 'sale_cartLine_details',
     component: CartLineDetailsScreen,
+  },
+  CatalogScreen: {
+    title: 'Sale_Catalog',
+    component: CatalogScreen,
+    options: {
+      shadedHeader: false,
+    },
+    isUsableOnShortcut: true,
   },
 };
 
