@@ -22,6 +22,7 @@ import {
   Button,
   Card,
   HeaderContainer,
+  QuantityCard,
   Screen,
   ScrollView,
   Text,
@@ -32,7 +33,7 @@ import {
   useSelector,
   useTranslator,
 } from '@axelor/aos-mobile-core';
-import {QuantityCard, StockMoveHeader} from '../../components';
+import {StockMoveHeader} from '../../components';
 import {updateSupplierTrackingNumber} from '../../features/trackingNumberSlice';
 import StockMove from '../../types/stock-move';
 
@@ -127,6 +128,7 @@ const SupplierArrivalAddTrackingScreen = ({route, navigation}) => {
           onValueChange={setTrackingQty}
           editable={true}
           isBigButton={true}
+          translator={I18n.t}
         />
       </ScrollView>
     </Screen>
