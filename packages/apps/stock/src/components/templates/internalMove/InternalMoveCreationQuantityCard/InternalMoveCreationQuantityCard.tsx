@@ -18,8 +18,12 @@
 
 import React from 'react';
 import {useTranslator} from '@axelor/aos-mobile-core';
-import {checkNullString, Text, useDigitFormat} from '@axelor/aos-mobile-ui';
-import {QuantityCard} from '../../../organisms';
+import {
+  checkNullString,
+  QuantityCard,
+  Text,
+  useDigitFormat,
+} from '@axelor/aos-mobile-ui';
 
 interface InternalMoveCreationQuantityCardProps {
   movedQty: number;
@@ -52,7 +56,8 @@ const InternalMoveCreationQuantityCard = ({
       actionQty={true}
       iconName="x-lg"
       onPressActionQty={cancelMove}
-      isBigButton={true}>
+      isBigButton={true}
+      translator={I18n.t}>
       <Text fontSize={16}>
         {productName}
         {!checkNullString(trackingNumber) && ' - ' + trackingNumber}

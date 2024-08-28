@@ -18,6 +18,7 @@
 
 import React, {useCallback, useEffect, useState} from 'react';
 import {
+  QuantityCard,
   Screen,
   Text,
   ScrollView,
@@ -31,7 +32,7 @@ import {
   useTranslator,
   useTypes,
 } from '@axelor/aos-mobile-core';
-import {QuantityCard, ProductCardInfo} from '@axelor/aos-mobile-stock';
+import {ProductCardInfo} from '@axelor/aos-mobile-stock';
 import {
   ManufacturingOrderHeader,
   ProdProductFixedItems,
@@ -181,7 +182,8 @@ const ProducedProductDetailsScreen = ({route, navigation}) => {
             !readonly &&
             manufOrder?.statusSelect === ManufOrder?.statusSelect.InProgress
           }
-          isBigButton={true}>
+          isBigButton={true}
+          translator={I18n.t}>
           <Text>
             {`${I18n.t('Manufacturing_PlannedQty')}: ${formatNumber(
               producedProdProduct?.plannedQty,

@@ -18,14 +18,13 @@
 
 import React from 'react';
 import {StyleSheet} from 'react-native';
-import {Text, useDigitFormat} from '@axelor/aos-mobile-ui';
+import {QuantityCard, Text, useDigitFormat} from '@axelor/aos-mobile-ui';
 import {
   useNavigation,
   usePermitted,
   useTranslator,
   useTypes,
 } from '@axelor/aos-mobile-core';
-import {QuantityCard} from '../../../organisms';
 
 const InternalMoveLineQuantityCard = ({
   status,
@@ -73,7 +72,8 @@ const InternalMoveLineQuantityCard = ({
           status === StockMove?.statusSelect.Planned)
       }
       onPressActionQty={handleCreateCorrection}
-      isBigButton={true}>
+      isBigButton={true}
+      translator={I18n.t}>
       <Text style={styles.text}>
         {`${I18n.t('Stock_AvailableQty')}: ${formatNumber(plannedQty)} ${
           stockProduct.unit?.name

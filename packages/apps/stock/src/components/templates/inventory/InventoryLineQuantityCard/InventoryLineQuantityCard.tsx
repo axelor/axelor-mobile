@@ -18,8 +18,7 @@
 
 import React from 'react';
 import {useTranslator, useSelector, useTypes} from '@axelor/aos-mobile-core';
-import {Text, useDigitFormat} from '@axelor/aos-mobile-ui';
-import {QuantityCard} from '../../../organisms';
+import {QuantityCard, Text, useDigitFormat} from '@axelor/aos-mobile-ui';
 
 const InventoryLineQuantityCard = ({
   realQty,
@@ -42,7 +41,8 @@ const InventoryLineQuantityCard = ({
         !readonly &&
         inventory.statusSelect !== Inventory?.statusSelect.Validated
       }
-      isBigButton={true}>
+      isBigButton={true}
+      translator={I18n.t}>
       {inventoryLine == null ? (
         <Text>
           {`${I18n.t('Stock_DatabaseQty')} : ${I18n.t('Base_Unknown')}`}
