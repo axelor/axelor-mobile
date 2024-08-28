@@ -25,12 +25,12 @@ import {
   useTypes,
 } from '@axelor/aos-mobile-core';
 import {
-  Text,
   Badge,
+  QuantityCard,
+  Text,
   useThemeColor,
   useDigitFormat,
 } from '@axelor/aos-mobile-ui';
-import {QuantityCard} from '../../../organisms';
 
 const CustomerDeliveryLineQuantityCard = ({
   customerDelivery,
@@ -78,7 +78,8 @@ const CustomerDeliveryLineQuantityCard = ({
         !readonly &&
         customerDelivery.statusSelect !== StockMove?.statusSelect.Realized
       }
-      isBigButton={true}>
+      isBigButton={true}
+      translator={I18n.t}>
       <View style={styles.headerQuantityCard}>
         <Text>{`${I18n.t('Stock_AskedQty')} : ${askedQty}`}</Text>
         {customerDeliveryLine != null && (

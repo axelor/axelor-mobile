@@ -35,6 +35,7 @@ export {default as InfoButton} from './InfoButton/InfoButton';
 export {default as MultiValuePicker} from './MultiValuePicker/MultiValuePicker';
 export {default as Picker} from './Picker/Picker';
 export {default as ProgressBar} from './ProgressBar/ProgressBar';
+export {default as QuantityCard} from './QuantityCard/QuantityCard';
 export {ActionType, ScrollList, TopActions} from './ScrollList';
 export {default as SearchBar} from './SearchBar/SearchBar';
 export {default as TagList} from './TagList/TagList';
