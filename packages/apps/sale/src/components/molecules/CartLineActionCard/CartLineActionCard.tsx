@@ -38,6 +38,7 @@ interface CartLineActionCardProps {
   product?: any;
   hideIncrement?: boolean;
   hideDelete?: boolean;
+  hideVariant?: boolean;
   hideBadgeInformation?: boolean;
   addToCart?: boolean;
 }
@@ -49,6 +50,7 @@ const CartLineActionCard = ({
   cartId,
   hideIncrement,
   hideDelete,
+  hideVariant,
   hideBadgeInformation,
   addToCart = false,
 }: CartLineActionCardProps) => {
@@ -68,7 +70,9 @@ const CartLineActionCard = ({
         productId: product ? product.id : cartLine?.variantProduct?.id,
       }),
     );
-    navigation.navigate('VariantProductsScreen');
+    product
+      ? navigation.navigate('CatalogVariantScreen')
+      : navigation.navigate('VariantProductsScreen');
   }, [dispatch, navigation, product, cartLine?.variantProduct?.id]);
 
   const handleDeletePress = useCallback(() => {
@@ -108,7 +112,9 @@ const CartLineActionCard = ({
           helper: I18n.t('Sale_SeeVariants'),
           onPress: handleVariantPress,
           hidden:
-            cartLine?.variantProduct == null && product?.productVariant == null,
+            (cartLine?.variantProduct == null &&
+              product?.productVariant == null) ||
+            hideVariant,
         },
         {
           iconName: 'trash3-fill',

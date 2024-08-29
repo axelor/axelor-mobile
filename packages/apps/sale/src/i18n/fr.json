@@ -4,6 +4,7 @@
   "Sale_Cart": "Panier",
   "Sale_ActiveCart": "Panier actif",
   "Sale_Catalog": "Catalogue",
+  "Sale_VariantsCatalog": "Catalogue des variants",
   "Sale_ProductsServices": "Articles et prestations",
   "Sale_ProductService": "Article et prestation",
   "Sale_NotState": "Non {{state}}",
