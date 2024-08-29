@@ -21,6 +21,7 @@ export {
   updateCart as updateCartApi,
 } from './cart-api';
 export {
+  addToCart as addToCartApi,
   searchCartLine as searchCartLineApi,
   updateCartLine as updateCartLineApi,
   deleteCartLine as deleteCartLineApi,

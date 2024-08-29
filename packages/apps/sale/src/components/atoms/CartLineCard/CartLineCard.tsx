@@ -32,10 +32,10 @@ interface CartLineCardProps {
   style?: any;
   product: any;
   isAvailable?: boolean;
-  qty: number;
-  unit: string;
+  qty?: number;
+  unit?: string;
   hideBadgeInformation?: boolean;
-  onPress: () => void;
+  onPress?: () => void;
 }
 
 const CartLineCard = ({

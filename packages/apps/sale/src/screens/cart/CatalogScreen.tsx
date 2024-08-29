@@ -26,12 +26,12 @@ import {
   useTranslator,
 } from '@axelor/aos-mobile-core';
 import {searchProduct} from '../../features/productSlice';
-import {CartLineCard} from '../../components';
+import {CartLineActionCard} from '../../components';
 import {fetchActiveCart} from '../../features/cartSlice';
 
 const catalogScanKey = 'sale_catalog_scanKey';
 
-const CatalogScreen = ({navigation}) => {
+const CatalogScreen = ({}) => {
   const dispatch = useDispatch();
   const I18n = useTranslator();
 
@@ -39,6 +39,8 @@ const CatalogScreen = ({navigation}) => {
   const {productList, moreLoading, isListEnd, loadingList} = useSelector(
     (state: any) => state.sale_product,
   );
+
+  const {activeCart} = useSelector((state: any) => state.sale_cart);
 
   useEffect(() => {
     dispatch((fetchActiveCart as any)({userId}));
@@ -56,7 +58,15 @@ const CatalogScreen = ({navigation}) => {
         displaySearchValue={displayItemName}
         searchPlaceholder={I18n.t('Base_Search')}
         expandableFilter={false}
-        renderListItem={({item}) => <CartLineCard product={item} />}
+        renderListItem={({item}) => (
+          <CartLineActionCard
+            cartId={activeCart?.id}
+            product={item}
+            hideDelete={true}
+            hideIncrement={true}
+            addToCart={true}
+          />
+        )}
       />
     </Screen>
   );
