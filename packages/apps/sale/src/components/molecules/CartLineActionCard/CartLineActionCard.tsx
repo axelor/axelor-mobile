@@ -16,7 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import React, {useMemo} from 'react';
+import React, {useCallback, useMemo} from 'react';
 import {
   useDispatch,
   useNavigation,
@@ -57,9 +57,47 @@ const CartLineActionCard = ({
   const navigation = useNavigation();
   const dispatch = useDispatch();
 
-  const _product = useMemo(() => {
-    return product ? product : cartLine?.product;
-  }, [cartLine?.product, product]);
+  const _product = useMemo(
+    () => product || cartLine?.product,
+    [cartLine?.product, product],
+  );
+
+  const handleVariantPress = useCallback(() => {
+    dispatch(
+      (fetchProductById as any)({
+        productId: product ? product.id : cartLine?.variantProduct?.id,
+      }),
+    );
+    navigation.navigate('VariantProductsScreen');
+  }, [dispatch, navigation, product, cartLine?.variantProduct?.id]);
+
+  const handleDeletePress = useCallback(() => {
+    dispatch((deleteCartLine as any)({cartLineId: cartLine?.id, cartId}));
+  }, [dispatch, cartLine?.id, cartId]);
+
+  const handleIncrementPress = useCallback(() => {
+    if (product) {
+      dispatch((addToCartAction as any)({product}));
+    } else {
+      dispatch(
+        (updateCartLine as any)({
+          cartLine,
+          qty: parseInt(cartLine?.qty, 10) + 1,
+          cartId,
+        }),
+      );
+    }
+  }, [dispatch, product, cartLine, cartId]);
+
+  const handleDecrementPress = useCallback(() => {
+    dispatch(
+      (updateCartLine as any)({
+        cartLine,
+        qty: parseInt(cartLine?.qty, 10) - 1,
+        cartId,
+      }),
+    );
+  }, [dispatch, cartLine, cartId]);
 
   return (
     <ActionCard
@@ -68,28 +106,14 @@ const CartLineActionCard = ({
         {
           iconName: 'palette2',
           helper: I18n.t('Sale_SeeVariants'),
-          onPress: () => {
-            dispatch(
-              (fetchProductById as any)({
-                productId: product ? product?.id : cartLine?.variantProduct.id,
-              }),
-            );
-            navigation.navigate('VariantProductsScreen');
-          },
+          onPress: handleVariantPress,
           hidden:
             cartLine?.variantProduct == null && product?.productVariant == null,
         },
         {
           iconName: 'trash3-fill',
           helper: I18n.t('Sale_RemoveFromCart'),
-          onPress: () => {
-            dispatch(
-              (deleteCartLine as any)({
-                cartLineId: cartLine?.id,
-                cartId: cartId,
-              }),
-            );
-          },
+          onPress: handleDeletePress,
           iconColor: Colors.errorColor.background,
           large: cartLine?.variantProduct == null,
           hidden: hideDelete,
@@ -97,36 +121,14 @@ const CartLineActionCard = ({
         {
           iconName: 'plus-lg',
           helper: I18n.t('Sale_AddOne'),
-          onPress: () => {
-            product != null
-              ? dispatch(
-                  (addToCartAction as any)({
-                    product,
-                  }),
-                )
-              : dispatch(
-                  (updateCartLine as any)({
-                    cartLine,
-                    qty: parseInt(cartLine?.qty, 10) + 1,
-                    cartId: cartId,
-                  }),
-                );
-          },
+          onPress: handleIncrementPress,
           hidden: hideIncrement && !addToCart,
         },
         {
           iconName: 'dash-lg',
           helper: I18n.t('Sale_RemoveOne'),
           disabled: cartLine?.qty <= 1,
-          onPress: () => {
-            dispatch(
-              (updateCartLine as any)({
-                cartLine,
-                qty: parseInt(cartLine?.qty, 10) - 1,
-                cartId: cartId,
-              }),
-            );
-          },
+          onPress: handleDecrementPress,
           hidden: hideIncrement,
         },
       ]}
