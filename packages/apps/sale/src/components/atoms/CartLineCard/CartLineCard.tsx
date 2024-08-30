@@ -55,9 +55,9 @@ const CartLineCard = ({
   return (
     <ObjectCard
       style={[styles.container, style]}
-      showArrow={false}
       onPress={onPress}
       leftContainerFlex={2}
+      iconLeftMargin={5}
       image={{
         generalStyle: styles.imageSize,
         imageSize: styles.imageSize,
@@ -96,13 +96,19 @@ const CartLineCard = ({
                 <TextUnit
                   unit={product?.saleCurrency?.symbol}
                   value={priceFormat(product?.salePrice)}
+                  fontSize={20}
                   numberOfLines={1}
                 />
               ),
             },
             {
               customComponent: (
-                <TextUnit unit={unit} value={qty} numberOfLines={1} />
+                <TextUnit
+                  unit={unit}
+                  value={qty}
+                  fontSize={20}
+                  numberOfLines={1}
+                />
               ),
             },
           ],
@@ -116,6 +122,7 @@ const styles = StyleSheet.create({
   container: {
     marginHorizontal: 2,
     marginVertical: 2,
+    paddingRight: 5,
   },
   title: {
     flexDirection: 'row',

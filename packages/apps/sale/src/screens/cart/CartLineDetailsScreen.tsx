@@ -73,6 +73,7 @@ const CartLineDetailsScreen = ({route}) => {
           defaultValue={cartLine?.qty}
           labelQty={I18n.t('Sale_Quantity')}
           onValueChange={setNewQty}
+          isBigButton
           style={styles.card}
         />
         <PriceDetails
