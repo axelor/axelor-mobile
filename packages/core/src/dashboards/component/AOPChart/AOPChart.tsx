@@ -136,6 +136,7 @@ const AOPChart = ({
             title={chart.title}
             type={chart.type}
             widthGraph={widthGraph}
+            translator={I18n.t}
           />
         ) : (
           <Text style={styles.text}>{translator('Base_NoRecordsFound')}</Text>
