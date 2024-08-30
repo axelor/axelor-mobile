@@ -145,7 +145,7 @@ const CartLineActionCard = ({
         unit={cartLine?.unit?.name}
         hideBadgeInformation={hideBadgeInformation}
         onPress={() => {
-          !product == null &&
+          product == null &&
             navigation.navigate('CartLineDetailsScreen', {
               cartLineId: cartLine?.id,
             });
