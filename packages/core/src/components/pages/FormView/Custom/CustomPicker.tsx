@@ -34,6 +34,7 @@ interface props extends customComponentOptions {
   onChange: () => any;
   required?: boolean;
   readonly?: boolean;
+  listItems?: any;
 }
 
 const CustomPicker = ({
@@ -44,16 +45,21 @@ const CustomPicker = ({
   onChange,
   required,
   readonly,
+  listItems,
 }: props) => {
   const [selection, setSelection] = useState<SelectionItem[]>([]);
 
   useEffect(() => {
-    fetchSelectionOptions({
-      modelName: item.uniqueModel,
-      attrsPanelName: item.modelField,
-      fieldName: item.name,
-    }).then(setSelection);
-  }, [item]);
+    if (Array.isArray(listItems) && listItems.length > 0) {
+      setSelection(listItems);
+    } else {
+      fetchSelectionOptions({
+        modelName: item.uniqueModel,
+        attrsPanelName: item.modelField,
+        fieldName: item.name,
+      }).then(setSelection);
+    }
+  }, [item, listItems]);
 
   return (
     <Picker
@@ -61,8 +67,8 @@ const CustomPicker = ({
       title={title}
       onValueChange={onChange}
       listItems={selection}
-      labelField="name"
-      valueField="id"
+      labelField={listItems ? 'title' : 'name'}
+      valueField={listItems ? 'value' : 'id'}
       defaultValue={defaultValue}
       required={required}
       readonly={readonly}

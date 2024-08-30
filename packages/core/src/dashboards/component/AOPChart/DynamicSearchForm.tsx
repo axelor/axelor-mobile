@@ -16,97 +16,105 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import React, {useState} from 'react';
-import {StyleSheet, View, TouchableOpacity} from 'react-native';
-import {DateInput} from '../../../components';
-import {Input, Picker, Text, Icon} from '@axelor/aos-mobile-ui';
+import React, {useCallback, useEffect, useMemo, useState} from 'react';
+import {StyleSheet} from 'react-native';
+import {FormView} from '../../../components';
+import {useThemeColor, ThemeColors} from '@axelor/aos-mobile-ui';
+import {formConfigsProvider, mapStudioFields} from '../../../forms';
 
-const AOPFormField = ({field, value, onChange}) => {
-  const handleChange = newValue => {
-    onChange(field.name, newValue);
-  };
+const FORM_KEY = 'AOPField-form';
 
-  const _field = {
-    ...field,
-  };
+const PhantomComponent = ({objectState, onChange}) => {
+  console.log('objectState,', objectState);
+  console.log('onChange', onChange);
+  useEffect(() => {
+    Object.keys(objectState).forEach(key => {
+      onChange(key, objectState[key]);
+    });
+  }, [objectState, onChange]);
 
-  if (field.selectionList && field.selectionList.length > 0) {
-    _field.type = 'string';
-  }
-
-  switch (_field.type) {
-    case 'date':
-      return (
-        <View>
-          <Text>{_field.title}</Text>
-          <DateInput
-            onDateChange={handleChange}
-            mode="date"
-            defaultDate={value && new Date(value)}
-          />
-        </View>
-      );
-    case 'datetime':
-      return (
-        <View>
-          <Text>{_field.title}</Text>
-          <DateInput
-            onDateChange={handleChange}
-            mode="datetime"
-            defaultDate={value && new Date(value)}
-          />
-        </View>
-      );
-    case 'string':
-      if (_field.selectionList && _field.selectionList.length > 0) {
-        return (
-          <View>
-            <Text>{_field.title}</Text>
-            <Picker
-              listItems={_field.selectionList}
-              valueField="value"
-              labelField="title"
-              onValueChange={handleChange}
-              defaultValue={value?.toString()}
-            />
-          </View>
-        );
-      }
-      return (
-        <View>
-          <Text>{_field.title}</Text>
-          <Input
-            value={value}
-            onChange={handleChange}
-            placeholder={_field.title}
-          />
-        </View>
-      );
-    case 'text':
-    default:
-      return (
-        <View>
-          <Text>{_field.title}</Text>
-          <Input
-            value={value}
-            onChange={handleChange}
-            placeholder={_field.title}
-          />
-        </View>
-      );
-  }
+  return null;
 };
 
-const AOPSearchForm = ({fields, values, onChange}) => {
+const AOPSearchForm = ({fields, values, title, onChange}) => {
   const [showOptionalFields, setShowOptionalFields] = useState(false);
+  const Colors = useThemeColor();
+
+  const styles = useMemo(() => getStyles(Colors), [Colors]);
 
   const toggleOptionalFields = () => {
     setShowOptionalFields(!showOptionalFields);
   };
 
+  const removeUnauthorizedFields = item => {
+    return item;
+  };
+
+  const formatFields = useCallback(
+    (_fields: any[], colors: ThemeColors) => {
+      console.log('ici');
+      const {
+        fields: formattedFields,
+        panels,
+        defaults,
+      } = mapStudioFields(_fields, colors, removeUnauthorizedFields);
+
+      formattedFields.phantomComponent = {
+        type: 'object',
+        widget: 'custom',
+        customComponent: ({objectState}) => (
+          <PhantomComponent onChange={onChange} objectState={objectState} />
+        ),
+      };
+
+      return {formattedFields, panels, defaults};
+    },
+    [onChange],
+  );
+
+  const {formattedFields, panels, defaults} = useMemo(
+    () => formatFields(fields, Colors),
+    [formatFields, fields, Colors],
+  );
+
+  useEffect(() => {
+    formConfigsProvider.registerForm(
+      `${FORM_KEY}${title}`,
+      {
+        fields: {...formattedFields},
+        modelName: 'com.axelor.apps.mobilesettings.db.MobileDashboard',
+      },
+      {replaceOld: true},
+    );
+  }, [formattedFields, title]);
+
   return (
-    <View style={styles.form}>
-      {fields.map(field => {
+    <FormView
+      style={styles.form}
+      actions={
+        [
+          /*
+        {
+          key: 'r',
+          type: 'custom',
+          customAction: ({objectState}) => {
+            console.log('objectState', objectState);
+            Object.keys(objectState).forEach(key => {
+              console.log('key', key);
+              onChange(key, objectState[key]);
+            });
+          },
+        },*/
+        ]
+      }
+      formKey={`${FORM_KEY}${title}`}
+      isCustom={true}
+      //defaultValue={values}
+      floatingTools={false}
+      styleSreen={styles.screen}
+    />
+    /* <View style={styles.form}>
+    {fields.map(field => {
         const isRequired = field.widgetAttrs?.required;
         const shouldRender = isRequired || showOptionalFields;
 
@@ -130,19 +138,25 @@ const AOPSearchForm = ({fields, values, onChange}) => {
           <Icon name={showOptionalFields ? 'chevron-up' : 'chevron-down'} />
         </TouchableOpacity>
       )}
-    </View>
+    </View>*/
   );
 };
 
-const styles = StyleSheet.create({
-  form: {
-    marginHorizontal: 10,
-  },
-  chevronContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    marginVertical: 10,
-  },
-});
+const getStyles = Colors =>
+  StyleSheet.create({
+    form: {
+      marginHorizontal: 10,
+      backgroundColor: null,
+    },
+    screen: {
+      backgroundColor: null,
+      marginBottom: -100,
+    },
+    chevronContainer: {
+      flexDirection: 'row',
+      alignItems: 'center',
+      marginVertical: 10,
+    },
+  });
 
 export default AOPSearchForm;

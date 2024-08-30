@@ -50,6 +50,8 @@ export const mapStudioFields = (
         removeUnauthorizedFields,
       );
 
+      console.log('_fields', _fields);
+
       formFields = {...formFields, ..._fields};
       formPanels = {...formPanels, ..._panels};
       defaults = {...defaults, ..._defaults};
@@ -134,7 +136,7 @@ const mapStudioWidgetToWidget = (
 };
 
 const getWidgetAttrs = (item: any): any => {
-  return item?.widgetAttrs == null ? null : JSON.parse(item.widgetAttrs);
+  return null;
 };
 
 const BootstrapMapper = {
@@ -202,7 +204,20 @@ const manageContentOfModel = (
     .filter(_item => _item.modelField === modelField)
     .map(removeUnauthorizedFields)
     .forEach(item => {
+      const isSelectionField =
+        item.selectionList && item.selectionList.length > 0;
+
+      console.log(item);
+
       switch (item.type) {
+        case 'datetime':
+        case 'date':
+          formFields[item.name] = {
+            type: 'datetime',
+            options: {popup: true},
+          };
+
+          break;
         case 'panel':
           lastPanel = item.name;
 
@@ -318,6 +333,11 @@ const manageContentOfModel = (
             config.customComponent = CustomPicker;
             config.options = {item};
           }
+          if (isSelectionField) {
+            config.widget = 'custom';
+            config.customComponent = CustomPicker;
+            config.options = {item, listItems: item.selectionList};
+          }
 
           if (fieldType === 'object' && widget !== 'signature') {
             config.widget = 'custom';
@@ -343,7 +363,6 @@ const manageContentOfModel = (
           ) {
             config.options = {popup: true};
           }
-
           formFields[item.name] = config;
 
           break;
