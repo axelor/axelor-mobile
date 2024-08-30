@@ -16,102 +16,78 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import React, {useCallback, useEffect, useMemo, useState} from 'react';
+import React, {useCallback, useEffect, useMemo} from 'react';
 import {StyleSheet} from 'react-native';
+import {useThemeColor} from '@axelor/aos-mobile-ui';
 import {FormView} from '../../../components';
-import {useThemeColor, ThemeColors} from '@axelor/aos-mobile-ui';
 import {formConfigsProvider, mapStudioFields} from '../../../forms';
 
 const FORM_KEY = 'AOPField-form';
 
 const PhantomComponent = ({objectState, onChange}) => {
-  console.log('objectState,', objectState);
-  console.log('onChange', onChange);
   useEffect(() => {
-    Object.keys(objectState).forEach(key => {
-      onChange(key, objectState[key]);
-    });
+    onChange(objectState);
   }, [objectState, onChange]);
 
   return null;
 };
 
-const AOPSearchForm = ({fields, values, title, onChange}) => {
-  const [showOptionalFields, setShowOptionalFields] = useState(false);
+const DynamicSearchForm = ({fields, values, title, onChange}) => {
   const Colors = useThemeColor();
 
-  const styles = useMemo(() => getStyles(Colors), [Colors]);
-
-  const toggleOptionalFields = () => {
-    setShowOptionalFields(!showOptionalFields);
-  };
-
-  const removeUnauthorizedFields = item => {
-    return item;
-  };
-
-  const formatFields = useCallback(
-    (_fields: any[], colors: ThemeColors) => {
-      console.log('ici');
-      const {
-        fields: formattedFields,
-        panels,
-        defaults,
-      } = mapStudioFields(_fields, colors, removeUnauthorizedFields);
-
-      formattedFields.phantomComponent = {
-        type: 'object',
-        widget: 'custom',
-        customComponent: ({objectState}) => (
-          <PhantomComponent onChange={onChange} objectState={objectState} />
-        ),
-      };
-
-      return {formattedFields, panels, defaults};
+  const renderPhantomComponent = useCallback(
+    ({objectState = {}}) => {
+      return <PhantomComponent onChange={onChange} objectState={objectState} />;
     },
     [onChange],
   );
 
-  const {formattedFields, panels, defaults} = useMemo(
-    () => formatFields(fields, Colors),
-    [formatFields, fields, Colors],
+  const formatFields = useCallback(
+    (_fields: any[]) => {
+      const {
+        fields: formattedFields,
+        panels,
+        defaults,
+      } = mapStudioFields(_fields, Colors, item => item);
+
+      formattedFields.phantomComponent = {
+        type: 'object',
+        widget: 'custom',
+        customComponent: renderPhantomComponent,
+      };
+
+      return {formattedFields, panels, defaults};
+    },
+    [Colors, renderPhantomComponent],
   );
+
+  const {formattedFields} = useMemo(
+    () => formatFields(fields),
+    [formatFields, fields],
+  );
+
+  const _formKey = useMemo(() => `${FORM_KEY}${title}`, [title]);
 
   useEffect(() => {
     formConfigsProvider.registerForm(
-      `${FORM_KEY}${title}`,
+      _formKey,
       {
-        fields: {...formattedFields},
+        fields: formattedFields,
         modelName: 'com.axelor.apps.mobilesettings.db.MobileDashboard',
       },
       {replaceOld: true},
     );
-  }, [formattedFields, title]);
+  }, [formattedFields, _formKey]);
 
   return (
     <FormView
       style={styles.form}
-      actions={
-        [
-          /*
-        {
-          key: 'r',
-          type: 'custom',
-          customAction: ({objectState}) => {
-            console.log('objectState', objectState);
-            Object.keys(objectState).forEach(key => {
-              console.log('key', key);
-              onChange(key, objectState[key]);
-            });
-          },
-        },*/
-        ]
-      }
-      formKey={`${FORM_KEY}${title}`}
+      actions={[]}
+      formKey={_formKey}
       isCustom={true}
-      //defaultValue={values}
+      defaultValue={values}
       floatingTools={false}
-      styleSreen={styles.screen}
+      styleScreen={styles.screen}
     />
     /* <View style={styles.form}>
     {fields.map(field => {
@@ -142,21 +118,20 @@ const AOPSearchForm = ({fields, values, title, onChange}) => {
   );
 };
 
-const getStyles = Colors =>
-  StyleSheet.create({
-    form: {
-      marginHorizontal: 10,
-      backgroundColor: null,
-    },
-    screen: {
-      backgroundColor: null,
-      marginBottom: -100,
-    },
-    chevronContainer: {
-      flexDirection: 'row',
-      alignItems: 'center',
-      marginVertical: 10,
-    },
-  });
+const styles = StyleSheet.create({
+  form: {
+    marginHorizontal: 10,
+    backgroundColor: null,
+  },
+  screen: {
+    backgroundColor: null,
+    marginBottom: -100,
+  },
+  chevronContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginVertical: 10,
+  },
+});
 
-export default AOPSearchForm;
+export default DynamicSearchForm;

@@ -41,14 +41,12 @@ const AOPChart = ({
   translator?: (key: string) => string;
 }) => {
   const I18n = useTranslator();
+
   const [chart, setChart] = useState(DEFAULT_CHART_CONFIG);
   const [searchFields, setSearchFields] = useState([]);
   const [searchValues, setSearchValues] = useState({});
+  const [initialDefaultValue, setInitialDefaultValue] = useState({});
   const [initialLoad, setInitialLoad] = useState(true);
-
-  const handleSearchChange = (name, value) => {
-    setSearchValues(prevValues => ({...prevValues, [name]: value}));
-  };
 
   const fetchChartData = useCallback(
     async (initial = false) => {
@@ -80,6 +78,7 @@ const AOPChart = ({
           parameter = paramResponse?.data?.data[0].values;
           if (initial) {
             setSearchValues(parameter);
+            setInitialDefaultValue(parameter);
           }
         }
 
@@ -124,8 +123,8 @@ const AOPChart = ({
       <View style={styles.flex}>
         <DynamicSearchForm
           fields={searchFields}
-          values={searchValues}
-          onChange={handleSearchChange}
+          values={initialDefaultValue}
+          onChange={setSearchValues}
           title={chart.title}
         />
       </View>
