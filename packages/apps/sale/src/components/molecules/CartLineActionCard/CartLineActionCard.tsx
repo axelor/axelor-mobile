@@ -108,6 +108,12 @@ const CartLineActionCard = ({
       style={style}
       actionList={[
         {
+          iconName: 'plus-lg',
+          helper: I18n.t('Sale_AddOne'),
+          onPress: handleIncrementPress,
+          hidden: hideIncrement && !addToCart,
+        },
+        {
           iconName: 'palette2',
           helper: I18n.t('Sale_SeeVariants'),
           onPress: handleVariantPress,
@@ -123,12 +129,6 @@ const CartLineActionCard = ({
           iconColor: Colors.errorColor.background,
           large: cartLine?.variantProduct == null,
           hidden: hideDelete,
-        },
-        {
-          iconName: 'plus-lg',
-          helper: I18n.t('Sale_AddOne'),
-          onPress: handleIncrementPress,
-          hidden: hideIncrement && !addToCart,
         },
         {
           iconName: 'dash-lg',

@@ -53,5 +53,7 @@ export default {
   },
 };
 
-export {CartLineDetailsScreen};
 export {ActiveCartScreen};
+export {CartLineDetailsScreen};
+export {CatalogScreen};
+export {CatalogVariantScreen};
