@@ -125,7 +125,7 @@ const AOPChart = ({
           fields={searchFields}
           values={initialDefaultValue}
           onChange={setSearchValues}
-          title={chart.title}
+          actionViewName={actionViewName}
         />
       </View>
       <View style={styles.flex}>

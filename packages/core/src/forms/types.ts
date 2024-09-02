@@ -48,6 +48,7 @@ export interface Field {
   titleKey?: string;
   helperKey?: string;
   type: InputType;
+  isPhantom?: boolean;
   required?: boolean;
   requiredIf?: (values?: States) => boolean;
   readonly?: boolean;

@@ -49,8 +49,6 @@ const CustomPicker = ({
 }: props) => {
   const [selection, setSelection] = useState<SelectionItem[]>([]);
 
-  console.log(defaultValue);
-
   const _defaultValue = useMemo(() => {
     return defaultValue;
   }, [defaultValue]);

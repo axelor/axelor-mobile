@@ -32,7 +32,7 @@ const PhantomComponent = ({objectState, onChange}) => {
   return null;
 };
 
-const DynamicSearchForm = ({fields, values, title, onChange}) => {
+const DynamicSearchForm = ({fields, values, actionViewName, onChange}) => {
   const Colors = useThemeColor();
 
   const addCustomFieldProperty = useCallback(_fields => {
@@ -62,6 +62,7 @@ const DynamicSearchForm = ({fields, values, title, onChange}) => {
       formattedFields.phantomComponent = {
         type: 'object',
         widget: 'custom',
+        isPhantom: true,
         customComponent: renderPhantomComponent,
       };
 
@@ -75,7 +76,10 @@ const DynamicSearchForm = ({fields, values, title, onChange}) => {
     [formatFields, fields],
   );
 
-  const _formKey = useMemo(() => `${FORM_KEY}${title}`, [title]);
+  const _formKey = useMemo(
+    () => `${FORM_KEY}${actionViewName}-${Math.random()}`,
+    [actionViewName],
+  );
 
   useEffect(() => {
     formConfigsProvider.registerForm(

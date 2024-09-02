@@ -105,8 +105,7 @@ const FormView = ({
 
     const sortedContent = sortContent(config);
     return sortedContent.some(
-      (item: any) =>
-        isField(item) && !item.required && item.key !== 'phantomComponent',
+      (item: any) => isField(item) && !item.required && !item.isPhantom,
     );
   }, [config, toggleOptionalFields]);
 
@@ -159,6 +158,10 @@ const FormView = ({
       }
     });
   }, [creationDefaultValue, defaultValue, isCreation, record]);
+
+  const toggleShowOptionalFields = () => {
+    setShowOptionalFields(prev => !prev);
+  };
 
   const handleFieldChange = (newValue: any, fieldName: string) => {
     setObject(_current => {
@@ -290,10 +293,6 @@ const FormView = ({
         disabled={_action.isDisabled}
       />
     );
-  };
-
-  const toggleShowOptionalFields = () => {
-    setShowOptionalFields(prev => !prev);
   };
 
   const renderItem = (item: DisplayPanel | DisplayField) => {
