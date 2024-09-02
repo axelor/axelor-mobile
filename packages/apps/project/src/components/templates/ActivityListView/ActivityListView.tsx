@@ -144,7 +144,7 @@ const ActivityListView = () => {
     );
   };
 
-  if (dataList.length === 0) {
+  if (dataList.length === 0 && !refreshing) {
     return (
       <Label
         style={styles.label}
