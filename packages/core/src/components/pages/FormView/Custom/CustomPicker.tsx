@@ -16,7 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import React, {useEffect, useState} from 'react';
+import React, {useEffect, useMemo, useState} from 'react';
 import {Picker} from '@axelor/aos-mobile-ui';
 import {customComponentOptions} from '../../../../forms/types';
 import {fetchSelectionOptions} from '../../../../forms/studio/api.helpers';
@@ -49,6 +49,12 @@ const CustomPicker = ({
 }: props) => {
   const [selection, setSelection] = useState<SelectionItem[]>([]);
 
+  console.log(defaultValue);
+
+  const _defaultValue = useMemo(() => {
+    return defaultValue;
+  }, [defaultValue]);
+
   useEffect(() => {
     if (Array.isArray(listItems) && listItems.length > 0) {
       setSelection(listItems);
@@ -66,10 +72,11 @@ const CustomPicker = ({
       style={style}
       title={title}
       onValueChange={onChange}
-      listItems={selection}
+      listItems={listItems ? listItems : selection}
       labelField={listItems ? 'title' : 'name'}
       valueField={listItems ? 'value' : 'id'}
-      defaultValue={defaultValue}
+      isValueItem={false}
+      defaultValue={_defaultValue}
       required={required}
       readonly={readonly}
       isScrollViewContainer={true}
