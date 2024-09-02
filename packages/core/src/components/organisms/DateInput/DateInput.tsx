@@ -305,7 +305,7 @@ const getStyles = (
       paddingRight: 10,
       position: 'absolute',
       height: 240,
-      width: '130%',
+      width: '100%',
       zIndex: 110,
     },
     styleTextButton: {

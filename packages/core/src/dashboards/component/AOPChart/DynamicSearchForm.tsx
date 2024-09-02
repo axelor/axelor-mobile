@@ -35,6 +35,13 @@ const PhantomComponent = ({objectState, onChange}) => {
 const DynamicSearchForm = ({fields, values, title, onChange}) => {
   const Colors = useThemeColor();
 
+  const addCustomFieldProperty = useCallback(_fields => {
+    return _fields.map(field => ({
+      ...field,
+      ifFromGraphForm: true,
+    }));
+  }, []);
+
   const renderPhantomComponent = useCallback(
     ({objectState = {}}) => {
       return <PhantomComponent onChange={onChange} objectState={objectState} />;
@@ -44,11 +51,13 @@ const DynamicSearchForm = ({fields, values, title, onChange}) => {
 
   const formatFields = useCallback(
     (_fields: any[]) => {
+      const updatedFields = addCustomFieldProperty(_fields);
+
       const {
         fields: formattedFields,
         panels,
         defaults,
-      } = mapStudioFields(_fields, Colors, item => item);
+      } = mapStudioFields(updatedFields, Colors, item => item);
 
       formattedFields.phantomComponent = {
         type: 'object',
@@ -58,7 +67,7 @@ const DynamicSearchForm = ({fields, values, title, onChange}) => {
 
       return {formattedFields, panels, defaults};
     },
-    [Colors, renderPhantomComponent],
+    [Colors, addCustomFieldProperty, renderPhantomComponent],
   );
 
   const {formattedFields} = useMemo(
