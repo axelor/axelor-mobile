@@ -97,33 +97,8 @@ const DynamicSearchForm = ({fields, values, title, onChange}) => {
       defaultValue={values}
       floatingTools={false}
       styleScreen={styles.screen}
+      toggleOptionalFields={true}
     />
-    /* <View style={styles.form}>
-    {fields.map(field => {
-        const isRequired = field.widgetAttrs?.required;
-        const shouldRender = isRequired || showOptionalFields;
-
-        if (!shouldRender) {
-          return null;
-        }
-
-        return (
-          <AOPFormField
-            key={field.name}
-            field={field}
-            value={values[field.name] || ''}
-            onChange={onChange}
-          />
-        );
-      })}
-      {fields.some(field => !field.widgetAttrs?.required) && (
-        <TouchableOpacity
-          onPress={toggleOptionalFields}
-          style={styles.chevronContainer}>
-          <Icon name={showOptionalFields ? 'chevron-up' : 'chevron-down'} />
-        </TouchableOpacity>
-      )}
-    </View>*/
   );
 };
 

@@ -195,6 +195,10 @@ const hasPanelTitle = (item: any): boolean => {
   );
 };
 
+const isRequired = (item: any): boolean => {
+  return item?.widgetAttrs?.required;
+};
+
 const manageContentOfModel = (
   metaJsonFields: any[],
   modelField: string,
@@ -220,6 +224,7 @@ const manageContentOfModel = (
             formFields[item.name] = {
               type: 'datetime',
               options: {popup: true},
+              required: item.required || isRequired(item),
             };
           }
           break;
@@ -228,6 +233,7 @@ const manageContentOfModel = (
             formFields[item.name] = {
               type: 'date',
               options: {popup: true},
+              required: item.required || isRequired(item),
             };
           }
           break;
@@ -308,7 +314,7 @@ const manageContentOfModel = (
             titleKey: item.title,
             helperKey: item.help,
             type: inputType || fieldType,
-            required: item.required,
+            required: item.required || isRequired(item),
             requiredIf: createFormulaFunction(item.requiredIf),
             readonly: item.readonly,
             readonlyIf: createFormulaFunction(item.readonlyIf),
