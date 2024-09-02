@@ -56,7 +56,7 @@ const ActivityListView = () => {
   }, []);
 
   const fetchActivityData = useCallback(
-    async (_startDate, reset = false) => {
+    async _startDate => {
       try {
         const res = await previousProjectActivity({
           projectId: project?.id,
@@ -72,9 +72,7 @@ const ActivityListView = () => {
         if (formattedData.length === 0 && _startDate >= dateLimit) {
           handlePreviousActivity();
         } else {
-          setDataList(prevData =>
-            reset ? formattedData : [...prevData, ...formattedData],
-          );
+          setDataList(prevData => [...prevData, ...formattedData]);
         }
       } catch (error) {
         console.error(error);
@@ -96,10 +94,13 @@ const ActivityListView = () => {
 
   const onRefresh = useCallback(() => {
     setRefreshing(true);
-    const newDate = new Date();
-    newDate.setDate(newDate.getDate() + 1);
-    setStartDate(newDate);
-    fetchActivityData(newDate, true).finally(() => setRefreshing(false));
+    setStartDate(() => {
+      const newDate = new Date();
+      newDate.setDate(newDate.getDate() + 1);
+      return newDate;
+    });
+    setDataList([]);
+    fetchActivityData(new Date()).finally(() => setRefreshing(false));
   }, [fetchActivityData]);
 
   const renderItem = ({item}) => {
