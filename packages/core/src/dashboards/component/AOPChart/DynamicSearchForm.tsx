@@ -115,11 +115,6 @@ const styles = StyleSheet.create({
     backgroundColor: null,
     marginBottom: -100,
   },
-  chevronContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    marginVertical: 10,
-  },
 });
 
 export default DynamicSearchForm;

@@ -73,7 +73,6 @@ const CustomPicker = ({
       listItems={listItems ? listItems : selection}
       labelField={listItems ? 'title' : 'name'}
       valueField={listItems ? 'value' : 'id'}
-      isValueItem={false}
       defaultValue={_defaultValue}
       required={required}
       readonly={readonly}
