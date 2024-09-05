@@ -215,12 +215,12 @@ export const hr_typeObjects: ModuleSelections = [
       startOnSelect: {
         content: [
           {
-            key: 'Draft',
+            key: 'Morning',
             value: 1,
             title: 'Hr_StartOn_Morning',
           },
           {
-            key: 'WaitingValidation',
+            key: 'Afternoon',
             value: 2,
             title: 'Hr_StartOn_Afternoon',
           },
@@ -229,12 +229,12 @@ export const hr_typeObjects: ModuleSelections = [
       endOnSelect: {
         content: [
           {
-            key: 'Draft',
+            key: 'Morning',
             value: 1,
             title: 'Hr_EndOn_Morning',
           },
           {
-            key: 'WaitingValidation',
+            key: 'Afternoon',
             value: 2,
             title: 'Hr_EndOn_Afternoon',
           },
@@ -256,6 +256,25 @@ export const hr_typeObjects: ModuleSelections = [
             key: 'Hours',
             value: 2,
             title: 'Hr_TimeUnit_Hours',
+          },
+        ],
+      },
+      leaveReasonTypeSelect: {
+        content: [
+          {
+            key: 'LeaveManagedEveryMonth',
+            value: 1,
+            title: null,
+          },
+          {
+            key: 'ExceptionalLeave',
+            value: 2,
+            title: null,
+          },
+          {
+            key: 'LeaveManagedEveryYear',
+            value: 3,
+            title: null,
           },
         ],
       },
