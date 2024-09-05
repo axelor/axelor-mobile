@@ -29,7 +29,7 @@ import {
 export const mapStudioFields = (
   items: any[],
   Colors: ThemeColors,
-  removeUnauthorizedFields: (item: any) => any,
+  removeUnauthorizedFields: (item: any) => any = _i => _i,
 ): {panels: JSONObject<Panel>; fields: JSONObject<Field>; defaults: any} => {
   let formFields: JSONObject<Field> = {};
   let formPanels: JSONObject<Panel> = {};
@@ -134,16 +134,7 @@ const mapStudioWidgetToWidget = (
 };
 
 const getWidgetAttrs = (item: any): any => {
-  if (typeof item?.widgetAttrs === 'object') {
-    return item.widgetAttrs;
-  }
-
-  try {
-    return item?.widgetAttrs == null ? null : JSON.parse(item.widgetAttrs);
-  } catch (error) {
-    console.error(error);
-    return null;
-  }
+  return item?.widgetAttrs == null ? null : JSON.parse(item.widgetAttrs);
 };
 
 const BootstrapMapper = {
@@ -195,10 +186,6 @@ const hasPanelTitle = (item: any): boolean => {
   );
 };
 
-const isRequired = (item: any): boolean => {
-  return item?.widgetAttrs?.required;
-};
-
 const manageContentOfModel = (
   metaJsonFields: any[],
   modelField: string,
@@ -215,28 +202,7 @@ const manageContentOfModel = (
     .filter(_item => _item.modelField === modelField)
     .map(removeUnauthorizedFields)
     .forEach(item => {
-      const isSelectionField =
-        item.selectionList && item.selectionList.length > 0;
-
       switch (item.type) {
-        case 'datetime':
-          if (item.ifFromGraphForm) {
-            formFields[item.name] = {
-              type: 'datetime',
-              options: {popup: true},
-              required: item.required || isRequired(item),
-            };
-          }
-          break;
-        case 'date':
-          if (item.ifFromGraphForm) {
-            formFields[item.name] = {
-              type: 'date',
-              options: {popup: true},
-              required: item.required || isRequired(item),
-            };
-          }
-          break;
         case 'panel':
           lastPanel = item.name;
 
@@ -314,7 +280,7 @@ const manageContentOfModel = (
             titleKey: item.title,
             helperKey: item.help,
             type: inputType || fieldType,
-            required: item.required || isRequired(item),
+            required: item.required,
             requiredIf: createFormulaFunction(item.requiredIf),
             readonly: item.readonly,
             readonlyIf: createFormulaFunction(item.readonlyIf),
@@ -351,11 +317,6 @@ const manageContentOfModel = (
             config.widget = 'custom';
             config.customComponent = CustomPicker;
             config.options = {item};
-          }
-          if (isSelectionField) {
-            config.widget = 'custom';
-            config.customComponent = CustomPicker;
-            config.options = {item, listItems: item.selectionList};
           }
 
           if (fieldType === 'object' && widget !== 'signature') {

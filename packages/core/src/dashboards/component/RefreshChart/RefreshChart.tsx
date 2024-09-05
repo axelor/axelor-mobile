@@ -19,8 +19,8 @@
 import React, {useEffect, useMemo, useState} from 'react';
 import {StyleSheet, View} from 'react-native';
 import {ChartRender, Icon} from '@axelor/aos-mobile-ui';
-import {useTranslator} from '../../../i18n';
 import {fetchChartById} from '../../api.helpers';
+import {useTranslator} from '../../../i18n';
 import AOPChart from '../AOPChart/AOPChart';
 
 const DEFAULT_CONFIG = {
@@ -42,6 +42,7 @@ const RefreshChart = ({
   hideCardBackground = false,
 }: RefreshChartProps) => {
   const I18n = useTranslator();
+
   const [charConfig, setChartConfig] = useState(DEFAULT_CONFIG);
 
   useEffect(() => {
@@ -74,12 +75,7 @@ const RefreshChart = ({
 
   const content = useMemo(() => {
     if (charConfig.actionViewName) {
-      return (
-        <AOPChart
-          actionViewName={charConfig.actionViewName}
-          translator={I18n.t}
-        />
-      );
+      return <AOPChart actionViewName={charConfig.actionViewName} />;
     } else if (charConfig.dataList.length > 0 && charConfig.chartType) {
       return (
         <ChartRender

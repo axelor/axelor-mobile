@@ -227,8 +227,8 @@ export async function fetchModelFields({
 }
 
 interface SelectionItem {
-  name: string;
-  id: string;
+  title: string;
+  value: string;
 }
 
 export async function fetchSelectionOptions({
@@ -258,8 +258,8 @@ export async function fetchSelectionOptions({
       return _selection
         .sort((a, b) => a.order - b.order)
         .map(_item => ({
-          name: _item?.title as string,
-          id: _item?.value as string,
+          title: _item?.title as string,
+          value: _item?.value as string,
         }));
     });
 }

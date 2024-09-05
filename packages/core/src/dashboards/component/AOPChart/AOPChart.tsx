@@ -34,11 +34,9 @@ const DEFAULT_CHART_CONFIG = {type: '', dataset: [], title: ''};
 const AOPChart = ({
   actionViewName,
   widthGraph,
-  translator,
 }: {
   actionViewName: string;
   widthGraph?: number;
-  translator?: (key: string) => string;
 }) => {
   const I18n = useTranslator();
 
@@ -138,7 +136,7 @@ const AOPChart = ({
             translator={I18n.t}
           />
         ) : (
-          <Text style={styles.text}>{translator('Base_NoRecordsFound')}</Text>
+          <Text style={styles.text}>{I18n.t('Base_NoRecordsFound')}</Text>
         )}
       </View>
     </View>

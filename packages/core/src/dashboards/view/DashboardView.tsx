@@ -97,14 +97,14 @@ export const DashboardView = ({
     return dashboard?.dashboardLineList.map(elt => ({
       graphList: elt.chartList.map(ch => ({
         customChart: ch.metaActionName && (
-          <AOPChart actionViewName={ch.metaActionName} translator={I18n.t} />
+          <AOPChart actionViewName={ch.metaActionName} />
         ),
         type: ch.chartType,
         dataList: [ch.valueList],
         title: ch?.chartName,
       })),
     }));
-  }, [I18n.t, dashboard]);
+  }, [dashboard]);
 
   if (loading) {
     return <ActivityIndicator size="large" />;

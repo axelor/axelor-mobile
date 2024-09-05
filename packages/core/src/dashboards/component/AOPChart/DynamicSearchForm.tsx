@@ -20,7 +20,12 @@ import React, {useCallback, useEffect, useMemo} from 'react';
 import {StyleSheet} from 'react-native';
 import {useThemeColor} from '@axelor/aos-mobile-ui';
 import {FormView} from '../../../components';
-import {formConfigsProvider, mapStudioFields} from '../../../forms';
+import {
+  Field,
+  formConfigsProvider,
+  JSONObject,
+  mapStudioFields,
+} from '../../../forms';
 
 const FORM_KEY = 'AOPField-form';
 
@@ -32,15 +37,23 @@ const PhantomComponent = ({objectState, onChange}) => {
   return null;
 };
 
+const formatChartFields = (data: any[]): any[] => {
+  return data.map(_field => {
+    console.log(_field);
+    return {
+      name: _field.name,
+      title: _field.title,
+      type: _field.type,
+      required: _field.widgetAttrs?.required === 'true',
+      isSelectionField: _field.selectionList?.length > 0,
+      selectionList: _field.selectionList,
+      widgetAttrs: JSON.stringify(_field.widgetAttrs ?? {}),
+    };
+  });
+};
+
 const DynamicSearchForm = ({fields, values, actionViewName, onChange}) => {
   const Colors = useThemeColor();
-
-  const addCustomFieldProperty = useCallback(_fields => {
-    return _fields.map(field => ({
-      ...field,
-      ifFromGraphForm: true,
-    }));
-  }, []);
 
   const renderPhantomComponent = useCallback(
     ({objectState = {}}) => {
@@ -49,32 +62,21 @@ const DynamicSearchForm = ({fields, values, actionViewName, onChange}) => {
     [onChange],
   );
 
-  const formatFields = useCallback(
-    (_fields: any[]) => {
-      const updatedFields = addCustomFieldProperty(_fields);
+  const formattedFields = useMemo(() => {
+    const updatedFields = formatChartFields(fields);
 
-      const {
-        fields: formattedFields,
-        panels,
-        defaults,
-      } = mapStudioFields(updatedFields, Colors, item => item);
+    const {fields: _fields} = mapStudioFields(updatedFields, Colors);
 
-      formattedFields.phantomComponent = {
+    return {
+      ..._fields,
+      phantomComponent: {
         type: 'object',
         widget: 'custom',
         isPhantom: true,
         customComponent: renderPhantomComponent,
-      };
-
-      return {formattedFields, panels, defaults};
-    },
-    [Colors, addCustomFieldProperty, renderPhantomComponent],
-  );
-
-  const {formattedFields} = useMemo(
-    () => formatFields(fields),
-    [formatFields, fields],
-  );
+      },
+    } as JSONObject<Field>;
+  }, [Colors, fields, renderPhantomComponent]);
 
   const _formKey = useMemo(
     () => `${FORM_KEY}${actionViewName}-${Math.random()}`,
@@ -95,12 +97,12 @@ const DynamicSearchForm = ({fields, values, actionViewName, onChange}) => {
   return (
     <FormView
       style={styles.form}
+      styleScreen={styles.screen}
       actions={[]}
       formKey={_formKey}
       isCustom={true}
       defaultValue={values}
       floatingTools={false}
-      styleScreen={styles.screen}
       toggleOptionalFields={true}
     />
   );
@@ -108,12 +110,10 @@ const DynamicSearchForm = ({fields, values, actionViewName, onChange}) => {
 
 const styles = StyleSheet.create({
   form: {
-    marginHorizontal: 10,
-    backgroundColor: null,
+    paddingBottom: 0,
   },
   screen: {
     backgroundColor: null,
-    marginBottom: -100,
   },
 });
 

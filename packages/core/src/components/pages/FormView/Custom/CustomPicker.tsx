@@ -16,14 +16,14 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import React, {useEffect, useMemo, useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {Picker} from '@axelor/aos-mobile-ui';
 import {customComponentOptions} from '../../../../forms/types';
 import {fetchSelectionOptions} from '../../../../forms/studio/api.helpers';
 
 interface SelectionItem {
-  name: string;
-  id: number | string;
+  title: string;
+  value: number | string;
 }
 
 interface props extends customComponentOptions {
@@ -34,7 +34,6 @@ interface props extends customComponentOptions {
   onChange: () => any;
   required?: boolean;
   readonly?: boolean;
-  listItems?: any;
 }
 
 const CustomPicker = ({
@@ -45,17 +44,12 @@ const CustomPicker = ({
   onChange,
   required,
   readonly,
-  listItems,
 }: props) => {
   const [selection, setSelection] = useState<SelectionItem[]>([]);
 
-  const _defaultValue = useMemo(() => {
-    return defaultValue;
-  }, [defaultValue]);
-
   useEffect(() => {
-    if (Array.isArray(listItems) && listItems.length > 0) {
-      setSelection(listItems);
+    if (Array.isArray(item.selectionList) && item.selectionList.length > 0) {
+      setSelection(item.selectionList);
     } else {
       fetchSelectionOptions({
         modelName: item.uniqueModel,
@@ -63,17 +57,17 @@ const CustomPicker = ({
         fieldName: item.name,
       }).then(setSelection);
     }
-  }, [item, listItems]);
+  }, [item]);
 
   return (
     <Picker
       style={style}
       title={title}
       onValueChange={onChange}
-      listItems={listItems ? listItems : selection}
-      labelField={listItems ? 'title' : 'name'}
-      valueField={listItems ? 'value' : 'id'}
-      defaultValue={_defaultValue}
+      listItems={selection}
+      labelField="title"
+      valueField="value"
+      defaultValue={defaultValue}
       required={required}
       readonly={readonly}
       isScrollViewContainer={true}
