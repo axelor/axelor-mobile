@@ -24,6 +24,7 @@ import {
 import {
   fetchLeave as _fetchLeave,
   fetchLeaveById as _fetchLeaveById,
+  fetchLeaveReason as _fetchLeaveReason,
   fetchLeaveToValidate as _fetchLeaveToValidate,
 } from '../api/leave-api';
 
@@ -66,6 +67,19 @@ export const fetchLeaveById = createAsyncThunk(
   },
 );
 
+export const fetchLeaveReason = createAsyncThunk(
+  'hr_leave/fetchLeaveReason',
+  async function (data, {getState}) {
+    return handlerApiCall({
+      fetchFunction: _fetchLeaveReason,
+      data,
+      action: 'Hr_SliceAction_FetchLeaveReason',
+      getState,
+      responseOptions: {isArrayResponse: true},
+    });
+  },
+);
+
 const initialState = {
   loadingMyLeave: true,
   moreLoadingMyLeave: false,
@@ -80,6 +94,11 @@ const initialState = {
 
   loadingLeave: true,
   leave: {},
+
+  loadingLeaveReason: true,
+  moreLoadingLeaveReason: false,
+  isListEndLeaveReason: false,
+  leaveReasonList: [],
 };
 
 const leaveSlice = createSlice({
@@ -106,6 +125,12 @@ const leaveSlice = createSlice({
         manageTotal: true,
       },
     );
+    generateInifiniteScrollCases(builder, fetchLeaveReason, {
+      loading: 'loadingLeaveReason',
+      moreLoading: 'moreLoadingLeaveReason',
+      isListEnd: 'isListEndLeaveReason',
+      list: 'leaveReasonList',
+    });
     builder.addCase(fetchLeaveById.pending, state => {
       state.loadingLeave = true;
     });

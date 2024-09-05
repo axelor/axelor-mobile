@@ -90,6 +90,14 @@
   "Hr_SendOn": "Send on",
   "Hr_ValidatedOnBy": "Validated on {{date}} by {{name}}",
   "Hr_RejectedOnBy": "Rejected on {{date}} by {{name}}",
+  "Hr_CompleteRequest": "Complete request",
+  "Hr_Distribution": "Distribution",
+  "Hr_StartOn": "Start on ...",
+  "Hr_EndOn": "End on ...",
+  "Hr_LeaveReason": "Leave reason",
+  "Hr_Quantity": "Quantity",
+  "Hr_AvailableQty": "Available quantity",
+  "Hr_MissingQuantity": "Missing quantity",
   "Hr_SliceAction_FetchExpenseLines": "fetch expense lines",
   "Hr_SliceAction_SearchDraftExpense": "fetch draft expenses",
   "Hr_SliceAction_FetchExpense": "fetch expenses",
@@ -143,5 +151,6 @@
   "Hr_SliceAction_DeleteTimer": "delete timer",
   "Hr_SliceAction_FetchLeave": "fetch leave",
   "Hr_SliceAction_FetchLeaveToValidate": "fetch leave to validate",
-  "Hr_SliceAction_FetchLeaveById": "fetch leave request by id"
+  "Hr_SliceAction_FetchLeaveById": "fetch leave request by id",
+  "Hr_SliceAction_FetchLeaveReason": "fetch leave reason"
 }
