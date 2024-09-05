@@ -16,7 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import React, {useEffect, useMemo} from 'react';
+import React, {useEffect, useMemo, useState} from 'react';
 import {
   Button,
   DoubleIcon,
@@ -30,8 +30,13 @@ import {
   useDispatch,
   useSelector,
   useTranslator,
+  useIsFocused,
 } from '@axelor/aos-mobile-core';
-import {CartHeader, CartLineActionCard} from '../../components';
+import {
+  CartHeader,
+  CartLineActionCard,
+  ValidateCartPopup,
+} from '../../components';
 import {fetchActiveCart} from '../../features/cartSlice';
 import {searchCartLine} from '../../features/cartLineSlice';
 
@@ -39,6 +44,7 @@ const ActiveCartScreen = ({}) => {
   const dispatch = useDispatch();
   const Colors = useThemeColor();
   const I18n = useTranslator();
+  const isFocused = useIsFocused();
 
   const {userId} = useSelector((state: any) => state.auth);
   const {mobileSettings} = useSelector((state: any) => state.appConfig);
@@ -46,6 +52,14 @@ const ActiveCartScreen = ({}) => {
   const {loading, moreLoading, isListEnd, carLineList} = useSelector(
     (state: any) => state.sale_cartLine,
   );
+
+  const [showPopup, setShowPopup] = useState(false);
+
+  useEffect(() => {
+    if (isFocused) {
+      setShowPopup(false);
+    }
+  }, [isFocused]);
 
   useEffect(() => {
     dispatch((fetchActiveCart as any)({userId}));
@@ -115,7 +129,13 @@ const ActiveCartScreen = ({}) => {
         <Button
           iconName="check-lg"
           title={I18n.t('Sale_CreateSaleOrder')}
-          onPress={() => {}}
+          onPress={() => {
+            activeCart?.partner != null
+              ? () => {
+                  console.log('api');
+                }
+              : setShowPopup(true);
+          }}
         />
       }>
       <SearchListView
@@ -138,6 +158,10 @@ const ActiveCartScreen = ({}) => {
         renderListItem={({item}) => (
           <CartLineActionCard cartLine={item} cartId={activeCart?.id} />
         )}
+      />
+      <ValidateCartPopup
+        visible={showPopup}
+        onClose={() => setShowPopup(false)}
       />
     </Screen>
   );

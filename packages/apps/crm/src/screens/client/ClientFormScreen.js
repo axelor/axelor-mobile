@@ -18,7 +18,7 @@
 
 import React, {useCallback, useMemo} from 'react';
 import {useSelector, FormView} from '@axelor/aos-mobile-core';
-import {updateClient} from '../../features/clientSlice';
+import {createClient, updateClient} from '../../features/clientSlice';
 
 const ClientFormScreen = ({navigation}) => {
   const {client} = useSelector(state => state.client);
@@ -40,6 +40,20 @@ const ClientFormScreen = ({navigation}) => {
     [navigation],
   );
 
+  const createClientAPI = useCallback((objectState, dispatch) => {
+    dispatch(
+      createClient({
+        client: {
+          ...objectState,
+          isContact: false,
+          isCorporatePartner: false,
+          isCustomer: true,
+          isEmployee: false,
+        },
+      }),
+    );
+  }, []);
+
   const _defaultValue = useMemo(() => {
     return {
       ...client,
@@ -60,6 +74,14 @@ const ClientFormScreen = ({navigation}) => {
           needRequiredFields: true,
           customAction: ({dispatch, objectState}) =>
             updateClientAPI(objectState, dispatch),
+        },
+        {
+          key: 'create-client',
+          type: 'create',
+          needValidation: true,
+          needRequiredFields: true,
+          customAction: ({dispatch, objectState}) =>
+            createClientAPI(objectState, dispatch),
         },
       ]}
     />

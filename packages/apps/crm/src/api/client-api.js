@@ -113,3 +113,12 @@ export async function updateClient({
       }),
     );
 }
+
+export async function createClient({client}) {
+  return axiosApiProvider.put({
+    url: '/ws/rest/com.axelor.apps.base.db.Partner',
+    data: {
+      data: client,
+    },
+  });
+}

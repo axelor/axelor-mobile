@@ -23,8 +23,9 @@ import {
   updateAgendaItems,
 } from '@axelor/aos-mobile-core';
 import {
-  searchClient,
+  createClient as _createClient,
   getClient,
+  searchClient,
   updateClient as _updateClient,
 } from '../api/client-api';
 
@@ -71,6 +72,19 @@ export const updateClient = createAsyncThunk(
         getState,
         responseOptions: {isArrayResponse: false},
       });
+    });
+  },
+);
+
+export const createClient = createAsyncThunk(
+  'crm_client/createClient',
+  async function (data, {getState}) {
+    return handlerApiCall({
+      fetchFunction: _createClient,
+      data,
+      action: "Crm_SliceAction_CreateClient",
+      getState,
+      responseOptions: {isArrayResponse: true},
     });
   },
 );

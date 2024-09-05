@@ -137,6 +137,8 @@
   "Sale_CreateSaleOrder": "Create the sale order",
   "Sale_Delete": "Delete",
   "Sale_NoCartAvailable": "No cart available",
+  "Sale_LinkQuotationToCustomer": "Link quotation to customer",
+  "Sale_CreateNewCustomer": "Create new customer",
   "Sale_ProductUnavailable": "This product is not available",
   "Sale_SliceAction_FetchSaleConfig": "fetch sale config",
   "Sale_SliceAction_FetchSaleOrder": "fetch sale orders",

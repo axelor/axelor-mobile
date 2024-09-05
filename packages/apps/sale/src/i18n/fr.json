@@ -137,6 +137,8 @@
   "Sale_CreateSaleOrder": "Créer la commande",
   "Sale_Delete": "Supprimer",
   "Sale_NoCartAvailable": "Aucun panier disponible",
+  "Sale_LinkQuotationToCustomer": "Lier le devis au client",
+  "Sale_CreateNewCustomer": "Créer un nouveau client",
   "Sale_ProductUnavailable": "Ce produit n'est pas disponible",
   "Sale_SliceAction_FetchSaleConfig": "récupération des configurations de vente",
   "Sale_SliceAction_FetchSaleOrder": "récupération des commandes client",
