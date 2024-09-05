@@ -21,5 +21,6 @@ export {default as ExpenseLineCard} from './ExpenseLineCard/ExpenseLineCard';
 export {default as FromToDateDisplay} from './FromToDateDisplay/FromToDateDisplay';
 export {default as LeaveAvailableDuractionCard} from './LeaveAvailableDuractionCard/LeaveAvailableDuractionCard';
 export {default as LeaveCard} from './LeaveCard/LeaveCard';
+export {default as LeaveStartEndOn} from './LeaveStartEndOn/LeaveStartEndOn';
 export {default as TimeCard} from './TimeCard/TimeCard';
 export {default as TimesheetCard} from './TimesheetCard/TimesheetCard';

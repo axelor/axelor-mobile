@@ -98,3 +98,39 @@ export async function fetchLeaveById({leaveId}) {
     fieldKey: 'hr_leave',
   });
 }
+
+export async function fetchLeaveReason({searchValue, employeeId, page = 0}) {
+  const LeaveReason = getTypes().LeaveReason;
+
+  return createStandardSearch({
+    model: 'com.axelor.apps.hr.db.LeaveReason',
+    criteria: [getSearchCriterias('hr_leaveReason', searchValue)],
+    domain:
+      'self.leaveReasonTypeSelect = :exceptionalLeave OR self IN (SELECT leaveReason FROM LeaveLine leaveLine WHERE leaveLine.employee.id = :employeeId)',
+    domainContext: {
+      employeeId: employeeId,
+      exceptionalLeave: LeaveReason?.leaveReasonTypeSelect.ExceptionalLeave,
+    },
+    fieldKey: 'hr_leaveReason',
+    page,
+  });
+}
+
+export async function fetchMissingDuration({
+  fromDate,
+  toDate,
+  startOnSelect,
+  endOnSelect,
+  duration,
+}) {
+  return new Promise((resolve, reject) => {
+    console.log({
+      fromDate,
+      toDate,
+      startOnSelect,
+      endOnSelect,
+      duration,
+    });
+    resolve(2);
+  });
+}
