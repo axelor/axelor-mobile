@@ -26,7 +26,6 @@ interface ValidateCartPopupProps {
   style?: any;
   onClose?: () => void;
   visible: boolean;
-  selectedItems?: any;
 }
 
 const ValidateCartPopup = ({
@@ -57,6 +56,7 @@ const ValidateCartPopup = ({
       translator={I18n.t}>
       <View style={styles.container}>
         <CustomerSearchBar
+          style={styles.searchBar}
           onChange={setCustomerSelected}
           defaultValue={customerSelected}
         />
@@ -82,6 +82,9 @@ const styles = StyleSheet.create({
   },
   labelText: {
     marginVertical: 5,
+  },
+  searchBar: {
+    width: '100%',
   },
 });
 
