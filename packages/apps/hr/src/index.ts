@@ -104,6 +104,11 @@ export const HrModule: Module = {
       icon: 'suitcase-fill',
       screen: 'LeaveListScreen',
     },
+    hr_menu_completeRequest: {
+      title: 'Hr_CompleteRequest',
+      icon: 'plus-lg',
+      screen: 'CompleteRequestScreen',
+    },
   },
   screens: {
     ...ExpenseScreens,
