@@ -25,6 +25,7 @@ import {
   searchCartLine as _searchCartLine,
   updateCartLine as _updateCartLine,
   deleteCartLine as _deleteCartLine,
+  fetchCartLineById as _fetchCartLineById,
 } from '../api/cart-line-api';
 
 export const searchCartLine = createAsyncThunk(
@@ -82,11 +83,26 @@ export const updateCartLine = createAsyncThunk(
   },
 );
 
+export const fetchCartLineById = createAsyncThunk(
+  'sale_cartLine/fetchCartLineById',
+  async function (data, {getState}) {
+    return handlerApiCall({
+      fetchFunction: _fetchCartLineById,
+      data,
+      action: 'Sale_SliceAction_Fetch cartLineById',
+      getState,
+      responseOptions: {isArrayResponse: false},
+    });
+  },
+);
+
 const initialState = {
   loading: true,
   moreLoading: false,
   isListEnd: false,
   carLineList: [],
+
+  cartLine: {},
 };
 
 const cartLineSlice = createSlice({
@@ -104,6 +120,9 @@ const cartLineSlice = createSlice({
     });
     builder.addCase(deleteCartLine.fulfilled, (state, action) => {
       state.carLineList = action.payload;
+    });
+    builder.addCase(fetchCartLineById.fulfilled, (state, action) => {
+      state.cartLine = action.payload;
     });
   },
 });

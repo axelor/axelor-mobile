@@ -34,6 +34,8 @@ interface CartLineCardProps {
   isAvailable?: boolean;
   qty: number;
   unit: string;
+  hideBadgeInformation?: boolean;
+  onPress: () => void;
 }
 
 const CartLineCard = ({
@@ -42,6 +44,8 @@ const CartLineCard = ({
   isAvailable = true,
   qty,
   unit,
+  hideBadgeInformation,
+  onPress,
 }: CartLineCardProps) => {
   const formatMetaFile = useMetafileUri();
   const priceFormat = usePriceFormat();
@@ -51,9 +55,9 @@ const CartLineCard = ({
   return (
     <ObjectCard
       style={[styles.container, style]}
-      touchable={false}
-      showArrow={false}
+      onPress={onPress}
       leftContainerFlex={2}
+      iconLeftMargin={5}
       image={{
         generalStyle: styles.imageSize,
         imageSize: styles.imageSize,
@@ -83,25 +87,33 @@ const CartLineCard = ({
           },
         ],
       }}
-      sideBadges={{
-        style: styles.badges,
-        items: [
-          {
-            customComponent: (
-              <TextUnit
-                unit={product?.saleCurrency?.symbol}
-                value={priceFormat(product?.salePrice)}
-                numberOfLines={1}
-              />
-            ),
-          },
-          {
-            customComponent: (
-              <TextUnit unit={unit} value={qty} numberOfLines={1} />
-            ),
-          },
-        ],
-      }}
+      sideBadges={
+        !hideBadgeInformation && {
+          style: styles.badges,
+          items: [
+            {
+              customComponent: (
+                <TextUnit
+                  unit={product?.saleCurrency?.symbol}
+                  value={priceFormat(product?.salePrice)}
+                  fontSize={20}
+                  numberOfLines={1}
+                />
+              ),
+            },
+            {
+              customComponent: (
+                <TextUnit
+                  unit={unit}
+                  value={qty}
+                  fontSize={20}
+                  numberOfLines={1}
+                />
+              ),
+            },
+          ],
+        }
+      }
     />
   );
 };
@@ -110,6 +122,7 @@ const styles = StyleSheet.create({
   container: {
     marginHorizontal: 2,
     marginVertical: 2,
+    paddingRight: 5,
   },
   title: {
     flexDirection: 'row',

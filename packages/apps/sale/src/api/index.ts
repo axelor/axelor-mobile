@@ -24,6 +24,7 @@ export {
   searchCartLine as searchCartLineApi,
   updateCartLine as updateCartLineApi,
   deleteCartLine as deleteCartLineApi,
+  fetchCartLineById as fetchCartLineByIdApi,
 } from './cart-line-api';
 export {fetchComplementaryProduct as fetchComplementaryProductApi} from './complementary-product-api';
 export {
