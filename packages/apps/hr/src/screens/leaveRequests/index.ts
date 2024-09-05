@@ -40,6 +40,7 @@ export default {
   CompleteRequestScreen: {
     title: 'Hr_CompleteRequest',
     component: CompleteRequestScreen,
+    isUsableOnShortcut: true,
   },
 };
 

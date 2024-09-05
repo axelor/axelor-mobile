@@ -115,3 +115,22 @@ export async function fetchLeaveReason({searchValue, employeeId, page = 0}) {
     page,
   });
 }
+
+export async function fetchMissingDuration({
+  fromDate,
+  toDate,
+  startOnSelect,
+  endOnSelect,
+  duration,
+}) {
+  return new Promise((resolve, reject) => {
+    console.log({
+      fromDate,
+      toDate,
+      startOnSelect,
+      endOnSelect,
+      duration,
+    });
+    resolve(2);
+  });
+}

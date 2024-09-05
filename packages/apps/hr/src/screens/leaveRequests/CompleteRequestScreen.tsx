@@ -16,7 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import React, {useMemo, useState} from 'react';
+import React, {useCallback, useEffect, useMemo, useState} from 'react';
 import {StyleSheet} from 'react-native';
 import {
   PeriodInput,
@@ -25,6 +25,7 @@ import {
   useTypes,
 } from '@axelor/aos-mobile-core';
 import {
+  FormInput,
   KeyboardAvoidingScrollView,
   Label,
   Screen,
@@ -36,6 +37,7 @@ import {
   LeaveReasonSearchBar,
   LeaveStartEndOn,
 } from '../../components';
+import {fetchMissingDuration} from '../../api/leave-api';
 
 const CompleteRequestScreen = ({}) => {
   const I18n = useTranslator();
@@ -49,6 +51,14 @@ const CompleteRequestScreen = ({}) => {
   const [lines, setLines] = useState([]);
   const [newLine, setNewLine] = useState(null);
   const [leaveQty, setLeaveQty] = useState(0);
+  const [comments, setComments] = useState(null);
+  const [missingQty, setMissingQty] = useState(0);
+
+  const handleReset = useCallback(() => {
+    setNewLine(null);
+    setComments(null);
+    setLeaveQty(0);
+  }, []);
 
   const handleAddLine = () => {
     setLines(prevLines => {
@@ -61,28 +71,50 @@ const CompleteRequestScreen = ({}) => {
         } else {
           newLines[indexLine].qty += leaveQty;
         }
+
+        newLines[indexLine].comments = comments;
       } else {
         newLines.push({
           ...newLine,
           qty: leaveQty,
+          comments,
         });
       }
 
       return newLines;
     });
-    setLeaveQty(0);
-    setNewLine(null);
+
+    handleReset();
   };
 
-  const handleEditLine = line => {
+  const handleEditLine = useCallback(line => {
     setNewLine(line);
     setLeaveQty(line.qty);
-  };
+    setComments(line.comments);
+  }, []);
 
   const isEditionMode = useMemo(
     () => newLine?.qty > 0 && lines.find(({id}) => id === newLine.id) != null,
     [lines, newLine],
   );
+
+  const currentDuration = useMemo(() => {
+    return lines.reduce((_d, _c) => _d + _c, 0);
+  }, [lines]);
+
+  useEffect(() => {
+    if (fromDate && toDate && startOn && endOn) {
+      fetchMissingDuration({
+        fromDate,
+        toDate,
+        startOnSelect: startOn,
+        endOnSelect: endOn,
+        duration: currentDuration,
+      })
+        .then(setMissingQty)
+        .catch(() => setMissingQty(0));
+    }
+  }, [currentDuration, endOn, fromDate, startOn, toDate]);
 
   return (
     <Screen
@@ -91,7 +123,7 @@ const CompleteRequestScreen = ({}) => {
           leaveQty={leaveQty}
           hasNewLine={!!newLine}
           hasPeriod={!!fromDate && !!toDate && !!startOn && !!endOn}
-          hasLines={Array.isArray(lines) && lines.length > 0}
+          hasLines={lines.length > 0}
           onAddPress={handleAddLine}
           onFinishPress={() => console.log('Finish button pressed.')}
         />
@@ -100,14 +132,8 @@ const CompleteRequestScreen = ({}) => {
         keyboardOffset={{ios: 70, android: 100}}
         style={styles.container}>
         <PeriodInput
-          startDateConfig={{
-            date: fromDate,
-            onDateChange: date => setFromDate(date),
-          }}
-          endDateConfig={{
-            date: toDate,
-            onDateChange: date => setToDate(date),
-          }}
+          startDateConfig={{date: fromDate, onDateChange: setFromDate}}
+          endDateConfig={{date: toDate, onDateChange: setToDate}}
         />
         <LeaveStartEndOn
           onStartOnChange={setStartOn}
@@ -121,10 +147,10 @@ const CompleteRequestScreen = ({}) => {
           handleEditLine={handleEditLine}
           translator={I18n.t}
         />
-        {false && (
+        {missingQty > 0 && (
           <Label
             style={styles.label}
-            message={`${I18n.t('Hr_MissingQuantity')} : 0 ${I18n.t('Hr_TimeUnit_Days')}`}
+            message={`${I18n.t('Hr_MissingQuantity')} : ${missingQty} ${I18n.t('Hr_TimeUnit_Days')}`}
             type="error"
           />
         )}
@@ -147,8 +173,17 @@ const CompleteRequestScreen = ({}) => {
           <CompleteRequestQuantityCard
             leaveQty={leaveQty}
             setLeaveQty={setLeaveQty}
-            cancelLeave={() => setNewLine(null)}
+            cancelLeave={handleReset}
             newLine={newLine}
+          />
+        )}
+        {newLine && (
+          <FormInput
+            title={I18n.t('Hr_Comments')}
+            defaultValue={comments}
+            onChange={setComments}
+            multiline
+            adjustHeightWithLines
           />
         )}
       </KeyboardAvoidingScrollView>

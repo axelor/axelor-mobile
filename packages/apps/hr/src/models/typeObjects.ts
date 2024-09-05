@@ -229,12 +229,12 @@ export const hr_typeObjects: ModuleSelections = [
       endOnSelect: {
         content: [
           {
-            key: 'Draft',
+            key: 'Morning',
             value: 1,
             title: 'Hr_EndOn_Morning',
           },
           {
-            key: 'WaitingValidation',
+            key: 'Afternoon',
             value: 2,
             title: 'Hr_EndOn_Afternoon',
           },

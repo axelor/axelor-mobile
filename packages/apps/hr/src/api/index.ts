@@ -48,6 +48,7 @@ export {
   fetchLeaveById as fetchLeaveByIdApi,
   fetchLeaveReason as fetchLeaveReasonApi,
   fetchLeaveToValidate as fetchLeaveToValidateApi,
+  fetchMissingDuration as fetchMissingDurationApi,
 } from './leave-api';
 export {
   searchManufOrder as searchManufOrderApi,
