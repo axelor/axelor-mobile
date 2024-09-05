@@ -82,7 +82,7 @@ export const createClient = createAsyncThunk(
     return handlerApiCall({
       fetchFunction: _createClient,
       data,
-      action: "Crm_SliceAction_CreateClient",
+      action: 'Crm_SliceAction_CreateClient',
       getState,
       responseOptions: {isArrayResponse: true},
     });

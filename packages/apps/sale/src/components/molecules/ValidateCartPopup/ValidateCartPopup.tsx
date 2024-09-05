@@ -19,11 +19,7 @@
 import React, {useState} from 'react';
 import {StyleSheet, TouchableOpacity, View} from 'react-native';
 import {Alert, useThemeColor, LabelText} from '@axelor/aos-mobile-ui';
-import {
-  useTranslator,
-  useDispatch,
-  useNavigation,
-} from '@axelor/aos-mobile-core';
+import {useTranslator, useNavigation} from '@axelor/aos-mobile-core';
 import {CustomerSearchBar} from '../../organisms';
 
 interface ValidateCartPopupProps {
@@ -40,7 +36,6 @@ const ValidateCartPopup = ({
 }: ValidateCartPopupProps) => {
   const I18n = useTranslator();
   const Colors = useThemeColor();
-  const dispatch = useDispatch();
   const navigation = useNavigation();
 
   const [customerSelected, setCustomerSelected] = useState(null);
