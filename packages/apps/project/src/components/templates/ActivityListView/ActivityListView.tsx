@@ -83,7 +83,7 @@ const ActivityListView = () => {
 
   useEffect(() => {
     if (project?.id) {
-      fetchActivityData(startDate);
+      fetchActivityData(startDate).finally(() => setRefreshing(false));
     }
   }, [fetchActivityData, startDate, project]);
 
@@ -100,8 +100,7 @@ const ActivityListView = () => {
       return newDate;
     });
     setDataList([]);
-    fetchActivityData(new Date()).finally(() => setRefreshing(false));
-  }, [fetchActivityData]);
+  }, []);
 
   const renderItem = ({item}) => {
     const updates = item[Object.keys(item)[0]];
@@ -145,7 +144,7 @@ const ActivityListView = () => {
     );
   };
 
-  if (dataList.length === 0) {
+  if (dataList.length === 0 && !refreshing) {
     return (
       <Label
         style={styles.label}
