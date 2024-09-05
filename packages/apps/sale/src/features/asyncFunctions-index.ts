@@ -17,7 +17,12 @@
  */
 
 export {fetchActiveCart, updateCart} from './cartSlice';
-export {searchCartLine, updateCartLine, deleteCartLine} from './cartLineSlice';
+export {
+  deleteCartLine,
+  fetchCartLineById,
+  searchCartLine,
+  updateCartLine,
+} from './cartLineSlice';
 export {fetchComplementaryProduct} from './complementaryProductSlice';
 export {fetchCustomerDelivery} from './customerDeliverySlice';
 export {
