@@ -17,6 +17,7 @@
  */
 import {
   axiosApiProvider,
+  createStandardFetch,
   createStandardSearch,
   getSearchCriterias,
 } from '@axelor/aos-mobile-core';
@@ -57,5 +58,13 @@ export async function updateCartLine({cartLine, qty}) {
 export async function deleteCartLine({cartLineId}) {
   return axiosApiProvider.delete({
     url: `/ws/rest/com.axelor.apps.sale.db.CartLine/${cartLineId}`,
+  });
+}
+
+export async function fetchCartLineById({cartLineId}) {
+  return createStandardFetch({
+    model: 'com.axelor.apps.sale.db.CartLine',
+    id: cartLineId,
+    fieldKey: 'sale_cartLine',
   });
 }
