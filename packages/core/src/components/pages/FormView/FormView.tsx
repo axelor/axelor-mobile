@@ -17,11 +17,10 @@
  */
 
 import React, {useCallback, useEffect, useMemo, useState} from 'react';
-import {StyleSheet, TouchableOpacity, View} from 'react-native';
+import {StyleSheet, View} from 'react-native';
 import {useDispatch, useSelector} from 'react-redux';
 import {
   Button,
-  Icon,
   KeyboardAvoidingScrollView,
   Screen,
   WarningCard,
@@ -61,7 +60,6 @@ interface FormProps {
   defaultEditMode?: boolean;
   styleScreen?: any;
   hideButtonBackground?: boolean;
-  toggleOptionalFields?: boolean;
 }
 
 const FormView = ({
@@ -75,7 +73,6 @@ const FormView = ({
   defaultEditMode = false,
   styleScreen,
   hideButtonBackground = false,
-  toggleOptionalFields = false,
 }: FormProps) => {
   const I18n = useTranslator();
   const dispatch = useDispatch();
@@ -96,28 +93,11 @@ const FormView = ({
     floatingTools && !defaultEditMode,
   );
   const [buttonHeight, setButtonHeight] = useState<number>(0);
-  const [showOptionalFields, setShowOptionalFields] = useState(false);
 
-  const hasOptionalFields = useMemo(() => {
-    if (!toggleOptionalFields) {
-      return false;
-    }
-
-    const sortedContent = sortContent(config);
-    return sortedContent.some(
-      (item: any) => isField(item) && !item.required && !item.isPhantom,
-    );
-  }, [config, toggleOptionalFields]);
-
-  const formContent: (DisplayPanel | DisplayField)[] = useMemo(() => {
-    const sortedContent = sortContent(config);
-    return sortedContent.filter((item: any) => {
-      if (isField(item)) {
-        return showOptionalFields || item.required || !toggleOptionalFields;
-      }
-      return true;
-    });
-  }, [config, showOptionalFields, toggleOptionalFields]);
+  const formContent: (DisplayPanel | DisplayField)[] = useMemo(
+    () => sortContent(config),
+    [config],
+  );
 
   const isCreation = useMemo(
     () => !isCustom && object?.id == null,
@@ -158,10 +138,6 @@ const FormView = ({
       }
     });
   }, [creationDefaultValue, defaultValue, isCreation, record]);
-
-  const toggleShowOptionalFields = () => {
-    setShowOptionalFields(prev => !prev);
-  };
 
   const handleFieldChange = (newValue: any, fieldName: string) => {
     setObject(_current => {
@@ -368,11 +344,6 @@ const FormView = ({
         )}
         <View style={[styles.container, style, getZIndexStyle(5)]}>
           {formContent.map(renderItem)}
-          {hasOptionalFields && (
-            <TouchableOpacity onPress={toggleShowOptionalFields}>
-              <Icon name={showOptionalFields ? 'chevron-up' : 'chevron-down'} />
-            </TouchableOpacity>
-          )}
         </View>
       </KeyboardAvoidingScrollView>
       <FloatingTools

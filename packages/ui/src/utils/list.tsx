@@ -26,7 +26,7 @@ export function getFromList(list, objectParam, query) {
     return null;
   }
 
-  const result = list.find(_item => {
+  return list.find(_item => {
     const itemValue = _item[objectParam];
 
     if (typeof itemValue !== typeof query) {
@@ -35,8 +35,6 @@ export function getFromList(list, objectParam, query) {
 
     return itemValue === query;
   });
-
-  return result;
 }
 
 export function getItemsFromList(

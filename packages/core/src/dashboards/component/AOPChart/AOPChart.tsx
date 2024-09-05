@@ -148,7 +148,6 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   text: {
-    flex: 1,
     alignSelf: 'center',
     padding: 15,
   },
