@@ -101,6 +101,7 @@ const initialState = {
   moreLoading: false,
   isListEnd: false,
   carLineList: [],
+
   cartLine: {},
 };
 

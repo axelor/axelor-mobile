@@ -117,7 +117,7 @@ const useCartLineDetailsActions = () => {
   const {cartLine} = useSelector((state: any) => state.sale_cartLine);
 
   useEffect(() => {
-    headerActionsProvider.registerModel('sale_details_cart_line', {
+    headerActionsProvider.registerModel('sale_cartLine_details', {
       model: 'com.axelor.apps.sale.db.CartLine',
       modelId: cartLine?.id,
       disableMailMessages: !mobileSettings?.isTrackerMessageEnabled,

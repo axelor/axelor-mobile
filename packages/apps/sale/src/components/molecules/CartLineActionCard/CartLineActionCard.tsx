@@ -30,7 +30,7 @@ import {fetchProductById} from '../../../features/productSlice';
 interface CartLineActionCardProps {
   style?: any;
   cartLine: any;
-  cartId: number;
+  cartId?: number;
   hideIncrement?: boolean;
   hideDelete?: boolean;
   hideBadgeInformation?: boolean;

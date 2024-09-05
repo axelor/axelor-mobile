@@ -64,9 +64,8 @@ const CartLineValidationButton = ({newQty}) => {
         onPress={_deleteCartLine}
         width="45%"
         color={Colors.errorColor}
-        iconName={'trash3-fill'}
+        iconName="trash3-fill"
       />
-
       <Button
         title={I18n.t('Base_Validate')}
         onPress={_updateCartLine}

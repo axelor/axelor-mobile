@@ -31,7 +31,7 @@ export default {
   },
   CartLineDetailsScreen: {
     title: 'Sale_Cart',
-    actionID: 'sale_details_cart_line',
+    actionID: 'sale_cartLine_details',
     component: CartLineDetailsScreen,
   },
 };
