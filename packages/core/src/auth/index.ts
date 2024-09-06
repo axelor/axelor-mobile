@@ -16,7 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import {Module} from '../app';
+import {Module, modulesProvider} from '../app';
 import enTranslations from './i18n/en.json';
 import frTranslations from './i18n/fr.json';
 import * as authReducers from './features';
@@ -60,6 +60,20 @@ export const authModule: Module = {
     headerRegisters: useAuthHeaders,
   },
   requiredConfig: ['AppBase', 'AppMobileSettings'],
+  moduleRegister: () => {
+    modulesProvider.registerModule({
+      name: 'app-test',
+      title: 'User_User',
+      icon: 'check-lg',
+      menus: {
+        test_menu_user: {
+          title: 'User_UserProfile',
+          icon: 'person-fill',
+          screen: 'UserScreen',
+        },
+      },
+    });
+  },
 };
 
 export * from './screens';

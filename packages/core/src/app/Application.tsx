@@ -16,7 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import React, {useEffect, useRef} from 'react';
+import React, {useEffect, useMemo, useRef} from 'react';
 import {
   Theme,
   ThemeColors,
@@ -78,18 +78,23 @@ const Application = ({
 }: ApplicationProps) => {
   const modules: Module[] = useRef([authModule, ...modulesProvided]).current;
 
-  RouterProvider.enableRetrocompatibilityWithAOSv6(
-    configuration?.retrocompatibilityAOS6,
-  );
-
-  RouterProvider.addRoutes(configuration?.additionalRoutes);
+  RouterProvider.init({
+    retrocompatibility: configuration?.retrocompatibilityAOS6,
+    routesDefinition: configuration?.additionalRoutes,
+  });
 
   ApiProviderConfig.allowConnectionBlock =
     configuration.allowInternetConnectionBlock;
 
-  useEffect(() => {
-    modulesProvider.init(modules);
+  const moduleRegisters = useMemo(() => {
+    return modules
+      .filter(_module => _module.moduleRegister)
+      .flatMap(_module => _module.moduleRegister);
   }, [modules]);
+
+  useEffect(() => {
+    modulesProvider.init(modules, moduleRegisters);
+  }, [modules, moduleRegisters]);
 
   useEffect(() => {
     sessionStorage.init(
@@ -100,6 +105,7 @@ const Application = ({
 
   return (
     <ContextsProvider
+      modules={modules}
       additionalsReducers={additionalsReducers}
       defaultTheme={defaultTheme}
       themes={themes}

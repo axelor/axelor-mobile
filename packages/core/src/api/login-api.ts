@@ -22,6 +22,7 @@ import {
   provider,
   translationMiddleware,
 } from '../apiProviders';
+import {modulesProvider} from '../app';
 
 const loginPath = '/callback';
 
@@ -55,6 +56,7 @@ export async function loginApi(
       );
 
       provider.getModelApi()?.init();
+      modulesProvider.getModuleRegisters().forEach(_f => _f());
 
       return {token, jsessionId, requestInterceptorId, responseInterceptorId};
     });

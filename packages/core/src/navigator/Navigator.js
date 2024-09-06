@@ -62,7 +62,7 @@ import {
   filterAuthorizedWebViewMenus,
 } from '../webViews/menu.helper';
 import {registerTypes} from '../selections';
-import {useModules} from '../app';
+import {useModulesInitialisation} from '../app';
 
 const Drawer = createDrawerNavigator();
 const Stack = createStackNavigator();
@@ -77,8 +77,8 @@ const Navigator = ({mainMenu, onRefresh, versionCheckConfig}) => {
   const I18n = useTranslator();
   const Colors = useThemeColor();
   const dispatch = useDispatch();
-  const {modules} = useModules();
   const fetchAllPermission = usePermissionsFetcher();
+  const {modules} = useModulesInitialisation();
 
   const storeState = useSelector(state => state.appConfig);
   const {user} = useSelector(state => state.user);
@@ -193,6 +193,14 @@ const Navigator = ({mainMenu, onRefresh, versionCheckConfig}) => {
             key,
             {component, title, actionID, options = {shadedHeader: true}},
           ]) => {
+            const renderTitle = () => (
+              <Header
+                mainScreen={initialRouteName === key}
+                title={title}
+                actionID={actionID}
+                shadedHeader={options?.shadedHeader}
+              />
+            );
             return (
               <Stack.Screen
                 key={key}
@@ -212,14 +220,7 @@ const Navigator = ({mainMenu, onRefresh, versionCheckConfig}) => {
                   headerLeft: () => null,
                   headerRight: () => null,
                   headerTitleStyle: {width: '100%'},
-                  headerTitle: () => (
-                    <Header
-                      mainScreen={initialRouteName === key}
-                      title={title}
-                      actionID={actionID}
-                      shadedHeader={options?.shadedHeader}
-                    />
-                  ),
+                  headerTitle: renderTitle,
                 }}
               />
             );
@@ -228,6 +229,21 @@ const Navigator = ({mainMenu, onRefresh, versionCheckConfig}) => {
       </Stack.Navigator>
     ),
     [modulesScreens],
+  );
+
+  const renderDrawer = useCallback(
+    props => {
+      return (
+        <DrawerContent
+          {...props}
+          modules={enabledModule}
+          onModuleClick={changeActiveModule}
+          onRefresh={onRefresh}
+          versionCheckConfig={versionCheckConfig}
+        />
+      );
+    },
+    [changeActiveModule, enabledModule, onRefresh, versionCheckConfig],
   );
 
   const windowWidth = Dimensions.get('window').width;
@@ -245,15 +261,7 @@ const Navigator = ({mainMenu, onRefresh, versionCheckConfig}) => {
             width: isLargeScreen ? windowWidth * 0.5 : windowWidth * 0.8,
           },
         }}
-        drawerContent={props => (
-          <DrawerContent
-            {...props}
-            modules={enabledModule}
-            onModuleClick={changeActiveModule}
-            onRefresh={onRefresh}
-            versionCheckConfig={versionCheckConfig}
-          />
-        )}>
+        drawerContent={renderDrawer}>
         {Object.entries(modulesMenus).map(([key, menu], index) => {
           return (
             <React.Fragment key={index}>
