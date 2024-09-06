@@ -55,24 +55,6 @@ export async function updateCartLine({cartLine, qty}) {
   });
 }
 
-export async function addToCart({product}) {
-  return axiosApiProvider.post({
-    url: `/ws/action/`,
-    data: {
-      action: 'action-product-method-add-to-cart',
-      data: {
-        context: {
-          ...product,
-          _fromSale: true,
-          _id: null,
-          _model: 'com.axelor.apps.base.db.Product',
-        },
-      },
-      model: 'com.axelor.apps.base.db.Product',
-    },
-  });
-}
-
 export async function deleteCartLine({cartLineId}) {
   return axiosApiProvider.delete({
     url: `/ws/rest/com.axelor.apps.sale.db.CartLine/${cartLineId}`,

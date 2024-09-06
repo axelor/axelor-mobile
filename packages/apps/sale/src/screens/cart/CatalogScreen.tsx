@@ -36,7 +36,6 @@ const CatalogScreen = ({}) => {
   const I18n = useTranslator();
 
   const {userId} = useSelector((state: any) => state.auth);
-  const {activeCart} = useSelector((state: any) => state.sale_cart);
   const {productList, moreLoading, isListEnd, loadingList} = useSelector(
     (state: any) => state.sale_product,
   );
@@ -57,9 +56,7 @@ const CatalogScreen = ({}) => {
         displaySearchValue={displayItemName}
         searchPlaceholder={I18n.t('Base_Search')}
         expandableFilter={false}
-        renderListItem={({item}) => (
-          <CatalogActionCard cartId={activeCart?.id} product={item} />
-        )}
+        renderListItem={({item}) => <CatalogActionCard product={item} />}
       />
     </Screen>
   );

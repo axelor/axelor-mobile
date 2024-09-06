@@ -26,7 +26,6 @@ import {
   updateCartLine as _updateCartLine,
   deleteCartLine as _deleteCartLine,
   fetchCartLineById as _fetchCartLineById,
-  addToCart as _addToCart,
 } from '../api/cart-line-api';
 
 export const searchCartLine = createAsyncThunk(
@@ -38,19 +37,6 @@ export const searchCartLine = createAsyncThunk(
       action: 'Sale_SliceAction_SearchCartLine',
       getState,
       responseOptions: {isArrayResponse: true},
-    });
-  },
-);
-
-export const addToCart = createAsyncThunk(
-  'sale_cartLine/addToCart',
-  async function (data, {getState}) {
-    return handlerApiCall({
-      fetchFunction: _addToCart,
-      data,
-      action: 'Sale_SliceAction_AddToCart',
-      getState,
-      responseOptions: {isArrayResponse: true, showToast: true},
     });
   },
 );

@@ -18,7 +18,6 @@
 
 export {fetchActiveCart, updateCart} from './cartSlice';
 export {
-  addToCart,
   deleteCartLine,
   fetchCartLineById,
   searchCartLine,

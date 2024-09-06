@@ -17,21 +17,17 @@
  */
 
 import React from 'react';
-import {useDispatch, useTranslator} from '@axelor/aos-mobile-core';
+import {useTranslator} from '@axelor/aos-mobile-core';
 import {ActionCard} from '@axelor/aos-mobile-ui';
 import {CartLineCard} from '../../atoms';
-import {addToCart as addToCartAction} from '../../../features/cartLineSlice';
 
 interface CatalogActionCardProps {
   style?: any;
-  cartId?: number;
   product?: any;
-  addToCart?: boolean;
 }
 
 const CatalogActionCard = ({style, product}: CatalogActionCardProps) => {
   const I18n = useTranslator();
-  const dispatch = useDispatch();
 
   return (
     <ActionCard
@@ -40,9 +36,7 @@ const CatalogActionCard = ({style, product}: CatalogActionCardProps) => {
         {
           iconName: 'plus-lg',
           helper: I18n.t('Sale_AddOne'),
-          onPress: () => {
-            dispatch((addToCartAction as any)({product}));
-          },
+          onPress: () => {},
         },
         {
           iconName: 'palette2',
