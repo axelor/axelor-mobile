@@ -57,6 +57,12 @@ export const SaleModule: Module = {
       screen: 'ActiveCartScreen',
       hideIf: store => !store.sale?.isCartManagementEnabled,
     },
+    sale_menu_catalog: {
+      title: 'Sale_Catalog',
+      icon: 'cart-plus',
+      screen: 'CatalogScreen',
+      hideIf: store => !store.sale?.isCartManagementEnabled,
+    },
     sale_menu_salesFollowUpSeparator: {
       title: 'Sale_SalesFollowUp',
       separator: true,
