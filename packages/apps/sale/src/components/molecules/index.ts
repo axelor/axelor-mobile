@@ -20,6 +20,7 @@ export {default as CartHeader} from './CartHeader/CartHeader';
 export {default as CartLineActionCard} from './CartLineActionCard/CartLineActionCard';
 export {default as CartLinePriceDetails} from './CartLinePriceDetails/CartLinePriceDetails';
 export {default as CartLineValidationButton} from './CartLineValidationButton/CartLineValidationButton';
+export {default as CatalogActionCard} from './CatalogActionCard/CatalogActionCard';
 export {default as ClientActionCard} from './ClientActionCard/ClientActionCard';
 export {default as ClientHeader} from './ClientHeader/ClientHeader';
 export {default as DropdownMultipleQuantities} from './DropdownMultipleQuantities/DropdownMultipleQuantities';

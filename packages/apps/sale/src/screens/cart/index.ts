@@ -19,7 +19,6 @@
 import ActiveCartScreen from './ActiveCartScreen';
 import CartLineDetailsScreen from './CartLineDetailsScreen';
 import CatalogScreen from './CatalogScreen';
-import CatalogVariantScreen from './CatalogVariantScreen';
 
 export default {
   ActiveCartScreen: {
@@ -44,16 +43,8 @@ export default {
     },
     isUsableOnShortcut: true,
   },
-  CatalogVariantScreen: {
-    title: 'Sale_VariantsCatalog',
-    component: CatalogVariantScreen,
-    options: {
-      shadedHeader: false,
-    },
-  },
 };
 
 export {ActiveCartScreen};
 export {CartLineDetailsScreen};
 export {CatalogScreen};
-export {CatalogVariantScreen};
