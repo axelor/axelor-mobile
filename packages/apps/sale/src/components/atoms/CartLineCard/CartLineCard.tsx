@@ -32,10 +32,10 @@ interface CartLineCardProps {
   style?: any;
   product: any;
   isAvailable?: boolean;
-  qty: number;
-  unit: string;
+  qty?: number;
+  unit?: string;
   hideBadgeInformation?: boolean;
-  onPress: () => void;
+  onPress?: () => void;
 }
 
 const CartLineCard = ({
@@ -55,6 +55,8 @@ const CartLineCard = ({
   return (
     <ObjectCard
       style={[styles.container, style]}
+      touchable={onPress != null}
+      showArrow={onPress != null}
       onPress={onPress}
       leftContainerFlex={2}
       iconLeftMargin={5}
