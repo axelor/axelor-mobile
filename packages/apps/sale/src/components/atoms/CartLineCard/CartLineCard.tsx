@@ -55,6 +55,8 @@ const CartLineCard = ({
   return (
     <ObjectCard
       style={[styles.container, style]}
+      touchable={onPress != null}
+      showArrow={onPress != null}
       onPress={onPress}
       leftContainerFlex={2}
       iconLeftMargin={5}

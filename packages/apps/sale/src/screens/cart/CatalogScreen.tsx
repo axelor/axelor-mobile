@@ -25,8 +25,8 @@ import {
   useSelector,
   useTranslator,
 } from '@axelor/aos-mobile-core';
-import {searchProduct} from '../../features/productSlice';
 import {CatalogActionCard} from '../../components';
+import {searchProduct} from '../../features/productSlice';
 import {fetchActiveCart} from '../../features/cartSlice';
 
 const catalogScanKey = 'sale_catalog_scanKey';
@@ -45,7 +45,7 @@ const CatalogScreen = ({}) => {
   }, [dispatch, userId]);
 
   return (
-    <Screen removeSpaceOnTop={true}>
+    <Screen removeSpaceOnTop>
       <SearchListView
         scanKeySearch={catalogScanKey}
         list={productList}

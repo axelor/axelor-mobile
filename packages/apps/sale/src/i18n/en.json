@@ -4,7 +4,6 @@
   "Sale_Cart": "Cart",
   "Sale_ActiveCart": "Active Cart",
   "Sale_Catalog": "Catalog",
-  "Sale_VariantsCatalog": "Variants catalog",
   "Sale_ProductsServices": "Products & services",
   "Sale_ProductService": "Produit & service",
   "Sale_NotState": "Not {{state}}",
