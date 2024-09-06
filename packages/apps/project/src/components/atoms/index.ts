@@ -20,5 +20,4 @@ export {default as DatesDisplay} from './DatesDisplay/DatesDisplay';
 export {default as PartnerCard} from './PartnerCard/PartnerCard';
 export {default as ProjectCard} from './ProjectCard/ProjectCard';
 export {default as ProjectSimpleCard} from './ProjectSimpleCard/ProjectSimpleCard';
-export {default as TaskButton} from './TaskButton/TaskButton';
 export {default as TaskCard} from './TaskCard/TaskCard';
