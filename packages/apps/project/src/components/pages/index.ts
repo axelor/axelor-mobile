@@ -18,6 +18,7 @@
 
 export {default as GeneralInformationView} from './GeneralInformationView/GeneralInformationView';
 export {default as ReportingView} from './ReportingView/ReportingView';
+export {default as TaskGeneralInformationView} from './TaskGeneralInformationView/TaskGeneralInformationView';
 export {default as SubProjectView} from './SubProjectView/SubProjectView';
 export {default as TaskView} from './TaskView/TaskView';
 export {default as TimeView} from './TimeView/TimeView';
