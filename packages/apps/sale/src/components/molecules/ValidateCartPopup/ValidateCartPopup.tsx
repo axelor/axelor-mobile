@@ -25,6 +25,7 @@ import {CustomerSearchBar} from '../../organisms';
 interface ValidateCartPopupProps {
   style?: any;
   onClose?: () => void;
+  handleValidate?: () => void;
   visible: boolean;
 }
 
@@ -32,6 +33,7 @@ const ValidateCartPopup = ({
   style,
   visible,
   onClose,
+  handleValidate,
 }: ValidateCartPopupProps) => {
   const I18n = useTranslator();
   const Colors = useThemeColor();
@@ -47,11 +49,13 @@ const ValidateCartPopup = ({
       cancelButtonConfig={{
         title: null,
         onPress: onClose,
+        width: 50,
       }}
       confirmButtonConfig={{
         title: null,
-        onPress: () => {},
+        onPress: handleValidate,
         disabled: customerSelected == null,
+        width: 50,
       }}
       translator={I18n.t}>
       <View style={styles.container}>
@@ -61,7 +65,7 @@ const ValidateCartPopup = ({
           defaultValue={customerSelected}
         />
         <TouchableOpacity
-          onPress={() => navigation.navigate('ClientFormScreen')}
+          onPress={() => navigation.navigate('ClientFormSaleScreen')}
           style={styles.labelText}>
           <LabelText
             iconName="plus-lg"

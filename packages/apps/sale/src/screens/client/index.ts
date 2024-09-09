@@ -18,6 +18,7 @@
 
 import ClientSaleListScreen from './ClientSaleListScreen';
 import ClientSaleDetailsScreen from './ClientSaleDetailsScreen';
+import ClientFormSaleScreen from './ClientFormSaleScreen';
 
 export default {
   ClientSaleListScreen: {
@@ -36,7 +37,12 @@ export default {
       shadedHeader: false,
     },
   },
+  ClientFormSaleScreen: {
+    title: 'Crm_Clients',
+    component: ClientFormSaleScreen,
+  },
 };
 
+export {ClientFormSaleScreen};
 export {ClientSaleListScreen};
 export {ClientSaleDetailsScreen};

@@ -84,7 +84,7 @@ export const createClient = createAsyncThunk(
       data,
       action: 'Crm_SliceAction_CreateClient',
       getState,
-      responseOptions: {isArrayResponse: true},
+      responseOptions: {isArrayResponse: false},
     });
   },
 );

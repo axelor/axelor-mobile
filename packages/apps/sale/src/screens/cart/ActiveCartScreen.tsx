@@ -16,7 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import React, {useEffect, useMemo, useState} from 'react';
+import React, {useCallback, useEffect, useMemo, useState} from 'react';
 import {
   Button,
   DoubleIcon,
@@ -64,6 +64,13 @@ const ActiveCartScreen = ({}) => {
   useEffect(() => {
     dispatch((fetchActiveCart as any)({userId}));
   }, [dispatch, userId]);
+
+  const handleCartValidation = useCallback(() => {
+    if (activeCart?.partner != null) {
+      return;
+    }
+    setShowPopup(true);
+  }, [activeCart]);
 
   useEffect(() => {
     if (activeCart) {
@@ -129,9 +136,7 @@ const ActiveCartScreen = ({}) => {
         <Button
           iconName="check-lg"
           title={I18n.t('Sale_CreateSaleOrder')}
-          onPress={() => {
-            activeCart?.partner != null ? () => {} : setShowPopup(true);
-          }}
+          onPress={handleCartValidation}
         />
       }>
       <SearchListView
