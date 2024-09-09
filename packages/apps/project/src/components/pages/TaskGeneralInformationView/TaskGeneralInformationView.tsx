@@ -51,8 +51,9 @@ const TaskGeneralInformationView = ({projecTaskId}) => {
   if (projecTaskId !== projectTask?.id) {
     return null;
   }
+
   return (
-    <View style={styles.constainer}>
+    <View style={styles.container}>
       <HeaderContainer
         expandableFilter={false}
         fixedItems={<TaskDetailsHeader />}
@@ -84,7 +85,7 @@ const TaskGeneralInformationView = ({projecTaskId}) => {
 };
 
 const styles = StyleSheet.create({
-  constainer: {
+  container: {
     marginBottom: 150,
   },
   scrollView: {

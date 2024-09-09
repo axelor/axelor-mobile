@@ -17,16 +17,22 @@
  */
 
 import React from 'react';
-import {BottomBar, Screen} from '@axelor/aos-mobile-ui';
-import {TaskGeneralInformationView} from '../components';
+import {BottomBar, Screen, useThemeColor} from '@axelor/aos-mobile-ui';
+import {CustomFieldFormView, TaskGeneralInformationView} from '../components';
 
 const TaskDetailsScreen = ({route}) => {
   const projecTaskId = route?.params?.projecTaskId;
+  const Colors = useThemeColor();
 
   const bottomBarItems = [
     {
       iconName: 'house',
       viewComponent: <TaskGeneralInformationView projecTaskId={projecTaskId} />,
+    },
+    {
+      iconName: 'layout-text-window-reverse',
+      viewComponent: <CustomFieldFormView projecTaskId={projecTaskId} />,
+      color: Colors.plannedColor,
     },
   ];
 

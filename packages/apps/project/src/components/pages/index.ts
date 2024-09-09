@@ -16,6 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+export {default as CustomFieldFormView} from './CustomFieldFormView/CustomFieldFormView';
 export {default as GeneralInformationView} from './GeneralInformationView/GeneralInformationView';
 export {default as ReportingView} from './ReportingView/ReportingView';
 export {default as TaskGeneralInformationView} from './TaskGeneralInformationView/TaskGeneralInformationView';

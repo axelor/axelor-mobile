@@ -16,18 +16,16 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import React, {useEffect, useMemo} from 'react';
+import React, {useEffect, useMemo, useState} from 'react';
 import {StyleSheet} from 'react-native';
-import {useDispatch, useSelector} from 'react-redux';
+import {useDispatch} from 'react-redux';
 import {useThemeColor} from '@axelor/aos-mobile-ui';
 import {FormView} from '../../pages';
-import {
-  fetchJsonFieldsOfModel,
-  fetchObject,
-  updateJsonFieldsObject,
-} from '../../../features/metaJsonFieldSlice';
+import {updateJsonFieldsObject} from '../../../features/metaJsonFieldSlice';
 import {
   Action,
+  fetchJsonFieldsOfModel,
+  fetchObject,
   formConfigsProvider,
   getAttrsValue,
   mapFormToStudioFields,
@@ -45,6 +43,7 @@ interface JsonAction extends Action {
 }
 
 interface CustomFieldFormProps {
+  style?: any;
   model: string;
   modelId: number;
   fieldType?: string;
@@ -54,6 +53,7 @@ interface CustomFieldFormProps {
 }
 
 const CustomFieldForm = ({
+  style,
   model,
   modelId,
   fieldType = null,
@@ -64,18 +64,19 @@ const CustomFieldForm = ({
   const Colors = useThemeColor();
   const dispatch = useDispatch();
 
-  const {fields: _fields, object} = useSelector(
-    (state: any) => state.metaJsonField,
-  );
+  const [_fields, setFields] = useState(null);
+  const [object, setObject] = useState(null);
 
   const removeUnauthorizedFields = useFieldPermitter({modelName: model});
 
   useEffect(() => {
-    dispatch(
-      (fetchJsonFieldsOfModel as any)({modelName: model, type: fieldType}),
-    );
-    dispatch((fetchObject as any)({modelName: model, id: modelId}));
-  }, [dispatch, model, modelId, fieldType]);
+    fetchJsonFieldsOfModel({modelName: model, type: fieldType}).then(res => {
+      setFields(res?.data?.data);
+    });
+    fetchObject({modelName: model, id: modelId}).then(res => {
+      setObject(res?.data?.data[0]);
+    });
+  }, [model, modelId, fieldType]);
 
   const {fields, panels, defaults} = useMemo(
     () =>
@@ -89,7 +90,7 @@ const CustomFieldForm = ({
 
   useEffect(() => {
     formConfigsProvider.registerForm(
-      FORM_KEY,
+      `${FORM_KEY}_${fieldType}`,
       {
         readonlyIf: () => readonly,
         fields,
@@ -98,7 +99,7 @@ const CustomFieldForm = ({
       },
       {replaceOld: true},
     );
-  }, [fields, model, panels, readonly]);
+  }, [fieldType, fields, model, panels, readonly]);
 
   const attrsValues = useMemo(
     () => (object?.id !== modelId ? null : getAttrsValue(object, fieldType)),
@@ -135,9 +136,9 @@ const CustomFieldForm = ({
 
   return (
     <FormView
-      style={styles.formView}
+      style={[styles.formView, style]}
       actions={_additionalActions}
-      formKey={FORM_KEY}
+      formKey={`${FORM_KEY}_${fieldType}`}
       isCustom={true}
       defaultValue={attrsValues == null ? {...defaults} : attrsValues}
       floatingTools={readonlyButton}
