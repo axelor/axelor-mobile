@@ -106,6 +106,7 @@ const CustomFieldForm = ({
         type: 'object',
         widget: 'custom',
         customComponent: customComponent,
+        order: 0,
       };
     }
 

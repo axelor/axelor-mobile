@@ -18,8 +18,18 @@
 
 import React, {useCallback, useEffect} from 'react';
 import {StyleSheet, View} from 'react-native';
-import {CustomFieldForm, useSelector} from '@axelor/aos-mobile-core';
-import {Button, HeaderContainer, ScrollView, Text} from '@axelor/aos-mobile-ui';
+import {
+  CustomFieldForm,
+  useSelector,
+  useTranslator,
+} from '@axelor/aos-mobile-core';
+import {
+  Button,
+  HeaderContainer,
+  HorizontalRule,
+  ScrollView,
+  Text,
+} from '@axelor/aos-mobile-ui';
 import {TaskDetailsHeader} from '../../molecules';
 
 const PhantomComponent = ({objectState, onChange, title}) => {
@@ -36,6 +46,8 @@ const PhantomComponent = ({objectState, onChange, title}) => {
 };
 
 const CustomFieldFormView = ({projecTaskId}) => {
+  const I18n = useTranslator();
+
   const {projectTask} = useSelector((state: any) => state.project_projectTask);
 
   const renderPhantomComponent = useCallback(({objectState = {}, title}) => {
@@ -59,7 +71,6 @@ const CustomFieldFormView = ({projecTaskId}) => {
         fixedItems={<TaskDetailsHeader />}
       />
       <ScrollView>
-        <Text>appJson</Text>
         <View style={styles.form}>
           <CustomFieldForm
             model="com.axelor.apps.project.db.ProjectTask"
@@ -69,25 +80,27 @@ const CustomFieldFormView = ({projecTaskId}) => {
             customComponent={({objectState}) =>
               renderPhantomComponent({
                 objectState,
-                title: 'Sale_ProjectAppCustomField',
+                title: I18n.t('Project_ProjectAppCustomField'),
               })
             }
           />
         </View>
-        <Text>projectJson</Text>
-        <CustomFieldForm
-          model="com.axelor.apps.project.db.ProjectTask"
-          fieldType="projectJson"
-          modelId={projectTask.id}
-          readonly
-          customComponent={({objectState}) =>
-            renderPhantomComponent({
-              objectState,
-              title: 'Sale_ProjectCustomField',
-            })
-          }
-        />
-        <Text>categoryJson</Text>
+        <HorizontalRule style={styles.horizontalRule} />
+        <View style={styles.form}>
+          <CustomFieldForm
+            model="com.axelor.apps.project.db.ProjectTask"
+            fieldType="projectJson"
+            modelId={projectTask.id}
+            readonly
+            customComponent={({objectState}) =>
+              renderPhantomComponent({
+                objectState,
+                title: I18n.t('Project_ProjectCustomField'),
+              })
+            }
+          />
+        </View>
+        <HorizontalRule style={styles.horizontalRule} />
         <View style={styles.form}>
           <CustomFieldForm
             model="com.axelor.apps.project.db.ProjectTask"
@@ -97,7 +110,7 @@ const CustomFieldFormView = ({projecTaskId}) => {
             customComponent={({objectState}) =>
               renderPhantomComponent({
                 objectState,
-                title: 'Sale_CategoryCustomField',
+                title: I18n.t('Project_CategoryCustomField'),
               })
             }
           />
@@ -122,6 +135,11 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     alignItems: 'center',
     marginHorizontal: 24,
+  },
+  horizontalRule: {
+    marginVertical: 12,
+    width: '90%',
+    alignSelf: 'center',
   },
 });
 
