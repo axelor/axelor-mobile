@@ -1,0 +1,5 @@
+{
+  "title": "PlanningView: add month change information to scrollable view",
+  "type": "feat",
+  "packages": "core"
+}
