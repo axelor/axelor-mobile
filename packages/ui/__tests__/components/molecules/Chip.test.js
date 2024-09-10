@@ -37,11 +37,18 @@ describe('Chip Component', () => {
   });
 
   it('renders a touchable component with a title', () => {
-    const wrapper = shallow(<Chip {...props} selectedColor={null} />);
+    const wrapper = shallow(
+      <Chip {...props} selectedColor={null} readonly={false} />,
+    );
 
     expect(wrapper.find(Text).prop('children')).toEqual(props.title);
 
     expect(wrapper.find(TouchableOpacity).exists()).toBeTruthy();
+    expect(wrapper.find(TouchableOpacity).prop('disabled')).toEqual(false);
+
+    wrapper.setProps({readonly: true});
+
+    expect(wrapper.find(TouchableOpacity).prop('disabled')).toEqual(true);
   });
 
   it('renders wtih the default selected values', () => {

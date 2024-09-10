@@ -53,13 +53,25 @@ describe('ChipSelect Component', () => {
   });
 
   it('should render Chip with the right props', () => {
-    const wrapper = shallow(<ChipSelect {...props} />);
+    const wrapper = shallow(<ChipSelect {...props} readonly={false} />);
 
     for (let i = 0; i < props.selectionItems.length; i++) {
       expect(wrapper.find(Chip).at(i).props()).toMatchObject({
         selected: props.selectionItems[i].isActive,
         selectedColor: props.selectionItems[i].color,
         title: props.selectionItems[i].title,
+        readonly: false,
+      });
+    }
+
+    wrapper.setProps({readonly: true});
+
+    for (let i = 0; i < props.selectionItems.length; i++) {
+      expect(wrapper.find(Chip).at(i).props()).toMatchObject({
+        selected: props.selectionItems[i].isActive,
+        selectedColor: props.selectionItems[i].color,
+        title: props.selectionItems[i].title,
+        readonly: true,
       });
     }
   });

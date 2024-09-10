@@ -1,0 +1,5 @@
+{
+  "title": "ChipSelect: enable readonly mode on component",
+  "type": "feat",
+  "packages": "ui"
+}
