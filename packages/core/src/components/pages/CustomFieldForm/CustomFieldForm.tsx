@@ -50,6 +50,7 @@ interface CustomFieldFormProps {
   additionalActions?: JsonAction[];
   readonly?: boolean;
   readonlyButton?: boolean;
+  customComponent?: any;
 }
 
 const CustomFieldForm = ({
@@ -60,6 +61,7 @@ const CustomFieldForm = ({
   additionalActions = [],
   readonly = false,
   readonlyButton = false,
+  customComponent,
 }: CustomFieldFormProps) => {
   const Colors = useThemeColor();
   const dispatch = useDispatch();
@@ -70,12 +72,20 @@ const CustomFieldForm = ({
   const removeUnauthorizedFields = useFieldPermitter({modelName: model});
 
   useEffect(() => {
-    fetchJsonFieldsOfModel({modelName: model, type: fieldType}).then(res => {
-      setFields(res?.data?.data);
-    });
-    fetchObject({modelName: model, id: modelId}).then(res => {
-      setObject(res?.data?.data[0]);
-    });
+    fetchJsonFieldsOfModel({modelName: model, type: fieldType})
+      .then(res => {
+        setFields(res?.data?.data);
+      })
+      .catch(() => {
+        setFields(null);
+      });
+    fetchObject({modelName: model, id: modelId})
+      .then(res => {
+        setObject(res?.data?.data[0]);
+      })
+      .catch(() => {
+        setObject(null);
+      });
   }, [model, modelId, fieldType]);
 
   const {fields, panels, defaults} = useMemo(
@@ -88,18 +98,32 @@ const CustomFieldForm = ({
     [Colors, _fields, object, removeUnauthorizedFields],
   );
 
+  const formattedFields = useMemo(() => {
+    const customFields = {...fields};
+
+    if (customComponent) {
+      customFields.customComponent = {
+        type: 'object',
+        widget: 'custom',
+        customComponent: customComponent,
+      };
+    }
+
+    return customFields;
+  }, [fields, customComponent]);
+
   useEffect(() => {
     formConfigsProvider.registerForm(
       `${FORM_KEY}_${fieldType}`,
       {
         readonlyIf: () => readonly,
-        fields,
+        fields: formattedFields,
         panels,
         modelName: model,
       },
       {replaceOld: true},
     );
-  }, [fieldType, fields, model, panels, readonly]);
+  }, [fieldType, fields, formattedFields, model, panels, readonly]);
 
   const attrsValues = useMemo(
     () => (object?.id !== modelId ? null : getAttrsValue(object, fieldType)),

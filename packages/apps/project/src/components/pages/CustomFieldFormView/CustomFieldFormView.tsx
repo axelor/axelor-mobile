@@ -16,14 +16,37 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import React from 'react';
+import React, {useCallback, useEffect} from 'react';
 import {StyleSheet, View} from 'react-native';
 import {CustomFieldForm, useSelector} from '@axelor/aos-mobile-core';
-import {HeaderContainer, ScrollView, Text} from '@axelor/aos-mobile-ui';
+import {Button, HeaderContainer, ScrollView, Text} from '@axelor/aos-mobile-ui';
 import {TaskDetailsHeader} from '../../molecules';
+
+const PhantomComponent = ({objectState, onChange, title}) => {
+  useEffect(() => {
+    onChange(objectState);
+  }, [objectState, onChange]);
+
+  return (
+    <View style={styles.validationButton}>
+      <Text>{title}</Text>
+      <Button iconName="check-lg" width={50} />
+    </View>
+  );
+};
 
 const CustomFieldFormView = ({projecTaskId}) => {
   const {projectTask} = useSelector((state: any) => state.project_projectTask);
+
+  const renderPhantomComponent = useCallback(({objectState = {}, title}) => {
+    return (
+      <PhantomComponent
+        onChange={() => {}}
+        objectState={objectState}
+        title={title}
+      />
+    );
+  }, []);
 
   if (projecTaskId !== projectTask?.id) {
     return null;
@@ -43,6 +66,12 @@ const CustomFieldFormView = ({projecTaskId}) => {
             fieldType="appJson"
             modelId={projectTask.id}
             readonly
+            customComponent={({objectState}) =>
+              renderPhantomComponent({
+                objectState,
+                title: 'Sale_ProjectAppCustomField',
+              })
+            }
           />
         </View>
         <Text>projectJson</Text>
@@ -51,6 +80,12 @@ const CustomFieldFormView = ({projecTaskId}) => {
           fieldType="projectJson"
           modelId={projectTask.id}
           readonly
+          customComponent={({objectState}) =>
+            renderPhantomComponent({
+              objectState,
+              title: 'Sale_ProjectCustomField',
+            })
+          }
         />
         <Text>categoryJson</Text>
         <View style={styles.form}>
@@ -59,6 +94,12 @@ const CustomFieldFormView = ({projecTaskId}) => {
             fieldType="categoryJson"
             modelId={projectTask.id}
             readonly
+            customComponent={({objectState}) =>
+              renderPhantomComponent({
+                objectState,
+                title: 'Sale_CategoryCustomField',
+              })
+            }
           />
         </View>
       </ScrollView>
@@ -75,6 +116,12 @@ const styles = StyleSheet.create({
   },
   form: {
     flex: 1,
+  },
+  validationButton: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    marginHorizontal: 24,
   },
 });
 
