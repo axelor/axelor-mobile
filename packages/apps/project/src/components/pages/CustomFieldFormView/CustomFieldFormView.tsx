@@ -16,7 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import React, {useCallback, useEffect} from 'react';
+import React, {useCallback, useEffect, useMemo} from 'react';
 import {StyleSheet, View} from 'react-native';
 import {
   CustomFieldForm,
@@ -45,10 +45,12 @@ const CustomComponent = ({objectState, onChange, title}) => {
   );
 };
 
-const CustomFieldFormView = ({projecTaskId}) => {
+const CustomFieldFormView = ({projecTaskId, config}) => {
   const I18n = useTranslator();
 
   const {projectTask} = useSelector((state: any) => state.project_projectTask);
+
+  const configArray = useMemo(() => config.split(','), [config]);
 
   const renderCustomomponent = useCallback(({objectState = {}, title}) => {
     return (
@@ -71,50 +73,63 @@ const CustomFieldFormView = ({projecTaskId}) => {
         fixedItems={<TaskDetailsHeader />}
       />
       <ScrollView>
-        <View style={styles.form}>
-          <CustomFieldForm
-            model="com.axelor.apps.project.db.ProjectTask"
-            fieldType="appJson"
-            modelId={projectTask.id}
-            readonly
-            customComponent={({objectState}) =>
-              renderCustomomponent({
-                objectState,
-                title: I18n.t('Project_ProjectAppCustomField'),
-              })
-            }
-          />
-        </View>
-        <HorizontalRule style={styles.horizontalRule} />
-        <View style={styles.form}>
-          <CustomFieldForm
-            model="com.axelor.apps.project.db.ProjectTask"
-            fieldType="projectJson"
-            modelId={projectTask.id}
-            readonly
-            customComponent={({objectState}) =>
-              renderCustomomponent({
-                objectState,
-                title: I18n.t('Project_ProjectCustomField'),
-              })
-            }
-          />
-        </View>
-        <HorizontalRule style={styles.horizontalRule} />
-        <View style={styles.form}>
-          <CustomFieldForm
-            model="com.axelor.apps.project.db.ProjectTask"
-            fieldType="categoryJson"
-            modelId={projectTask.id}
-            readonly
-            customComponent={({objectState}) =>
-              renderCustomomponent({
-                objectState,
-                title: I18n.t('Project_CategoryCustomField'),
-              })
-            }
-          />
-        </View>
+        {configArray.includes('app') && (
+          <>
+            <View style={styles.form}>
+              <CustomFieldForm
+                model="com.axelor.apps.project.db.ProjectTask"
+                fieldType="appJson"
+                modelId={projectTask.id}
+                readonly
+                customComponent={({objectState}) =>
+                  renderCustomomponent({
+                    objectState,
+                    title: I18n.t('Project_ProjectAppCustomField'),
+                  })
+                }
+              />
+            </View>
+            <HorizontalRule style={styles.horizontalRule} />
+          </>
+        )}
+        {configArray.includes('project') && (
+          <>
+            <View style={styles.form}>
+              <CustomFieldForm
+                model="com.axelor.apps.project.db.ProjectTask"
+                fieldType="projectJson"
+                modelId={projectTask.id}
+                readonly
+                customComponent={({objectState}) =>
+                  renderCustomomponent({
+                    objectState,
+                    title: I18n.t('Project_ProjectCustomField'),
+                  })
+                }
+              />
+            </View>
+            <HorizontalRule style={styles.horizontalRule} />
+          </>
+        )}
+        {configArray.includes('category') && (
+          <>
+            <View style={styles.form}>
+              <CustomFieldForm
+                model="com.axelor.apps.project.db.ProjectTask"
+                fieldType="categoryJson"
+                modelId={projectTask.id}
+                readonly
+                customComponent={({objectState}) =>
+                  renderCustomomponent({
+                    objectState,
+                    title: I18n.t('Project_CategoryCustomField'),
+                  })
+                }
+              />
+            </View>
+            <HorizontalRule style={styles.horizontalRule} />
+          </>
+        )}
       </ScrollView>
     </View>
   );
