@@ -42,6 +42,12 @@ storiesOf('ui/molecules/Chip', module).add(
         },
         defaultValue: 'Chip Title',
       },
+      readonly: {
+        control: {
+          type: 'boolean',
+        },
+        defaultValue: false,
+      },
       selected: {
         control: {
           type: 'boolean',

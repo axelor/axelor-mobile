@@ -40,6 +40,7 @@ interface ChipSelectProps {
   isRefresh?: boolean;
   width?: number;
   marginHorizontal?: number;
+  readonly?: boolean;
   onChangeValue?: (value: any) => void;
 }
 
@@ -50,6 +51,7 @@ const ChipSelect = ({
   isRefresh = false,
   width,
   marginHorizontal,
+  readonly = false,
   onChangeValue = () => {},
 }: ChipSelectProps) => {
   const [selectedChip, setSelectedChip] = useState<Item[]>(
@@ -108,6 +110,7 @@ const ChipSelect = ({
             title={item.title}
             selectedColor={item.color}
             onPress={() => updateChip(item)}
+            readonly={readonly}
             marginHorizontal={marginHorizontal}
             width={width}
           />
