@@ -79,6 +79,12 @@ storiesOf('ui/organisms/ChipSelect', module)
           },
           defaultValue: 200,
         },
+        readonly: {
+          control: {
+            type: 'boolean',
+          },
+          defaultValue: false,
+        },
         marginHorizontal: {
           control: {
             type: 'range',

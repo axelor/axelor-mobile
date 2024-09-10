@@ -29,6 +29,7 @@ interface ChipProps {
   selectedColor?: Color;
   width?: number;
   marginHorizontal?: number;
+  readonly?: boolean;
   style?: any;
 }
 
@@ -39,6 +40,7 @@ const Chip = ({
   selectedColor = null,
   width = Dimensions.get('window').width * 0.4,
   marginHorizontal = 12,
+  readonly = false,
   style,
 }: ChipProps) => {
   const Colors = useThemeColor();
@@ -66,6 +68,7 @@ const Chip = ({
   return (
     <TouchableOpacity
       style={[{width: width, marginHorizontal: marginHorizontal}, style]}
+      disabled={readonly}
       onPress={onPress}
       activeOpacity={0.8}>
       <View style={styles.container}>
