@@ -1,0 +1,5 @@
+{
+  "title": "PlanningView: manage data deletion in calendar items helper",
+  "type": "fix",
+  "packages": "core"
+}
