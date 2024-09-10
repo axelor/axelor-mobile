@@ -32,7 +32,7 @@ import {
 } from '@axelor/aos-mobile-ui';
 import {TaskDetailsHeader} from '../../molecules';
 
-const PhantomComponent = ({objectState, onChange, title}) => {
+const CustomComponent = ({objectState, onChange, title}) => {
   useEffect(() => {
     onChange(objectState);
   }, [objectState, onChange]);
@@ -50,9 +50,9 @@ const CustomFieldFormView = ({projecTaskId}) => {
 
   const {projectTask} = useSelector((state: any) => state.project_projectTask);
 
-  const renderPhantomComponent = useCallback(({objectState = {}, title}) => {
+  const renderCustomomponent = useCallback(({objectState = {}, title}) => {
     return (
-      <PhantomComponent
+      <CustomComponent
         onChange={() => {}}
         objectState={objectState}
         title={title}
@@ -78,7 +78,7 @@ const CustomFieldFormView = ({projecTaskId}) => {
             modelId={projectTask.id}
             readonly
             customComponent={({objectState}) =>
-              renderPhantomComponent({
+              renderCustomomponent({
                 objectState,
                 title: I18n.t('Project_ProjectAppCustomField'),
               })
@@ -93,7 +93,7 @@ const CustomFieldFormView = ({projecTaskId}) => {
             modelId={projectTask.id}
             readonly
             customComponent={({objectState}) =>
-              renderPhantomComponent({
+              renderCustomomponent({
                 objectState,
                 title: I18n.t('Project_ProjectCustomField'),
               })
@@ -108,7 +108,7 @@ const CustomFieldFormView = ({projecTaskId}) => {
             modelId={projectTask.id}
             readonly
             customComponent={({objectState}) =>
-              renderPhantomComponent({
+              renderCustomomponent({
                 objectState,
                 title: I18n.t('Project_CategoryCustomField'),
               })
