@@ -115,8 +115,7 @@ const getStyles = Colors =>
       paddingRight: 10,
       paddingBottom: 10,
       marginTop: -20,
-      borderTopLeftRadius: 0,
-      borderTopRightRadius: 0,
+      borderRadius: 7,
       zIndex: 30,
     },
   });
