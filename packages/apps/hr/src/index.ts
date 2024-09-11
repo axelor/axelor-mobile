@@ -56,6 +56,7 @@ export const HrModule: Module = {
         moduleName: 'axelor-human-resource',
         downToVersion: '8.0.0',
       },
+      hideIf: store => !store.timesheet?.enableTimer,
     },
     hr_menu_timers: {
       title: 'Hr_Timers',
@@ -65,7 +66,9 @@ export const HrModule: Module = {
         moduleName: 'axelor-human-resource',
         downToVersion: '8.0.0',
       },
-      hideIf: store => !store.timesheet?.isMultipleTimerEnabled,
+      hideIf: store =>
+        !store.timesheet?.isMultipleTimerEnabled ||
+        !store.timesheet?.enableTimer,
     },
     hr_menu_timesheets: {
       title: 'Hr_Timesheets',
