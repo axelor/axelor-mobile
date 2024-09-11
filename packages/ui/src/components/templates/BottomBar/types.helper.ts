@@ -18,7 +18,7 @@
 
 import {Color} from '../../../theme';
 
-export interface BottomBarItem {
+interface Item {
   iconName: string;
   color?: Color;
   title?: string;
@@ -26,9 +26,15 @@ export interface BottomBarItem {
   hidden?: boolean;
   disabled?: boolean;
   indicator?: number;
+  key?: string;
+}
+
+export interface ViewItem extends Item {
   viewComponent: React.ReactNode;
 }
 
-export interface DisplayItem extends BottomBarItem {
-  key: string;
+interface ActionItem extends Item {
+  onPress: () => void;
 }
+
+export type BottomBarItem = ViewItem | ActionItem;

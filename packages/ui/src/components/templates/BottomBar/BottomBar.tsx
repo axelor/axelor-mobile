@@ -28,7 +28,7 @@ import {useConfig} from '../../../config/ConfigContext';
 import {useThemeColor} from '../../../theme';
 import {Card} from '../../atoms';
 import BarItem from './BarItem';
-import {BottomBarItem, DisplayItem} from './types.helper';
+import {BottomBarItem, ViewItem} from './types.helper';
 import {getVisibleItems} from './display.helper';
 
 const WINDOW_HEIGHT = Dimensions.get('window').height;
@@ -78,28 +78,37 @@ const BottomBar = ({
     };
   });
 
-  const visibleItems: DisplayItem[] = useMemo(
+  const visibleItems: BottomBarItem[] = useMemo(
     () => getVisibleItems(items),
     [items],
   );
 
+  const handleItemPress = useCallback(
+    (item: BottomBarItem) => {
+      if ('onPress' in item && typeof item.onPress === 'function') {
+        item.onPress();
+      } else {
+        setSelectedItemColor(item.color);
+        setSelectedKey(item.key);
+      }
+    },
+    [setSelectedKey, setSelectedItemColor],
+  );
+
   const renderItem = useCallback(
-    (item: DisplayItem) => {
+    (item: BottomBarItem) => {
       return (
         <View key={item.key} onLayout={event => onItemLayout(event, item.key)}>
           <BarItem
             {...item}
             size={itemSize}
-            onPress={() => {
-              setSelectedItemColor(item.color);
-              setSelectedKey(item.key);
-            }}
-            isSelected={selectedKey === item.key}
+            onPress={() => handleItemPress(item)}
+            isSelected={selectedKey === item.key && !('onPress' in item)}
           />
         </View>
       );
     },
-    [itemSize, onItemLayout, selectedKey],
+    [itemSize, onItemLayout, selectedKey, handleItemPress],
   );
 
   useEffect(() => {
@@ -112,7 +121,10 @@ const BottomBar = ({
   return (
     <View style={styles.container}>
       <View style={{height: viewHeight}}>
-        {visibleItems.find(_item => _item.key === selectedKey)?.viewComponent}
+        {
+          (visibleItems as ViewItem[]).find(_item => _item.key === selectedKey)
+            ?.viewComponent
+        }
       </View>
       <View
         onLayout={event => {
