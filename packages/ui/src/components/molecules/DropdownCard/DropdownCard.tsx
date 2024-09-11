@@ -115,6 +115,7 @@ const getStyles = Colors =>
       paddingRight: 10,
       paddingBottom: 10,
       marginTop: -20,
+      borderRadius: 7,
       borderTopLeftRadius: 0,
       borderTopRightRadius: 0,
       zIndex: 30,

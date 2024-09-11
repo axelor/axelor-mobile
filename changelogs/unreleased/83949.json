@@ -1,0 +1,5 @@
+{
+  "title": "DropdownCard: adjust border radius on content container",
+  "type": "fix",
+  "packages": "ui"
+}
