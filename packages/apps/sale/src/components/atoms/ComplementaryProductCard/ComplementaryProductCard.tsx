@@ -18,7 +18,11 @@
 
 import React, {useMemo} from 'react';
 import {StyleSheet, View} from 'react-native';
-import {useMetafileUri, useTranslator,clipboardProvider} from '@axelor/aos-mobile-core';
+import {
+  useMetafileUri,
+  useTranslator,
+  clipboardProvider,
+} from '@axelor/aos-mobile-core';
 import {
   ObjectCard,
   TextUnit,
