@@ -21,7 +21,7 @@ import {StyleSheet, TouchableOpacity, View} from 'react-native';
 import {Card, HtmlInput, Icon, Text} from '../../atoms';
 import {useThemeColor} from '../../../theme/ThemeContext';
 
-const MAX_HEIGHT = 60;
+const MAX_HEIGHT = 71;
 
 interface NotesCardProps {
   title: string;
@@ -59,7 +59,6 @@ const NotesCard = ({title, data, style}: NotesCardProps) => {
           />
           {chevronHeight > MAX_HEIGHT && (
             <Icon
-              style={styles.icon}
               name={expanded ? 'chevron-up' : 'chevron-down'}
               color={Colors.primaryColor.background}
             />
@@ -91,9 +90,6 @@ const styles = StyleSheet.create({
   },
   htmlInput: {
     maxHeight: MAX_HEIGHT,
-  },
-  icon: {
-    marginTop: 5,
   },
 });
 
