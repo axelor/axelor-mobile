@@ -1,6 +1,5 @@
 {
-    "title": "timer: hide timer menu entry depends on config",
-    "type": "fix",
-    "packages": "hr"
-  }
-  
+  "title": "Timer: hide menu entry when timers are disabled on AOS",
+  "type": "fix",
+  "packages": "hr"
+}
