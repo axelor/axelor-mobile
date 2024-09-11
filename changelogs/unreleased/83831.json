@@ -1,0 +1,6 @@
+{
+    "title": "timer: hide timer menu entry depends on config",
+    "type": "fix",
+    "packages": "hr"
+  }
+  
