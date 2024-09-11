@@ -27,7 +27,10 @@ import {
   unsubscribeRequest,
   countUnreadMessages,
 } from '../api/mail-message-api';
-import {handlerApiCall} from '../apiProviders/utils';
+import {
+  generateInifiniteScrollCases,
+  handlerApiCall,
+} from '../apiProviders/utils';
 
 export const getMailMessages = createAsyncThunk(
   'mailMessages/getMailMessages',
@@ -169,11 +172,13 @@ export const markAllMailMessageAsRead = createAsyncThunk(
 
 const initialState = {
   loading: false,
-  loadingFollowers: false,
   moreLoading: false,
   isListEnd: false,
   mailMessagesList: [],
+
+  loadingFollowers: false,
   modelFollowersList: [],
+
   reload: false,
   reloadFollowers: false,
   unreadMessages: 0,
@@ -183,31 +188,11 @@ const mailMessagesSlice = createSlice({
   name: 'mailMessages',
   initialState,
   extraReducers: builder => {
-    builder.addCase(getMailMessages.pending, (state, action) => {
-      state.reload = false;
-      if (action.meta.arg.page === 0) {
-        state.loading = true;
-      } else {
-        state.moreLoading = true;
-      }
-    });
-    builder.addCase(getMailMessages.fulfilled, (state, action) => {
-      state.loading = false;
-      state.moreLoading = false;
-      if (action.meta.arg.page === 0 || action.meta.arg.page == null) {
-        state.mailMessagesList = action.payload;
-        state.isListEnd = false;
-      } else {
-        if (action.payload != null) {
-          state.isListEnd = false;
-          state.mailMessagesList = [
-            ...state.mailMessagesList,
-            ...action.payload,
-          ];
-        } else {
-          state.isListEnd = true;
-        }
-      }
+    generateInifiniteScrollCases(builder, getMailMessages, {
+      loading: 'loading',
+      moreLoading: 'moreLoading',
+      isListEnd: 'isListEnd',
+      list: 'mailMessagesList',
     });
     builder.addCase(sendMailMessageComment.pending, (state, action) => {
       state.reload = false;
