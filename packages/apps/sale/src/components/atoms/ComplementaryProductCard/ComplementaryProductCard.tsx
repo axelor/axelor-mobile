@@ -18,7 +18,11 @@
 
 import React, {useMemo} from 'react';
 import {StyleSheet, View} from 'react-native';
-import {useMetafileUri, useTranslator} from '@axelor/aos-mobile-core';
+import {
+  useMetafileUri,
+  useTranslator,
+  clipboardProvider,
+} from '@axelor/aos-mobile-core';
 import {
   ObjectCard,
   TextUnit,
@@ -64,8 +68,8 @@ const ComplementaryProductCard = ({
       <ObjectCard
         style={styles.container}
         leftContainerFlex={2}
-        touchable={false}
         showArrow={false}
+        onPress={() => clipboardProvider.copyToClipboard(code)}
         image={{
           generalStyle: styles.imageSize,
           imageSize: styles.imageSize,
