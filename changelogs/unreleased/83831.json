@@ -1,0 +1,5 @@
+{
+  "title": "Timer: hide menu entry when timers are disabled on AOS",
+  "type": "fix",
+  "packages": "hr"
+}
