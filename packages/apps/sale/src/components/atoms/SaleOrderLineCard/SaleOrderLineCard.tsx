@@ -22,11 +22,9 @@ import {useMetafileUri, useTranslator, useTypes} from '@axelor/aos-mobile-core';
 import {
   HtmlInput,
   ObjectCard,
-  Text,
   TextUnit,
   useDigitFormat,
   usePriceFormat,
-  useThemeColor,
 } from '@axelor/aos-mobile-ui';
 
 interface SaleOrderLineCardProps {
@@ -63,7 +61,6 @@ const SaleOrderLineCard = ({
   onPress,
 }: SaleOrderLineCardProps) => {
   const I18n = useTranslator();
-  const Colors = useThemeColor();
   const {SaleOrderLine} = useTypes();
   const formatMetaFile = useMetafileUri();
   const formatNumber = useDigitFormat();
@@ -106,11 +103,6 @@ const SaleOrderLineCard = ({
               displayText: formatPrice(price),
               style: styles.noBold,
             },
-            {
-              indicatorText: I18n.t('Sale_Unit'),
-              displayText: unit,
-              style: styles.noBold,
-            },
           ],
         }}
         sideBadges={{
@@ -118,11 +110,11 @@ const SaleOrderLineCard = ({
           items: [
             {
               customComponent: (
-                <Text
+                <TextUnit
                   style={styles.sideText}
-                  textColor={Colors.primaryColor.background}>
-                  {formatNumber(qty)}
-                </Text>
+                  value={formatNumber(qty)}
+                  unit={unit}
+                />
               ),
             },
             {
