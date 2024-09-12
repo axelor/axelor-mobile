@@ -21,6 +21,32 @@ import {TranslatorProps} from '../../../i18n';
 import {formatTime, diffDate, sameDate, incrementDate} from '../../../utils';
 
 export const EMPTY_TIME = '-';
+const START_OF_MONTH_DOTS = 'startOfMonth';
+
+export const MONTHS = [
+  'Base_MonthLong_January',
+  'Base_MonthLong_February',
+  'Base_MonthLong_March',
+  'Base_MonthLong_April',
+  'Base_MonthLong_May',
+  'Base_MonthLong_June',
+  'Base_MonthLong_July',
+  'Base_MonthLong_August',
+  'Base_MonthLong_September',
+  'Base_MonthLong_October',
+  'Base_MonthLong_November',
+  'Base_MonthLong_December',
+];
+
+export const DAYS = [
+  'Base_Day_Sun',
+  'Base_Day_Mon',
+  'Base_Day_Tue',
+  'Base_Day_Wed',
+  'Base_Day_Thu',
+  'Base_Day_Fri',
+  'Base_Day_Sat',
+];
 
 export interface AgendaEvent {
   id: string;
@@ -32,6 +58,7 @@ export interface AgendaEvent {
 export interface AgendaItem {
   id: string;
   date: string | Date;
+  isNewMonth?: boolean;
   startHour?: string | Date;
   endHour?: string | Date;
   isFullDayEvent?: Boolean;
@@ -42,8 +69,17 @@ export function mapEntryToItem(
   agendaItem: AgendaEntry,
   itemList: AgendaItem[],
 ): AgendaItem {
-  const itemId = agendaItem.name;
-  return itemList.find((item: AgendaItem) => item.id === itemId);
+  const _item = itemList.find(
+    (item: AgendaItem) => item.id === agendaItem.name,
+  );
+
+  return {
+    id: agendaItem.name,
+    date: agendaItem.day,
+    data: {},
+    ...(_item ?? {}),
+    isNewMonth: agendaItem.name.includes(START_OF_MONTH_DOTS),
+  };
 }
 
 function mapItemToEntry(item: AgendaItem): AgendaEntry {
@@ -94,7 +130,24 @@ function generateAgendaItems(monthsAroundDate): AgendaSchedule {
   const dateArray = getAllDatesFromDate(monthsAroundDate, todayDate);
   const agendaItems = {};
 
-  dateArray.forEach((date: Date) => (agendaItems[formatDate(date)] = []));
+  dateArray.forEach((date: Date) => {
+    if (isStartOfMonth(date)) {
+      const _d = addDays(date, -1);
+
+      agendaItems[formatDate(_d)] = [
+        {
+          day: _d,
+          name: `${_d.getFullYear()}-${
+            _d.getMonth() + 1
+          }-${START_OF_MONTH_DOTS}`,
+          height: undefined,
+        },
+      ];
+    }
+
+    agendaItems[formatDate(date)] = [];
+  });
+
   return agendaItems;
 }
 
@@ -104,15 +157,27 @@ export function createAgendaSchedule(
 ) {
   const agendaSchedule = generateAgendaItems(monthsAroundDate);
   const agendaItems = mapItemListToEntryList(items);
+
   agendaItems.forEach((item: AgendaEntry) => {
     const itemDate = formatDate(new Date(item.day));
     return (agendaSchedule[itemDate] = [...agendaSchedule[itemDate], item]);
   });
+
   return agendaSchedule;
 }
 
-export function getShortName(date, lang) {
-  return new Intl.DateTimeFormat(lang, {weekday: 'short'}).format(date);
+export function getShortName(date: Date) {
+  return DAYS[date.getDay()];
+}
+
+export function getMonthName(date: string | Date): string {
+  const _d = addDays(date, 1);
+  return MONTHS[_d.getMonth()];
+}
+
+export function isStartOfMonth(date: Date | string): boolean {
+  const d = new Date(date);
+  return d.getDate() === 1;
 }
 
 export function isToday(date) {
@@ -215,4 +280,14 @@ export const shouldRenderDetailsCard = (event: AgendaItem) => {
     (isLastItemOfEvent && eventDate <= today) ||
     isDayEvent
   );
+};
+
+export const filterMarkedDates = (agendaItems: AgendaSchedule) => {
+  const nonTechnicalDates = Object.entries(agendaItems).map(([_d, items]) => {
+    const _list = items.filter(({name}) => !name.includes(START_OF_MONTH_DOTS));
+
+    return [_d, {marked: _list.length > 0}];
+  });
+
+  return Object.fromEntries(nonTechnicalDates);
 };

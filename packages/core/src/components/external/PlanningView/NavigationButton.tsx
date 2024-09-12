@@ -16,14 +16,39 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-export function updateAgendaItems(previousData, payload) {
-  if (payload == null) {
-    return previousData;
-  }
-  const allData = [...previousData, ...payload];
-  const mapIdToItem = allData.map(item => [item.id, item]);
-  const mapWithoutDuplicates = new Map(mapIdToItem);
-  const arrayWithoutDuplicates = [...mapWithoutDuplicates.values()];
+import React from 'react';
+import {StyleSheet} from 'react-native';
+import {CircleButton} from '@axelor/aos-mobile-ui';
 
-  return arrayWithoutDuplicates;
-}
+const NavigationButton = ({
+  visible = true,
+  icon,
+  onPress,
+}: {
+  visible?: boolean;
+  icon: string;
+  onPress: () => void;
+}) => {
+  if (!visible) {
+    return null;
+  }
+
+  return (
+    <CircleButton
+      style={styles.circleButton}
+      iconName={icon}
+      onPress={onPress}
+      size={30}
+    />
+  );
+};
+
+const styles = StyleSheet.create({
+  circleButton: {
+    marginHorizontal: 5,
+    marginTop: 5,
+    width: 40,
+  },
+});
+
+export default NavigationButton;
