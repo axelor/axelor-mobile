@@ -96,6 +96,7 @@ const getStyles = (Colors: ThemeColors) =>
     text: {
       textAlign: 'center',
       marginRight: 5,
+      maxWidth: 100,
     },
     listItemContainer: {
       flexDirection: 'row',
@@ -115,7 +116,6 @@ const getStyles = (Colors: ThemeColors) =>
       marginLeft: 5,
       paddingHorizontal: 7,
       height: 22,
-      maxWidth: 110,
     },
   });
 
