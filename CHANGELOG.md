@@ -3,6 +3,34 @@ title: 7.1.0
 tags: Changelog
 ---
 
+## [7.1.18] (2024-09-12)
+
+### @axelor/aos-mobile-core
+
+#### Features
+
+- PlanningView: add month change information to scrollable view
+
+#### Fixes
+
+- PlanningView: manage data deletion in calendar items helper
+- PlanningView: add translations to month and day names
+- Mail messages: remove infinite loading
+
+### @axelor/aos-mobile-ui
+
+#### Features
+
+- ChipSelect: enable readonly mode on component
+
+#### Changes
+
+- ProgressBar: when progress is small, display bar with a minimum width
+
+#### Fixes
+
+- MultiValuePicker: apply max width on text item
+
 ## [7.1.17] (2024-08-13)
 
 ### @axelor/aos-mobile-core
@@ -592,6 +620,7 @@ This update breaks the compatability with AOS Stock module under version 7.1 due
 - Add number decimal digit config management system
 - Manage multilines input with auto height resize on FormInput
 
+[7.1.18]: https://github.com/axelor/axelor-mobile/compare/7.1.17...7.1.18
 [7.1.17]: https://github.com/axelor/axelor-mobile/compare/7.1.16...7.1.17
 [7.1.16]: https://github.com/axelor/axelor-mobile/compare/7.1.15...7.1.16
 [7.1.15]: https://github.com/axelor/axelor-mobile/compare/7.1.14...7.1.15

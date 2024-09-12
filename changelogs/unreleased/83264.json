@@ -1,5 +1,0 @@
-{
-  "title": "ProgressBar: when progress is small, display bar with a minimum width",
-  "type": "refactor",
-  "packages": "ui"
-}
