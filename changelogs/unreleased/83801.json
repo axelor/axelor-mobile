@@ -1,0 +1,5 @@
+{
+  "title": "BottomBar: add possibility to trigger an action instead of view display",
+  "type": "feat",
+  "packages": "ui"
+}
