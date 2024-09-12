@@ -22,6 +22,7 @@ import {MultiValuePicker, ToggleButton} from '@axelor/aos-mobile-ui';
 import {
   useDispatch,
   useSelector,
+  useTranslator,
   useTypeHelpers,
 } from '@axelor/aos-mobile-core';
 import {
@@ -54,6 +55,7 @@ const TaskFilters = ({
   setProject?: SetterFunction;
   showProjectSearchBar?: boolean;
 }) => {
+  const I18n = useTranslator();
   const dispatch = useDispatch();
   const {getCustomSelectionItems} = useTypeHelpers();
 
@@ -115,11 +117,13 @@ const TaskFilters = ({
             style={styles.picker}
             listItems={statusList}
             onValueChange={setSelectedStatus}
+            placeholder={I18n.t('Project_Status')}
           />
           <MultiValuePicker
             style={styles.picker}
             listItems={priorityList}
             onValueChange={setSelectedPriority}
+            placeholder={I18n.t('Project_Priority')}
           />
         </View>
       </View>

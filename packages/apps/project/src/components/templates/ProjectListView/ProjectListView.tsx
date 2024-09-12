@@ -94,6 +94,7 @@ const ProjectListView = ({
             style={styles.picker}
             listItems={statusList}
             onValueChange={setSelectedStatus}
+            placeholder={I18n.t('Project_Status')}
           />
         </View>
       }
