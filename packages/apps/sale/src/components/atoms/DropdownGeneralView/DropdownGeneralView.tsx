@@ -73,6 +73,9 @@ const DropdownGeneralView = ({
           value={fiscalPositionName}
         />
       )}
+      {!checkNullString(priceListName) && (
+        <LabelText title={I18n.t('Sale_PriceList')} value={priceListName} />
+      )}
       {!checkNullString(invoicedPartnerName) && (
         <LabelText
           title={I18n.t('Sale_InvoicedPartner')}
@@ -87,9 +90,6 @@ const DropdownGeneralView = ({
         />
       )}
       <AdressLine address={deliveryAddress} />
-      {!checkNullString(priceListName) && (
-        <LabelText title={I18n.t('Sale_PriceList')} value={priceListName} />
-      )}
     </View>
   );
 };
