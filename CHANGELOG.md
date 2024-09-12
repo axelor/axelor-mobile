@@ -3,6 +3,41 @@ title: 8.0.0
 tags: Changelog
 ---
 
+## [8.0.10] (2024-09-12)
+
+### @axelor/aos-mobile-core
+
+#### Features
+
+- PlanningView: add month change information to scrollable view
+
+#### Fixes
+
+- PlanningView: manage data deletion in calendar items helper
+- PlanningView: add translations to month and day names
+- Mail messages: remove infinite loading
+
+### @axelor/aos-mobile-ui
+
+#### Features
+
+- ChipSelect: enable readonly mode on component
+
+#### Changes
+
+- ProgressBar: when progress is small, display bar with a minimum width
+
+#### Fixes
+
+- DropdownCard: adjust border radius on content container
+- MultiValuePicker: apply max width on text item
+
+### @axelor/aos-mobile-hr
+
+#### Fixes
+
+- Timer: hide menu entry when timers are disabled on AOS
+
 ## [8.0.9] (2024-08-09)
 
 ### @axelor/aos-mobile-core
@@ -458,6 +493,7 @@ Changes has been done to get new core and ui improvements: use of ChipSelect, co
 
 Changes has been done to get new core and ui improvements: use of ChipSelect, color differentiation between success and primary, definition of required configs, use of icons for Bootstrap
 
+[8.0.10]: https://github.com/axelor/axelor-mobile/compare/8.0.9...8.0.10
 [8.0.9]: https://github.com/axelor/axelor-mobile/compare/8.0.8...8.0.9
 [8.0.8]: https://github.com/axelor/axelor-mobile/compare/8.0.7...8.0.8
 [8.0.7]: https://github.com/axelor/axelor-mobile/compare/8.0.6...8.0.7

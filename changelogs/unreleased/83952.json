@@ -1,5 +1,0 @@
-{
-  "title": "Mail messages: remove infinite loading",
-  "type": "fix",
-  "packages": "core"
-}
