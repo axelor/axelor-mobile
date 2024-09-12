@@ -3,6 +3,34 @@ title: 7.2.0
 tags: Changelog
 ---
 
+## [7.2.16] (2024-09-12)
+
+### @axelor/aos-mobile-core
+
+#### Features
+
+- PlanningView: add month change information to scrollable view
+
+#### Fixes
+
+- PlanningView: manage data deletion in calendar items helper
+- PlanningView: add translations to month and day names
+- Mail messages: remove infinite loading
+
+### @axelor/aos-mobile-ui
+
+#### Features
+
+- ChipSelect: enable readonly mode on component
+
+#### Changes
+
+- ProgressBar: when progress is small, display bar with a minimum width
+
+#### Fixes
+
+- MultiValuePicker: apply max width on text item
+
 ## [7.2.15] (2024-08-09)
 
 ### @axelor/aos-mobile-core
@@ -621,6 +649,7 @@ It enables user to manage Expenses through the mobile application. You can creat
 - Remove IconButton component which should be replaced by Button component.
 - Remove Pop-up components which should be replaced by Alert component.
 
+[7.2.16]: https://github.com/axelor/axelor-mobile/compare/7.2.15...7.2.16
 [7.2.15]: https://github.com/axelor/axelor-mobile/compare/7.2.14...7.2.15
 [7.2.14]: https://github.com/axelor/axelor-mobile/compare/7.2.13...7.2.14
 [7.2.13]: https://github.com/axelor/axelor-mobile/compare/7.2.12...7.2.13
