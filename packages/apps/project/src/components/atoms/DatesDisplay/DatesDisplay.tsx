@@ -18,8 +18,8 @@
 
 import React from 'react';
 import {StyleSheet, View} from 'react-native';
-import {DateDisplay} from '@axelor/aos-mobile-core';
-import {Icon} from '@axelor/aos-mobile-ui';
+import {DateDisplay, useTranslator} from '@axelor/aos-mobile-core';
+import {Icon, Text} from '@axelor/aos-mobile-ui';
 
 const DatesDisplay = ({
   fromDate,
@@ -28,16 +28,24 @@ const DatesDisplay = ({
   fromDate?: string;
   toDate?: string;
 }) => {
+  const I18n = useTranslator();
+
   return (
     <View style={styles.dateContainer}>
-      <DateDisplay date={fromDate} />
+      <View style={styles.dateWrapper}>
+        <Text>{I18n.t('Project_StartedOn')}</Text>
+        <DateDisplay date={fromDate} />
+      </View>
       <Icon
         name="arrow-right"
         size={30}
         style={styles.icon}
         visible={fromDate != null && toDate != null}
       />
-      <DateDisplay date={toDate} />
+      <View style={styles.dateWrapper}>
+        <Text>{I18n.t('Project_EndedOn')}</Text>
+        <DateDisplay date={toDate} />
+      </View>
     </View>
   );
 };
@@ -51,6 +59,9 @@ const styles = StyleSheet.create({
   },
   icon: {
     marginHorizontal: 2,
+  },
+  dateWrapper: {
+    flexDirection: 'column',
   },
 });
 
