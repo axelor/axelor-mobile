@@ -32,6 +32,7 @@ interface DropdownGeneralViewProps {
   mainInvoicingAddress: string;
   deliveredPartnerName: string;
   deliveryAddress: string;
+  priceListName: string;
 }
 
 const DropdownGeneralView = ({
@@ -44,6 +45,7 @@ const DropdownGeneralView = ({
   mainInvoicingAddress,
   deliveredPartnerName,
   deliveryAddress,
+  priceListName,
 }: DropdownGeneralViewProps) => {
   const I18n = useTranslator();
 
@@ -85,6 +87,9 @@ const DropdownGeneralView = ({
         />
       )}
       <AdressLine address={deliveryAddress} />
+      {!checkNullString(priceListName) && (
+        <LabelText title={I18n.t('Sale_PriceList')} value={priceListName} />
+      )}
     </View>
   );
 };

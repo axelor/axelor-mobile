@@ -64,6 +64,7 @@ export const sale_modelAPI: ObjectFields = {
     saleOrderSeq: schemaContructor.string(),
     orderBeingEdited: schemaContructor.boolean(),
     externalReference: schemaContructor.string(),
+    priceList: schemaContructor.subObject('name'),
     clientPartner: schemaContructor.subObject().concat(
       schemaContructor.object({
         fullName: schemaContructor.string(),
