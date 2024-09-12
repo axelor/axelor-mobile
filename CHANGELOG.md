@@ -3,6 +3,30 @@ title: 7.0.0
 tags: Changelog
 ---
 
+## [7.0.20] (2024-09-12)
+
+### @axelor/aos-mobile-core
+
+#### Features
+
+- PlanningView: add month change information to scrollable view
+
+#### Fixes
+
+- PlanningView: manage data deletion in calendar items helper
+- PlanningView: add translations to month and day names
+- Mail messages: remove infinite loading
+
+### @axelor/aos-mobile-ui
+
+#### Features
+
+- ChipSelect: enable readonly mode on component
+
+#### Changes
+
+- ProgressBar: when progress is small, display bar with a minimum width
+
 ## [7.0.19] (2024-08-09)
 
 ### @axelor/aos-mobile-ui
@@ -660,6 +684,7 @@ The project architecture has also been updated, the example folder has been expl
 - Replace ChipSelect by MultiValuePicker on list screens
 - Add search bar details pop up on screens: add empowered searchBar for objects
 
+[7.0.20]: https://github.com/axelor/axelor-mobile/compare/7.0.19...7.0.20
 [7.0.19]: https://github.com/axelor/axelor-mobile/compare/7.0.18...7.0.19
 [7.0.18]: https://github.com/axelor/axelor-mobile/compare/7.0.17...7.0.18
 [7.0.17]: https://github.com/axelor/axelor-mobile/compare/7.0.16...7.0.17
