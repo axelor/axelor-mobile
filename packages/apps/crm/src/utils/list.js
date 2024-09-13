@@ -18,17 +18,6 @@
 
 import {isDate} from '@axelor/aos-mobile-core';
 
-export const getLastItem = (listItem, orderField) => {
-  return findItem(
-    listItem,
-    item => isDate(item[orderField]) && new Date(item[orderField]) < new Date(),
-    (prev, current) =>
-      new Date(current[orderField]) > new Date(prev[orderField])
-        ? current
-        : prev,
-  );
-};
-
 export const getNextItem = (listItem, orderField) => {
   return findItem(
     listItem,

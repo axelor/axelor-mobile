@@ -26,7 +26,7 @@ import {
   ScrollView,
 } from '@axelor/aos-mobile-ui';
 import {ClientDropdownCards, getClientbyId} from '@axelor/aos-mobile-crm';
-import {ClientHeader} from '../../components';
+import {ClientHeader, DropDownSaleOrderView} from '../../components';
 import {fetchCustomerById} from '../../features/customerSlice';
 
 const ClientSaleDetailsScreen = ({route}) => {
@@ -62,7 +62,12 @@ const ClientSaleDetailsScreen = ({route}) => {
         style={styles.scrollView}
         refresh={{loading: loadingCustomer, fetcher: getCustomer}}>
         <NotesCard title={I18n.t('Crm_Notes')} data={customer.description} />
-        <ClientDropdownCards />
+        <ClientDropdownCards
+          additionalDropDown={{
+            childrenComp: <DropDownSaleOrderView customerId={customer?.id} />,
+            title: I18n.t('Sale_LinkedQuotationsAndOrders'),
+          }}
+        />
       </ScrollView>
     </Screen>
   );

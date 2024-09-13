@@ -16,7 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import React, {useEffect} from 'react';
+import React, {useEffect, useMemo} from 'react';
 import {StyleSheet, View} from 'react-native';
 import {useDispatch, useSelector, useTranslator} from '@axelor/aos-mobile-core';
 import {DropdownCardSwitch} from '@axelor/aos-mobile-ui';
@@ -30,7 +30,7 @@ import {
 import {searchContactById} from '../../../../features/contactSlice';
 import {fetchPartnerEventById} from '../../../../features/eventSlice';
 
-const ClientDropdownCards = ({}) => {
+const ClientDropdownCards = ({additionalDropDown = null}) => {
   const I18n = useTranslator();
   const dispatch = useDispatch();
 
@@ -49,54 +49,65 @@ const ClientDropdownCards = ({}) => {
     dispatch(fetchPartnerEventById(client?.id));
   }, [dispatch, client]);
 
+  const dropdownItems = useMemo(() => {
+    const _dropdownItems = [
+      {
+        title: I18n.t('Crm_Contact'),
+        key: 1,
+        childrenComp: (
+          <DropdownContactView
+            address={client.mainAddress?.fullName}
+            fixedPhone={client.fixedPhone}
+            emailAddress={client.emailAddress?.address}
+            webSite={client.webSite}
+            networkData={{company: client.simpleFullName}}
+          />
+        ),
+      },
+      {
+        title: I18n.t('Crm_GeneralInformation'),
+        key: 2,
+        childrenComp: (
+          <DropdownGeneralView
+            assignedUser={client.user?.fullName}
+            category={client.partnerCategory?.name}
+            industrySector={client.industrySector?.name}
+            priceList={client.salePartnerPriceList?.label}
+          />
+        ),
+      },
+      {
+        title: I18n.t('Crm_Employees'),
+        key: 3,
+        childrenComp: <DropdownEmployeeView contactList={listContactById} />,
+      },
+      {
+        title: I18n.t('Crm_Events'),
+        key: 4,
+        childrenComp: <DropdownEventView eventList={listEventPartner} />,
+      },
+      {
+        title: I18n.t('Crm_Opportunity'),
+        key: 5,
+        childrenComp: <DropdownOpportunityView partnerId={client?.id} />,
+      },
+    ];
+
+    if (additionalDropDown) {
+      _dropdownItems.push({
+        title: additionalDropDown.title,
+        key: 6,
+        childrenComp: additionalDropDown.childrenComp,
+      });
+    }
+    return _dropdownItems;
+  }, [I18n, additionalDropDown, client, listContactById, listEventPartner]);
+
   return (
     <View style={styles.container}>
       <DropdownCardSwitch
         styleTitle={styles.textTitle}
-        dropdownItems={[
-          {
-            title: I18n.t('Crm_Contact'),
-            key: 1,
-            childrenComp: (
-              <DropdownContactView
-                address={client.mainAddress?.fullName}
-                fixedPhone={client.fixedPhone}
-                emailAddress={client.emailAddress?.address}
-                webSite={client.webSite}
-                networkData={{company: client.simpleFullName}}
-              />
-            ),
-          },
-          {
-            title: I18n.t('Crm_GeneralInformation'),
-            key: 2,
-            childrenComp: (
-              <DropdownGeneralView
-                assignedUser={client.user?.fullName}
-                category={client.partnerCategory?.name}
-                industrySector={client.industrySector?.name}
-                priceList={client.salePartnerPriceList?.label}
-              />
-            ),
-          },
-          {
-            title: I18n.t('Crm_Employees'),
-            key: 3,
-            childrenComp: (
-              <DropdownEmployeeView contactList={listContactById} />
-            ),
-          },
-          {
-            title: I18n.t('Crm_Events'),
-            key: 4,
-            childrenComp: <DropdownEventView eventList={listEventPartner} />,
-          },
-          {
-            title: I18n.t('Crm_Opportunity'),
-            key: 5,
-            childrenComp: <DropdownOpportunityView partnerId={client?.id} />,
-          },
-        ]}
+        dropdownItems={dropdownItems}
       />
     </View>
   );

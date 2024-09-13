@@ -49,7 +49,7 @@ export {
   formatRequestBody,
 } from './formatters';
 export {useBinaryImageUri, useBinaryPictureUri, useMetafileUri} from './image';
-export {filterList, filterListContain} from './list';
+export {filterList, filterListContain, getLastItem} from './list';
 export {
   calculateDiff,
   formatDuration,

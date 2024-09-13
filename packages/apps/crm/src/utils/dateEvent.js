@@ -16,7 +16,8 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import {getLastItem, getNextItem} from './list';
+import {getLastItem} from '@axelor/aos-mobile-core';
+import {getNextItem} from './list';
 
 export const getLastEvent = listEvent => {
   return getLastItem(listEvent, 'startDateTime');
