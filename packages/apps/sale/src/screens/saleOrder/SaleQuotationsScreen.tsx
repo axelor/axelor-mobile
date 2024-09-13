@@ -21,12 +21,14 @@ import {useTypes} from '@axelor/aos-mobile-core';
 import {Screen} from '@axelor/aos-mobile-ui';
 import {SaleOrderListView} from '../../components';
 
-const SaleQuotationsScreen = ({}) => {
+const SaleQuotationsScreen = ({route}) => {
   const {SaleOrder} = useTypes();
+  const {customer} = route.params;
 
   return (
     <Screen removeSpaceOnTop>
       <SaleOrderListView
+        customer={customer}
         statusList={[
           SaleOrder?.statusSelect.Draft,
           SaleOrder?.statusSelect.Finalized,

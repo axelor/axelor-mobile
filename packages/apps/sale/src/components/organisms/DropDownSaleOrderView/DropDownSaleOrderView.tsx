@@ -16,9 +16,9 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import React, {useEffect, useMemo} from 'react';
-import {View} from 'react-native';
-import {Text} from '@axelor/aos-mobile-ui';
+import React, {useCallback, useEffect, useMemo} from 'react';
+import {StyleSheet, TouchableOpacity, View} from 'react-native';
+import {Icon, Text, useThemeColor} from '@axelor/aos-mobile-ui';
 import {
   isEmpty,
   useNavigation,
@@ -31,18 +31,19 @@ import {
 import {SaleOrderCard} from '../../atoms';
 import {fetchSaleOrder} from '../../../features/saleOrderSlice';
 
-const DropDownSaleOrderView = ({customerId}) => {
+const DropDownSaleOrderView = ({customer}) => {
   const I18n = useTranslator();
   const navigation = useNavigation();
   const dispatch = useDispatch();
+  const Colors = useThemeColor();
 
   const {SaleOrder} = useTypes();
 
   const {saleOrderList} = useSelector(state => state.sale_saleOrder);
 
   useEffect(() => {
-    dispatch((fetchSaleOrder as any)({customerId: customerId}));
-  }, [customerId, dispatch]);
+    dispatch((fetchSaleOrder as any)({customerId: customer?.id}));
+  }, [customer, dispatch]);
 
   const _saleOderList = useMemo(() => {
     return saleOrderList.filter(
@@ -75,6 +76,28 @@ const DropDownSaleOrderView = ({customerId}) => {
   const lasQuotationList = useMemo(() => {
     return getLastItem(quotationList, 'creationDate');
   }, [quotationList]);
+
+  const SeeMoreIcon = useCallback(
+    screen => {
+      return (
+        <TouchableOpacity
+          onPress={() => {
+            navigation.navigate(screen, {customer: customer});
+          }}
+          activeOpacity={0.9}>
+          <View style={styles.iconContainer}>
+            <Text style={styles.txtDetails}>{I18n.t('Base_ViewAll')}</Text>
+            <Icon
+              name="chevron-right"
+              color={Colors.secondaryColor.background_light}
+              size={20}
+            />
+          </View>
+        </TouchableOpacity>
+      );
+    },
+    [Colors.secondaryColor.background_light, I18n, customer, navigation],
+  );
 
   if (isEmpty(lastOrderList) && isEmpty(lasQuotationList)) {
     return (
@@ -109,9 +132,10 @@ const DropDownSaleOrderView = ({customerId}) => {
               })
             }
           />
+          {SeeMoreIcon('SaleQuotationsScreen')}
         </>
       )}
-      {!isEmpty(lasQuotationList) && lasQuotationList != null && (
+      {!isEmpty(lastOrderList) && lastOrderList != null && (
         <>
           <Text>{I18n.t('Sale_LastOrder')}</Text>
           <SaleOrderCard
@@ -134,10 +158,29 @@ const DropDownSaleOrderView = ({customerId}) => {
               })
             }
           />
+          {SeeMoreIcon('SaleOrdersScreen')}
         </>
       )}
     </View>
   );
 };
+
+const styles = StyleSheet.create({
+  iconContainer: {
+    width: '100%',
+    flexDirection: 'row',
+    justifyContent: 'flex-end',
+    alignItems: 'center',
+    alignContent: 'center',
+    marginBottom: 2,
+    elevation: 3,
+    shadowOpacity: 0.5,
+    shadowOffset: {width: 0, height: 0},
+  },
+  txtDetails: {
+    fontSize: 14,
+    marginHorizontal: 15,
+  },
+});
 
 export default DropDownSaleOrderView;

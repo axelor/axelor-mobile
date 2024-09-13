@@ -64,7 +64,7 @@ const ClientSaleDetailsScreen = ({route}) => {
         <NotesCard title={I18n.t('Crm_Notes')} data={customer.description} />
         <ClientDropdownCards
           additionalDropDown={{
-            childrenComp: <DropDownSaleOrderView customerId={customer?.id} />,
+            childrenComp: <DropDownSaleOrderView customer={customer} />,
             title: I18n.t('Sale_LinkedQuotationsAndOrders'),
           }}
         />
