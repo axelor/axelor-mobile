@@ -27,6 +27,7 @@ import {
   getLastItem,
   useTypes,
   useDispatch,
+  useIsFocused,
 } from '@axelor/aos-mobile-core';
 import {SaleOrderCard} from '../../atoms';
 import {fetchSaleOrder} from '../../../features/saleOrderSlice';
@@ -36,14 +37,17 @@ const DropDownSaleOrderView = ({customer}) => {
   const navigation = useNavigation();
   const dispatch = useDispatch();
   const Colors = useThemeColor();
+  const isFocused = useIsFocused();
 
   const {SaleOrder} = useTypes();
 
   const {saleOrderList} = useSelector(state => state.sale_saleOrder);
 
   useEffect(() => {
-    dispatch((fetchSaleOrder as any)({customerId: customer?.id}));
-  }, [customer, dispatch]);
+    if (isFocused) {
+      dispatch((fetchSaleOrder as any)({customerId: customer?.id}));
+    }
+  }, [customer, dispatch, isFocused]);
 
   const _saleOderList = useMemo(() => {
     return saleOrderList.filter(
