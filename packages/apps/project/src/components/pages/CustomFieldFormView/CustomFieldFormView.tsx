@@ -16,7 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import React, {useCallback, useMemo, useState} from 'react';
+import React, {useMemo, useState} from 'react';
 import {ScrollView, StyleSheet, View} from 'react-native';
 import {
   CustomFieldForm,
@@ -31,26 +31,53 @@ import {
 } from '@axelor/aos-mobile-ui';
 import {CustomFieldPopup, TaskDetailsHeader} from '../../molecules';
 
-const CustomComponent = ({onPress, onEdit, title, expanded}) => {
-  return (
-    <View style={styles.sectionContainer}>
-      <Text writingType="title">{title}</Text>
-      <View style={styles.iconContainer}>
-        <Icon
-          touchable={true}
-          onPress={onPress}
-          name={expanded ? 'chevron-up' : 'chevron-down'}
-          style={styles.icon}
-        />
-        <Icon touchable={true} onPress={onEdit} name="pencil-fill" />
-      </View>
+const SectionHeader = ({title, expanded, onPress, onEdit}) => (
+  <View style={styles.sectionContainer}>
+    <Text writingType="title">{title}</Text>
+    <View style={styles.iconContainer}>
+      <Icon
+        touchable={true}
+        onPress={onPress}
+        name={expanded ? 'chevron-up' : 'chevron-down'}
+        style={styles.icon}
+      />
+      <Icon touchable={true} onPress={onEdit} name="pencil-fill" />
     </View>
-  );
-};
+  </View>
+);
+
+const CustomSection = ({
+  title,
+  expanded,
+  toggleSection,
+  onEdit,
+  fieldType,
+  modelId,
+}) => (
+  <>
+    <SectionHeader
+      title={title}
+      expanded={expanded}
+      onPress={() => toggleSection(fieldType)}
+      onEdit={() => onEdit(fieldType, title)}
+    />
+    {expanded && (
+      <>
+        <CustomFieldForm
+          model="com.axelor.apps.project.db.ProjectTask"
+          fieldType={fieldType}
+          modelId={modelId}
+          style={styles.form}
+          readonly
+        />
+        <HorizontalRule style={styles.horizontalRule} />
+      </>
+    )}
+  </>
+);
 
 const CustomFieldFormView = ({projecTaskId, config}) => {
   const I18n = useTranslator();
-
   const {projectTask} = useSelector((state: any) => state.project_projectTask);
 
   const [expandedSections, setExpandedSections] = useState({
@@ -74,21 +101,8 @@ const CustomFieldFormView = ({projecTaskId, config}) => {
   const closeEditPopup = () => {
     setEditingParams(null);
   };
-  const configArray = useMemo(() => config.split(','), [config]);
 
-  const renderCustomComponent = useCallback(
-    ({title, expanded, onPress, onEdit}) => {
-      return (
-        <CustomComponent
-          onPress={onPress}
-          onEdit={onEdit}
-          title={title}
-          expanded={expanded}
-        />
-      );
-    },
-    [],
-  );
+  const configArray = useMemo(() => config.split(','), [config]);
 
   if (projecTaskId !== projectTask?.id) {
     return null;
@@ -102,82 +116,34 @@ const CustomFieldFormView = ({projecTaskId, config}) => {
       />
       <ScrollView>
         {configArray.includes('app') && (
-          <>
-            {renderCustomComponent({
-              title: I18n.t('Project_ProjectAppCustomField'),
-              expanded: expandedSections.app,
-              onPress: () => toggleSection('app'),
-              onEdit: () =>
-                openEditPopup(
-                  'appJson',
-                  I18n.t('Project_ProjectAppCustomField'),
-                ),
-            })}
-            {expandedSections.app && (
-              <>
-                <CustomFieldForm
-                  model="com.axelor.apps.project.db.ProjectTask"
-                  fieldType="appJson"
-                  modelId={projectTask.id}
-                  style={styles.form}
-                  readonly
-                />
-                <HorizontalRule style={styles.horizontalRule} />
-              </>
-            )}
-          </>
+          <CustomSection
+            title={I18n.t('Project_ProjectAppCustomField')}
+            expanded={expandedSections.app}
+            toggleSection={toggleSection}
+            onEdit={openEditPopup}
+            fieldType="appJson"
+            modelId={projectTask.id}
+          />
         )}
         {configArray.includes('project') && (
-          <>
-            {renderCustomComponent({
-              title: I18n.t('Project_ProjectCustomField'),
-              expanded: expandedSections.project,
-              onPress: () => toggleSection('project'),
-              onEdit: () =>
-                openEditPopup(
-                  'projectJson',
-                  I18n.t('Project_ProjectCustomField'),
-                ),
-            })}
-            {expandedSections.project && (
-              <>
-                <CustomFieldForm
-                  model="com.axelor.apps.project.db.ProjectTask"
-                  fieldType="projectJson"
-                  modelId={projectTask.id}
-                  style={styles.form}
-                  readonly
-                />
-                <HorizontalRule style={styles.horizontalRule} />
-              </>
-            )}
-          </>
+          <CustomSection
+            title={I18n.t('Project_ProjectCustomField')}
+            expanded={expandedSections.project}
+            toggleSection={toggleSection}
+            onEdit={openEditPopup}
+            fieldType="projectJson"
+            modelId={projectTask.id}
+          />
         )}
         {configArray.includes('category') && (
-          <>
-            {renderCustomComponent({
-              title: I18n.t('Project_CategoryCustomField'),
-              expanded: expandedSections.category,
-              onPress: () => toggleSection('category'),
-              onEdit: () =>
-                openEditPopup(
-                  'categoryJson',
-                  I18n.t('Project_CategoryCustomField'),
-                ),
-            })}
-            {expandedSections.category && (
-              <>
-                <CustomFieldForm
-                  model="com.axelor.apps.project.db.ProjectTask"
-                  fieldType="categoryJson"
-                  modelId={projectTask.id}
-                  readonly
-                  style={styles.form}
-                />
-                <HorizontalRule style={styles.horizontalRule} />
-              </>
-            )}
-          </>
+          <CustomSection
+            title={I18n.t('Project_CategoryCustomField')}
+            expanded={expandedSections.category}
+            toggleSection={toggleSection}
+            onEdit={openEditPopup}
+            fieldType="categoryJson"
+            modelId={projectTask.id}
+          />
         )}
       </ScrollView>
       <CustomFieldPopup
@@ -194,9 +160,6 @@ const CustomFieldFormView = ({projecTaskId, config}) => {
 const styles = StyleSheet.create({
   container: {
     marginBottom: 150,
-  },
-  scrollView: {
-    height: null,
   },
   form: {
     flex: 1,
