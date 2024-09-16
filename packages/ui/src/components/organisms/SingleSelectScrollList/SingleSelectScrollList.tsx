@@ -25,7 +25,7 @@ import {ScrollList} from '../ScrollList';
 interface SingleSelectScrollListProps {
   scrollStyle?: any;
   rowStyle?: any;
-  loading: boolean;
+  loadingList: boolean;
   moreLoading: boolean;
   isListEnd: boolean;
   data: any[];
@@ -41,7 +41,7 @@ interface SingleSelectScrollListProps {
 const SingleSelectScrollList = ({
   scrollStyle,
   rowStyle,
-  loading = false,
+  loadingList = false,
   moreLoading = false,
   isListEnd = true,
   data,
@@ -105,7 +105,7 @@ const SingleSelectScrollList = ({
   return (
     <ScrollList
       style={scrollStyle}
-      loadingList={loading}
+      loadingList={loadingList}
       moreLoading={moreLoading}
       isListEnd={isListEnd}
       data={data}

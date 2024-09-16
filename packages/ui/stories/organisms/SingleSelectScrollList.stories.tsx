@@ -31,7 +31,7 @@ export default meta;
 
 export const SingleSelectScrollList: Story<typeof Component> = {
   args: {
-    loading: false,
+    loadingList: false,
     moreLoading: false,
     isListEnd: true,
     buttonSize: 20,
