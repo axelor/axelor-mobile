@@ -29,6 +29,8 @@
   "Project_StartDate": "Start date",
   "Project_DueDate": "Due date",
   "Project_Deadline": "Deadline",
+  "Project_StartedOn": "Started on",
+  "Project_EndedOn": "Ended on",
   "Project_Tags": "Tags",
   "Project_InternalDescription": "Internal description",
   "Project_TimeSpent": "Time spent",

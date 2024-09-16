@@ -29,6 +29,8 @@
   "Project_StartDate": "Date de début",
   "Project_DueDate": "Date d'échéance",
   "Project_Deadline": "Date limite",
+  "Project_StartedOn": "Commencé le",
+  "Project_EndedOn": "Terminé le",
   "Project_Tags": "Étiquettes",
   "Project_InternalDescription": "Description interne",
   "Project_TimeSpent": "Temps passé",

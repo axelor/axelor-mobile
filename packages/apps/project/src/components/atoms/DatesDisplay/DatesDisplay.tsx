@@ -16,10 +16,15 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import React from 'react';
+import React, {useCallback} from 'react';
 import {StyleSheet, View} from 'react-native';
-import {DateDisplay} from '@axelor/aos-mobile-core';
-import {Icon} from '@axelor/aos-mobile-ui';
+import {DateDisplay, useTranslator} from '@axelor/aos-mobile-core';
+import {Icon, Text} from '@axelor/aos-mobile-ui';
+
+interface DateItemProps {
+  title: string;
+  value?: string;
+}
 
 const DatesDisplay = ({
   fromDate,
@@ -28,16 +33,34 @@ const DatesDisplay = ({
   fromDate?: string;
   toDate?: string;
 }) => {
+  const I18n = useTranslator();
+
+  const renderDateItem = useCallback(
+    ({title, value}: DateItemProps) => {
+      if (!value) {
+        return null;
+      }
+
+      return (
+        <View style={styles.dateWrapper}>
+          <Text style={styles.centerText}>{I18n.t(title)}</Text>
+          <DateDisplay date={value} />
+        </View>
+      );
+    },
+    [I18n],
+  );
+
   return (
     <View style={styles.dateContainer}>
-      <DateDisplay date={fromDate} />
+      {renderDateItem({title: 'Project_StartedOn', value: fromDate})}
       <Icon
         name="arrow-right"
         size={30}
         style={styles.icon}
         visible={fromDate != null && toDate != null}
       />
-      <DateDisplay date={toDate} />
+      {renderDateItem({title: 'Project_EndedOn', value: toDate})}
     </View>
   );
 };
@@ -51,6 +74,14 @@ const styles = StyleSheet.create({
   },
   icon: {
     marginHorizontal: 2,
+  },
+  dateWrapper: {
+    flexDirection: 'column',
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  centerText: {
+    textAlign: 'center',
   },
 });
 
