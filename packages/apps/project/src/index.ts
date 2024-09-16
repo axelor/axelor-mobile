@@ -34,7 +34,7 @@ export const ProjectModule: Module = {
   name: 'app-project',
   title: 'Project_Project',
   subtitle: 'Project_Project',
-  icon: 'inboxes-fill',
+  icon: 'ui-checks',
   compatibilityAOS: {
     moduleName: 'axelor-project',
     downToVersion: '8.2.0',
