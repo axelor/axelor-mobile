@@ -19,6 +19,7 @@
 import React, {useCallback, useEffect, useMemo, useState} from 'react';
 import {StyleSheet, TouchableOpacity, View} from 'react-native';
 import {ThemeColors, useThemeColor} from '../../../theme';
+import {hexToRgb} from '../../../utils';
 import {ScrollList} from '../ScrollList';
 
 interface SingleSelectScrollListProps {
@@ -84,15 +85,17 @@ const SingleSelectScrollList = ({
       return (
         <TouchableOpacity
           onPress={() => handleRowSelection(item)}
+          activeOpacity={0.7}
           style={[
             styles.container,
             isSelected && styles.selectedCard,
             rowStyle,
           ]}>
-          <View style={styles.buttonExt}>
-            {isSelected ? <View style={styles.buttonInt} /> : null}
+          <View
+            style={[styles.buttonExt, isSelected && styles.selectedButtonExt]}>
+            <View style={isSelected && styles.selectedButtonInt} />
           </View>
-          {renderItem({item, index})}
+          <View style={styles.itemContainer}>{renderItem({item, index})}</View>
         </TouchableOpacity>
       );
     },
@@ -118,20 +121,15 @@ const getStyles = (Colors: ThemeColors, size: number) =>
     container: {
       flexDirection: 'row',
       alignItems: 'center',
-      margin: 5,
-      flex: 1,
-      minWidth: 100,
-      padding: 10,
+      marginHorizontal: 5,
+      marginVertical: 2,
+      padding: 3,
     },
     selectedCard: {
-      backgroundColor: Colors.backgroundColor,
-      borderColor: Colors.secondaryColor.background,
+      backgroundColor: `rgba(${hexToRgb(Colors.primaryColor.background)}, 0.4)`,
+      borderColor: Colors.primaryColor.background,
       borderWidth: 1,
       borderRadius: 7,
-      elevation: 2,
-      shadowOpacity: 0.5,
-      shadowColor: Colors.secondaryColor.background,
-      shadowOffset: {width: 0, height: 0},
     },
     buttonExt: {
       alignItems: 'center',
@@ -142,12 +140,19 @@ const getStyles = (Colors: ThemeColors, size: number) =>
       borderWidth: 1,
       borderColor: Colors.secondaryColor.background,
       backgroundColor: Colors.backgroundColor,
+      marginHorizontal: 5,
     },
-    buttonInt: {
+    selectedButtonExt: {
+      borderColor: Colors.primaryColor.background,
+    },
+    selectedButtonInt: {
       height: size * 0.7,
       width: size * 0.7,
       borderRadius: size * 0.7,
       backgroundColor: Colors.primaryColor.background,
+    },
+    itemContainer: {
+      flex: 1,
     },
   });
 
