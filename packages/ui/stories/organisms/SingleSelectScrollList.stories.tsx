@@ -19,8 +19,7 @@
 import React from 'react';
 import {StyleSheet, View} from 'react-native';
 import type {Meta} from '@storybook/react';
-import {Text} from '../../src/components/atoms';
-import {SingleSelectScrollList as Component} from '../../src/components/organisms';
+import {SingleSelectScrollList as Component, Text} from '../../src/components';
 import {disabledControl, Story} from '../utils/control-type.helpers';
 
 const meta: Meta<typeof Component> = {
@@ -34,25 +33,28 @@ export const SingleSelectScrollList: Story<typeof Component> = {
   args: {
     loading: false,
     moreLoading: false,
-    isListEnd: false,
+    isListEnd: true,
+    buttonSize: 20,
   },
   argTypes: {
     data: disabledControl,
     onChange: disabledControl,
     renderItem: disabledControl,
     fetchData: disabledControl,
+    defaultSelected: disabledControl,
     translator: disabledControl,
+    keyField: disabledControl,
   },
   render: args => (
     <Component
       data={[
-        {id: '1', title: 'A. Item 1'},
-        {id: '2', title: 'B. Item 2'},
-        {id: '3', title: 'C. Item 3'},
-        {id: '4', title: 'D. Item 4'},
-        {id: '5', title: 'E. Item 5'},
+        {id: 1, title: 'A. Item 1'},
+        {id: 2, title: 'B. Item 2'},
+        {id: 3, title: 'C. Item 3'},
+        {id: 4, title: 'D. Item 4'},
+        {id: 5, title: 'E. Item 5'},
       ]}
-      defaultSelected={{id: '2', title: 'B. Item 2'}}
+      defaultSelected={{id: 2}}
       onChange={() => {}}
       renderItem={({item}) => (
         <View style={styles.item}>
@@ -67,8 +69,7 @@ export const SingleSelectScrollList: Story<typeof Component> = {
 const styles = StyleSheet.create({
   item: {
     backgroundColor: '#f9c2ff',
+    borderRadius: 7,
     padding: 20,
-    marginVertical: 8,
-    marginHorizontal: 16,
   },
 });
