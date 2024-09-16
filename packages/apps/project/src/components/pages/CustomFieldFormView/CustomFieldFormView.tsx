@@ -29,12 +29,12 @@ import {
   Icon,
   Text,
 } from '@axelor/aos-mobile-ui';
-import {TaskDetailsHeader} from '../../molecules';
+import {CustomFieldPopup, TaskDetailsHeader} from '../../molecules';
 
-const CustomComponent = ({onPress, title, expanded}) => {
+const CustomComponent = ({onPress, onEdit, title, expanded}) => {
   return (
     <View style={styles.sectionContainer}>
-      <Text>{title}</Text>
+      <Text writingType="title">{title}</Text>
       <View style={styles.iconContainer}>
         <Icon
           touchable={true}
@@ -42,7 +42,7 @@ const CustomComponent = ({onPress, title, expanded}) => {
           name={expanded ? 'chevron-up' : 'chevron-down'}
           style={styles.icon}
         />
-        <Icon name="pencil-fill" />
+        <Icon touchable={true} onPress={onEdit} name="pencil-fill" />
       </View>
     </View>
   );
@@ -58,6 +58,7 @@ const CustomFieldFormView = ({projecTaskId, config}) => {
     project: true,
     category: true,
   });
+  const [editingParams, setEditingParams] = useState(null);
 
   const toggleSection = section => {
     setExpandedSections(prevState => ({
@@ -66,13 +67,28 @@ const CustomFieldFormView = ({projecTaskId, config}) => {
     }));
   };
 
+  const openEditPopup = (fieldType, title) => {
+    setEditingParams({fieldType, title});
+  };
+
+  const closeEditPopup = () => {
+    setEditingParams(null);
+  };
   const configArray = useMemo(() => config.split(','), [config]);
 
-  const renderCustomComponent = useCallback(({title, expanded, onPress}) => {
-    return (
-      <CustomComponent onPress={onPress} title={title} expanded={expanded} />
-    );
-  }, []);
+  const renderCustomComponent = useCallback(
+    ({title, expanded, onPress, onEdit}) => {
+      return (
+        <CustomComponent
+          onPress={onPress}
+          onEdit={onEdit}
+          title={title}
+          expanded={expanded}
+        />
+      );
+    },
+    [],
+  );
 
   if (projecTaskId !== projectTask?.id) {
     return null;
@@ -91,6 +107,11 @@ const CustomFieldFormView = ({projecTaskId, config}) => {
               title: I18n.t('Project_ProjectAppCustomField'),
               expanded: expandedSections.app,
               onPress: () => toggleSection('app'),
+              onEdit: () =>
+                openEditPopup(
+                  'appJson',
+                  I18n.t('Project_ProjectAppCustomField'),
+                ),
             })}
             {expandedSections.app && (
               <>
@@ -112,6 +133,11 @@ const CustomFieldFormView = ({projecTaskId, config}) => {
               title: I18n.t('Project_ProjectCustomField'),
               expanded: expandedSections.project,
               onPress: () => toggleSection('project'),
+              onEdit: () =>
+                openEditPopup(
+                  'projectJson',
+                  I18n.t('Project_ProjectCustomField'),
+                ),
             })}
             {expandedSections.project && (
               <>
@@ -121,14 +147,6 @@ const CustomFieldFormView = ({projecTaskId, config}) => {
                   modelId={projectTask.id}
                   style={styles.form}
                   readonly
-                  /*customComponent={({objectState}) =>
-                    renderCustomComponent({
-                      objectState,
-                      title: I18n.t('Project_ProjectCustomField'),
-                      onPress: () => toggleSection('project'),
-                      expanded: expandedSections.project,
-                    })
-                  }*/
                 />
                 <HorizontalRule style={styles.horizontalRule} />
               </>
@@ -141,6 +159,11 @@ const CustomFieldFormView = ({projecTaskId, config}) => {
               title: I18n.t('Project_CategoryCustomField'),
               expanded: expandedSections.category,
               onPress: () => toggleSection('category'),
+              onEdit: () =>
+                openEditPopup(
+                  'categoryJson',
+                  I18n.t('Project_CategoryCustomField'),
+                ),
             })}
             {expandedSections.category && (
               <>
@@ -157,6 +180,13 @@ const CustomFieldFormView = ({projecTaskId, config}) => {
           </>
         )}
       </ScrollView>
+      <CustomFieldPopup
+        editingParams={editingParams}
+        onClose={closeEditPopup}
+        onSave={closeEditPopup}
+        projectTaskId={projectTask?.id}
+        translator={I18n.t}
+      />
     </View>
   );
 };

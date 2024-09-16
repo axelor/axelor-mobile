@@ -17,6 +17,7 @@
  */
 
 export {default as ActivityCard} from './ActivityCard/ActivityCard';
+export {default as CustomFieldPopup} from './CustomFieldPopup/CustomFieldPopup';
 export {default as DropdownInvoicing} from './DropdownInvoicing/DropdownInvoicing';
 export {default as DropdownMembers} from './DropdownMembers/DropdownMembers';
 export {default as DropdownTaskCharacteristics} from './DropdownTaskCharacteristics/DropdownTaskCharacteristics';
