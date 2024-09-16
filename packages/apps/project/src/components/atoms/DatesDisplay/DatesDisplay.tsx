@@ -35,29 +35,32 @@ const DatesDisplay = ({
 }) => {
   const I18n = useTranslator();
 
-  const renderDateItem = useCallback(({title, value}: DateItemProps) => {
-    if (!value) return null;
-    return (
-      <View style={styles.dateWrapper}>
-        <Text style={styles.centerText}>{title}</Text>
-        <DateDisplay date={value} />
-      </View>
-    );
-  }, []);
+  const renderDateItem = useCallback(
+    ({title, value}: DateItemProps) => {
+      if (!value) {
+        return null;
+      }
+
+      return (
+        <View style={styles.dateWrapper}>
+          <Text style={styles.centerText}>{I18n.t(title)}</Text>
+          <DateDisplay date={value} />
+        </View>
+      );
+    },
+    [I18n],
+  );
 
   return (
     <View style={styles.dateContainer}>
-      {renderDateItem({
-        title: I18n.t('Project_StartedOn'),
-        value: fromDate,
-      })}
-      {fromDate && toDate && (
-        <Icon name="arrow-right" size={30} style={styles.icon} visible={true} />
-      )}
-      {renderDateItem({
-        title: I18n.t('Project_EndedOn'),
-        value: toDate,
-      })}
+      {renderDateItem({title: 'Project_StartedOn', value: fromDate})}
+      <Icon
+        name="arrow-right"
+        size={30}
+        style={styles.icon}
+        visible={fromDate != null && toDate != null}
+      />
+      {renderDateItem({title: 'Project_EndedOn', value: toDate})}
     </View>
   );
 };
