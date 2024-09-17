@@ -134,7 +134,7 @@
   "Sale_AddProduct": "Add product",
   "Sale_SetAside": "Set aside",
   "Sale_EmptyCart": "Empty cart",
-  "Sale_ValidateCart": "Validate cart",
+  "Sale_CreateSaleOrder": "Create the sale order",
   "Sale_Delete": "Delete",
   "Sale_NoCartAvailable": "No cart available",
   "Sale_ProductUnavailable": "This product is not available",
