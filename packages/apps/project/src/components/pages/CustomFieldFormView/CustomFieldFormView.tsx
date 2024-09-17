@@ -16,8 +16,8 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import React, {useMemo, useState} from 'react';
-import {ScrollView, StyleSheet, View} from 'react-native';
+import React, {useMemo, useState, useCallback} from 'react';
+import {StyleSheet, View} from 'react-native';
 import {
   CustomFieldForm,
   useSelector,
@@ -28,6 +28,7 @@ import {
   HorizontalRule,
   Icon,
   Text,
+  ScrollView,
 } from '@axelor/aos-mobile-ui';
 import {CustomFieldPopup, TaskDetailsHeader} from '../../molecules';
 
@@ -53,6 +54,7 @@ const CustomSection = ({
   onEdit,
   fieldType,
   modelId,
+  refreshKey,
 }) => (
   <>
     <SectionHeader
@@ -69,6 +71,7 @@ const CustomSection = ({
           modelId={modelId}
           style={styles.form}
           readonly
+          key={refreshKey}
         />
         <HorizontalRule style={styles.horizontalRule} />
       </>
@@ -86,7 +89,7 @@ const CustomFieldFormView = ({projecTaskId, config}) => {
     categoryJson: true,
   });
   const [editingParams, setEditingParams] = useState(null);
-
+  const [refreshKey, setRefreshKey] = useState(0);
   const toggleSection = section => {
     setExpandedSections(prevState => ({
       ...prevState,
@@ -104,6 +107,10 @@ const CustomFieldFormView = ({projecTaskId, config}) => {
 
   const configArray = useMemo(() => config.split(','), [config]);
 
+  const onRefresh = useCallback(() => {
+    setRefreshKey(prevKey => prevKey + 1);
+  }, []);
+
   if (projecTaskId !== projectTask?.id) {
     return null;
   }
@@ -114,7 +121,9 @@ const CustomFieldFormView = ({projecTaskId, config}) => {
         expandableFilter={false}
         fixedItems={<TaskDetailsHeader />}
       />
-      <ScrollView>
+      <ScrollView
+        style={styles.scrollView}
+        refresh={{fetcher: onRefresh, loading: false}}>
         {configArray.includes('app') && (
           <CustomSection
             title={I18n.t('Project_ProjectAppCustomField')}
@@ -123,6 +132,7 @@ const CustomFieldFormView = ({projecTaskId, config}) => {
             onEdit={openEditPopup}
             fieldType="appJson"
             modelId={projectTask.id}
+            refreshKey={refreshKey}
           />
         )}
         {configArray.includes('project') && (
@@ -133,6 +143,7 @@ const CustomFieldFormView = ({projecTaskId, config}) => {
             onEdit={openEditPopup}
             fieldType="projectJson"
             modelId={projectTask.id}
+            refreshKey={refreshKey}
           />
         )}
         {configArray.includes('category') && (
@@ -143,12 +154,14 @@ const CustomFieldFormView = ({projecTaskId, config}) => {
             onEdit={openEditPopup}
             fieldType="categoryJson"
             modelId={projectTask.id}
+            refreshKey={refreshKey}
           />
         )}
       </ScrollView>
       <CustomFieldPopup
         editingParams={editingParams}
         onClose={closeEditPopup}
+        onSave={onRefresh}
         projectTaskId={projectTask?.id}
         translator={I18n.t}
       />
@@ -159,6 +172,9 @@ const CustomFieldFormView = ({projecTaskId, config}) => {
 const styles = StyleSheet.create({
   container: {
     marginBottom: 150,
+  },
+  scrollView: {
+    height: null,
   },
   form: {
     flex: 1,

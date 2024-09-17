@@ -23,6 +23,7 @@ import {CustomFieldForm} from '@axelor/aos-mobile-core';
 
 interface CustomFieldPopupProps {
   onClose: () => void;
+  onSave: () => void;
   translator?: (key: string) => string;
   editingParams: any;
   projectTaskId: number;
@@ -30,6 +31,7 @@ interface CustomFieldPopupProps {
 
 const CustomFieldPopup = ({
   onClose,
+  onSave,
   translator = key => key,
   editingParams,
   projectTaskId,
@@ -59,7 +61,10 @@ const CustomFieldPopup = ({
                   type: 'update',
                   useDefaultAction: true,
                   readonlyAfterAction: true,
-                  postActions: onClose,
+                  postActions: () => {
+                    onSave();
+                    onClose();
+                  },
                 },
               ]}
             />
