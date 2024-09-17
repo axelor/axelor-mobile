@@ -63,10 +63,12 @@ const ClientSaleDetailsScreen = ({route}) => {
         refresh={{loading: loadingCustomer, fetcher: getCustomer}}>
         <NotesCard title={I18n.t('Crm_Notes')} data={customer.description} />
         <ClientDropdownCards
-          additionalDropDown={{
-            childrenComp: <DropDownSaleOrderView customer={customer} />,
-            title: I18n.t('Sale_LinkedQuotationsAndOrders'),
-          }}
+          additionalDropdowns={[
+            {
+              childrenComp: <DropDownSaleOrderView customer={customer} />,
+              title: I18n.t('Sale_LinkedQuotationsAndOrders'),
+            },
+          ]}
         />
       </ScrollView>
     </Screen>

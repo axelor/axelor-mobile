@@ -30,7 +30,7 @@ import {
 import {searchContactById} from '../../../../features/contactSlice';
 import {fetchPartnerEventById} from '../../../../features/eventSlice';
 
-const ClientDropdownCards = ({additionalDropDown = null}) => {
+const ClientDropdownCards = ({additionalDropdowns = []}) => {
   const I18n = useTranslator();
   const dispatch = useDispatch();
 
@@ -93,15 +93,18 @@ const ClientDropdownCards = ({additionalDropDown = null}) => {
       },
     ];
 
-    if (additionalDropDown) {
-      _dropdownItems.push({
-        title: additionalDropDown.title,
-        key: 6,
-        childrenComp: additionalDropDown.childrenComp,
+    if (additionalDropdowns?.length > 0) {
+      additionalDropdowns.forEach((dropdown, index) => {
+        _dropdownItems.push({
+          title: dropdown.title,
+          key: 6 + index,
+          childrenComp: dropdown.childrenComp,
+        });
       });
     }
+
     return _dropdownItems;
-  }, [I18n, additionalDropDown, client, listContactById, listEventPartner]);
+  }, [I18n, additionalDropdowns, client, listContactById, listEventPartner]);
 
   return (
     <View style={styles.container}>
