@@ -223,7 +223,8 @@ export async function fetchModelFields({
 
       return _fields.filter(_item => _item.nameColumn);
     })
-    .then(targetFields => targetFields.map(_item => _item.name));
+    .then(targetFields => targetFields.map(_item => _item.name))
+    .then(res => (res.length > 0 ? res : ['name']));
 }
 
 interface SelectionItem {

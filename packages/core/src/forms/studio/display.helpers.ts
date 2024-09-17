@@ -99,6 +99,7 @@ const mapStudioTypeToInputType = (type: string): InputType => {
     case 'decimal':
       return 'number';
     case 'many-to-one':
+    case 'reference':
       return 'object';
     default:
       return type as InputType;

@@ -33,6 +33,7 @@ const PhantomComponent = ({objectState, onChange}) => {
 };
 
 const formatChartFields = (data: any[]): any[] => {
+  console.log(data);
   return data.map(_field => {
     return {
       name: _field.name,
@@ -42,6 +43,7 @@ const formatChartFields = (data: any[]): any[] => {
       isSelectionField: _field.selectionList?.length > 0,
       selectionList: _field.selectionList,
       widgetAttrs: JSON.stringify(_field.widgetAttrs ?? {}),
+      targetModel: _field.target,
     };
   });
 };
