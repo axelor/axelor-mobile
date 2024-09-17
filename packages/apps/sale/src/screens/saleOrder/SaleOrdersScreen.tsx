@@ -23,7 +23,7 @@ import {SaleOrderListView} from '../../components';
 
 const SaleOrdersScreen = ({route}) => {
   const {SaleOrder} = useTypes();
-  const {customer} = route.params;
+  const {customer} = route.params ?? {};
 
   return (
     <Screen removeSpaceOnTop>

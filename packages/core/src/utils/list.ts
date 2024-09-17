@@ -109,6 +109,17 @@ export const getLastItem = (listItem, orderField) => {
   );
 };
 
+export const getNextItem = (listItem, orderField) => {
+  return findItem(
+    listItem,
+    item => isDate(item[orderField]) && new Date(item[orderField]) > new Date(),
+    (prev, current) =>
+      new Date(current[orderField]) < new Date(prev[orderField])
+        ? current
+        : prev,
+  );
+};
+
 const findItem = (listItem, filterFunc, reduceFunc) => {
   if (!Array.isArray(listItem) || listItem.length === 0) {
     return null;

@@ -140,7 +140,7 @@
   "Sale_LinkQuotationToCustomer": "Link quotation to customer",
   "Sale_ProductUnavailable": "This product is not available",
   "Sale_LinkedQuotationsAndOrders": "Linked quotations and orders",
-  "Sale_NoOrderSaleorQutotation": "No order sale or quotation",
+  "Sale_NoSaleOrderOrQuotation": "No sale order or quotation",
   "Sale_LastQuotation": "Last quotation",
   "Sale_LastOrder": "Last order",
   "Sale_SliceAction_FetchSaleConfig": "fetch sale config",

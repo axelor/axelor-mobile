@@ -61,7 +61,7 @@ const DropDownSaleOrderView = ({customer}) => {
     saleOrderList,
   ]);
 
-  const quotationList = useMemo(() => {
+  const _quotationList = useMemo(() => {
     return saleOrderList.filter(
       saleOrder =>
         saleOrder?.statusSelect === SaleOrder?.statusSelect.Draft ||
@@ -73,13 +73,13 @@ const DropDownSaleOrderView = ({customer}) => {
     saleOrderList,
   ]);
 
-  const lastOrderList = useMemo(() => {
+  const lastOrder = useMemo(() => {
     return getLastItem(_saleOderList, 'creationDate');
   }, [_saleOderList]);
 
-  const lasQuotationList = useMemo(() => {
-    return getLastItem(quotationList, 'creationDate');
-  }, [quotationList]);
+  const lasQuotation = useMemo(() => {
+    return getLastItem(_quotationList, 'creationDate');
+  }, [_quotationList]);
 
   const SeeMoreIcon = useCallback(
     screen => {
@@ -103,62 +103,62 @@ const DropDownSaleOrderView = ({customer}) => {
     [Colors.secondaryColor.background_light, I18n, customer, navigation],
   );
 
-  if (isEmpty(lastOrderList) && isEmpty(lasQuotationList)) {
+  if (isEmpty(lastOrder) && isEmpty(lasQuotation)) {
     return (
       <View>
-        <Text>{I18n.t('Sale_NoOrderSaleorQutotation')}</Text>
+        <Text>{I18n.t('Sale_NoSaleOrderOrQuotation')}</Text>
       </View>
     );
   }
 
   return (
     <View>
-      {!isEmpty(lasQuotationList) && lasQuotationList != null && (
+      {!isEmpty(lasQuotation) && (
         <>
           <Text>{I18n.t('Sale_LastQuotation')}</Text>
           <SaleOrderCard
-            statusSelect={lasQuotationList.statusSelect}
-            sequence={lasQuotationList.saleOrderSeq}
-            orderBeingEdited={lasQuotationList.orderBeingEdited}
-            externalReference={lasQuotationList.externalReference}
-            clientPartnerName={lasQuotationList.clientPartner?.fullName}
-            companyName={lasQuotationList.company?.name}
-            tradingName={lasQuotationList.tradingName?.name}
-            orderDate={lasQuotationList.orderDate}
-            WTPrice={lasQuotationList.exTaxTotal}
-            ATIPrice={lasQuotationList.inTaxTotal}
-            currencySymbol={lasQuotationList.currency?.symbol}
-            deliveryState={lasQuotationList.deliveryState}
-            invoicingState={lasQuotationList.invoicingState}
+            statusSelect={lasQuotation.statusSelect}
+            sequence={lasQuotation.saleOrderSeq}
+            orderBeingEdited={lasQuotation.orderBeingEdited}
+            externalReference={lasQuotation.externalReference}
+            clientPartnerName={lasQuotation.clientPartner?.fullName}
+            companyName={lasQuotation.company?.name}
+            tradingName={lasQuotation.tradingName?.name}
+            orderDate={lasQuotation.orderDate}
+            WTPrice={lasQuotation.exTaxTotal}
+            ATIPrice={lasQuotation.inTaxTotal}
+            currencySymbol={lasQuotation.currency?.symbol}
+            deliveryState={lasQuotation.deliveryState}
+            invoicingState={lasQuotation.invoicingState}
             onPress={() =>
               navigation.navigate('SaleOrderDetailsScreen', {
-                saleOrderId: lasQuotationList.id,
+                saleOrderId: lasQuotation.id,
               })
             }
           />
           {SeeMoreIcon('SaleQuotationsScreen')}
         </>
       )}
-      {!isEmpty(lastOrderList) && lastOrderList != null && (
+      {!isEmpty(lastOrder) && (
         <>
           <Text>{I18n.t('Sale_LastOrder')}</Text>
           <SaleOrderCard
-            statusSelect={lastOrderList.statusSelect}
-            sequence={lastOrderList.saleOrderSeq}
-            orderBeingEdited={lastOrderList.orderBeingEdited}
-            externalReference={lastOrderList.externalReference}
-            clientPartnerName={lastOrderList.clientPartner?.fullName}
-            companyName={lastOrderList.company?.name}
-            tradingName={lastOrderList.tradingName?.name}
-            orderDate={lastOrderList.orderDate}
-            WTPrice={lastOrderList.exTaxTotal}
-            ATIPrice={lastOrderList.inTaxTotal}
-            currencySymbol={lastOrderList.currency?.symbol}
-            deliveryState={lastOrderList.deliveryState}
-            invoicingState={lastOrderList.invoicingState}
+            statusSelect={lastOrder.statusSelect}
+            sequence={lastOrder.saleOrderSeq}
+            orderBeingEdited={lastOrder.orderBeingEdited}
+            externalReference={lastOrder.externalReference}
+            clientPartnerName={lastOrder.clientPartner?.fullName}
+            companyName={lastOrder.company?.name}
+            tradingName={lastOrder.tradingName?.name}
+            orderDate={lastOrder.orderDate}
+            WTPrice={lastOrder.exTaxTotal}
+            ATIPrice={lastOrder.inTaxTotal}
+            currencySymbol={lastOrder.currency?.symbol}
+            deliveryState={lastOrder.deliveryState}
+            invoicingState={lastOrder.invoicingState}
             onPress={() =>
               navigation.navigate('SaleOrderDetailsScreen', {
-                saleOrderId: lastOrderList.id,
+                saleOrderId: lastOrder.id,
               })
             }
           />
