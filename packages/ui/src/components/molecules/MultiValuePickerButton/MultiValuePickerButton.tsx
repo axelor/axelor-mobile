@@ -77,7 +77,8 @@ const MultiValuePickerButton = ({
             : placeholder && (
                 <Text
                   textColor={Colors.placeholderTextColor}
-                  style={styles.placeHolder}>
+                  style={styles.placeHolder}
+                  numberOfLines={1}>
                   {placeholder}
                 </Text>
               )}
