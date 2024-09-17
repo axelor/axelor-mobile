@@ -21,4 +21,3 @@ export {default as PartnerCard} from './PartnerCard/PartnerCard';
 export {default as ProjectCard} from './ProjectCard/ProjectCard';
 export {default as ProjectSimpleCard} from './ProjectSimpleCard/ProjectSimpleCard';
 export {default as TaskCard} from './TaskCard/TaskCard';
-export {default as ValidationButtonCustomForm} from './ValidationButtonCustomForm/ValidationButtonCustomForm';
