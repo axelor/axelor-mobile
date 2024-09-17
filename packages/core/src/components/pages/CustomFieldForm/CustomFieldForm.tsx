@@ -118,7 +118,7 @@ const CustomFieldForm = ({
 
   useEffect(() => {
     formConfigsProvider.registerForm(
-      `${FORM_KEY}_${fieldType}`,
+      `${FORM_KEY}_${fieldType}_${readonly}`,
       {
         readonlyIf: () => readonly,
         fields: formattedFields,
@@ -168,7 +168,7 @@ const CustomFieldForm = ({
       styleScreen={hideBackgroundForm && styles.screen}
       hideBackgroundButton={hideBackgroundButton}
       actions={_additionalActions}
-      formKey={`${FORM_KEY}_${fieldType}`}
+      formKey={`${FORM_KEY}_${fieldType}_${readonly}`}
       isCustom={true}
       defaultValue={attrsValues == null ? {...defaults} : attrsValues}
       floatingTools={readonlyButton}

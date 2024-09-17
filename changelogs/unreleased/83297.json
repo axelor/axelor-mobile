@@ -1,0 +1,5 @@
+{
+  "title": "Fixed item: Add option to hide background of fixed items",
+  "type": "feat",
+  "packages": ["ui", "core"]
+}

@@ -16,6 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+export {default as CustomSection} from './CustomSection/CustomSection';
 export {default as EditTaskButton} from './EditTaskButton/EditTaskButton';
 export {default as LogTimeButton} from './LogTimeButton/LogTimeButton';
 export {default as ProjectDropdownCards} from './ProjectDropdownCards/ProjectDropdownCards';
