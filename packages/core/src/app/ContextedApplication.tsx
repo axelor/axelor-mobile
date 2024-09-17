@@ -30,6 +30,7 @@ import {RouterProvider} from '../config';
 import {proxy, releaseConfig, versionCheckConfig} from './types';
 import {useDispatch} from '../redux/hooks';
 import {setAppVersion} from '../features/authSlice';
+import {Module} from './modules';
 
 interface instanceConfig {
   testInstanceConfig: proxy;
@@ -40,12 +41,14 @@ interface instanceConfig {
 }
 
 interface ContextedApplicationProps {
+  modules: Module[];
   mainMenu?: string;
   version: string;
   configuration?: instanceConfig;
 }
 
 const ContextedApplication = ({
+  modules,
   mainMenu,
   version,
   configuration,
@@ -87,6 +90,7 @@ const ContextedApplication = ({
           <LoadingIndicator />
           <BlockInteractionMessage />
           <RootNavigator
+            modules={modules}
             mainMenu={mainMenu}
             onRefresh={() => setRefresh(_current => !_current)}
             configuration={configuration}

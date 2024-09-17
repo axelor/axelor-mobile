@@ -16,7 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import React, {useEffect, useMemo, useRef} from 'react';
+import React, {useEffect, useRef} from 'react';
 import {
   Theme,
   ThemeColors,
@@ -86,15 +86,14 @@ const Application = ({
   ApiProviderConfig.allowConnectionBlock =
     configuration.allowInternetConnectionBlock;
 
-  const moduleRegisters = useMemo(() => {
-    return modules
-      .filter(_module => _module.moduleRegister)
-      .flatMap(_module => _module.moduleRegister);
-  }, [modules]);
-
   useEffect(() => {
-    modulesProvider.init(modules, moduleRegisters);
-  }, [modules, moduleRegisters]);
+    modulesProvider.init(
+      modules,
+      modules
+        .filter(_module => _module.moduleRegister)
+        .flatMap(_module => _module.moduleRegister),
+    );
+  }, [modules]);
 
   useEffect(() => {
     sessionStorage.init(
@@ -119,6 +118,7 @@ const Application = ({
         configuration?.showModulesSubtitle ?? showModulesSubtitle
       }>
       <ContextedApplication
+        modules={modules}
         mainMenu={mainMenu}
         version={version}
         configuration={{

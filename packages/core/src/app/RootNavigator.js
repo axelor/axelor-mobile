@@ -16,7 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import React, {useCallback, useEffect, useRef} from 'react';
+import React, {useCallback, useEffect, useMemo, useRef} from 'react';
 import {useDispatch, useSelector} from 'react-redux';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import {useThemeColor} from '@axelor/aos-mobile-ui';
@@ -29,10 +29,11 @@ import {useTranslator} from '../i18n';
 import {showToastMessage} from '../utils';
 import {logout} from '../features/authSlice';
 import {useSessionExpired} from '../apiProviders/config';
+import {useHeaderRegisters} from '../hooks/use-header-registers';
 
 const {Navigator, Screen} = createNativeStackNavigator();
 
-const RootNavigator = ({mainMenu, onRefresh, configuration}) => {
+const RootNavigator = ({modules, mainMenu, onRefresh, configuration}) => {
   const Colors = useThemeColor();
   const I18n = useTranslator();
   const dispatch = useDispatch();
@@ -42,6 +43,14 @@ const RootNavigator = ({mainMenu, onRefresh, configuration}) => {
 
   const {sessionExpired} = useSessionExpired();
   const {registerHeaderBand} = useHeaderBand();
+
+  const modulesHeaderRegisters = useMemo(() => {
+    return modules
+      .filter(_module => _module.models?.headerRegisters)
+      .map(_module => _module.models.headerRegisters);
+  }, [modules]);
+
+  useHeaderRegisters(modulesHeaderRegisters);
 
   const {logged} = useSelector(state => state.auth);
 

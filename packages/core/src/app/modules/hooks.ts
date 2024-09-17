@@ -1,14 +1,13 @@
 import {useEffect, useMemo} from 'react';
-import {useModules} from './ModuleProvider';
 import {processProvider} from '../../loader';
 import {useBackgroundFunction} from '../../hooks/use-background-function';
-import {Models} from './types';
-import {addModuleModels} from '../context.helper';
 import {core_modelAPI, core_searchFields, core_sortFields} from '../../models';
 import {addModuleForms, formConfigsProvider} from '../../forms';
 import {objectFieldsProvider} from '../../apiProviders';
 import {initSelections} from '../../selections';
-import {useHeaderRegisters} from '../../hooks/use-header-registers';
+import {addModuleModels} from '../context.helper';
+import {useModules} from './ModuleProvider';
+import {Models} from './types';
 
 export const useModulesInitialisation = () => {
   const {modules} = useModules();
@@ -22,6 +21,8 @@ export const useModulesInitialisation = () => {
 
     return backgroundFunctions;
   }, [modules]);
+
+  useBackgroundFunction(modulesBackgroundFunctions);
 
   const modulesObjectFields: Models = useMemo(
     () =>
@@ -43,26 +44,11 @@ export const useModulesInitialisation = () => {
       .reduce((forms, _moduleForms) => addModuleForms(forms, _moduleForms), {});
   }, [modules]);
 
-  const modulesHeaderRegisters = useMemo(() => {
-    return modules
-      .filter(_module => _module.models?.headerRegisters)
-      .map(_module => _module.models.headerRegisters);
-  }, [modules]);
-
-  useBackgroundFunction(modulesBackgroundFunctions);
-
-  useHeaderRegisters(modulesHeaderRegisters);
-
   useEffect(() => {
     objectFieldsProvider.init(modulesObjectFields);
     initSelections(modulesObjectFields.typeObjects);
     formConfigsProvider.init(modulesFormsRegisters);
   }, [modulesObjectFields, modulesFormsRegisters]);
 
-  return useMemo(
-    () => ({
-      modules,
-    }),
-    [modules],
-  );
+  return useMemo(() => ({modules}), [modules]);
 };
