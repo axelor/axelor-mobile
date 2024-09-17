@@ -22,6 +22,7 @@ import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import {useThemeColor} from '@axelor/aos-mobile-ui';
 import {default as CoreNavigator} from '../navigator/Navigator';
 import {getNetInfo, getTokenInfo} from '../api/net-info-utils';
+import {useHeaderRegisters} from '../hooks/use-header-registers';
 import LoginScreen from '../screens/LoginScreen';
 import SessionManagementScreen from '../screens/SessionManagementScreen';
 import {useHeaderBand} from '../header';
@@ -29,7 +30,6 @@ import {useTranslator} from '../i18n';
 import {showToastMessage} from '../utils';
 import {logout} from '../features/authSlice';
 import {useSessionExpired} from '../apiProviders/config';
-import {useHeaderRegisters} from '../hooks/use-header-registers';
 
 const {Navigator, Screen} = createNativeStackNavigator();
 
@@ -44,6 +44,8 @@ const RootNavigator = ({modules, mainMenu, onRefresh, configuration}) => {
   const {sessionExpired} = useSessionExpired();
   const {registerHeaderBand} = useHeaderBand();
 
+  const {logged} = useSelector(state => state.auth);
+
   const modulesHeaderRegisters = useMemo(() => {
     return modules
       .filter(_module => _module.models?.headerRegisters)
@@ -51,8 +53,6 @@ const RootNavigator = ({modules, mainMenu, onRefresh, configuration}) => {
   }, [modules]);
 
   useHeaderRegisters(modulesHeaderRegisters);
-
-  const {logged} = useSelector(state => state.auth);
 
   const AppNavigator = useCallback(
     () => (
