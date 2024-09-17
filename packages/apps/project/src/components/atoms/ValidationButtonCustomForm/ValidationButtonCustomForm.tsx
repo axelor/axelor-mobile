@@ -16,9 +16,26 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-export {default as DatesDisplay} from './DatesDisplay/DatesDisplay';
-export {default as PartnerCard} from './PartnerCard/PartnerCard';
-export {default as ProjectCard} from './ProjectCard/ProjectCard';
-export {default as ProjectSimpleCard} from './ProjectSimpleCard/ProjectSimpleCard';
-export {default as TaskCard} from './TaskCard/TaskCard';
-export {default as ValidationButtonCustomForm} from './ValidationButtonCustomForm/ValidationButtonCustomForm';
+import React from 'react';
+import {Button} from '@axelor/aos-mobile-ui';
+import {useTranslator} from '@axelor/aos-mobile-core';
+
+interface ValidationButtonCustomFormProps {
+  objectState: any;
+}
+
+const ValidationButtonCustomForm = ({
+  objectState,
+}: ValidationButtonCustomFormProps) => {
+  const I18n = useTranslator();
+  return (
+    <Button
+      title={I18n.t('Base_Save')}
+      onPress={() => {
+        console.log(objectState);
+      }}
+    />
+  );
+};
+
+export default ValidationButtonCustomForm;

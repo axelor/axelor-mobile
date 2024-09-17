@@ -51,6 +51,8 @@ interface CustomFieldFormProps {
   readonly?: boolean;
   readonlyButton?: boolean;
   customComponent?: any;
+  hideBackgroundButton?: boolean;
+  hideBackgroundForm?: boolean;
 }
 
 const CustomFieldForm = ({
@@ -62,6 +64,8 @@ const CustomFieldForm = ({
   readonly = false,
   readonlyButton = false,
   customComponent,
+  hideBackgroundButton,
+  hideBackgroundForm,
 }: CustomFieldFormProps) => {
   const Colors = useThemeColor();
   const dispatch = useDispatch();
@@ -106,7 +110,6 @@ const CustomFieldForm = ({
         type: 'object',
         widget: 'custom',
         customComponent: customComponent,
-        order: 0,
       };
     }
 
@@ -162,6 +165,8 @@ const CustomFieldForm = ({
   return (
     <FormView
       style={[styles.formView, style]}
+      styleScreen={hideBackgroundForm && styles.screen}
+      hideBackgroundButton={hideBackgroundButton}
       actions={_additionalActions}
       formKey={`${FORM_KEY}_${fieldType}`}
       isCustom={true}
@@ -174,6 +179,9 @@ const CustomFieldForm = ({
 const styles = StyleSheet.create({
   formView: {
     paddingBottom: 0,
+  },
+  screen: {
+    backgroundColor: null,
   },
 });
 

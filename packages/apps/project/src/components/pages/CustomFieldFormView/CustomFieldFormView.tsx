@@ -81,9 +81,9 @@ const CustomFieldFormView = ({projecTaskId, config}) => {
   const {projectTask} = useSelector((state: any) => state.project_projectTask);
 
   const [expandedSections, setExpandedSections] = useState({
-    app: true,
-    project: true,
-    category: true,
+    appJson: true,
+    projectJson: true,
+    categoryJson: true,
   });
   const [editingParams, setEditingParams] = useState(null);
 
@@ -118,7 +118,7 @@ const CustomFieldFormView = ({projecTaskId, config}) => {
         {configArray.includes('app') && (
           <CustomSection
             title={I18n.t('Project_ProjectAppCustomField')}
-            expanded={expandedSections.app}
+            expanded={expandedSections.appJson}
             toggleSection={toggleSection}
             onEdit={openEditPopup}
             fieldType="appJson"
@@ -128,7 +128,7 @@ const CustomFieldFormView = ({projecTaskId, config}) => {
         {configArray.includes('project') && (
           <CustomSection
             title={I18n.t('Project_ProjectCustomField')}
-            expanded={expandedSections.project}
+            expanded={expandedSections.projectJson}
             toggleSection={toggleSection}
             onEdit={openEditPopup}
             fieldType="projectJson"
@@ -138,7 +138,7 @@ const CustomFieldFormView = ({projecTaskId, config}) => {
         {configArray.includes('category') && (
           <CustomSection
             title={I18n.t('Project_CategoryCustomField')}
-            expanded={expandedSections.category}
+            expanded={expandedSections.categoryJson}
             toggleSection={toggleSection}
             onEdit={openEditPopup}
             fieldType="categoryJson"
@@ -149,7 +149,6 @@ const CustomFieldFormView = ({projecTaskId, config}) => {
       <CustomFieldPopup
         editingParams={editingParams}
         onClose={closeEditPopup}
-        onSave={closeEditPopup}
         projectTaskId={projectTask?.id}
         translator={I18n.t}
       />
@@ -169,6 +168,7 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     alignItems: 'center',
     marginHorizontal: 24,
+    marginVertical: 7,
   },
   iconContainer: {
     flexDirection: 'row',

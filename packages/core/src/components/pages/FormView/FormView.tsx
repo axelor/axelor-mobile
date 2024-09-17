@@ -58,6 +58,8 @@ interface FormProps {
   actions: Action[];
   floatingTools?: boolean;
   defaultEditMode?: boolean;
+  styleScreen?: any;
+  hideBackgroundButton?: boolean;
 }
 
 const FormView = ({
@@ -69,6 +71,8 @@ const FormView = ({
   actions: _actions,
   floatingTools = true,
   defaultEditMode = false,
+  styleScreen,
+  hideBackgroundButton = false,
 }: FormProps) => {
   const I18n = useTranslator();
   const dispatch = useDispatch();
@@ -314,6 +318,7 @@ const FormView = ({
 
   return (
     <Screen
+      hideBackgroundButton={hideBackgroundButton}
       fixedItems={
         <View
           onLayout={({nativeEvent}) => {
@@ -326,6 +331,7 @@ const FormView = ({
                 .map(renderAction)}
         </View>
       }
+      style={styleScreen}
       removeSpaceOnTop={true}>
       <KeyboardAvoidingScrollView
         keyboardOffset={{ios: 70, android: 100}}

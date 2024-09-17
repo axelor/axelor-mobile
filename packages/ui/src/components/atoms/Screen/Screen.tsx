@@ -27,6 +27,7 @@ interface ScreenProps {
   children: any;
   fixedItems?: any;
   removeSpaceOnTop?: boolean;
+  hideBackgroundButton?: boolean;
   loading?: boolean;
 }
 
@@ -43,6 +44,7 @@ const Screen = ({
   fixedItems,
   removeSpaceOnTop = false,
   loading = false,
+  hideBackgroundButton = false,
 }: ScreenProps) => {
   const Colors = useThemeColor();
   const styles = useMemo(() => getStyles(Colors), [Colors]);
@@ -78,7 +80,7 @@ const Screen = ({
           style={
             fixedItemsHeight > FIXED_ITEMS_NOT_DISPLAY_HEIGHT && [
               styles.fixedContainer,
-              styles.smallTopShadow,
+              !hideBackgroundButton && styles.smallTopShadow,
             ]
           }
           onLayout={onLayout}>

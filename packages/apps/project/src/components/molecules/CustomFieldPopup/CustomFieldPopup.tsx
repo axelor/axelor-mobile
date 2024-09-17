@@ -23,7 +23,6 @@ import {CustomFieldForm} from '@axelor/aos-mobile-core';
 
 interface CustomFieldPopupProps {
   onClose: () => void;
-  onSave: () => void;
   translator?: (key: string) => string;
   editingParams: any;
   projectTaskId: number;
@@ -31,7 +30,6 @@ interface CustomFieldPopupProps {
 
 const CustomFieldPopup = ({
   onClose,
-  onSave,
   translator = key => key,
   editingParams,
   projectTaskId,
@@ -42,13 +40,8 @@ const CustomFieldPopup = ({
       title={editingParams?.title}
       translator={translator}
       cancelButtonConfig={{
-        onPress: onSave,
-      }}
-      confirmButtonConfig={{
-        title: translator('Base_Save'),
-        onPress: () => {
-          onClose();
-        },
+        onPress: onClose,
+        showInHeader: true,
       }}>
       {editingParams && (
         <View style={styles.popupContainer}>
@@ -58,6 +51,17 @@ const CustomFieldPopup = ({
               fieldType={editingParams.fieldType}
               modelId={projectTaskId}
               readonly={false}
+              hideBackgroundForm={true}
+              hideBackgroundButton={true}
+              additionalActions={[
+                {
+                  key: 'validateChanges',
+                  type: 'update',
+                  useDefaultAction: true,
+                  readonlyAfterAction: true,
+                  postActions: onClose,
+                },
+              ]}
             />
           </View>
         </View>
