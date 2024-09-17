@@ -28,6 +28,7 @@ import {
 import {
   fetchProjectTaskStatus,
   fetchProjectPriority,
+  fetchProjectTaskCategory,
 } from '../../../features/projectTaskSlice';
 import {ProjectSearchBar} from '../../templates';
 
@@ -43,11 +44,13 @@ const TaskFilters = ({
   setIsAssignedToMe,
   setSelectedStatus,
   setSelectedPriority,
+  setSelectedCategory,
   project,
   setProject,
   showProjectSearchBar = false,
 }: {
   isAssignedToMe: boolean;
+  setSelectedCategory: SetterFunction;
   setIsAssignedToMe: SetterFunction;
   setSelectedStatus: SetterFunction;
   setSelectedPriority: SetterFunction;
@@ -59,9 +62,8 @@ const TaskFilters = ({
   const dispatch = useDispatch();
   const {getCustomSelectionItems} = useTypeHelpers();
 
-  const {projectTaskStatusList, projectPriorityList} = useSelector(
-    (state: any) => state.project_projectTask,
-  );
+  const {projectTaskStatusList, projectPriorityList, projectCategoryList} =
+    useSelector((state: any) => state.project_projectTask);
 
   const statusList = useMemo(() => {
     const _list = getCustomSelectionItems(projectTaskStatusList, 'name', []);
@@ -87,9 +89,22 @@ const TaskFilters = ({
     }
   }, [getCustomSelectionItems, projectPriorityList, project]);
 
+  const categoryList = useMemo(() => {
+    const _list = getCustomSelectionItems(projectCategoryList, 'name', []);
+
+    if (project == null) {
+      return _list;
+    } else if (!project.isShowTaskCategory) {
+      return [];
+    } else {
+      return filterAvailableSet(project.projectTaskCategorySet, _list);
+    }
+  }, [getCustomSelectionItems, projectCategoryList, project]);
+
   useEffect(() => {
     dispatch((fetchProjectTaskStatus as any)());
     dispatch((fetchProjectPriority as any)());
+    dispatch((fetchProjectTaskCategory as any)());
   }, [dispatch]);
 
   return (
@@ -121,6 +136,12 @@ const TaskFilters = ({
           />
           <MultiValuePicker
             style={styles.picker}
+            listItems={categoryList}
+            onValueChange={setSelectedCategory}
+            placeholder={I18n.t('Project_Category')}
+          />
+          <MultiValuePicker
+            style={styles.picker}
             listItems={priorityList}
             onValueChange={setSelectedPriority}
             placeholder={I18n.t('Project_Priority')}
@@ -144,7 +165,7 @@ const styles = StyleSheet.create({
     height: 40,
   },
   picker: {
-    width: '46%',
+    width: '30%',
   },
   pickerContainer: {
     flexDirection: 'row',
