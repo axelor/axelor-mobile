@@ -114,7 +114,7 @@ const ActiveCartScreen = ({}) => {
       fixedItems={
         <Button
           iconName="check-lg"
-          title={I18n.t('Sale_ValidateCart')}
+          title={I18n.t('Sale_CreateSaleOrder')}
           onPress={() => {}}
         />
       }>
