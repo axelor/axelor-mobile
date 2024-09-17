@@ -16,7 +16,10 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import {Module, modulesProvider} from '../app';
+import {Module} from '../app';
+import {registerDashboardModule} from '../dashboards/menu.helpers';
+import {registerWebViewModule} from '../webViews/menu.helper';
+import {getLoggedUser} from './api';
 import enTranslations from './i18n/en.json';
 import frTranslations from './i18n/fr.json';
 import * as authReducers from './features';
@@ -60,19 +63,13 @@ export const authModule: Module = {
     headerRegisters: useAuthHeaders,
   },
   requiredConfig: ['AppBase', 'AppMobileSettings'],
-  moduleRegister: () => {
-    modulesProvider.registerModule({
-      name: 'app-test',
-      title: 'User_User',
-      icon: 'check-lg',
-      menus: {
-        test_menu_user: {
-          title: 'User_UserProfile',
-          icon: 'person-fill',
-          screen: 'UserScreen',
-        },
-      },
-    });
+  moduleRegister: async (userId: number) => {
+    const user = await getLoggedUser(userId)
+      .then(res => res?.data?.data)
+      .catch(() => ({}));
+
+    await registerDashboardModule(user);
+    await registerWebViewModule(user);
   },
 };
 

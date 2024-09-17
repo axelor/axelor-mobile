@@ -16,7 +16,8 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import {Menu, Screen} from '../app';
+import {Menu, modulesProvider, Screen} from '../app';
+import {fetchDashboardConfigs} from './api.helpers';
 import {createDashboardActionID} from './display.helpers';
 import {DashboardScreen} from './view';
 
@@ -123,4 +124,18 @@ export const filterAuthorizedDashboardMenus = (
     });
 
   return menus;
+};
+
+export const registerDashboardModule = async (user: any) => {
+  const dashboardConfigs = await fetchDashboardConfigs()
+    .then(res => res?.data?.data)
+    .catch(() => []);
+
+  const {screens, menus} = createDashboardScreens(dashboardConfigs);
+
+  modulesProvider.registerModule({
+    name: 'app-dashboard',
+    menus: filterAuthorizedDashboardMenus(menus, user),
+    screens,
+  });
 };
