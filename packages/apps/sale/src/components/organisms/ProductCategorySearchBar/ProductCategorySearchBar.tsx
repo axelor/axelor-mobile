@@ -55,7 +55,7 @@ const ProductCategorySearchBar = ({
     productCategoryList,
   } = useSelector((state: any) => state.sale_product);
 
-  const searchCustomerAPI = useCallback(
+  const searchProductCategoryAPI = useCallback(
     ({page = 0, searchValue}) => {
       dispatch((searchProductCategory as any)({page, searchValue}));
     },
@@ -71,7 +71,7 @@ const ProductCategorySearchBar = ({
       required={required}
       readonly={readonly}
       onChangeValue={onChange}
-      fetchData={searchCustomerAPI}
+      fetchData={searchProductCategoryAPI}
       displayValue={displayItemName}
       placeholder={I18n.t(title)}
       showDetailsPopup={true}
