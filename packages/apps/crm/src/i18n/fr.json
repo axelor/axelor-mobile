@@ -142,6 +142,5 @@
   "Crm_SliceAction_FetchTourLine": "récupération des lignes de la tournée",
   "Crm_SliceAction_ValidateTourLine": "validation d'une ligne de tournée",
   "Crm_SliceAction_ValidateTour": "validation de la tournée",
-  "Crm_SliceAction_UpdateTourLine": "mise à jour d'une ligne de tournée",
-  "Crm_SliceAction_CreateClient": "création d'un client"
+  "Crm_SliceAction_UpdateTourLine": "mise à jour d'une ligne de tournée"
 }

@@ -142,6 +142,5 @@
   "Crm_SliceAction_FetchTourLine": "fetch tour lines",
   "Crm_SliceAction_ValidateTourLine": "validate tour line",
   "Crm_SliceAction_ValidateTour": "validate tour",
-  "Crm_SliceAction_UpdateTourLine": "update tour line",
-  "Crm_SliceAction_CreateClient": "create client"
+  "Crm_SliceAction_UpdateTourLine": "update tour line"
 }

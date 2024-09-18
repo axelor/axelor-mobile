@@ -16,17 +16,18 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import React, {useState} from 'react';
-import {StyleSheet, TouchableOpacity, View} from 'react-native';
-import {Alert, useThemeColor, LabelText} from '@axelor/aos-mobile-ui';
-import {useTranslator, useNavigation} from '@axelor/aos-mobile-core';
+import React, {useCallback, useState} from 'react';
+import {StyleSheet} from 'react-native';
+import {Alert} from '@axelor/aos-mobile-ui';
+import {useTranslator, useSelector, useDispatch} from '@axelor/aos-mobile-core';
+import {updateCart} from '../../../features/cartSlice';
 import {CustomerSearchBar} from '../../organisms';
 
 interface ValidateCartPopupProps {
   style?: any;
-  onClose?: () => void;
-  handleValidate?: () => void;
   visible: boolean;
+  onClose: () => void;
+  handleValidate?: (cart?: any) => void;
 }
 
 const ValidateCartPopup = ({
@@ -36,10 +37,30 @@ const ValidateCartPopup = ({
   handleValidate,
 }: ValidateCartPopupProps) => {
   const I18n = useTranslator();
-  const Colors = useThemeColor();
-  const navigation = useNavigation();
+  const dispatch: any = useDispatch();
+
+  const {activeCart} = useSelector((state: any) => state.sale_cart);
+  const {userId} = useSelector((state: any) => state.auth);
 
   const [customerSelected, setCustomerSelected] = useState(null);
+
+  const handleLinkCustomer = useCallback(
+    ({id: customerId}: {id: number}) => {
+      dispatch(
+        (updateCart as any)({
+          partnerId: customerId,
+          cartId: activeCart?.id,
+          cartVersion: activeCart?.version,
+          userId,
+        }),
+      ).then((action: any) => {
+        if (action?.payload?.payload != null) {
+          handleValidate?.(action.payload.payload);
+        }
+      });
+    },
+    [activeCart?.id, activeCart?.version, dispatch, handleValidate, userId],
+  );
 
   return (
     <Alert
@@ -53,40 +74,21 @@ const ValidateCartPopup = ({
       }}
       confirmButtonConfig={{
         title: null,
-        onPress: handleValidate,
+        onPress: () => handleLinkCustomer(customerSelected),
         disabled: customerSelected == null,
         width: 50,
       }}
       translator={I18n.t}>
-      <View style={styles.container}>
-        <CustomerSearchBar
-          style={styles.searchBar}
-          onChange={setCustomerSelected}
-          defaultValue={customerSelected}
-        />
-        <TouchableOpacity
-          onPress={() => navigation.navigate('ClientFormSaleScreen')}
-          style={styles.labelText}>
-          <LabelText
-            iconName="plus-lg"
-            color={Colors.primaryColor.background}
-            title={I18n.t('Sale_CreateNewCustomer')}
-            size={16}
-          />
-        </TouchableOpacity>
-      </View>
+      <CustomerSearchBar
+        style={styles.searchBar}
+        onChange={setCustomerSelected}
+        defaultValue={customerSelected}
+      />
     </Alert>
   );
 };
 
 const styles = StyleSheet.create({
-  container: {
-    flexDirection: 'column',
-    width: '100%',
-  },
-  labelText: {
-    marginVertical: 5,
-  },
   searchBar: {
     width: '100%',
   },

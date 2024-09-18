@@ -22,7 +22,6 @@ export {
   searchCatalog,
 } from './catalog-api';
 export {
-  createClient as createClientApi,
   getClient,
   searchClient,
   updateClient as updateClientApi,

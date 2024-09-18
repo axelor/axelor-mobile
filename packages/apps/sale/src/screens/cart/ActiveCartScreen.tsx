@@ -30,21 +30,19 @@ import {
   useDispatch,
   useSelector,
   useTranslator,
-  useIsFocused,
 } from '@axelor/aos-mobile-core';
 import {
   CartHeader,
   CartLineActionCard,
   ValidateCartPopup,
 } from '../../components';
-import {fetchActiveCart} from '../../features/cartSlice';
+import {fetchActiveCart, validateCart} from '../../features/cartSlice';
 import {searchCartLine} from '../../features/cartLineSlice';
 
 const ActiveCartScreen = ({}) => {
   const dispatch = useDispatch();
   const Colors = useThemeColor();
   const I18n = useTranslator();
-  const isFocused = useIsFocused();
 
   const {userId} = useSelector((state: any) => state.auth);
   const {mobileSettings} = useSelector((state: any) => state.appConfig);
@@ -56,21 +54,19 @@ const ActiveCartScreen = ({}) => {
   const [showPopup, setShowPopup] = useState(false);
 
   useEffect(() => {
-    if (isFocused) {
-      setShowPopup(false);
-    }
-  }, [isFocused]);
-
-  useEffect(() => {
     dispatch((fetchActiveCart as any)({userId}));
   }, [dispatch, userId]);
 
-  const handleCartValidation = useCallback(() => {
-    if (activeCart?.partner != null) {
-      return;
-    }
-    setShowPopup(true);
-  }, [activeCart]);
+  const handleCartValidation = useCallback(
+    (cart: any) => {
+      if (cart?.partner != null) {
+        dispatch((validateCart as any)({id: cart.id, version: cart.version}));
+      } else {
+        setShowPopup(true);
+      }
+    },
+    [dispatch],
+  );
 
   useEffect(() => {
     if (activeCart) {
@@ -136,7 +132,7 @@ const ActiveCartScreen = ({}) => {
         <Button
           iconName="check-lg"
           title={I18n.t('Sale_CreateSaleOrder')}
-          onPress={handleCartValidation}
+          onPress={() => handleCartValidation(activeCart)}
         />
       }>
       <SearchListView
@@ -163,6 +159,7 @@ const ActiveCartScreen = ({}) => {
       <ValidateCartPopup
         visible={showPopup}
         onClose={() => setShowPopup(false)}
+        handleValidate={handleCartValidation}
       />
     </Screen>
   );

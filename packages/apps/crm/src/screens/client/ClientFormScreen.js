@@ -18,9 +18,9 @@
 
 import React, {useCallback, useMemo} from 'react';
 import {useSelector, FormView} from '@axelor/aos-mobile-core';
-import {createClient, updateClient} from '../../features/clientSlice';
+import {updateClient} from '../../features/clientSlice';
 
-const ClientFormScreen = ({navigation, onCreate}) => {
+const ClientFormScreen = ({navigation}) => {
   const {client} = useSelector(state => state.client);
 
   const updateClientAPI = useCallback(
@@ -38,30 +38,6 @@ const ClientFormScreen = ({navigation, onCreate}) => {
       );
     },
     [navigation],
-  );
-
-  const createClientAPI = useCallback(
-    (objectState, dispatch) => {
-      dispatch(
-        createClient({
-          client: {
-            ...objectState,
-            isContact: false,
-            isCorporatePartner: false,
-            isCustomer: true,
-            isEmployee: false,
-          },
-        }),
-      ).then(action => {
-        if (action?.payload?.id) {
-          if (onCreate) {
-            onCreate(action?.payload?.id);
-          }
-          navigation.pop();
-        }
-      });
-    },
-    [onCreate, navigation],
   );
 
   const _defaultValue = useMemo(() => {
@@ -84,14 +60,6 @@ const ClientFormScreen = ({navigation, onCreate}) => {
           needRequiredFields: true,
           customAction: ({dispatch, objectState}) =>
             updateClientAPI(objectState, dispatch),
-        },
-        {
-          key: 'create-client',
-          type: 'create',
-          needValidation: true,
-          needRequiredFields: true,
-          customAction: ({dispatch, objectState}) =>
-            createClientAPI(objectState, dispatch),
         },
       ]}
     />

@@ -17,12 +17,7 @@
  */
 
 export {createCatalog, fetchCatalog, fetchCatalogType} from './catalogSlice';
-export {
-  createClient,
-  fetchClients,
-  getClientbyId,
-  updateClient,
-} from './clientSlice';
+export {fetchClients, getClientbyId, updateClient} from './clientSlice';
 export {fetchCompanyById} from './companySlice';
 export {
   fetchContact,
