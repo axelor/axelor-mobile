@@ -83,6 +83,7 @@ const ValidateCartPopup = ({
         style={styles.searchBar}
         onChange={setCustomerSelected}
         defaultValue={customerSelected}
+        companyId={activeCart?.company?.id}
       />
     </Alert>
   );

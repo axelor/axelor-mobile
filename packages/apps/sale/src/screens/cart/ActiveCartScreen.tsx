@@ -60,12 +60,15 @@ const ActiveCartScreen = ({}) => {
   const handleCartValidation = useCallback(
     (cart: any) => {
       if (cart?.partner != null) {
-        dispatch((validateCart as any)({id: cart.id, version: cart.version}));
+        dispatch(
+          (validateCart as any)({id: cart.id, version: cart.version, userId}),
+        );
+        setShowPopup(false);
       } else {
         setShowPopup(true);
       }
     },
-    [dispatch],
+    [dispatch, userId],
   );
 
   useEffect(() => {
