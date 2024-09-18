@@ -23,7 +23,11 @@ import {
   getSearchCriterias,
 } from '@axelor/aos-mobile-core';
 
-const createProductCriteria = searchValue => {
+const createProductCriteria = ({
+  searchValue,
+  productTypeSelect,
+  productCategory,
+}) => {
   const criteria = [
     {
       fieldName: 'isModel',
@@ -48,7 +52,30 @@ const createProductCriteria = searchValue => {
     getSearchCriterias('sale_product', searchValue),
   ];
 
+  if (Array.isArray(productTypeSelect) && productTypeSelect.length > 0) {
+    criteria.push({
+      operator: 'or',
+      criteria: productTypeSelect.map(typeSelect => ({
+        fieldName: 'productTypeSelect',
+        operator: '=',
+        value: typeSelect.value,
+      })),
+    });
+  }
+
+  if (productCategory) {
+    criteria.push({
+      fieldName: 'productCategory.id',
+      operator: '=',
+      value: productCategory.id,
+    });
+  }
+
   return criteria;
+};
+
+const createProductCategoryCriteria = searchValue => {
+  return [getSearchCriterias('sale_productCategory', searchValue)];
 };
 
 const createProductCompanyCriteria = (companyId, productId) => {
@@ -69,12 +96,30 @@ const createVariantProductCriteria = (searchValue, parentProductId) => {
   ];
 };
 
-export async function searchProduct({page = 0, searchValue}) {
+export async function searchProduct({
+  page = 0,
+  searchValue,
+  productTypeSelect,
+  productCategory,
+}) {
   return createStandardSearch({
     model: 'com.axelor.apps.base.db.Product',
-    criteria: createProductCriteria(searchValue),
+    criteria: createProductCriteria({
+      searchValue,
+      productTypeSelect,
+      productCategory,
+    }),
     fieldKey: 'sale_product',
     sortKey: 'sale_product',
+    page,
+  });
+}
+export async function searchProductCategory({page = 0, searchValue}) {
+  return createStandardSearch({
+    model: 'com.axelor.apps.base.db.ProductCategory',
+    criteria: createProductCategoryCriteria(searchValue),
+    fieldKey: 'sale_productCategory',
+    sortKey: 'sale_productCategory',
     page,
   });
 }

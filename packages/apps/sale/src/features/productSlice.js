@@ -26,6 +26,7 @@ import {
   fetchProductCompanyConfig as _fetchProductCompanyConfig,
   fetchVariantProduct as _fetchVariantProduct,
   searchProduct as _searchProduct,
+  searchProductCategory as _searchProductCategory,
 } from '../api/product-api';
 
 export const searchProduct = createAsyncThunk(
@@ -35,6 +36,19 @@ export const searchProduct = createAsyncThunk(
       fetchFunction: _searchProduct,
       data,
       action: 'Sale_SliceAction_SearchProduct',
+      getState,
+      responseOptions: {isArrayResponse: true},
+    });
+  },
+);
+
+export const searchProductCategory = createAsyncThunk(
+  'sale_product/searchProductCategory',
+  async function (data, {getState}) {
+    return handlerApiCall({
+      fetchFunction: _searchProductCategory,
+      data,
+      action: 'Sale_SliceAction_SearchProductCategory',
       getState,
       responseOptions: {isArrayResponse: true},
     });
@@ -96,6 +110,11 @@ const initialState = {
   moreLoadingVariantList: false,
   isVariantListEnd: false,
   variantProductList: [],
+
+  loadingListProductCategory: false,
+  moreLoadingProductCategory: false,
+  isListEndProductCategory: false,
+  productCategoryList: [],
 };
 
 const productSlice = createSlice({
@@ -107,6 +126,12 @@ const productSlice = createSlice({
       moreLoading: 'moreLoading',
       isListEnd: 'isListEnd',
       list: 'productList',
+    });
+    generateInifiniteScrollCases(builder, searchProductCategory, {
+      loading: 'loadingListProductCategory',
+      moreLoading: 'moreLoadingProductCategory',
+      isListEnd: 'isListEndProductCategory',
+      list: 'productCategoryList',
     });
     generateInifiniteScrollCases(builder, fetchVariantProduct, {
       loading: 'loadingVariantList',

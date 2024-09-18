@@ -36,6 +36,7 @@ export {
   fetchProductCompanyConfig,
   fetchVariantProduct,
   searchProduct,
+  searchProductCategory,
 } from './productSlice';
 export {fetchSaleConfig} from './saleConfigSlice';
 export {fetchSaleOrderLine, fetchSaleOrderLineById} from './saleOrderLineSlice';

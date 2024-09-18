@@ -26,6 +26,7 @@ export const sale_searchFields: SearchFields = {
     'productCategory.name',
     'description',
   ],
+  sale_productCategory: ['name'],
   sale_saleOrder: ['saleOrderSeq', 'externalReference'],
   sale_customer: ['fullName', 'name', 'partnerSeq'],
   sale_customerCategory: ['name'],
