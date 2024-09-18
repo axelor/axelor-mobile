@@ -16,10 +16,20 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import React, {useCallback, useState} from 'react';
-import {StyleSheet} from 'react-native';
-import {Alert} from '@axelor/aos-mobile-ui';
-import {useTranslator, useSelector, useDispatch} from '@axelor/aos-mobile-core';
+import React, {useCallback, useEffect, useState} from 'react';
+import {
+  DeviceEventEmitter,
+  StyleSheet,
+  TouchableOpacity,
+  View,
+} from 'react-native';
+import {Alert, useThemeColor, LabelText} from '@axelor/aos-mobile-ui';
+import {
+  useTranslator,
+  useNavigation,
+  useSelector,
+  useDispatch,
+} from '@axelor/aos-mobile-core';
 import {updateCart} from '../../../features/cartSlice';
 import {CustomerSearchBar} from '../../organisms';
 
@@ -37,6 +47,8 @@ const ValidateCartPopup = ({
   handleValidate,
 }: ValidateCartPopupProps) => {
   const I18n = useTranslator();
+  const Colors = useThemeColor();
+  const navigation = useNavigation();
   const dispatch: any = useDispatch();
 
   const {activeCart} = useSelector((state: any) => state.sale_cart);
@@ -62,6 +74,14 @@ const ValidateCartPopup = ({
     [activeCart?.id, activeCart?.version, dispatch, handleValidate, userId],
   );
 
+  useEffect(() => {
+    DeviceEventEmitter.addListener('client.creation', handleLinkCustomer);
+
+    return () => {
+      DeviceEventEmitter.removeAllListeners('client.creation');
+    };
+  }, [handleLinkCustomer]);
+
   return (
     <Alert
       title={I18n.t('Sale_LinkQuotationToCustomer')}
@@ -79,17 +99,36 @@ const ValidateCartPopup = ({
         width: 50,
       }}
       translator={I18n.t}>
-      <CustomerSearchBar
-        style={styles.searchBar}
-        onChange={setCustomerSelected}
-        defaultValue={customerSelected}
-        companyId={activeCart?.company?.id}
-      />
+      <View style={styles.container}>
+        <CustomerSearchBar
+          style={styles.searchBar}
+          onChange={setCustomerSelected}
+          defaultValue={customerSelected}
+          companyId={activeCart?.company?.id}
+        />
+        <TouchableOpacity
+          onPress={() => navigation.navigate('ClientFormScreen')}
+          style={styles.labelText}>
+          <LabelText
+            iconName="plus-lg"
+            color={Colors.primaryColor.background}
+            title={I18n.t('Sale_CreateNewCustomer')}
+            size={16}
+          />
+        </TouchableOpacity>
+      </View>
     </Alert>
   );
 };
 
 const styles = StyleSheet.create({
+  container: {
+    flexDirection: 'column',
+    width: '100%',
+  },
+  labelText: {
+    marginTop: 5,
+  },
   searchBar: {
     width: '100%',
   },

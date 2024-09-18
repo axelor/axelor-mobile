@@ -140,6 +140,7 @@
   "Sale_Delete": "Delete",
   "Sale_NoCartAvailable": "No cart available",
   "Sale_LinkQuotationToCustomer": "Link quotation to customer",
+  "Sale_CreateNewCustomer": "Create new customer",
   "Sale_ProductUnavailable": "This product is not available",
   "Sale_LinkedQuotationsAndOrders": "Linked quotations and orders",
   "Sale_NoSaleOrderOrQuotation": "No sale order or quotation",
