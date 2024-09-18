@@ -1,0 +1,5 @@
+{
+  "title": "Pickers: restrict placeholder to one line",
+  "type": "fix",
+  "packages": "ui"
+}
