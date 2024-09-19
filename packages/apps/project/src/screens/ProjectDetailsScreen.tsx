@@ -15,7 +15,6 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-
 import React, {useEffect} from 'react';
 import {Screen, BottomBar, useThemeColor} from '@axelor/aos-mobile-ui';
 import {useDispatch, useSelector} from '@axelor/aos-mobile-core';
@@ -52,12 +51,6 @@ const ProjectDetailsScreen = ({route}) => {
       viewComponent: <TaskView />,
     },
     {
-      iconName: 'diagram-3-fill',
-      color: Colors.infoColor,
-      viewComponent: <SubProjectView />,
-      disabled: !project?.isShowPhasesElements,
-    },
-    {
       iconName: 'activity',
       color: Colors.progressColor,
       viewComponent: <ReportingView />,
@@ -68,6 +61,14 @@ const ProjectDetailsScreen = ({route}) => {
       viewComponent: <TimeView />,
     },
   ];
+
+  if (project?.isShowPhasesElements || project?.parentProject) {
+    bottomBarItems.splice(2, 0, {
+      iconName: 'diagram-3-fill',
+      color: Colors.infoColor,
+      viewComponent: <SubProjectView />,
+    });
+  }
 
   if (project?.id !== projectId) {
     return null;
