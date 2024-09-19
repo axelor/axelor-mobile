@@ -62,3 +62,10 @@ export async function updateCart({partnerId, cartId, cartVersion}) {
     },
   });
 }
+
+export async function validateCart({id, version}) {
+  return axiosApiProvider.put({
+    url: `/ws/aos/cart/validate/${id}`,
+    data: {version},
+  });
+}

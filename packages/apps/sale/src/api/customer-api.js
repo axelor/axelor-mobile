@@ -81,6 +81,7 @@ export async function searchCustomer({
   isAsssignedToMe,
   userId,
   categoryId,
+  companyId,
   page = 0,
 }) {
   return createStandardSearch({
@@ -91,6 +92,14 @@ export async function searchCustomer({
       userId,
       categoryId,
     ),
+    ...(companyId != null && {
+      domain: ':company MEMBER OF self.companySet',
+      domainContext: {
+        company: {
+          id: companyId,
+        },
+      },
+    }),
     fieldKey: 'sale_customer',
     sortKey: 'sale_customer',
     page,

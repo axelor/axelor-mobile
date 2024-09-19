@@ -35,4 +35,5 @@ export {default as SaleOrderHeader} from './SaleOrderHeader/SaleOrderHeader';
 export {default as SaleOrderLineDropdownCards} from './SaleOrderLineDropdownCards/SaleOrderLineDropdownCards';
 export {default as SaleOrderLinePriceDetails} from './SaleOrderLinePriceDetails/SaleOrderLinePriceDetails';
 export {default as SaleOrderPriceDetails} from './SaleOrderPriceDetails/SaleOrderPriceDetails';
+export {default as ValidateCartPopup} from './ValidateCartPopup/ValidateCartPopup';
 export {default as VariantProductCard} from './VariantProductCard/VariantProductCard';
