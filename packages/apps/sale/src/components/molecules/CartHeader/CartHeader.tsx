@@ -58,6 +58,7 @@ const CartHeader = ({style}: CartHeaderProps) => {
       <CustomerSearchBar
         onChange={handleChangeCustomer}
         defaultValue={activeCart?.partner}
+        companyId={activeCart?.company?.id}
       />
     </View>
   );
