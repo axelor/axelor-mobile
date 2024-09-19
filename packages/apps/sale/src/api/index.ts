@@ -19,6 +19,7 @@
 export {
   searchCart as searchCartApi,
   updateCart as updateCartApi,
+  validateCart as validateCartApi,
 } from './cart-api';
 export {
   searchCartLine as searchCartLineApi,

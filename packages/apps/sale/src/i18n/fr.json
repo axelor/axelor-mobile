@@ -137,6 +137,7 @@
   "Sale_CreateSaleOrder": "Créer la commande",
   "Sale_Delete": "Supprimer",
   "Sale_NoCartAvailable": "Aucun panier disponible",
+  "Sale_LinkQuotationToCustomer": "Lier le devis au client",
   "Sale_ProductUnavailable": "Ce produit n'est pas disponible",
   "Sale_SliceAction_FetchSaleConfig": "récupération des configurations de vente",
   "Sale_SliceAction_FetchSaleOrder": "récupération des commandes client",
@@ -158,5 +159,6 @@
   "Sale_SliceAction_SearchCartLine": "recherche des lignes de panier",
   "Sale_SliceAction_DeleteCartLine": "suppression de la ligne du panier",
   "Sale_SliceAction_UpdateCartLine": "mise à jour de la ligne du panier",
-  "Sale_SliceAction_FetchCartLineById": "récupération de la ligne de panier par id"
+  "Sale_SliceAction_FetchCartLineById": "récupération de la ligne de panier par id",
+  "Sale_SliceAction_ValidateCart": "validation du panier et création du devis"
 }
