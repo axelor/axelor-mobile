@@ -17,27 +17,20 @@
  */
 
 import React, {useCallback} from 'react';
-import {useSelector} from 'react-redux';
 import {Button, useThemeColor} from '@axelor/aos-mobile-ui';
 import {customComponentOptions} from '../../../../forms/types';
 import {executeButtonAction} from '../../../../forms/studio/api.helpers';
 
 interface props extends customComponentOptions {
   item: any;
-  object?: any;
-  style?: any;
-  title?: string;
-  readonly?: boolean;
 }
 
-const CustomButton = ({item, style, title, readonly}: props) => {
+const CustomButton = ({item, style, title, readonly, objectState}: props) => {
   const Colors = useThemeColor();
 
-  const {object} = useSelector((state: any) => state.metaJsonField);
-
   const handlePress = useCallback(() => {
-    executeButtonAction(item.onClick, item.uniqueModel, object);
-  }, [item, object]);
+    executeButtonAction(item.onClick, item.uniqueModel, objectState);
+  }, [item, objectState]);
 
   return (
     <Button
