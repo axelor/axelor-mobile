@@ -16,29 +16,16 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import React, {useCallback, useEffect} from 'react';
-import {useDispatch} from 'react-redux';
+import React, {useEffect, useState} from 'react';
 import {CustomFieldForm} from '../components';
-import {
-  fetchJsonFieldsOfModel,
-  fetchObject,
-} from '../features/metaJsonFieldSlice';
 import {headerActionsProvider} from '../header';
 import {useTranslator} from '../i18n';
 
 const JsonFieldScreen = ({route}) => {
   const {model, modelId} = route.params;
   const I18n = useTranslator();
-  const dispatch = useDispatch();
 
-  const refresh = useCallback(() => {
-    dispatch((fetchJsonFieldsOfModel as any)({modelName: model}));
-    dispatch((fetchObject as any)({modelName: model, id: modelId}));
-  }, [dispatch, model, modelId]);
-
-  useEffect(() => {
-    refresh();
-  }, [refresh]);
+  const [refreshKey, setRefreshKey] = useState(0);
 
   useEffect(() => {
     headerActionsProvider.registerModel('core_metaJsonFields_details', {
@@ -49,11 +36,11 @@ const JsonFieldScreen = ({route}) => {
           showInHeader: false,
           iconName: 'arrow-repeat',
           title: I18n.t('Base_Studio_RefreshConfig'),
-          onPress: refresh,
+          onPress: () => setRefreshKey(_current => _current + 1),
         },
       ],
     });
-  }, [I18n, refresh]);
+  }, [I18n]);
 
   return (
     <CustomFieldForm
@@ -68,6 +55,7 @@ const JsonFieldScreen = ({route}) => {
           readonlyAfterAction: true,
         },
       ]}
+      key={refreshKey}
     />
   );
 };
