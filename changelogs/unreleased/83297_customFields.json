@@ -1,0 +1,5 @@
+{
+  "title": "Custom fields view: add possibility to manage multiple instances of the component on the same view",
+  "type": "feat",
+  "packages": "core"
+}

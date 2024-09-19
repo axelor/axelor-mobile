@@ -1,0 +1,5 @@
+{
+  "title": "Form view: add possibility to remove background color and buttons container",
+  "type": "feat",
+  "packages": "core"
+}
