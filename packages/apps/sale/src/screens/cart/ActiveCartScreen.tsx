@@ -16,7 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import React, {useEffect, useMemo} from 'react';
+import React, {useCallback, useEffect, useMemo, useState} from 'react';
 import {
   Button,
   DoubleIcon,
@@ -31,8 +31,12 @@ import {
   useSelector,
   useTranslator,
 } from '@axelor/aos-mobile-core';
-import {CartHeader, CartLineActionCard} from '../../components';
-import {fetchActiveCart} from '../../features/cartSlice';
+import {
+  CartHeader,
+  CartLineActionCard,
+  ValidateCartPopup,
+} from '../../components';
+import {fetchActiveCart, validateCart} from '../../features/cartSlice';
 import {searchCartLine} from '../../features/cartLineSlice';
 
 const ActiveCartScreen = ({}) => {
@@ -47,9 +51,25 @@ const ActiveCartScreen = ({}) => {
     (state: any) => state.sale_cartLine,
   );
 
+  const [showPopup, setShowPopup] = useState(false);
+
   useEffect(() => {
     dispatch((fetchActiveCart as any)({userId}));
   }, [dispatch, userId]);
+
+  const handleCartValidation = useCallback(
+    (cart: any) => {
+      if (cart?.partner != null) {
+        dispatch(
+          (validateCart as any)({id: cart.id, version: cart.version, userId}),
+        );
+        setShowPopup(false);
+      } else {
+        setShowPopup(true);
+      }
+    },
+    [dispatch, userId],
+  );
 
   useEffect(() => {
     if (activeCart) {
@@ -115,7 +135,7 @@ const ActiveCartScreen = ({}) => {
         <Button
           iconName="check-lg"
           title={I18n.t('Sale_CreateSaleOrder')}
-          onPress={() => {}}
+          onPress={() => handleCartValidation(activeCart)}
         />
       }>
       <SearchListView
@@ -138,6 +158,11 @@ const ActiveCartScreen = ({}) => {
         renderListItem={({item}) => (
           <CartLineActionCard cartLine={item} cartId={activeCart?.id} />
         )}
+      />
+      <ValidateCartPopup
+        visible={showPopup}
+        onClose={() => setShowPopup(false)}
+        handleValidate={handleCartValidation}
       />
     </Screen>
   );

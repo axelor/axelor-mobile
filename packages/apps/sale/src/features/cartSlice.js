@@ -18,7 +18,11 @@
 
 import {createAsyncThunk, createSlice} from '@reduxjs/toolkit';
 import {handlerApiCall} from '@axelor/aos-mobile-core';
-import {searchCart, updateCart as _updateCart} from '../api/cart-api';
+import {
+  searchCart,
+  updateCart as _updateCart,
+  validateCart as _validateCart,
+} from '../api/cart-api';
 
 export const fetchActiveCart = createAsyncThunk(
   'sale_cart/searchCart',
@@ -42,9 +46,20 @@ export const updateCart = createAsyncThunk(
       action: 'Sale_SliceAction_UpdateCart',
       getState,
       responseOptions: {isArrayResponse: true},
-    }).then(() => {
-      dispatch(fetchActiveCart(data));
-    });
+    }).then(() => dispatch(fetchActiveCart(data)));
+  },
+);
+
+export const validateCart = createAsyncThunk(
+  'sale_cart/validateCart',
+  async function (data, {getState, dispatch}) {
+    return handlerApiCall({
+      fetchFunction: _validateCart,
+      data,
+      action: 'Sale_SliceAction_ValidateCart',
+      getState,
+      responseOptions: {isArrayResponse: false, showToast: true},
+    }).then(() => dispatch(fetchActiveCart(data)));
   },
 );
 
