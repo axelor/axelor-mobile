@@ -18,10 +18,10 @@
 
 import React, {useEffect, useMemo, useState} from 'react';
 import {StyleSheet} from 'react-native';
-import {useDispatch} from 'react-redux';
+import {useSelector} from 'react-redux';
 import {useThemeColor} from '@axelor/aos-mobile-ui';
 import {FormView} from '../../pages';
-import {updateJsonFieldsObject} from '../../../features/metaJsonFieldSlice';
+import {handlerApiCall} from '../../../apiProviders';
 import {
   Action,
   fetchJsonFieldsOfModel,
@@ -31,6 +31,7 @@ import {
   mapFormToStudioFields,
   mapStudioFields,
   mapStudioFieldsWithFormula,
+  updateJsonFieldsObject,
   useFieldPermitter,
 } from '../../../forms';
 
@@ -50,9 +51,8 @@ interface CustomFieldFormProps {
   additionalActions?: JsonAction[];
   readonly?: boolean;
   readonlyButton?: boolean;
-  customComponent?: any;
-  hideBackgroundButton?: boolean;
-  hideBackgroundForm?: boolean;
+  hideButtonBackground?: boolean;
+  hideFormBackground?: boolean;
 }
 
 const CustomFieldForm = ({
@@ -63,12 +63,12 @@ const CustomFieldForm = ({
   additionalActions = [],
   readonly = false,
   readonlyButton = false,
-  customComponent,
-  hideBackgroundButton,
-  hideBackgroundForm,
+  hideButtonBackground,
+  hideFormBackground,
 }: CustomFieldFormProps) => {
   const Colors = useThemeColor();
-  const dispatch = useDispatch();
+
+  const {userId} = useSelector((state: any) => state.auth);
 
   const [_fields, setFields] = useState(null);
   const [object, setObject] = useState(null);
@@ -83,9 +83,10 @@ const CustomFieldForm = ({
       .catch(() => {
         setFields(null);
       });
+
     fetchObject({modelName: model, id: modelId})
       .then(res => {
-        setObject(res?.data?.data[0]);
+        setObject(res?.data?.data?.[0]);
       })
       .catch(() => {
         setObject(null);
@@ -102,32 +103,23 @@ const CustomFieldForm = ({
     [Colors, _fields, object, removeUnauthorizedFields],
   );
 
-  const formattedFields = useMemo(() => {
-    const customFields = {...fields};
-
-    if (customComponent) {
-      customFields.customComponent = {
-        type: 'object',
-        widget: 'custom',
-        customComponent: customComponent,
-      };
-    }
-
-    return customFields;
-  }, [fields, customComponent]);
+  const formKey = useMemo(
+    () => `${FORM_KEY}_${fieldType}_${readonly}`,
+    [fieldType, readonly],
+  );
 
   useEffect(() => {
     formConfigsProvider.registerForm(
-      `${FORM_KEY}_${fieldType}_${readonly}`,
+      formKey,
       {
         readonlyIf: () => readonly,
-        fields: formattedFields,
+        fields,
         panels,
         modelName: model,
       },
       {replaceOld: true},
     );
-  }, [fieldType, fields, formattedFields, model, panels, readonly]);
+  }, [fields, formKey, model, panels, readonly]);
 
   const attrsValues = useMemo(
     () => (object?.id !== modelId ? null : getAttrsValue(object, fieldType)),
@@ -141,17 +133,24 @@ const CustomFieldForm = ({
           return {
             ..._action,
             customAction: ({objectState}) => {
-              dispatch(
-                (updateJsonFieldsObject as any)({
+              handlerApiCall({
+                fetchFunction: updateJsonFieldsObject,
+                data: {
                   modelName: model,
-                  id: object.id,
-                  version: object.version,
+                  id: object?.id,
+                  version: object?.version,
                   values: mapFormToStudioFields(_fields, objectState),
+                },
+                action: 'Base_SliceAction_UpdateJsonFieldsObject',
+                getState: () => ({auth: {userId}}),
+                responseOptions: {
+                  isArrayResponse: false,
                   showToast:
                     _action.showToast != null ? _action.showToast : true,
-                }),
-              ).then(res => {
-                _action.postActions?.(res?.payload);
+                },
+              }).then(res => {
+                setObject(res);
+                _action.postActions?.(res);
               });
             },
           };
@@ -159,16 +158,16 @@ const CustomFieldForm = ({
           return _action;
         }
       }),
-    [_fields, additionalActions, dispatch, model, object?.id, object?.version],
+    [_fields, additionalActions, model, object?.id, object?.version, userId],
   );
 
   return (
     <FormView
       style={[styles.formView, style]}
-      styleScreen={hideBackgroundForm && styles.screen}
-      hideBackgroundButton={hideBackgroundButton}
+      styleScreen={hideFormBackground && styles.screen}
+      hideButtonBackground={hideButtonBackground}
       actions={_additionalActions}
-      formKey={`${FORM_KEY}_${fieldType}_${readonly}`}
+      formKey={formKey}
       isCustom={true}
       defaultValue={attrsValues == null ? {...defaults} : attrsValues}
       floatingTools={readonlyButton}

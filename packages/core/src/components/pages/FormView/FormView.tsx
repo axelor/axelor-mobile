@@ -59,7 +59,7 @@ interface FormProps {
   floatingTools?: boolean;
   defaultEditMode?: boolean;
   styleScreen?: any;
-  hideBackgroundButton?: boolean;
+  hideButtonBackground?: boolean;
 }
 
 const FormView = ({
@@ -72,7 +72,7 @@ const FormView = ({
   floatingTools = true,
   defaultEditMode = false,
   styleScreen,
-  hideBackgroundButton = false,
+  hideButtonBackground = false,
 }: FormProps) => {
   const I18n = useTranslator();
   const dispatch = useDispatch();
@@ -318,7 +318,7 @@ const FormView = ({
 
   return (
     <Screen
-      hideBackgroundButton={hideBackgroundButton}
+      hideButtonBackground={hideButtonBackground}
       fixedItems={
         <View
           onLayout={({nativeEvent}) => {
