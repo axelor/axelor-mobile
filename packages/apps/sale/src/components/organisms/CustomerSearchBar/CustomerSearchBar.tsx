@@ -34,6 +34,7 @@ interface CustomerSearchbarProps {
   onChange?: (any: any) => void;
   readonly?: boolean;
   required?: boolean;
+  companyId?: number;
 }
 
 const CustomerSearchBar = ({
@@ -44,6 +45,7 @@ const CustomerSearchBar = ({
   onChange = () => {},
   readonly = false,
   required = false,
+  companyId,
 }: CustomerSearchbarProps) => {
   const I18n = useTranslator();
   const dispatch = useDispatch();
@@ -54,9 +56,9 @@ const CustomerSearchBar = ({
 
   const searchCustomerAPI = useCallback(
     ({page = 0, searchValue}) => {
-      dispatch((searchCustomer as any)({page, searchValue}));
+      dispatch((searchCustomer as any)({page, searchValue, companyId}));
     },
-    [dispatch],
+    [dispatch, companyId],
   );
 
   return (

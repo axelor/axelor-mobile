@@ -16,13 +16,13 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-export {fetchActiveCart, updateCart} from './cartSlice';
 export {
   deleteCartLine,
   fetchCartLineById,
   searchCartLine,
   updateCartLine,
 } from './cartLineSlice';
+export {fetchActiveCart, updateCart, validateCart} from './cartSlice';
 export {fetchComplementaryProduct} from './complementaryProductSlice';
 export {fetchCustomerDelivery} from './customerDeliverySlice';
 export {
