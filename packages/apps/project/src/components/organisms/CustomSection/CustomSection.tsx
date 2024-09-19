@@ -16,43 +16,66 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import React from 'react';
+import React, {useState} from 'react';
 import {StyleSheet} from 'react-native';
 import {HorizontalRule} from '@axelor/aos-mobile-ui';
 import {CustomFieldForm} from '@axelor/aos-mobile-core';
-import {SectionHeader} from '../../molecules/';
+import {CustomFieldPopup, SectionHeader} from '../../molecules';
 
 const CustomSection = ({
-  title,
-  expanded,
-  toggleSection,
-  onEdit,
+  titleKey,
   fieldType,
+  visible = true,
   modelId,
   refreshKey,
-}) => (
-  <>
-    <SectionHeader
-      title={title}
-      expanded={expanded}
-      onPress={() => toggleSection(fieldType)}
-      onEdit={() => onEdit(fieldType, title)}
-    />
-    {expanded && (
-      <>
-        <CustomFieldForm
-          model="com.axelor.apps.project.db.ProjectTask"
-          fieldType={fieldType}
-          modelId={modelId}
-          style={styles.form}
-          readonly
-          key={refreshKey}
-        />
-        <HorizontalRule style={styles.horizontalRule} />
-      </>
-    )}
-  </>
-);
+  onRefresh,
+}: {
+  titleKey: string;
+  fieldType: string;
+  visible?: boolean;
+  modelId: number;
+  refreshKey: number;
+  onRefresh: () => void;
+}) => {
+  const [expanded, setExpanded] = useState(true);
+  const [alertVisible, setAlertVisible] = useState(false);
+
+  if (!visible) {
+    return null;
+  }
+
+  return (
+    <>
+      <SectionHeader
+        titleKey={titleKey}
+        expanded={expanded}
+        onPress={() => setExpanded(_current => !_current)}
+        onEdit={() => setAlertVisible(true)}
+      />
+      {expanded && (
+        <>
+          <CustomFieldForm
+            model="com.axelor.apps.project.db.ProjectTask"
+            fieldType={fieldType}
+            modelId={modelId}
+            style={styles.form}
+            readonly
+            key={refreshKey}
+          />
+          <HorizontalRule style={styles.horizontalRule} />
+        </>
+      )}
+      <CustomFieldPopup
+        titleKey={titleKey}
+        fieldType={fieldType}
+        visible={alertVisible}
+        onClose={() => setAlertVisible(false)}
+        onSave={onRefresh}
+        projectTaskId={modelId}
+      />
+    </>
+  );
+};
 
 const styles = StyleSheet.create({
   form: {

@@ -17,37 +17,63 @@
  */
 
 import React from 'react';
-import {StyleSheet, View} from 'react-native';
+import {StyleSheet, TouchableOpacity, View} from 'react-native';
+import {useTranslator} from '@axelor/aos-mobile-core';
 import {Icon, Text} from '@axelor/aos-mobile-ui';
 
-const SectionHeader = ({title, expanded, onPress, onEdit}) => (
-  <View style={styles.sectionContainer}>
-    <Text writingType="title">{title}</Text>
-    <View style={styles.iconContainer}>
+const SectionHeader = ({
+  titleKey,
+  expanded,
+  onPress,
+  onEdit,
+  showEdit = true,
+}: {
+  titleKey: string;
+  expanded: boolean;
+  onPress: () => void;
+  onEdit?: () => void;
+  showEdit?: boolean;
+}) => {
+  const I18n = useTranslator();
+
+  return (
+    <View style={styles.sectionContainer}>
+      <TouchableOpacity style={styles.titleContainer} onPress={onPress}>
+        <Text writingType="title" style={styles.title}>
+          {I18n.t(titleKey)}
+        </Text>
+        <Icon name={expanded ? 'chevron-up' : 'chevron-down'} />
+      </TouchableOpacity>
       <Icon
+        name="pencil-fill"
+        visible={showEdit}
         touchable={true}
-        onPress={onPress}
-        name={expanded ? 'chevron-up' : 'chevron-down'}
+        onPress={onEdit}
         style={styles.icon}
       />
-      <Icon touchable={true} onPress={onEdit} name="pencil-fill" />
     </View>
-  </View>
-);
+  );
+};
 
 const styles = StyleSheet.create({
   sectionContainer: {
     flexDirection: 'row',
-    justifyContent: 'space-between',
     alignItems: 'center',
-    marginHorizontal: 24,
+    width: '90%',
+    alignSelf: 'center',
     marginVertical: 7,
   },
-  iconContainer: {
+  titleContainer: {
+    flex: 1,
     flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+  },
+  title: {
+    flex: 1,
   },
   icon: {
-    marginRight: 10,
+    marginLeft: 10,
   },
 });
 

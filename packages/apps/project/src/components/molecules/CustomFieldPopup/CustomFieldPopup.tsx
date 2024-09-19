@@ -18,70 +18,69 @@
 
 import React from 'react';
 import {StyleSheet, View} from 'react-native';
+import {CustomFieldForm, useTranslator} from '@axelor/aos-mobile-core';
 import {Alert} from '@axelor/aos-mobile-ui';
-import {CustomFieldForm} from '@axelor/aos-mobile-core';
 
 interface CustomFieldPopupProps {
+  visible: boolean;
+  titleKey: string;
+  fieldType: string;
   onClose: () => void;
   onSave: () => void;
-  translator?: (key: string) => string;
-  editingParams: any;
   projectTaskId: number;
 }
 
 const CustomFieldPopup = ({
+  visible,
+  titleKey,
+  fieldType,
   onClose,
   onSave,
-  translator = key => key,
-  editingParams,
   projectTaskId,
 }: CustomFieldPopupProps) => {
+  const I18n = useTranslator();
+
   return (
     <Alert
-      visible={editingParams !== null}
-      title={editingParams?.title}
-      translator={translator}
+      visible={visible}
+      style={styles.container}
+      title={I18n.t(titleKey)}
+      translator={I18n.t}
       cancelButtonConfig={{
         onPress: onClose,
         showInHeader: true,
       }}>
-      {editingParams && (
-        <View style={styles.popupContainer}>
-          <View style={styles.popupChildren}>
-            <CustomFieldForm
-              model="com.axelor.apps.project.db.ProjectTask"
-              fieldType={editingParams.fieldType}
-              modelId={projectTaskId}
-              readonly={false}
-              hideBackgroundForm={true}
-              hideBackgroundButton={true}
-              additionalActions={[
-                {
-                  key: 'validateChanges',
-                  type: 'update',
-                  useDefaultAction: true,
-                  readonlyAfterAction: true,
-                  postActions: () => {
-                    onSave();
-                    onClose();
-                  },
-                },
-              ]}
-            />
-          </View>
-        </View>
-      )}
+      <View style={styles.content}>
+        <CustomFieldForm
+          model="com.axelor.apps.project.db.ProjectTask"
+          fieldType={fieldType}
+          modelId={projectTaskId}
+          readonly={false}
+          hideFormBackground={true}
+          hideButtonBackground={true}
+          additionalActions={[
+            {
+              key: 'validateChanges',
+              type: 'update',
+              useDefaultAction: true,
+              readonlyAfterAction: true,
+              postActions: () => {
+                onSave();
+                onClose();
+              },
+            },
+          ]}
+        />
+      </View>
     </Alert>
   );
 };
 
 const styles = StyleSheet.create({
-  popupContainer: {
-    flexDirection: 'column',
-    width: '100%',
-    marginBottom: -50,
+  content: {
+    flex: 1,
   },
-  popupChildren: {
+  container: {
     height: '80%',
   },
 });

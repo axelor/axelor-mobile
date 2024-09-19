@@ -16,34 +16,45 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import React from 'react';
+import React, {useCallback, useEffect} from 'react';
 import {BottomBar, Screen, useThemeColor} from '@axelor/aos-mobile-ui';
-import {useSelector} from '@axelor/aos-mobile-core';
-import {CustomFieldFormView, TaskGeneralInformationView} from '../components';
+import {useDispatch, useSelector} from '@axelor/aos-mobile-core';
+import {TaskCustomFieldsView, TaskGeneralInformationView} from '../components';
+import {fetchProjectTaskById} from '../features/projectTaskSlice';
 
 const TaskDetailsScreen = ({route}) => {
-  const projecTaskId = route?.params?.projecTaskId;
+  const {projecTaskId} = route?.params;
   const Colors = useThemeColor();
+  const dispatch = useDispatch();
 
   const {projectTask} = useSelector((state: any) => state.project_projectTask);
+
+  const fetchProjectTask = useCallback(() => {
+    dispatch((fetchProjectTaskById as any)({projecTaskId}));
+  }, [dispatch, projecTaskId]);
 
   const bottomBarItems = [
     {
       iconName: 'house',
-      viewComponent: <TaskGeneralInformationView projecTaskId={projecTaskId} />,
+      viewComponent: (
+        <TaskGeneralInformationView handleRefresh={fetchProjectTask} />
+      ),
     },
     {
       iconName: 'layout-text-window-reverse',
-      viewComponent: (
-        <CustomFieldFormView
-          projecTaskId={projecTaskId}
-          config={projectTask?.project?.customFieldManagementSelect}
-        />
-      ),
+      viewComponent: <TaskCustomFieldsView />,
       color: Colors.plannedColor,
       disabled: projectTask?.project?.customFieldManagementSelect == null,
     },
   ];
+
+  useEffect(() => {
+    fetchProjectTask();
+  }, [fetchProjectTask]);
+
+  if (projecTaskId !== projectTask?.id) {
+    return null;
+  }
 
   return (
     <Screen removeSpaceOnTop={true}>
