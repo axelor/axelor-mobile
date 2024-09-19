@@ -16,23 +16,22 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import React, {useEffect, useMemo} from 'react';
+import React, {useEffect, useMemo, useState} from 'react';
 import {StyleSheet} from 'react-native';
-import {useDispatch, useSelector} from 'react-redux';
+import {useSelector} from 'react-redux';
 import {useThemeColor} from '@axelor/aos-mobile-ui';
 import {FormView} from '../../pages';
-import {
-  fetchJsonFieldsOfModel,
-  fetchObject,
-  updateJsonFieldsObject,
-} from '../../../features/metaJsonFieldSlice';
+import {handlerApiCall} from '../../../apiProviders';
 import {
   Action,
+  fetchJsonFieldsOfModel,
+  fetchObject,
   formConfigsProvider,
   getAttrsValue,
   mapFormToStudioFields,
   mapStudioFields,
   mapStudioFieldsWithFormula,
+  updateJsonFieldsObject,
   useFieldPermitter,
 } from '../../../forms';
 
@@ -45,37 +44,54 @@ interface JsonAction extends Action {
 }
 
 interface CustomFieldFormProps {
+  style?: any;
   model: string;
   modelId: number;
   fieldType?: string;
   additionalActions?: JsonAction[];
   readonly?: boolean;
   readonlyButton?: boolean;
+  hideButtonBackground?: boolean;
+  hideFormBackground?: boolean;
 }
 
 const CustomFieldForm = ({
+  style,
   model,
   modelId,
   fieldType = null,
   additionalActions = [],
   readonly = false,
   readonlyButton = false,
+  hideButtonBackground,
+  hideFormBackground,
 }: CustomFieldFormProps) => {
   const Colors = useThemeColor();
-  const dispatch = useDispatch();
 
-  const {fields: _fields, object} = useSelector(
-    (state: any) => state.metaJsonField,
-  );
+  const {userId} = useSelector((state: any) => state.auth);
+
+  const [_fields, setFields] = useState(null);
+  const [object, setObject] = useState(null);
 
   const removeUnauthorizedFields = useFieldPermitter({modelName: model});
 
   useEffect(() => {
-    dispatch(
-      (fetchJsonFieldsOfModel as any)({modelName: model, type: fieldType}),
-    );
-    dispatch((fetchObject as any)({modelName: model, id: modelId}));
-  }, [dispatch, model, modelId, fieldType]);
+    fetchJsonFieldsOfModel({modelName: model, type: fieldType})
+      .then(res => {
+        setFields(res?.data?.data);
+      })
+      .catch(() => {
+        setFields(null);
+      });
+
+    fetchObject({modelName: model, id: modelId})
+      .then(res => {
+        setObject(res?.data?.data?.[0]);
+      })
+      .catch(() => {
+        setObject(null);
+      });
+  }, [model, modelId, fieldType]);
 
   const {fields, panels, defaults} = useMemo(
     () =>
@@ -87,9 +103,14 @@ const CustomFieldForm = ({
     [Colors, _fields, object, removeUnauthorizedFields],
   );
 
+  const formKey = useMemo(
+    () => `${FORM_KEY}_${fieldType}_${readonly}`,
+    [fieldType, readonly],
+  );
+
   useEffect(() => {
     formConfigsProvider.registerForm(
-      FORM_KEY,
+      formKey,
       {
         readonlyIf: () => readonly,
         fields,
@@ -98,7 +119,7 @@ const CustomFieldForm = ({
       },
       {replaceOld: true},
     );
-  }, [fields, model, panels, readonly]);
+  }, [fields, formKey, model, panels, readonly]);
 
   const attrsValues = useMemo(
     () => (object?.id !== modelId ? null : getAttrsValue(object, fieldType)),
@@ -112,17 +133,24 @@ const CustomFieldForm = ({
           return {
             ..._action,
             customAction: ({objectState}) => {
-              dispatch(
-                (updateJsonFieldsObject as any)({
+              handlerApiCall({
+                fetchFunction: updateJsonFieldsObject,
+                data: {
                   modelName: model,
-                  id: object.id,
-                  version: object.version,
+                  id: object?.id,
+                  version: object?.version,
                   values: mapFormToStudioFields(_fields, objectState),
+                },
+                action: 'Base_SliceAction_UpdateJsonFieldsObject',
+                getState: () => ({auth: {userId}}),
+                responseOptions: {
+                  isArrayResponse: false,
                   showToast:
                     _action.showToast != null ? _action.showToast : true,
-                }),
-              ).then(res => {
-                _action.postActions?.(res?.payload);
+                },
+              }).then(res => {
+                setObject(res);
+                _action.postActions?.(res);
               });
             },
           };
@@ -130,14 +158,16 @@ const CustomFieldForm = ({
           return _action;
         }
       }),
-    [_fields, additionalActions, dispatch, model, object?.id, object?.version],
+    [_fields, additionalActions, model, object?.id, object?.version, userId],
   );
 
   return (
     <FormView
-      style={styles.formView}
+      style={[styles.formView, style]}
+      styleScreen={hideFormBackground && styles.screen}
+      hideButtonBackground={hideButtonBackground}
       actions={_additionalActions}
-      formKey={FORM_KEY}
+      formKey={formKey}
       isCustom={true}
       defaultValue={attrsValues == null ? {...defaults} : attrsValues}
       floatingTools={readonlyButton}
@@ -148,6 +178,9 @@ const CustomFieldForm = ({
 const styles = StyleSheet.create({
   formView: {
     paddingBottom: 0,
+  },
+  screen: {
+    backgroundColor: null,
   },
 });
 

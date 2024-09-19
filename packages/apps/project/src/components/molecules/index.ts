@@ -17,6 +17,7 @@
  */
 
 export {default as ActivityCard} from './ActivityCard/ActivityCard';
+export {default as CustomFieldPopup} from './CustomFieldPopup/CustomFieldPopup';
 export {default as DropdownInvoicing} from './DropdownInvoicing/DropdownInvoicing';
 export {default as DropdownMembers} from './DropdownMembers/DropdownMembers';
 export {default as DropdownTaskCharacteristics} from './DropdownTaskCharacteristics/DropdownTaskCharacteristics';
@@ -24,5 +25,6 @@ export {default as DropdownTaskDescription} from './DropdownTaskDescription/Drop
 export {default as PartnerActionCard} from './PartnerActionCard/PartnerActionCard';
 export {default as ProjectHeader} from './ProjectHeader/ProjectHeader';
 export {default as ProjectSiteTags} from './ProjectSiteTags/ProjectSiteTags';
+export {default as SectionHeader} from './SectionHeader/SectionHeader';
 export {default as TaskActionCard} from './TaskActionCard/TaskActionCard';
 export {default as TaskDetailsHeader} from './TaskDetailsHeader/TaskDetailsHeader';

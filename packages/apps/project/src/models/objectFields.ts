@@ -124,6 +124,7 @@ export const project_modelAPI: ObjectFields = {
       schemaContructor.object({
         name: schemaContructor.string(),
         projectStatus: schemaContructor.subObject(),
+        customFieldManagementSelect: schemaContructor.string(),
       }),
     ),
     projectTaskCategory: schemaContructor.subObject(),
