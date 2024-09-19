@@ -30,7 +30,9 @@ const AdressLine = ({address}: AdressLineProps) => {
 
   return (
     <View style={styles.container}>
-      <Text fontSize={14}>{_address}</Text>
+      <Text style={styles.addressText} fontSize={14} numberOfLines={2}>
+        {_address}
+      </Text>
       <View style={styles.iconContainer}>
         <Icon
           style={styles.marginLeft}
@@ -53,6 +55,13 @@ const styles = StyleSheet.create({
   container: {
     flexDirection: 'row',
     justifyContent: 'space-between',
+    alignItems: 'center',
+    flexWrap: 'wrap',
+  },
+  addressText: {
+    flex: 1,
+    flexShrink: 1,
+    marginRight: 10,
   },
   iconContainer: {
     flexDirection: 'row',
