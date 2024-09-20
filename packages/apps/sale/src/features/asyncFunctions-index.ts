@@ -22,7 +22,12 @@ export {
   searchCartLine,
   updateCartLine,
 } from './cartLineSlice';
-export {fetchActiveCart, updateCart, validateCart} from './cartSlice';
+export {
+  emptyCart,
+  fetchActiveCart,
+  updateCart,
+  validateCart,
+} from './cartSlice';
 export {fetchComplementaryProduct} from './complementaryProductSlice';
 export {fetchCustomerDelivery} from './customerDeliverySlice';
 export {
