@@ -49,6 +49,9 @@ export const sale_modelAPI: ObjectFields = {
     productVariant: schemaContructor.subObject('name'),
     parentProduct: schemaContructor.subObject('name'),
   }),
+  sale_productCategory: schemaContructor.object({
+    name: schemaContructor.string(),
+  }),
   sale_productCompany: schemaContructor.object({
     company: schemaContructor.subObject(),
     product: schemaContructor.subObject(),
