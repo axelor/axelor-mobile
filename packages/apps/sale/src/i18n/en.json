@@ -132,6 +132,7 @@
   "Sale_AddOne": "Add one",
   "Sale_RemoveOne": "Remove one",
   "Sale_AddProduct": "Add product",
+  "Sale_SetAside": "Set aside",
   "Sale_EmptyCart": "Empty cart",
   "Sale_CreateSaleOrder": "Create the sale order",
   "Sale_Delete": "Delete",
