@@ -18,4 +18,5 @@
 
 export {default as CategorySearchBar} from './CategorySearchBar/CategorySearchBar';
 export {default as CustomerSearchBar} from './CustomerSearchBar/CustomerSearchBar';
+export {default as ProductCategorySearchBar} from './ProductCategorySearchBar/ProductCategorySearchBar';
 export {default as ProductDropdownCard} from './ProductDropdownCard/ProductDropdownCard';

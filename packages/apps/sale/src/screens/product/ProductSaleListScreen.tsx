@@ -16,22 +16,42 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import React from 'react';
-import {Screen} from '@axelor/aos-mobile-ui';
+import React, {useMemo, useState} from 'react';
+import {ChipSelect, Screen} from '@axelor/aos-mobile-ui';
 import {
   SearchListView,
   displayItemName,
   useSelector,
   useTranslator,
+  useTypeHelpers,
+  useTypes,
 } from '@axelor/aos-mobile-core';
 import {searchProduct} from '../../features/productSlice';
-import {ProductCard} from '../../components';
+import {ProductCard, ProductCategorySearchBar} from '../../components';
 
 const ProductSaleListScreen = ({navigation}) => {
   const I18n = useTranslator();
+  const {SaleProduct} = useTypes();
+  const {getSelectionItems} = useTypeHelpers();
+
+  const [productTypeSelect, setProductTypeSelect] = useState();
+  const [productCategory, setProductCategory] = useState();
 
   const {productList, moreLoading, isListEnd, loadingList} = useSelector(
     (state: any) => state.sale_product,
+  );
+
+  const productTypeSelectList = useMemo(
+    () => getSelectionItems(SaleProduct?.productTypeSelect, productTypeSelect),
+    [SaleProduct?.productTypeSelect, getSelectionItems, productTypeSelect],
+  );
+
+  const sliceFunctionData = useMemo(
+    () => ({
+      productTypeSelect: productTypeSelect,
+      productCategory: productCategory,
+    }),
+    [productCategory, productTypeSelect],
   );
 
   return (
@@ -42,9 +62,22 @@ const ProductSaleListScreen = ({navigation}) => {
         moreLoading={moreLoading}
         isListEnd={isListEnd}
         sliceFunction={searchProduct}
+        sliceFunctionData={sliceFunctionData}
         displaySearchValue={displayItemName}
         searchPlaceholder={I18n.t('Base_Search')}
-        expandableFilter={false}
+        headerChildren={
+          <ProductCategorySearchBar
+            defaultValue={productCategory}
+            onChange={setProductCategory}
+          />
+        }
+        chipComponent={
+          <ChipSelect
+            mode="switch"
+            onChangeValue={setProductTypeSelect}
+            selectionItems={productTypeSelectList}
+          />
+        }
         renderListItem={({item}) => (
           <ProductCard
             onPress={() => {
