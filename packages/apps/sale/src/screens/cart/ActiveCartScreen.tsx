@@ -96,24 +96,6 @@ const ActiveCartScreen = ({}) => {
             customComponent: (
               <DoubleIcon
                 topIconConfig={{
-                  name: 'plus-lg',
-                  color: Colors.primaryColor.background,
-                  size: 13,
-                }}
-                bottomIconConfig={{name: 'basket2-fill'}}
-                topIconPosition={{bottom: -7, right: -7}}
-              />
-            ),
-            iconName: null,
-            key: 'activeCart_setAside',
-            order: 10,
-            title: I18n.t('Sale_SetAside'),
-            onPress: () => {},
-          },
-          {
-            customComponent: (
-              <DoubleIcon
-                topIconConfig={{
                   name: 'trash3-fill',
                   color: Colors.errorColor.background,
                   size: 13,
