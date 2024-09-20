@@ -132,7 +132,6 @@
   "Sale_AddOne": "Add one",
   "Sale_RemoveOne": "Remove one",
   "Sale_AddProduct": "Add product",
-  "Sale_SetAside": "Set aside",
   "Sale_EmptyCart": "Empty cart",
   "Sale_CreateSaleOrder": "Create the sale order",
   "Sale_Delete": "Delete",
@@ -160,5 +159,6 @@
   "Sale_SliceAction_DeleteCartLine": "delete cart line",
   "Sale_SliceAction_UpdateCartLine": "update cart line",
   "Sale_SliceAction_FetchCartLineById": "fetch cart line by id",
-  "Sale_SliceAction_ValidateCart": "validate cart and create sale quotation"
+  "Sale_SliceAction_ValidateCart": "validate cart and create sale quotation",
+  "Sale_SliceAction_EmptyCart": "empty cart"
 }

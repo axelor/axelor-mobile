@@ -36,7 +36,11 @@ import {
   CartLineActionCard,
   ValidateCartPopup,
 } from '../../components';
-import {fetchActiveCart, validateCart} from '../../features/cartSlice';
+import {
+  emptyCart,
+  fetchActiveCart,
+  validateCart,
+} from '../../features/cartSlice';
 import {searchCartLine} from '../../features/cartLineSlice';
 
 const ActiveCartScreen = ({}) => {
@@ -71,6 +75,16 @@ const ActiveCartScreen = ({}) => {
     [dispatch, userId],
   );
 
+  const handleEmptyCart = useCallback(() => {
+    dispatch(
+      (emptyCart as any)({
+        id: activeCart?.id,
+        version: activeCart?.version,
+        userId,
+      }),
+    );
+  }, [activeCart?.id, activeCart?.version, dispatch, userId]);
+
   useEffect(() => {
     if (activeCart) {
       headerActionsProvider.registerModel('sale_active_cart', {
@@ -78,24 +92,6 @@ const ActiveCartScreen = ({}) => {
         modelId: activeCart?.id,
         disableMailMessages: !mobileSettings?.isTrackerMessageEnabled,
         actions: [
-          {
-            customComponent: (
-              <DoubleIcon
-                topIconConfig={{
-                  name: 'plus-lg',
-                  color: Colors.primaryColor.background,
-                  size: 13,
-                }}
-                bottomIconConfig={{name: 'basket2-fill'}}
-                topIconPosition={{bottom: -7, right: -7}}
-              />
-            ),
-            iconName: null,
-            key: 'activeCart_setAside',
-            order: 10,
-            title: I18n.t('Sale_SetAside'),
-            onPress: () => {},
-          },
           {
             customComponent: (
               <DoubleIcon
@@ -112,16 +108,16 @@ const ActiveCartScreen = ({}) => {
             key: 'activeCart_emptyCart',
             order: 20,
             title: I18n.t('Sale_EmptyCart'),
-            onPress: () => {},
+            onPress: handleEmptyCart,
           },
         ],
       });
     }
-  }, [Colors, I18n, activeCart, mobileSettings]);
+  }, [Colors, I18n, activeCart, handleEmptyCart, mobileSettings]);
 
   const sliceFunctionData = useMemo(
     () => ({cartId: activeCart?.id}),
-    [activeCart?.id],
+    [activeCart],
   );
 
   if (activeCart == null) {
