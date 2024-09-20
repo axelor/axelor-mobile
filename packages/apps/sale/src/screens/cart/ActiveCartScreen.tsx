@@ -36,7 +36,11 @@ import {
   CartLineActionCard,
   ValidateCartPopup,
 } from '../../components';
-import {fetchActiveCart, validateCart} from '../../features/cartSlice';
+import {
+  emptyCart,
+  fetchActiveCart,
+  validateCart,
+} from '../../features/cartSlice';
 import {searchCartLine} from '../../features/cartLineSlice';
 
 const ActiveCartScreen = ({}) => {
@@ -70,6 +74,16 @@ const ActiveCartScreen = ({}) => {
     },
     [dispatch, userId],
   );
+
+  const handleEmptyCart = useCallback(() => {
+    dispatch(
+      (emptyCart as any)({
+        id: activeCart?.id,
+        version: activeCart?.version,
+        userId,
+      }),
+    );
+  }, [activeCart?.id, activeCart?.version, dispatch, userId]);
 
   useEffect(() => {
     if (activeCart) {
@@ -112,16 +126,16 @@ const ActiveCartScreen = ({}) => {
             key: 'activeCart_emptyCart',
             order: 20,
             title: I18n.t('Sale_EmptyCart'),
-            onPress: () => {},
+            onPress: handleEmptyCart,
           },
         ],
       });
     }
-  }, [Colors, I18n, activeCart, mobileSettings]);
+  }, [Colors, I18n, activeCart, handleEmptyCart, mobileSettings]);
 
   const sliceFunctionData = useMemo(
     () => ({cartId: activeCart?.id}),
-    [activeCart?.id],
+    [activeCart],
   );
 
   if (activeCart == null) {

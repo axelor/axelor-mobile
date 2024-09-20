@@ -69,3 +69,10 @@ export async function validateCart({id, version}) {
     data: {version},
   });
 }
+
+export async function emptyCart({id, version}) {
+  return axiosApiProvider.put({
+    url: `ws/aos/cart/empty/${id}`,
+    data: {version},
+  });
+}
