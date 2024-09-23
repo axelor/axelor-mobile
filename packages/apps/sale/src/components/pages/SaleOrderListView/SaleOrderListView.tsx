@@ -33,9 +33,13 @@ import {fetchSaleOrder} from '../../../features/saleOrderSlice';
 
 interface SaleOrderListViewProps {
   statusList: number[];
+  customer?: any;
 }
 
-const SaleOrderListView = ({statusList}: SaleOrderListViewProps) => {
+const SaleOrderListView = ({
+  statusList,
+  customer: _customer,
+}: SaleOrderListViewProps) => {
   const I18n = useTranslator();
   const navigation = useNavigation();
   const {SaleOrder} = useTypes();
@@ -47,7 +51,7 @@ const SaleOrderListView = ({statusList}: SaleOrderListViewProps) => {
 
   const [filteredList, setFilteredList] = useState(saleOrderList);
   const [selectedStatus, setSelectedStatus] = useState([]);
-  const [customer, setCustomer] = useState(null);
+  const [customer, setCustomer] = useState(_customer);
 
   useEffect(
     () =>
