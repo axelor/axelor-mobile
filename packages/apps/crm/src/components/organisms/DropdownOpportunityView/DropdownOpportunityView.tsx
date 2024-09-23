@@ -25,13 +25,13 @@ import {
   useNavigation,
   useSelector,
   useTranslator,
+  getLastItem,
 } from '@axelor/aos-mobile-core';
 import {OpportunityCard} from '../../molecules';
 import {
   fetchOpportunityStatus,
   getPartnerOpportunities,
 } from '../../../features/opportunitySlice';
-import {getLastItem} from '../../../utils/list';
 
 const DropdownOpportunityView = ({partnerId}: {partnerId: number}) => {
   const I18n = useTranslator();
