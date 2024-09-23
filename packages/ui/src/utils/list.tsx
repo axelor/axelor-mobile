@@ -26,7 +26,15 @@ export function getFromList(list, objectParam, query) {
     return null;
   }
 
-  return list.find(_item => _item[objectParam] === query);
+  return list.find(_item => {
+    const itemValue = _item[objectParam];
+
+    if (typeof itemValue !== typeof query) {
+      return String(itemValue) === String(query);
+    }
+
+    return itemValue === query;
+  });
 }
 
 export function getItemsFromList(

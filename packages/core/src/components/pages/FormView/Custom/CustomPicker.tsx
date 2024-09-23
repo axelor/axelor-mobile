@@ -22,8 +22,8 @@ import {customComponentOptions} from '../../../../forms/types';
 import {fetchSelectionOptions} from '../../../../forms/studio/api.helpers';
 
 interface SelectionItem {
-  name: string;
-  id: number | string;
+  title: string;
+  value: number | string;
 }
 
 interface props extends customComponentOptions {
@@ -48,11 +48,15 @@ const CustomPicker = ({
   const [selection, setSelection] = useState<SelectionItem[]>([]);
 
   useEffect(() => {
-    fetchSelectionOptions({
-      modelName: item.uniqueModel,
-      attrsPanelName: item.modelField,
-      fieldName: item.name,
-    }).then(setSelection);
+    if (Array.isArray(item.selectionList) && item.selectionList.length > 0) {
+      setSelection(item.selectionList);
+    } else {
+      fetchSelectionOptions({
+        modelName: item.uniqueModel,
+        attrsPanelName: item.modelField,
+        fieldName: item.name,
+      }).then(setSelection);
+    }
   }, [item]);
 
   return (
@@ -61,8 +65,8 @@ const CustomPicker = ({
       title={title}
       onValueChange={onChange}
       listItems={selection}
-      labelField="name"
-      valueField="id"
+      labelField="title"
+      valueField="value"
       defaultValue={defaultValue}
       required={required}
       readonly={readonly}
