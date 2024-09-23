@@ -14,6 +14,8 @@ To modify the name displayed under the application once installed, you need to m
 
 To create an application distinct from Axelor Mobile, you need to modify the package name associated with the application in the native Android code. There's no easy way to do this. You need to perform a global search in the Android folder and replace all occurrences of the standard package name _com.aosmobile_, with and without capital letters, with the name of the new package. You should also remember to modify the structure of the _java_ folders in the main and debug sections to adapt to the new package name.
 
+The last step is to modify the package name at the root of the project, as well as the version, and to modify the identifier used by Metro in the `app.json` file to use the identifier of the new application.
+
 ## Modifying the application icon
 
 To modify the application icon, open the application's Android folder in **Android Studio**. The project may take some time to initialize. Once the IDE is ready, create a new _Image Asset_ in the resources folder.
