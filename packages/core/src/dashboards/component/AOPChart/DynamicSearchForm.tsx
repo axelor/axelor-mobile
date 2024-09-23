@@ -33,7 +33,6 @@ const PhantomComponent = ({objectState, onChange}) => {
 };
 
 const formatChartFields = (data: any[]): any[] => {
-  console.log(data);
   return data.map(_field => {
     return {
       name: _field.name,
@@ -111,7 +110,7 @@ const DynamicSearchForm = ({fields, values, actionViewName, onChange}) => {
         floatingTools={false}
       />
       <Icon
-        name={showOptionalFields ? 'chevron-up' : 'chevron-down'}
+        name={showOptionalFields ? 'chevron-down' : 'chevron-up'}
         visible={hasOptionalFields}
         touchable
         onPress={() => setShowOptionalFields(prev => !prev)}
