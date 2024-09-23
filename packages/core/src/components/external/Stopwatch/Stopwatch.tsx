@@ -165,7 +165,7 @@ const Stopwatch = ({
         </Text>
         <Icon name="stopwatch-fill" size={18} style={styles.icon} />
       </View>
-      <View style={styles.row}>
+      <View style={styles.flexWrapContainer}>
         <View style={styles.btnContainer}>
           {stopwatchStatus !== StopwatchType.status.InProgress && (
             <TimerButton
@@ -233,8 +233,6 @@ const styles = StyleSheet.create({
     marginRight: 20,
   },
   btnContainer: {
-    width: '60%',
-    flex: 1,
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'flex-start',
@@ -244,6 +242,11 @@ const styles = StyleSheet.create({
     width: '95%',
     marginHorizontal: 12,
     marginVertical: '30%',
+  },
+  flexWrapContainer: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    flexWrap: 'wrap',
   },
   icon: {
     width: '50%',
