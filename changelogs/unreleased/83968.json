@@ -1,0 +1,5 @@
+{
+  "title": "SaleOrderDetails: improve badges display",
+  "type": "refactor",
+  "packages": "sale"
+}
