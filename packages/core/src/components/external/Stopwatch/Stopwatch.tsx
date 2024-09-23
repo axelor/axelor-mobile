@@ -245,6 +245,7 @@ const styles = StyleSheet.create({
   },
   flexWrapContainer: {
     flexDirection: 'row',
+    justifyContent: 'space-between',
     flexWrap: 'wrap',
   },
   icon: {
