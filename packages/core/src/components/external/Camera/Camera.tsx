@@ -17,7 +17,13 @@
  */
 
 import React, {useEffect, useState, useCallback, useMemo, useRef} from 'react';
-import {Dimensions, Platform, StyleSheet, View} from 'react-native';
+import {
+  Dimensions,
+  Platform,
+  SafeAreaView,
+  StyleSheet,
+  View,
+} from 'react-native';
 import {useDispatch} from 'react-redux';
 import {
   Camera as PackageCamera,
@@ -150,16 +156,18 @@ const Camera = () => {
   );
 
   return (
-    <View style={{zIndex: 700 * (cameraVisible ? 1 : -1)}}>
+    <SafeAreaView style={{zIndex: 700 * (cameraVisible ? 1 : -1)}}>
       {device != null && hasPermission && (
-        <PackageCamera
-          ref={camera}
-          style={[styles.camera, {zIndex: 750 * (cameraVisible ? 1 : -1)}]}
-          device={device}
-          isActive={cameraVisible}
-          photo={!isScanActive}
-          codeScanner={codeScanner}
-        />
+        <View style={styles.flexOne}>
+          <PackageCamera
+            ref={camera}
+            style={[styles.camera, {zIndex: 750 * (cameraVisible ? 1 : -1)}]}
+            device={device}
+            isActive={cameraVisible}
+            photo={!isScanActive}
+            codeScanner={codeScanner}
+          />
+        </View>
       )}
       {cameraVisible ? (
         <View style={styles.rightButtonRow}>
@@ -208,7 +216,7 @@ const Camera = () => {
           />
         </View>
       ) : null}
-    </View>
+    </SafeAreaView>
   );
 };
 
@@ -218,6 +226,9 @@ const styles = StyleSheet.create({
     top: Dimensions.get('window').height - SAFE_AREA_PADDING.paddingBottom * 2,
     left: Dimensions.get('window').width / 2 - SAFE_AREA_PADDING.paddingLeft,
     zIndex: 850,
+  },
+  flexOne: {
+    flex: 1,
   },
   camera: {
     height: Dimensions.get('screen').height,
