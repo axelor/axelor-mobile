@@ -47,15 +47,15 @@ const ProjectDetailsScreen = ({route}) => {
       color: Colors.secondaryColor_dark,
     },
     {
+      iconName: 'card-list',
+      color: Colors.plannedColor,
+      viewComponent: <TaskView />,
+    },
+    {
       iconName: 'diagram-3-fill',
       color: Colors.infoColor,
       viewComponent: <SubProjectView />,
       hidden: !project?.isShowPhasesElements || project?.parentProject,
-    },
-    {
-      iconName: 'card-list',
-      color: Colors.plannedColor,
-      viewComponent: <TaskView />,
     },
     {
       iconName: 'activity',
