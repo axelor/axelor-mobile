@@ -16,6 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+import {isDate} from './date';
 import {areObjectsEquals} from './object';
 
 export function filterList(list, subObject, objectParam, query) {
@@ -96,3 +97,38 @@ function subListContain(subList, objectParam, query) {
     return false;
   }
 }
+
+export const getLastItem = (listItem, orderField) => {
+  return findItem(
+    listItem,
+    item => isDate(item[orderField]) && new Date(item[orderField]) < new Date(),
+    (prev, current) =>
+      new Date(current[orderField]) > new Date(prev[orderField])
+        ? current
+        : prev,
+  );
+};
+
+export const getNextItem = (listItem, orderField) => {
+  return findItem(
+    listItem,
+    item => isDate(item[orderField]) && new Date(item[orderField]) > new Date(),
+    (prev, current) =>
+      new Date(current[orderField]) < new Date(prev[orderField])
+        ? current
+        : prev,
+  );
+};
+
+const findItem = (listItem, filterFunc, reduceFunc) => {
+  if (!Array.isArray(listItem) || listItem.length === 0) {
+    return null;
+  }
+
+  const filteredList = listItem.filter(filterFunc);
+  if (filteredList.length === 0) {
+    return null;
+  }
+
+  return filteredList.reduce(reduceFunc);
+};
