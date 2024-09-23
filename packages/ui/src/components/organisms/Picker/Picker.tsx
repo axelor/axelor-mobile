@@ -194,6 +194,7 @@ const Picker = ({
         <Text style={[styles.title, styleTxt]}>{title}</Text>
       )}
       <RightIconButton
+        numberOfLines={1}
         onPress={togglePicker}
         icon={
           <Icon
