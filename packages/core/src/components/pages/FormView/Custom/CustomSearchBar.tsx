@@ -43,7 +43,7 @@ const CustomSearchBar = ({
   required,
   readonly,
 }: props) => {
-  const [searchFields, setSearchFields] = useState<string[]>([]);
+  const [searchFields, setSearchFields] = useState<string[]>(['name']);
   const [loading, setLoading] = useState<boolean>(false);
   const [moreLoading, setMoreLoading] = useState<boolean>(false);
   const [isListEnd, setIsListEnd] = useState<boolean>(false);
@@ -102,9 +102,7 @@ const CustomSearchBar = ({
       readonly={readonly}
       onChangeValue={onChange}
       fetchData={searchClientAndProspectAPI}
-      displayValue={_item =>
-        _item[searchFields?.length > 0 ? searchFields[0] : 'name']
-      }
+      displayValue={_item => _item[searchFields[0]]}
       placeholder={title}
       showDetailsPopup={true}
       loadingList={loading}

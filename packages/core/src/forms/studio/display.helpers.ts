@@ -29,7 +29,7 @@ import {
 export const mapStudioFields = (
   items: any[],
   Colors: ThemeColors,
-  removeUnauthorizedFields: (item: any) => any,
+  removeUnauthorizedFields: (item: any) => any = _i => _i,
 ): {panels: JSONObject<Panel>; fields: JSONObject<Field>; defaults: any} => {
   let formFields: JSONObject<Field> = {};
   let formPanels: JSONObject<Panel> = {};
@@ -99,6 +99,7 @@ const mapStudioTypeToInputType = (type: string): InputType => {
     case 'decimal':
       return 'number';
     case 'many-to-one':
+    case 'reference':
       return 'object';
     default:
       return type as InputType;

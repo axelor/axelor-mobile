@@ -194,6 +194,7 @@
   "Base_SeeActions": "See actions",
   "Base_Print": "Print",
   "Base_PrintTemplate": "Print template",
+  "Base_NoRecordsFound": "No records found",
   "Base_SliceAction_FetchAttachedFiles": "fetch attached files",
   "Base_SliceAction_FetchFilesDetails": "fetch file details",
   "Base_SliceAction_FetchMetaModule": "fetch meta modules",
