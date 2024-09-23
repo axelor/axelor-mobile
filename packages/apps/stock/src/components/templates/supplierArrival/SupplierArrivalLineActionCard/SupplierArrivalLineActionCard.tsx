@@ -19,13 +19,17 @@
 import React, {useCallback} from 'react';
 import {StyleSheet} from 'react-native';
 import {ActionCard} from '@axelor/aos-mobile-ui';
-import {useDispatch, useTranslator} from '@axelor/aos-mobile-core';
+import {
+  useDispatch,
+  useSelector,
+  useTranslator,
+  useTypes,
+} from '@axelor/aos-mobile-core';
 import SupplierArrivalLineCard from '../SupplierArrivalLineCard/SupplierArrivalLineCard';
 import {splitSupplierArrivalLine} from '../../../../features/supplierArrivalLineSlice';
 
 interface SupplierArrivalLineActionCardProps {
   style?: any;
-  supplierArrivalId: number;
   supplierArrivalLineId: number;
   version: number;
   productName: string;
@@ -39,7 +43,6 @@ interface SupplierArrivalLineActionCardProps {
 
 const SupplierArrivalLineActionCard = ({
   style,
-  supplierArrivalId,
   supplierArrivalLineId,
   version,
   productName,
@@ -52,16 +55,19 @@ const SupplierArrivalLineActionCard = ({
 }: SupplierArrivalLineActionCardProps) => {
   const I18n = useTranslator();
   const dispatch = useDispatch();
+  const {StockMove} = useTypes();
+
+  const {supplierArrival} = useSelector(state => state.supplierArrival);
 
   const splitLine = useCallback(() => {
     dispatch(
       (splitSupplierArrivalLine as any)({
         stockMoveLineId: supplierArrivalLineId,
-        supplierArrivalId: supplierArrivalId,
+        supplierArrivalId: supplierArrival?.id,
         version: version,
       }),
     );
-  }, [dispatch, supplierArrivalId, supplierArrivalLineId, version]);
+  }, [dispatch, supplierArrivalLineId, supplierArrival?.id, version]);
 
   return (
     <ActionCard
@@ -72,6 +78,11 @@ const SupplierArrivalLineActionCard = ({
           iconName: 'diagram-2-fill',
           helper: I18n.t('Stock_Split'),
           onPress: splitLine,
+          hidden:
+            (supplierArrival.statusSelect !== StockMove?.statusSelect.Planned &&
+              supplierArrival.statusSelect !== StockMove?.statusSelect.Draft) ||
+            deliveredQty >= askedQty ||
+            Number(deliveredQty) === 0,
         },
       ]}>
       <SupplierArrivalLineCard

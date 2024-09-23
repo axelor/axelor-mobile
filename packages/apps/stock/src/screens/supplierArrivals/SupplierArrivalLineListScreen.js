@@ -138,7 +138,6 @@ const SupplierArrivalLineListScreen = ({route, navigation}) => {
         }
         renderListItem={({item}) => (
           <SupplierArrivalLineActionCard
-            supplierArrivalId={supplierArrival?.id}
             supplierArrivalLineId={item.id}
             version={item.version}
             productName={item.product?.fullName}

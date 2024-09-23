@@ -140,7 +140,6 @@ const SupplierArrivalSearchLineContainer = ({}) => {
       onAction={handleNewLine}
       renderItem={item => (
         <SupplierArrivalLineActionCard
-          supplierArrivalId={supplierArrival?.id}
           style={styles.item}
           supplierArrivalLineId={item.id}
           productName={item.product?.fullName}
