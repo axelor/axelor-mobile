@@ -207,6 +207,7 @@
   "Base_SeeActions": "Voir les actions",
   "Base_Print": "Imprimer",
   "Base_PrintTemplate": "Modèle d'impression",
+  "Base_NoRecordsFound": "Aucun enregistrement trouvé",
   "Base_SliceAction_FetchAttachedFiles": "récupération des fichiers joints",
   "Base_SliceAction_FetchFilesDetails": "récupération des détails du fichier",
   "Base_SliceAction_FetchMetaModule": "récupération des modules",
