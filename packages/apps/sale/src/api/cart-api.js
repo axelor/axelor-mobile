@@ -45,13 +45,24 @@ export async function searchCart({searchValue, page = 0, userId}) {
   });
 }
 
-export async function updateCart({partnerId, cartId, cartVersion}) {
+export async function updateCart({
+  partnerId,
+  cartId,
+  cartVersion,
+  newCompanyId,
+}) {
   return axiosApiProvider.post({
     url: '/ws/rest/com.axelor.apps.sale.db.Cart',
     data: {
       data: {
         id: cartId,
         version: cartVersion,
+        company:
+          newCompanyId != null
+            ? {
+                id: newCompanyId,
+              }
+            : null,
         partner:
           partnerId != null
             ? {
