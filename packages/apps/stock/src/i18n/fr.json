@@ -181,5 +181,6 @@
   "Stock_SliceAction_FetchStockQtyIndicator": "récupération des données de l'indicateur sur la quantité en stock",
   "Stock_SliceAction_FetchSaleOrderQtyIndicator": "récupération des données de l'indicateur sur la quantité en commande client",
   "Stock_SliceAction_FetchPurchaseOrderQtyIndicator": "récupération des données de l'indicateur sur la quantité en ordre d'achat",
-  "Stock_SliceAction_FetchAvailableStockIndicator": "récupération des données de l'indicateur sur le stock disponible"
+  "Stock_SliceAction_FetchAvailableStockIndicator": "récupération des données de l'indicateur sur le stock disponible",
+  "Stock_SliceAction_SplitSupplierArrivalLine": ""
 }

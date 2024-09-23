@@ -83,3 +83,12 @@ export async function fetchSupplierArrivalLine({supplierArrivalLineId}) {
     fieldKey: 'stock_supplierArrivalLine',
   });
 }
+
+export async function splitSupplierArrivalLine({stockMoveLineId, version}) {
+  return axiosApiProvider.put({
+    url: `ws/aos/stock-move-line/split/${stockMoveLineId}`,
+    data: {
+      version,
+    },
+  });
+}

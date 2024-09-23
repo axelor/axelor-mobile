@@ -181,5 +181,6 @@
   "Stock_SliceAction_FetchStockQtyIndicator": "fetch data of stock quantity indicator",
   "Stock_SliceAction_FetchSaleOrderQtyIndicator": "fetch data of sale order quantity indicator",
   "Stock_SliceAction_FetchPurchaseOrderQtyIndicator": "fetch data of purchase order quantity indicator",
-  "Stock_SliceAction_FetchAvailableStockIndicator": "fetch data of available stock indicator"
+  "Stock_SliceAction_FetchAvailableStockIndicator": "fetch data of available stock indicator",
+  "Stock_SliceAction_SplitSupplierArrivalLine": ""
 }
