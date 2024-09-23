@@ -1,0 +1,5 @@
+{
+  "title": "Client details: add possibility to define additional dropdowns",
+  "type": "feat",
+  "packages": "crm"
+}
