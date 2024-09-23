@@ -33,3 +33,9 @@ Then simply validate the configuration and Android Studio will generate all the 
 To change the name or identifier of an iOS application, use XCode and open the application's General tab. In the _identity_ panel, modify the _Display Name_ and/or _Bundle Identifier_ with the desired values. The changes should then appear in the `Info.plist` and `project.pbxproj` files.
 
 ## Application icon modification
+
+To modify the application icon, open the application's ios folder in **Xcode**. The project may take some time to initialize. Once the IDE is ready, modify the AppIcon file in `AosMobile > Images`. To only have to load a single image, select _Single Size_ in the right sidebar.
+
+![ios_app_icon.png](/img/en/ios_app_icon.png)
+
+Then just double-click on the old icon to select the new one.
