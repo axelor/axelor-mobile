@@ -55,7 +55,7 @@ const ProjectDetailsScreen = ({route}) => {
       iconName: 'diagram-3-fill',
       color: Colors.infoColor,
       viewComponent: <SubProjectView />,
-      hidden: !project?.isShowPhasesElements || project?.parentProject,
+      hidden: !project?.isShowPhasesElements && project?.parentProject == null,
     },
     {
       iconName: 'activity',
