@@ -1,0 +1,5 @@
+{
+  "title": "Stopwatch: manage button visibility when formatted duration is too large",
+  "type": "fix",
+  "packages": "ui"
+}
