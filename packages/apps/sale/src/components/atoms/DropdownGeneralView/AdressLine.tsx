@@ -56,12 +56,9 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
-    flexWrap: 'wrap',
   },
   addressText: {
     flex: 1,
-    flexShrink: 1,
-    marginRight: 10,
   },
   iconContainer: {
     flexDirection: 'row',
