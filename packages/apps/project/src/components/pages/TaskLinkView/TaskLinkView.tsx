@@ -18,7 +18,12 @@
 
 import React, {useCallback, useEffect} from 'react';
 import {StyleSheet, View} from 'react-native';
-import {useDispatch, useSelector, useTranslator} from '@axelor/aos-mobile-core';
+import {
+  useDispatch,
+  useSelector,
+  useTranslator,
+  clipboardProvider,
+} from '@axelor/aos-mobile-core';
 import {
   GroupByScrollList,
   HeaderContainer,
@@ -39,8 +44,6 @@ const TaskLinkView = ({}) => {
     moreLoadingTaskLink,
     isListEndTaskLink,
   } = useSelector((state: any) => state.project_projectTask);
-
-  console.log('taskLinkList', taskLinkList);
 
   useEffect(() => {
     dispatch((searchProjectTaskLinkByIds as any)({taskId: projectTask?.id}));
@@ -66,7 +69,6 @@ const TaskLinkView = ({}) => {
 
   const fetchTopIndicator = item => ({
     title: item.projectTaskLinkType.name,
-    isFirstItem: true,
   });
 
   return (
@@ -81,7 +83,6 @@ const TaskLinkView = ({}) => {
         fetchData={fetchProjectTaskLinkAPI}
         renderItem={({item}) => (
           <TaskCard
-            onPress={() => {}}
             name={item?.relatedTask.name}
             assignedTo={item?.relatedTask?.assignedTo?.fullName}
             taskDeadline={item?.relatedTask?.taskDeadline}
@@ -89,13 +90,21 @@ const TaskLinkView = ({}) => {
             progress={item?.relatedTask?.progress}
             priority={item?.relatedTask?.priority}
             status={item?.relatedTask?.status}
+            isCopyCard={true}
+            showArrow={false}
+            onPress={() =>
+              clipboardProvider.copyToClipboard(item?.relatedTask.name)
+            }
           />
         )}
         isListEnd={isListEndTaskLink}
         moreLoading={moreLoadingTaskLink}
         translator={I18n.t}
         separatorCondition={separatorCondition}
-        customBottomSeparator={<HorizontalRule />}
+        fetchBottomIndicator={() => ({
+          text: '',
+        })}
+        customBottomSeparator={<HorizontalRule style={styles.horizotalRule} />}
         fetchTopIndicator={fetchTopIndicator}
       />
     </View>
@@ -106,8 +115,10 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
   },
-  scrollView: {
-    height: null,
+  horizotalRule: {
+    marginTop: 10,
+    width: '60%',
+    alignSelf: 'center',
   },
 });
 
