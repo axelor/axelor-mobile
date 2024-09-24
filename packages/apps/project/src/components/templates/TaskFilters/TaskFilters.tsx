@@ -117,7 +117,7 @@ const TaskFilters = ({
           differentiateBusinessProjects={false}
         />
       )}
-      <View style={styles.headerContainer}>
+      <View style={[styles.headerContainer, styles.zIndex]}>
         <ToggleButton
           isActive={isAssignedToMe}
           onPress={() => setIsAssignedToMe(current => !current)}
@@ -129,19 +129,23 @@ const TaskFilters = ({
         />
         <View style={styles.pickerContainer}>
           <MultiValuePicker
-            style={styles.picker}
+            listItems={categoryList}
+            onValueChange={setSelectedCategory}
+            placeholder={I18n.t('Project_Category')}
+            style={[styles.flexPicker, styles.pickerSpacingLeft]}
+          />
+        </View>
+      </View>
+      <View style={styles.headerContainer}>
+        <View style={styles.pickerContainer}>
+          <MultiValuePicker
+            style={[styles.flexPicker, styles.pickerSpacingRight]}
             listItems={statusList}
             onValueChange={setSelectedStatus}
             placeholder={I18n.t('Project_Status')}
           />
           <MultiValuePicker
-            style={styles.picker}
-            listItems={categoryList}
-            onValueChange={setSelectedCategory}
-            placeholder={I18n.t('Project_Category')}
-          />
-          <MultiValuePicker
-            style={styles.picker}
+            style={styles.flexPicker}
             listItems={priorityList}
             onValueChange={setSelectedPriority}
             placeholder={I18n.t('Project_Priority')}
@@ -161,15 +165,25 @@ const styles = StyleSheet.create({
     alignSelf: 'center',
     alignItems: 'center',
   },
+  zIndex: {
+    zIndex: 2,
+  },
   toggleButton: {
     height: 40,
   },
-  picker: {
-    width: '30%',
-  },
   pickerContainer: {
     flexDirection: 'row',
-    justifyContent: 'space-evenly',
+    justifyContent: 'space-between',
+    flex: 1,
+  },
+  flexPicker: {
+    flex: 1,
+  },
+  pickerSpacingRight: {
+    marginRight: 10,
+  },
+  pickerSpacingLeft: {
+    marginLeft: 10,
   },
 });
 
