@@ -85,51 +85,57 @@ const SaleOrderHeader = ({saleOrder}: SaleOrderHeaderProps) => {
           color={getItemColor(SaleOrder?.statusSelect, saleOrder.statusSelect)}
         />
       </View>
-      {saleOrder.externalReference && (
-        <LabelText
-          iconName="tag-fill"
-          size={16}
-          title={saleOrder.externalReference}
-          textStyle={styles.labelText}
-        />
-      )}
-      <LabelText
-        iconName="clock-history"
-        size={16}
-        title={I18n.t('Sale_Version')}
-        value={saleOrder.version}
-        textStyle={styles.labelText}
-      />
-      <View style={styles.badgesContainer}>
-        {saleOrder.oneoffSale && (
-          <Badge
-            title={I18n.t('Sale_OneOffSale')}
-            color={Colors.cautionColor}
-          />
-        )}
-        {saleOrder.saleOrderTypeSelect ===
-          SaleOrder?.saleOrderTypeSelect.Subscription && (
-          <Badge
-            title={I18n.t('Sale_Subscription')}
-            color={Colors.plannedColor}
-          />
-        )}
-        <TaxModeBadge inAti={saleOrder.inAti} type="sale" />
-      </View>
-      {displayStateBadges && (
-        <View style={styles.badgesContainer}>
-          <StateBadge
-            style={styles.stateBadge}
-            title={I18n.t('Sale_Delivered')}
-            type={deliveredStateBadgeType}
-          />
-          <StateBadge
-            style={styles.stateBadge}
-            title={I18n.t('Sale_Invoiced')}
-            type={invoicedStateBadgeType}
+      <View style={styles.rowContainer}>
+        <View>
+          {saleOrder.externalReference && (
+            <LabelText
+              iconName="tag-fill"
+              size={16}
+              title={saleOrder.externalReference}
+              textStyle={styles.labelText}
+            />
+          )}
+          <LabelText
+            iconName="clock-history"
+            size={16}
+            title={I18n.t('Sale_Version')}
+            value={saleOrder.version}
+            textStyle={styles.labelText}
           />
         </View>
-      )}
+        <View>
+          <View style={styles.badgesContainer}>
+            {saleOrder.oneoffSale && (
+              <Badge
+                title={I18n.t('Sale_OneOffSale')}
+                color={Colors.cautionColor}
+              />
+            )}
+            {saleOrder.saleOrderTypeSelect ===
+              SaleOrder?.saleOrderTypeSelect.Subscription && (
+              <Badge
+                title={I18n.t('Sale_Subscription')}
+                color={Colors.plannedColor}
+              />
+            )}
+            <TaxModeBadge inAti={saleOrder.inAti} type="sale" />
+          </View>
+          {displayStateBadges && (
+            <View style={styles.badgesContainer}>
+              <StateBadge
+                style={styles.stateBadge}
+                title={I18n.t('Sale_Delivered')}
+                type={deliveredStateBadgeType}
+              />
+              <StateBadge
+                style={styles.stateBadge}
+                title={I18n.t('Sale_Invoiced')}
+                type={invoicedStateBadgeType}
+              />
+            </View>
+          )}
+        </View>
+      </View>
     </View>
   );
 };
@@ -158,10 +164,10 @@ const styles = StyleSheet.create({
   badgesContainer: {
     flexDirection: 'row',
     justifyContent: 'flex-end',
-    marginVertical: 1,
+    marginBottom: 3,
   },
   stateBadge: {
-    marginHorizontal: 2,
+    margin: '1%',
   },
 });
 
