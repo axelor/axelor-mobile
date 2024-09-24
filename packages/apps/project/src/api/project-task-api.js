@@ -114,6 +114,17 @@ const createStatusCriteria = ({searchValue, statusIds}) => {
   ];
 };
 
+const createTaskLinkCriteria = ({searchValue, taskId}) => {
+  return [
+    getSearchCriterias('project_projectTaskLink', searchValue),
+    {
+      fieldName: 'projectTask.id',
+      operator: '=',
+      value: taskId,
+    },
+  ];
+};
+
 const createCategoryCriteria = ({searchValue, categoryIds}) => {
   return [
     getSearchCriterias('project_projectTaskCategory', searchValue),
@@ -255,5 +266,19 @@ export async function saveProjectTask({projectTask}) {
     data: {
       data: projectTask,
     },
+  });
+}
+
+export async function searchProjectTaskLinkByIds({
+  searchValue,
+  page = 0,
+  taskId,
+}) {
+  return createStandardSearch({
+    model: 'com.axelor.apps.project.db.ProjectTaskLink',
+    criteria: createTaskLinkCriteria({searchValue, taskId}),
+    fieldKey: 'project_projectTaskLink',
+    sortKey: 'project_projectTaskLink',
+    page,
   });
 }

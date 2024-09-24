@@ -27,13 +27,14 @@ import {
   fetchProjectTaskById as _fetchProjectTaskById,
   fetchProjectTaskStatus as _fetchProjectTaskStatus,
   getProjectTaskTag as _getProjectTaskTag,
+  saveProjectTask as _saveProjectTask,
   searchCategory as _searchCategory,
   searchPriority as _searchPriority,
   searchProjectTask as _searchProjectTask,
+  searchProjectTaskLinkByIds as _searchProjectTaskLinkByIds,
   searchSection as _searchSection,
-  searchTargetVersion as _searchTargetVersion,
-  saveProjectTask as _saveProjectTask,
   searchStatus as _searchStatus,
+  searchTargetVersion as _searchTargetVersion,
 } from '../api/project-task-api';
 
 export const searchProjectTask = createAsyncThunk(
@@ -204,6 +205,19 @@ export const saveProjectTask = createAsyncThunk(
   },
 );
 
+export const searchProjectTaskLinkByIds = createAsyncThunk(
+  'project_projectTask/searchProjectTaskLinkByIds',
+  async function (data, {getState}) {
+    return handlerApiCall({
+      fetchFunction: _searchProjectTaskLinkByIds,
+      data,
+      action: 'Project_SliceAction_SearchProjectTaskLinkByIds',
+      getState,
+      responseOptions: {isArrayResponse: true},
+    });
+  },
+);
+
 const initialState = {
   loading: true,
   moreLoading: false,
@@ -240,6 +254,11 @@ const initialState = {
   isListEndStatus: false,
   statusList: [],
 
+  loadingTaskLink: true,
+  moreLoadingTaskLink: false,
+  isListEndTaskLink: false,
+  taskLinkList: [],
+
   projectTaskStatusList: [],
   projectPriorityList: [],
 
@@ -259,6 +278,12 @@ const projectTaskSlice = createSlice({
       moreLoading: 'moreLoading',
       isListEnd: 'isListEnd',
       list: 'projectTaskList',
+    });
+    generateInifiniteScrollCases(builder, searchProjectTaskLinkByIds, {
+      loading: 'loadingTaskLink',
+      moreLoading: 'moreLoadingTaskLink',
+      isListEnd: 'isListEndTaskLink',
+      list: 'taskLinkList',
     });
     generateInifiniteScrollCases(builder, searchTargetVersion, {
       loading: 'loadingTargetVersion',

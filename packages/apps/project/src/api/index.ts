@@ -28,13 +28,14 @@ export {
   fetchProjectTaskById as fetchProjectTaskByIdApi,
   fetchProjectTaskStatus as fetchProjectTaskStatusApi,
   getProjectTaskTag as getProjectTaskTagApi,
+  saveProjectTask as saveProjectTaskApi,
   searchCategory as searchCategoryApi,
   searchPriority as searchPriorityApi,
   searchProjectTask as searchProjectTaskApi,
+  searchProjectTaskLinkByIds as searchProjectTaskLinkByIdsApi,
   searchSection as searchSectionApi,
   searchStatus as searchStatusApi,
   searchTargetVersion as searchTargetVersionApi,
-  saveProjectTask as saveProjectTaskApi,
 } from './project-task-api';
 export {fetchIndicator} from './reporting-api';
 export {fetchTimesheetLinesByTask as fetchTimesheetLinesByTaskApi} from './timesheet-lines-api';

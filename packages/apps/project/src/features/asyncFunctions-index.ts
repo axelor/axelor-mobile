@@ -27,14 +27,15 @@ export {
   fetchProjectTaskById,
   fetchProjectTaskStatus,
   getProjectTaskTag,
+  saveProjectTask,
   searchCategory,
-  searchPriority,
   searchParentTask,
+  searchPriority,
   searchProjectTask,
+  searchProjectTaskLinkByIds,
   searchSection,
   searchStatus,
   searchTargetVersion,
-  saveProjectTask,
 } from './projectTaskSlice';
 export {getProjectReportingIndicator} from './reportingSlice';
 export {fetchTimesheetLinesByTask} from './timesheetLinesSlice';
