@@ -16,7 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import React from 'react';
+import React, {useCallback, useEffect, useState} from 'react';
 import {
   useDispatch,
   useNavigation,
@@ -26,6 +26,8 @@ import {ActionCard, useThemeColor} from '@axelor/aos-mobile-ui';
 import {CartLineCard} from '../../atoms';
 import {deleteCartLine, updateCartLine} from '../../../features/cartLineSlice';
 import {fetchProductById} from '../../../features/productSlice';
+
+const TIME_INCREMENT = 2000;
 
 interface CartLineActionCardProps {
   style?: any;
@@ -48,6 +50,31 @@ const CartLineActionCard = ({
   const Colors = useThemeColor();
   const navigation = useNavigation();
   const dispatch = useDispatch();
+
+  const [diffQty, setDiffQty] = useState(0);
+
+  const handleTimeOut = useCallback(() => {
+    if (diffQty !== 0) {
+      dispatch(
+        (updateCartLine as any)({
+          cartLine,
+          qty: parseInt(cartLine.qty, 10) + diffQty,
+          cartId: cartId,
+        }),
+      );
+      setDiffQty(0);
+    }
+  }, [diffQty, cartId, cartLine, dispatch]);
+
+  useEffect(() => {
+    if (diffQty !== 0) {
+      const timeoutId = setTimeout(handleTimeOut, TIME_INCREMENT);
+
+      return () => {
+        clearTimeout(timeoutId);
+      };
+    }
+  }, [handleTimeOut, diffQty]);
 
   return (
     <ActionCard
@@ -84,37 +111,22 @@ const CartLineActionCard = ({
         {
           iconName: 'plus-lg',
           helper: I18n.t('Sale_AddOne'),
-          onPress: () => {
-            dispatch(
-              (updateCartLine as any)({
-                cartLine,
-                qty: parseInt(cartLine.qty, 10) + 1,
-                cartId: cartId,
-              }),
-            );
-          },
+          onPress: () => setDiffQty(current => current + 1),
           hidden: hideIncrement,
         },
         {
           iconName: 'dash-lg',
           helper: I18n.t('Sale_RemoveOne'),
-          disabled: cartLine.qty <= 1,
-          onPress: () => {
-            dispatch(
-              (updateCartLine as any)({
-                cartLine,
-                qty: parseInt(cartLine.qty, 10) - 1,
-                cartId: cartId,
-              }),
-            );
-          },
+          disabled: parseInt(cartLine.qty, 10) + diffQty <= 1,
+          onPress: () => setDiffQty(current => current - 1),
           hidden: hideIncrement,
         },
       ]}
+      forceActionsDisplay={diffQty !== 0}
       translator={I18n.t}>
       <CartLineCard
         product={cartLine.product}
-        qty={cartLine.qty}
+        qty={parseInt(cartLine.qty, 10) + diffQty}
         unit={cartLine.unit?.name}
         hideBadgeInformation={hideBadgeInformation}
         onPress={() => {
