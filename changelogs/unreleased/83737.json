@@ -1,0 +1,5 @@
+{
+  "title": "SingleSelectSearchListView: add a new component to simplify list view creation with SingleSelectScrollList",
+  "type": "feat",
+  "packages": "core"
+}
