@@ -24,5 +24,6 @@ export {default as PopupMinimalRequiredVersion} from './PopupMinimalRequiredVers
 export {default as PrintTemplateSearchBar} from './PrintTemplateSearchBar/PrintTemplateSearchBar';
 export {default as SearchListView} from './SearchListView/SearchListView';
 export {default as SearchTreeView} from './SearchTreeView/SearchTreeView';
+export {default as SingleSelectSearchListView} from './SingleSelectSearchListView/SingleSelectSearchListView';
 export {default as SocialNetworkLinks} from './SocialNetworkLinks/SocialNetworkLinks';
 export {default as UserSearchBar} from './UserSearchBar/UserSearchBar';
