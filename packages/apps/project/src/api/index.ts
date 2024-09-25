@@ -32,7 +32,7 @@ export {
   searchCategory as searchCategoryApi,
   searchPriority as searchPriorityApi,
   searchProjectTask as searchProjectTaskApi,
-  searchProjectTaskLinkByIds as searchProjectTaskLinkByIdsApi,
+  searchProjectTaskLink as searchProjectTaskLinkApi,
   searchSection as searchSectionApi,
   searchStatus as searchStatusApi,
   searchTargetVersion as searchTargetVersionApi,

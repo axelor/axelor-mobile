@@ -32,7 +32,7 @@ export {
   searchParentTask,
   searchPriority,
   searchProjectTask,
-  searchProjectTaskLinkByIds,
+  searchProjectTaskLink,
   searchSection,
   searchStatus,
   searchTargetVersion,

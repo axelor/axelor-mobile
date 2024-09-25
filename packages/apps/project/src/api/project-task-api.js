@@ -269,11 +269,7 @@ export async function saveProjectTask({projectTask}) {
   });
 }
 
-export async function searchProjectTaskLinkByIds({
-  searchValue,
-  page = 0,
-  taskId,
-}) {
+export async function searchProjectTaskLink({searchValue, page = 0, taskId}) {
   return createStandardSearch({
     model: 'com.axelor.apps.project.db.ProjectTaskLink',
     criteria: createTaskLinkCriteria({searchValue, taskId}),

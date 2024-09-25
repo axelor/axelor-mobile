@@ -30,7 +30,7 @@ import {
   HorizontalRule,
 } from '@axelor/aos-mobile-ui';
 import {TaskDetailsHeader} from '../../molecules';
-import {searchProjectTaskLinkByIds} from '../../../features/projectTaskSlice';
+import {searchProjectTaskLink} from '../../../features/projectTaskSlice';
 import {TaskCard} from '../../atoms';
 
 const TaskLinkView = ({}) => {
@@ -46,13 +46,13 @@ const TaskLinkView = ({}) => {
   } = useSelector((state: any) => state.project_projectTask);
 
   useEffect(() => {
-    dispatch((searchProjectTaskLinkByIds as any)({taskId: projectTask?.id}));
+    dispatch((searchProjectTaskLink as any)({taskId: projectTask?.id}));
   }, [dispatch, projectTask?.id]);
 
   const fetchProjectTaskLinkAPI = useCallback(
     (page = 0) => {
       dispatch(
-        (searchProjectTaskLinkByIds as any)({
+        (searchProjectTaskLink as any)({
           taskId: projectTask?.id,
           page: page,
         }),

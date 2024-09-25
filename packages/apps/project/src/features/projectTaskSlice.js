@@ -31,7 +31,7 @@ import {
   searchCategory as _searchCategory,
   searchPriority as _searchPriority,
   searchProjectTask as _searchProjectTask,
-  searchProjectTaskLinkByIds as _searchProjectTaskLinkByIds,
+  searchProjectTaskLink as _searchProjectTaskLink,
   searchSection as _searchSection,
   searchStatus as _searchStatus,
   searchTargetVersion as _searchTargetVersion,
@@ -205,13 +205,13 @@ export const saveProjectTask = createAsyncThunk(
   },
 );
 
-export const searchProjectTaskLinkByIds = createAsyncThunk(
-  'project_projectTask/searchProjectTaskLinkByIds',
+export const searchProjectTaskLink = createAsyncThunk(
+  'project_projectTask/searchProjectTaskLink',
   async function (data, {getState}) {
     return handlerApiCall({
-      fetchFunction: _searchProjectTaskLinkByIds,
+      fetchFunction: _searchProjectTaskLink,
       data,
-      action: 'Project_SliceAction_SearchProjectTaskLinkByIds',
+      action: 'Project_SliceAction_SearchProjectTaskLink',
       getState,
       responseOptions: {isArrayResponse: true},
     });
@@ -279,7 +279,7 @@ const projectTaskSlice = createSlice({
       isListEnd: 'isListEnd',
       list: 'projectTaskList',
     });
-    generateInifiniteScrollCases(builder, searchProjectTaskLinkByIds, {
+    generateInifiniteScrollCases(builder, searchProjectTaskLink, {
       loading: 'loadingTaskLink',
       moreLoading: 'moreLoadingTaskLink',
       isListEnd: 'isListEndTaskLink',
