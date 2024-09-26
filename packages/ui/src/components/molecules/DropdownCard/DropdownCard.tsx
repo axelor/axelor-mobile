@@ -32,6 +32,7 @@ interface DropdownCardProps {
   dropdownIsOpen?: boolean;
   onPress?: () => void;
   showIcon?: boolean;
+  iconName?: string;
 }
 
 const DropdownCard = ({
@@ -43,6 +44,7 @@ const DropdownCard = ({
   children,
   onPress,
   showIcon = true,
+  iconName,
 }: DropdownCardProps) => {
   const [isOpen, setIsOpen] = useState(dropdownIsOpen);
   const Colors = useThemeColor();
@@ -73,9 +75,12 @@ const DropdownCard = ({
             styles.content,
             style,
           ]}>
-          <Text style={styleText} numberOfLines={1}>
-            {title}
-          </Text>
+          <View style={styles.row}>
+            {iconName && <Icon name={iconName} style={styles.iconLeft} />}
+            <Text style={styleText} numberOfLines={1}>
+              {title}
+            </Text>
+          </View>
           {showIcon && (
             <Icon
               name={displayCard ? 'chevron-up' : 'chevron-down'}
@@ -119,6 +124,12 @@ const getStyles = Colors =>
       borderTopLeftRadius: 0,
       borderTopRightRadius: 0,
       zIndex: 30,
+    },
+    row: {
+      flexDirection: 'row',
+    },
+    iconLeft: {
+      marginRight: 10,
     },
   });
 
