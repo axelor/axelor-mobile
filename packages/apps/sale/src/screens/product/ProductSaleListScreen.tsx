@@ -50,17 +50,11 @@ const ProductSaleListScreen = ({navigation}) => {
 
       if (!selectedTypes || selectedTypes.length === 0) {
         return mobileSettings.productTypesToDisplay.map(type => ({
-          fieldName: 'productTypeSelect',
-          operator: '=',
           value: type,
         }));
       }
 
-      return selectedTypes?.map(typeSelect => ({
-        fieldName: 'productTypeSelect',
-        operator: '=',
-        value: typeSelect.value,
-      }));
+      return selectedTypes;
     },
     [mobileSettings.productTypesToDisplay],
   );
