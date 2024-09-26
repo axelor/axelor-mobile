@@ -111,7 +111,6 @@ const getStyles = Colors =>
       borderWidth: 1,
       marginHorizontal: 0,
       height: 40,
-      alignItems: 'center',
     },
     containerChildren: {
       backgroundColor: Colors.backgroundColor,
