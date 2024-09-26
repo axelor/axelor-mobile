@@ -50,8 +50,12 @@ const CatalogScreen = ({}) => {
       productTypeSelect: mobileSettings.productTypesToDisplay.map(type => ({
         value: type,
       })),
+      isConfiguratorProductShown: mobileSettings.isConfiguratorProductShown,
     }),
-    [mobileSettings.productTypesToDisplay],
+    [
+      mobileSettings.isConfiguratorProductShown,
+      mobileSettings.productTypesToDisplay,
+    ],
   );
 
   return (

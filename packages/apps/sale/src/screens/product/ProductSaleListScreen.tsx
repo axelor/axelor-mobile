@@ -63,8 +63,14 @@ const ProductSaleListScreen = ({navigation}) => {
     () => ({
       productTypeSelect: filterProductTypeSelectForApi(productTypeSelect),
       productCategory: productCategory,
+      isConfiguratorProductShown: mobileSettings.isConfiguratorProductShown,
     }),
-    [filterProductTypeSelectForApi, productTypeSelect, productCategory],
+    [
+      filterProductTypeSelectForApi,
+      productTypeSelect,
+      productCategory,
+      mobileSettings.isConfiguratorProductShown,
+    ],
   );
 
   const productTypeSelectList = useMemo(() => {
