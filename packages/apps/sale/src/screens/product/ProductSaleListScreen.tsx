@@ -16,7 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import React, {useMemo, useState} from 'react';
+import React, {useCallback, useMemo, useState} from 'react';
 import {ChipSelect, Screen} from '@axelor/aos-mobile-ui';
 import {
   SearchListView,
@@ -34,6 +34,7 @@ const ProductSaleListScreen = ({navigation}) => {
   const {SaleProduct} = useTypes();
   const {getSelectionItems} = useTypeHelpers();
 
+  const {mobileSettings} = useSelector((state: any) => state.appConfig);
   const [productTypeSelect, setProductTypeSelect] = useState();
   const [productCategory, setProductCategory] = useState();
 
@@ -41,18 +42,52 @@ const ProductSaleListScreen = ({navigation}) => {
     (state: any) => state.sale_product,
   );
 
-  const productTypeSelectList = useMemo(
-    () => getSelectionItems(SaleProduct?.productTypeSelect, productTypeSelect),
-    [SaleProduct?.productTypeSelect, getSelectionItems, productTypeSelect],
+  const filterProductTypeSelectForApi = useCallback(
+    selectedTypes => {
+      if (!mobileSettings?.productTypesToDisplay) {
+        return [];
+      }
+
+      if (!selectedTypes || selectedTypes.length === 0) {
+        return mobileSettings.productTypesToDisplay.map(type => ({
+          fieldName: 'productTypeSelect',
+          operator: '=',
+          value: type,
+        }));
+      }
+
+      return selectedTypes?.map(typeSelect => ({
+        fieldName: 'productTypeSelect',
+        operator: '=',
+        value: typeSelect.value,
+      }));
+    },
+    [mobileSettings.productTypesToDisplay],
   );
 
   const sliceFunctionData = useMemo(
     () => ({
-      productTypeSelect: productTypeSelect,
+      productTypeSelect: filterProductTypeSelectForApi(productTypeSelect),
       productCategory: productCategory,
     }),
-    [productCategory, productTypeSelect],
+    [filterProductTypeSelectForApi, productTypeSelect, productCategory],
   );
+
+  const productTypeSelectList = useMemo(() => {
+    const selectionItems = getSelectionItems(
+      SaleProduct?.productTypeSelect,
+      productTypeSelect,
+    );
+
+    return selectionItems.filter(item =>
+      mobileSettings?.productTypesToDisplay.includes(item.value),
+    );
+  }, [
+    SaleProduct?.productTypeSelect,
+    getSelectionItems,
+    productTypeSelect,
+    mobileSettings?.productTypesToDisplay,
+  ]);
 
   return (
     <Screen removeSpaceOnTop={true}>
