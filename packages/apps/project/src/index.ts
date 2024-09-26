@@ -74,6 +74,7 @@ export const ProjectModule: Module = {
     headerRegisters: useProjectHeaders,
     typeObjects: project_typeObjects,
   },
+  requiredConfig: ['AppProject'],
 };
 
 export * from './api';
