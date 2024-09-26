@@ -127,30 +127,26 @@ const TaskFilters = ({
             style: styles.toggleButton,
           }}
         />
-        <View style={styles.pickerContainer}>
-          <MultiValuePicker
-            listItems={categoryList}
-            onValueChange={setSelectedCategory}
-            placeholder={I18n.t('Project_Category')}
-            style={[styles.flexPicker, styles.pickerSpacingLeft]}
-          />
-        </View>
+        <MultiValuePicker
+          listItems={categoryList}
+          onValueChange={setSelectedCategory}
+          placeholder={I18n.t('Project_Category')}
+          style={[styles.flexPicker, styles.pickerSpacingLeft]}
+        />
       </View>
       <View style={styles.headerContainer}>
-        <View style={styles.pickerContainer}>
-          <MultiValuePicker
-            style={[styles.flexPicker, styles.pickerSpacingRight]}
-            listItems={statusList}
-            onValueChange={setSelectedStatus}
-            placeholder={I18n.t('Project_Status')}
-          />
-          <MultiValuePicker
-            style={styles.flexPicker}
-            listItems={priorityList}
-            onValueChange={setSelectedPriority}
-            placeholder={I18n.t('Project_Priority')}
-          />
-        </View>
+        <MultiValuePicker
+          style={styles.flexPicker}
+          listItems={statusList}
+          onValueChange={setSelectedStatus}
+          placeholder={I18n.t('Project_Status')}
+        />
+        <MultiValuePicker
+          style={[styles.flexPicker, styles.pickerSpacingLeft]}
+          listItems={priorityList}
+          onValueChange={setSelectedPriority}
+          placeholder={I18n.t('Project_Priority')}
+        />
       </View>
     </>
   );
@@ -170,17 +166,10 @@ const styles = StyleSheet.create({
   },
   toggleButton: {
     height: 40,
-  },
-  pickerContainer: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    flex: 1,
+    marginVertical: 0,
   },
   flexPicker: {
     flex: 1,
-  },
-  pickerSpacingRight: {
-    marginRight: 10,
   },
   pickerSpacingLeft: {
     marginLeft: 10,

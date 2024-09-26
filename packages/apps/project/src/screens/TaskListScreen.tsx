@@ -50,11 +50,11 @@ const TaskListScreen = ({navigation}) => {
       userId: isAssignedToMe ? userId : null,
     };
   }, [
-    project?.id,
     isAssignedToMe,
-    selectedStatus,
-    selectedPriority,
+    project?.id,
     selectedCategory,
+    selectedPriority,
+    selectedStatus,
     userId,
   ]);
 
