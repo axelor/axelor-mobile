@@ -145,7 +145,7 @@ const SupplierArrivalLineListScreen = ({route, navigation}) => {
             deliveredQty={
               StockMoveLine.hideLineQty(item, supplierArrival)
                 ? 0
-                : item.realQty
+                : Number(item.realQty)
             }
             askedQty={item?.qty}
             trackingNumber={item?.trackingNumber}

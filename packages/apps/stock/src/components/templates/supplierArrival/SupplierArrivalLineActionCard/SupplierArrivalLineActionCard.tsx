@@ -82,7 +82,7 @@ const SupplierArrivalLineActionCard = ({
             (supplierArrival.statusSelect !== StockMove?.statusSelect.Planned &&
               supplierArrival.statusSelect !== StockMove?.statusSelect.Draft) ||
             deliveredQty >= askedQty ||
-            Number(deliveredQty) === 0,
+            deliveredQty === 0,
         },
       ]}>
       <SupplierArrivalLineCard

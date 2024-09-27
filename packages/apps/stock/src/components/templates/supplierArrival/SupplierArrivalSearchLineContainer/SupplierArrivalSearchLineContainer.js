@@ -145,7 +145,9 @@ const SupplierArrivalSearchLineContainer = ({}) => {
           productName={item.product?.fullName}
           stockLocationName={item.toStockLocation?.name}
           deliveredQty={
-            StockMoveLine.hideLineQty(item, supplierArrival) ? 0 : item.realQty
+            StockMoveLine.hideLineQty(item, supplierArrival)
+              ? 0
+              : Number(item.realQty)
           }
           askedQty={item.qty}
           trackingNumber={item.trackingNumber}

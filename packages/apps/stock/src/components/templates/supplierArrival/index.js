@@ -16,10 +16,10 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-export {default as SupplierArrivalLineActionCard} from './SupplierArrivalLineActionCard/SupplierArrivalLineActionCard';
 export {default as SupplierArrivalButtons} from './SupplierArrivalButtons/SupplierArrivalButtons';
 export {default as SupplierArrivalCard} from './SupplierArrivalCard/SupplierArrivalCard';
 export {default as SupplierArrivalHeader} from './SupplierArrivalHeader/SupplierArrivalHeader';
+export {default as SupplierArrivalLineActionCard} from './SupplierArrivalLineActionCard/SupplierArrivalLineActionCard';
 export {default as SupplierArrivalLineButtons} from './SupplierArrivalLineButtons/SupplierArrivalLineButtons';
 export {default as SupplierArrivalLineCard} from './SupplierArrivalLineCard/SupplierArrivalLineCard';
 export {default as SupplierArrivalLineCreationButton} from './SupplierArrivalLineCreationButton/SupplierArrivalLineCreationButton';
