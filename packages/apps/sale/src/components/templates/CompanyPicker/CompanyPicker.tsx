@@ -24,9 +24,15 @@ interface CompanyPickerProps {
   style?: any;
   setCompany?: (state: any) => any;
   company?: any;
+  emptyValue?: boolean;
 }
 
-const CompanyPicker = ({style, setCompany, company}: CompanyPickerProps) => {
+const CompanyPicker = ({
+  style,
+  setCompany,
+  company,
+  emptyValue = true,
+}: CompanyPickerProps) => {
   const {user} = useSelector((state: any) => state.user);
 
   if (!Array.isArray(user?.companySet) || user.companySet.length === 0) {
@@ -42,6 +48,7 @@ const CompanyPicker = ({style, setCompany, company}: CompanyPickerProps) => {
       labelField="name"
       onValueChange={setCompany}
       isValueItem
+      emptyValue={emptyValue}
     />
   );
 };

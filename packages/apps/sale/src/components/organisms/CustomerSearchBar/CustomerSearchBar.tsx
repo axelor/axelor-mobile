@@ -79,6 +79,7 @@ const CustomerSearchBar = ({
       isListEnd={isListEnd}
       navigate={false}
       oneFilter={false}
+      translator={I18n.t}
     />
   );
 };

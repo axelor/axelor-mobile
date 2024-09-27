@@ -47,46 +47,19 @@ const CartHeader = ({style}: CartHeaderProps) => {
     return user?.companySet?.length > 1;
   }, [user?.companySet]);
 
-  const handleChangeCustomer = useCallback(
-    newCustomer => {
+  const handleUpdateCart = useCallback(
+    ({newCustomer, newCompany}: {newCustomer?: any; newCompany?: any}) => {
       dispatch(
         (updateCart as any)({
-          newCompanyId: activeCart?.company?.id,
           partnerId: newCustomer?.id,
+          newCompanyId: newCompany?.id ?? activeCart?.company?.id,
           cartId: activeCart?.id,
           cartVersion: activeCart?.version,
           userId,
         }),
       );
     },
-    [
-      activeCart?.company?.id,
-      activeCart?.id,
-      activeCart?.version,
-      dispatch,
-      userId,
-    ],
-  );
-
-  const handleChangeCompany = useCallback(
-    newCompany => {
-      dispatch(
-        (updateCart as any)({
-          partnerId: activeCart?.partner?.id,
-          newCompanyId: newCompany?.id,
-          cartId: activeCart?.id,
-          cartVersion: activeCart?.version,
-          userId,
-        }),
-      );
-    },
-    [
-      activeCart?.id,
-      activeCart?.partner?.id,
-      activeCart?.version,
-      dispatch,
-      userId,
-    ],
+    [activeCart, dispatch, userId],
   );
 
   return (
@@ -110,7 +83,7 @@ const CartHeader = ({style}: CartHeaderProps) => {
         )}
       </View>
       <CustomerSearchBar
-        onChange={handleChangeCustomer}
+        onChange={newCustomer => handleUpdateCart({newCustomer})}
         defaultValue={activeCart?.partner}
         companyId={activeCart?.company?.id}
       />
@@ -120,7 +93,7 @@ const CartHeader = ({style}: CartHeaderProps) => {
         translator={I18n.t}
         confirmButtonConfig={{
           onPress: () => {
-            handleChangeCompany(company);
+            handleUpdateCart({newCompany: company});
             setPopupIsVisible(false);
           },
         }}
@@ -129,21 +102,28 @@ const CartHeader = ({style}: CartHeaderProps) => {
             setPopupIsVisible(false);
           },
         }}>
-        <CompanyPicker setCompany={setCompany} company={company} />
+        <CompanyPicker
+          style={styles.picker}
+          setCompany={setCompany}
+          company={company}
+          emptyValue={false}
+        />
       </Alert>
     </View>
   );
 };
 
 const styles = StyleSheet.create({
+  row: {
+    flexDirection: 'row',
+    marginBottom: 5,
+  },
   label: {
     marginLeft: 24,
     marginRight: 5,
-    marginBottom: 5,
   },
-  row: {
-    flexDirection: 'row',
-    alignItems: 'center',
+  picker: {
+    width: '100%',
   },
 });
 
