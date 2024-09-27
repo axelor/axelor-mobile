@@ -1,0 +1,6 @@
+{
+    "title": "SearchListView: resolve zIndex issue on iOS when another search bar is used",
+    "type": "fix",
+    "packages": "core"
+  }
+  

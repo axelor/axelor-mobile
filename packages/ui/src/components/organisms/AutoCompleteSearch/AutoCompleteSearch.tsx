@@ -37,7 +37,7 @@ const ITEM_HEIGHT = 40;
 
 interface AutocompleteSearchProps {
   title?: string;
-  objectList: any[];
+  objectList?: any[];
   value?: any;
   required?: boolean;
   readonly?: boolean;
@@ -69,7 +69,7 @@ interface AutocompleteSearchProps {
 
 const AutoCompleteSearch = ({
   title,
-  objectList,
+  objectList = null,
   value = null,
   required = false,
   readonly = false,

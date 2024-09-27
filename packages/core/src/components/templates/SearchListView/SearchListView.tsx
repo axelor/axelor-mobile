@@ -123,7 +123,6 @@ const SearchListView = ({
 
     return (
       <SearchBar
-        objectList={list}
         onChangeValue={onChangeSearchValue}
         fetchData={fetchSearchAPI}
         displayValue={displaySearchValue}

@@ -36,7 +36,7 @@ import {useDispatch} from '../../../redux/hooks';
 
 interface AutocompleteSearchProps {
   title?: string;
-  objectList: any[];
+  objectList?: any[];
   value?: string;
   required?: boolean;
   readonly?: boolean;
