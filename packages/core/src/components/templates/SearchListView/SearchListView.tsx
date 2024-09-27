@@ -136,7 +136,6 @@ const SearchListView = ({
   }, [
     displaySearchValue,
     fetchSearchAPI,
-    list,
     onChangeSearchValue,
     scanKeySearch,
     searchNavigate,
