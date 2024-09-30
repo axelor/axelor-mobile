@@ -45,21 +45,30 @@ export async function searchCart({searchValue, page = 0, userId}) {
   });
 }
 
-export async function updateCart({partnerId, cartId, cartVersion}) {
+export async function updateCart({partnerId, companyId, cartId, cartVersion}) {
+  let data = {id: cartId, version: cartVersion};
+
+  if (companyId != null) {
+    data = {
+      ...data,
+      company: {
+        id: companyId,
+      },
+    };
+  }
+
+  if (partnerId != null) {
+    data = {
+      ...data,
+      partner: {
+        id: partnerId,
+      },
+    };
+  }
+
   return axiosApiProvider.post({
     url: '/ws/rest/com.axelor.apps.sale.db.Cart',
-    data: {
-      data: {
-        id: cartId,
-        version: cartVersion,
-        partner:
-          partnerId != null
-            ? {
-                id: partnerId,
-              }
-            : null,
-      },
-    },
+    data: {data},
   });
 }
 
