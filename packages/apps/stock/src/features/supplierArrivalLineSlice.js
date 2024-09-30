@@ -23,9 +23,10 @@ import {
   updateAgendaItems,
 } from '@axelor/aos-mobile-core';
 import {
-  searchSupplierArrivalLines,
-  updateLine,
   fetchSupplierArrivalLine as _fetchSupplierArrivalLine,
+  searchSupplierArrivalLines,
+  splitSupplierArrivalLine as _splitSupplierArrivalLine,
+  updateLine,
 } from '../api/supplier-arrival-line-api';
 
 export const fetchSupplierArrivalLines = createAsyncThunk(
@@ -71,6 +72,23 @@ export const fetchSupplierArrivalLine = createAsyncThunk(
       action: 'Stock_SliceAction_FetchSupplierArrivalLine',
       getState,
       responseOptions: {isArrayResponse: false},
+    });
+  },
+);
+
+export const splitSupplierArrivalLine = createAsyncThunk(
+  'stock_supplierArrivalLine/splitSupplierArrivalLine',
+  async function (data, {getState, dispatch}) {
+    return handlerApiCall({
+      fetchFunction: _splitSupplierArrivalLine,
+      data,
+      action: 'Stock_SliceAction_SplitSupplierArrivalLine',
+      getState,
+      responseOptions: {showToast: true},
+    }).then(() => {
+      dispatch(
+        fetchSupplierArrivalLines({supplierArrivalId: data.supplierArrivalId}),
+      );
     });
   },
 );

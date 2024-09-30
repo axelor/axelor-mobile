@@ -27,10 +27,9 @@ import {
   useTypes,
 } from '@axelor/aos-mobile-core';
 import {SearchLineContainer} from '../../../organisms';
-import {SupplierArrivalLineCard} from '../../../templates';
+import {SupplierArrivalLineActionCard} from '../../../templates';
 import {showLine} from '../../../../utils/line-navigation';
 import {fetchSupplierArrivalLines} from '../../../../features/supplierArrivalLineSlice';
-import {StockMoveLine} from '../../../../types';
 import {useSupplierLinesWithRacks} from '../../../../hooks';
 
 const scanKey = 'trackingNumber-or-product_supplier-arrival-details';
@@ -139,17 +138,10 @@ const SupplierArrivalSearchLineContainer = ({}) => {
       showAction={showLineAdditionIcon}
       onAction={handleNewLine}
       renderItem={item => (
-        <SupplierArrivalLineCard
-          style={styles.item}
-          productName={item.product?.fullName}
-          stockLocationName={item.toStockLocation?.name}
-          deliveredQty={
-            StockMoveLine.hideLineQty(item, supplierArrival) ? 0 : item.realQty
-          }
-          askedQty={item.qty}
-          trackingNumber={item.trackingNumber}
-          locker={item.locker}
-          onPress={() => handleShowLine(item)}
+        <SupplierArrivalLineActionCard
+          style={styles.container}
+          supplierArrivalLine={item}
+          handleShowLine={handleShowLine}
         />
       )}
     />
@@ -157,9 +149,8 @@ const SupplierArrivalSearchLineContainer = ({}) => {
 };
 
 const styles = StyleSheet.create({
-  item: {
-    marginHorizontal: 1,
-    marginVertical: 4,
+  container: {
+    width: '100%',
   },
 });
 

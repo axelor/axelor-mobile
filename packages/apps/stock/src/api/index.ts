@@ -77,6 +77,7 @@ export {
 export {
   fetchSupplierArrivalLine as fetchSupplierArrivalLineApi,
   searchSupplierArrivalLines,
+  splitSupplierArrivalLine as splitSupplierArrivalLineApi,
   updateLine as updateSupplierArrivalLineApi,
 } from './supplier-arrival-line-api';
 export * from './supplier-catalog-api';
