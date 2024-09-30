@@ -73,7 +73,7 @@ const SupplierArrivalLineCard = ({
   return (
     <ObjectCard
       onPress={onPress}
-      style={[borderStyle, style]}
+      style={[borderStyle, styles.card, style]}
       showArrow={true}
       lowerTexts={{
         items: [
@@ -123,6 +123,10 @@ const getStyles = color =>
 const styles = StyleSheet.create({
   textWidth: {
     width: '72%',
+  },
+  card: {
+    marginVertical: 2,
+    marginHorizontal: 2,
   },
 });
 
