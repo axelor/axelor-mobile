@@ -19,7 +19,11 @@
 import React, {useCallback, useEffect} from 'react';
 import {BottomBar, Screen, useThemeColor} from '@axelor/aos-mobile-ui';
 import {useDispatch, useSelector} from '@axelor/aos-mobile-core';
-import {TaskCustomFieldsView, TaskGeneralInformationView} from '../components';
+import {
+  TaskCustomFieldsView,
+  TaskGeneralInformationView,
+  TaskLinkView,
+} from '../components';
 import {fetchProjectTaskById} from '../features/projectTaskSlice';
 
 const TaskDetailsScreen = ({route}) => {
@@ -45,6 +49,11 @@ const TaskDetailsScreen = ({route}) => {
       viewComponent: <TaskCustomFieldsView />,
       color: Colors.plannedColor,
       disabled: projectTask?.project?.customFieldManagementSelect == null,
+    },
+    {
+      iconName: 'diagram-3-fill',
+      viewComponent: <TaskLinkView />,
+      color: Colors.infoColor,
     },
   ];
 

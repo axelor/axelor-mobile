@@ -150,6 +150,33 @@ export const project_modelAPI: ObjectFields = {
   project_taskStatus: schemaContructor.object({
     name: schemaContructor.string(),
   }),
+  project_projectTaskLink: schemaContructor.object({
+    projectTaskLinkType: schemaContructor.subObject(),
+    relatedTask: schemaContructor.subObject().concat(
+      schemaContructor.object({
+        name: schemaContructor.string(),
+        fullName: schemaContructor.string(),
+        assignedTo: schemaContructor.subObject(),
+        status: schemaContructor.subObject(),
+        priority: schemaContructor.subObject(),
+        progress: schemaContructor.number(),
+        taskDeadline: schemaContructor.string(),
+        parentTask: schemaContructor.subObject('name'),
+        project: schemaContructor.subObject().concat(
+          schemaContructor.object({
+            name: schemaContructor.string(),
+            projectStatus: schemaContructor.subObject(),
+            customFieldManagementSelect: schemaContructor.string(),
+          }),
+        ),
+        projectTaskCategory: schemaContructor.subObject(),
+        projectTaskSection: schemaContructor.subObject(),
+        targetVersion: schemaContructor.subObject(),
+        taskDate: schemaContructor.string(),
+        taskEndDate: schemaContructor.string(),
+      }),
+    ),
+  }),
   project_timesheetLine: schemaContructor.object({
     project: schemaContructor.subObject(),
     projectTask: schemaContructor.subObject(),

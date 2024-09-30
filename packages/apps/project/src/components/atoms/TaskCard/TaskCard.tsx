@@ -18,7 +18,12 @@
 
 import React, {useMemo} from 'react';
 import {StyleSheet} from 'react-native';
-import {ObjectCard, ProgressBar} from '@axelor/aos-mobile-ui';
+import {
+  Icon,
+  ObjectCard,
+  ProgressBar,
+  useThemeColor,
+} from '@axelor/aos-mobile-ui';
 import {
   DateDisplay,
   useTypeHelpers,
@@ -34,6 +39,8 @@ interface TaskCardProps {
   progress?: number;
   priority?: any;
   status?: any;
+  isCopyCard?: boolean;
+  showArrow?: boolean;
   onPress?: () => void;
 }
 
@@ -46,9 +53,12 @@ const TaskCard = ({
   progress,
   priority,
   status,
+  isCopyCard = false,
+  showArrow = true,
   onPress,
 }: TaskCardProps) => {
   const {getItemColorFromIndex} = useTypeHelpers();
+  const Colors = useThemeColor();
 
   const {projectTaskStatusList, projectPriorityList} = useSelector(
     (state: any) => state.project_projectTask,
@@ -69,6 +79,7 @@ const TaskCard = ({
       style={[borderStyle, styles.card, style]}
       iconLeftMargin={30}
       leftContainerFlex={2}
+      showArrow={showArrow}
       upperTexts={{
         items: [
           {displayText: name, isTitle: true},
@@ -86,6 +97,7 @@ const TaskCard = ({
         ],
       }}
       sideBadges={{
+        style: isCopyCard && styles.badge,
         items: [
           {
             customComponent: <DateDisplay date={taskDeadline} size={16} />,
@@ -105,6 +117,11 @@ const TaskCard = ({
             displayText: priority?.name,
             color: getItemColorFromIndex(projectPriorityList, priority),
             showIf: priority != null,
+          },
+          isCopyCard && {
+            customComponent: (
+              <Icon name="copy" color={Colors.secondaryColor.background} />
+            ),
           },
         ],
       }}
@@ -127,6 +144,7 @@ const styles = StyleSheet.create({
     padding: 0,
     marginRight: 5,
     paddingRight: 5,
+    flex: 1,
   },
   progressBar: {
     borderRadius: 20,
@@ -134,6 +152,10 @@ const styles = StyleSheet.create({
   },
   textProgressBar: {
     display: 'none',
+  },
+  badge: {
+    justifyContent: 'flex-end',
+    alignItems: 'flex-end',
   },
 });
 
