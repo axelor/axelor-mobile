@@ -16,11 +16,12 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import React, {useCallback} from 'react';
+import React, {useCallback, useMemo, useState} from 'react';
 import {StyleSheet, View} from 'react-native';
-import {LabelText} from '@axelor/aos-mobile-ui';
-import {useDispatch, useSelector} from '@axelor/aos-mobile-core';
+import {Alert, Icon, LabelText} from '@axelor/aos-mobile-ui';
+import {useDispatch, useSelector, useTranslator} from '@axelor/aos-mobile-core';
 import {CustomerSearchBar} from '../../organisms';
+import {CompanyPicker} from '../../templates';
 import {updateCart} from '../../../features/cartSlice';
 
 interface CartHeaderProps {
@@ -29,15 +30,24 @@ interface CartHeaderProps {
 
 const CartHeader = ({style}: CartHeaderProps) => {
   const dispatch = useDispatch();
+  const I18n = useTranslator();
 
   const {activeCart} = useSelector((state: any) => state.sale_cart);
   const {userId} = useSelector((state: any) => state.auth);
+  const {user} = useSelector((state: any) => state.user);
 
-  const handleChangeCustomer = useCallback(
-    newCustomer => {
+  const [popupIsVisible, setPopupIsVisible] = useState(false);
+
+  const isMultipleCompany = useMemo(() => {
+    return user?.companySet?.length > 1;
+  }, [user?.companySet]);
+
+  const handleUpdateCart = useCallback(
+    ({newCustomer, newCompany}: {newCustomer?: any; newCompany?: any}) => {
       dispatch(
         (updateCart as any)({
           partnerId: newCustomer?.id,
+          companyId: newCompany?.id,
           cartId: activeCart?.id,
           cartVersion: activeCart?.version,
           userId,
@@ -47,27 +57,74 @@ const CartHeader = ({style}: CartHeaderProps) => {
     [activeCart?.id, activeCart?.version, dispatch, userId],
   );
 
+  const handleUpdatePartner = useCallback(
+    (newCustomer: any) => {
+      handleUpdateCart({newCustomer});
+    },
+    [handleUpdateCart],
+  );
+
+  const handleUpdateCompany = useCallback(
+    (newCompany: any) => {
+      handleUpdateCart({newCompany});
+      setPopupIsVisible(false);
+    },
+    [handleUpdateCart],
+  );
+
   return (
     <View style={style}>
-      <LabelText
-        style={styles.label}
-        iconName="building"
-        size={16}
-        title={activeCart?.company?.name}
-      />
+      <View style={styles.row}>
+        <LabelText
+          style={styles.label}
+          iconName="building"
+          size={16}
+          title={activeCart?.company?.name}
+        />
+        {isMultipleCompany && (
+          <Icon
+            size={16}
+            name="pencil-fill"
+            touchable
+            onPress={() => setPopupIsVisible(true)}
+          />
+        )}
+      </View>
       <CustomerSearchBar
-        onChange={handleChangeCustomer}
+        onChange={handleUpdatePartner}
         defaultValue={activeCart?.partner}
         companyId={activeCart?.company?.id}
       />
+      <Alert
+        title={I18n.t('User_Company')}
+        visible={popupIsVisible}
+        translator={I18n.t}
+        cancelButtonConfig={{
+          showInHeader: true,
+          onPress: () => setPopupIsVisible(false),
+        }}>
+        <CompanyPicker
+          style={styles.picker}
+          setCompany={handleUpdateCompany}
+          company={activeCart?.company}
+          emptyValue={false}
+        />
+      </Alert>
     </View>
   );
 };
 
 const styles = StyleSheet.create({
-  label: {
-    marginHorizontal: 24,
+  row: {
+    flexDirection: 'row',
     marginBottom: 5,
+  },
+  label: {
+    marginLeft: 24,
+    marginRight: 5,
+  },
+  picker: {
+    width: '100%',
   },
 });
 
