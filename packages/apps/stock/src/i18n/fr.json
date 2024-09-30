@@ -123,6 +123,7 @@
   "Stock_Status_NotReceived": "Non reçu",
   "Stock_Status_PariallyReceived": "Partiellement reçu",
   "Stock_Status_Received": "Reçu",
+  "Stock_Split": "Diviser la ligne",
   "Stock_SliceAction_FetchCustomerDeliveryLines": "récupération des lignes de livraison client",
   "Stock_SliceAction_FetchCustomerDeliveryLine": "récupération de la ligne de livraison client",
   "Stock_SliceAction_UpdateCustomerDeliveryLine": "mise à jour de la ligne de livraison client",
@@ -181,5 +182,6 @@
   "Stock_SliceAction_FetchStockQtyIndicator": "récupération des données de l'indicateur sur la quantité en stock",
   "Stock_SliceAction_FetchSaleOrderQtyIndicator": "récupération des données de l'indicateur sur la quantité en commande client",
   "Stock_SliceAction_FetchPurchaseOrderQtyIndicator": "récupération des données de l'indicateur sur la quantité en ordre d'achat",
-  "Stock_SliceAction_FetchAvailableStockIndicator": "récupération des données de l'indicateur sur le stock disponible"
+  "Stock_SliceAction_FetchAvailableStockIndicator": "récupération des données de l'indicateur sur le stock disponible",
+  "Stock_SliceAction_SplitSupplierArrivalLine": "séparation de la ligne de réception fournisseur"
 }
