@@ -23,7 +23,7 @@ import {
   useSelector,
   useTranslator,
 } from '@axelor/aos-mobile-core';
-import {SupplierArrivalLineCard, StockMoveHeader} from '../../components';
+import {StockMoveHeader, SupplierArrivalLineActionCard} from '../../components';
 import {fetchSupplierArrivalLines} from '../../features/supplierArrivalLineSlice';
 import {StockMove, StockMoveLine} from '../../types';
 import {showLine} from '../../utils/line-navigation';
@@ -137,20 +137,9 @@ const SupplierArrivalLineListScreen = ({route, navigation}) => {
           />
         }
         renderListItem={({item}) => (
-          <SupplierArrivalLineCard
-            productName={item.product?.fullName}
-            stockLocationName={item.toStockLocation?.name}
-            deliveredQty={
-              StockMoveLine.hideLineQty(item, supplierArrival)
-                ? 0
-                : item.realQty
-            }
-            askedQty={item?.qty}
-            trackingNumber={item?.trackingNumber}
-            locker={item?.locker}
-            onPress={() => {
-              handleShowLine(item);
-            }}
+          <SupplierArrivalLineActionCard
+            supplierArrivalLine={item}
+            handleShowLine={handleShowLine}
           />
         )}
       />
