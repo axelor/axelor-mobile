@@ -73,5 +73,6 @@
   "Project_SliceAction_SearchStatus": "recherche sur les statuts",
   "Project_SliceAction_SearchParentTask": "recherche sur la tâche parente",
   "Project_SliceAction_GetProjectTimeData": "récupération des données de temps du projet",
-  "Project_SliceAction_GetProjectFinancialData": "récupération des données financières du projet"
+  "Project_SliceAction_GetProjectFinancialData": "récupération des données financières du projet",
+  "Project_SliceAction_SearchProjectTaskLink": "recherche sur les liens de la tâche"
 }
