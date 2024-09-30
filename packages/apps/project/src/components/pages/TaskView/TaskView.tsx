@@ -39,6 +39,8 @@ const TaskView = () => {
 
   const [selectedStatus, setSelectedStatus] = useState([]);
   const [selectedPriority, setSelectedPriority] = useState([]);
+  const [selectedCategory, setSelectedCategory] = useState([]);
+
   const [isAssignedToMe, setIsAssignedToMe] = useState(false);
 
   const sliceFunctionData = useMemo(() => {
@@ -47,9 +49,17 @@ const TaskView = () => {
       isAssignedToMe: isAssignedToMe,
       selectedStatus: selectedStatus,
       selectedPriority: selectedPriority,
+      selectedCategory: selectedCategory,
       userId: isAssignedToMe ? userId : null,
     };
-  }, [project?.id, isAssignedToMe, selectedStatus, selectedPriority, userId]);
+  }, [
+    project?.id,
+    isAssignedToMe,
+    selectedStatus,
+    selectedPriority,
+    selectedCategory,
+    userId,
+  ]);
 
   return (
     <SearchListView
@@ -59,6 +69,7 @@ const TaskView = () => {
           isAssignedToMe={isAssignedToMe}
           setIsAssignedToMe={setIsAssignedToMe}
           setSelectedPriority={setSelectedPriority}
+          setSelectedCategory={setSelectedCategory}
           setSelectedStatus={setSelectedStatus}
           project={project}
         />
