@@ -17,7 +17,7 @@
  */
 
 import React from 'react';
-import {useSelector} from '@axelor/aos-mobile-core';
+import {useSelector, useTranslator} from '@axelor/aos-mobile-core';
 import {Picker} from '@axelor/aos-mobile-ui';
 
 interface CompanyPickerProps {
@@ -33,6 +33,8 @@ const CompanyPicker = ({
   company,
   emptyValue = true,
 }: CompanyPickerProps) => {
+  const I18n = useTranslator();
+
   const {user} = useSelector((state: any) => state.user);
 
   if (!Array.isArray(user?.companySet) || user.companySet.length === 0) {
@@ -49,6 +51,7 @@ const CompanyPicker = ({
       onValueChange={setCompany}
       isValueItem
       emptyValue={emptyValue}
+      translator={I18n.t}
     />
   );
 };
