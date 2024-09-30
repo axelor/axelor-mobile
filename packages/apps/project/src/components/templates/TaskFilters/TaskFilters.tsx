@@ -28,6 +28,7 @@ import {
 import {
   fetchProjectTaskStatus,
   fetchProjectPriority,
+  fetchProjectTaskCategory,
 } from '../../../features/projectTaskSlice';
 import {ProjectSearchBar} from '../../templates';
 
@@ -43,11 +44,13 @@ const TaskFilters = ({
   setIsAssignedToMe,
   setSelectedStatus,
   setSelectedPriority,
+  setSelectedCategory,
   project,
   setProject,
   showProjectSearchBar = false,
 }: {
   isAssignedToMe: boolean;
+  setSelectedCategory: SetterFunction;
   setIsAssignedToMe: SetterFunction;
   setSelectedStatus: SetterFunction;
   setSelectedPriority: SetterFunction;
@@ -59,9 +62,8 @@ const TaskFilters = ({
   const dispatch = useDispatch();
   const {getCustomSelectionItems} = useTypeHelpers();
 
-  const {projectTaskStatusList, projectPriorityList} = useSelector(
-    (state: any) => state.project_projectTask,
-  );
+  const {projectTaskStatusList, projectPriorityList, projectCategoryList} =
+    useSelector((state: any) => state.project_projectTask);
 
   const statusList = useMemo(() => {
     const _list = getCustomSelectionItems(projectTaskStatusList, 'name', []);
@@ -87,9 +89,22 @@ const TaskFilters = ({
     }
   }, [getCustomSelectionItems, projectPriorityList, project]);
 
+  const categoryList = useMemo(() => {
+    const _list = getCustomSelectionItems(projectCategoryList, 'name', []);
+
+    if (project == null) {
+      return _list;
+    } else if (!project.isShowTaskCategory) {
+      return [];
+    } else {
+      return filterAvailableSet(project.projectTaskCategorySet, _list);
+    }
+  }, [getCustomSelectionItems, projectCategoryList, project]);
+
   useEffect(() => {
     dispatch((fetchProjectTaskStatus as any)());
     dispatch((fetchProjectPriority as any)());
+    dispatch((fetchProjectTaskCategory as any)());
   }, [dispatch]);
 
   return (
@@ -102,7 +117,7 @@ const TaskFilters = ({
           differentiateBusinessProjects={false}
         />
       )}
-      <View style={styles.headerContainer}>
+      <View style={[styles.headerContainer, styles.zIndex]}>
         <ToggleButton
           isActive={isAssignedToMe}
           onPress={() => setIsAssignedToMe(current => !current)}
@@ -112,20 +127,26 @@ const TaskFilters = ({
             style: styles.toggleButton,
           }}
         />
-        <View style={styles.pickerContainer}>
-          <MultiValuePicker
-            style={styles.picker}
-            listItems={statusList}
-            onValueChange={setSelectedStatus}
-            placeholder={I18n.t('Project_Status')}
-          />
-          <MultiValuePicker
-            style={styles.picker}
-            listItems={priorityList}
-            onValueChange={setSelectedPriority}
-            placeholder={I18n.t('Project_Priority')}
-          />
-        </View>
+        <MultiValuePicker
+          listItems={categoryList}
+          onValueChange={setSelectedCategory}
+          placeholder={I18n.t('Project_Category')}
+          style={[styles.flexPicker, styles.pickerSpacingLeft]}
+        />
+      </View>
+      <View style={styles.headerContainer}>
+        <MultiValuePicker
+          style={styles.flexPicker}
+          listItems={statusList}
+          onValueChange={setSelectedStatus}
+          placeholder={I18n.t('Project_Status')}
+        />
+        <MultiValuePicker
+          style={[styles.flexPicker, styles.pickerSpacingLeft]}
+          listItems={priorityList}
+          onValueChange={setSelectedPriority}
+          placeholder={I18n.t('Project_Priority')}
+        />
       </View>
     </>
   );
@@ -140,15 +161,18 @@ const styles = StyleSheet.create({
     alignSelf: 'center',
     alignItems: 'center',
   },
+  zIndex: {
+    zIndex: 2,
+  },
   toggleButton: {
     height: 40,
+    marginVertical: 0,
   },
-  picker: {
-    width: '46%',
+  flexPicker: {
+    flex: 1,
   },
-  pickerContainer: {
-    flexDirection: 'row',
-    justifyContent: 'space-evenly',
+  pickerSpacingLeft: {
+    marginLeft: 10,
   },
 });
 
