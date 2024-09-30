@@ -1,0 +1,5 @@
+{
+  "title": "Supplier arrival: enable line splitting",
+  "type": "feat",
+  "packages": "stock"
+}
