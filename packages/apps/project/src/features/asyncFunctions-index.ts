@@ -25,6 +25,7 @@ export {
 export {
   fetchProjectPriority,
   fetchProjectTaskById,
+  fetchProjectTaskCategory,
   fetchProjectTaskStatus,
   getProjectTaskTag,
   searchCategory,

@@ -30,6 +30,7 @@ const createProjectTaskCriteria = ({
   userId,
   selectedStatus,
   selectedPriority,
+  selectedCategory,
   projectTaskId,
 }) => {
   const ProjectTask = getTypes().ProjectTask;
@@ -89,6 +90,17 @@ const createProjectTaskCriteria = ({
     });
   }
 
+  if (Array.isArray(selectedCategory) && selectedCategory.length > 0) {
+    criteria.push({
+      operator: 'or',
+      criteria: selectedCategory.map(({key}) => ({
+        fieldName: 'projectTaskCategory.id',
+        operator: '=',
+        value: key,
+      })),
+    });
+  }
+
   return criteria;
 };
 
@@ -132,6 +144,7 @@ export async function searchProjectTask({
   userId,
   selectedStatus,
   selectedPriority,
+  selectedCategory,
   projectTaskId,
 }) {
   return createStandardSearch({
@@ -142,6 +155,7 @@ export async function searchProjectTask({
       userId,
       selectedStatus,
       selectedPriority,
+      selectedCategory,
       projectTaskId,
     }),
     fieldKey: 'project_projectTask',
@@ -163,6 +177,15 @@ export async function fetchProjectPriority() {
   return createStandardSearch({
     model: 'com.axelor.apps.project.db.ProjectPriority',
     fieldKey: 'project_projectPriority',
+    numberElementsByPage: null,
+    page: 0,
+  });
+}
+
+export async function fetchProjectTaskCategory() {
+  return createStandardSearch({
+    model: 'com.axelor.apps.project.db.ProjectTaskCategory',
+    fieldKey: 'project_projectTaskCategory',
     numberElementsByPage: null,
     page: 0,
   });
