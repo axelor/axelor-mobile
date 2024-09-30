@@ -73,7 +73,7 @@ const CartHeader = ({style}: CartHeaderProps) => {
   );
 
   return (
-    <View style={style}>
+    <View style={[styles.container, style]}>
       <View style={styles.row}>
         <LabelText
           style={styles.label}
@@ -115,6 +115,9 @@ const CartHeader = ({style}: CartHeaderProps) => {
 };
 
 const styles = StyleSheet.create({
+  container: {
+    zIndex: 1,
+  },
   row: {
     flexDirection: 'row',
     marginBottom: 5,
