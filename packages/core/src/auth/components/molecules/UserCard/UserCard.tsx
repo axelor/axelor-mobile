@@ -92,7 +92,7 @@ const UserCard = ({children, style}) => {
             resizeMode="contain"
             generalStyle={styles.image}
           />
-          <View>
+          <View style={styles.flexOne}>
             <Text>{user.name}</Text>
             <Text writingType="details">{user.code}</Text>
             {!displayCompanyPicker && (
@@ -145,6 +145,7 @@ const getStyles = (isCardTopMargin: boolean, Colors: ThemeColors) =>
       marginBottom: isCardTopMargin ? 10 : 0,
     },
     cardTopLeftContainer: {
+      flex: 1,
       flexDirection: 'row',
       alignItems: 'center',
     },
@@ -166,6 +167,9 @@ const getStyles = (isCardTopMargin: boolean, Colors: ThemeColors) =>
     },
     picker: {
       width: '100%',
+    },
+    flexOne: {
+      flex: 1,
     },
   });
 

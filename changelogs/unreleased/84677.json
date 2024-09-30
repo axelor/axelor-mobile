@@ -1,0 +1,5 @@
+{
+  "title": "UserCard: display company name on multiple lines to prevent logout button being out of card",
+  "type": "fix",
+  "packages": "core"
+}
