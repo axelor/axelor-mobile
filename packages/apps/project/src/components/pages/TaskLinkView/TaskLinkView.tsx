@@ -29,9 +29,9 @@ import {
   HeaderContainer,
   HorizontalRule,
 } from '@axelor/aos-mobile-ui';
+import {TaskCard} from '../../atoms';
 import {TaskDetailsHeader} from '../../molecules';
 import {searchProjectTaskLink} from '../../../features/projectTaskSlice';
-import {TaskCard} from '../../atoms';
 
 const TaskLinkView = ({}) => {
   const dispatch = useDispatch();
@@ -61,15 +61,11 @@ const TaskLinkView = ({}) => {
     [dispatch, projectTask?.id],
   );
 
-  const separatorCondition = (prevItem, currentItem) => {
-    return (
-      prevItem.projectTaskLinkType.id !== currentItem.projectTaskLinkType.id
-    );
-  };
-
-  const fetchTopIndicator = item => ({
-    title: item.projectTaskLinkType.name,
-  });
+  const separatorCondition = useCallback(
+    (prevItem: any, currentItem: any) =>
+      prevItem.projectTaskLinkType.id !== currentItem.projectTaskLinkType.id,
+    [],
+  );
 
   return (
     <View style={styles.container}>
@@ -78,8 +74,11 @@ const TaskLinkView = ({}) => {
         fixedItems={<TaskDetailsHeader />}
       />
       <GroupByScrollList
+        translator={I18n.t}
         data={taskLinkList}
         loadingList={loadingTaskLink}
+        isListEnd={isListEndTaskLink}
+        moreLoading={moreLoadingTaskLink}
         fetchData={fetchProjectTaskLinkAPI}
         renderItem={({item}) => (
           <TaskCard
@@ -97,15 +96,13 @@ const TaskLinkView = ({}) => {
             }
           />
         )}
-        isListEnd={isListEndTaskLink}
-        moreLoading={moreLoadingTaskLink}
-        translator={I18n.t}
         separatorCondition={separatorCondition}
-        fetchBottomIndicator={() => ({
-          text: '',
-        })}
+        fetchBottomIndicator={() => ({text: ''})}
         customBottomSeparator={<HorizontalRule style={styles.horizotalRule} />}
-        fetchTopIndicator={fetchTopIndicator}
+        fetchTopIndicator={item => ({
+          title: item.projectTaskLinkType.name,
+          position: 'left',
+        })}
       />
     </View>
   );
@@ -116,7 +113,7 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   horizotalRule: {
-    marginTop: 10,
+    marginTop: 15,
     width: '60%',
     alignSelf: 'center',
   },
