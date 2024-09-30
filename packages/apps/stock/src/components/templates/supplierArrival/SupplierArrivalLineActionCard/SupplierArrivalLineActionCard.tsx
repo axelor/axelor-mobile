@@ -16,8 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import React, {useCallback} from 'react';
-import {StyleSheet} from 'react-native';
+import React, {useCallback, useMemo} from 'react';
 import {ActionCard} from '@axelor/aos-mobile-ui';
 import {
   useDispatch,
@@ -25,33 +24,22 @@ import {
   useTranslator,
   useTypes,
 } from '@axelor/aos-mobile-core';
-import SupplierArrivalLineCard from '../SupplierArrivalLineCard/SupplierArrivalLineCard';
+import {StockMoveLine} from '../../../../types';
 import {splitSupplierArrivalLine} from '../../../../features/supplierArrivalLineSlice';
+import {SupplierArrivalLineCard} from '../../supplierArrival';
 
 interface SupplierArrivalLineActionCardProps {
   style?: any;
-  supplierArrivalLineId: number;
-  version: number;
-  productName: string;
-  stockLocationName: string;
-  askedQty: number;
-  deliveredQty: number;
-  locker?: string;
-  trackingNumber?: {trackingNumberSeq: string};
-  onPress: () => void;
+  styleCard?: any;
+  supplierArrivalLine: any;
+  handleShowLine: (item: any) => void;
 }
 
 const SupplierArrivalLineActionCard = ({
   style,
-  supplierArrivalLineId,
-  version,
-  productName,
-  stockLocationName,
-  askedQty,
-  deliveredQty,
-  locker,
-  trackingNumber,
-  onPress,
+  styleCard,
+  supplierArrivalLine,
+  handleShowLine,
 }: SupplierArrivalLineActionCardProps) => {
   const I18n = useTranslator();
   const dispatch = useDispatch();
@@ -62,16 +50,24 @@ const SupplierArrivalLineActionCard = ({
   const splitLine = useCallback(() => {
     dispatch(
       (splitSupplierArrivalLine as any)({
-        stockMoveLineId: supplierArrivalLineId,
+        id: supplierArrivalLine.id,
+        version: supplierArrivalLine.version,
         supplierArrivalId: supplierArrival?.id,
-        version: version,
       }),
     );
-  }, [dispatch, supplierArrivalLineId, supplierArrival?.id, version]);
+  }, [dispatch, supplierArrivalLine, supplierArrival?.id]);
+
+  const deliveredQty = useMemo(
+    () =>
+      StockMoveLine.hideLineQty(supplierArrivalLine, supplierArrival)
+        ? 0
+        : Number(supplierArrivalLine.realQty),
+    [supplierArrival, supplierArrivalLine],
+  );
 
   return (
     <ActionCard
-      style={[styles.container, style]}
+      style={style}
       translator={I18n.t}
       actionList={[
         {
@@ -79,30 +75,23 @@ const SupplierArrivalLineActionCard = ({
           helper: I18n.t('Stock_Split'),
           onPress: splitLine,
           hidden:
-            (supplierArrival.statusSelect !== StockMove?.statusSelect.Planned &&
-              supplierArrival.statusSelect !== StockMove?.statusSelect.Draft) ||
-            deliveredQty >= askedQty ||
+            supplierArrival.statusSelect > StockMove?.statusSelect.Planned ||
+            deliveredQty >= supplierArrivalLine.qty ||
             deliveredQty === 0,
         },
       ]}>
       <SupplierArrivalLineCard
-        style={style}
-        askedQty={askedQty}
+        style={styleCard}
+        productName={supplierArrivalLine.product?.fullName}
+        stockLocationName={supplierArrivalLine.toStockLocation?.name}
         deliveredQty={deliveredQty}
-        onPress={onPress}
-        productName={productName}
-        stockLocationName={stockLocationName}
-        locker={locker}
-        trackingNumber={trackingNumber}
+        askedQty={supplierArrivalLine.qty}
+        trackingNumber={supplierArrivalLine.trackingNumber}
+        locker={supplierArrivalLine.locker}
+        onPress={() => handleShowLine(supplierArrivalLine)}
       />
     </ActionCard>
   );
 };
-
-const styles = StyleSheet.create({
-  container: {
-    width: '90%',
-  },
-});
 
 export default SupplierArrivalLineActionCard;

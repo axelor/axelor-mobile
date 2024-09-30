@@ -138,21 +138,8 @@ const SupplierArrivalLineListScreen = ({route, navigation}) => {
         }
         renderListItem={({item}) => (
           <SupplierArrivalLineActionCard
-            supplierArrivalLineId={item.id}
-            version={item.version}
-            productName={item.product?.fullName}
-            stockLocationName={item.toStockLocation?.name}
-            deliveredQty={
-              StockMoveLine.hideLineQty(item, supplierArrival)
-                ? 0
-                : Number(item.realQty)
-            }
-            askedQty={item?.qty}
-            trackingNumber={item?.trackingNumber}
-            locker={item?.locker}
-            onPress={() => {
-              handleShowLine(item);
-            }}
+            supplierArrivalLine={item}
+            handleShowLine={handleShowLine}
           />
         )}
       />

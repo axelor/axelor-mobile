@@ -84,11 +84,9 @@ export async function fetchSupplierArrivalLine({supplierArrivalLineId}) {
   });
 }
 
-export async function splitSupplierArrivalLine({stockMoveLineId, version}) {
+export async function splitSupplierArrivalLine({id, version}) {
   return axiosApiProvider.put({
-    url: `ws/aos/stock-move-line/split/${stockMoveLineId}`,
-    data: {
-      version,
-    },
+    url: `ws/aos/stock-move-line/split/${id}`,
+    data: {version},
   });
 }

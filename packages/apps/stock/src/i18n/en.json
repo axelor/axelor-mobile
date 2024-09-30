@@ -123,6 +123,7 @@
   "Stock_Status_NotReceived": "Not received",
   "Stock_Status_PariallyReceived": "Parially received",
   "Stock_Status_Received": "Received",
+  "Stock_Split": "Split the line",
   "Stock_SliceAction_FetchCustomerDeliveryLines": "fetch customer delivery lines",
   "Stock_SliceAction_FetchCustomerDeliveryLine": "fetch customer delivery line",
   "Stock_SliceAction_UpdateCustomerDeliveryLine": "update customer delivery line",
