@@ -33,7 +33,7 @@ interface GroupByScrollListProps {
   fetchData: (fetchOptions?: any) => any[] | void;
   moreLoading: boolean;
   isListEnd: boolean;
-  filter: boolean;
+  filter?: boolean;
   translator?: (translationKey: string) => string;
   horizontal?: boolean;
   disabledRefresh?: boolean;
