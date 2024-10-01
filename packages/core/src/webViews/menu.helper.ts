@@ -16,7 +16,8 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import {Menu, Screen} from '../app';
+import {Menu, modulesProvider, Screen} from '../app';
+import {fetchWebViewConfigs} from './api.helpers';
 import {createWebViewActionID} from './display.helpers';
 import {WebViewScreen} from './view';
 
@@ -119,4 +120,18 @@ export const filterAuthorizedWebViewMenus = (
     });
 
   return menus;
+};
+
+export const registerWebViewModule = async (user: any) => {
+  const webViewConfigs = await fetchWebViewConfigs()
+    .then(res => res?.data?.data)
+    .catch(() => []);
+
+  const {screens, menus} = createWebViewScreens(webViewConfigs);
+
+  modulesProvider.registerModule({
+    name: 'app-webview',
+    menus: filterAuthorizedWebViewMenus(menus, user),
+    screens,
+  });
 };

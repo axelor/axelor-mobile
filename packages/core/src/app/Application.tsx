@@ -78,17 +78,21 @@ const Application = ({
 }: ApplicationProps) => {
   const modules: Module[] = useRef([authModule, ...modulesProvided]).current;
 
-  RouterProvider.enableRetrocompatibilityWithAOSv6(
-    configuration?.retrocompatibilityAOS6,
-  );
-
-  RouterProvider.addRoutes(configuration?.additionalRoutes);
+  RouterProvider.init({
+    retrocompatibility: configuration?.retrocompatibilityAOS6,
+    routesDefinition: configuration?.additionalRoutes,
+  });
 
   ApiProviderConfig.allowConnectionBlock =
     configuration.allowInternetConnectionBlock;
 
   useEffect(() => {
-    modulesProvider.init(modules);
+    modulesProvider.init(
+      modules,
+      modules
+        .filter(_module => _module.moduleRegister)
+        .flatMap(_module => _module.moduleRegister),
+    );
   }, [modules]);
 
   useEffect(() => {
@@ -100,6 +104,7 @@ const Application = ({
 
   return (
     <ContextsProvider
+      modules={modules}
       additionalsReducers={additionalsReducers}
       defaultTheme={defaultTheme}
       themes={themes}
@@ -113,6 +118,7 @@ const Application = ({
         configuration?.showModulesSubtitle ?? showModulesSubtitle
       }>
       <ContextedApplication
+        modules={modules}
         mainMenu={mainMenu}
         version={version}
         configuration={{
