@@ -55,7 +55,7 @@ const SupplierArrivalLineListScreen = ({route, navigation}) => {
       lineDetailsScreen: 'SupplierArrivalLineDetailScreen',
       selectTrackingScreen: 'SupplierArrivalSelectTrackingScreen',
       selectProductScreen: 'SupplierArrivalSelectProductScreen',
-      skipTrackingNumberVerification: true,
+      skipTrackingNumberVerification: false,
       skipVerification,
       navigation,
     });

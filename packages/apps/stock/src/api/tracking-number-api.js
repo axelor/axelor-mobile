@@ -50,7 +50,12 @@ export async function searchTrackingNumberFilter({
   });
 }
 
-export async function createTrackingNumber({qty, product, trackingNumberSeq}) {
+export async function createTrackingNumber({
+  qty,
+  product,
+  trackingNumberSeq,
+  origin,
+}) {
   return axiosApiProvider.post({
     url: '/ws/rest/com.axelor.apps.stock.db.TrackingNumber',
     data: {
@@ -58,6 +63,7 @@ export async function createTrackingNumber({qty, product, trackingNumberSeq}) {
         counter: qty,
         product: product,
         trackingNumberSeq: trackingNumberSeq,
+        origin: origin,
       },
     },
   });
@@ -75,6 +81,20 @@ export async function updateStockMoveLineTrackingNumber({
         id: stockMoveLineId,
         version: stockMoveLineVersion,
         trackingNumber: trackingNumber,
+      },
+    },
+  });
+}
+
+export async function updateTrackingNumber({trackingNumber, origin}) {
+  console.log('ici', trackingNumber);
+  return axiosApiProvider.post({
+    url: `/ws/rest/com.axelor.apps.stock.db.TrackingNumber`,
+    data: {
+      data: {
+        ...trackingNumber,
+        origin: origin,
+        version: trackingNumber.$version,
       },
     },
   });

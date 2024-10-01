@@ -25,6 +25,7 @@ import {
   createTrackingNumber,
   searchTrackingNumberFilter,
   updateStockMoveLineTrackingNumber as _updateStockMoveLineTrackingNumber,
+  updateTrackingNumber as _updateTrackingNumber,
 } from '../api/tracking-number-api';
 import {fetchSupplierArrivalLine} from './supplierArrivalLineSlice';
 
@@ -89,6 +90,25 @@ export const updateStockMoveLineTrackingNumber = createAsyncThunk(
       fetchFunction: _updateStockMoveLineTrackingNumber,
       data,
       action: 'Stock_SliceAction_UpdateSupplierArrivalLineWithTrackingNumber',
+      getState,
+      responseOptions: {isArrayResponse: false, showToast: true},
+    }).then(() => {
+      dispatch(
+        fetchSupplierArrivalLine({
+          supplierArrivalLineId: data.stockMoveLineId,
+        }),
+      );
+    });
+  },
+);
+
+export const updateTrackingNumber = createAsyncThunk(
+  'trackingNumber/updateTrackingNumber',
+  async function (data, {getState, dispatch}) {
+    return handlerApiCall({
+      fetchFunction: _updateTrackingNumber,
+      data,
+      action: 'Stock_SliceAction_UpdateTrackingNumber',
       getState,
       responseOptions: {isArrayResponse: false, showToast: true},
     }).then(() => {

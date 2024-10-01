@@ -21,6 +21,7 @@ import {StyleSheet} from 'react-native';
 import {
   Button,
   Card,
+  FormInput,
   HeaderContainer,
   QuantityCard,
   Screen,
@@ -46,6 +47,7 @@ const SupplierArrivalAddTrackingScreen = ({route, navigation}) => {
 
   const [sequence, setSequence] = useState(null);
   const [trackingQty, setTrackingQty] = useState(0);
+  const [origin, setOrigin] = useState(null);
 
   const {loading, createdTrackingNumber} = useSelector(
     state => state.trackingNumber,
@@ -57,11 +59,20 @@ const SupplierArrivalAddTrackingScreen = ({route, navigation}) => {
         product: product,
         trackingNumberSeq: sequence,
         qty: trackingQty,
+        origin: origin,
         stockMoveLineId: supplierArrivalLine.id,
         stockMoveLineVersion: supplierArrivalLine.version,
       }),
     );
-  }, [dispatch, product, sequence, supplierArrivalLine, trackingQty]);
+  }, [
+    dispatch,
+    origin,
+    product,
+    sequence,
+    supplierArrivalLine.id,
+    supplierArrivalLine.version,
+    trackingQty,
+  ]);
 
   useEffect(() => {
     if (!loading && createdTrackingNumber != null) {
@@ -122,6 +133,11 @@ const SupplierArrivalAddTrackingScreen = ({route, navigation}) => {
           title={I18n.t('Stock_TrackingSequence')}
           onChange={setSequence}
         />
+        <FormInput
+          title={I18n.t('Stock_Origin')}
+          style={[styles.input, styles.origin]}
+          onChange={setOrigin}
+        />
         <QuantityCard
           labelQty={I18n.t('Stock_TrackingQty')}
           defaultValue={trackingQty}
@@ -142,6 +158,10 @@ const styles = StyleSheet.create({
   },
   input: {
     zIndex: 50,
+    alignSelf: 'center',
+  },
+  origin: {
+    marginBottom: 20,
   },
 });
 

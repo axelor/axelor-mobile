@@ -55,6 +55,7 @@ export async function updateLine({
   conformity: _conformity,
   toStockLocationId,
 }) {
+  console.log('??');
   const StockMove = getTypes().StockMove;
   const conformity = _conformity ?? StockMove?.conformitySelect.None;
 
