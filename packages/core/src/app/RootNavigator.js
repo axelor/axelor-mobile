@@ -30,12 +30,10 @@ import {useTranslator} from '../i18n';
 import {showToastMessage} from '../utils';
 import {logout} from '../features/authSlice';
 import {useSessionExpired} from '../apiProviders/config';
-import {useModules} from './modules';
 
 const {Navigator, Screen} = createNativeStackNavigator();
 
-const RootNavigator = ({mainMenu, onRefresh, configuration}) => {
-  const {modules} = useModules();
+const RootNavigator = ({modules, mainMenu, onRefresh, configuration}) => {
   const Colors = useThemeColor();
   const I18n = useTranslator();
   const dispatch = useDispatch();

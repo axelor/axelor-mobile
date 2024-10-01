@@ -46,8 +46,10 @@ export interface Module {
     searchFields?: SearchFields;
     formsRegister?: FormConfigs;
     headerRegisters?: Function;
+    typeObjects?: ModuleSelections;
   };
   requiredConfig?: string[];
+  moduleRegister?: Function;
 }
 ```
 
@@ -65,3 +67,31 @@ A module therefore has :
 - a list of functions to be executed in the background if necessary (_backgroundFunctions_). These functions are executed every 5 minutes.
 - a configuration of templates for API calls (_models_).
 - a list of web application names to retrieve the associated configuration (_requiredConfig_), such as 'AppBase' or 'AppMobileSettings'. Each configuration will then be retrieved using the application's router. The associated routes must therefore be specified to the router. New routes can be set in the application configuration file via the _additionalRoutes_ attribute.
+- a function for dynamically registering modules (_moduleRegister_). This function will be executed once when the user logs in, to enable the creation of menus and screens from ERP data such as dashboards or customized web views.
+
+# Dynamic module creation
+
+It is sometimes necessary to create menus or screens according to a configuration defined on the ERP, which is not possible with the normal management of menus and screens in the _Module_ object. In this case, a new module must be dynamically created to register these elements, which is made possible by the _modulesProvider_ and the _moduleRegister_ attribute of the Module object:
+
+```tsx
+export const functionalModule: Module = {
+  name: 'app-functional',
+  title: 'Title',
+  icon: 'icon-name',
+  menus: {...staticMenus},
+  screens: {...staticMenus},
+  moduleRegister: async (userId: number) => {
+    const {screens, menus} = await fetchCustomMenusAndScreens(userId);
+
+    modulesProvider.registerModule({
+      name: 'app-custom',
+      menus,
+      screens,
+    });
+  },
+};
+```
+
+When the user logs in, all the functions specified in this attribute will be executed with the user's identifier on the instance to which he/she has logged in as an argument. The use of the _modulesProvider_ tool outside the dedicated attribute is not recommended to avoid excessive updating problems, as the list of modules is the central object of the application, and many functions depend on it.
+
+Dynamically registered modules are managed in the same way as the others, so it is possible to use the principles of overriding different objects to add a menu to an existing module with the _parent_ attribute, or to modify an existing screen.
