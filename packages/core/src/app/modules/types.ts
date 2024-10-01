@@ -126,4 +126,6 @@ export interface Module {
   models?: Models;
   /** List of configuration name to fetch from the web */
   requiredConfig?: string[];
+  /** Function which will be executed once after user login to create modules/menus based on data */
+  moduleRegister?: Function;
 }
