@@ -35,6 +35,12 @@ const ProjectDetailsScreen = ({route}) => {
   const dispatch = useDispatch();
 
   const {project} = useSelector((state: any) => state.project_project);
+  const {mobileSettings} = useSelector((state: any) => state.appConfig);
+
+  const allowedReportingTypes = mobileSettings?.reportingTypesToDisplay || [];
+  const isNoneOnly =
+    allowedReportingTypes.length === 1 &&
+    allowedReportingTypes.includes('none');
 
   useEffect(() => {
     dispatch((fetchProjectById as any)({projectId}));
@@ -61,6 +67,10 @@ const ProjectDetailsScreen = ({route}) => {
       iconName: 'activity',
       color: Colors.progressColor,
       viewComponent: <ReportingView />,
+      hidden:
+        isNoneOnly ||
+        (!project?.isBusinessProject &&
+          allowedReportingTypes.includes('indicators')),
     },
     {
       iconName: 'clock-history',

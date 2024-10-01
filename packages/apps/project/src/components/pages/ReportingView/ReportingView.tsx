@@ -24,22 +24,39 @@ import {ProjectHeader} from '../../molecules';
 import {ActivityListView, ReportingDetailsView} from '../../templates';
 
 const modes = {
-  reporting: 'reporting',
+  indicator: 'indicators',
   activities: 'activities',
+  none: 'none',
 };
 
 const ReportingView = () => {
   const I18n = useTranslator();
 
   const {project} = useSelector((state: any) => state.project_project);
+  const {mobileSettings} = useSelector((state: any) => state.appConfig);
 
-  const [mode, setMode] = useState(modes?.reporting);
+  const [mode, setMode] = useState(modes.indicator);
+
+  const allowedReportingTypes = mobileSettings?.reportingTypesToDisplay || [];
+  const isNone =
+    allowedReportingTypes.length === 1 &&
+    allowedReportingTypes.includes(modes.none);
+  const showActivities = allowedReportingTypes.includes(modes.activities);
+  const showReporting =
+    allowedReportingTypes.includes(modes.indicator) &&
+    project?.isBusinessProject;
 
   useEffect(() => {
-    if (!project?.isBusinessProject) {
+    if (!showReporting) {
       setMode(modes.activities);
+    } else if (!showActivities) {
+      setMode(modes.indicator);
     }
-  }, [project?.isBusinessProject]);
+  }, [showActivities, showReporting]);
+
+  if (isNone) {
+    return null;
+  }
 
   return (
     <View style={styles.container}>
@@ -48,14 +65,14 @@ const ReportingView = () => {
         fixedItems={
           <>
             <ProjectHeader />
-            {project?.isBusinessProject && (
+            {project?.isBusinessProject && showReporting && showActivities && (
               <ToggleSwitch
                 leftTitle={I18n.t('Project_Reporting')}
                 rightTitle={I18n.t('Project_Activities')}
                 onSwitch={() =>
                   setMode(_mode => {
                     return _mode === modes.activities
-                      ? modes.reporting
+                      ? modes.indicator
                       : modes.activities;
                   })
                 }
@@ -64,10 +81,10 @@ const ReportingView = () => {
           </>
         }
       />
-      {mode === modes.activities ? (
+      {mode === modes.activities && showActivities ? (
         <ActivityListView />
       ) : (
-        <ReportingDetailsView />
+        showReporting && <ReportingDetailsView />
       )}
     </View>
   );
