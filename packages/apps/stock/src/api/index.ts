@@ -80,5 +80,10 @@ export {
   updateLine as updateSupplierArrivalLineApi,
 } from './supplier-arrival-line-api';
 export * from './supplier-catalog-api';
-export * from './tracking-number-api';
+export {
+  searchTrackingNumberFilter as searchTrackingNumberFilterApi,
+  createTrackingNumber as createTrackingNumberApi,
+  updateStockMoveLineTrackingNumber as updateStockMoveLineTrackingNumberApi,
+  updateTrackingNumber as updateTrackingNumberApi,
+} from './tracking-number-api';
 export * from './unit-api';
