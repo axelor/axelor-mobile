@@ -23,6 +23,7 @@ import {apiProviderConfig} from '../apiProviders/config';
 import {saveUrlInStorage} from '../sessions';
 import {checkNullString} from '../utils';
 import {testUrl} from '../utils/api';
+import {modulesProvider} from '../app';
 
 export const login = createAsyncThunk(
   'auth/login',
@@ -37,6 +38,8 @@ export const login = createAsyncThunk(
     apiProviderConfig.setSessionExpired(false);
 
     closePopup?.();
+
+    modulesProvider.getModuleRegisters().forEach(_f => _f(userId));
 
     return {
       url: urlWithProtocol,

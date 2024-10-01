@@ -41,6 +41,14 @@ class RouterProvider {
 
   constructor() {}
 
+  public init(data: {
+    retrocompatibility: boolean;
+    routesDefinition: RouteSwitcher;
+  }) {
+    this.enableRetrocompatibilityWithAOSv6(data.retrocompatibility);
+    this.addRoutes(data.routesDefinition);
+  }
+
   public enableRetrocompatibilityWithAOSv6(value: boolean) {
     this.retrocompatibilityAOS6 = value;
   }

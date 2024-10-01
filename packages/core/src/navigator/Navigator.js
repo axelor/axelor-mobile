@@ -41,7 +41,6 @@ import {
   getMenuTitle,
   hasSubMenus,
   formatMenus,
-  addMenusToModules,
 } from './menu.helper';
 import useTranslator from '../i18n/hooks/use-translator';
 import {useDispatch, useSelector} from 'react-redux';
@@ -49,80 +48,41 @@ import BaseScreen from '../screens';
 import Header from './drawer/Header';
 import {fetchMetaModules} from '../features/metaModuleSlice';
 import {fetchRequiredConfig} from '../features/appConfigSlice';
-import {
-  createDashboardScreens,
-  filterAuthorizedDashboardMenus,
-} from '../dashboards/menu.helpers';
-import {fetchDashboardConfigs} from '../features/mobileDashboardSlice';
-import {fetchWebViewConfigs} from '../features/mobileWebViewSlice';
 import {usePermissionsFetcher} from '../permissions';
 import {navigationInformations} from './NavigationInformationsProvider';
-import {
-  createWebViewScreens,
-  filterAuthorizedWebViewMenus,
-} from '../webViews/menu.helper';
 import {registerTypes} from '../selections';
-import {useModules} from '../app';
+import {useModulesInitialisation} from '../app';
 
 const Drawer = createDrawerNavigator();
 const Stack = createStackNavigator();
 
-export const ModuleNavigatorContext = createContext({
-  activeModule: null,
-  modulesMenus: {},
-  modulesScreens: {},
-});
+export const ModuleNavigatorContext = createContext({activeModule: null});
 
 const Navigator = ({mainMenu, onRefresh, versionCheckConfig}) => {
   const I18n = useTranslator();
   const Colors = useThemeColor();
   const dispatch = useDispatch();
-  const {modules} = useModules();
   const fetchAllPermission = usePermissionsFetcher();
+  const {modules} = useModulesInitialisation();
 
   const storeState = useSelector(state => state.appConfig);
-  const {user} = useSelector(state => state.user);
-  const {dashboardConfigs} = useSelector(state => state.mobileDashboard);
-  const {webViewConfigs} = useSelector(state => state.mobileWebView);
   const {mobileSettings} = useSelector(state => state.appConfig);
   const {metaModules} = useSelector(state => state.metaModule);
-
-  const {screens: dashboardScreeens, menus: dashboardMenusConfig} = useMemo(
-    () => createDashboardScreens(dashboardConfigs),
-    [dashboardConfigs],
-  );
-
-  const {screens: webViewScreens, menus: webViewMenusConfig} = useMemo(
-    () => createWebViewScreens(webViewConfigs),
-    [webViewConfigs],
-  );
 
   const enabledModule = useMemo(
     () =>
       manageWebCompatibility(
         manageWebConfig(
-          addMenusToModules(
-            manageOverridingMenus(
-              manageSubMenusOverriding(
-                checkModulesMenusAccessibility(modules, mobileSettings?.apps),
-              ),
+          manageOverridingMenus(
+            manageSubMenusOverriding(
+              checkModulesMenusAccessibility(modules, mobileSettings?.apps),
             ),
-            filterAuthorizedWebViewMenus(webViewMenusConfig, user),
-            filterAuthorizedDashboardMenus(dashboardMenusConfig, user),
           ),
           storeState,
         ),
         metaModules,
       ),
-    [
-      dashboardMenusConfig,
-      webViewMenusConfig,
-      metaModules,
-      mobileSettings?.apps,
-      modules,
-      storeState,
-      user,
-    ],
+    [metaModules, mobileSettings?.apps, modules, storeState],
   );
 
   const [activeModule, setActiveModule] = useState(
@@ -147,8 +107,6 @@ const Navigator = ({mainMenu, onRefresh, versionCheckConfig}) => {
 
   useEffect(() => {
     dispatch(fetchMetaModules());
-    dispatch(fetchDashboardConfigs());
-    dispatch(fetchWebViewConfigs());
     fetchAllPermission();
   }, [dispatch, fetchAllPermission]);
 
@@ -162,28 +120,25 @@ const Navigator = ({mainMenu, onRefresh, versionCheckConfig}) => {
   );
 
   const modulesMenus = useMemo(() => {
-    return enabledModule
+    const menuArray = enabledModule
       .filter(moduleHasMenus)
       .reduce((menus, _module) => ({...menus, ...formatMenus(_module)}), {});
+
+    navigationInformations.registerMenus(menuArray);
+
+    return menuArray;
   }, [enabledModule]);
 
-  useEffect(() => {
-    navigationInformations.registerMenus(modulesMenus);
-  }, [modulesMenus]);
+  const modulesScreens = useMemo(() => {
+    const screenArray = modules.reduce(
+      (screens, module) => ({...screens, ...module.screens}),
+      {...BaseScreen},
+    );
 
-  const modulesScreens = useMemo(
-    () =>
-      modules.reduce((screens, module) => ({...screens, ...module.screens}), {
-        ...BaseScreen,
-        ...dashboardScreeens,
-        ...webViewScreens,
-      }),
-    [dashboardScreeens, webViewScreens, modules],
-  );
+    navigationInformations.registerScreens(screenArray);
 
-  useEffect(() => {
-    navigationInformations.registerScreens(modulesScreens);
-  }, [modulesScreens]);
+    return screenArray;
+  }, [modules]);
 
   const ModulesScreensStackNavigator = useCallback(
     ({initialRouteName, ...rest}) => (
@@ -193,6 +148,14 @@ const Navigator = ({mainMenu, onRefresh, versionCheckConfig}) => {
             key,
             {component, title, actionID, options = {shadedHeader: true}},
           ]) => {
+            const renderTitle = () => (
+              <Header
+                mainScreen={initialRouteName === key}
+                title={title}
+                actionID={actionID}
+                shadedHeader={options?.shadedHeader}
+              />
+            );
             return (
               <Stack.Screen
                 key={key}
@@ -200,26 +163,15 @@ const Navigator = ({mainMenu, onRefresh, versionCheckConfig}) => {
                 component={component}
                 options={{
                   headerStyle: [
-                    {
-                      elevation: 0,
-                    },
+                    {elevation: 0},
                     Platform.OS === 'ios' && !options?.shadedHeader
-                      ? {
-                          shadowOpacity: 0,
-                        }
+                      ? {shadowOpacity: 0}
                       : null,
                   ],
                   headerLeft: () => null,
                   headerRight: () => null,
                   headerTitleStyle: {width: '100%'},
-                  headerTitle: () => (
-                    <Header
-                      mainScreen={initialRouteName === key}
-                      title={title}
-                      actionID={actionID}
-                      shadedHeader={options?.shadedHeader}
-                    />
-                  ),
+                  headerTitle: renderTitle,
                 }}
               />
             );
@@ -230,30 +182,39 @@ const Navigator = ({mainMenu, onRefresh, versionCheckConfig}) => {
     [modulesScreens],
   );
 
-  const windowWidth = Dimensions.get('window').width;
-  const isLargeScreen = windowWidth >= 768;
+  const renderDrawer = useCallback(
+    props => {
+      return (
+        <DrawerContent
+          {...props}
+          modules={enabledModule}
+          onModuleClick={changeActiveModule}
+          onRefresh={onRefresh}
+          versionCheckConfig={versionCheckConfig}
+        />
+      );
+    },
+    [changeActiveModule, enabledModule, onRefresh, versionCheckConfig],
+  );
+
+  const {windowWidth, isLargeScreen} = useMemo(() => {
+    const _width = Dimensions.get('window').width;
+
+    return {windowWidth: _width, isLargeScreen: _width >= 768};
+  }, []);
 
   return (
-    <ModuleNavigatorContext.Provider
-      value={{activeModule, modulesMenus, modulesScreens}}>
+    <ModuleNavigatorContext.Provider value={{activeModule}}>
       <Drawer.Navigator
         initialRouteName={mainMenu}
         screenOptions={{
           headerShown: false,
           drawerStyle: {
             backgroundColor: Colors.backgroundColor,
-            width: isLargeScreen ? windowWidth * 0.5 : windowWidth * 0.8,
+            width: windowWidth * (isLargeScreen ? 0.5 : 0.8),
           },
         }}
-        drawerContent={props => (
-          <DrawerContent
-            {...props}
-            modules={enabledModule}
-            onModuleClick={changeActiveModule}
-            onRefresh={onRefresh}
-            versionCheckConfig={versionCheckConfig}
-          />
-        )}>
+        drawerContent={renderDrawer}>
         {Object.entries(modulesMenus).map(([key, menu], index) => {
           return (
             <React.Fragment key={index}>
