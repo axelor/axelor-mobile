@@ -52,9 +52,20 @@ export const showLine = ({
 
   const {trackingNumberConfiguration} = product;
 
-  console.log('trackingNumberConfiguration', trackingNumberConfiguration);
-
-  if (true) {
+  if (
+    item?.data?.statusSelect === detailStatus ||
+    skipVerification ||
+    (!skipTrackingNumberVerification &&
+      trackingNumberConfiguration &&
+      trackingNumber == null)
+  ) {
+    navigation.navigate(lineDetailsScreen, {
+      [itemLine.name]: line,
+      [item.name]: item.data,
+      [`${itemLine.name}Id`]: line.id,
+      productId: product.id,
+    });
+  } else if (trackingNumberConfiguration && trackingNumber != null) {
     navigation.navigate(selectTrackingScreen, {
       [itemLine.name]: line,
       [item.name]: item.data,

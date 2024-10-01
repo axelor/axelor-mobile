@@ -106,5 +106,6 @@ export {
   createTrackingNumberSeq,
   filterTrackingNumber,
   updateSupplierTrackingNumber,
+  updateTrackingNumber,
 } from './trackingNumberSlice';
 export {fetchUnit} from './unitSlice';

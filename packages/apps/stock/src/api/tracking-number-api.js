@@ -87,7 +87,6 @@ export async function updateStockMoveLineTrackingNumber({
 }
 
 export async function updateTrackingNumber({trackingNumber, origin}) {
-  console.log('ici', trackingNumber);
   return axiosApiProvider.post({
     url: `/ws/rest/com.axelor.apps.stock.db.TrackingNumber`,
     data: {

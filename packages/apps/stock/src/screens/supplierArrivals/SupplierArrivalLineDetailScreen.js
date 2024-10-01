@@ -241,17 +241,22 @@ const SupplierArrivalLineDetailScreen = ({route, navigation}) => {
           name={product?.name}
           trackingNumber={trackingNumber?.trackingNumberSeq}
         />
-        <SupplierArrivalTrackingNumberSelect
-          supplierArrival={supplierArrival}
-          supplierArrivalLine={supplierArrivalLine}
-          handleTrackingNumberSelection={handleTrackingNumberSelection}
-          product={product}
-          trackingNumber={trackingNumber}
-        />
-        <EditableInput
-          defaultValue={trackingNumber?.origin}
-          onValidate={item => handleTrackingNumberOrigin(item)}
-        />
+        {product.trackingNumberConfiguration != null &&
+          trackingNumber == null && (
+            <>
+              <SupplierArrivalTrackingNumberSelect
+                supplierArrival={supplierArrival}
+                supplierArrivalLine={supplierArrivalLine}
+                handleTrackingNumberSelection={handleTrackingNumberSelection}
+                product={product}
+                trackingNumber={trackingNumber}
+              />
+              <EditableInput
+                defaultValue={trackingNumber?.origin}
+                onValidate={item => handleTrackingNumberOrigin(item)}
+              />
+            </>
+          )}
         <SupplierProductInfo />
         <SupplierArrivalLineQuantityCard
           realQty={realQty}
