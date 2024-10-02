@@ -58,7 +58,6 @@ const StockMoveHeader = ({
   const [checkQtyObject, setCheckQtyObject] = useState(null);
 
   useEffect(() => {
-    console.log(stockMoveLineId);
     if (stockMoveLineId) {
       checkQuantityApi({stockMoveLineId})
         .then(response => {
