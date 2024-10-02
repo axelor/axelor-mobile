@@ -156,6 +156,7 @@ const CustomerDeliveryLineListScreen = ({route, navigation}) => {
                 ? null
                 : item.availableStatusSelect
             }
+            stockMoveLineId={item.id}
             onPress={() => handleShowLine(item)}
           />
         )}

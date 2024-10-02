@@ -147,6 +147,7 @@ const InternalMoveLineListScreen = ({route, navigation}) => {
                 ? null
                 : item.availableStatusSelect
             }
+            stockMoveLineId={item.id}
             trackingNumber={item.trackingNumber?.trackingNumberSeq}
             locker={item.locker}
             expectedQty={item.qty}

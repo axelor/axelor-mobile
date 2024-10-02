@@ -16,13 +16,13 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import React, {useMemo} from 'react';
+import React, {useEffect, useMemo, useState} from 'react';
 import {StyleSheet, View} from 'react-native';
 import {
+  checkNullString,
   Icon,
   ObjectCard,
   Text,
-  checkNullString,
   useDigitFormat,
   useThemeColor,
 } from '@axelor/aos-mobile-ui';
@@ -32,12 +32,14 @@ import {
   useTypeHelpers,
   useTypes,
 } from '@axelor/aos-mobile-core';
+import {checkQuantityApi} from '../../../../api';
 
 interface InternalMoveLineCardProps {
   style?: any;
   internalMoveStatus: number;
   productName: string;
   availability: number;
+  stockMoveLineId: number;
   trackingNumber: string;
   fromStockLocation: string;
   toStockLocation: string;
@@ -52,6 +54,7 @@ const InternalMoveLineCard = ({
   internalMoveStatus,
   productName,
   availability,
+  stockMoveLineId,
   trackingNumber,
   fromStockLocation,
   toStockLocation,
@@ -64,9 +67,11 @@ const InternalMoveLineCard = ({
   const I18n = useTranslator();
   const formatNumber = useDigitFormat();
   const {StockMove} = useTypes();
-  const {getItemColor, getItemTitle} = useTypeHelpers();
+  const {getItemColor} = useTypeHelpers();
 
   const {stock: stockConfig} = useSelector((state: any) => state.appConfig);
+
+  const [checkQtyObject, setCheckQtyObject] = useState(null);
 
   const borderColor = useMemo(() => {
     if (movedQty === 0 || movedQty == null) {
@@ -88,6 +93,16 @@ const InternalMoveLineCard = ({
     () => internalMoveStatus ?? StockMove?.statusSelect.Planned,
     [StockMove?.statusSelect.Planned, internalMoveStatus],
   );
+
+  useEffect(() => {
+    checkQuantityApi({stockMoveLineId})
+      .then(response => {
+        if (response?.data?.object) {
+          setCheckQtyObject(response?.data?.object);
+        }
+      })
+      .catch(() => setCheckQtyObject(null));
+  }, [stockMoveLineId]);
 
   return (
     <ObjectCard
@@ -129,26 +144,24 @@ const InternalMoveLineCard = ({
           },
         ],
       }}
-      sideBadges={
-        availability == null ||
-        availability === 0 ||
-        _internalMoveStatus === StockMove?.statusSelect.Realized
-          ? null
-          : {
-              items: [
-                {
-                  displayText: getItemTitle(
-                    StockMove?.availableStatusSelect,
-                    availability,
-                  ),
-                  color: getItemColor(
-                    StockMove?.availableStatusSelect,
-                    availability,
-                  ),
-                },
-              ],
-            }
-      }
+      sideBadges={{
+        items: [
+          {
+            displayText: checkQtyObject?.availability,
+            color: getItemColor(StockMove?.availableStatusSelect, availability),
+            showIf:
+              checkQtyObject?.availability &&
+              availability != null &&
+              availability > 0 &&
+              _internalMoveStatus !== StockMove?.statusSelect.Realized,
+          },
+          {
+            displayText: formatNumber(checkQtyObject?.missingQty),
+            color: Colors.errorColor,
+            showIf: Number(checkQtyObject?.missingQty ?? 0) !== 0,
+          },
+        ],
+      }}
     />
   );
 };

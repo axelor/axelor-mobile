@@ -16,21 +16,21 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import React, {useMemo} from 'react';
-import {StyleSheet} from 'react-native';
-import {
-  checkNullString,
-  ObjectCard,
-  useDigitFormat,
-  useThemeColor,
-} from '@axelor/aos-mobile-ui';
+import React, {useEffect, useMemo, useState} from 'react';
+import {Dimensions, StyleSheet} from 'react-native';
 import {
   useSelector,
   useTranslator,
   useTypeHelpers,
   useTypes,
 } from '@axelor/aos-mobile-core';
-import {Dimensions} from 'react-native';
+import {
+  checkNullString,
+  ObjectCard,
+  useDigitFormat,
+  useThemeColor,
+} from '@axelor/aos-mobile-ui';
+import {checkQuantityApi} from '../../../../api';
 
 interface CustomerDeliveryLineCardProps {
   style?: any;
@@ -40,6 +40,7 @@ interface CustomerDeliveryLineCardProps {
   pickedQty: number;
   locker?: string;
   availability: number;
+  stockMoveLineId: number;
   trackingNumber?: {trackingNumberSeq: string};
   onPress: () => void;
 }
@@ -52,6 +53,7 @@ const CustomerDeliveryLineCard = ({
   pickedQty,
   locker,
   availability,
+  stockMoveLineId,
   trackingNumber,
   onPress,
 }: CustomerDeliveryLineCardProps) => {
@@ -59,9 +61,11 @@ const CustomerDeliveryLineCard = ({
   const I18n = useTranslator();
   const formatNumber = useDigitFormat();
   const {StockMove} = useTypes();
-  const {getItemColor, getItemTitle} = useTypeHelpers();
+  const {getItemColor} = useTypeHelpers();
 
   const {stock: stockConfig} = useSelector((state: any) => state.appConfig);
+
+  const [checkQtyObject, setCheckQtyObject] = useState(null);
 
   const borderColor = useMemo(() => {
     if (pickedQty === 0 || pickedQty == null) {
@@ -75,15 +79,25 @@ const CustomerDeliveryLineCard = ({
     return Colors.successColor.background;
   }, [Colors, askedQty, pickedQty]);
 
-  const borderStyle = useMemo(() => {
-    return getStyles(borderColor)?.border;
+  const styles = useMemo(() => {
+    return getStyles(borderColor);
   }, [borderColor]);
+
+  useEffect(() => {
+    checkQuantityApi({stockMoveLineId})
+      .then(response => {
+        if (response?.data?.object) {
+          setCheckQtyObject(response?.data?.object);
+        }
+      })
+      .catch(() => setCheckQtyObject(null));
+  }, [stockMoveLineId]);
 
   return (
     <ObjectCard
       onPress={onPress}
       showArrow={true}
-      style={[borderStyle, style]}
+      style={[styles.container, style]}
       lowerTexts={{
         items: [
           {displayText: productName, isTitle: true},
@@ -117,40 +131,41 @@ const CustomerDeliveryLineCard = ({
           },
         ],
       }}
-      sideBadges={
-        availability == null || availability === 0
-          ? null
-          : {
-              items: [
-                {
-                  displayText: getItemTitle(
-                    StockMove?.availableStatusSelect,
-                    availability,
-                  ),
-                  color: getItemColor(
-                    StockMove?.availableStatusSelect,
-                    availability,
-                  ),
-                },
-              ],
-            }
-      }
+      sideBadges={{
+        items: [
+          {
+            displayText: checkQtyObject?.availability,
+            color: getItemColor(StockMove?.availableStatusSelect, availability),
+            showIf:
+              checkQtyObject?.availability &&
+              availability != null &&
+              availability > 0,
+          },
+          {
+            displayText: formatNumber(checkQtyObject?.missingQty),
+            color: Colors.errorColor,
+            showIf: Number(checkQtyObject?.missingQty ?? 0) !== 0,
+          },
+        ],
+        style: styles.badgesContainer,
+      }}
     />
   );
 };
 
 const getStyles = color =>
   StyleSheet.create({
-    border: {
+    container: {
       borderWidth: 1.5,
       borderColor: color,
+      paddingRight: 5,
+    },
+    textWidth: {
+      width: '85%',
+    },
+    badgesContainer: {
+      marginRight: 10,
     },
   });
-
-const styles = StyleSheet.create({
-  textWidth: {
-    width: '85%',
-  },
-});
 
 export default CustomerDeliveryLineCard;

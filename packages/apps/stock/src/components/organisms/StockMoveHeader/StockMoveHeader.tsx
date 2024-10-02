@@ -16,15 +16,21 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import React from 'react';
+import React, {useEffect, useState} from 'react';
 import {StyleSheet, View} from 'react-native';
-import {Badge, Text} from '@axelor/aos-mobile-ui';
+import {
+  Badge,
+  Text,
+  useDigitFormat,
+  useThemeColor,
+} from '@axelor/aos-mobile-ui';
 import {
   formatDate,
   useTranslator,
   useTypeHelpers,
   useTypes,
 } from '@axelor/aos-mobile-core';
+import {checkQuantityApi} from '../../../api';
 
 interface StockMoveHeaderProps {
   reference: string;
@@ -32,6 +38,7 @@ interface StockMoveHeaderProps {
   status: number;
   date: string;
   availability: number;
+  stockMoveLineId?: number;
 }
 
 const StockMoveHeader = ({
@@ -40,14 +47,32 @@ const StockMoveHeader = ({
   status,
   date,
   availability,
+  stockMoveLineId,
 }: StockMoveHeaderProps) => {
   const I18n = useTranslator();
+  const Colors = useThemeColor();
   const {StockMove} = useTypes();
   const {getItemColor, getItemTitle} = useTypeHelpers();
+  const formatNumber = useDigitFormat();
+
+  const [checkQtyObject, setCheckQtyObject] = useState(null);
+
+  useEffect(() => {
+    console.log(stockMoveLineId);
+    if (stockMoveLineId) {
+      checkQuantityApi({stockMoveLineId})
+        .then(response => {
+          if (response?.data?.object) {
+            setCheckQtyObject(response?.data?.object);
+          }
+        })
+        .catch(() => setCheckQtyObject(null));
+    }
+  }, [stockMoveLineId]);
 
   return (
-    <View style={styles.infoContainer}>
-      <View style={styles.refContainer}>
+    <View style={styles.container}>
+      <View>
         {lineRef != null && (
           <Text style={styles.text_important}>{lineRef}</Text>
         )}
@@ -65,43 +90,43 @@ const StockMoveHeader = ({
           </Text>
         )}
       </View>
-      <View style={styles.badgeContainer}>
+      <View style={styles.badgesContainer}>
         <Badge
           color={getItemColor(StockMove?.statusSelect, status)}
           title={getItemTitle(StockMove?.statusSelect, status)}
         />
-        {availability == null || availability === 0 ? (
-          <View style={styles.refContainer} />
-        ) : (
+        <View style={styles.rowContainer}>
+          {Number(checkQtyObject?.missingQty ?? 0) !== 0 && (
+            <Badge
+              color={Colors.errorColor}
+              title={formatNumber(checkQtyObject?.missingQty)}
+            />
+          )}
           <Badge
             color={getItemColor(StockMove?.availableStatusSelect, availability)}
-            title={getItemTitle(StockMove?.availableStatusSelect, availability)}
+            title={
+              checkQtyObject?.availability ??
+              getItemTitle(StockMove?.availableStatusSelect, availability)
+            }
           />
-        )}
+        </View>
       </View>
     </View>
   );
 };
 
 const styles = StyleSheet.create({
-  infoContainer: {
+  container: {
     flexDirection: 'row',
-    justifyContent: 'space-around',
-    alignItems: 'center',
-    marginBottom: '2%',
+    justifyContent: 'space-between',
+    marginHorizontal: 24,
+    marginBottom: 5,
   },
-  refContainer: {
-    flex: 1,
-    flexDirection: 'column',
-    marginLeft: 24,
+  badgesContainer: {
+    alignItems: 'flex-end',
   },
-  badgeContainer: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    marginTop: '2%',
-    marginHorizontal: 32,
-    flexDirection: 'row-reverse',
+  rowContainer: {
+    flexDirection: 'row',
   },
   text_important: {
     fontSize: 16,

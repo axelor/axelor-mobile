@@ -67,6 +67,7 @@ export {
   searchAvailableProducts as searchAvailableProductsApi,
   searchStockLocationLine,
 } from './stock-location-line-api';
+export {checkQuantity as checkQuantityApi} from './stock-move-line-api';
 export {
   addLineStockMove as addSupplierArrivalLine,
   fetchSupplierArrival as fetchSupplierArrivalApi,
