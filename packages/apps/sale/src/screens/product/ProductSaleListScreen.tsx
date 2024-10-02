@@ -44,7 +44,7 @@ const ProductSaleListScreen = ({navigation}) => {
 
   const filterProductTypeSelectForApi = useCallback(
     selectedTypes => {
-      if (!selectedTypes || selectedTypes.length === 0) {
+      if (!Array.isArray(selectedTypes) || selectedTypes.length === 0) {
         return mobileSettings.productTypesToDisplay.map(type => ({
           value: type,
         }));
