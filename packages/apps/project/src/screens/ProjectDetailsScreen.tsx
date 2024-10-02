@@ -27,6 +27,7 @@ import {
   TimeView,
 } from '../components';
 import {fetchProjectById} from '../features/projectSlice';
+import {getReportingConfiguration} from '../utils';
 
 const ProjectDetailsScreen = ({route}) => {
   const projectId = route?.params?.projectId;
@@ -38,9 +39,10 @@ const ProjectDetailsScreen = ({route}) => {
   const {mobileSettings} = useSelector((state: any) => state.appConfig);
 
   const allowedReportingTypes = mobileSettings?.reportingTypesToDisplay || [];
-  const isNoneOnly =
-    allowedReportingTypes.length === 1 &&
-    allowedReportingTypes.includes('none');
+  const {isNoneOnly, showReportingOrActivities} = getReportingConfiguration(
+    allowedReportingTypes,
+    project,
+  );
 
   useEffect(() => {
     dispatch((fetchProjectById as any)({projectId}));
@@ -67,10 +69,7 @@ const ProjectDetailsScreen = ({route}) => {
       iconName: 'activity',
       color: Colors.progressColor,
       viewComponent: <ReportingView />,
-      hidden:
-        isNoneOnly ||
-        (!project?.isBusinessProject &&
-          allowedReportingTypes.includes('indicators')),
+      hidden: isNoneOnly || !showReportingOrActivities,
     },
     {
       iconName: 'clock-history',

@@ -22,6 +22,7 @@ import {useSelector, useTranslator} from '@axelor/aos-mobile-core';
 import {HeaderContainer, ToggleSwitch} from '@axelor/aos-mobile-ui';
 import {ProjectHeader} from '../../molecules';
 import {ActivityListView, ReportingDetailsView} from '../../templates';
+import {getReportingConfiguration} from '../../../utils';
 
 const modes = {
   indicator: 'indicators',
@@ -35,16 +36,13 @@ const ReportingView = () => {
   const {project} = useSelector((state: any) => state.project_project);
   const {mobileSettings} = useSelector((state: any) => state.appConfig);
 
-  const [mode, setMode] = useState(modes.indicator);
-
   const allowedReportingTypes = mobileSettings?.reportingTypesToDisplay || [];
-  const isNone =
-    allowedReportingTypes.length === 1 &&
-    allowedReportingTypes.includes(modes.none);
-  const showActivities = allowedReportingTypes.includes(modes.activities);
-  const showReporting =
-    allowedReportingTypes.includes(modes.indicator) &&
-    project?.isBusinessProject;
+  const {isNoneOnly, showActivities, showReporting} = getReportingConfiguration(
+    allowedReportingTypes,
+    project,
+  );
+
+  const [mode, setMode] = useState(modes.indicator);
 
   useEffect(() => {
     if (!showReporting) {
@@ -54,7 +52,7 @@ const ReportingView = () => {
     }
   }, [showActivities, showReporting]);
 
-  if (isNone) {
+  if (isNoneOnly) {
     return null;
   }
 
