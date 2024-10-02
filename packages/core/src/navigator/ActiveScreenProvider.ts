@@ -17,6 +17,7 @@
  */
 
 import {useCallback, useEffect, useMemo, useState} from 'react';
+import {useIsFocused} from '../hooks/use-navigation';
 
 class ActiveScreenProvider {
   private screenName: string;
@@ -74,5 +75,18 @@ export const useActiveScreen = () => {
     };
   }, [refreshData]);
 
-  return useMemo(() => ({activeScreen, context}), [activeScreen, context]);
+  return useMemo(
+    () => ({name: activeScreen, context}),
+    [activeScreen, context],
+  );
+};
+
+export const useContextRegister = (data: any) => {
+  const isFocused = useIsFocused();
+
+  useEffect(() => {
+    if (isFocused) {
+      activeScreenProvider.registerScreenContext(data);
+    }
+  }, [data, isFocused]);
 };

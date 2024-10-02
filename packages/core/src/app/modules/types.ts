@@ -16,6 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+import {Dispatch} from 'react';
 import {Reducer} from '@reduxjs/toolkit';
 import {Schema} from 'yup';
 import {FormConfigs} from '../../forms/types';
@@ -89,6 +90,27 @@ export interface Models {
   typeObjects?: ModuleSelections;
 }
 
+interface ToolData {
+  dispatch: Dispatch<any>;
+  storeState: any;
+  screenContext: any;
+}
+
+interface ActionToolData extends ToolData {
+  navigation: any;
+}
+
+export interface Tool {
+  key: string;
+  order?: number;
+  title?: string;
+  iconName: string;
+  color?: string;
+  hideIf?: (data: ToolData) => boolean;
+  disabledIf?: (data: ToolData) => boolean;
+  onPress: (data: ActionToolData) => void;
+}
+
 type version = `${number}.${number}.${number}` | '-';
 
 export interface Compatibility {
@@ -128,4 +150,5 @@ export interface Module {
   requiredConfig?: string[];
   /** Function which will be executed once after user login to create modules/menus based on data */
   moduleRegister?: Function;
+  globalTools?: Tool[];
 }
