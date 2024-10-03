@@ -1,5 +1,0 @@
-{
-  "title": "Camera: prevent camera display on top bar on iOS",
-  "type": "fix",
-  "packages": "core"
-}

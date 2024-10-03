@@ -3,6 +3,22 @@ title: 8.1.0
 tags: Changelog
 ---
 
+## [8.1.5] (2024-10-03)
+
+### @axelor/aos-mobile-core
+
+#### Fixes
+
+- Camera: prevent camera display on top bar on iOS
+- UserCard: display company name on multiple lines to prevent logout button being out of card
+
+### @axelor/aos-mobile-ui
+
+#### Fixes
+
+- Pickers: restrict placeholder to one line
+- Stopwatch: manage button visibility when formatted duration is too large
+
 ## [8.1.4] (2024-09-12)
 
 ### @axelor/aos-mobile-core
@@ -335,6 +351,7 @@ It enables user to manage interventions and customer parc through the mobile app
 - Selections: use new system and tools instead of type files
 - Product indicators: use new chart component to display quantity indicators
 
+  [8.1.5]: https://github.com/axelor/axelor-mobile/compare/8.1.4...8.1.5
   [8.1.4]: https://github.com/axelor/axelor-mobile/compare/8.1.3...8.1.4
   [8.1.3]: https://github.com/axelor/axelor-mobile/compare/8.1.2...8.1.3
   [8.1.2]: https://github.com/axelor/axelor-mobile/compare/8.1.1...8.1.2
