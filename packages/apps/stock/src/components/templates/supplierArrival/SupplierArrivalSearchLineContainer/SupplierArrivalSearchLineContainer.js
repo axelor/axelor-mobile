@@ -74,7 +74,7 @@ const SupplierArrivalSearchLineContainer = ({}) => {
       selectTrackingScreen: 'SupplierArrivalSelectTrackingScreen',
       selectProductScreen: 'SupplierArrivalSelectProductScreen',
       skipVerification,
-      skipTrackingNumberVerification: true,
+      skipTrackingNumberVerification: false,
       navigation,
     });
   };
