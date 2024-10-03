@@ -50,6 +50,7 @@ export interface Module {
   };
   requiredConfig?: string[];
   moduleRegister?: Function;
+  globalTools?: Tool[];
 }
 ```
 
@@ -68,6 +69,7 @@ Un module possède donc :
 - une configuration de modèles pour les appels API (_models_).
 - une liste de noms d'application web pour récupérer la configuration associée (_requiredConfig_), comme par exemple 'AppBase" ou 'AppMobileSettings'. Chaque configuration sera ensuite récupérée avec le router de l'application. Il faut donc que les routes associées soient renseignées auprès du router. Il est possible de renseigner des nouvelles routes dans le fichier de configuration de l'application à travers l'attribut _additionalRoutes_.
 - une fonction pour enregistrer des modules dynamiquement (_moduleRegister_). Cette fonction sera éxécuté une seule fois à la connexion de l'utilisateur pour permettre la création de menus et écrans à partir de données de l'ERP comme les tableaux de bord ou les vues web personnalisées.
+- une liste d'outils à afficher globalement sur l'application (_globalTools_).
 
 # Création dynamique de modules
 

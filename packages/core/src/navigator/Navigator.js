@@ -52,6 +52,7 @@ import {usePermissionsFetcher} from '../permissions';
 import {navigationInformations} from './NavigationInformationsProvider';
 import {registerTypes} from '../selections';
 import {useModulesInitialisation} from '../app';
+import {activeScreenProvider} from './ActiveScreenProvider';
 
 const Drawer = createDrawerNavigator();
 const Stack = createStackNavigator();
@@ -142,7 +143,14 @@ const Navigator = ({mainMenu, onRefresh, versionCheckConfig}) => {
 
   const ModulesScreensStackNavigator = useCallback(
     ({initialRouteName, ...rest}) => (
-      <Stack.Navigator {...rest} initialRouteName={initialRouteName}>
+      <Stack.Navigator
+        {...rest}
+        initialRouteName={initialRouteName}
+        screenListeners={{
+          state: e => {
+            activeScreenProvider.registerActiveScreen(e.data?.state);
+          },
+        }}>
         {Object.entries(modulesScreens).map(
           ([
             key,

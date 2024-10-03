@@ -1,0 +1,5 @@
+{
+  "title": "Module: add new system to manage quick actions with a global toolbox",
+  "type": "feat",
+  "packages": "core"
+}
