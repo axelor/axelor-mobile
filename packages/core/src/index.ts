@@ -17,7 +17,7 @@
  */
 
 export * from './app';
-export {default as Navigator} from './navigator/Navigator';
+export * from './navigator';
 export {configGlobalStore} from './redux/store';
 export {storage, Storage, useStorage} from './storage/Storage';
 export {traceError} from './api/traceback-api';

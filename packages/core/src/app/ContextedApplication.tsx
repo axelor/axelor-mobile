@@ -25,7 +25,13 @@ import RootNavigator from './RootNavigator';
 import Translator from '../i18n/component/Translator';
 import {getActiveUserInfo} from '../api/login-api';
 import ErrorScreen from '../screens/ErrorScreen';
-import {Camera, HeaderBandList, Scanner, Toast} from '../components';
+import {
+  Camera,
+  GlobalToolBox,
+  HeaderBandList,
+  Scanner,
+  Toast,
+} from '../components';
 import {RouterProvider} from '../config';
 import {proxy, releaseConfig, versionCheckConfig} from './types';
 import {useDispatch} from '../redux/hooks';
@@ -89,6 +95,7 @@ const ContextedApplication = ({
           <HeaderBandList />
           <LoadingIndicator />
           <BlockInteractionMessage />
+          <GlobalToolBox />
           <RootNavigator
             modules={modules}
             mainMenu={mainMenu}
