@@ -16,13 +16,22 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+export const ReportingType = {
+  indicator: 'indicators',
+  activities: 'activities',
+  none: 'none',
+};
+
 export const getReportingConfiguration = (allowedReportingTypes, project) => {
   const isNoneOnly =
     allowedReportingTypes.length === 1 &&
-    allowedReportingTypes.includes('none');
-  const showActivities = allowedReportingTypes.includes('activities');
+    allowedReportingTypes.includes(ReportingType.none);
+  const showActivities = allowedReportingTypes.includes(
+    ReportingType.activities,
+  );
   const showReporting =
-    allowedReportingTypes.includes('indicators') && project?.isBusinessProject;
+    allowedReportingTypes.includes(ReportingType.indicator) &&
+    project?.isBusinessProject;
 
   return {
     isNoneOnly,
