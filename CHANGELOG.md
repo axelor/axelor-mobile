@@ -3,6 +3,14 @@ title: 8.0.0
 tags: Changelog
 ---
 
+## [8.0.11] (2024-10-03)
+
+### @axelor/aos-mobile-ui
+
+#### Fixes
+
+- Stopwatch: manage button visibility when formatted duration is too large
+
 ## [8.0.10] (2024-09-12)
 
 ### @axelor/aos-mobile-core
@@ -493,6 +501,7 @@ Changes has been done to get new core and ui improvements: use of ChipSelect, co
 
 Changes has been done to get new core and ui improvements: use of ChipSelect, color differentiation between success and primary, definition of required configs, use of icons for Bootstrap
 
+[8.0.11]: https://github.com/axelor/axelor-mobile/compare/8.0.10...8.0.11
 [8.0.10]: https://github.com/axelor/axelor-mobile/compare/8.0.9...8.0.10
 [8.0.9]: https://github.com/axelor/axelor-mobile/compare/8.0.8...8.0.9
 [8.0.8]: https://github.com/axelor/axelor-mobile/compare/8.0.7...8.0.8
