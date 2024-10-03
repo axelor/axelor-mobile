@@ -44,11 +44,68 @@ export const sale_modelAPI: ObjectFields = {
     isPrototype: schemaContructor.boolean(),
     isUnrenewed: schemaContructor.boolean(),
     allowToForceSaleQty: schemaContructor.boolean(),
+
     saleProductMultipleQtyList: schemaContructor
       .array()
       .of(schemaContructor.subObject()),
-    productVariant: schemaContructor.subObject('name'),
-    parentProduct: schemaContructor.subObject('name'),
+    productVariantConfig: schemaContructor.subObject().concat(
+      schemaContructor.object({
+        name: schemaContructor.string(),
+        productVariantAttr1: schemaContructor.subObject(
+          'productVariantValueList',
+        ),
+        productVariantAttr2: schemaContructor.subObject(
+          'productVariantValueList',
+        ),
+        productVariantAttr3: schemaContructor.subObject(
+          'productVariantValueList',
+        ),
+        productVariantAttr4: schemaContructor.subObject(
+          'productVariantValueList',
+        ),
+        productVariantAttr5: schemaContructor.subObject(
+          'productVariantValueList',
+        ),
+        productVariantValue1Set: schemaContructor.subObject(),
+        productVariantValue2Set: schemaContructor.subObject(),
+        productVariantValue3Set: schemaContructor.subObject(),
+        productVariantValue4Set: schemaContructor.subObject(),
+        productVariantValue5Set: schemaContructor.subObject(),
+      }),
+    ),
+    productVariant: schemaContructor.subObject().concat(
+      schemaContructor.object({
+        productVariantAttr1: schemaContructor.subObject(),
+        productVariantAttr2: schemaContructor.subObject(),
+        productVariantAttr3: schemaContructor.subObject(),
+        productVariantAttr4: schemaContructor.subObject(),
+        productVariantAttr5: schemaContructor.subObject(),
+        productVariantValue1: schemaContructor.subObject(),
+        productVariantValue2: schemaContructor.subObject(),
+        productVariantValue3: schemaContructor.subObject(),
+        productVariantValue4: schemaContructor.subObject(),
+        productVariantValue5: schemaContructor.subObject(),
+      }),
+    ),
+    parentProduct: schemaContructor.subObject().concat(
+      schemaContructor.object({
+        name: schemaContructor.string(),
+        productVariantConfig: schemaContructor.subObject().concat(
+          schemaContructor.object({
+            productVariantAttr1: schemaContructor.subObject(),
+            productVariantAttr2: schemaContructor.subObject(),
+            productVariantAttr3: schemaContructor.subObject(),
+            productVariantAttr4: schemaContructor.subObject(),
+            productVariantAttr5: schemaContructor.subObject(),
+            productVariantValue1Set: schemaContructor.subObject(),
+            productVariantValue2Set: schemaContructor.subObject(),
+            productVariantValue3Set: schemaContructor.subObject(),
+            productVariantValue4Set: schemaContructor.subObject(),
+            productVariantValue5Set: schemaContructor.subObject(),
+          }),
+        ),
+      }),
+    ),
   }),
   sale_productCategory: schemaContructor.object({
     name: schemaContructor.string(),
@@ -227,6 +284,8 @@ export const sale_modelAPI: ObjectFields = {
         salePrice: schemaContructor.number(),
         saleCurrency: schemaContructor.subObject('symbol'),
         productVariant: schemaContructor.subObject('name'),
+        productVariantConfig: schemaContructor.subObject(),
+        parentProduct: schemaContructor.subObject(),
       }),
     ),
     qty: schemaContructor.number(),

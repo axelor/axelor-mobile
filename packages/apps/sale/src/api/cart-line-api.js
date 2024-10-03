@@ -43,13 +43,14 @@ export async function searchCartLine({searchValue, page = 0, cartId}) {
   });
 }
 
-export async function updateCartLine({cartLine, qty}) {
+export async function updateCartLine({cartLine, qty, variantProduct}) {
   return axiosApiProvider.post({
     url: '/ws/rest/com.axelor.apps.sale.db.CartLine',
     data: {
       data: {
         ...cartLine,
         qty,
+        variantProduct,
       },
     },
   });

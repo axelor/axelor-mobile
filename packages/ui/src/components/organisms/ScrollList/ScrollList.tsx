@@ -48,6 +48,7 @@ export interface Action {
 interface ScrollListProps {
   style?: any;
   styleFooter?: any;
+  scrollEnabled?: boolean;
   loadingList: boolean;
   data: any[];
   renderItem: (item: any) => any;

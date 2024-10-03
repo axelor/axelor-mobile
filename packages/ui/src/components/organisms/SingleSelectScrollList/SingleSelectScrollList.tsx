@@ -25,6 +25,7 @@ import {ScrollList} from '../ScrollList';
 interface SingleSelectScrollListProps {
   scrollStyle?: any;
   rowStyle?: any;
+  scrollEnabled?: boolean;
   loadingList: boolean;
   moreLoading: boolean;
   isListEnd: boolean;
