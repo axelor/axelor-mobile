@@ -28,10 +28,12 @@ const ProductTrackingNumberSelect = ({
   trackingScanKey,
   onAddTrackingNumber,
   style,
+  trackingNumber,
 }) => {
   const I18n = useTranslator();
 
-  const [selectedTrackingNumber, setSelectedTrackingNumber] = useState(null);
+  const [selectedTrackingNumber, setSelectedTrackingNumber] =
+    useState(trackingNumber);
 
   if (!visible) {
     return null;

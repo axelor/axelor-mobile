@@ -1,5 +1,5 @@
 {
-  "title": "Card display: possibility to fill origin when creating or selecting a trackingNumber",
+  "title": "SupplierArrival: add possibility to fill origin when creating or selecting a trackingNumber",
   "type": "fix",
   "packages": "stock"
 }

@@ -22,6 +22,7 @@ import {
   Screen,
   KeyboardAvoidingScrollView,
   NotesCard,
+  EditableInput,
 } from '@axelor/aos-mobile-ui';
 import {
   useDispatch,
@@ -41,6 +42,7 @@ import {
 import {fetchProductWithId} from '../../features/productSlice';
 import {StockMove as StockMoveType, StockMoveLine} from '../../types';
 import {fetchCustomerDeliveryLine} from '../../features/customerDeliveryLineSlice';
+import {updateSupplierTrackingNumber} from '../../features/trackingNumberSlice';
 
 const stockLocationScanKey =
   'from-stock-location_customer-delivery-line-update';
@@ -76,6 +78,21 @@ const CustomerDeliveryLineDetailScreen = ({route, navigation}) => {
         trackingNumber,
       ),
     [customerDelivery, product, trackingNumber],
+  );
+
+  const handleTrackingNumberOrigin = useCallback(
+    item => {
+      if (item !== null) {
+        dispatch(
+          updateSupplierTrackingNumber({
+            trackingNumber: trackingNumber,
+            stockMoveLineId: customerDeliveryLine.id,
+            origin: item,
+          }),
+        );
+      }
+    },
+    [dispatch, customerDeliveryLine.id, trackingNumber],
   );
 
   useEffect(() => {
@@ -174,11 +191,19 @@ const CustomerDeliveryLineDetailScreen = ({route, navigation}) => {
           trackingNumber={trackingNumber?.trackingNumberSeq}
           locker={customerDeliveryLine?.locker}
         />
-        <CustomerDeliveryLineTrackingNumberSelect
-          product={product}
-          customerDeliveryLine={customerDeliveryLine}
-          visible={!readonly && isTrackingNumberSelectVisible}
-        />
+        {!readonly && isTrackingNumberSelectVisible && (
+          <>
+            <CustomerDeliveryLineTrackingNumberSelect
+              product={product}
+              customerDeliveryLine={customerDeliveryLine}
+              trackingNumber={trackingNumber}
+            />
+            <EditableInput
+              defaultValue={trackingNumber?.origin}
+              onValidate={item => handleTrackingNumberOrigin(item)}
+            />
+          </>
+        )}
         <CustomerDeliveryLineQuantityCard
           customerDelivery={customerDelivery}
           customerDeliveryLine={customerDeliveryLine}
