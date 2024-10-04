@@ -28,7 +28,7 @@ import {fetchProjectFormById} from '../features/projectSlice';
 import {saveProjectTask} from '../features/projectTaskSlice';
 
 const TaskFormScreen = ({navigation, route}) => {
-  const {isCreation} = route.params;
+  const {isCreation} = route.params ?? {};
   const _dispatch = useDispatch();
   const {ProjectTask} = useTypes();
 
