@@ -16,8 +16,23 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-export {useCustomerLinesWithRacks} from './customer-delivery-lines';
-export {useInternalLinesWithRacks} from './internal-move-lines';
-export {useStockListWithAvailability} from './stock-list-availability';
-export {useStockLinesCheckQty} from './stock-move-lines';
-export {useSupplierLinesWithRacks} from './supplier-arrival-lines';
+import {useEffect, useMemo, useState} from 'react';
+import {checkQuantityApi} from '../api';
+
+export const useStockLinesCheckQty = stockMoveLineId => {
+  const [checkQtyObject, setCheckQtyObject] = useState(null);
+
+  useEffect(() => {
+    if (stockMoveLineId) {
+      checkQuantityApi({stockMoveLineId})
+        .then(response => {
+          if (response?.data?.object) {
+            setCheckQtyObject(response?.data?.object);
+          }
+        })
+        .catch(() => setCheckQtyObject(null));
+    }
+  }, [stockMoveLineId]);
+
+  return useMemo(() => checkQtyObject, [checkQtyObject]);
+};

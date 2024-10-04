@@ -67,7 +67,8 @@ const InternalMoveSelectProductScreen = ({navigation, route}) => {
               internalMove.statusSelect,
               internalMove,
             )}
-            availability={internalMove.availableStatusSelect}
+            availability={internalMoveLine?.availableStatusSelect}
+            stockMoveLineId={internalMoveLine?.id}
           />
         }
       />

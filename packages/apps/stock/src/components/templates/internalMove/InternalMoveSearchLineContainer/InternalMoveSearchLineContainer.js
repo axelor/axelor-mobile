@@ -116,6 +116,7 @@ const InternalMoveSearchLineContainer = ({}) => {
               ? item.availableStatusSelect
               : null
           }
+          stockMoveLineId={item.id}
           onPress={() => handleShowLine(item)}
         />
       )}
