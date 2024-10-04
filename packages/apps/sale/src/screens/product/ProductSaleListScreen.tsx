@@ -34,10 +34,10 @@ const ProductSaleListScreen = ({navigation}) => {
   const {SaleProduct} = useTypes();
   const {getSelectionItems} = useTypeHelpers();
 
-  const {mobileSettings} = useSelector((state: any) => state.appConfig);
   const [productTypeSelect, setProductTypeSelect] = useState();
   const [productCategory, setProductCategory] = useState();
 
+  const {mobileSettings} = useSelector((state: any) => state.appConfig);
   const {productList, moreLoading, isListEnd, loadingList} = useSelector(
     (state: any) => state.sale_product,
   );
@@ -45,27 +45,27 @@ const ProductSaleListScreen = ({navigation}) => {
   const filterProductTypeSelectForApi = useCallback(
     selectedTypes => {
       if (!Array.isArray(selectedTypes) || selectedTypes.length === 0) {
-        return mobileSettings.productTypesToDisplay.map(type => ({
+        return mobileSettings?.productTypesToDisplay.map(type => ({
           value: type,
         }));
       }
 
       return selectedTypes;
     },
-    [mobileSettings.productTypesToDisplay],
+    [mobileSettings],
   );
 
   const sliceFunctionData = useMemo(
     () => ({
       productTypeSelect: filterProductTypeSelectForApi(productTypeSelect),
       productCategory: productCategory,
-      isConfiguratorProductShown: mobileSettings.isConfiguratorProductShown,
+      isConfiguratorProductShown: mobileSettings?.isConfiguratorProductShown,
     }),
     [
       filterProductTypeSelectForApi,
       productTypeSelect,
       productCategory,
-      mobileSettings.isConfiguratorProductShown,
+      mobileSettings?.isConfiguratorProductShown,
     ],
   );
 
@@ -75,8 +75,8 @@ const ProductSaleListScreen = ({navigation}) => {
       productTypeSelect,
     );
 
-    return selectionItems.filter(item =>
-      mobileSettings?.productTypesToDisplay.includes(item.value),
+    return selectionItems.filter(({value}) =>
+      mobileSettings?.productTypesToDisplay.includes(value),
     );
   }, [
     SaleProduct?.productTypeSelect,

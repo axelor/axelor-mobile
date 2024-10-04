@@ -47,15 +47,12 @@ const CatalogScreen = ({}) => {
 
   const sliceFunctionData = useMemo(
     () => ({
-      productTypeSelect: mobileSettings.productTypesToDisplay.map(type => ({
+      productTypeSelect: mobileSettings?.productTypesToDisplay.map(type => ({
         value: type,
       })),
-      isConfiguratorProductShown: mobileSettings.isConfiguratorProductShown,
+      isConfiguratorProductShown: mobileSettings?.isConfiguratorProductShown,
     }),
-    [
-      mobileSettings.isConfiguratorProductShown,
-      mobileSettings.productTypesToDisplay,
-    ],
+    [mobileSettings],
   );
 
   return (
