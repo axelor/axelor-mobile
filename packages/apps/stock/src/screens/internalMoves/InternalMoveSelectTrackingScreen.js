@@ -66,7 +66,8 @@ const InternalMoveSelectTrackingScreen = ({navigation, route}) => {
                 internalMove.statusSelect,
                 internalMove,
               )}
-              availability={internalMove.availableStatusSelect}
+              availability={internalMoveLine?.availableStatusSelect}
+              stockMoveLineId={internalMoveLine?.id}
             />
           }
         />

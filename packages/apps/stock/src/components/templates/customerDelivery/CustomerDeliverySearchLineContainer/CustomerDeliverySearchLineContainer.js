@@ -153,6 +153,7 @@ const CustomerDeliverySearchLineContainer = ({}) => {
               ? item.availableStatusSelect
               : null
           }
+          stockMoveLineId={item.id}
           onPress={() => handleShowLine(item)}
         />
       )}
