@@ -18,6 +18,7 @@
 
 import BuisnessProjectScreen from './BuisnessProjectScreen';
 import ProjectDetailsScreen from './ProjectDetailsScreen';
+import ActiveProjectScreen from './ActiveProjectScreen';
 import ProjectScreen from './ProjectScreen';
 import TaskDetailsScreen from './TaskDetailsScreen';
 import TaskFormScreen from './TaskFormScreen';
@@ -27,6 +28,13 @@ export default {
   BuisnessProjectScreen: {
     title: 'Project_BuisnessProjects',
     component: BuisnessProjectScreen,
+    options: {
+      shadedHeader: false,
+    },
+  },
+  ActiveProjectScreen: {
+    title: 'Project_ActiveProject',
+    component: ActiveProjectScreen,
     options: {
       shadedHeader: false,
     },
@@ -67,6 +75,7 @@ export default {
   },
 };
 
+export {ActiveProjectScreen};
 export {ProjectScreen};
 export {BuisnessProjectScreen};
 export {ProjectDetailsScreen};

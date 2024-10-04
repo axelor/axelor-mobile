@@ -201,4 +201,7 @@ export const project_modelAPI: ObjectFields = {
   project_projectTaskSection: schemaContructor.object({
     name: schemaContructor.subObject(),
   }),
+  auth_user: schemaContructor.object({
+    activeProject: schemaContructor.subObject(),
+  }),
 };
