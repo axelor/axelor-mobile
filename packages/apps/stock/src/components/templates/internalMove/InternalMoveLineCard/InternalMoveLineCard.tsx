@@ -16,7 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import React, {useEffect, useMemo, useState} from 'react';
+import React, {useMemo} from 'react';
 import {StyleSheet, View} from 'react-native';
 import {
   checkNullString,
@@ -32,7 +32,7 @@ import {
   useTypeHelpers,
   useTypes,
 } from '@axelor/aos-mobile-core';
-import {checkQuantityApi} from '../../../../api';
+import {useStockLinesCheckQty} from '../../../../hooks';
 
 interface InternalMoveLineCardProps {
   style?: any;
@@ -71,7 +71,7 @@ const InternalMoveLineCard = ({
 
   const {stock: stockConfig} = useSelector((state: any) => state.appConfig);
 
-  const [checkQtyObject, setCheckQtyObject] = useState(null);
+  const checkQtyObject = useStockLinesCheckQty(stockMoveLineId);
 
   const borderColor = useMemo(() => {
     if (movedQty === 0 || movedQty == null) {
@@ -93,16 +93,6 @@ const InternalMoveLineCard = ({
     () => internalMoveStatus ?? StockMove?.statusSelect.Planned,
     [StockMove?.statusSelect.Planned, internalMoveStatus],
   );
-
-  useEffect(() => {
-    checkQuantityApi({stockMoveLineId})
-      .then(response => {
-        if (response?.data?.object) {
-          setCheckQtyObject(response?.data?.object);
-        }
-      })
-      .catch(() => setCheckQtyObject(null));
-  }, [stockMoveLineId]);
 
   return (
     <ObjectCard

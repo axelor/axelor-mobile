@@ -16,7 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import React, {useEffect, useMemo, useState} from 'react';
+import React, {useMemo} from 'react';
 import {Dimensions, StyleSheet} from 'react-native';
 import {
   useSelector,
@@ -30,7 +30,7 @@ import {
   useDigitFormat,
   useThemeColor,
 } from '@axelor/aos-mobile-ui';
-import {checkQuantityApi} from '../../../../api';
+import {useStockLinesCheckQty} from '../../../../hooks';
 
 interface CustomerDeliveryLineCardProps {
   style?: any;
@@ -65,7 +65,7 @@ const CustomerDeliveryLineCard = ({
 
   const {stock: stockConfig} = useSelector((state: any) => state.appConfig);
 
-  const [checkQtyObject, setCheckQtyObject] = useState(null);
+  const checkQtyObject = useStockLinesCheckQty(stockMoveLineId);
 
   const borderColor = useMemo(() => {
     if (pickedQty === 0 || pickedQty == null) {
@@ -82,16 +82,6 @@ const CustomerDeliveryLineCard = ({
   const styles = useMemo(() => {
     return getStyles(borderColor);
   }, [borderColor]);
-
-  useEffect(() => {
-    checkQuantityApi({stockMoveLineId})
-      .then(response => {
-        if (response?.data?.object) {
-          setCheckQtyObject(response?.data?.object);
-        }
-      })
-      .catch(() => setCheckQtyObject(null));
-  }, [stockMoveLineId]);
 
   return (
     <ObjectCard

@@ -16,7 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import React, {useEffect, useState} from 'react';
+import React from 'react';
 import {StyleSheet, View} from 'react-native';
 import {
   Badge,
@@ -30,7 +30,7 @@ import {
   useTypeHelpers,
   useTypes,
 } from '@axelor/aos-mobile-core';
-import {checkQuantityApi} from '../../../api';
+import {useStockLinesCheckQty} from '../../../hooks';
 
 interface StockMoveHeaderProps {
   reference: string;
@@ -55,19 +55,7 @@ const StockMoveHeader = ({
   const {getItemColor, getItemTitle} = useTypeHelpers();
   const formatNumber = useDigitFormat();
 
-  const [checkQtyObject, setCheckQtyObject] = useState(null);
-
-  useEffect(() => {
-    if (stockMoveLineId) {
-      checkQuantityApi({stockMoveLineId})
-        .then(response => {
-          if (response?.data?.object) {
-            setCheckQtyObject(response?.data?.object);
-          }
-        })
-        .catch(() => setCheckQtyObject(null));
-    }
-  }, [stockMoveLineId]);
+  const checkQtyObject = useStockLinesCheckQty(stockMoveLineId);
 
   return (
     <View style={styles.container}>
@@ -101,13 +89,18 @@ const StockMoveHeader = ({
               title={formatNumber(checkQtyObject?.missingQty)}
             />
           )}
-          <Badge
-            color={getItemColor(StockMove?.availableStatusSelect, availability)}
-            title={
-              checkQtyObject?.availability ??
-              getItemTitle(StockMove?.availableStatusSelect, availability)
-            }
-          />
+          {availability != null && availability > 0 && (
+            <Badge
+              color={getItemColor(
+                StockMove?.availableStatusSelect,
+                availability,
+              )}
+              title={
+                checkQtyObject?.availability ??
+                getItemTitle(StockMove?.availableStatusSelect, availability)
+              }
+            />
+          )}
         </View>
       </View>
     </View>
