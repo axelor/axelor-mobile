@@ -149,6 +149,7 @@ export const project_modelAPI: ObjectFields = {
   }),
   project_taskStatus: schemaContructor.object({
     name: schemaContructor.string(),
+    defaultProgress: schemaContructor.number(),
   }),
   project_projectTaskLink: schemaContructor.object({
     projectTaskLinkType: schemaContructor.subObject(),
