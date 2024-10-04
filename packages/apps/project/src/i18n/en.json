@@ -1,6 +1,7 @@
 {
   "Project_Project": "Project",
   "Project_BuisnessProjects": "Business projects",
+  "Project_ActiveProject": "Active project",
   "Project_Projects": "Projects",
   "Project_Business": "Business",
   "Project_Invoicing": "Invoicing",
@@ -54,6 +55,7 @@
   "Project_ProjectAppCustomField": "App",
   "Project_ProjectCustomField": "Project",
   "Project_CategoryCustomField": "Category",
+  "Project_NoActiveProject": "No active project",
   "Project_SliceAction_SearchProject": "search projects",
   "Project_SliceAction_FetchProjectById": "fetch project by id",
   "Project_SliceAction_FetchProjectStatus": "fetch project status",
