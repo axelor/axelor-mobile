@@ -25,7 +25,6 @@ import {
   TaskLinkView,
 } from '../components';
 import {fetchProjectTaskById} from '../features/projectTaskSlice';
-import TaskFormScreen from './TaskFormScreen';
 
 const TaskDetailsScreen = ({navigation, route}) => {
   const {projecTaskId} = route?.params;
@@ -58,8 +57,8 @@ const TaskDetailsScreen = ({navigation, route}) => {
     },
     {
       iconName: 'pencil-square',
-      viewComponent: <TaskFormScreen navigation={navigation} />,
       color: Colors.progressColor,
+      onPress: () => navigation.navigate('TaskFormScreen'),
     },
   ];
 
