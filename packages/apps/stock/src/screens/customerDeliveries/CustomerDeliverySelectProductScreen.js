@@ -69,7 +69,8 @@ const CustomerDeliverySelectProductScreen = ({route, navigation}) => {
                   )
                 : null
             }
-            availability={customerDelivery.availableStatusSelect}
+            availability={customerDeliveryLine?.availableStatusSelect}
+            stockMoveLineId={customerDeliveryLine?.id}
           />
         }
       />

@@ -16,8 +16,10 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-export {useCustomerLinesWithRacks} from './customer-delivery-lines';
-export {useInternalLinesWithRacks} from './internal-move-lines';
-export {useStockListWithAvailability} from './stock-list-availability';
-export {useStockLinesCheckQty} from './stock-move-lines';
-export {useSupplierLinesWithRacks} from './supplier-arrival-lines';
+import {axiosApiProvider} from '@axelor/aos-mobile-core';
+
+export async function checkQuantity({stockMoveLineId}) {
+  return axiosApiProvider.get({
+    url: `ws/aos/stock-move-line/check-quantity/${stockMoveLineId}`,
+  });
+}

@@ -1,0 +1,5 @@
+{
+  "title": "Stock move line: add missing quantity tag",
+  "type": "feat",
+  "packages": "stock"
+}
