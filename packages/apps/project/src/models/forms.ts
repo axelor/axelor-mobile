@@ -271,6 +271,13 @@ export const project_formsRegister: FormConfigs = {
         titleKey: 'Project_Progress',
         type: 'number',
         widget: 'increment',
+        dependsOn: {
+          status: ({newValue, storeState}) => {
+            if (storeState.appConfig.project?.selectAutoProgressOnProjectTask) {
+              return parseInt(newValue?.defaultProgress, 10);
+            }
+          },
+        },
         hideIf: ({storeState}) =>
           !storeState.project_project.projectForm?.isShowProgress,
       },
