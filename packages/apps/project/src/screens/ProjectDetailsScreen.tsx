@@ -28,8 +28,16 @@ import {
 } from '../components';
 import {fetchProjectById} from '../features/projectSlice';
 
-const ProjectDetailsScreen = ({route}) => {
-  const projectId = route?.params?.projectId;
+export interface ProjectDetailsScreenProps {
+  route?: any;
+  projectId?: number;
+}
+
+const ProjectDetailsScreen = ({
+  route,
+  projectId,
+}: ProjectDetailsScreenProps) => {
+  const _projectId = route?.params?.projectId || projectId;
 
   const Colors = useThemeColor();
   const dispatch = useDispatch();
@@ -37,8 +45,8 @@ const ProjectDetailsScreen = ({route}) => {
   const {project} = useSelector((state: any) => state.project_project);
 
   useEffect(() => {
-    dispatch((fetchProjectById as any)({projectId}));
-  }, [projectId, dispatch]);
+    dispatch((fetchProjectById as any)({projectId: _projectId}));
+  }, [_projectId, dispatch]);
 
   const bottomBarItems = [
     {
@@ -69,7 +77,7 @@ const ProjectDetailsScreen = ({route}) => {
     },
   ];
 
-  if (project?.id !== projectId) {
+  if (project?.id !== _projectId) {
     return null;
   }
 

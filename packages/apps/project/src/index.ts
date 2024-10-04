@@ -44,6 +44,11 @@ export const ProjectModule: Module = {
     fr: frTranslations,
   },
   menus: {
+    project_menu_activeProject: {
+      title: 'Project_ActiveProject',
+      icon: 'clipboard2-check',
+      screen: 'ActiveProjectScreen',
+    },
     project_menu_projects: {
       title: 'Project_Projects',
       icon: 'clipboard2-data',

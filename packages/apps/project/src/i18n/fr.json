@@ -1,6 +1,7 @@
 {
   "Project_Project": "Projet",
   "Project_BuisnessProjects": "Affaires",
+  "Project_ActiveProject": "Projet actif",
   "Project_Projects": "Projets",
   "Project_Business": "Affaire",
   "Project_Invoicing": "Facturation",
@@ -54,6 +55,7 @@
   "Project_ProjectAppCustomField": "Application",
   "Project_ProjectCustomField": "Projet",
   "Project_CategoryCustomField": "Catégorie",
+  "Project_NoActiveProject": "Pas de projet actif",
   "Project_SliceAction_SearchProject": "recherche sur les projets",
   "Project_SliceAction_FetchProjectById": "récupération du projet par id",
   "Project_SliceAction_FetchProjectStatus": "récupération des statuts de projet",
