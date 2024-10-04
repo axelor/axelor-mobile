@@ -22,7 +22,6 @@ import {
   Screen,
   KeyboardAvoidingScrollView,
   NotesCard,
-  EditableInput,
 } from '@axelor/aos-mobile-ui';
 import {
   useDispatch,
@@ -38,11 +37,11 @@ import {
   CustomerDeliveryLineQuantityCard,
   CustomerDeliveryLineTrackingNumberSelect,
   StockLocationSearchBar,
+  EditableOriginInput,
 } from '../../components';
 import {fetchProductWithId} from '../../features/productSlice';
 import {StockMove as StockMoveType, StockMoveLine} from '../../types';
 import {fetchCustomerDeliveryLine} from '../../features/customerDeliveryLineSlice';
-import {updateSupplierTrackingNumber} from '../../features/trackingNumberSlice';
 
 const stockLocationScanKey =
   'from-stock-location_customer-delivery-line-update';
@@ -78,21 +77,6 @@ const CustomerDeliveryLineDetailScreen = ({route, navigation}) => {
         trackingNumber,
       ),
     [customerDelivery, product, trackingNumber],
-  );
-
-  const handleTrackingNumberOrigin = useCallback(
-    item => {
-      if (item !== null) {
-        dispatch(
-          updateSupplierTrackingNumber({
-            trackingNumber: trackingNumber,
-            stockMoveLineId: customerDeliveryLine.id,
-            origin: item,
-          }),
-        );
-      }
-    },
-    [dispatch, customerDeliveryLine.id, trackingNumber],
   );
 
   useEffect(() => {
@@ -198,9 +182,9 @@ const CustomerDeliveryLineDetailScreen = ({route, navigation}) => {
               customerDeliveryLine={customerDeliveryLine}
               trackingNumber={trackingNumber}
             />
-            <EditableInput
-              defaultValue={trackingNumber?.origin}
-              onValidate={item => handleTrackingNumberOrigin(item)}
+            <EditableOriginInput
+              stockMoveLineId={customerDeliveryLine.id}
+              trackingNumber={trackingNumber}
             />
           </>
         )}

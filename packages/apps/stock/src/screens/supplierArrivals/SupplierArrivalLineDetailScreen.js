@@ -23,7 +23,6 @@ import {
   Picker,
   Screen,
   KeyboardAvoidingScrollView,
-  EditableInput,
 } from '@axelor/aos-mobile-ui';
 import {
   useDispatch,
@@ -41,14 +40,12 @@ import {
   SupplierProductInfo,
   StockLocationSearchBar,
   SupplierArrivalTrackingNumberSelect,
+  EditableOriginInput,
 } from '../../components';
 import {fetchProductWithId} from '../../features/productSlice';
 import {fetchProductForSupplier} from '../../features/supplierCatalogSlice';
 import {fetchSupplierArrivalLine} from '../../features/supplierArrivalLineSlice';
-import {
-  updateStockMoveLineTrackingNumber,
-  updateTrackingNumber,
-} from '../../features/trackingNumberSlice';
+import {updateStockMoveLineTrackingNumber} from '../../features/trackingNumberSlice';
 import {StockMove as StockMoveType, StockMoveLine} from '../../types';
 
 const stockLocationScanKey = 'to-stock-location_supplier-arrival-line-update';
@@ -176,21 +173,6 @@ const SupplierArrivalLineDetailScreen = ({route, navigation}) => {
     ],
   );
 
-  const handleTrackingNumberOrigin = useCallback(
-    item => {
-      if (item !== null) {
-        dispatch(
-          updateTrackingNumber({
-            trackingNumber: trackingNumber,
-            stockMoveLineId: supplierArrivalLine.id,
-            origin: item,
-          }),
-        );
-      }
-    },
-    [dispatch, supplierArrivalLine.id, trackingNumber],
-  );
-
   const conformityList = useMemo(() => {
     const conformityToDisplay = [
       StockMove?.conformitySelect.Compliant,
@@ -251,9 +233,9 @@ const SupplierArrivalLineDetailScreen = ({route, navigation}) => {
                 product={product}
                 trackingNumber={trackingNumber}
               />
-              <EditableInput
-                defaultValue={trackingNumber?.origin}
-                onValidate={item => handleTrackingNumberOrigin(item)}
+              <EditableOriginInput
+                stockMoveLineId={supplierArrivalLine.id}
+                trackingNumber={trackingNumber}
               />
             </>
           )}

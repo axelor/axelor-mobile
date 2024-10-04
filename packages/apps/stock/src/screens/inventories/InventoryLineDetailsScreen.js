@@ -37,10 +37,12 @@ import {
   InventoryLineQuantityCard,
   InventoryLineButtons,
   InventoryLineTrackingNumberSelect,
+  EditableOriginInput,
 } from '../../components';
 import {fetchInventoryLine} from '../../features/inventoryLineSlice';
 import {fetchProductWithId} from '../../features/productSlice';
 import {Inventory as InventoryType} from '../../types';
+import {updateSupplierTrackingNumber} from '../../features/trackingNumberSlice';
 
 const InventoryLineDetailsScreen = ({route, navigation}) => {
   const {inventory, inventoryLineId, productId} = route.params;
@@ -104,6 +106,21 @@ const InventoryLineDetailsScreen = ({route, navigation}) => {
     getInventoryLine();
   }, [getInventoryLine]);
 
+  const handleTrackingNumberOrigin = useCallback(
+    item => {
+      if (item !== null) {
+        dispatch(
+          updateSupplierTrackingNumber({
+            trackingNumber: trackingNumber,
+            stockMoveLineId: inventoryLineId.id,
+            origin: item,
+          }),
+        );
+      }
+    },
+    [dispatch, inventoryLineId.id, trackingNumber],
+  );
+
   return (
     <Screen
       removeSpaceOnTop={true}
@@ -148,11 +165,19 @@ const InventoryLineDetailsScreen = ({route, navigation}) => {
           trackingNumber={trackingNumber?.trackingNumberSeq}
           locker={inventoryLine?.rack}
         />
-        <InventoryLineTrackingNumberSelect
-          product={productFromId}
-          inventoryLine={inventoryLine}
-          visible={!readonly && isTrackingNumberSelectVisible}
-        />
+        {!readonly && isTrackingNumberSelectVisible && (
+          <>
+            <InventoryLineTrackingNumberSelect
+              product={productFromId}
+              inventoryLine={inventoryLine}
+              trackingNumber={trackingNumber}
+            />
+            <EditableOriginInput
+              stockMoveLineId={inventoryLineId.id}
+              trackingNumber={trackingNumber}
+            />
+          </>
+        )}
         <InventoryLineQuantityCard
           inventoryLine={inventoryLine}
           realQty={realQty}
