@@ -16,7 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import React, {useEffect} from 'react';
+import React, {useEffect, useMemo} from 'react';
 import {Screen} from '@axelor/aos-mobile-ui';
 import {
   SearchListView,
@@ -36,6 +36,7 @@ const CatalogScreen = ({}) => {
   const I18n = useTranslator();
 
   const {userId} = useSelector((state: any) => state.auth);
+  const {mobileSettings} = useSelector((state: any) => state.appConfig);
   const {productList, moreLoading, isListEnd, loadingList} = useSelector(
     (state: any) => state.sale_product,
   );
@@ -43,6 +44,16 @@ const CatalogScreen = ({}) => {
   useEffect(() => {
     dispatch((fetchActiveCart as any)({userId}));
   }, [dispatch, userId]);
+
+  const sliceFunctionData = useMemo(
+    () => ({
+      productTypeSelect: mobileSettings?.productTypesToDisplay.map(type => ({
+        value: type,
+      })),
+      isConfiguratorProductShown: mobileSettings?.isConfiguratorProductShown,
+    }),
+    [mobileSettings],
+  );
 
   return (
     <Screen removeSpaceOnTop>
@@ -53,6 +64,7 @@ const CatalogScreen = ({}) => {
         moreLoading={moreLoading}
         isListEnd={isListEnd}
         sliceFunction={searchProduct}
+        sliceFunctionData={sliceFunctionData}
         displaySearchValue={displayItemName}
         searchPlaceholder={I18n.t('Base_Search')}
         expandableFilter={false}

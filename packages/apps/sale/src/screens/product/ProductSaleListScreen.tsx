@@ -16,7 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import React, {useMemo, useState} from 'react';
+import React, {useCallback, useMemo, useState} from 'react';
 import {ChipSelect, Screen} from '@axelor/aos-mobile-ui';
 import {
   SearchListView,
@@ -37,22 +37,53 @@ const ProductSaleListScreen = ({navigation}) => {
   const [productTypeSelect, setProductTypeSelect] = useState();
   const [productCategory, setProductCategory] = useState();
 
+  const {mobileSettings} = useSelector((state: any) => state.appConfig);
   const {productList, moreLoading, isListEnd, loadingList} = useSelector(
     (state: any) => state.sale_product,
   );
 
-  const productTypeSelectList = useMemo(
-    () => getSelectionItems(SaleProduct?.productTypeSelect, productTypeSelect),
-    [SaleProduct?.productTypeSelect, getSelectionItems, productTypeSelect],
+  const filterProductTypeSelectForApi = useCallback(
+    selectedTypes => {
+      if (!Array.isArray(selectedTypes) || selectedTypes.length === 0) {
+        return mobileSettings?.productTypesToDisplay.map(type => ({
+          value: type,
+        }));
+      }
+
+      return selectedTypes;
+    },
+    [mobileSettings],
   );
 
   const sliceFunctionData = useMemo(
     () => ({
-      productTypeSelect: productTypeSelect,
+      productTypeSelect: filterProductTypeSelectForApi(productTypeSelect),
       productCategory: productCategory,
+      isConfiguratorProductShown: mobileSettings?.isConfiguratorProductShown,
     }),
-    [productCategory, productTypeSelect],
+    [
+      filterProductTypeSelectForApi,
+      productTypeSelect,
+      productCategory,
+      mobileSettings?.isConfiguratorProductShown,
+    ],
   );
+
+  const productTypeSelectList = useMemo(() => {
+    const selectionItems = getSelectionItems(
+      SaleProduct?.productTypeSelect,
+      productTypeSelect,
+    );
+
+    return selectionItems.filter(({value}) =>
+      mobileSettings?.productTypesToDisplay.includes(value),
+    );
+  }, [
+    SaleProduct?.productTypeSelect,
+    getSelectionItems,
+    productTypeSelect,
+    mobileSettings?.productTypesToDisplay,
+  ]);
 
   return (
     <Screen removeSpaceOnTop={true}>

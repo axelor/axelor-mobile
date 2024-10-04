@@ -27,6 +27,7 @@ const createProductCriteria = ({
   searchValue,
   productTypeSelect,
   productCategory,
+  isConfiguratorProductShown,
 }) => {
   const criteria = [
     {
@@ -51,6 +52,13 @@ const createProductCriteria = ({
     },
     getSearchCriterias('sale_product', searchValue),
   ];
+
+  if (!isConfiguratorProductShown) {
+    criteria.push({
+      fieldName: 'configurator.id',
+      operator: 'isNull',
+    });
+  }
 
   if (Array.isArray(productTypeSelect) && productTypeSelect.length > 0) {
     criteria.push({
@@ -101,6 +109,7 @@ export async function searchProduct({
   searchValue,
   productTypeSelect,
   productCategory,
+  isConfiguratorProductShown,
 }) {
   return createStandardSearch({
     model: 'com.axelor.apps.base.db.Product',
@@ -108,6 +117,7 @@ export async function searchProduct({
       searchValue,
       productTypeSelect,
       productCategory,
+      isConfiguratorProductShown,
     }),
     fieldKey: 'sale_product',
     sortKey: 'sale_product',
