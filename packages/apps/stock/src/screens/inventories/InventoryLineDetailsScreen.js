@@ -42,7 +42,6 @@ import {
 import {fetchInventoryLine} from '../../features/inventoryLineSlice';
 import {fetchProductWithId} from '../../features/productSlice';
 import {Inventory as InventoryType} from '../../types';
-import {updateSupplierTrackingNumber} from '../../features/trackingNumberSlice';
 
 const InventoryLineDetailsScreen = ({route, navigation}) => {
   const {inventory, inventoryLineId, productId} = route.params;
@@ -105,21 +104,6 @@ const InventoryLineDetailsScreen = ({route, navigation}) => {
   useEffect(() => {
     getInventoryLine();
   }, [getInventoryLine]);
-
-  const handleTrackingNumberOrigin = useCallback(
-    item => {
-      if (item !== null) {
-        dispatch(
-          updateSupplierTrackingNumber({
-            trackingNumber: trackingNumber,
-            stockMoveLineId: inventoryLineId.id,
-            origin: item,
-          }),
-        );
-      }
-    },
-    [dispatch, inventoryLineId.id, trackingNumber],
-  );
 
   return (
     <Screen

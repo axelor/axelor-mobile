@@ -24,7 +24,7 @@ import {TrackingNumberSearchBar} from '../../../templates';
 
 const ProductTrackingNumberSelect = ({
   product,
-  visible,
+  visible = true,
   trackingScanKey,
   onAddTrackingNumber,
   style,
