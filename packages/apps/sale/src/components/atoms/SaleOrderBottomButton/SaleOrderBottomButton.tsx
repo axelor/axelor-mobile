@@ -16,7 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import React, {useEffect} from 'react';
+import React, {useCallback, useEffect} from 'react';
 import {
   useDispatch,
   useModules,
@@ -27,6 +27,12 @@ import {
 } from '@axelor/aos-mobile-core';
 import {Button, useThemeColor} from '@axelor/aos-mobile-ui';
 import {fetchCustomerDelivery} from '../../../features/customerDeliverySlice';
+import {updateStatusSaleOrder} from '../../../features/saleOrderSlice';
+
+const STATUS_API = {
+  confirm: 'confirm',
+  finalize: 'finalize',
+};
 
 interface SaleOrderBottomButtonProps {
   saleOrder: any;
@@ -44,13 +50,40 @@ const SaleOrderBottomButton = ({saleOrder}: SaleOrderBottomButtonProps) => {
     (state: any) => state.sale_customerDelivery,
   );
 
+  const updateStatusApi = useCallback(
+    status => {
+      dispatch(
+        (updateStatusSaleOrder as any)({
+          saleOrderId: saleOrder.id,
+          saleOrderVersion: saleOrder.version,
+          status: status,
+        }),
+      );
+    },
+    [dispatch, saleOrder.id, saleOrder.version],
+  );
+
   useEffect(() => {
     dispatch((fetchCustomerDelivery as any)({saleOrderId: saleOrder.id}));
   }, [dispatch, saleOrder]);
 
   if (saleOrder.statusSelect === SaleOrder?.statusSelect.Draft) {
     return (
-      <Button title={I18n.t('Base_Confirm')} color={Colors.primaryColor} />
+      <Button
+        title={I18n.t('Sale_Status_Finalized')}
+        color={Colors.primaryColor}
+        onPress={() => updateStatusApi(STATUS_API.finalize)}
+      />
+    );
+  }
+
+  if (saleOrder.statusSelect === SaleOrder?.statusSelect.Finalized) {
+    return (
+      <Button
+        title={I18n.t('Base_Confirm')}
+        color={Colors.primaryColor}
+        onPress={() => updateStatusApi(STATUS_API.confirm)}
+      />
     );
   }
 

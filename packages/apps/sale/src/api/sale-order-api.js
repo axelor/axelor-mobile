@@ -17,6 +17,7 @@
  */
 
 import {
+  axiosApiProvider,
   createStandardFetch,
   createStandardSearch,
   getSearchCriterias,
@@ -67,5 +68,19 @@ export async function fetchSaleOrderById({saleOrderId}) {
     model: 'com.axelor.apps.sale.db.SaleOrder',
     id: saleOrderId,
     fieldKey: 'sale_saleOrder',
+  });
+}
+
+export async function updateStatusSaleOrder({
+  saleOrderId,
+  saleOrderVersion,
+  status,
+}) {
+  return axiosApiProvider.put({
+    url: `ws/aos/sale-order/status/${saleOrderId}`,
+    data: {
+      version: saleOrderVersion,
+      toStatus: status,
+    },
   });
 }
