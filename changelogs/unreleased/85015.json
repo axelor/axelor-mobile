@@ -1,0 +1,5 @@
+{
+  "title": "EditableInput: fix refresh issu",
+  "type": "fix",
+  "packages": "ui"
+}
