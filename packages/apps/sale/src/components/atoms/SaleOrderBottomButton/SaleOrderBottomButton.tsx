@@ -16,7 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import React, {useCallback, useEffect} from 'react';
+import React, {useCallback, useEffect, useMemo} from 'react';
 import {
   useDispatch,
   useModules,
@@ -67,45 +67,48 @@ const SaleOrderBottomButton = ({saleOrder}: SaleOrderBottomButtonProps) => {
     dispatch((fetchCustomerDelivery as any)({saleOrderId: saleOrder.id}));
   }, [dispatch, saleOrder]);
 
-  if (saleOrder.statusSelect === SaleOrder?.statusSelect.Draft) {
-    return (
-      <Button
-        title={I18n.t('Sale_Status_Finalized')}
-        color={Colors.primaryColor}
-        onPress={() => updateStatusApi(STATUS_API.finalize)}
-      />
-    );
-  }
-
-  if (saleOrder.statusSelect === SaleOrder?.statusSelect.Finalized) {
-    return (
-      <Button
-        title={I18n.t('Base_Confirm')}
-        color={Colors.primaryColor}
-        onPress={() => updateStatusApi(STATUS_API.confirm)}
-      />
-    );
-  }
-
-  if (
-    saleOrder.statusSelect === SaleOrder?.statusSelect.Confirmed &&
-    checkModule('app-stock') &&
-    customerDelivery?.id != null
-  ) {
-    return (
-      <Button
-        title={I18n.t('Sale_CheckCustomerDelivery')}
-        color={Colors.infoColor}
-        onPress={() =>
+  const buttonConfig = useMemo(() => {
+    if (saleOrder.statusSelect === SaleOrder?.statusSelect.Draft) {
+      return {
+        title: I18n.t('Sale_Status_Finalized'),
+        color: Colors.primaryColor,
+        onPress: () => updateStatusApi(STATUS_API.finalize),
+      };
+    }
+    if (saleOrder.statusSelect === SaleOrder?.statusSelect.Finalized) {
+      return {
+        title: I18n.t('Base_Confirm'),
+        color: Colors.primaryColor,
+        onPress: () => updateStatusApi(STATUS_API.confirm),
+      };
+    }
+    if (
+      saleOrder.statusSelect === SaleOrder?.statusSelect.Confirmed &&
+      checkModule('app-stock') &&
+      customerDelivery?.id != null
+    ) {
+      return {
+        title: I18n.t('Sale_CheckCustomerDelivery'),
+        color: Colors.infoColor,
+        onPress: () =>
           navigation.navigate('CustomerDeliveryDetailScreen', {
             customerDeliveryId: customerDelivery?.id,
-          })
-        }
-      />
-    );
-  }
+          }),
+      };
+    }
+    return null;
+  }, [
+    saleOrder.statusSelect,
+    SaleOrder,
+    checkModule,
+    customerDelivery?.id,
+    I18n,
+    Colors,
+    updateStatusApi,
+    navigation,
+  ]);
 
-  return null;
+  return buttonConfig ? <Button {...buttonConfig} /> : null;
 };
 
 export default SaleOrderBottomButton;
