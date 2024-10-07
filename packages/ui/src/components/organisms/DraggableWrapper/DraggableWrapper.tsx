@@ -29,6 +29,7 @@ const DraggableWrapper = ({style, children}: DraggableWrapperProps) => {
   const {headerHeight, setIsScrollEnabled} = useConfig();
 
   const [dragging, setDragging] = useState(false);
+  const [isWindowPositionGet, setIsWindowPositionGet] = useState(false);
 
   const wrapperRef = useRef(null);
   const screenPosition = useRef({x: 0, y: 0});
@@ -125,10 +126,21 @@ const DraggableWrapper = ({style, children}: DraggableWrapperProps) => {
       ref={wrapperRef}
       onLayout={event => {
         const {width, height} = event.nativeEvent.layout;
+
+        if (isWindowPositionGet) {
+          const screenPositionX =
+            screenPosition.current.x - width + viewLayout.current.width;
+          const screenPositionY =
+            screenPosition.current.y - height + viewLayout.current.height;
+          screenPosition.current = {x: screenPositionX, y: screenPositionY};
+        } else {
+          wrapperRef.current.measureInWindow((x, y) => {
+            screenPosition.current = {x, y};
+          });
+          setIsWindowPositionGet(true);
+        }
+
         viewLayout.current = {width, height};
-        wrapperRef.current.measureInWindow((x, y) => {
-          screenPosition.current = {x, y};
-        });
       }}
       {...panResponder.panHandlers}>
       {children}
