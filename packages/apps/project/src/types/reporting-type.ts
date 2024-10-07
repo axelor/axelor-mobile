@@ -17,7 +17,7 @@
  */
 
 export const ReportingType = {
-  indicator: 'indicators',
+  indicators: 'indicators',
   activities: 'activities',
   none: 'none',
 };

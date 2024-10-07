@@ -30,20 +30,20 @@ const ReportingView = () => {
 
   const {project} = useSelector((state: any) => state.project_project);
 
-  const {isNoneOnly, showActivities, showReporting} =
+  const {showActivities, showIndicators, noReporting} =
     useReportingConfiguration(project);
 
-  const [mode, setMode] = useState(ReportingType.indicator);
+  const [mode, setMode] = useState(ReportingType.indicators);
 
   useEffect(() => {
-    if (!showReporting) {
+    if (!showIndicators) {
       setMode(ReportingType.activities);
     } else if (!showActivities) {
-      setMode(ReportingType.indicator);
+      setMode(ReportingType.indicators);
     }
-  }, [showActivities, showReporting]);
+  }, [showActivities, showIndicators]);
 
-  if (isNoneOnly) {
+  if (noReporting) {
     return null;
   }
 
@@ -54,14 +54,14 @@ const ReportingView = () => {
         fixedItems={
           <>
             <ProjectHeader />
-            {showReporting && showActivities && (
+            {showIndicators && showActivities && (
               <ToggleSwitch
                 leftTitle={I18n.t('Project_Reporting')}
                 rightTitle={I18n.t('Project_Activities')}
                 onSwitch={() =>
                   setMode(_mode => {
                     return _mode === ReportingType.activities
-                      ? ReportingType.indicator
+                      ? ReportingType.indicators
                       : ReportingType.activities;
                   })
                 }
@@ -73,7 +73,7 @@ const ReportingView = () => {
       {mode === ReportingType.activities ? (
         <ActivityListView />
       ) : (
-        showReporting && <ReportingDetailsView />
+        <ReportingDetailsView />
       )}
     </View>
   );

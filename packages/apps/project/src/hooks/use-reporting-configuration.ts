@@ -21,30 +21,24 @@ import {useSelector} from '@axelor/aos-mobile-core';
 import {ReportingType} from '../types';
 
 export const useReportingConfiguration = project => {
-  const {mobileSettings} = useSelector(state => state.appConfig);
+  const {mobileSettings} = useSelector((state: any) => state.appConfig);
+  const allowedReportingTypes = mobileSettings?.reportingTypesToDisplay || [];
 
-  const allowedReportingTypes = useMemo(() => {
-    return mobileSettings?.reportingTypesToDisplay || [];
-  }, [mobileSettings?.reportingTypesToDisplay]);
+  const showActivities = allowedReportingTypes.includes(
+    ReportingType.activities,
+  );
+  const showIndicators =
+    allowedReportingTypes.includes(ReportingType.indicators) &&
+    project?.isBusinessProject;
 
-  const reportingConfig = useMemo(() => {
-    const isNoneOnly =
-      allowedReportingTypes.length === 1 &&
-      allowedReportingTypes.includes(ReportingType.none);
-    const showActivities = allowedReportingTypes.includes(
-      ReportingType.activities,
-    );
-    const showReporting =
-      allowedReportingTypes.includes(ReportingType.indicator) &&
-      project?.isBusinessProject;
+  const noReporting = !showActivities && !showIndicators;
 
-    return {
-      isNoneOnly,
+  return useMemo(
+    () => ({
       showActivities,
-      showReporting,
-      showReportingOrActivities: showActivities || showReporting,
-    };
-  }, [allowedReportingTypes, project]);
-
-  return reportingConfig;
+      showIndicators,
+      noReporting,
+    }),
+    [showActivities, showIndicators, noReporting],
+  );
 };

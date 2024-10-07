@@ -37,8 +37,7 @@ const ProjectDetailsScreen = ({route}) => {
 
   const {project} = useSelector((state: any) => state.project_project);
 
-  const {isNoneOnly, showReportingOrActivities} =
-    useReportingConfiguration(project);
+  const {noReporting} = useReportingConfiguration(project);
 
   useEffect(() => {
     dispatch((fetchProjectById as any)({projectId}));
@@ -65,7 +64,7 @@ const ProjectDetailsScreen = ({route}) => {
       iconName: 'activity',
       color: Colors.progressColor,
       viewComponent: <ReportingView />,
-      hidden: isNoneOnly || !showReportingOrActivities,
+      hidden: noReporting,
     },
     {
       iconName: 'clock-history',
