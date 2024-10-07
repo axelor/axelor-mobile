@@ -22,19 +22,16 @@ import {useSelector, useTranslator} from '@axelor/aos-mobile-core';
 import {HeaderContainer, ToggleSwitch} from '@axelor/aos-mobile-ui';
 import {ProjectHeader} from '../../molecules';
 import {ActivityListView, ReportingDetailsView} from '../../templates';
-import {getReportingConfiguration, ReportingType} from '../../../utils';
+import {ReportingType} from '../../../types';
+import {useReportingConfiguration} from '../../../hooks/use-reporting-configuration';
 
 const ReportingView = () => {
   const I18n = useTranslator();
 
   const {project} = useSelector((state: any) => state.project_project);
-  const {mobileSettings} = useSelector((state: any) => state.appConfig);
 
-  const allowedReportingTypes = mobileSettings?.reportingTypesToDisplay || [];
-  const {isNoneOnly, showActivities, showReporting} = getReportingConfiguration(
-    allowedReportingTypes,
-    project,
-  );
+  const {isNoneOnly, showActivities, showReporting} =
+    useReportingConfiguration(project);
 
   const [mode, setMode] = useState(ReportingType.indicator);
 
@@ -57,7 +54,7 @@ const ReportingView = () => {
         fixedItems={
           <>
             <ProjectHeader />
-            {project?.isBusinessProject && showReporting && showActivities && (
+            {showReporting && showActivities && (
               <ToggleSwitch
                 leftTitle={I18n.t('Project_Reporting')}
                 rightTitle={I18n.t('Project_Activities')}
@@ -73,7 +70,7 @@ const ReportingView = () => {
           </>
         }
       />
-      {mode === ReportingType.activities && showActivities ? (
+      {mode === ReportingType.activities ? (
         <ActivityListView />
       ) : (
         showReporting && <ReportingDetailsView />

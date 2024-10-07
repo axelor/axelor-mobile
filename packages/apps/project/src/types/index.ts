@@ -16,27 +16,4 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-export const ReportingType = {
-  indicator: 'indicators',
-  activities: 'activities',
-  none: 'none',
-};
-
-export const getReportingConfiguration = (allowedReportingTypes, project) => {
-  const isNoneOnly =
-    allowedReportingTypes.length === 1 &&
-    allowedReportingTypes.includes(ReportingType.none);
-  const showActivities = allowedReportingTypes.includes(
-    ReportingType.activities,
-  );
-  const showReporting =
-    allowedReportingTypes.includes(ReportingType.indicator) &&
-    project?.isBusinessProject;
-
-  return {
-    isNoneOnly,
-    showActivities,
-    showReporting,
-    showReportingOrActivities: showActivities || showReporting,
-  };
-};
+export * from './reporting-type';

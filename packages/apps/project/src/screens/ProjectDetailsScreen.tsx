@@ -27,7 +27,7 @@ import {
   TimeView,
 } from '../components';
 import {fetchProjectById} from '../features/projectSlice';
-import {getReportingConfiguration} from '../utils';
+import {useReportingConfiguration} from '../hooks/use-reporting-configuration';
 
 const ProjectDetailsScreen = ({route}) => {
   const projectId = route?.params?.projectId;
@@ -36,13 +36,9 @@ const ProjectDetailsScreen = ({route}) => {
   const dispatch = useDispatch();
 
   const {project} = useSelector((state: any) => state.project_project);
-  const {mobileSettings} = useSelector((state: any) => state.appConfig);
 
-  const allowedReportingTypes = mobileSettings?.reportingTypesToDisplay || [];
-  const {isNoneOnly, showReportingOrActivities} = getReportingConfiguration(
-    allowedReportingTypes,
-    project,
-  );
+  const {isNoneOnly, showReportingOrActivities} =
+    useReportingConfiguration(project);
 
   useEffect(() => {
     dispatch((fetchProjectById as any)({projectId}));
