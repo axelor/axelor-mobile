@@ -17,26 +17,16 @@
  */
 
 import React, {useCallback, useEffect, useMemo, useState} from 'react';
-import {FlatList, ScrollView, View} from 'react-native';
 import {
   useDispatch,
   useNavigation,
   useSelector,
   useTranslator,
 } from '@axelor/aos-mobile-core';
-import {
-  ActionCard,
-  Alert,
-  SingleSelectScrollList,
-  Text,
-  useThemeColor,
-} from '@axelor/aos-mobile-ui';
-import {CartLineCard} from '../../atoms';
+import {ActionCard, useThemeColor} from '@axelor/aos-mobile-ui';
+import {CartLineCard, VariantPopup} from '../../atoms';
 import {deleteCartLine, updateCartLine} from '../../../features/cartLineSlice';
-import {
-  fetchProductById,
-  fetchVariantProduct,
-} from '../../../features/productSlice';
+import {fetchProductById} from '../../../features/productSlice';
 import {fetchProductByIdApi} from '../../../api';
 
 const TIME_INCREMENT = 2000;
@@ -63,7 +53,27 @@ const CartLineActionCard = ({
   const navigation = useNavigation();
   const dispatch = useDispatch();
 
+  const {product: parentProduct} = useSelector(
+    (state: any) => state.sale_product,
+  );
+
   const [diffQty, setDiffQty] = useState(0);
+  const [alertVisible, setAlertVisible] = useState(false);
+  const [selectedVariants, setSelectedVariants] = useState<{
+    productVariantValue1?: any;
+    productVariantValue2?: any;
+    productVariantValue3?: any;
+    productVariantValue4?: any;
+    productVariantValue5?: any;
+  }>({});
+
+  const variantConfig = useMemo(() => {
+    return parentProduct?.productVariantConfig;
+  }, [parentProduct?.productVariantConfig]);
+
+  const currentVariant = useMemo(() => {
+    return cartLine?.variantProduct;
+  }, [cartLine?.variantProduct]);
 
   const handleTimeOut = useCallback(() => {
     if (diffQty !== 0) {
@@ -88,42 +98,19 @@ const CartLineActionCard = ({
     }
   }, [handleTimeOut, diffQty]);
 
-  const [alertVisible, setAlertVisible] = useState(false);
-  const [selectedVariants, setSelectedVariants] = useState<{
-    productVariantValue1?: any;
-    productVariantValue2?: any;
-    productVariantValue3?: any;
-    productVariantValue4?: any;
-    productVariantValue5?: any;
-  }>({});
-
-  const currentVariant = cartLine?.variantProduct;
-
-  //console.log('currentVariant', currentVariant);
-
-  // console.log('cartLine', cartLine);
-
   const handleVariantSelection = () => {
     setAlertVisible(true);
   };
 
   const handleConfirm = () => {
-    // dispatch(
-    //   (updateCartLine as any)({
-    //     cartLine: {...cartLine},
-    //     cartId: cartId,
-    //     qty: cartLine.qty,
-    //     // variantProduct: selectedVariant,
-    //   }),
-    // );
     console.log(selectedVariants);
     setAlertVisible(false);
   };
 
   useEffect(() => {
     if (cartLine?.variantProduct != null) {
-      fetchProductByIdApi({productId: cartLine?.variantProduct?.id}).then(
-        res => {
+      fetchProductByIdApi({productId: cartLine?.variantProduct?.id})
+        .then(res => {
           const variantData = res.data.data[0]?.productVariant;
           if (variantData) {
             setSelectedVariants({
@@ -139,31 +126,10 @@ const CartLineActionCard = ({
                 variantData.productVariantValue5 ?? undefined,
             });
           }
-        },
-      );
+        })
+        .catch(() => setSelectedVariants({}));
     }
   }, [cartLine?.variantProduct, currentVariant]);
-  const {product} = useSelector((state: any) => state.sale_product);
-  const {
-    loadingVariantList,
-    moreLoadingVariantList,
-    isVariantListEnd,
-    variantProductList,
-  } = useSelector((state: any) => state.sale_product);
-
-  const fetchVariantProductAPI = useCallback(
-    (page = 0) => {
-      dispatch(
-        (fetchVariantProduct as any)({
-          parentProductId: product?.parentProduct?.id,
-          page,
-        }),
-      );
-    },
-    [dispatch, product?.parentProduct?.id],
-  );
-
-  const variantConfig = product?.productVariantConfig;
 
   const variantAttributes = useMemo(() => {
     return [
@@ -250,7 +216,7 @@ const CartLineActionCard = ({
           },
           {
             iconName: 'exposure',
-            helper: I18n.t('aaaaaaaaaaaaaa'),
+            helper: I18n.t('Sale_ChooseVariant'),
             onPress: () => {
               dispatch(
                 (fetchProductById as any)({
@@ -276,44 +242,13 @@ const CartLineActionCard = ({
           }}
         />
       </ActionCard>
-      <Alert
-        visible={alertVisible}
-        title={I18n.t('Sale_SelectVariant')}
-        confirmButtonConfig={{
-          onPress: handleConfirm,
-          title: I18n.t('Base_OK'),
-        }}
-        cancelButtonConfig={{
-          onPress: () => setAlertVisible(false),
-          title: I18n.t('Base_Cancel'),
-        }}>
-        <FlatList
-          data={variantAttributes.filter(
-            attr => attr.attribute && attr.values.length > 0,
-          )}
-          keyExtractor={(item, index) => index.toString()}
-          renderItem={({item}) => (
-            <View style={{marginBottom: 50}}>
-              <Text>{item.attribute.name}</Text>
-              <SingleSelectScrollList
-                fetchData={fetchVariantProductAPI}
-                loadingList={loadingVariantList}
-                moreLoading={moreLoadingVariantList}
-                isListEnd={isVariantListEnd}
-                data={item.values}
-                defaultSelected={item.defaultValue}
-                onChange={value => {
-                  setSelectedVariants(prev => ({
-                    ...prev,
-                    [item.attribute.code]: value,
-                  }));
-                }}
-                renderItem={({item: a}) => <Text>{a.name}</Text>}
-              />
-            </View>
-          )}
-        />
-      </Alert>
+      <VariantPopup
+        alertVisible={alertVisible}
+        handleConfirm={handleConfirm}
+        setAlertVisible={setAlertVisible}
+        setSelectedVariants={setSelectedVariants}
+        variantAttributes={variantAttributes}
+      />
     </>
   );
 };
