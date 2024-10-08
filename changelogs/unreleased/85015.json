@@ -1,0 +1,5 @@
+{
+  "title": "EditableInput: and refresh when value change",
+  "type": "fix",
+  "packages": "ui"
+}
