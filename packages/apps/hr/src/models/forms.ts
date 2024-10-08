@@ -98,6 +98,11 @@ export const hr_formsRegister: FormConfigs = {
         hideIf: ({storeState}) =>
           !storeState.appConfig.mobileSettings
             ?.isExpenseProjectInvoicingEnabled,
+        dependsOn: {
+          projectTask: ({newValue}) => {
+            return newValue?.project;
+          },
+        },
       },
       projectTask: {
         titleKey: 'Hr_ProjectTask',

@@ -97,6 +97,7 @@ export const hr_modelAPI: ObjectFields = {
     fullName: schemaContructor.string(),
     name: schemaContructor.string(),
     product: schemaContructor.subObject('fullName'),
+    project: schemaContructor.subObject(),
   }),
   hr_product: schemaContructor.object({
     fullName: schemaContructor.string(),
