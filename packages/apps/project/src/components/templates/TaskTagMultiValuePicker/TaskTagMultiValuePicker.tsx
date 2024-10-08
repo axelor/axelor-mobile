@@ -42,6 +42,7 @@ const TaskTagMultiValuePickerAux = ({
   const Color = useThemeColor();
 
   const {tagList} = useSelector((state: any) => state.project_projectTask);
+  const {user} = useSelector((state: any) => state.user);
 
   const transformTagsToPickerItems = useCallback(
     tags => {
@@ -62,8 +63,8 @@ const TaskTagMultiValuePickerAux = ({
   );
 
   useEffect(() => {
-    dispatch(getTag());
-  }, [dispatch]);
+    dispatch((getTag as any)({activeCompany: user.activeCompany}));
+  }, [dispatch, user.activeCompany]);
 
   const _defaultValue = useMemo(
     () => transformTagsToPickerItems(defaultValue),

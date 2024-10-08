@@ -213,9 +213,36 @@ export async function fetchProjectTaskById({projecTaskId}) {
   });
 }
 
-export async function getTag() {
+export async function _getTag({}) {
   return axiosApiProvider.get({
     url: 'ws/rest/com.axelor.apps.base.db.Tag/',
+  });
+}
+
+export async function getTag({activeCompany, page = 0}) {
+  return createStandardSearch({
+    model: 'com.axelor.meta.db.MetaModel',
+    criteria: [
+      {
+        fieldName: 'name',
+        operator: '=',
+        value: 'ProjectTask',
+      },
+    ],
+    page: 0,
+    fieldKey: [],
+    numberElementsByPage: null,
+  }).then(res => {
+    const metaId = res.data.data[0].id;
+    return createStandardSearch({
+      model: 'com.axelor.apps.base.db.Tag',
+      criteria: [],
+      fieldKey: 'project_Tag',
+      sortKey: 'project_Tag',
+      page,
+      numberElementsByPage: null,
+      domain: `(self.concernedModelSet IS EMPTY OR ${metaId} member of self.concernedModelSet) AND (self.companySet IS EMPTY OR ${activeCompany.id} member of self.companySet)`,
+    });
   });
 }
 
