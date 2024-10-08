@@ -261,7 +261,7 @@ export const project_formsRegister: FormConfigs = {
         type: 'date',
         widget: 'date',
       },
-      TagSet: {
+      tagSet: {
         titleKey: 'Project_Tags',
         type: 'array',
         widget: 'custom',

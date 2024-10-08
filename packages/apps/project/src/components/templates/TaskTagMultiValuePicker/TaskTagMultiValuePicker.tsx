@@ -43,17 +43,19 @@ const TaskTagMultiValuePickerAux = ({
 
   const {tagList} = useSelector((state: any) => state.project_projectTask);
 
-  console.log('defaultValue', defaultValue);
-
   const transformTagsToPickerItems = useCallback(
     tags => {
       return (
-        tags?.map(tag => ({
-          ...tag,
-          title: tag.name,
-          color: Color[`${tag.colorSelect}`],
-          key: tag.id,
-        })) || []
+        tags?.map(tag => {
+          const colorKey = tag.colorSelect;
+          const color = Color[colorKey] || Color.primaryColor;
+          return {
+            ...tag,
+            title: tag.name,
+            color: color,
+            key: tag.id,
+          };
+        }) || []
       );
     },
     [Color],
