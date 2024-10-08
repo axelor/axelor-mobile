@@ -132,9 +132,7 @@ export const project_modelAPI: ObjectFields = {
     targetVersion: schemaContructor.subObject(),
     taskDate: schemaContructor.string(),
     taskEndDate: schemaContructor.string(),
-    projectTaskTagSet: schemaContructor
-      .array()
-      .of(schemaContructor.subObject()),
+    tagSet: schemaContructor.array().of(schemaContructor.subObject()),
     spentTime: schemaContructor.number(),
     description: schemaContructor.string(),
     internalDescription: schemaContructor.string(),
@@ -188,7 +186,7 @@ export const project_modelAPI: ObjectFields = {
     toInvoice: schemaContructor.boolean(),
     comments: schemaContructor.string(),
   }),
-  project_projectTaskTag: schemaContructor.object({
+  project_Tag: schemaContructor.object({
     name: schemaContructor.string(),
     colorSelect: schemaContructor.string(),
   }),

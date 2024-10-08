@@ -19,7 +19,7 @@
 import React, {useCallback, useEffect, useMemo} from 'react';
 import {useDispatch, useSelector} from '@axelor/aos-mobile-core';
 import {MultiValuePicker, useThemeColor} from '@axelor/aos-mobile-ui';
-import {getProjectTaskTag} from '../../../features/projectTaskSlice';
+import {getTag} from '../../../features/projectTaskSlice';
 
 interface TaskTagMultiValuePickerProps {
   style?: any;
@@ -41,7 +41,9 @@ const TaskTagMultiValuePickerAux = ({
   const dispatch = useDispatch();
   const Color = useThemeColor();
 
-  const {taskTagList} = useSelector((state: any) => state.project_projectTask);
+  const {tagList} = useSelector((state: any) => state.project_projectTask);
+
+  console.log('defaultValue', defaultValue);
 
   const transformTagsToPickerItems = useCallback(
     tags => {
@@ -58,7 +60,7 @@ const TaskTagMultiValuePickerAux = ({
   );
 
   useEffect(() => {
-    dispatch(getProjectTaskTag());
+    dispatch(getTag());
   }, [dispatch]);
 
   const _defaultValue = useMemo(
@@ -67,8 +69,8 @@ const TaskTagMultiValuePickerAux = ({
   );
 
   const projectTaskListItems = useMemo(
-    () => transformTagsToPickerItems(taskTagList),
-    [taskTagList, transformTagsToPickerItems],
+    () => transformTagsToPickerItems(tagList),
+    [tagList, transformTagsToPickerItems],
   );
 
   return (

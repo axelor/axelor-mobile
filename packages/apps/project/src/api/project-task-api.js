@@ -208,14 +208,14 @@ export async function fetchProjectTaskById({projecTaskId}) {
     id: projecTaskId,
     fieldKey: 'project_projectTask',
     relatedFields: {
-      projectTaskTagSet: ['name', 'colorSelect'],
+      tagSet: ['name', 'colorSelect'],
     },
   });
 }
 
-export async function getProjectTaskTag() {
+export async function getTag() {
   return axiosApiProvider.get({
-    url: 'ws/rest/com.axelor.apps.project.db.ProjectTaskTag/',
+    url: 'ws/rest/com.axelor.apps.base.db.Tag/',
   });
 }
 
