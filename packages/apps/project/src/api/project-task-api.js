@@ -208,15 +208,40 @@ export async function fetchProjectTaskById({projecTaskId}) {
     id: projecTaskId,
     fieldKey: 'project_projectTask',
     relatedFields: {
-      projectTaskTagSet: ['name', 'colorSelect'],
+      tagSet: ['name', 'colorSelect'],
     },
   });
 }
 
-export async function getProjectTaskTag() {
-  return axiosApiProvider.get({
-    url: 'ws/rest/com.axelor.apps.project.db.ProjectTaskTag/',
-  });
+export async function getTag({activeCompany}) {
+  return createStandardSearch({
+    model: 'com.axelor.meta.db.MetaModel',
+    criteria: [
+      {
+        fieldName: 'name',
+        operator: '=',
+        value: 'ProjectTask',
+      },
+    ],
+    page: 0,
+    fieldKey: '',
+    numberElementsByPage: 1,
+  }).then(res =>
+    createStandardSearch({
+      model: 'com.axelor.apps.base.db.Tag',
+      criteria: [],
+      fieldKey: 'project_Tag',
+      sortKey: 'project_Tag',
+      page: 0,
+      numberElementsByPage: null,
+      domain:
+        '(self.concernedModelSet IS EMPTY OR :metaModel member of self.concernedModelSet) AND (self.companySet IS EMPTY OR :activeCompany member of self.companySet)',
+      domainContext: {
+        metaModel: {id: res?.data?.data?.[0]?.id},
+        activeCompany: {id: activeCompany?.id},
+      },
+    }),
+  );
 }
 
 export async function searchTargetVersion({searchValue, page = 0, projectId}) {

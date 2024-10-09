@@ -27,7 +27,7 @@ import {
   fetchProjectTaskCategory as _fetchProjectTaskCategory,
   fetchProjectTaskById as _fetchProjectTaskById,
   fetchProjectTaskStatus as _fetchProjectTaskStatus,
-  getProjectTaskTag as _getProjectTaskTag,
+  getTag as _getTag,
   saveProjectTask as _saveProjectTask,
   searchCategory as _searchCategory,
   searchPriority as _searchPriority,
@@ -116,13 +116,13 @@ export const fetchProjectTaskById = createAsyncThunk(
   },
 );
 
-export const getProjectTaskTag = createAsyncThunk(
-  'project_projectTask/getProjectTaskTag',
+export const getTag = createAsyncThunk(
+  'project_projectTask/getTag',
   async function (data, {getState}) {
     return handlerApiCall({
-      fetchFunction: _getProjectTaskTag,
+      fetchFunction: _getTag,
       data,
-      action: 'Project_SliceAction_GetProjectTaskTag',
+      action: 'Project_SliceAction_GetTag',
       getState,
       responseOptions: {isArrayResponse: true},
     });
@@ -281,7 +281,7 @@ const initialState = {
   projectTask: {},
 
   loadingTaskTag: true,
-  taskTagList: [],
+  tagList: [],
 };
 
 const projectTaskSlice = createSlice({
@@ -352,12 +352,12 @@ const projectTaskSlice = createSlice({
       state.loadingProjectTask = false;
       state.projectTask = action.payload;
     });
-    builder.addCase(getProjectTaskTag.pending, state => {
+    builder.addCase(getTag.pending, state => {
       state.loadingTaskTag = true;
     });
-    builder.addCase(getProjectTaskTag.fulfilled, (state, action) => {
+    builder.addCase(getTag.fulfilled, (state, action) => {
       state.loadingTaskTag = false;
-      state.taskTagList = action.payload;
+      state.tagList = action.payload;
     });
     builder.addCase(saveProjectTask.pending, (state, action) => {
       state.loadingProjectTask = true;
