@@ -3,6 +3,20 @@ title: 8.1.0
 tags: Changelog
 ---
 
+## [8.1.6] (2024-10-09)
+
+### @axelor/aos-mobile-ui
+
+#### Fixes
+
+- EditableInput: and refresh when value change
+
+### @axelor/aos-mobile-hr
+
+#### Fixes
+
+- Expense line: fill project when filling task in form view
+
 ## [8.1.5] (2024-10-03)
 
 ### @axelor/aos-mobile-core
@@ -351,6 +365,7 @@ It enables user to manage interventions and customer parc through the mobile app
 - Selections: use new system and tools instead of type files
 - Product indicators: use new chart component to display quantity indicators
 
+  [8.1.6]: https://github.com/axelor/axelor-mobile/compare/8.1.5...8.1.6
   [8.1.5]: https://github.com/axelor/axelor-mobile/compare/8.1.4...8.1.5
   [8.1.4]: https://github.com/axelor/axelor-mobile/compare/8.1.3...8.1.4
   [8.1.3]: https://github.com/axelor/axelor-mobile/compare/8.1.2...8.1.3
