@@ -103,6 +103,16 @@ export const SaleModule: Module = {
   },
   reducers: {...saleReducers},
   requiredConfig: ['AppSale'],
+  globalTools: [
+    {
+      key: 'sale_accessActiveCart',
+      iconName: 'basket2-fill',
+      onPress: ({navigation}) => navigation.navigate('ActiveCartScreen'),
+      title: 'Sale_AccessCart',
+      hideIf: ({storeState}) =>
+        !storeState?.appConfig?.sale?.isCartManagementEnabled,
+    },
+  ],
 };
 
 export * from './api';

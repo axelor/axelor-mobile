@@ -143,6 +143,7 @@
   "Sale_NoSaleOrderOrQuotation": "Pas de commande de vente ni devis",
   "Sale_LastQuotation": "Dernier devis",
   "Sale_LastOrder": "Dernière commande",
+  "Sale_AccessCart": "Accéder au panier",
   "Sale_SliceAction_FetchSaleConfig": "récupération des configurations de vente",
   "Sale_SliceAction_FetchSaleOrder": "récupération des commandes client",
   "Sale_SliceAction_SearchCustomer": "recherche sur les clients",
