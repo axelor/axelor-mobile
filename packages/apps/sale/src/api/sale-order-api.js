@@ -17,10 +17,12 @@
  */
 
 import {
+  axiosApiProvider,
   createStandardFetch,
   createStandardSearch,
   getSearchCriterias,
 } from '@axelor/aos-mobile-core';
+import {mapStatusToAPIValue} from '../utils';
 
 const createSaleOrderCriteria = (searchValue, statusList, customerId) => {
   const criteria = [getSearchCriterias('sale_saleOrder', searchValue)];
@@ -67,5 +69,19 @@ export async function fetchSaleOrderById({saleOrderId}) {
     model: 'com.axelor.apps.sale.db.SaleOrder',
     id: saleOrderId,
     fieldKey: 'sale_saleOrder',
+  });
+}
+
+export async function updateSaleOrderStatus({
+  saleOrderId,
+  saleOrderVersion,
+  status,
+}) {
+  return axiosApiProvider.put({
+    url: `ws/aos/sale-order/status/${saleOrderId}`,
+    data: {
+      version: saleOrderVersion,
+      toStatus: mapStatusToAPIValue(status),
+    },
   });
 }
