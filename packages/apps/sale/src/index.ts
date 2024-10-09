@@ -105,7 +105,7 @@ export const SaleModule: Module = {
   requiredConfig: ['AppSale'],
   globalTools: [
     {
-      key: '0',
+      key: 'sale_accessActiveCart',
       iconName: 'basket2-fill',
       onPress: ({navigation}) => navigation.navigate('ActiveCartScreen'),
       title: 'Sale_AccessCart',
