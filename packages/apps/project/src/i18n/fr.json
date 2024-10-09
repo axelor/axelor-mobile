@@ -66,7 +66,7 @@
   "Project_SliceAction_SearchSubProject": "recherche sur les sous-projets",
   "Project_SliceAction_FetchProjectTaskById": "récupération de la tâche du projet par id",
   "Project_SliceAction_FetchTimesheetLinesByTask": "récupération des lignes de feuille de temps par tâche",
-  "Project_SliceAction_GetProjectTaskTag": "récupération des tags des tâches du projet",
+  "Project_SliceAction_GetTag": "récupération des tags des tâches du projet",
   "Project_SliceAction_SearchTargetVersion": "recherche sur les versions cibles",
   "Project_SliceAction_SearchCategory": "recherche sur les catégories",
   "Project_SliceAction_SearchSection": "recherche sur les sections",
