@@ -112,3 +112,4 @@ export * from './screens/cart';
 export * from './screens/product';
 export * from './screens/saleOrder';
 export * from './screens/client';
+export * from './utils';

@@ -45,4 +45,8 @@ export {
 } from './productSlice';
 export {fetchSaleConfig} from './saleConfigSlice';
 export {fetchSaleOrderLine, fetchSaleOrderLineById} from './saleOrderLineSlice';
-export {fetchSaleOrder, fetchSaleOrderById} from './saleOrderSlice';
+export {
+  fetchSaleOrder,
+  fetchSaleOrderById,
+  updateSaleOrderStatus,
+} from './saleOrderSlice';
