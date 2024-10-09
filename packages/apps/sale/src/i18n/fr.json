@@ -89,7 +89,6 @@
   "Sale_ProcurementMethod_BuyProduce": "Acheter et produire",
   "Sale_NoConfigPerCompany": "Pas de configuration de produit par société.",
   "Sale_QuantitiesAreRestricted": "Les quantités sont restreintes.",
-  "Sale_NoMultipleQuantitiesRegistered": "Aucune quantité multiple enregistrée",
   "Sale_ProductPulledOfMarket": "Date de fin d'application du produit",
   "Sale_Clients": "Clients",
   "Sale_Category": "Catégorie",

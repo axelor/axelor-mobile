@@ -52,7 +52,7 @@ const ProductDropdownCard = ({}) => {
 
     if (
       saleConfig?.manageMultipleSaleQuantity &&
-      product.saleProductMultipleQtyList.length > 0
+      product.saleProductMultipleQtyList?.length > 0
     ) {
       result.push({
         title: I18n.t('Sale_MultipleQuantities'),
@@ -66,7 +66,7 @@ const ProductDropdownCard = ({}) => {
   }, [
     I18n,
     product.allowToForceSaleQty,
-    product.saleProductMultipleQtyList.length,
+    product.saleProductMultipleQtyList?.length,
     saleConfig?.manageMultipleSaleQuantity,
   ]);
 
