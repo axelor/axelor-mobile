@@ -16,7 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import React, {useMemo, useState} from 'react';
+import React, {useEffect, useMemo, useState} from 'react';
 import {StyleSheet, TouchableOpacity, View} from 'react-native';
 import {getCommonStyles} from '../../../utils/commons-styles';
 import {useThemeColor} from '../../../theme/ThemeContext';
@@ -40,6 +40,10 @@ const EditableInput = ({
   const Colors = useThemeColor();
   const [isEditable, setEditable] = useState(true);
   const [value, setValue] = useState(defaultValue);
+
+  useEffect(() => {
+    setValue(defaultValue);
+  }, [defaultValue]);
 
   const handleIcon = () => {
     setEditable(!isEditable);

@@ -37,6 +37,7 @@ import {
   InventoryLineQuantityCard,
   InventoryLineButtons,
   InventoryLineTrackingNumberSelect,
+  EditableOriginInput,
 } from '../../components';
 import {fetchInventoryLine} from '../../features/inventoryLineSlice';
 import {fetchProductWithId} from '../../features/productSlice';
@@ -148,11 +149,19 @@ const InventoryLineDetailsScreen = ({route, navigation}) => {
           trackingNumber={trackingNumber?.trackingNumberSeq}
           locker={inventoryLine?.rack}
         />
-        <InventoryLineTrackingNumberSelect
-          product={productFromId}
-          inventoryLine={inventoryLine}
-          visible={!readonly && isTrackingNumberSelectVisible}
-        />
+        {!readonly && isTrackingNumberSelectVisible && (
+          <>
+            <InventoryLineTrackingNumberSelect
+              product={productFromId}
+              inventoryLine={inventoryLine}
+              trackingNumber={trackingNumber}
+            />
+            <EditableOriginInput
+              stockMoveLineId={inventoryLineId.id}
+              trackingNumber={trackingNumber}
+            />
+          </>
+        )}
         <InventoryLineQuantityCard
           inventoryLine={inventoryLine}
           realQty={realQty}

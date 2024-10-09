@@ -1,0 +1,5 @@
+{
+  "title": "Tracking Number: add possibility to fill origin when creating or selecting a trackingNumber",
+  "type": "fix",
+  "packages": "stock"
+}
