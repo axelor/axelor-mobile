@@ -24,6 +24,7 @@ import {
 import {
   fetchSaleOrder as _fetchSaleOrder,
   fetchSaleOrderById as _fetchSaleOrderById,
+  updateSaleOrderStatus as _updateSaleOrderStatus,
 } from '../api/sale-order-api';
 
 export const fetchSaleOrder = createAsyncThunk(
@@ -48,6 +49,21 @@ export const fetchSaleOrderById = createAsyncThunk(
       action: 'Sale_SliceAction_FetchSaleOrderById',
       getState,
       responseOptions: {isArrayResponse: false},
+    });
+  },
+);
+
+export const updateSaleOrderStatus = createAsyncThunk(
+  'sale_saleOrder/updateSaleOrderStatus',
+  async function (data, {getState, dispatch}) {
+    return handlerApiCall({
+      fetchFunction: _updateSaleOrderStatus,
+      data,
+      action: 'Sale_SliceAction_UpdateSaleOrderStatus',
+      getState,
+      responseOptions: {isArrayResponse: false},
+    }).then(() => {
+      dispatch(fetchSaleOrderById({saleOrderId: data.saleOrderId}));
     });
   },
 );
