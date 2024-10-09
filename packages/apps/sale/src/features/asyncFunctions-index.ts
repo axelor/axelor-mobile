@@ -48,5 +48,5 @@ export {fetchSaleOrderLine, fetchSaleOrderLineById} from './saleOrderLineSlice';
 export {
   fetchSaleOrder,
   fetchSaleOrderById,
-  updateStatusSaleOrder,
+  updateSaleOrderStatus,
 } from './saleOrderSlice';

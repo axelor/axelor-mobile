@@ -166,5 +166,5 @@
   "Sale_SliceAction_FetchCartLineById": "fetch cart line by id",
   "Sale_SliceAction_ValidateCart": "validate cart and create sale quotation",
   "Sale_SliceAction_EmptyCart": "empty cart",
-  "Sale_SliceAction_UpdateStatusSaleOrder": "update status of sale order"
+  "Sale_SliceAction_UpdateSaleOrderStatus": "update sale order status"
 }

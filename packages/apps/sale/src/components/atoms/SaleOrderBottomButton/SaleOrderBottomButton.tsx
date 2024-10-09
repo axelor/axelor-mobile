@@ -16,7 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import React, {useCallback, useEffect, useMemo} from 'react';
+import React, {useCallback, useEffect} from 'react';
 import {
   useDispatch,
   useModules,
@@ -27,12 +27,7 @@ import {
 } from '@axelor/aos-mobile-core';
 import {Button, useThemeColor} from '@axelor/aos-mobile-ui';
 import {fetchCustomerDelivery} from '../../../features/customerDeliverySlice';
-import {updateStatusSaleOrder} from '../../../features/saleOrderSlice';
-
-const STATUS_API = {
-  confirm: 'confirm',
-  finalize: 'finalize',
-};
+import {updateSaleOrderStatus} from '../../../features/saleOrderSlice';
 
 interface SaleOrderBottomButtonProps {
   saleOrder: any;
@@ -51,12 +46,12 @@ const SaleOrderBottomButton = ({saleOrder}: SaleOrderBottomButtonProps) => {
   );
 
   const updateStatusApi = useCallback(
-    status => {
+    (targetStatus: any) => {
       dispatch(
-        (updateStatusSaleOrder as any)({
+        (updateSaleOrderStatus as any)({
           saleOrderId: saleOrder.id,
           saleOrderVersion: saleOrder.version,
-          status: status,
+          status: targetStatus,
         }),
       );
     },
@@ -67,48 +62,35 @@ const SaleOrderBottomButton = ({saleOrder}: SaleOrderBottomButtonProps) => {
     dispatch((fetchCustomerDelivery as any)({saleOrderId: saleOrder.id}));
   }, [dispatch, saleOrder]);
 
-  const buttonConfig = useMemo(() => {
-    if (saleOrder.statusSelect === SaleOrder?.statusSelect.Draft) {
-      return {
-        title: I18n.t('Sale_Status_Finalized'),
-        color: Colors.primaryColor,
-        onPress: () => updateStatusApi(STATUS_API.finalize),
-      };
-    }
-    if (saleOrder.statusSelect === SaleOrder?.statusSelect.Finalized) {
-      return {
-        title: I18n.t('Base_Confirm'),
-        color: Colors.primaryColor,
-        onPress: () => updateStatusApi(STATUS_API.confirm),
-      };
-    }
-    if (
-      saleOrder.statusSelect === SaleOrder?.statusSelect.Confirmed &&
-      checkModule('app-stock') &&
-      customerDelivery?.id != null
-    ) {
-      return {
-        title: I18n.t('Sale_CheckCustomerDelivery'),
-        color: Colors.infoColor,
-        onPress: () =>
+  if (saleOrder.statusSelect === SaleOrder?.statusSelect.Finalized) {
+    return (
+      <Button
+        title={I18n.t('Base_Confirm')}
+        color={Colors.primaryColor}
+        onPress={() => updateStatusApi(SaleOrder?.statusSelect.Confirmed)}
+      />
+    );
+  }
+
+  if (
+    saleOrder.statusSelect === SaleOrder?.statusSelect.Confirmed &&
+    checkModule('app-stock') &&
+    customerDelivery?.id != null
+  ) {
+    return (
+      <Button
+        title={I18n.t('Sale_CheckCustomerDelivery')}
+        color={Colors.infoColor}
+        onPress={() =>
           navigation.navigate('CustomerDeliveryDetailScreen', {
             customerDeliveryId: customerDelivery?.id,
-          }),
-      };
-    }
-    return null;
-  }, [
-    saleOrder.statusSelect,
-    SaleOrder,
-    checkModule,
-    customerDelivery?.id,
-    I18n,
-    Colors,
-    updateStatusApi,
-    navigation,
-  ]);
+          })
+        }
+      />
+    );
+  }
 
-  return buttonConfig ? <Button {...buttonConfig} /> : null;
+  return null;
 };
 
 export default SaleOrderBottomButton;

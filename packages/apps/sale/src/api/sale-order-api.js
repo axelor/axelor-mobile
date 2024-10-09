@@ -22,6 +22,7 @@ import {
   createStandardSearch,
   getSearchCriterias,
 } from '@axelor/aos-mobile-core';
+import {mapStatusToAPIValue} from '../utils';
 
 const createSaleOrderCriteria = (searchValue, statusList, customerId) => {
   const criteria = [getSearchCriterias('sale_saleOrder', searchValue)];
@@ -71,7 +72,7 @@ export async function fetchSaleOrderById({saleOrderId}) {
   });
 }
 
-export async function updateStatusSaleOrder({
+export async function updateSaleOrderStatus({
   saleOrderId,
   saleOrderVersion,
   status,
@@ -80,7 +81,7 @@ export async function updateStatusSaleOrder({
     url: `ws/aos/sale-order/status/${saleOrderId}`,
     data: {
       version: saleOrderVersion,
-      toStatus: status,
+      toStatus: mapStatusToAPIValue(status),
     },
   });
 }
