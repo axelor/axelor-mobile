@@ -22,23 +22,30 @@ import {ReportingType} from '../types';
 
 export const useReportingConfiguration = project => {
   const {mobileSettings} = useSelector((state: any) => state.appConfig);
-  const allowedReportingTypes = mobileSettings?.reportingTypesToDisplay || [];
 
-  const showActivities = allowedReportingTypes.includes(
-    ReportingType.activities,
+  const allowedReportingTypes = useMemo(
+    () => mobileSettings?.reportingTypesToDisplay || [],
+    [mobileSettings?.reportingTypesToDisplay],
   );
-  const showIndicators =
-    allowedReportingTypes.includes(ReportingType.indicators) &&
-    project?.isBusinessProject;
 
-  const noReporting = !showActivities && !showIndicators;
+  const showActivities = useMemo(
+    () => allowedReportingTypes.includes(ReportingType.activities),
+    [allowedReportingTypes],
+  );
+
+  const showIndicators = useMemo(
+    () =>
+      allowedReportingTypes.includes(ReportingType.indicators) &&
+      project?.isBusinessProject,
+    [allowedReportingTypes, project?.isBusinessProject],
+  );
 
   return useMemo(
     () => ({
       showActivities,
       showIndicators,
-      noReporting,
+      noReporting: !showActivities && !showIndicators,
     }),
-    [showActivities, showIndicators, noReporting],
+    [showActivities, showIndicators],
   );
 };
