@@ -29,9 +29,15 @@ const ProductDropdownCard = ({}) => {
   const I18n = useTranslator();
 
   const {sale: saleConfig} = useSelector((state: any) => state.appConfig);
+  const {product} = useSelector((state: any) => state.sale_product);
 
   const items = useMemo(() => {
-    const result = [
+    const result: {
+      title: string;
+      key: number;
+      childrenComp: React.ReactNode;
+      iconName?: string;
+    }[] = [
       {
         title: I18n.t('Sale_ProductTypology'),
         key: 0,
@@ -44,16 +50,25 @@ const ProductDropdownCard = ({}) => {
       },
     ];
 
-    if (saleConfig?.manageMultipleSaleQuantity) {
+    if (
+      saleConfig?.manageMultipleSaleQuantity &&
+      product.saleProductMultipleQtyList?.length > 0
+    ) {
       result.push({
         title: I18n.t('Sale_MultipleQuantities'),
+        iconName: !product.allowToForceSaleQty && 'lock-fill',
         key: 2,
         childrenComp: <DropdownMultipleQuantities />,
       });
     }
 
     return result;
-  }, [I18n, saleConfig?.manageMultipleSaleQuantity]);
+  }, [
+    I18n,
+    product.allowToForceSaleQty,
+    product.saleProductMultipleQtyList?.length,
+    saleConfig?.manageMultipleSaleQuantity,
+  ]);
 
   return <DropdownCardSwitch dropdownItems={items} />;
 };

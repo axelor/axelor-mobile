@@ -55,14 +55,7 @@ const DropdownMultipleQuantities = ({}) => {
         iconName="lock-fill"
         visible={!product.allowToForceSaleQty}
       />
-      {quantities.length > 0 ? (
-        quantities?.map(renderQuantityItem)
-      ) : (
-        <Label
-          type="info"
-          message={I18n.t('Sale_NoMultipleQuantitiesRegistered')}
-        />
-      )}
+      {quantities?.map(renderQuantityItem)}
     </View>
   );
 };
