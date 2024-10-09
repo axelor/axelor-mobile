@@ -48,6 +48,7 @@ export {fetchSaleConfig as fetchSaleConfigApi} from './sale-config-api';
 export {
   fetchSaleOrder as fetchSaleOrderApi,
   fetchSaleOrderById as fetchSaleOrderByIdApi,
+  updateSaleOrderStatus as updateSaleOrderStatusApi,
 } from './sale-order-api';
 export {
   fetchSaleOrderLine as fetchSaleOrderLineApi,
