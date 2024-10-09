@@ -27,6 +27,7 @@ import {
   TimeView,
 } from '../components';
 import {fetchProjectById} from '../features/projectSlice';
+import {useReportingConfiguration} from '../hooks/use-reporting-configuration';
 
 export interface ProjectDetailsScreenProps {
   route?: any;
@@ -43,6 +44,8 @@ const ProjectDetailsScreen = ({
   const dispatch = useDispatch();
 
   const {project} = useSelector((state: any) => state.project_project);
+
+  const {noReporting} = useReportingConfiguration(project);
 
   useEffect(() => {
     dispatch((fetchProjectById as any)({projectId: _projectId}));
@@ -69,6 +72,7 @@ const ProjectDetailsScreen = ({
       iconName: 'activity',
       color: Colors.progressColor,
       viewComponent: <ReportingView />,
+      hidden: noReporting,
     },
     {
       iconName: 'clock-history',

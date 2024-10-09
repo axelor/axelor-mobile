@@ -22,24 +22,30 @@ import {useSelector, useTranslator} from '@axelor/aos-mobile-core';
 import {HeaderContainer, ToggleSwitch} from '@axelor/aos-mobile-ui';
 import {ProjectHeader} from '../../molecules';
 import {ActivityListView, ReportingDetailsView} from '../../templates';
-
-const modes = {
-  reporting: 'reporting',
-  activities: 'activities',
-};
+import {ReportingType} from '../../../types';
+import {useReportingConfiguration} from '../../../hooks/use-reporting-configuration';
 
 const ReportingView = () => {
   const I18n = useTranslator();
 
   const {project} = useSelector((state: any) => state.project_project);
 
-  const [mode, setMode] = useState(modes?.reporting);
+  const {showActivities, showIndicators, noReporting} =
+    useReportingConfiguration(project);
+
+  const [mode, setMode] = useState(ReportingType.indicators);
 
   useEffect(() => {
-    if (!project?.isBusinessProject) {
-      setMode(modes.activities);
+    if (!showIndicators) {
+      setMode(ReportingType.activities);
+    } else if (!showActivities) {
+      setMode(ReportingType.indicators);
     }
-  }, [project?.isBusinessProject]);
+  }, [showActivities, showIndicators]);
+
+  if (noReporting) {
+    return null;
+  }
 
   return (
     <View style={styles.container}>
@@ -48,15 +54,15 @@ const ReportingView = () => {
         fixedItems={
           <>
             <ProjectHeader />
-            {project?.isBusinessProject && (
+            {showIndicators && showActivities && (
               <ToggleSwitch
                 leftTitle={I18n.t('Project_Reporting')}
                 rightTitle={I18n.t('Project_Activities')}
                 onSwitch={() =>
                   setMode(_mode => {
-                    return _mode === modes.activities
-                      ? modes.reporting
-                      : modes.activities;
+                    return _mode === ReportingType.activities
+                      ? ReportingType.indicators
+                      : ReportingType.activities;
                   })
                 }
               />
@@ -64,7 +70,7 @@ const ReportingView = () => {
           </>
         }
       />
-      {mode === modes.activities ? (
+      {mode === ReportingType.activities ? (
         <ActivityListView />
       ) : (
         <ReportingDetailsView />
