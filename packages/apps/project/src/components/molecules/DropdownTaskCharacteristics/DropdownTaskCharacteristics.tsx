@@ -34,7 +34,7 @@ interface DropdownTaskCharacteristicsProps {
   taskDate?: string;
   taskEndDate?: string;
   taskDeadline?: string;
-  projectTaskTagSet?: any;
+  tagSet?: any;
 }
 
 const DropdownTaskCharacteristics = ({
@@ -45,17 +45,17 @@ const DropdownTaskCharacteristics = ({
   taskDate,
   taskEndDate,
   taskDeadline,
-  projectTaskTagSet,
+  tagSet,
 }: DropdownTaskCharacteristicsProps) => {
   const I18n = useTranslator();
   const Colors = useThemeColor();
 
   const tagsList = useMemo(() => {
-    return projectTaskTagSet?.map(tag => ({
+    return tagSet?.map(tag => ({
       title: tag?.name,
       color: Colors[tag?.colorSelect],
     }));
-  }, [projectTaskTagSet, Colors]);
+  }, [tagSet, Colors]);
 
   const _formatDate = useCallback(
     _date => {

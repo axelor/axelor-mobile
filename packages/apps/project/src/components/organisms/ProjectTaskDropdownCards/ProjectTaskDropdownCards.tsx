@@ -43,7 +43,7 @@ const ProjectTaskDropdownCards = () => {
             taskDate={projectTask.taskDate}
             taskEndDate={projectTask.taskEndDate}
             taskDeadline={projectTask.taskDeadline}
-            projectTaskTagSet={projectTask.projectTaskTagSet}
+            tagSet={projectTask.tagSet}
           />
         ),
       },

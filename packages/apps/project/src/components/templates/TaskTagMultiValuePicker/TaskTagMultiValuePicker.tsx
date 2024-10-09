@@ -19,7 +19,7 @@
 import React, {useCallback, useEffect, useMemo} from 'react';
 import {useDispatch, useSelector} from '@axelor/aos-mobile-core';
 import {MultiValuePicker, useThemeColor} from '@axelor/aos-mobile-ui';
-import {getProjectTaskTag} from '../../../features/projectTaskSlice';
+import {getTag} from '../../../features/projectTaskSlice';
 
 interface TaskTagMultiValuePickerProps {
   style?: any;
@@ -41,25 +41,30 @@ const TaskTagMultiValuePickerAux = ({
   const dispatch = useDispatch();
   const Color = useThemeColor();
 
-  const {taskTagList} = useSelector((state: any) => state.project_projectTask);
+  const {tagList} = useSelector((state: any) => state.project_projectTask);
+  const {user} = useSelector((state: any) => state.user);
 
   const transformTagsToPickerItems = useCallback(
     tags => {
       return (
-        tags?.map(tag => ({
-          ...tag,
-          title: tag.name,
-          color: Color[`${tag.colorSelect}`],
-          key: tag.id,
-        })) || []
+        tags?.map(tag => {
+          const colorKey = tag.colorSelect;
+          const color = Color[colorKey] || Color.primaryColor;
+          return {
+            ...tag,
+            title: tag.name,
+            color: color,
+            key: tag.id,
+          };
+        }) || []
       );
     },
     [Color],
   );
 
   useEffect(() => {
-    dispatch(getProjectTaskTag());
-  }, [dispatch]);
+    dispatch((getTag as any)({activeCompany: user.activeCompany}));
+  }, [dispatch, user.activeCompany]);
 
   const _defaultValue = useMemo(
     () => transformTagsToPickerItems(defaultValue),
@@ -67,8 +72,8 @@ const TaskTagMultiValuePickerAux = ({
   );
 
   const projectTaskListItems = useMemo(
-    () => transformTagsToPickerItems(taskTagList),
-    [taskTagList, transformTagsToPickerItems],
+    () => transformTagsToPickerItems(tagList),
+    [tagList, transformTagsToPickerItems],
   );
 
   return (
