@@ -146,6 +146,8 @@ export const project_formsRegister: FormConfigs = {
         type: 'string',
         readonly: true,
         order: 1,
+        hideIf: ({storeState}) =>
+          !storeState.appConfig.project?.isEnablePerProjectTaskSequence,
       },
       project: {
         titleKey: 'Project_Project',
