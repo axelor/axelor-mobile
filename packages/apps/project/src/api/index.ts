@@ -28,7 +28,7 @@ export {
   fetchProjectTaskById as fetchProjectTaskByIdApi,
   fetchProjectTaskStatus as fetchProjectTaskStatusApi,
   fetchProjectTaskCategory as fetchProjectTaskCategoryApi,
-  getProjectTaskTag as getProjectTaskTagApi,
+  getTag as getTagApi,
   saveProjectTask as saveProjectTaskApi,
   searchCategory as searchCategoryApi,
   searchPriority as searchPriorityApi,

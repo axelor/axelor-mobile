@@ -27,7 +27,7 @@ export {
   fetchProjectTaskById,
   fetchProjectTaskCategory,
   fetchProjectTaskStatus,
-  getProjectTaskTag,
+  getTag,
   saveProjectTask,
   searchCategory,
   searchParentTask,
