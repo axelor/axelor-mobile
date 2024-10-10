@@ -27,6 +27,7 @@ import {
   DropdownGeneralView,
   DropdownOpportunityView,
 } from '../../../organisms';
+import {fetchProspectById} from '../../../../features/prospectSlice';
 import {searchContactById} from '../../../../features/contactSlice';
 import {fetchPartnerEventById} from '../../../../features/eventSlice';
 
@@ -59,12 +60,13 @@ const ProspectDropdownCards = ({}) => {
             key: 1,
             childrenComp: (
               <DropdownContactView
-                address={prospect.mainAddress?.fullName}
-                fixedPhone={prospect.fixedPhone}
-                emailAddress={prospect.emailAddress?.address}
-                webSite={prospect.webSite}
+                contact={{...prospect, address: prospect.mainAddress}}
+                refreshContactInfos={() =>
+                  dispatch(fetchProspectById({partnerId: prospect.id}))
+                }
               />
             ),
+            isDefaultVisible: true,
           },
           {
             title: I18n.t('Crm_GeneralInformation'),
