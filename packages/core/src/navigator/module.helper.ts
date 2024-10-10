@@ -16,7 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import {Compatibility, Menu, Module} from '../app';
+import {Compatibility, Menu, Module, Tool} from '../app';
 
 export function checkModulesMenusAccessibility(modules, mobileSettingsApps) {
   if (!Array.isArray(modules) || modules.length === 0) {
@@ -379,4 +379,39 @@ export const manageCompatibilityOverride = (modules: Module[]): Module[] => {
   });
 
   return result;
+};
+
+export const addModuleTools = (
+  registeredTools: Tool[],
+  module: Module,
+): Tool[] => {
+  const currentTools = registeredTools.map(_i => _i.key);
+  const moduleTools = module.globalTools;
+
+  let result: Tool[] =
+    moduleTools.filter(({key}) => !currentTools.includes(key)) ?? [];
+
+  registeredTools.forEach(_tool => {
+    const overrideTool = moduleTools.find(({key}) => key === _tool.key);
+
+    if (overrideTool == null) {
+      result.push(_tool);
+    } else {
+      result.push({
+        ..._tool,
+        ...overrideTool,
+      });
+    }
+  });
+
+  return result;
+};
+
+export const addToolDefaultValues = (tool: Tool, idx: number): Tool => {
+  return {
+    ...tool,
+    order: tool.order ?? idx * 10,
+    hideIf: tool.hideIf != null ? tool.hideIf : () => false,
+    disabledIf: tool.disabledIf != null ? tool.disabledIf : () => false,
+  };
 };

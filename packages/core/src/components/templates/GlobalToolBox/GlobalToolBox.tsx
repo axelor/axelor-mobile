@@ -27,27 +27,16 @@ import {useDispatch, useSelector} from '../../../redux/hooks';
 import {useNavigation} from '../../../hooks/use-navigation';
 import {useActiveScreen} from '../../../navigator';
 import {useTranslator} from '../../../i18n';
-import {Tool, useModules} from '../../../app';
-import {addDefaultValues, addModuleTools} from './tool.helpers';
 
 const GlobalToolBox = () => {
   const I18n = useTranslator();
   const Colors = useThemeColor();
   const navigation = useNavigation();
-  const {name, context} = useActiveScreen();
-  const {modules} = useModules();
+  const {name, context, tools: modulesActions} = useActiveScreen();
   const dispatch = useDispatch();
 
   const storeState = useSelector(state => state);
-
-  const modulesActions: Tool[] = useMemo(
-    () =>
-      modules
-        .filter(_m => _m.globalTools?.length > 0)
-        .reduce(addModuleTools, [])
-        .map(addDefaultValues),
-    [modules],
-  );
+  const {token} = useSelector(state => state.auth);
 
   const visibleActions = useMemo(() => {
     const data = {dispatch, storeState, screenContext: context};
@@ -65,7 +54,7 @@ const GlobalToolBox = () => {
       }));
   }, [Colors, context, dispatch, modulesActions, navigation, storeState]);
 
-  if (name == null) {
+  if (!token || name == null) {
     return null;
   }
 

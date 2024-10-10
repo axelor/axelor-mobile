@@ -18,15 +18,19 @@
 
 import {useCallback, useEffect, useMemo, useState} from 'react';
 import {useIsFocused} from '../hooks/use-navigation';
+import {Module, Tool} from '../app';
+import {addModuleTools, addToolDefaultValues} from './module.helper';
 
 class ActiveScreenProvider {
   private screenName: string;
   private screenContext: any;
+  private tools: Tool[];
   private refreshCallBack: Function[];
 
   constructor() {
     this.screenName = null;
     this.screenContext = null;
+    this.tools = [];
     this.refreshCallBack = [];
   }
 
@@ -49,9 +53,22 @@ class ActiveScreenProvider {
     this.updateState();
   }
 
+  registerScreenTools(modules: Module[]) {
+    this.tools = modules
+      .filter(_m => _m.globalTools?.length > 0)
+      .reduce(addModuleTools, [])
+      .map(addToolDefaultValues);
+
+    this.updateState();
+  }
+
   private updateState() {
     this.refreshCallBack.forEach(_f =>
-      _f({screenName: this.screenName, screenContext: this.screenContext}),
+      _f({
+        screenName: this.screenName,
+        screenContext: this.screenContext,
+        registeredTools: this.tools,
+      }),
     );
   }
 }
@@ -61,11 +78,16 @@ export const activeScreenProvider = new ActiveScreenProvider();
 export const useActiveScreen = () => {
   const [activeScreen, setActiveScreen] = useState<string>();
   const [context, setContext] = useState<any>();
+  const [tools, setTools] = useState<Tool[]>([]);
 
-  const refreshData = useCallback(({screenName, screenContext}) => {
-    setActiveScreen(screenName);
-    setContext(screenContext);
-  }, []);
+  const refreshData = useCallback(
+    ({screenName, screenContext, registeredTools}) => {
+      setActiveScreen(screenName);
+      setContext(screenContext);
+      setTools(registeredTools);
+    },
+    [],
+  );
 
   useEffect(() => {
     activeScreenProvider.registerCallback(refreshData);
@@ -76,8 +98,8 @@ export const useActiveScreen = () => {
   }, [refreshData]);
 
   return useMemo(
-    () => ({name: activeScreen, context}),
-    [activeScreen, context],
+    () => ({name: activeScreen, context, tools}),
+    [activeScreen, context, tools],
   );
 };
 
