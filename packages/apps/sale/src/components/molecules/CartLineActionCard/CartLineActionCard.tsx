@@ -102,9 +102,22 @@ const CartLineActionCard = ({
   const handleVariantSelection = () => {
     setAlertVisible(true);
   };
-  const handleConfirm = async () => {
+
+  const handleConfirm = useCallback(() => {
+    fetchMatchingProduct({
+      selectedVariants,
+    }).then(res => {
+      dispatch(
+        (updateCartLine as any)({
+          cartLine: cartLine,
+          qty: cartLine.qty,
+          variantProduct: res.data.data[0],
+          cartId: cartId,
+        }),
+      );
+    });
     setAlertVisible(false);
-  };
+  }, [cartId, cartLine, dispatch, selectedVariants]);
 
   useEffect(() => {
     if (cartLine?.variantProduct != null) {

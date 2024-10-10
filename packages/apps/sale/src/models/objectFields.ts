@@ -90,20 +90,6 @@ export const sale_modelAPI: ObjectFields = {
     parentProduct: schemaContructor.subObject().concat(
       schemaContructor.object({
         name: schemaContructor.string(),
-        productVariantConfig: schemaContructor.subObject().concat(
-          schemaContructor.object({
-            productVariantAttr1: schemaContructor.subObject(),
-            productVariantAttr2: schemaContructor.subObject(),
-            productVariantAttr3: schemaContructor.subObject(),
-            productVariantAttr4: schemaContructor.subObject(),
-            productVariantAttr5: schemaContructor.subObject(),
-            productVariantValue1Set: schemaContructor.subObject(),
-            productVariantValue2Set: schemaContructor.subObject(),
-            productVariantValue3Set: schemaContructor.subObject(),
-            productVariantValue4Set: schemaContructor.subObject(),
-            productVariantValue5Set: schemaContructor.subObject(),
-          }),
-        ),
       }),
     ),
   }),
