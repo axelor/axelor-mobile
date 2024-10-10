@@ -28,6 +28,7 @@ import {CartLineCard, VariantPopup} from '../../atoms';
 import {deleteCartLine, updateCartLine} from '../../../features/cartLineSlice';
 import {fetchProductById} from '../../../features/productSlice';
 import {fetchProductByIdApi} from '../../../api';
+import {fetchMatchingProduct} from '../../../api/product-api';
 
 const TIME_INCREMENT = 2000;
 
@@ -101,9 +102,7 @@ const CartLineActionCard = ({
   const handleVariantSelection = () => {
     setAlertVisible(true);
   };
-
-  const handleConfirm = () => {
-    console.log(selectedVariants);
+  const handleConfirm = async () => {
     setAlertVisible(false);
   };
 
@@ -132,30 +131,55 @@ const CartLineActionCard = ({
   }, [cartLine?.variantProduct, currentVariant]);
 
   const variantAttributes = useMemo(() => {
+    const filterAvailableValues = (attribute, valueSet) => {
+      if (!attribute || !attribute.productVariantValueList || !valueSet) {
+        return [];
+      }
+
+      return attribute.productVariantValueList.filter(value =>
+        valueSet.some(av => av.id === value.id),
+      );
+    };
+
     return [
       {
         attribute: variantConfig?.productVariantAttr1,
-        values: variantConfig?.productVariantAttr1?.productVariantValueList,
+        values: filterAvailableValues(
+          variantConfig?.productVariantAttr1,
+          parentProduct?.productVariantConfig?.productVariantValue1Set,
+        ),
         defaultValue: selectedVariants?.productVariantValue1,
       },
       {
         attribute: variantConfig?.productVariantAttr2,
-        values: variantConfig?.productVariantAttr2?.productVariantValueList,
+        values: filterAvailableValues(
+          variantConfig?.productVariantAttr2,
+          parentProduct?.productVariantConfig?.productVariantValue2Set,
+        ),
         defaultValue: selectedVariants?.productVariantValue2,
       },
       {
         attribute: variantConfig?.productVariantAttr3,
-        values: variantConfig?.productVariantAttr3?.productVariantValueList,
+        values: filterAvailableValues(
+          variantConfig?.productVariantAttr3,
+          parentProduct?.productVariantConfig?.productVariantValue3Set,
+        ),
         defaultValue: selectedVariants?.productVariantValue3,
       },
       {
         attribute: variantConfig?.productVariantAttr4,
-        values: variantConfig?.productVariantAttr4?.productVariantValueList,
+        values: filterAvailableValues(
+          variantConfig?.productVariantAttr4,
+          parentProduct?.productVariantConfig?.productVariantValue4Set,
+        ),
         defaultValue: selectedVariants?.productVariantValue4,
       },
       {
         attribute: variantConfig?.productVariantAttr5,
-        values: variantConfig?.productVariantAttr5?.productVariantValueList,
+        values: filterAvailableValues(
+          variantConfig?.productVariantAttr5,
+          parentProduct?.productVariantConfig?.productVariantValue5Set,
+        ),
         defaultValue: selectedVariants?.productVariantValue5,
       },
     ];
@@ -166,6 +190,7 @@ const CartLineActionCard = ({
     variantConfig?.productVariantAttr4,
     variantConfig?.productVariantAttr5,
     selectedVariants,
+    parentProduct?.productVariantConfig,
   ]);
 
   return (
