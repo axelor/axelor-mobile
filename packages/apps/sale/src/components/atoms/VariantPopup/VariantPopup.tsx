@@ -49,8 +49,10 @@ const VariantPopup = ({
       cancelButtonConfig={{
         onPress: () => setAlertVisible(false),
         title: I18n.t('Base_Cancel'),
-      }}>
+      }}
+      style={styles.popup}>
       <FlatList
+        style={styles.flalist}
         data={variantAttributes.filter(
           attr => attr.attribute && attr.values.length > 0,
         )}
@@ -62,6 +64,7 @@ const VariantPopup = ({
               fetchData={() => {}}
               loadingList={false}
               moreLoading={false}
+              rowStyle={styles.select}
               isListEnd={true}
               data={item.values}
               defaultSelected={item.defaultValue}
@@ -87,8 +90,17 @@ const VariantPopup = ({
 };
 
 const styles = StyleSheet.create({
+  popup: {
+    alignItems: 'flex-start',
+  },
+  flalist: {
+    width: '100%',
+  },
   container: {
-    marginBottom: 50,
+    marginBottom: 20,
+  },
+  select: {
+    minHeight: 40,
   },
 });
 

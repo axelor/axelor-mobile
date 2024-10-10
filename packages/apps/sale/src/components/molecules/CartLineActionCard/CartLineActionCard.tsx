@@ -107,14 +107,16 @@ const CartLineActionCard = ({
     fetchMatchingProduct({
       selectedVariants,
     }).then(res => {
-      dispatch(
-        (updateCartLine as any)({
-          cartLine: cartLine,
-          qty: cartLine.qty,
-          variantProduct: res.data.data[0],
-          cartId: cartId,
-        }),
-      );
+      if (res?.data?.data[0] != null) {
+        dispatch(
+          (updateCartLine as any)({
+            cartLine: cartLine,
+            qty: cartLine.qty,
+            variantProduct: res.data.data[0],
+            cartId: cartId,
+          }),
+        );
+      }
     });
     setAlertVisible(false);
   }, [cartId, cartLine, dispatch, selectedVariants]);
