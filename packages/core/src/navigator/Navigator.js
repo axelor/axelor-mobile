@@ -86,6 +86,10 @@ const Navigator = ({mainMenu, onRefresh, versionCheckConfig}) => {
     [metaModules, mobileSettings?.apps, modules, storeState],
   );
 
+  useEffect(() => {
+    activeScreenProvider.registerScreenTools(enabledModule);
+  }, [enabledModule]);
+
   const [activeModule, setActiveModule] = useState(
     getDefaultModule(enabledModule, mainMenu),
   );
