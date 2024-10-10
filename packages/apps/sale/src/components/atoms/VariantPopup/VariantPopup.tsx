@@ -66,10 +66,16 @@ const VariantPopup = ({
               data={item.values}
               defaultSelected={item.defaultValue}
               onChange={value => {
-                setSelectedVariants(prev => ({
-                  ...prev,
-                  [item.attribute.code]: value,
-                }));
+                setSelectedVariants(prev => {
+                  const attributeIndex = variantAttributes.findIndex(
+                    attr => attr.attribute.code === item.attribute.code,
+                  );
+
+                  return {
+                    ...prev,
+                    [`productVariantValue${attributeIndex + 1}`]: value,
+                  };
+                });
               }}
               renderItem={({item: a}) => <Text>{a.name}</Text>}
             />
