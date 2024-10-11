@@ -328,7 +328,6 @@ export const hr_formsRegister: FormConfigs = {
             return objectState.projectTask?.product;
           },
         },
-        required: true,
       },
       toInvoice: {
         titleKey: 'Hr_ToInvoice',
