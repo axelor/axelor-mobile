@@ -43,7 +43,6 @@ export const sale_modelAPI: ObjectFields = {
     isPrototype: schemaContructor.boolean(),
     isUnrenewed: schemaContructor.boolean(),
     allowToForceSaleQty: schemaContructor.boolean(),
-
     saleProductMultipleQtyList: schemaContructor
       .array()
       .of(schemaContructor.subObject()),

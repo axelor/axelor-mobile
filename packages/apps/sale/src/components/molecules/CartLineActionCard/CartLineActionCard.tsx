@@ -16,7 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import React, {useCallback, useEffect, useMemo, useState} from 'react';
+import React, {useCallback, useEffect, useState} from 'react';
 import {
   useDispatch,
   useNavigation,
@@ -27,8 +27,8 @@ import {ActionCard, useThemeColor} from '@axelor/aos-mobile-ui';
 import {CartLineCard, VariantPopup} from '../../atoms';
 import {deleteCartLine, updateCartLine} from '../../../features/cartLineSlice';
 import {fetchProductById} from '../../../features/productSlice';
-import {fetchProductByIdApi} from '../../../api';
 import {fetchMatchingProduct} from '../../../api/product-api';
+import {useVariantSelection} from '../../../hooks/use-variant-selection';
 
 const TIME_INCREMENT = 2000;
 
@@ -58,23 +58,16 @@ const CartLineActionCard = ({
     (state: any) => state.sale_product,
   );
 
+  const {
+    alertVisible,
+    setAlertVisible,
+    handleVariantSelection,
+    variantAttributes,
+    setSelectedVariants,
+    selectedVariants,
+  } = useVariantSelection(cartLine, parentProduct);
+
   const [diffQty, setDiffQty] = useState(0);
-  const [alertVisible, setAlertVisible] = useState(false);
-  const [selectedVariants, setSelectedVariants] = useState<{
-    productVariantValue1?: any;
-    productVariantValue2?: any;
-    productVariantValue3?: any;
-    productVariantValue4?: any;
-    productVariantValue5?: any;
-  }>({});
-
-  const variantConfig = useMemo(() => {
-    return parentProduct?.productVariantConfig;
-  }, [parentProduct?.productVariantConfig]);
-
-  const currentVariant = useMemo(() => {
-    return cartLine?.variantProduct;
-  }, [cartLine?.variantProduct]);
 
   const handleTimeOut = useCallback(() => {
     if (diffQty !== 0) {
@@ -99,10 +92,6 @@ const CartLineActionCard = ({
     }
   }, [handleTimeOut, diffQty]);
 
-  const handleVariantSelection = () => {
-    setAlertVisible(true);
-  };
-
   const handleConfirm = useCallback(() => {
     fetchMatchingProduct({
       selectedVariants,
@@ -119,94 +108,7 @@ const CartLineActionCard = ({
       }
     });
     setAlertVisible(false);
-  }, [cartId, cartLine, dispatch, selectedVariants]);
-
-  useEffect(() => {
-    if (cartLine?.variantProduct != null) {
-      fetchProductByIdApi({productId: cartLine?.variantProduct?.id})
-        .then(res => {
-          const variantData = res.data.data[0]?.productVariant;
-          if (variantData) {
-            setSelectedVariants({
-              productVariantValue1:
-                variantData.productVariantValue1 ?? undefined,
-              productVariantValue2:
-                variantData.productVariantValue2 ?? undefined,
-              productVariantValue3:
-                variantData.productVariantValue3 ?? undefined,
-              productVariantValue4:
-                variantData.productVariantValue4 ?? undefined,
-              productVariantValue5:
-                variantData.productVariantValue5 ?? undefined,
-            });
-          }
-        })
-        .catch(() => setSelectedVariants({}));
-    }
-  }, [cartLine?.variantProduct, currentVariant]);
-
-  const variantAttributes = useMemo(() => {
-    const filterAvailableValues = (attribute, valueSet) => {
-      if (!attribute || !attribute.productVariantValueList || !valueSet) {
-        return [];
-      }
-
-      return attribute.productVariantValueList.filter(value =>
-        valueSet.some(av => av.id === value.id),
-      );
-    };
-
-    return [
-      {
-        attribute: variantConfig?.productVariantAttr1,
-        values: filterAvailableValues(
-          variantConfig?.productVariantAttr1,
-          parentProduct?.productVariantConfig?.productVariantValue1Set,
-        ),
-        defaultValue: selectedVariants?.productVariantValue1,
-      },
-      {
-        attribute: variantConfig?.productVariantAttr2,
-        values: filterAvailableValues(
-          variantConfig?.productVariantAttr2,
-          parentProduct?.productVariantConfig?.productVariantValue2Set,
-        ),
-        defaultValue: selectedVariants?.productVariantValue2,
-      },
-      {
-        attribute: variantConfig?.productVariantAttr3,
-        values: filterAvailableValues(
-          variantConfig?.productVariantAttr3,
-          parentProduct?.productVariantConfig?.productVariantValue3Set,
-        ),
-        defaultValue: selectedVariants?.productVariantValue3,
-      },
-      {
-        attribute: variantConfig?.productVariantAttr4,
-        values: filterAvailableValues(
-          variantConfig?.productVariantAttr4,
-          parentProduct?.productVariantConfig?.productVariantValue4Set,
-        ),
-        defaultValue: selectedVariants?.productVariantValue4,
-      },
-      {
-        attribute: variantConfig?.productVariantAttr5,
-        values: filterAvailableValues(
-          variantConfig?.productVariantAttr5,
-          parentProduct?.productVariantConfig?.productVariantValue5Set,
-        ),
-        defaultValue: selectedVariants?.productVariantValue5,
-      },
-    ];
-  }, [
-    variantConfig?.productVariantAttr1,
-    variantConfig?.productVariantAttr2,
-    variantConfig?.productVariantAttr3,
-    variantConfig?.productVariantAttr4,
-    variantConfig?.productVariantAttr5,
-    selectedVariants,
-    parentProduct?.productVariantConfig,
-  ]);
+  }, [cartId, cartLine, dispatch, selectedVariants, setAlertVisible]);
 
   return (
     <>
@@ -219,12 +121,12 @@ const CartLineActionCard = ({
             onPress: () => {
               dispatch(
                 (fetchProductById as any)({
-                  productId: cartLine?.variantProduct.id,
+                  productId: cartLine.product.id,
                 }),
               );
-              navigation.navigate('VariantProductsScreen');
+              handleVariantSelection();
             },
-            hidden: cartLine?.variantProduct == null,
+            hidden: cartLine.product?.productVariantConfig == null,
           },
           {
             iconName: 'trash3-fill',
@@ -253,19 +155,6 @@ const CartLineActionCard = ({
             disabled: parseInt(cartLine.qty, 10) + diffQty <= 1,
             onPress: () => setDiffQty(current => current - 1),
             hidden: hideIncrement,
-          },
-          {
-            iconName: 'exposure',
-            helper: I18n.t('Sale_ChooseVariant'),
-            onPress: () => {
-              dispatch(
-                (fetchProductById as any)({
-                  productId: cartLine.product.id,
-                }),
-              );
-              handleVariantSelection();
-            },
-            hidden: cartLine.product?.productVariantConfig == null,
           },
         ]}
         forceActionsDisplay={diffQty !== 0}
