@@ -44,6 +44,7 @@ export {
   fetchVariantProduct as fetchVariantProductApi,
   searchProduct as searchProductApi,
   searchProductCategory as searchProductCategoryApi,
+  fetchMatchingProduct as fetchMatchingProductApi,
 } from './product-api';
 export {fetchSaleConfig as fetchSaleConfigApi} from './sale-config-api';
 export {
