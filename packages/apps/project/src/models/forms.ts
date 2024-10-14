@@ -39,6 +39,7 @@ import {
   TaskStatusSearchBar,
 } from '../components';
 import {updateProject} from '../features/projectSlice';
+import {updateProjectTaskCategory} from '../features/projectTaskSlice';
 
 export const project_formsRegister: FormConfigs = {
   project_TimesheetLine: {
@@ -181,6 +182,22 @@ export const project_formsRegister: FormConfigs = {
         },
         parentPanel: 'parentContainer',
       },
+      projectTaskCategory: {
+        titleKey: 'Project_Category',
+        type: 'object',
+        widget: 'custom',
+        customComponent: CategorySearchBar,
+        hideIf: ({storeState}) =>
+          !storeState.project_project.projectForm?.isShowTaskCategory,
+        requiredIf: ({storeState}) =>
+          storeState.project_project.projectForm?.taskStatusManagementSelect ===
+          getTypes().Project.taskStatusManagementSelect?.ManageByCategory,
+        dependsOn: {
+          project: () => {
+            return null;
+          },
+        },
+      },
       status: {
         titleKey: 'Project_Status',
         type: 'object',
@@ -189,16 +206,25 @@ export const project_formsRegister: FormConfigs = {
         hideIf: ({storeState}) => {
           return (
             storeState.project_project.projectForm
-              ?.taskStatusManagementSelect !==
-            getTypes().Project.taskStatusManagementSelect?.ManageByProject
+              ?.taskStatusManagementSelect ===
+            getTypes().Project.taskStatusManagementSelect?.NoStatusManagement
           );
         },
         requiredIf: ({storeState}) =>
-          storeState.project_project.projectForm?.taskStatusManagementSelect ===
-          getTypes().Project.taskStatusManagementSelect?.ManageByProject,
+          storeState.project_project.projectForm?.taskStatusManagementSelect !==
+          getTypes().Project.taskStatusManagementSelect?.NoStatusManagement,
         dependsOn: {
           project: () => {
             return null;
+          },
+          projectTaskCategory: ({newValue, storeState, dispatch}) => {
+            if (
+              storeState.project_project.projectForm
+                ?.taskStatusManagementSelect ===
+              getTypes().Project.taskStatusManagementSelect?.ManageByCategory
+            ) {
+              dispatch(updateProjectTaskCategory(newValue));
+            }
           },
         },
       },
@@ -222,22 +248,6 @@ export const project_formsRegister: FormConfigs = {
         widget: 'custom',
         customComponent: UserSearchBar,
         required: true,
-      },
-      projectTaskCategory: {
-        titleKey: 'Project_Category',
-        type: 'object',
-        widget: 'custom',
-        customComponent: CategorySearchBar,
-        hideIf: ({storeState}) =>
-          !storeState.project_project.projectForm?.isShowTaskCategory,
-        requiredIf: ({storeState}) =>
-          storeState.project_project.projectForm?.taskStatusManagementSelect ===
-          getTypes().Project.taskStatusManagementSelect?.ManageByCategory,
-        dependsOn: {
-          project: () => {
-            return null;
-          },
-        },
       },
       projectTaskSection: {
         titleKey: 'Project_Section',

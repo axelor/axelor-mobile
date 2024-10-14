@@ -22,6 +22,7 @@ import {
   useDispatch,
   useSelector,
   useTranslator,
+  useTypes,
 } from '@axelor/aos-mobile-core';
 import {AutoCompleteSearch} from '@axelor/aos-mobile-ui';
 import {searchStatus} from '../../../features/projectTaskSlice';
@@ -47,15 +48,39 @@ const TaskStatusSearchBarAux = ({
 }: TaskStatusSearchBarProps) => {
   const I18n = useTranslator();
   const dispatch = useDispatch();
+  const {Project} = useTypes();
 
-  const {loadingStatus, moreLoadingStatus, isListEndStatus, statusList} =
-    useSelector((state: any) => state.project_projectTask);
+  const {
+    loadingStatus,
+    moreLoadingStatus,
+    isListEndStatus,
+    statusList,
+    projectTaskCategory,
+  } = useSelector((state: any) => state.project_projectTask);
   const {projectForm} = useSelector((state: any) => state.project_project);
 
-  const statusIds = useMemo(
-    () => projectForm?.projectTaskStatusSet?.map(status => status.id),
-    [projectForm?.projectTaskStatusSet],
-  );
+  const statusIds = useMemo(() => {
+    if (
+      projectForm?.taskStatusManagementSelect ===
+      Project.taskStatusManagementSelect.ManageByProject
+    ) {
+      return projectForm?.projectTaskStatusSet?.map(status => status.id);
+    } else if (
+      projectForm?.taskStatusManagementSelect ===
+        Project.taskStatusManagementSelect.ManageByCategory &&
+      projectTaskCategory
+    ) {
+      return projectTaskCategory?.projectTaskStatusSet?.map(
+        status => status.id,
+      );
+    }
+  }, [
+    Project.taskStatusManagementSelect.ManageByCategory,
+    Project.taskStatusManagementSelect.ManageByProject,
+    projectForm?.projectTaskStatusSet,
+    projectForm?.taskStatusManagementSelect,
+    projectTaskCategory,
+  ]);
 
   const searchStatusAPI = useCallback(
     ({page = 0, searchValue}) => {
