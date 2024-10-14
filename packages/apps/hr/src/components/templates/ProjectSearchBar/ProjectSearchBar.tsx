@@ -33,6 +33,8 @@ interface ProjectSearchBarProps {
   onChange?: (any: any) => void;
   readonly?: boolean;
   required?: boolean;
+  isBusinessProject?: boolean;
+  manageTimeSpent?: boolean;
 }
 
 const ProjectSearchBarAux = ({
@@ -42,6 +44,8 @@ const ProjectSearchBarAux = ({
   onChange = () => {},
   readonly = false,
   required = false,
+  isBusinessProject = false,
+  manageTimeSpent = false,
 }: ProjectSearchBarProps) => {
   const I18n = useTranslator();
   const dispatch = useDispatch();
@@ -58,10 +62,12 @@ const ProjectSearchBarAux = ({
           page,
           searchValue,
           activeCompanyId: user?.activeCompany?.id,
+          isBusinessProject: isBusinessProject,
+          manageTimeSpent: manageTimeSpent,
         }),
       );
     },
-    [dispatch, user?.activeCompany?.id],
+    [dispatch, isBusinessProject, manageTimeSpent, user?.activeCompany?.id],
   );
 
   return (
@@ -93,6 +99,8 @@ const ProjectSearchBar = ({
   onChange = () => {},
   readonly = false,
   required = false,
+  isBusinessProject = false,
+  manageTimeSpent = false,
 }: ProjectSearchBarProps) => {
   return (
     <ProjectSearchBarAux
@@ -102,6 +110,8 @@ const ProjectSearchBar = ({
       onChange={onChange}
       readonly={readonly}
       required={required}
+      isBusinessProject={isBusinessProject}
+      manageTimeSpent={manageTimeSpent}
     />
   );
 };
