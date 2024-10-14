@@ -1,0 +1,5 @@
+{
+  "title": "TimesheetLine form: hide activity field when it's not managed",
+  "type": "fix",
+  "packages": "hr"
+}
