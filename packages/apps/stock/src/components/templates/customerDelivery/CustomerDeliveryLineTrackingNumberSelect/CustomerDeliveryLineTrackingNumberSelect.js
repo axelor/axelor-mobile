@@ -47,7 +47,6 @@ const CustomerDeliveryLineTrackingNumberSelect = ({
     <ProductTrackingNumberSelect
       trackingNumber={trackingNumber}
       product={product}
-      visible={true}
       trackingScanKey={trackingScanKey}
       onAddTrackingNumber={handleAddTrackingNumber}
     />
