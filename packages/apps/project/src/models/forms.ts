@@ -16,7 +16,12 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import {FormConfigs, isEmpty, UserSearchBar} from '@axelor/aos-mobile-core';
+import {
+  FormConfigs,
+  isEmpty,
+  UserSearchBar,
+  getTypes,
+} from '@axelor/aos-mobile-core';
 import {
   ProductSearchBar,
   ProjectSearchBar as HRProjectSearchBar,
@@ -181,9 +186,16 @@ export const project_formsRegister: FormConfigs = {
         type: 'object',
         widget: 'custom',
         customComponent: TaskStatusSearchBar,
-        hideIf: ({storeState}) =>
-          !storeState.project_project.projectForm?.isShowStatus,
-        required: true,
+        hideIf: ({storeState}) => {
+          return (
+            storeState.project_project.projectForm
+              ?.taskStatusManagementSelect !==
+            getTypes().Project.taskStatusManagementSelect?.ManageByProject
+          );
+        },
+        requiredIf: ({storeState}) =>
+          storeState.project_project.projectForm?.taskStatusManagementSelect ===
+          getTypes().Project.taskStatusManagementSelect?.ManageByProject,
         dependsOn: {
           project: () => {
             return null;
@@ -218,6 +230,9 @@ export const project_formsRegister: FormConfigs = {
         customComponent: CategorySearchBar,
         hideIf: ({storeState}) =>
           !storeState.project_project.projectForm?.isShowTaskCategory,
+        requiredIf: ({storeState}) =>
+          storeState.project_project.projectForm?.taskStatusManagementSelect ===
+          getTypes().Project.taskStatusManagementSelect?.ManageByCategory,
         dependsOn: {
           project: () => {
             return null;

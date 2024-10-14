@@ -71,6 +71,7 @@ const TaskListScreen = ({navigation}) => {
             project={project}
             setProject={setProject}
             showProjectSearchBar
+            selectedCategory={selectedCategory}
           />
         }
         list={projectTaskList}

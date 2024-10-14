@@ -24,6 +24,7 @@ import {
   useSelector,
   useTranslator,
   useTypeHelpers,
+  useTypes,
 } from '@axelor/aos-mobile-core';
 import {
   fetchProjectTaskStatus,
@@ -48,6 +49,7 @@ const TaskFilters = ({
   project,
   setProject,
   showProjectSearchBar = false,
+  selectedCategory,
 }: {
   isAssignedToMe: boolean;
   setSelectedCategory: SetterFunction;
@@ -57,25 +59,57 @@ const TaskFilters = ({
   project?: any;
   setProject?: SetterFunction;
   showProjectSearchBar?: boolean;
+  selectedCategory?: any;
 }) => {
   const I18n = useTranslator();
   const dispatch = useDispatch();
+  const {Project} = useTypes();
   const {getCustomSelectionItems} = useTypeHelpers();
 
   const {projectTaskStatusList, projectPriorityList, projectCategoryList} =
     useSelector((state: any) => state.project_projectTask);
+
+  const fullSelectedCategory = useMemo(() => {
+    if (!selectedCategory || !selectedCategory[0]) {
+      return null;
+    }
+    return projectCategoryList.find(
+      category => category.id === selectedCategory[0].value,
+    );
+  }, [selectedCategory, projectCategoryList]);
 
   const statusList = useMemo(() => {
     const _list = getCustomSelectionItems(projectTaskStatusList, 'name', []);
 
     if (project == null) {
       return _list;
-    } else if (!project.isShowStatus) {
+    } else if (
+      project?.taskStatusManagementSelect ===
+      Project.taskStatusManagementSelect.NoStatusManagement
+    ) {
       return [];
-    } else {
+    } else if (
+      project?.taskStatusManagementSelect ===
+      Project.taskStatusManagementSelect.ManageByProject
+    ) {
       return filterAvailableSet(project.projectTaskStatusSet, _list);
+    } else if (
+      project?.taskStatusManagementSelect ===
+        Project.taskStatusManagementSelect.ManageByCategory &&
+      fullSelectedCategory
+    ) {
+      return filterAvailableSet(
+        fullSelectedCategory?.projectTaskStatusSet,
+        _list,
+      );
     }
-  }, [getCustomSelectionItems, projectTaskStatusList, project]);
+  }, [
+    getCustomSelectionItems,
+    projectTaskStatusList,
+    project,
+    Project.taskStatusManagementSelect,
+    fullSelectedCategory,
+  ]);
 
   const priorityList = useMemo(() => {
     const _list = getCustomSelectionItems(projectPriorityList, 'name', []);
