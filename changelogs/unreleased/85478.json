@@ -1,5 +1,5 @@
 {
-  "title": "FormView: tools visible by default when toolbox is enabled",
+  "title": "FloatingButton: make tools expanded when visible by default",
   "type": "fix",
   "packages": "ui"
 }
