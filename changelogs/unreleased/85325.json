@@ -1,0 +1,5 @@
+{
+  "title": "GlobalToolbox: add configuration to activate/desactivate",
+  "type": "feat",
+  "packages": ["ui", "core"]
+}
