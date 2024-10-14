@@ -24,12 +24,12 @@ import {
 const createProjectCriteria = (searchValue, activeCompanyId) => {
   const criteria = [
     {
-      fieldName: 'imputable',
+      fieldName: 'isBusinessProject',
       operator: '=',
       value: true,
     },
     {
-      fieldName: 'isShowTimeSpent',
+      fieldName: 'manageTimeSpent',
       operator: '=',
       value: true,
     },
