@@ -306,7 +306,7 @@ export const hr_formsRegister: FormConfigs = {
         hideIf: ({storeState}) =>
           !storeState.appConfig.mobileSettings?.fieldsToShowOnTimesheet.find(
             (field: string) => field === 'product',
-          ),
+          ) || !storeState.appConfig.timesheet?.enableActivity,
         dependsOn: {
           projectTask: ({objectState}) => {
             return objectState.projectTask?.product;
