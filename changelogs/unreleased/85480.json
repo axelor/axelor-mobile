@@ -1,0 +1,5 @@
+{
+  "title": "Form views: add edition mode by default when user navigates to create or modify an object",
+  "type": "fix",
+  "packages": ["hr", "intervention"]
+}
