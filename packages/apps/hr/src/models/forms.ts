@@ -102,7 +102,6 @@ export const hr_formsRegister: FormConfigs = {
           isBusinessProject: true,
         },
       },
-
       projectTask: {
         titleKey: 'Hr_ProjectTask',
         type: 'object',
