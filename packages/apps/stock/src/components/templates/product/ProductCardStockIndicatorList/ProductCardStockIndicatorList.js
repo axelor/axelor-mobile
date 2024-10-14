@@ -75,6 +75,7 @@ const ProductCardStockIndicatorList = ({}) => {
               },
             ]}
             widthGraph={Dimensions.get('window').width * 0.4}
+            translator={I18n.t}
           />
         );
       }
