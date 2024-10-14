@@ -54,7 +54,7 @@ const FloatingButton = ({
   });
 
   const [isOpen, setIsOpen] = useState(defaultOpenValue);
-  const [expanded, setExpanded] = useState(false);
+  const [expanded, setExpanded] = useState(defaultOpenValue);
 
   const styles = useMemo(() => getStyles(Colors), [Colors]);
 
