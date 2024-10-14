@@ -44,6 +44,7 @@ interface ConfigContextState {
   hideVirtualKeyboard: boolean;
   showActivityIndicator: boolean;
   showSubtitles: boolean;
+  showToolbox: boolean;
   headerHeight: number;
   blockInteractionConfig: BlockInteractionConfig;
   nbDecimalDigitForQty: number;
@@ -54,6 +55,7 @@ interface ConfigContextState {
   setNbDecimalDigitForUnitPrice: (option: number) => void;
   setActivityIndicator: (option: boolean) => void;
   setShowSubtitles: (option: boolean) => void;
+  setShowToolbox: (option: boolean) => void;
   setFilterConfig: (option: boolean) => void;
   toggleFilterConfig: () => void;
   setVirtualKeyboardConfig: (option: boolean) => void;
@@ -72,6 +74,7 @@ const defaultConfigContext = {
   hideVirtualKeyboard: false,
   showActivityIndicator: false,
   showSubtitles: false,
+  showToolbox: true,
   headerHeight: 60,
   blockInteractionConfig: {
     visible: false,
@@ -101,6 +104,11 @@ const defaultConfigContext = {
   },
   setShowSubtitles: () => {
     throw new Error('ConfigProvider should be mounted to set subtitles config');
+  },
+  setShowToolbox: () => {
+    throw new Error(
+      'ConfigProvider should be mounted to set showToolbox config',
+    );
   },
   setFilterConfig: () => {
     throw new Error('ConfigProvider should be mounted to set filter config');
@@ -137,6 +145,7 @@ const actionTypes = {
   toggleFilterConfig: 'toggleFilterConfig',
   setVirtualKeyboardConfig: 'setVirtualKeyboardConfig',
   setShowSubtitles: 'setShowSubtitles',
+  setShowToolbox: 'setShowToolbox',
   toggleVirtualKeyboardConfig: 'toggleVirtualKeyboardConfig',
   setActivityIndicator: 'setActivityIndicator',
   setHeaderHeight: 'setHeaderHeight',
@@ -179,6 +188,12 @@ const configReducer = (
       return {
         ...state,
         showSubtitles: action.payload as boolean,
+      };
+    }
+    case actionTypes.setShowToolbox: {
+      return {
+        ...state,
+        showToolbox: action.payload as boolean,
       };
     }
     case actionTypes.setFilterConfig: {
@@ -243,6 +258,10 @@ const actions = {
     type: actionTypes.setShowSubtitles,
     payload: option,
   }),
+  setShowToolbox: option => ({
+    type: actionTypes.setShowToolbox,
+    payload: option,
+  }),
   setFilterConfig: option => ({
     type: actionTypes.setFilterConfig,
     payload: option,
@@ -293,6 +312,10 @@ export const ConfigProvider = ({children, showModulesSubtitle}) => {
     option => dispatch(actions.setShowSubtitles(option)),
     [],
   );
+  const setShowToolbox = useCallback(
+    option => dispatch(actions.setShowToolbox(option)),
+    [],
+  );
   const setFilterConfig = useCallback(
     option => dispatch(actions.setFilterConfig(option)),
     [],
@@ -324,6 +347,7 @@ export const ConfigProvider = ({children, showModulesSubtitle}) => {
       setNbDecimalDigitForUnitPrice,
       setActivityIndicator,
       setShowSubtitles,
+      setShowToolbox,
       setFilterConfig,
       toggleFilterConfig,
       setVirtualKeyboardConfig,
@@ -338,6 +362,7 @@ export const ConfigProvider = ({children, showModulesSubtitle}) => {
       setNbDecimalDigitForUnitPrice,
       setActivityIndicator,
       setShowSubtitles,
+      setShowToolbox,
       setFilterConfig,
       toggleFilterConfig,
       setVirtualKeyboardConfig,
