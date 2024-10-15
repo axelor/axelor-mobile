@@ -20,7 +20,7 @@ import React, {useCallback} from 'react';
 import {useDispatch, useSelector, useTranslator} from '@axelor/aos-mobile-core';
 import {ActionCard} from '@axelor/aos-mobile-ui';
 import {CartLineCard, VariantPopup} from '../../atoms';
-import {fetchProductById} from '../../../features/productSlice';
+import {fetchproductVariantConfig} from '../../../features/productSlice';
 import {fetchMatchingProduct} from '../../../api/product-api';
 import {useVariantSelection} from '../../../hooks/use-variant-selection';
 
@@ -33,7 +33,7 @@ const CatalogActionCard = ({style, product}: CatalogActionCardProps) => {
   const I18n = useTranslator();
   const dispatch = useDispatch();
 
-  const {product: parentProduct} = useSelector(
+  const {productVariantConfig} = useSelector(
     (state: any) => state.sale_product,
   );
 
@@ -44,7 +44,7 @@ const CatalogActionCard = ({style, product}: CatalogActionCardProps) => {
     variantAttributes,
     setSelectedVariants,
     selectedVariants,
-  } = useVariantSelection(product, parentProduct);
+  } = useVariantSelection(product, productVariantConfig);
 
   const handleConfirm = useCallback(() => {
     fetchMatchingProduct({
@@ -72,8 +72,8 @@ const CatalogActionCard = ({style, product}: CatalogActionCardProps) => {
             helper: I18n.t('Sale_SeeVariants'),
             onPress: () => {
               dispatch(
-                (fetchProductById as any)({
-                  productId: product.id,
+                (fetchproductVariantConfig as any)({
+                  productVariantConfigId: product.productVariantConfig?.id,
                 }),
               );
               handleVariantSelection();
