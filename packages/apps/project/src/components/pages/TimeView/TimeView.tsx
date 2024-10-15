@@ -16,17 +16,22 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import React, {useEffect, useMemo} from 'react';
+import React, {ReactNode, useEffect, useMemo} from 'react';
 import {StyleSheet, View} from 'react-native';
-import {FormView, useDispatch, useSelector} from '@axelor/aos-mobile-core';
+import {FormView, useDispatch} from '@axelor/aos-mobile-core';
 import {HeaderContainer} from '@axelor/aos-mobile-ui';
 import {updateProject} from '@axelor/aos-mobile-hr';
-import {ProjectHeader} from '../../molecules';
 
-const TimeView = () => {
+const TimeView = ({
+  project,
+  projectTask,
+  headerComponent,
+}: {
+  project: any;
+  projectTask?: any;
+  headerComponent: ReactNode;
+}) => {
   const dispatch = useDispatch();
-
-  const {project} = useSelector((state: any) => state.project_project);
 
   useEffect(() => {
     dispatch(updateProject(project));
@@ -34,17 +39,16 @@ const TimeView = () => {
 
   const defaultValue = useMemo(() => {
     return {
-      project: project,
+      project,
+      projectTask,
+      isTaskLog: projectTask != null,
       date: new Date().toISOString().split('T')[0],
     };
-  }, [project]);
+  }, [project, projectTask]);
 
   return (
     <View>
-      <HeaderContainer
-        expandableFilter={false}
-        fixedItems={<ProjectHeader />}
-      />
+      <HeaderContainer expandableFilter={false} fixedItems={headerComponent} />
       <View style={styles.container}>
         <FormView
           formKey="project_TimesheetLine"
