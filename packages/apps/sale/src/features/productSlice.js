@@ -27,6 +27,7 @@ import {
   fetchVariantProduct as _fetchVariantProduct,
   searchProduct as _searchProduct,
   searchProductCategory as _searchProductCategory,
+  fetchproductVariantConfig as _fetchproductVariantConfig,
 } from '../api/product-api';
 
 export const searchProduct = createAsyncThunk(
@@ -62,6 +63,19 @@ export const fetchProductById = createAsyncThunk(
       fetchFunction: _fetchProductById,
       data,
       action: 'Sale_SliceAction_FetchProductById',
+      getState,
+      responseOptions: {isArrayResponse: false},
+    });
+  },
+);
+
+export const fetchproductVariantConfig = createAsyncThunk(
+  'sale_product/fetchproductVariantConfig',
+  async function (data, {getState}) {
+    return handlerApiCall({
+      fetchFunction: _fetchproductVariantConfig,
+      data,
+      action: 'Sale_SliceAction_fetchproductVariantConfig',
       getState,
       responseOptions: {isArrayResponse: false},
     });
@@ -115,6 +129,8 @@ const initialState = {
   moreLoadingProductCategory: false,
   isListEndProductCategory: false,
   productCategoryList: [],
+
+  productVariantConfig: {},
 };
 
 const productSlice = createSlice({
@@ -150,6 +166,9 @@ const productSlice = createSlice({
     builder.addCase(fetchProductCompanyConfig.fulfilled, (state, action) => {
       state.productCompany = action.payload;
       state.product = mergeConfigs(state._product, action.payload);
+    });
+    builder.addCase(fetchproductVariantConfig.fulfilled, (state, action) => {
+      state.productVariantConfig = action.payload ?? {};
     });
   },
 });
