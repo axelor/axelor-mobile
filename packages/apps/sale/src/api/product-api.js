@@ -258,7 +258,7 @@ export async function fetchVariantAttributes({productVariantId, version}) {
   });
 }
 
-export async function fetchproductVariantConfig({productVariantConfigId}) {
+export async function fetchProductVariantConfig({productVariantConfigId}) {
   return createStandardFetch({
     model: 'com.axelor.apps.base.db.ProductVariantConfig',
     id: productVariantConfigId,

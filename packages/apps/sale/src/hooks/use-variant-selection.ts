@@ -19,7 +19,7 @@
 import {useEffect, useState, useMemo} from 'react';
 import {fetchProductByIdApi} from '../api/';
 
-export const useVariantSelection = (cartLine, productVariantConfig) => {
+export const useVariantSelection = (product, productVariantConfig) => {
   const [selectedVariants, setSelectedVariants] = useState<{
     productVariantValue1?: any;
     productVariantValue2?: any;
@@ -39,8 +39,8 @@ export const useVariantSelection = (cartLine, productVariantConfig) => {
   };
 
   useEffect(() => {
-    if (cartLine?.variantProduct != null && productVariantConfig) {
-      fetchProductByIdApi({productId: cartLine?.variantProduct?.id})
+    if (product?.variantProduct != null && productVariantConfig) {
+      fetchProductByIdApi({productId: product?.variantProduct?.id})
         .then(res => {
           const variantData = res.data.data[0]?.productVariant;
           if (variantData) {
@@ -60,7 +60,7 @@ export const useVariantSelection = (cartLine, productVariantConfig) => {
         })
         .catch(() => setSelectedVariants({}));
     }
-  }, [cartLine?.variantProduct, productVariantConfig]);
+  }, [product?.variantProduct, productVariantConfig]);
 
   const variantAttributes = useMemo(() => {
     if (!variantConfig || !productVariantConfig) {

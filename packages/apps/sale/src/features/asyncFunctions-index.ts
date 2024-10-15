@@ -39,6 +39,7 @@ export {fetchPriceListLine} from './priceListLineSlice';
 export {
   fetchProductById,
   fetchProductCompanyConfig,
+  fetchProductVariantConfig,
   fetchVariantProduct,
   searchProduct,
   searchProductCategory,
