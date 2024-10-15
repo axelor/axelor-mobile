@@ -20,7 +20,7 @@ import React, {useCallback} from 'react';
 import {useDispatch, useSelector, useTranslator} from '@axelor/aos-mobile-core';
 import {ActionCard} from '@axelor/aos-mobile-ui';
 import {CartLineCard, VariantPopup} from '../../atoms';
-import {fetchproductVariantConfig} from '../../../features/productSlice';
+import {fetchProductVariantConfig} from '../../../features/productSlice';
 import {fetchMatchingProduct} from '../../../api/product-api';
 import {useVariantSelection} from '../../../hooks/use-variant-selection';
 
@@ -47,11 +47,10 @@ const CatalogActionCard = ({style, product}: CatalogActionCardProps) => {
   } = useVariantSelection(product, productVariantConfig);
 
   const handleConfirm = useCallback(() => {
-    fetchMatchingProduct({
-      selectedVariants,
-    }).then(res => {
-      if (res?.data?.data[0] != null) {
-        console.log('res?.data?.data[0] ', res?.data?.data[0]);
+    fetchMatchingProduct({selectedVariants}).then(res => {
+      const variantProduct = res?.data?.data?.[0];
+      if (variantProduct) {
+        console.log('variantProduct ', variantProduct);
       }
     });
     setAlertVisible(false);
@@ -65,20 +64,18 @@ const CatalogActionCard = ({style, product}: CatalogActionCardProps) => {
           {
             iconName: 'plus-lg',
             helper: I18n.t('Sale_AddOne'),
-            onPress: () => {},
-          },
-          {
-            iconName: 'palette2',
-            helper: I18n.t('Sale_SeeVariants'),
-            onPress: () => {
-              dispatch(
-                (fetchproductVariantConfig as any)({
-                  productVariantConfigId: product.productVariantConfig?.id,
-                }),
-              );
-              handleVariantSelection();
-            },
-            hidden: product?.productVariantConfig == null,
+            onPress:
+              product?.productVariantConfig == null
+                ? () => {}
+                : () => {
+                    dispatch(
+                      (fetchProductVariantConfig as any)({
+                        productVariantConfigId:
+                          product.productVariantConfig?.id,
+                      }),
+                    );
+                    handleVariantSelection();
+                  },
           },
         ]}
         translator={I18n.t}>

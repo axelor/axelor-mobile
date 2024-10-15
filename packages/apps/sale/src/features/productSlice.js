@@ -27,7 +27,7 @@ import {
   fetchVariantProduct as _fetchVariantProduct,
   searchProduct as _searchProduct,
   searchProductCategory as _searchProductCategory,
-  fetchproductVariantConfig as _fetchproductVariantConfig,
+  fetchProductVariantConfig as _fetchProductVariantConfig,
 } from '../api/product-api';
 
 export const searchProduct = createAsyncThunk(
@@ -69,13 +69,13 @@ export const fetchProductById = createAsyncThunk(
   },
 );
 
-export const fetchproductVariantConfig = createAsyncThunk(
-  'sale_product/fetchproductVariantConfig',
+export const fetchProductVariantConfig = createAsyncThunk(
+  'sale_product/fetchProductVariantConfig',
   async function (data, {getState}) {
     return handlerApiCall({
-      fetchFunction: _fetchproductVariantConfig,
+      fetchFunction: _fetchProductVariantConfig,
       data,
-      action: 'Sale_SliceAction_fetchproductVariantConfig',
+      action: 'Sale_SliceAction_fetchProductVariantConfig',
       getState,
       responseOptions: {isArrayResponse: false},
     });
@@ -167,7 +167,7 @@ const productSlice = createSlice({
       state.productCompany = action.payload;
       state.product = mergeConfigs(state._product, action.payload);
     });
-    builder.addCase(fetchproductVariantConfig.fulfilled, (state, action) => {
+    builder.addCase(fetchProductVariantConfig.fulfilled, (state, action) => {
       state.productVariantConfig = action.payload ?? {};
     });
   },

@@ -26,7 +26,7 @@ import {
 import {ActionCard, useThemeColor} from '@axelor/aos-mobile-ui';
 import {CartLineCard, VariantPopup} from '../../atoms';
 import {deleteCartLine, updateCartLine} from '../../../features/cartLineSlice';
-import {fetchproductVariantConfig} from '../../../features/productSlice';
+import {fetchProductVariantConfig} from '../../../features/productSlice';
 import {fetchMatchingProduct} from '../../../api/product-api';
 import {useVariantSelection} from '../../../hooks/use-variant-selection';
 
@@ -93,20 +93,23 @@ const CartLineActionCard = ({
   }, [handleTimeOut, diffQty]);
 
   const handleConfirm = useCallback(() => {
-    fetchMatchingProduct({
-      selectedVariants,
-    }).then(res => {
-      if (res?.data?.data[0] != null) {
-        dispatch(
-          (updateCartLine as any)({
-            cartLine: cartLine,
-            qty: cartLine.qty,
-            variantProduct: res.data.data[0],
-            cartId: cartId,
-          }),
-        );
-      }
-    });
+    fetchMatchingProduct({selectedVariants})
+      .then(res => {
+        const variantProduct = res?.data?.data?.[0];
+        if (variantProduct) {
+          dispatch(
+            (updateCartLine as any)({
+              cartLine,
+              qty: cartLine.qty,
+              variantProduct,
+              cartId,
+            }),
+          );
+        }
+      })
+      .catch(error => {
+        console.error('Error fetching matching product:', error);
+      });
     setAlertVisible(false);
   }, [cartId, cartLine, dispatch, selectedVariants, setAlertVisible]);
 
@@ -120,7 +123,7 @@ const CartLineActionCard = ({
             helper: I18n.t('Sale_SeeVariants'),
             onPress: () => {
               dispatch(
-                (fetchproductVariantConfig as any)({
+                (fetchProductVariantConfig as any)({
                   productVariantConfigId:
                     cartLine.product.productVariantConfig?.id,
                 }),

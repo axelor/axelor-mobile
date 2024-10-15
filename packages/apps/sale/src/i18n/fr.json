@@ -169,5 +169,6 @@
   "Sale_SliceAction_ValidateCart": "validation du panier et création du devis",
   "Sale_SliceAction_EmptyCart": "vidage du panier",
   "Sale_SliceAction_UpdateSaleOrderStatus": "mise à jour du statut de la commande",
-  "Sale_SliceAction_AddCartLine": "ajout d'une ligne au panier"
+  "Sale_SliceAction_AddCartLine": "ajout d'une ligne au panier",
+  "Sale_SliceAction_fetchProductVariantConfig": "récupérer la configuration de la variante du produit"
 }

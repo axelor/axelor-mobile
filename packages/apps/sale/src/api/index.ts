@@ -40,6 +40,7 @@ export {fetchPriceListLine as fetchPriceListLineApi} from './price-list-line-api
 export {
   fetchProductById as fetchProductByIdApi,
   fetchProductCompanyConfig as fetchProductCompanyConfigApi,
+  fetchProductVariantConfig as fetchProductVariantConfigApi,
   fetchVariantAttributes as fetchVariantAttributesApi,
   fetchVariantProduct as fetchVariantProductApi,
   searchProduct as searchProductApi,
