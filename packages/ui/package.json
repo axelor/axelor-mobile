@@ -37,6 +37,7 @@
     "react-native-webview": "11.26.1"
   },
   "devDependencies": {
+    "@react-native-community/slider": "^4.5.3",
     "@babel/runtime": "^7.20.0",
     "@react-native/babel-preset": "0.73.21",
     "@react-native/eslint-config": "0.73.2",
