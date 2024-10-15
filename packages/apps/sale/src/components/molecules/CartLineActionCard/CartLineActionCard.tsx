@@ -26,7 +26,7 @@ import {
 import {ActionCard, useThemeColor} from '@axelor/aos-mobile-ui';
 import {CartLineCard, VariantPopup} from '../../atoms';
 import {deleteCartLine, updateCartLine} from '../../../features/cartLineSlice';
-import {fetchProductById} from '../../../features/productSlice';
+import {fetchproductVariantConfig} from '../../../features/productSlice';
 import {fetchMatchingProduct} from '../../../api/product-api';
 import {useVariantSelection} from '../../../hooks/use-variant-selection';
 
@@ -54,7 +54,7 @@ const CartLineActionCard = ({
   const navigation = useNavigation();
   const dispatch = useDispatch();
 
-  const {product: parentProduct} = useSelector(
+  const {productVariantConfig} = useSelector(
     (state: any) => state.sale_product,
   );
 
@@ -65,7 +65,7 @@ const CartLineActionCard = ({
     variantAttributes,
     setSelectedVariants,
     selectedVariants,
-  } = useVariantSelection(cartLine, parentProduct);
+  } = useVariantSelection(cartLine, productVariantConfig);
 
   const [diffQty, setDiffQty] = useState(0);
 
@@ -120,8 +120,9 @@ const CartLineActionCard = ({
             helper: I18n.t('Sale_SeeVariants'),
             onPress: () => {
               dispatch(
-                (fetchProductById as any)({
-                  productId: cartLine.product.id,
+                (fetchproductVariantConfig as any)({
+                  productVariantConfigId:
+                    cartLine.product.productVariantConfig?.id,
                 }),
               );
               handleVariantSelection();

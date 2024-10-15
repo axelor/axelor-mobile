@@ -19,7 +19,7 @@
 import {useEffect, useState, useMemo} from 'react';
 import {fetchProductByIdApi} from '../api/';
 
-export const useVariantSelection = (cartLine, parentProduct) => {
+export const useVariantSelection = (cartLine, productVariantConfig) => {
   const [selectedVariants, setSelectedVariants] = useState<{
     productVariantValue1?: any;
     productVariantValue2?: any;
@@ -31,15 +31,15 @@ export const useVariantSelection = (cartLine, parentProduct) => {
   const [alertVisible, setAlertVisible] = useState(false);
 
   const variantConfig = useMemo(() => {
-    return parentProduct?.productVariantConfig || null;
-  }, [parentProduct?.productVariantConfig]);
+    return productVariantConfig || null;
+  }, [productVariantConfig]);
 
   const handleVariantSelection = () => {
     setAlertVisible(true);
   };
 
   useEffect(() => {
-    if (cartLine?.variantProduct != null && parentProduct) {
+    if (cartLine?.variantProduct != null && productVariantConfig) {
       fetchProductByIdApi({productId: cartLine?.variantProduct?.id})
         .then(res => {
           const variantData = res.data.data[0]?.productVariant;
@@ -60,10 +60,10 @@ export const useVariantSelection = (cartLine, parentProduct) => {
         })
         .catch(() => setSelectedVariants({}));
     }
-  }, [cartLine?.variantProduct, parentProduct]);
+  }, [cartLine?.variantProduct, productVariantConfig]);
 
   const variantAttributes = useMemo(() => {
-    if (!variantConfig || !parentProduct) {
+    if (!variantConfig || !productVariantConfig) {
       return [];
     }
 
@@ -81,7 +81,7 @@ export const useVariantSelection = (cartLine, parentProduct) => {
         attribute: variantConfig.productVariantAttr1,
         values: filterAvailableValues(
           variantConfig.productVariantAttr1,
-          parentProduct.productVariantConfig?.productVariantValue1Set,
+          productVariantConfig?.productVariantValue1Set,
         ),
         defaultValue: selectedVariants?.productVariantValue1,
       },
@@ -89,7 +89,7 @@ export const useVariantSelection = (cartLine, parentProduct) => {
         attribute: variantConfig.productVariantAttr2,
         values: filterAvailableValues(
           variantConfig.productVariantAttr2,
-          parentProduct.productVariantConfig?.productVariantValue2Set,
+          productVariantConfig?.productVariantValue2Set,
         ),
         defaultValue: selectedVariants?.productVariantValue2,
       },
@@ -97,7 +97,7 @@ export const useVariantSelection = (cartLine, parentProduct) => {
         attribute: variantConfig.productVariantAttr3,
         values: filterAvailableValues(
           variantConfig.productVariantAttr3,
-          parentProduct.productVariantConfig?.productVariantValue3Set,
+          productVariantConfig?.productVariantValue3Set,
         ),
         defaultValue: selectedVariants?.productVariantValue3,
       },
@@ -105,7 +105,7 @@ export const useVariantSelection = (cartLine, parentProduct) => {
         attribute: variantConfig.productVariantAttr4,
         values: filterAvailableValues(
           variantConfig.productVariantAttr4,
-          parentProduct.productVariantConfig?.productVariantValue4Set,
+          productVariantConfig?.productVariantValue4Set,
         ),
         defaultValue: selectedVariants?.productVariantValue4,
       },
@@ -113,12 +113,20 @@ export const useVariantSelection = (cartLine, parentProduct) => {
         attribute: variantConfig.productVariantAttr5,
         values: filterAvailableValues(
           variantConfig.productVariantAttr5,
-          parentProduct.productVariantConfig?.productVariantValue5Set,
+          productVariantConfig?.productVariantValue5Set,
         ),
         defaultValue: selectedVariants?.productVariantValue5,
       },
     ];
-  }, [variantConfig, selectedVariants, parentProduct]);
+  }, [
+    variantConfig,
+    productVariantConfig,
+    selectedVariants?.productVariantValue1,
+    selectedVariants?.productVariantValue2,
+    selectedVariants?.productVariantValue3,
+    selectedVariants?.productVariantValue4,
+    selectedVariants?.productVariantValue5,
+  ]);
 
   return {
     selectedVariants,

@@ -247,6 +247,14 @@ export async function fetchVariantAttributes({productVariantId, version}) {
   });
 }
 
+export async function fetchproductVariantConfig({productVariantConfigId}) {
+  return createStandardFetch({
+    model: 'com.axelor.apps.base.db.ProductVariantConfig',
+    id: productVariantConfigId,
+    fieldKey: 'sale_productVariantConfig',
+  });
+}
+
 export async function fetchMatchingProduct({selectedVariants}) {
   const variantCriteria = createVariantCriteria(selectedVariants);
 
