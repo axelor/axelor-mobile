@@ -95,13 +95,9 @@ const createProductCriteria = ({
   productTypeSelect,
   productCategory,
   isConfiguratorProductShown,
+  isGenericProductShown,
 }) => {
   const criteria = [
-    {
-      fieldName: 'isModel',
-      operator: '=',
-      value: false,
-    },
     {
       fieldName: 'sellable',
       operator: '=',
@@ -124,6 +120,19 @@ const createProductCriteria = ({
     criteria.push({
       fieldName: 'configurator.id',
       operator: 'isNull',
+    });
+  }
+
+  if (isGenericProductShown) {
+    criteria.push({
+      fieldName: 'parentProduct',
+      operator: 'isNull',
+    });
+  } else {
+    criteria.push({
+      fieldName: 'isModel',
+      operator: '=',
+      value: false,
     });
   }
 
@@ -177,6 +186,7 @@ export async function searchProduct({
   productTypeSelect,
   productCategory,
   isConfiguratorProductShown,
+  isGenericProductShown,
 }) {
   return createStandardSearch({
     model: 'com.axelor.apps.base.db.Product',
@@ -185,6 +195,7 @@ export async function searchProduct({
       productTypeSelect,
       productCategory,
       isConfiguratorProductShown,
+      isGenericProductShown,
     }),
     fieldKey: 'sale_product',
     sortKey: 'sale_product',
