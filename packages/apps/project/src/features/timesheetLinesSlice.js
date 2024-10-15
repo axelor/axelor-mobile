@@ -18,6 +18,7 @@
 
 import {createAsyncThunk, createSlice} from '@reduxjs/toolkit';
 import {handlerApiCall} from '@axelor/aos-mobile-core';
+import {createTimesheet, createTimesheetLine} from '@axelor/aos-mobile-hr';
 import {fetchTimesheetLinesByTask as _fetchTimesheetLinesByTask} from '../api/timesheet-lines-api';
 
 export const fetchTimesheetLinesByTask = createAsyncThunk(
@@ -29,6 +30,24 @@ export const fetchTimesheetLinesByTask = createAsyncThunk(
       action: 'Project_SliceAction_FetchTimesheetLinesByTask',
       getState,
       responseOptions: {isArrayResponse: true},
+    });
+  },
+);
+
+export const createTimeLog = createAsyncThunk(
+  'project_timesheetLines/createTimeLog',
+  async function (data, {dispatch}) {
+    return dispatch(
+      createTimesheet({fromDate: data.timesheetLine.date, timerIdList: []}),
+    ).then(res => {
+      dispatch(
+        createTimesheetLine({
+          timesheetLine: {
+            ...data.timesheetLine,
+            timesheetId: res?.payload?.timesheetId,
+          },
+        }),
+      );
     });
   },
 );
