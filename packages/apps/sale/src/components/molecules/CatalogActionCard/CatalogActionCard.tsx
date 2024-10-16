@@ -21,7 +21,6 @@ import {useDispatch, useSelector, useTranslator} from '@axelor/aos-mobile-core';
 import {ActionCard} from '@axelor/aos-mobile-ui';
 import {CartLineCard, VariantPopup} from '../../atoms';
 import {fetchProductVariantConfig} from '../../../features/productSlice';
-import {fetchMatchingProduct} from '../../../api/product-api';
 import {useVariantSelection} from '../../../hooks/use-variant-selection';
 
 interface CatalogActionCardProps {
