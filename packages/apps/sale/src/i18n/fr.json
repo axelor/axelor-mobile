@@ -170,5 +170,6 @@
   "Sale_SliceAction_EmptyCart": "vidage du panier",
   "Sale_SliceAction_UpdateSaleOrderStatus": "mise à jour du statut de la commande",
   "Sale_SliceAction_AddCartLine": "ajout d'une ligne au panier",
-  "Sale_SliceAction_fetchProductVariantConfig": "récupérer la configuration du variant du produit"
+  "Sale_SliceAction_fetchProductVariantConfig": "récupérer la configuration du variant du produit",
+  "Sale_SliceAction_FetchMatchingProduct": "récupérer le produit correspondant"
 }
