@@ -47,12 +47,6 @@ const CatalogActionCard = ({style, product}: CatalogActionCardProps) => {
   } = useVariantSelection(product, productVariantConfig);
 
   const handleConfirm = useCallback(() => {
-    fetchMatchingProduct({selectedVariants}).then(res => {
-      const variantProduct = res?.data?.data?.[0];
-      if (variantProduct) {
-        console.log('variantProduct ', variantProduct);
-      }
-    });
     setAlertVisible(false);
   }, [selectedVariants, setAlertVisible]);
 

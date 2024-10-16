@@ -26,8 +26,10 @@ import {
 import {ActionCard, useThemeColor} from '@axelor/aos-mobile-ui';
 import {CartLineCard, VariantPopup} from '../../atoms';
 import {deleteCartLine, updateCartLine} from '../../../features/cartLineSlice';
-import {fetchProductVariantConfig} from '../../../features/productSlice';
-import {fetchMatchingProduct} from '../../../api/product-api';
+import {
+  fetchMatchingProduct,
+  fetchProductVariantConfig,
+} from '../../../features/productSlice';
 import {useVariantSelection} from '../../../hooks/use-variant-selection';
 
 const TIME_INCREMENT = 2000;
@@ -93,23 +95,13 @@ const CartLineActionCard = ({
   }, [handleTimeOut, diffQty]);
 
   const handleConfirm = useCallback(() => {
-    fetchMatchingProduct({selectedVariants})
-      .then(res => {
-        const variantProduct = res?.data?.data?.[0];
-        if (variantProduct) {
-          dispatch(
-            (updateCartLine as any)({
-              cartLine,
-              qty: cartLine.qty,
-              variantProduct,
-              cartId,
-            }),
-          );
-        }
-      })
-      .catch(error => {
-        console.error('Error fetching matching product:', error);
-      });
+    dispatch(
+      (fetchMatchingProduct as any)({
+        selectedVariants: selectedVariants,
+        cartLine: cartLine,
+        cartId: cartId,
+      }),
+    );
     setAlertVisible(false);
   }, [cartId, cartLine, dispatch, selectedVariants, setAlertVisible]);
 

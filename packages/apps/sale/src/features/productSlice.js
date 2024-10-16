@@ -28,7 +28,9 @@ import {
   searchProduct as _searchProduct,
   searchProductCategory as _searchProductCategory,
   fetchProductVariantConfig as _fetchProductVariantConfig,
+  fetchMatchingProduct as _fetchMatchingProduct,
 } from '../api/product-api';
+import {updateCartLine} from './cartLineSlice';
 
 export const searchProduct = createAsyncThunk(
   'sale_product/searchProduct',
@@ -65,6 +67,28 @@ export const fetchProductById = createAsyncThunk(
       action: 'Sale_SliceAction_FetchProductById',
       getState,
       responseOptions: {isArrayResponse: false},
+    });
+  },
+);
+
+export const fetchMatchingProduct = createAsyncThunk(
+  'sale_product/fetchMatchingProduct',
+  async function (data, {getState, dispatch}) {
+    return handlerApiCall({
+      fetchFunction: _fetchMatchingProduct,
+      data,
+      action: 'Sale_SliceAction_FetchMatchingProduct',
+      getState,
+      responseOptions: {isArrayResponse: false},
+    }).then(res => {
+      dispatch(
+        updateCartLine({
+          cartLine: data.cartLine,
+          qty: data.cartLine.qty,
+          variantProduct: res,
+          cartId: data.cartId,
+        }),
+      );
     });
   },
 );
