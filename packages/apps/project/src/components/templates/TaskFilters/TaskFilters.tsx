@@ -85,17 +85,17 @@ const TaskFilters = ({
       return _list;
     } else if (
       project?.taskStatusManagementSelect ===
-      Project.taskStatusManagementSelect.NoStatusManagement
+      Project?.taskStatusManagementSelect.NoStatusManagement
     ) {
       return [];
     } else if (
       project?.taskStatusManagementSelect ===
-      Project.taskStatusManagementSelect.ManageByProject
+      Project?.taskStatusManagementSelect.ManageByProject
     ) {
       return filterAvailableSet(project.projectTaskStatusSet, _list);
     } else if (
       project?.taskStatusManagementSelect ===
-        Project.taskStatusManagementSelect.ManageByCategory &&
+        Project?.taskStatusManagementSelect.ManageByCategory &&
       fullSelectedCategory
     ) {
       return filterAvailableSet(
@@ -107,7 +107,7 @@ const TaskFilters = ({
     getCustomSelectionItems,
     projectTaskStatusList,
     project,
-    Project.taskStatusManagementSelect,
+    Project?.taskStatusManagementSelect,
     fullSelectedCategory,
   ]);
 

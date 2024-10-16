@@ -62,12 +62,12 @@ const TaskStatusSearchBarAux = ({
   const statusIds = useMemo(() => {
     if (
       projectForm?.taskStatusManagementSelect ===
-      Project.taskStatusManagementSelect.ManageByProject
+      Project?.taskStatusManagementSelect.ManageByProject
     ) {
       return projectForm?.projectTaskStatusSet?.map(status => status.id);
     } else if (
       projectForm?.taskStatusManagementSelect ===
-        Project.taskStatusManagementSelect.ManageByCategory &&
+        Project?.taskStatusManagementSelect.ManageByCategory &&
       projectTaskCategory
     ) {
       return projectTaskCategory?.projectTaskStatusSet?.map(
@@ -75,8 +75,7 @@ const TaskStatusSearchBarAux = ({
       );
     }
   }, [
-    Project.taskStatusManagementSelect.ManageByCategory,
-    Project.taskStatusManagementSelect.ManageByProject,
+    Project?.taskStatusManagementSelect,
     projectForm?.projectTaskStatusSet,
     projectForm?.taskStatusManagementSelect,
     projectTaskCategory,
