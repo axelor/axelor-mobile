@@ -81,7 +81,6 @@ const CatalogActionCard = ({style, product}: CatalogActionCardProps) => {
         translator={I18n.t}>
         <CartLineCard product={product} />
       </ActionCard>
-
       <VariantPopup
         alertVisible={alertVisible}
         handleConfirm={handleConfirm}

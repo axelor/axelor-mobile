@@ -20,14 +20,7 @@ import {useEffect, useState, useMemo} from 'react';
 import {fetchProductByIdApi} from '../api/';
 
 export const useVariantSelection = (product, productVariantConfig) => {
-  const [selectedVariants, setSelectedVariants] = useState<{
-    productVariantValue1?: any;
-    productVariantValue2?: any;
-    productVariantValue3?: any;
-    productVariantValue4?: any;
-    productVariantValue5?: any;
-  }>({});
-
+  const [selectedVariants, setSelectedVariants] = useState({});
   const [alertVisible, setAlertVisible] = useState(false);
 
   const variantConfig = useMemo(() => {
@@ -44,18 +37,12 @@ export const useVariantSelection = (product, productVariantConfig) => {
         .then(res => {
           const variantData = res.data.data[0]?.productVariant;
           if (variantData) {
-            setSelectedVariants({
-              productVariantValue1:
-                variantData.productVariantValue1 ?? undefined,
-              productVariantValue2:
-                variantData.productVariantValue2 ?? undefined,
-              productVariantValue3:
-                variantData.productVariantValue3 ?? undefined,
-              productVariantValue4:
-                variantData.productVariantValue4 ?? undefined,
-              productVariantValue5:
-                variantData.productVariantValue5 ?? undefined,
-            });
+            const newSelectedVariants = {};
+            for (let i = 1; i <= 5; i++) {
+              newSelectedVariants[`productVariantValue${i}`] =
+                variantData[`productVariantValue${i}`] ?? undefined;
+            }
+            setSelectedVariants(newSelectedVariants);
           }
         })
         .catch(() => setSelectedVariants({}));
@@ -76,57 +63,18 @@ export const useVariantSelection = (product, productVariantConfig) => {
       );
     };
 
-    return [
-      {
-        attribute: variantConfig.productVariantAttr1,
-        values: filterAvailableValues(
-          variantConfig.productVariantAttr1,
-          productVariantConfig?.productVariantValue1Set,
-        ),
-        defaultValue: selectedVariants?.productVariantValue1,
-      },
-      {
-        attribute: variantConfig.productVariantAttr2,
-        values: filterAvailableValues(
-          variantConfig.productVariantAttr2,
-          productVariantConfig?.productVariantValue2Set,
-        ),
-        defaultValue: selectedVariants?.productVariantValue2,
-      },
-      {
-        attribute: variantConfig.productVariantAttr3,
-        values: filterAvailableValues(
-          variantConfig.productVariantAttr3,
-          productVariantConfig?.productVariantValue3Set,
-        ),
-        defaultValue: selectedVariants?.productVariantValue3,
-      },
-      {
-        attribute: variantConfig.productVariantAttr4,
-        values: filterAvailableValues(
-          variantConfig.productVariantAttr4,
-          productVariantConfig?.productVariantValue4Set,
-        ),
-        defaultValue: selectedVariants?.productVariantValue4,
-      },
-      {
-        attribute: variantConfig.productVariantAttr5,
-        values: filterAvailableValues(
-          variantConfig.productVariantAttr5,
-          productVariantConfig?.productVariantValue5Set,
-        ),
-        defaultValue: selectedVariants?.productVariantValue5,
-      },
-    ];
-  }, [
-    variantConfig,
-    productVariantConfig,
-    selectedVariants?.productVariantValue1,
-    selectedVariants?.productVariantValue2,
-    selectedVariants?.productVariantValue3,
-    selectedVariants?.productVariantValue4,
-    selectedVariants?.productVariantValue5,
-  ]);
+    return Array.from({length: 5}, (_, index) => {
+      const attrIndex = index + 1;
+      const attribute = variantConfig[`productVariantAttr${attrIndex}`];
+      const valueSet =
+        productVariantConfig[`productVariantValue${attrIndex}Set`];
+      return {
+        attribute,
+        values: filterAvailableValues(attribute, valueSet),
+        defaultValue: selectedVariants[`productVariantValue${attrIndex}`],
+      };
+    });
+  }, [variantConfig, productVariantConfig, selectedVariants]);
 
   return {
     selectedVariants,

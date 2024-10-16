@@ -48,7 +48,7 @@ const VariantPopup = ({
       }}
       cancelButtonConfig={{
         onPress: () => setAlertVisible(false),
-        title: I18n.t('Base_Cancel'),
+        showInHeader: true,
       }}
       style={styles.popup}>
       <FlatList
