@@ -170,5 +170,6 @@
   "Stock_SliceAction_FilterProductTrakingNumbers": "filter product tracking numbers",
   "Stock_SliceAction_CreateTrakingNumber": "create tracking number",
   "Stock_SliceAction_UpdateSupplierArrivalLineWithTrackingNumber": "update supplier arrival line with new tracking number",
-  "Stock_SliceAction_FetchUnits": "fetch units"
+  "Stock_SliceAction_FetchUnits": "fetch units",
+  "Stock_SliceAction_AddTrackingNumberToStockCorrection": "add tracking number to stock correction"
 }
