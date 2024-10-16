@@ -27,7 +27,10 @@ import {
   fetchVariantProduct as _fetchVariantProduct,
   searchProduct as _searchProduct,
   searchProductCategory as _searchProductCategory,
+  fetchProductVariantConfig as _fetchProductVariantConfig,
+  fetchMatchingProduct as _fetchMatchingProduct,
 } from '../api/product-api';
+import {updateCartLine} from './cartLineSlice';
 
 export const searchProduct = createAsyncThunk(
   'sale_product/searchProduct',
@@ -62,6 +65,41 @@ export const fetchProductById = createAsyncThunk(
       fetchFunction: _fetchProductById,
       data,
       action: 'Sale_SliceAction_FetchProductById',
+      getState,
+      responseOptions: {isArrayResponse: false},
+    });
+  },
+);
+
+export const fetchMatchingProduct = createAsyncThunk(
+  'sale_product/fetchMatchingProduct',
+  async function (data, {getState, dispatch}) {
+    return handlerApiCall({
+      fetchFunction: _fetchMatchingProduct,
+      data,
+      action: 'Sale_SliceAction_FetchMatchingProduct',
+      getState,
+      responseOptions: {isArrayResponse: false},
+    }).then(res => {
+      dispatch(
+        updateCartLine({
+          cartLine: data.cartLine,
+          qty: data.cartLine.qty,
+          variantProduct: res,
+          cartId: data.cartId,
+        }),
+      );
+    });
+  },
+);
+
+export const fetchProductVariantConfig = createAsyncThunk(
+  'sale_product/fetchProductVariantConfig',
+  async function (data, {getState}) {
+    return handlerApiCall({
+      fetchFunction: _fetchProductVariantConfig,
+      data,
+      action: 'Sale_SliceAction_fetchProductVariantConfig',
       getState,
       responseOptions: {isArrayResponse: false},
     });
@@ -115,6 +153,8 @@ const initialState = {
   moreLoadingProductCategory: false,
   isListEndProductCategory: false,
   productCategoryList: [],
+
+  productVariantConfig: {},
 };
 
 const productSlice = createSlice({
@@ -150,6 +190,9 @@ const productSlice = createSlice({
     builder.addCase(fetchProductCompanyConfig.fulfilled, (state, action) => {
       state.productCompany = action.payload;
       state.product = mergeConfigs(state._product, action.payload);
+    });
+    builder.addCase(fetchProductVariantConfig.fulfilled, (state, action) => {
+      state.productVariantConfig = action.payload ?? {};
     });
   },
 });
