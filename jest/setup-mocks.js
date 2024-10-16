@@ -162,3 +162,18 @@ jest.mock('react-native-vision-camera', () => {
     useCodeScanner: jest.fn(),
   };
 });
+
+jest.mock('@react-native-community/slider', () => {
+  const React = require('react');
+  const {View} = require('react-native');
+
+  return {
+    default: props => {
+      const {onValueChange, value} = props;
+      return React.createElement(View, {
+        children: `Mocked Slider with value: ${value}`,
+        onValueChange: () => onValueChange && onValueChange(value),
+      });
+    },
+  };
+});
