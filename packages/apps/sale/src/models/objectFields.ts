@@ -61,11 +61,7 @@ export const sale_modelAPI: ObjectFields = {
         productVariantValue5: schemaContructor.subObject(),
       }),
     ),
-    parentProduct: schemaContructor.subObject().concat(
-      schemaContructor.object({
-        name: schemaContructor.string(),
-      }),
-    ),
+    parentProduct: schemaContructor.subObject('name'),
   }),
   sale_productVariantConfig: schemaContructor.object({
     name: schemaContructor.string(),

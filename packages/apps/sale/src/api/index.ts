@@ -37,6 +37,7 @@ export {
 export {fetchCustomerDelivery as fetchCustomerDeliveryApi} from './customer-delivery-api';
 export {fetchPriceListLine as fetchPriceListLineApi} from './price-list-line-api';
 export {
+  fetchMatchingProduct as fetchMatchingProductApi,
   fetchProductById as fetchProductByIdApi,
   fetchProductCompanyConfig as fetchProductCompanyConfigApi,
   fetchProductVariantConfig as fetchProductVariantConfigApi,
@@ -44,7 +45,6 @@ export {
   fetchVariantProduct as fetchVariantProductApi,
   searchProduct as searchProductApi,
   searchProductCategory as searchProductCategoryApi,
-  fetchMatchingProduct as fetchMatchingProductApi,
 } from './product-api';
 export {fetchSaleConfig as fetchSaleConfigApi} from './sale-config-api';
 export {
