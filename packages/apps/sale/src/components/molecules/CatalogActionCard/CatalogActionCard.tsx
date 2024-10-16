@@ -42,12 +42,11 @@ const CatalogActionCard = ({style, product}: CatalogActionCardProps) => {
     handleVariantSelection,
     variantAttributes,
     setSelectedVariants,
-    selectedVariants,
   } = useVariantSelection(product, productVariantConfig);
 
   const handleConfirm = useCallback(() => {
     setAlertVisible(false);
-  }, [selectedVariants, setAlertVisible]);
+  }, [setAlertVisible]);
 
   return (
     <>
