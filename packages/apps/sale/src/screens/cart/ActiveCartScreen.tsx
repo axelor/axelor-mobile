@@ -28,6 +28,7 @@ import {
   headerActionsProvider,
   SearchListView,
   useDispatch,
+  useNavigation,
   useSelector,
   useTranslator,
 } from '@axelor/aos-mobile-core';
@@ -47,6 +48,7 @@ const ActiveCartScreen = ({}) => {
   const dispatch = useDispatch();
   const Colors = useThemeColor();
   const I18n = useTranslator();
+  const navigation = useNavigation();
 
   const {userId} = useSelector((state: any) => state.auth);
   const {mobileSettings} = useSelector((state: any) => state.appConfig);
@@ -139,7 +141,7 @@ const ActiveCartScreen = ({}) => {
           {
             iconName: 'plus-lg',
             title: I18n.t('Sale_AddProduct'),
-            onPress: () => {},
+            onPress: () => navigation.navigate('CartLineDetailsScreen'),
           },
         ]}
         list={carLineList}
