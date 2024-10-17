@@ -72,6 +72,7 @@ export {
 export {getRacks} from './racksListSlice';
 export {fetchStockCorrectionReasons} from './stockCorrectionReasonSlice';
 export {
+  addTrackingNumberStockCorrection,
   createCorrection,
   fetchStockCorrection,
   searchStockCorrections,
