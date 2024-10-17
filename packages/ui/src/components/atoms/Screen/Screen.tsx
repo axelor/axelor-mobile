@@ -95,9 +95,6 @@ const getStyles = (Colors: ThemeColors) =>
       backgroundColor: Colors.screenBackgroundColor,
       flex: 1,
     },
-    marginTop: {
-      paddingTop: '1.5%',
-    },
     childrenContainer: {
       flex: 1,
     },
@@ -121,6 +118,9 @@ const getStyles = (Colors: ThemeColors) =>
       shadowOpacity: 0.5,
       shadowColor: Colors.secondaryColor.background,
       shadowOffset: {width: 0, height: 0},
+    },
+    marginTop: {
+      paddingTop: '1.5%',
     },
   });
 
