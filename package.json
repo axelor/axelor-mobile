@@ -42,6 +42,7 @@
     "@axelor/aos-mobile-stock": "8.1.5",
     "@axelor/aos-mobile-ui": "8.1.5",
     "@react-native-clipboard/clipboard": "1.14.1",
+    "@react-native-community/slider": "^4.5.4",
     "bootstrap-icons": "^1.10.3",
     "react": "18.2.0",
     "react-native": "0.73.9",
