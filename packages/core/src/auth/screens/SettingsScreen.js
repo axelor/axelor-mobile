@@ -55,6 +55,8 @@ const SettingsScreen = ({children}) => {
     toggleVirtualKeyboardConfig,
     setShowSubtitles,
     showSubtitles,
+    showToolbox,
+    setShowToolbox,
   } = useConfig();
 
   const {appVersion, baseUrl} = useSelector(state => state.auth);
@@ -120,6 +122,13 @@ const SettingsScreen = ({children}) => {
     [setShowSubtitles],
   );
 
+  const handleToggleToolbox = useCallback(
+    state => {
+      setShowToolbox(state);
+    },
+    [setShowToolbox],
+  );
+
   return (
     <Screen style={styles.screen}>
       <ScrollView
@@ -180,6 +189,12 @@ const SettingsScreen = ({children}) => {
           title={I18n.t('User_Show_Drawer_Subtitles')}
           defaultValue={showSubtitles}
           onToggle={handleToggleSubtitles}
+          style={styles.switchCard}
+        />
+        <SwitchCard
+          title={I18n.t('User_ShowToolBox')}
+          defaultValue={showToolbox}
+          onToggle={handleToggleToolbox}
           style={styles.switchCard}
         />
         {children}

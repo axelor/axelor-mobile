@@ -21,6 +21,7 @@ import {StyleSheet, View} from 'react-native';
 import {
   DraggableWrapper,
   FloatingButton,
+  useConfig,
   useThemeColor,
 } from '@axelor/aos-mobile-ui';
 import {useDispatch, useSelector} from '../../../redux/hooks';
@@ -32,6 +33,7 @@ const GlobalToolBox = () => {
   const I18n = useTranslator();
   const Colors = useThemeColor();
   const navigation = useNavigation();
+  const {showToolbox} = useConfig();
   const {name, context, tools: modulesActions} = useActiveScreen();
   const dispatch = useDispatch();
 
@@ -54,7 +56,7 @@ const GlobalToolBox = () => {
       }));
   }, [Colors, context, dispatch, modulesActions, navigation, storeState]);
 
-  if (!token || name == null) {
+  if (!token || name == null || !showToolbox) {
     return null;
   }
 
