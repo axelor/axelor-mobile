@@ -95,7 +95,7 @@ export const project_modelAPI: ObjectFields = {
       }),
     ),
     priceList: schemaContructor.subObject(),
-    isShowStatus: schemaContructor.boolean(),
+    taskStatusManagementSelect: schemaContructor.number(),
     projectTaskStatusSet: schemaContructor
       .array()
       .of(schemaContructor.subObject()),
@@ -195,6 +195,7 @@ export const project_modelAPI: ObjectFields = {
   }),
   project_projectTaskCategory: schemaContructor.object({
     name: schemaContructor.subObject(),
+    projectTaskStatusSet: schemaContructor.subObject(),
   }),
   project_projectTaskSection: schemaContructor.object({
     name: schemaContructor.subObject(),

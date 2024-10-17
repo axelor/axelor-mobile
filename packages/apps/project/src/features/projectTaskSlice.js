@@ -282,11 +282,18 @@ const initialState = {
 
   loadingTaskTag: true,
   tagList: [],
+
+  projectTaskCategory: {},
 };
 
 const projectTaskSlice = createSlice({
   name: 'project_projectTask',
   initialState,
+  reducers: {
+    updateProjectTaskCategory: (state, action) => {
+      state.projectTaskCategory = action.payload;
+    },
+  },
   extraReducers: builder => {
     generateInifiniteScrollCases(builder, searchProjectTask, {
       loading: 'loading',
@@ -373,5 +380,7 @@ const projectTaskSlice = createSlice({
     });
   },
 });
+
+export const {updateProjectTaskCategory} = projectTaskSlice.actions;
 
 export const projectTaskReducer = projectTaskSlice.reducer;
