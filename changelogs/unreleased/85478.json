@@ -1,0 +1,5 @@
+{
+  "title": "FloatingButton: make tools expanded when visible by default",
+  "type": "fix",
+  "packages": "ui"
+}
