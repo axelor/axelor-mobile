@@ -78,3 +78,20 @@ export async function updateStockCorrection({
     },
   });
 }
+
+export async function updateStockCorrectionTrackingNumber({
+  stockCorrectionId,
+  stockCorrectionVersion,
+  trackingNumber,
+}) {
+  return axiosApiProvider.post({
+    url: `/ws/rest/com.axelor.apps.stock.db.StockCorrection/${stockCorrectionId}`,
+    data: {
+      data: {
+        id: stockCorrectionId,
+        version: stockCorrectionVersion,
+        trackingNumber: trackingNumber,
+      },
+    },
+  });
+}
