@@ -154,7 +154,7 @@ const TimerFormScreen = ({route}) => {
       formKey="hr_Timer"
       defaultValue={loadingCreation ? null : defaultValue}
       creationDefaultValue={creationDefaultValue}
-      defaultEditMode={creation}
+      defaultEditMode
       actions={[
         {
           key: 'update-timer',

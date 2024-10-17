@@ -140,6 +140,7 @@ const InterventionQuestionFormScreen = ({route, navigation}) => {
       <FormView
         formKey="intervention_interventionQuestion"
         defaultValue={question}
+        defaultEditMode
         actions={[
           {
             key: 'save-interventionQuestion',
