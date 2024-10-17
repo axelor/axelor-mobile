@@ -19,10 +19,13 @@
 import React, {useCallback, useEffect} from 'react';
 import {BottomBar, Screen, useThemeColor} from '@axelor/aos-mobile-ui';
 import {useDispatch, useSelector} from '@axelor/aos-mobile-core';
+import {getImputationMode} from '@axelor/aos-mobile-hr';
 import {
   TaskCustomFieldsView,
+  TaskDetailsHeader,
   TaskGeneralInformationView,
   TaskLinkView,
+  TimeView,
 } from '../components';
 import {fetchProjectTaskById} from '../features/projectTaskSlice';
 
@@ -32,6 +35,7 @@ const TaskDetailsScreen = ({navigation, route}) => {
   const dispatch = useDispatch();
 
   const {projectTask} = useSelector((state: any) => state.project_projectTask);
+  const {user} = useSelector((state: any) => state.user);
 
   const fetchProjectTask = useCallback(() => {
     dispatch((fetchProjectTaskById as any)({projecTaskId}));
@@ -59,6 +63,21 @@ const TaskDetailsScreen = ({navigation, route}) => {
       iconName: 'pencil-square',
       color: Colors.progressColor,
       onPress: () => navigation.navigate('TaskFormScreen'),
+    },
+    {
+      iconName: 'clock-history',
+      color: Colors.primaryColor,
+      hidden:
+        !projectTask?.project?.manageTimeSpent ||
+        user.employee?.timesheetImputationSelect ===
+          getImputationMode()?.ManufOrder,
+      viewComponent: (
+        <TimeView
+          project={projectTask?.project}
+          projectTask={projectTask}
+          headerComponent={<TaskDetailsHeader />}
+        />
+      ),
     },
   ];
 

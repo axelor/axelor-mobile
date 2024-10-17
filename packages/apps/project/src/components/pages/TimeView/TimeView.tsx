@@ -16,50 +16,70 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import React, {useEffect, useMemo} from 'react';
+import React, {ReactNode, useEffect, useMemo, useState} from 'react';
 import {StyleSheet, View} from 'react-native';
 import {FormView, useDispatch, useSelector} from '@axelor/aos-mobile-core';
 import {HeaderContainer} from '@axelor/aos-mobile-ui';
 import {updateProject} from '@axelor/aos-mobile-hr';
-import {ProjectHeader} from '../../molecules';
+import {clearReset} from '../../../features/timesheetLinesSlice';
 
-const TimeView = () => {
+const TimeView = ({
+  project,
+  projectTask,
+  headerComponent,
+}: {
+  project: any;
+  projectTask?: any;
+  headerComponent: ReactNode;
+}) => {
   const dispatch = useDispatch();
 
-  const {project} = useSelector((state: any) => state.project_project);
+  const {resetTimeForm} = useSelector(
+    (state: any) => state.project_timesheetLines,
+  );
+
+  const [formValue, setFormValue] = useState({});
+
+  const defaultValue = useMemo(() => {
+    return {
+      project,
+      projectTask,
+      isTaskLog: projectTask != null,
+      date: new Date().toISOString().split('T')[0],
+    };
+  }, [project, projectTask]);
 
   useEffect(() => {
     dispatch(updateProject(project));
   }, [dispatch, project]);
 
-  const defaultValue = useMemo(() => {
-    return {
-      project: project,
-      date: new Date().toISOString().split('T')[0],
-    };
-  }, [project]);
+  useEffect(() => {
+    if (resetTimeForm) {
+      setFormValue(current => ({...current}));
+      dispatch(clearReset());
+    }
+  }, [dispatch, resetTimeForm]);
+
+  useEffect(() => {
+    setFormValue(defaultValue);
+  }, [defaultValue]);
 
   return (
-    <View>
-      <HeaderContainer
-        expandableFilter={false}
-        fixedItems={<ProjectHeader />}
+    <View style={styles.container}>
+      <HeaderContainer expandableFilter={false} fixedItems={headerComponent} />
+      <FormView
+        formKey="project_TimesheetLine"
+        actions={[]}
+        defaultValue={formValue}
+        floatingTools={false}
       />
-      <View style={styles.container}>
-        <FormView
-          formKey="project_TimesheetLine"
-          actions={[]}
-          defaultValue={defaultValue}
-          floatingTools={false}
-        />
-      </View>
     </View>
   );
 };
 
 const styles = StyleSheet.create({
   container: {
-    height: '100%',
+    flex: 1,
   },
 });
 
