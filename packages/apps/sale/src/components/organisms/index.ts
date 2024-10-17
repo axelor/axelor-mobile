@@ -21,3 +21,4 @@ export {default as CustomerSearchBar} from './CustomerSearchBar/CustomerSearchBa
 export {default as DropDownSaleOrderView} from './DropDownSaleOrderView/DropDownSaleOrderView';
 export {default as ProductCategorySearchBar} from './ProductCategorySearchBar/ProductCategorySearchBar';
 export {default as ProductDropdownCard} from './ProductDropdownCard/ProductDropdownCard';
+export {default as ProductSearchBar} from './ProductSearchBar/ProductSearchBar';
