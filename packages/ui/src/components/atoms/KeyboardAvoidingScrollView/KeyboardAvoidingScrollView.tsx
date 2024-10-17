@@ -25,7 +25,7 @@ import {
   StyleSheet,
 } from 'react-native';
 
-const DEFAULT_OFFSET = {ios: 70, android: 180};
+const DEFAULT_OFFSET = {ios: 70, android: 115};
 
 interface Offset {
   ios: number;
