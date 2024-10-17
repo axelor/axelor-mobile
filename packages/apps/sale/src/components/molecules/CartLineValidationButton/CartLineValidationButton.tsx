@@ -25,9 +25,23 @@ import {
   useNavigation,
 } from '@axelor/aos-mobile-core';
 import {Button, useThemeColor} from '@axelor/aos-mobile-ui';
-import {deleteCartLine, updateCartLine} from '../../../features/cartLineSlice';
+import {
+  addCartLine,
+  deleteCartLine,
+  updateCartLine,
+} from '../../../features/cartLineSlice';
 
-const CartLineValidationButton = ({newQty}) => {
+interface CartLineValidationButton {
+  isCreation: boolean;
+  newQty: number;
+  productId?: number;
+}
+
+const CartLineValidationButton = ({
+  isCreation,
+  newQty,
+  productId,
+}: CartLineValidationButton) => {
   const Colors = useThemeColor();
   const I18n = useTranslator();
   const navigation = useNavigation();
@@ -50,26 +64,47 @@ const CartLineValidationButton = ({newQty}) => {
     dispatch(
       (updateCartLine as any)({
         cartLine,
-        qty: parseInt(newQty, 10),
+        qty: newQty,
         cartId: activeCart?.id,
       }),
     );
     navigation.pop();
   }, [activeCart?.id, cartLine, dispatch, navigation, newQty]);
 
+  const _addCartLine = useCallback(() => {
+    dispatch(
+      (addCartLine as any)({
+        cartId: activeCart?.id,
+        cartVersion: activeCart?.version,
+        productId,
+        qty: newQty,
+      }),
+    );
+    navigation.pop();
+  }, [
+    activeCart?.id,
+    activeCart?.version,
+    dispatch,
+    navigation,
+    newQty,
+    productId,
+  ]);
+
   return (
     <View style={styles.buttonContainer}>
-      <Button
-        title={I18n.t('Sale_Delete')}
-        onPress={_deleteCartLine}
-        width="45%"
-        color={Colors.errorColor}
-        iconName="trash3-fill"
-      />
+      {!isCreation && (
+        <Button
+          title={I18n.t('Sale_Delete')}
+          onPress={_deleteCartLine}
+          width="45%"
+          color={Colors.errorColor}
+          iconName="trash3-fill"
+        />
+      )}
       <Button
         title={I18n.t('Base_Validate')}
-        onPress={_updateCartLine}
-        width="45%"
+        onPress={isCreation ? _addCartLine : _updateCartLine}
+        width={isCreation ? '90%' : '45%'}
         iconName="check-lg"
       />
     </View>

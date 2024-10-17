@@ -40,6 +40,7 @@ export const sale_modelAPI: ObjectFields = {
     startDate: schemaContructor.string(),
     endDate: schemaContructor.string(),
     salesUnit: schemaContructor.subObject(),
+    unit: schemaContructor.subObject(),
     isPrototype: schemaContructor.boolean(),
     isUnrenewed: schemaContructor.boolean(),
     allowToForceSaleQty: schemaContructor.boolean(),

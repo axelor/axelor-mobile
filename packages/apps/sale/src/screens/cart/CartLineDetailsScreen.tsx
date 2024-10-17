@@ -16,7 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import React, {useEffect, useState, useCallback} from 'react';
+import React, {useEffect, useMemo, useState, useCallback} from 'react';
 import {StyleSheet} from 'react-native';
 import {QuantityCard, Screen, ScrollView} from '@axelor/aos-mobile-ui';
 import {useDispatch, useSelector, useTranslator} from '@axelor/aos-mobile-core';
@@ -25,52 +25,85 @@ import {
   CartLineActionCard,
   CartLinePriceDetails,
   CartLineValidationButton,
+  ProductSearchBar,
 } from '../../components';
 
 const CartLineDetailsScreen = ({route}) => {
-  const {cartLineId} = route.params;
+  const cartLineId = route.params?.cartLineId;
 
   const I18n = useTranslator();
   const dispatch = useDispatch();
 
   const {cartLine} = useSelector((state: any) => state.sale_cartLine);
 
-  const [newQty, setNewQty] = useState(cartLine?.qty);
+  const [product, setProduct] = useState(null);
+  const [newQty, setNewQty] = useState(cartLineId ? cartLine?.qty : 0);
+
+  const _cartLine = useMemo(() => {
+    if (cartLineId) {
+      return cartLine;
+    } else {
+      const unit = product?.salesUnit ?? product?.unit;
+      return {
+        product: product,
+        unit,
+      };
+    }
+  }, [cartLine, cartLineId, product]);
 
   const refreshLine = useCallback(() => {
     dispatch((fetchCartLineById as any)({cartLineId}));
   }, [cartLineId, dispatch]);
 
   useEffect(() => {
-    refreshLine();
-  }, [refreshLine]);
+    cartLineId && refreshLine();
+  }, [cartLineId, refreshLine]);
 
   useEffect(() => {
-    setNewQty(cartLine?.qty);
-  }, [cartLine?.qty]);
+    cartLineId && setNewQty(cartLine?.qty);
+  }, [cartLine?.qty, cartLineId]);
 
   return (
-    <Screen fixedItems={<CartLineValidationButton newQty={newQty} />}>
+    <Screen
+      fixedItems={
+        <CartLineValidationButton
+          isCreation={cartLineId == null}
+          newQty={newQty}
+          productId={product?.id}
+        />
+      }>
       <ScrollView
         style={styles.container}
         refresh={{fetcher: refreshLine, loading: false}}>
-        <CartLineActionCard
-          cartLine={cartLine}
-          hideIncrement={true}
-          hideDelete={true}
-          hideBadgeInformation={true}
-          style={styles.card}
-        />
-        <QuantityCard
-          labelQty={I18n.t('Sale_Quantity')}
-          defaultValue={cartLine?.qty}
-          onValueChange={setNewQty}
-          editable={true}
-          isBigButton
-          translator={I18n.t}
-          style={styles.card}
-        />
-        <CartLinePriceDetails cartLine={cartLine} qty={newQty} />
+        {cartLineId ? (
+          <CartLineActionCard
+            cartLine={cartLine}
+            hideIncrement={true}
+            hideDelete={true}
+            hideBadgeInformation={true}
+            style={styles.card}
+          />
+        ) : (
+          <ProductSearchBar
+            defaultValue={product}
+            onChange={setProduct}
+            isScrollViewContainer
+          />
+        )}
+        {(cartLineId || product) && (
+          <>
+            <QuantityCard
+              labelQty={I18n.t('Sale_Quantity')}
+              defaultValue={newQty}
+              onValueChange={setNewQty}
+              editable={true}
+              isBigButton
+              translator={I18n.t}
+              style={styles.card}
+            />
+            <CartLinePriceDetails cartLine={_cartLine} qty={newQty} />
+          </>
+        )}
       </ScrollView>
     </Screen>
   );
