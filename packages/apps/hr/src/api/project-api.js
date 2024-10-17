@@ -21,20 +21,29 @@ import {
   getSearchCriterias,
 } from '@axelor/aos-mobile-core';
 
-const createProjectCriteria = (searchValue, activeCompanyId) => {
-  const criteria = [
-    {
-      fieldName: 'imputable',
+const createProjectCriteria = ({
+  searchValue,
+  activeCompanyId,
+  isBusinessProject,
+  manageTimeSpent,
+}) => {
+  const criteria = [getSearchCriterias('hr_project', searchValue)];
+
+  if (isBusinessProject) {
+    criteria.push({
+      fieldName: 'isBusinessProject',
       operator: '=',
       value: true,
-    },
-    {
-      fieldName: 'isShowTimeSpent',
+    });
+  }
+
+  if (manageTimeSpent) {
+    criteria.push({
+      fieldName: 'manageTimeSpent',
       operator: '=',
       value: true,
-    },
-    getSearchCriterias('hr_project', searchValue),
-  ];
+    });
+  }
 
   if (activeCompanyId != null) {
     criteria.push({
@@ -90,10 +99,21 @@ const createProductCriteria = searchValue => {
   ];
 };
 
-export async function searchProject({searchValue, page = 0, activeCompanyId}) {
+export async function searchProject({
+  searchValue,
+  page = 0,
+  activeCompanyId,
+  isBusinessProject,
+  manageTimeSpent,
+}) {
   return createStandardSearch({
     model: 'com.axelor.apps.project.db.Project',
-    criteria: createProjectCriteria(searchValue, activeCompanyId),
+    criteria: createProjectCriteria({
+      searchValue,
+      activeCompanyId,
+      isBusinessProject,
+      manageTimeSpent,
+    }),
     fieldKey: 'hr_project',
     sortKey: 'hr_project',
     page,
