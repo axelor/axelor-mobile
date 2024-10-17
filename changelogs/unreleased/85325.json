@@ -1,5 +1,5 @@
 {
-  "title": "GlobalToolbox: add configuration to activate/desactivate",
+  "title": "Quick actions: add possibility to hide actions from settings screen",
   "type": "feat",
-  "packages": ["ui", "core"]
+  "packages": "core"
 }

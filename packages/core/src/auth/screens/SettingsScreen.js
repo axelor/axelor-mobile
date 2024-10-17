@@ -192,12 +192,11 @@ const SettingsScreen = ({children}) => {
           style={styles.switchCard}
         />
         <SwitchCard
-          title="Afficher la Toolbox"
+          title={I18n.t('User_ShowToolBox')}
           defaultValue={showToolbox}
           onToggle={handleToggleToolbox}
           style={styles.switchCard}
         />
-
         {children}
         {isAdmin && <HorizontalRule style={styles.lineSeparator} />}
         <TranslationsButton />
