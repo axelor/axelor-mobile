@@ -177,6 +177,7 @@
   "Stock_SliceAction_FetchSupplierCatalogForProduct": "fetch supplier catalog product informations",
   "Stock_SliceAction_FilterProductTrakingNumbers": "filter product tracking numbers",
   "Stock_SliceAction_CreateTrakingNumber": "create tracking number",
+  "Stock_SliceAction_UpdateTrackingNumber": "update tracking number",
   "Stock_SliceAction_UpdateSupplierArrivalLineWithTrackingNumber": "update supplier arrival line with new tracking number",
   "Stock_SliceAction_FetchUnits": "fetch units",
   "Stock_SliceAction_FetchStockQtyIndicator": "fetch data of stock quantity indicator",

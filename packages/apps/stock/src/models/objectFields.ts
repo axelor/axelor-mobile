@@ -49,7 +49,12 @@ export const stock_modelAPI: ObjectFields = {
       }),
     ),
     availableStatusSelect: schemaContructor.number(),
-    trackingNumber: schemaContructor.subObject('trackingNumberSeq'),
+    trackingNumber: schemaContructor.subObject().concat(
+      schemaContructor.object({
+        trackingNumberSeq: schemaContructor.string(),
+        origin: schemaContructor.string(),
+      }),
+    ),
     unit: schemaContructor.subObject('name'),
     qty: schemaContructor.number(),
     realQty: schemaContructor.number(),
@@ -224,7 +229,12 @@ export const stock_modelAPI: ObjectFields = {
     statusSelect: schemaContructor.number(),
   }),
   stock_supplierArrivalLine: schemaContructor.object({
-    trackingNumber: schemaContructor.subObject('trackingNumberSeq'),
+    trackingNumber: schemaContructor.subObject().concat(
+      schemaContructor.object({
+        trackingNumberSeq: schemaContructor.string(),
+        origin: schemaContructor.string(),
+      }),
+    ),
     unit: schemaContructor.subObject('name'),
     qty: schemaContructor.number(),
     realQty: schemaContructor.number(),
@@ -249,6 +259,7 @@ export const stock_modelAPI: ObjectFields = {
   }),
   stock_trackingNumber: schemaContructor.object({
     trackingNumberSeq: schemaContructor.string(),
+    origin: schemaContructor.string(),
     serialNumber: schemaContructor.string(),
   }),
   stock_stockQtyIndicator: schemaContructor.object({

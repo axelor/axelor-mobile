@@ -33,6 +33,7 @@ const SupplierArrivalTrackingNumberSelect = ({
   supplierArrivalLine,
   supplierArrival,
   handleTrackingNumberSelection,
+  trackingNumber,
 }) => {
   const I18n = useTranslator();
   const Colors = useThemeColor();
@@ -66,6 +67,7 @@ const SupplierArrivalTrackingNumberSelect = ({
       )}
       <TrackingNumberSearchBar
         scanKey={trackingScanKey}
+        defaultValue={trackingNumber}
         onChange={handleTrackingNumberSelection}
         isFocus={true}
         changeScreenAfter={true}

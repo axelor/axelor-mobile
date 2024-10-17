@@ -40,6 +40,7 @@ import {
   SupplierProductInfo,
   StockLocationSearchBar,
   SupplierArrivalTrackingNumberSelect,
+  EditableOriginInput,
 } from '../../components';
 import {fetchProductWithId} from '../../features/productSlice';
 import {fetchProductForSupplier} from '../../features/supplierCatalogSlice';
@@ -151,17 +152,26 @@ const SupplierArrivalLineDetailScreen = ({route, navigation}) => {
     });
   };
 
-  const handleTrackingNumberSelection = item => {
-    if (item !== null) {
-      dispatch(
-        updateStockMoveLineTrackingNumber({
-          trackingNumber: item,
-          stockMoveLineId: supplierArrivalLine.id,
-          stockMoveLineVersion: supplierArrivalLine.version,
-        }),
-      );
-    }
-  };
+  const handleTrackingNumberSelection = useCallback(
+    item => {
+      if (item !== null) {
+        dispatch(
+          updateStockMoveLineTrackingNumber({
+            trackingNumber: item,
+            stockMoveLineId: supplierArrivalLine.id,
+            stockMoveLineVersion: supplierArrivalLine.version,
+            origin: trackingNumber?.origin,
+          }),
+        );
+      }
+    },
+    [
+      dispatch,
+      supplierArrivalLine.id,
+      supplierArrivalLine.version,
+      trackingNumber?.origin,
+    ],
+  );
 
   const conformityList = useMemo(() => {
     const conformityToDisplay = [
@@ -215,12 +225,19 @@ const SupplierArrivalLineDetailScreen = ({route, navigation}) => {
         />
         {product.trackingNumberConfiguration != null &&
           trackingNumber == null && (
-            <SupplierArrivalTrackingNumberSelect
-              supplierArrival={supplierArrival}
-              supplierArrivalLine={supplierArrivalLine}
-              handleTrackingNumberSelection={handleTrackingNumberSelection}
-              product={product}
-            />
+            <>
+              <SupplierArrivalTrackingNumberSelect
+                supplierArrival={supplierArrival}
+                supplierArrivalLine={supplierArrivalLine}
+                handleTrackingNumberSelection={handleTrackingNumberSelection}
+                product={product}
+                trackingNumber={trackingNumber}
+              />
+              <EditableOriginInput
+                stockMoveLineId={supplierArrivalLine.id}
+                trackingNumber={trackingNumber}
+              />
+            </>
           )}
         <SupplierProductInfo />
         <SupplierArrivalLineQuantityCard

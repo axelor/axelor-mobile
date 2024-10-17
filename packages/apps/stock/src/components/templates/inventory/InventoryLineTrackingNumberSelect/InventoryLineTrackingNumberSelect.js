@@ -26,7 +26,7 @@ const trackingScanKey = 'tracking_inventory-line-select';
 const InventoryLineTrackingNumberSelect = ({
   product,
   inventoryLine,
-  visible,
+  trackingNumber,
 }) => {
   const dispatch = useDispatch();
 
@@ -46,7 +46,7 @@ const InventoryLineTrackingNumberSelect = ({
   return (
     <ProductTrackingNumberSelect
       product={product}
-      visible={visible}
+      trackingNumber={trackingNumber}
       trackingScanKey={trackingScanKey}
       onAddTrackingNumber={handleAddTrackingNumber}
     />
