@@ -23,10 +23,11 @@ export {
   validateCart as validateCartApi,
 } from './cart-api';
 export {
-  searchCartLine as searchCartLineApi,
-  updateCartLine as updateCartLineApi,
+  addCartLine as addCartLineApi,
   deleteCartLine as deleteCartLineApi,
   fetchCartLineById as fetchCartLineByIdApi,
+  searchCartLine as searchCartLineApi,
+  updateCartLine as updateCartLineApi,
 } from './cart-line-api';
 export {fetchComplementaryProduct as fetchComplementaryProductApi} from './complementary-product-api';
 export {

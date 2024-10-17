@@ -17,6 +17,7 @@
  */
 
 export {
+  addCartLine,
   deleteCartLine,
   fetchCartLineById,
   searchCartLine,

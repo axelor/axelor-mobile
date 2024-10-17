@@ -68,3 +68,10 @@ export async function fetchCartLineById({cartLineId}) {
     fieldKey: 'sale_cartLine',
   });
 }
+
+export async function addCartLine({cartId, cartVersion, productId, qty}) {
+  return axiosApiProvider.put({
+    url: `/ws/aos/cart/add-line/${cartId}`,
+    data: {version: cartVersion, productId: productId, qty},
+  });
+}
