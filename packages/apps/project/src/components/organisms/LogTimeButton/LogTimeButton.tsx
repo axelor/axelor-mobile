@@ -17,7 +17,6 @@
  */
 
 import React, {useCallback} from 'react';
-import {StyleSheet} from 'react-native';
 import {Button} from '@axelor/aos-mobile-ui';
 import {useDispatch, useTranslator} from '@axelor/aos-mobile-core';
 import {createTimeLog} from '../../../features/timesheetLinesSlice';
@@ -53,18 +52,11 @@ const LogTimeButton = ({
 
   return (
     <Button
-      style={[styles.margin, style]}
+      style={style}
       title={I18n.t('Base_Create')}
       onPress={() => handleLogTime(objectState)}
     />
   );
 };
-
-const styles = StyleSheet.create({
-  margin: {
-    marginTop: 20,
-    marginBottom: 100,
-  },
-});
 
 export default LogTimeButton;

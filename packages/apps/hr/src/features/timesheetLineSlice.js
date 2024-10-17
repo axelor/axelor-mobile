@@ -51,11 +51,13 @@ export const createTimesheetLine = createAsyncThunk(
       action: 'Hr_SliceAction_CreateTimesheetLine',
       getState,
       responseOptions: {isArrayResponse: false, showToast: true},
-    }).then(() =>
-      dispatch(
-        fetchTimesheetById({timesheetId: data.timesheetLine.timesheetId}),
-      ),
-    );
+    }).then(() => {
+      if (data?.timesheetLine?.timesheetId != null) {
+        dispatch(
+          fetchTimesheetById({timesheetId: data.timesheetLine.timesheetId}),
+        );
+      }
+    });
   },
 );
 
