@@ -26,6 +26,7 @@ import {
 } from '@axelor/aos-mobile-ui';
 import {
   isEmpty,
+  useContextRegister,
   useDispatch,
   useSelector,
   useTranslator,
@@ -44,6 +45,7 @@ import {
 
 const ProductSaleDetailsScreen = ({route}) => {
   const productId = route.params.productId;
+  useContextRegister({productId});
   const I18n = useTranslator();
   const dispatch = useDispatch();
 

@@ -105,6 +105,15 @@ export const SaleModule: Module = {
   requiredConfig: ['AppSale'],
   globalTools: [
     {
+      key: 'sale_addProductToCart',
+      iconName: 'cart-plus',
+      onPress: ({screenContext}) => console.log(screenContext),
+      title: 'Sale_AddProductToCart',
+      hideIf: ({storeState, screenContext}) =>
+        !storeState?.appConfig?.sale?.isCartManagementEnabled ||
+        screenContext?.productId == null,
+    },
+    {
       key: 'sale_accessActiveCart',
       iconName: 'basket2-fill',
       onPress: ({navigation}) => navigation.navigate('ActiveCartScreen'),
