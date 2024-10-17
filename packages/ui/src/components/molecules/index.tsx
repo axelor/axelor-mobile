@@ -34,6 +34,7 @@ export {default as EditableInput} from './EditableInput/EditableInput';
 export {default as FormHtmlInput} from './FormHtmlInput/FormHtmlInput';
 export {default as FormIncrementInput} from './FormIncrementInput/FormIncrementInput';
 export {default as FormInput} from './FormInput/FormInput';
+export {default as FormSlider} from './FormSlider/FormSlider';
 export {default as FromTo} from './FromTo/FromTo';
 export {default as HalfLabelCard} from './HalfLabelCard/HalfLabelCard';
 export {default as IconInput} from './IconInput/IconInput';

@@ -162,3 +162,5 @@ jest.mock('react-native-vision-camera', () => {
     useCodeScanner: jest.fn(),
   };
 });
+
+jest.mock('@react-native-community/slider', () => 'RNSlider');

@@ -1,0 +1,5 @@
+{
+  "title": "FormSlider: add new component to manage slider with form design",
+  "type": "feat",
+  "packages": "ui"
+}
