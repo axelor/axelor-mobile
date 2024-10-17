@@ -22,10 +22,11 @@ import {
   handlerApiCall,
 } from '@axelor/aos-mobile-core';
 import {
-  searchCartLine as _searchCartLine,
-  updateCartLine as _updateCartLine,
+  addCartLine as _addCartLine,
   deleteCartLine as _deleteCartLine,
   fetchCartLineById as _fetchCartLineById,
+  searchCartLine as _searchCartLine,
+  updateCartLine as _updateCartLine,
 } from '../api/cart-line-api';
 
 export const searchCartLine = createAsyncThunk(
@@ -93,6 +94,19 @@ export const fetchCartLineById = createAsyncThunk(
       getState,
       responseOptions: {isArrayResponse: false},
     });
+  },
+);
+
+export const addCartLine = createAsyncThunk(
+  'sale_cartLine/addCartLine',
+  async function (data, {getState, dispatch}) {
+    return handlerApiCall({
+      fetchFunction: _addCartLine,
+      data,
+      action: 'Sale_SliceAction_AddCartLine',
+      getState,
+      responseOptions: {isArrayResponse: false},
+    }).then(() => dispatch(searchCartLine({cartId: data.cartId})));
   },
 );
 
