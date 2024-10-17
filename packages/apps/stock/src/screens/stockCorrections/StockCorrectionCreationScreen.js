@@ -27,6 +27,7 @@ import {
   StockCorrectionProductCardInfo,
   StockCorrectionQuantityCard,
   StockCorrectionReasonPicker,
+  StockCorrectionTrackingNumberSelect,
   StockLocationSearchBar,
 } from '../../components';
 import {fetchProductIndicators} from '../../features/productIndicatorsSlice';
@@ -193,6 +194,11 @@ const StockCorrectionCreationScreen = ({route}) => {
               stockProduct={product}
               trackingNumber={trackingNumber}
             />
+            <StockCorrectionTrackingNumberSelect
+              product={product}
+              visible={trackingNumber == null}
+              handleTrackingSelect={setTrackingNumber}
+            />
             <StockCorrectionQuantityCard
               databaseQty={databaseQty}
               realQty={realQty}
@@ -215,7 +221,6 @@ const StockCorrectionCreationScreen = ({route}) => {
 
 const styles = StyleSheet.create({
   container: {
-    alignItems: 'center',
     paddingBottom: 100,
   },
   scroll: {
