@@ -16,11 +16,12 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import React, {ReactNode, useEffect, useMemo} from 'react';
+import React, {ReactNode, useEffect, useMemo, useState} from 'react';
 import {StyleSheet, View} from 'react-native';
-import {FormView, useDispatch} from '@axelor/aos-mobile-core';
+import {FormView, useDispatch, useSelector} from '@axelor/aos-mobile-core';
 import {HeaderContainer} from '@axelor/aos-mobile-ui';
 import {updateProject} from '@axelor/aos-mobile-hr';
+import {clearReset} from '../../../features/timesheetLinesSlice';
 
 const TimeView = ({
   project,
@@ -33,9 +34,11 @@ const TimeView = ({
 }) => {
   const dispatch = useDispatch();
 
-  useEffect(() => {
-    dispatch(updateProject(project));
-  }, [dispatch, project]);
+  const {resetTimeForm} = useSelector(
+    (state: any) => state.project_timesheetLines,
+  );
+
+  const [formValue, setFormValue] = useState({});
 
   const defaultValue = useMemo(() => {
     return {
@@ -46,24 +49,37 @@ const TimeView = ({
     };
   }, [project, projectTask]);
 
+  useEffect(() => {
+    dispatch(updateProject(project));
+  }, [dispatch, project]);
+
+  useEffect(() => {
+    if (resetTimeForm) {
+      setFormValue(current => ({...current}));
+      dispatch(clearReset());
+    }
+  }, [dispatch, resetTimeForm]);
+
+  useEffect(() => {
+    setFormValue(defaultValue);
+  }, [defaultValue]);
+
   return (
-    <View>
+    <View style={styles.container}>
       <HeaderContainer expandableFilter={false} fixedItems={headerComponent} />
-      <View style={styles.container}>
-        <FormView
-          formKey="project_TimesheetLine"
-          actions={[]}
-          defaultValue={defaultValue}
-          floatingTools={false}
-        />
-      </View>
+      <FormView
+        formKey="project_TimesheetLine"
+        actions={[]}
+        defaultValue={formValue}
+        floatingTools={false}
+      />
     </View>
   );
 };
 
 const styles = StyleSheet.create({
   container: {
-    height: '100%',
+    flex: 1,
   },
 });
 

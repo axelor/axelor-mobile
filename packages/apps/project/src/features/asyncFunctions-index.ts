@@ -39,4 +39,8 @@ export {
   searchTargetVersion,
 } from './projectTaskSlice';
 export {getProjectReportingIndicator} from './reportingSlice';
-export {fetchTimesheetLinesByTask} from './timesheetLinesSlice';
+export {
+  clearReset,
+  createTimeLog,
+  fetchTimesheetLinesByTask,
+} from './timesheetLinesSlice';
