@@ -72,7 +72,7 @@ const Screen = ({
         removeSpaceOnTop ? null : styles.marginTop,
         style,
       ]}>
-      {children}
+      <View style={styles.childrenContainer}>{children}</View>
       {!!fixedItems && (
         <View
           style={
@@ -93,6 +93,9 @@ const getStyles = (Colors: ThemeColors) =>
   StyleSheet.create({
     container: {
       backgroundColor: Colors.screenBackgroundColor,
+      flex: 1,
+    },
+    childrenContainer: {
       flex: 1,
     },
     fixedContainer: {
