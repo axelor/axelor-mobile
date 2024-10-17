@@ -171,5 +171,6 @@
   "Stock_SliceAction_FilterProductTrakingNumbers": "filtrer les numéros de suivi du produit",
   "Stock_SliceAction_CreateTrakingNumber": "création d'un numéro de suivi",
   "Stock_SliceAction_UpdateSupplierArrivalLineWithTrackingNumber": "mise à jour d'une ligne de réception fournisseur avec un nouveau numéro de suivi",
-  "Stock_SliceAction_FetchUnits": "récupération des unités"
+  "Stock_SliceAction_FetchUnits": "récupération des unités",
+  "Stock_SliceAction_AddTrackingNumberToStockCorrection": "ajout du numéro de suivi sur la correction de stock"
 }

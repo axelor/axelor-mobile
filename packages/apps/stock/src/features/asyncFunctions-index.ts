@@ -76,6 +76,7 @@ export {
 } from './stockAppConfigSlice';
 export {fetchStockCorrectionReasons} from './stockCorrectionReasonSlice';
 export {
+  addTrackingNumberStockCorrection,
   createCorrection,
   fetchStockCorrection,
   searchStockCorrections,
