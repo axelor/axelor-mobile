@@ -54,6 +54,7 @@ export {
   fetchStockCorrection as fetchStockCorrectionApi,
   searchStockCorrection,
   updateStockCorrection,
+  updateStockCorrectionTrackingNumber,
 } from './stock-correction-api';
 export * from './stock-correction-reason-api';
 export * from './stock-location-api';

@@ -26,8 +26,8 @@ import {
   searchStockCorrection,
   createStockCorrection,
   updateStockCorrection,
+  updateStockCorrectionTrackingNumber,
 } from '../api/stock-correction-api';
-import {updateStockCorrectionTrackingNumber} from '../api';
 
 export const searchStockCorrections = createAsyncThunk(
   'stockCorrection/searchStockCorrections',
@@ -86,8 +86,8 @@ export const updateCorrection = createAsyncThunk(
 );
 
 export const addTrackingNumberStockCorrection = createAsyncThunk(
-  'customerDeliveryLine/addTrackingNumber',
-  async function (data = {}, {getState, dispatch}) {
+  'stockCorrection/addTrackingNumberStockCorrection',
+  async function (data, {getState, dispatch}) {
     return handlerApiCall({
       fetchFunction: updateStockCorrectionTrackingNumber,
       data,

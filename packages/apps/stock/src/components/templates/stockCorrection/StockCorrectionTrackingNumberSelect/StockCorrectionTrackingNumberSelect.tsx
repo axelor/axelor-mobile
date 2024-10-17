@@ -21,22 +21,30 @@ import {useDispatch} from '@axelor/aos-mobile-core';
 import {ProductTrackingNumberSelect} from '../../../templates';
 import {addTrackingNumberStockCorrection} from '../../../../features/stockCorrectionSlice';
 
-const trackingScanKey = 'tracking_stock-correction-select';
+const trackingScanKey = 'tracking-number_stock-correction_select';
 
 const StockCorrectionTrackingNumberSelect = ({
+  style,
   product,
   stockCorrection,
-  visible = true,
+  visible = false,
+  handleTrackingSelect = () => {},
+}: {
+  style?: any;
+  product: any;
+  stockCorrection?: any;
+  visible?: boolean;
+  handleTrackingSelect?: (value: any) => void;
 }) => {
   const dispatch = useDispatch();
 
   const handleAddTrackingNumber = useCallback(
-    selectedTrackingNumber => {
+    (item: any) => {
       dispatch(
         (addTrackingNumberStockCorrection as any)({
-          stockCorrectionId: stockCorrection?.id,
-          stockCorrectionVersion: stockCorrection?.version,
-          trackingNumber: selectedTrackingNumber,
+          stockCorrectionId: stockCorrection.id,
+          stockCorrectionVersion: stockCorrection.version,
+          trackingNumber: item,
         }),
       );
     },
@@ -45,11 +53,13 @@ const StockCorrectionTrackingNumberSelect = ({
 
   return (
     <ProductTrackingNumberSelect
+      style={style}
       product={product}
       visible={visible}
       trackingScanKey={trackingScanKey}
-      onAddTrackingNumber={handleAddTrackingNumber}
-      style={{}}
+      onAddTrackingNumber={
+        stockCorrection == null ? handleTrackingSelect : handleAddTrackingNumber
+      }
     />
   );
 };
