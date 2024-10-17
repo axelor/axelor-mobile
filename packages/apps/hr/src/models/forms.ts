@@ -98,6 +98,9 @@ export const hr_formsRegister: FormConfigs = {
         hideIf: ({storeState}) =>
           !storeState.appConfig.mobileSettings
             ?.isExpenseProjectInvoicingEnabled,
+        options: {
+          isBusinessProject: true,
+        },
       },
       projectTask: {
         titleKey: 'Hr_ProjectTask',
@@ -264,6 +267,9 @@ export const hr_formsRegister: FormConfigs = {
           !storeState.appConfig.mobileSettings?.fieldsToShowOnTimesheet.find(
             (field: string) => field === 'project',
           ),
+        options: {
+          manageTimeSpent: true,
+        },
       },
       projectTask: {
         titleKey: 'Hr_ProjectTask',
@@ -381,6 +387,9 @@ export const hr_formsRegister: FormConfigs = {
           !storeState.appConfig.mobileSettings?.fieldsToShowOnTimesheet.find(
             (field: string) => field === 'project',
           ),
+        options: {
+          manageTimeSpent: true,
+        },
       },
       projectTask: {
         titleKey: 'Hr_ProjectTask',
