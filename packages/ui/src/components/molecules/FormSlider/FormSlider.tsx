@@ -22,7 +22,7 @@ import {Slider, Text} from '../../atoms';
 import {Color, useThemeColor} from '../../../theme';
 import {getCommonStyles} from '../../../utils';
 
-interface SliderProps {
+interface FormSliderProps {
   style?: any;
   title: string;
   color?: Color;
@@ -34,7 +34,7 @@ interface SliderProps {
   displayStepNumber?: boolean;
   defaultValue: number;
   displaySliderValue?: boolean;
-  readOnly?: boolean;
+  readonly?: boolean;
   onChange: (value: number) => void;
 }
 
@@ -50,9 +50,9 @@ const FormSlider = ({
   displayStepNumber,
   defaultValue,
   displaySliderValue,
-  readOnly,
+  readonly,
   onChange,
-}: SliderProps) => {
+}: FormSliderProps) => {
   const Colors = useThemeColor();
 
   const commonStyles = useMemo(() => getCommonStyles(Colors), [Colors]);
@@ -82,7 +82,7 @@ const FormSlider = ({
           displayStepNumber={displayStepNumber}
           defaultValue={defaultValue}
           displaySliderValue={displaySliderValue}
-          disabled={readOnly}
+          disabled={readonly}
           onChange={onChange}
         />
       </View>

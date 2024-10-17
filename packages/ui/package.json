@@ -25,6 +25,7 @@
     "icons:build": "npm run icons:clean && node scripts/icons-build.js"
   },
   "peerDependencies": {
+    "@react-native-community/slider": "^4.5.4",
     "bootstrap-icons": "^1.10.3",
     "react": "*",
     "react-native": "*",
@@ -37,8 +38,8 @@
     "react-native-webview": "11.26.1"
   },
   "devDependencies": {
-    "@react-native-community/slider": "^4.5.3",
     "@babel/runtime": "^7.20.0",
+    "@react-native-community/slider": "^4.5.4",
     "@react-native/babel-preset": "0.73.21",
     "@react-native/eslint-config": "0.73.2",
     "@svgr/core": "^6.5.1",

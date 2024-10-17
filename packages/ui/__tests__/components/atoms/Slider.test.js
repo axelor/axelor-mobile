@@ -19,20 +19,19 @@
 import React from 'react';
 import {View} from 'react-native';
 import {shallow} from 'enzyme';
-import {Slider} from '@axelor/aos-mobile-ui';
 import RNSlider from '@react-native-community/slider';
+import {Slider, Text} from '@axelor/aos-mobile-ui';
 import {getGlobalStyles} from '../../tools';
-
-jest.mock('@react-native-community/slider', () => 'RNSlider');
 
 describe('Slider Component', () => {
   const props = {
     minValue: 0,
     maxValue: 100,
+    minLimit: 0,
+    maxLimit: 100,
     step: 10,
     defaultValue: 50,
     onChange: jest.fn(),
-    displayStepNumber: true,
     disabled: false,
   };
 
@@ -44,29 +43,48 @@ describe('Slider Component', () => {
 
   it('should render RNSlider with correct props', () => {
     const wrapper = shallow(<Slider {...props} />);
-    const rnSlider = wrapper.find('RNSlider');
+    const rnSlider = wrapper.find(RNSlider);
 
-    expect(rnSlider.prop('minimumValue')).toBe(props.minValue);
-    expect(rnSlider.prop('maximumValue')).toBe(props.maxValue);
-    expect(rnSlider.prop('step')).toBe(props.step);
-    expect(rnSlider.prop('value')).toBe(props.defaultValue);
-    expect(rnSlider.prop('disabled')).toBe(props.disabled);
+    expect(rnSlider.props()).toMatchObject({
+      minimumValue: props.minValue,
+      maximumValue: props.maxValue,
+      lowerLimit: props.minLimit,
+      upperLimit: props.maxLimit,
+      step: props.step,
+      value: props.defaultValue,
+    });
   });
 
-  it('should render the correct step number list when displayStepNumber is true', () => {
-    const wrapper = shallow(<Slider {...props} />);
-    const stepNumberContainer = wrapper
+  it('should render steps only if displayStepNumber is true', () => {
+    const step = 10;
+    const minValue = 0;
+    const maxValue = 100;
+    const wrapper = shallow(
+      <Slider
+        {...props}
+        minValue={minValue}
+        maxValue={maxValue}
+        step={step}
+        displayStepNumber={true}
+      />,
+    )
       .find(View)
-      .findWhere(node => node.prop('style')?.flexDirection === 'row');
+      .at(2);
 
-    expect(stepNumberContainer.exists()).toBe(true);
+    expect(wrapper.exists()).toBe(true);
 
-    const steps = stepNumberContainer.find('Text');
-
-    const expectedSteps =
-      Math.floor((props.maxValue - props.minValue) / props.step) + 1;
-    expect(steps.length).toBe(expectedSteps);
+    const expectedSteps = Math.floor((maxValue - minValue) / step) + 1;
+    expect(wrapper.find(Text).length).toBe(expectedSteps);
   });
+
+  it('should not render steps when there are too many', () => {
+    const wrapper = shallow(
+      <Slider {...props} minValue={0} maxValue={100} step={5} />,
+    );
+
+    expect(wrapper.find(View).at(2).find(Text).length).toBe(0);
+  });
+
   it('should update the value when the slider value changes', () => {
     const wrapper = shallow(<Slider {...props} />);
     const sliderComponent = wrapper.find(RNSlider);
@@ -84,47 +102,34 @@ describe('Slider Component', () => {
     expect(props.onChange).toHaveBeenCalledWith(70);
   });
 
-  it('should display the slider value if displaySliderValue is true', () => {
-    const wrapper = shallow(<Slider {...props} displaySliderValue={true} />);
-    const sliderValueText = wrapper.findWhere(
-      node => node.prop('style')?.textAlign === 'right',
+  it('should display the slider value only if displaySliderValue is true', () => {
+    const findValueText = node => node.prop('style')?.textAlign === 'right';
+
+    const noValueWrapper = shallow(
+      <Slider {...props} displaySliderValue={false} />,
     );
+    const sliderText = noValueWrapper.findWhere(findValueText);
+
+    expect(sliderText.exists()).toBe(false);
+
+    const wrapper = shallow(<Slider {...props} displaySliderValue={true} />);
+    const sliderValueText = wrapper.findWhere(findValueText);
 
     expect(sliderValueText.exists()).toBe(true);
 
     expect(sliderValueText.children().text()).toBe('50.00');
   });
 
-  it('should not display the slider value if displaySliderValue is false', () => {
-    const wrapper = shallow(<Slider {...props} displaySliderValue={false} />);
+  it('should disable the slider when needed', () => {
+    const disabledWrapper = shallow(<Slider {...props} disabled={true} />);
+    const wrapper = shallow(<Slider {...props} disabled={false} />);
 
-    const sliderValueText = wrapper.findWhere(
-      node => node.prop('style')?.textAlign === 'right',
-    );
-
-    expect(sliderValueText.exists()).toBe(false);
-  });
-
-  it('should disable the slider if the disabled prop is true', () => {
-    const wrapper = shallow(<Slider {...props} disabled={true} />);
-    const sliderComponent = wrapper.find(RNSlider);
-
-    expect(sliderComponent.prop('disabled')).toBe(true);
-  });
-
-  it('should render without step numbers if displayStepNumber is false', () => {
-    const wrapper = shallow(<Slider {...props} displayStepNumber={false} />);
-    const stepNumberContainer = wrapper
-      .find(View)
-      .findWhere(node => node.prop('style')?.flexDirection === 'row');
-
-    expect(stepNumberContainer.exists()).toBe(false);
+    expect(disabledWrapper.find(View).at(1).prop('pointerEvents')).toBe('none');
+    expect(wrapper.find(View).at(1).prop('pointerEvents')).toBe('auto');
   });
 
   it('should render with custom style', () => {
-    const customStyle = {
-      margin: 20,
-    };
+    const customStyle = {margin: 20};
     const wrapper = shallow(<Slider {...props} style={customStyle} />);
 
     expect(getGlobalStyles(wrapper.find(View).first())).toMatchObject(

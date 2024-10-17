@@ -17,44 +17,45 @@
  */
 
 import React from 'react';
+import {View} from 'react-native';
 import {shallow} from 'enzyme';
 import {Slider, Text, FormSlider} from '@axelor/aos-mobile-ui';
+import {getGlobalStyles} from '../../tools';
 
 describe('FormSlider Component', () => {
   const props = {
     title: 'Volume',
     minValue: 0,
     maxValue: 100,
+    step: 10,
     defaultValue: 50,
     onChange: jest.fn(),
-    displaySliderValue: true,
-    step: 10,
-    readOnly: false,
+    readonly: false,
   };
 
   it('should render without crashing', () => {
     const wrapper = shallow(<FormSlider {...props} />);
+
     expect(wrapper.exists()).toBe(true);
   });
 
   it('should render the title correctly', () => {
     const wrapper = shallow(<FormSlider {...props} />);
-    const titleText = wrapper.find(Text).first();
-    expect(titleText.props().children).toBe(props.title);
+
+    expect(wrapper.find(Text).first().prop('children')).toBe(props.title);
   });
 
   it('should pass correct props to Slider component', () => {
     const wrapper = shallow(<FormSlider {...props} />);
     const sliderComponent = wrapper.find(Slider);
 
-    expect(sliderComponent.prop('minValue')).toBe(props.minValue);
-    expect(sliderComponent.prop('maxValue')).toBe(props.maxValue);
-    expect(sliderComponent.prop('defaultValue')).toBe(props.defaultValue);
-    expect(sliderComponent.prop('displaySliderValue')).toBe(
-      props.displaySliderValue,
-    );
-    expect(sliderComponent.prop('step')).toBe(props.step);
-    expect(sliderComponent.prop('disabled')).toBe(props.readOnly);
+    expect(sliderComponent.props()).toMatchObject({
+      minValue: props.minValue,
+      maxValue: props.maxValue,
+      defaultValue: props.defaultValue,
+      step: props.step,
+      disabled: props.readonly,
+    });
   });
 
   it('should handle value changes correctly', () => {
@@ -65,24 +66,17 @@ describe('FormSlider Component', () => {
     expect(props.onChange).toHaveBeenCalledWith(60);
   });
 
-  it('should render as read-only when readOnly is true', () => {
-    const readOnlyProps = {
-      ...props,
-      readOnly: true,
-    };
-    const wrapper = shallow(<FormSlider {...readOnlyProps} />);
-    const sliderComponent = wrapper.find(Slider);
+  it('should render as read-only when readonly is true', () => {
+    const wrapper = shallow(<FormSlider {...props} readonly />);
 
-    expect(sliderComponent.prop('disabled')).toBe(true);
+    expect(wrapper.find(Slider).prop('disabled')).toBe(true);
   });
 
   it('should render with custom styles', () => {
-    const customStyle = {
-      margin: 20,
-    };
+    const customStyle = {margin: 20};
     const wrapper = shallow(<FormSlider {...props} style={customStyle} />);
 
-    expect(wrapper.find('View').first().prop('style')).toContainEqual(
+    expect(getGlobalStyles(wrapper.find(View).first())).toMatchObject(
       customStyle,
     );
   });

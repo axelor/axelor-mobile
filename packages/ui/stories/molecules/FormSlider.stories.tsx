@@ -42,7 +42,7 @@ export const FormSlider: Story<typeof Component> = {
     displayStepNumber: false,
     defaultValue: 50,
     displaySliderValue: true,
-    readOnly: false,
+    readonly: false,
   },
   argTypes: {
     style: disabledControl,

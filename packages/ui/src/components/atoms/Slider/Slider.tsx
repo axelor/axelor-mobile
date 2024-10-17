@@ -16,12 +16,14 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import React, {useMemo, useState} from 'react';
+import React, {useEffect, useMemo, useState} from 'react';
 import {StyleSheet, View} from 'react-native';
 import {default as RNSlider} from '@react-native-community/slider';
-import Text from '../Text/Text';
 import {Color, useThemeColor} from '../../../theme';
 import {useDigitFormat} from '../../../hooks/use-digit-format';
+import {Text} from '../../atoms';
+
+const STEPS_LENGTH_LIMIT = 12;
 
 interface SliderProps {
   style?: any;
@@ -57,7 +59,10 @@ const Slider = ({
 
   const [value, setValue] = useState(defaultValue);
 
-  const _color = useMemo(() => color ?? Colors.primaryColor, [color, Colors]);
+  const _color = useMemo(
+    () => (disabled ? Colors.secondaryColor : (color ?? Colors.primaryColor)),
+    [disabled, Colors, color],
+  );
 
   const displaySteps = useMemo(
     () => step > 0 && displayStepNumber,
@@ -65,29 +70,29 @@ const Slider = ({
   );
 
   const stepNumberList = useMemo(() => {
-    if (!displaySteps) {
-      return null;
+    if (displaySteps) {
+      const numberOfSteps = Math.floor((maxValue - minValue) / step) + 1;
+
+      if (numberOfSteps < STEPS_LENGTH_LIMIT) {
+        return Array.from(
+          {length: numberOfSteps},
+          (_, k) => minValue + k * step,
+        );
+      }
     }
 
-    const _stepNumberList = [];
-    let stepNumber = minValue;
-
-    while (stepNumber <= maxValue) {
-      _stepNumberList.push(stepNumber);
-      stepNumber += step;
-    }
-
-    return _stepNumberList;
+    return [];
   }, [displaySteps, maxValue, minValue, step]);
 
-  const styles = useMemo(
-    () => getStyles(displaySliderValue),
-    [displaySliderValue],
-  );
+  useEffect(() => {
+    setValue(defaultValue);
+  }, [defaultValue]);
 
   return (
     <View style={[styles.container, style]}>
-      <View style={styles.sliderContainer}>
+      <View
+        style={styles.sliderContainer}
+        pointerEvents={disabled ? 'none' : 'auto'}>
         <RNSlider
           thumbTintColor={_color.background}
           minimumTrackTintColor={_color.background}
@@ -98,7 +103,6 @@ const Slider = ({
           upperLimit={maxLimit}
           step={step}
           value={value}
-          disabled={disabled}
           onValueChange={setValue}
           onSlidingComplete={_value => {
             setValue(_value);
@@ -122,33 +126,31 @@ const Slider = ({
   );
 };
 
-const getStyles = (displaySliderValue: boolean) =>
-  StyleSheet.create({
-    container: {
-      flexDirection: 'row',
-      alignItems: 'center',
-      width: '100%',
-      height: 40,
-    },
-    sliderContainer: {
-      width: displaySliderValue ? '80%' : '100%',
-    },
-    stepNumberContainer: {
-      flexDirection: 'row',
-      justifyContent: 'space-between',
-      width: '100%',
-      paddingHorizontal: 5,
-    },
-    stepNumber: {
-      justifyContent: 'center',
-      textAlign: 'center',
-      width: 20,
-    },
-    sliderValue: {
-      textAlign: 'right',
-      width: '20%',
-      paddingRight: 12,
-    },
-  });
+const styles = StyleSheet.create({
+  container: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    width: '100%',
+  },
+  sliderContainer: {
+    flex: 1,
+  },
+  stepNumberContainer: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    width: '100%',
+    paddingHorizontal: 5,
+  },
+  stepNumber: {
+    justifyContent: 'center',
+    textAlign: 'center',
+    width: 20,
+  },
+  sliderValue: {
+    textAlign: 'right',
+    width: '20%',
+    paddingRight: 12,
+  },
+});
 
 export default Slider;
