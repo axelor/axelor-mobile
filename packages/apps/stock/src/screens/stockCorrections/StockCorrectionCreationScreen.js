@@ -188,7 +188,10 @@ const StockCorrectionCreationScreen = ({route}) => {
             />
             <StockCorrectionTrackingNumberSelect
               product={product}
-              visible={trackingNumber == null}
+              visible={
+                trackingNumber == null &&
+                product?.trackingNumberConfiguration != null
+              }
               handleTrackingSelect={setTrackingNumber}
             />
             <StockCorrectionQuantityCard
