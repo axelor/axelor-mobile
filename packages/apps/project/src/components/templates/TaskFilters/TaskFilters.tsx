@@ -42,16 +42,17 @@ type SetterFunction = (value: any | ((_current: any) => any)) => void;
 
 const TaskFilters = ({
   isAssignedToMe,
+  selectedCategories: _selectedCategories,
+  setSelectedCategory,
   setIsAssignedToMe,
   setSelectedStatus,
   setSelectedPriority,
-  setSelectedCategory,
   project,
   setProject,
   showProjectSearchBar = false,
-  selectedCategory,
 }: {
   isAssignedToMe: boolean;
+  selectedCategories?: any[];
   setSelectedCategory: SetterFunction;
   setIsAssignedToMe: SetterFunction;
   setSelectedStatus: SetterFunction;
@@ -59,7 +60,6 @@ const TaskFilters = ({
   project?: any;
   setProject?: SetterFunction;
   showProjectSearchBar?: boolean;
-  selectedCategory?: any;
 }) => {
   const I18n = useTranslator();
   const dispatch = useDispatch();
@@ -69,46 +69,46 @@ const TaskFilters = ({
   const {projectTaskStatusList, projectPriorityList, projectCategoryList} =
     useSelector((state: any) => state.project_projectTask);
 
-  const fullSelectedCategory = useMemo(() => {
-    if (!selectedCategory || !selectedCategory[0]) {
-      return null;
-    }
-    return projectCategoryList.find(
-      category => category.id === selectedCategory[0].value,
-    );
-  }, [selectedCategory, projectCategoryList]);
+  const selectedCategories = useMemo(
+    () =>
+      _selectedCategories?.map(({key}) =>
+        projectCategoryList.find(({id}) => id === key),
+      ),
+    [_selectedCategories, projectCategoryList],
+  );
 
   const statusList = useMemo(() => {
     const _list = getCustomSelectionItems(projectTaskStatusList, 'name', []);
 
     if (project == null) {
       return _list;
-    } else if (
-      project?.taskStatusManagementSelect ===
-      Project?.taskStatusManagementSelect.NoStatusManagement
-    ) {
-      return [];
-    } else if (
-      project?.taskStatusManagementSelect ===
-      Project?.taskStatusManagementSelect.ManageByProject
-    ) {
-      return filterAvailableSet(project.projectTaskStatusSet, _list);
-    } else if (
-      project?.taskStatusManagementSelect ===
-        Project?.taskStatusManagementSelect.ManageByCategory &&
-      fullSelectedCategory
-    ) {
-      return filterAvailableSet(
-        fullSelectedCategory?.projectTaskStatusSet,
-        _list,
-      );
+    } else {
+      switch (project?.taskStatusManagementSelect) {
+        case Project?.taskStatusManagementSelect.NoStatusManagement:
+          return [];
+        case Project?.taskStatusManagementSelect.ManageByProject:
+          return filterAvailableSet(project.projectTaskStatusSet, _list);
+        case Project?.taskStatusManagementSelect.ManageByCategory:
+          return selectedCategories
+            ? selectedCategories
+                .flatMap(_c =>
+                  filterAvailableSet(_c?.projectTaskStatusSet, _list),
+                )
+                .filter(({key}, idx, self) => {
+                  console.log(key);
+                  return self.findIndex(_i => _i.key === key) === idx;
+                })
+            : _list;
+        default:
+          return _list;
+      }
     }
   }, [
     getCustomSelectionItems,
     projectTaskStatusList,
     project,
     Project?.taskStatusManagementSelect,
-    fullSelectedCategory,
+    selectedCategories,
   ]);
 
   const priorityList = useMemo(() => {

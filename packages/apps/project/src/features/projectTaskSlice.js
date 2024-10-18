@@ -232,6 +232,19 @@ export const searchProjectTaskLink = createAsyncThunk(
   },
 );
 
+export const fetchCategoryFormById = createAsyncThunk(
+  'project_projectTask/fetchCategoryFormById',
+  async function (data, {getState}) {
+    return handlerApiCall({
+      fetchFunction: _searchCategory,
+      data: {categoryIds: data.categoryId == null ? null : [data.categoryId]},
+      action: 'Project_SliceAction_SearchCategory',
+      getState,
+      responseOptions: {isArrayResponse: false},
+    });
+  },
+);
+
 const initialState = {
   loading: true,
   moreLoading: false,
@@ -283,15 +296,15 @@ const initialState = {
   loadingTaskTag: true,
   tagList: [],
 
-  projectTaskCategory: {},
+  categoryForm: {},
 };
 
 const projectTaskSlice = createSlice({
   name: 'project_projectTask',
   initialState,
   reducers: {
-    updateProjectTaskCategory: (state, action) => {
-      state.projectTaskCategory = action.payload;
+    udpateFormCategory: (state, action) => {
+      state.categoryForm = action.payload;
     },
   },
   extraReducers: builder => {
@@ -378,9 +391,12 @@ const projectTaskSlice = createSlice({
         action.payload,
       ]);
     });
+    builder.addCase(fetchCategoryFormById.fulfilled, (state, action) => {
+      state.categoryForm = action.payload;
+    });
   },
 });
 
-export const {updateProjectTaskCategory} = projectTaskSlice.actions;
+export const {udpateFormCategory} = projectTaskSlice.actions;
 
 export const projectTaskReducer = projectTaskSlice.reducer;

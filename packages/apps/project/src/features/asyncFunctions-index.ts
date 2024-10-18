@@ -23,6 +23,7 @@ export {
   searchSubProject,
 } from './projectSlice';
 export {
+  fetchCategoryFormById,
   fetchProjectPriority,
   fetchProjectTaskById,
   fetchProjectTaskCategory,
@@ -37,6 +38,7 @@ export {
   searchSection,
   searchStatus,
   searchTargetVersion,
+  udpateFormCategory,
 } from './projectTaskSlice';
 export {getProjectReportingIndicator} from './reportingSlice';
 export {fetchTimesheetLinesByTask} from './timesheetLinesSlice';

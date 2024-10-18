@@ -55,30 +55,24 @@ const TaskStatusSearchBarAux = ({
     moreLoadingStatus,
     isListEndStatus,
     statusList,
-    projectTaskCategory,
+    categoryForm,
   } = useSelector((state: any) => state.project_projectTask);
   const {projectForm} = useSelector((state: any) => state.project_project);
 
   const statusIds = useMemo(() => {
-    if (
-      projectForm?.taskStatusManagementSelect ===
-      Project?.taskStatusManagementSelect.ManageByProject
-    ) {
-      return projectForm?.projectTaskStatusSet?.map(status => status.id);
-    } else if (
-      projectForm?.taskStatusManagementSelect ===
-        Project?.taskStatusManagementSelect.ManageByCategory &&
-      projectTaskCategory
-    ) {
-      return projectTaskCategory?.projectTaskStatusSet?.map(
-        status => status.id,
-      );
+    switch (projectForm?.taskStatusManagementSelect) {
+      case Project?.taskStatusManagementSelect.ManageByProject:
+        return projectForm?.projectTaskStatusSet?.map(({id}) => id) ?? [];
+      case Project?.taskStatusManagementSelect.ManageByCategory:
+        return categoryForm?.projectTaskStatusSet?.map(({id}) => id) ?? [];
+      default:
+        return [];
     }
   }, [
     Project?.taskStatusManagementSelect,
     projectForm?.projectTaskStatusSet,
     projectForm?.taskStatusManagementSelect,
-    projectTaskCategory,
+    categoryForm?.projectTaskStatusSet,
   ]);
 
   const searchStatusAPI = useCallback(

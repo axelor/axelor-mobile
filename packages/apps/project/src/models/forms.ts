@@ -39,7 +39,7 @@ import {
   TaskStatusSearchBar,
 } from '../components';
 import {updateProject} from '../features/projectSlice';
-import {updateProjectTaskCategory} from '../features/projectTaskSlice';
+import {udpateFormCategory} from '../features/projectTaskSlice';
 
 export const project_formsRegister: FormConfigs = {
   project_TimesheetLine: {
@@ -223,7 +223,8 @@ export const project_formsRegister: FormConfigs = {
                 ?.taskStatusManagementSelect ===
               getTypes().Project.taskStatusManagementSelect?.ManageByCategory
             ) {
-              dispatch(updateProjectTaskCategory(newValue));
+              dispatch(udpateFormCategory(newValue));
+              return null;
             }
           },
         },
