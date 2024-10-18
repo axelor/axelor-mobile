@@ -67,6 +67,7 @@ const TaskListScreen = ({navigation}) => {
             setIsAssignedToMe={setIsAssignedToMe}
             setSelectedPriority={setSelectedPriority}
             setSelectedStatus={setSelectedStatus}
+            selectedCategories={selectedCategory}
             setSelectedCategory={setSelectedCategory}
             project={project}
             setProject={setProject}

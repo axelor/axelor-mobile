@@ -71,6 +71,7 @@ const TaskView = () => {
           setSelectedPriority={setSelectedPriority}
           setSelectedCategory={setSelectedCategory}
           setSelectedStatus={setSelectedStatus}
+          selectedCategories={selectedCategory}
           project={project}
         />
       }
