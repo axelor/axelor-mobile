@@ -23,9 +23,8 @@ import {
   useTranslator,
 } from '@axelor/aos-mobile-core';
 import {ActionCard, useThemeColor} from '@axelor/aos-mobile-ui';
-import {CartLineCard} from '../../atoms';
+import {CartLineCard, VariantPopup} from '../../atoms';
 import {deleteCartLine, updateCartLine} from '../../../features/cartLineSlice';
-import {fetchProductById} from '../../../features/productSlice';
 
 const TIME_INCREMENT = 2000;
 
@@ -52,19 +51,38 @@ const CartLineActionCard = ({
   const dispatch = useDispatch();
 
   const [diffQty, setDiffQty] = useState(0);
+  const [alertVisible, setAlertVisible] = useState(false);
 
-  const handleTimeOut = useCallback(() => {
-    if (diffQty !== 0) {
+  const handleUpdateLine = useCallback(
+    (data: {qty?: number; variantProduct?: any}) => {
       dispatch(
         (updateCartLine as any)({
           cartLine,
-          qty: parseInt(cartLine.qty, 10) + diffQty,
+          qty: data.qty != null ? data.qty : cartLine.qty,
+          variantProduct:
+            data.variantProduct != null
+              ? data.variantProduct
+              : cartLine.variantProduct,
           cartId: cartId,
         }),
       );
+    },
+    [cartId, cartLine, dispatch],
+  );
+
+  const handleUpdateVariant = useCallback(
+    (productId: number) => {
+      handleUpdateLine({variantProduct: {id: productId}});
+    },
+    [handleUpdateLine],
+  );
+
+  const handleTimeOut = useCallback(() => {
+    if (diffQty !== 0) {
+      handleUpdateLine({qty: parseInt(cartLine.qty, 10) + diffQty});
       setDiffQty(0);
     }
-  }, [diffQty, cartId, cartLine, dispatch]);
+  }, [diffQty, handleUpdateLine, cartLine.qty]);
 
   useEffect(() => {
     if (diffQty !== 0) {
@@ -77,65 +95,67 @@ const CartLineActionCard = ({
   }, [handleTimeOut, diffQty]);
 
   return (
-    <ActionCard
-      style={style}
-      actionList={[
-        {
-          iconName: 'palette2',
-          helper: I18n.t('Sale_SeeVariants'),
-          onPress: () => {
-            dispatch(
-              (fetchProductById as any)({
-                productId: cartLine?.variantProduct.id,
-              }),
-            );
-            navigation.navigate('VariantProductsScreen');
+    <>
+      <ActionCard
+        style={style}
+        actionList={[
+          {
+            iconName: 'palette2',
+            helper: I18n.t('Sale_SeeVariants'),
+            onPress: () => setAlertVisible(true),
+            hidden: cartLine.product?.productVariantConfig == null,
           },
-          hidden: cartLine?.variantProduct == null,
-        },
-        {
-          iconName: 'trash3-fill',
-          helper: I18n.t('Sale_RemoveFromCart'),
-          onPress: () => {
-            dispatch(
-              (deleteCartLine as any)({
-                cartLineId: cartLine?.id,
-                cartId: cartId,
-              }),
-            );
+          {
+            iconName: 'trash3-fill',
+            helper: I18n.t('Sale_RemoveFromCart'),
+            onPress: () => {
+              dispatch(
+                (deleteCartLine as any)({
+                  cartLineId: cartLine?.id,
+                  cartId: cartId,
+                }),
+              );
+            },
+            iconColor: Colors.errorColor.background,
+            large: cartLine.product?.productVariantConfig == null,
+            hidden: hideDelete,
           },
-          iconColor: Colors.errorColor.background,
-          large: cartLine?.variantProduct == null,
-          hidden: hideDelete,
-        },
-        {
-          iconName: 'plus-lg',
-          helper: I18n.t('Sale_AddOne'),
-          onPress: () => setDiffQty(current => current + 1),
-          hidden: hideIncrement,
-        },
-        {
-          iconName: 'dash-lg',
-          helper: I18n.t('Sale_RemoveOne'),
-          disabled: parseInt(cartLine.qty, 10) + diffQty <= 1,
-          onPress: () => setDiffQty(current => current - 1),
-          hidden: hideIncrement,
-        },
-      ]}
-      forceActionsDisplay={diffQty !== 0}
-      translator={I18n.t}>
-      <CartLineCard
-        product={cartLine.product}
-        qty={parseInt(cartLine.qty, 10) + diffQty}
-        unit={cartLine.unit?.name}
-        hideBadgeInformation={hideBadgeInformation}
-        onPress={() => {
-          navigation.navigate('CartLineDetailsScreen', {
-            cartLineId: cartLine.id,
-          });
-        }}
+          {
+            iconName: 'plus-lg',
+            helper: I18n.t('Sale_AddOne'),
+            onPress: () => setDiffQty(current => current + 1),
+            hidden: hideIncrement,
+          },
+          {
+            iconName: 'dash-lg',
+            helper: I18n.t('Sale_RemoveOne'),
+            disabled: parseInt(cartLine.qty, 10) + diffQty <= 1,
+            onPress: () => setDiffQty(current => current - 1),
+            hidden: hideIncrement,
+          },
+        ]}
+        forceActionsDisplay={diffQty !== 0}
+        translator={I18n.t}>
+        <CartLineCard
+          product={cartLine.product}
+          qty={parseInt(cartLine.qty, 10) + diffQty}
+          unit={cartLine.unit?.name}
+          hideBadgeInformation={hideBadgeInformation}
+          onPress={() => {
+            navigation.navigate('CartLineDetailsScreen', {
+              cartLineId: cartLine.id,
+            });
+          }}
+        />
+      </ActionCard>
+      <VariantPopup
+        visible={alertVisible}
+        handleClose={() => setAlertVisible(false)}
+        parentProduct={cartLine.product}
+        variantProduct={cartLine.variantProduct}
+        handleConfirm={handleUpdateVariant}
       />
-    </ActionCard>
+    </>
   );
 };
 

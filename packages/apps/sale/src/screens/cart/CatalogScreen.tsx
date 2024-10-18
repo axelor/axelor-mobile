@@ -51,6 +51,7 @@ const CatalogScreen = ({}) => {
         value: type,
       })),
       isConfiguratorProductShown: mobileSettings?.isConfiguratorProductShown,
+      isGenericProductShown: mobileSettings?.isGenericProductShown,
     }),
     [mobileSettings],
   );
