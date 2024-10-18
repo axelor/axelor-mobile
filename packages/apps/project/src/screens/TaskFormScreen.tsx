@@ -25,7 +25,10 @@ import {
   useTypes,
 } from '@axelor/aos-mobile-core';
 import {fetchProjectFormById} from '../features/projectSlice';
-import {saveProjectTask} from '../features/projectTaskSlice';
+import {
+  fetchCategoryFormById,
+  saveProjectTask,
+} from '../features/projectTaskSlice';
 
 const TaskFormScreen = ({navigation, route}) => {
   const {isCreation} = route.params ?? {};
@@ -42,6 +45,14 @@ const TaskFormScreen = ({navigation, route}) => {
       }),
     );
   }, [_dispatch, isCreation, project?.id, projectTask?.project]);
+
+  useEffect(() => {
+    _dispatch(
+      (fetchCategoryFormById as any)({
+        categoryId: isCreation ? null : projectTask?.projectTaskCategory?.id,
+      }),
+    );
+  }, [_dispatch, isCreation, projectTask?.projectTaskCategory]);
 
   const _defaultValue = useMemo(() => {
     if (!isCreation && !isEmpty(projectTask)) {
