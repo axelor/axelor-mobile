@@ -81,6 +81,9 @@ const HtmlInput = ({
         editor.current.dismissKeyboard();
       }
     }
+  }, [defaultInput]);
+
+  useEffect(() => {
     if (!isFocused) {
       setKey(defaultInput);
     }
