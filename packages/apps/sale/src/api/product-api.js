@@ -23,18 +23,37 @@ import {
   getSearchCriterias,
 } from '@axelor/aos-mobile-core';
 
+const createVariantCriteria = selectedVariants => {
+  const criteria = [];
+
+  for (let i = 1; i <= 5; i++) {
+    const fieldName = `productVariantValue${i}`;
+
+    if (selectedVariants[fieldName]) {
+      criteria.push({
+        fieldName: `productVariant.${fieldName}.id`,
+        operator: '=',
+        value: selectedVariants[fieldName].id,
+      });
+    } else {
+      criteria.push({
+        fieldName: `productVariant.${fieldName}.id`,
+        operator: 'isNull',
+      });
+    }
+  }
+
+  return criteria;
+};
+
 const createProductCriteria = ({
   searchValue,
   productTypeSelect,
   productCategory,
   isConfiguratorProductShown,
+  isGenericProductShown,
 }) => {
   const criteria = [
-    {
-      fieldName: 'isModel',
-      operator: '=',
-      value: false,
-    },
     {
       fieldName: 'sellable',
       operator: '=',
@@ -57,6 +76,19 @@ const createProductCriteria = ({
     criteria.push({
       fieldName: 'configurator.id',
       operator: 'isNull',
+    });
+  }
+
+  if (isGenericProductShown) {
+    criteria.push({
+      fieldName: 'parentProduct',
+      operator: 'isNull',
+    });
+  } else {
+    criteria.push({
+      fieldName: 'isModel',
+      operator: '=',
+      value: false,
     });
   }
 
@@ -110,6 +142,7 @@ export async function searchProduct({
   productTypeSelect,
   productCategory,
   isConfiguratorProductShown,
+  isGenericProductShown,
 }) {
   return createStandardSearch({
     model: 'com.axelor.apps.base.db.Product',
@@ -118,6 +151,7 @@ export async function searchProduct({
       productTypeSelect,
       productCategory,
       isConfiguratorProductShown,
+      isGenericProductShown,
     }),
     fieldKey: 'sale_product',
     sortKey: 'sale_product',
@@ -177,5 +211,23 @@ export async function fetchVariantAttributes({productVariantId, version}) {
   return axiosApiProvider.post({
     url: `/ws/aos/stock-product/get-variant-attributes/${productVariantId}`,
     data: {version: version},
+  });
+}
+
+export async function fetchProductVariantConfig({productVariantConfigId}) {
+  return createStandardFetch({
+    model: 'com.axelor.apps.base.db.ProductVariantConfig',
+    id: productVariantConfigId,
+    fieldKey: 'sale_productVariantConfig',
+  });
+}
+
+export async function fetchMatchingProduct({selectedVariants}) {
+  return createStandardSearch({
+    model: 'com.axelor.apps.base.db.Product',
+    criteria: createVariantCriteria(selectedVariants),
+    fieldKey: 'sale_product',
+    sortKey: 'sale_product',
+    page: 0,
   });
 }

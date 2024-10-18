@@ -144,6 +144,7 @@
   "Sale_LastOrder": "Dernière commande",
   "Sale_AccessCart": "Accéder au panier",
   "Sale_Product": "Produit",
+  "Sale_ChooseVariant": "Choisir un variant",
   "Sale_SliceAction_FetchSaleConfig": "récupération des configurations de vente",
   "Sale_SliceAction_FetchSaleOrder": "récupération des commandes client",
   "Sale_SliceAction_SearchCustomer": "recherche sur les clients",
@@ -168,5 +169,7 @@
   "Sale_SliceAction_ValidateCart": "validation du panier et création du devis",
   "Sale_SliceAction_EmptyCart": "vidage du panier",
   "Sale_SliceAction_UpdateSaleOrderStatus": "mise à jour du statut de la commande",
-  "Sale_SliceAction_AddCartLine": "ajout d'une ligne au panier"
+  "Sale_SliceAction_AddCartLine": "ajout d'une ligne au panier",
+  "Sale_SliceAction_fetchProductVariantConfig": "récupération de la configuration du variant de produit",
+  "Sale_SliceAction_FetchMatchingProduct": "récupération du produit correspondant"
 }

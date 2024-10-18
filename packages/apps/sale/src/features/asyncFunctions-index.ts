@@ -38,8 +38,10 @@ export {
 } from './customerSlice';
 export {fetchPriceListLine} from './priceListLineSlice';
 export {
+  fetchMatchingProduct,
   fetchProductById,
   fetchProductCompanyConfig,
+  fetchProductVariantConfig,
   fetchVariantProduct,
   searchProduct,
   searchProductCategory,
