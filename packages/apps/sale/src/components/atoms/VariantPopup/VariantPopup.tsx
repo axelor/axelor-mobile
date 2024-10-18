@@ -31,7 +31,7 @@ interface VariantPopupProps {
   handleClose: () => void;
   parentProduct: any;
   variantProduct?: any;
-  confirmData?: any;
+  handleConfirm: (productId: number) => void;
 }
 
 const VariantPopup = ({
@@ -39,10 +39,10 @@ const VariantPopup = ({
   handleClose,
   parentProduct,
   variantProduct,
-  confirmData,
+  handleConfirm,
 }: VariantPopupProps) => {
   const I18n = useTranslator();
-  const dispatch = useDispatch();
+  const dispatch: any = useDispatch();
 
   const {productVariantConfig} = useSelector(
     (state: any) => state.sale_product,
@@ -63,12 +63,16 @@ const VariantPopup = ({
   const handleProductSelection = useCallback(() => {
     dispatch(
       (fetchMatchingProduct as any)({
-        ...(confirmData ?? {}),
         selectedVariants,
       }),
-    );
-    handleClose();
-  }, [confirmData, dispatch, selectedVariants, handleClose]);
+    ).then(res => {
+      const _productId = res?.payload?.id;
+      if (_productId != null) {
+        handleConfirm(res?.payload?.id);
+        handleClose();
+      }
+    });
+  }, [dispatch, selectedVariants, handleConfirm, handleClose]);
 
   useEffect(() => {
     if (variantProduct != null && productVariantConfig) {

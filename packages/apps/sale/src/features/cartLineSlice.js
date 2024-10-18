@@ -105,7 +105,7 @@ export const addCartLine = createAsyncThunk(
       data,
       action: 'Sale_SliceAction_AddCartLine',
       getState,
-      responseOptions: {isArrayResponse: false},
+      responseOptions: {isArrayResponse: false, showToast: true},
     }).then(() => dispatch(searchCartLine({cartId: data.cartId})));
   },
 );

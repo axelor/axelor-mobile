@@ -53,18 +53,36 @@ const CartLineActionCard = ({
   const [diffQty, setDiffQty] = useState(0);
   const [alertVisible, setAlertVisible] = useState(false);
 
-  const handleTimeOut = useCallback(() => {
-    if (diffQty !== 0) {
+  const handleUpdateLine = useCallback(
+    (data: {qty?: number; variantProduct?: any}) => {
       dispatch(
         (updateCartLine as any)({
           cartLine,
-          qty: parseInt(cartLine.qty, 10) + diffQty,
+          qty: data.qty != null ? data.qty : cartLine.qty,
+          variantProduct:
+            data.variantProduct != null
+              ? data.variantProduct
+              : cartLine.variantProduct,
           cartId: cartId,
         }),
       );
+    },
+    [cartId, cartLine, dispatch],
+  );
+
+  const handleUpdateVariant = useCallback(
+    (productId: number) => {
+      handleUpdateLine({variantProduct: {id: productId}});
+    },
+    [handleUpdateLine],
+  );
+
+  const handleTimeOut = useCallback(() => {
+    if (diffQty !== 0) {
+      handleUpdateLine({qty: parseInt(cartLine.qty, 10) + diffQty});
       setDiffQty(0);
     }
-  }, [diffQty, cartId, cartLine, dispatch]);
+  }, [diffQty, handleUpdateLine, cartLine.qty]);
 
   useEffect(() => {
     if (diffQty !== 0) {
@@ -134,11 +152,8 @@ const CartLineActionCard = ({
         visible={alertVisible}
         handleClose={() => setAlertVisible(false)}
         parentProduct={cartLine.product}
-        variantProduct={cartLine.productVariant}
-        confirmData={{
-          cartLine: cartLine,
-          cartId: cartId,
-        }}
+        variantProduct={cartLine.variantProduct}
+        handleConfirm={handleUpdateVariant}
       />
     </>
   );

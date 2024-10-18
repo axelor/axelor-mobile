@@ -16,10 +16,11 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import React, {useState} from 'react';
-import {useTranslator} from '@axelor/aos-mobile-core';
+import React, {useCallback, useState} from 'react';
+import {useDispatch, useSelector, useTranslator} from '@axelor/aos-mobile-core';
 import {ActionCard} from '@axelor/aos-mobile-ui';
 import {CartLineCard, VariantPopup} from '../../atoms';
+import {addCartLine} from '../../../features/cartLineSlice';
 
 interface CatalogActionCardProps {
   style?: any;
@@ -28,8 +29,25 @@ interface CatalogActionCardProps {
 
 const CatalogActionCard = ({style, product}: CatalogActionCardProps) => {
   const I18n = useTranslator();
+  const dispatch = useDispatch();
+
+  const {activeCart} = useSelector((state: any) => state.sale_cart);
 
   const [alertVisible, setAlertVisible] = useState(false);
+
+  const handleAddProduct = useCallback(
+    (productId: number) => {
+      dispatch(
+        (addCartLine as any)({
+          cartId: activeCart?.id,
+          cartVersion: activeCart?.version,
+          productId,
+          qty: 1,
+        }),
+      );
+    },
+    [activeCart?.id, activeCart?.version, dispatch],
+  );
 
   return (
     <>
@@ -41,7 +59,7 @@ const CatalogActionCard = ({style, product}: CatalogActionCardProps) => {
             helper: I18n.t('Sale_AddOne'),
             onPress:
               product?.productVariantConfig == null
-                ? () => {}
+                ? () => handleAddProduct(product.id)
                 : () => setAlertVisible(true),
           },
         ]}
@@ -52,6 +70,7 @@ const CatalogActionCard = ({style, product}: CatalogActionCardProps) => {
         visible={alertVisible}
         handleClose={() => setAlertVisible(false)}
         parentProduct={product}
+        handleConfirm={handleAddProduct}
       />
     </>
   );
