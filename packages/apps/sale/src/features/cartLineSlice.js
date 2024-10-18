@@ -71,7 +71,7 @@ export const updateCartLine = createAsyncThunk(
       data,
       action: 'Sale_SliceAction_UpdateCartLine',
       getState,
-      responseOptions: {isArrayResponse: true},
+      responseOptions: {isArrayResponse: true, showToast: true},
     }).then(() => {
       return handlerApiCall({
         fetchFunction: _searchCartLine,
@@ -105,7 +105,7 @@ export const addCartLine = createAsyncThunk(
       data,
       action: 'Sale_SliceAction_AddCartLine',
       getState,
-      responseOptions: {isArrayResponse: false},
+      responseOptions: {isArrayResponse: false, showToast: true},
     }).then(() => dispatch(searchCartLine({cartId: data.cartId})));
   },
 );
