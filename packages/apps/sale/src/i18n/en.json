@@ -143,6 +143,8 @@
   "Sale_LastQuotation": "Last quotation",
   "Sale_LastOrder": "Last order",
   "Sale_AccessCart": "Access cart",
+  "Sale_NewSaleQuotation": "New sale quotation",
+  "Sale_Products": "Products",
   "Sale_Product": "Product",
   "Sale_ChooseVariant": "Choose variant",
   "Sale_SliceAction_FetchSaleConfig": "fetch sale config",
@@ -171,5 +173,6 @@
   "Sale_SliceAction_UpdateSaleOrderStatus": "update sale order status",
   "Sale_SliceAction_AddCartLine": "add cart line",
   "Sale_SliceAction_fetchProductVariantConfig": "fetch product variant config",
-  "Sale_SliceAction_FetchMatchingProduct": "fetch matching product"
+  "Sale_SliceAction_FetchMatchingProduct": "fetch matching product",
+  "Sale_SliceAction_CreateSaleOrder": "create sale quotation"
 }
