@@ -38,8 +38,10 @@ export {
 export {fetchCustomerDelivery as fetchCustomerDeliveryApi} from './customer-delivery-api';
 export {fetchPriceListLine as fetchPriceListLineApi} from './price-list-line-api';
 export {
+  fetchMatchingProduct as fetchMatchingProductApi,
   fetchProductById as fetchProductByIdApi,
   fetchProductCompanyConfig as fetchProductCompanyConfigApi,
+  fetchProductVariantConfig as fetchProductVariantConfigApi,
   fetchVariantAttributes as fetchVariantAttributesApi,
   fetchVariantProduct as fetchVariantProductApi,
   searchProduct as searchProductApi,
