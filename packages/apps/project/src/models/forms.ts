@@ -16,7 +16,12 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import {FormConfigs, isEmpty, UserSearchBar} from '@axelor/aos-mobile-core';
+import {
+  FormConfigs,
+  isEmpty,
+  UserSearchBar,
+  getTypes,
+} from '@axelor/aos-mobile-core';
 import {
   ProductSearchBar,
   ProjectSearchBar as HRProjectSearchBar,
@@ -34,6 +39,7 @@ import {
   TaskStatusSearchBar,
 } from '../components';
 import {updateProject} from '../features/projectSlice';
+import {udpateFormCategory} from '../features/projectTaskSlice';
 
 export const project_formsRegister: FormConfigs = {
   project_TimesheetLine: {
@@ -176,17 +182,50 @@ export const project_formsRegister: FormConfigs = {
         },
         parentPanel: 'parentContainer',
       },
+      projectTaskCategory: {
+        titleKey: 'Project_Category',
+        type: 'object',
+        widget: 'custom',
+        customComponent: CategorySearchBar,
+        hideIf: ({storeState}) =>
+          !storeState.project_project.projectForm?.isShowTaskCategory,
+        requiredIf: ({storeState}) =>
+          storeState.project_project.projectForm?.taskStatusManagementSelect ===
+          getTypes().Project.taskStatusManagementSelect?.ManageByCategory,
+        dependsOn: {
+          project: () => {
+            return null;
+          },
+        },
+      },
       status: {
         titleKey: 'Project_Status',
         type: 'object',
         widget: 'custom',
         customComponent: TaskStatusSearchBar,
-        hideIf: ({storeState}) =>
-          !storeState.project_project.projectForm?.isShowStatus,
-        required: true,
+        hideIf: ({storeState}) => {
+          return (
+            storeState.project_project.projectForm
+              ?.taskStatusManagementSelect ===
+            getTypes().Project.taskStatusManagementSelect?.NoStatusManagement
+          );
+        },
+        requiredIf: ({storeState}) =>
+          storeState.project_project.projectForm?.taskStatusManagementSelect !==
+          getTypes().Project.taskStatusManagementSelect?.NoStatusManagement,
         dependsOn: {
           project: () => {
             return null;
+          },
+          projectTaskCategory: ({newValue, storeState, dispatch}) => {
+            if (
+              storeState.project_project.projectForm
+                ?.taskStatusManagementSelect ===
+              getTypes().Project.taskStatusManagementSelect?.ManageByCategory
+            ) {
+              dispatch(udpateFormCategory(newValue));
+              return null;
+            }
           },
         },
       },
@@ -210,19 +249,6 @@ export const project_formsRegister: FormConfigs = {
         widget: 'custom',
         customComponent: UserSearchBar,
         required: true,
-      },
-      projectTaskCategory: {
-        titleKey: 'Project_Category',
-        type: 'object',
-        widget: 'custom',
-        customComponent: CategorySearchBar,
-        hideIf: ({storeState}) =>
-          !storeState.project_project.projectForm?.isShowTaskCategory,
-        dependsOn: {
-          project: () => {
-            return null;
-          },
-        },
       },
       projectTaskSection: {
         titleKey: 'Project_Section',

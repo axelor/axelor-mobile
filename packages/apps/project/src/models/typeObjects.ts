@@ -38,4 +38,28 @@ export const project_typeObjects: ModuleSelections = [
       },
     },
   },
+  {
+    modelName: 'com.axelor.apps.project.db.Project',
+    fields: {
+      taskStatusManagementSelect: {
+        content: [
+          {
+            key: 'ManageByCategory',
+            value: 4,
+            title: null,
+          },
+          {
+            key: 'ManageByProject',
+            value: 2,
+            title: null,
+          },
+          {
+            key: 'NoStatusManagement',
+            value: 1,
+            title: null,
+          },
+        ],
+      },
+    },
+  },
 ];

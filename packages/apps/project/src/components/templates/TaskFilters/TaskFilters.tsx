@@ -24,6 +24,7 @@ import {
   useSelector,
   useTranslator,
   useTypeHelpers,
+  useTypes,
 } from '@axelor/aos-mobile-core';
 import {
   fetchProjectTaskStatus,
@@ -41,15 +42,17 @@ type SetterFunction = (value: any | ((_current: any) => any)) => void;
 
 const TaskFilters = ({
   isAssignedToMe,
+  selectedCategories: _selectedCategories,
+  setSelectedCategory,
   setIsAssignedToMe,
   setSelectedStatus,
   setSelectedPriority,
-  setSelectedCategory,
   project,
   setProject,
   showProjectSearchBar = false,
 }: {
   isAssignedToMe: boolean;
+  selectedCategories?: any[];
   setSelectedCategory: SetterFunction;
   setIsAssignedToMe: SetterFunction;
   setSelectedStatus: SetterFunction;
@@ -60,22 +63,53 @@ const TaskFilters = ({
 }) => {
   const I18n = useTranslator();
   const dispatch = useDispatch();
+  const {Project} = useTypes();
   const {getCustomSelectionItems} = useTypeHelpers();
 
   const {projectTaskStatusList, projectPriorityList, projectCategoryList} =
     useSelector((state: any) => state.project_projectTask);
+
+  const selectedCategories = useMemo(
+    () =>
+      _selectedCategories?.map(({key}) =>
+        projectCategoryList.find(({id}) => id === key),
+      ),
+    [_selectedCategories, projectCategoryList],
+  );
 
   const statusList = useMemo(() => {
     const _list = getCustomSelectionItems(projectTaskStatusList, 'name', []);
 
     if (project == null) {
       return _list;
-    } else if (!project.isShowStatus) {
-      return [];
     } else {
-      return filterAvailableSet(project.projectTaskStatusSet, _list);
+      switch (project?.taskStatusManagementSelect) {
+        case Project?.taskStatusManagementSelect.NoStatusManagement:
+          return [];
+        case Project?.taskStatusManagementSelect.ManageByProject:
+          return filterAvailableSet(project.projectTaskStatusSet, _list);
+        case Project?.taskStatusManagementSelect.ManageByCategory:
+          return selectedCategories
+            ? selectedCategories
+                .flatMap(_c =>
+                  filterAvailableSet(_c?.projectTaskStatusSet, _list),
+                )
+                .filter(({key}, idx, self) => {
+                  console.log(key);
+                  return self.findIndex(_i => _i.key === key) === idx;
+                })
+            : _list;
+        default:
+          return _list;
+      }
     }
-  }, [getCustomSelectionItems, projectTaskStatusList, project]);
+  }, [
+    getCustomSelectionItems,
+    projectTaskStatusList,
+    project,
+    Project?.taskStatusManagementSelect,
+    selectedCategories,
+  ]);
 
   const priorityList = useMemo(() => {
     const _list = getCustomSelectionItems(projectPriorityList, 'name', []);
