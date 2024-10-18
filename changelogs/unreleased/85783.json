@@ -1,0 +1,6 @@
+{
+    "title": "HtmlInput: resolve issue with keyboard closing right after opening when clicking on the input on iOS",
+    "type": "fix",
+    "packages": "ui"
+  }
+  
