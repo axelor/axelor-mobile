@@ -22,3 +22,5 @@ export {default as DropDownSaleOrderView} from './DropDownSaleOrderView/DropDown
 export {default as ProductCategorySearchBar} from './ProductCategorySearchBar/ProductCategorySearchBar';
 export {default as ProductDropdownCard} from './ProductDropdownCard/ProductDropdownCard';
 export {default as ProductSearchBar} from './ProductSearchBar/ProductSearchBar';
+export {default as SaleQuotationCreationButtons} from './SaleQuotationCreationButtons/SaleQuotationCreationButtons';
+export {default as SaleQuotationCreationQuantityCard} from './SaleQuotationCreationQuantityCard/SaleQuotationCreationQuantityCard';

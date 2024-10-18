@@ -22,6 +22,7 @@ import {
   handlerApiCall,
 } from '@axelor/aos-mobile-core';
 import {
+  createSaleOrder as _createSaleOrder,
   fetchSaleOrder as _fetchSaleOrder,
   fetchSaleOrderById as _fetchSaleOrderById,
   updateSaleOrderStatus as _updateSaleOrderStatus,
@@ -64,6 +65,19 @@ export const updateSaleOrderStatus = createAsyncThunk(
       responseOptions: {isArrayResponse: false},
     }).then(() => {
       dispatch(fetchSaleOrderById({saleOrderId: data.saleOrderId}));
+    });
+  },
+);
+
+export const createSaleOrder = createAsyncThunk(
+  'sale_saleOrder/createSaleOrder',
+  async function (data, {getState}) {
+    return handlerApiCall({
+      fetchFunction: _createSaleOrder,
+      data,
+      action: 'Sale_SliceAction_CreateSaleOrder',
+      getState,
+      responseOptions: {isArrayResponse: false, showToast: true},
     });
   },
 );

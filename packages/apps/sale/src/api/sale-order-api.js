@@ -85,3 +85,10 @@ export async function updateSaleOrderStatus({
     },
   });
 }
+
+export async function createSaleOrder({saleOrderLineList, customerId}) {
+  return axiosApiProvider.post({
+    url: '/ws/aos/sale-order',
+    data: {saleOrderLineList, clientPartnerId: customerId},
+  });
+}

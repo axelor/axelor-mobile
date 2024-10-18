@@ -49,6 +49,7 @@ export {
 export {fetchSaleConfig} from './saleConfigSlice';
 export {fetchSaleOrderLine, fetchSaleOrderLineById} from './saleOrderLineSlice';
 export {
+  createSaleOrder,
   fetchSaleOrder,
   fetchSaleOrderById,
   updateSaleOrderStatus,
