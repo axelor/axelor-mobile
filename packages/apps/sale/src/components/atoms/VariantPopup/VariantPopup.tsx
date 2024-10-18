@@ -16,38 +16,104 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import React from 'react';
+import React, {useCallback, useEffect, useMemo, useState} from 'react';
 import {FlatList, StyleSheet, View} from 'react-native';
 import {Alert, SingleSelectScrollList, Text} from '@axelor/aos-mobile-ui';
-import {useTranslator} from '@axelor/aos-mobile-core';
+import {useDispatch, useSelector, useTranslator} from '@axelor/aos-mobile-core';
+import {
+  fetchMatchingProduct,
+  fetchProductVariantConfig,
+} from '../../../features/productSlice';
+import {fetchProductByIdApi} from '../../../api';
 
 interface VariantPopupProps {
-  alertVisible: boolean;
-  handleConfirm: any;
-  setAlertVisible: any;
-  variantAttributes: any;
-  setSelectedVariants: any;
+  visible?: boolean;
+  handleClose: () => void;
+  parentProduct: any;
+  variantProduct?: any;
+  confirmData?: any;
 }
 
 const VariantPopup = ({
-  alertVisible,
-  handleConfirm,
-  setAlertVisible,
-  variantAttributes,
-  setSelectedVariants,
+  visible = false,
+  handleClose,
+  parentProduct,
+  variantProduct,
+  confirmData,
 }: VariantPopupProps) => {
   const I18n = useTranslator();
+  const dispatch = useDispatch();
+
+  const {productVariantConfig} = useSelector(
+    (state: any) => state.sale_product,
+  );
+
+  const [selectedVariants, setSelectedVariants] = useState({});
+
+  useEffect(() => {
+    if (visible && parentProduct?.productVariantConfig != null) {
+      dispatch(
+        (fetchProductVariantConfig as any)({
+          productVariantConfigId: parentProduct.productVariantConfig.id,
+        }),
+      );
+    }
+  }, [dispatch, parentProduct, visible]);
+
+  const handleProductSelection = useCallback(() => {
+    dispatch(
+      (fetchMatchingProduct as any)({
+        ...(confirmData ?? {}),
+        selectedVariants,
+      }),
+    );
+    handleClose();
+  }, [confirmData, dispatch, selectedVariants, handleClose]);
+
+  useEffect(() => {
+    if (variantProduct != null && productVariantConfig) {
+      fetchProductByIdApi({productId: variantProduct?.id})
+        .then(res => {
+          const variantData = res?.data?.data?.[0]?.productVariant;
+          if (variantData) {
+            const newSelectedVariants = {};
+            for (let i = 1; i <= 5; i++) {
+              newSelectedVariants[`productVariantValue${i}`] =
+                variantData[`productVariantValue${i}`] ?? undefined;
+            }
+            setSelectedVariants(newSelectedVariants);
+          }
+        })
+        .catch(() => setSelectedVariants({}));
+    }
+  }, [variantProduct, productVariantConfig]);
+
+  const variantAttributes = useMemo(() => {
+    if (!productVariantConfig) {
+      return [];
+    }
+
+    return Array.from({length: 5}, (_, index) => {
+      const attrIndex = index + 1;
+
+      return {
+        attribute: productVariantConfig[`productVariantAttr${attrIndex}`],
+        values: productVariantConfig[`productVariantValue${attrIndex}Set`],
+        defaultValue: selectedVariants[`productVariantValue${attrIndex}`],
+      };
+    });
+  }, [productVariantConfig, selectedVariants]);
 
   return (
     <Alert
-      visible={alertVisible}
+      visible={visible}
       title={I18n.t('Sale_ChooseVariant')}
       confirmButtonConfig={{
-        onPress: handleConfirm,
+        onPress: handleProductSelection,
         title: I18n.t('Base_OK'),
       }}
       cancelButtonConfig={{
-        onPress: () => setAlertVisible(false),
+        onPress: handleClose,
         showInHeader: true,
       }}
       style={styles.popup}>
@@ -56,7 +122,7 @@ const VariantPopup = ({
         data={variantAttributes.filter(
           attr => attr.attribute && attr.values.length > 0,
         )}
-        keyExtractor={(item, index) => index.toString()}
+        keyExtractor={(_, index) => index.toString()}
         renderItem={({item}) => (
           <View style={styles.container}>
             <Text>{item.attribute.name}</Text>

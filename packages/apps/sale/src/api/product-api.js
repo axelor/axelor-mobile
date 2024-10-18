@@ -26,65 +26,21 @@ import {
 const createVariantCriteria = selectedVariants => {
   const criteria = [];
 
-  if (selectedVariants.productVariantValue1) {
-    criteria.push({
-      fieldName: 'productVariant.productVariantValue1.id',
-      operator: '=',
-      value: selectedVariants.productVariantValue1.id,
-    });
-  } else {
-    criteria.push({
-      fieldName: 'productVariant.productVariantValue1.id',
-      operator: 'isNull',
-    });
-  }
-  if (selectedVariants.productVariantValue2) {
-    criteria.push({
-      fieldName: 'productVariant.productVariantValue2.id',
-      operator: '=',
-      value: selectedVariants.productVariantValue2.id,
-    });
-  } else {
-    criteria.push({
-      fieldName: 'productVariant.productVariantValue2.id',
-      operator: 'isNull',
-    });
-  }
-  if (selectedVariants.productVariantValue3) {
-    criteria.push({
-      fieldName: 'productVariant.productVariantValue3.id',
-      operator: '=',
-      value: selectedVariants.productVariantValue3.id,
-    });
-  } else {
-    criteria.push({
-      fieldName: 'productVariant.productVariantValue3.id',
-      operator: 'isNull',
-    });
-  }
-  if (selectedVariants.productVariantValue4) {
-    criteria.push({
-      fieldName: 'productVariant.productVariantValue4.id',
-      operator: '=',
-      value: selectedVariants.productVariantValue4.id,
-    });
-  } else {
-    criteria.push({
-      fieldName: 'productVariant.productVariantValue4.id',
-      operator: 'isNull',
-    });
-  }
-  if (selectedVariants.productVariantValue5) {
-    criteria.push({
-      fieldName: 'productVariant.productVariantValue5.id',
-      operator: '=',
-      value: selectedVariants.productVariantValue5.id,
-    });
-  } else {
-    criteria.push({
-      fieldName: 'productVariant.productVariantValue5.id',
-      operator: 'isNull',
-    });
+  for (let i = 1; i <= 5; i++) {
+    const fieldName = `productVariantValue${i}`;
+
+    if (selectedVariants[fieldName]) {
+      criteria.push({
+        fieldName: `productVariant.${fieldName}.id`,
+        operator: '=',
+        value: selectedVariants[fieldName].id,
+      });
+    } else {
+      criteria.push({
+        fieldName: `productVariant.${fieldName}.id`,
+        operator: 'isNull',
+      });
+    }
   }
 
   return criteria;
@@ -267,21 +223,11 @@ export async function fetchProductVariantConfig({productVariantConfigId}) {
 }
 
 export async function fetchMatchingProduct({selectedVariants}) {
-  const variantCriteria = createVariantCriteria(selectedVariants);
-
-  const criteria = [
-    {
-      operator: 'and',
-      criteria: variantCriteria,
-    },
-  ];
-
-  return axiosApiProvider.post({
-    url: `/ws/rest/com.axelor.apps.base.db.Product/search`,
-    data: {
-      offset: 0,
-      limit: 10,
-      data: {criteria},
-    },
+  return createStandardSearch({
+    model: 'com.axelor.apps.base.db.Product',
+    criteria: createVariantCriteria(selectedVariants),
+    fieldKey: 'sale_product',
+    sortKey: 'sale_product',
+    page: 0,
   });
 }

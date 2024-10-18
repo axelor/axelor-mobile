@@ -81,14 +81,18 @@ export const fetchMatchingProduct = createAsyncThunk(
       getState,
       responseOptions: {isArrayResponse: false},
     }).then(res => {
-      dispatch(
-        updateCartLine({
-          cartLine: data.cartLine,
-          qty: data.cartLine.qty,
-          variantProduct: res,
-          cartId: data.cartId,
-        }),
-      );
+      if (data.cartLine != null) {
+        dispatch(
+          updateCartLine({
+            cartLine: data.cartLine,
+            qty: data.cartLine.qty,
+            variantProduct: res,
+            cartId: data.cartId,
+          }),
+        );
+      } else {
+        // Add line
+      }
     });
   },
 );

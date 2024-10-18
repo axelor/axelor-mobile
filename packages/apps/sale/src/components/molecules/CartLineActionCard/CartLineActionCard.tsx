@@ -20,17 +20,11 @@ import React, {useCallback, useEffect, useState} from 'react';
 import {
   useDispatch,
   useNavigation,
-  useSelector,
   useTranslator,
 } from '@axelor/aos-mobile-core';
 import {ActionCard, useThemeColor} from '@axelor/aos-mobile-ui';
 import {CartLineCard, VariantPopup} from '../../atoms';
 import {deleteCartLine, updateCartLine} from '../../../features/cartLineSlice';
-import {
-  fetchMatchingProduct,
-  fetchProductVariantConfig,
-} from '../../../features/productSlice';
-import {useVariantSelection} from '../../../hooks/use-variant-selection';
 
 const TIME_INCREMENT = 2000;
 
@@ -56,20 +50,8 @@ const CartLineActionCard = ({
   const navigation = useNavigation();
   const dispatch = useDispatch();
 
-  const {productVariantConfig} = useSelector(
-    (state: any) => state.sale_product,
-  );
-
-  const {
-    alertVisible,
-    setAlertVisible,
-    handleVariantSelection,
-    variantAttributes,
-    setSelectedVariants,
-    selectedVariants,
-  } = useVariantSelection(cartLine, productVariantConfig);
-
   const [diffQty, setDiffQty] = useState(0);
+  const [alertVisible, setAlertVisible] = useState(false);
 
   const handleTimeOut = useCallback(() => {
     if (diffQty !== 0) {
@@ -94,17 +76,6 @@ const CartLineActionCard = ({
     }
   }, [handleTimeOut, diffQty]);
 
-  const handleConfirm = useCallback(() => {
-    dispatch(
-      (fetchMatchingProduct as any)({
-        selectedVariants: selectedVariants,
-        cartLine: cartLine,
-        cartId: cartId,
-      }),
-    );
-    setAlertVisible(false);
-  }, [cartId, cartLine, dispatch, selectedVariants, setAlertVisible]);
-
   return (
     <>
       <ActionCard
@@ -113,15 +84,7 @@ const CartLineActionCard = ({
           {
             iconName: 'palette2',
             helper: I18n.t('Sale_SeeVariants'),
-            onPress: () => {
-              dispatch(
-                (fetchProductVariantConfig as any)({
-                  productVariantConfigId:
-                    cartLine.product.productVariantConfig?.id,
-                }),
-              );
-              handleVariantSelection();
-            },
+            onPress: () => setAlertVisible(true),
             hidden: cartLine.product?.productVariantConfig == null,
           },
           {
@@ -136,7 +99,7 @@ const CartLineActionCard = ({
               );
             },
             iconColor: Colors.errorColor.background,
-            large: cartLine?.variantProduct == null,
+            large: cartLine.product?.productVariantConfig == null,
             hidden: hideDelete,
           },
           {
@@ -168,11 +131,14 @@ const CartLineActionCard = ({
         />
       </ActionCard>
       <VariantPopup
-        alertVisible={alertVisible}
-        handleConfirm={handleConfirm}
-        setAlertVisible={setAlertVisible}
-        setSelectedVariants={setSelectedVariants}
-        variantAttributes={variantAttributes}
+        visible={alertVisible}
+        handleClose={() => setAlertVisible(false)}
+        parentProduct={cartLine.product}
+        variantProduct={cartLine.productVariant}
+        confirmData={{
+          cartLine: cartLine,
+          cartId: cartId,
+        }}
       />
     </>
   );

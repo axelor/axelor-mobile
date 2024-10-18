@@ -16,12 +16,10 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import React, {useCallback} from 'react';
-import {useDispatch, useSelector, useTranslator} from '@axelor/aos-mobile-core';
+import React, {useState} from 'react';
+import {useTranslator} from '@axelor/aos-mobile-core';
 import {ActionCard} from '@axelor/aos-mobile-ui';
 import {CartLineCard, VariantPopup} from '../../atoms';
-import {fetchProductVariantConfig} from '../../../features/productSlice';
-import {useVariantSelection} from '../../../hooks/use-variant-selection';
 
 interface CatalogActionCardProps {
   style?: any;
@@ -30,23 +28,8 @@ interface CatalogActionCardProps {
 
 const CatalogActionCard = ({style, product}: CatalogActionCardProps) => {
   const I18n = useTranslator();
-  const dispatch = useDispatch();
 
-  const {productVariantConfig} = useSelector(
-    (state: any) => state.sale_product,
-  );
-
-  const {
-    alertVisible,
-    setAlertVisible,
-    handleVariantSelection,
-    variantAttributes,
-    setSelectedVariants,
-  } = useVariantSelection(product, productVariantConfig);
-
-  const handleConfirm = useCallback(() => {
-    setAlertVisible(false);
-  }, [setAlertVisible]);
+  const [alertVisible, setAlertVisible] = useState(false);
 
   return (
     <>
@@ -59,26 +42,16 @@ const CatalogActionCard = ({style, product}: CatalogActionCardProps) => {
             onPress:
               product?.productVariantConfig == null
                 ? () => {}
-                : () => {
-                    dispatch(
-                      (fetchProductVariantConfig as any)({
-                        productVariantConfigId:
-                          product.productVariantConfig?.id,
-                      }),
-                    );
-                    handleVariantSelection();
-                  },
+                : () => setAlertVisible(true),
           },
         ]}
         translator={I18n.t}>
         <CartLineCard product={product} />
       </ActionCard>
       <VariantPopup
-        alertVisible={alertVisible}
-        handleConfirm={handleConfirm}
-        setAlertVisible={setAlertVisible}
-        setSelectedVariants={setSelectedVariants}
-        variantAttributes={variantAttributes}
+        visible={alertVisible}
+        handleClose={() => setAlertVisible(false)}
+        parentProduct={product}
       />
     </>
   );
