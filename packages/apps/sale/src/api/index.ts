@@ -17,6 +17,7 @@
  */
 
 export {
+  addProductToActiveCart as addProductToActiveCartApi,
   emptyCart as emptyCartApi,
   searchCart as searchCartApi,
   updateCart as updateCartApi,
