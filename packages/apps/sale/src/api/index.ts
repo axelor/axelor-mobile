@@ -49,6 +49,7 @@ export {
 } from './product-api';
 export {fetchSaleConfig as fetchSaleConfigApi} from './sale-config-api';
 export {
+  createSaleOrder as createSaleOrderApi,
   fetchSaleOrder as fetchSaleOrderApi,
   fetchSaleOrderById as fetchSaleOrderByIdApi,
   updateSaleOrderStatus as updateSaleOrderStatusApi,
