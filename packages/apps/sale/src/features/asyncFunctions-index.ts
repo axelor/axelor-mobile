@@ -24,6 +24,7 @@ export {
   updateCartLine,
 } from './cartLineSlice';
 export {
+  addProductToActiveCart,
   emptyCart,
   fetchActiveCart,
   updateCart,

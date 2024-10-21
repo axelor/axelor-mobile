@@ -17,6 +17,7 @@
  */
 
 import React, {useCallback, useEffect, useMemo, useState} from 'react';
+import {StyleSheet} from 'react-native';
 import {
   Button,
   DoubleIcon,
@@ -123,7 +124,13 @@ const ActiveCartScreen = ({}) => {
   );
 
   if (activeCart == null) {
-    return <Label type="info" message={I18n.t('Sale_NoCartAvailable')} />;
+    return (
+      <Label
+        style={styles.label}
+        type="info"
+        message={I18n.t('Sale_NoCartAvailable')}
+      />
+    );
   }
 
   return (
@@ -165,5 +172,12 @@ const ActiveCartScreen = ({}) => {
     </Screen>
   );
 };
+
+const styles = StyleSheet.create({
+  label: {
+    width: '90%',
+    alignSelf: 'center',
+  },
+});
 
 export default ActiveCartScreen;
