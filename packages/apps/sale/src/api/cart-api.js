@@ -20,6 +20,7 @@ import {
   createStandardSearch,
   getSearchCriterias,
 } from '@axelor/aos-mobile-core';
+import {addCartLine} from './cart-line-api';
 
 const createCartCriteria = (searchValue, userId) => {
   const criteria = [getSearchCriterias('sale_cart', searchValue)];
@@ -84,4 +85,21 @@ export async function emptyCart({id, version}) {
     url: `ws/aos/cart/empty/${id}`,
     data: {version},
   });
+}
+
+export async function addProductToActiveCart({userId, productId, qty}) {
+  return searchCart({userId})
+    .then(res => res?.data?.data?.[0])
+    .then(cart => {
+      if (cart != null) {
+        return addCartLine({
+          cartId: cart.id,
+          cartVersion: cart.version,
+          productId,
+          qty,
+        });
+      } else {
+        throw {response: {status: 404, statusText: 'No active cart found'}};
+      }
+    });
 }
