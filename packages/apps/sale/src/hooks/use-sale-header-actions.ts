@@ -19,10 +19,12 @@
 import {useEffect, useMemo} from 'react';
 import {
   headerActionsProvider,
+  useNavigation,
   useSelector,
   useTranslator,
   useTypes,
 } from '@axelor/aos-mobile-core';
+import {useThemeColor} from '@axelor/aos-mobile-ui';
 
 export const useSaleHeaders = () => {
   useSaleOrderDetailsActions();
@@ -30,6 +32,7 @@ export const useSaleHeaders = () => {
   useProductDetailsActions();
   useClientDetailsActions();
   useCartLineDetailsActions();
+  useSaleQuotationsActions();
 };
 
 const useSaleOrderDetailsActions = () => {
@@ -123,4 +126,26 @@ const useCartLineDetailsActions = () => {
       disableMailMessages: !mobileSettings?.isTrackerMessageEnabled,
     });
   }, [cartLine?.id, mobileSettings]);
+};
+
+const useSaleQuotationsActions = () => {
+  const Colors = useThemeColor();
+  const I18n = useTranslator();
+  const navigation = useNavigation();
+
+  useEffect(() => {
+    headerActionsProvider.registerModel('sale_saleQuotation_list', {
+      actions: [
+        {
+          key: 'newSaleQuotation',
+          order: 10,
+          iconName: 'plus-lg',
+          title: I18n.t('Sale_NewSaleQuotation'),
+          iconColor: Colors.primaryColor.background,
+          onPress: () => navigation.navigate('SaleQuotationCreationScreen'),
+          showInHeader: true,
+        },
+      ],
+    });
+  }, [Colors.primaryColor.background, I18n, navigation]);
 };
