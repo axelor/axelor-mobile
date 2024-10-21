@@ -22,11 +22,7 @@ import {
   UserSearchBar,
   getTypes,
 } from '@axelor/aos-mobile-core';
-import {
-  ProductSearchBar,
-  ProjectSearchBar as HRProjectSearchBar,
-  ProjectTaskSearchBar,
-} from '@axelor/aos-mobile-hr';
+import {HrModule} from '@axelor/aos-mobile-hr';
 import {
   LogTimeButton,
   CategorySearchBar,
@@ -41,72 +37,26 @@ import {
 import {updateProject} from '../features/projectSlice';
 import {udpateFormCategory} from '../features/projectTaskSlice';
 
+const hr_TimesheetLineForm = HrModule.models.formsRegister.hr_TimesheetLine;
+
 export const project_formsRegister: FormConfigs = {
   project_TimesheetLine: {
     modelName: 'com.axelor.apps.hr.db.TimesheetLine',
     fields: {
       project: {
-        titleKey: 'Hr_Project',
-        type: 'object',
-        widget: 'custom',
-        customComponent: HRProjectSearchBar,
+        ...hr_TimesheetLineForm.fields.project,
         readonly: true,
       },
       projectTask: {
-        titleKey: 'Hr_ProjectTask',
-        type: 'object',
-        widget: 'custom',
-        customComponent: ProjectTaskSearchBar,
-        hideIf: ({storeState}) =>
-          !storeState.appConfig.mobileSettings.fieldsToShowOnTimesheet.find(
-            (field: string) => field === 'projectTask',
-          ),
+        ...hr_TimesheetLineForm.fields.projectTask,
+        readonlyIf: ({objectState}) => objectState?.isTaskLog ?? false,
       },
-      product: {
-        titleKey: 'Hr_Product',
-        type: 'object',
-        widget: 'custom',
-        customComponent: ProductSearchBar,
-        hideIf: ({storeState}) =>
-          !storeState.appConfig.mobileSettings.fieldsToShowOnTimesheet.find(
-            (field: string) => field === 'product',
-          ),
-        dependsOn: {
-          projectTask: ({objectState}) => {
-            return objectState.projectTask?.product;
-          },
-        },
-        required: true,
-      },
-      toInvoice: {
-        titleKey: 'Hr_ToInvoice',
-        type: 'boolean',
-        widget: 'checkbox',
-        options: {
-          style: {width: '90%', alignSelf: 'center'},
-        },
-        hideIf: ({storeState}) =>
-          !storeState.appConfig.mobileSettings
-            .isTimesheetProjectInvoicingEnabled,
-      },
-      date: {
-        titleKey: 'Hr_Date',
-        type: 'date',
-        widget: 'date',
-        readonlyIf: ({storeState}) =>
-          !storeState.appConfig.mobileSettings.isEditionOfDateAllowed,
-        required: true,
-      },
-      hoursDuration: {
-        titleKey: 'Hr_Duration',
-        type: 'number',
-        widget: 'increment',
-        required: true,
-      },
+      product: hr_TimesheetLineForm.fields.product,
+      toInvoice: hr_TimesheetLineForm.fields.toInvoice,
+      date: hr_TimesheetLineForm.fields.date,
+      hoursDuration: hr_TimesheetLineForm.fields.hoursDuration,
       comments: {
-        titleKey: 'Hr_Comments',
-        type: 'string',
-        widget: 'default',
+        ...hr_TimesheetLineForm.fields.comments,
         options: {
           multiline: true,
           adjustHeightWithLines: true,
