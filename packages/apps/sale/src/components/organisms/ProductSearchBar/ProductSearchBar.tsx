@@ -50,6 +50,7 @@ const ProductSearchBar = ({
   const I18n = useTranslator();
   const dispatch = useDispatch();
 
+  const {mobileSettings} = useSelector((state: any) => state.appConfig);
   const {loadingList, moreLoading, isListEnd, productList} = useSelector(
     (state: any) => state.sale_product,
   );
@@ -60,10 +61,15 @@ const ProductSearchBar = ({
         (searchProduct as any)({
           page,
           searchValue,
+          productTypeSelect: mobileSettings?.productTypesToDisplay.map(
+            type => ({value: type}),
+          ),
+          isConfiguratorProductShown:
+            mobileSettings?.isConfiguratorProductShown,
         }),
       );
     },
-    [dispatch],
+    [dispatch, mobileSettings],
   );
 
   return (

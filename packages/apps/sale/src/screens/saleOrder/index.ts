@@ -21,10 +21,12 @@ import SaleOrdersScreen from './SaleOrdersScreen';
 import SaleOrderDetailsScreen from './SaleOrderDetailsScreen';
 import SaleOrderLineListScreen from './SaleOrderLineListScreen';
 import SaleOrderLineDetailsScreen from './SaleOrderLineDetailsScreen';
+import SaleQuotationCreationScreen from './SaleQuotationCreationScreen';
 
 export default {
   SaleQuotationsScreen: {
     title: 'Sale_SaleQuotations',
+    actionID: 'sale_saleQuotation_list',
     component: SaleQuotationsScreen,
     options: {
       shadedHeader: false,
@@ -63,6 +65,10 @@ export default {
       shadedHeader: false,
     },
   },
+  SaleQuotationCreationScreen: {
+    title: 'Sale_SaleQuotation',
+    component: SaleQuotationCreationScreen,
+  },
 };
 
 export {SaleQuotationsScreen};
@@ -70,3 +76,4 @@ export {SaleOrdersScreen};
 export {SaleOrderDetailsScreen};
 export {SaleOrderLineListScreen};
 export {SaleOrderLineDetailsScreen};
+export {SaleQuotationCreationScreen};
