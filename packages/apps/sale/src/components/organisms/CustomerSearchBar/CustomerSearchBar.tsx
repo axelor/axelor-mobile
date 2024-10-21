@@ -35,7 +35,6 @@ interface CustomerSearchbarProps {
   readonly?: boolean;
   required?: boolean;
   companyId?: number;
-  isScrollViewContainer?: boolean;
 }
 
 const CustomerSearchBar = ({
@@ -47,7 +46,6 @@ const CustomerSearchBar = ({
   readonly = false,
   required = false,
   companyId,
-  isScrollViewContainer = false,
 }: CustomerSearchbarProps) => {
   const I18n = useTranslator();
   const dispatch = useDispatch();
@@ -82,7 +80,6 @@ const CustomerSearchBar = ({
       navigate={false}
       oneFilter={false}
       translator={I18n.t}
-      isScrollViewContainer={isScrollViewContainer}
     />
   );
 };

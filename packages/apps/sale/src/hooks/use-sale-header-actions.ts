@@ -134,7 +134,7 @@ const useSaleQuotationsActions = () => {
   const navigation = useNavigation();
 
   useEffect(() => {
-    headerActionsProvider.registerModel('sale_saleQuotations', {
+    headerActionsProvider.registerModel('sale_saleQuotation_list', {
       actions: [
         {
           key: 'newSaleQuotation',

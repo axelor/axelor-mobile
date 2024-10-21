@@ -83,11 +83,7 @@ const SaleQuotationCreationScreen = ({}) => {
         />
       }>
       <ScrollView style={styles.container}>
-        <CustomerSearchBar
-          defaultValue={customer}
-          onChange={setCustomer}
-          isScrollViewContainer
-        />
+        <CustomerSearchBar defaultValue={customer} onChange={setCustomer} />
         {customer && (
           <>
             <ViewAllEditList
@@ -129,6 +125,7 @@ const SaleQuotationCreationScreen = ({}) => {
 const styles = StyleSheet.create({
   container: {
     height: null,
+    flex: 1,
   },
 });
 

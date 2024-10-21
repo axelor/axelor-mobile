@@ -26,7 +26,7 @@ import SaleQuotationCreationScreen from './SaleQuotationCreationScreen';
 export default {
   SaleQuotationsScreen: {
     title: 'Sale_SaleQuotations',
-    actionID: 'sale_saleQuotations',
+    actionID: 'sale_saleQuotation_list',
     component: SaleQuotationsScreen,
     options: {
       shadedHeader: false,

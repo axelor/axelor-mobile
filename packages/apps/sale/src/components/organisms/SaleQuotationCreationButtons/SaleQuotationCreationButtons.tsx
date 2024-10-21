@@ -48,13 +48,6 @@ const SaleQuotationCreationButtons = ({
   const dispatch = useDispatch();
 
   const handleRealizePress = () => {
-    console.log(
-      'lines: ',
-      lines.map(line => ({
-        productId: line.product?.id,
-        quantity: line.qty,
-      })),
-    );
     dispatch(
       (createSaleOrder as any)({
         saleOrderLineList: lines.map(line => ({
