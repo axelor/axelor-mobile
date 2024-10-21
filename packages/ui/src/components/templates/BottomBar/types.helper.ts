@@ -27,6 +27,7 @@ interface Item {
   disabled?: boolean;
   indicator?: number;
   key?: string;
+  isActive?: boolean;
 }
 
 export interface ViewItem extends Item {

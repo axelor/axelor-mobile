@@ -36,10 +36,12 @@ const WINDOW_HEIGHT = Dimensions.get('window').height;
 const BottomBar = ({
   style,
   items,
+  updateActiveItem = false,
   itemSize = 50,
 }: {
   style?: any;
   items: BottomBarItem[];
+  updateActiveItem?: boolean;
   itemSize?: number;
 }) => {
   const {headerHeight} = useConfig();
@@ -117,6 +119,15 @@ const BottomBar = ({
       setSelectedItemColor(visibleItems?.[0].color);
     }
   }, [selectedKey, visibleItems]);
+
+  useEffect(() => {
+    const activeItem = visibleItems.find(item => item.isActive);
+
+    if (activeItem && updateActiveItem) {
+      setSelectedKey(activeItem.key);
+      setSelectedItemColor(activeItem.color);
+    }
+  }, [updateActiveItem, visibleItems]);
 
   return (
     <View style={styles.container}>

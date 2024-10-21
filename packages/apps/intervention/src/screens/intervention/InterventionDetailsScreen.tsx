@@ -77,40 +77,50 @@ const InterventionDetailsScreen = ({
     );
   }, [dispatch, idsInterventionEquipement]);
 
-  const bottomBarItems = [
-    {
-      iconName: 'house',
-      viewComponent: <GeneralInformationView />,
-      color: Colors.secondaryColor_dark,
-    },
-    {
-      iconName: 'card-checklist',
-      viewComponent: (
-        <SurveyView
-          selectedRangeId={selectedRangeId}
-          onChangeRangeId={setSelectedRangeId}
-        />
-      ),
-      color: Colors.progressColor,
-      disabled: intervention.statusSelect < Intervention?.statusSelect.Started,
-    },
-    {
-      iconName: 'cart3',
-      viewComponent: <EquipmentView />,
-      color: Colors.infoColor,
-      indicator: totalNumberInterventionEquipment,
-    },
-    {
-      iconName: 'chat-text',
-      viewComponent: <NoteView />,
-      color: Colors.plannedColor,
-    },
-    {
-      iconName: 'clock-history',
-      viewComponent: <HistoryView />,
-      color: Colors.successColor,
-    },
-  ];
+  const bottomBarItems = useMemo(
+    () => [
+      {
+        iconName: 'house',
+        viewComponent: <GeneralInformationView />,
+        color: Colors.secondaryColor_dark,
+      },
+      {
+        iconName: 'card-checklist',
+        viewComponent: (
+          <SurveyView
+            selectedRangeId={selectedRangeId}
+            onChangeRangeId={setSelectedRangeId}
+          />
+        ),
+        color: Colors.progressColor,
+        disabled:
+          intervention.statusSelect < Intervention?.statusSelect.Started,
+      },
+      {
+        iconName: 'cart3',
+        viewComponent: <EquipmentView />,
+        color: Colors.infoColor,
+        indicator: totalNumberInterventionEquipment,
+      },
+      {
+        iconName: 'chat-text',
+        viewComponent: <NoteView />,
+        color: Colors.plannedColor,
+      },
+      {
+        iconName: 'clock-history',
+        viewComponent: <HistoryView />,
+        color: Colors.successColor,
+      },
+    ],
+    [
+      Colors,
+      Intervention?.statusSelect.Started,
+      intervention.statusSelect,
+      selectedRangeId,
+      totalNumberInterventionEquipment,
+    ],
+  );
 
   if (intervention?.id !== _interventionId) {
     return null;
