@@ -31,6 +31,7 @@ import {
   sale_typeObjects,
 } from './models';
 import {useSaleHeaders} from './hooks/use-sale-header-actions';
+import {addProductToActiveCart} from './features/cartSlice';
 
 export const SaleModule: Module = {
   name: 'app-sale',
@@ -104,6 +105,23 @@ export const SaleModule: Module = {
   reducers: {...saleReducers},
   requiredConfig: ['AppSale'],
   globalTools: [
+    {
+      key: 'sale_addProductToCart',
+      iconName: 'cart-plus',
+      onPress: ({dispatch, storeState, screenContext}) => {
+        (dispatch as any)(
+          (addProductToActiveCart as any)({
+            userId: storeState.auth?.userId,
+            productId: screenContext.productId,
+            qty: 1,
+          }),
+        );
+      },
+      title: 'Sale_AddProductToCart',
+      hideIf: ({storeState, screenContext}) =>
+        !storeState?.appConfig?.sale?.isCartManagementEnabled ||
+        screenContext?.productId == null,
+    },
     {
       key: 'sale_accessActiveCart',
       iconName: 'basket2-fill',
