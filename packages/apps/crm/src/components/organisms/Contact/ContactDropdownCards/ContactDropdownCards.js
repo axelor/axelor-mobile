@@ -26,6 +26,7 @@ import {
   DropdownEventView,
   DropdownGeneralView,
 } from '../../../organisms';
+import {getContact} from '../../../../features/contactSlice';
 import {fetchContactEventById} from '../../../../features/eventSlice';
 
 const ContactDropdownCards = ({}) => {
@@ -49,17 +50,17 @@ const ContactDropdownCards = ({}) => {
             key: 0,
             childrenComp: (
               <DropdownContactView
-                address={contact.mainAddress?.fullName}
-                fixedPhone={contact.fixedPhone}
-                mobilePhone={contact.mobilePhone}
-                emailAddress={contact.emailAddress?.address}
-                webSite={contact.webSite}
+                contact={{...contact, address: contact.mainAddress}}
                 networkData={{
                   fullName: contact.simpleFullName,
                   company: contact.mainPartner?.simpleFullName,
                 }}
+                refreshContactInfos={() =>
+                  dispatch(getContact({contactId: contact.id}))
+                }
               />
             ),
+            isDefaultVisible: true,
           },
           {
             title: I18n.t('Crm_GeneralInformation'),

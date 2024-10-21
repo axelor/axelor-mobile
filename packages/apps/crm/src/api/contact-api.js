@@ -21,8 +21,8 @@ import {
   createStandardFetch,
   createStandardSearch,
   getSearchCriterias,
-  RouterProvider,
 } from '@axelor/aos-mobile-core';
+import {updateEmail} from './contact-info-api';
 
 const createContactCriteria = (searchValue, userId, assigned) => {
   const criteria = [
@@ -114,36 +114,27 @@ export async function updateContact({
   emailId,
   emailVersion,
 }) {
-  const route = await RouterProvider.get('EmailAddress');
-
-  return axiosApiProvider
-    .post({
-      url: route,
+  return updateEmail({
+    id: emailId,
+    version: emailVersion,
+    email,
+  }).then(() =>
+    axiosApiProvider.post({
+      url: '/ws/rest/com.axelor.apps.base.db.Partner',
       data: {
         data: {
-          id: emailId,
-          version: emailVersion,
-          address: email,
+          id,
+          version,
+          titleSelect,
+          firstName,
+          name,
+          fixedPhone,
+          mobilePhone,
+          webSite,
+          description,
+          mainPartner,
         },
       },
-    })
-    .then(() =>
-      axiosApiProvider.post({
-        url: '/ws/rest/com.axelor.apps.base.db.Partner',
-        data: {
-          data: {
-            id,
-            version,
-            titleSelect,
-            firstName,
-            name,
-            fixedPhone,
-            mobilePhone,
-            webSite,
-            description,
-            mainPartner,
-          },
-        },
-      }),
-    );
+    }),
+  );
 }

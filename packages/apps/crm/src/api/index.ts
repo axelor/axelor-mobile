@@ -34,6 +34,11 @@ export {
   updateContact as updateContactApi,
 } from './contact-api';
 export {
+  updateAddress as updateAddressApi,
+  updateEmail as updateEmailApi,
+  updatePartner as updatePartnerApi,
+} from './contact-info-api';
+export {
   contactEventById,
   createEvent as createEventApi,
   getEvent,

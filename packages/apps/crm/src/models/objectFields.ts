@@ -215,4 +215,7 @@ export const crm_modelAPI: ObjectFields = {
     address: schemaContructor.subObject(),
     event: schemaContructor.subObject(),
   }),
+  crm_partnerAddress: schemaContructor.object({
+    fullName: schemaContructor.string(),
+  }),
 };

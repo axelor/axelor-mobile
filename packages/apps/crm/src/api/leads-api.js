@@ -21,8 +21,8 @@ import {
   createStandardFetch,
   createStandardSearch,
   getSearchCriterias,
-  RouterProvider,
 } from '@axelor/aos-mobile-core';
+import {updateEmail} from './contact-info-api';
 
 const createLeadCriteria = (searchValue, userId, assigned, statusList) => {
   const criteria = [
@@ -110,26 +110,21 @@ export async function updateLeadScoring({leadId, leadVersion, newScore}) {
 }
 
 export async function updateLead({lead, emailId, emailVersion}) {
-  const route = await RouterProvider.get('EmailAddress');
-
   return axiosApiProvider
     .post({
-      url: route,
+      url: '/ws/rest/com.axelor.apps.crm.db.Lead',
       data: {
-        data: {
-          id: emailId,
-          version: emailVersion,
-          address: lead.emailAddress?.address,
-        },
+        data: lead,
       },
     })
-    .then(res =>
-      axiosApiProvider.post({
-        url: '/ws/rest/com.axelor.apps.crm.db.Lead',
-        data: {
-          data: lead,
-        },
-      }),
+    .then(
+      () =>
+        emailId &&
+        updateEmail({
+          id: emailId,
+          version: emailVersion,
+          email: lead.emailAddress?.address,
+        }),
     );
 }
 
