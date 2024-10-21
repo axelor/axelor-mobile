@@ -37,7 +37,6 @@ import {
   CustomerDeliveryLineQuantityCard,
   CustomerDeliveryLineTrackingNumberSelect,
   StockLocationSearchBar,
-  EditableOriginInput,
 } from '../../components';
 import {fetchProductWithId} from '../../features/productSlice';
 import {StockMove as StockMoveType, StockMoveLine} from '../../types';
@@ -175,19 +174,11 @@ const CustomerDeliveryLineDetailScreen = ({route, navigation}) => {
           trackingNumber={trackingNumber?.trackingNumberSeq}
           locker={customerDeliveryLine?.locker}
         />
-        {!readonly && isTrackingNumberSelectVisible && (
-          <>
-            <CustomerDeliveryLineTrackingNumberSelect
-              product={product}
-              customerDeliveryLine={customerDeliveryLine}
-              trackingNumber={trackingNumber}
-            />
-            <EditableOriginInput
-              stockMoveLineId={customerDeliveryLine.id}
-              trackingNumber={trackingNumber}
-            />
-          </>
-        )}
+        <CustomerDeliveryLineTrackingNumberSelect
+          product={product}
+          customerDeliveryLine={customerDeliveryLine}
+          visible={!readonly && isTrackingNumberSelectVisible}
+        />
         <CustomerDeliveryLineQuantityCard
           customerDelivery={customerDelivery}
           customerDeliveryLine={customerDeliveryLine}

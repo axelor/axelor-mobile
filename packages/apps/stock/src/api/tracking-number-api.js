@@ -86,14 +86,14 @@ export async function updateStockMoveLineTrackingNumber({
   });
 }
 
-export async function updateTrackingNumber({trackingNumber, origin}) {
+export async function updateTrackingNumber({id, origin, ...trackingNumber}) {
   return axiosApiProvider.post({
-    url: `/ws/rest/com.axelor.apps.stock.db.TrackingNumber`,
+    url: `/ws/rest/com.axelor.apps.stock.db.TrackingNumber/${id}`,
     data: {
       data: {
         ...trackingNumber,
         origin: origin,
-        version: trackingNumber.$version,
+        version: trackingNumber.$version ?? trackingNumber.version,
       },
     },
   });

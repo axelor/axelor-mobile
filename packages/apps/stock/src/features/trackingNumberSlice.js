@@ -104,19 +104,13 @@ export const updateStockMoveLineTrackingNumber = createAsyncThunk(
 
 export const updateTrackingNumber = createAsyncThunk(
   'trackingNumber/updateTrackingNumber',
-  async function (data, {getState, dispatch}) {
+  async function (data, {getState}) {
     return handlerApiCall({
       fetchFunction: _updateTrackingNumber,
       data,
       action: 'Stock_SliceAction_UpdateTrackingNumber',
       getState,
       responseOptions: {isArrayResponse: false, showToast: true},
-    }).then(() => {
-      dispatch(
-        fetchSupplierArrivalLine({
-          supplierArrivalLineId: data.stockMoveLineId,
-        }),
-      );
     });
   },
 );

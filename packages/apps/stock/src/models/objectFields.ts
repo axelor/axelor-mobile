@@ -49,12 +49,7 @@ export const stock_modelAPI: ObjectFields = {
       }),
     ),
     availableStatusSelect: schemaContructor.number(),
-    trackingNumber: schemaContructor.subObject().concat(
-      schemaContructor.object({
-        trackingNumberSeq: schemaContructor.string(),
-        origin: schemaContructor.string(),
-      }),
-    ),
+    trackingNumber: schemaContructor.subObject('trackingNumberSeq'),
     unit: schemaContructor.subObject('name'),
     qty: schemaContructor.number(),
     realQty: schemaContructor.number(),

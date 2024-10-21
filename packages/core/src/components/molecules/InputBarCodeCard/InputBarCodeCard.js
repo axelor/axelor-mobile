@@ -95,7 +95,6 @@ const styles = StyleSheet.create({
   },
   textImportant: {
     fontWeight: 'bold',
-    marginLeft: 10,
   },
   icon: {
     width: '7%',

@@ -24,16 +24,14 @@ import {TrackingNumberSearchBar} from '../../../templates';
 
 const ProductTrackingNumberSelect = ({
   product,
-  visible = true,
+  visible,
   trackingScanKey,
   onAddTrackingNumber,
   style,
-  trackingNumber,
 }) => {
   const I18n = useTranslator();
 
-  const [selectedTrackingNumber, setSelectedTrackingNumber] =
-    useState(trackingNumber);
+  const [selectedTrackingNumber, setSelectedTrackingNumber] = useState(null);
 
   if (!visible) {
     return null;

@@ -26,7 +26,7 @@ const trackingScanKey = 'tracking_customer-delivery-line-select';
 const CustomerDeliveryLineTrackingNumberSelect = ({
   product,
   customerDeliveryLine,
-  trackingNumber,
+  visible,
 }) => {
   const dispatch = useDispatch();
 
@@ -45,8 +45,8 @@ const CustomerDeliveryLineTrackingNumberSelect = ({
 
   return (
     <ProductTrackingNumberSelect
-      trackingNumber={trackingNumber}
       product={product}
+      visible={visible}
       trackingScanKey={trackingScanKey}
       onAddTrackingNumber={handleAddTrackingNumber}
     />

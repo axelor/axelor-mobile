@@ -81,8 +81,8 @@ export {
 } from './supplier-arrival-line-api';
 export * from './supplier-catalog-api';
 export {
-  searchTrackingNumberFilter as searchTrackingNumberFilterApi,
   createTrackingNumber as createTrackingNumberApi,
+  searchTrackingNumberFilter as searchTrackingNumberFilterApi,
   updateStockMoveLineTrackingNumber as updateStockMoveLineTrackingNumberApi,
   updateTrackingNumber as updateTrackingNumberApi,
 } from './tracking-number-api';

@@ -59,20 +59,12 @@ const SupplierArrivalAddTrackingScreen = ({route, navigation}) => {
         product: product,
         trackingNumberSeq: sequence,
         qty: trackingQty,
-        origin: origin,
+        origin,
         stockMoveLineId: supplierArrivalLine.id,
         stockMoveLineVersion: supplierArrivalLine.version,
       }),
     );
-  }, [
-    dispatch,
-    origin,
-    product,
-    sequence,
-    supplierArrivalLine.id,
-    supplierArrivalLine.version,
-    trackingQty,
-  ]);
+  }, [dispatch, origin, product, sequence, supplierArrivalLine, trackingQty]);
 
   useEffect(() => {
     if (!loading && createdTrackingNumber != null) {
@@ -161,7 +153,7 @@ const styles = StyleSheet.create({
     alignSelf: 'center',
   },
   origin: {
-    marginBottom: 20,
+    marginBottom: 10,
   },
 });
 
