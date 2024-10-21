@@ -31,8 +31,7 @@ import {
   sale_typeObjects,
 } from './models';
 import {useSaleHeaders} from './hooks/use-sale-header-actions';
-import {fetchActiveCart} from './features/cartSlice';
-import {addCartLine} from './features/cartLineSlice';
+import {addProductToActiveCart} from './features/cartSlice';
 
 export const SaleModule: Module = {
   name: 'app-sale',
@@ -109,18 +108,13 @@ export const SaleModule: Module = {
     {
       key: 'sale_addProductToCart',
       iconName: 'cart-plus',
-      onPress: ({dispatch, storeState, screenContext, navigation}) => {
+      onPress: ({dispatch, storeState, screenContext}) => {
         (dispatch as any)(
-          (fetchActiveCart as any)({userId: storeState.auth?.userId}),
-        ).then(res =>
-          (dispatch as any)(
-            (addCartLine as any)({
-              cartId: res.payload?.id,
-              cartVersion: res.payload?.version,
-              productId: screenContext.productId,
-              qty: 1,
-            }),
-          ).then(() => navigation.navigate('ActiveCartScreen')),
+          (addProductToActiveCart as any)({
+            userId: storeState.auth?.userId,
+            productId: screenContext.productId,
+            qty: 1,
+          }),
         );
       },
       title: 'Sale_AddProductToCart',

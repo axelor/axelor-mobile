@@ -175,5 +175,6 @@
   "Sale_SliceAction_AddCartLine": "add cart line",
   "Sale_SliceAction_fetchProductVariantConfig": "fetch product variant config",
   "Sale_SliceAction_FetchMatchingProduct": "fetch matching product",
-  "Sale_SliceAction_CreateSaleOrder": "create sale quotation"
+  "Sale_SliceAction_CreateSaleOrder": "create sale quotation",
+  "Sale_SliceAction_AddProductToActiveCart": "add product to active cart"
 }
