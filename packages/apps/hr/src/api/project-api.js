@@ -31,9 +31,19 @@ const createProjectCriteria = ({
 
   if (isBusinessProject) {
     criteria.push({
-      fieldName: 'isBusinessProject',
-      operator: '=',
-      value: true,
+      operator: 'and',
+      criteria: [
+        {
+          fieldName: 'isBusinessProject',
+          operator: '=',
+          value: true,
+        },
+        activeCompanyId && {
+          fieldName: 'company.id',
+          operator: '=',
+          value: activeCompanyId,
+        },
+      ],
     });
   }
 
@@ -42,14 +52,6 @@ const createProjectCriteria = ({
       fieldName: 'manageTimeSpent',
       operator: '=',
       value: true,
-    });
-  }
-
-  if (activeCompanyId != null) {
-    criteria.push({
-      fieldName: 'company.id',
-      operator: '=',
-      value: activeCompanyId,
     });
   }
 
