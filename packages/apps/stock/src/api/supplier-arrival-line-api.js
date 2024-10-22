@@ -98,8 +98,10 @@ export async function fetchSupplierArrivalLine({supplierArrivalLineId}) {
 }
 
 export async function splitSupplierArrivalLine({id, version}) {
-  return axiosApiProvider.put({
+  return getActionApi().send({
     url: `ws/aos/stock-move-line/split/${id}`,
-    data: {version},
+    method: 'put',
+    body: {version},
+    description: 'split supplier arrival line',
   });
 }
