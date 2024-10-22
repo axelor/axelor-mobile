@@ -25,6 +25,7 @@ export {default as SupplierArrivalLineCard} from './SupplierArrivalLineCard/Supp
 export {default as SupplierArrivalLineCreationButton} from './SupplierArrivalLineCreationButton/SupplierArrivalLineCreationButton';
 export {default as SupplierArrivalLineQuantityCard} from './SupplierArrivalLineQuantityCard/SupplierArrivalLineQuantityCard';
 export {default as SupplierArrivalMovementIndicationCard} from './SupplierArrivalMovementIndicationCard/SupplierArrivalMovementIndicationCard';
+export {default as SupplierArrivalOriginInput} from './SupplierArrivalOriginInput/SupplierArrivalOriginInput';
 export {default as SupplierArrivalProductName} from './SupplierArrivalProductName/SupplierArrivalProductName';
 export {default as SupplierArrivalSearchLineContainer} from './SupplierArrivalSearchLineContainer/SupplierArrivalSearchLineContainer';
 export {default as SupplierArrivalTrackingNumberSelect} from './SupplierArrivalTrackingNumberSelect/SupplierArrivalTrackingNumberSelect';

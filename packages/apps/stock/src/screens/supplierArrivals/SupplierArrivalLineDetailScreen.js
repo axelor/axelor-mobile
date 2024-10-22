@@ -40,6 +40,7 @@ import {
   SupplierProductInfo,
   StockLocationSearchBar,
   SupplierArrivalTrackingNumberSelect,
+  SupplierArrivalOriginInput,
 } from '../../components';
 import {fetchProductWithId} from '../../features/productSlice';
 import {fetchProductForSupplier} from '../../features/supplierCatalogSlice';
@@ -72,6 +73,7 @@ const SupplierArrivalLineDetailScreen = ({route, navigation}) => {
 
   const [toStockLocation, setToStockLocation] = useState(null);
   const [realQty, setRealQty] = useState(0);
+  const [origin, setOrigin] = useState();
   const [conformity, setConformity] = useState({
     title: getItemTitle(
       StockMove?.conformitySelect,
@@ -105,6 +107,10 @@ const SupplierArrivalLineDetailScreen = ({route, navigation}) => {
     getItemTitle,
     StockMove?.conformitySelect,
   ]);
+
+  useEffect(() => {
+    setOrigin(trackingNumber?.origin);
+  }, [trackingNumber?.origin]);
 
   useEffect(() => {
     dispatch(fetchProductWithId(supplierArrivalLine.product?.id ?? productId));
@@ -184,6 +190,8 @@ const SupplierArrivalLineDetailScreen = ({route, navigation}) => {
           toStockLocation={toStockLocation}
           supplierArrival={supplierArrival}
           supplierArrivalLine={supplierArrivalLine}
+          trackingNumber={trackingNumber}
+          origin={origin}
         />
       }>
       <HeaderContainer
@@ -213,6 +221,12 @@ const SupplierArrivalLineDetailScreen = ({route, navigation}) => {
           name={product?.name}
           trackingNumber={trackingNumber?.trackingNumberSeq}
         />
+        {trackingNumber != null && (
+          <SupplierArrivalOriginInput
+            setOrigin={setOrigin}
+            trackingNumber={trackingNumber}
+          />
+        )}
         {product.trackingNumberConfiguration != null &&
           trackingNumber == null && (
             <SupplierArrivalTrackingNumberSelect

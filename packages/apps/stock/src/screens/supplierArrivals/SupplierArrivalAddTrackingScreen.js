@@ -21,7 +21,6 @@ import {StyleSheet} from 'react-native';
 import {
   Button,
   Card,
-  FormInput,
   HeaderContainer,
   QuantityCard,
   Screen,
@@ -34,7 +33,7 @@ import {
   useSelector,
   useTranslator,
 } from '@axelor/aos-mobile-core';
-import {StockMoveHeader} from '../../components';
+import {StockMoveHeader, SupplierArrivalOriginInput} from '../../components';
 import {updateSupplierTrackingNumber} from '../../features/trackingNumberSlice';
 import StockMove from '../../types/stock-move';
 
@@ -121,16 +120,12 @@ const SupplierArrivalAddTrackingScreen = ({route, navigation}) => {
           <Text>{product?.name}</Text>
         </Card>
         <InputBarCodeCard
-          style={styles.input}
           title={I18n.t('Stock_TrackingSequence')}
           onChange={setSequence}
         />
-        <FormInput
-          title={I18n.t('Stock_Origin')}
-          style={[styles.input, styles.origin]}
-          onChange={setOrigin}
-        />
+        <SupplierArrivalOriginInput setOrigin={setOrigin} />
         <QuantityCard
+          style={styles.qtyCard}
           labelQty={I18n.t('Stock_TrackingQty')}
           defaultValue={trackingQty}
           onValueChange={setTrackingQty}
@@ -148,12 +143,8 @@ const styles = StyleSheet.create({
     marginVertical: '2%',
     marginHorizontal: 16,
   },
-  input: {
-    zIndex: 50,
-    alignSelf: 'center',
-  },
-  origin: {
-    marginBottom: 10,
+  qtyCard: {
+    marginTop: 10,
   },
 });
 
