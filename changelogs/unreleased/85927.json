@@ -1,0 +1,5 @@
+{
+  "title": "Scan: add missing export",
+  "type": "fix",
+  "packages": "core"
+}
