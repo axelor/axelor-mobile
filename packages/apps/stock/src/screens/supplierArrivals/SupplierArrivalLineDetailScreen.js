@@ -225,6 +225,9 @@ const SupplierArrivalLineDetailScreen = ({route, navigation}) => {
           <SupplierArrivalOriginInput
             setOrigin={setOrigin}
             trackingNumber={trackingNumber}
+            readonly={
+              supplierArrival.statusSelect === StockMove?.statusSelect.Realized
+            }
           />
         )}
         {product.trackingNumberConfiguration != null &&

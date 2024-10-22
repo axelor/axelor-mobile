@@ -123,7 +123,7 @@ const InputBarCodeCard = ({
             name="arrow-counterclockwise"
             size={20}
             visible={inputData !== defaultValue}
-            touchable={true}
+            touchable={!readonly}
             style={styles.icon}
             onPress={() => handleValueChange(defaultValue)}
           />,
@@ -131,11 +131,11 @@ const InputBarCodeCard = ({
             name="qr-code-scan"
             size={20}
             color={
-              scannerEnabled && scanKey === scanKeySearch
+              !readonly && scannerEnabled && scanKey === scanKeySearch
                 ? Colors.primaryColor.background
                 : Colors.secondaryColor_dark.background
             }
-            touchable={true}
+            touchable={!readonly}
             style={styles.icon}
             onPress={onScanPress}
           />,

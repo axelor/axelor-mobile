@@ -29,19 +29,17 @@ const SupplierArrivalOriginInput = ({
   style,
   trackingNumber,
   setOrigin,
+  readonly: _componentReadonly = false,
 }: {
   style?: any;
   trackingNumber?: any;
   setOrigin: (value: string) => void;
+  readonly?: boolean;
 }) => {
   const I18n = useTranslator();
   const {readonly} = usePermitted({
     modelName: 'com.axelor.apps.stock.db.TrackingNumber',
   });
-
-  if (readonly) {
-    return null;
-  }
 
   return (
     <InputBarCodeCard
@@ -50,6 +48,7 @@ const SupplierArrivalOriginInput = ({
       onChange={setOrigin}
       title={I18n.t('Stock_Origin')}
       scanKeySearch={trackingScanKey}
+      readonly={_componentReadonly || readonly}
     />
   );
 };
