@@ -30,20 +30,25 @@ const createProjectCriteria = ({
   const criteria = [getSearchCriterias('hr_project', searchValue)];
 
   if (isBusinessProject) {
+    const _businessCriteria = [
+      {
+        fieldName: 'isBusinessProject',
+        operator: '=',
+        value: true,
+      },
+    ];
+
+    if (activeCompanyId != null) {
+      _businessCriteria.push({
+        fieldName: 'company.id',
+        operator: '=',
+        value: activeCompanyId,
+      });
+    }
+
     criteria.push({
       operator: 'and',
-      criteria: [
-        {
-          fieldName: 'isBusinessProject',
-          operator: '=',
-          value: true,
-        },
-        activeCompanyId && {
-          fieldName: 'company.id',
-          operator: '=',
-          value: activeCompanyId,
-        },
-      ],
+      criteria: _businessCriteria,
     });
   }
 
