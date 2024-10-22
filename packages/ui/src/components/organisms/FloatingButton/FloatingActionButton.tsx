@@ -62,9 +62,14 @@ const FloatingActionButton = ({
       <Indicator show={indicator} color={Colors.errorColor} />
       {title != null ? (
         <View style={styles.actionTitleContainer}>
-          <Text fontSize={16} style={styles.actionTitle}>
-            {translator(title)}
-          </Text>
+          <View style={styles.actionTitle}>
+            <Text
+              fontSize={16}
+              style={styles.actionTitleText}
+              numberOfLines={2}>
+              {translator(title)}
+            </Text>
+          </View>
         </View>
       ) : null}
     </View>
@@ -75,19 +80,20 @@ const getStyles = (Colors: ThemeColors) =>
   StyleSheet.create({
     actionButtonContainer: {
       flexDirection: 'row-reverse',
+      marginTop: 5,
     },
     button: {
       marginVertical: 0,
-      marginTop: 5,
     },
     actionTitleContainer: {
+      maxWidth: '70%',
+      minWidth: MIN_ACTION_BUTTON_WIDTH,
+      justifyContent: 'center',
+      alignItems: 'flex-end',
+    },
+    actionTitle: {
       backgroundColor: Colors.backgroundColor,
       marginHorizontal: 15,
-      marginVertical: 10,
-      justifyContent: 'center',
-      alignItems: 'center',
-      minWidth: MIN_ACTION_BUTTON_WIDTH,
-      maxWidth: '70%',
       borderRadius: 7,
       paddingHorizontal: 10,
       elevation: 3,
@@ -95,7 +101,7 @@ const getStyles = (Colors: ThemeColors) =>
       shadowColor: Colors.secondaryColor.background,
       shadowOffset: {width: 0, height: 0},
     },
-    actionTitle: {
+    actionTitleText: {
       textAlign: 'center',
     },
   });

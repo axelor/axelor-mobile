@@ -64,8 +64,8 @@ const styles = StyleSheet.create({
   indicator: {
     borderWidth: 1,
     position: 'absolute',
-    top: 4,
-    rifht: 4,
+    top: 2,
+    right: 2,
   },
 });
 
