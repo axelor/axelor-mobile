@@ -61,7 +61,7 @@ export async function validateTourLine({tourLineId}) {
     method: 'put',
     description: 'validate tour line',
     matchers: {
-      modelName: 'com.axelor.apps.crm.db.TourLines',
+      modelName: 'com.axelor.apps.crm.db.TourLine',
       id: tourLineId,
     },
   });

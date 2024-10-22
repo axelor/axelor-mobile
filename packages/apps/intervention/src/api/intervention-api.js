@@ -195,7 +195,7 @@ export async function updateInterventionStatus({
       modelName: 'com.axelor.apps.intervention.db.Intervention',
       id: interventionId,
       fields: {
-        toStatus: 'toStatus',
+        toStatus: 'statusSelect',
         version: 'version',
       },
     },
@@ -215,14 +215,6 @@ export async function linkEquipment({
       version: interventionVersion,
     },
     description: 'link equipment',
-    matchers: {
-      modelName: 'com.axelor.apps.intervention.db.Intervention',
-      id: interventionId,
-      fields: {
-        equipmentId: 'equipmentId',
-        version: 'version',
-      },
-    },
   });
 }
 
@@ -239,13 +231,5 @@ export async function unlinkEquipment({
       version: interventionVersion,
     },
     description: 'unlink equipment',
-    matchers: {
-      modelName: 'com.axelor.apps.intervention.db.Intervention',
-      id: interventionId,
-      fields: {
-        equipmentId: 'equipmentId',
-        version: 'version',
-      },
-    },
   });
 }
