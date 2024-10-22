@@ -26,6 +26,7 @@ import {
   useConfig,
 } from '@axelor/aos-mobile-ui';
 import {
+  useContextRegister,
   useDispatch,
   usePermitted,
   useSelector,
@@ -49,6 +50,9 @@ const stockLocationScanKey = 'stock-location_product-indicators';
 
 const ProductStockDetailsScreen = ({route, addtionalIndicators}) => {
   const productId = route.params.product?.id;
+  useContextRegister({
+    models: [{model: 'com.axelor.apps.base.db.Product', id: productId}],
+  });
   const I18n = useTranslator();
   const isFocused = useIsFocused();
   const dispatch = useDispatch();

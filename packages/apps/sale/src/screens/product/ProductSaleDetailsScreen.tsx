@@ -45,7 +45,9 @@ import {
 
 const ProductSaleDetailsScreen = ({route}) => {
   const productId = route.params.productId;
-  useContextRegister({productId});
+  useContextRegister({
+    models: [{model: 'com.axelor.apps.base.db.Product', id: productId}],
+  });
   const I18n = useTranslator();
   const dispatch = useDispatch();
 

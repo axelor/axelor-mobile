@@ -16,5 +16,10 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-export {useActiveScreen, useContextRegister} from './ActiveScreenProvider';
+export {
+  getModelId,
+  isModel,
+  useActiveScreen,
+  useContextRegister,
+} from './ActiveScreenProvider';
 export {default as Navigator} from './Navigator';
