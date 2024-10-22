@@ -1,0 +1,6 @@
+{
+    "title": "FloatingButton: prevent height modification due to big title",
+    "type": "fix",
+    "packages": "ui"
+  }
+  
