@@ -126,24 +126,26 @@ export const useContextRegister = (data: Data) => {
   }, [data, isFocused]);
 };
 
+const isModelMatch = (model: Model, modelName: string, key: string) => {
+  const isModelNameMatch = model.model === modelName;
+
+  if (key) {
+    return isModelNameMatch && model.key === key;
+  }
+
+  return isModelNameMatch;
+};
+
 export const isModel = (
   context: Data,
   model: string,
   key?: string,
 ): boolean => {
-  if (!Array.isArray(context.models) || context.models.length === 0) {
+  if (!Array.isArray(context?.models) || context?.models.length === 0) {
     return false;
   }
 
-  return context.models.some(m => {
-    const isModelNameMatch = m.model === model;
-
-    if (key) {
-      return isModelNameMatch && m.key === key;
-    }
-
-    return isModelNameMatch;
-  });
+  return context?.models.some(m => isModelMatch(m, model, key));
 };
 
 export const getModelId = (
@@ -151,19 +153,11 @@ export const getModelId = (
   model: string,
   key?: string,
 ): undefined | number | number[] => {
-  if (!Array.isArray(context.models) || context.models.length === 0) {
+  if (!Array.isArray(context?.models) || context?.models.length === 0) {
     return undefined;
   }
 
-  const foundModel = context.models.find(m => {
-    const isModelNameMatch = m.model === model;
-
-    if (key) {
-      return isModelNameMatch && m.key === key;
-    }
-
-    return isModelNameMatch;
-  });
+  const foundModel = context?.models.find(m => isModelMatch(m, model, key));
 
   if (!foundModel) {
     return undefined;
