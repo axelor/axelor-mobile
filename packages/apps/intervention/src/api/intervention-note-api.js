@@ -86,6 +86,7 @@ export async function fetchInterventionNoteType() {
     sortKey: 'intervention_interventionNoteType',
     page: 0,
     numberElementsByPage: null,
+    provider: 'model',
   });
 }
 
