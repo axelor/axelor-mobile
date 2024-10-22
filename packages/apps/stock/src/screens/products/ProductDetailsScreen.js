@@ -19,7 +19,12 @@
 import React, {useCallback, useEffect} from 'react';
 import {StyleSheet, View} from 'react-native';
 import {Screen, ScrollView, NotesCard} from '@axelor/aos-mobile-ui';
-import {useDispatch, useSelector, useTranslator} from '@axelor/aos-mobile-core';
+import {
+  useContextRegister,
+  useDispatch,
+  useSelector,
+  useTranslator,
+} from '@axelor/aos-mobile-core';
 import {
   ProductCharacteristics,
   ProductVariantButton,
@@ -30,6 +35,9 @@ import {fetchProductWithId} from '../../features/productSlice';
 
 const ProductDetailsScreen = ({route, navigation}) => {
   const productId = route.params.product?.id;
+  useContextRegister({
+    models: [{model: 'com.axelor.apps.base.db.Product', id: productId}],
+  });
   const I18n = useTranslator();
   const dispatch = useDispatch();
 

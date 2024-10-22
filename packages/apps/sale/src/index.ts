@@ -16,7 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import {Module} from '@axelor/aos-mobile-core';
+import {getModelId, isModel, Module} from '@axelor/aos-mobile-core';
 import enTranslations from './i18n/en.json';
 import frTranslations from './i18n/fr.json';
 import CartScreens from './screens/cart';
@@ -112,7 +112,10 @@ export const SaleModule: Module = {
         (dispatch as any)(
           (addProductToActiveCart as any)({
             userId: storeState.auth?.userId,
-            productId: screenContext.productId,
+            productId: getModelId(
+              screenContext,
+              'com.axelor.apps.base.db.Product',
+            ),
             qty: 1,
           }),
         );
@@ -120,7 +123,7 @@ export const SaleModule: Module = {
       title: 'Sale_AddProductToCart',
       hideIf: ({storeState, screenContext}) =>
         !storeState?.appConfig?.sale?.isCartManagementEnabled ||
-        screenContext?.productId == null,
+        !isModel(screenContext, 'com.axelor.apps.base.db.Product'),
     },
     {
       key: 'sale_accessActiveCart',

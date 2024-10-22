@@ -18,7 +18,12 @@
 
 import React, {useCallback, useEffect} from 'react';
 import {StyleSheet} from 'react-native';
-import {useDispatch, useSelector, useTranslator} from '@axelor/aos-mobile-core';
+import {
+  useContextRegister,
+  useDispatch,
+  useSelector,
+  useTranslator,
+} from '@axelor/aos-mobile-core';
 import {
   HeaderContainer,
   NotesCard,
@@ -42,6 +47,23 @@ const SaleOrderLineDetailsScreen = ({navigation, route}) => {
   const {loadingSaleOrderLine, saleOrderLine} = useSelector(
     (state: any) => state.sale_saleOrderLine,
   );
+
+  useContextRegister({
+    models: [
+      {
+        model: 'com.axelor.apps.sale.db.SaleOrder',
+        id: saleOrder?.id,
+      },
+      {
+        model: 'com.axelor.apps.sale.db.SaleOrderLine',
+        id: saleOrderLine?.id,
+      },
+      {
+        model: 'com.axelor.apps.base.db.Product',
+        id: saleOrderLine?.product?.id,
+      },
+    ],
+  });
 
   const fetchSaleOrderLine = useCallback(() => {
     dispatch((fetchSaleOrderLineById as any)({saleOrderLineId}));
