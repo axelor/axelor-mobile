@@ -55,11 +55,11 @@ export async function createEquipmentPicture({
     },
     description: 'create equipment picture',
     matchers: {
-      modelName: 'com.axelor.apps.intervention.db.Equipment',
+      modelName: 'com.axelor.apps.intervention.db.Picture',
       id: equipmentId,
       fields: {
-        'data.pictureId': 'pictureId',
-        'data.version': 'version',
+        pictureId: 'pictureId',
+        version: 'version',
       },
     },
   });
@@ -78,13 +78,5 @@ export async function deleteEquipmentPicture({
       version,
     },
     description: 'remove equipment picture',
-    matchers: {
-      modelName: 'com.axelor.apps.intervention.db.Equipment',
-      id: equipmentId,
-      fields: {
-        'data.pictureId': 'pictureId',
-        'data.version': 'version',
-      },
-    },
   });
 }

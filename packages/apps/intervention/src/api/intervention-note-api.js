@@ -131,9 +131,5 @@ export async function deleteInterventionNote({interventionNoteId}) {
     url: `/ws/rest/com.axelor.apps.intervention.db.InterventionNote/${interventionNoteId}`,
     method: 'delete',
     description: 'delete intervention note',
-    matchers: {
-      modelName: 'com.axelor.apps.intervention.db.InterventionNote',
-      id: interventionNoteId,
-    },
   });
 }

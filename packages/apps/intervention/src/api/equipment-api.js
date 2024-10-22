@@ -287,10 +287,6 @@ export async function deleteEquipment({equipmentId}) {
     url: `/ws/rest/com.axelor.apps.intervention.db.Equipment/${equipmentId}`,
     method: 'delete',
     description: 'delete equipment',
-    matchers: {
-      modelName: 'com.axelor.apps.intervention.db.Equipment',
-      id: equipmentId,
-    },
   });
 }
 
