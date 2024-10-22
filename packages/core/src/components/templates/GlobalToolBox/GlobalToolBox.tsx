@@ -76,8 +76,8 @@ const GlobalToolBox = () => {
 const styles = StyleSheet.create({
   position: {
     position: 'absolute',
-    bottom: 30,
-    right: 30,
+    bottom: 80,
+    right: 10,
     zIndex: 9999,
   },
   buttonPosition: {
