@@ -28,7 +28,7 @@ import {useConfig} from '../../../config/ConfigContext';
 import {useThemeColor} from '../../../theme';
 import {Card} from '../../atoms';
 import BarItem from './BarItem';
-import {BottomBarItem, ViewItem} from './types.helper';
+import {BottomBarItem} from './types.helper';
 import {getVisibleItems} from './display.helper';
 
 const WINDOW_HEIGHT = Dimensions.get('window').height;
@@ -36,10 +36,12 @@ const WINDOW_HEIGHT = Dimensions.get('window').height;
 const BottomBar = ({
   style,
   items,
+  updateActiveItem = false,
   itemSize = 50,
 }: {
   style?: any;
   items: BottomBarItem[];
+  updateActiveItem?: boolean;
   itemSize?: number;
 }) => {
   const {headerHeight} = useConfig();
@@ -85,9 +87,11 @@ const BottomBar = ({
 
   const handleItemPress = useCallback(
     (item: BottomBarItem) => {
-      if ('onPress' in item && typeof item.onPress === 'function') {
+      if (typeof item.onPress === 'function') {
         item.onPress();
-      } else {
+      }
+
+      if (item.viewComponent != null) {
         setSelectedItemColor(item.color);
         setSelectedKey(item.key);
       }
@@ -113,18 +117,27 @@ const BottomBar = ({
 
   useEffect(() => {
     if (selectedKey == null) {
-      setSelectedKey(visibleItems?.[0].key);
-      setSelectedItemColor(visibleItems?.[0].color);
+      const _viewItem = visibleItems?.find(
+        ({viewComponent}) => viewComponent != null,
+      );
+      setSelectedKey(_viewItem?.key);
+      setSelectedItemColor(_viewItem?.color);
     }
   }, [selectedKey, visibleItems]);
+
+  useEffect(() => {
+    const activeItem = visibleItems.find(item => item.isActive);
+
+    if (activeItem && updateActiveItem) {
+      setSelectedKey(activeItem.key);
+      setSelectedItemColor(activeItem.color);
+    }
+  }, [updateActiveItem, visibleItems]);
 
   return (
     <View style={styles.container}>
       <View style={{height: viewHeight}}>
-        {
-          (visibleItems as ViewItem[]).find(_item => _item.key === selectedKey)
-            ?.viewComponent
-        }
+        {visibleItems.find(_item => _item.key === selectedKey)?.viewComponent}
       </View>
       <View
         onLayout={event => {
