@@ -17,10 +17,10 @@
  */
 
 import {
-  axiosApiProvider,
   createStandardFetch,
   createStandardSearch,
   formatRequestBody,
+  getActionApi,
   getNextMonth,
   getPreviousMonth,
   getSearchCriterias,
@@ -88,6 +88,7 @@ export async function searchEventsByIds(idList) {
     fieldKey: 'crm_event',
     numberElementsByPage: null,
     page: 0,
+    provider: 'model',
   });
 }
 
@@ -104,6 +105,7 @@ export async function partnerEventById(id) {
     fieldKey: 'crm_event',
     numberElementsByPage: null,
     page: 0,
+    provider: 'model',
   });
 }
 
@@ -120,6 +122,7 @@ export async function contactEventById(id) {
     fieldKey: 'crm_event',
     numberElementsByPage: null,
     page: 0,
+    provider: 'model',
   });
 }
 
@@ -131,6 +134,7 @@ export async function getPlannedEvent({date, searchValue = null}) {
     sortKey: 'crm_event',
     numberElementsByPage: null,
     page: 0,
+    provider: 'model',
   });
 }
 
@@ -139,23 +143,46 @@ export async function getEvent({eventId}) {
     model: 'com.axelor.apps.crm.db.Event',
     id: eventId,
     fieldKey: 'crm_event',
+    provider: 'model',
   });
 }
 
 export async function createEvent({event}) {
-  return axiosApiProvider.put({
+  const {formattedData, matchers} = formatRequestBody(event, 'data');
+
+  return getActionApi().send({
     url: '/ws/rest/com.axelor.apps.crm.db.Event',
-    data: {
-      data: formatRequestBody(event),
+    method: 'put',
+    body: {
+      data: formattedData,
+    },
+    description: 'create event',
+    matchers: {
+      modelName: 'com.axelor.apps.crm.db.Event',
+      id: Date.now(),
+      fields: {
+        ...matchers,
+      },
     },
   });
 }
 
 export async function updateEvent({event}) {
-  return axiosApiProvider.post({
+  const {formattedData, matchers} = formatRequestBody(event, 'data');
+
+  return getActionApi().send({
     url: '/ws/rest/com.axelor.apps.crm.db.Event',
-    data: {
-      data: formatRequestBody(event),
+    method: 'post',
+    body: {
+      data: formattedData,
+    },
+    description: 'update event',
+    matchers: {
+      modelName: 'com.axelor.apps.crm.db.Event',
+      id: event.id,
+      fields: {
+        ...matchers,
+      },
     },
   });
 }

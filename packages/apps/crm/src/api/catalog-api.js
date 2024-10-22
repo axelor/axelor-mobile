@@ -17,8 +17,8 @@
  */
 
 import {
-  axiosApiProvider,
   createStandardSearch,
+  getActionApi,
   getSearchCriterias,
 } from '@axelor/aos-mobile-core';
 
@@ -46,12 +46,18 @@ export async function searchCatalog({searchValue, statusList, page = 0}) {
     fieldKey: 'crm_catalog',
     sortKey: 'crm_catalog',
     page,
+    provider: 'model',
   });
 }
 
 export async function getCatalogType() {
-  return axiosApiProvider.get({
-    url: '/ws/rest/com.axelor.apps.crm.db.CatalogType/',
+  return createStandardSearch({
+    numberElementsByPage: null,
+    model: 'com.axelor.apps.crm.db.CatalogType',
+    criteria: [],
+    fieldKey: 'crm_catologType',
+    page: 0,
+    provider: 'model',
   });
 }
 
@@ -62,15 +68,28 @@ export async function createCatalog({
   image,
   description,
 }) {
-  return axiosApiProvider.put({
-    url: '/ws/rest/com.axelor.apps.crm.db.Catalog/',
-    data: {
+  return getActionApi().send({
+    url: '/ws/rest/com.axelor.apps.crm.db.Catalog',
+    method: 'put',
+    body: {
       data: {
         name,
         catalogType,
         pdfFile,
         image,
         description,
+      },
+    },
+    description: 'create catalog',
+    matchers: {
+      modelName: '/ws/rest/com.axelor.apps.crm.db.Catalog',
+      id: Date.now(),
+      fields: {
+        'data.name': 'name',
+        'data.catalogType': 'catalogType',
+        'data.pdfFile': 'pdfFile',
+        'data.image': 'image',
+        'data.description': 'description',
       },
     },
   });

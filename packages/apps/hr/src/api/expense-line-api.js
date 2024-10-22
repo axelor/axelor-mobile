@@ -17,8 +17,8 @@
  */
 
 import {
-  axiosApiProvider,
   createStandardSearch,
+  getActionApi,
   getSearchCriterias,
 } from '@axelor/aos-mobile-core';
 
@@ -108,6 +108,7 @@ export async function searchExpenseLines({
     fieldKey: 'hr_expenseLines',
     sortKey: 'hr_expenseLines',
     page,
+    provider: 'model',
   });
 }
 
@@ -121,6 +122,7 @@ export async function searchGeneralExpenseLines({
     criteria: createGeneralExpenseLineCriteria(searchValue, expenseId),
     fieldKey: 'hr_expenseLines',
     page: page,
+    provider: 'model',
   });
 }
 
@@ -134,6 +136,7 @@ export async function searchKilometricExpenseLines({
     criteria: createKilomectricExpenseLineCriteria(searchValue, expenseId),
     fieldKey: 'hr_expenseLines',
     page: page,
+    provider: 'model',
   });
 }
 
@@ -144,25 +147,36 @@ export async function getNumberExpenseLineByDate({userId, date}) {
     fieldKey: 'hr_expenseLines',
     numberElementsByPage: null,
     page: 0,
+    provider: 'model',
   });
 }
 
 export async function createExpenseLine({expenseLine}) {
-  return axiosApiProvider.post({
+  return getActionApi().send({
     url: 'ws/aos/expense-line/',
-    data: expenseLine,
+    method: 'post',
+    body: expenseLine,
+    description: 'create expense line',
   });
 }
 
 export async function updateExpenseLine({expenseLine}) {
-  return axiosApiProvider.put({
+  return getActionApi().send({
     url: `ws/aos/expense-line/update/${expenseLine.id}`,
-    data: expenseLine,
+    method: 'put',
+    body: expenseLine,
+    description: 'update expense line',
   });
 }
 
-export async function deleteExpenseLine({ExpenseLineId}) {
-  return axiosApiProvider.delete({
-    url: `ws/rest/com.axelor.apps.hr.db.ExpenseLine/${ExpenseLineId}`,
+export async function deleteExpenseLine({expenseLineId}) {
+  return getActionApi().send({
+    url: `ws/rest/com.axelor.apps.hr.db.ExpenseLine/${expenseLineId}`,
+    method: 'delete',
+    description: 'delete expense line',
+    matchers: {
+      modelName: 'com.axelor.apps.hr.db.ExpenseLine',
+      id: expenseLineId,
+    },
   });
 }

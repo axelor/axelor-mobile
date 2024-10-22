@@ -37,5 +37,6 @@ export async function searchManagedEmployee({userId}) {
     fieldKey: 'hr_employee',
     numberElementsByPage: 1,
     page: 0,
+    provider: 'model',
   });
 }

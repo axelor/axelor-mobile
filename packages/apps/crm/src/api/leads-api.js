@@ -17,9 +17,10 @@
  */
 
 import {
-  axiosApiProvider,
   createStandardFetch,
   createStandardSearch,
+  formatRequestBody,
+  getActionApi,
   getSearchCriterias,
   RouterProvider,
 } from '@axelor/aos-mobile-core';
@@ -69,6 +70,7 @@ export async function searchLeads({
     fieldKey: 'crm_lead',
     sortKey: 'crm_lead',
     page,
+    provider: 'model',
   });
 }
 
@@ -77,6 +79,7 @@ export async function getLead({leadId}) {
     model: 'com.axelor.apps.crm.db.Lead',
     id: leadId,
     fieldKey: 'crm_lead',
+    provider: 'model',
   });
 }
 
@@ -93,17 +96,27 @@ export async function getLeadStatus() {
     fieldKey: 'crm_leadStatus',
     numberElementsByPage: null,
     page: 0,
+    provider: 'model',
   });
 }
 
 export async function updateLeadScoring({leadId, leadVersion, newScore}) {
-  return axiosApiProvider.post({
+  return getActionApi().send({
     url: '/ws/rest/com.axelor.apps.crm.db.Lead',
-    data: {
+    method: 'post',
+    body: {
       data: {
         id: leadId,
         version: leadVersion,
         leadScoringSelect: newScore,
+      },
+    },
+    description: 'update lead scoring',
+    matchers: {
+      modelName: 'com.axelor.apps.crm.db.Lead',
+      id: leadId,
+      fields: {
+        'data.leadScoringSelect': 'leadScoringSelect',
       },
     },
   });
@@ -112,32 +125,61 @@ export async function updateLeadScoring({leadId, leadVersion, newScore}) {
 export async function updateLead({lead, emailId, emailVersion}) {
   const route = await RouterProvider.get('EmailAddress');
 
-  return axiosApiProvider
-    .post({
+  const modelName = route.replace('/ws/rest/', '');
+
+  return getActionApi()
+    .send({
       url: route,
-      data: {
+      method: 'post',
+      body: {
         data: {
           id: emailId,
           version: emailVersion,
           address: lead.emailAddress?.address,
         },
       },
+      description: 'update lead email',
+      matchers: {
+        modelName: modelName,
+        id: emailId,
+        fields: {
+          'data.address': 'address',
+        },
+      },
     })
-    .then(res =>
-      axiosApiProvider.post({
+    .then(() => {
+      const {matchers} = formatRequestBody(lead, 'data');
+
+      return getActionApi().send({
         url: '/ws/rest/com.axelor.apps.crm.db.Lead',
-        data: {
+        method: 'post',
+        body: {
           data: lead,
         },
-      }),
-    );
+        description: 'update lead',
+        matchers: {
+          modelName: 'com.axelor.apps.crm.db.Lead',
+          id: lead.id,
+          fields: matchers,
+        },
+      });
+    });
 }
 
 export async function createLead({lead}) {
-  return axiosApiProvider.put({
+  const {matchers} = formatRequestBody(lead, 'data');
+
+  return getActionApi().send({
     url: '/ws/rest/com.axelor.apps.crm.db.Lead',
-    data: {
+    method: 'put',
+    body: {
       data: lead,
+    },
+    description: 'create lead',
+    matchers: {
+      modelName: 'com.axelor.apps.crm.db.Lead',
+      id: Date.now(),
+      fields: matchers,
     },
   });
 }

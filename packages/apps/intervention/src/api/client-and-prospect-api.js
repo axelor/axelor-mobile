@@ -58,5 +58,6 @@ export async function searchClientAndProspect({searchValue, page = 0}) {
     criteria: createClientAndProspectCriteria(searchValue),
     fieldKey: 'intervention_partner',
     page,
+    provider: 'model',
   });
 }

@@ -37,5 +37,6 @@ export async function searchEquipmentLine({equipmentId, page = 0}) {
     fieldKey: 'intervention_equipmentLine',
     sortKey: 'intervention_equipmentLine',
     page,
+    provider: 'model',
   });
 }

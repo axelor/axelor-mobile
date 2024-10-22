@@ -20,7 +20,7 @@ import {
   createStandardSearch,
   getSearchCriterias,
   createStandardFetch,
-  axiosApiProvider,
+  getActionApi,
   getTypes,
 } from '@axelor/aos-mobile-core';
 
@@ -89,6 +89,7 @@ export async function searchExpenseDraft({userId}) {
     fieldKey: 'hr_expenseDraft',
     numberElementsByPage: null,
     page: 0,
+    provider: 'model',
   });
 }
 
@@ -99,6 +100,7 @@ export async function searchMyExpense({searchValue = null, page = 0, userId}) {
     fieldKey: 'hr_expense',
     sortKey: 'hr_expense',
     page,
+    provider: 'model',
   });
 }
 
@@ -113,6 +115,7 @@ export async function searchExpenseToValidate({
     fieldKey: 'hr_expense',
     sortKey: 'hr_expense',
     page,
+    provider: 'model',
   });
 }
 
@@ -121,58 +124,81 @@ export async function getExpense({ExpenseId}) {
     model: 'com.axelor.apps.hr.db.Expense',
     id: ExpenseId,
     fieldKey: 'hr_expense',
+    provider: 'model',
   });
 }
 
 export async function createExpense({expense}) {
-  return axiosApiProvider.post({
+  return getActionApi().send({
     url: 'ws/aos/expense/',
-    data: expense,
+    method: 'post',
+    body: expense,
+    description: 'create expense',
   });
 }
 
 export async function quickCreateExpense() {
-  return axiosApiProvider.post({
+  return getActionApi().send({
     url: 'ws/aos/expense/quick-create',
+    method: 'post',
+    description: 'quick create expense',
   });
 }
 
 export async function updateExpense({expenseId, version, expenseLineIdList}) {
-  return axiosApiProvider.put({
+  return getActionApi().send({
     url: `ws/aos/expense/add-line/${expenseId}`,
-    data: {
-      version: version,
-      expenseLineIdList: expenseLineIdList,
+    method: 'put',
+    body: {
+      version,
+      expenseLineIdList,
     },
+    description: 'update expense',
   });
 }
 
 export async function sendExpense({expenseId, version}) {
-  return axiosApiProvider.put({
+  return getActionApi().send({
     url: `ws/aos/expense/send/${expenseId}`,
-    data: {version: version},
+    method: 'put',
+    body: {
+      version,
+    },
+    description: 'send expense',
   });
 }
 
 export async function validateExpense({expenseId, version}) {
-  return axiosApiProvider.put({
+  return getActionApi().send({
     url: `ws/aos/expense/validate/${expenseId}`,
-    data: {version: version},
+    method: 'put',
+    body: {
+      version,
+    },
+    description: 'validate expense',
   });
 }
 
 export async function refuseExpense({expenseId, version, groundForRefusal}) {
-  return axiosApiProvider.put({
+  return getActionApi().send({
     url: `ws/aos/expense/refuse/${expenseId}`,
-    data: {
-      version: version,
-      groundForRefusal: groundForRefusal,
+    method: 'put',
+    body: {
+      version,
+      groundForRefusal,
     },
+    description: 'refuse expense',
   });
 }
 
-export async function deleteExpense({ExpenseId}) {
-  return axiosApiProvider.delete({
-    url: `ws/rest/com.axelor.apps.hr.db.Expense/${ExpenseId}`,
+export async function deleteExpense({expenseId}) {
+  return getActionApi().send({
+    url: `ws/rest/com.axelor.apps.hr.db.Expense/${expenseId}`,
+    method: 'delete',
+    description: 'delete expense',
+    matchers: {
+      modelName: 'com.axelor.apps.hr.db.Expense',
+      id: expenseId,
+    },
   });
 }

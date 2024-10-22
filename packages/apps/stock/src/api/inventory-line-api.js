@@ -17,10 +17,10 @@
  */
 
 import {
-  axiosApiProvider,
   createStandardSearch,
   createStandardFetch,
   getSearchCriterias,
+  getActionApi,
 } from '@axelor/aos-mobile-core';
 
 const createSearchCriteria = (inventoryId, searchValue) => {
@@ -44,6 +44,7 @@ export async function searchInventoryLines({
     criteria: createSearchCriteria(inventoryId, searchValue),
     fieldKey: 'stock_inventoryLine',
     page,
+    provider: 'model',
   });
 }
 
@@ -53,12 +54,19 @@ export async function updateInventoryLineDetails({
   realQty,
   description = null,
 }) {
-  return axiosApiProvider.put({
+  return getActionApi().send({
     url: `/ws/aos/inventory-line/${inventoryLineId}`,
-    data: {
-      version: version,
-      realQty: realQty,
-      description: description,
+    method: 'put',
+    body: {
+      version,
+      realQty,
+      description,
+    },
+    description: 'update inventory line details',
+    matchers: {
+      modelName: 'com.axelor.apps.stock.db.InventoryLine',
+      id: inventoryLineId,
+      fields: {description, realQty},
     },
   });
 }
@@ -71,15 +79,28 @@ export async function createInventoryLine({
   rack = null,
   realQty,
 }) {
-  return axiosApiProvider.post({
+  return getActionApi().send({
     url: '/ws/aos/inventory-line/',
-    data: {
-      inventoryId: inventoryId,
-      inventoryVersion: inventoryVersion,
-      productId: productId,
-      trackingNumberId: trackingNumberId,
-      rack: rack,
-      realQty: realQty,
+    method: 'post',
+    body: {
+      inventoryId,
+      inventoryVersion,
+      productId,
+      trackingNumberId,
+      rack,
+      realQty,
+    },
+    description: 'create inventory line',
+    matchers: {
+      modelName: 'com.axelor.apps.stock.db.InventoryLine',
+      id: Date.now(),
+      fields: {
+        productId: 'product.id',
+        trackingNumberId: 'trackingNumber.id',
+        inventoryId: 'inventory.id',
+        rack,
+        realQty,
+      },
     },
   });
 }
@@ -89,13 +110,22 @@ export async function addTrackingNumber({
   version,
   trackingNumber,
 }) {
-  return axiosApiProvider.post({
+  return getActionApi().send({
     url: `/ws/rest/com.axelor.apps.stock.db.InventoryLine/${inventoryLineId}`,
-    data: {
+    method: 'post',
+    body: {
       data: {
         id: inventoryLineId,
         version,
         trackingNumber,
+      },
+    },
+    description: 'add trackingNumber on inventory line',
+    matchers: {
+      modelName: 'com.axelor.apps.stock.db.InventoryLine',
+      id: inventoryLineId,
+      fields: {
+        'data.trackingNumber': 'trackingNumber',
       },
     },
   });
@@ -106,5 +136,6 @@ export async function fetchInventoryLine({inventoryLineId}) {
     model: 'com.axelor.apps.stock.db.InventoryLine',
     id: inventoryLineId,
     fieldKey: 'stock_inventoryLine',
+    provider: 'model',
   });
 }

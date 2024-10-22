@@ -17,8 +17,8 @@
  */
 
 import {
-  axiosApiProvider,
   createStandardSearch,
+  getActionApi,
   getSearchCriterias,
 } from '@axelor/aos-mobile-core';
 
@@ -44,20 +44,25 @@ export async function fetchTimesheetLine({
     fieldKey: 'hr_timesheetLine',
     sortKey: 'hr_timesheetLine',
     page,
+    provider: 'model',
   });
 }
 
 export async function createTimesheetLine({timesheetLine}) {
-  return axiosApiProvider
-    .post({
+  return getActionApi()
+    .send({
       url: 'ws/aos/business/timesheet-line',
-      data: timesheetLine,
+      method: 'post',
+      body: timesheetLine,
+      description: 'create timesheet line in business',
     })
     .catch(e => {
       if (e.response.status === 404) {
-        return axiosApiProvider.post({
+        return getActionApi().send({
           url: 'ws/aos/timesheet-line',
-          data: timesheetLine,
+          method: 'post',
+          body: timesheetLine,
+          description: 'create timesheet line',
         });
       } else {
         throw e;
@@ -66,16 +71,20 @@ export async function createTimesheetLine({timesheetLine}) {
 }
 
 export async function updateTimesheetLine({timesheetLineId, timesheetLine}) {
-  return axiosApiProvider
-    .put({
+  return getActionApi()
+    .send({
       url: `ws/aos/business/timesheet-line/update/${timesheetLineId}`,
-      data: timesheetLine,
+      method: 'put',
+      body: timesheetLine,
+      description: 'update timesheet line in business',
     })
     .catch(e => {
       if (e.response.status === 404) {
-        return axiosApiProvider.put({
+        return getActionApi().send({
           url: `ws/aos/timesheet-line/update/${timesheetLineId}`,
-          data: timesheetLine,
+          method: 'put',
+          body: timesheetLine,
+          description: 'update timesheet line',
         });
       } else {
         throw e;
@@ -84,7 +93,13 @@ export async function updateTimesheetLine({timesheetLineId, timesheetLine}) {
 }
 
 export async function deleteTimesheetLine({timesheetLineId}) {
-  return axiosApiProvider.delete({
+  return getActionApi().send({
     url: `ws/rest/com.axelor.apps.hr.db.TimesheetLine/${timesheetLineId}`,
+    method: 'delete',
+    description: 'delete timesheet line',
+    matchers: {
+      modelName: 'com.axelor.apps.hr.db.TimesheetLine',
+      id: timesheetLineId,
+    },
   });
 }

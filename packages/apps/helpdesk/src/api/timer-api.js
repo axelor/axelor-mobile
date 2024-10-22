@@ -26,6 +26,7 @@ export async function getTimer({timerId}) {
     model: 'com.axelor.apps.base.db.Timer',
     id: timerId,
     fieldKey: 'helpdesk_timer',
+    provider: 'model',
   });
 }
 
@@ -46,5 +47,6 @@ export async function searchTimerHistoryWithId({idTimer}) {
     fieldKey: 'helpdesk_timerHistory',
     numberElementsByPage: null,
     page: 0,
+    provider: 'model',
   });
 }

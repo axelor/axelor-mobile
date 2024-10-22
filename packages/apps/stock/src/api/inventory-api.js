@@ -17,9 +17,9 @@
  */
 
 import {
-  axiosApiProvider,
   createStandardFetch,
   createStandardSearch,
+  getActionApi,
   getSearchCriterias,
   getTypes,
 } from '@axelor/aos-mobile-core';
@@ -68,6 +68,7 @@ export async function fetchInventory({inventoryId}) {
     model: 'com.axelor.apps.stock.db.Inventory',
     id: inventoryId,
     fieldKey: 'stock_inventory',
+    provider: 'model',
   });
 }
 
@@ -83,6 +84,7 @@ export async function searchInventoryFilter({
     fieldKey: 'stock_inventory',
     sortKey: 'stock_inventory',
     page,
+    provider: 'model',
   });
 }
 
@@ -91,13 +93,22 @@ export async function modifyDescriptionInventory({
   description,
   version,
 }) {
-  return axiosApiProvider.post({
+  return getActionApi().send({
     url: `/ws/rest/com.axelor.apps.stock.db.Inventory/${inventoryId}`,
-    data: {
+    method: 'post',
+    body: {
       data: {
         id: inventoryId,
-        description: description,
-        version: version,
+        description,
+        version,
+      },
+    },
+    description: 'modify inventory description',
+    matchers: {
+      modelName: 'com.axelor.apps.stock.db.Inventory',
+      id: inventoryId,
+      fields: {
+        'data.description': 'description',
       },
     },
   });
@@ -109,9 +120,10 @@ export async function updateInventoryStatus({
   status,
   userId = null,
 }) {
-  return axiosApiProvider.put({
+  return getActionApi().send({
     url: `/ws/aos/inventory/update-status/${inventoryId}`,
-    data:
+    method: 'put',
+    body:
       userId != null
         ? {
             version: version,
@@ -122,5 +134,13 @@ export async function updateInventoryStatus({
             version: version,
             status: status,
           },
+    description: 'modify inventory status',
+    matchers: {
+      modelName: 'com.axelor.apps.stock.db.Inventory',
+      id: inventoryId,
+      fields: {
+        status: 'statusSelect',
+      },
+    },
   });
 }

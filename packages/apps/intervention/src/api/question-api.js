@@ -17,9 +17,10 @@
  */
 
 import {
-  axiosApiProvider,
   createStandardFetch,
   createStandardSearch,
+  formatRequestBody,
+  getActionApi,
 } from '@axelor/aos-mobile-core';
 
 const createQuestionCriteria = (interventionId, rangeId) => {
@@ -58,6 +59,7 @@ export async function fetchQuestion({interventionId, rangeId, page = 0}) {
     fieldKey: 'intervention_question',
     sortKey: 'intervention_question',
     page,
+    provider: 'model',
   });
 }
 
@@ -66,14 +68,24 @@ export async function fetchQuestionById({questionId}) {
     model: 'com.axelor.apps.intervention.db.InterventionQuestion',
     id: questionId,
     fieldKey: 'intervention_question',
+    provider: 'model',
   });
 }
 
 export async function updateQuestion({question}) {
-  return axiosApiProvider.post({
-    url: `ws/rest/com.axelor.apps.intervention.db.InterventionQuestion/${question.id}`,
-    data: {
+  const {matchers} = formatRequestBody(question, 'data');
+
+  return getActionApi().send({
+    url: `/ws/rest/com.axelor.apps.intervention.db.InterventionQuestion/${question.id}`,
+    method: 'post',
+    body: {
       data: question,
+    },
+    description: 'update intervention question',
+    matchers: {
+      modelName: 'com.axelor.apps.intervention.db.InterventionQuestion',
+      id: question.id,
+      fields: matchers,
     },
   });
 }
@@ -85,5 +97,6 @@ export async function fetchRange({interventionId}) {
     fieldKey: 'intervention_range',
     page: 0,
     numberElementsByPage: null,
+    provider: 'model',
   });
 }

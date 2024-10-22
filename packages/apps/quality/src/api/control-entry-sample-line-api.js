@@ -17,9 +17,9 @@
  */
 
 import {
-  axiosApiProvider,
   createStandardSearch,
   createStandardFetch,
+  getActionApi,
   getTypes,
 } from '@axelor/aos-mobile-core';
 
@@ -43,6 +43,7 @@ export async function searchControlEntrySampleLine({
     fieldKey: 'quality_controlEntrySampleLine',
     sortKey: 'quality_controlEntrySampleLine',
     page: page,
+    provider: 'model',
   });
 }
 
@@ -66,6 +67,7 @@ export async function searchControlEntrySampleLineOfControlEntry({
     sortKey: 'quality_controlEntrySampleLine',
     numberElementsByPage: null,
     page: 0,
+    provider: 'model',
   });
 }
 
@@ -74,16 +76,18 @@ export async function fetchControlEntrySampleLine({id}) {
     model: 'com.axelor.apps.quality.db.ControlEntryPlanLine',
     id,
     fieldKey: 'quality_controlEntrySampleLine',
+    provider: 'model',
   });
 }
 
 export async function checkComformity({object}) {
   const ControlEntrySample = getTypes().ControlEntrySample;
 
-  return axiosApiProvider
-    .post({
+  return getActionApi()
+    .send({
       url: 'ws/action',
-      data: {
+      method: 'post',
+      body: {
         action: 'action-quality-control-entry-line-method-control-conformity',
         data: {
           context: {
@@ -93,12 +97,14 @@ export async function checkComformity({object}) {
         },
         model: 'com.axelor.apps.quality.db.ControlEntryPlanLine',
       },
+      description: 'check conformity',
     })
     .then(() =>
       createStandardFetch({
         model: 'com.axelor.apps.quality.db.ControlEntryPlanLine',
         id: object.id,
         fieldKey: 'quality_controlEntrySampleLine',
+        provider: 'model',
       }),
     )
     .then(({data: {data}}) => {

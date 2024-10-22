@@ -97,6 +97,7 @@ export async function searchProject({searchValue, page = 0, activeCompanyId}) {
     fieldKey: 'hr_project',
     sortKey: 'hr_project',
     page,
+    provider: 'model',
   });
 }
 
@@ -127,6 +128,7 @@ export async function searchProjectTask({
     fieldKey: 'hr_projectTask',
     sortKey: 'hr_projectTask',
     page,
+    provider: 'model',
   });
 }
 
@@ -137,5 +139,6 @@ export async function searchProduct({searchValue, page = 0}) {
     fieldKey: 'hr_product',
     sortKey: 'hr_product',
     page,
+    provider: 'model',
   });
 }

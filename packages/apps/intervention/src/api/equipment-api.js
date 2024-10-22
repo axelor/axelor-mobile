@@ -17,9 +17,10 @@
  */
 
 import {
-  axiosApiProvider,
   createStandardFetch,
   createStandardSearch,
+  formatRequestBody,
+  getActionApi,
   getSearchCriterias,
   getTypes,
 } from '@axelor/aos-mobile-core';
@@ -103,125 +104,6 @@ const createInterventionEquipmentCriteria = ({
   return criteria;
 };
 
-export async function searchEquipment({
-  searchValue = null,
-  page = 0,
-  inService,
-  partnerId,
-  parentPlaceId,
-  noParent = false,
-  isCountFetch = false,
-}) {
-  return createStandardSearch({
-    model: 'com.axelor.apps.intervention.db.Equipment',
-    criteria: createEquipmentsCriteria({
-      searchValue,
-      inService,
-      partnerId,
-      parentPlaceId,
-      noParent,
-    }),
-    fieldKey: 'intervention_equipment',
-    sortKey: 'intervention_equipment',
-    page,
-    numberElementsByPage: isCountFetch ? 0 : 10,
-  });
-}
-
-export async function searchInterventionEquipment({
-  searchValue,
-  idsInterventionEquipement: equipmentIds,
-  inService,
-  isCountFetch = false,
-  page = 0,
-}) {
-  if (!Array.isArray(equipmentIds) || equipmentIds.length === 0) {
-    return {data: {data: [], total: 0}};
-  }
-
-  return createStandardSearch({
-    model: 'com.axelor.apps.intervention.db.Equipment',
-    criteria: createInterventionEquipmentCriteria({
-      searchValue,
-      idsInterventionEquipement: equipmentIds,
-      inService,
-    }),
-    fieldKey: 'intervention_equipment',
-    sortKey: 'intervention_equipment',
-    page,
-    numberElementsByPage: isCountFetch ? 0 : 10,
-  });
-}
-
-export async function searchPlaceEquipment({searchValue, page = 0, partnerId}) {
-  return createStandardSearch({
-    model: 'com.axelor.apps.intervention.db.Equipment',
-    criteria: createEquipmentsCriteria({
-      searchValue,
-      partnerId,
-      isPlaceEquipment: true,
-    }),
-    fieldKey: 'intervention_equipment',
-    sortKey: 'intervention_equipment',
-    page,
-  });
-}
-
-export async function getEquipmentById({equipmentId}) {
-  return createStandardFetch({
-    model: 'com.axelor.apps.intervention.db.Equipment',
-    id: equipmentId,
-    fieldKey: 'intervention_equipment',
-  });
-}
-
-export async function saveEquipment({equipment}) {
-  return axiosApiProvider.post({
-    url: '/ws/rest/com.axelor.apps.intervention.db.Equipment',
-    data: {
-      data: equipment,
-    },
-  });
-}
-
-export async function archiveEquipment({equipmentId, equipmentVersion}) {
-  return axiosApiProvider.post({
-    url: '/ws/rest/com.axelor.apps.intervention.db.Equipment/',
-    data: {
-      data: {
-        id: equipmentId,
-        version: equipmentVersion,
-        archived: true,
-      },
-    },
-  });
-}
-
-export async function copyEquipment({equipmentId}) {
-  return axiosApiProvider
-    .get({
-      url: `/ws/rest/com.axelor.apps.intervention.db.Equipment/${equipmentId}/copy`,
-    })
-    .catch(error => {
-      throw new Error(error);
-    })
-    .then(({data}) => {
-      const equipment = Array.isArray(data?.data) ? data.data[0] : null;
-
-      if (equipment != null) {
-        return saveEquipment({equipment});
-      }
-
-      return null;
-    });
-}
-
-export async function deleteEquipment({equipmentId}) {
-  return axiosApiProvider.delete({
-    url: `/ws/rest/com.axelor.apps.intervention.db.Equipment/${equipmentId}`,
-  });
-}
-
 const createInterventionEquipmentToLinkCriteria = ({
   searchValue,
   equipmentSet,
@@ -259,6 +141,155 @@ const createInterventionEquipmentToLinkCriteria = ({
   return criteria;
 };
 
+export async function searchEquipment({
+  searchValue = null,
+  page = 0,
+  inService,
+  partnerId,
+  parentPlaceId,
+  noParent = false,
+  isCountFetch = false,
+}) {
+  return createStandardSearch({
+    model: 'com.axelor.apps.intervention.db.Equipment',
+    criteria: createEquipmentsCriteria({
+      searchValue,
+      inService,
+      partnerId,
+      parentPlaceId,
+      noParent,
+    }),
+    fieldKey: 'intervention_equipment',
+    sortKey: 'intervention_equipment',
+    page,
+    numberElementsByPage: isCountFetch ? 0 : 10,
+    provider: 'model',
+  });
+}
+
+export async function searchInterventionEquipment({
+  searchValue,
+  idsInterventionEquipement: equipmentIds,
+  inService,
+  isCountFetch = false,
+  page = 0,
+}) {
+  if (!Array.isArray(equipmentIds) || equipmentIds.length === 0) {
+    return {data: {data: [], total: 0}};
+  }
+
+  return createStandardSearch({
+    model: 'com.axelor.apps.intervention.db.Equipment',
+    criteria: createInterventionEquipmentCriteria({
+      searchValue,
+      idsInterventionEquipement: equipmentIds,
+      inService,
+    }),
+    fieldKey: 'intervention_equipment',
+    sortKey: 'intervention_equipment',
+    page,
+    numberElementsByPage: isCountFetch ? 0 : 10,
+    provider: 'model',
+  });
+}
+
+export async function searchPlaceEquipment({searchValue, page = 0, partnerId}) {
+  return createStandardSearch({
+    model: 'com.axelor.apps.intervention.db.Equipment',
+    criteria: createEquipmentsCriteria({
+      searchValue,
+      partnerId,
+      isPlaceEquipment: true,
+    }),
+    fieldKey: 'intervention_equipment',
+    sortKey: 'intervention_equipment',
+    page,
+    provider: 'model',
+  });
+}
+
+export async function getEquipmentById({equipmentId}) {
+  return createStandardFetch({
+    model: 'com.axelor.apps.intervention.db.Equipment',
+    id: equipmentId,
+    fieldKey: 'intervention_equipment',
+    provider: 'model',
+  });
+}
+
+export async function saveEquipment({equipment}) {
+  const {matchers} = formatRequestBody(equipment, 'data');
+
+  return getActionApi().send({
+    url: '/ws/rest/com.axelor.apps.intervention.db.Equipment',
+    method: 'post',
+    body: {
+      data: equipment,
+    },
+    description: 'save equipment',
+    matchers: {
+      modelName: 'com.axelor.apps.intervention.db.Equipment',
+      id: equipment.id,
+      fields: matchers,
+    },
+  });
+}
+
+export async function archiveEquipment({equipmentId, equipmentVersion}) {
+  return getActionApi().send({
+    url: '/ws/rest/com.axelor.apps.intervention.db.Equipment',
+    method: 'post',
+    body: {
+      data: {
+        id: equipmentId,
+        version: equipmentVersion,
+        archived: true,
+      },
+    },
+    description: 'archive equipment',
+    matchers: {
+      modelName: 'com.axelor.apps.intervention.db.Equipment',
+      id: equipmentId,
+      fields: {
+        'data.archived': 'archived',
+      },
+    },
+  });
+}
+
+export async function copyEquipment({equipmentId}) {
+  return getActionApi()
+    .send({
+      url: `/ws/rest/com.axelor.apps.intervention.db.Equipment/${equipmentId}/copy`,
+      method: 'get',
+      description: 'copy equipment',
+      matchers: {
+        modelName: 'com.axelor.apps.intervention.db.Equipment',
+        id: equipmentId,
+      },
+    })
+    .catch(error => {
+      throw new Error(error);
+    })
+    .then(({data}) => {
+      const equipment = Array.isArray(data?.data) ? data.data[0] : null;
+
+      if (equipment != null) {
+        return saveEquipment({equipment});
+      }
+
+      return null;
+    });
+}
+
+export async function deleteEquipment({equipmentId}) {
+  return getActionApi().send({
+    url: `/ws/rest/com.axelor.apps.intervention.db.Equipment/${equipmentId}`,
+    method: 'delete',
+    description: 'delete equipment',
+  });
+}
+
 export async function searchEquipmentToLink({
   page = 0,
   searchValue,
@@ -275,5 +306,6 @@ export async function searchEquipmentToLink({
     fieldKey: 'intervention_equipment',
     sortKey: 'intervention_equipment',
     page,
+    provider: 'model',
   });
 }

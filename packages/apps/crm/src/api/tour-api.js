@@ -17,9 +17,9 @@
  */
 
 import {
-  axiosApiProvider,
   createStandardFetch,
   createStandardSearch,
+  getActionApi,
   getSearchCriterias,
 } from '@axelor/aos-mobile-core';
 
@@ -58,6 +58,7 @@ export async function searchTour({
     fieldKey: 'crm_tour',
     sortKey: 'crm_tour',
     page: page,
+    provider: 'model',
   });
 }
 
@@ -66,11 +67,18 @@ export async function fetchTourById({tourId}) {
     model: 'com.axelor.apps.crm.db.Tour',
     id: tourId,
     fieldKey: 'crm_tour',
+    provider: 'model',
   });
 }
 
 export async function validateTour({tourId}) {
-  return axiosApiProvider.put({
+  return getActionApi().send({
     url: `ws/aos/tour/validate/${tourId}`,
+    method: 'put',
+    description: 'validate tour',
+    matchers: {
+      modelName: 'com.axelor.apps.crm.db.Tour',
+      id: tourId,
+    },
   });
 }
