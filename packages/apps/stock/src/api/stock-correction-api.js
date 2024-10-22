@@ -178,7 +178,7 @@ export async function updateStockCorrectionTrackingNumber({
       modelName: 'com.axelor.apps.stock.db.StockCorrection',
       id: stockCorrectionId,
       fields: {
-        trackingNumber: 'trackingNumber',
+        'data.trackingNumber': 'trackingNumber',
       },
     },
   });
