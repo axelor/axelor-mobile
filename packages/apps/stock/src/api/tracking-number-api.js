@@ -17,6 +17,7 @@
  */
 
 import {
+  axiosApiProvider,
   createStandardSearch,
   getActionApi,
   getSearchCriterias,
@@ -51,7 +52,12 @@ export async function searchTrackingNumberFilter({
   });
 }
 
-export async function createTrackingNumber({qty, product, trackingNumberSeq}) {
+export async function createTrackingNumber({
+  qty,
+  product,
+  trackingNumberSeq,
+  origin,
+}) {
   return getActionApi().send({
     url: '/ws/rest/com.axelor.apps.stock.db.TrackingNumber',
     method: 'put',
@@ -60,6 +66,7 @@ export async function createTrackingNumber({qty, product, trackingNumberSeq}) {
         counter: qty,
         product,
         trackingNumberSeq,
+        origin,
       },
     },
     description: 'create tracking number',
@@ -70,6 +77,7 @@ export async function createTrackingNumber({qty, product, trackingNumberSeq}) {
         'data.counter': 'counter',
         'data.product': 'product',
         'data.trackingNumberSeq': 'trackingNumberSeq',
+        'data.origin': 'origin',
       },
     },
   });
@@ -94,6 +102,19 @@ export async function updateStockMoveLineTrackingNumber({
       id: stockMoveLineId,
       fields: {
         'data.trackingNumber': 'trackingNumber',
+      },
+    },
+  });
+}
+
+export async function updateTrackingNumber({id, origin, ...trackingNumber}) {
+  return axiosApiProvider.post({
+    url: `/ws/rest/com.axelor.apps.stock.db.TrackingNumber/${id}`,
+    data: {
+      data: {
+        ...trackingNumber,
+        origin: origin,
+        version: trackingNumber.$version ?? trackingNumber.version,
       },
     },
   });

@@ -33,7 +33,7 @@ import {
   useSelector,
   useTranslator,
 } from '@axelor/aos-mobile-core';
-import {StockMoveHeader} from '../../components';
+import {StockMoveHeader, SupplierArrivalOriginInput} from '../../components';
 import {updateSupplierTrackingNumber} from '../../features/trackingNumberSlice';
 import StockMove from '../../types/stock-move';
 
@@ -46,6 +46,7 @@ const SupplierArrivalAddTrackingScreen = ({route, navigation}) => {
 
   const [sequence, setSequence] = useState(null);
   const [trackingQty, setTrackingQty] = useState(0);
+  const [origin, setOrigin] = useState(null);
 
   const {loading, createdTrackingNumber} = useSelector(
     state => state.trackingNumber,
@@ -57,11 +58,12 @@ const SupplierArrivalAddTrackingScreen = ({route, navigation}) => {
         product: product,
         trackingNumberSeq: sequence,
         qty: trackingQty,
+        origin,
         stockMoveLineId: supplierArrivalLine.id,
         stockMoveLineVersion: supplierArrivalLine.version,
       }),
     );
-  }, [dispatch, product, sequence, supplierArrivalLine, trackingQty]);
+  }, [dispatch, origin, product, sequence, supplierArrivalLine, trackingQty]);
 
   useEffect(() => {
     if (!loading && createdTrackingNumber != null) {
@@ -118,11 +120,12 @@ const SupplierArrivalAddTrackingScreen = ({route, navigation}) => {
           <Text>{product?.name}</Text>
         </Card>
         <InputBarCodeCard
-          style={styles.input}
           title={I18n.t('Stock_TrackingSequence')}
           onChange={setSequence}
         />
+        <SupplierArrivalOriginInput setOrigin={setOrigin} />
         <QuantityCard
+          style={styles.qtyCard}
           labelQty={I18n.t('Stock_TrackingQty')}
           defaultValue={trackingQty}
           onValueChange={setTrackingQty}
@@ -140,8 +143,8 @@ const styles = StyleSheet.create({
     marginVertical: '2%',
     marginHorizontal: 16,
   },
-  input: {
-    zIndex: 50,
+  qtyCard: {
+    marginTop: 10,
   },
 });
 

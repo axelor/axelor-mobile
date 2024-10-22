@@ -1,0 +1,5 @@
+{
+  "title": "InputBarCodeCard: improve component design",
+  "type": "refactor",
+  "packages": "core"
+}

@@ -26,6 +26,7 @@ import {
   useTypes,
 } from '@axelor/aos-mobile-core';
 import {updateSupplierArrivalLine} from '../../../../features/supplierArrivalLineSlice';
+import {updateTrackingNumber} from '../../../../features/trackingNumberSlice';
 
 const SupplierArrivalLineButtons = ({
   supplierArrival,
@@ -33,6 +34,8 @@ const SupplierArrivalLineButtons = ({
   realQty,
   conformity,
   toStockLocation,
+  trackingNumber,
+  origin,
 }) => {
   const I18n = useTranslator();
   const dispatch = useDispatch();
@@ -48,7 +51,19 @@ const SupplierArrivalLineButtons = ({
     });
   }, [supplierArrival, navigation]);
 
+  const handleTrackingNumberOrigin = useCallback(() => {
+    if (trackingNumber != null && origin !== trackingNumber.origin) {
+      dispatch(
+        updateTrackingNumber({
+          ...trackingNumber,
+          origin,
+        }),
+      );
+    }
+  }, [dispatch, origin, trackingNumber]);
+
   const handleValidate = useCallback(() => {
+    handleTrackingNumberOrigin();
     dispatch(
       updateSupplierArrivalLine({
         stockMoveLineId: supplierArrivalLine.id,
@@ -63,6 +78,7 @@ const SupplierArrivalLineButtons = ({
   }, [
     conformity,
     dispatch,
+    handleTrackingNumberOrigin,
     navigateBackToDetails,
     realQty,
     supplierArrivalLine,
