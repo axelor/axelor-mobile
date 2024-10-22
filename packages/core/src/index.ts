@@ -30,6 +30,7 @@ export {
   enableScan,
   scanValue,
   disableScan,
+  clearScan,
   default as scannerReducer,
 } from './features/scannerSlice';
 export {
@@ -63,4 +64,9 @@ export * from './forms';
 export * from './dashboards';
 export * from './permissions';
 export * from './selections';
+export {
+  useScanActivator,
+  useScannerDeviceActivator,
+  useCameraScannerActivator,
+} from './hooks/use-scan-activator';
 export {useNavigation, useIsFocused} from './hooks/use-navigation';
