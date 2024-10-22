@@ -1,5 +1,5 @@
 {
-  "title": "Scan: add missing export",
+  "title": "Barcode scanning: add hooks exports to manage activation manually",
   "type": "fix",
   "packages": "core"
 }
