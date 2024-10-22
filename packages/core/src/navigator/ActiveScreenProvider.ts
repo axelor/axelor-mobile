@@ -103,7 +103,20 @@ export const useActiveScreen = () => {
   );
 };
 
-export const useContextRegister = (data: any) => {
+interface Model {
+  model: string;
+  key?: string;
+  id?: number;
+  ids?: number[];
+  [key: string]: any;
+}
+
+interface Data {
+  models?: Model[];
+  [key: string]: any;
+}
+
+export const useContextRegister = (data: Data) => {
   const isFocused = useIsFocused();
 
   useEffect(() => {
@@ -111,4 +124,56 @@ export const useContextRegister = (data: any) => {
       activeScreenProvider.registerScreenContext(data);
     }
   }, [data, isFocused]);
+};
+
+export const isModel = (
+  context: Data,
+  model: string,
+  key?: string,
+): boolean => {
+  if (!Array.isArray(context.models) || context.models.length === 0) {
+    return false;
+  }
+
+  return context.models.some(m => {
+    const isModelNameMatch = m.model === model;
+
+    if (key) {
+      return isModelNameMatch && m.key === key;
+    }
+
+    return isModelNameMatch;
+  });
+};
+
+export const getModelId = (
+  context: Data,
+  model: string,
+  key?: string,
+): undefined | number | number[] => {
+  if (!Array.isArray(context.models) || context.models.length === 0) {
+    return undefined;
+  }
+
+  const foundModel = context.models.find(m => {
+    const isModelNameMatch = m.model === model;
+
+    if (key) {
+      return isModelNameMatch && m.key === key;
+    }
+
+    return isModelNameMatch;
+  });
+
+  if (!foundModel) {
+    return undefined;
+  }
+
+  if (Array.isArray(foundModel.ids) && foundModel.ids.length > 0) {
+    return foundModel.ids;
+  } else if (foundModel.id) {
+    return foundModel.id;
+  }
+
+  return undefined;
 };
