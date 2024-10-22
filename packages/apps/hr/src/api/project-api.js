@@ -30,10 +30,25 @@ const createProjectCriteria = ({
   const criteria = [getSearchCriterias('hr_project', searchValue)];
 
   if (isBusinessProject) {
+    const _businessCriteria = [
+      {
+        fieldName: 'isBusinessProject',
+        operator: '=',
+        value: true,
+      },
+    ];
+
+    if (activeCompanyId != null) {
+      _businessCriteria.push({
+        fieldName: 'company.id',
+        operator: '=',
+        value: activeCompanyId,
+      });
+    }
+
     criteria.push({
-      fieldName: 'isBusinessProject',
-      operator: '=',
-      value: true,
+      operator: 'and',
+      criteria: _businessCriteria,
     });
   }
 
@@ -42,14 +57,6 @@ const createProjectCriteria = ({
       fieldName: 'manageTimeSpent',
       operator: '=',
       value: true,
-    });
-  }
-
-  if (activeCompanyId != null) {
-    criteria.push({
-      fieldName: 'company.id',
-      operator: '=',
-      value: activeCompanyId,
     });
   }
 
