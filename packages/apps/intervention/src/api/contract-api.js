@@ -48,5 +48,6 @@ export async function searchContract({page, partnerId, searchValue}) {
     fieldKey: 'intervention_contract',
     sortKey: 'intervention_contract',
     page: page,
+    provider: 'model',
   });
 }

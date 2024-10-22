@@ -17,7 +17,6 @@
  */
 
 import {
-  axiosApiProvider,
   createStandardFetch,
   createStandardSearch,
   getActionApi,
@@ -164,13 +163,22 @@ export async function updateStockCorrectionTrackingNumber({
   stockCorrectionVersion,
   trackingNumber,
 }) {
-  return axiosApiProvider.post({
+  return getActionApi().send({
     url: `/ws/rest/com.axelor.apps.stock.db.StockCorrection/${stockCorrectionId}`,
-    data: {
+    method: 'post',
+    body: {
       data: {
         id: stockCorrectionId,
         version: stockCorrectionVersion,
         trackingNumber: trackingNumber,
+      },
+    },
+    description: 'update stock correction tracking number',
+    matchers: {
+      modelName: 'com.axelor.apps.stock.db.StockCorrection',
+      id: stockCorrectionId,
+      fields: {
+        trackingNumber: 'trackingNumber',
       },
     },
   });

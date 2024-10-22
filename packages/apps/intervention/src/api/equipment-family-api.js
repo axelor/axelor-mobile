@@ -28,5 +28,6 @@ export async function searchEquipmentFamily({page = 0, searchValue = null}) {
     fieldKey: 'intervention_equipmentFamily',
     sortKey: 'intervention_equipmentFamily',
     page: page,
+    provider: 'model',
   });
 }

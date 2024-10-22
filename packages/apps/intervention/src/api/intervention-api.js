@@ -17,9 +17,9 @@
  */
 
 import {
-  axiosApiProvider,
   createStandardFetch,
   createStandardSearch,
+  getActionApi,
   getEndOfDay,
   getNowDateZonesISOString,
   getSearchCriterias,
@@ -126,6 +126,7 @@ export async function fetchIntervention({
     fieldKey: 'intervention_intervention',
     sortKey: 'intervention_intervention',
     page,
+    provider: 'model',
   });
 }
 
@@ -134,6 +135,7 @@ export async function fetchInterventionById({interventionId}) {
     model: 'com.axelor.apps.intervention.db.Intervention',
     id: interventionId,
     fieldKey: 'intervention_intervention',
+    provider: 'model',
   });
 }
 
@@ -154,6 +156,7 @@ export async function searchHistoryInterventionByEquipment({
     fieldKey: 'intervention_intervention',
     sortKey: 'intervention_intervention',
     page,
+    provider: 'model',
   });
 }
 
@@ -170,6 +173,7 @@ export async function fetchActiveIntervention({userId}) {
     sortKey: 'intervention_activeIntervention',
     numberElementsByPage: 1,
     page: 0,
+    provider: 'model',
   });
 }
 
@@ -178,12 +182,22 @@ export async function updateInterventionStatus({
   version,
   targetStatus,
 }) {
-  return axiosApiProvider.put({
-    url: `ws/aos/intervention/status/${interventionId}`,
-    data: {
+  return getActionApi().send({
+    url: `/ws/aos/intervention/status/${interventionId}`,
+    method: 'put',
+    body: {
       toStatus: targetStatus,
       dateTime: getNowDateZonesISOString(),
       version,
+    },
+    description: 'update intervention status',
+    matchers: {
+      modelName: 'com.axelor.apps.intervention.db.Intervention',
+      id: interventionId,
+      fields: {
+        'data.toStatus': 'toStatus',
+        'data.version': 'version',
+      },
     },
   });
 }
@@ -193,9 +207,22 @@ export async function linkEquipment({
   interventionVersion,
   equipmentId,
 }) {
-  return axiosApiProvider.put({
-    url: `ws/aos/intervention/add-equipment/${interventionId}`,
-    data: {equipmentId, version: interventionVersion},
+  return getActionApi().send({
+    url: `/ws/aos/intervention/add-equipment/${interventionId}`,
+    method: 'put',
+    body: {
+      equipmentId,
+      version: interventionVersion,
+    },
+    description: 'link equipment',
+    matchers: {
+      modelName: 'com.axelor.apps.intervention.db.Intervention',
+      id: interventionId,
+      fields: {
+        'data.equipmentId': 'equipmentId',
+        'data.version': 'version',
+      },
+    },
   });
 }
 
@@ -204,8 +231,21 @@ export async function unlinkEquipment({
   interventionVersion,
   equipmentId,
 }) {
-  return axiosApiProvider.put({
-    url: `ws/aos/intervention/remove-equipment/${interventionId}`,
-    data: {equipmentId, version: interventionVersion},
+  return getActionApi().send({
+    url: `/ws/aos/intervention/remove-equipment/${interventionId}`,
+    method: 'put',
+    body: {
+      equipmentId,
+      version: interventionVersion,
+    },
+    description: 'unlink equipment',
+    matchers: {
+      modelName: 'com.axelor.apps.intervention.db.Intervention',
+      id: interventionId,
+      fields: {
+        'data.equipmentId': 'equipmentId',
+        'data.version': 'version',
+      },
+    },
   });
 }

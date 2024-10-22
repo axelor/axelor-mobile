@@ -17,9 +17,10 @@
  */
 
 import {
-  axiosApiProvider,
   createStandardFetch,
   createStandardSearch,
+  formatRequestBody,
+  getActionApi,
   getSearchCriterias,
 } from '@axelor/aos-mobile-core';
 
@@ -64,6 +65,7 @@ export async function fetchInterventionNote({
     fieldKey: 'intervention_interventionNote',
     sortKey: 'intervention_interventionNote',
     page,
+    provider: 'model',
   });
 }
 
@@ -72,35 +74,65 @@ export async function fetchInterventionNoteById({interventionNoteId}) {
     model: 'com.axelor.apps.intervention.db.InterventionNote',
     id: interventionNoteId,
     fieldKey: 'intervention_interventionNote',
+    provider: 'model',
   });
 }
 
 export async function fetchInterventionNoteType() {
-  return axiosApiProvider.get({
-    url: '/ws/rest/com.axelor.apps.intervention.db.InterventionNoteType',
+  return createStandardSearch({
+    model: 'com.axelor.apps.intervention.db.InterventionNoteType',
+    criteria: [],
+    fieldKey: 'intervention_interventionNoteType',
+    sortKey: 'intervention_interventionNoteType',
+    page: 0,
+    numberElementsByPage: null,
   });
 }
 
 export async function createInterventionNote({interventionNote}) {
-  return axiosApiProvider.post({
-    url: 'ws/rest/com.axelor.apps.intervention.db.InterventionNote',
-    data: {
+  const {matchers} = formatRequestBody(interventionNote, 'data');
+
+  return getActionApi().send({
+    url: '/ws/rest/com.axelor.apps.intervention.db.InterventionNote',
+    method: 'post',
+    body: {
       data: interventionNote,
+    },
+    description: 'create intervention note',
+    matchers: {
+      modelName: 'com.axelor.apps.intervention.db.InterventionNote',
+      id: Date.now(),
+      fields: matchers,
     },
   });
 }
 
 export async function updateInterventionNote({interventionNote}) {
-  return axiosApiProvider.post({
-    url: `ws/rest/com.axelor.apps.intervention.db.InterventionNote/${interventionNote.id}`,
-    data: {
+  const {matchers} = formatRequestBody(interventionNote, 'data');
+
+  return getActionApi().send({
+    url: `/ws/rest/com.axelor.apps.intervention.db.InterventionNote/${interventionNote.id}`,
+    method: 'post',
+    body: {
       data: interventionNote,
+    },
+    description: 'update intervention note',
+    matchers: {
+      modelName: 'com.axelor.apps.intervention.db.InterventionNote',
+      id: interventionNote.id,
+      fields: matchers,
     },
   });
 }
 
 export async function deleteInterventionNote({interventionNoteId}) {
-  return axiosApiProvider.delete({
-    url: `ws/rest/com.axelor.apps.intervention.db.InterventionNote/${interventionNoteId}`,
+  return getActionApi().send({
+    url: `/ws/rest/com.axelor.apps.intervention.db.InterventionNote/${interventionNoteId}`,
+    method: 'delete',
+    description: 'delete intervention note',
+    matchers: {
+      modelName: 'com.axelor.apps.intervention.db.InterventionNote',
+      id: interventionNoteId,
+    },
   });
 }

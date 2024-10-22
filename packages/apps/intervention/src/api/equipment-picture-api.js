@@ -16,7 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import {axiosApiProvider, createStandardSearch} from '@axelor/aos-mobile-core';
+import {createStandardSearch, getActionApi} from '@axelor/aos-mobile-core';
 
 const createEquipmentPictureCriteria = equipmentId => {
   const criteria = [
@@ -37,6 +37,7 @@ export async function searchEquipmentPicture({equipmentId, page = 0}) {
     fieldKey: 'intervention_equipmentPicture',
     sortKey: 'intervention_equipmentPicture',
     page,
+    provider: 'model',
   });
 }
 
@@ -45,11 +46,21 @@ export async function createEquipmentPicture({
   version,
   metaFileId,
 }) {
-  return axiosApiProvider.put({
-    url: `ws/aos/equipment/add-picture/${equipmentId}`,
-    data: {
+  return getActionApi().send({
+    url: `/ws/aos/equipment/add-picture/${equipmentId}`,
+    method: 'put',
+    body: {
       pictureId: metaFileId,
       version,
+    },
+    description: 'create equipment picture',
+    matchers: {
+      modelName: 'com.axelor.apps.intervention.db.Equipment',
+      id: equipmentId,
+      fields: {
+        'data.pictureId': 'pictureId',
+        'data.version': 'version',
+      },
     },
   });
 }
@@ -59,11 +70,21 @@ export async function deleteEquipmentPicture({
   version,
   pictureId,
 }) {
-  return axiosApiProvider.put({
-    url: `ws/aos/equipment/remove-picture/${equipmentId}`,
-    data: {
+  return getActionApi().send({
+    url: `/ws/aos/equipment/remove-picture/${equipmentId}`,
+    method: 'put',
+    body: {
       pictureId,
       version,
+    },
+    description: 'remove equipment picture',
+    matchers: {
+      modelName: 'com.axelor.apps.intervention.db.Equipment',
+      id: equipmentId,
+      fields: {
+        'data.pictureId': 'pictureId',
+        'data.version': 'version',
+      },
     },
   });
 }
