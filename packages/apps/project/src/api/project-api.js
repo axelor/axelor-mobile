@@ -17,9 +17,9 @@
  */
 
 import {
-  axiosApiProvider,
   createStandardFetch,
   createStandardSearch,
+  getActionApi,
   getSearchCriterias,
 } from '@axelor/aos-mobile-core';
 
@@ -79,6 +79,16 @@ const createProjectCriteria = ({
   return criteria;
 };
 
+const createSubProjectCriteria = ({projectId}) => {
+  return [
+    {
+      fieldName: 'parentProject.id',
+      operator: '=',
+      value: projectId,
+    },
+  ];
+};
+
 export async function searchProject({
   searchValue,
   page = 0,
@@ -99,6 +109,7 @@ export async function searchProject({
     fieldKey: 'project_project',
     sortKey: 'project_project',
     page,
+    provider: 'model',
   });
 }
 
@@ -108,6 +119,7 @@ export async function fetchProjectStatus() {
     fieldKey: 'project_projectStatus',
     numberElementsByPage: null,
     page: 0,
+    provider: 'model',
   });
 }
 
@@ -116,18 +128,9 @@ export async function fetchProjectById({projectId}) {
     model: 'com.axelor.apps.project.db.Project',
     id: projectId,
     fieldKey: 'project_project',
+    provider: 'model',
   });
 }
-
-const createSubProjectCriteria = ({projectId}) => {
-  return [
-    {
-      fieldName: 'parentProject.id',
-      operator: '=',
-      value: projectId,
-    },
-  ];
-};
 
 export async function searchSubProject({page = 0, projectId}) {
   return createStandardSearch({
@@ -136,13 +139,15 @@ export async function searchSubProject({page = 0, projectId}) {
     fieldKey: 'project_project',
     sortKey: 'project_project',
     page,
+    provider: 'model',
   });
 }
 
 export async function previousProjectActivity({projectId, startDate}) {
-  return axiosApiProvider.post({
+  return getActionApi().send({
     url: 'ws/action/',
-    data: {
+    method: 'post',
+    body: {
       action: 'action-project-activity-dashboard-method-previous-on-click',
       data: {
         context: {
@@ -156,5 +161,6 @@ export async function previousProjectActivity({projectId, startDate}) {
       _signal: 'previousBtn',
       _source: 'previousBtn',
     },
+    description: 'Retrieve previous project activity',
   });
 }

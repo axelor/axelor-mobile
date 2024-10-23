@@ -20,6 +20,8 @@ import {
   axiosApiProvider,
   createStandardFetch,
   createStandardSearch,
+  formatRequestBody,
+  getActionApi,
   getSearchCriterias,
   getTypes,
 } from '@axelor/aos-mobile-core';
@@ -172,6 +174,7 @@ export async function searchProjectTask({
     fieldKey: 'project_projectTask',
     sortKey: 'project_projectTask',
     page,
+    provider: 'model',
   });
 }
 
@@ -181,6 +184,7 @@ export async function fetchProjectTaskStatus() {
     fieldKey: 'project_projectStatus',
     numberElementsByPage: null,
     page: 0,
+    provider: 'model',
   });
 }
 
@@ -190,6 +194,7 @@ export async function fetchProjectPriority() {
     fieldKey: 'project_projectPriority',
     numberElementsByPage: null,
     page: 0,
+    provider: 'model',
   });
 }
 
@@ -199,6 +204,7 @@ export async function fetchProjectTaskCategory() {
     fieldKey: 'project_projectTaskCategory',
     numberElementsByPage: null,
     page: 0,
+    provider: 'model',
   });
 }
 
@@ -210,6 +216,7 @@ export async function fetchProjectTaskById({projecTaskId}) {
     relatedFields: {
       tagSet: ['name', 'colorSelect'],
     },
+    provider: 'model',
   });
 }
 
@@ -240,6 +247,7 @@ export async function getTag({activeCompany}) {
         metaModel: {id: res?.data?.data?.[0]?.id},
         activeCompany: {id: activeCompany?.id},
       },
+      provider: 'model',
     }),
   );
 }
@@ -253,6 +261,7 @@ export async function searchTargetVersion({searchValue, page = 0, projectId}) {
     page,
     domain: ':project member of self.projectSet',
     domainContext: {project: {id: projectId}},
+    provider: 'model',
   });
 }
 
@@ -267,6 +276,7 @@ export async function searchCategory({searchValue, page = 0, categoryIds}) {
     fieldKey: 'project_projectTaskCategory',
     sortKey: 'project_projectTaskCategory',
     page,
+    provider: 'model',
   });
 }
 
@@ -277,6 +287,7 @@ export async function searchSection({searchValue, page = 0}) {
     fieldKey: 'project_projectTaskSection',
     sortKey: 'project_projectTaskSection',
     page,
+    provider: 'model',
   });
 }
 
@@ -291,6 +302,7 @@ export async function searchPriority({searchValue, page = 0, priorityIds}) {
     fieldKey: 'project_projectPriority',
     sortKey: 'project_projectPriority',
     page,
+    provider: 'model',
   });
 }
 
@@ -305,14 +317,33 @@ export async function searchStatus({searchValue, page = 0, statusIds}) {
     fieldKey: 'project_taskStatus',
     sortKey: 'project_taskStatus',
     page,
+    provider: 'model',
   });
 }
 
-export async function saveProjectTask({projectTask}) {
+export async function _saveProjectTask({projectTask}) {
   return axiosApiProvider.post({
     url: '/ws/rest/com.axelor.apps.project.db.ProjectTask/',
     data: {
       data: projectTask,
+    },
+  });
+}
+
+export async function saveProjectTask({projectTask}) {
+  const {matchers} = formatRequestBody(projectTask, 'data');
+
+  return getActionApi().send({
+    url: '/ws/rest/com.axelor.apps.project.db.ProjectTask/',
+    method: 'post',
+    body: {
+      data: projectTask,
+    },
+    description: 'save project task',
+    matchers: {
+      modelName: 'com.axelor.apps.project.db.ProjectTask',
+      id: projectTask.id,
+      fields: matchers,
     },
   });
 }
@@ -324,5 +355,6 @@ export async function searchProjectTaskLink({searchValue, page = 0, taskId}) {
     fieldKey: 'project_projectTaskLink',
     sortKey: 'project_projectTaskLink',
     page,
+    provider: 'model',
   });
 }
