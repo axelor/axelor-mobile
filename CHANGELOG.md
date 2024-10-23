@@ -3,6 +3,26 @@ title: 7.0.0
 tags: Changelog
 ---
 
+## [7.0.22] (2024-10-23)
+
+### @axelor/aos-mobile-core
+
+#### Fixes
+
+- Barcode scanning: add hooks exports to manage activation manually
+
+### @axelor/aos-mobile-ui
+
+#### Fixes
+
+- HtmlInput: resolve issue with keyboard closing right after opening when clicking on the input on iOS
+
+### @axelor/aos-mobile-stock
+
+#### Fixes
+
+- Stock correction: add possibility to fill in tracking number when needed
+
 ## [7.0.21] (2024-10-03)
 
 ### @axelor/aos-mobile-ui
@@ -692,6 +712,7 @@ The project architecture has also been updated, the example folder has been expl
 - Replace ChipSelect by MultiValuePicker on list screens
 - Add search bar details pop up on screens: add empowered searchBar for objects
 
+[7.0.22]: https://github.com/axelor/axelor-mobile/compare/7.0.21...7.0.22
 [7.0.21]: https://github.com/axelor/axelor-mobile/compare/7.0.20...7.0.21
 [7.0.20]: https://github.com/axelor/axelor-mobile/compare/7.0.19...7.0.20
 [7.0.19]: https://github.com/axelor/axelor-mobile/compare/7.0.18...7.0.19
