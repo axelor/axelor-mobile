@@ -16,7 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-type Method = 'put' | 'post' | 'delete';
+type Method = 'put' | 'post' | 'delete' | 'get';
 
 export type ActionRequest = {
   url: string;

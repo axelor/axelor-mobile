@@ -141,7 +141,6 @@ export async function updateLead({lead, emailId, emailVersion}) {
 
 export async function createLead({lead}) {
   const {matchers} = formatRequestBody(lead, 'data');
-  console.log(matchers);
 
   return getActionApi().send({
     url: '/ws/rest/com.axelor.apps.crm.db.Lead',
