@@ -3,6 +3,85 @@ title: 8.1.0
 tags: Changelog
 ---
 
+## [8.1.7] (2024-10-23)
+
+### @axelor/aos-mobile-core
+
+#### Fixes
+
+- Barcode scanning: add hooks exports to manage activation manually
+
+### @axelor/aos-mobile-ui
+
+#### Features
+
+- BottomBar: add the possibility to define a default active tab
+- BottomBar: add the ability to trigger an action even with a view component
+
+#### Fixes
+
+- FloatingButton: prevent height modification due to big title
+- Screen: prevent fixedItems from being cut
+- FloatingButton: make tools expanded when visible by default
+- HtmlInput: resolve issue with keyboard closing right after opening when clicking on the input on iOS
+
+### @axelor/aos-mobile-intervention
+
+#### Changes
+
+- API: use model and action providers
+
+#### Fixes
+
+- Form views: add edition mode by default when user navigates to create or modify an object
+
+### @axelor/aos-mobile-quality
+
+#### Changes
+
+- API: use model and action providers
+
+### @axelor/aos-mobile-hr
+
+#### Changes
+
+- API: use model and action providers
+
+#### Fixes
+
+- TimesheetLine form: change product input to not required
+- TimesheetLine form: hide activity field when it's not managed
+- Form views: add edition mode by default when user navigates to create or modify an object
+
+### @axelor/aos-mobile-helpdesk
+
+#### Changes
+
+- API: use model and action providers
+
+### @axelor/aos-mobile-crm
+
+#### Changes
+
+- API: use model and action providers
+
+### @axelor/aos-mobile-manufacturing
+
+#### Changes
+
+- API: use model and action providers
+
+### @axelor/aos-mobile-stock
+
+#### Changes
+
+- API: use model and action providers
+
+#### Fixes
+
+- Product indicator: resolve issue when clicking on card
+- Stock correction: add possibility to fill in tracking number when needed
+
 ## [8.1.6] (2024-10-09)
 
 ### @axelor/aos-mobile-ui
@@ -365,6 +444,7 @@ It enables user to manage interventions and customer parc through the mobile app
 - Selections: use new system and tools instead of type files
 - Product indicators: use new chart component to display quantity indicators
 
+  [8.1.7]: https://github.com/axelor/axelor-mobile/compare/8.1.6...8.1.7
   [8.1.6]: https://github.com/axelor/axelor-mobile/compare/8.1.5...8.1.6
   [8.1.5]: https://github.com/axelor/axelor-mobile/compare/8.1.4...8.1.5
   [8.1.4]: https://github.com/axelor/axelor-mobile/compare/8.1.3...8.1.4

@@ -1,5 +1,0 @@
-{
-  "title": "BottomBar: add the ability to trigger an action even with a view component",
-  "type": "feat",
-  "packages": "ui"
-}

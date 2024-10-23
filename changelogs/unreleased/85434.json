@@ -1,6 +1,0 @@
-{
-    "title": "TimesheetLine form: change product input to not required",
-    "type": "fix",
-    "packages": "hr"
-  }
-  

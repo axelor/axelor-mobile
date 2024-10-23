@@ -1,5 +1,0 @@
-{
-  "title": "BottomBar: add the possibility to define a default active tab",
-  "type": "feat",
-  "packages": "ui"
-}
