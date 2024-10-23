@@ -17,7 +17,6 @@
  */
 
 import {
-  axiosApiProvider,
   createStandardSearch,
   formatRequestBody,
   getActionApi,
