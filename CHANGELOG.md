@@ -3,6 +3,34 @@ title: 8.0.0
 tags: Changelog
 ---
 
+## [8.0.12] (2024-10-23)
+
+### @axelor/aos-mobile-core
+
+#### Fixes
+
+- Barcode scanning: add hooks exports to manage activation manually
+
+### @axelor/aos-mobile-ui
+
+#### Fixes
+
+- Screen: prevent fixedItems from being cut
+- HtmlInput: resolve issue with keyboard closing right after opening when clicking on the input on iOS
+
+### @axelor/aos-mobile-hr
+
+#### Fixes
+
+- TimesheetLine form: change product input to not required
+- TimesheetLine form: hide activity field when it's not managed
+
+### @axelor/aos-mobile-stock
+
+#### Fixes
+
+- Stock correction: add possibility to fill in tracking number when needed
+
 ## [8.0.11] (2024-10-03)
 
 ### @axelor/aos-mobile-ui
@@ -501,6 +529,7 @@ Changes has been done to get new core and ui improvements: use of ChipSelect, co
 
 Changes has been done to get new core and ui improvements: use of ChipSelect, color differentiation between success and primary, definition of required configs, use of icons for Bootstrap
 
+[8.0.12]: https://github.com/axelor/axelor-mobile/compare/8.0.11...8.0.12
 [8.0.11]: https://github.com/axelor/axelor-mobile/compare/8.0.10...8.0.11
 [8.0.10]: https://github.com/axelor/axelor-mobile/compare/8.0.9...8.0.10
 [8.0.9]: https://github.com/axelor/axelor-mobile/compare/8.0.8...8.0.9

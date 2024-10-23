@@ -1,5 +1,0 @@
-{
-  "title": "Screen: prevent fixedItems from being cut",
-  "type": "fix",
-  "packages": "ui"
-}
