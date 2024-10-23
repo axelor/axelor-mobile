@@ -18,18 +18,11 @@
 
 import {resourcesBinding} from '../i18n';
 
-interface translations {
+export const formatResources = ({
+  resources,
+}: {
   resources: resourcesBinding[];
-}
-
-export const getSupportedLangages = ({resources}: translations) => {
-  if (resources == null || resources.length === 0) {
-    return [];
-  }
-  return resources.map(langageBundle => langageBundle.lng);
-};
-
-export const formatResources = ({resources}: translations) => {
+}) => {
   if (resources == null || resources.length === 0) {
     return {};
   }

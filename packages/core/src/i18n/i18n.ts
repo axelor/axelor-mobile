@@ -18,7 +18,7 @@
 
 import i18next, {i18n} from 'i18next';
 import {initReactI18next} from 'react-i18next';
-import {formatResources, getSupportedLangages} from './helpers/langages';
+import {formatResources} from './helpers/langages';
 
 export interface resourcesBinding {
   lng: string;
@@ -31,12 +31,10 @@ export interface langagesResources {
 }
 
 class I18nProvider {
-  private supportedLng: string[];
   private resources: any;
   private i18next: i18n;
 
   constructor() {
-    this.supportedLng = [];
     this.resources = [];
     this.i18next = i18next;
   }
@@ -46,7 +44,6 @@ class I18nProvider {
   }
 
   configI18n({resources, defaultLanguage}: langagesResources) {
-    this.supportedLng = getSupportedLangages({resources});
     this.resources = formatResources({resources});
     this.initI18n(defaultLanguage);
   }
@@ -56,7 +53,6 @@ class I18nProvider {
       compatibilityJSON: 'v3',
       lng: defaultLanguage,
       fallbackLng: 'en',
-      supportedLngs: this.supportedLng,
       resources: this.resources,
       react: {
         bindI18nStore: 'added',
