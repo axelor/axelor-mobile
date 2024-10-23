@@ -17,9 +17,9 @@
  */
 
 import {
+  axiosApiProvider,
   createStandardFetch,
   createStandardSearch,
-  getActionApi,
   getSearchCriterias,
 } from '@axelor/aos-mobile-core';
 
@@ -213,11 +213,9 @@ export async function fetchVariantProduct({
 }
 
 export async function fetchVariantAttributes({productVariantId, version}) {
-  return getActionApi().send({
+  return axiosApiProvider.post({
     url: `/ws/aos/stock-product/get-variant-attributes/${productVariantId}`,
-    method: 'post',
-    body: {version},
-    description: 'Fetch Variant Attributes',
+    data: {version: version},
   });
 }
 

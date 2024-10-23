@@ -17,7 +17,6 @@
  */
 
 import {
-  axiosApiProvider,
   createStandardFetch,
   createStandardSearch,
   formatRequestBody,
@@ -318,15 +317,6 @@ export async function searchStatus({searchValue, page = 0, statusIds}) {
     sortKey: 'project_taskStatus',
     page,
     provider: 'model',
-  });
-}
-
-export async function _saveProjectTask({projectTask}) {
-  return axiosApiProvider.post({
-    url: '/ws/rest/com.axelor.apps.project.db.ProjectTask/',
-    data: {
-      data: projectTask,
-    },
   });
 }
 
