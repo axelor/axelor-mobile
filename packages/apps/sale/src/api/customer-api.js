@@ -103,6 +103,7 @@ export async function searchCustomer({
     fieldKey: 'sale_customer',
     sortKey: 'sale_customer',
     page,
+    provider: 'model',
   });
 }
 
@@ -113,6 +114,7 @@ export async function searchCustomerCategory({searchValue, page = 0}) {
     fieldKey: 'sale_customerCategory',
     sortKey: 'sale_customerCategory',
     page,
+    provider: 'model',
   });
 }
 
@@ -121,5 +123,6 @@ export async function fetchCustomerById({customerId}) {
     model: 'com.axelor.apps.base.db.Partner',
     id: customerId,
     fieldKey: 'sale_customer',
+    provider: 'model',
   });
 }

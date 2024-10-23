@@ -29,5 +29,6 @@ export async function fetchCustomerDelivery({saleOrderId}) {
     sortKey: 'sale_customerDelivery',
     numberElementsByPage: 1,
     page: 0,
+    provider: 'model',
   });
 }

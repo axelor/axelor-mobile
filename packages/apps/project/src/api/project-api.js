@@ -17,9 +17,9 @@
  */
 
 import {
+  axiosApiProvider,
   createStandardFetch,
   createStandardSearch,
-  getActionApi,
   getSearchCriterias,
 } from '@axelor/aos-mobile-core';
 
@@ -144,10 +144,9 @@ export async function searchSubProject({page = 0, projectId}) {
 }
 
 export async function previousProjectActivity({projectId, startDate}) {
-  return getActionApi().send({
+  return axiosApiProvider.post({
     url: 'ws/action/',
-    method: 'post',
-    body: {
+    data: {
       action: 'action-project-activity-dashboard-method-previous-on-click',
       data: {
         context: {
@@ -161,6 +160,5 @@ export async function previousProjectActivity({projectId, startDate}) {
       _signal: 'previousBtn',
       _source: 'previousBtn',
     },
-    description: 'Retrieve previous project activity',
   });
 }

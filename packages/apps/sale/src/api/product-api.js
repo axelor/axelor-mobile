@@ -17,9 +17,9 @@
  */
 
 import {
-  axiosApiProvider,
   createStandardFetch,
   createStandardSearch,
+  getActionApi,
   getSearchCriterias,
 } from '@axelor/aos-mobile-core';
 
@@ -156,6 +156,7 @@ export async function searchProduct({
     fieldKey: 'sale_product',
     sortKey: 'sale_product',
     page,
+    provider: 'model',
   });
 }
 export async function searchProductCategory({page = 0, searchValue}) {
@@ -165,6 +166,7 @@ export async function searchProductCategory({page = 0, searchValue}) {
     fieldKey: 'sale_productCategory',
     sortKey: 'sale_productCategory',
     page,
+    provider: 'model',
   });
 }
 
@@ -176,6 +178,7 @@ export async function fetchProductById({productId}) {
     relatedFields: {
       saleProductMultipleQtyList: ['name', 'multipleQty'],
     },
+    provider: 'model',
   });
 }
 
@@ -190,6 +193,7 @@ export async function fetchProductCompanyConfig({companyId, productId}) {
     fieldKey: 'sale_productCompany',
     page: 0,
     numberElementsByPage: 1,
+    provider: 'model',
   });
 }
 
@@ -204,13 +208,16 @@ export async function fetchVariantProduct({
     fieldKey: 'sale_product',
     sortKey: 'sale_product',
     page,
+    provider: 'model',
   });
 }
 
 export async function fetchVariantAttributes({productVariantId, version}) {
-  return axiosApiProvider.post({
+  return getActionApi().send({
     url: `/ws/aos/stock-product/get-variant-attributes/${productVariantId}`,
-    data: {version: version},
+    method: 'post',
+    body: {version},
+    description: 'Fetch Variant Attributes',
   });
 }
 
@@ -219,6 +226,7 @@ export async function fetchProductVariantConfig({productVariantConfigId}) {
     model: 'com.axelor.apps.base.db.ProductVariantConfig',
     id: productVariantConfigId,
     fieldKey: 'sale_productVariantConfig',
+    provider: 'model',
   });
 }
 
@@ -229,5 +237,6 @@ export async function fetchMatchingProduct({selectedVariants}) {
     fieldKey: 'sale_product',
     sortKey: 'sale_product',
     page: 0,
+    provider: 'model',
   });
 }
