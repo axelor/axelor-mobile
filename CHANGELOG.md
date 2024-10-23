@@ -3,6 +3,27 @@ title: 7.2.0
 tags: Changelog
 ---
 
+## [7.2.18] (2024-10-23)
+
+### @axelor/aos-mobile-core
+
+#### Fixes
+
+- Barcode scanning: add hooks exports to manage activation manually
+
+### @axelor/aos-mobile-ui
+
+#### Fixes
+
+- Screen: prevent fixedItems from being cut
+- HtmlInput: resolve issue with keyboard closing right after opening when clicking on the input on iOS
+
+### @axelor/aos-mobile-stock
+
+#### Fixes
+
+- Stock correction: add possibility to fill in tracking number when needed
+
 ## [7.2.17] (2024-10-03)
 
 ### @axelor/aos-mobile-ui
@@ -657,6 +678,7 @@ It enables user to manage Expenses through the mobile application. You can creat
 - Remove IconButton component which should be replaced by Button component.
 - Remove Pop-up components which should be replaced by Alert component.
 
+[7.2.18]: https://github.com/axelor/axelor-mobile/compare/7.2.17...7.2.18
 [7.2.17]: https://github.com/axelor/axelor-mobile/compare/7.2.16...7.2.17
 [7.2.16]: https://github.com/axelor/axelor-mobile/compare/7.2.15...7.2.16
 [7.2.15]: https://github.com/axelor/axelor-mobile/compare/7.2.14...7.2.15
