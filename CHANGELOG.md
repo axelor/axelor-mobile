@@ -3,6 +3,26 @@ title: 7.1.0
 tags: Changelog
 ---
 
+## [7.1.20] (2024-10-23)
+
+### @axelor/aos-mobile-core
+
+#### Fixes
+
+- Barcode scanning: add hooks exports to manage activation manually
+
+### @axelor/aos-mobile-ui
+
+#### Fixes
+
+- HtmlInput: resolve issue with keyboard closing right after opening when clicking on the input on iOS
+
+### @axelor/aos-mobile-stock
+
+#### Fixes
+
+- Stock correction: add possibility to fill in tracking number when needed
+
 ## [7.1.19] (2024-10-03)
 
 ### @axelor/aos-mobile-ui
@@ -628,6 +648,7 @@ This update breaks the compatability with AOS Stock module under version 7.1 due
 - Add number decimal digit config management system
 - Manage multilines input with auto height resize on FormInput
 
+[7.1.20]: https://github.com/axelor/axelor-mobile/compare/7.1.19...7.1.20
 [7.1.19]: https://github.com/axelor/axelor-mobile/compare/7.1.18...7.1.19
 [7.1.18]: https://github.com/axelor/axelor-mobile/compare/7.1.17...7.1.18
 [7.1.17]: https://github.com/axelor/axelor-mobile/compare/7.1.16...7.1.17
