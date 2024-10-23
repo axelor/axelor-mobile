@@ -64,8 +64,8 @@ export async function updateCartLine({cartLine, qty, variantProduct}) {
       modelName: 'com.axelor.apps.sale.db.CartLine',
       id: cartLine.id,
       fields: {
-        qty: 'qty',
-        variantProduct: 'variantProduct',
+        'data.qty': 'qty',
+        'data.variantProduct': 'variantProduct',
         ...matchers,
       },
     },

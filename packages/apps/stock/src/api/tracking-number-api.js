@@ -125,7 +125,7 @@ export async function updateTrackingNumber({id, origin, ...trackingNumber}) {
       modelName: 'com.axelor.apps.stock.db.TrackingNumber',
       id: id,
       fields: {
-        origin: 'origin',
+        'data.origin': 'origin',
         ...matchers,
       },
     },
