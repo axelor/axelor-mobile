@@ -67,6 +67,15 @@ const GlobalToolBox = () => {
           style={styles.buttonPosition}
           actions={visibleActions}
           translator={I18n.t}
+          iconName="grid-1x2"
+          closeIconName="grid-1x2-fill"
+          useCircleStyle
+          buttonColor={{
+            ...Colors.primaryColor,
+            foreground: Colors.primaryColor.background,
+          }}
+          expandable={false}
+          buttonStyle={styles.button}
         />
       </DraggableWrapper>
     </View>
@@ -84,6 +93,9 @@ const styles = StyleSheet.create({
     position: 'relative',
     bottom: undefined,
     right: undefined,
+  },
+  button: {
+    backgroundColor: 'transparent',
   },
 });
 
