@@ -26,19 +26,22 @@ import {useSelector} from 'react-redux';
 
 export const selectLanguage = createSelector(
   state => state?.user,
-  userState => userState?.user?.localization?.language?.code,
+  userState => ({
+    localization: userState?.user?.localization?.code,
+    language: userState?.user?.localization?.language?.code,
+  }),
 );
 
 const DEFAULT_NAMESPACE = 'translation';
 
 const useLanguageEffect = callback => {
-  const language = useSelector(selectLanguage);
+  const {localization} = useSelector(selectLanguage);
 
   useEffect(() => {
-    if (language) {
-      callback(language);
+    if (localization) {
+      callback({localization});
     }
-  }, [language, callback]);
+  }, [callback, localization]);
 };
 
 const Translator = () => {
@@ -49,60 +52,64 @@ const Translator = () => {
   }, []);
 
   useLanguageEffect(
-    useCallback(language => {
-      loadTranslationsFromStorage(language);
+    useCallback(({localization}) => {
+      loadTranslationsFromStorage(localization);
     }, []),
   );
 
   useLanguageEffect(
-    useCallback(language => {
-      fetchTranslation(language).then(translations => {
+    useCallback(({localization}) => {
+      fetchTranslation(localization).then(translations => {
         if (translations) {
-          addTranslationsToI18n(language, translations);
-          saveTranslationResourcesToStorage(language);
+          addTranslationsToI18n(localization, translations);
+          saveTranslationResourcesToStorage(localization);
         }
       });
     }, []),
   );
 
   useLanguageEffect(
-    useCallback(language => {
-      i18nProvider.i18n.changeLanguage(language);
+    useCallback(({localization}) => {
+      i18nProvider.i18n.changeLanguage(localization);
     }, []),
   );
 
   return null;
 };
 
-export function getTranslations(language) {
-  return i18nProvider.i18n.getResourceBundle(language, DEFAULT_NAMESPACE);
+export function getTranslations(localization) {
+  return i18nProvider.i18n.getResourceBundle(localization, DEFAULT_NAMESPACE);
 }
 
-function loadTranslationsFromStorage(language) {
-  const translations = storage.getItem(`language.${language}`);
+function loadTranslationsFromStorage(localization) {
+  const translations = storage.getItem(`language.${localization}`);
+
   if (translations != null) {
     i18nProvider.i18n.addResourceBundle(
-      language,
+      localization,
       DEFAULT_NAMESPACE,
       translations,
     );
   }
 }
 
-function addTranslationsToI18n(language, translations) {
+function addTranslationsToI18n(localization, translations) {
   i18nProvider.i18n.addResources(
-    language,
+    localization,
     DEFAULT_NAMESPACE,
     reduceTranslationsToI18nResources(translations),
   );
 }
 
-function saveTranslationResourcesToStorage(language) {
+function saveTranslationResourcesToStorage(localization) {
   const translationResources = i18nProvider.i18n.getResourceBundle(
-    language,
+    localization,
     DEFAULT_NAMESPACE,
   );
-  storage.setItem(`language.${language}`, translationResources);
+
+  if (translationResources != null) {
+    storage.setItem(`language.${localization}`, translationResources);
+  }
 }
 
 export default Translator;
