@@ -38,5 +38,6 @@ export async function fetchTimesheetLinesByTask({projectTaskId}) {
     }),
     numberElementsByPage: null,
     page: 0,
+    provider: 'model',
   });
 }
