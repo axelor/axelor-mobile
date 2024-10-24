@@ -39,11 +39,14 @@ const FloatingButton = ({
   actions: _actions,
   iconName = 'plus-lg',
   closeIconName = 'x-lg',
+  buttonStyle,
+  buttonColor,
   size = FLOATING_BUTTON_SIZE,
   closeOnOutsideClick = true,
   onGlobalPress,
   translator,
   useCircleStyle = false,
+  expandable = true,
   defaultOpenValue = false,
 }: FloatingButtonProps) => {
   const Colors = useThemeColor();
@@ -91,6 +94,7 @@ const FloatingButton = ({
         iconName={action.iconName}
         color={action.color}
         size={actionButtonParams.size}
+        margin={actionButtonParams.marginRight}
         disabled={action.disabled}
         indicator={action.indicator}
         onPress={() => {
@@ -103,12 +107,7 @@ const FloatingButton = ({
         useCircleStyle={useCircleStyle}
       />
     ),
-    [
-      actionButtonParams.size,
-      handleFLoatingButtonPress,
-      translator,
-      useCircleStyle,
-    ],
+    [actionButtonParams, handleFLoatingButtonPress, translator, useCircleStyle],
   );
 
   const actions = useMemo(() => {
@@ -124,6 +123,11 @@ const FloatingButton = ({
     [actions],
   );
 
+  const _buttonColor = useMemo(
+    () => buttonColor ?? Colors.primaryColor,
+    [Colors.primaryColor, buttonColor],
+  );
+
   if (actions == null || actions?.length === 0) {
     return <View />;
   }
@@ -136,7 +140,7 @@ const FloatingButton = ({
             {padding: actionButtonParams.marginRight},
             useCircleStyle ? styles.actionsContainer : null,
           ]}>
-          {useCircleStyle ? (
+          {useCircleStyle && expandable ? (
             <Icon
               name={expanded ? 'chevron-down' : 'chevron-up'}
               touchable={true}
@@ -157,7 +161,8 @@ const FloatingButton = ({
         iconName={isOpen ? closeIconName : iconName}
         onPress={handleFLoatingButtonPress}
         size={size}
-        style={styles.floatingButton}
+        color={_buttonColor}
+        style={[styles.floatingButton, buttonStyle]}
         square={!useCircleStyle}
       />
     </View>

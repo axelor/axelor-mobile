@@ -23,11 +23,14 @@ export interface FloatingButtonProps {
   actions: ActionProps[];
   iconName?: string;
   closeIconName?: string;
+  buttonStyle?: any;
+  buttonColor?: Color;
   size?: number;
   closeOnOutsideClick?: boolean;
   onGlobalPress?: () => void;
   translator: (key: string) => string;
   useCircleStyle?: boolean;
+  expandable?: boolean;
   defaultOpenValue?: boolean;
 }
 
