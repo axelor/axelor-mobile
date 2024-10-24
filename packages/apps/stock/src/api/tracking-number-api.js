@@ -17,8 +17,8 @@
  */
 
 import {
-  axiosApiProvider,
   createStandardSearch,
+  formatRequestBody,
   getActionApi,
   getSearchCriterias,
 } from '@axelor/aos-mobile-core';
@@ -108,13 +108,25 @@ export async function updateStockMoveLineTrackingNumber({
 }
 
 export async function updateTrackingNumber({id, origin, ...trackingNumber}) {
-  return axiosApiProvider.post({
+  const {matchers} = formatRequestBody(trackingNumber, 'data');
+
+  return getActionApi().send({
     url: `/ws/rest/com.axelor.apps.stock.db.TrackingNumber/${id}`,
-    data: {
+    method: 'post',
+    body: {
       data: {
         ...trackingNumber,
         origin: origin,
         version: trackingNumber.$version ?? trackingNumber.version,
+      },
+    },
+    description: 'Update tracking number',
+    matchers: {
+      modelName: 'com.axelor.apps.stock.db.TrackingNumber',
+      id: id,
+      fields: {
+        'data.origin': 'origin',
+        ...matchers,
       },
     },
   });

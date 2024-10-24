@@ -15,9 +15,10 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
+
 import {
-  axiosApiProvider,
   createStandardSearch,
+  getActionApi,
   getSearchCriterias,
 } from '@axelor/aos-mobile-core';
 import {addCartLine} from './cart-line-api';
@@ -43,6 +44,7 @@ export async function searchCart({searchValue, page = 0, userId}) {
     fieldKey: 'sale_cart',
     sortKey: 'sale_cart',
     page: page,
+    provider: 'model',
   });
 }
 
@@ -67,23 +69,37 @@ export async function updateCart({partnerId, companyId, cartId, cartVersion}) {
     };
   }
 
-  return axiosApiProvider.post({
+  return getActionApi().send({
     url: '/ws/rest/com.axelor.apps.sale.db.Cart',
-    data: {data},
+    method: 'post',
+    body: {data},
+    description: 'Update Cart',
+    matchers: {
+      modelName: 'com.axelor.apps.sale.db.Cart',
+      id: cartId,
+      fields: {
+        'data.company.id': 'company.id',
+        'data.partner.id': 'partner.id',
+      },
+    },
   });
 }
 
 export async function validateCart({id, version}) {
-  return axiosApiProvider.put({
+  return getActionApi().send({
     url: `/ws/aos/cart/validate/${id}`,
-    data: {version},
+    method: 'put',
+    body: {version},
+    description: 'Validate Cart',
   });
 }
 
 export async function emptyCart({id, version}) {
-  return axiosApiProvider.put({
+  return getActionApi().send({
     url: `ws/aos/cart/empty/${id}`,
-    data: {version},
+    method: 'put',
+    body: {version},
+    description: 'Empty Cart',
   });
 }
 

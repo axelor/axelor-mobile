@@ -38,6 +38,7 @@ export async function fetchSaleOrderLine({saleOrderId, page = 0}) {
     fieldKey: 'sale_saleOrderLine',
     sortKey: 'sale_saleOrderLine',
     page,
+    provider: 'model',
   });
 }
 
@@ -46,5 +47,6 @@ export async function fetchSaleOrderLineById({saleOrderLineId}) {
     model: 'com.axelor.apps.sale.db.SaleOrderLine',
     id: saleOrderLineId,
     fieldKey: 'sale_saleOrderLine',
+    provider: 'model',
   });
 }

@@ -43,5 +43,6 @@ export async function fetchComplementaryProduct({
     fieldKey: 'sale_complementaryProduct',
     sortKey: 'sale_complementaryProduct',
     page,
+    provider: 'model',
   });
 }
