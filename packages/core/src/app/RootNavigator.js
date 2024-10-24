@@ -31,6 +31,7 @@ import {showToastMessage} from '../utils';
 import {logout} from '../features/authSlice';
 import {useSessionExpired} from '../apiProviders/config';
 import {useModules} from './modules';
+import {useConfigUpdater} from '../hooks/use-storage-config';
 
 const {Navigator, Screen} = createNativeStackNavigator();
 
@@ -50,6 +51,7 @@ const RootNavigator = ({
 
   const {sessionExpired} = useSessionExpired();
   const {registerHeaderBand} = useHeaderBand();
+  const {updateConfigFromStorage} = useConfigUpdater();
 
   const {logged} = useSelector(state => state.auth);
 
@@ -119,6 +121,10 @@ const RootNavigator = ({
       handleSessionExpired();
     }
   }, [handleSessionExpired, sessionExpired]);
+
+  useEffect(() => {
+    updateConfigFromStorage();
+  }, [updateConfigFromStorage]);
 
   return (
     <Navigator screenOptions={{headerShown: false}}>
