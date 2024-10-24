@@ -85,3 +85,4 @@ export {
   useCameraScannerActivator,
 } from './hooks/use-scan-activator';
 export {useNavigation, useIsFocused} from './hooks/use-navigation';
+export {useConfigUpdater, useStorageUpdater} from './hooks/use-storage-config';
