@@ -18,10 +18,11 @@
 
 import React from 'react';
 import {ActionCard} from '@axelor/aos-mobile-ui';
-import {useTranslator} from '@axelor/aos-mobile-core';
+import {useNavigation, useTranslator} from '@axelor/aos-mobile-core';
 import {TaskCard} from '../../atoms';
 
 interface TaskProps {
+  id: number;
   name?: string;
   assignedTo?: any;
   taskDeadline?: string;
@@ -46,6 +47,7 @@ const TaskActionCard = ({
   onPress,
 }: TaskActionCardProps) => {
   const I18n = useTranslator();
+  const navigation = useNavigation();
 
   return (
     <ActionCard
@@ -54,7 +56,11 @@ const TaskActionCard = ({
         {
           iconName: 'clock-history',
           helper: I18n.t('Project_LogTime'),
-          onPress: () => {},
+          onPress: () =>
+            navigation.navigate('TaskDetailsScreen', {
+              projecTaskId: task.id,
+              isTimeViewActive: true,
+            }),
         },
       ]}
       translator={I18n.t}>
