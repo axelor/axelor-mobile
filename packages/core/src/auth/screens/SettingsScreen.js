@@ -40,6 +40,7 @@ import {updateActiveUser} from '../features/userSlice';
 import {ApiProviderConfig} from '../../apiProviders/config';
 import {NavigationToolsButton, TranslationsButton} from '../components';
 import {useIsAdmin} from '../../permissions';
+import {useStorageUpdater} from '../../hooks/use-storage-config';
 
 const SettingsScreen = ({children}) => {
   const I18n = useTranslator();
@@ -58,6 +59,8 @@ const SettingsScreen = ({children}) => {
     showToolbox,
     setShowToolbox,
   } = useConfig();
+
+  useStorageUpdater();
 
   const {appVersion, baseUrl} = useSelector(state => state.auth);
   const {user} = useSelector(state => state.user);
