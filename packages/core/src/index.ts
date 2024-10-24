@@ -34,6 +34,14 @@ export {
   default as scannerReducer,
 } from './features/scannerSlice';
 export {
+  useCameraScannerSelector,
+  useCameraScannerValueByKey,
+  clearBarcode,
+  enableCameraScanner,
+  scanBarcode,
+  disableCameraScanner,
+} from './features/cameraScannerSlice';
+export {
   useCameraSelector,
   useCameraValueByKey,
   enableCamera,
