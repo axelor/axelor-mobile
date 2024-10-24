@@ -78,8 +78,8 @@ export async function updateCart({partnerId, companyId, cartId, cartVersion}) {
       modelName: 'com.axelor.apps.sale.db.Cart',
       id: cartId,
       fields: {
-        companyId: 'company.id',
-        partnerId: 'partner.id',
+        'data.company.id': 'company.id',
+        'data.partner.id': 'partner.id',
       },
     },
   });

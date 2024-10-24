@@ -93,13 +93,14 @@ export async function addCartLine({cartId, cartVersion, productId, qty}) {
   return getActionApi().send({
     url: `/ws/aos/cart/add-line/${cartId}`,
     method: 'put',
-    body: {version: cartVersion, productId, qty},
+    body: {version: cartVersion, cartId, productId, qty},
     description: 'Add Product to Cart Line',
     matchers: {
       modelName: 'com.axelor.apps.sale.db.CartLine',
-      id: cartId,
+      id: Date.now(),
       fields: {
-        productId: 'productId',
+        cartId: 'cart.id',
+        productId: 'product.id',
         qty: 'qty',
       },
     },

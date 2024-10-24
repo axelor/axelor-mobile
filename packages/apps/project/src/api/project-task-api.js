@@ -232,6 +232,7 @@ export async function getTag({activeCompany}) {
     page: 0,
     fieldKey: '',
     numberElementsByPage: 1,
+    provider: 'model',
   }).then(res =>
     createStandardSearch({
       model: 'com.axelor.apps.base.db.Tag',

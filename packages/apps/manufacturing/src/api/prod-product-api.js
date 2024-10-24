@@ -101,5 +101,6 @@ export async function fetchStockMoveStatus({stockMoveLineId}) {
     model: 'com.axelor.apps.stock.db.StockMoveLine',
     id: stockMoveLineId,
     fieldKey: 'manufacturing_stockMoveStatus',
+    provider: 'model',
   });
 }
