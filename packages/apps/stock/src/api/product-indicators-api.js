@@ -183,6 +183,7 @@ export async function fetchStockQtyIndicator({
     ),
     fieldKey: 'stock_stockQtyIndicator',
     page,
+    provider: 'model',
   });
 }
 
@@ -192,6 +193,7 @@ export async function fetchSaleOrderQtyIndicator({productId, page = 0}) {
     criteria: createSaleOrderQtyCriteria(productId),
     fieldKey: 'stock_saleOrderQtyIndicator',
     page,
+    provider: 'model',
   });
 }
 
@@ -201,6 +203,7 @@ export async function fetchPurchaseOrderQtyIndicator({productId, page = 0}) {
     criteria: createPurchaseOrderQtyCriteria(productId),
     fieldKey: 'stock_purchaseOrderQtyIndicator',
     page,
+    provider: 'model',
   });
 }
 
@@ -210,5 +213,6 @@ export async function fetchAvailableStockIndicator({productId, page = 0}) {
     criteria: createAvailableStockCriteria(productId),
     fieldKey: 'stock_stockLocationLine',
     page,
+    provider: 'model',
   });
 }

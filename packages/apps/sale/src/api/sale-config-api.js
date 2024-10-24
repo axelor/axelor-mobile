@@ -35,5 +35,6 @@ export async function fetchSaleConfig({companyId}) {
     fieldKey: 'sale_saleConfig',
     sortKey: 'sale_saleConfig',
     page: 0,
+    provider: 'model',
   });
 }

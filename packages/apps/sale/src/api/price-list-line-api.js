@@ -84,5 +84,6 @@ export async function fetchPriceListLine({
     fieldKey: 'sale_priceListLine',
     sortKey: 'sale_priceListLine',
     page,
+    provider: 'model',
   });
 }

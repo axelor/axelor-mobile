@@ -16,10 +16,12 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import {axiosApiProvider} from '@axelor/aos-mobile-core';
+import {getActionApi} from '@axelor/aos-mobile-core';
 
 export async function fetchIndicator({projectId}) {
-  return axiosApiProvider.get({
-    url: `ws/aos/project/reporting-values/${projectId}`,
+  return getActionApi().send({
+    url: `/ws/aos/project/reporting-values/${projectId}`,
+    method: 'get',
+    description: 'fetch project reporting indicators',
   });
 }

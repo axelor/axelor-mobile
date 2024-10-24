@@ -112,5 +112,6 @@ export async function fetchManufacturingQtyIndicator({
     criteria: createManufacturingQtyCriteria(indicatorType, productId),
     fieldKey: 'manufacturing_manufacturingQtyIndicator',
     page,
+    provider: 'model',
   });
 }

@@ -15,10 +15,12 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
+
 import {
-  axiosApiProvider,
   createStandardFetch,
   createStandardSearch,
+  formatRequestBody,
+  getActionApi,
   getSearchCriterias,
 } from '@axelor/aos-mobile-core';
 
@@ -40,25 +42,41 @@ export async function searchCartLine({searchValue, page = 0, cartId}) {
     fieldKey: 'sale_cartLine',
     sortKey: 'sale_cartLine',
     page: page,
+    provider: 'model',
   });
 }
 
 export async function updateCartLine({cartLine, qty, variantProduct}) {
-  return axiosApiProvider.post({
+  const {matchers} = formatRequestBody(cartLine, 'data');
+
+  return getActionApi().send({
     url: '/ws/rest/com.axelor.apps.sale.db.CartLine',
-    data: {
+    method: 'post',
+    body: {
       data: {
         ...cartLine,
         qty,
         variantProduct,
       },
     },
+    description: 'Update Cart Line',
+    matchers: {
+      modelName: 'com.axelor.apps.sale.db.CartLine',
+      id: cartLine.id,
+      fields: {
+        'data.qty': 'qty',
+        'data.variantProduct': 'variantProduct',
+        ...matchers,
+      },
+    },
   });
 }
 
 export async function deleteCartLine({cartLineId}) {
-  return axiosApiProvider.delete({
+  return getActionApi().send({
     url: `/ws/rest/com.axelor.apps.sale.db.CartLine/${cartLineId}`,
+    method: 'delete',
+    description: 'Delete Cart Line',
   });
 }
 
@@ -67,12 +85,24 @@ export async function fetchCartLineById({cartLineId}) {
     model: 'com.axelor.apps.sale.db.CartLine',
     id: cartLineId,
     fieldKey: 'sale_cartLine',
+    provider: 'model',
   });
 }
 
 export async function addCartLine({cartId, cartVersion, productId, qty}) {
-  return axiosApiProvider.put({
+  return getActionApi().send({
     url: `/ws/aos/cart/add-line/${cartId}`,
-    data: {version: cartVersion, productId: productId, qty},
+    method: 'put',
+    body: {version: cartVersion, cartId, productId, qty},
+    description: 'Add Product to Cart Line',
+    matchers: {
+      modelName: 'com.axelor.apps.sale.db.CartLine',
+      id: Date.now(),
+      fields: {
+        cartId: 'cart.id',
+        productId: 'product.id',
+        qty: 'qty',
+      },
+    },
   });
 }
