@@ -1,0 +1,5 @@
+{
+  "title": "Camera: Add additional barcode types",
+  "type": "fix",
+  "packages": "core"
+}
