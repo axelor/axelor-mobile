@@ -1,0 +1,5 @@
+{
+  "title": "FloatingButton: improve style when circle mode is activated",
+  "type": "refactor",
+  "packages": "ui"
+}

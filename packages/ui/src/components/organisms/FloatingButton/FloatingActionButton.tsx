@@ -29,6 +29,7 @@ const FloatingActionButton = ({
   iconName,
   color,
   size,
+  margin = 0,
   disabled = false,
   indicator = false,
   onPress,
@@ -39,6 +40,7 @@ const FloatingActionButton = ({
   iconName: string;
   color: Color;
   size: number;
+  margin?: number;
   disabled?: boolean;
   indicator?: boolean;
   onPress: () => void;
@@ -61,7 +63,7 @@ const FloatingActionButton = ({
       />
       <Indicator show={indicator} color={Colors.errorColor} />
       {title != null ? (
-        <View style={styles.actionTitleContainer}>
+        <View style={[styles.actionTitleContainer, {left: size + margin * 2}]}>
           <View style={styles.actionTitle}>
             <Text
               fontSize={16}
@@ -80,20 +82,20 @@ const getStyles = (Colors: ThemeColors) =>
   StyleSheet.create({
     actionButtonContainer: {
       flexDirection: 'row-reverse',
-      marginTop: 5,
+      marginVertical: 2,
     },
     button: {
       marginVertical: 0,
     },
     actionTitleContainer: {
-      maxWidth: '70%',
-      minWidth: MIN_ACTION_BUTTON_WIDTH,
+      width: MIN_ACTION_BUTTON_WIDTH,
+      height: '100%',
       justifyContent: 'center',
       alignItems: 'flex-end',
+      position: 'absolute',
     },
     actionTitle: {
       backgroundColor: Colors.backgroundColor,
-      marginHorizontal: 15,
       borderRadius: 7,
       paddingHorizontal: 10,
       elevation: 3,
