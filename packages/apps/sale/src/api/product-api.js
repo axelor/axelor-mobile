@@ -69,6 +69,11 @@ const createProductCriteria = ({
       operator: '=',
       value: 'Product',
     },
+    {
+      fieldName: 'expense',
+      operator: '=',
+      value: false,
+    },
     getSearchCriterias('sale_product', searchValue),
   ];
 
