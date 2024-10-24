@@ -17,18 +17,16 @@
  */
 
 import {useMemo} from 'react';
-import {i18nProvider} from '../i18n';
+import {useTranslation} from 'react-i18next';
 
 export interface TranslatorProps {
   t: (key: string, values?: any) => string;
 }
 
 function useTranslator(): TranslatorProps {
-  return useMemo(
-    () => ({t: i18nProvider?.i18n ? i18nProvider.i18n.t : value => value}),
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    [i18nProvider.i18n.language],
-  );
+  const {t} = useTranslation();
+
+  return useMemo(() => ({t: t != null ? t : value => value}), [t]);
 }
 
 export default useTranslator;
