@@ -33,7 +33,8 @@ export const auth_modelAPI: ObjectFields = {
     ),
     localization: schemaContructor.subObject().concat(
       schemaContructor.object({
-        language: schemaContructor.subObject(),
+        code: schemaContructor.string(),
+        language: schemaContructor.subObject('code'),
       }),
     ),
     activeTeam: schemaContructor.subObject(),
@@ -45,7 +46,6 @@ export const auth_modelAPI: ObjectFields = {
       }),
     ),
     employee: schemaContructor.subObject(),
-    language: schemaContructor.string(),
     todayDateT: schemaContructor.string(),
     code: schemaContructor.string(),
     companySet: schemaContructor.subObject(),
@@ -53,10 +53,6 @@ export const auth_modelAPI: ObjectFields = {
   auth_localization: schemaContructor.object({
     code: schemaContructor.string(),
     name: schemaContructor.string(),
-    language: schemaContructor.subObject().concat(
-      schemaContructor.object({
-        code: schemaContructor.number(),
-      }),
-    ),
+    language: schemaContructor.subObject('code'),
   }),
 };

@@ -39,7 +39,7 @@ const TranslationsButton = ({}) => {
 
   const {setActivityIndicator} = useConfig();
 
-  const language = useSelector(selectLanguage);
+  const {localization, language} = useSelector(selectLanguage);
 
   const {message} = useSelector((state: any) => state.config);
 
@@ -55,9 +55,13 @@ const TranslationsButton = ({}) => {
 
   const handleSendTranslations = useCallback(() => {
     setActivityIndicator(true);
-    const translations = getTranslations(language);
-    dispatch((uploadTranslations as any)({language, translations}));
-  }, [dispatch, language, setActivityIndicator]);
+    dispatch(
+      (uploadTranslations as any)({
+        language,
+        translations: getTranslations(localization),
+      }),
+    );
+  }, [dispatch, language, localization, setActivityIndicator]);
 
   if (!isAdmin) {
     return null;
