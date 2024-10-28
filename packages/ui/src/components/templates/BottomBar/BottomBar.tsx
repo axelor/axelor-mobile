@@ -28,6 +28,7 @@ import {useConfig} from '../../../config/ConfigContext';
 import {useThemeColor} from '../../../theme';
 import {Card} from '../../atoms';
 import BarItem from './BarItem';
+import ItemTitle from './ItemTitle';
 import {BottomBarItem} from './types.helper';
 import {getVisibleItems} from './display.helper';
 
@@ -38,11 +39,13 @@ const BottomBar = ({
   items,
   updateActiveItem = false,
   itemSize = 50,
+  manageActiveTitle = false,
 }: {
   style?: any;
   items: BottomBarItem[];
   updateActiveItem?: boolean;
   itemSize?: number;
+  manageActiveTitle?: boolean;
 }) => {
   const {headerHeight} = useConfig();
   const Colors = useThemeColor();
@@ -105,6 +108,7 @@ const BottomBar = ({
         <View key={item.key} onLayout={event => onItemLayout(event, item.key)}>
           <BarItem
             {...item}
+            title={manageActiveTitle ? undefined : item.title}
             size={itemSize}
             onPress={() => handleItemPress(item)}
             isSelected={selectedKey === item.key && !('onPress' in item)}
@@ -112,7 +116,7 @@ const BottomBar = ({
         </View>
       );
     },
-    [itemSize, onItemLayout, selectedKey, handleItemPress],
+    [manageActiveTitle, itemSize, selectedKey, onItemLayout, handleItemPress],
   );
 
   useEffect(() => {
@@ -134,11 +138,14 @@ const BottomBar = ({
     }
   }, [updateActiveItem, visibleItems]);
 
+  const activeView = useMemo(
+    () => visibleItems.find(_item => _item.key === selectedKey),
+    [selectedKey, visibleItems],
+  );
+
   return (
     <View style={styles.container}>
-      <View style={{height: viewHeight}}>
-        {visibleItems.find(_item => _item.key === selectedKey)?.viewComponent}
-      </View>
+      <View style={{height: viewHeight}}>{activeView?.viewComponent}</View>
       <View
         onLayout={event => {
           const {height: barHeight} = event.nativeEvent.layout;
@@ -150,18 +157,24 @@ const BottomBar = ({
           );
         }}>
         <Card style={[styles.bottomContainer, style]}>
-          {visibleItems.map(renderItem)}
-          <Animated.View
-            style={[
-              styles.animatedBar,
-              animatedStyle,
-              {
-                backgroundColor:
-                  selectedItemColor?.background != null
-                    ? selectedItemColor?.background
-                    : Colors.primaryColor?.background,
-              },
-            ]}
+          <View style={styles.itemsContainer}>
+            {visibleItems.map(renderItem)}
+            <Animated.View
+              style={[
+                styles.animatedBar,
+                animatedStyle,
+                {
+                  backgroundColor:
+                    selectedItemColor?.background != null
+                      ? selectedItemColor?.background
+                      : Colors.primaryColor?.background,
+                },
+              ]}
+            />
+          </View>
+          <ItemTitle
+            title={manageActiveTitle ? activeView?.title : undefined}
+            style={styles.title}
           />
         </Card>
       </View>
@@ -177,20 +190,26 @@ const styles = StyleSheet.create({
     paddingHorizontal: 20,
     paddingRight: 20,
     paddingVertical: 10,
-    flexDirection: 'row',
+    flexDirection: 'column',
     width: '90%',
-    justifyContent: 'space-between',
-    alignItems: 'flex-end',
     alignSelf: 'center',
     marginBottom: 10,
+  },
+  itemsContainer: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'flex-end',
   },
   animatedBar: {
     position: 'absolute',
     height: 2,
     width: 41,
-    bottom: 10,
+    bottom: 2,
     left: 7,
     borderRadius: 1,
+  },
+  title: {
+    fontWeight: 'bold',
   },
 });
 

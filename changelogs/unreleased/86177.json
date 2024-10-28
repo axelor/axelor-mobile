@@ -1,0 +1,5 @@
+{
+  "title": "BottomBar: add possibility to manage only the active item title",
+  "type": "feat",
+  "packages": "ui"
+}
