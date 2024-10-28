@@ -60,7 +60,7 @@ axelor-mobile/
 
 Once in the stories folder, components are sorted by type (atoms, molecules, organisms & templates) in the same way as in the package sources.
 
-A story is a component use case. In the storybook, you need to successfully re-create all the component's use cases to enable better documentation. To create a story, you need to create a new file in the _stories_ folder, in the right component category. The nomenclature for the file name is _<component name>.stories.tsx_.
+A story is a component use case. In the storybook, you need to successfully re-create all the component's use cases to enable better documentation. To create a story, you need to create a new file in the _stories_ folder, in the right component category. The nomenclature for the file name is `<component name>.stories.tsx`.
 
 There can then be two types of stories: fixed stories in the style of a catalog, or customizable stories where the user can modify each attribute to make the combinations of his choice.
 

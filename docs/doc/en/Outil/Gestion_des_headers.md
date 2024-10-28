@@ -30,7 +30,7 @@ const useCustomerDeliveryDetailsActions = () => {
 
 The `headerActionsProvider` tool must therefore be used to associate a key with an object containing all the information required for the various header actions.
 
-A nomenclature has been set up to help understand the origin of a key: _<Module><Object><Screen type>._.
+A nomenclature has been set up to help understand the origin of a key: `<Module><Object><Screen type>`.
 
 Actions are defined through a structure named `HeaderOptions` :
 
