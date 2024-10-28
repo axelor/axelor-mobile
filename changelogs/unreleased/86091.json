@@ -1,0 +1,6 @@
+{
+    "title": "Login: enable login page override",
+    "type": "feat",
+    "packages": "core"
+  }
+  
