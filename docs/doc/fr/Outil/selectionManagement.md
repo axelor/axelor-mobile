@@ -1,7 +1,6 @@
 ---
-id: selectionManagement
 sidebar_position: 7
-sidebar_class_name: icon selections
+description: ''
 ---
 
 # Gestion des sélections

@@ -1,9 +1,7 @@
 ---
-id: Introduction
 slug: /
 sidebar_position: 1
-sidebar_label: Introduction
-sidebar_class_name: icon introduction
+description: ''
 ---
 
 # Introduction

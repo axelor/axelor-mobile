@@ -1,7 +1,6 @@
 ---
-id: Gestion de la camera
 sidebar_position: 8
-sidebar_class_name: icon gestion de la camera
+description: ''
 ---
 
 # Gestion de la caméra et/ou du scanner

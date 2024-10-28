@@ -1,7 +1,6 @@
 ---
-id: Bonnes pratiques de dévleloppement
 sidebar_position: 6
-sidebar_class_name: icon pratique
+description: ''
 ---
 
 # Bonnes pratiques de développement

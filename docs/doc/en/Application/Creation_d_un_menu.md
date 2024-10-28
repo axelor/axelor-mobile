@@ -1,7 +1,6 @@
 ---
-id: Création d’un menu
 sidebar_position: 4
-sidebar_class_name: icon
+description: ''
 ---
 
 ## Creating a menu
