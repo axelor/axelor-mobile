@@ -24,9 +24,8 @@ import Animated, {
   withSpring,
 } from 'react-native-reanimated';
 import {Color, useThemeColor} from '../../../theme';
-import {checkNullString} from '../../../utils';
 import {Button, NumberBubble} from '../../molecules';
-import {Text} from '../../atoms';
+import ItemTitle from './ItemTitle';
 
 const BarItem = ({
   iconName,
@@ -88,7 +87,7 @@ const BarItem = ({
           />
         </Animated.View>
       )}
-      {!checkNullString(title) && <Text>{title}</Text>}
+      <ItemTitle title={title} style={{width: size}} />
     </View>
   );
 };
