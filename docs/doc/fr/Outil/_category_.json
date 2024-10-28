@@ -1,0 +1,8 @@
+{
+  "className": "tools",
+  "label": "Outils mis à votre disposition",
+  "position": 4,
+  "link": {
+    "type": "generated-index"
+  }
+}
