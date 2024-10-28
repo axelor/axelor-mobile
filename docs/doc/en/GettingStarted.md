@@ -110,6 +110,9 @@ const App = () => {
 export default App;
 ```
 
+## Custom login page
+The application supports the use of a custom login page. You can provide your own login component through the customLoginPage prop in the Application component. If a custom login page is provided, it will replace the default login screen.
+
 ### Important commands
 
 - Install dependencies : `yarn clean && yarn`
