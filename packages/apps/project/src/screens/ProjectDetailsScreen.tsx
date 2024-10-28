@@ -16,9 +16,9 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import React, {useEffect} from 'react';
+import React, {useEffect, useMemo} from 'react';
 import {Screen, BottomBar, useThemeColor} from '@axelor/aos-mobile-ui';
-import {useDispatch, useSelector} from '@axelor/aos-mobile-core';
+import {useDispatch, useSelector, useTranslator} from '@axelor/aos-mobile-core';
 import {getImputationMode} from '@axelor/aos-mobile-hr';
 import {
   GeneralInformationView,
@@ -42,6 +42,7 @@ const ProjectDetailsScreen = ({
 }: ProjectDetailsScreenProps) => {
   const _projectId = route?.params?.projectId || projectId;
 
+  const I18n = useTranslator();
   const Colors = useThemeColor();
   const dispatch = useDispatch();
 
@@ -54,41 +55,56 @@ const ProjectDetailsScreen = ({
     dispatch((fetchProjectById as any)({projectId: _projectId}));
   }, [_projectId, dispatch]);
 
-  const bottomBarItems = [
-    {
-      iconName: 'house',
-      viewComponent: <GeneralInformationView />,
-      color: Colors.secondaryColor_dark,
-    },
-    {
-      iconName: 'card-list',
-      color: Colors.plannedColor,
-      viewComponent: <TaskView />,
-    },
-    {
-      iconName: 'diagram-3-fill',
-      color: Colors.infoColor,
-      viewComponent: <SubProjectView />,
-      hidden: !project?.isShowPhasesElements && project?.parentProject == null,
-    },
-    {
-      iconName: 'activity',
-      color: Colors.progressColor,
-      viewComponent: <ReportingView />,
-      hidden: noReporting,
-    },
-    {
-      iconName: 'clock-history',
-      color: Colors.primaryColor,
-      hidden:
-        !project?.manageTimeSpent ||
-        user.employee?.timesheetImputationSelect ===
-          getImputationMode()?.ManufOrder,
-      viewComponent: (
-        <TimeView project={project} headerComponent={<ProjectHeader />} />
-      ),
-    },
-  ];
+  const bottomBarItems = useMemo(
+    () => [
+      {
+        iconName: 'house',
+        viewComponent: <GeneralInformationView />,
+        color: Colors.secondaryColor_dark,
+        title: I18n.t('Project_DetailsView'),
+      },
+      {
+        iconName: 'card-list',
+        color: Colors.plannedColor,
+        viewComponent: <TaskView />,
+        title: I18n.t('Project_TasksView'),
+      },
+      {
+        iconName: 'diagram-3-fill',
+        color: Colors.infoColor,
+        viewComponent: <SubProjectView />,
+        hidden:
+          !project?.isShowPhasesElements && project?.parentProject == null,
+        title: I18n.t('Project_TreeStructureView'),
+      },
+      {
+        iconName: 'activity',
+        color: Colors.progressColor,
+        viewComponent: <ReportingView />,
+        hidden: noReporting,
+        title: I18n.t('Project_ReportingView'),
+      },
+      {
+        iconName: 'clock-history',
+        color: Colors.primaryColor,
+        hidden:
+          !project?.manageTimeSpent ||
+          user.employee?.timesheetImputationSelect ===
+            getImputationMode()?.ManufOrder,
+        viewComponent: (
+          <TimeView project={project} headerComponent={<ProjectHeader />} />
+        ),
+        title: I18n.t('Project_TimeLogView'),
+      },
+    ],
+    [
+      Colors,
+      I18n,
+      noReporting,
+      project,
+      user.employee?.timesheetImputationSelect,
+    ],
+  );
 
   if (project?.id !== _projectId) {
     return null;

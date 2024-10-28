@@ -16,9 +16,9 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import React, {useCallback, useEffect, useState} from 'react';
+import React, {useCallback, useEffect, useMemo, useState} from 'react';
 import {BottomBar, Screen, useThemeColor} from '@axelor/aos-mobile-ui';
-import {useDispatch, useSelector} from '@axelor/aos-mobile-core';
+import {useDispatch, useSelector, useTranslator} from '@axelor/aos-mobile-core';
 import {getImputationMode} from '@axelor/aos-mobile-hr';
 import {
   TaskCustomFieldsView,
@@ -32,6 +32,7 @@ import {fetchProjectTaskById} from '../features/projectTaskSlice';
 const TaskDetailsScreen = ({navigation, route}) => {
   const {projecTaskId, isTimeViewActive} = route?.params;
   const Colors = useThemeColor();
+  const I18n = useTranslator();
   const dispatch = useDispatch();
 
   const [manageActiveItem, setManageActiveItem] = useState(isTimeViewActive);
@@ -43,50 +44,64 @@ const TaskDetailsScreen = ({navigation, route}) => {
     dispatch((fetchProjectTaskById as any)({projecTaskId}));
   }, [dispatch, projecTaskId]);
 
-  const bottomBarItems = [
-    {
-      iconName: 'house',
-      viewComponent: (
-        <TaskGeneralInformationView handleRefresh={fetchProjectTask} />
-      ),
-      onPress: () => setManageActiveItem(false),
-    },
-    {
-      iconName: 'layout-text-window-reverse',
-      viewComponent: <TaskCustomFieldsView />,
-      color: Colors.plannedColor,
-      disabled: projectTask?.project?.customFieldManagementSelect == null,
-      onPress: () => setManageActiveItem(false),
-    },
-    {
-      iconName: 'diagram-3-fill',
-      viewComponent: <TaskLinkView />,
-      color: Colors.infoColor,
-      onPress: () => setManageActiveItem(false),
-    },
-    {
-      iconName: 'pencil-square',
-      color: Colors.progressColor,
-      onPress: () => navigation.navigate('TaskFormScreen'),
-    },
-    {
-      iconName: 'clock-history',
-      color: Colors.primaryColor,
-      hidden:
-        !projectTask?.project?.manageTimeSpent ||
-        user.employee?.timesheetImputationSelect ===
-          getImputationMode()?.ManufOrder,
-      viewComponent: (
-        <TimeView
-          project={projectTask?.project}
-          projectTask={projectTask}
-          headerComponent={<TaskDetailsHeader />}
-        />
-      ),
-      isActive: isTimeViewActive,
-    },
-  ];
-
+  const bottomBarItems = useMemo(
+    () => [
+      {
+        iconName: 'house',
+        viewComponent: (
+          <TaskGeneralInformationView handleRefresh={fetchProjectTask} />
+        ),
+        onPress: () => setManageActiveItem(false),
+        title: I18n.t('Project_DetailsView'),
+      },
+      {
+        iconName: 'layout-text-window-reverse',
+        viewComponent: <TaskCustomFieldsView />,
+        color: Colors.plannedColor,
+        disabled: projectTask?.project?.customFieldManagementSelect == null,
+        onPress: () => setManageActiveItem(false),
+        title: I18n.t('Project_CustomFieldsView'),
+      },
+      {
+        iconName: 'diagram-3-fill',
+        viewComponent: <TaskLinkView />,
+        color: Colors.infoColor,
+        onPress: () => setManageActiveItem(false),
+        title: I18n.t('Project_LinkedTasksView'),
+      },
+      {
+        iconName: 'pencil-square',
+        color: Colors.progressColor,
+        onPress: () => navigation.navigate('TaskFormScreen'),
+      },
+      {
+        iconName: 'clock-history',
+        color: Colors.primaryColor,
+        hidden:
+          !projectTask?.project?.manageTimeSpent ||
+          user.employee?.timesheetImputationSelect ===
+            getImputationMode()?.ManufOrder,
+        viewComponent: (
+          <TimeView
+            project={projectTask?.project}
+            projectTask={projectTask}
+            headerComponent={<TaskDetailsHeader />}
+          />
+        ),
+        isActive: isTimeViewActive,
+        title: I18n.t('Project_TimeLogView'),
+      },
+    ],
+    [
+      Colors,
+      I18n,
+      fetchProjectTask,
+      isTimeViewActive,
+      navigation,
+      projectTask,
+      user.employee?.timesheetImputationSelect,
+    ],
+  );
   useEffect(() => {
     fetchProjectTask();
   }, [fetchProjectTask]);

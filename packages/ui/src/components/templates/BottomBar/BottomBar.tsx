@@ -39,7 +39,7 @@ const BottomBar = ({
   items,
   updateActiveItem = false,
   itemSize = 50,
-  manageActiveTitle = false,
+  manageActiveTitle = true,
 }: {
   style?: any;
   items: BottomBarItem[];

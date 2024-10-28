@@ -1,0 +1,5 @@
+{
+  "title": "BottomBar: make active title management the default behaviour",
+  "type": "feat",
+  "packages": "ui"
+}
