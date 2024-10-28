@@ -1,10 +1,9 @@
 ---
-id: Création d’un module
 sidebar_position: 5
-sidebar_class_name: icon
+description: ''
 ---
 
-## Creating a module
+# Creating a module
 
 The application uses a module structure. Each functional package must export an object in the _Module_ format defined in the **CORE** package.
 

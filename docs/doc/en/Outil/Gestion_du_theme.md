@@ -1,7 +1,6 @@
 ---
-id: Themes
 sidebar_position: 2
-sidebar_class_name: icon themes
+description: ''
 ---
 
 # Theme management

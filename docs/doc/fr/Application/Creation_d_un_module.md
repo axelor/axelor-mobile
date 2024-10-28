@@ -1,7 +1,6 @@
 ---
-id: Création d’un module
 sidebar_position: 5
-sidebar_class_name: icon
+description: ''
 ---
 
 # Création d’un module

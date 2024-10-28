@@ -1,7 +1,6 @@
 ---
-id: toolManagement
 sidebar_position: 10
-sidebar_class_name: icon tools
+description: ''
 ---
 
 # Gestion des actions rapides

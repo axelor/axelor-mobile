@@ -1,7 +1,6 @@
 ---
-id: Gestion des composants
 sidebar_position: 1
-sidebar_class_name: icon
+description: ''
 ---
 
 # Component management

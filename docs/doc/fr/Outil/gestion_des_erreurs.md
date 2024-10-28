@@ -1,7 +1,6 @@
 ---
-id: Gestions des erreurs
 sidebar_position: 3
-sidebar_class_name: icon gestions des erreurs
+description: ''
 ---
 
 # Gestion des erreurs
