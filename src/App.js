@@ -27,6 +27,7 @@ import {QualityModule} from '@axelor/aos-mobile-quality';
 import {InterventionModule} from '@axelor/aos-mobile-intervention';
 import application_properties from '../package.json';
 import {app_config} from './app.config';
+import CustomLogin from './CustomLogin';
 
 const App = () => {
   return (
@@ -43,6 +44,7 @@ const App = () => {
       mainMenu="auth_menu_user"
       version={application_properties.version}
       configuration={app_config}
+      customLoginPage={CustomLogin}
     />
   );
 };

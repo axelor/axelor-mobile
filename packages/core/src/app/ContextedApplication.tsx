@@ -43,12 +43,14 @@ interface ContextedApplicationProps {
   mainMenu?: string;
   version: string;
   configuration?: instanceConfig;
+  customLoginPage?: React.ComponentType;
 }
 
 const ContextedApplication = ({
   mainMenu,
   version,
   configuration,
+  customLoginPage,
 }: ContextedApplicationProps) => {
   const dispatch = useDispatch();
 
@@ -90,6 +92,7 @@ const ContextedApplication = ({
             mainMenu={mainMenu}
             onRefresh={() => setRefresh(_current => !_current)}
             configuration={configuration}
+            customLoginPage={customLoginPage}
           />
         </NavigationContainer>
       </ErrorBoundary>
