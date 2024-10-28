@@ -1,7 +1,6 @@
 ---
-id: Création d’un écran
 sidebar_position: 3
-sidebar_class_name: icon
+description: ''
 ---
 
 # Création d’un écran

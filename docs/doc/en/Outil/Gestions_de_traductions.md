@@ -1,7 +1,6 @@
 ---
-id: Traductions
 sidebar_position: 1
-sidebar_class_name: icon  traductions
+description: ''
 ---
 
 # Translation management
