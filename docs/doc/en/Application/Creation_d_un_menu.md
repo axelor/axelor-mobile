@@ -3,7 +3,7 @@ sidebar_position: 4
 description: ''
 ---
 
-## Creating a menu
+# Creating a menu
 
 The definition of a menu requires the definition of a screen to be displayed when the user selects the menu entry in the drawer.
 
