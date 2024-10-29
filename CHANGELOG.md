@@ -3,6 +3,14 @@ title: 7.1.0
 tags: Changelog
 ---
 
+## [7.1.21] (2024-10-29)
+
+### @axelor/aos-mobile-core
+
+#### Fixes
+
+- Camera Barcode scanning: add hooks exports to manage activation manually
+
 ## [7.1.20] (2024-10-23)
 
 ### @axelor/aos-mobile-core
@@ -648,6 +656,7 @@ This update breaks the compatability with AOS Stock module under version 7.1 due
 - Add number decimal digit config management system
 - Manage multilines input with auto height resize on FormInput
 
+[7.1.21]: https://github.com/axelor/axelor-mobile/compare/7.1.20...7.1.21
 [7.1.20]: https://github.com/axelor/axelor-mobile/compare/7.1.19...7.1.20
 [7.1.19]: https://github.com/axelor/axelor-mobile/compare/7.1.18...7.1.19
 [7.1.18]: https://github.com/axelor/axelor-mobile/compare/7.1.17...7.1.18
