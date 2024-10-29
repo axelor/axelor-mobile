@@ -34,7 +34,12 @@ import {useModules} from './modules';
 
 const {Navigator, Screen} = createNativeStackNavigator();
 
-const RootNavigator = ({mainMenu, onRefresh, configuration}) => {
+const RootNavigator = ({
+  mainMenu,
+  onRefresh,
+  configuration,
+  customLoginPage: CustomLoginPage,
+}) => {
   const {modules} = useModules();
   const Colors = useThemeColor();
   const I18n = useTranslator();
@@ -118,7 +123,9 @@ const RootNavigator = ({mainMenu, onRefresh, configuration}) => {
   return (
     <Navigator screenOptions={{headerShown: false}}>
       {!logged ? (
-        configuration?.enableConnectionSessions ? (
+        CustomLoginPage ? (
+          <Screen name="CustomLoginPage" component={CustomLoginPage} />
+        ) : configuration?.enableConnectionSessions ? (
           <Screen
             name="SessionManagementScreen"
             component={SessionManagementScreen}

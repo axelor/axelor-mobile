@@ -109,6 +109,8 @@ const App = () => {
 export default App;
 ```
 
+The application supports the use of a custom login page. You can provide your own login component through the _customLoginPage_ attribute in the _Application_ component. If a custom login page is provided, it will replace the default connection system.
+
 ### Important commands
 
 - Install dependencies : `yarn clean && yarn`

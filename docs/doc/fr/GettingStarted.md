@@ -109,6 +109,8 @@ const App = () => {
 export default App;
 ```
 
+L'application prend en charge l'utilisation d'une page de connexion personnalisée. Vous pouvez fournir votre propre composant de connexion grâce à l'attribut _customLoginPage_ du composant _Application_. Si une page de connexion personnalisée est fournie, elle remplacera le système de connexion par défaut.
+
 ### Commandes importantes
 
 - Installer les dépendances : `yarn clean && yarn`

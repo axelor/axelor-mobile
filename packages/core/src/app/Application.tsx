@@ -59,6 +59,7 @@ interface ApplicationProps {
   defaultWritingTheme?: Writing;
   showModulesSubtitle?: boolean;
   configuration?: appConfig;
+  customLoginPage?: React.ComponentType;
 }
 
 const Application = ({
@@ -72,6 +73,7 @@ const Application = ({
   defaultWritingTheme,
   showModulesSubtitle = false,
   configuration,
+  customLoginPage,
 }: ApplicationProps) => {
   const modules: Module[] = useRef([authModule, ...modulesProvided]).current;
 
@@ -112,6 +114,7 @@ const Application = ({
           logoFile: configuration?.logoFile,
           versionCheckConfig: configuration?.versionCheckConfig,
         }}
+        customLoginPage={customLoginPage}
       />
     </ContextsProvider>
   );
