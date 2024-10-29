@@ -1,6 +1,6 @@
 {
   "name": "@axelor/aos-mobile-core",
-  "version": "8.1.7",
+  "version": "8.1.8",
   "author": "Axelor",
   "license": "AGPL-3.0-only",
   "publishConfig": {
@@ -24,8 +24,8 @@
     "license:add": "npx add-copyright-header --generate --dir 'src'"
   },
   "dependencies": {
-    "@axelor/aos-mobile-error": "8.1.7",
-    "@axelor/aos-mobile-ui": "8.1.7",
+    "@axelor/aos-mobile-error": "8.1.8",
+    "@axelor/aos-mobile-ui": "8.1.8",
     "@react-navigation/drawer": "6.6.15",
     "@react-navigation/native": "6.1.17",
     "@react-navigation/native-stack": "6.9.26",

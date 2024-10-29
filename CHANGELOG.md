@@ -3,6 +3,29 @@ title: 8.1.0
 tags: Changelog
 ---
 
+## [8.1.8] (2024-10-29)
+
+### @axelor/aos-mobile-core
+
+#### Features
+
+- Connection: add possibility to define a custom login screen
+
+#### Fixes
+
+- Camera Barcode scanning: add hooks exports to manage activation manually
+- Camera: Add additional barcode types
+
+### @axelor/aos-mobile-ui
+
+#### Features
+
+- BottomBar: add possibility to manage only the active item title
+
+#### Changes
+
+- FloatingButton: improve style when circle mode is activated
+
 ## [8.1.7] (2024-10-23)
 
 ### @axelor/aos-mobile-core
@@ -444,6 +467,7 @@ It enables user to manage interventions and customer parc through the mobile app
 - Selections: use new system and tools instead of type files
 - Product indicators: use new chart component to display quantity indicators
 
+  [8.1.8]: https://github.com/axelor/axelor-mobile/compare/8.1.7...8.1.8
   [8.1.7]: https://github.com/axelor/axelor-mobile/compare/8.1.6...8.1.7
   [8.1.6]: https://github.com/axelor/axelor-mobile/compare/8.1.5...8.1.6
   [8.1.5]: https://github.com/axelor/axelor-mobile/compare/8.1.4...8.1.5
