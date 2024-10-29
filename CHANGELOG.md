@@ -3,6 +3,14 @@ title: 7.0.0
 tags: Changelog
 ---
 
+## [7.0.23] (2024-10-29)
+
+### @axelor/aos-mobile-core
+
+#### Fixes
+
+- Camera Barcode scanning: add hooks exports to manage activation manually
+
 ## [7.0.22] (2024-10-23)
 
 ### @axelor/aos-mobile-core
@@ -712,6 +720,7 @@ The project architecture has also been updated, the example folder has been expl
 - Replace ChipSelect by MultiValuePicker on list screens
 - Add search bar details pop up on screens: add empowered searchBar for objects
 
+[7.0.23]: https://github.com/axelor/axelor-mobile/compare/7.0.22...7.0.23
 [7.0.22]: https://github.com/axelor/axelor-mobile/compare/7.0.21...7.0.22
 [7.0.21]: https://github.com/axelor/axelor-mobile/compare/7.0.20...7.0.21
 [7.0.20]: https://github.com/axelor/axelor-mobile/compare/7.0.19...7.0.20
