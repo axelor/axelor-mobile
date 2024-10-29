@@ -1,7 +1,6 @@
 ---
-id: API providers
 sidebar_position: 4
-sidebar_class_name: icon API providers
+description: ''
 ---
 
 # Gestion des API providers
