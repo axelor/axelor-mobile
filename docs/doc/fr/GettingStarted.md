@@ -110,10 +110,7 @@ const App = () => {
 export default App;
 ```
 
-
-## Page de connexion personnalisée
-
-L'application prend en charge l'utilisation d'une page de connexion personnalisée. Vous pouvez fournir votre propre composant de connexion via la propriété customLoginPage dans le composant Application. Si une page de connexion personnalisée est fournie, elle remplacera l'écran de connexion par défaut.
+L'application prend en charge l'utilisation d'une page de connexion personnalisée. Vous pouvez fournir votre propre composant de connexion grâce à l'attribut _customLoginPage_ du composant _Application_. Si une page de connexion personnalisée est fournie, elle remplacera le système de connexion par défaut.
 
 ### Commandes importantes
 

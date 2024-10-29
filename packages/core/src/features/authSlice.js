@@ -94,10 +94,9 @@ export const authSlice = createSlice({
       state.appVersion = action.payload.appVersion;
     },
     updateAuthState: (state, action) => {
-      const {key, value} = action.payload;
-      if (key in state) {
+      Object.entries(action.payload ?? {}).forEach(([key, value]) => {
         state[key] = value;
-      }
+      });
     },
   },
   extraReducers: builder => {
