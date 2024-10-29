@@ -39,6 +39,7 @@ const RootNavigator = ({
   version,
   onRefresh,
   configuration,
+  customLoginPage: CustomLoginPage,
 }) => {
   const Colors = useThemeColor();
   const I18n = useTranslator();
@@ -124,7 +125,9 @@ const RootNavigator = ({
   return (
     <Navigator screenOptions={{headerShown: false}}>
       {!logged ? (
-        configuration?.enableConnectionSessions ? (
+        CustomLoginPage ? (
+          <Screen name="CustomLoginPage" component={CustomLoginPage} />
+        ) : configuration?.enableConnectionSessions ? (
           <Screen
             name="SessionManagementScreen"
             component={SessionManagementScreen}

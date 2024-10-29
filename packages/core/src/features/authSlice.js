@@ -87,6 +87,11 @@ export const authSlice = createSlice({
     clearError: state => {
       state.error = null;
     },
+    updateAuthState: (state, action) => {
+      Object.entries(action.payload ?? {}).forEach(([key, value]) => {
+        state[key] = value;
+      });
+    },
   },
   extraReducers: builder => {
     builder.addCase(login.pending, state => {
@@ -141,6 +146,6 @@ export const authSlice = createSlice({
   },
 });
 
-export const {clearError} = authSlice.actions;
+export const {clearError, updateAuthState} = authSlice.actions;
 
 export const authReducer = authSlice.reducer;

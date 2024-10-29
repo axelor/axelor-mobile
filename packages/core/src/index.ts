@@ -22,7 +22,13 @@ export {configGlobalStore} from './redux/store';
 export {storage, Storage, useStorage} from './storage/Storage';
 export {traceError} from './api/traceback-api';
 export {useEffectDebugger} from './hooks/use-effect-debugger';
-export {login, logout} from './features/authSlice';
+export {
+  clearError,
+  isUrlValid,
+  login,
+  logout,
+  updateAuthState,
+} from './features/authSlice';
 export * from './apiProviders';
 export {
   useScannedValueByKey,

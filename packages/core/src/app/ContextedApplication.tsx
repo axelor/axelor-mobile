@@ -50,6 +50,7 @@ interface ContextedApplicationProps {
   mainMenu?: string;
   version: string;
   configuration?: instanceConfig;
+  customLoginPage?: React.ComponentType;
 }
 
 const ContextedApplication = ({
@@ -57,6 +58,7 @@ const ContextedApplication = ({
   mainMenu,
   version,
   configuration,
+  customLoginPage,
 }: ContextedApplicationProps) => {
   const Colors = useThemeColor();
 
@@ -122,6 +124,7 @@ const ContextedApplication = ({
             version={version}
             onRefresh={() => setRefresh(_current => !_current)}
             configuration={configuration}
+            customLoginPage={customLoginPage}
           />
         </NavigationContainer>
       </ErrorBoundary>

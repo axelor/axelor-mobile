@@ -1,0 +1,5 @@
+{
+  "title": "Connection: add possibility to define a custom login screen",
+  "type": "feat",
+  "packages": "core"
+}
