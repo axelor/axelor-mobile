@@ -3,6 +3,14 @@ title: 7.2.0
 tags: Changelog
 ---
 
+## [7.2.19] (2024-10-29)
+
+### @axelor/aos-mobile-core
+
+#### Fixes
+
+- Camera Barcode scanning: add hooks exports to manage activation manually
+
 ## [7.2.18] (2024-10-23)
 
 ### @axelor/aos-mobile-core
@@ -678,6 +686,7 @@ It enables user to manage Expenses through the mobile application. You can creat
 - Remove IconButton component which should be replaced by Button component.
 - Remove Pop-up components which should be replaced by Alert component.
 
+[7.2.19]: https://github.com/axelor/axelor-mobile/compare/7.2.18...7.2.19
 [7.2.18]: https://github.com/axelor/axelor-mobile/compare/7.2.17...7.2.18
 [7.2.17]: https://github.com/axelor/axelor-mobile/compare/7.2.16...7.2.17
 [7.2.16]: https://github.com/axelor/axelor-mobile/compare/7.2.15...7.2.16
