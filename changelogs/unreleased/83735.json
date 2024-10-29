@@ -1,5 +1,0 @@
-{
-  "title": "SingleSelectScrollList: add a new component to manage a scrollable list with radio selection",
-  "type": "feat",
-  "packages": "ui"
-}

@@ -1,5 +1,0 @@
-{
-  "title": "Webview: use new module registration system to create webview menus from web config",
-  "type": "refactor",
-  "packages": "core"
-}

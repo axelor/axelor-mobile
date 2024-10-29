@@ -1,5 +1,0 @@
-{
-  "title": "CardIconButton / InfoButton : add possibility to disable the button",
-  "type": "feat",
-  "packages": "ui"
-}

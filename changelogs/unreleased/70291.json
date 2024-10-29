@@ -1,5 +1,0 @@
-{
-  "title": "Sessions: add possibility to set default session for demo",
-  "type": "feat",
-  "packages": "core"
-}

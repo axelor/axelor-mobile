@@ -1,5 +1,0 @@
-{
-  "title": "ViewAllEditList: add new component to display an editable list with an Alert to show all the items",
-  "type": "feat",
-  "packages": "ui"
-}

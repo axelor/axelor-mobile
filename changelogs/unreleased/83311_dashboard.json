@@ -1,5 +1,0 @@
-{
-  "title": "Dashboard: use new module registration system to create dashboard menus from web config",
-  "type": "refactor",
-  "packages": "core"
-}

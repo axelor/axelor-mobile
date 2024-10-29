@@ -1,5 +1,0 @@
-{
-  "title": "QuantityCard: add new component to display a quantity with an increment input on a card",
-  "type": "feat",
-  "packages": "ui"
-}

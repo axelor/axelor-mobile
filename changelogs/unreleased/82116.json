@@ -1,5 +1,0 @@
-{
-  "title": "Supplier arrival: add possibility to fill origin when creating or selecting tracking number",
-  "type": "fix",
-  "packages": "stock"
-}

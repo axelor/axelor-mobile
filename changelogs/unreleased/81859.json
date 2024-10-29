@@ -1,5 +1,0 @@
-{
-  "title": "Card display: replace cards with actions by ActionCard component",
-  "type": "refactor",
-  "packages": "manufacturing"
-}

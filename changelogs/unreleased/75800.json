@@ -1,5 +1,0 @@
-{
-  "title": "DraggableWrapper: add new wrapper to make components draggable",
-  "type": "feat",
-  "packages": "ui"
-}

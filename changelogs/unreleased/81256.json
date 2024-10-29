@@ -1,5 +1,0 @@
-{
-  "title": "ActionCard: new component which wrap a card and display its actions",
-  "type": "feat",
-  "packages": "ui"
-}

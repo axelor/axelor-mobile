@@ -1,5 +1,0 @@
-{
-  "title": "Menu management: use new logic for authorized menus",
-  "type": "feat",
-  "packages": "core"
-}

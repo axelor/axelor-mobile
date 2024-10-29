@@ -1,5 +1,0 @@
-{
-  "title": "LabelText: align items to avoid flex display issue",
-  "type": "fix",
-  "packages": "ui"
-}

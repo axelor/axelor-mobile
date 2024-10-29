@@ -1,5 +1,0 @@
-{
-  "title": "Module: add new system to manage dynamic module registration",
-  "type": "feat",
-  "packages": "core"
-}
