@@ -1,7 +1,6 @@
 ---
-id: permissionManagement
 sidebar_position: 9
-sidebar_class_name: icon permissions
+description: ''
 ---
 
 # Gestion des permissions

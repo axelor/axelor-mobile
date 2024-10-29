@@ -1,7 +1,6 @@
 ---
-id: Traductions
 sidebar_position: 1
-sidebar_class_name: icon  traductions
+description: ''
 ---
 
 # Translation management
@@ -14,7 +13,7 @@ Each module must include in its architecture an i18n folder with json files, one
 
 Within the translation files, the keys must follow a nomenclature in order to structure all translations and identify their origin.
 
-The nomenclature is as follows: _<Module>\_<Signification>_.
+The nomenclature is as follows: `<Module>\_<Signification>`.
 
 All translation keys must be written in **English** to enable the user to continue using the application even if the translation value has not been found.
 

@@ -1,7 +1,6 @@
 ---
-id: Gestion de store
 sidebar_position: 5
-sidebar_class_name: icon gestion de store
+description: ''
 ---
 
 # Store management
@@ -44,7 +43,7 @@ export const handlerApiCall = ({
 }: ApiHandlerProps)
 ```
 
-When creating the asynchronous function, it's important to respect the following nomenclature for creating the type: _<slice name>/<function name>._ There is also a nomenclature for creating the translation keys used to describe the action executed: _"<module name>SliceAction<action>"_. In addition, to make translation files easier to read, translations for reducer actions are grouped together at the end of the files.
+When creating the asynchronous function, it's important to respect the following nomenclature for creating the type: `<slice name>/<function name>`. There is also a nomenclature for creating the translation keys used to describe the action executed: `<module name>SliceAction<action>`. In addition, to make translation files easier to read, translations for reducer actions are grouped together at the end of the files.
 
 Next, we need to build a slice to indicate the behavior to be adopted in the various query states (pending, rejected or fulfilled). In order to access the store state for this slice, it must be exported, then the reducer created must be exported so that it can be added to the module export.
 

@@ -1,7 +1,6 @@
 ---
-id: Architecture de l'application
 sidebar_position: 3
-sidebar_class_name: icon architecture
+description: ''
 ---
 
 # Architecture de l’application

@@ -1,7 +1,6 @@
 ---
-id: Création d’un appel API
 sidebar_position: 2
-sidebar_class_name: icon
+description: ''
 ---
 
 # Creating an API call

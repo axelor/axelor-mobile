@@ -1,7 +1,6 @@
 ---
-id: Gestion de store
 sidebar_position: 5
-sidebar_class_name: icon gestion de store
+description: ''
 ---
 
 # Gestion du store
@@ -158,7 +157,7 @@ const myModule : Module {
 }
 ```
 
-Une fois les exports finis, il est donc possible d’accéder au contenu du store depuis les écrans ou les composants grâce au hook du package _core_ en indiquant le reducer à utiliser et les attributs du state correspondant à récupérer : `useSelector` . Le composant sera mis à jour à chaque changement de valeur du state.
+Une fois les exports finis, il est donc possible d’accéder au contenu du store depuis les écrans ou les composants grâce au hook du package _core_ en indiquant le reducer à utiliser et les attributs du state correspondant à récupérer : `useSelector`. Le composant sera mis à jour à chaque changement de valeur du state.
 
 ```tsx
 import {useSelector} from '@axelor/aos-mobile-core';

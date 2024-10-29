@@ -1,7 +1,6 @@
 ---
-id: Getting Started
 sidebar_position: 2
-sidebar_class_name: icon started
+description: ''
 ---
 
 # Getting started
