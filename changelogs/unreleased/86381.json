@@ -1,0 +1,5 @@
+{
+  "title": "Product indicators: disable the popup to increase the pressable area to access stock indicator details view",
+  "type": "fix",
+  "packages": "stock"
+}
