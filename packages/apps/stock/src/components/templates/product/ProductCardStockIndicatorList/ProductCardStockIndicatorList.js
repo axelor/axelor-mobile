@@ -103,17 +103,19 @@ const ProductCardStockIndicatorList = ({
             activeOpacity={0.9}
             disabled={parseFloat(value) === 0}
             key={idx}>
-            <IndicatorChart
-              style={styles.chart}
-              datasets={[
-                {
-                  title: I18n.t(titleKey),
-                  value: formatNumber(value),
-                },
-              ]}
-              widthGraph={Dimensions.get('window').width * 0.4}
-              translator={I18n.t}
-            />
+            <View pointerEvents="none">
+              <IndicatorChart
+                style={styles.chart}
+                datasets={[
+                  {
+                    title: I18n.t(titleKey),
+                    value: formatNumber(value),
+                  },
+                ]}
+                widthGraph={Dimensions.get('window').width * 0.4}
+                translator={I18n.t}
+              />
+            </View>
           </TouchableOpacity>
         );
       }
@@ -138,6 +140,7 @@ const styles = StyleSheet.create({
   },
   chart: {
     alignSelf: 'stretch',
+    flex: 1,
   },
 });
 
