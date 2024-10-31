@@ -29,6 +29,7 @@ import {
   headerActionsProvider,
   SearchListView,
   useDispatch,
+  useIsFocused,
   useNavigation,
   useSelector,
   useTranslator,
@@ -50,6 +51,7 @@ const ActiveCartScreen = ({}) => {
   const Colors = useThemeColor();
   const I18n = useTranslator();
   const navigation = useNavigation();
+  const isFocused = useIsFocused();
 
   const {userId} = useSelector((state: any) => state.auth);
   const {mobileSettings} = useSelector((state: any) => state.appConfig);
@@ -61,8 +63,10 @@ const ActiveCartScreen = ({}) => {
   const [showPopup, setShowPopup] = useState(false);
 
   useEffect(() => {
-    dispatch((fetchActiveCart as any)({userId}));
-  }, [dispatch, userId]);
+    if (isFocused) {
+      dispatch((fetchActiveCart as any)({userId}));
+    }
+  }, [dispatch, isFocused, userId]);
 
   const handleCartValidation = useCallback(
     (cart: any) => {
