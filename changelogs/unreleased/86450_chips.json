@@ -1,0 +1,5 @@
+{
+  "title": "ChipSelect: add possibility to define maximun number of line for chip titles",
+  "type": "feat",
+  "packages": "ui"
+}

@@ -265,8 +265,6 @@ const MailMessageView = ({
         <ChipSelect
           style={styles.chipSelect}
           mode="switch"
-          width={Dimensions.get('window').width * 0.28}
-          marginHorizontal={5}
           onChangeValue={chiplist => setSelectedStatus(chiplist)}
           isRefresh
           selectionItems={MailMessageType.getSelectionItems(
@@ -274,6 +272,7 @@ const MailMessageView = ({
             Colors,
             selectedStatus,
           )}
+          chipNumberOfLines={1}
         />
         {displayMessageBox && (
           <View style={styles.messageBox}>
