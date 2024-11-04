@@ -30,6 +30,7 @@ interface ChipProps {
   width?: number;
   marginHorizontal?: number;
   readonly?: boolean;
+  numberOfLines?: number;
   style?: any;
 }
 
@@ -41,6 +42,7 @@ const Chip = ({
   width = Dimensions.get('window').width * 0.4,
   marginHorizontal = 12,
   readonly = false,
+  numberOfLines,
   style,
 }: ChipProps) => {
   const Colors = useThemeColor();
@@ -74,6 +76,7 @@ const Chip = ({
       <View style={styles.container}>
         <Text
           textColor={selected ? chipColor.foreground : Colors.text}
+          numberOfLines={numberOfLines}
           fontSize={14}>
           {sliceString(title, 23)}
         </Text>
