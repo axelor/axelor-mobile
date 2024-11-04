@@ -44,6 +44,7 @@ interface ChipSelectProps {
   width?: number;
   marginHorizontal?: number;
   readonly?: boolean;
+  chipNumberOfLines?: number;
   onChangeValue?: (value: any) => void;
 }
 
@@ -55,6 +56,7 @@ const ChipSelect = ({
   width,
   marginHorizontal = CHIP_MARGIN,
   readonly = false,
+  chipNumberOfLines,
   onChangeValue = () => {},
 }: ChipSelectProps) => {
   const [selectedChip, setSelectedChip] = useState<Item[]>(
@@ -145,6 +147,7 @@ const ChipSelect = ({
             readonly={readonly}
             marginHorizontal={marginHorizontal}
             width={_width}
+            numberOfLines={chipNumberOfLines}
           />
         ))}
       </ScrollView>
