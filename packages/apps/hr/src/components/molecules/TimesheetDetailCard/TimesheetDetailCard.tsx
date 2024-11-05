@@ -94,7 +94,7 @@ const TimesheetDetailCard = ({
         }
       })
       .catch(() => setConvertedPeriod(0));
-  }, [item.id]);
+  }, [item]);
 
   return (
     <ActionCard

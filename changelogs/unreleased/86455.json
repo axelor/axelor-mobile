@@ -1,0 +1,5 @@
+{
+  "title": "Timesheet: trigger period computation on update",
+  "type": "fix",
+  "packages": "hr"
+}
