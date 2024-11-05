@@ -68,6 +68,7 @@ export * from './i18n';
 export * from './config';
 export * from './header';
 export * from './forms';
+export * from './sessions';
 export {
   useScanActivator,
   useScannerDeviceActivator,
