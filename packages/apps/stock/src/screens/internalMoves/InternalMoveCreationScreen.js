@@ -162,7 +162,7 @@ const InternalMoveCreationScreen = () => {
           addLine={handleAddLine}
         />
       }>
-      <KeyboardAvoidingScrollView keyboardOffset={{android: 100}}>
+      <KeyboardAvoidingScrollView>
         <StockLocationSearchBar
           placeholderKey="Stock_OriginalStockLocation"
           scanKey={fromStockLocationScanKey}
