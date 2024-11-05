@@ -31,10 +31,35 @@ const createSaleOrderLineCriteria = saleOrderId => {
   ];
 };
 
+const createSubSaleOrderLineCriteria = (saleOrderId, parentId) => {
+  return [
+    {
+      fieldName: 'parentSaleOrderLine.id',
+      operator: '=',
+      value: parentId,
+    },
+  ];
+};
+
 export async function fetchSaleOrderLine({saleOrderId, page = 0}) {
   return createStandardSearch({
     model: 'com.axelor.apps.sale.db.SaleOrderLine',
     criteria: createSaleOrderLineCriteria(saleOrderId),
+    fieldKey: 'sale_saleOrderLine',
+    sortKey: 'sale_saleOrderLine',
+    page,
+    provider: 'model',
+  });
+}
+
+export async function searchSubSaleOrderLine({
+  saleOrderId,
+  page = 0,
+  parentId,
+}) {
+  return createStandardSearch({
+    model: 'com.axelor.apps.sale.db.SaleOrderLine',
+    criteria: createSubSaleOrderLineCriteria(saleOrderId, parentId),
     fieldKey: 'sale_saleOrderLine',
     sortKey: 'sale_saleOrderLine',
     page,

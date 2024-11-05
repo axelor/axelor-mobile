@@ -203,6 +203,7 @@ export const sale_modelAPI: ObjectFields = {
     subTotalMarkup: schemaContructor.number(),
     saleSupplySelect: schemaContructor.number(),
     pricingScaleLogs: schemaContructor.string(),
+    subSaleOrderLineList: schemaContructor.subObject(),
   }),
   sale_customerCategory: schemaContructor.object({
     name: schemaContructor.string(),
