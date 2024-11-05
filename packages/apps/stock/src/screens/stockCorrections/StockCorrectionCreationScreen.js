@@ -169,16 +169,13 @@ const StockCorrectionCreationScreen = ({route}) => {
           />
         )
       }>
-      <KeyboardAvoidingScrollView
-        style={[
-          styles.container,
-          currentStep < CREATION_STEP.validation ? styles.scroll : null,
-        ]}>
+      <KeyboardAvoidingScrollView style={styles.container}>
         <StockLocationSearchBar
           defaultValue={location}
           scanKey={stockLocationScanKey}
           onChange={handleStockLocationChange}
           isFocus={currentStep === CREATION_STEP.stockLocation}
+          isScrollViewContainer={location == null}
         />
         {currentStep >= CREATION_STEP.product_trackingNumber ? (
           <ProductTrackingNumberSearchBar
@@ -186,6 +183,7 @@ const StockCorrectionCreationScreen = ({route}) => {
             onChange={handleProductTrackingNumberChange}
             defaultValue={trackingNumber || product}
             isFocus={currentStep === CREATION_STEP.product_trackingNumber}
+            isScrollViewContainer={product == null}
           />
         ) : null}
         {currentStep >= CREATION_STEP.validation ? (
@@ -225,10 +223,6 @@ const StockCorrectionCreationScreen = ({route}) => {
 const styles = StyleSheet.create({
   container: {
     paddingBottom: 100,
-  },
-  scroll: {
-    height: null,
-    flex: 1,
   },
 });
 

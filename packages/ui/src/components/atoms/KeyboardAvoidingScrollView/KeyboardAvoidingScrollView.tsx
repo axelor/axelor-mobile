@@ -66,11 +66,7 @@ const KeyboardAvoidingScrollView = ({
       <ScrollView
         style={globalStyle}
         keyboardShouldPersistTaps="handled"
-        contentContainerStyle={[
-          styles.scrollContent,
-          getZIndexStyles(10),
-          style,
-        ]}
+        contentContainerStyle={[getZIndexStyles(10), style]}
         refreshControl={
           refresh != null && (
             <RefreshControl
@@ -85,15 +81,12 @@ const KeyboardAvoidingScrollView = ({
   );
 };
 
-const getZIndexStyles = value =>
+const getZIndexStyles = (value: number) =>
   Platform.OS === 'ios' ? {zIndex: value} : null;
 
 const styles = StyleSheet.create({
   containerKeyboard: {
     flex: 1,
-  },
-  scrollContent: {
-    height: null,
   },
 });
 
