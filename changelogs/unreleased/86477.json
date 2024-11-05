@@ -1,0 +1,5 @@
+{
+  "title": "Sessions: add export to use components in other packages",
+  "type": "fix",
+  "packages": "core"
+}
