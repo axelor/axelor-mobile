@@ -52,6 +52,19 @@ export const fetchSaleOrderLineById = createAsyncThunk(
   },
 );
 
+export const searchSubSaleOrderLine = createAsyncThunk(
+  'sale_saleOrderLine/searchSubSaleOrderLine',
+  async function (data, {getState}) {
+    return handlerApiCall({
+      fetchFunction: _fetchSaleOrderLine,
+      data,
+      action: 'Sale_SliceAction_FetchSaleOrderLine',
+      getState,
+      responseOptions: {isArrayResponse: true},
+    });
+  },
+);
+
 const initialState = {
   loading: true,
   moreLoading: false,
@@ -61,6 +74,11 @@ const initialState = {
 
   loadingSaleOrderLine: true,
   saleOrderLine: {},
+
+  loadingsub: true,
+  moreLoadingSub: false,
+  isListEndSub: false,
+  subSaleOrderLineList: [],
 };
 
 const saleOrderLineSlice = createSlice({
@@ -81,6 +99,12 @@ const saleOrderLineSlice = createSlice({
         manageTotal: true,
       },
     );
+    generateInifiniteScrollCases(builder, searchSubSaleOrderLine, {
+      loading: 'loadingsub',
+      moreLoading: 'moreLoadingSub',
+      isListEnd: 'isListEndSub',
+      list: 'subSaleOrderLineList',
+    });
     builder.addCase(fetchSaleOrderLineById.pending, state => {
       state.loadingSaleOrderLine = true;
     });

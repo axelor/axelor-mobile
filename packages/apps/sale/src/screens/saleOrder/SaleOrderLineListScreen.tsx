@@ -16,39 +16,52 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import React, {useCallback} from 'react';
-import {StyleSheet} from 'react-native';
+import React, {useMemo} from 'react';
 import {
-  useDispatch,
+  displayItemName,
+  SearchTreeView,
   useNavigation,
   useSelector,
   useTranslator,
 } from '@axelor/aos-mobile-core';
-import {HeaderContainer, Screen, ScrollList} from '@axelor/aos-mobile-ui';
+import {HeaderContainer, Screen} from '@axelor/aos-mobile-ui';
 import {
   SaleOrderHeader,
   SaleOrderLineCard,
-  SaleOrderPriceDetails,
+  SaleOrderLineParentCard,
 } from '../../components';
-import {fetchSaleOrderLine} from '../../features/saleOrderLineSlice';
+import {
+  fetchSaleOrderLine,
+  searchSubSaleOrderLine,
+} from '../../features/saleOrderLineSlice';
+import {searchSubSaleOrderLineApi} from '../../api';
 
 const SaleOrderLineListScreen = ({}) => {
   const I18n = useTranslator();
   const navigation = useNavigation();
-  const dispatch = useDispatch();
 
   const {saleOrder} = useSelector((state: any) => state.sale_saleOrder);
-  const {loading, moreLoading, isListEnd, saleOrderLineList} = useSelector(
-    (state: any) => state.sale_saleOrderLine,
+  const {
+    saleOrderLineList,
+
+    loadingsub,
+    moreLoadingSub,
+    isListEndSub,
+    subSaleOrderLineList,
+  } = useSelector((state: any) => state.sale_saleOrderLine);
+
+  const sliceParentFunctionData = useMemo(
+    () => ({
+      saleOrderId: saleOrder.id,
+    }),
+    [saleOrder.id],
   );
 
-  const fetchSaleOrderLineAPI = useCallback(
-    (page = 0) => {
-      dispatch(
-        (fetchSaleOrderLine as any)({saleOrderId: saleOrder.id, page: page}),
-      );
-    },
-    [dispatch, saleOrder.id],
+  const sliceFunctionData = useMemo(
+    () => ({
+      saleOrderId: saleOrder.id,
+    }),
+    [saleOrder.id],
   );
 
   return (
@@ -57,14 +70,54 @@ const SaleOrderLineListScreen = ({}) => {
         expandableFilter={false}
         fixedItems={<SaleOrderHeader saleOrder={saleOrder} />}
       />
-      <SaleOrderPriceDetails
-        style={styles.marginVertical}
-        saleOrder={saleOrder}
-      />
-      <ScrollList
-        loadingList={loading}
-        data={saleOrderLineList}
-        renderItem={({item}) => (
+      <SearchTreeView
+        headerChildren={<SaleOrderHeader saleOrder={saleOrder} />}
+        parentList={saleOrderLineList}
+        sliceParentFunction={fetchSaleOrderLine}
+        sliceParentFunctionData={sliceParentFunctionData}
+        sliceFunctionDataParentIdName="parentId"
+        sliceFunctionDataNoParentName="noParent"
+        list={subSaleOrderLineList}
+        sliceFunction={searchSubSaleOrderLine}
+        sliceFunctionData={sliceFunctionData}
+        loading={loadingsub}
+        moreLoading={moreLoadingSub}
+        isListEnd={isListEndSub}
+        displayParentSearchValue={displayItemName}
+        fetchBranchData={branchId =>
+          searchSubSaleOrderLineApi({
+            saleOrderId: saleOrder.id,
+            parentId: branchId,
+          })
+        }
+        branchCondition={item => item.subSaleOrderLineList?.length > 0}
+        searchParentPlaceholder={I18n.t('Sale_SaleOrderParent')}
+        searchPlaceholder={I18n.t('Base_Search')}
+        parentFieldName="parentSaleOrder"
+        renderBranch={({item}) => {
+          return (
+            <SaleOrderLineParentCard
+              typeSelect={item.typeSelect}
+              product={item.product}
+              productName={item.productName}
+              price={item.price}
+              unit={item.unit?.name}
+              qty={item.qty}
+              SOinAti={saleOrder.inAti}
+              inTaxTotal={item.inTaxTotal}
+              exTaxTotal={item.exTaxTotal}
+              isShowEndOfPackTotal={item.isShowTotal}
+              currencySymbol={saleOrder.currency?.symbol}
+              description={item.description}
+              onPress={() =>
+                navigation.navigate('SaleOrderLineDetailsScreen', {
+                  saleOrderLineId: item.id,
+                })
+              }
+            />
+          );
+        }}
+        renderLeaf={({item}) => (
           <SaleOrderLineCard
             typeSelect={item.typeSelect}
             product={item.product}
@@ -85,19 +138,9 @@ const SaleOrderLineListScreen = ({}) => {
             }
           />
         )}
-        fetchData={fetchSaleOrderLineAPI}
-        moreLoading={moreLoading}
-        isListEnd={isListEnd}
-        translator={I18n.t}
       />
     </Screen>
   );
 };
-
-const styles = StyleSheet.create({
-  marginVertical: {
-    marginVertical: 10,
-  },
-});
 
 export default SaleOrderLineListScreen;

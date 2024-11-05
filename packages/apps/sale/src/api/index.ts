@@ -58,4 +58,5 @@ export {
 export {
   fetchSaleOrderLine as fetchSaleOrderLineApi,
   fetchSaleOrderLineById as fetchSaleOrderLineByIdApi,
+  searchSubSaleOrderLine as searchSubSaleOrderLineApi,
 } from './sale-order-line-api';
