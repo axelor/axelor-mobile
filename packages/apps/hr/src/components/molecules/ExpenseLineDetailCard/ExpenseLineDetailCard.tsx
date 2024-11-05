@@ -88,7 +88,7 @@ const ExpenseLineDetailCard = ({
   const handleDelete = useCallback(() => {
     dispatch(
       (deleteExpenseLine as any)({
-        ExpenseLineId: item.id,
+        expenseLineId: item.id,
         userId: userId,
         expenseId: expense?.id,
       }),
