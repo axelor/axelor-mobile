@@ -97,7 +97,7 @@ const TimesheetDetailCard = ({
         }
       })
       .catch(() => setConvertedPeriod(0));
-  }, [item.id]);
+  }, [item]);
 
   return (
     <View style={[styles.container, style]}>

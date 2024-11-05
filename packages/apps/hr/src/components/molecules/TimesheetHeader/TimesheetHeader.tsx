@@ -83,7 +83,7 @@ const TimesheetHeader = ({timesheet, statusSelect}: TimesheetHeaderProps) => {
         }
       })
       .catch(() => setConvertedPeriod(null));
-  }, [timesheet.id]);
+  }, [timesheet]);
 
   return (
     <View style={styles.container}>
