@@ -65,7 +65,7 @@ const ExpenseDetailsValidationButton = ({expense, mode, isManualCreation}) => {
   }, [dispatch, mode, expense]);
 
   const deleteExpenseAPI = useCallback(() => {
-    dispatch(deleteExpense({ExpenseId: expense.id, userId: user.id}));
+    dispatch(deleteExpense({expenseId: expense.id, userId: user.id}));
     navigation.pop();
   }, [dispatch, expense.id, navigation, user.id]);
 

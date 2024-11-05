@@ -1,0 +1,5 @@
+{
+  "title": "Expense: solve deletion error on expense and expense line",
+  "type": "fix",
+  "packages": "hr"
+}
