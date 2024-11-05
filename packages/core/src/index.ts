@@ -79,6 +79,7 @@ export * from './forms';
 export * from './dashboards';
 export * from './permissions';
 export * from './selections';
+export * from './sessions';
 export {
   useScanActivator,
   useScannerDeviceActivator,
