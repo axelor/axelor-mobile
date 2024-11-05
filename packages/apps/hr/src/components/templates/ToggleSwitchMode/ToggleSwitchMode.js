@@ -21,7 +21,7 @@ import {RadioSelect} from '@axelor/aos-mobile-ui';
 import {useTranslator} from '@axelor/aos-mobile-core';
 import {ExpenseLine} from '../../../types';
 
-const ToggleSwitchMode = ({
+const ToggleSwitchModeAux = ({
   style = null,
   defaultValue = ExpenseLine.modes.general,
   onChange = () => {},
@@ -43,6 +43,22 @@ const ToggleSwitchMode = ({
         onChange(_mode);
         setMode(_mode);
       }}
+      readonly={readonly}
+    />
+  );
+};
+
+const ToggleSwitchMode = ({
+  style = null,
+  defaultValue = ExpenseLine.modes.general,
+  onChange = () => {},
+  readonly = false,
+}) => {
+  return (
+    <ToggleSwitchModeAux
+      style={style}
+      defaultValue={defaultValue}
+      onChange={onChange}
       readonly={readonly}
     />
   );
