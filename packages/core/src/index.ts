@@ -73,6 +73,7 @@ export * from './auth';
 export * from './i18n';
 export * from './config';
 export * from './header';
+export * from './sessions';
 export {
   useScanActivator,
   useScannerDeviceActivator,
