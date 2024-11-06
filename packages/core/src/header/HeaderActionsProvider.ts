@@ -17,16 +17,25 @@
  */
 
 import {useCallback, useEffect, useMemo, useState} from 'react';
-import {HeaderActions, HeaderOptions} from './types';
+import {
+  GenericHeaderActions,
+  HeaderActions,
+  HeaderOptions,
+  RegisterFunction,
+} from './types';
 import {fetchOptionsOfHeaderKey, mergeActions} from './utils';
 
 class HeaderActionsProvider {
   private headerActions: HeaderActions;
+  private headerGenericActions: GenericHeaderActions;
   private refreshCallBack: Function[];
+  private refreshGenericCallBack: Function[];
 
   constructor() {
     this.headerActions = {};
+    this.headerGenericActions = {};
     this.refreshCallBack = [];
+    this.refreshGenericCallBack = [];
   }
 
   register(callBack) {
@@ -39,6 +48,20 @@ class HeaderActionsProvider {
 
   private updateState() {
     this.refreshCallBack.forEach(_f => _f(this.headerActions));
+  }
+
+  registerGeneric(callBack) {
+    this.refreshGenericCallBack.push(callBack);
+  }
+
+  unregisterGeneric(callBack) {
+    this.refreshGenericCallBack = this.refreshGenericCallBack.filter(
+      _f => _f !== callBack,
+    );
+  }
+
+  private updateGenericState() {
+    this.refreshGenericCallBack.forEach(_f => _f(this.headerGenericActions));
   }
 
   registerModel(key: string, options: HeaderOptions) {
@@ -56,12 +79,22 @@ class HeaderActionsProvider {
     this.updateState();
   }
 
+  registerGenericAction(key: string, registerFunction: RegisterFunction) {
+    this.headerGenericActions[key] = registerFunction;
+
+    this.updateGenericState();
+  }
+
   getHeaderOptions(key: string): HeaderOptions {
     return fetchOptionsOfHeaderKey(this.headerActions, key);
   }
 
   getAllHeaderActions(): HeaderActions {
     return this.headerActions;
+  }
+
+  getAllGenericHeaderActions(): GenericHeaderActions {
+    return this.headerGenericActions;
   }
 }
 
@@ -73,12 +106,19 @@ export const useHeaderActions = (
   const [headers, setHeaders] = useState<HeaderActions>(
     headerActionsProvider.getAllHeaderActions(),
   );
+  const [genericHeaders, setGenericHeaders] = useState<GenericHeaderActions>(
+    headerActionsProvider.getAllGenericHeaderActions(),
+  );
 
   useEffect(() => {
     headerActionsProvider.register(options => setHeaders({...options}));
+    headerActionsProvider.registerGeneric(functions =>
+      setGenericHeaders({...functions}),
+    );
 
     return () => {
       headerActionsProvider.unregister(setHeaders);
+      headerActionsProvider.unregisterGeneric(setGenericHeaders);
     };
   }, []);
 
@@ -88,7 +128,7 @@ export const useHeaderActions = (
   );
 
   return useMemo(
-    () => ({headers: getFormConfigOfModel(actionID)}),
-    [actionID, getFormConfigOfModel],
+    () => ({headers: getFormConfigOfModel(actionID), genericHeaders}),
+    [actionID, genericHeaders, getFormConfigOfModel],
   );
 };

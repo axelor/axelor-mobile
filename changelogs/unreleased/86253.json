@@ -1,0 +1,5 @@
+{
+  "title": "Header: add possibility to define generic actions from functional packages",
+  "type": "feat",
+  "packages": "core"
+}

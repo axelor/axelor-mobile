@@ -26,6 +26,7 @@ export interface HeaderActions {
 export interface HeaderOptions {
   model?: string;
   modelId?: number;
+  options?: any;
   disablePrint?: boolean;
   disableMailMessages?: boolean;
   disableJsonFields?: boolean;
@@ -34,6 +35,20 @@ export interface HeaderOptions {
   headerTitle?: string;
   actions?: ActionType[];
 }
+
+export interface GenericHeaderActions {
+  [key: string]: RegisterFunction;
+}
+
+export type RegisterFunction = ({
+  model,
+  modelId,
+  options,
+}: {
+  model: string;
+  modelId: number;
+  options?: any;
+}) => ActionType;
 
 export interface ActionType {
   key: string;

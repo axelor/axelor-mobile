@@ -105,6 +105,61 @@ D’un point de vue fonctionnel, l’ensemble des actions est transmis au compos
 
 Pour les petits écrans, toutes les actions sont affichées dans la liste déroulante.
 
+## Actions génériques
+
+Il est possible de créer des actions génériques depuis n'importe quel package fonctionnel.
+
+Comme pour les actions, cela passe par un hook.
+
+```tsx
+const useAttachedFilesAction = () => {
+  const navigation = useNavigation();
+  const I18n = useTranslator();
+
+  useEffect(() => {
+    headerActionsProvider.registerGenericAction(
+      'dms_attachedFiles',
+      ({model, modelId, options}) => ({
+        key: 'attachedFiles',
+        order: 10,
+        onPress: () =>
+          navigation.navigate('AttachedFilesScreen', {model, modelId, options}),
+        hideIf: options.disabled,
+        indicator: ...,
+        iconName: 'bell-fill',
+        title: options.screenTitle,
+        showInHeader: true,
+      }),
+    );
+  }, [...]);
+};
+```
+
+Il faut donc utiliser `registerGenericAction` de l’outil `headerActionsProvider` pour associer une clé à une fonction. Cette fonction prend en paramètres `model`, `modelId` et `options`. Elle retourne l’ensemble des informations nécessaires aux différentes actions du header.
+
+Le paramètre `options` permet de passer des paramètres personnalisés depuis un écran grâce à la clé utilisée pour créer l'action générique.
+
+```tsx
+const useProductDetailsActions = () => {
+  const {mobileSettings} = useSelector(state => state.appConfig);
+  const {product} = useSelector(state => state.product);
+
+  useEffect(() => {
+    headerActionsProvider.registerModel('stock_product_details', {
+      model: 'com.axelor.apps.base.db.Product',
+      modelId: product?.id,
+      options: {
+        dms_attachedFiles: {
+          disabled: !mobileSettings?.isAttachedFilesEnabled,
+          screenTitle: product?.name,
+          ...
+        },
+      },
+    });
+  }, [mobileSettings, product]);
+};
+```
+
 ## Bandeaux
 
 Il est possible de venir renseigner des bandeaux à afficher au-dessus du header pour informer l’utilisateur d’une situation globale de l’application (mode hors-ligne, perte de connexion ou encore environnement de test).
