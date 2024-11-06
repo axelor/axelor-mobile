@@ -58,25 +58,6 @@ export const formatPermissions = (permissionList: any[]): ModelsPermission => {
   return permissions;
 };
 
-export const _formatPermissions = (permissionList: any[]): ModelsPermission => {
-  if (!Array.isArray(permissionList) || permissionList.length === 0) {
-    return {};
-  }
-
-  const permissions: ModelsPermission = {};
-
-  permissionList.forEach(_permission => {
-    permissions[_permission.object] = {
-      canCreate: _permission.canCreate,
-      canRead: _permission.canRead,
-      canRemove: _permission.canRemove,
-      canWrite: _permission.canWrite,
-    };
-  });
-
-  return permissions;
-};
-
 export const formatMetaPermissions = (
   permissionList: any[],
 ): MetaPermission => {
