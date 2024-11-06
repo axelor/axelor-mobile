@@ -1,0 +1,5 @@
+{
+  "title": "Permission: merge permission configurations for unified access control",
+  "type": "fix",
+  "packages": "core"
+}
