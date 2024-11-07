@@ -178,7 +178,7 @@ const ActionCard = ({
             onPress={action1.onPress}
             disabled={action1.disabled}
           />
-          {action2 != null && (
+          {action2 != null && action3 != null && (
             <InfoButton
               style={{width: ACTION_WIDTH}}
               iconName={action2.iconName}
