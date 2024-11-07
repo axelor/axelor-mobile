@@ -3,6 +3,26 @@ title: 7.2.0
 tags: Changelog
 ---
 
+## [7.2.20] (2024-11-07)
+
+### @axelor/aos-mobile-core
+
+#### Fixes
+
+- Sessions: add export to use components in other packages
+
+### @axelor/aos-mobile-ui
+
+#### Fixes
+
+- Screen: hide native navigation bar when keyboard disappears
+
+### @axelor/aos-mobile-hr
+
+#### Fixes
+
+- Expense line: solve number of hooks issue on form
+
 ## [7.2.19] (2024-10-29)
 
 ### @axelor/aos-mobile-core
@@ -686,6 +706,7 @@ It enables user to manage Expenses through the mobile application. You can creat
 - Remove IconButton component which should be replaced by Button component.
 - Remove Pop-up components which should be replaced by Alert component.
 
+[7.2.20]: https://github.com/axelor/axelor-mobile/compare/7.2.19...7.2.20
 [7.2.19]: https://github.com/axelor/axelor-mobile/compare/7.2.18...7.2.19
 [7.2.18]: https://github.com/axelor/axelor-mobile/compare/7.2.17...7.2.18
 [7.2.17]: https://github.com/axelor/axelor-mobile/compare/7.2.16...7.2.17
