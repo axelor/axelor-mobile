@@ -33,12 +33,16 @@ export const formatPermissions = (permissionList: any[]): ModelsPermission => {
 
   const permissions: ModelsPermission = {};
 
-  permissionList.forEach(_permission => {
-    permissions[_permission.object] = {
-      canCreate: _permission.canCreate,
-      canRead: _permission.canRead,
-      canRemove: _permission.canRemove,
-      canWrite: _permission.canWrite,
+  permissionList.forEach(permission => {
+    const modelName = permission.object;
+
+    const _currentPermissions: Permission = permissions[modelName];
+
+    permissions[modelName] = {
+      canRead: _currentPermissions?.canRead || permission.canRead,
+      canWrite: _currentPermissions?.canWrite || permission.canWrite,
+      canCreate: _currentPermissions?.canCreate || permission.canCreate,
+      canRemove: _currentPermissions?.canRemove || permission.canRemove,
     };
   });
 
