@@ -17,7 +17,7 @@
  */
 
 import React, {useEffect, useMemo, useState} from 'react';
-import {ActivityIndicator, StyleSheet, View} from 'react-native';
+import {ActivityIndicator, Keyboard, StyleSheet, View} from 'react-native';
 import SystemNavigationBar from 'react-native-system-navigation-bar';
 import {ThemeColors, useThemeColor} from '../../../theme';
 import {useConfig} from '../../../config/ConfigContext';
@@ -55,6 +55,17 @@ const Screen = ({
     const {height} = event.nativeEvent.layout;
     setFixedItemsHeight(height);
   };
+
+  useEffect(() => {
+    const keyboardHideListener = Keyboard.addListener(
+      'keyboardDidHide',
+      immersiveMode,
+    );
+
+    return () => {
+      keyboardHideListener.remove();
+    };
+  }, []);
 
   useEffect(() => {
     immersiveMode();
