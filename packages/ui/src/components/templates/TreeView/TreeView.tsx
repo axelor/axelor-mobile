@@ -51,7 +51,7 @@ interface TreeViewProps {
   moreLoading: boolean;
   isListEnd: boolean;
   filter?: boolean;
-  translator?: (translationKey: string) => string;
+  translator: (translationKey: string) => string;
   disabledRefresh?: boolean;
   actionList?: ActionType[];
   verticalActions?: boolean;

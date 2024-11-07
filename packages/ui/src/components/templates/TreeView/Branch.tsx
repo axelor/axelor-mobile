@@ -34,7 +34,7 @@ interface SubBranchViewProps {
   fetchBranchData: (idParent: number) => Promise<any>;
   branchCondition: (item: any) => boolean;
   onBranchFilterPress: (branch: any) => void;
-  translator?: (translationKey: string) => string;
+  translator: (translationKey: string) => string;
 }
 
 const SubBranchView = ({
@@ -127,7 +127,7 @@ interface BranchProps {
   fetchBranchData: (idParent: number) => Promise<any>;
   branchCondition: (item: any) => boolean;
   onBranchFilterPress: (branch: any) => void;
-  translator?: (translationKey: string) => string;
+  translator: (translationKey: string) => string;
 }
 
 const Branch = ({
@@ -189,6 +189,7 @@ const Branch = ({
         parent={branch.item}
         onFilterPress={onBranchFilterPress}
         infoButtonIndication={branchCardInfoButtonIndication}
+        translator={translator}
       />
       {isBranchOpen && (
         <SubBranchView

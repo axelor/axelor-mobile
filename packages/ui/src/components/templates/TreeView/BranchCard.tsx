@@ -18,9 +18,8 @@
 
 import React from 'react';
 import {StyleSheet, TouchableOpacity, View} from 'react-native';
-import {useThemeColor} from '../../../theme';
 import {Card, Icon} from '../../atoms';
-import {InfoButton} from '../../organisms';
+import {ActionCard} from '../../organisms';
 
 interface BranchCardProps {
   onPress: () => void;
@@ -29,6 +28,7 @@ interface BranchCardProps {
   parent: any;
   onFilterPress: (branch: any) => void;
   infoButtonIndication: string;
+  translator: (translationKey: string) => string;
 }
 
 const BranchCard = ({
@@ -38,28 +38,25 @@ const BranchCard = ({
   parent,
   onFilterPress,
   infoButtonIndication,
+  translator,
 }: BranchCardProps) => {
-  const Colors = useThemeColor();
-
   return (
-    <View style={styles.container}>
-      <TouchableOpacity
-        style={styles.cardContainer}
-        onPress={onPress}
-        activeOpacity={0.9}>
+    <ActionCard
+      actionList={[
+        {
+          iconName: 'filter',
+          helper: infoButtonIndication,
+          onPress: () => onFilterPress(parent),
+        },
+      ]}
+      translator={translator}>
+      <TouchableOpacity onPress={onPress} activeOpacity={0.9}>
         <Card style={styles.card}>
           <View>{children}</View>
           <Icon name={isOpen ? 'chevron-up' : 'chevron-down'} />
         </Card>
       </TouchableOpacity>
-      <InfoButton
-        style={styles.infoButton}
-        iconName="filter"
-        iconColor={Colors.secondaryColor_dark.background}
-        onPress={() => onFilterPress(parent)}
-        indication={infoButtonIndication}
-      />
-    </View>
+    </ActionCard>
   );
 };
 
