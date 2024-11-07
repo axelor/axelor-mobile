@@ -1,0 +1,5 @@
+{
+  "title": "Screen: hide native navigation bar when keyboard disappears",
+  "type": "fix",
+  "packages": "ui"
+}
