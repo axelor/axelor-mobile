@@ -18,7 +18,12 @@
 
 import {HorizontalRule, Label, ThemeColors} from '@axelor/aos-mobile-ui';
 import {Field, InputType, JSONObject, Panel, Widget} from '../types';
-import {CustomButton, CustomPicker, CustomSearchBar} from '../../components';
+import {
+  CustomButton,
+  CustomPicker,
+  CustomSearchBar,
+  CustomTagList,
+} from '../../components';
 import {
   combinedFormula,
   createFormulaFunction,
@@ -347,6 +352,23 @@ const manageContentOfModel = (
 
           formFields[item.name] = config;
 
+          break;
+        case 'many-to-many':
+        case 'many-to-one':
+          formFields[item.name] = {
+            titleKey: item.title,
+            type: 'object',
+            order: item.sequence,
+            parentPanel: lastPanel,
+            widget: 'custom',
+            hideIf: () => item.hidden,
+            readonly: true,
+            customComponent: CustomTagList,
+            options: {
+              fieldName: 'name',
+              targetModel: item.targetModel,
+            },
+          };
           break;
       }
     });

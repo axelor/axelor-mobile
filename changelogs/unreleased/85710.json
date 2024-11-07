@@ -1,0 +1,5 @@
+{
+  "title": "CustomFieldForm: manage M2M and M2O fields",
+  "type": "feat",
+  "packages": "core"
+}

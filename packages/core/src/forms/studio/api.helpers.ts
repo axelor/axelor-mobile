@@ -142,27 +142,32 @@ export async function fetchData({
   domain,
   searchValue = null,
   page = 0,
+  criteria = [],
   searchFields,
 }: {
   modelName: string;
   domain?: string;
   searchValue?: string;
   page?: number;
+  criteria?: any[];
   searchFields?: string[];
 }) {
   if (modelName == null) {
     return null;
   }
 
-  let criteria = [];
+  let combinedCriteria = [...criteria];
 
   if (searchValue != null) {
-    searchFields.forEach(_field => {
-      criteria.push({
-        fieldName: _field,
-        operator: 'like',
-        value: searchValue,
-      });
+    const searchCriteria = searchFields.map(_field => ({
+      fieldName: _field,
+      operator: 'like',
+      value: searchValue,
+    }));
+
+    combinedCriteria.push({
+      criteria: searchCriteria,
+      operator: 'or',
     });
   }
 
@@ -172,12 +177,7 @@ export async function fetchData({
       data: {
         data: {
           _domain: domain,
-          criteria: [
-            {
-              criteria,
-              operator: 'or',
-            },
-          ],
+          criteria: combinedCriteria,
         },
         fields: searchFields,
         limit: 10,
