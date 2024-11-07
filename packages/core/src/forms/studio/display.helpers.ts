@@ -135,6 +135,9 @@ const mapStudioWidgetToWidget = (
     case 'Drawing':
       result.widget = 'signature';
       break;
+    case 'Image':
+      result.widget = 'file';
+      break;
     default:
       break;
   }
