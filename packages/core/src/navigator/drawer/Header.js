@@ -42,7 +42,7 @@ const Header = ({mainScreen, title, actionID = null, shadedHeader = true}) => {
 
   let timeOutRequestCall = useRef();
 
-  const {headers} = useHeaderActions(actionID);
+  const {headers, genericHeaders} = useHeaderActions(actionID);
 
   const [options, setOptions] = useState();
   const [containerHeight, setContainerHeight] = useState();
@@ -108,6 +108,8 @@ const Header = ({mainScreen, title, actionID = null, shadedHeader = true}) => {
           model={options.model}
           modelId={options.modelId}
           actions={options.actions}
+          genericActions={genericHeaders}
+          options={options.options}
           attachedFileScreenTitle={options.attachedFileScreenTitle}
           disableMailMessages={options.disableMailMessages}
           disablePrint={options.disablePrint}

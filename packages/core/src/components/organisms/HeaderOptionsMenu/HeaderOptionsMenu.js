@@ -29,6 +29,8 @@ const HeaderOptionsMenu = ({
   model,
   modelId,
   actions = [],
+  genericActions = {},
+  options,
   disableMailMessages,
   disableJsonFields,
   disablePrint,
@@ -63,27 +65,38 @@ const HeaderOptionsMenu = ({
     [collapseMenuItems],
   );
 
-  const allActions = useMemo(
-    () =>
-      [
-        attachedFilesAction,
-        mailMessagesAction,
-        printAction,
-        barcodeAction,
-        jsonFieldsAction,
-        ...actions,
-      ]
-        .filter(_action => !_action.hideIf)
-        .sort((a, b) => a.order - b.order),
-    [
-      actions,
+  const allActions = useMemo(() => {
+    let _genericActions = [];
+
+    if (model && modelId) {
+      _genericActions = Object.entries(genericActions).map(([key, func]) =>
+        func({model, modelId, options: options?.[key]}),
+      );
+    }
+
+    return [
       attachedFilesAction,
+      mailMessagesAction,
       printAction,
       barcodeAction,
       jsonFieldsAction,
-      mailMessagesAction,
-    ],
-  );
+      ...actions,
+      ..._genericActions,
+    ]
+      .filter(_action => !_action.hideIf)
+      .sort((a, b) => a.order - b.order);
+  }, [
+    actions,
+    attachedFilesAction,
+    barcodeAction,
+    genericActions,
+    jsonFieldsAction,
+    mailMessagesAction,
+    model,
+    modelId,
+    options,
+    printAction,
+  ]);
 
   const headerActions = useMemo(
     () => allActions.filter(_action => _action.showInHeader).slice(0, 2),

@@ -105,6 +105,61 @@ From a functional point of view, the set of actions is passed to the `HeaderOpti
 
 For small screens, all actions are displayed in the drop-down list.
 
+## Generic actions
+
+It is possible to create generic actions from any functional package.
+
+As for actions, this is done through a hook.
+
+```tsx
+const useAttachedFilesAction = () => {
+  const navigation = useNavigation();
+  const I18n = useTranslator();
+
+  useEffect(() => {
+    headerActionsProvider.registerGenericAction(
+      'dms_attachedFiles',
+      ({model, modelId, options}) => ({
+        key: 'attachedFiles',
+        order: 10,
+        onPress: () =>
+          navigation.navigate('AttachedFilesScreen', {model, modelId, options}),
+        hideIf: options.disabled,
+        indicator: ...,
+        iconName: 'bell-fill',
+        title: options.screenTitle,
+        showInHeader: true,
+      }),
+    );
+  }, [...]);
+};
+```
+
+You must therefore use `registerGenericAction` from the `headerActionsProvider` tool to associate a key with a function. This function takes `model`, `modelId` and `options` as parameters. It returns all the information necessary for the different actions of the header.
+
+The `options` parameter allows you to pass custom parameters from a screen using the key used to create the generic action.
+
+```tsx
+const useProductDetailsActions = () => {
+  const {mobileSettings} = useSelector(state => state.appConfig);
+  const {product} = useSelector(state => state.product);
+
+  useEffect(() => {
+    headerActionsProvider.registerModel('stock_product_details', {
+      model: 'com.axelor.apps.base.db.Product',
+      modelId: product?.id,
+      options: {
+        dms_attachedFiles: {
+          disabled: !mobileSettings?.isAttachedFilesEnabled,
+          screenTitle: product?.name,
+          ...
+        },
+      },
+    });
+  }, [mobileSettings, product]);
+};
+```
+
 ## Banners
 
 It is possible to add banners to be displayed above the header to inform the user of a global application situation (offline mode, loss of connection or test environment).
