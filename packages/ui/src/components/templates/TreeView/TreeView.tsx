@@ -17,7 +17,7 @@
  */
 
 import React, {useEffect, useState} from 'react';
-import {ActionType, ScrollList} from '../../organisms';
+import {ActionCardType, ActionType, ScrollList} from '../../organisms';
 import Branch from './Branch';
 
 interface TreeViewProps {
@@ -27,6 +27,7 @@ interface TreeViewProps {
   data: any[];
   parentFieldName: string;
   branchCardInfoButtonIndication: string;
+  branchCardActionList?: ActionCardType[];
   /**
    * Function used to display what is inside a branch card.
    */
@@ -64,6 +65,7 @@ const TreeView = ({
   data = [],
   parentFieldName,
   branchCardInfoButtonIndication,
+  branchCardActionList,
   renderBranch,
   renderLeaf,
   fetchData = () => [],
@@ -94,6 +96,7 @@ const TreeView = ({
         setOpenBranches={setOpenBranches}
         renderBranch={renderBranch}
         branchCardInfoButtonIndication={branchCardInfoButtonIndication}
+        branchCardActionList={branchCardActionList}
         renderLeaf={renderLeaf}
         fetchBranchData={fetchBranchData}
         branchCondition={branchCondition}

@@ -28,7 +28,7 @@ import {
 const ACTION_WIDTH = 40;
 const TWO_ACTIONS_HEIGHT = 84;
 
-interface Action {
+export interface Action {
   iconName: string;
   iconColor?: string;
   helper?: string;

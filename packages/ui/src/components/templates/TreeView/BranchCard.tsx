@@ -19,7 +19,7 @@
 import React from 'react';
 import {StyleSheet, TouchableOpacity, View} from 'react-native';
 import {Card, Icon} from '../../atoms';
-import {ActionCard} from '../../organisms';
+import {ActionCard, ActionCardType} from '../../organisms';
 
 interface BranchCardProps {
   onPress: () => void;
@@ -28,6 +28,7 @@ interface BranchCardProps {
   parent: any;
   onFilterPress: (branch: any) => void;
   infoButtonIndication: string;
+  actionList?: ActionCardType[];
   translator: (translationKey: string) => string;
 }
 
@@ -38,14 +39,17 @@ const BranchCard = ({
   parent,
   onFilterPress,
   infoButtonIndication,
+  actionList = [],
   translator,
 }: BranchCardProps) => {
   return (
     <ActionCard
       actionList={[
+        ...actionList,
         {
           iconName: 'filter',
           helper: infoButtonIndication,
+          large: true,
           onPress: () => onFilterPress(parent),
         },
       ]}
@@ -61,25 +65,14 @@ const BranchCard = ({
 };
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    flexDirection: 'row',
-    marginVertical: 2,
-    marginHorizontal: 10,
-  },
-  cardContainer: {
-    flex: 1,
-  },
   card: {
+    flex: 1,
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
     marginVertical: 2,
     paddingHorizontal: 15,
     paddingRight: 15,
-  },
-  infoButton: {
-    width: 40,
   },
 });
 
