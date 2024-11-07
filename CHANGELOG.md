@@ -3,6 +3,39 @@ title: 8.0.0
 tags: Changelog
 ---
 
+## [8.0.14] (2024-11-07)
+
+### @axelor/aos-mobile-core
+
+#### Fixes
+
+- MailMessages: display chips only on one line
+- Sessions: add export to use components in other packages
+
+### @axelor/aos-mobile-ui
+
+#### Features
+
+- ChipSelect: add possibility to define maximun number of line for chip titles
+
+#### Fixes
+
+- Screen: hide native navigation bar when keyboard disappears
+
+### @axelor/aos-mobile-hr
+
+#### Fixes
+
+- Expense line: solve number of hooks issue on form
+- Timesheet: trigger period computation on update
+- Expense: solve deletion error on expense and expense line
+
+### @axelor/aos-mobile-stock
+
+#### Fixes
+
+- Creation screens: improve scroll style
+
 ## [8.0.13] (2024-10-29)
 
 ### @axelor/aos-mobile-core
@@ -537,6 +570,7 @@ Changes has been done to get new core and ui improvements: use of ChipSelect, co
 
 Changes has been done to get new core and ui improvements: use of ChipSelect, color differentiation between success and primary, definition of required configs, use of icons for Bootstrap
 
+[8.0.14]: https://github.com/axelor/axelor-mobile/compare/8.0.13...8.0.14
 [8.0.13]: https://github.com/axelor/axelor-mobile/compare/8.0.12...8.0.13
 [8.0.12]: https://github.com/axelor/axelor-mobile/compare/8.0.11...8.0.12
 [8.0.11]: https://github.com/axelor/axelor-mobile/compare/8.0.10...8.0.11
