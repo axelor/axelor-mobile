@@ -1,5 +1,5 @@
 {
-  "title": "Permission: merge permission configurations for unified access control",
+  "title": "Permissions: merge configurations to avoid conflicts",
   "type": "fix",
   "packages": "core"
 }
