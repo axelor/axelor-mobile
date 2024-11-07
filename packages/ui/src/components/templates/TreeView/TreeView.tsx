@@ -33,6 +33,10 @@ interface TreeViewProps {
    */
   renderBranch: (renderParams: any) => any;
   /**
+   * Function used to display actions alongside a branch card.
+   */
+  renderBranchCardActionList?: (renderParams: any) => ActionCardType[];
+  /**
    * Function used to display a leaf card.
    */
   renderLeaf: (renderParams: any) => any;
@@ -65,8 +69,8 @@ const TreeView = ({
   data = [],
   parentFieldName,
   branchCardInfoButtonIndication,
-  branchCardActionList,
   renderBranch,
+  renderBranchCardActionList,
   renderLeaf,
   fetchData = () => [],
   fetchBranchData,
@@ -96,7 +100,7 @@ const TreeView = ({
         setOpenBranches={setOpenBranches}
         renderBranch={renderBranch}
         branchCardInfoButtonIndication={branchCardInfoButtonIndication}
-        branchCardActionList={branchCardActionList}
+        renderBranchCardActionList={renderBranchCardActionList}
         renderLeaf={renderLeaf}
         fetchBranchData={fetchBranchData}
         branchCondition={branchCondition}
