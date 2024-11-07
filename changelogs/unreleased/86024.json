@@ -1,5 +1,0 @@
-{
-  "title": "UI Configs: save configs into storage to restore them when opening the app",
-  "type": "feat",
-  "packages": "core"
-}

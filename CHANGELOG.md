@@ -3,6 +3,45 @@ title: 8.1.0
 tags: Changelog
 ---
 
+## [8.1.9] (2024-11-07)
+
+### @axelor/aos-mobile-core
+
+#### Features
+
+- UI Configs: save configs into storage to restore them when opening the app
+
+#### Fixes
+
+- Permissions: merge configurations to avoid conflicts
+- MailMessages: display chips only on one line
+- Sessions: add export to use components in other packages
+
+### @axelor/aos-mobile-ui
+
+#### Features
+
+- ChipSelect: add possibility to define maximun number of line for chip titles
+
+#### Fixes
+
+- Screen: hide native navigation bar when keyboard disappears
+- TreeView: resolve display issue on branch card
+
+### @axelor/aos-mobile-hr
+
+#### Fixes
+
+- Expense line: solve number of hooks issue on form
+- Timesheet: trigger period computation on update
+- Expense: solve deletion error on expense and expense line
+
+### @axelor/aos-mobile-stock
+
+#### Fixes
+
+- Creation screens: improve scroll style
+
 ## [8.1.8] (2024-10-29)
 
 ### @axelor/aos-mobile-core
@@ -467,7 +506,8 @@ It enables user to manage interventions and customer parc through the mobile app
 - Selections: use new system and tools instead of type files
 - Product indicators: use new chart component to display quantity indicators
 
-  [8.1.8]: https://github.com/axelor/axelor-mobile/compare/8.1.7...8.1.8
+  [8.1.9]: https://github.com/axelor/axelor-mobile/compare/8.1.8...8.1.9
+[8.1.8]: https://github.com/axelor/axelor-mobile/compare/8.1.7...8.1.8
   [8.1.7]: https://github.com/axelor/axelor-mobile/compare/8.1.6...8.1.7
   [8.1.6]: https://github.com/axelor/axelor-mobile/compare/8.1.5...8.1.6
   [8.1.5]: https://github.com/axelor/axelor-mobile/compare/8.1.4...8.1.5
