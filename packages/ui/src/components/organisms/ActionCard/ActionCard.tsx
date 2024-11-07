@@ -42,6 +42,7 @@ interface ActionCardProps {
   style?: any;
   children: any;
   actionList: Action[];
+  quickAction?: Action;
   horizontal?: boolean;
   forceActionsDisplay?: boolean;
   translator: (key: string) => string;
@@ -51,6 +52,7 @@ const ActionCard = ({
   style,
   children,
   actionList,
+  quickAction,
   horizontal = false,
   forceActionsDisplay = false,
   translator,
@@ -112,16 +114,12 @@ const ActionCard = ({
     const shouldDisplay =
       (_actionList.length > 2 ||
         (_actionList[0]?.large && horizontal) ||
-        _actionList[1]?.large) &&
+        _actionList[1]?.large ||
+        quickAction) &&
       !forceActionsDisplay;
     setDisplaySeeActionsButton(shouldDisplay);
     setIsActionsVisible(!shouldDisplay);
-  }, [_actionList, forceActionsDisplay, horizontal]);
-
-  const isCardMinHeight = useMemo(
-    () => _actionList.length > 1 || _actionList[0]?.large,
-    [_actionList],
-  );
+  }, [_actionList, forceActionsDisplay, horizontal, quickAction]);
 
   const styles = useMemo(
     () => getStyles(isMoreThanOneAction),
@@ -129,7 +127,7 @@ const ActionCard = ({
   );
 
   const getIconColor = (action: Action) => {
-    return action.iconColor ?? Colors.secondaryColor_dark.background;
+    return action?.iconColor ?? Colors.secondaryColor_dark.background;
   };
 
   const renderHorizontalActions = (list, isLastList) => {
@@ -201,44 +199,60 @@ const ActionCard = ({
     <View style={[styles.container, style]} ref={wrapperRef}>
       <View style={styles.cardContainer}>
         {React.cloneElement(children, {
-          style: {minHeight: isCardMinHeight && TWO_ACTIONS_HEIGHT},
+          style: styles.cardContainer,
         })}
       </View>
-      {_actionList.length > 0 &&
-        (displaySeeActionsButton && !isActionsVisible ? (
-          <InfoButton
-            style={styles.seeActions}
-            iconName="three-dots"
-            iconColor={Colors.secondaryColor_dark.background}
-            indication={translator('Base_SeeActions')}
-            onPress={() => setIsActionsVisible(true)}
-          />
-        ) : (
-          <View>
-            {horizontal ? (
-              <>
+      {_actionList.length > 0 && isActionsVisible && (
+        <View>
+          {horizontal ? (
+            <>
+              <View style={styles.horizontalActionContainer}>
+                {renderHorizontalActions(
+                  _actionList.slice(0, middleIndex),
+                  false,
+                )}
+              </View>
+              {isMoreThanOneAction && (
                 <View style={styles.horizontalActionContainer}>
                   {renderHorizontalActions(
-                    _actionList.slice(0, middleIndex),
-                    false,
+                    _actionList.slice(middleIndex),
+                    true,
                   )}
                 </View>
-                {isMoreThanOneAction && (
-                  <View style={styles.horizontalActionContainer}>
-                    {renderHorizontalActions(
-                      _actionList.slice(middleIndex),
-                      true,
-                    )}
-                  </View>
-                )}
-              </>
-            ) : (
-              <View style={styles.verticalActionContainer}>
-                {renderVerticalActions()}
-              </View>
+              )}
+            </>
+          ) : (
+            <View style={styles.verticalActionContainer}>
+              {renderVerticalActions()}
+            </View>
+          )}
+        </View>
+      )}
+      {_actionList.length > 0 &&
+        ((displaySeeActionsButton && !isActionsVisible) || quickAction) && (
+          <View
+            style={{
+              minHeight: quickAction && TWO_ACTIONS_HEIGHT,
+            }}>
+            {quickAction && (
+              <InfoButton
+                style={styles.smallAction}
+                iconName={quickAction?.iconName}
+                iconColor={getIconColor(quickAction)}
+                indication={quickAction?.helper}
+                onPress={quickAction?.onPress}
+                disabled={quickAction?.disabled}
+              />
             )}
+            <InfoButton
+              style={quickAction ? styles.smallAction : {width: ACTION_WIDTH}}
+              iconName="three-dots"
+              iconColor={Colors.secondaryColor_dark.background}
+              indication={translator('Base_SeeActions')}
+              onPress={() => setIsActionsVisible(current => !current)}
+            />
           </View>
-        ))}
+        )}
     </View>
   );
 };
@@ -255,8 +269,9 @@ const getStyles = (isMoreThanOneAction: boolean) =>
     cardContainer: {
       flex: 1,
     },
-    seeActions: {
+    smallAction: {
       width: 40,
+      height: '50%',
     },
     horizontalActionContainer: {
       flexDirection: 'row',

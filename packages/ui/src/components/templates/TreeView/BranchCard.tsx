@@ -44,15 +44,13 @@ const BranchCard = ({
 }: BranchCardProps) => {
   return (
     <ActionCard
-      actionList={[
-        ...actionList,
-        {
-          iconName: 'filter',
-          helper: infoButtonIndication,
-          large: true,
-          onPress: () => onFilterPress(parent),
-        },
-      ]}
+      actionList={actionList}
+      quickAction={{
+        iconName: 'filter',
+        helper: infoButtonIndication,
+        large: true,
+        onPress: () => onFilterPress(parent),
+      }}
       translator={translator}>
       <TouchableOpacity onPress={onPress} activeOpacity={0.9}>
         <Card style={styles.card}>
