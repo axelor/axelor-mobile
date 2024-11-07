@@ -22,11 +22,12 @@ This new application mobile includes at the moment the following modules with di
 - Stock management (AOS v6.4+)
 - Production (AOS v6.4+)
 - CRM (AOS v6.5+)
-
-Working on :
-
-- Human ressources (AOS v7.1+)
-- Offline management
+- Helpdesk (AOS v7.1+)
+- Human ressources (Expenses AOS v7.1+ / Timesheets AOS v8.0+)
+- Quality (AOS v8.0+)
+- Intervention (AOS v8.1+)
+- Project (AOS v8.2+)
+- Sale (AOS v8.2+)
 
 # Installation
 

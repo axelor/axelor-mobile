@@ -3,6 +3,59 @@ title: 8.2.0
 tags: Changelog
 ---
 
+## [8.2.1] (2024-11-07)
+
+### @axelor/aos-mobile-core
+
+#### Features
+
+- Header: add possibility to define generic actions from functional packages
+
+#### Fixes
+
+- Permissions: merge configurations to avoid conflicts
+- MailMessages: display chips only on one line
+- Sessions: add export to use components in other packages
+
+### @axelor/aos-mobile-ui
+
+#### Features
+
+- ChipSelect: add possibility to define maximun number of line for chip titles
+
+#### Fixes
+
+- Screen: hide native navigation bar when keyboard disappears
+- ActionCard: avoid display issue with vertial actions
+- TreeView: resolve display issue on branch card
+
+### @axelor/aos-mobile-sale
+
+#### Fixes
+
+- Cart: add refresh on screen focus
+
+### @axelor/aos-mobile-project
+
+#### Fixes
+
+- Task: add sorting in request to group task links
+
+### @axelor/aos-mobile-hr
+
+#### Fixes
+
+- Expense line: solve number of hooks issue on form
+- Timesheet: trigger period computation on update
+- Expense: solve deletion error on expense and expense line
+
+### @axelor/aos-mobile-stock
+
+#### Fixes
+
+- Product indicators: disable the popup to increase the pressable area to access stock indicator details view
+- Creation screens: improve scroll style
+
 ## [8.2.0] (2024-10-29)
 
 This release brings a major update to the project's dependencies, including React Native, which is now at 0.73.x.
@@ -118,4 +171,5 @@ This package is linked with the @axelor/aos-mobile-hr to manage time logging.
 
 - Supplier arrival: add possibility to fill origin when creating or selecting tracking number
 
-  [8.2.0]: https://github.com/axelor/axelor-mobile/compare/8.1.8...8.2.0
+  [8.2.1]: https://github.com/axelor/axelor-mobile/compare/8.2.0...8.2.1
+[8.2.0]: https://github.com/axelor/axelor-mobile/compare/8.1.8...8.2.0

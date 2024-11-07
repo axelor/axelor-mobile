@@ -1,5 +1,0 @@
-{
-  "title": "Permissions: merge configurations to avoid conflicts",
-  "type": "fix",
-  "packages": "core"
-}
