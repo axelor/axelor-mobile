@@ -1,0 +1,5 @@
+{
+  "title": "TreeView: resolve display issue on branch card",
+  "type": "fix",
+  "packages": "ui"
+}
