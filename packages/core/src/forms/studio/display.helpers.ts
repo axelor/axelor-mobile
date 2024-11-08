@@ -274,6 +274,23 @@ const manageContentOfModel = (
             options: {item},
           };
           break;
+        case 'many-to-many':
+        case 'many-to-one':
+          formFields[item.name] = {
+            titleKey: item.title,
+            type: 'object',
+            order: item.sequence,
+            parentPanel: lastPanel,
+            widget: 'custom',
+            hideIf: () => item.hidden,
+            readonly: true,
+            customComponent: CustomTagList,
+            options: {
+              fieldName: 'name',
+              targetModel: item.targetModel,
+            },
+          };
+          break;
         default:
           const fieldType: InputType = mapStudioTypeToInputType(item.type);
           const {widget, inputType} = mapStudioWidgetToWidget(item.widget);
@@ -352,23 +369,6 @@ const manageContentOfModel = (
 
           formFields[item.name] = config;
 
-          break;
-        case 'many-to-many':
-        case 'many-to-one':
-          formFields[item.name] = {
-            titleKey: item.title,
-            type: 'object',
-            order: item.sequence,
-            parentPanel: lastPanel,
-            widget: 'custom',
-            hideIf: () => item.hidden,
-            readonly: true,
-            customComponent: CustomTagList,
-            options: {
-              fieldName: 'name',
-              targetModel: item.targetModel,
-            },
-          };
           break;
       }
     });
