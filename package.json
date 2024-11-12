@@ -32,6 +32,7 @@
   "dependencies": {
     "@axelor/aos-mobile-core": "8.3.0",
     "@axelor/aos-mobile-crm": "8.3.0",
+    "@axelor/aos-mobile-dms": "8.3.0",
     "@axelor/aos-mobile-helpdesk": "8.3.0",
     "@axelor/aos-mobile-hr": "8.3.0",
     "@axelor/aos-mobile-intervention": "8.3.0",
