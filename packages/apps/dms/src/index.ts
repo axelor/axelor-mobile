@@ -25,10 +25,6 @@ export const DmsModule: Module = {
   title: 'Dms_Dms',
   subtitle: 'Dms_Dms',
   icon: 'inboxes-fill',
-  compatibilityAOS: {
-    moduleName: 'axelor-dms',
-    downToVersion: '8.3.0',
-  },
   translations: {
     en: enTranslations,
     fr: frTranslations,
