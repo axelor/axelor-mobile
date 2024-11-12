@@ -164,6 +164,8 @@ const ActionCard = ({
       const action2 = _actionList[index + 1];
       const action3 = _actionList[index + 2];
 
+      const isThreeActions = _actionList.length - index >= 3;
+
       verticalActions.push(
         <View
           style={
@@ -178,7 +180,7 @@ const ActionCard = ({
             onPress={action1.onPress}
             disabled={action1.disabled}
           />
-          {action2 != null && action3 != null && (
+          {action2 != null && (!isThreeActions || action3 != null) && (
             <InfoButton
               style={{width: ACTION_WIDTH}}
               iconName={action2.iconName}
