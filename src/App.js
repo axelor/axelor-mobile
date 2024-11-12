@@ -27,6 +27,7 @@ import {QualityModule} from '@axelor/aos-mobile-quality';
 import {InterventionModule} from '@axelor/aos-mobile-intervention';
 import {SaleModule} from '@axelor/aos-mobile-sale';
 import {ProjectModule} from '@axelor/aos-mobile-project';
+import {DmsModule} from '@axelor/aos-mobile-dms';
 import application_properties from '../package.json';
 import {app_config} from './app.config';
 
@@ -43,6 +44,7 @@ const App = () => {
         InterventionModule,
         SaleModule,
         ProjectModule,
+        DmsModule,
       ]}
       mainMenu="auth_menu_user"
       version={application_properties.version}
