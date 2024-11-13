@@ -1,0 +1,5 @@
+{
+  "title": "ExpenseLineFormScreen: remove bottom add button and put it on floating tools",
+  "type": "fix",
+  "packages": "hr"
+}
