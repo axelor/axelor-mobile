@@ -18,7 +18,12 @@
 
 import {HorizontalRule, Label, ThemeColors} from '@axelor/aos-mobile-ui';
 import {Field, InputType, JSONObject, Panel, Widget} from '../types';
-import {CustomButton, CustomPicker, CustomSearchBar} from '../../components';
+import {
+  CustomButton,
+  CustomPicker,
+  CustomSearchBar,
+  CustomTagList,
+} from '../../components';
 import {
   combinedFormula,
   createFormulaFunction,
@@ -98,6 +103,9 @@ const mapStudioTypeToInputType = (type: string): InputType => {
     case 'integer':
     case 'decimal':
       return 'number';
+    case 'many-to-many':
+    case 'one-to-many':
+      return 'array';
     case 'many-to-one':
     case 'reference':
       return 'object';
@@ -318,6 +326,14 @@ const manageContentOfModel = (
             config.widget = 'custom';
             config.customComponent = CustomPicker;
             config.options = {item};
+          }
+
+          if (fieldType === 'array') {
+            config.widget = 'custom';
+            config.customComponent = CustomTagList;
+            config.options = {
+              targetModel: item.targetModel,
+            };
           }
 
           if (fieldType === 'object' && widget !== 'signature') {
