@@ -22,6 +22,7 @@ import {
   ActionCardType,
   ActionType,
   AutoCompleteSearch,
+  Breadcrumb,
   HeaderContainer,
   TreeView,
 } from '@axelor/aos-mobile-ui';
@@ -64,6 +65,7 @@ interface SearchTreeViewProps {
   renderLeaf: (item: any) => any;
   actionList?: ActionType[];
   verticalActions?: boolean;
+  displayBreadcrumb?: boolean;
 }
 
 const SearchTreeView = ({
@@ -100,13 +102,22 @@ const SearchTreeView = ({
   renderLeaf,
   actionList,
   verticalActions,
+  displayBreadcrumb = false,
 }: SearchTreeViewProps) => {
   const I18n = useTranslator();
   const dispatch = useDispatch();
   const isFocused = useIsFocused();
 
   const [filter, setFilter] = useState(null);
-  const [parent, setParent] = useState(null);
+  const [parent, setParent] = useState([]);
+
+  const handleChangeParent = value => {
+    setParent(current => {
+      const _parent = [...current];
+      value ? _parent.push(value) : _parent.pop();
+      return _parent;
+    });
+  };
 
   const fetchParentSearchAPI = useCallback(
     ({page = 0, searchValue}) => {
@@ -126,9 +137,9 @@ const SearchTreeView = ({
       dispatch(
         sliceFunction({
           ...(sliceFunctionData ?? {}),
-          [sliceFunctionDataParentIdName]: parent?.id,
+          [sliceFunctionDataParentIdName]: parent.at(-1)?.id,
           [sliceFunctionDataNoParentName]:
-            parent == null && searchValue == null,
+            parent.length === 0 && searchValue == null,
           searchValue: searchValue,
           page: page,
         }),
@@ -169,8 +180,8 @@ const SearchTreeView = ({
     return (
       <AutoCompleteSearch
         objectList={parentList}
-        value={parent}
-        onChangeValue={setParent}
+        value={parent.at(-1)}
+        onChangeValue={handleChangeParent}
         fetchData={fetchParentSearchAPI}
         displayValue={displayParentSearchValue}
         placeholder={searchParentPlaceholder}
@@ -233,6 +244,16 @@ const SearchTreeView = ({
         {isHideableSearch && renderSearchBar()}
         {headerChildren}
       </HeaderContainer>
+      {displayBreadcrumb && (
+        <Breadcrumb
+          style={styles.breadcrumb}
+          items={parent.map((item, index) => ({
+            title: displayParentSearchValue(item),
+            onPress: () => setParent(current => current.slice(0, index + 1)),
+          }))}
+          onHomePress={() => setParent([])}
+        />
+      )}
       <TreeView
         loadingList={loading}
         data={list}
@@ -244,7 +265,7 @@ const SearchTreeView = ({
         fetchData={fetchListAPI}
         fetchBranchData={fetchBranchData}
         branchCondition={branchCondition}
-        onBranchFilterPress={setParent}
+        onBranchFilterPress={handleChangeParent}
         moreLoading={moreLoading}
         isListEnd={isListEnd}
         translator={I18n.t}
@@ -258,6 +279,9 @@ const SearchTreeView = ({
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+  },
+  breadcrumb: {
+    marginTop: 8,
   },
 });
 
