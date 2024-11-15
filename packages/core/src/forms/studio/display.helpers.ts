@@ -134,6 +134,9 @@ const mapStudioWidgetToWidget = (
     case 'Drawing':
       result.widget = 'signature';
       break;
+    case 'Image':
+      result.widget = 'file';
+      break;
     default:
       break;
   }
@@ -335,14 +338,16 @@ const manageContentOfModel = (
             };
           }
 
-          if (fieldType === 'object' && widget !== 'signature') {
-            config.widget = 'custom';
-            config.customComponent = CustomSearchBar;
-            config.options = {item};
-          }
-
-          if (widget === 'signature') {
-            config.options = {popup: true};
+          if (fieldType === 'object') {
+            if (widget === 'signature') {
+              config.options = {popup: true};
+            } else if (widget === 'file') {
+              config.options = {returnBase64String: false};
+            } else {
+              config.widget = 'custom';
+              config.customComponent = CustomSearchBar;
+              config.options = {item};
+            }
           }
 
           if (item.valueExpr != null) {
