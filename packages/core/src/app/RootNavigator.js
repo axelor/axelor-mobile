@@ -130,7 +130,15 @@ const RootNavigator = ({
     <Navigator screenOptions={{headerShown: false}}>
       {!logged ? (
         CustomLoginPage ? (
-          <Screen name="CustomLoginPage" component={CustomLoginPage} />
+          <Screen
+            name="CustomLoginPage"
+            component={CustomLoginPage}
+            initialParams={{
+              testInstanceConfig: configuration?.testInstanceConfig,
+              releaseInstanceConfig: configuration?.releaseInstanceConfig,
+              logoFile: configuration?.logoFile,
+            }}
+          />
         ) : configuration?.enableConnectionSessions ? (
           <Screen
             name="SessionManagementScreen"

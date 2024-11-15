@@ -1,0 +1,5 @@
+{
+  "title": "CustomLoginPage: add same props to component as other login screen",
+  "type": "fix",
+  "packages": "core"
+}
