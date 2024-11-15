@@ -1,5 +1,5 @@
 {
-  "title": "CustomFieldForm: manage M2M and M2O fields",
+  "title": "CustomFieldForm: manage M2M and O2M fields display",
   "type": "feat",
   "packages": "core"
 }

@@ -18,53 +18,31 @@
 
 import React, {useEffect, useMemo, useState} from 'react';
 import {TagList} from '@axelor/aos-mobile-ui';
-import {customComponentOptions} from '../../../../forms/types';
-import {fetchData} from '../../../../forms/studio/api.helpers';
+import {customComponentOptions, fetchData} from '../../../../forms';
 
 interface props extends customComponentOptions {
-  style?: any;
-  title?: string;
-  defaultValue?: any;
-  onChange: (value: any) => void;
-  required?: boolean;
-  readonly?: boolean;
   targetModel?: string;
 }
 
-const CustomTagList = ({defaultValue, title, targetModel}: props) => {
+const CustomTagList = ({style, title, defaultValue, targetModel}: props) => {
   const [tagsData, setTagsData] = useState([]);
 
   useEffect(() => {
     const fetchTagsData = async () => {
-      const criteria = Array.isArray(defaultValue)
-        ? [
+      if (targetModel && defaultValue != null) {
+        fetchData({
+          modelName: targetModel,
+          criteria: [
             {
               fieldName: 'id',
               operator: 'in',
-              value: defaultValue.map(item => item.id),
+              value: defaultValue.map(({id}) => id),
             },
-          ]
-        : defaultValue?.id
-          ? [
-              {
-                fieldName: 'id',
-                operator: '=',
-                value: defaultValue.id,
-              },
-            ]
-          : [];
-
-      if (criteria.length > 0 && targetModel) {
-        try {
-          const fetchedData = await fetchData({
-            modelName: targetModel,
-            criteria,
-            searchFields: ['fullName', 'name'],
-          });
-          setTagsData(fetchedData);
-        } catch (error) {
-          setTagsData([]);
-        }
+          ],
+          searchFields: ['fullName', 'name'],
+        })
+          .then(setTagsData)
+          .catch(() => setTagsData([]));
       }
     };
 
@@ -77,7 +55,7 @@ const CustomTagList = ({defaultValue, title, targetModel}: props) => {
     }));
   }, [tagsData]);
 
-  return <TagList tags={tags} title={title} />;
+  return <TagList style={style} tags={tags} title={title} />;
 };
 
 export default CustomTagList;

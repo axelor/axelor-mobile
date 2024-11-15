@@ -103,6 +103,9 @@ const mapStudioTypeToInputType = (type: string): InputType => {
     case 'integer':
     case 'decimal':
       return 'number';
+    case 'many-to-many':
+    case 'one-to-many':
+      return 'array';
     case 'many-to-one':
     case 'reference':
       return 'object';
@@ -274,23 +277,6 @@ const manageContentOfModel = (
             options: {item},
           };
           break;
-        case 'many-to-many':
-        case 'many-to-one':
-          formFields[item.name] = {
-            titleKey: item.title,
-            type: 'object',
-            order: item.sequence,
-            parentPanel: lastPanel,
-            widget: 'custom',
-            hideIf: () => item.hidden,
-            readonly: true,
-            customComponent: CustomTagList,
-            options: {
-              fieldName: 'name',
-              targetModel: item.targetModel,
-            },
-          };
-          break;
         default:
           const fieldType: InputType = mapStudioTypeToInputType(item.type);
           const {widget, inputType} = mapStudioWidgetToWidget(item.widget);
@@ -340,6 +326,14 @@ const manageContentOfModel = (
             config.widget = 'custom';
             config.customComponent = CustomPicker;
             config.options = {item};
+          }
+
+          if (fieldType === 'array') {
+            config.widget = 'custom';
+            config.customComponent = CustomTagList;
+            config.options = {
+              targetModel: item.targetModel,
+            };
           }
 
           if (fieldType === 'object' && widget !== 'signature') {
