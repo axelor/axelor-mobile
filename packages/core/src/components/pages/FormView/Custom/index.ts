@@ -20,3 +20,4 @@ export {default as CustomButton} from './CustomButton';
 export {default as CustomPasswordInput} from './CustomPasswordInput';
 export {default as CustomPicker} from './CustomPicker';
 export {default as CustomSearchBar} from './CustomSearchBar';
+export {default as CustomTagList} from './CustomTagList';
