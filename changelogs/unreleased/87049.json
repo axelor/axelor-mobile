@@ -1,0 +1,5 @@
+{
+  "title": "SessionInputs: improve field updating",
+  "type": "fix",
+  "packages": "core"
+}

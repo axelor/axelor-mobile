@@ -108,12 +108,7 @@ const SessionInputs = ({
   const [isKeyboardOpen, setIsKeyboardOpen] = useState(false);
 
   useEffect(() => {
-    if (
-      session != null &&
-      !loading &&
-      mode !== MODE.creation &&
-      mode !== MODE.unique
-    ) {
+    if (session != null && !loading && mode !== MODE.creation) {
       setForm({...session});
     }
   }, [loading, mode, session]);
