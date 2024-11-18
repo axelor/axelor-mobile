@@ -280,7 +280,7 @@ const ExpenseLineFormScreen = ({route, navigation}) => {
         },
         {
           key: 'create-and-link-expenseLine',
-          type: 'update',
+          type: 'create',
           needValidation: true,
           needRequiredFields: true,
           hideIf: () => expenseLine != null || idExpense == null,
