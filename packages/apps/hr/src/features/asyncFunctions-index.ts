@@ -17,7 +17,13 @@
  */
 
 export {searchCurrencies} from './currencySlice';
-export {getDistance} from './distanceSlice';
+export {
+  getDistance,
+  needUpdateDistance,
+  resetDistance,
+  updateFromCity,
+  updateToCity,
+} from './distanceSlice';
 export {searchManagedEmployee} from './employeeSlice';
 export {fetchExpenseConfig} from './expenseConfigSlice';
 export {
@@ -40,5 +46,8 @@ export {
   validateExpense,
 } from './expenseSlice';
 export {searchExpenseType} from './expenseTypeSlice';
-export {searchKilometricAllowParam} from './kilometricAllowParamSlice';
+export {
+  searchKilometricAllowParam,
+  updateExpenseDate,
+} from './kilometricAllowParamSlice';
 export {searchProject} from './projectSlice';
