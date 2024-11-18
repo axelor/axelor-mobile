@@ -31,7 +31,7 @@ interface SubBranchViewProps {
   setOpenBranches: (current: any) => void;
   branchCardInfoButtonIndication: string;
   renderBranch: (renderParams: any) => any;
-  renderBranchCardActionList?: (renderParams: any) => ActionCardType[];
+  getBranchActions?: (renderParams: any) => ActionCardType[];
   renderLeaf: (renderParams: any) => any;
   fetchBranchData: (idParent: number) => Promise<any>;
   branchCondition: (item: any) => boolean;
@@ -47,7 +47,7 @@ const SubBranchView = ({
   setOpenBranches,
   branchCardInfoButtonIndication,
   renderBranch,
-  renderBranchCardActionList,
+  getBranchActions,
   renderLeaf,
   fetchBranchData,
   branchCondition,
@@ -104,7 +104,7 @@ const SubBranchView = ({
             setOpenBranches={setOpenBranches}
             renderBranch={renderBranch}
             branchCardInfoButtonIndication={branchCardInfoButtonIndication}
-            renderBranchCardActionList={renderBranchCardActionList}
+            getBranchActions={getBranchActions}
             renderLeaf={renderLeaf}
             fetchBranchData={fetchBranchData}
             branchCondition={branchCondition}
@@ -127,7 +127,7 @@ interface BranchProps {
   setOpenBranches: (current: any) => void;
   branchCardInfoButtonIndication: string;
   renderBranch: (renderParams: any) => any;
-  renderBranchCardActionList?: (renderParams: any) => ActionCardType[];
+  getBranchActions?: (renderParams: any) => ActionCardType[];
   renderLeaf: (renderParams: any) => any;
   fetchBranchData: (idParent: number) => Promise<any>;
   branchCondition: (item: any) => boolean;
@@ -143,7 +143,7 @@ const Branch = ({
   setOpenBranches,
   branchCardInfoButtonIndication,
   renderBranch,
-  renderBranchCardActionList,
+  getBranchActions,
   renderLeaf,
   fetchBranchData,
   branchCondition,
@@ -195,7 +195,7 @@ const Branch = ({
         parent={branch.item}
         onFilterPress={onBranchFilterPress}
         infoButtonIndication={branchCardInfoButtonIndication}
-        actionList={renderBranchCardActionList(branch)}
+        actionList={getBranchActions?.(branch)}
         translator={translator}
       />
       {isBranchOpen && (
@@ -207,7 +207,7 @@ const Branch = ({
           setOpenBranches={setOpenBranches}
           renderBranch={renderBranch}
           branchCardInfoButtonIndication={branchCardInfoButtonIndication}
-          renderBranchCardActionList={renderBranchCardActionList}
+          getBranchActions={getBranchActions}
           renderLeaf={renderLeaf}
           fetchBranchData={fetchBranchData}
           branchCondition={branchCondition}

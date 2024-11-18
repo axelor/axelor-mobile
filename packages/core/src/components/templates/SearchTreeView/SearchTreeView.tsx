@@ -60,7 +60,7 @@ interface SearchTreeViewProps {
   headerTopChildren?: any;
   parentFieldName?: string;
   renderBranch?: (item: any) => any;
-  renderBranchCardActionList?: (branch: any) => ActionCardType[];
+  getBranchActions?: (branch: any) => ActionCardType[];
   renderLeaf: (item: any) => any;
   actionList?: ActionType[];
   verticalActions?: boolean;
@@ -96,7 +96,7 @@ const SearchTreeView = ({
   headerTopChildren,
   parentFieldName,
   renderBranch,
-  renderBranchCardActionList,
+  getBranchActions,
   renderLeaf,
   actionList,
   verticalActions,
@@ -239,7 +239,7 @@ const SearchTreeView = ({
         parentFieldName={parentFieldName}
         branchCardInfoButtonIndication={I18n.t('Base_Filter')}
         renderBranch={renderBranch}
-        renderBranchCardActionList={renderBranchCardActionList}
+        getBranchActions={getBranchActions}
         renderLeaf={renderLeaf}
         fetchData={fetchListAPI}
         fetchBranchData={fetchBranchData}

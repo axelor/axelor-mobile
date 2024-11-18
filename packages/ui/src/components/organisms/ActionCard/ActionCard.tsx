@@ -26,7 +26,6 @@ import {
 } from '../../../hooks/use-click-outside';
 
 const ACTION_WIDTH = 40;
-const TWO_ACTIONS_HEIGHT = 84;
 
 export interface Action {
   iconName: string;
@@ -112,11 +111,11 @@ const ActionCard = ({
 
   useEffect(() => {
     const shouldDisplay =
-      (_actionList.length > 2 ||
-        (_actionList[0]?.large && horizontal) ||
-        _actionList[1]?.large ||
-        quickAction) &&
-      !forceActionsDisplay;
+      (quickAction != null && !quickAction.large
+        ? _actionList.length > 1
+        : _actionList.length > 2 ||
+          (_actionList[0]?.large && horizontal) ||
+          _actionList[1]?.large) && !forceActionsDisplay;
     setDisplaySeeActionsButton(shouldDisplay);
     setIsActionsVisible(!shouldDisplay);
   }, [_actionList, forceActionsDisplay, horizontal, quickAction]);
@@ -164,9 +163,7 @@ const ActionCard = ({
 
       verticalActions.push(
         <View
-          style={
-            getVerticalActionStyle(action2 == null || action3 === null).action
-          }
+          style={getVerticalActionStyle(action2 == null || action3 === null)}
           key={index}>
           <InfoButton
             style={{width: ACTION_WIDTH}}
@@ -202,57 +199,69 @@ const ActionCard = ({
           style: styles.cardContainer,
         })}
       </View>
-      {_actionList.length > 0 && isActionsVisible && (
-        <View>
-          {horizontal ? (
-            <>
-              <View style={styles.horizontalActionContainer}>
-                {renderHorizontalActions(
-                  _actionList.slice(0, middleIndex),
-                  false,
-                )}
-              </View>
-              {isMoreThanOneAction && (
+      {_actionList.length > 0 &&
+        isActionsVisible &&
+        (!quickAction || isMoreThanOneAction) && (
+          <View>
+            {horizontal ? (
+              <>
                 <View style={styles.horizontalActionContainer}>
                   {renderHorizontalActions(
-                    _actionList.slice(middleIndex),
-                    true,
+                    _actionList.slice(0, middleIndex),
+                    false,
                   )}
                 </View>
-              )}
-            </>
-          ) : (
-            <View style={styles.verticalActionContainer}>
-              {renderVerticalActions()}
-            </View>
-          )}
-        </View>
-      )}
-      {_actionList.length > 0 &&
-        ((displaySeeActionsButton && !isActionsVisible) || quickAction) && (
-          <View
-            style={{
-              minHeight: quickAction && TWO_ACTIONS_HEIGHT,
-            }}>
-            {quickAction && (
-              <InfoButton
-                style={styles.smallAction}
-                iconName={quickAction?.iconName}
-                iconColor={getIconColor(quickAction)}
-                indication={quickAction?.helper}
-                onPress={quickAction?.onPress}
-                disabled={quickAction?.disabled}
-              />
+                {isMoreThanOneAction && (
+                  <View style={styles.horizontalActionContainer}>
+                    {renderHorizontalActions(
+                      _actionList.slice(middleIndex),
+                      true,
+                    )}
+                  </View>
+                )}
+              </>
+            ) : (
+              <View style={styles.verticalActionContainer}>
+                {renderVerticalActions()}
+              </View>
             )}
-            <InfoButton
-              style={quickAction ? styles.smallAction : {width: ACTION_WIDTH}}
-              iconName="three-dots"
-              iconColor={Colors.secondaryColor_dark.background}
-              indication={translator('Base_SeeActions')}
-              onPress={() => setIsActionsVisible(current => !current)}
-            />
           </View>
         )}
+      <View style={styles.quickActionContainer}>
+        {quickAction != null && _actionList.length === 1 && (
+          <InfoButton
+            style={getVerticalActionStyle(false)}
+            iconName={actionList[0].iconName}
+            iconColor={getIconColor(actionList[0])}
+            indication={actionList[0].helper}
+            onPress={actionList[0].onPress}
+            disabled={actionList[0].disabled}
+          />
+        )}
+        {displaySeeActionsButton && (
+          <InfoButton
+            style={getVerticalActionStyle(
+              quickAction == null || quickAction.large,
+            )}
+            iconName="three-dots"
+            iconColor={Colors.secondaryColor_dark.background}
+            indication={translator('Base_SeeActions')}
+            onPress={() => setIsActionsVisible(current => !current)}
+          />
+        )}
+        {quickAction && (
+          <InfoButton
+            style={getVerticalActionStyle(
+              _actionList.length === 0 || quickAction.large,
+            )}
+            iconName={quickAction?.iconName}
+            iconColor={getIconColor(quickAction)}
+            indication={quickAction?.helper}
+            onPress={quickAction?.onPress}
+            disabled={quickAction?.disabled}
+          />
+        )}
+      </View>
     </View>
   );
 };
@@ -269,10 +278,6 @@ const getStyles = (isMoreThanOneAction: boolean) =>
     cardContainer: {
       flex: 1,
     },
-    smallAction: {
-      width: 40,
-      height: '50%',
-    },
     horizontalActionContainer: {
       flexDirection: 'row',
       flexWrap: 'wrap',
@@ -282,13 +287,18 @@ const getStyles = (isMoreThanOneAction: boolean) =>
     verticalActionContainer: {
       flexDirection: 'row',
     },
+    quickActionContainer: {
+      flexDirection: 'column-reverse',
+      flexWrap: 'wrap',
+    },
   });
 
 const getVerticalActionStyle = (isLargeAction: boolean) =>
   StyleSheet.create({
     action: {
+      width: ACTION_WIDTH,
       height: isLargeAction ? '100%' : '50%',
     },
-  });
+  }).action;
 
 export default ActionCard;
