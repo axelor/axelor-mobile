@@ -138,6 +138,7 @@ const CustomerParkScreen = ({}) => {
             selectionItems={serviceStatusList}
           />
         }
+        displayBreadcrumb={customer}
       />
     </Screen>
   );
