@@ -3,6 +3,20 @@ title: 7.2.0
 tags: Changelog
 ---
 
+## [7.2.21] (2024-11-19)
+
+### @axelor/aos-mobile-ui
+
+#### Fixes
+
+- Increment: improve management of spacers on blur
+
+### @axelor/aos-mobile-hr
+
+#### Fixes
+
+- Reducers: add missing exports
+
 ## [7.2.20] (2024-11-07)
 
 ### @axelor/aos-mobile-core
@@ -706,6 +720,7 @@ It enables user to manage Expenses through the mobile application. You can creat
 - Remove IconButton component which should be replaced by Button component.
 - Remove Pop-up components which should be replaced by Alert component.
 
+[7.2.21]: https://github.com/axelor/axelor-mobile/compare/7.2.20...7.2.21
 [7.2.20]: https://github.com/axelor/axelor-mobile/compare/7.2.19...7.2.20
 [7.2.19]: https://github.com/axelor/axelor-mobile/compare/7.2.18...7.2.19
 [7.2.18]: https://github.com/axelor/axelor-mobile/compare/7.2.17...7.2.18
