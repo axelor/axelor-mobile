@@ -3,6 +3,32 @@ title: 8.1.0
 tags: Changelog
 ---
 
+## [8.1.10] (2024-11-19)
+
+### @axelor/aos-mobile-core
+
+#### Features
+
+- CustomFieldForm: manage M2M and O2M fields display
+- CustomFieldForm: manage image widget
+
+#### Fixes
+
+- CustomLoginPage: add same props to component as other login screen
+
+### @axelor/aos-mobile-ui
+
+#### Fixes
+
+- Increment: improve management of spacers on blur
+
+### @axelor/aos-mobile-hr
+
+#### Fixes
+
+- Expense line form: move the add button to the floating tools
+- Reducers: add missing exports
+
 ## [8.1.9] (2024-11-07)
 
 ### @axelor/aos-mobile-core
@@ -506,7 +532,8 @@ It enables user to manage interventions and customer parc through the mobile app
 - Selections: use new system and tools instead of type files
 - Product indicators: use new chart component to display quantity indicators
 
-  [8.1.9]: https://github.com/axelor/axelor-mobile/compare/8.1.8...8.1.9
+  [8.1.10]: https://github.com/axelor/axelor-mobile/compare/8.1.9...8.1.10
+[8.1.9]: https://github.com/axelor/axelor-mobile/compare/8.1.8...8.1.9
 [8.1.8]: https://github.com/axelor/axelor-mobile/compare/8.1.7...8.1.8
   [8.1.7]: https://github.com/axelor/axelor-mobile/compare/8.1.6...8.1.7
   [8.1.6]: https://github.com/axelor/axelor-mobile/compare/8.1.5...8.1.6

@@ -1,5 +1,0 @@
-{
-  "title": "Increment: improve management of spacers on blur",
-  "type": "fix",
-  "packages": "ui"
-}
