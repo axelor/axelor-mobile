@@ -3,6 +3,20 @@ title: 8.0.0
 tags: Changelog
 ---
 
+## [8.0.15] (2024-11-19)
+
+### @axelor/aos-mobile-ui
+
+#### Fixes
+
+- Increment: improve management of spacers on blur
+
+### @axelor/aos-mobile-hr
+
+#### Fixes
+
+- Reducers: add missing exports
+
 ## [8.0.14] (2024-11-07)
 
 ### @axelor/aos-mobile-core
@@ -570,6 +584,7 @@ Changes has been done to get new core and ui improvements: use of ChipSelect, co
 
 Changes has been done to get new core and ui improvements: use of ChipSelect, color differentiation between success and primary, definition of required configs, use of icons for Bootstrap
 
+[8.0.15]: https://github.com/axelor/axelor-mobile/compare/8.0.14...8.0.15
 [8.0.14]: https://github.com/axelor/axelor-mobile/compare/8.0.13...8.0.14
 [8.0.13]: https://github.com/axelor/axelor-mobile/compare/8.0.12...8.0.13
 [8.0.12]: https://github.com/axelor/axelor-mobile/compare/8.0.11...8.0.12
