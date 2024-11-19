@@ -26,6 +26,7 @@ import {
 } from '../../../hooks/use-click-outside';
 
 const ACTION_WIDTH = 40;
+const TWO_ACTIONS_HEIGHT = 84;
 
 export interface Action {
   iconName: string;
@@ -91,6 +92,12 @@ const ActionCard = ({
     [actionList],
   );
 
+  const _quickAction = useMemo(
+    () =>
+      quickAction != null && !quickAction.hidden ? quickAction : undefined,
+    [quickAction],
+  );
+
   const isMoreThanOneAction = useMemo(
     () => _actionList.length > 1,
     [_actionList],
@@ -111,14 +118,19 @@ const ActionCard = ({
 
   useEffect(() => {
     const shouldDisplay =
-      (quickAction != null && !quickAction.large
+      (_quickAction != null && !_quickAction.large
         ? _actionList.length > 1
         : _actionList.length > 2 ||
           (_actionList[0]?.large && horizontal) ||
           _actionList[1]?.large) && !forceActionsDisplay;
     setDisplaySeeActionsButton(shouldDisplay);
     setIsActionsVisible(!shouldDisplay);
-  }, [_actionList, forceActionsDisplay, horizontal, quickAction]);
+  }, [_actionList, forceActionsDisplay, horizontal, _quickAction]);
+
+  const isCardMinHeight = useMemo(
+    () => _actionList.length > 1 || _actionList[0]?.large,
+    [_actionList],
+  );
 
   const styles = useMemo(
     () => getStyles(isMoreThanOneAction),
@@ -196,12 +208,12 @@ const ActionCard = ({
     <View style={[styles.container, style]} ref={wrapperRef}>
       <View style={styles.cardContainer}>
         {React.cloneElement(children, {
-          style: styles.cardContainer,
+          style: {minHeight: isCardMinHeight && TWO_ACTIONS_HEIGHT},
         })}
       </View>
       {_actionList.length > 0 &&
         isActionsVisible &&
-        (!quickAction || isMoreThanOneAction) && (
+        (!_quickAction || isMoreThanOneAction) && (
           <View>
             {horizontal ? (
               <>
@@ -228,7 +240,7 @@ const ActionCard = ({
           </View>
         )}
       <View style={styles.quickActionContainer}>
-        {quickAction != null && _actionList.length === 1 && (
+        {_quickAction != null && _actionList.length === 1 && (
           <InfoButton
             style={getVerticalActionStyle(false)}
             iconName={actionList[0].iconName}
@@ -241,7 +253,7 @@ const ActionCard = ({
         {displaySeeActionsButton && (
           <InfoButton
             style={getVerticalActionStyle(
-              quickAction == null || quickAction.large,
+              _quickAction == null || _quickAction.large,
             )}
             iconName="three-dots"
             iconColor={Colors.secondaryColor_dark.background}
@@ -249,16 +261,16 @@ const ActionCard = ({
             onPress={() => setIsActionsVisible(current => !current)}
           />
         )}
-        {quickAction && (
+        {_quickAction != null && (
           <InfoButton
             style={getVerticalActionStyle(
-              _actionList.length === 0 || quickAction.large,
+              _actionList.length === 0 || _quickAction.large,
             )}
-            iconName={quickAction?.iconName}
-            iconColor={getIconColor(quickAction)}
-            indication={quickAction?.helper}
-            onPress={quickAction?.onPress}
-            disabled={quickAction?.disabled}
+            iconName={_quickAction.iconName}
+            iconColor={getIconColor(_quickAction)}
+            indication={_quickAction.helper}
+            onPress={_quickAction.onPress}
+            disabled={_quickAction.disabled}
           />
         )}
       </View>
