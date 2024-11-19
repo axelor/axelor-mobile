@@ -9,7 +9,7 @@
   "Base_AllFilters": "Tous les filtres",
   "Base_DateFormat": "DD/MM/YYYY",
   "Base_DateTimeFormat": "DD/MM/YYYY HH:mm",
-  "Base_DecimalSpacer": ".",
+  "Base_DecimalSpacer": ",",
   "Base_ThousandSpacer": " ",
   "Base_CreatedOn": "Créé le",
   "Base_ValidatedOn": "Validé le",

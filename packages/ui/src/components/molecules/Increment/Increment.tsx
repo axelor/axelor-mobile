@@ -157,14 +157,12 @@ const Increment = ({
   };
 
   const handleEndInput = () => {
-    if (valueQty?.slice(-1) === decimalSpacer) {
-      valueQty.replace(/.,$/, '');
-    }
+    const unformattedValue = defaultFormatting ? unformat(valueQty) : valueQty;
 
-    if (valueQty === '' || valueQty == null) {
+    if (unformattedValue === '' || unformattedValue == null) {
       handleResult(0);
     } else {
-      handleResult(parseFloat(valueQty));
+      handleResult(parseFloat(unformattedValue));
     }
 
     onBlur();
