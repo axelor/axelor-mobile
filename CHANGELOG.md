@@ -3,6 +3,33 @@ title: 8.2.0
 tags: Changelog
 ---
 
+## [8.2.2] (2024-11-19)
+
+### @axelor/aos-mobile-core
+
+#### Features
+
+- CustomFieldForm: manage M2M and O2M fields display
+- CustomFieldForm: manage image widget
+
+#### Fixes
+
+- CustomLoginPage: add same props to component as other login screen
+
+### @axelor/aos-mobile-ui
+
+#### Fixes
+
+- ActionCard: avoid display issue with two vertial actions
+- Increment: improve management of spacers on blur
+
+### @axelor/aos-mobile-hr
+
+#### Fixes
+
+- Expense line form: move the add button to the floating tools
+- Reducers: add missing exports
+
 ## [8.2.1] (2024-11-07)
 
 ### @axelor/aos-mobile-core
@@ -171,5 +198,6 @@ This package is linked with the @axelor/aos-mobile-hr to manage time logging.
 
 - Supplier arrival: add possibility to fill origin when creating or selecting tracking number
 
+  [8.2.2]: https://github.com/axelor/axelor-mobile/compare/8.2.1...8.2.2
   [8.2.1]: https://github.com/axelor/axelor-mobile/compare/8.2.0...8.2.1
-[8.2.0]: https://github.com/axelor/axelor-mobile/compare/8.1.8...8.2.0
+  [8.2.0]: https://github.com/axelor/axelor-mobile/compare/8.1.8...8.2.0
