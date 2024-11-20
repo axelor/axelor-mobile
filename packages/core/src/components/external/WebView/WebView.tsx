@@ -60,6 +60,7 @@ const WebView = ({style, baseUrl, path, queryParams}: WebViewProps) => {
 
   return (
     <RNWebView
+      geolocationEnabled={true}
       containerStyle={style}
       source={{uri}}
       startInLoadingState

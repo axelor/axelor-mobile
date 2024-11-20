@@ -61,6 +61,13 @@
 	<string>Allow access to your camera to scan barcodes or upload photos to the server.</string>
 	<key>NSContactsUsageDescription</key>
 	<string>Allow access to your contacts to save contact from the server to your phone.</string>
+	<key>NSLocationWhenInUseUsageDescription</key>
+	<string>Allow access to your location while using the app to display your position on the map.</string>
+	<key>NSLocationAlwaysUsageDescription</key>
+	<string>Allow access to your location even when the app is in the background to enhance location-based features.</string>
+	<key>NSLocationAlwaysAndWhenInUsageDescription</key>
+	<string>Allow access to your location for enhanced geolocation features.</string>
+
 	<key>UIAppFonts</key>
 	<array>
 		<string>AntDesign.ttf</string>
