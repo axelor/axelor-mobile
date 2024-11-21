@@ -21,9 +21,7 @@ import {createStandardSearch} from '../apiProviders';
 export async function getAllMetaModules({}) {
   return createStandardSearch({
     model: 'com.axelor.meta.db.MetaModule',
-    criteria: [],
     fieldKey: 'core_module',
-    sortKey: 'core_module',
     numberElementsByPage: null,
     page: 0,
     provider: 'model',
