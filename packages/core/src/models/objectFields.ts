@@ -53,7 +53,6 @@ export const core_modelAPI: ObjectFields = {
       }),
     ),
   }),
-
   core_module: schemaContructor.object({
     moduleVersion: schemaContructor.string(),
     name: schemaContructor.string(),
