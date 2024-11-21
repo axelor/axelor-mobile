@@ -27,7 +27,7 @@ import {QualityModule} from '@axelor/aos-mobile-quality';
 import {InterventionModule} from '@axelor/aos-mobile-intervention';
 import {SaleModule} from '@axelor/aos-mobile-sale';
 import {ProjectModule} from '@axelor/aos-mobile-project';
-import {PurchaseModule} from '@axelor/apps/purchase';
+import {PurchaseModule} from '@axelor/aos-mobile-purchase';
 import {DmsModule} from '@axelor/aos-mobile-dms';
 import application_properties from '../package.json';
 import {app_config} from './app.config';
