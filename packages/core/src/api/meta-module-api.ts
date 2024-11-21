@@ -16,8 +16,13 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import {axiosApiProvider} from '../apiProviders';
+import {createStandardSearch} from '../apiProviders';
 
-export const getAllMetaModules = () => {
-  return axiosApiProvider.get({url: 'ws/rest/com.axelor.meta.db.MetaModule'});
-};
+export async function getAllMetaModules({}) {
+  return createStandardSearch({
+    model: 'com.axelor.meta.db.MetaModule',
+    fieldKey: 'core_module',
+    numberElementsByPage: null,
+    page: 0,
+  });
+}
