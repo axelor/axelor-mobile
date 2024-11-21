@@ -28,4 +28,8 @@ export const core_modelAPI: ObjectFields = {
     fileName: schemaContructor.string(),
     createdOn: schemaContructor.string(),
   }),
+  core_module: schemaContructor.object({
+    moduleVersion: schemaContructor.string(),
+    name: schemaContructor.string(),
+  }),
 };
