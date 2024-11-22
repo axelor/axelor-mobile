@@ -19,6 +19,7 @@
 import React, {useCallback, useEffect, useState} from 'react';
 import {StyleSheet, View} from 'react-native';
 import {
+  ActionCardType,
   ActionType,
   AutoCompleteSearch,
   HeaderContainer,
@@ -60,6 +61,7 @@ interface SearchTreeViewProps {
   headerTopChildren?: any;
   parentFieldName?: string;
   renderBranch?: (item: any) => any;
+  getBranchActions?: (branch: any) => ActionCardType[];
   renderLeaf: (item: any) => any;
   actionList?: ActionType[];
   verticalActions?: boolean;
@@ -96,6 +98,7 @@ const SearchTreeView = ({
   headerTopChildren,
   parentFieldName,
   renderBranch,
+  getBranchActions,
   renderLeaf,
   actionList,
   verticalActions,
@@ -239,6 +242,7 @@ const SearchTreeView = ({
         parentFieldName={parentFieldName}
         branchCardInfoButtonIndication={I18n.t('Base_Filter')}
         renderBranch={renderBranch}
+        getBranchActions={getBranchActions}
         renderLeaf={renderLeaf}
         fetchData={fetchListAPI}
         fetchBranchData={fetchBranchData}
