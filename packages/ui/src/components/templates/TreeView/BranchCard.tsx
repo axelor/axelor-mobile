@@ -18,9 +18,8 @@
 
 import React from 'react';
 import {StyleSheet, TouchableOpacity, View} from 'react-native';
-import {useThemeColor} from '../../../theme';
 import {Card, Icon} from '../../atoms';
-import {InfoButton} from '../../organisms';
+import {ActionCard, ActionCardType} from '../../organisms';
 
 interface BranchCardProps {
   onPress: () => void;
@@ -29,6 +28,8 @@ interface BranchCardProps {
   parent: any;
   onFilterPress: (branch: any) => void;
   infoButtonIndication: string;
+  actionList?: ActionCardType[];
+  translator: (translationKey: string) => string;
 }
 
 const BranchCard = ({
@@ -38,51 +39,38 @@ const BranchCard = ({
   parent,
   onFilterPress,
   infoButtonIndication,
+  actionList = [],
+  translator,
 }: BranchCardProps) => {
-  const Colors = useThemeColor();
-
   return (
-    <View style={styles.container}>
-      <TouchableOpacity
-        style={styles.cardContainer}
-        onPress={onPress}
-        activeOpacity={0.9}>
+    <ActionCard
+      actionList={actionList}
+      quickAction={{
+        iconName: 'filter',
+        helper: infoButtonIndication,
+        large: true,
+        onPress: () => onFilterPress(parent),
+      }}
+      translator={translator}>
+      <TouchableOpacity onPress={onPress} activeOpacity={0.9}>
         <Card style={styles.card}>
           <View>{children}</View>
           <Icon name={isOpen ? 'chevron-up' : 'chevron-down'} />
         </Card>
       </TouchableOpacity>
-      <InfoButton
-        style={styles.infoButton}
-        iconName="filter"
-        iconColor={Colors.secondaryColor_dark.background}
-        onPress={() => onFilterPress(parent)}
-        indication={infoButtonIndication}
-      />
-    </View>
+    </ActionCard>
   );
 };
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    flexDirection: 'row',
-    marginVertical: 2,
-    marginHorizontal: 10,
-  },
-  cardContainer: {
-    flex: 1,
-  },
   card: {
+    flex: 1,
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
     marginVertical: 2,
     paddingHorizontal: 15,
     paddingRight: 15,
-  },
-  infoButton: {
-    width: 40,
   },
 });
 
