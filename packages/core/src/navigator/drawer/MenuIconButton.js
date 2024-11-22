@@ -57,10 +57,11 @@ const MenuIconButton = ({
     <TouchableOpacity
       onPress={onPress}
       disabled={disabled || compatibilityError}
+      style={styles.container}
       activeOpacity={0.95}>
       <View
         style={[
-          styles.container,
+          styles.childrenContainer,
           {borderRadius: rounded ? ROUNDED_RADIUS : DEFAULT_RADIUS},
           {
             backgroundColor: disabled
@@ -109,6 +110,9 @@ const MenuIconButton = ({
 const getStyles = Colors =>
   StyleSheet.create({
     container: {
+      zIndex: 20,
+    },
+    childrenContainer: {
       width: WIDTH,
       height: HEIGHT,
       flexDirection: 'row',

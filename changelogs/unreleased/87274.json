@@ -1,0 +1,5 @@
+{
+  "title": "Menu: improve display of warning when error",
+  "type": "fix",
+  "packages": "core"
+}
