@@ -20,6 +20,7 @@ import React, {useCallback, useEffect, useMemo, useState} from 'react';
 import {ActivityIndicator, StyleSheet, View} from 'react-native';
 import {useThemeColor} from '../../../theme';
 import {Label} from '../../molecules';
+import {ActionCardType} from '../../organisms';
 import BranchCard from './BranchCard';
 
 interface SubBranchViewProps {
@@ -30,11 +31,12 @@ interface SubBranchViewProps {
   setOpenBranches: (current: any) => void;
   branchCardInfoButtonIndication: string;
   renderBranch: (renderParams: any) => any;
+  getBranchActions?: (renderParams: any) => ActionCardType[];
   renderLeaf: (renderParams: any) => any;
   fetchBranchData: (idParent: number) => Promise<any>;
   branchCondition: (item: any) => boolean;
   onBranchFilterPress: (branch: any) => void;
-  translator?: (translationKey: string) => string;
+  translator: (translationKey: string) => string;
 }
 
 const SubBranchView = ({
@@ -45,6 +47,7 @@ const SubBranchView = ({
   setOpenBranches,
   branchCardInfoButtonIndication,
   renderBranch,
+  getBranchActions,
   renderLeaf,
   fetchBranchData,
   branchCondition,
@@ -101,6 +104,7 @@ const SubBranchView = ({
             setOpenBranches={setOpenBranches}
             renderBranch={renderBranch}
             branchCardInfoButtonIndication={branchCardInfoButtonIndication}
+            getBranchActions={getBranchActions}
             renderLeaf={renderLeaf}
             fetchBranchData={fetchBranchData}
             branchCondition={branchCondition}
@@ -123,11 +127,12 @@ interface BranchProps {
   setOpenBranches: (current: any) => void;
   branchCardInfoButtonIndication: string;
   renderBranch: (renderParams: any) => any;
+  getBranchActions?: (renderParams: any) => ActionCardType[];
   renderLeaf: (renderParams: any) => any;
   fetchBranchData: (idParent: number) => Promise<any>;
   branchCondition: (item: any) => boolean;
   onBranchFilterPress: (branch: any) => void;
-  translator?: (translationKey: string) => string;
+  translator: (translationKey: string) => string;
 }
 
 const Branch = ({
@@ -138,6 +143,7 @@ const Branch = ({
   setOpenBranches,
   branchCardInfoButtonIndication,
   renderBranch,
+  getBranchActions,
   renderLeaf,
   fetchBranchData,
   branchCondition,
@@ -189,6 +195,8 @@ const Branch = ({
         parent={branch.item}
         onFilterPress={onBranchFilterPress}
         infoButtonIndication={branchCardInfoButtonIndication}
+        actionList={getBranchActions?.(branch)}
+        translator={translator}
       />
       {isBranchOpen && (
         <SubBranchView
@@ -199,6 +207,7 @@ const Branch = ({
           setOpenBranches={setOpenBranches}
           renderBranch={renderBranch}
           branchCardInfoButtonIndication={branchCardInfoButtonIndication}
+          getBranchActions={getBranchActions}
           renderLeaf={renderLeaf}
           fetchBranchData={fetchBranchData}
           branchCondition={branchCondition}

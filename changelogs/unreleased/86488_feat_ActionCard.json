@@ -1,0 +1,5 @@
+{
+  "title": "ActionCard: add the possibility to define a quick action which is displayed above the button to see all the actions",
+  "type": "feat",
+  "packages": "ui"
+}
