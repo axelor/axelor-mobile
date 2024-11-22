@@ -17,9 +17,9 @@
  */
 
 import React from 'react';
+import {TouchableOpacity, View} from 'react-native';
 import {shallow} from 'enzyme';
 import {Icon, Text, Breadcrumb} from '@axelor/aos-mobile-ui';
-import {TouchableOpacity, View} from 'react-native';
 import {getGlobalStyles} from '../../tools';
 
 describe('Breadcrumb Component', () => {
