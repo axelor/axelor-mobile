@@ -1,3 +1,10 @@
 {
-  "Dms_Dms": "GED"
+  "Dms_Dms": "GED",
+  "Dms_AllDocuments": "Tous les documents",
+  "Dms_ParentFolder": "Dossier parent",
+  "Dms_AddToFavorites": "Ajouter aux favoris",
+  "Dms_Details": "Détails",
+  "Dms_Rename": "Renommer",
+  "Dms_SliceAction_SearchDocument": "recherche sur les documents",
+  "Dms_SliceAction_SearchDirectory": "recherche sur les dossiers"
 }
