@@ -81,12 +81,14 @@ export async function updateStockMoveLineTrackingNumber({
   trackingNumber,
 }) {
   return getActionApi().send({
-    url: `/ws/aos/stock-move-line/${stockMoveLineId}`,
-    method: 'put',
+    url: `/ws/rest/com.axelor.apps.stock.db.StockMoveLine/${stockMoveLineId}`,
+    method: 'post',
     body: {
-      id: stockMoveLineId,
-      version: stockMoveLineVersion,
-      trackingNumber,
+      data: {
+        id: stockMoveLineId,
+        version: stockMoveLineVersion,
+        trackingNumber,
+      },
     },
     description: 'add tracking number on stock move line',
     matchers: {
