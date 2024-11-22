@@ -58,6 +58,18 @@ describe('ActionCard Component', () => {
     expect(actionList[0].onPress).toHaveBeenCalled();
   });
 
+  it('should render InfoButton components for quick action if present', () => {
+    const quickAction = {iconName: 'heart', onPress: jest.fn()};
+    const wrapper = shallow(
+      <ActionCard {...props} quickAction={quickAction} />,
+    );
+
+    expect(wrapper.find(InfoButton).length).toBe(actionList.length + 1);
+
+    const quickActionWrapper = wrapper.find(InfoButton).at(actionList.length);
+    expect(quickActionWrapper.props()).toMatchObject(quickAction);
+  });
+
   it('should apply custom style to the container if provided', () => {
     const customStyle = {width: 200};
     const wrapper = shallow(<ActionCard {...props} style={customStyle} />);

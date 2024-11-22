@@ -28,7 +28,7 @@ import {
 const ACTION_WIDTH = 40;
 const TWO_ACTIONS_HEIGHT = 84;
 
-interface Action {
+export interface Action {
   iconName: string;
   iconColor?: string;
   helper?: string;
@@ -42,6 +42,7 @@ interface ActionCardProps {
   style?: any;
   children: any;
   actionList: Action[];
+  quickAction?: Action;
   horizontal?: boolean;
   forceActionsDisplay?: boolean;
   translator: (key: string) => string;
@@ -51,6 +52,7 @@ const ActionCard = ({
   style,
   children,
   actionList,
+  quickAction,
   horizontal = false,
   forceActionsDisplay = false,
   translator,
@@ -90,6 +92,12 @@ const ActionCard = ({
     [actionList],
   );
 
+  const _quickAction = useMemo(
+    () =>
+      quickAction != null && !quickAction.hidden ? quickAction : undefined,
+    [quickAction],
+  );
+
   const isMoreThanOneAction = useMemo(
     () => _actionList.length > 1,
     [_actionList],
@@ -110,13 +118,14 @@ const ActionCard = ({
 
   useEffect(() => {
     const shouldDisplay =
-      (_actionList.length > 2 ||
-        (_actionList[0]?.large && horizontal) ||
-        _actionList[1]?.large) &&
-      !forceActionsDisplay;
+      (_quickAction != null && !_quickAction.large
+        ? _actionList.length > 1
+        : _actionList.length > 2 ||
+          (_actionList[0]?.large && horizontal) ||
+          _actionList[1]?.large) && !forceActionsDisplay;
     setDisplaySeeActionsButton(shouldDisplay);
     setIsActionsVisible(!shouldDisplay);
-  }, [_actionList, forceActionsDisplay, horizontal]);
+  }, [_actionList, forceActionsDisplay, horizontal, _quickAction]);
 
   const isCardMinHeight = useMemo(
     () => _actionList.length > 1 || _actionList[0]?.large,
@@ -129,7 +138,7 @@ const ActionCard = ({
   );
 
   const getIconColor = (action: Action) => {
-    return action.iconColor ?? Colors.secondaryColor_dark.background;
+    return action?.iconColor ?? Colors.secondaryColor_dark.background;
   };
 
   const renderHorizontalActions = (list, isLastList) => {
@@ -168,9 +177,7 @@ const ActionCard = ({
 
       verticalActions.push(
         <View
-          style={
-            getVerticalActionStyle(action2 == null || action3 === null).action
-          }
+          style={getVerticalActionStyle(action2 == null || action3 === null)}
           key={index}>
           <InfoButton
             style={{width: ACTION_WIDTH}}
@@ -207,15 +214,8 @@ const ActionCard = ({
         })}
       </View>
       {_actionList.length > 0 &&
-        (displaySeeActionsButton && !isActionsVisible ? (
-          <InfoButton
-            style={styles.seeActions}
-            iconName="three-dots"
-            iconColor={Colors.secondaryColor_dark.background}
-            indication={translator('Base_SeeActions')}
-            onPress={() => setIsActionsVisible(true)}
-          />
-        ) : (
+        isActionsVisible &&
+        (!_quickAction || isMoreThanOneAction) && (
           <View>
             {horizontal ? (
               <>
@@ -240,7 +240,42 @@ const ActionCard = ({
               </View>
             )}
           </View>
-        ))}
+        )}
+      <View style={styles.quickActionContainer}>
+        {_quickAction != null && _actionList.length === 1 && (
+          <InfoButton
+            style={getVerticalActionStyle(false)}
+            iconName={actionList[0].iconName}
+            iconColor={getIconColor(actionList[0])}
+            indication={actionList[0].helper}
+            onPress={actionList[0].onPress}
+            disabled={actionList[0].disabled}
+          />
+        )}
+        {displaySeeActionsButton && (
+          <InfoButton
+            style={getVerticalActionStyle(
+              _quickAction == null || _quickAction.large,
+            )}
+            iconName="three-dots"
+            iconColor={Colors.secondaryColor_dark.background}
+            indication={translator('Base_SeeActions')}
+            onPress={() => setIsActionsVisible(current => !current)}
+          />
+        )}
+        {_quickAction != null && (
+          <InfoButton
+            style={getVerticalActionStyle(
+              _actionList.length === 0 || _quickAction.large,
+            )}
+            iconName={_quickAction.iconName}
+            iconColor={getIconColor(_quickAction)}
+            indication={_quickAction.helper}
+            onPress={_quickAction.onPress}
+            disabled={_quickAction.disabled}
+          />
+        )}
+      </View>
     </View>
   );
 };
@@ -257,9 +292,6 @@ const getStyles = (isMoreThanOneAction: boolean) =>
     cardContainer: {
       flex: 1,
     },
-    seeActions: {
-      width: 40,
-    },
     horizontalActionContainer: {
       flexDirection: 'row',
       flexWrap: 'wrap',
@@ -269,13 +301,18 @@ const getStyles = (isMoreThanOneAction: boolean) =>
     verticalActionContainer: {
       flexDirection: 'row',
     },
+    quickActionContainer: {
+      flexDirection: 'column-reverse',
+      flexWrap: 'wrap',
+    },
   });
 
 const getVerticalActionStyle = (isLargeAction: boolean) =>
   StyleSheet.create({
     action: {
+      width: ACTION_WIDTH,
       height: isLargeAction ? '100%' : '50%',
     },
-  });
+  }).action;
 
 export default ActionCard;
