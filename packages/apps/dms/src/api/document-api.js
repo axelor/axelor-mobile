@@ -24,6 +24,7 @@ import {
 const createDocumentCriteria = ({
   searchValue,
   authorId,
+  extensions,
   parentDirectoryId,
   noParent,
   isDirectory = null,
@@ -35,6 +36,17 @@ const createDocumentCriteria = ({
       fieldName: 'createdBy.id',
       operator: '=',
       value: authorId,
+    });
+  }
+
+  if (Array.isArray(extensions) && extensions.length > 0) {
+    criteria.push({
+      operator: 'or',
+      criteria: extensions.map(_extension => ({
+        fieldName: 'fileName',
+        operator: 'like',
+        value: '%.' + _extension,
+      })),
     });
   }
 
@@ -67,6 +79,7 @@ const createDocumentCriteria = ({
 export async function searchDocument({
   searchValue = null,
   authorId,
+  extensions,
   parentDirectoryId,
   noParent = false,
   page = 0,
@@ -76,6 +89,7 @@ export async function searchDocument({
     criteria: createDocumentCriteria({
       searchValue,
       authorId,
+      extensions,
       parentDirectoryId,
       noParent,
     }),

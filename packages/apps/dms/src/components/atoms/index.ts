@@ -16,4 +16,6 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+export {default as AuthorFilter} from './AuthorFilter/AuthorFilter';
 export {default as DirectoryCard} from './DirectoryCard/DirectoryCard';
+export {default as DocumentCard} from './DocumentCard/DocumentCard';

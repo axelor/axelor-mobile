@@ -2,9 +2,11 @@
   "Dms_Dms": "DMS",
   "Dms_AllDocuments": "All documents",
   "Dms_ParentFolder": "Parent folder",
+  "Dms_Download": "Download",
   "Dms_AddToFavorites": "Add to favorites",
   "Dms_Details": "Details",
   "Dms_Rename": "Rename",
+  "Dms_Delete": "Delete",
   "Dms_SliceAction_SearchDocument": "search document",
   "Dms_SliceAction_SearchDirectory": "search directory"
 }

@@ -18,6 +18,7 @@
 
 import React from 'react';
 import {StyleSheet, View} from 'react-native';
+import {useSelector} from '@axelor/aos-mobile-core';
 import {Icon, LabelText, Text} from '@axelor/aos-mobile-ui';
 
 interface DirectoryCardProps {
@@ -25,6 +26,8 @@ interface DirectoryCardProps {
 }
 
 const DirectoryCard = ({directory}: DirectoryCardProps) => {
+  const {mobileSettings} = useSelector((state: any) => state.appConfig);
+
   return (
     <View style={styles.container}>
       <View style={styles.contentContainer}>
@@ -36,13 +39,16 @@ const DirectoryCard = ({directory}: DirectoryCardProps) => {
           iconName="person-fill"
         />
       </View>
-      <Icon
-        style={styles.icon}
-        name="plus"
-        size={32}
-        touchable
-        onPress={() => console.log('Create new file')}
-      />
+      {(mobileSettings?.isFolderCreationAllowed ||
+        mobileSettings?.isFileCreationAllowed) && (
+        <Icon
+          style={styles.icon}
+          name="plus"
+          size={32}
+          touchable
+          onPress={() => console.log('Create new file')}
+        />
+      )}
     </View>
   );
 };
@@ -50,7 +56,6 @@ const DirectoryCard = ({directory}: DirectoryCardProps) => {
 const styles = StyleSheet.create({
   container: {
     flexDirection: 'row',
-    justifyContent: 'space-between',
   },
   contentContainer: {
     flex: 1,

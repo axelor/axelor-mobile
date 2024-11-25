@@ -21,19 +21,21 @@ import {StyleSheet, View} from 'react-native';
 import {UserSearchBar, useSelector} from '@axelor/aos-mobile-core';
 import {ToggleButton} from '@axelor/aos-mobile-ui';
 
-interface DocumentsFiltersProps {
+interface AuthorFilterProps {
   author: any;
   setAuthor: (author: any) => void;
 }
 
-const DocumentsFilters = ({author, setAuthor}: DocumentsFiltersProps) => {
+const AuthorFilter = ({author, setAuthor}: AuthorFilterProps) => {
   const {user} = useSelector(state => state.user);
 
   return (
     <View style={styles.container}>
       <ToggleButton
         isActive={author?.id === user?.id}
-        onPress={() => setAuthor(user)}
+        onPress={() =>
+          setAuthor(current => (current?.id === user?.id ? null : user))
+        }
         buttonConfig={{
           iconName: 'person-fill',
           style: styles.toggleButton,
@@ -52,12 +54,13 @@ const DocumentsFilters = ({author, setAuthor}: DocumentsFiltersProps) => {
 const styles = StyleSheet.create({
   container: {
     zIndex: 1,
-    width: '90%',
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignSelf: 'center',
     alignItems: 'center',
+    width: '90%',
   },
+
   toggleButton: {
     width: '10%',
     height: 40,
@@ -68,4 +71,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default DocumentsFilters;
+export default AuthorFilter;

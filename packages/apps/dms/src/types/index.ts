@@ -16,15 +16,4 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import {ObjectFields, schemaContructor} from '@axelor/aos-mobile-core';
-
-export const dms_modelAPI: ObjectFields = {
-  dms_document: schemaContructor.object({
-    fileName: schemaContructor.string(),
-    isDirectory: schemaContructor.boolean(),
-    parent: schemaContructor.subObject(),
-    createdBy: schemaContructor.subObject(),
-    createdOn: schemaContructor.string(),
-    metaFile: schemaContructor.subObject('fileName'),
-  }),
-};
+export {default as File} from './file';
