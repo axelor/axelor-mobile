@@ -57,7 +57,6 @@ const MenuIconButton = ({
     <TouchableOpacity
       onPress={onPress}
       disabled={disabled || compatibilityError}
-      style={styles.container}
       activeOpacity={0.95}>
       <View
         style={[
