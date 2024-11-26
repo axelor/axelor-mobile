@@ -114,7 +114,13 @@ const SearchTreeView = ({
   const handleChangeParent = value => {
     setParent(current => {
       const _parent = [...current];
-      value ? _parent.push(value) : _parent.pop();
+
+      if (value) {
+        _parent.at(-1)?.id !== value?.id && _parent.push(value);
+      } else {
+        _parent.pop();
+      }
+
       return _parent;
     });
   };
