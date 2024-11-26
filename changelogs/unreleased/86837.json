@@ -1,5 +1,0 @@
-{
-  "title": "WebView: authorize geolocation",
-  "type": "feat",
-  "packages": "core"
-}

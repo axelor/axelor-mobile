@@ -1,5 +1,0 @@
-{
-  "title": "StockMoveLine: use the right API to add a tracking number",
-  "type": "fix",
-  "packages": "stock"
-}

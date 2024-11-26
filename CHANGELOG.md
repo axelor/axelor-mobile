@@ -3,6 +3,35 @@ title: 8.1.0
 tags: Changelog
 ---
 
+## [8.1.11] (2024-11-26)
+
+### @axelor/aos-mobile-core
+
+#### Features
+
+- WebView: authorize geolocation
+
+#### Fixes
+
+- SessionInputs: manage session refresh in unique mode
+- Modules: improved search to remove the 40-response limit
+
+### @axelor/aos-mobile-ui
+
+#### Features
+
+- Numerical inputs: add auto-select on focus
+
+#### Fixes
+
+- BranchCard: resolve display issue with chevron
+
+### @axelor/aos-mobile-stock
+
+#### Fixes
+
+- StockMoveLine: use the right API to add a tracking number
+
 ## [8.1.10] (2024-11-19)
 
 ### @axelor/aos-mobile-core
@@ -532,9 +561,10 @@ It enables user to manage interventions and customer parc through the mobile app
 - Selections: use new system and tools instead of type files
 - Product indicators: use new chart component to display quantity indicators
 
+  [8.1.11]: https://github.com/axelor/axelor-mobile/compare/8.1.10...8.1.11
   [8.1.10]: https://github.com/axelor/axelor-mobile/compare/8.1.9...8.1.10
-[8.1.9]: https://github.com/axelor/axelor-mobile/compare/8.1.8...8.1.9
-[8.1.8]: https://github.com/axelor/axelor-mobile/compare/8.1.7...8.1.8
+  [8.1.9]: https://github.com/axelor/axelor-mobile/compare/8.1.8...8.1.9
+  [8.1.8]: https://github.com/axelor/axelor-mobile/compare/8.1.7...8.1.8
   [8.1.7]: https://github.com/axelor/axelor-mobile/compare/8.1.6...8.1.7
   [8.1.6]: https://github.com/axelor/axelor-mobile/compare/8.1.5...8.1.6
   [8.1.5]: https://github.com/axelor/axelor-mobile/compare/8.1.4...8.1.5
