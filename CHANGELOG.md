@@ -3,6 +3,35 @@ title: 8.2.0
 tags: Changelog
 ---
 
+## [8.2.3] (2024-11-26)
+
+### @axelor/aos-mobile-core
+
+#### Features
+
+- WebView: authorize geolocation
+
+#### Fixes
+
+- SessionInputs: manage session refresh in unique mode
+- Modules: improved search to remove the 40-response limit
+
+### @axelor/aos-mobile-ui
+
+#### Features
+
+- Numerical inputs: add auto-select on focus
+
+#### Fixes
+
+- BranchCard: resolve display issue with chevron
+
+### @axelor/aos-mobile-stock
+
+#### Fixes
+
+- StockMoveLine: use the right API to add a tracking number
+
 ## [8.2.2] (2024-11-19)
 
 ### @axelor/aos-mobile-core
@@ -198,6 +227,7 @@ This package is linked with the @axelor/aos-mobile-hr to manage time logging.
 
 - Supplier arrival: add possibility to fill origin when creating or selecting tracking number
 
+  [8.2.3]: https://github.com/axelor/axelor-mobile/compare/8.2.2...8.2.3
   [8.2.2]: https://github.com/axelor/axelor-mobile/compare/8.2.1...8.2.2
   [8.2.1]: https://github.com/axelor/axelor-mobile/compare/8.2.0...8.2.1
   [8.2.0]: https://github.com/axelor/axelor-mobile/compare/8.1.8...8.2.0
