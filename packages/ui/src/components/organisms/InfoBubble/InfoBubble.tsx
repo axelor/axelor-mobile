@@ -31,6 +31,7 @@ interface InfoBubbleProps {
   size?: number;
   position?: 'left' | 'right';
   coloredBubble?: boolean;
+  usePopup?: boolean;
 }
 
 const InfoBubble = ({
@@ -42,6 +43,7 @@ const InfoBubble = ({
   size = Dimensions.get('window').width * 0.07,
   position = 'right',
   coloredBubble = true,
+  usePopup = false,
 }: InfoBubbleProps) => {
   const styles = useMemo(() => getStyles(badgeColor, size), [badgeColor, size]);
 
@@ -54,7 +56,8 @@ const InfoBubble = ({
       position={position}
       isVisible={isVisible}
       handleClose={() => setIsVisible(false)}
-      textIndicationStyle={textIndicationStyle}>
+      textIndicationStyle={textIndicationStyle}
+      usePopup={usePopup}>
       <TouchableOpacity onPress={() => setIsVisible(current => !current)}>
         <Icon
           name={iconName}

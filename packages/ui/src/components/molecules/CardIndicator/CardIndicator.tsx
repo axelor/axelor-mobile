@@ -24,6 +24,7 @@ import {
 } from '../../../hooks/use-click-outside';
 import {checkNullString} from '../../../utils';
 import {Card, Text} from '../../atoms';
+import Alert from '../Alert/Alert';
 
 interface CardIndicatorProps {
   style?: any;
@@ -34,6 +35,7 @@ interface CardIndicatorProps {
   isVisible: boolean;
   handleClose: () => void;
   space?: number;
+  usePopup?: boolean;
 }
 
 const CardIndicator = ({
@@ -45,6 +47,7 @@ const CardIndicator = ({
   isVisible,
   handleClose,
   space = Dimensions.get('window').width * 0.08,
+  usePopup = false,
 }: CardIndicatorProps) => {
   const wrapperRef = useRef(null);
   const clickOutside = useClickOutside({wrapperRef});
@@ -60,14 +63,32 @@ const CardIndicator = ({
     }
   }, [clickOutside, isVisible, handleClose]);
 
+  const renderIndication = () => {
+    if (checkNullString(indication)) {
+      return null;
+    }
+
+    return usePopup ? (
+      <Alert
+        visible={isVisible}
+        cancelButtonConfig={{hide: true}}
+        confirmButtonConfig={{
+          title: null,
+          onPress: handleClose,
+        }}>
+        <Text>{indication}</Text>
+      </Alert>
+    ) : (
+      <Card style={[styles.indicationCard, textIndicationStyle]}>
+        <Text>{indication}</Text>
+      </Card>
+    );
+  };
+
   return (
     <View ref={wrapperRef} style={[styles.container, style]}>
       {children}
-      {!checkNullString(indication) && isVisible ? (
-        <Card style={[styles.indicationCard, textIndicationStyle]}>
-          <Text>{indication}</Text>
-        </Card>
-      ) : null}
+      {isVisible && renderIndication()}
     </View>
   );
 };
