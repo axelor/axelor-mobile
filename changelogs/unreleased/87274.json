@@ -1,5 +1,5 @@
 {
-  "title": "Menu: improve display of warning when error",
+  "title": "Menu: use popup to display error message",
   "type": "fix",
   "packages": "core"
 }
