@@ -178,8 +178,11 @@ const NumberChevronInput = ({
   );
 
   const handleSelection = useCallback(() => {
+    if ((inputRef as any)?.current) {
+      (inputRef as any).current.setSelection(0, inputValue?.toString().length);
+    }
     setIsFocused(true);
-  }, []);
+  }, [inputRef, inputValue]);
 
   const handleEndFocus = useCallback(() => {
     setIsFocused(false);
