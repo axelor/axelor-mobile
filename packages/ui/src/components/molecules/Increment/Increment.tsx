@@ -16,7 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import React, {useCallback, useEffect, useMemo, useState} from 'react';
+import React, {useCallback, useEffect, useMemo, useRef, useState} from 'react';
 import {KeyboardTypeOptions, Platform, StyleSheet, View} from 'react-native';
 import {
   formatNumber as _format,
@@ -66,6 +66,7 @@ const Increment = ({
 }: IncrementProps) => {
   const Colors = useThemeColor();
   const cutDecimalExcess = useDigitFormat();
+  const inputRef = useRef<any>(null);
 
   const [valueQty, setValueQty] = useState<string>(value);
 
@@ -158,6 +159,13 @@ const Increment = ({
     onBlur();
   };
 
+  const handleFocus = () => {
+    if (inputRef.current) {
+      inputRef.current.setSelection(0, valueQty.length);
+    }
+    onFocus();
+  };
+
   const styles = useMemo(() => getStyles(Colors), [Colors]);
 
   return (
@@ -172,11 +180,12 @@ const Increment = ({
       <View
         style={[styles.inputLine, isBigButton ? styles.fixedInputWidth : null]}>
         <Input
+          inputRef={inputRef}
           style={[styles.input, inputStyle]}
           value={valueQty != null ? String(valueQty) : ''}
           onChange={input => setValueQty(input)}
           keyboardType={keyboardType}
-          onSelection={onFocus}
+          onSelection={handleFocus}
           onEndFocus={handleEndInput}
           readOnly={readonly}
         />
