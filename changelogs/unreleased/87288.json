@@ -1,0 +1,5 @@
+{
+  "title": "BranchCard: resolve display issue with chevron",
+  "type": "fix",
+  "packages": "ui"
+}
