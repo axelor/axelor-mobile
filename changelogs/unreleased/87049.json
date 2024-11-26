@@ -1,5 +1,0 @@
-{
-  "title": "SessionInputs: manage session refresh in unique mode",
-  "type": "fix",
-  "packages": "core"
-}
