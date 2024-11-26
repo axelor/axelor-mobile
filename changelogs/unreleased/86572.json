@@ -1,5 +1,5 @@
 {
-  "title": "Increment: add auto-select on focus",
+  "title": "Numerical inputs: add auto-select on focus",
   "type": "feat",
   "packages": "ui"
 }
