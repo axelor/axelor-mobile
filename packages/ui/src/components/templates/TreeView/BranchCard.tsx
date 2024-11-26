@@ -44,11 +44,11 @@ const BranchCard = ({
   return (
     <View style={styles.container}>
       <TouchableOpacity
-        style={styles.cardContainer}
+        style={styles.flexOne}
         onPress={onPress}
         activeOpacity={0.9}>
         <Card style={styles.card}>
-          <View>{children}</View>
+          <View style={styles.flexOne}>{children}</View>
           <Icon name={isOpen ? 'chevron-up' : 'chevron-down'} />
         </Card>
       </TouchableOpacity>
@@ -70,7 +70,7 @@ const styles = StyleSheet.create({
     marginVertical: 2,
     marginHorizontal: 10,
   },
-  cardContainer: {
+  flexOne: {
     flex: 1,
   },
   card: {
