@@ -71,11 +71,7 @@ const CardIndicator = ({
     return usePopup ? (
       <Alert
         visible={isVisible}
-        cancelButtonConfig={{hide: true}}
-        confirmButtonConfig={{
-          title: null,
-          onPress: handleClose,
-        }}>
+        cancelButtonConfig={{onPress: handleClose, showInHeader: true}}>
         <Text>{indication}</Text>
       </Alert>
     ) : (
