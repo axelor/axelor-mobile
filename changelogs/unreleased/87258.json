@@ -1,5 +1,0 @@
-{
-  "title": "Modules: improved search to remove the 40-response limit",
-  "type": "fix",
-  "packages": "core"
-}

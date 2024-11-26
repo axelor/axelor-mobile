@@ -3,6 +3,27 @@ title: 8.0.0
 tags: Changelog
 ---
 
+## [8.0.16] (2024-11-26)
+
+### @axelor/aos-mobile-core
+
+#### Fixes
+
+- SessionInputs: manage session refresh in unique mode
+- Modules: improved search to remove the 40-response limit
+
+### @axelor/aos-mobile-ui
+
+#### Features
+
+- Numerical inputs: add auto-select on focus
+
+### @axelor/aos-mobile-stock
+
+#### Fixes
+
+- StockMoveLine: use the right API to add a tracking number
+
 ## [8.0.15] (2024-11-19)
 
 ### @axelor/aos-mobile-ui
@@ -584,6 +605,7 @@ Changes has been done to get new core and ui improvements: use of ChipSelect, co
 
 Changes has been done to get new core and ui improvements: use of ChipSelect, color differentiation between success and primary, definition of required configs, use of icons for Bootstrap
 
+[8.0.16]: https://github.com/axelor/axelor-mobile/compare/8.0.15...8.0.16
 [8.0.15]: https://github.com/axelor/axelor-mobile/compare/8.0.14...8.0.15
 [8.0.14]: https://github.com/axelor/axelor-mobile/compare/8.0.13...8.0.14
 [8.0.13]: https://github.com/axelor/axelor-mobile/compare/8.0.12...8.0.13
