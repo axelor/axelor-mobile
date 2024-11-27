@@ -28,7 +28,7 @@ describe('InfoBubble Component', () => {
     iconName: 'plus',
     badgeColor: Colors.primaryColor,
     indication: 'This is an info bubble.',
-    usePopup: false, // New prop
+    usePopup: false,
   };
 
   it('should render without crashing', () => {
