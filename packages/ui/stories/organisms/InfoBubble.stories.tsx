@@ -32,14 +32,16 @@ export default meta;
 export const InfoBubble: Story<typeof Component> = {
   args: {
     iconName: 'heart',
-    badgeColor: 'primaryColor',
+    badgeColor: 'primaryColor' as any,
     indication: 'Indication',
     size: 25,
     position: 'right',
     coloredBubble: true,
+    usePopup: false,
   },
   argTypes: {
     badgeColor: colorPicker,
+    usePopup: {control: 'boolean'},
   },
   render: args => (
     <View style={styles.view}>
