@@ -32,7 +32,7 @@ export default meta;
 export const InfoBubble: Story<typeof Component> = {
   args: {
     iconName: 'heart',
-    badgeColor: 'primaryColor' as any,
+    badgeColor: 'primaryColor',
     indication: 'Indication',
     size: 25,
     position: 'right',
