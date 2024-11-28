@@ -17,6 +17,7 @@
  */
 
 import AllDocumentsScreen from './AllDocumentsScreen';
+import MyFavoriteDocumentsScreen from './MyFavoriteDocumentsScreen';
 
 export default {
   AllDocumentsScreen: {
@@ -30,3 +31,4 @@ export default {
 };
 
 export {AllDocumentsScreen};
+export {MyFavoriteDocumentsScreen};
