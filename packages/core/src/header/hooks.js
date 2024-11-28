@@ -107,11 +107,13 @@ export const useBasicActions = ({
   }, [model]);
 
   useEffect(() => {
-    fetchActionPrint({model, id: modelId})
-      .catch(() => setDisablePrinting(true))
-      .then(({templateSet, fileName}) => {
-        setDisablePrinting(templateSet == null && fileName == null);
-      });
+    if (model && modelId) {
+      fetchActionPrint({model, id: modelId})
+        .catch(() => setDisablePrinting(true))
+        .then(({templateSet, fileName}) => {
+          setDisablePrinting(templateSet == null && fileName == null);
+        });
+    }
   }, [model, modelId]);
 
   const checkInternetConnection = useCallback(async () => {
