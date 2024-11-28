@@ -215,7 +215,9 @@ const DrawerContent = ({
     <SafeAreaView style={styles.container}>
       {externalMenuIsVisible && (
         <View style={styles.iconsContainer}>
-          <ScrollView showsVerticalScrollIndicator={false}>
+          <ScrollView
+            showsVerticalScrollIndicator={false}
+            contentContainerStyle={styles.scrollView}>
             {drawerModules.map(_module => (
               <View style={styles.globalContainer} key={_module.name}>
                 <MenuIconButton
@@ -306,6 +308,9 @@ const getStyles = Colors =>
       justifyContent: 'space-between',
       marginHorizontal: 12,
       zIndex: 3,
+    },
+    scrollView: {
+      paddingBottom: 10,
     },
     otherIconsContainer: {
       marginVertical: 8,
