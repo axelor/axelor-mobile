@@ -27,7 +27,7 @@ const UserSearchBar = ({
   style = null,
   title = 'Base_User',
   defaultValue = null,
-  onChange = () => {},
+  onChange = value => value,
   readonly = false,
   required = false,
   showDetailsPopup = true,
