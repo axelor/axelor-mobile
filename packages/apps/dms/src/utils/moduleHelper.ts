@@ -17,7 +17,7 @@
  */
 
 import {Menu, Screen} from '@axelor/aos-mobile-core';
-import {AllDocumentsScreen, MyFavoriteDocumentsScreen} from '../screens';
+import {AllDocumentsScreen} from '../screens';
 
 const createAllDocumentsScreenComponent = (defaultParent: any) => {
   return props => AllDocumentsScreen({...props, defaultParent});
@@ -47,16 +47,6 @@ export const createMenusScreen = ({
   let screens: Screens = {};
 
   if (Array.isArray(favouriteFileSet) && favouriteFileSet.length > 0) {
-    screens = {
-      FavoriteDocuments: {
-        title: 'Dms_MyFavoriteDocuments',
-        component: MyFavoriteDocumentsScreen,
-        options: {
-          shadedHeader: false,
-        },
-      },
-    };
-
     menus = {
       dms_menu_favoriteDocuments: {
         title: 'Dms_MyFavoriteDocuments',

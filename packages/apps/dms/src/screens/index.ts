@@ -28,6 +28,13 @@ export default {
     },
     isUsableOnShortcut: true,
   },
+  FavoriteDocuments: {
+    title: 'Dms_MyFavoriteDocuments',
+    component: MyFavoriteDocumentsScreen,
+    options: {
+      shadedHeader: false,
+    },
+  },
 };
 
 export {AllDocumentsScreen};
