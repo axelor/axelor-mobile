@@ -59,6 +59,12 @@ storiesOf('ui/molecules/CardIndicator', module).add(
         },
         defaultValue: true,
       },
+      usePopup: {
+        control: {
+          type: 'boolean',
+        },
+        defaultValue: false,
+      },
     },
   },
 );

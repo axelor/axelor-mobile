@@ -75,6 +75,12 @@ storiesOf('ui/organisms/InfoBubble', module).add(
         },
         defaultValue: true,
       },
+      usePopup: {
+        control: {
+          type: 'boolean',
+        },
+        defaultValue: false,
+      },
     },
   },
 );
