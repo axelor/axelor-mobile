@@ -31,6 +31,8 @@ import {useDispatch} from '../../../redux/hooks';
 import useTranslator from '../../../i18n/hooks/use-translator';
 import {useIsFocused} from '../../../hooks/use-navigation';
 
+const EMPTY_PARENT = {title: '...'};
+
 interface SearchTreeViewProps {
   parentList: any[];
   list: any[];
@@ -66,6 +68,7 @@ interface SearchTreeViewProps {
   actionList?: ActionType[];
   verticalActions?: boolean;
   displayBreadcrumb?: boolean;
+  defaultParent?: any;
 }
 
 const SearchTreeView = ({
@@ -103,6 +106,7 @@ const SearchTreeView = ({
   actionList,
   verticalActions,
   displayBreadcrumb = false,
+  defaultParent,
 }: SearchTreeViewProps) => {
   const I18n = useTranslator();
   const dispatch = useDispatch();
@@ -110,6 +114,10 @@ const SearchTreeView = ({
 
   const [filter, setFilter] = useState(null);
   const [parent, setParent] = useState([]);
+
+  useEffect(() => {
+    setParent([EMPTY_PARENT, defaultParent]);
+  }, [defaultParent]);
 
   const handleChangeParent = value => {
     setParent(current => {
@@ -119,6 +127,9 @@ const SearchTreeView = ({
         _parent.at(-1)?.id !== value?.id && _parent.push(value);
       } else {
         _parent.pop();
+        if (_parent.at(-1) === EMPTY_PARENT) {
+          _parent.pop();
+        }
       }
 
       return _parent;
@@ -253,10 +264,15 @@ const SearchTreeView = ({
       {displayBreadcrumb && (
         <Breadcrumb
           style={styles.breadcrumb}
-          items={parent.map((item, index) => ({
-            title: displayParentSearchValue(item),
-            onPress: () => setParent(current => current.slice(0, index + 1)),
-          }))}
+          items={parent.map((item, index) =>
+            item === EMPTY_PARENT
+              ? EMPTY_PARENT
+              : {
+                  title: displayParentSearchValue(item),
+                  onPress: () =>
+                    setParent(current => current.slice(0, index + 1)),
+                },
+          )}
           onHomePress={() => setParent([])}
         />
       )}
