@@ -60,7 +60,6 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     width: '90%',
   },
-
   toggleButton: {
     width: '10%',
     height: 40,
