@@ -148,7 +148,9 @@ const Increment = ({
   };
 
   const handleEndInput = () => {
-    const unformattedValue = defaultFormatting ? unformat(valueQty) : valueQty;
+    const unformattedValue = defaultFormatting
+      ? valueQty.replaceAll(',', '.')
+      : valueQty;
 
     if (unformattedValue === '' || unformattedValue == null) {
       handleResult(0);
@@ -160,6 +162,10 @@ const Increment = ({
   };
 
   const handleFocus = () => {
+    if (defaultFormatting) {
+      setValueQty(current => unformat(current).replace('.', decimalSpacer));
+    }
+
     if (inputRef.current) {
       inputRef.current.setSelection(0, valueQty.length);
     }
