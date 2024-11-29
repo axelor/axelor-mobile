@@ -22,46 +22,23 @@ import {Card, Icon} from '../../atoms';
 import {ActionCard, ActionCardType} from '../../organisms';
 
 interface BranchCardProps {
+  style?: any;
   onPress: () => void;
   children: any;
   isOpen: boolean;
-  parent: any;
-  onFilterPress: (branch: any) => void;
-  infoButtonIndication: string;
-  actionList?: ActionCardType[];
-  translator: (translationKey: string) => string;
 }
 
-const BranchCard = ({
-  onPress,
-  children,
-  isOpen,
-  parent,
-  onFilterPress,
-  infoButtonIndication,
-  actionList = [],
-  translator,
-}: BranchCardProps) => {
+const BranchCard = ({style, onPress, children, isOpen}: BranchCardProps) => {
   return (
-    <ActionCard
-      actionList={actionList}
-      quickAction={{
-        iconName: 'filter',
-        helper: infoButtonIndication,
-        large: true,
-        onPress: () => onFilterPress(parent),
-      }}
-      translator={translator}>
-      <TouchableOpacity
-        style={styles.flexOne}
-        onPress={onPress}
-        activeOpacity={0.9}>
-        <Card style={styles.card}>
-          <View style={styles.flexOne}>{children}</View>
-          <Icon name={isOpen ? 'chevron-up' : 'chevron-down'} />
-        </Card>
-      </TouchableOpacity>
-    </ActionCard>
+    <TouchableOpacity
+      style={[styles.flexOne, style]}
+      onPress={onPress}
+      activeOpacity={0.9}>
+      <Card style={styles.card}>
+        <View style={styles.flexOne}>{children}</View>
+        <Icon name={isOpen ? 'chevron-up' : 'chevron-down'} />
+      </Card>
+    </TouchableOpacity>
   );
 };
 
@@ -75,9 +52,46 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     alignItems: 'center',
     marginVertical: 2,
+    marginRight: 2,
     paddingHorizontal: 15,
     paddingRight: 15,
   },
 });
 
-export default BranchCard;
+interface BranchActionCardProps {
+  onPress: () => void;
+  children: any;
+  isOpen: boolean;
+  parent: any;
+  onFilterPress: (branch: any) => void;
+  infoButtonIndication: string;
+  actionList?: ActionCardType[];
+  translator: (translationKey: string) => string;
+}
+
+const BranchActionCard = ({
+  onPress,
+  children,
+  isOpen,
+  parent,
+  onFilterPress,
+  infoButtonIndication,
+  actionList = [],
+  translator,
+}: BranchActionCardProps) => {
+  return (
+    <ActionCard
+      actionList={actionList}
+      quickAction={{
+        iconName: 'filter',
+        helper: infoButtonIndication,
+        large: true,
+        onPress: () => onFilterPress(parent),
+      }}
+      translator={translator}>
+      <BranchCard onPress={onPress} children={children} isOpen={isOpen} />
+    </ActionCard>
+  );
+};
+
+export default BranchActionCard;
