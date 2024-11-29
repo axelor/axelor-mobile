@@ -29,7 +29,11 @@ import {AuthorFilter, DirectoryCard} from '../../atoms';
 import {DocumentActionCard} from '../../molecules';
 import {File} from '../../../types';
 
-const DocumentList = () => {
+interface DocumentListProps {
+  defaultParent?: any;
+}
+
+const DocumentList = ({defaultParent}: DocumentListProps) => {
   const I18n = useTranslator();
   const Colors = useThemeColor();
 
@@ -118,6 +122,7 @@ const DocumentList = () => {
           />
         }
         displayBreadcrumb
+        defaultParent={defaultParent}
       />
     </Screen>
   );

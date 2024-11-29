@@ -16,12 +16,13 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import {Module} from '@axelor/aos-mobile-core';
+import {getLoggedUser, Module, modulesProvider} from '@axelor/aos-mobile-core';
 import enTranslations from './i18n/en.json';
 import frTranslations from './i18n/fr.json';
 import DmsScreens from './screens';
 import * as dmsReducers from './features';
 import {dms_modelAPI, dms_searchFields, dms_sortFields} from './models';
+import {createMenusScreen} from './utils';
 
 export const DmsModule: Module = {
   name: 'app-dms',
@@ -50,6 +51,22 @@ export const DmsModule: Module = {
     searchFields: {...dms_searchFields},
     sortFields: {...dms_sortFields},
   },
+  moduleRegister: async (userId: number) => {
+    const user = await getLoggedUser(userId)
+      .then(res => res?.data?.data?.[0])
+      .catch(() => ({}));
+
+    const {menus, screens} = createMenusScreen({
+      favouriteFolderSet: user?.favouriteFolderSet,
+      favouriteFileSet: user?.favouriteFileSet,
+    });
+
+    modulesProvider.registerModule({
+      name: 'app-dms-favorites',
+      menus,
+      screens,
+    });
+  },
 };
 
 export * from './api';
@@ -57,3 +74,4 @@ export * from './components';
 export * from './features/asyncFunctions-index';
 export * from './screens';
 export * from './types';
+export * from './utils';
