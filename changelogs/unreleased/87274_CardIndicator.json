@@ -1,0 +1,5 @@
+{
+  "title": "CardIndicator: add possibility to display indication in popup",
+  "type": "feat",
+  "packages": "ui"
+}

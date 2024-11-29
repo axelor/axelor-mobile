@@ -37,9 +37,11 @@ export const InfoBubble: Story<typeof Component> = {
     size: 25,
     position: 'right',
     coloredBubble: true,
+    usePopup: false,
   },
   argTypes: {
     badgeColor: colorPicker,
+    usePopup: {control: 'boolean'},
   },
   render: args => (
     <View style={styles.view}>

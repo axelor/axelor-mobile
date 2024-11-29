@@ -28,6 +28,7 @@ describe('InfoBubble Component', () => {
     iconName: 'plus',
     badgeColor: Colors.primaryColor,
     indication: 'This is an info bubble.',
+    usePopup: false,
   };
 
   it('should render without crashing', () => {
@@ -77,5 +78,11 @@ describe('InfoBubble Component', () => {
 
     wrapper.find(TouchableOpacity).simulate('press');
     expect(wrapper.find(CardIndicator).prop('isVisible')).toBe(false);
+  });
+
+  it('should pass usePopup to CardIndicator', () => {
+    const wrapper = shallow(<InfoBubble {...props} usePopup={true} />);
+
+    expect(wrapper.find(CardIndicator).prop('usePopup')).toBe(true);
   });
 });

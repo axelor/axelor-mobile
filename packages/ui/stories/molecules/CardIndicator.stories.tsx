@@ -35,9 +35,11 @@ export const CardIndicator: Story<typeof Component> = {
     position: 'right',
     space: 50,
     isVisible: true,
+    usePopup: false,
   },
   argTypes: {
     handleClose: disabledControl,
+    usePopup: {control: 'boolean'},
   },
   render: args => {
     return (

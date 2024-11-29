@@ -19,14 +19,15 @@
 import React from 'react';
 import {View} from 'react-native';
 import {shallow} from 'enzyme';
-import {Card, CardIndicator, Text} from '@axelor/aos-mobile-ui';
+import {Card, CardIndicator, Text, Alert} from '@axelor/aos-mobile-ui';
 
 describe('CardIndicator Component', () => {
   const props = {
     indication: 'heart',
     children: <View testID="children" />,
     isVisible: true,
-    handleClose: () => {},
+    handleClose: jest.fn(),
+    usePopup: false,
   };
 
   it('should render without crashing', () => {
@@ -35,7 +36,7 @@ describe('CardIndicator Component', () => {
     expect(wrapper.exists()).toBe(true);
   });
 
-  it('renders the right informations', () => {
+  it('renders the right components when usePopup is false', () => {
     const wrapper = shallow(<CardIndicator {...props} />);
 
     expect(wrapper.contains(props.children)).toBe(true);
@@ -43,8 +44,19 @@ describe('CardIndicator Component', () => {
     expect(wrapper.find(Text).prop('children')).toBe(props.indication);
 
     wrapper.setProps({isVisible: false});
-
     expect(wrapper.contains(props.children)).toBe(true);
     expect(wrapper.find(Card).exists()).toBe(false);
+  });
+
+  it('renders the right components when usePopup is true', () => {
+    const wrapper = shallow(<CardIndicator {...props} usePopup={true} />);
+
+    expect(wrapper.contains(props.children)).toBe(true);
+    expect(wrapper.find(Alert).exists()).toBe(true);
+    expect(wrapper.find(Text).prop('children')).toBe(props.indication);
+
+    wrapper.setProps({isVisible: false});
+    expect(wrapper.contains(props.children)).toBe(true);
+    expect(wrapper.find(Alert).exists()).toBe(false);
   });
 });
