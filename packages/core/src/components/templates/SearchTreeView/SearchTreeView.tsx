@@ -118,7 +118,9 @@ const SearchTreeView = ({
   const [parent, setParent] = useState([]);
 
   useEffect(() => {
-    setParent([EMPTY_PARENT, defaultParent]);
+    if (defaultParent != null) {
+      setParent([EMPTY_PARENT, defaultParent]);
+    }
   }, [defaultParent]);
 
   const handleChangeParent = value => {
