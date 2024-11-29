@@ -19,8 +19,8 @@
 import React from 'react';
 import {DocumentList} from '../components';
 
-const AllDocumentsScreen = ({}) => {
-  return <DocumentList />;
+const AllDocumentsScreen = ({defaultParent}) => {
+  return <DocumentList defaultParent={defaultParent} />;
 };
 
 export default AllDocumentsScreen;

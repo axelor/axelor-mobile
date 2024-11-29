@@ -16,26 +16,4 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import AllDocumentsScreen from './AllDocumentsScreen';
-import MyFavoriteDocumentsScreen from './MyFavoriteDocumentsScreen';
-
-export default {
-  AllDocumentsScreen: {
-    title: 'Dms_AllDocuments',
-    component: AllDocumentsScreen,
-    options: {
-      shadedHeader: false,
-    },
-    isUsableOnShortcut: true,
-  },
-  FavoriteDocuments: {
-    title: 'Dms_MyFavoriteDocuments',
-    component: MyFavoriteDocumentsScreen,
-    options: {
-      shadedHeader: false,
-    },
-  },
-};
-
-export {AllDocumentsScreen};
-export {MyFavoriteDocumentsScreen};
+export * from './moduleHelper';
