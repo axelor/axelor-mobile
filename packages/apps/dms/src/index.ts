@@ -19,6 +19,9 @@
 import {Module} from '@axelor/aos-mobile-core';
 import enTranslations from './i18n/en.json';
 import frTranslations from './i18n/fr.json';
+import DmsScreens from './screens';
+import * as dmsReducers from './features';
+import {dms_modelAPI, dms_searchFields, dms_sortFields} from './models';
 
 export const DmsModule: Module = {
   name: 'app-dms',
@@ -29,4 +32,28 @@ export const DmsModule: Module = {
     en: enTranslations,
     fr: frTranslations,
   },
+  menus: {
+    dms_menu_allDocuments: {
+      title: 'Dms_AllDocuments',
+      icon: 'folder',
+      screen: 'AllDocumentsScreen',
+    },
+  },
+  screens: {
+    ...DmsScreens,
+  },
+  reducers: {
+    ...dmsReducers,
+  },
+  models: {
+    objectFields: {...dms_modelAPI},
+    searchFields: {...dms_searchFields},
+    sortFields: {...dms_sortFields},
+  },
 };
+
+export * from './api';
+export * from './components';
+export * from './features/asyncFunctions-index';
+export * from './screens';
+export * from './types';
