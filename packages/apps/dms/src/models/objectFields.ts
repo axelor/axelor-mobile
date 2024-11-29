@@ -27,4 +27,10 @@ export const dms_modelAPI: ObjectFields = {
     createdOn: schemaContructor.string(),
     metaFile: schemaContructor.subObject('fileName'),
   }),
+  auth_user: schemaContructor.object({
+    favouriteFolderSet: schemaContructor
+      .array()
+      .of(schemaContructor.subObject()),
+    favouriteFileSet: schemaContructor.array().of(schemaContructor.subObject()),
+  }),
 };

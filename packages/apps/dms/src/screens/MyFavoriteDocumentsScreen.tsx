@@ -16,26 +16,15 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import AllDocumentsScreen from './AllDocumentsScreen';
-import MyFavoriteDocumentsScreen from './MyFavoriteDocumentsScreen';
+import React from 'react';
+import {Screen, Text} from '@axelor/aos-mobile-ui';
 
-export default {
-  AllDocumentsScreen: {
-    title: 'Dms_AllDocuments',
-    component: AllDocumentsScreen,
-    options: {
-      shadedHeader: false,
-    },
-    isUsableOnShortcut: true,
-  },
-  FavoriteDocuments: {
-    title: 'Dms_MyFavoriteDocuments',
-    component: MyFavoriteDocumentsScreen,
-    options: {
-      shadedHeader: false,
-    },
-  },
+const MyFavoriteDocumentsScreen = ({}) => {
+  return (
+    <Screen removeSpaceOnTop={true}>
+      <Text>MyFavoriteDocumentsScreen</Text>
+    </Screen>
+  );
 };
 
-export {AllDocumentsScreen};
-export {MyFavoriteDocumentsScreen};
+export default MyFavoriteDocumentsScreen;
