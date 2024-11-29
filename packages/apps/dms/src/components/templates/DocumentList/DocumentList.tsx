@@ -117,6 +117,7 @@ const DocumentList = () => {
             onChangeValue={setSelectedExtensions}
           />
         }
+        displayBreadcrumb
       />
     </Screen>
   );
