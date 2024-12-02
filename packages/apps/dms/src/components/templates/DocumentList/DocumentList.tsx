@@ -19,6 +19,7 @@
 import React, {useMemo, useState} from 'react';
 import {
   SearchTreeView,
+  useNavigation,
   useSelector,
   useTranslator,
 } from '@axelor/aos-mobile-core';
@@ -36,6 +37,7 @@ interface DocumentListProps {
 const DocumentList = ({defaultParent}: DocumentListProps) => {
   const I18n = useTranslator();
   const Colors = useThemeColor();
+  const navigation = useNavigation();
 
   const [author, setAuthor] = useState(null);
   const [selectedExtensions, setSelectedExtensions] = useState([]);
@@ -108,7 +110,10 @@ const DocumentList = ({defaultParent}: DocumentListProps) => {
             iconName: 'pencil-fill',
             helper: I18n.t('Dms_Rename'),
             large: true,
-            onPress: () => console.log('branch: ', branch),
+            onPress: () =>
+              navigation.navigate('DocumentFormScreen', {
+                document: branch.item,
+              }),
             hidden: !mobileSettings?.isRenamingAllowed,
           },
         ]}
