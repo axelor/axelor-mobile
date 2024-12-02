@@ -49,6 +49,7 @@ export const dms_formsRegister: FormConfigs = {
         titleKey: 'Dms_Folder',
         type: 'boolean',
         widget: 'checkbox',
+        hideIf: ({objectState}) => objectState.id,
         options: {
           iconSize: 20,
         },
