@@ -1,3 +1,13 @@
 {
-  "Purchase_Purchase": "Achats"
+  "Purchase_Purchase": "Achats",
+  "Purchase_InternalRequests": "Demandes internes",
+  "Purchase_Status_Draft": "Brouillon",
+  "Purchase_Status_Requested": "Demandé",
+  "Purchase_Status_Planned": "Planifié",
+  "Purchase_Status_Purchased": "Acheté",
+  "Purchase_Status_Refused": "Refusé",
+  "Purchase_Status_Canceled": "Annulé",
+  "Purchase_Supplier": "Fournisseur",
+  "Purchase_SliceAction_SearchPurchaseRequest": "recherche sur les demandes d'achat",
+  "Purchase_SliceAction_SearchSupplier": "recherche sur les fournisseurs"
 }
