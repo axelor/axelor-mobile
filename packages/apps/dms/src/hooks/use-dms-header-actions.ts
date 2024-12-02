@@ -19,10 +19,8 @@
 import {useEffect} from 'react';
 import {
   headerActionsProvider,
-  useSelector,
   useNavigation,
   useTranslator,
-  usePermitted,
 } from '@axelor/aos-mobile-core';
 import {useThemeColor} from '@axelor/aos-mobile-ui';
 
@@ -34,11 +32,6 @@ const useAllDocumentsActions = () => {
   const Colors = useThemeColor();
   const navigation = useNavigation();
   const I18n = useTranslator();
-  const {canCreate} = usePermitted({
-    modelName: 'com.axelor.apps.crm.db.Catalog',
-  });
-
-  const {crm: crmConfig} = useSelector((state: any) => state.appConfig);
 
   useEffect(() => {
     headerActionsProvider.registerModel('dms_all_documents', {
@@ -54,5 +47,5 @@ const useAllDocumentsActions = () => {
         },
       ],
     });
-  }, [Colors, I18n, navigation, crmConfig, canCreate]);
+  }, [Colors, I18n, navigation]);
 };
