@@ -24,6 +24,7 @@ export const purchase_modelAPI: ObjectFields = {
     supplierPartner: schemaContructor.subObject('fullName'),
     company: schemaContructor.subObject('name'),
     statusSelect: schemaContructor.number(),
+    stockLocation: schemaContructor.subObject('name'),
   }),
   purchase_supplier: schemaContructor.object({
     simpleFullName: schemaContructor.string(),
