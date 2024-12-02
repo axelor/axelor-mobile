@@ -94,7 +94,6 @@ const RequestListScreen = ({}) => {
             reference={item.purchaseRequestSeq}
             companyName={item.company?.name}
             supplierPartnerName={item.supplierPartner?.fullName}
-            stockLocationName={item.stockLocation?.name}
           />
         )}
       />

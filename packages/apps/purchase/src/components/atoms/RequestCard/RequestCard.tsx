@@ -25,7 +25,6 @@ interface RequestCardProps {
   style?: any;
   companyName: string;
   supplierPartnerName: string;
-  stockLocationName: string;
   reference: string;
   statusSelect: number;
   onPress: () => void;
@@ -35,7 +34,6 @@ const RequestCard = ({
   style,
   companyName,
   supplierPartnerName,
-  stockLocationName,
   reference,
   statusSelect,
   onPress,
@@ -66,8 +64,8 @@ const RequestCard = ({
           },
           {
             iconName: 'building',
-            indicatorText: `${companyName} - ${stockLocationName}`,
-            hideIf: companyName == null && stockLocationName == null,
+            indicatorText: companyName,
+            hideIfNull: true,
           },
         ],
       }}
