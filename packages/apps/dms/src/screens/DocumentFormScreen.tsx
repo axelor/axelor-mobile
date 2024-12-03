@@ -54,11 +54,12 @@ const DocumentFormScreen = ({navigation, route}) => {
         _document.parent = null;
       }
 
-      if (
-        parentId === user.dmsRoot?.id ||
-        parentId === mobileSettings.defaultDmsRoot?.id
-      ) {
-        _document.parent = user.dmsRoot ?? mobileSettings.defaultDmsRoot;
+      if (parentId === user.dmsRoot?.id) {
+        _document.parent = user.dmsRoot;
+      }
+
+      if (parentId === mobileSettings.defaultDmsRoot?.id) {
+        _document.parent = mobileSettings.defaultDmsRoot;
       }
 
       const sliceFunction = isCreation ? createDocument : updateDocument;
