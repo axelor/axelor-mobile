@@ -17,6 +17,8 @@
  */
 
 export {
+  createDocument as createDocumentApi,
   searchDirectory as searchDirectoryApi,
   searchDocument as searchDocumentApi,
+  updateDocument as updateDocumentApi,
 } from './document-api';

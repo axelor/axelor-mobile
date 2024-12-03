@@ -17,7 +17,11 @@
  */
 
 import React from 'react';
-import {useSelector, useTranslator} from '@axelor/aos-mobile-core';
+import {
+  useNavigation,
+  useSelector,
+  useTranslator,
+} from '@axelor/aos-mobile-core';
 import {ActionCard, useThemeColor} from '@axelor/aos-mobile-ui';
 import {DocumentCard} from '../../atoms';
 
@@ -28,6 +32,7 @@ interface DocumentActionCardProps {
 const DocumentActionCard = ({document}: DocumentActionCardProps) => {
   const I18n = useTranslator();
   const Colors = useThemeColor();
+  const navigation = useNavigation();
 
   const {mobileSettings} = useSelector((state: any) => state.appConfig);
 
@@ -56,7 +61,10 @@ const DocumentActionCard = ({document}: DocumentActionCardProps) => {
         {
           iconName: 'pencil-fill',
           helper: I18n.t('Dms_Rename'),
-          onPress: () => console.log('Rename'),
+          onPress: () =>
+            navigation.navigate('DocumentFormScreen', {
+              document,
+            }),
           hidden: !mobileSettings?.isRenamingAllowed,
         },
         {

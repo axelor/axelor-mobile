@@ -16,7 +16,4 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-export {dms_formsRegister} from './forms';
-export {dms_modelAPI} from './objectFields';
-export {dms_searchFields} from './searchFields';
-export {dms_sortFields} from './sortFields';
+export {default as ParentDirectorySearchBar} from './ParentDirectorySearchBar/ParentDirectorySearchBar';
