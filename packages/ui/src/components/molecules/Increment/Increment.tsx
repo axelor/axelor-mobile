@@ -26,6 +26,10 @@ import {ThemeColors, useThemeColor} from '../../../theme';
 import {Input} from '../../atoms';
 import IncrementButton from './IncrementButton';
 import {useDigitFormat} from '../../../hooks/use-digit-format';
+import {
+  OUTSIDE_INDICATOR,
+  useClickOutside,
+} from '../../../hooks/use-click-outside';
 
 interface IncrementProps {
   style?: any;
@@ -67,6 +71,9 @@ const Increment = ({
   const Colors = useThemeColor();
   const cutDecimalExcess = useDigitFormat();
   const inputRef = useRef<any>(null);
+  const clickOutside = useClickOutside({
+    wrapperRef: inputRef,
+  });
 
   const [valueQty, setValueQty] = useState<string>(value);
 
@@ -147,7 +154,7 @@ const Increment = ({
     handleResult(newValue);
   };
 
-  const handleEndInput = () => {
+  const handleEndInput = useCallback(() => {
     const unformattedValue = defaultFormatting
       ? valueQty.replaceAll(',', '.')
       : valueQty;
@@ -159,7 +166,13 @@ const Increment = ({
     }
 
     onBlur();
-  };
+  }, [defaultFormatting, handleResult, onBlur, valueQty]);
+
+  useEffect(() => {
+    if (clickOutside === OUTSIDE_INDICATOR) {
+      handleEndInput();
+    }
+  }, [clickOutside, handleEndInput]);
 
   const handleFocus = () => {
     if (defaultFormatting) {
