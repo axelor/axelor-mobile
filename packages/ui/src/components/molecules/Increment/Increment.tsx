@@ -25,6 +25,10 @@ import {
 import {ThemeColors, useThemeColor} from '../../../theme';
 import {Input} from '../../atoms';
 import IncrementButton from './IncrementButton';
+import {
+  OUTSIDE_INDICATOR,
+  useClickOutside,
+} from '../../../hooks/use-click-outside';
 
 const cutDecimalExcess = number => {
   if (number == null) {
@@ -77,6 +81,9 @@ const Increment = ({
 }: IncrementProps) => {
   const Colors = useThemeColor();
   const inputRef = useRef<any>(null);
+  const clickOutside = useClickOutside({
+    wrapperRef: inputRef,
+  });
 
   const [valueQty, setValueQty] = useState<string>();
 
@@ -157,7 +164,7 @@ const Increment = ({
     handleResult(newValue);
   };
 
-  const handleEndInput = () => {
+  const handleEndInput = useCallback(() => {
     const unformattedValue = defaultFormatting
       ? valueQty.replaceAll(',', '.')
       : valueQty;
@@ -169,7 +176,13 @@ const Increment = ({
     }
 
     onBlur();
-  };
+  }, [defaultFormatting, handleResult, onBlur, valueQty]);
+
+  useEffect(() => {
+    if (clickOutside === OUTSIDE_INDICATOR) {
+      handleEndInput();
+    }
+  }, [clickOutside, handleEndInput]);
 
   const handleFocus = () => {
     if (defaultFormatting) {
