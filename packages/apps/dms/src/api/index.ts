@@ -17,6 +17,10 @@
  */
 
 export {
+  countAttachedFiles as countAttachedDocumentsApi,
+  createDocument as createDocumentApi,
+  fetchDirectory as fetchDirectoryApi,
   searchDirectory as searchDirectoryApi,
   searchDocument as searchDocumentApi,
+  updateDocument as updateDocumentApi,
 } from './document-api';
