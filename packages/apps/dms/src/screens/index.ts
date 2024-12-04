@@ -19,6 +19,7 @@
 import AllDocumentsScreen from './AllDocumentsScreen';
 import MyFavoriteDocumentsScreen from './MyFavoriteDocumentsScreen';
 import DocumentFormScreen from './DocumentFormScreen';
+import AttachedFilesScreen from './AttachedFilesScreen';
 
 export default {
   AllDocumentsScreen: {
@@ -41,8 +42,16 @@ export default {
     title: 'Dms_Document',
     component: DocumentFormScreen,
   },
+  AttachedFilesScreen: {
+    title: 'Dms_AttachedFiles',
+    component: AttachedFilesScreen,
+    options: {
+      shadedHeader: false,
+    },
+  },
 };
 
 export {AllDocumentsScreen};
 export {MyFavoriteDocumentsScreen};
 export {DocumentFormScreen};
+export {AttachedFilesScreen};
