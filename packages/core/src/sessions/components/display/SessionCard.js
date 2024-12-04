@@ -37,6 +37,7 @@ const SessionCard = ({
   openEdition,
   isUnactive,
   logoFile,
+  handleRemove = null,
 }) => {
   const Colors = useThemeColor();
   const ref = useRef(null);
@@ -80,12 +81,16 @@ const SessionCard = ({
         useNativeDriver: true,
       }),
     ]).start(() => {
-      sessionStorage.removeSession({sessionId: session.id});
+      if (handleRemove != null) {
+        handleRemove({sessionId: session.id});
+      } else {
+        sessionStorage.removeSession({sessionId: session.id});
+      }
       scaleAnim.setValue(1);
       translateXAnim.setValue(0);
       translateYAnim.setValue(0);
     });
-  }, [scaleAnim, session, translateXAnim, translateYAnim]);
+  }, [handleRemove, scaleAnim, session, translateXAnim, translateYAnim]);
 
   const renderActionButton = (trans, iconName, color, onPress) => {
     return (
