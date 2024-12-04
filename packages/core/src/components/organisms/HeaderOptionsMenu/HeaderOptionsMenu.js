@@ -16,7 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import React, {useCallback, useMemo} from 'react';
+import React, {useCallback, useEffect, useMemo, useState} from 'react';
 import {Dimensions, StyleSheet, View} from 'react-native';
 import {DropdownMenu, DropdownMenuItem} from '@axelor/aos-mobile-ui';
 import {HeaderOptionMenuItem} from '../../molecules';
@@ -65,38 +65,49 @@ const HeaderOptionsMenu = ({
     [collapseMenuItems],
   );
 
-  const allActions = useMemo(() => {
-    let _genericActions = [];
+  const [visibleGenericActions, setVisibleGenericActions] = useState([]);
 
-    if (model && modelId) {
-      _genericActions = Object.entries(genericActions).map(([key, func]) =>
-        func({model, modelId, options: options?.[key]}),
-      );
-    }
+  useEffect(() => {
+    const getVisibleGenericActions = async () => {
+      if (model && modelId) {
+        const _genericActions = await Promise.all(
+          Object.entries(genericActions).map(
+            async ([key, func]) =>
+              await func({model, modelId, options: options?.[key]}),
+          ),
+        );
+        setVisibleGenericActions(_genericActions);
+      } else {
+        setVisibleGenericActions([]);
+      }
+    };
 
-    return [
+    getVisibleGenericActions();
+  }, [genericActions, model, modelId, options]);
+
+  const allActions = useMemo(
+    () =>
+      [
+        attachedFilesAction,
+        mailMessagesAction,
+        printAction,
+        barcodeAction,
+        jsonFieldsAction,
+        ...actions,
+        ...visibleGenericActions,
+      ]
+        .filter(_action => !_action.hideIf)
+        .sort((a, b) => a.order - b.order),
+    [
+      actions,
       attachedFilesAction,
-      mailMessagesAction,
-      printAction,
       barcodeAction,
       jsonFieldsAction,
-      ...actions,
-      ..._genericActions,
-    ]
-      .filter(_action => !_action.hideIf)
-      .sort((a, b) => a.order - b.order);
-  }, [
-    actions,
-    attachedFilesAction,
-    barcodeAction,
-    genericActions,
-    jsonFieldsAction,
-    mailMessagesAction,
-    model,
-    modelId,
-    options,
-    printAction,
-  ]);
+      mailMessagesAction,
+      printAction,
+      visibleGenericActions,
+    ],
+  );
 
   const headerActions = useMemo(
     () => allActions.filter(_action => _action.showInHeader).slice(0, 2),
