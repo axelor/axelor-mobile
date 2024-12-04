@@ -1,0 +1,5 @@
+{
+  "title": "Session card: add possibility to override session removal action",
+  "type": "refactor",
+  "packages": "core"
+}
