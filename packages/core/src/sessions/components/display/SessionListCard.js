@@ -29,6 +29,7 @@ const SessionListCard = ({
   openEdition,
   openCreation,
   session,
+  handleRemoveSession = null,
 }) => {
   const Colors = useThemeColor();
 
@@ -57,6 +58,7 @@ const SessionListCard = ({
               openEdition={openEdition}
               isUnactive={_session.id !== session?.id}
               logoFile={logoFile}
+              handleRemove={handleRemoveSession}
             />
           ))}
         </ScrollView>
