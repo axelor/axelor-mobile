@@ -17,14 +17,14 @@
  */
 
 import React, {useCallback, useEffect} from 'react';
-import {Dimensions, StyleSheet} from 'react-native';
-import DeviceInfo from 'react-native-device-info';
+import {StyleSheet} from 'react-native';
 import {Screen, ScrollView, useConfig} from '@axelor/aos-mobile-ui';
 import {useDispatch, useSelector} from '../../index';
 import {fetchLocalizations} from '../features/localizationSlice';
 import {fetchActiveUser} from '../features/userSlice';
 import {DashboardsCard, ShortcutsCard, UserCard} from '../components';
 import {PopupApplicationInformation} from '../../components';
+import {useDefaultValuesOfUser} from '../../hooks/use-storage-config';
 
 const UserScreen = ({children}) => {
   const dispatch = useDispatch();
@@ -34,12 +34,9 @@ const UserScreen = ({children}) => {
   const {loadingUser, isUser} = useSelector(state => state.user);
   const {mobileSettings} = useSelector(state => state.appConfig);
 
-  const {
-    setFilterConfig,
-    setVirtualKeyboardConfig,
-    setNbDecimalDigitForQty,
-    setNbDecimalDigitForUnitPrice,
-  } = useConfig();
+  const {setNbDecimalDigitForQty, setNbDecimalDigitForUnitPrice} = useConfig();
+
+  useDefaultValuesOfUser();
 
   useEffect(() => {
     fetchUser();
@@ -54,16 +51,6 @@ const UserScreen = ({children}) => {
       setNbDecimalDigitForUnitPrice(baseConfig?.nbDecimalDigitForUnitPrice);
     }
   }, [baseConfig, setNbDecimalDigitForQty, setNbDecimalDigitForUnitPrice]);
-
-  useEffect(() => {
-    const SMALL_SCREEN_HEIGHT = 500;
-
-    DeviceInfo.getManufacturer().then(manufacturer =>
-      setVirtualKeyboardConfig(manufacturer === 'Zebra Technologies'),
-    );
-
-    setFilterConfig(Dimensions.get('window').height > SMALL_SCREEN_HEIGHT);
-  }, [setFilterConfig, setVirtualKeyboardConfig]);
 
   const fetchUser = useCallback(() => {
     dispatch(fetchActiveUser(userId));
