@@ -67,10 +67,9 @@ const CustomerParkScreen = ({}) => {
 
   const sliceFunctionData = useMemo(
     () => ({
-      inService: selectedStatus[0]?.value,
       partnerId: customer?.id,
     }),
-    [customer?.id, selectedStatus],
+    [customer?.id],
   );
 
   return (
@@ -89,7 +88,7 @@ const CustomerParkScreen = ({}) => {
         sliceFunctionDataNoParentName="noParent"
         fetchBranchData={branchId =>
           searchEquipmentApi({
-            inService: selectedStatus[0]?.key,
+            inService: selectedStatus[0]?.value,
             partnerId: customer?.id,
             parentPlaceId: branchId,
           })
