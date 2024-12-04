@@ -260,9 +260,10 @@ const AutoCompleteSearch = ({
 
   const marginBottom = useMemo(() => {
     if (isScrollViewContainer && displayList) {
-      const visibleListLength = !Array.isArray(objectList)
-        ? 0
-        : Math.min(objectList.length, 5);
+      const visibleListLength = Math.max(
+        !Array.isArray(objectList) ? 0 : Math.min(objectList.length, 5),
+        1,
+      );
 
       return visibleListLength * ITEM_HEIGHT + 5;
     }
