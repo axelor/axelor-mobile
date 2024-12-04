@@ -17,10 +17,13 @@
  */
 
 import {useCallback, useEffect, useMemo} from 'react';
+import {Dimensions} from 'react-native';
+import DeviceInfo from 'react-native-device-info';
 import {useConfig, useTheme} from '@axelor/aos-mobile-ui';
 import {storage} from '../storage/Storage';
 
 const CONFIG_STORAGE_KEY = 'ui_config';
+const SMALL_SCREEN_HEIGHT = 500;
 
 export const useStorageUpdater = () => {
   const {showFilter, showSubtitles, showToolbox, hideVirtualKeyboard} =
@@ -84,4 +87,19 @@ export const useConfigUpdater = (): {updateConfigFromStorage: () => void} => {
   ]);
 
   return useMemo(() => ({updateConfigFromStorage}), [updateConfigFromStorage]);
+};
+
+export const useDefaultValuesOfUser = () => {
+  const {setFilterConfig, setVirtualKeyboardConfig} = useConfig();
+
+  useEffect(() => {
+    const _config = storage.getItem(CONFIG_STORAGE_KEY);
+
+    if (_config == null) {
+      DeviceInfo.getManufacturer().then(manufacturer =>
+        setVirtualKeyboardConfig(manufacturer === 'Zebra Technologies'),
+      );
+      setFilterConfig(Dimensions.get('window').height > SMALL_SCREEN_HEIGHT);
+    }
+  }, [setFilterConfig, setVirtualKeyboardConfig]);
 };
