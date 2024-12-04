@@ -20,12 +20,15 @@ import {useEffect} from 'react';
 import {
   headerActionsProvider,
   useNavigation,
+  useSelector,
   useTranslator,
 } from '@axelor/aos-mobile-core';
 import {useThemeColor} from '@axelor/aos-mobile-ui';
+import {getAction} from '../utils';
 
 export const useDMSHeaders = () => {
   useAllDocumentsActions();
+  useAttachedFilesGenericAction();
 };
 
 const useAllDocumentsActions = () => {
@@ -48,4 +51,25 @@ const useAllDocumentsActions = () => {
       ],
     });
   }, [Colors, I18n, navigation]);
+};
+
+const useAttachedFilesGenericAction = () => {
+  const I18n = useTranslator();
+  const navigation = useNavigation();
+
+  const {mobileSettings} = useSelector((state: any) => state.appConfig);
+
+  useEffect(() => {
+    headerActionsProvider.registerGenericAction(
+      'attached_files_generic_action',
+      async ({model, modelId}) =>
+        await getAction({
+          model,
+          modelId,
+          isFolderCreationAllowed: mobileSettings?.isFolderCreationAllowed,
+          navigation,
+          translator: I18n.t,
+        }),
+    );
+  }, [I18n.t, mobileSettings?.isFolderCreationAllowed, navigation]);
 };

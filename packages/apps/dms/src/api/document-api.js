@@ -17,6 +17,7 @@
  */
 
 import {
+  axiosApiProvider,
   createStandardSearch,
   formatRequestBody,
   getActionApi,
@@ -107,6 +108,45 @@ const createDocumentCriteria = ({
   return criteria;
 };
 
+const createFetchDirectoryCriteria = ({model, modelId}) => {
+  return [
+    {
+      fieldName: 'isDirectory',
+      operator: '=',
+      value: true,
+    },
+    {
+      fieldName: 'relatedId',
+      operator: '=',
+      value: modelId,
+    },
+    {
+      fieldName: 'relatedModel',
+      operator: '=',
+      value: model,
+    },
+    {
+      fieldName: 'parent.relatedModel',
+      operator: '=',
+      value: model,
+    },
+    {
+      operator: 'or',
+      criteria: [
+        {
+          fieldName: 'parent.relatedId',
+          operator: 'isNull',
+        },
+        {
+          fieldName: 'parent.relatedId',
+          operator: '=',
+          value: 0,
+        },
+      ],
+    },
+  ];
+};
+
 export async function searchDocument({
   searchValue = null,
   authorId,
@@ -148,14 +188,18 @@ export async function searchDirectory({searchValue, authorId, page = 0}) {
   });
 }
 
-export async function createDocument({document}) {
+export async function createDocument({document, model, modelId}) {
   const {matchers} = formatRequestBody(document, 'data');
 
   return getActionApi().send({
     url: '/ws/rest/com.axelor.dms.db.DMSFile',
     method: 'put',
     body: {
-      data: document,
+      data: {
+        relatedModel: model,
+        relatedId: modelId,
+        ...document,
+      },
     },
     description: 'create document',
     matchers: {
@@ -180,6 +224,36 @@ export async function updateDocument({document}) {
       modelName: 'com.axelor.dms.db.DMSFile',
       id: document.id,
       fields: matchers,
+    },
+  });
+}
+
+export async function fetchDirectory({model, modelId}) {
+  return createStandardSearch({
+    model: 'com.axelor.dms.db.DMSFile',
+    criteria: createFetchDirectoryCriteria({model, modelId}),
+    fieldKey: 'dms_document',
+    sortKey: 'dms_document',
+    page: 0,
+    numberElementsByPage: 1,
+    provider: 'model',
+  });
+}
+
+export async function countAttachedFiles({model, modelId}) {
+  return axiosApiProvider.post({
+    url: '/ws/rest/com.axelor.dms.db.DMSFile/search',
+    data: {
+      data: {
+        _domain:
+          'self.relatedModel = :name AND self.relatedId = :id ' +
+          'AND COALESCE(self.isDirectory, FALSE) = FALSE',
+        _domainContext: {
+          name: model,
+          id: modelId,
+        },
+      },
+      fields: ['id'],
     },
   });
 }

@@ -14,9 +14,14 @@
   "Dms_Folder": "Dossier",
   "Dms_File": "Fichier",
   "Dms_Root": "Racine",
+  "Dms_AttachedFiles": "Fichiers joints",
+  "Dms_NoAttachedFiles": "Pas de fichiers joints",
+  "Dms_DoYouWantToAddFile": "Vouslez-vous ajouter un fichier ?",
   "Dms_SliceAction_SearchDocument": "recherche sur les documents",
   "Dms_SliceAction_SearchDirectory": "recherche sur les dossiers",
   "Dms_SliceAction_SearchFavoriteDocument": "recherche sur les documents favoris",
   "Dms_SliceAction_CreateDocument": "création d'un document",
-  "Dms_SliceAction_UpdateDocument": "mise à jour d'un document"
+  "Dms_SliceAction_UpdateDocument": "mise à jour d'un document",
+  "Dms_SliceAction_FetchDirectory": "récupération d'un dossier",
+  "Dms_SliceAction_CountAttachedFiles": "comptage des fichiers joints"
 }
