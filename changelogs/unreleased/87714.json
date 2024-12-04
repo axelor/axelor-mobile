@@ -1,0 +1,5 @@
+{
+  "title": "Increment: save when click outside the input",
+  "type": "fix",
+  "packages": "ui"
+}
