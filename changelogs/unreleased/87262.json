@@ -1,0 +1,5 @@
+{
+  "title": "AutoCompleteSearch: manage margin bottom when the list is empty",
+  "type": "fix",
+  "packages": "ui"
+}
