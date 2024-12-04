@@ -48,7 +48,7 @@ export type RegisterFunction = ({
   model: string;
   modelId: number;
   options?: any;
-}) => ActionType;
+}) => ActionType | Promise<ActionType>;
 
 export interface ActionType {
   key: string;
