@@ -46,9 +46,29 @@ const createEquipmentsCriteria = ({
 
   if (inService != null) {
     criteria.push({
-      fieldName: 'inService',
-      operator: inService ? '=' : '!=',
-      value: true,
+      operator: 'or',
+      criteria: [
+        {
+          operator: 'and',
+          criteria: [
+            {
+              fieldName: 'typeSelect',
+              operator: '=',
+              value: Equipment?.typeSelect.Equipment,
+            },
+            {
+              fieldName: 'inService',
+              operator: inService ? '=' : '!=',
+              value: true,
+            },
+          ],
+        },
+        {
+          fieldName: 'typeSelect',
+          operator: '=',
+          value: Equipment?.typeSelect.Place,
+        },
+      ],
     });
   }
 
@@ -144,7 +164,7 @@ const createInterventionEquipmentToLinkCriteria = ({
 export async function searchEquipment({
   searchValue = null,
   page = 0,
-  inService,
+  inService = null,
   partnerId,
   parentPlaceId,
   noParent = false,
