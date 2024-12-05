@@ -1,5 +1,0 @@
-{
-  "title": "InfoBubble: add usePopup props to display indication in popup",
-  "type": "feat",
-  "packages": "ui"
-}

@@ -1,5 +1,0 @@
-{
-  "title": "Print header action: check if a template exists only when model and id are present",
-  "type": "fix",
-  "packages": "core"
-}

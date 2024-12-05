@@ -1,5 +1,0 @@
-{
-  "title": "Generic action: add possibility to use async functions",
-  "type": "feat",
-  "packages": "core"
-}
