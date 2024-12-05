@@ -47,27 +47,6 @@ async function fetchData(data, {getState}) {
   return await getProductAvailabilty(data, {getState});
 }
 
-export const fetchProductsAvailability = createAsyncThunk(
-  'product/fetchProductsAvailability',
-  async function (data, {getState}) {
-    let promises = [];
-    data.productList.forEach(product => {
-      promises.push(
-        fetchData(
-          {
-            productId: product.id,
-            companyId: data.companyId,
-            stockLocationId: data.stockLocationId,
-            version: product.version,
-          },
-          {getState},
-        ),
-      );
-    });
-    return Promise.all(promises);
-  },
-);
-
 export const fetchProductDistribution = createAsyncThunk(
   'product/fetchProductDistribution',
   async function (data, {getState}) {
@@ -93,7 +72,6 @@ const initialState = {
   loading: false,
   loadingProductIndicators: false,
   productIndicators: {},
-  listAvailabilty: [],
   listAvailabiltyDistribution: [],
 };
 
@@ -107,13 +85,6 @@ const productIndicators = createSlice({
     builder.addCase(fetchProductIndicators.fulfilled, (state, action) => {
       state.loadingProductIndicators = false;
       state.productIndicators = action.payload;
-    });
-    builder.addCase(fetchProductsAvailability.pending, state => {
-      state.loading = true;
-    });
-    builder.addCase(fetchProductsAvailability.fulfilled, (state, action) => {
-      state.loading = false;
-      state.listAvailabilty = action.payload;
     });
     builder.addCase(fetchProductDistribution.pending, state => {
       state.loading = true;
