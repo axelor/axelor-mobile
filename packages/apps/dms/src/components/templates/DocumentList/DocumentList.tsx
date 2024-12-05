@@ -59,8 +59,9 @@ const DocumentList = ({defaultParent}: DocumentListProps) => {
   const sliceFunctionData = useMemo(
     () => ({
       authorId: author?.id,
+      extensions: selectedExtensions.map(_extension => _extension.key),
     }),
-    [author?.id],
+    [author?.id, selectedExtensions],
   );
 
   return (
