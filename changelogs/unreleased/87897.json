@@ -1,5 +1,0 @@
-{
-  "title": "UI Configs: evaluate default values for config only when storage is empty",
-  "type": "fix",
-  "packages": "core"
-}

@@ -3,6 +3,51 @@ title: 8.1.0
 tags: Changelog
 ---
 
+## [8.1.12] (2024-12-05)
+
+### @axelor/aos-mobile-core
+
+#### Changes
+
+- Session card: add possibility to override session removal action
+
+#### Fixes
+
+- Menu: use popup to display error message
+- UI Configs: evaluate default values for config only when storage is empty
+
+### @axelor/aos-mobile-ui
+
+#### Features
+
+- CardIndicator: add possibility to display indication in popup
+- InfoBubble: add usePopup props to display indication in popup
+
+#### Changes
+
+- Increment: modify format management on blur/focus
+
+#### Fixes
+
+- AutoCompleteSearch: manage margin bottom when the list is empty
+- Increment: save when click outside the input
+
+### @axelor/aos-mobile-intervention
+
+#### Fixes
+
+- CustomerParkScreen: resolve filter issue with chips
+
+### @axelor/aos-mobile-stock
+
+#### Changes
+
+- Indicators: move logic to fetch available stock to card components
+
+<details>
+There was a performance problem on the screens requiring the product indicators. To solve this slow performance problem, product indicators are now retrieved from the card component in the background. The old way of working retrieved the indicators for all the products in the list each time they were updated, before displaying them, which is rather cumbersome and shouldn't be used. The functions concerned have been removed. 
+</details>
+
 ## [8.1.11] (2024-11-26)
 
 ### @axelor/aos-mobile-core
@@ -561,6 +606,7 @@ It enables user to manage interventions and customer parc through the mobile app
 - Selections: use new system and tools instead of type files
 - Product indicators: use new chart component to display quantity indicators
 
+  [8.1.12]: https://github.com/axelor/axelor-mobile/compare/8.1.11...8.1.12
   [8.1.11]: https://github.com/axelor/axelor-mobile/compare/8.1.10...8.1.11
   [8.1.10]: https://github.com/axelor/axelor-mobile/compare/8.1.9...8.1.10
   [8.1.9]: https://github.com/axelor/axelor-mobile/compare/8.1.8...8.1.9
