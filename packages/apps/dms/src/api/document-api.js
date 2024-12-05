@@ -42,11 +42,31 @@ const createDocumentCriteria = ({
   if (Array.isArray(extensions) && extensions.length > 0) {
     criteria.push({
       operator: 'or',
-      criteria: extensions.map(_extension => ({
-        fieldName: 'fileName',
-        operator: 'like',
-        value: '%.' + _extension,
-      })),
+      criteria: [
+        {
+          operator: 'and',
+          criteria: [
+            {
+              fieldName: 'isDirectory',
+              operator: '=',
+              value: false,
+            },
+            {
+              operator: 'or',
+              criteria: extensions.map(_extension => ({
+                fieldName: 'fileName',
+                operator: 'like',
+                value: '%.' + _extension,
+              })),
+            },
+          ],
+        },
+        {
+          fieldName: 'isDirectory',
+          operator: '=',
+          value: true,
+        },
+      ],
     });
   }
 
