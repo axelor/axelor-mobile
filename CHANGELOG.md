@@ -3,6 +3,36 @@ title: 7.2.0
 tags: Changelog
 ---
 
+## [7.2.23] (2024-12-05)
+
+### @axelor/aos-mobile-core
+
+#### Changes
+
+- Session card: add possibility to override session removal action
+
+### @axelor/aos-mobile-ui
+
+#### Changes
+
+- Increment: modify format management on blur/focus
+
+#### Fixes
+
+- AutoCompleteSearch: manage margin bottom when the list is empty
+- Increment: save when click outside the input
+
+### @axelor/aos-mobile-stock
+
+#### Changes
+
+- Indicators: move logic to fetch available stock to card components
+
+<details>
+There was a performance problem on the screens requiring the product indicators. To solve this slow performance problem, product indicators are now retrieved from the card component in the background. The old way of working retrieved the indicators for all the products in the list each time they were updated, before displaying them, which is rather cumbersome and shouldn't be used. The functions concerned have been removed. 
+</details>
+
+
 ## [7.2.22] (2024-11-26)
 
 ### @axelor/aos-mobile-core
@@ -735,6 +765,7 @@ It enables user to manage Expenses through the mobile application. You can creat
 - Remove IconButton component which should be replaced by Button component.
 - Remove Pop-up components which should be replaced by Alert component.
 
+[7.2.23]: https://github.com/axelor/axelor-mobile/compare/7.2.22...7.2.23
 [7.2.22]: https://github.com/axelor/axelor-mobile/compare/7.2.21...7.2.22
 [7.2.21]: https://github.com/axelor/axelor-mobile/compare/7.2.20...7.2.21
 [7.2.20]: https://github.com/axelor/axelor-mobile/compare/7.2.19...7.2.20
