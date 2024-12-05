@@ -1,0 +1,6 @@
+{
+  "title": "Indicators: move logic to fetch available stock to card components",
+  "type": "refactor",
+  "packages": "stock",
+  "description": "There was a performance problem on the screens requiring the product indicators. To solve this slow performance problem, product indicators are now retrieved from the card component in the background. The old way of working retrieved the indicators for all the products in the list each time they were updated, before displaying them, which is rather cumbersome and shouldn't be used. The functions concerned have been removed. "
+}

@@ -16,7 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import React, {useCallback} from 'react';
+import React, {useCallback, useEffect, useRef, useState} from 'react';
 import {StyleSheet} from 'react-native';
 import {ObjectCard, useDigitFormat, useThemeColor} from '@axelor/aos-mobile-ui';
 import {
@@ -25,6 +25,10 @@ import {
   useTypeHelpers,
   useTypes,
 } from '@axelor/aos-mobile-core';
+import {
+  getProductStockIndicators,
+  fetchVariantAttributes,
+} from '../../../../api';
 
 interface ProductAttribut {
   attrName: string;
@@ -37,9 +41,10 @@ interface ProductVariantCardProps {
   style?: any;
   name: string;
   code: string;
-  attributesList: {attributes: ProductAttribut[]};
+  productId: number;
+  productVersion: number;
+  availabiltyData: {stockLocationId: number; companyId: number};
   picture?: any;
-  stockAvailability: number;
   onPress: () => void;
 }
 
@@ -47,9 +52,10 @@ const ProductVariantCard = ({
   style,
   name,
   code,
-  attributesList,
+  productId,
+  productVersion,
+  availabiltyData,
   picture,
-  stockAvailability,
   onPress,
 }: ProductVariantCardProps) => {
   const Colors = useThemeColor();
@@ -58,16 +64,69 @@ const ProductVariantCard = ({
   const formatNumber = useDigitFormat();
   const {ProductVariantValue} = useTypes();
   const {getItemTitle} = useTypeHelpers();
+  const isMounted = useRef(true);
+
+  const [attributes, setAttributesList] = useState<
+    ProductAttribut[] | undefined
+  >();
+  const [availableStock, setAvailableStock] = useState(null);
+
+  useEffect(() => {
+    isMounted.current = true;
+
+    return () => {
+      isMounted.current = false;
+    };
+  }, []);
+
+  useEffect(() => {
+    if (productId != null) {
+      fetchVariantAttributes({
+        productVariantId: productId,
+        version: productVersion,
+      })
+        .then((res: any) => {
+          if (isMounted.current) {
+            setAttributesList(res?.data?.object?.attributes);
+          }
+        })
+        .catch(() => {
+          if (isMounted.current) {
+            setAttributesList(null);
+          }
+        });
+    }
+  }, [availabiltyData, productId, productVersion]);
+
+  useEffect(() => {
+    if (productId != null) {
+      getProductStockIndicators({
+        productId: productId,
+        version: productVersion,
+        ...availabiltyData,
+      })
+        .then((res: any) => {
+          if (isMounted.current) {
+            setAvailableStock(res?.data?.object?.availableStock);
+          }
+        })
+        .catch(() => {
+          if (isMounted.current) {
+            setAvailableStock(null);
+          }
+        });
+    }
+  }, [availabiltyData, productId, productVersion]);
 
   const renderAttrItems = useCallback(() => {
-    if (!Array.isArray(attributesList?.attributes)) {
+    if (!Array.isArray(attributes)) {
       return null;
     }
 
     let items = [];
 
-    for (let index = 0; index < attributesList?.attributes.length; index++) {
-      const attr = attributesList?.attributes[index];
+    for (let index = 0; index < attributes.length; index++) {
+      const attr = attributes[index];
 
       if (attr != null) {
         items.push({
@@ -88,7 +147,7 @@ const ProductVariantCard = ({
     return items?.length > 0 ? {items} : null;
   }, [
     ProductVariantValue?.applicationPriceSelect,
-    attributesList?.attributes,
+    attributes,
     formatNumber,
     getItemTitle,
   ]);
@@ -115,11 +174,10 @@ const ProductVariantCard = ({
         items: [
           {
             displayText:
-              stockAvailability > 0
+              availableStock > 0
                 ? I18n.t('Stock_Available')
                 : I18n.t('Stock_Unavailable'),
-            color:
-              stockAvailability > 0 ? Colors.successColor : Colors.errorColor,
+            color: availableStock > 0 ? Colors.successColor : Colors.errorColor,
           },
         ],
       }}

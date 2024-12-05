@@ -55,7 +55,6 @@ export {
 } from './inventorySlice';
 export {filterClients, filterSuppliers} from './partnerSlice';
 export {
-  fetchProductsAvailability,
   fetchProductDistribution,
   fetchProductIndicators,
 } from './productIndicatorsSlice';
@@ -65,10 +64,7 @@ export {
   updateProductLocker,
 } from './productSlice';
 export {searchProductTrackingNumber} from './productTrackingNumberSlice';
-export {
-  fetchProductsAttributes,
-  fetchProductVariants,
-} from './productVariantSlice';
+export {fetchProductVariants} from './productVariantSlice';
 export {getRacks} from './racksListSlice';
 export {fetchStockCorrectionReasons} from './stockCorrectionReasonSlice';
 export {

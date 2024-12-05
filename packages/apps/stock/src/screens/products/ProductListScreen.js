@@ -16,27 +16,22 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import React, {useEffect, useState, useCallback} from 'react';
+import React, {useState, useCallback} from 'react';
 import {Screen} from '@axelor/aos-mobile-ui';
 import {
   displayItemName,
   SearchListView,
-  useDispatch,
   useSelector,
   useTranslator,
 } from '@axelor/aos-mobile-core';
 import {ProductCard} from '../../components';
 import {searchProducts} from '../../features/productSlice';
-import {fetchProductsAvailability} from '../../features/productIndicatorsSlice';
 
 const productScanKey = 'product_product-list';
 
 const ProductListScreen = ({navigation}) => {
   const I18n = useTranslator();
-  const dispatch = useDispatch();
 
-  const {activeCompany} = useSelector(state => state.user.user);
-  const {listAvailabilty} = useSelector(state => state.productIndicators);
   const {loadingProduct, moreLoadingProduct, isListEndProduct, productList} =
     useSelector(state => state.product);
 
@@ -52,18 +47,6 @@ const ProductListScreen = ({navigation}) => {
     [navigation],
   );
 
-  useEffect(() => {
-    if (productList != null) {
-      dispatch(
-        fetchProductsAvailability({
-          productList: productList,
-          companyId: activeCompany?.id,
-          stockLocationId: null,
-        }),
-      );
-    }
-  }, [activeCompany, dispatch, productList]);
-
   return (
     <Screen removeSpaceOnTop={true}>
       <SearchListView
@@ -78,15 +61,14 @@ const ProductListScreen = ({navigation}) => {
         searchNavigate={navigate}
         scanKeySearch={productScanKey}
         expandableFilter={false}
-        renderListItem={({item, index}) => (
+        renderListItem={({item}) => (
           <ProductCard
             key={item.id}
+            productId={item.id}
+            productVersion={item.version}
             name={item.name}
             code={item.code}
-            picture={item.picture == null ? null : item.picture}
-            availableStock={
-              listAvailabilty ? listAvailabilty[index]?.availableStock : null
-            }
+            picture={item.picture}
             onPress={() => showProductDetails(item)}
           />
         )}

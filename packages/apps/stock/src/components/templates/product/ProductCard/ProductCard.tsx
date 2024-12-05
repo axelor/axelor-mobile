@@ -16,31 +16,70 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import React from 'react';
+import React, {useEffect, useRef, useState} from 'react';
 import {StyleSheet} from 'react-native';
 import {ObjectCard, useThemeColor} from '@axelor/aos-mobile-ui';
-import {useMetafileUri, useTranslator} from '@axelor/aos-mobile-core';
+import {
+  useMetafileUri,
+  useSelector,
+  useTranslator,
+} from '@axelor/aos-mobile-core';
+import {getProductStockIndicators} from '../../../../api';
 
 interface ProductCardProps {
   style?: any;
+  productId: number;
+  productVersion: number;
   name: string;
   code: string;
   picture: any;
-  availableStock: number | null | undefined;
   onPress: () => void;
 }
 
 const ProductCard = ({
   style,
+  productId,
+  productVersion,
   name,
   code,
   picture,
-  availableStock,
   onPress,
 }: ProductCardProps) => {
   const Colors = useThemeColor();
   const I18n = useTranslator();
   const formatMetaFile = useMetafileUri();
+  const isMounted = useRef(true);
+
+  const {activeCompany} = useSelector(state => state.user.user);
+
+  const [availableStock, setAvailableStock] = useState(null);
+
+  useEffect(() => {
+    isMounted.current = true;
+
+    if (productId != null) {
+      getProductStockIndicators({
+        productId: productId,
+        version: productVersion,
+        companyId: activeCompany?.id,
+        stockLocationId: null,
+      })
+        .then((res: any) => {
+          if (isMounted.current) {
+            setAvailableStock(res?.data?.object?.availableStock);
+          }
+        })
+        .catch(() => {
+          if (isMounted.current) {
+            setAvailableStock(null);
+          }
+        });
+    }
+
+    return () => {
+      isMounted.current = false;
+    };
+  }, [activeCompany?.id, productId, productVersion]);
 
   return (
     <ObjectCard
