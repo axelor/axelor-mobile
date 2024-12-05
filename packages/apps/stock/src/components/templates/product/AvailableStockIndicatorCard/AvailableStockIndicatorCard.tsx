@@ -16,35 +16,69 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import React, {useCallback, useMemo} from 'react';
+import React, {useCallback, useEffect, useMemo, useRef, useState} from 'react';
 import {StyleSheet} from 'react-native';
 import {ObjectCard, useDigitFormat, useThemeColor} from '@axelor/aos-mobile-ui';
 import {useSelector, useTranslator} from '@axelor/aos-mobile-core';
+import {getProductStockIndicators} from '../../../../api';
 
 interface AvailableStockIndicatorCardProps {
+  product: any;
+  companyId: number;
   stockLocation: any;
   unit: any;
   currentQty: number;
   futureQty: number;
   reservedQty: number;
-  availableStock: number;
 }
 
 const AvailableStockIndicatorCard = ({
+  product,
+  companyId,
   stockLocation,
   unit,
   currentQty,
   futureQty,
   reservedQty,
-  availableStock,
 }: AvailableStockIndicatorCardProps) => {
   const Colors = useThemeColor();
   const I18n = useTranslator();
   const formatNumber = useDigitFormat();
+  const isMounted = useRef(true);
 
+  const {activeCompany} = useSelector(state => state.user.user);
   const {supplychain: supplychainConfig} = useSelector(
     state => state.appConfig,
   );
+
+  const [availableStock, setAvailableStock] = useState(null);
+
+  useEffect(() => {
+    isMounted.current = true;
+
+    if (product != null) {
+      getProductStockIndicators({
+        productId: product.id,
+        version: product.$version,
+        stockLocationId: stockLocation?.id,
+        companyId: companyId ?? activeCompany?.id,
+      })
+        .then((res: any) => {
+          if (isMounted.current) {
+            setAvailableStock(res?.data?.object?.availableStock);
+          }
+        })
+        .catch(() => {
+          if (isMounted.current) {
+            setAvailableStock(null);
+          }
+        });
+    }
+
+    return () => {
+      isMounted.current = false;
+    };
+  }, [activeCompany, companyId, product, stockLocation]);
 
   const borderStyle = useMemo(() => {
     const _color =

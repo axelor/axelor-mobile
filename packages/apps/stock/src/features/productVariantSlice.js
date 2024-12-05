@@ -21,7 +21,7 @@ import {
   generateInifiniteScrollCases,
   handlerApiCall,
 } from '@axelor/aos-mobile-core';
-import {fetchVariantAttributes, fetchVariants} from '../api/product-api';
+import {fetchVariants} from '../api/product-api';
 
 export const fetchProductVariants = createAsyncThunk(
   'product/fetchProductVariant',
@@ -36,44 +36,11 @@ export const fetchProductVariants = createAsyncThunk(
   },
 );
 
-var getProductAttributes = async (data, {getState}) => {
-  return handlerApiCall({
-    fetchFunction: fetchVariantAttributes,
-    data,
-    action: 'Stock_SliceAction_FetchProductVariantAttributes',
-    getState,
-    responseOptions: {isArrayResponse: true},
-  });
-};
-
-async function fetchData(data, {getState}) {
-  return await getProductAttributes(data, {getState});
-}
-
-export const fetchProductsAttributes = createAsyncThunk(
-  'product/fetchProductsAttributes',
-  async function (data, {getState}) {
-    let promises = [];
-    data.productList.forEach(product => {
-      promises.push(
-        fetchData(
-          {productVariantId: product.id, version: product.version},
-          {getState},
-        ),
-      );
-    });
-    return Promise.all(promises);
-  },
-);
-
 const initialState = {
   loadingProductList: false,
   moreLoading: false,
   isListEnd: false,
   productListVariables: [],
-
-  loading: false,
-  listProductsAttributes: [],
 };
 
 const productSlice = createSlice({
@@ -85,13 +52,6 @@ const productSlice = createSlice({
       moreLoading: 'moreLoading',
       isListEnd: 'isListEnd',
       list: 'productListVariables',
-    });
-    builder.addCase(fetchProductsAttributes.pending, (state, action) => {
-      state.loading = true;
-    });
-    builder.addCase(fetchProductsAttributes.fulfilled, (state, action) => {
-      state.loading = false;
-      state.listProductsAttributes = action.payload;
     });
   },
 });
