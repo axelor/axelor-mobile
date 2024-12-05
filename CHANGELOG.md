@@ -3,6 +3,36 @@ title: 8.0.0
 tags: Changelog
 ---
 
+## [8.0.17] (2024-12-05)
+
+### @axelor/aos-mobile-core
+
+#### Changes
+
+- Session card: add possibility to override session removal action
+
+### @axelor/aos-mobile-ui
+
+#### Changes
+
+- Increment: modify format management on blur/focus
+
+#### Fixes
+
+- AutoCompleteSearch: manage margin bottom when the list is empty
+- Increment: save when click outside the input
+
+### @axelor/aos-mobile-stock
+
+#### Changes
+
+- Indicators: move logic to fetch available stock to card components
+
+<details>
+There was a performance problem on the screens requiring the product indicators. To solve this slow performance problem, product indicators are now retrieved from the card component in the background. The old way of working retrieved the indicators for all the products in the list each time they were updated, before displaying them, which is rather cumbersome and shouldn't be used. The functions concerned have been removed. 
+</details>
+
+
 ## [8.0.16] (2024-11-26)
 
 ### @axelor/aos-mobile-core
@@ -605,6 +635,7 @@ Changes has been done to get new core and ui improvements: use of ChipSelect, co
 
 Changes has been done to get new core and ui improvements: use of ChipSelect, color differentiation between success and primary, definition of required configs, use of icons for Bootstrap
 
+[8.0.17]: https://github.com/axelor/axelor-mobile/compare/8.0.16...8.0.17
 [8.0.16]: https://github.com/axelor/axelor-mobile/compare/8.0.15...8.0.16
 [8.0.15]: https://github.com/axelor/axelor-mobile/compare/8.0.14...8.0.15
 [8.0.14]: https://github.com/axelor/axelor-mobile/compare/8.0.13...8.0.14
