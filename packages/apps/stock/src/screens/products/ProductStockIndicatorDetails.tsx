@@ -37,7 +37,6 @@ import {
   OrderQtyIndicatorCard,
   StockQtyIndicatorCard,
 } from '../../components';
-import {useStockListWithAvailability} from '../../hooks';
 import {StockIndicator} from '../../types';
 
 const ProductStockIndicatorDetails = ({route}) => {
@@ -72,8 +71,8 @@ const ProductStockIndicatorDetails = ({route}) => {
     loadingAvailableStock,
     moreLoadingAvailableStock,
     isListEndAvailableStock,
+    availableStockList,
   } = useSelector((state: any) => state.productIndicators);
-  const {availableStockList} = useStockListWithAvailability(companyId, product);
 
   useEffect(() => {
     if (productId != null && productId !== product?.id) {
@@ -195,13 +194,16 @@ const ProductStockIndicatorDetails = ({route}) => {
           moreLoading: moreLoadingAvailableStock,
           isListEnd: isListEndAvailableStock,
           fetchData: fetchIndicatorAPI,
-          renderItem: ({item}) => <AvailableStockIndicatorCard {...item} />,
+          renderItem: ({item}) => (
+            <AvailableStockIndicatorCard {...item} companyId={companyId} />
+          ),
         };
       default:
         return null;
     }
   }, [
     availableStockList,
+    companyId,
     fetchIndicatorAPI,
     fetchStockQtyIndicatorAPI,
     handleOnPressStockQty,

@@ -16,15 +16,11 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import React, {useCallback, useEffect, useMemo} from 'react';
+import React, {useCallback, useMemo} from 'react';
 import {Screen, ScrollList} from '@axelor/aos-mobile-ui';
 import {useDispatch, useSelector, useTranslator} from '@axelor/aos-mobile-core';
 import {ProductVariantCard} from '../../components';
-import {
-  fetchProductsAttributes,
-  fetchProductVariants,
-} from '../../features/productVariantSlice';
-import {fetchProductsAvailability} from '../../features/productIndicatorsSlice';
+import {fetchProductVariants} from '../../features/productVariantSlice';
 
 const ProductListVariantScreen = ({route, navigation}) => {
   const product = route.params.product;
@@ -34,14 +30,8 @@ const ProductListVariantScreen = ({route, navigation}) => {
     () => product?.parentProduct?.id,
     [product?.parentProduct?.id],
   );
-  const {
-    loadingProductList,
-    moreLoading,
-    isListEnd,
-    productListVariables,
-    listProductsAttributes,
-  } = useSelector(state => state.productVariant);
-  const {listAvailabilty} = useSelector(state => state.productIndicators);
+  const {loadingProductList, moreLoading, isListEnd, productListVariables} =
+    useSelector(state => state.productVariant);
   const I18n = useTranslator();
   const dispatch = useDispatch();
 
@@ -59,19 +49,6 @@ const ProductListVariantScreen = ({route, navigation}) => {
     [dispatch, parentProductId],
   );
 
-  useEffect(() => {
-    if (productListVariables != null) {
-      dispatch(
-        fetchProductsAvailability({
-          productList: productListVariables,
-          companyId: companyID,
-          stockLocationId: stockLocationId,
-        }),
-      );
-      dispatch(fetchProductsAttributes({productList: productListVariables}));
-    }
-  }, [companyID, dispatch, productListVariables, stockLocationId]);
-
   const navigateToProductVariable = productVar => {
     navigation.navigate('ProductStockDetailsScreen', {product: productVar});
   };
@@ -81,18 +58,15 @@ const ProductListVariantScreen = ({route, navigation}) => {
       <ScrollList
         loadingList={loadingProductList}
         data={productListVariables}
-        renderItem={({item, index}) => (
+        renderItem={({item}) => (
           <ProductVariantCard
+            key={item.id}
             name={item.name}
             code={item.code}
-            attributesList={
-              listProductsAttributes ? listProductsAttributes[index] : null
-            }
-            key={item.id}
+            productId={item.id}
+            productVersion={item.version}
+            availabiltyData={{stockLocationId, companyId: companyID}}
             picture={item.picture}
-            stockAvailability={
-              listAvailabilty ? listAvailabilty[index]?.availableStock : 0
-            }
             onPress={() => navigateToProductVariable(item)}
           />
         )}

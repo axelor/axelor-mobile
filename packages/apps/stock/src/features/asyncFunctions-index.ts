@@ -56,9 +56,7 @@ export {
 export {filterClients, filterSuppliers} from './partnerSlice';
 export {
   fetchAvailableStockIndicator,
-  fetchProductDistribution,
   fetchProductIndicators,
-  fetchProductsAvailability,
   fetchPurchaseOrderQtyIndicator,
   fetchSaleOrderQtyIndicator,
   fetchStockQtyIndicator,
@@ -69,10 +67,7 @@ export {
   updateProductLocker,
 } from './productSlice';
 export {searchProductTrackingNumber} from './productTrackingNumberSlice';
-export {
-  fetchProductsAttributes,
-  fetchProductVariants,
-} from './productVariantSlice';
+export {fetchProductVariants} from './productVariantSlice';
 export {getRacks} from './racksListSlice';
 export {fetchStockCorrectionReasons} from './stockCorrectionReasonSlice';
 export {
