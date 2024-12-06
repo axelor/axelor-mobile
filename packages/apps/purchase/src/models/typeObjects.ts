@@ -39,7 +39,7 @@ export const purchase_typeObjects: ModuleSelections = [
           {
             key: 'Accepted',
             value: 3,
-            title: 'Purchase_Status_Planned',
+            title: 'Purchase_Status_Accepted',
             color: 'plannedColor',
           },
           {

@@ -16,5 +16,5 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-export {purchaseRequestReducer as purchase_PurchaseRequest} from './purchaseRequestSlice';
+export {purchaseRequestReducer as purchase_purchaseRequest} from './purchaseRequestSlice';
 export {supplierReducer as purchase_supplier} from './supplierSlice';
