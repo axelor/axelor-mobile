@@ -18,8 +18,8 @@
 
 import React, {useEffect, useMemo, useState} from 'react';
 import {Dimensions, StyleSheet, View, ScrollView} from 'react-native';
-import {Color} from '../../../theme/themes';
-import {Chip} from '../../molecules';
+import {Button, Chip} from '../../molecules';
+import {useThemeColor, Color} from '../../../theme';
 
 const CHIP_CONTAINER_MARGIN = 16;
 const CHIP_MARGIN = 2;
@@ -46,6 +46,7 @@ interface ChipSelectProps {
   readonly?: boolean;
   chipNumberOfLines?: number;
   onChangeValue?: (value: any) => void;
+  showClearButton?: boolean;
 }
 
 const ChipSelect = ({
@@ -58,7 +59,10 @@ const ChipSelect = ({
   readonly = false,
   chipNumberOfLines,
   onChangeValue = () => {},
+  showClearButton = false,
 }: ChipSelectProps) => {
+  const Colors = useThemeColor();
+
   const [selectedChip, setSelectedChip] = useState<Item[]>(
     selectionItems.filter(item => item.isActive === true),
   );
@@ -127,6 +131,11 @@ const ChipSelect = ({
     );
   };
 
+  const clearAllChips = () => {
+    setSelectedChip([]);
+    onChangeValue([]);
+  };
+
   if (
     selectionItems.length < 2 ||
     (mode !== MODES.multi && mode !== MODES.switch)
@@ -136,7 +145,24 @@ const ChipSelect = ({
 
   return (
     <View style={[styles.chipContainer, style]}>
-      <ScrollView horizontal={true} showsHorizontalScrollIndicator={false}>
+      <ScrollView
+        horizontal={true}
+        showsHorizontalScrollIndicator={false}
+        contentContainerStyle={styles.scrollContainer}>
+        {showClearButton && (
+          <Button
+            iconName="trash"
+            color={
+              selectedChip.length > 0
+                ? Colors.primaryColor
+                : Colors.secondaryColor
+            }
+            onPress={clearAllChips}
+            disabled={selectedChip.length === 0}
+            width={'15%'}
+            style={styles.clarButton}
+          />
+        )}
         {selectionItems?.map((item, index) => (
           <Chip
             key={index}
@@ -162,6 +188,12 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     marginHorizontal: CHIP_CONTAINER_MARGIN,
     marginVertical: 2,
+  },
+  scrollContainer: {
+    alignItems: 'center',
+  },
+  clarButton: {
+    marginRight: 5,
   },
 });
 
