@@ -16,9 +16,11 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+export {searchProduct as searchProductApi} from './product-api';
 export {
   getPurchaseRequest as getPurchaseRequestApi,
   searchPurchaseRequest as searchPurchaseRequestApi,
 } from './purchase-request-api';
 export {searchPurchaseRequestLine as searchPurchaseRequestLineApi} from './purchase-request-line-api';
 export {searchSupplier as searchSupplierApi} from './supplier-api';
+export {searchUnit as searchUnitApi} from './unit-api';

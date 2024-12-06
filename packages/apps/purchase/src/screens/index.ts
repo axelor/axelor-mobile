@@ -16,6 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+import RequestCreationScreen from './RequestCreationScreen';
 import RequestDetailsScreen from './RequestDetailsScreen';
 import RequestLineListScreen from './RequestLineListScreen';
 import RequestListScreen from './RequestListScreen';
@@ -43,8 +44,17 @@ export default {
       shadedHeader: false,
     },
   },
+  RequestCreationScreen: {
+    title: 'Purchase_CreateRequest',
+    component: RequestCreationScreen,
+    options: {
+      shadedHeader: false,
+    },
+    isUsableOnShortcut: true,
+  },
 };
 
 export {RequestDetailsScreen};
 export {RequestListScreen};
 export {RequestLineListScreen};
+export {RequestCreationScreen};

@@ -39,4 +39,13 @@ export const purchase_modelAPI: ObjectFields = {
     quantity: schemaContructor.string(),
     newProduct: schemaContructor.boolean(),
   }),
+  purchase_product: schemaContructor.object({
+    name: schemaContructor.string(),
+    code: schemaContructor.string(),
+    trackingNumberConfiguration: schemaContructor.subObject(),
+    unit: schemaContructor.subObject('name'),
+  }),
+  purchase_unit: schemaContructor.object({
+    name: schemaContructor.string(),
+  }),
 };

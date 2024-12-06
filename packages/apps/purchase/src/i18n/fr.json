@@ -21,8 +21,14 @@
   "Purchase_AddProduct": "Ajouter un produit",
   "Purchase_NewProduct": "Nouveau produit",
   "Purchase_ExistingProduct": "Produit existant",
+  "Purchase_CreateRequest": "Créer une demande",
+  "Purchase_Company": "Société",
+  "Purchase_Or": "Ou",
+  "Purchase_Unit": "Unité",
   "Purchase_SliceAction_SearchPurchaseRequest": "recherche sur les demandes d'achat",
   "Purchase_SliceAction_SearchSupplier": "recherche sur les fournisseurs",
   "Purchase_SliceAction_GetPurchaseRequest": "récupération de la demande d'achat",
-  "Purchase_SliceAction_SearchPurchaseRequestLine": "recherche sur les lignes de demandes d'achat"
+  "Purchase_SliceAction_SearchPurchaseRequestLine": "recherche sur les lignes de demandes d'achat",
+  "Purchase_SliceAction_SearchProduct": "recherche sur les produits",
+  "Purchase_SliceAction_SearchUnit": "recherche sur les unités"
 }

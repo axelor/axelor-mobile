@@ -43,6 +43,11 @@ export const PurchaseModule: Module = {
       icon: 'file-earmark-ruled',
       screen: 'RequestListScreen',
     },
+    purchase_menu_request_creation: {
+      title: 'Purchase_CreateRequest',
+      icon: 'cart-plus',
+      screen: 'RequestCreationScreen',
+    },
   },
   screens: {
     ...PurchaseScreens,

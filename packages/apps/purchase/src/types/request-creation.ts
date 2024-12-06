@@ -1,7 +1,7 @@
 /*
  * Axelor Business Solutions
  *
- * Copyright (C) 2025 Axelor (<http://axelor.com>).
+ * Copyright (C) 2024 Axelor (<http://axelor.com>).
  *
  * This program is free software: you can redistribute it and/or  modify
  * it under the terms of the GNU Affero General Public License, version 3,
@@ -16,9 +16,12 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-export {default as DropdownRequestCharacteristics} from './DropdownRequestCharacteristics/DropdownRequestCharacteristics';
-export {default as HorizontalRuleText} from './HorizontalRuleText/HorizontalRuleText';
-export {default as RequestCard} from './RequestCard/RequestCard';
-export {default as RequestHeader} from './RequestHeader/RequestHeader';
-export {default as RequestLineCard} from './RequestLineCard/RequestLineCard';
-export {default as RequestSeeLinesButton} from './RequestSeeLinesButton/RequestSeeLinesButton';
+class RequestCreation {
+  static step = {
+    addLine: 0,
+    validateLine: 1,
+    finish: 2,
+  };
+}
+
+export default RequestCreation;

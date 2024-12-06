@@ -21,8 +21,14 @@
   "Purchase_AddProduct": "Add product",
   "Purchase_NewProduct": "New product",
   "Purchase_ExistingProduct": "Existing product",
+  "Purchase_CreateRequest": "Create request",
+  "Purchase_Company": "Company",
+  "Purchase_Or": "Or",
+  "Purchase_Unit": "Unit",
   "Purchase_SliceAction_SearchPurchaseRequest": "search purchase request",
   "Purchase_SliceAction_SearchSupplier": "search supplier",
   "Purchase_SliceAction_GetPurchaseRequest": "get purchase request",
-  "Purchase_SliceAction_SearchPurchaseRequestLine": "search purchase request lines"
+  "Purchase_SliceAction_SearchPurchaseRequestLine": "search purchase request lines",
+  "Purchase_SliceAction_SearchProduct": "search product",
+  "Purchase_SliceAction_SearchUnit": "search unit"
 }
