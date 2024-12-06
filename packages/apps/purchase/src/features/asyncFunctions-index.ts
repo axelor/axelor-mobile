@@ -17,4 +17,6 @@
  */
 
 export {searchPurchaseRequest} from './purchaseRequestSlice';
+export {searchProduct} from './productSlice';
 export {searchSupplier} from './supplierSlice';
+export {searchUnit} from './unitSlice';

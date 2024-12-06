@@ -8,6 +8,12 @@
   "Purchase_Status_Refused": "Refusé",
   "Purchase_Status_Canceled": "Annulé",
   "Purchase_Supplier": "Fournisseur",
+  "Purchase_CreateRequest": "Créer une demande",
+  "Purchase_Company": "Société",
+  "Purchase_Or": "Ou",
+  "Purchase_Unit": "Unité",
   "Purchase_SliceAction_SearchPurchaseRequest": "recherche sur les demandes d'achat",
-  "Purchase_SliceAction_SearchSupplier": "recherche sur les fournisseurs"
+  "Purchase_SliceAction_SearchSupplier": "recherche sur les fournisseurs",
+  "Purchase_SliceAction_SearchProduct": "recherche sur les produits",
+  "Purchase_SliceAction_SearchUnit": "recherche sur les unités"
 }

@@ -8,6 +8,12 @@
   "Purchase_Status_Refused": "Refused",
   "Purchase_Status_Canceled": "Canceled",
   "Purchase_Supplier": "Supplier",
+  "Purchase_CreateRequest": "Create request",
+  "Purchase_Company": "Company",
+  "Purchase_Or": "Or",
+  "Purchase_Unit": "Uµnit",
   "Purchase_SliceAction_SearchPurchaseRequest": "search purchase request",
-  "Purchase_SliceAction_SearchSupplier": "search supplier"
+  "Purchase_SliceAction_SearchSupplier": "search supplier",
+  "Purchase_SliceAction_SearchProduct": "search product",
+  "Purchase_SliceAction_SearchUnit": "search unit"
 }

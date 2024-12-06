@@ -17,4 +17,6 @@
  */
 
 export {searchPurchaseRequest as searchPurchaseRequestApi} from './purchase-request-api';
+export {searchProduct as searchProductApi} from './product-api';
 export {searchSupplier as searchSupplierApi} from './supplier-api';
+export {searchUnit as searchUnitApi} from './unit-api';

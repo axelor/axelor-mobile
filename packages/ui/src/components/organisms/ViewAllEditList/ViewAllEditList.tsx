@@ -53,6 +53,8 @@ const ViewAllEditList = ({
 
   const [isAlertVisible, setIsAlertVisible] = useState(false);
 
+  console.log('lines', lines);
+
   return (
     <>
       <ViewAllContainer
