@@ -25,6 +25,8 @@
   "Purchase_Company": "Company",
   "Purchase_Or": "Or",
   "Purchase_Unit": "Unit",
+  "Purchase_Quantity": "Quantity",
+  "Purchase_ProductTitle": "Product title",
   "Purchase_SliceAction_SearchPurchaseRequest": "search purchase request",
   "Purchase_SliceAction_SearchSupplier": "search supplier",
   "Purchase_SliceAction_GetPurchaseRequest": "get purchase request",
