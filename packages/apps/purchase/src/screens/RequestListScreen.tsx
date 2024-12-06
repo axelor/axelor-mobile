@@ -40,7 +40,7 @@ const RequestListScreen = ({}) => {
     moreLoadingPurchaseRequest,
     isListEndPurchaseRequest,
     purchaseRequestList,
-  } = useSelector(state => state.purchase_PurchaseRequest);
+  } = useSelector(state => state.purchase_purchaseRequest);
 
   const [selectedStatus, setSelectedStatus] = useState([]);
   const [supplier, setSupplier] = useState();

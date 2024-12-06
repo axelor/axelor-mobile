@@ -24,7 +24,7 @@ import {
 import {searchPurchaseRequest as _searchPurchaseRequest} from '../api/purchase-request-api';
 
 export const searchPurchaseRequest = createAsyncThunk(
-  'purchase_PurchaseRequest/searchPurchaseRequest',
+  'purchase_purchaseRequest/searchPurchaseRequest',
   async function (data, {getState}) {
     return handlerApiCall({
       fetchFunction: _searchPurchaseRequest,
@@ -44,7 +44,7 @@ const initialState = {
 };
 
 const purchaseRequestSlice = createSlice({
-  name: 'purchase_PurchaseRequest',
+  name: 'purchase_purchaseRequest',
   initialState,
   extraReducers: builder => {
     generateInifiniteScrollCases(builder, searchPurchaseRequest, {
