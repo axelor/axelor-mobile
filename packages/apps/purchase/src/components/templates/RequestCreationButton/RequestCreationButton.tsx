@@ -18,14 +18,8 @@
 
 import React from 'react';
 import {StyleSheet, View} from 'react-native';
-import {
-  useDispatch,
-  useNavigation,
-  useSelector,
-  useTranslator,
-} from '@axelor/aos-mobile-core';
+import {useNavigation, useTranslator} from '@axelor/aos-mobile-core';
 import {Button, useThemeColor} from '@axelor/aos-mobile-ui';
-//import {createInternalMove} from '../../../../features/internalMoveSlice';
 import {RequestCreation} from '../../../types';
 
 interface RequestCreationButtonProps {
@@ -48,9 +42,6 @@ const RequestCreationButton = ({
   const Colors = useThemeColor();
   const I18n = useTranslator();
   const navigation = useNavigation();
-  const dispatch = useDispatch();
-
-  const {user} = useSelector((state: any) => state.user);
 
   const handleFinishPress = () => {
     if (step === RequestCreation.step.validateLine) {

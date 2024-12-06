@@ -118,8 +118,6 @@ const RequestCreationScreen = () => {
     [lines, newLine],
   );
 
-  console.log(unit);
-
   return (
     <Screen
       removeSpaceOnTop
@@ -194,7 +192,6 @@ const RequestCreationScreen = () => {
 const styles = StyleSheet.create({
   container: {
     alignItems: 'center',
-    //height: '100%',
   },
   rule: {
     marginVertical: 15,

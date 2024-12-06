@@ -18,12 +18,7 @@
 
 import React from 'react';
 import {useTranslator} from '@axelor/aos-mobile-core';
-import {
-  checkNullString,
-  QuantityCard,
-  Text,
-  useDigitFormat,
-} from '@axelor/aos-mobile-ui';
+import {checkNullString, QuantityCard, Text} from '@axelor/aos-mobile-ui';
 
 interface RequestCreationQuantityCardProps {
   movedQty: number;
@@ -41,15 +36,12 @@ const RequestCreationQuantityCard = ({
   cancelMove,
   productName,
   trackingNumber,
-  availableQty,
-  productUnit,
 }: RequestCreationQuantityCardProps) => {
   const I18n = useTranslator();
-  const formatNumber = useDigitFormat();
 
   return (
     <QuantityCard
-      labelQty={I18n.t('Resquest_Quantity')}
+      labelQty={I18n.t('Purchase_Quantity')}
       defaultValue={movedQty}
       onValueChange={setMovedQty}
       editable={true}
