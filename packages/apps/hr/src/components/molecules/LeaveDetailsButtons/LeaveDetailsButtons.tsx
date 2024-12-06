@@ -16,33 +16,86 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import React from 'react';
+import React, {useCallback, useState} from 'react';
 import {StyleSheet, View} from 'react-native';
-import {useTranslator, useTypes} from '@axelor/aos-mobile-core';
+import {
+  useDispatch,
+  useSelector,
+  useTranslator,
+  useTypes,
+} from '@axelor/aos-mobile-core';
 import {Button, useThemeColor} from '@axelor/aos-mobile-ui';
+import {
+  cancelLeave,
+  sendLeave,
+  validateLeave,
+} from '../../../features/leaveSlice';
+import {LeaveRefusalPopup} from '../../templates';
 
 interface LeaveDetailsButtonsProps {
   statusSelect: number;
+  leaveId: number;
+  leaveVersion: number;
 }
 
-const LeaveDetailsButtons = ({statusSelect}: LeaveDetailsButtonsProps) => {
+const LeaveDetailsButtons = ({
+  statusSelect,
+  leaveId,
+  leaveVersion,
+}: LeaveDetailsButtonsProps) => {
   const I18n = useTranslator();
   const Colors = useThemeColor();
+  const dispatch = useDispatch();
+
   const {LeaveRequest} = useTypes();
+
+  const [refusalPopupIsOpen, setRefusalPopupIsOpen] = useState(false);
+
+  const {user} = useSelector(state => state.user);
+
+  const sendLeaveAPI = useCallback(() => {
+    dispatch(
+      (sendLeave as any)({
+        leaveRequestId: leaveId,
+        version: leaveVersion,
+        userId: user?.id,
+      }),
+    );
+  }, [dispatch, leaveId, leaveVersion, user?.id]);
+
+  const validateLeaveAPI = useCallback(() => {
+    dispatch(
+      (validateLeave as any)({
+        leaveRequestId: leaveId,
+        version: leaveVersion,
+        user: user,
+      }),
+    );
+  }, [dispatch, leaveId, leaveVersion, user]);
+
+  const cancelLeaveAPI = useCallback(() => {
+    dispatch(
+      (cancelLeave as any)({
+        leaveRequestId: leaveId,
+        version: leaveVersion,
+        userId: user?.id,
+      }),
+    );
+  }, [dispatch, leaveId, leaveVersion, user]);
 
   if (statusSelect === LeaveRequest?.statusSelect.Draft) {
     return (
       <View style={styles.container}>
         <Button
-          title={I18n.t('Hr_Delete')}
-          onPress={() => console.log('Delete button pressed.')}
+          title={I18n.t('Hr_Cancel')}
+          onPress={cancelLeaveAPI}
           width="45%"
           color={Colors.errorColor}
           iconName="trash3-fill"
         />
         <Button
           title={I18n.t('Hr_Send')}
-          onPress={() => console.log('Send button pressed.')}
+          onPress={sendLeaveAPI}
           width="45%"
           iconName="send-fill"
         />
@@ -55,16 +108,22 @@ const LeaveDetailsButtons = ({statusSelect}: LeaveDetailsButtonsProps) => {
       <View style={styles.container}>
         <Button
           title={I18n.t('Hr_Refuse')}
-          onPress={() => console.log('Refuse button pressed.')}
+          onPress={() => setRefusalPopupIsOpen(true)}
           width="45%"
           color={Colors.errorColor}
           iconName="x-lg"
         />
         <Button
           title={I18n.t('Hr_Validate')}
-          onPress={() => console.log('Validate button pressed.')}
+          onPress={validateLeaveAPI}
           width="45%"
           iconName="check-lg"
+        />
+        <LeaveRefusalPopup
+          isOpen={refusalPopupIsOpen}
+          leaveId={leaveId}
+          leaveVersion={leaveVersion}
+          onCancel={() => setRefusalPopupIsOpen(false)}
         />
       </View>
     );

@@ -65,7 +65,13 @@ const LeaveDetailsScreen = ({route}) => {
   return (
     <Screen
       removeSpaceOnTop={true}
-      fixedItems={<LeaveDetailsButtons statusSelect={leave.statusSelect} />}>
+      fixedItems={
+        <LeaveDetailsButtons
+          statusSelect={leave.statusSelect}
+          leaveId={leave.id}
+          leaveVersion={leave.version}
+        />
+      }>
       <HeaderContainer
         expandableFilter={false}
         fixedItems={<LeaveDetailsHeader leave={leave} />}

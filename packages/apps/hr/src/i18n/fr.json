@@ -42,6 +42,7 @@
   "Hr_Send": "Envoyer",
   "Hr_Validate": "Valider",
   "Hr_Delete": "Supprimer",
+  "Hr_Cancel": "Annulé",
   "Hr_CreateExpense": "Créer une note de frais",
   "Hr_CreateExpenseLine": "Créer une ligne de note de frais",
   "Hr_Refuse": "Refuser",
@@ -152,5 +153,9 @@
   "Hr_SliceAction_FetchLeave": "récupération des congés",
   "Hr_SliceAction_FetchLeaveToValidate": "récupération des congés à valider",
   "Hr_SliceAction_FetchLeaveById": "récupération d'une demande de congés par id",
-  "Hr_SliceAction_FetchLeaveReason": "récupération des motif de congés"
+  "Hr_SliceAction_FetchLeaveReason": "récupération des motif de congés",
+  "Hr_SliceAction_SendLeave": "envoie de la demande de congé",
+  "Hr_SliceAction_ValidateLeave": "",
+  "Hr_SliceAction_CancelLeave": "",
+  "Hr_SliceAction_RejectLeave": ""
 }

@@ -44,11 +44,15 @@ export {
 export {searchExpenseType as searchExpenseTypeApi} from './expense-type-api';
 export {searchKilometricAllowParam as searchKilometricAllowParamApi} from './kilometric-allow-param-api';
 export {
+  cancelLeave as cancelLeaveApi,
   fetchLeave as fetchLeaveApi,
   fetchLeaveById as fetchLeaveByIdApi,
   fetchLeaveReason as fetchLeaveReasonApi,
   fetchLeaveToValidate as fetchLeaveToValidateApi,
   fetchMissingDuration as fetchMissingDurationApi,
+  rejectLeave as rejectLeaveApi,
+  sendLeave as sendLeaveApi,
+  validateLeave as validateLeaveApi,
 } from './leave-api';
 export {
   searchManufOrder as searchManufOrderApi,

@@ -25,7 +25,12 @@ import {
 } from '@axelor/aos-mobile-core';
 import {HeaderContainer, Screen, ScrollList} from '@axelor/aos-mobile-ui';
 import {LeaveActionCard, LeaveFilters} from '../../components';
-import {fetchLeave, fetchLeaveToValidate} from '../../features/leaveSlice';
+import {
+  fetchLeave,
+  fetchLeaveToValidate,
+  sendLeave,
+  validateLeave,
+} from '../../features/leaveSlice';
 import {Leave} from '../../types';
 
 const LeaveListScreen = ({}) => {
@@ -53,6 +58,34 @@ const LeaveListScreen = ({}) => {
       dispatch((fetchLeave as any)({userId: user?.id, selectedStatus, page}));
     },
     [dispatch, selectedStatus, user?.id],
+  );
+
+  const sendLeaveAPI = useCallback(
+    item => {
+      dispatch(
+        (sendLeave as any)({
+          leaveRequestId: item.id,
+          version: item.version,
+          userId: user?.id,
+          selectedStatus,
+        }),
+      );
+    },
+    [dispatch, selectedStatus, user?.id],
+  );
+
+  const validateLeaveApi = useCallback(
+    item => {
+      dispatch(
+        (validateLeave as any)({
+          leaveRequestId: item.id,
+          version: item.version,
+          user: user,
+          selectedStatus,
+        }),
+      );
+    },
+    [dispatch, selectedStatus, user],
   );
 
   const fetchLeaveToValidateAPI = useCallback(
@@ -116,8 +149,8 @@ const LeaveListScreen = ({}) => {
             onPress={() =>
               navigation.navigate('LeaveDetailsScreen', {leaveId: item.id})
             }
-            onSend={() => console.log('Card send button pressed.')}
-            onValidate={() => console.log('Card validate button pressed.')}
+            onSend={() => sendLeaveAPI(item)}
+            onValidate={() => validateLeaveApi(item)}
           />
         )}
         fetchData={listToDisplay.functionApi}

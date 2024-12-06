@@ -52,10 +52,14 @@ export {
   updateExpenseDate,
 } from './kilometricAllowParamSlice';
 export {
+  cancelLeave,
   fetchLeave,
   fetchLeaveById,
   fetchLeaveReason,
   fetchLeaveToValidate,
+  rejectLeave,
+  sendLeave,
+  validateLeave,
 } from './leaveSlice';
 export {
   searchManufOrder,
