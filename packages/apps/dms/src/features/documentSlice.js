@@ -52,6 +52,19 @@ export const searchDirectory = createAsyncThunk(
   },
 );
 
+export const searchFavoriteDocument = createAsyncThunk(
+  'dms_document/searchFavoriteDocument',
+  async function (data, {getState}) {
+    return handlerApiCall({
+      fetchFunction: _searchDocument,
+      data,
+      action: 'Dms_SliceAction_SearchFavoriteDocument',
+      getState,
+      responseOptions: {isArrayResponse: true},
+    });
+  },
+);
+
 const initialState = {
   loadingDocuments: false,
   moreLoadingDocument: false,
@@ -62,6 +75,11 @@ const initialState = {
   moreLoadingDirectory: false,
   isListEndDirectory: false,
   directoryList: [],
+
+  loadingFavoriteDocument: false,
+  moreLoadingFavoriteDocument: false,
+  isListEndFavoriteDocument: false,
+  favoriteDocumentList: [],
 };
 
 const documentSlice = createSlice({
@@ -79,6 +97,12 @@ const documentSlice = createSlice({
       moreLoading: 'moreLoadingDirectory',
       isListEnd: 'isListEndDirectory',
       list: 'directoryList',
+    });
+    generateInifiniteScrollCases(builder, searchFavoriteDocument, {
+      loading: 'loadingFavoriteDocument',
+      moreLoading: 'moreLoadingFavoriteDocument',
+      isListEnd: 'isListEndFavoriteDocument',
+      list: 'favoriteDocumentList',
     });
   },
 });

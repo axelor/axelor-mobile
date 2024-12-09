@@ -28,6 +28,7 @@ const createDocumentCriteria = ({
   parentDirectoryId,
   noParent,
   isDirectory = null,
+  favoriteFileIds,
 }) => {
   const criteria = [getSearchCriterias('dms_document', searchValue)];
 
@@ -73,6 +74,14 @@ const createDocumentCriteria = ({
     });
   }
 
+  if (Array.isArray(favoriteFileIds) && favoriteFileIds.length > 0) {
+    criteria.push({
+      fieldName: 'id',
+      operator: 'in',
+      value: favoriteFileIds,
+    });
+  }
+
   return criteria;
 };
 
@@ -82,6 +91,7 @@ export async function searchDocument({
   extensions,
   parentDirectoryId,
   noParent = false,
+  favoriteFileIds = [],
   page = 0,
 }) {
   return createStandardSearch({
@@ -92,6 +102,7 @@ export async function searchDocument({
       extensions,
       parentDirectoryId,
       noParent,
+      favoriteFileIds,
     }),
     fieldKey: 'dms_document',
     sortKey: 'dms_document',
