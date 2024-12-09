@@ -9,5 +9,6 @@
   "Dms_Delete": "Supprimer",
   "Dms_MyFavoriteDocuments": "Mes fichiers favoris",
   "Dms_SliceAction_SearchDocument": "recherche sur les documents",
-  "Dms_SliceAction_SearchDirectory": "recherche sur les dossiers"
+  "Dms_SliceAction_SearchDirectory": "recherche sur les dossiers",
+  "Dms_SliceAction_SearchFavoriteDocument": "recherche sur les documents favoris"
 }
