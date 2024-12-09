@@ -155,7 +155,7 @@
   "Hr_SliceAction_FetchLeaveById": "fetch leave request by id",
   "Hr_SliceAction_FetchLeaveReason": "fetch leave reason",
   "Hr_SliceAction_SendLeave": "send leave",
-  "Hr_SliceAction_ValidateLeave": "",
-  "Hr_SliceAction_CancelLeave": "",
-  "Hr_SliceAction_RejectLeave": ""
+  "Hr_SliceAction_ValidateLeave": "validate leave",
+  "Hr_SliceAction_CancelLeave": "cancel leave",
+  "Hr_SliceAction_RejectLeave": "reject leave"
 }
