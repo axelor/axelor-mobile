@@ -18,8 +18,8 @@
 
 import React, {useEffect, useMemo, useState} from 'react';
 import {Dimensions, StyleSheet, View, ScrollView} from 'react-native';
-import {Button, Chip} from '../../molecules';
 import {useThemeColor, Color} from '../../../theme';
+import {Button, Chip} from '../../molecules';
 
 const CHIP_CONTAINER_MARGIN = 16;
 const CHIP_MARGIN = 2;

@@ -44,6 +44,7 @@ export const ChipSelect: Story<typeof Component> = {
     option2_color: 'plannedColor',
     option3_title: 'Option 3',
     option3_color: 'infoColor',
+    showClearButton: false,
   },
   argTypes: {
     option1_color: colorPicker,
@@ -52,7 +53,6 @@ export const ChipSelect: Story<typeof Component> = {
     selectionItems: disabledControl,
     isRefresh: disabledControl,
     onChangeValue: disabledControl,
-    showClearButton: {control: 'boolean'},
   },
   render: args => (
     <Component
