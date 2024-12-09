@@ -115,10 +115,12 @@ const SearchTreeView = ({
   const isFocused = useIsFocused();
 
   const [filter, setFilter] = useState(null);
-  const [parent, setParent] = useState([]);
+  const [parent, setParent] = useState(
+    defaultParent ? [EMPTY_PARENT, defaultParent] : [],
+  );
 
   useEffect(() => {
-    if (defaultParent != null && isFocused) {
+    if (isFocused && defaultParent != null) {
       setParent([EMPTY_PARENT, defaultParent]);
     }
   }, [defaultParent, isFocused]);
@@ -192,10 +194,10 @@ const SearchTreeView = ({
   );
 
   useEffect(() => {
-    if (isFocused) {
+    if (isFocused && defaultParent == null) {
       fetchListAPI();
     }
-  }, [fetchListAPI, isFocused]);
+  }, [defaultParent, fetchListAPI, isFocused]);
 
   const renderParentSearchBar = useCallback(() => {
     return (
