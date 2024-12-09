@@ -19,7 +19,7 @@
 import React from 'react';
 import {View} from 'react-native';
 import {shallow} from 'enzyme';
-import {Chip, ChipSelect} from '@axelor/aos-mobile-ui';
+import {Button, Chip, ChipSelect} from '@axelor/aos-mobile-ui';
 import {getGlobalStyles, getDefaultThemeColors} from '../../tools';
 
 describe('ChipSelect Component', () => {
@@ -217,5 +217,21 @@ describe('ChipSelect Component', () => {
         customMarginHorizontal,
       );
     }
+  });
+
+  it('should clear all selected chips when Clear All button is pressed', () => {
+    const onChangeValue = jest.fn();
+
+    const wrapper = shallow(
+      <ChipSelect
+        {...props}
+        onChangeValue={onChangeValue}
+        showClearButton={true}
+      />,
+    );
+
+    wrapper.find(Button).simulate('press');
+
+    expect(onChangeValue).toHaveBeenCalledWith([]);
   });
 });
