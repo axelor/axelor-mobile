@@ -159,7 +159,7 @@ const ChipSelect = ({
             }
             onPress={clearAllChips}
             disabled={selectedChip.length === 0}
-            iconSize={16}
+            iconSize={18}
             width={40}
             style={styles.clearButton}
           />
