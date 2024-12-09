@@ -16,7 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import React, {useCallback, useState} from 'react';
+import React, {useCallback, useMemo, useState} from 'react';
 import {StyleSheet, View} from 'react-native';
 import {
   useDispatch,
@@ -53,35 +53,40 @@ const LeaveDetailsButtons = ({
 
   const {user} = useSelector(state => state.user);
 
+  const leaveRequestParams = useMemo(
+    () => ({
+      leaveRequestId: leaveId,
+      version: leaveVersion,
+    }),
+    [leaveId, leaveVersion],
+  );
+
   const sendLeaveAPI = useCallback(() => {
     dispatch(
       (sendLeave as any)({
-        leaveRequestId: leaveId,
-        version: leaveVersion,
+        ...leaveRequestParams,
         userId: user?.id,
       }),
     );
-  }, [dispatch, leaveId, leaveVersion, user?.id]);
+  }, [dispatch, leaveRequestParams, user?.id]);
 
   const validateLeaveAPI = useCallback(() => {
     dispatch(
       (validateLeave as any)({
-        leaveRequestId: leaveId,
-        version: leaveVersion,
+        ...leaveRequestParams,
         user: user,
       }),
     );
-  }, [dispatch, leaveId, leaveVersion, user]);
+  }, [dispatch, leaveRequestParams, user]);
 
   const cancelLeaveAPI = useCallback(() => {
     dispatch(
       (cancelLeave as any)({
-        leaveRequestId: leaveId,
-        version: leaveVersion,
+        ...leaveRequestParams,
         userId: user?.id,
       }),
     );
-  }, [dispatch, leaveId, leaveVersion, user]);
+  }, [dispatch, leaveRequestParams, user?.id]);
 
   if (statusSelect === LeaveRequest?.statusSelect.Draft) {
     return (

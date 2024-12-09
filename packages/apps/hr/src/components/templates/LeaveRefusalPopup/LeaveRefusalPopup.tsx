@@ -39,13 +39,13 @@ const LeaveRefusalPopup = ({
   const {user} = useSelector(state => state.user);
 
   const rejectLeaveAPI = useCallback(
-    MeassageRefusal => {
+    (refusalMessage: string) => {
       dispatch(
         (rejectLeave as any)({
           leaveRequestId: leaveId,
           version: leaveVersion,
           user: user,
-          groundForRefusal: MeassageRefusal,
+          groundForRefusal: refusalMessage,
         }),
       );
     },
