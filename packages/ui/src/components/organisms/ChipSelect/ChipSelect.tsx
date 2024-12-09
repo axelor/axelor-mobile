@@ -159,8 +159,9 @@ const ChipSelect = ({
             }
             onPress={clearAllChips}
             disabled={selectedChip.length === 0}
-            width={'15%'}
-            style={styles.clarButton}
+            iconSize={16}
+            width={40}
+            style={styles.clearButton}
           />
         )}
         {selectionItems?.map((item, index) => (
@@ -192,8 +193,9 @@ const styles = StyleSheet.create({
   scrollContainer: {
     alignItems: 'center',
   },
-  clarButton: {
+  clearButton: {
     marginRight: 5,
+    height: 40,
   },
 });
 

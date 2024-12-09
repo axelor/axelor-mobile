@@ -52,6 +52,7 @@ export const ChipSelect: Story<typeof Component> = {
     selectionItems: disabledControl,
     isRefresh: disabledControl,
     onChangeValue: disabledControl,
+    showClearButton: {control: 'boolean'},
   },
   render: args => (
     <Component
@@ -76,5 +77,5 @@ export const ChipSelect: Story<typeof Component> = {
       onChangeValue={() => {}}
       {...args}
     />
-  )
+  ),
 };
