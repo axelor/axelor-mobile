@@ -44,6 +44,7 @@ export async function searchSupplier({page = 0, searchValue}) {
     model: 'com.axelor.apps.base.db.Partner',
     criteria: createSupplierCriteria(searchValue),
     fieldKey: 'purchase_supplier',
+    sortKey: 'purchase_supplier',
     page,
   });
 }
