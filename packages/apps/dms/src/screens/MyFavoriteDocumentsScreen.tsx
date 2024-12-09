@@ -40,7 +40,7 @@ const MyFavoriteDocumentsScreen = ({}) => {
     moreLoadingFavoriteDocument,
     isListEndFavoriteDocument,
     favoriteDocumentList,
-  } = useSelector((state: any) => state.dms_document);
+  } = useSelector(state => state.dms_document);
 
   const sliceFunctionData = useMemo(
     () => ({
