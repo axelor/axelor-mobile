@@ -19,5 +19,5 @@
 import {SortFields} from '@axelor/aos-mobile-core';
 
 export const purchase_sortFields: SortFields = {
-  purchase_purchaseRequest: ['statusSelect'],
+  purchase_purchaseRequest: ['statusSelect', 'purchaseRequestSeq'],
 };
