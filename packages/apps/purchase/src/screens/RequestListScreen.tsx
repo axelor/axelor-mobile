@@ -45,21 +45,10 @@ const RequestListScreen = ({}) => {
   const [selectedStatus, setSelectedStatus] = useState([]);
   const [supplier, setSupplier] = useState();
 
-  const statusList = useMemo(() => {
-    const statusToDisplay = [
-      PurchaseRequest?.statusSelect.Draft,
-      PurchaseRequest?.statusSelect.Requested,
-      PurchaseRequest?.statusSelect.Accepted,
-      PurchaseRequest?.statusSelect.Purchased,
-      PurchaseRequest?.statusSelect.Refused,
-      PurchaseRequest?.statusSelect.Canceled,
-    ];
-
-    return getSelectionItems(
-      PurchaseRequest?.statusSelect,
-      selectedStatus,
-    ).filter(({value}) => statusToDisplay.includes(value));
-  }, [PurchaseRequest?.statusSelect, getSelectionItems, selectedStatus]);
+  const statusList = useMemo(
+    () => getSelectionItems(PurchaseRequest?.statusSelect, selectedStatus),
+    [PurchaseRequest?.statusSelect, getSelectionItems, selectedStatus],
+  );
 
   const sliceFunctionData = useMemo(
     () => ({
