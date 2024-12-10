@@ -16,7 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import {Criteria, getModelApi} from '../Model';
+import {Criteria, Domain, getModelApi} from '../Model';
 import {axiosApiProvider} from './AxiosProvider';
 import {getObjectFields, getSortFields} from './ObjectFieldsProvider';
 
@@ -30,6 +30,10 @@ interface SearchProps {
   page: number;
   numberElementsByPage?: number;
   provider?: 'axios' | 'model';
+  companyId?: number;
+  isCompanyM2M?: boolean;
+  companyFieldName?: string;
+  companySetFieldName?: string;
 }
 
 interface FetchProps {
@@ -65,6 +69,10 @@ class RequestBuilder {
     page = 0,
     numberElementsByPage,
     provider = 'axios',
+    companyId,
+    isCompanyM2M = false,
+    companyFieldName,
+    companySetFieldName,
   }: SearchProps): Promise<any> => {
     if (model == null || fieldKey == null) {
       return null;
@@ -75,6 +83,10 @@ class RequestBuilder {
         ? numberElementsByPage
         : this.requestLimit;
 
+    if (companyId && !isCompanyM2M) {
+      criteria.push(getCompanyCriteria(companyId, companyFieldName));
+    }
+
     let data: any = {
       criteria: [
         {
@@ -82,11 +94,26 @@ class RequestBuilder {
           criteria: criteria,
         },
       ],
+      _domain: '',
     };
 
+    if (companyId && isCompanyM2M) {
+      const companyDomain = getCompanyDomain(companyId, companySetFieldName);
+
+      data._domain = companyDomain.domain;
+      data._domainContext = companyDomain.domainContext;
+    }
+
     if (domain != null && domain !== '') {
-      data._domain = domain;
-      data._domainContext = domainContext;
+      if (data._domain !== '') {
+        data._domain += ' AND ';
+      }
+
+      data._domain += domain;
+      data._domainContext = {
+        ...data._domainContext,
+        ...domainContext,
+      };
     }
 
     if (provider === 'axios') {
@@ -149,6 +176,31 @@ class RequestBuilder {
 }
 
 export const requestBuilder = new RequestBuilder();
+
+export const getCompanyCriteria = (
+  companyId: number,
+  companyFieldName: string = 'company',
+): Criteria => {
+  return {
+    fieldName: `${companyFieldName}.id`,
+    operator: '=',
+    value: companyId,
+  };
+};
+
+export const getCompanyDomain = (
+  companyId: number,
+  companySetFieldName: string = 'companySet',
+): Domain => {
+  return {
+    domain: `:company MEMBER OF self.${companySetFieldName}`,
+    domainContext: {
+      company: {
+        id: companyId,
+      },
+    },
+  };
+};
 
 export const createStandardSearch = (
   searchOptions: SearchProps,
