@@ -68,3 +68,8 @@ export interface RequestResponse {
     data: any[];
   };
 }
+
+export type Domain = {
+  domain: string;
+  domainContext: any;
+};
