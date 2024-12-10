@@ -21,7 +21,13 @@ import enTranslations from './i18n/en.json';
 import frTranslations from './i18n/fr.json';
 import DmsScreens from './screens';
 import * as dmsReducers from './features';
-import {dms_modelAPI, dms_searchFields, dms_sortFields} from './models';
+import {
+  dms_formsRegister,
+  dms_modelAPI,
+  dms_searchFields,
+  dms_sortFields,
+} from './models';
+import {useDMSHeaders} from './hooks/use-dms-header-actions';
 import {createMenusScreen} from './utils';
 
 export const DmsModule: Module = {
@@ -50,6 +56,8 @@ export const DmsModule: Module = {
     objectFields: {...dms_modelAPI},
     searchFields: {...dms_searchFields},
     sortFields: {...dms_sortFields},
+    formsRegister: {...dms_formsRegister},
+    headerRegisters: useDMSHeaders,
   },
   moduleRegister: async (userId: number) => {
     const user = await getLoggedUser(userId)

@@ -32,5 +32,6 @@ export const dms_modelAPI: ObjectFields = {
       .array()
       .of(schemaContructor.subObject()),
     favouriteFileSet: schemaContructor.array().of(schemaContructor.subObject()),
+    dmsRoot: schemaContructor.subObject('fileName'),
   }),
 };

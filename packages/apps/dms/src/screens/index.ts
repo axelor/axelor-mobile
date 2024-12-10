@@ -18,11 +18,13 @@
 
 import AllDocumentsScreen from './AllDocumentsScreen';
 import MyFavoriteDocumentsScreen from './MyFavoriteDocumentsScreen';
+import DocumentFormScreen from './DocumentFormScreen';
 
 export default {
   AllDocumentsScreen: {
     title: 'Dms_AllDocuments',
     component: AllDocumentsScreen,
+    actionID: 'dms_all_documents',
     options: {
       shadedHeader: false,
     },
@@ -35,7 +37,13 @@ export default {
       shadedHeader: false,
     },
   },
+  DocumentFormScreen: {
+    title: 'Dms_Document',
+    component: DocumentFormScreen,
+    isUsableOnShortcut: true,
+  },
 };
 
 export {AllDocumentsScreen};
 export {MyFavoriteDocumentsScreen};
+export {DocumentFormScreen};
