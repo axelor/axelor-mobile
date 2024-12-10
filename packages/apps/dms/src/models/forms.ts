@@ -18,12 +18,19 @@
 
 import {FormConfigs} from '@axelor/aos-mobile-core';
 import {checkNullString} from '@axelor/aos-mobile-ui';
-import {ParentDirectorySearchBar} from '../components';
+import {ParentDirectorySearchBar, SwitchDocumentType} from '../components';
 
 export const dms_formsRegister: FormConfigs = {
   dms_document: {
     modelName: 'com.axelor.dms.db.DMSFile',
     fields: {
+      isDirectory: {
+        titleKey: 'Dms_Folder',
+        type: 'boolean',
+        widget: 'custom',
+        customComponent: SwitchDocumentType,
+        hideIf: ({objectState}) => objectState.id,
+      },
       parent: {
         titleKey: 'Dms_ParentFolder',
         type: 'object',
@@ -44,15 +51,6 @@ export const dms_formsRegister: FormConfigs = {
           },
         },
         required: true,
-      },
-      isDirectory: {
-        titleKey: 'Dms_Folder',
-        type: 'boolean',
-        widget: 'checkbox',
-        hideIf: ({objectState}) => objectState.id,
-        options: {
-          iconSize: 20,
-        },
       },
       metaFile: {
         titleKey: 'Dms_File',

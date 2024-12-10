@@ -17,6 +17,7 @@
  */
 
 import React, {useCallback, useMemo} from 'react';
+import {StyleSheet} from 'react-native';
 import {FormView, useSelector, useTranslator} from '@axelor/aos-mobile-core';
 import {createDocument, updateDocument} from '../features/documentSlice';
 
@@ -72,6 +73,7 @@ const DocumentFormScreen = ({navigation, route}) => {
 
   return (
     <FormView
+      style={styles.form}
       formKey="dms_document"
       creationDefaultValue={creationDefaultValue}
       defaultValue={defaultValue}
@@ -99,5 +101,11 @@ const DocumentFormScreen = ({navigation, route}) => {
     />
   );
 };
+
+const styles = StyleSheet.create({
+  form: {
+    paddingBottom: 150,
+  },
+});
 
 export default DocumentFormScreen;
