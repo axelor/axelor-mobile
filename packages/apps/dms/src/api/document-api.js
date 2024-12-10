@@ -179,9 +179,7 @@ export async function updateDocument({document}) {
     matchers: {
       modelName: 'com.axelor.dms.db.DMSFile',
       id: document.id,
-      fields: {
-        ...matchers,
-      },
+      fields: matchers,
     },
   });
 }

@@ -40,6 +40,7 @@ export default {
   DocumentFormScreen: {
     title: 'Dms_Document',
     component: DocumentFormScreen,
+    isUsableOnShortcut: true,
   },
 };
 

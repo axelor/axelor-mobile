@@ -58,16 +58,16 @@ const DocumentFormScreen = ({navigation, route}) => {
         _document.parent = user.dmsRoot;
       }
 
-      if (parentId === mobileSettings.defaultDmsRoot?.id) {
-        _document.parent = mobileSettings.defaultDmsRoot;
+      if (parentId === mobileSettings?.defaultDmsRoot?.id) {
+        _document.parent = mobileSettings?.defaultDmsRoot;
       }
 
       const sliceFunction = isCreation ? createDocument : updateDocument;
       dispatch((sliceFunction as any)({document: _document}));
 
-      navigation.navigate('AllDocumentsScreen');
+      navigation.pop();
     },
-    [mobileSettings.defaultDmsRoot, navigation, user.dmsRoot],
+    [mobileSettings?.defaultDmsRoot, navigation, user.dmsRoot],
   );
 
   return (
