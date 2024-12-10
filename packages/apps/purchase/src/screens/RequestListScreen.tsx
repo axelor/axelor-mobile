@@ -50,6 +50,9 @@ const RequestListScreen = ({}) => {
       PurchaseRequest?.statusSelect.Draft,
       PurchaseRequest?.statusSelect.Requested,
       PurchaseRequest?.statusSelect.Accepted,
+      PurchaseRequest?.statusSelect.Purchased,
+      PurchaseRequest?.statusSelect.Refused,
+      PurchaseRequest?.statusSelect.Canceled,
     ];
 
     return getSelectionItems(
