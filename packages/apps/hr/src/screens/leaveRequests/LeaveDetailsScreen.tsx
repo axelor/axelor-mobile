@@ -68,8 +68,7 @@ const LeaveDetailsScreen = ({route}) => {
       fixedItems={
         <LeaveDetailsButtons
           statusSelect={leave.statusSelect}
-          leaveId={leave.id}
-          leaveVersion={leave.version}
+          leaveRequest={leave}
         />
       }>
       <HeaderContainer

@@ -60,32 +60,29 @@ const LeaveListScreen = ({}) => {
     [dispatch, selectedStatus, user?.id],
   );
 
+  const getActionParams = useCallback(
+    (item: any) => ({
+      leaveRequestId: item.id,
+      version: item.version,
+      userId: user?.id,
+      user: user,
+      selectedStatus,
+    }),
+    [selectedStatus, user],
+  );
+
   const sendLeaveAPI = useCallback(
-    item => {
-      dispatch(
-        (sendLeave as any)({
-          leaveRequestId: item.id,
-          version: item.version,
-          userId: user?.id,
-          selectedStatus,
-        }),
-      );
+    (item: any) => {
+      dispatch((sendLeave as any)(getActionParams(item)));
     },
-    [dispatch, selectedStatus, user?.id],
+    [dispatch, getActionParams],
   );
 
   const validateLeaveApi = useCallback(
-    item => {
-      dispatch(
-        (validateLeave as any)({
-          leaveRequestId: item.id,
-          version: item.version,
-          user: user,
-          selectedStatus,
-        }),
-      );
+    (item: any) => {
+      dispatch((validateLeave as any)(getActionParams(item)));
     },
-    [dispatch, selectedStatus, user],
+    [dispatch, getActionParams],
   );
 
   const fetchLeaveToValidateAPI = useCallback(

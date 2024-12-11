@@ -25,14 +25,14 @@ interface LeaveRefusalPopupProps {
   isOpen: boolean;
   leaveId: number;
   leaveVersion: number;
-  onCancel: () => void;
+  handleClose: () => void;
 }
 
 const LeaveRefusalPopup = ({
   isOpen,
   leaveId,
   leaveVersion,
-  onCancel,
+  handleClose,
 }: LeaveRefusalPopupProps) => {
   const dispatch = useDispatch();
 
@@ -40,22 +40,24 @@ const LeaveRefusalPopup = ({
 
   const rejectLeaveAPI = useCallback(
     (refusalMessage: string) => {
+      handleClose();
       dispatch(
         (rejectLeave as any)({
           leaveRequestId: leaveId,
           version: leaveVersion,
           user: user,
+          userId: user.id,
           groundForRefusal: refusalMessage,
         }),
       );
     },
-    [dispatch, leaveId, leaveVersion, user],
+    [dispatch, handleClose, leaveId, leaveVersion, user],
   );
 
   return (
     <RefusalPopup
       isOpen={isOpen}
-      onCancel={onCancel}
+      onCancel={handleClose}
       onValidate={rejectLeaveAPI}
     />
   );

@@ -45,6 +45,7 @@ export {searchExpenseType as searchExpenseTypeApi} from './expense-type-api';
 export {searchKilometricAllowParam as searchKilometricAllowParamApi} from './kilometric-allow-param-api';
 export {
   cancelLeave as cancelLeaveApi,
+  deleteLeave as deleteLeaveApi,
   fetchLeave as fetchLeaveApi,
   fetchLeaveById as fetchLeaveByIdApi,
   fetchLeaveReason as fetchLeaveReasonApi,

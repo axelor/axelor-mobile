@@ -20,6 +20,8 @@ import React, {useCallback, useMemo, useState} from 'react';
 import {StyleSheet, View} from 'react-native';
 import {
   useDispatch,
+  useNavigation,
+  usePermitted,
   useSelector,
   useTranslator,
   useTypes,
@@ -27,6 +29,7 @@ import {
 import {Button, useThemeColor} from '@axelor/aos-mobile-ui';
 import {
   cancelLeave,
+  deleteLeave,
   sendLeave,
   validateLeave,
 } from '../../../features/leaveSlice';
@@ -34,20 +37,22 @@ import {LeaveRefusalPopup} from '../../templates';
 
 interface LeaveDetailsButtonsProps {
   statusSelect: number;
-  leaveId: number;
-  leaveVersion: number;
+  leaveRequest: any;
 }
 
 const LeaveDetailsButtons = ({
   statusSelect,
-  leaveId,
-  leaveVersion,
+  leaveRequest,
 }: LeaveDetailsButtonsProps) => {
   const I18n = useTranslator();
   const Colors = useThemeColor();
+  const navigation = useNavigation();
   const dispatch = useDispatch();
 
   const {LeaveRequest} = useTypes();
+  const {canDelete, readonly} = usePermitted({
+    modelName: 'com.axelor.apps.hr.db.LeaveRequest',
+  });
 
   const [refusalPopupIsOpen, setRefusalPopupIsOpen] = useState(false);
 
@@ -55,49 +60,47 @@ const LeaveDetailsButtons = ({
 
   const leaveRequestParams = useMemo(
     () => ({
-      leaveRequestId: leaveId,
-      version: leaveVersion,
+      leaveRequestId: leaveRequest.id,
+      version: leaveRequest.version,
+      user: user,
+      userId: user.id,
     }),
-    [leaveId, leaveVersion],
+    [leaveRequest, user],
   );
 
   const sendLeaveAPI = useCallback(() => {
-    dispatch(
-      (sendLeave as any)({
-        ...leaveRequestParams,
-        userId: user?.id,
-      }),
-    );
-  }, [dispatch, leaveRequestParams, user?.id]);
+    dispatch((sendLeave as any)(leaveRequestParams));
+  }, [dispatch, leaveRequestParams]);
 
   const validateLeaveAPI = useCallback(() => {
-    dispatch(
-      (validateLeave as any)({
-        ...leaveRequestParams,
-        user: user,
-      }),
-    );
-  }, [dispatch, leaveRequestParams, user]);
+    dispatch((validateLeave as any)(leaveRequestParams));
+  }, [dispatch, leaveRequestParams]);
 
   const cancelLeaveAPI = useCallback(() => {
-    dispatch(
-      (cancelLeave as any)({
-        ...leaveRequestParams,
-        userId: user?.id,
-      }),
-    );
-  }, [dispatch, leaveRequestParams, user?.id]);
+    dispatch((cancelLeave as any)(leaveRequestParams));
+  }, [dispatch, leaveRequestParams]);
+
+  const deleteLeaveAPI = useCallback(() => {
+    dispatch((deleteLeave as any)(leaveRequestParams));
+    navigation.pop();
+  }, [dispatch, leaveRequestParams, navigation]);
+
+  if (readonly) {
+    return null;
+  }
 
   if (statusSelect === LeaveRequest?.statusSelect.Draft) {
     return (
       <View style={styles.container}>
-        <Button
-          title={I18n.t('Hr_Cancel')}
-          onPress={cancelLeaveAPI}
-          width="45%"
-          color={Colors.errorColor}
-          iconName="trash3-fill"
-        />
+        {canDelete && (
+          <Button
+            title={I18n.t('Hr_Delete')}
+            onPress={deleteLeaveAPI}
+            width="45%"
+            color={Colors.errorColor}
+            iconName="trash3-fill"
+          />
+        )}
         <Button
           title={I18n.t('Hr_Send')}
           onPress={sendLeaveAPI}
@@ -109,26 +112,42 @@ const LeaveDetailsButtons = ({
   }
 
   if (statusSelect === LeaveRequest?.statusSelect.WaitingValidation) {
+    if (
+      user?.employee?.hrManager ||
+      leaveRequest.employee?.managerUser?.id === user.id
+    ) {
+      return (
+        <View style={styles.container}>
+          <Button
+            title={I18n.t('Hr_Refuse')}
+            onPress={() => setRefusalPopupIsOpen(true)}
+            width="45%"
+            color={Colors.errorColor}
+            iconName="x-lg"
+          />
+          <Button
+            title={I18n.t('Hr_Validate')}
+            onPress={validateLeaveAPI}
+            width="45%"
+            iconName="check-lg"
+          />
+          <LeaveRefusalPopup
+            isOpen={refusalPopupIsOpen}
+            leaveId={leaveRequest.id}
+            leaveVersion={leaveRequest.version}
+            handleClose={() => setRefusalPopupIsOpen(false)}
+          />
+        </View>
+      );
+    }
+
     return (
       <View style={styles.container}>
         <Button
-          title={I18n.t('Hr_Refuse')}
-          onPress={() => setRefusalPopupIsOpen(true)}
-          width="45%"
+          title={I18n.t('Hr_Cancel')}
+          onPress={cancelLeaveAPI}
           color={Colors.errorColor}
-          iconName="x-lg"
-        />
-        <Button
-          title={I18n.t('Hr_Validate')}
-          onPress={validateLeaveAPI}
-          width="45%"
-          iconName="check-lg"
-        />
-        <LeaveRefusalPopup
-          isOpen={refusalPopupIsOpen}
-          leaveId={leaveId}
-          leaveVersion={leaveVersion}
-          onCancel={() => setRefusalPopupIsOpen(false)}
+          iconName="trash3-fill"
         />
       </View>
     );

@@ -157,5 +157,6 @@
   "Hr_SliceAction_SendLeave": "envoie de la demande de congé",
   "Hr_SliceAction_ValidateLeave": "validation de la demande de congé",
   "Hr_SliceAction_CancelLeave": "annulation de la demande de congé",
-  "Hr_SliceAction_RejectLeave": "rejet de la demande de congé"
+  "Hr_SliceAction_RejectLeave": "rejet de la demande de congé",
+  "Hr_SliceAction_DeleteLeave": "suppression de la demande de congé"
 }

@@ -180,3 +180,15 @@ export async function rejectLeave({leaveRequestId, version, groundForRefusal}) {
     description: 'reject leave',
   });
 }
+
+export async function deleteLeave({leaveRequestId}) {
+  return getActionApi().send({
+    url: `ws/rest/com.axelor.apps.hr.db.LeaveRequest/${leaveRequestId}`,
+    method: 'delete',
+    description: 'delete leave request',
+    matchers: {
+      modelName: 'com.axelor.apps.hr.db.LeaveRequest',
+      id: leaveRequestId,
+    },
+  });
+}

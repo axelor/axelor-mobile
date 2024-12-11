@@ -157,5 +157,6 @@
   "Hr_SliceAction_SendLeave": "send leave",
   "Hr_SliceAction_ValidateLeave": "validate leave",
   "Hr_SliceAction_CancelLeave": "cancel leave",
-  "Hr_SliceAction_RejectLeave": "reject leave"
+  "Hr_SliceAction_RejectLeave": "reject leave",
+  "Hr_SliceAction_DeleteLeave": "delete leave"
 }

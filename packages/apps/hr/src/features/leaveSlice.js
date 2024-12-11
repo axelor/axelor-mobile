@@ -23,6 +23,7 @@ import {
 } from '@axelor/aos-mobile-core';
 import {
   cancelLeave as _cancelLeave,
+  deleteLeave as _deleteLeave,
   fetchLeave as _fetchLeave,
   fetchLeaveById as _fetchLeaveById,
   fetchLeaveReason as _fetchLeaveReason,
@@ -94,12 +95,8 @@ export const sendLeave = createAsyncThunk(
       getState,
       responseOptions: {isArrayResponse: false},
     }).then(() => {
-      dispatch(
-        fetchLeave({
-          userId: data.userId,
-          selectedStatus: data.selectedStatus,
-        }),
-      );
+      dispatch(fetchLeave(data));
+      dispatch(fetchLeaveToValidate({user: data.user}));
       dispatch(fetchLeaveById({leaveId: data.leaveRequestId}));
     });
   },
@@ -115,6 +112,7 @@ export const validateLeave = createAsyncThunk(
       getState,
       responseOptions: {isArrayResponse: false},
     }).then(() => {
+      dispatch(fetchLeave(data));
       dispatch(fetchLeaveToValidate({user: data.user}));
       dispatch(fetchLeaveById({leaveId: data.leaveRequestId}));
     });
@@ -131,12 +129,8 @@ export const cancelLeave = createAsyncThunk(
       getState,
       responseOptions: {isArrayResponse: false},
     }).then(() => {
-      dispatch(
-        fetchLeave({
-          userId: data.userId,
-          selectedStatus: data.selectedStatus,
-        }),
-      );
+      dispatch(fetchLeave(data));
+      dispatch(fetchLeaveToValidate({user: data.user}));
       dispatch(fetchLeaveById({leaveId: data.leaveRequestId}));
     });
   },
@@ -152,8 +146,24 @@ export const rejectLeave = createAsyncThunk(
       getState,
       responseOptions: {isArrayResponse: false},
     }).then(() => {
+      dispatch(fetchLeave(data));
       dispatch(fetchLeaveToValidate({user: data.user}));
       dispatch(fetchLeaveById({leaveId: data.leaveRequestId}));
+    });
+  },
+);
+
+export const deleteLeave = createAsyncThunk(
+  'hr_leave/deleteLeave',
+  async function (data, {getState, dispatch}) {
+    return handlerApiCall({
+      fetchFunction: _deleteLeave,
+      data,
+      action: 'Hr_SliceAction_DeleteLeave',
+      getState,
+      responseOptions: {isArrayResponse: false},
+    }).then(() => {
+      dispatch(fetchLeave(data));
     });
   },
 );
