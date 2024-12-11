@@ -302,6 +302,11 @@ export const crm_formsRegister: FormConfigs = {
         widget: 'custom',
         customComponent: ClientProspectSearchBar,
         required: true,
+        dependsOn: {
+          contact: ({newValue}) => {
+            return newValue?.mainPartner;
+          },
+        },
       },
       contact: {
         titleKey: 'Crm_Contact',
@@ -311,7 +316,7 @@ export const crm_formsRegister: FormConfigs = {
         options: {
           showTitle: true,
         },
-        required: true,
+        requiredIf: ({objectState}) => objectState.partner == null,
       },
       expectedCloseDate: {
         titleKey: 'Crm_Opportunity_ExpectedCloseDate',
