@@ -29,7 +29,7 @@ import {
   useThemeColor,
 } from '@axelor/aos-mobile-ui';
 import {fetchCompanies} from '../../../features/companySlice';
-import {changeActiveCompany} from '../../../features/userSlice';
+import {updateActiveUser} from '../../../features/userSlice';
 import {
   logout,
   useBinaryImageUri,
@@ -60,17 +60,16 @@ const UserCard = ({children, style}) => {
   const updateActiveCompany = useCallback(
     company => {
       dispatch(
-        changeActiveCompany({
-          newCompany: {
-            $version: company?.$version,
-            code: company?.code,
+        (updateActiveUser as any)({
+          id: user.id,
+          version: user?.version,
+          activeCompany: {
             id: company?.id,
-            name: company?.name,
           },
         }),
       );
     },
-    [dispatch],
+    [dispatch, user],
   );
 
   const styles = useMemo(() => {

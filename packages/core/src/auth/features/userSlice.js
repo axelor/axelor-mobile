@@ -65,9 +65,6 @@ const userSlice = createSlice({
   name: 'user',
   initialState,
   reducers: {
-    changeActiveCompany: (state, action) => {
-      state.user = {...state.user, activeCompany: action.payload.newCompany};
-    },
     changeDefaultStockLocation: (state, action) => {
       state.user = {
         ...state.user,
@@ -100,7 +97,6 @@ const userSlice = createSlice({
   },
 });
 
-export const {changeActiveCompany, changeDefaultStockLocation} =
-  userSlice.actions;
+export const {changeDefaultStockLocation} = userSlice.actions;
 
 export const userReducer = userSlice.reducer;
