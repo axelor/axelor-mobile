@@ -16,11 +16,15 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import React from 'react';
-import {useTranslator, useTypes} from '@axelor/aos-mobile-core';
+import React, {useMemo} from 'react';
+import {
+  usePermitted,
+  useSelector,
+  useTranslator,
+  useTypes,
+} from '@axelor/aos-mobile-core';
 import {ActionCard} from '@axelor/aos-mobile-ui';
 import {LeaveCard} from '../../atoms';
-import {Leave} from '../../../types';
 
 interface LeaveActionCardProps {
   mode: number;
@@ -39,26 +43,47 @@ const LeaveActionCard = ({
 }: LeaveActionCardProps) => {
   const I18n = useTranslator();
   const {LeaveRequest} = useTypes();
+  const {readonly} = usePermitted({
+    modelName: 'com.axelor.apps.hr.db.LeaveRequest',
+  });
+
+  const {user} = useSelector((state: any) => state.user);
+
+  const userCanValidate = useMemo(() => {
+    return (
+      (user.employee?.hrManager ||
+        leave.employee?.managerUser?.id === user.id) &&
+      leave.statusSelect === LeaveRequest?.statusSelect.WaitingValidation
+    );
+  }, [LeaveRequest?.statusSelect.WaitingValidation, leave, user]);
+
+  const isDefaultDisplay = useMemo(() => {
+    return (
+      readonly ||
+      (!userCanValidate &&
+        leave.statusSelect !== LeaveRequest?.statusSelect.Draft)
+    );
+  }, [LeaveRequest?.statusSelect, readonly, leave, userCanValidate]);
 
   return (
     <ActionCard
       translator={I18n.t}
-      actionList={[
-        {
-          iconName: 'send-fill',
-          helper: I18n.t('Hr_Send'),
-          onPress: onSend,
-          hidden:
-            mode === Leave.mode.leavesToValidate ||
-            leave.statusSelect !== LeaveRequest?.statusSelect.Draft,
-        },
-        {
-          iconName: 'check-lg',
-          helper: I18n.t('Hr_Validate'),
-          onPress: onValidate,
-          hidden: mode === Leave.mode.myLeaves,
-        },
-      ]}>
+      actionList={
+        !isDefaultDisplay && [
+          {
+            iconName: 'send-fill',
+            helper: I18n.t('Hr_Send'),
+            onPress: onSend,
+            hidden: leave.statusSelect !== LeaveRequest?.statusSelect.Draft,
+          },
+          {
+            iconName: 'check-lg',
+            helper: I18n.t('Hr_Validate'),
+            onPress: onValidate,
+            hidden: leave.statusSelect === LeaveRequest?.statusSelect.Draft,
+          },
+        ]
+      }>
       <LeaveCard
         mode={mode}
         statusSelect={leave.statusSelect}
