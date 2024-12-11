@@ -380,11 +380,34 @@ const useEventDetailsActions = () => {
   }, [mobileSettings, event]);
 };
 
+const useEventPlanningActions = () => {
+  const I18n = useTranslator();
+  const navigation = useNavigation();
+  const {canCreate} = usePermitted({modelName: 'com.axelor.apps.crm.db.Event'});
+
+  useEffect(() => {
+    headerActionsProvider.registerModel('crm_event_planning', {
+      actions: [
+        {
+          key: 'event-openEventForm',
+          order: 10,
+          iconName: 'calendar-plus-fill',
+          title: I18n.t('Crm_CreateEvent'),
+          hideIf: !canCreate,
+          onPress: () => navigation.navigate('EventFormScreen'),
+          showInHeader: true,
+        },
+      ],
+    });
+  }, [navigation, canCreate, I18n]);
+};
+
 export const useCRMHeaders = () => {
   useCatalogListActions();
   useClientDetailsActions();
   useContactDetailsActions();
   useEventDetailsActions();
+  useEventPlanningActions();
   useLeadListActions();
   useLeadDetailsActions();
   useOpportunityListActions();

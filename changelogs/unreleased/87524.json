@@ -1,0 +1,5 @@
+{
+  "title": "Planning view: add possibility to create an event",
+  "type": "feat",
+  "packages": "crm"
+}

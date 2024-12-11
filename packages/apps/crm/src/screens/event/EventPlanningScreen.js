@@ -23,6 +23,7 @@ import {
   filterChip,
   PlanningView,
   useDispatch,
+  useIsFocused,
   useSelector,
   useTranslator,
   useTypes,
@@ -34,6 +35,7 @@ import {EventSearchBar, PlanningEventCard} from '../../components';
 function EventPlanningScreen({navigation}) {
   const dispatch = useDispatch();
   const I18n = useTranslator();
+  const isFocused = useIsFocused();
   const {Event} = useTypes();
   const {getItemColor, getSelectionItems} = useTypeHelpers();
 
@@ -77,9 +79,10 @@ function EventPlanningScreen({navigation}) {
   const fetchItemsByMonth = useCallback(
     date => {
       dateSave === null && setDateSave(date);
-      dispatch(fetchPlannedEvent({date: date, searchValue: filter}));
+      isFocused &&
+        dispatch(fetchPlannedEvent({date: date, searchValue: filter}));
     },
-    [dispatch, dateSave, filter],
+    [dispatch, dateSave, filter, isFocused],
   );
 
   const filterOnStatus = useCallback(
