@@ -18,3 +18,4 @@
 
 export {purchaseRequestReducer as purchase_purchaseRequest} from './purchaseRequestSlice';
 export {supplierReducer as purchase_supplier} from './supplierSlice';
+export {purchaseRequestLineReducer as purchase_purchaseRequestLine} from './purchaseRequestLineSlice';

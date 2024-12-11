@@ -8,6 +8,13 @@
   "Purchase_Status_Refused": "Refused",
   "Purchase_Status_Canceled": "Canceled",
   "Purchase_Supplier": "Supplier",
+  "Purchase_StockLocation": "Stock location",
+  "Purchase_RequesterUser": "Requester",
+  "Purchase_ValidatorUser": "Validator",
+  "Purchase_Characteristics": "Characteristic",
+  "Purchase_SeeLines": "See lines",
   "Purchase_SliceAction_SearchPurchaseRequest": "search purchase request",
-  "Purchase_SliceAction_SearchSupplier": "search supplier"
+  "Purchase_SliceAction_SearchSupplier": "search supplier",
+  "Purchase_SliceAction_GetPurchaseRequest": "get purchase request",
+  "Purchase_SliceAction_SearchPurchaseRequestLine": ""
 }
