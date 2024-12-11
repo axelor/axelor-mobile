@@ -22,10 +22,15 @@ import {
   generateInifiniteScrollCases,
 } from '@axelor/aos-mobile-core';
 import {
+  cancelLeave as _cancelLeave,
+  deleteLeave as _deleteLeave,
   fetchLeave as _fetchLeave,
   fetchLeaveById as _fetchLeaveById,
   fetchLeaveReason as _fetchLeaveReason,
   fetchLeaveToValidate as _fetchLeaveToValidate,
+  rejectLeave as _rejectLeave,
+  sendLeave as _sendLeave,
+  validateLeave as _validateLeave,
 } from '../api/leave-api';
 
 export const fetchLeave = createAsyncThunk(
@@ -76,6 +81,89 @@ export const fetchLeaveReason = createAsyncThunk(
       action: 'Hr_SliceAction_FetchLeaveReason',
       getState,
       responseOptions: {isArrayResponse: true},
+    });
+  },
+);
+
+export const sendLeave = createAsyncThunk(
+  'hr_leave/sendLeave',
+  async function (data, {getState, dispatch}) {
+    return handlerApiCall({
+      fetchFunction: _sendLeave,
+      data,
+      action: 'Hr_SliceAction_SendLeave',
+      getState,
+      responseOptions: {isArrayResponse: false},
+    }).then(() => {
+      dispatch(fetchLeave(data));
+      dispatch(fetchLeaveToValidate({user: data.user}));
+      dispatch(fetchLeaveById({leaveId: data.leaveRequestId}));
+    });
+  },
+);
+
+export const validateLeave = createAsyncThunk(
+  'hr_leave/validateLeave',
+  async function (data, {getState, dispatch}) {
+    return handlerApiCall({
+      fetchFunction: _validateLeave,
+      data,
+      action: 'Hr_SliceAction_ValidateLeave',
+      getState,
+      responseOptions: {isArrayResponse: false},
+    }).then(() => {
+      dispatch(fetchLeave(data));
+      dispatch(fetchLeaveToValidate({user: data.user}));
+      dispatch(fetchLeaveById({leaveId: data.leaveRequestId}));
+    });
+  },
+);
+
+export const cancelLeave = createAsyncThunk(
+  'hr_leave/cancelLeave',
+  async function (data, {getState, dispatch}) {
+    return handlerApiCall({
+      fetchFunction: _cancelLeave,
+      data,
+      action: 'Hr_SliceAction_CancelLeave',
+      getState,
+      responseOptions: {isArrayResponse: false},
+    }).then(() => {
+      dispatch(fetchLeave(data));
+      dispatch(fetchLeaveToValidate({user: data.user}));
+      dispatch(fetchLeaveById({leaveId: data.leaveRequestId}));
+    });
+  },
+);
+
+export const rejectLeave = createAsyncThunk(
+  'hr_leave/rejectLeave',
+  async function (data, {getState, dispatch}) {
+    return handlerApiCall({
+      fetchFunction: _rejectLeave,
+      data,
+      action: 'Hr_SliceAction_RejectLeave',
+      getState,
+      responseOptions: {isArrayResponse: false},
+    }).then(() => {
+      dispatch(fetchLeave(data));
+      dispatch(fetchLeaveToValidate({user: data.user}));
+      dispatch(fetchLeaveById({leaveId: data.leaveRequestId}));
+    });
+  },
+);
+
+export const deleteLeave = createAsyncThunk(
+  'hr_leave/deleteLeave',
+  async function (data, {getState, dispatch}) {
+    return handlerApiCall({
+      fetchFunction: _deleteLeave,
+      data,
+      action: 'Hr_SliceAction_DeleteLeave',
+      getState,
+      responseOptions: {isArrayResponse: false},
+    }).then(() => {
+      dispatch(fetchLeave(data));
     });
   },
 );
