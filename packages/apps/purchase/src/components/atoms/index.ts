@@ -16,4 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+export {default as DropdownRequestCharacteristics} from './DropdownRequestCharacteristics/DropdownRequestCharacteristics';
+export {default as PurchaseSeeLinesButton} from './PurchaseSeeLinesButton/PurchaseSeeLinesButton';
 export {default as RequestCard} from './RequestCard/RequestCard';
+export {default as RequestHeader} from './RequestHeader/RequestHeader';

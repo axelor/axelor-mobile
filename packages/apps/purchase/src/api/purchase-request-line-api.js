@@ -16,9 +16,24 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-export {
-  getPurchaseRequest,
-  searchPurchaseRequest,
-} from './purchaseRequestSlice';
-export {searchSupplier} from './supplierSlice';
-export {searchPurchaseRequestLine} from './purchaseRequestLineSlice';
+import {createStandardSearch} from '@axelor/aos-mobile-core';
+
+const createPurchaseRequestLineCriteria = purchaseRequestId => {
+  return [
+    {
+      fieldName: 'purchaseRequest.id',
+      operator: '=',
+      value: purchaseRequestId,
+    },
+  ];
+};
+
+export async function searchPurchaseRequestLine({page = 0, purchaseRequestId}) {
+  return createStandardSearch({
+    model: 'com.axelor.apps.purchase.db.PurchaseRequestLine',
+    criteria: createPurchaseRequestLineCriteria(purchaseRequestId),
+    fieldKey: 'purchase_purchaseRequestLine',
+    sortKey: 'purchase_purchaseRequestLine',
+    page,
+  });
+}

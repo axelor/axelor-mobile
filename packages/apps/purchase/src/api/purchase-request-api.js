@@ -17,6 +17,7 @@
  */
 
 import {
+  createStandardFetch,
   createStandardSearch,
   getSearchCriterias,
 } from '@axelor/aos-mobile-core';
@@ -64,5 +65,13 @@ export async function searchPurchaseRequest({
     fieldKey: 'purchase_purchaseRequest',
     sortKey: 'purchase_purchaseRequest',
     page,
+  });
+}
+
+export async function getPurchaseRequest({id}) {
+  return createStandardFetch({
+    model: 'com.axelor.apps.purchase.db.PurchaseRequest',
+    id,
+    fieldKey: 'purchase_purchaseRequest',
   });
 }
