@@ -19,8 +19,9 @@
 import {
   createStandardFetch,
   createStandardSearch,
-  getTypes,
+  getActionApi,
   getSearchCriterias,
+  getTypes,
 } from '@axelor/aos-mobile-core';
 
 const createLeaveCriteria = (userId, selectedStatus) => {
@@ -132,5 +133,62 @@ export async function fetchMissingDuration({
       duration,
     });
     resolve(2);
+  });
+}
+
+export async function sendLeave({leaveRequestId, version}) {
+  return getActionApi().send({
+    url: `ws/aos/leave-request/send/${leaveRequestId}`,
+    method: 'put',
+    body: {
+      version,
+    },
+    description: 'send leave',
+  });
+}
+
+export async function validateLeave({leaveRequestId, version}) {
+  return getActionApi().send({
+    url: `ws/aos/leave-request/validate/${leaveRequestId}`,
+    method: 'put',
+    body: {
+      version,
+    },
+    description: 'validate leave',
+  });
+}
+
+export async function cancelLeave({leaveRequestId, version}) {
+  return getActionApi().send({
+    url: `ws/aos/leave-request/cancel/${leaveRequestId}`,
+    method: 'put',
+    body: {
+      version,
+    },
+    description: 'cancel leave',
+  });
+}
+
+export async function rejectLeave({leaveRequestId, version, groundForRefusal}) {
+  return getActionApi().send({
+    url: `ws/aos/leave-request/reject/${leaveRequestId}`,
+    method: 'put',
+    body: {
+      version,
+      groundForRefusal,
+    },
+    description: 'reject leave',
+  });
+}
+
+export async function deleteLeave({leaveRequestId}) {
+  return getActionApi().send({
+    url: `ws/rest/com.axelor.apps.hr.db.LeaveRequest/${leaveRequestId}`,
+    method: 'delete',
+    description: 'delete leave request',
+    matchers: {
+      modelName: 'com.axelor.apps.hr.db.LeaveRequest',
+      id: leaveRequestId,
+    },
   });
 }
