@@ -17,8 +17,16 @@
  */
 
 import {Module} from '@axelor/aos-mobile-core';
+import PurchaseScreens from './screens';
 import enTranslations from './i18n/en.json';
 import frTranslations from './i18n/fr.json';
+import * as purchaseReducers from './features';
+import {
+  purchase_modelAPI,
+  purchase_searchFields,
+  purchase_sortFields,
+  purchase_typeObjects,
+} from './models';
 
 export const PurchaseModule: Module = {
   name: 'app-purchase',
@@ -29,8 +37,32 @@ export const PurchaseModule: Module = {
     moduleName: 'axelor-purchase',
     downToVersion: '8.3.0',
   },
+  menus: {
+    purchase_menu_internal_request: {
+      title: 'Purchase_InternalRequests',
+      icon: 'file-earmark-ruled',
+      screen: 'RequestListScreen',
+    },
+  },
+  screens: {
+    ...PurchaseScreens,
+  },
   translations: {
     en: enTranslations,
     fr: frTranslations,
   },
+  models: {
+    objectFields: {...purchase_modelAPI},
+    sortFields: {...purchase_sortFields},
+    searchFields: {...purchase_searchFields},
+    typeObjects: purchase_typeObjects,
+  },
+  reducers: {
+    ...purchaseReducers,
+  },
 };
+
+export * from './api';
+export * from './features/asyncFunctions-index';
+export * from './components';
+export * from './screens';
