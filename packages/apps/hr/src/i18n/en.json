@@ -42,6 +42,7 @@
   "Hr_Send": "Send",
   "Hr_Validate": "Validate",
   "Hr_Delete": "Delete",
+  "Hr_Cancel": "Cancel",
   "Hr_CreateExpense": "Create expense",
   "Hr_CreateExpenseLine": "Create expense line",
   "Hr_Refuse": "Refuse",
@@ -152,5 +153,10 @@
   "Hr_SliceAction_FetchLeave": "fetch leave",
   "Hr_SliceAction_FetchLeaveToValidate": "fetch leave to validate",
   "Hr_SliceAction_FetchLeaveById": "fetch leave request by id",
-  "Hr_SliceAction_FetchLeaveReason": "fetch leave reason"
+  "Hr_SliceAction_FetchLeaveReason": "fetch leave reason",
+  "Hr_SliceAction_SendLeave": "send leave",
+  "Hr_SliceAction_ValidateLeave": "validate leave",
+  "Hr_SliceAction_CancelLeave": "cancel leave",
+  "Hr_SliceAction_RejectLeave": "reject leave",
+  "Hr_SliceAction_DeleteLeave": "delete leave"
 }
