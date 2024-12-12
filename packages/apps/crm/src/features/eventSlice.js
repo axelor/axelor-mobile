@@ -115,7 +115,6 @@ export const createEvent = createAsyncThunk(
         dispatch(fetchLeadById({leadId: data?.event?.eventLead?.id}));
       }
       if (data?.eventPlanningDate) {
-        console.log('test', data?.eventPlanningDate);
         dispatch(fetchPlannedEvent({date: new Date(data?.eventPlanningDate)}));
       }
       return res;
