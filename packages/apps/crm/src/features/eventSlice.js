@@ -114,6 +114,10 @@ export const createEvent = createAsyncThunk(
       if (data?.event?.isLead) {
         dispatch(fetchLeadById({leadId: data?.event?.eventLead?.id}));
       }
+      if (data?.eventPlanningDate) {
+        console.log('test', data?.eventPlanningDate);
+        dispatch(fetchPlannedEvent({date: new Date(data?.eventPlanningDate)}));
+      }
       return res;
     });
   },
