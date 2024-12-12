@@ -1,0 +1,5 @@
+{
+  "title": "Company management: add generic tools to create criterias",
+  "type": "feat",
+  "packages": "core"
+}
