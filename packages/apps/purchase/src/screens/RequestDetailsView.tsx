@@ -47,7 +47,7 @@ const RequestDetailsView = ({route}) => {
     dispatch(
       (searchPurchaseRequestLine as any)({purchaseRequestId: idRequest}),
     );
-  });
+  }, [dispatch, idRequest]);
 
   return (
     <Screen removeSpaceOnTop={true}>
@@ -60,7 +60,9 @@ const RequestDetailsView = ({route}) => {
         data={purchaseRequest.description}
       />
       <RequestDropdownCards />
-      <PurchaseSeeLinesButton numberLines={totalPurchaseRequestLine} />
+      {totalPurchaseRequestLine > 0 && (
+        <PurchaseSeeLinesButton numberLines={totalPurchaseRequestLine} />
+      )}
     </Screen>
   );
 };
