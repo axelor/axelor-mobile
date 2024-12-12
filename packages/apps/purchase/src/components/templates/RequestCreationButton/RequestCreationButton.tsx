@@ -28,6 +28,7 @@ interface RequestCreationButtonProps {
   lines: any[];
   movedQty: number;
   isEditionMode: boolean;
+  unit: any;
   addLine: () => void;
 }
 
@@ -36,6 +37,7 @@ const RequestCreationButton = ({
   setStep,
   lines,
   movedQty,
+  unit,
   isEditionMode,
   addLine,
 }: RequestCreationButtonProps) => {
@@ -80,19 +82,19 @@ const RequestCreationButton = ({
     );
   }
 
-  if (step === RequestCreation.step.addLine) {
+  if (step === RequestCreation.step.finish) {
     return (
       <View style={styles.container}>
         <Button
           title={I18n.t('Base_Add')}
           iconName="arrow-left"
           color={Colors.progressColor}
-          width={true ? '45%' : '90%'}
+          width={unit ? '45%' : '90%'}
           onPress={() => {
             setStep(RequestCreation.step.addLine);
           }}
         />
-        {true && (
+        {unit && (
           <Button
             title={I18n.t('Base_Realize')}
             iconName="check"

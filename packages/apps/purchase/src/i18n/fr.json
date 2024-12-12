@@ -27,6 +27,8 @@
   "Purchase_Unit": "Unité",
   "Purchase_Quantity": "Quantité",
   "Purchase_ProductTitle": "Nom du produit",
+  "Purchase_Description": "Description",
+  "Purchase_Products": "Produits",
   "Purchase_SliceAction_SearchPurchaseRequest": "recherche sur les demandes d'achat",
   "Purchase_SliceAction_SearchSupplier": "recherche sur les fournisseurs",
   "Purchase_SliceAction_GetPurchaseRequest": "récupération de la demande d'achat",

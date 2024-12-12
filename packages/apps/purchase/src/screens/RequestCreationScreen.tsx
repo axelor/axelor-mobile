@@ -126,6 +126,7 @@ const RequestCreationScreen = () => {
           step={currentStep}
           setStep={setCurrentStep}
           lines={lines}
+          unit={unit}
           movedQty={movedQty}
           isEditionMode={isEditionMode}
           addLine={handleAddLine}
@@ -162,6 +163,7 @@ const RequestCreationScreen = () => {
           (RequestCreation.step.validateLine && isCustomProduct)) && (
           <FormInput
             title={I18n.t('Purchase_ProductTitle')}
+            defaultValue={productTitle}
             onChange={value => {
               handleCustomProductInput(value);
               if (value) {
@@ -181,7 +183,11 @@ const RequestCreationScreen = () => {
               availableQty={newLine?.currentQty}
               productUnit={unit?.name || newLine?.product?.unit?.name}
             />
-            <UnitSearchBar defaultValue={unit} onChange={setUnit} />
+            <UnitSearchBar
+              defaultValue={unit}
+              onChange={setUnit}
+              isScrollViewContainer={true}
+            />
           </>
         )}
       </KeyboardAvoidingScrollView>
