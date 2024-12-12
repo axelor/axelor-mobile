@@ -103,11 +103,19 @@ export const HrModule: Module = {
       title: 'Hr_Leaves',
       icon: 'suitcase-fill',
       screen: 'LeaveListScreen',
+      compatibilityAOS: {
+        moduleName: 'axelor-human-resource',
+        downToVersion: '8.3.0',
+      },
     },
     hr_menu_completeRequest: {
       title: 'Hr_CompleteRequest',
       icon: 'plus-lg',
       screen: 'CompleteRequestScreen',
+      compatibilityAOS: {
+        moduleName: 'axelor-human-resource',
+        downToVersion: '8.3.0',
+      },
     },
   },
   screens: {
