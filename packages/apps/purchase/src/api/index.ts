@@ -20,7 +20,5 @@ export {
   getPurchaseRequest as getPurchaseRequestApi,
   searchPurchaseRequest as searchPurchaseRequestApi,
 } from './purchase-request-api';
-export {
-  searchPurchaseRequestLine as searchPurchaseRequestLineApi,
-} from './purchase-request-line-api';
+export {searchPurchaseRequestLine as searchPurchaseRequestLineApi} from './purchase-request-line-api';
 export {searchSupplier as searchSupplierApi} from './supplier-api';
