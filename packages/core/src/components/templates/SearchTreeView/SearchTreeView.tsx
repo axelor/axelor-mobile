@@ -51,6 +51,7 @@ interface SearchTreeViewProps {
   searchNavigate?: boolean;
   scanKeySearch?: string;
   isHideableSearch?: boolean;
+  isHideableParentSearch?: boolean;
   fixedItems?: any;
   topFixedItems?: any;
   chipComponent?: any;
@@ -86,6 +87,7 @@ const SearchTreeView = ({
   searchNavigate,
   scanKeySearch = null,
   isHideableSearch = false,
+  isHideableParentSearch = true,
   fixedItems,
   topFixedItems,
   chipComponent,
@@ -215,12 +217,13 @@ const SearchTreeView = ({
         topChildren={
           <>
             {headerTopChildren}
-            {renderParentSearchBar()}
+            {isHideableParentSearch && renderParentSearchBar()}
           </>
         }
         fixedItems={
           <>
             {topFixedItems}
+            {!isHideableParentSearch && renderParentSearchBar()}
             {!isHideableSearch && renderSearchBar()}
             {fixedItems}
           </>
