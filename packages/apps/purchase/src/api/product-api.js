@@ -47,7 +47,7 @@ const createProductCriteria = ({searchValue}) => {
 export async function searchProduct({page = 0, searchValue}) {
   return createStandardSearch({
     model: 'com.axelor.apps.base.db.Product',
-    criteria: createProductCriteria(searchValue),
+    criteria: createProductCriteria({searchValue}),
     fieldKey: 'purchase_product',
     sortKey: 'purchase_product',
     page,
