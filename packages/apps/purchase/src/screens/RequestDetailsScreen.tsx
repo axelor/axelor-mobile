@@ -16,7 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import React, {useEffect} from 'react';
+import React, {useEffect, useMemo} from 'react';
 import {HeaderContainer, NotesCard, Screen} from '@axelor/aos-mobile-ui';
 import {useDispatch, useSelector, useTranslator} from '@axelor/aos-mobile-core';
 import {getPurchaseRequest} from '../features/purchaseRequestSlice';
@@ -24,10 +24,12 @@ import {
   PurchaseSeeLinesButton,
   RequestDropdownCards,
   RequestHeader,
+  RequestValidationButton,
 } from '../components';
 import {searchPurchaseRequestLine} from '../features/purchaseRequestLineSlice';
+import {StyleSheet} from 'react-native';
 
-const RequestDetailsView = ({route}) => {
+const RequestDetailsScreen = ({route}) => {
   const {idRequest} = route.params;
   const dispatch = useDispatch();
   const I18n = useTranslator();
@@ -49,8 +51,16 @@ const RequestDetailsView = ({route}) => {
     );
   }, [dispatch, idRequest]);
 
+  const isDescription = useMemo(() => {
+    return purchaseRequest.description != null;
+  }, [purchaseRequest.description]);
+
+  const styles = useMemo(() => {
+    return getStyles(isDescription);
+  }, [isDescription]);
+
   return (
-    <Screen removeSpaceOnTop={true}>
+    <Screen removeSpaceOnTop={true} fixedItems={<RequestValidationButton />}>
       <HeaderContainer
         fixedItems={<RequestHeader />}
         expandableFilter={false}
@@ -59,7 +69,7 @@ const RequestDetailsView = ({route}) => {
         title={I18n.t('Base_Description')}
         data={purchaseRequest.description}
       />
-      <RequestDropdownCards />
+      <RequestDropdownCards style={styles.margin} />
       {totalPurchaseRequestLine > 0 && (
         <PurchaseSeeLinesButton numberLines={totalPurchaseRequestLine} />
       )}
@@ -67,4 +77,11 @@ const RequestDetailsView = ({route}) => {
   );
 };
 
-export default RequestDetailsView;
+export default RequestDetailsScreen;
+
+const getStyles = isDescription =>
+  StyleSheet.create({
+    margin: {
+      marginTop: isDescription ? 0 : 10,
+    },
+  });

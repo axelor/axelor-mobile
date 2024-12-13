@@ -18,13 +18,12 @@
 
 import React from 'react';
 import {StyleSheet, View} from 'react-native';
-import {Text, LabelText, Badge, useThemeColor} from '@axelor/aos-mobile-ui';
+import {Text, LabelText, Badge} from '@axelor/aos-mobile-ui';
 import {useSelector, useTypeHelpers, useTypes} from '@axelor/aos-mobile-core';
 
 const RequestHeader = ({}) => {
-  const Colors = useThemeColor();
   const {PurchaseRequest} = useTypes();
-  const {getItemTitle} = useTypeHelpers();
+  const {getItemColor, getItemTitle} = useTypeHelpers();
 
   const {purchaseRequest} = useSelector(
     state => state.purchase_purchaseRequest,
@@ -39,7 +38,10 @@ const RequestHeader = ({}) => {
             PurchaseRequest?.statusSelect,
             purchaseRequest.statusSelect,
           )}
-          color={Colors.infoColor}
+          color={getItemColor(
+            PurchaseRequest?.statusSelect,
+            purchaseRequest.statusSelect,
+          )}
         />
       </View>
       <LabelText
@@ -53,7 +55,8 @@ const RequestHeader = ({}) => {
 
 const styles = StyleSheet.create({
   container: {
-    marginHorizontal: 15,
+    marginHorizontal: 24,
+    marginBottom: 5,
   },
   chlidrenContainer: {
     flexDirection: 'row',

@@ -11,10 +11,11 @@
   "Purchase_StockLocation": "Emplacement de stock",
   "Purchase_RequesterUser": "Demandeur",
   "Purchase_ValidatorUser": "Valideur",
-  "Purchase_Characteristics": "Caractéristique",
+  "Purchase_Characteristics": "Caractéristiques",
   "Purchase_SeeLines": "Voir les lignes",
+  "Purchase_Request": "Demande",
   "Purchase_SliceAction_SearchPurchaseRequest": "recherche sur les demandes d'achat",
   "Purchase_SliceAction_SearchSupplier": "recherche sur les fournisseurs",
   "Purchase_SliceAction_GetPurchaseRequest": "récupération de la demande d'achat",
-  "Purchase_SliceAction_SearchPurchaseRequestLine": ""
+  "Purchase_SliceAction_SearchPurchaseRequestLine": "recherche sur les lignes de demandes d'achat"
 }

@@ -16,7 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import RequestDetailsView from './RequestDetailsView';
+import RequestDetailsScreen from './RequestDetailsScreen';
 import RequestListScreen from './RequestListScreen';
 
 export default {
@@ -29,12 +29,13 @@ export default {
     isUsableOnShortcut: true,
   },
   RequestDetailsView: {
-    title: 'Purchase_InternalRequests',
-    component: RequestDetailsView,
+    title: 'Purchase_Request',
+    component: RequestDetailsScreen,
     options: {
       shadedHeader: false,
     },
   },
 };
 
+export {RequestDetailsScreen};
 export {RequestListScreen};

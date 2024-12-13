@@ -21,11 +21,12 @@ import {useTranslator} from '@axelor/aos-mobile-core';
 import {DropdownCardSwitch} from '@axelor/aos-mobile-ui';
 import {DropdownRequestCharacteristics} from '../../atoms';
 
-const RequestDropdownCards = () => {
+const RequestDropdownCards = ({style}: {style: any}) => {
   const I18n = useTranslator();
 
   return (
     <DropdownCardSwitch
+      style={style}
       dropdownItems={[
         {
           key: 1,
