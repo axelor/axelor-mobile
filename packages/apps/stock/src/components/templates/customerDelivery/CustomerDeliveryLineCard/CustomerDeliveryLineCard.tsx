@@ -149,6 +149,8 @@ const getStyles = color =>
       borderWidth: 1.5,
       borderColor: color,
       paddingRight: 5,
+      marginVertical: 2,
+      marginHorizontal: 2,
     },
     textWidth: {
       width: '85%',
