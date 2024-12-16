@@ -64,4 +64,25 @@ export const purchase_typeObjects: ModuleSelections = [
       },
     },
   },
+  {
+    modelName: 'com.axelor.apps.purchase.db.PurchaseRequestLine',
+    fields: {
+      newProduct: {
+        content: [
+          {
+            key: 'NewProduct',
+            value: true,
+            title: 'Purchase_NewProduct',
+            color: 'plannedColor',
+          },
+          {
+            key: 'ExistingProduct',
+            value: false,
+            title: 'Purchase_ExistingProduct',
+            color: 'secondaryColor',
+          },
+        ],
+      },
+    },
+  },
 ];

@@ -20,3 +20,4 @@ export {default as DropdownRequestCharacteristics} from './DropdownRequestCharac
 export {default as RequestSeeLinesButton} from './RequestSeeLinesButton/RequestSeeLinesButton';
 export {default as RequestCard} from './RequestCard/RequestCard';
 export {default as RequestHeader} from './RequestHeader/RequestHeader';
+export {default as RequestLineCard} from './RequestLineCard/RequestLineCard';

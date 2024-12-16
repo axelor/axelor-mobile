@@ -16,22 +16,49 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import {createStandardSearch} from '@axelor/aos-mobile-core';
+import {
+  createStandardSearch,
+  getSearchCriterias,
+} from '@axelor/aos-mobile-core';
 
-const createPurchaseRequestLineCriteria = purchaseRequestId => {
-  return [
+const createPurchaseRequestLineCriteria = ({
+  searchValue,
+  purchaseRequestId,
+  newProduct,
+}) => {
+  const criterias = [
+    getSearchCriterias('purchase_purchaseRequestLine', searchValue),
     {
       fieldName: 'purchaseRequest.id',
       operator: '=',
       value: purchaseRequestId,
     },
   ];
+
+  if (newProduct != null) {
+    criterias.push({
+      fieldName: 'newProduct',
+      operator: '=',
+      value: newProduct,
+    });
+  }
+
+  return criterias;
 };
 
-export async function searchPurchaseRequestLine({page = 0, purchaseRequestId}) {
+export async function searchPurchaseRequestLine({
+  page = 0,
+  searchValue,
+  purchaseRequestId,
+  newProduct,
+}) {
   return createStandardSearch({
     model: 'com.axelor.apps.purchase.db.PurchaseRequestLine',
-    criteria: createPurchaseRequestLineCriteria(purchaseRequestId),
+    criteria: createPurchaseRequestLineCriteria({
+      searchValue,
+      purchaseRequestId,
+      newProduct,
+    }),
     fieldKey: 'purchase_purchaseRequestLine',
     sortKey: 'purchase_purchaseRequestLine',
     page,

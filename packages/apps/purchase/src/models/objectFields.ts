@@ -32,4 +32,10 @@ export const purchase_modelAPI: ObjectFields = {
   purchase_supplier: schemaContructor.object({
     simpleFullName: schemaContructor.string(),
   }),
+  purchase_purchaseRequestLine: schemaContructor.object({
+    product: schemaContructor.subObject(),
+    unit: schemaContructor.subObject(),
+    quantity: schemaContructor.string(),
+    newProduct: schemaContructor.boolean(),
+  }),
 };
