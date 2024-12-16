@@ -22,8 +22,10 @@ import {
   handlerApiCall,
 } from '@axelor/aos-mobile-core';
 import {
+  createDocument as _createDocument,
   searchDirectory as _searchDirectory,
   searchDocument as _searchDocument,
+  updateDocument as _updateDocument,
 } from '../api/document-api';
 
 export const searchDocument = createAsyncThunk(
@@ -61,6 +63,32 @@ export const searchFavoriteDocument = createAsyncThunk(
       action: 'Dms_SliceAction_SearchFavoriteDocument',
       getState,
       responseOptions: {isArrayResponse: true},
+    });
+  },
+);
+
+export const createDocument = createAsyncThunk(
+  'dms_document/createDocument',
+  async function (data, {getState}) {
+    return handlerApiCall({
+      fetchFunction: _createDocument,
+      data,
+      action: 'Dms_SliceAction_CreateDocument',
+      getState,
+      responseOptions: {isArrayResponse: false},
+    });
+  },
+);
+
+export const updateDocument = createAsyncThunk(
+  'dms_document/updateDocument',
+  async function (data, {getState}) {
+    return handlerApiCall({
+      fetchFunction: _updateDocument,
+      data,
+      action: 'Dms_SliceAction_UpdateDocument',
+      getState,
+      responseOptions: {isArrayResponse: false},
     });
   },
 );
