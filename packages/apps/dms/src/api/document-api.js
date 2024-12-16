@@ -107,6 +107,65 @@ const createDocumentCriteria = ({
   return criteria;
 };
 
+const createFetchDirectoryCriteria = ({model, modelId}) => {
+  return [
+    {
+      fieldName: 'isDirectory',
+      operator: '=',
+      value: true,
+    },
+    {
+      fieldName: 'relatedId',
+      operator: '=',
+      value: modelId,
+    },
+    {
+      fieldName: 'relatedModel',
+      operator: '=',
+      value: model,
+    },
+    {
+      fieldName: 'parent.relatedModel',
+      operator: '=',
+      value: model,
+    },
+    {
+      operator: 'or',
+      criteria: [
+        {
+          fieldName: 'parent.relatedId',
+          operator: 'isNull',
+        },
+        {
+          fieldName: 'parent.relatedId',
+          operator: '=',
+          value: 0,
+        },
+      ],
+    },
+  ];
+};
+
+const createCountAttachedFilesCriteria = ({model, modelId}) => {
+  return [
+    {
+      fieldName: 'relatedModel',
+      operator: '=',
+      value: model,
+    },
+    {
+      fieldName: 'relatedId',
+      operator: '=',
+      value: modelId,
+    },
+    {
+      fieldName: 'isDirectory',
+      operator: '!=',
+      value: true,
+    },
+  ];
+};
+
 export async function searchDocument({
   searchValue = null,
   authorId,
@@ -148,14 +207,15 @@ export async function searchDirectory({searchValue, authorId, page = 0}) {
   });
 }
 
-export async function createDocument({document}) {
-  const {matchers} = formatRequestBody(document, 'data');
+export async function createDocument({document, model, modelId}) {
+  const body = {relatedModel: model, relatedId: modelId, ...document};
+  const {matchers} = formatRequestBody(body, 'data');
 
   return getActionApi().send({
     url: '/ws/rest/com.axelor.dms.db.DMSFile',
     method: 'put',
     body: {
-      data: document,
+      data: body,
     },
     description: 'create document',
     matchers: {
@@ -181,5 +241,28 @@ export async function updateDocument({document}) {
       id: document.id,
       fields: matchers,
     },
+  });
+}
+
+export async function fetchDirectory({model, modelId}) {
+  return createStandardSearch({
+    model: 'com.axelor.dms.db.DMSFile',
+    criteria: createFetchDirectoryCriteria({model, modelId}),
+    fieldKey: 'dms_document',
+    sortKey: 'dms_document',
+    page: 0,
+    numberElementsByPage: 1,
+    provider: 'model',
+  });
+}
+
+export async function countAttachedFiles({model, modelId}) {
+  return createStandardSearch({
+    model: 'com.axelor.dms.db.DMSFile',
+    criteria: createCountAttachedFilesCriteria({model, modelId}),
+    fieldKey: 'dms_document',
+    page: 0,
+    numberElementsByPage: null,
+    provider: 'model',
   });
 }
