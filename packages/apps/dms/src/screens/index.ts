@@ -45,6 +45,7 @@ export default {
   },
   AttachedFilesScreen: {
     title: 'Dms_AttachedFiles',
+    actionID: 'dms_attachedFiles_tree',
     component: AttachedFilesScreen,
     options: {
       shadedHeader: false,

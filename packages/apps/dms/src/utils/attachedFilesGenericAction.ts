@@ -19,27 +19,21 @@
 import {handlerApiCall} from '@axelor/aos-mobile-core';
 import {countAttachedFiles, fetchDirectory} from '../api/document-api';
 
-interface getActionProps {
-  model: string;
-  modelId: number;
-  options: any;
-  canCreate: boolean;
-  isFolderCreationAllowed: boolean;
-  isFileCreationAllowed: boolean;
-  navigation: any;
-  translator: (key: string) => string;
-}
-
 export const getAction = async ({
   model,
   modelId,
   options,
-  canCreate,
-  isFolderCreationAllowed,
-  isFileCreationAllowed,
+  canCreateObject = true,
   navigation,
   translator,
-}: getActionProps) => {
+}: {
+  model: string;
+  modelId: number;
+  options: any;
+  canCreateObject?: boolean;
+  navigation: any;
+  translator: (key: string) => string;
+}) => {
   const directory = await handlerApiCall({
     fetchFunction: fetchDirectory,
     data: {model, modelId},
@@ -75,12 +69,9 @@ export const getAction = async ({
         parent: directory,
         model,
         modelId,
+        options,
       }),
     showInHeader: true,
-    hideIf:
-      !canCreate ||
-      (!directory && !isFolderCreationAllowed) ||
-      !isFileCreationAllowed,
-    ...options,
+    hideIf: !directory && !canCreateObject,
   };
 };

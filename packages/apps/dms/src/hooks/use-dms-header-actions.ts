@@ -71,9 +71,10 @@ const useAttachedFilesGenericAction = () => {
           model,
           modelId,
           options,
-          canCreate,
-          isFolderCreationAllowed: mobileSettings?.isFolderCreationAllowed,
-          isFileCreationAllowed: mobileSettings?.isFileCreationAllowed,
+          canCreateObject:
+            canCreate &&
+            mobileSettings?.isFolderCreationAllowed &&
+            mobileSettings?.isFileCreationAllowed,
           navigation,
           translator: I18n.t,
         }),

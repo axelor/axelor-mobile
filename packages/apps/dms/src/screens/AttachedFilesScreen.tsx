@@ -19,6 +19,7 @@
 import React, {useEffect, useState} from 'react';
 import {
   handlerApiCall,
+  headerActionsProvider,
   useIsFocused,
   useTranslator,
 } from '@axelor/aos-mobile-core';
@@ -27,9 +28,7 @@ import {fetchDirectory} from '../api/document-api';
 import {DocumentList} from '../components';
 
 const AttachedFilesScreen = ({navigation, route}) => {
-  const _parent = route?.params?.parent;
-  const model = route?.params?.model;
-  const modelId = route?.params?.modelId;
+  const {parent: _parent, model, modelId, options} = route?.params ?? {};
   const I18n = useTranslator();
   const isFocused = useIsFocused();
 
@@ -55,6 +54,14 @@ const AttachedFilesScreen = ({navigation, route}) => {
       }).then(setParent);
     }
   }, [isFocused, model, modelId, parent]);
+
+  useEffect(() => {
+    if (options?.screenTitle != null) {
+      headerActionsProvider.registerModel('dms_attachedFiles_tree', {
+        headerTitle: options?.screenTitle,
+      });
+    }
+  }, [options]);
 
   return (
     <>
