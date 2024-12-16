@@ -1,5 +1,5 @@
 {
-  "title": "Header actions: transform attachedFileScreenTitle into options",
+  "title": "Header actions: remove use of attachedFileScreenTitle",
   "type": "refactor",
   "packages": ["crm", "helpdesk", "intervention", "project", "sale", "stock"]
 }

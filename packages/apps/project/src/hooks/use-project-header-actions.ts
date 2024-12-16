@@ -43,7 +43,6 @@ const useProjectDetailsActions = () => {
     headerActionsProvider.registerModel('project_project_details', {
       model: 'com.axelor.apps.project.db.Project',
       modelId: project?.id,
-      options: {dms_attachedFiles: {title: project?.code}},
       headerTitle: project?.code,
       disableMailMessages: !mobileSettings?.isTrackerMessageEnabled,
       actions: [

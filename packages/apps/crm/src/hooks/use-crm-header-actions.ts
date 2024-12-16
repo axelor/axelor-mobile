@@ -69,7 +69,6 @@ const useClientDetailsActions = () => {
     headerActionsProvider.registerModel('crm_client_details', {
       model: 'com.axelor.apps.base.db.Partner',
       modelId: client?.id,
-      options: {dms_attachedFiles: {title: client?.simpleFullName}},
       disableMailMessages: !mobileSettings?.isTrackerMessageEnabled,
       actions: [
         {
@@ -121,9 +120,6 @@ const useContactDetailsActions = () => {
     headerActionsProvider.registerModel('crm_contact_details', {
       model: 'com.axelor.apps.base.db.Partner',
       modelId: contact?.id,
-      options: {
-        dms_attachedFiles: {title: contact?.simpleFullName},
-      },
       disableMailMessages: !mobileSettings?.isTrackerMessageEnabled,
       actions: [
         {
@@ -202,7 +198,6 @@ const useLeadDetailsActions = () => {
     headerActionsProvider.registerModel('crm_lead_details', {
       model: 'com.axelor.apps.crm.db.Lead',
       modelId: lead?.id,
-      options: {dms_attachedFiles: {title: lead?.simpleFullName}},
       disableMailMessages: !mobileSettings?.isTrackerMessageEnabled,
       actions: [
         {
@@ -273,7 +268,6 @@ const useOpportunityDetailsActions = () => {
     headerActionsProvider.registerModel('crm_opportunity_details', {
       model: 'com.axelor.apps.crm.db.Opportunity',
       modelId: opportunity?.id,
-      options: {dms_attachedFiles: {title: opportunity?.name}},
       disableMailMessages: !mobileSettings?.isTrackerMessageEnabled,
     });
   }, [mobileSettings, opportunity]);
@@ -291,9 +285,6 @@ const useProspectDetailsActions = () => {
     headerActionsProvider.registerModel('crm_prospect_details', {
       model: 'com.axelor.apps.base.db.Partner',
       modelId: prospect?.id,
-      options: {
-        dms_attachedFiles: {title: prospect?.simpleFullName},
-      },
       disableMailMessages: !mobileSettings?.isTrackerMessageEnabled,
       actions: [
         {
@@ -347,7 +338,6 @@ const useTourDetailsActions = () => {
     headerActionsProvider.registerModel('crm_tour_details', {
       model: 'com.axelor.apps.crm.db.Tour',
       modelId: tour?.id,
-      options: {dms_attachedFiles: {title: tour?.name}},
       disableMailMessages: !mobileSettings?.isTrackerMessageEnabled,
       actions: [
         {

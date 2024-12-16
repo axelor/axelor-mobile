@@ -54,7 +54,6 @@ const useSaleOrderDetailsActions = () => {
     headerActionsProvider.registerModel('sale_saleOrder_details', {
       model: 'com.axelor.apps.sale.db.SaleOrder',
       modelId: saleOrder?.id,
-      options: {dms_attachedFiles: {title}},
       headerTitle: title,
       disableMailMessages: !mobileSettings?.isTrackerMessageEnabled,
     });
@@ -81,7 +80,6 @@ const useSaleOrderLineDetailsActions = () => {
     headerActionsProvider.registerModel('sale_saleOrderLine_details', {
       model: 'com.axelor.apps.sale.db.SaleOrderLine',
       modelId: saleOrderLine?.id,
-      options: {dms_attachedFiles: {title}},
       headerTitle: title,
       disableMailMessages: !mobileSettings?.isTrackerMessageEnabled,
     });
@@ -109,7 +107,6 @@ const useClientDetailsActions = () => {
     headerActionsProvider.registerModel('sale_client_details', {
       model: 'com.axelor.apps.base.db.Partner',
       modelId: customer?.id,
-      options: {dms_attachedFiles: {title: customer?.name}},
       disableMailMessages: !mobileSettings?.isTrackerMessageEnabled,
     });
   }, [customer, mobileSettings]);
