@@ -19,3 +19,4 @@
 export {default as AuthorFilter} from './AuthorFilter/AuthorFilter';
 export {default as DirectoryCard} from './DirectoryCard/DirectoryCard';
 export {default as DocumentCard} from './DocumentCard/DocumentCard';
+export {default as SwitchDocumentType} from './SwitchDocumentType/SwitchDocumentType';
