@@ -77,8 +77,8 @@ const InventoryLineButtons = ({
   const handleUpdateLine = useCallback(() => {
     dispatch(
       updateInventoryLine({
-        inventoryLineId: inventoryLine.id,
-        version: inventoryLine.version,
+        inventoryLineId: inventoryLine?.id,
+        version: inventoryLine?.version,
         realQty: realQty,
         description: description,
         inventoryId: inventory?.id,
@@ -90,8 +90,7 @@ const InventoryLineButtons = ({
     description,
     dispatch,
     inventory?.id,
-    inventoryLine.id,
-    inventoryLine.version,
+    inventoryLine,
     navigation,
     realQty,
   ]);
@@ -100,8 +99,12 @@ const InventoryLineButtons = ({
     return null;
   }
 
-  if (inventoryLine == null && canCreate) {
-    return <Button title={I18n.t('Base_Add')} onPress={handleNewLine} />;
+  if (inventoryLine?.id == null) {
+    if (canCreate) {
+      return <Button title={I18n.t('Base_Add')} onPress={handleNewLine} />;
+    }
+
+    return null;
   }
 
   if (
