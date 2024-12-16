@@ -34,9 +34,11 @@ const DocumentFormScreen = ({navigation, route}) => {
   const creationDefaultValue = useMemo(
     () => ({
       isAttachedFileCreation: model && modelId,
-      parent: parent,
+      parent: parent ?? {
+        fileName: I18n.t('Dms_Root'),
+      },
     }),
-    [model, modelId, parent],
+    [I18n, model, modelId, parent],
   );
 
   const defaultValue = useMemo(

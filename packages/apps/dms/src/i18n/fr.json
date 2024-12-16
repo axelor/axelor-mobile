@@ -17,6 +17,7 @@
   "Dms_AttachedFiles": "Fichiers joints",
   "Dms_NoAttachedFiles": "Pas de fichiers joints",
   "Dms_DoYouWantToAddFile": "Voulez-vous ajouter un fichier ?",
+  "Dms_SearchBarRootInfo": "Pour ajouter un document à votre dossier racine il faut sélectionner 'Racine' dans la barre de recherche",
   "Dms_SliceAction_SearchDocument": "recherche sur les documents",
   "Dms_SliceAction_SearchDirectory": "recherche sur les dossiers",
   "Dms_SliceAction_SearchFavoriteDocument": "recherche sur les documents favoris",

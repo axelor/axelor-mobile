@@ -17,8 +17,9 @@
  */
 
 import React, {useCallback, useMemo} from 'react';
+import {StyleSheet} from 'react-native';
 import {useDispatch, useSelector, useTranslator} from '@axelor/aos-mobile-core';
-import {AutoCompleteSearch} from '@axelor/aos-mobile-ui';
+import {AutoCompleteSearch, Label} from '@axelor/aos-mobile-ui';
 import {searchDirectory} from '../../../features/documentSlice';
 
 interface ParentDirectorySearchBarProps {
@@ -28,6 +29,7 @@ interface ParentDirectorySearchBarProps {
   onChange?: (any: any) => void;
   readonly?: boolean;
   required?: boolean;
+  displayRootInfo?: boolean;
 }
 
 const ParentDirectorySearchBar = ({
@@ -37,6 +39,7 @@ const ParentDirectorySearchBar = ({
   onChange = () => {},
   readonly = false,
   required = false,
+  displayRootInfo = false,
 }: ParentDirectorySearchBarProps) => {
   const I18n = useTranslator();
   const dispatch = useDispatch();
@@ -69,26 +72,42 @@ const ParentDirectorySearchBar = ({
   );
 
   return (
-    <AutoCompleteSearch
-      style={style}
-      title={I18n.t(title)}
-      objectList={extendedDirectoryList}
-      value={defaultValue}
-      required={required}
-      readonly={readonly}
-      onChangeValue={onChange}
-      fetchData={searchParentDirectoryAPI}
-      displayValue={item => item.fileName}
-      placeholder={I18n.t(title)}
-      showDetailsPopup={true}
-      loadingList={loadingDirectory}
-      moreLoading={moreLoadingDirectory}
-      isListEnd={isListEndDirectory}
-      navigate={false}
-      oneFilter={false}
-      translator={I18n.t}
-    />
+    <>
+      <AutoCompleteSearch
+        style={style}
+        title={I18n.t(title)}
+        objectList={extendedDirectoryList}
+        value={defaultValue}
+        required={required}
+        readonly={readonly}
+        onChangeValue={onChange}
+        fetchData={searchParentDirectoryAPI}
+        displayValue={item => item.fileName}
+        placeholder={I18n.t(title)}
+        showDetailsPopup={true}
+        loadingList={loadingDirectory}
+        moreLoading={moreLoadingDirectory}
+        isListEnd={isListEndDirectory}
+        navigate={false}
+        oneFilter={false}
+        translator={I18n.t}
+      />
+      {displayRootInfo && (
+        <Label
+          style={styles.label}
+          type="info"
+          message={I18n.t('Dms_SearchBarRootInfo')}
+        />
+      )}
+    </>
   );
 };
+
+const styles = StyleSheet.create({
+  label: {
+    width: '90%',
+    alignSelf: 'center',
+  },
+});
 
 export default ParentDirectorySearchBar;
