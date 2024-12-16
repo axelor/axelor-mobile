@@ -20,11 +20,17 @@ import React, {useMemo, useState} from 'react';
 import {
   SearchTreeView,
   useNavigation,
+  useDispatch,
   useSelector,
   useTranslator,
 } from '@axelor/aos-mobile-core';
 import {ChipSelect, Screen, useThemeColor} from '@axelor/aos-mobile-ui';
-import {searchDocument, searchDirectory} from '../../../features/documentSlice';
+import {
+  addToFavorites,
+  removeFromFavorites,
+  searchDocument,
+  searchDirectory,
+} from '../../../features/documentSlice';
 import {searchDocumentApi} from '../../../api';
 import {AuthorFilter, DirectoryCard} from '../../atoms';
 import {DocumentActionCard} from '../../molecules';
@@ -38,6 +44,7 @@ const DocumentList = ({defaultParent}: DocumentListProps) => {
   const I18n = useTranslator();
   const Colors = useThemeColor();
   const navigation = useNavigation();
+  const dispatch = useDispatch();
 
   const [author, setAuthor] = useState(null);
   const [selectedExtensions, setSelectedExtensions] = useState([]);
@@ -50,6 +57,7 @@ const DocumentList = ({defaultParent}: DocumentListProps) => {
     directoryList,
   } = useSelector((state: any) => state.dms_document);
   const {mobileSettings} = useSelector((state: any) => state.appConfig);
+  const {user} = useSelector(state => state.user);
 
   const sliceParentFunctionData = useMemo(
     () => ({
@@ -93,30 +101,46 @@ const DocumentList = ({defaultParent}: DocumentListProps) => {
         searchPlaceholder={I18n.t('Base_Search')}
         parentFieldName="parent"
         renderBranch={({item}) => <DirectoryCard directory={item} />}
-        getBranchActions={branch => [
-          {
-            iconName: 'star',
-            iconColor: Colors.progressColor.background,
-            helper: I18n.t('Dms_AddToFavorites'),
-            onPress: () => console.log('branch: ', branch),
-            hidden: !mobileSettings?.isFavoritesManagementEnabled,
-          },
-          {
-            iconName: 'info-circle',
-            helper: I18n.t('Dms_Details'),
-            onPress: () => console.log('branch: ', branch),
-          },
-          {
-            iconName: 'pencil-fill',
-            helper: I18n.t('Dms_Rename'),
-            large: true,
-            onPress: () =>
-              navigation.navigate('DocumentFormScreen', {
-                document: branch.item,
-              }),
-            hidden: !mobileSettings?.isRenamingAllowed,
-          },
-        ]}
+        getBranchActions={branch => {
+          const isFavorite = user?.favouriteFolderSet.some(
+            ({id}) => id === branch.item.id,
+          );
+
+          const sliceFunction = isFavorite
+            ? removeFromFavorites
+            : addToFavorites;
+
+          return [
+            {
+              iconName: isFavorite ? 'star-fill' : 'star',
+              iconColor: Colors.progressColor.background,
+              helper: I18n.t('Dms_AddToFavorites'),
+              onPress: () =>
+                dispatch(
+                  (sliceFunction as any)({
+                    documentId: branch.item.id,
+                    userId: user?.id,
+                  }),
+                ),
+              hidden: !mobileSettings?.isFavoritesManagementEnabled,
+            },
+            {
+              iconName: 'info-circle',
+              helper: I18n.t('Dms_Details'),
+              onPress: () => console.log('branch: ', branch),
+            },
+            {
+              iconName: 'pencil-fill',
+              helper: I18n.t('Dms_Rename'),
+              large: true,
+              onPress: () =>
+                navigation.navigate('DocumentFormScreen', {
+                  document: branch.item,
+                }),
+              hidden: !mobileSettings?.isRenamingAllowed,
+            },
+          ];
+        }}
         renderLeaf={({item}) => <DocumentActionCard document={item} />}
         headerChildren={<AuthorFilter author={author} setAuthor={setAuthor} />}
         chipComponent={
