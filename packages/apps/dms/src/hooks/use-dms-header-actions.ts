@@ -62,10 +62,11 @@ const useAttachedFilesGenericAction = () => {
   useEffect(() => {
     headerActionsProvider.registerGenericAction(
       'attached_files_generic_action',
-      async ({model, modelId}) =>
+      async ({model, modelId, options}) =>
         await getAction({
           model,
           modelId,
+          options,
           isFolderCreationAllowed: mobileSettings?.isFolderCreationAllowed,
           navigation,
           translator: I18n.t,

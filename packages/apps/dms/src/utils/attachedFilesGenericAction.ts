@@ -22,6 +22,7 @@ import {countAttachedFiles, fetchDirectory} from '../api/document-api';
 interface getActionProps {
   model: string;
   modelId: number;
+  options: any;
   isFolderCreationAllowed: boolean;
   navigation: any;
   translator: (key: string) => string;
@@ -30,6 +31,7 @@ interface getActionProps {
 export const getAction = async ({
   model,
   modelId,
+  options,
   isFolderCreationAllowed,
   navigation,
   translator,
@@ -64,5 +66,6 @@ export const getAction = async ({
       }),
     showInHeader: true,
     hideIf: !directory && !isFolderCreationAllowed,
+    ...options,
   };
 };
