@@ -266,3 +266,19 @@ export async function countAttachedFiles({model, modelId}) {
     provider: 'model',
   });
 }
+
+export async function addToFavorites({documentId}) {
+  return getActionApi().send({
+    url: `ws/aos/dms/favorites/${documentId}`,
+    method: 'post',
+    description: 'add to favorites',
+  });
+}
+
+export async function removeFromFavorites({documentId}) {
+  return getActionApi().send({
+    url: `ws/aos/dms/favorites/${documentId}`,
+    method: 'delete',
+    description: 'remove from favorites',
+  });
+}
