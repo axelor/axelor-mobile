@@ -16,13 +16,18 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import React from 'react';
+import React, {useMemo} from 'react';
 import {
+  useDispatch,
   useNavigation,
   useSelector,
   useTranslator,
 } from '@axelor/aos-mobile-core';
 import {ActionCard, useThemeColor} from '@axelor/aos-mobile-ui';
+import {
+  addToFavorites,
+  removeFromFavorites,
+} from '../../../features/documentSlice';
 import {DocumentCard} from '../../atoms';
 
 interface DocumentActionCardProps {
@@ -33,8 +38,20 @@ const DocumentActionCard = ({document}: DocumentActionCardProps) => {
   const I18n = useTranslator();
   const Colors = useThemeColor();
   const navigation = useNavigation();
+  const dispatch = useDispatch();
 
   const {mobileSettings} = useSelector((state: any) => state.appConfig);
+  const {user} = useSelector(state => state.user);
+
+  const isFavorite = useMemo(
+    () => user?.favouriteFileSet.some(({id}) => id === document.id),
+    [document.id, user?.favouriteFileSet],
+  );
+
+  const sliceFunction = useMemo(
+    () => (isFavorite ? removeFromFavorites : addToFavorites),
+    [isFavorite],
+  );
 
   return (
     <ActionCard
@@ -47,10 +64,16 @@ const DocumentActionCard = ({document}: DocumentActionCardProps) => {
           hidden: !mobileSettings?.isDownloadAllowed,
         },
         {
-          iconName: 'star',
+          iconName: isFavorite ? 'star-fill' : 'star',
           iconColor: Colors.progressColor.background,
           helper: I18n.t('Dms_AddToFavorites'),
-          onPress: () => console.log('Add to favorites'),
+          onPress: () =>
+            dispatch(
+              (sliceFunction as any)({
+                documentId: document.id,
+                userId: user?.id,
+              }),
+            ),
           hidden: !mobileSettings?.isFavoritesManagementEnabled,
         },
         {

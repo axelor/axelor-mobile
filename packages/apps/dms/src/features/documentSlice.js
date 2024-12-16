@@ -18,11 +18,14 @@
 
 import {createAsyncThunk, createSlice} from '@reduxjs/toolkit';
 import {
+  fetchActiveUser,
   generateInifiniteScrollCases,
   handlerApiCall,
 } from '@axelor/aos-mobile-core';
 import {
+  addToFavorites as _addToFavorites,
   createDocument as _createDocument,
+  removeFromFavorites as _removeFromFavorites,
   searchDirectory as _searchDirectory,
   searchDocument as _searchDocument,
   updateDocument as _updateDocument,
@@ -90,6 +93,32 @@ export const updateDocument = createAsyncThunk(
       getState,
       responseOptions: {isArrayResponse: false},
     });
+  },
+);
+
+export const addToFavorites = createAsyncThunk(
+  'dms_document/addToFavorites',
+  async function (data, {getState, dispatch}) {
+    return handlerApiCall({
+      fetchFunction: _addToFavorites,
+      data,
+      action: 'Dms_SliceAction_AddToFavorites',
+      getState,
+      responseOptions: {isArrayResponse: false, showToast: true},
+    }).then(() => dispatch(fetchActiveUser(data.userId)));
+  },
+);
+
+export const removeFromFavorites = createAsyncThunk(
+  'dms_document/removeFromFavorites',
+  async function (data, {getState, dispatch}) {
+    return handlerApiCall({
+      fetchFunction: _removeFromFavorites,
+      data,
+      action: 'Dms_SliceAction_RemoveFromFavorites',
+      getState,
+      responseOptions: {isArrayResponse: false, showToast: true},
+    }).then(() => dispatch(fetchActiveUser(data.userId)));
   },
 );
 
