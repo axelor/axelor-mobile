@@ -70,7 +70,6 @@ const useClientDetailsActions = () => {
       model: 'com.axelor.apps.base.db.Partner',
       modelId: client?.id,
       disableMailMessages: !mobileSettings?.isTrackerMessageEnabled,
-      attachedFileScreenTitle: client?.simpleFullName,
       actions: [
         {
           key: 'client-saveContact',
@@ -122,7 +121,6 @@ const useContactDetailsActions = () => {
       model: 'com.axelor.apps.base.db.Partner',
       modelId: contact?.id,
       disableMailMessages: !mobileSettings?.isTrackerMessageEnabled,
-      attachedFileScreenTitle: contact?.simpleFullName,
       actions: [
         {
           key: 'contact-saveContact',
@@ -201,7 +199,6 @@ const useLeadDetailsActions = () => {
       model: 'com.axelor.apps.crm.db.Lead',
       modelId: lead?.id,
       disableMailMessages: !mobileSettings?.isTrackerMessageEnabled,
-      attachedFileScreenTitle: lead?.simpleFullName,
       actions: [
         {
           key: 'lead-saveContact',
@@ -272,7 +269,6 @@ const useOpportunityDetailsActions = () => {
       model: 'com.axelor.apps.crm.db.Opportunity',
       modelId: opportunity?.id,
       disableMailMessages: !mobileSettings?.isTrackerMessageEnabled,
-      attachedFileScreenTitle: opportunity?.name,
     });
   }, [mobileSettings, opportunity]);
 };
@@ -290,7 +286,6 @@ const useProspectDetailsActions = () => {
       model: 'com.axelor.apps.base.db.Partner',
       modelId: prospect?.id,
       disableMailMessages: !mobileSettings?.isTrackerMessageEnabled,
-      attachedFileScreenTitle: prospect?.simpleFullName,
       actions: [
         {
           key: 'prospect-saveContact',
@@ -344,7 +339,6 @@ const useTourDetailsActions = () => {
       model: 'com.axelor.apps.crm.db.Tour',
       modelId: tour?.id,
       disableMailMessages: !mobileSettings?.isTrackerMessageEnabled,
-      attachedFileScreenTitle: tour?.name,
       actions: [
         {
           key: 'refreshTour',
