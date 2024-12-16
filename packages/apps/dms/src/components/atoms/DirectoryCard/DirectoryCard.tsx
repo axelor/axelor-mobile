@@ -18,7 +18,7 @@
 
 import React from 'react';
 import {StyleSheet, View} from 'react-native';
-import {useSelector} from '@axelor/aos-mobile-core';
+import {useNavigation, useSelector} from '@axelor/aos-mobile-core';
 import {Icon, LabelText, Text} from '@axelor/aos-mobile-ui';
 
 interface DirectoryCardProps {
@@ -26,6 +26,8 @@ interface DirectoryCardProps {
 }
 
 const DirectoryCard = ({directory}: DirectoryCardProps) => {
+  const navigation = useNavigation();
+
   const {mobileSettings} = useSelector((state: any) => state.appConfig);
 
   return (
@@ -46,7 +48,9 @@ const DirectoryCard = ({directory}: DirectoryCardProps) => {
           name="plus"
           size={32}
           touchable
-          onPress={() => console.log('Create new file')}
+          onPress={() =>
+            navigation.navigate('DocumentFormScreen', {parent: directory})
+          }
         />
       )}
     </View>
