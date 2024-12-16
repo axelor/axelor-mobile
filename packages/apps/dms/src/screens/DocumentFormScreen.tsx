@@ -24,6 +24,8 @@ import {createDocument, updateDocument} from '../features/documentSlice';
 const DocumentFormScreen = ({navigation, route}) => {
   const parent = route?.params?.parent;
   const document = route?.params?.document;
+  const model = route?.params?.model;
+  const modelId = route?.params?.modelId;
   const I18n = useTranslator();
 
   const {user} = useSelector(state => state.user);
@@ -31,9 +33,10 @@ const DocumentFormScreen = ({navigation, route}) => {
 
   const creationDefaultValue = useMemo(
     () => ({
+      isAttachedFileCreation: model && modelId,
       parent: parent,
     }),
-    [parent],
+    [model, modelId, parent],
   );
 
   const defaultValue = useMemo(
@@ -49,7 +52,7 @@ const DocumentFormScreen = ({navigation, route}) => {
 
   const documentAPI = useCallback(
     (_document, isCreation, dispatch) => {
-      const parentId = _document.parent.id;
+      const parentId = _document.parent?.id;
 
       if (parentId == null) {
         _document.parent = null;
@@ -64,11 +67,11 @@ const DocumentFormScreen = ({navigation, route}) => {
       }
 
       const sliceFunction = isCreation ? createDocument : updateDocument;
-      dispatch((sliceFunction as any)({document: _document}));
+      dispatch((sliceFunction as any)({document: _document, model, modelId}));
 
       navigation.pop();
     },
-    [mobileSettings?.defaultDmsRoot, navigation, user.dmsRoot],
+    [mobileSettings?.defaultDmsRoot, model, modelId, navigation, user.dmsRoot],
   );
 
   return (
