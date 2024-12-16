@@ -1,0 +1,5 @@
+{
+  "title": "Inventory line: correct creation process",
+  "type": "fix",
+  "packages": "stock"
+}
