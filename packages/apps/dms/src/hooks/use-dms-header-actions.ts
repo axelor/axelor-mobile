@@ -20,12 +20,16 @@ import {useEffect} from 'react';
 import {
   headerActionsProvider,
   useNavigation,
+  usePermitted,
+  useSelector,
   useTranslator,
 } from '@axelor/aos-mobile-core';
 import {useThemeColor} from '@axelor/aos-mobile-ui';
+import {getAction} from '../utils';
 
 export const useDMSHeaders = () => {
   useAllDocumentsActions();
+  useAttachedFilesGenericAction();
 };
 
 const useAllDocumentsActions = () => {
@@ -48,4 +52,32 @@ const useAllDocumentsActions = () => {
       ],
     });
   }, [Colors, I18n, navigation]);
+};
+
+const useAttachedFilesGenericAction = () => {
+  const I18n = useTranslator();
+  const navigation = useNavigation();
+  const {canCreate} = usePermitted({
+    modelName: 'com.axelor.dms.db.DMSFile',
+  });
+
+  const {mobileSettings} = useSelector((state: any) => state.appConfig);
+
+  useEffect(() => {
+    headerActionsProvider.registerGenericAction(
+      'dms_attachedFiles',
+      async ({model, modelId, options}) =>
+        await getAction({
+          model,
+          modelId,
+          options,
+          canCreateObject:
+            canCreate &&
+            mobileSettings?.isFolderCreationAllowed &&
+            mobileSettings?.isFileCreationAllowed,
+          navigation,
+          translator: I18n.t,
+        }),
+    );
+  }, [canCreate, I18n.t, mobileSettings, navigation]);
 };
