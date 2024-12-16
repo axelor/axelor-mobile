@@ -54,9 +54,9 @@ const useSaleOrderDetailsActions = () => {
     headerActionsProvider.registerModel('sale_saleOrder_details', {
       model: 'com.axelor.apps.sale.db.SaleOrder',
       modelId: saleOrder?.id,
+      options: {attached_files_generic_action: {title}},
       headerTitle: title,
       disableMailMessages: !mobileSettings?.isTrackerMessageEnabled,
-      attachedFileScreenTitle: title,
     });
   }, [mobileSettings, saleOrder?.id, title]);
 };
@@ -81,9 +81,9 @@ const useSaleOrderLineDetailsActions = () => {
     headerActionsProvider.registerModel('sale_saleOrderLine_details', {
       model: 'com.axelor.apps.sale.db.SaleOrderLine',
       modelId: saleOrderLine?.id,
+      options: {attached_files_generic_action: {title}},
       headerTitle: title,
       disableMailMessages: !mobileSettings?.isTrackerMessageEnabled,
-      attachedFileScreenTitle: title,
     });
   }, [mobileSettings, saleOrderLine?.id, title]);
 };
@@ -109,8 +109,8 @@ const useClientDetailsActions = () => {
     headerActionsProvider.registerModel('sale_client_details', {
       model: 'com.axelor.apps.base.db.Partner',
       modelId: customer?.id,
+      options: {attached_files_generic_action: {title: customer?.name}},
       disableMailMessages: !mobileSettings?.isTrackerMessageEnabled,
-      attachedFileScreenTitle: customer?.name,
     });
   }, [customer, mobileSettings]);
 };

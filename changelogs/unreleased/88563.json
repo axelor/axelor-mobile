@@ -1,0 +1,5 @@
+{
+  "title": "Header actions: transform attachedFileScreenTitle into options",
+  "type": "refactor",
+  "packages": ["crm", "helpdesk", "intervention", "project", "sale", "stock"]
+}

@@ -114,8 +114,8 @@ const useCustomerDeliveryLineDetailsActions = () => {
     headerActionsProvider.registerModel('stock_customerDelivery_lineDetails', {
       model: 'com.axelor.apps.stock.db.StockMoveLine',
       modelId: customerDeliveryLine?.id,
+      options: {attached_files_generic_action: {title: product?.name}},
       disableMailMessages: !mobileSettings?.isTrackerMessageEnabled,
-      attachedFileScreenTitle: product?.name,
     });
   }, [
     customerDeliveryLine?.id,
@@ -172,8 +172,8 @@ const useInternalMoveLineDetailsActions = () => {
     headerActionsProvider.registerModel('stock_internalMove_lineDetails', {
       model: 'com.axelor.apps.stock.db.StockMoveLine',
       modelId: internalMoveLine?.id,
+      options: {attached_files_generic_action: {title: product?.name}},
       disableMailMessages: !mobileSettings?.isTrackerMessageEnabled,
-      attachedFileScreenTitle: product?.name,
     });
   }, [
     internalMoveLine?.id,
@@ -217,8 +217,8 @@ const useInventoryLineDetailsActions = () => {
     headerActionsProvider.registerModel('stock_inventory_lineDetails', {
       model: 'com.axelor.apps.stock.db.InventoryLine',
       modelId: inventoryLine?.id,
+      options: {attached_files_generic_action: {title: product?.name}},
       disableMailMessages: !mobileSettings?.isTrackerMessageEnabled,
-      attachedFileScreenTitle: product?.name,
     });
   }, [
     mobileSettings?.isTrackerMessageEnabled,
@@ -235,8 +235,8 @@ const useProductDetailsActions = () => {
     headerActionsProvider.registerModel('stock_product_details', {
       model: 'com.axelor.apps.base.db.Product',
       modelId: product?.id,
+      options: {attached_files_generic_action: {title: product?.name}},
       disableMailMessages: !mobileSettings?.isTrackerMessageEnabled,
-      attachedFileScreenTitle: product?.name,
     });
   }, [mobileSettings, product]);
 };
@@ -249,8 +249,8 @@ const useProductStockDetailsActions = () => {
     headerActionsProvider.registerModel('stock_product_stockDetails', {
       model: 'com.axelor.apps.base.db.Product',
       modelId: product?.id,
+      options: {attached_files_generic_action: {title: product?.name}},
       disableMailMessages: !mobileSettings?.isTrackerMessageEnabled,
-      attachedFileScreenTitle: product?.name,
     });
   }, [mobileSettings, product]);
 };
@@ -361,8 +361,8 @@ const useSupplierArrivalLineDetailsActions = () => {
     headerActionsProvider.registerModel('stock_supplierArrival_lineDetails', {
       model: 'com.axelor.apps.stock.db.StockMoveLine',
       modelId: supplierArrivalLine?.id,
+      options: {attached_files_generic_action: {title: product?.name}},
       disableMailMessages: !mobileSettings?.isTrackerMessageEnabled,
-      attachedFileScreenTitle: product?.name,
     });
   }, [
     supplierArrivalLine?.id,

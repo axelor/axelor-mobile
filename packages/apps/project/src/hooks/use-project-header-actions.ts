@@ -43,9 +43,9 @@ const useProjectDetailsActions = () => {
     headerActionsProvider.registerModel('project_project_details', {
       model: 'com.axelor.apps.project.db.Project',
       modelId: project?.id,
+      options: {attached_files_generic_action: {title: project?.code}},
       headerTitle: project?.code,
       disableMailMessages: !mobileSettings?.isTrackerMessageEnabled,
-      attachedFileScreenTitle: project?.code,
       actions: [
         {
           key: 'refreshProject',
