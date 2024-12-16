@@ -17,7 +17,6 @@
  */
 
 import {
-  axiosApiProvider,
   createStandardSearch,
   formatRequestBody,
   getActionApi,
@@ -147,6 +146,26 @@ const createFetchDirectoryCriteria = ({model, modelId}) => {
   ];
 };
 
+const createCountAttachedFilesCriteria = ({model, modelId}) => {
+  return [
+    {
+      fieldName: 'relatedModel',
+      operator: '=',
+      value: model,
+    },
+    {
+      fieldName: 'relatedId',
+      operator: '=',
+      value: modelId,
+    },
+    {
+      fieldName: 'isDirectory',
+      operator: '!=',
+      value: true,
+    },
+  ];
+};
+
 export async function searchDocument({
   searchValue = null,
   authorId,
@@ -189,17 +208,14 @@ export async function searchDirectory({searchValue, authorId, page = 0}) {
 }
 
 export async function createDocument({document, model, modelId}) {
-  const {matchers} = formatRequestBody(document, 'data');
+  const body = {relatedModel: model, relatedId: modelId, ...document};
+  const {matchers} = formatRequestBody(body, 'data');
 
   return getActionApi().send({
     url: '/ws/rest/com.axelor.dms.db.DMSFile',
     method: 'put',
     body: {
-      data: {
-        relatedModel: model,
-        relatedId: modelId,
-        ...document,
-      },
+      data: body,
     },
     description: 'create document',
     matchers: {
@@ -241,19 +257,12 @@ export async function fetchDirectory({model, modelId}) {
 }
 
 export async function countAttachedFiles({model, modelId}) {
-  return axiosApiProvider.post({
-    url: '/ws/rest/com.axelor.dms.db.DMSFile/search',
-    data: {
-      data: {
-        _domain:
-          'self.relatedModel = :name AND self.relatedId = :id ' +
-          'AND COALESCE(self.isDirectory, FALSE) = FALSE',
-        _domainContext: {
-          name: model,
-          id: modelId,
-        },
-      },
-      fields: ['id'],
-    },
+  return createStandardSearch({
+    model: 'com.axelor.dms.db.DMSFile',
+    criteria: createCountAttachedFilesCriteria({model, modelId}),
+    fieldKey: 'dms_document',
+    page: 0,
+    numberElementsByPage: null,
+    provider: 'model',
   });
 }

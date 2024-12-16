@@ -20,6 +20,7 @@ import {useEffect} from 'react';
 import {
   headerActionsProvider,
   useNavigation,
+  usePermitted,
   useSelector,
   useTranslator,
 } from '@axelor/aos-mobile-core';
@@ -56,21 +57,26 @@ const useAllDocumentsActions = () => {
 const useAttachedFilesGenericAction = () => {
   const I18n = useTranslator();
   const navigation = useNavigation();
+  const {canCreate} = usePermitted({
+    modelName: 'com.axelor.dms.db.DMSFile',
+  });
 
   const {mobileSettings} = useSelector((state: any) => state.appConfig);
 
   useEffect(() => {
     headerActionsProvider.registerGenericAction(
-      'attached_files_generic_action',
+      'dms_attachedFiles',
       async ({model, modelId, options}) =>
         await getAction({
           model,
           modelId,
           options,
+          canCreate,
           isFolderCreationAllowed: mobileSettings?.isFolderCreationAllowed,
+          isFileCreationAllowed: mobileSettings?.isFileCreationAllowed,
           navigation,
           translator: I18n.t,
         }),
     );
-  }, [I18n.t, mobileSettings?.isFolderCreationAllowed, navigation]);
+  }, [canCreate, I18n.t, mobileSettings, navigation]);
 };

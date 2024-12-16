@@ -23,7 +23,9 @@ interface getActionProps {
   model: string;
   modelId: number;
   options: any;
+  canCreate: boolean;
   isFolderCreationAllowed: boolean;
+  isFileCreationAllowed: boolean;
   navigation: any;
   translator: (key: string) => string;
 }
@@ -32,7 +34,9 @@ export const getAction = async ({
   model,
   modelId,
   options,
+  canCreate,
   isFolderCreationAllowed,
+  isFileCreationAllowed,
   navigation,
   translator,
 }: getActionProps) => {
@@ -42,6 +46,10 @@ export const getAction = async ({
     action: 'Dms_SliceAction_FetchDirectory',
     getState: () => {},
     responseOptions: {isArrayResponse: false},
+    errorOptions: {
+      errorTracing: false,
+      showErrorToast: false,
+    },
   });
 
   const numberAttachedFiles = await handlerApiCall({
@@ -50,6 +58,10 @@ export const getAction = async ({
     action: 'Dms_SliceAction_CountAttachedFiles',
     getState: () => {},
     responseOptions: {returnTotal: true},
+    errorOptions: {
+      errorTracing: false,
+      showErrorToast: false,
+    },
   });
 
   return {
@@ -65,7 +77,10 @@ export const getAction = async ({
         modelId,
       }),
     showInHeader: true,
-    hideIf: !directory && !isFolderCreationAllowed,
+    hideIf:
+      !canCreate ||
+      (!directory && !isFolderCreationAllowed) ||
+      !isFileCreationAllowed,
     ...options,
   };
 };

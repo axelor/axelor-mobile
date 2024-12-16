@@ -48,7 +48,11 @@ const AttachedFilesScreen = ({navigation, route}) => {
         action: 'Dms_SliceAction_FetchDirectory',
         getState: () => {},
         responseOptions: {isArrayResponse: false},
-      }).then(directory => setParent(directory));
+        errorOptions: {
+          errorTracing: false,
+          showErrorToast: false,
+        },
+      }).then(setParent);
     }
   }, [isFocused, model, modelId, parent]);
 
