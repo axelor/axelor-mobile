@@ -16,17 +16,16 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import AttachedFilesScreen from './AttachedFilesScreen';
 import BarcodeDisplayScreen from './BarcodeDisplayScreen';
 import JsonFieldScreen from './JsonFieldScreen';
+import MailMessageAttachedFilesScreen from './MailMessageAttachedFilesScreen';
 import MailMessageScreen from './MailMessageScreen';
 import ProcessListScreen from './ProcessListScreen';
 
 export default {
-  AttachedFilesScreen: {
+  MailMessageAttachedFilesScreen: {
     title: 'Base_AttachedFiles',
-    component: AttachedFilesScreen,
-    actionID: 'core_attachedFiles_details',
+    component: MailMessageAttachedFilesScreen,
     options: {
       shadedHeader: false,
     },

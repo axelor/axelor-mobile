@@ -17,22 +17,12 @@
  */
 
 import React from 'react';
-import {AttachedFilesView} from '../components';
+import {MailMessageAttachedFilesView} from '../components';
 
-const AttachedFilesScreen = ({route}) => {
-  const {files, model, modelId, screenTitle} = route.params;
-  const isStatic = files && files.length > 0;
+const MailMessageAttachedFilesScreen = ({route}) => {
+  const {files} = route.params;
 
-  return (
-    <AttachedFilesView
-      files={files}
-      model={model}
-      modelId={modelId}
-      screenTitle={screenTitle}
-      isStaticList={isStatic}
-      isMetaFile={isStatic}
-    />
-  );
+  return <MailMessageAttachedFilesView files={files} />;
 };
 
-export default AttachedFilesScreen;
+export default MailMessageAttachedFilesScreen;

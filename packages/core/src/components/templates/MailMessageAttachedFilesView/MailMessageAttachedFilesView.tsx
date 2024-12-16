@@ -28,30 +28,23 @@ import {
   useThemeColor,
 } from '@axelor/aos-mobile-ui';
 import useTranslator from '../../../i18n/hooks/use-translator';
-import {
-  getAttachedFiles,
-  getAttachedFilesDetails,
-} from '../../../features/attachedFilesSlice';
+import {getAttachedFilesDetails} from '../../../features/attachedFilesSlice';
 import {openFileInExternalApp} from '../../../tools/FileViewer';
-import {headerActionsProvider} from '../../../header';
 
-function AttachedFilesView({
+interface MailMessageAttachedFilesViewProps {
+  files: any[];
+}
+
+const MailMessageAttachedFilesView = ({
   files,
-  model,
-  modelId,
-  isStaticList = false,
-  isMetaFile = false,
-  screenTitle,
-  actionList = [],
-  verticalActions = true,
-}) {
+}: MailMessageAttachedFilesViewProps) => {
   const Colors = useThemeColor();
   const I18n = useTranslator();
   const dispatch = useDispatch();
 
-  const {baseUrl, token, jsessionId} = useSelector(state => state.auth);
+  const {baseUrl, token, jsessionId} = useSelector((state: any) => state.auth);
   const {loading, attachedFilesList} = useSelector(
-    state => state.attachedFiles,
+    (state: any) => state.attachedFiles,
   );
 
   const [selectedStatus, setSelectedStatus] = useState([]);
@@ -59,7 +52,7 @@ function AttachedFilesView({
 
   const handleShowFile = async item => {
     await openFileInExternalApp(
-      {fileName: item.fileName, id: item.id, isMetaFile: isMetaFile},
+      {fileName: item.fileName, id: item.id, isMetaFile: true},
       {baseUrl: baseUrl, token: token, jsessionId: jsessionId},
       I18n,
     );
@@ -67,17 +60,11 @@ function AttachedFilesView({
 
   const fetchFilesAPI = useCallback(() => {
     dispatch(
-      isStaticList
-        ? getAttachedFilesDetails({
-            listFiles: files,
-            isMetaFile: true,
-          })
-        : getAttachedFiles({
-            model,
-            modelId,
-          }),
+      (getAttachedFilesDetails as any)({
+        listFiles: files,
+      }),
     );
-  }, [dispatch, isStaticList, files, model, modelId]);
+  }, [dispatch, files]);
 
   const filterOnSelectExtension = useCallback(
     list => {
@@ -100,14 +87,6 @@ function AttachedFilesView({
     () => filterOnSelectExtension(attachedFilesList),
     [filterOnSelectExtension, attachedFilesList],
   );
-
-  useEffect(() => {
-    if (screenTitle) {
-      headerActionsProvider.registerModel('core_attachedFiles_details', {
-        headerTitle: screenTitle,
-      });
-    }
-  }, [screenTitle]);
 
   useEffect(() => {
     setExtensionList(
@@ -153,11 +132,9 @@ function AttachedFilesView({
         moreLoading={false}
         isListEnd={true}
         translator={I18n.t}
-        actionList={actionList}
-        verticalActions={verticalActions}
       />
     </Screen>
   );
-}
+};
 
-export default AttachedFilesView;
+export default MailMessageAttachedFilesView;

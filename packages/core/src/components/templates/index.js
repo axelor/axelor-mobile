@@ -16,8 +16,8 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-export {default as AttachedFilesView} from './AttachedFilesView/AttachedFilesView';
 export {default as GlobalToolBox} from './GlobalToolBox/GlobalToolBox';
+export {default as MailMessageAttachedFilesView} from './MailMessageAttachedFilesView/MailMessageAttachedFilesView';
 export {default as MailMessageView} from './MailMessageView/MailMessageView';
 export {default as PeriodInput} from './PeriodInput/PeriodInput';
 export {default as PopupApplicationInformation} from './PopupApplicationInformation/PopupApplicationInformation';
