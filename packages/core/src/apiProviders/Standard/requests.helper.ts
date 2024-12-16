@@ -94,7 +94,6 @@ class RequestBuilder {
           criteria: criteria,
         },
       ],
-      _domain: '',
     };
 
     if (companyId && isCompanyM2M) {
@@ -105,15 +104,16 @@ class RequestBuilder {
     }
 
     if (domain != null && domain !== '') {
-      if (data._domain !== '') {
-        data._domain += ' AND ';
+      if (data._domain !== null) {
+        data._domain += ` AND ${domain}`;
+        data._domainContext = {
+          ...data._domainContext,
+          ...domainContext,
+        };
+      } else {
+        data._domain = domain;
+        data._domainContext = domainContext;
       }
-
-      data._domain += domain;
-      data._domainContext = {
-        ...data._domainContext,
-        ...domainContext,
-      };
     }
 
     if (provider === 'axios') {
