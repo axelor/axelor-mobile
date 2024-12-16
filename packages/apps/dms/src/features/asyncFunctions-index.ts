@@ -17,8 +17,11 @@
  */
 
 export {
+  addToFavorites,
   createDocument,
+  removeFromFavorites,
   searchDirectory,
   searchDocument,
+  searchFavoriteDocument,
   updateDocument,
 } from './documentSlice';

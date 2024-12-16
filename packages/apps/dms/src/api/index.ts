@@ -17,9 +17,11 @@
  */
 
 export {
+  addToFavorites as addToFavoritesApi,
   countAttachedFiles as countAttachedDocumentsApi,
   createDocument as createDocumentApi,
   fetchDirectory as fetchDirectoryApi,
+  removeFromFavorites as removeFromFavoritesApi,
   searchDirectory as searchDirectoryApi,
   searchDocument as searchDocumentApi,
   updateDocument as updateDocumentApi,
