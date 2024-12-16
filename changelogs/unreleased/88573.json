@@ -1,0 +1,5 @@
+{
+  "title": "SearchTreeView: add onParentChange props to get parent update",
+  "type": "feat",
+  "packages": "core"
+}

@@ -16,8 +16,9 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import React, {useMemo, useState} from 'react';
+import React, {useEffect, useMemo, useState} from 'react';
 import {
+  headerActionsProvider,
   SearchTreeView,
   useNavigation,
   useDispatch,
@@ -48,6 +49,7 @@ const DocumentList = ({defaultParent}: DocumentListProps) => {
 
   const [author, setAuthor] = useState(null);
   const [selectedExtensions, setSelectedExtensions] = useState([]);
+  const [parentList, setParentList] = useState([]);
 
   const {
     loadingDocument,
@@ -73,6 +75,25 @@ const DocumentList = ({defaultParent}: DocumentListProps) => {
     }),
     [author?.id, selectedExtensions],
   );
+
+  useEffect(() => {
+    headerActionsProvider.registerModel('dms_all_documents', {
+      actions: [
+        {
+          key: 'newDocument',
+          order: 10,
+          iconName: 'plus-lg',
+          title: I18n.t('Dms_NewDocument'),
+          iconColor: Colors.primaryColor.background,
+          onPress: () =>
+            navigation.navigate('DocumentFormScreen', {
+              parent: parentList.at(-1),
+            }),
+          showInHeader: true,
+        },
+      ],
+    });
+  }, [Colors, I18n, navigation, parentList]);
 
   return (
     <Screen removeSpaceOnTop={true}>
@@ -152,6 +173,7 @@ const DocumentList = ({defaultParent}: DocumentListProps) => {
         }
         displayBreadcrumb
         defaultParent={defaultParent}
+        onParentChange={setParentList}
       />
     </Screen>
   );
