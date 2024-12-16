@@ -85,31 +85,28 @@ const RequestCreationScreen = () => {
   const handleAddLine = () => {
     setLines(prevLines => {
       const newLines = [...prevLines];
-      const newProduct = isCustomProduct
-        ? {name: productTitle, id: `custom-${Date.now()}`}
-        : newLine;
-      const indexLine = newLines.findIndex(line => line.id === newProduct?.id);
+      const existingLine = newLines.find(line => line.id === newLine?.id);
 
-      if (indexLine >= 0) {
-        if (isEditionMode) {
-          newLines[indexLine].realQty = movedQty;
-        } else {
-          newLines[indexLine].realQty += movedQty;
-        }
+      if (existingLine) {
+        existingLine.realQty = isEditionMode
+          ? movedQty
+          : existingLine.realQty + movedQty;
       } else {
         newLines.push({
-          product: newProduct,
-          trackingNumber: newProduct?.trackingNumber,
+          product: isCustomProduct
+            ? {name: productTitle, id: `custom-${Date.now()}`}
+            : newLine,
+          trackingNumber: newLine?.trackingNumber,
           realQty: movedQty,
-          currentQty: newProduct?.currentQty,
+          currentQty: newLine?.currentQty,
           unit: unit,
-          id: newProduct?.id,
+          id: newLine?.id || `custom-${Date.now()}`,
         });
       }
 
       return newLines;
     });
-    handleReset(RequestCreation.step.addLine);
+    handleReset();
   };
 
   const isEditionMode = useMemo(
