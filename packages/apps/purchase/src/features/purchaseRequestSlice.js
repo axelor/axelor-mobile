@@ -21,7 +21,10 @@ import {
   generateInifiniteScrollCases,
   handlerApiCall,
 } from '@axelor/aos-mobile-core';
-import {searchPurchaseRequest as _searchPurchaseRequest} from '../api/purchase-request-api';
+import {
+  getPurchaseRequest as _getPurchaseRequest,
+  searchPurchaseRequest as _searchPurchaseRequest,
+} from '../api/purchase-request-api';
 
 export const searchPurchaseRequest = createAsyncThunk(
   'purchase_purchaseRequest/searchPurchaseRequest',
@@ -36,7 +39,22 @@ export const searchPurchaseRequest = createAsyncThunk(
   },
 );
 
+export const getPurchaseRequest = createAsyncThunk(
+  'purchase_purchaseRequest/getPurchaseRequest',
+  async function (data, {getState}) {
+    return handlerApiCall({
+      fetchFunction: _getPurchaseRequest,
+      data,
+      action: 'Purchase_SliceAction_GetPurchaseRequest',
+      getState,
+      responseOptions: {isArrayResponse: false},
+    });
+  },
+);
+
 const initialState = {
+  loadingPurchaseRequest: false,
+  purchaseRequest: {},
   loadingPurchaseRequests: false,
   moreLoadingPurchaseRequest: false,
   isListEndPurchaseRequest: false,
@@ -52,6 +70,16 @@ const purchaseRequestSlice = createSlice({
       moreLoading: 'moreLoadingPurchaseRequest',
       isListEnd: 'isListEndPurchaseRequest',
       list: 'purchaseRequestList',
+    });
+    builder.addCase(getPurchaseRequest.pending, state => {
+      state.loadingPurchaseRequest = true;
+    });
+    builder.addCase(getPurchaseRequest.rejected, state => {
+      state.loadingPurchaseRequest = false;
+    });
+    builder.addCase(getPurchaseRequest.fulfilled, (state, action) => {
+      state.loadingPurchaseRequest = false;
+      state.purchaseRequest = action.payload;
     });
   },
 });

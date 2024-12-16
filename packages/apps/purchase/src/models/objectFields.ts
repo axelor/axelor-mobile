@@ -24,8 +24,18 @@ export const purchase_modelAPI: ObjectFields = {
     supplierPartner: schemaContructor.subObject('fullName'),
     company: schemaContructor.subObject('name'),
     statusSelect: schemaContructor.number(),
+    description: schemaContructor.string(),
+    stockLocation: schemaContructor.subObject(),
+    requesterUser: schemaContructor.subObject(),
+    validatorUser: schemaContructor.subObject(),
   }),
   purchase_supplier: schemaContructor.object({
     simpleFullName: schemaContructor.string(),
+  }),
+  purchase_purchaseRequestLine: schemaContructor.object({
+    product: schemaContructor.subObject(),
+    unit: schemaContructor.subObject(),
+    quantity: schemaContructor.string(),
+    newProduct: schemaContructor.boolean(),
   }),
 };

@@ -16,9 +16,4 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-export {
-  getPurchaseRequest,
-  searchPurchaseRequest,
-} from './purchaseRequestSlice';
-export {searchSupplier} from './supplierSlice';
-export {searchPurchaseRequestLine} from './purchaseRequestLineSlice';
+export {default as RequestDropdownCards} from './RequestDropdownCards/RequestDropdownCards';
