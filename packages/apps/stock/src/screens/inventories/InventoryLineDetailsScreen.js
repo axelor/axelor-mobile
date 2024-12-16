@@ -43,8 +43,13 @@ const InventoryLineDetailsScreen = ({route, navigation}) => {
   const dispatch = useDispatch();
 
   const {productFromId} = useSelector(state => state.product);
-  const {inventoryLine, loadingInventoryLine} = useSelector(
+  const {inventoryLine: _inventoryLine, loadingInventoryLine} = useSelector(
     state => state.inventoryLine,
+  );
+
+  const inventoryLine = useMemo(
+    () => (inventoryLineId != null ? _inventoryLine : null),
+    [_inventoryLine, inventoryLineId],
   );
 
   const [loading, setLoading] = useState(true);
