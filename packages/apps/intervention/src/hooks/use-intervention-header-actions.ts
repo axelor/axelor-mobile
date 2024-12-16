@@ -47,7 +47,6 @@ const useEquipmentFormActions = () => {
       model: 'com.axelor.apps.intervention.db.Equipment',
       modelId: equipment?.id,
       disableMailMessages: !mobileSettings?.isTrackerMessageEnabled,
-      attachedFileScreenTitle: equipment?.name,
       actions: [
         {
           key: 'openEquipmentLine',
@@ -97,7 +96,6 @@ const useInterventionDetailsActions = () => {
       model: 'com.axelor.apps.intervention.db.Intervention',
       modelId: intervention?.id,
       disableMailMessages: !mobileSettings?.isTrackerMessageEnabled,
-      attachedFileScreenTitle: intervention?.sequence,
       actions: [
         {
           key: 'refreshIntervention',
@@ -138,7 +136,6 @@ const useActiveInterventionActions = () => {
       model: 'com.axelor.apps.intervention.db.Intervention',
       modelId: activeIntervention?.id,
       disableMailMessages: !mobileSettings?.isTrackerMessageEnabled,
-      attachedFileScreenTitle: intervention?.sequence,
       actions: [
         {
           key: 'refreshIntervention',

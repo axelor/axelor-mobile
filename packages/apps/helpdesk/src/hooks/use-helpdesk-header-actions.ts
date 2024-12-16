@@ -28,7 +28,6 @@ const useHeldpeskTicketDetailsActions = () => {
       model: 'com.axelor.apps.helpdesk.db.Ticket',
       modelId: ticket?.id,
       disableMailMessages: !mobileSettings?.isTrackerMessageEnabled,
-      attachedFileScreenTitle: ticket?.fullName,
     });
   }, [mobileSettings, ticket]);
 };

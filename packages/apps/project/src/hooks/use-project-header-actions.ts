@@ -45,7 +45,6 @@ const useProjectDetailsActions = () => {
       modelId: project?.id,
       headerTitle: project?.code,
       disableMailMessages: !mobileSettings?.isTrackerMessageEnabled,
-      attachedFileScreenTitle: project?.code,
       actions: [
         {
           key: 'refreshProject',
