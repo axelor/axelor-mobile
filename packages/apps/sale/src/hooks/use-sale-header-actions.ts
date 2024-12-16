@@ -57,7 +57,6 @@ const useSaleOrderDetailsActions = () => {
       modelId: saleOrder?.id,
       headerTitle: title,
       disableMailMessages: !mobileSettings?.isTrackerMessageEnabled,
-      attachedFileScreenTitle: title,
     });
   }, [mobileSettings, saleOrder?.id, title]);
 };
@@ -84,7 +83,6 @@ const useSaleOrderLineDetailsActions = () => {
       modelId: saleOrderLine?.id,
       headerTitle: title,
       disableMailMessages: !mobileSettings?.isTrackerMessageEnabled,
-      attachedFileScreenTitle: title,
     });
   }, [mobileSettings, saleOrderLine?.id, title]);
 };
@@ -111,7 +109,6 @@ const useClientDetailsActions = () => {
       model: 'com.axelor.apps.base.db.Partner',
       modelId: customer?.id,
       disableMailMessages: !mobileSettings?.isTrackerMessageEnabled,
-      attachedFileScreenTitle: customer?.name,
     });
   }, [customer, mobileSettings]);
 };
