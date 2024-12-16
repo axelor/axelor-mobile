@@ -18,6 +18,8 @@
 
 import {
   createStandardSearch,
+  formatRequestBody,
+  getActionApi,
   getSearchCriterias,
 } from '@axelor/aos-mobile-core';
 
@@ -143,5 +145,41 @@ export async function searchDirectory({searchValue, authorId, page = 0}) {
     sortKey: 'dms_document',
     page,
     provider: 'model',
+  });
+}
+
+export async function createDocument({document}) {
+  const {matchers} = formatRequestBody(document, 'data');
+
+  return getActionApi().send({
+    url: '/ws/rest/com.axelor.dms.db.DMSFile',
+    method: 'put',
+    body: {
+      data: document,
+    },
+    description: 'create document',
+    matchers: {
+      modelName: 'com.axelor.dms.db.DMSFile',
+      id: Date.now(),
+      fields: matchers,
+    },
+  });
+}
+
+export async function updateDocument({document}) {
+  const {matchers} = formatRequestBody(document, 'data');
+
+  return getActionApi().send({
+    url: '/ws/rest/com.axelor.dms.db.DMSFile',
+    method: 'post',
+    body: {
+      data: document,
+    },
+    description: 'update document',
+    matchers: {
+      modelName: 'com.axelor.dms.db.DMSFile',
+      id: document.id,
+      fields: matchers,
+    },
   });
 }
