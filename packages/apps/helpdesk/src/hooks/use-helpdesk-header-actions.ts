@@ -27,7 +27,7 @@ const useHeldpeskTicketDetailsActions = () => {
     headerActionsProvider.registerModel('helpdesk_ticket_details', {
       model: 'com.axelor.apps.helpdesk.db.Ticket',
       modelId: ticket?.id,
-      options: {attached_files_generic_action: {title: ticket?.fullName}},
+      options: {dms_attachedFiles: {title: ticket?.fullName}},
       disableMailMessages: !mobileSettings?.isTrackerMessageEnabled,
     });
   }, [mobileSettings, ticket]);

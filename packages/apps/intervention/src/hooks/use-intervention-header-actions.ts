@@ -46,7 +46,7 @@ const useEquipmentFormActions = () => {
     headerActionsProvider.registerModel('intervention_equipment_form', {
       model: 'com.axelor.apps.intervention.db.Equipment',
       modelId: equipment?.id,
-      options: {attached_files_generic_action: {title: equipment?.name}},
+      options: {dms_attachedFiles: {title: equipment?.name}},
       disableMailMessages: !mobileSettings?.isTrackerMessageEnabled,
       actions: [
         {
@@ -96,7 +96,7 @@ const useInterventionDetailsActions = () => {
     headerActionsProvider.registerModel('intervention_intervention_details', {
       model: 'com.axelor.apps.intervention.db.Intervention',
       modelId: intervention?.id,
-      options: {attached_files_generic_action: {title: intervention?.sequence}},
+      options: {dms_attachedFiles: {title: intervention?.sequence}},
       disableMailMessages: !mobileSettings?.isTrackerMessageEnabled,
       actions: [
         {
@@ -137,7 +137,7 @@ const useActiveInterventionActions = () => {
     headerActionsProvider.registerModel('intervention_active_intervention', {
       model: 'com.axelor.apps.intervention.db.Intervention',
       modelId: activeIntervention?.id,
-      options: {attached_files_generic_action: {title: intervention?.sequence}},
+      options: {dms_attachedFiles: {title: intervention?.sequence}},
       disableMailMessages: !mobileSettings?.isTrackerMessageEnabled,
       actions: [
         {
