@@ -31,6 +31,7 @@ export default meta;
 export const Breadcrumb: Story<typeof Component> = {
   args: {
     numberItems: 5,
+    disabled: false,
   },
   argTypes: {
     items: disabledControl,
