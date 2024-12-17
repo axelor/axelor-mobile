@@ -24,6 +24,7 @@ export default {
   EventPlanningScreen: {
     title: 'Crm_Events',
     component: EventPlanningScreen,
+    actionID: 'crm_event_planning',
     options: {
       shadedHeader: false,
     },

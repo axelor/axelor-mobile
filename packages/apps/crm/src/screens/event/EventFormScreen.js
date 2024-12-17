@@ -32,6 +32,7 @@ const EventFormScreen = ({navigation, route}) => {
   const client = route?.params?.client;
   const contact = route?.params?.contact;
   const tourlineData = route?.params?.tourlineData;
+  const eventPlanningDate = route?.params?.eventPlanningDate;
 
   const {Event} = useTypes();
 
@@ -112,11 +113,12 @@ const EventFormScreen = ({navigation, route}) => {
         createEvent({
           event: _event,
           tourlineData: tourlineData,
+          eventPlanningDate,
         }),
       );
       navigation.pop();
     },
-    [navigation, tourlineData],
+    [eventPlanningDate, navigation, tourlineData],
   );
 
   const updateEventAPI = useCallback(

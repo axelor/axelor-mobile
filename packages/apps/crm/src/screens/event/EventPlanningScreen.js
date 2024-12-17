@@ -21,8 +21,10 @@ import {StyleSheet, View} from 'react-native';
 import {Screen, HeaderContainer, MultiValuePicker} from '@axelor/aos-mobile-ui';
 import {
   filterChip,
+  headerActionsProvider,
   PlanningView,
   useDispatch,
+  usePermitted,
   useSelector,
   useTranslator,
   useTypes,
@@ -36,6 +38,7 @@ function EventPlanningScreen({navigation}) {
   const I18n = useTranslator();
   const {Event} = useTypes();
   const {getItemColor, getSelectionItems} = useTypeHelpers();
+  const {canCreate} = usePermitted({modelName: 'com.axelor.apps.crm.db.Event'});
 
   const {eventList, loading} = useSelector(state => state.event);
 
@@ -142,6 +145,25 @@ function EventPlanningScreen({navigation}) {
   useEffect(() => {
     setFilteredList(filterOnStatus(eventList));
   }, [filterOnStatus, eventList]);
+
+  useEffect(() => {
+    headerActionsProvider.registerModel('crm_event_planning', {
+      actions: [
+        {
+          key: 'event-openEventForm',
+          order: 10,
+          iconName: 'calendar-plus-fill',
+          title: I18n.t('Crm_CreateEvent'),
+          hideIf: !canCreate,
+          onPress: () =>
+            navigation.navigate('EventFormScreen', {
+              eventPlanningDate: dateSave.toDateString(),
+            }),
+          showInHeader: true,
+        },
+      ],
+    });
+  }, [I18n, canCreate, dateSave, navigation]);
 
   return (
     <Screen removeSpaceOnTop={true}>
