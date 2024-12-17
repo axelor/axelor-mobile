@@ -1,0 +1,5 @@
+{
+  "title": "Agenda: fix refresh issue",
+  "type": "fix",
+  "packages": "core"
+}
