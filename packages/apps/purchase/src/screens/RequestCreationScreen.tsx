@@ -155,7 +155,12 @@ const RequestCreationScreen = () => {
             isScrollViewContainer
           />
         )}
-        <HorizontalRuleText text={I18n.t('Purchase_Or')} style={styles.rule} />
+        {currentStep < RequestCreation.step.validateLine && (
+          <HorizontalRuleText
+            text={I18n.t('Purchase_Or')}
+            style={styles.rule}
+          />
+        )}
         {(currentStep === RequestCreation.step.addLine ||
           (RequestCreation.step.validateLine && isCustomProduct)) && (
           <FormInput
@@ -195,9 +200,11 @@ const RequestCreationScreen = () => {
 const styles = StyleSheet.create({
   container: {
     alignItems: 'center',
+    paddingTop: 10,
   },
   rule: {
     marginVertical: 15,
+    width: '80%',
   },
 });
 
