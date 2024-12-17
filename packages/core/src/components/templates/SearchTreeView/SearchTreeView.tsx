@@ -70,6 +70,7 @@ interface SearchTreeViewProps {
   verticalActions?: boolean;
   displayBreadcrumb?: boolean;
   defaultParent?: any;
+  isParentSearchBarVisible?: boolean;
 }
 
 const SearchTreeView = ({
@@ -109,6 +110,7 @@ const SearchTreeView = ({
   verticalActions,
   displayBreadcrumb = false,
   defaultParent,
+  isParentSearchBarVisible = true,
 }: SearchTreeViewProps) => {
   const I18n = useTranslator();
   const dispatch = useDispatch();
@@ -252,7 +254,9 @@ const SearchTreeView = ({
         topChildren={
           <>
             {headerTopChildren}
-            {isHideableParentSearch && renderParentSearchBar()}
+            {isHideableParentSearch &&
+              isParentSearchBarVisible &&
+              renderParentSearchBar()}
           </>
         }
         fixedItems={
@@ -271,6 +275,7 @@ const SearchTreeView = ({
       {displayBreadcrumb && (
         <Breadcrumb
           style={styles.breadcrumb}
+          disabled={!isParentSearchBarVisible}
           items={parent.map((item, index) =>
             item === EMPTY_PARENT
               ? EMPTY_PARENT
@@ -295,6 +300,7 @@ const SearchTreeView = ({
         fetchBranchData={fetchBranchData}
         branchCondition={branchCondition}
         onBranchFilterPress={handleChangeParent}
+        isBranchFilterVisible={isParentSearchBarVisible}
         moreLoading={moreLoading}
         isListEnd={isListEnd}
         translator={I18n.t}

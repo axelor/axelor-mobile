@@ -64,6 +64,7 @@ interface BranchActionCardProps {
   isOpen: boolean;
   parent: any;
   onFilterPress: (branch: any) => void;
+  isBranchFilterVisible?: boolean;
   infoButtonIndication: string;
   actionList?: ActionCardType[];
   translator: (translationKey: string) => string;
@@ -75,6 +76,7 @@ const BranchActionCard = ({
   isOpen,
   parent,
   onFilterPress,
+  isBranchFilterVisible,
   infoButtonIndication,
   actionList = [],
   translator,
@@ -87,6 +89,7 @@ const BranchActionCard = ({
         helper: infoButtonIndication,
         large: true,
         onPress: () => onFilterPress(parent),
+        hidden: !isBranchFilterVisible,
       }}
       translator={translator}>
       <BranchCard onPress={onPress} children={children} isOpen={isOpen} />

@@ -38,9 +38,13 @@ import {File} from '../../../types';
 
 interface DocumentListProps {
   defaultParent?: any;
+  isAttachedFilesList?: boolean;
 }
 
-const DocumentList = ({defaultParent}: DocumentListProps) => {
+const DocumentList = ({
+  defaultParent,
+  isAttachedFilesList = false,
+}: DocumentListProps) => {
   const I18n = useTranslator();
   const Colors = useThemeColor();
   const navigation = useNavigation();
@@ -152,6 +156,7 @@ const DocumentList = ({defaultParent}: DocumentListProps) => {
         }
         displayBreadcrumb
         defaultParent={defaultParent}
+        isParentSearchBarVisible={!isAttachedFilesList}
       />
     </Screen>
   );

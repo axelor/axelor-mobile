@@ -1,0 +1,5 @@
+{
+  "title": "SearchTreeView: add possibility to hide parent search bar",
+  "type": "feat",
+  "packages": "core"
+}
