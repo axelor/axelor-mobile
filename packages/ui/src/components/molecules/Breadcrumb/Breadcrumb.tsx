@@ -32,11 +32,17 @@ interface Item {
 
 interface BreadcrumbProps {
   style?: any;
+  disabled?: boolean;
   items: Item[];
   onHomePress: () => void;
 }
 
-const Breadcrumb = ({style, items, onHomePress}: BreadcrumbProps) => {
+const Breadcrumb = ({
+  style,
+  disabled = false,
+  items,
+  onHomePress,
+}: BreadcrumbProps) => {
   const Colors = useThemeColor();
 
   const [visibleItems, setVisibleItems] = useState(items);
@@ -86,7 +92,11 @@ const Breadcrumb = ({style, items, onHomePress}: BreadcrumbProps) => {
     <View
       style={[styles.container, style]}
       onLayout={e => setContainerWidth(e?.nativeEvent?.layout?.width)}>
-      <Icon name="house-door-fill" touchable onPress={onHomePress} />
+      <Icon
+        name="house-door-fill"
+        touchable={!disabled}
+        onPress={onHomePress}
+      />
       {visibleItems.map((item, index) => (
         <View
           style={styles.contentContainer}
@@ -96,7 +106,7 @@ const Breadcrumb = ({style, items, onHomePress}: BreadcrumbProps) => {
           <TouchableOpacity
             style={styles.textContainer}
             activeOpacity={0.7}
-            disabled={!item.onPress}
+            disabled={disabled || !item.onPress}
             onPress={item.onPress}>
             <Text>{item.title}</Text>
           </TouchableOpacity>

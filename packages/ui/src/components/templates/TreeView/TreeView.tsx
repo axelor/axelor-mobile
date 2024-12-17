@@ -52,6 +52,7 @@ interface TreeViewProps {
    */
   branchCondition: (item: any) => boolean;
   onBranchFilterPress: (branch: any) => void;
+  isBranchFilterVisible?: boolean;
   moreLoading: boolean;
   isListEnd: boolean;
   filter?: boolean;
@@ -75,6 +76,7 @@ const TreeView = ({
   fetchBranchData,
   branchCondition,
   onBranchFilterPress,
+  isBranchFilterVisible = true,
   moreLoading = false,
   isListEnd = false,
   filter = false,
@@ -104,6 +106,7 @@ const TreeView = ({
         fetchBranchData={fetchBranchData}
         branchCondition={branchCondition}
         onBranchFilterPress={onBranchFilterPress}
+        isBranchFilterVisible={isBranchFilterVisible}
         translator={translator}
       />
     ) : (

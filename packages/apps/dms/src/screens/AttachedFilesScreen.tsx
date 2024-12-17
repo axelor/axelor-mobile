@@ -65,7 +65,9 @@ const AttachedFilesScreen = ({navigation, route}) => {
 
   return (
     <>
-      {!isVisible && <DocumentList defaultParent={parent} />}
+      {!isVisible && (
+        <DocumentList defaultParent={parent} isAttachedFilesList />
+      )}
       <Alert
         visible={isVisible}
         title={I18n.t('Dms_NoAttachedFiles')}
