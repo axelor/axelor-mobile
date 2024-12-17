@@ -26,7 +26,6 @@ import {
 
 const createManufOrderCriteria = (
   searchValue,
-  companyId,
   manageWorkshop,
   workshopId,
   statusList,
@@ -67,14 +66,6 @@ const createManufOrderCriteria = (
     },
     getSearchCriterias('manufacturing_manufacturingOrder', searchValue),
   ];
-
-  if (companyId != null) {
-    criterias.push({
-      fieldName: 'company.id',
-      operator: '=',
-      value: companyId,
-    });
-  }
 
   if (workshopId != null && manageWorkshop) {
     criterias.push({
@@ -127,9 +118,9 @@ export async function searchManufacturingOrderFilter({
 }) {
   return createStandardSearch({
     model: 'com.axelor.apps.production.db.ManufOrder',
+    companyId,
     criteria: createManufOrderCriteria(
       searchValue,
-      companyId,
       manageWorkshop,
       workshopId,
       statusList,
