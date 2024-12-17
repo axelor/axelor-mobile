@@ -31,7 +31,7 @@ import {
   CompanyPicker,
   HorizontalRuleText,
   ProductSearchBar,
-  RequestCreationButton,
+  RequestCreationButtons,
   RequestCreationQuantityCard,
   UnitSearchBar,
 } from '../components';
@@ -119,7 +119,7 @@ const RequestCreationScreen = () => {
     <Screen
       removeSpaceOnTop
       fixedItems={
-        <RequestCreationButton
+        <RequestCreationButtons
           step={currentStep}
           setStep={setCurrentStep}
           lines={lines}
@@ -189,6 +189,7 @@ const RequestCreationScreen = () => {
               defaultValue={unit}
               onChange={setUnit}
               isScrollViewContainer={true}
+              required={true}
             />
           </>
         )}

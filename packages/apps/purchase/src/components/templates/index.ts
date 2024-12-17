@@ -18,7 +18,7 @@
 
 export {default as CompanyPicker} from './CompanyPicker/CompanyPicker';
 export {default as ProductSearchBar} from './ProductSearchBar/ProductSearchBar';
-export {default as RequestCreationButton} from './RequestCreationButton/RequestCreationButton';
+export {default as RequestCreationButtons} from './RequestCreationButtons/RequestCreationButtons';
 export {default as RequestCreationQuantityCard} from './RequestCreationQuantityCard/RequestCreationQuantityCard';
 export {default as SupplierSearchBar} from './SupplierSearchBar/SupplierSearchBar';
 export {default as UnitSearchBar} from './UnitSearchBar/UnitSearchBar';

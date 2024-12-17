@@ -16,13 +16,13 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import React from 'react';
+import React, {useMemo} from 'react';
 import {StyleSheet, View} from 'react-native';
 import {useTranslator} from '@axelor/aos-mobile-core';
 import {Button, useThemeColor} from '@axelor/aos-mobile-ui';
 import {RequestCreation} from '../../../types';
 
-interface RequestCreationButtonProps {
+interface RequestCreationButtonsProps {
   step: number;
   setStep: (step: number) => void;
   lines: any[];
@@ -32,7 +32,7 @@ interface RequestCreationButtonProps {
   addLine: () => void;
 }
 
-const RequestCreationButton = ({
+const RequestCreationButtons = ({
   step,
   setStep,
   lines,
@@ -40,12 +40,17 @@ const RequestCreationButton = ({
   unit,
   isEditionMode,
   addLine,
-}: RequestCreationButtonProps) => {
+}: RequestCreationButtonsProps) => {
   const Colors = useThemeColor();
   const I18n = useTranslator();
 
+  const isValidateLineStep = useMemo(
+    () => step === RequestCreation.step.validateLine,
+    [step],
+  );
+
   const handleFinishPress = () => {
-    if (step === RequestCreation.step.validateLine) {
+    if (isValidateLineStep) {
       addLine();
     }
     setStep(RequestCreation.step.finish);
@@ -55,24 +60,24 @@ const RequestCreationButton = ({
 
   if (
     (step === RequestCreation.step.addLine && lines.length >= 1) ||
-    step === RequestCreation.step.validateLine
+    isValidateLineStep
   ) {
     return (
       <View style={styles.container}>
-        {step === RequestCreation.step.validateLine && (
+        {isValidateLineStep && (
           <Button
             title={I18n.t(isEditionMode ? 'Base_Save' : 'Base_Add')}
             iconName={isEditionMode ? 'floppy-fill' : 'plus-lg'}
             color={Colors.progressColor}
             width="45%"
-            disabled={movedQty === 0}
+            disabled={movedQty === 0 || unit == null}
             onPress={addLine}
           />
         )}
         <Button
           title={I18n.t('Base_Finish')}
           iconName="check-lg"
-          width={step === RequestCreation.step.validateLine ? '45%' : '90%'}
+          width={isValidateLineStep ? '45%' : '90%'}
           onPress={handleFinishPress}
         />
       </View>
@@ -91,14 +96,12 @@ const RequestCreationButton = ({
             setStep(RequestCreation.step.addLine);
           }}
         />
-        {unit && (
-          <Button
-            title={I18n.t('Base_Realize')}
-            iconName="check"
-            width="45%"
-            onPress={handleRealizePress}
-          />
-        )}
+        <Button
+          title={I18n.t('Base_Realize')}
+          iconName="check"
+          width="45%"
+          onPress={handleRealizePress}
+        />
       </View>
     );
   }
@@ -113,4 +116,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default RequestCreationButton;
+export default RequestCreationButtons;
