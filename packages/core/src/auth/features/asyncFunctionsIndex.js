@@ -22,6 +22,5 @@ export {fetchLocalizations} from './localizationSlice';
 export {
   fetchActiveUser,
   updateActiveUser,
-  changeActiveCompany,
   changeDefaultStockLocation,
 } from './userSlice';
