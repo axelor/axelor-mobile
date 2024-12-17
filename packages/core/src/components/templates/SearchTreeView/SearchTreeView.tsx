@@ -70,7 +70,7 @@ interface SearchTreeViewProps {
   verticalActions?: boolean;
   displayBreadcrumb?: boolean;
   defaultParent?: any;
-  isParentSearchBarVisible?: boolean;
+  manageParentFilter?: boolean;
 }
 
 const SearchTreeView = ({
@@ -110,7 +110,7 @@ const SearchTreeView = ({
   verticalActions,
   displayBreadcrumb = false,
   defaultParent,
-  isParentSearchBarVisible = true,
+  manageParentFilter = true,
 }: SearchTreeViewProps) => {
   const I18n = useTranslator();
   const dispatch = useDispatch();
@@ -202,6 +202,10 @@ const SearchTreeView = ({
   }, [defaultParent, fetchListAPI, isFocused]);
 
   const renderParentSearchBar = useCallback(() => {
+    if (!manageParentFilter) {
+      return null;
+    }
+
     return (
       <AutoCompleteSearch
         objectList={parentList}
@@ -216,6 +220,7 @@ const SearchTreeView = ({
   }, [
     displayParentSearchValue,
     fetchParentSearchAPI,
+    manageParentFilter,
     parent,
     parentList,
     searchParentPlaceholder,
@@ -254,9 +259,7 @@ const SearchTreeView = ({
         topChildren={
           <>
             {headerTopChildren}
-            {isHideableParentSearch &&
-              isParentSearchBarVisible &&
-              renderParentSearchBar()}
+            {isHideableParentSearch && renderParentSearchBar()}
           </>
         }
         fixedItems={
@@ -275,7 +278,7 @@ const SearchTreeView = ({
       {displayBreadcrumb && (
         <Breadcrumb
           style={styles.breadcrumb}
-          disabled={!isParentSearchBarVisible}
+          disabled={!manageParentFilter}
           items={parent.map((item, index) =>
             item === EMPTY_PARENT
               ? EMPTY_PARENT
@@ -300,7 +303,7 @@ const SearchTreeView = ({
         fetchBranchData={fetchBranchData}
         branchCondition={branchCondition}
         onBranchFilterPress={handleChangeParent}
-        isBranchFilterVisible={isParentSearchBarVisible}
+        isBranchFilterVisible={manageParentFilter}
         moreLoading={moreLoading}
         isListEnd={isListEnd}
         translator={I18n.t}

@@ -156,7 +156,7 @@ const DocumentList = ({
         }
         displayBreadcrumb
         defaultParent={defaultParent}
-        isParentSearchBarVisible={!isAttachedFilesList}
+        manageParentFilter={!isAttachedFilesList}
       />
     </Screen>
   );

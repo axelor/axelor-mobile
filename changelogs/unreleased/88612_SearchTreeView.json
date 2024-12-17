@@ -1,5 +1,5 @@
 {
-  "title": "SearchTreeView: add possibility to hide parent search bar",
+  "title": "SearchTreeView: add possibility to remove management of parent filter",
   "type": "feat",
   "packages": "core"
 }
