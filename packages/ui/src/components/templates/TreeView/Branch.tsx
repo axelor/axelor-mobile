@@ -132,6 +132,7 @@ interface BranchProps {
   fetchBranchData: (idParent: number) => Promise<any>;
   branchCondition: (item: any) => boolean;
   onBranchFilterPress: (branch: any) => void;
+  isBranchFilterVisible?: boolean;
   translator: (translationKey: string) => string;
 }
 
@@ -148,6 +149,7 @@ const Branch = ({
   fetchBranchData,
   branchCondition,
   onBranchFilterPress,
+  isBranchFilterVisible,
   translator,
 }: BranchProps) => {
   const handleBranchPress = useCallback(() => {
@@ -194,6 +196,7 @@ const Branch = ({
         isOpen={isBranchOpen}
         parent={branch.item}
         onFilterPress={onBranchFilterPress}
+        isBranchFilterVisible={isBranchFilterVisible}
         infoButtonIndication={branchCardInfoButtonIndication}
         actionList={getBranchActions?.(branch)}
         translator={translator}

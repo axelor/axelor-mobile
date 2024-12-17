@@ -1,0 +1,5 @@
+{
+  "title": "TreeView: add possibility to hide branch filter quick action",
+  "type": "feat",
+  "packages": "ui"
+}
