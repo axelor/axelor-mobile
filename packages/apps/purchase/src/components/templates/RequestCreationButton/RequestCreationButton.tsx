@@ -18,7 +18,7 @@
 
 import React from 'react';
 import {StyleSheet, View} from 'react-native';
-import {useNavigation, useTranslator} from '@axelor/aos-mobile-core';
+import {useTranslator} from '@axelor/aos-mobile-core';
 import {Button, useThemeColor} from '@axelor/aos-mobile-ui';
 import {RequestCreation} from '../../../types';
 
@@ -43,7 +43,6 @@ const RequestCreationButton = ({
 }: RequestCreationButtonProps) => {
   const Colors = useThemeColor();
   const I18n = useTranslator();
-  const navigation = useNavigation();
 
   const handleFinishPress = () => {
     if (step === RequestCreation.step.validateLine) {
@@ -52,9 +51,7 @@ const RequestCreationButton = ({
     setStep(RequestCreation.step.finish);
   };
 
-  const handleRealizePress = () => {
-    navigation.popToTop();
-  };
+  const handleRealizePress = () => {};
 
   if (
     (step === RequestCreation.step.addLine && lines.length >= 1) ||
@@ -65,7 +62,7 @@ const RequestCreationButton = ({
         {step === RequestCreation.step.validateLine && (
           <Button
             title={I18n.t(isEditionMode ? 'Base_Save' : 'Base_Add')}
-            iconName={isEditionMode ? null : 'plus-lg'}
+            iconName={isEditionMode ? 'floppy-fill' : 'plus-lg'}
             color={Colors.progressColor}
             width="45%"
             disabled={movedQty === 0}

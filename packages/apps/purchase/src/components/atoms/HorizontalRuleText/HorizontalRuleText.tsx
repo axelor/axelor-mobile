@@ -17,11 +17,11 @@
  */
 
 import React from 'react';
-import {View, StyleSheet, Text} from 'react-native';
-import {HorizontalRule, useThemeColor} from '@axelor/aos-mobile-ui';
+import {View, StyleSheet} from 'react-native';
+import {HorizontalRule, useThemeColor, Text} from '@axelor/aos-mobile-ui';
 
 interface HorizontalRuleTextProps {
-  text?: string;
+  text: string;
   style?: any;
   textStyle?: any;
 }
@@ -37,11 +37,9 @@ const HorizontalRuleText = ({
     <View style={[styles.container, style]}>
       <HorizontalRule style={styles.line} />
       <Text
-        style={[
-          styles.text,
-          {color: Colors.secondaryColor.foreground},
-          textStyle,
-        ]}>
+        fontSize={14}
+        textColor={Colors.secondaryColor.foreground}
+        style={textStyle}>
         {text}
       </Text>
       <HorizontalRule style={styles.line} />
@@ -59,10 +57,6 @@ const styles = StyleSheet.create({
   line: {
     flex: 1,
     marginHorizontal: 10,
-  },
-  text: {
-    fontSize: 14,
-    textAlign: 'center',
   },
 });
 
