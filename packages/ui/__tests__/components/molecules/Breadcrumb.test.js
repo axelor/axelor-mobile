@@ -89,6 +89,16 @@ describe('Breadcrumb Component', () => {
     expect(nonClickableItem.prop('onPress')).toBeUndefined();
   });
 
+  it('renders correctly when disabled', () => {
+    const wrapper = shallow(<Breadcrumb {...props} disabled />);
+    const items = wrapper.find(TouchableOpacity);
+
+    items.forEach(_item => {
+      expect(_item.exists()).toBeTruthy();
+      expect(_item.prop('disabled')).toBeTruthy();
+    });
+  });
+
   it('should apply custom styles to the container when style prop is provided', () => {
     const customStyle = {
       fontSize: 25,
