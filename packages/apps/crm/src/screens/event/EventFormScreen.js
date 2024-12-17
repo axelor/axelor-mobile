@@ -32,6 +32,7 @@ const EventFormScreen = ({navigation, route}) => {
   const client = route?.params?.client;
   const contact = route?.params?.contact;
   const tourlineData = route?.params?.tourlineData;
+  const eventPlanningDate = route?.params?.eventPlanningDate;
 
   const {Event} = useTypes();
 
@@ -124,11 +125,12 @@ const EventFormScreen = ({navigation, route}) => {
             endDateTime: _event.perdiodDateTime.endDateTime.toISOString(),
           },
           tourlineData: tourlineData,
+          eventPlanningDate,
         }),
       );
       navigation.pop();
     },
-    [navigation, tourlineData],
+    [eventPlanningDate, navigation, tourlineData],
   );
 
   const updateEventAPI = useCallback(
