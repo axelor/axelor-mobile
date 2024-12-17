@@ -80,9 +80,7 @@ const userSlice = createSlice({
       state.loadingUser = false;
       state.user = action.payload ?? {};
       state.isUser = action.payload != null;
-      if (state.user?.activeCompany == null) {
-        state.canModifyCompany = true;
-      }
+      state.canModifyCompany = action.payload?.companySet?.length > 1;
     });
     builder.addCase(fetchActiveUser.rejected, (state, action) => {
       state.loadingUser = false;
@@ -90,9 +88,7 @@ const userSlice = createSlice({
     });
     builder.addCase(updateActiveUser.fulfilled, (state, action) => {
       state.user = action.payload;
-      if (state.user.activeCompany == null) {
-        state.canModifyCompany = true;
-      }
+      state.canModifyCompany = action.payload?.companySet?.length > 1;
     });
   },
 });

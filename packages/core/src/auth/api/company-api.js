@@ -18,10 +18,27 @@
 
 import {createStandardSearch} from '../../apiProviders';
 
-export async function searchCompany() {
+const createCompanyCriteria = ({companySet}) => {
+  let criteria = [];
+
+  if (companySet != null) {
+    criteria.push({
+      operator: 'OR',
+      criteria: companySet.map(({id}) => ({
+        fieldName: 'id',
+        operator: '=',
+        value: id,
+      })),
+    });
+  }
+
+  return criteria;
+};
+
+export async function searchCompany({companySet}) {
   return createStandardSearch({
     model: 'com.axelor.apps.base.db.Company',
-    criteria: [],
+    criteria: createCompanyCriteria({companySet}),
     fieldKey: 'auth_company',
     numberElementsByPage: null,
     page: 0,

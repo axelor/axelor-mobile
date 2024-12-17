@@ -49,8 +49,8 @@ const UserCard = ({children, style}) => {
   const {companyList} = useSelector((state: any) => state.company);
 
   useEffect(() => {
-    dispatch((fetchCompanies as any)());
-  }, [dispatch]);
+    dispatch((fetchCompanies as any)({companySet: user.companySet}));
+  }, [dispatch, user.companySet]);
 
   const displayCompanyPicker = useMemo(
     () => baseConfig?.enableMultiCompany && canModifyCompany,
@@ -58,14 +58,12 @@ const UserCard = ({children, style}) => {
   );
 
   const updateActiveCompany = useCallback(
-    company => {
+    (company: any) => {
       dispatch(
         (updateActiveUser as any)({
           id: user.id,
-          version: user?.version,
-          activeCompany: {
-            id: company?.id,
-          },
+          version: user.version,
+          activeCompany: company == null ? null : {id: company.id},
         }),
       );
     },
@@ -120,6 +118,7 @@ const UserCard = ({children, style}) => {
           valueField="id"
           onValueChange={updateActiveCompany}
           isValueItem={true}
+          emptyValue={false}
           style={styles.picker}
         />
       )}
