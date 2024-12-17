@@ -42,27 +42,32 @@ export interface HeaderActions {
 export interface HeaderOptions {
   model?: string;
   modelId?: number;
+  options?: any;
+  disablePrint?: boolean;
   disableMailMessages?: boolean;
   disableJsonFields?: boolean;
-  attachedFileScreenTitle?: string;
   barcodeFieldname?: string;
   headerTitle?: string;
   actions?: ActionType[];
 }
 ```
 
-The core package provides several header actions by default, including follow-up messages on each object, file attachments, studio fields, report printing and barcode display. These can be configured via the following props:
+The core package provides several header actions by default, including follow-up messages on each object, studio fields, report printing and barcode display. These can be configured via the following props:
 
 - _model_: full name of the ERP model.
 - _modelId_: object identifier.
+- _options_: object containing options for the generic actions.
 - _disablePrint_: condition for displaying or not the report printout.
 - _disableMailMessages_: condition for displaying follow-up messages on the object.
 - _disableJsonFields_: whether or not to display studio fields.
-- _attachedFileScreenTitle_: screen name for attached files.
 - _barcodeFieldname_: name of attribute containing barcode file on ERP (default `barCode`).
 - _headerTitle_: screen name for dynamic titles.
 
 These actions are displayed when the `model` and `modelId` attributes are set and the actions are not disabled by the associated attributes.
+
+:::caution
+Since version 8.3, the attached files feature is managed as a generic action from the DMS package. It will be added to every screen with a registered model and modelId.
+:::
 
 Additional actions can then be added using the `actions` attribute. Each action then has the following structure:
 
