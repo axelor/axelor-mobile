@@ -110,7 +110,6 @@ const Header = ({mainScreen, title, actionID = null, shadedHeader = true}) => {
           actions={options.actions}
           genericActions={genericHeaders}
           options={options.options}
-          attachedFileScreenTitle={options.attachedFileScreenTitle}
           disableMailMessages={options.disableMailMessages}
           disablePrint={options.disablePrint}
           barcodeFieldname={options.barcodeFieldname}

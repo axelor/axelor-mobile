@@ -77,7 +77,7 @@ const MailMessageCommentCard = ({
   );
 
   const handleCommentAttachedFilesPress = useCallback(() => {
-    navigation.navigate('AttachedFilesScreen', {
+    navigation.navigate('MailMessageAttachedFilesScreen', {
       files: files,
     });
   }, [navigation, files]);

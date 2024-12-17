@@ -30,7 +30,6 @@ export interface HeaderOptions {
   disablePrint?: boolean;
   disableMailMessages?: boolean;
   disableJsonFields?: boolean;
-  attachedFileScreenTitle?: string;
   barcodeFieldname?: string;
   headerTitle?: string;
   actions?: ActionType[];
