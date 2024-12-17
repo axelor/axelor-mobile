@@ -76,10 +76,12 @@ export async function searchInventoryFilter({
   searchValue,
   stockLocationId,
   statusList,
+  companyId,
   page = 0,
 }) {
   return createStandardSearch({
     model: 'com.axelor.apps.stock.db.Inventory',
+    companyId,
     criteria: createSearchCriteria(searchValue, stockLocationId, statusList),
     fieldKey: 'stock_inventory',
     sortKey: 'stock_inventory',

@@ -42,6 +42,7 @@ const SupplierArrivalListScreen = ({navigation}) => {
 
   const {loadingList, moreLoading, isListEnd, supplierArrivalsList} =
     useSelector(state => state.supplierArrival);
+  const {user} = useSelector(state => state.user);
 
   const [stockLocation, setStockLocation] = useState(null);
   const [partner, setPartner] = useState(null);
@@ -73,8 +74,9 @@ const SupplierArrivalListScreen = ({navigation}) => {
       toStockLocationId: stockLocation?.id,
       partnerId: partner?.id,
       statusList: selectedStatus,
+      companyId: user.activeCompany?.id,
     }),
-    [partner?.id, selectedStatus, stockLocation?.id],
+    [partner?.id, selectedStatus, stockLocation?.id, user.activeCompany?.id],
   );
 
   return (

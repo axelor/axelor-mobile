@@ -22,7 +22,7 @@ import {
   getTypes,
 } from '@axelor/aos-mobile-core';
 
-const createSearchCriteria = ({productId, companyId, stockLocationId}) => {
+const createSearchCriteria = ({productId, stockLocationId}) => {
   const StockLocation = getTypes().StockLocation;
 
   let criterias = [
@@ -45,14 +45,6 @@ const createSearchCriteria = ({productId, companyId, stockLocationId}) => {
       operator: '=',
       value: StockLocation?.typeSelect.internal,
     });
-
-    if (companyId != null) {
-      criterias.push({
-        fieldName: 'stockLocation.company.id',
-        operator: '=',
-        value: companyId,
-      });
-    }
   }
 
   return criterias;
@@ -66,8 +58,9 @@ export async function searchStockLocationLine({
 }) {
   return createStandardSearch({
     model: 'com.axelor.apps.stock.db.StockLocationLine',
+    companyId,
+    companyFieldName: 'stockLocation.company',
     criteria: createSearchCriteria({
-      companyId: companyId,
       productId: productId,
       stockLocationId: stockId,
     }),

@@ -23,7 +23,6 @@ const createStockQtyCriteria = (
   isAllocatedQty,
   productId,
   stockLocationId,
-  companyId,
 ) => {
   const criteria = [
     {
@@ -61,14 +60,6 @@ const createStockQtyCriteria = (
           value: stockLocationId,
         },
       ],
-    });
-  }
-
-  if (companyId != null) {
-    criteria.push({
-      fieldName: 'stockMove.company.id',
-      operator: '=',
-      value: companyId,
     });
   }
 
@@ -174,12 +165,13 @@ export async function fetchStockQtyIndicator({
 }) {
   return createStandardSearch({
     model: 'com.axelor.apps.stock.db.StockMoveLine',
+    companyId,
+    companyFieldName: 'stockMove.company',
     criteria: createStockQtyCriteria(
       status,
       isAllocatedQty,
       productId,
       stockLocationId,
-      companyId,
     ),
     fieldKey: 'stock_stockQtyIndicator',
     page,

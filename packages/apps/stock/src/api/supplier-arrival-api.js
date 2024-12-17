@@ -96,10 +96,12 @@ export async function searchSupplierArrivalFilter({
   toStockLocationId,
   partnerId,
   statusList,
+  companyId,
   page = 0,
 }) {
   return createStandardSearch({
     model: 'com.axelor.apps.stock.db.StockMove',
+    companyId,
     criteria: createSearchCriteria(
       searchValue,
       toStockLocationId,

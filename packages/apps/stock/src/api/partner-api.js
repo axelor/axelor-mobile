@@ -58,9 +58,15 @@ const createSearchCriteria = (searchValue, isSupplier) => {
   return criteria;
 };
 
-export async function searchSuppliersFilter({searchValue, page = 0}) {
+export async function searchSuppliersFilter({
+  searchValue,
+  companyId,
+  page = 0,
+}) {
   return createStandardSearch({
     model: 'com.axelor.apps.base.db.Partner',
+    companyId,
+    isCompanyM2M: true,
     criteria: createSearchCriteria(searchValue, true),
     fieldKey: 'stock_partner',
     page,
@@ -68,9 +74,11 @@ export async function searchSuppliersFilter({searchValue, page = 0}) {
   });
 }
 
-export async function searchClientsFilter({searchValue, page = 0}) {
+export async function searchClientsFilter({searchValue, companyId, page = 0}) {
   return createStandardSearch({
     model: 'com.axelor.apps.base.db.Partner',
+    companyId,
+    isCompanyM2M: true,
     criteria: createSearchCriteria(searchValue, false),
     fieldKey: 'stock_partner',
     page,
