@@ -42,26 +42,30 @@ export interface HeaderActions {
 export interface HeaderOptions {
   model?: string;
   modelId?: number;
+  options?: any;
+  disablePrint?: boolean;
   disableMailMessages?: boolean;
   disableJsonFields?: boolean;
-  attachedFileScreenTitle?: string;
   barcodeFieldname?: string;
   headerTitle?: string;
   actions?: ActionType[];
 }
 ```
 
-Le package core fournit par défaut deux actions pour le header qui sont les messages de suivi sur chaque objet ainsi que les fichiers joints. Elles sont paramétrables via les props suivantes :
+Le package core fournit par défaut plusieurs actions pour le header: les messages de suivi sur chaque objet, l'affichage du code-barre, les champs studio or encore l'impression de rapport. Elles sont paramétrables via les props suivantes :
 
 - _model_ : nom complet du modèle sur l’ERP.
 - _modelId_ : identifiant de l’objet.
+- _options_: objet contenant des options pour les actions génériques.
+- _disablePrint_: ccondition pour l'affichage ou non de l'impression de rapport.
 - _disableMailMessages_ : condition pour l'affichage ou non des messages de suivi sur l'objet.
 - _disableJsonFields_ : condition pour l’affichage ou non des champs studio.
-- _attachedFileScreenTitle_ : nom de l'écran pour les fichiers joints.
 - _barcodeFieldname_ : nom de l’attribut contenant le fichier code-barre sur l’ERP (par défaut `barCode`).
 - _headerTitle_ : nom de l'écran pour permettre les titres dynamiques.
 
-Les fichiers joints s’affichent uniquement si l’objet actuel en possède avec un indicateur sur leur nombre. Les messages de suivi eux n’affichent lorsque `model` et `modelId` sont renseignés et qu’il ne sont pas désactivés par l’attribut `disableMailMessages`.
+:::caution
+Depuis la version 8.3, la fonctionnalité des fichiers joints est gérée comme une action générique du module DMS. Elle sera ajoutée à tous les écrans avec un model et un modelId enregistrés.
+:::
 
 Il est ensuite possible d’ajouter des actions supplémentaires avec l’attribut `actions`. Chaque action possède alors la structure suivante :
 
