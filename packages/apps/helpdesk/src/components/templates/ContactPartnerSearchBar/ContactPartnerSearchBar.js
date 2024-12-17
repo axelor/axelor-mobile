@@ -45,12 +45,19 @@ const ContactPartnerSearchBar = ({
     isListEndCustomerContact,
     customerContactList,
   } = useSelector(state => state.helpdesk_customer);
+  const {user} = useSelector(state => state.user);
 
   const searchContactAPI = useCallback(
     ({page = 0, searchValue}) => {
-      dispatch(searchCustomerContact({page, searchValue}));
+      dispatch(
+        searchCustomerContact({
+          page,
+          searchValue,
+          companyId: user.activeCompany?.id,
+        }),
+      );
     },
-    [dispatch],
+    [dispatch, user.activeCompany?.id],
   );
 
   const ObjectToDisplay = useMemo(() => {
