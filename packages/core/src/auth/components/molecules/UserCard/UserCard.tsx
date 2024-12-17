@@ -29,7 +29,7 @@ import {
   useThemeColor,
 } from '@axelor/aos-mobile-ui';
 import {fetchCompanies} from '../../../features/companySlice';
-import {changeActiveCompany} from '../../../features/userSlice';
+import {updateActiveUser} from '../../../features/userSlice';
 import {
   logout,
   useBinaryImageUri,
@@ -49,8 +49,8 @@ const UserCard = ({children, style}) => {
   const {companyList} = useSelector((state: any) => state.company);
 
   useEffect(() => {
-    dispatch((fetchCompanies as any)());
-  }, [dispatch]);
+    dispatch((fetchCompanies as any)({companySet: user.companySet}));
+  }, [dispatch, user.companySet]);
 
   const displayCompanyPicker = useMemo(
     () => baseConfig?.enableMultiCompany && canModifyCompany,
@@ -58,19 +58,16 @@ const UserCard = ({children, style}) => {
   );
 
   const updateActiveCompany = useCallback(
-    company => {
+    (company: any) => {
       dispatch(
-        changeActiveCompany({
-          newCompany: {
-            $version: company?.$version,
-            code: company?.code,
-            id: company?.id,
-            name: company?.name,
-          },
+        (updateActiveUser as any)({
+          id: user.id,
+          version: user.version,
+          activeCompany: company == null ? null : {id: company.id},
         }),
       );
     },
-    [dispatch],
+    [dispatch, user],
   );
 
   const styles = useMemo(() => {
@@ -121,6 +118,7 @@ const UserCard = ({children, style}) => {
           valueField="id"
           onValueChange={updateActiveCompany}
           isValueItem={true}
+          emptyValue={false}
           style={styles.picker}
         />
       )}
