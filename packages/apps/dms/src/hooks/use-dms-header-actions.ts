@@ -24,34 +24,10 @@ import {
   useSelector,
   useTranslator,
 } from '@axelor/aos-mobile-core';
-import {useThemeColor} from '@axelor/aos-mobile-ui';
 import {getAction} from '../utils';
 
 export const useDMSHeaders = () => {
-  useAllDocumentsActions();
   useAttachedFilesGenericAction();
-};
-
-const useAllDocumentsActions = () => {
-  const Colors = useThemeColor();
-  const navigation = useNavigation();
-  const I18n = useTranslator();
-
-  useEffect(() => {
-    headerActionsProvider.registerModel('dms_all_documents', {
-      actions: [
-        {
-          key: 'newDocument',
-          order: 10,
-          iconName: 'plus-lg',
-          title: I18n.t('Dms_NewDocument'),
-          iconColor: Colors.primaryColor.background,
-          onPress: () => navigation.navigate('DocumentFormScreen'),
-          showInHeader: true,
-        },
-      ],
-    });
-  }, [Colors, I18n, navigation]);
 };
 
 const useAttachedFilesGenericAction = () => {
