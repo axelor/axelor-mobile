@@ -46,13 +46,9 @@ const createCriteria = (listFiles): Criteria[] => {
   return [];
 };
 
-export async function fetchFileDetails({listFiles, isMetaFile}) {
-  const model = isMetaFile
-    ? 'com.axelor.meta.db.MetaFile'
-    : 'com.axelor.dms.db.DMSFile';
-
+export async function fetchFileDetails({listFiles}) {
   return createStandardSearch({
-    model: model,
+    model: 'com.axelor.meta.db.MetaFile',
     criteria: createCriteria(listFiles),
     fieldKey: 'core_metaFile',
     numberElementsByPage: null,

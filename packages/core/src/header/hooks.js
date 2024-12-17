@@ -19,7 +19,6 @@
 import {useNavigation} from '@react-navigation/native';
 import {useCallback, useEffect, useMemo, useRef, useState} from 'react';
 import {useDispatch, useSelector} from 'react-redux';
-import {countAttachmentFiles} from '../features/attachedFilesSlice';
 import {countUnreadMailMessages} from '../features/mailMessageSlice';
 import {useTranslator} from '../i18n';
 import {checkNullString} from '../utils';
@@ -36,7 +35,6 @@ export const useBasicActions = ({
   disableMailMessages,
   disablePrint,
   disableJsonFields = false,
-  attachedFileScreenTitle,
   barcodeFieldname = 'barCode',
 }) => {
   const navigation = useNavigation();
@@ -46,10 +44,8 @@ export const useBasicActions = ({
   const isFocused = useIsFocused();
   const dispatch = useDispatch();
 
-  const {attachments} = useSelector(state => state.attachedFiles);
   const {unreadMessages} = useSelector(state => state.mailMessages);
 
-  const [disableAttachementFiles, setDisableAttachementFiles] = useState(true);
   const [disableBarcode, setDisableBarcode] = useState(true);
   const [disableCustomView, setDisableCustomView] = useState(true);
   const [disablePrinting, setDisablePrinting] = useState(true);
@@ -72,23 +68,9 @@ export const useBasicActions = ({
     }
   }, [dispatch, model, modelConfigured, modelId]);
 
-  const countAttachmentsAPI = useCallback(() => {
-    if (modelConfigured) {
-      dispatch(countAttachmentFiles({model, modelId}));
-    }
-  }, [dispatch, model, modelConfigured, modelId]);
-
   useEffect(() => {
     countUnreadMessagesAPI();
   }, [countUnreadMessagesAPI]);
-
-  useEffect(() => {
-    countAttachmentsAPI();
-  }, [countAttachmentsAPI]);
-
-  useEffect(() => {
-    setDisableAttachementFiles(attachments === 0);
-  }, [attachments]);
 
   useEffect(() => {
     fetchModel({model, modelId})
@@ -148,32 +130,6 @@ export const useBasicActions = ({
       showInHeader: true,
     };
   }, [I18n, disableMailMessages, model, modelId, navigation, unreadMessages]);
-
-  const attachedFilesAction = useMemo(() => {
-    return {
-      key: 'attachedFiles',
-      order: 10,
-      title: I18n.t('Base_AttachedFiles'),
-      iconName: 'paperclip',
-      indicator: attachments,
-      hideIf: disableAttachementFiles,
-      onPress: () =>
-        navigation.navigate('AttachedFilesScreen', {
-          model,
-          modelId,
-          screenTitle: attachedFileScreenTitle,
-        }),
-      showInHeader: true,
-    };
-  }, [
-    I18n,
-    attachedFileScreenTitle,
-    attachments,
-    disableAttachementFiles,
-    model,
-    modelId,
-    navigation,
-  ]);
 
   const barcodeAction = useMemo(() => {
     return {
@@ -243,14 +199,12 @@ export const useBasicActions = ({
       ...(modelConfigured
         ? {
             mailMessagesAction,
-            attachedFilesAction,
             printAction,
             barcodeAction,
             jsonFieldsAction,
           }
         : {
             mailMessagesAction: {key: 'mailMessages', hideIf: true},
-            attachedFilesAction: {key: 'attachedFiles', hideIf: true},
             printAction: {key: 'printTemplate', hideIf: true},
             barcodeAction: {key: 'barcode', hideIf: true},
             jsonFieldsAction: {key: 'metaJsonFields', hideIf: true},
@@ -259,7 +213,6 @@ export const useBasicActions = ({
   }, [
     modelConfigured,
     mailMessagesAction,
-    attachedFilesAction,
     printAction,
     barcodeAction,
     jsonFieldsAction,
