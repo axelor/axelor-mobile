@@ -84,8 +84,6 @@ const initialState = {
   loadingPartner: true,
   partner: {},
 
-  partnerForm: {},
-
   loadingList: false,
   clientAndProspectList: [],
 
@@ -102,7 +100,7 @@ const partnerSlice = createSlice({
   initialState,
   reducers: {
     updatePartner: (state, action) => {
-      state.partnerForm = action.payload;
+      state.partner = action.payload;
     },
   },
   extraReducers: builder => {
