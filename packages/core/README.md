@@ -19,7 +19,7 @@ It contains:
 - Auth module with login and user screens
 - Translations management system
 - Various helper tools : clipboard, file viewer, external app management
-- Management of MailMessages and attaches files on objects
+- Management of MailMessages
 - AOS linked components or using external libraries : Camera, Scanner, PlanningView, Stopwatch, ...
 - Menu management
 - Storage management
@@ -306,13 +306,13 @@ const Colors = useThemeColor();
 )}
 ```
 
-### Add MailMessages and attached files
+### Add MailMessages
 
-- Management of MailMessages and attaches files on objects
+- Management of MailMessages on objects
 
-This package provides a component to add MailMessages and file attachments functionality to the header. This component also allows to display its children if there are any as a dropdown menu.
+This package provides a component to add MailMessages functionality to the header. This component also allows to display its children if there are any as a dropdown menu.
 
-For the first two functionalities of this component, it is necessary to provide in props the name of the object model ("com.axelor.apps.stock.db.StockCorrection" for the stock corrections for example), the id of the current object, and the navigation attribute to go on the dedicated screens:
+For the first functionality of this component, it is necessary to provide in props the name of the object model ("com.axelor.apps.stock.db.StockCorrection" for the stock corrections for example), the id of the current object, and the navigation attribute to go on the dedicated screens:
 
 ```typescript
 import {HeaderOptionsMenu} from '@axelor/aos-mobile-core';
@@ -326,8 +326,7 @@ React.useLayoutEffect(() => {
         <HeaderOptionsMenu
           model={...}
           modelId={...}
-          navigation={navigation}
-          disableMailMessages={...}>
+          navigation={navigation}>
           <DropdownMenuItem
             icon="..."
             placeholder={...}

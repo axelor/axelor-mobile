@@ -34,12 +34,10 @@ const HeaderOptionsMenu = ({
   disableMailMessages,
   disableJsonFields,
   disablePrint,
-  attachedFileScreenTitle,
   barcodeFieldname,
 }) => {
   const {
     mailMessagesAction,
-    attachedFilesAction,
     barcodeAction,
     printAction,
     jsonFieldsAction,
@@ -52,7 +50,6 @@ const HeaderOptionsMenu = ({
     disablePrint,
     barcodeFieldname,
     disableJsonFields,
-    attachedFileScreenTitle,
   });
 
   const collapseMenuItems = useMemo(
@@ -88,7 +85,6 @@ const HeaderOptionsMenu = ({
   const allActions = useMemo(
     () =>
       [
-        attachedFilesAction,
         mailMessagesAction,
         printAction,
         barcodeAction,
@@ -100,7 +96,6 @@ const HeaderOptionsMenu = ({
         .sort((a, b) => a.order - b.order),
     [
       actions,
-      attachedFilesAction,
       barcodeAction,
       jsonFieldsAction,
       mailMessagesAction,

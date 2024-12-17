@@ -46,25 +46,28 @@ export interface HeaderOptions {
   disablePrint?: boolean;
   disableMailMessages?: boolean;
   disableJsonFields?: boolean;
-  attachedFileScreenTitle?: string;
   barcodeFieldname?: string;
   headerTitle?: string;
   actions?: ActionType[];
 }
 ```
 
-Le package core fournit par défaut plusieurs actions pour le header, à savoir les messages de suivi sur chaque objet, les fichiers joints, les champs studio, l'impression du rapport ou encore l'affichage du code-barre. Elles sont paramétrables via les props suivantes :
+Le package core fournit par défaut plusieurs actions pour le header, à savoir les messages de suivi sur chaque objet, les champs studio, l'impression du rapport ou encore l'affichage du code-barre. Elles sont paramétrables via les props suivantes :
 
 - _model_ : nom complet du modèle sur l’ERP.
 - _modelId_ : identifiant de l’objet.
+- _options_ : objet contenant des options pour les actions génériques.
 - _disablePrint_ : condition pour l'affichage ou non de l'impression du rapport.
 - _disableMailMessages_ : condition pour l'affichage ou non des messages de suivi sur l'objet.
 - _disableJsonFields_ : condition pour l’affichage ou non des champs studio.
-- _attachedFileScreenTitle_ : nom de l'écran pour les fichiers joints.
 - _barcodeFieldname_ : nom de l’attribut contenant le fichier code-barre sur l’ERP (par défaut `barCode`).
 - _headerTitle_ : nom de l'écran pour permettre les titres dynamiques.
 
 Ces actions s’affichent lorsque les valeurs des attributs `model` et `modelId` sont renseignés et que les actions ne sont pas désactivées par les attributs associés.
+
+:::caution
+Depuis la version 8.3, la fonctionnalité des fichiers joints est gérée comme une action générique du module DMS. Elle sera ajoutée à tous les écrans avec un model et un modelId enregistrés.
+:::
 
 Il est ensuite possible d’ajouter des actions supplémentaires avec l’attribut `actions`. Chaque action possède alors la structure suivante :
 
