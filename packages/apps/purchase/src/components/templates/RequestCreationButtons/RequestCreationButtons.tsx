@@ -78,6 +78,7 @@ const RequestCreationButtons = ({
           title={I18n.t('Base_Finish')}
           iconName="check-lg"
           width={isValidateLineStep ? '45%' : '90%'}
+          disabled={isValidateLineStep && !unit}
           onPress={handleFinishPress}
         />
       </View>
@@ -91,14 +92,14 @@ const RequestCreationButtons = ({
           title={I18n.t('Base_Add')}
           iconName="arrow-left"
           color={Colors.progressColor}
-          width={unit ? '45%' : '90%'}
+          width={'45%'}
           onPress={() => {
             setStep(RequestCreation.step.addLine);
           }}
         />
         <Button
           title={I18n.t('Base_Realize')}
-          iconName="check"
+          iconName="check-lg"
           width="45%"
           onPress={handleRealizePress}
         />
