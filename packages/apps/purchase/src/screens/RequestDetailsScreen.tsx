@@ -16,7 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import React, {useCallback, useEffect, useMemo} from 'react';
+import React, {useCallback, useEffect} from 'react';
 import {StyleSheet} from 'react-native';
 import {
   HeaderContainer,
@@ -54,14 +54,6 @@ const RequestDetailsScreen = ({route}) => {
     getPurchaseRequestAPI();
   }, [getPurchaseRequestAPI]);
 
-  const isDescription = useMemo(() => {
-    return purchaseRequest.description != null;
-  }, [purchaseRequest.description]);
-
-  const styles = useMemo(() => {
-    return getStyles(isDescription);
-  }, [isDescription]);
-
   return (
     <Screen removeSpaceOnTop={true} fixedItems={<RequestButtons />}>
       <HeaderContainer
@@ -86,9 +78,8 @@ const RequestDetailsScreen = ({route}) => {
 
 export default RequestDetailsScreen;
 
-const getStyles = isDescription =>
-  StyleSheet.create({
-    margin: {
-      marginTop: isDescription ? 0 : 10,
-    },
-  });
+const styles = StyleSheet.create({
+  margin: {
+    marginVertical: 5,
+  },
+});
