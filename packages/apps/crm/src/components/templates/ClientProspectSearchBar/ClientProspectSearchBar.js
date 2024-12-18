@@ -44,12 +44,19 @@ const ClientProspectSearchBar = ({
 
   const {loadingList, moreLoading, isListEnd, clientAndProspectList} =
     useSelector(state => state.partner);
+  const {user} = useSelector(state => state.user);
 
   const searchClientAndProspectAPI = useCallback(
     ({page = 0, searchValue}) => {
-      dispatch(fetchClientAndProspect({page, searchValue}));
+      dispatch(
+        fetchClientAndProspect({
+          page,
+          searchValue,
+          companyId: user.activeCompany?.id,
+        }),
+      );
     },
-    [dispatch],
+    [dispatch, user.activeCompany?.id],
   );
 
   return (

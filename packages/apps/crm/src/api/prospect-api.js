@@ -72,9 +72,12 @@ export async function searchProspect({
   userId,
   assigned,
   statusList,
+  companyId,
 }) {
   return createStandardSearch({
     model: 'com.axelor.apps.base.db.Partner',
+    companyId,
+    isCompanyM2M: true,
     criteria: createProspectCriteria(searchValue, userId, assigned, statusList),
     fieldKey: 'crm_prospect',
     sortKey: 'crm_prospect',

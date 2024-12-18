@@ -63,9 +63,11 @@ export async function searchLeads({
   userId,
   assigned,
   statusList,
+  companyId,
 }) {
   return createStandardSearch({
     model: 'com.axelor.apps.crm.db.Lead',
+    companyId,
     criteria: createLeadCriteria(searchValue, userId, assigned, statusList),
     fieldKey: 'crm_lead',
     sortKey: 'crm_lead',
