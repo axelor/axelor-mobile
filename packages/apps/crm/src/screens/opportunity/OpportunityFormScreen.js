@@ -44,6 +44,7 @@ const OpportunityFormScreen = ({navigation, route}) => {
             team: user.activeTeam,
             currency: user.activeCompany.currency,
           },
+          companyId: user.activeCompany?.id,
         }),
       );
 

@@ -82,9 +82,17 @@ export async function searchContactWithIds(idList) {
   });
 }
 
-export async function searchContact({searchValue, page = 0, userId, assigned}) {
+export async function searchContact({
+  searchValue,
+  page = 0,
+  userId,
+  assigned,
+  companyId,
+}) {
   return createStandardSearch({
     model: 'com.axelor.apps.base.db.Partner',
+    companyId,
+    isCompanyM2M: true,
     criteria: createContactCriteria(searchValue, userId, assigned),
     fieldKey: 'crm_contact',
     sortKey: 'crm_contact',

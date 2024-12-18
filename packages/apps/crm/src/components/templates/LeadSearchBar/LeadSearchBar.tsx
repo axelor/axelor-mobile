@@ -45,13 +45,20 @@ const LeadSearchBarAux = ({
   const {leadList, loadingLead, moreLoading, isListEnd} = useSelector(
     (state: any) => state.lead,
   );
+  const {user} = useSelector(state => state.user);
 
   const fetchLeadSearchBarAPI = useCallback(
     ({page = 0, searchValue}) => {
       onFetchDataAction && onFetchDataAction(searchValue);
-      dispatch((fetchLeads as any)({page, searchValue}));
+      dispatch(
+        (fetchLeads as any)({
+          page,
+          searchValue,
+          companyId: user.activeCompany?.id,
+        }),
+      );
     },
-    [dispatch, onFetchDataAction],
+    [dispatch, onFetchDataAction, user.activeCompany?.id],
   );
 
   return (

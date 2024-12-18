@@ -113,9 +113,11 @@ export async function getPartner({partnerId}) {
   });
 }
 
-export async function searchPartner({searchValue, page = 0}) {
+export async function searchPartner({searchValue, companyId, page = 0}) {
   return createStandardSearch({
     model: 'com.axelor.apps.base.db.Partner',
+    companyId,
+    isCompanyM2M: true,
     criteria: createPartnerCriteria(searchValue),
     fieldKey: 'crm_partner',
     page,
@@ -123,9 +125,15 @@ export async function searchPartner({searchValue, page = 0}) {
   });
 }
 
-export async function searchClientAndProspect({searchValue, page = 0}) {
+export async function searchClientAndProspect({
+  searchValue,
+  companyId,
+  page = 0,
+}) {
   return createStandardSearch({
     model: 'com.axelor.apps.base.db.Partner',
+    companyId,
+    isCompanyM2M: true,
     criteria: createClientAndProspectCriteria(searchValue),
     fieldKey: 'crm_partner',
     page,

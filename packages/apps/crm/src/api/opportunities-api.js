@@ -60,9 +60,11 @@ export async function searchOpportunities({
   userId,
   assigned,
   statusList,
+  companyId,
 }) {
   return createStandardSearch({
     model: 'com.axelor.apps.crm.db.Opportunity',
+    companyId,
     criteria: createOpportunityCriteria(
       searchValue,
       userId,
