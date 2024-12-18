@@ -16,40 +16,43 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import React, {useEffect, useMemo} from 'react';
-import {HeaderContainer, NotesCard, Screen} from '@axelor/aos-mobile-ui';
-import {useDispatch, useSelector, useTranslator} from '@axelor/aos-mobile-core';
-import {getPurchaseRequest} from '../features/purchaseRequestSlice';
+import React, {useCallback, useEffect, useMemo} from 'react';
+import {StyleSheet} from 'react-native';
 import {
-  PurchaseSeeLinesButton,
+  HeaderContainer,
+  NotesCard,
+  Screen,
+  ScrollView,
+} from '@axelor/aos-mobile-ui';
+import {useDispatch, useSelector, useTranslator} from '@axelor/aos-mobile-core';
+import {
+  RequestSeeLinesButton,
   RequestDropdownCards,
   RequestHeader,
-  RequestValidationButton,
+  RequestButtons,
 } from '../components';
+import {getPurchaseRequest} from '../features/purchaseRequestSlice';
 import {searchPurchaseRequestLine} from '../features/purchaseRequestLineSlice';
-import {StyleSheet} from 'react-native';
 
 const RequestDetailsScreen = ({route}) => {
   const {idRequest} = route.params;
   const dispatch = useDispatch();
   const I18n = useTranslator();
 
-  const {purchaseRequest} = useSelector(
+  const {loadingPurchaseRequest, purchaseRequest} = useSelector(
     state => state.purchase_purchaseRequest,
   );
-  const {totalPurchaseRequestLine} = useSelector(
-    state => state.purchase_purchaseRequestLine,
-  );
 
-  useEffect(() => {
+  const getPurchaseRequestAPI = useCallback(() => {
     dispatch((getPurchaseRequest as any)({id: idRequest}));
-  }, [dispatch, idRequest]);
-
-  useEffect(() => {
     dispatch(
       (searchPurchaseRequestLine as any)({purchaseRequestId: idRequest}),
     );
   }, [dispatch, idRequest]);
+
+  useEffect(() => {
+    getPurchaseRequestAPI();
+  }, [getPurchaseRequestAPI]);
 
   const isDescription = useMemo(() => {
     return purchaseRequest.description != null;
@@ -60,19 +63,23 @@ const RequestDetailsScreen = ({route}) => {
   }, [isDescription]);
 
   return (
-    <Screen removeSpaceOnTop={true} fixedItems={<RequestValidationButton />}>
+    <Screen removeSpaceOnTop={true} fixedItems={<RequestButtons />}>
       <HeaderContainer
         fixedItems={<RequestHeader />}
         expandableFilter={false}
       />
-      <NotesCard
-        title={I18n.t('Base_Description')}
-        data={purchaseRequest.description}
-      />
-      <RequestDropdownCards style={styles.margin} />
-      {totalPurchaseRequestLine > 0 && (
-        <PurchaseSeeLinesButton numberLines={totalPurchaseRequestLine} />
-      )}
+      <ScrollView
+        refresh={{
+          loading: loadingPurchaseRequest,
+          fetcher: getPurchaseRequestAPI,
+        }}>
+        <NotesCard
+          title={I18n.t('Base_Description')}
+          data={purchaseRequest.description}
+        />
+        <RequestDropdownCards style={styles.margin} />
+        <RequestSeeLinesButton />
+      </ScrollView>
     </Screen>
   );
 };

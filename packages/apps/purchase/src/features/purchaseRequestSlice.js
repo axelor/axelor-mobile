@@ -55,6 +55,7 @@ export const getPurchaseRequest = createAsyncThunk(
 const initialState = {
   loadingPurchaseRequest: false,
   purchaseRequest: {},
+
   loadingPurchaseRequests: false,
   moreLoadingPurchaseRequest: false,
   isListEndPurchaseRequest: false,

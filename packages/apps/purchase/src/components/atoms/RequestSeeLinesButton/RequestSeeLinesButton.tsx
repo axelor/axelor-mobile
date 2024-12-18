@@ -18,7 +18,7 @@
 
 import React, {useMemo} from 'react';
 import {StyleSheet, TouchableOpacity, View} from 'react-native';
-import {useTranslator} from '@axelor/aos-mobile-core';
+import {useSelector, useTranslator} from '@axelor/aos-mobile-core';
 import {
   Card,
   Icon,
@@ -27,11 +27,7 @@ import {
   Text,
 } from '@axelor/aos-mobile-ui';
 
-interface PurchaseSeeLinesButtonProps {
-  numberLines: number;
-}
-
-const PurchaseSeeLinesButton = ({numberLines}: PurchaseSeeLinesButtonProps) => {
+const RequestSeeLinesButton = () => {
   const I18n = useTranslator();
   const Colors = useThemeColor();
 
@@ -40,15 +36,19 @@ const PurchaseSeeLinesButton = ({numberLines}: PurchaseSeeLinesButtonProps) => {
     [Colors.secondaryColor.background],
   );
 
+  const {totalPurchaseRequestLine} = useSelector(
+    state => state.purchase_purchaseRequestLine,
+  );
+
   return (
     <TouchableOpacity onPress={() => {}} activeOpacity={0.9}>
       <Card style={styles.container}>
         <Text style={styles.text}>{I18n.t('Purchase_SeeLines')}</Text>
         <View style={styles.rightContainer}>
-          {numberLines > 0 && (
+          {totalPurchaseRequestLine > 0 && (
             <NumberBubble
               style={styles.numberBubble}
-              number={numberLines}
+              number={totalPurchaseRequestLine}
               color={Colors.progressColor}
               isNeutralBackground={false}
             />
@@ -90,4 +90,4 @@ const getStyles = (borderColor: string) =>
     },
   });
 
-export default PurchaseSeeLinesButton;
+export default RequestSeeLinesButton;

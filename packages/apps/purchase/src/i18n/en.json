@@ -14,8 +14,12 @@
   "Purchase_Characteristics": "Characteristics",
   "Purchase_SeeLines": "See lines",
   "Purchase_Request": "Request",
+  "Purchase_Accepte": "Accepte",
+  "Purchase_Refuse": "Refuse",
+  "Purchase_Draft": "Draft",
+  "Purchase_NoInformationAvailable": "No information available",
   "Purchase_SliceAction_SearchPurchaseRequest": "search purchase request",
   "Purchase_SliceAction_SearchSupplier": "search supplier",
   "Purchase_SliceAction_GetPurchaseRequest": "get purchase request",
-  "Purchase_SliceAction_SearchPurchaseRequestLine": "search purchase request line"
+  "Purchase_SliceAction_SearchPurchaseRequestLine": "search purchase request lines"
 }

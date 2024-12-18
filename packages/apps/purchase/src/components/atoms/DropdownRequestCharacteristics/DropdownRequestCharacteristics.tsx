@@ -18,15 +18,30 @@
 
 import React from 'react';
 import {View} from 'react-native';
-import {checkNullString, LabelText} from '@axelor/aos-mobile-ui';
+import {checkNullString, Label, LabelText} from '@axelor/aos-mobile-ui';
 import {useSelector, useTranslator} from '@axelor/aos-mobile-core';
 
 const DropdownRequestCharacteristics = () => {
+  const I18n = useTranslator();
+
   const {purchaseRequest} = useSelector(
     state => state.purchase_purchaseRequest,
   );
 
-  const I18n = useTranslator();
+  if (
+    checkNullString(purchaseRequest.supplierPartner?.fullName) &&
+    checkNullString(purchaseRequest.stockLocation?.name) &&
+    checkNullString(purchaseRequest.requesterUser?.fullName) &&
+    checkNullString(purchaseRequest.validatorUser?.fullName)
+  ) {
+    return (
+      <Label
+        message={I18n.t('Purchase_NoInformationAvailable')}
+        type="info"
+        iconName="info-circle-fill"
+      />
+    );
+  }
 
   return (
     <View>
