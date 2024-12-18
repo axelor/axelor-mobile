@@ -18,7 +18,7 @@
 
 import React from 'react';
 import {View, StyleSheet} from 'react-native';
-import {HorizontalRule, useThemeColor, Text} from '@axelor/aos-mobile-ui';
+import {HorizontalRule, Text, useThemeColor} from '@axelor/aos-mobile-ui';
 
 interface HorizontalRuleTextProps {
   text: string;
