@@ -41,19 +41,22 @@ const RequestSeeLinesButton = () => {
   );
 
   return (
-    <TouchableOpacity onPress={() => {}} activeOpacity={0.9}>
+    <TouchableOpacity
+      onPress={() => {}}
+      disabled={totalPurchaseRequestLine === 0}
+      activeOpacity={0.9}>
       <Card style={styles.container}>
         <Text style={styles.text}>{I18n.t('Purchase_SeeLines')}</Text>
         <View style={styles.rightContainer}>
+          <NumberBubble
+            style={styles.numberBubble}
+            number={totalPurchaseRequestLine}
+            color={Colors.progressColor}
+            isNeutralBackground={false}
+          />
           {totalPurchaseRequestLine > 0 && (
-            <NumberBubble
-              style={styles.numberBubble}
-              number={totalPurchaseRequestLine}
-              color={Colors.progressColor}
-              isNeutralBackground={false}
-            />
+            <Icon name="chevron-right" color={Colors.primaryColor.background} />
           )}
-          <Icon name="chevron-right" color={Colors.primaryColor.background} />
         </View>
       </Card>
     </TouchableOpacity>

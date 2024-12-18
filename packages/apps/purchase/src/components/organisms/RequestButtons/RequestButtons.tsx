@@ -16,7 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import React from 'react';
+import React, {useCallback, useMemo} from 'react';
 import {View, StyleSheet, DimensionValue} from 'react-native';
 import {Button, useThemeColor} from '@axelor/aos-mobile-ui';
 import {useSelector, useTranslator, useTypes} from '@axelor/aos-mobile-core';
@@ -25,108 +25,105 @@ const RequestButtons = () => {
   const Colors = useThemeColor();
   const I18n = useTranslator();
   const {PurchaseRequest} = useTypes();
+
   const {purchaseRequest} = useSelector(
     state => state.purchase_purchaseRequest,
   );
 
-  const getButtonsForStatus = status => {
-    switch (status) {
-      case PurchaseRequest.statusSelect.Draft:
-        return [
-          {
-            title: I18n.t('Base_Cancel'),
-            onPress: () => {},
-            width: '45%',
-            color: Colors.errorColor,
-            iconName: 'x-lg',
-          },
-          {
-            title: I18n.t('Purchase_Request'),
-            onPress: () => {},
-            width: '45%',
-            iconName: 'check-lg',
-          },
-        ];
+  const getButtonsForStatus = useCallback(
+    status => {
+      switch (status) {
+        case PurchaseRequest.statusSelect.Draft:
+          return [
+            {
+              title: I18n.t('Base_Cancel'),
+              onPress: () => {},
+              width: '45%',
+              color: Colors.errorColor,
+              iconName: 'x-lg',
+            },
+            {
+              title: I18n.t('Purchase_Request'),
+              onPress: () => {},
+              width: '45%',
+              iconName: 'check-lg',
+            },
+          ];
 
-      case PurchaseRequest.statusSelect.Requested:
-        return [
-          {
-            title: I18n.t('Base_Cancel'),
-            onPress: () => {},
-            width: '30%',
-            color: Colors.errorColor,
-            iconName: 'x-lg',
-          },
-          {
-            title: I18n.t('Purchase_Refuse'),
-            onPress: () => {},
-            width: '30%',
-            color: Colors.errorColor,
-            iconName: 'x-lg',
-          },
-          {
-            title: I18n.t('Purchase_Accepte'),
-            onPress: () => {},
-            width: '30%',
-            iconName: 'check-lg',
-          },
-        ];
+        case PurchaseRequest.statusSelect.Requested:
+          return [
+            {
+              title: I18n.t('Purchase_Accept'),
+              onPress: () => {},
+              width: '92%',
+              iconName: 'check-lg',
+            },
+            {
+              title: I18n.t('Purchase_Refuse'),
+              onPress: () => {},
+              width: '44%',
+              color: Colors.errorColor,
+              iconName: 'x-lg',
+            },
+            {
+              title: I18n.t('Base_Cancel'),
+              onPress: () => {},
+              width: '44%',
+              color: Colors.errorColor,
+              iconName: 'x-lg',
+            },
+          ];
 
-      case PurchaseRequest.statusSelect.Accepted:
-        return [
-          {
-            title: I18n.t('Base_Cancel'),
-            onPress: () => {},
-            width: '45%',
-            color: Colors.errorColor,
-            iconName: 'x-lg',
-          },
-          {
-            title: I18n.t('Purchase_Purchase'),
-            onPress: () => {},
-            width: '45%',
-            iconName: 'cart-fill',
-          },
-        ];
+        case PurchaseRequest.statusSelect.Accepted:
+          return [
+            {
+              title: I18n.t('Base_Cancel'),
+              onPress: () => {},
+              width: '45%',
+              color: Colors.errorColor,
+              iconName: 'x-lg',
+            },
+            {
+              title: I18n.t('Purchase_Purchase'),
+              onPress: () => {},
+              width: '45%',
+              iconName: 'cart-fill',
+            },
+          ];
 
-      case PurchaseRequest.statusSelect.Purchased:
-        return [
-          {
-            title: I18n.t('Base_Cancel'),
-            onPress: () => {},
-            width: '90%',
-            color: Colors.errorColor,
-            iconName: 'x-lg',
-          },
-        ];
+        case PurchaseRequest.statusSelect.Purchased:
+        case PurchaseRequest.statusSelect.Refused:
+          return [
+            {
+              title: I18n.t('Base_Cancel'),
+              onPress: () => {},
+              width: '90%',
+              color: Colors.errorColor,
+              iconName: 'x-lg',
+            },
+          ];
 
-      case PurchaseRequest.statusSelect.Refused:
-        return [
-          {
-            title: I18n.t('Base_Cancel'),
-            onPress: () => {},
-            width: '90%',
-            color: Colors.errorColor,
-            iconName: 'x-lg',
-          },
-        ];
+        case PurchaseRequest.statusSelect.Canceled:
+          return [
+            {
+              title: I18n.t('Purchase_Draft'),
+              onPress: () => {},
+              width: '90%',
+              iconName: 'pencil-fill',
+            },
+          ];
 
-      case PurchaseRequest.statusSelect.Canceled:
-        return [
-          {
-            title: I18n.t('Purchase_Draft'),
-            onPress: () => {},
-            width: '90%',
-            iconName: 'pencil-fill',
-          },
-        ];
+        default:
+          return [];
+      }
+    },
+    [Colors, I18n, PurchaseRequest],
+  );
 
-      default:
-        return [];
-    }
-  };
-
-  const buttons = getButtonsForStatus(purchaseRequest?.statusSelect);
+  const buttons = useMemo(
+    () => getButtonsForStatus(purchaseRequest?.statusSelect),
+    [getButtonsForStatus, purchaseRequest?.statusSelect],
+  );
 
   if (buttons.length === 0) {
     return null;
@@ -143,6 +140,7 @@ const RequestButtons = () => {
 
 const styles = StyleSheet.create({
   buttonContainer: {
+    flexWrap: 'wrap',
     flexDirection: 'row',
     justifyContent: 'space-evenly',
   },
