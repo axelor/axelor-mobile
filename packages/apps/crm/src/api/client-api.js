@@ -55,9 +55,17 @@ const createClientCriteria = (searchValue, userId, assigned) => {
   return criteria;
 };
 
-export async function searchClient({searchValue, page = 0, userId, assigned}) {
+export async function searchClient({
+  searchValue,
+  page = 0,
+  userId,
+  assigned,
+  companyId,
+}) {
   return createStandardSearch({
     model: 'com.axelor.apps.base.db.Partner',
+    companyId,
+    isCompanyM2M: true,
     criteria: createClientCriteria(searchValue, userId, assigned),
     fieldKey: 'crm_client',
     sortKey: 'crm_client',

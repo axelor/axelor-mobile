@@ -100,10 +100,13 @@ export async function searchContact({
   page = 0,
   userId,
   assigned,
+  companyId,
   mainPartnerId,
 }) {
   return createStandardSearch({
     model: 'com.axelor.apps.base.db.Partner',
+    companyId,
+    isCompanyM2M: true,
     criteria: createContactCriteria(
       searchValue,
       userId,

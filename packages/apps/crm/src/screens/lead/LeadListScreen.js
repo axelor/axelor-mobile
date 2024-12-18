@@ -36,7 +36,7 @@ const LeadListScreen = ({navigation}) => {
 
   const {loadingLeadList, moreLoading, isListEnd, leadList, leadStatusList} =
     useSelector(state => state.lead);
-  const {userId} = useSelector(state => state.auth);
+  const {user} = useSelector(state => state.user);
 
   const [selectedStatus, setSelectedStatus] = useState([]);
   const [assigned, setAssigned] = useState(false);
@@ -52,11 +52,12 @@ const LeadListScreen = ({navigation}) => {
 
   const sliceFunctionData = useMemo(
     () => ({
-      userId: userId,
+      userId: user.id,
       assigned: assigned,
       statusList: selectedStatus,
+      companyId: user.activeCompany?.id,
     }),
-    [assigned, selectedStatus, userId],
+    [assigned, selectedStatus, user],
   );
 
   return (

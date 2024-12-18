@@ -24,7 +24,7 @@ const LeadFormScreen = ({navigation, route}) => {
   const idLead = route.params.idLead;
 
   const {lead} = useSelector(state => state.lead);
-  const {userId} = useSelector(state => state.auth);
+  const {user} = useSelector(state => state.user);
 
   const updateLeadAPI = useCallback(
     (objectState, dispatch) => {
@@ -52,14 +52,15 @@ const LeadFormScreen = ({navigation, route}) => {
         createLead({
           lead: {
             ...objectState,
-            user: {id: userId},
+            user,
           },
+          companyId: user.activeCompany?.id,
         }),
       );
 
       navigation.navigate('LeadListScreen');
     },
-    [userId, navigation],
+    [user, navigation],
   );
 
   const _defaultValue = useMemo(
