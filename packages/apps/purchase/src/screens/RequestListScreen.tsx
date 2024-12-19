@@ -30,7 +30,7 @@ import {searchPurchaseRequest} from '../features/purchaseRequestSlice';
 
 const displayPurchaseRequestSeq = item => item.purchaseRequestSeq;
 
-const RequestListScreen = ({}) => {
+const RequestListScreen = ({navigation}) => {
   const I18n = useTranslator();
   const {PurchaseRequest} = useTypes();
   const {getSelectionItems} = useTypeHelpers();
@@ -81,7 +81,11 @@ const RequestListScreen = ({}) => {
         }
         renderListItem={({item}) => (
           <RequestCard
-            onPress={() => {}}
+            onPress={() => {
+              navigation.navigate('RequestDetailsView', {
+                idRequest: item.id,
+              });
+            }}
             statusSelect={item.statusSelect}
             reference={item.purchaseRequestSeq}
             companyName={item.company?.name}
