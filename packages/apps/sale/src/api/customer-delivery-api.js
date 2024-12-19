@@ -18,7 +18,7 @@
 
 import {createStandardSearch} from '@axelor/aos-mobile-core';
 
-export async function fetchCustomerDelivery({saleOrderId}) {
+export async function fetchCustomerDelivery({saleOrderId, companyId}) {
   return createStandardSearch({
     model: 'com.axelor.apps.stock.db.StockMove',
     domain: ':saleOrder MEMBER OF self.saleOrderSet',
@@ -30,5 +30,6 @@ export async function fetchCustomerDelivery({saleOrderId}) {
     numberElementsByPage: 1,
     page: 0,
     provider: 'model',
+    companyId,
   });
 }

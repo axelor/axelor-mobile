@@ -41,6 +41,7 @@ const SaleOrderBottomButton = ({saleOrder}: SaleOrderBottomButtonProps) => {
   const dispatch = useDispatch();
   const {checkModule} = useModules();
 
+  const {user} = useSelector(state => state.user);
   const {customerDelivery} = useSelector(
     (state: any) => state.sale_customerDelivery,
   );
@@ -59,8 +60,13 @@ const SaleOrderBottomButton = ({saleOrder}: SaleOrderBottomButtonProps) => {
   );
 
   useEffect(() => {
-    dispatch((fetchCustomerDelivery as any)({saleOrderId: saleOrder.id}));
-  }, [dispatch, saleOrder]);
+    dispatch(
+      (fetchCustomerDelivery as any)({
+        saleOrderId: saleOrder.id,
+        companyId: user.activeCompany?.id,
+      }),
+    );
+  }, [dispatch, saleOrder, user.activeCompany?.id]);
 
   if (saleOrder.statusSelect === SaleOrder?.statusSelect.Finalized) {
     return (

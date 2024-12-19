@@ -54,6 +54,7 @@ const ActiveCartScreen = ({}) => {
   const isFocused = useIsFocused();
 
   const {userId} = useSelector((state: any) => state.auth);
+  const {user} = useSelector(state => state.user);
   const {mobileSettings} = useSelector((state: any) => state.appConfig);
   const {activeCart} = useSelector((state: any) => state.sale_cart);
   const {loading, moreLoading, isListEnd, carLineList} = useSelector(
@@ -64,9 +65,14 @@ const ActiveCartScreen = ({}) => {
 
   useEffect(() => {
     if (isFocused) {
-      dispatch((fetchActiveCart as any)({userId}));
+      dispatch(
+        (fetchActiveCart as any)({
+          userId: userId,
+          companyId: user.activeCompany?.id,
+        }),
+      );
     }
-  }, [dispatch, isFocused, userId]);
+  }, [dispatch, isFocused, userId, user.activeCompany?.id]);
 
   const handleCartValidation = useCallback(
     (cart: any) => {

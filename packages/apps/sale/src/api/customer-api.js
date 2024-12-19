@@ -92,14 +92,8 @@ export async function searchCustomer({
       userId,
       categoryId,
     ),
-    ...(companyId != null && {
-      domain: ':company MEMBER OF self.companySet',
-      domainContext: {
-        company: {
-          id: companyId,
-        },
-      },
-    }),
+    companyId,
+    isCompanyM2M: true,
     fieldKey: 'sale_customer',
     sortKey: 'sale_customer',
     page,
