@@ -105,7 +105,7 @@ class RequestBuilder {
 
     if (domain != null && domain !== '') {
       if (data._domain != null) {
-        data._domain += ` AND ${domain}`;
+        data._domain = `(${data._domain}) AND (${domain})`;
         data._domainContext = {
           ...data._domainContext,
           ...domainContext,
