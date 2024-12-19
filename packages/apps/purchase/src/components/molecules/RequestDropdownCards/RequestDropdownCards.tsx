@@ -16,6 +16,26 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-export {purchaseRequestLineReducer as purchase_purchaseRequestLine} from './purchaseRequestLineSlice';
-export {purchaseRequestReducer as purchase_purchaseRequest} from './purchaseRequestSlice';
-export {supplierReducer as purchase_supplier} from './supplierSlice';
+import React from 'react';
+import {useTranslator} from '@axelor/aos-mobile-core';
+import {DropdownCardSwitch} from '@axelor/aos-mobile-ui';
+import {DropdownRequestCharacteristics} from '../../atoms';
+
+const RequestDropdownCards = ({style}: {style: any}) => {
+  const I18n = useTranslator();
+
+  return (
+    <DropdownCardSwitch
+      style={style}
+      dropdownItems={[
+        {
+          key: 1,
+          title: I18n.t('Purchase_Characteristics'),
+          childrenComp: <DropdownRequestCharacteristics />,
+        },
+      ]}
+    />
+  );
+};
+
+export default RequestDropdownCards;

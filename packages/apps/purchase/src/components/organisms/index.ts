@@ -16,6 +16,4 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-export {purchaseRequestLineReducer as purchase_purchaseRequestLine} from './purchaseRequestLineSlice';
-export {purchaseRequestReducer as purchase_purchaseRequest} from './purchaseRequestSlice';
-export {supplierReducer as purchase_supplier} from './supplierSlice';
+export {default as RequestButtons} from './RequestButtons/RequestButtons';
