@@ -58,6 +58,7 @@ export {
   fetchPartner,
   searchLinkedPartnersOfContact,
   searchPartner,
+  updatePartner,
 } from './partnerSlice';
 export {
   fetchProspectById,
