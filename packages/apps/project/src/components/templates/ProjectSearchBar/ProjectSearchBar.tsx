@@ -50,6 +50,7 @@ const ProjectSearchBarAux = ({
   const I18n = useTranslator();
   const dispatch = useDispatch();
 
+  const {user} = useSelector(state => state.user);
   const {projectList, loading, moreLoading, isListEnd} = useSelector(
     (state: any) => state.project_project,
   );
@@ -61,10 +62,11 @@ const ProjectSearchBarAux = ({
           page,
           searchValue,
           differentiateBusinessProjects,
+          companyId: user.activeCompany?.id,
         }),
       );
     },
-    [differentiateBusinessProjects, dispatch],
+    [differentiateBusinessProjects, dispatch, user.activeCompany?.id],
   );
 
   return (

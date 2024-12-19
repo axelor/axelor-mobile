@@ -46,12 +46,14 @@ const SubProjectView = () => {
     isListEndSubProject,
     subProjectList,
   } = useSelector((state: any) => state.project_project);
+  const {user} = useSelector(state => state.user);
 
   const sliceFunctionData = useMemo(
     () => ({
       projectId: project.id,
+      companyId: user.activeCompany?.id,
     }),
-    [project.id],
+    [project.id, user.activeCompany?.id],
   );
 
   useEffect(() => {
