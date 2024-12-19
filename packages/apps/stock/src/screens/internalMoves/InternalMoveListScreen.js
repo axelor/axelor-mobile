@@ -42,6 +42,7 @@ const InternalMoveListScreen = ({navigation}) => {
 
   const {loadingInternalMoveList, moreLoading, isListEnd, internalMoveList} =
     useSelector(state => state.internalMove);
+  const {user} = useSelector(state => state.user);
 
   const [originalStockLocation, setOriginalStockLocation] = useState(null);
   const [destinationStockLocation, setDestinationStockLocation] =
@@ -75,8 +76,14 @@ const InternalMoveListScreen = ({navigation}) => {
       fromStockLocationId: originalStockLocation?.id,
       toStockLocationId: destinationStockLocation?.id,
       statusList: selectedStatus,
+      companyId: user.activeCompany?.id,
     }),
-    [destinationStockLocation?.id, originalStockLocation?.id, selectedStatus],
+    [
+      destinationStockLocation?.id,
+      originalStockLocation?.id,
+      selectedStatus,
+      user.activeCompany?.id,
+    ],
   );
 
   return (

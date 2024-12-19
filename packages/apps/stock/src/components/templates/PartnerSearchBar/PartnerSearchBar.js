@@ -34,19 +34,24 @@ const PartnerSearchBar = ({
 
   const {loadingPartners, moreLoading, isListEnd, clientList, supplierList} =
     useSelector(state => state.stock_partner);
+  const {user} = useSelector(state => state.user);
 
   const fetchClientsAPI = useCallback(
     ({page = 0, searchValue}) => {
-      dispatch(filterClients({page, searchValue}));
+      dispatch(
+        filterClients({page, searchValue, companyId: user.activeCompany?.id}),
+      );
     },
-    [dispatch],
+    [dispatch, user.activeCompany?.id],
   );
 
   const fetchSuppliersAPI = useCallback(
     ({page = 0, searchValue}) => {
-      dispatch(filterSuppliers({page, searchValue}));
+      dispatch(
+        filterSuppliers({page, searchValue, companyId: user.activeCompany?.id}),
+      );
     },
-    [dispatch],
+    [dispatch, user.activeCompany?.id],
   );
 
   return (

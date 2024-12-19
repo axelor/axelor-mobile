@@ -86,7 +86,7 @@ export const createInternalMove = createAsyncThunk(
       .then(() =>
         handlerApiCall({
           fetchFunction: searchInternalMoveFilter,
-          data: {},
+          data: {companyId: data.companyId},
           action: 'Stock_SliceAction_FilterInternalMoves',
           getState,
           responseOptions: {isArrayResponse: true},
