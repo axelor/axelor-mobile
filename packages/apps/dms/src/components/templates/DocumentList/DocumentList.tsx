@@ -103,6 +103,7 @@ const DocumentList = ({
         displayParentSearchValue={item => item.fileName}
         searchParentPlaceholder={I18n.t('Dms_ParentFolder')}
         searchPlaceholder={I18n.t('Base_Search')}
+        isHideableParentSearch={false}
         parentFieldName="parent"
         renderBranch={({item}) => <DirectoryCard directory={item} />}
         getBranchActions={branch => {
