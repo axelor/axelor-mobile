@@ -123,11 +123,8 @@ const createProductCategoryCriteria = searchValue => {
   return [getSearchCriterias('sale_productCategory', searchValue)];
 };
 
-const createProductCompanyCriteria = (companyId, productId) => {
-  return [
-    {fieldName: 'company.id', operator: '=', value: companyId},
-    {fieldName: 'product.id', operator: '=', value: productId},
-  ];
+const createProductCompanyCriteria = productId => {
+  return [{fieldName: 'product.id', operator: '=', value: productId}];
 };
 
 const createVariantProductCriteria = (searchValue, parentProductId) => {
@@ -194,11 +191,12 @@ export async function fetchProductCompanyConfig({companyId, productId}) {
 
   return createStandardSearch({
     model: 'com.axelor.apps.base.db.ProductCompany',
-    criteria: createProductCompanyCriteria(companyId, productId),
+    criteria: createProductCompanyCriteria(productId),
     fieldKey: 'sale_productCompany',
     page: 0,
     numberElementsByPage: 1,
     provider: 'model',
+    companyId,
   });
 }
 
