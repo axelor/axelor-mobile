@@ -23,9 +23,10 @@ import {
   updateAgendaItems,
 } from '@axelor/aos-mobile-core';
 import {
-  searchCustomerDeliveryLines,
-  updateLine,
   fetchCustomerDeliveryLine as _fetchCustomerDeliveryLine,
+  searchCustomerDeliveryLines,
+  splitCustomerDeliveryLine as _splitCustomerDeliveryLine,
+  updateLine,
 } from '../api/customer-delivery-line-api';
 import {updateStockMoveLineTrackingNumber} from '../api/tracking-number-api';
 
@@ -93,6 +94,25 @@ export const addTrackingNumber = createAsyncThunk(
         getState,
         responseOptions: {isArrayResponse: false},
       });
+    });
+  },
+);
+
+export const splitCustomerDeliveryLine = createAsyncThunk(
+  'stock_customerDeliveryLine/splitCustomerDeliveryLine',
+  async function (data, {getState, dispatch}) {
+    return handlerApiCall({
+      fetchFunction: _splitCustomerDeliveryLine,
+      data,
+      action: 'Stock_SliceAction_SplitCustomerDeliveryLine',
+      getState,
+      responseOptions: {showToast: true},
+    }).then(() => {
+      dispatch(
+        fetchCustomerDeliveryLines({
+          customerDeliveryId: data.customerDeliveryId,
+        }),
+      );
     });
   },
 );
