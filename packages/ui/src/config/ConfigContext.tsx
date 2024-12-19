@@ -24,6 +24,7 @@ import React, {
   useReducer,
 } from 'react';
 import {Color} from '../theme';
+import {Keyboard} from '../types';
 
 interface Action {
   iconName?: string;
@@ -41,7 +42,7 @@ interface BlockInteractionConfig {
 
 interface ConfigContextState {
   showFilter: boolean;
-  hideVirtualKeyboard: boolean;
+  virtualKeyboardVisibility: number;
   showActivityIndicator: boolean;
   showSubtitles: boolean;
   showToolbox: boolean;
@@ -58,8 +59,7 @@ interface ConfigContextState {
   setShowToolbox: (option: boolean) => void;
   setFilterConfig: (option: boolean) => void;
   toggleFilterConfig: () => void;
-  setVirtualKeyboardConfig: (option: boolean) => void;
-  toggleVirtualKeyboardConfig: () => void;
+  setVirtualKeyboardVisibility: (option: number) => void;
   setHeaderHeight: (height: number) => void;
   setIsScrollEnabled: (option: boolean) => void;
 }
@@ -71,7 +71,7 @@ interface ConfigAction {
 
 const defaultConfigContext = {
   showFilter: true,
-  hideVirtualKeyboard: false,
+  virtualKeyboardVisibility: Keyboard.visibility.Always,
   showActivityIndicator: false,
   showSubtitles: false,
   showToolbox: false,
@@ -116,14 +116,9 @@ const defaultConfigContext = {
   toggleFilterConfig: () => {
     throw new Error('ConfigProvider should be mounted to toggle filter config');
   },
-  setVirtualKeyboardConfig: () => {
+  setVirtualKeyboardVisibility: () => {
     throw new Error(
-      'ConfigProvider should be mounted to set virtual keyboard config',
-    );
-  },
-  toggleVirtualKeyboardConfig: () => {
-    throw new Error(
-      'ConfigProvider should be mounted to toggle virtual keyboard config',
+      'ConfigProvider should be mounted to set virtual keyboard visibility',
     );
   },
   setHeaderHeight: () => {
@@ -143,10 +138,9 @@ const ConfigContext = createContext<ConfigContextState>(defaultConfigContext);
 const actionTypes = {
   setFilterConfig: 'setFilterConfig',
   toggleFilterConfig: 'toggleFilterConfig',
-  setVirtualKeyboardConfig: 'setVirtualKeyboardConfig',
   setShowSubtitles: 'setShowSubtitles',
   setShowToolbox: 'setShowToolbox',
-  toggleVirtualKeyboardConfig: 'toggleVirtualKeyboardConfig',
+  setVirtualKeyboardVisibility: 'setVirtualKeyboardVisibility',
   setActivityIndicator: 'setActivityIndicator',
   setHeaderHeight: 'setHeaderHeight',
   setBlockInteractionConfig: 'setBlockInteractionConfig',
@@ -208,16 +202,10 @@ const configReducer = (
         showFilter: !state.showFilter,
       };
     }
-    case actionTypes.setVirtualKeyboardConfig: {
+    case actionTypes.setVirtualKeyboardVisibility: {
       return {
         ...state,
-        hideVirtualKeyboard: action.payload as boolean,
-      };
-    }
-    case actionTypes.toggleVirtualKeyboardConfig: {
-      return {
-        ...state,
-        hideVirtualKeyboard: !state.hideVirtualKeyboard,
+        virtualKeyboardVisibility: action.payload as number,
       };
     }
     case actionTypes.setHeaderHeight: {
@@ -269,12 +257,9 @@ const actions = {
   toggleFilterConfig: () => ({
     type: actionTypes.toggleFilterConfig,
   }),
-  setVirtualKeyboardConfig: option => ({
-    type: actionTypes.setVirtualKeyboardConfig,
+  setVirtualKeyboardVisibility: option => ({
+    type: actionTypes.setVirtualKeyboardVisibility,
     payload: option,
-  }),
-  toggleVirtualKeyboardConfig: () => ({
-    type: actionTypes.toggleVirtualKeyboardConfig,
   }),
   setHeaderHeight: value => ({
     type: actionTypes.setHeaderHeight,
@@ -324,12 +309,8 @@ export const ConfigProvider = ({children, showModulesSubtitle}) => {
     () => dispatch(actions.toggleFilterConfig()),
     [],
   );
-  const setVirtualKeyboardConfig = useCallback(
-    option => dispatch(actions.setVirtualKeyboardConfig(option)),
-    [],
-  );
-  const toggleVirtualKeyboardConfig = useCallback(
-    () => dispatch(actions.toggleVirtualKeyboardConfig()),
+  const setVirtualKeyboardVisibility = useCallback(
+    option => dispatch(actions.setVirtualKeyboardVisibility(option)),
     [],
   );
   const setHeaderHeight = useCallback(
@@ -350,8 +331,7 @@ export const ConfigProvider = ({children, showModulesSubtitle}) => {
       setShowToolbox,
       setFilterConfig,
       toggleFilterConfig,
-      setVirtualKeyboardConfig,
-      toggleVirtualKeyboardConfig,
+      setVirtualKeyboardVisibility,
       setHeaderHeight,
       setBlockInteractionConfig,
       setIsScrollEnabled,
@@ -365,8 +345,7 @@ export const ConfigProvider = ({children, showModulesSubtitle}) => {
       setShowToolbox,
       setFilterConfig,
       toggleFilterConfig,
-      setVirtualKeyboardConfig,
-      toggleVirtualKeyboardConfig,
+      setVirtualKeyboardVisibility,
       setHeaderHeight,
       setBlockInteractionConfig,
       setIsScrollEnabled,

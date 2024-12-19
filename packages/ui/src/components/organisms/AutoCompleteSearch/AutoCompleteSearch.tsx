@@ -65,6 +65,7 @@ interface AutocompleteSearchProps {
   isListEnd?: boolean;
   translator?: (translationKey: string) => string;
   isScrollViewContainer?: boolean;
+  isScannableInput?: boolean;
 }
 
 const AutoCompleteSearch = ({
@@ -91,6 +92,7 @@ const AutoCompleteSearch = ({
   isListEnd,
   translator,
   isScrollViewContainer = false,
+  isScannableInput,
 }: AutocompleteSearchProps) => {
   const [displayList, setDisplayList] = useState(false);
   const [previousState, setPreviousState] = useState(null);
@@ -300,6 +302,7 @@ const AutoCompleteSearch = ({
         onScanPress={onScanPress}
         scanIconColor={scanIconColor}
         selected={selected}
+        isScannableInput={isScannableInput}
       />
       {displayList && !oneFilter && (
         <SelectionContainer
