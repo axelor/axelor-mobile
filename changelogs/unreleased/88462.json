@@ -1,0 +1,5 @@
+{
+  "title": "Data fetching: add active company management",
+  "type": "refactor",
+  "packages": "sale"
+}

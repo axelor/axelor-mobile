@@ -54,6 +54,7 @@ export async function fetchSaleOrder({
   statusList,
   customerId,
   page = 0,
+  companyId,
 }) {
   return createStandardSearch({
     model: 'com.axelor.apps.sale.db.SaleOrder',
@@ -62,6 +63,7 @@ export async function fetchSaleOrder({
     sortKey: 'sale_saleOrder',
     page,
     provider: 'model',
+    companyId,
   });
 }
 
