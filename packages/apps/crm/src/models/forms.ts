@@ -29,6 +29,7 @@ import {
   OpportunityStatusPicker,
   PartnerSearchBar,
 } from '../components';
+import {updatePartner} from '../features/partnerSlice';
 
 const MODELS = {
   lead: 'com.axelor.apps.crm.db.Lead',
@@ -302,6 +303,16 @@ export const crm_formsRegister: FormConfigs = {
         widget: 'custom',
         customComponent: ClientProspectSearchBar,
         required: true,
+        dependsOn: {
+          contact: ({newValue, objectState, dispatch}) => {
+            if (newValue != null) {
+              dispatch(updatePartner(newValue?.mainPartner));
+              return newValue?.mainPartner;
+            } else {
+              return objectState?.partner;
+            }
+          },
+        },
       },
       contact: {
         titleKey: 'Crm_Contact',
@@ -311,7 +322,17 @@ export const crm_formsRegister: FormConfigs = {
         options: {
           showTitle: true,
         },
-        required: true,
+        requiredIf: ({objectState}) => objectState.partner == null,
+        dependsOn: {
+          partner: ({newValue, objectState, dispatch}) => {
+            dispatch(updatePartner(newValue));
+            if (objectState.contact?.mainPartner?.id != newValue?.id) {
+              return null;
+            } else {
+              return objectState.contact;
+            }
+          },
+        },
       },
       expectedCloseDate: {
         titleKey: 'Crm_Opportunity_ExpectedCloseDate',
