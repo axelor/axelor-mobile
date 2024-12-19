@@ -182,9 +182,18 @@ export const getCompanyCriteria = (
   companyFieldName: string = 'company',
 ): Criteria => {
   return {
-    fieldName: `${companyFieldName}.id`,
-    operator: '=',
-    value: companyId,
+    operator: 'or',
+    criteria: [
+      {
+        fieldName: `${companyFieldName}`,
+        operator: 'isNull',
+      },
+      {
+        fieldName: `${companyFieldName}.id`,
+        operator: '=',
+        value: companyId,
+      },
+    ],
   };
 };
 
@@ -193,7 +202,7 @@ export const getCompanyDomain = (
   companySetFieldName: string = 'companySet',
 ): Domain => {
   return {
-    domain: `:company MEMBER OF self.${companySetFieldName}`,
+    domain: `self.${companySetFieldName} IS EMPTY OR :company MEMBER OF self.${companySetFieldName}`,
     domainContext: {
       company: {
         id: companyId,
