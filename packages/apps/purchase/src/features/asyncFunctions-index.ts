@@ -16,5 +16,9 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-export {searchPurchaseRequest} from './purchaseRequestSlice';
+export {searchPurchaseRequestLine} from './purchaseRequestLineSlice';
+export {
+  getPurchaseRequest,
+  searchPurchaseRequest,
+} from './purchaseRequestSlice';
 export {searchSupplier} from './supplierSlice';
