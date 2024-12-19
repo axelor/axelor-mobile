@@ -13,7 +13,7 @@ on:
 jobs:
   format:
     name: Format
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-22.04
     steps:
       - uses: actions/checkout@v3
       - name: Set up JDK 1.17
@@ -34,7 +34,7 @@ jobs:
 
   build:
     name: Build & APK generation
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-22.04
     needs: format
     steps:
       - uses: actions/checkout@v3
@@ -65,7 +65,7 @@ jobs:
 
   test:
     name: Test
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-22.04
     needs: format
     steps:
       - uses: actions/checkout@v3
@@ -83,7 +83,7 @@ jobs:
 
   check-license-lines:
     name: Check AGPL license header
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-22.04
     steps:
       - uses: actions/checkout@v3
       - uses: denoland/setup-deno@main
@@ -96,8 +96,7 @@ jobs:
     needs: [format, build, check-license-lines]
     if: github.event_name == 'push' && contains(github.ref, 'refs/tags/')
     name: Release tag
-    runs-on: 'ubuntu-latest'
-
+    runs-on: ubuntu-22.04
     steps:
       - name: Download site content
         uses: actions/download-artifact@v4
