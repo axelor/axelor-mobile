@@ -98,8 +98,8 @@ android {
         applicationId "com.aosmobile"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
-        versionCode 38
-        versionName "8.1.12"
+        versionCode 39
+        versionName "8.1.13"
     }
 
     splits {

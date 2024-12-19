@@ -1,5 +1,0 @@
-{
-  "title": "SearchTreeView: add possibility to have a fixed parent search bar",
-  "type": "feat",
-  "packages": "core"
-}

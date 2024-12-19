@@ -3,6 +3,26 @@ title: 8.1.0
 tags: Changelog
 ---
 
+## [8.1.13] (2024-12-19)
+
+### @axelor/aos-mobile-core
+
+#### Features
+
+- SearchTreeView: add possibility to have a fixed parent search bar
+
+### @axelor/aos-mobile-crm
+
+#### Fixes
+
+- Opportunity form: make contact and partner fields mutually dependent
+
+### @axelor/aos-mobile-stock
+
+#### Fixes
+
+- Inventory line: correct creation process
+
 ## [8.1.12] (2024-12-05)
 
 ### @axelor/aos-mobile-core
@@ -606,7 +626,8 @@ It enables user to manage interventions and customer parc through the mobile app
 - Selections: use new system and tools instead of type files
 - Product indicators: use new chart component to display quantity indicators
 
-  [8.1.12]: https://github.com/axelor/axelor-mobile/compare/8.1.11...8.1.12
+  [8.1.13]: https://github.com/axelor/axelor-mobile/compare/8.1.12...8.1.13
+[8.1.12]: https://github.com/axelor/axelor-mobile/compare/8.1.11...8.1.12
   [8.1.11]: https://github.com/axelor/axelor-mobile/compare/8.1.10...8.1.11
   [8.1.10]: https://github.com/axelor/axelor-mobile/compare/8.1.9...8.1.10
   [8.1.9]: https://github.com/axelor/axelor-mobile/compare/8.1.8...8.1.9
