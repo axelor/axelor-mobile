@@ -3,6 +3,31 @@ title: 8.2.0
 tags: Changelog
 ---
 
+## [8.2.5] (2024-12-19)
+
+### @axelor/aos-mobile-core
+
+#### Features
+
+- Company management: add generic tools to create criterias
+- SearchTreeView: add possibility to have a fixed parent search bar
+
+#### Fixes
+
+- Agenda: patch package to restore load of items on component layout
+
+### @axelor/aos-mobile-crm
+
+#### Fixes
+
+- Opportunity form: make contact and partner fields mutually dependent
+
+### @axelor/aos-mobile-stock
+
+#### Fixes
+
+- Inventory line: correct creation process
+
 ## [8.2.4] (2024-12-05)
 
 ### @axelor/aos-mobile-core
@@ -277,6 +302,7 @@ This package is linked with the @axelor/aos-mobile-hr to manage time logging.
 
 - Supplier arrival: add possibility to fill origin when creating or selecting tracking number
 
+  [8.2.5]: https://github.com/axelor/axelor-mobile/compare/8.2.4...8.2.5
   [8.2.4]: https://github.com/axelor/axelor-mobile/compare/8.2.3...8.2.4
   [8.2.3]: https://github.com/axelor/axelor-mobile/compare/8.2.2...8.2.3
   [8.2.2]: https://github.com/axelor/axelor-mobile/compare/8.2.1...8.2.2

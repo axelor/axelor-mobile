@@ -1,5 +1,0 @@
-{
-  "title": "Agenda: patch package to restore load of items on component layout",
-  "type": "fix",
-  "packages": "core"
-}
