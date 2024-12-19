@@ -40,6 +40,7 @@ interface SearchBarProps {
   onSearchPress?: () => void;
   disableSearchPress?: boolean;
   selected?: boolean;
+  isScannableInput?: boolean;
 }
 
 const SearchBar = ({
@@ -59,6 +60,7 @@ const SearchBar = ({
   onSearchPress = () => {},
   disableSearchPress = false,
   selected = false,
+  isScannableInput,
 }: SearchBarProps) => {
   const Colors = useThemeColor();
 
@@ -137,6 +139,7 @@ const SearchBar = ({
             onPress={onScanPress}
           />,
         ]}
+        isScannableInput={isScannableInput}
       />
     </View>
   );

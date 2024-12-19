@@ -16,16 +16,5 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-export * from './components';
-export * from './theme';
-export * from './utils';
-export * from './types';
-export {ConfigProvider, useConfig} from './config/ConfigContext';
-export {
-  OutsideAlerterProvider,
-  useClickOutside,
-  OUTSIDE_INDICATOR,
-} from './hooks/use-click-outside';
-export {animationUtil} from './tools/AnimationUtil';
-export {useDigitFormat} from './hooks/use-digit-format';
-export {usePriceFormat} from './hooks/use-price-format';
+export {default as File} from './file';
+export {default as Keyboard} from './keyboard';

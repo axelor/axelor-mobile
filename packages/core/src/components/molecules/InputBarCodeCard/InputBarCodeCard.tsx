@@ -140,6 +140,7 @@ const InputBarCodeCard = ({
             onPress={onScanPress}
           />,
         ]}
+        isScannableInput
       />
     </View>
   );

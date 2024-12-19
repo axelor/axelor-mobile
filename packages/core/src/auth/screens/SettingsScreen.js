@@ -21,6 +21,7 @@ import {StyleSheet, View} from 'react-native';
 import {useDispatch, useSelector} from 'react-redux';
 import {
   HorizontalRule,
+  Keyboard,
   Picker,
   Screen,
   ScrollView,
@@ -51,9 +52,9 @@ const SettingsScreen = ({children}) => {
 
   const {
     showFilter,
-    hideVirtualKeyboard,
     toggleFilterConfig,
-    toggleVirtualKeyboardConfig,
+    virtualKeyboardVisibility,
+    setVirtualKeyboardVisibility,
     setShowSubtitles,
     showSubtitles,
     showToolbox,
@@ -75,6 +76,13 @@ const SettingsScreen = ({children}) => {
     () => !Theme.isColorBlind && Theme.themes?.length !== 1,
     [Theme.isColorBlind, Theme.themes?.length],
   );
+
+  const keyboardVisibilityList = useMemo(() => {
+    return Object.entries(Keyboard.visibility).map(([key, value]) => ({
+      visibility: value,
+      name: I18n.t(`User_KeyboardVisibility_${key}`),
+    }));
+  }, [I18n]);
 
   const handleChangeTheme = useCallback(
     newTheme => Theme.changeTheme(newTheme),
@@ -162,17 +170,20 @@ const SettingsScreen = ({children}) => {
         {(isLanguagePicker || isThemePicker) && (
           <HorizontalRule style={styles.lineSeparator} />
         )}
+        <Picker
+          title={I18n.t('User_VirtualKeyboardVisibility')}
+          defaultValue={virtualKeyboardVisibility}
+          listItems={keyboardVisibilityList}
+          labelField="name"
+          valueField="visibility"
+          onValueChange={setVirtualKeyboardVisibility}
+          emptyValue={false}
+        />
         <SwitchCard
           title={I18n.t('User_ShowFilter')}
           defaultValue={showFilter}
           onToggle={toggleFilterConfig}
           style={[styles.topSwitchCard, styles.switchCard]}
-        />
-        <SwitchCard
-          title={I18n.t('User_VirtualKeyboardConfig')}
-          defaultValue={hideVirtualKeyboard}
-          onToggle={toggleVirtualKeyboardConfig}
-          style={styles.switchCard}
         />
         <SwitchCard
           title={I18n.t('User_ColorForColorBlind')}
