@@ -36,61 +36,43 @@ const RequestButtons = () => {
         case PurchaseRequest.statusSelect.Draft:
           return [
             {
-              title: I18n.t('Base_Cancel'),
-              onPress: () => {},
-              width: '45%',
-              color: Colors.errorColor,
-              iconName: 'x-lg',
-            },
-            {
               title: I18n.t('Purchase_Request'),
               onPress: () => {},
               width: '45%',
               iconName: 'check-lg',
             },
+            {
+              title: I18n.t('Base_Cancel'),
+              onPress: () => {},
+              width: '45%',
+              color: Colors.cautionColor,
+              iconName: 'reply-fill',
+            },
           ];
-
         case PurchaseRequest.statusSelect.Requested:
           return [
             {
               title: I18n.t('Purchase_Accept'),
               onPress: () => {},
-              width: '92%',
+              width: '45%',
               iconName: 'check-lg',
             },
             {
               title: I18n.t('Purchase_Refuse'),
               onPress: () => {},
-              width: '44%',
+              width: '45%',
               color: Colors.errorColor,
               iconName: 'x-lg',
             },
             {
               title: I18n.t('Base_Cancel'),
               onPress: () => {},
-              width: '44%',
-              color: Colors.errorColor,
-              iconName: 'x-lg',
+              width: '94%',
+              color: Colors.cautionColor,
+              iconName: 'reply-fill',
             },
           ];
-
         case PurchaseRequest.statusSelect.Accepted:
-          return [
-            {
-              title: I18n.t('Base_Cancel'),
-              onPress: () => {},
-              width: '45%',
-              color: Colors.errorColor,
-              iconName: 'x-lg',
-            },
-            {
-              title: I18n.t('Purchase_Purchase'),
-              onPress: () => {},
-              width: '45%',
-              iconName: 'cart-fill',
-            },
-          ];
-
         case PurchaseRequest.statusSelect.Purchased:
         case PurchaseRequest.statusSelect.Refused:
           return [
@@ -98,21 +80,10 @@ const RequestButtons = () => {
               title: I18n.t('Base_Cancel'),
               onPress: () => {},
               width: '90%',
-              color: Colors.errorColor,
-              iconName: 'x-lg',
+              color: Colors.cautionColor,
+              iconName: 'reply-fill',
             },
           ];
-
-        case PurchaseRequest.statusSelect.Canceled:
-          return [
-            {
-              title: I18n.t('Purchase_Draft'),
-              onPress: () => {},
-              width: '90%',
-              iconName: 'pencil-fill',
-            },
-          ];
-
         default:
           return [];
       }

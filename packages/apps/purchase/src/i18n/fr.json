@@ -16,7 +16,6 @@
   "Purchase_Request": "Demander",
   "Purchase_Accept": "Accepter",
   "Purchase_Refuse": "Refuser",
-  "Purchase_Draft": "Brouillon",
   "Purchase_NoInformationAvailable": "Aucune information disponible",
   "Purchase_SliceAction_SearchPurchaseRequest": "recherche sur les demandes d'achat",
   "Purchase_SliceAction_SearchSupplier": "recherche sur les fournisseurs",

@@ -16,7 +16,6 @@
   "Purchase_Request": "Request",
   "Purchase_Accept": "Accept",
   "Purchase_Refuse": "Refuse",
-  "Purchase_Draft": "Draft",
   "Purchase_NoInformationAvailable": "No information available",
   "Purchase_SliceAction_SearchPurchaseRequest": "search purchase request",
   "Purchase_SliceAction_SearchSupplier": "search supplier",
