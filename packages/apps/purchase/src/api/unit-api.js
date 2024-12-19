@@ -16,9 +16,17 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-export {default as CompanyPicker} from './CompanyPicker/CompanyPicker';
-export {default as ProductSearchBar} from './ProductSearchBar/ProductSearchBar';
-export {default as RequestCreationButtons} from './RequestCreationButtons/RequestCreationButtons';
-export {default as RequestCreationQuantityCard} from './RequestCreationQuantityCard/RequestCreationQuantityCard';
-export {default as SupplierSearchBar} from './SupplierSearchBar/SupplierSearchBar';
-export {default as UnitSearchBar} from './UnitSearchBar/UnitSearchBar';
+import {
+  createStandardSearch,
+  getSearchCriterias,
+} from '@axelor/aos-mobile-core';
+
+export async function searchUnit({page = 0, searchValue}) {
+  return createStandardSearch({
+    model: 'com.axelor.apps.base.db.Unit',
+    criteria: [getSearchCriterias('purchase_unit', searchValue)],
+    fieldKey: 'purchase_unit',
+    sortKey: 'purchase_unit',
+    page,
+  });
+}
