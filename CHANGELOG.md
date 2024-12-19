@@ -3,6 +3,14 @@ title: 7.0.0
 tags: Changelog
 ---
 
+## [7.0.28] (2024-12-19)
+
+### @axelor/aos-mobile-stock
+
+#### Fixes
+
+- Inventory line: correct creation process
+
 ## [7.0.27] (2024-12-05)
 
 ### @axelor/aos-mobile-ui
@@ -763,6 +771,7 @@ The project architecture has also been updated, the example folder has been expl
 - Replace ChipSelect by MultiValuePicker on list screens
 - Add search bar details pop up on screens: add empowered searchBar for objects
 
+[7.0.28]: https://github.com/axelor/axelor-mobile/compare/7.0.27...7.0.28
 [7.0.27]: https://github.com/axelor/axelor-mobile/compare/7.0.26...7.0.27
 [7.0.26]: https://github.com/axelor/axelor-mobile/compare/7.0.25...7.0.26
 [7.0.25]: https://github.com/axelor/axelor-mobile/compare/7.0.24...7.0.25
