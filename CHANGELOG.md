@@ -3,6 +3,20 @@ title: 8.0.0
 tags: Changelog
 ---
 
+## [8.0.18] (2024-12-19)
+
+### @axelor/aos-mobile-crm
+
+#### Fixes
+
+- Opportunity form: make contact and partner fields mutually dependent
+
+### @axelor/aos-mobile-stock
+
+#### Fixes
+
+- Inventory line: correct creation process
+
 ## [8.0.17] (2024-12-05)
 
 ### @axelor/aos-mobile-core
@@ -635,6 +649,7 @@ Changes has been done to get new core and ui improvements: use of ChipSelect, co
 
 Changes has been done to get new core and ui improvements: use of ChipSelect, color differentiation between success and primary, definition of required configs, use of icons for Bootstrap
 
+[8.0.18]: https://github.com/axelor/axelor-mobile/compare/8.0.17...8.0.18
 [8.0.17]: https://github.com/axelor/axelor-mobile/compare/8.0.16...8.0.17
 [8.0.16]: https://github.com/axelor/axelor-mobile/compare/8.0.15...8.0.16
 [8.0.15]: https://github.com/axelor/axelor-mobile/compare/8.0.14...8.0.15
