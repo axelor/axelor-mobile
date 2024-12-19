@@ -87,7 +87,6 @@ const BranchActionCard = ({
       quickAction={{
         iconName: 'filter',
         helper: infoButtonIndication,
-        large: true,
         onPress: () => onFilterPress(parent),
         hidden: !isBranchFilterVisible,
       }}
