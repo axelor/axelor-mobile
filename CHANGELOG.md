@@ -3,6 +3,20 @@ title: 7.2.0
 tags: Changelog
 ---
 
+## [7.2.24] (2024-12-19)
+
+### @axelor/aos-mobile-crm
+
+#### Fixes
+
+- Opportunity form: make contact and partner fields mutually dependent
+
+### @axelor/aos-mobile-stock
+
+#### Fixes
+
+- Inventory line: correct creation process
+
 ## [7.2.23] (2024-12-05)
 
 ### @axelor/aos-mobile-core
@@ -765,6 +779,7 @@ It enables user to manage Expenses through the mobile application. You can creat
 - Remove IconButton component which should be replaced by Button component.
 - Remove Pop-up components which should be replaced by Alert component.
 
+[7.2.24]: https://github.com/axelor/axelor-mobile/compare/7.2.23...7.2.24
 [7.2.23]: https://github.com/axelor/axelor-mobile/compare/7.2.22...7.2.23
 [7.2.22]: https://github.com/axelor/axelor-mobile/compare/7.2.21...7.2.22
 [7.2.21]: https://github.com/axelor/axelor-mobile/compare/7.2.20...7.2.21
