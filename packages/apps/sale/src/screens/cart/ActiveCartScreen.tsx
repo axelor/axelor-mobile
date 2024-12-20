@@ -53,7 +53,6 @@ const ActiveCartScreen = ({}) => {
   const navigation = useNavigation();
   const isFocused = useIsFocused();
 
-  const {userId} = useSelector((state: any) => state.auth);
   const {user} = useSelector(state => state.user);
   const {mobileSettings} = useSelector((state: any) => state.appConfig);
   const {activeCart} = useSelector((state: any) => state.sale_cart);
@@ -67,25 +66,29 @@ const ActiveCartScreen = ({}) => {
     if (isFocused) {
       dispatch(
         (fetchActiveCart as any)({
-          userId: userId,
+          userId: user.id,
           companyId: user.activeCompany?.id,
         }),
       );
     }
-  }, [dispatch, isFocused, userId, user.activeCompany?.id]);
+  }, [dispatch, isFocused, user]);
 
   const handleCartValidation = useCallback(
     (cart: any) => {
       if (cart?.partner != null) {
         dispatch(
-          (validateCart as any)({id: cart.id, version: cart.version, userId}),
+          (validateCart as any)({
+            id: cart.id,
+            version: cart.version,
+            userId: user.id,
+          }),
         );
         setShowPopup(false);
       } else {
         setShowPopup(true);
       }
     },
-    [dispatch, userId],
+    [dispatch, user.id],
   );
 
   const handleEmptyCart = useCallback(() => {
@@ -93,10 +96,10 @@ const ActiveCartScreen = ({}) => {
       (emptyCart as any)({
         id: activeCart?.id,
         version: activeCart?.version,
-        userId,
+        userId: user.id,
       }),
     );
-  }, [activeCart?.id, activeCart?.version, dispatch, userId]);
+  }, [activeCart?.id, activeCart?.version, dispatch, user.id]);
 
   useEffect(() => {
     if (activeCart) {

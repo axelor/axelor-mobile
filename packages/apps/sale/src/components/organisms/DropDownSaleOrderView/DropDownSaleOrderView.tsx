@@ -41,13 +41,19 @@ const DropDownSaleOrderView = ({customer}) => {
 
   const {SaleOrder} = useTypes();
 
+  const {user} = useSelector(state => state.user);
   const {saleOrderList} = useSelector(state => state.sale_saleOrder);
 
   useEffect(() => {
     if (isFocused) {
-      dispatch((fetchSaleOrder as any)({customerId: customer?.id}));
+      dispatch(
+        (fetchSaleOrder as any)({
+          customerId: customer?.id,
+          companyId: user.activeCompany?.id,
+        }),
+      );
     }
-  }, [customer, dispatch, isFocused]);
+  }, [customer, dispatch, isFocused, user.activeCompany?.id]);
 
   const _saleOderList = useMemo(() => {
     return saleOrderList.filter(

@@ -35,14 +35,19 @@ const ClientSaleListScreen = ({}) => {
   const [isAsssignedToMe, setIsAsssignedToMe] = useState(true);
   const [category, setCategory] = useState(null);
 
-  const {userId} = useSelector((state: any) => state.auth);
+  const {user} = useSelector(state => state.user);
   const {loading, moreLoading, isListEnd, customerList} = useSelector(
     (state: any) => state.sale_customer,
   );
 
   const sliceFunctionData = useMemo(
-    () => ({isAsssignedToMe, userId, categoryId: category?.id}),
-    [category, isAsssignedToMe, userId],
+    () => ({
+      isAsssignedToMe,
+      userId: user.id,
+      categoryId: category?.id,
+      companyId: user.activeCompany?.id,
+    }),
+    [category, isAsssignedToMe, user],
   );
 
   return (
