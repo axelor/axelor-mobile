@@ -46,7 +46,6 @@ const ProjectListView = ({
   const {getCustomSelectionItems} = useTypeHelpers();
 
   const {user} = useSelector(state => state.user);
-  const {userId} = useSelector((state: any) => state.auth);
   const {loading, moreLoading, isListEnd, projectList, projectStatusList} =
     useSelector((state: any) => state.project_project);
 
@@ -62,16 +61,10 @@ const ProjectListView = ({
     () => ({
       isBusinessProject: businessProject,
       statusList: selectedStatus,
-      userId: isAssignedToMe ? userId : null,
+      userId: isAssignedToMe ? user.id : null,
       companyId: user.activeCompany?.id,
     }),
-    [
-      businessProject,
-      isAssignedToMe,
-      selectedStatus,
-      user.activeCompany?.id,
-      userId,
-    ],
+    [businessProject, isAssignedToMe, selectedStatus, user],
   );
 
   useEffect(() => {

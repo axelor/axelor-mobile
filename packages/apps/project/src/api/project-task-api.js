@@ -247,7 +247,6 @@ export async function getTag({activeCompany}) {
         '(self.concernedModelSet IS EMPTY OR :metaModel member of self.concernedModelSet)',
       domainContext: {
         metaModel: {id: res?.data?.data?.[0]?.id},
-        activeCompany: {id: activeCompany?.id},
       },
       provider: 'model',
     }),
