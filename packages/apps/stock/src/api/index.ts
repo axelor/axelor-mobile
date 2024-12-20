@@ -23,9 +23,10 @@ export {
   searchDeliveryFilter,
 } from './customer-delivery-api';
 export {
-  searchCustomerDeliveryLines,
-  updateLine as updateCustomerDeliveryLineApi,
   fetchCustomerDeliveryLine as fetchCustomerDeliveryLineApi,
+  searchCustomerDeliveryLines,
+  splitCustomerDeliveryLine as splitCustomerDeliveryLineApi,
+  updateLine as updateCustomerDeliveryLineApi,
 } from './customer-delivery-line-api';
 export {
   createInternalStockMove,

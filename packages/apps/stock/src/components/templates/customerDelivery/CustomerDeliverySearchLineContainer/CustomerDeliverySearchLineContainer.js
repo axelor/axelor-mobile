@@ -26,10 +26,9 @@ import {
   useTranslator,
   useTypes,
 } from '@axelor/aos-mobile-core';
-import {CustomerDeliveryLineCard} from '../../../templates';
+import {CustomerDeliveryLineActionCard} from '../../../templates';
 import {SearchLineContainer} from '../../../organisms';
 import {showLine} from '../../../../utils/line-navigation';
-import {StockMoveLine} from '../../../../types';
 import {fetchCustomerDeliveryLines} from '../../../../features/customerDeliveryLineSlice';
 import {useCustomerLinesWithRacks} from '../../../../hooks';
 
@@ -138,23 +137,10 @@ const CustomerDeliverySearchLineContainer = ({}) => {
       showAction={showLineAdditionIcon}
       onAction={handleNewLine}
       renderItem={item => (
-        <CustomerDeliveryLineCard
-          style={styles.item}
-          productName={item.product?.fullName}
-          stockLocationName={item.fromStockLocation?.name}
-          pickedQty={
-            StockMoveLine.hideLineQty(item, customerDelivery) ? 0 : item.realQty
-          }
-          askedQty={item.qty}
-          trackingNumber={item.trackingNumber}
-          locker={item.locker}
-          availability={
-            customerDelivery.statusSelect !== StockMove?.statusSelect.Realized
-              ? item.availableStatusSelect
-              : null
-          }
-          stockMoveLineId={item.id}
-          onPress={() => handleShowLine(item)}
+        <CustomerDeliveryLineActionCard
+          style={styles.card}
+          customerDeliveryLine={item}
+          handleShowLine={handleShowLine}
         />
       )}
     />
@@ -162,9 +148,8 @@ const CustomerDeliverySearchLineContainer = ({}) => {
 };
 
 const styles = StyleSheet.create({
-  item: {
-    marginHorizontal: 1,
-    marginVertical: 4,
+  card: {
+    width: '100%',
   },
 });
 
