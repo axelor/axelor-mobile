@@ -83,3 +83,12 @@ export async function fetchCustomerDeliveryLine({customerDeliveryLineId}) {
     provider: 'model',
   });
 }
+
+export async function splitCustomerDeliveryLine({id, version}) {
+  return getActionApi().send({
+    url: `ws/aos/stock-move-line/split/${id}`,
+    method: 'put',
+    body: {version},
+    description: 'split customer delivery line',
+  });
+}

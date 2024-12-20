@@ -18,6 +18,7 @@
 
 export {default as CustomerDeliveryCard} from './CustomerDeliveryCard/CustomerDeliveryCard';
 export {default as CustomerDeliveryHeader} from './CustomerDeliveryHeader/CustomerDeliveryHeader';
+export {default as CustomerDeliveryLineActionCard} from './CustomerDeliveryLineActionCard/CustomerDeliveryLineActionCard';
 export {default as CustomerDeliveryLineButtons} from './CustomerDeliveryLineButtons/CustomerDeliveryLineButtons';
 export {default as CustomerDeliveryLineCard} from './CustomerDeliveryLineCard/CustomerDeliveryLineCard';
 export {default as CustomerDeliveryLineCreationButton} from './CustomerDeliveryLineCreationButton/CustomerDeliveryLineCreationButton';

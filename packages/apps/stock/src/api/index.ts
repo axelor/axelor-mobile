@@ -25,6 +25,7 @@ export {
 export {
   fetchCustomerDeliveryLine as fetchCustomerDeliveryLineApi,
   searchCustomerDeliveryLines as searchCustomerDeliveryLinesApi,
+  splitCustomerDeliveryLine as splitCustomerDeliveryLineApi,
   updateLine as updateCustomerDeliveryLineApi,
 } from './customer-delivery-line-api';
 export {

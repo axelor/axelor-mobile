@@ -20,6 +20,7 @@ export {
   addTrackingNumber as addTrackingNumberToCustomerDeliveryLine,
   fetchCustomerDeliveryLine,
   fetchCustomerDeliveryLines,
+  splitCustomerDeliveryLine,
   updateCustomerDeliveryLine,
 } from './customerDeliveryLineSlice';
 export {
