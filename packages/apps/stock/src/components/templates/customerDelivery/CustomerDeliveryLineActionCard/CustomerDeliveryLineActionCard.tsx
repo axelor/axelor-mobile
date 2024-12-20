@@ -66,7 +66,7 @@ const CustomerDeliveryLineActionCard = ({
     () =>
       StockMoveLine.hideLineQty(customerDeliveryLine, customerDelivery)
         ? 0
-        : customerDeliveryLine.realQty,
+        : Number(customerDeliveryLine.realQty),
     [customerDelivery, customerDeliveryLine],
   );
 
