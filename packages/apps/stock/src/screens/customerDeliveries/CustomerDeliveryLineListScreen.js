@@ -22,9 +22,11 @@ import {
   SearchListView,
   useSelector,
   useTranslator,
-  useTypes,
 } from '@axelor/aos-mobile-core';
-import {CustomerDeliveryLineCard, StockMoveHeader} from '../../components';
+import {
+  CustomerDeliveryLineActionCard,
+  StockMoveHeader,
+} from '../../components';
 import {fetchCustomerDeliveryLines} from '../../features/customerDeliveryLineSlice';
 import {
   StockMove as StockMoveType,
@@ -40,7 +42,6 @@ const CustomerDeliveryLineListScreen = ({route}) => {
   const customerDelivery = route.params.customerDelivery;
   const Colors = useThemeColor();
   const I18n = useTranslator();
-  const {StockMove} = useTypes();
   const {showLine} = useLineHandler();
 
   const {customerDeliveryLineList} =
@@ -140,24 +141,9 @@ const CustomerDeliveryLineListScreen = ({route}) => {
           />
         }
         renderListItem={({item}) => (
-          <CustomerDeliveryLineCard
-            productName={item.product.fullName}
-            stockLocationName={item.fromStockLocation?.name}
-            pickedQty={
-              StockMoveLine.hideLineQty(item, customerDelivery)
-                ? 0
-                : item.realQty
-            }
-            askedQty={item.qty}
-            trackingNumber={item?.trackingNumber}
-            locker={item.locker}
-            availability={
-              customerDelivery.statusSelect === StockMove?.statusSelect.Realized
-                ? null
-                : item.availableStatusSelect
-            }
-            stockMoveLineId={item.id}
-            onPress={() => handleShowLine(item)}
+          <CustomerDeliveryLineActionCard
+            customerDeliveryLine={item}
+            handleShowLine={handleShowLine}
           />
         )}
       />
