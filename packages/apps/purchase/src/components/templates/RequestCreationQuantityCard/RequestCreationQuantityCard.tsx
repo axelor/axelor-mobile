@@ -18,42 +18,36 @@
 
 import React from 'react';
 import {useTranslator} from '@axelor/aos-mobile-core';
-import {checkNullString, QuantityCard, Text} from '@axelor/aos-mobile-ui';
+import {QuantityCard, Text} from '@axelor/aos-mobile-ui';
 
 interface RequestCreationQuantityCardProps {
-  movedQty: number;
-  setMovedQty: (state: any) => void;
+  quantity: number;
+  setQuantity: (state: any) => void;
   cancelMove: () => void;
   productName: string;
-  trackingNumber: string;
-  availableQty: number;
   productUnit: string;
 }
 
 const RequestCreationQuantityCard = ({
-  movedQty,
-  setMovedQty,
+  quantity,
+  setQuantity,
   cancelMove,
   productName,
-  trackingNumber,
 }: RequestCreationQuantityCardProps) => {
   const I18n = useTranslator();
 
   return (
     <QuantityCard
       labelQty={I18n.t('Purchase_Quantity')}
-      defaultValue={movedQty}
-      onValueChange={setMovedQty}
+      defaultValue={quantity}
+      onValueChange={setQuantity}
       editable={true}
       actionQty={true}
       iconName="x-lg"
       onPressActionQty={cancelMove}
       isBigButton={true}
       translator={I18n.t}>
-      <Text fontSize={16}>
-        {productName}
-        {!checkNullString(trackingNumber) && ' - ' + trackingNumber}
-      </Text>
+      <Text fontSize={16}>{productName}</Text>
     </QuantityCard>
   );
 };

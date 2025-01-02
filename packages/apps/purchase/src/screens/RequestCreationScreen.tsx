@@ -25,7 +25,7 @@ import {
   Screen,
   ViewAllEditList,
 } from '@axelor/aos-mobile-ui';
-import {useTranslator} from '@axelor/aos-mobile-core';
+import {useSelector, useTranslator} from '@axelor/aos-mobile-core';
 import {RequestCreation} from '../types';
 import {
   CompanyPicker,
@@ -39,25 +39,27 @@ import {
 const RequestCreationScreen = () => {
   const I18n = useTranslator();
 
-  const [company, setCompany] = useState(null);
+  const {user} = useSelector(state => state.user);
+
+  const [company, setCompany] = useState(user.activeCompany);
   const [currentStep, setCurrentStep] = useState(RequestCreation.step.addLine);
   const [newLine, setNewLine] = useState(null);
   const [lines, setLines] = useState([]);
-  const [movedQty, setMovedQty] = useState(0);
+  const [quantity, setQuantity] = useState(0);
   const [productTitle, setProductTitle] = useState('');
   const [isCustomProduct, setIsCustomProduct] = useState(false);
   const [unit, setUnit] = useState(null);
 
   const handleEditLine = line => {
     setNewLine(line);
-    setMovedQty(line.realQty);
+    setQuantity(line.quantity);
     setUnit(line.unit);
     setCurrentStep(RequestCreation.step.validateLine);
   };
 
   const handleReset = useCallback((_step = RequestCreation.step.addLine) => {
     setCurrentStep(_step);
-    setMovedQty(0);
+    setQuantity(0);
     setNewLine(null);
     setProductTitle('');
     setUnit(null);
@@ -88,17 +90,12 @@ const RequestCreationScreen = () => {
       const existingLine = newLines.find(line => line.id === newLine?.id);
 
       if (existingLine) {
-        existingLine.realQty = isEditionMode
-          ? movedQty
-          : existingLine.realQty + movedQty;
+        existingLine.quantity = quantity;
       } else {
         newLines.push({
-          product: isCustomProduct
-            ? {name: productTitle, id: `custom-${Date.now()}`}
-            : newLine,
-          trackingNumber: newLine?.trackingNumber,
-          realQty: movedQty,
-          currentQty: newLine?.currentQty,
+          productTitle: isCustomProduct ? productTitle : null,
+          product: isCustomProduct ? null : newLine,
+          quantity: quantity,
           unit: unit,
           id: newLine?.id || `custom-${Date.now()}`,
         });
@@ -111,7 +108,7 @@ const RequestCreationScreen = () => {
 
   const isEditionMode = useMemo(
     () =>
-      newLine?.realQty > 0 && lines.find(({id}) => id === newLine?.id) != null,
+      newLine?.quantity > 0 && lines.find(({id}) => id === newLine?.id) != null,
     [lines, newLine],
   );
 
@@ -124,7 +121,7 @@ const RequestCreationScreen = () => {
           setStep={setCurrentStep}
           lines={lines}
           unit={unit}
-          movedQty={movedQty}
+          movedQty={quantity}
           isEditionMode={isEditionMode}
           addLine={handleAddLine}
         />
@@ -136,14 +133,13 @@ const RequestCreationScreen = () => {
           title={I18n.t('Purchase_Products')}
           lines={lines.map(line => ({
             ...line,
-            name: line.product?.name || line.name,
-            nameDetails: line.trackingNumber?.trackingNumberSeq,
-            qty: line.realQty,
+            name: line.productTitle || line.product?.name,
+            qty: line.quantity,
             unitName: line.unit?.name,
           }))}
           currentLineId={isEditionMode ? newLine.id : null}
           setLines={_lines =>
-            setLines(_lines.map(line => ({...line, realQty: line.qty})))
+            setLines(_lines.map(line => ({...line, quantity: line.qty})))
           }
           handleEditLine={handleEditLine}
           translator={I18n.t}
@@ -177,12 +173,10 @@ const RequestCreationScreen = () => {
         {currentStep === RequestCreation.step.validateLine && (
           <>
             <RequestCreationQuantityCard
-              movedQty={movedQty}
-              setMovedQty={setMovedQty}
+              quantity={quantity}
+              setQuantity={setQuantity}
               cancelMove={() => handleReset(RequestCreation.step.addLine)}
               productName={newLine?.name || productTitle}
-              trackingNumber={newLine?.trackingNumber?.trackingNumberSeq}
-              availableQty={newLine?.currentQty}
               productUnit={unit?.name || newLine?.product?.unit?.name}
             />
             <UnitSearchBar

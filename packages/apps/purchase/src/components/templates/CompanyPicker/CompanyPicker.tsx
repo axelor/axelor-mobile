@@ -37,7 +37,7 @@ const CompanyPicker = ({
 
   const {user} = useSelector((state: any) => state.user);
 
-  if (!Array.isArray(user?.companySet) || user.companySet.length === 0) {
+  if (!Array.isArray(user?.companySet) || user.companySet.length <= 1) {
     return null;
   }
 
