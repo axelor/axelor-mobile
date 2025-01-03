@@ -1,0 +1,5 @@
+{
+  "title": "Navigator: unmount Drawer on blur",
+  "type": "refactor",
+  "packages": "core"
+}
