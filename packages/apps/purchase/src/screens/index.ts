@@ -37,7 +37,7 @@ export default {
     },
   },
   RequestLineListScreen: {
-    title: 'Purchase_InternalRequests',
+    title: 'Purchase_Request',
     component: RequestLineListScreen,
     options: {
       shadedHeader: false,
@@ -47,3 +47,4 @@ export default {
 
 export {RequestDetailsScreen};
 export {RequestListScreen};
+export {RequestLineListScreen};

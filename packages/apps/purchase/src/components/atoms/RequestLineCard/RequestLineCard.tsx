@@ -52,6 +52,8 @@ const RequestLineCard = ({
   return (
     <ObjectCard
       style={[borderStyle, style]}
+      leftContainerFlex={4}
+      iconLeftMargin={5}
       upperTexts={{
         items: [
           {
