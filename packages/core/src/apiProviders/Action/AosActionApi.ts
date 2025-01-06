@@ -39,10 +39,6 @@ export class AosActionApi implements ActionApi {
   }
 
   send(request: ActionRequest): Promise<void> {
-    if (request.ignoreRequest) {
-      return null;
-    }
-
     return axios[request.method](request.url, request.body);
   }
 
