@@ -21,4 +21,5 @@ import {SearchFields} from '@axelor/aos-mobile-core';
 export const purchase_searchFields: SearchFields = {
   purchase_purchaseRequest: ['purchaseRequestSeq', 'company.name'],
   purchase_supplier: ['simpleFullName'],
+  purchase_purchaseRequestLine: ['product.fullName', 'productTitle'],
 };
