@@ -252,17 +252,18 @@ const ActionCard = ({
             disabled={actionList[0].disabled}
           />
         )}
-        {displaySeeActionsButton && (
-          <InfoButton
-            style={getVerticalActionStyle(
-              _quickAction == null || _quickAction.large,
-            )}
-            iconName="three-dots"
-            iconColor={Colors.secondaryColor_dark.background}
-            indication={translator('Base_SeeActions')}
-            onPress={() => setIsActionsVisible(current => !current)}
-          />
-        )}
+        {displaySeeActionsButton &&
+          (!isActionsVisible || _quickAction != null) && (
+            <InfoButton
+              style={getVerticalActionStyle(
+                _quickAction == null || _quickAction.large,
+              )}
+              iconName="three-dots"
+              iconColor={Colors.secondaryColor_dark.background}
+              indication={translator('Base_SeeActions')}
+              onPress={() => setIsActionsVisible(current => !current)}
+            />
+          )}
         {_quickAction != null && (
           <InfoButton
             style={getVerticalActionStyle(
