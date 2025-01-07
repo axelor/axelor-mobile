@@ -24,7 +24,7 @@ import {
   useSelector,
   useTranslator,
 } from '@axelor/aos-mobile-core';
-import {getProductStockIndicators} from '../../../../api';
+import {getProductStockIndicators} from '../../../../api/product-api';
 
 interface ProductCardProps {
   style?: any;
