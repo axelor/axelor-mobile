@@ -22,6 +22,8 @@ import {Text} from '@axelor/aos-mobile-ui';
 import {useTranslator} from '../../../i18n';
 import {areObjectsEquals, getFullDateItems} from '../../../utils';
 
+const BoldText = props => <Text style={styles.boldText}>{props.children}</Text>;
+
 interface PeriodDisplayProps {
   startDate: string;
   endDate: string;
@@ -40,16 +42,18 @@ const PeriodDisplay = ({startDate, endDate, style}: PeriodDisplayProps) => {
     [endDate, I18n],
   );
 
-  const BoldText = props => (
-    <Text style={styles.boldText}>{props.children}</Text>
-  );
-
   const renderDates = () => {
-    if (areObjectsEquals(_startDate, _endDate) || _endDate == null) {
+    if (
+      areObjectsEquals(_startDate, _endDate) ||
+      _startDate == null ||
+      _endDate == null
+    ) {
+      const _date = _startDate ?? _endDate;
+
       // prettier-ignore
       return (
         <Text>
-          {_startDate.date} <BoldText>{_startDate.month}</BoldText> {_startDate.year}
+          {_date.date} <BoldText>{_date.month}</BoldText> {_date.year}
         </Text>
       );
     } else if (
@@ -78,6 +82,10 @@ const PeriodDisplay = ({startDate, endDate, style}: PeriodDisplayProps) => {
       );
     }
   };
+
+  if (_startDate == null && _endDate == null) {
+    return null;
+  }
 
   return <View style={style}>{renderDates()}</View>;
 };
