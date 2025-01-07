@@ -21,6 +21,46 @@ import {provider} from '../apiProviders';
 import {translationMiddleware} from '../apiProviders/middlewares/translation';
 
 const loginPath = '/callback';
+const SESSION_REGEX = /JSESSIONID=\w+/g;
+
+const getJsessionId = (cookie: string) => {
+  return cookie.match(SESSION_REGEX)?.[0];
+};
+
+export function ejectAxios({
+  requestInterceptorId,
+  responseInterceptorId,
+}: {
+  requestInterceptorId: number;
+  responseInterceptorId: number;
+}) {
+  axios.interceptors.request.eject(requestInterceptorId);
+  axios.interceptors.request.eject(responseInterceptorId);
+}
+
+export function initAxiosWithHeaders(res: any, url: string) {
+  const token = res.headers['x-csrf-token'];
+  const jsessionId = getJsessionId(res.headers['set-cookie'][0]);
+
+  if (token == null) {
+    throw new Error('X-CSRF-Token is not exposed in remote header');
+  }
+
+  const requestInterceptorId = axios.interceptors.request.use(config => {
+    config.baseURL = url;
+    config.headers['x-csrf-token'] = token;
+
+    return config;
+  });
+
+  const responseInterceptorId = axios.interceptors.response.use(_response =>
+    translationMiddleware(_response),
+  );
+
+  provider.getModelApi()?.init();
+
+  return {token, jsessionId, requestInterceptorId, responseInterceptorId};
+}
 
 export async function loginApi(
   url: string,
@@ -34,27 +74,7 @@ export async function loginApi(
 }> {
   return axios
     .post(`${url}${loginPath}`, {username, password})
-    .then(response => {
-      const token = response.headers['x-csrf-token'];
-      const jsessionId = response.headers['set-cookie'][0].split(';')[0];
-      if (token == null) {
-        throw new Error('X-CSRF-Token is not exposed in remote header');
-      }
-
-      const requestInterceptorId = axios.interceptors.request.use(config => {
-        config.baseURL = url;
-        config.headers['x-csrf-token'] = token;
-        return config;
-      });
-
-      const responseInterceptorId = axios.interceptors.response.use(_response =>
-        translationMiddleware(_response),
-      );
-
-      provider.getModelApi()?.init();
-
-      return {token, jsessionId, requestInterceptorId, responseInterceptorId};
-    });
+    .then(res => initAxiosWithHeaders(res, url));
 }
 
 export async function getActiveUserInfo() {

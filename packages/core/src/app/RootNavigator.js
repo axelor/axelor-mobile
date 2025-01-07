@@ -130,6 +130,7 @@ const RootNavigator = ({
             name="CustomLoginPage"
             component={CustomLoginPage}
             initialParams={{
+              version,
               testInstanceConfig: configuration?.testInstanceConfig,
               releaseInstanceConfig: configuration?.releaseInstanceConfig,
               logoFile: configuration?.logoFile,

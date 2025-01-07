@@ -1,0 +1,5 @@
+{
+  "title": "Login: improve token retrieval with a regex",
+  "type": "refactor",
+  "packages": "core"
+}

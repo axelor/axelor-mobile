@@ -65,6 +65,12 @@ export {
 export {getNetInfo} from './api/net-info-utils';
 export {uploadFile, uploadBase64} from './api/metafile-api';
 export {useDispatch, useSelector} from './redux/hooks';
+export {
+  ejectAxios,
+  getActiveUserInfo,
+  initAxiosWithHeaders,
+  loginApi,
+} from './api/login-api';
 export * from './components';
 export * from './tools';
 export * from './utils';

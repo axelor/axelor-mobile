@@ -17,6 +17,7 @@
  */
 
 export {updateAgendaItems} from './agenda';
+export * from './api';
 export {
   isDate,
   isDateTime,
