@@ -101,6 +101,7 @@ export {fetchProductForSupplier} from './supplierCatalogSlice';
 export {
   createTrackingNumberSeq,
   filterTrackingNumber,
+  updateStockMoveLineTrackingNumber,
   updateSupplierTrackingNumber,
   updateTrackingNumber,
 } from './trackingNumberSlice';
