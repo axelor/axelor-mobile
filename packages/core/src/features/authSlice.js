@@ -17,8 +17,7 @@
  */
 
 import {createAsyncThunk, createSlice} from '@reduxjs/toolkit';
-import axios from 'axios';
-import {getActiveUserInfo, loginApi} from '../api/login-api';
+import {ejectAxios, getActiveUserInfo, loginApi} from '../api/login-api';
 import {apiProviderConfig} from '../apiProviders/config';
 import {saveUrlInStorage} from '../sessions';
 import {checkNullString} from '../utils';
@@ -63,8 +62,7 @@ export const logout = createAsyncThunk(
   'auth/logout',
   async function (data, {getState}) {
     const {requestInterceptorId, responseInterceptorId} = getState()?.auth;
-    axios.interceptors.request.eject(requestInterceptorId);
-    axios.interceptors.request.eject(responseInterceptorId);
+    ejectAxios({requestInterceptorId, responseInterceptorId});
     return;
   },
 );
