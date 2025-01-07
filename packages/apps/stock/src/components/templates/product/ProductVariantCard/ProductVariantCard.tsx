@@ -24,7 +24,7 @@ import Product from '../../../../types/product';
 import {
   getProductStockIndicators,
   fetchVariantAttributes,
-} from '../../../../api';
+} from '../../../../api/product-api';
 
 interface ProductAttribut {
   attrName: string;
