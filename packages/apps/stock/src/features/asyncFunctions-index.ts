@@ -83,12 +83,12 @@ export {
   searchAvailableProducts,
 } from './stockLocationLineSlice';
 export {
-  searchStockLocations,
   filterSecondStockLocations,
+  searchStockLocations,
 } from './stockLocationSlice';
 export {
-  fetchSupplierArrivalLines,
   fetchSupplierArrivalLine,
+  fetchSupplierArrivalLines,
   updateSupplierArrivalLine,
 } from './supplierArrivalLineSlice';
 export {
@@ -101,6 +101,7 @@ export {fetchProductForSupplier} from './supplierCatalogSlice';
 export {
   createTrackingNumberSeq,
   filterTrackingNumber,
+  updateStockMoveLineTrackingNumber,
   updateSupplierTrackingNumber,
 } from './trackingNumberSlice';
 export {fetchUnit} from './unitSlice';
