@@ -28,3 +28,4 @@ export {
   manageInfiteScrollState,
   generateInifiniteScrollCases,
 } from './utils';
+export {apiProviderConfig} from './config';
