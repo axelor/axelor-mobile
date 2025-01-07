@@ -17,48 +17,79 @@
  */
 
 export {
-  addLineStockMove as addCustomerDeliveryLine,
-  searchDeliveryFilter,
+  addLineStockMove as addCustomerDeliveryLineApi,
+  fetchCustomerDelivery as fetchCustomerDeliveryApi,
+  searchDeliveryFilter as searchDeliveryFilterApi,
   realizeSockMove as realizeCustomerDeliveryApi,
 } from './customer-delivery-api';
 export {
-  searchCustomerDeliveryLines,
+  fetchCustomerDeliveryLine as fetchCustomerDeliveryLineApi,
+  searchCustomerDeliveryLines as searchCustomerDeliveryLinesApi,
   updateLine as updateCustomerDeliveryLineApi,
 } from './customer-delivery-line-api';
 export {
+  createInternalStockMove as createInternalStockMoveApi,
   fetchInternalMove as fetchInternalMoveApi,
-  searchInternalMoveFilter,
+  modifyInternalMoveNotes as modifyInternalMoveNotesApi,
   realizeInternalMove as realizeInternalMoveApi,
-  createInternalStockMove,
+  searchInternalMoveFilter as searchInternalMoveFilterApi,
 } from './internal-move-api';
 export {
-  searchInternalMoveLines,
+  fetchInternalMoveLine as fetchInternalMoveLineApi,
+  searchInternalMoveLines as searchInternalMoveLinesApi,
   updateInternalMoveLine as updateInternalMoveLineApi,
 } from './internal-move-line-api';
-export * from './inventory-api';
-export * from './inventory-line-api';
-export * from './partner-api';
-export * from './product-api';
+export {
+  fetchInventory as fetchInventoryApi,
+  modifyDescriptionInventory as modifyDescriptionInventoryApi,
+  searchInventoryFilter as searchInventoryFilterApi,
+  updateInventoryStatus as updateInventoryStatusApi,
+} from './inventory-api';
+export {
+  addTrackingNumber as addTrackingNumberInventoryLineApi,
+  createInventoryLine as createInventoryLineApi,
+  fetchInventoryLine as fetchInventoryLineApi,
+  searchInventoryLines as searchInventoryLinesApi,
+  updateInventoryLineDetails as updateInventoryLineDetailsApi,
+} from './inventory-line-api';
+export {searchClientsFilter, searchSuppliersFilter} from './partner-api';
+export {
+  fetchVariantAttributes as fetchVariantAttributesApi,
+  fetchVariants as fetchVariantsApi,
+  getProductStockIndicators as getProductStockIndicatorsApi,
+  searchProductWithId as searchProductWithIdApi,
+  searchProductsFilter as searchProductsFilterApi,
+  updateLocker as updateLockerApi,
+} from './product-api';
 export {
   fetchStockCorrection as fetchStockCorrectionApi,
-  createStockCorrection,
-  updateStockCorrection,
-  searchStockCorrection,
-  updateStockCorrectionTrackingNumber,
+  createStockCorrection as createStockCorrectionApi,
+  updateStockCorrection as updateStockCorrectionApi,
+  searchStockCorrection as searchStockCorrectionApi,
+  updateStockCorrectionTrackingNumber as updateStockCorrectionTrackingNumberApi,
 } from './stock-correction-api';
-export * from './stock-correction-reason-api';
-export * from './stock-location-api';
-export * from './stock-location-line-api';
+export {searchStockCorrectionReason as searchStockCorrectionReasonApi} from './stock-correction-reason-api';
+export {searchStockLocationsFilter as searchStockLocationsFilterApi} from './stock-location-api';
 export {
-  searchSupplierArrivalFilter,
+  searchAvailableProducts as searchAvailableProductsApi,
+  searchStockLocationLine as searchStockLocationLineApi,
+} from './stock-location-line-api';
+export {
   addLineStockMove as addSupplierArrivalLine,
+  fetchSupplierArrival as fetchSupplierArrivalApi,
   realizeSockMove as realizeSupplierArrivalApi,
+  searchSupplierArrivalFilter as searchSupplierArrivalFilterApi,
 } from './supplier-arrival-api';
 export {
-  searchSupplierArrivalLines,
+  fetchSupplierArrivalLine as fetchSupplierArrivalLineApi,
+  searchSupplierArrivalLines as searchSupplierArrivalLinesApi,
   updateLine as updateSupplierArrivalLineApi,
 } from './supplier-arrival-line-api';
-export * from './supplier-catalog-api';
-export * from './supplychain-config-api';
-export * from './tracking-number-api';
-export * from './unit-api';
+export {searchSupplierProduct as searchSupplierProductApi} from './supplier-catalog-api';
+export {fetchSupplychainConfig as fetchSupplychainConfigApi} from './supplychain-config-api';
+export {
+  createTrackingNumber as createTrackingNumberApi,
+  searchTrackingNumberFilter as searchTrackingNumberFilterApi,
+  updateStockMoveLineTrackingNumber as updateStockMoveLineTrackingNumberApi,
+} from './tracking-number-api';
+export {searchUnit as searchUnitApi} from './unit-api';

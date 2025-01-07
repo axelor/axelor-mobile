@@ -17,35 +17,40 @@
  */
 
 export {
+  addTrackingNumber as addTrackingNumberCustomerDeliveryLine,
+  fetchCustomerDeliveryLine,
   fetchCustomerDeliveryLines,
   updateCustomerDeliveryLine,
 } from './customerDeliveryLineSlice';
 export {
   addNewLine as addNewCustomerDeliveryLine,
+  fetchCustomerDelivery,
   realizeCustomerDelivery,
   searchDeliveries,
-  fetchCustomerDelivery,
 } from './customerDeliverySlice';
 export {
+  addTrackingNumber as addTrackingNumberInternalMoveLine,
+  fetchInternalMoveLine,
   fetchInternalMoveLines,
   updateInternalMoveLine,
 } from './internalMoveLineSlice';
 export {
-  searchInternalMoves,
   createInternalMove,
-  realizeInternalMove,
   fetchInternalMove,
+  realizeInternalMove,
+  searchInternalMoves,
 } from './internalMoveSlice';
 export {
+  addTrackingNumber as addTrackingNumberInventoryLine,
   createNewInventoryLine,
   fetchInventoryLines,
   updateInventoryLine,
 } from './inventoryLineSlice';
 export {
-  searchInventories,
-  modifyDescription,
-  updateInventory,
   fetchInventoryById,
+  modifyDescription,
+  searchInventories,
+  updateInventory,
 } from './inventorySlice';
 export {filterClients, filterSuppliers} from './partnerSlice';
 export {
@@ -54,10 +59,11 @@ export {
   fetchProductsAvailability,
 } from './productIndicatorsSlice';
 export {
-  searchProducts,
   fetchProductWithId,
+  searchProducts,
   updateProductLocker,
 } from './productSlice';
+export {searchProductTrackingNumber} from './productTrackingNumberSlice';
 export {
   fetchProductVariants,
   fetchProductsAttributes,
@@ -67,30 +73,35 @@ export {fetchSupplychainConfigForStockApp} from './stockAppConfigSlice';
 export {fetchStockCorrectionReasons} from './stockCorrectionReasonSlice';
 export {
   addTrackingNumberStockCorrection,
-  searchStockCorrections,
   createCorrection,
-  updateCorrection,
   fetchStockCorrection,
+  searchStockCorrections,
+  updateCorrection,
 } from './stockCorrectionSlice';
-export {fetchStockLocationLine} from './stockLocationLineSlice';
 export {
-  searchStockLocations,
+  fetchStockLocationLine,
+  searchAvailableProducts,
+} from './stockLocationLineSlice';
+export {
   filterSecondStockLocations,
+  searchStockLocations,
 } from './stockLocationSlice';
 export {
+  fetchSupplierArrivalLine,
   fetchSupplierArrivalLines,
   updateSupplierArrivalLine,
 } from './supplierArrivalLineSlice';
 export {
-  searchSupplierArrivals,
   addNewLine as addNewSupplierArrivalLine,
-  realizeSupplierArrival,
   fetchSupplierArrival,
+  realizeSupplierArrival,
+  searchSupplierArrivals,
 } from './supplierArrivalSlice';
 export {fetchProductForSupplier} from './supplierCatalogSlice';
 export {
-  filterTrackingNumber,
   createTrackingNumberSeq,
+  filterTrackingNumber,
+  updateStockMoveLineTrackingNumber,
   updateSupplierTrackingNumber,
 } from './trackingNumberSlice';
 export {fetchUnit} from './unitSlice';
