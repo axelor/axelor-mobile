@@ -185,6 +185,10 @@ export async function fetchProductById({productId}) {
 }
 
 export async function fetchProductCompanyConfig({companyId, productId}) {
+  if (companyId == null) {
+    return null;
+  }
+
   return createStandardSearch({
     model: 'com.axelor.apps.base.db.ProductCompany',
     criteria: createProductCompanyCriteria(productId),
