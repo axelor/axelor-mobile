@@ -158,9 +158,12 @@ export async function searchProjectTask({
   selectedPriority,
   selectedCategory,
   projectTaskId,
+  companyId,
 }) {
   return createStandardSearch({
     model: 'com.axelor.apps.project.db.ProjectTask',
+    companyId,
+    companyFieldName: 'project.company',
     criteria: createProjectTaskCriteria({
       searchValue,
       projectId,
