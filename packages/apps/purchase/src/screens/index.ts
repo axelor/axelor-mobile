@@ -17,6 +17,7 @@
  */
 
 import RequestDetailsScreen from './RequestDetailsScreen';
+import RequestLineListScreen from './RequestLineListScreen';
 import RequestListScreen from './RequestListScreen';
 
 export default {
@@ -29,8 +30,15 @@ export default {
     isUsableOnShortcut: true,
   },
   RequestDetailsView: {
-    title: 'Purchase_Request',
+    title: 'Purchase_InternalRequest',
     component: RequestDetailsScreen,
+    options: {
+      shadedHeader: false,
+    },
+  },
+  RequestLineListScreen: {
+    title: 'Purchase_InternalRequest',
+    component: RequestLineListScreen,
     options: {
       shadedHeader: false,
     },
@@ -39,3 +47,4 @@ export default {
 
 export {RequestDetailsScreen};
 export {RequestListScreen};
+export {RequestLineListScreen};

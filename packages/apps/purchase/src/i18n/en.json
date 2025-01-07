@@ -1,6 +1,7 @@
 {
   "Purchase_Purchase": "Purchase",
   "Purchase_InternalRequests": "Internal requests",
+  "Purchase_InternalRequest": "Internal request",
   "Purchase_Status_Draft": "Draft",
   "Purchase_Status_Requested": "Requested",
   "Purchase_Status_Accepted": "Accepted",
@@ -17,6 +18,9 @@
   "Purchase_Accept": "Accept",
   "Purchase_Refuse": "Refuse",
   "Purchase_NoInformationAvailable": "No information available",
+  "Purchase_AddProduct": "Add product",
+  "Purchase_NewProduct": "New product",
+  "Purchase_ExistingProduct": "Existing product",
   "Purchase_SliceAction_SearchPurchaseRequest": "search purchase request",
   "Purchase_SliceAction_SearchSupplier": "search supplier",
   "Purchase_SliceAction_GetPurchaseRequest": "get purchase request",
