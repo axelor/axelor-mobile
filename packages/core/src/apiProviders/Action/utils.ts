@@ -24,6 +24,7 @@ export type ActionRequest = {
   body: any;
   description: string;
   matchers: MatcherConfig;
+  ignoreRequest?: boolean;
 };
 
 export type MatcherConfig = {

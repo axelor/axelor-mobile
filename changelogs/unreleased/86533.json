@@ -1,0 +1,5 @@
+{
+  "title": "ActionApi: add props on send request to enable provider to ignore it",
+  "type": "feat",
+  "packages": "core"
+}
