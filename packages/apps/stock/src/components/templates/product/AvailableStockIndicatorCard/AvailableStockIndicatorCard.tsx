@@ -20,7 +20,7 @@ import React, {useCallback, useEffect, useMemo, useRef, useState} from 'react';
 import {StyleSheet} from 'react-native';
 import {ObjectCard, useDigitFormat, useThemeColor} from '@axelor/aos-mobile-ui';
 import {useSelector, useTranslator} from '@axelor/aos-mobile-core';
-import {getProductStockIndicators} from '../../../../api';
+import {getProductStockIndicators} from '../../../../api/product-api';
 
 interface AvailableStockIndicatorCardProps {
   product: any;

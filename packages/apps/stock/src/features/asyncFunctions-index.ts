@@ -82,8 +82,8 @@ export {
   searchAvailableProducts,
 } from './stockLocationLineSlice';
 export {
-  searchStockLocations,
   filterSecondStockLocations,
+  searchStockLocations,
 } from './stockLocationSlice';
 export {
   fetchSupplierArrivalLine,

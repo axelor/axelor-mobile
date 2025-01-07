@@ -1,5 +1,5 @@
 {
-  "title": "Features: add missing export of updateStockMoveLineTrackingNumber",
+  "title": "API: add missing exports of api & slice functions",
   "type": "fix",
   "packages": "stock"
 }
