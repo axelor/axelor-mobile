@@ -1,6 +1,7 @@
 {
   "Purchase_Purchase": "Achats",
   "Purchase_InternalRequests": "Demandes internes",
+  "Purchase_InternalRequest": "Demande interne",
   "Purchase_Status_Draft": "Brouillon",
   "Purchase_Status_Requested": "Demandée",
   "Purchase_Status_Accepted": "Acceptée",
@@ -17,6 +18,9 @@
   "Purchase_Accept": "Accepter",
   "Purchase_Refuse": "Refuser",
   "Purchase_NoInformationAvailable": "Aucune information disponible",
+  "Purchase_AddProduct": "Ajouter un produit",
+  "Purchase_NewProduct": "Nouveau produit",
+  "Purchase_ExistingProduct": "Produit existant",
   "Purchase_SliceAction_SearchPurchaseRequest": "recherche sur les demandes d'achat",
   "Purchase_SliceAction_SearchSupplier": "recherche sur les fournisseurs",
   "Purchase_SliceAction_GetPurchaseRequest": "récupération de la demande d'achat",
