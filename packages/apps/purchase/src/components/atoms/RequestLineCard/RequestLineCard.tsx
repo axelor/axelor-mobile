@@ -52,15 +52,10 @@ const RequestLineCard = ({
   return (
     <ObjectCard
       style={[borderStyle, style]}
-      leftContainerFlex={4}
+      leftContainerFlex={3}
       iconLeftMargin={5}
       upperTexts={{
-        items: [
-          {
-            isTitle: true,
-            displayText: productName,
-          },
-        ],
+        items: [{isTitle: true, displayText: productName}],
       }}
       sideBadges={{
         items: [

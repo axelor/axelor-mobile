@@ -1,6 +1,7 @@
 {
   "Purchase_Purchase": "Achats",
   "Purchase_InternalRequests": "Demandes internes",
+  "Purchase_InternalRequest": "Demande interne",
   "Purchase_Status_Draft": "Brouillon",
   "Purchase_Status_Requested": "Demandée",
   "Purchase_Status_Accepted": "Acceptée",

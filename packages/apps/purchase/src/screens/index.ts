@@ -30,14 +30,14 @@ export default {
     isUsableOnShortcut: true,
   },
   RequestDetailsView: {
-    title: 'Purchase_Request',
+    title: 'Purchase_InternalRequest',
     component: RequestDetailsScreen,
     options: {
       shadedHeader: false,
     },
   },
   RequestLineListScreen: {
-    title: 'Purchase_Request',
+    title: 'Purchase_InternalRequest',
     component: RequestLineListScreen,
     options: {
       shadedHeader: false,
