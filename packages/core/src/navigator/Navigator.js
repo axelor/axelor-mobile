@@ -262,6 +262,7 @@ const Navigator = ({mainMenu, onRefresh, versionCheckConfig}) => {
                 name={key}
                 options={{
                   title: getMenuTitle(menu, {I18n}),
+                  unmountOnBlur: true,
                 }}>
                 {props =>
                   menu.screen && (
@@ -280,6 +281,7 @@ const Navigator = ({mainMenu, onRefresh, versionCheckConfig}) => {
                       name={subMenukey}
                       options={{
                         title: getMenuTitle(subMenu, {I18n}),
+                        unmountOnBlur: true,
                       }}>
                       {props => (
                         <ModulesScreensStackNavigator
