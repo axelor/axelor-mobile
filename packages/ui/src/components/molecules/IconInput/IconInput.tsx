@@ -41,6 +41,7 @@ interface IconInputProps {
   isFocus?: boolean;
   leftIconsList?: any[];
   rightIconsList?: any[];
+  isScannableInput?: boolean;
 }
 
 const IconInput = ({
@@ -60,6 +61,7 @@ const IconInput = ({
   isFocus = false,
   leftIconsList = [],
   rightIconsList = [],
+  isScannableInput,
 }: IconInputProps) => {
   const Colors = useThemeColor();
   const styles = useMemo(() => getStyles(Colors), [Colors]);
@@ -106,6 +108,7 @@ const IconInput = ({
         keyboardType={keyboardType}
         onEndFocus={handleEndFocus}
         isFocus={isFocus}
+        isScannableInput={isScannableInput}
       />
       {rightIconsList.map((iconComponent, index) =>
         React.cloneElement(iconComponent, {key: index}),

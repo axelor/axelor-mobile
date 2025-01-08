@@ -27,6 +27,7 @@ import {
 import {useThemeColor, useWritingType} from '../../../theme';
 import {useConfig} from '../../../config/ConfigContext';
 import {checkNullString} from '../../../utils';
+import {Keyboard} from '../../../types';
 
 interface InputProps {
   style?: any;
@@ -46,6 +47,7 @@ interface InputProps {
   onContentSizeChange?: (
     e: NativeSyntheticEvent<TextInputContentSizeChangeEventData>,
   ) => void;
+  isScannableInput?: boolean;
 }
 
 const Input = ({
@@ -64,9 +66,10 @@ const Input = ({
   isFocus = false,
   writingType,
   onContentSizeChange,
+  isScannableInput = false,
 }: InputProps) => {
   const Colors = useThemeColor();
-  const {hideVirtualKeyboard} = useConfig();
+  const {virtualKeyboardVisibility} = useConfig();
   const writingStyle = useWritingType(writingType);
 
   const defaultStyle: TextStyle = useMemo(() => {
@@ -77,6 +80,19 @@ const Input = ({
       textAlignVertical: multiline ? 'top' : 'center',
     };
   }, [Colors.text, multiline, writingStyle]);
+
+  const displayKeyboard = useMemo(() => {
+    switch (virtualKeyboardVisibility) {
+      case Keyboard.visibility.Always:
+        return true;
+      case Keyboard.visibility.HiddenOnScannableInputs:
+        return !isScannableInput;
+      case Keyboard.visibility.Never:
+        return false;
+      default:
+        return true;
+    }
+  }, [isScannableInput, virtualKeyboardVisibility]);
 
   const onValueChange = useCallback(
     _value => {
@@ -105,7 +121,7 @@ const Input = ({
       multiline={multiline}
       numberOfLines={numberOfLines}
       onBlur={onEndFocus}
-      showSoftInputOnFocus={hideVirtualKeyboard ? false : true}
+      showSoftInputOnFocus={displayKeyboard}
       autoFocus={isFocus}
       onContentSizeChange={onContentSizeChange}
     />

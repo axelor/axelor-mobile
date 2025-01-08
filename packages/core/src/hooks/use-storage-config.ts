@@ -19,14 +19,14 @@
 import {useCallback, useEffect, useMemo} from 'react';
 import {Dimensions} from 'react-native';
 import DeviceInfo from 'react-native-device-info';
-import {useConfig, useTheme} from '@axelor/aos-mobile-ui';
+import {Keyboard, useConfig, useTheme} from '@axelor/aos-mobile-ui';
 import {storage} from '../storage/Storage';
 
 const CONFIG_STORAGE_KEY = 'ui_config';
 const SMALL_SCREEN_HEIGHT = 500;
 
 export const useStorageUpdater = () => {
-  const {showFilter, showSubtitles, showToolbox, hideVirtualKeyboard} =
+  const {showFilter, showSubtitles, showToolbox, virtualKeyboardVisibility} =
     useConfig();
   const {activeTheme, isColorBlind} = useTheme();
 
@@ -35,13 +35,13 @@ export const useStorageUpdater = () => {
       showFilter,
       showSubtitles,
       showToolbox,
-      hideVirtualKeyboard,
+      virtualKeyboardVisibility,
       activeTheme,
       isColorBlind,
     }),
     [
       activeTheme,
-      hideVirtualKeyboard,
+      virtualKeyboardVisibility,
       isColorBlind,
       showFilter,
       showSubtitles,
@@ -59,7 +59,7 @@ export const useConfigUpdater = (): {updateConfigFromStorage: () => void} => {
     setFilterConfig,
     setShowSubtitles,
     setShowToolbox,
-    setVirtualKeyboardConfig,
+    setVirtualKeyboardVisibility,
   } = useConfig();
   const {activateColorBlind, changeTheme} = useTheme();
 
@@ -70,7 +70,7 @@ export const useConfigUpdater = (): {updateConfigFromStorage: () => void} => {
       setFilterConfig(_config.showFilter);
       setShowSubtitles(_config.showSubtitles);
       setShowToolbox(_config.showToolbox);
-      setVirtualKeyboardConfig(_config.hideVirtualKeyboard);
+      setVirtualKeyboardVisibility(_config.virtualKeyboardVisibility);
       if (_config.isColorBlind) {
         activateColorBlind();
       } else {
@@ -83,23 +83,27 @@ export const useConfigUpdater = (): {updateConfigFromStorage: () => void} => {
     setFilterConfig,
     setShowSubtitles,
     setShowToolbox,
-    setVirtualKeyboardConfig,
+    setVirtualKeyboardVisibility,
   ]);
 
   return useMemo(() => ({updateConfigFromStorage}), [updateConfigFromStorage]);
 };
 
 export const useDefaultValuesOfUser = () => {
-  const {setFilterConfig, setVirtualKeyboardConfig} = useConfig();
+  const {setFilterConfig, setVirtualKeyboardVisibility} = useConfig();
 
   useEffect(() => {
     const _config = storage.getItem(CONFIG_STORAGE_KEY);
 
     if (_config == null) {
       DeviceInfo.getManufacturer().then(manufacturer =>
-        setVirtualKeyboardConfig(manufacturer === 'Zebra Technologies'),
+        setVirtualKeyboardVisibility(
+          manufacturer === 'Zebra Technologies'
+            ? Keyboard.visibility.HiddenOnScannableInputs
+            : Keyboard.visibility.Always,
+        ),
       );
       setFilterConfig(Dimensions.get('window').height > SMALL_SCREEN_HEIGHT);
     }
-  }, [setFilterConfig, setVirtualKeyboardConfig]);
+  }, [setFilterConfig, setVirtualKeyboardVisibility]);
 };
