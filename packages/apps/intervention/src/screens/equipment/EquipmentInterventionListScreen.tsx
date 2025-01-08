@@ -42,6 +42,7 @@ const EquipmentInterventionListScreen = ({}) => {
     isListEndHistory,
     interventionHistoryList,
   } = useSelector((state: any) => state.intervention_intervention);
+  const {user} = useSelector(state => state.user);
 
   const fetchEquipmentHistoryAPI = useCallback(
     (page = 0) => {
@@ -52,10 +53,17 @@ const EquipmentInterventionListScreen = ({}) => {
             status => status.value,
           ),
           page,
+          companyId: user.activeCompany?.id,
         }),
       );
     },
-    [Intervention?.statusSelect, dispatch, equipment?.id, getSelectionItems],
+    [
+      Intervention?.statusSelect,
+      dispatch,
+      equipment?.id,
+      getSelectionItems,
+      user.activeCompany?.id,
+    ],
   );
 
   return (

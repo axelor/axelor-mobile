@@ -41,8 +41,14 @@ const createContractCriteria = ({partnerId, searchValue}) => {
   return criteria;
 };
 
-export async function searchContract({page, partnerId, searchValue}) {
+export async function searchContract({
+  page,
+  partnerId,
+  searchValue,
+  companyId,
+}) {
   return createStandardSearch({
+    companyId,
     model: 'com.axelor.apps.contract.db.Contract',
     criteria: createContractCriteria({partnerId, searchValue}),
     fieldKey: 'intervention_contract',

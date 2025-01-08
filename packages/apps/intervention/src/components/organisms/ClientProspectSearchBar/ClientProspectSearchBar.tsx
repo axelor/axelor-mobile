@@ -42,14 +42,21 @@ const ClientProspectSearchBar = ({
   const I18n = useTranslator();
   const dispatch = useDispatch();
 
+  const {user} = useSelector(state => state.user);
   const {loadingList, moreLoading, isListEnd, clientAndProspectList} =
     useSelector((state: any) => state.intervention_clientAndProspect);
 
   const searchClientAndProspectAPI = useCallback(
     ({page = 0, searchValue}) => {
-      dispatch((searchClientAndProspect as any)({page, searchValue}));
+      dispatch(
+        (searchClientAndProspect as any)({
+          page,
+          searchValue,
+          companyId: user.activeCompany?.id,
+        }),
+      );
     },
-    [dispatch],
+    [dispatch, user.activeCompany?.id],
   );
 
   return (

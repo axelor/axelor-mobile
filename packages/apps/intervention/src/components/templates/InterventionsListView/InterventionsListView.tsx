@@ -49,7 +49,7 @@ const InterventionsListView = ({
   const {loading, moreLoading, isListEnd, interventionList} = useSelector(
     (state: any) => state.intervention_intervention,
   );
-  const {userId} = useSelector((state: any) => state.auth);
+  const {user} = useSelector(state => state.user);
 
   const [filteredList, setFilteredList] = useState(interventionList);
   const [selectedStatus, setSelectedStatus] = useState([]);
@@ -66,11 +66,18 @@ const InterventionsListView = ({
 
   const sliceFunctionData = useMemo(
     () => ({
-      userId: isAssignedToMe ? userId : null,
+      userId: isAssignedToMe ? user.id : null,
       date: selectedDate,
       statusList: statusList,
+      companyId: user.activeCompany?.id,
     }),
-    [isAssignedToMe, selectedDate, statusList, userId],
+    [
+      isAssignedToMe,
+      selectedDate,
+      statusList,
+      user.activeCompany?.id,
+      user?.id,
+    ],
   );
 
   const interventionStatusList = useMemo(
