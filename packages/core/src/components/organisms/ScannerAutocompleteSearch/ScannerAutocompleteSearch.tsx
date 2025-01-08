@@ -156,6 +156,7 @@ const ScannerAutocompleteSearch = ({
       moreLoading={moreLoading}
       isListEnd={isListEnd}
       isScrollViewContainer={isScrollViewContainer}
+      isScannableInput
     />
   );
 };

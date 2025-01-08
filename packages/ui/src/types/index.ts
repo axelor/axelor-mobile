@@ -1,7 +1,7 @@
 /*
  * Axelor Business Solutions
  *
- * Copyright (C) 2025 Axelor (<http://axelor.com>).
+ * Copyright (C) 2024 Axelor (<http://axelor.com>).
  *
  * This program is free software: you can redistribute it and/or  modify
  * it under the terms of the GNU Affero General Public License, version 3,
@@ -16,16 +16,5 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-export * from './components';
-export * from './theme';
-export * from './utils';
-export * from './types';
-export {ConfigProvider, useConfig} from './config/ConfigContext';
-export {
-  OutsideAlerterProvider,
-  useClickOutside,
-  OUTSIDE_INDICATOR,
-} from './hooks/use-click-outside';
-export {animationUtil} from './tools/AnimationUtil';
-export {useDigitFormat} from './hooks/use-digit-format';
-export {usePriceFormat} from './hooks/use-price-format';
+export {default as File} from './file';
+export {default as Keyboard} from './keyboard';
