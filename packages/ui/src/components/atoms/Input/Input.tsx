@@ -81,7 +81,7 @@ const Input = ({
     };
   }, [Colors.text, multiline, writingStyle]);
 
-  const displayKeayboard = useMemo(() => {
+  const displayKeyboard = useMemo(() => {
     switch (virtualKeyboardVisibility) {
       case Keyboard.visibility.Always:
         return true;
@@ -121,7 +121,7 @@ const Input = ({
       multiline={multiline}
       numberOfLines={numberOfLines}
       onBlur={onEndFocus}
-      showSoftInputOnFocus={displayKeayboard}
+      showSoftInputOnFocus={displayKeyboard}
       autoFocus={isFocus}
       onContentSizeChange={onContentSizeChange}
     />
