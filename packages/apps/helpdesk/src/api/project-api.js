@@ -25,9 +25,10 @@ const createProjectCriteria = searchValue => {
   return [getSearchCriterias('helpdesk_project', searchValue)];
 };
 
-export async function searchProject({searchValue, page = 0}) {
+export async function searchProject({searchValue, companyId, page = 0}) {
   return createStandardSearch({
     model: 'com.axelor.apps.project.db.Project',
+    companyId,
     criteria: createProjectCriteria(searchValue),
     fieldKey: 'helpdesk_project',
     sortKey: 'helpdesk_project',

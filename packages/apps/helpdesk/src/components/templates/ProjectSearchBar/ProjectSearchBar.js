@@ -40,12 +40,15 @@ const ProjectSearchBar = ({
   const {projectList, loadingProject, moreLoading, isListEnd} = useSelector(
     state => state.helpdesk_project,
   );
+  const {user} = useSelector(state => state.user);
 
   const searchProjectAPI = useCallback(
     ({page = 0, searchValue}) => {
-      dispatch(searchProject({page, searchValue}));
+      dispatch(
+        searchProject({page, searchValue, companyId: user.activeCompany?.id}),
+      );
     },
-    [dispatch],
+    [dispatch, user.activeCompany?.id],
   );
 
   return (

@@ -37,9 +37,11 @@ const createCustomerContactCriteria = searchValue => {
   return [getSearchCriterias('helpdesk_customerContact', searchValue)];
 };
 
-export async function searchCustomer({searchValue, page = 0}) {
+export async function searchCustomer({searchValue, companyId, page = 0}) {
   return createStandardSearch({
     model: 'com.axelor.apps.base.db.Partner',
+    companyId,
+    isCompanyM2M: true,
     criteria: createCustomerCriteria(searchValue),
     fieldKey: 'helpdesk_customer',
     sortKey: 'helpdesk_customer',
@@ -48,9 +50,15 @@ export async function searchCustomer({searchValue, page = 0}) {
   });
 }
 
-export async function searchCustomerContact({searchValue, page = 0}) {
+export async function searchCustomerContact({
+  searchValue,
+  companyId,
+  page = 0,
+}) {
   return createStandardSearch({
     model: 'com.axelor.apps.base.db.Partner',
+    companyId,
+    isCompanyM2M: true,
     criteria: createCustomerContactCriteria(searchValue),
     fieldKey: 'helpdesk_customerContact',
     sortKey: 'helpdesk_customerContact',
