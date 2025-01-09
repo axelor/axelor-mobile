@@ -17,7 +17,12 @@
  */
 
 import {createAsyncThunk, createSlice} from '@reduxjs/toolkit';
-import {ejectAxios, getActiveUserInfo, loginApi} from '../api/login-api';
+import {
+  ejectAxios,
+  getActiveUserInfo,
+  loginApi,
+  logoutApi,
+} from '../api/login-api';
 import {apiProviderConfig} from '../apiProviders/config';
 import {saveUrlInStorage} from '../sessions';
 import {checkNullString} from '../utils';
@@ -64,6 +69,8 @@ export const isUrlValid = createAsyncThunk('auth/isUrlValid', async ({url}) => {
 export const logout = createAsyncThunk(
   'auth/logout',
   async function (data, {getState}) {
+    await logoutApi();
+
     const {requestInterceptorId, responseInterceptorId} = getState()?.auth;
     ejectAxios({requestInterceptorId, responseInterceptorId});
     return;
