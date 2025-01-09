@@ -24,7 +24,7 @@ const loginPath = '/callback';
 const SESSION_REGEX = /JSESSIONID=\w+/g;
 
 const getJsessionId = (cookie: string) => {
-  return cookie.match(SESSION_REGEX)?.[0];
+  return cookie?.match(SESSION_REGEX)?.[0];
 };
 
 export function ejectAxios({
@@ -40,7 +40,7 @@ export function ejectAxios({
 
 export function initAxiosWithHeaders(res: any, url: string) {
   const token = res.headers['x-csrf-token'];
-  const jsessionId = getJsessionId(res.headers['set-cookie'][0]);
+  const jsessionId = getJsessionId(res.headers['set-cookie']?.[0]);
 
   if (token == null) {
     throw new Error('X-CSRF-Token is not exposed in remote header');
@@ -75,6 +75,10 @@ export async function loginApi(
   return axios
     .post(`${url}${loginPath}`, {username, password})
     .then(res => initAxiosWithHeaders(res, url));
+}
+
+export async function logoutApi() {
+  return axios.get('/logout');
 }
 
 export async function getActiveUserInfo() {
