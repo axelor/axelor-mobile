@@ -1,5 +1,0 @@
-{
-  "title": "Increment: modify format management on blur/focus",
-  "type": "refactor",
-  "packages": "ui"
-}

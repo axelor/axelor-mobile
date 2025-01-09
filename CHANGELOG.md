@@ -3,6 +3,42 @@ title: 7.1.0
 tags: Changelog
 ---
 
+## [7.1.22] (2025-01-09)
+
+### @axelor/aos-mobile-core
+
+#### Features
+
+- Connection: add possibility to define a custom login screen
+
+#### Changes
+
+- Session card: add possibility to override session removal action
+- Login: improve token retrieval with a regex
+- Login: split code into small tools to make it resusable in other packages
+
+#### Fixes
+
+- Sessions: add export to use components in other packages
+- Login: add exports of functions and tools
+- Auth: add call to logout endpoint to unvalidate tokens
+
+### @axelor/aos-mobile-ui
+
+#### Features
+
+- Numerical inputs: add auto-select on focus
+
+#### Changes
+
+- Increment: modify format management on blur/focus
+
+#### Fixes
+
+- Screen: hide native navigation bar when keyboard disappears
+- AutoCompleteSearch: manage margin bottom when the list is empty
+- Increment: save when click outside the input
+
 ## [7.1.21] (2024-10-29)
 
 ### @axelor/aos-mobile-core
@@ -656,6 +692,7 @@ This update breaks the compatability with AOS Stock module under version 7.1 due
 - Add number decimal digit config management system
 - Manage multilines input with auto height resize on FormInput
 
+[7.1.22]: https://github.com/axelor/axelor-mobile/compare/7.1.21...7.1.22
 [7.1.21]: https://github.com/axelor/axelor-mobile/compare/7.1.20...7.1.21
 [7.1.20]: https://github.com/axelor/axelor-mobile/compare/7.1.19...7.1.20
 [7.1.19]: https://github.com/axelor/axelor-mobile/compare/7.1.18...7.1.19

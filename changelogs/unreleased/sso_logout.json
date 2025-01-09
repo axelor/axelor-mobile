@@ -1,6 +1,0 @@
-{
-  "title": "Auth: add call to logout endpoint to unvalidate tokens",
-  "type": "fix",
-  "packages": "core"
-}
-  
