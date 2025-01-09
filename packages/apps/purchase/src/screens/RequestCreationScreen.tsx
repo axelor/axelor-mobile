@@ -72,7 +72,9 @@ const RequestCreationScreen = () => {
         handleReset(RequestCreation.step.addLine);
       } else {
         setNewLine(_value);
+        setProductTitle(_value.name);
         setUnit(_value?.unit);
+        setIsCustomProduct(false);
         setCurrentStep(RequestCreation.step.validateLine);
       }
     },
@@ -144,49 +146,35 @@ const RequestCreationScreen = () => {
           handleEditLine={handleEditLine}
           translator={I18n.t}
         />
-        {currentStep === RequestCreation.step.addLine && !isCustomProduct && (
-          <ProductSearchBar
-            onChange={handleProductChange}
-            defaultValue={newLine}
-            isScrollViewContainer
-          />
-        )}
-        {currentStep < RequestCreation.step.validateLine && (
-          <HorizontalRuleText
-            text={I18n.t('Purchase_Or')}
-            style={styles.rule}
-          />
-        )}
-        {(currentStep === RequestCreation.step.addLine ||
-          (RequestCreation.step.validateLine && isCustomProduct)) && (
-          <FormInput
-            title={I18n.t('Purchase_ProductTitle')}
-            defaultValue={productTitle}
-            onChange={value => {
-              handleCustomProductInput(value);
-              if (value) {
-                setCurrentStep(RequestCreation.step.validateLine);
-              }
-            }}
-          />
-        )}
-        {currentStep === RequestCreation.step.validateLine && (
-          <>
-            <RequestCreationQuantityCard
-              quantity={quantity}
-              setQuantity={setQuantity}
-              cancelMove={() => handleReset(RequestCreation.step.addLine)}
-              productName={newLine?.name || productTitle}
-              productUnit={unit?.name || newLine?.product?.unit?.name}
-            />
-            <UnitSearchBar
-              defaultValue={unit}
-              onChange={setUnit}
-              isScrollViewContainer={true}
-              required={true}
-            />
-          </>
-        )}
+        <ProductSearchBar
+          onChange={handleProductChange}
+          defaultValue={newLine}
+        />
+        <HorizontalRuleText text={I18n.t('Purchase_Or')} style={styles.rule} />
+        <FormInput
+          readOnly={!isCustomProduct && newLine?.name != null}
+          title={I18n.t('Purchase_ProductTitle')}
+          defaultValue={isCustomProduct ? productTitle : newLine?.name}
+          onChange={value => {
+            handleCustomProductInput(value);
+            if (value) {
+              setCurrentStep(RequestCreation.step.validateLine);
+            }
+          }}
+        />
+        <RequestCreationQuantityCard
+          quantity={quantity}
+          setQuantity={setQuantity}
+          cancelMove={() => handleReset(RequestCreation.step.addLine)}
+          productName={newLine?.name || productTitle}
+          productUnit={unit?.name || newLine?.product?.unit?.name}
+        />
+        <UnitSearchBar
+          defaultValue={unit}
+          onChange={setUnit}
+          required={true}
+          isScrollViewContainer={true}
+        />
       </KeyboardAvoidingScrollView>
     </Screen>
   );
@@ -198,7 +186,7 @@ const styles = StyleSheet.create({
     paddingTop: 10,
   },
   rule: {
-    marginVertical: 15,
+    marginTop: 5,
     width: '80%',
   },
 });

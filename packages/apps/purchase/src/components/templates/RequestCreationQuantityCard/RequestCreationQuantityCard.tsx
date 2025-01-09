@@ -16,9 +16,9 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import React from 'react';
+import React, {useMemo} from 'react';
 import {useTranslator} from '@axelor/aos-mobile-core';
-import {QuantityCard, Text} from '@axelor/aos-mobile-ui';
+import {checkNullString, QuantityCard, Text} from '@axelor/aos-mobile-ui';
 
 interface RequestCreationQuantityCardProps {
   quantity: number;
@@ -36,18 +36,23 @@ const RequestCreationQuantityCard = ({
 }: RequestCreationQuantityCardProps) => {
   const I18n = useTranslator();
 
+  const isProductName = useMemo(
+    () => !checkNullString(productName),
+    [productName],
+  );
+
   return (
     <QuantityCard
       labelQty={I18n.t('Purchase_Quantity')}
       defaultValue={quantity}
       onValueChange={setQuantity}
       editable={true}
-      actionQty={true}
+      actionQty={isProductName}
       iconName="x-lg"
       onPressActionQty={cancelMove}
       isBigButton={true}
       translator={I18n.t}>
-      <Text fontSize={16}>{productName}</Text>
+      {isProductName && <Text fontSize={16}>{productName}</Text>}
     </QuantityCard>
   );
 };
