@@ -105,10 +105,13 @@ const createManufacturingQtyCriteria = (indicatorType, productId) => {
 export async function fetchManufacturingQtyIndicator({
   indicatorType,
   productId,
+  companyId,
   page = 0,
 }) {
   return createStandardSearch({
     model: 'com.axelor.apps.stock.db.StockMoveLine',
+    companyId,
+    companyFieldName: 'stockMove.company',
     criteria: createManufacturingQtyCriteria(indicatorType, productId),
     fieldKey: 'manufacturing_manufacturingQtyIndicator',
     page,

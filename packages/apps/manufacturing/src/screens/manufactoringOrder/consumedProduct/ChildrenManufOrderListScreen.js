@@ -41,18 +41,21 @@ import {fetchChildrenOfManufacturingOrder} from '../../../features/manufacturing
 
 const ChildrenManufOrderListScreen = ({route, navigation}) => {
   const manufOrder = route.params.manufOrder;
+  const I18n = useTranslator();
+  const dispatch = useDispatch();
+  const {ManufOrder} = useTypes();
+  const {getSelectionItems} = useTypeHelpers();
+
+  const [filteredList, setFilteredList] = useState(childrenManufOrders);
+  const [selectedStatus, setSelectedStatus] = useState([]);
+
   const {
     loadingChildrenMO,
     moreLoadingChildrenMO,
     isListEndChildrenMO,
     childrenManufOrders,
   } = useSelector(state => state.manufacturingOrder);
-  const [filteredList, setFilteredList] = useState(childrenManufOrders);
-  const [selectedStatus, setSelectedStatus] = useState([]);
-  const dispatch = useDispatch();
-  const I18n = useTranslator();
-  const {ManufOrder} = useTypes();
-  const {getSelectionItems} = useTypeHelpers();
+  const {user} = useSelector(state => state.user);
 
   const filterOnStatus = useCallback(
     list => {
@@ -70,11 +73,12 @@ const ChildrenManufOrderListScreen = ({route, navigation}) => {
       dispatch(
         fetchChildrenOfManufacturingOrder({
           parentManufOrderId: manufOrder?.id,
+          companyId: user.activeCompany?.id,
           page,
         }),
       );
     },
-    [dispatch, manufOrder?.id],
+    [dispatch, manufOrder?.id, user.activeCompany?.id],
   );
 
   const handleViewItem = item => {

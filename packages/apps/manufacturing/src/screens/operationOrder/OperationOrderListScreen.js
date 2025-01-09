@@ -44,6 +44,7 @@ function OperationOrderListScreen({navigation}) {
   const {loadingList, moreLoading, isListEnd, operationOrderList} = useSelector(
     state => state.operationOrder,
   );
+  const {user} = useSelector(state => state.user);
 
   const [machine, setMachine] = useState(null);
   const [workCenter, setWorkCenter] = useState(null);
@@ -64,8 +65,9 @@ function OperationOrderListScreen({navigation}) {
       statusList: selectedStatus,
       workCenterId: workCenter?.id,
       machineId: machine?.id,
+      companyId: user.activeCompany?.id,
     }),
-    [machine?.id, selectedStatus, workCenter?.id],
+    [machine?.id, selectedStatus, user.activeCompany?.id, workCenter?.id],
   );
 
   const statusList = useMemo(() => {

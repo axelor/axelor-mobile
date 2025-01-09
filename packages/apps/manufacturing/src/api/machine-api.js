@@ -21,9 +21,15 @@ import {
   getSearchCriterias,
 } from '@axelor/aos-mobile-core';
 
-export async function searchMachineFilter({searchValue = null, page = 0}) {
+export async function searchMachineFilter({
+  searchValue = null,
+  companyId,
+  page = 0,
+}) {
   return createStandardSearch({
     model: 'com.axelor.apps.production.db.Machine',
+    companyId,
+    companyFieldName: 'stockLocation.company',
     criteria: [getSearchCriterias('manufacturing_machine', searchValue)],
     fieldKey: 'manufacturing_machine',
     page: page,

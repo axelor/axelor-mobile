@@ -48,6 +48,7 @@ const ManufacturingOrderOperationListScreen = ({route, navigation}) => {
     isListEnd,
     operationOrderList,
   } = useSelector(state => state.operationOrder);
+  const {user} = useSelector(state => state.user);
 
   const [filteredList, setFilteredList] = useState(operationOrderList);
   const [selectedStatus, setSelectedStatus] = useState([]);
@@ -63,11 +64,12 @@ const ManufacturingOrderOperationListScreen = ({route, navigation}) => {
       dispatch(
         fetchOperationOrders({
           manufOrderId: manufOrder?.id,
+          companyId: user.activeCompany?.id,
           page: page,
         }),
       );
     },
-    [dispatch, manufOrder?.id],
+    [dispatch, manufOrder?.id, user.activeCompany?.id],
   );
 
   const filterOnStatus = useCallback(

@@ -145,6 +145,7 @@ export async function fetchManufacturingOrder({manufOrderId}) {
 
 export async function fetchManufacturingOrderOfProductionOrder({
   productionOrderList,
+  companyId,
   page = 0,
 }) {
   if (productionOrderList == null) {
@@ -174,16 +175,23 @@ export async function fetchManufacturingOrderOfProductionOrder({
 
       return manufOrderList?.map(manufOrder => manufOrder.id);
     })
-    .then(manufOrderIds => fetchManufacturingOrderByIds({manufOrderIds, page}));
+    .then(manufOrderIds =>
+      fetchManufacturingOrderByIds({manufOrderIds, companyId, page}),
+    );
 }
 
-async function fetchManufacturingOrderByIds({manufOrderIds, page = 0}) {
+async function fetchManufacturingOrderByIds({
+  manufOrderIds,
+  companyId,
+  page = 0,
+}) {
   if (manufOrderIds == null) {
     return null;
   }
 
   return createStandardSearch({
     model: 'com.axelor.apps.production.db.ManufOrder',
+    companyId,
     criteria: [
       {
         fieldName: 'id',
@@ -200,10 +208,12 @@ async function fetchManufacturingOrderByIds({manufOrderIds, page = 0}) {
 
 export async function fetchChildrenManufacturingOrders({
   parentManufOrderId,
+  companyId,
   page = 0,
 }) {
   return createStandardSearch({
     model: 'com.axelor.apps.production.db.ManufOrder',
+    companyId,
     criteria: [
       {
         fieldName: 'parentMO.id',

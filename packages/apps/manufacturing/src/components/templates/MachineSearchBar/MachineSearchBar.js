@@ -41,12 +41,15 @@ const MachineSearchBar = ({
   const {machineList, loading, moreLoading, isListEnd} = useSelector(
     state => state.machines,
   );
+  const {user} = useSelector(state => state.user);
 
   const fetchMachineAPI = useCallback(
     ({page = 0, searchValue}) => {
-      dispatch(searchMachines({page, searchValue}));
+      dispatch(
+        searchMachines({page, companyId: user.activeCompany?.id, searchValue}),
+      );
     },
-    [dispatch],
+    [dispatch, user.activeCompany?.id],
   );
 
   return (
