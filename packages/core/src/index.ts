@@ -71,6 +71,7 @@ export {
   getActiveUserInfo,
   initAxiosWithHeaders,
   loginApi,
+  logoutApi,
 } from './api/login-api';
 export * from './components';
 export * from './tools';
