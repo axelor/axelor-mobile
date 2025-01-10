@@ -50,8 +50,13 @@ const DraftTimesheetPicker = ({
   const {draftTimesheetList} = useSelector((state: any) => state.timesheet);
 
   useEffect(() => {
-    dispatch((fetchDraftTimesheet as any)({userId: user?.id}));
-  }, [dispatch, user?.id]);
+    dispatch(
+      (fetchDraftTimesheet as any)({
+        userId: user?.id,
+        companyId: user.activeCompany?.id,
+      }),
+    );
+  }, [dispatch, user.activeCompany?.id, user?.id]);
 
   const displayValue = item => {
     return `${formatDate(

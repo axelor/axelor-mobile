@@ -50,7 +50,14 @@ const ExpenseWaitingValidationSearchBar = ({
 
   const fetchExpenseToValidateAPI = useCallback(
     ({page = 0, searchValue}) => {
-      dispatch(searchExpenseToValidate({page: page, user: user, searchValue}));
+      dispatch(
+        searchExpenseToValidate({
+          page: page,
+          user: user,
+          searchValue,
+          companyId: user.activeCompany?.id,
+        }),
+      );
     },
     [dispatch, user],
   );

@@ -38,14 +38,6 @@ const createProjectCriteria = ({
       },
     ];
 
-    if (activeCompanyId != null) {
-      _businessCriteria.push({
-        fieldName: 'company.id',
-        operator: '=',
-        value: activeCompanyId,
-      });
-    }
-
     criteria.push({
       operator: 'and',
       criteria: _businessCriteria,
@@ -115,9 +107,9 @@ export async function searchProject({
 }) {
   return createStandardSearch({
     model: 'com.axelor.apps.project.db.Project',
+    companyId: activeCompanyId,
     criteria: createProjectCriteria({
       searchValue,
-      activeCompanyId,
       isBusinessProject,
       manageTimeSpent,
     }),
@@ -135,9 +127,12 @@ export async function searchProjectTask({
   projectId,
   isAssignedToRequired,
   isMemberRequired,
+  companyId,
 }) {
   return createStandardSearch({
     model: 'com.axelor.apps.project.db.ProjectTask',
+    companyId,
+    companyFieldName: 'project.company',
     criteria: createProjectTaskCriteria(
       searchValue,
       userId,

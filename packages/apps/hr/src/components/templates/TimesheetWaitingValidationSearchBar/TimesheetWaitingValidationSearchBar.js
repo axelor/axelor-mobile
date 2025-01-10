@@ -44,7 +44,14 @@ const TimesheetWaitingValidationSearchBar = ({
 
   const fetchTimesheetToValidateAPI = useCallback(
     ({page = 0, searchValue}) => {
-      dispatch(fetchTimesheetToValidate({page: page, user: user, searchValue}));
+      dispatch(
+        fetchTimesheetToValidate({
+          page: page,
+          user: user,
+          searchValue,
+          companyId: user.activeCompany?.id,
+        }),
+      );
     },
     [dispatch, user],
   );

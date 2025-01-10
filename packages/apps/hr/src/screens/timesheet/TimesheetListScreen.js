@@ -88,14 +88,26 @@ const TimesheetListScreen = ({navigation}) => {
 
   const fetchTimesheetAPI = useCallback(
     (page = 0) => {
-      dispatch(fetchTimesheet({userId: user?.id, page: page}));
+      dispatch(
+        fetchTimesheet({
+          userId: user?.id,
+          page: page,
+          companyId: user.activeCompany?.id,
+        }),
+      );
     },
     [dispatch, user],
   );
 
   const fetchTimesheetToValidateAPI = useCallback(
     (page = 0) => {
-      dispatch(fetchTimesheetToValidate({page: page, user: user}));
+      dispatch(
+        fetchTimesheetToValidate({
+          page: page,
+          user: user,
+          companyId: user.activeCompany?.id,
+        }),
+      );
     },
     [dispatch, user],
   );

@@ -82,7 +82,7 @@ const createExpenseToValidateCriteria = (searchValue, user) => {
   return criteria;
 };
 
-export async function searchExpenseDraft({userId}) {
+export async function searchExpenseDraft({userId, companyId}) {
   return createStandardSearch({
     model: 'com.axelor.apps.hr.db.Expense',
     criteria: createExpenseDraftCriteria(userId),
@@ -90,10 +90,16 @@ export async function searchExpenseDraft({userId}) {
     numberElementsByPage: null,
     page: 0,
     provider: 'model',
+    companyId,
   });
 }
 
-export async function searchMyExpense({searchValue = null, page = 0, userId}) {
+export async function searchMyExpense({
+  searchValue = null,
+  page = 0,
+  userId,
+  companyId,
+}) {
   return createStandardSearch({
     model: 'com.axelor.apps.hr.db.Expense',
     criteria: createMyExpenseCriteria(searchValue, userId),
@@ -101,6 +107,7 @@ export async function searchMyExpense({searchValue = null, page = 0, userId}) {
     sortKey: 'hr_expense',
     page,
     provider: 'model',
+    companyId,
   });
 }
 
@@ -108,8 +115,10 @@ export async function searchExpenseToValidate({
   searchValue = null,
   page = 0,
   user,
+  companyId,
 }) {
   return createStandardSearch({
+    companyId,
     model: 'com.axelor.apps.hr.db.Expense',
     criteria: createExpenseToValidateCriteria(searchValue, user),
     fieldKey: 'hr_expense',

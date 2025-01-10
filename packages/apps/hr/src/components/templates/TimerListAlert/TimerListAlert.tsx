@@ -67,6 +67,7 @@ const TimerListAlert = ({
     isListEndTimerDateInterval,
   } = useSelector((state: any) => state.hr_timer);
   const {userId} = useSelector((state: any) => state.auth);
+  const {user} = useSelector(state => state.user);
 
   const [timesheet, setTimesheet] = useState(null);
   const [fromDate, setFromDate] = useState(null);
@@ -104,10 +105,11 @@ const TimerListAlert = ({
     if (timesheet == null && fromDate && toDate) {
       if (getStartOfDay(fromDate) <= getEndOfDay(toDate)) {
         fetchDraftTimesheet({
-          userId: userId,
+          userId: user?.id,
           fromDate: fromDate,
           toDate: toDate,
           isOverlapAllowed: false,
+          companyId: user.activeCompany?.id,
         }).then(res => {
           setErrorKey(null);
           res.data?.data?.length > 0 &&
@@ -119,7 +121,7 @@ const TimerListAlert = ({
     } else {
       setErrorKey(null);
     }
-  }, [fromDate, timesheet, toDate, userId]);
+  }, [fromDate, timesheet, toDate, user.activeCompany?.id, user?.id, userId]);
 
   const renderChexboxItem = ({item}) => {
     return (
