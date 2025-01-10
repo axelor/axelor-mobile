@@ -31,7 +31,8 @@ export type CriteriaField = {
     | 'between'
     | 'notBetween'
     | 'isNull'
-    | 'notNull';
+    | 'notNull'
+    | 'in';
   fieldName: string;
   value?: any;
   value2?: any;
