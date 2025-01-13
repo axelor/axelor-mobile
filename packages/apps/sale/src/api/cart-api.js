@@ -104,8 +104,13 @@ export async function emptyCart({id, version}) {
   });
 }
 
-export async function addProductToActiveCart({userId, productId, qty}) {
-  return searchCart({userId})
+export async function addProductToActiveCart({
+  userId,
+  companyId,
+  productId,
+  qty,
+}) {
+  return searchCart({userId, companyId})
     .then(res => res?.data?.data?.[0])
     .then(cart => {
       if (cart != null) {
