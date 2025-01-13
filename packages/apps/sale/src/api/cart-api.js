@@ -37,7 +37,7 @@ const createCartCriteria = (searchValue, userId) => {
   return criteria;
 };
 
-export async function searchCart({searchValue, page = 0, userId}) {
+export async function searchCart({searchValue, page = 0, userId, companyId}) {
   return createStandardSearch({
     model: 'com.axelor.apps.sale.db.Cart',
     criteria: createCartCriteria(searchValue, userId),
@@ -45,6 +45,7 @@ export async function searchCart({searchValue, page = 0, userId}) {
     sortKey: 'sale_cart',
     page: page,
     provider: 'model',
+    companyId,
   });
 }
 
@@ -103,8 +104,13 @@ export async function emptyCart({id, version}) {
   });
 }
 
-export async function addProductToActiveCart({userId, productId, qty}) {
-  return searchCart({userId})
+export async function addProductToActiveCart({
+  userId,
+  companyId,
+  productId,
+  qty,
+}) {
+  return searchCart({userId, companyId})
     .then(res => res?.data?.data?.[0])
     .then(cart => {
       if (cart != null) {

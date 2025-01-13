@@ -16,7 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import React, {useCallback} from 'react';
+import React, {useCallback, useMemo} from 'react';
 import {
   displayItemFullname,
   useDispatch,
@@ -45,13 +45,19 @@ const CustomerSearchBar = ({
   onChange = () => {},
   readonly = false,
   required = false,
-  companyId,
+  companyId: _companyId,
 }: CustomerSearchbarProps) => {
   const I18n = useTranslator();
   const dispatch = useDispatch();
 
+  const {user} = useSelector(state => state.user);
   const {loading, moreLoading, isListEnd, customerList} = useSelector(
     (state: any) => state.sale_customer,
+  );
+
+  const companyId = useMemo(
+    () => _companyId ?? user.activeCompany?.id,
+    [_companyId, user.activeCompany?.id],
   );
 
   const searchCustomerAPI = useCallback(

@@ -35,15 +35,20 @@ const CatalogScreen = ({}) => {
   const dispatch = useDispatch();
   const I18n = useTranslator();
 
-  const {userId} = useSelector((state: any) => state.auth);
+  const {user} = useSelector(state => state.user);
   const {mobileSettings} = useSelector((state: any) => state.appConfig);
   const {productList, moreLoading, isListEnd, loadingList} = useSelector(
     (state: any) => state.sale_product,
   );
 
   useEffect(() => {
-    dispatch((fetchActiveCart as any)({userId}));
-  }, [dispatch, userId]);
+    dispatch(
+      (fetchActiveCart as any)({
+        userId: user.id,
+        companyId: user.activeCompany?.id,
+      }),
+    );
+  }, [dispatch, user]);
 
   const sliceFunctionData = useMemo(
     () => ({

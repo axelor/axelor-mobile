@@ -45,6 +45,7 @@ const SaleOrderListView = ({
   const {SaleOrder} = useTypes();
   const {getSelectionItems} = useTypeHelpers();
 
+  const {user} = useSelector(state => state.user);
   const {loading, moreLoading, isListEnd, saleOrderList} = useSelector(
     (state: any) => state.sale_saleOrder,
   );
@@ -73,8 +74,9 @@ const SaleOrderListView = ({
     () => ({
       statusList: statusList,
       customerId: customer?.id,
+      companyId: user.activeCompany?.id,
     }),
-    [customer?.id, statusList],
+    [customer?.id, statusList, user.activeCompany?.id],
   );
 
   return (

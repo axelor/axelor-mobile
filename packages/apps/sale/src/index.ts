@@ -111,7 +111,8 @@ export const SaleModule: Module = {
       onPress: ({dispatch, storeState, screenContext}) => {
         (dispatch as any)(
           (addProductToActiveCart as any)({
-            userId: storeState.auth?.userId,
+            userId: storeState.user.user.id,
+            companyId: storeState.user.user.activeCompany?.id,
             productId: getModelId(
               screenContext,
               'com.axelor.apps.base.db.Product',

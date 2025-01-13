@@ -18,23 +18,13 @@
 
 import {createStandardSearch} from '@axelor/aos-mobile-core';
 
-const createSaleConfigCriteria = companyId => {
-  return [
-    {
-      fieldName: 'company.id',
-      operator: '=',
-      value: companyId,
-    },
-  ];
-};
-
 export async function fetchSaleConfig({companyId}) {
   return createStandardSearch({
     model: 'com.axelor.apps.sale.db.SaleConfig',
-    criteria: createSaleConfigCriteria(companyId),
     fieldKey: 'sale_saleConfig',
     sortKey: 'sale_saleConfig',
     page: 0,
     provider: 'model',
+    companyId,
   });
 }

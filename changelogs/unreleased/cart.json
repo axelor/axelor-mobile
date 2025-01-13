@@ -1,0 +1,5 @@
+{
+  "title": "Cart: hide empty cart action when no cart found",
+  "type": "fix",
+  "packages": "sale"
+}
