@@ -16,6 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+export {searchAddress as searchAdsressApi} from './address-api';
 export {
   createCatalog as createCatalogApi,
   getCatalogType,
@@ -84,4 +85,3 @@ export {
   updateTourLine as updateTourLineApi,
   validateTourLine as validateTourLineApi,
 } from './tour-line-api';
-export {searchAddress as searchAdsressApi} from './address-api';

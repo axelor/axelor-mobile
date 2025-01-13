@@ -16,6 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+export {addressReducer as crm_address} from './addressSlice';
 export {catalogReducer as catalog} from './catalogSlice';
 export {clientReducer as client} from './clientSlice';
 export {companyReducer as crm_company} from './companySlice';
@@ -28,4 +29,3 @@ export {partnerReducer as partner} from './partnerSlice';
 export {prospectReducer as prospect} from './prospectSlice';
 export {tourLineReducer as tourLine} from './tourLineSlice';
 export {tourReducer as tour} from './tourSlice';
-export {addressReducer as crm_address} from './addressSlice';

@@ -29,7 +29,7 @@ export const searchAddress = createAsyncThunk(
     return handlerApiCall({
       fetchFunction: _searchAddress,
       data,
-      action: 'Crm_SliceAction_SearchAdress',
+      action: 'Crm_SliceAction_SearchAddress',
       getState,
       responseOptions: {isArrayResponse: true},
     });
