@@ -145,9 +145,11 @@ const ProductStockIndicatorDetails = ({route}) => {
           return null;
       }
 
-      dispatch((sliceFunction as any)({productId: product?.id, page}));
+      dispatch(
+        (sliceFunction as any)({productId: product?.id, companyId, page}),
+      );
     },
-    [dispatch, indicatorType, product?.id],
+    [dispatch, indicatorType, product?.id, companyId],
   );
 
   const scrollListData = useMemo(() => {

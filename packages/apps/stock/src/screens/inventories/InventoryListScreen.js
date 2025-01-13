@@ -40,6 +40,7 @@ const InventoryListScreen = ({navigation}) => {
   const {loadingList, moreLoading, isListEnd, inventoryList} = useSelector(
     state => state.inventory,
   );
+  const {user} = useSelector(state => state.user);
 
   const [stockLocation, setStockLocation] = useState(null);
   const [navigate, setNavigate] = useState(false);
@@ -66,8 +67,9 @@ const InventoryListScreen = ({navigation}) => {
     () => ({
       stockLocationId: stockLocation?.id,
       statusList: selectedStatus,
+      companyId: user.activeCompany?.id,
     }),
-    [selectedStatus, stockLocation?.id],
+    [selectedStatus, stockLocation?.id, user.activeCompany?.id],
   );
 
   return (

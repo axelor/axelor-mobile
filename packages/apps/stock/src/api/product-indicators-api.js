@@ -23,7 +23,6 @@ const createStockQtyCriteria = (
   isAllocatedQty,
   productId,
   stockLocationId,
-  companyId,
 ) => {
   const criteria = [
     {
@@ -61,14 +60,6 @@ const createStockQtyCriteria = (
           value: stockLocationId,
         },
       ],
-    });
-  }
-
-  if (companyId != null) {
-    criteria.push({
-      fieldName: 'stockMove.company.id',
-      operator: '=',
-      value: companyId,
     });
   }
 
@@ -174,12 +165,13 @@ export async function fetchStockQtyIndicator({
 }) {
   return createStandardSearch({
     model: 'com.axelor.apps.stock.db.StockMoveLine',
+    companyId,
+    companyFieldName: 'stockMove.company',
     criteria: createStockQtyCriteria(
       status,
       isAllocatedQty,
       productId,
       stockLocationId,
-      companyId,
     ),
     fieldKey: 'stock_stockQtyIndicator',
     page,
@@ -187,9 +179,15 @@ export async function fetchStockQtyIndicator({
   });
 }
 
-export async function fetchSaleOrderQtyIndicator({productId, page = 0}) {
+export async function fetchSaleOrderQtyIndicator({
+  productId,
+  companyId,
+  page = 0,
+}) {
   return createStandardSearch({
     model: 'com.axelor.apps.sale.db.SaleOrderLine',
+    companyId,
+    companyFieldName: 'saleOrder.company',
     criteria: createSaleOrderQtyCriteria(productId),
     fieldKey: 'stock_saleOrderQtyIndicator',
     page,
@@ -197,9 +195,15 @@ export async function fetchSaleOrderQtyIndicator({productId, page = 0}) {
   });
 }
 
-export async function fetchPurchaseOrderQtyIndicator({productId, page = 0}) {
+export async function fetchPurchaseOrderQtyIndicator({
+  productId,
+  companyId,
+  page = 0,
+}) {
   return createStandardSearch({
     model: 'com.axelor.apps.purchase.db.PurchaseOrderLine',
+    companyId,
+    companyFieldName: 'purchaseOrder.company',
     criteria: createPurchaseOrderQtyCriteria(productId),
     fieldKey: 'stock_purchaseOrderQtyIndicator',
     page,
@@ -207,9 +211,15 @@ export async function fetchPurchaseOrderQtyIndicator({productId, page = 0}) {
   });
 }
 
-export async function fetchAvailableStockIndicator({productId, page = 0}) {
+export async function fetchAvailableStockIndicator({
+  productId,
+  companyId,
+  page = 0,
+}) {
   return createStandardSearch({
     model: 'com.axelor.apps.stock.db.StockLocationLine',
+    companyId,
+    companyFieldName: 'stockLocation.company',
     criteria: createAvailableStockCriteria(productId),
     fieldKey: 'stock_stockLocationLine',
     page,
