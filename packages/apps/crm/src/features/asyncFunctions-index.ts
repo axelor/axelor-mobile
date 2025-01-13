@@ -56,6 +56,7 @@ export {
 export {
   fetchClientAndProspect,
   fetchPartner,
+  fetchPartnerAddressByIds,
   searchLinkedPartnersOfContact,
   searchPartner,
   updatePartner,

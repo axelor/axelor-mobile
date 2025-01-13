@@ -95,6 +95,8 @@
   "Crm_SeeEvent": "See event",
   "Crm_AddEvent": "Add event",
   "Crm_ValidateTourStep": "Validate tour step",
+  "Crm_NoAddressInformation": "No address information",
+  "Crm_Addresses": "Addresses",
   "Crm_SliceAction_FetchCatalog": "fetch catalogs",
   "Crm_SliceAction_FetchCatalogType": "fetch catalog types",
   "Crm_SliceAction_FetchClient": "fetch clients",
@@ -142,5 +144,6 @@
   "Crm_SliceAction_FetchTourLine": "fetch tour lines",
   "Crm_SliceAction_ValidateTourLine": "validate tour line",
   "Crm_SliceAction_ValidateTour": "validate tour",
-  "Crm_SliceAction_UpdateTourLine": "update tour line"
+  "Crm_SliceAction_UpdateTourLine": "update tour line",
+  "Crm_SliceAction_FetchPartnerAddressByIds": "fetch partner address by ids"
 }

@@ -26,6 +26,7 @@ import {
   DropdownEventView,
   DropdownGeneralView,
   DropdownOpportunityView,
+  DropdownAddressView,
 } from '../../../organisms';
 import {searchContactById} from '../../../../features/contactSlice';
 import {fetchPartnerEventById} from '../../../../features/eventSlice';
@@ -65,8 +66,15 @@ const ClientDropdownCards = ({additionalDropdowns = []}) => {
         ),
       },
       {
-        title: I18n.t('Crm_GeneralInformation'),
+        title: I18n.t('Crm_Addresses'),
         key: 2,
+        childrenComp: (
+          <DropdownAddressView partnerAddressList={client.partnerAddressList} />
+        ),
+      },
+      {
+        title: I18n.t('Crm_GeneralInformation'),
+        key: 3,
         childrenComp: (
           <DropdownGeneralView
             assignedUser={client.user?.fullName}
@@ -78,17 +86,17 @@ const ClientDropdownCards = ({additionalDropdowns = []}) => {
       },
       {
         title: I18n.t('Crm_Employees'),
-        key: 3,
+        key: 4,
         childrenComp: <DropdownEmployeeView contactList={listContactById} />,
       },
       {
         title: I18n.t('Crm_Events'),
-        key: 4,
+        key: 5,
         childrenComp: <DropdownEventView eventList={listEventPartner} />,
       },
       {
         title: I18n.t('Crm_Opportunity'),
-        key: 5,
+        key: 6,
         childrenComp: <DropdownOpportunityView partnerId={client?.id} />,
       },
     ];
