@@ -125,6 +125,7 @@ const ActiveCartScreen = ({}) => {
             order: 20,
             title: I18n.t('Sale_EmptyCart'),
             onPress: handleEmptyCart,
+            hideIf: activeCart?.id == null,
           },
         ],
       });
