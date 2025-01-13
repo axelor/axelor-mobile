@@ -16,6 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+export {default as AddressSearchBar} from './AddressSearchBar/AddressSearchBar';
 export {default as CatalogTypePicker} from './CatalogTypePicker/CatalogTypePicker';
 export {default as CivilityPicker} from './CivilityPicker/CivilityPicker';
 export {default as ClientProspectSearchBar} from './ClientProspectSearchBar/ClientProspectSearchBar';

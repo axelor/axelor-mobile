@@ -19,6 +19,7 @@
 import {SearchFields} from '@axelor/aos-mobile-core';
 
 export const crm_searchFields: SearchFields = {
+  crm_address: ['fullName'],
   crm_catalog: ['name', 'catalogType.name'],
   crm_client: [
     'simpleFullName',
@@ -40,7 +41,7 @@ export const crm_searchFields: SearchFields = {
   crm_lead: [
     'simpleFullName',
     'enterpriseName',
-    'primaryAddress',
+    'address.fullName',
     'mobilePhone',
     'fixedPhone',
     'emailAddress.name',

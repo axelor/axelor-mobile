@@ -73,3 +73,4 @@ export {
   validateTourLine,
 } from './tourLineSlice';
 export {fetchTourById, searchTour, validateTour} from './tourSlice';
+export {searchAddress} from './addressSlice';

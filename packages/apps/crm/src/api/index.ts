@@ -84,3 +84,4 @@ export {
   updateTourLine as updateTourLineApi,
   validateTourLine as validateTourLineApi,
 } from './tour-line-api';
+export {searchAddress as searchAdsressApi} from './address-api';
