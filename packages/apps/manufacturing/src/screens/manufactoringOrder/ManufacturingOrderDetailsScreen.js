@@ -48,7 +48,6 @@ const ManufacturingOrderDetailsScreen = ({route, navigation}) => {
   const {loadingOrder, manufOrder} = useSelector(
     state => state.manufacturingOrder,
   );
-  const {user} = useSelector(state => state.user);
 
   useEffect(() => {
     if (manufOrder?.product != null) {
@@ -61,12 +60,9 @@ const ManufacturingOrderDetailsScreen = ({route, navigation}) => {
       fetchManufOrder({manufOrderId: route.params.manufacturingOrderId}),
     );
     dispatch(
-      fetchOperationOrders({
-        manufOrderId: route.params.manufacturingOrderId,
-        companyId: user.activeCompany?.id,
-      }),
+      fetchOperationOrders({manufOrderId: route.params.manufacturingOrderId}),
     );
-  }, [dispatch, route.params.manufacturingOrderId, user.activeCompany?.id]);
+  }, [dispatch, route.params.manufacturingOrderId]);
 
   useEffect(() => {
     fetchManufOrderAndOperation();
