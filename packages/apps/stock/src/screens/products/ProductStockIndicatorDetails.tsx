@@ -73,7 +73,6 @@ const ProductStockIndicatorDetails = ({route}) => {
     isListEndAvailableStock,
     availableStockList,
   } = useSelector((state: any) => state.productIndicators);
-  const {user} = useSelector(state => state.user);
 
   useEffect(() => {
     if (productId != null && productId !== product?.id) {
@@ -147,14 +146,10 @@ const ProductStockIndicatorDetails = ({route}) => {
       }
 
       dispatch(
-        (sliceFunction as any)({
-          productId: product?.id,
-          companyId: user.activeCompany?.id,
-          page,
-        }),
+        (sliceFunction as any)({productId: product?.id, companyId, page}),
       );
     },
-    [dispatch, indicatorType, product?.id, user.activeCompany?.id],
+    [dispatch, indicatorType, product?.id, companyId],
   );
 
   const scrollListData = useMemo(() => {
