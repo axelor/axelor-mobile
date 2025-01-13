@@ -150,7 +150,7 @@ const getStyles = color =>
       marginLeft: 10,
       color: color?.foreground,
       alignSelf: 'center',
-      width: '85%',
+      flex: 1,
     },
   });
 
