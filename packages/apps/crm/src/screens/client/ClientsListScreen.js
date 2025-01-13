@@ -30,7 +30,7 @@ import {fetchClients} from '../../features/clientSlice';
 const CLientsListScreen = ({navigation}) => {
   const I18n = useTranslator();
 
-  const {userId} = useSelector(state => state.auth);
+  const {user} = useSelector(state => state.user);
   const {loadingClientList, moreLoading, isListEnd, clientList} = useSelector(
     state => state.client,
   );
@@ -39,10 +39,11 @@ const CLientsListScreen = ({navigation}) => {
 
   const sliceFunctionData = useMemo(
     () => ({
-      userId: userId,
+      userId: user.id,
       assigned: assigned,
+      companyId: user.activeCompany?.id,
     }),
-    [userId, assigned],
+    [assigned, user],
   );
 
   return (

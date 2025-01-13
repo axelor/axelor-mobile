@@ -37,7 +37,7 @@ const OpportunityListScreen = ({navigation}) => {
   const dispatch = useDispatch();
   const {getCustomSelectionItems} = useTypeHelpers();
 
-  const {userId} = useSelector(state => state.auth);
+  const {user} = useSelector(state => state.user);
   const {
     loadingList,
     moreLoading,
@@ -60,11 +60,12 @@ const OpportunityListScreen = ({navigation}) => {
 
   const sliceFunctionData = useMemo(
     () => ({
-      userId: userId,
+      userId: user.id,
       assigned: assigned,
       statusList: selectedStatus,
+      companyId: user.activeCompany?.id,
     }),
-    [assigned, selectedStatus, userId],
+    [assigned, selectedStatus, user],
   );
 
   return (

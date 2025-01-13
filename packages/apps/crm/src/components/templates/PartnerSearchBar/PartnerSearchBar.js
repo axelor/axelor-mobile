@@ -40,12 +40,15 @@ const PartnerSearchBarAux = ({
   const {partnerList, loadingPartnerList, moreLoading, isListEnd} = useSelector(
     state => state.partner,
   );
+  const {user} = useSelector(state => state.user);
 
   const fetchPartnerSearchBarAPI = useCallback(
     ({page = 0, searchValue}) => {
-      dispatch(searchPartner({page, searchValue}));
+      dispatch(
+        searchPartner({page, searchValue, companyId: user.activeCompany?.id}),
+      );
     },
-    [dispatch],
+    [dispatch, user.activeCompany?.id],
   );
 
   return (

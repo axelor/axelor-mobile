@@ -46,6 +46,7 @@ const ContactSearchBarAux = ({
     (state: any) => state.contact,
   );
   const {partner} = useSelector((state: any) => state.partner);
+  const {user} = useSelector((state: any) => state.user);
 
   const fetchContactSearchBarAPI = useCallback(
     ({page = 0, searchValue}) => {
@@ -55,10 +56,11 @@ const ContactSearchBarAux = ({
           page,
           searchValue,
           mainPartnerId: partner?.id,
+          companyId: user.activeCompany?.id,
         }),
       );
     },
-    [dispatch, onFetchDataAction, partner],
+    [dispatch, onFetchDataAction, partner, user.activeCompany?.id],
   );
 
   return (

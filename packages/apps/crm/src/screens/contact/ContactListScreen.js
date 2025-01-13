@@ -30,7 +30,7 @@ import {PartnerCard} from '../../components';
 const ContactListScreen = ({navigation}) => {
   const I18n = useTranslator();
 
-  const {userId} = useSelector(state => state.auth);
+  const {user} = useSelector(state => state.user);
   const {loadingContact, moreLoading, isListEnd, contactList} = useSelector(
     state => state.contact,
   );
@@ -39,10 +39,11 @@ const ContactListScreen = ({navigation}) => {
 
   const sliceFunctionData = useMemo(
     () => ({
-      userId: userId,
+      userId: user.id,
       assigned: assigned,
+      companyId: user.activeCompany?.id,
     }),
-    [userId, assigned],
+    [user, assigned],
   );
 
   return (
