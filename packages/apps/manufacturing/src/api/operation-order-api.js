@@ -151,10 +151,13 @@ export async function searchOperationOrderFilter({
   statusList,
   workCenterId,
   machineId,
+  companyId,
   page = 0,
 }) {
   return createStandardSearch({
     model: 'com.axelor.apps.production.db.OperationOrder',
+    companyId,
+    companyFieldName: 'manufOrder.company',
     criteria: createOperationOrderCriteria(
       searchValue,
       manufOrderId,
@@ -169,9 +172,11 @@ export async function searchOperationOrderFilter({
   });
 }
 
-export async function getPlannedOperationOrder(date) {
+export async function getPlannedOperationOrder({date, companyId}) {
   return createStandardSearch({
     model: 'com.axelor.apps.production.db.OperationOrder',
+    companyId,
+    companyFieldName: 'manufOrder.company',
     criteria: createOperationOrderPlanningCriteria(date),
     fieldKey: 'manufacturing_operationOrder',
     sortKey: 'manufacturing_operationOrderPlanning',

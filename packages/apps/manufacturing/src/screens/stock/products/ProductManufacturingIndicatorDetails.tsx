@@ -34,6 +34,7 @@ const ProductManufacturingIndicatorDetails = ({route}) => {
     isListEndManufacturingQty,
     manufacturingQtyList,
   } = useSelector((state: any) => state.manufacturing_productIndicators);
+  const {user} = useSelector(state => state.user);
 
   const fetchManufacturingQtyIndicatorAPI = useCallback(
     (page = 0) => {
@@ -41,11 +42,12 @@ const ProductManufacturingIndicatorDetails = ({route}) => {
         (fetchManufacturingQtyIndicator as any)({
           indicatorType,
           productId: productId,
+          companyId: user.activeCompany?.id,
           page,
         }),
       );
     },
-    [dispatch, indicatorType, productId],
+    [dispatch, indicatorType, productId, user.activeCompany?.id],
   );
 
   return (

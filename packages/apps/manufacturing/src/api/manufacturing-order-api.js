@@ -26,7 +26,6 @@ import {
 
 const createManufOrderCriteria = (
   searchValue,
-  companyId,
   manageWorkshop,
   workshopId,
   statusList,
@@ -67,14 +66,6 @@ const createManufOrderCriteria = (
     },
     getSearchCriterias('manufacturing_manufacturingOrder', searchValue),
   ];
-
-  if (companyId != null) {
-    criterias.push({
-      fieldName: 'company.id',
-      operator: '=',
-      value: companyId,
-    });
-  }
 
   if (workshopId != null && manageWorkshop) {
     criterias.push({
@@ -127,9 +118,9 @@ export async function searchManufacturingOrderFilter({
 }) {
   return createStandardSearch({
     model: 'com.axelor.apps.production.db.ManufOrder',
+    companyId,
     criteria: createManufOrderCriteria(
       searchValue,
-      companyId,
       manageWorkshop,
       workshopId,
       statusList,
@@ -154,6 +145,7 @@ export async function fetchManufacturingOrder({manufOrderId}) {
 
 export async function fetchManufacturingOrderOfProductionOrder({
   productionOrderList,
+  companyId,
   page = 0,
 }) {
   if (productionOrderList == null) {
@@ -183,16 +175,23 @@ export async function fetchManufacturingOrderOfProductionOrder({
 
       return manufOrderList?.map(manufOrder => manufOrder.id);
     })
-    .then(manufOrderIds => fetchManufacturingOrderByIds({manufOrderIds, page}));
+    .then(manufOrderIds =>
+      fetchManufacturingOrderByIds({manufOrderIds, companyId, page}),
+    );
 }
 
-async function fetchManufacturingOrderByIds({manufOrderIds, page = 0}) {
+async function fetchManufacturingOrderByIds({
+  manufOrderIds,
+  companyId,
+  page = 0,
+}) {
   if (manufOrderIds == null) {
     return null;
   }
 
   return createStandardSearch({
     model: 'com.axelor.apps.production.db.ManufOrder',
+    companyId,
     criteria: [
       {
         fieldName: 'id',
@@ -209,10 +208,12 @@ async function fetchManufacturingOrderByIds({manufOrderIds, page = 0}) {
 
 export async function fetchChildrenManufacturingOrders({
   parentManufOrderId,
+  companyId,
   page = 0,
 }) {
   return createStandardSearch({
     model: 'com.axelor.apps.production.db.ManufOrder',
+    companyId,
     criteria: [
       {
         fieldName: 'parentMO.id',

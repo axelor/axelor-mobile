@@ -33,17 +33,19 @@ const ManufacturingOrderListProductionOrderScreen = ({route}) => {
 
   const {loadingLinkMO, moreLoadingLinkMO, isListEndLinkMO, linkedManufOrders} =
     useSelector(state => state.manufacturingOrder);
+  const {user} = useSelector(state => state.user);
 
   const fetchManufOrderAPI = useCallback(
     (page = 0) => {
       dispatch(
         fetchLinkedManufOrders({
           productionOrderList: manufOrder.productionOrderSet,
+          companyId: user.activeCompany?.id,
           page,
         }),
       );
     },
-    [dispatch, manufOrder],
+    [dispatch, manufOrder.productionOrderSet, user.activeCompany?.id],
   );
 
   return (

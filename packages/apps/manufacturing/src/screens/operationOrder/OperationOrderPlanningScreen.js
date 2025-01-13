@@ -35,6 +35,7 @@ function OperationOrderPlanningScreen({navigation}) {
   const {plannedOperationOrderList, loading} = useSelector(
     state => state.operationOrder,
   );
+  const {user} = useSelector(state => state.user);
 
   const listItem = useMemo(() => {
     if (
@@ -65,9 +66,11 @@ function OperationOrderPlanningScreen({navigation}) {
 
   const fetchItemsByMonth = useCallback(
     date => {
-      dispatch(fetchPlannedOperationOrder(date));
+      dispatch(
+        fetchPlannedOperationOrder({date, companyId: user.activeCompany?.id}),
+      );
     },
-    [dispatch],
+    [dispatch, user.activeCompany?.id],
   );
 
   const navigateToOperationOrder = id => {

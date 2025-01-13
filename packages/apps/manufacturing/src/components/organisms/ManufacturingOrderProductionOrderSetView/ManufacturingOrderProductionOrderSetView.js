@@ -35,16 +35,18 @@ const ManufacturingOrderProductionOrderSetView = ({onPressViewProduction}) => {
   const {manufOrder, linkedManufOrders} = useSelector(
     state => state.manufacturingOrder,
   );
+  const {user} = useSelector(state => state.user);
 
   useEffect(() => {
     if (manufOrder != null) {
       dispatch(
         fetchLinkedManufOrders({
           productionOrderList: manufOrder.productionOrderSet,
+          companyId: user.activeCompany?.id,
         }),
       );
     }
-  }, [dispatch, manufOrder]);
+  }, [dispatch, manufOrder, user.activeCompany?.id]);
 
   if (
     !Array.isArray(manufOrder.productionOrderSet) ||
