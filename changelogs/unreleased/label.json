@@ -1,0 +1,5 @@
+{
+  "title": "Label: ensure that the text takes up all the available space",
+  "type": "fix",
+  "packages": "ui"
+}
