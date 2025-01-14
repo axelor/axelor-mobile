@@ -1,5 +1,0 @@
-{
-  "title": "MailMessageView: add props to hide message box and filter messages by date",
-  "type": "feat",
-  "packages": "core"
-}
