@@ -199,6 +199,9 @@ export const crm_modelAPI: ObjectFields = {
         zip: schemaContructor.string(),
       }),
     ),
+    partnerAddressList: schemaContructor
+      .array()
+      .of(schemaContructor.subObject()),
     partnerTypeSelect: schemaContructor.number(),
     fixedPhone: schemaContructor.string(),
     mobilePhone: schemaContructor.string(),
