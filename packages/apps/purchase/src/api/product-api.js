@@ -18,6 +18,7 @@
 
 import {
   createStandardSearch,
+  getNowDateZonesISOString,
   getSearchCriterias,
 } from '@axelor/aos-mobile-core';
 
@@ -28,6 +29,25 @@ const createProductCriteria = ({searchValue}) => {
       fieldName: 'isModel',
       operator: '=',
       value: false,
+    },
+    {
+      fieldName: 'expense',
+      operator: '=',
+      value: false,
+    },
+    {
+      operator: 'or',
+      criteria: [
+        {
+          fieldName: 'endDate',
+          operator: 'isNull',
+        },
+        {
+          fieldName: 'endDate',
+          operator: '>',
+          value: getNowDateZonesISOString().split('T')[0],
+        },
+      ],
     },
     {
       fieldName: 'purchasable',
