@@ -53,8 +53,10 @@ const DEFAULT_BOTTOM_MARGIN = 10;
 const MailMessageView = ({
   model,
   modelId,
+  date = null,
   actionList = [],
   verticalActions = true,
+  hideMessageBox = false,
 }) => {
   const dispatch = useDispatch();
   const I18n = useTranslator();
@@ -85,12 +87,13 @@ const MailMessageView = ({
         getMailMessages({
           model: model,
           modelId: modelId,
+          date,
           limit: 10,
           page: page,
         }),
       );
     },
-    [dispatch, model, modelId],
+    [date, dispatch, model, modelId],
   );
 
   const fetchModelFollowersAPI = useCallback(() => {
@@ -155,12 +158,16 @@ const MailMessageView = ({
   );
 
   const displayMessageBox = useMemo(() => {
+    if (hideMessageBox) {
+      return false;
+    }
+
     if (selectedStatus.length !== 0) {
       return selectedStatus[0].key !== MailMessageType.status.notification;
     }
 
     return true;
-  }, [selectedStatus]);
+  }, [hideMessageBox, selectedStatus]);
 
   useEffect(() => {
     headerActionsProvider.registerModel('core_mailMessage_details', {
