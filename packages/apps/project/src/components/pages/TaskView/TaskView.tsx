@@ -31,7 +31,7 @@ const TaskView = () => {
   const I18n = useTranslator();
   const navigation = useNavigation();
 
-  const {userId} = useSelector((state: any) => state.auth);
+  const {user} = useSelector((state: any) => state.user);
   const {project} = useSelector((state: any) => state.project_project);
   const {loading, moreLoading, isListEnd, projectTaskList} = useSelector(
     (state: any) => state.project_projectTask,
@@ -50,7 +50,8 @@ const TaskView = () => {
       selectedStatus: selectedStatus,
       selectedPriority: selectedPriority,
       selectedCategory: selectedCategory,
-      userId: isAssignedToMe ? userId : null,
+      userId: isAssignedToMe ? user?.id : null,
+      companyId: user?.activeCompany?.id,
     };
   }, [
     project?.id,
@@ -58,7 +59,7 @@ const TaskView = () => {
     selectedStatus,
     selectedPriority,
     selectedCategory,
-    userId,
+    user,
   ]);
 
   return (
