@@ -17,7 +17,6 @@
  */
 
 export {default as DropdownRequestCharacteristics} from './DropdownRequestCharacteristics/DropdownRequestCharacteristics';
-export {default as HorizontalRuleText} from './HorizontalRuleText/HorizontalRuleText';
 export {default as RequestCard} from './RequestCard/RequestCard';
 export {default as RequestHeader} from './RequestHeader/RequestHeader';
 export {default as RequestLineCard} from './RequestLineCard/RequestLineCard';

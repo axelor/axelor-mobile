@@ -18,7 +18,8 @@
 
 import React, {useCallback, useMemo} from 'react';
 import {View, StyleSheet} from 'react-native';
-import {HorizontalRule, Text, useThemeColor} from '@axelor/aos-mobile-ui';
+import {HorizontalRule, Text} from '../../atoms';
+import {useThemeColor} from '../../../theme';
 
 interface HorizontalRuleTextProps {
   style?: any;

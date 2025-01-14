@@ -21,6 +21,7 @@ import {StyleSheet} from 'react-native';
 import {
   FormHtmlInput,
   FormInput,
+  HorizontalRuleText,
   KeyboardAvoidingScrollView,
   Screen,
   ViewAllEditList,
@@ -29,7 +30,6 @@ import {useSelector, useTranslator} from '@axelor/aos-mobile-core';
 import {RequestCreation} from '../types';
 import {
   CompanyPicker,
-  HorizontalRuleText,
   ProductSearchBar,
   RequestCreationButtons,
   RequestCreationQuantityCard,
