@@ -22,6 +22,7 @@ import {RouterProvider} from '../config';
 interface fetchMailMessageProps {
   model: string;
   modelId: number;
+  date?: string;
   limit?: number;
   page?: number;
 }
@@ -35,16 +36,31 @@ interface postMailMessageCommentProps {
 export async function fetchMailMessages({
   model,
   modelId,
+  date,
   limit = 10,
   page,
 }: fetchMailMessageProps) {
   const route = await RouterProvider.get('MailMessages');
 
-  return axiosApiProvider.get({
+  const res = await axiosApiProvider.get({
     url: `${route}?relatedId=${modelId}&relatedModel=${model}&limit=${limit}&offset=${
       limit * page
     }`,
   });
+
+  if (date != null) {
+    const filteredMessages = [];
+    for (const message of res?.data?.data) {
+      if (new Date(message.$eventTime) > new Date(date)) {
+        filteredMessages.push(message);
+      } else {
+        break;
+      }
+    }
+    res.data.data = filteredMessages;
+  }
+
+  return res;
 }
 
 export async function postMailMessageComment({
