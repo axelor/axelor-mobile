@@ -158,6 +158,7 @@ const CompleteRequestScreen = ({}) => {
           <LeaveReasonSearchBar
             defaultValue={newLine}
             onChange={leaveReason =>
+              leaveReason != null &&
               setNewLine({
                 id: leaveReason.id,
                 name: leaveReason.name,
