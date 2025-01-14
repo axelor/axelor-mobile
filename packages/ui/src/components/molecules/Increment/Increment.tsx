@@ -57,8 +57,8 @@ const Increment = ({
   decimalSpacer,
   thousandSpacer,
   onValueChange,
-  onFocus = () => {},
-  onBlur = () => {},
+  onFocus,
+  onBlur,
   readonly = false,
   defaultFormatting = true,
   stepSize = 1,
@@ -165,7 +165,7 @@ const Increment = ({
       handleResult(parseFloat(unformattedValue));
     }
 
-    onBlur();
+    onBlur?.();
   }, [defaultFormatting, handleResult, onBlur, valueQty]);
 
   useEffect(() => {
@@ -182,7 +182,7 @@ const Increment = ({
     if (inputRef.current) {
       inputRef.current.setSelection(0, valueQty.length);
     }
-    onFocus();
+    onFocus?.();
   };
 
   const styles = useMemo(() => getStyles(Colors), [Colors]);
@@ -202,7 +202,7 @@ const Increment = ({
           inputRef={inputRef}
           style={[styles.input, inputStyle]}
           value={valueQty != null ? String(valueQty) : ''}
-          onChange={input => setValueQty(input)}
+          onChange={setValueQty}
           keyboardType={keyboardType}
           onSelection={handleFocus}
           onEndFocus={handleEndInput}
