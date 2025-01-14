@@ -16,4 +16,9 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+export {default as CompanyPicker} from './CompanyPicker/CompanyPicker';
+export {default as ProductSearchBar} from './ProductSearchBar/ProductSearchBar';
+export {default as RequestCreationButtons} from './RequestCreationButtons/RequestCreationButtons';
+export {default as RequestCreationQuantityCard} from './RequestCreationQuantityCard/RequestCreationQuantityCard';
 export {default as SupplierSearchBar} from './SupplierSearchBar/SupplierSearchBar';
+export {default as UnitSearchBar} from './UnitSearchBar/UnitSearchBar';
