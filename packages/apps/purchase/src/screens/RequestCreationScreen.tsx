@@ -42,16 +42,19 @@ const RequestCreationScreen = () => {
   const {user} = useSelector(state => state.user);
 
   const [company, setCompany] = useState(user.activeCompany);
+  const [description, setDescription] = useState('');
   const [currentStep, setCurrentStep] = useState(RequestCreation.step.addLine);
-  const [newLine, setNewLine] = useState(null);
   const [lines, setLines] = useState([]);
-  const [quantity, setQuantity] = useState(0);
+  const [newLine, setNewLine] = useState(null);
   const [productTitle, setProductTitle] = useState('');
   const [isCustomProduct, setIsCustomProduct] = useState(false);
+  const [quantity, setQuantity] = useState(0);
   const [unit, setUnit] = useState(null);
 
-  const handleEditLine = line => {
+  const handleEditLine = (line: any) => {
     setNewLine(line);
+    setProductTitle(line.productTitle);
+    setIsCustomProduct(line.product == null);
     setQuantity(line.quantity);
     setUnit(line.unit);
     setCurrentStep(RequestCreation.step.validateLine);
@@ -59,43 +62,51 @@ const RequestCreationScreen = () => {
 
   const handleReset = useCallback((_step = RequestCreation.step.addLine) => {
     setCurrentStep(_step);
-    setQuantity(0);
     setNewLine(null);
     setProductTitle('');
-    setUnit(null);
     setIsCustomProduct(false);
+    setQuantity(0);
+    setUnit(null);
   }, []);
 
   const handleProductChange = useCallback(
-    _value => {
+    (_value: any) => {
       if (_value == null) {
         handleReset(RequestCreation.step.addLine);
       } else {
         setNewLine(_value);
         setProductTitle(_value.name);
-        setUnit(_value?.unit);
         setIsCustomProduct(false);
+        setUnit(_value.unit);
         setCurrentStep(RequestCreation.step.validateLine);
       }
     },
     [handleReset],
   );
 
-  const handleCustomProductInput = useCallback(value => {
+  const handleCustomProductInput = useCallback((value: string) => {
     setProductTitle(value);
     setIsCustomProduct(!!value);
+
+    if (value) {
+      setCurrentStep(RequestCreation.step.validateLine);
+    }
   }, []);
 
   const handleAddLine = () => {
     setLines(prevLines => {
       const newLines = [...prevLines];
-      const existingLine = newLines.find(line => line.id === newLine?.id);
+      const indexLine = newLines.findIndex(({id}) => id === newLine?.id);
 
-      if (existingLine) {
-        existingLine.quantity = quantity;
+      if (indexLine >= 0) {
+        if (isEditionMode) {
+          newLines[indexLine].quantity = quantity;
+        } else {
+          newLines[indexLine].quantity += quantity;
+        }
       } else {
         newLines.push({
-          productTitle: isCustomProduct ? productTitle : null,
+          productTitle: productTitle,
           product: isCustomProduct ? null : newLine,
           quantity: quantity,
           unit: unit,
@@ -122,27 +133,28 @@ const RequestCreationScreen = () => {
           step={currentStep}
           setStep={setCurrentStep}
           lines={lines}
-          unit={unit}
-          movedQty={quantity}
+          disabled={quantity === 0 || unit == null}
           isEditionMode={isEditionMode}
           addLine={handleAddLine}
         />
       }>
       <KeyboardAvoidingScrollView style={styles.container}>
         <CompanyPicker onChange={setCompany} company={company} />
-        <FormHtmlInput title={I18n.t('Purchase_Description')} />
+        <FormHtmlInput
+          title={I18n.t('Purchase_Description')}
+          defaultValue={description}
+          onChange={setDescription}
+        />
         <ViewAllEditList
           title={I18n.t('Purchase_Products')}
           lines={lines.map(line => ({
             ...line,
-            name: line.productTitle || line.product?.name,
+            name: line.productTitle,
             qty: line.quantity,
             unitName: line.unit?.name,
           }))}
           currentLineId={isEditionMode ? newLine.id : null}
-          setLines={_lines =>
-            setLines(_lines.map(line => ({...line, quantity: line.qty})))
-          }
+          setLines={setLines}
           handleEditLine={handleEditLine}
           translator={I18n.t}
         />
@@ -152,21 +164,16 @@ const RequestCreationScreen = () => {
         />
         <HorizontalRuleText text={I18n.t('Purchase_Or')} style={styles.rule} />
         <FormInput
-          readOnly={!isCustomProduct && newLine?.name != null}
+          readOnly={!isCustomProduct && newLine != null}
           title={I18n.t('Purchase_ProductTitle')}
-          defaultValue={isCustomProduct ? productTitle : newLine?.name}
-          onChange={value => {
-            handleCustomProductInput(value);
-            if (value) {
-              setCurrentStep(RequestCreation.step.validateLine);
-            }
-          }}
+          defaultValue={productTitle}
+          onChange={handleCustomProductInput}
         />
         <RequestCreationQuantityCard
           quantity={quantity}
           setQuantity={setQuantity}
-          cancelMove={() => handleReset(RequestCreation.step.addLine)}
-          productName={newLine?.name || productTitle}
+          cancelLine={() => handleReset(RequestCreation.step.addLine)}
+          productName={productTitle}
           productUnit={unit?.name || newLine?.product?.unit?.name}
         />
         <UnitSearchBar
@@ -186,7 +193,6 @@ const styles = StyleSheet.create({
     paddingTop: 10,
   },
   rule: {
-    marginTop: 5,
     width: '80%',
   },
 });

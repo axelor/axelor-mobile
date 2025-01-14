@@ -23,7 +23,7 @@ import {checkNullString, QuantityCard, Text} from '@axelor/aos-mobile-ui';
 interface RequestCreationQuantityCardProps {
   quantity: number;
   setQuantity: (state: any) => void;
-  cancelMove: () => void;
+  cancelLine: () => void;
   productName: string;
   productUnit: string;
 }
@@ -31,7 +31,7 @@ interface RequestCreationQuantityCardProps {
 const RequestCreationQuantityCard = ({
   quantity,
   setQuantity,
-  cancelMove,
+  cancelLine,
   productName,
 }: RequestCreationQuantityCardProps) => {
   const I18n = useTranslator();
@@ -49,7 +49,7 @@ const RequestCreationQuantityCard = ({
       editable={true}
       actionQty={isProductName}
       iconName="x-lg"
-      onPressActionQty={cancelMove}
+      onPressActionQty={cancelLine}
       isBigButton={true}
       translator={I18n.t}>
       {isProductName && <Text fontSize={16}>{productName}</Text>}

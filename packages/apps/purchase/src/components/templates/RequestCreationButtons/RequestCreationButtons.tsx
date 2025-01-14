@@ -16,7 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import React, {useMemo} from 'react';
+import React, {useCallback, useMemo} from 'react';
 import {StyleSheet, View} from 'react-native';
 import {useTranslator} from '@axelor/aos-mobile-core';
 import {Button, useThemeColor} from '@axelor/aos-mobile-ui';
@@ -26,9 +26,8 @@ interface RequestCreationButtonsProps {
   step: number;
   setStep: (step: number) => void;
   lines: any[];
-  movedQty: number;
-  isEditionMode: boolean;
-  unit: any;
+  isEditionMode?: boolean;
+  disabled?: boolean;
   addLine: () => void;
 }
 
@@ -36,9 +35,8 @@ const RequestCreationButtons = ({
   step,
   setStep,
   lines,
-  movedQty,
-  unit,
-  isEditionMode,
+  isEditionMode = false,
+  disabled = false,
   addLine,
 }: RequestCreationButtonsProps) => {
   const Colors = useThemeColor();
@@ -56,7 +54,7 @@ const RequestCreationButtons = ({
     setStep(RequestCreation.step.finish);
   };
 
-  const handleRealizePress = () => {};
+  const handleRealizePress = useCallback(() => {}, []);
 
   if (
     (step === RequestCreation.step.addLine && lines.length >= 1) ||
@@ -70,7 +68,7 @@ const RequestCreationButtons = ({
             iconName={isEditionMode ? 'floppy-fill' : 'plus-lg'}
             color={Colors.progressColor}
             width="45%"
-            disabled={movedQty === 0 || unit == null}
+            disabled={disabled}
             onPress={addLine}
           />
         )}
@@ -78,7 +76,7 @@ const RequestCreationButtons = ({
           title={I18n.t('Base_Finish')}
           iconName="check-lg"
           width={isValidateLineStep ? '45%' : '90%'}
-          disabled={isValidateLineStep && !unit}
+          disabled={isValidateLineStep && disabled}
           onPress={handleFinishPress}
         />
       </View>
@@ -92,7 +90,7 @@ const RequestCreationButtons = ({
           title={I18n.t('Base_Add')}
           iconName="arrow-left"
           color={Colors.progressColor}
-          width={'45%'}
+          width="45%"
           onPress={() => {
             setStep(RequestCreation.step.addLine);
           }}
