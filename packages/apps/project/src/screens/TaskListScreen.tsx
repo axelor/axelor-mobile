@@ -48,7 +48,7 @@ const TaskListScreen = ({navigation}) => {
       selectedStatus: selectedStatus,
       selectedPriority: selectedPriority,
       selectedCategory: selectedCategory,
-      userId: isAssignedToMe ? user?.id : null,
+      userId: isAssignedToMe ? user.id : null,
     };
   }, [
     isAssignedToMe,
@@ -56,8 +56,7 @@ const TaskListScreen = ({navigation}) => {
     selectedCategory,
     selectedPriority,
     selectedStatus,
-    user.activeCompany?.id,
-    user?.id,
+    user,
   ]);
 
   return (

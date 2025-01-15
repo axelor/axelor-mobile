@@ -50,8 +50,8 @@ const TaskView = () => {
       selectedStatus: selectedStatus,
       selectedPriority: selectedPriority,
       selectedCategory: selectedCategory,
-      userId: isAssignedToMe ? user?.id : null,
-      companyId: user?.activeCompany?.id,
+      userId: isAssignedToMe ? user.id : null,
+      companyId: user.activeCompany?.id,
     };
   }, [
     project?.id,
