@@ -18,7 +18,7 @@
 
 import React, {useCallback, useMemo} from 'react';
 import {StyleSheet} from 'react-native';
-import {FormView, useSelector, useTranslator} from '@axelor/aos-mobile-core';
+import {FormView, useSelector} from '@axelor/aos-mobile-core';
 import {createDocument, updateDocument} from '../features/documentSlice';
 
 const DocumentFormScreen = ({navigation, route}) => {
@@ -26,7 +26,6 @@ const DocumentFormScreen = ({navigation, route}) => {
   const document = route?.params?.document;
   const model = route?.params?.model;
   const modelId = route?.params?.modelId;
-  const I18n = useTranslator();
 
   const {user} = useSelector(state => state.user);
   const {mobileSettings} = useSelector(state => state.appConfig);
@@ -34,22 +33,18 @@ const DocumentFormScreen = ({navigation, route}) => {
   const creationDefaultValue = useMemo(
     () => ({
       isAttachedFileCreation: model && modelId,
-      parent: parent ?? {
-        fileName: I18n.t('Dms_Root'),
-      },
+      parent: parent,
     }),
-    [I18n, model, modelId, parent],
+    [model, modelId, parent],
   );
 
   const defaultValue = useMemo(
     () =>
       document && {
         ...document,
-        parent: document.parent ?? {
-          fileName: I18n.t('Dms_Root'),
-        },
+        parent: document.parent,
       },
-    [I18n, document],
+    [document],
   );
 
   const documentAPI = useCallback(
@@ -57,15 +52,7 @@ const DocumentFormScreen = ({navigation, route}) => {
       const parentId = _document.parent?.id;
 
       if (parentId == null) {
-        _document.parent = null;
-      }
-
-      if (parentId === user.dmsRoot?.id) {
-        _document.parent = user.dmsRoot;
-      }
-
-      if (parentId === mobileSettings?.defaultDmsRoot?.id) {
-        _document.parent = mobileSettings?.defaultDmsRoot;
+        _document.parent = user.dmsRoot ?? mobileSettings?.defaultDmsRoot;
       }
 
       const sliceFunction = isCreation ? createDocument : updateDocument;

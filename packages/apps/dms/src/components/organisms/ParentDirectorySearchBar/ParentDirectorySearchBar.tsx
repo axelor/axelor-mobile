@@ -16,7 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import React, {useCallback, useMemo} from 'react';
+import React, {useCallback} from 'react';
 import {StyleSheet} from 'react-native';
 import {useDispatch, useSelector, useTranslator} from '@axelor/aos-mobile-core';
 import {AutoCompleteSearch, Label} from '@axelor/aos-mobile-ui';
@@ -44,25 +44,12 @@ const ParentDirectorySearchBar = ({
   const I18n = useTranslator();
   const dispatch = useDispatch();
 
-  const {user} = useSelector(state => state.user);
-  const {mobileSettings} = useSelector(state => state.appConfig);
   const {
     loadingDirectory,
     moreLoadingDirectory,
     isListEndDirectory,
     directoryList,
   } = useSelector(state => state.dms_document);
-
-  const extendedDirectoryList = useMemo(
-    () => [
-      {
-        ...(user.dmsRoot ?? mobileSettings?.defaultDmsRoot),
-        fileName: I18n.t('Dms_Root'),
-      },
-      ...directoryList,
-    ],
-    [I18n, directoryList, mobileSettings?.defaultDmsRoot, user.dmsRoot],
-  );
 
   const searchParentDirectoryAPI = useCallback(
     ({searchValue, page = 0}) => {
@@ -73,10 +60,17 @@ const ParentDirectorySearchBar = ({
 
   return (
     <>
+      {displayRootInfo && defaultValue == null && (
+        <Label
+          style={styles.label}
+          type="info"
+          message={I18n.t('Dms_SearchBarRootInfo')}
+        />
+      )}
       <AutoCompleteSearch
         style={style}
         title={I18n.t(title)}
-        objectList={extendedDirectoryList}
+        objectList={directoryList}
         value={defaultValue}
         required={required}
         readonly={readonly}
@@ -92,13 +86,6 @@ const ParentDirectorySearchBar = ({
         oneFilter={false}
         translator={I18n.t}
       />
-      {displayRootInfo && (
-        <Label
-          style={styles.label}
-          type="info"
-          message={I18n.t('Dms_SearchBarRootInfo')}
-        />
-      )}
     </>
   );
 };
