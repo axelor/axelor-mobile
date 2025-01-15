@@ -113,9 +113,11 @@ export async function fetchIntervention({
   date,
   statusList,
   page = 0,
+  companyId,
 }) {
   return createStandardSearch({
     model: 'com.axelor.apps.intervention.db.Intervention',
+    companyId,
     criteria: createInterventionCriteria(
       searchValue,
       userId,
@@ -143,8 +145,10 @@ export async function searchHistoryInterventionByEquipment({
   page,
   statusList,
   equipmentId,
+  companyId,
 }) {
   return createStandardSearch({
+    companyId,
     model: 'com.axelor.apps.intervention.db.Intervention',
     criteria: createInterventionHistoryCriteria(statusList, equipmentId),
     domain: ':equipment MEMBER OF self.equipmentSet',
@@ -160,10 +164,11 @@ export async function searchHistoryInterventionByEquipment({
   });
 }
 
-export async function fetchActiveIntervention({userId}) {
+export async function fetchActiveIntervention({userId, companyId}) {
   const Intervention = getTypes().Intervention;
 
   return createStandardSearch({
+    companyId,
     model: 'com.axelor.apps.intervention.db.Intervention',
     criteria: createInterventionCriteria(null, userId, null, null, [
       Intervention?.statusSelect.Started,

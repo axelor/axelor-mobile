@@ -31,6 +31,7 @@ const HistoryView = ({}) => {
   const I18n = useTranslator();
   const {Intervention} = useTypes();
 
+  const {user} = useSelector(state => state.user);
   const {loading, moreLoading, isListEnd, interventionList, intervention} =
     useSelector((state: any) => state.intervention_intervention);
 
@@ -38,8 +39,13 @@ const HistoryView = ({}) => {
     () => ({
       deliveredPartnerId: intervention.deliveredPartner?.id,
       statusList: [Intervention?.statusSelect.Finished],
+      companyId: user.activeCompany?.id,
     }),
-    [Intervention?.statusSelect, intervention.deliveredPartner?.id],
+    [
+      Intervention?.statusSelect.Finished,
+      intervention.deliveredPartner?.id,
+      user.activeCompany?.id,
+    ],
   );
 
   return (

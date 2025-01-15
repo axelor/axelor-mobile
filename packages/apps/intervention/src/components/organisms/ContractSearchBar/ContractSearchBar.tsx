@@ -43,6 +43,7 @@ const ContractSearchBarAux = ({
   const I18n = useTranslator();
   const dispatch = useDispatch();
 
+  const {user} = useSelector(state => state.user);
   const {loadingList, moreLoading, isListEnd, contractList} = useSelector(
     (state: any) => state.intervention_contract,
   );
@@ -50,10 +51,15 @@ const ContractSearchBarAux = ({
   const searchContractAPI = useCallback(
     ({page = 0, searchValue}) => {
       dispatch(
-        (searchContract as any)({page, partnerId: customerId, searchValue}),
+        (searchContract as any)({
+          page,
+          partnerId: customerId,
+          searchValue,
+          companyId: user.activeCompany?.id,
+        }),
       );
     },
-    [dispatch, customerId],
+    [dispatch, customerId, user.activeCompany?.id],
   );
 
   return (
