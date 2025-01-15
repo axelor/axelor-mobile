@@ -29,7 +29,7 @@ import {searchProjectTask} from '../features/projectTaskSlice';
 const TaskListScreen = ({navigation}) => {
   const I18n = useTranslator();
 
-  const {userId} = useSelector((state: any) => state.auth);
+  const {user} = useSelector(state => state.user);
   const {loading, moreLoading, isListEnd, projectTaskList} = useSelector(
     (state: any) => state.project_projectTask,
   );
@@ -42,12 +42,13 @@ const TaskListScreen = ({navigation}) => {
 
   const sliceFunctionData = useMemo(() => {
     return {
+      companyId: user.activeCompany?.id,
       projectId: project?.id,
       isAssignedToMe: isAssignedToMe,
       selectedStatus: selectedStatus,
       selectedPriority: selectedPriority,
       selectedCategory: selectedCategory,
-      userId: isAssignedToMe ? userId : null,
+      userId: isAssignedToMe ? user.id : null,
     };
   }, [
     isAssignedToMe,
@@ -55,7 +56,7 @@ const TaskListScreen = ({navigation}) => {
     selectedCategory,
     selectedPriority,
     selectedStatus,
-    userId,
+    user,
   ]);
 
   return (

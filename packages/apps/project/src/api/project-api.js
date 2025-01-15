@@ -96,6 +96,7 @@ export async function searchProject({
   differentiateBusinessProjects = true,
   statusList,
   userId,
+  companyId,
 }) {
   return createStandardSearch({
     model: 'com.axelor.apps.project.db.Project',
@@ -110,6 +111,7 @@ export async function searchProject({
     sortKey: 'project_project',
     page,
     provider: 'model',
+    companyId,
   });
 }
 
@@ -132,7 +134,7 @@ export async function fetchProjectById({projectId}) {
   });
 }
 
-export async function searchSubProject({page = 0, projectId}) {
+export async function searchSubProject({page = 0, projectId, companyId}) {
   return createStandardSearch({
     model: 'com.axelor.apps.project.db.Project',
     criteria: createSubProjectCriteria({projectId}),
@@ -140,6 +142,7 @@ export async function searchSubProject({page = 0, projectId}) {
     sortKey: 'project_project',
     page,
     provider: 'model',
+    companyId,
   });
 }
 
