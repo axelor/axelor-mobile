@@ -17,7 +17,7 @@
  */
 
 import React, {useMemo} from 'react';
-import {useSelector, useTranslator} from '@axelor/aos-mobile-core';
+import {useSelector, useTranslator, useTypes} from '@axelor/aos-mobile-core';
 import {QuantityCard, Text, useDigitFormat} from '@axelor/aos-mobile-ui';
 
 interface CompleteRequestQuantityCardProps {
@@ -34,17 +34,33 @@ const CompleteRequestQuantityCard = ({
   newLine,
 }: CompleteRequestQuantityCardProps) => {
   const I18n = useTranslator();
+  const {LeaveReason} = useTypes();
   const formatNumber = useDigitFormat();
 
   const {user} = useSelector(state => state.user);
 
-  const availableQty = useMemo(
-    () =>
+  const availableQty = useMemo(() => {
+    if (
+      newLine.leaveReasonTypeSelect ===
+      LeaveReason?.leaveReasonTypeSelect.ExceptionalLeave
+    ) {
+      return '-';
+    }
+
+    const _availableQty =
       user.employee?.leaveLineList?.find(
         leaveLine => leaveLine.leaveReason.id === newLine.id,
-      )?.quantity ?? 0,
-    [newLine.id, user.employee?.leaveLineList],
-  );
+      )?.quantity ?? 0;
+
+    return `${formatNumber(_availableQty)} ${newLine.unitName}`;
+  }, [
+    LeaveReason?.leaveReasonTypeSelect.ExceptionalLeave,
+    formatNumber,
+    newLine.id,
+    newLine.leaveReasonTypeSelect,
+    newLine.unitName,
+    user.employee?.leaveLineList,
+  ]);
 
   return (
     <QuantityCard
@@ -60,9 +76,7 @@ const CompleteRequestQuantityCard = ({
       <Text
         fontSize={16}>{`${I18n.t('Hr_LeaveReason')} : ${newLine.name}`}</Text>
       <Text fontSize={16}>
-        {`${I18n.t('Hr_AvailableQty')} : ${formatNumber(
-          availableQty,
-        )} ${newLine.unitName}`}
+        {`${I18n.t('Hr_AvailableQty')} : ${availableQty}`}
       </Text>
     </QuantityCard>
   );

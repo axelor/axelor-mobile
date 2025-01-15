@@ -165,6 +165,7 @@ export const hr_modelAPI: ObjectFields = {
       schemaContructor.object({
         name: schemaContructor.string(),
         unitSelect: schemaContructor.number(),
+        leaveReasonTypeSelect: schemaContructor.number(),
       }),
     ),
     company: schemaContructor.subObject('name'),
@@ -183,5 +184,6 @@ export const hr_modelAPI: ObjectFields = {
   hr_leaveReason: schemaContructor.object({
     name: schemaContructor.string(),
     unitSelect: schemaContructor.number(),
+    leaveReasonTypeSelect: schemaContructor.number(),
   }),
 };

@@ -166,6 +166,7 @@ const CompleteRequestScreen = ({}) => {
                   LeaveReason?.unitSelect,
                   leaveReason.unitSelect,
                 ),
+                leaveReasonTypeSelect: leaveReason.leaveReasonTypeSelect,
               })
             }
           />
