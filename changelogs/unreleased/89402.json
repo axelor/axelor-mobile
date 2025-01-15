@@ -1,0 +1,5 @@
+{
+  "title": "Addresses: add new dropdown to manage addresses of prospect and client",
+  "type": "feat",
+  "packages": "crm"
+}
