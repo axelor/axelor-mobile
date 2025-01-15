@@ -49,7 +49,6 @@ const ActiveInterventionScreen = ({}) => {
   const isFocused = useIsFocused();
   const dispatch = useDispatch();
 
-  const {userId} = useSelector((state: any) => state.auth);
   const {user} = useSelector(state => state.user);
   const {loadingActiveIntervention, activeIntervention, intervention} =
     useSelector((state: any) => state.intervention_intervention);
@@ -58,11 +57,11 @@ const ActiveInterventionScreen = ({}) => {
     isFocused &&
       dispatch(
         (fetchActiveIntervention as any)({
-          userId,
+          userId: user.id,
           companyId: user.activeCompany?.id,
         }),
       );
-  }, [dispatch, isFocused, user.activeCompany?.id, userId]);
+  }, [dispatch, isFocused, user]);
 
   useEffect(() => {
     if (activeIntervention?.id != null) {

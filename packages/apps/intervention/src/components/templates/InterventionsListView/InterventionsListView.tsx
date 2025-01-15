@@ -71,13 +71,7 @@ const InterventionsListView = ({
       statusList: statusList,
       companyId: user.activeCompany?.id,
     }),
-    [
-      isAssignedToMe,
-      selectedDate,
-      statusList,
-      user.activeCompany?.id,
-      user?.id,
-    ],
+    [isAssignedToMe, selectedDate, statusList, user],
   );
 
   const interventionStatusList = useMemo(
