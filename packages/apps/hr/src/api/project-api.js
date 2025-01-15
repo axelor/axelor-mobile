@@ -23,7 +23,6 @@ import {
 
 const createProjectCriteria = ({
   searchValue,
-  activeCompanyId,
   isBusinessProject,
   manageTimeSpent,
 }) => {
