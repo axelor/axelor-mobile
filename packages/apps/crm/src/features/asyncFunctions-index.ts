@@ -16,7 +16,6 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-export {searchAddress} from './addressSlice';
 export {createCatalog, fetchCatalog, fetchCatalogType} from './catalogSlice';
 export {fetchClients, getClientbyId, updateClient} from './clientSlice';
 export {fetchCompanyById} from './companySlice';

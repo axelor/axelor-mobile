@@ -18,7 +18,6 @@
 
 import {FormConfigs, UserSearchBar, isEmpty} from '@axelor/aos-mobile-core';
 import {
-  AddressSearchBar,
   CatalogTypePicker,
   CivilityPicker,
   ClientProspectSearchBar,
@@ -236,12 +235,6 @@ export const crm_formsRegister: FormConfigs = {
         type: 'object',
         widget: 'custom',
         customComponent: FunctionSearchBar,
-      },
-      address: {
-        titleKey: 'Crm_Address',
-        type: 'object',
-        widget: 'custom',
-        customComponent: AddressSearchBar,
       },
       fixedPhone: {
         titleKey: 'Crm_Phone',
