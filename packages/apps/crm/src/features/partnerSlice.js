@@ -95,7 +95,7 @@ export const fetchPartnerAddressByIds = createAsyncThunk(
 );
 
 const initialState = {
-  partnerAddress: [],
+  partnerAddressList: [],
 
   loadingPartner: true,
   partner: {},
@@ -146,7 +146,7 @@ const partnerSlice = createSlice({
       list: 'partnerList',
     });
     builder.addCase(fetchPartnerAddressByIds.fulfilled, (state, action) => {
-      state.partnerAddress = action.payload;
+      state.partnerAddressList = action.payload;
     });
   },
 });

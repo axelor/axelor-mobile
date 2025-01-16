@@ -162,7 +162,7 @@ export async function searchLinkedPartnersOfContact({contactId}) {
   });
 }
 
-export async function fetchPartnerAddressByIds({partnerAddressIds, page = 0}) {
+export async function fetchPartnerAddressByIds({partnerAddressIds}) {
   if (!Array.isArray(partnerAddressIds) || partnerAddressIds.length === 0) {
     return [];
   }
@@ -171,7 +171,7 @@ export async function fetchPartnerAddressByIds({partnerAddressIds, page = 0}) {
     criteria: createPartnerAddressCriteria(partnerAddressIds),
     fieldKey: 'crm_partnerAddress',
     sortKey: 'crm_partnerAddress',
-    page,
     numberElementsByPage: null,
+    provider: 'model',
   });
 }

@@ -28,6 +28,11 @@ import {
 import {Icon, Text, useThemeColor} from '@axelor/aos-mobile-ui';
 import {fetchPartnerAddressByIds} from '../../../features/partnerSlice';
 
+interface PartnerAddress {
+  id: number;
+  version: number;
+}
+
 interface Address {
   id: number;
   address: {
@@ -38,39 +43,39 @@ interface Address {
   isInvoicingAddr?: boolean;
 }
 
-interface DropdownAddressViewProps {
-  partnerAddressList: Address[];
+interface DropdownAddressesViewProps {
+  partnerAddressIdList: PartnerAddress[];
 }
 
-const DropdownAddressView = ({
-  partnerAddressList,
-}: DropdownAddressViewProps) => {
+const DropdownAddressesView = ({
+  partnerAddressIdList,
+}: DropdownAddressesViewProps) => {
   const I18n = useTranslator();
   const Colors = useThemeColor();
   const dispatch = useDispatch();
 
-  const {partnerAddress} = useSelector(state => state.partner);
+  const {partnerAddressList} = useSelector(state => state.partner);
 
   const styles = useMemo(() => {
     return getStyles(Colors);
   }, [Colors]);
 
   useEffect(() => {
-    const idList = partnerAddressList?.map(item => item.id);
+    const idList = partnerAddressIdList?.map(item => item.id);
     dispatch((fetchPartnerAddressByIds as any)({partnerAddressIds: idList}));
-  }, [dispatch, partnerAddressList]);
+  }, [dispatch, partnerAddressIdList]);
 
-  const renderAddressItem = (_partnerAddress: Address, index: number) => {
-    const isLastItem = index === partnerAddress.length - 1;
+  const renderAddressItem = (partnerAddress: Address, index: number) => {
+    const isLastItem = index === partnerAddressList.length - 1;
 
     const icons = [
-      _partnerAddress.isInvoicingAddr && {name: 'star'},
-      _partnerAddress.isDefaultAddr && {name: 'card-list'},
-      _partnerAddress.isDeliveryAddr && {name: 'cart-fill'},
+      partnerAddress.isInvoicingAddr && {name: 'star'},
+      partnerAddress.isDefaultAddr && {name: 'card-list'},
+      partnerAddress.isDeliveryAddr && {name: 'cart-fill'},
     ].filter(Boolean);
 
     return (
-      <View style={styles.container} key={_partnerAddress.id}>
+      <View style={styles.container} key={partnerAddress.id}>
         <View style={styles.containerBody}>
           {icons.length === 1 && (
             <Icon name={icons[0].name} style={styles.leftIcon} />
@@ -87,14 +92,14 @@ const DropdownAddressView = ({
           {icons.length === 3 && <Icon name="star" style={styles.leftIcon} />}
 
           <Text fontSize={14} style={styles.title}>
-            {_partnerAddress.address?.fullName}
+            {partnerAddress.address?.fullName}
           </Text>
           <View style={styles.containerItem}>
             <Icon
               name="pin-map-fill"
               touchable
               onPress={() =>
-                linkingProvider.openMapApp(_partnerAddress.address?.fullName)
+                linkingProvider.openMapApp(partnerAddress.address?.fullName)
               }
             />
             <Icon
@@ -102,7 +107,7 @@ const DropdownAddressView = ({
               touchable
               onPress={() =>
                 clipboardProvider.copyToClipboard(
-                  _partnerAddress.address?.fullName,
+                  partnerAddress.address?.fullName,
                 )
               }
             />
@@ -115,7 +120,7 @@ const DropdownAddressView = ({
     );
   };
 
-  if (!partnerAddress || partnerAddress.length === 0) {
+  if (!partnerAddressList || partnerAddressList.length === 0) {
     return (
       <View>
         <Text>{I18n.t('Crm_NoAddressInformation')}</Text>
@@ -123,13 +128,7 @@ const DropdownAddressView = ({
     );
   }
 
-  return (
-    <View>
-      {partnerAddress &&
-        partnerAddress.length !== 0 &&
-        partnerAddress.map(renderAddressItem)}
-    </View>
-  );
+  return <View>{partnerAddressList.map(renderAddressItem)}</View>;
 };
 
 const getStyles = Colors =>
@@ -169,4 +168,4 @@ const getStyles = Colors =>
     },
   });
 
-export default DropdownAddressView;
+export default DropdownAddressesView;

@@ -21,7 +21,7 @@ import {StyleSheet, View} from 'react-native';
 import {DropdownCardSwitch} from '@axelor/aos-mobile-ui';
 import {useDispatch, useSelector, useTranslator} from '@axelor/aos-mobile-core';
 import {
-  DropdownAddressView,
+  DropdownAddressesView,
   DropdownContactView,
   DropdownEmployeeView,
   DropdownEventView,
@@ -71,8 +71,8 @@ const ProspectDropdownCards = ({}) => {
             title: I18n.t('Crm_Addresses'),
             key: 2,
             childrenComp: (
-              <DropdownAddressView
-                partnerAddressList={prospect.partnerAddressList}
+              <DropdownAddressesView
+                partnerAddressIdList={prospect.partnerAddressList}
               />
             ),
           },

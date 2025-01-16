@@ -21,12 +21,12 @@ import {StyleSheet, View} from 'react-native';
 import {useDispatch, useSelector, useTranslator} from '@axelor/aos-mobile-core';
 import {DropdownCardSwitch} from '@axelor/aos-mobile-ui';
 import {
+  DropdownAddressesView,
   DropdownContactView,
   DropdownEmployeeView,
   DropdownEventView,
   DropdownGeneralView,
   DropdownOpportunityView,
-  DropdownAddressView,
 } from '../../../organisms';
 import {searchContactById} from '../../../../features/contactSlice';
 import {fetchPartnerEventById} from '../../../../features/eventSlice';
@@ -69,7 +69,9 @@ const ClientDropdownCards = ({additionalDropdowns = []}) => {
         title: I18n.t('Crm_Addresses'),
         key: 2,
         childrenComp: (
-          <DropdownAddressView partnerAddressList={client.partnerAddressList} />
+          <DropdownAddressesView
+            partnerAddressIdList={client.partnerAddressList}
+          />
         ),
       },
       {
