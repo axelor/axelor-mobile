@@ -31,6 +31,7 @@ interface NetworkData {
 
 interface DropdownContactViewProps {
   address?: string;
+  isMainAddress?: boolean;
   fixedPhone?: string;
   mobilePhone?: string;
   emailAddress?: string;
@@ -40,6 +41,7 @@ interface DropdownContactViewProps {
 
 const DropdownContactView = ({
   address,
+  isMainAddress,
   fixedPhone,
   mobilePhone,
   emailAddress,
@@ -67,7 +69,9 @@ const DropdownContactView = ({
     <View>
       <ContactInfoCard
         headerIconName="geo-alt-fill"
-        title={I18n.t('Crm_Address')}
+        title={
+          isMainAddress ? I18n.t('Crm_MainAddress') : I18n.t('Crm_Address')
+        }
         data={address}
         rightIconName="pin-map-fill"
         border={

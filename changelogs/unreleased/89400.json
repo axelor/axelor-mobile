@@ -1,0 +1,5 @@
+{
+  "title": "DropdownContactView: renane 'Address' to 'Main address' on clients and prospects",
+  "type": "feat",
+  "packages": "crm"
+}
