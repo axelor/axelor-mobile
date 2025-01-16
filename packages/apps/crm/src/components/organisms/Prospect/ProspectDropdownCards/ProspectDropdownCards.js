@@ -59,6 +59,7 @@ const ProspectDropdownCards = ({}) => {
             key: 1,
             childrenComp: (
               <DropdownContactView
+                isMainAddress={true}
                 address={prospect.mainAddress?.fullName}
                 fixedPhone={prospect.fixedPhone}
                 emailAddress={prospect.emailAddress?.address}

@@ -9,6 +9,7 @@
   "Crm_Description": "Description",
   "Crm_Contact": "Contact",
   "Crm_Address": "Address",
+  "Crm_MainAddress": "Main address",
   "Crm_Phone": "Phone number",
   "Crm_MobilePhone": "Mobile phone",
   "Crm_Email": "Mail address",
