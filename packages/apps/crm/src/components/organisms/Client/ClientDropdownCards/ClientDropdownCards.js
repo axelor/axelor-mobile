@@ -56,6 +56,7 @@ const ClientDropdownCards = ({additionalDropdowns = []}) => {
         key: 1,
         childrenComp: (
           <DropdownContactView
+            isMainAddress={true}
             address={client.mainAddress?.fullName}
             fixedPhone={client.fixedPhone}
             emailAddress={client.emailAddress?.address}
