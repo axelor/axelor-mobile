@@ -52,7 +52,7 @@ const EventLeadCard = ({}) => {
       style={styles.item}
       leadsFullname={lead.simpleFullName}
       leadsCompany={lead.enterpriseName}
-      leadsAddress={lead.primaryAddress}
+      leadsAddress={lead.address?.fullName}
       leadsFixedPhone={lead.fixedPhone}
       leadsPhoneNumber={lead.mobilePhone}
       leadsEmail={lead.emailAddress?.address}

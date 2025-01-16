@@ -109,7 +109,7 @@ export const crm_modelAPI: ObjectFields = {
     firstName: schemaContructor.string(),
     simpleFullName: schemaContructor.string(),
     leadStatus: schemaContructor.subObject('name'),
-    primaryAddress: schemaContructor.string(),
+    address: schemaContructor.subObject('fullName'),
     emailAddress: schemaContructor.subObject('address'),
     mobilePhone: schemaContructor.string(),
     fixedPhone: schemaContructor.string(),
