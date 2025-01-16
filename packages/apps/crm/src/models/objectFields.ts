@@ -19,9 +19,6 @@
 import {ObjectFields, schemaContructor} from '@axelor/aos-mobile-core';
 
 export const crm_modelAPI: ObjectFields = {
-  crm_address: schemaContructor.object({
-    fullName: schemaContructor.string(),
-  }),
   crm_catalog: schemaContructor.object({
     name: schemaContructor.string(),
     pdfFile: schemaContructor.subObject('fileName'),
@@ -112,7 +109,7 @@ export const crm_modelAPI: ObjectFields = {
     firstName: schemaContructor.string(),
     simpleFullName: schemaContructor.string(),
     leadStatus: schemaContructor.subObject('name'),
-    address: schemaContructor.subObject(),
+    address: schemaContructor.subObject('fullName'),
     emailAddress: schemaContructor.subObject('address'),
     mobilePhone: schemaContructor.string(),
     fixedPhone: schemaContructor.string(),
