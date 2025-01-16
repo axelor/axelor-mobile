@@ -24,6 +24,7 @@ import {
 import {
   getPurchaseRequest as _getPurchaseRequest,
   searchPurchaseRequest as _searchPurchaseRequest,
+  updatePurchaseRequestStatus as _updatePurchaseRequestStatus,
 } from '../api/purchase-request-api';
 
 export const searchPurchaseRequest = createAsyncThunk(
@@ -48,6 +49,21 @@ export const getPurchaseRequest = createAsyncThunk(
       action: 'Purchase_SliceAction_GetPurchaseRequest',
       getState,
       responseOptions: {isArrayResponse: false},
+    });
+  },
+);
+
+export const updatePurchaseRequestStatus = createAsyncThunk(
+  'purchase_purchaseRequest/updatePurchaseRequestStatus',
+  async function (data, {getState, dispatch}) {
+    return handlerApiCall({
+      fetchFunction: _updatePurchaseRequestStatus,
+      data,
+      action: 'Purchase_SliceAction_UpdatePurchaseRequestStatus',
+      getState,
+      responseOptions: {isArrayResponse: false, showToast: true},
+    }).then(() => {
+      dispatch(getPurchaseRequest({id: data.purchaseRequest.id}));
     });
   },
 );

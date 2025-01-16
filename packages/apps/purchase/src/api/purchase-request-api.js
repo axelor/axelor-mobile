@@ -19,6 +19,7 @@
 import {
   createStandardFetch,
   createStandardSearch,
+  getActionApi,
   getSearchCriterias,
 } from '@axelor/aos-mobile-core';
 
@@ -73,5 +74,16 @@ export async function getPurchaseRequest({id}) {
     model: 'com.axelor.apps.purchase.db.PurchaseRequest',
     id,
     fieldKey: 'purchase_purchaseRequest',
+  });
+}
+
+export async function updatePurchaseRequestStatus({purchaseRequest, status}) {
+  return getActionApi().send({
+    url: `ws/aos/purchase-request/${status}/${purchaseRequest.id}`,
+    method: 'put',
+    body: {
+      version: purchaseRequest.version,
+    },
+    description: 'update purchase request status',
   });
 }
