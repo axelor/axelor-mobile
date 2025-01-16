@@ -40,7 +40,7 @@ export const crm_searchFields: SearchFields = {
   crm_lead: [
     'simpleFullName',
     'enterpriseName',
-    'primaryAddress',
+    'address.fullName',
     'mobilePhone',
     'fixedPhone',
     'emailAddress.name',

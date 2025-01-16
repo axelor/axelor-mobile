@@ -51,7 +51,7 @@ const LeadDropdownCards = ({}) => {
             key: 1,
             childrenComp: (
               <DropdownContactView
-                address={lead.primaryAddress}
+                address={lead.address?.fullName}
                 fixedPhone={lead.fixedPhone}
                 mobilePhone={lead.mobilePhone}
                 emailAddress={lead.emailAddress?.address}

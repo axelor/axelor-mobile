@@ -92,7 +92,7 @@ const LeadListScreen = ({navigation}) => {
             style={styles.item}
             leadsFullname={item.simpleFullName}
             leadsCompany={item.enterpriseName}
-            leadsAddress={item.primaryAddress}
+            leadsAddress={item.address?.fullName}
             leadsFixedPhone={item.fixedPhone}
             leadsPhoneNumber={item.mobilePhone}
             leadsEmail={item.emailAddress?.address}

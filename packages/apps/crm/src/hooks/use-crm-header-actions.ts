@@ -215,7 +215,7 @@ const useLeadDetailsActions = () => {
               fixedPhone: lead.fixedPhone,
               email: lead.emailAddress?.address,
               address: {
-                street: lead.primaryAddress,
+                street: lead.address?.fullName,
               },
               notes: lead.description,
             }),
