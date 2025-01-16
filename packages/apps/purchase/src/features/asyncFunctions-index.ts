@@ -21,6 +21,7 @@ export {searchPurchaseRequestLine} from './purchaseRequestLineSlice';
 export {
   getPurchaseRequest,
   searchPurchaseRequest,
+  updatePurchaseRequestStatus,
 } from './purchaseRequestSlice';
 export {searchSupplier} from './supplierSlice';
 export {searchUnit} from './unitSlice';

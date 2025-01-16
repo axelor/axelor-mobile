@@ -19,12 +19,19 @@
 import React, {useCallback, useMemo} from 'react';
 import {View, StyleSheet, DimensionValue} from 'react-native';
 import {Button, useThemeColor} from '@axelor/aos-mobile-ui';
-import {useSelector, useTranslator, useTypes} from '@axelor/aos-mobile-core';
+import {
+  useDispatch,
+  useSelector,
+  useTranslator,
+  useTypes,
+} from '@axelor/aos-mobile-core';
+import {updatePurchaseRequestStatus} from '../../../features/purchaseRequestSlice';
 
 const RequestButtons = () => {
   const Colors = useThemeColor();
   const I18n = useTranslator();
   const {PurchaseRequest} = useTypes();
+  const dispatch = useDispatch();
 
   const {purchaseRequest} = useSelector(
     state => state.purchase_purchaseRequest,
@@ -37,13 +44,25 @@ const RequestButtons = () => {
           return [
             {
               title: I18n.t('Purchase_Request'),
-              onPress: () => {},
+              onPress: () =>
+                dispatch(
+                  (updatePurchaseRequestStatus as any)({
+                    purchaseRequest,
+                    status: 'request',
+                  }),
+                ),
               width: '45%',
               iconName: 'check-lg',
             },
             {
               title: I18n.t('Base_Cancel'),
-              onPress: () => {},
+              onPress: () =>
+                dispatch(
+                  (updatePurchaseRequestStatus as any)({
+                    purchaseRequest,
+                    status: 'cancel',
+                  }),
+                ),
               width: '45%',
               color: Colors.cautionColor,
               iconName: 'reply-fill',
@@ -53,20 +72,38 @@ const RequestButtons = () => {
           return [
             {
               title: I18n.t('Purchase_Accept'),
-              onPress: () => {},
+              onPress: () =>
+                dispatch(
+                  (updatePurchaseRequestStatus as any)({
+                    purchaseRequest,
+                    status: 'accept',
+                  }),
+                ),
               width: '45%',
               iconName: 'check-lg',
             },
             {
               title: I18n.t('Purchase_Refuse'),
-              onPress: () => {},
+              onPress: () =>
+                dispatch(
+                  (updatePurchaseRequestStatus as any)({
+                    purchaseRequest,
+                    status: 'refuse',
+                  }),
+                ),
               width: '45%',
               color: Colors.errorColor,
               iconName: 'x-lg',
             },
             {
               title: I18n.t('Base_Cancel'),
-              onPress: () => {},
+              onPress: () =>
+                dispatch(
+                  (updatePurchaseRequestStatus as any)({
+                    purchaseRequest,
+                    status: 'cancel',
+                  }),
+                ),
               width: '94%',
               color: Colors.cautionColor,
               iconName: 'reply-fill',
@@ -78,7 +115,13 @@ const RequestButtons = () => {
           return [
             {
               title: I18n.t('Base_Cancel'),
-              onPress: () => {},
+              onPress: () =>
+                dispatch(
+                  (updatePurchaseRequestStatus as any)({
+                    purchaseRequest,
+                    status: 'cancel',
+                  }),
+                ),
               width: '90%',
               color: Colors.cautionColor,
               iconName: 'reply-fill',
@@ -88,7 +131,14 @@ const RequestButtons = () => {
           return [];
       }
     },
-    [Colors, I18n, PurchaseRequest],
+    [
+      Colors.cautionColor,
+      Colors.errorColor,
+      I18n,
+      PurchaseRequest.statusSelect,
+      dispatch,
+      purchaseRequest,
+    ],
   );
 
   const buttons = useMemo(

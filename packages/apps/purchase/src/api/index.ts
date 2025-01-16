@@ -20,6 +20,7 @@ export {searchProduct as searchProductApi} from './product-api';
 export {
   getPurchaseRequest as getPurchaseRequestApi,
   searchPurchaseRequest as searchPurchaseRequestApi,
+  updatePurchaseRequestStatus as updatePurchaseRequestStatusApi,
 } from './purchase-request-api';
 export {searchPurchaseRequestLine as searchPurchaseRequestLineApi} from './purchase-request-line-api';
 export {searchSupplier as searchSupplierApi} from './supplier-api';
