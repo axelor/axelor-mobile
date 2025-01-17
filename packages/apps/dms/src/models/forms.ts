@@ -36,9 +36,8 @@ export const dms_formsRegister: FormConfigs = {
         type: 'object',
         widget: 'custom',
         customComponent: ParentDirectorySearchBar,
+        options: {displayRootInfo: true},
         hideIf: ({objectState}) => objectState.isAttachedFileCreation,
-        requiredIf: ({objectState}) =>
-          !objectState.parent?.fileName && !objectState.isAttachedFileCreation,
       },
       fileName: {
         titleKey: 'Dms_Name',
