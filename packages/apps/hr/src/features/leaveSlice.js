@@ -23,6 +23,7 @@ import {
 } from '@axelor/aos-mobile-core';
 import {
   cancelLeave as _cancelLeave,
+  createLeaveRequest as _createLeaveRequest,
   deleteLeave as _deleteLeave,
   fetchLeave as _fetchLeave,
   fetchLeaveById as _fetchLeaveById,
@@ -164,6 +165,19 @@ export const deleteLeave = createAsyncThunk(
       responseOptions: {isArrayResponse: false},
     }).then(() => {
       dispatch(fetchLeave(data));
+    });
+  },
+);
+
+export const createLeaveRequest = createAsyncThunk(
+  'hr_leave/createLeaveRequest',
+  async function (data, {getState}) {
+    return handlerApiCall({
+      fetchFunction: _createLeaveRequest,
+      data,
+      action: 'Hr_SliceAction_CreateLeaveRequest',
+      getState,
+      responseOptions: {isArrayResponse: false, showToast: true},
     });
   },
 );

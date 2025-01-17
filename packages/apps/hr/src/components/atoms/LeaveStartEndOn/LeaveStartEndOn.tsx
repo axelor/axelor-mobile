@@ -27,11 +27,15 @@ const PICKER_MODE = {
 };
 
 interface LeaveStartEndOnProps {
+  startOn: number;
+  endOn: number;
   onStartOnChange: (value: number) => void;
   onEndOnChange: (value: number) => void;
 }
 
 const LeaveStartEndOn = ({
+  startOn,
+  endOn,
   onStartOnChange,
   onEndOnChange,
 }: LeaveStartEndOnProps) => {
@@ -58,6 +62,7 @@ const LeaveStartEndOn = ({
           style={styles.picker}
           placeholder={I18n.t(isStartOn ? 'Hr_StartOn' : 'Hr_EndOn')}
           listItems={isStartOn ? leaveStartOnList : leaveEndOnList}
+          defaultValue={isStartOn ? startOn : endOn}
           onValueChange={value =>
             isStartOn ? onStartOnChange(value) : onEndOnChange(value)
           }
@@ -67,7 +72,15 @@ const LeaveStartEndOn = ({
         />
       );
     },
-    [I18n, leaveStartOnList, leaveEndOnList, onStartOnChange, onEndOnChange],
+    [
+      I18n,
+      leaveStartOnList,
+      leaveEndOnList,
+      startOn,
+      endOn,
+      onStartOnChange,
+      onEndOnChange,
+    ],
   );
 
   return (

@@ -53,6 +53,7 @@ export {
 } from './kilometricAllowParamSlice';
 export {
   cancelLeave,
+  createLeaveRequest,
   deleteLeave,
   fetchLeave,
   fetchLeaveById,
