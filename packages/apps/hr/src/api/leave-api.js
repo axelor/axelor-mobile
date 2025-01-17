@@ -192,3 +192,22 @@ export async function deleteLeave({leaveRequestId}) {
     },
   });
 }
+
+export async function createLeaveRequest({fromDate, startOnSelect, lines}) {
+  const requests = lines.map(line => ({
+    leaveReasonId: line.id,
+    duration: line.qty,
+    comment: line.comment,
+  }));
+
+  return getActionApi().send({
+    url: 'ws/aos/leave-request/',
+    method: 'post',
+    body: {
+      fromDate,
+      startOnSelect,
+      requests,
+    },
+    description: 'create leave request',
+  });
+}

@@ -20,6 +20,7 @@ import React, {useCallback, useEffect, useMemo, useState} from 'react';
 import {StyleSheet} from 'react-native';
 import {
   PeriodInput,
+  useDispatch,
   useTranslator,
   useTypeHelpers,
   useTypes,
@@ -37,12 +38,14 @@ import {
   LeaveReasonSearchBar,
   LeaveStartEndOn,
 } from '../../components';
+import {createLeaveRequest} from '../../features/leaveSlice';
 import {fetchMissingDuration} from '../../api/leave-api';
 
 const CompleteRequestScreen = ({}) => {
   const I18n = useTranslator();
   const {LeaveReason} = useTypes();
   const {getItemTitle} = useTypeHelpers();
+  const dispatch = useDispatch();
 
   const [fromDate, setFromDate] = useState(new Date());
   const [toDate, setToDate] = useState(null);
@@ -51,12 +54,24 @@ const CompleteRequestScreen = ({}) => {
   const [lines, setLines] = useState([]);
   const [newLine, setNewLine] = useState(null);
   const [leaveQty, setLeaveQty] = useState(0);
-  const [comments, setComments] = useState(null);
+  const [comment, setComment] = useState(null);
   const [missingQty, setMissingQty] = useState(0);
+
+  const resetDefaultStates = () => {
+    setFromDate(new Date());
+    setToDate(null);
+    setStartOn(null);
+    setEndOn(null);
+    setLines([]);
+    setNewLine(null);
+    setLeaveQty(0);
+    setComment(null);
+    setMissingQty(0);
+  };
 
   const handleReset = useCallback(() => {
     setNewLine(null);
-    setComments(null);
+    setComment(null);
     setLeaveQty(0);
   }, []);
 
@@ -72,12 +87,12 @@ const CompleteRequestScreen = ({}) => {
           newLines[indexLine].qty += leaveQty;
         }
 
-        newLines[indexLine].comments = comments;
+        newLines[indexLine].comment = comment;
       } else {
         newLines.push({
           ...newLine,
           qty: leaveQty,
-          comments,
+          comment,
         });
       }
 
@@ -90,7 +105,7 @@ const CompleteRequestScreen = ({}) => {
   const handleEditLine = useCallback(line => {
     setNewLine(line);
     setLeaveQty(line.qty);
-    setComments(line.comments);
+    setComment(line.comment);
   }, []);
 
   const isEditionMode = useMemo(
@@ -125,7 +140,16 @@ const CompleteRequestScreen = ({}) => {
           hasPeriod={!!fromDate && !!toDate && !!startOn && !!endOn}
           hasLines={lines.length > 0}
           onAddPress={handleAddLine}
-          onFinishPress={() => console.log('Finish button pressed.')}
+          onFinishPress={() => {
+            dispatch(
+              (createLeaveRequest as any)({
+                fromDate,
+                startOnSelect: startOn,
+                lines,
+              }),
+            );
+            resetDefaultStates();
+          }}
         />
       }>
       <KeyboardAvoidingScrollView
@@ -136,6 +160,8 @@ const CompleteRequestScreen = ({}) => {
           endDateConfig={{date: toDate, onDateChange: setToDate}}
         />
         <LeaveStartEndOn
+          startOn={startOn}
+          endOn={endOn}
           onStartOnChange={setStartOn}
           onEndOnChange={setEndOn}
         />
@@ -181,8 +207,8 @@ const CompleteRequestScreen = ({}) => {
         {newLine && (
           <FormInput
             title={I18n.t('Hr_Comments')}
-            defaultValue={comments}
-            onChange={setComments}
+            defaultValue={comment}
+            onChange={setComment}
             multiline
             adjustHeightWithLines
           />

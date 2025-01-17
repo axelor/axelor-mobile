@@ -17,7 +17,6 @@
  */
 
 import React from 'react';
-import {StyleSheet, View} from 'react-native';
 import {useTranslator} from '@axelor/aos-mobile-core';
 import {Button, useThemeColor} from '@axelor/aos-mobile-ui';
 
@@ -41,36 +40,32 @@ const CompleteRequestButtons = ({
   const Colors = useThemeColor();
   const I18n = useTranslator();
 
-  return (
-    <View style={styles.container}>
-      {hasNewLine && (
-        <Button
-          title={I18n.t('Base_Add')}
-          iconName="plus-lg"
-          color={Colors.progressColor}
-          width={hasLines ? '45%' : '90%'}
-          disabled={leaveQty === 0}
-          onPress={onAddPress}
-        />
-      )}
-      {hasLines && (
-        <Button
-          title={I18n.t('Base_Finish')}
-          iconName="check-lg"
-          width={hasNewLine ? '45%' : '90%'}
-          disabled={!hasPeriod}
-          onPress={onFinishPress}
-        />
-      )}
-    </View>
-  );
-};
+  if (hasNewLine) {
+    return (
+      <Button
+        title={I18n.t('Base_Add')}
+        iconName="plus-lg"
+        color={Colors.progressColor}
+        width="90%"
+        disabled={leaveQty === 0}
+        onPress={onAddPress}
+      />
+    );
+  }
 
-const styles = StyleSheet.create({
-  container: {
-    flexDirection: 'row',
-    justifyContent: 'space-evenly',
-  },
-});
+  if (hasLines) {
+    return (
+      <Button
+        title={I18n.t('Base_Finish')}
+        iconName="check-lg"
+        width="90%"
+        disabled={!hasPeriod}
+        onPress={onFinishPress}
+      />
+    );
+  }
+
+  return null;
+};
 
 export default CompleteRequestButtons;
