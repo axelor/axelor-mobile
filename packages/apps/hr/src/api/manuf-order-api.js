@@ -59,6 +59,7 @@ export async function searchOperationOrder({
   searchValue,
   page = 0,
   manufOrderId,
+  companyId,
 }) {
   return createStandardSearch({
     model: 'com.axelor.apps.production.db.OperationOrder',
@@ -67,5 +68,7 @@ export async function searchOperationOrder({
     sortKey: 'hr_operationOrder',
     page,
     provider: 'model',
+    companyId,
+    companyFieldName: 'manufOrder.company',
   });
 }

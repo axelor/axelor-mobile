@@ -66,7 +66,6 @@ const TimerListAlert = ({
     moreLoadingTimerDateInterval,
     isListEndTimerDateInterval,
   } = useSelector((state: any) => state.hr_timer);
-  const {userId} = useSelector((state: any) => state.auth);
   const {user} = useSelector(state => state.user);
 
   const [timesheet, setTimesheet] = useState(null);
@@ -85,14 +84,14 @@ const TimerListAlert = ({
     (page = 0) => {
       dispatch(
         (fetchTimerDateInterval as any)({
-          userId: userId,
+          userId: user.id,
           fromDate: fromDate,
           toDate: toDate,
           page: page,
         }),
       );
     },
-    [dispatch, fromDate, toDate, userId],
+    [dispatch, fromDate, toDate, user.id],
   );
 
   useEffect(() => {
@@ -105,7 +104,7 @@ const TimerListAlert = ({
     if (timesheet == null && fromDate && toDate) {
       if (getStartOfDay(fromDate) <= getEndOfDay(toDate)) {
         fetchDraftTimesheet({
-          userId: user?.id,
+          userId: user.id,
           fromDate: fromDate,
           toDate: toDate,
           isOverlapAllowed: false,
@@ -121,7 +120,7 @@ const TimerListAlert = ({
     } else {
       setErrorKey(null);
     }
-  }, [fromDate, timesheet, toDate, user.activeCompany?.id, user?.id, userId]);
+  }, [fromDate, timesheet, toDate, user]);
 
   const renderChexboxItem = ({item}) => {
     return (
@@ -155,7 +154,7 @@ const TimerListAlert = ({
           timesheetId: timesheet?.id,
           version: timesheet?.version,
           timerIdList,
-          userId,
+          userId: user.id,
         }),
       );
     } else {
@@ -164,7 +163,7 @@ const TimerListAlert = ({
           fromDate,
           toDate,
           timerIdList,
-          userId,
+          userId: user.id,
         }),
       );
     }

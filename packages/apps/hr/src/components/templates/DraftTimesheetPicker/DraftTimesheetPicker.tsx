@@ -52,11 +52,11 @@ const DraftTimesheetPicker = ({
   useEffect(() => {
     dispatch(
       (fetchDraftTimesheet as any)({
-        userId: user?.id,
+        userId: user.id,
         companyId: user.activeCompany?.id,
       }),
     );
-  }, [dispatch, user.activeCompany?.id, user?.id]);
+  }, [dispatch, user.activeCompany?.id, user.id]);
 
   const displayValue = item => {
     return `${formatDate(

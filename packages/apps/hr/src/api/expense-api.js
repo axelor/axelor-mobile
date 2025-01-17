@@ -118,13 +118,13 @@ export async function searchExpenseToValidate({
   companyId,
 }) {
   return createStandardSearch({
-    companyId,
     model: 'com.axelor.apps.hr.db.Expense',
     criteria: createExpenseToValidateCriteria(searchValue, user),
     fieldKey: 'hr_expense',
     sortKey: 'hr_expense',
     page,
     provider: 'model',
+    companyId,
   });
 }
 

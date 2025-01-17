@@ -70,7 +70,13 @@ const TimesheetListScreen = ({navigation}) => {
   const {user} = useSelector(state => state.user);
 
   useEffect(() => {
-    dispatch(fetchTimesheetToValidate({page: 0, user: user}));
+    dispatch(
+      fetchTimesheetToValidate({
+        page: 0,
+        user: user,
+        companyId: user.activeCompany?.id,
+      }),
+    );
   }, [dispatch, user]);
 
   const updateTimesheetStatusAPI = useCallback(
@@ -90,7 +96,7 @@ const TimesheetListScreen = ({navigation}) => {
     (page = 0) => {
       dispatch(
         fetchTimesheet({
-          userId: user?.id,
+          userId: user.id,
           page: page,
           companyId: user.activeCompany?.id,
         }),

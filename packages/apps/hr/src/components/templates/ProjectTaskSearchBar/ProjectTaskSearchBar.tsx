@@ -65,7 +65,7 @@ const ProjectTaskSearchBarAux = ({
         (searchProjectTask as any)({
           page,
           searchValue,
-          userId: user?.id,
+          userId: user.id,
           projectId: project?.id,
           isAssignedToRequired,
           isMemberRequired,
@@ -73,14 +73,7 @@ const ProjectTaskSearchBarAux = ({
         }),
       );
     },
-    [
-      dispatch,
-      isAssignedToRequired,
-      isMemberRequired,
-      project?.id,
-      user.activeCompany?.id,
-      user?.id,
-    ],
+    [dispatch, isAssignedToRequired, isMemberRequired, project?.id, user],
   );
 
   return (

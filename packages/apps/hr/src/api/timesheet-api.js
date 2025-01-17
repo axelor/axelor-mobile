@@ -149,13 +149,13 @@ export async function fetchTimesheet({
   companyId,
 }) {
   return createStandardSearch({
-    companyId,
     model: 'com.axelor.apps.hr.db.Timesheet',
     criteria: createTimesheetCriteria(searchValue, userId),
     fieldKey: 'hr_timesheet',
     sortKey: 'hr_timesheet',
     page,
     provider: 'model',
+    companyId,
   });
 }
 
@@ -166,13 +166,13 @@ export async function fetchTimesheetToValidate({
   companyId,
 }) {
   return createStandardSearch({
-    companyId,
     model: 'com.axelor.apps.hr.db.Timesheet',
     criteria: createTimesheetToValidateCriteria(searchValue, user),
     fieldKey: 'hr_timesheet',
     sortKey: 'hr_timesheet',
     page,
     provider: 'model',
+    companyId,
   });
 }
 
@@ -194,7 +194,6 @@ export async function fetchDraftTimesheet({
 }) {
   return createStandardSearch({
     model: 'com.axelor.apps.hr.db.Timesheet',
-    companyId,
     criteria: createDraftTimesheetCriteria(
       userId,
       fromDate,
@@ -205,6 +204,7 @@ export async function fetchDraftTimesheet({
     numberElementsByPage: null,
     page: 0,
     provider: 'model',
+    companyId,
   });
 }
 
