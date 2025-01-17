@@ -34,6 +34,7 @@ interface LeaveAvailableDuractionCardProps {
   availableLeave: number;
   durationLeave: number;
   durationUnitSelect: number;
+  isExceptionalLeave: boolean;
 }
 
 const LeaveAvailableDuractionCard = ({
@@ -42,6 +43,7 @@ const LeaveAvailableDuractionCard = ({
   availableLeave,
   durationLeave,
   durationUnitSelect,
+  isExceptionalLeave,
 }: LeaveAvailableDuractionCardProps) => {
   const I18n = useTranslator();
   const Colors = useThemeColor();
@@ -66,8 +68,12 @@ const LeaveAvailableDuractionCard = ({
           <Text style={styles.titleText}>{I18n.t('Hr_Available')}</Text>
           <TextUnit
             fontSize={30}
-            value={formatNumber(availableLeave)}
-            unit={getItemTitle(LeaveReason?.unitSelect, durationUnitSelect)}
+            value={isExceptionalLeave ? '-' : formatNumber(availableLeave)}
+            unit={
+              isExceptionalLeave
+                ? undefined
+                : getItemTitle(LeaveReason?.unitSelect, durationUnitSelect)
+            }
           />
         </View>
         <View style={styles.horizontalRule} />
