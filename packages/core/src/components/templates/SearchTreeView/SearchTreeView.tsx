@@ -71,6 +71,7 @@ interface SearchTreeViewProps {
   displayBreadcrumb?: boolean;
   defaultParent?: any;
   manageParentFilter?: boolean;
+  onParentChange?: (parent: any) => void;
 }
 
 const SearchTreeView = ({
@@ -111,6 +112,7 @@ const SearchTreeView = ({
   displayBreadcrumb = false,
   defaultParent,
   manageParentFilter = true,
+  onParentChange,
 }: SearchTreeViewProps) => {
   const I18n = useTranslator();
   const dispatch = useDispatch();
@@ -126,6 +128,10 @@ const SearchTreeView = ({
       setParent([EMPTY_PARENT, defaultParent]);
     }
   }, [defaultParent, isFocused]);
+
+  useEffect(() => {
+    onParentChange(parent);
+  }, [onParentChange, parent]);
 
   const handleChangeParent = value => {
     setParent(current => {
