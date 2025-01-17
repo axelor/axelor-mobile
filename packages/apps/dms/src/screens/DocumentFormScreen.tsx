@@ -22,10 +22,7 @@ import {FormView, useSelector} from '@axelor/aos-mobile-core';
 import {createDocument, updateDocument} from '../features/documentSlice';
 
 const DocumentFormScreen = ({navigation, route}) => {
-  const parent = route?.params?.parent;
-  const document = route?.params?.document;
-  const model = route?.params?.model;
-  const modelId = route?.params?.modelId;
+  const {parent, document, model, modelId} = route?.params ?? {};
 
   const {user} = useSelector(state => state.user);
   const {mobileSettings} = useSelector(state => state.appConfig);
@@ -38,14 +35,7 @@ const DocumentFormScreen = ({navigation, route}) => {
     [model, modelId, parent],
   );
 
-  const defaultValue = useMemo(
-    () =>
-      document && {
-        ...document,
-        parent: document.parent,
-      },
-    [document],
-  );
+  const defaultValue = useMemo(() => document, [document]);
 
   const documentAPI = useCallback(
     (_document, isCreation, dispatch) => {
