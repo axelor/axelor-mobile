@@ -104,12 +104,12 @@ const createPartnerCriteria = searchValue => {
   ];
 };
 
-const createPartnerAddressCriteria = partnerAddressIds => {
+const createPartnerAddressCriteria = partnerId => {
   return [
     {
-      fieldName: 'id',
-      operator: 'in',
-      value: partnerAddressIds,
+      fieldName: 'partner.id',
+      operator: '=',
+      value: partnerId,
     },
   ];
 };
@@ -162,13 +162,10 @@ export async function searchLinkedPartnersOfContact({contactId}) {
   });
 }
 
-export async function fetchPartnerAddressByIds({partnerAddressIds}) {
-  if (!Array.isArray(partnerAddressIds) || partnerAddressIds.length === 0) {
-    return [];
-  }
+export async function fetchPartnerAddresses({partnerId}) {
   return createStandardSearch({
     model: 'com.axelor.apps.base.db.PartnerAddress',
-    criteria: createPartnerAddressCriteria(partnerAddressIds),
+    criteria: createPartnerAddressCriteria(partnerId),
     fieldKey: 'crm_partnerAddress',
     sortKey: 'crm_partnerAddress',
     numberElementsByPage: null,

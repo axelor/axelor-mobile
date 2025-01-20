@@ -68,11 +68,8 @@ const ClientDropdownCards = ({additionalDropdowns = []}) => {
       {
         title: I18n.t('Crm_Addresses'),
         key: 2,
-        childrenComp: (
-          <DropdownAddressesView
-            partnerAddressIdList={client.partnerAddressList}
-          />
-        ),
+        style: styles.zeroPadding,
+        childrenComp: <DropdownAddressesView partnerId={client.id} />,
       },
       {
         title: I18n.t('Crm_GeneralInformation'),
@@ -132,6 +129,10 @@ const styles = StyleSheet.create({
   },
   textTitle: {
     fontWeight: 'bold',
+  },
+  zeroPadding: {
+    paddingRight: 0,
+    paddingLeft: 0,
   },
 });
 

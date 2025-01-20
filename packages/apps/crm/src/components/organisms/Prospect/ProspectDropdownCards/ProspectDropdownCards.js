@@ -70,11 +70,8 @@ const ProspectDropdownCards = ({}) => {
           {
             title: I18n.t('Crm_Addresses'),
             key: 2,
-            childrenComp: (
-              <DropdownAddressesView
-                partnerAddressIdList={prospect.partnerAddressList}
-              />
-            ),
+            style: styles.zeroPadding,
+            childrenComp: <DropdownAddressesView partnerId={prospect.id} />,
           },
           {
             title: I18n.t('Crm_GeneralInformation'),
@@ -111,15 +108,15 @@ const ProspectDropdownCards = ({}) => {
 };
 
 const styles = StyleSheet.create({
-  item: {
-    marginHorizontal: 12,
-    marginVertical: 4,
-  },
   container: {
     alignItems: 'center',
   },
   textTitle: {
     fontWeight: 'bold',
+  },
+  zeroPadding: {
+    paddingRight: 0,
+    paddingLeft: 0,
   },
 });
 

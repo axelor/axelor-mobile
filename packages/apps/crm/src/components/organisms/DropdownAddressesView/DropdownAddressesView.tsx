@@ -16,8 +16,8 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import React, {useEffect, useMemo} from 'react';
-import {View, StyleSheet} from 'react-native';
+import React, {useCallback, useEffect} from 'react';
+import {View, StyleSheet, TouchableOpacity} from 'react-native';
 import {
   useTranslator,
   linkingProvider,
@@ -25,15 +25,10 @@ import {
   useSelector,
   clipboardProvider,
 } from '@axelor/aos-mobile-core';
-import {Icon, Text, useThemeColor} from '@axelor/aos-mobile-ui';
-import {fetchPartnerAddressByIds} from '../../../features/partnerSlice';
+import {HorizontalRule, Icon, Text} from '@axelor/aos-mobile-ui';
+import {fetchPartnerAddresses} from '../../../features/partnerSlice';
 
 interface PartnerAddress {
-  id: number;
-  version: number;
-}
-
-interface Address {
   id: number;
   address: {
     fullName: string;
@@ -43,84 +38,64 @@ interface Address {
   isInvoicingAddr?: boolean;
 }
 
-interface DropdownAddressesViewProps {
-  partnerAddressIdList: PartnerAddress[];
-}
-
-const DropdownAddressesView = ({
-  partnerAddressIdList,
-}: DropdownAddressesViewProps) => {
+const DropdownAddressesView = ({partnerId}: {partnerId: number}) => {
   const I18n = useTranslator();
-  const Colors = useThemeColor();
   const dispatch = useDispatch();
 
   const {partnerAddressList} = useSelector(state => state.partner);
 
-  const styles = useMemo(() => {
-    return getStyles(Colors);
-  }, [Colors]);
-
   useEffect(() => {
-    const idList = partnerAddressIdList?.map(item => item.id);
-    dispatch((fetchPartnerAddressByIds as any)({partnerAddressIds: idList}));
-  }, [dispatch, partnerAddressIdList]);
+    dispatch((fetchPartnerAddresses as any)({partnerId}));
+  }, [dispatch, partnerId]);
 
-  const renderAddressItem = (partnerAddress: Address, index: number) => {
-    const isLastItem = index === partnerAddressList.length - 1;
+  const renderAddressItem = useCallback(
+    (partnerAddress: PartnerAddress, index: number, self: PartnerAddress[]) => {
+      const isLastItem = index === self.length - 1;
 
-    const icons = [
-      partnerAddress.isInvoicingAddr && {name: 'star'},
-      partnerAddress.isDefaultAddr && {name: 'card-list'},
-      partnerAddress.isDeliveryAddr && {name: 'cart-fill'},
-    ].filter(Boolean);
+      const icons = [
+        {name: 'star', showIf: partnerAddress.isDefaultAddr},
+        {name: 'card-list', showIf: partnerAddress.isInvoicingAddr},
+        {name: 'cart-fill', showIf: partnerAddress.isDeliveryAddr},
+      ]
+        .filter(_i => _i.showIf)
+        .filter((_i, _, arr) => (arr.length === 3 ? _i.name === 'star' : true));
 
-    return (
-      <View style={styles.container} key={partnerAddress.id}>
-        <View style={styles.containerBody}>
-          {icons.length === 1 && (
-            <Icon name={icons[0].name} style={styles.leftIcon} />
-          )}
+      const address = partnerAddress.address?.fullName;
 
-          {icons.length === 2 && (
-            <View style={styles.twoIconsStack}>
+      return (
+        <View key={partnerAddress.id}>
+          <TouchableOpacity
+            style={styles.container}
+            onPress={() => console.log('edit')}>
+            <View style={styles.containerIcons}>
               {icons.map((icon, idx) => (
                 <Icon key={idx} name={icon.name} />
               ))}
             </View>
-          )}
-
-          {icons.length === 3 && <Icon name="star" style={styles.leftIcon} />}
-
-          <Text fontSize={14} style={styles.title}>
-            {partnerAddress.address?.fullName}
-          </Text>
-          <View style={styles.containerItem}>
-            <Icon
-              name="pin-map-fill"
-              touchable
-              onPress={() =>
-                linkingProvider.openMapApp(partnerAddress.address?.fullName)
-              }
-            />
-            <Icon
-              name="copy"
-              touchable
-              onPress={() =>
-                clipboardProvider.copyToClipboard(
-                  partnerAddress.address?.fullName,
-                )
-              }
-            />
-            <Icon name="pencil-fill" touchable onPress={() => {}} />
-          </View>
+            <Text fontSize={14} style={styles.title}>
+              {address}
+            </Text>
+            <View style={styles.containerActions}>
+              <Icon
+                name="pin-map-fill"
+                touchable
+                onPress={() => linkingProvider.openMapApp(address)}
+              />
+              <Icon
+                name="copy"
+                touchable
+                onPress={() => clipboardProvider.copyToClipboard(address)}
+              />
+            </View>
+          </TouchableOpacity>
+          {!isLastItem && <HorizontalRule style={styles.borderBottom} />}
         </View>
+      );
+    },
+    [],
+  );
 
-        {!isLastItem && <View style={styles.borderBottom} />}
-      </View>
-    );
-  };
-
-  if (!partnerAddressList || partnerAddressList.length === 0) {
+  if (!Array.isArray(partnerAddressList) || partnerAddressList.length === 0) {
     return (
       <View>
         <Text>{I18n.t('Crm_NoAddressInformation')}</Text>
@@ -131,41 +106,30 @@ const DropdownAddressesView = ({
   return <View>{partnerAddressList.map(renderAddressItem)}</View>;
 };
 
-const getStyles = Colors =>
-  StyleSheet.create({
-    container: {
-      flexDirection: 'column',
-      width: '95%',
-      marginHorizontal: 5,
-    },
-    containerBody: {
-      flexDirection: 'row',
-      justifyContent: 'space-between',
-      alignItems: 'center',
-      marginTop: '2%',
-    },
-    containerItem: {
-      flexDirection: 'row',
-      gap: 10,
-    },
-    borderBottom: {
-      width: '112%',
-      left: '-5%',
-      borderBottomWidth: 1.5,
-      borderBottomColor: Colors.secondaryColor.background,
-      marginVertical: '3%',
-    },
-    leftIcon: {
-      marginRight: 10,
-    },
-    twoIconsStack: {
-      flexDirection: 'column',
-      marginRight: 10,
-      gap: 5,
-    },
-    title: {
-      flex: 1,
-    },
-  });
+const styles = StyleSheet.create({
+  container: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    marginVertical: 7,
+    paddingHorizontal: 10,
+  },
+  containerIcons: {
+    flexDirection: 'column',
+    marginRight: 10,
+    gap: 5,
+  },
+  title: {
+    flex: 1,
+  },
+  containerActions: {
+    flexDirection: 'row',
+    gap: 10,
+  },
+  borderBottom: {
+    width: '100%',
+    marginVertical: 5,
+  },
+});
 
 export default DropdownAddressesView;
