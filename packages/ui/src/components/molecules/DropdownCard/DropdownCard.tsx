@@ -27,6 +27,7 @@ interface DropdownCardProps {
   style?: any;
   styleText?: any;
   styleContainer?: any;
+  styleCard?: any;
   title: string;
   children: any;
   dropdownIsOpen?: boolean;
@@ -39,6 +40,7 @@ const DropdownCard = ({
   style,
   styleText,
   styleContainer,
+  styleCard,
   title,
   dropdownIsOpen = false,
   children,
@@ -89,7 +91,9 @@ const DropdownCard = ({
           )}
         </View>
       </TouchableOpacity>
-      {displayCard && <Card style={styles.containerChildren}>{children}</Card>}
+      {displayCard && (
+        <Card style={[styles.containerChildren, styleCard]}>{children}</Card>
+      )}
     </View>
   );
 };

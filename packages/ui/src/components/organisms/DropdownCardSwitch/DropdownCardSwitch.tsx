@@ -32,6 +32,7 @@ interface DropdownItem {
   childrenComp: ReactNode;
   isDefaultVisible?: boolean;
   iconName?: string;
+  style?: any;
 }
 
 const DropdownCardSwitch = ({
@@ -87,6 +88,7 @@ const DropdownCardSwitch = ({
           <DropdownCard
             key={index}
             title={elt.title}
+            styleCard={elt.style}
             styleText={styleTitle}
             onPress={() => handlePress(elt.key)}
             dropdownIsOpen={openedCardKeys.includes(elt.key)}
