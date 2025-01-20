@@ -28,7 +28,7 @@ import {
 import {RequestHeader, RequestLineCard} from '../components';
 import {searchPurchaseRequestLine} from '../features/purchaseRequestLineSlice';
 
-const RequestLineListScreen = () => {
+const RequestLineListScreen = ({navigation}) => {
   const I18n = useTranslator();
   const {PurchaseRequestLine} = useTypes();
   const {getSelectionItems} = useTypeHelpers();
@@ -66,7 +66,9 @@ const RequestLineListScreen = () => {
           {
             iconName: 'plus',
             title: I18n.t('Purchase_AddProduct'),
-            onPress: () => {},
+            onPress: () => {
+              navigation.navigate('RequestLineFormScreen', {});
+            },
           },
         ]}
         chipComponent={

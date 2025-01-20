@@ -29,6 +29,7 @@
   "Purchase_ProductTitle": "Product title",
   "Purchase_Description": "Description",
   "Purchase_Products": "Products",
+  "Purchase_Product": "Product",
   "Purchase_SliceAction_SearchPurchaseRequest": "search purchase request",
   "Purchase_SliceAction_SearchSupplier": "search supplier",
   "Purchase_SliceAction_GetPurchaseRequest": "get purchase request",

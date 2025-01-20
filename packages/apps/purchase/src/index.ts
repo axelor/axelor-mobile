@@ -22,6 +22,7 @@ import enTranslations from './i18n/en.json';
 import frTranslations from './i18n/fr.json';
 import * as purchaseReducers from './features';
 import {
+  purchase_formsRegister,
   purchase_modelAPI,
   purchase_searchFields,
   purchase_sortFields,
@@ -60,6 +61,7 @@ export const PurchaseModule: Module = {
     objectFields: {...purchase_modelAPI},
     sortFields: {...purchase_sortFields},
     searchFields: {...purchase_searchFields},
+    formsRegister: {...purchase_formsRegister},
     typeObjects: purchase_typeObjects,
   },
   reducers: {

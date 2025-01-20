@@ -18,6 +18,7 @@
 
 import RequestCreationScreen from './RequestCreationScreen';
 import RequestDetailsScreen from './RequestDetailsScreen';
+import RequestLineFormScreen from './RequestLineFormScreen';
 import RequestLineListScreen from './RequestLineListScreen';
 import RequestListScreen from './RequestListScreen';
 
@@ -52,9 +53,17 @@ export default {
     },
     isUsableOnShortcut: true,
   },
+  RequestLineFormScreen: {
+    title: 'Purchase_InternalRequest',
+    component: RequestLineFormScreen,
+    options: {
+      shadedHeader: false,
+    },
+  },
 };
 
 export {RequestDetailsScreen};
 export {RequestListScreen};
+export {RequestLineFormScreen};
 export {RequestLineListScreen};
 export {RequestCreationScreen};
