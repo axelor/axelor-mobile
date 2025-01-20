@@ -62,6 +62,7 @@ export {
   updateOpportunityStatus as updateOpportunityStatusApi,
 } from './opportunities-api';
 export {
+  fetchPartnerAddresses as fetchPartnerAddressesApi,
   getPartner,
   searchClientAndProspect,
   searchLinkedPartnersOfContact as searchLinkedPartnersOfContactApi,

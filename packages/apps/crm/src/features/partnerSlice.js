@@ -22,6 +22,7 @@ import {
   handlerApiCall,
 } from '@axelor/aos-mobile-core';
 import {
+  fetchPartnerAddresses as _fetchPartnerAddresses,
   getPartner,
   searchClientAndProspect,
   searchLinkedPartnersOfContact as _searchLinkedPartnersOfContact,
@@ -80,7 +81,22 @@ export const searchLinkedPartnersOfContact = createAsyncThunk(
   },
 );
 
+export const fetchPartnerAddresses = createAsyncThunk(
+  'crm_partner/fetchPartnerAddresses',
+  async function (data, {getState}) {
+    return handlerApiCall({
+      fetchFunction: _fetchPartnerAddresses,
+      data,
+      action: 'Crm_SliceAction_FetchPartnerAddresses',
+      getState,
+      responseOptions: {isArrayResponse: true},
+    });
+  },
+);
+
 const initialState = {
+  partnerAddressList: [],
+
   loadingPartner: true,
   partner: {},
 
@@ -128,6 +144,9 @@ const partnerSlice = createSlice({
       moreLoading: 'moreLoading',
       isListEnd: 'isListEnd',
       list: 'partnerList',
+    });
+    builder.addCase(fetchPartnerAddresses.fulfilled, (state, action) => {
+      state.partnerAddressList = action.payload;
     });
   },
 });
