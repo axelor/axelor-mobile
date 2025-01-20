@@ -21,6 +21,7 @@ import {StyleSheet, View} from 'react-native';
 import {useDispatch, useSelector, useTranslator} from '@axelor/aos-mobile-core';
 import {DropdownCardSwitch} from '@axelor/aos-mobile-ui';
 import {
+  DropdownAddressesView,
   DropdownContactView,
   DropdownEmployeeView,
   DropdownEventView,
@@ -66,8 +67,14 @@ const ClientDropdownCards = ({additionalDropdowns = []}) => {
         ),
       },
       {
-        title: I18n.t('Crm_GeneralInformation'),
+        title: I18n.t('Crm_Addresses'),
         key: 2,
+        style: styles.zeroPadding,
+        childrenComp: <DropdownAddressesView partnerId={client.id} />,
+      },
+      {
+        title: I18n.t('Crm_GeneralInformation'),
+        key: 3,
         childrenComp: (
           <DropdownGeneralView
             assignedUser={client.user?.fullName}
@@ -79,17 +86,17 @@ const ClientDropdownCards = ({additionalDropdowns = []}) => {
       },
       {
         title: I18n.t('Crm_Employees'),
-        key: 3,
+        key: 4,
         childrenComp: <DropdownEmployeeView contactList={listContactById} />,
       },
       {
         title: I18n.t('Crm_Events'),
-        key: 4,
+        key: 5,
         childrenComp: <DropdownEventView eventList={listEventPartner} />,
       },
       {
         title: I18n.t('Crm_Opportunity'),
-        key: 5,
+        key: 6,
         childrenComp: <DropdownOpportunityView partnerId={client?.id} />,
       },
     ];
@@ -123,6 +130,10 @@ const styles = StyleSheet.create({
   },
   textTitle: {
     fontWeight: 'bold',
+  },
+  zeroPadding: {
+    paddingRight: 0,
+    paddingLeft: 0,
   },
 });
 

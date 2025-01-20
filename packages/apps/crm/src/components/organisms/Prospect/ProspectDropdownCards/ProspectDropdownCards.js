@@ -21,6 +21,7 @@ import {StyleSheet, View} from 'react-native';
 import {DropdownCardSwitch} from '@axelor/aos-mobile-ui';
 import {useDispatch, useSelector, useTranslator} from '@axelor/aos-mobile-core';
 import {
+  DropdownAddressesView,
   DropdownContactView,
   DropdownEmployeeView,
   DropdownEventView,
@@ -68,8 +69,14 @@ const ProspectDropdownCards = ({}) => {
             ),
           },
           {
-            title: I18n.t('Crm_GeneralInformation'),
+            title: I18n.t('Crm_Addresses'),
             key: 2,
+            style: styles.zeroPadding,
+            childrenComp: <DropdownAddressesView partnerId={prospect.id} />,
+          },
+          {
+            title: I18n.t('Crm_GeneralInformation'),
+            key: 3,
             childrenComp: (
               <DropdownGeneralView
                 assignedUser={prospect.user?.fullName}
@@ -80,19 +87,19 @@ const ProspectDropdownCards = ({}) => {
           },
           {
             title: I18n.t('Crm_Employees'),
-            key: 3,
+            key: 4,
             childrenComp: (
               <DropdownEmployeeView contactList={listContactById} />
             ),
           },
           {
             title: I18n.t('Crm_Events'),
-            key: 4,
+            key: 5,
             childrenComp: <DropdownEventView eventList={listEventPartner} />,
           },
           {
             title: I18n.t('Crm_Opportunity'),
-            key: 5,
+            key: 6,
             childrenComp: <DropdownOpportunityView partnerId={prospect?.id} />,
           },
         ]}
@@ -102,15 +109,15 @@ const ProspectDropdownCards = ({}) => {
 };
 
 const styles = StyleSheet.create({
-  item: {
-    marginHorizontal: 12,
-    marginVertical: 4,
-  },
   container: {
     alignItems: 'center',
   },
   textTitle: {
     fontWeight: 'bold',
+  },
+  zeroPadding: {
+    paddingRight: 0,
+    paddingLeft: 0,
   },
 });
 
