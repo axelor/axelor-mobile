@@ -25,7 +25,7 @@ import {
   useSelector,
   clipboardProvider,
 } from '@axelor/aos-mobile-core';
-import {HorizontalRule, Icon, Text} from '@axelor/aos-mobile-ui';
+import {HorizontalRule, Icon, Text, useThemeColor} from '@axelor/aos-mobile-ui';
 import {fetchPartnerAddresses} from '../../../features/partnerSlice';
 
 interface PartnerAddress {
@@ -40,6 +40,7 @@ interface PartnerAddress {
 
 const DropdownAddressesView = ({partnerId}: {partnerId: number}) => {
   const I18n = useTranslator();
+  const Colors = useThemeColor();
   const dispatch = useDispatch();
 
   const {partnerAddressList} = useSelector(state => state.partner);
@@ -52,13 +53,15 @@ const DropdownAddressesView = ({partnerId}: {partnerId: number}) => {
     (partnerAddress: PartnerAddress, index: number, self: PartnerAddress[]) => {
       const isLastItem = index === self.length - 1;
 
-      const icons = [
+      let icons: any[] = [
         {name: 'star', showIf: partnerAddress.isDefaultAddr},
         {name: 'card-list', showIf: partnerAddress.isInvoicingAddr},
         {name: 'cart-fill', showIf: partnerAddress.isDeliveryAddr},
-      ]
-        .filter(_i => _i.showIf)
-        .filter((_i, _, arr) => (arr.length === 3 ? _i.name === 'star' : true));
+      ].filter(_i => _i.showIf);
+
+      if (icons.length === 3) {
+        icons = [{name: 'star-fill', color: Colors.progressColor.background}];
+      }
 
       const address = partnerAddress.address?.fullName;
 
@@ -69,7 +72,7 @@ const DropdownAddressesView = ({partnerId}: {partnerId: number}) => {
             onPress={() => console.log('edit')}>
             <View style={styles.containerIcons}>
               {icons.map((icon, idx) => (
-                <Icon key={idx} name={icon.name} />
+                <Icon key={idx} name={icon.name} color={icon.color} />
               ))}
             </View>
             <Text fontSize={14} style={styles.title}>
@@ -92,7 +95,7 @@ const DropdownAddressesView = ({partnerId}: {partnerId: number}) => {
         </View>
       );
     },
-    [],
+    [Colors],
   );
 
   if (!Array.isArray(partnerAddressList) || partnerAddressList.length === 0) {
