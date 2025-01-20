@@ -39,9 +39,6 @@ export const crm_modelAPI: ObjectFields = {
     name: schemaContructor.string(),
     fullName: schemaContructor.string(),
     partnerSeq: schemaContructor.string(),
-    partnerAddressList: schemaContructor
-      .array()
-      .of(schemaContructor.subObject()),
     mainAddress: schemaContructor.subObject('fullName').concat(
       schemaContructor.object({
         addressL4: schemaContructor.string(),
@@ -199,9 +196,6 @@ export const crm_modelAPI: ObjectFields = {
         zip: schemaContructor.string(),
       }),
     ),
-    partnerAddressList: schemaContructor
-      .array()
-      .of(schemaContructor.subObject()),
     partnerTypeSelect: schemaContructor.number(),
     fixedPhone: schemaContructor.string(),
     mobilePhone: schemaContructor.string(),
