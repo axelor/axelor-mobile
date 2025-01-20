@@ -142,7 +142,12 @@ const createDraftTimesheetCriteria = (
   return criteria;
 };
 
-export async function fetchTimesheet({searchValue = null, userId, page = 0}) {
+export async function fetchTimesheet({
+  searchValue = null,
+  userId,
+  page = 0,
+  companyId,
+}) {
   return createStandardSearch({
     model: 'com.axelor.apps.hr.db.Timesheet',
     criteria: createTimesheetCriteria(searchValue, userId),
@@ -150,6 +155,7 @@ export async function fetchTimesheet({searchValue = null, userId, page = 0}) {
     sortKey: 'hr_timesheet',
     page,
     provider: 'model',
+    companyId,
   });
 }
 
@@ -157,6 +163,7 @@ export async function fetchTimesheetToValidate({
   searchValue = null,
   page = 0,
   user,
+  companyId,
 }) {
   return createStandardSearch({
     model: 'com.axelor.apps.hr.db.Timesheet',
@@ -165,6 +172,7 @@ export async function fetchTimesheetToValidate({
     sortKey: 'hr_timesheet',
     page,
     provider: 'model',
+    companyId,
   });
 }
 
@@ -182,6 +190,7 @@ export async function fetchDraftTimesheet({
   fromDate,
   toDate,
   isOverlapAllowed,
+  companyId,
 }) {
   return createStandardSearch({
     model: 'com.axelor.apps.hr.db.Timesheet',
@@ -195,6 +204,7 @@ export async function fetchDraftTimesheet({
     numberElementsByPage: null,
     page: 0,
     provider: 'model',
+    companyId,
   });
 }
 

@@ -80,14 +80,26 @@ const ExpenseListScreen = ({navigation}) => {
 
   const fetchMyExpenseAPI = useCallback(
     (page = 0) => {
-      dispatch(searchMyExpense({page: page, userId: user.id}));
+      dispatch(
+        searchMyExpense({
+          page: page,
+          userId: user.id,
+          companyId: user.activeCompany?.id,
+        }),
+      );
     },
-    [dispatch, user.id],
+    [dispatch, user.activeCompany?.id, user.id],
   );
 
   const fetchExpenseToValidateAPI = useCallback(
     (page = 0) => {
-      dispatch(searchExpenseToValidate({page: page, user: user}));
+      dispatch(
+        searchExpenseToValidate({
+          page: page,
+          user: user,
+          companyId: user.activeCompany?.id,
+        }),
+      );
     },
     [dispatch, user],
   );

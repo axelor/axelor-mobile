@@ -74,7 +74,13 @@ const TimesheetFilters = ({
   ]);
 
   useEffect(() => {
-    dispatch(fetchTimesheetToValidate({page: 0, user: user}));
+    dispatch(
+      fetchTimesheetToValidate({
+        page: 0,
+        user: user,
+        companyId: user.activeCompany?.id,
+      }),
+    );
   }, [dispatch, user]);
 
   return (
