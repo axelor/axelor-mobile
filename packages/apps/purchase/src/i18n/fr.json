@@ -36,5 +36,8 @@
   "Purchase_SliceAction_SearchPurchaseRequestLine": "recherche sur les lignes de demandes d'achat",
   "Purchase_SliceAction_SearchProduct": "recherche sur les produits",
   "Purchase_SliceAction_SearchUnit": "recherche sur les unités",
-  "Purchase_SliceAction_UpdatePurchaseRequestStatus": "mise à jour du statut de la demande d'achat"
+  "Purchase_SliceAction_UpdatePurchaseRequestStatus": "mise à jour du statut de la demande d'achat",
+  "Purchase_SliceAction_FetchPurchaseRequestLine": "récupération de la ligne de demande d'achat",
+  "Purchase_SliceAction_CreatePurchaseRequestLine": "création de la ligne de demande d'achat",
+  "Purchase_SliceAction_UpdatePurchaseRequestLine": "mise à jour de la ligne de demande d'achat"
 }

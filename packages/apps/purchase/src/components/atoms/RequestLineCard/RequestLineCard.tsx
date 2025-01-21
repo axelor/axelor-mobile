@@ -32,6 +32,7 @@ interface RequestLineCardProps {
   unit?: string;
   qty?: string;
   newProduct?: boolean;
+  id: number;
 }
 
 const RequestLineCard = ({
@@ -40,6 +41,7 @@ const RequestLineCard = ({
   unit,
   qty,
   newProduct,
+  id,
 }: RequestLineCardProps) => {
   const priceFormat = usePriceFormat();
   const navigation = useNavigation();
@@ -54,7 +56,9 @@ const RequestLineCard = ({
   return (
     <ObjectCard
       onPress={() => {
-        navigation.navigate('RequestLineFormScreen', {});
+        navigation.navigate('RequestLineFormScreen', {
+          purchaseRequestLineId: id,
+        });
       }}
       style={[borderStyle, style]}
       leftContainerFlex={3}

@@ -21,7 +21,12 @@ import {
   generateInifiniteScrollCases,
   handlerApiCall,
 } from '@axelor/aos-mobile-core';
-import {searchPurchaseRequestLine as _searchPurchaseRequestLine} from '../api/purchase-request-line-api';
+import {
+  createPurchaseRequestLine as _createPurchaseRequestLine,
+  fetchPurchaseRequestLine as _fetchPurchaseRequestLine,
+  searchPurchaseRequestLine as _searchPurchaseRequestLine,
+  updatePurchaseRequestLine as _updatePurchaseRequestLine,
+} from '../api/purchase-request-line-api';
 
 export const searchPurchaseRequestLine = createAsyncThunk(
   'purchase_purchaseRequestLine/searchPurchaseRequestLine',
@@ -36,7 +41,57 @@ export const searchPurchaseRequestLine = createAsyncThunk(
   },
 );
 
+export const fetchPurchaseRequestLine = createAsyncThunk(
+  'purchase_purchaseRequestLine/fetchPurchaseRequestLine',
+  async function (data, {getState}) {
+    return handlerApiCall({
+      fetchFunction: _fetchPurchaseRequestLine,
+      data,
+      action: 'Purchase_SliceAction_FetchPurchaseRequestLine',
+      getState,
+      responseOptions: {isArrayResponse: false},
+    });
+  },
+);
+
+export const createPurchaseRequestLine = createAsyncThunk(
+  'purchase_purchaseRequestLine/createPurchaseRequestLine',
+  async function (data, {getState, dispatch}) {
+    return handlerApiCall({
+      fetchFunction: _createPurchaseRequestLine,
+      data,
+      action: 'Purchase_SliceAction_CreatePurchaseRequestLine',
+      getState,
+      responseOptions: {isArrayResponse: false},
+    }).then(() => {
+      dispatch(
+        searchPurchaseRequestLine({purchaseRequestId: data.purchaseRequestId}),
+      );
+    });
+  },
+);
+
+export const updatePurchaseRequestLine = createAsyncThunk(
+  'purchase_purchaseRequestLine/updatePurchaseRequestLine',
+  async function (data, {getState, dispatch}) {
+    return handlerApiCall({
+      fetchFunction: _updatePurchaseRequestLine,
+      data,
+      action: 'Purchase_SliceAction_UpdatePurchaseRequestLine',
+      getState,
+      responseOptions: {isArrayResponse: false},
+    }).then(() => {
+      dispatch(
+        searchPurchaseRequestLine({purchaseRequestId: data.purchaseRequestId}),
+      );
+    });
+  },
+);
+
 const initialState = {
+  loadingPurchaseRequestLine: false,
+  purchaseRequestLine: {},
+
   loadingPurchaseRequestLines: false,
   moreLoadingPurchaseRequestLine: false,
   isListEndPurchaseRequestLine: false,
@@ -62,6 +117,16 @@ const purchaseRequestLineSlice = createSlice({
         manageTotal: true,
       },
     );
+    builder.addCase(fetchPurchaseRequestLine.pending, state => {
+      state.loadingPurchaseRequestLine = true;
+    });
+    builder.addCase(fetchPurchaseRequestLine.rejected, state => {
+      state.loadingPurchaseRequestLine = false;
+    });
+    builder.addCase(fetchPurchaseRequestLine.fulfilled, (state, action) => {
+      state.loadingPurchaseRequestLine = false;
+      state.purchaseRequestLine = action.payload;
+    });
   },
 });
 

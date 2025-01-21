@@ -88,6 +88,7 @@ const RequestLineListScreen = ({navigation}) => {
         sliceFunctionData={sliceFunctionData}
         renderListItem={({item}) => (
           <RequestLineCard
+            id={item.id}
             productName={item.product?.fullName ?? item.productTitle}
             qty={item.quantity}
             unit={item.unit?.name}

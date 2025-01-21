@@ -16,17 +16,68 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import React from 'react';
-import {StyleSheet} from 'react-native';
-import {KeyboardAvoidingScrollView, Screen, Text} from '@axelor/aos-mobile-ui';
-import {FormView} from '@axelor/aos-mobile-core';
+import React, {useCallback, useEffect, useMemo} from 'react';
+import {FormView, useDispatch, useSelector} from '@axelor/aos-mobile-core';
+import {
+  createPurchaseRequestLine,
+  fetchPurchaseRequestLine,
+  updatePurchaseRequestLine,
+} from '../features/purchaseRequestLineSlice';
 
-const RequestLineFormScreen = () => {
+const RequestLineFormScreen = ({navigation, route}) => {
+  const purchaseRequestLineId = route.params.purchaseRequestLineId;
+
+  const _dispatch = useDispatch();
+
+  const {purchaseRequest} = useSelector(
+    state => state.purchase_purchaseRequest,
+  );
+  const {purchaseRequestLine} = useSelector(
+    state => state.purchase_purchaseRequestLine,
+  );
+
+  useEffect(() => {
+    if (purchaseRequestLineId != null) {
+      _dispatch((fetchPurchaseRequestLine as any)({id: purchaseRequestLineId}));
+    }
+  }, [_dispatch, purchaseRequestLineId]);
+
+  const _defaultValue = useMemo(
+    () => (purchaseRequestLineId != null ? {...purchaseRequestLine} : null),
+    [purchaseRequestLineId, purchaseRequestLine],
+  );
+
+  const createPurchaseRequestLineAPI = useCallback(
+    (objectState, dispatch) => {
+      dispatch(
+        (createPurchaseRequestLine as any)({
+          purchaseRequestLine: objectState,
+          purchaseRequestId: purchaseRequest.id,
+          purchaseRequestVersion: purchaseRequest.version,
+        }),
+      );
+      navigation.pop();
+    },
+    [navigation, purchaseRequest.id, purchaseRequest.version],
+  );
+
+  const updatePurchaseRequestLineAPI = useCallback(
+    (objectState, dispatch) => {
+      dispatch(
+        (updatePurchaseRequestLine as any)({
+          purchaseRequestLine: objectState,
+          purchaseRequestId: purchaseRequest.id,
+        }),
+      );
+      navigation.pop();
+    },
+    [navigation, purchaseRequest.id],
+  );
+
   return (
     <FormView
       formKey="purchase_purchaseRequestLine"
-      // defaultValue={_defaultValue}
-      //creationDefaultValue={_creationDefaultValue}
+      defaultValue={_defaultValue}
       defaultEditMode
       actions={[
         {
@@ -34,31 +85,24 @@ const RequestLineFormScreen = () => {
           type: 'create',
           needRequiredFields: true,
           needValidation: true,
-          customAction: ({dispatch, objectState}) => {},
-          // createLeadAPI(objectState, dispatch),
+          hideIf: () => !purchaseRequestLineId == null,
+          customAction: ({dispatch, objectState}) => {
+            createPurchaseRequestLineAPI(objectState, dispatch);
+          },
         },
         {
           key: 'update-lead',
           type: 'update',
           needRequiredFields: true,
           needValidation: true,
-          // hideIf: () => idLead == null,
-          customAction: ({dispatch, objectState}) => {},
-          // updateLeadAPI(objectState, dispatch),
+          hideIf: () => purchaseRequestLineId == null,
+          customAction: ({dispatch, objectState}) => {
+            updatePurchaseRequestLineAPI(objectState, dispatch);
+          },
         },
       ]}
     />
   );
 };
-
-const styles = StyleSheet.create({
-  container: {
-    alignItems: 'center',
-    paddingTop: 10,
-  },
-  rule: {
-    width: '80%',
-  },
-});
 
 export default RequestLineFormScreen;

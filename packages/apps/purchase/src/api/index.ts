@@ -22,6 +22,11 @@ export {
   searchPurchaseRequest as searchPurchaseRequestApi,
   updatePurchaseRequestStatus as updatePurchaseRequestStatusApi,
 } from './purchase-request-api';
-export {searchPurchaseRequestLine as searchPurchaseRequestLineApi} from './purchase-request-line-api';
+export {
+  createPurchaseRequestLine as createPurchaseRequestLineApi,
+  fetchPurchaseRequestLine as fetchPurchaseRequestLineApi,
+  searchPurchaseRequestLine as searchPurchaseRequestLineApi,
+  updatePurchaseRequestLine as updatePurchaseRequestLineApi,
+} from './purchase-request-line-api';
 export {searchSupplier as searchSupplierApi} from './supplier-api';
 export {searchUnit as searchUnitApi} from './unit-api';
