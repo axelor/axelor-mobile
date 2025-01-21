@@ -65,6 +65,7 @@ export const purchase_formsRegister: FormConfigs = {
         titleKey: 'Purchase_Quantity',
         type: 'number',
         widget: 'increment',
+        required: true,
       },
       unit: {
         titleKey: 'Purchase_Unit',

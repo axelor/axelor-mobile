@@ -85,7 +85,7 @@ const RequestLineFormScreen = ({navigation, route}) => {
           type: 'create',
           needRequiredFields: true,
           needValidation: true,
-          hideIf: () => !purchaseRequestLineId == null,
+          hideIf: () => purchaseRequestLineId != null,
           customAction: ({dispatch, objectState}) => {
             createPurchaseRequestLineAPI(objectState, dispatch);
           },
