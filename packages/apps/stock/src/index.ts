@@ -17,6 +17,7 @@
  */
 
 import {Module} from '@axelor/aos-mobile-core';
+import AuthScreens from './screens/auth';
 import CustomerDeliveryScreens from './screens/customerDeliveries';
 import InternalMovesScreens from './screens/internalMoves';
 import InventoriesScreens from './screens/inventories';
@@ -26,7 +27,6 @@ import SupplierArrivalsScreens from './screens/supplierArrivals';
 import enTranslations from './i18n/en.json';
 import frTranslations from './i18n/fr.json';
 import * as stockReducers from './features';
-import UserScreen from './screens/auth/UserScreen';
 import {stock_modelAPI, stock_searchFields, stock_sortFields} from './models';
 import {useStockHeaders} from './hooks/use-stock-header-actions';
 
@@ -73,17 +73,13 @@ export const StockModule: Module = {
     },
   },
   screens: {
+    ...AuthScreens,
     ...CustomerDeliveryScreens,
     ...InternalMovesScreens,
     ...InventoriesScreens,
     ...ProductsScreens,
     ...StockCorrectionScreens,
     ...SupplierArrivalsScreens,
-    UserScreen: {
-      title: 'User_UserProfile',
-      component: UserScreen,
-      actionID: 'auth_user_profile',
-    },
   },
   translations: {
     en: enTranslations,
@@ -120,7 +116,7 @@ export {
 export * from './types';
 export * from './api';
 export * from './features/asyncFunctions-index';
-
+export * from './screens/auth';
 export * from './screens/customerDeliveries';
 export * from './screens/internalMoves';
 export * from './screens/inventories';
