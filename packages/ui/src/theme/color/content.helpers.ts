@@ -164,7 +164,7 @@ function mapPaletteColors(theme: ConfigurableTheme): ThemeColors {
 
 export function registerThemes(
   existing: Theme[],
-  newThemes: ConfigurableTheme[],
+  newThemes: (ConfigurableTheme | Theme)[],
 ): Theme[] {
   if (!Array.isArray(newThemes) || newThemes.length === 0) {
     return existing;
@@ -172,13 +172,18 @@ export function registerThemes(
 
   let result: Theme[] = existing.filter(_t => !_t.isCustom);
 
-  newThemes.forEach(_t => {
-    result.push({
-      key: _t.name,
-      name: _t.label ?? _t.name,
-      colors: mapPaletteColors(_t),
-      isCustom: true,
-    });
+  newThemes.forEach(_theme => {
+    if ((_theme as ConfigurableTheme).id != null) {
+      const _t = _theme as ConfigurableTheme;
+      result.push({
+        key: _t.id,
+        name: _t.label ?? _t.name,
+        colors: mapPaletteColors(_t),
+        isCustom: true,
+      });
+    } else {
+      result.push(_theme as Theme);
+    }
   });
 
   return result;

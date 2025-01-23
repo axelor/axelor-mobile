@@ -45,6 +45,7 @@ export const auth_modelAPI: ObjectFields = {
         roles: schemaContructor.array(),
       }),
     ),
+    theme: schemaContructor.string(),
     employee: schemaContructor.subObject(),
     todayDateT: schemaContructor.string(),
     code: schemaContructor.string(),

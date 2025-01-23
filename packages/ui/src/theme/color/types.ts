@@ -53,6 +53,7 @@ export interface Theme {
 }
 
 export interface ConfigurableTheme {
+  id: string;
   name: string;
   label?: string;
   content: any;

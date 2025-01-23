@@ -40,14 +40,14 @@ interface ThemeContextState {
   isColorBlind: boolean;
   themes: Theme[];
   changeTheme: (themeKey: string) => void;
-  addThemes: (themes: ConfigurableTheme[]) => void;
+  addThemes: (themes: (ConfigurableTheme | Theme)[]) => void;
   activateColorBlind: () => void;
   desactivateColorBlind: () => void;
 }
 
 interface ThemeAction {
   type: string;
-  payload?: string | ConfigurableTheme[];
+  payload?: string | (ConfigurableTheme | Theme)[];
 }
 
 const defaultThemeContext = {
@@ -104,7 +104,7 @@ const themeReducer = (
         ...state,
         themes: registerThemes(
           state.themes,
-          action.payload as ConfigurableTheme[],
+          action.payload as (ConfigurableTheme | Theme)[],
         ),
       };
     }
@@ -130,7 +130,7 @@ const actions = {
     type: actionTypes.changeTheme,
     payload: themeKey,
   }),
-  addThemes: (themes: ConfigurableTheme[]) => ({
+  addThemes: (themes: (ConfigurableTheme | Theme)[]) => ({
     type: actionTypes.addThemes,
     payload: themes,
   }),
@@ -166,7 +166,7 @@ export const ThemeProvider = ({
   );
 
   const addThemes = useCallback(
-    (configurableThemes: ConfigurableTheme[]) =>
+    (configurableThemes: (ConfigurableTheme | Theme)[]) =>
       dispatch(actions.addThemes(configurableThemes)),
     [],
   );
