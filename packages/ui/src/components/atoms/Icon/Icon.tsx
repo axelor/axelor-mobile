@@ -20,7 +20,7 @@ import React, {useMemo, useCallback} from 'react';
 import {Platform, StyleSheet, TouchableOpacity} from 'react-native';
 import Icon5 from 'react-native-vector-icons/FontAwesome5';
 import Icon4 from 'react-native-vector-icons/FontAwesome';
-import {useThemeColor} from '../../../theme/ThemeContext';
+import {useThemeColor} from '../../../theme';
 import BootstrapIcon from '../BootstrapIcon/BootstrapIcon';
 
 interface IconProps {

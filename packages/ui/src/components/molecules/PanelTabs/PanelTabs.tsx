@@ -18,8 +18,7 @@
 
 import React, {useCallback, useMemo, useState} from 'react';
 import {StyleSheet, TouchableOpacity, View} from 'react-native';
-import {useThemeColor} from '../../../theme/ThemeContext';
-import {ThemeColors} from '../../../theme/themes';
+import {ThemeColors, useThemeColor} from '../../../theme';
 import {Text} from '../../atoms';
 
 export interface TabProps {

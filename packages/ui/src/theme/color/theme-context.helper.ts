@@ -16,30 +16,14 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import React, {useMemo} from 'react';
-import {View, StyleSheet} from 'react-native';
-import {useThemeColor} from '../../../theme';
+import {deepCopy} from '../../utils/objects';
+import {Theme, ThemeColors} from './themes';
 
-interface HorizontalRuleProps {
-  style?: any;
-}
-
-const HorizontalRule = ({style}: HorizontalRuleProps) => {
-  const Colors = useThemeColor();
-
-  const styles = useMemo(() => {
-    return getStyles(Colors);
-  }, [Colors]);
-
-  return <View style={[styles.line, style]} />;
+export const getActiveTheme = (
+  defaultTheme: Theme,
+  themeColorsConfig: ThemeColors,
+) => {
+  const activeTheme = deepCopy(defaultTheme);
+  Object.assign(activeTheme.colors, themeColorsConfig);
+  return activeTheme;
 };
-
-const getStyles = Colors =>
-  StyleSheet.create({
-    line: {
-      borderBottomColor: Colors.secondaryColor.background,
-      borderBottomWidth: 1,
-    },
-  });
-
-export default HorizontalRule;

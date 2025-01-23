@@ -16,7 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import {deepCopy} from '../utils/objects';
+import {deepCopy} from '../../utils/objects';
 import {Writing, WritingStyles} from './writingTheme';
 
 export const getActiveWritingTheme = (

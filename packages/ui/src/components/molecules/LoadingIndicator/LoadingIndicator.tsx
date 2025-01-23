@@ -19,7 +19,7 @@
 import React from 'react';
 import {ActivityIndicator, StyleSheet, Dimensions} from 'react-native';
 import {useConfig} from '../../../config/ConfigContext';
-import {useThemeColor} from '../../../theme/ThemeContext';
+import {useThemeColor} from '../../../theme';
 import {BlockInteractionScreen, Card} from '../../atoms';
 
 /**

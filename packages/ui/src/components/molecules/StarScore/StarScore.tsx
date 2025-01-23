@@ -18,8 +18,7 @@
 
 import React, {useCallback, useMemo} from 'react';
 import {StyleSheet, View} from 'react-native';
-import {Color} from '../../../theme/themes';
-import {useThemeColor} from '../../../theme/ThemeContext';
+import {Color, useThemeColor} from '../../../theme';
 import {Icon} from '../../atoms';
 import {
   getIntegerPart,

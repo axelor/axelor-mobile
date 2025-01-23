@@ -16,14 +16,12 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import {deepCopy} from '../utils/objects';
-import {Theme, ThemeColors} from './themes';
-
-export const getActiveTheme = (
-  defaultTheme: Theme,
-  themeColorsConfig: ThemeColors,
-) => {
-  const activeTheme = deepCopy(defaultTheme);
-  Object.assign(activeTheme.colors, themeColorsConfig);
-  return activeTheme;
-};
+export {ThemeProvider, useTheme, useThemeColor} from './ThemeContext';
+export {
+  lightTheme,
+  purpleTheme,
+  colorBlindTheme,
+  Theme,
+  ThemeColors,
+  Color,
+} from './themes';
