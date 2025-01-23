@@ -55,4 +55,9 @@ export const auth_modelAPI: ObjectFields = {
     name: schemaContructor.string(),
     language: schemaContructor.subObject('code'),
   }),
+  auth_metaTheme: schemaContructor.object({
+    name: schemaContructor.string(),
+    label: schemaContructor.string(),
+    content: schemaContructor.string(),
+  }),
 };

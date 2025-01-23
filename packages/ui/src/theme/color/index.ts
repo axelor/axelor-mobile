@@ -16,12 +16,8 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+export * from './color.defaults';
+export * from './content.helpers';
 export {ThemeProvider, useTheme, useThemeColor} from './ThemeContext';
-export {
-  lightTheme,
-  purpleTheme,
-  colorBlindTheme,
-  Theme,
-  ThemeColors,
-  Color,
-} from './themes';
+export {lightTheme, purpleTheme, colorBlindTheme} from './themes';
+export {Theme, ThemeColors, Color} from './types';

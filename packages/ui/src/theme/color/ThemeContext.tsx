@@ -24,14 +24,13 @@ import React, {
   useMemo,
   useReducer,
 } from 'react';
-import {
-  Theme,
-  lightTheme,
-  purpleTheme,
-  colorBlindTheme,
-  ThemeColors,
-} from './themes';
-import {getActiveTheme} from './theme-context.helper';
+import {lightTheme, purpleTheme, colorBlindTheme} from './themes';
+import {ConfigurableTheme, Theme, ThemeColors} from './types';
+import {getActiveTheme, registerThemes} from './content.helpers';
+
+function throwError(action: string) {
+  throw new Error(`Theme provider should be mounted to ${action}`);
+}
 
 const DEFAULT_THEME = purpleTheme;
 const COLORBLIND_THEME = colorBlindTheme;
@@ -41,30 +40,24 @@ interface ThemeContextState {
   isColorBlind: boolean;
   themes: Theme[];
   changeTheme: (themeKey: string) => void;
+  addThemes: (themes: ConfigurableTheme[]) => void;
   activateColorBlind: () => void;
   desactivateColorBlind: () => void;
 }
 
 interface ThemeAction {
   type: string;
-  payload?: string;
+  payload?: string | ConfigurableTheme[];
 }
 
 const defaultThemeContext = {
   activeTheme: DEFAULT_THEME,
   isColorBlind: DEFAULT_THEME === COLORBLIND_THEME,
   themes: [lightTheme, purpleTheme],
-  changeTheme: () => {
-    throw new Error('ThemeProvider should be mounted to change theme');
-  },
-  activateColorBlind() {
-    throw new Error('ThemeProvider should be mounted to activate color blind');
-  },
-  desactivateColorBlind() {
-    throw new Error(
-      'ThemeProvider should be mounted to desactivate color blind',
-    );
-  },
+  changeTheme: () => throwError('change theme'),
+  addThemes: () => throwError('add themes'),
+  activateColorBlind: () => throwError('activate color blind'),
+  desactivateColorBlind: () => throwError('desactivate color blind'),
 };
 
 const getInitialThemeState = (
@@ -83,6 +76,7 @@ const ThemeContext = createContext<ThemeContextState>(defaultThemeContext);
 
 const actionTypes = {
   changeTheme: 'changeTheme',
+  addThemes: 'addThemes',
   activateColorBlind: 'activateColorBlind',
   desactivateColorBlind: 'desactivateColorBlind',
 };
@@ -105,6 +99,15 @@ const themeReducer = (
         isColorBlind: newActiveTheme === COLORBLIND_THEME,
       };
     }
+    case actionTypes.addThemes: {
+      return {
+        ...state,
+        themes: registerThemes(
+          state.themes,
+          action.payload as ConfigurableTheme[],
+        ),
+      };
+    }
     case actionTypes.activateColorBlind: {
       return {
         ...state,
@@ -123,9 +126,13 @@ const themeReducer = (
 };
 
 const actions = {
-  changeTheme: themeKey => ({
+  changeTheme: (themeKey: string) => ({
     type: actionTypes.changeTheme,
     payload: themeKey,
+  }),
+  addThemes: (themes: ConfigurableTheme[]) => ({
+    type: actionTypes.addThemes,
+    payload: themes,
   }),
   activateColorBlind: () => ({
     type: actionTypes.activateColorBlind,
@@ -152,26 +159,37 @@ export const ThemeProvider = ({
     themeReducer,
     getInitialThemeState(themes, defaultTheme, themeColorsConfig),
   );
+
   const changeTheme = useCallback(
-    themeKey => dispatch(actions.changeTheme(themeKey)),
+    (themeKey: string) => dispatch(actions.changeTheme(themeKey)),
     [],
   );
+
+  const addThemes = useCallback(
+    (configurableThemes: ConfigurableTheme[]) =>
+      dispatch(actions.addThemes(configurableThemes)),
+    [],
+  );
+
   const activateColorBlind = useCallback(
     () => dispatch(actions.activateColorBlind()),
     [],
   );
+
   const desactivateColorBlind = useCallback(
     () => dispatch(actions.desactivateColorBlind()),
     [],
   );
+
   const themeContextState = useMemo<ThemeContextState>(
     () => ({
       ...state,
       changeTheme,
+      addThemes,
       activateColorBlind,
       desactivateColorBlind,
     }),
-    [activateColorBlind, changeTheme, desactivateColorBlind, state],
+    [activateColorBlind, addThemes, changeTheme, desactivateColorBlind, state],
   );
 
   return (
