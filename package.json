@@ -25,6 +25,7 @@
     "graph": "nx graph",
     "license:add": "nx run-many --target=license:add",
     "generator": "npx aom-generate --options && yarn license:add",
+    "reactotron": "node reactotron.js",
     "storybook": "storybook dev -p 6006",
     "storybook:build": "storybook build",
     "postinstall": "patch-package"
@@ -108,6 +109,7 @@
     "react-native-web": "0.18.12",
     "react-native-web-linear-gradient": "1.1.2",
     "react-test-renderer": "18.2.0",
+    "reactotron-react-native": "5.1.12",
     "storybook": "7.6.17",
     "text-encoding": "^0.7.0",
     "ts-jest": "^29.1.4",
