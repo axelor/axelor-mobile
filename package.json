@@ -25,10 +25,10 @@
     "graph": "nx graph",
     "license:add": "nx run-many --target=license:add",
     "generator": "npx aom-generate --options && yarn license:add",
+    "reactotron": "node reactotron.js",
     "storybook": "storybook dev -p 6006",
     "storybook:build": "storybook build",
-    "postinstall": "patch-package",
-    "reactotron": "node reactotron.js"
+    "postinstall": "patch-package"
   },
   "dependencies": {
     "@axelor/aos-mobile-core": "8.3.0",
