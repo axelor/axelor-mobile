@@ -98,6 +98,7 @@ export async function fetchVariants({productVariantParentId, page = 0}) {
       },
     ],
     fieldKey: 'stock_product',
+    sortKey: 'stock_product',
     page,
     provider: 'model',
   });
