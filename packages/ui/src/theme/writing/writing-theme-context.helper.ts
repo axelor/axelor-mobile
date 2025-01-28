@@ -16,30 +16,14 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import React, {useMemo} from 'react';
-import {View, StyleSheet} from 'react-native';
-import {useThemeColor} from '../../../theme';
+import {deepCopy} from '../../utils/objects';
+import {Writing, WritingStyles} from './writingTheme';
 
-interface HorizontalRuleProps {
-  style?: any;
-}
-
-const HorizontalRule = ({style}: HorizontalRuleProps) => {
-  const Colors = useThemeColor();
-
-  const styles = useMemo(() => {
-    return getStyles(Colors);
-  }, [Colors]);
-
-  return <View style={[styles.line, style]} />;
+export const getActiveWritingTheme = (
+  defaultWritingTheme: Writing,
+  writingStylesConfig: WritingStyles,
+) => {
+  const activeWritingTheme = deepCopy(defaultWritingTheme);
+  Object.assign(activeWritingTheme.style, writingStylesConfig);
+  return activeWritingTheme;
 };
-
-const getStyles = Colors =>
-  StyleSheet.create({
-    line: {
-      borderBottomColor: Colors.secondaryColor.background,
-      borderBottomWidth: 1,
-    },
-  });
-
-export default HorizontalRule;

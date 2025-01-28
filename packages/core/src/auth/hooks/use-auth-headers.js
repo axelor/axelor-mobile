@@ -25,11 +25,13 @@ import {useNavigation} from '../../hooks/use-navigation';
 import {useOnline} from '../../features/onlineSlice';
 import {formatDateTime} from '../../utils/formatters';
 import {useLoaderListener} from '../../loader';
+import {useThemesRegister} from '../themes';
 
 export const useAuthHeaders = () => {
   useUserProfileActions();
   useAuthHeaderBands();
   useLoaderHeaderBand();
+  useThemesRegister();
 };
 
 const useUserProfileActions = () => {

@@ -19,7 +19,7 @@
 import React, {useState} from 'react';
 import {StyleSheet, TouchableOpacity, View} from 'react-native';
 import {Card, HtmlInput, Icon, Text} from '../../atoms';
-import {useThemeColor} from '../../../theme/ThemeContext';
+import {useThemeColor} from '../../../theme';
 
 const MAX_HEIGHT = 71;
 

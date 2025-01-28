@@ -20,7 +20,7 @@ import React, {LegacyRef, useMemo, useState} from 'react';
 import {KeyboardTypeOptions, StyleSheet, TextInput, View} from 'react-native';
 import {ThemeColors} from '../../../theme';
 import {getCommonStyles} from '../../../utils/commons-styles';
-import {useThemeColor} from '../../../theme/ThemeContext';
+import {useThemeColor} from '../../../theme';
 import {Input} from '../../atoms';
 import {checkNullString} from '../../../utils/strings';
 

@@ -19,9 +19,8 @@
 import React, {useMemo} from 'react';
 import {DimensionValue, StyleSheet, TouchableOpacity} from 'react-native';
 import {getCommonStyles} from '../../../utils/commons-styles';
-import {useThemeColor} from '../../../theme/ThemeContext';
+import {Color, useThemeColor} from '../../../theme';
 import {Icon, Text} from '../../atoms';
-import {Color} from '../../../theme/themes';
 
 export interface ButtonProps {
   width?: DimensionValue;

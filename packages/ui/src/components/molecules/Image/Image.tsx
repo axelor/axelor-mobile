@@ -24,7 +24,7 @@ import {
   ImageStyle,
   StyleProp,
 } from 'react-native';
-import {useThemeColor} from '../../../theme/ThemeContext';
+import {useThemeColor} from '../../../theme';
 import {Icon} from '../../atoms';
 
 interface ImageProps {

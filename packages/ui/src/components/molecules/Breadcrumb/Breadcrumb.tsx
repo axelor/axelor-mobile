@@ -18,7 +18,7 @@
 
 import React, {useEffect, useState} from 'react';
 import {StyleSheet, TouchableOpacity, View} from 'react-native';
-import {useThemeColor} from '../../../theme/ThemeContext';
+import {useThemeColor} from '../../../theme';
 import {Icon, Text} from '../../atoms';
 
 const ICON_WIDTH = 18;
