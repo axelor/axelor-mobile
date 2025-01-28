@@ -45,6 +45,7 @@ export const auth_modelAPI: ObjectFields = {
         roles: schemaContructor.array(),
       }),
     ),
+    theme: schemaContructor.string(),
     employee: schemaContructor.subObject(),
     todayDateT: schemaContructor.string(),
     code: schemaContructor.string(),
@@ -54,5 +55,10 @@ export const auth_modelAPI: ObjectFields = {
     code: schemaContructor.string(),
     name: schemaContructor.string(),
     language: schemaContructor.subObject('code'),
+  }),
+  auth_metaTheme: schemaContructor.object({
+    name: schemaContructor.string(),
+    label: schemaContructor.string(),
+    content: schemaContructor.string(),
   }),
 };

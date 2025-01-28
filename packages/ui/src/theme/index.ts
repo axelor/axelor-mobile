@@ -16,20 +16,5 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-export {ThemeProvider, useTheme, useThemeColor} from './ThemeContext';
-export {WritingThemeProvider, useWritingStyle} from './WritingThemeContext';
-export {
-  lightTheme,
-  purpleTheme,
-  colorBlindTheme,
-  Theme,
-  ThemeColors,
-  Color,
-} from './themes';
-export {
-  writingDefaultTheme,
-  Writing,
-  WritingStyles,
-  TextStyle,
-  useWritingType,
-} from './writingTheme';
+export * from './color';
+export * from './writing';

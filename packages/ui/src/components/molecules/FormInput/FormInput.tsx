@@ -19,8 +19,7 @@
 import React, {useCallback, useEffect, useMemo, useState} from 'react';
 import {KeyboardTypeOptions, StyleSheet, View} from 'react-native';
 import {Input, Text} from '../../atoms';
-import {useThemeColor} from '../../../theme/ThemeContext';
-import {ThemeColors} from '../../../theme/themes';
+import {ThemeColors, useThemeColor} from '../../../theme';
 import {getCommonStyles, checkNullString} from '../../../utils';
 
 interface FormInputProps {

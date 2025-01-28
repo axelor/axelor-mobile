@@ -19,7 +19,7 @@
 import React, {useMemo} from 'react';
 import {StyleSheet, Dimensions} from 'react-native';
 import {getCommonStyles} from '../../../utils/commons-styles';
-import {useThemeColor} from '../../../theme/ThemeContext';
+import {useThemeColor} from '../../../theme';
 import {Card, Icon, Text} from '../../atoms';
 
 interface ClearableCardPops {

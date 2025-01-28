@@ -19,7 +19,7 @@
 import React, {useMemo, useState} from 'react';
 import {StyleSheet, TouchableOpacity, View} from 'react-native';
 import {animationUtil} from '../../../tools/AnimationUtil';
-import {useThemeColor} from '../../../theme/ThemeContext';
+import {useThemeColor} from '../../../theme';
 import {Card, Icon, Text} from '../../atoms';
 import {getCommonStyles} from '../../../utils';
 

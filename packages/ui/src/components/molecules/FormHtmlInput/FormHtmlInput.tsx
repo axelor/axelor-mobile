@@ -19,8 +19,7 @@
 import React, {useCallback, useEffect, useMemo, useState} from 'react';
 import {StyleSheet, View} from 'react-native';
 import {HtmlInput, Text} from '../../atoms';
-import {useThemeColor} from '../../../theme/ThemeContext';
-import {ThemeColors} from '../../../theme/themes';
+import {ThemeColors, useThemeColor} from '../../../theme';
 import {getCommonStyles} from '../../../utils/commons-styles';
 import {checkNullString} from '../../../utils/strings';
 

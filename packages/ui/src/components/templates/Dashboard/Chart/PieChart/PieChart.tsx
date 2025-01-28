@@ -19,7 +19,7 @@
 import React, {useCallback, useEffect, useMemo, useState} from 'react';
 import {StyleSheet, View} from 'react-native';
 import {PieChart as RNPieChart} from 'react-native-gifted-charts';
-import {useThemeColor} from '../../../../../theme/ThemeContext';
+import {useThemeColor} from '../../../../../theme';
 import {checkNullString} from '../../../../../utils/strings';
 import {Text} from '../../../../atoms';
 import Chart from '../../chart-type';
