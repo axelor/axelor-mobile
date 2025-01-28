@@ -43,6 +43,7 @@ export async function searchInternalMoveLines({
     model: 'com.axelor.apps.stock.db.StockMoveLine',
     criteria: createSearchCriteria(internalMoveId, searchValue),
     fieldKey: 'stock_internalMoveLine',
+    sortKey: 'stock_internalMoveLine',
     page,
     provider: 'model',
   });
