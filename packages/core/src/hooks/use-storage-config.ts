@@ -21,6 +21,7 @@ import {Dimensions} from 'react-native';
 import DeviceInfo from 'react-native-device-info';
 import {Keyboard, useConfig, useTheme} from '@axelor/aos-mobile-ui';
 import {storage} from '../storage/Storage';
+import {useSelector} from '../redux/hooks';
 
 const CONFIG_STORAGE_KEY = 'ui_config';
 const SMALL_SCREEN_HEIGHT = 500;
@@ -61,7 +62,7 @@ export const useConfigUpdater = (): {updateConfigFromStorage: () => void} => {
     setShowToolbox,
     setVirtualKeyboardVisibility,
   } = useConfig();
-  const {activateColorBlind, changeTheme} = useTheme();
+  const {activateColorBlind, addThemes, changeTheme} = useTheme();
 
   const updateConfigFromStorage = useCallback(() => {
     const _config = storage.getItem(CONFIG_STORAGE_KEY);
@@ -71,6 +72,7 @@ export const useConfigUpdater = (): {updateConfigFromStorage: () => void} => {
       setShowSubtitles(_config.showSubtitles);
       setShowToolbox(_config.showToolbox);
       setVirtualKeyboardVisibility(_config.virtualKeyboardVisibility);
+      addThemes(_config.themes);
       if (_config.isColorBlind) {
         activateColorBlind();
       } else {
@@ -79,6 +81,7 @@ export const useConfigUpdater = (): {updateConfigFromStorage: () => void} => {
     }
   }, [
     activateColorBlind,
+    addThemes,
     changeTheme,
     setFilterConfig,
     setShowSubtitles,
@@ -89,8 +92,31 @@ export const useConfigUpdater = (): {updateConfigFromStorage: () => void} => {
   return useMemo(() => ({updateConfigFromStorage}), [updateConfigFromStorage]);
 };
 
+export const useCustomThemeOfUser = () => {
+  const {activeTheme, themes, changeTheme} = useTheme();
+
+  const {user} = useSelector(state => state.user);
+
+  useEffect(() => {
+    const _theme = themes.find(_t => Number(_t.key) === Number(user.theme));
+
+    if (_theme?.isCustom) {
+      changeTheme(_theme.key);
+    }
+  }, [changeTheme, themes, user.theme]);
+
+  useEffect(() => {
+    storage.setItem(CONFIG_STORAGE_KEY, {
+      ...storage.getItem(CONFIG_STORAGE_KEY),
+      themes: themes.filter(_t => _t.isCustom),
+      activeTheme,
+    });
+  }, [activeTheme, themes]);
+};
+
 export const useDefaultValuesOfUser = () => {
   const {setFilterConfig, setVirtualKeyboardVisibility} = useConfig();
+  useCustomThemeOfUser();
 
   useEffect(() => {
     const _config = storage.getItem(CONFIG_STORAGE_KEY);

@@ -18,8 +18,7 @@
 
 import React, {useMemo} from 'react';
 import {Text as ReactNativeText, TextStyle} from 'react-native';
-import {useThemeColor} from '../../../theme/ThemeContext';
-import {useWritingType} from '../../../theme/writingTheme';
+import {useThemeColor, useWritingType} from '../../../theme';
 
 export interface TextProps {
   style?: any;

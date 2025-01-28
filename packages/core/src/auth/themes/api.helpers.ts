@@ -16,14 +16,15 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import {deepCopy} from '../utils/objects';
-import {Theme, ThemeColors} from './themes';
+import {createStandardSearch} from '../../apiProviders';
 
-export const getActiveTheme = (
-  defaultTheme: Theme,
-  themeColorsConfig: ThemeColors,
-) => {
-  const activeTheme = deepCopy(defaultTheme);
-  Object.assign(activeTheme.colors, themeColorsConfig);
-  return activeTheme;
-};
+export async function fetchWebThemes() {
+  return createStandardSearch({
+    model: 'com.axelor.meta.db.MetaTheme',
+    criteria: [{fieldName: 'isSelectable', operator: '=', value: true}],
+    fieldKey: 'auth_metaTheme',
+    numberElementsByPage: null,
+    page: 0,
+    provider: 'model',
+  });
+}

@@ -17,7 +17,7 @@
  */
 
 import React, {useState, useCallback, useMemo, useEffect} from 'react';
-import {useThemeColor, Color} from '../../../theme/';
+import {useThemeColor, Color} from '../../../theme';
 import Button, {ButtonProps} from '../../molecules/Button/Button';
 
 export interface ToggleButtonProps {

@@ -19,7 +19,7 @@
 import React, {useMemo} from 'react';
 import {StyleSheet} from 'react-native';
 import {Button} from '../../molecules';
-import {Color} from '../../../theme/themes';
+import {Color} from '../../../theme';
 
 const BUTTON_SIZE = 50;
 
