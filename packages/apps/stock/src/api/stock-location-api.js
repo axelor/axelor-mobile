@@ -17,15 +17,15 @@
  */
 
 import {
-  createStandardSearch,
+  createHierarchicalSearch,
   getSearchCriterias,
   getTypes,
 } from '@axelor/aos-mobile-core';
 
-const createSearchCriteria = ({searchValue, defaultStockLocation}) => {
+const createSearchCriteria = ({searchValue}) => {
   const StockLocation = getTypes().StockLocation;
 
-  let criterias = [
+  return [
     {
       fieldName: 'typeSelect',
       operator: '=',
@@ -33,26 +33,6 @@ const createSearchCriteria = ({searchValue, defaultStockLocation}) => {
     },
     getSearchCriterias('stock_stockLocation', searchValue),
   ];
-
-  if (defaultStockLocation != null) {
-    criterias.push({
-      operator: 'or',
-      criteria: [
-        {
-          fieldName: 'id',
-          operator: '=',
-          value: defaultStockLocation.id,
-        },
-        {
-          fieldName: 'parentStockLocation.id',
-          operator: '=',
-          value: defaultStockLocation.id,
-        },
-      ],
-    });
-  }
-
-  return criterias;
 };
 
 export async function searchStockLocationsFilter({
@@ -61,15 +41,14 @@ export async function searchStockLocationsFilter({
   defaultStockLocation = null,
   page = 0,
 }) {
-  return createStandardSearch({
+  return createHierarchicalSearch({
+    parentField: 'parentStockLocation',
+    parentId: defaultStockLocation?.id,
     model: 'com.axelor.apps.stock.db.StockLocation',
-    companyId,
-    criteria: createSearchCriteria({
-      searchValue: searchValue,
-      defaultStockLocation: defaultStockLocation,
-    }),
+    criteria: createSearchCriteria({searchValue}),
     fieldKey: 'stock_stockLocation',
     sortKey: 'stock_stockLocation',
+    companyId,
     page,
     provider: 'model',
   });
