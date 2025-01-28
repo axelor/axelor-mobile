@@ -1,5 +1,5 @@
 {
-  "title": "Customer delivery line API: add missing sort key",
+  "title": "API: add missing sort key on search functions",
   "type": "fix",
   "packages": "stock"
 }

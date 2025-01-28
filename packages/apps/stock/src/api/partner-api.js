@@ -69,6 +69,7 @@ export async function searchSuppliersFilter({
     isCompanyM2M: true,
     criteria: createSearchCriteria(searchValue, true),
     fieldKey: 'stock_partner',
+    sortKey: 'stock_partner',
     page,
     provider: 'model',
   });
@@ -81,6 +82,7 @@ export async function searchClientsFilter({searchValue, companyId, page = 0}) {
     isCompanyM2M: true,
     criteria: createSearchCriteria(searchValue, false),
     fieldKey: 'stock_partner',
+    sortKey: 'stock_partner',
     page,
     provider: 'model',
   });
