@@ -44,6 +44,7 @@ export async function searchSupplierArrivalLines({
     model: 'com.axelor.apps.stock.db.StockMoveLine',
     criteria: createSearchCriteria(supplierArrivalId, searchValue),
     fieldKey: 'stock_supplierArrivalLine',
+    sortKey: 'stock_supplierArrivalLine',
     page,
   });
 }
