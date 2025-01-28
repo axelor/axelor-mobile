@@ -79,6 +79,7 @@ export async function searchStockLocationsFilter({
       defaultStockLocation: defaultStockLocation,
     }),
     fieldKey: 'stock_stockLocation',
+    sortKey: 'stock_stockLocation',
     page,
   });
 }
