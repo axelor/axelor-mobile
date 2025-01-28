@@ -1,5 +1,0 @@
-{
-  "title": "Increment: remove refresh issue due to undefined props",
-  "type": "fix",
-  "packages": "ui"
-}
