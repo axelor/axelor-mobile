@@ -36,6 +36,11 @@ interface SearchProps {
   companySetFieldName?: string;
 }
 
+interface HierarchicalSearchProps extends SearchProps {
+  parentField: string;
+  parentId: number;
+}
+
 interface FetchProps {
   model: string;
   fieldKey: string;
@@ -142,6 +147,101 @@ class RequestBuilder {
     });
   };
 
+  private getIdsHierarchicalSearch = async ({
+    parentField,
+    parentId,
+    model,
+    criteria = [],
+    domain = '',
+    domainContext = {},
+    provider = 'axios',
+    companyId,
+    isCompanyM2M = false,
+    companyFieldName,
+    companySetFieldName,
+  }: Partial<HierarchicalSearchProps>): Promise<number[]> => {
+    const result = [parentId];
+
+    const res = await this.createStandardSearch({
+      model,
+      criteria: [
+        {
+          fieldName: parentField + '.id',
+          operator: '=',
+          value: parentId,
+        },
+        ...(criteria ?? []),
+      ],
+      domain,
+      domainContext,
+      fieldKey: '',
+      page: 0,
+      numberElementsByPage: null,
+      provider,
+      companyId,
+      isCompanyM2M,
+      companyFieldName,
+      companySetFieldName,
+    });
+
+    const children = res?.data?.data;
+
+    if (Array.isArray(children) && children?.length > 0) {
+      result.push(...children.map(child => child.id));
+
+      for (const child of children) {
+        const subTree = await this.getIdsHierarchicalSearch({
+          parentField,
+          parentId: child.id,
+          model,
+          criteria,
+          domain,
+          domainContext,
+          provider,
+          companyId,
+          isCompanyM2M,
+          companyFieldName,
+          companySetFieldName,
+        });
+        result.push(...subTree);
+      }
+    }
+
+    return result.filter((id, idx) => result.indexOf(id) === idx);
+  };
+
+  createHierarchicalSearch = async ({
+    parentField,
+    parentId,
+    criteria = [],
+    ...props
+  }: HierarchicalSearchProps): Promise<any> => {
+    let _criteria: Criteria[] = criteria;
+
+    if (parentId != null) {
+      const ids = await this.getIdsHierarchicalSearch({
+        ...props,
+        parentField,
+        parentId,
+        criteria,
+      });
+
+      if (!Array.isArray(ids) || ids.length === 0) {
+        return null;
+      }
+
+      _criteria = [
+        {
+          fieldName: 'id',
+          operator: 'in',
+          value: ids,
+        },
+      ];
+    }
+
+    return this.createStandardSearch({...props, criteria: _criteria});
+  };
+
   createStandardFetch = ({
     model,
     fieldKey,
@@ -215,6 +315,12 @@ export const createStandardSearch = (
   searchOptions: SearchProps,
 ): Promise<any> => {
   return requestBuilder.createStandardSearch({...searchOptions});
+};
+
+export const createHierarchicalSearch = (
+  searchOptions: HierarchicalSearchProps,
+): Promise<any> => {
+  return requestBuilder.createHierarchicalSearch({...searchOptions});
 };
 
 export const createStandardFetch = (fetchOptions: FetchProps): Promise<any> => {

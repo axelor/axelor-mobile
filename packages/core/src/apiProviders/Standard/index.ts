@@ -23,4 +23,8 @@ export {
   getSortFields,
   objectFieldsProvider,
 } from './ObjectFieldsProvider';
-export {createStandardSearch, createStandardFetch} from './requests.helper';
+export {
+  createHierarchicalSearch,
+  createStandardSearch,
+  createStandardFetch,
+} from './requests.helper';

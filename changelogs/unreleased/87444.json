@@ -1,0 +1,5 @@
+{
+  "title": "RequestBuilder: add tool to manage search on hierarchical objects",
+  "type": "feat",
+  "packages": "core"
+}
