@@ -3,6 +3,36 @@ title: 7.2.0
 tags: Changelog
 ---
 
+## [7.2.25] (2025-01-30)
+
+### @axelor/aos-mobile-core
+
+#### Changes
+
+- Navigator: unmount Drawer on blur
+- Login: improve token retrieval with a regex
+- Login: split code into small tools to make it resusable in other packages
+
+#### Fixes
+
+- Login: add exports of functions and tools
+- Auth: add call to logout endpoint to unvalidate tokens
+
+### @axelor/aos-mobile-ui
+
+#### Fixes
+
+- Increment: remove refresh issue due to undefined props
+- Label: ensure that the text takes up all the available space
+
+### @axelor/aos-mobile-stock
+
+#### Fixes
+
+- API: add missing exports of api & slice functions
+- UserScreen: modify export
+- API: add missing sort key on search functions
+
 ## [7.2.24] (2024-12-19)
 
 ### @axelor/aos-mobile-crm
@@ -779,6 +809,7 @@ It enables user to manage Expenses through the mobile application. You can creat
 - Remove IconButton component which should be replaced by Button component.
 - Remove Pop-up components which should be replaced by Alert component.
 
+[7.2.25]: https://github.com/axelor/axelor-mobile/compare/7.2.24...7.2.25
 [7.2.24]: https://github.com/axelor/axelor-mobile/compare/7.2.23...7.2.24
 [7.2.23]: https://github.com/axelor/axelor-mobile/compare/7.2.22...7.2.23
 [7.2.22]: https://github.com/axelor/axelor-mobile/compare/7.2.21...7.2.22
