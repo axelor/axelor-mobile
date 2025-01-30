@@ -1,5 +1,0 @@
-{
-  "title": "Stock location API: use new tool to manage hierarchical search",
-  "type": "refactor",
-  "packages": "stock"
-}

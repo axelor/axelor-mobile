@@ -3,6 +3,93 @@ title: 8.2.0
 tags: Changelog
 ---
 
+## [8.2.6] (2025-01-30)
+
+### @axelor/aos-mobile-core
+
+#### Features
+
+- RequestBuilder: add tool to manage search on hierarchical objects
+
+#### Changes
+
+- Navigator: unmount Drawer on blur
+- Login: improve token retrieval with a regex
+- Login: split code into small tools to make it resusable in other packages
+
+#### Fixes
+
+- PeriodDisplay: add null check on start date to avoid crash
+- Menu management: apply override before checking accessibility and order to match configuration
+- Login: add exports of functions and tools
+- Auth: add call to logout endpoint to unvalidate tokens
+
+### @axelor/aos-mobile-ui
+
+#### Fixes
+
+- Increment: remove refresh issue due to undefined props
+- Label: ensure that the text takes up all the available space
+
+### @axelor/aos-mobile-sale
+
+#### Changes
+
+- Data fetching: add active company management
+
+#### Fixes
+
+- Cart: hide empty cart action when no cart found
+
+### @axelor/aos-mobile-project
+
+#### Changes
+
+- Data fetching: add active company management
+
+### @axelor/aos-mobile-intervention
+
+#### Changes
+
+- Data fetching: add active company management
+
+### @axelor/aos-mobile-hr
+
+#### Changes
+
+- Data fetching: add active company management
+
+### @axelor/aos-mobile-helpdesk
+
+#### Changes
+
+- Data fetching: add active company management
+
+### @axelor/aos-mobile-crm
+
+#### Changes
+
+- Data fetching: add active company management
+
+### @axelor/aos-mobile-manufacturing
+
+#### Changes
+
+- Data fetching: add active company management
+
+### @axelor/aos-mobile-stock
+
+#### Changes
+
+- Stock location API: use new tool to manage hierarchical search
+- Data fetching: add active company management
+
+#### Fixes
+
+- API: add missing exports of api & slice functions
+- UserScreen: modify export
+- API: add missing sort key on search functions
+
 ## [8.2.5] (2024-12-19)
 
 ### @axelor/aos-mobile-core
@@ -302,9 +389,10 @@ This package is linked with the @axelor/aos-mobile-hr to manage time logging.
 
 - Supplier arrival: add possibility to fill origin when creating or selecting tracking number
 
-  [8.2.5]: https://github.com/axelor/axelor-mobile/compare/8.2.4...8.2.5
-  [8.2.4]: https://github.com/axelor/axelor-mobile/compare/8.2.3...8.2.4
-  [8.2.3]: https://github.com/axelor/axelor-mobile/compare/8.2.2...8.2.3
-  [8.2.2]: https://github.com/axelor/axelor-mobile/compare/8.2.1...8.2.2
-  [8.2.1]: https://github.com/axelor/axelor-mobile/compare/8.2.0...8.2.1
-  [8.2.0]: https://github.com/axelor/axelor-mobile/compare/8.1.8...8.2.0
+[8.2.6]: https://github.com/axelor/axelor-mobile/compare/8.2.5...8.2.6
+[8.2.5]: https://github.com/axelor/axelor-mobile/compare/8.2.4...8.2.5
+[8.2.4]: https://github.com/axelor/axelor-mobile/compare/8.2.3...8.2.4
+[8.2.3]: https://github.com/axelor/axelor-mobile/compare/8.2.2...8.2.3
+[8.2.2]: https://github.com/axelor/axelor-mobile/compare/8.2.1...8.2.2
+[8.2.1]: https://github.com/axelor/axelor-mobile/compare/8.2.0...8.2.1
+[8.2.0]: https://github.com/axelor/axelor-mobile/compare/8.1.8...8.2.0
