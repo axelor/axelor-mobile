@@ -1,0 +1,5 @@
+{
+  "title": "Menu management: apply override before checking accessibility and order to match configuration",
+  "type": "fix",
+  "packages": "core"
+}
