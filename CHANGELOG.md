@@ -3,6 +3,37 @@ title: 8.0.0
 tags: Changelog
 ---
 
+## [8.0.19] (2025-01-30)
+
+### @axelor/aos-mobile-core
+
+#### Changes
+
+- Navigator: unmount Drawer on blur
+- Login: improve token retrieval with a regex
+- Login: split code into small tools to make it resusable in other packages
+
+#### Fixes
+
+- PeriodDisplay: add null check on start date to avoid crash
+- Login: add exports of functions and tools
+- Auth: add call to logout endpoint to unvalidate tokens
+
+### @axelor/aos-mobile-ui
+
+#### Fixes
+
+- Increment: remove refresh issue due to undefined props
+- Label: ensure that the text takes up all the available space
+
+### @axelor/aos-mobile-stock
+
+#### Fixes
+
+- API: add missing exports of api & slice functions
+- UserScreen: modify export
+- API: add missing sort key on search functions
+
 ## [8.0.18] (2024-12-19)
 
 ### @axelor/aos-mobile-crm
@@ -649,6 +680,7 @@ Changes has been done to get new core and ui improvements: use of ChipSelect, co
 
 Changes has been done to get new core and ui improvements: use of ChipSelect, color differentiation between success and primary, definition of required configs, use of icons for Bootstrap
 
+[8.0.19]: https://github.com/axelor/axelor-mobile/compare/8.0.18...8.0.19
 [8.0.18]: https://github.com/axelor/axelor-mobile/compare/8.0.17...8.0.18
 [8.0.17]: https://github.com/axelor/axelor-mobile/compare/8.0.16...8.0.17
 [8.0.16]: https://github.com/axelor/axelor-mobile/compare/8.0.15...8.0.16
