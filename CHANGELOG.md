@@ -3,6 +3,37 @@ title: 8.1.0
 tags: Changelog
 ---
 
+## [8.1.14] (2025-01-30)
+
+### @axelor/aos-mobile-core
+
+#### Changes
+
+- Navigator: unmount Drawer on blur
+- Login: improve token retrieval with a regex
+- Login: split code into small tools to make it resusable in other packages
+
+#### Fixes
+
+- PeriodDisplay: add null check on start date to avoid crash
+- Login: add exports of functions and tools
+- Auth: add call to logout endpoint to unvalidate tokens
+
+### @axelor/aos-mobile-ui
+
+#### Fixes
+
+- Increment: remove refresh issue due to undefined props
+- Label: ensure that the text takes up all the available space
+
+### @axelor/aos-mobile-stock
+
+#### Fixes
+
+- API: add missing exports of api & slice functions
+- UserScreen: modify export
+- API: add missing sort key on search functions
+
 ## [8.1.13] (2024-12-19)
 
 ### @axelor/aos-mobile-core
@@ -626,17 +657,18 @@ It enables user to manage interventions and customer parc through the mobile app
 - Selections: use new system and tools instead of type files
 - Product indicators: use new chart component to display quantity indicators
 
-  [8.1.13]: https://github.com/axelor/axelor-mobile/compare/8.1.12...8.1.13
+[8.1.14]: https://github.com/axelor/axelor-mobile/compare/8.1.13...8.1.14
+[8.1.13]: https://github.com/axelor/axelor-mobile/compare/8.1.12...8.1.13
 [8.1.12]: https://github.com/axelor/axelor-mobile/compare/8.1.11...8.1.12
-  [8.1.11]: https://github.com/axelor/axelor-mobile/compare/8.1.10...8.1.11
-  [8.1.10]: https://github.com/axelor/axelor-mobile/compare/8.1.9...8.1.10
-  [8.1.9]: https://github.com/axelor/axelor-mobile/compare/8.1.8...8.1.9
-  [8.1.8]: https://github.com/axelor/axelor-mobile/compare/8.1.7...8.1.8
-  [8.1.7]: https://github.com/axelor/axelor-mobile/compare/8.1.6...8.1.7
-  [8.1.6]: https://github.com/axelor/axelor-mobile/compare/8.1.5...8.1.6
-  [8.1.5]: https://github.com/axelor/axelor-mobile/compare/8.1.4...8.1.5
-  [8.1.4]: https://github.com/axelor/axelor-mobile/compare/8.1.3...8.1.4
-  [8.1.3]: https://github.com/axelor/axelor-mobile/compare/8.1.2...8.1.3
-  [8.1.2]: https://github.com/axelor/axelor-mobile/compare/8.1.1...8.1.2
-  [8.1.1]: https://github.com/axelor/axelor-mobile/compare/8.1.0...8.1.1
-  [8.1.0]: https://github.com/axelor/axelor-mobile/compare/8.0.6...8.1.0
+[8.1.11]: https://github.com/axelor/axelor-mobile/compare/8.1.10...8.1.11
+[8.1.10]: https://github.com/axelor/axelor-mobile/compare/8.1.9...8.1.10
+[8.1.9]: https://github.com/axelor/axelor-mobile/compare/8.1.8...8.1.9
+[8.1.8]: https://github.com/axelor/axelor-mobile/compare/8.1.7...8.1.8
+[8.1.7]: https://github.com/axelor/axelor-mobile/compare/8.1.6...8.1.7
+[8.1.6]: https://github.com/axelor/axelor-mobile/compare/8.1.5...8.1.6
+[8.1.5]: https://github.com/axelor/axelor-mobile/compare/8.1.4...8.1.5
+[8.1.4]: https://github.com/axelor/axelor-mobile/compare/8.1.3...8.1.4
+[8.1.3]: https://github.com/axelor/axelor-mobile/compare/8.1.2...8.1.3
+[8.1.2]: https://github.com/axelor/axelor-mobile/compare/8.1.1...8.1.2
+[8.1.1]: https://github.com/axelor/axelor-mobile/compare/8.1.0...8.1.1
+[8.1.0]: https://github.com/axelor/axelor-mobile/compare/8.0.6...8.1.0

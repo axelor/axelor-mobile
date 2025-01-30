@@ -1,5 +1,0 @@
-{
-  "title": "Login: add exports of functions and tools",
-  "type": "fix",
-  "packages": "core"
-}
