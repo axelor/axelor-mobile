@@ -1,0 +1,5 @@
+{
+  "title": "Tools: add new helper to download a file in storage",
+  "type": "feat",
+  "packages": "core"
+}
