@@ -67,7 +67,7 @@ const RequestLineListScreen = ({navigation}) => {
             iconName: 'plus',
             title: I18n.t('Purchase_AddProduct'),
             onPress: () => {
-              navigation.navigate('RequestLineFormScreen', {});
+              navigation.navigate('RequestLineFormScreen');
             },
           },
         ]}

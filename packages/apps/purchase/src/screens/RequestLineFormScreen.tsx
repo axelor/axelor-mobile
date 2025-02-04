@@ -25,7 +25,7 @@ import {
 } from '../features/purchaseRequestLineSlice';
 
 const RequestLineFormScreen = ({navigation, route}) => {
-  const purchaseRequestLineId = route.params.purchaseRequestLineId;
+  const {purchaseRequestLineId} = route?.params ?? {};
 
   const _dispatch = useDispatch();
 
@@ -81,7 +81,7 @@ const RequestLineFormScreen = ({navigation, route}) => {
       defaultEditMode
       actions={[
         {
-          key: 'create-lead',
+          key: 'create-purchase-line',
           type: 'create',
           needRequiredFields: true,
           needValidation: true,
@@ -91,7 +91,7 @@ const RequestLineFormScreen = ({navigation, route}) => {
           },
         },
         {
-          key: 'update-lead',
+          key: 'update-purchase-line',
           type: 'update',
           needRequiredFields: true,
           needValidation: true,

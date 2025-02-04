@@ -81,8 +81,6 @@ export async function createPurchaseRequestLine({
   purchaseRequestVersion,
   purchaseRequestLine,
 }) {
-  const {matchers} = formatRequestBody(purchaseRequestLine, 'data');
-
   return getActionApi().send({
     url: `ws/aos/purchase-request/add-line/${purchaseRequestId}`,
     method: 'put',
@@ -97,13 +95,18 @@ export async function createPurchaseRequestLine({
     matchers: {
       modelName: 'com.axelor.apps.purchase.db.PurchaseRequestLine',
       id: Date.now(),
-      fields: matchers,
+      fields: {
+        productTitle: 'title',
+        unitId: 'unit.id',
+        quantity: 'quantity',
+      },
     },
   });
 }
 
 export async function updatePurchaseRequestLine({purchaseRequestLine}) {
   const {matchers} = formatRequestBody(purchaseRequestLine, 'data');
+
   return getActionApi().send({
     url: '/ws/rest/com.axelor.apps.purchase.db.PurchaseRequestLine',
     method: 'post',
@@ -116,6 +119,7 @@ export async function updatePurchaseRequestLine({purchaseRequestLine}) {
     description: 'update purchaseRequestLine',
     matchers: {
       modelName: 'com.axelor.apps.purchase.db.PurchaseRequestLine',
+      id: purchaseRequestLine.id,
       fields: matchers,
     },
   });

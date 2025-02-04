@@ -56,9 +56,6 @@ export default {
   RequestLineFormScreen: {
     title: 'Purchase_InternalRequest',
     component: RequestLineFormScreen,
-    options: {
-      shadedHeader: false,
-    },
   },
 };
 
