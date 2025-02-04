@@ -163,5 +163,6 @@
   "Hr_SliceAction_DeleteLeave": "delete leave",
   "Hr_SliceAction_CreateLeaveRequest": "create leave requests",
   "Hr_SliceAction_CancelExpense": "cancel expense",
-  "Hr_SliceAction_ReturnToDraftStatusExpense": "return expense to draft status"
+  "Hr_SliceAction_ReturnToDraftStatusExpense": "return expense to draft status",
+  "Hr_SliceAction_UpdateLeave": "update leave"
 }
