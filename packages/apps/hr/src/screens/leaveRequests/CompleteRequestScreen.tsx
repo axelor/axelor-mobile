@@ -184,6 +184,7 @@ const CompleteRequestScreen = ({}) => {
         )}
         {!newLine && (
           <LeaveReasonSearchBar
+            showTitle={false}
             defaultValue={newLine}
             onChange={leaveReason =>
               leaveReason != null &&

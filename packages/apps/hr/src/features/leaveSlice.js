@@ -31,6 +31,7 @@ import {
   fetchLeaveToValidate as _fetchLeaveToValidate,
   rejectLeave as _rejectLeave,
   sendLeave as _sendLeave,
+  updateLeave as _updateLeave,
   validateLeave as _validateLeave,
 } from '../api/leave-api';
 
@@ -182,6 +183,21 @@ export const createLeaveRequest = createAsyncThunk(
   },
 );
 
+export const updateLeave = createAsyncThunk(
+  'hr_leave/updateLeave',
+  async function (data, {getState, dispatch}) {
+    return handlerApiCall({
+      fetchFunction: _updateLeave,
+      data,
+      action: 'Hr_SliceAction_UpdateLeave',
+      getState,
+      responseOptions: {isArrayResponse: false},
+    }).then(() => {
+      dispatch(fetchLeave({userId: data.userId}));
+    });
+  },
+);
+
 const initialState = {
   loadingMyLeave: true,
   moreLoadingMyLeave: false,
@@ -201,11 +217,18 @@ const initialState = {
   moreLoadingLeaveReason: false,
   isListEndLeaveReason: false,
   leaveReasonList: [],
+
+  leaveReasonSelect: {},
 };
 
 const leaveSlice = createSlice({
   name: 'hr_leave',
   initialState,
+  reducers: {
+    updateLeaveReasonSelect: (state, action) => {
+      state.leaveReasonSelect = action.payload;
+    },
+  },
   extraReducers: builder => {
     generateInifiniteScrollCases(builder, fetchLeave, {
       loading: 'loadingMyLeave',
@@ -242,5 +265,7 @@ const leaveSlice = createSlice({
     });
   },
 });
+
+export const {updateLeaveReasonSelect} = leaveSlice.actions;
 
 export const leaveReducer = leaveSlice.reducer;

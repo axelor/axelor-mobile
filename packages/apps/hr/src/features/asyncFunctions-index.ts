@@ -61,6 +61,7 @@ export {
   fetchLeaveToValidate,
   rejectLeave,
   sendLeave,
+  updateLeave,
   validateLeave,
 } from './leaveSlice';
 export {

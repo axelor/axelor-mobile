@@ -16,7 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import React, {useCallback} from 'react';
+import React, {useCallback, useEffect} from 'react';
 import {
   displayItemName,
   useDispatch,
@@ -24,18 +24,29 @@ import {
   useTranslator,
 } from '@axelor/aos-mobile-core';
 import {AutoCompleteSearch} from '@axelor/aos-mobile-ui';
-import {fetchLeaveReason} from '../../../features/leaveSlice';
+import {
+  fetchLeaveReason,
+  updateLeaveReasonSelect,
+} from '../../../features/leaveSlice';
 
 interface LeaveReasonSearchBarProps {
+  title?: string;
+  showTitle?: boolean;
+  readonly?: boolean;
+  required?: boolean;
   placeholderKey?: string;
   defaultValue?: string;
   onChange: (leaveReason: any) => void;
 }
 
 const LeaveReasonSearchBar = ({
+  title = 'Hr_LeaveReason',
   placeholderKey = 'Hr_LeaveReason',
   defaultValue = null,
+  showTitle = true,
   onChange = () => {},
+  readonly = false,
+  required = false,
 }: LeaveReasonSearchBarProps) => {
   const I18n = useTranslator();
   const dispatch = useDispatch();
@@ -61,10 +72,17 @@ const LeaveReasonSearchBar = ({
     [dispatch, user.employee.id],
   );
 
+  useEffect(() => {
+    dispatch(updateLeaveReasonSelect(defaultValue));
+  }, [defaultValue, dispatch]);
+
   return (
     <AutoCompleteSearch
+      title={showTitle && I18n.t(title)}
       objectList={leaveReasonList}
       value={defaultValue}
+      required={required}
+      readonly={readonly}
       onChangeValue={onChange}
       fetchData={fetchLeaveReasonAPI}
       displayValue={displayItemName}
