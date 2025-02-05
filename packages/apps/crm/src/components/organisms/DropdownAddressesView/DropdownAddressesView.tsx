@@ -74,7 +74,7 @@ const DropdownAddressesView = ({
         responseOptions: {showToast: true},
       });
     },
-    [getState],
+    [getState, partnerId, partnerVersion],
   );
 
   if (!Array.isArray(partnerAddressList) || partnerAddressList.length === 0) {
