@@ -16,6 +16,8 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+import {isEmpty} from '@axelor/aos-mobile-core';
+
 class ContactInfoType {
   static type = {
     Address: 0,
@@ -25,17 +27,17 @@ class ContactInfoType {
     WebSite: 4,
   };
 
-  static getContactInfo = (
-    contactInfoType: number,
-    contact: any,
-    isLead: boolean,
-  ) => {
+  static getContactInfo = (contactInfoType: number, contact: any) => {
+    if (isEmpty(contact)) {
+      return {};
+    }
+
     switch (contactInfoType) {
       case this.type.Address:
         return {
           displayText: contact.address?.fullName,
-          id: isLead ? contact.id : contact.address?.id,
-          version: isLead ? contact.version : contact.address?.version,
+          id: contact.id,
+          version: contact.version,
         };
       case this.type.MobilePhone:
         return {
@@ -62,7 +64,7 @@ class ContactInfoType {
           version: contact.version,
         };
       default:
-        return null;
+        return {};
     }
   };
 }

@@ -20,10 +20,19 @@ import {ObjectFields, schemaContructor} from '@axelor/aos-mobile-core';
 
 export const crm_modelAPI: ObjectFields = {
   crm_partnerAddress: schemaContructor.object({
-    address: schemaContructor.subObject(),
+    address: schemaContructor.subObject('fullName').concat(
+      schemaContructor.object({
+        fullName: schemaContructor.string(),
+        streetName: schemaContructor.string(),
+        city: schemaContructor.subObject('name'),
+        country: schemaContructor.subObject('name'),
+        zip: schemaContructor.string(),
+      }),
+    ),
     isDefaultAddr: schemaContructor.boolean(),
     isDeliveryAddr: schemaContructor.boolean(),
     isInvoicingAddr: schemaContructor.boolean(),
+    fullName: schemaContructor.string(),
   }),
   crm_catalog: schemaContructor.object({
     name: schemaContructor.string(),
@@ -43,7 +52,9 @@ export const crm_modelAPI: ObjectFields = {
       schemaContructor.object({
         addressL4: schemaContructor.string(),
         addressL7Country: schemaContructor.subObject('symbol'),
+        streetName: schemaContructor.string(),
         city: schemaContructor.subObject('name'),
+        country: schemaContructor.subObject('name'),
         zip: schemaContructor.string(),
       }),
     ),
@@ -71,7 +82,9 @@ export const crm_modelAPI: ObjectFields = {
       schemaContructor.object({
         addressL4: schemaContructor.string(),
         addressL7Country: schemaContructor.subObject('symbol'),
+        streetName: schemaContructor.string(),
         city: schemaContructor.subObject('name'),
+        country: schemaContructor.subObject('name'),
         zip: schemaContructor.string(),
       }),
     ),
@@ -115,7 +128,15 @@ export const crm_modelAPI: ObjectFields = {
     firstName: schemaContructor.string(),
     simpleFullName: schemaContructor.string(),
     leadStatus: schemaContructor.subObject('name'),
-    address: schemaContructor.subObject('fullName'),
+    address: schemaContructor.subObject('fullName').concat(
+      schemaContructor.object({
+        fullName: schemaContructor.string(),
+        streetName: schemaContructor.string(),
+        city: schemaContructor.subObject('name'),
+        country: schemaContructor.subObject('name'),
+        zip: schemaContructor.string(),
+      }),
+    ),
     emailAddress: schemaContructor.subObject('address'),
     mobilePhone: schemaContructor.string(),
     fixedPhone: schemaContructor.string(),
@@ -163,7 +184,9 @@ export const crm_modelAPI: ObjectFields = {
       schemaContructor.object({
         addressL4: schemaContructor.string(),
         addressL7Country: schemaContructor.subObject('symbol'),
+        streetName: schemaContructor.string(),
         city: schemaContructor.subObject('name'),
+        country: schemaContructor.subObject('name'),
         zip: schemaContructor.string(),
       }),
     ),
@@ -192,7 +215,9 @@ export const crm_modelAPI: ObjectFields = {
       schemaContructor.object({
         addressL4: schemaContructor.string(),
         addressL7Country: schemaContructor.subObject('symbol'),
+        streetName: schemaContructor.string(),
         city: schemaContructor.subObject('name'),
+        country: schemaContructor.subObject('name'),
         zip: schemaContructor.string(),
       }),
     ),

@@ -66,12 +66,21 @@ const ClientDropdownCards = ({additionalDropdowns = []}) => {
             }
           />
         ),
+        isDefaultVisible: true,
       },
       {
         title: I18n.t('Crm_Addresses'),
         key: 2,
         style: styles.zeroPadding,
-        childrenComp: <DropdownAddressesView partnerId={client.id} />,
+        childrenComp: (
+          <DropdownAddressesView
+            partnerId={client.id}
+            partnerVersion={client.version}
+            refreshContactInfos={() =>
+              dispatch(getClientbyId({clientId: client.id}))
+            }
+          />
+        ),
       },
       {
         title: I18n.t('Crm_GeneralInformation'),

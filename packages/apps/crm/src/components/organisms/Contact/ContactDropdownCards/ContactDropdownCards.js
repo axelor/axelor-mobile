@@ -60,6 +60,7 @@ const ContactDropdownCards = ({}) => {
                 }
               />
             ),
+            isDefaultVisible: true,
           },
           {
             title: I18n.t('Crm_GeneralInformation'),

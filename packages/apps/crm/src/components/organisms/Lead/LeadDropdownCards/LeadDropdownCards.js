@@ -52,13 +52,14 @@ const LeadDropdownCards = ({}) => {
             key: 1,
             childrenComp: (
               <DropdownContactView
-                contact={{...lead, address: {fullName: lead.primaryAddress}}}
+                contact={lead}
                 isLead
                 refreshContactInfos={() =>
                   dispatch(fetchLeadById({leadId: lead.id}))
                 }
               />
             ),
+            isDefaultVisible: true,
           },
           {
             title: I18n.t('Crm_GeneralInformation'),

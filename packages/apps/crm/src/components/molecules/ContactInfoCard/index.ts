@@ -16,5 +16,6 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+export {default as ContactInfoAlert} from './ContactInfoAlert';
 export {default as ContactInfoCard} from './ContactInfoCard';
 export {default as ContactInfoType} from './contactInfoHelper';

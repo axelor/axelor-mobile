@@ -68,12 +68,21 @@ const ProspectDropdownCards = ({}) => {
                 }
               />
             ),
+            isDefaultVisible: true,
           },
           {
             title: I18n.t('Crm_Addresses'),
             key: 2,
             style: styles.zeroPadding,
-            childrenComp: <DropdownAddressesView partnerId={prospect.id} />,
+            childrenComp: (
+              <DropdownAddressesView
+                partnerId={prospect.id}
+                partnerVersion={prospect.version}
+                refreshContactInfos={() =>
+                  dispatch(fetchProspectById({partnerId: prospect.id}))
+                }
+              />
+            ),
           },
           {
             title: I18n.t('Crm_GeneralInformation'),

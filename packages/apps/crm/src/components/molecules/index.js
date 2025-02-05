@@ -16,6 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+export {default as AddressListCard} from './AddressListCard/AddressListCard';
 export {default as CatalogCard} from './CatalogCard/CatalogCard';
 export * from './ContactInfoCard';
 export {default as EventCard} from './EventCard/EventCard';

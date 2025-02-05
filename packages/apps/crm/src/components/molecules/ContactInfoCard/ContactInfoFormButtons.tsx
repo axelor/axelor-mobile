@@ -20,13 +20,14 @@ import React from 'react';
 import {StyleSheet, View} from 'react-native';
 import {Button, useThemeColor} from '@axelor/aos-mobile-ui';
 
-interface TimerValueProps {
-  onCancelButtonPress: () => void;
+interface ContactInfoProps {
+  displayDeleteButton: boolean;
+  onDeleteButtonPress: () => void;
   onConfirmButtonPress: (data: Object) => void;
 }
 
 interface ContactInfoFormButtonsProps {
-  defaultValue?: TimerValueProps;
+  defaultValue?: ContactInfoProps;
   objectState?: any;
 }
 
@@ -38,19 +39,25 @@ const ContactInfoFormButtonsAux = ({
 
   return (
     <View style={styles.container}>
-      <Button
-        style={styles.leftButton}
-        iconName="x-lg"
-        width={50}
-        color={Colors.errorColor}
-        onPress={defaultValue.onCancelButtonPress}
-      />
+      {defaultValue.displayDeleteButton && (
+        <Button
+          style={styles.leftButton}
+          iconName="trash-fill"
+          width={50}
+          color={Colors.errorColor}
+          onPress={defaultValue.onDeleteButtonPress}
+        />
+      )}
       <Button
         iconName="check-lg"
         width={50}
         color={Colors.successColor}
         onPress={() =>
           defaultValue.onConfirmButtonPress({
+            streetName: objectState.streetName,
+            city: objectState.city,
+            country: objectState.country,
+            zip: objectState.zip,
             mobilePhone: objectState.mobilePhone,
             fixedPhone: objectState.fixedPhone,
             email: objectState.email,

@@ -36,11 +36,10 @@ interface ContactInfoCardProps {
   contact: any;
   contactInfoType: number;
   isLead?: boolean;
-  rightIconName: string;
   border?: boolean;
   styleBorder?: any;
-  rightIconAction?: () => any;
-  onUpdate: (args: {id: number; version: number; data: Object}) => void;
+  onPress?: () => any;
+  onUpdate: (args: {id: number; version: number; data: Object}) => Promise<any>;
   refreshContactInfos: () => void;
 }
 
@@ -51,10 +50,9 @@ const ContactInfoCard = ({
   contact,
   contactInfoType,
   isLead,
-  rightIconName,
   border = false,
   styleBorder,
-  rightIconAction,
+  onPress,
   onUpdate,
   refreshContactInfos,
 }: ContactInfoCardProps) => {
@@ -67,8 +65,8 @@ const ContactInfoCard = ({
   }, [Colors]);
 
   const contactInfo = useMemo(
-    () => ContactInfoType.getContactInfo(contactInfoType, contact, isLead),
-    [contact, contactInfoType, isLead],
+    () => ContactInfoType.getContactInfo(contactInfoType, contact),
+    [contact, contactInfoType],
   );
 
   if (contactInfo == null) {
@@ -79,8 +77,8 @@ const ContactInfoCard = ({
     <>
       <TouchableOpacity
         style={[styles.container, style]}
-        onPress={() => setIsVisible(true)}
-        activeOpacity={0.9}>
+        activeOpacity={0.9}
+        onPress={onPress}>
         {!checkNullString(contactInfo.displayText) && (
           <View>
             <LabelText
@@ -90,20 +88,25 @@ const ContactInfoCard = ({
               textStyle={styles.textTitle}
             />
             <View style={styles.containerBody}>
-              <Text style={styles.textData}>{contactInfo.displayText}</Text>
-              <Icon
-                style={styles.rightIcon}
-                name={rightIconName}
-                touchable={true}
-                onPress={rightIconAction}
-              />
-              <Icon
-                name="copy"
-                touchable={true}
-                onPress={() =>
-                  clipboardProvider.copyToClipboard(contactInfo.displayText)
-                }
-              />
+              <Text style={styles.text} fontSize={14}>
+                {contactInfo.displayText}
+              </Text>
+              <View style={styles.iconContainer}>
+                <Icon
+                  style={styles.icon}
+                  name="copy"
+                  touchable={true}
+                  onPress={() =>
+                    clipboardProvider.copyToClipboard(contactInfo.displayText)
+                  }
+                />
+                <Icon
+                  style={styles.icon}
+                  name="pencil-fill"
+                  touchable={true}
+                  onPress={() => setIsVisible(true)}
+                />
+              </View>
             </View>
             {border && <View style={[styles.borderBottom, styleBorder]} />}
           </View>
@@ -130,27 +133,29 @@ const getStyles = Colors =>
       width: '95%',
       marginHorizontal: 5,
     },
-    containerBody: {
-      flexDirection: 'row',
-      justifyContent: 'space-between',
-      alignItems: 'center',
-      marginTop: '2%',
-    },
-    rightIcon: {
-      marginRight: '2%',
-    },
     textTitle: {
       fontSize: 14,
     },
-    textData: {
-      width: '85%',
-      fontSize: 14,
+    containerBody: {
+      flexDirection: 'row',
+      justifyContent: 'space-between',
+      alignItems: 'flex-start',
+      marginTop: 4,
+    },
+    text: {
+      flex: 1,
+    },
+    iconContainer: {
+      flexDirection: 'row',
+    },
+    icon: {
+      marginLeft: 4,
     },
     borderBottom: {
       width: '100%',
       borderBottomWidth: 1.5,
       borderBottomColor: Colors.secondaryColor.background,
-      marginVertical: '3%',
+      marginVertical: 8,
     },
   });
 
