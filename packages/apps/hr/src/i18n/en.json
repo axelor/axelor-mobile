@@ -99,6 +99,7 @@
   "Hr_Quantity": "Quantity",
   "Hr_AvailableQty": "Available quantity",
   "Hr_MissingQuantity": "Missing quantity",
+  "Hr_ExceedingQuantity": "Exceeding quantity",
   "Hr_SliceAction_FetchExpenseLines": "fetch expense lines",
   "Hr_SliceAction_SearchDraftExpense": "fetch draft expenses",
   "Hr_SliceAction_FetchExpense": "fetch expenses",
