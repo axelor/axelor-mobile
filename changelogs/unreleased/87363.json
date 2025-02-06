@@ -1,0 +1,6 @@
+{
+  "title": "Scanner: add Datawedge profile creation management",
+  "type": "refactor",
+  "packages": "core",
+  "description": "Based on the application name and bundle id, the Scanner component is now dynamically creating the Datawegde profile with the correct configuration. Caution, if you modified the bundle id compared to the standard application, then your action intent was also modified to match the bundle id. To correctly get this functionnality, please delete your current Datawedge profile and let the application recreate a new one with the right configutation."
+}
