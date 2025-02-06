@@ -16,20 +16,12 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+import {FormConfigs} from '@axelor/aos-mobile-core';
 import {
-  customComponentOptions,
-  FormConfigs,
-  useTranslator,
-} from '@axelor/aos-mobile-core';
-import {ProductSearchBar, UnitSearchBar} from '../components';
-import {HorizontalRuleText} from '@axelor/aos-mobile-ui';
-
-const CustomerComponentWrapper = component => {
-  const I18n = useTranslator();
-
-  return ({...props}: customComponentOptions) =>
-    component({...props, translator: I18n.t});
-};
+  HorizontalOrRuleText,
+  ProductSearchBar,
+  UnitSearchBar,
+} from '../components';
 
 export const purchase_formsRegister: FormConfigs = {
   purchase_purchaseRequestLine: {
@@ -50,7 +42,7 @@ export const purchase_formsRegister: FormConfigs = {
         type: 'object',
         widget: 'custom',
         readonly: true,
-        customComponent: CustomerComponentWrapper(HorizontalRuleText),
+        customComponent: HorizontalOrRuleText,
         options: {text: 'Purchase_Or'},
       },
       productTitle: {

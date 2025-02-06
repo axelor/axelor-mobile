@@ -27,7 +27,6 @@ interface HorizontalRuleTextProps {
   lineStyle?: any;
   text: string;
   color?: string;
-  translator?: (key: string) => string;
 }
 
 const HorizontalRuleText = ({
@@ -36,7 +35,6 @@ const HorizontalRuleText = ({
   lineStyle,
   text,
   color: _color,
-  translator,
 }: HorizontalRuleTextProps) => {
   const Colors = useThemeColor();
 
@@ -44,10 +42,6 @@ const HorizontalRuleText = ({
     () => _color ?? Colors.secondaryColor.background_light,
     [_color, Colors],
   );
-
-  const displayText = useMemo(() => {
-    return translator ? translator(text) : text;
-  }, [translator, text]);
 
   const renderLine = useCallback(() => {
     return (
@@ -59,7 +53,7 @@ const HorizontalRuleText = ({
     <View style={[styles.container, style]}>
       {renderLine()}
       <Text style={[styles.text, textStyle]} fontSize={14} textColor={color}>
-        {displayText}
+        {text}
       </Text>
       {renderLine()}
     </View>
