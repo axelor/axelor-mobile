@@ -43,7 +43,6 @@ export const purchase_formsRegister: FormConfigs = {
         widget: 'custom',
         readonly: true,
         customComponent: HorizontalOrRuleText,
-        options: {text: 'Purchase_Or'},
       },
       productTitle: {
         titleKey: 'Purchase_ProductTitle',
