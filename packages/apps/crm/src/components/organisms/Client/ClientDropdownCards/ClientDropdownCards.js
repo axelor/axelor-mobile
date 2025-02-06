@@ -16,7 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import React, {useEffect, useMemo} from 'react';
+import React, {useCallback, useEffect, useMemo} from 'react';
 import {StyleSheet, View} from 'react-native';
 import {useDispatch, useSelector, useTranslator} from '@axelor/aos-mobile-core';
 import {DropdownCardSwitch} from '@axelor/aos-mobile-ui';
@@ -31,6 +31,7 @@ import {
 import {getClientbyId} from '../../../../features/clientSlice';
 import {searchContactById} from '../../../../features/contactSlice';
 import {fetchPartnerEventById} from '../../../../features/eventSlice';
+import {fetchPartnerAddresses} from '../../../../features/partnerSlice';
 
 const ClientDropdownCards = ({additionalDropdowns = []}) => {
   const I18n = useTranslator();
@@ -39,6 +40,11 @@ const ClientDropdownCards = ({additionalDropdowns = []}) => {
   const {client} = useSelector(state => state.client);
   const {listContactById} = useSelector(state => state.contact);
   const {listEventPartner} = useSelector(state => state.event);
+
+  const refreshContactInfos = useCallback(() => {
+    dispatch(getClientbyId({clientId: client?.id}));
+    dispatch(fetchPartnerAddresses({partnerId: client?.id}));
+  }, [client.id, dispatch]);
 
   useEffect(() => {
     if (client.contactPartnerSet?.length > 0) {
@@ -61,9 +67,7 @@ const ClientDropdownCards = ({additionalDropdowns = []}) => {
             isMainAddress={true}
             contact={{...client, address: client.mainAddress}}
             networkData={{company: client.simpleFullName}}
-            refreshContactInfos={() =>
-              dispatch(getClientbyId({clientId: client.id}))
-            }
+            refreshContactInfos={refreshContactInfos}
           />
         ),
         isDefaultVisible: true,
@@ -76,11 +80,10 @@ const ClientDropdownCards = ({additionalDropdowns = []}) => {
           <DropdownAddressesView
             partnerId={client.id}
             partnerVersion={client.version}
-            refreshContactInfos={() =>
-              dispatch(getClientbyId({clientId: client.id}))
-            }
+            refreshContactInfos={refreshContactInfos}
           />
         ),
+        isDefaultVisible: true,
       },
       {
         title: I18n.t('Crm_GeneralInformation'),
@@ -126,9 +129,9 @@ const ClientDropdownCards = ({additionalDropdowns = []}) => {
     I18n,
     additionalDropdowns,
     client,
-    dispatch,
     listContactById,
     listEventPartner,
+    refreshContactInfos,
   ]);
 
   return (
@@ -136,6 +139,7 @@ const ClientDropdownCards = ({additionalDropdowns = []}) => {
       <DropdownCardSwitch
         styleTitle={styles.textTitle}
         dropdownItems={dropdownItems}
+        multiSelection
       />
     </View>
   );

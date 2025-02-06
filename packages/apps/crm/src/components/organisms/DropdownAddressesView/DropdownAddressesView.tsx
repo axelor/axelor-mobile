@@ -52,10 +52,6 @@ const DropdownAddressesView = ({
   const {userId} = useSelector((state: any) => state.auth);
   const {partnerAddressList} = useSelector(state => state.partner);
 
-  useEffect(() => {
-    dispatch((fetchPartnerAddresses as any)({partnerId}));
-  }, [dispatch, partnerId]);
-
   const getState = useCallback(() => ({auth: {userId}}), [userId]);
 
   const addPartnerAddress = useCallback(
@@ -76,6 +72,10 @@ const DropdownAddressesView = ({
     },
     [getState, partnerId, partnerVersion],
   );
+
+  useEffect(() => {
+    dispatch((fetchPartnerAddresses as any)({partnerId}));
+  }, [dispatch, partnerId]);
 
   if (!Array.isArray(partnerAddressList) || partnerAddressList.length === 0) {
     return (

@@ -89,7 +89,7 @@ const ContactInfoAlert = ({
           onDelete?.({
             id: contactInfo.id,
             version: contactInfo.version,
-          }).then(() => refreshContactInfos());
+          }).then(refreshContactInfos);
         },
         onConfirmButtonPress: data => {
           setIsVisible(false);
@@ -97,7 +97,7 @@ const ContactInfoAlert = ({
             id: contactInfo.id,
             version: contactInfo.version,
             data,
-          }).then(() => refreshContactInfos());
+          }).then(refreshContactInfos);
         },
       },
     }),
