@@ -86,7 +86,7 @@ export const downloadFileOnPhone = async (
       }/content/download`
     : `${authentification.baseUrl}ws/dms/download/${file.id}`;
 
-  const downloadPath = `${fs.dirs.LegacyDownloadDir}/${file.fileName}`;
+  const downloadPath = `${Platform.OS === 'ios' ? fs.dirs.DocumentDir : fs.dirs.LegacyDownloadDir}/${file.fileName}`;
 
   config({
     fileCache: true,
@@ -104,10 +104,10 @@ export const downloadFileOnPhone = async (
     .fetch('GET', downloadUrl, {
       Cookie: `CSRF-TOKEN=${authentification.token}; ${authentification.jsessionId}`,
     })
-    .then(res => {
+    .then(async res => {
       if (Platform.OS === 'ios') {
-        Share.open({
-          url: res.path(),
+        await Share.open({
+          url: 'file://' + res.path(),
           saveToFiles: true,
         }).catch(console.error);
       }
@@ -116,7 +116,9 @@ export const downloadFileOnPhone = async (
         type: 'success',
         position: 'bottom',
         text1: I18n.t('Base_Success'),
-        text2: I18n.t('Base_FileDownload'),
+        text2: I18n.t(
+          Platform.OS === 'ios' ? 'Base_FileDownloadiOS' : 'Base_FileDownload',
+        ),
       });
     })
     .catch(() => {
