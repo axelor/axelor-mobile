@@ -471,6 +471,7 @@ export const hr_formsRegister: FormConfigs = {
         options: {
           mode: 'startOn',
         },
+        required: true,
       },
       toDateT: {
         titleKey: 'Base_EndDate',
@@ -485,6 +486,7 @@ export const hr_formsRegister: FormConfigs = {
         options: {
           mode: 'endOn',
         },
+        required: true,
       },
       leaveReason: {
         titleKey: 'Hr_LeaveReason',

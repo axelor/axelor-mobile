@@ -17,11 +17,18 @@
  */
 
 import React, {useCallback, useEffect, useMemo} from 'react';
-import {FormView, useDispatch, useSelector} from '@axelor/aos-mobile-core';
+import {
+  FormView,
+  showToastMessage,
+  useDispatch,
+  useSelector,
+  useTranslator,
+} from '@axelor/aos-mobile-core';
 import {fetchLeaveById, updateLeave} from '../../features/leaveSlice';
 
 const LeaveFormScreen = ({route, navigation}) => {
   const {leaveId} = route.params;
+  const I18n = useTranslator();
   const _dispatch = useDispatch();
 
   const {leave} = useSelector(state => state.hr_leave);
@@ -31,12 +38,56 @@ const LeaveFormScreen = ({route, navigation}) => {
     _dispatch((fetchLeaveById as any)({leaveId}));
   }, [_dispatch, leaveId]);
 
+  const validateDates = useCallback(
+    objectState => {
+      const {fromDateT, toDateT, startOnSelect, endOnSelect} = objectState;
+
+      if (!fromDateT || !toDateT) {
+        return I18n.t('Hr_DateMandatory');
+      }
+
+      const startDate = new Date(fromDateT);
+      const endDate = new Date(toDateT);
+
+      if (startDate > endDate) {
+        return I18n.t('Hr_StartDateBeforeEndDate');
+      }
+
+      if (startDate.getTime() === endDate.getTime()) {
+        if (!startOnSelect || !endOnSelect) {
+          return I18n.t('Hr_HalfDayMandatory');
+        }
+        const s = Number(startOnSelect);
+        const e = Number(endOnSelect);
+        if (s <= e) {
+          return I18n.t('Hr_InvalidHalfDaySelection');
+        }
+      }
+
+      return null;
+    },
+    [I18n],
+  );
+
   const updateLeaveApi = useCallback(
     (objectState, dispatch) => {
+      const error = validateDates(objectState);
+
+      if (error) {
+        showToastMessage({
+          type: 'error',
+          position: 'bottom',
+          text1: 'Error',
+          text2: error,
+          onPress: () => {},
+        });
+        return;
+      }
+
       dispatch((updateLeave as any)({leave: objectState, userId: userId}));
       navigation.pop();
     },
-    [navigation, userId],
+    [navigation, userId, validateDates],
   );
 
   const _defaultValue = useMemo(
