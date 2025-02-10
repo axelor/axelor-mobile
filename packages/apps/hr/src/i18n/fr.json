@@ -104,7 +104,7 @@
   "Hr_DateMandatory": "Les dates de début et de fin sont obligatoires.",
   "Hr_StartDateBeforeEndDate": "La date de début doit être antérieure à la date de fin.",
   "Hr_HalfDayMandatory": "Les sélections de demi-journée sont obligatoires pour une journée unique.",
-  "Hr_InvalidHalfDaySelection": "Pour une journée unique, la valeur de date de début doit être supérieure à celle de fin",
+  "Hr_InvalidHalfDaySelection": "Pour une journée unique, la valeur de date de fin doit être supérieure à celle de début",
   "Hr_SliceAction_FetchExpenseLines": "récupération des lignes de frais",
   "Hr_SliceAction_SearchDraftExpense": "récupération des notes de frais brouillon",
   "Hr_SliceAction_FetchExpense": "récupération des notes de frais",

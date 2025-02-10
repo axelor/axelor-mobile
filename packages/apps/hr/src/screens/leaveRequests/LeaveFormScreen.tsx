@@ -59,7 +59,7 @@ const LeaveFormScreen = ({route, navigation}) => {
         }
         const s = Number(startOnSelect);
         const e = Number(endOnSelect);
-        if (s <= e) {
+        if (e <= s) {
           return I18n.t('Hr_InvalidHalfDaySelection');
         }
       }
@@ -77,7 +77,7 @@ const LeaveFormScreen = ({route, navigation}) => {
         showToastMessage({
           type: 'error',
           position: 'bottom',
-          text1: 'Error',
+          text1: I18n.t('Auth_Warning'),
           text2: error,
           onPress: () => {},
         });
@@ -87,7 +87,7 @@ const LeaveFormScreen = ({route, navigation}) => {
       dispatch((updateLeave as any)({leave: objectState, userId: userId}));
       navigation.pop();
     },
-    [navigation, userId, validateDates],
+    [I18n, navigation, userId, validateDates],
   );
 
   const _defaultValue = useMemo(

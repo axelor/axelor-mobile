@@ -104,7 +104,7 @@
   "Hr_DateMandatory": "Start and end dates are required.",
   "Hr_StartDateBeforeEndDate": "The start date must be before the end date.",
   "Hr_HalfDayMandatory": "Half-day selections are required for a single-day leave.",
-  "Hr_InvalidHalfDaySelection": "For a single-day leave, the 'startOn' value must be greater than the 'endOn' value.",
+  "Hr_InvalidHalfDaySelection": "For a single-day leave, the 'endOn' value must be greater than the 'startOn' value.",
   "Hr_SliceAction_FetchExpenseLines": "fetch expense lines",
   "Hr_SliceAction_SearchDraftExpense": "fetch draft expenses",
   "Hr_SliceAction_FetchExpense": "fetch expenses",
