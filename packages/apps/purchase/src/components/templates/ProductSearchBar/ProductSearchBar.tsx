@@ -39,7 +39,7 @@ interface ProductSearchBarProps {
 
 const ProductSearchBar = ({
   style = null,
-  title = 'Sale_Product',
+  title = 'Purchase_Product',
   showTitle = false,
   defaultValue = null,
   onChange = () => {},

@@ -16,17 +16,30 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-export {searchProduct as searchProductApi} from './product-api';
-export {
-  getPurchaseRequest as getPurchaseRequestApi,
-  searchPurchaseRequest as searchPurchaseRequestApi,
-  updatePurchaseRequestStatus as updatePurchaseRequestStatusApi,
-} from './purchase-request-api';
-export {
-  createPurchaseRequestLine as createPurchaseRequestLineApi,
-  fetchPurchaseRequestLine as fetchPurchaseRequestLineApi,
-  searchPurchaseRequestLine as searchPurchaseRequestLineApi,
-  updatePurchaseRequestLine as updatePurchaseRequestLineApi,
-} from './purchase-request-line-api';
-export {searchSupplier as searchSupplierApi} from './supplier-api';
-export {searchUnit as searchUnitApi} from './unit-api';
+import React from 'react';
+import {StyleSheet} from 'react-native';
+import {useTranslator} from '@axelor/aos-mobile-core';
+import {HorizontalRuleText} from '@axelor/aos-mobile-ui';
+
+const HorizontalOrRuleTextAux = ({style}: {style?: any}) => {
+  const I18n = useTranslator();
+
+  return (
+    <HorizontalRuleText
+      text={I18n.t('Purchase_Or')}
+      style={[styles.rule, style]}
+    />
+  );
+};
+
+const HorizontalOrRuleText = ({style}: {style?: any}) => {
+  return <HorizontalOrRuleTextAux style={style} />;
+};
+
+const styles = StyleSheet.create({
+  rule: {
+    width: '80%',
+  },
+});
+
+export default HorizontalOrRuleText;

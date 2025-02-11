@@ -33,7 +33,7 @@ export const purchase_modelAPI: ObjectFields = {
     simpleFullName: schemaContructor.string(),
   }),
   purchase_purchaseRequestLine: schemaContructor.object({
-    product: schemaContructor.subObject(),
+    product: schemaContructor.subObject('name'),
     productTitle: schemaContructor.string(),
     unit: schemaContructor.subObject(),
     quantity: schemaContructor.string(),

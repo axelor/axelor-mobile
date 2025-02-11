@@ -29,11 +29,15 @@
   "Purchase_ProductTitle": "Product title",
   "Purchase_Description": "Description",
   "Purchase_Products": "Products",
+  "Purchase_Product": "Product",
   "Purchase_SliceAction_SearchPurchaseRequest": "search purchase request",
   "Purchase_SliceAction_SearchSupplier": "search supplier",
   "Purchase_SliceAction_GetPurchaseRequest": "get purchase request",
   "Purchase_SliceAction_SearchPurchaseRequestLine": "search purchase request lines",
   "Purchase_SliceAction_SearchProduct": "search product",
   "Purchase_SliceAction_SearchUnit": "search unit",
-  "Purchase_SliceAction_UpdatePurchaseRequestStatus": "update purchase request status"
+  "Purchase_SliceAction_UpdatePurchaseRequestStatus": "update purchase request status",
+  "Purchase_SliceAction_FetchPurchaseRequestLine": "fetch purchase request line",
+  "Purchase_SliceAction_CreatePurchaseRequestLine": "create purchase request line",
+  "Purchase_SliceAction_UpdatePurchaseRequestLine": "update purchase request line"
 }
