@@ -16,12 +16,12 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import React, {useMemo, useState} from 'react';
+import React, {useCallback, useMemo, useState} from 'react';
 import {KeyboardTypeOptions, StyleSheet, View} from 'react-native';
 import {useThemeColor, ThemeColors} from '../../../theme';
 import {Text} from '../../atoms';
+import {Increment} from '../../molecules';
 import {getCommonStyles} from '../../../utils/commons-styles';
-import Increment from '../Increment/Increment';
 
 interface FormIncrementInputProps {
   style?: any;
@@ -71,18 +71,14 @@ const FormIncrementInput = ({
     () => getCommonStyles(Colors, _required),
     [Colors, _required],
   );
+
   const styles = useMemo(
     () => getStyles(Colors, _required),
     [Colors, _required],
   );
 
-  const handleFocus = () => {
-    setIsFocused(true);
-  };
-
-  const handleBlur = () => {
-    setIsFocused(false);
-  };
+  const handleFocus = useCallback(() => setIsFocused(true), []);
+  const handleBlur = useCallback(() => setIsFocused(false), []);
 
   return (
     <View style={[styles.container, style]}>
