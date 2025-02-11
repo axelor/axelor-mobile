@@ -282,3 +282,15 @@ export async function removeFromFavorites({documentId}) {
     description: 'remove from favorites',
   });
 }
+
+export async function deleteDocument({documentId}) {
+  return getActionApi().send({
+    url: `ws/rest/com.axelor.dms.db.DMSFile/${documentId}`,
+    method: 'delete',
+    description: 'delete document',
+    matchers: {
+      modelName: 'com.axelor.dms.db.DMSFile',
+      id: documentId,
+    },
+  });
+}

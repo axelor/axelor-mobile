@@ -21,25 +21,33 @@ import {
   downloadFileOnPhone,
   useDispatch,
   useNavigation,
+  usePermitted,
   useSelector,
   useTranslator,
 } from '@axelor/aos-mobile-core';
 import {ActionCard, useThemeColor} from '@axelor/aos-mobile-ui';
 import {
   addToFavorites,
+  deleteDocument,
+  deleteFavoriteDocument,
   removeFromFavorites,
 } from '../../../features/documentSlice';
 import {DocumentCard} from '../../atoms';
 
 interface DocumentActionCardProps {
   document: any;
+  handleRefresh?: () => void;
 }
 
-const DocumentActionCard = ({document}: DocumentActionCardProps) => {
+const DocumentActionCard = ({
+  document,
+  handleRefresh,
+}: DocumentActionCardProps) => {
   const I18n = useTranslator();
   const Colors = useThemeColor();
   const navigation = useNavigation();
-  const dispatch = useDispatch();
+  const {canDelete} = usePermitted({modelName: 'com.axelor.dms.db.DMSFile'});
+  const dispatch: any = useDispatch();
 
   const {mobileSettings} = useSelector(state => state.appConfig);
   const {user} = useSelector(state => state.user);
@@ -48,11 +56,6 @@ const DocumentActionCard = ({document}: DocumentActionCardProps) => {
   const isFavorite = useMemo(
     () => user?.favouriteFileSet.some(({id}) => id === document.id),
     [document.id, user?.favouriteFileSet],
-  );
-
-  const sliceFunction = useMemo(
-    () => (isFavorite ? removeFromFavorites : addToFavorites),
-    [isFavorite],
   );
 
   const handleDownloadFile = useCallback(async () => {
@@ -67,19 +70,12 @@ const DocumentActionCard = ({document}: DocumentActionCardProps) => {
     <ActionCard
       actionList={[
         {
-          iconName: 'download',
-          helper: I18n.t('Dms_Download'),
-          large: true,
-          onPress: handleDownloadFile,
-          hidden: !mobileSettings?.isDownloadAllowed,
-        },
-        {
           iconName: isFavorite ? 'star-fill' : 'star',
           iconColor: Colors.progressColor.background,
           helper: I18n.t('Dms_AddToFavorites'),
           onPress: () =>
             dispatch(
-              (sliceFunction as any)({
+              ((isFavorite ? removeFromFavorites : addToFavorites) as any)({
                 documentId: document.id,
                 userId: user?.id,
               }),
@@ -87,9 +83,10 @@ const DocumentActionCard = ({document}: DocumentActionCardProps) => {
           hidden: !mobileSettings?.isFavoritesManagementEnabled,
         },
         {
-          iconName: 'info-circle',
-          helper: I18n.t('Dms_Details'),
-          onPress: () => console.log('Details'),
+          iconName: 'download',
+          helper: I18n.t('Dms_Download'),
+          onPress: handleDownloadFile,
+          hidden: !mobileSettings?.isDownloadAllowed,
         },
         {
           iconName: 'pencil-fill',
@@ -104,8 +101,14 @@ const DocumentActionCard = ({document}: DocumentActionCardProps) => {
           iconName: 'trash-fill',
           iconColor: Colors.errorColor.background,
           helper: I18n.t('Dms_Delete'),
-          onPress: () => console.log('Delete'),
-          hidden: !mobileSettings?.isFileDeletionAllowed,
+          onPress: () =>
+            dispatch(
+              ((isFavorite ? deleteFavoriteDocument : deleteDocument) as any)({
+                documentId: document.id,
+                userId: user?.id,
+              }),
+            ).then(() => handleRefresh?.()),
+          hidden: !canDelete || !mobileSettings?.isFileDeletionAllowed,
         },
       ]}
       translator={I18n.t}>

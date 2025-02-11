@@ -20,6 +20,7 @@ export {
   addToFavorites as addToFavoritesApi,
   countAttachedFiles as countAttachedDocumentsApi,
   createDocument as createDocumentApi,
+  deleteDocument as deleteDocumentApi,
   fetchDirectory as fetchDirectoryApi,
   removeFromFavorites as removeFromFavoritesApi,
   searchDirectory as searchDirectoryApi,

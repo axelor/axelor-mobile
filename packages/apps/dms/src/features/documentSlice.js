@@ -25,6 +25,7 @@ import {
 import {
   addToFavorites as _addToFavorites,
   createDocument as _createDocument,
+  deleteDocument as _deleteDocument,
   removeFromFavorites as _removeFromFavorites,
   searchDirectory as _searchDirectory,
   searchDocument as _searchDocument,
@@ -119,6 +120,28 @@ export const removeFromFavorites = createAsyncThunk(
       getState,
       responseOptions: {isArrayResponse: false, showToast: true},
     }).then(() => dispatch(fetchActiveUser(data.userId)));
+  },
+);
+
+export const deleteDocument = createAsyncThunk(
+  'dms_document/deleteDocument',
+  async function (data, {getState}) {
+    return handlerApiCall({
+      fetchFunction: _deleteDocument,
+      data,
+      action: 'Dms_SliceAction_DeleteDocument',
+      getState,
+      responseOptions: {isArrayResponse: false, showToast: true},
+    });
+  },
+);
+
+export const deleteFavoriteDocument = createAsyncThunk(
+  'dms_document/deleteFavoriteDocument',
+  async function (data, {dispatch}) {
+    dispatch(removeFromFavorites(data)).then(() =>
+      dispatch(deleteDocument(data)),
+    );
   },
 );
 
