@@ -37,10 +37,13 @@ import {
   InventoryLineQuantityCard,
   InventoryLineButtons,
   InventoryLineTrackingNumberSelect,
+  StockLocationSearchBar,
 } from '../../components';
 import {fetchInventoryLine} from '../../features/inventoryLineSlice';
 import {fetchProductWithId} from '../../features/productSlice';
 import {Inventory as InventoryType} from '../../types';
+
+const stockLocationScanKey = 'stock-location_inventory-line-details';
 
 const InventoryLineDetailsScreen = ({route, navigation}) => {
   const {inventory, inventoryLineId, productId} = route.params;
@@ -65,6 +68,7 @@ const InventoryLineDetailsScreen = ({route, navigation}) => {
   const [rack, setRack] = useState(null);
   const [realQty, setRealQty] = useState(0);
   const [description, setDescription] = useState();
+  const [stockLocation, setStockLocation] = useState();
 
   const trackingNumber = useMemo(
     () => inventoryLine?.trackingNumber ?? route.params.trackingNumber,
@@ -84,6 +88,7 @@ const InventoryLineDetailsScreen = ({route, navigation}) => {
   useEffect(() => {
     setRealQty(inventoryLine?.realQty ?? 0);
     setDescription(inventoryLine?.description);
+    setStockLocation(inventoryLine?.stockLocation);
     setLoading(false);
   }, [inventoryLine]);
 
@@ -119,6 +124,7 @@ const InventoryLineDetailsScreen = ({route, navigation}) => {
           inventoryLine={inventoryLine}
           rack={rack}
           realQty={realQty}
+          stockLocation={stockLocation}
           trackingNumber={trackingNumber}
           visible={!isTrackingNumberSelectVisible}
         />
@@ -152,6 +158,12 @@ const InventoryLineDetailsScreen = ({route, navigation}) => {
           name={productFromId?.name}
           trackingNumber={trackingNumber?.trackingNumberSeq}
           locker={inventoryLine?.rack}
+        />
+        <StockLocationSearchBar
+          scanKey={stockLocationScanKey}
+          placeholderKey="Stock_StockLocation"
+          defaultValue={stockLocation}
+          onChange={setStockLocation}
         />
         <InventoryLineTrackingNumberSelect
           product={productFromId}

@@ -34,6 +34,7 @@ import {
 const InventoryLineButtons = ({
   inventoryLine,
   inventory,
+  stockLocation,
   trackingNumber,
   rack,
   realQty,
@@ -56,6 +57,7 @@ const InventoryLineButtons = ({
         inventoryId: inventory.id,
         inventoryVersion: inventory.version,
         productId: productFromId?.id,
+        stockLocationId: stockLocation?.id,
         trackingNumberId: trackingNumber?.id,
         rack: rack == null || rack === '' ? null : rack,
         realQty: realQty,
@@ -71,6 +73,7 @@ const InventoryLineButtons = ({
     productFromId?.id,
     rack,
     realQty,
+    stockLocation?.id,
     trackingNumber?.id,
   ]);
 
@@ -79,6 +82,7 @@ const InventoryLineButtons = ({
       updateInventoryLine({
         inventoryLineId: inventoryLine?.id,
         version: inventoryLine?.version,
+        stockLocationId: stockLocation?.id,
         realQty: realQty,
         description: description,
         inventoryId: inventory?.id,
@@ -93,6 +97,7 @@ const InventoryLineButtons = ({
     inventoryLine,
     navigation,
     realQty,
+    stockLocation?.id,
   ]);
 
   if (!visible) {
