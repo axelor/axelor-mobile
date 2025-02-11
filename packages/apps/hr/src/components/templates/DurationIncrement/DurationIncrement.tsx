@@ -19,7 +19,7 @@
 import React, {useEffect, useState} from 'react';
 import {StyleSheet} from 'react-native';
 import {FormIncrementInput} from '@axelor/aos-mobile-ui';
-import {useSelector} from '@axelor/aos-mobile-core';
+import {useSelector, useTranslator} from '@axelor/aos-mobile-core';
 
 interface DurationIncrementProps {
   title?: string;
@@ -36,7 +36,10 @@ const DurationIncrementAux = ({
   readonly = false,
   required = false,
 }: DurationIncrementProps) => {
+  const I18n = useTranslator();
+
   const [value, setValue] = useState(defaultValue);
+
   const {duration} = useSelector(state => state.hr_leave);
 
   useEffect(() => {
@@ -53,6 +56,8 @@ const DurationIncrementAux = ({
       readOnly={readonly}
       required={required}
       style={styles.input}
+      decimalSpacer={I18n.t('Base_DecimalSpacer')}
+      thousandSpacer={I18n.t('Base_ThousandSpacer')}
     />
   );
 };
