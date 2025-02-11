@@ -17,7 +17,7 @@
  */
 
 import React, {useCallback, useMemo, useState} from 'react';
-import {Platform, StyleSheet} from 'react-native';
+import {ActivityIndicator, Platform, StyleSheet} from 'react-native';
 import {
   Alert,
   Button,
@@ -32,13 +32,21 @@ import {logout} from '../../../features/authSlice';
 
 const BUTTON_WIDTH = 250;
 
+const DOWNLOAD = {
+  NOT_ATTEMPTED: 0,
+  LOADING: 2,
+  ATTEMPTED: 3,
+};
+
 const PopupMinimalRequiredVersion = ({versionCheckConfig, onRefresh}) => {
   const I18n = useTranslator();
   const Colors = useThemeColor();
   const dispatch = useDispatch();
 
   const [apkDownloaded, setApkDownloaded] = useState(false);
-  const [downloadAttempted, setDownloadAttempted] = useState(false);
+  const [downloadAttempted, setDownloadAttempted] = useState<number>(
+    DOWNLOAD.NOT_ATTEMPTED,
+  );
 
   const {mobileSettings} = useSelector(state => state.appConfig);
   const {baseUrl, token, jsessionId} = useSelector(state => state.auth);
@@ -60,19 +68,20 @@ const PopupMinimalRequiredVersion = ({versionCheckConfig, onRefresh}) => {
     if (Platform.OS === 'ios' || apkFile == null) {
       linkingProvider.openBrowser(url);
     } else {
+      setDownloadAttempted(DOWNLOAD.LOADING);
       await downloadFileOnPhone(
         {fileName: apkFile.fileName, id: apkFile.id, isMetaFile: true},
         {baseUrl, token, jsessionId},
         I18n,
       ).then(setApkDownloaded);
-      setDownloadAttempted(true);
+      setDownloadAttempted(DOWNLOAD.ATTEMPTED);
     }
   }, [I18n, apkFile, baseUrl, jsessionId, token, url]);
 
   const hideUpdateButton = useMemo(
     () =>
       Platform.OS !== 'ios' && apkFile != null
-        ? downloadAttempted
+        ? downloadAttempted !== DOWNLOAD.NOT_ATTEMPTED
         : checkNullString(url),
     [apkFile, downloadAttempted, url],
   );
@@ -81,15 +90,22 @@ const PopupMinimalRequiredVersion = ({versionCheckConfig, onRefresh}) => {
     <Alert visible={true} title={I18n.t('Base_Information')}>
       <Text style={styles.text}>{I18n.t('Base_MinimalRequiredVersion')}</Text>
       {hideUpdateButton ? (
-        <Text style={styles.text}>
-          {I18n.t(
-            downloadAttempted
-              ? apkDownloaded
-                ? 'Base_Version_APKDownloaded'
-                : 'Base_Version_APKDownloadFailed'
-              : 'Base_Contact_Admin',
-          )}
-        </Text>
+        downloadAttempted === DOWNLOAD.LOADING ? (
+          <ActivityIndicator
+            size="large"
+            color={Colors.inverseColor.background}
+          />
+        ) : (
+          <Text style={styles.text}>
+            {I18n.t(
+              downloadAttempted === DOWNLOAD.ATTEMPTED
+                ? apkDownloaded
+                  ? 'Base_Version_APKDownloaded'
+                  : 'Base_Version_APKDownloadFailed'
+                : 'Base_Contact_Admin',
+            )}
+          </Text>
+        )
       ) : (
         <Button
           width={BUTTON_WIDTH}
