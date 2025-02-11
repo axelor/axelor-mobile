@@ -18,7 +18,9 @@
 
 import {PermissionsAndroid, Platform} from 'react-native';
 import RNFetchBlob from 'react-native-blob-util';
+import RNFS from 'react-native-fs';
 import Share from 'react-native-share';
+import {File} from '@axelor/aos-mobile-ui';
 import {TranslatorProps} from '../i18n/hooks/use-translator';
 import {showToastMessage} from '../utils/show-toast-message';
 
@@ -32,6 +34,24 @@ interface ConnexionNeed {
   baseUrl: string;
   token: string;
   jsessionId?: string;
+}
+
+async function getUniqueFileName(
+  basePath: string,
+  fileName: string,
+): Promise<string> {
+  const extension = File.getFileExtension(fileName);
+  const baseName = fileName?.replaceAll(`.${extension}`, '');
+
+  let filePath: string = `${basePath}/${baseName}.${extension}`;
+  let counter = 1;
+
+  while (await RNFS.exists(filePath)) {
+    filePath = `${basePath}/${baseName}(${counter}).${extension}`;
+    counter++;
+  }
+
+  return filePath;
 }
 
 async function requestStoragePermission(I18n: TranslatorProps) {
@@ -86,7 +106,10 @@ export const downloadFileOnPhone = async (
       }/content/download`
     : `${authentification.baseUrl}ws/dms/download/${file.id}`;
 
-  const downloadPath = `${Platform.OS === 'ios' ? fs.dirs.DocumentDir : fs.dirs.LegacyDownloadDir}/${file.fileName}`;
+  const downloadPath = await getUniqueFileName(
+    Platform.OS === 'ios' ? fs.dirs.DocumentDir : fs.dirs.LegacyDownloadDir,
+    file.fileName,
+  );
 
   const result = await config({
     fileCache: true,
