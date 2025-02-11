@@ -162,6 +162,7 @@ const InventoryLineDetailsScreen = ({route, navigation}) => {
         <StockLocationSearchBar
           scanKey={stockLocationScanKey}
           placeholderKey="Stock_StockLocation"
+          defaultStockLocation={inventory.stockLocation}
           defaultValue={stockLocation}
           onChange={setStockLocation}
         />
