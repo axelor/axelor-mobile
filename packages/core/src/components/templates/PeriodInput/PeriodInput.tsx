@@ -29,6 +29,8 @@ const DATE_INPUT_MODE = {
 };
 
 interface dateInputConfig {
+  dateInputMode?: 'date' | 'datetime' | 'time';
+  nullable?: boolean;
   date?: Date;
   onDateChange: (date: Date) => void;
   readonly?: boolean;
@@ -36,17 +38,21 @@ interface dateInputConfig {
 }
 
 interface PeriodInputProps {
+  style?: any;
+  horizontal?: boolean;
+  showTitle?: boolean;
   startDateConfig: dateInputConfig;
   endDateConfig: dateInputConfig;
-  horizontal?: boolean;
-  style?: any;
+  onPeriodErrorChange?: (isPeriodError: boolean) => void;
 }
 
 const PeriodInput = ({
+  style,
+  horizontal = true,
+  showTitle = true,
   startDateConfig,
   endDateConfig,
-  horizontal = true,
-  style,
+  onPeriodErrorChange,
 }: PeriodInputProps) => {
   const I18n = useTranslator();
 
@@ -63,10 +69,23 @@ const PeriodInput = ({
   }, [endDateConfig.date]);
 
   useEffect(() => {
-    setIsPeriodError(
-      startDate && endDate && getStartOfDay(startDate) > getEndOfDay(endDate),
-    );
-  }, [startDate, endDate]);
+    const _startDate =
+      startDateConfig.dateInputMode === 'date'
+        ? getStartOfDay(startDate)
+        : startDate;
+    const _endDate =
+      endDateConfig.dateInputMode === 'date' ? getEndOfDay(endDate) : endDate;
+
+    const isError = startDate && endDate && _startDate > _endDate;
+    setIsPeriodError(isError);
+    onPeriodErrorChange(isError);
+  }, [
+    startDate,
+    endDate,
+    startDateConfig.dateInputMode,
+    endDateConfig.dateInputMode,
+    onPeriodErrorChange,
+  ]);
 
   const styles = useMemo(() => {
     return getStyles(horizontal);
@@ -79,13 +98,15 @@ const PeriodInput = ({
       const date = isStartDate ? startDate : endDate;
       const setDate = isStartDate ? setStartDate : setEndDate;
       const dateConfig = isStartDate ? startDateConfig : endDateConfig;
+      const nullable =
+        dateConfig.nullable || dateConfig.nullable == null ? true : false;
 
       return (
         <DateInput
           style={styles.dateInput}
-          title={I18n.t(translationKey)}
-          mode="date"
-          nullable
+          title={showTitle && I18n.t(translationKey)}
+          mode={dateConfig.dateInputMode ?? 'date'}
+          nullable={nullable}
           popup={horizontal}
           defaultDate={date}
           onDateChange={_date => {
@@ -98,13 +119,14 @@ const PeriodInput = ({
       );
     },
     [
-      endDate,
-      endDateConfig,
-      horizontal,
-      I18n,
       startDate,
+      endDate,
       startDateConfig,
+      endDateConfig,
       styles.dateInput,
+      showTitle,
+      I18n,
+      horizontal,
     ],
   );
 
