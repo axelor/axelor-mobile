@@ -18,6 +18,7 @@
 
 import {
   createStandardSearch,
+  formatRequestBody,
   getActionApi,
   RouterProvider,
 } from '@axelor/aos-mobile-core';
@@ -47,6 +48,20 @@ const createPartnerAddressCriteria = partnerId => {
   ];
 };
 
+async function getAddress({country, city, zip, streetName}) {
+  return getActionApi().send({
+    url: '/ws/aos/address',
+    method: 'post',
+    body: {
+      country,
+      city,
+      zip,
+      streetName,
+    },
+    description: 'find/create address',
+  });
+}
+
 export async function updateAddress({
   isLead,
   id,
@@ -57,61 +72,71 @@ export async function updateAddress({
   zip,
   streetName,
 }) {
-  return getActionApi()
-    .send({
-      url: '/ws/aos/address',
-      method: 'post',
-      body: {
-        country,
-        city,
-        zip,
-        streetName,
-      },
-      description: 'find/create address',
-    })
-    .then(async resAddress => {
-      if (!isLead) {
-        let _partnerAddress = partnerAddress;
+  return getAddress({
+    country,
+    city,
+    zip,
+    streetName,
+  }).then(async resAddress => {
+    if (!isLead) {
+      let _partnerAddress = partnerAddress;
 
-        if (_partnerAddress == null) {
-          const res = await createStandardSearch({
-            model: 'com.axelor.apps.base.db.PartnerAddress',
-            criteria: createPartnerAddressCriteria(id),
-            fieldKey: 'crm_partnerAddress',
-            page: 0,
-            numberElementsByPage: null,
-            provider: 'model',
-          });
-          _partnerAddress = res?.data?.data?.[0];
-        }
-
-        await getActionApi().send({
-          url: '/ws/rest/com.axelor.apps.base.db.PartnerAddress',
-          method: 'post',
-          body: {
-            data: {
-              id: _partnerAddress?.id,
-              version: _partnerAddress?.version,
-              address: resAddress.data?.object,
-            },
-          },
-          description: 'update address',
+      if (_partnerAddress == null) {
+        const res = await createStandardSearch({
+          model: 'com.axelor.apps.base.db.PartnerAddress',
+          criteria: createPartnerAddressCriteria(id),
+          fieldKey: 'crm_partnerAddress',
+          page: 0,
+          numberElementsByPage: null,
+          provider: 'model',
         });
+        _partnerAddress = res?.data?.data?.[0];
       }
 
-      return getActionApi().send({
-        url: `/ws/rest/com.axelor.apps.${isLead ? 'crm' : 'base'}.db.${isLead ? 'Lead' : 'Partner'}`,
+      await getActionApi().send({
+        url: '/ws/rest/com.axelor.apps.base.db.PartnerAddress',
         method: 'post',
         body: {
           data: {
-            id,
-            version,
-            [isLead ? 'address' : 'mainAddress']: resAddress.data?.object,
+            id: _partnerAddress?.id,
+            version: _partnerAddress?.version,
+            address: resAddress.data?.object,
           },
         },
         description: 'update address',
+        matchers: {
+          modelName: '/ws/rest/com.axelor.apps.base.db.PartnerAddress',
+          id: _partnerAddress?.id,
+          fields: {
+            'data.address': 'address',
+          },
+        },
       });
+    }
+
+    const modelName = isLead
+      ? 'com.axelor.apps.crm.db.Lead'
+      : 'com.axelor.apps.base.db.Partner';
+    const body = {
+      id,
+      version,
+      [isLead ? 'address' : 'mainAddress']: resAddress.data?.object,
+    };
+    const {matchers} = formatRequestBody(body, 'data');
+    return getActionApi().send({
+      url: `/ws/rest/${modelName}`,
+      method: 'post',
+      body: {
+        data: body,
+      },
+      description: 'update address',
+      matchers: {
+        modelName: modelName,
+        id,
+        fields: matchers,
+      },
     });
+  });
 }
 
 export async function deletePartnerAddress({id}) {
@@ -119,6 +144,10 @@ export async function deletePartnerAddress({id}) {
     url: `/ws/rest/com.axelor.apps.base.db.PartnerAddress/${id}`,
     method: 'delete',
     description: 'delete partner address',
+    matchers: {
+      modelName: 'com.axelor.apps.base.db.PartnerAddress',
+      id,
+    },
   });
 }
 
@@ -130,28 +159,21 @@ export async function addPartnerAddress({
   zip,
   streetName,
 }) {
-  return getActionApi()
-    .send({
-      url: '/ws/aos/address',
-      method: 'post',
+  return getAddress({
+    country,
+    city,
+    zip,
+    streetName,
+  }).then(async resAddress => {
+    return getActionApi().send({
+      url: `/ws/aos/partner/${partnerId}/address/${resAddress.data?.object?.id}`,
+      method: 'put',
       body: {
-        country,
-        city,
-        zip,
-        streetName,
+        version: partnerVersion,
       },
-      description: 'find/create address',
-    })
-    .then(async resAddress => {
-      return getActionApi().send({
-        url: `/ws/aos/partner/${partnerId}/address/${resAddress.data?.object?.id}`,
-        method: 'put',
-        body: {
-          version: partnerVersion,
-        },
-        description: 'add partner address',
-      });
+      description: 'add partner address',
     });
+  });
 }
 
 export async function updateEmail({id, version, email}) {
@@ -168,6 +190,13 @@ export async function updateEmail({id, version, email}) {
       },
     },
     description: 'update email',
+    matchers: {
+      modelName: 'com.axelor.message.db.EmailAddress',
+      id,
+      fields: {
+        'data.address': 'address',
+      },
+    },
   });
 }
 
@@ -178,18 +207,26 @@ export async function updatePartner({
   fixedPhone,
   webSite,
 }) {
+  const body = {
+    id,
+    version,
+    mobilePhone,
+    fixedPhone,
+    webSite,
+  };
+  const {matchers} = formatRequestBody(body, 'data');
+
   return getActionApi().send({
     url: '/ws/rest/com.axelor.apps.base.db.Partner',
     method: 'post',
     body: {
-      data: {
-        id,
-        version,
-        mobilePhone,
-        fixedPhone,
-        webSite,
-      },
+      data: body,
     },
     description: 'update partner',
+    matchers: {
+      modelName: 'com.axelor.apps.base.db.Partner',
+      id,
+      fields: matchers,
+    },
   });
 }

@@ -17,9 +17,10 @@
  */
 
 import {
-  axiosApiProvider,
   createStandardFetch,
   createStandardSearch,
+  formatRequestBody,
+  getActionApi,
   getSearchCriterias,
 } from '@axelor/aos-mobile-core';
 import {updateEmail} from './contact-info-api';
@@ -94,23 +95,37 @@ export async function updateClient({
   emailId,
   emailVersion,
 }) {
-  return updateEmail({
-    id: emailId,
-    version: emailVersion,
-    email,
-  }).then(res =>
-    axiosApiProvider.post({
+  const body = {
+    id,
+    version,
+    name,
+    fixedPhone,
+    website,
+    description,
+  };
+  const {matchers} = formatRequestBody(body, 'data');
+
+  return getActionApi()
+    .send({
       url: '/ws/rest/com.axelor.apps.base.db.Partner',
-      data: {
-        data: {
-          id,
-          version,
-          name,
-          fixedPhone,
-          website,
-          description,
-        },
+      method: 'post',
+      body: {
+        data: body,
       },
-    }),
-  );
+      description: 'update client',
+      matchers: {
+        modelName: 'com.axelor.apps.base.db.Partner',
+        id,
+        fields: matchers,
+      },
+    })
+    .then(
+      () =>
+        emailId &&
+        updateEmail({
+          id: emailId,
+          version: emailVersion,
+          email,
+        }),
+    );
 }

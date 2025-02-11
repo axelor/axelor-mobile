@@ -22,6 +22,7 @@ import {Alert} from '@axelor/aos-mobile-ui';
 import {
   formConfigsProvider,
   FormView,
+  usePermitted,
   useTranslator,
 } from '@axelor/aos-mobile-core';
 import ContactInfoFormButtons from './ContactInfoFormButtons';
@@ -56,6 +57,9 @@ const ContactInfoAlert = ({
   refreshContactInfos,
 }: ContactInfoAlertProps) => {
   const I18n = useTranslator();
+  const {canDelete} = usePermitted({
+    modelName: 'com.axelor.apps.base.db.PartnerAddress',
+  });
 
   const styles = useMemo(() => {
     let formContainerHeight = 0;
@@ -83,7 +87,7 @@ const ContactInfoAlert = ({
       zip: contact?.address?.zip,
       email: contact?.emailAddress?.address,
       formButtons: {
-        displayDeleteButton: !!onDelete,
+        displayDeleteButton: canDelete && !!onDelete,
         onDeleteButtonPress: () => {
           setIsVisible(false);
           onDelete?.({
@@ -102,8 +106,10 @@ const ContactInfoAlert = ({
       },
     }),
     [
+      canDelete,
       contact,
-      contactInfo,
+      contactInfo.id,
+      contactInfo.version,
       onDelete,
       onUpdate,
       refreshContactInfos,
@@ -140,13 +146,11 @@ const ContactInfoAlert = ({
           streetName: {
             titleKey: 'Crm_StreetName',
             type: 'string',
-            widget: 'default',
             hideIf: () => contactInfoType !== ContactInfoType.type.Address,
           },
           city: {
             titleKey: 'Crm_City',
             type: 'string',
-            widget: 'default',
             hideIf: () => contactInfoType !== ContactInfoType.type.Address,
             parentPanel: 'headerLeft',
             options: {style: styles.headerLeft},
@@ -154,7 +158,6 @@ const ContactInfoAlert = ({
           country: {
             titleKey: 'Crm_Country',
             type: 'string',
-            widget: 'default',
             hideIf: () => contactInfoType !== ContactInfoType.type.Address,
             parentPanel: 'headerRight',
             options: {
@@ -164,29 +167,24 @@ const ContactInfoAlert = ({
           zip: {
             titleKey: 'Crm_Zip',
             type: 'string',
-            widget: 'default',
             hideIf: () => contactInfoType !== ContactInfoType.type.Address,
             parentPanel: 'headerLeft',
             options: {style: styles.headerLeft},
           },
           mobilePhone: {
             type: 'phone',
-            widget: 'default',
             hideIf: () => contactInfoType !== ContactInfoType.type.MobilePhone,
           },
           fixedPhone: {
             type: 'phone',
-            widget: 'default',
             hideIf: () => contactInfoType !== ContactInfoType.type.FixedPhone,
           },
           email: {
             type: 'email',
-            widget: 'default',
             hideIf: () => contactInfoType !== ContactInfoType.type.Email,
           },
           webSite: {
             type: 'url',
-            widget: 'default',
             hideIf: () => contactInfoType !== ContactInfoType.type.WebSite,
           },
           formButtons: {

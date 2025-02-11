@@ -17,14 +17,15 @@
  */
 
 import React, {useCallback, useEffect, useState} from 'react';
-import {View, StyleSheet} from 'react-native';
+import {View, StyleSheet, TouchableOpacity} from 'react-native';
 import {
   handlerApiCall,
   useDispatch,
+  usePermitted,
   useSelector,
   useTranslator,
 } from '@axelor/aos-mobile-core';
-import {Button, Text} from '@axelor/aos-mobile-ui';
+import {Icon, Text, useThemeColor} from '@axelor/aos-mobile-ui';
 import {
   AddressListCard,
   ContactInfoAlert,
@@ -45,6 +46,10 @@ const DropdownAddressesView = ({
   refreshContactInfos,
 }: DropdownAddressesViewProps) => {
   const I18n = useTranslator();
+  const Colors = useThemeColor();
+  const {canCreate} = usePermitted({
+    modelName: 'com.axelor.apps.base.db.PartnerAddress',
+  });
   const dispatch = useDispatch();
 
   const [isVisible, setIsVisible] = useState(false);
@@ -93,17 +98,25 @@ const DropdownAddressesView = ({
             partnerId={partnerId}
             partnerVersion={partnerVersion}
             partnerAddress={partnerAddress}
-            borderBottom={index !== partnerAddressList.length - 1}
+            borderBottom={index !== partnerAddressList.length - 1 || canCreate}
             refreshContactInfos={refreshContactInfos}
             key={index}
           />
         ))}
-        <Button
-          style={styles.addButton}
-          iconName="plus-lg"
-          title={I18n.t('Base_Add')}
-          onPress={() => setIsVisible(true)}
-        />
+        {canCreate && (
+          <TouchableOpacity
+            style={styles.addButton}
+            onPress={() => setIsVisible(true)}>
+            <Icon
+              style={styles.addButtonIcon}
+              name="plus-lg"
+              color={Colors.secondaryColor.background}
+            />
+            <Text textColor={Colors.secondaryColor.background}>
+              {I18n.t('Base_Add')}
+            </Text>
+          </TouchableOpacity>
+        )}
       </View>
       <ContactInfoAlert
         title={I18n.t('Crm_Address')}
@@ -119,8 +132,12 @@ const DropdownAddressesView = ({
 
 const styles = StyleSheet.create({
   addButton: {
-    height: 40,
-    marginTop: 15,
+    flexDirection: 'row',
+    justifyContent: 'center',
+    paddingVertical: 5,
+  },
+  addButtonIcon: {
+    marginRight: 5,
   },
 });
 

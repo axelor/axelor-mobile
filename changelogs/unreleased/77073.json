@@ -1,5 +1,5 @@
 {
   "title": "Contact and addresses dropdown: add edition management",
   "type": "feat",
-  "packages": "crm"
+  "packages": ["crm", "intervention"]
 }
