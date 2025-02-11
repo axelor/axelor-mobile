@@ -16,7 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import React, {useEffect} from 'react';
+import React, {useCallback, useEffect} from 'react';
 import {StyleSheet, View} from 'react-native';
 import {DropdownCardSwitch} from '@axelor/aos-mobile-ui';
 import {useDispatch, useSelector, useTranslator} from '@axelor/aos-mobile-core';
@@ -28,8 +28,10 @@ import {
   DropdownGeneralView,
   DropdownOpportunityView,
 } from '../../../organisms';
+import {fetchProspectById} from '../../../../features/prospectSlice';
 import {searchContactById} from '../../../../features/contactSlice';
 import {fetchPartnerEventById} from '../../../../features/eventSlice';
+import {fetchPartnerAddresses} from '../../../../features/partnerSlice';
 
 const ProspectDropdownCards = ({}) => {
   const I18n = useTranslator();
@@ -38,6 +40,11 @@ const ProspectDropdownCards = ({}) => {
   const {prospect} = useSelector(state => state.prospect);
   const {listContactById} = useSelector(state => state.contact);
   const {listEventPartner} = useSelector(state => state.event);
+
+  const refreshContactInfos = useCallback(() => {
+    dispatch(fetchProspectById({partnerId: prospect?.id}));
+    dispatch(fetchPartnerAddresses({partnerId: prospect?.id}));
+  }, [dispatch, prospect?.id]);
 
   useEffect(() => {
     if (prospect.contactPartnerSet?.length > 0) {
@@ -61,18 +68,24 @@ const ProspectDropdownCards = ({}) => {
             childrenComp: (
               <DropdownContactView
                 isMainAddress={true}
-                address={prospect.mainAddress?.fullName}
-                fixedPhone={prospect.fixedPhone}
-                emailAddress={prospect.emailAddress?.address}
-                webSite={prospect.webSite}
+                contact={{...prospect, address: prospect.mainAddress}}
+                refreshContactInfos={refreshContactInfos}
               />
             ),
+            isDefaultVisible: true,
           },
           {
             title: I18n.t('Crm_Addresses'),
             key: 2,
             style: styles.zeroPadding,
-            childrenComp: <DropdownAddressesView partnerId={prospect.id} />,
+            childrenComp: (
+              <DropdownAddressesView
+                partnerId={prospect.id}
+                partnerVersion={prospect.version}
+                refreshContactInfos={refreshContactInfos}
+              />
+            ),
+            isDefaultVisible: true,
           },
           {
             title: I18n.t('Crm_GeneralInformation'),
@@ -103,6 +116,7 @@ const ProspectDropdownCards = ({}) => {
             childrenComp: <DropdownOpportunityView partnerId={prospect?.id} />,
           },
         ]}
+        multiSelection
       />
     </View>
   );

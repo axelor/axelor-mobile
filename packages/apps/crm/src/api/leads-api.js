@@ -22,8 +22,8 @@ import {
   formatRequestBody,
   getActionApi,
   getSearchCriterias,
-  RouterProvider,
 } from '@axelor/aos-mobile-core';
+import {updateEmail} from './contact-info-api';
 
 const createLeadCriteria = (searchValue, userId, assigned, statusList) => {
   const criteria = [
@@ -125,47 +125,31 @@ export async function updateLeadScoring({leadId, leadVersion, newScore}) {
 }
 
 export async function updateLead({lead, emailId, emailVersion}) {
-  const route = await RouterProvider.get('EmailAddress');
-
-  const modelName = route.replace('/ws/rest/', '');
+  const {matchers} = formatRequestBody(lead, 'data');
 
   return getActionApi()
     .send({
-      url: route,
+      url: '/ws/rest/com.axelor.apps.crm.db.Lead',
       method: 'post',
       body: {
-        data: {
-          id: emailId,
-          version: emailVersion,
-          address: lead.emailAddress?.address,
-        },
+        data: lead,
       },
-      description: 'update lead email',
+      description: 'update lead',
       matchers: {
-        modelName: modelName,
-        id: emailId,
-        fields: {
-          'data.address': 'address',
-        },
+        modelName: 'com.axelor.apps.crm.db.Lead',
+        id: lead.id,
+        fields: matchers,
       },
     })
-    .then(() => {
-      const {matchers} = formatRequestBody(lead, 'data');
-
-      return getActionApi().send({
-        url: '/ws/rest/com.axelor.apps.crm.db.Lead',
-        method: 'post',
-        body: {
-          data: lead,
-        },
-        description: 'update lead',
-        matchers: {
-          modelName: 'com.axelor.apps.crm.db.Lead',
-          id: lead.id,
-          fields: matchers,
-        },
-      });
-    });
+    .then(
+      () =>
+        emailId &&
+        updateEmail({
+          id: emailId,
+          version: emailVersion,
+          email: lead.emailAddress?.address,
+        }),
+    );
 }
 
 export async function createLead({lead}) {

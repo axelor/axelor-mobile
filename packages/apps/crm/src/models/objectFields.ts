@@ -18,12 +18,25 @@
 
 import {ObjectFields, schemaContructor} from '@axelor/aos-mobile-core';
 
+const addressModel = schemaContructor.subObject('fullName').concat(
+  schemaContructor.object({
+    fullName: schemaContructor.string(),
+    streetName: schemaContructor.string(),
+    city: schemaContructor.subObject('name'),
+    country: schemaContructor.subObject('name'),
+    zip: schemaContructor.string(),
+    addressL4: schemaContructor.string(),
+    addressL7Country: schemaContructor.subObject('symbol'),
+  }),
+);
+
 export const crm_modelAPI: ObjectFields = {
   crm_partnerAddress: schemaContructor.object({
-    address: schemaContructor.subObject(),
+    address: addressModel,
     isDefaultAddr: schemaContructor.boolean(),
     isDeliveryAddr: schemaContructor.boolean(),
     isInvoicingAddr: schemaContructor.boolean(),
+    fullName: schemaContructor.string(),
   }),
   crm_catalog: schemaContructor.object({
     name: schemaContructor.string(),
@@ -39,14 +52,7 @@ export const crm_modelAPI: ObjectFields = {
     name: schemaContructor.string(),
     fullName: schemaContructor.string(),
     partnerSeq: schemaContructor.string(),
-    mainAddress: schemaContructor.subObject('fullName').concat(
-      schemaContructor.object({
-        addressL4: schemaContructor.string(),
-        addressL7Country: schemaContructor.subObject('symbol'),
-        city: schemaContructor.subObject('name'),
-        zip: schemaContructor.string(),
-      }),
-    ),
+    mainAddress: addressModel,
     fixedPhone: schemaContructor.string(),
     mobilePhone: schemaContructor.string(),
     leadScoring: schemaContructor.number(),
@@ -67,14 +73,7 @@ export const crm_modelAPI: ObjectFields = {
     name: schemaContructor.string(),
     firstName: schemaContructor.string(),
     partnerSeq: schemaContructor.string(),
-    mainAddress: schemaContructor.subObject('fullName').concat(
-      schemaContructor.object({
-        addressL4: schemaContructor.string(),
-        addressL7Country: schemaContructor.subObject('symbol'),
-        city: schemaContructor.subObject('name'),
-        zip: schemaContructor.string(),
-      }),
-    ),
+    mainAddress: addressModel,
     fixedPhone: schemaContructor.string(),
     mobilePhone: schemaContructor.string(),
     emailAddress: schemaContructor.subObject('address'),
@@ -115,7 +114,7 @@ export const crm_modelAPI: ObjectFields = {
     firstName: schemaContructor.string(),
     simpleFullName: schemaContructor.string(),
     leadStatus: schemaContructor.subObject('name'),
-    address: schemaContructor.subObject('fullName'),
+    address: addressModel,
     emailAddress: schemaContructor.subObject('address'),
     mobilePhone: schemaContructor.string(),
     fixedPhone: schemaContructor.string(),
@@ -159,14 +158,7 @@ export const crm_modelAPI: ObjectFields = {
     fullName: schemaContructor.string(),
     name: schemaContructor.string(),
     partnerSeq: schemaContructor.string(),
-    mainAddress: schemaContructor.subObject('fullName').concat(
-      schemaContructor.object({
-        addressL4: schemaContructor.string(),
-        addressL7Country: schemaContructor.subObject('symbol'),
-        city: schemaContructor.subObject('name'),
-        zip: schemaContructor.string(),
-      }),
-    ),
+    mainAddress: addressModel,
     fixedPhone: schemaContructor.string(),
     mobilePhone: schemaContructor.string(),
     emailAddress: schemaContructor.subObject('address'),
@@ -188,14 +180,7 @@ export const crm_modelAPI: ObjectFields = {
     simpleFullName: schemaContructor.string(),
     name: schemaContructor.string(),
     partnerSeq: schemaContructor.string(),
-    mainAddress: schemaContructor.subObject('fullName').concat(
-      schemaContructor.object({
-        addressL4: schemaContructor.string(),
-        addressL7Country: schemaContructor.subObject('symbol'),
-        city: schemaContructor.subObject('name'),
-        zip: schemaContructor.string(),
-      }),
-    ),
+    mainAddress: addressModel,
     partnerTypeSelect: schemaContructor.number(),
     fixedPhone: schemaContructor.string(),
     mobilePhone: schemaContructor.string(),
