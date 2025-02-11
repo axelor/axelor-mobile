@@ -151,14 +151,8 @@ const DocumentList = ({
               hidden: !mobileSettings?.isFavoritesManagementEnabled,
             },
             {
-              iconName: 'info-circle',
-              helper: I18n.t('Dms_Details'),
-              onPress: () => console.log('branch: ', branch),
-            },
-            {
               iconName: 'pencil-fill',
               helper: I18n.t('Dms_Rename'),
-              large: true,
               onPress: () =>
                 navigation.navigate('DocumentFormScreen', {
                   document: branch.item,
@@ -167,7 +161,12 @@ const DocumentList = ({
             },
           ];
         }}
-        renderLeaf={({item}) => <DocumentActionCard document={item} />}
+        renderLeaf={({item}) => (
+          <DocumentActionCard
+            document={item}
+            handleRefresh={() => setSelectedExtensions(current => [...current])}
+          />
+        )}
         headerChildren={<AuthorFilter author={author} setAuthor={setAuthor} />}
         chipComponent={
           <ChipSelect
