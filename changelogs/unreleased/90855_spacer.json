@@ -1,0 +1,5 @@
+{
+  "title": "Distance input: add spacer translations to avoid undefined issue on format",
+  "type": "fix",
+  "packages": "hr"
+}

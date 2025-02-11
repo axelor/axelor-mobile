@@ -17,17 +17,19 @@
  */
 
 import React, {useCallback, useEffect, useState} from 'react';
-import {StyleSheet} from 'react-native';
-import {useSelector} from '@axelor/aos-mobile-core';
+import {useSelector, useTranslator} from '@axelor/aos-mobile-core';
 import {FormIncrementInput} from '@axelor/aos-mobile-ui';
 
 const DistanceIncrementAux = ({
+  style,
   title = 'Hr_Distance',
-  defaultValue = null,
-  onChange = () => {},
+  defaultValue,
+  onChange,
   readonly = false,
   required = false,
 }) => {
+  const I18n = useTranslator();
+
   const [value, setValue] = useState(defaultValue);
 
   const {distance} = useSelector(state => state.distance);
@@ -49,9 +51,11 @@ const DistanceIncrementAux = ({
   return (
     <FormIncrementInput
       title={title}
-      style={styles.input}
+      style={style}
       onChange={handleChange}
       defaultValue={value}
+      decimalSpacer={I18n.t('Base_DecimalSpacer')}
+      thousandSpacer={I18n.t('Base_ThousandSpacer')}
       readOnly={readonly}
       required={required}
     />
@@ -77,12 +81,5 @@ const DistanceIncrement = ({
     />
   );
 };
-
-const styles = StyleSheet.create({
-  input: {
-    width: '90%',
-    alignSelf: 'center',
-  },
-});
 
 export default DistanceIncrement;
