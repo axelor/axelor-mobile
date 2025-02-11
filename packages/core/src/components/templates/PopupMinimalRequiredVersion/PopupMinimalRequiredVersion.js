@@ -16,8 +16,8 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import React, {useMemo} from 'react';
-import {Platform, StyleSheet, View} from 'react-native';
+import React, {useCallback, useMemo, useState} from 'react';
+import {Platform, StyleSheet} from 'react-native';
 import {
   Alert,
   Button,
@@ -25,10 +25,10 @@ import {
   Text,
   useThemeColor,
 } from '@axelor/aos-mobile-ui';
-import useTranslator from '../../../i18n/hooks/use-translator';
-import {linkingProvider} from '../../../tools/LinkingProvider';
+import {downloadFileOnPhone, linkingProvider} from '../../../tools';
+import {useDispatch, useSelector} from '../../../redux/hooks';
+import {useTranslator} from '../../../i18n';
 import {logout} from '../../../features/authSlice';
-import {useDispatch} from '../../../redux/hooks';
 
 const BUTTON_WIDTH = 250;
 
@@ -36,6 +36,12 @@ const PopupMinimalRequiredVersion = ({versionCheckConfig, onRefresh}) => {
   const I18n = useTranslator();
   const Colors = useThemeColor();
   const dispatch = useDispatch();
+
+  const [apkDownloaded, setApkDownloaded] = useState(false);
+  const [downloadAttempted, setDownloadAttempted] = useState(false);
+
+  const {mobileSettings} = useSelector(state => state.appConfig);
+  const {baseUrl, token, jsessionId} = useSelector(state => state.auth);
 
   const url = useMemo(
     () =>
@@ -45,49 +51,75 @@ const PopupMinimalRequiredVersion = ({versionCheckConfig, onRefresh}) => {
     [versionCheckConfig],
   );
 
-  const handleUpdate = () => {
-    linkingProvider.openBrowser(url);
-  };
+  const apkFile = useMemo(
+    () => mobileSettings?.currentApkFile,
+    [mobileSettings?.currentApkFile],
+  );
+
+  const handleUpdate = useCallback(async () => {
+    if (Platform.OS === 'ios' || apkFile == null) {
+      linkingProvider.openBrowser(url);
+    } else {
+      await downloadFileOnPhone(
+        {fileName: apkFile.fileName, id: apkFile.id, isMetaFile: true},
+        {baseUrl, token, jsessionId},
+        I18n,
+      ).then(setApkDownloaded);
+      setDownloadAttempted(true);
+    }
+  }, [I18n, apkFile, baseUrl, jsessionId, token, url]);
+
+  const hideUpdateButton = useMemo(
+    () =>
+      Platform.OS !== 'ios' && apkFile != null
+        ? downloadAttempted
+        : checkNullString(url),
+    [apkFile, downloadAttempted, url],
+  );
 
   return (
     <Alert visible={true} title={I18n.t('Base_Information')}>
-      <Text>{I18n.t('Base_MinimalRequiredVersion')}</Text>
-      <View style={styles.buttonsContainer}>
-        {checkNullString(url) ? (
-          <Text style={styles.noURLText}>{I18n.t('Base_Contact_Admin')}</Text>
-        ) : (
-          <Button
-            width={BUTTON_WIDTH}
-            title={I18n.t('Base_Update')}
-            iconName="chevron-double-up"
-            onPress={handleUpdate}
-          />
-        )}
+      <Text style={styles.text}>{I18n.t('Base_MinimalRequiredVersion')}</Text>
+      {hideUpdateButton ? (
+        <Text style={styles.text}>
+          {I18n.t(
+            downloadAttempted
+              ? apkDownloaded
+                ? 'Base_Version_APKDownloaded'
+                : 'Base_Version_APKDownloadFailed'
+              : 'Base_Contact_Admin',
+          )}
+        </Text>
+      ) : (
         <Button
           width={BUTTON_WIDTH}
-          color={Colors.secondaryColor}
-          title={I18n.t('Base_Refresh')}
-          iconName="arrow-repeat"
-          onPress={onRefresh}
+          title={I18n.t('Base_Update')}
+          iconName="chevron-double-up"
+          onPress={handleUpdate}
         />
-        <Button
-          width={BUTTON_WIDTH}
-          color={Colors.errorColor}
-          title={I18n.t('Base_Logout')}
-          iconName="power"
-          onPress={() => dispatch(logout())}
-        />
-      </View>
+      )}
+      <Button
+        width={BUTTON_WIDTH}
+        color={Colors.secondaryColor}
+        title={I18n.t('Base_Refresh')}
+        iconName="arrow-repeat"
+        onPress={onRefresh}
+      />
+      <Button
+        width={BUTTON_WIDTH}
+        color={Colors.errorColor}
+        title={I18n.t('Base_Logout')}
+        iconName="power"
+        onPress={() => dispatch(logout())}
+      />
     </Alert>
   );
 };
 
 const styles = StyleSheet.create({
-  buttonsContainer: {
-    marginTop: 10,
-  },
-  noURLText: {
+  text: {
     marginBottom: 10,
+    width: '100%',
   },
 });
 

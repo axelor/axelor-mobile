@@ -88,7 +88,7 @@ export const downloadFileOnPhone = async (
 
   const downloadPath = `${Platform.OS === 'ios' ? fs.dirs.DocumentDir : fs.dirs.LegacyDownloadDir}/${file.fileName}`;
 
-  config({
+  const result = await config({
     fileCache: true,
     path: downloadPath,
     IOSBackgroundTask: true,
@@ -120,6 +120,8 @@ export const downloadFileOnPhone = async (
           Platform.OS === 'ios' ? 'Base_FileDownloadiOS' : 'Base_FileDownload',
         ),
       });
+
+      return true;
     })
     .catch(() => {
       showToastMessage({
@@ -128,5 +130,9 @@ export const downloadFileOnPhone = async (
         text1: I18n.t('Base_Error'),
         text2: I18n.t('Base_ErrorOnDownload'),
       });
+
+      return false;
     });
+
+  return result;
 };
