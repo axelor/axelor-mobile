@@ -22,6 +22,7 @@ import {
   CivilityPicker,
   ClientProspectSearchBar,
   ContactSearchBar,
+  EventPeriodInput,
   EventStatusPicker,
   EventTypePicker,
   FunctionSearchBar,
@@ -470,15 +471,28 @@ export const crm_formsRegister: FormConfigs = {
           showTitle: true,
         },
       },
-      startDateTime: {
-        titleKey: 'Crm_StartDate',
-        type: 'datetime',
-        widget: 'date',
+      perdiodDateTime: {
+        type: 'object',
+        widget: 'custom',
+        customComponent: EventPeriodInput,
       },
-      endDateTime: {
-        titleKey: 'Crm_EndDate',
-        type: 'datetime',
-        widget: 'date',
+      perdiodDateTimeError: {
+        type: 'string',
+        validationOptions: {
+          required: {
+            customErrorKey: 'Base_PeriodError',
+          },
+        },
+        dependsOn: {
+          perdiodDateTime: ({newValue}) => {
+            if (newValue.isError) {
+              return '';
+            } else {
+              return 'OK';
+            }
+          },
+        },
+        hideIf: () => true,
       },
       allDay: {
         titleKey: 'Crm_AllDay',

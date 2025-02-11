@@ -1,0 +1,5 @@
+{
+  "title": "PeriodInput: add new props to detect error from outside",
+  "type": "feat",
+  "packages": "core"
+}

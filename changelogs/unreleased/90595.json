@@ -1,0 +1,5 @@
+{
+  "title": "Event form: replace start and end DateInput by PeriodInput",
+  "type": "feat",
+  "packages": "crm"
+}
