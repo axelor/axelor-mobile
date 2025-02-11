@@ -16,8 +16,9 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import React, {useMemo} from 'react';
+import React, {useCallback, useMemo} from 'react';
 import {
+  downloadFileOnPhone,
   useDispatch,
   useNavigation,
   useSelector,
@@ -40,8 +41,9 @@ const DocumentActionCard = ({document}: DocumentActionCardProps) => {
   const navigation = useNavigation();
   const dispatch = useDispatch();
 
-  const {mobileSettings} = useSelector((state: any) => state.appConfig);
+  const {mobileSettings} = useSelector(state => state.appConfig);
   const {user} = useSelector(state => state.user);
+  const {baseUrl, token, jsessionId} = useSelector(state => state.auth);
 
   const isFavorite = useMemo(
     () => user?.favouriteFileSet.some(({id}) => id === document.id),
@@ -53,6 +55,14 @@ const DocumentActionCard = ({document}: DocumentActionCardProps) => {
     [isFavorite],
   );
 
+  const handleDownloadFile = useCallback(async () => {
+    await downloadFileOnPhone(
+      {fileName: document.fileName, id: document.id, isMetaFile: false},
+      {baseUrl, token, jsessionId},
+      I18n,
+    );
+  }, [I18n, baseUrl, document, jsessionId, token]);
+
   return (
     <ActionCard
       actionList={[
@@ -60,7 +70,7 @@ const DocumentActionCard = ({document}: DocumentActionCardProps) => {
           iconName: 'download',
           helper: I18n.t('Dms_Download'),
           large: true,
-          onPress: () => console.log('Download'),
+          onPress: handleDownloadFile,
           hidden: !mobileSettings?.isDownloadAllowed,
         },
         {
