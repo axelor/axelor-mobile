@@ -91,14 +91,13 @@ export async function createPurchaseRequestLine({
       unitId: purchaseRequestLine.unit?.id,
       quantity: purchaseRequestLine.quantity,
     },
-    description: 'create request line',
+    description: 'create purchase request line',
     matchers: {
       modelName: 'com.axelor.apps.purchase.db.PurchaseRequestLine',
       id: Date.now(),
       fields: {
-        productTitle: 'title',
+        productId: 'product.id',
         unitId: 'unit.id',
-        quantity: 'quantity',
       },
     },
   });
@@ -116,7 +115,7 @@ export async function updatePurchaseRequestLine({purchaseRequestLine}) {
         newProduct: purchaseRequestLine.product == null,
       },
     },
-    description: 'update purchaseRequestLine',
+    description: 'update purchase request line',
     matchers: {
       modelName: 'com.axelor.apps.purchase.db.PurchaseRequestLine',
       id: purchaseRequestLine.id,

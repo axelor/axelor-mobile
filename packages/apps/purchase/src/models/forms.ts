@@ -31,32 +31,22 @@ export const purchase_formsRegister: FormConfigs = {
         titleKey: 'Purchase_Product',
         type: 'object',
         widget: 'custom',
-        requiredIf: ({objectState}) => {
-          return objectState?.productTitle == null;
-        },
+        requiredIf: ({objectState}) => objectState?.productTitle == null,
         customComponent: ProductSearchBar,
         options: {showTitle: true},
       },
       orRule: {
-        titleKey: 'Purchase_Product',
         type: 'object',
         widget: 'custom',
-        readonly: true,
         customComponent: HorizontalOrRuleText,
       },
       productTitle: {
         titleKey: 'Purchase_ProductTitle',
         type: 'string',
-        readonlyIf: ({objectState}) => {
-          return objectState?.product != null;
-        },
-        requiredIf: ({objectState}) => {
-          return objectState?.product == null;
-        },
+        readonlyIf: ({objectState}) => objectState?.product != null,
+        requiredIf: ({objectState}) => objectState?.product == null,
         dependsOn: {
-          product: ({newValue}) => {
-            return newValue?.name;
-          },
+          product: ({newValue}) => newValue?.name,
         },
       },
       quantity: {

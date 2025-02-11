@@ -17,13 +17,29 @@
  */
 
 import React from 'react';
-import {HorizontalRuleText} from '@axelor/aos-mobile-ui';
+import {StyleSheet} from 'react-native';
 import {useTranslator} from '@axelor/aos-mobile-core';
+import {HorizontalRuleText} from '@axelor/aos-mobile-ui';
 
-const HorizontalOrRuleText = () => {
+const HorizontalOrRuleTextAux = ({style}: {style?: any}) => {
   const I18n = useTranslator();
 
-  return <HorizontalRuleText text={I18n.t('Purchase_Or')} />;
+  return (
+    <HorizontalRuleText
+      text={I18n.t('Purchase_Or')}
+      style={[styles.rule, style]}
+    />
+  );
 };
+
+const HorizontalOrRuleText = ({style}: {style?: any}) => {
+  return <HorizontalOrRuleTextAux style={style} />;
+};
+
+const styles = StyleSheet.create({
+  rule: {
+    width: '80%',
+  },
+});
 
 export default HorizontalOrRuleText;
