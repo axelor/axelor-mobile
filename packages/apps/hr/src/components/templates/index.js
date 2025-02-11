@@ -25,6 +25,7 @@ export {default as CurrencySearchBar} from './CurrencySearchBar/CurrencySearchBa
 export {default as DistanceIncrement} from './DistanceIncrement/DistanceIncrement';
 export {default as DraftExpensePicker} from './DraftExpensePicker/DraftExpensePicker';
 export {default as DraftTimesheetPicker} from './DraftTimesheetPicker/DraftTimesheetPicker';
+export {default as DurationIncrement} from './DurationIncrement/DurationIncrement';
 export {default as ExpenseHeader} from './ExpenseHeader/ExpenseHeader';
 export {default as ExpenseLineSwitchAdd} from './ExpenseLineSwitchAdd/ExpenseLineSwitchAdd';
 export {default as ExpenseLineTypeDisplay} from './ExpenseLineTypeDisplay/ExpenseLineTypeDisplay';

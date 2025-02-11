@@ -47,6 +47,7 @@ export {
   cancelLeave as cancelLeaveApi,
   createLeaveRequest as createLeaveRequestApi,
   deleteLeave as deleteLeaveApi,
+  fetchDuration as fetchDurationApi,
   fetchLeave as fetchLeaveApi,
   fetchLeaveById as fetchLeaveByIdApi,
   fetchLeaveReason as fetchLeaveReasonApi,

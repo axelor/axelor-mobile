@@ -37,6 +37,7 @@ import {
   LeaveStartEndOnPicker,
   LeaveReasonSearchBar,
   AvailableQtyInput,
+  DurationIncrement,
 } from '../components';
 import {updateExpenseDate} from '../features/kilometricAllowParamSlice';
 import {updateManufOrder} from '../features/manufOrderSlice';
@@ -48,7 +49,18 @@ import {
 } from '../features/distanceSlice';
 import {ExpenseLine} from '../types';
 import {checkUserImputationMode, getImputationMode} from '../utils';
-import {updateLeaveReasonSelect} from '../features/leaveSlice';
+import {fetchDuration, updateLeaveReasonSelect} from '../features/leaveSlice';
+
+const handleDurationUpdate = ({objectState, dispatch}) => {
+  dispatch(
+    (fetchDuration as any)({
+      fromDate: objectState.fromDateT,
+      startOnSelect: objectState.startOnSelect,
+      toDate: objectState.toDateT,
+      endOnSelect: objectState.endOnSelect,
+    }),
+  );
+};
 
 export const hr_formsRegister: FormConfigs = {
   hr_Expenseline: {
@@ -492,8 +504,15 @@ export const hr_formsRegister: FormConfigs = {
       duration: {
         titleKey: 'Hr_Duration',
         type: 'number',
-        widget: 'increment',
         readonly: true,
+        widget: 'custom',
+        customComponent: DurationIncrement,
+        dependsOn: {
+          fromDateT: handleDurationUpdate,
+          startOnSelect: handleDurationUpdate,
+          toDateT: handleDurationUpdate,
+          endOnSelect: handleDurationUpdate,
+        },
       },
       leaveReason: {
         titleKey: 'Hr_LeaveReason',

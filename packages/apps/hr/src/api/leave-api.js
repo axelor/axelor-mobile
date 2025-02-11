@@ -232,3 +232,22 @@ export async function createLeaveRequest({fromDate, startOnSelect, lines}) {
     description: 'create leave request',
   });
 }
+
+export async function fetchDuration({
+  fromDate,
+  startOnSelect,
+  toDate,
+  endOnSelect,
+}) {
+  return getActionApi().send({
+    url: 'ws/aos/leave-request/compute-duration',
+    method: 'post',
+    body: {
+      fromDate,
+      toDate,
+      startOnSelect,
+      endOnSelect,
+    },
+    description: 'fetch duration',
+  });
+}

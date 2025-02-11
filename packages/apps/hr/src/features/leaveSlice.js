@@ -33,6 +33,7 @@ import {
   sendLeave as _sendLeave,
   updateLeave as _updateLeave,
   validateLeave as _validateLeave,
+  fetchDuration as _fetchDuration,
 } from '../api/leave-api';
 
 export const fetchLeave = createAsyncThunk(
@@ -198,6 +199,19 @@ export const updateLeave = createAsyncThunk(
   },
 );
 
+export const fetchDuration = createAsyncThunk(
+  'hr_leave/fetchDuration',
+  async function (data, {getState}) {
+    return handlerApiCall({
+      fetchFunction: _fetchDuration,
+      data,
+      action: 'Hr_SliceAction_FetchDuration',
+      getState,
+      responseOptions: {isArrayResponse: false},
+    });
+  },
+);
+
 const initialState = {
   loadingMyLeave: true,
   moreLoadingMyLeave: false,
@@ -219,6 +233,7 @@ const initialState = {
   leaveReasonList: [],
 
   leaveReasonSelect: {},
+  duration: null,
 };
 
 const leaveSlice = createSlice({
@@ -262,6 +277,9 @@ const leaveSlice = createSlice({
     builder.addCase(fetchLeaveById.fulfilled, (state, action) => {
       state.loadingLeave = false;
       state.leave = action.payload;
+    });
+    builder.addCase(fetchDuration.fulfilled, (state, action) => {
+      state.duration = action.payload?.duration;
     });
   },
 });

@@ -55,6 +55,7 @@ export {
   cancelLeave,
   createLeaveRequest,
   deleteLeave,
+  fetchDuration,
   fetchLeave,
   fetchLeaveById,
   fetchLeaveReason,
