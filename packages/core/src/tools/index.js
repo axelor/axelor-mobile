@@ -18,6 +18,7 @@
 
 export {clipboardProvider} from './ClipboardProvider';
 export {contactProvider} from './ContactProvider';
+export {downloadFileOnPhone} from './FileDownloader';
 export {handleDocumentSelection} from './FilePicker';
 export {openFileInExternalApp} from './FileViewer';
 export {linkingProvider} from './LinkingProvider';

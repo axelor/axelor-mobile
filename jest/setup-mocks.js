@@ -164,3 +164,7 @@ jest.mock('react-native-vision-camera', () => {
 });
 
 jest.mock('@react-native-community/slider', () => 'RNSlider');
+
+jest.mock('react-native-share', () => ({
+  turboModuleRegistry: jest.fn(),
+}));
