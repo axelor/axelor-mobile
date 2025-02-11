@@ -113,9 +113,10 @@ const CompleteRequestScreen = ({}) => {
     [lines, newLine],
   );
 
-  const currentDuration = useMemo(() => {
-    return lines.reduce((_d, _c) => _d + _c, 0);
-  }, [lines]);
+  const currentDuration = useMemo(
+    () => lines.reduce((accumulator, line) => accumulator + line.qty, 0),
+    [lines],
+  );
 
   useEffect(() => {
     if (fromDate && toDate && startOn && endOn) {
@@ -124,9 +125,8 @@ const CompleteRequestScreen = ({}) => {
         toDate,
         startOnSelect: startOn,
         endOnSelect: endOn,
-        duration: currentDuration,
       })
-        .then(setMissingQty)
+        .then(duration => setMissingQty(duration - currentDuration))
         .catch(() => setMissingQty(0));
     }
   }, [currentDuration, endOn, fromDate, startOn, toDate]);
@@ -137,8 +137,10 @@ const CompleteRequestScreen = ({}) => {
         <CompleteRequestButtons
           leaveQty={leaveQty}
           hasNewLine={!!newLine}
-          hasPeriod={!!fromDate && !!toDate && !!startOn && !!endOn}
           hasLines={lines.length > 0}
+          isFinishDisabled={
+            !fromDate || !toDate || !startOn || !endOn || missingQty !== 0
+          }
           onAddPress={handleAddLine}
           onFinishPress={() => {
             dispatch(
@@ -173,10 +175,10 @@ const CompleteRequestScreen = ({}) => {
           handleEditLine={handleEditLine}
           translator={I18n.t}
         />
-        {missingQty > 0 && (
+        {missingQty !== 0 && (
           <Label
             style={styles.label}
-            message={`${I18n.t('Hr_MissingQuantity')} : ${missingQty} ${I18n.t('Hr_TimeUnit_Days')}`}
+            message={`${I18n.t(missingQty > 0 ? 'Hr_MissingQuantity' : 'Hr_ExceedingQuantity')} : ${Math.abs(missingQty)} ${I18n.t('Hr_TimeUnit_Days')}`}
             type="error"
           />
         )}
