@@ -23,8 +23,8 @@ import {Button, useThemeColor} from '@axelor/aos-mobile-ui';
 interface CompleteRequestButtonsProps {
   leaveQty: number;
   hasNewLine: boolean;
-  hasPeriod: boolean;
   hasLines: boolean;
+  isFinishDisabled: boolean;
   onAddPress: () => void;
   onFinishPress: () => void;
 }
@@ -32,8 +32,8 @@ interface CompleteRequestButtonsProps {
 const CompleteRequestButtons = ({
   leaveQty,
   hasNewLine,
-  hasPeriod,
   hasLines,
+  isFinishDisabled,
   onAddPress,
   onFinishPress,
 }: CompleteRequestButtonsProps) => {
@@ -59,7 +59,7 @@ const CompleteRequestButtons = ({
         title={I18n.t('Base_Finish')}
         iconName="check-lg"
         width="90%"
-        disabled={!hasPeriod}
+        disabled={isFinishDisabled}
         onPress={onFinishPress}
       />
     );

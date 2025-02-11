@@ -122,18 +122,20 @@ export async function fetchMissingDuration({
   toDate,
   startOnSelect,
   endOnSelect,
-  duration,
 }) {
-  return new Promise((resolve, reject) => {
-    console.log({
-      fromDate,
-      toDate,
-      startOnSelect,
-      endOnSelect,
-      duration,
-    });
-    resolve(2);
-  });
+  return getActionApi()
+    .send({
+      url: 'ws/aos/leave-request/compute-duration',
+      method: 'post',
+      body: {
+        fromDate,
+        toDate,
+        startOnSelect,
+        endOnSelect,
+      },
+      description: 'compute duration',
+    })
+    .then(res => Number(res?.data?.object?.duration));
 }
 
 export async function sendLeave({leaveRequestId, version}) {

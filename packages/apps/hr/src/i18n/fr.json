@@ -99,6 +99,7 @@
   "Hr_Quantity": "Quantité",
   "Hr_AvailableQty": "Quantité disponible",
   "Hr_MissingQuantity": "Quantité manquante",
+  "Hr_ExceedingQuantity": "Quantité en trop",
   "Hr_SliceAction_FetchExpenseLines": "récupération des lignes de frais",
   "Hr_SliceAction_SearchDraftExpense": "récupération des notes de frais brouillon",
   "Hr_SliceAction_FetchExpense": "récupération des notes de frais",
