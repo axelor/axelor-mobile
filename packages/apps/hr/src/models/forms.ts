@@ -37,6 +37,7 @@ import {
   LeaveStartEndOnPicker,
   LeaveReasonSearchBar,
   AvailableQtyInput,
+  DurationIncrement,
 } from '../components';
 import {updateExpenseDate} from '../features/kilometricAllowParamSlice';
 import {updateManufOrder} from '../features/manufOrderSlice';
@@ -503,8 +504,9 @@ export const hr_formsRegister: FormConfigs = {
       duration: {
         titleKey: 'Hr_Duration',
         type: 'number',
-        widget: 'increment',
         readonly: true,
+        widget: 'custom',
+        customComponent: DurationIncrement,
       },
       comments: {
         titleKey: 'Hr_Comments',
