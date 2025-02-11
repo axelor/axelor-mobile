@@ -46,7 +46,10 @@ const MyFavoriteDocumentsScreen = ({}) => {
     () => ({
       authorId: author?.id,
       extensions: selectedExtensions.map(_extension => _extension.key),
-      favoriteFileIds: user?.favouriteFileSet?.map(file => file.id),
+      favoriteFileIds:
+        user?.favouriteFileSet?.length > 0
+          ? user?.favouriteFileSet?.map((file: any) => file.id)
+          : [-1],
     }),
     [author?.id, selectedExtensions, user?.favouriteFileSet],
   );

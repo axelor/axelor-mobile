@@ -19,6 +19,8 @@
 export {
   addToFavorites,
   createDocument,
+  deleteDocument,
+  deleteFavoriteDocument,
   removeFromFavorites,
   searchDirectory,
   searchDocument,
