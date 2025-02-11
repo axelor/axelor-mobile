@@ -43,6 +43,8 @@
   "Base_NoAppConfigured": "Votre application n'est pas configurée, merci de contacter un administrateur.",
   "Base_MinimalRequiredVersion": "La version actuelle est en dessous de la version minimale requise, merci de mettre à jour votre application.",
   "Base_Contact_Admin": "Merci de contacter un administrateur.",
+  "Base_Version_APKDownloaded": "Le dernier APK disponible a été téléchargé, veuillez lancer la mise à jour ou contacter votre administrateur",
+  "Base_Version_APKDownloadFailed": "La tentative de téléchargement de l'APK a échouée, veuillez contacter votre administrateur pour mettre à jour votre application.",
   "Base_Unknown": "Inconnue",
   "Base_Next": "Suivant",
   "Base_Estimated": "Estimée",

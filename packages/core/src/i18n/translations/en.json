@@ -43,6 +43,8 @@
   "Base_NoAppConfigured": "No module configured on your application, please contact an administrator.",
   "Base_MinimalRequiredVersion": "The current version is below the minimum required version, please update your application.",
   "Base_Contact_Admin": "Please contact an administrator.",
+  "Base_Version_APKDownloaded": "The latest APK has been downloaded, please run the update or contact your administrator.",
+  "Base_Version_APKDownloadFailed": "The APK download attempt has failed, please contact your administrator to update your application.",
   "Base_Unknown": "Unknown",
   "Base_Next": "Next",
   "Base_Estimated": "Estimated",
