@@ -16,8 +16,9 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import LeaveListScreen from './LeaveListScreen';
 import LeaveDetailsScreen from './LeaveDetailsScreen';
+import LeaveFormScreen from './LeaveFormScreen';
+import LeaveListScreen from './LeaveListScreen';
 import CompleteRequestScreen from './CompleteRequestScreen';
 
 export default {
@@ -42,8 +43,13 @@ export default {
     component: CompleteRequestScreen,
     isUsableOnShortcut: true,
   },
+  LeaveFormScreen: {
+    title: 'Hr_LeaveRequest',
+    component: LeaveFormScreen,
+  },
 };
 
-export {LeaveListScreen};
 export {LeaveDetailsScreen};
+export {LeaveFormScreen};
+export {LeaveListScreen};
 export {CompleteRequestScreen};

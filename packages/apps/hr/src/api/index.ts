@@ -47,6 +47,7 @@ export {
   cancelLeave as cancelLeaveApi,
   createLeaveRequest as createLeaveRequestApi,
   deleteLeave as deleteLeaveApi,
+  fetchDuration as fetchDurationApi,
   fetchLeave as fetchLeaveApi,
   fetchLeaveById as fetchLeaveByIdApi,
   fetchLeaveReason as fetchLeaveReasonApi,
@@ -54,6 +55,7 @@ export {
   fetchMissingDuration as fetchMissingDurationApi,
   rejectLeave as rejectLeaveApi,
   sendLeave as sendLeaveApi,
+  updateLeave as updateLeaveApi,
   validateLeave as validateLeaveApi,
 } from './leave-api';
 export {

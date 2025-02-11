@@ -55,12 +55,14 @@ export {
   cancelLeave,
   createLeaveRequest,
   deleteLeave,
+  fetchDuration,
   fetchLeave,
   fetchLeaveById,
   fetchLeaveReason,
   fetchLeaveToValidate,
   rejectLeave,
   sendLeave,
+  updateLeave,
   validateLeave,
 } from './leaveSlice';
 export {

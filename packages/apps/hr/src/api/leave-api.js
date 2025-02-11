@@ -19,6 +19,7 @@
 import {
   createStandardFetch,
   createStandardSearch,
+  formatRequestBody,
   getActionApi,
   getSearchCriterias,
   getTypes,
@@ -195,6 +196,24 @@ export async function deleteLeave({leaveRequestId}) {
   });
 }
 
+export async function updateLeave({leave}) {
+  const {matchers} = formatRequestBody(leave, 'data');
+
+  return getActionApi().send({
+    url: '/ws/rest/com.axelor.apps.hr.db.LeaveRequest',
+    method: 'post',
+    body: {
+      data: leave,
+    },
+    description: 'update leave',
+    matchers: {
+      modelName: 'com.axelor.apps.crm.db.Opportunity',
+      id: leave.id,
+      fields: matchers,
+    },
+  });
+}
+
 export async function createLeaveRequest({fromDate, startOnSelect, lines}) {
   const requests = lines.map(line => ({
     leaveReasonId: line.id,
@@ -211,5 +230,24 @@ export async function createLeaveRequest({fromDate, startOnSelect, lines}) {
       requests,
     },
     description: 'create leave request',
+  });
+}
+
+export async function fetchDuration({
+  fromDate,
+  startOnSelect,
+  toDate,
+  endOnSelect,
+}) {
+  return getActionApi().send({
+    url: 'ws/aos/leave-request/compute-duration',
+    method: 'post',
+    body: {
+      fromDate,
+      toDate,
+      startOnSelect,
+      endOnSelect,
+    },
+    description: 'fetch duration',
   });
 }

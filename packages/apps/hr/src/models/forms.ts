@@ -34,6 +34,10 @@ import {
   ProjectTaskSearchBar,
   TimerStopwatch,
   ToggleSwitchMode,
+  LeaveStartEndOnPicker,
+  LeaveReasonSearchBar,
+  AvailableQtyInput,
+  DurationIncrement,
 } from '../components';
 import {updateExpenseDate} from '../features/kilometricAllowParamSlice';
 import {updateManufOrder} from '../features/manufOrderSlice';
@@ -45,6 +49,18 @@ import {
 } from '../features/distanceSlice';
 import {ExpenseLine} from '../types';
 import {checkUserImputationMode, getImputationMode} from '../utils';
+import {fetchDuration, updateLeaveReasonSelect} from '../features/leaveSlice';
+
+const handleDurationUpdate = ({objectState, dispatch}) => {
+  dispatch(
+    (fetchDuration as any)({
+      fromDate: objectState.fromDateT,
+      startOnSelect: objectState.startOnSelect,
+      toDate: objectState.toDateT,
+      endOnSelect: objectState.endOnSelect,
+    }),
+  );
+};
 
 export const hr_formsRegister: FormConfigs = {
   hr_Expenseline: {
@@ -449,6 +465,81 @@ export const hr_formsRegister: FormConfigs = {
         type: 'object',
         widget: 'custom',
         customComponent: TimerStopwatch,
+      },
+    },
+  },
+  hr_Leave: {
+    modelName: 'com.axelor.apps.hr.db.LeaveRequest',
+    fields: {
+      fromDateT: {
+        titleKey: 'Base_StartDate',
+        type: 'datetime',
+        widget: 'date',
+        required: true,
+      },
+      startOnSelect: {
+        type: 'string',
+        widget: 'custom',
+        customComponent: LeaveStartEndOnPicker,
+        options: {
+          mode: 'startOn',
+        },
+        required: true,
+      },
+      toDateT: {
+        titleKey: 'Base_EndDate',
+        type: 'datetime',
+        widget: 'date',
+        required: true,
+      },
+      endOnSelect: {
+        type: 'string',
+        widget: 'custom',
+        customComponent: LeaveStartEndOnPicker,
+        options: {
+          mode: 'endOn',
+        },
+        required: true,
+      },
+      duration: {
+        titleKey: 'Hr_Duration',
+        type: 'number',
+        readonly: true,
+        widget: 'custom',
+        customComponent: DurationIncrement,
+        dependsOn: {
+          fromDateT: handleDurationUpdate,
+          startOnSelect: handleDurationUpdate,
+          toDateT: handleDurationUpdate,
+          endOnSelect: handleDurationUpdate,
+        },
+      },
+      leaveReason: {
+        titleKey: 'Hr_LeaveReason',
+        type: 'object',
+        widget: 'custom',
+        customComponent: LeaveReasonSearchBar,
+      },
+      availableQty: {
+        titleKey: 'Hr_AvailableQty',
+        type: 'number',
+        widget: 'custom',
+        customComponent: AvailableQtyInput,
+        dependsOn: {
+          leaveReason: ({newValue, dispatch}) => {
+            dispatch(updateLeaveReasonSelect(newValue));
+          },
+        },
+      },
+      comments: {
+        titleKey: 'Hr_Comments',
+        type: 'string',
+        widget: 'default',
+        options: {
+          multiline: true,
+          adjustHeightWithLines: true,
+          style: {marginBottom: 100, width: '90%', alignSelf: 'center'},
+        },
       },
     },
   },

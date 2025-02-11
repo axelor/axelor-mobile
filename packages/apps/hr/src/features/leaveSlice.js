@@ -31,7 +31,9 @@ import {
   fetchLeaveToValidate as _fetchLeaveToValidate,
   rejectLeave as _rejectLeave,
   sendLeave as _sendLeave,
+  updateLeave as _updateLeave,
   validateLeave as _validateLeave,
+  fetchDuration as _fetchDuration,
 } from '../api/leave-api';
 
 export const fetchLeave = createAsyncThunk(
@@ -182,6 +184,34 @@ export const createLeaveRequest = createAsyncThunk(
   },
 );
 
+export const updateLeave = createAsyncThunk(
+  'hr_leave/updateLeave',
+  async function (data, {getState, dispatch}) {
+    return handlerApiCall({
+      fetchFunction: _updateLeave,
+      data,
+      action: 'Hr_SliceAction_UpdateLeave',
+      getState,
+      responseOptions: {isArrayResponse: false},
+    }).then(() => {
+      dispatch(fetchLeave({userId: data.userId}));
+    });
+  },
+);
+
+export const fetchDuration = createAsyncThunk(
+  'hr_leave/fetchDuration',
+  async function (data, {getState}) {
+    return handlerApiCall({
+      fetchFunction: _fetchDuration,
+      data,
+      action: 'Hr_SliceAction_FetchDuration',
+      getState,
+      responseOptions: {isArrayResponse: false},
+    });
+  },
+);
+
 const initialState = {
   loadingMyLeave: true,
   moreLoadingMyLeave: false,
@@ -201,11 +231,19 @@ const initialState = {
   moreLoadingLeaveReason: false,
   isListEndLeaveReason: false,
   leaveReasonList: [],
+
+  leaveReasonSelect: {},
+  duration: null,
 };
 
 const leaveSlice = createSlice({
   name: 'hr_leave',
   initialState,
+  reducers: {
+    updateLeaveReasonSelect: (state, action) => {
+      state.leaveReasonSelect = action.payload;
+    },
+  },
   extraReducers: builder => {
     generateInifiniteScrollCases(builder, fetchLeave, {
       loading: 'loadingMyLeave',
@@ -240,7 +278,12 @@ const leaveSlice = createSlice({
       state.loadingLeave = false;
       state.leave = action.payload;
     });
+    builder.addCase(fetchDuration.fulfilled, (state, action) => {
+      state.duration = action.payload?.duration;
+    });
   },
 });
+
+export const {updateLeaveReasonSelect} = leaveSlice.actions;
 
 export const leaveReducer = leaveSlice.reducer;
