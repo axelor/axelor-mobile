@@ -17,6 +17,7 @@
  */
 
 export {default as CompanyPicker} from './CompanyPicker/CompanyPicker';
+export {default as HorizontalOrRuleText} from './HorizontalOrRuleText/HorizontalOrRuleText';
 export {default as ProductSearchBar} from './ProductSearchBar/ProductSearchBar';
 export {default as RequestCreationButtons} from './RequestCreationButtons/RequestCreationButtons';
 export {default as RequestCreationQuantityCard} from './RequestCreationQuantityCard/RequestCreationQuantityCard';

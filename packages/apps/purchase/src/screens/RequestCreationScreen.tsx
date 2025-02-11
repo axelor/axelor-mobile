@@ -21,7 +21,6 @@ import {StyleSheet} from 'react-native';
 import {
   FormHtmlInput,
   FormInput,
-  HorizontalRuleText,
   KeyboardAvoidingScrollView,
   Screen,
   ViewAllEditList,
@@ -30,6 +29,7 @@ import {useSelector, useTranslator} from '@axelor/aos-mobile-core';
 import {RequestCreation} from '../types';
 import {
   CompanyPicker,
+  HorizontalOrRuleText,
   ProductSearchBar,
   RequestCreationButtons,
   RequestCreationQuantityCard,
@@ -162,7 +162,7 @@ const RequestCreationScreen = () => {
           onChange={handleProductChange}
           defaultValue={newLine}
         />
-        <HorizontalRuleText text={I18n.t('Purchase_Or')} style={styles.rule} />
+        <HorizontalOrRuleText />
         <FormInput
           readOnly={!isCustomProduct && newLine != null}
           title={I18n.t('Purchase_ProductTitle')}
@@ -191,9 +191,6 @@ const styles = StyleSheet.create({
   container: {
     alignItems: 'center',
     paddingTop: 10,
-  },
-  rule: {
-    width: '80%',
   },
 });
 

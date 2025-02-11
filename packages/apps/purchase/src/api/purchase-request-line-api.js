@@ -17,7 +17,10 @@
  */
 
 import {
+  createStandardFetch,
   createStandardSearch,
+  formatRequestBody,
+  getActionApi,
   getSearchCriterias,
 } from '@axelor/aos-mobile-core';
 
@@ -62,5 +65,61 @@ export async function searchPurchaseRequestLine({
     fieldKey: 'purchase_purchaseRequestLine',
     sortKey: 'purchase_purchaseRequestLine',
     page,
+  });
+}
+
+export async function fetchPurchaseRequestLine({id}) {
+  return createStandardFetch({
+    model: 'com.axelor.apps.purchase.db.PurchaseRequestLine',
+    id,
+    fieldKey: 'purchase_purchaseRequestLine',
+  });
+}
+
+export async function createPurchaseRequestLine({
+  purchaseRequestId,
+  purchaseRequestVersion,
+  purchaseRequestLine,
+}) {
+  return getActionApi().send({
+    url: `ws/aos/purchase-request/add-line/${purchaseRequestId}`,
+    method: 'put',
+    body: {
+      version: purchaseRequestVersion,
+      productId: purchaseRequestLine.product?.id,
+      productTitle: purchaseRequestLine.productTitle,
+      unitId: purchaseRequestLine.unit?.id,
+      quantity: purchaseRequestLine.quantity,
+    },
+    description: 'create purchase request line',
+    matchers: {
+      modelName: 'com.axelor.apps.purchase.db.PurchaseRequestLine',
+      id: Date.now(),
+      fields: {
+        productId: 'product.id',
+        unitId: 'unit.id',
+      },
+    },
+  });
+}
+
+export async function updatePurchaseRequestLine({purchaseRequestLine}) {
+  const {matchers} = formatRequestBody(purchaseRequestLine, 'data');
+
+  return getActionApi().send({
+    url: '/ws/rest/com.axelor.apps.purchase.db.PurchaseRequestLine',
+    method: 'post',
+    body: {
+      data: {
+        ...purchaseRequestLine,
+        newProduct: purchaseRequestLine.product == null,
+      },
+    },
+    description: 'update purchase request line',
+    matchers: {
+      modelName: 'com.axelor.apps.purchase.db.PurchaseRequestLine',
+      id: purchaseRequestLine.id,
+      fields: matchers,
+    },
   });
 }
