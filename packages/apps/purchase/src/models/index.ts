@@ -16,6 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+export {purchase_formsRegister} from './forms';
 export {purchase_searchFields} from './searchFields';
 export {purchase_sortFields} from './sortFields';
 export {purchase_modelAPI} from './objectFields';

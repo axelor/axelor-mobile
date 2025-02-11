@@ -17,7 +17,12 @@
  */
 
 export {searchProduct} from './productSlice';
-export {searchPurchaseRequestLine} from './purchaseRequestLineSlice';
+export {
+  createPurchaseRequestLine,
+  fetchPurchaseRequestLine,
+  searchPurchaseRequestLine,
+  updatePurchaseRequestLine,
+} from './purchaseRequestLineSlice';
 export {
   getPurchaseRequest,
   searchPurchaseRequest,
