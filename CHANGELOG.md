@@ -3,6 +3,30 @@ title: 8.0.0
 tags: Changelog
 ---
 
+## [8.0.20] (2025-02-12)
+
+### @axelor/aos-mobile-core
+
+#### Changes
+
+- Zebra scanner: add Datawedge profile creation management
+
+<details>
+Based on the application name and bundle id, the Scanner component is now dynamically creating the Datawegde profile with the correct configuration. Caution, if you modified the bundle id compared to the standard application, then your action intent was also modified to match the bundle id. To correctly get this functionnality, please delete your current Datawedge profile and let the application recreate a new one with the right configutation.
+</details>
+
+### @axelor/aos-mobile-ui
+
+#### Fixes
+
+- FormIncrementInput: add callback on blur and focus functions to avoid useless refresh
+
+### @axelor/aos-mobile-hr
+
+#### Fixes
+
+- Distance input: add spacer translations to avoid undefined issue on format
+
 ## [8.0.19] (2025-01-30)
 
 ### @axelor/aos-mobile-core
@@ -76,7 +100,6 @@ tags: Changelog
 <details>
 There was a performance problem on the screens requiring the product indicators. To solve this slow performance problem, product indicators are now retrieved from the card component in the background. The old way of working retrieved the indicators for all the products in the list each time they were updated, before displaying them, which is rather cumbersome and shouldn't be used. The functions concerned have been removed. 
 </details>
-
 
 ## [8.0.16] (2024-11-26)
 
@@ -680,6 +703,7 @@ Changes has been done to get new core and ui improvements: use of ChipSelect, co
 
 Changes has been done to get new core and ui improvements: use of ChipSelect, color differentiation between success and primary, definition of required configs, use of icons for Bootstrap
 
+[8.0.20]: https://github.com/axelor/axelor-mobile/compare/8.0.19...8.0.20
 [8.0.19]: https://github.com/axelor/axelor-mobile/compare/8.0.18...8.0.19
 [8.0.18]: https://github.com/axelor/axelor-mobile/compare/8.0.17...8.0.18
 [8.0.17]: https://github.com/axelor/axelor-mobile/compare/8.0.16...8.0.17

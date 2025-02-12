@@ -1,5 +1,0 @@
-{
-  "title": "FormIncrementInput: add callback on blur and focus functions to avoid useless refresh",
-  "type": "fix",
-  "packages": "ui"
-}
