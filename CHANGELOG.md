@@ -3,6 +3,19 @@ title: 7.0.0
 tags: Changelog
 ---
 
+## [7.0.30] (2025-02-12)
+
+### @axelor/aos-mobile-core
+
+#### Changes
+
+- Scanner: add Datawedge profile creation management
+
+<details>
+Based on the application name and bundle id, the Scanner component is now dynamically creating the Datawegde profile with the correct configuration. Caution, if you modified the bundle id compared to the standard application, then your action intent was also modified to match the bundle id. To correctly get this functionnality, please delete your current Datawedge profile and let the application recreate a new one with the right configutation.
+</details>
+
+
 ## [7.0.29] (2025-01-30)
 
 ### @axelor/aos-mobile-core
@@ -794,6 +807,7 @@ The project architecture has also been updated, the example folder has been expl
 - Replace ChipSelect by MultiValuePicker on list screens
 - Add search bar details pop up on screens: add empowered searchBar for objects
 
+[7.0.30]: https://github.com/axelor/axelor-mobile/compare/7.0.29...7.0.30
 [7.0.29]: https://github.com/axelor/axelor-mobile/compare/7.0.28...7.0.29
 [7.0.28]: https://github.com/axelor/axelor-mobile/compare/7.0.27...7.0.28
 [7.0.27]: https://github.com/axelor/axelor-mobile/compare/7.0.26...7.0.27
