@@ -28,13 +28,15 @@ import {
 } from '@axelor/aos-mobile-core';
 import {Button, useThemeColor} from '@axelor/aos-mobile-ui';
 import {
+  cancelExpense,
   deleteExpense,
+  returnToDraftStatusExpense,
   sendExpense,
   validateExpense,
 } from '../../../features/expenseSlice';
 import {ExpenseRefusalPopup} from '../../templates';
 
-const ExpenseDetailsValidationButton = ({expense, mode, isManualCreation}) => {
+const ExpenseDetailsValidationButton = ({expense, mode}) => {
   const navigation = useNavigation();
   const Colors = useThemeColor();
   const I18n = useTranslator();
@@ -50,7 +52,7 @@ const ExpenseDetailsValidationButton = ({expense, mode, isManualCreation}) => {
 
   const sendExpenseAPI = useCallback(() => {
     dispatch(
-      sendExpense({
+      (sendExpense as any)({
         expenseId: expense.id,
         version: expense.version,
         onExpense: true,
@@ -60,7 +62,7 @@ const ExpenseDetailsValidationButton = ({expense, mode, isManualCreation}) => {
 
   const validateExpenseAPI = useCallback(() => {
     dispatch(
-      validateExpense({
+      (validateExpense as any)({
         expenseId: expense.id,
         version: expense.version,
         onExpense: true,
@@ -70,9 +72,42 @@ const ExpenseDetailsValidationButton = ({expense, mode, isManualCreation}) => {
   }, [dispatch, mode, expense]);
 
   const deleteExpenseAPI = useCallback(() => {
-    dispatch(deleteExpense({expenseId: expense.id, userId: user.id}));
+    dispatch((deleteExpense as any)({expenseId: expense.id, userId: user.id}));
     navigation.pop();
   }, [dispatch, expense.id, navigation, user.id]);
+
+  const cancelExpenseAPI = useCallback(() => {
+    dispatch(
+      (cancelExpense as any)({
+        expenseId: expense.id,
+        version: expense.version,
+        mode,
+        user,
+      }),
+    );
+  }, [dispatch, expense, mode, user]);
+
+  const returnToDraftStatusExpenseAPI = useCallback(() => {
+    dispatch(
+      (returnToDraftStatusExpense as any)({
+        expenseId: expense.id,
+        version: expense.version,
+        user,
+      }),
+    );
+  }, [dispatch, expense, user]);
+
+  const rendreCancelButton = width => {
+    return (
+      <Button
+        title={I18n.t('Base_Cancel')}
+        onPress={cancelExpenseAPI}
+        width={width}
+        color={Colors.errorColor}
+        iconName="x-lg"
+      />
+    );
+  };
 
   if (readonly) {
     return null;
@@ -83,48 +118,74 @@ const ExpenseDetailsValidationButton = ({expense, mode, isManualCreation}) => {
       <View style={styles.buttonContainer}>
         {canDelete && (
           <Button
-            title={I18n.t(isManualCreation ? 'Base_Cancel' : 'Hr_Delete')}
+            title={I18n.t('Hr_Delete')}
             onPress={deleteExpenseAPI}
             width="45%"
             color={Colors.errorColor}
-            iconName={isManualCreation ? 'x-lg' : 'trash3-fill'}
+            iconName={'trash3-fill'}
           />
         )}
+        {rendreCancelButton('45%')}
         <Button
           title={I18n.t('Hr_Send')}
           onPress={sendExpenseAPI}
-          width="45%"
+          width={canDelete ? '94%' : '45%'}
           iconName="send-fill"
         />
       </View>
     );
   }
 
+  if (expense.statusSelect === Expense?.statusSelect.WaitingValidation) {
+    return (
+      <View style={styles.buttonContainer}>
+        {(user?.employee?.hrManager ||
+          expense.employee?.managerUser?.id === user.id) && (
+          <>
+            <Button
+              title={I18n.t('Hr_Refuse')}
+              onPress={() => setRefusalPopupIsOpen(true)}
+              color={Colors.errorColor}
+              width="45%"
+              iconName="ban"
+            />
+            <ExpenseRefusalPopup
+              isOpen={refusalPopupIsOpen}
+              expense={expense}
+              expenseMode={mode}
+              onCancel={() => setRefusalPopupIsOpen(false)}
+            />
+            <Button
+              title={I18n.t('Hr_Validate')}
+              onPress={validateExpenseAPI}
+              width="45%"
+              iconName="check-lg"
+            />
+          </>
+        )}
+        {rendreCancelButton('94%')}
+      </View>
+    );
+  }
+
+  if (expense.statusSelect === Expense?.statusSelect.Validate) {
+    return (
+      <View style={styles.buttonContainer}>{rendreCancelButton('94%')}</View>
+    );
+  }
+
   if (
-    (user?.employee?.hrManager ||
-      expense.employee?.managerUser?.id === user.id) &&
-    expense.statusSelect === Expense?.statusSelect.WaitingValidation
+    expense.statusSelect === Expense?.statusSelect.Refused ||
+    expense.statusSelect === Expense?.statusSelect.Canceled
   ) {
     return (
       <View style={styles.buttonContainer}>
         <Button
-          title={I18n.t('Hr_Refuse')}
-          onPress={() => setRefusalPopupIsOpen(true)}
-          color={Colors.errorColor}
-          width="45%"
-          iconName="x-lg"
-        />
-        <ExpenseRefusalPopup
-          isOpen={refusalPopupIsOpen}
-          expense={expense}
-          expenseMode={mode}
-          onCancel={() => setRefusalPopupIsOpen(false)}
-        />
-        <Button
-          title={I18n.t('Hr_Validate')}
-          onPress={validateExpenseAPI}
-          width="45%"
-          iconName="check-lg"
+          title={I18n.t('Hr_ReturnToDraftStatus')}
+          onPress={returnToDraftStatusExpenseAPI}
+          width="94%"
+          color={Colors.primaryColor}
+          iconName="reply-fill"
         />
       </View>
     );
@@ -135,6 +196,7 @@ const ExpenseDetailsValidationButton = ({expense, mode, isManualCreation}) => {
 
 const styles = StyleSheet.create({
   buttonContainer: {
+    flexWrap: 'wrap',
     flexDirection: 'row',
     justifyContent: 'space-evenly',
   },

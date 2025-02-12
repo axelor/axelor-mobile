@@ -39,7 +39,7 @@ import {
 import {ExpenseLine} from '../../types';
 
 const ExpenseDetailsScreen = ({route, navigation}) => {
-  const {idExpense, expenseMode, isManualCreation} = route.params;
+  const {idExpense, expenseMode} = route.params;
   const I18n = useTranslator();
   const dispatch = useDispatch();
 
@@ -110,11 +110,7 @@ const ExpenseDetailsScreen = ({route, navigation}) => {
     <Screen
       removeSpaceOnTop={true}
       fixedItems={
-        <ExpenseDetailsValidationButton
-          expense={expense}
-          mode={expenseMode}
-          isManualCreation={isManualCreation}
-        />
+        <ExpenseDetailsValidationButton expense={expense} mode={expenseMode} />
       }>
       <HeaderContainer
         expandableFilter={false}
