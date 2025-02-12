@@ -128,6 +128,7 @@ export const stock_modelAPI: ObjectFields = {
     realQty: schemaContructor.number(),
     description: schemaContructor.string(),
     rack: schemaContructor.string(),
+    stockLocation: schemaContructor.subObject('name'),
   }),
   stock_partner: schemaContructor.object({
     partnerSeq: schemaContructor.string(),

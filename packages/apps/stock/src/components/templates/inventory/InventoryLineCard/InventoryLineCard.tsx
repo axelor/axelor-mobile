@@ -34,6 +34,7 @@ interface InventoryLineCardProps {
   unit: string;
   trackingNumber?: {trackingNumberSeq: string};
   locker?: string;
+  stockLocationName?: string;
   onPress: () => void;
 }
 
@@ -45,6 +46,7 @@ const InventoryLineCard = ({
   unit,
   trackingNumber,
   locker,
+  stockLocationName,
   onPress,
 }: InventoryLineCardProps) => {
   const Colors = useThemeColor();
@@ -88,6 +90,11 @@ const InventoryLineCard = ({
             indicatorText: `${I18n.t('Stock_TrackingNumber')} :`,
             hideIf: trackingNumber?.trackingNumberSeq == null,
             iconName: 'qr-code',
+          },
+          {
+            indicatorText: stockLocationName,
+            hideIfNull: true,
+            iconName: 'house',
           },
         ],
       }}
