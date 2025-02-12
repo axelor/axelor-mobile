@@ -17,14 +17,20 @@
  */
 
 import React, {useMemo} from 'react';
-import {StyleSheet} from 'react-native';
-import {PeriodDisplay, useTypeHelpers, useTypes} from '@axelor/aos-mobile-core';
+import {Dimensions, StyleSheet} from 'react-native';
+import {
+  AnomalyBubble,
+  PeriodDisplay,
+  useTypeHelpers,
+  useTypes,
+} from '@axelor/aos-mobile-core';
 import {ObjectCard, TextUnit} from '@axelor/aos-mobile-ui';
 import {Leave} from '../../../types';
 
 interface LeaveCardProps {
   style?: any;
   mode: number;
+  leaveId: number;
   statusSelect: number;
   startDate: string;
   endDate: string;
@@ -39,6 +45,7 @@ interface LeaveCardProps {
 const LeaveCard = ({
   style,
   mode,
+  leaveId,
   statusSelect,
   startDate,
   endDate,
@@ -97,6 +104,17 @@ const LeaveCard = ({
               />
             ),
           },
+          {
+            customComponent: (
+              <AnomalyBubble
+                style={styles.anoBubble}
+                textIndicationStyle={styles.anoBubbleText}
+                indicatorPosition="left"
+                objectName="leave-request"
+                objectId={leaveId}
+              />
+            ),
+          },
         ],
       }}
     />
@@ -115,6 +133,15 @@ const getStyles = color =>
     },
     textUnit: {
       alignSelf: 'flex-end',
+    },
+    anoBubble: {
+      position: 'absolute',
+      right: 0,
+      bottom: 0,
+    },
+    anoBubbleText: {
+      width: Dimensions.get('window').width * 0.6,
+      bottom: 0,
     },
   });
 

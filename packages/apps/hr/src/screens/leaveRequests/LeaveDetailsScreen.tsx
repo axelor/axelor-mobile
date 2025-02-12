@@ -19,6 +19,7 @@
 import React, {useCallback, useEffect, useMemo} from 'react';
 import {StyleSheet} from 'react-native';
 import {
+  AnomalyList,
   formatDate,
   formatDateTime,
   useDispatch,
@@ -75,6 +76,7 @@ const LeaveDetailsScreen = ({route}) => {
         expandableFilter={false}
         fixedItems={<LeaveDetailsHeader leave={leave} />}
       />
+      <AnomalyList objectName="leave-request" objectId={leave.id} />
       <ScrollView
         style={styles.container}
         refresh={{loading: loadingLeave, fetcher: fetchLeave}}>
