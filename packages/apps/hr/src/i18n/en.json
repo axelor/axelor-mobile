@@ -100,6 +100,7 @@
   "Hr_AvailableQty": "Available quantity",
   "Hr_MissingQuantity": "Missing quantity",
   "Hr_ExceedingQuantity": "Exceeding quantity",
+  "Hr_ReturnToDraftStatus": "Return to draft status",
   "Hr_SliceAction_FetchExpenseLines": "fetch expense lines",
   "Hr_SliceAction_SearchDraftExpense": "fetch draft expenses",
   "Hr_SliceAction_FetchExpense": "fetch expenses",
@@ -160,5 +161,7 @@
   "Hr_SliceAction_CancelLeave": "cancel leave",
   "Hr_SliceAction_RejectLeave": "reject leave",
   "Hr_SliceAction_DeleteLeave": "delete leave",
-  "Hr_SliceAction_CreateLeaveRequest": "create leave requests"
+  "Hr_SliceAction_CreateLeaveRequest": "create leave requests",
+  "Hr_SliceAction_CancelExpense": "cancel expense",
+  "Hr_SliceAction_ReturnToDraftStatusExpense": "return expense to draft status"
 }

@@ -34,11 +34,13 @@ export {
   updateExpenseLine,
 } from './expenseLineSlice';
 export {
+  cancelExpense,
   createExpense,
   deleteExpense,
   fetchExpenseById,
   quickCreateExpense,
   refuseExpense,
+  returnToDraftStatusExpense,
   searchExpenseDraft,
   searchExpenseToValidate,
   searchMyExpense,
