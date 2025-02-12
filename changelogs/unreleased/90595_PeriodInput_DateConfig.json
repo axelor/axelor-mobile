@@ -1,5 +1,0 @@
-{
-  "title": "PeriodInput: add props dateInputMode and nullable on date config",
-  "type": "feat",
-  "packages": "core"
-}

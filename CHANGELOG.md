@@ -3,6 +3,41 @@ title: 8.2.0
 tags: Changelog
 ---
 
+## [8.2.7] (2025-02-12)
+
+### @axelor/aos-mobile-core
+
+#### Features
+
+- PeriodInput: add props dateInputMode and nullable on date config
+- PeriodInput: add new props to detect error from outside
+
+#### Changes
+
+- Zebra scanner: add Datawedge profile creation management
+
+<details>
+Based on the application name and bundle id, the Scanner component is now dynamically creating the Datawegde profile with the correct configuration. Caution, if you modified the bundle id compared to the standard application, then your action intent was also modified to match the bundle id. To correctly get this functionnality, please delete your current Datawedge profile and let the application recreate a new one with the right configutation.
+</details>
+
+### @axelor/aos-mobile-ui
+
+#### Fixes
+
+- FormIncrementInput: add callback on blur and focus functions to avoid useless refresh
+
+### @axelor/aos-mobile-hr
+
+#### Fixes
+
+- Distance input: add spacer translations to avoid undefined issue on format
+
+### @axelor/aos-mobile-crm
+
+#### Changes
+
+- Event form: replace start and end dates inputs by PeriodInput component
+
 ## [8.2.6] (2025-01-30)
 
 ### @axelor/aos-mobile-core
@@ -389,6 +424,7 @@ This package is linked with the @axelor/aos-mobile-hr to manage time logging.
 
 - Supplier arrival: add possibility to fill origin when creating or selecting tracking number
 
+[8.2.7]: https://github.com/axelor/axelor-mobile/compare/8.2.6...8.2.7
 [8.2.6]: https://github.com/axelor/axelor-mobile/compare/8.2.5...8.2.6
 [8.2.5]: https://github.com/axelor/axelor-mobile/compare/8.2.4...8.2.5
 [8.2.4]: https://github.com/axelor/axelor-mobile/compare/8.2.3...8.2.4
