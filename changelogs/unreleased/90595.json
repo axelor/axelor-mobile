@@ -1,5 +1,0 @@
-{
-  "title": "Event form: replace start and end dates inputs by PeriodInput component",
-  "type": "refactor",
-  "packages": "crm"
-}
