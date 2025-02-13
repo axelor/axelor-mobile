@@ -70,7 +70,11 @@ export async function searchStockLocationLine({
   });
 }
 
-const createAvailableProductsCriteria = ({stockLocationId, searchValue}) => {
+const createAvailableProductsCriteria = ({
+  stockLocationId,
+  searchValue,
+  alternativeBarcodeList,
+}) => {
   let criterias = [
     {
       operator: 'or',
@@ -113,6 +117,20 @@ const createAvailableProductsCriteria = ({stockLocationId, searchValue}) => {
     getSearchCriterias('stock_stockLocationLine', searchValue),
   ];
 
+  if (
+    Array.isArray(alternativeBarcodeList) &&
+    alternativeBarcodeList.length > 0
+  ) {
+    criterias.push({
+      operator: 'or',
+      criteria: alternativeBarcodeList.map(barcode => ({
+        fieldName: 'product.id',
+        operator: '=',
+        value: barcode.product.id,
+      })),
+    });
+  }
+
   return criterias;
 };
 
@@ -120,12 +138,14 @@ export async function searchAvailableProducts({
   stockLocationId,
   searchValue,
   page = 0,
+  alternativeBarcodeList,
 }) {
   return createStandardSearch({
     model: 'com.axelor.apps.stock.db.StockLocationLine',
     criteria: createAvailableProductsCriteria({
       stockLocationId,
       searchValue,
+      alternativeBarcodeList,
     }),
     fieldKey: 'stock_availableProducts',
     sortKey: 'stock_availableProducts',
