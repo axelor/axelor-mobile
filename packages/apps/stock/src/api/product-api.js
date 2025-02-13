@@ -77,7 +77,6 @@ export async function searchProductsFilter({
     sortKey: 'stock_product',
     page,
     provider: 'model',
-    relatedFields: {alternativeBarcodeList: ['serialNumber']},
   });
 }
 
@@ -87,7 +86,6 @@ export async function searchProductWithId(productId) {
     id: productId,
     fieldKey: 'stock_product',
     provider: 'model',
-    relatedFields: {alternativeBarcodeList: ['serialNumber']},
   });
 }
 
