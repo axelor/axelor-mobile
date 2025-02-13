@@ -24,9 +24,7 @@ import {ScannerAutocompleteSearch} from '../../organisms';
 import {InputBarCodeCard} from '../../molecules';
 import {useTranslator} from '../../../i18n/';
 
-const barCodeScanKey = 'stock_alt-serial-number';
-
-interface SearchListAlternativeBarCodeProps {
+interface DoubleScannerSearchBarProps {
   showTitle?: boolean;
   title?: string;
   list: any[];
@@ -38,7 +36,9 @@ interface SearchListAlternativeBarCodeProps {
   sliceFunctionData?: Object;
   displayValue?: (value: any) => string;
   placeholderSearchBar?: string;
+  placeholerBarCode?: string;
   scanKeySearch?: string;
+  scanKeyBarCode?: string;
   isFocus?: boolean;
   changeScreenAfter?: boolean;
   navigate?: boolean;
@@ -55,7 +55,7 @@ interface SearchListAlternativeBarCodeProps {
   sliceFunctionBarCodeData: Object;
 }
 
-const SearchListAlternativeBarCode = ({
+const DoubleScannerSearchBar = ({
   style = null,
   title = '',
   showTitle = false,
@@ -81,7 +81,9 @@ const SearchListAlternativeBarCode = ({
   isFocus = true,
   changeScreenAfter,
   navigate,
-}: SearchListAlternativeBarCodeProps) => {
+  scanKeyBarCode,
+  placeholerBarCode,
+}: DoubleScannerSearchBarProps) => {
   const dispatch = useDispatch();
   const I18n = useTranslator();
 
@@ -152,9 +154,11 @@ const SearchListAlternativeBarCode = ({
         />
         <InputBarCodeCard
           style={styles.inputCode}
-          placeholder={I18n.t('Base_AltseriaNo')}
+          placeholder={
+            placeholerBarCode ? placeholerBarCode : I18n.t('Base_AltseriaNo')
+          }
           onChange={handleChangeBarCode}
-          scanKeySearch={barCodeScanKey}
+          scanKeySearch={scanKeyBarCode}
         />
       </View>
     </View>
@@ -182,4 +186,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default SearchListAlternativeBarCode;
+export default DoubleScannerSearchBar;

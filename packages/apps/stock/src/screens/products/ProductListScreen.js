@@ -23,13 +23,14 @@ import {
   SearchListView,
   useSelector,
   useTranslator,
-  SearchListAlternativeBarCode,
+  DoubleScannerSearchBar,
 } from '@axelor/aos-mobile-core';
 import {ProductCard} from '../../components';
 import {searchProducts} from '../../features/productSlice';
 import {searchAlternativeBarcode} from '../../features/alternativeBarcodeSlice';
 
 const productScanKey = 'product_product-list';
+const barCodeScanKey = 'product_bar-code';
 
 const ProductListScreen = ({navigation}) => {
   const I18n = useTranslator();
@@ -61,7 +62,7 @@ const ProductListScreen = ({navigation}) => {
 
   return (
     <Screen removeSpaceOnTop={true}>
-      <SearchListAlternativeBarCode
+      <DoubleScannerSearchBar
         sliceFunction={searchProducts}
         sliceFunctionData={sliceFunctionData}
         list={productList}
@@ -72,6 +73,8 @@ const ProductListScreen = ({navigation}) => {
         displayValue={displayItemName}
         sliceBarCodeFunction={searchAlternativeBarcode}
         oneFilter={true}
+        scanKeySearch={productScanKey}
+        scanKeyBarCode={barCodeScanKey}
       />
       <SearchListView
         list={productList}
