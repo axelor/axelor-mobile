@@ -162,6 +162,9 @@ export const stock_modelAPI: ObjectFields = {
     serialNumber: schemaContructor.string(),
     parentProduct: schemaContructor.subObject('fileName'),
     productVariant: schemaContructor.subObject('name'),
+    alternativeBarcodeList: schemaContructor
+      .array()
+      .of(schemaContructor.subObject('serialNumber')),
   }),
   stock_stockCorrection: schemaContructor.object({
     statusSelect: schemaContructor.number(),
@@ -307,5 +310,9 @@ export const stock_modelAPI: ObjectFields = {
     unit: schemaContructor.subObject('name'),
     estimatedReceiptDate: schemaContructor.string(),
     receiptState: schemaContructor.number(),
+  }),
+  stock_alternativeBarcode: schemaContructor.object({
+    product: schemaContructor.subObject(),
+    serialNumber: schemaContructor.number(),
   }),
 };

@@ -90,3 +90,4 @@ export {
   updateTrackingNumber as updateTrackingNumberApi,
 } from './tracking-number-api';
 export * from './unit-api';
+export {searchAlternativeBarcode as searchAlternativeBarcodeApi} from './alternative-barcode-api';

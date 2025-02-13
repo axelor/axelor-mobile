@@ -16,16 +16,18 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import React, {useState, useCallback} from 'react';
+import React, {useState, useCallback, useMemo} from 'react';
 import {Screen} from '@axelor/aos-mobile-ui';
 import {
   displayItemName,
   SearchListView,
   useSelector,
   useTranslator,
+  SearchListAlternativeBarCode,
 } from '@axelor/aos-mobile-core';
 import {ProductCard} from '../../components';
 import {searchProducts} from '../../features/productSlice';
+import {searchAlternativeBarcode} from '../../features/alternativeBarcodeSlice';
 
 const productScanKey = 'product_product-list';
 
@@ -34,6 +36,9 @@ const ProductListScreen = ({navigation}) => {
 
   const {loadingProduct, moreLoadingProduct, isListEndProduct, productList} =
     useSelector(state => state.product);
+  const {alternativeBarcodeList} = useSelector(
+    state => state.stock_alternativeBarcode,
+  );
 
   const [navigate, setNavigate] = useState(false);
 
@@ -47,14 +52,36 @@ const ProductListScreen = ({navigation}) => {
     [navigation],
   );
 
+  const sliceFunctionData = useMemo(
+    () => ({
+      alternativeBarcodeList,
+    }),
+    [alternativeBarcodeList],
+  );
+
+  console.log('alternativeBarcodeList', alternativeBarcodeList);
+
   return (
     <Screen removeSpaceOnTop={true}>
+      <SearchListAlternativeBarCode
+        sliceFunction={searchProducts}
+        sliceFunctionData={sliceFunctionData}
+        list={productList}
+        loading={loadingProduct}
+        moreLoading={moreLoadingProduct}
+        isListEnd={isListEndProduct}
+        placeholderSearchBar={I18n.t('Stock_Product')}
+        displayValue={displayItemName}
+        sliceBarCodeFunction={searchAlternativeBarcode}
+        oneFilter={true}
+      />
       <SearchListView
         list={productList}
         loading={loadingProduct}
         moreLoading={moreLoadingProduct}
         isListEnd={isListEndProduct}
         sliceFunction={searchProducts}
+        sliceFunctionData={sliceFunctionData}
         onChangeSearchValue={showProductDetails}
         displaySearchValue={displayItemName}
         searchPlaceholder={I18n.t('Stock_Product')}

@@ -23,8 +23,8 @@ import {
   getActionApi,
 } from '@axelor/aos-mobile-core';
 
-const createProductCriteria = searchValue => {
-  return [
+const createProductCriteria = (searchValue, alternativeBarcodeList) => {
+  const criteria = [
     {
       fieldName: 'isModel',
       operator: '=',
@@ -45,18 +45,39 @@ const createProductCriteria = searchValue => {
       operator: '=',
       value: 'Product',
     },
+
     getSearchCriterias('stock_product', searchValue),
   ];
+
+  if (
+    Array.isArray(alternativeBarcodeList) &&
+    alternativeBarcodeList.length > 0
+  ) {
+    criteria.push({
+      operator: 'or',
+      criteria: alternativeBarcodeList.map(barcode => ({
+        fieldName: 'id',
+        operator: '=',
+        value: barcode.product.id,
+      })),
+    });
+  }
+  return criteria;
 };
 
-export async function searchProductsFilter({searchValue, page = 0}) {
+export async function searchProductsFilter({
+  searchValue,
+  page = 0,
+  alternativeBarcodeList,
+}) {
   return createStandardSearch({
     model: 'com.axelor.apps.base.db.Product',
-    criteria: createProductCriteria(searchValue),
+    criteria: createProductCriteria(searchValue, alternativeBarcodeList),
     fieldKey: 'stock_product',
     sortKey: 'stock_product',
     page,
     provider: 'model',
+    relatedFields: {alternativeBarcodeList: ['serialNumber']},
   });
 }
 
@@ -66,6 +87,7 @@ export async function searchProductWithId(productId) {
     id: productId,
     fieldKey: 'stock_product',
     provider: 'model',
+    relatedFields: {alternativeBarcodeList: ['serialNumber']},
   });
 }
 

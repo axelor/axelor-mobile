@@ -208,6 +208,7 @@
   "Base_Print": "Imprimer",
   "Base_PrintTemplate": "Modèle d'impression",
   "Base_NoRecordsFound": "Aucun enregistrement trouvé",
+  "Base_AltseriaNo": "N° de série alt.",
   "Base_StoragePermissionRequired": "Accès au stockage requis",
   "Base_StoragePermissionDetails": "L'application a besoin d'avoir accès à votre stockage pour télécharger des fichiers.",
   "Base_ErrorOnDownload": "Il y a eu un problème lors du téléchargement du fichier.",

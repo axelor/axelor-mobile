@@ -37,3 +37,4 @@ export {supplierArrivalReducer as supplierArrival} from './supplierArrivalSlice'
 export {supplierCatalogReducer as supplierCatalog} from './supplierCatalogSlice';
 export {trackingNumberReducer as trackingNumber} from './trackingNumberSlice';
 export {unitReducer as unit} from './unitSlice';
+export {alternativeBarcodeReducer as stock_alternativeBarcode} from './alternativeBarcodeSlice';

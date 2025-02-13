@@ -22,6 +22,7 @@ export {default as PeriodInput} from './PeriodInput/PeriodInput';
 export {default as PopupApplicationInformation} from './PopupApplicationInformation/PopupApplicationInformation';
 export {default as PopupMinimalRequiredVersion} from './PopupMinimalRequiredVersion/PopupMinimalRequiredVersion';
 export {default as PrintTemplateSearchBar} from './PrintTemplateSearchBar/PrintTemplateSearchBar';
+export {default as SearchListAlternativeBarCode} from './SearchListAlternativeBarCode/SearchListAlternativeBarCode';
 export {default as SearchListView} from './SearchListView/SearchListView';
 export {default as SearchTreeView} from './SearchTreeView/SearchTreeView';
 export {default as SingleSelectSearchListView} from './SingleSelectSearchListView/SingleSelectSearchListView';
