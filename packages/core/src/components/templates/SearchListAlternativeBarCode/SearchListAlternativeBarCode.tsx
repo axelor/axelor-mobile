@@ -24,6 +24,8 @@ import {ScannerAutocompleteSearch} from '../../organisms';
 import {InputBarCodeCard} from '../../molecules';
 import {useTranslator} from '../../../i18n/';
 
+const barCodeScanKey = 'stock_alt-serial-number';
+
 interface SearchListAlternativeBarCodeProps {
   showTitle?: boolean;
   title?: string;
@@ -49,7 +51,6 @@ interface SearchListAlternativeBarCodeProps {
   isListEnd?: boolean;
   isScrollViewContainer?: boolean;
   alternativeBarcodeList?: any[];
-
   sliceBarCodeFunction: any;
   sliceFunctionBarCodeData: Object;
 }
@@ -75,6 +76,11 @@ const SearchListAlternativeBarCode = ({
   placeholderSearchBar,
   sliceBarCodeFunction,
   sliceFunctionBarCodeData,
+  selectLastItem,
+  scanKeySearch,
+  isFocus = true,
+  changeScreenAfter,
+  navigate,
 }: SearchListAlternativeBarCodeProps) => {
   const dispatch = useDispatch();
   const I18n = useTranslator();
@@ -127,27 +133,30 @@ const SearchListAlternativeBarCode = ({
           style={styles.searchBar}
           title={showTitle && title}
           objectList={list}
-          isFocus={true}
+          isFocus={isFocus}
           value={value}
           required={required}
+          selectLastItem={selectLastItem}
           readonly={readonly}
           displayValue={displayValue}
           onChangeValue={onChangeValue}
           fetchData={fetchSearchAPI}
           placeholder={placeholderSearchBar}
-          navigate={false}
+          navigate={navigate}
           oneFilter={oneFilter}
           showDetailsPopup={showDetailsPopup}
           loadingList={loadingList}
           moreLoading={moreLoading}
           isListEnd={isListEnd}
           isScrollViewContainer={isScrollViewContainer}
+          scanKeySearch={scanKeySearch}
+          changeScreenAfter={changeScreenAfter}
         />
         <InputBarCodeCard
           style={styles.inputCode}
           placeholder={I18n.t('Base_AltseriaNo')}
           onChange={handleChangeBarCode}
-          scanKeySearch="altSerialNumber"
+          scanKeySearch={barCodeScanKey}
         />
       </View>
     </View>
