@@ -59,8 +59,6 @@ const ProductListScreen = ({navigation}) => {
     [alternativeBarcodeList],
   );
 
-  console.log('alternativeBarcodeList', alternativeBarcodeList);
-
   return (
     <Screen removeSpaceOnTop={true}>
       <SearchListAlternativeBarCode

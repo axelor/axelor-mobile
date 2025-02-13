@@ -124,8 +124,6 @@ const SearchListAlternativeBarCode = ({
     checkNullString(_value) ? setBarCode(null) : setBarCode(_value);
   }, []);
 
-  console.log('barCode', barCode);
-
   return (
     <View style={[styles.container, style]}>
       <View style={styles.searchContainer}>
