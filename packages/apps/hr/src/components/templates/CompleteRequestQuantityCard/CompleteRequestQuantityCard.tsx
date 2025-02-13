@@ -16,15 +16,17 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import React, {useMemo} from 'react';
-import {useSelector, useTranslator, useTypes} from '@axelor/aos-mobile-core';
+import React, {useEffect, useState} from 'react';
+import {useTranslator} from '@axelor/aos-mobile-core';
 import {QuantityCard, Text, useDigitFormat} from '@axelor/aos-mobile-ui';
+import {fetchLeaveReasonAvailability} from '../../../api/leave-api';
 
 interface CompleteRequestQuantityCardProps {
   leaveQty: number;
   setLeaveQty: (leaveQty: number) => void;
   cancelLeave: () => void;
   newLine: any;
+  toDate: string;
 }
 
 const CompleteRequestQuantityCard = ({
@@ -32,35 +34,23 @@ const CompleteRequestQuantityCard = ({
   setLeaveQty,
   cancelLeave,
   newLine,
+  toDate,
 }: CompleteRequestQuantityCardProps) => {
   const I18n = useTranslator();
-  const {LeaveReason} = useTypes();
   const formatNumber = useDigitFormat();
 
-  const {user} = useSelector(state => state.user);
+  const [availableQty, setAvailableQty] = useState(0);
 
-  const availableQty = useMemo(() => {
-    if (
-      newLine.leaveReasonTypeSelect ===
-      LeaveReason?.leaveReasonTypeSelect.ExceptionalLeave
-    ) {
-      return '-';
+  useEffect(() => {
+    if (toDate && newLine.id) {
+      fetchLeaveReasonAvailability({
+        toDate,
+        leaveReasonId: newLine.id,
+      })
+        .then(setAvailableQty)
+        .catch(() => setAvailableQty(0));
     }
-
-    const _availableQty =
-      user.employee?.leaveLineList?.find(
-        leaveLine => leaveLine.leaveReason.id === newLine.id,
-      )?.quantity ?? 0;
-
-    return `${formatNumber(_availableQty)} ${newLine.unitName}`;
-  }, [
-    LeaveReason?.leaveReasonTypeSelect.ExceptionalLeave,
-    formatNumber,
-    newLine.id,
-    newLine.leaveReasonTypeSelect,
-    newLine.unitName,
-    user.employee?.leaveLineList,
-  ]);
+  }, [formatNumber, newLine.id, toDate]);
 
   return (
     <QuantityCard
@@ -76,7 +66,7 @@ const CompleteRequestQuantityCard = ({
       <Text
         fontSize={16}>{`${I18n.t('Hr_LeaveReason')} : ${newLine.name}`}</Text>
       <Text fontSize={16}>
-        {`${I18n.t('Hr_AvailableQty')} : ${availableQty}`}
+        {`${I18n.t('Hr_AvailableQty')} : ${formatNumber(availableQty)}`}
       </Text>
     </QuantityCard>
   );

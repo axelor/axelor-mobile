@@ -150,9 +150,6 @@ export const hr_modelAPI: ObjectFields = {
           .of(schemaContructor.subObject()),
         product: schemaContructor.subObject('name'),
         timesheetImputationSelect: schemaContructor.number(),
-        leaveLineList: schemaContructor
-          .array()
-          .of(schemaContructor.subObject()),
       }),
     ),
   }),

@@ -44,7 +44,7 @@ import {fetchLeaveById} from '../../features/leaveSlice';
 const LeaveDetailsScreen = ({route}) => {
   const {leaveId} = route.params;
   const I18n = useTranslator();
-  const {LeaveRequest, LeaveReason} = useTypes();
+  const {LeaveRequest} = useTypes();
   const dispatch = useDispatch();
 
   const {leave, loadingLeave} = useSelector(state => state.hr_leave);
@@ -86,14 +86,9 @@ const LeaveDetailsScreen = ({route}) => {
         />
         <LeaveAvailableDuractionCard
           style={styles.marginTop}
-          reason={leave.leaveReason?.name}
-          availableLeave={leave.quantityBeforeValidation}
+          leaveReason={leave.leaveReason}
           durationLeave={leave.duration}
-          durationUnitSelect={leave.leaveReason?.unitSelect}
-          isExceptionalLeave={
-            leave.leaveReason?.leaveReasonTypeSelect ===
-            LeaveReason?.leaveReasonTypeSelect.ExceptionalLeave
-          }
+          toDate={leave.toDateT}
         />
         {leave.statusSelect > LeaveRequest?.statusSelect.Draft && (
           <Text style={[styles.text, styles.marginTop]} writingType="details">
