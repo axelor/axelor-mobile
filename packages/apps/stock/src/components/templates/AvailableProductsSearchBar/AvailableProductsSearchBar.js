@@ -75,7 +75,7 @@ const AvailableProductsSearchBar = ({
           : _item?.product?.name
       }
       scanKeySearch={scanKey}
-      placeholder={I18n.t(placeholderKey)}
+      placeholderSearchBar={I18n.t(placeholderKey)}
       showDetailsPopup={showDetailsPopup}
       navigate={navigate}
       oneFilter={oneFilter}
