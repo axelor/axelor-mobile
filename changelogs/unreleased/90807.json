@@ -1,0 +1,5 @@
+{
+  "title": "Cart :  improve the error message when adding an item to the cart and there is no cart",
+  "type": "fix",
+  "packages": "sale"
+}
