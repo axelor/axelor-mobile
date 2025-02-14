@@ -18,8 +18,9 @@
 
 import React, {useCallback, useMemo} from 'react';
 import {StyleSheet, View} from 'react-native';
-import {useTranslator} from '@axelor/aos-mobile-core';
+import {useDispatch, useTranslator, useTypes} from '@axelor/aos-mobile-core';
 import {Button, useThemeColor} from '@axelor/aos-mobile-ui';
+import {createPurchaseRequest} from '../../../features/purchaseRequestSlice';
 import {RequestCreation} from '../../../types';
 
 interface RequestCreationButtonsProps {
@@ -29,6 +30,9 @@ interface RequestCreationButtonsProps {
   isEditionMode?: boolean;
   disabled?: boolean;
   addLine: () => void;
+  companyId: number;
+  description: string;
+  resetDefaultStates: () => void;
 }
 
 const RequestCreationButtons = ({
@@ -38,9 +42,14 @@ const RequestCreationButtons = ({
   isEditionMode = false,
   disabled = false,
   addLine,
+  companyId,
+  description,
+  resetDefaultStates,
 }: RequestCreationButtonsProps) => {
   const Colors = useThemeColor();
   const I18n = useTranslator();
+  const {PurchaseRequest} = useTypes();
+  const dispatch = useDispatch();
 
   const isValidateLineStep = useMemo(
     () => step === RequestCreation.step.validateLine,
@@ -54,7 +63,31 @@ const RequestCreationButtons = ({
     setStep(RequestCreation.step.finish);
   };
 
-  const handleRealizePress = useCallback(() => {}, []);
+  const handleRealizePress = useCallback(() => {
+    const purchaseRequestLineList = lines.map(line => ({
+      productId: line.product?.id,
+      productTitle: line.productTitle,
+      unitId: line.unit?.id,
+      quantity: line.quantity,
+    }));
+
+    dispatch(
+      (createPurchaseRequest as any)({
+        companyId,
+        status: PurchaseRequest?.statusSelect.Requested,
+        description,
+        purchaseRequestLineList,
+      }),
+    );
+    resetDefaultStates();
+  }, [
+    companyId,
+    description,
+    dispatch,
+    lines,
+    PurchaseRequest?.statusSelect.Requested,
+    resetDefaultStates,
+  ]);
 
   if (
     (step === RequestCreation.step.addLine && lines.length >= 1) ||

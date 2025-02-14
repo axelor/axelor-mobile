@@ -51,6 +51,13 @@ const RequestCreationScreen = () => {
   const [quantity, setQuantity] = useState(0);
   const [unit, setUnit] = useState(null);
 
+  const resetDefaultStates = () => {
+    handleReset();
+    setCompany(user.activeCompany);
+    setDescription('');
+    setLines([]);
+  };
+
   const handleEditLine = (line: any) => {
     setNewLine(line);
     setProductTitle(line.productTitle);
@@ -72,7 +79,7 @@ const RequestCreationScreen = () => {
   const handleProductChange = useCallback(
     (_value: any) => {
       if (_value == null) {
-        handleReset(RequestCreation.step.addLine);
+        newLine != null && handleReset(RequestCreation.step.addLine);
       } else {
         setNewLine(_value);
         setProductTitle(_value.name);
@@ -81,7 +88,7 @@ const RequestCreationScreen = () => {
         setCurrentStep(RequestCreation.step.validateLine);
       }
     },
-    [handleReset],
+    [handleReset, newLine],
   );
 
   const handleCustomProductInput = useCallback((value: string) => {
@@ -136,6 +143,9 @@ const RequestCreationScreen = () => {
           disabled={quantity === 0 || unit == null}
           isEditionMode={isEditionMode}
           addLine={handleAddLine}
+          companyId={company.id}
+          description={description}
+          resetDefaultStates={resetDefaultStates}
         />
       }>
       <KeyboardAvoidingScrollView style={styles.container}>
