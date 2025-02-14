@@ -190,6 +190,7 @@ const styles = StyleSheet.create({
     flex: 1,
     marginLeft: 5,
     minHeight: 40,
+    alignSelf: 'flex-start',
   },
 });
 
