@@ -16,7 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import React, {useCallback, useMemo} from 'react';
+import React, {useMemo} from 'react';
 import {
   displayItemName,
   useSelector,
@@ -24,6 +24,7 @@ import {
   DoubleScannerSearchBar,
 } from '@axelor/aos-mobile-core';
 import {searchProducts} from '../../../features/productSlice';
+import {searchAlternativeBarcode} from '../../../features/alternativeBarcodeSlice';
 
 const barCodeScanKey = 'product_bar-code';
 
@@ -47,14 +48,6 @@ const ProductSearchBar = ({
     state => state.stock_alternativeBarcode,
   );
 
-  const fetchProductsAPI = useCallback(
-    ({page = 0, searchValue}) => {
-      onFetchDataAction && onFetchDataAction(searchValue);
-      onChange({page, searchValue});
-    },
-    [onChange, onFetchDataAction],
-  );
-
   const sliceFunctionData = useMemo(
     () => ({
       alternativeBarcodeList,
@@ -65,21 +58,23 @@ const ProductSearchBar = ({
   return (
     <DoubleScannerSearchBar
       value={defaultValue}
+      placeholderSearchBar={I18n.t(placeholderKey)}
+      onFetchDataAction={onFetchDataAction}
       sliceFunction={searchProducts}
       sliceFunctionData={sliceFunctionData}
       list={productList}
       loadingList={loadingProduct}
       moreLoading={moreLoadingProduct}
       isListEnd={isListEndProduct}
-      onChangeValue={fetchProductsAPI}
+      onChangeValue={onChange}
       displayValue={displayItemName}
       scanKeySearch={scanKey}
-      placeholder={I18n.t(placeholderKey)}
       showDetailsPopup={showDetailsPopup}
       navigate={navigate}
       oneFilter={oneFilter}
       isFocus={isFocus}
       changeScreenAfter={changeScreenAfter}
+      sliceBarCodeFunction={searchAlternativeBarcode}
       scanKeyBarCode={barCodeScanKey}
     />
   );

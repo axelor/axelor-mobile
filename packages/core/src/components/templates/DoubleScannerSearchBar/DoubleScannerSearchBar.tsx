@@ -19,7 +19,7 @@
 import React, {useCallback, useEffect, useState} from 'react';
 import {View, StyleSheet} from 'react-native';
 import {checkNullString} from '@axelor/aos-mobile-ui';
-import {useDispatch} from '../../../redux/hooks';
+import {useDispatch, useSelector} from '../../../redux/hooks';
 import {ScannerAutocompleteSearch} from '../../organisms';
 import {InputBarCodeCard} from '../../molecules';
 import {useTranslator} from '../../../i18n/';
@@ -53,6 +53,7 @@ interface DoubleScannerSearchBarProps {
   alternativeBarcodeList?: any[];
   sliceBarCodeFunction: any;
   sliceFunctionBarCodeData: Object;
+  onFetchDataAction: any;
 }
 
 const DoubleScannerSearchBar = ({
@@ -83,9 +84,12 @@ const DoubleScannerSearchBar = ({
   navigate,
   scanKeyBarCode,
   placeholerBarCode,
+  onFetchDataAction,
 }: DoubleScannerSearchBarProps) => {
   const dispatch = useDispatch();
   const I18n = useTranslator();
+
+  const {base: baseConfig} = useSelector(state => state.appConfig);
 
   const [barCode, setBarCode] = useState(null);
 
@@ -104,9 +108,10 @@ const DoubleScannerSearchBar = ({
 
   const fetchSearchAPI = useCallback(
     ({page = 0, searchValue}) => {
+      onFetchDataAction && onFetchDataAction(searchValue);
       fetchApi({page, searchValue});
     },
-    [fetchApi],
+    [fetchApi, onFetchDataAction],
   );
 
   const fetchBarCodeApi = useCallback(() => {
@@ -152,14 +157,16 @@ const DoubleScannerSearchBar = ({
           scanKeySearch={scanKeySearch}
           changeScreenAfter={changeScreenAfter}
         />
-        <InputBarCodeCard
-          style={styles.inputCode}
-          placeholder={
-            placeholerBarCode ? placeholerBarCode : I18n.t('Base_AltseriaNo')
-          }
-          onChange={handleChangeBarCode}
-          scanKeySearch={scanKeyBarCode}
-        />
+        {baseConfig.enableMultiBarcodeOnProducts && (
+          <InputBarCodeCard
+            style={styles.inputCode}
+            placeholder={
+              placeholerBarCode ? placeholerBarCode : I18n.t('Base_AltseriaNo')
+            }
+            onChange={handleChangeBarCode}
+            scanKeySearch={scanKeyBarCode}
+          />
+        )}
       </View>
     </View>
   );
