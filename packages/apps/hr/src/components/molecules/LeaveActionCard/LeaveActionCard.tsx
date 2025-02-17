@@ -86,6 +86,7 @@ const LeaveActionCard = ({
       }>
       <LeaveCard
         mode={mode}
+        leaveId={leave.id}
         statusSelect={leave.statusSelect}
         startDate={leave.fromDateT}
         endDate={leave.toDateT}
