@@ -46,7 +46,7 @@ const CatalogActionCard = ({style, product}: CatalogActionCardProps) => {
         }),
       );
     },
-    [activeCart?.id, activeCart?.version, dispatch],
+    [activeCart, dispatch],
   );
 
   return (

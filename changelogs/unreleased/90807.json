@@ -1,0 +1,5 @@
+{
+  "title": "Cart: add error message when trying to add a product from catalog without active cart",
+  "type": "fix",
+  "packages": "sale"
+}

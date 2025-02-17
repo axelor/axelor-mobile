@@ -90,6 +90,10 @@ export async function fetchCartLineById({cartLineId}) {
 }
 
 export async function addCartLine({cartId, cartVersion, productId, qty}) {
+  if (!cartId) {
+    throw {response: {status: 404, statusText: 'Sale_NoActiveCart'}};
+  }
+
   return getActionApi().send({
     url: `/ws/aos/cart/add-line/${cartId}`,
     method: 'put',
