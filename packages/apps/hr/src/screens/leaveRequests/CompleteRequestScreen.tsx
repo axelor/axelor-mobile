@@ -205,6 +205,7 @@ const CompleteRequestScreen = ({}) => {
             setLeaveQty={setLeaveQty}
             cancelLeave={handleReset}
             newLine={newLine}
+            toDate={toDate}
           />
         )}
         {newLine && (

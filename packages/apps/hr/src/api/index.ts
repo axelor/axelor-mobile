@@ -50,6 +50,7 @@ export {
   fetchLeave as fetchLeaveApi,
   fetchLeaveById as fetchLeaveByIdApi,
   fetchLeaveReason as fetchLeaveReasonApi,
+  fetchLeaveReasonAvailability as fetchLeaveReasonAvailabilityApi,
   fetchLeaveToValidate as fetchLeaveToValidateApi,
   fetchMissingDuration as fetchMissingDurationApi,
   rejectLeave as rejectLeaveApi,

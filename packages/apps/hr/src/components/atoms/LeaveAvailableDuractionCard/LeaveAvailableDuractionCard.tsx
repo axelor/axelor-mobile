@@ -16,7 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import React, {useMemo} from 'react';
+import React, {useEffect, useMemo, useState} from 'react';
 import {StyleSheet, View} from 'react-native';
 import {useTranslator, useTypeHelpers, useTypes} from '@axelor/aos-mobile-core';
 import {
@@ -27,29 +27,49 @@ import {
   useDigitFormat,
   useThemeColor,
 } from '@axelor/aos-mobile-ui';
+import {fetchLeaveReasonAvailability} from '../../../api/leave-api';
 
 interface LeaveAvailableDuractionCardProps {
   style?: any;
-  reason: string;
-  availableLeave: number;
+  leaveReason: any;
   durationLeave: number;
-  durationUnitSelect: number;
-  isExceptionalLeave: boolean;
+  toDate: string;
 }
 
 const LeaveAvailableDuractionCard = ({
   style,
-  reason,
-  availableLeave,
+  leaveReason,
   durationLeave,
-  durationUnitSelect,
-  isExceptionalLeave,
+  toDate,
 }: LeaveAvailableDuractionCardProps) => {
   const I18n = useTranslator();
   const Colors = useThemeColor();
   const formatNumber = useDigitFormat();
   const {LeaveReason} = useTypes();
   const {getItemTitle} = useTypeHelpers();
+
+  const [availableLeave, setAvailableLeave] = useState(0);
+
+  const isExceptionalLeave = useMemo(
+    () =>
+      leaveReason?.leaveReasonTypeSelect ===
+      LeaveReason?.leaveReasonTypeSelect.ExceptionalLeave,
+    [
+      LeaveReason?.leaveReasonTypeSelect.ExceptionalLeave,
+      leaveReason?.leaveReasonTypeSelect,
+    ],
+  );
+
+  useEffect(() => {
+    if (!isExceptionalLeave && toDate && leaveReason?.id) {
+      fetchLeaveReasonAvailability({
+        toDate,
+        leaveReasonId: leaveReason?.id,
+      })
+        .then(setAvailableLeave)
+        .catch(() => setAvailableLeave(0));
+    }
+  }, [formatNumber, isExceptionalLeave, leaveReason?.id, toDate]);
 
   const styles = useMemo(() => {
     return getStyles(Colors.secondaryColor.background);
@@ -60,7 +80,7 @@ const LeaveAvailableDuractionCard = ({
       <LabelText
         iconName="tag-fill"
         size={16}
-        title={reason}
+        title={leaveReason?.name}
         textStyle={styles.labelText}
       />
       <View style={styles.container}>
@@ -72,7 +92,7 @@ const LeaveAvailableDuractionCard = ({
             unit={
               isExceptionalLeave
                 ? undefined
-                : getItemTitle(LeaveReason?.unitSelect, durationUnitSelect)
+                : getItemTitle(LeaveReason?.unitSelect, leaveReason?.unitSelect)
             }
           />
         </View>
@@ -82,7 +102,10 @@ const LeaveAvailableDuractionCard = ({
           <TextUnit
             fontSize={30}
             value={formatNumber(durationLeave)}
-            unit={getItemTitle(LeaveReason?.unitSelect, durationUnitSelect)}
+            unit={getItemTitle(
+              LeaveReason?.unitSelect,
+              leaveReason?.unitSelect,
+            )}
           />
         </View>
       </View>
