@@ -213,3 +213,18 @@ export async function createLeaveRequest({fromDate, startOnSelect, lines}) {
     description: 'create leave request',
   });
 }
+
+export async function fetchLeaveReasonAvailability({toDate, leaveReasonId}) {
+  return getActionApi()
+    .send({
+      url: 'ws/aos/leave-request/compute-leave-available',
+      method: 'post',
+      body: {
+        toDate,
+        leaveReasonId,
+      },
+      description: 'fetch leave reason availability',
+      ignoreRequest: true,
+    })
+    .then(res => Number(res?.data?.object?.leaveDays));
+}
