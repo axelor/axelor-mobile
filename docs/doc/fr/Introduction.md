@@ -20,6 +20,9 @@ Cette nouvelle application mobile comprend actuellement les modules suivants ave
 - Support Client (AOS v7.1+)
 - RH : Notes de frais (AOS v7.2+) & Feuilles de temps (AOS v8.0+)
 - Qualité (AOS v8.0+)
+- Intervention (AOS v8.1+)
+- Projet (AOS v8.2+)
+- Ventes (AOS v8.2+)
 
 Les trois axes principaux lors du développement de cette application mobile étaient :
 
