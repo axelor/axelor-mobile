@@ -36,7 +36,17 @@ import {
 } from '../../../features/expenseSlice';
 import {ExpenseRefusalPopup} from '../../templates';
 
-const ExpenseDetailsValidationButton = ({expense, mode}) => {
+interface ExpenseDetailsValidationButtonProps {
+  expense: any;
+  mode: string;
+  isManualCreation?: boolean;
+}
+
+const ExpenseDetailsValidationButton = ({
+  expense,
+  mode,
+  isManualCreation = false,
+}: ExpenseDetailsValidationButtonProps) => {
   const navigation = useNavigation();
   const Colors = useThemeColor();
   const I18n = useTranslator();
@@ -97,7 +107,7 @@ const ExpenseDetailsValidationButton = ({expense, mode}) => {
     );
   }, [dispatch, expense, user]);
 
-  const rendreCancelButton = width => {
+  const renderCancelButton = width => {
     return (
       <Button
         title={I18n.t('Base_Cancel')}
@@ -118,18 +128,18 @@ const ExpenseDetailsValidationButton = ({expense, mode}) => {
       <View style={styles.buttonContainer}>
         {canDelete && (
           <Button
-            title={I18n.t('Hr_Delete')}
+            title={I18n.t(isManualCreation ? 'Base_Cancel' : 'Hr_Delete')}
             onPress={deleteExpenseAPI}
             width="45%"
             color={Colors.errorColor}
-            iconName={'trash3-fill'}
+            iconName={isManualCreation ? 'x-lg' : 'trash3-fill'}
           />
         )}
-        {rendreCancelButton('45%')}
+        {(!canDelete || !isManualCreation) && renderCancelButton('45%')}
         <Button
           title={I18n.t('Hr_Send')}
           onPress={sendExpenseAPI}
-          width={canDelete ? '94%' : '45%'}
+          width={canDelete && !isManualCreation ? '94%' : '45%'}
           iconName="send-fill"
         />
       </View>
@@ -163,14 +173,14 @@ const ExpenseDetailsValidationButton = ({expense, mode}) => {
             />
           </>
         )}
-        {rendreCancelButton('94%')}
+        {renderCancelButton('94%')}
       </View>
     );
   }
 
   if (expense.statusSelect === Expense?.statusSelect.Validate) {
     return (
-      <View style={styles.buttonContainer}>{rendreCancelButton('94%')}</View>
+      <View style={styles.buttonContainer}>{renderCancelButton('94%')}</View>
     );
   }
 

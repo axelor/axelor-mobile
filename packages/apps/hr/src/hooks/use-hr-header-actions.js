@@ -68,6 +68,7 @@ const useExpenseAction = () => {
                 navigation.navigate('ExpenseDetailsScreen', {
                   idExpense: res.payload.expenseId,
                   expenseMode: Expense.mode.personnal,
+                  isManualCreation: true,
                 }),
             ),
           showInHeader: true,
