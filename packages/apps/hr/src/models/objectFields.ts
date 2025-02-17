@@ -170,7 +170,6 @@ export const hr_modelAPI: ObjectFields = {
     groundForRefusal: schemaContructor.string(),
     startOnSelect: schemaContructor.number(),
     endOnSelect: schemaContructor.number(),
-    quantityBeforeValidation: schemaContructor.number(),
     comments: schemaContructor.string(),
     requestDate: schemaContructor.string(),
     validationDateTime: schemaContructor.string(),

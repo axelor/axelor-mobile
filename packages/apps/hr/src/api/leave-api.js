@@ -224,6 +224,7 @@ export async function fetchLeaveReasonAvailability({toDate, leaveReasonId}) {
         leaveReasonId,
       },
       description: 'fetch leave reason availability',
+      ignoreRequest: true,
     })
     .then(res => Number(res?.data?.object?.leaveDays));
 }

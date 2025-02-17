@@ -16,8 +16,8 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import React, {useEffect, useState} from 'react';
-import {useTranslator} from '@axelor/aos-mobile-core';
+import React, {useEffect, useMemo, useState} from 'react';
+import {useTranslator, useTypes} from '@axelor/aos-mobile-core';
 import {QuantityCard, Text, useDigitFormat} from '@axelor/aos-mobile-ui';
 import {fetchLeaveReasonAvailability} from '../../../api/leave-api';
 
@@ -37,12 +37,23 @@ const CompleteRequestQuantityCard = ({
   toDate,
 }: CompleteRequestQuantityCardProps) => {
   const I18n = useTranslator();
+  const {LeaveReason} = useTypes();
   const formatNumber = useDigitFormat();
 
   const [availableQty, setAvailableQty] = useState(0);
 
+  const isExceptionalLeave = useMemo(
+    () =>
+      newLine.leaveReasonTypeSelect ===
+      LeaveReason?.leaveReasonTypeSelect.ExceptionalLeave,
+    [
+      newLine.leaveReasonTypeSelect,
+      LeaveReason?.leaveReasonTypeSelect.ExceptionalLeave,
+    ],
+  );
+
   useEffect(() => {
-    if (toDate && newLine.id) {
+    if (!isExceptionalLeave && toDate && newLine.id) {
       fetchLeaveReasonAvailability({
         toDate,
         leaveReasonId: newLine.id,
@@ -50,7 +61,7 @@ const CompleteRequestQuantityCard = ({
         .then(setAvailableQty)
         .catch(() => setAvailableQty(0));
     }
-  }, [formatNumber, newLine.id, toDate]);
+  }, [formatNumber, isExceptionalLeave, newLine.id, toDate]);
 
   return (
     <QuantityCard
@@ -66,7 +77,9 @@ const CompleteRequestQuantityCard = ({
       <Text
         fontSize={16}>{`${I18n.t('Hr_LeaveReason')} : ${newLine.name}`}</Text>
       <Text fontSize={16}>
-        {`${I18n.t('Hr_AvailableQty')} : ${formatNumber(availableQty)}`}
+        {I18n.t('Hr_AvailableQty', {
+          availableQty: isExceptionalLeave ? '-' : formatNumber(availableQty),
+        })}
       </Text>
     </QuantityCard>
   );

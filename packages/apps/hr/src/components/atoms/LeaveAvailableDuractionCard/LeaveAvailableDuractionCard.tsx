@@ -50,8 +50,18 @@ const LeaveAvailableDuractionCard = ({
 
   const [availableLeave, setAvailableLeave] = useState(0);
 
+  const isExceptionalLeave = useMemo(
+    () =>
+      leaveReason?.leaveReasonTypeSelect ===
+      LeaveReason?.leaveReasonTypeSelect.ExceptionalLeave,
+    [
+      LeaveReason?.leaveReasonTypeSelect.ExceptionalLeave,
+      leaveReason?.leaveReasonTypeSelect,
+    ],
+  );
+
   useEffect(() => {
-    if (toDate && leaveReason?.id) {
+    if (!isExceptionalLeave && toDate && leaveReason?.id) {
       fetchLeaveReasonAvailability({
         toDate,
         leaveReasonId: leaveReason?.id,
@@ -59,7 +69,7 @@ const LeaveAvailableDuractionCard = ({
         .then(setAvailableLeave)
         .catch(() => setAvailableLeave(0));
     }
-  }, [formatNumber, leaveReason?.id, toDate]);
+  }, [formatNumber, isExceptionalLeave, leaveReason?.id, toDate]);
 
   const styles = useMemo(() => {
     return getStyles(Colors.secondaryColor.background);
@@ -78,11 +88,12 @@ const LeaveAvailableDuractionCard = ({
           <Text style={styles.titleText}>{I18n.t('Hr_Available')}</Text>
           <TextUnit
             fontSize={30}
-            value={formatNumber(availableLeave)}
-            unit={getItemTitle(
-              LeaveReason?.unitSelect,
-              leaveReason?.unitSelect,
-            )}
+            value={isExceptionalLeave ? '-' : formatNumber(availableLeave)}
+            unit={
+              isExceptionalLeave
+                ? undefined
+                : getItemTitle(LeaveReason?.unitSelect, leaveReason?.unitSelect)
+            }
           />
         </View>
         <View style={styles.horizontalRule} />
