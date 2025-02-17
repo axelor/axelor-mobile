@@ -148,7 +148,6 @@
   "Sale_Product": "Produit",
   "Sale_ChooseVariant": "Choisir un variant",
   "Sale_AddProductToCart": "Ajouter le produit au panier",
-  "Sale_NoCart": "Pas de panier configuré",
   "Sale_SliceAction_FetchSaleConfig": "récupération des configurations de vente",
   "Sale_SliceAction_FetchSaleOrder": "récupération des commandes client",
   "Sale_SliceAction_SearchCustomer": "recherche sur les clients",

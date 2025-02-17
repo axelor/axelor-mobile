@@ -17,12 +17,7 @@
  */
 
 import React, {useCallback, useState} from 'react';
-import {
-  showToastMessage,
-  useDispatch,
-  useSelector,
-  useTranslator,
-} from '@axelor/aos-mobile-core';
+import {useDispatch, useSelector, useTranslator} from '@axelor/aos-mobile-core';
 import {ActionCard} from '@axelor/aos-mobile-ui';
 import {CartLineCard, VariantPopup} from '../../atoms';
 import {addCartLine} from '../../../features/cartLineSlice';
@@ -42,25 +37,16 @@ const CatalogActionCard = ({style, product}: CatalogActionCardProps) => {
 
   const handleAddProduct = useCallback(
     (productId: number) => {
-      if (activeCart == null) {
-        showToastMessage({
-          type: 'error',
-          position: 'bottom',
-          text1: I18n.t('Base_Error'),
-          text2: I18n.t('Sale_NoCart'),
-        });
-      } else {
-        dispatch(
-          (addCartLine as any)({
-            cartId: activeCart?.id,
-            cartVersion: activeCart?.version,
-            productId,
-            qty: 1,
-          }),
-        );
-      }
+      dispatch(
+        (addCartLine as any)({
+          cartId: activeCart?.id,
+          cartVersion: activeCart?.version,
+          productId,
+          qty: 1,
+        }),
+      );
     },
-    [I18n, activeCart, dispatch],
+    [activeCart, dispatch],
   );
 
   return (

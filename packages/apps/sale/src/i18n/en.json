@@ -148,7 +148,6 @@
   "Sale_Product": "Product",
   "Sale_ChooseVariant": "Choose variant",
   "Sale_AddProductToCart": "Add product to cart",
-  "Sale_NoCart": "No cart configured",
   "Sale_SliceAction_FetchSaleConfig": "fetch sale config",
   "Sale_SliceAction_FetchSaleOrder": "fetch sale orders",
   "Sale_SliceAction_SearchCustomer": "search customers",
