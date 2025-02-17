@@ -1,0 +1,5 @@
+{
+  "title": "Version control: add APK download management based on web config",
+  "type": "feat",
+  "packages": "core"
+}
