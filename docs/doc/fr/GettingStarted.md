@@ -111,6 +111,65 @@ export default App;
 
 L'application prend en charge l'utilisation d'une page de connexion personnalisée. Vous pouvez fournir votre propre composant de connexion grâce à l'attribut _customLoginPage_ du composant _Application_. Si une page de connexion personnalisée est fournie, elle remplacera le système de connexion par défaut.
 
+### Ajouter un module depuis Nexus
+
+Certaines fonctionnalités ne sont pas disponibles sur l'application standard et nécessitent l'ajout de _modules pro_. C'est le cas par exemple du mode hors-ligne ou de l'OCR des notes de frais. Ces modules sont publiés sur le Nexus d'Axelor dans le repository **npm-enterprise**. Voici la marche à suivre pour les récupérer :
+
+- **Étape 1** : obtenir le token de connexion à Nexus
+
+Lancez la commande suivante dans votre terminal en utilisant vos identifiants Nexus fournis par Axelor.
+
+```bash
+echo -n "username:password" | base64
+```
+
+- **Étape 2** : ajouter ce token en variable d'environnement
+
+Ajoutez la ligne suivante à votre fichier .bashrc ou .zshrc en utilisant la valeur de token obtenue à l'étape précédente et redémarrez votre terminal.
+
+```bash
+export NEXUS_TOKEN=value
+```
+
+- **Étape 3** : configurer le registre Nexus
+
+Pour permettre à l'application d'aller récupérer des packages sur le Nexus, il faut configurer un nouveau registre sur le projet.
+
+Ajoutez un fichier .npmrc sur votre projet avec le contenu suivant:
+
+```bash
+@aos-mobile:registry=https://repository.axelor.com/nexus/repository/npm-enterprise/
+//repository.axelor.com/nexus/repository/npm-enterprise/:_auth=${NEXUS_TOKEN}
+```
+
+- **Étape 4** : ajouter la dépendance
+
+Il faut ensuite ajouter la dépendance du module à l'application de la même manière que pour les modules standards, à savoir ajout de la dépendance dans le package.json puis transmission de l'objet `Module` à l'application :
+
+```jsx
+import React from 'react';
+import {Application} from '@axelor/aos-mobile-core';
+import {HrModule} from '@axelor/aos-mobile-hr';
+import {DataCaptureModule} from '@aos-mobile/data-capture';
+import application_properties from '../package.json';
+import {app_config} from './app.config';
+
+const App = () => {
+  return (
+    <Application
+      modules={[HrModule, DataCaptureModule]}
+      mainMenu="auth_menu_user"
+      version={application_properties.version}
+      configuration={app_config}
+    />
+  );
+};
+
+export default App;
+```
+
+Certains modules entreprises de l’application peuvent nécessiter l’installation d’un module complémentaire sur l’instance Axelor Open Suite.
+
 ### Commandes importantes
 
 - Installer les dépendances : `yarn clean && yarn`
