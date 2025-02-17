@@ -111,6 +111,43 @@ export default App;
 
 The application supports the use of a custom login page. You can provide your own login component through the _customLoginPage_ attribute in the _Application_ component. If a custom login page is provided, it will replace the default connection system.
 
+### Add a module from Nexus
+
+Some functions are not available on the standard application and require the addition of _enterprise modules_. This is the case, for example, with offline mode or OCR for expense reports. These modules are published on Axelor's Nexus in the **npm-enterprise** repository. Here's how to get them:
+
+- **Step 1** : get your Nexus connection token
+
+Run the following command in your terminal using your Nexus credentials.
+
+```bash
+echo -n "username:password" | base64
+```
+
+- **Step 2** : add this token as an environment variable
+
+Add the following line to your .bashrc or .zshrc file, using the token value obtained in the previous step, and restart your terminal.
+
+```bash
+export NEXUS_TOKEN=value
+```
+
+- **Step 3** : configuring the Nexus registry
+
+To enable the application to retrieve packages from the Nexus, we need to configure a new registry on the project.
+
+Add an .npmrc file to your project with the following contents:
+
+```bash
+@aos-mobile:registry=https://repository.axelor.com/nexus/repository/npm-enterprise/
+//repository.axelor.com/nexus/repository/npm-enterprise/:_auth=${NEXUS_TOKEN}
+```
+
+- **Step 4** : add dependency
+
+The module dependency must then be added to the application in the same way as for standard modules.
+
+Some of the application's enterprise modules may require the installation of an add-on module on the Axelor Open Suite instance.
+
 ### Important commands
 
 - Install dependencies : `yarn clean && yarn`
