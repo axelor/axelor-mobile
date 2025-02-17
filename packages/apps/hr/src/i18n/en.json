@@ -97,7 +97,7 @@
   "Hr_EndOn": "End on ...",
   "Hr_LeaveReason": "Leave reason",
   "Hr_Quantity": "Quantity",
-  "Hr_AvailableQty": "Available quantity",
+  "Hr_AvailableQty": "Available quantity : {{availableQty}}",
   "Hr_MissingQuantity": "Missing quantity",
   "Hr_ExceedingQuantity": "Exceeding quantity",
   "Hr_SliceAction_FetchExpenseLines": "fetch expense lines",
