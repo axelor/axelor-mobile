@@ -23,15 +23,17 @@ import {
   updateAgendaItems,
 } from '@axelor/aos-mobile-core';
 import {
+  cancelExpense as _cancelExpense,
   createExpense as _createExpense,
   deleteExpense as _deleteExpense,
   getExpense,
   quickCreateExpense as _quickCreateExpense,
   refuseExpense as _refuseExpense,
-  sendExpense as _sendExpense,
+  returnToDraftStatusExpense as _returnToDraftStatusExpense,
   searchExpenseDraft as _searchExpenseDraft,
   searchExpenseToValidate as _searchExpenseToValidate,
   searchMyExpense as _searchMyExpense,
+  sendExpense as _sendExpense,
   updateExpense as _updateExpense,
   validateExpense as _validateExpense,
 } from '../api/expense-api';
@@ -268,6 +270,42 @@ export const deleteExpense = createAsyncThunk(
       responseOptions: {isArrayResponse: false, showToast: true},
     }).then(() => {
       dispatch(searchMyExpense({userId: data.userId, page: 0}));
+    });
+  },
+);
+
+export const cancelExpense = createAsyncThunk(
+  'hr_expense/cancelExpense',
+  async function (data, {getState, dispatch}) {
+    return handlerApiCall({
+      fetchFunction: _cancelExpense,
+      data,
+      action: 'Hr_SliceAction_CancelExpense',
+      getState,
+      responseOptions: {isArrayResponse: false},
+    }).then(() => {
+      dispatch(fetchExpenseById({ExpenseId: data.expenseId}));
+      if (data.mode === Expense.mode.validation) {
+        dispatch(searchExpenseToValidate({user: data.user}));
+      } else {
+        dispatch(searchMyExpense({userId: data.user?.id}));
+      }
+    });
+  },
+);
+
+export const returnToDraftStatusExpense = createAsyncThunk(
+  'hr_expense/returnToDraftStatusExpense',
+  async function (data, {getState, dispatch}) {
+    return handlerApiCall({
+      fetchFunction: _returnToDraftStatusExpense,
+      data,
+      action: 'Hr_SliceAction_ReturnToDraftStatusExpense',
+      getState,
+      responseOptions: {isArrayResponse: false},
+    }).then(() => {
+      dispatch(fetchExpenseById({ExpenseId: data.expenseId}));
+      dispatch(searchMyExpense({userId: data.user?.id}));
     });
   },
 );
