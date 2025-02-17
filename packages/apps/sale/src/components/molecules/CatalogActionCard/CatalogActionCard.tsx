@@ -42,14 +42,12 @@ const CatalogActionCard = ({style, product}: CatalogActionCardProps) => {
 
   const handleAddProduct = useCallback(
     (productId: number) => {
-      console.log(activeCart);
       if (activeCart == null) {
         showToastMessage({
           type: 'error',
           position: 'bottom',
           text1: I18n.t('Base_Error'),
           text2: I18n.t('Sale_NoCart'),
-          onPress: () => {},
         });
       } else {
         dispatch(
