@@ -25,7 +25,6 @@ import {RequestCreation} from '../../../types';
 
 interface RequestCreationButtonsProps {
   step: number;
-  setStep: (step: number) => void;
   lines: any[];
   isEditionMode?: boolean;
   disabled?: boolean;
@@ -37,7 +36,6 @@ interface RequestCreationButtonsProps {
 
 const RequestCreationButtons = ({
   step,
-  setStep,
   lines,
   isEditionMode = false,
   disabled = false,
@@ -55,13 +53,6 @@ const RequestCreationButtons = ({
     () => step === RequestCreation.step.validateLine,
     [step],
   );
-
-  const handleFinishPress = () => {
-    if (isValidateLineStep) {
-      addLine();
-    }
-    setStep(RequestCreation.step.finish);
-  };
 
   const handleRealizePress = useCallback(() => {
     const purchaseRequestLineList = lines.map(line => ({
@@ -106,32 +97,10 @@ const RequestCreationButtons = ({
           />
         )}
         <Button
-          title={I18n.t('Base_Finish')}
-          iconName="check-lg"
-          width={isValidateLineStep ? '45%' : '90%'}
-          disabled={isValidateLineStep && disabled}
-          onPress={handleFinishPress}
-        />
-      </View>
-    );
-  }
-
-  if (step === RequestCreation.step.finish) {
-    return (
-      <View style={styles.container}>
-        <Button
-          title={I18n.t('Base_Add')}
-          iconName="arrow-left"
-          color={Colors.progressColor}
-          width="45%"
-          onPress={() => {
-            setStep(RequestCreation.step.addLine);
-          }}
-        />
-        <Button
           title={I18n.t('Base_Realize')}
           iconName="check-lg"
-          width="45%"
+          width={isValidateLineStep ? '45%' : '90%'}
+          disabled={isValidateLineStep}
           onPress={handleRealizePress}
         />
       </View>

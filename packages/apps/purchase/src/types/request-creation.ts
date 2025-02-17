@@ -20,7 +20,6 @@ class RequestCreation {
   static step = {
     addLine: 0,
     validateLine: 1,
-    finish: 2,
   };
 }
 

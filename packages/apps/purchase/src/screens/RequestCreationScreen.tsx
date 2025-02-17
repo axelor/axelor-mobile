@@ -79,7 +79,7 @@ const RequestCreationScreen = () => {
   const handleProductChange = useCallback(
     (_value: any) => {
       if (_value == null) {
-        newLine != null && handleReset(RequestCreation.step.addLine);
+        handleReset(RequestCreation.step.addLine);
       } else {
         setNewLine(_value);
         setProductTitle(_value.name);
@@ -88,7 +88,7 @@ const RequestCreationScreen = () => {
         setCurrentStep(RequestCreation.step.validateLine);
       }
     },
-    [handleReset, newLine],
+    [handleReset],
   );
 
   const handleCustomProductInput = useCallback((value: string) => {
@@ -138,7 +138,6 @@ const RequestCreationScreen = () => {
       fixedItems={
         <RequestCreationButtons
           step={currentStep}
-          setStep={setCurrentStep}
           lines={lines}
           disabled={quantity === 0 || unit == null}
           isEditionMode={isEditionMode}
