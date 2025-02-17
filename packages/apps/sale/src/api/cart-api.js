@@ -121,7 +121,7 @@ export async function addProductToActiveCart({
           qty,
         });
       } else {
-        throw {response: {status: 404, statusText: 'No active cart found'}};
+        throw {response: {status: 404, statusText: 'Sale_NoActiveCart'}};
       }
     });
 }

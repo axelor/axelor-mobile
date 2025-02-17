@@ -89,7 +89,7 @@ const manageError = (
         text1: `${i18nProvider.i18n.t('Auth_Error')} ${code}`,
         text2: `${i18nProvider.i18n.t('Base_Failed_To')} ${i18nProvider.i18n.t(
           action,
-        )}: ${message}.`,
+        )}: ${i18nProvider.i18n.t(message)}.`,
       });
     }
 
