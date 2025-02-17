@@ -17,10 +17,10 @@
  */
 
 import {
-  createStandardSearch,
-  getSearchCriterias,
   createStandardFetch,
+  createStandardSearch,
   getActionApi,
+  getSearchCriterias,
   getTypes,
 } from '@axelor/aos-mobile-core';
 
@@ -200,5 +200,27 @@ export async function deleteExpense({expenseId}) {
       modelName: 'com.axelor.apps.hr.db.Expense',
       id: expenseId,
     },
+  });
+}
+
+export async function cancelExpense({expenseId, version}) {
+  return getActionApi().send({
+    url: `ws/aos/expense/cancel/${expenseId}`,
+    method: 'put',
+    body: {
+      version,
+    },
+    description: 'cancel expense',
+  });
+}
+
+export async function returnToDraftStatusExpense({expenseId, version}) {
+  return getActionApi().send({
+    url: `ws/aos/expense/draft/${expenseId}`,
+    method: 'put',
+    body: {
+      version,
+    },
+    description: 'return expense to draft status',
   });
 }
