@@ -1,5 +1,6 @@
 ---
-sidebar_position: 4
+slug: /menus
+sidebar_position: 40
 description: ''
 ---
 
@@ -23,9 +24,9 @@ interface MinimumMenuFields {
 - **tittle** : [required] une clé de traduction pour le titre à afficher sur le drawer
 - **hideIf** : permet de définir une condition d'affichage en fonction des configurations web récupérées. Ces configurations doivent être renseignées dans l'export du module (_requiredConfig_) pour apparaître dans l'objet donné en argument de cette fonction.
 - **parent** : le nom du module parent dans le cadre d’une surcharge. Attention, le menu est ajouté sur le module parent seulement si le module courant est ajouté après le module parent dans la liste des modules du composant _Application_.
-- **order** : l’ordre de l’entrée de menu dans le drawer. Afin de permettre aux menus venant d’autres modules de s’insérer entre deux entrées de menu existantes, la convention exige que les ordres soient séparés de 10 (ex: 0, 10, 20, 30…). SI aucun ordre n’est défini, la valeur par défaut est l’index du menu lors de sa définition dans le module.
+- **order** : l’ordre de l’entrée de menu dans le drawer. Afin de permettre aux menus venant d’autres modules de s’insérer entre deux entrées de menu existantes, la convention exige que les ordres soient séparés de 10 (ex: 0, 10, 20, 30…). Si aucun ordre n’est défini, la valeur par défaut est l’index du menu lors de sa définition dans le module.
 
-Cet object peut ensuite se transformer en entrée de menu ou en séparateur en fonction des attributs ajoutés :
+Cet objet peut ensuite se transformer en entrée de menu ou en séparateur en fonction des attributs ajoutés :
 
 ```tsx
 interface MenuSeparator extends MinimumMenuFields {
@@ -52,9 +53,9 @@ Pour obtenir un séparateur, il suffit d'ajouter le bouléen **separator**. Pour
 
 - **icon** : [required] le nom de l’icon à afficher dans le drawer
 - **disabled** : permet de désactiver l’entrée de menu
-- **compatibilityAOS** : les information de compatibilité avec l’instance web. Il est possible d'indiquer seulement les informations de versions pour surcharger les informations données au module globalement. Il est également d'indiquer un nom d'application web différent de celui donné au module. Une version doit être un string composé de trois numéros. La version du module web est récupérée et renseignée automatiquement depuis les informations du serveur.
+- **compatibilityAOS** : les information de compatibilité avec l’instance web. Il est possible d'indiquer seulement les informations de versions pour surcharger les informations données au module globalement. Il est également possible d'indiquer un nom d'application web différent de celui donné au module. Une version doit être un string composé de trois numéros. La version du module web est récupérée et renseignée automatiquement depuis les informations du serveur.
 
-Il existe ensuite deux types d’entrée de menu : les menus avec sous-menu et les menus avec écran.
+Il existe ensuite deux types d’entrée de menu : les menus avec sous-menus et les menus avec écran.
 
 ```tsx
 interface MenuWithScreen extends MenuBase {

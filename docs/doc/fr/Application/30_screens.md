@@ -1,5 +1,6 @@
 ---
-sidebar_position: 3
+slug: /screens
+sidebar_position: 30
 description: ''
 ---
 
@@ -149,7 +150,7 @@ Un field est défini à travers plusieurs attribut :
     | 'custom';
   ```
 
-- _customComponent_ : définition d’un composant d’affichage personnalisé. Cela permet notamment d’afficher une barre de recherche ou bien encore une sélection. Les composants personnalisés doivent avoir uns structure précise pour permettre de transmettre les valeurs au composant.
+- _customComponent_ : définition d’un composant d’affichage personnalisé. Cela permet notamment d’afficher une barre de recherche ou bien encore une sélection. Les composants personnalisés doivent avoir une structure précise pour permettre de transmettre les valeurs au composant.
 
   ```tsx
   interface customComponentOptions {
@@ -163,7 +164,7 @@ Un field est défini à travers plusieurs attribut :
   ```
 
 :::caution
-Il faut faire attention lors de l’utilisation des composants custom avec l’attribut hideIf. En effet, l’affichage étant conditionnel, il ne faut pas que le composant utilise des hooks afin d’éviter les erreurs de rendu dus à un nombre de hooks différents entre les différents renders.
+Il faut faire attention lors de l’utilisation des composants custom avec l’attribut hideIf. En effet, l’affichage étant conditionnel, il ne faut pas que le composant utilise des hooks afin d’éviter les erreurs de rendu dues à un nombre de hooks différents entre les différents rendus.
 
 L’astuce est donc de créer un composant auxiliaire qui va gérer l’ensemble des hooks puis de créer un composant au-dessus qui transmet seulement les valeurs au composant auxiliaire.
 
@@ -224,7 +225,7 @@ Un panel est défini à travers plusieurs attributs :
 
 - _titleKey_ : clé de traduction pour le titre du panel.
 - _isCollapsible_ : permet de définir si un panel doit pouvoir être collapsible.
-- _order_ : order du panel dans la vue.
+- _order_ : ordre du panel dans la vue.
 - _colSpan_ : largeur du panel sur la vue. Par défaut, le panel prend toute la largeur de la vue.
 - _direction_ : direction d’affichage des éléments (`’row’` affiche les éléments en ligne, `‘column’` affiche les éléments en colonne)
 - _parent_ : nom du panel parent.
@@ -258,7 +259,7 @@ Ce composant prend en argument trois éléments :
 
 - defaultValue : la valeur par défaut à afficher sur le formulaire.
 - formKey : la clé de la configuration du formulaire définie lors de l’export du module.
-- actions : l’ensemble des actions à afficher en bas de la page. Les actions sont construite à travers un template de la même manière que l’ensemble des éléments du formulaire.
+- actions : l’ensemble des actions à afficher en bas de la page. Les actions sont construites à travers un template de la même manière que l’ensemble des éléments du formulaire.
 
   ```tsx
   interface Action {
@@ -286,7 +287,7 @@ Ce composant prend en argument trois éléments :
   type FormActionType = 'update' | 'create' | 'reset' | 'refresh' | 'custom';
   ```
 
-  Une action est définir à travers plusieurs attributs :
+  Une action est définie à travers plusieurs attributs :
 
   - _key_ : clé de l’action pour l’unicité des actions
   - _type_ : définition du type d’action pour les configurations par défaut. Cela permet de définir automatiquement le titre et l’action à effectuer lors du clique sur le bouton.
@@ -295,6 +296,6 @@ Ce composant prend en argument trois éléments :
   - _color_ : couleur du bouton.
   - _hideIf_ / _disabledIf_ : fonctions permettant d’ajouter une condition d’affichage / de disponibilité pour le bouton en fonction de l’état du formulaire et des valeurs du store.
   - _customAction_ : action personnalisée à effectuer au clique.
-  - _needValidation_ : permet de demander au formulaire de vérifier si les valeurs remplies par l’utilisateur répondent aux contraintes avant d’effectuer l’action. Si le formulaire est correcte alors l’action est effectuée. Dans le cas contraire, l’utilisateur obtient un récapitulatif des éléments à corriger.
+  - _needValidation_ : permet de demander au formulaire de vérifier si les valeurs remplies par l’utilisateur répondent aux contraintes avant d’effectuer l’action. Si le formulaire est correct alors l’action est effectuée. Dans le cas contraire, l’utilisateur obtient un récapitulatif des éléments à corriger.
   - _needRequiredFields_ : empêche l’utilisateur de cliquer sur le bouton si certains champs requis ne sont pas remplis.
   - _customComponent_ : composant personnalisé pour l'affichage du bouton. L'attribut onPress du composant sera ré-écrit avec l'action qui lui est associée.

@@ -1,5 +1,6 @@
 ---
-sidebar_position: 1
+slug: /components
+sidebar_position: 10
 description: ''
 ---
 
@@ -61,7 +62,7 @@ axelor-mobile/
 
 Une fois dans le dossier stories, les composants sont triés par type (atoms, molecules, organisms & templates) sur le même principe que dans les sources du package.
 
-Une storie est un cas d’utilisation du composant. Dans la storybook, il faut donc réussir à re-créer tous les cas d’utilisation du composant pour permettre une meilleure documentation. Pour créer une storie, il faut donc créer un nouveau fichier dans le dossier _stories_ dans la bonne catégorie de composant. La nomenclature pour le nom du fichier est `<nom du composant>.stories.tsx`.
+Une story est un cas d’utilisation du composant. Dans le storybook, il faut donc réussir à re-créer tous les cas d’utilisation du composant pour permettre une meilleure documentation. Pour créer une story, il faut donc créer un nouveau fichier dans le dossier _stories_ dans la bonne catégorie de composant. La nomenclature pour le nom du fichier est `<nom du composant>.stories.tsx`.
 
 Il peut ensuite y avoir deux types de stories : les stories fixes dans le style d’un catalogue ou alors les stories paramétrables où l’utilisateur peut modifier chaque attribut pour faire les combinaisons de son choix.
 
@@ -176,7 +177,7 @@ _color: colorPicker,
 ```
 
 :::caution
-La gestion des champs object n’est pas très bien faite sur le storybook. Il n’est pas possible de définir la structure de l’objet attendu et pour l’utilisateur, modifier un champs de type object est assez difficile car il faut reconstruire l’objet json dans un éditeur texte. Dans le cas où le format de l’objet attendu est connu, il est plutôt conseiller de créer un attribut par champs attendu de l’objet puis reconstruire l’objet dans les props du composant par la suite. Un exemple avec l’objet suivant :
+La gestion des champs object n’est pas très bien faite sur le storybook. Il n’est pas possible de définir la structure de l’objet attendu et pour l’utilisateur, modifier un champs de type object est assez difficile car il faut reconstruire l’objet json dans un éditeur texte. Dans le cas où le format de l’objet attendu est connu, il est plutôt conseillé de créer un attribut par champs attendu de l’objet puis reconstruire l’objet dans les props du composant par la suite. Un exemple avec l’objet suivant :
 
 ```tsx
 // Structure de l'objet attendu
@@ -211,7 +212,7 @@ Quelques commandes importantes à exécuter à la racine du projet pour la story
 - build la storybook : `yarn storybook:build`
 
 :::info
-💡 Ne pas hésiter à regarder les stories existantes lors de la création d’une nouvelle storie, elles représentent déjà un certain nombre de cas d’utilisation qui peuvent être utiles.
+💡 Ne pas hésiter à regarder les stories existantes lors de la création d’une nouvelle story, elles représentent déjà un certain nombre de cas d’utilisation qui peuvent être utiles.
 :::
 
 ## Création d’une card
@@ -260,7 +261,7 @@ L’élément **BadgeElement** permet d’afficher des informations dans les com
 
 Il est possible de personnaliser la texte et la couleur du badge, à travers les attribut _displayText_ et _color_, mais également de définir un composant de remplacement avec l’attribut _customComponent_.
 
-La card est donc divisée est plusieurs compartiments, tous paramétrables et facultatif. La card affichera seulement les compartiments contenant de la données.
+La card est donc divisée en plusieurs compartiments, tous paramétrables et facultatifs. La card affichera seulement les compartiments contenant de la données.
 
 ![explanation_objectCard.png](/img/fr/explanation_objectCard.png)
 

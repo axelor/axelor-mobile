@@ -1,5 +1,6 @@
 ---
-sidebar_position: 2
+slug: /api_requests
+sidebar_position: 20
 description: ''
 ---
 
@@ -11,7 +12,7 @@ Afin de permettre de surcharger facilement les différentes caractéristiques de
 
 Chaque module a la responsabilité de générer ses propres modèles et de surcharger les modèles d’un autre module si nécessaire.
 
-Il faut donc aujouter dans l’architecture un dossier models qui va contenir un fichier par type de configuration ainsi qu’un fichier index afin de faciliter l’export.
+Il faut donc ajouter dans l’architecture un dossier models qui va contenir un fichier par type de configuration ainsi qu’un fichier index afin de faciliter l’export.
 
 ![architecture_fields.png](/img/fr/architecture_fields.png)
 
@@ -185,7 +186,7 @@ const searchStockMoveFrom = ({page}): Promise<any> => {
 
 Signature de la fonction : `getSearchCriterias(objectKey: string, searchValue: string): CriteriaGroup`
 
-Cet helper permet de récupérer une liste de critères par rapport aux champs de recherche associés à la à la clé fournie en argument. Les critères sont construits en mettant en relation chaque champ présent dans la liste avec la valeur de recherche fournie en argument avec un opérateur _like._ La liste contenant l’ensemble des critères est ensuite entouré d’un opérator _or_ :
+Cet helper permet de récupérer une liste de critères par rapport aux champs de recherche associés à la clé fournie en argument. Les critères sont construits en mettant en relation chaque champ présent dans la liste avec la valeur de recherche fournie en argument avec un opérateur _like_. La liste contenant l’ensemble des critères est ensuite entouré d’un opérator _or_ :
 
 ```jsx
 {

@@ -1,5 +1,6 @@
 ---
-sidebar_position: 5
+slug: /modules
+sidebar_position: 50
 description: ''
 ---
 
@@ -66,13 +67,13 @@ Un module possède donc :
 - un ensemble de reducers pour le module (_reducers_). Un reducer est un simple fonction qui permet de mettre à jour l’état d’un objet en fonction de l’action qui lui est transmise. Dans notre contexte, les reducers sont les fonctions redux qui permettent de mettre à jour le store lors des appels API par exemple. Il faut obligatoirement exporter tous les reducers créés dans le module pour accéder à la partie du store correspondante dans les différents écrans.
 - une liste de fonctions à exécuter en arrière plan si nécessaire (_backgroundFunctions_). Ces fonctions sont exécutées toutes les 5 minutes.
 - une configuration de modèles pour les appels API (_models_).
-- une liste de noms d'application web pour récupérer la configuration associée (_requiredConfig_), comme par exemple 'AppBase" ou 'AppMobileSettings'. Chaque configuration sera ensuite récupérée avec le router de l'application. Il faut donc que les routes associées soient renseignées auprès du router. Il est possible de renseigner des nouvelles routes dans le fichier de configuration de l'application à travers l'attribut _additionalRoutes_.
+- une liste de noms d'application web pour récupérer la configuration associée (_requiredConfig_), comme par exemple 'AppBase' ou 'AppMobileSettings'. Chaque configuration sera ensuite récupérée avec le router de l'application. Il faut donc que les routes associées soient renseignées auprès du router. Il est possible de renseigner des nouvelles routes dans le fichier de configuration de l'application à travers l'attribut _additionalRoutes_.
 - une fonction pour enregistrer des modules dynamiquement (_moduleRegister_). Cette fonction sera éxécuté une seule fois à la connexion de l'utilisateur pour permettre la création de menus et écrans à partir de données de l'ERP comme les tableaux de bord ou les vues web personnalisées.
 - une liste d'outils à afficher globalement sur l'application (_globalTools_).
 
 # Création dynamique de modules
 
-Il est parfois nécessaire de créer des menus ou écrans en fonction d'une configuration définie sur l'ERP ce qui n'est pas possible avec la gestion normal des menus et écrans dans l'objet _Module_. Il faut alors créer un nouveau module dynamiquement pour enregistrer ces éléments, ce qui est possible grâce au _modulesProvider_ et à l'attribut _moduleRegister_ de l'objet Module :
+Il est parfois nécessaire de créer des menus ou écrans en fonction d'une configuration définie sur l'ERP ce qui n'est pas possible avec la gestion normale des menus et écrans dans l'objet _Module_. Il faut alors créer un nouveau module dynamiquement pour enregistrer ces éléments, ce qui est possible grâce au _modulesProvider_ et à l'attribut _moduleRegister_ de l'objet Module :
 
 ```tsx
 export const functionalModule: Module = {

@@ -22,7 +22,7 @@ Enfin de bénéficier des différents outils mis à disposition par les packages
 
 ![dependencies_functionnal.png](/img/fr/dependencies_functionnal.png)
 
-D’un point de vue architecture du code dans le projet standard, les trois packages génériques sont présents à la racine du dossier _packages/_ alors que les modules métiers sont situés dans le dossier _packages/apps/_. La version 7.0.0 d’AOM a apporté un changement dans l’architecture de l’application. En effet, les dossiers _android_ et _ios_ sont maintenant à la racine du projet. Ces dossier permettent notamment de gérer les versions de l’application sur les deux plateformes ainsi que les configurations et les permissions à demander à l’utilisateur.
+D’un point de vue architecture du code dans le projet standard, les trois packages génériques sont présents à la racine du dossier _packages/_ alors que les modules métiers sont situés dans le dossier _packages/apps/_. Les dossiers _android_ et _ios_ permettent de gérer les versions de l’application sur les deux plateformes ainsi que les configurations et les permissions à demander à l’utilisateur.
 
 ```bash
 axelor-mobile

@@ -1,5 +1,6 @@
 ---
-sidebar_position: 4
+slug: /api_providers
+sidebar_position: 40
 description: ''
 ---
 
@@ -7,7 +8,7 @@ description: ''
 
 ## Standard
 
-Afin de communiquer avec l’instance web de l’ERP, les différents modules utilisent _axios_ \*\*\*\*qui permet de réaliser des appels API. Lors de la connexion sur l’application, axios va récupérer et sauvegarder l’url de l’instance et les tokens de connexion envoyés par l’ERP afin de pouvoir réaliser les futures requêtes.
+Afin de communiquer avec l’instance web de l’ERP, les différents modules utilisent _axios_ qui permet de réaliser des appels API. Lors de la connexion sur l’application, axios va récupérer et sauvegarder l’url de l’instance et les tokens de connexion envoyés par l’ERP afin de pouvoir réaliser les futures requêtes.
 
 Le package core fournit un provider afin de réaliser n’importe quel appel API. Il s’agit de _axiosApiProvider_ qui possède quatre types de requêtes :
 
@@ -22,55 +23,25 @@ export interface ApiProvider {
 
 Pour l’utiliser il suffit de récupérer le provider du package core puis d’appeler la méthode adéquate en fonction du besoin.
 
-Il existe deux autres types de providers qui permettent de généraliser l’utilisation des requêtes mais également permettre à un module de venir modifier ce provider pour utiliser un outil spécifique. Ce système a été mis en place pour les requêtes concernant la récupération de données sur les modèles et pour les requêtes concernant la réalisation d’actions. Chaque provider possède un interface spécifique avec les méthodes nécessaires à son fonctionnement mais également d’un Gateway permettant de switcher entre plusieurs providers en fonction de leur disponibilité.
+Il existe deux autres types de providers qui permettent de généraliser l’utilisation des requêtes mais également de permettre à un module de venir modifier ce provider pour utiliser un outil spécifique. Ce système a été mis en place pour les requêtes concernant la récupération de données sur les modèles et la réalisation d’actions. Chaque provider possède une interface spécifique avec les méthodes nécessaires à son fonctionnement mais également un Gateway permettant de switcher entre plusieurs providers en fonction de leur disponibilité.
 
 ## Model
 
-Les providers spécialisés pour la récupération de données doivent suivre l’interface suivante afin d’offrir les mêmes fonctionnalités et éviter les erreurs :
+Les providers spécialisés pour la récupération de données doivent suivre l’interface suivante afin d’offrir les mêmes fonctionnalités et d'éviter les erreurs :
 
 ```tsx
 export interface ModelApi {
   init(data?: any): void;
   isAvailable(): Promise<boolean>;
-  getAll({
-    modelName,
-    page,
-  }: {
-    modelName: string;
-    page: number;
-  }): Promise<RequestResponse>;
-  get({
-    modelName,
-    id,
-  }: {
-    modelName: string;
-    id: number;
-  }): Promise<RequestResponse>;
-  fetch({
-    modelName,
-    id,
-    query,
-  }: {
+  getAll(data: {modelName: string; page: number}): Promise<RequestResponse>;
+  get(data: {modelName: string; id: number}): Promise<RequestResponse>;
+  fetch(data: {
     modelName: string;
     id: number;
     query: ReadOptions;
   }): Promise<RequestResponse>;
-  search({
-    modelName,
-    query,
-  }: {
-    modelName: string;
-    query: Query;
-  }): Promise<RequestResponse>;
-  insert({
-    modelName,
-    id,
-    data,
-  }: {
-    modelName: string;
-    id: number;
-    data: any;
-  }): Promise<any>;
+  search(data: {modelName: string; query: Query}): Promise<RequestResponse>;
+  insert(data: {modelName: string; id: number; data: any}): Promise<any>;
   reset(modelName?: string): void;
 }
 ```
@@ -104,10 +75,10 @@ registerModelApi(new GatewayModelApi(modelApi1, modelApi2, ...));
 
 ## Action
 
-Les providers spécialisés pour la réalisation d’actions doivent suivre l’interface suivante afin d’offrir les mêmes fonctionnalités et éviter les erreurs :
+Les providers spécialisés pour la réalisation d’actions doivent suivre l’interface suivante afin d’offrir les mêmes fonctionnalités et d'éviter les erreurs :
 
 ```tsx
-type Method = 'put' | 'post';
+type Method = 'put' | 'post' | 'delete' | 'get';
 
 export type ActionRequest = {
   url: string;
@@ -123,7 +94,11 @@ export interface ActionApi {
 }
 ```
 
-La fonction _isAvailable_ permet de savoir si le provider est disponible pour utilisation ou non : aucune connexion internet ou autre. La fonction _send_ permet de réaliser la requête. La fonction _synchronize_ permet de synchroniser les requêtes avec le web.
+La fonction _isAvailable_ permet de savoir si le provider est disponible pour utilisation ou non : aucune connexion internet ou autre.
+
+La fonction _send_ permet de réaliser la requête.
+
+La fonction _synchronize_ permet de synchroniser les requêtes avec le web.
 
 Le package core propose par défaut une implémentation de cette interface qui utilise les web services AOS, il s’agit de la classe `AosActionApi`.
 
@@ -136,7 +111,7 @@ Afin d’uniformiser l’utilisation de toutes les implémentations de l’inter
 
 Par défaut, ce provider est paramétré avec le _AosActionApi_.
 
-Ainsi, lors de l’utilisation d’un Gateway, il faut venir enregistrer le nouveau ModelApi.
+Ainsi, lors de l’utilisation d’un Gateway, il faut venir enregistrer le nouveau ActionApi.
 
 ```tsx
 registerActionApi(new GatewayActionApi(actionApi1, actionApi2, ...));

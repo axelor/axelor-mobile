@@ -1,5 +1,6 @@
 ---
-sidebar_position: 8
+slug: /camera_scanner
+sidebar_position: 80
 description: ''
 ---
 
@@ -7,11 +8,11 @@ description: ''
 
 ## Prise de photo avec la caméra
 
-L’application a la possibilité d’ouvrir la caméra du téléphone afin d’effectuer une photo. L’ouverture de la caméra aisni que l’obtention des données de la photo sont gérées via un slice.
+L’application a la possibilité d’ouvrir la caméra du téléphone afin d’effectuer une photo. L’ouverture de la caméra ainsi que l’obtention des données de la photo sont gérées via un slice.
 
-Pour toute utilisation de la caméra, il faut définir une clé pour cibler l’envoi des données de la photo et éviter les conflits. Cette clé doit être unique et idéalement décrire l’utilisation (exemple : _‘expense-line_justication_picture’_).
+Pour toute utilisation de la caméra, il faut définir une clé pour cibler l’envoi des données de la photo et éviter les conflits. Cette clé doit être unique et idéalement décrire l’utilisation (exemple : _‘expense-line_justification_picture’_).
 
-Pour ouvrir la caméra il suffit d’utiliser le reducer _enableCamera_ avec le clé. De la même manière pour récupérer les informations de la photo, il faut utiliser le selector de la caméra avec la même clé. En mettant en place un useEffect il est alors possible d’initier une action dès qu’une photo est prise. La prise de photo ferme automatiquement la caméra. Une fois l’action initiée suite à la prise de photo, il faut penser à nettoyer le state de la caméra avec _clearPhoto_ pour éviter les problèmes de refresh.
+Pour ouvrir la caméra il suffit d’utiliser le reducer _enableCamera_ avec la clé. De la même manière pour récupérer les informations de la photo, il faut utiliser le selector de la caméra avec la même clé. En mettant en place un useEffect il est alors possible d’initier une action dès qu’une photo est prise. La prise de photo ferme automatiquement la caméra. Une fois l’action initiée suite à la prise de photo, il faut penser à nettoyer le state de la caméra avec _clearPhoto_ pour éviter les problèmes de refresh.
 
 ```tsx
 // Récupération des données
@@ -44,7 +45,7 @@ useEffect(() => {
 
 Il existe déjà deux composants qui utilisent la caméra :
 
-- **UploadFileInput** : offre la possibilité à l’utilisateur de sélectionner une image du stockage du téléphone ou de prendre une photo. Cette photo peut ensuite être transformé en MetaFile ou rester au format base64.
+- **UploadFileInput** : offre la possibilité à l’utilisateur de sélectionner une image du stockage du téléphone ou de prendre une photo. Cette photo peut ensuite être transformée en MetaFile ou rester au format base64.
 - **CameraButton** : offre la possibilié d’ouvrir la caméra au clique puis de permettre une action sur la prise de photo. Cette photo peut être renvoyée sous forme de MetaFile ou au format base64 en fonction de la configuration donnée au composant.
 
 ## Récupération des informations d’un scan

@@ -1,5 +1,6 @@
 ---
-sidebar_position: 2
+slug: /themes
+sidebar_position: 20
 description: ''
 ---
 
@@ -51,6 +52,26 @@ export interface ThemeColors {
   warningColor: Color;
   inverseColor: Color;
   infoColor: Color;
+  red: Color;
+  pink: Color;
+  purple: Color;
+  deepPurple: Color;
+  indigo: Color;
+  blue: Color;
+  lightBlue: Color;
+  cyan: Color;
+  teal: Color;
+  green: Color;
+  lightGreen: Color;
+  lime: Color;
+  yellow: Color;
+  amber: Color;
+  orange: Color;
+  deepOrange: Color;
+  brown: Color;
+  grey: Color;
+  blueGrey: Color;
+  black: Color;
   text: string;
   placeholderTextColor: string;
 }
@@ -62,11 +83,13 @@ export interface Theme {
 }
 ```
 
-![theme.png](/img/fr/theme.png)
+![theme.png](/img/fr/theme_purple.png)
 
-- _background_ : cette couleur doit correspondre à la couleur principale de l’objet.
-- _background_light_ : il s’agit ici de la couleur prinicpale avec une opacité plus faible (70%) permettant d’être plus discrète et plus facile pour la lecture.
-- _foreground_ : cette couleur doit être utilisée pour tout élément positioné au-dessus des couleurs background ou background_light. Elle a été calculé afin d’optimiser le [contraste](https://coolors.co/contrast-checker/112a46-acc8e5) avec la couleur de fond et ainsi optimiser la lecture.
+Les couleurs de l'application sont divisées en trois attributs :
+
+- **background** : cette couleur doit correspondre à la couleur principale de l’objet.
+- **background_light** : il s’agit ici de la couleur prinicpale avec une opacité plus faible (70%) permettant d’être plus discrète et plus facile pour la lecture.
+- **foreground** : cette couleur doit être utilisée pour tout élément positioné au-dessus des couleurs background ou background_light. Elle a été calculé afin d’optimiser le [contraste](https://coolors.co/contrast-checker/112a46-acc8e5) avec la couleur de fond et ainsi optimiser la lecture.
 
 Il est également possible de venir personnaliser l’application en ajoutant d’autres thèmes et/ou en re-définissant le thème par défaut via les attributs _themes_ (Theme[]) et _defaultTheme_ (Theme) du composant **Application.**
 

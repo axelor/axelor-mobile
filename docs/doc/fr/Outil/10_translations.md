@@ -1,5 +1,6 @@
 ---
-sidebar_position: 1
+slug: /translations
+sidebar_position: 10
 description: ''
 ---
 
@@ -13,7 +14,7 @@ Chaque module doit comporter dans son architecture un dossier i18n avec des fich
 
 Au sein des fichiers de traductions, les clés doivent suivre une nomenclature afin de structurer l’ensemble des traductions et en connaître l’origine.
 
-La nomenclature est la suivante : _`<Module>_<Signification>.`\_
+La nomenclature est la suivante : `<Module>_<Signification>`
 
 L’ensemble des clés de traductions doivent être rédigées en **anglais** et permettre à l’utilisateur de pouvoir continuer à utiliser l’application même si la valeur de la traduction n’a pas été trouvée.
 
@@ -53,6 +54,6 @@ const I18n = useTranslator();
 <Text>{I18n.t('HelloWorld')}</Text>
 ```
 
-L’application mobile supporte officiellement pour le moment deux langues : français et anglais. Cependant, le composant de traduction est en intéraction avec l’ERP et les administrateurs peuvent envoyer les traductions de l’application présentes dans les fichiers JSON vers la base de données de l’ERP. Les utilisateurs peuvent alors les modifier ou encore ajouter de nouvelles traductions pour ajouter un nouveau langage sur l’application. Les langues disponibles sur l’application mobile sont récupérées dans la base de données sur l’objet _com.axelor.apps.base.db.Language_. Si l’utilisateur choisit une langue dont les traductions ne sont pas définies alors elles s’affireront en anglais qui est la langue par défaut. Les traductions de l’ERP sont récupérées à chaque changement de langage sur la page utilisateur de l’application mobile.
+L’application mobile supporte officiellement pour le moment deux langues : français et anglais. Cependant, le composant de traduction est en intéraction avec l’ERP et les administrateurs peuvent envoyer les traductions de l’application présentes dans les fichiers JSON vers la base de données de l’ERP. Les utilisateurs peuvent alors les modifier ou encore ajouter de nouvelles traductions pour ajouter un nouveau langage sur l’application. Les langues disponibles sur l’application mobile sont récupérées dans la base de données sur l’objet _com.axelor.apps.base.db.Localization_. Si l’utilisateur choisit une langue dont les traductions ne sont pas définies alors elles s’affireront en anglais qui est la langue par défaut. Les traductions de l’ERP sont récupérées à chaque changement de langage sur la page utilisateur de l’application mobile.
 
 D’un point de vue fonctionnel, lors de l’utilisation du traducteur, si la traduction existe dans les données récupérées du serveur alors c’est celle-ci qui est utilisée, sinon le système va regarder dans la base de l’application et dans le cas où la traduction n’existe pas alors le traducteur renvoit la clé de traduction.

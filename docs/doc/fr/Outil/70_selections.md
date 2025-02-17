@@ -1,5 +1,6 @@
 ---
-sidebar_position: 7
+slug: /selections
+sidebar_position: 70
 description: ''
 ---
 
@@ -74,7 +75,7 @@ Une sélection est alors définie avec les propriétés suivantes :
 - _useWebContent_: définit si la configuration doit être récupérée du web ou non.
 - _content_: définit la liste des options sur la sélection avec la clé associée, la valeur, le titre et optionnellement un ordre et une couleur.
 
-Les sélections des différents modules sont alors rassemblés lors du build de l'application et les configurations du web sont récupérées après la connexion de l'utilisateur.
+Les sélections des différents modules sont alors rassemblées lors du build de l'application et les configurations du web sont récupérées après la connexion de l'utilisateur.
 
 Il existe deux méthodes pour récupérer une sélection pour permettre leur utilisation dans toutes les situations, que ce soit dans un appel API où les hooks ne sont pas accessibles ou dans un composant où il est important d'éviter les refresh inutiles.
 

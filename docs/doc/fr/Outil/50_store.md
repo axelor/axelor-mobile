@@ -1,5 +1,6 @@
 ---
-sidebar_position: 5
+slug: /redux_store
+sidebar_position: 50
 description: ''
 ---
 
@@ -45,7 +46,7 @@ export const handlerApiCall = ({
 
 Lors de la création de la fonction asynchrone, il est important de respecter la nomenclature suivante pour la création du type : `<nom du slice>/<nom de la fonction>`. Il existe également une nomenclature pour la création des clés de traduction servant à décrire l’action exécutée : `<nom du module>_SliceAction_<action>`. De plus, pour permettre une meilleure lisibilité des fichiers de traductions, la convention veut que les traductions pour les actions des reducers soient regroupées à la fin des fichiers.
 
-Il faut ensuite construire un slice permettant permettant d’indiquer le comportant à adopter dans les différents états des requêtes (pending, rejected ou fulfilled). Afin de pouvoir accéder à l’état du store pour ce slice, il faut l’exporter puis exporter le reducer ansi créé pour pouvoir l’ajouter à l’export du module.
+Il faut ensuite construire un slice permettant d’indiquer le comportant à adopter dans les différents états des requêtes (pending, rejected ou fulfilled). Afin de pouvoir accéder à l’état du store pour ce slice, il faut exporter le reducer ansi créé pour pouvoir l’ajouter à l’export du module.
 
 À titre d’exemple, le code suivant correspond à la création d’un reducer pour récupérer une liste d’unités depuis l’instance web de l’ERP.
 
@@ -115,7 +116,7 @@ Cette fonction permet donc de créer les trois états d’un reducer (pending, f
 - **moreLoading** : permet de savoir quand l’utilisateur charge la suite de la liste (chargement d’une page autre que la première). Les données obtenues seront ajoutées à la fin de la liste existante.
 - **isListEnd** : permet de savoir si toutes les données ont été chargées et ainsi éviter des requêtes inutiles.
 - **list** : contient les données récupérées du serveur.
-- **total** : contient le nombre total d’élément présent sur le serveur et répondant à la requête. Cet attribut n’est mis à jour que si l’option _manageTotal_ est activée et que la fonction transmise à l’attribut _actionCreator_ a activé l’option _resturnTotalWithData_ ou _returnResponseMessage_ est activée.
+- **total** : contient le nombre total d’élément présent sur le serveur et répondant à la requête. Cet attribut n’est mis à jour que si l’option _manageTotal_ est activée et que la fonction transmise à l’attribut _actionCreator_ a activé l’option _resturnTotalWithData_ ou _returnResponseMessage_.
 
 Dans le fichier index du dossier features contenant l’ensemble des slices du module, il faut ensuite exporter ce reducer sous un nom plus simple permettant par la suite d’accéder à son state :
 

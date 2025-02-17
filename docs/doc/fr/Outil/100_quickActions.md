@@ -1,5 +1,6 @@
 ---
-sidebar_position: 10
+slug: /quick_actions
+sidebar_position: 100
 description: ''
 ---
 

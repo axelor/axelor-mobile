@@ -1,11 +1,12 @@
 ---
-sidebar_position: 9
+slug: /permission
+sidebar_position: 90
 description: ''
 ---
 
 # Gestion des permissions
 
-Pour éviter les erreurs API liées aux droits des utilisateurs sur l'ERP, le package CORE met à disposition des outils permettant de vérifier les droits de lecture, d'écriture, de création et de suppression sur un objet donné.
+Pour éviter les erreurs API liées aux droits des utilisateurs sur l'ERP, le package CORE met à disposition des outils permettant de vérifier les droits de lecture, d'écriture, de création et/ou de suppression sur un objet donné.
 
 Les permissions enregistrées sur l'ERP sont récupérées lors de la connexion sur l'écran d'accueil grâce à la fonction résultante du hook _usePermissionsFetcher_. L'utilisateur _admin_ n'est pas impacté par ces permissions puisqu'il est l'administrateur de l'ERP et possède tous les droits.
 

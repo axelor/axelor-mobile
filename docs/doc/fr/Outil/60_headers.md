@@ -1,5 +1,6 @@
 ---
-sidebar_position: 6
+slug: /headers
+sidebar_position: 60
 description: ''
 ---
 
@@ -42,6 +43,8 @@ export interface HeaderActions {
 export interface HeaderOptions {
   model?: string;
   modelId?: number;
+  options?: any;
+  disablePrint?: boolean;
   disableMailMessages?: boolean;
   disableJsonFields?: boolean;
   attachedFileScreenTitle?: string;
@@ -51,17 +54,18 @@ export interface HeaderOptions {
 }
 ```
 
-Le package core fournit par défaut deux actions pour le header qui sont les messages de suivi sur chaque objet ainsi que les fichiers joints. Elles sont paramétrables via les props suivantes :
+Le package core fournit par défaut plusieurs actions pour le header, à savoir les messages de suivi sur chaque objet, les fichiers joints, les champs studio, l'impression du rapport ou encore l'affichage du code-barre. Elles sont paramétrables via les props suivantes :
 
 - _model_ : nom complet du modèle sur l’ERP.
 - _modelId_ : identifiant de l’objet.
+- _disablePrint_ : condition pour l'affichage ou non de l'impression du rapport.
 - _disableMailMessages_ : condition pour l'affichage ou non des messages de suivi sur l'objet.
 - _disableJsonFields_ : condition pour l’affichage ou non des champs studio.
 - _attachedFileScreenTitle_ : nom de l'écran pour les fichiers joints.
 - _barcodeFieldname_ : nom de l’attribut contenant le fichier code-barre sur l’ERP (par défaut `barCode`).
 - _headerTitle_ : nom de l'écran pour permettre les titres dynamiques.
 
-Les fichiers joints s’affichent uniquement si l’objet actuel en possède avec un indicateur sur leur nombre. Les messages de suivi eux n’affichent lorsque `model` et `modelId` sont renseignés et qu’il ne sont pas désactivés par l’attribut `disableMailMessages`.
+Ces actions s’affichent lorsque les valeurs des attributs `model` et `modelId` sont renseignés et que les actions ne sont pas désactivées par les attributs associés.
 
 Il est ensuite possible d’ajouter des actions supplémentaires avec l’attribut `actions`. Chaque action possède alors la structure suivante :
 
@@ -86,7 +90,7 @@ Les différents attributs mis à disposition sont donc :
 - **key** : **_[Required]_** permet de donner un identifiant à l’action afin de permettre la modification à travers une surcharge.
 - **order** : **_[Required]_** permet d’ordonner l’affichage des actions
 - **title** : **_[Required]_** titre de l’action lorsque celle-ci est réduite dans le `DropdownMenu`
-- **iconName** : **_[Required]_** nom de l’icone associé à cette action
+- **iconName** : **_[Required]_** nom de l’icone Bootstrap associé à cette action
 - **iconColor** : couleur de l’icone, par défaut celle-ci est fixée à `secondaryColor_dark.background`
 - **indicator** : chiffre à afficher en petit en haut de l’icone de l’action (ex: nombre de fichiers joints ou de messages en attente)
 - **hideIf** : condition d’affichage de l’action
@@ -97,7 +101,7 @@ Les différents attributs mis à disposition sont donc :
 
 D’un point de vue fonctionnel, l’ensemble des actions est transmis au composant `HeaderOptionsMenu` qui va ensuite réaliser les étapes suivantes:
 
-- récuprérer les deux actions par défaut paramétrées avec les informations renseignées
+- récupérer les actions par défaut paramétrées avec les informations renseignées
 - retirer de la liste les actions cachées
 - trier la liste par `order` croissant
 - afficher les deux premières actions avec l’attribut `showInHeader` à true directement dans le header
@@ -199,7 +203,7 @@ Pour enregistrer un bandeau, il suffit alors d’utiliser la fonction _registerH
 export interface HeaderBandItem {
   key: string; // Clé du bandeau
   color: Color; // Couleur du bandeau
-  text: string; // Test à afficher
+  text: string; // Texte à afficher
   showIf: boolean; // Condition pour laquelle le bandeau doit s'afficher
   order?: number; // Ordre d'affichage du bandeau dans la liste
 }
