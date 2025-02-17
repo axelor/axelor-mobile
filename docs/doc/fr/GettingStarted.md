@@ -117,7 +117,7 @@ Certaines fonctionnalités ne sont pas disponibles sur l'application standard et
 
 - **Étape 1** : obtenir le token de connexion à Nexus
 
-Lancez la commande suivante dans votre terminal en utilisant vos identifiants Nexus.
+Lancez la commande suivante dans votre terminal en utilisant vos identifiants Nexus fournis par Axelor.
 
 ```bash
 echo -n "username:password" | base64
@@ -144,7 +144,29 @@ Ajoutez un fichier .npmrc sur votre projet avec le contenu suivant:
 
 - **Étape 4** : ajouter la dépendance
 
-Il faut ensuite ajouter la dépendance du module à l'application de la même manière que pour les modules standards.
+Il faut ensuite ajouter la dépendance du module à l'application de la même manière que pour les modules standards, à savoir ajout de la dépendance dans le package.json puis transmission de l'objet `Module` à l'application :
+
+```jsx
+import React from 'react';
+import {Application} from '@axelor/aos-mobile-core';
+import {HrModule} from '@axelor/aos-mobile-hr';
+import {DataCaptureModule} from '@aos-mobile/data-capture';
+import application_properties from '../package.json';
+import {app_config} from './app.config';
+
+const App = () => {
+  return (
+    <Application
+      modules={[HrModule, DataCaptureModule]}
+      mainMenu="auth_menu_user"
+      version={application_properties.version}
+      configuration={app_config}
+    />
+  );
+};
+
+export default App;
+```
 
 Certains modules entreprises de l’application peuvent nécessiter l’installation d’un module complémentaire sur l’instance Axelor Open Suite.
 
