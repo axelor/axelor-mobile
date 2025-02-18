@@ -91,9 +91,11 @@ const DoubleScannerSearchBar = ({
 
   const {base: baseConfig} = useSelector(state => state.appConfig);
 
+  const [_searchValue, setSearchValue] = useState(value);
   const [barCode, setBarCode] = useState(null);
+  const [itemSelected, setItemSelected] = useState(false);
 
-  const fetchApi = useCallback(
+  const fetchAPI = useCallback(
     ({page, searchValue}) => {
       dispatch(
         sliceFunction({
@@ -109,12 +111,12 @@ const DoubleScannerSearchBar = ({
   const fetchSearchAPI = useCallback(
     ({page = 0, searchValue}) => {
       onFetchDataAction && onFetchDataAction(searchValue);
-      fetchApi({page, searchValue});
+      fetchAPI({page, searchValue});
     },
-    [fetchApi, onFetchDataAction],
+    [fetchAPI, onFetchDataAction],
   );
 
-  const fetchBarCodeApi = useCallback(() => {
+  const fetchBarCodeAPI = useCallback(() => {
     dispatch(
       sliceBarCodeFunction({
         ...(sliceFunctionBarCodeData ?? {}),
@@ -124,8 +126,22 @@ const DoubleScannerSearchBar = ({
   }, [barCode, dispatch, sliceBarCodeFunction, sliceFunctionBarCodeData]);
 
   useEffect(() => {
-    fetchBarCodeApi();
-  }, [fetchBarCodeApi]);
+    fetchBarCodeAPI();
+  }, [fetchBarCodeAPI]);
+
+  useEffect(() => {
+    if (list.length === 1 && selectLastItem && !itemSelected) {
+      setSearchValue(displayValue(list[0]));
+      onChangeValue?.(list[0]);
+      setItemSelected(true);
+    }
+  }, [displayValue, itemSelected, list, onChangeValue, selectLastItem]);
+
+  useEffect(() => {
+    if (list.length > 1 && itemSelected) {
+      setItemSelected(false);
+    }
+  }, [itemSelected, list]);
 
   const handleChangeBarCode = useCallback(_value => {
     checkNullString(_value) ? setBarCode(null) : setBarCode(_value);
@@ -139,12 +155,15 @@ const DoubleScannerSearchBar = ({
           title={showTitle && title}
           objectList={list}
           isFocus={isFocus}
-          value={value}
+          value={_searchValue}
           required={required}
           selectLastItem={selectLastItem}
           readonly={readonly}
           displayValue={displayValue}
-          onChangeValue={onChangeValue}
+          onChangeValue={_value => {
+            _value == null && setBarCode(null);
+            onChangeValue(_value);
+          }}
           fetchData={fetchSearchAPI}
           placeholder={placeholderSearchBar}
           navigate={navigate}
@@ -161,10 +180,12 @@ const DoubleScannerSearchBar = ({
           <InputBarCodeCard
             style={styles.inputCode}
             placeholder={
-              placeholerBarCode ? placeholerBarCode : I18n.t('Base_AltseriaNo')
+              placeholerBarCode ? placeholerBarCode : I18n.t('Base_AltSerialNo')
             }
+            defaultValue={barCode}
             onChange={handleChangeBarCode}
             scanKeySearch={scanKeyBarCode}
+            readonly={itemSelected}
           />
         )}
       </View>
@@ -174,23 +195,22 @@ const DoubleScannerSearchBar = ({
 
 const styles = StyleSheet.create({
   container: {
-    width: '100%',
-    padding: 10,
+    width: '90%',
+    alignSelf: 'center',
   },
   searchContainer: {
     flexDirection: 'row',
-    alignItems: 'center',
     justifyContent: 'space-between',
-    marginHorizontal: 10,
+    gap: 5,
   },
   searchBar: {
     flex: 1,
+    alignSelf: 'flex-start',
   },
   inputCode: {
     flex: 1,
-    marginLeft: 5,
-    minHeight: 40,
     alignSelf: 'flex-start',
+    minHeight: 40,
   },
 });
 

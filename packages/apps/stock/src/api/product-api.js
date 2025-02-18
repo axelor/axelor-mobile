@@ -54,14 +54,12 @@ const createProductCriteria = (searchValue, alternativeBarcodeList) => {
     alternativeBarcodeList.length > 0
   ) {
     criteria.push({
-      operator: 'or',
-      criteria: alternativeBarcodeList.map(barcode => ({
-        fieldName: 'id',
-        operator: '=',
-        value: barcode.product.id,
-      })),
+      fieldName: 'id',
+      operator: 'in',
+      value: alternativeBarcodeList.map(barcode => barcode.product.id),
     });
   }
+
   return criteria;
 };
 

@@ -208,7 +208,7 @@
   "Base_Print": "Print",
   "Base_PrintTemplate": "Print template",
   "Base_NoRecordsFound": "No records found",
-  "Base_AltseriaNo": "Alt. serial no.",
+  "Base_AltSerialNo": "Alt. serial no.",
   "Base_StoragePermissionRequired": "Storage permission required",
   "Base_StoragePermissionDetails": "This app needs access to your storage to download files.",
   "Base_ErrorOnDownload": "Something went wrong while downloading the file.",

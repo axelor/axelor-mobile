@@ -122,12 +122,9 @@ const createAvailableProductsCriteria = ({
     alternativeBarcodeList.length > 0
   ) {
     criterias.push({
-      operator: 'or',
-      criteria: alternativeBarcodeList.map(barcode => ({
-        fieldName: 'product.id',
-        operator: '=',
-        value: barcode.product.id,
-      })),
+      fieldName: 'product.id',
+      operator: 'in',
+      value: alternativeBarcodeList.map(barcode => barcode.product.id),
     });
   }
 

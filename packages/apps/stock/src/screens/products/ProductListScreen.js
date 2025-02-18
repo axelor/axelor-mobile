@@ -75,6 +75,8 @@ const ProductListScreen = ({navigation}) => {
         oneFilter={true}
         scanKeySearch={productScanKey}
         scanKeyBarCode={barCodeScanKey}
+        selectLastItem
+        onChangeValue={showProductDetails}
       />
       <SearchListView
         list={productList}

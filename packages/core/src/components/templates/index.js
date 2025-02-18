@@ -16,13 +16,13 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+export {default as DoubleScannerSearchBar} from './DoubleScannerSearchBar/DoubleScannerSearchBar';
 export {default as GlobalToolBox} from './GlobalToolBox/GlobalToolBox';
 export {default as MailMessageView} from './MailMessageView/MailMessageView';
 export {default as PeriodInput} from './PeriodInput/PeriodInput';
 export {default as PopupApplicationInformation} from './PopupApplicationInformation/PopupApplicationInformation';
 export {default as PopupMinimalRequiredVersion} from './PopupMinimalRequiredVersion/PopupMinimalRequiredVersion';
 export {default as PrintTemplateSearchBar} from './PrintTemplateSearchBar/PrintTemplateSearchBar';
-export {default as DoubleScannerSearchBar} from './DoubleScannerSearchBar/DoubleScannerSearchBar';
 export {default as SearchListView} from './SearchListView/SearchListView';
 export {default as SearchTreeView} from './SearchTreeView/SearchTreeView';
 export {default as SingleSelectSearchListView} from './SingleSelectSearchListView/SingleSelectSearchListView';
