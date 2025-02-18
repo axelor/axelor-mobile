@@ -139,7 +139,7 @@ const RequestCreationScreen = () => {
         <RequestCreationButtons
           step={currentStep}
           lines={lines}
-          disabled={quantity === 0 || unit == null}
+          isValidateButtonDisabled={quantity === 0 || unit == null}
           isEditionMode={isEditionMode}
           addLine={handleAddLine}
           companyId={company.id}
