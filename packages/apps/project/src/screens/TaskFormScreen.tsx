@@ -28,15 +28,22 @@ import {fetchProjectFormById} from '../features/projectSlice';
 import {
   fetchCategoryFormById,
   saveProjectTask,
+  updateTargetVersion,
 } from '../features/projectTaskSlice';
 
 const TaskFormScreen = ({navigation, route}) => {
   const {isCreation} = route.params ?? {};
   const _dispatch = useDispatch();
-  const {ProjectTask} = useTypes();
+  const {Project, ProjectTask} = useTypes();
 
   const {projectTask} = useSelector((state: any) => state.project_projectTask);
   const {project} = useSelector((state: any) => state.project_project);
+
+  useEffect(() => {
+    _dispatch(
+      updateTargetVersion(isCreation ? null : projectTask?.targetVersion),
+    );
+  }, [_dispatch, isCreation, projectTask?.targetVersion]);
 
   useEffect(() => {
     _dispatch(
@@ -71,8 +78,17 @@ const TaskFormScreen = ({navigation, route}) => {
       taskDate: new Date().toISOString().split('T')[0],
       progress: 0,
       typeSelect: ProjectTask?.typeSelect.Task,
+      activeSprint:
+        project?.sprintManagementSelect ===
+        Project?.sprintManagementSelect.Project
+          ? project?.backlogSprint
+          : null,
     }),
-    [project, ProjectTask?.typeSelect],
+    [
+      project,
+      ProjectTask?.typeSelect.Task,
+      Project?.sprintManagementSelect.Project,
+    ],
   );
 
   const saveTaskAPI = useCallback(

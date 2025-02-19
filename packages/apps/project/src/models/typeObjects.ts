@@ -60,6 +60,25 @@ export const project_typeObjects: ModuleSelections = [
           },
         ],
       },
+      sprintManagementSelect: {
+        content: [
+          {
+            key: 'None',
+            value: 'none',
+            title: null,
+          },
+          {
+            key: 'Project',
+            value: 'project',
+            title: null,
+          },
+          {
+            key: 'Version',
+            value: 'version',
+            title: null,
+          },
+        ],
+      },
     },
   },
 ];
