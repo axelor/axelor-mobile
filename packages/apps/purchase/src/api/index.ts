@@ -18,6 +18,7 @@
 
 export {searchProduct as searchProductApi} from './product-api';
 export {
+  createPurchaseRequest as createPurchaseRequestApi,
   getPurchaseRequest as getPurchaseRequestApi,
   searchPurchaseRequest as searchPurchaseRequestApi,
   updatePurchaseRequestStatus as updatePurchaseRequestStatusApi,
