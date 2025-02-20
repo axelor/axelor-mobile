@@ -87,3 +87,22 @@ export async function updatePurchaseRequestStatus({purchaseRequest, status}) {
     description: 'update purchase request status',
   });
 }
+
+export async function createPurchaseRequest({
+  companyId,
+  status,
+  description,
+  purchaseRequestLineList,
+}) {
+  return getActionApi().send({
+    url: 'ws/aos/purchase-request/create',
+    method: 'post',
+    body: {
+      companyId,
+      status,
+      description,
+      purchaseRequestLineList,
+    },
+    description: 'create purchase request',
+  });
+}
