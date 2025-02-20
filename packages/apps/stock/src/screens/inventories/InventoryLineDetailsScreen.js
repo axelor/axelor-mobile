@@ -88,7 +88,9 @@ const InventoryLineDetailsScreen = ({route, navigation}) => {
   useEffect(() => {
     setRealQty(inventoryLine?.realQty ?? 0);
     setDescription(inventoryLine?.description);
-    setStockLocation(inventoryLine?.stockLocation ?? inventory?.stockLocation);
+    setStockLocation(
+      inventoryLine ? inventoryLine?.stockLocation : inventory?.stockLocation,
+    );
     setLoading(false);
   }, [inventory, inventoryLine]);
 
