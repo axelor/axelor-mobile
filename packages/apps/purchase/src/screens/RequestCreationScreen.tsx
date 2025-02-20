@@ -51,6 +51,13 @@ const RequestCreationScreen = () => {
   const [quantity, setQuantity] = useState(0);
   const [unit, setUnit] = useState(null);
 
+  const resetDefaultStates = () => {
+    handleReset();
+    setCompany(user.activeCompany);
+    setDescription('');
+    setLines([]);
+  };
+
   const handleEditLine = (line: any) => {
     setNewLine(line);
     setProductTitle(line.productTitle);
@@ -131,11 +138,13 @@ const RequestCreationScreen = () => {
       fixedItems={
         <RequestCreationButtons
           step={currentStep}
-          setStep={setCurrentStep}
           lines={lines}
-          disabled={quantity === 0 || unit == null}
+          isValidateButtonDisabled={quantity === 0 || unit == null}
           isEditionMode={isEditionMode}
           addLine={handleAddLine}
+          companyId={company.id}
+          description={description}
+          resetDefaultStates={resetDefaultStates}
         />
       }>
       <KeyboardAvoidingScrollView style={styles.container}>

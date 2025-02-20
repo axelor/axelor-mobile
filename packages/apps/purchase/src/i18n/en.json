@@ -39,5 +39,6 @@
   "Purchase_SliceAction_UpdatePurchaseRequestStatus": "update purchase request status",
   "Purchase_SliceAction_FetchPurchaseRequestLine": "fetch purchase request line",
   "Purchase_SliceAction_CreatePurchaseRequestLine": "create purchase request line",
-  "Purchase_SliceAction_UpdatePurchaseRequestLine": "update purchase request line"
+  "Purchase_SliceAction_UpdatePurchaseRequestLine": "update purchase request line",
+  "Purchase_SliceAction_CreatePurchaseRequest": "create purchase request"
 }

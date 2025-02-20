@@ -22,6 +22,7 @@ import {
   handlerApiCall,
 } from '@axelor/aos-mobile-core';
 import {
+  createPurchaseRequest as _createPurchaseRequest,
   getPurchaseRequest as _getPurchaseRequest,
   searchPurchaseRequest as _searchPurchaseRequest,
   updatePurchaseRequestStatus as _updatePurchaseRequestStatus,
@@ -64,6 +65,19 @@ export const updatePurchaseRequestStatus = createAsyncThunk(
       responseOptions: {isArrayResponse: false, showToast: true},
     }).then(() => {
       dispatch(getPurchaseRequest({id: data.purchaseRequest.id}));
+    });
+  },
+);
+
+export const createPurchaseRequest = createAsyncThunk(
+  'purchase_purchaseRequest/createPurchaseRequest',
+  async function (data, {getState}) {
+    return handlerApiCall({
+      fetchFunction: _createPurchaseRequest,
+      data,
+      action: 'Purchase_SliceAction_CreatePurchaseRequest',
+      getState,
+      responseOptions: {isArrayResponse: false, showToast: true},
     });
   },
 );
