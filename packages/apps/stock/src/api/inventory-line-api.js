@@ -52,6 +52,7 @@ export async function searchInventoryLines({
 export async function updateInventoryLineDetails({
   inventoryLineId,
   version,
+  stockLocationId,
   realQty,
   description = null,
 }) {
@@ -60,6 +61,7 @@ export async function updateInventoryLineDetails({
     method: 'put',
     body: {
       version,
+      stockLocationId,
       realQty,
       description,
     },
@@ -67,7 +69,11 @@ export async function updateInventoryLineDetails({
     matchers: {
       modelName: 'com.axelor.apps.stock.db.InventoryLine',
       id: inventoryLineId,
-      fields: {description, realQty},
+      fields: {
+        stockLocationId: 'stockLocation.id',
+        description,
+        realQty,
+      },
     },
   });
 }
@@ -76,6 +82,7 @@ export async function createInventoryLine({
   inventoryId,
   inventoryVersion,
   productId,
+  stockLocationId = null,
   trackingNumberId = null,
   rack = null,
   realQty,
@@ -87,6 +94,7 @@ export async function createInventoryLine({
       inventoryId,
       inventoryVersion,
       productId,
+      stockLocationId,
       trackingNumberId,
       rack,
       realQty,
@@ -97,6 +105,7 @@ export async function createInventoryLine({
       id: Date.now(),
       fields: {
         productId: 'product.id',
+        stockLocationId: 'stockLocation.id',
         trackingNumberId: 'trackingNumber.id',
         inventoryId: 'inventory.id',
         rack,

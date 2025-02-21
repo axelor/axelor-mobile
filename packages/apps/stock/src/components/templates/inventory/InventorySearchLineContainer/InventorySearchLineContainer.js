@@ -122,6 +122,7 @@ const InventorySearchLineContainer = ({}) => {
           unit={item.unit?.name}
           locker={item.rack}
           trackingNumber={item.trackingNumber}
+          stockLocationName={item.stockLocation?.name}
           onPress={() => handleShowLine(item)}
         />
       )}
