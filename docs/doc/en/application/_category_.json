@@ -3,6 +3,7 @@
   "label": "Creating your own app",
   "position": 5,
   "link": {
-    "type": "generated-index"
+    "type": "generated-index",
+    "slug": "/application"
   }
 }
