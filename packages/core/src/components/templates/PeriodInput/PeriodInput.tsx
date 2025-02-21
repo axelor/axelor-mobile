@@ -98,8 +98,8 @@ const PeriodInput = ({
       endDateConfig.dateInputMode === 'date' ? getEndOfDay(endDate) : endDate;
 
     const isError = startDate && endDate && _startDate > _endDate;
-    setIsPeriodError(isError);
-    onPeriodErrorChange(isError);
+    setIsPeriodError(!!isError);
+    onPeriodErrorChange?.(!!isError);
   }, [
     startDate,
     endDate,
