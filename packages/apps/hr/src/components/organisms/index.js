@@ -17,3 +17,4 @@
  */
 
 export {default as DateSeparator} from './DateSeparator/DateSeparator';
+export {default as LeavePeriodInput} from './LeavePeriodInput/LeavePeriodInput';

@@ -19,14 +19,18 @@
 import {FormConfigs} from '@axelor/aos-mobile-core';
 import {DurationInput} from '@axelor/aos-mobile-ui';
 import {
+  AvailableQtyInput,
   BillableSwitchCard,
+  CityFormInput,
   CurrencySearchBar,
   DistanceIncrement,
   DraftExpensePicker,
-  CityFormInput,
+  DurationIncrement,
   ExpenseTypeSearchBar,
   KilometricAllowParamSearchBar,
   KilometricTypeSelectPicker,
+  LeavePeriodInput,
+  LeaveReasonSearchBar,
   ManufOrderSearchBar,
   OperationOrderSearchBar,
   ProductSearchBar,
@@ -34,10 +38,6 @@ import {
   ProjectTaskSearchBar,
   TimerStopwatch,
   ToggleSwitchMode,
-  LeaveStartEndOnPicker,
-  LeaveReasonSearchBar,
-  AvailableQtyInput,
-  DurationIncrement,
 } from '../components';
 import {updateExpenseDate} from '../features/kilometricAllowParamSlice';
 import {updateManufOrder} from '../features/manufOrderSlice';
@@ -459,35 +459,30 @@ export const hr_formsRegister: FormConfigs = {
   hr_Leave: {
     modelName: 'com.axelor.apps.hr.db.LeaveRequest',
     fields: {
-      fromDateT: {
-        titleKey: 'Base_StartDate',
-        type: 'datetime',
-        widget: 'date',
-        required: true,
-      },
-      startOnSelect: {
-        type: 'string',
+      perdiodDate: {
+        type: 'object',
         widget: 'custom',
-        customComponent: LeaveStartEndOnPicker,
-        options: {
-          mode: 'startOn',
-        },
-        required: true,
+        customComponent: LeavePeriodInput,
       },
-      toDateT: {
-        titleKey: 'Base_EndDate',
-        type: 'datetime',
-        widget: 'date',
-        required: true,
-      },
-      endOnSelect: {
+      perdiodDateError: {
         type: 'string',
-        widget: 'custom',
-        customComponent: LeaveStartEndOnPicker,
-        options: {
-          mode: 'endOn',
+        validationOptions: {
+          required: {
+            customErrorKey: 'Hr_PeriodDateError',
+          },
         },
-        required: true,
+        dependsOn: {
+          perdiodDate: ({newValue}) => {
+            console.log('isDateError: ', newValue.isDateError);
+            console.log('isStartEndError: ', newValue.isStartEndError);
+            if (newValue.isDateError || newValue.isStartEndError) {
+              return '';
+            } else {
+              return 'OK';
+            }
+          },
+        },
+        hideIf: () => true,
       },
       leaveReason: {
         titleKey: 'Hr_LeaveReason',

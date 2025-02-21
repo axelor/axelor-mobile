@@ -29,6 +29,8 @@ const DATE_INPUT_MODE = {
 };
 
 interface dateInputConfig {
+  dateInputMode?: 'date' | 'datetime' | 'time';
+  nullable?: boolean;
   date?: Date;
   onDateChange: (date: Date) => void;
   readonly?: boolean;
@@ -36,21 +38,23 @@ interface dateInputConfig {
 }
 
 interface PeriodInputProps {
+  style?: any;
+  horizontal?: boolean;
+  showTitle?: boolean;
   startDateConfig: dateInputConfig;
   endDateConfig: dateInputConfig;
-  showTitle?: boolean;
-  horizontal?: boolean;
-  style?: any;
   defaultIntervalHours?: number;
+  onPeriodErrorChange?: (isPeriodError: boolean) => void;
 }
 
 const PeriodInput = ({
+  style,
+  horizontal = true,
+  showTitle = true,
   startDateConfig,
   endDateConfig,
-  showTitle = true,
-  horizontal = true,
-  style,
   defaultIntervalHours = null,
+  onPeriodErrorChange,
 }: PeriodInputProps) => {
   const I18n = useTranslator();
 
@@ -86,10 +90,23 @@ const PeriodInput = ({
   }, [startDate, endDate, interval, startDateConfig, endDateConfig]);
 
   useEffect(() => {
-    setIsPeriodError(
-      startDate && endDate && getStartOfDay(startDate) > getEndOfDay(endDate),
-    );
-  }, [startDate, endDate]);
+    const _startDate =
+      startDateConfig.dateInputMode === 'date'
+        ? getStartOfDay(startDate)
+        : startDate;
+    const _endDate =
+      endDateConfig.dateInputMode === 'date' ? getEndOfDay(endDate) : endDate;
+
+    const isError = startDate && endDate && _startDate > _endDate;
+    setIsPeriodError(!!isError);
+    onPeriodErrorChange?.(!!isError);
+  }, [
+    startDate,
+    endDate,
+    startDateConfig.dateInputMode,
+    endDateConfig.dateInputMode,
+    onPeriodErrorChange,
+  ]);
 
   const styles = useMemo(() => {
     return getStyles(horizontal);
@@ -143,13 +160,15 @@ const PeriodInput = ({
       const translationKey = isStartDate ? 'Base_StartDate' : 'Base_EndDate';
       const date = isStartDate ? startDate : endDate;
       const dateConfig = isStartDate ? startDateConfig : endDateConfig;
+      const nullable =
+        dateConfig.nullable || dateConfig.nullable == null ? true : false;
 
       return (
         <DateInput
           style={styles.dateInput}
           title={showTitle && I18n.t(translationKey)}
-          mode="date"
-          nullable
+          mode={dateConfig.dateInputMode ?? 'date'}
+          nullable={nullable}
           popup={horizontal}
           defaultDate={date}
           onDateChange={_date => handleDateChange(isStartDate, _date)}
