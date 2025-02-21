@@ -22,12 +22,12 @@ Once NodeJS is installed, npm is available. You can check its version with `npm 
 
 This project is based on Node version 16.x
 
-### Install Java 11
+### Install Java 17
 
-This project requires java 11. To check your java version, run the command `java -version`.
+This project requires java 17. To check your java version, run the command `java -version`.
 
 ```bash
-sudo apt install openjdk-11-jre-headless
+sudo apt install openjdk-17-jre-headless
 ```
 
 ### Setting up the Android environment
@@ -63,21 +63,21 @@ A quick configuration file `app.config.js` is available to easily define certain
 
 The configurations taken into consideration are :
 
-- **testInstanceConfig:** The test instance for automatically filling in the url, username and password fields of the login page in debug mode.
-- **releaseInstanceConfig:** The instance configuration for release mode. This configuration automatically fills the url on the login page, but also hides the url input if the customer does not want users to be able to modify it.
-- **defaultLanguage:** The default language for all users. This setting defines the application's default language. However, this value is overridden by the default user language set on the ERP. Default application language is English
-- **defaultRequestLimit:** The default number of items retrieved per request. This value can be overridden on query entries if required. Its default value is 10.
-- **enableConnectionSessions**: Enables or disables connection session management. If enabled, the user will be able to manage the sessions he wishes to store on his phone. If disabled, the application will only remember the last connection session.
-- **allowInternetConnectionBlock**: Allows users to go offline by blocking the internet connection for requests.
-- **retrocompatibilityAOS6**: Enables backward compatibility with AOS versions 6.4 & 6.5. If enabled, a router will test AOS v6 routes. If the resource is not found, the router will return the AOS v7 route for the request, otherwise the AOS v6 route will be used.
-- **additionalRoutes**: Allows you to add new routes to the application configurations fetcher. You can also update existing routes with new values. If the setting _retrocompatibilityAOS6_ is active, you need to define routes for Axelor Open Suite version 6 and version 7. Otherwise, Axelor Open Suite version 7 is sufficient.
-- **versionCheckConfig**: Enables version checking between the minimum required version defined on the web and the application version. If enabled, the user will be forced to update using the links provided, or by contacting the administrator if the versions do not match.
-- **showModulesSubtitle**: Displays module subtitles in the menu.
-- **themeColorsConfig**: Allows you to modify the application's classic theme by overriding the standard colors.
-- **writingStylesConfig**: Allows you to modify writing themes by overriding the standard configuration.
-- **logoFile**: Customize the logo displayed on the login page for customer projects.
+- `testInstanceConfig`: The test instance for automatically filling in the url, username and password fields of the login page in debug mode.
+- `releaseInstanceConfig`: The instance configuration for release mode. This configuration automatically fills the url on the login page, but also hides the url input if the customer does not want users to be able to modify it.
+- `defaultLanguage`: The default language for all users. This setting defines the application's default language. However, this value is overridden by the default user language set on the ERP. Default application language is English
+- `defaultRequestLimit`: The default number of items retrieved per request. This value can be overridden on query entries if required. Its default value is 10.
+- `enableConnectionSessions`: Enables or disables connection session management. If enabled, the user will be able to manage the sessions he wishes to store on his phone. If disabled, the application will only remember the last connection session.
+- `allowInternetConnectionBlock`: Allows users to go offline by blocking the internet connection for requests.
+- `retrocompatibilityAOS6`: Enables backward compatibility with AOS versions 6.4 & 6.5. If enabled, a router will test AOS v6 routes. If the resource is not found, the router will return the AOS v7 route for the request, otherwise the AOS v6 route will be used.
+- `additionalRoutes`: Allows you to add new routes to the application configurations fetcher. You can also update existing routes with new values. If the setting _retrocompatibilityAOS6_ is active, you need to define routes for Axelor Open Suite version 6 and version 7. Otherwise, Axelor Open Suite version 7 is sufficient.
+- `versionCheckConfig`: Enables version checking between the minimum required version defined on the web and the application version. If enabled, the user will be forced to update using the links provided, or by contacting the administrator if the versions do not match.
+- `showModulesSubtitle`: Displays module subtitles in the menu.
+- `themeColorsConfig`: Allows you to modify the application's classic theme by overriding the standard colors.
+- `writingStylesConfig`: Allows you to modify writing themes by overriding the standard configuration.
+- `logoFile`: Customize the logo displayed on the login page for customer projects.
 
-An example configuration file is [available on Github](https://github.com/axelor/axelor-mobile/blob/7.0/src/app.config.js).
+An example configuration file is [available on Github](https://github.com/axelor/axelor-mobile/blob/main/src/app.config.js).
 
 ## Start project
 
@@ -176,5 +176,6 @@ Some of the application's enterprise modules may require the installation of an 
 - Build packages : `yarn build`
 - Install debug android APK : `yarn android`
 - Start Metro for development : `yarn start`
+- Launch dev mode (must be launched simultaneously with Metro) : `yarn dev`
 - Create release APK : `yarn android:apk`
 - [Create release App bundle](https://reactnative.dev/docs/signed-apk-android#generating-the-release-aab) : `yarn android:bundle`

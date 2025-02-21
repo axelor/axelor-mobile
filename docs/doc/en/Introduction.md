@@ -20,6 +20,9 @@ This new mobile application currently includes the following modules with differ
 - Helpdesk (AOS v7.1+)
 - HR : Expense (AOS v7.2+) & Timesheet (AOS v8.0+)
 - Quality (AOS v8.0+)
+- Intervention (AOS v8.1+)
+- Project (AOS v8.2+)
+- Sales (AOS v8.2+)
 
 The three main priorities in the development of this mobile application were :
 
