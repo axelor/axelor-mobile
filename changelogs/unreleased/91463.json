@@ -1,0 +1,5 @@
+{
+  "title": "Intervention: use assignedTo to check user instead of going through employee",
+  "type": "fix",
+  "packages": "intervention"
+}
