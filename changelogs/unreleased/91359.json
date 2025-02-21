@@ -1,0 +1,5 @@
+{
+  "title": "PeriodInput: resolve issue when onPeriodErrorChange not provided",
+  "type": "fix",
+  "packages": "core"
+}
