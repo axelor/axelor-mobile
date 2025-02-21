@@ -51,6 +51,26 @@ export interface ThemeColors {
   warningColor: Color;
   inverseColor: Color;
   infoColor: Color;
+  red: Color;
+  pink: Color;
+  purple: Color;
+  deepPurple: Color;
+  indigo: Color;
+  blue: Color;
+  lightBlue: Color;
+  cyan: Color;
+  teal: Color;
+  green: Color;
+  lightGreen: Color;
+  lime: Color;
+  yellow: Color;
+  amber: Color;
+  orange: Color;
+  deepOrange: Color;
+  brown: Color;
+  grey: Color;
+  blueGrey: Color;
+  black: Color;
   text: string;
   placeholderTextColor: string;
 }
@@ -62,7 +82,7 @@ export interface Theme {
 }
 ```
 
-![theme.png](/img/en/theme.png)
+![theme.png](/img/en/theme_purple.png)
 
 Main theme of the application
 

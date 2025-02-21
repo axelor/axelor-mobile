@@ -51,17 +51,18 @@ export interface HeaderOptions {
 }
 ```
 
-By default, the core package provides two actions for the header: follow-up messages on each object and attached files. These can be configured via the following props:
+The core package provides several header actions by default, including follow-up messages on each object, file attachments, studio fields, report printing and barcode display. These can be configured via the following props:
 
 - _model_: full name of the ERP model.
 - _modelId_: object identifier.
-- _disableMailMessages_: condition for displaying or not displaying follow-up messages on the object.
-- _disableJsonFields_: condition for displaying studio fields.
+- _disablePrint_: condition for displaying or not the report printout.
+- _disableMailMessages_: condition for displaying follow-up messages on the object.
+- _disableJsonFields_: whether or not to display studio fields.
 - _attachedFileScreenTitle_: screen name for attached files.
 - _barcodeFieldname_: name of attribute containing barcode file on ERP (default `barCode`).
 - _headerTitle_: screen name for dynamic titles.
 
-Attached files are displayed only if the current object has them, with an indicator of their number. Follow-up messages are only displayed when `model` and `modelId` are set and not disabled by the `disableMailMessages` attribute.
+These actions are displayed when the `model` and `modelId` attributes are set and the actions are not disabled by the associated attributes.
 
 Additional actions can then be added using the `actions` attribute. Each action then has the following structure:
 
@@ -97,7 +98,7 @@ The various attributes available are :
 
 From a functional point of view, the set of actions is passed to the `HeaderOptionsMenu` component, which then performs the following steps:
 
-- retrieve the two default actions set with the information provided
+- retrieve the default actions set with the information provided
 - remove hidden actions from the list
 - sort the list by ascending `order`
 - display the first two actions with the `showInHeader` attribute set to true directly in the header
