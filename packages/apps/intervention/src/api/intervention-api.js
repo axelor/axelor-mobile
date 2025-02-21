@@ -40,7 +40,7 @@ const createInterventionCriteria = (
 
   if (userId != null) {
     criteria.push({
-      fieldName: 'assignedTo.employee.user.id',
+      fieldName: 'assignedTo.id',
       operator: '=',
       value: userId,
     });
