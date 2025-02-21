@@ -1,5 +1,4 @@
 ---
-slug: /permission
 sidebar_position: 90
 description: ''
 ---

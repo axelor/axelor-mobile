@@ -1,5 +1,4 @@
 ---
-slug: /modules
 sidebar_position: 50
 description: ''
 ---

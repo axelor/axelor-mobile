@@ -1,5 +1,4 @@
 ---
-slug: /build_customization
 sidebar_position: 60
 description: ''
 ---

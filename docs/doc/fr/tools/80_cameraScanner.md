@@ -1,5 +1,4 @@
 ---
-slug: /camera_scanner
 sidebar_position: 80
 description: ''
 ---

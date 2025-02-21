@@ -1,5 +1,4 @@
 ---
-slug: /translations
 sidebar_position: 10
 description: ''
 ---

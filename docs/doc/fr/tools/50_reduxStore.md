@@ -1,5 +1,4 @@
 ---
-slug: /redux_store
 sidebar_position: 50
 description: ''
 ---

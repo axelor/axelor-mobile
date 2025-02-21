@@ -1,9 +1,9 @@
 {
-  "slug": "/application",
   "className": "cloud-fill",
   "label": "Création de votre propre application",
   "position": 5,
   "link": {
-    "type": "generated-index"
+    "type": "generated-index",
+    "slug": "/application"
   }
 }

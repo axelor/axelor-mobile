@@ -1,5 +1,4 @@
 ---
-slug: /menus
 sidebar_position: 40
 description: ''
 ---

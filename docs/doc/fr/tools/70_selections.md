@@ -1,5 +1,4 @@
 ---
-slug: /selections
 sidebar_position: 70
 description: ''
 ---

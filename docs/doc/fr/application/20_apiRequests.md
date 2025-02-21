@@ -1,5 +1,4 @@
 ---
-slug: /api_requests
 sidebar_position: 20
 description: ''
 ---

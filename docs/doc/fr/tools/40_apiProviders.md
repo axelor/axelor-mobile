@@ -1,5 +1,4 @@
 ---
-slug: /api_providers
 sidebar_position: 40
 description: ''
 ---

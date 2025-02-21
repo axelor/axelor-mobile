@@ -1,5 +1,4 @@
 ---
-slug: /components
 sidebar_position: 10
 description: ''
 ---

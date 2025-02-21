@@ -1,5 +1,4 @@
 ---
-slug: /headers
 sidebar_position: 60
 description: ''
 ---

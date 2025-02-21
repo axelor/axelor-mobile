@@ -1,5 +1,4 @@
 ---
-slug: /themes
 sidebar_position: 20
 description: ''
 ---
