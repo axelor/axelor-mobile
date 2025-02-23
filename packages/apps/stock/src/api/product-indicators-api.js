@@ -174,6 +174,7 @@ export async function fetchStockQtyIndicator({
       stockLocationId,
     ),
     fieldKey: 'stock_stockQtyIndicator',
+    sortKey: 'stock_stockQtyIndicator',
     page,
     provider: 'model',
   });
@@ -190,6 +191,7 @@ export async function fetchSaleOrderQtyIndicator({
     companyFieldName: 'saleOrder.company',
     criteria: createSaleOrderQtyCriteria(productId),
     fieldKey: 'stock_saleOrderQtyIndicator',
+    sortKey: 'stock_saleOrderQtyIndicator',
     page,
     provider: 'model',
   });
@@ -206,6 +208,7 @@ export async function fetchPurchaseOrderQtyIndicator({
     companyFieldName: 'purchaseOrder.company',
     criteria: createPurchaseOrderQtyCriteria(productId),
     fieldKey: 'stock_purchaseOrderQtyIndicator',
+    sortKey: 'stock_purchaseOrderQtyIndicator',
     page,
     provider: 'model',
   });
@@ -222,6 +225,7 @@ export async function fetchAvailableStockIndicator({
     companyFieldName: 'stockLocation.company',
     criteria: createAvailableStockCriteria(productId),
     fieldKey: 'stock_stockLocationLine',
+    sortKey: 'stock_stockLocationLine',
     page,
     provider: 'model',
   });

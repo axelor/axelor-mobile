@@ -158,9 +158,12 @@ export async function searchProjectTask({
   selectedPriority,
   selectedCategory,
   projectTaskId,
+  companyId,
 }) {
   return createStandardSearch({
     model: 'com.axelor.apps.project.db.ProjectTask',
+    companyId,
+    companyFieldName: 'project.company',
     criteria: createProjectTaskCriteria({
       searchValue,
       projectId,
@@ -241,11 +244,12 @@ export async function getTag({activeCompany}) {
       sortKey: 'project_Tag',
       page: 0,
       numberElementsByPage: null,
+      companyId: activeCompany?.id,
+      isCompanyM2M: true,
       domain:
-        '(self.concernedModelSet IS EMPTY OR :metaModel member of self.concernedModelSet) AND (self.companySet IS EMPTY OR :activeCompany member of self.companySet)',
+        '(self.concernedModelSet IS EMPTY OR :metaModel member of self.concernedModelSet)',
       domainContext: {
         metaModel: {id: res?.data?.data?.[0]?.id},
-        activeCompany: {id: activeCompany?.id},
       },
       provider: 'model',
     }),

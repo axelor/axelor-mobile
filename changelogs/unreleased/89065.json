@@ -1,5 +1,0 @@
-{
-  "title": "PeriodDisplay: add null check on start date to avoid crash",
-  "type": "fix",
-  "packages": "core"
-}

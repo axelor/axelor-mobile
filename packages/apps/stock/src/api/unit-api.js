@@ -22,6 +22,7 @@ export async function searchUnit() {
   return createStandardSearch({
     model: 'com.axelor.apps.base.db.Unit',
     fieldKey: 'stock_unit',
+    sortKey: 'stock_unit',
     page: 0,
     numberElementsByPage: null,
     provider: 'model',

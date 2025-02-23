@@ -43,6 +43,7 @@ export async function searchCustomerDeliveryLines({
     model: 'com.axelor.apps.stock.db.StockMoveLine',
     criteria: createSearchCriteria(customerDeliveryId, searchValue),
     fieldKey: 'stock_customerDeliveryLine',
+    sortKey: 'stock_customerDeliveryLine',
     page,
     provider: 'model',
   });

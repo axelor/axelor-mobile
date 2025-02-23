@@ -52,12 +52,18 @@ const createClientAndProspectCriteria = searchValue => {
   ];
 };
 
-export async function searchClientAndProspect({searchValue, page = 0}) {
+export async function searchClientAndProspect({
+  searchValue,
+  page = 0,
+  companyId,
+}) {
   return createStandardSearch({
     model: 'com.axelor.apps.base.db.Partner',
     criteria: createClientAndProspectCriteria(searchValue),
     fieldKey: 'intervention_partner',
     page,
     provider: 'model',
+    companyId,
+    isCompanyM2M: true,
   });
 }

@@ -47,8 +47,11 @@ const EventFormScreen = ({navigation, route}) => {
     const _default = {
       typeSelect: Event?.typeSelect.Meeting,
       statusSelect: Event?.statusSelect.Planned,
-      startDateTime: _defaultStartDate.toISOString(),
-      endDateTime: _defaultEndDate.toISOString(),
+      perdiodDateTime: {
+        startDateTime: _defaultStartDate,
+        endDateTime: _defaultEndDate,
+        isError: false,
+      },
       user: user,
     };
 
@@ -102,6 +105,11 @@ const EventFormScreen = ({navigation, route}) => {
         ? {
             ...creationDefaultValue,
             ...event,
+            perdiodDateTime: {
+              startDateTime: new Date(event.startDateTime),
+              endDateTime: new Date(event.endDateTime),
+              isError: false,
+            },
           }
         : null,
     [event, creationDefaultValue],
@@ -111,7 +119,11 @@ const EventFormScreen = ({navigation, route}) => {
     (_event, dispatch) => {
       dispatch(
         createEvent({
-          event: _event,
+          event: {
+            ..._event,
+            startDateTime: _event.perdiodDateTime.startDateTime.toISOString(),
+            endDateTime: _event.perdiodDateTime.endDateTime.toISOString(),
+          },
           tourlineData: tourlineData,
           eventPlanningDate,
         }),
@@ -123,7 +135,15 @@ const EventFormScreen = ({navigation, route}) => {
 
   const updateEventAPI = useCallback(
     (_event, dispatch) => {
-      dispatch(updateEvent({event: _event}));
+      dispatch(
+        updateEvent({
+          event: {
+            ..._event,
+            startDateTime: _event.perdiodDateTime.startDateTime.toISOString(),
+            endDateTime: _event.perdiodDateTime.endDateTime.toISOString(),
+          },
+        }),
+      );
       navigation.pop();
     },
     [navigation],

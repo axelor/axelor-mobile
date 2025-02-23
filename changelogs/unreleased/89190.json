@@ -1,5 +1,0 @@
-{
-  "title": "Features: add missing export of updateStockMoveLineTrackingNumber",
-  "type": "fix",
-  "packages": "stock"
-}

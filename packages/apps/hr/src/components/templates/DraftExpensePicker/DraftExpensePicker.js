@@ -35,8 +35,10 @@ const DraftExpensePickerAux = ({
   const {expenseDraftList} = useSelector(state => state.expense);
 
   useEffect(() => {
-    dispatch(searchExpenseDraft({userId: user?.id}));
-  }, [dispatch, user?.id]);
+    dispatch(
+      searchExpenseDraft({userId: user?.id, companyId: user.activeCompany?.id}),
+    );
+  }, [dispatch, user.activeCompany?.id, user?.id]);
 
   return (
     <Picker

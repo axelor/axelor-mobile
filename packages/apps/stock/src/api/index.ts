@@ -19,37 +19,48 @@
 export {
   addLineStockMove as addCustomerDeliveryLine,
   fetchCustomerDelivery as fetchCustomerDeliveryApi,
+  searchDeliveryFilter as searchDeliveryFilterApi,
   realizeSockMove as realizeCustomerDeliveryApi,
-  searchDeliveryFilter,
 } from './customer-delivery-api';
 export {
   fetchCustomerDeliveryLine as fetchCustomerDeliveryLineApi,
-  searchCustomerDeliveryLines,
-  splitCustomerDeliveryLine as splitCustomerDeliveryLineApi,
+  searchCustomerDeliveryLines as searchCustomerDeliveryLinesApi,
   updateLine as updateCustomerDeliveryLineApi,
 } from './customer-delivery-line-api';
 export {
-  createInternalStockMove,
+  createInternalStockMove as createInternalStockMoveApi,
   fetchInternalMove as fetchInternalMoveApi,
-  modifyInternalMoveNotes,
+  modifyInternalMoveNotes as modifyInternalMoveNotesApi,
   realizeInternalMove as realizeInternalMoveApi,
-  searchInternalMoveFilter,
+  searchInternalMoveFilter as searchInternalMoveFilterApi,
 } from './internal-move-api';
 export {
   fetchInternalMoveLine as fetchInternalMoveLineApi,
-  searchInternalMoveLines,
+  searchInternalMoveLines as searchInternalMoveLinesApi,
   updateInternalMoveLine as updateInternalMoveLineApi,
 } from './internal-move-line-api';
-export * from './inventory-api';
 export {
-  addTrackingNumber,
-  createInventoryLine,
+  fetchInventory as fetchInventoryApi,
+  modifyDescriptionInventory as modifyDescriptionInventoryApi,
+  searchInventoryFilter as searchInventoryFilterApi,
+  updateInventoryStatus as updateInventoryStatusApi,
+} from './inventory-api';
+export {
+  addTrackingNumber as addTrackingNumberInventoryLineApi,
+  createInventoryLine as createInventoryLineApi,
   fetchInventoryLine as fetchInventoryLineApi,
-  searchInventoryLines,
-  updateInventoryLineDetails,
+  searchInventoryLines as searchInventoryLinesApi,
+  updateInventoryLineDetails as updateInventoryLineDetailsApi,
 } from './inventory-line-api';
-export * from './partner-api';
-export * from './product-api';
+export {searchClientsFilter, searchSuppliersFilter} from './partner-api';
+export {
+  fetchVariantAttributes as fetchVariantAttributesApi,
+  fetchVariants as fetchVariantsApi,
+  getProductStockIndicators as getProductStockIndicatorsApi,
+  searchProductWithId as searchProductWithIdApi,
+  searchProductsFilter as searchProductsFilterApi,
+  updateLocker as updateLockerApi,
+} from './product-api';
 export {
   fetchAvailableStockIndicator as fetchAvailableStockIndicatorApi,
   fetchPurchaseOrderQtyIndicator as fetchPurchaseOrderQtyIndicatorApi,
@@ -57,36 +68,36 @@ export {
   fetchStockQtyIndicator as fetchStockQtyIndicatorApi,
 } from './product-indicators-api';
 export {
-  createStockCorrection,
+  createStockCorrection as createStockCorrectionApi,
   fetchStockCorrection as fetchStockCorrectionApi,
-  searchStockCorrection,
-  updateStockCorrection,
-  updateStockCorrectionTrackingNumber,
+  searchStockCorrection as searchStockCorrectionApi,
+  updateStockCorrection as updateStockCorrectionApi,
+  updateStockCorrectionTrackingNumber as updateStockCorrectionTrackingNumberApi,
 } from './stock-correction-api';
-export * from './stock-correction-reason-api';
-export * from './stock-location-api';
+export {searchStockCorrectionReason as searchStockCorrectionReasonApi} from './stock-correction-reason-api';
+export {searchStockLocationsFilter as searchStockLocationsFilterApi} from './stock-location-api';
 export {
   searchAvailableProducts as searchAvailableProductsApi,
-  searchStockLocationLine,
+  searchStockLocationLine as searchStockLocationLineApi,
 } from './stock-location-line-api';
 export {checkQuantity as checkQuantityApi} from './stock-move-line-api';
 export {
   addLineStockMove as addSupplierArrivalLine,
   fetchSupplierArrival as fetchSupplierArrivalApi,
   realizeSockMove as realizeSupplierArrivalApi,
-  searchSupplierArrivalFilter,
+  searchSupplierArrivalFilter as searchSupplierArrivalFilterApi,
 } from './supplier-arrival-api';
 export {
   fetchSupplierArrivalLine as fetchSupplierArrivalLineApi,
-  searchSupplierArrivalLines,
+  searchSupplierArrivalLines as searchSupplierArrivalLinesApi,
   splitSupplierArrivalLine as splitSupplierArrivalLineApi,
   updateLine as updateSupplierArrivalLineApi,
 } from './supplier-arrival-line-api';
-export * from './supplier-catalog-api';
+export {searchSupplierProduct as searchSupplierProductApi} from './supplier-catalog-api';
 export {
   createTrackingNumber as createTrackingNumberApi,
   searchTrackingNumberFilter as searchTrackingNumberFilterApi,
   updateStockMoveLineTrackingNumber as updateStockMoveLineTrackingNumberApi,
   updateTrackingNumber as updateTrackingNumberApi,
 } from './tracking-number-api';
-export * from './unit-api';
+export {searchUnit as searchUnitApi} from './unit-api';

@@ -16,27 +16,14 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import {createStandardSearch} from '@axelor/aos-mobile-core';
+import UserScreen from './UserScreen';
 
-export async function searchSupplierProduct({supplierId, productId}) {
-  return createStandardSearch({
-    model: 'com.axelor.apps.purchase.db.SupplierCatalog',
-    criteria: [
-      {
-        fieldName: 'supplierPartner.id',
-        operator: '=',
-        value: supplierId,
-      },
-      {
-        fieldName: 'product.id',
-        operator: '=',
-        value: productId,
-      },
-    ],
-    fieldKey: 'stock_supplierCatalog',
-    sortKey: 'stock_supplierCatalog',
-    page: 0,
-    numberElementsByPage: 1,
-    provider: 'model',
-  });
-}
+export default {
+  UserScreen: {
+    title: 'User_UserProfile',
+    component: UserScreen,
+    actionID: 'auth_user_profile',
+  },
+};
+
+export {UserScreen};

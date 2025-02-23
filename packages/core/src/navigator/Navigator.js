@@ -74,10 +74,9 @@ const Navigator = ({mainMenu, onRefresh, versionCheckConfig}) => {
     () =>
       manageWebCompatibility(
         manageWebConfig(
-          manageOverridingMenus(
-            manageSubMenusOverriding(
-              checkModulesMenusAccessibility(modules, mobileSettings?.apps),
-            ),
+          checkModulesMenusAccessibility(
+            manageOverridingMenus(manageSubMenusOverriding(modules)),
+            mobileSettings?.apps,
           ),
           storeState,
         ),

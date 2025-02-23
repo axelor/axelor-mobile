@@ -21,18 +21,8 @@ import {
   getSearchCriterias,
 } from '@axelor/aos-mobile-core';
 
-const createManufOrderCriteria = (searchValue, activeCompanyId) => {
-  const criteria = [getSearchCriterias('hr_manufOrder', searchValue)];
-
-  if (activeCompanyId != null) {
-    criteria.push({
-      fieldName: 'company.id',
-      operator: '=',
-      value: activeCompanyId,
-    });
-  }
-
-  return criteria;
+const createManufOrderCriteria = searchValue => {
+  return [getSearchCriterias('hr_manufOrder', searchValue)];
 };
 
 const createOperationOrderCriteria = (searchValue, manufOrderId) => {
@@ -56,11 +46,12 @@ export async function searchManufOrder({
 }) {
   return createStandardSearch({
     model: 'com.axelor.apps.production.db.ManufOrder',
-    criteria: createManufOrderCriteria(searchValue, activeCompanyId),
+    criteria: createManufOrderCriteria(searchValue),
     fieldKey: 'hr_manufOrder',
     sortKey: 'hr_manufOrder',
     page,
     provider: 'model',
+    companyId: activeCompanyId,
   });
 }
 
@@ -68,6 +59,7 @@ export async function searchOperationOrder({
   searchValue,
   page = 0,
   manufOrderId,
+  companyId,
 }) {
   return createStandardSearch({
     model: 'com.axelor.apps.production.db.OperationOrder',
@@ -76,5 +68,7 @@ export async function searchOperationOrder({
     sortKey: 'hr_operationOrder',
     page,
     provider: 'model',
+    companyId,
+    companyFieldName: 'manufOrder.company',
   });
 }

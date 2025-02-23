@@ -43,6 +43,7 @@ export async function searchInventoryLines({
     model: 'com.axelor.apps.stock.db.InventoryLine',
     criteria: createSearchCriteria(inventoryId, searchValue),
     fieldKey: 'stock_inventoryLine',
+    sortKey: 'stock_inventoryLine',
     page,
     provider: 'model',
   });

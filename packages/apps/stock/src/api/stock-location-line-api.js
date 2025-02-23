@@ -65,6 +65,7 @@ export async function searchStockLocationLine({
       stockLocationId: stockId,
     }),
     fieldKey: 'stock_stockLocationLine',
+    sortKey: 'stock_stockLocationLine',
     page,
     provider: 'model',
   });

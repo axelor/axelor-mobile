@@ -53,6 +53,7 @@ const OperationOrderSearchBarAux = ({
     moreLoadingOperationOrder,
     isListEndOperationOrder,
   } = useSelector((state: any) => state.hr_manufOrder);
+  const {user} = useSelector((state: any) => state.user);
 
   const searchOperationOrderAPI = useCallback(
     ({page = 0, searchValue}) => {
@@ -61,10 +62,11 @@ const OperationOrderSearchBarAux = ({
           page,
           searchValue,
           manufOrderId: manufOrder?.id,
+          companyId: user.activeCompany?.id,
         }),
       );
     },
-    [dispatch, manufOrder?.id],
+    [dispatch, manufOrder?.id, user.activeCompany?.id],
   );
 
   return (

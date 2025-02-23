@@ -22,6 +22,7 @@ export async function searchStockCorrectionReason() {
   return createStandardSearch({
     model: 'com.axelor.apps.stock.db.StockCorrectionReason',
     fieldKey: 'stock_stockCorrectionReason',
+    sortKey: 'stock_stockCorrectionReason',
     page: 0,
     numberElementsByPage: null,
     provider: 'model',
