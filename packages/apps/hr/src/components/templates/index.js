@@ -38,7 +38,6 @@ export {default as KilometricTypeSelectPicker} from './KilometricTypeSelectPicke
 export {default as LeaveFilters} from './LeaveFilters/LeaveFilters';
 export {default as LeaveReasonSearchBar} from './LeaveReasonSearchBar/LeaveReasonSearchBar';
 export {default as LeaveRefusalPopup} from './LeaveRefusalPopup/LeaveRefusalPopup';
-export {default as LeaveStartEndOnPicker} from './LeaveStartEndOnPicker/LeaveStartEndOnPicker';
 export {default as LeaveWaitingValidationSearchBar} from './LeaveWaitingValidationSearchBar/LeaveWaitingValidationSearchBar';
 export {default as ManufOrderSearchBar} from './ManufOrderSearchBar/ManufOrderSearchBar';
 export {default as OperationOrderSearchBar} from './OperationOrderSearchBar/OperationOrderSearchBar';

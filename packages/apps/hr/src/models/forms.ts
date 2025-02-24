@@ -473,8 +473,6 @@ export const hr_formsRegister: FormConfigs = {
         },
         dependsOn: {
           perdiodDate: ({newValue}) => {
-            console.log('isDateError: ', newValue.isDateError);
-            console.log('isStartEndError: ', newValue.isStartEndError);
             if (newValue.isDateError || newValue.isStartEndError) {
               return '';
             } else {

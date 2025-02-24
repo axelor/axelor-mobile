@@ -16,7 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import React, {useEffect, useState} from 'react';
+import React, {useState} from 'react';
 import {StyleSheet, View} from 'react-native';
 import {PeriodInput, sameDate, useTranslator} from '@axelor/aos-mobile-core';
 import {Label} from '@axelor/aos-mobile-ui';
@@ -34,10 +34,6 @@ const LeavePeriodInputAux = ({
   const I18n = useTranslator();
 
   const [isHalfDayError, setIsHalfDayError] = useState(false);
-
-  useEffect(() => {
-    console.log(defaultValue?.isStartEndError);
-  }, [defaultValue]);
 
   const handleValueChange = (field: string, value: any) => {
     if (value !== defaultValue?.[field]) {
