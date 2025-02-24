@@ -46,6 +46,7 @@ const ProductTrackingNumberSearchBar = ({
 }) => {
   const I18n = useTranslator();
 
+  const {base: baseConfig} = useSelector(state => state.appConfig);
   const {productTrackingNumberList, loading, moreLoading, isListEnd} =
     useSelector(state => state.productTrackingNumber);
   const {alternativeBarcodeList} = useSelector(
@@ -79,6 +80,7 @@ const ProductTrackingNumberSearchBar = ({
       scanKeyBarCode={barCodeScanKey}
       sliceBarCodeFunction={searchAlternativeBarcode}
       isScrollViewContainer={isScrollViewContainer}
+      displayBarCodeInput={baseConfig.enableMultiBarcodeOnProducts}
     />
   );
 };

@@ -16,10 +16,10 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import React, {useCallback, useEffect, useState} from 'react';
+import React, {useCallback, useEffect, useRef, useState} from 'react';
 import {View, StyleSheet} from 'react-native';
 import {checkNullString} from '@axelor/aos-mobile-ui';
-import {useDispatch, useSelector} from '../../../redux/hooks';
+import {useDispatch} from '../../../redux/hooks';
 import {ScannerAutocompleteSearch} from '../../organisms';
 import {InputBarCodeCard} from '../../molecules';
 import {useTranslator} from '../../../i18n/';
@@ -50,10 +50,10 @@ interface DoubleScannerSearchBarProps {
   moreLoading?: boolean;
   isListEnd?: boolean;
   isScrollViewContainer?: boolean;
-  alternativeBarcodeList?: any[];
   sliceBarCodeFunction: any;
   sliceFunctionBarCodeData: Object;
   onFetchDataAction: any;
+  displayBarCodeInput?: boolean;
 }
 
 const DoubleScannerSearchBar = ({
@@ -85,15 +85,14 @@ const DoubleScannerSearchBar = ({
   scanKeyBarCode,
   placeholerBarCode,
   onFetchDataAction,
+  displayBarCodeInput = true,
 }: DoubleScannerSearchBarProps) => {
   const dispatch = useDispatch();
   const I18n = useTranslator();
-
-  const {base: baseConfig} = useSelector(state => state.appConfig);
+  const timerRef = useRef(null);
 
   const [_searchValue, setSearchValue] = useState(value);
   const [barCode, setBarCode] = useState(null);
-  const [itemSelected, setItemSelected] = useState(false);
 
   const fetchAPI = useCallback(
     ({page, searchValue}) => {
@@ -126,25 +125,25 @@ const DoubleScannerSearchBar = ({
   }, [barCode, dispatch, sliceBarCodeFunction, sliceFunctionBarCodeData]);
 
   useEffect(() => {
-    fetchBarCodeAPI();
+    if (timerRef.current) {
+      clearTimeout(timerRef.current);
+    }
+
+    timerRef.current = setTimeout(() => {
+      fetchBarCodeAPI();
+    }, 500);
   }, [fetchBarCodeAPI]);
 
   useEffect(() => {
-    if (list.length === 1 && selectLastItem && !itemSelected) {
-      setSearchValue(displayValue(list[0]));
+    if (list.length === 1 && selectLastItem) {
       onChangeValue?.(list[0]);
-      setItemSelected(true);
+      setSearchValue('');
+      setBarCode(null);
     }
-  }, [displayValue, itemSelected, list, onChangeValue, selectLastItem]);
+  }, [list, onChangeValue, selectLastItem]);
 
-  useEffect(() => {
-    if (list.length > 1 && itemSelected) {
-      setItemSelected(false);
-    }
-  }, [itemSelected, list]);
-
-  const handleChangeBarCode = useCallback(_value => {
-    checkNullString(_value) ? setBarCode(null) : setBarCode(_value);
+  const handleChangeBarCode = useCallback(_barCode => {
+    checkNullString(_barCode) ? setBarCode(null) : setBarCode(_barCode);
   }, []);
 
   return (
@@ -160,10 +159,7 @@ const DoubleScannerSearchBar = ({
           selectLastItem={selectLastItem}
           readonly={readonly}
           displayValue={displayValue}
-          onChangeValue={_value => {
-            _value == null && setBarCode(null);
-            onChangeValue(_value);
-          }}
+          onChangeValue={onChangeValue}
           fetchData={fetchSearchAPI}
           placeholder={placeholderSearchBar}
           navigate={navigate}
@@ -176,16 +172,13 @@ const DoubleScannerSearchBar = ({
           scanKeySearch={scanKeySearch}
           changeScreenAfter={changeScreenAfter}
         />
-        {baseConfig.enableMultiBarcodeOnProducts && (
+        {displayBarCodeInput && (
           <InputBarCodeCard
             style={styles.inputCode}
-            placeholder={
-              placeholerBarCode ? placeholerBarCode : I18n.t('Base_AltSerialNo')
-            }
+            placeholder={I18n.t(placeholerBarCode ?? 'Base_AltSerialNo')}
             defaultValue={barCode}
             onChange={handleChangeBarCode}
             scanKeySearch={scanKeyBarCode}
-            readonly={itemSelected}
           />
         )}
       </View>

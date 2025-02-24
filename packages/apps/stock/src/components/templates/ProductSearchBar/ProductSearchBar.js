@@ -26,7 +26,7 @@ import {
 import {searchProducts} from '../../../features/productSlice';
 import {searchAlternativeBarcode} from '../../../features/alternativeBarcodeSlice';
 
-const barCodeScanKey = 'product_bar-code';
+const barCodeScanKey = 'product_bar-code_product-search-bar';
 
 const ProductSearchBar = ({
   placeholderKey = 'Stock_Product',
@@ -42,6 +42,7 @@ const ProductSearchBar = ({
 }) => {
   const I18n = useTranslator();
 
+  const {base: baseConfig} = useSelector(state => state.appConfig);
   const {productList, loadingProduct, moreLoadingProduct, isListEndProduct} =
     useSelector(state => state.product);
   const {alternativeBarcodeList} = useSelector(
@@ -76,6 +77,7 @@ const ProductSearchBar = ({
       changeScreenAfter={changeScreenAfter}
       sliceBarCodeFunction={searchAlternativeBarcode}
       scanKeyBarCode={barCodeScanKey}
+      displayBarCodeInput={baseConfig.enableMultiBarcodeOnProducts}
     />
   );
 };

@@ -162,9 +162,6 @@ export const stock_modelAPI: ObjectFields = {
     serialNumber: schemaContructor.string(),
     parentProduct: schemaContructor.subObject('fileName'),
     productVariant: schemaContructor.subObject('name'),
-    alternativeBarcodeList: schemaContructor
-      .array()
-      .of(schemaContructor.subObject('serialNumber')),
   }),
   stock_stockCorrection: schemaContructor.object({
     statusSelect: schemaContructor.number(),

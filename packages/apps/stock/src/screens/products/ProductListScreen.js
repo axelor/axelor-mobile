@@ -16,7 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import React, {useState, useCallback, useMemo} from 'react';
+import React, {useCallback, useMemo, useState} from 'react';
 import {Screen} from '@axelor/aos-mobile-ui';
 import {
   displayItemName,
@@ -30,11 +30,12 @@ import {searchProducts} from '../../features/productSlice';
 import {searchAlternativeBarcode} from '../../features/alternativeBarcodeSlice';
 
 const productScanKey = 'product_product-list';
-const barCodeScanKey = 'product_bar-code';
+const barCodeScanKey = 'product_bar-code_product-list';
 
 const ProductListScreen = ({navigation}) => {
   const I18n = useTranslator();
 
+  const {base: baseConfig} = useSelector(state => state.appConfig);
   const {loadingProduct, moreLoadingProduct, isListEndProduct, productList} =
     useSelector(state => state.product);
   const {alternativeBarcodeList} = useSelector(
@@ -66,7 +67,7 @@ const ProductListScreen = ({navigation}) => {
         sliceFunction={searchProducts}
         sliceFunctionData={sliceFunctionData}
         list={productList}
-        loading={loadingProduct}
+        loadingList={loadingProduct}
         moreLoading={moreLoadingProduct}
         isListEnd={isListEndProduct}
         placeholderSearchBar={I18n.t('Stock_Product')}
@@ -77,6 +78,8 @@ const ProductListScreen = ({navigation}) => {
         scanKeyBarCode={barCodeScanKey}
         selectLastItem
         onChangeValue={showProductDetails}
+        displayBarCodeInput={baseConfig.enableMultiBarcodeOnProducts}
+        navigate={navigate}
       />
       <SearchListView
         list={productList}

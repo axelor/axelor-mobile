@@ -77,9 +77,6 @@ const initialState = {
 
   loadingProductLocker: false,
   updateResponde: {},
-
-  loadingAlternativeBarcode: false,
-  alternativeBarcodeProductList: [],
 };
 
 const productSlice = createSlice({

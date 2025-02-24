@@ -41,6 +41,8 @@ const AvailableProductsSearchBar = ({
   isScrollViewContainer = false,
 }) => {
   const I18n = useTranslator();
+
+  const {base: baseConfig} = useSelector(state => state.appConfig);
   const {
     availableProducts,
     loadingAvailableProducts,
@@ -84,6 +86,7 @@ const AvailableProductsSearchBar = ({
       scanKeyBarCode={barCodeScanKey}
       sliceBarCodeFunction={searchAlternativeBarcode}
       isScrollViewContainer={isScrollViewContainer}
+      displayBarCodeInput={baseConfig.enableMultiBarcodeOnProducts}
     />
   );
 };
