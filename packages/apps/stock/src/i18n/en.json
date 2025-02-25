@@ -186,5 +186,6 @@
   "Stock_SliceAction_FetchPurchaseOrderQtyIndicator": "fetch data of purchase order quantity indicator",
   "Stock_SliceAction_FetchAvailableStockIndicator": "fetch data of available stock indicator",
   "Stock_SliceAction_SplitSupplierArrivalLine": "split supplier arrival line",
-  "Stock_SliceAction_SplitCustomerDeliveryLine": "split customer delivery line"
+  "Stock_SliceAction_SplitCustomerDeliveryLine": "split customer delivery line",
+  "Stock_SliceAction_SearchAlternativeBarcode": "search for alternative barcodes"
 }

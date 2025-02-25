@@ -16,6 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+export {default as DoubleScannerSearchBar} from './DoubleScannerSearchBar/DoubleScannerSearchBar';
 export {default as GlobalToolBox} from './GlobalToolBox/GlobalToolBox';
 export {default as MailMessageView} from './MailMessageView/MailMessageView';
 export {default as PeriodInput} from './PeriodInput/PeriodInput';

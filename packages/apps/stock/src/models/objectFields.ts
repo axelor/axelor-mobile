@@ -309,4 +309,8 @@ export const stock_modelAPI: ObjectFields = {
     estimatedReceiptDate: schemaContructor.string(),
     receiptState: schemaContructor.number(),
   }),
+  stock_alternativeBarcode: schemaContructor.object({
+    product: schemaContructor.subObject(),
+    serialNumber: schemaContructor.number(),
+  }),
 };
