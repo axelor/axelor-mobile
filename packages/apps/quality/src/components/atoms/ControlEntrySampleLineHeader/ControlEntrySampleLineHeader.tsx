@@ -40,12 +40,13 @@ const ControlEntrySampleLineHeader = ({}) => {
   }
 
   return (
-    <View>
+    <View style={styles.container}>
       <View style={styles.row}>
-        <Text>{`${I18n.t('Quality_Sample')} : ${
+        <Text style={styles.sampleText}>{`${I18n.t('Quality_Sample')} : ${
           sampleLine.controlEntrySample?.fullName
         }`}</Text>
         <Badge
+          style={styles.badge}
           color={getItemColor(
             ControlEntrySample?.resultSelect,
             sampleLine.resultSelect,
@@ -66,14 +67,21 @@ const ControlEntrySampleLineHeader = ({}) => {
 };
 
 const styles = StyleSheet.create({
+  container: {
+    marginTop: 5,
+  },
   row: {
     flexDirection: 'row',
     justifyContent: 'space-between',
-    alignItems: 'center',
+  },
+  sampleText: {
+    flex: 1,
   },
   badge: {
-    margin: 0,
     width: null,
+    margin: 0,
+    marginLeft: 10,
+    paddingHorizontal: 10,
   },
 });
 
