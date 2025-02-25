@@ -19,10 +19,11 @@
 import {
   createStandardFetch,
   createStandardSearch,
+  formatRequestBody,
   getActionApi,
   getSearchCriterias,
-  RouterProvider,
 } from '@axelor/aos-mobile-core';
+import {updateEmail} from './contact-info-api';
 
 const createContactCriteria = (
   searchValue,
@@ -144,63 +145,41 @@ export async function updateContact({
   emailId,
   emailVersion,
 }) {
-  const route = await RouterProvider.get('EmailAddress');
-
-  const modelName = route.replace('/ws/rest/', '');
+  const body = {
+    id,
+    version,
+    titleSelect,
+    firstName,
+    name,
+    fixedPhone,
+    mobilePhone,
+    webSite,
+    description,
+    mainPartner,
+  };
+  const {matchers} = formatRequestBody(body, 'data');
 
   return getActionApi()
     .send({
-      url: route,
+      url: '/ws/rest/com.axelor.apps.base.db.Partner',
       method: 'post',
       body: {
-        data: {
-          id: emailId,
-          version: emailVersion,
-          address: email,
-        },
+        data: body,
       },
-      description: 'update contact email',
+      description: 'update contact',
       matchers: {
-        modelName: modelName,
-        id: emailId,
-        fields: {
-          'data.address': 'address',
-        },
+        modelName: 'com.axelor.apps.base.db.Partner',
+        id,
+        fields: matchers,
       },
     })
-    .then(() =>
-      getActionApi().send({
-        url: '/ws/rest/com.axelor.apps.base.db.Partner',
-        method: 'post',
-        body: {
-          data: {
-            id,
-            version,
-            titleSelect,
-            firstName,
-            name,
-            fixedPhone,
-            mobilePhone,
-            webSite,
-            description,
-            mainPartner,
-          },
-        },
-        description: 'update contact',
-        matchers: {
-          modelName: 'com.axelor.apps.base.db.Partner',
-          id: id,
-          fields: {
-            'data.titleSelect': 'titleSelect',
-            'data.firstName': 'firstName',
-            'data.name': 'name',
-            'data.fixedPhone': 'fixedPhone',
-            'data.mobilePhone': 'mobilePhone',
-            'data.webSite': 'webSite',
-            'data.description': 'description',
-            'data.mainPartner': 'mainPartner',
-          },
-        },
-      }),
+    .then(
+      () =>
+        emailId &&
+        updateEmail({
+          id: emailId,
+          version: emailVersion,
+          email,
+        }),
     );
 }
