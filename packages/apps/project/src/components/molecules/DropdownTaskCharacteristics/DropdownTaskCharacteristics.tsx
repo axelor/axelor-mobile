@@ -17,7 +17,7 @@
  */
 
 import React, {useCallback, useMemo} from 'react';
-import {View} from 'react-native';
+import {StyleSheet, View} from 'react-native';
 import {
   LabelText,
   TagList,
@@ -31,6 +31,7 @@ interface DropdownTaskCharacteristicsProps {
   projectTaskCategory?: any;
   projectTaskSection?: any;
   targetVersion?: any;
+  activeSprint?: any;
   taskDate?: string;
   taskEndDate?: string;
   taskDeadline?: string;
@@ -42,6 +43,7 @@ const DropdownTaskCharacteristics = ({
   projectTaskCategory,
   projectTaskSection,
   targetVersion,
+  activeSprint,
   taskDate,
   taskEndDate,
   taskDeadline,
@@ -69,6 +71,7 @@ const DropdownTaskCharacteristics = ({
       if (!checkNullString(value)) {
         return (
           <LabelText
+            style={styles.labelText}
             title={`${I18n.t(titleKey)} :`}
             value={value}
             textSize={16}
@@ -85,6 +88,7 @@ const DropdownTaskCharacteristics = ({
       {renderLabelText('Project_Category', projectTaskCategory?.name)}
       {renderLabelText('Project_Section', projectTaskSection?.name)}
       {renderLabelText('Project_TargetVersion', targetVersion?.title)}
+      {renderLabelText('Project_ActiveSprint', activeSprint?.name)}
       {renderLabelText('Project_StartDate', _formatDate(taskDate))}
       {renderLabelText('Project_DueDate', _formatDate(taskEndDate))}
       {renderLabelText('Project_Deadline', _formatDate(taskDeadline))}
@@ -92,5 +96,10 @@ const DropdownTaskCharacteristics = ({
     </View>
   );
 };
+const styles = StyleSheet.create({
+  labelText: {
+    alignItems: 'flex-start',
+  },
+});
 
 export default DropdownTaskCharacteristics;

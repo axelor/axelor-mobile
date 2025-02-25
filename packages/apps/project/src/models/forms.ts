@@ -24,18 +24,22 @@ import {
 } from '@axelor/aos-mobile-core';
 import {HrModule} from '@axelor/aos-mobile-hr';
 import {
-  LogTimeButton,
+  ActiveSprintSearchBar,
   CategorySearchBar,
+  LogTimeButton,
   ParentTaskSearchBar,
   PrioritySearchBar,
   ProjectSearchBar,
   SectionSearchBar,
-  TaskTagMultiValuePicker,
   TargetVersionSearchBar,
   TaskStatusSearchBar,
+  TaskTagMultiValuePicker,
 } from '../components';
 import {updateProject} from '../features/projectSlice';
-import {udpateFormCategory} from '../features/projectTaskSlice';
+import {
+  udpateFormCategory,
+  updateTargetVersion,
+} from '../features/projectTaskSlice';
 
 const hr_TimesheetLineForm = HrModule.models.formsRegister.hr_TimesheetLine;
 
@@ -223,6 +227,31 @@ export const project_formsRegister: FormConfigs = {
             return null;
           },
         },
+      },
+      activeSprint: {
+        titleKey: 'Project_ActiveSprint',
+        type: 'object',
+        widget: 'custom',
+        customComponent: ActiveSprintSearchBar,
+        dependsOn: {
+          targetVersion: ({dispatch, newValue, objectState, storeState}) => {
+            dispatch(updateTargetVersion(newValue));
+            if (
+              storeState.project_project.projectForm?.sprintManagementSelect ===
+              getTypes().Project?.sprintManagementSelect.Version
+            ) {
+              return storeState.project_project.projectForm?.backlogSprint;
+            } else {
+              return objectState?.activeSprint;
+            }
+          },
+        },
+        hideIf: ({objectState, storeState}) =>
+          storeState.project_project.projectForm?.sprintManagementSelect ===
+            getTypes().Project?.sprintManagementSelect.None ||
+          (storeState.project_project.projectForm?.sprintManagementSelect ===
+            getTypes().Project?.sprintManagementSelect.Version &&
+            objectState?.targetVersion == null),
       },
       taskDate: {
         titleKey: 'Project_StartDate',
