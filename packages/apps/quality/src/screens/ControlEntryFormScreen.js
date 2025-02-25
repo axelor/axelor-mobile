@@ -285,6 +285,7 @@ const ControlEntryFormScreen = ({navigation, route}) => {
             },
           ]}
           readonly={isReadonly}
+          key={currentIndex}
         />
       )}
     </Screen>
