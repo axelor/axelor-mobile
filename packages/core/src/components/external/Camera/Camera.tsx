@@ -102,7 +102,21 @@ const Camera = () => {
   }, []);
 
   const codeScanner = useCodeScanner({
-    codeTypes: ['code-128', 'code-39', 'code-93', 'ean-13', 'ean-8', 'qr'],
+    codeTypes: [
+      'aztec',
+      'codabar',
+      'code-39',
+      'code-93',
+      'code-128',
+      'data-matrix',
+      'ean-8',
+      'ean-13',
+      'itf',
+      'pdf-417',
+      'qr',
+      'upc-a',
+      'upc-e',
+    ],
     onCodeScanned: barcode => {
       if (isScanActive && Array.isArray(barcode) && barcode[0] != null) {
         dispatch(
