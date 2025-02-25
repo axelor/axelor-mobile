@@ -1,0 +1,5 @@
+{
+  "title": "Dimension type control: resolve issue with value which was not reset when switching from one sample to another",
+  "type": "fix",
+  "packages": "quality"
+}
