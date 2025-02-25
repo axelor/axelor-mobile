@@ -211,6 +211,7 @@
   "Base_PrintTemplate": "Modèle d'impression",
   "Base_NoRecordsFound": "Aucun enregistrement trouvé",
   "Base_NoPermForCreate": "Vous n'avez pas les permissions pour créer cet objet",
+  "Base_AltSerialNo": "N° de série alt.",
   "Base_StoragePermissionRequired": "Accès au stockage requis",
   "Base_StoragePermissionDetails": "L'application a besoin d'avoir accès à votre stockage pour télécharger des fichiers.",
   "Base_ErrorOnDownload": "Il y a eu un problème lors du téléchargement du fichier.",

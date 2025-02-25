@@ -23,8 +23,8 @@ import {
   getActionApi,
 } from '@axelor/aos-mobile-core';
 
-const createProductCriteria = searchValue => {
-  return [
+const createProductCriteria = (searchValue, alternativeBarcodeList) => {
+  const criteria = [
     {
       fieldName: 'isModel',
       operator: '=',
@@ -47,6 +47,19 @@ const createProductCriteria = searchValue => {
     },
     getSearchCriterias('stock_product', searchValue),
   ];
+
+  if (
+    Array.isArray(alternativeBarcodeList) &&
+    alternativeBarcodeList.length > 0
+  ) {
+    criteria.push({
+      fieldName: 'id',
+      operator: 'in',
+      value: alternativeBarcodeList.map(barcode => barcode.product.id),
+    });
+  }
+
+  return criteria;
 };
 
 const createProductCompanyCriteria = (productId, companyId) => {
@@ -64,10 +77,14 @@ const createProductCompanyCriteria = (productId, companyId) => {
   ];
 };
 
-export async function searchProductsFilter({searchValue, page = 0}) {
+export async function searchProductsFilter({
+  searchValue,
+  page = 0,
+  alternativeBarcodeList,
+}) {
   return createStandardSearch({
     model: 'com.axelor.apps.base.db.Product',
-    criteria: createProductCriteria(searchValue),
+    criteria: createProductCriteria(searchValue, alternativeBarcodeList),
     fieldKey: 'stock_product',
     sortKey: 'stock_product',
     page,

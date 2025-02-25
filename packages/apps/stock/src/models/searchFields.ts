@@ -63,4 +63,5 @@ export const stock_searchFields: SearchFields = {
     'trackingNumber.serialNumber',
   ],
   stock_trackingNumber: ['trackingNumberSeq', 'serialNumber', 'origin'],
+  stock_alternativeBarcode: ['serialNumber'],
 };

@@ -1,0 +1,5 @@
+{
+  "title": "Products: use new widget DoubleScannerSearchBar to manage configuration of multi barcodes",
+  "type": "feat",
+  "packages": "stock"
+}
