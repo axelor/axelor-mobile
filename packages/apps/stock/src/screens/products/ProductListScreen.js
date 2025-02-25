@@ -55,32 +55,12 @@ const ProductListScreen = ({navigation}) => {
   );
 
   const sliceFunctionData = useMemo(
-    () => ({
-      alternativeBarcodeList,
-    }),
+    () => ({alternativeBarcodeList}),
     [alternativeBarcodeList],
   );
 
   return (
     <Screen removeSpaceOnTop={true}>
-      <DoubleScannerSearchBar
-        sliceFunction={searchProducts}
-        sliceFunctionData={sliceFunctionData}
-        list={productList}
-        loadingList={loadingProduct}
-        moreLoading={moreLoadingProduct}
-        isListEnd={isListEndProduct}
-        placeholderSearchBar={I18n.t('Stock_Product')}
-        displayValue={displayItemName}
-        sliceBarCodeFunction={searchAlternativeBarcode}
-        oneFilter={true}
-        scanKeySearch={productScanKey}
-        scanKeyBarCode={barCodeScanKey}
-        selectLastItem
-        onChangeValue={showProductDetails}
-        displayBarCodeInput={baseConfig.enableMultiBarcodeOnProducts}
-        navigate={navigate}
-      />
       <SearchListView
         list={productList}
         loading={loadingProduct}
@@ -88,12 +68,28 @@ const ProductListScreen = ({navigation}) => {
         isListEnd={isListEndProduct}
         sliceFunction={searchProducts}
         sliceFunctionData={sliceFunctionData}
-        onChangeSearchValue={showProductDetails}
-        displaySearchValue={displayItemName}
-        searchPlaceholder={I18n.t('Stock_Product')}
-        searchNavigate={navigate}
-        scanKeySearch={productScanKey}
         expandableFilter={false}
+        customSearchBarComponent={
+          <DoubleScannerSearchBar
+            list={productList}
+            loadingList={loadingProduct}
+            moreLoading={moreLoadingProduct}
+            isListEnd={isListEndProduct}
+            sliceFunction={searchProducts}
+            sliceFunctionData={sliceFunctionData}
+            placeholderSearchBar={I18n.t('Stock_Product')}
+            onChangeValue={showProductDetails}
+            displayValue={displayItemName}
+            sliceBarCodeFunction={searchAlternativeBarcode}
+            displayBarCodeInput={baseConfig.enableMultiBarcodeOnProducts}
+            scanKeySearch={productScanKey}
+            scanKeyBarCode={barCodeScanKey}
+            navigate={navigate}
+            showDetailsPopup={false}
+            selectLastItem
+            oneFilter
+          />
+        }
         renderListItem={({item}) => (
           <ProductCard
             key={item.id}
