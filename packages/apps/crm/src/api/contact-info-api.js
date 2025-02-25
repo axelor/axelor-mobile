@@ -103,9 +103,9 @@ export async function updateAddress({
             address: resAddress.data?.object,
           },
         },
-        description: 'update address',
+        description: 'update partner address',
         matchers: {
-          modelName: '/ws/rest/com.axelor.apps.base.db.PartnerAddress',
+          modelName: 'com.axelor.apps.base.db.PartnerAddress',
           id: _partnerAddress?.id,
           fields: {
             'data.address': 'address',
@@ -179,6 +179,8 @@ export async function addPartnerAddress({
 export async function updateEmail({id, version, email}) {
   const route = await RouterProvider.get('EmailAddress');
 
+  const modelName = route.replace('/ws/rest/', '');
+
   return getActionApi().send({
     url: route,
     method: 'post',
@@ -191,7 +193,7 @@ export async function updateEmail({id, version, email}) {
     },
     description: 'update email',
     matchers: {
-      modelName: 'com.axelor.message.db.EmailAddress',
+      modelName: modelName,
       id,
       fields: {
         'data.address': 'address',
