@@ -69,7 +69,7 @@ const LeaveAvailableDuractionCard = ({
         .then(setAvailableLeave)
         .catch(() => setAvailableLeave(0));
     }
-  }, [formatNumber, isExceptionalLeave, leaveReason?.id, toDate]);
+  }, [isExceptionalLeave, leaveReason?.id, toDate]);
 
   const styles = useMemo(() => {
     return getStyles(Colors.secondaryColor.background);

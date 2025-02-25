@@ -23,11 +23,13 @@ import {
   formatDate,
   formatDateTime,
   useDispatch,
+  useNavigation,
   useSelector,
   useTranslator,
   useTypes,
 } from '@axelor/aos-mobile-core';
 import {
+  CircleButton,
   HeaderContainer,
   NotesCard,
   Screen,
@@ -46,6 +48,7 @@ const LeaveDetailsScreen = ({route}) => {
   const {leaveId} = route.params;
   const I18n = useTranslator();
   const {LeaveRequest} = useTypes();
+  const navigation = useNavigation();
   const dispatch = useDispatch();
 
   const {leave, loadingLeave} = useSelector(state => state.hr_leave);
@@ -123,6 +126,13 @@ const LeaveDetailsScreen = ({route}) => {
           data={leave.comments}
         />
       </ScrollView>
+      <CircleButton
+        style={styles.floatingButton}
+        iconName="pencil-fill"
+        onPress={() =>
+          navigation.navigate('LeaveFormScreen', {leaveId: leave.id})
+        }
+      />
     </Screen>
   );
 };
@@ -137,6 +147,11 @@ const styles = StyleSheet.create({
   },
   text: {
     width: '90%',
+  },
+  floatingButton: {
+    position: 'absolute',
+    bottom: 15,
+    right: 15,
   },
 });
 

@@ -31,6 +31,7 @@ import {
   fetchLeaveToValidate as _fetchLeaveToValidate,
   rejectLeave as _rejectLeave,
   sendLeave as _sendLeave,
+  updateLeave as _updateLeave,
   validateLeave as _validateLeave,
 } from '../api/leave-api';
 
@@ -178,6 +179,22 @@ export const createLeaveRequest = createAsyncThunk(
       action: 'Hr_SliceAction_CreateLeaveRequest',
       getState,
       responseOptions: {isArrayResponse: false, showToast: true},
+    });
+  },
+);
+
+export const updateLeave = createAsyncThunk(
+  'hr_leave/updateLeave',
+  async function (data, {getState, dispatch}) {
+    return handlerApiCall({
+      fetchFunction: _updateLeave,
+      data,
+      action: 'Hr_SliceAction_UpdateLeave',
+      getState,
+      responseOptions: {isArrayResponse: false, showToast: true},
+    }).then(() => {
+      dispatch(fetchLeaveById({leaveId: data.leave.id}));
+      dispatch(fetchLeave({userId: data.userId}));
     });
   },
 );

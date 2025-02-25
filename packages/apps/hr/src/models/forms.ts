@@ -19,14 +19,18 @@
 import {FormConfigs} from '@axelor/aos-mobile-core';
 import {DurationInput} from '@axelor/aos-mobile-ui';
 import {
+  AvailableQtyInput,
   BillableSwitchCard,
+  CityFormInput,
   CurrencySearchBar,
   DistanceIncrement,
   DraftExpensePicker,
-  CityFormInput,
+  DurationIncrement,
   ExpenseTypeSearchBar,
   KilometricAllowParamSearchBar,
   KilometricTypeSelectPicker,
+  LeavePeriodInput,
+  LeaveReasonSearchBar,
   ManufOrderSearchBar,
   OperationOrderSearchBar,
   ProductSearchBar,
@@ -449,6 +453,63 @@ export const hr_formsRegister: FormConfigs = {
         type: 'object',
         widget: 'custom',
         customComponent: TimerStopwatch,
+      },
+    },
+  },
+  hr_Leave: {
+    modelName: 'com.axelor.apps.hr.db.LeaveRequest',
+    fields: {
+      perdiodDate: {
+        type: 'object',
+        widget: 'custom',
+        customComponent: LeavePeriodInput,
+      },
+      perdiodDateError: {
+        type: 'string',
+        validationOptions: {
+          required: {
+            customErrorKey: 'Hr_PeriodDateError',
+          },
+        },
+        dependsOn: {
+          perdiodDate: ({newValue}) => {
+            if (newValue.isDateError || newValue.isStartEndError) {
+              return '';
+            } else {
+              return 'OK';
+            }
+          },
+        },
+        hideIf: () => true,
+      },
+      leaveReason: {
+        titleKey: 'Hr_LeaveReason',
+        type: 'object',
+        widget: 'custom',
+        customComponent: LeaveReasonSearchBar,
+      },
+      availableQty: {
+        titleKey: 'Hr_AvailableQty',
+        type: 'number',
+        widget: 'custom',
+        customComponent: AvailableQtyInput,
+      },
+      duration: {
+        titleKey: 'Hr_Duration',
+        type: 'number',
+        readonly: true,
+        widget: 'custom',
+        customComponent: DurationIncrement,
+      },
+      comments: {
+        titleKey: 'Hr_Comments',
+        type: 'string',
+        widget: 'default',
+        options: {
+          multiline: true,
+          adjustHeightWithLines: true,
+          style: {marginBottom: 100, width: '90%', alignSelf: 'center'},
+        },
       },
     },
   },

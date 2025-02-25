@@ -146,6 +146,9 @@ const LeaveListScreen = ({}) => {
             onPress={() =>
               navigation.navigate('LeaveDetailsScreen', {leaveId: item.id})
             }
+            onEdit={() =>
+              navigation.navigate('LeaveFormScreen', {leaveId: item.id})
+            }
             onSend={() => sendLeaveAPI(item)}
             onValidate={() => validateLeaveApi(item)}
           />

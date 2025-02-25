@@ -19,6 +19,7 @@
 import {
   createStandardFetch,
   createStandardSearch,
+  formatRequestBody,
   getActionApi,
   getSearchCriterias,
   getTypes,
@@ -191,6 +192,24 @@ export async function deleteLeave({leaveRequestId}) {
     matchers: {
       modelName: 'com.axelor.apps.hr.db.LeaveRequest',
       id: leaveRequestId,
+    },
+  });
+}
+
+export async function updateLeave({leave}) {
+  const {matchers} = formatRequestBody(leave, 'data');
+
+  return getActionApi().send({
+    url: '/ws/rest/com.axelor.apps.hr.db.LeaveRequest',
+    method: 'post',
+    body: {
+      data: leave,
+    },
+    description: 'update leave',
+    matchers: {
+      modelName: 'com.axelor.apps.hr.db.LeaveRequest',
+      id: leave.id,
+      fields: matchers,
     },
   });
 }
