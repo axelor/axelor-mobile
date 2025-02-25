@@ -1,0 +1,5 @@
+{
+  "title": "Control entry line: resolve display issue with long sample title",
+  "type": "fix",
+  "packages": "quality"
+}
