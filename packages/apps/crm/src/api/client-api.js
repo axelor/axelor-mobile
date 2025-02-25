@@ -19,10 +19,11 @@
 import {
   createStandardFetch,
   createStandardSearch,
+  formatRequestBody,
   getActionApi,
   getSearchCriterias,
-  RouterProvider,
 } from '@axelor/aos-mobile-core';
+import {updateEmail} from './contact-info-api';
 
 const createClientCriteria = (searchValue, userId, assigned) => {
   const criteria = [
@@ -94,55 +95,37 @@ export async function updateClient({
   emailId,
   emailVersion,
 }) {
-  const route = await RouterProvider.get('EmailAddress');
-
-  const modelName = route.replace('/ws/rest/', '');
+  const body = {
+    id,
+    version,
+    name,
+    fixedPhone,
+    website,
+    description,
+  };
+  const {matchers} = formatRequestBody(body, 'data');
 
   return getActionApi()
     .send({
-      url: route,
+      url: '/ws/rest/com.axelor.apps.base.db.Partner',
       method: 'post',
       body: {
-        data: {
-          id: emailId,
-          version: emailVersion,
-          address: email,
-        },
+        data: body,
       },
-      description: 'update client email',
+      description: 'update client',
       matchers: {
-        modelName: modelName,
-        id: emailId,
-        fields: {
-          'data.address': 'address',
-        },
+        modelName: 'com.axelor.apps.base.db.Partner',
+        id,
+        fields: matchers,
       },
     })
-    .then(() =>
-      getActionApi().send({
-        url: '/ws/rest/com.axelor.apps.base.db.Partner',
-        method: 'post',
-        body: {
-          data: {
-            id,
-            version,
-            name,
-            fixedPhone,
-            website,
-            description,
-          },
-        },
-        description: 'update lead',
-        matchers: {
-          modelName: 'com.axelor.apps.base.db.Partner',
-          id: id,
-          fields: {
-            'data.name': 'name',
-            'data.fixedPhone': 'fixedPhone',
-            'data.webSite': 'webSite',
-            'data.description': 'description',
-          },
-        },
-      }),
+    .then(
+      () =>
+        emailId &&
+        updateEmail({
+          id: emailId,
+          version: emailVersion,
+          email,
+        }),
     );
 }

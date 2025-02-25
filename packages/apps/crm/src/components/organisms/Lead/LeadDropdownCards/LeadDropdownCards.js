@@ -25,6 +25,7 @@ import {
   DropdownEventView,
   DropdownGeneralView,
 } from '../../../organisms';
+import {fetchLeadById} from '../../../../features/leadSlice';
 import {searchEventById} from '../../../../features/eventSlice';
 
 const LeadDropdownCards = ({}) => {
@@ -51,13 +52,14 @@ const LeadDropdownCards = ({}) => {
             key: 1,
             childrenComp: (
               <DropdownContactView
-                address={lead.address?.fullName}
-                fixedPhone={lead.fixedPhone}
-                mobilePhone={lead.mobilePhone}
-                emailAddress={lead.emailAddress?.address}
-                webSite={lead.webSite}
+                contact={lead}
+                isLead
+                refreshContactInfos={() =>
+                  dispatch(fetchLeadById({leadId: lead.id}))
+                }
               />
             ),
+            isDefaultVisible: true,
           },
           {
             title: I18n.t('Crm_GeneralInformation'),

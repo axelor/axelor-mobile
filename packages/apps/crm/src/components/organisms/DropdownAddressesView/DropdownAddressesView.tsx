@@ -16,87 +16,71 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import React, {useCallback, useEffect} from 'react';
+import React, {useCallback, useEffect, useState} from 'react';
 import {View, StyleSheet, TouchableOpacity} from 'react-native';
 import {
-  useTranslator,
-  linkingProvider,
+  handlerApiCall,
   useDispatch,
+  usePermitted,
   useSelector,
-  clipboardProvider,
+  useTranslator,
 } from '@axelor/aos-mobile-core';
-import {HorizontalRule, Icon, Text, useThemeColor} from '@axelor/aos-mobile-ui';
+import {Icon, Text, useThemeColor} from '@axelor/aos-mobile-ui';
+import {
+  AddressListCard,
+  ContactInfoAlert,
+  ContactInfoType,
+} from '../../molecules';
 import {fetchPartnerAddresses} from '../../../features/partnerSlice';
+import {addPartnerAddressApi} from '../../../api';
 
-interface PartnerAddress {
-  id: number;
-  address: {
-    fullName: string;
-  };
-  isDefaultAddr?: boolean;
-  isDeliveryAddr?: boolean;
-  isInvoicingAddr?: boolean;
+interface DropdownAddressesViewProps {
+  partnerId: number;
+  partnerVersion: number;
+  refreshContactInfos: () => void;
 }
 
-const DropdownAddressesView = ({partnerId}: {partnerId: number}) => {
+const DropdownAddressesView = ({
+  partnerId,
+  partnerVersion,
+  refreshContactInfos,
+}: DropdownAddressesViewProps) => {
   const I18n = useTranslator();
   const Colors = useThemeColor();
+  const {canCreate} = usePermitted({
+    modelName: 'com.axelor.apps.base.db.PartnerAddress',
+  });
   const dispatch = useDispatch();
 
+  const [isVisible, setIsVisible] = useState(false);
+
+  const {userId} = useSelector((state: any) => state.auth);
   const {partnerAddressList} = useSelector(state => state.partner);
+
+  const getState = useCallback(() => ({auth: {userId}}), [userId]);
+
+  const addPartnerAddress = useCallback(
+    ({data}) => {
+      const dataApi = {
+        partnerId,
+        partnerVersion,
+        ...data,
+      };
+
+      return handlerApiCall({
+        fetchFunction: addPartnerAddressApi,
+        data: dataApi,
+        action: 'Crm_ApiAction_AddAddress',
+        getState,
+        responseOptions: {showToast: true},
+      });
+    },
+    [getState, partnerId, partnerVersion],
+  );
 
   useEffect(() => {
     dispatch((fetchPartnerAddresses as any)({partnerId}));
   }, [dispatch, partnerId]);
-
-  const renderAddressItem = useCallback(
-    (partnerAddress: PartnerAddress, index: number, self: PartnerAddress[]) => {
-      const isLastItem = index === self.length - 1;
-
-      let icons: any[] = [
-        {name: 'star', showIf: partnerAddress.isDefaultAddr},
-        {name: 'card-list', showIf: partnerAddress.isInvoicingAddr},
-        {name: 'cart-fill', showIf: partnerAddress.isDeliveryAddr},
-      ].filter(_i => _i.showIf);
-
-      if (icons.length === 3) {
-        icons = [{name: 'star-fill', color: Colors.progressColor.background}];
-      }
-
-      const address = partnerAddress.address?.fullName;
-
-      return (
-        <View key={partnerAddress.id}>
-          <TouchableOpacity
-            style={styles.container}
-            onPress={() => console.log('edit')}>
-            <View style={styles.containerIcons}>
-              {icons.map((icon, idx) => (
-                <Icon key={idx} name={icon.name} color={icon.color} />
-              ))}
-            </View>
-            <Text fontSize={14} style={styles.title}>
-              {address}
-            </Text>
-            <View style={styles.containerActions}>
-              <Icon
-                name="pin-map-fill"
-                touchable
-                onPress={() => linkingProvider.openMapApp(address)}
-              />
-              <Icon
-                name="copy"
-                touchable
-                onPress={() => clipboardProvider.copyToClipboard(address)}
-              />
-            </View>
-          </TouchableOpacity>
-          {!isLastItem && <HorizontalRule style={styles.borderBottom} />}
-        </View>
-      );
-    },
-    [Colors],
-  );
 
   if (!Array.isArray(partnerAddressList) || partnerAddressList.length === 0) {
     return (
@@ -106,32 +90,54 @@ const DropdownAddressesView = ({partnerId}: {partnerId: number}) => {
     );
   }
 
-  return <View>{partnerAddressList.map(renderAddressItem)}</View>;
+  return (
+    <>
+      <View>
+        {partnerAddressList.map((partnerAddress, index) => (
+          <AddressListCard
+            partnerId={partnerId}
+            partnerVersion={partnerVersion}
+            partnerAddress={partnerAddress}
+            borderBottom={index !== partnerAddressList.length - 1 || canCreate}
+            refreshContactInfos={refreshContactInfos}
+            key={index}
+          />
+        ))}
+        {canCreate && (
+          <TouchableOpacity
+            style={styles.addButton}
+            onPress={() => setIsVisible(true)}>
+            <Icon
+              style={styles.addButtonIcon}
+              name="plus-lg"
+              color={Colors.secondaryColor.background}
+            />
+            <Text textColor={Colors.secondaryColor.background}>
+              {I18n.t('Base_Add')}
+            </Text>
+          </TouchableOpacity>
+        )}
+      </View>
+      <ContactInfoAlert
+        title={I18n.t('Crm_Address')}
+        contactInfoType={ContactInfoType.type.Address}
+        isVisible={isVisible}
+        setIsVisible={setIsVisible}
+        onUpdate={addPartnerAddress}
+        refreshContactInfos={refreshContactInfos}
+      />
+    </>
+  );
 };
 
 const styles = StyleSheet.create({
-  container: {
+  addButton: {
     flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    marginVertical: 7,
-    paddingHorizontal: 10,
+    justifyContent: 'center',
+    paddingVertical: 5,
   },
-  containerIcons: {
-    flexDirection: 'column',
-    marginRight: 10,
-    gap: 5,
-  },
-  title: {
-    flex: 1,
-  },
-  containerActions: {
-    flexDirection: 'row',
-    gap: 10,
-  },
-  borderBottom: {
-    width: '100%',
-    marginVertical: 5,
+  addButtonIcon: {
+    marginRight: 5,
   },
 });
 
