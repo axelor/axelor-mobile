@@ -121,7 +121,7 @@ const ControlEntryFormScreen = ({navigation, route}) => {
   const fetchSampleLine = useCallback(
     (_set, _index) => {
       if (Array.isArray(_set) && _set.length > 0) {
-        dispatch(fetchControlEntrySampleLine({id: _set[_index].id}));
+        dispatch(fetchControlEntrySampleLine({id: _set[_index]?.id}));
       }
     },
     [dispatch],

@@ -74,7 +74,8 @@ const ControlEntryFormButtons = ({
 
   const handleNotControlled = useCallback(() => {
     if (
-      sampleLine.resultSelect === ControlEntrySample?.resultSelect.NotControlled
+      sampleLine?.resultSelect ===
+      ControlEntrySample?.resultSelect.NotControlled
     ) {
       showToastMessage({
         type: ControlEntryType.getSampleResultType(
@@ -93,7 +94,7 @@ const ControlEntryFormButtons = ({
     ControlEntrySample?.resultSelect,
     I18n,
     getItemTitle,
-    sampleLine.resultSelect,
+    sampleLine?.resultSelect,
   ]);
 
   return (
