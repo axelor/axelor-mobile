@@ -32,6 +32,7 @@ interface LeaveActionCardProps {
   onPress: () => void;
   onSend: () => void;
   onValidate: () => void;
+  onEdit: () => void;
 }
 
 const LeaveActionCard = ({
@@ -40,6 +41,7 @@ const LeaveActionCard = ({
   onPress,
   onSend,
   onValidate,
+  onEdit,
 }: LeaveActionCardProps) => {
   const I18n = useTranslator();
   const {LeaveRequest} = useTypes();
@@ -74,6 +76,12 @@ const LeaveActionCard = ({
             iconName: 'send-fill',
             helper: I18n.t('Hr_Send'),
             onPress: onSend,
+            hidden: leave.statusSelect !== LeaveRequest?.statusSelect.Draft,
+          },
+          {
+            iconName: 'pencil-fill',
+            helper: I18n.t('Hr_Edit'),
+            onPress: onEdit,
             hidden: leave.statusSelect !== LeaveRequest?.statusSelect.Draft,
           },
           {

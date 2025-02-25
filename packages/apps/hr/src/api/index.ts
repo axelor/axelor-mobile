@@ -57,6 +57,7 @@ export {
   fetchMissingDuration as fetchMissingDurationApi,
   rejectLeave as rejectLeaveApi,
   sendLeave as sendLeaveApi,
+  updateLeave as updateLeaveApi,
   validateLeave as validateLeaveApi,
 } from './leave-api';
 export {
