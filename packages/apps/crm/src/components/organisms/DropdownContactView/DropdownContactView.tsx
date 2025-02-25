@@ -20,18 +20,17 @@ import React, {useCallback} from 'react';
 import {StyleSheet, View} from 'react-native';
 import {
   handlerApiCall,
-  isEmpty,
   linkingProvider,
   useSelector,
   useTranslator,
 } from '@axelor/aos-mobile-core';
-import {Text} from '@axelor/aos-mobile-ui';
 import {
   ContactInfoCard,
   ContactInfoType,
   SocialNetworksInfoCard,
 } from '../../molecules';
 import {
+  linkEmailApi,
   updateAddressApi,
   updateEmailApi,
   updateLeadApi,
@@ -124,23 +123,26 @@ const DropdownContactView = ({
     [getState],
   );
 
-  if (
-    !contact.address &&
-    !contact.fixedPhone &&
-    !contact.mobilePhone &&
-    !contact.emailAddress &&
-    !contact.webSite &&
-    isEmpty(networkData)
-  ) {
-    return (
-      <View>
-        <Text>{I18n.t('Crm_NoContactInformation')}</Text>
-      </View>
-    );
-  }
+  const linkEmail = useCallback(
+    ({data}) => {
+      return handlerApiCall({
+        fetchFunction: linkEmailApi,
+        data: {
+          id: contact?.id,
+          version: contact?.version,
+          isLead,
+          email: data.email,
+        },
+        action: 'Crm_ApiAction_UpdateEmail',
+        getState,
+        responseOptions: {showToast: true},
+      });
+    },
+    [contact?.id, contact?.version, getState, isLead],
+  );
 
   return (
-    <View>
+    <View style={styles.container}>
       <ContactInfoCard
         headerIconName="geo-alt-fill"
         title={
@@ -149,17 +151,10 @@ const DropdownContactView = ({
         contact={contact}
         contactInfoType={ContactInfoType.type.Address}
         isLead={isLead}
-        border={
-          contact.fixedPhone != null ||
-          contact.mobilePhone != null ||
-          contact.emailAddress != null ||
-          contact.webSite != null ||
-          !isEmpty(networkData)
-        }
-        styleBorder={styles.borderInfoCard}
         onPress={() => linkingProvider.openMapApp(contact.address.fullName)}
         onUpdate={updateAddress}
         refreshContactInfos={refreshContactInfos}
+        canCreate={!isMainAddress}
       />
       <ContactInfoCard
         headerIconName="telephone-fill"
@@ -167,13 +162,6 @@ const DropdownContactView = ({
         contact={contact}
         contactInfoType={ContactInfoType.type.FixedPhone}
         isLead={isLead}
-        border={
-          contact.mobilePhone != null ||
-          contact.emailAddress != null ||
-          contact.webSite != null ||
-          !isEmpty(networkData)
-        }
-        styleBorder={styles.borderInfoCard}
         onPress={() => linkingProvider.openCallApp(contact.fixedPhone)}
         onUpdate={updateContactInfo}
         refreshContactInfos={refreshContactInfos}
@@ -184,12 +172,6 @@ const DropdownContactView = ({
         contact={contact}
         contactInfoType={ContactInfoType.type.MobilePhone}
         isLead={isLead}
-        border={
-          contact.emailAddress != null ||
-          contact.webSite != null ||
-          !isEmpty(networkData)
-        }
-        styleBorder={styles.borderInfoCard}
         onPress={() => linkingProvider.openCallApp(contact.mobilePhone)}
         onUpdate={updateContactInfo}
         refreshContactInfos={refreshContactInfos}
@@ -200,12 +182,11 @@ const DropdownContactView = ({
         contact={contact}
         contactInfoType={ContactInfoType.type.Email}
         isLead={isLead}
-        border={contact.webSite != null || !isEmpty(networkData)}
-        styleBorder={styles.borderInfoCard}
         onPress={() =>
           linkingProvider.openMailApp(contact.emailAddress?.address)
         }
         onUpdate={updateEmail}
+        onCreate={linkEmail}
         refreshContactInfos={refreshContactInfos}
       />
       <ContactInfoCard
@@ -214,8 +195,6 @@ const DropdownContactView = ({
         contact={contact}
         contactInfoType={ContactInfoType.type.WebSite}
         isLead={isLead}
-        styleBorder={styles.borderInfoCard}
-        border={!isEmpty(networkData)}
         onPress={() => linkingProvider.openBrowser(contact.webSite)}
         onUpdate={updateContactInfo}
         refreshContactInfos={refreshContactInfos}
@@ -226,9 +205,9 @@ const DropdownContactView = ({
 };
 
 const styles = StyleSheet.create({
-  borderInfoCard: {
-    width: '112%',
-    left: '-5%',
+  container: {
+    left: -10,
+    width: '107%',
   },
 });
 

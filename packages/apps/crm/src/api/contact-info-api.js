@@ -176,7 +176,7 @@ export async function addPartnerAddress({
   });
 }
 
-export async function updateEmail({id, version, email}) {
+export async function updateEmail({id, version, email, partner}) {
   const route = await RouterProvider.get('EmailAddress');
 
   const modelName = route.replace('/ws/rest/', '');
@@ -189,16 +189,46 @@ export async function updateEmail({id, version, email}) {
         id,
         version,
         address: email,
+        partner,
       },
     },
     description: 'update email',
     matchers: {
       modelName: modelName,
-      id,
+      id: id ?? Date.now(),
       fields: {
         'data.address': 'address',
+        'data.partner': 'partner',
       },
     },
+  });
+}
+
+export async function linkEmail({id, version, email, isLead}) {
+  return updateEmail({email, ...(isLead ? {} : {partner: {id}})}).then(res => {
+    if (!isLead) {
+      return res;
+    }
+
+    const body = {
+      id,
+      version,
+      emailAddress: res?.data?.data?.[0],
+    };
+
+    const {matchers} = formatRequestBody(body, 'data');
+
+    return getActionApi().send({
+      url: '/ws/rest/com.axelor.apps.crm.db.Lead',
+      method: 'post',
+      body: {data: body},
+      description: 'update email address',
+      matchers: {
+        modelName: 'com.axelor.apps.crm.db.Lead',
+        id,
+        fields: matchers,
+      },
+    });
   });
 }
 

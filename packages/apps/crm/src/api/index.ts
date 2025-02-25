@@ -36,6 +36,7 @@ export {
 export {
   addPartnerAddress as addPartnerAddressApi,
   deletePartnerAddress as deletePartnerAddressApi,
+  linkEmail as linkEmailApi,
   updateAddress as updateAddressApi,
   updateEmail as updateEmailApi,
   updatePartner as updatePartnerApi,
