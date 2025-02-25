@@ -36,9 +36,11 @@ export {
   searchProjectTask,
   searchProjectTaskLink,
   searchSection,
+  searchSprint,
   searchStatus,
   searchTargetVersion,
   udpateFormCategory,
+  updateTargetVersion,
 } from './projectTaskSlice';
 export {getProjectReportingIndicator} from './reportingSlice';
 export {

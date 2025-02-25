@@ -24,8 +24,8 @@ import {
 } from '@axelor/aos-mobile-core';
 import {
   fetchProjectPriority as _fetchProjectPriority,
-  fetchProjectTaskCategory as _fetchProjectTaskCategory,
   fetchProjectTaskById as _fetchProjectTaskById,
+  fetchProjectTaskCategory as _fetchProjectTaskCategory,
   fetchProjectTaskStatus as _fetchProjectTaskStatus,
   getTag as _getTag,
   saveProjectTask as _saveProjectTask,
@@ -34,6 +34,7 @@ import {
   searchProjectTask as _searchProjectTask,
   searchProjectTaskLink as _searchProjectTaskLink,
   searchSection as _searchSection,
+  searchSprint as _searchSprint,
   searchStatus as _searchStatus,
   searchTargetVersion as _searchTargetVersion,
 } from '../api/project-task-api';
@@ -245,6 +246,19 @@ export const fetchCategoryFormById = createAsyncThunk(
   },
 );
 
+export const searchSprint = createAsyncThunk(
+  'project_projectTask/searchSprint',
+  async function (data, {getState}) {
+    return handlerApiCall({
+      fetchFunction: _searchSprint,
+      data,
+      action: 'Project_SliceAction_SearchSprint',
+      getState,
+      responseOptions: {isArrayResponse: true},
+    });
+  },
+);
+
 const initialState = {
   loading: true,
   moreLoading: false,
@@ -260,6 +274,7 @@ const initialState = {
   moreLoadingTargetVersion: false,
   isListEndTargetVersion: false,
   targetVersionList: [],
+  targetVersion: {},
 
   loadingCategory: true,
   moreLoadingCategory: false,
@@ -297,6 +312,11 @@ const initialState = {
   tagList: [],
 
   categoryForm: {},
+
+  loadingSprint: true,
+  moreLoadingSprint: false,
+  isListEndSprint: false,
+  sprintList: [],
 };
 
 const projectTaskSlice = createSlice({
@@ -305,6 +325,9 @@ const projectTaskSlice = createSlice({
   reducers: {
     udpateFormCategory: (state, action) => {
       state.categoryForm = action.payload;
+    },
+    updateTargetVersion: (state, action) => {
+      state.targetVersion = action.payload;
     },
   },
   extraReducers: builder => {
@@ -356,6 +379,12 @@ const projectTaskSlice = createSlice({
       isListEnd: 'isListEndStatus',
       list: 'statusList',
     });
+    generateInifiniteScrollCases(builder, searchSprint, {
+      loading: 'loadingSprint',
+      moreLoading: 'moreLoadingSprint',
+      isListEnd: 'isListEndSprint',
+      list: 'sprintList',
+    });
     builder.addCase(fetchProjectTaskStatus.fulfilled, (state, action) => {
       state.projectTaskStatusList = action.payload;
     });
@@ -397,6 +426,7 @@ const projectTaskSlice = createSlice({
   },
 });
 
-export const {udpateFormCategory} = projectTaskSlice.actions;
+export const {udpateFormCategory, updateTargetVersion} =
+  projectTaskSlice.actions;
 
 export const projectTaskReducer = projectTaskSlice.reducer;

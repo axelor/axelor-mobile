@@ -16,6 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+export {default as ActiveSprintSearchBar} from './ActiveSprintSearchBar/ActiveSprintSearchBar';
 export {default as ActivityListView} from './ActivityListView/ActivityListView';
 export {default as CategorySearchBar} from './CategorySearchBar/CategorySearchBar';
 export {default as ParentTaskSearchBar} from './ParentTaskSearchBar/ParentTaskSearchBar';

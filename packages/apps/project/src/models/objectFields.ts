@@ -107,6 +107,8 @@ export const project_modelAPI: ObjectFields = {
     isShowProgress: schemaContructor.boolean(),
     isShowSection: schemaContructor.boolean(),
     manageTimeSpent: schemaContructor.boolean(),
+    sprintManagementSelect: schemaContructor.string(),
+    backlogSprint: schemaContructor.subObject(),
   }),
   project_projectTask: schemaContructor.object({
     name: schemaContructor.string(),
@@ -135,6 +137,7 @@ export const project_modelAPI: ObjectFields = {
     description: schemaContructor.string(),
     internalDescription: schemaContructor.string(),
     ticketNumber: schemaContructor.string(),
+    activeSprint: schemaContructor.subObject('name'),
   }),
   project_projectStatus: schemaContructor.object({
     name: schemaContructor.string(),
@@ -200,5 +203,8 @@ export const project_modelAPI: ObjectFields = {
   }),
   auth_user: schemaContructor.object({
     activeProject: schemaContructor.subObject(),
+  }),
+  project_projectSprint: schemaContructor.object({
+    name: schemaContructor.string(),
   }),
 };

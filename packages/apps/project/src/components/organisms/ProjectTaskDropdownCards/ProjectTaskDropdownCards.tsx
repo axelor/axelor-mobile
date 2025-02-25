@@ -18,7 +18,7 @@
 
 import React, {useMemo} from 'react';
 import {StyleSheet} from 'react-native';
-import {useSelector, useTranslator} from '@axelor/aos-mobile-core';
+import {useSelector, useTranslator, useTypes} from '@axelor/aos-mobile-core';
 import {DropdownCardSwitch, checkNullString} from '@axelor/aos-mobile-ui';
 import {
   DropdownTaskCharacteristics,
@@ -27,8 +27,19 @@ import {
 
 const ProjectTaskDropdownCards = () => {
   const I18n = useTranslator();
+  const {Project} = useTypes();
 
   const {projectTask} = useSelector((state: any) => state.project_projectTask);
+
+  const isSprintManagementEnabled = useMemo(
+    () =>
+      projectTask.project?.sprintManagementSelect !==
+      Project?.sprintManagementSelect.None,
+    [
+      Project?.sprintManagementSelect.None,
+      projectTask.project?.sprintManagementSelect,
+    ],
+  );
 
   const items = useMemo(() => {
     const result = [
@@ -40,6 +51,7 @@ const ProjectTaskDropdownCards = () => {
             projectTaskCategory={projectTask.projectTaskCategory}
             projectTaskSection={projectTask.projectTaskSection}
             targetVersion={projectTask.targetVersion}
+            activeSprint={isSprintManagementEnabled && projectTask.activeSprint}
             taskDate={projectTask.taskDate}
             taskEndDate={projectTask.taskEndDate}
             taskDeadline={projectTask.taskDeadline}
@@ -66,7 +78,7 @@ const ProjectTaskDropdownCards = () => {
     }
 
     return result;
-  }, [I18n, projectTask]);
+  }, [I18n, isSprintManagementEnabled, projectTask]);
 
   return <DropdownCardSwitch dropdownItems={items} style={styles.dropdown} />;
 };

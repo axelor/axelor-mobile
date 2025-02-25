@@ -149,6 +149,45 @@ const createCategoryCriteria = ({searchValue, categoryIds}) => {
   ];
 };
 
+const createSprintCriteria = ({
+  searchValue,
+  sprintManagedOnProject,
+  projectId,
+  targetVersionId,
+  backlogSprintId,
+}) => {
+  return [
+    getSearchCriterias('project_projectSprint', searchValue),
+    {
+      operator: 'or',
+      criteria: [
+        {
+          operator: 'and',
+          criteria: [
+            {
+              fieldName: sprintManagedOnProject
+                ? 'project.id'
+                : 'targetVersion.id',
+              operator: '=',
+              value: sprintManagedOnProject ? projectId : targetVersionId,
+            },
+            {
+              fieldName: 'toDate',
+              operator: '>',
+              value: new Date(),
+            },
+          ],
+        },
+        {
+          fieldName: 'id',
+          operator: '=',
+          value: backlogSprintId,
+        },
+      ],
+    },
+  ];
+};
+
 export async function searchProjectTask({
   searchValue,
   page = 0,
@@ -258,7 +297,7 @@ export async function getTag({activeCompany}) {
 
 export async function searchTargetVersion({searchValue, page = 0, projectId}) {
   return createStandardSearch({
-    model: 'com.axelor.apps.businesssupport.db.ProjectVersion',
+    model: 'com.axelor.apps.project.db.ProjectVersion',
     criteria: [getSearchCriterias('project_projectVersion', searchValue)],
     fieldKey: 'project_projectVersion',
     sortKey: 'project_projectVersion',
@@ -349,6 +388,30 @@ export async function searchProjectTaskLink({searchValue, page = 0, taskId}) {
     criteria: createTaskLinkCriteria({searchValue, taskId}),
     fieldKey: 'project_projectTaskLink',
     sortKey: 'project_projectTaskLink',
+    page,
+    provider: 'model',
+  });
+}
+
+export async function searchSprint({
+  searchValue,
+  sprintManagedOnProject,
+  projectId,
+  targetVersionId,
+  backlogSprintId,
+  page = 0,
+}) {
+  return createStandardSearch({
+    model: 'com.axelor.apps.project.db.Sprint',
+    criteria: createSprintCriteria({
+      searchValue,
+      sprintManagedOnProject,
+      projectId,
+      targetVersionId,
+      backlogSprintId,
+    }),
+    fieldKey: 'project_projectSprint',
+    sortKey: 'project_projectSprint',
     page,
     provider: 'model',
   });

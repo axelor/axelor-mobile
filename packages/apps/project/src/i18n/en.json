@@ -63,6 +63,7 @@
   "Project_LinkedTasksView": "Linked tasks",
   "Project_CustomFieldsView": "Custom fields",
   "Project_ReportingView": "Reporting",
+  "Project_ActiveSprint": "Active sprint",
   "Project_SliceAction_SearchProject": "search projects",
   "Project_SliceAction_FetchProjectById": "fetch project by id",
   "Project_SliceAction_FetchProjectStatus": "fetch project status",
@@ -83,5 +84,6 @@
   "Project_SliceAction_SearchParentTask": "search parent task",
   "Project_SliceAction_GetProjectTimeData": "get project time data",
   "Project_SliceAction_GetProjectFinancialData": "get project financial data",
-  "Project_SliceAction_SearchProjectTaskLink": "search project task links"
+  "Project_SliceAction_SearchProjectTaskLink": "search project task links",
+  "Project_SliceAction_SearchSprint": "search sprint"
 }
