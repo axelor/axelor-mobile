@@ -191,8 +191,9 @@ export const updateLeave = createAsyncThunk(
       data,
       action: 'Hr_SliceAction_UpdateLeave',
       getState,
-      responseOptions: {isArrayResponse: false},
+      responseOptions: {isArrayResponse: false, showToast: true},
     }).then(() => {
+      dispatch(fetchLeaveById({leaveId: data.leave.id}));
       dispatch(fetchLeave({userId: data.userId}));
     });
   },
