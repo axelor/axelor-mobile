@@ -1,0 +1,5 @@
+{
+  "title": "Camera scanner: allow more code types to match server options",
+  "type": "feat",
+  "packages": "core"
+}
