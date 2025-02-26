@@ -1,5 +1,0 @@
-{
-  "title": "SearchTreeView: resolve issue when onParentChange not provided",
-  "type": "fix",
-  "packages": "core"
-}
