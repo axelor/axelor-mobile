@@ -16,111 +16,20 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import {useEffect, useMemo, useState} from 'react';
-import {
-  useDispatch,
-  useSelector,
-  useTypeHelpers,
-} from '@axelor/aos-mobile-core';
+import {useEffect} from 'react';
+import {useDispatch} from '@axelor/aos-mobile-core';
 import {
   fetchProjectTaskStatus,
   fetchProjectPriority,
+  fetchProjectTaskCategory,
 } from '../features/projectTaskSlice';
 
-export const useTaskFilters = (project: any) => {
+export const useTaskFilters = () => {
   const dispatch = useDispatch();
 
-  const {getCustomSelectionItems} = useTypeHelpers();
-
-  const {projectTaskStatusList, projectPriorityList} = useSelector(
-    (state: any) => state.project_projectTask,
-  );
-  const {userId} = useSelector((state: any) => state.auth);
-
-  const [selectedStatus, setSelectedStatus] = useState([]);
-  const [selectedPriority, setSelectedPriority] = useState([]);
-  const [isAssignedToMe, setIsAssignedToMe] = useState(false);
-
   useEffect(() => {
-    dispatch(fetchProjectTaskStatus());
-    dispatch(fetchProjectPriority());
+    dispatch((fetchProjectTaskStatus as any)());
+    dispatch((fetchProjectPriority as any)());
+    dispatch((fetchProjectTaskCategory as any)());
   }, [dispatch]);
-
-  const availableStatus = useMemo(() => {
-    return project?.isShowStatus
-      ? project?.projectTaskStatusSet?.map(status => status.id)
-      : [];
-  }, [project?.isShowStatus, project?.projectTaskStatusSet]);
-
-  const availablePriorities = useMemo(() => {
-    return project?.isShowPriority
-      ? project?.projectTaskPrioritySet?.map(status => status.id)
-      : [];
-  }, [project?.isShowPriority, project?.projectTaskPrioritySet]);
-
-  const sliceFunctionData = useMemo(() => {
-    return {
-      projectId: project?.id,
-      isAssignedToMe: isAssignedToMe,
-      selectedStatus: selectedStatus,
-      selectedPriority: selectedPriority,
-      statusToFilter: availableStatus,
-      priorityToFilter: availablePriorities,
-      userId: isAssignedToMe ? userId : null,
-    };
-  }, [
-    project,
-    isAssignedToMe,
-    selectedStatus,
-    selectedPriority,
-    availableStatus,
-    availablePriorities,
-    userId,
-  ]);
-
-  const statusList = useMemo(() => {
-    const _statusList = getCustomSelectionItems(
-      projectTaskStatusList,
-      'name',
-      selectedStatus,
-    );
-    return availableStatus.length === 0
-      ? _statusList
-      : _statusList.filter(status => availableStatus.includes(status.value));
-  }, [
-    getCustomSelectionItems,
-    projectTaskStatusList,
-    selectedStatus,
-    availableStatus,
-  ]);
-
-  const priorityList = useMemo(() => {
-    const _priorityList = getCustomSelectionItems(
-      projectPriorityList,
-      'name',
-      selectedPriority,
-    );
-    return availablePriorities.length === 0
-      ? _priorityList
-      : _priorityList.filter(status =>
-          availablePriorities.includes(status.value),
-        );
-  }, [
-    getCustomSelectionItems,
-    projectPriorityList,
-    selectedPriority,
-    availablePriorities,
-  ]);
-
-  return {
-    selectedStatus,
-    setSelectedStatus,
-    selectedPriority,
-    setSelectedPriority,
-    isAssignedToMe,
-    setIsAssignedToMe,
-    sliceFunctionData,
-    statusList,
-    priorityList,
-  };
 };
