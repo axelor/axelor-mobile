@@ -45,6 +45,7 @@ export const fetchControlEntrySampleLine = createAsyncThunk(
       action: 'Quality_SliceAction_FetchControlEntrySampleLine',
       getState,
       responseOptions: {isArrayResponse: false},
+      errorOptions: {showErrorToast: false},
     });
   },
 );
