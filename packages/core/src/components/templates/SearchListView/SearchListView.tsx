@@ -51,6 +51,7 @@ interface SearchListViewProps {
   renderListItem: (item: any) => any;
   actionList?: ActionType[];
   verticalActions?: boolean;
+  customSearchBarComponent?: React.JSX.Element;
 }
 
 const SearchListView = ({
@@ -75,6 +76,7 @@ const SearchListView = ({
   renderListItem,
   actionList,
   verticalActions,
+  customSearchBarComponent,
 }: SearchListViewProps) => {
   const I18n = useTranslator();
   const dispatch = useDispatch();
@@ -117,6 +119,10 @@ const SearchListView = ({
   }, [fetchListAPI, isFocused]);
 
   const renderSearchBar = useCallback(() => {
+    if (customSearchBarComponent != null) {
+      return customSearchBarComponent;
+    }
+
     const SearchBar = scanKeySearch
       ? ScannerAutocompleteSearch
       : AutoCompleteSearch;
@@ -135,6 +141,7 @@ const SearchListView = ({
       />
     );
   }, [
+    customSearchBarComponent,
     displaySearchValue,
     fetchSearchAPI,
     list,
