@@ -16,6 +16,4 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-export * from './atoms';
-export * from './molecules';
-export * from './organisms';
+export {default as SampleNotFoundView} from './SampleNotFoundView/SampleNotFoundView';
