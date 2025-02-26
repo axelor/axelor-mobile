@@ -28,7 +28,11 @@ import {
   useTypes,
   useTypeHelpers,
 } from '@axelor/aos-mobile-core';
-import {ControlEntryFormButtons, ControlEntryFormHeader} from '../components';
+import {
+  ControlEntryFormButtons,
+  ControlEntryFormHeader,
+  SampleNotFoundView,
+} from '../components';
 import {
   fetchControlEntrySampleLine,
   searchControlEntrySampleLineOfControlEntry as searchControlEntrySampleLine,
@@ -121,7 +125,7 @@ const ControlEntryFormScreen = ({navigation, route}) => {
   const fetchSampleLine = useCallback(
     (_set, _index) => {
       if (Array.isArray(_set) && _set.length > 0) {
-        dispatch(fetchControlEntrySampleLine({id: _set[_index].id}));
+        dispatch(fetchControlEntrySampleLine({id: _set[_index]?.id}));
       }
     },
     [dispatch],
@@ -266,6 +270,24 @@ const ControlEntryFormScreen = ({navigation, route}) => {
     }
   }, [canNext, handleNext, navigation]);
 
+  const renderButtons = useCallback(
+    (checkConformity = true) => {
+      return (
+        <ControlEntryFormButtons
+          handleNext={handleNext}
+          handlePrevious={handlePrevious}
+          mode={selectedMode}
+          isLastItem={isLastItem}
+          isFirstItem={isFirstItem}
+          canNext={canNext}
+          canPrevious={!isFirstItem || categoryIndex !== 0}
+          checkConformity={checkConformity}
+        />
+      );
+    },
+    [canNext, categoryIndex, handleNext, isFirstItem, isLastItem, selectedMode],
+  );
+
   return (
     <Screen removeSpaceOnTop>
       <HeaderContainer
@@ -281,48 +303,41 @@ const ControlEntryFormScreen = ({navigation, route}) => {
           />
         }
       />
-      {categorySet[categoryIndex] != null && itemSet[currentIndex] != null && (
-        <CustomFieldForm
-          model="com.axelor.apps.quality.db.ControlEntryPlanLine"
-          fieldType="entryAttrs"
-          modelId={itemSet[currentIndex].id}
-          additionalActions={[
-            {
-              key: 'customAction',
-              useDefaultAction: true,
-              showToast: false,
-              postActions: async res => {
-                await checkComformity({object: res}).then(result => {
-                  showToastMessage({
-                    type: ControlEntryType.getSampleResultType(result),
-                    position: 'bottom',
-                    bottomOffset: 80,
-                    text1: `${I18n.t('Quality_ConformityResult')}`,
-                    text2: getItemTitle(
-                      ControlEntrySample?.resultSelect,
-                      result,
-                    ),
+      {categorySet[categoryIndex] != null &&
+        (itemSet[currentIndex] != null ? (
+          <CustomFieldForm
+            model="com.axelor.apps.quality.db.ControlEntryPlanLine"
+            fieldType="entryAttrs"
+            modelId={itemSet[currentIndex].id}
+            additionalActions={[
+              {
+                key: 'customAction',
+                useDefaultAction: true,
+                showToast: false,
+                postActions: async res => {
+                  await checkComformity({object: res}).then(result => {
+                    showToastMessage({
+                      type: ControlEntryType.getSampleResultType(result),
+                      position: 'bottom',
+                      bottomOffset: 80,
+                      text1: `${I18n.t('Quality_ConformityResult')}`,
+                      text2: getItemTitle(
+                        ControlEntrySample?.resultSelect,
+                        result,
+                      ),
+                    });
                   });
-                });
-                handleValidation();
+                  handleValidation();
+                },
+                customComponent: renderButtons(),
               },
-              customComponent: (
-                <ControlEntryFormButtons
-                  handleNext={handleNext}
-                  handlePrevious={handlePrevious}
-                  mode={selectedMode}
-                  isLastItem={isLastItem}
-                  isFirstItem={isFirstItem}
-                  canNext={canNext}
-                  canPrevious={!isFirstItem || categoryIndex !== 0}
-                />
-              ),
-            },
-          ]}
-          readonly={isReadonly}
-          key={currentIndex}
-        />
-      )}
+            ]}
+            readonly={isReadonly}
+            key={currentIndex}
+          />
+        ) : (
+          <SampleNotFoundView navigationButtons={renderButtons(false)} />
+        ))}
     </Screen>
   );
 };

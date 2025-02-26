@@ -1,0 +1,5 @@
+{
+  "title": "Control entry line: add null checks to avoid crash",
+  "type": "fix",
+  "packages": "quality"
+}
