@@ -46,7 +46,9 @@ const DocumentActionCard = ({
   const I18n = useTranslator();
   const Colors = useThemeColor();
   const navigation = useNavigation();
-  const {canDelete} = usePermitted({modelName: 'com.axelor.dms.db.DMSFile'});
+  const {readonly, canDelete} = usePermitted({
+    modelName: 'com.axelor.dms.db.DMSFile',
+  });
   const dispatch: any = useDispatch();
 
   const {mobileSettings} = useSelector(state => state.appConfig);
@@ -81,6 +83,7 @@ const DocumentActionCard = ({
               }),
             ),
           hidden: !mobileSettings?.isFavoritesManagementEnabled,
+          disabled: readonly,
         },
         {
           iconName: 'download',
@@ -95,7 +98,7 @@ const DocumentActionCard = ({
             navigation.navigate('DocumentFormScreen', {
               document,
             }),
-          hidden: !mobileSettings?.isRenamingAllowed,
+          hidden: !mobileSettings?.isRenamingAllowed || readonly,
         },
         {
           iconName: 'trash-fill',
