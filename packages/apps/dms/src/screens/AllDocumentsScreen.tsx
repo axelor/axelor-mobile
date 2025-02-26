@@ -16,11 +16,20 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import React from 'react';
+import React, {useMemo} from 'react';
+import {useSelector} from '@axelor/aos-mobile-core';
 import {DocumentList} from '../components';
 
 const AllDocumentsScreen = ({defaultParent}) => {
-  return <DocumentList defaultParent={defaultParent} />;
+  const {user} = useSelector(state => state.user);
+  const {mobileSettings} = useSelector(state => state.appConfig);
+
+  const _parent = useMemo(
+    () => defaultParent ?? user.dmsRoot ?? mobileSettings?.defaultDmsRoot,
+    [defaultParent, mobileSettings?.defaultDmsRoot, user.dmsRoot],
+  );
+
+  return <DocumentList defaultParent={_parent} />;
 };
 
 export default AllDocumentsScreen;
