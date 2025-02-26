@@ -36,8 +36,12 @@ export {
 export {
   addPartnerAddress as addPartnerAddressApi,
   deletePartnerAddress as deletePartnerAddressApi,
+  getAddress as getAddressApi,
+  linkEmail as linkEmailApi,
   updateAddress as updateAddressApi,
   updateEmail as updateEmailApi,
+  updateMainAddress as updateMainAddressApi,
+  updatePartnerAddress as updatePartnerAddressApi,
   updatePartner as updatePartnerApi,
 } from './contact-info-api';
 export {

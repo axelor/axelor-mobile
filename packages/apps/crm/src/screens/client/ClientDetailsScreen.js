@@ -63,7 +63,7 @@ const ClientDetailsScreen = ({route}) => {
     <Screen removeSpaceOnTop={true}>
       <HeaderContainer expandableFilter={false} fixedItems={<ClientHeader />} />
       <ScrollView
-        refresh={{loadingClient, fetcher: getClient}}
+        refresh={{loading: loadingClient, fetcher: getClient}}
         style={styles.scrollView}>
         <NotesCard title={I18n.t('Crm_Notes')} data={client.description} />
         <ClientDropdownCards />

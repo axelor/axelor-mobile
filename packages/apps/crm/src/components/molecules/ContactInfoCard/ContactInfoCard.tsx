@@ -20,10 +20,10 @@ import React, {useMemo, useState} from 'react';
 import {StyleSheet, TouchableOpacity, View} from 'react-native';
 import {
   checkNullString,
+  HorizontalRule,
   Icon,
   LabelText,
   Text,
-  useThemeColor,
 } from '@axelor/aos-mobile-ui';
 import {clipboardProvider} from '@axelor/aos-mobile-core';
 import ContactInfoAlert from './ContactInfoAlert';
@@ -40,7 +40,13 @@ interface ContactInfoCardProps {
   styleBorder?: any;
   onPress?: () => any;
   onUpdate: (args: {id: number; version: number; data: Object}) => Promise<any>;
+  onCreate?: (args: {
+    id: number;
+    version: number;
+    data: Object;
+  }) => Promise<any>;
   refreshContactInfos: () => void;
+  canCreate?: boolean;
 }
 
 const ContactInfoCard = ({
@@ -50,68 +56,80 @@ const ContactInfoCard = ({
   contact,
   contactInfoType,
   isLead,
-  border = false,
+  border = true,
   styleBorder,
   onPress,
   onUpdate,
+  onCreate,
   refreshContactInfos,
+  canCreate = true,
 }: ContactInfoCardProps) => {
-  const Colors = useThemeColor();
-
   const [isVisible, setIsVisible] = useState(false);
-
-  const styles = useMemo(() => {
-    return getStyles(Colors);
-  }, [Colors]);
 
   const contactInfo = useMemo(
     () => ContactInfoType.getContactInfo(contactInfoType, contact),
     [contact, contactInfoType],
   );
 
-  if (contactInfo == null) {
+  const isCreation = useMemo(
+    () => checkNullString(contactInfo?.displayText),
+    [contactInfo?.displayText],
+  );
+
+  if (isCreation && !canCreate) {
     return null;
   }
 
   return (
     <>
-      <TouchableOpacity
-        style={[styles.container, style]}
-        activeOpacity={0.9}
-        onPress={onPress}>
-        {!checkNullString(contactInfo.displayText) && (
-          <View>
-            <LabelText
-              title={title}
-              iconName={headerIconName}
-              size={15}
-              textStyle={styles.textTitle}
-            />
-            <View style={styles.containerBody}>
-              <Text style={styles.text} fontSize={14}>
-                {contactInfo.displayText}
-              </Text>
-              <View style={styles.iconContainer}>
-                <Icon
-                  style={styles.icon}
-                  name="copy"
-                  touchable={true}
-                  onPress={() =>
-                    clipboardProvider.copyToClipboard(contactInfo.displayText)
-                  }
-                />
-                <Icon
-                  style={styles.icon}
-                  name="pencil-fill"
-                  touchable={true}
-                  onPress={() => setIsVisible(true)}
-                />
-              </View>
+      {isCreation ? (
+        <TouchableOpacity
+          style={[styles.container, styles.rowDirection, style]}
+          activeOpacity={0.9}
+          onPress={() => setIsVisible(true)}>
+          <LabelText
+            title={title}
+            iconName={headerIconName}
+            size={15}
+            textSize={14}
+          />
+          <Icon name="plus-lg" />
+        </TouchableOpacity>
+      ) : (
+        <TouchableOpacity
+          style={[styles.container, style]}
+          activeOpacity={0.9}
+          onPress={onPress}>
+          <LabelText
+            title={title}
+            iconName={headerIconName}
+            size={15}
+            textSize={14}
+          />
+          <View style={styles.rowDirection}>
+            <Text style={styles.text} fontSize={14}>
+              {contactInfo.displayText}
+            </Text>
+            <View style={styles.rowDirection}>
+              <Icon
+                style={styles.icon}
+                name="copy"
+                touchable={true}
+                onPress={() =>
+                  clipboardProvider.copyToClipboard(contactInfo.displayText)
+                }
+              />
+              <Icon
+                style={styles.icon}
+                name="pencil-fill"
+                touchable={true}
+                onPress={() => setIsVisible(true)}
+              />
             </View>
-            {border && <View style={[styles.borderBottom, styleBorder]} />}
           </View>
-        )}
-      </TouchableOpacity>
+        </TouchableOpacity>
+      )}
+      {border && <HorizontalRule style={[styles.borderBottom, styleBorder]} />}
       <ContactInfoAlert
         title={title}
         contact={contact}
@@ -119,44 +137,33 @@ const ContactInfoCard = ({
         isLead={isLead}
         isVisible={isVisible}
         setIsVisible={setIsVisible}
-        onUpdate={onUpdate}
+        onUpdate={(isCreation ? onCreate : undefined) ?? onUpdate}
         refreshContactInfos={refreshContactInfos}
       />
     </>
   );
 };
 
-const getStyles = Colors =>
-  StyleSheet.create({
-    container: {
-      flexDirection: 'column',
-      width: '95%',
-      marginHorizontal: 5,
-    },
-    textTitle: {
-      fontSize: 14,
-    },
-    containerBody: {
-      flexDirection: 'row',
-      justifyContent: 'space-between',
-      alignItems: 'flex-start',
-      marginTop: 4,
-    },
-    text: {
-      flex: 1,
-    },
-    iconContainer: {
-      flexDirection: 'row',
-    },
-    icon: {
-      marginLeft: 4,
-    },
-    borderBottom: {
-      width: '100%',
-      borderBottomWidth: 1.5,
-      borderBottomColor: Colors.secondaryColor.background,
-      marginVertical: 8,
-    },
-  });
+const styles = StyleSheet.create({
+  container: {
+    width: '100%',
+    paddingHorizontal: 10,
+    gap: 5,
+  },
+  rowDirection: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'flex-start',
+  },
+  text: {
+    flex: 1,
+  },
+  icon: {
+    marginLeft: 5,
+  },
+  borderBottom: {
+    marginVertical: 8,
+  },
+});
 
 export default ContactInfoCard;
