@@ -48,7 +48,7 @@ const createPartnerAddressCriteria = partnerId => {
   ];
 };
 
-async function getAddress({country, city, zip, streetName}) {
+export async function getAddress({country, city, zip, streetName}) {
   return getActionApi().send({
     url: '/ws/aos/address',
     method: 'post',
@@ -93,49 +93,56 @@ export async function updateAddress({
         _partnerAddress = res?.data?.data?.[0];
       }
 
-      await getActionApi().send({
-        url: '/ws/rest/com.axelor.apps.base.db.PartnerAddress',
-        method: 'post',
-        body: {
-          data: {
-            id: _partnerAddress?.id,
-            version: _partnerAddress?.version,
-            address: resAddress.data?.object,
-          },
-        },
-        description: 'update partner address',
-        matchers: {
-          modelName: 'com.axelor.apps.base.db.PartnerAddress',
-          id: _partnerAddress?.id,
-          fields: {
-            'data.address': 'address',
-          },
-        },
+      await updatePartnerAddress({
+        id: _partnerAddress?.id,
+        version: _partnerAddress?.version,
+        address: resAddress.data?.object,
       });
     }
 
-    const modelName = isLead
-      ? 'com.axelor.apps.crm.db.Lead'
-      : 'com.axelor.apps.base.db.Partner';
-    const body = {
+    return updateMainAddress({
+      modelName: isLead
+        ? 'com.axelor.apps.crm.db.Lead'
+        : 'com.axelor.apps.base.db.Partner',
       id,
-      version,
-      [isLead ? 'address' : 'mainAddress']: resAddress.data?.object,
-    };
-    const {matchers} = formatRequestBody(body, 'data');
-    return getActionApi().send({
-      url: `/ws/rest/${modelName}`,
-      method: 'post',
       body: {
-        data: body,
-      },
-      description: 'update address',
-      matchers: {
-        modelName: modelName,
         id,
-        fields: matchers,
+        version,
+        [isLead ? 'address' : 'mainAddress']: resAddress.data?.object,
       },
     });
+  });
+}
+
+export async function updatePartnerAddress({id, version, address}) {
+  if (id == null) {
+    return;
+  }
+
+  return getActionApi().send({
+    url: '/ws/rest/com.axelor.apps.base.db.PartnerAddress',
+    method: 'post',
+    body: {data: {id, version, address}},
+    description: 'update partner address',
+    matchers: {
+      modelName: 'com.axelor.apps.base.db.PartnerAddress',
+      id,
+      fields: {
+        'data.address': 'address',
+      },
+    },
+  });
+}
+
+export async function updateMainAddress({modelName, id, body}) {
+  const {matchers} = formatRequestBody(body, 'data');
+
+  return getActionApi().send({
+    url: `/ws/rest/${modelName}`,
+    method: 'post',
+    body: {data: body},
+    description: 'update address',
+    matchers: {modelName, id, fields: matchers},
   });
 }
 

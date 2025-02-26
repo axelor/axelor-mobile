@@ -20,6 +20,7 @@ import React, {useCallback} from 'react';
 import {StyleSheet, View} from 'react-native';
 import {
   handlerApiCall,
+  isEmpty,
   linkingProvider,
   useSelector,
   useTranslator,
@@ -57,7 +58,7 @@ interface NetworkData {
 interface DropdownContactViewProps {
   isMainAddress?: boolean;
   contact: Contact;
-  isLead?;
+  isLead?: boolean;
   networkData?: NetworkData;
   refreshContactInfos: () => void;
 }
@@ -198,6 +199,7 @@ const DropdownContactView = ({
         onPress={() => linkingProvider.openBrowser(contact.webSite)}
         onUpdate={updateContactInfo}
         refreshContactInfos={refreshContactInfos}
+        border={!isEmpty(networkData)}
       />
       <SocialNetworksInfoCard {...networkData} />
     </View>

@@ -82,7 +82,10 @@ const DropdownAddressesView = ({
     dispatch((fetchPartnerAddresses as any)({partnerId}));
   }, [dispatch, partnerId]);
 
-  if (!Array.isArray(partnerAddressList) || partnerAddressList.length === 0) {
+  if (
+    (!Array.isArray(partnerAddressList) || partnerAddressList.length === 0) &&
+    !canCreate
+  ) {
     return (
       <View>
         <Text>{I18n.t('Crm_NoAddressInformation')}</Text>
