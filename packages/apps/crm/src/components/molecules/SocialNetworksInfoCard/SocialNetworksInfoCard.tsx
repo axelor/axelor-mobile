@@ -72,7 +72,7 @@ const styles = StyleSheet.create({
   container: {
     flexDirection: 'column',
     width: '95%',
-    marginHorizontal: 5,
+    marginHorizontal: 10,
   },
   containerBody: {
     flexDirection: 'row',
