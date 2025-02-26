@@ -20,9 +20,9 @@ import React, {useCallback, useEffect, useRef, useState} from 'react';
 import {View, StyleSheet} from 'react-native';
 import {checkNullString} from '@axelor/aos-mobile-ui';
 import {useDispatch} from '../../../redux/hooks';
+import {useTranslator} from '../../../i18n';
 import {ScannerAutocompleteSearch} from '../../organisms';
 import {InputBarCodeCard} from '../../molecules';
-import {useTranslator} from '../../../i18n/';
 
 interface DoubleScannerSearchBarProps {
   showTitle?: boolean;
