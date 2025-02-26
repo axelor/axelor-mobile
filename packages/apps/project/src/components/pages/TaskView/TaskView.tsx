@@ -26,10 +26,13 @@ import {
 import {ProjectHeader, TaskActionCard} from '../../molecules';
 import {TaskFilters} from '../../templates';
 import {searchProjectTask} from '../../../features/projectTaskSlice';
+import {useTaskFilters} from '../../../hooks';
 
 const TaskView = () => {
   const I18n = useTranslator();
   const navigation = useNavigation();
+
+  useTaskFilters();
 
   const {user} = useSelector((state: any) => state.user);
   const {project} = useSelector((state: any) => state.project_project);

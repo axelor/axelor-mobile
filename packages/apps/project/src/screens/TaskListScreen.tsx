@@ -25,9 +25,12 @@ import {
 } from '@axelor/aos-mobile-core';
 import {TaskActionCard, TaskFilters} from '../components';
 import {searchProjectTask} from '../features/projectTaskSlice';
+import {useTaskFilters} from '../hooks';
 
 const TaskListScreen = ({navigation}) => {
   const I18n = useTranslator();
+
+  useTaskFilters();
 
   const {user} = useSelector(state => state.user);
   const {loading, moreLoading, isListEnd, projectTaskList} = useSelector(
