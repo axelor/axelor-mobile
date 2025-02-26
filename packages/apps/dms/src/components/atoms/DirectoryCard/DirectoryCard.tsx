@@ -18,7 +18,11 @@
 
 import React from 'react';
 import {StyleSheet, View} from 'react-native';
-import {useNavigation, useSelector} from '@axelor/aos-mobile-core';
+import {
+  useNavigation,
+  usePermitted,
+  useSelector,
+} from '@axelor/aos-mobile-core';
 import {Icon, LabelText, Text} from '@axelor/aos-mobile-ui';
 
 interface DirectoryCardProps {
@@ -27,6 +31,9 @@ interface DirectoryCardProps {
 
 const DirectoryCard = ({directory}: DirectoryCardProps) => {
   const navigation = useNavigation();
+  const {canCreate} = usePermitted({
+    modelName: 'com.axelor.dms.db.DMSFile',
+  });
 
   const {mobileSettings} = useSelector((state: any) => state.appConfig);
 
@@ -41,18 +48,19 @@ const DirectoryCard = ({directory}: DirectoryCardProps) => {
           iconName="person-fill"
         />
       </View>
-      {(mobileSettings?.isFolderCreationAllowed ||
-        mobileSettings?.isFileCreationAllowed) && (
-        <Icon
-          style={styles.icon}
-          name="plus"
-          size={32}
-          touchable
-          onPress={() =>
-            navigation.navigate('DocumentFormScreen', {parent: directory})
-          }
-        />
-      )}
+      {canCreate &&
+        (mobileSettings?.isFolderCreationAllowed ||
+          mobileSettings?.isFileCreationAllowed) && (
+          <Icon
+            style={styles.icon}
+            name="plus"
+            size={32}
+            touchable
+            onPress={() =>
+              navigation.navigate('DocumentFormScreen', {parent: directory})
+            }
+          />
+        )}
     </View>
   );
 };

@@ -24,6 +24,7 @@ import {
   useDispatch,
   useSelector,
   useTranslator,
+  usePermitted,
 } from '@axelor/aos-mobile-core';
 import {ChipSelect, Screen, useThemeColor} from '@axelor/aos-mobile-ui';
 import {
@@ -49,6 +50,9 @@ const DocumentList = ({
   const I18n = useTranslator();
   const Colors = useThemeColor();
   const navigation = useNavigation();
+  const {canCreate, readonly} = usePermitted({
+    modelName: 'com.axelor.dms.db.DMSFile',
+  });
   const dispatch = useDispatch();
 
   const [author, setAuthor] = useState(null);
@@ -89,6 +93,7 @@ const DocumentList = ({
           iconName: 'plus-lg',
           title: I18n.t('Dms_NewDocument'),
           iconColor: Colors.primaryColor.background,
+          hideIf: !canCreate,
           onPress: () =>
             navigation.navigate('DocumentFormScreen', {
               parent: parentList.at(-1),
@@ -97,7 +102,7 @@ const DocumentList = ({
         },
       ],
     });
-  }, [Colors, I18n, navigation, parentList]);
+  }, [Colors, I18n, canCreate, navigation, parentList]);
 
   return (
     <Screen removeSpaceOnTop={true}>
@@ -149,6 +154,7 @@ const DocumentList = ({
                   }),
                 ),
               hidden: !mobileSettings?.isFavoritesManagementEnabled,
+              disabled: readonly,
             },
             {
               iconName: 'pencil-fill',
@@ -157,7 +163,7 @@ const DocumentList = ({
                 navigation.navigate('DocumentFormScreen', {
                   document: branch.item,
                 }),
-              hidden: !mobileSettings?.isRenamingAllowed,
+              hidden: !mobileSettings?.isRenamingAllowed || readonly,
             },
           ];
         }}
