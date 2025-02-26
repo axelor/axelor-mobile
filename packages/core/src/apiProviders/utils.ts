@@ -76,7 +76,10 @@ const manageError = (
     if (errorTracing) {
       traceError({
         message: 'API request',
-        cause: error.response.data ? error.response.data : error,
+        cause: {
+          path: error?.response?.request?.responseURL,
+          ...(error.response.data ? error.response.data : error),
+        },
         userId,
       });
     }
@@ -181,6 +184,9 @@ export const handlerApiCall = ({
           response: {
             status: 403,
             statusText: `${res.data.data?.title}: ${res.data.data?.message}`,
+            request: {
+              responseURL: res.request.responseURL,
+            },
           },
         };
       } else {
