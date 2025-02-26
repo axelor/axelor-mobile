@@ -130,7 +130,7 @@ const SearchTreeView = ({
   }, [defaultParent, isFocused]);
 
   useEffect(() => {
-    onParentChange(parent);
+    onParentChange?.(parent);
   }, [onParentChange, parent]);
 
   const handleChangeParent = value => {
