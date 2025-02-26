@@ -39,9 +39,7 @@ const DocumentFormScreen = ({navigation, route}) => {
 
   const documentAPI = useCallback(
     (_document, isCreation, dispatch) => {
-      const parentId = _document.parent?.id;
-
-      if (parentId == null) {
+      if (!_document.isAttachedFileCreation && _document.parent?.id == null) {
         _document.parent = user.dmsRoot ?? mobileSettings?.defaultDmsRoot;
       }
 
