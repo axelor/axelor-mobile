@@ -1,0 +1,5 @@
+{
+  "title": "ProgressBar: hide progress when value is 0",
+  "type": "fix",
+  "packages": "ui"
+}
