@@ -60,7 +60,7 @@ const ProgressBar = ({
   const [textWidth, setTextWidth] = useState(0);
 
   const percent = useMemo(() => {
-    if (total !== 0 && progressBarContainerWidth !== 0) {
+    if (value !== 0 && total !== 0 && progressBarContainerWidth !== 0) {
       let _progressBarWidth = (value / total) * progressBarContainerWidth;
 
       if (_progressBarWidth < 2 * BORDER_RADIUS) {
