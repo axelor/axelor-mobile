@@ -19,6 +19,7 @@
   "Quality_ControlResult_NotCompliant": "Non conforme",
   "Quality_ControlResult_NotControlled": "Non contrôlé",
   "Quality_ConformityResult": "Résultat de la conformité",
+  "Quality_SampleNotFound": "Ce contrôle a été supprimé ou le plan de contrôle a été modifié après la création de ce relevé. Veuillez passer au contrôle suivant.",
   "Quality_SliceAction_SearchControlEntry": "recherche des relevés de contrôle",
   "Quality_SliceAction_FetchControlEntryById": "récupération du relevé de contrôle par id",
   "Quality_SliceAction_SearchControlEntrySample": "recherche sur les échantillons du relevé de contôle",

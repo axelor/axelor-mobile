@@ -36,6 +36,7 @@ interface ControlEntryFormButtonsProps {
   handleNext: () => void;
   handlePrevious: () => void;
   onPress: () => any;
+  checkConformity?: boolean;
 }
 
 const ControlEntryFormButtons = ({
@@ -47,6 +48,7 @@ const ControlEntryFormButtons = ({
   handleNext,
   handlePrevious,
   onPress,
+  checkConformity = true,
 }: ControlEntryFormButtonsProps) => {
   const Colors = useThemeColor();
   const I18n = useTranslator();
@@ -58,9 +60,10 @@ const ControlEntryFormButtons = ({
 
   const isConformityButton = useMemo(
     () =>
-      controlEntry.statusSelect === ControlEntry.status.Draft ||
-      controlEntry.statusSelect === ControlEntry.status.InProgress,
-    [controlEntry.statusSelect],
+      checkConformity &&
+      (controlEntry.statusSelect === ControlEntry.status.Draft ||
+        controlEntry.statusSelect === ControlEntry.status.InProgress),
+    [checkConformity, controlEntry.statusSelect],
   );
 
   const {categoryIcon, subCategoryIcon} = useMemo(
@@ -69,7 +72,10 @@ const ControlEntryFormButtons = ({
   );
 
   const handleNotControlled = useCallback(() => {
-    if (sampleLine.resultSelect === ControlEntry.sampleResult.NotControlled) {
+    if (
+      checkConformity &&
+      sampleLine?.resultSelect === ControlEntry.sampleResult.NotControlled
+    ) {
       showToastMessage({
         type: ControlEntry.getSampleResultType(
           ControlEntry.sampleResult.NotControlled,
@@ -83,7 +89,7 @@ const ControlEntryFormButtons = ({
         ),
       });
     }
-  }, [I18n, sampleLine.resultSelect]);
+  }, [I18n, checkConformity, sampleLine?.resultSelect]);
 
   return (
     <View style={styles.container}>

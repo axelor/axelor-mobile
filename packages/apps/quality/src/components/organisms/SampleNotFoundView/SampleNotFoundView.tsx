@@ -16,6 +16,34 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-export * from './atoms';
-export * from './molecules';
-export * from './organisms';
+import React from 'react';
+import {StyleSheet} from 'react-native';
+import {useTranslator} from '@axelor/aos-mobile-core';
+import {Label, Screen} from '@axelor/aos-mobile-ui';
+
+interface SampleNotFoundViewProps {
+  navigationButtons: JSX.Element;
+}
+
+const SampleNotFoundView = ({navigationButtons}: SampleNotFoundViewProps) => {
+  const I18n = useTranslator();
+
+  return (
+    <Screen fixedItems={navigationButtons}>
+      <Label
+        type="danger"
+        message={I18n.t('Quality_SampleNotFound')}
+        style={styles.label}
+      />
+    </Screen>
+  );
+};
+
+const styles = StyleSheet.create({
+  label: {
+    width: '90%',
+    alignSelf: 'center',
+  },
+});
+
+export default SampleNotFoundView;
