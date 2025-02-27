@@ -85,8 +85,9 @@ const useClientDetailsActions = () => {
               email: client.emailAddress?.address,
               address: {
                 street:
-                  client.mainAddress?.addressL4 ?? client.mainAddress?.fullName,
-                country: client.mainAddress?.addressL7Country?.name,
+                  client.mainAddress?.streetName ??
+                  client.mainAddress?.fullName,
+                country: client.mainAddress?.country?.name,
                 city: client.mainAddress?.city?.name,
                 postCode: client.mainAddress?.zip,
               },
@@ -139,9 +140,9 @@ const useContactDetailsActions = () => {
               email: contact.emailAddress?.address,
               address: {
                 street:
-                  contact.mainAddress?.addressL4 ??
+                  contact.mainAddress?.streetName ??
                   contact.mainAddress?.fullName,
-                country: contact.mainAddress?.addressL7Country?.name,
+                country: contact.mainAddress?.country?.name,
                 city: contact.mainAddress?.city?.name,
                 postCode: contact.mainAddress?.zip,
               },
@@ -305,9 +306,9 @@ const useProspectDetailsActions = () => {
               email: prospect.emailAddress?.address,
               address: {
                 street:
-                  prospect.mainAddress?.addressL4 ??
+                  prospect.mainAddress?.streetName ??
                   prospect.mainAddress?.fullName,
-                country: prospect.mainAddress?.addressL7Country?.name,
+                country: prospect.mainAddress?.country?.name,
                 city: prospect.mainAddress?.city?.name,
                 postCode: prospect.mainAddress?.zip,
               },
