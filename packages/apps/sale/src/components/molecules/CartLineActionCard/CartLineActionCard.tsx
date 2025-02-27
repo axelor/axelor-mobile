@@ -20,6 +20,7 @@ import React, {useCallback, useEffect, useState} from 'react';
 import {
   useDispatch,
   useNavigation,
+  usePermitted,
   useTranslator,
 } from '@axelor/aos-mobile-core';
 import {ActionCard, useThemeColor} from '@axelor/aos-mobile-ui';
@@ -49,6 +50,9 @@ const CartLineActionCard = ({
   const Colors = useThemeColor();
   const navigation = useNavigation();
   const dispatch = useDispatch();
+  const {canDelete, readonly} = usePermitted({
+    modelName: 'com.axelor.apps.sale.db.CartLine',
+  });
 
   const [diffQty, setDiffQty] = useState(0);
   const [alertVisible, setAlertVisible] = useState(false);
@@ -118,20 +122,20 @@ const CartLineActionCard = ({
             },
             iconColor: Colors.errorColor.background,
             large: cartLine.product?.productVariantConfig == null,
-            hidden: hideDelete,
+            hidden: !canDelete || hideDelete,
           },
           {
             iconName: 'plus-lg',
             helper: I18n.t('Sale_AddOne'),
             onPress: () => setDiffQty(current => current + 1),
-            hidden: hideIncrement,
+            hidden: readonly || hideIncrement,
           },
           {
             iconName: 'dash-lg',
             helper: I18n.t('Sale_RemoveOne'),
             disabled: parseInt(cartLine.qty, 10) + diffQty <= 1,
             onPress: () => setDiffQty(current => current - 1),
-            hidden: hideIncrement,
+            hidden: readonly || hideIncrement,
           },
         ]}
         forceActionsDisplay={diffQty !== 0}

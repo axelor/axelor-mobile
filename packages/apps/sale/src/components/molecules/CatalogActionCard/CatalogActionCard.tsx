@@ -17,7 +17,12 @@
  */
 
 import React, {useCallback, useState} from 'react';
-import {useDispatch, useSelector, useTranslator} from '@axelor/aos-mobile-core';
+import {
+  useDispatch,
+  usePermitted,
+  useSelector,
+  useTranslator,
+} from '@axelor/aos-mobile-core';
 import {ActionCard} from '@axelor/aos-mobile-ui';
 import {CartLineCard, VariantPopup} from '../../atoms';
 import {addCartLine} from '../../../features/cartLineSlice';
@@ -30,6 +35,9 @@ interface CatalogActionCardProps {
 const CatalogActionCard = ({style, product}: CatalogActionCardProps) => {
   const I18n = useTranslator();
   const dispatch = useDispatch();
+  const {readonly} = usePermitted({
+    modelName: 'com.axelor.apps.sale.db.Cart',
+  });
 
   const {activeCart} = useSelector((state: any) => state.sale_cart);
 
@@ -61,6 +69,7 @@ const CatalogActionCard = ({style, product}: CatalogActionCardProps) => {
               product?.productVariantConfig == null
                 ? () => handleAddProduct(product.id)
                 : () => setAlertVisible(true),
+            hidden: readonly,
           },
         ]}
         translator={I18n.t}>

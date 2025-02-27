@@ -31,6 +31,7 @@ import {
   useDispatch,
   useIsFocused,
   useNavigation,
+  usePermitted,
   useSelector,
   useTranslator,
 } from '@axelor/aos-mobile-core';
@@ -52,6 +53,9 @@ const ActiveCartScreen = ({}) => {
   const I18n = useTranslator();
   const navigation = useNavigation();
   const isFocused = useIsFocused();
+  const {readonly} = usePermitted({
+    modelName: 'com.axelor.apps.sale.db.Cart',
+  });
 
   const {user} = useSelector(state => state.user);
   const {mobileSettings} = useSelector((state: any) => state.appConfig);
@@ -125,12 +129,12 @@ const ActiveCartScreen = ({}) => {
             order: 20,
             title: I18n.t('Sale_EmptyCart'),
             onPress: handleEmptyCart,
-            hideIf: activeCart?.id == null,
+            hideIf: activeCart?.id == null || readonly,
           },
         ],
       });
     }
-  }, [Colors, I18n, activeCart, handleEmptyCart, mobileSettings]);
+  }, [Colors, I18n, activeCart, handleEmptyCart, mobileSettings, readonly]);
 
   const sliceFunctionData = useMemo(
     () => ({cartId: activeCart?.id}),
@@ -151,11 +155,13 @@ const ActiveCartScreen = ({}) => {
     <Screen
       removeSpaceOnTop
       fixedItems={
-        <Button
-          iconName="check-lg"
-          title={I18n.t('Sale_CreateSaleOrder')}
-          onPress={() => handleCartValidation(activeCart)}
-        />
+        !readonly && (
+          <Button
+            iconName="check-lg"
+            title={I18n.t('Sale_CreateSaleOrder')}
+            onPress={() => handleCartValidation(activeCart)}
+          />
+        )
       }>
       <SearchListView
         actionList={[

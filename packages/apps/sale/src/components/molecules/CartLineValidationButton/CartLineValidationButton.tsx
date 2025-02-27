@@ -19,10 +19,11 @@
 import React, {useCallback} from 'react';
 import {View, StyleSheet} from 'react-native';
 import {
-  useTranslator,
   useDispatch,
-  useSelector,
   useNavigation,
+  usePermitted,
+  useSelector,
+  useTranslator,
 } from '@axelor/aos-mobile-core';
 import {Button, useThemeColor} from '@axelor/aos-mobile-ui';
 import {
@@ -46,6 +47,9 @@ const CartLineValidationButton = ({
   const I18n = useTranslator();
   const navigation = useNavigation();
   const dispatch = useDispatch();
+  const {canDelete, readonly} = usePermitted({
+    modelName: 'com.axelor.apps.sale.db.CartLine',
+  });
 
   const {activeCart} = useSelector((state: any) => state.sale_cart);
   const {cartLine} = useSelector((state: any) => state.sale_cartLine);
@@ -90,9 +94,13 @@ const CartLineValidationButton = ({
     productId,
   ]);
 
+  if (!canDelete && readonly) {
+    return null;
+  }
+
   return (
     <View style={styles.buttonContainer}>
-      {!isCreation && (
+      {canDelete && !isCreation && (
         <Button
           title={I18n.t('Sale_Delete')}
           onPress={_deleteCartLine}
@@ -101,12 +109,14 @@ const CartLineValidationButton = ({
           iconName="trash3-fill"
         />
       )}
-      <Button
-        title={I18n.t('Base_Validate')}
-        onPress={isCreation ? _addCartLine : _updateCartLine}
-        width={isCreation ? '90%' : '45%'}
-        iconName="check-lg"
-      />
+      {!readonly && (
+        <Button
+          title={I18n.t('Base_Validate')}
+          onPress={isCreation ? _addCartLine : _updateCartLine}
+          width={isCreation ? '90%' : '45%'}
+          iconName="check-lg"
+        />
+      )}
     </View>
   );
 };
