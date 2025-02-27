@@ -18,7 +18,12 @@
 
 import React, {useEffect, useMemo} from 'react';
 import {Screen, BottomBar, useThemeColor} from '@axelor/aos-mobile-ui';
-import {useDispatch, useSelector, useTranslator} from '@axelor/aos-mobile-core';
+import {
+  useDispatch,
+  usePermitted,
+  useSelector,
+  useTranslator,
+} from '@axelor/aos-mobile-core';
 import {getImputationMode} from '@axelor/aos-mobile-hr';
 import {
   GeneralInformationView,
@@ -45,6 +50,9 @@ const ProjectDetailsScreen = ({
   const I18n = useTranslator();
   const Colors = useThemeColor();
   const dispatch = useDispatch();
+  const {canCreate} = usePermitted({
+    modelName: 'com.axelor.apps.hr.db.TimesheetLine',
+  });
 
   const {project} = useSelector((state: any) => state.project_project);
   const {user} = useSelector((state: any) => state.user);
@@ -88,6 +96,7 @@ const ProjectDetailsScreen = ({
         iconName: 'clock-history',
         color: Colors.primaryColor,
         hidden:
+          !canCreate ||
           !project?.manageTimeSpent ||
           user.employee?.timesheetImputationSelect ===
             getImputationMode()?.ManufOrder,
@@ -100,6 +109,7 @@ const ProjectDetailsScreen = ({
     [
       Colors,
       I18n,
+      canCreate,
       noReporting,
       project,
       user.employee?.timesheetImputationSelect,

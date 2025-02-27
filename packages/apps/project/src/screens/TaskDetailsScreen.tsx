@@ -18,7 +18,12 @@
 
 import React, {useCallback, useEffect, useMemo, useState} from 'react';
 import {BottomBar, Screen, useThemeColor} from '@axelor/aos-mobile-ui';
-import {useDispatch, useSelector, useTranslator} from '@axelor/aos-mobile-core';
+import {
+  useDispatch,
+  usePermitted,
+  useSelector,
+  useTranslator,
+} from '@axelor/aos-mobile-core';
 import {getImputationMode} from '@axelor/aos-mobile-hr';
 import {
   TaskCustomFieldsView,
@@ -34,6 +39,12 @@ const TaskDetailsScreen = ({navigation, route}) => {
   const Colors = useThemeColor();
   const I18n = useTranslator();
   const dispatch = useDispatch();
+  const {readonly: readonlyProjectTask} = usePermitted({
+    modelName: 'com.axelor.apps.project.db.ProjectTask',
+  });
+  const {canCreate: canCreateTimesheetLine} = usePermitted({
+    modelName: 'com.axelor.apps.hr.db.TimesheetLine',
+  });
 
   const [manageActiveItem, setManageActiveItem] = useState(isTimeViewActive);
 
@@ -73,12 +84,13 @@ const TaskDetailsScreen = ({navigation, route}) => {
         iconName: 'pencil-square',
         color: Colors.progressColor,
         onPress: () => navigation.navigate('TaskFormScreen'),
+        hidden: readonlyProjectTask,
       },
       {
         iconName: 'clock-history',
         color: Colors.primaryColor,
         hidden:
-          !projectTask?.project?.manageTimeSpent ||
+          (!canCreateTimesheetLine && !projectTask?.project?.manageTimeSpent) ||
           user.employee?.timesheetImputationSelect ===
             getImputationMode()?.ManufOrder,
         viewComponent: (
@@ -95,10 +107,12 @@ const TaskDetailsScreen = ({navigation, route}) => {
     [
       Colors,
       I18n,
+      canCreateTimesheetLine,
       fetchProjectTask,
       isTimeViewActive,
       navigation,
       projectTask,
+      readonlyProjectTask,
       user.employee?.timesheetImputationSelect,
     ],
   );
