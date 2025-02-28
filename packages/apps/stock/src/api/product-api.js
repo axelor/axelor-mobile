@@ -49,6 +49,21 @@ const createProductCriteria = searchValue => {
   ];
 };
 
+const createProductCompanyCriteria = (productId, companyId) => {
+  return [
+    {
+      fieldName: 'product.id',
+      operator: '=',
+      value: productId,
+    },
+    {
+      fieldName: 'company.id',
+      operator: '=',
+      value: companyId,
+    },
+  ];
+};
+
 export async function searchProductsFilter({searchValue, page = 0}) {
   return createStandardSearch({
     model: 'com.axelor.apps.base.db.Product',
@@ -130,5 +145,17 @@ export async function fetchVariantAttributes({productVariantId, version}) {
       version,
     },
     description: 'fetch variant attributes',
+  });
+}
+
+export async function fetchProductCompanyWithId({productId, companyId}) {
+  return createStandardSearch({
+    model: 'com.axelor.apps.base.db.ProductCompany',
+    criteria: createProductCompanyCriteria(productId, companyId),
+    fieldKey: 'stock_product',
+    sortKey: 'stock_product',
+    numberElementsByPage: 1,
+    page: 0,
+    provider: 'model',
   });
 }

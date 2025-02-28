@@ -19,4 +19,5 @@
 export {useCustomerLinesWithRacks} from './customer-delivery-lines';
 export {useInternalLinesWithRacks} from './internal-move-lines';
 export {useStockLinesCheckQty} from './stock-move-lines';
+export {useProductByCompany} from './use-product-by-company';
 export {useSupplierLinesWithRacks} from './supplier-arrival-lines';
