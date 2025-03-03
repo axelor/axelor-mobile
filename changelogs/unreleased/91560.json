@@ -1,0 +1,5 @@
+{
+  "title": "Permission: add access control before displaying action buttons",
+  "type": "refactor",
+  "packages": "purchase"
+}

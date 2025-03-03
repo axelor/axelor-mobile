@@ -17,7 +17,12 @@
  */
 
 import React, {useCallback} from 'react';
-import {useDispatch, useTranslator, useTypes} from '@axelor/aos-mobile-core';
+import {
+  useDispatch,
+  usePermitted,
+  useTranslator,
+  useTypes,
+} from '@axelor/aos-mobile-core';
 import {Button, useThemeColor} from '@axelor/aos-mobile-ui';
 import {createPurchaseRequest} from '../../../features/purchaseRequestSlice';
 import {RequestCreation} from '../../../types';
@@ -47,6 +52,9 @@ const RequestCreationButtons = ({
   const I18n = useTranslator();
   const {PurchaseRequest} = useTypes();
   const dispatch = useDispatch();
+  const {canCreate} = usePermitted({
+    modelName: 'com.axelor.apps.purchase.db.PurchaseRequest',
+  });
 
   const handleRealizePress = useCallback(() => {
     const purchaseRequestLineList = lines.map(line => ({
@@ -73,6 +81,10 @@ const RequestCreationButtons = ({
     PurchaseRequest?.statusSelect.Requested,
     resetDefaultStates,
   ]);
+
+  if (!canCreate) {
+    return null;
+  }
 
   if (step === RequestCreation.step.addLine && lines.length >= 1) {
     return (
