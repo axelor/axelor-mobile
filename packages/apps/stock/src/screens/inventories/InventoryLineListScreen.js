@@ -16,7 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import React, {useCallback, useState, useMemo} from 'react';
+import React, {useCallback, useEffect, useMemo, useState} from 'react';
 import {ChipSelect, Screen, useThemeColor} from '@axelor/aos-mobile-ui';
 import {
   SearchListView,
@@ -28,6 +28,7 @@ import {InventoryHeader, InventoryLineCard} from '../../components';
 import {fetchInventoryLines} from '../../features/inventoryLineSlice';
 import {showLine} from '../../utils/line-navigation';
 import {displayLine} from '../../utils/displayers';
+import {useProductByCompany} from '../../hooks';
 
 const STATUS = {
   done: 'doneStatus',
@@ -48,22 +49,33 @@ const InventoryLineListScreen = ({route, navigation}) => {
     useSelector(state => state.inventoryLine);
 
   const [selectedStatus, setSelectedStatus] = useState([]);
+  const [line, setLine] = useState(null);
 
-  const handleShowLine = (
-    item,
-    skipVerification = !mobileSettings?.isVerifyInventoryLineEnabled,
-  ) => {
-    showLine({
-      item: {name: 'inventory', data: inventory},
-      itemLine: {name: 'inventoryLine', data: item},
-      lineDetailsScreen: 'InventoryLineDetailsScreen',
-      selectTrackingScreen: 'InventorySelectTrackingScreen',
-      selectProductScreen: 'InventorySelectProductScreen',
-      detailStatus: Inventory?.statusSelect.Validated,
-      skipVerification,
+  const product = useProductByCompany(line?.product?.id);
+
+  const handleShowLine = useCallback(
+    (
+      item,
+      skipVerification = !mobileSettings?.isVerifyInventoryLineEnabled,
+    ) => {
+      showLine({
+        item: {name: 'inventory', data: inventory},
+        itemLine: {name: 'inventoryLine', data: item},
+        lineDetailsScreen: 'InventoryLineDetailsScreen',
+        selectTrackingScreen: 'InventorySelectTrackingScreen',
+        selectProductScreen: 'InventorySelectProductScreen',
+        detailStatus: Inventory?.statusSelect.Validated,
+        skipVerification,
+        navigation,
+      });
+    },
+    [
+      Inventory?.statusSelect.Validated,
+      inventory,
+      mobileSettings?.isVerifyInventoryLineEnabled,
       navigation,
-    });
-  };
+    ],
+  );
 
   const handleLineSearch = item => {
     handleShowLine(item, true);
@@ -103,6 +115,12 @@ const InventoryLineListScreen = ({route, navigation}) => {
     () => filterOnStatus(inventoryLineList),
     [filterOnStatus, inventoryLineList],
   );
+
+  useEffect(() => {
+    if (line?.product?.id === product?.id) {
+      handleShowLine(line);
+    }
+  }, [handleShowLine, line, product?.id]);
 
   return (
     <Screen removeSpaceOnTop={true}>
@@ -161,7 +179,7 @@ const InventoryLineListScreen = ({route, navigation}) => {
             unit={item.unit?.name}
             locker={item.rack}
             trackingNumber={item.trackingNumber}
-            onPress={() => handleShowLine(item)}
+            onPress={() => setLine(item)}
           />
         )}
       />

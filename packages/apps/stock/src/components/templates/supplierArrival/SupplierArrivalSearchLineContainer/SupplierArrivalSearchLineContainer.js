@@ -16,7 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import React, {useCallback, useMemo} from 'react';
+import React, {useCallback, useEffect, useMemo, useState} from 'react';
 import {StyleSheet} from 'react-native';
 import {
   useDispatch,
@@ -30,7 +30,10 @@ import {SearchLineContainer} from '../../../organisms';
 import {SupplierArrivalLineActionCard} from '../../../templates';
 import {showLine} from '../../../../utils/line-navigation';
 import {fetchSupplierArrivalLines} from '../../../../features/supplierArrivalLineSlice';
-import {useSupplierLinesWithRacks} from '../../../../hooks';
+import {
+  useProductByCompany,
+  useSupplierLinesWithRacks,
+} from '../../../../hooks';
 
 const scanKey = 'trackingNumber-or-product_supplier-arrival-details';
 
@@ -46,10 +49,14 @@ const SupplierArrivalSearchLineContainer = ({}) => {
     modelName: 'com.axelor.apps.stock.db.StockMoveLine',
   });
 
+  const [line, setLine] = useState(null);
+
   const {mobileSettings} = useSelector(state => state.appConfig);
   const {supplierArrival} = useSelector(state => state.supplierArrival);
   const {supplierArrivalLineList, totalNumberLines} =
     useSupplierLinesWithRacks(supplierArrival);
+
+  const product = useProductByCompany(line?.product?.id);
 
   const handleNewLine = () => {
     navigation.navigate('SupplierArrivalLineCreationScreen', {
@@ -63,21 +70,28 @@ const SupplierArrivalSearchLineContainer = ({}) => {
     });
   };
 
-  const handleShowLine = (
-    item,
-    skipVerification = !mobileSettings?.isVerifySupplierArrivalLineEnabled,
-  ) => {
-    showLine({
-      item: {name: 'supplierArrival', data: supplierArrival},
-      itemLine: {name: 'supplierArrivalLine', data: item},
-      lineDetailsScreen: 'SupplierArrivalLineDetailScreen',
-      selectTrackingScreen: 'SupplierArrivalSelectTrackingScreen',
-      selectProductScreen: 'SupplierArrivalSelectProductScreen',
-      skipVerification,
-      skipTrackingNumberVerification: true,
+  const handleShowLine = useCallback(
+    (
+      item,
+      skipVerification = !mobileSettings?.isVerifySupplierArrivalLineEnabled,
+    ) => {
+      showLine({
+        item: {name: 'supplierArrival', data: supplierArrival},
+        itemLine: {name: 'supplierArrivalLine', data: item},
+        lineDetailsScreen: 'SupplierArrivalLineDetailScreen',
+        selectTrackingScreen: 'SupplierArrivalSelectTrackingScreen',
+        selectProductScreen: 'SupplierArrivalSelectProductScreen',
+        skipVerification,
+        skipTrackingNumberVerification: true,
+        navigation,
+      });
+    },
+    [
+      mobileSettings?.isVerifySupplierArrivalLineEnabled,
       navigation,
-    });
-  };
+      supplierArrival,
+    ],
+  );
 
   const handleLineSearch = item => {
     handleShowLine(item, true);
@@ -125,6 +139,12 @@ const SupplierArrivalSearchLineContainer = ({}) => {
     mobileSettings,
   ]);
 
+  useEffect(() => {
+    if (line?.product?.id === product?.id) {
+      handleShowLine(line);
+    }
+  }, [handleShowLine, line, product?.id]);
+
   return (
     <SearchLineContainer
       title={I18n.t('Stock_SupplierArrivalLines')}
@@ -141,7 +161,7 @@ const SupplierArrivalSearchLineContainer = ({}) => {
         <SupplierArrivalLineActionCard
           style={styles.container}
           supplierArrivalLine={item}
-          handleShowLine={handleShowLine}
+          setLine={setLine}
         />
       )}
     />

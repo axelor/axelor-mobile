@@ -16,7 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import React, {useCallback, useState, useMemo} from 'react';
+import React, {useCallback, useEffect, useMemo, useState} from 'react';
 import {ChipSelect, Screen, useThemeColor} from '@axelor/aos-mobile-ui';
 import {
   SearchListView,
@@ -27,7 +27,7 @@ import {StockMoveHeader, SupplierArrivalLineActionCard} from '../../components';
 import {fetchSupplierArrivalLines} from '../../features/supplierArrivalLineSlice';
 import {StockMove, StockMoveLine} from '../../types';
 import {showLine} from '../../utils/line-navigation';
-import {useSupplierLinesWithRacks} from '../../hooks';
+import {useProductByCompany, useSupplierLinesWithRacks} from '../../hooks';
 import {displayLine} from '../../utils/displayers';
 
 const scanKey = 'trackingNumber-or-product_supplier-arrival-line-list';
@@ -44,22 +44,32 @@ const SupplierArrivalLineListScreen = ({route, navigation}) => {
   );
 
   const [selectedStatus, setSelectedStatus] = useState([]);
+  const [line, setLine] = useState(null);
 
-  const handleShowLine = (
-    item,
-    skipVerification = !mobileSettings?.isVerifySupplierArrivalLineEnabled,
-  ) => {
-    showLine({
-      item: {name: 'supplierArrival', data: supplierArrival},
-      itemLine: {name: 'supplierArrivalLine', data: item},
-      lineDetailsScreen: 'SupplierArrivalLineDetailScreen',
-      selectTrackingScreen: 'SupplierArrivalSelectTrackingScreen',
-      selectProductScreen: 'SupplierArrivalSelectProductScreen',
-      skipTrackingNumberVerification: true,
-      skipVerification,
+  const product = useProductByCompany(line?.product?.id);
+
+  const handleShowLine = useCallback(
+    (
+      item,
+      skipVerification = !mobileSettings?.isVerifySupplierArrivalLineEnabled,
+    ) => {
+      showLine({
+        item: {name: 'supplierArrival', data: supplierArrival},
+        itemLine: {name: 'supplierArrivalLine', data: item},
+        lineDetailsScreen: 'SupplierArrivalLineDetailScreen',
+        selectTrackingScreen: 'SupplierArrivalSelectTrackingScreen',
+        selectProductScreen: 'SupplierArrivalSelectProductScreen',
+        skipTrackingNumberVerification: true,
+        skipVerification,
+        navigation,
+      });
+    },
+    [
+      mobileSettings?.isVerifySupplierArrivalLineEnabled,
       navigation,
-    });
-  };
+      supplierArrival,
+    ],
+  );
 
   const handleLineSearch = item => {
     handleShowLine(item, true);
@@ -97,6 +107,12 @@ const SupplierArrivalLineListScreen = ({route, navigation}) => {
     () => filterOnStatus(supplierArrivalLineList),
     [filterOnStatus, supplierArrivalLineList],
   );
+
+  useEffect(() => {
+    if (line?.product?.id === product?.id) {
+      handleShowLine(line);
+    }
+  }, [handleShowLine, line, product?.id]);
 
   return (
     <Screen removeSpaceOnTop={true}>
@@ -139,7 +155,7 @@ const SupplierArrivalLineListScreen = ({route, navigation}) => {
         renderListItem={({item}) => (
           <SupplierArrivalLineActionCard
             supplierArrivalLine={item}
-            handleShowLine={handleShowLine}
+            setLine={setLine}
           />
         )}
       />

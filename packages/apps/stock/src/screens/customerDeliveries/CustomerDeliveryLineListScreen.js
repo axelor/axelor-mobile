@@ -16,7 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import React, {useCallback, useState, useMemo} from 'react';
+import React, {useCallback, useEffect, useState, useMemo} from 'react';
 import {ChipSelect, Screen, useThemeColor} from '@axelor/aos-mobile-ui';
 import {
   SearchListView,
@@ -28,7 +28,7 @@ import {CustomerDeliveryLineCard, StockMoveHeader} from '../../components';
 import {fetchCustomerDeliveryLines} from '../../features/customerDeliveryLineSlice';
 import {StockMove as StockMoveType, StockMoveLine} from '../../types';
 import {showLine} from '../../utils/line-navigation';
-import {useCustomerLinesWithRacks} from '../../hooks';
+import {useCustomerLinesWithRacks, useProductByCompany} from '../../hooks';
 import {displayLine} from '../../utils/displayers';
 
 const scanKey = 'trackingNumber-or-product_customer-delivery-line-list';
@@ -47,21 +47,31 @@ const CustomerDeliveryLineListScreen = ({route, navigation}) => {
   );
 
   const [selectedStatus, setSelectedStatus] = useState([]);
+  const [line, setLine] = useState(null);
 
-  const handleShowLine = (
-    item,
-    skipVerification = !mobileSettings?.isVerifyCustomerDeliveryLineEnabled,
-  ) => {
-    showLine({
-      item: {name: 'customerDelivery', data: customerDelivery},
-      itemLine: {name: 'customerDeliveryLine', data: item},
-      lineDetailsScreen: 'CustomerDeliveryLineDetailScreen',
-      selectTrackingScreen: 'CustomerDeliverySelectTrackingScreen',
-      selectProductScreen: 'CustomerDeliverySelectProductScreen',
-      skipVerification,
+  const product = useProductByCompany(line?.product?.id);
+
+  const handleShowLine = useCallback(
+    (
+      item,
+      skipVerification = !mobileSettings?.isVerifyCustomerDeliveryLineEnabled,
+    ) => {
+      showLine({
+        item: {name: 'customerDelivery', data: customerDelivery},
+        itemLine: {name: 'customerDeliveryLine', data: item},
+        lineDetailsScreen: 'CustomerDeliveryLineDetailScreen',
+        selectTrackingScreen: 'CustomerDeliverySelectTrackingScreen',
+        selectProductScreen: 'CustomerDeliverySelectProductScreen',
+        skipVerification,
+        navigation,
+      });
+    },
+    [
+      customerDelivery,
+      mobileSettings?.isVerifyCustomerDeliveryLineEnabled,
       navigation,
-    });
-  };
+    ],
+  );
 
   const handleLineSearch = item => {
     handleShowLine(item, true);
@@ -99,6 +109,12 @@ const CustomerDeliveryLineListScreen = ({route, navigation}) => {
     () => filterOnStatus(customerDeliveryLineList),
     [filterOnStatus, customerDeliveryLineList],
   );
+
+  useEffect(() => {
+    if (line?.product?.id === product?.id) {
+      handleShowLine(line);
+    }
+  }, [handleShowLine, line, product?.id]);
 
   return (
     <Screen removeSpaceOnTop={true}>
@@ -157,7 +173,7 @@ const CustomerDeliveryLineListScreen = ({route, navigation}) => {
                 : item.availableStatusSelect
             }
             stockMoveLineId={item.id}
-            onPress={() => handleShowLine(item)}
+            onPress={() => setLine(item)}
           />
         )}
       />

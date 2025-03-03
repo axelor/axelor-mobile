@@ -16,7 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import React, {useCallback, useState, useMemo} from 'react';
+import React, {useCallback, useEffect, useMemo, useState} from 'react';
 import {ChipSelect, Screen, useThemeColor} from '@axelor/aos-mobile-ui';
 import {
   SearchListView,
@@ -28,7 +28,7 @@ import {fetchInternalMoveLines} from '../../features/internalMoveLineSlice';
 import {StockMove, StockMoveLine} from '../../types';
 import {showLine} from '../../utils/line-navigation';
 import {displayLine} from '../../utils/displayers';
-import {useInternalLinesWithRacks} from '../../hooks';
+import {useInternalLinesWithRacks, useProductByCompany} from '../../hooks';
 
 const scanKey = 'trackingNumber-or-product_internal-move-line-list';
 
@@ -44,21 +44,27 @@ const InternalMoveLineListScreen = ({route, navigation}) => {
   );
 
   const [selectedStatus, setSelectedStatus] = useState([]);
+  const [line, setLine] = useState(null);
 
-  const handleShowLine = (
-    item,
-    skipVerification = !mobileSettings?.isVerifyInternalMoveLineEnabled,
-  ) => {
-    showLine({
-      item: {name: 'internalMove', data: internalMove},
-      itemLine: {name: 'internalMoveLine', data: item},
-      lineDetailsScreen: 'InternalMoveLineDetailsScreen',
-      selectTrackingScreen: 'InternalMoveSelectTrackingScreen',
-      selectProductScreen: 'InternalMoveSelectProductScreen',
-      skipVerification,
-      navigation,
-    });
-  };
+  const product = useProductByCompany(line?.product?.id);
+
+  const handleShowLine = useCallback(
+    (
+      item,
+      skipVerification = !mobileSettings?.isVerifyInternalMoveLineEnabled,
+    ) => {
+      showLine({
+        item: {name: 'internalMove', data: internalMove},
+        itemLine: {name: 'internalMoveLine', data: item},
+        lineDetailsScreen: 'InternalMoveLineDetailsScreen',
+        selectTrackingScreen: 'InternalMoveSelectTrackingScreen',
+        selectProductScreen: 'InternalMoveSelectProductScreen',
+        skipVerification,
+        navigation,
+      });
+    },
+    [internalMove, mobileSettings?.isVerifyInternalMoveLineEnabled, navigation],
+  );
 
   const handleLineSearch = item => {
     handleShowLine(item, true);
@@ -96,6 +102,12 @@ const InternalMoveLineListScreen = ({route, navigation}) => {
     () => filterOnStatus(internalMoveLineList),
     [filterOnStatus, internalMoveLineList],
   );
+
+  useEffect(() => {
+    if (line?.product?.id === product?.id) {
+      handleShowLine(line);
+    }
+  }, [handleShowLine, line, product?.id]);
 
   return (
     <Screen removeSpaceOnTop={true}>
@@ -154,7 +166,7 @@ const InternalMoveLineListScreen = ({route, navigation}) => {
             movedQty={
               StockMoveLine.hideLineQty(item, internalMove) ? 0 : item.realQty
             }
-            onPress={() => handleShowLine(item)}
+            onPress={() => setLine(item)}
           />
         )}
       />

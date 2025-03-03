@@ -51,19 +51,27 @@ export const useProductByCompany = (productId: boolean) => {
   }, [isTrackingNumberConfiguration, productCompany, productFromId]);
 
   useEffect(() => {
-    if (productId != null && productId !== productFromId?.id) {
-      dispatch((fetchProductWithId as any)(productId));
-      isTrackingNumberConfiguration &&
+    if (productId != null) {
+      if (productId !== productFromId?.id) {
+        dispatch((fetchProductWithId as any)(productId));
+      }
+
+      if (
+        isTrackingNumberConfiguration &&
+        productId !== productCompany?.product?.id
+      ) {
         dispatch(
           (fetchProductCompanyWithId as any)({
             productId,
             companyId: user.activeCompany?.id,
           }),
         );
+      }
     }
   }, [
     dispatch,
     isTrackingNumberConfiguration,
+    productCompany?.product?.id,
     productFromId?.id,
     productId,
     user.activeCompany?.id,

@@ -16,7 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import React, {useCallback} from 'react';
+import React, {useCallback, useEffect, useState} from 'react';
 import {StyleSheet} from 'react-native';
 import {
   useDispatch,
@@ -28,7 +28,10 @@ import {SearchLineContainer} from '../../../organisms';
 import {InternalMoveLineCard} from '../../../templates';
 import {fetchInternalMoveLines} from '../../../../features/internalMoveLineSlice';
 import {showLine} from '../../../../utils/line-navigation';
-import {useInternalLinesWithRacks} from '../../../../hooks';
+import {
+  useInternalLinesWithRacks,
+  useProductByCompany,
+} from '../../../../hooks';
 import {StockMoveLine} from '../../../../types';
 
 const scanKey = 'trackingNumber-or-product_internal-move-details';
@@ -38,10 +41,14 @@ const InternalMoveSearchLineContainer = ({}) => {
   const navigation = useNavigation();
   const dispatch = useDispatch();
 
+  const [line, setLine] = useState(null);
+
   const {mobileSettings} = useSelector(state => state.appConfig);
   const {internalMove} = useSelector(state => state.internalMove);
   const {internalMoveLineList, totalNumberLines} =
     useInternalLinesWithRacks(internalMove);
+
+  const product = useProductByCompany(line?.product?.id);
 
   const handleViewAll = () => {
     navigation.navigate('InternalMoveLineListScreen', {
@@ -49,20 +56,23 @@ const InternalMoveSearchLineContainer = ({}) => {
     });
   };
 
-  const handleShowLine = (
-    item,
-    skipVerification = !mobileSettings?.isVerifyInternalMoveLineEnabled,
-  ) => {
-    showLine({
-      item: {name: 'internalMove', data: internalMove},
-      itemLine: {name: 'internalMoveLine', data: item},
-      lineDetailsScreen: 'InternalMoveLineDetailsScreen',
-      selectTrackingScreen: 'InternalMoveSelectTrackingScreen',
-      selectProductScreen: 'InternalMoveSelectProductScreen',
-      skipVerification,
-      navigation,
-    });
-  };
+  const handleShowLine = useCallback(
+    (
+      item,
+      skipVerification = !mobileSettings?.isVerifyInternalMoveLineEnabled,
+    ) => {
+      showLine({
+        item: {name: 'internalMove', data: internalMove},
+        itemLine: {name: 'internalMoveLine', data: item},
+        lineDetailsScreen: 'InternalMoveLineDetailsScreen',
+        selectTrackingScreen: 'InternalMoveSelectTrackingScreen',
+        selectProductScreen: 'InternalMoveSelectProductScreen',
+        skipVerification,
+        navigation,
+      });
+    },
+    [internalMove, mobileSettings?.isVerifyInternalMoveLineEnabled, navigation],
+  );
 
   const handleLineSearch = item => {
     handleShowLine(item, true);
@@ -87,6 +97,12 @@ const InternalMoveSearchLineContainer = ({}) => {
       parseFloat(item.realQty) < parseFloat(item.qty)
     );
   }, []);
+
+  useEffect(() => {
+    if (line?.product?.id === product?.id) {
+      handleShowLine(line);
+    }
+  }, [handleShowLine, line, product?.id]);
 
   return (
     <SearchLineContainer
@@ -117,7 +133,7 @@ const InternalMoveSearchLineContainer = ({}) => {
               : null
           }
           stockMoveLineId={item.id}
-          onPress={() => handleShowLine(item)}
+          onPress={() => setLine(item)}
         />
       )}
     />

@@ -152,8 +152,8 @@ export async function fetchProductCompanyWithId({productId, companyId}) {
   return createStandardSearch({
     model: 'com.axelor.apps.base.db.ProductCompany',
     criteria: createProductCompanyCriteria(productId, companyId),
-    fieldKey: 'stock_product',
-    sortKey: 'stock_product',
+    fieldKey: 'stock_productCompany',
+    sortKey: 'stock_productCompany',
     numberElementsByPage: 1,
     page: 0,
     provider: 'model',

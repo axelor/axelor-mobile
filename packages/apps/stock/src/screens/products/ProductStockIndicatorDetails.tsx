@@ -16,7 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import React, {useCallback, useMemo} from 'react';
+import React, {useCallback, useEffect, useMemo} from 'react';
 import {
   useDispatch,
   useNavigation,
@@ -25,6 +25,7 @@ import {
   useTypes,
 } from '@axelor/aos-mobile-core';
 import {Screen, ScrollList} from '@axelor/aos-mobile-ui';
+import {fetchProductWithId} from '../../features/productSlice';
 import {
   fetchAvailableStockIndicator,
   fetchPurchaseOrderQtyIndicator,
@@ -37,7 +38,6 @@ import {
   StockQtyIndicatorCard,
 } from '../../components';
 import {StockIndicator} from '../../types';
-import {useProductByCompany} from '../../hooks';
 
 const ProductStockIndicatorDetails = ({route}) => {
   const {
@@ -51,6 +51,7 @@ const ProductStockIndicatorDetails = ({route}) => {
   const navigation = useNavigation();
   const dispatch = useDispatch();
 
+  const {productFromId: product} = useSelector(state => state.product);
   const {
     loadingStockQty,
     moreLoadingStockQty,
@@ -73,7 +74,11 @@ const ProductStockIndicatorDetails = ({route}) => {
     availableStockList,
   } = useSelector((state: any) => state.productIndicators);
 
-  const product = useProductByCompany(productId);
+  useEffect(() => {
+    if (productId != null && productId !== product?.id) {
+      dispatch((fetchProductWithId as any)(productId));
+    }
+  }, [dispatch, product?.id, productId]);
 
   const handleOnPressStockQty = useCallback(
     stockMove => {
