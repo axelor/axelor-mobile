@@ -73,23 +73,35 @@ const createLeaveToValidateCriteria = (searchValue, user) => {
   return criteria;
 };
 
-export async function fetchLeave({userId, selectedStatus, page = 0}) {
+export async function fetchLeave({
+  userId,
+  selectedStatus,
+  page = 0,
+  companyId,
+}) {
   return createStandardSearch({
     model: 'com.axelor.apps.hr.db.LeaveRequest',
     criteria: createLeaveCriteria(userId, selectedStatus),
     fieldKey: 'hr_leave',
     sortKey: 'hr_leave',
     page,
+    companyId,
   });
 }
 
-export async function fetchLeaveToValidate({searchValue, user, page = 0}) {
+export async function fetchLeaveToValidate({
+  searchValue,
+  user,
+  page = 0,
+  companyId,
+}) {
   return createStandardSearch({
     model: 'com.axelor.apps.hr.db.LeaveRequest',
     criteria: createLeaveToValidateCriteria(searchValue, user),
     fieldKey: 'hr_leave',
     sortKey: 'hr_leave',
     page,
+    companyId,
   });
 }
 
