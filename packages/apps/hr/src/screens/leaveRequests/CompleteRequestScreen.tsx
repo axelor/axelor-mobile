@@ -21,6 +21,7 @@ import {StyleSheet} from 'react-native';
 import {
   PeriodInput,
   useDispatch,
+  usePermitted,
   useTranslator,
   useTypeHelpers,
   useTypes,
@@ -46,6 +47,9 @@ const CompleteRequestScreen = ({}) => {
   const {LeaveReason} = useTypes();
   const {getItemTitle} = useTypeHelpers();
   const dispatch = useDispatch();
+  const {canCreate} = usePermitted({
+    modelName: 'com.axelor.apps.hr.db.LeaveRequest',
+  });
 
   const [fromDate, setFromDate] = useState(new Date());
   const [toDate, setToDate] = useState(null);
@@ -130,6 +134,16 @@ const CompleteRequestScreen = ({}) => {
         .catch(() => setMissingQty(0));
     }
   }, [currentDuration, endOn, fromDate, startOn, toDate]);
+
+  if (!canCreate) {
+    return (
+      <Label
+        style={styles.label}
+        type="info"
+        message={I18n.t('Base_NoPermForCreate')}
+      />
+    );
+  }
 
   return (
     <Screen
@@ -229,6 +243,7 @@ const styles = StyleSheet.create({
   },
   label: {
     width: '90%',
+    alignSelf: 'center',
   },
 });
 
