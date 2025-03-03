@@ -130,14 +130,15 @@ const LeaveDetailsScreen = ({route}) => {
           data={leave.comments}
         />
       </ScrollView>
-      <CircleButton
-        style={styles.floatingButton}
-        iconName="pencil-fill"
-        disabled={!readonly}
-        onPress={() =>
-          navigation.navigate('LeaveFormScreen', {leaveId: leave.id})
-        }
-      />
+      {!readonly && (
+        <CircleButton
+          style={styles.floatingButton}
+          iconName="pencil-fill"
+          onPress={() =>
+            navigation.navigate('LeaveFormScreen', {leaveId: leave.id})
+          }
+        />
+      )}
     </Screen>
   );
 };
