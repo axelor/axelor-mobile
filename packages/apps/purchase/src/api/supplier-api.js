@@ -39,12 +39,14 @@ const createSupplierCriteria = searchValue => {
   return criterias;
 };
 
-export async function searchSupplier({page = 0, searchValue}) {
+export async function searchSupplier({page = 0, searchValue, companyId}) {
   return createStandardSearch({
     model: 'com.axelor.apps.base.db.Partner',
     criteria: createSupplierCriteria(searchValue),
     fieldKey: 'purchase_supplier',
     sortKey: 'purchase_supplier',
     page,
+    companyId,
+    isCompanyM2M: true,
   });
 }

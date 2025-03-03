@@ -55,6 +55,7 @@ export async function searchPurchaseRequest({
   searchValue,
   statusList,
   supplier,
+  companyId,
 }) {
   return createStandardSearch({
     model: 'com.axelor.apps.purchase.db.PurchaseRequest',
@@ -66,6 +67,7 @@ export async function searchPurchaseRequest({
     fieldKey: 'purchase_purchaseRequest',
     sortKey: 'purchase_purchaseRequest',
     page,
+    companyId,
   });
 }
 
