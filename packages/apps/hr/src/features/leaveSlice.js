@@ -98,7 +98,9 @@ export const sendLeave = createAsyncThunk(
       responseOptions: {isArrayResponse: false},
     }).then(() => {
       dispatch(fetchLeave(data));
-      dispatch(fetchLeaveToValidate({user: data.user}));
+      dispatch(
+        fetchLeaveToValidate({user: data.user, companyId: data.companyId}),
+      );
       dispatch(fetchLeaveById({leaveId: data.leaveRequestId}));
     });
   },
@@ -115,7 +117,9 @@ export const validateLeave = createAsyncThunk(
       responseOptions: {isArrayResponse: false},
     }).then(() => {
       dispatch(fetchLeave(data));
-      dispatch(fetchLeaveToValidate({user: data.user}));
+      dispatch(
+        fetchLeaveToValidate({user: data.user, companyId: data.companyId}),
+      );
       dispatch(fetchLeaveById({leaveId: data.leaveRequestId}));
     });
   },
@@ -132,7 +136,9 @@ export const cancelLeave = createAsyncThunk(
       responseOptions: {isArrayResponse: false},
     }).then(() => {
       dispatch(fetchLeave(data));
-      dispatch(fetchLeaveToValidate({user: data.user}));
+      dispatch(
+        fetchLeaveToValidate({user: data.user, companyId: data.companyId}),
+      );
       dispatch(fetchLeaveById({leaveId: data.leaveRequestId}));
     });
   },
@@ -149,7 +155,9 @@ export const rejectLeave = createAsyncThunk(
       responseOptions: {isArrayResponse: false},
     }).then(() => {
       dispatch(fetchLeave(data));
-      dispatch(fetchLeaveToValidate({user: data.user}));
+      dispatch(
+        fetchLeaveToValidate({user: data.user, companyId: data.companyId}),
+      );
       dispatch(fetchLeaveById({leaveId: data.leaveRequestId}));
     });
   },
@@ -194,7 +202,7 @@ export const updateLeave = createAsyncThunk(
       responseOptions: {isArrayResponse: false, showToast: true},
     }).then(() => {
       dispatch(fetchLeaveById({leaveId: data.leave.id}));
-      dispatch(fetchLeave({userId: data.userId}));
+      dispatch(fetchLeave({userId: data.userId, companyId: data.companyId}));
     });
   },
 );

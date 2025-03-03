@@ -74,6 +74,7 @@ const LeaveListScreen = ({}) => {
       userId: user?.id,
       user: user,
       selectedStatus,
+      companyId: user.activeCompany?.id,
     }),
     [selectedStatus, user],
   );
