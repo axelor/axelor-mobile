@@ -22,10 +22,15 @@ import {
   FormHtmlInput,
   FormInput,
   KeyboardAvoidingScrollView,
+  Label,
   Screen,
   ViewAllEditList,
 } from '@axelor/aos-mobile-ui';
-import {useSelector, useTranslator} from '@axelor/aos-mobile-core';
+import {
+  usePermitted,
+  useSelector,
+  useTranslator,
+} from '@axelor/aos-mobile-core';
 import {RequestCreation} from '../types';
 import {
   CompanyPicker,
@@ -38,6 +43,9 @@ import {
 
 const RequestCreationScreen = () => {
   const I18n = useTranslator();
+  const {canCreate} = usePermitted({
+    modelName: 'com.axelor.apps.purchase.db.PurchaseRequest',
+  });
 
   const {user} = useSelector(state => state.user);
 
@@ -132,6 +140,16 @@ const RequestCreationScreen = () => {
     [lines, newLine],
   );
 
+  if (!canCreate) {
+    return (
+      <Label
+        style={styles.label}
+        type="info"
+        message={I18n.t('Base_NoPermForCreate')}
+      />
+    );
+  }
+
   return (
     <Screen
       removeSpaceOnTop
@@ -200,6 +218,10 @@ const styles = StyleSheet.create({
   container: {
     alignItems: 'center',
     paddingTop: 10,
+  },
+  label: {
+    width: '90%',
+    alignSelf: 'center',
   },
 });
 
