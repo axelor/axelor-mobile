@@ -32,8 +32,6 @@ export const project_modelAPI: ObjectFields = {
         partnerSeq: schemaContructor.string(),
         mainAddress: schemaContructor.subObject('fullName').concat(
           schemaContructor.object({
-            addressL4: schemaContructor.string(),
-            addressL7Country: schemaContructor.subObject('symbol'),
             city: schemaContructor.subObject('name'),
             zip: schemaContructor.string(),
           }),
@@ -69,8 +67,6 @@ export const project_modelAPI: ObjectFields = {
             name: schemaContructor.string(),
             mainAddress: schemaContructor.subObject('fullName').concat(
               schemaContructor.object({
-                addressL4: schemaContructor.string(),
-                addressL7Country: schemaContructor.subObject('symbol'),
                 city: schemaContructor.subObject('name'),
                 zip: schemaContructor.string(),
               }),

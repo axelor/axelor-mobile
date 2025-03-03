@@ -35,8 +35,8 @@ export const crm_modelAPI: ObjectFields = {
     partnerSeq: schemaContructor.string(),
     mainAddress: schemaContructor.subObject('fullName').concat(
       schemaContructor.object({
-        addressL4: schemaContructor.string(),
-        addressL7Country: schemaContructor.subObject('symbol'),
+        streetName: schemaContructor.string(),
+        country: schemaContructor.subObject('name'),
         city: schemaContructor.subObject('name'),
         zip: schemaContructor.string(),
       }),
@@ -63,8 +63,8 @@ export const crm_modelAPI: ObjectFields = {
     partnerSeq: schemaContructor.string(),
     mainAddress: schemaContructor.subObject('fullName').concat(
       schemaContructor.object({
-        addressL4: schemaContructor.string(),
-        addressL7Country: schemaContructor.subObject('symbol'),
+        streetName: schemaContructor.string(),
+        country: schemaContructor.subObject('name'),
         city: schemaContructor.subObject('name'),
         zip: schemaContructor.string(),
       }),
@@ -155,8 +155,6 @@ export const crm_modelAPI: ObjectFields = {
     partnerSeq: schemaContructor.string(),
     mainAddress: schemaContructor.subObject('fullName').concat(
       schemaContructor.object({
-        addressL4: schemaContructor.string(),
-        addressL7Country: schemaContructor.subObject('symbol'),
         city: schemaContructor.subObject('name'),
         zip: schemaContructor.string(),
       }),
@@ -184,8 +182,8 @@ export const crm_modelAPI: ObjectFields = {
     partnerSeq: schemaContructor.string(),
     mainAddress: schemaContructor.subObject('fullName').concat(
       schemaContructor.object({
-        addressL4: schemaContructor.string(),
-        addressL7Country: schemaContructor.subObject('symbol'),
+        streetName: schemaContructor.string(),
+        country: schemaContructor.subObject('name'),
         city: schemaContructor.subObject('name'),
         zip: schemaContructor.string(),
       }),
