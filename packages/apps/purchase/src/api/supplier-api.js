@@ -48,5 +48,6 @@ export async function searchSupplier({page = 0, searchValue, companyId}) {
     page,
     companyId,
     isCompanyM2M: true,
+    provider: 'model',
   });
 }

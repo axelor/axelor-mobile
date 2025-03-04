@@ -28,5 +28,6 @@ export async function searchUnit({page = 0, searchValue}) {
     fieldKey: 'purchase_unit',
     sortKey: 'purchase_unit',
     page,
+    provider: 'model',
   });
 }

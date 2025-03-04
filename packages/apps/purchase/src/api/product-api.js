@@ -71,5 +71,6 @@ export async function searchProduct({page = 0, searchValue}) {
     fieldKey: 'purchase_product',
     sortKey: 'purchase_product',
     page,
+    provider: 'model',
   });
 }

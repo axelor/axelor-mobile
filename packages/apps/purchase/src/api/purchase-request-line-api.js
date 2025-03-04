@@ -65,6 +65,7 @@ export async function searchPurchaseRequestLine({
     fieldKey: 'purchase_purchaseRequestLine',
     sortKey: 'purchase_purchaseRequestLine',
     page,
+    provider: 'model',
   });
 }
 
@@ -73,6 +74,7 @@ export async function fetchPurchaseRequestLine({id}) {
     model: 'com.axelor.apps.purchase.db.PurchaseRequestLine',
     id,
     fieldKey: 'purchase_purchaseRequestLine',
+    provider: 'model',
   });
 }
 

@@ -39,5 +39,6 @@ export async function searchAlternativeBarcode({page = 0, searchValue}) {
     fieldKey: 'stock_alternativeBarcode',
     sortKey: 'stock_alternativeBarcode',
     page,
+    provider: 'model',
   });
 }
