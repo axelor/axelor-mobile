@@ -32,14 +32,14 @@ interface SupplierArrivalLineActionCardProps {
   style?: any;
   styleCard?: any;
   supplierArrivalLine: any;
-  setLine: (line: any) => void;
+  handleShowLine: (item: any) => void;
 }
 
 const SupplierArrivalLineActionCard = ({
   style,
   styleCard,
   supplierArrivalLine,
-  setLine,
+  handleShowLine,
 }: SupplierArrivalLineActionCardProps) => {
   const I18n = useTranslator();
   const dispatch = useDispatch();
@@ -88,7 +88,7 @@ const SupplierArrivalLineActionCard = ({
         askedQty={supplierArrivalLine.qty}
         trackingNumber={supplierArrivalLine.trackingNumber}
         locker={supplierArrivalLine.locker}
-        onPress={() => setLine(supplierArrivalLine)}
+        onPress={() => handleShowLine(supplierArrivalLine)}
       />
     </ActionCard>
   );

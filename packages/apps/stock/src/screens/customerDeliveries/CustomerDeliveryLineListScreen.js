@@ -16,7 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import React, {useCallback, useEffect, useState, useMemo} from 'react';
+import React, {useCallback, useState, useMemo} from 'react';
 import {ChipSelect, Screen, useThemeColor} from '@axelor/aos-mobile-ui';
 import {
   SearchListView,
@@ -26,20 +26,23 @@ import {
 } from '@axelor/aos-mobile-core';
 import {CustomerDeliveryLineCard, StockMoveHeader} from '../../components';
 import {fetchCustomerDeliveryLines} from '../../features/customerDeliveryLineSlice';
-import {StockMove as StockMoveType, StockMoveLine} from '../../types';
-import {showLine} from '../../utils/line-navigation';
-import {useCustomerLinesWithRacks, useProductByCompany} from '../../hooks';
+import {
+  StockMove as StockMoveType,
+  StockMoveLine,
+  LineVerification,
+} from '../../types';
+import {useCustomerLinesWithRacks, useLineHandler} from '../../hooks';
 import {displayLine} from '../../utils/displayers';
 
 const scanKey = 'trackingNumber-or-product_customer-delivery-line-list';
 
-const CustomerDeliveryLineListScreen = ({route, navigation}) => {
+const CustomerDeliveryLineListScreen = ({route}) => {
   const customerDelivery = route.params.customerDelivery;
   const Colors = useThemeColor();
   const I18n = useTranslator();
   const {StockMove} = useTypes();
+  const {showLine} = useLineHandler();
 
-  const {mobileSettings} = useSelector(state => state.appConfig);
   const {customerDeliveryLineList} =
     useCustomerLinesWithRacks(customerDelivery);
   const {loadingCDLinesList, moreLoading, isListEnd} = useSelector(
@@ -47,30 +50,17 @@ const CustomerDeliveryLineListScreen = ({route, navigation}) => {
   );
 
   const [selectedStatus, setSelectedStatus] = useState([]);
-  const [line, setLine] = useState(null);
-
-  const product = useProductByCompany(line?.product?.id);
 
   const handleShowLine = useCallback(
-    (
-      item,
-      skipVerification = !mobileSettings?.isVerifyCustomerDeliveryLineEnabled,
-    ) => {
+    (item, skipVerification = undefined) => {
       showLine({
-        item: {name: 'customerDelivery', data: customerDelivery},
-        itemLine: {name: 'customerDeliveryLine', data: item},
-        lineDetailsScreen: 'CustomerDeliveryLineDetailScreen',
-        selectTrackingScreen: 'CustomerDeliverySelectTrackingScreen',
-        selectProductScreen: 'CustomerDeliverySelectProductScreen',
+        move: customerDelivery,
+        line: item,
         skipVerification,
-        navigation,
+        type: LineVerification.type.internal,
       });
     },
-    [
-      customerDelivery,
-      mobileSettings?.isVerifyCustomerDeliveryLineEnabled,
-      navigation,
-    ],
+    [customerDelivery, showLine],
   );
 
   const handleLineSearch = item => {
@@ -109,12 +99,6 @@ const CustomerDeliveryLineListScreen = ({route, navigation}) => {
     () => filterOnStatus(customerDeliveryLineList),
     [filterOnStatus, customerDeliveryLineList],
   );
-
-  useEffect(() => {
-    if (line?.product?.id === product?.id) {
-      handleShowLine(line);
-    }
-  }, [handleShowLine, line, product?.id]);
 
   return (
     <Screen removeSpaceOnTop={true}>
@@ -173,7 +157,7 @@ const CustomerDeliveryLineListScreen = ({route, navigation}) => {
                 : item.availableStatusSelect
             }
             stockMoveLineId={item.id}
-            onPress={() => setLine(item)}
+            onPress={() => handleShowLine(item)}
           />
         )}
       />

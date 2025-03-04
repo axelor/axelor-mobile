@@ -16,7 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import React, {useCallback, useEffect, useMemo, useState} from 'react';
+import React, {useCallback, useMemo, useState} from 'react';
 import {ChipSelect, Screen, useThemeColor} from '@axelor/aos-mobile-ui';
 import {
   SearchListView,
@@ -25,45 +25,35 @@ import {
 } from '@axelor/aos-mobile-core';
 import {InternalMoveLineCard, StockMoveHeader} from '../../components';
 import {fetchInternalMoveLines} from '../../features/internalMoveLineSlice';
-import {StockMove, StockMoveLine} from '../../types';
-import {showLine} from '../../utils/line-navigation';
+import {LineVerification, StockMove, StockMoveLine} from '../../types';
 import {displayLine} from '../../utils/displayers';
-import {useInternalLinesWithRacks, useProductByCompany} from '../../hooks';
+import {useInternalLinesWithRacks, useLineHandler} from '../../hooks';
 
 const scanKey = 'trackingNumber-or-product_internal-move-line-list';
 
-const InternalMoveLineListScreen = ({route, navigation}) => {
+const InternalMoveLineListScreen = ({route}) => {
   const internalMove = route.params.internalMove;
   const Colors = useThemeColor();
   const I18n = useTranslator();
+  const {showLine} = useLineHandler();
 
-  const {mobileSettings} = useSelector(state => state.appConfig);
   const {internalMoveLineList} = useInternalLinesWithRacks(internalMove);
   const {loadingIMLinesList, moreLoading, isListEnd} = useSelector(
     state => state.internalMoveLine,
   );
 
   const [selectedStatus, setSelectedStatus] = useState([]);
-  const [line, setLine] = useState(null);
-
-  const product = useProductByCompany(line?.product?.id);
 
   const handleShowLine = useCallback(
-    (
-      item,
-      skipVerification = !mobileSettings?.isVerifyInternalMoveLineEnabled,
-    ) => {
+    (item, skipVerification = undefined) => {
       showLine({
-        item: {name: 'internalMove', data: internalMove},
-        itemLine: {name: 'internalMoveLine', data: item},
-        lineDetailsScreen: 'InternalMoveLineDetailsScreen',
-        selectTrackingScreen: 'InternalMoveSelectTrackingScreen',
-        selectProductScreen: 'InternalMoveSelectProductScreen',
+        move: internalMove,
+        line: item,
         skipVerification,
-        navigation,
+        type: LineVerification.type.internal,
       });
     },
-    [internalMove, mobileSettings?.isVerifyInternalMoveLineEnabled, navigation],
+    [internalMove, showLine],
   );
 
   const handleLineSearch = item => {
@@ -102,12 +92,6 @@ const InternalMoveLineListScreen = ({route, navigation}) => {
     () => filterOnStatus(internalMoveLineList),
     [filterOnStatus, internalMoveLineList],
   );
-
-  useEffect(() => {
-    if (line?.product?.id === product?.id) {
-      handleShowLine(line);
-    }
-  }, [handleShowLine, line, product?.id]);
 
   return (
     <Screen removeSpaceOnTop={true}>
@@ -166,7 +150,7 @@ const InternalMoveLineListScreen = ({route, navigation}) => {
             movedQty={
               StockMoveLine.hideLineQty(item, internalMove) ? 0 : item.realQty
             }
-            onPress={() => setLine(item)}
+            onPress={() => handleShowLine(item)}
           />
         )}
       />

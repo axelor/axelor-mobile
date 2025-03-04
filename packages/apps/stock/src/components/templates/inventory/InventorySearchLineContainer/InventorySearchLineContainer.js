@@ -16,7 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import React, {useCallback, useEffect, useState} from 'react';
+import React, {useCallback} from 'react';
 import {StyleSheet} from 'react-native';
 import {
   useDispatch,
@@ -28,9 +28,9 @@ import {
 } from '@axelor/aos-mobile-core';
 import {SearchLineContainer} from '../../../organisms';
 import {InventoryLineCard} from '../../../templates';
-import {showLine} from '../../../../utils/line-navigation';
 import {fetchInventoryLines} from '../../../../features/inventoryLineSlice';
-import {useProductByCompany} from '../../../../hooks';
+import {useLineHandler} from '../../../../hooks';
+import {LineVerification} from '../../../../types';
 
 const scanKey = 'trackingNumber-or-product_inventory-details';
 
@@ -45,16 +45,12 @@ const InventorySearchLineContainer = ({}) => {
   const {canCreate} = usePermitted({
     modelName: 'com.axelor.apps.stock.db.InventoryLine',
   });
+  const {showLine} = useLineHandler();
 
-  const [line, setLine] = useState(null);
-
-  const {mobileSettings} = useSelector(state => state.appConfig);
   const {inventory} = useSelector(state => state.inventory);
   const {inventoryLineList, totalNumberLines} = useSelector(
     state => state.inventoryLine,
   );
-
-  const product = useProductByCompany(line?.product?.id);
 
   const handleNewLine = useCallback(() => {
     navigation.navigate('InventorySelectProductScreen', {
@@ -69,27 +65,15 @@ const InventorySearchLineContainer = ({}) => {
   };
 
   const handleShowLine = useCallback(
-    (
-      item,
-      skipVerification = !mobileSettings?.isVerifyInventoryLineEnabled,
-    ) => {
+    (item, skipVerification = undefined) => {
       showLine({
-        item: {name: 'inventory', data: inventory},
-        itemLine: {name: 'inventoryLine', data: item},
-        lineDetailsScreen: 'InventoryLineDetailsScreen',
-        selectTrackingScreen: 'InventorySelectTrackingScreen',
-        selectProductScreen: 'InventorySelectProductScreen',
-        detailStatus: Inventory?.statusSelect.Validated,
+        move: inventory,
+        line: item,
         skipVerification,
-        navigation,
+        type: LineVerification.type.inventory,
       });
     },
-    [
-      Inventory?.statusSelect.Validated,
-      inventory,
-      mobileSettings?.isVerifyInventoryLineEnabled,
-      navigation,
-    ],
+    [inventory, showLine],
   );
 
   const handleLineSearch = item => {
@@ -112,12 +96,6 @@ const InventorySearchLineContainer = ({}) => {
   const filterLine = useCallback(item => {
     return item.realQty == null;
   }, []);
-
-  useEffect(() => {
-    if (line?.product?.id === product?.id) {
-      handleShowLine(line);
-    }
-  }, [handleShowLine, line, product?.id]);
 
   return (
     <SearchLineContainer
@@ -144,7 +122,7 @@ const InventorySearchLineContainer = ({}) => {
           unit={item.unit?.name}
           locker={item.rack}
           trackingNumber={item.trackingNumber}
-          onPress={() => setLine(item)}
+          onPress={() => handleShowLine(item)}
         />
       )}
     />

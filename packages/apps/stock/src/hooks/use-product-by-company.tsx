@@ -16,35 +16,50 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import {useEffect, useMemo} from 'react';
-import {useDispatch, useSelector} from '@axelor/aos-mobile-core';
+import {useCallback, useEffect, useMemo} from 'react';
+import {
+  handlerApiCall,
+  useDispatch,
+  useNavigation,
+  useSelector,
+} from '@axelor/aos-mobile-core';
 import {
   fetchProductCompanyWithId,
   fetchProductWithId,
 } from '../features/productSlice';
+import {fetchProductCompanyWithId as fetchProductCompanyWithIdApi} from '../api/product-api';
+import {showLine} from '../utils';
+import {LineVerification} from '../types';
 
-export const useProductByCompany = (productId: boolean) => {
-  const dispatch = useDispatch();
+const recreateProductStructure = (product: any, productByCompany: any): any => {
+  return {
+    ...product,
+    trackingNumberConfiguration: productByCompany?.trackingNumberConfiguration,
+  };
+};
 
-  const {base} = useSelector((state: any) => state.appConfig);
-  const {user} = useSelector(state => state.user);
-  const {productFromId, productCompany} = useSelector(state => state.product);
+export const useTrackingConfigByCompany = () => {
+  const {base} = useSelector(state => state.appConfig);
 
-  const isTrackingNumberConfiguration = useMemo(
+  return useMemo(
     () =>
       base?.companySpecificProductFieldsSet.some(
-        field => field.name === 'trackingNumberConfiguration',
+        ({name}) => name === 'trackingNumberConfiguration',
       ),
     [base?.companySpecificProductFieldsSet],
   );
+};
+
+export const useProductByCompany = (productId: boolean) => {
+  const dispatch = useDispatch();
+  const isTrackingNumberConfiguration = useTrackingConfigByCompany();
+
+  const {user} = useSelector(state => state.user);
+  const {productFromId, productCompany} = useSelector(state => state.product);
 
   const product = useMemo(() => {
     if (isTrackingNumberConfiguration) {
-      return {
-        ...productFromId,
-        trackingNumberConfiguration:
-          productCompany?.trackingNumberConfiguration,
-      };
+      return recreateProductStructure(productFromId, productCompany);
     }
 
     return productFromId;
@@ -78,4 +93,64 @@ export const useProductByCompany = (productId: boolean) => {
   ]);
 
   return useMemo(() => product, [product]);
+};
+
+export const useLineHandler = () => {
+  const navigation = useNavigation();
+  const isTrackingNumberConfiguration = useTrackingConfigByCompany();
+
+  const {mobileSettings} = useSelector(state => state.appConfig);
+  const {user} = useSelector(state => state.user);
+
+  const getState = useCallback(() => ({auth: {userId: user?.id}}), [user?.id]);
+
+  const fetchProductByCompany = useCallback(
+    async (product: any) => {
+      let productCompany = product;
+
+      if (isTrackingNumberConfiguration) {
+        productCompany = await handlerApiCall({
+          fetchFunction: fetchProductCompanyWithIdApi,
+          data: {productId: product.id, companyId: user.activeCompany?.id},
+          action: 'Stock_SliceAction_FetchProductCompanyWithId',
+          getState,
+          responseOptions: {isArrayResponse: false},
+          errorOptions: {showErrorToast: false},
+        });
+      }
+
+      return recreateProductStructure(product, productCompany);
+    },
+    [getState, isTrackingNumberConfiguration, user.activeCompany?.id],
+  );
+
+  const handleLine = useCallback(
+    async ({
+      move,
+      line,
+      skipVerification,
+      type,
+    }: {
+      move: any;
+      line: any;
+      skipVerification?: boolean;
+      type: keyof typeof LineVerification.type;
+    }) => {
+      const config = LineVerification.getLineVerificationConfig(type);
+      const _skipVerification =
+        skipVerification ?? !mobileSettings?.[config.configName];
+      const product = await fetchProductByCompany(line.product);
+
+      showLine({
+        ...config,
+        item: {name: config.item, data: move},
+        itemLine: {name: config.itemLine, data: {...line, product}},
+        skipVerification: _skipVerification,
+        navigation,
+      });
+    },
+    [fetchProductByCompany, mobileSettings, navigation],
+  );
+
+  return useMemo(() => ({showLine: handleLine}), [handleLine]);
 };

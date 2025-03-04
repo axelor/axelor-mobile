@@ -186,5 +186,5 @@
   "Stock_SliceAction_FetchPurchaseOrderQtyIndicator": "fetch data of purchase order quantity indicator",
   "Stock_SliceAction_FetchAvailableStockIndicator": "fetch data of available stock indicator",
   "Stock_SliceAction_SplitSupplierArrivalLine": "split supplier arrival line",
-  "Stock_SliceAction_FetchProductCompanyWithId": "fetch product company"
+  "Stock_SliceAction_FetchProductCompanyWithId": "fetch product by company"
 }
