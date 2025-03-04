@@ -45,6 +45,7 @@ export const crm_typeObjects: ModuleSelections = [
         ],
       },
       typeSelect: {
+        useWebContent: true,
         content: [
           {
             key: 'Event',
