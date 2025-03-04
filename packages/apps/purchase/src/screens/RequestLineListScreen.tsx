@@ -20,6 +20,7 @@ import React, {useMemo, useState} from 'react';
 import {ChipSelect, Screen} from '@axelor/aos-mobile-ui';
 import {
   SearchListView,
+  usePermitted,
   useSelector,
   useTranslator,
   useTypeHelpers,
@@ -32,6 +33,9 @@ const RequestLineListScreen = ({navigation}) => {
   const I18n = useTranslator();
   const {PurchaseRequestLine} = useTypes();
   const {getSelectionItems} = useTypeHelpers();
+  const {canCreate} = usePermitted({
+    modelName: 'com.axelor.apps.purchase.db.PurchaseRequestLine',
+  });
 
   const {purchaseRequest} = useSelector(
     state => state.purchase_purchaseRequest,
@@ -62,15 +66,17 @@ const RequestLineListScreen = ({navigation}) => {
     <Screen removeSpaceOnTop={true}>
       <SearchListView
         topFixedItems={<RequestHeader />}
-        actionList={[
-          {
-            iconName: 'plus',
-            title: I18n.t('Purchase_AddProduct'),
-            onPress: () => {
-              navigation.navigate('RequestLineFormScreen');
+        actionList={
+          canCreate && [
+            {
+              iconName: 'plus',
+              title: I18n.t('Purchase_AddProduct'),
+              onPress: () => {
+                navigation.navigate('RequestLineFormScreen');
+              },
             },
-          },
-        ]}
+          ]
+        }
         chipComponent={
           <ChipSelect
             mode="switch"

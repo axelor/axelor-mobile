@@ -21,6 +21,7 @@ import {View, StyleSheet, DimensionValue} from 'react-native';
 import {Button, useThemeColor} from '@axelor/aos-mobile-ui';
 import {
   useDispatch,
+  usePermitted,
   useSelector,
   useTranslator,
   useTypes,
@@ -31,6 +32,9 @@ const RequestButtons = () => {
   const Colors = useThemeColor();
   const I18n = useTranslator();
   const {PurchaseRequest} = useTypes();
+  const {readonly} = usePermitted({
+    modelName: 'com.axelor.apps.purchase.db.PurchaseRequest',
+  });
   const dispatch = useDispatch();
 
   const {purchaseRequest} = useSelector(
@@ -146,7 +150,7 @@ const RequestButtons = () => {
     [getButtonsForStatus, purchaseRequest?.statusSelect],
   );
 
-  if (buttons.length === 0) {
+  if (buttons.length === 0 || readonly) {
     return null;
   }
 
