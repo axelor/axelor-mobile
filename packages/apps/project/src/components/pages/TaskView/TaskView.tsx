@@ -18,10 +18,11 @@
 
 import React, {useMemo, useState} from 'react';
 import {
-  useSelector,
   SearchListView,
-  useTranslator,
   useNavigation,
+  usePermitted,
+  useSelector,
+  useTranslator,
 } from '@axelor/aos-mobile-core';
 import {ProjectHeader, TaskActionCard} from '../../molecules';
 import {TaskFilters} from '../../templates';
@@ -31,6 +32,9 @@ import {useTaskFilters} from '../../../hooks';
 const TaskView = () => {
   const I18n = useTranslator();
   const navigation = useNavigation();
+  const {canCreate} = usePermitted({
+    modelName: 'com.axelor.apps.project.db.ProjectTask',
+  });
 
   useTaskFilters();
 
@@ -43,8 +47,23 @@ const TaskView = () => {
   const [selectedStatus, setSelectedStatus] = useState([]);
   const [selectedPriority, setSelectedPriority] = useState([]);
   const [selectedCategory, setSelectedCategory] = useState([]);
-
   const [isAssignedToMe, setIsAssignedToMe] = useState(false);
+
+  const actionList = useMemo(() => {
+    let _actionList = [];
+
+    if (canCreate) {
+      _actionList.push({
+        iconName: 'plus',
+        title: I18n.t('Project_CreateNewTask'),
+        onPress: () => {
+          navigation.navigate('TaskFormScreen', {isCreation: true});
+        },
+      });
+    }
+
+    return _actionList;
+  }, [I18n, canCreate, navigation]);
 
   const sliceFunctionData = useMemo(() => {
     return {
@@ -79,15 +98,7 @@ const TaskView = () => {
           project={project}
         />
       }
-      actionList={[
-        {
-          iconName: 'plus',
-          title: I18n.t('Project_CreateNewTask'),
-          onPress: () => {
-            navigation.navigate('TaskFormScreen', {isCreation: true});
-          },
-        },
-      ]}
+      actionList={actionList}
       list={projectTaskList}
       loading={loading}
       moreLoading={moreLoading}

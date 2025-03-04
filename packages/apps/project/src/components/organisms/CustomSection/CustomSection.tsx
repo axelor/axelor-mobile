@@ -19,7 +19,7 @@
 import React, {useState} from 'react';
 import {StyleSheet} from 'react-native';
 import {HorizontalRule} from '@axelor/aos-mobile-ui';
-import {CustomFieldForm} from '@axelor/aos-mobile-core';
+import {CustomFieldForm, usePermitted} from '@axelor/aos-mobile-core';
 import {CustomFieldPopup, SectionHeader} from '../../molecules';
 
 const CustomSection = ({
@@ -37,6 +37,10 @@ const CustomSection = ({
   refreshKey: number;
   onRefresh: () => void;
 }) => {
+  const {readonly} = usePermitted({
+    modelName: 'com.axelor.apps.project.db.ProjectTask',
+  });
+
   const [expanded, setExpanded] = useState(true);
   const [alertVisible, setAlertVisible] = useState(false);
 
@@ -51,6 +55,7 @@ const CustomSection = ({
         expanded={expanded}
         onPress={() => setExpanded(_current => !_current)}
         onEdit={() => setAlertVisible(true)}
+        showEdit={!readonly}
       />
       {expanded && (
         <>

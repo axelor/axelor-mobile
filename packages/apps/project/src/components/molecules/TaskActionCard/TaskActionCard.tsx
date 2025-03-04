@@ -18,7 +18,11 @@
 
 import React from 'react';
 import {ActionCard} from '@axelor/aos-mobile-ui';
-import {useNavigation, useTranslator} from '@axelor/aos-mobile-core';
+import {
+  useNavigation,
+  usePermitted,
+  useTranslator,
+} from '@axelor/aos-mobile-core';
 import {TaskCard} from '../../atoms';
 
 interface TaskProps {
@@ -48,6 +52,9 @@ const TaskActionCard = ({
 }: TaskActionCardProps) => {
   const I18n = useTranslator();
   const navigation = useNavigation();
+  const {canCreate} = usePermitted({
+    modelName: 'com.axelor.apps.hr.db.TimesheetLine',
+  });
 
   return (
     <ActionCard
@@ -61,6 +68,7 @@ const TaskActionCard = ({
               projecTaskId: task.id,
               isTimeViewActive: true,
             }),
+          hidden: !canCreate,
         },
       ]}
       translator={I18n.t}>
