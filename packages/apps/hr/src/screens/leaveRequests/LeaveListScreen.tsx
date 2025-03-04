@@ -55,9 +55,16 @@ const LeaveListScreen = ({}) => {
 
   const fetchLeaveAPI = useCallback(
     (page = 0) => {
-      dispatch((fetchLeave as any)({userId: user?.id, selectedStatus, page}));
+      dispatch(
+        (fetchLeave as any)({
+          userId: user?.id,
+          selectedStatus,
+          page,
+          companyId: user.activeCompany?.id,
+        }),
+      );
     },
-    [dispatch, selectedStatus, user?.id],
+    [dispatch, selectedStatus, user.activeCompany?.id, user?.id],
   );
 
   const getActionParams = useCallback(
@@ -67,6 +74,7 @@ const LeaveListScreen = ({}) => {
       userId: user?.id,
       user: user,
       selectedStatus,
+      companyId: user.activeCompany?.id,
     }),
     [selectedStatus, user],
   );
@@ -87,7 +95,13 @@ const LeaveListScreen = ({}) => {
 
   const fetchLeaveToValidateAPI = useCallback(
     (page = 0) => {
-      dispatch((fetchLeaveToValidate as any)({user, page}));
+      dispatch(
+        (fetchLeaveToValidate as any)({
+          user,
+          page,
+          companyId: user.activeCompany?.id,
+        }),
+      );
     },
     [dispatch, user],
   );

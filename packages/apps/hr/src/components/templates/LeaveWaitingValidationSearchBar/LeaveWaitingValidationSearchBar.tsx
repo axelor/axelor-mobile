@@ -50,7 +50,14 @@ const LeaveWaitingValidationSearchBar = ({
 
   const fetchLeaveToValidateAPI = useCallback(
     ({searchValue, page = 0}) => {
-      dispatch((fetchLeaveToValidate as any)({searchValue, user, page}));
+      dispatch(
+        (fetchLeaveToValidate as any)({
+          searchValue,
+          user,
+          page,
+          companyId: user.activeCompany?.id,
+        }),
+      );
     },
     [dispatch, user],
   );

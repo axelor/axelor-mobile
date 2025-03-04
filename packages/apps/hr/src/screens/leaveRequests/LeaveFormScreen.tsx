@@ -25,7 +25,7 @@ const LeaveFormScreen = ({route, navigation}) => {
   const _dispatch = useDispatch();
 
   const {leave} = useSelector(state => state.hr_leave);
-  const {userId} = useSelector(state => state.auth);
+  const {user} = useSelector(state => state.user);
 
   useEffect(() => {
     _dispatch((fetchLeaveById as any)({leaveId}));
@@ -42,13 +42,14 @@ const LeaveFormScreen = ({route, navigation}) => {
             startOnSelect: objectState.perdiodDate.startOnSelect,
             endOnSelect: objectState.perdiodDate.endOnSelect,
           },
-          userId: userId,
+          userId: user.id,
+          companyId: user.activeCompany?.id,
         }),
       );
 
       navigation.pop();
     },
-    [navigation, userId],
+    [navigation, user],
   );
 
   const _defaultValue = useMemo(

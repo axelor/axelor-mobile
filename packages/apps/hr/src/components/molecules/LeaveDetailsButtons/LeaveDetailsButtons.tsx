@@ -64,6 +64,7 @@ const LeaveDetailsButtons = ({
       version: leaveRequest.version,
       user: user,
       userId: user.id,
+      companyId: user.activeCompany?.id,
     }),
     [leaveRequest, user],
   );

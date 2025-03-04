@@ -57,7 +57,13 @@ const LeaveFilters = ({
   const {totalNumberLeaveToValidate} = useSelector(state => state.hr_leave);
 
   useEffect(() => {
-    dispatch((fetchLeaveToValidate as any)({user: user, page: 0}));
+    dispatch(
+      (fetchLeaveToValidate as any)({
+        user: user,
+        page: 0,
+        companyId: user.activeCompany?.id,
+      }),
+    );
   }, [dispatch, user]);
 
   const leaveStatusList = useMemo(
