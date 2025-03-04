@@ -16,13 +16,14 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import React, {useCallback} from 'react';
+import React, {useCallback, useMemo} from 'react';
 import {View, StyleSheet} from 'react-native';
 import {
-  useTranslator,
   useDispatch,
-  useSelector,
   useNavigation,
+  usePermitted,
+  useSelector,
+  useTranslator,
 } from '@axelor/aos-mobile-core';
 import {Button, useThemeColor} from '@axelor/aos-mobile-ui';
 import {
@@ -46,6 +47,9 @@ const CartLineValidationButton = ({
   const I18n = useTranslator();
   const navigation = useNavigation();
   const dispatch = useDispatch();
+  const {canCreate, canDelete, readonly} = usePermitted({
+    modelName: 'com.axelor.apps.sale.db.CartLine',
+  });
 
   const {activeCart} = useSelector((state: any) => state.sale_cart);
   const {cartLine} = useSelector((state: any) => state.sale_cartLine);
@@ -90,23 +94,35 @@ const CartLineValidationButton = ({
     productId,
   ]);
 
+  const displayDeleteBtn = useMemo(
+    () => !isCreation && canDelete,
+    [canDelete, isCreation],
+  );
+
+  const displaySaveBtn = useMemo(
+    () => (isCreation && canCreate) || !readonly,
+    [canCreate, isCreation, readonly],
+  );
+
   return (
     <View style={styles.buttonContainer}>
-      {!isCreation && (
+      {displayDeleteBtn && (
         <Button
           title={I18n.t('Sale_Delete')}
           onPress={_deleteCartLine}
-          width="45%"
+          width={displaySaveBtn ? '45%' : '90%'}
           color={Colors.errorColor}
           iconName="trash3-fill"
         />
       )}
-      <Button
-        title={I18n.t('Base_Validate')}
-        onPress={isCreation ? _addCartLine : _updateCartLine}
-        width={isCreation ? '90%' : '45%'}
-        iconName="check-lg"
-      />
+      {displaySaveBtn && (
+        <Button
+          title={I18n.t('Base_Validate')}
+          onPress={isCreation ? _addCartLine : _updateCartLine}
+          width={displayDeleteBtn ? '45%' : '90%'}
+          iconName="check-lg"
+        />
+      )}
     </View>
   );
 };

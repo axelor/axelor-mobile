@@ -19,7 +19,12 @@
 import React, {useEffect, useMemo, useState, useCallback} from 'react';
 import {StyleSheet} from 'react-native';
 import {QuantityCard, Screen, ScrollView} from '@axelor/aos-mobile-ui';
-import {useDispatch, useSelector, useTranslator} from '@axelor/aos-mobile-core';
+import {
+  useDispatch,
+  usePermitted,
+  useSelector,
+  useTranslator,
+} from '@axelor/aos-mobile-core';
 import {fetchCartLineById} from '../../features/cartLineSlice';
 import {
   CartLineActionCard,
@@ -33,6 +38,9 @@ const CartLineDetailsScreen = ({route}) => {
 
   const I18n = useTranslator();
   const dispatch = useDispatch();
+  const {readonly} = usePermitted({
+    modelName: 'com.axelor.apps.sale.db.CartLine',
+  });
 
   const {cartLine} = useSelector((state: any) => state.sale_cartLine);
 
@@ -96,7 +104,7 @@ const CartLineDetailsScreen = ({route}) => {
               labelQty={I18n.t('Sale_Quantity')}
               defaultValue={newQty}
               onValueChange={setNewQty}
-              editable={true}
+              editable={!readonly}
               isBigButton
               translator={I18n.t}
               style={styles.card}

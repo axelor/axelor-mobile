@@ -20,6 +20,7 @@ import {useEffect, useMemo} from 'react';
 import {
   headerActionsProvider,
   useNavigation,
+  usePermitted,
   useSelector,
   useTranslator,
   useTypes,
@@ -132,6 +133,9 @@ const useSaleQuotationsActions = () => {
   const Colors = useThemeColor();
   const I18n = useTranslator();
   const navigation = useNavigation();
+  const {canCreate} = usePermitted({
+    modelName: 'com.axelor.apps.sale.db.SaleOrder',
+  });
 
   useEffect(() => {
     headerActionsProvider.registerModel('sale_saleQuotation_list', {
@@ -144,8 +148,9 @@ const useSaleQuotationsActions = () => {
           iconColor: Colors.primaryColor.background,
           onPress: () => navigation.navigate('SaleQuotationCreationScreen'),
           showInHeader: true,
+          hideIf: !canCreate,
         },
       ],
     });
-  }, [Colors.primaryColor.background, I18n, navigation]);
+  }, [Colors.primaryColor.background, I18n, canCreate, navigation]);
 };

@@ -18,8 +18,13 @@
 
 import React, {useState} from 'react';
 import {StyleSheet} from 'react-native';
-import {useTranslator} from '@axelor/aos-mobile-core';
-import {Screen, ScrollView, ViewAllEditList} from '@axelor/aos-mobile-ui';
+import {usePermitted, useTranslator} from '@axelor/aos-mobile-core';
+import {
+  Label,
+  Screen,
+  ScrollView,
+  ViewAllEditList,
+} from '@axelor/aos-mobile-ui';
 import {
   CustomerSearchBar,
   ProductSearchBar,
@@ -29,6 +34,9 @@ import {
 
 const SaleQuotationCreationScreen = ({}) => {
   const I18n = useTranslator();
+  const {canCreate} = usePermitted({
+    modelName: 'com.axelor.apps.sale.db.SaleOrder',
+  });
 
   const [customer, setCustomer] = useState(null);
   const [lines, setLines] = useState([]);
@@ -69,6 +77,16 @@ const SaleQuotationCreationScreen = ({}) => {
     setProduct(line.product);
     setProductQty(line.qty);
   };
+
+  if (!canCreate) {
+    return (
+      <Label
+        type="danger"
+        style={styles.label}
+        message={I18n.t('Base_NoPermForCreate')}
+      />
+    );
+  }
 
   return (
     <Screen
@@ -126,6 +144,10 @@ const styles = StyleSheet.create({
   container: {
     height: null,
     flex: 1,
+  },
+  label: {
+    width: '90%',
+    alignSelf: 'center',
   },
 });
 

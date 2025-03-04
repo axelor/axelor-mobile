@@ -19,7 +19,12 @@
 import React, {useCallback, useMemo, useState} from 'react';
 import {StyleSheet, View} from 'react-native';
 import {Alert, Icon, LabelText} from '@axelor/aos-mobile-ui';
-import {useDispatch, useSelector, useTranslator} from '@axelor/aos-mobile-core';
+import {
+  useDispatch,
+  usePermitted,
+  useSelector,
+  useTranslator,
+} from '@axelor/aos-mobile-core';
 import {CustomerSearchBar} from '../../organisms';
 import {CompanyPicker} from '../../templates';
 import {updateCart} from '../../../features/cartSlice';
@@ -31,6 +36,9 @@ interface CartHeaderProps {
 const CartHeader = ({style}: CartHeaderProps) => {
   const dispatch = useDispatch();
   const I18n = useTranslator();
+  const {readonly} = usePermitted({
+    modelName: 'com.axelor.apps.sale.db.Cart',
+  });
 
   const {activeCart} = useSelector((state: any) => state.sale_cart);
   const {userId} = useSelector((state: any) => state.auth);
@@ -38,9 +46,10 @@ const CartHeader = ({style}: CartHeaderProps) => {
 
   const [popupIsVisible, setPopupIsVisible] = useState(false);
 
-  const isMultipleCompany = useMemo(() => {
-    return user?.companySet?.length > 1;
-  }, [user?.companySet]);
+  const canModifyCompany = useMemo(
+    () => user?.companySet?.length > 1 && !readonly,
+    [readonly, user?.companySet?.length],
+  );
 
   const handleUpdateCart = useCallback(
     ({newCustomer, newCompany}: {newCustomer?: any; newCompany?: any}) => {
@@ -81,7 +90,7 @@ const CartHeader = ({style}: CartHeaderProps) => {
           size={16}
           title={activeCart?.company?.name}
         />
-        {isMultipleCompany && (
+        {canModifyCompany && (
           <Icon
             size={16}
             name="pencil-fill"
@@ -90,11 +99,20 @@ const CartHeader = ({style}: CartHeaderProps) => {
           />
         )}
       </View>
-      <CustomerSearchBar
-        onChange={handleUpdatePartner}
-        defaultValue={activeCart?.partner}
-        companyId={activeCart?.company?.id}
-      />
+      {readonly ? (
+        <LabelText
+          style={styles.label}
+          iconName="person-fill"
+          size={16}
+          title={activeCart?.partner?.fullName}
+        />
+      ) : (
+        <CustomerSearchBar
+          onChange={handleUpdatePartner}
+          defaultValue={activeCart?.partner}
+          companyId={activeCart?.company?.id}
+        />
+      )}
       <Alert
         title={I18n.t('User_Company')}
         visible={popupIsVisible}
