@@ -48,6 +48,7 @@ const LeaveRefusalPopup = ({
           user: user,
           userId: user.id,
           groundForRefusal: refusalMessage,
+          companyId: user.activeCompany?.id,
         }),
       );
     },
