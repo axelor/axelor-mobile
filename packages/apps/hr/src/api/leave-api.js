@@ -86,6 +86,7 @@ export async function fetchLeave({
     sortKey: 'hr_leave',
     page,
     companyId,
+    provider: 'model',
   });
 }
 
@@ -102,6 +103,7 @@ export async function fetchLeaveToValidate({
     sortKey: 'hr_leave',
     page,
     companyId,
+    provider: 'model',
   });
 }
 
@@ -110,6 +112,7 @@ export async function fetchLeaveById({leaveId}) {
     model: 'com.axelor.apps.hr.db.LeaveRequest',
     id: leaveId,
     fieldKey: 'hr_leave',
+    provider: 'model',
   });
 }
 
@@ -127,6 +130,7 @@ export async function fetchLeaveReason({searchValue, employeeId, page = 0}) {
     },
     fieldKey: 'hr_leaveReason',
     page,
+    provider: 'model',
   });
 }
 

@@ -68,6 +68,7 @@ export async function searchPurchaseRequest({
     sortKey: 'purchase_purchaseRequest',
     page,
     companyId,
+    provider: 'model',
   });
 }
 
@@ -76,6 +77,7 @@ export async function getPurchaseRequest({id}) {
     model: 'com.axelor.apps.purchase.db.PurchaseRequest',
     id,
     fieldKey: 'purchase_purchaseRequest',
+    provider: 'model',
   });
 }
 
