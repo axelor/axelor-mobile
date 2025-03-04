@@ -24,6 +24,7 @@ import {
   formatDateTime,
   useDispatch,
   useNavigation,
+  usePermitted,
   useSelector,
   useTranslator,
   useTypes,
@@ -50,6 +51,9 @@ const LeaveDetailsScreen = ({route}) => {
   const {LeaveRequest} = useTypes();
   const navigation = useNavigation();
   const dispatch = useDispatch();
+  const {readonly} = usePermitted({
+    modelName: 'com.axelor.apps.hr.db.LeaveRequest',
+  });
 
   const {leave, loadingLeave} = useSelector(state => state.hr_leave);
 
@@ -126,13 +130,15 @@ const LeaveDetailsScreen = ({route}) => {
           data={leave.comments}
         />
       </ScrollView>
-      <CircleButton
-        style={styles.floatingButton}
-        iconName="pencil-fill"
-        onPress={() =>
-          navigation.navigate('LeaveFormScreen', {leaveId: leave.id})
-        }
-      />
+      {!readonly && (
+        <CircleButton
+          style={styles.floatingButton}
+          iconName="pencil-fill"
+          onPress={() =>
+            navigation.navigate('LeaveFormScreen', {leaveId: leave.id})
+          }
+        />
+      )}
     </Screen>
   );
 };
