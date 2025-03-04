@@ -41,6 +41,7 @@ const RequestListScreen = ({navigation}) => {
     isListEndPurchaseRequest,
     purchaseRequestList,
   } = useSelector(state => state.purchase_purchaseRequest);
+  const {user} = useSelector(state => state.user);
 
   const [selectedStatus, setSelectedStatus] = useState([]);
   const [supplier, setSupplier] = useState();
@@ -54,8 +55,9 @@ const RequestListScreen = ({navigation}) => {
     () => ({
       statusList: selectedStatus,
       supplier: supplier,
+      companyId: user.activeCompany?.id,
     }),
-    [selectedStatus, supplier],
+    [selectedStatus, supplier, user.activeCompany?.id],
   );
 
   return (
