@@ -21,6 +21,7 @@ import {
   useDispatch,
   useModules,
   useNavigation,
+  usePermitted,
   useSelector,
   useTranslator,
   useTypes,
@@ -40,6 +41,12 @@ const SaleOrderBottomButton = ({saleOrder}: SaleOrderBottomButtonProps) => {
   const navigation = useNavigation();
   const dispatch = useDispatch();
   const {checkModule} = useModules();
+  const {readonly: readonlySaleOrder} = usePermitted({
+    modelName: 'com.axelor.apps.sale.db.SaleOrder',
+  });
+  const {hidden: hiddenStockMove} = usePermitted({
+    modelName: 'com.axelor.apps.stock.db.StockMove',
+  });
 
   const {user} = useSelector(state => state.user);
   const {customerDelivery} = useSelector(
@@ -68,7 +75,10 @@ const SaleOrderBottomButton = ({saleOrder}: SaleOrderBottomButtonProps) => {
     );
   }, [dispatch, saleOrder, user.activeCompany?.id]);
 
-  if (saleOrder.statusSelect === SaleOrder?.statusSelect.Finalized) {
+  if (
+    !readonlySaleOrder &&
+    saleOrder.statusSelect === SaleOrder?.statusSelect.Finalized
+  ) {
     return (
       <Button
         title={I18n.t('Base_Confirm')}
@@ -79,6 +89,7 @@ const SaleOrderBottomButton = ({saleOrder}: SaleOrderBottomButtonProps) => {
   }
 
   if (
+    !hiddenStockMove &&
     saleOrder.statusSelect === SaleOrder?.statusSelect.Confirmed &&
     checkModule('app-stock') &&
     customerDelivery?.id != null

@@ -56,6 +56,9 @@ const ActiveCartScreen = ({}) => {
   const {readonly} = usePermitted({
     modelName: 'com.axelor.apps.sale.db.Cart',
   });
+  const {canCreate: canCreateLine} = usePermitted({
+    modelName: 'com.axelor.apps.sale.db.CartLine',
+  });
 
   const {user} = useSelector(state => state.user);
   const {mobileSettings} = useSelector((state: any) => state.appConfig);
@@ -164,13 +167,15 @@ const ActiveCartScreen = ({}) => {
         )
       }>
       <SearchListView
-        actionList={[
-          {
-            iconName: 'plus-lg',
-            title: I18n.t('Sale_AddProduct'),
-            onPress: () => navigation.navigate('CartLineDetailsScreen'),
-          },
-        ]}
+        actionList={
+          canCreateLine && [
+            {
+              iconName: 'plus-lg',
+              title: I18n.t('Sale_AddProduct'),
+              onPress: () => navigation.navigate('CartLineDetailsScreen'),
+            },
+          ]
+        }
         list={carLineList}
         loading={loading}
         moreLoading={moreLoading}

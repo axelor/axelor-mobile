@@ -35,8 +35,8 @@ interface CatalogActionCardProps {
 const CatalogActionCard = ({style, product}: CatalogActionCardProps) => {
   const I18n = useTranslator();
   const dispatch = useDispatch();
-  const {readonly} = usePermitted({
-    modelName: 'com.axelor.apps.sale.db.Cart',
+  const {canCreate} = usePermitted({
+    modelName: 'com.axelor.apps.sale.db.CartLine',
   });
 
   const {activeCart} = useSelector((state: any) => state.sale_cart);
@@ -69,7 +69,7 @@ const CatalogActionCard = ({style, product}: CatalogActionCardProps) => {
               product?.productVariantConfig == null
                 ? () => handleAddProduct(product.id)
                 : () => setAlertVisible(true),
-            hidden: readonly,
+            hidden: !canCreate,
           },
         ]}
         translator={I18n.t}>

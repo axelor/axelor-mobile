@@ -107,7 +107,7 @@ const CartLineActionCard = ({
             iconName: 'palette2',
             helper: I18n.t('Sale_SeeVariants'),
             onPress: () => setAlertVisible(true),
-            hidden: cartLine.product?.productVariantConfig == null,
+            hidden: readonly || cartLine.product?.productVariantConfig == null,
           },
           {
             iconName: 'trash3-fill',

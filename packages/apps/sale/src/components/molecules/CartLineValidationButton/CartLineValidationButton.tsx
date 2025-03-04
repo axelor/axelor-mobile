@@ -16,7 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import React, {useCallback} from 'react';
+import React, {useCallback, useMemo} from 'react';
 import {View, StyleSheet} from 'react-native';
 import {
   useDispatch,
@@ -47,7 +47,7 @@ const CartLineValidationButton = ({
   const I18n = useTranslator();
   const navigation = useNavigation();
   const dispatch = useDispatch();
-  const {canDelete, readonly} = usePermitted({
+  const {canCreate, canDelete, readonly} = usePermitted({
     modelName: 'com.axelor.apps.sale.db.CartLine',
   });
 
@@ -94,26 +94,32 @@ const CartLineValidationButton = ({
     productId,
   ]);
 
-  if (!canDelete && readonly) {
-    return null;
-  }
+  const displayDeleteBtn = useMemo(
+    () => !isCreation && canDelete,
+    [canDelete, isCreation],
+  );
+
+  const displaySaveBtn = useMemo(
+    () => (isCreation && canCreate) || !readonly,
+    [canCreate, isCreation, readonly],
+  );
 
   return (
     <View style={styles.buttonContainer}>
-      {canDelete && !isCreation && (
+      {displayDeleteBtn && (
         <Button
           title={I18n.t('Sale_Delete')}
           onPress={_deleteCartLine}
-          width="45%"
+          width={displaySaveBtn ? '45%' : '90%'}
           color={Colors.errorColor}
           iconName="trash3-fill"
         />
       )}
-      {!readonly && (
+      {displaySaveBtn && (
         <Button
           title={I18n.t('Base_Validate')}
           onPress={isCreation ? _addCartLine : _updateCartLine}
-          width={isCreation ? '90%' : '45%'}
+          width={displayDeleteBtn ? '45%' : '90%'}
           iconName="check-lg"
         />
       )}
