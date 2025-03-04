@@ -49,12 +49,19 @@ const SupplierSearchBar = ({
     moreLoadingSupplier,
     isListEndSupplier,
   } = useSelector(state => state.purchase_supplier);
+  const {user} = useSelector(state => state.user);
 
   const fetchSupplierAPI = useCallback(
     ({page = 0, searchValue}) => {
-      dispatch((searchSupplier as any)({page, searchValue}));
+      dispatch(
+        (searchSupplier as any)({
+          page,
+          searchValue,
+          companyId: user.activeCompany?.id,
+        }),
+      );
     },
-    [dispatch],
+    [dispatch, user.activeCompany?.id],
   );
 
   return (
