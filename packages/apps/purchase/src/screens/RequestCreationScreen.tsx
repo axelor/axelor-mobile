@@ -144,7 +144,7 @@ const RequestCreationScreen = () => {
     return (
       <Label
         style={styles.label}
-        type="info"
+        type="danger"
         message={I18n.t('Base_NoPermForCreate')}
       />
     );

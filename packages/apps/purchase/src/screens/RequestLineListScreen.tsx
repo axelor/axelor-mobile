@@ -67,17 +67,15 @@ const RequestLineListScreen = ({navigation}) => {
       <SearchListView
         topFixedItems={<RequestHeader />}
         actionList={
-          canCreate
-            ? [
-                {
-                  iconName: 'plus',
-                  title: I18n.t('Purchase_AddProduct'),
-                  onPress: () => {
-                    navigation.navigate('RequestLineFormScreen');
-                  },
-                },
-              ]
-            : []
+          canCreate && [
+            {
+              iconName: 'plus',
+              title: I18n.t('Purchase_AddProduct'),
+              onPress: () => {
+                navigation.navigate('RequestLineFormScreen');
+              },
+            },
+          ]
         }
         chipComponent={
           <ChipSelect

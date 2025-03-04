@@ -24,7 +24,7 @@ import {
   usePriceFormat,
   useThemeColor,
 } from '@axelor/aos-mobile-ui';
-import {useNavigation, usePermitted} from '@axelor/aos-mobile-core';
+import {useNavigation} from '@axelor/aos-mobile-core';
 
 interface RequestLineCardProps {
   style?: any;
@@ -46,9 +46,6 @@ const RequestLineCard = ({
   const priceFormat = usePriceFormat();
   const navigation = useNavigation();
   const Colors = useThemeColor();
-  const {readonly} = usePermitted({
-    modelName: 'com.axelor.apps.purchase.db.PurchaseRequestLine',
-  });
 
   const borderStyle = useMemo(() => {
     if (newProduct) {
@@ -59,10 +56,9 @@ const RequestLineCard = ({
   return (
     <ObjectCard
       onPress={() => {
-        !readonly &&
-          navigation.navigate('RequestLineFormScreen', {
-            purchaseRequestLineId: id,
-          });
+        navigation.navigate('RequestLineFormScreen', {
+          purchaseRequestLineId: id,
+        });
       }}
       style={[borderStyle, style]}
       leftContainerFlex={3}
