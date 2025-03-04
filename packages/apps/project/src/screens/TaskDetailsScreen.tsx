@@ -90,7 +90,8 @@ const TaskDetailsScreen = ({navigation, route}) => {
         iconName: 'clock-history',
         color: Colors.primaryColor,
         hidden:
-          (!canCreateTimesheetLine && !projectTask?.project?.manageTimeSpent) ||
+          !canCreateTimesheetLine ||
+          !projectTask?.project?.manageTimeSpent ||
           user.employee?.timesheetImputationSelect ===
             getImputationMode()?.ManufOrder,
         viewComponent: (
