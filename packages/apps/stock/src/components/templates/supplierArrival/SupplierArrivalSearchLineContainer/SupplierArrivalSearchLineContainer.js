@@ -28,9 +28,9 @@ import {
 } from '@axelor/aos-mobile-core';
 import {SearchLineContainer} from '../../../organisms';
 import {SupplierArrivalLineActionCard} from '../../../templates';
-import {showLine} from '../../../../utils/line-navigation';
 import {fetchSupplierArrivalLines} from '../../../../features/supplierArrivalLineSlice';
-import {useSupplierLinesWithRacks} from '../../../../hooks';
+import {useLineHandler, useSupplierLinesWithRacks} from '../../../../hooks';
+import {LineVerification} from '../../../../types';
 
 const scanKey = 'trackingNumber-or-product_supplier-arrival-details';
 
@@ -45,6 +45,7 @@ const SupplierArrivalSearchLineContainer = ({}) => {
   const {canCreate} = usePermitted({
     modelName: 'com.axelor.apps.stock.db.StockMoveLine',
   });
+  const {showLine} = useLineHandler();
 
   const {mobileSettings} = useSelector(state => state.appConfig);
   const {supplierArrival} = useSelector(state => state.supplierArrival);
@@ -63,21 +64,17 @@ const SupplierArrivalSearchLineContainer = ({}) => {
     });
   };
 
-  const handleShowLine = (
-    item,
-    skipVerification = !mobileSettings?.isVerifySupplierArrivalLineEnabled,
-  ) => {
-    showLine({
-      item: {name: 'supplierArrival', data: supplierArrival},
-      itemLine: {name: 'supplierArrivalLine', data: item},
-      lineDetailsScreen: 'SupplierArrivalLineDetailScreen',
-      selectTrackingScreen: 'SupplierArrivalSelectTrackingScreen',
-      selectProductScreen: 'SupplierArrivalSelectProductScreen',
-      skipVerification,
-      skipTrackingNumberVerification: true,
-      navigation,
-    });
-  };
+  const handleShowLine = useCallback(
+    (item, skipVerification = undefined) => {
+      showLine({
+        move: supplierArrival,
+        line: item,
+        skipVerification,
+        type: LineVerification.type.incoming,
+      });
+    },
+    [showLine, supplierArrival],
+  );
 
   const handleLineSearch = item => {
     handleShowLine(item, true);

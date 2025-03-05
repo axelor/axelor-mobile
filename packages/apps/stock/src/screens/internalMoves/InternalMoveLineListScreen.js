@@ -16,7 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import React, {useCallback, useState, useMemo} from 'react';
+import React, {useCallback, useMemo, useState} from 'react';
 import {ChipSelect, Screen, useThemeColor} from '@axelor/aos-mobile-ui';
 import {
   SearchListView,
@@ -25,19 +25,18 @@ import {
 } from '@axelor/aos-mobile-core';
 import {InternalMoveLineCard, StockMoveHeader} from '../../components';
 import {fetchInternalMoveLines} from '../../features/internalMoveLineSlice';
-import {StockMove, StockMoveLine} from '../../types';
-import {showLine} from '../../utils/line-navigation';
+import {LineVerification, StockMove, StockMoveLine} from '../../types';
 import {displayLine} from '../../utils/displayers';
-import {useInternalLinesWithRacks} from '../../hooks';
+import {useInternalLinesWithRacks, useLineHandler} from '../../hooks';
 
 const scanKey = 'trackingNumber-or-product_internal-move-line-list';
 
-const InternalMoveLineListScreen = ({route, navigation}) => {
+const InternalMoveLineListScreen = ({route}) => {
   const internalMove = route.params.internalMove;
   const Colors = useThemeColor();
   const I18n = useTranslator();
+  const {showLine} = useLineHandler();
 
-  const {mobileSettings} = useSelector(state => state.appConfig);
   const {internalMoveLineList} = useInternalLinesWithRacks(internalMove);
   const {loadingIMLinesList, moreLoading, isListEnd} = useSelector(
     state => state.internalMoveLine,
@@ -45,20 +44,17 @@ const InternalMoveLineListScreen = ({route, navigation}) => {
 
   const [selectedStatus, setSelectedStatus] = useState([]);
 
-  const handleShowLine = (
-    item,
-    skipVerification = !mobileSettings?.isVerifyInternalMoveLineEnabled,
-  ) => {
-    showLine({
-      item: {name: 'internalMove', data: internalMove},
-      itemLine: {name: 'internalMoveLine', data: item},
-      lineDetailsScreen: 'InternalMoveLineDetailsScreen',
-      selectTrackingScreen: 'InternalMoveSelectTrackingScreen',
-      selectProductScreen: 'InternalMoveSelectProductScreen',
-      skipVerification,
-      navigation,
-    });
-  };
+  const handleShowLine = useCallback(
+    (item, skipVerification = undefined) => {
+      showLine({
+        move: internalMove,
+        line: item,
+        skipVerification,
+        type: LineVerification.type.internal,
+      });
+    },
+    [internalMove, showLine],
+  );
 
   const handleLineSearch = item => {
     handleShowLine(item, true);

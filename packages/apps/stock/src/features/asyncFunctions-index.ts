@@ -62,6 +62,7 @@ export {
   fetchStockQtyIndicator,
 } from './productIndicatorsSlice';
 export {
+  fetchProductCompanyWithId,
   fetchProductWithId,
   searchProducts,
   updateProductLocker,

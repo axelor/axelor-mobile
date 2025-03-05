@@ -39,10 +39,10 @@ import {
   InternalMoveLineTrackingNumberSelect,
   StockLocationSearchBar,
 } from '../../components';
-import {fetchProductWithId} from '../../features/productSlice';
 import {fetchInternalMoveLine} from '../../features/internalMoveLineSlice';
 import {fetchProductIndicators} from '../../features/productIndicatorsSlice';
 import {StockMove as StockMoveType, StockMoveLine} from '../../types';
+import {useProductByCompany} from '../../hooks';
 
 const fromScanKey = 'from-stock-location_internal-move-line-update';
 const toScanKey = 'to-stock-location_internal-move-line-update';
@@ -58,10 +58,11 @@ const InternalMoveLineDetailsScreen = ({navigation, route}) => {
   const {activeCompany} = useSelector(state => state.user.user);
   const {stock: stockConfig} = useSelector(state => state.appConfig);
   const {productIndicators} = useSelector(state => state.productIndicators);
-  const {productFromId: product} = useSelector(state => state.product);
   const {internalMoveLine, loadingInternalMoveLine} = useSelector(
     state => state.internalMoveLine,
   );
+
+  const product = useProductByCompany(internalMoveLine?.product?.id);
 
   const [fromStockLocation, setFromStockLocation] = useState(
     internalMoveLine?.fromStockLocation,
@@ -115,12 +116,6 @@ const InternalMoveLineDetailsScreen = ({navigation, route}) => {
   useEffect(() => {
     getInternalMoveLine();
   }, [getInternalMoveLine]);
-
-  useEffect(() => {
-    if (!isEmpty(internalMoveLine)) {
-      dispatch(fetchProductWithId(internalMoveLine?.product?.id));
-    }
-  }, [dispatch, internalMoveLine]);
 
   useEffect(() => {
     if (!isEmpty(product)) {

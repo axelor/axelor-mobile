@@ -22,8 +22,9 @@ import {
   handlerApiCall,
 } from '@axelor/aos-mobile-core';
 import {
-  searchProductsFilter,
+  fetchProductCompanyWithId as _fetchProductCompanyWithId,
   searchProductWithId,
+  searchProductsFilter,
   updateLocker,
 } from '../api/product-api';
 
@@ -66,6 +67,19 @@ export const updateProductLocker = createAsyncThunk(
   },
 );
 
+export const fetchProductCompanyWithId = createAsyncThunk(
+  'stock_product/fetchProductCompanyWithId',
+  async function (data, {getState}) {
+    return handlerApiCall({
+      fetchFunction: _fetchProductCompanyWithId,
+      data,
+      action: 'Stock_SliceAction_FetchProductCompanyWithId',
+      getState,
+      responseOptions: {isArrayResponse: false},
+    });
+  },
+);
+
 const initialState = {
   loadingProduct: false,
   moreLoadingProduct: false,
@@ -77,6 +91,9 @@ const initialState = {
 
   loadingProductLocker: false,
   updateResponde: {},
+
+  loadingCompanyProduct: false,
+  productCompany: {},
 };
 
 const productSlice = createSlice({
@@ -102,6 +119,13 @@ const productSlice = createSlice({
     builder.addCase(updateProductLocker.fulfilled, (state, action) => {
       state.loadingProductLocker = false;
       state.updateResponde = action.payload;
+    });
+    builder.addCase(fetchProductCompanyWithId.pending, state => {
+      state.loadingCompanyProduct = true;
+    });
+    builder.addCase(fetchProductCompanyWithId.fulfilled, (state, action) => {
+      state.loadingCompanyProduct = false;
+      state.productCompany = action.payload;
     });
   },
 });

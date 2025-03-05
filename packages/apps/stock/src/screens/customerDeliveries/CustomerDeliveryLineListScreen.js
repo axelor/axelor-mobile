@@ -26,20 +26,23 @@ import {
 } from '@axelor/aos-mobile-core';
 import {CustomerDeliveryLineCard, StockMoveHeader} from '../../components';
 import {fetchCustomerDeliveryLines} from '../../features/customerDeliveryLineSlice';
-import {StockMove as StockMoveType, StockMoveLine} from '../../types';
-import {showLine} from '../../utils/line-navigation';
-import {useCustomerLinesWithRacks} from '../../hooks';
+import {
+  StockMove as StockMoveType,
+  StockMoveLine,
+  LineVerification,
+} from '../../types';
+import {useCustomerLinesWithRacks, useLineHandler} from '../../hooks';
 import {displayLine} from '../../utils/displayers';
 
 const scanKey = 'trackingNumber-or-product_customer-delivery-line-list';
 
-const CustomerDeliveryLineListScreen = ({route, navigation}) => {
+const CustomerDeliveryLineListScreen = ({route}) => {
   const customerDelivery = route.params.customerDelivery;
   const Colors = useThemeColor();
   const I18n = useTranslator();
   const {StockMove} = useTypes();
+  const {showLine} = useLineHandler();
 
-  const {mobileSettings} = useSelector(state => state.appConfig);
   const {customerDeliveryLineList} =
     useCustomerLinesWithRacks(customerDelivery);
   const {loadingCDLinesList, moreLoading, isListEnd} = useSelector(
@@ -48,20 +51,17 @@ const CustomerDeliveryLineListScreen = ({route, navigation}) => {
 
   const [selectedStatus, setSelectedStatus] = useState([]);
 
-  const handleShowLine = (
-    item,
-    skipVerification = !mobileSettings?.isVerifyCustomerDeliveryLineEnabled,
-  ) => {
-    showLine({
-      item: {name: 'customerDelivery', data: customerDelivery},
-      itemLine: {name: 'customerDeliveryLine', data: item},
-      lineDetailsScreen: 'CustomerDeliveryLineDetailScreen',
-      selectTrackingScreen: 'CustomerDeliverySelectTrackingScreen',
-      selectProductScreen: 'CustomerDeliverySelectProductScreen',
-      skipVerification,
-      navigation,
-    });
-  };
+  const handleShowLine = useCallback(
+    (item, skipVerification = undefined) => {
+      showLine({
+        move: customerDelivery,
+        line: item,
+        skipVerification,
+        type: LineVerification.type.outgoing,
+      });
+    },
+    [customerDelivery, showLine],
+  );
 
   const handleLineSearch = item => {
     handleShowLine(item, true);

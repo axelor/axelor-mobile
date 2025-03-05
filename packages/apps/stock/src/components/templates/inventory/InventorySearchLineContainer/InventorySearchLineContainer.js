@@ -28,8 +28,9 @@ import {
 } from '@axelor/aos-mobile-core';
 import {SearchLineContainer} from '../../../organisms';
 import {InventoryLineCard} from '../../../templates';
-import {showLine} from '../../../../utils/line-navigation';
 import {fetchInventoryLines} from '../../../../features/inventoryLineSlice';
+import {useLineHandler} from '../../../../hooks';
+import {LineVerification} from '../../../../types';
 
 const scanKey = 'trackingNumber-or-product_inventory-details';
 
@@ -44,8 +45,8 @@ const InventorySearchLineContainer = ({}) => {
   const {canCreate} = usePermitted({
     modelName: 'com.axelor.apps.stock.db.InventoryLine',
   });
+  const {showLine} = useLineHandler();
 
-  const {mobileSettings} = useSelector(state => state.appConfig);
   const {inventory} = useSelector(state => state.inventory);
   const {inventoryLineList, totalNumberLines} = useSelector(
     state => state.inventoryLine,
@@ -63,21 +64,17 @@ const InventorySearchLineContainer = ({}) => {
     });
   };
 
-  const handleShowLine = (
-    item,
-    skipVerification = !mobileSettings?.isVerifyInventoryLineEnabled,
-  ) => {
-    showLine({
-      item: {name: 'inventory', data: inventory},
-      itemLine: {name: 'inventoryLine', data: item},
-      lineDetailsScreen: 'InventoryLineDetailsScreen',
-      selectTrackingScreen: 'InventorySelectTrackingScreen',
-      selectProductScreen: 'InventorySelectProductScreen',
-      detailStatus: Inventory?.statusSelect.Validated,
-      skipVerification,
-      navigation,
-    });
-  };
+  const handleShowLine = useCallback(
+    (item, skipVerification = undefined) => {
+      showLine({
+        move: inventory,
+        line: item,
+        skipVerification,
+        type: LineVerification.type.inventory,
+      });
+    },
+    [inventory, showLine],
+  );
 
   const handleLineSearch = item => {
     handleShowLine(item, true);

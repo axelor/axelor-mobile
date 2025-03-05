@@ -16,7 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import React, {useCallback, useState, useMemo} from 'react';
+import React, {useCallback, useMemo, useState} from 'react';
 import {ChipSelect, Screen, useThemeColor} from '@axelor/aos-mobile-ui';
 import {
   SearchListView,
@@ -26,8 +26,9 @@ import {
 } from '@axelor/aos-mobile-core';
 import {InventoryHeader, InventoryLineCard} from '../../components';
 import {fetchInventoryLines} from '../../features/inventoryLineSlice';
-import {showLine} from '../../utils/line-navigation';
 import {displayLine} from '../../utils/displayers';
+import {useLineHandler} from '../../hooks';
+import {LineVerification} from '../../types';
 
 const STATUS = {
   done: 'doneStatus',
@@ -37,33 +38,29 @@ const STATUS = {
 
 const scanKey = 'trackingNumber-or-product_inventory-line-list';
 
-const InventoryLineListScreen = ({route, navigation}) => {
+const InventoryLineListScreen = ({route}) => {
   const inventory = route.params.inventory;
   const Colors = useThemeColor();
   const I18n = useTranslator();
   const {Inventory} = useTypes();
+  const {showLine} = useLineHandler();
 
-  const {mobileSettings} = useSelector(state => state.appConfig);
   const {loadingInventoryLines, moreLoading, isListEnd, inventoryLineList} =
     useSelector(state => state.inventoryLine);
 
   const [selectedStatus, setSelectedStatus] = useState([]);
 
-  const handleShowLine = (
-    item,
-    skipVerification = !mobileSettings?.isVerifyInventoryLineEnabled,
-  ) => {
-    showLine({
-      item: {name: 'inventory', data: inventory},
-      itemLine: {name: 'inventoryLine', data: item},
-      lineDetailsScreen: 'InventoryLineDetailsScreen',
-      selectTrackingScreen: 'InventorySelectTrackingScreen',
-      selectProductScreen: 'InventorySelectProductScreen',
-      detailStatus: Inventory?.statusSelect.Validated,
-      skipVerification,
-      navigation,
-    });
-  };
+  const handleShowLine = useCallback(
+    (item, skipVerification = undefined) => {
+      showLine({
+        move: inventory,
+        line: item,
+        skipVerification,
+        type: LineVerification.type.inventory,
+      });
+    },
+    [inventory, showLine],
+  );
 
   const handleLineSearch = item => {
     handleShowLine(item, true);

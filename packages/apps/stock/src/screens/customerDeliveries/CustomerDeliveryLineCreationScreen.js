@@ -22,7 +22,7 @@ import {
   KeyboardAvoidingScrollView,
   Screen,
 } from '@axelor/aos-mobile-ui';
-import {useDispatch, useSelector} from '@axelor/aos-mobile-core';
+import {useSelector} from '@axelor/aos-mobile-core';
 import {
   AvailableProductsSearchBar,
   CustomerDeliveryLineCreationButton,
@@ -32,7 +32,7 @@ import {
   StockMoveHeader,
 } from '../../components';
 import StockMove from '../../types/stock-move';
-import {fetchProductWithId} from '../../features/productSlice';
+import {useProductByCompany} from '../../hooks';
 
 const stockLocationScanKey =
   'from-stock-location_customer-delivery-line-creation';
@@ -46,9 +46,7 @@ const CREATION_STEP = {
 
 const CustomerDeliveryLineCreationScreen = ({route, navigation}) => {
   const customerDelivery = route.params.customerDelivery;
-  const dispatch = useDispatch();
 
-  const {productFromId: product} = useSelector(state => state.product);
   const {stock: stockConfig} = useSelector(state => state.appConfig);
 
   const [fromStockLocation, setFromStockLocation] = useState(
@@ -59,6 +57,9 @@ const CustomerDeliveryLineCreationScreen = ({route, navigation}) => {
   const [currentStep, setCurrentStep] = useState(
     CREATION_STEP.product_trackingNumber,
   );
+  const [productId, setProductId] = useState(null);
+
+  const product = useProductByCompany(productId);
 
   const handleFromStockLocationChange = useCallback(
     _value => {
@@ -76,7 +77,7 @@ const CustomerDeliveryLineCreationScreen = ({route, navigation}) => {
     if (item != null) {
       const _product = item?.product;
 
-      dispatch(fetchProductWithId(_product?.id));
+      setProductId(_product?.id);
       setLocationLine(item);
       handleNextStep(CREATION_STEP.product_trackingNumber);
     } else {

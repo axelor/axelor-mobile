@@ -38,9 +38,9 @@ import {
   StockCorrectionHtmlInput,
   StockCorrectionTrackingNumberSelect,
 } from '../../components';
-import {fetchProductWithId} from '../../features/productSlice';
 import {fetchProductIndicators} from '../../features/productIndicatorsSlice';
 import {fetchStockCorrection} from '../../features/stockCorrectionSlice';
+import {useProductByCompany} from '../../hooks';
 
 const StockCorrectionDetailsScreen = ({route}) => {
   const stockCorrectionId = route.params.stockCorrectionId;
@@ -55,7 +55,8 @@ const StockCorrectionDetailsScreen = ({route}) => {
   );
   const {activeCompany} = useSelector(state => state.user.user);
   const {productIndicators} = useSelector(state => state.productIndicators);
-  const {productFromId: product} = useSelector(state => state.product);
+
+  const product = useProductByCompany(stockCorrection?.product.id);
 
   const [saveStatus, setSaveStatus] = useState(true);
   const [comments, setComments] = useState();
@@ -85,10 +86,6 @@ const StockCorrectionDetailsScreen = ({route}) => {
   }, [getStockCorrection]);
 
   useEffect(() => {
-    if (stockCorrection != null) {
-      dispatch(fetchProductWithId(stockCorrection?.product.id));
-    }
-
     if (stockCorrection != null) {
       dispatch(
         fetchProductIndicators({
