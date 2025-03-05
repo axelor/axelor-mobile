@@ -65,7 +65,7 @@ export const authModule: Module = {
   requiredConfig: ['AppBase', 'AppMobileSettings'],
   moduleRegister: async (userId: number) => {
     const user = await getLoggedUser(userId)
-      .then(res => res?.data?.data)
+      .then(res => res?.data?.data?.[0])
       .catch(() => ({}));
 
     await registerDashboardModule(user);
