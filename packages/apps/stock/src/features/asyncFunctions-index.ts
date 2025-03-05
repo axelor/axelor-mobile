@@ -59,6 +59,7 @@ export {
   fetchProductIndicators,
 } from './productIndicatorsSlice';
 export {
+  fetchProductCompanyWithId,
   fetchProductWithId,
   searchProducts,
   updateProductLocker,

@@ -38,9 +38,9 @@ import {
   CustomerDeliveryLineTrackingNumberSelect,
   StockLocationSearchBar,
 } from '../../components';
-import {fetchProductWithId} from '../../features/productSlice';
 import {StockMove as StockMoveType, StockMoveLine} from '../../types';
 import {fetchCustomerDeliveryLine} from '../../features/customerDeliveryLineSlice';
+import {useProductByCompany} from '../../hooks';
 
 const stockLocationScanKey =
   'from-stock-location_customer-delivery-line-update';
@@ -55,9 +55,12 @@ const CustomerDeliveryLineDetailScreen = ({route, navigation}) => {
   });
 
   const {stock: stockConfig} = useSelector(state => state.appConfig);
-  const {productFromId: product} = useSelector(state => state.product);
   const {customerDeliveryLine, loadingCustomerDeliveryLine} = useSelector(
     state => state.customerDeliveryLine,
+  );
+
+  const product = useProductByCompany(
+    productId ?? customerDeliveryLine?.product?.id,
   );
 
   const [fromStockLocation, setFromStockLocation] = useState();
@@ -86,12 +89,6 @@ const CustomerDeliveryLineDetailScreen = ({route, navigation}) => {
     );
     setFromStockLocation(customerDeliveryLine?.fromStockLocation);
   }, [customerDeliveryLine, customerDelivery]);
-
-  useEffect(() => {
-    dispatch(
-      fetchProductWithId(productId ?? customerDeliveryLine?.product?.id),
-    );
-  }, [dispatch, productId, customerDeliveryLine]);
 
   const handleShowProduct = () => {
     navigation.navigate('ProductStockDetailsScreen', {

@@ -41,11 +41,11 @@ import {
   StockLocationSearchBar,
   SupplierArrivalTrackingNumberSelect,
 } from '../../components';
-import {fetchProductWithId} from '../../features/productSlice';
 import {fetchProductForSupplier} from '../../features/supplierCatalogSlice';
 import {fetchSupplierArrivalLine} from '../../features/supplierArrivalLineSlice';
 import {updateStockMoveLineTrackingNumber} from '../../features/trackingNumberSlice';
 import {StockMove as StockMoveType, StockMoveLine} from '../../types';
+import {useProductByCompany} from '../../hooks';
 
 const stockLocationScanKey = 'to-stock-location_supplier-arrival-line-update';
 
@@ -60,9 +60,12 @@ const SupplierArrivalLineDetailScreen = ({route, navigation}) => {
   });
 
   const {stock: stockConfig} = useSelector(state => state.appConfig);
-  const {productFromId: product} = useSelector(state => state.product);
   const {loadingSupplierArrivalLine, supplierArrivalLine} = useSelector(
     state => state.supplierArrivalLine,
+  );
+
+  const product = useProductByCompany(
+    supplierArrivalLine.product?.id ?? productId,
   );
 
   const trackingNumber = useMemo(
@@ -107,7 +110,6 @@ const SupplierArrivalLineDetailScreen = ({route, navigation}) => {
   ]);
 
   useEffect(() => {
-    dispatch(fetchProductWithId(supplierArrivalLine.product?.id ?? productId));
     dispatch(
       fetchProductForSupplier({
         supplierId: supplierArrival?.partner?.id,

@@ -18,5 +18,6 @@
 
 export {default as Inventory} from './inventory';
 export {default as InternalMoveCreation} from './internal-move-creation';
+export {default as LineVerification} from './line-verification';
 export {default as StockMoveLine} from './stock-move-line';
 export {default as StockMove} from './stock-move';

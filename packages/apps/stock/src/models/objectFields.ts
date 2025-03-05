@@ -163,6 +163,10 @@ export const stock_modelAPI: ObjectFields = {
     parentProduct: schemaContructor.subObject('fileName'),
     productVariant: schemaContructor.subObject('name'),
   }),
+  stock_productCompany: schemaContructor.object({
+    product: schemaContructor.subObject(),
+    trackingNumberConfiguration: schemaContructor.subObject(),
+  }),
   stock_stockCorrection: schemaContructor.object({
     statusSelect: schemaContructor.number(),
     product: schemaContructor.subObject('fullName'),

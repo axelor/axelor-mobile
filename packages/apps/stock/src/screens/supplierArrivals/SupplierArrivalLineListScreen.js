@@ -16,7 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import React, {useCallback, useState, useMemo} from 'react';
+import React, {useCallback, useMemo, useState} from 'react';
 import {ChipSelect, Screen, useThemeColor} from '@axelor/aos-mobile-ui';
 import {
   SearchListView,
@@ -25,19 +25,18 @@ import {
 } from '@axelor/aos-mobile-core';
 import {SupplierArrivalLineCard, StockMoveHeader} from '../../components';
 import {fetchSupplierArrivalLines} from '../../features/supplierArrivalLineSlice';
-import {StockMove, StockMoveLine} from '../../types';
-import {showLine} from '../../utils/line-navigation';
-import {useSupplierLinesWithRacks} from '../../hooks';
+import {LineVerification, StockMove, StockMoveLine} from '../../types';
+import {useLineHandler, useSupplierLinesWithRacks} from '../../hooks';
 import {displayLine} from '../../utils/displayers';
 
 const scanKey = 'trackingNumber-or-product_supplier-arrival-line-list';
 
-const SupplierArrivalLineListScreen = ({route, navigation}) => {
+const SupplierArrivalLineListScreen = ({route}) => {
   const supplierArrival = route.params.supplierArrival;
   const Colors = useThemeColor();
   const I18n = useTranslator();
+  const {showLine} = useLineHandler();
 
-  const {mobileSettings} = useSelector(state => state.appConfig);
   const {supplierArrivalLineList} = useSupplierLinesWithRacks(supplierArrival);
   const {loadingSALinesList, moreLoading, isListEnd} = useSelector(
     state => state.supplierArrivalLine,
@@ -45,21 +44,17 @@ const SupplierArrivalLineListScreen = ({route, navigation}) => {
 
   const [selectedStatus, setSelectedStatus] = useState([]);
 
-  const handleShowLine = (
-    item,
-    skipVerification = !mobileSettings?.isVerifySupplierArrivalLineEnabled,
-  ) => {
-    showLine({
-      item: {name: 'supplierArrival', data: supplierArrival},
-      itemLine: {name: 'supplierArrivalLine', data: item},
-      lineDetailsScreen: 'SupplierArrivalLineDetailScreen',
-      selectTrackingScreen: 'SupplierArrivalSelectTrackingScreen',
-      selectProductScreen: 'SupplierArrivalSelectProductScreen',
-      skipTrackingNumberVerification: true,
-      skipVerification,
-      navigation,
-    });
-  };
+  const handleShowLine = useCallback(
+    (item, skipVerification = undefined) => {
+      showLine({
+        move: supplierArrival,
+        line: item,
+        skipVerification,
+        type: LineVerification.type.incoming,
+      });
+    },
+    [showLine, supplierArrival],
+  );
 
   const handleLineSearch = item => {
     handleShowLine(item, true);

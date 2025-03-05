@@ -39,8 +39,8 @@ import {
   InventoryLineTrackingNumberSelect,
 } from '../../components';
 import {fetchInventoryLine} from '../../features/inventoryLineSlice';
-import {fetchProductWithId} from '../../features/productSlice';
 import {Inventory as InventoryType} from '../../types';
+import {useProductByCompany} from '../../hooks';
 
 const InventoryLineDetailsScreen = ({route, navigation}) => {
   const {inventory, inventoryLineId, productId} = route.params;
@@ -51,9 +51,12 @@ const InventoryLineDetailsScreen = ({route, navigation}) => {
     modelName: 'com.axelor.apps.stock.db.InventoryLine',
   });
 
-  const {productFromId} = useSelector(state => state.product);
   const {inventoryLine: _inventoryLine, loadingInventoryLine} = useSelector(
     state => state.inventoryLine,
+  );
+
+  const productFromId = useProductByCompany(
+    productId ?? inventoryLine?.product?.id,
   );
 
   const inventoryLine = useMemo(
@@ -86,12 +89,6 @@ const InventoryLineDetailsScreen = ({route, navigation}) => {
     setDescription(inventoryLine?.description);
     setLoading(false);
   }, [inventoryLine]);
-
-  useEffect(() => {
-    if (productFromId?.id !== productId) {
-      dispatch(fetchProductWithId(productId ?? inventoryLine?.product?.id));
-    }
-  }, [dispatch, productId, inventoryLine, productFromId]);
 
   const handleShowProduct = () => {
     navigation.navigate('ProductStockDetailsScreen', {

@@ -1,0 +1,5 @@
+{
+  "title": "Multi company: manage product by company for tracking number configuration",
+  "type": "refactor",
+  "packages": "stock"
+}

@@ -54,6 +54,7 @@ export {
 } from './inventory-line-api';
 export {searchClientsFilter, searchSuppliersFilter} from './partner-api';
 export {
+  fetchProductCompanyWithId as fetchProductCompanyWithIdApi,
   fetchVariantAttributes as fetchVariantAttributesApi,
   fetchVariants as fetchVariantsApi,
   getProductStockIndicators as getProductStockIndicatorsApi,

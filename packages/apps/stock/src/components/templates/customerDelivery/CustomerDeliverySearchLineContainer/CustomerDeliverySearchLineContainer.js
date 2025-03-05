@@ -28,10 +28,9 @@ import {
 } from '@axelor/aos-mobile-core';
 import {CustomerDeliveryLineCard} from '../../../templates';
 import {SearchLineContainer} from '../../../organisms';
-import {showLine} from '../../../../utils/line-navigation';
-import {StockMoveLine} from '../../../../types';
+import {LineVerification, StockMoveLine} from '../../../../types';
 import {fetchCustomerDeliveryLines} from '../../../../features/customerDeliveryLineSlice';
-import {useCustomerLinesWithRacks} from '../../../../hooks';
+import {useCustomerLinesWithRacks, useLineHandler} from '../../../../hooks';
 
 const scanKey = 'trackingNumber-or-product_dustomer-delivery-details';
 
@@ -46,6 +45,7 @@ const CustomerDeliverySearchLineContainer = ({}) => {
   const {canCreate} = usePermitted({
     modelName: 'com.axelor.apps.stock.db.StockMoveLine',
   });
+  const {showLine} = useLineHandler();
 
   const {mobileSettings} = useSelector(state => state.appConfig);
   const {customerDelivery} = useSelector(state => state.customerDelivery);
@@ -64,20 +64,17 @@ const CustomerDeliverySearchLineContainer = ({}) => {
     });
   };
 
-  const handleShowLine = (
-    item,
-    skipVerification = !mobileSettings?.isVerifyCustomerDeliveryLineEnabled,
-  ) => {
-    showLine({
-      item: {name: 'customerDelivery', data: customerDelivery},
-      itemLine: {name: 'customerDeliveryLine', data: item},
-      lineDetailsScreen: 'CustomerDeliveryLineDetailScreen',
-      selectTrackingScreen: 'CustomerDeliverySelectTrackingScreen',
-      selectProductScreen: 'CustomerDeliverySelectProductScreen',
-      skipVerification,
-      navigation,
-    });
-  };
+  const handleShowLine = useCallback(
+    (item, skipVerification = undefined) => {
+      showLine({
+        move: customerDelivery,
+        line: item,
+        skipVerification,
+        type: LineVerification.type.outgoing,
+      });
+    },
+    [customerDelivery, showLine],
+  );
 
   const handleLineSearch = item => {
     handleShowLine(item, true);
