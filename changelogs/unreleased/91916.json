@@ -1,0 +1,5 @@
+{
+  "title": "Dashboards/Webviews: restore menus access control by correctly fetching user",
+  "type": "fix",
+  "packages": "core"
+}
