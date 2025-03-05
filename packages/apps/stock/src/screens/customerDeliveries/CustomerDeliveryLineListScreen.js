@@ -57,7 +57,7 @@ const CustomerDeliveryLineListScreen = ({route}) => {
         move: customerDelivery,
         line: item,
         skipVerification,
-        type: LineVerification.type.internal,
+        type: LineVerification.type.outgoing,
       });
     },
     [customerDelivery, showLine],
