@@ -16,19 +16,24 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-export {searchProduct} from './productSlice';
-export {
-  createPurchaseRequestLine,
-  fetchPurchaseRequestLine,
-  searchPurchaseRequestLine,
-  updatePurchaseRequestLine,
-} from './purchaseRequestLineSlice';
-export {
-  createPurchaseRequest,
-  getPurchaseRequest,
-  searchPurchaseRequest,
-  updatePurchaseRequest,
-  updatePurchaseRequestStatus,
-} from './purchaseRequestSlice';
-export {searchSupplier} from './supplierSlice';
-export {searchUnit} from './unitSlice';
+import type {Meta} from '@storybook/react';
+import {EditableHtmlInput as Component} from '../../src/components';
+import {disabledControl, Story} from '../utils/control-type.helpers';
+
+const meta: Meta<typeof Component> = {
+  title: 'ui/molecules/EditableHtmlInput',
+  component: Component,
+};
+
+export default meta;
+
+export const EditableHtmlInput: Story<typeof Component> = {
+  args: {
+    placeholder: 'Enter your value',
+    defaultValue: 'Value...',
+    readonly: false,
+  },
+  argTypes: {
+    onValidate: disabledControl,
+  },
+};

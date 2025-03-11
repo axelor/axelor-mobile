@@ -40,5 +40,6 @@
   "Purchase_SliceAction_FetchPurchaseRequestLine": "récupération de la ligne de demande d'achat",
   "Purchase_SliceAction_CreatePurchaseRequestLine": "création de la ligne de demande d'achat",
   "Purchase_SliceAction_UpdatePurchaseRequestLine": "mise à jour de la ligne de demande d'achat",
-  "Purchase_SliceAction_CreatePurchaseRequest": "création d'une demande d'achat"
+  "Purchase_SliceAction_CreatePurchaseRequest": "création d'une demande d'achat",
+  "Purchase_SliceAction_UpdatePurchaseRequest": "mise à jour de demande d'achat"
 }

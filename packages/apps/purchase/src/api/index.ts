@@ -21,6 +21,7 @@ export {
   createPurchaseRequest as createPurchaseRequestApi,
   getPurchaseRequest as getPurchaseRequestApi,
   searchPurchaseRequest as searchPurchaseRequestApi,
+  updatePurchaseRequest as updatePurchaseRequestApi,
   updatePurchaseRequestStatus as updatePurchaseRequestStatusApi,
 } from './purchase-request-api';
 export {
