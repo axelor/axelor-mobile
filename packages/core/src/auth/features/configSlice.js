@@ -23,8 +23,14 @@ import {uploadNavigationTools as _uploadNavigationTools} from '../api/config-api
 
 export const uploadTranslations = createAsyncThunk(
   'base/uploadTranslations',
-  async function ({language, translations}) {
-    return postTranslations(language, translations);
+  async function (data, {getState}) {
+    return handlerApiCall({
+      fetchFunction: postTranslations,
+      data,
+      action: 'Auth_SliceAction_UploadTranslations',
+      getState,
+      responseOptions: {isArrayResponse: false, showToast: true},
+    });
   },
 );
 
@@ -42,25 +48,22 @@ export const uploadNavigationTools = createAsyncThunk(
 );
 
 const initialState = {
+  loadingTranslations: false,
   loading: false,
-  message: null,
 };
 
 const configSlice = createSlice({
   name: 'config',
   initialState,
-  reducers: {
-    clearMessage: state => {
-      state.message = null;
-    },
-  },
   extraReducers: builder => {
     builder.addCase(uploadTranslations.pending, state => {
-      state.loading = true;
+      state.loadingTranslations = true;
     });
     builder.addCase(uploadTranslations.fulfilled, (state, action) => {
-      state.loading = false;
-      state.message = action.payload;
+      state.loadingTranslations = false;
+    });
+    builder.addCase(uploadTranslations.rejected, state => {
+      state.loadingTranslations = false;
     });
     builder.addCase(uploadNavigationTools.pending, state => {
       state.loading = true;
@@ -73,7 +76,5 @@ const configSlice = createSlice({
     });
   },
 });
-
-export const {clearMessage} = configSlice.actions;
 
 export const configReducer = configSlice.reducer;

@@ -1,0 +1,5 @@
+{
+  "title": "Translations: improve logic to upload localization and language at the same time",
+  "type": "fix",
+  "packages": "core"
+}

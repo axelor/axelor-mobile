@@ -26,5 +26,6 @@
   "Auth_SliceAction_FetchCompanies": "fetch companies",
   "Auth_SliceAction_FetchActiveUser": "fetch active user",
   "Auth_SliceAction_UpdateActiveUser": "update active user",
-  "Auth_SliceAction_UploadNavigationTools": "upload navigation tools"
+  "Auth_SliceAction_UploadNavigationTools": "upload navigation tools",
+  "Auth_SliceAction_UploadTranslations": "upload translations"
 }

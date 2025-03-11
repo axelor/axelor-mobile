@@ -78,7 +78,15 @@ const Translator = () => {
 };
 
 export function getTranslations(localization) {
-  return i18nProvider.i18n.getResourceBundle(localization, DEFAULT_NAMESPACE);
+  const language = localization?.split('_')?.[0];
+
+  const _getTranslations = lng =>
+    i18nProvider.i18n.getResourceBundle(lng, DEFAULT_NAMESPACE);
+
+  const localizationTranslations = _getTranslations(localization);
+  const languageTranslations = _getTranslations(language);
+
+  return {...languageTranslations, ...localizationTranslations};
 }
 
 function loadTranslationsFromStorage(localization) {

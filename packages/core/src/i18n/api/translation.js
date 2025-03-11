@@ -31,10 +31,6 @@ export async function fetchTranslation(language) {
     .then(res => res?.data?.translation);
 }
 
-export async function postTranslations(language, translations) {
-  return axios
-    .post(`/ws/aos/translation/${language}`, translations)
-    .then(res => {
-      return res?.data?.messageStatus;
-    });
+export async function postTranslations({language, translations}) {
+  return axios.post(`/ws/aos/translation/${language}`, translations);
 }

@@ -27,8 +27,7 @@ import {
   Icon,
 } from '@axelor/aos-mobile-ui';
 import {getTranslations, selectLanguage, useTranslator} from '../../../../i18n';
-import {showToastMessage} from '../../../../utils';
-import {clearMessage, uploadTranslations} from '../../../features/configSlice';
+import {uploadTranslations} from '../../../features/configSlice';
 import {useIsAdmin} from '../../../../permissions';
 
 const TranslationsButton = ({}) => {
@@ -41,27 +40,22 @@ const TranslationsButton = ({}) => {
 
   const {localization, language} = useSelector(selectLanguage);
 
-  const {message} = useSelector((state: any) => state.config);
+  const {loadingTranslations} = useSelector((state: any) => state.config);
 
   const styles = useMemo(() => getStyles(Colors), [Colors]);
 
   useEffect(() => {
-    if (message) {
-      showToastMessage({type: 'success', position: 'bottom', text1: message});
-      setActivityIndicator(false);
-      dispatch((clearMessage as any)());
-    }
-  }, [message, dispatch, setActivityIndicator]);
+    setActivityIndicator(loadingTranslations);
+  }, [loadingTranslations, setActivityIndicator]);
 
   const handleSendTranslations = useCallback(() => {
-    setActivityIndicator(true);
     dispatch(
       (uploadTranslations as any)({
         language,
         translations: getTranslations(localization),
       }),
     );
-  }, [dispatch, language, localization, setActivityIndicator]);
+  }, [dispatch, language, localization]);
 
   if (!isAdmin) {
     return null;
