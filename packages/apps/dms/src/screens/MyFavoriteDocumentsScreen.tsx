@@ -71,6 +71,7 @@ const MyFavoriteDocumentsScreen = ({}) => {
             mode="multi"
             selectionItems={File.getFileExtensionList(Colors)}
             onChangeValue={setSelectedExtensions}
+            showClearButton
           />
         }
         renderListItem={({item}) => <DocumentActionCard document={item} />}
