@@ -28,6 +28,7 @@ import {
   purchase_sortFields,
   purchase_typeObjects,
 } from './models';
+import {usePurchaseHeaders} from './hooks/use-purchase-header-actions';
 
 export const PurchaseModule: Module = {
   name: 'app-purchase',
@@ -58,6 +59,7 @@ export const PurchaseModule: Module = {
     fr: frTranslations,
   },
   models: {
+    headerRegisters: usePurchaseHeaders,
     objectFields: {...purchase_modelAPI},
     sortFields: {...purchase_sortFields},
     searchFields: {...purchase_searchFields},
