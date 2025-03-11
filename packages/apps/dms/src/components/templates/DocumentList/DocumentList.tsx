@@ -179,6 +179,7 @@ const DocumentList = ({
             mode="multi"
             selectionItems={File.getFileExtensionList(Colors)}
             onChangeValue={setSelectedExtensions}
+            showClearButton
           />
         }
         displayBreadcrumb
