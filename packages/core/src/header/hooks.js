@@ -52,6 +52,7 @@ export const useBasicActions = ({
   const [isConnected, setIsConnected] = useState(true);
   const [isTemplateSelectorVisible, setTemplateSelectorVisible] =
     useState(false);
+  const [isSavedFiltersVisible, setIsSavedFiltersVisible] = useState(false);
 
   const modelConfigured = useMemo(
     () => !checkNullString(model) && modelId != null,
@@ -60,6 +61,10 @@ export const useBasicActions = ({
 
   const closePrintTemplateSelector = useCallback(() => {
     setTemplateSelectorVisible(false);
+  }, []);
+
+  const closeSavedFilterPopup = useCallback(() => {
+    setIsSavedFiltersVisible(false);
   }, []);
 
   const countUnreadMessagesAPI = useCallback(() => {
@@ -131,6 +136,20 @@ export const useBasicActions = ({
     };
   }, [I18n, disableMailMessages, model, modelId, navigation, unreadMessages]);
 
+  const savedFiltersAction = useMemo(() => {
+    return {
+      key: 'savedFilters',
+      order: 50,
+      iconName: 'filter',
+      title: I18n.t('Base_ShowSavedFilter'),
+      onPress: () => {
+        setIsSavedFiltersVisible(true);
+      },
+      hideIf: modelId != null || model == null,
+      showInHeader: true,
+    };
+  }, [I18n, model, modelId]);
+
   const barcodeAction = useMemo(() => {
     return {
       key: 'barcode',
@@ -195,28 +214,35 @@ export const useBasicActions = ({
   return useMemo(() => {
     return {
       isTemplateSelectorVisible,
+      isSavedFiltersVisible,
       closePrintTemplateSelector,
+      closeSavedFilterPopup,
       ...(modelConfigured
         ? {
             mailMessagesAction,
             printAction,
             barcodeAction,
             jsonFieldsAction,
+            savedFiltersAction,
           }
         : {
             mailMessagesAction: {key: 'mailMessages', hideIf: true},
             printAction: {key: 'printTemplate', hideIf: true},
             barcodeAction: {key: 'barcode', hideIf: true},
             jsonFieldsAction: {key: 'metaJsonFields', hideIf: true},
+            savedFiltersAction: {key: 'savedFilters', hideIf: true},
           }),
     };
   }, [
+    isTemplateSelectorVisible,
+    isSavedFiltersVisible,
+    closePrintTemplateSelector,
+    closeSavedFilterPopup,
     modelConfigured,
     mailMessagesAction,
     printAction,
     barcodeAction,
     jsonFieldsAction,
-    isTemplateSelectorVisible,
-    closePrintTemplateSelector,
+    savedFiltersAction,
   ]);
 };

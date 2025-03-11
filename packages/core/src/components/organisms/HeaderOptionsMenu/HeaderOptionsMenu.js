@@ -22,6 +22,7 @@ import {DropdownMenu, DropdownMenuItem} from '@axelor/aos-mobile-ui';
 import {HeaderOptionMenuItem} from '../../molecules';
 import {useBasicActions} from '../../../header';
 import PopupPrintTemplate from '../PopupPrintTemplate/PopupPrintTemplate';
+import PopupFilter from '../PopupFilter/PopupFilter';
 
 const SMALLEST_WINDOW_WIDTH = 300;
 
@@ -38,11 +39,14 @@ const HeaderOptionsMenu = ({
 }) => {
   const {
     mailMessagesAction,
+    savedFiltersAction,
     barcodeAction,
     printAction,
     jsonFieldsAction,
     isTemplateSelectorVisible,
+    isSavedFiltersVisible,
     closePrintTemplateSelector,
+    closeSavedFilterPopup,
   } = useBasicActions({
     model,
     modelId,
@@ -87,6 +91,7 @@ const HeaderOptionsMenu = ({
       [
         mailMessagesAction,
         printAction,
+        savedFiltersAction,
         barcodeAction,
         jsonFieldsAction,
         ...actions,
@@ -99,6 +104,7 @@ const HeaderOptionsMenu = ({
       barcodeAction,
       jsonFieldsAction,
       mailMessagesAction,
+      savedFiltersAction,
       printAction,
       visibleGenericActions,
     ],
@@ -128,6 +134,24 @@ const HeaderOptionsMenu = ({
         />
       ) : null,
     [closePrintTemplateSelector, isTemplateSelectorVisible, model, modelId],
+  );
+
+  const renderPopupSavedFilter = useCallback(
+    () =>
+      isSavedFiltersVisible ? (
+        <PopupFilter
+          model={model}
+          visible={isSavedFiltersVisible}
+          filters={savedFiltersAction?.filters || []}
+          onClose={closeSavedFilterPopup}
+        />
+      ) : null,
+    [
+      closeSavedFilterPopup,
+      isSavedFiltersVisible,
+      model,
+      savedFiltersAction?.filters,
+    ],
   );
 
   const HeaderItemList = useMemo(
@@ -174,6 +198,7 @@ const HeaderOptionsMenu = ({
       <View style={styles.container}>
         <DropdownMenu>{[...HeaderItemList, ...MenuItemList]}</DropdownMenu>
         {renderPopupPrintTemplate()}
+        {renderPopupSavedFilter()}
       </View>
     );
   }
@@ -183,6 +208,7 @@ const HeaderOptionsMenu = ({
       {HeaderItemList}
       {menuActions.length !== 0 && <DropdownMenu>{MenuItemList}</DropdownMenu>}
       {renderPopupPrintTemplate()}
+      {renderPopupSavedFilter()}
     </View>
   );
 };
