@@ -16,32 +16,25 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import React, {useEffect, useState} from 'react';
+import React, {useState} from 'react';
 import {View, StyleSheet} from 'react-native';
 import {Alert, RadioSelect} from '@axelor/aos-mobile-ui';
-import {fetchCustomfilter} from '../../../api/custom-filter-api';
 import {useTranslator} from '../../../i18n';
 
 interface PopupFilterProps {
   visible: boolean;
   onClose: () => void;
   model: string;
+  savedFilters: any;
 }
 
-const PopupFilter = ({visible = false, model, onClose}: PopupFilterProps) => {
+const PopupFilter = ({
+  visible = false,
+  onClose,
+  savedFilters,
+}: PopupFilterProps) => {
   const [selectedFilter, setSelectedFilter] = useState<string | null>(null);
-  const [savedFilters, setSavedFilters] = useState([]);
   const I18n = useTranslator();
-
-  useEffect(() => {
-    if (!model) return;
-    fetchCustomfilter({modelName: model})
-      .then(res => {
-        const _filters = res?.data?.data?.view?.filters || [];
-        setSavedFilters(_filters);
-      })
-      .catch(() => setSavedFilters([]));
-  }, [model]);
 
   const handleConfirm = () => {
     if (selectedFilter) {

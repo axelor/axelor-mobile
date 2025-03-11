@@ -28,6 +28,7 @@ import {getNetInfo} from '../api/net-info-utils';
 import {fetchJsonFieldsOfModel} from '../forms';
 import {useIsFocused} from '../hooks/use-navigation';
 import {fetchActionPrint} from '../api/print-template-api';
+import {fetchCustomfilter} from '../api/custom-filter-api';
 
 export const useBasicActions = ({
   model,
@@ -53,6 +54,7 @@ export const useBasicActions = ({
   const [isTemplateSelectorVisible, setTemplateSelectorVisible] =
     useState(false);
   const [isSavedFiltersVisible, setIsSavedFiltersVisible] = useState(false);
+  const [savedFilters, setSavedFilters] = useState([]);
 
   const modelConfigured = useMemo(
     () => !checkNullString(model) && modelId != null,
@@ -119,6 +121,16 @@ export const useBasicActions = ({
     };
   }, [checkInternetConnection, isFocused]);
 
+  useEffect(() => {
+    if (!model) return;
+    fetchCustomfilter({modelName: model})
+      .then(res => {
+        const _filters = res?.data?.data?.view?.filters || [];
+        setSavedFilters(_filters);
+      })
+      .catch(() => setSavedFilters([]));
+  }, [model]);
+
   const mailMessagesAction = useMemo(() => {
     return {
       key: 'mailMessages',
@@ -145,10 +157,14 @@ export const useBasicActions = ({
       onPress: () => {
         setIsSavedFiltersVisible(true);
       },
-      hideIf: modelId != null || model == null,
+      hideIf:
+        modelId != null ||
+        model == null ||
+        savedFilters == null ||
+        savedFilters?.length === 0,
       showInHeader: true,
     };
-  }, [I18n, model, modelId]);
+  }, [I18n, model, modelId, savedFilters]);
 
   const barcodeAction = useMemo(() => {
     return {
@@ -217,6 +233,7 @@ export const useBasicActions = ({
       isSavedFiltersVisible,
       closePrintTemplateSelector,
       closeSavedFilterPopup,
+      savedFilters,
       ...(modelConfigured
         ? {
             mailMessagesAction,
@@ -238,6 +255,7 @@ export const useBasicActions = ({
     isSavedFiltersVisible,
     closePrintTemplateSelector,
     closeSavedFilterPopup,
+    savedFilters,
     modelConfigured,
     mailMessagesAction,
     printAction,

@@ -47,6 +47,7 @@ const HeaderOptionsMenu = ({
     isSavedFiltersVisible,
     closePrintTemplateSelector,
     closeSavedFilterPopup,
+    savedFilters,
   } = useBasicActions({
     model,
     modelId,
@@ -144,12 +145,14 @@ const HeaderOptionsMenu = ({
           visible={isSavedFiltersVisible}
           filters={savedFiltersAction?.filters || []}
           onClose={closeSavedFilterPopup}
+          savedFilters={savedFilters}
         />
       ) : null,
     [
       closeSavedFilterPopup,
       isSavedFiltersVisible,
       model,
+      savedFilters,
       savedFiltersAction?.filters,
     ],
   );
