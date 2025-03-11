@@ -168,7 +168,7 @@ const RequestCreationScreen = () => {
       <KeyboardAvoidingScrollView style={styles.container}>
         <CompanyPicker onChange={setCompany} company={company} />
         <FormHtmlInput
-          title={I18n.t('Purchase_Description')}
+          title={I18n.t('Purchase_RequestDescription')}
           defaultValue={description}
           onChange={setDescription}
         />
