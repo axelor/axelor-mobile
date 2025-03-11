@@ -26,5 +26,6 @@
   "Auth_SliceAction_FetchCompanies": "récupération des sociétés",
   "Auth_SliceAction_FetchActiveUser": "récupération de l'utilisateur actif",
   "Auth_SliceAction_UpdateActiveUser": "mise à jour de l'utilisateur actif",
-  "Auth_SliceAction_UploadNavigationTools": "envoie des informations de navigation"
+  "Auth_SliceAction_UploadNavigationTools": "envoie des informations de navigation",
+  "Auth_SliceAction_UploadTranslations": "envoie des traductions"
 }
