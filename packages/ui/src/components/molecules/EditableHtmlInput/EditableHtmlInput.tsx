@@ -18,7 +18,7 @@
 
 import React, {useEffect, useMemo, useState} from 'react';
 import {StyleSheet, View} from 'react-native';
-import {getCommonStyles} from '../../../utils/commons-styles';
+import {checkNullString, getCommonStyles} from '../../../utils';
 import {useThemeColor} from '../../../theme';
 import {HtmlInput, Icon} from '../../atoms';
 
@@ -36,6 +36,7 @@ const EditableHtmlInput = ({
   onValidate,
 }: EditableHtmlInputProps) => {
   const Colors = useThemeColor();
+
   const [isEditable, setEditable] = useState(true);
   const [value, setValue] = useState(defaultValue);
 
@@ -52,7 +53,9 @@ const EditableHtmlInput = ({
 
   const commonStyles = useMemo(() => getCommonStyles(Colors), [Colors]);
 
-  const styles = useMemo(() => getStyles(readonly), [readonly]);
+  if (readonly && checkNullString(value)) {
+    return null;
+  }
 
   return (
     <View style={[commonStyles.filter, commonStyles.filterAlign]}>
@@ -66,7 +69,6 @@ const EditableHtmlInput = ({
       />
       {!readonly && (
         <Icon
-          style={styles.icon}
           name={isEditable ? 'pencil-fill' : 'check-lg'}
           size={15}
           touchable
@@ -77,20 +79,15 @@ const EditableHtmlInput = ({
   );
 };
 
-const getStyles = (readonly: boolean) =>
-  StyleSheet.create({
-    htmlInput: {
-      width: readonly ? '100%' : '90%',
-      fontSize: 14,
-    },
-    htmlToolBar: {
-      backgroundColor: null,
-      marginLeft: -5,
-    },
-    icon: {
-      width: '10%',
-      justifyContent: 'flex-end',
-    },
-  });
+const styles = StyleSheet.create({
+  htmlInput: {
+    fontSize: 14,
+    flex: 1,
+  },
+  htmlToolBar: {
+    backgroundColor: null,
+    marginLeft: -5,
+  },
+});
 
 export default EditableHtmlInput;
