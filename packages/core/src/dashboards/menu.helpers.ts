@@ -20,6 +20,7 @@ import {Menu, modulesProvider, Screen} from '../app';
 import {fetchDashboardConfigs} from './api.helpers';
 import {createDashboardActionID} from './display.helpers';
 import {DashboardScreen} from './view';
+import {getRoles} from '../utils';
 
 type DashboardMenuConfig = {
   [menuKey: string]: {menu: Menu; configRoles: any[]};
@@ -103,7 +104,7 @@ export const createDashboardScreens = (
 
 export const filterAuthorizedDashboardMenus = (
   dashboardConfigs: DashboardMenuConfig,
-  {roles: userRoles}: {roles: any[]},
+  userRoles: any[],
 ): Menus => {
   const menus: Menus = {};
 
@@ -132,10 +133,11 @@ export const registerDashboardModule = async (user: any) => {
     .catch(() => []);
 
   const {screens, menus} = createDashboardScreens(dashboardConfigs);
+  const userRoles = getRoles(user);
 
   modulesProvider.registerModule({
     name: 'app-dashboard',
-    menus: filterAuthorizedDashboardMenus(menus, user),
+    menus: filterAuthorizedDashboardMenus(menus, userRoles),
     screens,
   });
 };
