@@ -67,6 +67,7 @@ export const PurchaseModule: Module = {
   reducers: {
     ...purchaseReducers,
   },
+  requiredConfig: ['AppPurchase'],
 };
 
 export * from './api';

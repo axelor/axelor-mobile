@@ -48,6 +48,7 @@ const RequestCreationScreen = () => {
   });
 
   const {user} = useSelector(state => state.user);
+  const {purchase: purchaseConfig} = useSelector(state => state.appConfig);
 
   const [company, setCompany] = useState(user.activeCompany);
   const [description, setDescription] = useState('');
@@ -57,7 +58,7 @@ const RequestCreationScreen = () => {
   const [productTitle, setProductTitle] = useState('');
   const [isCustomProduct, setIsCustomProduct] = useState(false);
   const [quantity, setQuantity] = useState(0);
-  const [unit, setUnit] = useState(null);
+  const [unit, setUnit] = useState(purchaseConfig?.purchaseUnit);
 
   const resetDefaultStates = () => {
     handleReset();
@@ -75,14 +76,17 @@ const RequestCreationScreen = () => {
     setCurrentStep(RequestCreation.step.validateLine);
   };
 
-  const handleReset = useCallback((_step = RequestCreation.step.addLine) => {
-    setCurrentStep(_step);
-    setNewLine(null);
-    setProductTitle('');
-    setIsCustomProduct(false);
-    setQuantity(0);
-    setUnit(null);
-  }, []);
+  const handleReset = useCallback(
+    (_step = RequestCreation.step.addLine) => {
+      setCurrentStep(_step);
+      setNewLine(null);
+      setProductTitle('');
+      setIsCustomProduct(false);
+      setQuantity(0);
+      setUnit(purchaseConfig?.purchaseUnit);
+    },
+    [purchaseConfig?.purchaseUnit],
+  );
 
   const handleProductChange = useCallback(
     (_value: any) => {
