@@ -19,28 +19,51 @@
 import React, {useCallback, useEffect} from 'react';
 import {StyleSheet} from 'react-native';
 import {
+  EditableHtmlInput,
   HeaderContainer,
-  NotesCard,
   Screen,
   ScrollView,
 } from '@axelor/aos-mobile-ui';
-import {useDispatch, useSelector, useTranslator} from '@axelor/aos-mobile-core';
+import {
+  useDispatch,
+  useSelector,
+  useTranslator,
+  useTypes,
+} from '@axelor/aos-mobile-core';
 import {
   RequestSeeLinesButton,
   RequestDropdownCards,
   RequestHeader,
   RequestButtons,
 } from '../components';
-import {getPurchaseRequest} from '../features/purchaseRequestSlice';
+import {
+  getPurchaseRequest,
+  updatePurchaseRequest,
+} from '../features/purchaseRequestSlice';
 import {searchPurchaseRequestLine} from '../features/purchaseRequestLineSlice';
 
 const RequestDetailsScreen = ({route}) => {
   const {idRequest} = route.params;
-  const dispatch = useDispatch();
   const I18n = useTranslator();
+  const {PurchaseRequest} = useTypes();
+  const dispatch = useDispatch();
 
   const {loadingPurchaseRequest, purchaseRequest} = useSelector(
     state => state.purchase_purchaseRequest,
+  );
+
+  const handleDescriptionChange = useCallback(
+    description => {
+      dispatch(
+        (updatePurchaseRequest as any)({
+          purchaseRequest: {
+            ...purchaseRequest,
+            description,
+          },
+        }),
+      );
+    },
+    [dispatch, purchaseRequest],
   );
 
   const getPurchaseRequestAPI = useCallback(() => {
@@ -65,9 +88,16 @@ const RequestDetailsScreen = ({route}) => {
           loading: loadingPurchaseRequest,
           fetcher: getPurchaseRequestAPI,
         }}>
-        <NotesCard
-          title={I18n.t('Base_Description')}
-          data={purchaseRequest.description}
+        <EditableHtmlInput
+          placeholder={I18n.t('Base_Description')}
+          defaultValue={purchaseRequest.description}
+          readonly={
+            purchaseRequest.statusSelect !==
+              PurchaseRequest.statusSelect.Draft &&
+            purchaseRequest.statusSelect !==
+              PurchaseRequest.statusSelect.Requested
+          }
+          onValidate={handleDescriptionChange}
         />
         <RequestDropdownCards style={styles.margin} />
         <RequestSeeLinesButton />

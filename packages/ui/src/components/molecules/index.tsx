@@ -31,6 +31,7 @@ export {default as ClearableCard} from './ClearableCard/ClearableCard';
 export {default as DoubleIcon} from './DoubleIcon/DoubleIcon';
 export {default as DropdownCard} from './DropdownCard/DropdownCard';
 export {default as DropdownMenu} from './DropdownMenu/DropdownMenu';
+export {default as EditableHtmlInput} from './EditableHtmlInput/EditableHtmlInput';
 export {default as EditableInput} from './EditableInput/EditableInput';
 export {default as FormHtmlInput} from './FormHtmlInput/FormHtmlInput';
 export {default as FormIncrementInput} from './FormIncrementInput/FormIncrementInput';

@@ -19,6 +19,7 @@
 import {
   createStandardFetch,
   createStandardSearch,
+  formatRequestBody,
   getActionApi,
   getSearchCriterias,
 } from '@axelor/aos-mobile-core';
@@ -108,5 +109,23 @@ export async function createPurchaseRequest({
       purchaseRequestLineList,
     },
     description: 'create purchase request',
+  });
+}
+
+export async function updatePurchaseRequest({purchaseRequest}) {
+  const {matchers} = formatRequestBody(purchaseRequest, 'data');
+
+  return getActionApi().send({
+    url: '/ws/rest/com.axelor.apps.purchase.db.PurchaseRequest',
+    method: 'post',
+    body: {
+      data: purchaseRequest,
+    },
+    description: 'update purchase request',
+    matchers: {
+      modelName: 'com.axelor.apps.purchase.db.PurchaseRequest',
+      id: purchaseRequest.id,
+      fields: matchers,
+    },
   });
 }
