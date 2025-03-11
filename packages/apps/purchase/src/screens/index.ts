@@ -33,6 +33,7 @@ export default {
   },
   RequestDetailsView: {
     title: 'Purchase_InternalRequest',
+    actionID: 'purchase_purchaseRequest_details',
     component: RequestDetailsScreen,
     options: {
       shadedHeader: false,
@@ -55,6 +56,7 @@ export default {
   },
   RequestLineFormScreen: {
     title: 'Purchase_InternalRequest',
+    actionID: 'purchase_purchaseRequestLine_details',
     component: RequestLineFormScreen,
   },
 };
