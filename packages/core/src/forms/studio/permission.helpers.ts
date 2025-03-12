@@ -20,6 +20,7 @@ import {useCallback, useEffect, useMemo} from 'react';
 import {useDispatch, useSelector} from 'react-redux';
 import {fetchObjectModelTypes} from '../../features/metaJsonFieldSlice';
 import {useFieldsPermissions, useIsAdmin} from '../../permissions';
+import {getRoles} from '../../utils';
 
 const isFieldHidden = (authorizedRoles, userRoles) => {
   if (!Array.isArray(authorizedRoles) || authorizedRoles.length === 0) {
@@ -49,14 +50,7 @@ export const useFieldPermitter = ({modelName}: {modelName: string}) => {
     dispatch((fetchObjectModelTypes as any)({modelName}));
   }, [dispatch, modelName]);
 
-  const roles = useMemo(() => {
-    const _userRoles = user?.roles ?? [];
-    const _groupRoles = user?.group?.roles ?? [];
-
-    return [..._userRoles, ..._groupRoles].filter(
-      (item, index, self) => self.findIndex(_i => _i.id === item.id) === index,
-    );
-  }, [user?.group?.roles, user?.roles]);
+  const roles = useMemo(() => getRoles(user), [user]);
 
   return useCallback(
     _item => {

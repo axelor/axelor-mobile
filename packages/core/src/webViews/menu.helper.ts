@@ -20,6 +20,7 @@ import {Menu, modulesProvider, Screen} from '../app';
 import {fetchWebViewConfigs} from './api.helpers';
 import {createWebViewActionID} from './display.helpers';
 import {WebViewScreen} from './view';
+import {getRoles} from '../utils';
 
 type WebViewMenuConfig = {
   [menuKey: string]: {menu: Menu; configRoles: any[]};
@@ -99,7 +100,7 @@ export const createWebViewScreens = (
 
 export const filterAuthorizedWebViewMenus = (
   webViewConfigs: WebViewMenuConfig,
-  {roles: userRoles}: {roles: any[]},
+  userRoles: any[],
 ): Menus => {
   const menus: Menus = {};
 
@@ -128,10 +129,11 @@ export const registerWebViewModule = async (user: any) => {
     .catch(() => []);
 
   const {screens, menus} = createWebViewScreens(webViewConfigs);
+  const userRoles = getRoles(user);
 
   modulesProvider.registerModule({
     name: 'app-webview',
-    menus: filterAuthorizedWebViewMenus(menus, user),
+    menus: filterAuthorizedWebViewMenus(menus, userRoles),
     screens,
   });
 };
