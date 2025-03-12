@@ -63,6 +63,7 @@ import {
 } from '../webViews/menu.helper';
 import {registerTypes} from '../selections';
 import {useModules} from '../app';
+import {getRoles} from '../utils';
 
 const Drawer = createDrawerNavigator();
 const Stack = createStackNavigator();
@@ -97,6 +98,8 @@ const Navigator = ({mainMenu, onRefresh, versionCheckConfig}) => {
     [webViewConfigs],
   );
 
+  const userRoles = useMemo(() => getRoles(user), [user]);
+
   const enabledModule = useMemo(
     () =>
       manageWebCompatibility(
@@ -107,8 +110,8 @@ const Navigator = ({mainMenu, onRefresh, versionCheckConfig}) => {
                 checkModulesMenusAccessibility(modules, mobileSettings?.apps),
               ),
             ),
-            filterAuthorizedWebViewMenus(webViewMenusConfig, user),
-            filterAuthorizedDashboardMenus(dashboardMenusConfig, user),
+            filterAuthorizedWebViewMenus(webViewMenusConfig, userRoles),
+            filterAuthorizedDashboardMenus(dashboardMenusConfig, userRoles),
           ),
           storeState,
         ),
@@ -121,7 +124,7 @@ const Navigator = ({mainMenu, onRefresh, versionCheckConfig}) => {
       mobileSettings?.apps,
       modules,
       storeState,
-      user,
+      userRoles,
     ],
   );
 

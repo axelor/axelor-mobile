@@ -98,7 +98,7 @@ export const createWebViewScreens = (
 
 export const filterAuthorizedWebViewMenus = (
   webViewConfigs: WebViewMenuConfig,
-  {roles: userRoles}: {roles: any[]},
+  userRoles: any[],
 ): Menus => {
   const menus: Menus = {};
 

@@ -102,7 +102,7 @@ export const createDashboardScreens = (
 
 export const filterAuthorizedDashboardMenus = (
   dashboardConfigs: DashboardMenuConfig,
-  {roles: userRoles}: {roles: any[]},
+  userRoles: any[],
 ): Menus => {
   const menus: Menus = {};
 
