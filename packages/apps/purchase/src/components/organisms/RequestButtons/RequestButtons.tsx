@@ -131,18 +131,27 @@ const RequestButtons = () => {
               iconName: 'reply-fill',
             },
           ];
+        case PurchaseRequest.statusSelect.Canceled:
+          return [
+            {
+              title: I18n.t('Purchase_Status_Draft'),
+              onPress: () =>
+                dispatch(
+                  (updatePurchaseRequestStatus as any)({
+                    purchaseRequest,
+                    status: 'draft',
+                  }),
+                ),
+              width: '90%',
+              color: Colors.secondaryColor,
+              iconName: 'pencil-fill',
+            },
+          ];
         default:
           return [];
       }
     },
-    [
-      Colors.cautionColor,
-      Colors.errorColor,
-      I18n,
-      PurchaseRequest.statusSelect,
-      dispatch,
-      purchaseRequest,
-    ],
+    [Colors, I18n, PurchaseRequest.statusSelect, dispatch, purchaseRequest],
   );
 
   const buttons = useMemo(
