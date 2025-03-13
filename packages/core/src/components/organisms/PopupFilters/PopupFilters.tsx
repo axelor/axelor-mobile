@@ -24,28 +24,49 @@ import {useTranslator} from '../../../i18n';
 interface PopupFiltersProps {
   visible: boolean;
   onClose: () => void;
-  savedFilters: any;
-  userFilters: any;
+  savedFilters: any[];
+  userFilters: any[];
 }
 
 const PopupFilters = ({
   visible = false,
   onClose,
-  savedFilters,
-  userFilters,
+  savedFilters = [],
+  userFilters = [],
 }: PopupFiltersProps) => {
   const I18n = useTranslator();
 
-  const [selectedFilter, setSelectedFilter] = useState<string | null>(null);
+  const [selectedSavedFilter, setSelectedSavedFilter] = useState<string | null>(
+    null,
+  );
+  const [selectedUserFilter, setSelectedUserFilter] = useState<string | null>(
+    null,
+  );
 
   const handleConfirm = useCallback(() => {
+    const selectedFilter = selectedSavedFilter || selectedUserFilter;
     if (selectedFilter) {
       console.log('selectedFilter', selectedFilter);
-      onClose();
     }
-  }, [onClose, selectedFilter]);
+    onClose();
+  }, [onClose, selectedSavedFilter, selectedUserFilter]);
 
-  const renderRadioSelect = (filters: any[], titleKey: string) => {
+  const handleSavedFilterSelection = useCallback((filterId: string) => {
+    setSelectedSavedFilter(filterId);
+    setSelectedUserFilter(null);
+  }, []);
+
+  const handleUserFilterSelection = useCallback((filterId: string) => {
+    setSelectedUserFilter(filterId);
+    setSelectedSavedFilter(null);
+  }, []);
+
+  const renderRadioSelect = (
+    filters: any[],
+    titleKey: string,
+    selectedFilter: string | null,
+    onSelect: (filterId: string) => void,
+  ) => {
     if (filters?.length === 0) return null;
 
     return (
@@ -56,7 +77,8 @@ const PopupFilters = ({
             id: filter.id || filter.name,
             title: filter.title || filter.name,
           }))}
-          onChange={setSelectedFilter}
+          onChange={onSelect}
+          defaultValue={selectedFilter}
           direction="column"
           radioButtonStyle={styles.radioButtonStyle}
         />
@@ -71,8 +93,18 @@ const PopupFilters = ({
       cancelButtonConfig={{onPress: onClose}}
       confirmButtonConfig={{onPress: handleConfirm}}
       translator={I18n.t}>
-      {renderRadioSelect(savedFilters, 'Base_Filters')}
-      {renderRadioSelect(userFilters, 'Base_MyFilters')}
+      {renderRadioSelect(
+        savedFilters,
+        'Base_Filters',
+        selectedSavedFilter,
+        handleSavedFilterSelection,
+      )}
+      {renderRadioSelect(
+        userFilters,
+        'Base_MyFilters',
+        selectedUserFilter,
+        handleUserFilterSelection,
+      )}
     </Alert>
   );
 };
