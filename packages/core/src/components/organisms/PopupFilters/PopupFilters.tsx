@@ -25,12 +25,14 @@ interface PopupFiltersProps {
   visible: boolean;
   onClose: () => void;
   savedFilters: any;
+  userFilters: any;
 }
 
 const PopupFilters = ({
   visible = false,
   onClose,
   savedFilters,
+  userFilters,
 }: PopupFiltersProps) => {
   const I18n = useTranslator();
 
@@ -50,17 +52,32 @@ const PopupFilters = ({
       cancelButtonConfig={{onPress: onClose}}
       confirmButtonConfig={{onPress: handleConfirm}}
       translator={I18n.t}>
-      <View style={styles.container}>
-        <RadioSelect
-          items={savedFilters.map(filter => ({
-            id: filter.name,
-            title: filter.title,
-          }))}
-          onChange={setSelectedFilter}
-          direction="column"
-          radioButtonStyle={styles.radioButtonStyle}
-        />
-      </View>
+      {savedFilters != null && savedFilters?.length > 0 && (
+        <View style={styles.container}>
+          <RadioSelect
+            items={savedFilters.map(filter => ({
+              id: filter.name,
+              title: filter.title,
+            }))}
+            onChange={setSelectedFilter}
+            direction="column"
+            radioButtonStyle={styles.radioButtonStyle}
+          />
+        </View>
+      )}
+      {userFilters != null && userFilters?.length > 0 && (
+        <View style={styles.container}>
+          <RadioSelect
+            items={userFilters.map(filter => ({
+              id: filter.id,
+              title: filter.name,
+            }))}
+            onChange={setSelectedFilter}
+            direction="column"
+            radioButtonStyle={styles.radioButtonStyle}
+          />
+        </View>
+      )}
     </Alert>
   );
 };

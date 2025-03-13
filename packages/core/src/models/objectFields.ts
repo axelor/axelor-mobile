@@ -57,4 +57,9 @@ export const core_modelAPI: ObjectFields = {
     moduleVersion: schemaContructor.string(),
     name: schemaContructor.string(),
   }),
+  core_metaFilter: schemaContructor.object({
+    filters: schemaContructor.string(),
+    filterView: schemaContructor.string(),
+    name: schemaContructor.string(),
+  }),
 };
