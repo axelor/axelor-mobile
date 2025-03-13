@@ -3,6 +3,20 @@ title: 7.2.0
 tags: Changelog
 ---
 
+## [7.2.27] (2025-03-13)
+
+### @axelor/aos-mobile-core
+
+#### Features
+
+- Traceback: add current request path
+
+### @axelor/aos-mobile-ui
+
+#### Fixes
+
+- ProgressBar: hide progress when value is 0
+
 ## [7.2.26] (2025-02-12)
 
 ### @axelor/aos-mobile-core
@@ -832,6 +846,7 @@ It enables user to manage Expenses through the mobile application. You can creat
 - Remove IconButton component which should be replaced by Button component.
 - Remove Pop-up components which should be replaced by Alert component.
 
+[7.2.27]: https://github.com/axelor/axelor-mobile/compare/7.2.26...7.2.27
 [7.2.26]: https://github.com/axelor/axelor-mobile/compare/7.2.25...7.2.26
 [7.2.25]: https://github.com/axelor/axelor-mobile/compare/7.2.24...7.2.25
 [7.2.24]: https://github.com/axelor/axelor-mobile/compare/7.2.23...7.2.24
