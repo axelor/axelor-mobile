@@ -137,7 +137,7 @@ const HeaderOptionsMenu = ({
     [closePrintTemplateSelector, isTemplateSelectorVisible, model, modelId],
   );
 
-  const renderPopupSavedFilter = useCallback(
+  const renderPopupSavedFilters = useCallback(
     () =>
       areSavedFiltersVisible ? (
         <PopupFilters
@@ -193,7 +193,7 @@ const HeaderOptionsMenu = ({
       <View style={styles.container}>
         <DropdownMenu>{[...HeaderItemList, ...MenuItemList]}</DropdownMenu>
         {renderPopupPrintTemplate()}
-        {renderPopupSavedFilter()}
+        {renderPopupSavedFilters()}
       </View>
     );
   }
@@ -203,7 +203,7 @@ const HeaderOptionsMenu = ({
       {HeaderItemList}
       {menuActions.length !== 0 && <DropdownMenu>{MenuItemList}</DropdownMenu>}
       {renderPopupPrintTemplate()}
-      {renderPopupSavedFilter()}
+      {renderPopupSavedFilters()}
     </View>
   );
 };
