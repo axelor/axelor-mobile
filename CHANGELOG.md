@@ -3,6 +3,28 @@ title: 8.0.0
 tags: Changelog
 ---
 
+## [8.0.21] (2025-03-13)
+
+### @axelor/aos-mobile-core
+
+#### Features
+
+- Traceback: add current request path
+
+### @axelor/aos-mobile-ui
+
+#### Fixes
+
+- ProgressBar: hide progress when value is 0
+
+### @axelor/aos-mobile-quality
+
+#### Fixes
+
+- Dimension type control: resolve issue with value which was not reset when switching from one sample to another
+- Control entry line: resolve display issue with long sample title
+- Control entry line: add null checks to avoid crash
+
 ## [8.0.20] (2025-02-12)
 
 ### @axelor/aos-mobile-core
@@ -703,6 +725,7 @@ Changes has been done to get new core and ui improvements: use of ChipSelect, co
 
 Changes has been done to get new core and ui improvements: use of ChipSelect, color differentiation between success and primary, definition of required configs, use of icons for Bootstrap
 
+[8.0.21]: https://github.com/axelor/axelor-mobile/compare/8.0.20...8.0.21
 [8.0.20]: https://github.com/axelor/axelor-mobile/compare/8.0.19...8.0.20
 [8.0.19]: https://github.com/axelor/axelor-mobile/compare/8.0.18...8.0.19
 [8.0.18]: https://github.com/axelor/axelor-mobile/compare/8.0.17...8.0.18
