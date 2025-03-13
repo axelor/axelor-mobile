@@ -3,6 +3,52 @@ title: 8.1.0
 tags: Changelog
 ---
 
+## [8.1.16] (2025-03-13)
+
+### @axelor/aos-mobile-core
+
+#### Features
+
+- Traceback: add current request path
+- Camera scanner: allow more code types to match server options
+- Roles: add tool to get all roles of user
+
+#### Fixes
+
+- PeriodInput: resolve issue when onPeriodErrorChange not provided
+
+### @axelor/aos-mobile-ui
+
+#### Fixes
+
+- ProgressBar: hide progress when value is 0
+
+### @axelor/aos-mobile-intervention
+
+#### Fixes
+
+- Intervention: use assignedTo to check user instead of going through employee
+
+### @axelor/aos-mobile-quality
+
+#### Fixes
+
+- Dimension type control: resolve issue with value which was not reset when switching from one sample to another
+- Control entry line: resolve display issue with long sample title
+- Control entry line: add null checks to avoid crash
+
+### @axelor/aos-mobile-crm
+
+#### Fixes
+
+- Event: use selection from web for type
+
+### @axelor/aos-mobile-stock
+
+#### Changes
+
+- Multi company: manage product by company for tracking number configuration
+
 ## [8.1.15] (2025-02-12)
 
 ### @axelor/aos-mobile-core
@@ -692,6 +738,7 @@ It enables user to manage interventions and customer parc through the mobile app
 - Selections: use new system and tools instead of type files
 - Product indicators: use new chart component to display quantity indicators
 
+[8.1.16]: https://github.com/axelor/axelor-mobile/compare/8.1.15...8.1.16
 [8.1.15]: https://github.com/axelor/axelor-mobile/compare/8.1.14...8.1.15
 [8.1.14]: https://github.com/axelor/axelor-mobile/compare/8.1.13...8.1.14
 [8.1.13]: https://github.com/axelor/axelor-mobile/compare/8.1.12...8.1.13

@@ -1,5 +1,0 @@
-{
-  "title": "Traceback: add current request path",
-  "type": "feat",
-  "packages": "core"
-}
