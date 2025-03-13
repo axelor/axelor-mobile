@@ -18,7 +18,7 @@
 
 import {axiosApiProvider} from '../apiProviders';
 
-export async function fetchCustomfilter({modelName}: {modelName: string}) {
+export async function fetchDefaultFilters({modelName}: {modelName: string}) {
   return axiosApiProvider.post({
     url: `/ws/meta/view`,
     data: {

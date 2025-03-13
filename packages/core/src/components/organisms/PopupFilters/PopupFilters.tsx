@@ -21,18 +21,17 @@ import {View, StyleSheet} from 'react-native';
 import {Alert, RadioSelect} from '@axelor/aos-mobile-ui';
 import {useTranslator} from '../../../i18n';
 
-interface PopupFilterProps {
+interface PopupFiltersProps {
   visible: boolean;
   onClose: () => void;
-  model: string;
   savedFilters: any;
 }
 
-const PopupFilter = ({
+const PopupFilters = ({
   visible = false,
   onClose,
   savedFilters,
-}: PopupFilterProps) => {
+}: PopupFiltersProps) => {
   const [selectedFilter, setSelectedFilter] = useState<string | null>(null);
   const I18n = useTranslator();
 
@@ -75,4 +74,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default PopupFilter;
+export default PopupFilters;

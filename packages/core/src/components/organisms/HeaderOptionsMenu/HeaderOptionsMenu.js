@@ -22,7 +22,7 @@ import {DropdownMenu, DropdownMenuItem} from '@axelor/aos-mobile-ui';
 import {HeaderOptionMenuItem} from '../../molecules';
 import {useBasicActions} from '../../../header';
 import PopupPrintTemplate from '../PopupPrintTemplate/PopupPrintTemplate';
-import PopupFilter from '../PopupFilter/PopupFilter';
+import PopupFilters from '../PopupFilters/PopupFilters';
 
 const SMALLEST_WINDOW_WIDTH = 300;
 
@@ -44,9 +44,9 @@ const HeaderOptionsMenu = ({
     printAction,
     jsonFieldsAction,
     isTemplateSelectorVisible,
-    isSavedFiltersVisible,
+    areSavedFiltersVisible,
     closePrintTemplateSelector,
-    closeSavedFilterPopup,
+    closeSavedFiltersPopup,
     savedFilters,
   } = useBasicActions({
     model,
@@ -139,22 +139,14 @@ const HeaderOptionsMenu = ({
 
   const renderPopupSavedFilter = useCallback(
     () =>
-      isSavedFiltersVisible ? (
-        <PopupFilter
-          model={model}
-          visible={isSavedFiltersVisible}
-          filters={savedFiltersAction?.filters || []}
-          onClose={closeSavedFilterPopup}
+      areSavedFiltersVisible ? (
+        <PopupFilters
+          visible={areSavedFiltersVisible}
+          onClose={closeSavedFiltersPopup}
           savedFilters={savedFilters}
         />
       ) : null,
-    [
-      closeSavedFilterPopup,
-      isSavedFiltersVisible,
-      model,
-      savedFilters,
-      savedFiltersAction?.filters,
-    ],
+    [closeSavedFiltersPopup, areSavedFiltersVisible, savedFilters],
   );
 
   const HeaderItemList = useMemo(

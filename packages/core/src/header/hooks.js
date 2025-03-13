@@ -28,7 +28,7 @@ import {getNetInfo} from '../api/net-info-utils';
 import {fetchJsonFieldsOfModel} from '../forms';
 import {useIsFocused} from '../hooks/use-navigation';
 import {fetchActionPrint} from '../api/print-template-api';
-import {fetchCustomfilter} from '../api/custom-filter-api';
+import {fetchDefaultFilters} from '../api/aop-filter-api';
 
 export const useBasicActions = ({
   model,
@@ -53,7 +53,7 @@ export const useBasicActions = ({
   const [isConnected, setIsConnected] = useState(true);
   const [isTemplateSelectorVisible, setTemplateSelectorVisible] =
     useState(false);
-  const [isSavedFiltersVisible, setIsSavedFiltersVisible] = useState(false);
+  const [areSavedFiltersVisible, setAreSavedFiltersVisible] = useState(false);
   const [savedFilters, setSavedFilters] = useState([]);
 
   const modelConfigured = useMemo(
@@ -65,8 +65,8 @@ export const useBasicActions = ({
     setTemplateSelectorVisible(false);
   }, []);
 
-  const closeSavedFilterPopup = useCallback(() => {
-    setIsSavedFiltersVisible(false);
+  const closeSavedFiltersPopup = useCallback(() => {
+    setAreSavedFiltersVisible(false);
   }, []);
 
   const countUnreadMessagesAPI = useCallback(() => {
@@ -123,7 +123,7 @@ export const useBasicActions = ({
 
   useEffect(() => {
     if (!model) return;
-    fetchCustomfilter({modelName: model})
+    fetchDefaultFilters({modelName: model})
       .then(res => {
         const _filters = res?.data?.data?.view?.filters || [];
         setSavedFilters(_filters);
@@ -155,7 +155,7 @@ export const useBasicActions = ({
       iconName: 'filter',
       title: I18n.t('Base_ShowSavedFilter'),
       onPress: () => {
-        setIsSavedFiltersVisible(true);
+        setAreSavedFiltersVisible(true);
       },
       hideIf:
         modelId != null ||
@@ -230,9 +230,9 @@ export const useBasicActions = ({
   return useMemo(() => {
     return {
       isTemplateSelectorVisible,
-      isSavedFiltersVisible,
+      areSavedFiltersVisible,
       closePrintTemplateSelector,
-      closeSavedFilterPopup,
+      closeSavedFiltersPopup,
       savedFilters,
       ...(modelConfigured
         ? {
@@ -252,9 +252,9 @@ export const useBasicActions = ({
     };
   }, [
     isTemplateSelectorVisible,
-    isSavedFiltersVisible,
+    areSavedFiltersVisible,
     closePrintTemplateSelector,
-    closeSavedFilterPopup,
+    closeSavedFiltersPopup,
     savedFilters,
     modelConfigured,
     mailMessagesAction,
