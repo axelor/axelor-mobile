@@ -1,5 +1,0 @@
-{
-  "title": "Task: initialize options even when the filters are hidden",
-  "type": "fix",
-  "packages": "project"
-}

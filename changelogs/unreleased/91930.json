@@ -1,5 +1,0 @@
-{
-  "title": "Roles: add tool to get all roles of user",
-  "type": "feat",
-  "packages": "core"
-}

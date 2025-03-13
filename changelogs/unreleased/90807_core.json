@@ -1,5 +1,0 @@
-{
-  "title": "API management: add translation on error message",
-  "type": "fix",
-  "packages": "core"
-}

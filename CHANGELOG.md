@@ -3,6 +3,77 @@ title: 8.2.0
 tags: Changelog
 ---
 
+## [8.2.8] (2025-03-13)
+
+### @axelor/aos-mobile-core
+
+#### Features
+
+- Traceback: add current request path
+- Camera scanner: allow more code types to match server options
+- Roles: add tool to get all roles of user
+
+#### Fixes
+
+- API management: add translation on error message
+- PeriodInput: resolve issue when onPeriodErrorChange not provided
+- Dashboards/Webviews: restore menus access control by correctly fetching user
+- Translations: improve logic to upload localization and language at the same time
+
+### @axelor/aos-mobile-ui
+
+#### Fixes
+
+- ProgressBar: hide progress when value is 0
+
+### @axelor/aos-mobile-sale
+
+#### Changes
+
+- Permission: add access control before displaying action buttons
+
+#### Fixes
+
+- Cart: add error message when trying to add a product from catalog without active cart
+
+### @axelor/aos-mobile-project
+
+#### Changes
+
+- Permission: add access control before displaying action buttons
+
+#### Fixes
+
+- Address: remove unused deprecated fields
+- Task: initialize options even when the filters are hidden
+
+### @axelor/aos-mobile-intervention
+
+#### Fixes
+
+- Intervention: use assignedTo to check user instead of going through employee
+
+### @axelor/aos-mobile-quality
+
+#### Fixes
+
+- Dimension type control: resolve issue with value which was not reset when switching from one sample to another
+- Control entry line: resolve display issue with long sample title
+- Control entry line: add null checks to avoid crash
+
+### @axelor/aos-mobile-crm
+
+#### Fixes
+
+- Address: change fields to follow model structure update
+- Event: use selection from web for type
+
+### @axelor/aos-mobile-stock
+
+#### Changes
+
+- Multi company: manage product by company for tracking number configuration
+
 ## [8.2.7] (2025-02-12)
 
 ### @axelor/aos-mobile-core
@@ -424,6 +495,7 @@ This package is linked with the @axelor/aos-mobile-hr to manage time logging.
 
 - Supplier arrival: add possibility to fill origin when creating or selecting tracking number
 
+[8.2.8]: https://github.com/axelor/axelor-mobile/compare/8.2.7...8.2.8
 [8.2.7]: https://github.com/axelor/axelor-mobile/compare/8.2.6...8.2.7
 [8.2.6]: https://github.com/axelor/axelor-mobile/compare/8.2.5...8.2.6
 [8.2.5]: https://github.com/axelor/axelor-mobile/compare/8.2.4...8.2.5

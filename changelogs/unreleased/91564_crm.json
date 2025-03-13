@@ -1,5 +1,0 @@
-{
-  "title": "Address: change fields to follow model structure update",
-  "type": "fix",
-  "packages": "crm"
-}

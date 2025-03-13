@@ -1,5 +1,0 @@
-{
-  "title": "Address: remove unused deprecated fields",
-  "type": "fix",
-  "packages": "project"
-}
