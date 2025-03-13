@@ -45,6 +45,25 @@ const PopupFilters = ({
     }
   }, [onClose, selectedFilter]);
 
+  const renderRadioSelect = (filters: any[], titleKey: string) => {
+    if (filters?.length === 0) return null;
+
+    return (
+      <View style={styles.container}>
+        <RadioSelect
+          question={I18n.t(titleKey)}
+          items={filters.map(filter => ({
+            id: filter.id || filter.name,
+            title: filter.title || filter.name,
+          }))}
+          onChange={setSelectedFilter}
+          direction="column"
+          radioButtonStyle={styles.radioButtonStyle}
+        />
+      </View>
+    );
+  };
+
   return (
     <Alert
       visible={visible}
@@ -52,32 +71,8 @@ const PopupFilters = ({
       cancelButtonConfig={{onPress: onClose}}
       confirmButtonConfig={{onPress: handleConfirm}}
       translator={I18n.t}>
-      {savedFilters != null && savedFilters?.length > 0 && (
-        <View style={styles.container}>
-          <RadioSelect
-            items={savedFilters.map(filter => ({
-              id: filter.name,
-              title: filter.title,
-            }))}
-            onChange={setSelectedFilter}
-            direction="column"
-            radioButtonStyle={styles.radioButtonStyle}
-          />
-        </View>
-      )}
-      {userFilters != null && userFilters?.length > 0 && (
-        <View style={styles.container}>
-          <RadioSelect
-            items={userFilters.map(filter => ({
-              id: filter.id,
-              title: filter.name,
-            }))}
-            onChange={setSelectedFilter}
-            direction="column"
-            radioButtonStyle={styles.radioButtonStyle}
-          />
-        </View>
-      )}
+      {renderRadioSelect(savedFilters, 'Base_Filters')}
+      {renderRadioSelect(userFilters, 'Base_MyFilters')}
     </Alert>
   );
 };
