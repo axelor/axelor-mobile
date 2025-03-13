@@ -46,7 +46,7 @@ const PopupFilter = ({
   return (
     <Alert
       visible={visible}
-      title="Sélectionner un filtre"
+      title={I18n.t('Base_SelectFilter')}
       cancelButtonConfig={{onPress: onClose}}
       confirmButtonConfig={{onPress: handleConfirm}}
       translator={I18n.t}>
