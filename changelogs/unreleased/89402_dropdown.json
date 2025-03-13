@@ -1,5 +1,0 @@
-{
-  "title": "DropdownCardSwitch: add possibility to give style on each dropdown item for the card container",
-  "type": "feat",
-  "packages": "ui"
-}

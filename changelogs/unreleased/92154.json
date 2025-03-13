@@ -1,5 +1,0 @@
-{
-  "title": "EditableHtmlInput: add new component to manage html text edition",
-  "type": "feat",
-  "packages": "ui"
-}

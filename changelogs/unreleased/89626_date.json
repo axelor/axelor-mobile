@@ -1,5 +1,0 @@
-{
-  "title": "MailMessageView: add option to filter messages between a given date and current date",
-  "type": "feat",
-  "packages": "core"
-}

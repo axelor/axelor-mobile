@@ -1,5 +1,0 @@
-{
-  "title": "HorizontalRuleText: add new component to display horizontal rules with text in the center",
-  "type": "feat",
-  "packages": "ui"
-}

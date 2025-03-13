@@ -1,5 +1,0 @@
-{
-  "title": "TreeView: add the possibility to define additional actions on branch",
-  "type": "feat",
-  "packages": "ui"
-}

@@ -1,5 +1,0 @@
-{
-  "title": "Header actions: remove use of attachedFileScreenTitle",
-  "type": "refactor",
-  "packages": ["crm", "helpdesk", "intervention", "project", "sale", "stock"]
-}

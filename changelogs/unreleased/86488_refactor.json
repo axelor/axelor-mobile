@@ -1,5 +1,0 @@
-{
-  "title": "TreeView: use ActionCard for branch display",
-  "type": "refactor",
-  "packages": "ui"
-}

@@ -1,5 +1,0 @@
-{
-  "title": "MailMessageView: add option to hide message box",
-  "type": "feat",
-  "packages": "core"
-}

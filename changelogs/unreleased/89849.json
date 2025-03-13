@@ -1,5 +1,0 @@
-{
-  "title": "DoubleScannerSearchBar: add new component to manage new configuration of multi barcodes",
-  "type": "feat",
-  "packages": "core"
-}

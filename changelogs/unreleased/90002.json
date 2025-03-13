@@ -1,5 +1,0 @@
-{
-  "title": "Theme: add support for AOP's configurable themes",
-  "type": "feat",
-  "packages": ["core", "ui"]
-}

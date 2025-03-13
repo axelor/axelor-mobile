@@ -1,5 +1,0 @@
-{
-  "title": "SearchListView: add possibility to define a custom component for the integrated search bar",
-  "type": "feat",
-  "packages": "core"
-}

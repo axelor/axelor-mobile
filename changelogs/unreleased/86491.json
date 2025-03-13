@@ -1,5 +1,0 @@
-{
-  "title": "SearchTreeView: add possibility to define default value for parent filter",
-  "type": "feat",
-  "packages": "core"
-}

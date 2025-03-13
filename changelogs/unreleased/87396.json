@@ -1,5 +1,0 @@
-{
-  "title": "ChipSelect: add showClearButton prop to clear all selected chips",
-  "type": "feat",
-  "packages": "ui"
-}

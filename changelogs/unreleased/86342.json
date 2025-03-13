@@ -1,5 +1,0 @@
-{
-  "title": "Virtual keyboard: replace boolean by selection ('Always', 'Hidden on scannable inputs', 'Never')",
-  "type": "feat",
-  "packages": ["core", "ui"]
-}
