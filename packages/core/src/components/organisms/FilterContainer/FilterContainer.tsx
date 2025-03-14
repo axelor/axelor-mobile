@@ -22,12 +22,10 @@ import {useActiveFilter} from '../../../hooks/use-active-filter';
 import {
   animationUtil,
   Icon,
-  LabelText,
   ThemeColors,
   useConfig,
   useThemeColor,
 } from '@axelor/aos-mobile-ui';
-import {useTranslator} from '../../../i18n';
 
 interface FilterContainerProps {
   style?: any;
@@ -54,7 +52,6 @@ const FilterContainer = ({
     forceHideByDefault ? false : showFilter,
   );
   const Colors = useThemeColor();
-  const I18n = useTranslator();
 
   useEffect(() => {
     setVisible(forceHideByDefault ? false : showFilter);
@@ -74,17 +71,13 @@ const FilterContainer = ({
 
       {activeFilter && (
         <View style={styles.filterTag}>
-          <LabelText
-            title={I18n.t('Base_SelectedFilter')}
-            value={activeFilter}
-          />
+          <Text style={styles.filterText}>{activeFilter}</Text>
           <Icon
             touchable={true}
             onPress={clearFilter}
             name="x-circle"
             size={18}
             color={Colors.errorColor.background}
-            style={{flex: 1}}
           />
         </View>
       )}
@@ -128,7 +121,12 @@ const getStyles = (Colors: ThemeColors) =>
       flexDirection: 'row',
       alignItems: 'center',
       marginVertical: 5,
-      marginHorizontal: 15,
+      marginHorizontal: 24,
+    },
+    filterText: {
+      color: Colors.text,
+      fontSize: 14,
+      marginRight: 5,
     },
   });
 
