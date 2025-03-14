@@ -16,7 +16,11 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import {axiosApiProvider, createStandardSearch} from '../apiProviders';
+import {
+  axiosApiProvider,
+  createStandardSearch,
+  Criteria,
+} from '../apiProviders';
 
 const createFetchMetaFiltersCriteria = ({filterName, userId}) => {
   return [
@@ -58,7 +62,10 @@ export async function fetchDefaultFilters({modelName}: {modelName: string}) {
 export async function fetchMetaFilters({page = 0, filterName, userId}) {
   return createStandardSearch({
     model: 'com.axelor.meta.db.MetaFilter',
-    criteria: createFetchMetaFiltersCriteria({filterName, userId}) as any,
+    criteria: createFetchMetaFiltersCriteria({
+      filterName,
+      userId,
+    }) as Criteria[],
     fieldKey: 'core_metaFilter',
     page,
   });

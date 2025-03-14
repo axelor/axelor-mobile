@@ -44,7 +44,7 @@ const PopupFilters = ({
   );
 
   const handleConfirm = useCallback(() => {
-    const selectedFilter = selectedSavedFilter || selectedUserFilter;
+    const selectedFilter = selectedSavedFilter ?? selectedUserFilter;
     if (selectedFilter) {
       console.log('selectedFilter', selectedFilter);
     }
