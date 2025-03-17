@@ -75,8 +75,10 @@ export async function loginApi(
   requestInterceptorId: number;
   responseInterceptorId: number;
 }> {
+  const normalizedUrl = url.endsWith('/') ? url.slice(0, -1) : url;
+  const normalizedLoginPath = loginPath.startsWith('/') ? loginPath : `/${loginPath}`;
   return axios
-    .post(`${url}${loginPath}`, {username, password})
+    .post(`${normalizedUrl}${normalizedLoginPath}`, {username, password})
     .then(res => initAxiosWithHeaders(res, url));
 }
 
