@@ -38,10 +38,10 @@ describe('LabelText Component', () => {
   it('should render with title and value', () => {
     const wrapper = shallow(<LabelText {...props} />);
 
-    const textComponents = wrapper.find(Text);
+    const childrenTextContainer = wrapper.find(Text).at(0).prop('children');
 
-    expect(textComponents.at(0).prop('children')).toBe(props.title);
-    expect(textComponents.at(1).prop('children')).toBe(props.value);
+    expect(childrenTextContainer[0].trim()).toBe(props.title);
+    expect(childrenTextContainer[1].props.children).toBe(props.value);
   });
 
   it('should render with an icon when iconName is provided', () => {
