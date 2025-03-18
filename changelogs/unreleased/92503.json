@@ -1,0 +1,5 @@
+{
+  "title": "Navigation: add new tool to check if a screen is present in the current stack",
+  "type": "feat",
+  "packages": "core"
+}
