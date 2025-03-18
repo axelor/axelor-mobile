@@ -16,16 +16,16 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import React, {useCallback, useEffect, useMemo, useState} from 'react';
-import {StyleSheet, View, TouchableOpacity, Text} from 'react-native';
-import {useActiveFilter} from '../../../hooks/use-active-filter';
+import React, {useMemo} from 'react';
+import {View, StyleSheet, TouchableOpacity} from 'react-native';
 import {
-  animationUtil,
+  HeaderContainer,
   Icon,
-  ThemeColors,
-  useConfig,
+  Text,
   useThemeColor,
 } from '@axelor/aos-mobile-ui';
+import {useActiveFilter} from '../../../hooks/use-active-filter';
+import {filterProvider} from '../../../header/FilterProvider';
 
 interface FilterContainerProps {
   style?: any;
@@ -46,87 +46,65 @@ const FilterContainer = ({
   expandableFilter = true,
   forceHideByDefault = false,
 }: FilterContainerProps) => {
-  const {showFilter} = useConfig();
-  const {activeFilter, clearFilter} = useActiveFilter();
-  const [isVisible, setVisible] = useState(
-    forceHideByDefault ? false : showFilter,
-  );
   const Colors = useThemeColor();
+  const {activeFilter} = useActiveFilter();
 
-  useEffect(() => {
-    setVisible(forceHideByDefault ? false : showFilter);
-  }, [forceHideByDefault, showFilter]);
+  const styles = useMemo(
+    () => getStyles(Colors.primaryColor.background),
+    [Colors],
+  );
 
-  const styles = useMemo(() => getStyles(Colors), [Colors]);
+  const renderFilterTag = () => {
+    if (!activeFilter) {
+      return null;
+    }
 
-  const handleExpandPress = useCallback(() => {
-    animationUtil.animateNext();
-    setVisible(!isVisible);
-  }, [isVisible]);
+    return (
+      <View style={styles.filterContainer}>
+        <Icon name="filter" size={18} />
+        <TouchableOpacity
+          style={styles.filterTag}
+          onPress={() => filterProvider.setActiveFilter()}>
+          <Text fontSize={14}>{activeFilter.name}</Text>
+          <Icon name="x" size={18} />
+        </TouchableOpacity>
+      </View>
+    );
+  };
 
   return (
-    <View style={[styles.container, style]}>
-      {expandableFilter && isVisible && topChildren}
-      {fixedItems}
-
-      {activeFilter && (
-        <View style={styles.filterTag}>
-          <Text style={styles.filterText}>{activeFilter}</Text>
-          <Icon
-            touchable={true}
-            onPress={clearFilter}
-            name="x-circle"
-            size={18}
-            color={Colors.errorColor.background}
-          />
-        </View>
-      )}
-
-      {expandableFilter && isVisible && children}
-      {chipComponent}
-      {expandableFilter && (
-        <TouchableOpacity onPress={handleExpandPress}>
-          <View style={styles.arrowContainer}>
-            <Icon
-              name={isVisible ? 'chevron-up' : 'chevron-down'}
-              size={22}
-              color={Colors.primaryColor.background}
-            />
-          </View>
-        </TouchableOpacity>
-      )}
-    </View>
+    <HeaderContainer
+      style={style}
+      topChildren={topChildren}
+      fixedItems={
+        <>
+          {fixedItems}
+          {renderFilterTag()}
+        </>
+      }
+      chipComponent={chipComponent}
+      expandableFilter={expandableFilter}
+      forceHideByDefault={forceHideByDefault}>
+      {children}
+    </HeaderContainer>
   );
 };
 
-const getStyles = (Colors: ThemeColors) =>
+const getStyles = (borderColor: string) =>
   StyleSheet.create({
-    container: {
-      flexDirection: 'column',
-      justifyContent: 'center',
-      backgroundColor: Colors.backgroundColor,
-      elevation: 3,
-      shadowOpacity: 3,
-      zIndex: 2,
-      paddingBottom: 5,
-      borderBottomEndRadius: 10,
-      borderBottomStartRadius: 10,
-    },
-    arrowContainer: {
-      alignSelf: 'center',
-      justifyContent: 'center',
-      alignItems: 'center',
+    filterContainer: {
+      flexDirection: 'row',
+      marginVertical: 5,
+      paddingHorizontal: 24,
+      gap: 10,
     },
     filterTag: {
       flexDirection: 'row',
       alignItems: 'center',
-      marginVertical: 5,
-      marginHorizontal: 24,
-    },
-    filterText: {
-      color: Colors.text,
-      fontSize: 14,
-      marginRight: 5,
+      paddingHorizontal: 8,
+      borderRadius: 14,
+      borderWidth: 2,
+      borderColor,
     },
   });
 
