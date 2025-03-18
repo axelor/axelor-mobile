@@ -193,6 +193,8 @@
   "Base_Filter": "Filter",
   "Base_ShowSavedFilter": "See saved filters",
   "Base_SelectFilter": "Select filter",
+  "Base_Filters": "Filters",
+  "Base_MyFilters": "My filters",
   "Base_Details": "Details",
   "Base_Label": "Label",
   "Base_Value": "Value",

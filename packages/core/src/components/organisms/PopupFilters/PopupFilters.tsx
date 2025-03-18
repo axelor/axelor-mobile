@@ -17,31 +17,56 @@
  */
 
 import React, {useCallback, useState} from 'react';
-import {View, StyleSheet} from 'react-native';
+import {StyleSheet} from 'react-native';
 import {Alert, RadioSelect} from '@axelor/aos-mobile-ui';
 import {useTranslator} from '../../../i18n';
 
 interface PopupFiltersProps {
   visible: boolean;
   onClose: () => void;
-  savedFilters: any;
+  savedFilters: any[];
+  userFilters: any[];
 }
 
 const PopupFilters = ({
   visible = false,
   onClose,
-  savedFilters,
+  savedFilters = [],
+  userFilters = [],
 }: PopupFiltersProps) => {
   const I18n = useTranslator();
 
   const [selectedFilter, setSelectedFilter] = useState<string | null>(null);
 
   const handleConfirm = useCallback(() => {
-    if (selectedFilter) {
-      console.log('selectedFilter', selectedFilter);
-      onClose();
-    }
+    console.log('selectedFilter', selectedFilter);
+    onClose();
   }, [onClose, selectedFilter]);
+
+  const handleFilterSelection = (filterId: string) => {
+    setSelectedFilter(prevFilter =>
+      prevFilter === filterId ? null : filterId,
+    );
+  };
+
+  const renderRadioSelect = (filters: any[], titleKey: string) => {
+    if (filters.length === 0) return null;
+
+    return (
+      <RadioSelect
+        style={styles.container}
+        question={I18n.t(titleKey)}
+        items={filters.map(filter => ({
+          id: filter.id || filter.name,
+          title: filter.title || filter.name,
+        }))}
+        onChange={handleFilterSelection}
+        defaultValue={selectedFilter}
+        direction="column"
+        radioButtonStyle={styles.radioButtonStyle}
+      />
+    );
+  };
 
   return (
     <Alert
@@ -50,24 +75,14 @@ const PopupFilters = ({
       cancelButtonConfig={{onPress: onClose}}
       confirmButtonConfig={{onPress: handleConfirm}}
       translator={I18n.t}>
-      <View style={styles.container}>
-        <RadioSelect
-          items={savedFilters.map(filter => ({
-            id: filter.name,
-            title: filter.title,
-          }))}
-          onChange={setSelectedFilter}
-          direction="column"
-          radioButtonStyle={styles.radioButtonStyle}
-        />
-      </View>
+      {renderRadioSelect(savedFilters, 'Base_Filters')}
+      {renderRadioSelect(userFilters, 'Base_MyFilters')}
     </Alert>
   );
 };
 
 const styles = StyleSheet.create({
   container: {
-    marginTop: 10,
     width: '100%',
   },
   radioButtonStyle: {

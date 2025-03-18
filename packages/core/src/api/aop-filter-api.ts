@@ -16,7 +16,36 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import {axiosApiProvider} from '../apiProviders';
+import {
+  axiosApiProvider,
+  createStandardSearch,
+  Criteria,
+} from '../apiProviders';
+
+const createMetaFiltersCriteria = ({filterName, userId}): Criteria[] => {
+  return [
+    {
+      fieldName: 'filterView',
+      operator: '=',
+      value: filterName,
+    },
+    {
+      operator: 'or',
+      criteria: [
+        {
+          fieldName: 'shared',
+          operator: '=',
+          value: true,
+        },
+        {
+          fieldName: 'user.id',
+          operator: '=',
+          value: userId,
+        },
+      ],
+    },
+  ];
+};
 
 export async function fetchDefaultFilters({modelName}: {modelName: string}) {
   return axiosApiProvider.post({
@@ -27,5 +56,14 @@ export async function fetchDefaultFilters({modelName}: {modelName: string}) {
       },
       model: modelName,
     },
+  });
+}
+
+export async function fetchMetaFilters({page = 0, filterName, userId}) {
+  return createStandardSearch({
+    model: 'com.axelor.meta.db.MetaFilter',
+    criteria: createMetaFiltersCriteria({filterName, userId}),
+    fieldKey: 'core_metaFilter',
+    page,
   });
 }
