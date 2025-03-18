@@ -21,8 +21,7 @@ export {default as Navigator} from './navigator/Navigator';
 export {configGlobalStore} from './redux/store';
 export {storage, Storage, useStorage} from './storage/Storage';
 export {traceError} from './api/traceback-api';
-export {useEffectDebugger} from './hooks/use-effect-debugger';
-export {login, logout} from './features/authSlice';
+export {clearError, isUrlValid, login, logout} from './features/authSlice';
 export * from './apiProviders';
 export {
   useScannedValueByKey,
@@ -71,14 +70,9 @@ export * from './tools';
 export * from './utils';
 export * from './types';
 export * from './auth';
+export * from './hooks';
 export * from './i18n';
 export * from './config';
 export * from './header';
 export * from './forms';
 export * from './sessions';
-export {
-  useScanActivator,
-  useScannerDeviceActivator,
-  useCameraScannerActivator,
-} from './hooks/use-scan-activator';
-export {useNavigation, useIsFocused} from './hooks/use-navigation';
