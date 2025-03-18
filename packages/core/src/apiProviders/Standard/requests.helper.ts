@@ -24,6 +24,7 @@ interface SearchProps {
   model: string;
   criteria?: Criteria[];
   domain?: string;
+  domains?: string;
   domainContext?: any;
   fieldKey: string;
   sortKey?: string;
@@ -68,6 +69,7 @@ class RequestBuilder {
     model,
     criteria = [],
     domain = '',
+    domains = '',
     domainContext = {},
     fieldKey,
     sortKey,
@@ -120,6 +122,18 @@ class RequestBuilder {
         data._domainContext = domainContext;
       }
     }
+    if (domains != null && domains !== '') {
+      if (data._domains != null) {
+        data._domains = `(${data._domains}) AND (${domains})`;
+        data._domainContext = {
+          ...data._domainContext,
+          ...domainContext,
+        };
+      } else {
+        data._domains = domains;
+        data._domainContext = domainContext;
+      }
+    }
 
     if (provider === 'axios') {
       axiosApiProvider.post({
@@ -153,6 +167,7 @@ class RequestBuilder {
     model,
     criteria = [],
     domain = '',
+    domains = '',
     domainContext = {},
     provider = 'axios',
     companyId,
@@ -173,6 +188,7 @@ class RequestBuilder {
         ...(criteria ?? []),
       ],
       domain,
+      domains,
       domainContext,
       fieldKey: '',
       page: 0,

@@ -169,6 +169,7 @@ const useLeadListActions = () => {
 
   useEffect(() => {
     headerActionsProvider.registerModel('crm_lead_list', {
+      model: 'com.axelor.apps.crm.db.Lead',
       actions: [
         {
           key: 'newLead',
