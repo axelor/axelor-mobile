@@ -191,6 +191,8 @@
   "Base_Yes": "Oui",
   "Base_No": "Non",
   "Base_Filter": "Filtrer",
+  "Base_ShowSavedFilter": "Voir les filtres sauvegardés",
+  "Base_SelectFilter": "Sélectionner un filtre",
   "Base_Details": "Détails",
   "Base_Label": "Label",
   "Base_Value": "Valeur",
