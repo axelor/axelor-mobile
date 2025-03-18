@@ -22,7 +22,7 @@ import {
   Criteria,
 } from '../apiProviders';
 
-const createFetchMetaFiltersCriteria = ({filterName, userId}) => {
+const createMetaFiltersCriteria = ({filterName, userId}): Criteria[] => {
   return [
     {
       fieldName: 'filterView',
@@ -62,10 +62,7 @@ export async function fetchDefaultFilters({modelName}: {modelName: string}) {
 export async function fetchMetaFilters({page = 0, filterName, userId}) {
   return createStandardSearch({
     model: 'com.axelor.meta.db.MetaFilter',
-    criteria: createFetchMetaFiltersCriteria({
-      filterName,
-      userId,
-    }) as Criteria[],
+    criteria: createMetaFiltersCriteria({filterName, userId}),
     fieldKey: 'core_metaFilter',
     page,
   });
