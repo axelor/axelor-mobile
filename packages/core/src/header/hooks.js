@@ -28,6 +28,7 @@ import {getNetInfo} from '../api/net-info-utils';
 import {fetchJsonFieldsOfModel} from '../forms';
 import {useIsFocused} from '../hooks/use-navigation';
 import {fetchActionPrint} from '../api/print-template-api';
+import {fetchDefaultFilters} from '../api/aop-filter-api';
 
 export const useBasicActions = ({
   model,
@@ -52,6 +53,8 @@ export const useBasicActions = ({
   const [isConnected, setIsConnected] = useState(true);
   const [isTemplateSelectorVisible, setTemplateSelectorVisible] =
     useState(false);
+  const [areSavedFiltersVisible, setAreSavedFiltersVisible] = useState(false);
+  const [savedFilters, setSavedFilters] = useState([]);
 
   const modelConfigured = useMemo(
     () => !checkNullString(model) && modelId != null,
@@ -60,6 +63,10 @@ export const useBasicActions = ({
 
   const closePrintTemplateSelector = useCallback(() => {
     setTemplateSelectorVisible(false);
+  }, []);
+
+  const closeSavedFiltersPopup = useCallback(() => {
+    setAreSavedFiltersVisible(false);
   }, []);
 
   const countUnreadMessagesAPI = useCallback(() => {
@@ -114,6 +121,16 @@ export const useBasicActions = ({
     };
   }, [checkInternetConnection, isFocused]);
 
+  useEffect(() => {
+    if (!model) return;
+    fetchDefaultFilters({modelName: model})
+      .then(res => {
+        const _filters = res?.data?.data?.view?.filters || [];
+        setSavedFilters(_filters);
+      })
+      .catch(() => setSavedFilters([]));
+  }, [model]);
+
   const mailMessagesAction = useMemo(() => {
     return {
       key: 'mailMessages',
@@ -130,6 +147,24 @@ export const useBasicActions = ({
       showInHeader: true,
     };
   }, [I18n, disableMailMessages, model, modelId, navigation, unreadMessages]);
+
+  const savedFiltersAction = useMemo(() => {
+    return {
+      key: 'savedFilters',
+      order: 50,
+      iconName: 'filter',
+      title: I18n.t('Base_ShowSavedFilter'),
+      onPress: () => {
+        setAreSavedFiltersVisible(true);
+      },
+      hideIf:
+        modelId != null ||
+        model == null ||
+        savedFilters == null ||
+        savedFilters?.length === 0,
+      showInHeader: true,
+    };
+  }, [I18n, model, modelId, savedFilters]);
 
   const barcodeAction = useMemo(() => {
     return {
@@ -195,28 +230,37 @@ export const useBasicActions = ({
   return useMemo(() => {
     return {
       isTemplateSelectorVisible,
+      areSavedFiltersVisible,
       closePrintTemplateSelector,
+      closeSavedFiltersPopup,
+      savedFilters,
       ...(modelConfigured
         ? {
             mailMessagesAction,
             printAction,
             barcodeAction,
             jsonFieldsAction,
+            savedFiltersAction,
           }
         : {
             mailMessagesAction: {key: 'mailMessages', hideIf: true},
             printAction: {key: 'printTemplate', hideIf: true},
             barcodeAction: {key: 'barcode', hideIf: true},
             jsonFieldsAction: {key: 'metaJsonFields', hideIf: true},
+            savedFiltersAction: {key: 'savedFilters', hideIf: true},
           }),
     };
   }, [
+    isTemplateSelectorVisible,
+    areSavedFiltersVisible,
+    closePrintTemplateSelector,
+    closeSavedFiltersPopup,
+    savedFilters,
     modelConfigured,
     mailMessagesAction,
     printAction,
     barcodeAction,
     jsonFieldsAction,
-    isTemplateSelectorVisible,
-    closePrintTemplateSelector,
+    savedFiltersAction,
   ]);
 };
