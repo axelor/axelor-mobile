@@ -22,6 +22,7 @@ import {DropdownMenu, DropdownMenuItem} from '@axelor/aos-mobile-ui';
 import {HeaderOptionMenuItem} from '../../molecules';
 import {useBasicActions} from '../../../header';
 import PopupPrintTemplate from '../PopupPrintTemplate/PopupPrintTemplate';
+import PopupFilters from '../PopupFilters/PopupFilters';
 
 const SMALLEST_WINDOW_WIDTH = 300;
 
@@ -38,11 +39,15 @@ const HeaderOptionsMenu = ({
 }) => {
   const {
     mailMessagesAction,
+    savedFiltersAction,
     barcodeAction,
     printAction,
     jsonFieldsAction,
     isTemplateSelectorVisible,
+    areSavedFiltersVisible,
     closePrintTemplateSelector,
+    closeSavedFiltersPopup,
+    savedFilters,
   } = useBasicActions({
     model,
     modelId,
@@ -87,6 +92,7 @@ const HeaderOptionsMenu = ({
       [
         mailMessagesAction,
         printAction,
+        savedFiltersAction,
         barcodeAction,
         jsonFieldsAction,
         ...actions,
@@ -99,6 +105,7 @@ const HeaderOptionsMenu = ({
       barcodeAction,
       jsonFieldsAction,
       mailMessagesAction,
+      savedFiltersAction,
       printAction,
       visibleGenericActions,
     ],
@@ -128,6 +135,18 @@ const HeaderOptionsMenu = ({
         />
       ) : null,
     [closePrintTemplateSelector, isTemplateSelectorVisible, model, modelId],
+  );
+
+  const renderPopupSavedFilters = useCallback(
+    () =>
+      areSavedFiltersVisible ? (
+        <PopupFilters
+          visible={areSavedFiltersVisible}
+          onClose={closeSavedFiltersPopup}
+          savedFilters={savedFilters}
+        />
+      ) : null,
+    [closeSavedFiltersPopup, areSavedFiltersVisible, savedFilters],
   );
 
   const HeaderItemList = useMemo(
@@ -174,6 +193,7 @@ const HeaderOptionsMenu = ({
       <View style={styles.container}>
         <DropdownMenu>{[...HeaderItemList, ...MenuItemList]}</DropdownMenu>
         {renderPopupPrintTemplate()}
+        {renderPopupSavedFilters()}
       </View>
     );
   }
@@ -183,6 +203,7 @@ const HeaderOptionsMenu = ({
       {HeaderItemList}
       {menuActions.length !== 0 && <DropdownMenu>{MenuItemList}</DropdownMenu>}
       {renderPopupPrintTemplate()}
+      {renderPopupSavedFilters()}
     </View>
   );
 };
