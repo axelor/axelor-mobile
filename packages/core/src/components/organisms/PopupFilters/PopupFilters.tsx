@@ -17,7 +17,7 @@
  */
 
 import React, {useCallback, useState} from 'react';
-import {View, StyleSheet} from 'react-native';
+import {StyleSheet} from 'react-native';
 import {Alert, RadioSelect} from '@axelor/aos-mobile-ui';
 import {useTranslator} from '../../../i18n';
 
@@ -36,53 +36,35 @@ const PopupFilters = ({
 }: PopupFiltersProps) => {
   const I18n = useTranslator();
 
-  const [selectedSavedFilter, setSelectedSavedFilter] = useState<string | null>(
-    null,
-  );
-  const [selectedUserFilter, setSelectedUserFilter] = useState<string | null>(
-    null,
-  );
+  const [selectedFilter, setSelectedFilter] = useState<string | null>(null);
 
   const handleConfirm = useCallback(() => {
-    const selectedFilter = selectedSavedFilter ?? selectedUserFilter;
-    if (selectedFilter) {
-      console.log('selectedFilter', selectedFilter);
-    }
+    console.log('selectedFilter', selectedFilter);
     onClose();
-  }, [onClose, selectedSavedFilter, selectedUserFilter]);
+  }, [onClose, selectedFilter]);
 
-  const handleSavedFilterSelection = useCallback((filterId: string) => {
-    setSelectedSavedFilter(filterId);
-    setSelectedUserFilter(null);
-  }, []);
+  const handleFilterSelection = (filterId: string) => {
+    setSelectedFilter(prevFilter =>
+      prevFilter === filterId ? null : filterId,
+    );
+  };
 
-  const handleUserFilterSelection = useCallback((filterId: string) => {
-    setSelectedUserFilter(filterId);
-    setSelectedSavedFilter(null);
-  }, []);
-
-  const renderRadioSelect = (
-    filters: any[],
-    titleKey: string,
-    selectedFilter: string | null,
-    onSelect: (filterId: string) => void,
-  ) => {
-    if (filters?.length === 0) return null;
+  const renderRadioSelect = (filters: any[], titleKey: string) => {
+    if (filters.length === 0) return null;
 
     return (
-      <View style={styles.container}>
-        <RadioSelect
-          question={I18n.t(titleKey)}
-          items={filters.map(filter => ({
-            id: filter.id || filter.name,
-            title: filter.title || filter.name,
-          }))}
-          onChange={onSelect}
-          defaultValue={selectedFilter}
-          direction="column"
-          radioButtonStyle={styles.radioButtonStyle}
-        />
-      </View>
+      <RadioSelect
+        style={styles.container}
+        question={I18n.t(titleKey)}
+        items={filters.map(filter => ({
+          id: filter.id || filter.name,
+          title: filter.title || filter.name,
+        }))}
+        onChange={handleFilterSelection}
+        defaultValue={selectedFilter}
+        direction="column"
+        radioButtonStyle={styles.radioButtonStyle}
+      />
     );
   };
 
@@ -93,25 +75,14 @@ const PopupFilters = ({
       cancelButtonConfig={{onPress: onClose}}
       confirmButtonConfig={{onPress: handleConfirm}}
       translator={I18n.t}>
-      {renderRadioSelect(
-        savedFilters,
-        'Base_Filters',
-        selectedSavedFilter,
-        handleSavedFilterSelection,
-      )}
-      {renderRadioSelect(
-        userFilters,
-        'Base_MyFilters',
-        selectedUserFilter,
-        handleUserFilterSelection,
-      )}
+      {renderRadioSelect(savedFilters, 'Base_Filters')}
+      {renderRadioSelect(userFilters, 'Base_MyFilters')}
     </Alert>
   );
 };
 
 const styles = StyleSheet.create({
   container: {
-    marginTop: 10,
     width: '100%',
   },
   radioButtonStyle: {
