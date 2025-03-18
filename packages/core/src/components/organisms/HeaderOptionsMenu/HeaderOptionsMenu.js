@@ -48,6 +48,7 @@ const HeaderOptionsMenu = ({
     closePrintTemplateSelector,
     closeSavedFiltersPopup,
     savedFilters,
+    userFilters,
   } = useBasicActions({
     model,
     modelId,
@@ -144,9 +145,10 @@ const HeaderOptionsMenu = ({
           visible={areSavedFiltersVisible}
           onClose={closeSavedFiltersPopup}
           savedFilters={savedFilters}
+          userFilters={userFilters}
         />
       ) : null,
-    [closeSavedFiltersPopup, areSavedFiltersVisible, savedFilters],
+    [closeSavedFiltersPopup, areSavedFiltersVisible, savedFilters, userFilters],
   );
 
   const HeaderItemList = useMemo(
