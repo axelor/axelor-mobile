@@ -28,7 +28,7 @@ import {getNetInfo} from '../api/net-info-utils';
 import {fetchJsonFieldsOfModel} from '../forms';
 import {useIsFocused} from '../hooks/use-navigation';
 import {fetchActionPrint} from '../api/print-template-api';
-import {fetchDefaultFilters} from '../api/aop-filter-api';
+import {fetchDefaultFilters, fetchMetaFilters} from '../api/aop-filter-api';
 
 export const useBasicActions = ({
   model,
@@ -46,6 +46,7 @@ export const useBasicActions = ({
   const dispatch = useDispatch();
 
   const {unreadMessages} = useSelector(state => state.mailMessages);
+  const {userId} = useSelector(state => state.auth);
 
   const [disableBarcode, setDisableBarcode] = useState(true);
   const [disableCustomView, setDisableCustomView] = useState(true);
@@ -55,6 +56,7 @@ export const useBasicActions = ({
     useState(false);
   const [areSavedFiltersVisible, setAreSavedFiltersVisible] = useState(false);
   const [savedFilters, setSavedFilters] = useState([]);
+  const [userFilters, setUserFilters] = useState([]);
 
   const modelConfigured = useMemo(
     () => !checkNullString(model) && modelId != null,
@@ -126,10 +128,20 @@ export const useBasicActions = ({
     fetchDefaultFilters({modelName: model})
       .then(res => {
         const _filters = res?.data?.data?.view?.filters || [];
+        const viewName = res?.data?.data?.view?.name;
         setSavedFilters(_filters);
+
+        if (viewName) {
+          fetchMetaFilters({filterName: viewName, userId})
+            .then(metaRes => {
+              const _userFilters = metaRes?.data?.data || [];
+              setUserFilters(_userFilters);
+            })
+            .catch(() => setUserFilters([]));
+        }
       })
       .catch(() => setSavedFilters([]));
-  }, [model]);
+  }, [model, userId]);
 
   const mailMessagesAction = useMemo(() => {
     return {
@@ -160,11 +172,11 @@ export const useBasicActions = ({
       hideIf:
         modelId != null ||
         model == null ||
-        savedFilters == null ||
-        savedFilters?.length === 0,
+        ((savedFilters == null || savedFilters?.length === 0) &&
+          (userFilters == null || userFilters?.length === 0)),
       showInHeader: true,
     };
-  }, [I18n, model, modelId, savedFilters]);
+  }, [I18n, model, modelId, savedFilters, userFilters]);
 
   const barcodeAction = useMemo(() => {
     return {
@@ -234,6 +246,7 @@ export const useBasicActions = ({
       closePrintTemplateSelector,
       closeSavedFiltersPopup,
       savedFilters,
+      userFilters,
       ...(modelConfigured
         ? {
             mailMessagesAction,
@@ -256,6 +269,7 @@ export const useBasicActions = ({
     closePrintTemplateSelector,
     closeSavedFiltersPopup,
     savedFilters,
+    userFilters,
     modelConfigured,
     mailMessagesAction,
     printAction,
