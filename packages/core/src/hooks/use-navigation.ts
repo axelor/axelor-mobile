@@ -16,9 +16,11 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+import {useCallback, useMemo} from 'react';
 import {
   useNavigation as useReactNavigation,
   useIsFocused as useReactIsFocused,
+  useNavigationState as useReactNavigationState,
 } from '@react-navigation/native';
 
 export const useNavigation = (): any => {
@@ -27,4 +29,21 @@ export const useNavigation = (): any => {
 
 export const useIsFocused = (): boolean => {
   return useReactIsFocused();
+};
+
+export const useNavigationRoutes = (): any => {
+  return useReactNavigationState(state => state.routes);
+};
+
+export const useStackChecker = (): ((name: string) => boolean) => {
+  const routes = useNavigationRoutes();
+
+  const checkScreenMounted = useCallback(
+    (name: string) => {
+      return routes.some((route: any) => route.name === name);
+    },
+    [routes],
+  );
+
+  return useMemo(() => checkScreenMounted, [checkScreenMounted]);
 };
