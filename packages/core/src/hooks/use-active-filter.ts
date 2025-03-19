@@ -16,13 +16,24 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import {useContext} from 'react';
-import {FilterContext, FilterContextType} from '../header/FilterProvider';
+import {useEffect, useState} from 'react';
+import {filterProvider} from '../header/FilterProvider';
 
-export const useActiveFilter = (): FilterContextType => {
-  const context = useContext(FilterContext);
-  if (!context) {
-    throw new Error('useActiveFilter must be used within a FilterProvider');
-  }
-  return context;
+export const useActiveFilter = () => {
+  const [activeFilter, setActiveFilterState] = useState(
+    filterProvider.getActiveFilter(),
+  );
+
+  useEffect(() => {
+    filterProvider.register(setActiveFilterState);
+    return () => {
+      filterProvider.unregister(setActiveFilterState);
+    };
+  }, []);
+
+  return {
+    activeFilter,
+    setActiveFilter: filterProvider.setActiveFilter.bind(filterProvider),
+    clearFilter: filterProvider.clearFilter.bind(filterProvider),
+  };
 };

@@ -16,31 +16,35 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import React, {createContext, useState} from 'react';
+class FilterProviderClass {
+  private activeFilter: any | null = null;
+  private listeners: Function[] = [];
 
-export interface FilterContextType {
-  activeFilter: string | null;
-  setActiveFilter: (filter: string | null) => void;
-  clearFilter: () => void;
+  register(callback: Function) {
+    this.listeners.push(callback);
+  }
+
+  unregister(callback: Function) {
+    this.listeners = this.listeners.filter(cb => cb !== callback);
+  }
+
+  private notify() {
+    this.listeners.forEach(callback => callback(this.activeFilter));
+  }
+
+  setActiveFilter(filter: any | null) {
+    this.activeFilter = filter;
+    this.notify();
+  }
+
+  clearFilter() {
+    this.activeFilter = null;
+    this.notify();
+  }
+
+  getActiveFilter() {
+    return this.activeFilter;
+  }
 }
 
-export const FilterContext = createContext<FilterContextType | undefined>(
-  undefined,
-);
-
-export const FilterProvider: React.FC<{children: React.ReactNode}> = ({
-  children,
-}) => {
-  const [activeFilter, setActiveFilter] = useState<string | null>(null);
-
-  const clearFilter = () => {
-    setActiveFilter(null);
-  };
-
-  return (
-    <FilterContext.Provider
-      value={{activeFilter, setActiveFilter, clearFilter}}>
-      {children}
-    </FilterContext.Provider>
-  );
-};
+export const filterProvider = new FilterProviderClass();

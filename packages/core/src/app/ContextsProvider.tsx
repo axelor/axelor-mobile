@@ -35,7 +35,6 @@ import {configGlobalStore} from '../redux/store';
 import {requestBuilder} from '../apiProviders/Standard/requests.helper';
 import {HeaderBandProvider} from '../header';
 import {Module} from './modules';
-import {FilterProvider} from '../header/FilterProvider';
 
 interface ContextsProviderProps {
   modules: Module[];
@@ -128,9 +127,7 @@ const ContextsProvider = ({
             defaultTheme={defaultWritingTheme}
             writingStylesConfig={writingStylesConfig}>
             <ConfigProvider showModulesSubtitle={showModulesSubtitle}>
-              <FilterProvider>
-                <HeaderBandProvider>{children}</HeaderBandProvider>
-              </FilterProvider>
+              <HeaderBandProvider>{children}</HeaderBandProvider>
             </ConfigProvider>
           </WritingThemeProvider>
         </ThemeProvider>
