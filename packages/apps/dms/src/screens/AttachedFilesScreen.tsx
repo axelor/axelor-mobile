@@ -75,21 +75,24 @@ const AttachedFilesScreen = ({navigation, route}) => {
           iconColor: Colors.primaryColor.background,
           hideIf:
             !canCreate ||
-            !mobileSettings?.isFolderCreationAllowed ||
-            !mobileSettings?.isFileCreationAllowed,
+            (!mobileSettings?.isFolderCreationAllowed &&
+              !mobileSettings?.isFileCreationAllowed),
           onPress: () =>
             navigation.navigate('DocumentFormScreen', {
-              parent,
+              model,
+              modelId,
             }),
           showInHeader: true,
         },
       ],
     });
   }, [
+    canCreate,
     Colors.primaryColor.background,
     I18n,
-    canCreate,
     mobileSettings,
+    model,
+    modelId,
     navigation,
     options,
     parent,

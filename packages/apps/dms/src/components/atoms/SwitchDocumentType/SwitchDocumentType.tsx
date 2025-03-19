@@ -18,7 +18,7 @@
 
 import React from 'react';
 import {StyleSheet} from 'react-native';
-import {useTranslator} from '@axelor/aos-mobile-core';
+import {useSelector, useTranslator} from '@axelor/aos-mobile-core';
 import {RadioSelect} from '@axelor/aos-mobile-ui';
 
 const DOCUMENT_TYPE = {
@@ -37,6 +37,8 @@ const SwitchDocumentTypeAux = ({
 }: SwitchDocumentTypeProps) => {
   const I18n = useTranslator();
 
+  const {mobileSettings} = useSelector((state: any) => state.appConfig);
+
   return (
     <RadioSelect
       style={styles.radioSelect}
@@ -45,6 +47,10 @@ const SwitchDocumentTypeAux = ({
         {id: DOCUMENT_TYPE.file, title: I18n.t('Dms_File')},
         {id: DOCUMENT_TYPE.folder, title: I18n.t('Dms_Folder')},
       ]}
+      readonly={
+        !mobileSettings?.isFolderCreationAllowed ||
+        !mobileSettings?.isFileCreationAllowed
+      }
       onChange={type => onChange(type === DOCUMENT_TYPE.folder)}
     />
   );
