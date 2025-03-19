@@ -1,0 +1,5 @@
+{
+  "title": "Event form: improve date management",
+  "type": "fix",
+  "packages": "crm"
+}

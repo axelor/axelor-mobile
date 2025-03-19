@@ -39,9 +39,15 @@ const EventFormScreen = ({navigation, route}) => {
   const {user} = useSelector(state => state.user);
 
   const creationDefaultValue = useMemo(() => {
-    const _defaultStartDate = new Date();
-    const _defaultEndDate = new Date();
-
+    const today = new Date();
+    const baseDate = eventPlanningDate
+      ? new Date(eventPlanningDate).setHours(
+          today.getHours(),
+          today.getMinutes(),
+        )
+      : today;
+    const _defaultStartDate = new Date(baseDate);
+    const _defaultEndDate = new Date(baseDate);
     _defaultEndDate.setHours(_defaultStartDate.getHours() + 1);
 
     const _default = {
@@ -97,7 +103,16 @@ const EventFormScreen = ({navigation, route}) => {
     }
 
     return _default;
-  }, [Event, user, lead, prospect, client, contact]);
+  }, [
+    eventPlanningDate,
+    Event?.typeSelect.Meeting,
+    Event?.statusSelect.Planned,
+    user,
+    lead,
+    prospect,
+    client,
+    contact,
+  ]);
 
   const defaultValue = useMemo(
     () =>
