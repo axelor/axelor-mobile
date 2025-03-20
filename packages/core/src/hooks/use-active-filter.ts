@@ -16,7 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import {useEffect, useState} from 'react';
+import {useEffect, useMemo, useState} from 'react';
 import {filterProvider} from '../header/FilterProvider';
 
 export const useActiveFilter = () => {
@@ -31,9 +31,12 @@ export const useActiveFilter = () => {
     };
   }, []);
 
-  return {
-    activeFilter,
-    setActiveFilter: filterProvider.setActiveFilter.bind(filterProvider),
-    clearFilter: filterProvider.clearFilter.bind(filterProvider),
-  };
+  return useMemo(
+    () => ({
+      activeFilter,
+      setActiveFilter: filterProvider.setActiveFilter.bind(filterProvider),
+      clearFilter: filterProvider.clearFilter.bind(filterProvider),
+    }),
+    [activeFilter],
+  );
 };
