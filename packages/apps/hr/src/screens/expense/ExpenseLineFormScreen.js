@@ -257,7 +257,6 @@ const ExpenseLineFormScreen = ({route, navigation}) => {
     headerActionsProvider.registerModel('hr_expenseLine_details', {
       model: 'com.axelor.apps.hr.db.ExpenseLine',
       modelId: expenseLine?.id,
-      disableMailMessages: !mobileSettings?.isTrackerMessageEnabled,
     });
   }, [expenseLine?.id, mobileSettings]);
 

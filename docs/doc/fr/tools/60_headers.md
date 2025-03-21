@@ -22,7 +22,6 @@ const useCustomerDeliveryDetailsActions = () => {
     headerActionsProvider.registerModel('stock_customerDelivery_details', {
       model: 'com.axelor.apps.stock.db.StockMove',
       modelId: customerDelivery?.id,
-      disableMailMessages: !mobileSettings?.isTrackerMessageOnStockApp,
     });
   }, [mobileSettings, customerDelivery]);
 };
@@ -44,7 +43,6 @@ export interface HeaderOptions {
   modelId?: number;
   options?: any;
   disablePrint?: boolean;
-  disableMailMessages?: boolean;
   disableJsonFields?: boolean;
   barcodeFieldname?: string;
   headerTitle?: string;
@@ -52,13 +50,12 @@ export interface HeaderOptions {
 }
 ```
 
-Le package core fournit par défaut plusieurs actions pour le header, à savoir les messages de suivi sur chaque objet, les champs studio, l'impression du rapport ou encore l'affichage du code-barre. Elles sont paramétrables via les props suivantes :
+Le package core fournit par défaut plusieurs actions pour le header, à savoir les champs studio, l'impression du rapport ou encore l'affichage du code-barre. Elles sont paramétrables via les props suivantes :
 
 - _model_ : nom complet du modèle sur l’ERP.
 - _modelId_ : identifiant de l’objet.
 - _options_ : objet contenant des options pour les actions génériques.
 - _disablePrint_ : condition pour l'affichage ou non de l'impression du rapport.
-- _disableMailMessages_ : condition pour l'affichage ou non des messages de suivi sur l'objet.
 - _disableJsonFields_ : condition pour l’affichage ou non des champs studio.
 - _barcodeFieldname_ : nom de l’attribut contenant le fichier code-barre sur l’ERP (par défaut `barCode`).
 - _headerTitle_ : nom de l'écran pour permettre les titres dynamiques.

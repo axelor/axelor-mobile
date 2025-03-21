@@ -118,7 +118,6 @@ const TimesheetLineFormScreen = ({route, navigation}) => {
     headerActionsProvider.registerModel('hr_timesheetLine_details', {
       model: 'com.axelor.apps.hr.db.TimesheetLine',
       modelId: timesheetLine?.id,
-      disableMailMessages: !mobileSettings?.isTrackerMessageEnabled,
     });
   }, [timesheetLine?.id, mobileSettings]);
 

@@ -32,7 +32,6 @@ const HeaderOptionsMenu = ({
   actions = [],
   genericActions = {},
   options,
-  disableMailMessages,
   disableJsonFields,
   disablePrint,
   barcodeFieldname,
@@ -51,7 +50,6 @@ const HeaderOptionsMenu = ({
   } = useBasicActions({
     model,
     modelId,
-    disableMailMessages,
     disablePrint,
     barcodeFieldname,
     disableJsonFields,
