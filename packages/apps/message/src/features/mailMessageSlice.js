@@ -18,19 +18,19 @@
 
 import {createAsyncThunk, createSlice} from '@reduxjs/toolkit';
 import {
+  generateInifiniteScrollCases,
+  handlerApiCall,
+} from '@axelor/aos-mobile-core';
+import {
+  countUnreadMessages,
   fetchMailMessages,
   fetchModelSubscribers,
   postMailMessageComment,
-  realAllMailMessages,
+  readAllMailMessages,
   readMailMessage,
   subscribeRequest,
   unsubscribeRequest,
-  countUnreadMessages,
 } from '../api/mail-message-api';
-import {
-  generateInifiniteScrollCases,
-  handlerApiCall,
-} from '../apiProviders/utils';
 
 export const getMailMessages = createAsyncThunk(
   'mailMessages/getMailMessages',
@@ -145,7 +145,7 @@ export const markAllMailMessageAsRead = createAsyncThunk(
   async function (data, {getState}) {
     const fetchMailMessageData = {model: data?.model, modelId: data?.modelId};
     return handlerApiCall({
-      fetchFunction: realAllMailMessages,
+      fetchFunction: readAllMailMessages,
       data: data,
       action: 'Base_SliceAction_MarkAllMailMessageAsRead',
       getState: getState,

@@ -16,12 +16,4 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-export {default as CameraButton} from './CameraButton/CameraButton';
-export {default as DateDisplay} from './DateDisplay/DateDisplay';
-export {default as DatePicker} from './DatePicker/DatePicker';
-export {default as FocusScreen} from './FocusScreen/FocusScreen';
-export {default as HeaderBand} from './HeaderBand/HeaderBand';
-export {default as HeaderOptionMenuItem} from './HeaderOptionsMenuItem/HeaderOptionMenuItem';
-export {default as InputBarCodeCard} from './InputBarCodeCard/InputBarCodeCard';
-export {default as PeriodDisplay} from './PeriodDisplay/PeriodDisplay';
-export {default as UploadFileInput} from './UploadFileInput/UploadFileInput';
+export * from './mailMessagesGenericAction';

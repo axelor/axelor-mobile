@@ -25,7 +25,12 @@ import {
   StyleSheet,
   View,
 } from 'react-native';
-import {useDispatch, useSelector} from 'react-redux';
+import {
+  headerActionsProvider,
+  useDispatch,
+  useSelector,
+  useTranslator,
+} from '@axelor/aos-mobile-core';
 import {
   Alert,
   ChipSelect,
@@ -35,7 +40,8 @@ import {
   Text,
   useThemeColor,
 } from '@axelor/aos-mobile-ui';
-import {MailMessageCard} from '../../../components';
+import {useMarkAllMailMessages} from '../../molecules';
+import {MailMessageCard} from '../../organisms';
 import {
   getMailMessages,
   getModelSubscribers,
@@ -43,9 +49,6 @@ import {
   modelUnsubscribeRequest,
   sendMailMessageComment,
 } from '../../../features/mailMessageSlice';
-import useTranslator from '../../../i18n/hooks/use-translator';
-import {headerActionsProvider} from '../../../header';
-import {useMarkAllMailMessages} from '../../molecules/MailMessageReadIcon/MailMessageReadIcon';
 import {MailMessageType} from '../../../types';
 
 const DEFAULT_BOTTOM_MARGIN = 10;

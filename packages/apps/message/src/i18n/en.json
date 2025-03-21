@@ -1,3 +1,5 @@
 {
-  "Message_Message": "Message"
+  "Message_Message": "Message",
+  "Message_MailMessages": "Mail messages",
+  "Message_SliceAction_CountUnreadMailMessages": "count unread mail messages"
 }

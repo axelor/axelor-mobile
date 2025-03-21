@@ -38,7 +38,6 @@ const HeaderOptionsMenu = ({
   barcodeFieldname,
 }) => {
   const {
-    mailMessagesAction,
     savedFiltersAction,
     barcodeAction,
     printAction,
@@ -91,7 +90,6 @@ const HeaderOptionsMenu = ({
   const allActions = useMemo(
     () =>
       [
-        mailMessagesAction,
         printAction,
         savedFiltersAction,
         barcodeAction,
@@ -105,7 +103,6 @@ const HeaderOptionsMenu = ({
       actions,
       barcodeAction,
       jsonFieldsAction,
-      mailMessagesAction,
       savedFiltersAction,
       printAction,
       visibleGenericActions,

@@ -1,3 +1,5 @@
 {
-  "Message_Message": "Message"
+  "Message_Message": "Message",
+  "Message_MailMessages": "Suivi des notifications",
+  "Message_SliceAction_CountUnreadMailMessages": "comptage des mail messages non lus"
 }

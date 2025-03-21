@@ -52,7 +52,6 @@
   "Base_Large": "Large",
   "Base_Small": "Petit",
   "Base_Barcode": "Code-barre",
-  "Base_MailMessages": "Suivi des notifications",
   "Base_Comment": "Commentaire",
   "Base_MailMessages_CommentInput_Placeholder": "Entrez votre commentaire",
   "Base_MailMessages_MarkAllAsRead": "Marquer tous les messages comme lus",
