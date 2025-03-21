@@ -41,7 +41,7 @@ const useMailMessagesGenericAction = () => {
 
   useEffect(() => {
     headerActionsProvider.registerGenericAction(
-      'dms_attachedFiles',
+      'message_mailMessages',
       async ({model, modelId}) =>
         await getAction({
           model,
