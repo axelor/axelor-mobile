@@ -1,0 +1,5 @@
+{
+  "title": "DateInput: reset date when click outside",
+  "type": "fix",
+  "packages": "core"
+}
