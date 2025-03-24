@@ -102,6 +102,7 @@ const CustomerDeliveryLineCard = ({
             iconName: 'house-down',
             style:
               Dimensions.get('window').width < 350 ? styles.textWidth : null,
+            numberOfLines: 2,
           },
           {
             displayText: locker,
