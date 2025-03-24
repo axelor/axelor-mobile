@@ -24,7 +24,7 @@ import {
   useTranslator,
   useTypes,
 } from '@axelor/aos-mobile-core';
-import {InventoryHeader, InventoryLineCard} from '../../components';
+import {InventoryHeader, InventoryLineGlobalCard} from '../../components';
 import {fetchInventoryLines} from '../../features/inventoryLineSlice';
 import {displayLine} from '../../utils/displayers';
 import {useLineHandler} from '../../hooks';
@@ -38,7 +38,7 @@ const STATUS = {
 
 const scanKey = 'trackingNumber-or-product_inventory-line-list';
 
-const InventoryLineListScreen = ({route}) => {
+const InventoryLineListScreen = ({route, navigation}) => {
   const inventory = route.params.inventory;
   const Colors = useThemeColor();
   const I18n = useTranslator();
@@ -65,6 +65,8 @@ const InventoryLineListScreen = ({route}) => {
   const handleLineSearch = item => {
     handleShowLine(item, true);
   };
+
+  console.log(inventory);
 
   const sliceFunctionData = useMemo(
     () => ({
@@ -151,7 +153,7 @@ const InventoryLineListScreen = ({route}) => {
           />
         }
         renderListItem={({item}) => (
-          <InventoryLineCard
+          <InventoryLineGlobalCard
             productName={item.product?.fullName}
             currentQty={item.currentQty}
             realQty={item.realQty}
@@ -159,6 +161,8 @@ const InventoryLineListScreen = ({route}) => {
             locker={item.rack}
             trackingNumber={item.trackingNumber}
             stockLocationName={item.stockLocation?.name}
+            companyId={inventory?.company?.id}
+            productId={item.product?.id}
             onPress={() => handleShowLine(item)}
           />
         )}

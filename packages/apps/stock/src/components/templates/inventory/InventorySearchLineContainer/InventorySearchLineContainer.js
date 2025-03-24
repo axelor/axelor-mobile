@@ -17,7 +17,7 @@
  */
 
 import React, {useCallback} from 'react';
-import {StyleSheet} from 'react-native';
+import {StyleSheet, View} from 'react-native';
 import {
   useDispatch,
   useNavigation,
@@ -27,7 +27,7 @@ import {
   useTypes,
 } from '@axelor/aos-mobile-core';
 import {SearchLineContainer} from '../../../organisms';
-import {InventoryLineCard} from '../../../templates';
+import {InventoryLineGlobalCard} from '../../../templates';
 import {fetchInventoryLines} from '../../../../features/inventoryLineSlice';
 import {useLineHandler} from '../../../../hooks';
 import {LineVerification} from '../../../../types';
@@ -114,7 +114,7 @@ const InventorySearchLineContainer = ({}) => {
       }
       onAction={handleNewLine}
       renderItem={item => (
-        <InventoryLineCard
+        <InventoryLineGlobalCard
           style={styles.item}
           productName={item.product?.fullName}
           currentQty={item.currentQty}
@@ -123,6 +123,8 @@ const InventorySearchLineContainer = ({}) => {
           locker={item.rack}
           trackingNumber={item.trackingNumber}
           stockLocationName={item.stockLocation?.name}
+          companyId={inventory?.company?.id}
+          productId={item.product?.id}
           onPress={() => handleShowLine(item)}
         />
       )}
@@ -134,6 +136,8 @@ const styles = StyleSheet.create({
   item: {
     marginHorizontal: 1,
     marginVertical: 4,
+    width: '100%',
+    //height: 300,
   },
 });
 
