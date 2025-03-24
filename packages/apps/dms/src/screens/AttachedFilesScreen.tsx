@@ -21,16 +21,24 @@ import {
   handlerApiCall,
   headerActionsProvider,
   useIsFocused,
+  usePermitted,
+  useSelector,
   useTranslator,
 } from '@axelor/aos-mobile-core';
-import {Alert, Text} from '@axelor/aos-mobile-ui';
+import {Alert, Text, useThemeColor} from '@axelor/aos-mobile-ui';
 import {fetchDirectory} from '../api/document-api';
 import {DocumentList} from '../components';
 
 const AttachedFilesScreen = ({navigation, route}) => {
   const {parent: _parent, model, modelId, options} = route?.params ?? {};
   const I18n = useTranslator();
+  const Colors = useThemeColor();
   const isFocused = useIsFocused();
+  const {canCreate} = usePermitted({
+    modelName: 'com.axelor.dms.db.DMSFile',
+  });
+
+  const {mobileSettings} = useSelector((state: any) => state.appConfig);
 
   const [isVisible, setIsVisible] = useState(false);
   const [parent, setParent] = useState(_parent);
@@ -56,12 +64,39 @@ const AttachedFilesScreen = ({navigation, route}) => {
   }, [isFocused, model, modelId, parent]);
 
   useEffect(() => {
-    if (options?.screenTitle != null) {
-      headerActionsProvider.registerModel('dms_attachedFiles_tree', {
-        headerTitle: options?.screenTitle,
-      });
-    }
-  }, [options]);
+    headerActionsProvider.registerModel('dms_attachedFiles_tree', {
+      headerTitle: options?.screenTitle ?? I18n.t('Dms_AttachedFiles'),
+      actions: [
+        {
+          key: 'newDocument',
+          order: 10,
+          iconName: 'plus-lg',
+          title: I18n.t('Dms_NewDocument'),
+          iconColor: Colors.primaryColor.background,
+          hideIf:
+            !canCreate ||
+            (!mobileSettings?.isFolderCreationAllowed &&
+              !mobileSettings?.isFileCreationAllowed),
+          onPress: () =>
+            navigation.navigate('DocumentFormScreen', {
+              model,
+              modelId,
+            }),
+          showInHeader: true,
+        },
+      ],
+    });
+  }, [
+    canCreate,
+    Colors.primaryColor.background,
+    I18n,
+    mobileSettings,
+    model,
+    modelId,
+    navigation,
+    options,
+    parent,
+  ]);
 
   return (
     <>

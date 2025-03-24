@@ -30,9 +30,10 @@ const DocumentFormScreen = ({navigation, route}) => {
   const creationDefaultValue = useMemo(
     () => ({
       isAttachedFileCreation: model && modelId,
+      isDirectory: !mobileSettings?.isFileCreationAllowed,
       parent: parent,
     }),
-    [model, modelId, parent],
+    [mobileSettings?.isFileCreationAllowed, model, modelId, parent],
   );
 
   const defaultValue = useMemo(() => document, [document]);
