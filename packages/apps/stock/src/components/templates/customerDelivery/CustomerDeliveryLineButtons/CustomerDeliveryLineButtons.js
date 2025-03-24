@@ -21,6 +21,7 @@ import {
   useTranslator,
   useDispatch,
   useNavigation,
+  useStackChecker,
 } from '@axelor/aos-mobile-core';
 import {Button} from '@axelor/aos-mobile-ui';
 import StockMove from '../../../../types/stock-move';
@@ -36,12 +37,19 @@ const CustomerDeliveryLineButtons = ({
   const I18n = useTranslator();
   const dispatch = useDispatch();
   const navigation = useNavigation();
+  const isScreenMounted = useStackChecker();
 
   const navigateBackToDetails = useCallback(() => {
-    navigation.navigate('CustomerDeliveryDetailScreen', {
-      customerDeliveryId: customerDelivery.id,
-    });
-  }, [customerDelivery, navigation]);
+    if (isScreenMounted('CustomerDeliveryLineListScreen')) {
+      navigation.navigate('CustomerDeliveryLineListScreen', {
+        customerDelivery,
+      });
+    } else {
+      navigation.navigate('CustomerDeliveryDetailScreen', {
+        customerDeliveryId: customerDelivery.id,
+      });
+    }
+  }, [customerDelivery, isScreenMounted, navigation]);
 
   const handleValidate = useCallback(() => {
     dispatch(
