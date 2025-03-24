@@ -1,5 +1,5 @@
 {
-  "title": "Navigation stock move line: improve navigation after line validation",
+  "title": "Line update: improve navigation after update to match user history",
   "type": "fix",
   "packages": "stock"
 }
