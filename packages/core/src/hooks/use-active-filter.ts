@@ -26,17 +26,8 @@ export const useActiveFilter = () => {
 
   useEffect(() => {
     filterProvider.register(setActiveFilterState);
-    return () => {
-      filterProvider.unregister(setActiveFilterState);
-    };
+    return () => filterProvider.unregister(setActiveFilterState);
   }, []);
 
-  return useMemo(
-    () => ({
-      activeFilter,
-      setActiveFilter: filterProvider.setActiveFilter.bind(filterProvider),
-      clearFilter: filterProvider.clearFilter.bind(filterProvider),
-    }),
-    [activeFilter],
-  );
+  return useMemo(() => ({activeFilter}), [activeFilter]);
 };

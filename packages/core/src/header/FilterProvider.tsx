@@ -16,8 +16,8 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-class FilterProviderClass {
-  private activeFilter: any | null = null;
+class FilterProvider {
+  private activeFilter: string = null;
   private listeners: Function[] = [];
 
   register(callback: Function) {
@@ -32,13 +32,8 @@ class FilterProviderClass {
     this.listeners.forEach(callback => callback(this.activeFilter));
   }
 
-  setActiveFilter(filter: any | null) {
+  setActiveFilter(filter?: string) {
     this.activeFilter = filter;
-    this.notify();
-  }
-
-  clearFilter() {
-    this.activeFilter = null;
     this.notify();
   }
 
@@ -47,4 +42,4 @@ class FilterProviderClass {
   }
 }
 
-export const filterProvider = new FilterProviderClass();
+export const filterProvider = new FilterProvider();

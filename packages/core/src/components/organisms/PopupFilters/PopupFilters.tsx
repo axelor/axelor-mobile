@@ -21,6 +21,7 @@ import {StyleSheet} from 'react-native';
 import {Alert, RadioSelect} from '@axelor/aos-mobile-ui';
 import {useTranslator} from '../../../i18n';
 import {useActiveFilter} from '../../../hooks/use-active-filter';
+import {filterProvider} from '../../../header/FilterProvider';
 
 interface PopupFiltersProps {
   visible: boolean;
@@ -36,11 +37,9 @@ const PopupFilters = ({
   userFilters = [],
 }: PopupFiltersProps) => {
   const I18n = useTranslator();
-  const {activeFilter, setActiveFilter} = useActiveFilter();
+  const {activeFilter} = useActiveFilter();
 
-  const [selectedFilter, setSelectedFilter] = useState<string | null>(
-    activeFilter,
-  );
+  const [selectedFilter, setSelectedFilter] = useState(activeFilter);
 
   useEffect(() => {
     if (visible) {
@@ -49,9 +48,9 @@ const PopupFilters = ({
   }, [activeFilter, visible]);
 
   const handleConfirm = useCallback(() => {
-    setActiveFilter(selectedFilter);
+    filterProvider.setActiveFilter(selectedFilter);
     onClose();
-  }, [onClose, selectedFilter, setActiveFilter]);
+  }, [onClose, selectedFilter]);
 
   const handleFilterSelection = (filterId: string) => {
     setSelectedFilter(prevFilter =>

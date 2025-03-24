@@ -29,7 +29,7 @@ import {fetchJsonFieldsOfModel} from '../forms';
 import {useIsFocused} from '../hooks/use-navigation';
 import {fetchActionPrint} from '../api/print-template-api';
 import {fetchDefaultFilters, fetchMetaFilters} from '../api/aop-filter-api';
-import {useActiveFilter} from '../hooks/use-active-filter';
+import {filterProvider} from './FilterProvider';
 
 export const useBasicActions = ({
   model,
@@ -43,10 +43,8 @@ export const useBasicActions = ({
   const I18n = useTranslator();
   const online = useOnline();
   const connectionInterval = useRef();
-  const prevModelRef = useRef(null);
   const isFocused = useIsFocused();
   const dispatch = useDispatch();
-  const {clearFilter} = useActiveFilter();
 
   const {unreadMessages} = useSelector(state => state.mailMessages);
   const {userId} = useSelector(state => state.auth);
@@ -93,13 +91,6 @@ export const useBasicActions = ({
   }, [barcodeFieldname, model, modelId]);
 
   useEffect(() => {
-    if (model && model !== prevModelRef.current) {
-      clearFilter();
-      prevModelRef.current = model;
-    }
-  }, [clearFilter, model]);
-
-  useEffect(() => {
     fetchJsonFieldsOfModel({modelName: model})
       .catch(() => setDisableCustomView(true))
       .then(res => {
@@ -135,6 +126,7 @@ export const useBasicActions = ({
 
   useEffect(() => {
     if (!model) return;
+    filterProvider.setActiveFilter();
     fetchDefaultFilters({modelName: model})
       .then(res => {
         const _filters = res?.data?.data?.view?.filters || [];
