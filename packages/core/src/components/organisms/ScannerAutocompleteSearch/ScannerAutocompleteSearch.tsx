@@ -31,6 +31,7 @@ import {
   useScanActivator,
   useScannerDeviceActivator,
 } from '../../../hooks/use-scan-activator';
+import {useIsFocused} from '../../../hooks/use-navigation';
 import {useTranslator} from '../../../i18n';
 import {useDispatch} from '../../../redux/hooks';
 
@@ -88,6 +89,7 @@ const ScannerAutocompleteSearch = ({
   isScrollViewContainer = false,
 }: AutocompleteSearchProps) => {
   const I18n = useTranslator();
+  const isFocused = useIsFocused();
   const dispatch = useDispatch();
 
   const [searchValue, setSearchValue] = useState(value);
@@ -110,10 +112,10 @@ const ScannerAutocompleteSearch = ({
   const Colors = useThemeColor();
 
   useEffect(() => {
-    if (isFocus) {
+    if (isFocus && isFocused) {
       enableScanner();
     }
-  }, [enableScanner, isFocus]);
+  }, [enableScanner, isFocus, isFocused]);
 
   useEffect(() => {
     setSearchValue(value);
