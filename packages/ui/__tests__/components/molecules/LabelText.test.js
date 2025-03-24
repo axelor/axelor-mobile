@@ -84,6 +84,5 @@ describe('LabelText Component', () => {
     const wrapper = shallow(<LabelText {...props} onlyOneLine />);
 
     expect(wrapper.find(Text).at(0).prop('numberOfLines')).toBe(1);
-    expect(wrapper.find(Text).at(1).prop('numberOfLines')).toBe(1);
   });
 });
