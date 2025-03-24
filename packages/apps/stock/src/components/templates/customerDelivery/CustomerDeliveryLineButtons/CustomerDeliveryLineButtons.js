@@ -41,10 +41,16 @@ const CustomerDeliveryLineButtons = ({
   const isScreenMounted = useStackChecker();
 
   const navigateBackToDetails = useCallback(() => {
-    navigation.navigate('CustomerDeliveryDetailScreen', {
-      customerDeliveryId: customerDelivery.id,
-    });
-  }, [customerDelivery, navigation]);
+    if (isScreenMounted('CustomerDeliveryLineListScreen')) {
+      navigation.navigate('CustomerDeliveryLineListScreen', {
+        customerDelivery,
+      });
+    } else {
+      navigation.navigate('CustomerDeliveryDetailScreen', {
+        customerDeliveryId: customerDelivery.id,
+      });
+    }
+  }, [customerDelivery, isScreenMounted, navigation]);
 
   const handleValidate = useCallback(() => {
     dispatch(
@@ -56,22 +62,12 @@ const CustomerDeliveryLineButtons = ({
       }),
     );
 
-    if (isScreenMounted('CustomerDeliveryLineListScreen')) {
-      navigation.navigate('CustomerDeliveryLineListScreen', {
-        customerDelivery,
-      });
-    } else {
-      navigateBackToDetails();
-    }
+    navigateBackToDetails();
   }, [
-    customerDelivery,
-    customerDeliveryLine.id,
-    customerDeliveryLine.version,
+    customerDeliveryLine,
     dispatch,
-    fromStockLocation?.id,
-    isScreenMounted,
+    fromStockLocation,
     navigateBackToDetails,
-    navigation,
     realQty,
   ]);
 

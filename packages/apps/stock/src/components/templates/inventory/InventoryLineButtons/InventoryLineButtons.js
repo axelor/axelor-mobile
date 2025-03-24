@@ -53,6 +53,16 @@ const InventoryLineButtons = ({
 
   const {productFromId} = useSelector(state => state.product);
 
+  const navigateBack = useCallback(() => {
+    if (isScreenMounted('InventoryLineListScreen')) {
+      navigation.navigate('InventoryLineListScreen', {inventory});
+    } else {
+      navigation.navigate('InventoryLineListScreen', {
+        inventoryId: inventory?.id,
+      });
+    }
+  }, [inventory, isScreenMounted, navigation]);
+
   const handleNewLine = useCallback(() => {
     dispatch(
       createNewInventoryLine({
@@ -66,12 +76,12 @@ const InventoryLineButtons = ({
       }),
     );
 
-    navigation.pop();
+    navigateBack();
   }, [
     dispatch,
     inventory.id,
     inventory.version,
-    navigation,
+    navigateBack,
     productFromId?.id,
     rack,
     realQty,
@@ -91,21 +101,13 @@ const InventoryLineButtons = ({
       }),
     );
 
-    if (isScreenMounted('InventoryLineListScreen')) {
-      navigation.navigate('InventoryLineListScreen', {
-        inventory,
-      });
-    } else {
-      navigation.pop();
-    }
+    navigateBack();
   }, [
     description,
     dispatch,
-    inventory,
-    inventoryLine?.id,
-    inventoryLine?.version,
-    isScreenMounted,
-    navigation,
+    inventory?.id,
+    inventoryLine,
+    navigateBack,
     realQty,
     stockLocation?.id,
   ]);

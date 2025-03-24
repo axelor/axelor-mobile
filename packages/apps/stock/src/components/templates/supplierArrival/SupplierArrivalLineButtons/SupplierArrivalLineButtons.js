@@ -48,10 +48,14 @@ const SupplierArrivalLineButtons = ({
   });
 
   const navigateBackToDetails = useCallback(() => {
-    navigation.navigate('SupplierArrivalDetailsScreen', {
-      supplierArrivalId: supplierArrival?.id,
-    });
-  }, [supplierArrival, navigation]);
+    if (isScreenMounted('SupplierArrivalLineListScreen')) {
+      navigation.navigate('SupplierArrivalLineListScreen', {supplierArrival});
+    } else {
+      navigation.navigate('SupplierArrivalDetailsScreen', {
+        supplierArrivalId: supplierArrival?.id,
+      });
+    }
+  }, [isScreenMounted, navigation, supplierArrival]);
 
   const handleTrackingNumberOrigin = useCallback(() => {
     if (trackingNumber != null && origin !== trackingNumber.origin) {
@@ -76,23 +80,15 @@ const SupplierArrivalLineButtons = ({
       }),
     );
 
-    if (isScreenMounted('SupplierArrivalLineListScreen')) {
-      navigation.navigate('SupplierArrivalLineListScreen', {supplierArrival});
-    } else {
-      navigateBackToDetails();
-    }
+    navigateBackToDetails();
   }, [
-    conformity?.id,
+    conformity,
     dispatch,
     handleTrackingNumberOrigin,
-    isScreenMounted,
     navigateBackToDetails,
-    navigation,
     realQty,
-    supplierArrival,
-    supplierArrivalLine.id,
-    supplierArrivalLine.version,
-    toStockLocation?.id,
+    supplierArrivalLine,
+    toStockLocation,
   ]);
 
   if (
