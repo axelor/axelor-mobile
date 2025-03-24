@@ -16,10 +16,12 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import React, {useCallback, useState} from 'react';
+import React, {useCallback, useEffect, useState} from 'react';
 import {StyleSheet} from 'react-native';
 import {Alert, RadioSelect} from '@axelor/aos-mobile-ui';
 import {useTranslator} from '../../../i18n';
+import {useActiveFilter} from '../../../hooks/use-active-filter';
+import {filterProvider} from '../../../header/FilterProvider';
 
 interface PopupFiltersProps {
   visible: boolean;
@@ -35,11 +37,18 @@ const PopupFilters = ({
   userFilters = [],
 }: PopupFiltersProps) => {
   const I18n = useTranslator();
+  const {activeFilter} = useActiveFilter();
 
-  const [selectedFilter, setSelectedFilter] = useState<string | null>(null);
+  const [selectedFilter, setSelectedFilter] = useState(activeFilter);
+
+  useEffect(() => {
+    if (visible) {
+      setSelectedFilter(activeFilter);
+    }
+  }, [activeFilter, visible]);
 
   const handleConfirm = useCallback(() => {
-    console.log('selectedFilter', selectedFilter);
+    filterProvider.setActiveFilter(selectedFilter);
     onClose();
   }, [onClose, selectedFilter]);
 
