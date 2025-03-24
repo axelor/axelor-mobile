@@ -52,11 +52,7 @@ const LabelText = ({
     }
 
     return (
-      <Text
-        style={textStyle}
-        writingType="important"
-        fontSize={textSize}
-        numberOfLines={onlyOneLine ? 1 : null}>
+      <Text style={textStyle} writingType="important" fontSize={textSize}>
         {value}
       </Text>
     );
@@ -72,17 +68,13 @@ const LabelText = ({
           color={color}
         />
       )}
-      {checkNullString(title?.toString()) ? (
-        renderValue()
-      ) : (
-        <Text
-          style={textStyle}
-          fontSize={textSize}
-          numberOfLines={onlyOneLine ? 1 : null}>
-          {`${title} `}
-          {renderValue()}
-        </Text>
-      )}
+      <Text
+        style={textStyle}
+        fontSize={textSize}
+        numberOfLines={onlyOneLine ? 1 : null}>
+        {!checkNullString(title?.toString()) && `${title} `}
+        {renderValue()}
+      </Text>
     </View>
   );
 };
