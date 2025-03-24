@@ -1,0 +1,5 @@
+{
+  "title": "Line card: add more line to fixed issue with too long title",
+  "type": "fix",
+  "packages": "stock"
+}
