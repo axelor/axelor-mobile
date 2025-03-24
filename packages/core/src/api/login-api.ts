@@ -23,7 +23,7 @@ import {
   translationMiddleware,
 } from '../apiProviders';
 
-const loginPath = '/callback';
+const LOGIN_PATH = 'callback';
 const SESSION_REGEX = /JSESSIONID=\w+/g;
 
 const getJsessionId = (cookie: string) => {
@@ -76,7 +76,7 @@ export async function loginApi(
   responseInterceptorId: number;
 }> {
   return axios
-    .post(`${url}${loginPath}`, {username, password})
+    .post(`${url}${LOGIN_PATH}`, {username, password})
     .then(res => initAxiosWithHeaders(res, url));
 }
 

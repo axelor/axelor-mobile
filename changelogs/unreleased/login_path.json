@@ -1,0 +1,5 @@
+{
+  "title": "Login: remove double slash before callback endpoint",
+  "type": "fix",
+  "packages": "core"
+}
