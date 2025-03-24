@@ -1,5 +1,9 @@
 {
   "Message_Message": "Message",
   "Message_MailMessages": "Mail messages",
+  "Message_CommentInput_Placeholder": "Enter a comment",
+  "Message_MarkAllAsRead": "Mark all messages as read",
+  "Message_Subscribe": "Subscribe",
+  "Message_Unsubscribe": "Unsubscribe",
   "Message_SliceAction_CountUnreadMailMessages": "count unread mail messages"
 }

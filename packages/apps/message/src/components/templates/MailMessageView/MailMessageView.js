@@ -184,7 +184,7 @@ const MailMessageView = ({
             unreadMessages === 0
               ? Colors.primaryColor.background
               : Colors.secondaryColor.background,
-          title: I18n.t('Base_MailMessages_MarkAllAsRead'),
+          title: I18n.t('Message_MarkAllAsRead'),
           onPress: handleMarkAll,
         },
         {
@@ -196,9 +196,7 @@ const MailMessageView = ({
             ? Colors.primaryColor.background
             : Colors.secondaryColor_dark.background,
           title: I18n.t(
-            subscribe
-              ? 'Base_MailMessages_Unsubscribe'
-              : 'Base_MailMessages_Subscribe',
+            subscribe ? 'Message_Unsubscribe' : 'Message_Subscribe',
           ),
           onPress: subscribe ? () => setPopUp(true) : handleSubscribe,
         },
@@ -287,7 +285,7 @@ const MailMessageView = ({
         {displayMessageBox && (
           <View style={styles.messageBox}>
             <MessageBox
-              placeholder={I18n.t('Base_MailMessages_CommentInput_Placeholder')}
+              placeholder={I18n.t('Message_CommentInput_Placeholder')}
               disabled={!comment}
               value={comment}
               onChange={setComment}

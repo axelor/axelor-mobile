@@ -1,5 +1,9 @@
 {
   "Message_Message": "Message",
   "Message_MailMessages": "Suivi des notifications",
+  "Message_CommentInput_Placeholder": "Entrez votre commentaire",
+  "Message_MarkAllAsRead": "Marquer tous les messages comme lus",
+  "Message_Subscribe": "S'abonner",
+  "Message_Unsubscribe": "Se désabonner",
   "Message_SliceAction_CountUnreadMailMessages": "comptage des mail messages non lus"
 }
