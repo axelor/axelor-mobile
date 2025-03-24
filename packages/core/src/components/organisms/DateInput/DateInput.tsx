@@ -184,9 +184,10 @@ const DateInput = ({
 
   useEffect(() => {
     if (clickOutside === OUTSIDE_INDICATOR && pickerIsOpen) {
+      setSelectedDate(defaultDate);
       setPickerIsOpen(false);
     }
-  }, [clickOutside, pickerIsOpen]);
+  }, [clickOutside, defaultDate, pickerIsOpen]);
 
   const togglePicker = () => {
     if (!readonly) {
