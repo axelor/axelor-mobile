@@ -1,0 +1,5 @@
+{
+  "title": "ScannerAutocompleteSearch: handle scan focus when going back to a screen",
+  "type": "fix",
+  "packages": "core"
+}
