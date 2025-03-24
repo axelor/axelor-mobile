@@ -77,7 +77,7 @@ const SupplierArrivalLineButtons = ({
     );
 
     if (isScreenMounted('SupplierArrivalLineListScreen')) {
-      navigation.goBack();
+      navigation.pop();
     } else {
       navigateBackToDetails();
     }
