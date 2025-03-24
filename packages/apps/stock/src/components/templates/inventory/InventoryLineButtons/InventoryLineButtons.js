@@ -25,6 +25,7 @@ import {
   useNavigation,
   usePermitted,
   useTypes,
+  useStackChecker,
 } from '@axelor/aos-mobile-core';
 import {
   createNewInventoryLine,
@@ -43,12 +44,23 @@ const InventoryLineButtons = ({
   const I18n = useTranslator();
   const dispatch = useDispatch();
   const navigation = useNavigation();
+  const isScreenMounted = useStackChecker();
   const {Inventory} = useTypes();
   const {canCreate, readonly} = usePermitted({
     modelName: 'com.axelor.apps.stock.db.InventoryLine',
   });
 
   const {productFromId} = useSelector(state => state.product);
+
+  const navigateBack = useCallback(() => {
+    if (isScreenMounted('InventoryLineListScreen')) {
+      navigation.navigate('InventoryLineListScreen', {inventory});
+    } else {
+      navigation.navigate('InventoryLineListScreen', {
+        inventoryId: inventory?.id,
+      });
+    }
+  }, [inventory, isScreenMounted, navigation]);
 
   const handleNewLine = useCallback(() => {
     dispatch(
@@ -62,12 +74,12 @@ const InventoryLineButtons = ({
       }),
     );
 
-    navigation.pop();
+    navigateBack();
   }, [
     dispatch,
     inventory.id,
     inventory.version,
-    navigation,
+    navigateBack,
     productFromId?.id,
     rack,
     realQty,
@@ -85,13 +97,13 @@ const InventoryLineButtons = ({
       }),
     );
 
-    navigation.pop();
+    navigateBack();
   }, [
     description,
     dispatch,
     inventory?.id,
     inventoryLine,
-    navigation,
+    navigateBack,
     realQty,
   ]);
 
