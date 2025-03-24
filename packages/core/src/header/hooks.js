@@ -29,6 +29,7 @@ import {fetchJsonFieldsOfModel} from '../forms';
 import {useIsFocused} from '../hooks/use-navigation';
 import {fetchActionPrint} from '../api/print-template-api';
 import {fetchDefaultFilters, fetchMetaFilters} from '../api/aop-filter-api';
+import {filterProvider} from './FilterProvider';
 
 export const useBasicActions = ({
   model,
@@ -125,6 +126,7 @@ export const useBasicActions = ({
 
   useEffect(() => {
     if (!model) return;
+    filterProvider.setActiveFilter();
     fetchDefaultFilters({modelName: model})
       .then(res => {
         const _filters = res?.data?.data?.view?.filters || [];
