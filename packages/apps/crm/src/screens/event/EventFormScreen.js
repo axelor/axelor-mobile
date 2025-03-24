@@ -51,6 +51,7 @@ const EventFormScreen = ({navigation, route}) => {
         endDateTime: _defaultEndDate,
         isError: false,
       },
+      perdiodDateTimeError: 'OK',
       user: user,
     };
 
