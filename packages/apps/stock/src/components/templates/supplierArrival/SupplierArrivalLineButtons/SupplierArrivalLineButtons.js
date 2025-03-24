@@ -89,6 +89,7 @@ const SupplierArrivalLineButtons = ({
     navigateBackToDetails,
     navigation,
     realQty,
+    supplierArrival,
     supplierArrivalLine.id,
     supplierArrivalLine.version,
     toStockLocation?.id,

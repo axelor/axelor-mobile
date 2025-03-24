@@ -64,6 +64,7 @@ const CustomerDeliveryLineButtons = ({
       navigateBackToDetails();
     }
   }, [
+    customerDelivery,
     customerDeliveryLine.id,
     customerDeliveryLine.version,
     dispatch,

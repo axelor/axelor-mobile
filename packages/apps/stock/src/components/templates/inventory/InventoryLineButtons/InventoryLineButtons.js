@@ -101,8 +101,10 @@ const InventoryLineButtons = ({
   }, [
     description,
     dispatch,
-    inventory?.id,
-    inventoryLine,
+    inventory,
+    inventoryLine?.id,
+    inventoryLine?.version,
+    isScreenMounted,
     navigation,
     realQty,
     stockLocation?.id,
