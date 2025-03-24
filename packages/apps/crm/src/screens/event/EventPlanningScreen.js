@@ -42,7 +42,7 @@ function EventPlanningScreen({navigation}) {
   const [filteredList, setFilteredList] = useState(eventList);
   const [filter, setFilter] = useState(null);
   const [selectedStatus, setSelectedStatus] = useState([]);
-  const [dateSave, setDateSave] = useState(null);
+  const [dateSave, setDateSave] = useState(new Date());
 
   const listItem = useMemo(() => {
     if (filteredList == null || filteredList.length === 0) {
@@ -76,7 +76,7 @@ function EventPlanningScreen({navigation}) {
 
   const fetchItemsByMonth = useCallback(
     date => {
-      dateSave === null && setDateSave(date);
+      dateSave !== date && setDateSave(date);
       dispatch(fetchPlannedEvent({date: date, searchValue: filter}));
     },
     [dispatch, dateSave, filter],
