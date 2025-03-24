@@ -57,7 +57,9 @@ const CustomerDeliveryLineButtons = ({
     );
 
     if (isScreenMounted('CustomerDeliveryLineListScreen')) {
-      navigation.pop();
+      navigation.navigate('CustomerDeliveryLineListScreen', {
+        customerDelivery,
+      });
     } else {
       navigateBackToDetails();
     }
