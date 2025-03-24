@@ -22,6 +22,7 @@ import {
   useDispatch,
   useNavigation,
   usePermitted,
+  useStackChecker,
   useTranslator,
   useTypes,
 } from '@axelor/aos-mobile-core';
@@ -40,6 +41,7 @@ const SupplierArrivalLineButtons = ({
   const I18n = useTranslator();
   const dispatch = useDispatch();
   const navigation = useNavigation();
+  const isScreenMounted = useStackChecker();
   const {StockMove} = useTypes();
   const {readonly} = usePermitted({
     modelName: 'com.axelor.apps.stock.db.StockMoveLine',
@@ -74,15 +76,22 @@ const SupplierArrivalLineButtons = ({
       }),
     );
 
-    navigateBackToDetails();
+    if (isScreenMounted('SupplierArrivalLineListScreen')) {
+      navigation.goBack();
+    } else {
+      navigateBackToDetails();
+    }
   }, [
-    conformity,
+    conformity?.id,
     dispatch,
     handleTrackingNumberOrigin,
+    isScreenMounted,
     navigateBackToDetails,
+    navigation,
     realQty,
-    supplierArrivalLine,
-    toStockLocation,
+    supplierArrivalLine.id,
+    supplierArrivalLine.version,
+    toStockLocation?.id,
   ]);
 
   if (

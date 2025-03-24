@@ -20,6 +20,7 @@ import React from 'react';
 import {
   useDispatch,
   useNavigation,
+  useStackChecker,
   useTranslator,
 } from '@axelor/aos-mobile-core';
 import {Button} from '@axelor/aos-mobile-ui';
@@ -37,6 +38,7 @@ const InternalMoveLineButtons = ({
   const I18n = useTranslator();
   const dispatch = useDispatch();
   const navigation = useNavigation();
+  const isScreenMounted = useStackChecker();
 
   const handleSave = () => {
     dispatch(
@@ -52,9 +54,13 @@ const InternalMoveLineButtons = ({
       }),
     );
 
-    navigation.navigate('InternalMoveDetailsGeneralScreen', {
-      internalMoveId: internalMove.id,
-    });
+    if (isScreenMounted('InternalMoveLineListScreen')) {
+      navigation.goBack();
+    } else {
+      navigation.navigate('InternalMoveDetailsGeneralScreen', {
+        internalMoveId: internalMove.id,
+      });
+    }
   };
 
   if (!visible) {

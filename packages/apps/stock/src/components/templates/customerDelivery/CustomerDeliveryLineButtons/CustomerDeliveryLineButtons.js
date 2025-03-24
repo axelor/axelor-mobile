@@ -22,6 +22,7 @@ import {
   useDispatch,
   useNavigation,
   useTypes,
+  useStackChecker,
 } from '@axelor/aos-mobile-core';
 import {Button} from '@axelor/aos-mobile-ui';
 import {updateCustomerDeliveryLine} from '../../../../features/customerDeliveryLineSlice';
@@ -37,6 +38,7 @@ const CustomerDeliveryLineButtons = ({
   const dispatch = useDispatch();
   const navigation = useNavigation();
   const {StockMove} = useTypes();
+  const isScreenMounted = useStackChecker();
 
   const navigateBackToDetails = useCallback(() => {
     navigation.navigate('CustomerDeliveryDetailScreen', {
@@ -54,12 +56,19 @@ const CustomerDeliveryLineButtons = ({
       }),
     );
 
-    navigateBackToDetails();
+    if (isScreenMounted('CustomerDeliveryLineListScreen')) {
+      navigation.goBack();
+    } else {
+      navigateBackToDetails();
+    }
   }, [
-    customerDeliveryLine,
+    customerDeliveryLine.id,
+    customerDeliveryLine.version,
     dispatch,
-    fromStockLocation,
+    fromStockLocation?.id,
+    isScreenMounted,
     navigateBackToDetails,
+    navigation,
     realQty,
   ]);
 

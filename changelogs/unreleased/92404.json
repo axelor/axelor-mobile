@@ -1,0 +1,5 @@
+{
+  "title": "Navigation stock move line: improve navigation after line validation",
+  "type": "fix",
+  "packages": "stock"
+}
