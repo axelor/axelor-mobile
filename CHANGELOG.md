@@ -3,6 +3,43 @@ title: 8.1.0
 tags: Changelog
 ---
 
+## [8.1.17] (2025-03-25)
+
+### @axelor/aos-mobile-core
+
+#### Features
+
+- Navigation: add new tool to check if a screen is present in the current stack
+
+#### Fixes
+
+- ScannerAutocompleteSearch: handle scan focus when going back to a screen
+- DateInput: reset date when click outside
+
+### @axelor/aos-mobile-ui
+
+#### Changes
+
+- LabelText: improve multi lines management of title and value
+
+#### Fixes
+
+- RadioSelect: manage update when default value change
+
+### @axelor/aos-mobile-crm
+
+#### Fixes
+
+- Event form: improve date management
+- Event form: resolve issue with period when creating an event
+
+### @axelor/aos-mobile-stock
+
+#### Fixes
+
+- Line update: improve navigation after update to match user history
+- Line card: add more line to fixed issue with too long title
+
 ## [8.1.16] (2025-03-13)
 
 ### @axelor/aos-mobile-core
@@ -738,6 +775,7 @@ It enables user to manage interventions and customer parc through the mobile app
 - Selections: use new system and tools instead of type files
 - Product indicators: use new chart component to display quantity indicators
 
+[8.1.17]: https://github.com/axelor/axelor-mobile/compare/8.1.16...8.1.17
 [8.1.16]: https://github.com/axelor/axelor-mobile/compare/8.1.15...8.1.16
 [8.1.15]: https://github.com/axelor/axelor-mobile/compare/8.1.14...8.1.15
 [8.1.14]: https://github.com/axelor/axelor-mobile/compare/8.1.13...8.1.14
