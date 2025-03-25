@@ -3,6 +3,44 @@ title: 8.2.0
 tags: Changelog
 ---
 
+## [8.2.9] (2025-03-25)
+
+### @axelor/aos-mobile-core
+
+#### Features
+
+- Navigation: add new tool to check if a screen is present in the current stack
+
+#### Fixes
+
+- ScannerAutocompleteSearch: handle scan focus when going back to a screen
+- DateInput: reset date when click outside
+- Login: remove double slash before callback endpoint
+
+### @axelor/aos-mobile-ui
+
+#### Changes
+
+- LabelText: improve multi lines management of title and value
+
+#### Fixes
+
+- RadioSelect: manage update when default value change
+
+### @axelor/aos-mobile-crm
+
+#### Fixes
+
+- Event form: improve date management
+- Event form: resolve issue with period when creating an event
+
+### @axelor/aos-mobile-stock
+
+#### Fixes
+
+- Line update: improve navigation after update to match user history
+- Line card: add more line to fixed issue with too long title
+
 ## [8.2.8] (2025-03-13)
 
 ### @axelor/aos-mobile-core
@@ -495,6 +533,7 @@ This package is linked with the @axelor/aos-mobile-hr to manage time logging.
 
 - Supplier arrival: add possibility to fill origin when creating or selecting tracking number
 
+[8.2.9]: https://github.com/axelor/axelor-mobile/compare/8.2.8...8.2.9
 [8.2.8]: https://github.com/axelor/axelor-mobile/compare/8.2.7...8.2.8
 [8.2.7]: https://github.com/axelor/axelor-mobile/compare/8.2.6...8.2.7
 [8.2.6]: https://github.com/axelor/axelor-mobile/compare/8.2.5...8.2.6

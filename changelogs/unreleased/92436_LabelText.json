@@ -1,5 +1,0 @@
-{
-  "title": "LabelText: improve multi lines management of title and value",
-  "type": "refactor",
-  "packages": "ui"
-}
