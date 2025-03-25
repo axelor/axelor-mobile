@@ -5,5 +5,12 @@
   "Message_MarkAllAsRead": "Marquer tous les messages comme lus",
   "Message_Subscribe": "S'abonner",
   "Message_Unsubscribe": "Se désabonner",
-  "Message_SliceAction_CountUnreadMailMessages": "comptage des mail messages non lus"
+  "Message_SliceAction_FetchMailMessages": "récupération des mail messages",
+  "Message_SliceAction_PostMailMessageComment": "ajout d'un mail message",
+  "Message_SliceAction_FetchModelSubscribers": "récupération des abonnés du modèle",
+  "Message_SliceAction_SubscribeToModel": "abonnement au modèle",
+  "Message_SliceAction_UnsubscribeFromModel": "désabonnement au modèle",
+  "Message_SliceAction_CountUnreadMailMessages": "comptage des mail messages non lus",
+  "Message_SliceAction_MarkMailMessageAsRead": "marquer le message comme lu",
+  "Message_SliceAction_MarkAllMailMessageAsRead": "marquer tous les messages comme lus"
 }

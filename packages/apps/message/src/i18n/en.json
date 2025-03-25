@@ -5,5 +5,12 @@
   "Message_MarkAllAsRead": "Mark all messages as read",
   "Message_Subscribe": "Subscribe",
   "Message_Unsubscribe": "Unsubscribe",
-  "Message_SliceAction_CountUnreadMailMessages": "count unread mail messages"
+  "Message_SliceAction_FetchMailMessages": "fetch mail messages",
+  "Message_SliceAction_PostMailMessageComment": "post mail message comment",
+  "Message_SliceAction_FetchModelSubscribers": "fetch model subscribers",
+  "Message_SliceAction_SubscribeToModel": "subscribe to model",
+  "Message_SliceAction_UnsubscribeFromModel": "unsubscribe from model",
+  "Message_SliceAction_CountUnreadMailMessages": "count unread mail messages",
+  "Message_SliceAction_MarkMailMessageAsRead": "mark mail message as read",
+  "Message_SliceAction_MarkAllMailMessageAsRead": "mark all mail messages as read"
 }
