@@ -25,7 +25,7 @@ import {
   useTranslator,
 } from '@axelor/aos-mobile-core';
 import {SearchLineContainer} from '../../../organisms';
-import {InternalMoveLineCard} from '../../../templates';
+import {InternalMoveLineActionCard} from '../../../templates';
 import {fetchInternalMoveLines} from '../../../../features/internalMoveLineSlice';
 import {useInternalLinesWithRacks, useLineHandler} from '../../../../hooks';
 import {LineVerification, StockMoveLine} from '../../../../types';
@@ -95,7 +95,7 @@ const InternalMoveSearchLineContainer = ({}) => {
       onViewPress={handleViewAll}
       filterLine={filterLine}
       renderItem={item => (
-        <InternalMoveLineCard
+        <InternalMoveLineActionCard
           style={styles.item}
           productName={item.product?.fullName}
           internalMoveStatus={internalMove.statusSelect}
@@ -114,6 +114,8 @@ const InternalMoveSearchLineContainer = ({}) => {
           }
           stockMoveLineId={item.id}
           onPress={() => handleShowLine(item)}
+          companyId={internalMove.company?.id}
+          productId={item.product?.id}
         />
       )}
     />
@@ -122,8 +124,7 @@ const InternalMoveSearchLineContainer = ({}) => {
 
 const styles = StyleSheet.create({
   item: {
-    marginHorizontal: 1,
-    marginVertical: 4,
+    width: '100%',
   },
 });
 

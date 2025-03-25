@@ -20,17 +20,19 @@ import React, {useCallback, useMemo} from 'react';
 import {ActionCard} from '@axelor/aos-mobile-ui';
 import {
   useDispatch,
+  useNavigation,
   useSelector,
   useTranslator,
   useTypes,
 } from '@axelor/aos-mobile-core';
-import {StockMoveLine} from '../../../../types';
+import {StockIndicator, StockMoveLine} from '../../../../types';
 import {splitCustomerDeliveryLine} from '../../../../features/customerDeliveryLineSlice';
 import CustomerDeliveryLineCard from '../CustomerDeliveryLineCard/CustomerDeliveryLineCard';
 
 interface CustomerDeliveryLineActionCardProps {
   style?: any;
   styleCard?: any;
+  companyId: number;
   customerDeliveryLine: any;
   handleShowLine: (customerDeliveryLine: any) => void;
 }
@@ -39,11 +41,13 @@ const CustomerDeliveryLineActionCard = ({
   style,
   styleCard,
   customerDeliveryLine,
+  companyId,
   handleShowLine,
 }: CustomerDeliveryLineActionCardProps) => {
   const I18n = useTranslator();
   const dispatch = useDispatch();
   const {StockMove} = useTypes();
+  const navigation = useNavigation();
 
   const {customerDelivery} = useSelector(state => state.customerDelivery);
 
@@ -82,6 +86,14 @@ const CustomerDeliveryLineActionCard = ({
     ],
   );
 
+  const handleViewAvailability = () => {
+    navigation.navigate('ProductStockIndicatorDetails', {
+      type: StockIndicator.type.AvailableStock,
+      productId: customerDeliveryLine.product?.id,
+      companyId,
+    });
+  };
+
   return (
     <ActionCard
       style={style}
@@ -96,7 +108,12 @@ const CustomerDeliveryLineActionCard = ({
             pickedQty >= customerDeliveryLine.qty ||
             pickedQty === 0,
         },
-      ]}>
+      ]}
+      quickAction={{
+        iconName: 'geo-alt-fill',
+        onPress: handleViewAvailability,
+        helper: I18n.t('Stock_SeeAvailability'),
+      }}>
       <CustomerDeliveryLineCard
         style={styleCard}
         productName={customerDeliveryLine.product?.fullName}

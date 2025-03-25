@@ -66,8 +66,6 @@ const InventoryLineListScreen = ({route, navigation}) => {
     handleShowLine(item, true);
   };
 
-  console.log(inventory);
-
   const sliceFunctionData = useMemo(
     () => ({
       inventoryId: inventory?.id,

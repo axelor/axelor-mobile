@@ -19,36 +19,42 @@
 import React from 'react';
 import {ActionCard} from '@axelor/aos-mobile-ui';
 import {useNavigation, useTranslator} from '@axelor/aos-mobile-core';
-import InventoryLineCard from '../InventoryLineCard/InventoryLineCard';
+import {InternalMoveLineCard} from '../../internalMove';
 import {StockIndicator} from '../../../../types';
 
-interface InventoryLineGlobalCardProps {
+interface InternalMoveLineActionCardProps {
   style?: any;
+  internalMoveStatus: number;
   productName: string;
-  currentQty: number;
-  realQty: number;
-  unit: string;
-  trackingNumber?: {trackingNumberSeq: string};
-  locker?: string;
-  stockLocationName?: string;
+  availability: number;
+  stockMoveLineId: number;
+  trackingNumber: string;
+  fromStockLocation: string;
+  toStockLocation: string;
+  locker: string;
+  expectedQty: number;
+  movedQty: number;
+  onPress: () => void;
   companyId: number;
   productId: number;
-  onPress: () => void;
 }
 
-const InventoryLineGlobalCard = ({
+const InternalMoveLineActionCard = ({
   style,
+  internalMoveStatus,
   productName,
-  currentQty,
-  realQty,
-  unit,
+  availability,
+  stockMoveLineId,
   trackingNumber,
+  fromStockLocation,
+  toStockLocation,
   locker,
-  stockLocationName,
+  expectedQty,
+  movedQty,
   onPress,
   companyId,
   productId,
-}: InventoryLineGlobalCardProps) => {
+}: InternalMoveLineActionCardProps) => {
   const I18n = useTranslator();
   const navigation = useNavigation();
 
@@ -68,20 +74,23 @@ const InventoryLineGlobalCard = ({
       quickAction={{
         iconName: 'geo-alt-fill',
         onPress: handleViewAvailability,
-        helper: I18n.t('Manufacturing_SeeAvailability'),
+        helper: I18n.t('Stock_SeeAvailability'),
       }}>
-      <InventoryLineCard
+      <InternalMoveLineCard
         productName={productName}
-        currentQty={currentQty}
-        realQty={realQty}
-        unit={unit}
+        internalMoveStatus={internalMoveStatus}
+        fromStockLocation={fromStockLocation}
+        toStockLocation={toStockLocation}
+        expectedQty={expectedQty}
+        movedQty={movedQty}
         locker={locker}
         trackingNumber={trackingNumber}
-        stockLocationName={stockLocationName}
+        availability={availability}
+        stockMoveLineId={stockMoveLineId}
         onPress={onPress}
       />
     </ActionCard>
   );
 };
 
-export default InventoryLineGlobalCard;
+export default InternalMoveLineActionCard;

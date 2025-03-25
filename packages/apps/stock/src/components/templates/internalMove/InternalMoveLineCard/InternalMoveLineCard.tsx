@@ -161,6 +161,9 @@ const getStyles = color =>
     border: {
       borderWidth: 1.5,
       borderColor: color,
+      paddingRight: 5,
+      marginVertical: 2,
+      marginHorizontal: 2,
     },
   });
 

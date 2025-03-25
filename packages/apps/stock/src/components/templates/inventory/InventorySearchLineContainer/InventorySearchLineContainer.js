@@ -17,7 +17,7 @@
  */
 
 import React, {useCallback} from 'react';
-import {StyleSheet, View} from 'react-native';
+import {StyleSheet} from 'react-native';
 import {
   useDispatch,
   useNavigation,
@@ -27,7 +27,7 @@ import {
   useTypes,
 } from '@axelor/aos-mobile-core';
 import {SearchLineContainer} from '../../../organisms';
-import {InventoryLineGlobalCard} from '../../../templates';
+import {InventoryLineActionCard} from '../../../templates';
 import {fetchInventoryLines} from '../../../../features/inventoryLineSlice';
 import {useLineHandler} from '../../../../hooks';
 import {LineVerification} from '../../../../types';
@@ -114,7 +114,7 @@ const InventorySearchLineContainer = ({}) => {
       }
       onAction={handleNewLine}
       renderItem={item => (
-        <InventoryLineGlobalCard
+        <InventoryLineActionCard
           style={styles.item}
           productName={item.product?.fullName}
           currentQty={item.currentQty}
@@ -134,10 +134,7 @@ const InventorySearchLineContainer = ({}) => {
 
 const styles = StyleSheet.create({
   item: {
-    marginHorizontal: 1,
-    marginVertical: 4,
     width: '100%',
-    //height: 300,
   },
 });
 
