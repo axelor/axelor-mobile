@@ -3,6 +3,37 @@ title: 7.2.0
 tags: Changelog
 ---
 
+## [7.2.28] (2025-03-25)
+
+### @axelor/aos-mobile-core
+
+#### Features
+
+- Navigation: add new tool to check if a screen is present in the current stack
+
+#### Fixes
+
+- ScannerAutocompleteSearch: handle scan focus when going back to a screen
+- DateInput: reset date when click outside
+- Login: remove double slash before callback endpoint
+
+### @axelor/aos-mobile-ui
+
+#### Changes
+
+- LabelText: improve multi lines management of title and value
+
+#### Fixes
+
+- RadioSelect: manage update when default value change
+
+### @axelor/aos-mobile-stock
+
+#### Fixes
+
+- Line update: improve navigation after update to match user history
+- Line card: add more line to fixed issue with too long title
+
 ## [7.2.27] (2025-03-13)
 
 ### @axelor/aos-mobile-core
@@ -846,6 +877,7 @@ It enables user to manage Expenses through the mobile application. You can creat
 - Remove IconButton component which should be replaced by Button component.
 - Remove Pop-up components which should be replaced by Alert component.
 
+[7.2.28]: https://github.com/axelor/axelor-mobile/compare/7.2.27...7.2.28
 [7.2.27]: https://github.com/axelor/axelor-mobile/compare/7.2.26...7.2.27
 [7.2.26]: https://github.com/axelor/axelor-mobile/compare/7.2.25...7.2.26
 [7.2.25]: https://github.com/axelor/axelor-mobile/compare/7.2.24...7.2.25
