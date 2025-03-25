@@ -64,7 +64,6 @@
 	<string>Allow access to your location even when the app is in the background to enhance location-based features.</string>
 	<key>NSLocationAlwaysAndWhenInUsageDescription</key>
 	<string>Allow access to your location for enhanced geolocation features.</string>
-
 	<key>UIAppFonts</key>
 	<array>
 		<string>AntDesign.ttf</string>
@@ -90,6 +89,8 @@
 	<array>
 		<string>armv7</string>
 	</array>
+	<key>UIRequiresFullScreen</key>
+	<true/>
 	<key>UISupportedInterfaceOrientations</key>
 	<array>
 		<string>UIInterfaceOrientationPortrait</string>
