@@ -3,6 +3,44 @@ title: 8.3.0
 tags: Changelog
 ---
 
+## [8.3.1] (2025-03-25)
+
+### @axelor/aos-mobile-core
+
+#### Features
+
+- Navigation: add new tool to check if a screen is present in the current stack
+
+#### Fixes
+
+- ScannerAutocompleteSearch: handle scan focus when going back to a screen
+- DateInput: reset date when click outside
+- Login: remove double slash before callback endpoint
+
+### @axelor/aos-mobile-ui
+
+#### Changes
+
+- LabelText: improve multi lines management of title and value
+
+#### Fixes
+
+- RadioSelect: manage update when default value change
+
+### @axelor/aos-mobile-crm
+
+#### Fixes
+
+- Event form: improve date management
+- Event form: resolve issue with period when creating an event
+
+### @axelor/aos-mobile-stock
+
+#### Fixes
+
+- Line update: improve navigation after update to match user history
+- Line card: add more line to fixed issue with too long title
+
 ## [8.3.0] (2025-03-13)
 
 ### @axelor/aos-mobile-core
@@ -121,4 +159,5 @@ This version add a new part of the HR package, user can now manage leave request
 
 - Header actions: remove use of attachedFileScreenTitle
 
+[8.3.1]: https://github.com/axelor/axelor-mobile/compare/8.3.0...8.3.1
 [8.3.0]: https://github.com/axelor/axelor-mobile/compare/8.2.8...8.3.0

@@ -1,5 +1,0 @@
-{
-  "title": "Event form: resolve issue with period when creating an event",
-  "type": "fix",
-  "packages": "crm"
-}
