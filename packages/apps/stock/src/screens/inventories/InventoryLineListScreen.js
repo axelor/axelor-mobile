@@ -24,7 +24,7 @@ import {
   useTranslator,
   useTypes,
 } from '@axelor/aos-mobile-core';
-import {InventoryHeader, InventoryLineGlobalCard} from '../../components';
+import {InventoryHeader, InventoryLineActionCard} from '../../components';
 import {fetchInventoryLines} from '../../features/inventoryLineSlice';
 import {displayLine} from '../../utils/displayers';
 import {useLineHandler} from '../../hooks';
@@ -38,7 +38,7 @@ const STATUS = {
 
 const scanKey = 'trackingNumber-or-product_inventory-line-list';
 
-const InventoryLineListScreen = ({route, navigation}) => {
+const InventoryLineListScreen = ({route}) => {
   const inventory = route.params.inventory;
   const Colors = useThemeColor();
   const I18n = useTranslator();
@@ -151,7 +151,7 @@ const InventoryLineListScreen = ({route, navigation}) => {
           />
         }
         renderListItem={({item}) => (
-          <InventoryLineGlobalCard
+          <InventoryLineActionCard
             productName={item.product?.fullName}
             currentQty={item.currentQty}
             realQty={item.realQty}

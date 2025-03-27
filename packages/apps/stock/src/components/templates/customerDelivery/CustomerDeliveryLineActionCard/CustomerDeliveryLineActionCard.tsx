@@ -108,12 +108,12 @@ const CustomerDeliveryLineActionCard = ({
             pickedQty >= customerDeliveryLine.qty ||
             pickedQty === 0,
         },
-      ]}
-      quickAction={{
-        iconName: 'geo-alt-fill',
-        onPress: handleViewAvailability,
-        helper: I18n.t('Stock_SeeAvailability'),
-      }}>
+        {
+          iconName: 'geo-alt-fill',
+          onPress: handleViewAvailability,
+          helper: I18n.t('Stock_SeeAvailability'),
+        },
+      ]}>
       <CustomerDeliveryLineCard
         style={styleCard}
         productName={customerDeliveryLine.product?.fullName}

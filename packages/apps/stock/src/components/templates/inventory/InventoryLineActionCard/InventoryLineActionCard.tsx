@@ -64,12 +64,13 @@ const InventoryLineActionCard = ({
     <ActionCard
       style={style}
       translator={I18n.t}
-      actionList={[]}
-      quickAction={{
-        iconName: 'geo-alt-fill',
-        onPress: handleViewAvailability,
-        helper: I18n.t('Stock_SeeAvailability'),
-      }}>
+      actionList={[
+        {
+          iconName: 'geo-alt-fill',
+          onPress: handleViewAvailability,
+          helper: I18n.t('Stock_SeeAvailability'),
+        },
+      ]}>
       <InventoryLineCard
         productName={productName}
         currentQty={currentQty}
