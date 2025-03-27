@@ -62,6 +62,7 @@ export const authModule: Module = {
   requiredConfig: ['AppBase', 'AppMobileSettings'],
 };
 
-export * from './screens';
 export * from './api';
+export * from './components';
 export * from './features/asyncFunctionsIndex';
+export * from './screens';
