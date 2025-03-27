@@ -122,6 +122,7 @@ export const markMailMessageAsRead = createAsyncThunk(
       responseOptions: {returnTotal: true},
     }).then(result => {
       const unreadMessages = result;
+
       return handlerApiCall({
         fetchFunction: fetchMailMessages,
         data: {
@@ -152,6 +153,7 @@ export const markAllMailMessageAsRead = createAsyncThunk(
       responseOptions: {returnTotal: true},
     }).then(result => {
       const unreadMessages = result;
+
       return handlerApiCall({
         fetchFunction: fetchMailMessages,
         data: {

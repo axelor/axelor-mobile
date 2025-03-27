@@ -21,7 +21,7 @@ class MailMessageNotificationType {
     Default: 'default',
     Important: 'important',
     Success: 'success',
-    Warning: 'orange',
+    Warning: 'warning',
     Inverse: 'inverse',
     Info: 'info',
   };

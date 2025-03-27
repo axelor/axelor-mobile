@@ -21,6 +21,7 @@ import {MailMessageView} from '../components';
 
 const MailMessageScreen = ({route}) => {
   const {model, modelId} = route.params;
+
   return <MailMessageView model={model} modelId={modelId} />;
 };
 

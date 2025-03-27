@@ -40,11 +40,11 @@ import {
   Text,
   useThemeColor,
 } from '@axelor/aos-mobile-ui';
-import {useMarkAllMailMessages} from '../../molecules';
 import {MailMessageCard} from '../../organisms';
 import {
   getMailMessages,
   getModelSubscribers,
+  markAllMailMessageAsRead,
   modelSubscribeRequest,
   modelUnsubscribeRequest,
   sendMailMessageComment,
@@ -53,6 +53,15 @@ import {MailMessageType} from '../../../types';
 
 const DEFAULT_BOTTOM_MARGIN = 10;
 
+interface MailMessageViewProps {
+  model: string;
+  modelId: number;
+  date?: string;
+  actionList?: any[];
+  verticalActions?: boolean;
+  hideMessageBox?: boolean;
+}
+
 const MailMessageView = ({
   model,
   modelId,
@@ -60,14 +69,12 @@ const MailMessageView = ({
   actionList = [],
   verticalActions = true,
   hideMessageBox = false,
-}) => {
-  const dispatch = useDispatch();
+}: MailMessageViewProps) => {
   const I18n = useTranslator();
   const Colors = useThemeColor();
+  const dispatch = useDispatch();
 
-  const handleMarkAll = useMarkAllMailMessages({model, modelId});
-
-  const [comment, setComment] = useState();
+  const [comment, setComment] = useState('');
   const [subscribe, setSubscribe] = useState(false);
   const [popUp, setPopUp] = useState(false);
   const [selectedStatus, setSelectedStatus] = useState([]);
@@ -84,10 +91,10 @@ const MailMessageView = ({
     unreadMessages,
   } = useSelector(state => state.mailMessages);
 
-  const fetchMailMessageAPI = useCallback(
+  const fetchMailMessagesAPI = useCallback(
     page => {
       dispatch(
-        getMailMessages({
+        (getMailMessages as any)({
           model: model,
           modelId: modelId,
           date,
@@ -100,7 +107,7 @@ const MailMessageView = ({
   );
 
   const fetchModelFollowersAPI = useCallback(() => {
-    dispatch(getModelSubscribers({model, modelId}));
+    dispatch((getModelSubscribers as any)({model, modelId}));
   }, [dispatch, model, modelId]);
 
   const checkFollowers = useCallback(() => {
@@ -109,15 +116,30 @@ const MailMessageView = ({
       : setSubscribe(false);
   }, [modelFollowersList, userId]);
 
+  const handleSendMailMessageComment = useCallback(() => {
+    dispatch((sendMailMessageComment as any)({model, modelId, comment}));
+    Keyboard.dismiss();
+    setComment('');
+  }, [dispatch, model, modelId, comment]);
+
+  const handleMarkAllAsRead = useCallback(() => {
+    dispatch(
+      (markAllMailMessageAsRead as any)({
+        modelId,
+        model,
+      }),
+    );
+  }, [dispatch, model, modelId]);
+
   const handleSubscribe = useCallback(() => {
     if (!subscribe) {
-      dispatch(modelSubscribeRequest({model, modelId}));
+      dispatch((modelSubscribeRequest as any)({model, modelId}));
     }
   }, [dispatch, subscribe, model, modelId]);
 
   const handleUnsubscribe = useCallback(() => {
     if (subscribe) {
-      dispatch(modelUnsubscribeRequest({model, modelId}));
+      dispatch((modelUnsubscribeRequest as any)({model, modelId}));
     }
   }, [dispatch, subscribe, model, modelId]);
 
@@ -125,12 +147,6 @@ const MailMessageView = ({
     handleUnsubscribe();
     setPopUp(false);
   }, [handleUnsubscribe]);
-
-  const handleSendMailMessageComment = useCallback(() => {
-    dispatch(sendMailMessageComment({model, modelId, comment}));
-    Keyboard.dismiss();
-    setComment('');
-  }, [dispatch, model, modelId, comment]);
 
   const filterOnStatus = useCallback(
     list => {
@@ -173,6 +189,24 @@ const MailMessageView = ({
   }, [hideMessageBox, selectedStatus]);
 
   useEffect(() => {
+    if (reload) {
+      fetchMailMessagesAPI(0);
+    }
+
+    if (reloadFollowers) {
+      fetchModelFollowersAPI();
+    }
+  }, [fetchMailMessagesAPI, fetchModelFollowersAPI, reload, reloadFollowers]);
+
+  useEffect(() => {
+    fetchModelFollowersAPI();
+  }, [fetchModelFollowersAPI]);
+
+  useEffect(() => {
+    checkFollowers();
+  }, [checkFollowers]);
+
+  useEffect(() => {
     headerActionsProvider.registerModel('message_mailMessage_details', {
       actions: [
         {
@@ -185,7 +219,7 @@ const MailMessageView = ({
               ? Colors.primaryColor.background
               : Colors.secondaryColor.background,
           title: I18n.t('Message_MarkAllAsRead'),
-          onPress: handleMarkAll,
+          onPress: handleMarkAllAsRead,
         },
         {
           key: 'subscribe',
@@ -198,29 +232,18 @@ const MailMessageView = ({
           title: I18n.t(
             subscribe ? 'Message_Unsubscribe' : 'Message_Subscribe',
           ),
-          onPress: subscribe ? () => setPopUp(true) : handleSubscribe,
+          onPress: () => (subscribe ? setPopUp(true) : handleSubscribe()),
         },
       ],
     });
-  }, [Colors, subscribe, unreadMessages, handleSubscribe, I18n, handleMarkAll]);
-
-  useEffect(() => {
-    fetchModelFollowersAPI();
-  }, [fetchModelFollowersAPI]);
-
-  useEffect(() => {
-    checkFollowers();
-  }, [checkFollowers, modelFollowersList]);
-
-  useEffect(() => {
-    if (reload) {
-      fetchMailMessageAPI(0);
-    }
-
-    if (reloadFollowers) {
-      fetchModelFollowersAPI();
-    }
-  }, [fetchMailMessageAPI, fetchModelFollowersAPI, reload, reloadFollowers]);
+  }, [
+    Colors,
+    handleSubscribe,
+    handleMarkAllAsRead,
+    I18n,
+    subscribe,
+    unreadMessages,
+  ]);
 
   return (
     <KeyboardAvoidingView
@@ -261,7 +284,7 @@ const MailMessageView = ({
                 relatedModel={model}
               />
             )}
-            fetchData={fetchMailMessageAPI}
+            fetchData={fetchMailMessagesAPI}
             filter={false}
             moreLoading={moreLoading}
             isListEnd={isListEnd}

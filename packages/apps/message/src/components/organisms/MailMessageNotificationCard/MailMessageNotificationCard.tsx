@@ -29,6 +29,8 @@ import {
 import {MailMessageReadIcon, TrackItem} from '../../molecules';
 import {MailMessageNotificationType} from '../../../types';
 
+const MAX_TRACK_ITEMS = 5;
+
 interface TagProps {
   title: string;
   style: string;
@@ -44,8 +46,6 @@ interface MailMessageNotificationCardProps {
   style?: any;
   customTopComponent?: ReactElement<any>;
 }
-
-const MAX_TRACK_ITEMS = 5;
 
 const MailMessageNotificationCard = ({
   relatedModel,

@@ -25,42 +25,43 @@ import {
   markMailMessageAsRead,
 } from '../../../features/mailMessageSlice';
 
-export const useMarkAllMailMessages = ({model, modelId}) => {
-  const dispatch = useDispatch();
-
-  return useCallback(() => {
-    dispatch(
-      markAllMailMessageAsRead({
-        modelId,
-        model,
-      }),
-    );
-  }, [dispatch, model, modelId]);
-};
+interface MailMessageReadIconProps {
+  allMessagesRead?: boolean;
+  mailMessageFlag: any;
+  modelId: number;
+  model: string;
+}
 
 const MailMessageReadIcon = ({
   allMessagesRead = false,
   mailMessageFlag,
   modelId,
   model,
-}) => {
+}: MailMessageReadIconProps) => {
   const Colors = useThemeColor();
   const dispatch = useDispatch();
 
   const isRead =
     mailMessageFlag != null ? mailMessageFlag?.isRead : allMessagesRead;
 
-  const handleMarkAll = useMarkAllMailMessages({model, modelId});
-
   const handleMarkAsRead = useCallback(() => {
     dispatch(
-      markMailMessageAsRead({
+      (markMailMessageAsRead as any)({
         mailFlagList: [mailMessageFlag],
         modelId,
         model,
       }),
     );
   }, [dispatch, mailMessageFlag, model, modelId]);
+
+  const handleMarkAllAsRead = useCallback(() => {
+    dispatch(
+      (markAllMailMessageAsRead as any)({
+        modelId,
+        model,
+      }),
+    );
+  }, [dispatch, model, modelId]);
 
   return (
     <Icon
@@ -72,7 +73,7 @@ const MailMessageReadIcon = ({
       }
       size={mailMessageFlag == null ? 18 : 15}
       touchable={!isRead}
-      onPress={mailMessageFlag != null ? handleMarkAsRead : handleMarkAll}
+      onPress={mailMessageFlag != null ? handleMarkAsRead : handleMarkAllAsRead}
       style={
         mailMessageFlag == null ? styles.doucleCheckIcon : styles.checkIcon
       }

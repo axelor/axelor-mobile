@@ -33,7 +33,21 @@ export const formatDateItem = (date, I18n) => {
     : formatDate(date, I18n.t('Base_DateFormat'));
 };
 
-const TrackItem = ({title, oldDisplayValue, oldValue, displayValue, value}) => {
+interface TrackItemProps {
+  title: string;
+  oldDisplayValue: string;
+  oldValue: string;
+  displayValue: string;
+  value: string;
+}
+
+const TrackItem = ({
+  title,
+  oldDisplayValue,
+  oldValue,
+  displayValue,
+  value,
+}: TrackItemProps) => {
   const I18n = useTranslator();
 
   const values = useMemo(() => {

@@ -30,19 +30,19 @@ import {
 } from '@axelor/aos-mobile-ui';
 import {MailMessageReadIcon} from '../../molecules';
 
+const MAX_TEXT_LINES = 5;
+const MAX_HEIGHT = 150;
+
 interface MailMessageCommentCardProps {
   relatedModel: string;
   relatedId: number;
   subject?: string;
-  files: [any];
+  files: any[];
   value: string;
   flags?: any;
   style?: any;
   navigation?: any;
 }
-
-const MAX_TEXT_LINES = 5;
-const MAX_HEIGHT = 150;
 
 const MailMessageCommentCard = ({
   relatedModel,

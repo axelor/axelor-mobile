@@ -28,6 +28,22 @@ import MailMessageCommentCard from '../MailMessageCommentCard/MailMessageComment
 import MailMessageNotificationCard from '../MailMessageNotificationCard/MailMessageNotificationCard';
 import {MailMessageType} from '../../../types';
 
+interface MailMessageCardProps {
+  author: string;
+  avatar: string;
+  body: any;
+  eventText: string;
+  eventTime: string;
+  files: any[];
+  style?: any;
+  subject: string;
+  title: string;
+  type: string;
+  flags: any[];
+  relatedId: number;
+  relatedModel: string;
+}
+
 const MailMessageCard = ({
   author,
   avatar,
@@ -42,7 +58,7 @@ const MailMessageCard = ({
   flags,
   relatedId,
   relatedModel,
-}) => {
+}: MailMessageCardProps) => {
   const Colors = useThemeColor();
   const I18n = useTranslator();
   const {baseUrl} = useSelector(state => state.auth);
@@ -53,7 +69,6 @@ const MailMessageCard = ({
     <View style={[styles.container, style]}>
       <View style={styles.avatarContainer}>
         <Image
-          imageSize={Dimensions.get('window').width * 0.1}
           generalStyle={styles.avatar}
           defaultIconSize={25}
           resizeMode="contain"
