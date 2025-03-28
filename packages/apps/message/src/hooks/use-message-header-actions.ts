@@ -20,7 +20,6 @@ import {useEffect} from 'react';
 import {
   headerActionsProvider,
   useNavigation,
-  usePermitted,
   useSelector,
   useTranslator,
 } from '@axelor/aos-mobile-core';
