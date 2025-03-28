@@ -33,9 +33,6 @@ export const useMessageHeaders = () => {
 const useMailMessagesGenericAction = () => {
   const I18n = useTranslator();
   const navigation = useNavigation();
-  const {canCreate} = usePermitted({
-    modelName: 'com.axelor.dms.db.DMSFile',
-  });
 
   const {mobileSettings} = useSelector((state: any) => state.appConfig);
 
@@ -51,5 +48,5 @@ const useMailMessagesGenericAction = () => {
           translator: I18n.t,
         }),
     );
-  }, [canCreate, I18n.t, mobileSettings, navigation, I18n]);
+  }, [I18n.t, mobileSettings, navigation, I18n]);
 };

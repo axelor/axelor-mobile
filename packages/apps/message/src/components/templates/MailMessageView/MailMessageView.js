@@ -173,7 +173,7 @@ const MailMessageView = ({
   }, [hideMessageBox, selectedStatus]);
 
   useEffect(() => {
-    headerActionsProvider.registerModel('core_mailMessage_details', {
+    headerActionsProvider.registerModel('message_mailMessage_details', {
       actions: [
         {
           key: 'readMessages',
@@ -230,7 +230,7 @@ const MailMessageView = ({
       <Screen removeSpaceOnTop={true}>
         <Alert
           visible={popUp}
-          title={I18n.t('Base_Question')}
+          title={I18n.t('Message_Question')}
           cancelButtonConfig={{
             onPress: () => setPopUp(false),
           }}
@@ -238,7 +238,7 @@ const MailMessageView = ({
             onPress: handleUnfollowConfirmation,
           }}
           translator={I18n.t}>
-          <Text>{I18n.t('Base_Unfollow_Confirmation')}</Text>
+          <Text>{I18n.t('Message_Unfollow_Confirmation')}</Text>
         </Alert>
         <View style={styles.flexOne}>
           <ScrollList

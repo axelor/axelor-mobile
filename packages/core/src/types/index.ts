@@ -17,6 +17,4 @@
  */
 
 export {default as Anomaly} from './anomaly-type';
-export {default as MailMessageNotificationType} from './mail-message-notification-type';
-export {default as MailMessageType} from './mail-message-type';
 export {default as StopwatchType} from './stopwatch-type';

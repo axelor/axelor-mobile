@@ -22,7 +22,7 @@ export default {
   MailMessageScreen: {
     title: 'Message_MailMessages',
     component: MailMessageScreen,
-    actionID: 'core_mailMessage_details',
+    actionID: 'message_mailMessage_details',
     options: {
       shadedHeader: false,
     },
