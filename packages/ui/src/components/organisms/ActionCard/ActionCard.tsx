@@ -210,7 +210,10 @@ const ActionCard = ({
     <View style={[styles.container, style]} ref={wrapperRef}>
       <View style={styles.cardContainer}>
         {React.cloneElement(children, {
-          style: {minHeight: isCardMinHeight && TWO_ACTIONS_HEIGHT},
+          style: {
+            ...(children.props?.style ?? {}),
+            minHeight: isCardMinHeight && TWO_ACTIONS_HEIGHT,
+          },
         })}
       </View>
       {_actionList.length > 0 &&
