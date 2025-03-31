@@ -24,7 +24,7 @@ import {
   useTranslator,
 } from '@axelor/aos-mobile-core';
 import {Badge, Image, Text, useThemeColor} from '@axelor/aos-mobile-ui';
-import {MailMessageNotificationCard} from '@axelor/aos-mobile-message';
+import {NotificationCard as MailMessageNotificationCard} from '@axelor/aos-mobile-message';
 
 const AVATAR_SIZE = Dimensions.get('window').width * 0.12;
 

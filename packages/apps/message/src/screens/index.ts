@@ -23,9 +23,6 @@ export default {
     title: 'Message_MailMessages',
     component: MailMessageScreen,
     actionID: 'message_mailMessage_details',
-    options: {
-      shadedHeader: false,
-    },
   },
 };
 
