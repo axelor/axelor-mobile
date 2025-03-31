@@ -16,6 +16,8 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+import {ThemeColors} from '@axelor/aos-mobile-ui';
+
 class MailMessageNotificationType {
   static style = {
     Default: 'default',
@@ -26,7 +28,7 @@ class MailMessageNotificationType {
     Info: 'info',
   };
 
-  static getTagColor = (style, Colors) => {
+  static getTagColor = (style: string, Colors: ThemeColors) => {
     switch (style) {
       case this.style.Default:
         return Colors.defaultColor;
