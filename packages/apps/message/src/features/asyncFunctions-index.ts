@@ -22,7 +22,9 @@ export {
   getModelSubscribers,
   markAllMailMessageAsRead,
   markMailMessageAsRead,
-  modelSubscribeRequest,
-  modelUnsubscribeRequest,
+  subscribeModel,
+  unsubscribeModel,
+  registerModel,
+  registerModelId,
   sendMailMessageComment,
 } from './mailMessageSlice';
