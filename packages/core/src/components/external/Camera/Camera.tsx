@@ -66,7 +66,7 @@ const BUTTON_SIZE = 40;
 
 const Camera = () => {
   const Colors = useThemeColor();
-  const {isEnabled: isScanActive} = useCameraScannerSelector();
+  const {isEnabled: isScanActive, isMassScan} = useCameraScannerSelector();
   const {isEnabled: isCameraActive} = useCameraSelector();
   const {hasPermission, requestPermission} = useCameraPermission();
   const camera = useRef(null);
@@ -125,6 +125,10 @@ const Camera = () => {
             type: barcode[0].type,
           }),
         );
+
+        if (!isMassScan) {
+          dispatch(disableCameraScanner());
+        }
       }
     },
   });
@@ -177,7 +181,7 @@ const Camera = () => {
             ref={camera}
             style={[styles.camera, {zIndex: 750 * (cameraVisible ? 1 : -1)}]}
             device={device}
-            isActive={cameraVisible}
+            isActive={isScanActive || isCameraActive}
             photo={!isScanActive}
             codeScanner={codeScanner}
           />

@@ -21,6 +21,8 @@ import DeviceInfo from 'react-native-device-info';
 import {enableCameraScanner} from '../features/cameraScannerSlice';
 import {enableScan} from '../features/scannerSlice';
 import {useDispatch} from '../redux/hooks';
+import {NativeModules} from 'react-native';
+const {DataWedgeIntents} = NativeModules;
 
 export const useScanActivator = scanKeySearch => {
   const {enable: enableScanner} = useScannerDeviceActivator(scanKeySearch);
@@ -48,6 +50,36 @@ export const useScanActivator = scanKeySearch => {
     }),
     [enable],
   );
+};
+
+export const useContinuousZebraScan = isActive => {
+  const enableContinuousScan = useCallback(() => {
+    DataWedgeIntents.sendBroadcastWithExtras({
+      action: 'com.symbol.datawedge.api.ACTION',
+      extras: {
+        'com.symbol.datawedge.api.SOFT_SCAN_TRIGGER': 'START_SCANNING',
+      },
+    });
+  }, []);
+
+  const disableContinuousScan = useCallback(() => {
+    DataWedgeIntents.sendBroadcastWithExtras({
+      action: 'com.symbol.datawedge.api.ACTION',
+      extras: {
+        'com.symbol.datawedge.api.SOFT_SCAN_TRIGGER': 'STOP_SCANNING',
+      },
+    });
+  }, []);
+
+  useEffect(() => {
+    if (isActive) {
+      enableContinuousScan();
+    } else {
+      disableContinuousScan();
+    }
+
+    return () => disableContinuousScan();
+  }, [isActive, enableContinuousScan, disableContinuousScan]);
 };
 
 export const useScannerDeviceActivator = scanKeySearch => {

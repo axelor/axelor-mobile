@@ -24,7 +24,7 @@ export {default as DateInput} from './DateInput/DateInput';
 export {default as FilterContainer} from './FilterContainer/FilterContainer';
 export {default as HeaderBandList} from './HeaderBandList/HeaderBandList';
 export {default as HeaderOptionsMenu} from './HeaderOptionsMenu/HeaderOptionsMenu';
-export {default as LogoImage} from '../../sessions/components/display/LogoImage';
+export {default as MassScanner} from './MassScanner/MassScanner';
 export {default as PopupFilters} from './PopupFilters/PopupFilters';
 export {default as PopupPrintTemplate} from './PopupPrintTemplate/PopupPrintTemplate';
 export {default as SignatureInput} from './SignatureInput/SignatureInput';

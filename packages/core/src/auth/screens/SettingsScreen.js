@@ -17,7 +17,7 @@
  */
 
 import React, {useCallback, useMemo} from 'react';
-import {StyleSheet, View} from 'react-native';
+import {Alert, StyleSheet, View} from 'react-native';
 import {useDispatch, useSelector} from 'react-redux';
 import {
   HorizontalRule,
@@ -42,6 +42,7 @@ import {ApiProviderConfig} from '../../apiProviders/config';
 import {NavigationToolsButton, TranslationsButton} from '../components';
 import {useIsAdmin} from '../../permissions';
 import {useStorageUpdater} from '../../hooks/use-storage-config';
+import {MassScanner} from '@axelor/aos-mobile-core';
 
 const SettingsScreen = ({children}) => {
   const I18n = useTranslator();
@@ -178,6 +179,19 @@ const SettingsScreen = ({children}) => {
           valueField="visibility"
           onValueChange={setVirtualKeyboardVisibility}
           emptyValue={false}
+        />
+        <MassScanner
+          scanKey="mass_scan_products"
+          backgroundAction={async barcodeValue => {
+            console.log('barcodeValueBACKGROUNND ACTION', barcodeValue);
+          }}
+          fallbackAction={error => {
+            Alert.alert(
+              'Erreur',
+              'Erreur durant le scan massif: ' + error.message,
+            );
+          }}
+          scanInterval={1500} // 1.5s de délai entre chaque scan
         />
         <SwitchCard
           title={I18n.t('User_ShowFilter')}
