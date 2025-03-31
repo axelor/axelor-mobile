@@ -32,13 +32,11 @@ const HeaderOptionsMenu = ({
   actions = [],
   genericActions = {},
   options,
-  disableMailMessages,
   disableJsonFields,
   disablePrint,
   barcodeFieldname,
 }) => {
   const {
-    mailMessagesAction,
     savedFiltersAction,
     barcodeAction,
     printAction,
@@ -52,7 +50,6 @@ const HeaderOptionsMenu = ({
   } = useBasicActions({
     model,
     modelId,
-    disableMailMessages,
     disablePrint,
     barcodeFieldname,
     disableJsonFields,
@@ -91,7 +88,6 @@ const HeaderOptionsMenu = ({
   const allActions = useMemo(
     () =>
       [
-        mailMessagesAction,
         printAction,
         savedFiltersAction,
         barcodeAction,
@@ -105,7 +101,6 @@ const HeaderOptionsMenu = ({
       actions,
       barcodeAction,
       jsonFieldsAction,
-      mailMessagesAction,
       savedFiltersAction,
       printAction,
       visibleGenericActions,

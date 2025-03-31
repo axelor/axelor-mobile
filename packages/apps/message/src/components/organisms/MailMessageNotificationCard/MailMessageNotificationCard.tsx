@@ -26,8 +26,8 @@ import {
   UnorderedList,
   Badge,
 } from '@axelor/aos-mobile-ui';
-import MailMessageNotificationType from '../../../types/mail-message-notification-type';
 import {MailMessageReadIcon, TrackItem} from '../../molecules';
+import {MailMessageNotificationType} from '../../../types';
 
 interface TagProps {
   title: string;

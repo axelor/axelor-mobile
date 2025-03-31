@@ -16,21 +16,36 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import {headerActionsProvider, useSelector} from '@axelor/aos-mobile-core';
 import {useEffect} from 'react';
+import {
+  headerActionsProvider,
+  useNavigation,
+  useSelector,
+  useTranslator,
+} from '@axelor/aos-mobile-core';
+import {getAction} from '../utils';
 
-const useHeldpeskTicketDetailsActions = () => {
-  const {mobileSettings} = useSelector((state: any) => state.appConfig);
-  const {ticket} = useSelector((state: any) => state.ticket);
-
-  useEffect(() => {
-    headerActionsProvider.registerModel('helpdesk_ticket_details', {
-      model: 'com.axelor.apps.helpdesk.db.Ticket',
-      modelId: ticket?.id,
-    });
-  }, [mobileSettings, ticket]);
+export const useMessageHeaders = () => {
+  useMailMessagesGenericAction();
 };
 
-export const useHelpdeskHeaders = () => {
-  useHeldpeskTicketDetailsActions();
+const useMailMessagesGenericAction = () => {
+  const I18n = useTranslator();
+  const navigation = useNavigation();
+
+  const {mobileSettings} = useSelector((state: any) => state.appConfig);
+
+  useEffect(() => {
+    headerActionsProvider.registerGenericAction(
+      'message_mailMessages',
+      async ({model, modelId}) =>
+        await getAction({
+          model,
+          modelId,
+          navigation,
+          hideIf: !mobileSettings?.isTrackerMessageEnabled,
+          translator: I18n.t,
+        }),
+    );
+  }, [I18n.t, mobileSettings, navigation, I18n]);
 };

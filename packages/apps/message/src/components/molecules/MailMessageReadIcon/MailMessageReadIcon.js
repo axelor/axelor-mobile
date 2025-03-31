@@ -18,8 +18,8 @@
 
 import React, {useCallback} from 'react';
 import {StyleSheet} from 'react-native';
+import {useDispatch} from '@axelor/aos-mobile-core';
 import {Icon, useThemeColor} from '@axelor/aos-mobile-ui';
-import {useDispatch} from '../../../redux/hooks';
 import {
   markAllMailMessageAsRead,
   markMailMessageAsRead,

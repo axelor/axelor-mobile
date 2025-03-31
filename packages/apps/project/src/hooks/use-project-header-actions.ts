@@ -44,7 +44,6 @@ const useProjectDetailsActions = () => {
       model: 'com.axelor.apps.project.db.Project',
       modelId: project?.id,
       headerTitle: project?.code,
-      disableMailMessages: !mobileSettings?.isTrackerMessageEnabled,
       actions: [
         {
           key: 'refreshProject',
@@ -81,7 +80,6 @@ const useProjectTaskDetailsActions = () => {
     headerActionsProvider.registerModel('project_projectTask_details', {
       model: 'com.axelor.apps.project.db.ProjectTask',
       modelId: projectTask?.id,
-      disableMailMessages: !mobileSettings?.isTrackerMessageEnabled,
     });
   }, [mobileSettings?.isTrackerMessageEnabled, projectTask?.id]);
 };
