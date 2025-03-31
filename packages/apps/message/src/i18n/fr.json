@@ -1,3 +1,19 @@
 {
-  "Message_Message": "Message"
+  "Message_Message": "Message",
+  "Message_MailMessages": "Suivi des notifications",
+  "Message_CommentInput_Placeholder": "Entrez votre commentaire",
+  "Message_MarkAllAsRead": "Marquer tous les messages comme lus",
+  "Message_Subscribe": "S'abonner",
+  "Message_Unsubscribe": "Se désabonner",
+  "Message_Question": "Question",
+  "Message_Unfollow_Confirmation": "Êtes-vous sûr de vouloir vous désabonner de ce document?",
+  "Message_Notifications": "Notifications",
+  "Message_SliceAction_FetchMailMessages": "récupération des mail messages",
+  "Message_SliceAction_PostMailMessageComment": "ajout d'un mail message",
+  "Message_SliceAction_FetchModelSubscribers": "récupération des abonnés du modèle",
+  "Message_SliceAction_SubscribeToModel": "abonnement au modèle",
+  "Message_SliceAction_UnsubscribeFromModel": "désabonnement au modèle",
+  "Message_SliceAction_CountUnreadMailMessages": "comptage des mail messages non lus",
+  "Message_SliceAction_MarkMailMessageAsRead": "marquer le message comme lu",
+  "Message_SliceAction_MarkAllMailMessageAsRead": "marquer tous les messages comme lus"
 }

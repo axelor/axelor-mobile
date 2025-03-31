@@ -18,8 +18,7 @@
 
 import {useNavigation} from '@react-navigation/native';
 import {useCallback, useEffect, useMemo, useRef, useState} from 'react';
-import {useDispatch, useSelector} from 'react-redux';
-import {countUnreadMailMessages} from '../features/mailMessageSlice';
+import {useSelector} from 'react-redux';
 import {useTranslator} from '../i18n';
 import {checkNullString} from '../utils';
 import {fetchModel} from '../api/model-api';
@@ -34,7 +33,6 @@ import {filterProvider} from './FilterProvider';
 export const useBasicActions = ({
   model,
   modelId,
-  disableMailMessages,
   disablePrint,
   disableJsonFields = false,
   barcodeFieldname = 'barCode',
@@ -44,9 +42,7 @@ export const useBasicActions = ({
   const online = useOnline();
   const connectionInterval = useRef();
   const isFocused = useIsFocused();
-  const dispatch = useDispatch();
 
-  const {unreadMessages} = useSelector(state => state.mailMessages);
   const {userId} = useSelector(state => state.auth);
 
   const [disableBarcode, setDisableBarcode] = useState(true);
@@ -71,16 +67,6 @@ export const useBasicActions = ({
   const closeSavedFiltersPopup = useCallback(() => {
     setAreSavedFiltersVisible(false);
   }, []);
-
-  const countUnreadMessagesAPI = useCallback(() => {
-    if (modelConfigured) {
-      dispatch(countUnreadMailMessages({model, modelId}));
-    }
-  }, [dispatch, model, modelConfigured, modelId]);
-
-  useEffect(() => {
-    countUnreadMessagesAPI();
-  }, [countUnreadMessagesAPI]);
 
   useEffect(() => {
     fetchModel({model, modelId})
@@ -144,23 +130,6 @@ export const useBasicActions = ({
       })
       .catch(() => setSavedFilters([]));
   }, [model, userId]);
-
-  const mailMessagesAction = useMemo(() => {
-    return {
-      key: 'mailMessages',
-      order: 20,
-      onPress: () =>
-        navigation.navigate('MailMessageScreen', {
-          model,
-          modelId,
-        }),
-      hideIf: disableMailMessages,
-      indicator: unreadMessages,
-      iconName: 'bell-fill',
-      title: I18n.t('Base_MailMessages'),
-      showInHeader: true,
-    };
-  }, [I18n, disableMailMessages, model, modelId, navigation, unreadMessages]);
 
   const savedFiltersAction = useMemo(() => {
     return {
@@ -251,14 +220,12 @@ export const useBasicActions = ({
       userFilters,
       ...(modelConfigured
         ? {
-            mailMessagesAction,
             printAction,
             barcodeAction,
             jsonFieldsAction,
             savedFiltersAction,
           }
         : {
-            mailMessagesAction: {key: 'mailMessages', hideIf: true},
             printAction: {key: 'printTemplate', hideIf: true},
             barcodeAction: {key: 'barcode', hideIf: true},
             jsonFieldsAction: {key: 'metaJsonFields', hideIf: true},
@@ -273,7 +240,6 @@ export const useBasicActions = ({
     savedFilters,
     userFilters,
     modelConfigured,
-    mailMessagesAction,
     printAction,
     barcodeAction,
     jsonFieldsAction,

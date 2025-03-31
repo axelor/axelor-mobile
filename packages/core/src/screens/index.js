@@ -19,21 +19,12 @@
 import BarcodeDisplayScreen from './BarcodeDisplayScreen';
 import JsonFieldScreen from './JsonFieldScreen';
 import MailMessageAttachedFilesScreen from './MailMessageAttachedFilesScreen';
-import MailMessageScreen from './MailMessageScreen';
 import ProcessListScreen from './ProcessListScreen';
 
 export default {
   MailMessageAttachedFilesScreen: {
     title: 'Base_AttachedFiles',
     component: MailMessageAttachedFilesScreen,
-    options: {
-      shadedHeader: false,
-    },
-  },
-  MailMessageScreen: {
-    title: 'Base_MailMessages',
-    component: MailMessageScreen,
-    actionID: 'core_mailMessage_details',
     options: {
       shadedHeader: false,
     },

@@ -90,7 +90,6 @@ const useExpenseDetailsAction = () => {
     headerActionsProvider.registerModel('hr_expense_details', {
       model: 'com.axelor.apps.hr.db.Expense',
       modelId: expense?.id,
-      disableMailMessages: !mobileSettings?.isTrackerMessageEnabled,
       actions: [
         {
           key: 'refreshExpenseDetails',
@@ -178,7 +177,6 @@ const useTimesheetDetailsAction = () => {
     headerActionsProvider.registerModel('hr_timesheet_details', {
       model: 'com.axelor.apps.hr.db.Timesheet',
       modelId: timesheet?.id,
-      disableMailMessages: !mobileSettings?.isTrackerMessageEnabled,
     });
   }, [timesheet, mobileSettings]);
 };
@@ -191,7 +189,6 @@ const useLeaveDetailsAction = () => {
     headerActionsProvider.registerModel('hr_leave_details', {
       model: 'com.axelor.apps.hr.db.LeaveRequest',
       modelId: leave?.id,
-      disableMailMessages: !mobileSettings?.isTrackerMessageEnabled,
     });
   }, [leave, mobileSettings]);
 };

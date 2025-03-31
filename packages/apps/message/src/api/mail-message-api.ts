@@ -16,8 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import {axiosApiProvider} from '../apiProviders';
-import {RouterProvider} from '../config';
+import {axiosApiProvider, RouterProvider} from '@axelor/aos-mobile-core';
 
 interface fetchMailMessageProps {
   model: string;
@@ -171,7 +170,7 @@ export async function getAllUnReadFlagsOfMailMessage({
   });
 }
 
-export async function realAllMailMessages({
+export async function readAllMailMessages({
   model,
   modelId,
 }: {
