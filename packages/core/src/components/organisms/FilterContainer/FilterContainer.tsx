@@ -23,7 +23,6 @@ import {
   Icon,
   Text,
   useThemeColor,
-  ThemeColors,
 } from '@axelor/aos-mobile-ui';
 import {useActiveFilter} from '../../../hooks/use-active-filter';
 import {filterProvider} from '../../../header/FilterProvider';
@@ -50,58 +49,40 @@ const FilterContainer = ({
   const Colors = useThemeColor();
   const {activeFilter} = useActiveFilter();
 
-  const styles = useMemo(() => getStyles(Colors), [Colors]);
-
-  const renderFilterTag = () => {
-    if (!activeFilter) {
-      return null;
-    }
-
-    return (
-      <View style={[styles.container, style]}>
-        <View style={styles.filterContainer}>
-          <Icon name="filter" size={18} />
-          <TouchableOpacity
-            style={styles.filterTag}
-            onPress={() => filterProvider.setActiveFilter()}>
-            <Text fontSize={14}>{activeFilter.name}</Text>
-            <Icon name="x" size={18} />
-          </TouchableOpacity>
-        </View>
-      </View>
-    );
-  };
-
-  if (activeFilter) {
-    return renderFilterTag();
-  }
+  const styles = useMemo(
+    () => getStyles(Colors.primaryColor.background),
+    [Colors],
+  );
 
   return (
     <HeaderContainer
       style={style}
-      topChildren={topChildren}
-      children={children}
-      fixedItems={fixedItems}
-      chipComponent={chipComponent}
+      topChildren={!activeFilter ? topChildren : null}
+      children={!activeFilter ? children : null}
+      fixedItems={
+        activeFilter ? (
+          <View style={styles.filterContainer}>
+            <Icon name="filter" size={18} />
+            <TouchableOpacity
+              style={styles.filterTag}
+              onPress={() => filterProvider.setActiveFilter()}>
+              <Text fontSize={14}>{activeFilter.name}</Text>
+              <Icon name="x" size={18} />
+            </TouchableOpacity>
+          </View>
+        ) : (
+          fixedItems
+        )
+      }
+      chipComponent={!activeFilter ? chipComponent : null}
       expandableFilter={expandableFilter}
       forceHideByDefault={forceHideByDefault}
     />
   );
 };
 
-const getStyles = (Colors: ThemeColors) =>
+const getStyles = (borderColor: string) =>
   StyleSheet.create({
-    container: {
-      flexDirection: 'column',
-      justifyContent: 'center',
-      backgroundColor: Colors.backgroundColor,
-      elevation: 3,
-      shadowOpacity: 3,
-      zIndex: 2,
-      paddingBottom: 5,
-      borderBottomEndRadius: 10,
-      borderBottomStartRadius: 10,
-    },
     filterContainer: {
       flexDirection: 'row',
       marginVertical: 5,
@@ -114,7 +95,7 @@ const getStyles = (Colors: ThemeColors) =>
       paddingHorizontal: 8,
       borderRadius: 14,
       borderWidth: 2,
-      borderColor: Colors.primaryColor.background,
+      borderColor,
     },
   });
 
