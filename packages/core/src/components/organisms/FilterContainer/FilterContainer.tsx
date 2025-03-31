@@ -76,6 +76,7 @@ const FilterContainer = ({
     <HeaderContainer
       style={style}
       topChildren={topChildren}
+      children={children}
       fixedItems={
         <>
           {fixedItems}
@@ -84,9 +85,8 @@ const FilterContainer = ({
       }
       chipComponent={chipComponent}
       expandableFilter={expandableFilter}
-      forceHideByDefault={forceHideByDefault}>
-      {children}
-    </HeaderContainer>
+      forceHideByDefault={forceHideByDefault}
+    />
   );
 };
 
