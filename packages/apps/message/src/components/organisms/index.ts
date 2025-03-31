@@ -17,5 +17,3 @@
  */
 
 export {default as MailMessageCard} from './MailMessageCard/MailMessageCard';
-export {default as MailMessageCommentCard} from './MailMessageCommentCard/MailMessageCommentCard';
-export {default as MailMessageNotificationCard} from './MailMessageNotificationCard/MailMessageNotificationCard';

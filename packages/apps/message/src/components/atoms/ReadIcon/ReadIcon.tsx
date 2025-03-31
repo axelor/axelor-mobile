@@ -16,7 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import React, {useCallback} from 'react';
+import React, {useCallback, useMemo} from 'react';
 import {StyleSheet} from 'react-native';
 import {useDispatch} from '@axelor/aos-mobile-core';
 import {Icon, useThemeColor} from '@axelor/aos-mobile-ui';
@@ -25,36 +25,38 @@ import {
   markMailMessageAsRead,
 } from '../../../features/mailMessageSlice';
 
-export const useMarkAllMailMessages = ({model, modelId}) => {
-  const dispatch = useDispatch();
+interface ReadIconProps {
+  allMessagesRead?: boolean;
+  mailMessageFlag: any;
+  modelId: number;
+  model: string;
+}
 
-  return useCallback(() => {
-    dispatch(
-      markAllMailMessageAsRead({
-        modelId,
-        model,
-      }),
-    );
-  }, [dispatch, model, modelId]);
-};
-
-const MailMessageReadIcon = ({
+const ReadIcon = ({
   allMessagesRead = false,
   mailMessageFlag,
   modelId,
   model,
-}) => {
+}: ReadIconProps) => {
   const Colors = useThemeColor();
   const dispatch = useDispatch();
 
-  const isRead =
-    mailMessageFlag != null ? mailMessageFlag?.isRead : allMessagesRead;
+  const isRead = useMemo(
+    () => (mailMessageFlag != null ? mailMessageFlag?.isRead : allMessagesRead),
+    [allMessagesRead, mailMessageFlag],
+  );
 
-  const handleMarkAll = useMarkAllMailMessages({model, modelId});
+  const iconColor = useMemo(
+    () =>
+      isRead
+        ? Colors.successColor.background
+        : Colors.secondaryColor.background,
+    [Colors, isRead],
+  );
 
   const handleMarkAsRead = useCallback(() => {
     dispatch(
-      markMailMessageAsRead({
+      (markMailMessageAsRead as any)({
         mailFlagList: [mailMessageFlag],
         modelId,
         model,
@@ -62,20 +64,36 @@ const MailMessageReadIcon = ({
     );
   }, [dispatch, mailMessageFlag, model, modelId]);
 
+  const handleMarkAllAsRead = useCallback(() => {
+    dispatch(
+      (markAllMailMessageAsRead as any)({
+        modelId,
+        model,
+      }),
+    );
+  }, [dispatch, model, modelId]);
+
+  if (mailMessageFlag == null) {
+    return (
+      <Icon
+        name="check-all"
+        color={iconColor}
+        size={18}
+        touchable={!isRead}
+        onPress={handleMarkAsRead}
+        style={styles.doucleCheckIcon}
+      />
+    );
+  }
+
   return (
     <Icon
-      name={mailMessageFlag == null ? 'check-all' : 'check-lg'}
-      color={
-        isRead
-          ? Colors.successColor.background
-          : Colors.secondaryColor.background
-      }
-      size={mailMessageFlag == null ? 18 : 15}
+      name="check-lg"
+      color={iconColor}
+      size={15}
       touchable={!isRead}
-      onPress={mailMessageFlag != null ? handleMarkAsRead : handleMarkAll}
-      style={
-        mailMessageFlag == null ? styles.doucleCheckIcon : styles.checkIcon
-      }
+      onPress={handleMarkAllAsRead}
+      style={styles.checkIcon}
     />
   );
 };
@@ -91,4 +109,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default MailMessageReadIcon;
+export default ReadIcon;

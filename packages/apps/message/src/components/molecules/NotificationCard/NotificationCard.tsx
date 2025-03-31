@@ -26,15 +26,17 @@ import {
   UnorderedList,
   Badge,
 } from '@axelor/aos-mobile-ui';
-import {MailMessageReadIcon, TrackItem} from '../../molecules';
+import {ReadIcon, TrackItem} from '../../atoms';
 import {MailMessageNotificationType} from '../../../types';
+
+const MAX_TRACK_ITEMS = 5;
 
 interface TagProps {
   title: string;
   style: string;
 }
 
-interface MailMessageNotificationCardProps {
+interface NotificationCardProps {
   relatedModel?: string;
   relatedId?: number;
   title: string;
@@ -45,9 +47,7 @@ interface MailMessageNotificationCardProps {
   customTopComponent?: ReactElement<any>;
 }
 
-const MAX_TRACK_ITEMS = 5;
-
-const MailMessageNotificationCard = ({
+const NotificationCard = ({
   relatedModel,
   relatedId,
   title,
@@ -56,7 +56,7 @@ const MailMessageNotificationCard = ({
   flags,
   style,
   customTopComponent,
-}: MailMessageNotificationCardProps) => {
+}: NotificationCardProps) => {
   const Colors = useThemeColor();
   const [moreItems, setMoreItems] = useState(false);
 
@@ -94,7 +94,7 @@ const MailMessageNotificationCard = ({
             </View>
           )}
           {displayFlags && (
-            <MailMessageReadIcon
+            <ReadIcon
               mailMessageFlag={flags}
               model={relatedModel}
               modelId={relatedId}
@@ -168,4 +168,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default MailMessageNotificationCard;
+export default NotificationCard;

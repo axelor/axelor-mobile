@@ -20,7 +20,7 @@ export {
   countUnreadMessages as countUnreadMessagesApi,
   fetchMailMessages as fetchMailMessagesApi,
   fetchModelSubscribers as fetchModelSubscribersApi,
-  getAllUnReadFlagsOfMailMessage as getAllUnReadFlagsOfMailMessageApi,
+  getAllUnreadFlagsOfMailMessage as getAllUnreadFlagsOfMailMessageApi,
   postMailMessageComment as postMailMessageCommentApi,
   readMailMessage as readMailMessageApi,
   readAllMailMessages as readAllMailMessagesApi,
