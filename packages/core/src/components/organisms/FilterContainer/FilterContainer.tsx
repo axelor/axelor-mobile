@@ -23,6 +23,7 @@ import {
   Icon,
   Text,
   useThemeColor,
+  ThemeColors,
 } from '@axelor/aos-mobile-ui';
 import {useActiveFilter} from '../../../hooks/use-active-filter';
 import {filterProvider} from '../../../header/FilterProvider';
@@ -41,18 +42,15 @@ const FilterContainer = ({
   style,
   topChildren,
   children,
-  fixedItems = null,
-  chipComponent = null,
-  expandableFilter = true,
-  forceHideByDefault = false,
+  fixedItems,
+  chipComponent,
+  expandableFilter,
+  forceHideByDefault,
 }: FilterContainerProps) => {
   const Colors = useThemeColor();
   const {activeFilter} = useActiveFilter();
 
-  const styles = useMemo(
-    () => getStyles(Colors.primaryColor.background),
-    [Colors],
-  );
+  const styles = useMemo(() => getStyles(Colors), [Colors]);
 
   const renderFilterTag = () => {
     if (!activeFilter) {
@@ -60,29 +58,30 @@ const FilterContainer = ({
     }
 
     return (
-      <View style={styles.filterContainer}>
-        <Icon name="filter" size={18} />
-        <TouchableOpacity
-          style={styles.filterTag}
-          onPress={() => filterProvider.setActiveFilter()}>
-          <Text fontSize={14}>{activeFilter.name}</Text>
-          <Icon name="x" size={18} />
-        </TouchableOpacity>
+      <View style={[styles.container, style]}>
+        <View style={styles.filterContainer}>
+          <Icon name="filter" size={18} />
+          <TouchableOpacity
+            style={styles.filterTag}
+            onPress={() => filterProvider.setActiveFilter()}>
+            <Text fontSize={14}>{activeFilter.name}</Text>
+            <Icon name="x" size={18} />
+          </TouchableOpacity>
+        </View>
       </View>
     );
   };
+
+  if (activeFilter) {
+    return renderFilterTag();
+  }
 
   return (
     <HeaderContainer
       style={style}
       topChildren={topChildren}
       children={children}
-      fixedItems={
-        <>
-          {fixedItems}
-          {renderFilterTag()}
-        </>
-      }
+      fixedItems={fixedItems}
       chipComponent={chipComponent}
       expandableFilter={expandableFilter}
       forceHideByDefault={forceHideByDefault}
@@ -90,8 +89,19 @@ const FilterContainer = ({
   );
 };
 
-const getStyles = (borderColor: string) =>
+const getStyles = (Colors: ThemeColors) =>
   StyleSheet.create({
+    container: {
+      flexDirection: 'column',
+      justifyContent: 'center',
+      backgroundColor: Colors.backgroundColor,
+      elevation: 3,
+      shadowOpacity: 3,
+      zIndex: 2,
+      paddingBottom: 5,
+      borderBottomEndRadius: 10,
+      borderBottomStartRadius: 10,
+    },
     filterContainer: {
       flexDirection: 'row',
       marginVertical: 5,
@@ -104,7 +114,7 @@ const getStyles = (borderColor: string) =>
       paddingHorizontal: 8,
       borderRadius: 14,
       borderWidth: 2,
-      borderColor,
+      borderColor: Colors.primaryColor.background,
     },
   });
 
