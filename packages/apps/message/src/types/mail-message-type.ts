@@ -57,7 +57,7 @@ class MailMessageType {
         key: this.status.comment,
       },
       {
-        title: I18n.t('Base_Notifications'),
+        title: I18n.t('Message_Notifications'),
         color: Colors.primaryColor,
         isActive: this.isTypeSelected(selectedStatus, this.status.notification),
         key: this.status.notification,

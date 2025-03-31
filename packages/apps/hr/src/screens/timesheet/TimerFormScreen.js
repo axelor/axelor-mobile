@@ -72,13 +72,11 @@ const TimerFormScreen = ({route}) => {
     headerActionsProvider.registerModel('hr_active_timer', {
       model: 'com.axelor.apps.hr.db.TSTimer',
       modelId: !creation ? timer?.id : null,
-      disableMailMessages: !mobileSettings?.isTrackerMessageEnabled,
     });
 
     headerActionsProvider.registerModel('hr_timer_details', {
       model: 'com.axelor.apps.hr.db.TSTimer',
       modelId: !creation ? timer?.id : null,
-      disableMailMessages: !mobileSettings?.isTrackerMessageEnabled,
     });
   }, [creation, mobileSettings?.isTrackerMessageEnabled, timer?.id]);
 

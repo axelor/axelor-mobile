@@ -33,7 +33,6 @@ const usePurchaseRequestDetailsActions = () => {
     headerActionsProvider.registerModel('purchase_purchaseRequest_details', {
       model: 'com.axelor.apps.purchase.db.PurchaseRequest',
       modelId: purchaseRequest?.id,
-      disableMailMessages: !mobileSettings?.isTrackerMessageEnabled,
     });
   }, [mobileSettings, purchaseRequest?.id]);
 };
@@ -50,7 +49,6 @@ const usePurchaseRequestLineDetailsActions = () => {
       {
         model: 'com.axelor.apps.purchase.db.PurchaseRequestLine',
         modelId: purchaseRequestLine?.id,
-        disableMailMessages: !mobileSettings?.isTrackerMessageEnabled,
       },
     );
   }, [mobileSettings, purchaseRequestLine?.id]);

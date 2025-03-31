@@ -18,10 +18,14 @@
 
 import React, {useCallback, useMemo} from 'react';
 import {StyleSheet} from 'react-native';
+import {
+  formatDate,
+  formatDateTime,
+  isDate,
+  isDateTime,
+  useTranslator,
+} from '@axelor/aos-mobile-core';
 import {Icon, Text} from '@axelor/aos-mobile-ui';
-import {isDate, isDateTime} from '../../../utils/date';
-import useTranslator from '../../../i18n/hooks/use-translator';
-import {formatDate, formatDateTime} from '../../../utils/formatters';
 
 export const formatDateItem = (date, I18n) => {
   return isDateTime(date)
