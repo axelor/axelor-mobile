@@ -25,7 +25,7 @@ import {
   RouterProvider,
 } from '@axelor/aos-mobile-core';
 
-const createCountUnreadMessagesCriteria = ({model, modelId}): Criteria[] => {
+const createUnreadMessagesCriteria = ({model, modelId}): Criteria[] => {
   return [
     {
       fieldName: 'relatedModel',
@@ -45,7 +45,7 @@ const createCountUnreadMessagesCriteria = ({model, modelId}): Criteria[] => {
   ];
 };
 
-const createGetAllUnreadFlagsCriteria = ({model, modelId}): Criteria[] => {
+const createUnreadFlagsCriteria = ({model, modelId}): Criteria[] => {
   return [
     {
       fieldName: 'message.relatedModel',
@@ -181,7 +181,7 @@ export async function countUnreadMessages({
 }) {
   return createStandardSearch({
     model: 'com.axelor.mail.db.MailMessage',
-    criteria: createCountUnreadMessagesCriteria({model, modelId}),
+    criteria: createUnreadMessagesCriteria({model, modelId}),
     fieldKey: 'message_mailMessage',
     page: 0,
     numberElementsByPage: null,
@@ -198,7 +198,7 @@ export async function getAllUnreadFlagsOfMailMessage({
 }) {
   return createStandardSearch({
     model: 'com.axelor.mail.db.MailFlags',
-    criteria: createGetAllUnreadFlagsCriteria({model, modelId}),
+    criteria: createUnreadFlagsCriteria({model, modelId}),
     fieldKey: 'message_mailFlags',
     page: 0,
     numberElementsByPage: null,
@@ -214,34 +214,23 @@ export async function readAllMailMessages({
   modelId: number;
 }) {
   return getAllUnreadFlagsOfMailMessage({model, modelId}).then(res => {
-    const mailFlagList = res?.data?.data;
-    return readMailMessage({mailFlagList, model, modelId});
+    return readMailMessage({mailFlagList: res?.data?.data});
   });
 }
 
-export async function readMailMessage({
-  mailFlagList,
-  model,
-  modelId,
-}: {
-  mailFlagList: any[];
-  model: string;
-  modelId: number;
-}) {
-  if (mailFlagList == null || mailFlagList?.length === 0) {
+export async function readMailMessage({mailFlagList}: {mailFlagList: any[]}) {
+  if (!Array.isArray(mailFlagList) || mailFlagList?.length === 0) {
     return null;
   }
 
-  const criteria = mailFlagList.map(item => {
-    return {id: item.id, isRead: true, version: item.version};
+  return axiosApiProvider.post({
+    url: '/ws/rest/com.axelor.mail.db.MailFlags',
+    data: {
+      records: mailFlagList.map(item => ({
+        id: item.id,
+        isRead: true,
+        version: item.version,
+      })),
+    },
   });
-
-  return axiosApiProvider
-    .post({
-      url: '/ws/rest/com.axelor.mail.db.MailFlags',
-      data: {
-        records: criteria,
-      },
-    })
-    .then(() => countUnreadMessages({model, modelId}));
 }

@@ -112,7 +112,7 @@ export const countUnreadMailMessages = createAsyncThunk(
 
 export const markMailMessageAsRead = createAsyncThunk(
   'mailMessages/markMailMessageAsRead',
-  async function (data, {getState}) {
+  async function (data, {getState, dispatch}) {
     const fetchMailMessageData = {model: data?.model, modelId: data?.modelId};
     return handlerApiCall({
       fetchFunction: readMailMessage,
@@ -120,54 +120,27 @@ export const markMailMessageAsRead = createAsyncThunk(
       action: 'Message_SliceAction_MarkMailMessageAsRead',
       getState: getState,
       responseOptions: {returnTotal: true},
-    }).then(result => {
-      const unreadMessages = result;
-
-      return handlerApiCall({
-        fetchFunction: fetchMailMessages,
-        data: {
-          model: fetchMailMessageData.model,
-          modelId: fetchMailMessageData.modelId,
-          page: 0,
-        },
-        action: 'Message_SliceAction_FetchMailMessages',
-        getState: getState,
-        responseOptions: {isArrayResponse: true},
-      }).then(mailMessages => ({
-        unreadMessages: unreadMessages,
-        mailMessagesList: mailMessages,
-      }));
+    }).then(() => {
+      dispatch(getMailMessages({...fetchMailMessageData, page: 0}));
+      dispatch(countUnreadMailMessages(fetchMailMessageData));
     });
   },
 );
 
 export const markAllMailMessageAsRead = createAsyncThunk(
   'mailMessages/markAllMailMessageAsRead',
-  async function (data, {getState}) {
+  async function (data, {getState, dispatch}) {
     const fetchMailMessageData = {model: data?.model, modelId: data?.modelId};
+
     return handlerApiCall({
       fetchFunction: readAllMailMessages,
       data: data,
       action: 'Message_SliceAction_MarkAllMailMessageAsRead',
       getState: getState,
       responseOptions: {returnTotal: true},
-    }).then(result => {
-      const unreadMessages = result;
-
-      return handlerApiCall({
-        fetchFunction: fetchMailMessages,
-        data: {
-          model: fetchMailMessageData.model,
-          modelId: fetchMailMessageData.modelId,
-          page: 0,
-        },
-        action: 'Message_SliceAction_FetchMailMessages',
-        getState: getState,
-        responseOptions: {isArrayResponse: true},
-      }).then(mailMessages => ({
-        unreadMessages: unreadMessages,
-        mailMessagesList: mailMessages,
-      }));
+    }).then(() => {
+      dispatch(getMailMessages({...fetchMailMessageData, page: 0}));
+      dispatch(countUnreadMailMessages(fetchMailMessageData));
     });
   },
 );
@@ -196,13 +169,13 @@ const mailMessagesSlice = createSlice({
       isListEnd: 'isListEnd',
       list: 'mailMessagesList',
     });
-    builder.addCase(sendMailMessageComment.pending, (state, action) => {
+    builder.addCase(sendMailMessageComment.pending, state => {
       state.reload = false;
     });
-    builder.addCase(sendMailMessageComment.fulfilled, (state, action) => {
+    builder.addCase(sendMailMessageComment.fulfilled, state => {
       state.reload = true;
     });
-    builder.addCase(getModelSubscribers.pending, (state, action) => {
+    builder.addCase(getModelSubscribers.pending, state => {
       state.loadingFollowers = true;
       state.reloadFollowers = false;
     });
@@ -210,36 +183,22 @@ const mailMessagesSlice = createSlice({
       state.loadingFollowers = false;
       state.modelFollowersList = action.payload ? action.payload : [];
     });
-    builder.addCase(modelSubscribeRequest.pending, (state, action) => {
+    builder.addCase(modelSubscribeRequest.pending, state => {
       state.loadingFollowers = true;
     });
-    builder.addCase(modelSubscribeRequest.fulfilled, (state, action) => {
+    builder.addCase(modelSubscribeRequest.fulfilled, state => {
       state.loadingFollowers = false;
       state.reloadFollowers = true;
     });
-    builder.addCase(modelUnsubscribeRequest.pending, (state, action) => {
+    builder.addCase(modelUnsubscribeRequest.pending, state => {
       state.loadingFollowers = true;
     });
-    builder.addCase(modelUnsubscribeRequest.fulfilled, (state, action) => {
+    builder.addCase(modelUnsubscribeRequest.fulfilled, state => {
       state.loadingFollowers = false;
       state.reloadFollowers = true;
     });
     builder.addCase(countUnreadMailMessages.fulfilled, (state, action) => {
       state.unreadMessages = action.payload;
-    });
-    builder.addCase(markMailMessageAsRead.fulfilled, (state, action) => {
-      state.loading = false;
-      state.moreLoading = false;
-      state.mailMessagesList = action.payload.mailMessagesList;
-      state.isListEnd = false;
-      state.unreadMessages = action.payload.unreadMessages;
-    });
-    builder.addCase(markAllMailMessageAsRead.fulfilled, (state, action) => {
-      state.loading = false;
-      state.moreLoading = false;
-      state.mailMessagesList = action.payload.mailMessagesList;
-      state.isListEnd = false;
-      state.unreadMessages = action.payload.unreadMessages;
     });
   },
 });
