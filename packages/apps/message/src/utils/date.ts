@@ -16,5 +16,15 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-export * from './date';
-export * from './mailMessagesGenericAction';
+import {
+  formatDate,
+  formatDateTime,
+  isDateTime,
+  TranslatorProps,
+} from '@axelor/aos-mobile-core';
+
+export const formatDateItem = (date: string, I18n: TranslatorProps) => {
+  return isDateTime(date)
+    ? formatDateTime(date, I18n.t('Base_DateTimeFormat'))
+    : formatDate(date, I18n.t('Base_DateFormat'));
+};

@@ -18,22 +18,25 @@
 
 import React, {useCallback, useMemo} from 'react';
 import {StyleSheet} from 'react-native';
-import {
-  formatDate,
-  formatDateTime,
-  isDate,
-  isDateTime,
-  useTranslator,
-} from '@axelor/aos-mobile-core';
+import {isDate, useTranslator} from '@axelor/aos-mobile-core';
 import {Icon, Text} from '@axelor/aos-mobile-ui';
+import {formatDateItem} from '../../../utils';
 
-export const formatDateItem = (date, I18n) => {
-  return isDateTime(date)
-    ? formatDateTime(date, I18n.t('Base_DateTimeFormat'))
-    : formatDate(date, I18n.t('Base_DateFormat'));
-};
+interface TrackItemProps {
+  title: string;
+  oldDisplayValue: string;
+  oldValue: string;
+  displayValue: string;
+  value: string;
+}
 
-const TrackItem = ({title, oldDisplayValue, oldValue, displayValue, value}) => {
+const TrackItem = ({
+  title,
+  oldDisplayValue,
+  oldValue,
+  displayValue,
+  value,
+}: TrackItemProps) => {
   const I18n = useTranslator();
 
   const values = useMemo(() => {
@@ -75,7 +78,6 @@ const styles = StyleSheet.create({
   itemTitle: {
     fontWeight: 'bold',
   },
-
   itemValue: {
     textAlign: 'justify',
   },
