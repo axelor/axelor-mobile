@@ -18,3 +18,5 @@
 
 export {default as CommentCard} from './CommentCard/CommentCard';
 export {default as NotificationCard} from './NotificationCard/NotificationCard';
+export {default as SendMessageBox} from './SendMessageBox/SendMessageBox';
+export {default as UnsubscribeIcon} from './UnsubscribeIcon/UnsubscribeIcon';

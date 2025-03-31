@@ -16,11 +16,19 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import React from 'react';
+import React, {useEffect} from 'react';
+import {useDispatch} from '@axelor/aos-mobile-core';
 import {MailMessageView} from '../components';
+import {registerModel, registerModelId} from '../features/mailMessageSlice';
 
 const MailMessageScreen = ({route}) => {
   const {model, modelId} = route.params;
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    dispatch(registerModel(model));
+    dispatch(registerModelId(modelId));
+  }, [dispatch, model, modelId]);
 
   return <MailMessageView model={model} modelId={modelId} />;
 };
