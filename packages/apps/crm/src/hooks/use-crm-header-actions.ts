@@ -69,7 +69,6 @@ const useClientDetailsActions = () => {
     headerActionsProvider.registerModel('crm_client_details', {
       model: 'com.axelor.apps.base.db.Partner',
       modelId: client?.id,
-      disableMailMessages: !mobileSettings?.isTrackerMessageEnabled,
       actions: [
         {
           key: 'client-saveContact',
@@ -121,7 +120,6 @@ const useContactDetailsActions = () => {
     headerActionsProvider.registerModel('crm_contact_details', {
       model: 'com.axelor.apps.base.db.Partner',
       modelId: contact?.id,
-      disableMailMessages: !mobileSettings?.isTrackerMessageEnabled,
       actions: [
         {
           key: 'contact-saveContact',
@@ -199,7 +197,6 @@ const useLeadDetailsActions = () => {
     headerActionsProvider.registerModel('crm_lead_details', {
       model: 'com.axelor.apps.crm.db.Lead',
       modelId: lead?.id,
-      disableMailMessages: !mobileSettings?.isTrackerMessageEnabled,
       actions: [
         {
           key: 'lead-saveContact',
@@ -269,7 +266,6 @@ const useOpportunityDetailsActions = () => {
     headerActionsProvider.registerModel('crm_opportunity_details', {
       model: 'com.axelor.apps.crm.db.Opportunity',
       modelId: opportunity?.id,
-      disableMailMessages: !mobileSettings?.isTrackerMessageEnabled,
     });
   }, [mobileSettings, opportunity]);
 };
@@ -286,7 +282,6 @@ const useProspectDetailsActions = () => {
     headerActionsProvider.registerModel('crm_prospect_details', {
       model: 'com.axelor.apps.base.db.Partner',
       modelId: prospect?.id,
-      disableMailMessages: !mobileSettings?.isTrackerMessageEnabled,
       actions: [
         {
           key: 'prospect-saveContact',
@@ -339,7 +334,6 @@ const useTourDetailsActions = () => {
     headerActionsProvider.registerModel('crm_tour_details', {
       model: 'com.axelor.apps.crm.db.Tour',
       modelId: tour?.id,
-      disableMailMessages: !mobileSettings?.isTrackerMessageEnabled,
       actions: [
         {
           key: 'refreshTour',
@@ -376,7 +370,6 @@ const useEventDetailsActions = () => {
     headerActionsProvider.registerModel('crm_event_details', {
       model: 'com.axelor.apps.crm.db.Event',
       modelId: event?.id,
-      disableMailMessages: !mobileSettings?.isTrackerMessageEnabled,
     });
   }, [mobileSettings, event]);
 };

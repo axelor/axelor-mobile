@@ -16,5 +16,17 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-export {default as Anomaly} from './anomaly-type';
-export {default as StopwatchType} from './stopwatch-type';
+import MailMessageScreen from './MailMessageScreen';
+
+export default {
+  MailMessageScreen: {
+    title: 'Message_MailMessages',
+    component: MailMessageScreen,
+    actionID: 'message_mailMessage_details',
+    options: {
+      shadedHeader: false,
+    },
+  },
+};
+
+export {MailMessageScreen};

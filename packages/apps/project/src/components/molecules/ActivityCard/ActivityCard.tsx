@@ -19,12 +19,12 @@
 import React, {useCallback, useMemo} from 'react';
 import {StyleSheet, View, Dimensions} from 'react-native';
 import {
-  MailMessageNotificationCard,
   formatTime as _formatTime,
   useBinaryImageUri,
   useTranslator,
 } from '@axelor/aos-mobile-core';
 import {Badge, Image, Text, useThemeColor} from '@axelor/aos-mobile-ui';
+import {MailMessageNotificationCard} from '@axelor/aos-mobile-message';
 
 const AVATAR_SIZE = Dimensions.get('window').width * 0.12;
 

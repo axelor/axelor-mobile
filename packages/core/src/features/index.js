@@ -22,7 +22,6 @@ export {authReducer as auth} from './authSlice';
 export {default as cameraScanner} from './cameraScannerSlice';
 export {default as camera} from './cameraSlice';
 export {formReducer as form} from './formSlice';
-export {mailMessagesReducer as mailMessages} from './mailMessageSlice';
 export {metafileReducer as metafile} from './metafileSlice';
 export {metaJsonFieldReducer as metaJsonField} from './metaJsonFieldSlice';
 export {metaModuleReducer as metaModule} from './metaModuleSlice';
