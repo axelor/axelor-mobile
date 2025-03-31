@@ -16,5 +16,5 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-export {default as MailMessageReadIcon} from './MailMessageReadIcon/MailMessageReadIcon';
-export {default as TrackItem} from './TrackItem/TrackItem';
+export {default as CommentCard} from './CommentCard/CommentCard';
+export {default as NotificationCard} from './NotificationCard/NotificationCard';

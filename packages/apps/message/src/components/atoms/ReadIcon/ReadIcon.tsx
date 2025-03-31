@@ -16,7 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import React, {useCallback} from 'react';
+import React, {useCallback, useMemo} from 'react';
 import {StyleSheet} from 'react-native';
 import {useDispatch} from '@axelor/aos-mobile-core';
 import {Icon, useThemeColor} from '@axelor/aos-mobile-ui';
@@ -25,24 +25,34 @@ import {
   markMailMessageAsRead,
 } from '../../../features/mailMessageSlice';
 
-interface MailMessageReadIconProps {
+interface ReadIconProps {
   allMessagesRead?: boolean;
   mailMessageFlag: any;
   modelId: number;
   model: string;
 }
 
-const MailMessageReadIcon = ({
+const ReadIcon = ({
   allMessagesRead = false,
   mailMessageFlag,
   modelId,
   model,
-}: MailMessageReadIconProps) => {
+}: ReadIconProps) => {
   const Colors = useThemeColor();
   const dispatch = useDispatch();
 
-  const isRead =
-    mailMessageFlag != null ? mailMessageFlag?.isRead : allMessagesRead;
+  const isRead = useMemo(
+    () => (mailMessageFlag != null ? mailMessageFlag?.isRead : allMessagesRead),
+    [allMessagesRead, mailMessageFlag],
+  );
+
+  const iconColor = useMemo(
+    () =>
+      isRead
+        ? Colors.successColor.background
+        : Colors.secondaryColor.background,
+    [Colors, isRead],
+  );
 
   const handleMarkAsRead = useCallback(() => {
     dispatch(
@@ -63,20 +73,27 @@ const MailMessageReadIcon = ({
     );
   }, [dispatch, model, modelId]);
 
+  if (mailMessageFlag == null) {
+    return (
+      <Icon
+        name="check-all"
+        color={iconColor}
+        size={18}
+        touchable={!isRead}
+        onPress={handleMarkAsRead}
+        style={styles.doucleCheckIcon}
+      />
+    );
+  }
+
   return (
     <Icon
-      name={mailMessageFlag == null ? 'check-all' : 'check-lg'}
-      color={
-        isRead
-          ? Colors.successColor.background
-          : Colors.secondaryColor.background
-      }
-      size={mailMessageFlag == null ? 18 : 15}
+      name="check-lg"
+      color={iconColor}
+      size={15}
       touchable={!isRead}
-      onPress={mailMessageFlag != null ? handleMarkAsRead : handleMarkAllAsRead}
-      style={
-        mailMessageFlag == null ? styles.doucleCheckIcon : styles.checkIcon
-      }
+      onPress={handleMarkAllAsRead}
+      style={styles.checkIcon}
     />
   );
 };
@@ -92,4 +109,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default MailMessageReadIcon;
+export default ReadIcon;
