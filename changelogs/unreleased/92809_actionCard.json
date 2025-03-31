@@ -1,0 +1,5 @@
+{
+  "title": "ActionCard: merge style of children instead of replacing with height",
+  "type": "fix",
+  "packages": "ui"
+}

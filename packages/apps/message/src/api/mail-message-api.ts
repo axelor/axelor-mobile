@@ -16,7 +16,54 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import {axiosApiProvider, RouterProvider} from '@axelor/aos-mobile-core';
+import {
+  axiosApiProvider,
+  createStandardSearch,
+  Criteria,
+  formatRequestBody,
+  getActionApi,
+  RouterProvider,
+} from '@axelor/aos-mobile-core';
+
+const createUnreadMessagesCriteria = ({model, modelId}): Criteria[] => {
+  return [
+    {
+      fieldName: 'relatedModel',
+      operator: '=',
+      value: model,
+    },
+    {
+      fieldName: 'relatedId',
+      operator: '=',
+      value: modelId,
+    },
+    {
+      fieldName: 'flags.isRead',
+      operator: '=',
+      value: false,
+    },
+  ];
+};
+
+const createUnreadFlagsCriteria = ({model, modelId}): Criteria[] => {
+  return [
+    {
+      fieldName: 'message.relatedModel',
+      operator: '=',
+      value: model,
+    },
+    {
+      fieldName: 'message.relatedId',
+      operator: '=',
+      value: modelId,
+    },
+    {
+      fieldName: 'isRead',
+      operator: '=',
+      value: false,
+    },
+  ];
+};
 
 interface fetchMailMessageProps {
   model: string;
@@ -24,12 +71,6 @@ interface fetchMailMessageProps {
   date?: string;
   limit?: number;
   page?: number;
-}
-
-interface postMailMessageCommentProps {
-  model: string;
-  modelId: number;
-  comment: string;
 }
 
 export async function fetchMailMessages({
@@ -62,19 +103,35 @@ export async function fetchMailMessages({
   return res;
 }
 
+interface postMailMessageCommentProps {
+  model: string;
+  modelId: number;
+  comment: string;
+}
+
 export async function postMailMessageComment({
   model,
   modelId,
   comment,
 }: postMailMessageCommentProps) {
-  return axiosApiProvider.post({
+  const body = {
+    body: `${comment}`,
+    type: 'comment',
+    files: [],
+  };
+  const {matchers} = formatRequestBody(body, 'data');
+
+  return getActionApi().send({
     url: `/ws/rest/${model}/${modelId}/message`,
-    data: {
-      data: {
-        body: `${comment}`,
-        type: 'comment',
-        files: [],
-      },
+    method: 'post',
+    body: {
+      data: body,
+    },
+    description: 'post mail message comment',
+    matchers: {
+      modelName: 'com.axelor.mail.db.MailMessage',
+      id: Date.now(),
+      fields: matchers,
     },
   });
 }
@@ -122,51 +179,30 @@ export async function countUnreadMessages({
   model: string;
   modelId: number;
 }) {
-  return axiosApiProvider.post({
-    url: '/ws/rest/com.axelor.mail.db.MailMessage/search',
-    data: {
-      data: {
-        criteria: [
-          {
-            operator: 'and',
-            criteria: [
-              {fieldName: 'relatedModel', operator: '=', value: model},
-              {fieldName: 'relatedId', operator: '=', value: modelId},
-              {fieldName: 'flags.isRead', operator: '=', value: false},
-            ],
-          },
-        ],
-      },
-      fields: ['id'],
-    },
+  return createStandardSearch({
+    model: 'com.axelor.mail.db.MailMessage',
+    criteria: createUnreadMessagesCriteria({model, modelId}),
+    fieldKey: 'message_mailMessage',
+    page: 0,
+    numberElementsByPage: null,
+    provider: 'model',
   });
 }
 
-export async function getAllUnReadFlagsOfMailMessage({
+export async function getAllUnreadFlagsOfMailMessage({
   model,
   modelId,
 }: {
   model: string;
   modelId: number;
 }) {
-  return axiosApiProvider.post({
-    url: '/ws/rest/com.axelor.mail.db.MailFlags/search',
-    data: {
-      data: {
-        criteria: [
-          {
-            operator: 'and',
-            criteria: [
-              {fieldName: 'message.relatedModel', operator: '=', value: model},
-              {fieldName: 'message.relatedId', operator: '=', value: modelId},
-              {fieldName: 'isRead', operator: '=', value: false},
-            ],
-          },
-        ],
-      },
-      limit: null,
-      offset: 0,
-    },
+  return createStandardSearch({
+    model: 'com.axelor.mail.db.MailFlags',
+    criteria: createUnreadFlagsCriteria({model, modelId}),
+    fieldKey: 'message_mailFlags',
+    page: 0,
+    numberElementsByPage: null,
+    provider: 'model',
   });
 }
 
@@ -177,35 +213,24 @@ export async function readAllMailMessages({
   model: string;
   modelId: number;
 }) {
-  return getAllUnReadFlagsOfMailMessage({model, modelId}).then(res => {
-    const mailFlagList = res?.data?.data;
-    return readMailMessage({mailFlagList, model, modelId});
+  return getAllUnreadFlagsOfMailMessage({model, modelId}).then(res => {
+    return readMailMessage({mailFlagList: res?.data?.data});
   });
 }
 
-export async function readMailMessage({
-  mailFlagList,
-  model,
-  modelId,
-}: {
-  mailFlagList: any[];
-  model: string;
-  modelId: number;
-}) {
-  if (mailFlagList == null || mailFlagList?.length === 0) {
+export async function readMailMessage({mailFlagList}: {mailFlagList: any[]}) {
+  if (!Array.isArray(mailFlagList) || mailFlagList?.length === 0) {
     return null;
   }
 
-  const criteria = mailFlagList.map(item => {
-    return {id: item.id, isRead: true, version: item.version};
+  return axiosApiProvider.post({
+    url: '/ws/rest/com.axelor.mail.db.MailFlags',
+    data: {
+      records: mailFlagList.map(item => ({
+        id: item.id,
+        isRead: true,
+        version: item.version,
+      })),
+    },
   });
-
-  return axiosApiProvider
-    .post({
-      url: '/ws/rest/com.axelor.mail.db.MailFlags/',
-      data: {
-        records: criteria,
-      },
-    })
-    .then(() => countUnreadMessages({model, modelId}));
 }

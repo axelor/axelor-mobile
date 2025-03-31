@@ -16,5 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-export * from './date';
-export * from './mailMessagesGenericAction';
+export {default as Avatar} from './Avatar/Avatar';
+export {default as ExpandableText} from './ExpandableText/ExpandableText';
+export {default as ReadIcon} from './ReadIcon/ReadIcon';
+export {default as TrackItem} from './TrackItem/TrackItem';

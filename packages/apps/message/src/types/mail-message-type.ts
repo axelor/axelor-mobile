@@ -17,6 +17,7 @@
  */
 
 import {ThemeColors} from '@axelor/aos-mobile-ui';
+import {TranslatorProps} from '@axelor/aos-mobile-core';
 
 class MailMessageType {
   static status = {
@@ -37,7 +38,7 @@ class MailMessageType {
   };
 
   static getSelectionItems = (
-    I18n: {t: (key: string) => string},
+    I18n: TranslatorProps,
     Colors: ThemeColors,
     selectedStatus: any[],
   ) => {
