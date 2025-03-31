@@ -38,6 +38,7 @@ interface MailMessageCardProps {
   flags: any[];
   relatedId: number;
   relatedModel: string;
+  isInbox?: boolean;
 }
 
 const MailMessageCard = ({
@@ -54,6 +55,7 @@ const MailMessageCard = ({
   flags,
   relatedId,
   relatedModel,
+  isInbox,
 }: MailMessageCardProps) => {
   const I18n = useTranslator();
 
@@ -75,6 +77,7 @@ const MailMessageCard = ({
             flags={flags}
             relatedId={relatedId}
             relatedModel={relatedModel}
+            isInbox={isInbox}
           />
         )}
         {type === MailMessageType.status.notification && (
@@ -85,6 +88,7 @@ const MailMessageCard = ({
             flags={flags}
             relatedId={relatedId}
             relatedModel={relatedModel}
+            isInbox={isInbox}
           />
         )}
       </View>

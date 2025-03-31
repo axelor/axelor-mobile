@@ -17,6 +17,7 @@
  */
 
 import MailMessageScreen from './MailMessageScreen';
+import InboxScreen from './InboxScreen';
 
 export default {
   MailMessageScreen: {
@@ -24,6 +25,11 @@ export default {
     component: MailMessageScreen,
     actionID: 'message_mailMessage_details',
   },
+  InboxScreen: {
+    title: 'Message_Inbox',
+    component: InboxScreen,
+  },
 };
 
 export {MailMessageScreen};
+export {InboxScreen};

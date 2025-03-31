@@ -37,6 +37,7 @@ import {useIsSubscribed} from './use-is-subscribed';
 export const useMessageHeaders = () => {
   useMailMessagesGenericAction();
   useMailMessagesDetailsAction();
+  useUserProfileActions();
 };
 
 const useMailMessagesGenericAction = () => {
@@ -108,4 +109,24 @@ const useMailMessagesDetailsAction = () => {
       ],
     });
   }, [Colors, I18n, handleMarkAllAsRead, isSubscribed, unreadMessages]);
+};
+
+const useUserProfileActions = () => {
+  const I18n = useTranslator();
+  const navigation = useNavigation();
+
+  useEffect(() => {
+    headerActionsProvider.registerModel('auth_user_profile', {
+      actions: [
+        {
+          key: 'inbox',
+          order: 15,
+          iconName: 'bell-fill',
+          title: I18n.t('Message_Inbox'),
+          onPress: () => navigation.navigate('InboxScreen'),
+          showInHeader: true,
+        },
+      ],
+    });
+  }, [I18n, navigation]);
 };

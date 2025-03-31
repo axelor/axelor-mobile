@@ -45,6 +45,7 @@ interface NotificationCardProps {
   flags?: any;
   style?: any;
   customTopComponent?: ReactElement<any>;
+  isInbox?: boolean;
 }
 
 const NotificationCard = ({
@@ -56,6 +57,7 @@ const NotificationCard = ({
   flags,
   style,
   customTopComponent,
+  isInbox,
 }: NotificationCardProps) => {
   const Colors = useThemeColor();
   const [moreItems, setMoreItems] = useState(false);
@@ -98,6 +100,7 @@ const NotificationCard = ({
               mailMessageFlag={flags}
               model={relatedModel}
               modelId={relatedId}
+              isInbox={isInbox}
             />
           )}
         </View>
