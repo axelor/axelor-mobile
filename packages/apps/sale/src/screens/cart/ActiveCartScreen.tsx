@@ -113,7 +113,6 @@ const ActiveCartScreen = ({}) => {
       headerActionsProvider.registerModel('sale_active_cart', {
         model: 'com.axelor.apps.sale.db.Cart',
         modelId: activeCart?.id,
-        disableMailMessages: !mobileSettings?.isTrackerMessageEnabled,
         actions: [
           {
             customComponent: (

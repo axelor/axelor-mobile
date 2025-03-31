@@ -56,7 +56,6 @@ const useSaleOrderDetailsActions = () => {
       model: 'com.axelor.apps.sale.db.SaleOrder',
       modelId: saleOrder?.id,
       headerTitle: title,
-      disableMailMessages: !mobileSettings?.isTrackerMessageEnabled,
     });
   }, [mobileSettings, saleOrder?.id, title]);
 };
@@ -82,7 +81,6 @@ const useSaleOrderLineDetailsActions = () => {
       model: 'com.axelor.apps.sale.db.SaleOrderLine',
       modelId: saleOrderLine?.id,
       headerTitle: title,
-      disableMailMessages: !mobileSettings?.isTrackerMessageEnabled,
     });
   }, [mobileSettings, saleOrderLine?.id, title]);
 };
@@ -95,7 +93,6 @@ const useProductDetailsActions = () => {
     headerActionsProvider.registerModel('sale_product_details', {
       model: 'com.axelor.apps.base.db.Product',
       modelId: product?.id,
-      disableMailMessages: !mobileSettings?.isTrackerMessageEnabled,
     });
   }, [mobileSettings, product?.id]);
 };
@@ -108,7 +105,6 @@ const useClientDetailsActions = () => {
     headerActionsProvider.registerModel('sale_client_details', {
       model: 'com.axelor.apps.base.db.Partner',
       modelId: customer?.id,
-      disableMailMessages: !mobileSettings?.isTrackerMessageEnabled,
     });
   }, [customer, mobileSettings]);
 };
@@ -121,7 +117,6 @@ const useCartLineDetailsActions = () => {
     headerActionsProvider.registerModel('sale_cartLine_details', {
       model: 'com.axelor.apps.sale.db.CartLine',
       modelId: cartLine?.id,
-      disableMailMessages: !mobileSettings?.isTrackerMessageEnabled,
     });
   }, [cartLine?.id, mobileSettings]);
 };

@@ -19,6 +19,9 @@
 import {Module} from '@axelor/aos-mobile-core';
 import enTranslations from './i18n/en.json';
 import frTranslations from './i18n/fr.json';
+import MessageScreens from './screens';
+import * as messageReducers from './features';
+import {useMessageHeaders} from './hooks/use-message-header-actions';
 
 export const MessageModule: Module = {
   name: 'app-message',
@@ -29,4 +32,20 @@ export const MessageModule: Module = {
     en: enTranslations,
     fr: frTranslations,
   },
+  screens: {
+    ...MessageScreens,
+  },
+  reducers: {
+    ...messageReducers,
+  },
+  models: {
+    headerRegisters: useMessageHeaders,
+  },
 };
+
+export * from './api';
+export * from './components';
+export * from './features/asyncFunctions-index';
+export * from './screens';
+export * from './types';
+export * from './utils';

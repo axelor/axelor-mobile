@@ -25,7 +25,12 @@ import {
   StyleSheet,
   View,
 } from 'react-native';
-import {useDispatch, useSelector} from 'react-redux';
+import {
+  headerActionsProvider,
+  useDispatch,
+  useSelector,
+  useTranslator,
+} from '@axelor/aos-mobile-core';
 import {
   Alert,
   ChipSelect,
@@ -35,7 +40,8 @@ import {
   Text,
   useThemeColor,
 } from '@axelor/aos-mobile-ui';
-import {MailMessageCard} from '../../../components';
+import {useMarkAllMailMessages} from '../../molecules';
+import {MailMessageCard} from '../../organisms';
 import {
   getMailMessages,
   getModelSubscribers,
@@ -43,9 +49,6 @@ import {
   modelUnsubscribeRequest,
   sendMailMessageComment,
 } from '../../../features/mailMessageSlice';
-import useTranslator from '../../../i18n/hooks/use-translator';
-import {headerActionsProvider} from '../../../header';
-import {useMarkAllMailMessages} from '../../molecules/MailMessageReadIcon/MailMessageReadIcon';
 import {MailMessageType} from '../../../types';
 
 const DEFAULT_BOTTOM_MARGIN = 10;
@@ -170,7 +173,7 @@ const MailMessageView = ({
   }, [hideMessageBox, selectedStatus]);
 
   useEffect(() => {
-    headerActionsProvider.registerModel('core_mailMessage_details', {
+    headerActionsProvider.registerModel('message_mailMessage_details', {
       actions: [
         {
           key: 'readMessages',
@@ -181,7 +184,7 @@ const MailMessageView = ({
             unreadMessages === 0
               ? Colors.primaryColor.background
               : Colors.secondaryColor.background,
-          title: I18n.t('Base_MailMessages_MarkAllAsRead'),
+          title: I18n.t('Message_MarkAllAsRead'),
           onPress: handleMarkAll,
         },
         {
@@ -193,9 +196,7 @@ const MailMessageView = ({
             ? Colors.primaryColor.background
             : Colors.secondaryColor_dark.background,
           title: I18n.t(
-            subscribe
-              ? 'Base_MailMessages_Unsubscribe'
-              : 'Base_MailMessages_Subscribe',
+            subscribe ? 'Message_Unsubscribe' : 'Message_Subscribe',
           ),
           onPress: subscribe ? () => setPopUp(true) : handleSubscribe,
         },
@@ -229,7 +230,7 @@ const MailMessageView = ({
       <Screen removeSpaceOnTop={true}>
         <Alert
           visible={popUp}
-          title={I18n.t('Base_Question')}
+          title={I18n.t('Message_Question')}
           cancelButtonConfig={{
             onPress: () => setPopUp(false),
           }}
@@ -237,7 +238,7 @@ const MailMessageView = ({
             onPress: handleUnfollowConfirmation,
           }}
           translator={I18n.t}>
-          <Text>{I18n.t('Base_Unfollow_Confirmation')}</Text>
+          <Text>{I18n.t('Message_Unfollow_Confirmation')}</Text>
         </Alert>
         <View style={styles.flexOne}>
           <ScrollList
@@ -284,7 +285,7 @@ const MailMessageView = ({
         {displayMessageBox && (
           <View style={styles.messageBox}>
             <MessageBox
-              placeholder={I18n.t('Base_MailMessages_CommentInput_Placeholder')}
+              placeholder={I18n.t('Message_CommentInput_Placeholder')}
               disabled={!comment}
               value={comment}
               onChange={setComment}

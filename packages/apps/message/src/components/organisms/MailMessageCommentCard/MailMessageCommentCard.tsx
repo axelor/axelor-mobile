@@ -18,6 +18,7 @@
 
 import React, {useCallback, useMemo, useState} from 'react';
 import {StyleSheet, TouchableOpacity, View} from 'react-native';
+import {isHtml, useNavigation, useTranslator} from '@axelor/aos-mobile-core';
 import {
   Card,
   getCommonStyles,
@@ -27,10 +28,7 @@ import {
   Text,
   useThemeColor,
 } from '@axelor/aos-mobile-ui';
-import useTranslator from '../../../i18n/hooks/use-translator';
-import {isHtml} from '../../../utils/string';
 import {MailMessageReadIcon} from '../../molecules';
-import {useNavigation} from '../../../hooks/use-navigation';
 
 interface MailMessageCommentCardProps {
   relatedModel: string;

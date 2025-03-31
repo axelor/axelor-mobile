@@ -28,7 +28,6 @@ export interface HeaderOptions {
   modelId?: number;
   options?: any;
   disablePrint?: boolean;
-  disableMailMessages?: boolean;
   disableJsonFields?: boolean;
   barcodeFieldname?: string;
   headerTitle?: string;
