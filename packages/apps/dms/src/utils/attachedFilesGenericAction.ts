@@ -34,6 +34,18 @@ export const getAction = async ({
   navigation: any;
   translator: (key: string) => string;
 }) => {
+  const _defaultAction = {
+    key: 'dmsAttachedFiles',
+    order: 10,
+    iconName: 'paperclip',
+    title: translator('Dms_AttachedFiles'),
+    showInHeader: true,
+    hideIf: true,
+    onPress: () => {},
+  };
+
+  if (modelId == null || model == null) return _defaultAction;
+
   const directory = await handlerApiCall({
     fetchFunction: fetchDirectory,
     data: {model, modelId},
@@ -59,11 +71,8 @@ export const getAction = async ({
   });
 
   return {
-    key: 'dmsAttachedFiles',
-    order: 10,
-    iconName: 'paperclip',
+    ..._defaultAction,
     indicator: numberAttachedFiles,
-    title: translator('Dms_AttachedFiles'),
     onPress: () =>
       navigation.navigate('AttachedFilesScreen', {
         parent: directory,
@@ -71,7 +80,6 @@ export const getAction = async ({
         modelId,
         options,
       }),
-    showInHeader: true,
     hideIf: !directory && !canCreateObject,
   };
 };

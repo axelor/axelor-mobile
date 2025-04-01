@@ -42,9 +42,6 @@ export interface HeaderOptions {
   model?: string;
   modelId?: number;
   options?: any;
-  disablePrint?: boolean;
-  disableJsonFields?: boolean;
-  barcodeFieldname?: string;
   headerTitle?: string;
   actions?: ActionType[];
 }
@@ -55,15 +52,12 @@ Le package core fournit par défaut plusieurs actions pour le header, à savoir 
 - _model_ : nom complet du modèle sur l’ERP.
 - _modelId_ : identifiant de l’objet.
 - _options_ : objet contenant des options pour les actions génériques.
-- _disablePrint_ : condition pour l'affichage ou non de l'impression du rapport.
-- _disableJsonFields_ : condition pour l’affichage ou non des champs studio.
-- _barcodeFieldname_ : nom de l’attribut contenant le fichier code-barre sur l’ERP (par défaut `barCode`).
 - _headerTitle_ : nom de l'écran pour permettre les titres dynamiques.
 
-Ces actions s’affichent lorsque les valeurs des attributs `model` et `modelId` sont renseignés et que les actions ne sont pas désactivées par les attributs associés.
+Ces actions s’affichent lorsque les valeurs des attributs `model` et `modelId` sont renseignés et que les actions ne sont pas désactivées dans les options associées.
 
 :::caution
-Depuis la version 8.3, la fonctionnalité des fichiers joints est gérée comme une action générique du module DMS. Elle sera ajoutée à tous les écrans avec un model et un modelId enregistrés.
+Depuis la version 8.3, la fonctionnalité des fichiers joints est gérée comme une action générique du module DMS et depuis la version 8.4, la fonctionnalité des messages de suivi est gérée comme une action générique du module message. Elles seront ajoutées à tous les écrans avec un model et un modelId enregistrés.
 :::
 
 Il est ensuite possible d’ajouter des actions supplémentaires avec l’attribut `actions`. Chaque action possède alors la structure suivante :
