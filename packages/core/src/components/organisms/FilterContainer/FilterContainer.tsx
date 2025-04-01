@@ -54,13 +54,11 @@ const FilterContainer = ({
     [Colors],
   );
 
-  return (
-    <HeaderContainer
-      style={style}
-      topChildren={!activeFilter ? topChildren : null}
-      children={!activeFilter ? children : null}
-      fixedItems={
-        activeFilter ? (
+  if (activeFilter?.id) {
+    return (
+      <HeaderContainer
+        style={style}
+        fixedItems={
           <View style={styles.filterContainer}>
             <Icon name="filter" size={18} />
             <TouchableOpacity
@@ -70,11 +68,19 @@ const FilterContainer = ({
               <Icon name="x" size={18} />
             </TouchableOpacity>
           </View>
-        ) : (
-          fixedItems
-        )
-      }
-      chipComponent={!activeFilter ? chipComponent : null}
+        }
+        expandableFilter={false}
+      />
+    );
+  }
+
+  return (
+    <HeaderContainer
+      style={style}
+      topChildren={topChildren}
+      children={children}
+      fixedItems={fixedItems}
+      chipComponent={chipComponent}
       expandableFilter={expandableFilter}
       forceHideByDefault={forceHideByDefault}
     />
