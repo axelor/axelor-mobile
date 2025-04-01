@@ -16,8 +16,13 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+export interface Filter {
+  id: string;
+  name: string;
+}
+
 class FilterProvider {
-  private activeFilter: string = null;
+  private activeFilter: Filter = null;
   private listeners: Function[] = [];
 
   register(callback: Function) {
@@ -32,7 +37,7 @@ class FilterProvider {
     this.listeners.forEach(callback => callback(this.activeFilter));
   }
 
-  setActiveFilter(filter?: string) {
+  setActiveFilter(filter?: Filter) {
     this.activeFilter = filter;
     this.notify();
   }
