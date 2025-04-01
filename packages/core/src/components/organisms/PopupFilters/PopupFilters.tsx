@@ -54,7 +54,10 @@ const PopupFilters = ({
 
   const handleFilterSelection = (filterId: string) => {
     setSelectedFilter(prevFilter =>
-      prevFilter === filterId ? null : filterId,
+      prevFilter?.id === filterId
+        ? null
+        : (savedFilters.find(f => f.id === filterId) ??
+          userFilters.find(f => f.id === filterId)),
     );
   };
 
@@ -65,12 +68,9 @@ const PopupFilters = ({
       <RadioSelect
         style={styles.container}
         question={I18n.t(titleKey)}
-        items={filters.map(filter => ({
-          id: filter.id || filter.name,
-          title: filter.title || filter.name,
-        }))}
+        items={filters.map(filter => ({id: filter.id, title: filter.name}))}
         onChange={handleFilterSelection}
-        defaultValue={selectedFilter}
+        defaultValue={selectedFilter?.id}
         direction="column"
         radioButtonStyle={styles.radioButtonStyle}
       />
