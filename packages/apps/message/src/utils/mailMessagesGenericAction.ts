@@ -32,6 +32,18 @@ export const getAction = async ({
   hideIf: boolean;
   translator: (key: string) => string;
 }) => {
+  const _defaultAction = {
+    key: 'mailMessages',
+    order: 20,
+    iconName: 'bell-fill',
+    title: translator('Message_MailMessages'),
+    showInHeader: true,
+    hideIf: true,
+    onPress: () => {},
+  };
+
+  if (modelId == null || model == null) return _defaultAction;
+
   const numberUnreadMessages = await handlerApiCall({
     fetchFunction: countUnreadMessages,
     data: {model, modelId},
@@ -45,17 +57,13 @@ export const getAction = async ({
   });
 
   return {
-    key: 'mailMessages',
-    order: 20,
-    iconName: 'bell-fill',
+    ..._defaultAction,
     indicator: numberUnreadMessages,
-    title: translator('Message_MailMessages'),
     onPress: () =>
       navigation.navigate('MailMessageScreen', {
         model,
         modelId,
       }),
-    showInHeader: true,
     hideIf,
   };
 };

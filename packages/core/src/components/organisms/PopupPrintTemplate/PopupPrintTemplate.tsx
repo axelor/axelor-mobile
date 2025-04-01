@@ -17,13 +17,10 @@
  */
 
 import React, {useCallback, useEffect, useState} from 'react';
-import {Alert} from '@axelor/aos-mobile-ui';
+import {Alert, Icon} from '@axelor/aos-mobile-ui';
 import {useTranslator} from '../../../i18n';
 import {useSelector} from '../../../redux/hooks';
-import {
-  fetchActionPrint,
-  fetchFileToPrint,
-} from '../../../api/print-template-api';
+import {fetchFileToPrint} from '../../../api/print-template-api';
 import {openFileInExternalApp} from '../../../tools';
 import {PrintTemplateSearchBar} from '../../templates';
 import {showToastMessage} from '../../../utils';
@@ -33,6 +30,8 @@ interface PopupPrintTemplateProps {
   onClose: () => void;
   model: string;
   modelId: number;
+  templateSet?: any[];
+  fileName?: string;
 }
 
 const PopupPrintTemplate = ({
@@ -40,21 +39,20 @@ const PopupPrintTemplate = ({
   onClose,
   model,
   modelId,
+  templateSet,
+  fileName,
 }: PopupPrintTemplateProps) => {
   const I18n = useTranslator();
 
   const {baseUrl, token, jsessionId} = useSelector((state: any) => state.auth);
 
-  const [templateIdList, setTemplateIdList] = useState([]);
   const [selectedTemplate, setSelectedTemplate] = useState(null);
   const [showPopup, setShowPopup] = useState(false);
 
   const handleShowFile = useCallback(
     async (file: string) => {
-      const fileName = file.split('=')[1];
-
       await openFileInExternalApp(
-        {fileName, path: file},
+        {fileName: file.split('=')[1], path: file},
         {baseUrl, token, jsessionId},
         I18n,
       );
@@ -65,38 +63,24 @@ const PopupPrintTemplate = ({
   );
 
   const handleCancel = useCallback(() => {
-    setTemplateIdList([]);
     setSelectedTemplate(null);
     onClose();
   }, [onClose]);
 
   useEffect(() => {
     if (visible) {
-      fetchActionPrint({id: modelId, model: model})
-        .then(({templateSet, fileName, error}) => {
-          if (Array.isArray(templateSet) && templateSet.length > 0) {
-            setTemplateIdList(templateSet);
-            setShowPopup(true);
-          } else if (fileName) {
-            handleShowFile(fileName);
-          } else {
-            showToastMessage({
-              type: 'error',
-              position: 'bottom',
-              text1: 'Error',
-              text2: error,
-            });
-            onClose();
-          }
-        })
-        .catch(handleCancel);
+      if (Array.isArray(templateSet) && templateSet.length > 0) {
+        setShowPopup(true);
+      } else if (fileName) {
+        handleShowFile(fileName);
+      }
     }
-  }, [handleCancel, handleShowFile, model, modelId, onClose, visible]);
+  }, [fileName, handleShowFile, templateSet, visible]);
 
   const openFile = useCallback(() => {
     fetchFileToPrint({printingTemplate: selectedTemplate, id: modelId, model})
-      .then(({error, fileName}) => {
-        if (fileName == null) {
+      .then(({error, fileName: _file}) => {
+        if (_file == null) {
           showToastMessage({
             type: 'error',
             position: 'bottom',
@@ -105,24 +89,27 @@ const PopupPrintTemplate = ({
           });
           handleCancel();
         } else {
-          handleShowFile(fileName);
+          handleShowFile(_file);
         }
       })
       .catch(handleCancel);
   }, [selectedTemplate, modelId, model, handleCancel, handleShowFile]);
 
   return (
-    <Alert
-      visible={showPopup}
-      cancelButtonConfig={{onPress: onClose}}
-      confirmButtonConfig={{onPress: openFile}}
-      translator={I18n.t}>
-      <PrintTemplateSearchBar
-        idList={templateIdList}
-        defaultValue={selectedTemplate}
-        onChange={setSelectedTemplate}
-      />
-    </Alert>
+    <>
+      <Icon name="printer-fill" />
+      <Alert
+        visible={showPopup}
+        cancelButtonConfig={{onPress: onClose}}
+        confirmButtonConfig={{onPress: openFile}}
+        translator={I18n.t}>
+        <PrintTemplateSearchBar
+          idList={templateSet}
+          defaultValue={selectedTemplate}
+          onChange={setSelectedTemplate}
+        />
+      </Alert>
+    </>
   );
 };
 

@@ -18,7 +18,7 @@
 
 import {axiosApiProvider} from '../../apiProviders';
 
-const createJsonFieldsOfModelCriteria = (modelName: string, type: string) => {
+const createJsonFieldsOfModelCriteria = (modelName: string, type?: string) => {
   const criteria = [
     {
       fieldName: 'model',
@@ -48,7 +48,7 @@ export async function fetchJsonFieldsOfModel({
   type,
 }: {
   modelName: string;
-  type: string;
+  type?: string;
 }) {
   if (modelName == null) {
     return null;
