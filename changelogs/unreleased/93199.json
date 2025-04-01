@@ -1,5 +1,5 @@
 {
-  "title": "InventoryStartedDetailsScreen: Change ScrollView to KeyboardAvoidingScrollView",
+  "title": "InventoryStartedDetailsScreen: change ScrollView to KeyboardAvoidingScrollView",
   "type": "fix",
   "packages": "stock"
 }
