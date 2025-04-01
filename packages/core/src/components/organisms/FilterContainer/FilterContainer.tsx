@@ -24,8 +24,7 @@ import {
   Text,
   useThemeColor,
 } from '@axelor/aos-mobile-ui';
-import {useActiveFilter} from '../../../hooks/use-active-filter';
-import {filterProvider} from '../../../header/FilterProvider';
+import {filterProvider, useActiveFilter} from '../../../header/FilterProvider';
 
 interface FilterContainerProps {
   style?: any;
@@ -64,7 +63,7 @@ const FilterContainer = ({
             <TouchableOpacity
               style={styles.filterTag}
               onPress={() => filterProvider.setActiveFilter()}>
-              <Text fontSize={14}>{activeFilter.name}</Text>
+              <Text fontSize={14}>{activeFilter.title}</Text>
               <Icon name="x" size={18} />
             </TouchableOpacity>
           </View>

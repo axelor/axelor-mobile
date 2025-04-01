@@ -18,16 +18,16 @@
 
 import React, {useCallback, useEffect, useState} from 'react';
 import {StyleSheet} from 'react-native';
-import {Alert, RadioSelect} from '@axelor/aos-mobile-ui';
+import {Alert, Icon, RadioSelect, ScrollView} from '@axelor/aos-mobile-ui';
 import {useTranslator} from '../../../i18n';
-import {useActiveFilter} from '../../../hooks/use-active-filter';
-import {filterProvider} from '../../../header/FilterProvider';
+import {filterProvider, useActiveFilter} from '../../../header/FilterProvider';
 
 interface PopupFiltersProps {
   visible: boolean;
   onClose: () => void;
   savedFilters: any[];
   userFilters: any[];
+  model: string;
 }
 
 const PopupFilters = ({
@@ -35,11 +35,18 @@ const PopupFilters = ({
   onClose,
   savedFilters = [],
   userFilters = [],
+  model,
 }: PopupFiltersProps) => {
   const I18n = useTranslator();
   const {activeFilter} = useActiveFilter();
 
   const [selectedFilter, setSelectedFilter] = useState(activeFilter);
+
+  useEffect(() => {
+    if (model) {
+      filterProvider.setActiveFilter();
+    }
+  }, [model]);
 
   useEffect(() => {
     if (visible) {
@@ -56,8 +63,7 @@ const PopupFilters = ({
     setSelectedFilter(prevFilter =>
       prevFilter?.id === filterId
         ? null
-        : (savedFilters.find(f => f.id === filterId) ??
-          userFilters.find(f => f.id === filterId)),
+        : [...savedFilters, ...userFilters].find(({id}) => id === filterId),
     );
   };
 
@@ -68,7 +74,7 @@ const PopupFilters = ({
       <RadioSelect
         style={styles.container}
         question={I18n.t(titleKey)}
-        items={filters.map(filter => ({id: filter.id, title: filter.name}))}
+        items={filters}
         onChange={handleFilterSelection}
         defaultValue={selectedFilter?.id}
         direction="column"
@@ -78,19 +84,27 @@ const PopupFilters = ({
   };
 
   return (
-    <Alert
-      visible={visible}
-      title={I18n.t('Base_SelectFilter')}
-      cancelButtonConfig={{onPress: onClose}}
-      confirmButtonConfig={{onPress: handleConfirm}}
-      translator={I18n.t}>
-      {renderRadioSelect(savedFilters, 'Base_Filters')}
-      {renderRadioSelect(userFilters, 'Base_MyFilters')}
-    </Alert>
+    <>
+      <Icon name="filter" />
+      <Alert
+        visible={visible}
+        title={I18n.t('Base_SelectFilter')}
+        cancelButtonConfig={{onPress: onClose}}
+        confirmButtonConfig={{onPress: handleConfirm}}
+        translator={I18n.t}>
+        <ScrollView style={styles.scrollview}>
+          {renderRadioSelect(savedFilters, 'Base_Filters')}
+          {renderRadioSelect(userFilters, 'Base_MyFilters')}
+        </ScrollView>
+      </Alert>
+    </>
   );
 };
 
 const styles = StyleSheet.create({
+  scrollview: {
+    height: null,
+  },
   container: {
     width: '100%',
   },

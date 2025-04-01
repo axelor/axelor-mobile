@@ -1,0 +1,5 @@
+{
+  "title": "Header actions: use generic actions to generate basic header actions",
+  "type": "refactor",
+  "packages": "core"
+}
