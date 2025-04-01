@@ -16,9 +16,11 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+import {useEffect, useMemo, useState} from 'react';
+
 export interface Filter {
   id: string;
-  name: string;
+  title: string;
 }
 
 class FilterProvider {
@@ -48,3 +50,16 @@ class FilterProvider {
 }
 
 export const filterProvider = new FilterProvider();
+
+export const useActiveFilter = () => {
+  const [activeFilter, setActiveFilterState] = useState(
+    filterProvider.getActiveFilter(),
+  );
+
+  useEffect(() => {
+    filterProvider.register(setActiveFilterState);
+    return () => filterProvider.unregister(setActiveFilterState);
+  }, []);
+
+  return useMemo(() => ({activeFilter}), [activeFilter]);
+};
