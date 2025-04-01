@@ -21,13 +21,13 @@ import {StyleSheet, View} from 'react-native';
 import {
   ActionType,
   AutoCompleteSearch,
-  HeaderContainer,
   ScrollList,
 } from '@axelor/aos-mobile-ui';
-import {ScannerAutocompleteSearch} from '../../organisms';
+import {FilterContainer, ScannerAutocompleteSearch} from '../../organisms';
 import {useDispatch} from '../../../redux/hooks';
 import useTranslator from '../../../i18n/hooks/use-translator';
 import {useIsFocused} from '../../../hooks/use-navigation';
+import {useActiveFilter} from '../../../header/FilterProvider';
 
 interface SearchListViewProps {
   list: any[];
@@ -81,6 +81,7 @@ const SearchListView = ({
   const I18n = useTranslator();
   const dispatch = useDispatch();
   const isFocused = useIsFocused();
+  const {activeFilter} = useActiveFilter();
 
   const [filter, setFilter] = useState(null);
 
@@ -91,10 +92,11 @@ const SearchListView = ({
           ...(sliceFunctionData ?? {}),
           searchValue: searchValue,
           page: page,
+          filterDomain: activeFilter,
         }),
       );
     },
-    [dispatch, sliceFunction, sliceFunctionData],
+    [dispatch, sliceFunction, sliceFunctionData, activeFilter],
   );
 
   const fetchSearchAPI = useCallback(
@@ -153,7 +155,7 @@ const SearchListView = ({
 
   return (
     <View style={styles.container}>
-      <HeaderContainer
+      <FilterContainer
         topChildren={headerTopChildren}
         fixedItems={
           <>
@@ -166,7 +168,7 @@ const SearchListView = ({
         expandableFilter={expandableFilter}>
         {isHideableSearch && renderSearchBar()}
         {headerChildren}
-      </HeaderContainer>
+      </FilterContainer>
       <ScrollList
         loadingList={loading}
         data={list}
