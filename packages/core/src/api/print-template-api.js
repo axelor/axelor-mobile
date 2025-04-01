@@ -55,7 +55,8 @@ export async function fetchActionPrint({id, model}) {
       const error = res?.error?.message;
 
       return {templateSet, fileName, error};
-    });
+    })
+    .catch(() => ({}));
 }
 
 export async function searchPrintingTemplate({

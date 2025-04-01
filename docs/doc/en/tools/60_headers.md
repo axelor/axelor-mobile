@@ -42,9 +42,6 @@ export interface HeaderOptions {
   model?: string;
   modelId?: number;
   options?: any;
-  disablePrint?: boolean;
-  disableJsonFields?: boolean;
-  barcodeFieldname?: string;
   headerTitle?: string;
   actions?: ActionType[];
 }
@@ -55,15 +52,12 @@ The core package provides several header actions by default, including studio fi
 - _model_: full name of the ERP model.
 - _modelId_: object identifier.
 - _options_: object containing options for the generic actions.
-- _disablePrint_: condition for displaying or not the report printout.
-- _disableJsonFields_: whether or not to display studio fields.
-- _barcodeFieldname_: name of attribute containing barcode file on ERP (default `barCode`).
 - _headerTitle_: screen name for dynamic titles.
 
-These actions are displayed when the `model` and `modelId` attributes are set and the actions are not disabled by the associated attributes.
+These actions are displayed when the `model` and `modelId` attributes are set and the actions are not disabled in the associated options.
 
 :::caution
-Since version 8.3, the attached files feature is managed as a generic action from the DMS package. It will be added to every screen with a registered model and modelId.
+Since version 8.3, the attached files feature is managed as a generic action from the DMS package and since version 8.4, the tracking notifications feature is managed as a generic action from the message package. It will be added to every screen with a registered model and modelId.
 :::
 
 Additional actions can then be added using the `actions` attribute. Each action then has the following structure:
