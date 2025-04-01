@@ -117,7 +117,9 @@ export const useBasicActions = ({
       .then(res => {
         const _filters = res?.data?.data?.view?.filters || [];
         const viewName = res?.data?.data?.view?.name;
-        setSavedFilters(_filters);
+        setSavedFilters(
+          _filters.map(_f => ({..._f, id: _f.name, name: _f.title})),
+        );
 
         if (viewName) {
           fetchMetaFilters({filterName: viewName, userId})

@@ -21,6 +21,7 @@ export {default as AnomalyList} from './AnomalyList/AnomalyList';
 export {default as AOSImage} from './AOSImage/AOSImage';
 export {default as AOSImageBubble} from './AOSImageBubble/AOSImageBubble';
 export {default as DateInput} from './DateInput/DateInput';
+export {default as FilterContainer} from './FilterContainer/FilterContainer';
 export {default as HeaderBandList} from './HeaderBandList/HeaderBandList';
 export {default as HeaderOptionsMenu} from './HeaderOptionsMenu/HeaderOptionsMenu';
 export {default as LogoImage} from '../../sessions/components/display/LogoImage';
