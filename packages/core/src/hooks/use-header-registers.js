@@ -16,7 +16,10 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+import {useBasicActions} from '../header';
+
 export const useHeaderRegisters = headerRegisters => {
+  useBasicActions();
   headerRegisters.forEach(_moduleHook => {
     _moduleHook();
   });

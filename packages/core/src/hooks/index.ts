@@ -16,18 +16,11 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import {useEffect, useMemo, useState} from 'react';
-import {filterProvider} from '../header/FilterProvider';
-
-export const useActiveFilter = () => {
-  const [activeFilter, setActiveFilterState] = useState(
-    filterProvider.getActiveFilter(),
-  );
-
-  useEffect(() => {
-    filterProvider.register(setActiveFilterState);
-    return () => filterProvider.unregister(setActiveFilterState);
-  }, []);
-
-  return useMemo(() => ({activeFilter}), [activeFilter]);
-};
+export * from './use-effect-debugger';
+export {useIsFocused, useNavigation} from './use-navigation';
+export {
+  useScanActivator,
+  useScannerDeviceActivator,
+  useCameraScannerActivator,
+} from './use-scan-activator';
+export {useConfigUpdater, useStorageUpdater} from './use-storage-config';
