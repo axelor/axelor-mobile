@@ -16,13 +16,10 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import React, {useCallback, useEffect, useMemo, useState} from 'react';
+import React, {useEffect, useMemo, useState} from 'react';
 import {Dimensions, StyleSheet, View} from 'react-native';
 import {DropdownMenu, DropdownMenuItem} from '@axelor/aos-mobile-ui';
 import {HeaderOptionMenuItem} from '../../molecules';
-import {useBasicActions} from '../../../header';
-import PopupPrintTemplate from '../PopupPrintTemplate/PopupPrintTemplate';
-import PopupFilters from '../PopupFilters/PopupFilters';
 
 const SMALLEST_WINDOW_WIDTH = 300;
 
@@ -32,29 +29,7 @@ const HeaderOptionsMenu = ({
   actions = [],
   genericActions = {},
   options,
-  disableJsonFields,
-  disablePrint,
-  barcodeFieldname,
 }) => {
-  const {
-    savedFiltersAction,
-    barcodeAction,
-    printAction,
-    jsonFieldsAction,
-    isTemplateSelectorVisible,
-    areSavedFiltersVisible,
-    closePrintTemplateSelector,
-    closeSavedFiltersPopup,
-    savedFilters,
-    userFilters,
-  } = useBasicActions({
-    model,
-    modelId,
-    disablePrint,
-    barcodeFieldname,
-    disableJsonFields,
-  });
-
   const collapseMenuItems = useMemo(
     () => Dimensions.get('window').width <= SMALLEST_WINDOW_WIDTH,
     [],
@@ -69,17 +44,13 @@ const HeaderOptionsMenu = ({
 
   useEffect(() => {
     const getVisibleGenericActions = async () => {
-      if (model && modelId) {
-        const _genericActions = await Promise.all(
-          Object.entries(genericActions).map(
-            async ([key, func]) =>
-              await func({model, modelId, options: options?.[key]}),
-          ),
-        );
-        setVisibleGenericActions(_genericActions);
-      } else {
-        setVisibleGenericActions([]);
-      }
+      const _genericActions = await Promise.all(
+        Object.entries(genericActions).map(
+          async ([key, func]) =>
+            await func({model, modelId, options: options?.[key]}),
+        ),
+      );
+      setVisibleGenericActions(_genericActions ?? []);
     };
 
     getVisibleGenericActions();
@@ -87,24 +58,10 @@ const HeaderOptionsMenu = ({
 
   const allActions = useMemo(
     () =>
-      [
-        printAction,
-        savedFiltersAction,
-        barcodeAction,
-        jsonFieldsAction,
-        ...actions,
-        ...visibleGenericActions,
-      ]
+      [...actions, ...visibleGenericActions]
         .filter(_action => !_action.hideIf)
         .sort((a, b) => a.order - b.order),
-    [
-      actions,
-      barcodeAction,
-      jsonFieldsAction,
-      savedFiltersAction,
-      printAction,
-      visibleGenericActions,
-    ],
+    [actions, visibleGenericActions],
   );
 
   const headerActions = useMemo(
@@ -118,32 +75,6 @@ const HeaderOptionsMenu = ({
         _action => !headerActions.some(_header => _header.key === _action.key),
       ),
     [allActions, headerActions],
-  );
-
-  const renderPopupPrintTemplate = useCallback(
-    () =>
-      isTemplateSelectorVisible ? (
-        <PopupPrintTemplate
-          visible={isTemplateSelectorVisible}
-          onClose={closePrintTemplateSelector}
-          model={model}
-          modelId={modelId}
-        />
-      ) : null,
-    [closePrintTemplateSelector, isTemplateSelectorVisible, model, modelId],
-  );
-
-  const renderPopupSavedFilters = useCallback(
-    () =>
-      areSavedFiltersVisible ? (
-        <PopupFilters
-          visible={areSavedFiltersVisible}
-          onClose={closeSavedFiltersPopup}
-          savedFilters={savedFilters}
-          userFilters={userFilters}
-        />
-      ) : null,
-    [closeSavedFiltersPopup, areSavedFiltersVisible, savedFilters, userFilters],
   );
 
   const HeaderItemList = useMemo(
@@ -189,8 +120,6 @@ const HeaderOptionsMenu = ({
     return (
       <View style={styles.container}>
         <DropdownMenu>{[...HeaderItemList, ...MenuItemList]}</DropdownMenu>
-        {renderPopupPrintTemplate()}
-        {renderPopupSavedFilters()}
       </View>
     );
   }
@@ -199,8 +128,6 @@ const HeaderOptionsMenu = ({
     <View style={styles.container}>
       {HeaderItemList}
       {menuActions.length !== 0 && <DropdownMenu>{MenuItemList}</DropdownMenu>}
-      {renderPopupPrintTemplate()}
-      {renderPopupSavedFilters()}
     </View>
   );
 };

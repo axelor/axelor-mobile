@@ -27,9 +27,6 @@ export interface HeaderOptions {
   model?: string;
   modelId?: number;
   options?: any;
-  disablePrint?: boolean;
-  disableJsonFields?: boolean;
-  barcodeFieldname?: string;
   headerTitle?: string;
   actions?: ActionType[];
 }

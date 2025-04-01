@@ -61,5 +61,6 @@ export const core_modelAPI: ObjectFields = {
     filters: schemaContructor.string(),
     filterView: schemaContructor.string(),
     name: schemaContructor.string(),
+    title: schemaContructor.string(),
   }),
 };
