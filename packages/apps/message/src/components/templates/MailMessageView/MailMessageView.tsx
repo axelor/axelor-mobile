@@ -111,7 +111,6 @@ const MailMessageView = ({
                 eventTime={item.$eventTime}
                 files={item.$files}
                 subject={item.subject}
-                title={item.subject}
                 type={item.type}
                 flags={item.$flags}
                 relatedId={modelId}

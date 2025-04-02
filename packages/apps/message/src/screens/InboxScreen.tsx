@@ -50,8 +50,8 @@ const InboxScreen = ({}) => {
             eventText={item.$eventText}
             eventTime={item.$eventTime}
             files={item.$files}
+            relatedName={item.relatedName}
             subject={item.subject}
-            title={item.subject}
             type={item.type}
             flags={item.$flags}
             relatedId={item.relatedId}

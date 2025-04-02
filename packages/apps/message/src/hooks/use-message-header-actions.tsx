@@ -121,7 +121,7 @@ const useUserProfileActions = () => {
         {
           key: 'inbox',
           order: 15,
-          iconName: 'bell-fill',
+          iconName: 'chat-dots',
           title: I18n.t('Message_Inbox'),
           onPress: () => navigation.navigate('InboxScreen'),
           showInHeader: true,

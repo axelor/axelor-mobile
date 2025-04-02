@@ -39,7 +39,8 @@ interface TagProps {
 interface NotificationCardProps {
   relatedModel?: string;
   relatedId?: number;
-  title: string;
+  relatedName?: string;
+  subject: string;
   tag?: TagProps;
   tracks?: any[];
   flags?: any;
@@ -51,7 +52,8 @@ interface NotificationCardProps {
 const NotificationCard = ({
   relatedModel,
   relatedId,
-  title,
+  relatedName,
+  subject,
   tag,
   tracks,
   flags,
@@ -77,7 +79,8 @@ const NotificationCard = ({
           <LabelText
             iconName="info-circle-fill"
             size={18}
-            value={title}
+            title={relatedName}
+            value={subject}
             style={styles.headerLabel}
             textStyle={styles.title}
             color={Colors.primaryColor.background}

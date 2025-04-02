@@ -32,8 +32,8 @@ interface MailMessageCardProps {
   eventTime: string;
   files: any[];
   style?: any;
+  relatedName?: string;
   subject: string;
-  title: string;
   type: string;
   flags: any[];
   relatedId: number;
@@ -49,8 +49,8 @@ const MailMessageCard = ({
   eventTime,
   files,
   style,
+  relatedName,
   subject,
-  title,
   type,
   flags,
   relatedId,
@@ -82,7 +82,8 @@ const MailMessageCard = ({
         )}
         {type === MailMessageType.status.notification && (
           <NotificationCard
-            title={title}
+            relatedName={relatedName}
+            subject={subject}
             tracks={JSON.parse(body ?? '{}').tracks}
             tag={JSON.parse(body ?? '{}').tags[0]}
             flags={flags}
