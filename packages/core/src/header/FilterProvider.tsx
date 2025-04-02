@@ -24,7 +24,7 @@ export interface Filter {
   title?: string;
   type?: string;
   filterView?: string;
-  filters?: string;
+  filterCustom?: string;
   id?: string;
 }
 

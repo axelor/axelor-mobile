@@ -69,8 +69,26 @@ class RequestBuilder {
   getFilterDomains(
     model: string,
     filter?: Filter | null,
-  ): {domains?: any[]; domainContext?: any} {
+  ): {
+    domains?: any[];
+    domainContext?: any;
+    customCriteria?: Criteria[];
+  } {
     if (!filter) return {};
+
+    if (filter.filterCustom) {
+      try {
+        const parsed = JSON.parse(filter.filterCustom);
+        if (parsed && parsed.criteria) {
+          return {
+            customCriteria: [parsed],
+          };
+        }
+      } catch (err) {
+        return {};
+      }
+      return {};
+    }
 
     return {
       domains: [
@@ -86,7 +104,6 @@ class RequestBuilder {
       },
     };
   }
-
   createStandardSearch = ({
     model,
     criteria = [],
@@ -144,9 +161,11 @@ class RequestBuilder {
         data._domainContext = domainContext;
       }
     }
-
     const filterResult = this.getFilterDomains(model, domains);
 
+    if (filterResult.customCriteria) {
+      data.criteria[0].criteria.push(...filterResult.customCriteria);
+    }
     if (filterResult.domains) {
       data._domains = filterResult.domains;
       data._domainContext = {
