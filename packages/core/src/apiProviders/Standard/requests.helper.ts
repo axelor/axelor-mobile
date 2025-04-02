@@ -25,7 +25,7 @@ interface SearchProps {
   model: string;
   criteria?: Criteria[];
   domain?: string;
-  domains?: Filter[];
+  domains?: Filter;
   domainContext?: any;
   fieldKey: string;
   sortKey?: string;
@@ -64,6 +64,27 @@ class RequestBuilder {
 
   getRequestLimit() {
     return this.requestLimit;
+  }
+
+  getFilterDomains(
+    model: string,
+    filter?: Filter | null,
+  ): {domains?: any[]; domainContext?: any} {
+    if (!filter) return {};
+
+    return {
+      domains: [
+        {
+          type: filter.type,
+          name: filter.name,
+          domain: filter.domain,
+          title: filter.title,
+        },
+      ],
+      domainContext: {
+        _model: model,
+      },
+    };
   }
 
   createStandardSearch = ({
@@ -123,11 +144,14 @@ class RequestBuilder {
         data._domainContext = domainContext;
       }
     }
-    if (Array.isArray(domains) && domains.length > 0) {
-      data._domains = domains;
+
+    const filterResult = this.getFilterDomains(model, domains);
+
+    if (filterResult.domains) {
+      data._domains = filterResult.domains;
       data._domainContext = {
         ...data._domainContext,
-        ...domainContext,
+        ...filterResult.domainContext,
       };
     }
 

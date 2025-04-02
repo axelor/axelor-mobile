@@ -74,19 +74,7 @@ export async function searchLeads({
     sortKey: 'crm_lead',
     page,
     provider: 'model',
-    ...(filterDomain && {
-      domains: [
-        {
-          type: filterDomain.type,
-          name: filterDomain.name,
-          domain: filterDomain.domain,
-          title: filterDomain.title,
-        },
-      ],
-      domainContext: {
-        _model: 'com.axelor.apps.crm.db.Lead',
-      },
-    }),
+    domains: filterDomain,
   });
 }
 
