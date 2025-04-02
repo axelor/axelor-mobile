@@ -28,15 +28,6 @@ import {StockIndicator} from '../../../../types';
 
 interface InventoryLineActionCardProps {
   style?: any;
-  productName: string;
-  currentQty: number;
-  realQty: number;
-  unit: string;
-  trackingNumber?: {trackingNumberSeq: string};
-  locker?: string;
-  stockLocationName?: string;
-  companyId: number;
-  productId: number;
   onPress: () => void;
   inventoryLine: any;
 }
