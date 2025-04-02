@@ -32,7 +32,6 @@ import CustomerDeliveryLineCard from '../CustomerDeliveryLineCard/CustomerDelive
 interface CustomerDeliveryLineActionCardProps {
   style?: any;
   styleCard?: any;
-  companyId: number;
   customerDeliveryLine: any;
   handleShowLine: (customerDeliveryLine: any) => void;
 }
@@ -41,7 +40,6 @@ const CustomerDeliveryLineActionCard = ({
   style,
   styleCard,
   customerDeliveryLine,
-  companyId,
   handleShowLine,
 }: CustomerDeliveryLineActionCardProps) => {
   const I18n = useTranslator();
@@ -90,7 +88,7 @@ const CustomerDeliveryLineActionCard = ({
     navigation.navigate('ProductStockIndicatorDetails', {
       type: StockIndicator.type.AvailableStock,
       productId: customerDeliveryLine.product?.id,
-      companyId,
+      companyId: customerDelivery.company?.id,
     });
   };
 

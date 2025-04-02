@@ -139,7 +139,6 @@ const CustomerDeliverySearchLineContainer = ({}) => {
           style={styles.card}
           customerDeliveryLine={item}
           handleShowLine={handleShowLine}
-          companyId={customerDelivery?.company?.id}
         />
       )}
     />

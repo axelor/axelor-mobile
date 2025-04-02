@@ -116,15 +116,7 @@ const InventorySearchLineContainer = ({}) => {
       renderItem={item => (
         <InventoryLineActionCard
           style={styles.item}
-          productName={item.product?.fullName}
-          currentQty={item.currentQty}
-          realQty={item.realQty}
-          unit={item.unit?.name}
-          locker={item.rack}
-          trackingNumber={item.trackingNumber}
-          stockLocationName={item.stockLocation?.name}
-          companyId={inventory?.company?.id}
-          productId={item.product?.id}
+          inventoryLine={item}
           onPress={() => handleShowLine(item)}
         />
       )}

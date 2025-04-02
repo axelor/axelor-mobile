@@ -134,25 +134,8 @@ const InternalMoveLineListScreen = ({route}) => {
         }
         renderListItem={({item}) => (
           <InternalMoveLineActionCard
-            productName={item.product?.fullName}
-            internalMoveStatus={internalMove.statusSelect}
-            fromStockLocation={item.fromStockLocation?.name}
-            toStockLocation={item.toStockLocation?.name}
-            availability={
-              item.availableStatusSelect == null
-                ? null
-                : item.availableStatusSelect
-            }
-            stockMoveLineId={item.id}
-            trackingNumber={item.trackingNumber?.trackingNumberSeq}
-            locker={item.locker}
-            expectedQty={item.qty}
-            movedQty={
-              StockMoveLine.hideLineQty(item, internalMove) ? 0 : item.realQty
-            }
             onPress={() => handleShowLine(item)}
-            companyId={internalMove.company?.id}
-            productId={item.product?.id}
+            internalMoveLine={item}
           />
         )}
       />

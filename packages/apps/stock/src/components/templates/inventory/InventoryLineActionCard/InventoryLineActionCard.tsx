@@ -18,7 +18,11 @@
 
 import React from 'react';
 import {ActionCard} from '@axelor/aos-mobile-ui';
-import {useNavigation, useTranslator} from '@axelor/aos-mobile-core';
+import {
+  useNavigation,
+  useSelector,
+  useTranslator,
+} from '@axelor/aos-mobile-core';
 import InventoryLineCard from '../InventoryLineCard/InventoryLineCard';
 import {StockIndicator} from '../../../../types';
 
@@ -34,29 +38,24 @@ interface InventoryLineActionCardProps {
   companyId: number;
   productId: number;
   onPress: () => void;
+  inventoryLine: any;
 }
 
 const InventoryLineActionCard = ({
   style,
-  productName,
-  currentQty,
-  realQty,
-  unit,
-  trackingNumber,
-  locker,
-  stockLocationName,
+  inventoryLine,
   onPress,
-  companyId,
-  productId,
 }: InventoryLineActionCardProps) => {
   const I18n = useTranslator();
   const navigation = useNavigation();
 
+  const {inventory} = useSelector(state => state.inventory);
+
   const handleViewAvailability = () => {
     navigation.navigate('ProductStockIndicatorDetails', {
       type: StockIndicator.type.AvailableStock,
-      productId,
-      companyId,
+      productId: inventoryLine.product?.id,
+      companyId: inventory?.company?.id,
     });
   };
 
@@ -72,13 +71,13 @@ const InventoryLineActionCard = ({
         },
       ]}>
       <InventoryLineCard
-        productName={productName}
-        currentQty={currentQty}
-        realQty={realQty}
-        unit={unit}
-        locker={locker}
-        trackingNumber={trackingNumber}
-        stockLocationName={stockLocationName}
+        productName={inventoryLine.product?.fullName}
+        currentQty={inventoryLine.currentQty}
+        realQty={inventoryLine.realQty}
+        unit={inventoryLine.unit?.name}
+        locker={inventoryLine.rack}
+        trackingNumber={inventoryLine.trackingNumber}
+        stockLocationName={inventoryLine.stockLocation?.name}
         onPress={onPress}
       />
     </ActionCard>

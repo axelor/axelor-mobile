@@ -18,51 +18,35 @@
 
 import React from 'react';
 import {ActionCard} from '@axelor/aos-mobile-ui';
-import {useNavigation, useTranslator} from '@axelor/aos-mobile-core';
+import {
+  useNavigation,
+  useSelector,
+  useTranslator,
+} from '@axelor/aos-mobile-core';
 import {InternalMoveLineCard} from '../../internalMove';
-import {StockIndicator} from '../../../../types';
+import {StockIndicator, StockMoveLine} from '../../../../types';
 
 interface InternalMoveLineActionCardProps {
   style?: any;
-  internalMoveStatus: number;
-  productName: string;
-  availability: number;
-  stockMoveLineId: number;
-  trackingNumber: string;
-  fromStockLocation: string;
-  toStockLocation: string;
-  locker: string;
-  expectedQty: number;
-  movedQty: number;
   onPress: () => void;
-  companyId: number;
-  productId: number;
+  internalMoveLine: any;
 }
 
 const InternalMoveLineActionCard = ({
   style,
-  internalMoveStatus,
-  productName,
-  availability,
-  stockMoveLineId,
-  trackingNumber,
-  fromStockLocation,
-  toStockLocation,
-  locker,
-  expectedQty,
-  movedQty,
   onPress,
-  companyId,
-  productId,
+  internalMoveLine,
 }: InternalMoveLineActionCardProps) => {
   const I18n = useTranslator();
   const navigation = useNavigation();
 
+  const {internalMove} = useSelector(state => state.internalMove);
+
   const handleViewAvailability = () => {
     navigation.navigate('ProductStockIndicatorDetails', {
       type: StockIndicator.type.AvailableStock,
-      productId,
-      companyId,
+      productId: internalMoveLine.product?.id,
+      companyId: internalMove.company?.id,
     });
   };
 
@@ -78,16 +62,24 @@ const InternalMoveLineActionCard = ({
         },
       ]}>
       <InternalMoveLineCard
-        productName={productName}
-        internalMoveStatus={internalMoveStatus}
-        fromStockLocation={fromStockLocation}
-        toStockLocation={toStockLocation}
-        expectedQty={expectedQty}
-        movedQty={movedQty}
-        locker={locker}
-        trackingNumber={trackingNumber}
-        availability={availability}
-        stockMoveLineId={stockMoveLineId}
+        productName={internalMoveLine.product?.fullName}
+        internalMoveStatus={internalMove.statusSelect}
+        fromStockLocation={internalMoveLine.fromStockLocation?.name}
+        toStockLocation={internalMoveLine.toStockLocation?.name}
+        expectedQty={internalMoveLine.qty}
+        movedQty={
+          StockMoveLine.hideLineQty(internalMoveLine, internalMove)
+            ? 0
+            : internalMoveLine.realQty
+        }
+        locker={internalMoveLine.locker}
+        trackingNumber={internalMoveLine.trackingNumber?.trackingNumberSeq}
+        availability={
+          internalMoveLine.availableStatusSelect != null
+            ? internalMoveLine.availableStatusSelect
+            : null
+        }
+        stockMoveLineId={internalMoveLine.id}
         onPress={onPress}
       />
     </ActionCard>

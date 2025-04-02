@@ -28,7 +28,7 @@ import {SearchLineContainer} from '../../../organisms';
 import {InternalMoveLineActionCard} from '../../../templates';
 import {fetchInternalMoveLines} from '../../../../features/internalMoveLineSlice';
 import {useInternalLinesWithRacks, useLineHandler} from '../../../../hooks';
-import {LineVerification, StockMoveLine} from '../../../../types';
+import {LineVerification} from '../../../../types';
 
 const scanKey = 'trackingNumber-or-product_internal-move-details';
 
@@ -96,26 +96,9 @@ const InternalMoveSearchLineContainer = ({}) => {
       filterLine={filterLine}
       renderItem={item => (
         <InternalMoveLineActionCard
+          internalMoveLine={item}
           style={styles.item}
-          productName={item.product?.fullName}
-          internalMoveStatus={internalMove.statusSelect}
-          fromStockLocation={item.fromStockLocation?.name}
-          toStockLocation={item.toStockLocation?.name}
-          expectedQty={item.qty}
-          movedQty={
-            StockMoveLine.hideLineQty(item, internalMove) ? 0 : item.realQty
-          }
-          locker={item.locker}
-          trackingNumber={item.trackingNumber?.trackingNumberSeq}
-          availability={
-            item.availableStatusSelect != null
-              ? item.availableStatusSelect
-              : null
-          }
-          stockMoveLineId={item.id}
           onPress={() => handleShowLine(item)}
-          companyId={internalMove.company?.id}
-          productId={item.product?.id}
         />
       )}
     />
