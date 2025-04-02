@@ -30,7 +30,6 @@ import {
 const TimesheetLineFormScreen = ({route, navigation}) => {
   const {timesheetId, timesheetLine} = route?.params;
 
-  const {mobileSettings} = useSelector(state => state.appConfig);
   const {user} = useSelector(state => state.user);
 
   const createTimesheetLineAPI = useCallback(
@@ -119,7 +118,7 @@ const TimesheetLineFormScreen = ({route, navigation}) => {
       model: 'com.axelor.apps.hr.db.TimesheetLine',
       modelId: timesheetLine?.id,
     });
-  }, [timesheetLine?.id, mobileSettings]);
+  }, [timesheetLine?.id]);
 
   return (
     <FormView
