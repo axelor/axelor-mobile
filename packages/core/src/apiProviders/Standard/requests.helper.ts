@@ -19,12 +19,13 @@
 import {Criteria, Domain, getModelApi} from '../Model';
 import {axiosApiProvider} from './AxiosProvider';
 import {getObjectFields, getSortFields} from './ObjectFieldsProvider';
+import {Filter} from '../../header/FilterProvider';
 
 interface SearchProps {
   model: string;
   criteria?: Criteria[];
   domain?: string;
-  domains?: string;
+  domains?: Filter[];
   domainContext?: any;
   fieldKey: string;
   sortKey?: string;
@@ -69,7 +70,7 @@ class RequestBuilder {
     model,
     criteria = [],
     domain = '',
-    domains = '',
+    domains,
     domainContext = {},
     fieldKey,
     sortKey,
@@ -122,17 +123,12 @@ class RequestBuilder {
         data._domainContext = domainContext;
       }
     }
-    if (domains != null && domains !== '') {
-      if (data._domains != null) {
-        data._domains = `(${data._domains}) AND (${domains})`;
-        data._domainContext = {
-          ...data._domainContext,
-          ...domainContext,
-        };
-      } else {
-        data._domains = domains;
-        data._domainContext = domainContext;
-      }
+    if (Array.isArray(domains) && domains.length > 0) {
+      data._domains = domains;
+      data._domainContext = {
+        ...data._domainContext,
+        ...domainContext,
+      };
     }
 
     if (provider === 'axios') {
@@ -167,7 +163,7 @@ class RequestBuilder {
     model,
     criteria = [],
     domain = '',
-    domains = '',
+    domains,
     domainContext = {},
     provider = 'axios',
     companyId,

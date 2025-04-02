@@ -19,8 +19,13 @@
 import {useEffect, useMemo, useState} from 'react';
 
 export interface Filter {
-  id: string;
-  title: string;
+  domain?: string;
+  name: string;
+  title?: string;
+  type?: string;
+  filterView?: string;
+  filters?: string;
+  id?: string;
 }
 
 class FilterProvider {

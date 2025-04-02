@@ -66,7 +66,6 @@ export async function searchLeads({
   companyId,
   filterDomain,
 }) {
-  console.log('filterDomain', filterDomain);
   return createStandardSearch({
     model: 'com.axelor.apps.crm.db.Lead',
     companyId,
