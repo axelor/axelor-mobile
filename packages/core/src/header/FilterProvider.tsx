@@ -23,7 +23,6 @@ export interface Filter {
   name: string;
   title?: string;
   type?: string;
-  filterView?: string;
   filterCustom?: string;
   id?: string;
 }
