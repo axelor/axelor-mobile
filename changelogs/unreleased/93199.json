@@ -1,0 +1,5 @@
+{
+  "title": "Inventory: use keyboard avoiding view on details screen",
+  "type": "fix",
+  "packages": "stock"
+}
