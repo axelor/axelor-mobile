@@ -17,7 +17,11 @@
  */
 
 import React, {useCallback, useEffect} from 'react';
-import {HeaderContainer, Screen, ScrollView} from '@axelor/aos-mobile-ui';
+import {
+  HeaderContainer,
+  KeyboardAvoidingScrollView,
+  Screen,
+} from '@axelor/aos-mobile-ui';
 import {useDispatch, useSelector} from '@axelor/aos-mobile-core';
 import {
   InventoryLocationsMoveCard,
@@ -54,10 +58,10 @@ const InventoryStartedDetailsScreen = ({route}) => {
         expandableFilter={false}
         fixedItems={<InventoryDetailsHeader />}
       />
-      <ScrollView refresh={{loading, fetcher: getInventory}}>
+      <KeyboardAvoidingScrollView refresh={{loading, fetcher: getInventory}}>
         <InventoryLocationsMoveCard />
         <InventorySearchLineContainer />
-      </ScrollView>
+      </KeyboardAvoidingScrollView>
     </Screen>
   );
 };
