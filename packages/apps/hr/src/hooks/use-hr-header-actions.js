@@ -84,7 +84,6 @@ const useExpenseDetailsAction = () => {
   const dispatch = useDispatch();
 
   const {expense} = useSelector(state => state.expense);
-  const {mobileSettings} = useSelector(state => state.appConfig);
 
   useEffect(() => {
     headerActionsProvider.registerModel('hr_expense_details', {
@@ -104,7 +103,7 @@ const useExpenseDetailsAction = () => {
         },
       ],
     });
-  }, [Colors, dispatch, expense, I18n, mobileSettings]);
+  }, [Colors, dispatch, expense, I18n]);
 };
 
 const useTimerListAction = () => {
@@ -171,24 +170,22 @@ const useActiveTimerAction = () => {
 
 const useTimesheetDetailsAction = () => {
   const {timesheet} = useSelector(state => state.timesheet);
-  const {mobileSettings} = useSelector(state => state.appConfig);
 
   useEffect(() => {
     headerActionsProvider.registerModel('hr_timesheet_details', {
       model: 'com.axelor.apps.hr.db.Timesheet',
       modelId: timesheet?.id,
     });
-  }, [timesheet, mobileSettings]);
+  }, [timesheet]);
 };
 
 const useLeaveDetailsAction = () => {
   const {leave} = useSelector(state => state.hr_leave);
-  const {mobileSettings} = useSelector(state => state.appConfig);
 
   useEffect(() => {
     headerActionsProvider.registerModel('hr_leave_details', {
       model: 'com.axelor.apps.hr.db.LeaveRequest',
       modelId: leave?.id,
     });
-  }, [leave, mobileSettings]);
+  }, [leave]);
 };
