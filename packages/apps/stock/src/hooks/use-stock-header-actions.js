@@ -47,7 +47,6 @@ export const useStockHeaders = () => {
 };
 
 const useCustomerDeliveryDetailsActions = () => {
-  const {mobileSettings} = useSelector(state => state.appConfig);
   const {customerDelivery} = useSelector(state => state.customerDelivery);
 
   useEffect(() => {
@@ -55,7 +54,7 @@ const useCustomerDeliveryDetailsActions = () => {
       model: 'com.axelor.apps.stock.db.StockMove',
       modelId: customerDelivery?.id,
     });
-  }, [mobileSettings, customerDelivery]);
+  }, [customerDelivery]);
 };
 
 const useCustomerDeliveryLineListActions = () => {
@@ -103,7 +102,6 @@ const useCustomerDeliveryLineListActions = () => {
 };
 
 const useCustomerDeliveryLineDetailsActions = () => {
-  const {mobileSettings} = useSelector(state => state.appConfig);
   const {productFromId: product} = useSelector(state => state.product);
   const {customerDeliveryLine} = useSelector(
     state => state.customerDeliveryLine,
@@ -114,15 +112,10 @@ const useCustomerDeliveryLineDetailsActions = () => {
       model: 'com.axelor.apps.stock.db.StockMoveLine',
       modelId: customerDeliveryLine?.id,
     });
-  }, [
-    customerDeliveryLine?.id,
-    mobileSettings?.isTrackerMessageEnabled,
-    product?.name,
-  ]);
+  }, [customerDeliveryLine?.id, product?.name]);
 };
 
 const useInternalMoveDetailsActions = () => {
-  const {mobileSettings} = useSelector(state => state.appConfig);
   const {internalMove} = useSelector(state => state.internalMove);
 
   useEffect(() => {
@@ -130,7 +123,7 @@ const useInternalMoveDetailsActions = () => {
       model: 'com.axelor.apps.stock.db.StockMove',
       modelId: internalMove?.id,
     });
-  }, [mobileSettings, internalMove]);
+  }, [internalMove]);
 };
 
 const useInternalMoveListActions = () => {
@@ -160,7 +153,6 @@ const useInternalMoveListActions = () => {
 };
 
 const useInternalMoveLineDetailsActions = () => {
-  const {mobileSettings} = useSelector(state => state.appConfig);
   const {productFromId: product} = useSelector(state => state.product);
   const {internalMoveLine} = useSelector(state => state.internalMoveLine);
 
@@ -169,15 +161,10 @@ const useInternalMoveLineDetailsActions = () => {
       model: 'com.axelor.apps.stock.db.StockMoveLine',
       modelId: internalMoveLine?.id,
     });
-  }, [
-    internalMoveLine?.id,
-    mobileSettings?.isTrackerMessageEnabled,
-    product?.name,
-  ]);
+  }, [internalMoveLine?.id, product?.name]);
 };
 
 const useInventoryPlannedDetailsActions = () => {
-  const {mobileSettings} = useSelector(state => state.appConfig);
   const {inventory} = useSelector(state => state.inventory);
 
   useEffect(() => {
@@ -185,11 +172,10 @@ const useInventoryPlannedDetailsActions = () => {
       model: 'com.axelor.apps.stock.db.Inventory',
       modelId: inventory?.id,
     });
-  }, [mobileSettings, inventory]);
+  }, [inventory]);
 };
 
 const useInventoryStartedDetailsActions = () => {
-  const {mobileSettings} = useSelector(state => state.appConfig);
   const {inventory} = useSelector(state => state.inventory);
 
   useEffect(() => {
@@ -197,11 +183,10 @@ const useInventoryStartedDetailsActions = () => {
       model: 'com.axelor.apps.stock.db.Inventory',
       modelId: inventory?.id,
     });
-  }, [mobileSettings, inventory]);
+  }, [inventory]);
 };
 
 const useInventoryLineDetailsActions = () => {
-  const {mobileSettings} = useSelector(state => state.appConfig);
   const {productFromId: product} = useSelector(state => state.product);
   const {inventoryLine} = useSelector(state => state.inventoryLine);
 
@@ -210,15 +195,10 @@ const useInventoryLineDetailsActions = () => {
       model: 'com.axelor.apps.stock.db.InventoryLine',
       modelId: inventoryLine?.id,
     });
-  }, [
-    mobileSettings?.isTrackerMessageEnabled,
-    inventoryLine?.id,
-    product?.name,
-  ]);
+  }, [inventoryLine?.id, product?.name]);
 };
 
 const useProductDetailsActions = () => {
-  const {mobileSettings} = useSelector(state => state.appConfig);
   const {productFromId: product} = useSelector(state => state.product);
 
   useEffect(() => {
@@ -226,11 +206,10 @@ const useProductDetailsActions = () => {
       model: 'com.axelor.apps.base.db.Product',
       modelId: product?.id,
     });
-  }, [mobileSettings, product]);
+  }, [product]);
 };
 
 const useProductStockDetailsActions = () => {
-  const {mobileSettings} = useSelector(state => state.appConfig);
   const {productFromId: product} = useSelector(state => state.product);
 
   useEffect(() => {
@@ -238,7 +217,7 @@ const useProductStockDetailsActions = () => {
       model: 'com.axelor.apps.base.db.Product',
       modelId: product?.id,
     });
-  }, [mobileSettings, product]);
+  }, [product]);
 };
 
 const useStockCorrectionListActions = () => {
@@ -269,7 +248,6 @@ const useStockCorrectionListActions = () => {
 };
 
 const useStockCorrectionDetailsActions = () => {
-  const {mobileSettings} = useSelector(state => state.appConfig);
   const {stockCorrection} = useSelector(state => state.stockCorrection);
 
   useEffect(() => {
@@ -277,11 +255,10 @@ const useStockCorrectionDetailsActions = () => {
       model: 'com.axelor.apps.stock.db.StockCorrection',
       modelId: stockCorrection?.id,
     });
-  }, [mobileSettings, stockCorrection]);
+  }, [stockCorrection]);
 };
 
 const useSupplierArrivalDetailsActions = () => {
-  const {mobileSettings} = useSelector(state => state.appConfig);
   const {supplierArrival} = useSelector(state => state.supplierArrival);
 
   useEffect(() => {
@@ -289,7 +266,7 @@ const useSupplierArrivalDetailsActions = () => {
       model: 'com.axelor.apps.stock.db.StockMove',
       modelId: supplierArrival?.id,
     });
-  }, [mobileSettings, supplierArrival]);
+  }, [supplierArrival]);
 };
 
 const useSupplierArrivalLineListActions = () => {
@@ -337,7 +314,6 @@ const useSupplierArrivalLineListActions = () => {
 };
 
 const useSupplierArrivalLineDetailsActions = () => {
-  const {mobileSettings} = useSelector(state => state.appConfig);
   const {productFromId: product} = useSelector(state => state.product);
   const {supplierArrivalLine} = useSelector(state => state.supplierArrivalLine);
 
@@ -346,9 +322,5 @@ const useSupplierArrivalLineDetailsActions = () => {
       model: 'com.axelor.apps.stock.db.StockMoveLine',
       modelId: supplierArrivalLine?.id,
     });
-  }, [
-    supplierArrivalLine?.id,
-    mobileSettings?.isTrackerMessageEnabled,
-    product?.name,
-  ]);
+  }, [supplierArrivalLine?.id, product?.name]);
 };

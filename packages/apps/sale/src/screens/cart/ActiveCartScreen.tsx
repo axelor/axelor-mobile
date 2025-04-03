@@ -61,7 +61,6 @@ const ActiveCartScreen = ({}) => {
   });
 
   const {user} = useSelector(state => state.user);
-  const {mobileSettings} = useSelector((state: any) => state.appConfig);
   const {activeCart} = useSelector((state: any) => state.sale_cart);
   const {loading, moreLoading, isListEnd, carLineList} = useSelector(
     (state: any) => state.sale_cartLine,
@@ -136,7 +135,7 @@ const ActiveCartScreen = ({}) => {
         ],
       });
     }
-  }, [Colors, I18n, activeCart, handleEmptyCart, mobileSettings, readonly]);
+  }, [Colors, I18n, activeCart, handleEmptyCart, readonly]);
 
   const sliceFunctionData = useMemo(
     () => ({cartId: activeCart?.id}),
