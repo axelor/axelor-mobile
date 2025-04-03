@@ -37,7 +37,6 @@ const useProjectDetailsActions = () => {
   const I18n = useTranslator();
 
   const {project} = useSelector((state: any) => state.project_project);
-  const {mobileSettings} = useSelector((state: any) => state.appConfig);
 
   useEffect(() => {
     headerActionsProvider.registerModel('project_project_details', {
@@ -62,24 +61,16 @@ const useProjectDetailsActions = () => {
         },
       ],
     });
-  }, [
-    Colors,
-    I18n,
-    dispatch,
-    mobileSettings?.isTrackerMessageEnabled,
-    project?.code,
-    project?.id,
-  ]);
+  }, [Colors, I18n, dispatch, project?.code, project?.id]);
 };
 
 const useProjectTaskDetailsActions = () => {
   const {projectTask} = useSelector((state: any) => state.project_projectTask);
-  const {mobileSettings} = useSelector((state: any) => state.appConfig);
 
   useEffect(() => {
     headerActionsProvider.registerModel('project_projectTask_details', {
       model: 'com.axelor.apps.project.db.ProjectTask',
       modelId: projectTask?.id,
     });
-  }, [mobileSettings?.isTrackerMessageEnabled, projectTask?.id]);
+  }, [projectTask?.id]);
 };

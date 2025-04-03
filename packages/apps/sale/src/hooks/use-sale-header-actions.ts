@@ -40,7 +40,6 @@ const useSaleOrderDetailsActions = () => {
   const I18n = useTranslator();
   const {SaleOrder} = useTypes();
 
-  const {mobileSettings} = useSelector((state: any) => state.appConfig);
   const {saleOrder} = useSelector((state: any) => state.sale_saleOrder);
 
   const title = useMemo(
@@ -57,14 +56,13 @@ const useSaleOrderDetailsActions = () => {
       modelId: saleOrder?.id,
       headerTitle: title,
     });
-  }, [mobileSettings, saleOrder?.id, title]);
+  }, [saleOrder?.id, title]);
 };
 
 const useSaleOrderLineDetailsActions = () => {
   const I18n = useTranslator();
   const {SaleOrder} = useTypes();
 
-  const {mobileSettings} = useSelector((state: any) => state.appConfig);
   const {saleOrder} = useSelector((state: any) => state.sale_saleOrder);
   const {saleOrderLine} = useSelector((state: any) => state.sale_saleOrderLine);
 
@@ -82,11 +80,10 @@ const useSaleOrderLineDetailsActions = () => {
       modelId: saleOrderLine?.id,
       headerTitle: title,
     });
-  }, [mobileSettings, saleOrderLine?.id, title]);
+  }, [saleOrderLine?.id, title]);
 };
 
 const useProductDetailsActions = () => {
-  const {mobileSettings} = useSelector((state: any) => state.appConfig);
   const {product} = useSelector((state: any) => state.sale_product);
 
   useEffect(() => {
@@ -94,11 +91,10 @@ const useProductDetailsActions = () => {
       model: 'com.axelor.apps.base.db.Product',
       modelId: product?.id,
     });
-  }, [mobileSettings, product?.id]);
+  }, [product?.id]);
 };
 
 const useClientDetailsActions = () => {
-  const {mobileSettings} = useSelector((state: any) => state.appConfig);
   const {customer} = useSelector((state: any) => state.sale_customer);
 
   useEffect(() => {
@@ -106,11 +102,10 @@ const useClientDetailsActions = () => {
       model: 'com.axelor.apps.base.db.Partner',
       modelId: customer?.id,
     });
-  }, [customer, mobileSettings]);
+  }, [customer]);
 };
 
 const useCartLineDetailsActions = () => {
-  const {mobileSettings} = useSelector((state: any) => state.appConfig);
   const {cartLine} = useSelector((state: any) => state.sale_cartLine);
 
   useEffect(() => {
@@ -118,7 +113,7 @@ const useCartLineDetailsActions = () => {
       model: 'com.axelor.apps.sale.db.CartLine',
       modelId: cartLine?.id,
     });
-  }, [cartLine?.id, mobileSettings]);
+  }, [cartLine?.id]);
 };
 
 const useSaleQuotationsActions = () => {

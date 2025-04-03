@@ -39,7 +39,6 @@ const useEquipmentFormActions = () => {
   const navigation = useNavigation();
   const {Equipment} = useTypes();
 
-  const {mobileSettings} = useSelector((state: any) => state.appConfig);
   const {equipment} = useSelector((state: any) => state.intervention_equipment);
 
   useEffect(() => {
@@ -77,7 +76,7 @@ const useEquipmentFormActions = () => {
         },
       ],
     });
-  }, [mobileSettings, equipment, I18n, navigation, Equipment?.typeSelect]);
+  }, [equipment, I18n, navigation, Equipment?.typeSelect]);
 };
 
 const useInterventionDetailsActions = () => {
@@ -85,7 +84,6 @@ const useInterventionDetailsActions = () => {
   const Colors = useThemeColor();
   const dispatch = useDispatch();
 
-  const {mobileSettings} = useSelector((state: any) => state.appConfig);
   const {intervention} = useSelector(
     (state: any) => state.intervention_intervention,
   );
@@ -110,13 +108,7 @@ const useInterventionDetailsActions = () => {
         },
       ],
     });
-  }, [
-    I18n,
-    Colors,
-    dispatch,
-    intervention,
-    mobileSettings?.isTrackerMessageEnabled,
-  ]);
+  }, [I18n, Colors, dispatch, intervention]);
 };
 
 const useActiveInterventionActions = () => {
@@ -124,7 +116,6 @@ const useActiveInterventionActions = () => {
   const Colors = useThemeColor();
   const dispatch = useDispatch();
 
-  const {mobileSettings} = useSelector((state: any) => state.appConfig);
   const {intervention, activeIntervention} = useSelector(
     (state: any) => state.intervention_intervention,
   );
@@ -152,12 +143,5 @@ const useActiveInterventionActions = () => {
         },
       ],
     });
-  }, [
-    I18n,
-    Colors,
-    dispatch,
-    intervention,
-    mobileSettings?.isTrackerMessageEnabled,
-    activeIntervention?.id,
-  ]);
+  }, [I18n, Colors, dispatch, intervention, activeIntervention?.id]);
 };

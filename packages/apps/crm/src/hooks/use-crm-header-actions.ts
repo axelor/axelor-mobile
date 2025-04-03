@@ -62,7 +62,6 @@ const useClientDetailsActions = () => {
   const navigation = useNavigation();
   const {canCreate} = usePermitted({modelName: 'com.axelor.apps.crm.db.Event'});
 
-  const {mobileSettings} = useSelector((state: any) => state.appConfig);
   const {client} = useSelector((state: any) => state.client);
 
   useEffect(() => {
@@ -105,7 +104,7 @@ const useClientDetailsActions = () => {
         },
       ],
     });
-  }, [mobileSettings, client, I18n, navigation, canCreate]);
+  }, [client, I18n, navigation, canCreate]);
 };
 
 const useContactDetailsActions = () => {
@@ -113,7 +112,6 @@ const useContactDetailsActions = () => {
   const navigation = useNavigation();
   const {canCreate} = usePermitted({modelName: 'com.axelor.apps.crm.db.Event'});
 
-  const {mobileSettings} = useSelector((state: any) => state.appConfig);
   const {contact} = useSelector((state: any) => state.contact);
 
   useEffect(() => {
@@ -158,7 +156,7 @@ const useContactDetailsActions = () => {
         },
       ],
     });
-  }, [mobileSettings, contact, I18n, navigation, canCreate]);
+  }, [contact, I18n, navigation, canCreate]);
 };
 
 const useLeadListActions = () => {
@@ -190,7 +188,6 @@ const useLeadDetailsActions = () => {
   const navigation = useNavigation();
   const {canCreate} = usePermitted({modelName: 'com.axelor.apps.crm.db.Event'});
 
-  const {mobileSettings} = useSelector((state: any) => state.appConfig);
   const {lead} = useSelector((state: any) => state.lead);
 
   useEffect(() => {
@@ -229,7 +226,7 @@ const useLeadDetailsActions = () => {
         },
       ],
     });
-  }, [mobileSettings, lead, I18n, navigation, canCreate]);
+  }, [lead, I18n, navigation, canCreate]);
 };
 
 const useOpportunityListActions = () => {
@@ -259,7 +256,6 @@ const useOpportunityListActions = () => {
 };
 
 const useOpportunityDetailsActions = () => {
-  const {mobileSettings} = useSelector((state: any) => state.appConfig);
   const {opportunity} = useSelector((state: any) => state.opportunity);
 
   useEffect(() => {
@@ -267,7 +263,7 @@ const useOpportunityDetailsActions = () => {
       model: 'com.axelor.apps.crm.db.Opportunity',
       modelId: opportunity?.id,
     });
-  }, [mobileSettings, opportunity]);
+  }, [opportunity]);
 };
 
 const useProspectDetailsActions = () => {
@@ -275,7 +271,6 @@ const useProspectDetailsActions = () => {
   const I18n = useTranslator();
   const {canCreate} = usePermitted({modelName: 'com.axelor.apps.crm.db.Event'});
 
-  const {mobileSettings} = useSelector((state: any) => state.appConfig);
   const {prospect} = useSelector((state: any) => state.prospect);
 
   useEffect(() => {
@@ -318,7 +313,7 @@ const useProspectDetailsActions = () => {
         },
       ],
     });
-  }, [mobileSettings, prospect, I18n, navigation, canCreate]);
+  }, [prospect, I18n, navigation, canCreate]);
 };
 
 const useTourDetailsActions = () => {
@@ -327,7 +322,6 @@ const useTourDetailsActions = () => {
   const Colors = useThemeColor();
   const dispatch = useDispatch();
 
-  const {mobileSettings} = useSelector((state: any) => state.appConfig);
   const {tour} = useSelector((state: any) => state.tour);
 
   useEffect(() => {
@@ -352,18 +346,10 @@ const useTourDetailsActions = () => {
         },
       ],
     });
-  }, [
-    mobileSettings,
-    I18n,
-    navigation,
-    tour,
-    Colors.primaryColor.background,
-    dispatch,
-  ]);
+  }, [I18n, navigation, tour, Colors.primaryColor.background, dispatch]);
 };
 
 const useEventDetailsActions = () => {
-  const {mobileSettings} = useSelector((state: any) => state.appConfig);
   const {event} = useSelector((state: any) => state.event);
 
   useEffect(() => {
@@ -371,7 +357,7 @@ const useEventDetailsActions = () => {
       model: 'com.axelor.apps.crm.db.Event',
       modelId: event?.id,
     });
-  }, [mobileSettings, event]);
+  }, [event]);
 };
 
 export const useCRMHeaders = () => {

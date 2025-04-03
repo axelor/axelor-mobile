@@ -15,7 +15,6 @@ Chaque module doit donc fournir son hook permettant d’enregistrer les actions 
 
 ```tsx
 const useCustomerDeliveryDetailsActions = () => {
-  const {mobileSettings} = useSelector(state => state.config);
   const {customerDelivery} = useSelector(state => state.customerDelivery);
 
   useEffect(() => {
@@ -23,7 +22,7 @@ const useCustomerDeliveryDetailsActions = () => {
       model: 'com.axelor.apps.stock.db.StockMove',
       modelId: customerDelivery?.id,
     });
-  }, [mobileSettings, customerDelivery]);
+  }, [customerDelivery]);
 };
 ```
 

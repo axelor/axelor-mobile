@@ -32,7 +32,6 @@ export const useManufacturingHeaders = () => {
 };
 
 const useManufacturingOrderActions = () => {
-  const {mobileSettings} = useSelector(state => state.appConfig);
   const {manufOrder} = useSelector(state => state.manufacturingOrder);
 
   useEffect(() => {
@@ -43,7 +42,7 @@ const useManufacturingOrderActions = () => {
         modelId: manufOrder?.id,
       },
     );
-  }, [mobileSettings, manufOrder]);
+  }, [manufOrder]);
 };
 
 const useProducedProductActions = () => {
@@ -77,7 +76,6 @@ const useOperationOrderDetailsActions = () => {
   const navigation = useNavigation();
   const I18n = useTranslator();
 
-  const {mobileSettings} = useSelector(state => state.appConfig);
   const {operationOrder} = useSelector(state => state.operationOrder);
 
   useEffect(() => {
@@ -100,5 +98,5 @@ const useOperationOrderDetailsActions = () => {
         ],
       },
     );
-  }, [I18n, mobileSettings, navigation, operationOrder]);
+  }, [I18n, navigation, operationOrder]);
 };
