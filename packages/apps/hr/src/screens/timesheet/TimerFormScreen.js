@@ -42,7 +42,6 @@ const TimerFormScreen = ({route}) => {
   const [creation, setCreation] = useState(isCreation ?? false);
 
   const {timesheet: timesheetConfig} = useSelector(state => state.appConfig);
-  const {mobileSettings} = useSelector(state => state.appConfig);
   const {user} = useSelector(state => state.user);
   const {timer, loadingCreation} = useSelector(state => state.hr_timer);
 
@@ -78,7 +77,7 @@ const TimerFormScreen = ({route}) => {
       model: 'com.axelor.apps.hr.db.TSTimer',
       modelId: !creation ? timer?.id : null,
     });
-  }, [creation, mobileSettings?.isTrackerMessageEnabled, timer?.id]);
+  }, [creation, timer?.id]);
 
   useEffect(() => {
     setActivityIndicator(loadingCreation);

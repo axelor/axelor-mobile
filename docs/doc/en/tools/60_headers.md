@@ -15,7 +15,6 @@ Each module must therefore provide its own hook to record header actions for its
 
 ```tsx
 const useCustomerDeliveryDetailsActions = () => {
-  const {mobileSettings} = useSelector(state => state.config);
   const {customerDelivery} = useSelector(state => state.customerDelivery);
 
   useEffect(() => {
@@ -23,7 +22,7 @@ const useCustomerDeliveryDetailsActions = () => {
       model: 'com.axelor.apps.stock.db.StockMove',
       modelId: customerDelivery?.id,
     });
-  }, [mobileSettings, customerDelivery]);
+  }, [customerDelivery]);
 };
 ```
 

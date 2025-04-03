@@ -25,7 +25,6 @@ export const usePurchaseHeaders = () => {
 };
 
 const usePurchaseRequestDetailsActions = () => {
-  const {mobileSettings} = useSelector(state => state.appConfig);
   const {purchaseRequest} = useSelector(
     state => state.purchase_purchaseRequest,
   );
@@ -34,11 +33,10 @@ const usePurchaseRequestDetailsActions = () => {
       model: 'com.axelor.apps.purchase.db.PurchaseRequest',
       modelId: purchaseRequest?.id,
     });
-  }, [mobileSettings, purchaseRequest?.id]);
+  }, [purchaseRequest?.id]);
 };
 
 const usePurchaseRequestLineDetailsActions = () => {
-  const {mobileSettings} = useSelector(state => state.appConfig);
   const {purchaseRequestLine} = useSelector(
     state => state.purchase_purchaseRequestLine,
   );
@@ -51,5 +49,5 @@ const usePurchaseRequestLineDetailsActions = () => {
         modelId: purchaseRequestLine?.id,
       },
     );
-  }, [mobileSettings, purchaseRequestLine?.id]);
+  }, [purchaseRequestLine?.id]);
 };
