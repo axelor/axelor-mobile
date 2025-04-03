@@ -258,7 +258,7 @@ const ExpenseLineFormScreen = ({route, navigation}) => {
       model: 'com.axelor.apps.hr.db.ExpenseLine',
       modelId: expenseLine?.id,
     });
-  }, [expenseLine?.id, mobileSettings]);
+  }, [expenseLine?.id]);
 
   return (
     <FormView
