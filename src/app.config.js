@@ -109,4 +109,10 @@ export const app_config = {
    * By default, the application display the Axelor logo.
    */
   //logoFile: require('./asset/Logo_Axelor.png'),
+
+  /*
+   * This configuration allows you to enable or disable WebSocket support within the application.
+   * By default, WebSocket support is enabled.
+   */
+  enableWebSocket: true,
 };

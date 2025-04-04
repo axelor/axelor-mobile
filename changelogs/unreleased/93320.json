@@ -1,0 +1,5 @@
+{
+  "title": "WebSocket: add a tool with a configuration to define if it should be enabled",
+  "type": "feat",
+  "packages": "core"
+}
