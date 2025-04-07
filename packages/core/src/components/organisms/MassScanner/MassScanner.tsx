@@ -10,12 +10,14 @@ import {
 import {useScanActivator} from '../../../hooks/use-scan-activator';
 import DeviceInfo from 'react-native-device-info';
 import {clearScan, useScannedValueByKey} from '../../../features/scannerSlice';
+import {useCameraScannerSelector} from '../../../features/cameraScannerSlice';
 
 interface MassScannerProps {
   scanKey: string;
   backgroundAction: (scannedValue: string) => any;
   fallbackAction?: (error: any) => void;
   scanInterval?: number;
+  onClose?: () => void;
 }
 
 const MassScanner = ({
@@ -23,16 +25,29 @@ const MassScanner = ({
   backgroundAction,
   fallbackAction,
   scanInterval = 1000,
+  onClose,
 }: MassScannerProps) => {
   const dispatch = useDispatch();
   const scannedBarcode = useCameraScannerValueByKey(scanKey);
   const {enable: enableScan} = useScanActivator(scanKey);
   const scannedValue = useScannedValueByKey(scanKey);
+  const {isEnabled} = useCameraScannerSelector();
 
   const isProcessingRef = useRef(false);
   const timerRef = useRef(null);
+  const hasMounted = useRef(false);
 
   const [isZebraDevice, setIsZebraDevice] = useState(false);
+
+  useEffect(() => {
+    if (hasMounted.current && !isEnabled) {
+      onClose?.();
+    }
+  }, [isEnabled, onClose]);
+
+  useEffect(() => {
+    hasMounted.current = true;
+  }, []);
 
   useEffect(() => {
     DeviceInfo.getManufacturer().then(manufacturer => {
@@ -40,7 +55,6 @@ const MassScanner = ({
       setIsZebraDevice(isZebra);
 
       if (isZebra) {
-        console.log('ici');
         enableScan();
       } else {
         dispatch(enableMassCameraScanner(scanKey));
