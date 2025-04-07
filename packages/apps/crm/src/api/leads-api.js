@@ -74,7 +74,7 @@ export async function searchLeads({
     sortKey: 'crm_lead',
     page,
     provider: 'model',
-    domains: filterDomain,
+    filter: filterDomain,
   });
 }
 

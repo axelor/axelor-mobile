@@ -25,7 +25,6 @@ interface SearchProps {
   model: string;
   criteria?: Criteria[];
   domain?: string;
-  domains?: Filter;
   domainContext?: any;
   fieldKey: string;
   sortKey?: string;
@@ -36,6 +35,7 @@ interface SearchProps {
   isCompanyM2M?: boolean;
   companyFieldName?: string;
   companySetFieldName?: string;
+  filter?: Filter;
 }
 
 interface HierarchicalSearchProps extends SearchProps {
@@ -66,49 +66,10 @@ class RequestBuilder {
     return this.requestLimit;
   }
 
-  getFilterDomains(
-    model: string,
-    filter?: Filter | null,
-  ): {
-    domains?: any[];
-    domainContext?: any;
-    customCriteria?: Criteria[];
-  } {
-    if (!filter) return {};
-
-    if (filter.filterCustom) {
-      try {
-        const parsed = JSON.parse(filter.filterCustom);
-        if (parsed && parsed.criteria) {
-          return {
-            customCriteria: [parsed],
-          };
-        }
-      } catch (err) {
-        return {};
-      }
-      return {};
-    }
-
-    return {
-      domains: [
-        {
-          type: filter.type,
-          name: filter.name,
-          domain: filter.domain,
-          title: filter.title,
-        },
-      ],
-      domainContext: {
-        _model: model,
-      },
-    };
-  }
   createStandardSearch = ({
     model,
     criteria = [],
     domain = '',
-    domains,
     domainContext = {},
     fieldKey,
     sortKey,
@@ -119,6 +80,7 @@ class RequestBuilder {
     isCompanyM2M = false,
     companyFieldName,
     companySetFieldName,
+    filter,
   }: SearchProps): Promise<any> => {
     if (model == null || fieldKey == null) {
       return null;
@@ -133,11 +95,17 @@ class RequestBuilder {
       criteria.push(getCompanyCriteria(companyId, companyFieldName));
     }
 
+    const {
+      criteria: _filterCriteria = [],
+      domainContext: _filterContext,
+      domains: _filterDomains,
+    } = getFilterDomains(model, filter);
+
     let data: any = {
       criteria: [
         {
           operator: 'and',
-          criteria: criteria,
+          criteria: [...criteria, ..._filterCriteria],
         },
       ],
     };
@@ -161,16 +129,12 @@ class RequestBuilder {
         data._domainContext = domainContext;
       }
     }
-    const filterResult = this.getFilterDomains(model, domains);
 
-    if (filterResult.customCriteria) {
-      data.criteria[0].criteria.push(...filterResult.customCriteria);
-    }
-    if (filterResult.domains) {
-      data._domains = filterResult.domains;
+    if (_filterDomains) {
+      data._domains = _filterDomains;
       data._domainContext = {
         ...data._domainContext,
-        ...filterResult.domainContext,
+        ..._filterContext,
       };
     }
 
@@ -206,7 +170,6 @@ class RequestBuilder {
     model,
     criteria = [],
     domain = '',
-    domains,
     domainContext = {},
     provider = 'axios',
     companyId,
@@ -227,7 +190,6 @@ class RequestBuilder {
         ...(criteria ?? []),
       ],
       domain,
-      domains,
       domainContext,
       fieldKey: '',
       page: 0,
@@ -351,6 +313,42 @@ export const getCompanyCriteria = (
     ],
   };
 };
+
+export function getFilterDomains(
+  model: string,
+  filter?: Filter,
+): {
+  domains?: {type: string; name: string; domain: string; title: string}[];
+  domainContext?: any;
+  criteria?: Criteria[];
+} {
+  if (!filter) return {};
+
+  if (filter.filterCustom) {
+    try {
+      const parsed = JSON.parse(filter.filterCustom);
+      if (parsed?.criteria) {
+        return {criteria: [parsed]};
+      }
+
+      return {};
+    } catch (err) {
+      return {};
+    }
+  }
+
+  return {
+    domains: [
+      {
+        type: filter.type,
+        name: filter.name,
+        domain: filter.domain,
+        title: filter.title,
+      },
+    ],
+    domainContext: {_model: model},
+  };
+}
 
 export const getCompanyDomain = (
   companyId: number,
