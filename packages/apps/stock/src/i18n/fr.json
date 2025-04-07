@@ -125,6 +125,7 @@
   "Stock_Status_Received": "Reçu",
   "Stock_Split": "Diviser la ligne",
   "Stock_LineNumber": "Ligne n°{{sequence}}",
+  "Stock_SeeAvailability": "Voir la disponibilité",
   "Stock_SliceAction_FetchCustomerDeliveryLines": "récupération des lignes de livraison client",
   "Stock_SliceAction_FetchCustomerDeliveryLine": "récupération de la ligne de livraison client",
   "Stock_SliceAction_UpdateCustomerDeliveryLine": "mise à jour de la ligne de livraison client",
