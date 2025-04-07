@@ -36,12 +36,14 @@ interface ConnexionNeed {
   jsessionId?: string;
 }
 
+const sanitizeFileName = (name: string) => name?.replace(/[:*?"<>|\\]/g, '_');
+
 async function getUniqueFileName(
   basePath: string,
   fileName: string,
 ): Promise<string> {
   const extension = File.getFileExtension(fileName);
-  const baseName = fileName?.replaceAll(`.${extension}`, '');
+  const baseName = sanitizeFileName(fileName)?.replaceAll(`.${extension}`, '');
 
   let filePath: string = `${basePath}/${baseName}.${extension}`;
   let counter = 1;
