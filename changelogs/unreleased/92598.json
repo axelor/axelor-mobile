@@ -1,0 +1,5 @@
+{
+  "title": "Compatibility: improve error messages in drawer with more details",
+  "type": "refactor",
+  "packages": "core"
+}
