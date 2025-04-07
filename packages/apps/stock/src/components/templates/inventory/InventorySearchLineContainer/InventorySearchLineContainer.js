@@ -27,7 +27,7 @@ import {
   useTypes,
 } from '@axelor/aos-mobile-core';
 import {SearchLineContainer} from '../../../organisms';
-import {InventoryLineCard} from '../../../templates';
+import {InventoryLineActionCard} from '../../../templates';
 import {fetchInventoryLines} from '../../../../features/inventoryLineSlice';
 import {useLineHandler} from '../../../../hooks';
 import {LineVerification} from '../../../../types';
@@ -114,15 +114,9 @@ const InventorySearchLineContainer = ({}) => {
       }
       onAction={handleNewLine}
       renderItem={item => (
-        <InventoryLineCard
+        <InventoryLineActionCard
           style={styles.item}
-          productName={item.product?.fullName}
-          currentQty={item.currentQty}
-          realQty={item.realQty}
-          unit={item.unit?.name}
-          locker={item.rack}
-          trackingNumber={item.trackingNumber}
-          stockLocationName={item.stockLocation?.name}
+          inventoryLine={item}
           onPress={() => handleShowLine(item)}
         />
       )}
@@ -132,8 +126,7 @@ const InventorySearchLineContainer = ({}) => {
 
 const styles = StyleSheet.create({
   item: {
-    marginHorizontal: 1,
-    marginVertical: 4,
+    width: '100%',
   },
 });
 

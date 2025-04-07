@@ -20,11 +20,12 @@ import React, {useCallback, useMemo} from 'react';
 import {ActionCard} from '@axelor/aos-mobile-ui';
 import {
   useDispatch,
+  useNavigation,
   useSelector,
   useTranslator,
   useTypes,
 } from '@axelor/aos-mobile-core';
-import {StockMoveLine} from '../../../../types';
+import {StockIndicator, StockMoveLine} from '../../../../types';
 import {splitCustomerDeliveryLine} from '../../../../features/customerDeliveryLineSlice';
 import CustomerDeliveryLineCard from '../CustomerDeliveryLineCard/CustomerDeliveryLineCard';
 
@@ -44,6 +45,7 @@ const CustomerDeliveryLineActionCard = ({
   const I18n = useTranslator();
   const dispatch = useDispatch();
   const {StockMove} = useTypes();
+  const navigation = useNavigation();
 
   const {customerDelivery} = useSelector(state => state.customerDelivery);
 
@@ -82,6 +84,14 @@ const CustomerDeliveryLineActionCard = ({
     ],
   );
 
+  const handleViewAvailability = () => {
+    navigation.navigate('ProductStockIndicatorDetails', {
+      type: StockIndicator.type.AvailableStock,
+      productId: customerDeliveryLine.product?.id,
+      companyId: customerDelivery.company?.id,
+    });
+  };
+
   return (
     <ActionCard
       style={style}
@@ -95,6 +105,11 @@ const CustomerDeliveryLineActionCard = ({
             customerDelivery.statusSelect > StockMove?.statusSelect.Planned ||
             pickedQty >= customerDeliveryLine.qty ||
             pickedQty === 0,
+        },
+        {
+          iconName: 'geo-alt-fill',
+          onPress: handleViewAvailability,
+          helper: I18n.t('Stock_SeeAvailability'),
         },
       ]}>
       <CustomerDeliveryLineCard

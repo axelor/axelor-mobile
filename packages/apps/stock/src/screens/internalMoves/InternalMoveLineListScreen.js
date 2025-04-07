@@ -23,7 +23,7 @@ import {
   useSelector,
   useTranslator,
 } from '@axelor/aos-mobile-core';
-import {InternalMoveLineCard, StockMoveHeader} from '../../components';
+import {InternalMoveLineActionCard, StockMoveHeader} from '../../components';
 import {fetchInternalMoveLines} from '../../features/internalMoveLineSlice';
 import {LineVerification, StockMove, StockMoveLine} from '../../types';
 import {displayLine} from '../../utils/displayers';
@@ -133,24 +133,9 @@ const InternalMoveLineListScreen = ({route}) => {
           />
         }
         renderListItem={({item}) => (
-          <InternalMoveLineCard
-            productName={item.product?.fullName}
-            internalMoveStatus={internalMove.statusSelect}
-            fromStockLocation={item.fromStockLocation?.name}
-            toStockLocation={item.toStockLocation?.name}
-            availability={
-              item.availableStatusSelect == null
-                ? null
-                : item.availableStatusSelect
-            }
-            stockMoveLineId={item.id}
-            trackingNumber={item.trackingNumber?.trackingNumberSeq}
-            locker={item.locker}
-            expectedQty={item.qty}
-            movedQty={
-              StockMoveLine.hideLineQty(item, internalMove) ? 0 : item.realQty
-            }
+          <InternalMoveLineActionCard
             onPress={() => handleShowLine(item)}
+            internalMoveLine={item}
           />
         )}
       />
