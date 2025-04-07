@@ -18,6 +18,7 @@
 
 import {checkNullString} from '@axelor/aos-mobile-ui';
 import {formatVersionString} from '../utils/string';
+import {formatCompatibilityToDisplay} from './module.helper';
 
 export function findIndexAndRouteOfMenu(routes, menuName) {
   const index = routes.findIndex(_route => _route.name === menuName);
@@ -36,8 +37,26 @@ export function getMenuTitle(menu, {I18n}) {
   return menu.screen;
 }
 
-export function isModuleNotFound(compatibility) {
+function isModuleNotFound(compatibility) {
   return compatibility?.moduleVersion == null;
+}
+
+function isVersionTooLow(compatibility) {
+  const moduleVersion = formatVersionString(compatibility.moduleVersion);
+
+  return (
+    !checkNullString(compatibility.downToVersion) &&
+    moduleVersion < formatVersionString(compatibility.downToVersion)
+  );
+}
+
+function isVersionTooHigh(compatibility) {
+  const moduleVersion = formatVersionString(compatibility.moduleVersion);
+
+  return (
+    !checkNullString(compatibility.upToVersion) &&
+    moduleVersion >= formatVersionString(compatibility.upToVersion)
+  );
 }
 
 export function isMenuIncompatible(compatibility) {
@@ -45,27 +64,48 @@ export function isMenuIncompatible(compatibility) {
     return false;
   }
 
+  return (
+    isModuleNotFound(compatibility) ||
+    isVersionTooLow(compatibility) ||
+    isVersionTooHigh(compatibility)
+  );
+}
+
+export function getCompatibilityError(compatibility, I18n, showDetails = true) {
+  if (compatibility == null) {
+    return undefined;
+  }
+
+  const compatibilityVersions = formatCompatibilityToDisplay(compatibility);
+
   if (isModuleNotFound(compatibility)) {
-    return true;
+    return I18n.t(
+      showDetails
+        ? 'Base_Compatibility_NotFoundDetails'
+        : 'Base_Compatibility_NotFound',
+      compatibilityVersions,
+    );
   }
 
-  const moduleVersion = formatVersionString(compatibility.moduleVersion);
-
-  if (
-    !checkNullString(compatibility.downToVersion) &&
-    moduleVersion < formatVersionString(compatibility.downToVersion)
-  ) {
-    return true;
+  if (isVersionTooLow(compatibility)) {
+    return I18n.t(
+      showDetails
+        ? 'Base_Compatibility_ErrorTooLowDetails'
+        : 'Base_Compatibility_ErrorTooLow',
+      compatibilityVersions,
+    );
   }
 
-  if (
-    !checkNullString(compatibility.upToVersion) &&
-    moduleVersion >= formatVersionString(compatibility.upToVersion)
-  ) {
-    return true;
+  if (isVersionTooHigh(compatibility)) {
+    return I18n.t(
+      showDetails
+        ? 'Base_Compatibility_ErrorTooHighDetails'
+        : 'Base_Compatibility_ErrorTooHigh',
+      compatibilityVersions,
+    );
   }
 
-  return false;
+  return undefined;
 }
 
 export function formatMenus(module) {

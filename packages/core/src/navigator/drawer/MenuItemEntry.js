@@ -19,9 +19,8 @@
 import React, {useMemo} from 'react';
 import {View, StyleSheet, TouchableOpacity} from 'react-native';
 import {Icon, Text, WarningCard, useThemeColor} from '@axelor/aos-mobile-ui';
-import {isMenuIncompatible, isModuleNotFound} from '../menu.helper';
+import {getCompatibilityError, isMenuIncompatible} from '../menu.helper';
 import {useTranslator} from '../../i18n';
-import {formatCompatibilityToDisplay} from '../module.helper';
 
 const MenuItemEntry = ({
   icon,
@@ -51,11 +50,6 @@ const MenuItemEntry = ({
       dropdown,
       isActive,
     ],
-  );
-
-  const moduleNotFound = useMemo(
-    () => isModuleNotFound(compatibility),
-    [compatibility],
   );
 
   const compatibilityError = useMemo(
@@ -112,14 +106,7 @@ const MenuItemEntry = ({
       {compatibilityError && (
         <WarningCard
           style={styles.compatibilityError}
-          errorMessage={I18n.t(
-            moduleNotFound
-              ? 'Base_Compatibility_NotFound'
-              : 'Base_Compatibility_Error',
-            {
-              compatibility: formatCompatibilityToDisplay(compatibility),
-            },
-          )}
+          errorMessage={getCompatibilityError(compatibility, I18n, false)}
         />
       )}
     </TouchableOpacity>
