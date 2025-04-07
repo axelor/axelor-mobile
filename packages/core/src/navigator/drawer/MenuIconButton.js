@@ -20,8 +20,7 @@ import React, {useMemo} from 'react';
 import {Dimensions, StyleSheet, TouchableOpacity, View} from 'react-native';
 import {Icon, InfoBubble, Text, useThemeColor} from '@axelor/aos-mobile-ui';
 import {useTranslator} from '../../i18n';
-import {isMenuIncompatible, isModuleNotFound} from '../menu.helper';
-import {formatCompatibilityToDisplay} from '../module.helper';
+import {getCompatibilityError, isMenuIncompatible} from '../menu.helper';
 
 const WIDTH = 54;
 const HEIGHT = 54;
@@ -42,11 +41,6 @@ const MenuIconButton = ({
   const I18n = useTranslator();
 
   const styles = useMemo(() => getStyles(Colors), [Colors]);
-
-  const moduleNotFound = useMemo(
-    () => isModuleNotFound(compatibility),
-    [compatibility],
-  );
 
   const compatibilityError = useMemo(
     () => isMenuIncompatible(compatibility),
@@ -87,14 +81,7 @@ const MenuIconButton = ({
             iconName="exclamation-triangle-fill"
             badgeColor={Colors.errorColor}
             textIndicationStyle={styles.textIndicationStyle}
-            indication={I18n.t(
-              moduleNotFound
-                ? 'Base_Compatibility_NotFoundDetails'
-                : 'Base_Compatibility_ErrorDetails',
-              {
-                compatibility: formatCompatibilityToDisplay(compatibility),
-              },
-            )}
+            indication={getCompatibilityError(compatibility, I18n)}
           />
         )}
       </View>
