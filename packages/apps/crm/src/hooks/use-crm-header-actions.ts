@@ -128,6 +128,16 @@ const useContactListActions = () => {
     });
   }, []);
 };
+const useContactListActions = () => {
+  useEffect(() => {
+    headerActionsProvider.registerModel('crm_contact_list', {
+      model: 'com.axelor.apps.base.db.Partner',
+      options: {
+        core_modelFilters: {name: 'contact-filters'},
+      },
+    });
+  }, []);
+};
 
 const useContactDetailsActions = () => {
   const I18n = useTranslator();
@@ -301,6 +311,17 @@ const useProspectListActions = () => {
   }, []);
 };
 
+const useProspectListActions = () => {
+  useEffect(() => {
+    headerActionsProvider.registerModel('crm_prospect_list', {
+      model: 'com.axelor.apps.base.db.Partner',
+      options: {
+        core_modelFilters: {name: 'partner-filters'},
+      },
+    });
+  }, []);
+};
+
 const useProspectDetailsActions = () => {
   const navigation = useNavigation();
   const I18n = useTranslator();
@@ -349,6 +370,14 @@ const useProspectDetailsActions = () => {
       ],
     });
   }, [prospect, I18n, navigation, canCreate]);
+};
+
+const useTourListActions = () => {
+  useEffect(() => {
+    headerActionsProvider.registerModel('crm_tour_list', {
+      model: 'com.axelor.apps.crm.db.Tour',
+    });
+  }, []);
 };
 
 const useTourListActions = () => {
