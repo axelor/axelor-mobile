@@ -50,7 +50,7 @@ class WebSocketProvider {
     };
 
     this.ws.onmessage = event => {
-      this.notify(event.data);
+      this.notify(JSON.parse(event.data));
     };
 
     this.ws.onclose = () => {
