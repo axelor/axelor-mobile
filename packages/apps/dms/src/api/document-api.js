@@ -57,7 +57,7 @@ const createDocumentCriteria = ({
             {
               operator: 'or',
               criteria: extensions.map(_extension => ({
-                fieldName: 'fileName',
+                fieldName: 'metaFile.fileName',
                 operator: 'like',
                 value: '%.' + _extension,
               })),

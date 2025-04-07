@@ -39,8 +39,8 @@ const DocumentCard = ({style, document}: DocumentCardProps) => {
   const {baseUrl, token, jsessionId} = useSelector((state: any) => state.auth);
 
   const fileColor = useMemo(
-    () => File.getFileColor(document.fileName, Colors).background,
-    [Colors, document.fileName],
+    () => File.getFileColor(document.metaFile?.fileName, Colors).background,
+    [Colors, document.metaFile?.fileName],
   );
 
   const styles = useMemo(() => getStyles(fileColor), [fileColor]);
