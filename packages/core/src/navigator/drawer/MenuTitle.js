@@ -21,19 +21,14 @@ import {Dimensions, StyleSheet, TouchableOpacity} from 'react-native';
 import {Text, useThemeColor} from '@axelor/aos-mobile-ui';
 import {useTranslator} from '../../i18n';
 import {
+  getCompatibilityError,
   getMenuTitle,
   isMenuIncompatible,
-  isModuleNotFound,
 } from '../menu.helper';
 
 const MenuTitle = ({module, onPress}) => {
   const Colors = useThemeColor();
   const I18n = useTranslator();
-
-  const moduleNotFound = useMemo(
-    () => isModuleNotFound(module.compatibilityAOS),
-    [module.compatibilityAOS],
-  );
 
   const compatibilityError = useMemo(
     () => isMenuIncompatible(module.compatibilityAOS),
@@ -52,14 +47,7 @@ const MenuTitle = ({module, onPress}) => {
       </Text>
       {compatibilityError && (
         <Text style={styles.text} textColor={Colors.errorColor.background}>
-          {I18n.t(
-            moduleNotFound
-              ? 'Base_Compatibility_NotFound'
-              : 'Base_Compatibility_Error',
-            {
-              compatibility: module.compatibilityAOS,
-            },
-          )}
+          {getCompatibilityError(module.compatibilityAOS, I18n, false)}
         </Text>
       )}
     </TouchableOpacity>
