@@ -41,6 +41,7 @@ const useCatalogListActions = () => {
 
   useEffect(() => {
     headerActionsProvider.registerModel('crm_catalog_list', {
+      model: 'com.axelor.apps.crm.db.Catalog',
       actions: [
         {
           key: 'newCatalog',
@@ -55,6 +56,17 @@ const useCatalogListActions = () => {
       ],
     });
   }, [Colors, I18n, navigation, crmConfig, canCreate]);
+};
+
+const useClientListActions = () => {
+  useEffect(() => {
+    headerActionsProvider.registerModel('crm_client_list', {
+      model: 'com.axelor.apps.base.db.Partner',
+      options: {
+        core_modelFilters: {name: 'partner-filters'},
+      },
+    });
+  }, []);
 };
 
 const useClientDetailsActions = () => {
@@ -106,6 +118,16 @@ const useClientDetailsActions = () => {
       ],
     });
   }, [mobileSettings, client, I18n, navigation, canCreate]);
+};
+const useContactListActions = () => {
+  useEffect(() => {
+    headerActionsProvider.registerModel('crm_contact_list', {
+      model: 'com.axelor.apps.base.db.Partner',
+      options: {
+        core_modelFilters: {name: 'contact-filters'},
+      },
+    });
+  }, []);
 };
 
 const useContactDetailsActions = () => {
@@ -243,6 +265,7 @@ const useOpportunityListActions = () => {
 
   useEffect(() => {
     headerActionsProvider.registerModel('crm_opportunity_list', {
+      model: 'com.axelor.apps.crm.db.Opportunity',
       actions: [
         {
           key: 'newOpportunity',
@@ -269,6 +292,17 @@ const useOpportunityDetailsActions = () => {
       modelId: opportunity?.id,
     });
   }, [mobileSettings, opportunity]);
+};
+
+const useProspectListActions = () => {
+  useEffect(() => {
+    headerActionsProvider.registerModel('crm_prospect_list', {
+      model: 'com.axelor.apps.base.db.Partner',
+      options: {
+        core_modelFilters: {name: 'partner-filters'},
+      },
+    });
+  }, []);
 };
 
 const useProspectDetailsActions = () => {
@@ -320,6 +354,14 @@ const useProspectDetailsActions = () => {
       ],
     });
   }, [mobileSettings, prospect, I18n, navigation, canCreate]);
+};
+
+const useTourListActions = () => {
+  useEffect(() => {
+    headerActionsProvider.registerModel('crm_tour_list', {
+      model: 'com.axelor.apps.crm.db.Tour',
+    });
+  }, []);
 };
 
 const useTourDetailsActions = () => {
@@ -377,13 +419,17 @@ const useEventDetailsActions = () => {
 
 export const useCRMHeaders = () => {
   useCatalogListActions();
+  useClientListActions();
   useClientDetailsActions();
+  useContactListActions();
   useContactDetailsActions();
   useEventDetailsActions();
   useLeadListActions();
   useLeadDetailsActions();
   useOpportunityListActions();
   useOpportunityDetailsActions();
+  useProspectListActions();
   useProspectDetailsActions();
+  useTourListActions();
   useTourDetailsActions();
 };

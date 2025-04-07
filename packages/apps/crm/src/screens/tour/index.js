@@ -22,6 +22,7 @@ import TourDetailsScreen from './TourDetailsScreen';
 export default {
   TourListScreen: {
     title: 'Crm_Tours',
+    actionID: 'crm_tour_list',
     component: TourListScreen,
     options: {
       shadedHeader: false,

@@ -47,12 +47,19 @@ const createMetaFiltersCriteria = ({filterName, userId}): Criteria[] => {
   ];
 };
 
-export async function fetchDefaultFilters({modelName}: {modelName: string}) {
+export async function fetchDefaultFilters({
+  modelName,
+  options,
+}: {
+  modelName: string;
+  options?: any;
+}) {
   return axiosApiProvider.post({
     url: `/ws/meta/view`,
     data: {
       data: {
         type: 'search-filters',
+        ...(options != null && options),
       },
       model: modelName,
     },
