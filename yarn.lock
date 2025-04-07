@@ -3000,10 +3000,10 @@
     prompts "^2.4.2"
     semver "^7.5.2"
 
-"@react-native-community/slider@^4.5.4":
-  version "4.5.4"
-  resolved "https://registry.npmjs.org/@react-native-community/slider/-/slider-4.5.4.tgz"
-  integrity sha512-TFhwnrp0LTFG90yat8mqEOBLLMJylpnchO5F0KusH8dI0VzViIVIXOzhnx0mUVqLvRwRPbqBB0tvhxd739UhmA==
+"@react-native-community/slider@^4.5.6":
+  version "4.5.6"
+  resolved "https://registry.npmjs.org/@react-native-community/slider/-/slider-4.5.6.tgz#dfbfdd6a582b160d41719ad42a7b524794b06dd5"
+  integrity sha512-UhLPFeqx0YfPLrEz8ffT3uqAyXWu6iqFjohNsbp4cOU7hnJwg2RXtDnYHoHMr7MOkZDVdlLMdrSrAuzY6KGqrg==
 
 "@react-native/assets-registry@0.74.88":
   version "0.74.88"
@@ -7959,10 +7959,10 @@ get-symbol-description@^1.0.2:
     es-errors "^1.3.0"
     get-intrinsic "^1.2.4"
 
-gifted-charts-core@^0.1.30:
-  version "0.1.30"
-  resolved "https://registry.npmjs.org/gifted-charts-core/-/gifted-charts-core-0.1.30.tgz"
-  integrity sha512-B5HhK4gwkTBC6kNYi1ZEuzGb91OEotdBj7qpqHfy+liXwQ7pbyaP0LO9XcaDFrqhS65UJtB10CDMrqeccA93uQ==
+gifted-charts-core@0.1.60:
+  version "0.1.60"
+  resolved "https://registry.npmjs.org/gifted-charts-core/-/gifted-charts-core-0.1.60.tgz#f14b7fed12431d6efd27e7cda52217f11aee8c29"
+  integrity sha512-xXkDyBYO14y3op/kDLUGUaTmmqJiYKlTujDE5QPS6XRR9qeHjsLc5wO3LDkr6THVc5LrER1xHeNmTuxMmUYYrw==
 
 giget@^1.0.0:
   version "1.2.3"
@@ -8021,9 +8021,9 @@ glob2base@0.0.12:
   dependencies:
     find-index "^0.1.1"
 
-glob@^10.0.0:
+glob@^10.0.0, glob@^10.3.10:
   version "10.4.5"
-  resolved "https://registry.npmjs.org/glob/-/glob-10.4.5.tgz"
+  resolved "https://registry.npmjs.org/glob/-/glob-10.4.5.tgz#f4d9f0b90ffdbab09c9d77f5f29b4262517b0956"
   integrity sha512-7Bv8RF0k6xjo7d4A/PxYLbUCfb6c+Vpd2/mB2yRDlew7Jb5hEXiCD9ibfO7wpk8i4sevK6DFny9h7EYbM3/sHg==
   dependencies:
     foreground-child "^3.1.0"
@@ -8033,7 +8033,7 @@ glob@^10.0.0:
     package-json-from-dist "^1.0.0"
     path-scurry "^1.11.1"
 
-glob@^7.1.1, glob@^7.1.3, glob@^7.1.4, glob@^7.1.7, glob@^7.2.3:
+glob@^7.1.1, glob@^7.1.3, glob@^7.1.4, glob@^7.1.7:
   version "7.2.3"
   resolved "https://registry.npmjs.org/glob/-/glob-7.2.3.tgz"
   integrity sha512-nFR0zLpU2YCaRxwoCJvL6UvCH2JFyFVIvwTLsIf21AuHlMskA1hhTdk+LlYJtOlYt9v6dvszD2BGRqBL+iQK9Q==
@@ -11307,13 +11307,13 @@ react-is@^17.0.1:
   resolved "https://registry.npmjs.org/react-is/-/react-is-17.0.2.tgz"
   integrity sha512-w2GsyukL62IJnlaff/nRegPQR94C/XXamvMWmSHRJ4y7Ts/4ocGRmTHvOs8PSE6pB3dWOrD/nueuU5sduBsQ4w==
 
-react-native-blob-util@0.18.4:
-  version "0.18.4"
-  resolved "https://registry.npmjs.org/react-native-blob-util/-/react-native-blob-util-0.18.4.tgz"
-  integrity sha512-t4DtjAC3gyTM40SPLj6rlejX8Yvek/4dPmWQPjvvnjY8okgSekOLbG0aLNIJeqqEUZqu+dhtT7HquLYNwOB97A==
+react-native-blob-util@0.21.2:
+  version "0.21.2"
+  resolved "https://registry.npmjs.org/react-native-blob-util/-/react-native-blob-util-0.21.2.tgz#26dc7907b2ef68ae92882bb5e512b3b41c641acb"
+  integrity sha512-4DsF+zzBEJmLww12PsUjwqjSaUrz7gdL5MeduSRn9fv5M8GLRIk5WHcgc7n+fzorGhbbL9QtB/QLTL6dMKjYUw==
   dependencies:
     base-64 "0.1.0"
-    glob "^7.2.3"
+    glob "^10.3.10"
 
 react-native-calendars@1.1306.0:
   version "1.1306.0"
@@ -11350,10 +11350,10 @@ react-native-device-info@^11.1.0:
   resolved "https://registry.npmjs.org/react-native-device-info/-/react-native-device-info-11.1.0.tgz"
   integrity sha512-hzXJSObJdezEz0hF7MAJ3tGeoesuQWenXXt9mrQR9Mjb8kXpZ09rqSsZ/quNpJdZpQ3rYiFa3/0GFG5KNn9PBg==
 
-react-native-document-picker@9.3.0:
-  version "9.3.0"
-  resolved "https://registry.npmjs.org/react-native-document-picker/-/react-native-document-picker-9.3.0.tgz"
-  integrity sha512-X/j0xKn8cObckpHTNwE/hW9WzBiP6oKx820FYu1Nat43QnnHmmT6uozFgAUDcJfxmZGcEdLlbv0lNhnyRXJyyA==
+react-native-document-picker@9.3.1:
+  version "9.3.1"
+  resolved "https://registry.npmjs.org/react-native-document-picker/-/react-native-document-picker-9.3.1.tgz#f2c33237a906fd0893130e0605c8f18a3aef1605"
+  integrity sha512-Vcofv9wfB0j67zawFjfq9WQPMMzXxOZL9kBmvWDpjVuEcVK73ndRmlXHlkeFl5ZHVsv4Zb6oZYhqm9u5omJOPA==
   dependencies:
     invariant "^2.2.4"
 
@@ -11380,12 +11380,12 @@ react-native-gesture-handler@2.18.1:
     invariant "^2.2.4"
     prop-types "^15.7.2"
 
-react-native-gifted-charts@1.4.29:
-  version "1.4.29"
-  resolved "https://registry.npmjs.org/react-native-gifted-charts/-/react-native-gifted-charts-1.4.29.tgz"
-  integrity sha512-/6ja64yE42fUMm9icL4WWFRQBNDomL0O27TC3CXN7aipKgFpjGVeFluFCNuGInk1Y8Xo+zPfZ4GzPflNEvK7fg==
+react-native-gifted-charts@1.4.58:
+  version "1.4.58"
+  resolved "https://registry.npmjs.org/react-native-gifted-charts/-/react-native-gifted-charts-1.4.58.tgz#e33c86760be83edd0ae5e45c38b076113e40376c"
+  integrity sha512-evCvyQCogaYCDrQRTyM+sv/EwlwXhtx+UnPCIyZ7H+KDKA5K+JHdNl5WNqipbkYWDnbj0T+PrgnZCgf0vlQdrg==
   dependencies:
-    gifted-charts-core "^0.1.30"
+    gifted-charts-core "0.1.60"
 
 react-native-linear-gradient@2.8.3:
   version "2.8.3"
@@ -11432,10 +11432,10 @@ react-native-screens@3.34.0:
     react-freeze "^1.0.0"
     warn-once "^0.1.0"
 
-react-native-share@12.0.3:
-  version "12.0.3"
-  resolved "https://registry.npmjs.org/react-native-share/-/react-native-share-12.0.3.tgz#1f2d6fc0c8f1e7ec9e75e0b4915bee78e06dce5b"
-  integrity sha512-Bg96AjouSbcpdlI/AzWXMBwpjyWcm4NvGr49mSF1cz8aw8E1sMXwpsHa6I841SJML8Im6sRN3aXnK+/QManrtQ==
+react-native-share@12.0.9:
+  version "12.0.9"
+  resolved "https://registry.npmjs.org/react-native-share/-/react-native-share-12.0.9.tgz#771640136114de6179aa42269a9e45135ac1a9cf"
+  integrity sha512-vSuz/9aF+/AZS3I5NC19MrB56h1Yivk2Yz8lf2d8Szv3KuRw2BnDI/AfCTjMWByJLVYr6xgzfkTkAfvbDGzxLQ==
 
 react-native-signature-canvas@4.5.1:
   version "4.5.1"
@@ -11472,10 +11472,10 @@ react-native-system-navigation-bar@2.2.0:
   resolved "https://registry.npmjs.org/react-native-system-navigation-bar/-/react-native-system-navigation-bar-2.2.0.tgz"
   integrity sha512-iVrWFbEh5WSX5pFiCBxJ1+zte4zTbTjLFsK/OZjKpwpZgLgDingEHaqQPAU+PPTYxzkShoCiaVnCNIbDzNnBow==
 
-react-native-toast-message@2.2.0:
-  version "2.2.0"
-  resolved "https://registry.npmjs.org/react-native-toast-message/-/react-native-toast-message-2.2.0.tgz"
-  integrity sha512-AFti8VzUk6JvyGAlLm9/BknTNDXrrhqnUk7ak/pM7uCTxDPveAu2ekszU0on6vnUPFnG04H/QfYE2IlETqeaWw==
+react-native-toast-message@2.2.1:
+  version "2.2.1"
+  resolved "https://registry.npmjs.org/react-native-toast-message/-/react-native-toast-message-2.2.1.tgz#f395321e9bc818ce63274c38a3d294ed997a4a27"
+  integrity sha512-iXFMnlxPcgKKs4bZOIl06W16m6KXMh/bAYpWLyVXlISSCdcL2+FX5WPpRP3TGQeM/u9q+j5ex48DDY+72en+Sw==
 
 react-native-vector-icons@10.0.3:
   version "10.0.3"
@@ -11485,10 +11485,10 @@ react-native-vector-icons@10.0.3:
     prop-types "^15.7.2"
     yargs "^16.1.1"
 
-react-native-vision-camera@4.6.3:
-  version "4.6.3"
-  resolved "https://registry.npmjs.org/react-native-vision-camera/-/react-native-vision-camera-4.6.3.tgz"
-  integrity sha512-fVHww4cNFrxvMYOlUZcjl3iYmR3vcUtvLZKW9NHlKZ3o4zsspwYjbw2vheZvHrHtJ30OrE3N2NFqT6CxgPvRCw==
+react-native-vision-camera@4.6.4:
+  version "4.6.4"
+  resolved "https://registry.npmjs.org/react-native-vision-camera/-/react-native-vision-camera-4.6.4.tgz#f1c51dda2c5d558ea0ec235e2401abf5efa46875"
+  integrity sha512-d998uTHsGJ9bTlsClgT37RK1sK7ZQekv5y6ylynds3vmdK6YbFQJUoi2cvMrFN4dp9qvSlCjEfwekjMIz3guQA==
 
 react-native-web-linear-gradient@1.1.2:
   version "1.1.2"
