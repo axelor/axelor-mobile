@@ -24,7 +24,7 @@ import {
   useTranslator,
   useTypes,
 } from '@axelor/aos-mobile-core';
-import {InventoryHeader, InventoryLineCard} from '../../components';
+import {InventoryHeader, InventoryLineActionCard} from '../../components';
 import {fetchInventoryLines} from '../../features/inventoryLineSlice';
 import {displayLine} from '../../utils/displayers';
 import {useLineHandler} from '../../hooks';
@@ -151,15 +151,9 @@ const InventoryLineListScreen = ({route}) => {
           />
         }
         renderListItem={({item}) => (
-          <InventoryLineCard
-            productName={item.product?.fullName}
-            currentQty={item.currentQty}
-            realQty={item.realQty}
-            unit={item.unit?.name}
-            locker={item.rack}
-            trackingNumber={item.trackingNumber}
-            stockLocationName={item.stockLocation?.name}
+          <InventoryLineActionCard
             onPress={() => handleShowLine(item)}
+            inventoryLine={item}
           />
         )}
       />

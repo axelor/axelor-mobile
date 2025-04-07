@@ -76,6 +76,7 @@ export const stock_modelAPI: ObjectFields = {
       .of(schemaContructor.subObject('productName')),
     note: schemaContructor.string(),
     pickingOrderComments: schemaContructor.string(),
+    company: schemaContructor.subObject(),
   }),
   stock_internalMoveLine: schemaContructor.object({
     product: schemaContructor.subObject().concat(
