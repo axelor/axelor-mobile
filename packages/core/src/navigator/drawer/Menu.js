@@ -23,13 +23,12 @@ import {Text, WarningCard} from '@axelor/aos-mobile-ui';
 import MenuItem from './MenuItem';
 import {
   findIndexAndRouteOfMenu,
+  getCompatibilityError,
   getMenuTitle,
   hasSubMenus,
   isMenuIncompatible,
-  isModuleNotFound,
 } from '../menu.helper';
 import useTranslator from '../../i18n/hooks/use-translator';
-import {formatCompatibilityToDisplay} from '../module.helper';
 
 const MenuItemList = ({
   state,
@@ -125,11 +124,6 @@ const Menu = ({
     [I18n, activeModule],
   );
 
-  const moduleNotFound = useMemo(
-    () => isModuleNotFound(compatibility),
-    [compatibility],
-  );
-
   const compatibilityError = useMemo(
     () => isMenuIncompatible(compatibility),
     [compatibility],
@@ -145,14 +139,7 @@ const Menu = ({
         </View>
         {compatibilityError && (
           <WarningCard
-            errorMessage={I18n.t(
-              moduleNotFound
-                ? 'Base_Compatibility_NotFoundDetails'
-                : 'Base_Compatibility_ErrorDetails',
-              {
-                compatibility: formatCompatibilityToDisplay(compatibility),
-              },
-            )}
+            errorMessage={getCompatibilityError(compatibility, I18n)}
           />
         )}
         <MenuItemList
