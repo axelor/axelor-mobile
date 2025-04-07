@@ -25,10 +25,10 @@ import {
   useTranslator,
 } from '@axelor/aos-mobile-core';
 import {SearchLineContainer} from '../../../organisms';
-import {InternalMoveLineCard} from '../../../templates';
+import {InternalMoveLineActionCard} from '../../../templates';
 import {fetchInternalMoveLines} from '../../../../features/internalMoveLineSlice';
 import {useInternalLinesWithRacks, useLineHandler} from '../../../../hooks';
-import {LineVerification, StockMoveLine} from '../../../../types';
+import {LineVerification} from '../../../../types';
 
 const scanKey = 'trackingNumber-or-product_internal-move-details';
 
@@ -95,24 +95,9 @@ const InternalMoveSearchLineContainer = ({}) => {
       onViewPress={handleViewAll}
       filterLine={filterLine}
       renderItem={item => (
-        <InternalMoveLineCard
+        <InternalMoveLineActionCard
+          internalMoveLine={item}
           style={styles.item}
-          productName={item.product?.fullName}
-          internalMoveStatus={internalMove.statusSelect}
-          fromStockLocation={item.fromStockLocation?.name}
-          toStockLocation={item.toStockLocation?.name}
-          expectedQty={item.qty}
-          movedQty={
-            StockMoveLine.hideLineQty(item, internalMove) ? 0 : item.realQty
-          }
-          locker={item.locker}
-          trackingNumber={item.trackingNumber?.trackingNumberSeq}
-          availability={
-            item.availableStatusSelect != null
-              ? item.availableStatusSelect
-              : null
-          }
-          stockMoveLineId={item.id}
           onPress={() => handleShowLine(item)}
         />
       )}
@@ -122,8 +107,7 @@ const InternalMoveSearchLineContainer = ({}) => {
 
 const styles = StyleSheet.create({
   item: {
-    marginHorizontal: 1,
-    marginVertical: 4,
+    width: '100%',
   },
 });
 
