@@ -23,6 +23,7 @@ import ProspectFormScreen from './ProspectFormScreen';
 export default {
   ProspectsListScreen: {
     title: 'Crm_Prospect',
+    actionID: 'crm_prospect_list',
     component: ProspectsListScreen,
     options: {
       shadedHeader: false,
