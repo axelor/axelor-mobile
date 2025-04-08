@@ -61,6 +61,7 @@ export async function searchOpportunities({
   assigned,
   statusList,
   companyId,
+  filterDomain,
 }) {
   return createStandardSearch({
     model: 'com.axelor.apps.crm.db.Opportunity',
@@ -75,6 +76,7 @@ export async function searchOpportunities({
     sortKey: 'crm_opportunity',
     page,
     provider: 'model',
+    filter: filterDomain,
   });
 }
 

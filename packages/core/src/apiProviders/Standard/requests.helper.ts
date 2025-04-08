@@ -19,6 +19,7 @@
 import {Criteria, Domain, getModelApi} from '../Model';
 import {axiosApiProvider} from './AxiosProvider';
 import {getObjectFields, getSortFields} from './ObjectFieldsProvider';
+import {Filter} from '../../header/FilterProvider';
 
 interface SearchProps {
   model: string;
@@ -34,6 +35,7 @@ interface SearchProps {
   isCompanyM2M?: boolean;
   companyFieldName?: string;
   companySetFieldName?: string;
+  filter?: Filter;
 }
 
 interface HierarchicalSearchProps extends SearchProps {
@@ -78,6 +80,7 @@ class RequestBuilder {
     isCompanyM2M = false,
     companyFieldName,
     companySetFieldName,
+    filter,
   }: SearchProps): Promise<any> => {
     if (model == null || fieldKey == null) {
       return null;
@@ -92,11 +95,17 @@ class RequestBuilder {
       criteria.push(getCompanyCriteria(companyId, companyFieldName));
     }
 
+    const {
+      criteria: _filterCriteria = [],
+      domainContext: _filterContext,
+      domains: _filterDomains,
+    } = getFilterDomains(model, filter);
+
     let data: any = {
       criteria: [
         {
           operator: 'and',
-          criteria: criteria,
+          criteria: [...criteria, ..._filterCriteria],
         },
       ],
     };
@@ -119,6 +128,14 @@ class RequestBuilder {
         data._domain = domain;
         data._domainContext = domainContext;
       }
+    }
+
+    if (_filterDomains) {
+      data._domains = _filterDomains;
+      data._domainContext = {
+        ...data._domainContext,
+        ..._filterContext,
+      };
     }
 
     if (provider === 'axios') {
@@ -296,6 +313,42 @@ export const getCompanyCriteria = (
     ],
   };
 };
+
+export function getFilterDomains(
+  model: string,
+  filter?: Filter,
+): {
+  domains?: {type: string; name: string; domain: string; title: string}[];
+  domainContext?: any;
+  criteria?: Criteria[];
+} {
+  if (!filter) return {};
+
+  if (filter.filterCustom) {
+    try {
+      const parsed = JSON.parse(filter.filterCustom);
+      if (parsed?.criteria) {
+        return {criteria: [parsed]};
+      }
+
+      return {};
+    } catch (err) {
+      return {};
+    }
+  }
+
+  return {
+    domains: [
+      {
+        type: filter.type,
+        name: filter.name,
+        domain: filter.domain,
+        title: filter.title,
+      },
+    ],
+    domainContext: {_model: model},
+  };
+}
 
 export const getCompanyDomain = (
   companyId: number,

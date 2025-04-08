@@ -23,6 +23,7 @@ import ClientFormScreen from './ClientFormScreen';
 export default {
   ClientsListScreen: {
     title: 'Crm_Clients',
+    actionID: 'crm_client_list',
     component: ClientsListScreen,
     options: {
       shadedHeader: false,
