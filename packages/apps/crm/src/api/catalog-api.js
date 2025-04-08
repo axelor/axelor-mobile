@@ -39,7 +39,12 @@ const createCatalogCriteria = (searchValue, statusList) => {
   return criteria;
 };
 
-export async function searchCatalog({searchValue, statusList, page = 0}) {
+export async function searchCatalog({
+  searchValue,
+  statusList,
+  page = 0,
+  filterDomain,
+}) {
   return createStandardSearch({
     model: 'com.axelor.apps.crm.db.Catalog',
     criteria: createCatalogCriteria(searchValue, statusList),
@@ -47,6 +52,7 @@ export async function searchCatalog({searchValue, statusList, page = 0}) {
     sortKey: 'crm_catalog',
     page,
     provider: 'model',
+    filter: filterDomain,
   });
 }
 

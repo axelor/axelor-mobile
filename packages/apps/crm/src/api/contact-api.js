@@ -103,6 +103,7 @@ export async function searchContact({
   assigned,
   companyId,
   mainPartnerId,
+  filterDomain,
 }) {
   return createStandardSearch({
     model: 'com.axelor.apps.base.db.Partner',
@@ -118,6 +119,7 @@ export async function searchContact({
     sortKey: 'crm_contact',
     page,
     provider: 'model',
+    filter: filterDomain,
   });
 }
 

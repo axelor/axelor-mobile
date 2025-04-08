@@ -51,6 +51,7 @@ export async function searchTour({
   date,
   isSalesperson,
   page = 0,
+  filterDomain,
 }) {
   return createStandardSearch({
     model: 'com.axelor.apps.crm.db.Tour',
@@ -59,6 +60,7 @@ export async function searchTour({
     sortKey: 'crm_tour',
     page: page,
     provider: 'model',
+    filter: filterDomain,
   });
 }
 
