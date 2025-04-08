@@ -64,6 +64,7 @@ export async function searchLeads({
   assigned,
   statusList,
   companyId,
+  filterDomain,
 }) {
   return createStandardSearch({
     model: 'com.axelor.apps.crm.db.Lead',
@@ -73,6 +74,7 @@ export async function searchLeads({
     sortKey: 'crm_lead',
     page,
     provider: 'model',
+    filter: filterDomain,
   });
 }
 

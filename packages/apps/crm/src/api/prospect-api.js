@@ -74,6 +74,7 @@ export async function searchProspect({
   assigned,
   statusList,
   companyId,
+  filterDomain,
 }) {
   return createStandardSearch({
     model: 'com.axelor.apps.base.db.Partner',
@@ -84,6 +85,7 @@ export async function searchProspect({
     sortKey: 'crm_prospect',
     page,
     provider: 'model',
+    filter: filterDomain,
   });
 }
 
