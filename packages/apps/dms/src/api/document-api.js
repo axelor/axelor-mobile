@@ -31,6 +31,7 @@ const createDocumentCriteria = ({
   noParent,
   isDirectory = null,
   favoriteFileIds,
+  attachedFileIds,
 }) => {
   const criteria = [getSearchCriterias('dms_document', searchValue)];
 
@@ -104,6 +105,14 @@ const createDocumentCriteria = ({
     });
   }
 
+  if (Array.isArray(attachedFileIds) && attachedFileIds.length > 0) {
+    criteria.push({
+      fieldName: 'metaFile.id',
+      operator: 'in',
+      value: attachedFileIds,
+    });
+  }
+
   return criteria;
 };
 
@@ -173,6 +182,7 @@ export async function searchDocument({
   parentDirectoryId,
   noParent = false,
   favoriteFileIds = [],
+  attachedFileIds = [],
   page = 0,
 }) {
   return createStandardSearch({
@@ -184,6 +194,7 @@ export async function searchDocument({
       parentDirectoryId,
       noParent,
       favoriteFileIds,
+      attachedFileIds,
     }),
     fieldKey: 'dms_document',
     sortKey: 'dms_document',
