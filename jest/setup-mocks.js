@@ -34,6 +34,22 @@ jest.mock('react-native-reanimated', () => {
 });
 
 jest.mock('react-native/Libraries/Animated/NativeAnimatedHelper');
+jest.mock('react-native/Libraries/BatchedBridge/NativeModules');
+jest.mock('react-native/Libraries/EventEmitter/NativeEventEmitter');
+jest.mock('react-native/Libraries/TurboModule/TurboModuleRegistry', () => {
+  const turboModuleRegistry = jest.requireActual(
+    'react-native/Libraries/TurboModule/TurboModuleRegistry',
+  );
+  return {
+    ...turboModuleRegistry,
+    getEnforcing: name => {
+      if (name === 'RNDocumentPicker') {
+        return null;
+      }
+      return turboModuleRegistry.getEnforcing(name);
+    },
+  };
+});
 
 jest.useFakeTimers();
 
@@ -53,21 +69,6 @@ jest.mock('react-native-fs', () => ({
 jest.mock('react-native-device-info', () => ({
   getManufacturer: 'FAKE-MANUFACTURER',
 }));
-
-jest.mock('react-native/Libraries/TurboModule/TurboModuleRegistry', () => {
-  const turboModuleRegistry = jest.requireActual(
-    'react-native/Libraries/TurboModule/TurboModuleRegistry',
-  );
-  return {
-    ...turboModuleRegistry,
-    getEnforcing: name => {
-      if (name === 'RNDocumentPicker') {
-        return null;
-      }
-      return turboModuleRegistry.getEnforcing(name);
-    },
-  };
-});
 
 jest.mock(
   'react-native-toast-message',
@@ -128,8 +129,6 @@ jest.mock('react-native-date-picker', () => ({
 jest.mock('react-native-blob-util', () => ({
   DocumentDir: 'FAKE-DIRECTORY-PATH',
 }));
-
-jest.mock('react-native/Libraries/EventEmitter/NativeEventEmitter');
 
 jest.mock('react-native-webview', () => ({
   default: jest.fn(),
