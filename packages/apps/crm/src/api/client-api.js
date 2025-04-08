@@ -62,6 +62,7 @@ export async function searchClient({
   userId,
   assigned,
   companyId,
+  filterDomain,
 }) {
   return createStandardSearch({
     model: 'com.axelor.apps.base.db.Partner',
@@ -72,6 +73,7 @@ export async function searchClient({
     sortKey: 'crm_client',
     page,
     provider: 'model',
+    filter: filterDomain,
   });
 }
 

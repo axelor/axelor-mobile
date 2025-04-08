@@ -64,7 +64,7 @@ const useFilterGenericAction = () => {
   useEffect(() => {
     headerActionsProvider.registerGenericAction(
       'core_modelFilters',
-      async ({model, modelId}) => {
+      async ({model, modelId, options}) => {
         const _defaultAction = {
           key: 'savedFilters',
           order: 50,
@@ -79,6 +79,7 @@ const useFilterGenericAction = () => {
 
         const {savedFilters, userFilters} = await fetchDefaultFilters({
           modelName: model,
+          options,
         })
           .then(res => res?.data?.data)
           .then(async res => {

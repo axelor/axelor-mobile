@@ -23,6 +23,7 @@ import ContactFormScreen from './ContactFormScreen';
 export default {
   ContactListScreen: {
     title: 'Crm_Contacts',
+    actionID: 'crm_contact_list',
     component: ContactListScreen,
     options: {
       shadedHeader: false,
