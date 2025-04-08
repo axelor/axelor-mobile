@@ -24,6 +24,7 @@ import CompleteRequestScreen from './CompleteRequestScreen';
 export default {
   LeaveListScreen: {
     title: 'Hr_Leaves',
+    actionID: 'hr_leave_list',
     component: LeaveListScreen,
     options: {
       shadedHeader: false,

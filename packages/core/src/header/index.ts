@@ -28,3 +28,4 @@ export {
 export {HeaderBandProvider, useHeaderBand} from './HeaderBandContext';
 export {HeaderBandHelper} from './header-band-context.helper';
 export {fetchOptionsOfHeaderKey} from './utils';
+export {useActiveFilter} from './FilterProvider';

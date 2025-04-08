@@ -78,6 +78,7 @@ export async function fetchLeave({
   selectedStatus,
   page = 0,
   companyId,
+  filterDomain,
 }) {
   return createStandardSearch({
     model: 'com.axelor.apps.hr.db.LeaveRequest',
@@ -87,6 +88,7 @@ export async function fetchLeave({
     page,
     companyId,
     provider: 'model',
+    filter: filterDomain,
   });
 }
 
@@ -95,6 +97,7 @@ export async function fetchLeaveToValidate({
   user,
   page = 0,
   companyId,
+  filterDomain,
 }) {
   return createStandardSearch({
     model: 'com.axelor.apps.hr.db.LeaveRequest',
@@ -104,6 +107,7 @@ export async function fetchLeaveToValidate({
     page,
     companyId,
     provider: 'model',
+    filter: filterDomain,
   });
 }
 

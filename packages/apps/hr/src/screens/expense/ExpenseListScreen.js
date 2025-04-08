@@ -33,6 +33,7 @@ import {
   useTranslator,
   useTypes,
   useTypeHelpers,
+  useActiveFilter,
 } from '@axelor/aos-mobile-core';
 import {ExpenseCard, ExpenseWaitingValidationSearchBar} from '../../components';
 import {
@@ -50,6 +51,7 @@ const ExpenseListScreen = ({navigation}) => {
   const dispatch = useDispatch();
   const {Expense} = useTypes();
   const {getSelectionItems} = useTypeHelpers();
+  const {activeFilter} = useActiveFilter();
 
   const {user} = useSelector(state => state.user);
   const {
@@ -85,10 +87,11 @@ const ExpenseListScreen = ({navigation}) => {
           page: page,
           userId: user.id,
           companyId: user.activeCompany?.id,
+          filterDomain: activeFilter,
         }),
       );
     },
-    [dispatch, user.activeCompany?.id, user.id],
+    [activeFilter, dispatch, user.activeCompany?.id, user.id],
   );
 
   const fetchExpenseToValidateAPI = useCallback(
@@ -98,10 +101,11 @@ const ExpenseListScreen = ({navigation}) => {
           page: page,
           user: user,
           companyId: user.activeCompany?.id,
+          filterDomain: activeFilter,
         }),
       );
     },
-    [dispatch, user],
+    [activeFilter, dispatch, user],
   );
 
   const sendExpenseAPI = useCallback(

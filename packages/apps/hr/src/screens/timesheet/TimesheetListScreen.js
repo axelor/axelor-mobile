@@ -19,6 +19,7 @@
 import React, {useCallback, useEffect, useMemo, useState} from 'react';
 import {
   headerActionsProvider,
+  useActiveFilter,
   useDispatch,
   usePermitted,
   useSelector,
@@ -46,6 +47,7 @@ const TimesheetListScreen = ({navigation}) => {
   const Colors = useThemeColor();
   const I18n = useTranslator();
   const dispatch = useDispatch();
+  const {activeFilter} = useActiveFilter();
   const {canCreate, readonly} = usePermitted({
     modelName: 'com.axelor.apps.hr.db.Timesheet',
   });
@@ -99,10 +101,11 @@ const TimesheetListScreen = ({navigation}) => {
           userId: user.id,
           page: page,
           companyId: user.activeCompany?.id,
+          filterDomain: activeFilter,
         }),
       );
     },
-    [dispatch, user],
+    [activeFilter, dispatch, user.activeCompany?.id, user.id],
   );
 
   const fetchTimesheetToValidateAPI = useCallback(
@@ -112,10 +115,11 @@ const TimesheetListScreen = ({navigation}) => {
           page: page,
           user: user,
           companyId: user.activeCompany?.id,
+          filterDomain: activeFilter,
         }),
       );
     },
-    [dispatch, user],
+    [activeFilter, dispatch, user],
   );
 
   const listToDisplay = useMemo(() => {
@@ -176,6 +180,7 @@ const TimesheetListScreen = ({navigation}) => {
 
   useEffect(() => {
     headerActionsProvider.registerModel('hr_timesheets_list', {
+      model: 'com.axelor.apps.hr.db.Timesheet',
       actions: [
         {
           key: 'newTimesheet',
