@@ -18,17 +18,34 @@
 
 import {useEffect} from 'react';
 
+const WEBSOCKET_CHANNEL = 'tags';
+const KEEP_ALIVE_INTERVAL_MS = 5000;
+
+interface InitWebSocket {
+  baseUrl: string;
+  token: string;
+  jsessionId: string;
+}
+
+interface WebSocketMessage {
+  type: 'SUB' | 'UNS' | 'MSG';
+  channel: string;
+  data?: any;
+}
+
+type WebSocketListener = (message: WebSocketMessage) => void;
+
 class WebSocketProvider {
   private isWebSocketEnabled = false;
   private ws: WebSocket | null = null;
   private intervalId: number | null = null;
-  private listeners: Function[] = [];
+  private listeners: WebSocketListener[] = [];
 
-  enableWebSocket(isWebSocketEnabled) {
+  enableWebSocket(isWebSocketEnabled: boolean) {
     this.isWebSocketEnabled = isWebSocketEnabled;
   }
 
-  initWebSocket({baseUrl, token, jsessionId}) {
+  initWebSocket({baseUrl, token, jsessionId}: InitWebSocket) {
     if (!this.isWebSocketEnabled) {
       return;
     }
@@ -41,16 +58,20 @@ class WebSocketProvider {
     });
 
     this.ws.onopen = () => {
-      this.sendMessage({type: 'SUB', channel: 'tags'});
+      this.sendMessage({type: 'SUB', channel: WEBSOCKET_CHANNEL});
 
-      this.sendMessage({type: 'MSG', channel: 'tags', data: []});
+      this.sendMessage({type: 'MSG', channel: WEBSOCKET_CHANNEL, data: []});
       this.intervalId = setInterval(() => {
-        this.sendMessage({type: 'MSG', channel: 'tags', data: []});
-      }, 5000);
+        this.sendMessage({type: 'MSG', channel: WEBSOCKET_CHANNEL, data: []});
+      }, KEEP_ALIVE_INTERVAL_MS);
     };
 
     this.ws.onmessage = event => {
       this.notify(JSON.parse(event.data));
+    };
+
+    this.ws.onerror = error => {
+      console.error('WebSocket error:', error);
     };
 
     this.ws.onclose = () => {
@@ -62,7 +83,7 @@ class WebSocketProvider {
     };
   }
 
-  private sendMessage(message: any) {
+  private sendMessage(message: WebSocketMessage) {
     if (this.ws && this.ws.readyState === WebSocket.OPEN) {
       this.ws.send(JSON.stringify(message));
     } else {
@@ -72,20 +93,20 @@ class WebSocketProvider {
 
   closeWebSocket() {
     if (this.ws) {
-      this.sendMessage({type: 'UNS', channel: 'tags'});
+      this.sendMessage({type: 'UNS', channel: WEBSOCKET_CHANNEL});
       this.ws.close();
     }
   }
 
-  register(callback: Function) {
+  register(callback: WebSocketListener) {
     this.listeners.push(callback);
   }
 
-  unregister(callback: Function) {
+  unregister(callback: WebSocketListener) {
     this.listeners = this.listeners.filter(cb => cb !== callback);
   }
 
-  private notify(message: any) {
+  private notify(message: WebSocketMessage) {
     this.listeners.forEach(callback => callback?.(message));
   }
 }
