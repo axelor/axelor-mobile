@@ -150,7 +150,7 @@ const CustomerDeliveryLineDetailScreen = ({route, navigation}) => {
           loading: loadingCustomerDeliveryLine,
           fetcher: getCustomerDeliveryLine,
         }}>
-        {stockConfig.isManageStockLocationOnStockMoveLine ? (
+        {stockConfig?.isManageStockLocationOnStockMoveLine ? (
           <StockLocationSearchBar
             placeholderKey="Stock_FromStockLocation"
             defaultValue={fromStockLocation}

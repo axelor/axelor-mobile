@@ -57,7 +57,7 @@ const TimesheetFilters = ({
   const timesheetStatusListItems = useMemo(() => {
     let result = getSelectionItems(Timesheet?.statusSelect);
 
-    if (!timesheetConfig.needValidation) {
+    if (!timesheetConfig?.needValidation) {
       result = result.filter(({value}) =>
         [
           Timesheet?.statusSelect.Draft,
@@ -70,7 +70,7 @@ const TimesheetFilters = ({
   }, [
     Timesheet?.statusSelect,
     getSelectionItems,
-    timesheetConfig.needValidation,
+    timesheetConfig?.needValidation,
   ]);
 
   useEffect(() => {
@@ -85,7 +85,7 @@ const TimesheetFilters = ({
 
   return (
     <View style={styles.container}>
-      {timesheetConfig.needValidation &&
+      {timesheetConfig?.needValidation &&
         (user?.employee?.hrManager || managedEmployeeTotal > 0) && (
           <ToggleSwitch
             leftTitle={I18n.t('Hr_MyTimesheets')}
@@ -109,7 +109,7 @@ const TimesheetFilters = ({
           />
         )}
       {mode === TimesheetType.mode.personnal &&
-        (timesheetConfig.needValidation ? (
+        (timesheetConfig?.needValidation ? (
           <Picker
             listItems={timesheetStatusListItems}
             title={I18n.t('Hr_Status')}

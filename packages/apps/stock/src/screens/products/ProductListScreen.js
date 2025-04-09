@@ -81,7 +81,7 @@ const ProductListScreen = ({navigation}) => {
             onChangeValue={showProductDetails}
             displayValue={displayItemName}
             sliceBarCodeFunction={searchAlternativeBarcode}
-            displayBarCodeInput={baseConfig.enableMultiBarcodeOnProducts}
+            displayBarCodeInput={baseConfig?.enableMultiBarcodeOnProducts}
             scanKeySearch={productScanKey}
             scanKeyBarCode={barCodeScanKey}
             navigate={navigate}

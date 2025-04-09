@@ -77,7 +77,7 @@ const ProductSearchBar = ({
       changeScreenAfter={changeScreenAfter}
       sliceBarCodeFunction={searchAlternativeBarcode}
       scanKeyBarCode={barCodeScanKey}
-      displayBarCodeInput={baseConfig.enableMultiBarcodeOnProducts}
+      displayBarCodeInput={baseConfig?.enableMultiBarcodeOnProducts}
     />
   );
 };
