@@ -39,3 +39,4 @@ export {storage, Storage, useStorage} from './storage/Storage';
 export * from './tools';
 export * from './types';
 export * from './utils';
+export * from './websocket';

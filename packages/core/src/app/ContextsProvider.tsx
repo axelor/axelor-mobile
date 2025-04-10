@@ -33,6 +33,7 @@ import enTranslation from '../i18n/translations/en.json';
 import frTranslation from '../i18n/translations/fr.json';
 import {configGlobalStore} from '../redux/store';
 import {requestBuilder} from '../apiProviders/Standard/requests.helper';
+import {webSocketProvider} from '../websocket';
 import {HeaderBandProvider} from '../header';
 import {Module} from './modules';
 
@@ -46,6 +47,7 @@ interface ContextsProviderProps {
   children: React.ReactNode;
   defaultLanguage: string;
   defaultRequestLimit: number;
+  enableWebSocket: boolean;
   themeColorsConfig?: ThemeColors;
   writingStylesConfig?: WritingStyles;
   showModulesSubtitle?: boolean;
@@ -61,6 +63,7 @@ const ContextsProvider = ({
   children,
   defaultLanguage = 'en',
   defaultRequestLimit = 10,
+  enableWebSocket = true,
   themeColorsConfig,
   writingStylesConfig,
   showModulesSubtitle = false,
@@ -110,6 +113,10 @@ const ContextsProvider = ({
   useEffect(() => {
     requestBuilder.init(defaultRequestLimit);
   }, [defaultRequestLimit]);
+
+  useEffect(() => {
+    webSocketProvider.enableWebSocket(enableWebSocket);
+  }, [enableWebSocket]);
 
   if (loading) {
     return null;
