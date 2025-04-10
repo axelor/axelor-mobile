@@ -28,6 +28,7 @@ import {saveUrlInStorage} from '../sessions';
 import {checkNullString} from '../utils';
 import {testUrl} from '../utils/api';
 import {modulesProvider} from '../app';
+import {webSocketProvider} from '../websocket';
 
 export const login = createAsyncThunk(
   'auth/login',
@@ -44,6 +45,13 @@ export const login = createAsyncThunk(
     closePopup?.();
 
     modulesProvider.getModuleRegisters().forEach(_f => _f(userId));
+
+    const urlWithoutProtocol = urlWithProtocol.replace(/.*\/\//, '');
+    webSocketProvider.initWebSocket({
+      baseUrl: urlWithoutProtocol,
+      token,
+      jsessionId,
+    });
 
     return {
       url: urlWithProtocol,
@@ -73,6 +81,9 @@ export const logout = createAsyncThunk(
 
     const {requestInterceptorId, responseInterceptorId} = getState()?.auth;
     ejectAxios({requestInterceptorId, responseInterceptorId});
+
+    webSocketProvider.closeWebSocket();
+
     return;
   },
 );
