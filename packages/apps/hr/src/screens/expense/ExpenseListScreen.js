@@ -21,7 +21,6 @@ import {View, StyleSheet} from 'react-native';
 import {
   Screen,
   ScrollList,
-  HeaderContainer,
   ToggleSwitch,
   useThemeColor,
   Picker,
@@ -34,6 +33,7 @@ import {
   useTypes,
   useTypeHelpers,
   useActiveFilter,
+  FilterContainer,
 } from '@axelor/aos-mobile-core';
 import {ExpenseCard, ExpenseWaitingValidationSearchBar} from '../../components';
 import {
@@ -186,7 +186,7 @@ const ExpenseListScreen = ({navigation}) => {
 
   return (
     <Screen removeSpaceOnTop={true}>
-      <HeaderContainer
+      <FilterContainer
         expandableFilter={false}
         fixedItems={
           <View style={styles.headerContainer}>

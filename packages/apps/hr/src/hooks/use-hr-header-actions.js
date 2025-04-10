@@ -119,6 +119,9 @@ const useTimerListAction = () => {
   useEffect(() => {
     headerActionsProvider.registerModel('hr_timers_list', {
       model: 'com.axelor.apps.hr.db.TSTimer',
+      options: {
+        core_modelFilters: {name: 'act:action.timesheet.view.multiple.timer'},
+      },
       actions: [
         {
           key: 'newTimer',

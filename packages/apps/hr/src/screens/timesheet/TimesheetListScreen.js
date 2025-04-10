@@ -18,6 +18,7 @@
 
 import React, {useCallback, useEffect, useMemo, useState} from 'react';
 import {
+  FilterContainer,
   headerActionsProvider,
   useActiveFilter,
   useDispatch,
@@ -25,12 +26,7 @@ import {
   useSelector,
   useTranslator,
 } from '@axelor/aos-mobile-core';
-import {
-  HeaderContainer,
-  Screen,
-  ScrollList,
-  useThemeColor,
-} from '@axelor/aos-mobile-ui';
+import {Screen, ScrollList, useThemeColor} from '@axelor/aos-mobile-ui';
 import {
   TimesheetCreationAlert,
   TimesheetDetailCard,
@@ -199,7 +195,7 @@ const TimesheetListScreen = ({navigation}) => {
 
   return (
     <Screen removeSpaceOnTop={true}>
-      <HeaderContainer
+      <FilterContainer
         expandableFilter={false}
         fixedItems={
           <TimesheetFilters

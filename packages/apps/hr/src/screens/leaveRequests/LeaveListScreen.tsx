@@ -18,13 +18,14 @@
 
 import React, {useCallback, useMemo, useState} from 'react';
 import {
+  FilterContainer,
   useActiveFilter,
   useDispatch,
   useNavigation,
   useSelector,
   useTranslator,
 } from '@axelor/aos-mobile-core';
-import {HeaderContainer, Screen, ScrollList} from '@axelor/aos-mobile-ui';
+import {Screen, ScrollList} from '@axelor/aos-mobile-ui';
 import {LeaveActionCard, LeaveFilters} from '../../components';
 import {
   fetchLeave,
@@ -144,7 +145,7 @@ const LeaveListScreen = ({}) => {
 
   return (
     <Screen removeSpaceOnTop={true}>
-      <HeaderContainer
+      <FilterContainer
         expandableFilter={false}
         fixedItems={
           <LeaveFilters
