@@ -62,6 +62,7 @@ export default {
     options: {
       shadedHeader: false,
     },
+    actionID: 'project_projectTask_list',
   },
   TaskDetailsScreen: {
     title: 'Project_Task',

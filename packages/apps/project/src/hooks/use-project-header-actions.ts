@@ -30,6 +30,7 @@ export const useProjectHeaders = () => {
   useProjectListScreenActions();
   useBuisnessProjectListScreenActions();
   useProjectDetailsActions();
+  useProjectTaskListActions();
   useProjectTaskDetailsActions();
 };
 
@@ -86,6 +87,14 @@ const useProjectDetailsActions = () => {
       ],
     });
   }, [Colors, I18n, dispatch, project?.code, project?.id]);
+};
+
+const useProjectTaskListActions = () => {
+  useEffect(() => {
+    headerActionsProvider.registerModel('project_projectTask_list', {
+      model: 'com.axelor.apps.project.db.ProjectTask',
+    });
+  }, []);
 };
 
 const useProjectTaskDetailsActions = () => {
