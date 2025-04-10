@@ -153,8 +153,10 @@ export async function searchOperationOrderFilter({
   machineId,
   companyId,
   page = 0,
+  filterDomain,
 }) {
   return createStandardSearch({
+    filter: filterDomain,
     model: 'com.axelor.apps.production.db.OperationOrder',
     companyId,
     companyFieldName: 'manufOrder.company',
