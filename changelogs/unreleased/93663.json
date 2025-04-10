@@ -1,0 +1,5 @@
+{
+  "title": "Scanner: always add listener on intents to resolve profile creation",
+  "type": "fix",
+  "packages": "core"
+}
