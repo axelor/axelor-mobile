@@ -18,13 +18,14 @@
 
 export {
   countUnreadMailMessages,
+  fetchInboxMessages,
   getMailMessages,
   getModelSubscribers,
   markAllMailMessageAsRead,
   markMailMessageAsRead,
-  subscribeModel,
-  unsubscribeModel,
   registerModel,
   registerModelId,
   sendMailMessageComment,
+  subscribeModel,
+  unsubscribeModel,
 } from './mailMessageSlice';

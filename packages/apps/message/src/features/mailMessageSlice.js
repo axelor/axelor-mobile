@@ -23,6 +23,7 @@ import {
 } from '@axelor/aos-mobile-core';
 import {
   countUnreadMessages,
+  fetchInboxMessages as _fetchInboxMessages,
   fetchMailMessages,
   fetchModelSubscribers,
   postMailMessageComment,
@@ -128,8 +129,12 @@ export const markMailMessageAsRead = createAsyncThunk(
       getState: getState,
       responseOptions: {returnTotal: true},
     }).then(() => {
-      dispatch(getMailMessages({...fetchMailMessageData, page: 0}));
-      dispatch(countUnreadMailMessages(fetchMailMessageData));
+      if (data?.isInbox) {
+        dispatch(fetchInboxMessages({page: 0}));
+      } else {
+        dispatch(getMailMessages({...fetchMailMessageData, page: 0}));
+        dispatch(countUnreadMailMessages(fetchMailMessageData));
+      }
     });
   },
 );
@@ -151,6 +156,19 @@ export const markAllMailMessageAsRead = createAsyncThunk(
   },
 );
 
+export const fetchInboxMessages = createAsyncThunk(
+  'mailMessages/fetchInboxMessages',
+  async function (data, {getState}) {
+    return handlerApiCall({
+      fetchFunction: _fetchInboxMessages,
+      data,
+      action: 'Message_SliceAction_FetchInboxMessages',
+      getState,
+      responseOptions: {isArrayResponse: true},
+    });
+  },
+);
+
 const initialState = {
   loading: false,
   moreLoading: false,
@@ -163,6 +181,11 @@ const initialState = {
 
   model: null,
   modelId: null,
+
+  loadingInbox: false,
+  moreLoadingInbox: false,
+  isInboxListEnd: false,
+  inboxList: [],
 };
 
 const mailMessagesSlice = createSlice({
@@ -182,6 +205,12 @@ const mailMessagesSlice = createSlice({
       moreLoading: 'moreLoading',
       isListEnd: 'isListEnd',
       list: 'mailMessagesList',
+    });
+    generateInifiniteScrollCases(builder, fetchInboxMessages, {
+      loading: 'loadingInbox',
+      moreLoading: 'moreLoadingInbox',
+      isListEnd: 'isInboxListEnd',
+      list: 'inboxList',
     });
     builder.addCase(getModelSubscribers.fulfilled, (state, action) => {
       state.modelFollowersList = action.payload ?? [];
