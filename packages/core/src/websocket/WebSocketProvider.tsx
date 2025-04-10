@@ -16,24 +16,13 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import {useEffect} from 'react';
-
-const WEBSOCKET_CHANNEL = 'tags';
-const KEEP_ALIVE_INTERVAL_MS = 5000;
-
-interface InitWebSocket {
-  baseUrl: string;
-  token: string;
-  jsessionId: string;
-}
-
-interface WebSocketMessage {
-  type: 'SUB' | 'UNS' | 'MSG';
-  channel: string;
-  data?: any;
-}
-
-type WebSocketListener = (message: WebSocketMessage) => void;
+import {
+  KEEP_ALIVE_INTERVAL_MS,
+  MessageType,
+  WebSocketListener,
+  WEBSOCKET_CHANNEL,
+  WebSocketMessage,
+} from './types';
 
 class WebSocketProvider {
   private isWebSocketEnabled = false;
@@ -45,24 +34,39 @@ class WebSocketProvider {
     this.isWebSocketEnabled = isWebSocketEnabled;
   }
 
-  initWebSocket({baseUrl, token, jsessionId}: InitWebSocket) {
+  initWebSocket({
+    baseUrl,
+    token,
+    jsessionId,
+  }: {
+    baseUrl: string;
+    token: string;
+    jsessionId: string;
+  }) {
     if (!this.isWebSocketEnabled) {
       return;
     }
 
     // @ts-ignore
     this.ws = new WebSocket(`wss://${baseUrl}/websocket`, [], {
-      headers: {
-        Cookie: `CSRF-TOKEN=${token}; ${jsessionId}`,
-      },
+      headers: {Cookie: `CSRF-TOKEN=${token}; ${jsessionId}`},
     });
 
     this.ws.onopen = () => {
-      this.sendMessage({type: 'SUB', channel: WEBSOCKET_CHANNEL});
+      this.sendMessage({type: MessageType.SUB, channel: WEBSOCKET_CHANNEL});
 
-      this.sendMessage({type: 'MSG', channel: WEBSOCKET_CHANNEL, data: []});
+      this.sendMessage({
+        type: MessageType.MSG,
+        channel: WEBSOCKET_CHANNEL,
+        data: [],
+      });
+
       this.intervalId = setInterval(() => {
-        this.sendMessage({type: 'MSG', channel: WEBSOCKET_CHANNEL, data: []});
+        this.sendMessage({
+          type: MessageType.MSG,
+          channel: WEBSOCKET_CHANNEL,
+          data: [],
+        });
       }, KEEP_ALIVE_INTERVAL_MS);
     };
 
@@ -93,7 +97,7 @@ class WebSocketProvider {
 
   closeWebSocket() {
     if (this.ws) {
-      this.sendMessage({type: 'UNS', channel: WEBSOCKET_CHANNEL});
+      this.sendMessage({type: MessageType.UNS, channel: WEBSOCKET_CHANNEL});
       this.ws.close();
     }
   }
@@ -112,15 +116,3 @@ class WebSocketProvider {
 }
 
 export const webSocketProvider = new WebSocketProvider();
-
-interface useWebSocketProps {
-  listener: (message: any) => void;
-}
-
-export const useWebSocket = ({listener}: useWebSocketProps) => {
-  useEffect(() => {
-    webSocketProvider.register(listener);
-
-    return () => webSocketProvider.unregister(listener);
-  }, [listener]);
-};

@@ -16,5 +16,14 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-export {useWebSocket} from './hooks';
-export {webSocketProvider} from './WebSocketProvider';
+import {useEffect} from 'react';
+import {webSocketProvider} from './WebSocketProvider';
+import {WebSocketListener} from './types';
+
+export const useWebSocket = (listener: WebSocketListener) => {
+  useEffect(() => {
+    webSocketProvider.register(listener);
+
+    return () => webSocketProvider.unregister(listener);
+  }, [listener]);
+};

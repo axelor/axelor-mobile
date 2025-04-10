@@ -16,5 +16,19 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-export {useWebSocket} from './hooks';
-export {webSocketProvider} from './WebSocketProvider';
+export const WEBSOCKET_CHANNEL = 'tags';
+export const KEEP_ALIVE_INTERVAL_MS = 5000;
+
+export enum MessageType {
+  SUB = 'SUB',
+  UNS = 'UNS',
+  MSG = 'MSG',
+}
+
+export interface WebSocketMessage {
+  type: MessageType;
+  channel: string;
+  data?: any;
+}
+
+export type WebSocketListener = (message: WebSocketMessage) => void;
