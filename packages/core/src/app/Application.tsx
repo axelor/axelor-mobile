@@ -40,6 +40,7 @@ interface appConfig {
   demoSession: Session;
   defaultLanguage: string;
   defaultRequestLimit: number;
+  enableWebSocket: boolean;
   enableConnectionSessions: boolean;
   allowInternetConnectionBlock: boolean;
   retrocompatibilityAOS6: boolean;
@@ -114,6 +115,7 @@ const Application = ({
       writingThemes={writingThemes}
       defaultLanguage={configuration?.defaultLanguage}
       defaultRequestLimit={configuration?.defaultRequestLimit}
+      enableWebSocket={configuration?.enableWebSocket}
       themeColorsConfig={configuration?.themeColorsConfig}
       writingStylesConfig={configuration?.writingStylesConfig}
       showModulesSubtitle={
