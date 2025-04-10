@@ -3,6 +3,38 @@ title: 8.2.0
 tags: Changelog
 ---
 
+## [8.2.10] (2025-04-10)
+
+### @axelor/aos-mobile-core
+
+#### Changes
+
+- Compatibility: improve error messages in drawer with more details
+
+#### Fixes
+
+- iPad: add configuration to be in full screen in portrait mode
+- Scanner: always add listener on intents to resolve profile creation
+
+### @axelor/aos-mobile-ui
+
+#### Fixes
+
+- ActionCard: merge style of children instead of replacing with height
+
+### @axelor/aos-mobile-hr
+
+#### Fixes
+
+- Config: add null checks to avoid crash
+
+### @axelor/aos-mobile-stock
+
+#### Fixes
+
+- Inventory: use keyboard avoiding view on details screen
+- Config: add null checks to avoid crash
+
 ## [8.2.9] (2025-03-25)
 
 ### @axelor/aos-mobile-core
@@ -533,6 +565,7 @@ This package is linked with the @axelor/aos-mobile-hr to manage time logging.
 
 - Supplier arrival: add possibility to fill origin when creating or selecting tracking number
 
+[8.2.10]: https://github.com/axelor/axelor-mobile/compare/8.2.9...8.2.10
 [8.2.9]: https://github.com/axelor/axelor-mobile/compare/8.2.8...8.2.9
 [8.2.8]: https://github.com/axelor/axelor-mobile/compare/8.2.7...8.2.8
 [8.2.7]: https://github.com/axelor/axelor-mobile/compare/8.2.6...8.2.7
