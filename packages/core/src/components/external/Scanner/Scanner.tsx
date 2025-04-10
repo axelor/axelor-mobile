@@ -21,7 +21,7 @@ import {DeviceEventEmitter, Platform} from 'react-native';
 import DataWedgeIntents from 'react-native-datawedge-intents';
 import DeviceInfo from 'react-native-device-info';
 import {useDispatch} from '../../../redux/hooks';
-import {scanValue, useScannerSelector} from '../../../features/scannerSlice';
+import {scanValue} from '../../../features/scannerSlice';
 import {DATAWEDGE_API} from './path.helpers';
 import {
   castScanIntent,
@@ -32,7 +32,6 @@ import {
 } from './intent.helpers';
 
 const Scanner = () => {
-  const {isEnabled} = useScannerSelector();
   const dispatch = useDispatch();
 
   const appConfig = useMemo(
@@ -130,23 +129,16 @@ const Scanner = () => {
 
   useEffect(() => {
     if (Platform.OS !== 'ios') {
-      if (isEnabled) {
-        const listener = DeviceEventEmitter.addListener(
-          'datawedge_broadcast_intent',
-          broadcastReceiver,
-        );
+      const listener = DeviceEventEmitter.addListener(
+        'datawedge_broadcast_intent',
+        broadcastReceiver,
+      );
 
-        return () => {
-          listener.remove();
-        };
-      }
+      return () => {
+        listener.remove();
+      };
     }
-  }, [
-    broadcastReceiver,
-    determineVersion,
-    isEnabled,
-    registerBroadcastReceiver,
-  ]);
+  }, [broadcastReceiver]);
 
   return null;
 };
