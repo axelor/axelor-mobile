@@ -37,7 +37,7 @@ const InboxScreen = ({}) => {
   );
 
   return (
-    <Screen>
+    <Screen removeSpaceOnTop>
       <ScrollList
         loadingList={loadingInbox}
         data={inboxList}
