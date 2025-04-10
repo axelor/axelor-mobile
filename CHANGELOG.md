@@ -3,6 +3,30 @@ title: 7.2.0
 tags: Changelog
 ---
 
+## [7.2.29] (2025-04-10)
+
+### @axelor/aos-mobile-core
+
+#### Changes
+
+- Compatibility: improve error messages in drawer with more details
+
+#### Fixes
+
+- Scanner: always add listener on intents to resolve profile creation
+
+### @axelor/aos-mobile-hr
+
+#### Fixes
+
+- Config: add null checks to avoid crash
+
+### @axelor/aos-mobile-stock
+
+#### Fixes
+
+- Config: add null checks to avoid crash
+
 ## [7.2.28] (2025-03-25)
 
 ### @axelor/aos-mobile-core
@@ -877,6 +901,7 @@ It enables user to manage Expenses through the mobile application. You can creat
 - Remove IconButton component which should be replaced by Button component.
 - Remove Pop-up components which should be replaced by Alert component.
 
+[7.2.29]: https://github.com/axelor/axelor-mobile/compare/7.2.28...7.2.29
 [7.2.28]: https://github.com/axelor/axelor-mobile/compare/7.2.27...7.2.28
 [7.2.27]: https://github.com/axelor/axelor-mobile/compare/7.2.26...7.2.27
 [7.2.26]: https://github.com/axelor/axelor-mobile/compare/7.2.25...7.2.26
