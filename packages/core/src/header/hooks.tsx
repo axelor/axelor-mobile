@@ -90,8 +90,11 @@ const useFilterGenericAction = () => {
             const filterName = res?.view?.name;
             let _userFilters = [];
 
-            if (filterName) {
-              _userFilters = await fetchMetaFilters({filterName, userId})
+            if (filterName || options) {
+              _userFilters = await fetchMetaFilters({
+                filterName: filterName || options.name,
+                userId,
+              })
                 .then(metaRes => metaRes?.data?.data ?? [])
                 .catch(() => []);
             }
