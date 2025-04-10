@@ -51,7 +51,7 @@ const TimesheetDetailCard = ({
   const [convertedPeriod, setConvertedPeriod] = useState<number>(0);
 
   const _statusSelect = useMemo(() => {
-    return TimesheetType.getStatus(timesheetConfig.needValidation, item);
+    return TimesheetType.getStatus(timesheetConfig?.needValidation, item);
   }, [item, timesheetConfig]);
 
   const userCanValidate = useMemo(() => {
