@@ -16,13 +16,14 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import React, {useCallback, useEffect} from 'react';
+import React, {useCallback, useEffect, useState} from 'react';
 import {
   headerActionsProvider,
   useDispatch,
   useNavigation,
   useSelector,
   useTranslator,
+  useWebSocket,
 } from '@axelor/aos-mobile-core';
 import {useThemeColor} from '@axelor/aos-mobile-ui';
 import {getAction} from '../utils';
@@ -115,6 +116,12 @@ const useUserProfileActions = () => {
   const I18n = useTranslator();
   const navigation = useNavigation();
 
+  const [numberUnreadMessages, setNumberUnreadMessages] = useState(0);
+
+  useWebSocket(websocket =>
+    setNumberUnreadMessages(websocket?.data?.values?.mail?.unread),
+  );
+
   useEffect(() => {
     headerActionsProvider.registerModel('auth_user_profile', {
       actions: [
@@ -122,11 +129,12 @@ const useUserProfileActions = () => {
           key: 'inbox',
           order: 15,
           iconName: 'chat-dots',
+          indicator: numberUnreadMessages,
           title: I18n.t('Message_Inbox'),
           onPress: () => navigation.navigate('InboxScreen'),
           showInHeader: true,
         },
       ],
     });
-  }, [I18n, navigation]);
+  }, [I18n, navigation, numberUnreadMessages]);
 };
