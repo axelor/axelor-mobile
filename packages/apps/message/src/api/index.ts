@@ -18,12 +18,13 @@
 
 export {
   countUnreadMessages as countUnreadMessagesApi,
+  fetchInboxMessages as fetchInboxMessagesApi,
   fetchMailMessages as fetchMailMessagesApi,
   fetchModelSubscribers as fetchModelSubscribersApi,
   getAllUnreadFlagsOfMailMessage as getAllUnreadFlagsOfMailMessageApi,
   postMailMessageComment as postMailMessageCommentApi,
-  readMailMessage as readMailMessageApi,
   readAllMailMessages as readAllMailMessagesApi,
+  readMailMessage as readMailMessageApi,
   subscribeRequest as subscribeRequestApi,
   unsubscribeRequest as unsubscribeRequestApi,
 } from './mail-message-api';

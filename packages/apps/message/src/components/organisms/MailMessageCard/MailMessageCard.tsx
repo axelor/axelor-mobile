@@ -32,12 +32,13 @@ interface MailMessageCardProps {
   eventTime: string;
   files: any[];
   style?: any;
+  relatedName?: string;
   subject: string;
-  title: string;
   type: string;
   flags: any[];
   relatedId: number;
   relatedModel: string;
+  isInbox?: boolean;
 }
 
 const MailMessageCard = ({
@@ -48,12 +49,13 @@ const MailMessageCard = ({
   eventTime,
   files,
   style,
+  relatedName,
   subject,
-  title,
   type,
   flags,
   relatedId,
   relatedModel,
+  isInbox,
 }: MailMessageCardProps) => {
   const I18n = useTranslator();
 
@@ -75,16 +77,19 @@ const MailMessageCard = ({
             flags={flags}
             relatedId={relatedId}
             relatedModel={relatedModel}
+            isInbox={isInbox}
           />
         )}
         {type === MailMessageType.status.notification && (
           <NotificationCard
-            title={title}
+            relatedName={relatedName}
+            subject={subject}
             tracks={JSON.parse(body ?? '{}').tracks}
             tag={JSON.parse(body ?? '{}').tags[0]}
             flags={flags}
             relatedId={relatedId}
             relatedModel={relatedModel}
+            isInbox={isInbox}
           />
         )}
       </View>

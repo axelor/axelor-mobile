@@ -87,7 +87,7 @@ const ActivityCard = ({
           })}
         </Text>
         <MailMessageNotificationCard
-          title={title}
+          subject={title}
           tracks={tracks}
           customTopComponent={<Badge title={modelName} color={bagdeColor} />}
         />

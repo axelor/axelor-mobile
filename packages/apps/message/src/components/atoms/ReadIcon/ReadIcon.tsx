@@ -30,6 +30,7 @@ interface ReadIconProps {
   mailMessageFlag: any;
   modelId: number;
   model: string;
+  isInbox?: boolean;
 }
 
 const ReadIcon = ({
@@ -37,6 +38,7 @@ const ReadIcon = ({
   mailMessageFlag,
   modelId,
   model,
+  isInbox = false,
 }: ReadIconProps) => {
   const Colors = useThemeColor();
   const dispatch = useDispatch();
@@ -60,9 +62,10 @@ const ReadIcon = ({
         mailFlagList: [mailMessageFlag],
         modelId,
         model,
+        isInbox,
       }),
     );
-  }, [dispatch, mailMessageFlag, model, modelId]);
+  }, [dispatch, isInbox, mailMessageFlag, model, modelId]);
 
   const handleMarkAllAsRead = useCallback(() => {
     dispatch(
@@ -80,7 +83,7 @@ const ReadIcon = ({
         color={iconColor}
         size={18}
         touchable={!isRead}
-        onPress={handleMarkAsRead}
+        onPress={handleMarkAllAsRead}
         style={styles.doucleCheckIcon}
       />
     );
@@ -92,7 +95,7 @@ const ReadIcon = ({
       color={iconColor}
       size={15}
       touchable={!isRead}
-      onPress={handleMarkAllAsRead}
+      onPress={handleMarkAsRead}
       style={styles.checkIcon}
     />
   );
