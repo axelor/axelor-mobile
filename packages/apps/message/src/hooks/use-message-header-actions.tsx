@@ -118,10 +118,9 @@ const useUserProfileActions = () => {
 
   const [numberUnreadMessages, setNumberUnreadMessages] = useState(0);
 
-  useWebSocket({
-    listener: message =>
-      setNumberUnreadMessages(message?.data?.values?.mail?.unread),
-  });
+  useWebSocket(websocket =>
+    setNumberUnreadMessages(websocket?.data?.values?.mail?.unread),
+  );
 
   useEffect(() => {
     headerActionsProvider.registerModel('auth_user_profile', {
