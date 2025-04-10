@@ -36,6 +36,7 @@ interface CommentCardProps {
   flags?: any;
   style?: any;
   navigation?: any;
+  isInbox?: boolean;
 }
 
 const CommentCard = ({
@@ -46,6 +47,7 @@ const CommentCard = ({
   value,
   flags,
   style,
+  isInbox,
 }: CommentCardProps) => {
   const Colors = useThemeColor();
   const I18n = useTranslator();
@@ -84,6 +86,7 @@ const CommentCard = ({
               mailMessageFlag={flags}
               model={relatedModel}
               modelId={relatedId}
+              isInbox={isInbox}
             />
           )}
         </View>

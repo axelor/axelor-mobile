@@ -234,3 +234,15 @@ export async function readMailMessage({mailFlagList}: {mailFlagList: any[]}) {
     },
   });
 }
+
+export async function fetchInboxMessages({
+  limit = 10,
+  page,
+}: {
+  limit?: number;
+  page: number;
+}) {
+  return axiosApiProvider.get({
+    url: `/ws/messages?folder=inbox&limit=${limit}&offset=${limit * page}`,
+  });
+}

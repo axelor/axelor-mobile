@@ -39,23 +39,27 @@ interface TagProps {
 interface NotificationCardProps {
   relatedModel?: string;
   relatedId?: number;
-  title: string;
+  relatedName?: string;
+  subject: string;
   tag?: TagProps;
   tracks?: any[];
   flags?: any;
   style?: any;
   customTopComponent?: ReactElement<any>;
+  isInbox?: boolean;
 }
 
 const NotificationCard = ({
   relatedModel,
   relatedId,
-  title,
+  relatedName,
+  subject,
   tag,
   tracks,
   flags,
   style,
   customTopComponent,
+  isInbox,
 }: NotificationCardProps) => {
   const Colors = useThemeColor();
   const [moreItems, setMoreItems] = useState(false);
@@ -75,7 +79,8 @@ const NotificationCard = ({
           <LabelText
             iconName="info-circle-fill"
             size={18}
-            value={title}
+            title={relatedName}
+            value={subject}
             style={styles.headerLabel}
             textStyle={styles.title}
             color={Colors.primaryColor.background}
@@ -98,6 +103,7 @@ const NotificationCard = ({
               mailMessageFlag={flags}
               model={relatedModel}
               modelId={relatedId}
+              isInbox={isInbox}
             />
           )}
         </View>
