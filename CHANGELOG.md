@@ -3,6 +3,33 @@ title: 8.1.0
 tags: Changelog
 ---
 
+## [8.1.18] (2025-04-10)
+
+### @axelor/aos-mobile-core
+
+#### Changes
+
+- Compatibility: improve error messages in drawer with more details
+
+#### Fixes
+
+- iPad: add configuration to be in full screen in portrait mode
+- Scanner: always add listener on intents to resolve profile creation
+- Login: remove double slash before callback endpoint
+
+### @axelor/aos-mobile-hr
+
+#### Fixes
+
+- Config: add null checks to avoid crash
+
+### @axelor/aos-mobile-stock
+
+#### Fixes
+
+- Inventory: use keyboard avoiding view on details screen
+- Config: add null checks to avoid crash
+
 ## [8.1.17] (2025-03-25)
 
 ### @axelor/aos-mobile-core
@@ -775,6 +802,7 @@ It enables user to manage interventions and customer parc through the mobile app
 - Selections: use new system and tools instead of type files
 - Product indicators: use new chart component to display quantity indicators
 
+[8.1.18]: https://github.com/axelor/axelor-mobile/compare/8.1.17...8.1.18
 [8.1.17]: https://github.com/axelor/axelor-mobile/compare/8.1.16...8.1.17
 [8.1.16]: https://github.com/axelor/axelor-mobile/compare/8.1.15...8.1.16
 [8.1.15]: https://github.com/axelor/axelor-mobile/compare/8.1.14...8.1.15
