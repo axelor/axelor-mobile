@@ -145,6 +145,7 @@ export async function searchProduct({
   productCategory,
   isConfiguratorProductShown,
   isGenericProductShown,
+  filterDomain,
 }) {
   return createStandardSearch({
     model: 'com.axelor.apps.base.db.Product',
@@ -159,6 +160,7 @@ export async function searchProduct({
     sortKey: 'sale_product',
     page,
     provider: 'model',
+    filter: filterDomain,
   });
 }
 export async function searchProductCategory({page = 0, searchValue}) {
