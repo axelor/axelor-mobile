@@ -53,7 +53,7 @@ const TimesheetDetailsScreen = ({navigation, route}) => {
     useSelector(state => state.timesheetLine);
 
   const _statusSelect = useMemo(() => {
-    return TimesheetType.getStatus(timesheetConfig.needValidation, timesheet);
+    return TimesheetType.getStatus(timesheetConfig?.needValidation, timesheet);
   }, [timesheet, timesheetConfig]);
 
   const isTimesheetLineListEmpty = useMemo(

@@ -56,7 +56,7 @@ export const hr_formsRegister: FormConfigs = {
         widget: 'default',
         readonly: true,
         hideIf: ({storeState}) =>
-          !storeState.appConfig.base.enableMultiCompany ||
+          !storeState.appConfig.base?.enableMultiCompany ||
           storeState.company.companyList?.length === 1,
       },
       expense: {

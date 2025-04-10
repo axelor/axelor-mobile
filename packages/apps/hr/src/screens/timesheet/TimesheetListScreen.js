@@ -140,7 +140,7 @@ const TimesheetListScreen = ({navigation}) => {
         if (selectedStatus != null) {
           return list?.filter(
             item =>
-              Timesheet.getStatus(timesheetConfig.needValidation, item) ===
+              Timesheet.getStatus(timesheetConfig?.needValidation, item) ===
               selectedStatus,
           );
         } else {
@@ -148,7 +148,7 @@ const TimesheetListScreen = ({navigation}) => {
         }
       }
     },
-    [selectedStatus, timesheetConfig.needValidation],
+    [selectedStatus, timesheetConfig?.needValidation],
   );
 
   const filteredList = useMemo(

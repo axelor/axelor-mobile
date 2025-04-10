@@ -232,7 +232,7 @@ const SupplierArrivalLineDetailScreen = ({route, navigation}) => {
           supplierArrivalLine={supplierArrivalLine}
           readonly={readonly}
         />
-        {stockConfig.isManageStockLocationOnStockMoveLine ? (
+        {stockConfig?.isManageStockLocationOnStockMoveLine ? (
           <StockLocationSearchBar
             placeholderKey="Stock_ToStockLocation"
             defaultValue={toStockLocation}
