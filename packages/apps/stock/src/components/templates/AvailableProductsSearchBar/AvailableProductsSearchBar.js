@@ -86,7 +86,7 @@ const AvailableProductsSearchBar = ({
       scanKeyBarCode={barCodeScanKey}
       sliceBarCodeFunction={searchAlternativeBarcode}
       isScrollViewContainer={isScrollViewContainer}
-      displayBarCodeInput={baseConfig.enableMultiBarcodeOnProducts}
+      displayBarCodeInput={baseConfig?.enableMultiBarcodeOnProducts}
     />
   );
 };
