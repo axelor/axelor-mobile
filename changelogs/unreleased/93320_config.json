@@ -1,0 +1,5 @@
+{
+  "title": "WebSocket: add a configuration to activate or not connection",
+  "type": "feat",
+  "packages": "core"
+}
