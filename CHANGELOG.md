@@ -3,6 +3,45 @@ title: 8.3.0
 tags: Changelog
 ---
 
+## [8.3.2] (2025-04-10)
+
+### @axelor/aos-mobile-core
+
+#### Changes
+
+- Compatibility: improve error messages in drawer with more details
+
+#### Fixes
+
+- iPad: add configuration to be in full screen in portrait mode
+- Download tool: remove illegal characters from filename before processing
+- Scanner: always add listener on intents to resolve profile creation
+
+### @axelor/aos-mobile-ui
+
+#### Fixes
+
+- ActionCard: merge style of children instead of replacing with height
+
+### @axelor/aos-mobile-dms
+
+#### Fixes
+
+- Extension: apply filter on MetaFile name instead of DMSFile name
+
+### @axelor/aos-mobile-hr
+
+#### Fixes
+
+- Config: add null checks to avoid crash
+
+### @axelor/aos-mobile-stock
+
+#### Fixes
+
+- Inventory: use keyboard avoiding view on details screen
+- Config: add null checks to avoid crash
+
 ## [8.3.1] (2025-03-25)
 
 ### @axelor/aos-mobile-core
@@ -159,5 +198,6 @@ This version add a new part of the HR package, user can now manage leave request
 
 - Header actions: remove use of attachedFileScreenTitle
 
+[8.3.2]: https://github.com/axelor/axelor-mobile/compare/8.3.1...8.3.2
 [8.3.1]: https://github.com/axelor/axelor-mobile/compare/8.3.0...8.3.1
 [8.3.0]: https://github.com/axelor/axelor-mobile/compare/8.2.8...8.3.0

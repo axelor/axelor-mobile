@@ -1,5 +1,0 @@
-{
-  "title": "Extension: apply filter on MetaFile name instead of DMSFile name",
-  "type": "fix",
-  "packages": "dms"
-}

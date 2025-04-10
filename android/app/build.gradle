@@ -79,8 +79,8 @@ android {
         applicationId "com.aosmobile"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
-        versionCode 44
-        versionName "8.3.1"
+        versionCode 45
+        versionName "8.3.2"
     }
     signingConfigs {
         debug {
@@ -120,7 +120,7 @@ android {
     productFlavors {
         pipeline {
             dimension "type"
-            applicationIdSuffix ".seven.two"
+            applicationIdSuffix ".eight.three"
             versionNameSuffix "-demo"
         }
         dev {
