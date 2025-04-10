@@ -147,7 +147,7 @@ const CustomerDeliveryLineCreationScreen = ({route, navigation}) => {
         }
       />
       <KeyboardAvoidingScrollView>
-        {stockConfig.isManageStockLocationOnStockMoveLine ? (
+        {stockConfig?.isManageStockLocationOnStockMoveLine ? (
           <StockLocationSearchBar
             placeholderKey="Stock_FromStockLocation"
             defaultValue={fromStockLocation}

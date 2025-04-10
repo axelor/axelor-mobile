@@ -180,7 +180,7 @@ const InternalMoveLineDetailsScreen = ({navigation, route}) => {
           loading: loadingInternalMoveLine,
           fetcher: getInternalMoveLine,
         }}>
-        {stockConfig.isManageStockLocationOnStockMoveLine ? (
+        {stockConfig?.isManageStockLocationOnStockMoveLine ? (
           <StockLocationSearchBar
             placeholderKey="Stock_OriginalStockLocation"
             scanKey={fromScanKey}
@@ -221,7 +221,7 @@ const InternalMoveLineDetailsScreen = ({navigation, route}) => {
           unit={unit}
           isScrollViewContainer={true}
         />
-        {stockConfig.isManageStockLocationOnStockMoveLine ? (
+        {stockConfig?.isManageStockLocationOnStockMoveLine ? (
           <StockLocationSearchBar
             placeholderKey="Stock_DestinationStockLocation"
             scanKey={toScanKey}
