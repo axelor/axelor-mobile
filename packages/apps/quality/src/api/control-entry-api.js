@@ -77,6 +77,7 @@ export async function searchControlEntry({
   userId = null,
   date = null,
   selectedStatus = null,
+  filterDomain,
 }) {
   return createStandardSearch({
     model: 'com.axelor.apps.quality.db.ControlEntry',
@@ -91,6 +92,7 @@ export async function searchControlEntry({
     sortKey: 'quality_controlEntry',
     page: page,
     provider: 'model',
+    filter: filterDomain,
   });
 }
 

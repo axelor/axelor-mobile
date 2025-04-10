@@ -28,6 +28,7 @@ export default {
       shadedHeader: false,
     },
     isUsableOnShortcut: true,
+    actionID: 'quality_controlEntry_list',
   },
   ControlEntryDetailsScreen: {
     title: 'Quality_ControlEntry',
