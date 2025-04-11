@@ -114,10 +114,12 @@ export async function fetchIntervention({
   statusList,
   page = 0,
   companyId,
+  filterDomain,
 }) {
   return createStandardSearch({
     model: 'com.axelor.apps.intervention.db.Intervention',
     companyId,
+    filter: filterDomain,
     criteria: createInterventionCriteria(
       searchValue,
       userId,

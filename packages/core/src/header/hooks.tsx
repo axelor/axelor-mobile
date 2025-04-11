@@ -87,7 +87,7 @@ const useFilterGenericAction = () => {
               ..._f,
               id: _f.name,
             }));
-            const filterName = res?.view?.name;
+            const filterName = options?.name ?? res?.view?.name;
             let _userFilters = [];
 
             if (filterName) {

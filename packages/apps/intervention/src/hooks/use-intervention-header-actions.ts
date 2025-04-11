@@ -30,6 +30,7 @@ import {fetchInterventionById} from '../features/interventionSlice';
 
 export const useInterventionHeaders = () => {
   useEquipmentFormActions();
+  useInterventionListAction();
   useInterventionDetailsActions();
   useActiveInterventionActions();
 };
@@ -77,6 +78,17 @@ const useEquipmentFormActions = () => {
       ],
     });
   }, [equipment, I18n, navigation, Equipment?.typeSelect]);
+};
+
+const useInterventionListAction = () => {
+  useEffect(() => {
+    headerActionsProvider.registerModel('intervention_intervention_list', {
+      model: 'com.axelor.apps.intervention.db.Intervention',
+      options: {
+        core_modelFilters: {name: 'act:intervention.root.interventions'},
+      },
+    });
+  }, []);
 };
 
 const useInterventionDetailsActions = () => {
