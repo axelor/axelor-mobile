@@ -17,13 +17,10 @@
  */
 
 import React, {useCallback, useEffect, useMemo, useState} from 'react';
+import {ChipSelect, Screen, ScrollList} from '@axelor/aos-mobile-ui';
 import {
-  ChipSelect,
-  HeaderContainer,
-  Screen,
-  ScrollList,
-} from '@axelor/aos-mobile-ui';
-import {
+  FilterContainer,
+  useActiveFilter,
   useDispatch,
   useIsFocused,
   useSelector,
@@ -47,6 +44,7 @@ const StockCorrectionListScreen = ({navigation}) => {
   const dispatch = useDispatch();
   const {StockCorrection} = useTypes();
   const {getSelectionItems} = useTypeHelpers();
+  const {activeFilter} = useActiveFilter();
 
   const {loadingList, moreLoading, isListEnd, stockCorrectionList} =
     useSelector(state => state.stockCorrection);
@@ -74,10 +72,11 @@ const StockCorrectionListScreen = ({navigation}) => {
           productId: product?.id,
           statusList: selectedStatus,
           page,
+          filterDomain: activeFilter,
         }),
       );
     },
-    [dispatch, product?.id, selectedStatus, stockLocation?.id],
+    [activeFilter, dispatch, product?.id, selectedStatus, stockLocation?.id],
   );
 
   useEffect(() => {
@@ -90,7 +89,7 @@ const StockCorrectionListScreen = ({navigation}) => {
 
   return (
     <Screen removeSpaceOnTop={true}>
-      <HeaderContainer
+      <FilterContainer
         chipComponent={
           <ChipSelect
             mode="switch"
@@ -109,7 +108,7 @@ const StockCorrectionListScreen = ({navigation}) => {
           onChange={setProduct}
           defaultValue={product}
         />
-      </HeaderContainer>
+      </FilterContainer>
       <ScrollList
         loadingList={loadingList}
         data={stockCorrectionList}

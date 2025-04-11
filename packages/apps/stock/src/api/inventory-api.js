@@ -78,6 +78,7 @@ export async function searchInventoryFilter({
   statusList,
   companyId,
   page = 0,
+  filterDomain,
 }) {
   return createStandardSearch({
     model: 'com.axelor.apps.stock.db.Inventory',
@@ -87,6 +88,7 @@ export async function searchInventoryFilter({
     sortKey: 'stock_inventory',
     page,
     provider: 'model',
+    filter: filterDomain,
   });
 }
 

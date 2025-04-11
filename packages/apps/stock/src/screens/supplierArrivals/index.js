@@ -33,6 +33,7 @@ export default {
       shadedHeader: false,
     },
     isUsableOnShortcut: true,
+    actionID: 'stock_supplierArrival_list',
   },
   SupplierArrivalDetailsScreen: {
     title: 'Stock_SupplierArrival',

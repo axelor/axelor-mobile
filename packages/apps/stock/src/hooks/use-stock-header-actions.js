@@ -28,22 +28,37 @@ import {
 import {useThemeColor} from '@axelor/aos-mobile-ui';
 
 export const useStockHeaders = () => {
+  useCustomerDeliveryListActions();
   useCustomerDeliveryDetailsActions();
   useCustomerDeliveryLineDetailsActions();
   useCustomerDeliveryLineListActions();
   useInternalMoveDetailsActions();
   useInternalMoveLineDetailsActions();
   useInternalMoveListActions();
+  useInventoryListActions();
   useInventoryPlannedDetailsActions();
   useInventoryStartedDetailsActions();
   useInventoryLineDetailsActions();
+  useProductListActions();
   useProductDetailsActions();
   useProductStockDetailsActions();
   useStockCorrectionListActions();
   useStockCorrectionDetailsActions();
+  useSupplierArrivalListActions();
   useSupplierArrivalDetailsActions();
   useSupplierArrivalLineDetailsActions();
   useSupplierArrivalLineListActions();
+};
+
+const useCustomerDeliveryListActions = () => {
+  useEffect(() => {
+    headerActionsProvider.registerModel('stock_customerDelivery_list', {
+      model: 'com.axelor.apps.stock.db.StockMove',
+      options: {
+        core_modelFilters: {name: 'customer-deliveries-filters'},
+      },
+    });
+  }, []);
 };
 
 const useCustomerDeliveryDetailsActions = () => {
@@ -136,6 +151,10 @@ const useInternalMoveListActions = () => {
 
   useEffect(() => {
     headerActionsProvider.registerModel('stock_internalMove_list', {
+      model: 'com.axelor.apps.stock.db.StockMove',
+      options: {
+        core_modelFilters: {name: 'internal-stock-move-filters'},
+      },
       actions: [
         {
           key: 'newInternalMove',
@@ -162,6 +181,14 @@ const useInternalMoveLineDetailsActions = () => {
       modelId: internalMoveLine?.id,
     });
   }, [internalMoveLine?.id, product?.name]);
+};
+
+const useInventoryListActions = () => {
+  useEffect(() => {
+    headerActionsProvider.registerModel('stock_inventory_list', {
+      model: 'com.axelor.apps.stock.db.Inventory',
+    });
+  }, []);
 };
 
 const useInventoryPlannedDetailsActions = () => {
@@ -198,6 +225,14 @@ const useInventoryLineDetailsActions = () => {
   }, [inventoryLine?.id, product?.name]);
 };
 
+const useProductListActions = () => {
+  useEffect(() => {
+    headerActionsProvider.registerModel('stock_product_list', {
+      model: 'com.axelor.apps.base.db.Product',
+    });
+  }, []);
+};
+
 const useProductDetailsActions = () => {
   const {productFromId: product} = useSelector(state => state.product);
 
@@ -230,6 +265,10 @@ const useStockCorrectionListActions = () => {
 
   useEffect(() => {
     headerActionsProvider.registerModel('stock_stockCorrection_list', {
+      model: 'com.axelor.apps.stock.db.StockCorrection',
+      options: {
+        core_modelFilters: {name: 'act:stock.root.stock.correction'},
+      },
       actions: [
         {
           key: 'newStockCorrection',
@@ -267,6 +306,17 @@ const useSupplierArrivalDetailsActions = () => {
       modelId: supplierArrival?.id,
     });
   }, [supplierArrival]);
+};
+
+const useSupplierArrivalListActions = () => {
+  useEffect(() => {
+    headerActionsProvider.registerModel('stock_supplierArrival_list', {
+      model: 'com.axelor.apps.stock.db.StockMoveLine',
+      options: {
+        core_modelFilters: {name: 'supplier-arrivals-filters'},
+      },
+    });
+  }, []);
 };
 
 const useSupplierArrivalLineListActions = () => {
