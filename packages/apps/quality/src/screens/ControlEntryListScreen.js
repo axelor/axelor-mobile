@@ -26,13 +26,13 @@ import {
 } from '@axelor/aos-mobile-ui';
 import {
   DateInput,
+  FilterContainer,
   useActiveFilter,
   useDispatch,
   useSelector,
   useTranslator,
   useTypes,
   useTypeHelpers,
-  FilterContainer,
 } from '@axelor/aos-mobile-core';
 import {searchControlEntry} from '../features/controlEntrySlice';
 import {ControlEntryCard} from '../components';
@@ -71,12 +71,12 @@ const ControlEntryListScreen = ({navigation}) => {
       );
     },
     [
+      activeFilter,
+      dateFilter,
       dispatch,
       isInspectorFilter,
-      userId,
-      dateFilter,
       selectedStatus,
-      activeFilter,
+      userId,
     ],
   );
 
