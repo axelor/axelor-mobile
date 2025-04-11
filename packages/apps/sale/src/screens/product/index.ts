@@ -30,6 +30,7 @@ export default {
       shadedHeader: false,
     },
     isUsableOnShortcut: true,
+    actionID: 'sale_product_list',
   },
   ProductSaleDetailsScreen: {
     title: 'Sale_ProductService',

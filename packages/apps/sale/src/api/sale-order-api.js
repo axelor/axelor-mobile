@@ -55,6 +55,7 @@ export async function fetchSaleOrder({
   customerId,
   page = 0,
   companyId,
+  filterDomain,
 }) {
   return createStandardSearch({
     model: 'com.axelor.apps.sale.db.SaleOrder',
@@ -64,6 +65,7 @@ export async function fetchSaleOrder({
     page,
     provider: 'model',
     companyId,
+    filter: filterDomain,
   });
 }
 
