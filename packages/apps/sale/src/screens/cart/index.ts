@@ -38,6 +38,7 @@ export default {
   CatalogScreen: {
     title: 'Sale_Catalog',
     component: CatalogScreen,
+    actionID: 'sale_product_list',
     options: {
       shadedHeader: false,
     },
