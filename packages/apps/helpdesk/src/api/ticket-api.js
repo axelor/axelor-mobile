@@ -102,6 +102,7 @@ export async function searchTickets({
   typeList,
   priorityList,
   page = 0,
+  filterDomain,
 }) {
   return createStandardSearch({
     model: 'com.axelor.apps.helpdesk.db.Ticket',
@@ -117,6 +118,7 @@ export async function searchTickets({
     sortKey: 'helpdesk_ticket',
     page,
     provider: 'model',
+    filter: filterDomain,
   });
 }
 
