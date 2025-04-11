@@ -83,6 +83,7 @@ export async function searchCustomer({
   categoryId,
   companyId,
   page = 0,
+  filterDomain,
 }) {
   return createStandardSearch({
     model: 'com.axelor.apps.base.db.Partner',
@@ -98,6 +99,7 @@ export async function searchCustomer({
     sortKey: 'sale_customer',
     page,
     provider: 'model',
+    filter: filterDomain,
   });
 }
 

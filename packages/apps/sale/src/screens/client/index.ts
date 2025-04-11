@@ -27,6 +27,7 @@ export default {
       shadedHeader: false,
     },
     isUsableOnShortcut: true,
+    actionID: 'sale_client_list',
   },
   ClientSaleDetailsScreen: {
     title: 'Sale_Client',
