@@ -20,8 +20,17 @@ import {useEffect} from 'react';
 import {headerActionsProvider, useSelector} from '@axelor/aos-mobile-core';
 
 export const usePurchaseHeaders = () => {
+  usePurchaseRequestListActions();
   usePurchaseRequestDetailsActions();
   usePurchaseRequestLineDetailsActions();
+};
+
+const usePurchaseRequestListActions = () => {
+  useEffect(() => {
+    headerActionsProvider.registerModel('purchase_purchaseRequest_list', {
+      model: 'com.axelor.apps.purchase.db.PurchaseRequest',
+    });
+  }, []);
 };
 
 const usePurchaseRequestDetailsActions = () => {

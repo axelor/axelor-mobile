@@ -57,6 +57,7 @@ export async function searchPurchaseRequest({
   statusList,
   supplier,
   companyId,
+  filterDomain,
 }) {
   return createStandardSearch({
     model: 'com.axelor.apps.purchase.db.PurchaseRequest',
@@ -70,6 +71,7 @@ export async function searchPurchaseRequest({
     page,
     companyId,
     provider: 'model',
+    filter: filterDomain,
   });
 }
 

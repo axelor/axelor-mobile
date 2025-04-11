@@ -30,6 +30,7 @@ export default {
       shadedHeader: false,
     },
     isUsableOnShortcut: true,
+    actionID: 'purchase_purchaseRequest_list',
   },
   RequestDetailsView: {
     title: 'Purchase_InternalRequest',
