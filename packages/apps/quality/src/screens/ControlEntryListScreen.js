@@ -20,13 +20,14 @@ import React, {useCallback, useMemo, useState} from 'react';
 import {Dimensions, StyleSheet, View} from 'react-native';
 import {
   ChipSelect,
-  HeaderContainer,
   Screen,
   ScrollList,
   ToggleButton,
 } from '@axelor/aos-mobile-ui';
 import {
   DateInput,
+  FilterContainer,
+  useActiveFilter,
   useDispatch,
   useSelector,
   useTranslator,
@@ -41,6 +42,7 @@ const ControlEntryListScreen = ({navigation}) => {
   const dispatch = useDispatch();
   const {ControlEntry} = useTypes();
   const {getSelectionItems} = useTypeHelpers();
+  const {activeFilter} = useActiveFilter();
 
   const {userId} = useSelector(state => state.auth);
   const {controlEntryList, loadingControlEntryList, moreLoading, isListEnd} =
@@ -64,15 +66,23 @@ const ControlEntryListScreen = ({navigation}) => {
           userId: userId,
           date: dateFilter,
           selectedStatus: selectedStatus,
+          filterDomain: activeFilter,
         }),
       );
     },
-    [dispatch, isInspectorFilter, userId, dateFilter, selectedStatus],
+    [
+      activeFilter,
+      dateFilter,
+      dispatch,
+      isInspectorFilter,
+      selectedStatus,
+      userId,
+    ],
   );
 
   return (
     <Screen removeSpaceOnTop={true}>
-      <HeaderContainer
+      <FilterContainer
         expandableFilter={false}
         fixedItems={
           <View style={styles.headerContainer}>
