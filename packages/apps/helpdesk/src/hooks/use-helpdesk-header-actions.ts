@@ -30,6 +30,15 @@ const useHeldpeskTicketDetailsActions = () => {
   }, [ticket]);
 };
 
+const useHelpdeskTicketListActions = () => {
+  useEffect(() => {
+    headerActionsProvider.registerModel('helpdesk_ticket_list', {
+      model: 'com.axelor.apps.helpdesk.db.Ticket',
+    });
+  }, []);
+};
+
 export const useHelpdeskHeaders = () => {
+  useHelpdeskTicketListActions();
   useHeldpeskTicketDetailsActions();
 };
