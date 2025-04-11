@@ -16,6 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+export {filterProvider, useActiveFilter} from './FilterProvider';
 export {headerActionsProvider, useHeaderActions} from './HeaderActionsProvider';
 export {useBasicActions} from './hooks';
 export {
@@ -27,4 +28,3 @@ export {
 export {HeaderBandProvider, useHeaderBand} from './HeaderBandContext';
 export {HeaderBandHelper} from './header-band-context.helper';
 export {fetchOptionsOfHeaderKey} from './utils';
-export {useActiveFilter} from './FilterProvider';
