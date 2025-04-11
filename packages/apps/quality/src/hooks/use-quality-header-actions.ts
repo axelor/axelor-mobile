@@ -27,7 +27,19 @@ import {useThemeColor} from '@axelor/aos-mobile-ui';
 import {fetchControlEntryById} from '../features/controlEntrySlice';
 
 export const useQualityHeaders = () => {
+  useControlEntryListActions();
   useControlEntryDetailsActions();
+};
+
+const useControlEntryListActions = () => {
+  useEffect(() => {
+    headerActionsProvider.registerModel('quality_controlEntry_list', {
+      model: 'com.axelor.apps.quality.db.ControlEntry',
+      options: {
+        core_modelFilters: {name: 'act:quality.control.entries.view'},
+      },
+    });
+  }, []);
 };
 
 const useControlEntryDetailsActions = () => {
