@@ -41,6 +41,7 @@ export default {
       shadedHeader: false,
     },
     isUsableOnShortcut: true,
+    actionID: 'intervention_intervention_list',
   },
   PlannedInterventionsScreen: {
     title: 'Intervention_Interventions',
@@ -49,6 +50,7 @@ export default {
       shadedHeader: false,
     },
     isUsableOnShortcut: true,
+    actionID: 'intervention_intervention_list',
   },
   InterventionsHistoryScreen: {
     title: 'Intervention_Interventions',
@@ -57,6 +59,7 @@ export default {
       shadedHeader: false,
     },
     isUsableOnShortcut: true,
+    actionID: 'intervention_intervention_list',
   },
   InterventionDetailsScreen: {
     title: 'Intervention_Intervention',
