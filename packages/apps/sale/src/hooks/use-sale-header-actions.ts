@@ -28,12 +28,23 @@ import {
 import {useThemeColor} from '@axelor/aos-mobile-ui';
 
 export const useSaleHeaders = () => {
+  useProductListActions();
   useSaleOrderDetailsActions();
   useSaleOrderLineDetailsActions();
   useProductDetailsActions();
+  useClientListActions();
   useClientDetailsActions();
   useCartLineDetailsActions();
   useSaleQuotationsActions();
+  useSaleOrdersActions();
+};
+
+const useProductListActions = () => {
+  useEffect(() => {
+    headerActionsProvider.registerModel('sale_product_list', {
+      model: 'com.axelor.apps.base.db.Product',
+    });
+  }, []);
 };
 
 const useSaleOrderDetailsActions = () => {
@@ -94,6 +105,17 @@ const useProductDetailsActions = () => {
   }, [product?.id]);
 };
 
+const useClientListActions = () => {
+  useEffect(() => {
+    headerActionsProvider.registerModel('sale_client_list', {
+      model: 'com.axelor.apps.base.db.Partner',
+      options: {
+        core_modelFilters: {name: 'partner-filters'},
+      },
+    });
+  }, []);
+};
+
 const useClientDetailsActions = () => {
   const {customer} = useSelector((state: any) => state.sale_customer);
 
@@ -116,6 +138,17 @@ const useCartLineDetailsActions = () => {
   }, [cartLine?.id]);
 };
 
+const useSaleOrdersActions = () => {
+  useEffect(() => {
+    headerActionsProvider.registerModel('sale_saleOrder_list', {
+      model: 'com.axelor.apps.sale.db.SaleOrder',
+      options: {
+        core_modelFilters: {name: 'sale-order-filters'},
+      },
+    });
+  }, []);
+};
+
 const useSaleQuotationsActions = () => {
   const Colors = useThemeColor();
   const I18n = useTranslator();
@@ -126,6 +159,10 @@ const useSaleQuotationsActions = () => {
 
   useEffect(() => {
     headerActionsProvider.registerModel('sale_saleQuotation_list', {
+      model: 'com.axelor.apps.sale.db.SaleOrder',
+      options: {
+        core_modelFilters: {name: 'sale-order-filters'},
+      },
       actions: [
         {
           key: 'newSaleQuotation',
