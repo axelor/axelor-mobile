@@ -35,6 +35,7 @@ export default {
   },
   SaleOrdersScreen: {
     title: 'Sale_SaleOrders',
+    actionID: 'sale_saleOrder_list',
     component: SaleOrdersScreen,
     options: {
       shadedHeader: false,
