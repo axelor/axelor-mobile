@@ -26,9 +26,22 @@ import {
 import {useThemeColor} from '@axelor/aos-mobile-ui';
 
 export const useManufacturingHeaders = () => {
+  useManufacturingOrderListActions();
   useManufacturingOrderActions();
   useProducedProductActions();
+  useOperationOrderListActions();
   useOperationOrderDetailsActions();
+};
+
+const useManufacturingOrderListActions = () => {
+  useEffect(() => {
+    headerActionsProvider.registerModel(
+      'manufacturing_manufacturingOrder_list',
+      {
+        model: 'com.axelor.apps.production.db.ManufOrder',
+      },
+    );
+  }, []);
 };
 
 const useManufacturingOrderActions = () => {
@@ -70,6 +83,14 @@ const useProducedProductActions = () => {
       ],
     });
   }, [I18n, navigation, manufOrder, Colors]);
+};
+
+const useOperationOrderListActions = () => {
+  useEffect(() => {
+    headerActionsProvider.registerModel('manufacturing_operationOrder_list', {
+      model: 'com.axelor.apps.production.db.OperationOrder',
+    });
+  }, []);
 };
 
 const useOperationOrderDetailsActions = () => {

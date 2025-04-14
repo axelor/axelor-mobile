@@ -32,6 +32,7 @@ export default {
     options: {
       shadedHeader: false,
     },
+    actionID: 'manufacturing_manufacturingOrder_list',
     isUsableOnShortcut: true,
   },
   ManufacturingOrderDetailsScreen: {
