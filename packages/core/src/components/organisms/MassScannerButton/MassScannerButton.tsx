@@ -47,9 +47,10 @@ const MassScannerButton = ({
 
   const styles = useMemo(() => getStyles(Colors), [Colors]);
 
-  const handleActivateScanner = () => {
-    setScannerActive(true);
+  const handleToggleScanner = () => {
+    setScannerActive(prev => !prev);
   };
+
   const handleScannerClose = () => {
     setScannerActive(false);
   };
@@ -74,11 +75,14 @@ const MassScannerButton = ({
           }}
           bottomIconConfig={{
             name: 'qr-code-scan',
+            color: scannerActive
+              ? Colors.successColor.background
+              : Colors.defaultColor.background,
           }}
           predefinedPosition="bottom-right"
           size={32}
           touchable
-          onPress={handleActivateScanner}
+          onPress={handleToggleScanner}
         />
       </Card>
     </View>

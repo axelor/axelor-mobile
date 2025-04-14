@@ -16,8 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import React, {useCallback, useEffect, useRef, useState} from 'react';
-import {View, Text, ActivityIndicator} from 'react-native';
+import {useCallback, useEffect, useRef, useState} from 'react';
 import {useDispatch} from 'react-redux';
 import {
   useCameraScannerValueByKey,
@@ -87,9 +86,10 @@ const MassScanner = ({
 
   const processScan = useCallback(
     async (value: string, clearAction: () => void) => {
-      console.log('value', value);
       if (isProcessingRef.current) return;
       isProcessingRef.current = true;
+
+      const effectiveScanInterval = isZebraDevice ? 0 : scanInterval;
 
       try {
         await backgroundAction(value);
@@ -105,7 +105,7 @@ const MassScanner = ({
           if (isZebraDevice) {
             enableScan();
           }
-        }, scanInterval);
+        }, effectiveScanInterval);
       }
     },
     [
@@ -130,12 +130,7 @@ const MassScanner = ({
     }
   }, [dispatch, processScan, scannedBarcode]);
 
-  return (
-    <View>
-      <ActivityIndicator size="large" />
-      <Text>Mass scanning in progress...</Text>
-    </View>
-  );
+  return null;
 };
 
 export default MassScanner;
