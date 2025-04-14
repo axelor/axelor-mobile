@@ -17,7 +17,13 @@
  */
 
 import React, {useCallback, useEffect, useMemo, useRef, useState} from 'react';
-import {KeyboardTypeOptions, Platform, StyleSheet, View} from 'react-native';
+import {
+  KeyboardTypeOptions,
+  Platform,
+  StyleSheet,
+  TouchableOpacity,
+  View,
+} from 'react-native';
 import {
   formatNumber as _format,
   unformatNumber as _unformat,
@@ -70,9 +76,10 @@ const Increment = ({
 }: IncrementProps) => {
   const Colors = useThemeColor();
   const cutDecimalExcess = useDigitFormat();
+  const containerRef = useRef<any>(null);
   const inputRef = useRef<any>(null);
   const clickOutside = useClickOutside({
-    wrapperRef: inputRef,
+    wrapperRef: containerRef,
   });
 
   const [valueQty, setValueQty] = useState<string>(value);
@@ -188,7 +195,11 @@ const Increment = ({
   const styles = useMemo(() => getStyles(Colors), [Colors]);
 
   return (
-    <View style={[styles.container_increment, style]}>
+    <TouchableOpacity
+      ref={containerRef}
+      style={[styles.container_increment, style]}
+      activeOpacity={0.9}
+      onPress={() => inputRef.current?.focus()}>
       <IncrementButton
         iconName="dash-lg"
         onPress={handleMinus}
@@ -216,7 +227,7 @@ const Increment = ({
         disabled={maxValue != null && parseFloat(valueQty) >= maxValue}
         isBigButton={isBigButton}
       />
-    </View>
+    </TouchableOpacity>
   );
 };
 
