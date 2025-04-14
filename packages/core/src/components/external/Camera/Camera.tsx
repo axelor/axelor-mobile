@@ -46,6 +46,7 @@ import {
   useCameraScannerSelector,
 } from '../../../features/cameraScannerSlice';
 import {formatScan} from '../../../utils/formatters';
+import DeviceInfo from 'react-native-device-info';
 
 const CONTENT_SPACING = 40;
 const PHOTO_TYPE = 'jpeg';
@@ -78,6 +79,8 @@ const Camera = () => {
 
   const [flash, setFlash] = useState<'off' | 'on'>('off');
 
+  const [isZebraDevice, setIsZebraDevice] = useState(false);
+
   const deviceBack = useCameraDevice('back');
 
   const deviceFront = useCameraDevice('front');
@@ -92,6 +95,14 @@ const Camera = () => {
   );
 
   const supportsFlash = device?.hasFlash ?? false;
+
+  useEffect(() => {
+    DeviceInfo.getManufacturer().then(manufacturer => {
+      if (manufacturer === 'Zebra Technologies') {
+        setIsZebraDevice(true);
+      }
+    });
+  }, []);
 
   const onFlipCameraPressed = useCallback(() => {
     setCameraPosition(p => (p === 'back' ? 'front' : 'back'));
@@ -172,6 +183,10 @@ const Camera = () => {
     () => (hasPermission ? isCameraActive || isScanActive : false),
     [hasPermission, isCameraActive, isScanActive],
   );
+
+  if (isZebraDevice) {
+    return null;
+  }
 
   return (
     <SafeAreaView style={{zIndex: 700 * (cameraVisible ? 1 : -1)}}>
