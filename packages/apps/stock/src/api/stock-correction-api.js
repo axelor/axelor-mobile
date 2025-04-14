@@ -64,6 +64,7 @@ export async function searchStockCorrection({
   productId,
   statusList,
   page = 0,
+  filterDomain,
 }) {
   return createStandardSearch({
     model: 'com.axelor.apps.stock.db.StockCorrection',
@@ -76,6 +77,7 @@ export async function searchStockCorrection({
     sortKey: 'stock_stockCorrection',
     page,
     provider: 'model',
+    filter: filterDomain,
   });
 }
 

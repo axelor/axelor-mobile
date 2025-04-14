@@ -89,6 +89,7 @@ export async function searchInternalMoveFilter({
   statusList,
   companyId,
   page = 0,
+  filterDomain,
 }) {
   return createStandardSearch({
     model: 'com.axelor.apps.stock.db.StockMove',
@@ -103,6 +104,7 @@ export async function searchInternalMoveFilter({
     sortKey: 'stock_internalMove',
     page,
     provider: 'model',
+    filter: filterDomain,
   });
 }
 
