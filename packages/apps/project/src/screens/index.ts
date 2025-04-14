@@ -31,7 +31,7 @@ export default {
     options: {
       shadedHeader: false,
     },
-    actionID: 'project_buisnessProject_list',
+    actionID: 'project_businessProject_list',
   },
   ActiveProjectScreen: {
     title: 'Project_ActiveProject',

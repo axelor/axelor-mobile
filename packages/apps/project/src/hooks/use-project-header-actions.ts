@@ -28,7 +28,7 @@ import {fetchProjectById} from '../features/projectSlice';
 
 export const useProjectHeaders = () => {
   useProjectListScreenActions();
-  useBuisnessProjectListScreenActions();
+  useBusinessProjectListScreenActions();
   useProjectDetailsActions();
   useProjectTaskListActions();
   useProjectTaskDetailsActions();
@@ -45,9 +45,9 @@ const useProjectListScreenActions = () => {
   }, []);
 };
 
-const useBuisnessProjectListScreenActions = () => {
+const useBusinessProjectListScreenActions = () => {
   useEffect(() => {
-    headerActionsProvider.registerModel('project_buisnessProject_list', {
+    headerActionsProvider.registerModel('project_businessProject_list', {
       model: 'com.axelor.apps.project.db.Project',
       options: {
         core_modelFilters: {name: 'project-filters'},
