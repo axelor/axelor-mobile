@@ -31,6 +31,7 @@ export default {
       shadedHeader: false,
     },
     isUsableOnShortcut: true,
+    actionID: 'stock_product_list',
   },
   ProductStockDetailsScreen: {
     title: 'Stock_Product',

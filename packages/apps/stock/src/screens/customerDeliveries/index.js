@@ -27,6 +27,7 @@ import CustomerDeliverySelectTrackingScreen from './CustomerDeliverySelectTracki
 export default {
   CustomerDeliveryListScreen: {
     title: 'Stock_CustomerDelivery',
+    actionID: 'stock_customerDelivery_list',
     component: CustomerDeliveryListScreen,
     options: {
       shadedHeader: false,
