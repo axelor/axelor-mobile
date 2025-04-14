@@ -115,9 +115,11 @@ export async function searchManufacturingOrderFilter({
   statusList,
   productId,
   page = 0,
+  filterDomain,
 }) {
   return createStandardSearch({
     model: 'com.axelor.apps.production.db.ManufOrder',
+    filter: filterDomain,
     companyId,
     criteria: createManufOrderCriteria(
       searchValue,

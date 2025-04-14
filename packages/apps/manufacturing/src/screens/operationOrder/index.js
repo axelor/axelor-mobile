@@ -29,6 +29,7 @@ export default {
       shadedHeader: false,
     },
     isUsableOnShortcut: true,
+    actionID: 'manufacturing_operationOrder_list',
   },
   OperationOrderDetailsScreen: {
     title: 'Manufacturing_OperationOrder',
