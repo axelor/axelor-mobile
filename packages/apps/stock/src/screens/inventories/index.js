@@ -32,6 +32,7 @@ export default {
       shadedHeader: false,
     },
     isUsableOnShortcut: true,
+    actionID: 'stock_inventory_list',
   },
   InventoryPlannedDetailsScreen: {
     title: 'Stock_Inventory',
