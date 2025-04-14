@@ -27,8 +27,33 @@ import {useThemeColor} from '@axelor/aos-mobile-ui';
 import {fetchProjectById} from '../features/projectSlice';
 
 export const useProjectHeaders = () => {
+  useProjectListScreenActions();
+  useBusinessProjectListScreenActions();
   useProjectDetailsActions();
+  useProjectTaskListActions();
   useProjectTaskDetailsActions();
+};
+
+const useProjectListScreenActions = () => {
+  useEffect(() => {
+    headerActionsProvider.registerModel('project_project_list', {
+      model: 'com.axelor.apps.project.db.Project',
+      options: {
+        core_modelFilters: {name: 'project-project-filters'},
+      },
+    });
+  }, []);
+};
+
+const useBusinessProjectListScreenActions = () => {
+  useEffect(() => {
+    headerActionsProvider.registerModel('project_businessProject_list', {
+      model: 'com.axelor.apps.project.db.Project',
+      options: {
+        core_modelFilters: {name: 'project-filters'},
+      },
+    });
+  }, []);
 };
 
 const useProjectDetailsActions = () => {
@@ -62,6 +87,14 @@ const useProjectDetailsActions = () => {
       ],
     });
   }, [Colors, I18n, dispatch, project?.code, project?.id]);
+};
+
+const useProjectTaskListActions = () => {
+  useEffect(() => {
+    headerActionsProvider.registerModel('project_projectTask_list', {
+      model: 'com.axelor.apps.project.db.ProjectTask',
+    });
+  }, []);
 };
 
 const useProjectTaskDetailsActions = () => {
