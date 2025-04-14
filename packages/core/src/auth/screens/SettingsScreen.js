@@ -182,6 +182,7 @@ const SettingsScreen = ({children}) => {
           emptyValue={false}
         />
         <MassScannerButton
+          style={{alignSelf: 'center'}}
           scanKey="mass_scan_products"
           backgroundAction={async barcodeValue => {
             console.log('barcodeValueBACKGROUNND ACTION', barcodeValue);
