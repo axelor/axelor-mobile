@@ -31,6 +31,7 @@ export default {
     options: {
       shadedHeader: false,
     },
+    actionID: 'project_businessProject_list',
   },
   ActiveProjectScreen: {
     title: 'Project_ActiveProject',
@@ -45,6 +46,7 @@ export default {
     options: {
       shadedHeader: false,
     },
+    actionID: 'project_project_list',
   },
   ProjectDetailsScreen: {
     title: 'Project_Projects',
@@ -60,6 +62,7 @@ export default {
     options: {
       shadedHeader: false,
     },
+    actionID: 'project_projectTask_list',
   },
   TaskDetailsScreen: {
     title: 'Project_Task',
