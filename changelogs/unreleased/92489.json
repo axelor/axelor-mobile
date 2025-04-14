@@ -1,0 +1,5 @@
+{
+  "title": "List views: add AOP filter management",
+  "type": "refactor",
+  "packages": "stock"
+}

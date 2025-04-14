@@ -81,6 +81,7 @@ export async function searchProductsFilter({
   searchValue,
   page = 0,
   alternativeBarcodeList,
+  filterDomain,
 }) {
   return createStandardSearch({
     model: 'com.axelor.apps.base.db.Product',
@@ -89,6 +90,7 @@ export async function searchProductsFilter({
     sortKey: 'stock_product',
     page,
     provider: 'model',
+    filter: filterDomain,
   });
 }
 

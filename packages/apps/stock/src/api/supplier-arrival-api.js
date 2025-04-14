@@ -98,6 +98,7 @@ export async function searchSupplierArrivalFilter({
   statusList,
   companyId,
   page = 0,
+  filterDomain,
 }) {
   return createStandardSearch({
     model: 'com.axelor.apps.stock.db.StockMove',
@@ -112,6 +113,7 @@ export async function searchSupplierArrivalFilter({
     sortKey: 'stock_supplierArrival',
     page,
     provider: 'model',
+    filter: filterDomain,
   });
 }
 
