@@ -20,7 +20,6 @@ import AllDocumentsScreen from './AllDocumentsScreen';
 import MyFavoriteDocumentsScreen from './MyFavoriteDocumentsScreen';
 import DocumentFormScreen from './DocumentFormScreen';
 import AttachedFilesScreen from './AttachedFilesScreen';
-import MailMessageAttachedFilesScreen from './MailMessageAttachedFilesScreen';
 
 export default {
   AllDocumentsScreen: {
@@ -52,17 +51,9 @@ export default {
       shadedHeader: false,
     },
   },
-  MailMessageAttachedFilesScreen: {
-    title: 'Dms_AttachedFiles',
-    component: MailMessageAttachedFilesScreen,
-    options: {
-      shadedHeader: false,
-    },
-  },
 };
 
 export {AllDocumentsScreen};
 export {MyFavoriteDocumentsScreen};
 export {DocumentFormScreen};
 export {AttachedFilesScreen};
-export {MailMessageAttachedFilesScreen};

@@ -145,19 +145,6 @@ export const deleteFavoriteDocument = createAsyncThunk(
   },
 );
 
-export const searchAttachedFiles = createAsyncThunk(
-  'dms_document/searchAttachedFiles',
-  async function (data, {getState}) {
-    return handlerApiCall({
-      fetchFunction: _searchDocument,
-      data,
-      action: 'Dms_SliceAction_SearchAttachedFiles',
-      getState,
-      responseOptions: {isArrayResponse: true},
-    });
-  },
-);
-
 const initialState = {
   loadingDocuments: false,
   moreLoadingDocument: false,
@@ -173,11 +160,6 @@ const initialState = {
   moreLoadingFavoriteDocument: false,
   isListEndFavoriteDocument: false,
   favoriteDocumentList: [],
-
-  loadingAttachedFiles: false,
-  moreLoadingAttachedFiles: false,
-  isListEndAttachedFiles: false,
-  attachedFilesList: [],
 };
 
 const documentSlice = createSlice({
@@ -201,12 +183,6 @@ const documentSlice = createSlice({
       moreLoading: 'moreLoadingFavoriteDocument',
       isListEnd: 'isListEndFavoriteDocument',
       list: 'favoriteDocumentList',
-    });
-    generateInifiniteScrollCases(builder, searchAttachedFiles, {
-      loading: 'loadingAttachedFiles',
-      moreLoading: 'moreLoadingAttachedFiles',
-      isListEnd: 'isListEndAttachedFiles',
-      list: 'attachedFilesList',
     });
   },
 });

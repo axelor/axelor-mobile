@@ -23,9 +23,7 @@ import {
   useTranslator,
 } from '@axelor/aos-mobile-core';
 import {ChipSelect, Screen, useThemeColor} from '@axelor/aos-mobile-ui';
-import {DocumentActionCard} from '../components';
-import {searchAttachedFiles} from '../features/documentSlice';
-import {File} from '../types';
+import {DocumentActionCard, File, searchDocument} from '@axelor/aos-mobile-dms';
 
 const MailMessageAttachedFilesScreen = ({route}) => {
   const {files} = route?.params;
@@ -35,16 +33,16 @@ const MailMessageAttachedFilesScreen = ({route}) => {
   const [selectedExtensions, setSelectedExtensions] = useState([]);
 
   const {
-    loadingAttachedFiles,
-    moreLoadingAttachedFiles,
-    isListEndAttachedFiles,
-    attachedFilesList,
+    loadingDocuments,
+    moreLoadingDocument,
+    isListEndDocument,
+    documentList,
   } = useSelector(state => state.dms_document);
 
   const sliceFunctionData = useMemo(
     () => ({
       extensions: selectedExtensions.map(_extension => _extension.key),
-      attachedFileIds: files.map((_file: any) => _file.id),
+      metaFileIds: files.map((_file: any) => _file.id),
     }),
     [files, selectedExtensions],
   );
@@ -52,11 +50,11 @@ const MailMessageAttachedFilesScreen = ({route}) => {
   return (
     <Screen removeSpaceOnTop={true}>
       <SearchListView
-        list={attachedFilesList}
-        loading={loadingAttachedFiles}
-        moreLoading={moreLoadingAttachedFiles}
-        isListEnd={isListEndAttachedFiles}
-        sliceFunction={searchAttachedFiles}
+        list={documentList}
+        loading={loadingDocuments}
+        moreLoading={moreLoadingDocument}
+        isListEnd={isListEndDocument}
+        sliceFunction={searchDocument}
         sliceFunctionData={sliceFunctionData}
         displaySearchValue={item => item.fileName}
         searchPlaceholder={I18n.t('Base_Search')}
