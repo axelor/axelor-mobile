@@ -198,6 +198,7 @@ export async function searchProjectTask({
   selectedCategory,
   projectTaskId,
   companyId,
+  filterDomain,
 }) {
   return createStandardSearch({
     model: 'com.axelor.apps.project.db.ProjectTask',
@@ -216,6 +217,7 @@ export async function searchProjectTask({
     sortKey: 'project_projectTask',
     page,
     provider: 'model',
+    filter: filterDomain,
   });
 }
 

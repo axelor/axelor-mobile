@@ -97,6 +97,7 @@ export async function searchProject({
   statusList,
   userId,
   companyId,
+  filterDomain,
 }) {
   return createStandardSearch({
     model: 'com.axelor.apps.project.db.Project',
@@ -112,6 +113,7 @@ export async function searchProject({
     page,
     provider: 'model',
     companyId,
+    filter: filterDomain,
   });
 }
 
