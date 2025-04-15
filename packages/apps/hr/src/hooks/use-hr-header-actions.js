@@ -30,15 +30,16 @@ import {fetchExpenseById, quickCreateExpense} from '../features/expenseSlice';
 import {Expense} from '../types';
 
 export const useHrHeaders = () => {
-  useExpenseAction();
+  useExpenseListAction();
   useExpenseDetailsAction();
   useTimerListAction();
   useActiveTimerAction();
   useTimesheetDetailsAction();
+  useLeaveListAction();
   useLeaveDetailsAction();
 };
 
-const useExpenseAction = () => {
+const useExpenseListAction = () => {
   const Colors = useThemeColor();
   const I18n = useTranslator();
   const navigation = useNavigation();
@@ -52,6 +53,7 @@ const useExpenseAction = () => {
 
   useEffect(() => {
     headerActionsProvider.registerModel('hr_expenses_list', {
+      model: 'com.axelor.apps.hr.db.Expense',
       actions: [
         {
           key: 'newExpense',
@@ -116,6 +118,10 @@ const useTimerListAction = () => {
 
   useEffect(() => {
     headerActionsProvider.registerModel('hr_timers_list', {
+      model: 'com.axelor.apps.hr.db.TSTimer',
+      options: {
+        core_modelFilters: {name: 'act:action.timesheet.view.multiple.timer'},
+      },
       actions: [
         {
           key: 'newTimer',
@@ -177,6 +183,14 @@ const useTimesheetDetailsAction = () => {
       modelId: timesheet?.id,
     });
   }, [timesheet]);
+};
+
+const useLeaveListAction = () => {
+  useEffect(() => {
+    headerActionsProvider.registerModel('hr_leave_list', {
+      model: 'com.axelor.apps.hr.db.LeaveRequest',
+    });
+  }, []);
 };
 
 const useLeaveDetailsAction = () => {
