@@ -119,6 +119,7 @@ export async function fetchTimer({
   fromDate,
   toDate,
   page = 0,
+  filterDomain,
 }) {
   return createStandardSearch({
     model: 'com.axelor.apps.hr.db.TSTimer',
@@ -127,6 +128,7 @@ export async function fetchTimer({
     sortKey: 'hr_timer',
     page,
     provider: 'model',
+    filter: filterDomain,
   });
 }
 
