@@ -19,6 +19,7 @@
 import React, {useCallback, useState} from 'react';
 import {
   ISODateTimeToDate,
+  useActiveFilter,
   useDispatch,
   usePermitted,
   useSelector,
@@ -39,6 +40,7 @@ import {Time} from '../../types';
 const TimerListScreen = ({navigation}) => {
   const I18n = useTranslator();
   const dispatch = useDispatch();
+  const {activeFilter} = useActiveFilter();
   const {canDelete, readonly} = usePermitted({
     modelName: 'com.axelor.apps.hr.db.TSTimer',
   });
@@ -52,9 +54,11 @@ const TimerListScreen = ({navigation}) => {
 
   const fetchTimerAPI = useCallback(
     (page = 0) => {
-      dispatch(fetchTimer({userId: userId, page: page}));
+      dispatch(
+        fetchTimer({userId: userId, page: page, filterDomain: activeFilter}),
+      );
     },
-    [dispatch, userId],
+    [activeFilter, dispatch, userId],
   );
 
   return (
