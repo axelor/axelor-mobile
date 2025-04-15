@@ -45,7 +45,7 @@
     "@svgr/plugin-jsx": "^6.5.1",
     "@svgr/plugin-prettier": "^6.5.1",
     "@svgr/plugin-svgo": "^6.5.1",
-    "@types/react": "^18.2.6",
+    "@types/react": "^18.3.20",
     "bootstrap-icons": "^1.10.3",
     "eslint": "8.57.0",
     "glob": "^8.1.0",
@@ -60,6 +60,6 @@
     "react-native-webview": "11.26.1"
   },
   "resolutions": {
-    "@types/react": "^18.2.6"
+    "@types/react": "^18.3.20"
   }
 }
