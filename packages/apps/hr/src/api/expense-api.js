@@ -99,6 +99,7 @@ export async function searchMyExpense({
   page = 0,
   userId,
   companyId,
+  filterDomain,
 }) {
   return createStandardSearch({
     model: 'com.axelor.apps.hr.db.Expense',
@@ -108,6 +109,7 @@ export async function searchMyExpense({
     page,
     provider: 'model',
     companyId,
+    filter: filterDomain,
   });
 }
 
@@ -116,6 +118,7 @@ export async function searchExpenseToValidate({
   page = 0,
   user,
   companyId,
+  filterDomain,
 }) {
   return createStandardSearch({
     model: 'com.axelor.apps.hr.db.Expense',
@@ -125,6 +128,7 @@ export async function searchExpenseToValidate({
     page,
     provider: 'model',
     companyId,
+    filter: filterDomain,
   });
 }
 

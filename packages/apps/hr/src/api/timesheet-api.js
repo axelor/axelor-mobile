@@ -147,6 +147,7 @@ export async function fetchTimesheet({
   userId,
   page = 0,
   companyId,
+  filterDomain,
 }) {
   return createStandardSearch({
     model: 'com.axelor.apps.hr.db.Timesheet',
@@ -156,6 +157,7 @@ export async function fetchTimesheet({
     page,
     provider: 'model',
     companyId,
+    filter: filterDomain,
   });
 }
 
@@ -164,6 +166,7 @@ export async function fetchTimesheetToValidate({
   page = 0,
   user,
   companyId,
+  filterDomain,
 }) {
   return createStandardSearch({
     model: 'com.axelor.apps.hr.db.Timesheet',
@@ -173,6 +176,7 @@ export async function fetchTimesheetToValidate({
     page,
     provider: 'model',
     companyId,
+    filter: filterDomain,
   });
 }
 

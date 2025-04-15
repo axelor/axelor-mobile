@@ -18,12 +18,14 @@
 
 import React, {useCallback, useMemo, useState} from 'react';
 import {
+  FilterContainer,
+  useActiveFilter,
   useDispatch,
   useNavigation,
   useSelector,
   useTranslator,
 } from '@axelor/aos-mobile-core';
-import {HeaderContainer, Screen, ScrollList} from '@axelor/aos-mobile-ui';
+import {Screen, ScrollList} from '@axelor/aos-mobile-ui';
 import {LeaveActionCard, LeaveFilters} from '../../components';
 import {
   fetchLeave,
@@ -37,6 +39,7 @@ const LeaveListScreen = ({}) => {
   const I18n = useTranslator();
   const navigation = useNavigation();
   const dispatch = useDispatch();
+  const {activeFilter} = useActiveFilter();
 
   const [mode, setMode] = useState(Leave.mode.myLeaves);
   const [selectedStatus, setSelectedStatus] = useState(null);
@@ -61,10 +64,11 @@ const LeaveListScreen = ({}) => {
           selectedStatus,
           page,
           companyId: user.activeCompany?.id,
+          filterDomain: activeFilter,
         }),
       );
     },
-    [dispatch, selectedStatus, user.activeCompany?.id, user?.id],
+    [activeFilter, dispatch, selectedStatus, user.activeCompany?.id, user?.id],
   );
 
   const getActionParams = useCallback(
@@ -100,10 +104,11 @@ const LeaveListScreen = ({}) => {
           user,
           page,
           companyId: user.activeCompany?.id,
+          filterDomain: activeFilter,
         }),
       );
     },
-    [dispatch, user],
+    [activeFilter, dispatch, user],
   );
 
   const listToDisplay = useMemo(() => {
@@ -140,7 +145,7 @@ const LeaveListScreen = ({}) => {
 
   return (
     <Screen removeSpaceOnTop={true}>
-      <HeaderContainer
+      <FilterContainer
         expandableFilter={false}
         fixedItems={
           <LeaveFilters
