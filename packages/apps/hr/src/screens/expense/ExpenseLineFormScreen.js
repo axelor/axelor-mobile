@@ -134,7 +134,7 @@ const ExpenseLineFormScreen = ({route, navigation}) => {
             : null,
         employeeIdList:
           mode === ExpenseLineType.modes.general
-            ? _expenseLine.invitedCollaboratorSet
+            ? _expenseLine.invitedCollaboratorSet?.map(employee => employee.id)
             : null,
         kilometricAllowParamId: _expenseLine.kilometricAllowParam?.id,
         kilometricTypeSelect: _expenseLine.kilometricTypeSelect?.key,
