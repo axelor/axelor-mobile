@@ -19,9 +19,6 @@
 import React, {useCallback, useEffect, useMemo, useState} from 'react';
 import {StyleSheet, View} from 'react-native';
 import {useDispatch, useSelector} from 'react-redux';
-import DocumentPicker, {
-  DocumentPickerResponse,
-} from 'react-native-document-picker';
 import {
   Text,
   getCommonStyles,
@@ -30,13 +27,9 @@ import {
   Image,
   Icon,
 } from '@axelor/aos-mobile-ui';
-import {
-  deleteMetaFile,
-  uploadBase64,
-  uploadFile,
-} from '../../../api/metafile-api';
+import {deleteMetaFile, uploadBase64} from '../../../api/metafile-api';
 import {useTranslator} from '../../../i18n';
-import {openFileInExternalApp} from '../../../tools';
+import {handleDocumentSelection, openFileInExternalApp} from '../../../tools';
 import {checkNullString, useMetafileUri} from '../../../utils';
 import {
   useCameraValueByKey,
@@ -144,74 +137,68 @@ const UploadFileInput = ({
     dispatch(enableCamera(cameraKey));
   };
 
-  const handleDocumentPick = async () => {
-    try {
-      const file = await DocumentPicker.pickSingle({
-        type: DocumentPicker.types[documentTypesAllowed],
-      });
-
-      if (file.size < _maxFileSize) {
-        setSizeError(false);
-        handleFileUpload(file);
-      } else {
-        setSizeError(true);
-      }
-    } catch (error) {
-      console.log('Document picking error:', error);
-    }
-  };
-
-  const handleFileUpload = async (file: DocumentPickerResponse) => {
-    try {
-      const response = await uploadFile(file, {
-        baseUrl,
-        token,
-        jsessionId,
-        returnBase64String,
-      });
-
-      setSelectedFile(
-        returnBase64String
-          ? {...file, base64: response}
-          : {...file, ...response},
-      );
-      onUpload(response);
-    } catch (error) {
-      console.log('Could not upload the file:', error);
-    }
-  };
-
-  const handleCameraUpload = useCallback(
-    async (photo: CameraPhoto) => {
+  const handleUpload = useCallback(
+    async (file: {
+      name: string;
+      type: string;
+      size: number;
+      base64: string;
+    }) => {
       try {
-        const _file = {
-          name: getFileName
-            ? getFileName(photo.pictureExtention, photo.dateTime)
-            : `picture_${photo.dateTime}.${photo.pictureExtention}`,
-          type: photo.type,
-          size: photo.size,
-          base64: returnBase64String ? photo.fullBase64 : photo.base64,
-        };
-
         if (returnBase64String) {
-          setSelectedFile(_file);
-          onUpload(_file.base64);
+          setSelectedFile(file);
+          onUpload(file.base64);
           return;
         }
 
-        const response = await uploadBase64(_file, {
+        const response = await uploadBase64(file, {
           baseUrl,
           token,
           jsessionId,
         });
 
-        setSelectedFile({..._file, ...response});
+        setSelectedFile({...file, ...response});
         onUpload(response);
       } catch (error) {
         console.log('Could not upload the file:', error);
       }
     },
-    [baseUrl, getFileName, jsessionId, onUpload, returnBase64String, token],
+    [baseUrl, jsessionId, onUpload, returnBase64String, token],
+  );
+
+  const handleDocumentPick = useCallback(
+    async (file: any) => {
+      const _file = {
+        name: file.name,
+        type: file.type,
+        size: file.size,
+        base64: returnBase64String ? file.fullBase64 : file.base64,
+      };
+
+      if (_file.size < _maxFileSize) {
+        setSizeError(false);
+        handleUpload(_file);
+      } else {
+        setSizeError(true);
+      }
+    },
+    [_maxFileSize, handleUpload, returnBase64String],
+  );
+
+  const handleCameraUpload = useCallback(
+    async (photo: CameraPhoto) => {
+      const _file = {
+        name: getFileName
+          ? getFileName(photo.pictureExtention, photo.dateTime)
+          : `picture_${photo.dateTime}.${photo.pictureExtention}`,
+        type: photo.type,
+        size: photo.size,
+        base64: returnBase64String ? photo.fullBase64 : photo.base64,
+      };
+
+      handleUpload(_file);
+    },
+    [getFileName, handleUpload, returnBase64String],
   );
 
   const handleFileDelete = async () => {
@@ -318,7 +305,7 @@ const UploadFileInput = ({
               name="upload"
               size={BUTTON_SIZE}
               touchable={true}
-              onPress={handleDocumentPick}
+              onPress={() => handleDocumentSelection(handleDocumentPick)}
               style={styles.action}
             />
           )}

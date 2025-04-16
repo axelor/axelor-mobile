@@ -1,0 +1,5 @@
+{
+  "title": "Document picker tool: use new library @react-native-documents/picker",
+  "type": "refactor",
+  "packages": "core"
+}
