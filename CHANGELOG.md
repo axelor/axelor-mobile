@@ -3,6 +3,14 @@ title: 8.2.0
 tags: Changelog
 ---
 
+## [8.2.11] (2025-04-16)
+
+### @axelor/aos-mobile-ui
+
+#### Changes
+
+- Increment: facilitate edition by making whole input clickable
+
 ## [8.2.10] (2025-04-10)
 
 ### @axelor/aos-mobile-core
@@ -565,6 +573,7 @@ This package is linked with the @axelor/aos-mobile-hr to manage time logging.
 
 - Supplier arrival: add possibility to fill origin when creating or selecting tracking number
 
+[8.2.11]: https://github.com/axelor/axelor-mobile/compare/8.2.10...8.2.11
 [8.2.10]: https://github.com/axelor/axelor-mobile/compare/8.2.9...8.2.10
 [8.2.9]: https://github.com/axelor/axelor-mobile/compare/8.2.8...8.2.9
 [8.2.8]: https://github.com/axelor/axelor-mobile/compare/8.2.7...8.2.8
