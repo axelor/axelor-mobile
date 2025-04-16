@@ -19,8 +19,6 @@
 import React from 'react';
 import {TouchableOpacity} from 'react-native';
 import {shallow} from 'enzyme';
-import Icon5 from 'react-native-vector-icons/FontAwesome5';
-import Icon4 from 'react-native-vector-icons/FontAwesome';
 import {Icon, BootstrapIcon} from '@axelor/aos-mobile-ui';
 
 describe('Icon Component', () => {
@@ -42,24 +40,6 @@ describe('Icon Component', () => {
   it('renders BootstrapIcon icon ', () => {
     const wrapper = shallow(<Icon name="star" />);
     const iconComponent = wrapper.find(BootstrapIcon);
-
-    expect(iconComponent.exists()).toBe(true);
-    expect(iconComponent.prop('name')).toBe('star');
-  });
-
-  it('renders FontAwesome5 icon when isFontAwesome5 prop is true', () => {
-    const wrapper = shallow(<Icon name="star" isFontAwesome5 />);
-    const iconComponent = wrapper.find(Icon5);
-
-    expect(iconComponent.exists()).toBe(true);
-    expect(iconComponent.prop('name')).toBe('star');
-  });
-
-  it('renders FontAwesome icon when isFontAwesome4 prop is true', () => {
-    const wrapper = shallow(
-      <Icon name="star" isFontAwesome4 FontAwesome5={false} />,
-    );
-    const iconComponent = wrapper.find(Icon4);
 
     expect(iconComponent.exists()).toBe(true);
     expect(iconComponent.prop('name')).toBe('star');

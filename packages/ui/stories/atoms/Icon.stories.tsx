@@ -44,8 +44,6 @@ export const Icon: Story<typeof Component> = {
     size: {control: {type: 'number', min: 10, max: 50}},
     color: colorPicker,
     onPress: disabledControl,
-    isFontAwesome4: disabledControl,
-    isFontAwesome5: disabledControl,
   },
   render: args => <Component {...args} color={args.color?.background} />,
 };

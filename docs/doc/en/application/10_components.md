@@ -283,7 +283,7 @@ To facilitate image integration on cards, the core package provides three utilit
 
 ## SVG icons management
 
-For icons, the application supports two librairies : [FontAwesome](https://fontawesome.com/icons) and [Bootstrap](https://icons.getbootstrap.com/). For the Bootstrap icons, we use the svg database in `BootstrapIcon` component. We created a script to generate a map between icon name and svg data which can be found in `icons/` folder of ui package sources. This construction allows us to create custom icons from a SVG file in the `scripts/` folder of ui package.
+For icons, the application supports [Bootstrap](https://icons.getbootstrap.com/). We use the svg database in `BootstrapIcon` component. We created a script to generate a map between icon name and svg data which can be found in `icons/` folder of ui package sources. This construction allows us to create custom icons from a SVG file in the `scripts/` folder of ui package.
 
 When adding a new icon, it is important to ensure that the added SVG is compatible with the viewBox used in the `BootstrapIcon` component:
 
