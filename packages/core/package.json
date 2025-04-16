@@ -44,6 +44,7 @@
   },
   "peerDependencies": {
     "@react-native-clipboard/clipboard": "1.14.1",
+    "@react-native-documents/picker": "10.1.2",
     "react": "18.2.0",
     "react-native": "0.74.6",
     "react-native-blob-util": "0.21.2",
@@ -51,7 +52,6 @@
     "react-native-datawedge-intents": "^0.1.8",
     "react-native-date-picker": "4.4.2",
     "react-native-device-info": "^11.1.0",
-    "react-native-document-picker": "9.3.1",
     "react-native-file-viewer": "^2.1.5",
     "react-native-fs": "^2.20.0",
     "react-native-gesture-handler": "2.18.1",
@@ -67,6 +67,7 @@
   "devDependencies": {
     "@babel/runtime": "^7.20.0",
     "@react-native-clipboard/clipboard": "1.14.1",
+    "@react-native-documents/picker": "10.1.2",
     "@react-native/babel-preset": "0.74.88",
     "@react-native/eslint-config": "0.74.88",
     "@types/react": "^18.2.6",
@@ -78,7 +79,6 @@
     "react-native-datawedge-intents": "^0.1.8",
     "react-native-date-picker": "4.4.2",
     "react-native-device-info": "^11.1.0",
-    "react-native-document-picker": "9.3.1",
     "react-native-file-viewer": "^2.1.5",
     "react-native-fs": "^2.20.0",
     "react-native-gesture-handler": "2.18.1",
