@@ -30,7 +30,6 @@ import {
   ParentTaskSearchBar,
   PrioritySearchBar,
   ProjectSearchBar,
-  SectionSearchBar,
   TargetVersionSearchBar,
   TaskStatusSearchBar,
   TaskTagMultiValuePicker,
@@ -203,19 +202,6 @@ export const project_formsRegister: FormConfigs = {
         widget: 'custom',
         customComponent: UserSearchBar,
         required: true,
-      },
-      projectTaskSection: {
-        titleKey: 'Project_Section',
-        type: 'object',
-        widget: 'custom',
-        customComponent: SectionSearchBar,
-        hideIf: ({storeState}) =>
-          !storeState.project_project.projectForm?.isShowSection,
-        dependsOn: {
-          project: () => {
-            return null;
-          },
-        },
       },
       targetVersion: {
         titleKey: 'Project_TargetVersion',

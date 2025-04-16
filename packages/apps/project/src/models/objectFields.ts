@@ -105,7 +105,6 @@ export const project_modelAPI: ObjectFields = {
     isShowPhasesElements: schemaContructor.boolean(),
     isShowTaskCategory: schemaContructor.boolean(),
     isShowProgress: schemaContructor.boolean(),
-    isShowSection: schemaContructor.boolean(),
     manageTimeSpent: schemaContructor.boolean(),
     sprintManagementSelect: schemaContructor.string(),
     backlogSprint: schemaContructor.subObject(),
@@ -128,7 +127,6 @@ export const project_modelAPI: ObjectFields = {
       }),
     ),
     projectTaskCategory: schemaContructor.subObject(),
-    projectTaskSection: schemaContructor.subObject(),
     targetVersion: schemaContructor.subObject(),
     taskDate: schemaContructor.string(),
     taskEndDate: schemaContructor.string(),
@@ -170,7 +168,6 @@ export const project_modelAPI: ObjectFields = {
           }),
         ),
         projectTaskCategory: schemaContructor.subObject(),
-        projectTaskSection: schemaContructor.subObject(),
         targetVersion: schemaContructor.subObject(),
         taskDate: schemaContructor.string(),
         taskEndDate: schemaContructor.string(),
@@ -197,9 +194,6 @@ export const project_modelAPI: ObjectFields = {
   project_projectTaskCategory: schemaContructor.object({
     name: schemaContructor.subObject(),
     projectTaskStatusSet: schemaContructor.subObject(),
-  }),
-  project_projectTaskSection: schemaContructor.object({
-    name: schemaContructor.subObject(),
   }),
   auth_user: schemaContructor.object({
     activeProject: schemaContructor.subObject(),

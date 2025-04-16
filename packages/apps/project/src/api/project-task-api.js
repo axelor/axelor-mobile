@@ -323,17 +323,6 @@ export async function searchCategory({searchValue, page = 0, categoryIds}) {
   });
 }
 
-export async function searchSection({searchValue, page = 0}) {
-  return createStandardSearch({
-    model: 'com.axelor.apps.project.db.ProjectTaskSection',
-    criteria: [getSearchCriterias('project_projectTaskSection', searchValue)],
-    fieldKey: 'project_projectTaskSection',
-    sortKey: 'project_projectTaskSection',
-    page,
-    provider: 'model',
-  });
-}
-
 export async function searchPriority({searchValue, page = 0, priorityIds}) {
   if (!Array.isArray(priorityIds) || priorityIds.length === 0) {
     return {data: {data: [], total: 0}};

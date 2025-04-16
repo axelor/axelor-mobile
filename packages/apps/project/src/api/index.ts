@@ -34,7 +34,6 @@ export {
   searchPriority as searchPriorityApi,
   searchProjectTask as searchProjectTaskApi,
   searchProjectTaskLink as searchProjectTaskLinkApi,
-  searchSection as searchSectionApi,
   searchSprint as searchSprintApi,
   searchStatus as searchStatusApi,
   searchTargetVersion as searchTargetVersionApi,
