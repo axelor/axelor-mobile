@@ -29,7 +29,6 @@ import {formatDate, useTranslator} from '@axelor/aos-mobile-core';
 interface DropdownTaskCharacteristicsProps {
   style?: any;
   projectTaskCategory?: any;
-  projectTaskSection?: any;
   targetVersion?: any;
   activeSprint?: any;
   taskDate?: string;
@@ -41,7 +40,6 @@ interface DropdownTaskCharacteristicsProps {
 const DropdownTaskCharacteristics = ({
   style,
   projectTaskCategory,
-  projectTaskSection,
   targetVersion,
   activeSprint,
   taskDate,
@@ -86,7 +84,6 @@ const DropdownTaskCharacteristics = ({
   return (
     <View style={style}>
       {renderLabelText('Project_Category', projectTaskCategory?.name)}
-      {renderLabelText('Project_Section', projectTaskSection?.name)}
       {renderLabelText('Project_TargetVersion', targetVersion?.title)}
       {renderLabelText('Project_ActiveSprint', activeSprint?.name)}
       {renderLabelText('Project_StartDate', _formatDate(taskDate))}

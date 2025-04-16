@@ -33,7 +33,6 @@ import {
   searchPriority as _searchPriority,
   searchProjectTask as _searchProjectTask,
   searchProjectTaskLink as _searchProjectTaskLink,
-  searchSection as _searchSection,
   searchSprint as _searchSprint,
   searchStatus as _searchStatus,
   searchTargetVersion as _searchTargetVersion,
@@ -156,19 +155,6 @@ export const searchCategory = createAsyncThunk(
   },
 );
 
-export const searchSection = createAsyncThunk(
-  'project_projectTask/searchSection',
-  async function (data, {getState}) {
-    return handlerApiCall({
-      fetchFunction: _searchSection,
-      data,
-      action: 'Project_SliceAction_SearchSection',
-      getState,
-      responseOptions: {isArrayResponse: true},
-    });
-  },
-);
-
 export const searchPriority = createAsyncThunk(
   'project_projectTask/searchPriority',
   async function (data, {getState}) {
@@ -281,11 +267,6 @@ const initialState = {
   isListEndCategory: false,
   categoryList: [],
 
-  loadingSection: true,
-  moreLoadingSection: false,
-  isListEndSection: false,
-  sectionList: [],
-
   loadingPriority: true,
   moreLoadingPriority: false,
   isListEndPriority: false,
@@ -360,12 +341,6 @@ const projectTaskSlice = createSlice({
       moreLoading: 'moreLoadingCategory',
       isListEnd: 'isListEndCategory',
       list: 'categoryList',
-    });
-    generateInifiniteScrollCases(builder, searchSection, {
-      loading: 'loadingSection',
-      moreLoading: 'moreLoadingSection',
-      isListEnd: 'isListEndSection',
-      list: 'sectionList',
     });
     generateInifiniteScrollCases(builder, searchPriority, {
       loading: 'loadingPriority',

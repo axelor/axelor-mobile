@@ -35,7 +35,6 @@ export {
   searchPriority,
   searchProjectTask,
   searchProjectTaskLink,
-  searchSection,
   searchSprint,
   searchStatus,
   searchTargetVersion,

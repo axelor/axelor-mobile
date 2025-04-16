@@ -49,7 +49,6 @@ const ProjectTaskDropdownCards = () => {
         childrenComp: (
           <DropdownTaskCharacteristics
             projectTaskCategory={projectTask.projectTaskCategory}
-            projectTaskSection={projectTask.projectTaskSection}
             targetVersion={projectTask.targetVersion}
             activeSprint={isSprintManagementEnabled && projectTask.activeSprint}
             taskDate={projectTask.taskDate}
