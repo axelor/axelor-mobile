@@ -151,22 +151,6 @@
 		B5DCF53729C4AD1A00A21B86 /* Fonts */ = {
 			isa = PBXGroup;
 			children = (
-				B5DCF54629C4AE0300A21B86 /* AntDesign.ttf */,
-				B5DCF54429C4AE0300A21B86 /* Entypo.ttf */,
-				B5DCF54229C4AE0300A21B86 /* EvilIcons.ttf */,
-				B5DCF54029C4AE0200A21B86 /* Feather.ttf */,
-				B5DCF53E29C4AE0200A21B86 /* FontAwesome.ttf */,
-				B5DCF54329C4AE0300A21B86 /* FontAwesome5_Brands.ttf */,
-				B5DCF53D29C4AE0200A21B86 /* FontAwesome5_Regular.ttf */,
-				B5DCF53929C4AE0200A21B86 /* FontAwesome5_Solid.ttf */,
-				B5DCF53829C4AE0200A21B86 /* Fontisto.ttf */,
-				B5DCF54529C4AE0300A21B86 /* Foundation.ttf */,
-				B5DCF54129C4AE0200A21B86 /* Ionicons.ttf */,
-				B5DCF53F29C4AE0200A21B86 /* MaterialCommunityIcons.ttf */,
-				B5DCF53B29C4AE0200A21B86 /* MaterialIcons.ttf */,
-				B5DCF53C29C4AE0200A21B86 /* Octicons.ttf */,
-				B5DCF54729C4AE0300A21B86 /* SimpleLineIcons.ttf */,
-				B5DCF53A29C4AE0200A21B86 /* Zocial.ttf */,
 			);
 			path = Fonts;
 			sourceTree = "<group>";
