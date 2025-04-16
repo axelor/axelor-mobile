@@ -16,7 +16,10 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import {createStandardSearch} from '@axelor/aos-mobile-core';
+import {
+  createStandardSearch,
+  getSearchCriterias,
+} from '@axelor/aos-mobile-core';
 
 const createManagedEmployeeCriteria = userId => {
   const criteria = [
@@ -30,6 +33,10 @@ const createManagedEmployeeCriteria = userId => {
   return criteria;
 };
 
+const createEmployeeCriteria = searchValue => {
+  return [getSearchCriterias('hr_employee', searchValue)];
+};
+
 export async function searchManagedEmployee({userId}) {
   return createStandardSearch({
     model: 'com.axelor.apps.hr.db.Employee',
@@ -37,6 +44,27 @@ export async function searchManagedEmployee({userId}) {
     fieldKey: 'hr_employee',
     numberElementsByPage: 1,
     page: 0,
+    provider: 'model',
+  });
+}
+
+export async function searcssEmployee({searchValue = null, page = 0}) {
+  return createStandardSearch({
+    model: 'com.axelor.apps.hr.db.Employee',
+    criteria: createEmployeeCriteria(searchValue),
+    fieldKey: 'hr_employee',
+    page,
+    provider: 'model',
+  });
+}
+
+export async function searchEmployee({searchValue = null, page = 0}) {
+  return createStandardSearch({
+    model: 'com.axelor.apps.hr.db.Employee',
+    criteria: createEmployeeCriteria(searchValue),
+    fieldKey: 'hr_employee',
+    sortKey: 'hr_employee',
+    page,
     provider: 'model',
   });
 }

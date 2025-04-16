@@ -26,6 +26,7 @@ export {default as DistanceIncrement} from './DistanceIncrement/DistanceIncremen
 export {default as DraftExpensePicker} from './DraftExpensePicker/DraftExpensePicker';
 export {default as DraftTimesheetPicker} from './DraftTimesheetPicker/DraftTimesheetPicker';
 export {default as DurationIncrement} from './DurationIncrement/DurationIncrement';
+export {default as EmployeeSearchBar} from './EmployeeSearchBar/EmployeeSearchBar';
 export {default as ExpenseHeader} from './ExpenseHeader/ExpenseHeader';
 export {default as ExpenseLineSwitchAdd} from './ExpenseLineSwitchAdd/ExpenseLineSwitchAdd';
 export {default as ExpenseLineTypeDisplay} from './ExpenseLineTypeDisplay/ExpenseLineTypeDisplay';
@@ -33,6 +34,7 @@ export {default as ExpenseLineTypeSwitch} from './ExpenseLineTypeSwitch/ExpenseL
 export {default as ExpenseRefusalPopup} from './ExpenseRefusalPopup/ExpenseRefusalPopup';
 export {default as ExpenseTypeSearchBar} from './ExpenseTypeSearchBar/ExpenseTypeSearchBar';
 export {default as ExpenseWaitingValidationSearchBar} from './ExpenseWaitingValidationSearchBar/ExpenseWaitingValidationSearchBar';
+export {default as InvitedCollaboratorViewAllList} from './InvitedCollaboratorViewAllList/InvitedCollaboratorViewAllList';
 export {default as KilometricAllowParamSearchBar} from './KilometricAllowParamSearchBar/KilometricAllowParamSearchBar';
 export {default as KilometricTypeSelectPicker} from './KilometricTypeSelectPicker/KilometricTypeSelectPicker';
 export {default as LeaveFilters} from './LeaveFilters/LeaveFilters';
