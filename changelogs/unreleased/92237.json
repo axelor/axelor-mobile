@@ -1,0 +1,5 @@
+{
+  "title": "UploadFileInput: simplify component to use document picker tool",
+  "type": "refactor",
+  "packages": "core"
+}

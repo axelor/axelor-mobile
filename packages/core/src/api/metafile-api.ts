@@ -21,7 +21,7 @@ import {
   createStandardSearch,
   Criteria,
 } from '../apiProviders';
-import {DocumentPickerResponse} from 'react-native-document-picker';
+import {DocumentPickerResponse} from '@react-native-documents/picker';
 import RNFS from 'react-native-fs';
 import RNFetchBlob from 'react-native-blob-util';
 import {sanitizeFileName} from '../utils';
