@@ -24,10 +24,7 @@ export {
   updateFromCity,
   updateToCity,
 } from './distanceSlice';
-export {
-  searchEmployee,
-  searchManagedEmployee,
-} from './employeeSlice';
+export {searchEmployee, searchManagedEmployee} from './employeeSlice';
 export {
   createExpenseLine,
   deleteExpenseLine,
