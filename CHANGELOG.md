@@ -3,6 +3,14 @@ title: 7.2.0
 tags: Changelog
 ---
 
+## [7.2.30] (2025-04-16)
+
+### @axelor/aos-mobile-ui
+
+#### Changes
+
+- Increment: facilitate edition by making whole input clickable
+
 ## [7.2.29] (2025-04-10)
 
 ### @axelor/aos-mobile-core
@@ -901,6 +909,7 @@ It enables user to manage Expenses through the mobile application. You can creat
 - Remove IconButton component which should be replaced by Button component.
 - Remove Pop-up components which should be replaced by Alert component.
 
+[7.2.30]: https://github.com/axelor/axelor-mobile/compare/7.2.29...7.2.30
 [7.2.29]: https://github.com/axelor/axelor-mobile/compare/7.2.28...7.2.29
 [7.2.28]: https://github.com/axelor/axelor-mobile/compare/7.2.27...7.2.28
 [7.2.27]: https://github.com/axelor/axelor-mobile/compare/7.2.26...7.2.27
