@@ -1,0 +1,5 @@
+{
+  "title": "ViewAllEditList: make edit optional",
+  "type": "fix",
+  "packages": "ui"
+}

@@ -37,7 +37,7 @@ interface ViewAllEditListProps {
   lines: Line[];
   currentLineId: number;
   setLines: (lines: Line[]) => void;
-  handleEditLine: (line: Line) => void;
+  handleEditLine?: (line: Line) => void;
   translator: (key: string) => string;
 }
 
