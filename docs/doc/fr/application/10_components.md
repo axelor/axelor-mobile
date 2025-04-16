@@ -285,7 +285,7 @@ Afin de faciliter l’intégration d’image sur les cards, le package core four
 
 ## Gestion des icônes SVG
 
-Pour les icônes, l'application supporte deux librairies : [FontAwesome](https://fontawesome.com/icons) et [Bootstrap](https://icons.getbootstrap.com/). Pour les icônes Bootstrap, nous utilisons la base de données svg dans le composant `BootstrapIcon`. Nous avons créé un script pour générer une map entre le nom de l'icône et les données svg qui peut être trouvée dans le dossier `icons/` des sources du package ui. Cette construction nous permet de créer des icônes personnalisées à partir d'un fichier SVG dans le dossier `scripts/` du package ui.
+Pour les icônes, l'application supporte [Bootstrap](https://icons.getbootstrap.com/). Nous utilisons la base de données svg dans le composant `BootstrapIcon`. Nous avons créé un script pour générer une map entre le nom de l'icône et les données svg qui peut être trouvée dans le dossier `icons/` des sources du package ui. Cette construction nous permet de créer des icônes personnalisées à partir d'un fichier SVG dans le dossier `scripts/` du package ui.
 
 Lors de l'ajout d'une nouvelle icône, il est important de s'assurer que le SVG ajouté est compatible avec la viewBox utilisée dans le composant `BootstrapIcon` :
 

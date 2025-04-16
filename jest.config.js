@@ -11,7 +11,7 @@ module.exports = {
     '^.+\\.(ts|tsx)?$': 'ts-jest',
   },
   transformIgnorePatterns: [
-    'node_modules/(?!(@react-native|(jest-)?react-native|react-native-toast-message|react-clone-referenced-element|@react-native-community|rollbar-react-native|@fontawesome|@react-native|@react-navigation|react-native-pell-rich-editor|react-native-vector-icons/FontAwesome|react-native-vector-icons/FontAwesome5)/|react-native-webview)',
+    'node_modules/(?!(@react-native|(jest-)?react-native|react-native-toast-message|react-clone-referenced-element|@react-native-community|rollbar-react-native|@react-native|@react-navigation|react-native-pell-rich-editor)/|react-native-webview)',
   ],
   moduleNameMapper: modulePackageNameMapping,
   modulePathIgnorePatterns: ['__tests__/tools'],
