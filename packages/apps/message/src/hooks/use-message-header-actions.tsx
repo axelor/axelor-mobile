@@ -116,6 +116,8 @@ const useUserProfileActions = () => {
   const I18n = useTranslator();
   const navigation = useNavigation();
 
+  const {mobileSettings} = useSelector(state => state.appConfig);
+
   const [numberUnreadMessages, setNumberUnreadMessages] = useState(0);
 
   useWebSocket(websocket =>
@@ -131,10 +133,16 @@ const useUserProfileActions = () => {
           iconName: 'chat-dots',
           indicator: numberUnreadMessages,
           title: I18n.t('Message_Inbox'),
+          hideIf: !mobileSettings?.isInboxAccessEnabled,
           onPress: () => navigation.navigate('InboxScreen'),
           showInHeader: true,
         },
       ],
     });
-  }, [I18n, navigation, numberUnreadMessages]);
+  }, [
+    I18n,
+    mobileSettings?.isInboxAccessEnabled,
+    navigation,
+    numberUnreadMessages,
+  ]);
 };
