@@ -1,5 +1,0 @@
-{
-  "title": "Project task: remove field section which was deleted in the model",
-  "type": "fix",
-  "packages": "project"
-}

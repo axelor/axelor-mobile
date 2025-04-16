@@ -3,6 +3,20 @@ title: 8.3.0
 tags: Changelog
 ---
 
+## [8.3.3] (2025-04-16)
+
+### @axelor/aos-mobile-ui
+
+#### Changes
+
+- Increment: facilitate edition by making whole input clickable
+
+### @axelor/aos-mobile-project
+
+#### Fixes
+
+- Project task: remove field section which was deleted in the model
+
 ## [8.3.2] (2025-04-10)
 
 ### @axelor/aos-mobile-core
@@ -198,6 +212,7 @@ This version add a new part of the HR package, user can now manage leave request
 
 - Header actions: remove use of attachedFileScreenTitle
 
+[8.3.3]: https://github.com/axelor/axelor-mobile/compare/8.3.2...8.3.3
 [8.3.2]: https://github.com/axelor/axelor-mobile/compare/8.3.1...8.3.2
 [8.3.1]: https://github.com/axelor/axelor-mobile/compare/8.3.0...8.3.1
 [8.3.0]: https://github.com/axelor/axelor-mobile/compare/8.2.8...8.3.0
