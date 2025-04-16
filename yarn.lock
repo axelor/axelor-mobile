@@ -3005,6 +3005,11 @@
   resolved "https://registry.npmjs.org/@react-native-community/slider/-/slider-4.5.6.tgz#dfbfdd6a582b160d41719ad42a7b524794b06dd5"
   integrity sha512-UhLPFeqx0YfPLrEz8ffT3uqAyXWu6iqFjohNsbp4cOU7hnJwg2RXtDnYHoHMr7MOkZDVdlLMdrSrAuzY6KGqrg==
 
+"@react-native-documents/picker@10.1.2":
+  version "10.1.2"
+  resolved "https://registry.npmjs.org/@react-native-documents/picker/-/picker-10.1.2.tgz#2ebbf1eccc7e9efa3690e35ab5f0a811411a57b8"
+  integrity sha512-JzbFmFp0SmG0FEKt4Q62trewHMFpas2zAX0n5EANwrU9kondnzAEF7/xxz2EA2tfZNwnkHelqG8A7iedGleMRw==
+
 "@react-native/assets-registry@0.74.88":
   version "0.74.88"
   resolved "https://registry.npmjs.org/@react-native/assets-registry/-/assets-registry-0.74.88.tgz"
@@ -11349,13 +11354,6 @@ react-native-device-info@^11.1.0:
   version "11.1.0"
   resolved "https://registry.npmjs.org/react-native-device-info/-/react-native-device-info-11.1.0.tgz"
   integrity sha512-hzXJSObJdezEz0hF7MAJ3tGeoesuQWenXXt9mrQR9Mjb8kXpZ09rqSsZ/quNpJdZpQ3rYiFa3/0GFG5KNn9PBg==
-
-react-native-document-picker@9.3.1:
-  version "9.3.1"
-  resolved "https://registry.npmjs.org/react-native-document-picker/-/react-native-document-picker-9.3.1.tgz#f2c33237a906fd0893130e0605c8f18a3aef1605"
-  integrity sha512-Vcofv9wfB0j67zawFjfq9WQPMMzXxOZL9kBmvWDpjVuEcVK73ndRmlXHlkeFl5ZHVsv4Zb6oZYhqm9u5omJOPA==
-  dependencies:
-    invariant "^2.2.4"
 
 react-native-file-viewer@^2.1.5:
   version "2.1.5"
