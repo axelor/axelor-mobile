@@ -30,7 +30,7 @@ interface AllLinesAlertProps {
   setIsAlertVisible: (visible: boolean) => void;
   lines: Line[];
   setLines: (lines: Line[]) => void;
-  handleEditLine: (line: Line) => void;
+  handleEditLine?: (line: Line) => void;
   translator: (key: string) => string;
 }
 
@@ -57,15 +57,17 @@ const AllLinesAlert = ({
           <Text style={styles.productQty}>
             {item.qty} {item.unitName}
           </Text>
-          <Icon
-            name="pencil-fill"
-            size={20}
-            touchable
-            onPress={() => {
-              setIsAlertVisible(false);
-              handleEditLine(item);
-            }}
-          />
+          {handleEditLine && (
+            <Icon
+              name="pencil-fill"
+              size={20}
+              touchable
+              onPress={() => {
+                setIsAlertVisible(false);
+                handleEditLine(item);
+              }}
+            />
+          )}
         </View>
         {item.nameDetails && (
           <Text writingType="details">{item.nameDetails}</Text>
