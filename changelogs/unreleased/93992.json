@@ -1,5 +1,5 @@
 {
-  "title": "ViewAllEditList: make edit optional",
-  "type": "fix",
+  "title": "ViewAllEditList: make line edit management optional",
+  "type": "refactor",
   "packages": "ui"
 }
