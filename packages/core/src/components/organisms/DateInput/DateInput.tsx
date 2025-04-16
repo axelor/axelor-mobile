@@ -228,7 +228,6 @@ const DateInput = ({
             ? DateInputUtils.formatDate(mode, selectedDate, I18n)
             : DateInputUtils.getDateInputPlaceholder(mode)
         }
-        styleText={styles.styleTextButton}
         style={[
           commonStyles.filter,
           commonStyles.filterSize,
@@ -308,9 +307,6 @@ const getStyles = (
       height: 240,
       width: '100%',
       zIndex: 110,
-    },
-    styleTextButton: {
-      left: '-20%',
     },
     title: {
       marginLeft: 10,
