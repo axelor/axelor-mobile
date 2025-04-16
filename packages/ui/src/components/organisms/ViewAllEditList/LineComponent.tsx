@@ -25,7 +25,7 @@ import {Line} from './ViewAllEditList';
 interface LineComponentProps {
   line: Line;
   isSelected: boolean;
-  handleEditLine: (line: Line) => void;
+  handleEditLine?: (line: Line) => void;
   handleDeleteLine: (lineId: number) => void;
 }
 
@@ -53,14 +53,16 @@ const LineComponent = ({
         fontSize={16}>
         {line.qty} {line.unitName}
       </Text>
-      <Icon
-        style={styles.icon}
-        name="pencil-fill"
-        size={16}
-        touchable={!isSelected}
-        color={isSelected ? Colors.secondaryColor.background : null}
-        onPress={() => handleEditLine(line)}
-      />
+      {handleEditLine && (
+        <Icon
+          style={styles.icon}
+          name="pencil-fill"
+          size={16}
+          touchable={!isSelected}
+          color={isSelected ? Colors.secondaryColor.background : null}
+          onPress={() => handleEditLine(line)}
+        />
+      )}
       <Icon
         style={styles.icon}
         name="x-lg"
