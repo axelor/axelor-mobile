@@ -132,6 +132,10 @@ const ExpenseLineFormScreen = ({route, navigation}) => {
           mode === ExpenseLineType.modes.general
             ? _expenseLine.justificationMetaFile?.id
             : null,
+        employeeIdList:
+          mode === ExpenseLineType.modes.general
+            ? _expenseLine.invitedCollaboratorSet
+            : null,
         kilometricAllowParamId: _expenseLine.kilometricAllowParam?.id,
         kilometricTypeSelect: _expenseLine.kilometricTypeSelect?.key,
         distance: _expenseLine.distance,

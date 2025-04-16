@@ -106,6 +106,7 @@
   "Hr_TimeLoggingPreference_Days": "days",
   "Hr_TimeLoggingPreference_Hours": "hours",
   "Hr_TimeLoggingPreference_Minutes": "minutes",
+  "Hr_Invitedcollaborators": "Invited collaborators",
   "Hr_SliceAction_FetchExpenseLines": "fetch expense lines",
   "Hr_SliceAction_SearchDraftExpense": "fetch draft expenses",
   "Hr_SliceAction_FetchExpense": "fetch expenses",
@@ -169,5 +170,6 @@
   "Hr_SliceAction_CreateLeaveRequest": "create leave requests",
   "Hr_SliceAction_CancelExpense": "cancel expense",
   "Hr_SliceAction_ReturnToDraftStatusExpense": "return expense to draft status",
-  "Hr_SliceAction_UpdateLeave": "update leave"
+  "Hr_SliceAction_UpdateLeave": "update leave",
+  "Hr_SliceAction_SearchEmployee": "searh employee"
 }

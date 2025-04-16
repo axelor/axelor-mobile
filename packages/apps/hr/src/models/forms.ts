@@ -28,6 +28,7 @@ import {
   DurationIncrement,
   DurationTimeSheetLine,
   ExpenseTypeSearchBar,
+  InvitedCollaboratorViewAllList,
   KilometricAllowParamSearchBar,
   KilometricTypeSelectPicker,
   LeavePeriodInput,
@@ -250,6 +251,15 @@ export const hr_formsRegister: FormConfigs = {
               return objectState?.totalTax;
             }
           },
+        },
+      },
+      invitedCollaboratorSet: {
+        titleKey: 'Hr_Invitedcollaborators',
+        type: 'array',
+        widget: 'custom',
+        customComponent: InvitedCollaboratorViewAllList,
+        hideIf: ({objectState}) => {
+          return !objectState?.expenseProduct?.deductLunchVoucher;
         },
       },
       comments: {

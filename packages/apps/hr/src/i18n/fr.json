@@ -106,6 +106,7 @@
   "Hr_TimeLoggingPreference_Days": "jours",
   "Hr_TimeLoggingPreference_Hours": "heures",
   "Hr_TimeLoggingPreference_Minutes": "minutes",
+  "Hr_Invitedcollaborators": "Collaborateurs invités",
   "Hr_SliceAction_FetchExpenseLines": "récupération des lignes de frais",
   "Hr_SliceAction_SearchDraftExpense": "récupération des notes de frais brouillon",
   "Hr_SliceAction_FetchExpense": "récupération des notes de frais",
@@ -169,5 +170,6 @@
   "Hr_SliceAction_CreateLeaveRequest": "création des demandes de congés",
   "Hr_SliceAction_CancelExpense": "annulation de la note de frais",
   "Hr_SliceAction_ReturnToDraftStatusExpense": "retour à l'état brouillon de la note de frais",
-  "Hr_SliceAction_UpdateLeave": "mise à jour de la demande de congé"
+  "Hr_SliceAction_UpdateLeave": "mise à jour de la demande de congé",
+  "Hr_SliceAction_SearchEmployee": "récuperation des employés"
 }
