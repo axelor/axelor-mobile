@@ -48,16 +48,6 @@ export async function searchManagedEmployee({userId}) {
   });
 }
 
-export async function searcssEmployee({searchValue = null, page = 0}) {
-  return createStandardSearch({
-    model: 'com.axelor.apps.hr.db.Employee',
-    criteria: createEmployeeCriteria(searchValue),
-    fieldKey: 'hr_employee',
-    page,
-    provider: 'model',
-  });
-}
-
 export async function searchEmployee({searchValue = null, page = 0}) {
   return createStandardSearch({
     model: 'com.axelor.apps.hr.db.Employee',
