@@ -48,18 +48,18 @@
     "@react-native-clipboard/clipboard": "1.14.1",
     "@react-native-community/slider": "^4.5.6",
     "@react-native-documents/picker": "10.1.2",
-    "bootstrap-icons": "^1.10.3",
-    "react": "18.2.0",
-    "react-native": "0.74.6",
+    "bootstrap-icons": "^1.11.3",
+    "react": "18.3.1",
+    "react-native": "0.75.5",
     "react-native-blob-util": "0.21.2",
     "react-native-contacts": "^7.0.8",
     "react-native-datawedge-intents": "^0.1.8",
     "react-native-date-picker": "4.4.2",
-    "react-native-device-info": "^11.1.0",
+    "react-native-device-info": "^14.0.4",
     "react-native-file-viewer": "^2.1.5",
     "react-native-fs": "^2.20.0",
     "react-native-gesture-handler": "2.18.1",
-    "react-native-gifted-charts": "1.4.58",
+    "react-native-gifted-charts": "1.4.59",
     "react-native-linear-gradient": "2.8.3",
     "react-native-mmkv": "2.12.2",
     "react-native-pell-rich-editor": "1.9.0",
@@ -68,7 +68,7 @@
     "react-native-screens": "3.34.0",
     "react-native-share": "12.0.9",
     "react-native-static-safe-area-insets": "^2.2.0",
-    "react-native-svg": "14.0.0",
+    "react-native-svg": "15.11.2",
     "react-native-system-navigation-bar": "2.2.0",
     "react-native-toast-message": "2.2.1",
     "react-native-vision-camera": "4.6.4",
@@ -80,10 +80,10 @@
     "@babel/preset-react": "^7.18.6",
     "@babel/preset-typescript": "^7.22.15",
     "@babel/runtime": "^7.20.0",
-    "@react-native/babel-preset": "0.74.88",
-    "@react-native/eslint-config": "0.74.88",
-    "@react-native/metro-config": "0.74.88",
-    "@react-native/typescript-config": "0.74.88",
+    "@react-native/babel-preset": "0.75.5",
+    "@react-native/eslint-config": "0.75.5",
+    "@react-native/metro-config": "0.75.5",
+    "@react-native/typescript-config": "0.75.5",
     "@storybook/addon-essentials": "^7.6.17",
     "@storybook/addon-react-native-web": "0.0.24",
     "@storybook/builder-webpack5": "^7.6.17",
@@ -92,7 +92,7 @@
     "@storybook/react-native": "7.6.20",
     "@storybook/react-webpack5": "7.6.17",
     "@storybook/theming": "^7.6.17",
-    "@types/react": "^18.2.6",
+    "@types/react": "^18.3.20",
     "@types/react-test-renderer": "^18.0.0",
     "babel-jest": "^29.6.3",
     "babel-loader": "^8.3.0",
@@ -104,10 +104,10 @@
     "nx": "19.6.1",
     "patch-package": "^8.0.0",
     "postinstall-postinstall": "^2.1.0",
-    "react-dom": "18.2.0",
+    "react-dom": "18.3.1",
     "react-native-web": "0.18.12",
     "react-native-web-linear-gradient": "1.1.2",
-    "react-test-renderer": "18.2.0",
+    "react-test-renderer": "18.3.1",
     "reactotron-react-native": "5.1.12",
     "storybook": "7.6.17",
     "text-encoding": "^0.7.0",
@@ -115,19 +115,20 @@
     "typescript": "5.1.6"
   },
   "resolutions": {
-    "@types/react": "^18.2.6"
+    "@types/react": "^18.3.20",
+    "cheerio": "1.0.0-rc.12"
   },
   "engines": {
     "node": ">=18"
   },
   "overrides": {
     "@react-native-clipboard/clipboard": {
-      "react-native": "~0.74.0",
-      "react-native-windows": "~0.74.0"
+      "react-native": "~0.75.0",
+      "react-native-windows": "~0.75.0"
     },
     "enzyme-adapter-react-16": {
-      "react": "18.2.0",
-      "react-dom": "18.2.0"
+      "react": "18.3.1",
+      "react-dom": "18.3.1"
     }
   }
 }

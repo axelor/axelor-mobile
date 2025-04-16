@@ -26,40 +26,40 @@
   },
   "peerDependencies": {
     "@react-native-community/slider": "^4.5.6",
-    "bootstrap-icons": "^1.10.3",
+    "bootstrap-icons": "^1.11.3",
     "react": "*",
     "react-native": "*",
-    "react-native-gifted-charts": "1.4.58",
+    "react-native-gifted-charts": "1.4.59",
     "react-native-linear-gradient": "2.8.3",
     "react-native-pell-rich-editor": "1.9.0",
-    "react-native-svg": "14.0.0",
+    "react-native-svg": "15.11.2",
     "react-native-system-navigation-bar": "2.2.0",
     "react-native-webview": "11.26.1"
   },
   "devDependencies": {
     "@babel/runtime": "^7.20.0",
     "@react-native-community/slider": "^4.5.6",
-    "@react-native/babel-preset": "0.74.88",
-    "@react-native/eslint-config": "0.74.88",
+    "@react-native/babel-preset": "0.75.5",
+    "@react-native/eslint-config": "0.75.5",
     "@svgr/core": "^6.5.1",
     "@svgr/plugin-jsx": "^6.5.1",
     "@svgr/plugin-prettier": "^6.5.1",
     "@svgr/plugin-svgo": "^6.5.1",
-    "@types/react": "^18.2.6",
-    "bootstrap-icons": "^1.10.3",
+    "@types/react": "^18.3.20",
+    "bootstrap-icons": "^1.11.3",
     "eslint": "8.57.0",
     "glob": "^8.1.0",
     "prettier": "^3.3.3",
-    "react": "18.2.0",
-    "react-native": "0.74.6",
-    "react-native-gifted-charts": "1.4.58",
+    "react": "18.3.1",
+    "react-native": "0.75.5",
+    "react-native-gifted-charts": "1.4.59",
     "react-native-linear-gradient": "2.8.3",
     "react-native-pell-rich-editor": "1.9.0",
-    "react-native-svg": "14.0.0",
+    "react-native-svg": "15.11.2",
     "react-native-system-navigation-bar": "2.2.0",
     "react-native-webview": "11.26.1"
   },
   "resolutions": {
-    "@types/react": "^18.2.6"
+    "@types/react": "^18.3.20"
   }
 }

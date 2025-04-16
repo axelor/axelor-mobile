@@ -255,10 +255,8 @@ const getStyles = (
       borderWidth: 1,
       marginHorizontal: 0,
       minHeight: 40,
-      paddingLeft: displayPlaceholder ? 9 : 20,
     },
     textPicker: {
-      left: displayPlaceholder ? 0 : '-20%',
       color: displayPlaceholder ? Colors.placeholderTextColor : Colors.text,
       fontSize: displayPlaceholder ? 15 : 16,
     },
