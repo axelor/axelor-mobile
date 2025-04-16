@@ -42,6 +42,7 @@ export {
   useCameraSelector,
   useCameraValueByKey,
 } from './cameraSlice';
+export {fetchAllCurrencies} from './currencySlice';
 export {getFileDetails} from './metafileSlice';
 export {fetchMetaModules} from './metaModuleSlice';
 export {
