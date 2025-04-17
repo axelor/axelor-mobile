@@ -69,7 +69,7 @@ const TimesheetLineFormScreen = ({route, navigation}) => {
         productId: objectState.product?.id,
         toInvoice: objectState.toInvoice,
         date: objectState.date,
-        duration: objectState.hoursDuration,
+        duration: objectState.duration,
         comments: objectState.comments,
       };
 
@@ -98,7 +98,9 @@ const TimesheetLineFormScreen = ({route, navigation}) => {
             product: timesheetLine.product,
             toInvoice: timesheetLine.toInvoice,
             date: timesheetLine.date,
+            useduration: true,
             hoursDuration: timesheetLine.hoursDuration,
+            duration: timesheetLine.duration,
             comments: timesheetLine.comments,
           }
         : null,

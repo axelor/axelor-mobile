@@ -26,6 +26,7 @@ import {
   DistanceIncrement,
   DraftExpensePicker,
   DurationIncrement,
+  DurationTimeSheetLine,
   ExpenseTypeSearchBar,
   KilometricAllowParamSearchBar,
   KilometricTypeSelectPicker,
@@ -363,6 +364,14 @@ export const hr_formsRegister: FormConfigs = {
         type: 'number',
         widget: 'increment',
         required: true,
+        hideIf: ({objectState}) => objectState.useduration,
+      },
+      duration: {
+        titleKey: 'Hr_Duration',
+        type: 'number',
+        required: true,
+        widget: 'custom',
+        customComponent: DurationTimeSheetLine,
       },
       comments: {
         titleKey: 'Hr_Comments',
