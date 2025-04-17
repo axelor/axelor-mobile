@@ -20,7 +20,6 @@ import {PermissionsAndroid, Platform} from 'react-native';
 import RNFetchBlob from 'react-native-blob-util';
 import RNFS from 'react-native-fs';
 import Share from 'react-native-share';
-import {File} from '@axelor/aos-mobile-ui';
 import {TranslatorProps} from '../i18n/hooks/use-translator';
 import {sanitizeFileName, showToastMessage} from '../utils';
 
@@ -36,11 +35,19 @@ interface ConnexionNeed {
   jsessionId?: string;
 }
 
+const getFileExtension = (filename: string) => {
+  if (filename == null) {
+    return filename;
+  }
+
+  return filename.split('.').pop();
+};
+
 async function getUniqueFileName(
   basePath: string,
   fileName: string,
 ): Promise<string> {
-  const extension = File.getFileExtension(fileName);
+  const extension = getFileExtension(fileName);
   const baseName = sanitizeFileName(fileName)?.replaceAll(`.${extension}`, '');
 
   let filePath: string = `${basePath}/${baseName}.${extension}`;
