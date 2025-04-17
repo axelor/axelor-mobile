@@ -16,4 +16,5 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-export const sanitizeFileName = (name: string) => name?.replace(/[ :*?"<>|\\]/g, '_');
+export const sanitizeFileName = (name: string) =>
+  name?.replace(/[ :*?"<>|\\]/g, '_');
