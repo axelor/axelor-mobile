@@ -31,6 +31,7 @@ export {
   getFullDateItems,
 } from './date';
 export {displayItemName, displayItemFullname} from './displayers';
+export {sanitizeFileName} from './file';
 export {
   formatDate,
   formatDateTime,
