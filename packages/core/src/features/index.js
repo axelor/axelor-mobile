@@ -21,6 +21,7 @@ export {attachedFilesReducer as attachedFiles} from './attachedFilesSlice';
 export {authReducer as auth} from './authSlice';
 export {default as cameraScanner} from './cameraScannerSlice';
 export {default as camera} from './cameraSlice';
+export {currencyReducer as core_currency} from './currencySlice';
 export {formReducer as form} from './formSlice';
 export {metafileReducer as metafile} from './metafileSlice';
 export {metaJsonFieldReducer as metaJsonField} from './metaJsonFieldSlice';

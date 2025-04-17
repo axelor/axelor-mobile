@@ -16,17 +16,14 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-export * from './use-effect-debugger';
-export {useCurrencyFormat} from './use-currency-formatter';
-export {
-  useIsFocused,
-  useNavigation,
-  useNavigationRoutes,
-  useStackChecker,
-} from './use-navigation';
-export {
-  useScanActivator,
-  useScannerDeviceActivator,
-  useCameraScannerActivator,
-} from './use-scan-activator';
-export {useConfigUpdater, useStorageUpdater} from './use-storage-config';
+import {createStandardSearch} from '../apiProviders';
+
+export async function getAllCurrencies({}) {
+  return createStandardSearch({
+    model: 'com.axelor.apps.base.db.Currency',
+    fieldKey: 'core_currency',
+    numberElementsByPage: null,
+    page: 0,
+    provider: 'model',
+  });
+}
