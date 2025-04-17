@@ -17,7 +17,7 @@
  */
 
 import React, {useMemo} from 'react';
-import {useTranslator} from '@axelor/aos-mobile-core';
+import {useCurrencyFormat, useTranslator} from '@axelor/aos-mobile-core';
 import {useDigitFormat, usePriceFormat} from '@axelor/aos-mobile-ui';
 import {PriceDetails} from '../../atoms';
 
@@ -35,6 +35,7 @@ const SaleOrderLinePriceDetails = ({
   const I18n = useTranslator();
   const formatPrice = usePriceFormat();
   const formatNumber = useDigitFormat();
+  const formatCurrencyPrice = useCurrencyFormat();
 
   const priceList = useMemo(
     () => [
@@ -62,15 +63,23 @@ const SaleOrderLinePriceDetails = ({
       },
       {
         title: I18n.t(saleOrder.inAti ? 'Sale_TotalATI' : 'Sale_TotalWT'),
-        value: formatPrice(
+        value: formatCurrencyPrice(
           saleOrder.inAti ? saleOrderLine.inTaxTotal : saleOrderLine.exTaxTotal,
+          saleOrder.currency?.id,
         ),
         unit: saleOrder.currency?.symbol,
         size: 20,
         showLine: true,
       },
     ],
-    [I18n, formatNumber, formatPrice, saleOrder, saleOrderLine],
+    [
+      I18n,
+      formatCurrencyPrice,
+      formatNumber,
+      formatPrice,
+      saleOrder,
+      saleOrderLine,
+    ],
   );
 
   return <PriceDetails style={style} lineList={priceList} />;

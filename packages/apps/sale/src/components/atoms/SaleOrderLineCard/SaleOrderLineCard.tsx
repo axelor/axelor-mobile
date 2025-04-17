@@ -18,7 +18,12 @@
 
 import React, {useMemo} from 'react';
 import {StyleSheet, View} from 'react-native';
-import {useMetafileUri, useTranslator, useTypes} from '@axelor/aos-mobile-core';
+import {
+  useCurrencyFormat,
+  useMetafileUri,
+  useTranslator,
+  useTypes,
+} from '@axelor/aos-mobile-core';
 import {
   HtmlInput,
   ObjectCard,
@@ -39,7 +44,7 @@ interface SaleOrderLineCardProps {
   inTaxTotal?: number;
   exTaxTotal?: number;
   isShowEndOfPackTotal?: boolean;
-  currencySymbol?: string;
+  currency?: {symbol: string; id: number};
   description?: string;
   onPress?: () => void;
 }
@@ -56,7 +61,7 @@ const SaleOrderLineCard = ({
   inTaxTotal,
   exTaxTotal,
   isShowEndOfPackTotal,
-  currencySymbol,
+  currency,
   description,
   onPress,
 }: SaleOrderLineCardProps) => {
@@ -65,6 +70,7 @@ const SaleOrderLineCard = ({
   const formatMetaFile = useMetafileUri();
   const formatNumber = useDigitFormat();
   const formatPrice = usePriceFormat();
+  const formatCurrencyPrice = useCurrencyFormat();
 
   const total = useMemo(
     () => (SOinAti ? inTaxTotal : exTaxTotal),
@@ -121,8 +127,8 @@ const SaleOrderLineCard = ({
               customComponent: (
                 <TextUnit
                   style={styles.sideText}
-                  value={formatPrice(total)}
-                  unit={currencySymbol}
+                  value={formatCurrencyPrice(total, currency?.id)}
+                  unit={currency?.symbol}
                 />
               ),
             },
@@ -192,8 +198,8 @@ const SaleOrderLineCard = ({
                 customComponent: (
                   <TextUnit
                     style={styles.sideText}
-                    value={formatPrice(total)}
-                    unit={currencySymbol}
+                    value={formatCurrencyPrice(total, currency?.id)}
+                    unit={currency?.symbol}
                     defaultColor
                   />
                 ),
