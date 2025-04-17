@@ -21,43 +21,53 @@ import {useTranslator} from '@axelor/aos-mobile-core';
 import {ViewAllEditList} from '@axelor/aos-mobile-ui';
 import EmployeeSearchBar from '../EmployeeSearchBar/EmployeeSearchBar';
 
+interface InvitedCollaboratorViewAllListProps {
+  title?: string;
+  defaultValue?: any[] | null;
+  onChange: (employees: any[]) => void;
+  readonly?: boolean;
+}
+
 const InvitedCollaboratorViewAllListAux = ({
-  title = 'Hr_Invitedcollaborators',
+  title = 'Hr_InvitedCollaborators',
   defaultValue = null,
   onChange,
   readonly = false,
-}) => {
+}: InvitedCollaboratorViewAllListProps) => {
   const I18n = useTranslator();
-
-  const [lines, setLines] = useState(defaultValue != null ? defaultValue : []);
-  const [newLine, setNewLine] = useState(null);
+  const [lines, setLines] = useState(defaultValue ?? []);
 
   const handleAddEmployee = useCallback(
     employee => {
-      const alreadyExists = lines.some(line => line.id === employee.id);
-      if (!alreadyExists) {
-        const updatedLines = [...lines, employee];
-        setLines(updatedLines);
+      setLines(currentLines => {
+        const alreadyExists = currentLines.some(
+          line => line.id === employee.id,
+        );
+        if (alreadyExists) return currentLines;
+
+        const updatedLines = [...currentLines, employee];
         onChange(updatedLines);
-      }
-      setNewLine(null);
+        return updatedLines;
+      });
     },
-    [lines, onChange],
+    [onChange],
   );
 
   return (
     <>
       <ViewAllEditList
+        currentLineId={null}
         title={I18n.t(title)}
         lines={lines}
-        currentLineId={readonly ? null : newLine?.id}
-        setLines={setLines}
+        setLines={updated => {
+          setLines(updated);
+          onChange(updated);
+        }}
         translator={I18n.t}
       />
-      {!newLine && (
+      {!readonly && (
         <EmployeeSearchBar
           showTitle={false}
-          defaultValue={newLine}
           onChange={employee => {
             if (employee) {
               handleAddEmployee({
@@ -77,7 +87,7 @@ const InvitedCollaboratorViewAllList = ({
   defaultValue,
   onChange,
   readonly,
-}) => {
+}: InvitedCollaboratorViewAllListProps) => {
   return (
     <InvitedCollaboratorViewAllListAux
       title={title}

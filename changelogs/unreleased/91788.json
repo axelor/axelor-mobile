@@ -1,5 +1,5 @@
 {
-  "title": "Form: manage invitations on expenses line",
+  "title": "Expense lines: manage invitations on form",
   "type": "feat",
   "packages": "hr"
 }
