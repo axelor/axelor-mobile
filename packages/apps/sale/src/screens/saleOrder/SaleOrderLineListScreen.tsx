@@ -76,7 +76,7 @@ const SaleOrderLineListScreen = ({}) => {
             inTaxTotal={item.inTaxTotal}
             exTaxTotal={item.exTaxTotal}
             isShowEndOfPackTotal={item.isShowTotal}
-            currencySymbol={saleOrder.currency?.symbol}
+            currency={saleOrder.currency}
             description={item.description}
             onPress={() =>
               navigation.navigate('SaleOrderLineDetailsScreen', {
