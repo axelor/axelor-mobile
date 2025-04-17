@@ -18,6 +18,7 @@
 
 import MailMessageScreen from './MailMessageScreen';
 import InboxScreen from './InboxScreen';
+import MailMessageAttachedFilesScreen from './MailMessageAttachedFilesScreen';
 
 export default {
   MailMessageScreen: {
@@ -29,7 +30,15 @@ export default {
     title: 'Message_Inbox',
     component: InboxScreen,
   },
+  MailMessageAttachedFilesScreen: {
+    title: 'Dms_AttachedFiles',
+    component: MailMessageAttachedFilesScreen,
+    options: {
+      shadedHeader: false,
+    },
+  },
 };
 
 export {MailMessageScreen};
 export {InboxScreen};
+export {MailMessageAttachedFilesScreen};

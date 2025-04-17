@@ -37,11 +37,19 @@ import {DocumentCard} from '../../atoms';
 interface DocumentActionCardProps {
   document: any;
   handleRefresh?: () => void;
+  disableFavorites?: boolean;
+  disableDownload?: boolean;
+  disableEdit?: boolean;
+  disabledDelete?: boolean;
 }
 
 const DocumentActionCard = ({
   document,
   handleRefresh,
+  disableFavorites = false,
+  disableDownload = false,
+  disableEdit = false,
+  disabledDelete = false,
 }: DocumentActionCardProps) => {
   const I18n = useTranslator();
   const Colors = useThemeColor();
@@ -82,14 +90,15 @@ const DocumentActionCard = ({
                 userId: user?.id,
               }),
             ),
-          hidden: !mobileSettings?.isFavoritesManagementEnabled,
+          hidden:
+            disableFavorites || !mobileSettings?.isFavoritesManagementEnabled,
           disabled: readonly,
         },
         {
           iconName: 'download',
           helper: I18n.t('Dms_Download'),
           onPress: handleDownloadFile,
-          hidden: !mobileSettings?.isDownloadAllowed,
+          hidden: disableDownload || !mobileSettings?.isDownloadAllowed,
         },
         {
           iconName: 'pencil-fill',
@@ -98,7 +107,7 @@ const DocumentActionCard = ({
             navigation.navigate('DocumentFormScreen', {
               document,
             }),
-          hidden: !mobileSettings?.isRenamingAllowed || readonly,
+          hidden: disableEdit || !mobileSettings?.isRenamingAllowed || readonly,
         },
         {
           iconName: 'trash-fill',
@@ -111,7 +120,10 @@ const DocumentActionCard = ({
                 userId: user?.id,
               }),
             ).then(() => handleRefresh?.()),
-          hidden: !canDelete || !mobileSettings?.isFileDeletionAllowed,
+          hidden:
+            disabledDelete ||
+            !canDelete ||
+            !mobileSettings?.isFileDeletionAllowed,
         },
       ]}
       translator={I18n.t}>
