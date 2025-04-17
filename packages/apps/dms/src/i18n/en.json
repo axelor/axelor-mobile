@@ -26,6 +26,5 @@
   "Dms_SliceAction_CountAttachedFiles": "count attached files",
   "Dms_SliceAction_AddToFavorites": "add to favorites",
   "Dms_SliceAction_RemoveFromFavorites": "remove from favorites",
-  "Dms_SliceAction_DeleteDocument": "delete document",
-  "Dms_SliceAction_SearchAttachedFiles": "search attached files"
+  "Dms_SliceAction_DeleteDocument": "delete document"
 }

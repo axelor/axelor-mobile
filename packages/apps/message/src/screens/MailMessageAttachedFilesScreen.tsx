@@ -66,7 +66,10 @@ const MailMessageAttachedFilesScreen = ({route}) => {
             showClearButton
           />
         }
-        renderListItem={({item}) => <DocumentActionCard document={item} />}
+        renderListItem={({item}) => (
+          <DocumentActionCard document={item} disableEdit disabledDelete />
+        )}
+        expandableFilter={false}
       />
     </Screen>
   );

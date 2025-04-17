@@ -26,6 +26,5 @@
   "Dms_SliceAction_CountAttachedFiles": "comptage des fichiers joints",
   "Dms_SliceAction_AddToFavorites": "ajout aux favoris",
   "Dms_SliceAction_RemoveFromFavorites": "suppression des favoris",
-  "Dms_SliceAction_DeleteDocument": "suppression d'un document",
-  "Dms_SliceAction_SearchAttachedFiles": "recherche sur les fichiers joints"
+  "Dms_SliceAction_DeleteDocument": "suppression d'un document"
 }
