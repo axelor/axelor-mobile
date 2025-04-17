@@ -17,7 +17,6 @@
  */
 
 export {fetchRequiredConfig} from './appConfigSlice';
-export {getAttachedFilesDetails} from './attachedFilesSlice';
 export {
   clearError,
   isUrlValid,

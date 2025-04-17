@@ -17,7 +17,6 @@
  */
 
 export {appConfigReducer as appConfig} from './appConfigSlice';
-export {attachedFilesReducer as attachedFiles} from './attachedFilesSlice';
 export {authReducer as auth} from './authSlice';
 export {default as cameraScanner} from './cameraScannerSlice';
 export {default as camera} from './cameraSlice';

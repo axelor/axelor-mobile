@@ -44,7 +44,6 @@
   "Manufacturing_StartDate": "Start",
   "Manufacturing_EndDate": "End",
   "Manufacturing_ProductionFile": "Production File",
-  "Manufacturing_AttachedFiles": "Attached Files",
   "Manufacturing_ChildrenMO": "Cildren MO",
   "Manufacturing_SeeAvailability": "See availability",
   "Manufacturing_SeeSubMO": "See sub MO",
