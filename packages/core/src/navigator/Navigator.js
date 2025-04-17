@@ -47,6 +47,7 @@ import {useDispatch, useSelector} from 'react-redux';
 import BaseScreen from '../screens';
 import Header from './drawer/Header';
 import {fetchMetaModules} from '../features/metaModuleSlice';
+import {fetchAllCurrencies} from '../features/currencySlice';
 import {fetchRequiredConfig} from '../features/appConfigSlice';
 import {usePermissionsFetcher} from '../permissions';
 import {navigationInformations} from './NavigationInformationsProvider';
@@ -111,6 +112,7 @@ const Navigator = ({mainMenu, onRefresh, versionCheckConfig}) => {
 
   useEffect(() => {
     dispatch(fetchMetaModules());
+    dispatch(fetchAllCurrencies());
     fetchAllPermission();
   }, [dispatch, fetchAllPermission]);
 
