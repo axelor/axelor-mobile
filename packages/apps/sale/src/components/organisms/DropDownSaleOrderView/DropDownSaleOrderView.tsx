@@ -133,7 +133,7 @@ const DropDownSaleOrderView = ({customer}) => {
             orderDate={lasQuotation.orderDate}
             WTPrice={lasQuotation.exTaxTotal}
             ATIPrice={lasQuotation.inTaxTotal}
-            currencySymbol={lasQuotation.currency?.symbol}
+            currency={lasQuotation.currency}
             deliveryState={lasQuotation.deliveryState}
             invoicingState={lasQuotation.invoicingState}
             onPress={() =>
@@ -159,7 +159,7 @@ const DropDownSaleOrderView = ({customer}) => {
             orderDate={lastOrder.orderDate}
             WTPrice={lastOrder.exTaxTotal}
             ATIPrice={lastOrder.inTaxTotal}
-            currencySymbol={lastOrder.currency?.symbol}
+            currency={lastOrder.currency}
             deliveryState={lastOrder.deliveryState}
             invoicingState={lastOrder.invoicingState}
             onPress={() =>

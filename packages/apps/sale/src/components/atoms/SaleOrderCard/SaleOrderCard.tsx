@@ -16,7 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import React, {useMemo} from 'react';
+import React, {useCallback, useMemo} from 'react';
 import {StyleSheet, View} from 'react-native';
 import {
   checkNullString,
@@ -25,8 +25,9 @@ import {
   useTranslator,
   useTypes,
   useTypeHelpers,
+  useCurrencyFormat,
 } from '@axelor/aos-mobile-core';
-import {ObjectCard, TextUnit, usePriceFormat} from '@axelor/aos-mobile-ui';
+import {ObjectCard, TextUnit} from '@axelor/aos-mobile-ui';
 import StateBadge from '../StateBadge/StateBadge';
 import SaleOrderCardTitle from './SaleOrderCardTitle';
 
@@ -42,7 +43,7 @@ interface SaleOrderCardProps {
   orderDate: string;
   WTPrice: number;
   ATIPrice: number;
-  currencySymbol: string;
+  currency: {symbol: string; id: number};
   deliveryState: number;
   invoicingState: number;
   onPress: () => void;
@@ -60,7 +61,7 @@ const SaleOrderCard = ({
   orderDate,
   WTPrice,
   ATIPrice,
-  currencySymbol,
+  currency,
   deliveryState,
   invoicingState,
   onPress,
@@ -68,7 +69,12 @@ const SaleOrderCard = ({
   const I18n = useTranslator();
   const {SaleOrder} = useTypes();
   const {getItemColor} = useTypeHelpers();
-  const formatPrice = usePriceFormat();
+  const formatCurrencyPrice = useCurrencyFormat();
+
+  const formatPrice = useCallback(
+    (amount: string | number) => formatCurrencyPrice(amount, currency?.id),
+    [formatCurrencyPrice, currency?.id],
+  );
 
   const {base: baseConfig} = useSelector((state: any) => state.appConfig);
   const {companyList} = useSelector((state: any) => state.company);
@@ -170,7 +176,7 @@ const SaleOrderCard = ({
                 <TextUnit
                   title={I18n.t('Sale_WT')}
                   value={formatPrice(WTPrice)}
-                  unit={currencySymbol}
+                  unit={currency?.symbol}
                   fontSize={16}
                   defaultColor
                 />
@@ -181,7 +187,7 @@ const SaleOrderCard = ({
                 <TextUnit
                   title={I18n.t('Sale_ATI')}
                   value={formatPrice(ATIPrice)}
-                  unit={currencySymbol}
+                  unit={currency?.symbol}
                   fontSize={16}
                 />
               ),
@@ -218,7 +224,7 @@ const SaleOrderCard = ({
   );
 };
 
-const getStyles = color =>
+const getStyles = (color: string) =>
   StyleSheet.create({
     container: {
       flex: 1,

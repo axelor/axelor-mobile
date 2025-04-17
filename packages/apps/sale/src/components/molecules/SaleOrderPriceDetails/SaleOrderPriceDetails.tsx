@@ -16,9 +16,12 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import React, {useMemo} from 'react';
-import {useTranslator, useTypes} from '@axelor/aos-mobile-core';
-import {usePriceFormat} from '@axelor/aos-mobile-ui';
+import React, {useCallback, useMemo} from 'react';
+import {
+  useCurrencyFormat,
+  useTranslator,
+  useTypes,
+} from '@axelor/aos-mobile-core';
 import {PriceDetails} from '../../atoms';
 
 interface SaleOrderPriceDetailsProps {
@@ -32,7 +35,13 @@ const SaleOrderPriceDetails = ({
 }: SaleOrderPriceDetailsProps) => {
   const I18n = useTranslator();
   const {SaleOrder} = useTypes();
-  const formatPrice = usePriceFormat();
+  const formatCurrencyPrice = useCurrencyFormat();
+
+  const formatPrice = useCallback(
+    (amount: string | number) =>
+      formatCurrencyPrice(amount, saleOrder.currency?.id),
+    [formatCurrencyPrice, saleOrder.currency?.id],
+  );
 
   const priceList = useMemo(
     () => [

@@ -111,7 +111,7 @@ const SaleOrderListView = ({
           orderDate={item.orderDate}
           WTPrice={item.exTaxTotal}
           ATIPrice={item.inTaxTotal}
-          currencySymbol={item.currency?.symbol}
+          currency={item.currency}
           deliveryState={item.deliveryState}
           invoicingState={item.invoicingState}
           onPress={() =>
