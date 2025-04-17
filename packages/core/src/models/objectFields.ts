@@ -63,4 +63,7 @@ export const core_modelAPI: ObjectFields = {
     title: schemaContructor.string(),
     filterCustom: schemaContructor.string(),
   }),
+  core_currency: schemaContructor.object({
+    numberOfDecimals: schemaContructor.number(),
+  }),
 };

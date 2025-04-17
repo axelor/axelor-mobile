@@ -229,5 +229,6 @@
   "Base_SliceAction_UpdateJsonFieldsObject": "update custom fields of object",
   "Base_SliceAction_FetchAnomalies": "fetch anomalies of object",
   "Base_SliceAction_SearchUser": "search user",
-  "Base_SliceAction_SearchPrintingTemplate": "search printing template"
+  "Base_SliceAction_SearchPrintingTemplate": "search printing template",
+  "Base_SliceAction_FetchAllCurrencies": "fetch currencies"
 }
