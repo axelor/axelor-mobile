@@ -1,72 +1,52 @@
-/*
- * Axelor Business Solutions
- *
- * Copyright (C) 2025 Axelor (<http://axelor.com>).
- *
- * This program is free software: you can redistribute it and/or  modify
- * it under the terms of the GNU Affero General Public License, version 3,
- * as published by the Free Software Foundation.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU Affero General Public License for more details.
- *
- * You should have received a copy of the GNU Affero General Public License
- * along with this program.  If not, see <http://www.gnu.org/licenses/>.
- */
-
 import {useCallback, useEffect, useRef, useState} from 'react';
 import {useDispatch} from 'react-redux';
+import DeviceInfo from 'react-native-device-info';
 import {
   useCameraScannerValueByKey,
   clearBarcode,
   enableMassCameraScanner,
   disableCameraScanner,
-} from '../../../features/cameraScannerSlice';
-import {useScanActivator} from '../../../hooks/use-scan-activator';
-import DeviceInfo from 'react-native-device-info';
-import {clearScan, useScannedValueByKey} from '../../../features/scannerSlice';
-import {useCameraScannerSelector} from '../../../features/cameraScannerSlice';
+  useCameraScannerSelector,
+} from '../features/cameraScannerSlice';
+import {clearScan, useScannedValueByKey} from '../features/scannerSlice';
+import {useScanActivator} from './use-scan-activator';
 
-interface MassScannerProps {
+interface UseMassScannerParams {
   scanKey: string;
   backgroundAction: (scannedValue: string) => any;
   fallbackAction?: (error: any) => void;
   scanInterval?: number;
   onClose?: () => void;
+  enabled?: boolean;
 }
 
-const MassScanner = ({
+export const useMassScanner = ({
   scanKey,
   backgroundAction,
   fallbackAction,
   scanInterval = 1000,
   onClose,
-}: MassScannerProps) => {
+  enabled = false,
+}: UseMassScannerParams) => {
   const dispatch = useDispatch();
   const scannedBarcode = useCameraScannerValueByKey(scanKey);
-  const {enable: enableScan} = useScanActivator(scanKey);
   const scannedValue = useScannedValueByKey(scanKey);
+  const {enable: enableScan} = useScanActivator(scanKey);
   const {isEnabled} = useCameraScannerSelector();
 
   const isProcessingRef = useRef(false);
-  const timerRef = useRef(null);
-  const hasMounted = useRef(false);
-
+  const timerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   const [isZebraDevice, setIsZebraDevice] = useState(false);
 
   useEffect(() => {
-    if (hasMounted.current && !isEnabled) {
+    if (!isEnabled && enabled) {
       onClose?.();
     }
-  }, [isEnabled, onClose]);
+  }, [enabled, isEnabled, onClose]);
 
   useEffect(() => {
-    hasMounted.current = true;
-  }, []);
+    if (!enabled) return;
 
-  useEffect(() => {
     DeviceInfo.getManufacturer().then(manufacturer => {
       const isZebra = manufacturer === 'Zebra Technologies';
       setIsZebraDevice(isZebra);
@@ -82,14 +62,14 @@ const MassScanner = ({
       dispatch(disableCameraScanner());
       if (timerRef.current) clearTimeout(timerRef.current);
     };
-  }, [dispatch, enableScan, scanKey]);
+  }, [dispatch, enableScan, scanKey, enabled]);
 
   const processScan = useCallback(
     async (value: string, clearAction: () => void) => {
       if (isProcessingRef.current) return;
       isProcessingRef.current = true;
 
-      const effectiveScanInterval = isZebraDevice ? 0 : scanInterval;
+      const delay = isZebraDevice ? 0 : scanInterval;
 
       try {
         await backgroundAction(value);
@@ -101,18 +81,15 @@ const MassScanner = ({
         clearAction();
         timerRef.current = setTimeout(() => {
           isProcessingRef.current = false;
-
-          if (isZebraDevice) {
-            enableScan();
-          }
-        }, effectiveScanInterval);
+          if (isZebraDevice) enableScan();
+        }, delay);
       }
     },
     [
       backgroundAction,
+      fallbackAction,
       dispatch,
       enableScan,
-      fallbackAction,
       isZebraDevice,
       scanInterval,
     ],
@@ -122,15 +99,11 @@ const MassScanner = ({
     if (scannedValue) {
       processScan(scannedValue, () => dispatch(clearScan()));
     }
-  }, [dispatch, processScan, scannedValue]);
+  }, [scannedValue, processScan, dispatch]);
 
   useEffect(() => {
     if (scannedBarcode?.value) {
       processScan(scannedBarcode.value, () => dispatch(clearBarcode()));
     }
-  }, [dispatch, processScan, scannedBarcode]);
-
-  return null;
+  }, [scannedBarcode, processScan, dispatch]);
 };
-
-export default MassScanner;

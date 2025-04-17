@@ -18,6 +18,7 @@
 
 export * from './use-effect-debugger';
 export {useCurrencyFormat} from './use-currency-formatter';
+export {useMassScanner} from './use-mass-scanner';
 export {
   useIsFocused,
   useNavigation,

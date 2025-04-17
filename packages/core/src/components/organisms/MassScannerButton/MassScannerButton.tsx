@@ -24,7 +24,7 @@ import {
   ThemeColors,
   useThemeColor,
 } from '@axelor/aos-mobile-ui';
-import MassScanner from '../MassScanner/MassScanner';
+import {useMassScanner} from '../../../hooks';
 
 interface MassScannerButtonProps {
   style?: any;
@@ -47,25 +47,21 @@ const MassScannerButton = ({
 
   const styles = useMemo(() => getStyles(Colors), [Colors]);
 
+  useMassScanner({
+    scanKey,
+    backgroundAction,
+    fallbackAction,
+    scanInterval,
+    onClose: () => setScannerActive(false),
+    enabled: scannerActive,
+  });
+
   const handleToggleScanner = () => {
     setScannerActive(prev => !prev);
   };
 
-  const handleScannerClose = () => {
-    setScannerActive(false);
-  };
-
   return (
     <View style={[styles.container, style]}>
-      {scannerActive && (
-        <MassScanner
-          scanKey={scanKey}
-          backgroundAction={backgroundAction}
-          fallbackAction={fallbackAction}
-          scanInterval={scanInterval}
-          onClose={handleScannerClose}
-        />
-      )}
       <Card style={styles.card}>
         <DoubleIcon
           style={styles.doubleIcon}

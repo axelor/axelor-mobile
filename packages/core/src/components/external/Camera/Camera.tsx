@@ -46,7 +46,6 @@ import {
   useCameraScannerSelector,
 } from '../../../features/cameraScannerSlice';
 import {formatScan} from '../../../utils/formatters';
-import DeviceInfo from 'react-native-device-info';
 
 const CONTENT_SPACING = 40;
 const PHOTO_TYPE = 'jpeg';
@@ -67,7 +66,7 @@ const BUTTON_SIZE = 40;
 
 const Camera = () => {
   const Colors = useThemeColor();
-  const {isEnabled: isScanActive, isMassScan} = useCameraScannerSelector();
+  const {isEnabled: isScanActive} = useCameraScannerSelector();
   const {isEnabled: isCameraActive} = useCameraSelector();
   const {hasPermission, requestPermission} = useCameraPermission();
   const camera = useRef(null);
@@ -78,8 +77,6 @@ const Camera = () => {
   );
 
   const [flash, setFlash] = useState<'off' | 'on'>('off');
-
-  const [isZebraDevice, setIsZebraDevice] = useState(false);
 
   const deviceBack = useCameraDevice('back');
 
@@ -95,14 +92,6 @@ const Camera = () => {
   );
 
   const supportsFlash = device?.hasFlash ?? false;
-
-  useEffect(() => {
-    DeviceInfo.getManufacturer().then(manufacturer => {
-      if (manufacturer === 'Zebra Technologies') {
-        setIsZebraDevice(true);
-      }
-    });
-  }, []);
 
   const onFlipCameraPressed = useCallback(() => {
     setCameraPosition(p => (p === 'back' ? 'front' : 'back'));
@@ -136,10 +125,6 @@ const Camera = () => {
             type: barcode[0].type,
           }),
         );
-
-        if (!isMassScan) {
-          dispatch(disableCameraScanner());
-        }
       }
     },
   });
@@ -184,10 +169,6 @@ const Camera = () => {
     [hasPermission, isCameraActive, isScanActive],
   );
 
-  if (isZebraDevice) {
-    return null;
-  }
-
   return (
     <SafeAreaView style={{zIndex: 700 * (cameraVisible ? 1 : -1)}}>
       {device != null && hasPermission && (
@@ -196,7 +177,7 @@ const Camera = () => {
             ref={camera}
             style={[styles.camera, {zIndex: 750 * (cameraVisible ? 1 : -1)}]}
             device={device}
-            isActive={isScanActive || isCameraActive}
+            isActive={cameraVisible}
             photo={!isScanActive}
             codeScanner={codeScanner}
           />
