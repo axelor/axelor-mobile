@@ -22,7 +22,7 @@ import RNFS from 'react-native-fs';
 import Share from 'react-native-share';
 import {File} from '@axelor/aos-mobile-ui';
 import {TranslatorProps} from '../i18n/hooks/use-translator';
-import {showToastMessage} from '../utils/show-toast-message';
+import {sanitizeFileName, showToastMessage} from '../utils';
 
 interface FileItem {
   fileName: string;
@@ -35,8 +35,6 @@ interface ConnexionNeed {
   token: string;
   jsessionId?: string;
 }
-
-const sanitizeFileName = (name: string) => name?.replace(/[:*?"<>|\\]/g, '_');
 
 async function getUniqueFileName(
   basePath: string,
