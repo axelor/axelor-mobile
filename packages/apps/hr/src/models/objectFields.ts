@@ -82,6 +82,7 @@ export const hr_modelAPI: ObjectFields = {
     name: schemaContructor.string(),
     fullName: schemaContructor.string(),
     blockExpenseTax: schemaContructor.boolean(),
+    deductLunchVoucher: schemaContructor.boolean(),
   }),
   hr_kilomectricAllowParam: schemaContructor.object({
     name: schemaContructor.string(),

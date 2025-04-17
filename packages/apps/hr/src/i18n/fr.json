@@ -106,7 +106,7 @@
   "Hr_TimeLoggingPreference_Days": "jours",
   "Hr_TimeLoggingPreference_Hours": "heures",
   "Hr_TimeLoggingPreference_Minutes": "minutes",
-  "Hr_Invitedcollaborators": "Collaborateurs invités",
+  "Hr_InvitedCollaborators": "Collaborateurs invités",
   "Hr_SliceAction_FetchExpenseLines": "récupération des lignes de frais",
   "Hr_SliceAction_SearchDraftExpense": "récupération des notes de frais brouillon",
   "Hr_SliceAction_FetchExpense": "récupération des notes de frais",

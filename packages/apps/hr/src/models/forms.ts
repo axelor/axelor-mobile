@@ -254,7 +254,7 @@ export const hr_formsRegister: FormConfigs = {
         },
       },
       invitedCollaboratorSet: {
-        titleKey: 'Hr_Invitedcollaborators',
+        titleKey: 'Hr_InvitedCollaborators',
         type: 'array',
         widget: 'custom',
         customComponent: InvitedCollaboratorViewAllList,
