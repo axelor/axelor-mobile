@@ -24,6 +24,7 @@ import {
 import {DocumentPickerResponse} from 'react-native-document-picker';
 import RNFS from 'react-native-fs';
 import RNFetchBlob from 'react-native-blob-util';
+import {sanitizeFileName} from '../utils';
 
 const createCriteria = (listFiles): Criteria[] => {
   if (Array.isArray(listFiles)) {
@@ -93,7 +94,7 @@ export async function uploadBase64(
       const headers = {
         'Content-Type': 'application/octet-stream',
         'Content-Length': String(file.size),
-        'X-File-Name': file.name,
+        'X-File-Name': sanitizeFileName(file.name),
         'X-File-Type': file.type,
         'X-File-Size': String(file.size),
         'X-File-Offset': String(0),
