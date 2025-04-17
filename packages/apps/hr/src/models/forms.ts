@@ -364,7 +364,7 @@ export const hr_formsRegister: FormConfigs = {
         type: 'number',
         widget: 'increment',
         required: true,
-        hideIf: ({objectState}) => objectState.useduration,
+        hideIf: ({objectState}) => objectState.useDuration,
       },
       duration: {
         titleKey: 'Hr_Duration',

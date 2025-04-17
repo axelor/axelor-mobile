@@ -98,7 +98,7 @@ const TimesheetLineFormScreen = ({route, navigation}) => {
             product: timesheetLine.product,
             toInvoice: timesheetLine.toInvoice,
             date: timesheetLine.date,
-            useduration: true,
+            useDuration: true,
             hoursDuration: timesheetLine.hoursDuration,
             duration: timesheetLine.duration,
             comments: timesheetLine.comments,
