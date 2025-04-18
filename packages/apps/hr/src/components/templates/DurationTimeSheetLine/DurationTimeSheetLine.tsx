@@ -18,7 +18,12 @@
 
 import React from 'react';
 import {FormIncrementInput} from '@axelor/aos-mobile-ui';
-import {useSelector, useTranslator} from '@axelor/aos-mobile-core';
+import {
+  useSelector,
+  useTranslator,
+  useTypeHelpers,
+  useTypes,
+} from '@axelor/aos-mobile-core';
 
 interface DurationTimeSheetLineProps {
   style?: any;
@@ -39,9 +44,11 @@ const DurationTimeSheetLineAux = ({
 }: DurationTimeSheetLineProps) => {
   const I18n = useTranslator();
   const {timesheet} = useSelector(state => state.timesheet);
+  const {Timesheet} = useTypes();
+  const {getItemTitle} = useTypeHelpers();
 
   const composedTitle = timesheet?.timeLoggingPreferenceSelect
-    ? `${title} (${timesheet.timeLoggingPreferenceSelect})`
+    ? `${title} (${getItemTitle(Timesheet?.timeLoggingPreferenceSelect, timesheet.timeLoggingPreferenceSelect)})`
     : title;
 
   return (
