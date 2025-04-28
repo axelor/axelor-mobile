@@ -41,7 +41,7 @@ const LogTimeButton = ({
             productId: state.product?.id,
             toInvoice: state.toInvoice,
             date: state.date,
-            duration: state.hoursDuration,
+            hoursDuration: state.hoursDuration,
             comments: state.comments,
           },
         }),
