@@ -63,6 +63,7 @@ export const hr_modelAPI: ObjectFields = {
       schemaContructor.object({
         name: schemaContructor.string(),
         blockExpenseTax: schemaContructor.boolean(),
+        deductLunchVoucher: schemaContructor.boolean(),
       }),
     ),
     kilometricTypeSelect: schemaContructor.number(),
@@ -73,11 +74,15 @@ export const hr_modelAPI: ObjectFields = {
     totalTax: schemaContructor.string(),
     toInvoice: schemaContructor.boolean(),
     currency: schemaContructor.subObject('symbol'),
+    invitedCollaboratorSet: schemaContructor
+      .array()
+      .of(schemaContructor.subObject()),
   }),
   hr_expenseType: schemaContructor.object({
     name: schemaContructor.string(),
     fullName: schemaContructor.string(),
     blockExpenseTax: schemaContructor.boolean(),
+    deductLunchVoucher: schemaContructor.boolean(),
   }),
   hr_kilomectricAllowParam: schemaContructor.object({
     name: schemaContructor.string(),
@@ -181,5 +186,8 @@ export const hr_modelAPI: ObjectFields = {
     name: schemaContructor.string(),
     unitSelect: schemaContructor.number(),
     leaveReasonTypeSelect: schemaContructor.number(),
+  }),
+  hr_employee: schemaContructor.object({
+    name: schemaContructor.string(),
   }),
 };

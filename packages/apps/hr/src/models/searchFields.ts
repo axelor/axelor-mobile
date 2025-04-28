@@ -20,6 +20,7 @@ import {SearchFields} from '@axelor/aos-mobile-core';
 
 export const hr_searchFields: SearchFields = {
   hr_currency: ['code', 'symbol', 'name', 'codeISO'],
+  hr_employee: ['name'],
   hr_expense: ['employee.name', 'expenseSeq'],
   hr_expenseLines: ['expenseDate', 'project.fullName'],
   hr_expenseType: ['name', 'fullName'],
