@@ -18,7 +18,10 @@
 
 export {searchCurrencies as searchCurrenciesApi} from './currency-api';
 export {getDistance as getDistanceApi} from './distance-api';
-export {searchManagedEmployee as searchManagedEmployeeApi} from './employee-api';
+export {
+  searchEmployee as searchEmployeeApi,
+  searchManagedEmployee as searchManagedEmployeeApi,
+} from './employee-api';
 export {
   cancelExpense as cancelExpenseApi,
   createExpense as createExpenseApi,
