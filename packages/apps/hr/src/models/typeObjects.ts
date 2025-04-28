@@ -154,6 +154,25 @@ export const hr_typeObjects: ModuleSelections = [
           },
         ],
       },
+      timeLoggingPreferenceSelect: {
+        content: [
+          {
+            key: 'Days',
+            value: 'days',
+            title: 'Hr_TimeLoggingPreference_Days',
+          },
+          {
+            key: 'Hours',
+            value: 'hours',
+            title: 'Hr_TimeLoggingPreference_Hours',
+          },
+          {
+            key: 'Minutes',
+            value: 'minutes',
+            title: 'Hr_TimeLoggingPreference_Minutes',
+          },
+        ],
+      },
     },
   },
   {
