@@ -39,10 +39,10 @@ export const useMassScanner = ({
   const [isZebraDevice, setIsZebraDevice] = useState(false);
 
   useEffect(() => {
-    if (!isEnabled && enabled) {
+    if (!isEnabled && enabled && !isZebraDevice) {
       onClose?.();
     }
-  }, [enabled, isEnabled, onClose]);
+  }, [enabled, isEnabled, onClose, isZebraDevice]);
 
   useEffect(() => {
     if (!enabled) return;
