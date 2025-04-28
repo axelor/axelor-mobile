@@ -1,10 +1,26 @@
-import {useCallback, useEffect, useRef, useState} from 'react';
+/*
+ * Axelor Business Solutions
+ *
+ * Copyright (C) 2025 Axelor (<http://axelor.com>).
+ *
+ * This program is free software: you can redistribute it and/or  modify
+ * it under the terms of the GNU Affero General Public License, version 3,
+ * as published by the Free Software Foundation.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU Affero General Public License for more details.
+ *
+ * You should have received a copy of the GNU Affero General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ */
+
+import {useCallback, useEffect, useRef} from 'react';
 import {useDispatch} from 'react-redux';
-import DeviceInfo from 'react-native-device-info';
 import {
   useCameraScannerValueByKey,
   clearBarcode,
-  enableMassCameraScanner,
   disableCameraScanner,
   useCameraScannerSelector,
 } from '../features/cameraScannerSlice';
@@ -31,38 +47,37 @@ export const useMassScanner = ({
   const dispatch = useDispatch();
   const scannedBarcode = useCameraScannerValueByKey(scanKey);
   const scannedValue = useScannedValueByKey(scanKey);
-  const {enable: enableScan} = useScanActivator(scanKey);
+  const {
+    enable: enableScan,
+    isZebraDevice,
+    ready,
+  } = useScanActivator(scanKey, true);
   const {isEnabled} = useCameraScannerSelector();
 
   const isProcessingRef = useRef(false);
   const timerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
-  const [isZebraDevice, setIsZebraDevice] = useState(false);
 
   useEffect(() => {
-    if (!isEnabled && enabled && !isZebraDevice) {
+    if (!enabled || !ready) return;
+
+    if (!isEnabled && !isZebraDevice) {
       onClose?.();
     }
-  }, [enabled, isEnabled, onClose, isZebraDevice]);
+  }, [enabled, isEnabled, onClose, isZebraDevice, ready]);
 
   useEffect(() => {
-    if (!enabled) return;
+    if (!enabled || !ready) return;
 
-    DeviceInfo.getManufacturer().then(manufacturer => {
-      const isZebra = manufacturer === 'Zebra Technologies';
-      setIsZebraDevice(isZebra);
+    enableScan();
+  }, [enabled, enableScan, ready]);
 
-      if (isZebra) {
-        enableScan();
-      } else {
-        dispatch(enableMassCameraScanner(scanKey));
-      }
-    });
+  useEffect(() => {
+    if (!enabled || !ready) return;
 
-    return () => {
-      dispatch(disableCameraScanner());
-      if (timerRef.current) clearTimeout(timerRef.current);
-    };
-  }, [dispatch, enableScan, scanKey, enabled]);
+    if (!isEnabled && !isZebraDevice) {
+      onClose?.();
+    }
+  }, [isEnabled, enabled, ready, isZebraDevice, onClose]);
 
   const processScan = useCallback(
     async (value: string, clearAction: () => void) => {

@@ -18,35 +18,46 @@
 
 import {useCallback, useEffect, useMemo, useState} from 'react';
 import DeviceInfo from 'react-native-device-info';
-import {enableCameraScanner} from '../features/cameraScannerSlice';
+import {
+  enableCameraScanner,
+  enableMassCameraScanner,
+} from '../features/cameraScannerSlice';
 import {enableScan} from '../features/scannerSlice';
 import {useDispatch} from '../redux/hooks';
 
-export const useScanActivator = scanKeySearch => {
-  const {enable: enableScanner} = useScannerDeviceActivator(scanKeySearch);
-  const {enable: enableCamera} = useCameraScannerActivator(scanKeySearch);
-
-  const [isZebraDevice, setDeviceType] = useState(false);
+export const useScanActivator = (scanKeySearch, isMass = false) => {
+  const dispatch = useDispatch();
+  const [isZebraDevice, setIsZebraDevice] = useState(false);
+  const [ready, setReady] = useState(false);
 
   useEffect(() => {
-    DeviceInfo.getManufacturer().then(manufacturer =>
-      setDeviceType(manufacturer === 'Zebra Technologies'),
-    );
+    DeviceInfo.getManufacturer().then(manufacturer => {
+      setIsZebraDevice(manufacturer === 'Zebra Technologies');
+      setReady(true);
+    });
   }, []);
 
   const enable = useCallback(() => {
+    if (!ready) return;
+
     if (isZebraDevice) {
-      enableScanner(scanKeySearch);
+      dispatch(enableScan(scanKeySearch));
     } else {
-      enableCamera(scanKeySearch);
+      if (isMass) {
+        dispatch(enableMassCameraScanner(scanKeySearch));
+      } else {
+        dispatch(enableCameraScanner(scanKeySearch));
+      }
     }
-  }, [enableCamera, enableScanner, isZebraDevice, scanKeySearch]);
+  }, [dispatch, isZebraDevice, isMass, ready, scanKeySearch]);
 
   return useMemo(
     () => ({
       enable,
+      isZebraDevice,
+      ready,
     }),
-    [enable],
+    [enable, isZebraDevice, ready],
   );
 };
 
