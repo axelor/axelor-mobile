@@ -21,6 +21,7 @@ export {
   fetchInboxMessages as fetchInboxMessagesApi,
   fetchMailMessages as fetchMailMessagesApi,
   fetchModelSubscribers as fetchModelSubscribersApi,
+  fetchReplies as fetchRepliesApi,
   getAllUnreadFlagsOfMailMessage as getAllUnreadFlagsOfMailMessageApi,
   postMailMessageComment as postMailMessageCommentApi,
   readAllMailMessages as readAllMailMessagesApi,
