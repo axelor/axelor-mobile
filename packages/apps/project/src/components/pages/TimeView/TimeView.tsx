@@ -46,6 +46,7 @@ const TimeView = ({
       projectTask,
       isTaskLog: projectTask != null,
       date: new Date().toISOString().split('T')[0],
+      useDuration: false,
     };
   }, [project, projectTask]);
 

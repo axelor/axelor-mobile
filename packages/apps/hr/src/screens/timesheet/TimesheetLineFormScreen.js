@@ -34,22 +34,17 @@ const TimesheetLineFormScreen = ({route, navigation}) => {
 
   const createTimesheetLineAPI = useCallback(
     (objectState, dispatch) => {
-      const _timesheetLine = {
-        timesheetId: timesheetId,
-        projectId: objectState.project?.id,
-        projectTaskId: objectState.projectTask?.id,
-        manufOrderId: objectState.manufOrder?.id,
-        operationOrderId: objectState.operationOrder?.id,
-        productId: objectState.product?.id,
-        toInvoice: objectState.toInvoice,
-        date: objectState.date,
-        duration: objectState.hoursDuration,
-        comments: objectState.comments,
-      };
-
       dispatch(
         createTimesheetLine({
-          timesheetLine: _timesheetLine,
+          timesheetLine: {
+            ...objectState,
+            timesheetId,
+            projectId: objectState.project?.id,
+            projectTaskId: objectState.projectTask?.id,
+            manufOrderId: objectState.manufOrder?.id,
+            operationOrderId: objectState.operationOrder?.id,
+            productId: objectState.product?.id,
+          },
         }),
       );
 
@@ -60,48 +55,29 @@ const TimesheetLineFormScreen = ({route, navigation}) => {
 
   const updateTimesheetLineAPI = useCallback(
     (objectState, dispatch) => {
-      const _timesheetLine = {
-        version: timesheetLine?.version,
-        projectId: objectState.project?.id,
-        projectTaskId: objectState.projectTask?.id,
-        manufOrderId: objectState.manufOrder?.id,
-        operationOrderId: objectState.operationOrder?.id,
-        productId: objectState.product?.id,
-        toInvoice: objectState.toInvoice,
-        date: objectState.date,
-        duration: objectState.hoursDuration,
-        comments: objectState.comments,
-      };
-
       dispatch(
         updateTimesheetLine({
-          timesheetId: timesheetId,
-          timesheetLineId: timesheetLine?.id,
-          timesheetLine: _timesheetLine,
+          timesheetId,
+          timesheetLineId: objectState?.id,
+          timesheetLine: {
+            ...objectState,
+            projectId: objectState.project?.id,
+            projectTaskId: objectState.projectTask?.id,
+            manufOrderId: objectState.manufOrder?.id,
+            operationOrderId: objectState.operationOrder?.id,
+            productId: objectState.product?.id,
+          },
         }),
       );
 
       navigation.goBack();
     },
-    [navigation, timesheetId, timesheetLine],
+    [navigation, timesheetId],
   );
 
   const defaultValue = useMemo(
     () =>
-      timesheetLine != null
-        ? {
-            id: timesheetLine.id,
-            project: timesheetLine.project,
-            projectTask: timesheetLine.projectTask,
-            manufOrder: timesheetLine.manufOrder,
-            operationOrder: timesheetLine.operationOrder,
-            product: timesheetLine.product,
-            toInvoice: timesheetLine.toInvoice,
-            date: timesheetLine.date,
-            hoursDuration: timesheetLine.hoursDuration,
-            comments: timesheetLine.comments,
-          }
-        : null,
+      timesheetLine != null ? {...timesheetLine, useDuration: true} : null,
     [timesheetLine],
   );
 
@@ -109,6 +85,7 @@ const TimesheetLineFormScreen = ({route, navigation}) => {
     () => ({
       date: new Date().toISOString().split('T')[0],
       product: user?.employee?.product,
+      useDuration: true,
     }),
     [user],
   );
