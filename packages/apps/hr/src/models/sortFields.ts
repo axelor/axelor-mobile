@@ -20,6 +20,7 @@ import {SortFields} from '@axelor/aos-mobile-core';
 
 export const hr_sortFields: SortFields = {
   hr_currency: ['name'],
+  hr_employee: ['name'],
   hr_expense: ['-createdOn'],
   hr_expenseLines: ['-expenseDate', '-createdOn'],
   hr_expenseType: ['name', 'fullName'],
