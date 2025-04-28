@@ -78,6 +78,7 @@ const CommentCard = ({
             size={18}
             value={subject || I18n.t('Base_Comment')}
             style={styles.flexOne}
+            textStyle={styles.flexOne}
             textSize={16}
             color={Colors.primaryColor.background}
           />
@@ -104,6 +105,8 @@ const styles = StyleSheet.create({
   },
   headerContainer: {
     flexDirection: 'row',
+    justifyContent: 'space-between',
+    gap: 5,
   },
   flexOne: {
     flex: 1,

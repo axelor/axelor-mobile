@@ -81,8 +81,9 @@ const NotificationCard = ({
             size={18}
             title={relatedName}
             value={subject}
-            style={styles.headerLabel}
-            textStyle={styles.title}
+            style={styles.flexOne}
+            textStyle={styles.flexOne}
+            textSize={16}
             color={Colors.primaryColor.background}
           />
           {customTopComponent && React.cloneElement(customTopComponent)}
@@ -140,21 +141,18 @@ const NotificationCard = ({
 
 const styles = StyleSheet.create({
   card: {
-    width: '95%',
-    paddingHorizontal: 20,
-    paddingRight: 25,
+    flex: 1,
+    width: '96%',
+    alignSelf: 'center',
+    marginVertical: 2,
+    paddingHorizontal: 15,
+    paddingRight: 15,
     paddingVertical: 10,
-    paddingBottom: 5,
-    margin: 5,
   },
   cardHeader: {
     flexDirection: 'row',
-    width: '105%',
-  },
-  checkIcon: {
-    width: '10%',
-    justifyContent: 'flex-end',
-    alignItems: 'center',
+    justifyContent: 'space-between',
+    gap: 5,
   },
   moreIcon: {
     alignSelf: 'center',
@@ -166,11 +164,8 @@ const styles = StyleSheet.create({
   tagTxt: {
     fontSize: 12,
   },
-  headerLabel: {
+  flexOne: {
     flex: 1,
-  },
-  title: {
-    fontSize: 16,
   },
 });
 
