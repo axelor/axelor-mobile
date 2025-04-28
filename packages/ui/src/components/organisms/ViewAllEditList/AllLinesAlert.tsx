@@ -51,16 +51,18 @@ const AllLinesAlert = ({
     return (
       <View style={styles.renderContainer}>
         <View style={styles.renderFirstLine}>
-          <Text style={styles.productName} writingType="important">
-            {item.name}
-          </Text>
-          <Text style={styles.productQty}>
-            {item.qty} {item.unitName}
-          </Text>
+          <View style={styles.text}>
+            <Text style={styles.productName} writingType="important">
+              {item.name}
+            </Text>
+            <Text style={styles.productQty}>
+              {item.qty} {item.unitName}
+            </Text>
+          </View>
           {handleEditLine && (
             <Icon
               name="pencil-fill"
-              size={20}
+              size={16}
               touchable
               onPress={() => {
                 setIsAlertVisible(false);
@@ -120,14 +122,18 @@ const styles = StyleSheet.create({
   },
   renderFirstLine: {
     flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'flex-start',
+    gap: 5,
+  },
+  text: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    flex: 1,
   },
   productName: {
-    flex: 4,
+    flex: 1,
   },
   productQty: {
-    flex: 2,
+    maxWidth: '25%',
   },
   alertContainer: {
     height: '70%',

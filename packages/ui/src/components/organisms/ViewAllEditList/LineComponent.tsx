@@ -39,23 +39,24 @@ const LineComponent = ({
 
   return (
     <View style={styles.container}>
-      <Text
-        style={styles.productName}
-        writingType={isSelected ? 'title' : null}
-        textColor={isSelected ? Colors.secondaryColor.background : null}
-        fontSize={16}>
-        {line.name}
-      </Text>
-      <Text
-        style={styles.productQty}
-        writingType={isSelected ? 'title' : null}
-        textColor={isSelected ? Colors.secondaryColor.background : null}
-        fontSize={16}>
-        {line.qty} {line.unitName}
-      </Text>
+      <View style={styles.line}>
+        <Text
+          style={styles.productName}
+          writingType={isSelected ? 'title' : null}
+          textColor={isSelected ? Colors.secondaryColor.background : null}
+          fontSize={16}>
+          {line.name}
+        </Text>
+        <Text
+          style={styles.productQty}
+          writingType={isSelected ? 'title' : null}
+          textColor={isSelected ? Colors.secondaryColor.background : null}
+          fontSize={16}>
+          {line.qty} {line.unitName}
+        </Text>
+      </View>
       {handleEditLine && (
         <Icon
-          style={styles.icon}
           name="pencil-fill"
           size={16}
           touchable={!isSelected}
@@ -64,7 +65,6 @@ const LineComponent = ({
         />
       )}
       <Icon
-        style={styles.icon}
         name="x-lg"
         size={20}
         touchable
@@ -77,17 +77,19 @@ const LineComponent = ({
 const styles = StyleSheet.create({
   container: {
     flexDirection: 'row',
-    justifyContent: 'space-between',
     marginVertical: 4,
+    gap: 5,
+  },
+  line: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    flex: 1,
   },
   productName: {
-    flex: 4,
+    flex: 1,
   },
   productQty: {
-    flex: 2,
-  },
-  icon: {
-    marginLeft: 3,
+    maxWidth: '25%',
   },
 });
 
