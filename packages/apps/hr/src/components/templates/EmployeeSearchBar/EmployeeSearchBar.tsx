@@ -34,6 +34,7 @@ interface EmployeeSearchBarProps {
   placeholderKey?: string;
   defaultValue?: string;
   onChange: (leaveReason: any) => void;
+  additionnalFilters?: any;
 }
 
 const EmployeeSearchBar = ({
@@ -44,6 +45,7 @@ const EmployeeSearchBar = ({
   onChange = () => {},
   readonly = false,
   required = false,
+  additionnalFilters,
 }: EmployeeSearchBarProps) => {
   const I18n = useTranslator();
   const dispatch = useDispatch();
@@ -61,12 +63,13 @@ const EmployeeSearchBar = ({
       dispatch(
         (searchEmployee as any)({
           searchValue,
-          employeeId: user.employee.id,
           page,
+          payCompany: user.activeCompany?.id,
+          ...(additionnalFilters ?? {}),
         }),
       );
     },
-    [dispatch, user.employee.id],
+    [additionnalFilters, dispatch, user.activeCompany?.id],
   );
 
   return (
@@ -82,7 +85,6 @@ const EmployeeSearchBar = ({
       placeholder={I18n.t(placeholderKey)}
       oneFilter={false}
       showDetailsPopup={true}
-      isScrollViewContainer={true}
       loadingList={loadingEmployees}
       moreLoading={moreLoadingEmployee}
       isListEnd={isListEndEmployee}

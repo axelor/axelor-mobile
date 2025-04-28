@@ -16,41 +16,57 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import React, {useCallback, useState} from 'react';
+import React, {useCallback, useMemo, useState} from 'react';
 import {useTranslator} from '@axelor/aos-mobile-core';
 import {ViewAllEditList} from '@axelor/aos-mobile-ui';
-import EmployeeSearchBar from '../EmployeeSearchBar/EmployeeSearchBar';
+import {EmployeeSearchBar} from '../../templates';
 
 interface InvitedCollaboratorViewAllListProps {
   title?: string;
-  defaultValue?: any[] | null;
+  defaultValue?: any[];
+  objectState?: any;
   onChange: (employees: any[]) => void;
   readonly?: boolean;
 }
 
 const InvitedCollaboratorViewAllListAux = ({
   title = 'Hr_InvitedCollaborators',
-  defaultValue = null,
+  defaultValue,
+  objectState,
   onChange,
   readonly = false,
 }: InvitedCollaboratorViewAllListProps) => {
   const I18n = useTranslator();
+
   const [lines, setLines] = useState(defaultValue ?? []);
 
-  const handleAddEmployee = useCallback(
-    employee => {
-      setLines(currentLines => {
-        const alreadyExists = currentLines.some(
-          line => line.id === employee.id,
-        );
-        if (alreadyExists) return currentLines;
-
-        const updatedLines = [...currentLines, employee];
-        onChange(updatedLines);
-        return updatedLines;
-      });
+  const handleChange = useCallback(
+    (updated: any[]) => {
+      setLines(updated);
+      onChange(updated);
     },
     [onChange],
+  );
+
+  const handleAddEmployee = useCallback(
+    (employee: any) => {
+      if (employee != null) {
+        setLines(currentLines => {
+          const updatedLines = [...currentLines, employee].filter(
+            ({id}, idx, self) => self.findIndex(_e => _e.id === id) === idx,
+          );
+
+          onChange(updatedLines);
+          return updatedLines;
+        });
+      }
+    },
+    [onChange],
+  );
+
+  const employeeFilters = useMemo(
+    () => ({hireDate: objectState?.expenseDate}),
+    [objectState?.expenseDate],
   );
 
   return (
@@ -59,43 +75,25 @@ const InvitedCollaboratorViewAllListAux = ({
         currentLineId={null}
         title={I18n.t(title)}
         lines={lines}
-        setLines={updated => {
-          setLines(updated);
-          onChange(updated);
-        }}
+        setLines={handleChange}
         translator={I18n.t}
       />
       {!readonly && (
         <EmployeeSearchBar
+          placeholderKey="Hr_AddCollaborator"
           showTitle={false}
-          onChange={employee => {
-            if (employee) {
-              handleAddEmployee({
-                id: employee.id,
-                name: employee.name,
-              });
-            }
-          }}
+          additionnalFilters={employeeFilters}
+          onChange={handleAddEmployee}
         />
       )}
     </>
   );
 };
 
-const InvitedCollaboratorViewAllList = ({
-  title,
-  defaultValue,
-  onChange,
-  readonly,
-}: InvitedCollaboratorViewAllListProps) => {
-  return (
-    <InvitedCollaboratorViewAllListAux
-      title={title}
-      defaultValue={defaultValue}
-      onChange={onChange}
-      readonly={readonly}
-    />
-  );
+const InvitedCollaboratorViewAllList = (
+  props: InvitedCollaboratorViewAllListProps,
+) => {
+  return <InvitedCollaboratorViewAllListAux {...props} />;
 };
 
 export default InvitedCollaboratorViewAllList;

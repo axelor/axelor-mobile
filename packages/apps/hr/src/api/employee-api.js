@@ -33,8 +33,36 @@ const createManagedEmployeeCriteria = userId => {
   return criteria;
 };
 
-const createEmployeeCriteria = searchValue => {
-  return [getSearchCriterias('hr_employee', searchValue)];
+const createEmployeeCriteria = (searchValue, hireDate, payCompany) => {
+  const criteria = [
+    getSearchCriterias('hr_employee', searchValue),
+    {fieldName: 'user.blocked', operator: '=', value: false},
+    {
+      operator: 'or',
+      criteria: [
+        {fieldName: 'user.expiresOn', operator: 'isNull'},
+        {
+          fieldName: 'user.expiresOn',
+          operator: '>=',
+          value: new Date().toISOString().split('T')[0],
+        },
+      ],
+    },
+  ];
+
+  if (hireDate != null) {
+    criteria.push({fieldName: 'hireDate', operator: '<=', value: hireDate});
+  }
+
+  if (payCompany != null) {
+    criteria.push({
+      fieldName: 'mainEmploymentContract.payCompany',
+      operator: '=',
+      value: payCompany,
+    });
+  }
+
+  return criteria;
 };
 
 export async function searchManagedEmployee({userId}) {
@@ -48,10 +76,15 @@ export async function searchManagedEmployee({userId}) {
   });
 }
 
-export async function searchEmployee({searchValue = null, page = 0}) {
+export async function searchEmployee({
+  page = 0,
+  searchValue = null,
+  hireDate,
+  payCompany,
+}) {
   return createStandardSearch({
     model: 'com.axelor.apps.hr.db.Employee',
-    criteria: createEmployeeCriteria(searchValue),
+    criteria: createEmployeeCriteria(searchValue, hireDate, payCompany),
     fieldKey: 'hr_employee',
     sortKey: 'hr_employee',
     page,

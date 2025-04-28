@@ -258,9 +258,8 @@ export const hr_formsRegister: FormConfigs = {
         type: 'array',
         widget: 'custom',
         customComponent: InvitedCollaboratorViewAllList,
-        hideIf: ({objectState}) => {
-          return !objectState?.expenseProduct?.deductLunchVoucher;
-        },
+        hideIf: ({objectState}) =>
+          !objectState?.expenseProduct?.deductLunchVoucher,
       },
       comments: {
         titleKey: 'Hr_Comments',
