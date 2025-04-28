@@ -16,7 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import React from 'react';
+import React, {useMemo} from 'react';
 import {FormIncrementInput} from '@axelor/aos-mobile-ui';
 import {
   useSelector,
@@ -43,13 +43,23 @@ const DurationTimeSheetLineAux = ({
   required = false,
 }: DurationTimeSheetLineProps) => {
   const I18n = useTranslator();
-  const {timesheet} = useSelector(state => state.timesheet);
   const {Timesheet} = useTypes();
   const {getItemTitle} = useTypeHelpers();
 
-  const composedTitle = timesheet?.timeLoggingPreferenceSelect
-    ? `${title} (${getItemTitle(Timesheet?.timeLoggingPreferenceSelect, timesheet.timeLoggingPreferenceSelect)})`
-    : title;
+  const {timesheet} = useSelector(state => state.timesheet);
+
+  const composedTitle = useMemo(
+    () =>
+      timesheet?.timeLoggingPreferenceSelect
+        ? `${title} (${getItemTitle(Timesheet?.timeLoggingPreferenceSelect, timesheet.timeLoggingPreferenceSelect)})`
+        : title,
+    [
+      Timesheet?.timeLoggingPreferenceSelect,
+      getItemTitle,
+      timesheet?.timeLoggingPreferenceSelect,
+      title,
+    ],
+  );
 
   return (
     <FormIncrementInput

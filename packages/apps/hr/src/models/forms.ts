@@ -363,15 +363,16 @@ export const hr_formsRegister: FormConfigs = {
         titleKey: 'Hr_DurationHours',
         type: 'number',
         widget: 'increment',
-        required: true,
+        requiredIf: ({objectState}) => !objectState.useDuration,
         hideIf: ({objectState}) => objectState.useDuration,
       },
       duration: {
         titleKey: 'Hr_Duration',
         type: 'number',
-        required: true,
         widget: 'custom',
         customComponent: DurationTimeSheetLine,
+        requiredIf: ({objectState}) => objectState.useDuration,
+        hideIf: ({objectState}) => !objectState.useDuration,
       },
       comments: {
         titleKey: 'Hr_Comments',
