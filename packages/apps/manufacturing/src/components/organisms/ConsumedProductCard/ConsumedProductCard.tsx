@@ -29,7 +29,6 @@ interface ConsumedProductCardProps {
   consumedQty?: number;
   missingQty?: number;
   availableQty?: number;
-  availableStock?: number;
   unitName?: string;
   trackingNumber?: string;
   onPress: () => void;
@@ -44,7 +43,6 @@ const ConsumedProductCard = ({
   consumedQty,
   missingQty,
   availableQty,
-  availableStock,
   unitName,
   trackingNumber = null,
   onPress = () => {},
@@ -103,7 +101,7 @@ const ConsumedProductCard = ({
             },
             {
               indicatorText: `${I18n.t('Stock_AvailableQuantity')}`,
-              displayText: `${formatNumber(availableStock)} ${
+              displayText: `${formatNumber(availableQty)} ${
                 unitName != null ? unitName : ''
               }`,
               iconName: 'house-gear-fill',
