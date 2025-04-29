@@ -27,6 +27,7 @@
   "Stock_Available": "Available",
   "Stock_Partially": "Partially",
   "Stock_Unavailable": "Unavailable",
+  "Stock_AvailableQuantity": "Available quantity",
   "Stock_StockUnit": "Stock unit",
   "Stock_Unit": "Unit",
   "Stock_RealQty": "Real quantity",

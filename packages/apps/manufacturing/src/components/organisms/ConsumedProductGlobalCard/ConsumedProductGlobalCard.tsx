@@ -27,6 +27,7 @@ interface ConsumedProductGlobalCardProps {
   consumedQty?: number;
   missingQty?: number;
   availableQty?: number;
+  availableStock?: number;
   unitName?: string;
   trackingNumber?: string;
   onPress: () => void;
@@ -46,6 +47,7 @@ const ConsumedProductGlobalCard = ({
   consumedQty,
   missingQty,
   availableQty,
+  availableStock,
   unitName,
   trackingNumber = null,
   onPress,
@@ -119,6 +121,7 @@ const ConsumedProductGlobalCard = ({
         consumedQty={consumedQty}
         missingQty={missingQty}
         availableQty={availableQty}
+        availableStock={availableStock}
         unitName={unitName}
         trackingNumber={trackingNumber}
         onPress={onPress}

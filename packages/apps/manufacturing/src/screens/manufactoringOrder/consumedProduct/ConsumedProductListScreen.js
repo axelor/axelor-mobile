@@ -232,6 +232,7 @@ const ConsumedProductListScreen = ({route, navigation}) => {
             missingQty={item?.missingQty}
             availableQty={item?.availableStock}
             unitName={item?.unit?.unitName}
+            availableStock={item?.availableStock}
             trackingNumber={item?.trackingNumber?.trackingNumberSeq}
             onMorePress={pressValue =>
               updateConsumedProductQtyAPI(item, pressValue)

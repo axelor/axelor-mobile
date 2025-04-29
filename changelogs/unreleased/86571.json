@@ -1,0 +1,5 @@
+{
+  "title": "Consumed product: Add available quantity on card",
+  "type": "feat",
+  "packages": "manufacturing"
+}
