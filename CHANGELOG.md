@@ -3,6 +3,27 @@ title: 8.3.0
 tags: Changelog
 ---
 
+## [8.3.4] (2025-04-30)
+
+### @axelor/aos-mobile-core
+
+#### Fixes
+
+- Upload tool: remove illegal characters from filename before processing
+
+### @axelor/aos-mobile-ui
+
+#### Changes
+
+- ViewAllEditList: improve line display
+- ViewAllEditList: make line edit management optional
+
+### @axelor/aos-mobile-manufacturing
+
+#### Fixes
+
+- prodProductSlice: use the correct product API import
+
 ## [8.3.3] (2025-04-16)
 
 ### @axelor/aos-mobile-ui
@@ -212,6 +233,7 @@ This version add a new part of the HR package, user can now manage leave request
 
 - Header actions: remove use of attachedFileScreenTitle
 
+[8.3.4]: https://github.com/axelor/axelor-mobile/compare/8.3.3...8.3.4
 [8.3.3]: https://github.com/axelor/axelor-mobile/compare/8.3.2...8.3.3
 [8.3.2]: https://github.com/axelor/axelor-mobile/compare/8.3.1...8.3.2
 [8.3.1]: https://github.com/axelor/axelor-mobile/compare/8.3.0...8.3.1
