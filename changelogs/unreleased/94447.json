@@ -1,5 +1,0 @@
-{
-  "title": "prodProductSlice: use the correct product API import",
-  "type": "fix",
-  "packages": "manufacturing"
-}
