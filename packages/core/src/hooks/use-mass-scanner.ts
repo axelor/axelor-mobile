@@ -60,14 +60,6 @@ export const useMassScanner = ({
   useEffect(() => {
     if (!enabled || !ready) return;
 
-    if (!isEnabled && !isZebraDevice) {
-      onClose?.();
-    }
-  }, [enabled, isEnabled, onClose, isZebraDevice, ready]);
-
-  useEffect(() => {
-    if (!enabled || !ready) return;
-
     enableScan();
   }, [enabled, enableScan, ready]);
 

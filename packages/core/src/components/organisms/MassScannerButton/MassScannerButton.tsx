@@ -29,7 +29,7 @@ import {useMassScanner} from '../../../hooks';
 interface MassScannerButtonProps {
   style?: any;
   scanKey: string;
-  backgroundAction: (scannedValue: string) => any;
+  backgroundAction: (scannedValue: string) => void;
   fallbackAction?: (error: any) => void;
   scanInterval?: number;
 }
