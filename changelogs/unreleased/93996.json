@@ -1,5 +1,0 @@
-{
-  "title": "Upload tool: remove illegal characters from filename before processing",
-  "type": "fix",
-  "packages": "core"
-}

@@ -3,6 +3,20 @@ title: 8.1.0
 tags: Changelog
 ---
 
+## [8.1.20] (2025-04-30)
+
+### @axelor/aos-mobile-core
+
+#### Fixes
+
+- Upload tool: remove illegal characters from filename before processing
+
+### @axelor/aos-mobile-manufacturing
+
+#### Fixes
+
+- prodProductSlice: use the correct product API import
+
 ## [8.1.19] (2025-04-16)
 
 ### @axelor/aos-mobile-ui
@@ -810,6 +824,7 @@ It enables user to manage interventions and customer parc through the mobile app
 - Selections: use new system and tools instead of type files
 - Product indicators: use new chart component to display quantity indicators
 
+[8.1.20]: https://github.com/axelor/axelor-mobile/compare/8.1.19...8.1.20
 [8.1.19]: https://github.com/axelor/axelor-mobile/compare/8.1.18...8.1.19
 [8.1.18]: https://github.com/axelor/axelor-mobile/compare/8.1.17...8.1.18
 [8.1.17]: https://github.com/axelor/axelor-mobile/compare/8.1.16...8.1.17
