@@ -100,6 +100,13 @@ const ConsumedProductCard = ({
               }`,
             },
             {
+              indicatorText: `${I18n.t('Stock_AvailableQty')}`,
+              displayText: `${formatNumber(availableQty)} ${
+                unitName != null ? unitName : ''
+              }`,
+              iconName: 'house-gear-fill',
+            },
+            {
               iconName: 'qr-code',
               displayText: trackingNumber,
               indicatorText: `${I18n.t('Manufacturing_TrackingNumber')}:`,
