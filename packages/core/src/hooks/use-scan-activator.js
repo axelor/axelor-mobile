@@ -60,3 +60,33 @@ export const useScanActivator = (scanKeySearch, isMass = false) => {
     [enable, isZebraDevice, ready],
   );
 };
+
+export const useScannerDeviceActivator = scanKeySearch => {
+  const dispatch = useDispatch();
+
+  const enable = useCallback(() => {
+    dispatch(enableScan(scanKeySearch));
+  }, [dispatch, scanKeySearch]);
+
+  return useMemo(
+    () => ({
+      enable,
+    }),
+    [enable],
+  );
+};
+
+export const useCameraScannerActivator = scanKeySearch => {
+  const dispatch = useDispatch();
+
+  const enable = useCallback(() => {
+    dispatch(enableCameraScanner(scanKeySearch));
+  }, [dispatch, scanKeySearch]);
+
+  return useMemo(
+    () => ({
+      enable,
+    }),
+    [enable],
+  );
+};
