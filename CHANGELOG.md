@@ -3,6 +3,27 @@ title: 8.2.0
 tags: Changelog
 ---
 
+## [8.2.12] (2025-04-30)
+
+### @axelor/aos-mobile-core
+
+#### Fixes
+
+- Upload tool: remove illegal characters from filename before processing
+
+### @axelor/aos-mobile-ui
+
+#### Changes
+
+- ViewAllEditList: improve line display
+- ViewAllEditList: make line edit management optional
+
+### @axelor/aos-mobile-manufacturing
+
+#### Fixes
+
+- prodProductSlice: use the correct product API import
+
 ## [8.2.11] (2025-04-16)
 
 ### @axelor/aos-mobile-ui
@@ -573,6 +594,7 @@ This package is linked with the @axelor/aos-mobile-hr to manage time logging.
 
 - Supplier arrival: add possibility to fill origin when creating or selecting tracking number
 
+[8.2.12]: https://github.com/axelor/axelor-mobile/compare/8.2.11...8.2.12
 [8.2.11]: https://github.com/axelor/axelor-mobile/compare/8.2.10...8.2.11
 [8.2.10]: https://github.com/axelor/axelor-mobile/compare/8.2.9...8.2.10
 [8.2.9]: https://github.com/axelor/axelor-mobile/compare/8.2.8...8.2.9
