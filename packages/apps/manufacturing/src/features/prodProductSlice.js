@@ -19,7 +19,7 @@
 import {createAsyncThunk, createSlice} from '@reduxjs/toolkit';
 import {handlerApiCall} from '@axelor/aos-mobile-core';
 import {
-  searchProductWithId,
+  searchProductWithIdApi,
   updateStockMoveLineTrackingNumber,
 } from '@axelor/aos-mobile-stock';
 import {
@@ -50,7 +50,7 @@ export const fetchConsumedProductWithId = createAsyncThunk(
   'product/fetchConsumedProductWithId',
   async function (productId, {getState}) {
     return handlerApiCall({
-      fetchFunction: searchProductWithId,
+      fetchFunction: searchProductWithIdApi,
       data: productId,
       action: 'Manufacturing_SliceAction_FetchConsumedProductWithId',
       getState,
@@ -76,7 +76,7 @@ export const fetchProducedProductWithId = createAsyncThunk(
   'product/fetchCProducedProductWithId',
   async function (productId, {getState}) {
     return handlerApiCall({
-      fetchFunction: searchProductWithId,
+      fetchFunction: searchProductWithIdApi,
       data: productId,
       action: 'Manufacturing_SliceAction_FetchProducedProductWithId',
       getState,
