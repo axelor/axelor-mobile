@@ -100,7 +100,7 @@ const ConsumedProductCard = ({
               }`,
             },
             {
-              indicatorText: `${I18n.t('Stock_AvailableQuantity')}`,
+              indicatorText: `${I18n.t('Stock_AvailableQty')}`,
               displayText: `${formatNumber(availableQty)} ${
                 unitName != null ? unitName : ''
               }`,
