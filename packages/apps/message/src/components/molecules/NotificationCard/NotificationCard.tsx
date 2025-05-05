@@ -141,12 +141,6 @@ const NotificationCard = ({
 };
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    width: '96%',
-    alignSelf: 'center',
-    marginVertical: 2,
-  },
   card: {
     paddingHorizontal: 15,
     paddingRight: 15,

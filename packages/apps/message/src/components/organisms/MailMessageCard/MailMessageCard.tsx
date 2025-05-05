@@ -199,7 +199,9 @@ const getStyles = (verticalRuleColor: string) =>
       paddingLeft: 10,
     },
     card: {
+      flex: 1,
       width: '100%',
+      marginVertical: 2,
       paddingHorizontal: 5,
     },
     replyCard: {
