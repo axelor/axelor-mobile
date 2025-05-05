@@ -17,10 +17,15 @@
  */
 
 import React, {useCallback, useMemo, useState} from 'react';
-import {ActivityIndicator, StyleSheet, View} from 'react-native';
+import {
+  ActivityIndicator,
+  StyleSheet,
+  TouchableOpacity,
+  View,
+} from 'react-native';
 import {formatDateTime, useTranslator} from '@axelor/aos-mobile-core';
 import {Icon, Text, useThemeColor} from '@axelor/aos-mobile-ui';
-import {Avatar} from '../../atoms';
+import {Avatar, AVATAR_SIZE, AVATAR_PADDING} from '../../atoms';
 import {CommentCard, NotificationCard} from '../../molecules';
 import {fetchRepliesApi} from '../../../api';
 import {MailMessageType} from '../../../types';
@@ -87,19 +92,18 @@ const MailMessageCard = ({
         <Avatar avatar={avatar} />
         {numReplies > 0 && (
           <>
-            <View style={styles.displayRepliesContainer}>
+            <TouchableOpacity
+              style={styles.displayRepliesContainer}
+              activeOpacity={0.9}
+              onPress={() => {
+                getReplies();
+                setAreRepliesVisible(current => !current);
+              }}>
               <Text textColor={Colors.secondaryColor_dark.background}>
                 {numReplies}
               </Text>
-              <Icon
-                name="chat-dots"
-                touchable
-                onPress={() => {
-                  getReplies();
-                  setAreRepliesVisible(current => !current);
-                }}
-              />
-            </View>
+              <Icon name="chat-dots" />
+            </TouchableOpacity>
             {areRepliesVisible && <View style={styles.verticalRule} />}
           </>
         )}
@@ -114,6 +118,7 @@ const MailMessageCard = ({
           </Text>
           {type === MailMessageType.status.comment && (
             <CommentCard
+              style={styles.card}
               subject={subject}
               files={files}
               value={body}
@@ -125,6 +130,7 @@ const MailMessageCard = ({
           )}
           {type === MailMessageType.status.notification && (
             <NotificationCard
+              style={styles.card}
               relatedName={relatedName}
               subject={subject}
               tracks={JSON.parse(body ?? '{}').tracks}
@@ -145,7 +151,7 @@ const MailMessageCard = ({
           ) : (
             replies.map(item => (
               <MailMessageCard
-                key={item.id}
+                style={styles.replyCard}
                 author={item.$author?.fullName}
                 avatar={item.$avatar}
                 body={item.body}
@@ -159,6 +165,7 @@ const MailMessageCard = ({
                 relatedId={item.relatedId}
                 relatedModel={item.relatedModel}
                 isInbox
+                key={item.id}
               />
             ))
           ))}
@@ -190,6 +197,13 @@ const getStyles = (verticalRuleColor: string) =>
     },
     author: {
       paddingLeft: 10,
+    },
+    card: {
+      width: '100%',
+      paddingHorizontal: 5,
+    },
+    replyCard: {
+      marginLeft: -((AVATAR_SIZE + AVATAR_PADDING) / 2),
     },
   });
 

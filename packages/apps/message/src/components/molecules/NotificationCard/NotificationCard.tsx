@@ -71,10 +71,11 @@ const NotificationCard = ({
 
   return (
     <TouchableOpacity
+      style={style}
       onPress={() => setMoreItems(!moreItems)}
       disabled={tracks.length < MAX_TRACK_ITEMS}
       activeOpacity={0.9}>
-      <Card style={[styles.card, style]}>
+      <Card style={styles.card}>
         <View style={styles.cardHeader}>
           <LabelText
             iconName="info-circle-fill"
@@ -140,11 +141,13 @@ const NotificationCard = ({
 };
 
 const styles = StyleSheet.create({
-  card: {
+  container: {
     flex: 1,
     width: '96%',
     alignSelf: 'center',
     marginVertical: 2,
+  },
+  card: {
     paddingHorizontal: 15,
     paddingRight: 15,
     paddingVertical: 10,

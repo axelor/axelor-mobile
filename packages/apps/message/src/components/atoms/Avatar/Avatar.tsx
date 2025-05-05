@@ -21,6 +21,9 @@ import {Dimensions, StyleSheet, View} from 'react-native';
 import {useSelector} from '@axelor/aos-mobile-core';
 import {Image, ThemeColors, useThemeColor} from '@axelor/aos-mobile-ui';
 
+export const AVATAR_SIZE = Dimensions.get('window').width * 0.12;
+export const AVATAR_PADDING = 10;
+
 interface AvatarProps {
   style?: any;
   avatar: string;
@@ -47,7 +50,7 @@ const Avatar = ({style, avatar}: AvatarProps) => {
 const getStyles = (Colors: ThemeColors) =>
   StyleSheet.create({
     avatarContainer: {
-      padding: 10,
+      padding: AVATAR_PADDING,
       alignItems: 'center',
       justifyContent: 'flex-start',
     },
@@ -56,9 +59,9 @@ const getStyles = (Colors: ThemeColors) =>
       justifyContent: 'center',
       alignItems: 'center',
       backgroundColor: Colors.backgroundColor,
-      borderRadius: Dimensions.get('window').width * 0.12,
-      width: Dimensions.get('window').width * 0.12,
-      height: Dimensions.get('window').width * 0.12,
+      borderRadius: AVATAR_SIZE / 2,
+      width: AVATAR_SIZE,
+      height: AVATAR_SIZE,
     },
   });
 

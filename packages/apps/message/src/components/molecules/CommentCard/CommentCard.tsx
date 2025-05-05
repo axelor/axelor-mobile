@@ -71,7 +71,7 @@ const CommentCard = ({
 
   return (
     <ActionCard style={style} actionList={actionList} translator={I18n.t}>
-      <Card style={styles.container}>
+      <Card style={styles.card}>
         <View style={styles.headerContainer}>
           <LabelText
             iconName="chat-fill"
@@ -98,7 +98,7 @@ const CommentCard = ({
 };
 
 const styles = StyleSheet.create({
-  container: {
+  card: {
     paddingHorizontal: 15,
     paddingRight: 15,
     paddingVertical: 10,
