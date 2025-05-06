@@ -25,7 +25,7 @@ const CatalogFormScreen = ({navigation}) => {
     (catalog, dispatch) => {
       dispatch(createCatalog(catalog));
 
-      navigation.navigate('CatalogListScreen');
+      navigation.pop();
     },
     [navigation],
   );

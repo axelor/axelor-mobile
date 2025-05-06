@@ -36,13 +36,13 @@ const ContactPartnerCard = ({}) => {
 
   const handleCardPress = useCallback(() => {
     if (partner?.isCustomer) {
-      return navigation.navigate('ClientDetailsScreen', {
+      return navigation.popTo('ClientDetailsScreen', {
         idClient: partner.id,
       });
     }
 
     if (partner?.isProspect) {
-      return navigation.navigate('ProspectDetailsScreen', {
+      return navigation.popTo('ProspectDetailsScreen', {
         idProspect: partner.id,
       });
     }

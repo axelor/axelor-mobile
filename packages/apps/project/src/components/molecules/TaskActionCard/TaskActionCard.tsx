@@ -64,7 +64,7 @@ const TaskActionCard = ({
           iconName: 'clock-history',
           helper: I18n.t('Project_LogTime'),
           onPress: () =>
-            navigation.navigate('TaskDetailsScreen', {
+            navigation.popTo('TaskDetailsScreen', {
               projecTaskId: task.id,
               isTimeViewActive: true,
             }),

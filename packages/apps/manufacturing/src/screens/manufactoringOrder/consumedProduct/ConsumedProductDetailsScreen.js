@@ -105,9 +105,7 @@ const ConsumedProductDetailsScreen = ({route, navigation}) => {
   };
 
   const handleNavigateBackToList = useCallback(() => {
-    navigation.navigate('ConsumedProductListScreen', {
-      manufOrder: manufOrder,
-    });
+    navigation.popTo('ConsumedProductListScreen', {manufOrder});
   }, [manufOrder, navigation]);
 
   const getManufOrderAndConsumedProduct = useCallback(() => {
