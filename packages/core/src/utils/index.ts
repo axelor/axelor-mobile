@@ -69,5 +69,11 @@ export {
 } from './object';
 export {getRoles} from './role';
 export {showToastMessage} from './show-toast-message';
-export {checkNullString, isHtml, splitInTwo, stringNoAccent} from './string';
+export {
+  checkNullString,
+  formatVersionString,
+  isHtml,
+  splitInTwo,
+  stringNoAccent,
+} from './string';
 export {filterChip, filterChipCriteria} from './filter';

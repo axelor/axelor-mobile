@@ -20,10 +20,11 @@ export {filterProvider, useActiveFilter} from './FilterProvider';
 export {headerActionsProvider, useHeaderActions} from './HeaderActionsProvider';
 export {useBasicActions} from './hooks';
 export {
-  HeaderActions,
-  HeaderOptions,
   ActionType,
+  GenericHeaderActions,
+  HeaderActions,
   HeaderBandItem,
+  HeaderOptions,
 } from './types';
 export {HeaderBandProvider, useHeaderBand} from './HeaderBandContext';
 export {HeaderBandHelper} from './header-band-context.helper';

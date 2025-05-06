@@ -18,29 +18,62 @@
 
 import React, {useMemo} from 'react';
 import {Dimensions, StyleSheet, TouchableOpacity, View} from 'react-native';
-import {Icon, InfoBubble, Text, useThemeColor} from '@axelor/aos-mobile-ui';
-import {useTranslator} from '../../i18n';
-import {getCompatibilityError, isMenuIncompatible} from '../menu.helper';
+import {
+  Icon,
+  InfoBubble,
+  Text,
+  ThemeColors,
+  useConfig,
+  useThemeColor,
+} from '@axelor/aos-mobile-ui';
+import {Compatibility} from '../../../app';
+import {useTranslator} from '../../../i18n';
+import {getCompatibilityError, isMenuIncompatible} from '../../helpers';
 
 const WIDTH = 54;
 const HEIGHT = 54;
 const DEFAULT_RADIUS = 8;
 const ROUNDED_RADIUS = WIDTH / 2;
 
+interface MenuIconButtonProps {
+  style?: any;
+  icon: string;
+  onPress: () => void;
+  isActive?: boolean;
+  subtitle?: string;
+  rounded?: boolean;
+  disabled?: boolean;
+  compatibility?: Compatibility;
+}
+
 const MenuIconButton = ({
   style,
   icon,
   onPress,
-  color,
+  isActive = false,
   subtitle,
   rounded = false,
   disabled = false,
   compatibility,
-}) => {
+}: MenuIconButtonProps) => {
   const Colors = useThemeColor();
   const I18n = useTranslator();
+  const {showSubtitles} = useConfig();
 
-  const styles = useMemo(() => getStyles(Colors), [Colors]);
+  const _color = useMemo(
+    () =>
+      disabled
+        ? Colors.secondaryColor.background_light
+        : isActive
+          ? Colors.primaryColor.background_light
+          : Colors.backgroundColor,
+    [Colors, disabled, isActive],
+  );
+
+  const styles = useMemo(
+    () => getStyles(Colors, rounded, _color),
+    [Colors, _color, rounded],
+  );
 
   const compatibilityError = useMemo(
     () => isMenuIncompatible(compatibility),
@@ -52,19 +85,7 @@ const MenuIconButton = ({
       onPress={onPress}
       disabled={disabled || compatibilityError}
       activeOpacity={0.95}>
-      <View
-        style={[
-          styles.container,
-          {borderRadius: rounded ? ROUNDED_RADIUS : DEFAULT_RADIUS},
-          {
-            backgroundColor: disabled
-              ? Colors.secondaryColor.background_light
-              : color
-                ? color
-                : Colors.backgroundColor,
-          },
-          style,
-        ]}>
+      <View style={[styles.container, style]}>
         <Icon
           size={32}
           name={icon}
@@ -85,25 +106,27 @@ const MenuIconButton = ({
           />
         )}
       </View>
-      {subtitle && (
+      {showSubtitles && (
         <Text style={styles.moduleSubtitle} numberOfLines={1}>
-          {subtitle}
+          {I18n.t(subtitle)}
         </Text>
       )}
     </TouchableOpacity>
   );
 };
 
-const getStyles = Colors =>
+const getStyles = (Colors: ThemeColors, rounded: boolean, _color: string) =>
   StyleSheet.create({
     container: {
       width: WIDTH,
       height: HEIGHT,
+      borderRadius: rounded ? ROUNDED_RADIUS : DEFAULT_RADIUS,
       flexDirection: 'row',
       justifyContent: 'center',
       elevation: 2,
       shadowOpacity: 0.5,
       shadowColor: Colors.secondaryColor.background,
+      backgroundColor: _color,
       shadowOffset: {width: 0, height: 0},
       zIndex: 10,
     },

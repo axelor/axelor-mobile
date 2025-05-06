@@ -18,28 +18,34 @@
 
 import React from 'react';
 import {StyleSheet} from 'react-native';
-import {getMenuTitle} from '../menu.helper';
-import useTranslator from '../../i18n/hooks/use-translator';
+import {useTranslator} from '../../../i18n';
+import {SubMenu} from '../../../app';
+import {getMenuTitle} from '../../helpers';
 import MenuItemEntry from './MenuItemEntry';
 
 const SUB_MENU_ICON_SIZE = 20;
 
+interface SubMenuItemProps {
+  subMenu: SubMenu;
+  onPress: () => void;
+  isActive?: boolean;
+}
+
 const SubMenuItem = ({
-  route,
   subMenu,
-  onPress = () => {},
+  onPress,
   isActive = false,
-}) => {
+}: SubMenuItemProps) => {
   const I18n = useTranslator();
 
   return (
     <MenuItemEntry
       icon={subMenu.icon}
-      title={getMenuTitle(subMenu, {I18n})}
+      title={getMenuTitle(subMenu, I18n)}
       disabled={subMenu.disabled}
       compatibility={subMenu.compatibilityAOS}
       iconSize={SUB_MENU_ICON_SIZE}
-      onPress={() => onPress(route)}
+      onPress={onPress}
       isActive={isActive}
       style={styles.subMenuItem}
     />

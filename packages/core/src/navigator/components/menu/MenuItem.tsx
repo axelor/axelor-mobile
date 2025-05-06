@@ -17,49 +17,62 @@
  */
 
 import React from 'react';
-import {getMenuTitle, hasSubMenus} from '../menu.helper';
-import useTranslator from '../../i18n/hooks/use-translator';
+import {
+  Menu,
+  MenuWithSubMenus,
+  MenuSeparator as Separator,
+  RootMenuWithScreen,
+} from '../../../app';
+import {useTranslator} from '../../../i18n';
+import {DrawerState, getMenuTitle, hasSubMenus, Route} from '../../helpers';
 import SubMenuItemList from './SubMenuItemList';
 import MenuItemEntry from './MenuItemEntry';
 import MenuSeparator from './MenuSeparator';
 
+interface MenuItemProps {
+  state: DrawerState;
+  route: Route;
+  menuItem: Menu;
+  subRoutes: Route[];
+  onPress: (route: Route) => void;
+  isActive?: boolean;
+  disabled?: boolean;
+}
+
 const MenuItem = ({
   state,
   route,
-  navigation,
   menuItem,
   subRoutes,
-  onPress = () => {},
+  onPress,
   isActive = false,
-  disabled,
-}) => {
+  disabled = false,
+}: MenuItemProps) => {
   const I18n = useTranslator();
 
   if (hasSubMenus(menuItem)) {
     return (
       <SubMenuItemList
         state={state}
-        route={route}
-        navigation={navigation}
-        onPress={onPress}
-        menuItem={menuItem}
+        menuItem={menuItem as MenuWithSubMenus}
         subRoutes={subRoutes}
+        onPress={onPress}
         disabled={disabled}
       />
     );
   }
 
-  if (menuItem.separator) {
-    return <MenuSeparator title={getMenuTitle(menuItem, {I18n})} />;
+  if ((menuItem as Separator).separator) {
+    return <MenuSeparator title={getMenuTitle(menuItem, I18n)} />;
   }
 
   return (
     <MenuItemEntry
       onPress={() => onPress(route)}
-      title={getMenuTitle(menuItem, {I18n})}
-      icon={menuItem.icon}
-      disabled={menuItem.disabled || disabled}
-      compatibility={menuItem.compatibilityAOS}
+      title={getMenuTitle(menuItem, I18n)}
+      icon={(menuItem as RootMenuWithScreen).icon}
+      disabled={(menuItem as RootMenuWithScreen).disabled || disabled}
+      compatibility={(menuItem as RootMenuWithScreen).compatibilityAOS}
       isActive={isActive}
     />
   );

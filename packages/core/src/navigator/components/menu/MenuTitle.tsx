@@ -19,14 +19,20 @@
 import React, {useMemo} from 'react';
 import {Dimensions, StyleSheet, TouchableOpacity} from 'react-native';
 import {Text, useThemeColor} from '@axelor/aos-mobile-ui';
-import {useTranslator} from '../../i18n';
+import {useTranslator} from '../../../i18n';
+import {Module} from '../../../app';
 import {
   getCompatibilityError,
   getMenuTitle,
   isMenuIncompatible,
-} from '../menu.helper';
+} from '../../helpers';
 
-const MenuTitle = ({module, onPress}) => {
+interface MenuTitleProps {
+  module: Module;
+  onPress: () => void;
+}
+
+const MenuTitle = ({module, onPress}: MenuTitleProps) => {
   const Colors = useThemeColor();
   const I18n = useTranslator();
 
@@ -43,7 +49,7 @@ const MenuTitle = ({module, onPress}) => {
       <Text
         style={[styles.text, styles.bold]}
         textColor={Colors.secondaryColor_dark.background}>
-        {getMenuTitle(module, {I18n})}
+        {getMenuTitle(module, I18n)}
       </Text>
       {compatibilityError && (
         <Text style={styles.text} textColor={Colors.errorColor.background}>
