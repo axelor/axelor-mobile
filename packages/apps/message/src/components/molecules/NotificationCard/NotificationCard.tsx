@@ -142,6 +142,7 @@ const NotificationCard = ({
 
 const styles = StyleSheet.create({
   card: {
+    flex: 1,
     paddingHorizontal: 15,
     paddingRight: 15,
     paddingVertical: 10,
