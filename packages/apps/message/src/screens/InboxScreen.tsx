@@ -44,6 +44,7 @@ const InboxScreen = ({}) => {
         renderItem={({item}) => (
           <MailMessageCard
             key={item.id}
+            messageId={item.id}
             author={item.$author?.fullName}
             avatar={item.$avatar}
             body={item.body}
@@ -57,6 +58,7 @@ const InboxScreen = ({}) => {
             relatedId={item.relatedId}
             relatedModel={item.relatedModel}
             isInbox
+            numReplies={item.$numReplies}
           />
         )}
         fetchData={fetchInboxMessagesAPI}
