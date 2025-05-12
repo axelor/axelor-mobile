@@ -23,8 +23,6 @@ Install the library :
 yarn add @axelor/aos-mobile-manufacturing
 ```
 
-Compatibility with React v18.2.x and React Native v0.70.x.
-
 To add this package in your application, you need to add it in the _modules_ props of the component `Application` from @axelor/aos-mobile-core package. This package is dependent on the stock module, so both modules must be added to make it work.
 
 ```typescript
