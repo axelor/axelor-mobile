@@ -96,17 +96,11 @@ const ReadIcon = ({
       size={15}
       touchable={!isRead}
       onPress={handleMarkAsRead}
-      style={styles.checkIcon}
     />
   );
 };
 
 const styles = StyleSheet.create({
-  checkIcon: {
-    width: '10%',
-    justifyContent: 'flex-end',
-    alignItems: 'center',
-  },
   doucleCheckIcon: {
     flex: 1,
   },
