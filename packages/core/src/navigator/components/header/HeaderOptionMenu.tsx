@@ -143,7 +143,6 @@ const HeaderOptionMenu = ({
 
 const styles = StyleSheet.create({
   container: {
-    borderRadius: 7, // TODO: check
     flexDirection: 'row',
     justifyContent: 'center',
     alignItems: 'center',
