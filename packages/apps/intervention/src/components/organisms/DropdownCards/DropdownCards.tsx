@@ -42,7 +42,7 @@ const DropdownCards = ({intervention}: DropdownCardsProps) => {
             <DropdownContactView
               contact={{
                 ...intervention.contact,
-                version: intervention.contact.$version,
+                version: intervention.contact?.$version,
                 address: intervention.address,
               }}
               refreshContactInfos={() =>
