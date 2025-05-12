@@ -71,13 +71,14 @@ const CommentCard = ({
 
   return (
     <ActionCard style={style} actionList={actionList} translator={I18n.t}>
-      <Card style={styles.container}>
+      <Card style={styles.card}>
         <View style={styles.headerContainer}>
           <LabelText
             iconName="chat-fill"
             size={18}
             value={subject || I18n.t('Base_Comment')}
             style={styles.flexOne}
+            textStyle={styles.flexOne}
             textSize={16}
             color={Colors.primaryColor.background}
           />
@@ -97,13 +98,15 @@ const CommentCard = ({
 };
 
 const styles = StyleSheet.create({
-  container: {
+  card: {
     paddingHorizontal: 15,
     paddingRight: 15,
     paddingVertical: 10,
   },
   headerContainer: {
     flexDirection: 'row',
+    justifyContent: 'space-between',
+    gap: 5,
   },
   flexOne: {
     flex: 1,

@@ -246,3 +246,9 @@ export async function fetchInboxMessages({
     url: `/ws/messages?folder=inbox&limit=${limit}&offset=${limit * page}`,
   });
 }
+
+export async function fetchReplies({messageId}: {messageId: number}) {
+  return axiosApiProvider.get({
+    url: `/ws/messages/${messageId}/replies`,
+  });
+}
