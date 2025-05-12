@@ -57,7 +57,7 @@ const InventoryLineButtons = ({
     if (isScreenMounted('InventoryLineListScreen')) {
       navigation.navigate('InventoryLineListScreen', {inventory});
     } else {
-      navigation.navigate('InventoryLineListScreen', {
+      navigation.navigate('InventoryStartedDetailsScreen', {
         inventoryId: inventory?.id,
       });
     }
