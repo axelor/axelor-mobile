@@ -92,6 +92,8 @@
     "@storybook/react-native": "7.6.20",
     "@storybook/react-webpack5": "7.6.17",
     "@storybook/theming": "^7.6.17",
+    "@testing-library/jest-native": "^5.4.3",
+    "@testing-library/react-native": "^13.2.0",
     "@types/react": "^18.3.20",
     "@types/react-test-renderer": "^18.0.0",
     "babel-jest": "^29.6.3",

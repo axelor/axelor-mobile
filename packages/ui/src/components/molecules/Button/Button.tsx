@@ -88,7 +88,8 @@ const Button = ({
       style={[commonStyles.button, styles.colorButton, style]}
       onPress={disabled ? onDisabledPress : onPress}
       disabled={disabled && !onDisabledPress}
-      activeOpacity={0.9}>
+      activeOpacity={0.9}
+      accessibilityRole="button">
       {!!iconName && (
         <Icon
           name={iconName}

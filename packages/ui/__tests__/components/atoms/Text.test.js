@@ -17,61 +17,49 @@
  */
 
 import React from 'react';
-import {Text as ReactNativeText} from 'react-native';
-import {shallow} from 'enzyme';
+import {fireEvent, render, screen} from '@testing-library/react-native';
 import {Text} from '@axelor/aos-mobile-ui';
 
 describe('Text Component', () => {
-  it('renders without crashing', () => {
-    const wrapper = shallow(<Text />);
-
-    expect(wrapper.exists()).toBe(true);
-  });
-
   it('renders text correctly', () => {
     const text = 'Hello, World!';
-    const wrapper = shallow(<Text>{text}</Text>);
+    render(<Text>{text}</Text>);
 
-    expect(wrapper.find(ReactNativeText).length).toBe(1);
-    expect(wrapper.find(ReactNativeText).children().text()).toBe(text);
+    expect(screen.getByText(text)).toBeTruthy();
   });
 
   it('applies custom styles correctly', () => {
+    const text = 'Custom Text';
     const customStyle = {color: 'red', fontSize: 20};
-    const wrapper = shallow(<Text style={customStyle}>Custom Text</Text>);
+    render(<Text style={customStyle}>{text}</Text>);
 
-    expect(wrapper.prop('style')).toContain(customStyle);
+    expect(screen.getByText(text)).toHaveStyle(customStyle);
   });
 
   it('applies the specified number of lines', () => {
+    const text = 'Custom Text';
     const numberOfLines = 2;
-    const wrapper = shallow(
-      <Text numberOfLines={numberOfLines}>Long Text</Text>,
-    );
+    render(<Text numberOfLines={numberOfLines}>{text}</Text>);
 
-    expect(wrapper.find(ReactNativeText).prop('numberOfLines')).toBe(
-      numberOfLines,
-    );
+    expect(screen.getByText(text).props.numberOfLines).toBe(numberOfLines);
   });
 
   it('adjusts font size to fit when enabled', () => {
-    const wrapper = shallow(<Text adjustsFontSizeToFit>Resizable Text</Text>);
+    const text = 'Custom Text';
+    render(<Text adjustsFontSizeToFit>{text}</Text>);
 
-    expect(wrapper.find(ReactNativeText).prop('adjustsFontSizeToFit')).toBe(
-      true,
-    );
+    expect(screen.getByText(text).props.adjustsFontSizeToFit).toBe(true);
   });
 
   it('invokes onTextLayout callback', () => {
+    const text = 'Custom Text';
     const onTextLayout = jest.fn();
-    const testLayoutInput = {nativeEvent: {layout: {height: 100}}};
-    const wrapper = shallow(
-      <Text onTextLayout={onTextLayout}>Text with Layout</Text>,
-    );
+    const layoutEvent = {nativeEvent: {layout: {height: 100}}};
+    render(<Text onTextLayout={onTextLayout}>{text}</Text>);
 
-    wrapper.simulate('textLayout', testLayoutInput);
+    fireEvent(screen.getByText(text), 'textLayout', layoutEvent);
 
     expect(onTextLayout).toHaveBeenCalledTimes(1);
-    expect(onTextLayout).toHaveBeenCalledWith(testLayoutInput);
+    expect(onTextLayout).toHaveBeenCalledWith(layoutEvent);
   });
 });
