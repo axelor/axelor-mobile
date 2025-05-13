@@ -17,109 +17,110 @@
  */
 
 import React from 'react';
-import {TouchableOpacity} from 'react-native';
-import {shallow} from 'enzyme';
-import {Button, Icon, Text} from '@axelor/aos-mobile-ui';
-import {getGlobalStyles, getDefaultThemeColors} from '../../tools';
+import {fireEvent, render, screen} from '@testing-library/react-native';
+import {Button} from '@axelor/aos-mobile-ui';
+import {getDefaultThemeColors} from '../../tools';
 
 describe('Button Component', () => {
   const Colors = getDefaultThemeColors();
   const props = {
-    title: 'Cick here',
+    title: 'Click here',
     onPress: jest.fn(),
     width: 45,
   };
 
   it('renders without crashing', () => {
-    const wrapper = shallow(<Button />);
-
-    expect(wrapper.exists()).toBe(true);
+    render(<Button {...props} />);
+    expect(screen.getByRole('button')).toBeTruthy();
   });
 
   it('renders correctly with default props', () => {
-    const wrapper = shallow(<Button {...props} />);
+    render(<Button {...props} />);
 
-    expect(wrapper.find(Text).prop('children')).toBe(props.title);
+    expect(screen.getByText(props.title)).toBeTruthy();
+    expect(screen.getByRole('button').props.disabled).toBeFalsy();
+  });
 
-    expect(wrapper.find(TouchableOpacity)).toHaveLength(1);
-    expect(wrapper.find(TouchableOpacity).prop('disabled')).toBeFalsy();
+  it('should call onPress function when needed', () => {
+    const onPress = jest.fn();
+    render(<Button {...props} onPress={onPress} />);
+
+    fireEvent.press(screen.getByRole('button'));
+    expect(onPress).toHaveBeenCalled();
+  });
+
+  it('should not call the onPress function in disabled state', () => {
+    const onPress = jest.fn();
+    render(<Button {...props} onPress={onPress} disabled />);
+
+    fireEvent.press(screen.getByRole('button'));
+    expect(onPress).not.toHaveBeenCalled();
+  });
+
+  it('should call the right onPress function in disabled state', () => {
+    const onPress = jest.fn();
+    const onDisabledPress = jest.fn();
+    render(
+      <Button
+        {...props}
+        onPress={onPress}
+        disabled
+        onDisabledPress={onDisabledPress}
+      />,
+    );
+
+    fireEvent.press(screen.getByRole('button'));
+    expect(onPress).not.toHaveBeenCalled();
+    expect(onDisabledPress).toHaveBeenCalled();
   });
 
   it('renders with custom style', () => {
     const style = {margin: 10};
-    const wrapper = shallow(<Button {...props} style={style} />);
+    const defaultColor = Colors.primaryColor;
+    render(<Button {...props} style={style} />);
 
-    expect(getGlobalStyles(wrapper.find(TouchableOpacity))).toMatchObject({
-      borderColor: Colors.primaryColor.background,
-      backgroundColor: Colors.primaryColor.background_light,
+    expect(screen.getByRole('button')).toHaveStyle({
+      borderColor: defaultColor.background,
+      backgroundColor: defaultColor.background_light,
       width: props.width,
       ...style,
     });
 
-    expect(wrapper.find(Text).prop('textColor')).toBe(
-      Colors.primaryColor.foreground,
-    );
+    expect(screen.getByText(props.title)).toHaveStyle({
+      color: defaultColor.foreground,
+    });
   });
 
   it('renders with correct color', () => {
-    const wrapper = shallow(
-      <Button {...props} color={Colors.secondaryColor_dark} />,
-    );
+    const color = Colors.secondaryColor_dark;
+    render(<Button {...props} color={color} />);
 
-    expect(getGlobalStyles(wrapper.find(TouchableOpacity))).toMatchObject({
-      borderColor: Colors.secondaryColor_dark.background,
-      backgroundColor: Colors.secondaryColor_dark.background_light,
+    expect(screen.getByRole('button')).toHaveStyle({
+      borderColor: color.background,
+      backgroundColor: color.background_light,
     });
 
-    expect(wrapper.find(Text).prop('textColor')).toBe(
-      Colors.secondaryColor_dark.foreground,
-    );
+    expect(screen.getByText(props.title)).toHaveStyle({
+      color: color.foreground,
+    });
   });
 
   it('renders neutral background when asked', () => {
-    const wrapper = shallow(<Button {...props} isNeutralBackground />);
+    render(<Button {...props} isNeutralBackground />);
 
-    expect(getGlobalStyles(wrapper.find(TouchableOpacity))).toMatchObject({
+    expect(screen.getByRole('button')).toHaveStyle({
       borderColor: Colors.primaryColor.background,
       backgroundColor: Colors.backgroundColor,
     });
 
-    expect(wrapper.find(Text).prop('textColor')).toBe(Colors.text);
+    expect(screen.getByText(props.title)).toHaveStyle({
+      color: Colors.text,
+    });
   });
 
   it('renders Icon when provided', () => {
-    const iconProps = {
-      iconName: 'check',
-      iconSize: 24,
-      styleIcon: {marginTop: 60},
-    };
-    const wrapper = shallow(<Button {...props} {...iconProps} />);
+    render(<Button {...props} iconName="check" />);
 
-    expect(wrapper.find(Icon).prop('name')).toBe(iconProps.iconName);
-    expect(wrapper.find(Icon).prop('size')).toBe(iconProps.iconSize);
-    expect(wrapper.find(Icon).prop('color')).toBe(
-      Colors.primaryColor.foreground,
-    );
-    expect(getGlobalStyles(wrapper.find(Icon))).toMatchObject(
-      iconProps.styleIcon,
-    );
-  });
-
-  it('renders with disabled state when no disabledPress', () => {
-    const wrapper = shallow(<Button {...props} disabled={true} />);
-
-    expect(wrapper.find(TouchableOpacity).prop('disabled')).toBeTruthy();
-  });
-
-  it('renders with no disabled state when it has disabledPress', () => {
-    const onDisabledPress = jest.fn();
-    const wrapper = shallow(
-      <Button {...props} disabled={true} onDisabledPress={onDisabledPress} />,
-    );
-
-    expect(wrapper.find(TouchableOpacity).prop('disabled')).toBe(false);
-    expect(wrapper.find(TouchableOpacity).prop('onPress')).toBe(
-      onDisabledPress,
-    );
+    expect(screen.getByTestId('icon')).toBeTruthy();
   });
 });

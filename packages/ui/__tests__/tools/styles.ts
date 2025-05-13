@@ -33,10 +33,3 @@ export function getComputedStyles(componentStyles: any[]) {
 export function getGlobalStyles(component: any, styleName: string = 'style') {
   return getComputedStyles(component.prop(styleName));
 }
-
-export function getRNTLGlobalStyles(
-  component: any,
-  styleName: string = 'style',
-) {
-  return getComputedStyles(component.props[styleName]);
-}
