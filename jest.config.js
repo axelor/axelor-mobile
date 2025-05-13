@@ -15,4 +15,5 @@ module.exports = {
   ],
   moduleNameMapper: modulePackageNameMapping,
   modulePathIgnorePatterns: ['__tests__/tools'],
+  setupFilesAfterEnv: ['@testing-library/jest-native/extend-expect'],
 };
