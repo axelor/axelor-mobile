@@ -18,6 +18,7 @@
   "Message_MarkAsNotArchived": "Mark as not archived",
   "Message_ImportantMessages": "Important messages",
   "Message_ArchivedMessages": "Archived messages",
+  "Message_LinkFiles": "Link files",
   "Message_SliceAction_FetchMailMessages": "fetch mail messages",
   "Message_SliceAction_PostMailMessageComment": "post mail message comment",
   "Message_SliceAction_FetchModelSubscribers": "fetch model subscribers",

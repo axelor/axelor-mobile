@@ -85,6 +85,7 @@ interface postMailMessageCommentProps {
   modelId: number;
   comment: string;
   parentId?: number;
+  files?: [];
 }
 
 export async function postMailMessageComment({
@@ -92,8 +93,9 @@ export async function postMailMessageComment({
   modelId,
   comment,
   parentId,
+  files = [],
 }: postMailMessageCommentProps) {
-  const body: any = {body: `${comment}`, type: 'comment', files: []};
+  const body: any = {body: `${comment}`, type: 'comment', files};
   if (parentId != null) {
     body.parent = {id: parentId};
   }

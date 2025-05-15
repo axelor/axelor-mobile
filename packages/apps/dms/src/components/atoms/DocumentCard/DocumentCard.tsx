@@ -30,9 +30,10 @@ import {File} from '../../../types';
 interface DocumentCardProps {
   style?: any;
   document: any;
+  customOnPress?: () => void;
 }
 
-const DocumentCard = ({style, document}: DocumentCardProps) => {
+const DocumentCard = ({style, document, customOnPress}: DocumentCardProps) => {
   const I18n = useTranslator();
   const Colors = useThemeColor();
 
@@ -67,7 +68,7 @@ const DocumentCard = ({style, document}: DocumentCardProps) => {
     <ObjectCard
       style={[styles.card, style]}
       showArrow={false}
-      onPress={handleOpenFile}
+      onPress={() => (customOnPress ? customOnPress() : handleOpenFile())}
       upperTexts={{
         items: [
           {
