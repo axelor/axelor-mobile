@@ -26,6 +26,7 @@ export {
   registerModel,
   registerModelId,
   sendMailMessageComment,
+  saveLinkFiles,
   subscribeModel,
   unsubscribeModel,
 } from './mailMessageSlice';

@@ -17,20 +17,24 @@
  */
 
 import React, {useMemo} from 'react';
-import {StyleSheet, TouchableOpacity, View} from 'react-native';
-import {HtmlInput, Icon} from '../../atoms';
-import {getCommonStyles} from '../../../utils/commons-styles';
-import {useThemeColor} from '../../../theme';
+import {StyleSheet, View} from 'react-native';
+import {
+  getCommonStyles,
+  HtmlInput,
+  Icon,
+  NumberBubble,
+  useThemeColor,
+} from '@axelor/aos-mobile-ui';
 
 interface MessageBoxProps {
-  placeholder: string;
+  placeholder?: string;
   disabled?: boolean;
   value?: string;
-  onChange?: (any) => void;
-  onSend?: (any) => void;
+  onChange: (value: string) => void;
+  onSend?: () => void;
+  onLinkFiles?: () => void;
+  numberLinkedFiles?: number;
 }
-
-const BOX_HEIGHT = 90;
 
 const MessageBox = ({
   placeholder,
@@ -38,6 +42,8 @@ const MessageBox = ({
   value,
   onChange,
   onSend,
+  onLinkFiles,
+  numberLinkedFiles,
 }: MessageBoxProps) => {
   const Colors = useThemeColor();
 
@@ -50,52 +56,63 @@ const MessageBox = ({
         onChange={onChange}
         placeholder={placeholder}
         containerStyle={[commonStyles.filter, styles.htlmInput]}
-        style={styles.input}
         styleToolbar={styles.htmlToolBar}
       />
-      <TouchableOpacity
-        style={[commonStyles.filter, styles.action]}
-        disabled={disabled}
-        onPress={onSend}
-        activeOpacity={0.9}>
-        <Icon name="send-fill" size={24} />
-      </TouchableOpacity>
+      <View style={styles.iconsContainer}>
+        {onSend && (
+          <Icon
+            style={[commonStyles.filter, styles.action]}
+            name="send-fill"
+            color={disabled && Colors.secondaryColor.background_light}
+            size={24}
+            touchable={!disabled}
+            onPress={onSend}
+          />
+        )}
+        {onLinkFiles && (
+          <View style={[commonStyles.filter, styles.action]}>
+            <Icon name="paperclip" size={24} touchable onPress={onLinkFiles} />
+            {numberLinkedFiles > 0 && (
+              <NumberBubble
+                style={styles.number}
+                number={numberLinkedFiles}
+                color={Colors.primaryColor}
+                isNeutralBackground
+                size={18}
+              />
+            )}
+          </View>
+        )}
+      </View>
     </View>
   );
 };
 
 const styles = StyleSheet.create({
   container: {
-    width: '100%',
     flexDirection: 'row',
-    justifyContent: 'center',
-    alignItems: 'center',
-    overflow: 'hidden',
-  },
-  input: {
-    width: '100%',
-    fontSize: 16,
-    marginRight: 5,
-    borderRadius: 7,
+    paddingHorizontal: 5,
+    gap: 5,
   },
   htlmInput: {
-    borderRadius: 7,
     paddingHorizontal: 0,
-    marginHorizontal: 5,
-    marginVertical: 5,
     paddingTop: 10,
   },
   htmlToolBar: {
     backgroundColor: null,
     marginLeft: -5,
   },
-  action: {
+  iconsContainer: {
     width: '10%',
-    height: BOX_HEIGHT,
+  },
+  action: {
+    flex: 1,
     justifyContent: 'center',
-    alignItems: 'center',
-    marginRight: 5,
-    paddingHorizontal: 0,
+  },
+  number: {
+    position: 'absolute',
+    top: 2,
+    right: 2,
   },
 });
 

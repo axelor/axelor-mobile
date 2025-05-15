@@ -107,17 +107,19 @@ interface postMailMessageCommentProps {
   model: string;
   modelId: number;
   comment: string;
+  files?: [];
 }
 
 export async function postMailMessageComment({
   model,
   modelId,
   comment,
+  files = [],
 }: postMailMessageCommentProps) {
   const body = {
     body: `${comment}`,
     type: 'comment',
-    files: [],
+    files,
   };
   const {matchers} = formatRequestBody(body, 'data');
 

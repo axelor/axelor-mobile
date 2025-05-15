@@ -41,11 +41,15 @@ import {File} from '../../../types';
 interface DocumentListProps {
   defaultParent?: any;
   isAttachedFilesList?: boolean;
+  hideActions?: boolean;
+  customOnPress?: (file: any) => void;
 }
 
 const DocumentList = ({
   defaultParent,
   isAttachedFilesList = false,
+  hideActions = false,
+  customOnPress,
 }: DocumentListProps) => {
   const I18n = useTranslator();
   const Colors = useThemeColor();
@@ -133,6 +137,10 @@ const DocumentList = ({
         parentFieldName="parent"
         renderBranch={({item}) => <DirectoryCard directory={item} />}
         getBranchActions={branch => {
+          if (hideActions) {
+            return null;
+          }
+
           const isFavorite = user?.favouriteFolderSet.some(
             ({id}) => id === branch.item.id,
           );
@@ -171,6 +179,11 @@ const DocumentList = ({
           <DocumentActionCard
             document={item}
             handleRefresh={() => setSelectedExtensions(current => [...current])}
+            disableFavorites={hideActions}
+            disableDownload={hideActions}
+            disableEdit={hideActions}
+            disabledDelete={hideActions}
+            customOnPress={() => customOnPress(item)}
           />
         )}
         headerChildren={<AuthorFilter author={author} setAuthor={setAuthor} />}
