@@ -31,11 +31,9 @@ const ClientFormScreen = ({navigation}) => {
           emailVersion: objectState.emailAddress?.$version,
           emailId: objectState.emailAddress?.id,
         }),
-
-        navigation.navigate('ClientDetailsScreen', {
-          idClient: objectState.id,
-        }),
       );
+
+      navigation.pop();
     },
     [navigation],
   );

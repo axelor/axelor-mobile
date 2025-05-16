@@ -39,7 +39,7 @@ const SupplierArrivalLineCreationButton = ({
   const navigation = useNavigation();
 
   const navigateBackToDetails = useCallback(() => {
-    navigation.navigate('SupplierArrivalDetailsScreen', {
+    navigation.popTo('SupplierArrivalDetailsScreen', {
       supplierArrivalId: supplierArrival?.id,
     });
   }, [supplierArrival, navigation]);

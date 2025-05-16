@@ -29,7 +29,7 @@ interface MinimumMenuFields {
   order?: number;
 }
 
-interface MenuSeparator extends MinimumMenuFields {
+export interface MenuSeparator extends MinimumMenuFields {
   separator: true;
 }
 
@@ -51,7 +51,7 @@ export interface MenuWithSubMenus extends MenuBase {
   };
 }
 
-interface RootMenuWithScreen extends MenuWithScreen {
+export interface RootMenuWithScreen extends MenuWithScreen {
   isDefault?: boolean;
 }
 

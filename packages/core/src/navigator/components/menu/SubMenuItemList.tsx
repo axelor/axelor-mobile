@@ -19,20 +19,27 @@
 import React, {useCallback, useState} from 'react';
 import {View} from 'react-native';
 import {animationUtil} from '@axelor/aos-mobile-ui';
+import {useTranslator} from '../../../i18n';
+import {MenuWithSubMenus} from '../../../app';
+import {DrawerState, getMenuTitle, resolveSubMenus, Route} from '../../helpers';
 import MenuItemEntry from './MenuItemEntry';
-import {getMenuTitle, resolveSubMenus} from '../menu.helper';
 import SubMenuItem from './SubMenuItem';
-import {useTranslator} from '../../i18n';
+
+interface SubMenuItemListProps {
+  state: DrawerState;
+  menuItem: MenuWithSubMenus;
+  subRoutes: Route[];
+  onPress: (route: Route) => void;
+  disabled?: boolean;
+}
 
 const SubMenuItemList = ({
   state,
-  route,
-  navigation,
   menuItem,
-  subRoutes = [],
-  onPress = () => {},
-  disabled,
-}) => {
+  subRoutes,
+  onPress,
+  disabled = false,
+}: SubMenuItemListProps) => {
   const I18n = useTranslator();
 
   const [dropdown, setDropdown] = useState(false);
@@ -47,11 +54,8 @@ const SubMenuItemList = ({
   return (
     <View>
       <MenuItemEntry
-        state={state}
-        route={route}
-        navigation={navigation}
         icon={menuItem.icon}
-        title={getMenuTitle(menuItem, {I18n})}
+        title={getMenuTitle(menuItem, I18n)}
         disabled={menuItem.disabled || disabled}
         compatibility={menuItem.compatibilityAOS}
         onPress={handleDropdownPress}
@@ -69,9 +73,8 @@ const SubMenuItemList = ({
             return (
               <SubMenuItem
                 key={subRoute.key}
-                route={subRoute}
                 subMenu={subMenu}
-                onPress={onPress}
+                onPress={() => onPress(subRoute)}
                 isActive={focused}
               />
             );

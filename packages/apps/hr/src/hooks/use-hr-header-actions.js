@@ -131,7 +131,7 @@ const useTimerListAction = () => {
           iconColor: Colors.primaryColor.background,
           hideIf: !canCreate,
           onPress: () =>
-            navigation.navigate('TimerFormScreen', {isCreation: true}),
+            navigation.popTo('TimerFormScreen', {isCreation: true}),
           showInHeader: true,
         },
       ],
@@ -160,7 +160,7 @@ const useActiveTimerAction = () => {
           iconColor: Colors.primaryColor.background,
           hideIf: !canCreate || !timesheetConfig?.isMultipleTimerEnabled,
           onPress: () =>
-            navigation.navigate('TimerFormScreen', {isCreation: true}),
+            navigation.popTo('TimerFormScreen', {isCreation: true}),
           showInHeader: true,
         },
       ],

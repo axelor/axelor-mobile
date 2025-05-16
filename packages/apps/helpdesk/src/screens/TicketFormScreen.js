@@ -51,24 +51,14 @@ const TicketFormScreen = ({navigation, route}) => {
   );
 
   const createTicketAPI = useCallback((_ticket, dispatch) => {
-    dispatch(
-      createTicket({
-        ticket: _ticket,
-      }),
-    );
+    dispatch(createTicket({ticket: _ticket}));
   }, []);
 
   const updateTicketAPI = useCallback(
     (_ticket, dispatch) => {
-      dispatch(
-        updateTicket({
-          ticket: _ticket,
-        }),
-      );
+      dispatch(updateTicket({ticket: _ticket}));
 
-      navigation.navigate('TicketDetailsScreen', {
-        idTicket: _ticket.id,
-      });
+      navigation.pop();
     },
     [navigation],
   );

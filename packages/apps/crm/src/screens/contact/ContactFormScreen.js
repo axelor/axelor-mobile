@@ -33,9 +33,7 @@ const ContactFormScreen = ({navigation}) => {
         }),
       );
 
-      navigation.navigate('ContactDetailsScreen', {
-        idContact: objectState.id,
-      });
+      navigation.pop();
     },
     [navigation],
   );

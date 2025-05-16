@@ -16,12 +16,12 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import {navigationInformations} from '../../navigator';
-import {axiosApiProvider} from '../../apiProviders';
-
-export async function uploadNavigationTools() {
-  return axiosApiProvider.post({
-    url: '/ws/aos/mobilesettings/navigation',
-    data: navigationInformations.getInformations(),
-  });
-}
+export {
+  activeScreenProvider,
+  getModelId,
+  isModel,
+  useActiveScreen,
+  useContextRegister,
+} from './active-screen';
+export {ModuleNavigatorContext, useActiveModule} from './module-navigator';
+export {navigationInformations} from './navigation-informations';
