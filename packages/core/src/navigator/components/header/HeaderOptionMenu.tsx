@@ -19,17 +19,26 @@
 import React, {useEffect, useMemo, useState} from 'react';
 import {Dimensions, StyleSheet, View} from 'react-native';
 import {DropdownMenu, DropdownMenuItem} from '@axelor/aos-mobile-ui';
-import {HeaderOptionMenuItem} from '../../molecules';
+import {ActionType, GenericHeaderActions} from '../../../header';
+import HeaderOptionMenuItem from './HeaderOptionMenuItem';
 
 const SMALLEST_WINDOW_WIDTH = 300;
 
-const HeaderOptionsMenu = ({
+interface HeaderOptionMenuProps {
+  model?: string;
+  modelId?: number;
+  actions?: ActionType[];
+  genericActions?: GenericHeaderActions;
+  options?: {[key: string]: any};
+}
+
+const HeaderOptionMenu = ({
   model,
   modelId,
   actions = [],
   genericActions = {},
   options,
-}) => {
+}: HeaderOptionMenuProps) => {
   const collapseMenuItems = useMemo(
     () => Dimensions.get('window').width <= SMALLEST_WINDOW_WIDTH,
     [],
@@ -92,7 +101,7 @@ const HeaderOptionsMenu = ({
           customComponent={_action.customComponent}
         />
       )),
-    [headerActions],
+    [MenuItem, headerActions],
   );
 
   const MenuItemList = useMemo(
@@ -134,7 +143,6 @@ const HeaderOptionsMenu = ({
 
 const styles = StyleSheet.create({
   container: {
-    borderRadius: 7,
     flexDirection: 'row',
     justifyContent: 'center',
     alignItems: 'center',
@@ -142,4 +150,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default HeaderOptionsMenu;
+export default HeaderOptionMenu;

@@ -24,6 +24,7 @@ export {
   useNavigationRoutes,
   useStackChecker,
 } from './use-navigation';
+export {useOutdatedVersion} from './use-outdated-version';
 export {
   useScanActivator,
   useScannerDeviceActivator,

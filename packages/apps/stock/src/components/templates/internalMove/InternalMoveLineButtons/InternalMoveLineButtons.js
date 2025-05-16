@@ -55,9 +55,9 @@ const InternalMoveLineButtons = ({
     );
 
     if (isScreenMounted('InternalMoveLineListScreen')) {
-      navigation.navigate('InternalMoveLineListScreen', {internalMove});
+      navigation.popTo('InternalMoveLineListScreen', {internalMove});
     } else {
-      navigation.navigate('InternalMoveDetailsGeneralScreen', {
+      navigation.popTo('InternalMoveDetailsGeneralScreen', {
         internalMoveId: internalMove.id,
       });
     }

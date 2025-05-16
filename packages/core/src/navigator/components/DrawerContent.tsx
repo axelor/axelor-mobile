@@ -16,32 +16,37 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import React, {
-  useRef,
-  useContext,
-  useMemo,
-  useEffect,
-  useCallback,
-} from 'react';
+import React, {useRef, useMemo, useEffect, useCallback} from 'react';
 import {StyleSheet, View, Animated, ScrollView} from 'react-native';
 import {SafeAreaView} from 'react-native-safe-area-context';
 import {CommonActions, DrawerActions} from '@react-navigation/native';
-import {useThemeColor, useConfig} from '@axelor/aos-mobile-ui';
-import {ModuleNavigatorContext} from '../Navigator';
-import MenuIconButton from './MenuIconButton';
-import Menu from './Menu';
-import {moduleHasMenus, numberOfModules} from '../module.helper';
-import {useTranslator} from '../../i18n';
+import {ThemeColors, useThemeColor} from '@axelor/aos-mobile-ui';
 import {authModule} from '../../auth';
-import AuthMenuIconButton from './AuthMenuIconButton';
-import {useSelector} from '../../redux/hooks';
 import {
   PopupApplicationInformation,
   PopupMinimalRequiredVersion,
 } from '../../components';
-import MenuTitle from './MenuTitle';
-import {formatVersionString} from '../../utils/string';
-import {getDefaultMenuKey, hasSubMenus} from '../menu.helper';
+import {useOutdatedVersion} from '../../hooks';
+import {MenuWithSubMenus, Module} from '../../app';
+import {useActiveModule} from '../providers';
+import {
+  DrawerState,
+  moduleHasMenus,
+  NavigationObject,
+  numberOfModules,
+  getDefaultMenuKey,
+  hasSubMenus,
+} from '../helpers';
+import {AuthMenu, Menu, MenuIconButton, MenuTitle} from './menu';
+
+interface DrawerContentProps {
+  state: DrawerState;
+  modules: Module[];
+  navigation: NavigationObject;
+  onModuleClick: (name: string) => void;
+  onRefresh: () => void;
+  versionCheckConfig: any;
+}
 
 const DrawerContent = ({
   state,
@@ -50,53 +55,39 @@ const DrawerContent = ({
   onModuleClick,
   onRefresh,
   versionCheckConfig,
-}) => {
-  useEffect(() => {
-    const generateRoutes = _state => {
-      return [...modules]
-        ?.filter(_module => _module.menus)
-        ?.flatMap(_module => {
-          const result = [];
-
-          for (const [key, menu] of Object.entries(_module.menus)) {
-            result.push(key);
-
-            if (hasSubMenus(menu)) {
-              Object.keys(menu.subMenus).forEach(_key => {
-                result.push(_key);
-              });
-            }
-          }
-
-          return result;
-        })
-        .map(_key => _state.routes.find(_item => _item.name === _key));
-    };
-
-    navigation.dispatch(_state => {
-      return CommonActions.reset({
-        ..._state,
-        routes: generateRoutes(_state),
-      });
-    });
-  }, [modules, navigation]);
-
+}: DrawerContentProps) => {
   const Colors = useThemeColor();
-  const I18n = useTranslator();
+  const {isOutdated} = useOutdatedVersion(versionCheckConfig);
 
-  const {showSubtitles} = useConfig();
+  useEffect(() => {
+    navigation.dispatch(_state =>
+      CommonActions.reset({
+        ..._state,
+        routes: modules
+          ?.filter(_module => _module.menus)
+          ?.flatMap(_module => {
+            const result = [];
+
+            for (const [key, menu] of Object.entries(_module.menus)) {
+              result.push(key);
+
+              if (hasSubMenus(menu)) {
+                result.push(
+                  ...Object.keys((menu as MenuWithSubMenus).subMenus),
+                );
+              }
+            }
+
+            return result;
+          })
+          .map(_key => _state.routes.find(_item => _item.name === _key)),
+      }),
+    );
+  }, [modules, navigation]);
 
   const styles = useMemo(() => getStyles(Colors), [Colors]);
   const secondaryMenusLeft = useRef(new Animated.Value(0)).current;
-  const {activeModule} = useContext(ModuleNavigatorContext);
-  const {mobileSettings} = useSelector(_state => _state.appConfig);
-  const {appVersion} = useSelector(_state => _state.auth);
-  const mobileVersion = formatVersionString(appVersion);
-
-  const minimalRequiredVersion = useMemo(
-    () => formatVersionString(mobileSettings?.minimalRequiredMobileAppVersion),
-    [mobileSettings],
-  );
+  const {activeModule} = useActiveModule();
 
   const innerMenuIsVisible = useMemo(
     () => activeModule.name !== authModule.name,
@@ -116,29 +107,19 @@ const DrawerContent = ({
     [drawerModules],
   );
 
+  const toggleSecondaryMenu = useCallback(() => {
+    const openConfig = {toValue: 0, duration: 300};
+    const closeConfig = {toValue: 100, duration: 0};
+
+    Animated.timing(secondaryMenusLeft, {
+      ...(innerMenuIsVisible ? openConfig : closeConfig),
+      useNativeDriver: false,
+    }).start();
+  }, [innerMenuIsVisible, secondaryMenusLeft]);
+
   useEffect(() => {
-    if (innerMenuIsVisible) {
-      openSecondaryMenu();
-    } else {
-      closeSecondaryMenu();
-    }
-  }, [closeSecondaryMenu, innerMenuIsVisible, openSecondaryMenu]);
-
-  const openSecondaryMenu = useCallback(() => {
-    Animated.timing(secondaryMenusLeft, {
-      toValue: 0,
-      duration: 300,
-      useNativeDriver: false,
-    }).start();
-  }, [secondaryMenusLeft]);
-
-  const closeSecondaryMenu = useCallback(() => {
-    Animated.timing(secondaryMenusLeft, {
-      toValue: 100,
-      duration: 0,
-      useNativeDriver: false,
-    }).start();
-  }, [secondaryMenusLeft]);
+    toggleSecondaryMenu();
+  }, [toggleSecondaryMenu]);
 
   const innerMenuPosition = useMemo(
     () =>
@@ -151,19 +132,16 @@ const DrawerContent = ({
     [externalMenuIsVisible, secondaryMenusLeft],
   );
 
-  const handleModuleClick = _module => {
+  const handleModuleClick = (_module: Module) => {
     onModuleClick(_module.name);
-    navigateToDefaultMenu(_module);
-  };
 
-  const navigateToDefaultMenu = selectedModule => {
-    const defaultMenuKey = getDefaultMenuKey(selectedModule);
+    const defaultMenuKey = getDefaultMenuKey(_module);
     if (defaultMenuKey) {
       navigateToMenu(defaultMenuKey);
     }
   };
 
-  const navigateToMenu = menuKey => {
+  const navigateToMenu = (menuKey: string) => {
     const route = state.routes.find(_route => _route.name === menuKey);
 
     if (route == null) {
@@ -174,10 +152,11 @@ const DrawerContent = ({
       state.routes.indexOf(route) === state.index &&
       Object.keys(activeModule.menus).includes(route.name);
 
-    const event = navigation.emit({
-      type: 'drawerItemPress',
+    const event: any = navigation.emit({
+      type: 'drawerItemPress' as never,
       target: route.key,
       canPreventDefault: true,
+      data: {} as never,
     });
 
     if (!event.defaultPrevented) {
@@ -193,16 +172,13 @@ const DrawerContent = ({
   if (numberOfModules(drawerModules) === 0) {
     return (
       <PopupApplicationInformation
-        textKey={'Base_NoAppConfigured'}
+        textKey="Base_NoAppConfigured"
         onRefresh={onRefresh}
       />
     );
   }
 
-  if (
-    versionCheckConfig?.activate === true &&
-    mobileVersion < minimalRequiredVersion
-  ) {
+  if (isOutdated) {
     return (
       <PopupMinimalRequiredVersion
         versionCheckConfig={versionCheckConfig}
@@ -223,13 +199,9 @@ const DrawerContent = ({
                 <MenuIconButton
                   style={styles.menuItemContainer}
                   icon={_module.icon}
-                  subtitle={showSubtitles && I18n.t(_module.subtitle)}
+                  subtitle={_module.subtitle}
                   disabled={_module.disabled}
-                  color={
-                    _module === activeModule
-                      ? Colors.primaryColor.background_light
-                      : null
-                  }
+                  isActive={_module.name === activeModule?.name}
                   onPress={() => handleModuleClick(_module)}
                   compatibility={_module.compatibilityAOS}
                 />
@@ -243,22 +215,13 @@ const DrawerContent = ({
             ))}
           </ScrollView>
           <View style={styles.otherIconsContainer}>
-            <AuthMenuIconButton
-              isActive={authModule.name === activeModule.name}
-              showModulesSubtitle={showSubtitles}
-              onPress={() => handleModuleClick(authModule)}
-            />
+            <AuthMenu onPress={handleModuleClick} />
           </View>
         </View>
       )}
       <View style={styles.menusContainer}>
         <Animated.View
-          style={[
-            styles.secondaryMenusContainer,
-            {
-              left: innerMenuPosition,
-            },
-          ]}>
+          style={[styles.secondaryMenusContainer, {left: innerMenuPosition}]}>
           <Menu
             activeModule={
               externalMenuIsVisible ? activeModule : drawerModules[0]
@@ -266,13 +229,10 @@ const DrawerContent = ({
             state={state}
             navigation={navigation}
             authMenu={
-              !externalMenuIsVisible ? (
-                <AuthMenuIconButton
-                  isActive={authModule.name === activeModule.name}
-                  showModulesSubtitle={showSubtitles}
-                  onPress={() => handleModuleClick(authModule)}
-                />
-              ) : null
+              <AuthMenu
+                onPress={handleModuleClick}
+                isVisible={!externalMenuIsVisible}
+              />
             }
             onItemClick={
               externalMenuIsVisible
@@ -289,7 +249,7 @@ const DrawerContent = ({
   );
 };
 
-const getStyles = Colors =>
+const getStyles = (Colors: ThemeColors) =>
   StyleSheet.create({
     container: {
       flex: 1,

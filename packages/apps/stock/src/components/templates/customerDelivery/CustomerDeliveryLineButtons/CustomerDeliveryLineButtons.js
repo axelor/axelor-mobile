@@ -42,11 +42,11 @@ const CustomerDeliveryLineButtons = ({
 
   const navigateBackToDetails = useCallback(() => {
     if (isScreenMounted('CustomerDeliveryLineListScreen')) {
-      navigation.navigate('CustomerDeliveryLineListScreen', {
+      navigation.popTo('CustomerDeliveryLineListScreen', {
         customerDelivery,
       });
     } else {
-      navigation.navigate('CustomerDeliveryDetailScreen', {
+      navigation.popTo('CustomerDeliveryDetailScreen', {
         customerDeliveryId: customerDelivery.id,
       });
     }

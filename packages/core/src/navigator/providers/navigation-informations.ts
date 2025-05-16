@@ -20,11 +20,15 @@ import {
   Menu as DrawerMenu,
   MenuWithSubMenus,
   Screen as NavigationScreen,
-} from '../app';
-import {isEmpty} from '../utils';
-import {hasSubMenus} from './menu.helper';
+} from '../../app';
+import {isEmpty} from '../../utils';
+import {hasSubMenus} from '../helpers';
 
-type MenuType = 'menu' | 'separator' | 'submenu';
+enum MenuType {
+  Menu = 'menu',
+  Separator = 'separator',
+  Submenu = 'submenu',
+}
 
 interface Menu {
   menuKey: string;
@@ -78,7 +82,7 @@ class NavigationInformationsProvider {
             menuTitle: subMenu.title,
             menuOrder: subMenu.order,
             menuParentApplication: menu.parent,
-            menuType: 'submenu',
+            menuType: MenuType.Submenu,
             parentMenuName: key,
           });
         }
@@ -114,12 +118,7 @@ class NavigationInformationsProvider {
   }
 }
 
-const getMenuType = (menu: any): MenuType => {
-  if (menu.separator) {
-    return 'separator';
-  }
-
-  return 'menu';
-};
+const getMenuType = (menu: any): MenuType =>
+  menu?.separator ? MenuType.Separator : MenuType.Menu;
 
 export const navigationInformations = new NavigationInformationsProvider();

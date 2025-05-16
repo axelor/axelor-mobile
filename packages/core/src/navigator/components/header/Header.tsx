@@ -16,40 +16,51 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import React, {useCallback, useEffect, useMemo, useRef, useState} from 'react';
+import React, {useEffect, useMemo, useRef, useState} from 'react';
 import {Dimensions, Platform, StyleSheet, View} from 'react-native';
 import {Text, useConfig, useThemeColor} from '@axelor/aos-mobile-ui';
-import DrawerToggleButton from './DrawerToggleButton';
-import BackIcon from './BackIcon';
-import {useTranslator} from '../../i18n';
-import {HeaderOptionsMenu} from '../../components';
+import {useTranslator} from '../../../i18n';
 import {
   HeaderBandHelper,
+  HeaderOptions,
   headerActionsProvider,
   useHeaderActions,
   useHeaderBand,
-} from '../../header';
+} from '../../../header';
+import HeaderButton from './HeaderButton';
+import HeaderOptionMenu from './HeaderOptionMenu';
 
 const TIME_BEFORE_RETRY = 500;
 const SMALL_SCREEN_LIMIT = 360;
 
-const Header = ({mainScreen, title, actionID = null, shadedHeader = true}) => {
+interface HeaderProps {
+  mainScreen?: boolean;
+  title: string;
+  actionID?: string;
+  shadedHeader?: boolean;
+}
+
+const Header = ({
+  mainScreen = false,
+  title,
+  actionID,
+  shadedHeader = true,
+}: HeaderProps) => {
   const Colors = useThemeColor();
   const I18n = useTranslator();
+  let timeOutRequestCall = useRef<number>();
 
   const {setHeaderHeight} = useConfig();
   const {allBands} = useHeaderBand();
-
-  let timeOutRequestCall = useRef();
-
   const {headers, genericHeaders} = useHeaderActions(actionID);
 
-  const [options, setOptions] = useState();
-  const [containerHeight, setContainerHeight] = useState();
+  const [options, setOptions] = useState<HeaderOptions>();
+  const [containerHeight, setContainerHeight] = useState<number>();
 
-  const visibleBands = useMemo(() => {
-    return HeaderBandHelper.filterBands(allBands)?.length ?? 0;
-  }, [allBands]);
+  const visibleBands = useMemo(
+    () => HeaderBandHelper.filterBands(allBands)?.length ?? 0,
+    [allBands],
+  );
 
   useEffect(() => {
     const height = containerHeight + visibleBands * HeaderBandHelper.bandHeight;
@@ -63,18 +74,15 @@ const Header = ({mainScreen, title, actionID = null, shadedHeader = true}) => {
     setOptions(headers);
   }, [headers]);
 
-  const handleTimeOut = useCallback(() => {
-    setOptions(headerActionsProvider.getHeaderOptions(actionID));
-  }, [actionID]);
-
   useEffect(() => {
-    const id = setTimeout(handleTimeOut, TIME_BEFORE_RETRY);
+    const id = setTimeout(
+      () => setOptions(headerActionsProvider.getHeaderOptions(actionID)),
+      TIME_BEFORE_RETRY,
+    );
     timeOutRequestCall.current = id;
 
-    return () => {
-      clearTimeout(timeOutRequestCall.current);
-    };
-  }, [handleTimeOut]);
+    return () => clearTimeout(timeOutRequestCall.current);
+  }, [actionID]);
 
   const styles = useMemo(() => getHeaderStyles(Colors), [Colors]);
 
@@ -86,11 +94,7 @@ const Header = ({mainScreen, title, actionID = null, shadedHeader = true}) => {
       }}
       style={[styles.header, shadedHeader ? styles.shadedHeader : null]}>
       <View style={styles.options}>
-        {mainScreen ? (
-          <DrawerToggleButton tintColor={Colors.primaryColor.background} />
-        ) : (
-          <BackIcon tintColor={Colors.primaryColor.background} />
-        )}
+        <HeaderButton isRoot={mainScreen} />
         <View style={styles.titleContainer}>
           <Text
             style={styles.headerTitle}
@@ -103,15 +107,9 @@ const Header = ({mainScreen, title, actionID = null, shadedHeader = true}) => {
           </Text>
         </View>
       </View>
-      {options != null ? (
-        <HeaderOptionsMenu
-          model={options.model}
-          modelId={options.modelId}
-          actions={options.actions}
-          genericActions={genericHeaders}
-          options={options.options}
-        />
-      ) : null}
+      {options && (
+        <HeaderOptionMenu {...options} genericActions={genericHeaders} />
+      )}
     </View>
   );
 };

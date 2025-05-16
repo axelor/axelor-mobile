@@ -16,18 +16,31 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import React, {
-  createContext,
-  useCallback,
-  useEffect,
-  useMemo,
-  useState,
-} from 'react';
+import React, {useCallback, useEffect, useMemo, useState} from 'react';
 import {Dimensions, Platform} from 'react-native';
 import {createDrawerNavigator} from '@react-navigation/drawer';
 import {createStackNavigator} from '@react-navigation/stack';
 import {useThemeColor} from '@axelor/aos-mobile-ui';
-import DrawerContent from './drawer/DrawerContent';
+import {useTranslator} from '../i18n';
+import {useDispatch, useSelector} from '../redux/hooks';
+import BaseScreen from '../screens';
+import {fetchMetaModules} from '../features/metaModuleSlice';
+import {fetchAllCurrencies} from '../features/currencySlice';
+import {fetchRequiredConfig} from '../features/appConfigSlice';
+import {usePermissionsFetcher} from '../permissions';
+import {registerTypes} from '../selections';
+import {
+  Menu,
+  MenuWithSubMenus,
+  RootMenuWithScreen,
+  useModulesInitialisation,
+} from '../app';
+import {
+  activeScreenProvider,
+  ModuleNavigatorContext,
+  navigationInformations,
+} from './providers';
+import {DrawerContent, Header} from './components';
 import {
   checkModulesMenusAccessibility,
   getDefaultModule,
@@ -35,30 +48,14 @@ import {
   manageWebCompatibility,
   manageWebConfig,
   moduleHasMenus,
-} from './module.helper';
-import {
   manageSubMenusOverriding,
   getMenuTitle,
   hasSubMenus,
   formatMenus,
-} from './menu.helper';
-import useTranslator from '../i18n/hooks/use-translator';
-import {useDispatch, useSelector} from 'react-redux';
-import BaseScreen from '../screens';
-import Header from './drawer/Header';
-import {fetchMetaModules} from '../features/metaModuleSlice';
-import {fetchAllCurrencies} from '../features/currencySlice';
-import {fetchRequiredConfig} from '../features/appConfigSlice';
-import {usePermissionsFetcher} from '../permissions';
-import {navigationInformations} from './NavigationInformationsProvider';
-import {registerTypes} from '../selections';
-import {useModulesInitialisation} from '../app';
-import {activeScreenProvider} from './ActiveScreenProvider';
+} from './helpers';
 
 const Drawer = createDrawerNavigator();
 const Stack = createStackNavigator();
-
-export const ModuleNavigatorContext = createContext({activeModule: null});
 
 const Navigator = ({mainMenu, onRefresh, versionCheckConfig}) => {
   const I18n = useTranslator();
@@ -104,7 +101,7 @@ const Navigator = ({mainMenu, onRefresh, versionCheckConfig}) => {
   }, [enabledModule]);
 
   useEffect(() => {
-    dispatch(fetchRequiredConfig(requiredConfig));
+    dispatch((fetchRequiredConfig as any)(requiredConfig));
     registerTypes();
     // Note: the configs only need to be fetched once at user connection
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -112,7 +109,7 @@ const Navigator = ({mainMenu, onRefresh, versionCheckConfig}) => {
 
   useEffect(() => {
     dispatch(fetchMetaModules());
-    dispatch(fetchAllCurrencies());
+    dispatch((fetchAllCurrencies as any)());
     fetchAllPermission();
   }, [dispatch, fetchAllPermission]);
 
@@ -126,7 +123,9 @@ const Navigator = ({mainMenu, onRefresh, versionCheckConfig}) => {
   );
 
   const modulesMenus = useMemo(() => {
-    const menuArray = enabledModule
+    const menuArray: {
+      [key: string]: Menu;
+    } = enabledModule
       .filter(moduleHasMenus)
       .reduce((menus, _module) => ({...menus, ...formatMenus(_module)}), {});
 
@@ -149,6 +148,7 @@ const Navigator = ({mainMenu, onRefresh, versionCheckConfig}) => {
   const ModulesScreensStackNavigator = useCallback(
     ({initialRouteName, ...rest}) => (
       <Stack.Navigator
+        id={undefined}
         {...rest}
         initialRouteName={initialRouteName}
         screenListeners={{
@@ -219,6 +219,7 @@ const Navigator = ({mainMenu, onRefresh, versionCheckConfig}) => {
   return (
     <ModuleNavigatorContext.Provider value={{activeModule}}>
       <Drawer.Navigator
+        id={undefined}
         initialRouteName={mainMenu}
         screenOptions={{
           headerShown: false,
@@ -235,37 +236,39 @@ const Navigator = ({mainMenu, onRefresh, versionCheckConfig}) => {
                 key={key}
                 name={key}
                 options={{
-                  title: getMenuTitle(menu, {I18n}),
-                  unmountOnBlur: true,
+                  title: getMenuTitle(menu, I18n),
+                  popToTopOnBlur: true,
                 }}>
                 {props =>
-                  menu.screen && (
+                  (menu as any).screen && (
                     <ModulesScreensStackNavigator
                       {...props}
-                      initialRouteName={menu.screen}
+                      initialRouteName={(menu as RootMenuWithScreen).screen}
                     />
                   )
                 }
               </Drawer.Screen>
               {hasSubMenus(menu) &&
-                Object.entries(menu.subMenus).map(([subMenukey, subMenu]) => {
-                  return (
-                    <Drawer.Screen
-                      key={subMenukey}
-                      name={subMenukey}
-                      options={{
-                        title: getMenuTitle(subMenu, {I18n}),
-                        unmountOnBlur: true,
-                      }}>
-                      {props => (
-                        <ModulesScreensStackNavigator
-                          {...props}
-                          initialRouteName={subMenu.screen}
-                        />
-                      )}
-                    </Drawer.Screen>
-                  );
-                })}
+                Object.entries((menu as MenuWithSubMenus).subMenus).map(
+                  ([subMenukey, subMenu]) => {
+                    return (
+                      <Drawer.Screen
+                        key={subMenukey}
+                        name={subMenukey}
+                        options={{
+                          title: getMenuTitle(subMenu, I18n),
+                          popToTopOnBlur: true,
+                        }}>
+                        {props => (
+                          <ModulesScreensStackNavigator
+                            {...props}
+                            initialRouteName={subMenu.screen}
+                          />
+                        )}
+                      </Drawer.Screen>
+                    );
+                  },
+                )}
             </React.Fragment>
           );
         })}

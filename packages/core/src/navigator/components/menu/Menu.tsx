@@ -18,96 +18,25 @@
 
 import React, {useMemo} from 'react';
 import {View, StyleSheet, ScrollView} from 'react-native';
-import {CommonActions, DrawerActions} from '@react-navigation/native';
 import {Text, WarningCard} from '@axelor/aos-mobile-ui';
-import MenuItem from './MenuItem';
+import {useTranslator} from '../../../i18n';
+import {Compatibility, Module} from '../../../app';
 import {
-  findIndexAndRouteOfMenu,
+  DrawerState,
   getCompatibilityError,
   getMenuTitle,
-  hasSubMenus,
   isMenuIncompatible,
-} from '../menu.helper';
-import useTranslator from '../../i18n/hooks/use-translator';
+} from '../../helpers';
+import MenuItemList from './MenuItemList';
 
-const MenuItemList = ({
-  state,
-  navigation,
-  activeModule,
-  onItemClick,
-  disabled,
-}) => {
-  const generateSubRoutes = menuItem => {
-    if (hasSubMenus(menuItem)) {
-      const {subMenus} = menuItem;
-      return state.routes.filter(subRoute => subRoute.name in subMenus);
-    }
-    return [];
-  };
-
-  const moduleEntries = useMemo(() => {
-    return state.routes
-      .filter(_route => activeModule.menus[_route.name] != null)
-      .map(route => ({...activeModule.menus[route.name], key: route.name}))
-      .map((item, index) => {
-        if (item.order != null) {
-          return item;
-        }
-
-        return {...item, order: index * 10};
-      })
-      .sort((a, b) => a.order - b.order);
-  }, [activeModule, state.routes]);
-
-  return moduleEntries.map(menuItem => {
-    const {route, index: i} = findIndexAndRouteOfMenu(
-      state.routes,
-      menuItem.key,
-    );
-
-    const focused =
-      i === state.index && Object.keys(activeModule.menus).includes(route.name);
-
-    const onPress = _route => {
-      if (_route == null) {
-        return null;
-      }
-
-      onItemClick();
-
-      const event = navigation.emit({
-        type: 'drawerItemPress',
-        target: _route.key,
-        canPreventDefault: true,
-      });
-
-      if (!event.defaultPrevented) {
-        navigation.dispatch({
-          ...(focused
-            ? DrawerActions.closeDrawer()
-            : CommonActions.navigate({name: _route.name, merge: true})),
-          target: state.key,
-        });
-      }
-    };
-
-    const subRoutes = generateSubRoutes(menuItem);
-
-    return (
-      <MenuItem
-        key={route.key}
-        state={state}
-        route={route}
-        navigation={navigation}
-        menuItem={menuItem}
-        subRoutes={subRoutes}
-        onPress={onPress}
-        isActive={focused}
-        disabled={disabled}
-      />
-    );
-  });
-};
+interface MenuProps {
+  state: DrawerState;
+  navigation: any;
+  authMenu?: React.ReactNode;
+  activeModule: Module;
+  onItemClick: () => void;
+  compatibility: Compatibility;
+}
 
 const Menu = ({
   state,
@@ -116,11 +45,11 @@ const Menu = ({
   activeModule,
   onItemClick,
   compatibility,
-}) => {
+}: MenuProps) => {
   const I18n = useTranslator();
 
   const title = useMemo(
-    () => getMenuTitle(activeModule, {I18n}),
+    () => getMenuTitle(activeModule, I18n),
     [I18n, activeModule],
   );
 

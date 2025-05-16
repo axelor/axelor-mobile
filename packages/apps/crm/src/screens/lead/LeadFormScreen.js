@@ -38,10 +38,7 @@ const LeadFormScreen = ({navigation, route}) => {
         }),
       );
 
-      navigation.navigate('LeadDetailsScreen', {
-        idLead: objectState.id,
-        versionLead: objectState.version,
-      });
+      navigation.pop();
     },
     [navigation],
   );
@@ -58,7 +55,7 @@ const LeadFormScreen = ({navigation, route}) => {
         }),
       );
 
-      navigation.navigate('LeadListScreen');
+      navigation.pop();
     },
     [user, navigation],
   );

@@ -83,7 +83,7 @@ const ChildrenManufOrderListScreen = ({route, navigation}) => {
 
   const handleViewItem = item => {
     if (item != null) {
-      navigation.navigate('ManufacturingOrderDetailsScreen', {
+      navigation.popTo('ManufacturingOrderDetailsScreen', {
         manufacturingOrderId: item.id,
       });
     }

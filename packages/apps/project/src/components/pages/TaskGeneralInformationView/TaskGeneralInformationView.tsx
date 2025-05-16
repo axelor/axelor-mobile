@@ -55,7 +55,7 @@ const TaskGeneralInformationView = ({
           name={projectTask.project?.name}
           projectStatus={projectTask.project?.projectStatus}
           onPress={() => {
-            navigation.navigate('ProjectDetailsScreen', {
+            navigation.popTo('ProjectDetailsScreen', {
               projectId: projectTask.project?.id,
             });
           }}

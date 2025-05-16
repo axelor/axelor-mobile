@@ -16,28 +16,15 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import React from 'react';
-import {StyleSheet, TouchableOpacity} from 'react-native';
-import {StackActions, useNavigation} from '@react-navigation/native';
-import {Icon} from '@axelor/aos-mobile-ui';
+import {
+  DrawerNavigationState,
+  ParamListBase,
+  NavigationHelpers,
+  NavigationRoute,
+} from '@react-navigation/native';
 
-const BackIcon = ({tintColor}) => {
-  const navigation = useNavigation();
+export type DrawerState = DrawerNavigationState<ParamListBase>;
 
-  return (
-    <TouchableOpacity
-      onPress={() => navigation.dispatch(StackActions.pop())}
-      style={styles.icon}>
-      <Icon name="chevron-left" size={26} color={tintColor} />
-    </TouchableOpacity>
-  );
-};
+export type NavigationObject = NavigationHelpers<ParamListBase>;
 
-const styles = StyleSheet.create({
-  icon: {
-    paddingLeft: 14,
-    paddingRight: 28,
-  },
-});
-
-export default BackIcon;
+export type Route = NavigationRoute<ParamListBase, string>;

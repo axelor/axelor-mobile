@@ -16,12 +16,13 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import {navigationInformations} from '../../navigator';
-import {axiosApiProvider} from '../../apiProviders';
+import {createContext, useContext} from 'react';
+import {Module} from '../../app';
 
-export async function uploadNavigationTools() {
-  return axiosApiProvider.post({
-    url: '/ws/aos/mobilesettings/navigation',
-    data: navigationInformations.getInformations(),
-  });
-}
+export const ModuleNavigatorContext = createContext<{activeModule: Module}>({
+  activeModule: null,
+});
+
+export const useActiveModule = () => {
+  return useContext(ModuleNavigatorContext);
+};
