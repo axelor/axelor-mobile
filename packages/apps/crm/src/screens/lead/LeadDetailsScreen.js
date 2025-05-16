@@ -34,7 +34,7 @@ import {LeadHeader, LeadDropdownCards, LeadBottom} from '../../components';
 import {fetchLeadById} from '../../features/leadSlice';
 
 const LeadDetailsScreen = ({route}) => {
-  const {idLead, versionLead} = route.params;
+  const {idLead} = route.params;
   const I18n = useTranslator();
   const dispatch = useDispatch();
   const isFocused = useIsFocused();
@@ -57,10 +57,7 @@ const LeadDetailsScreen = ({route}) => {
 
   return (
     <Screen removeSpaceOnTop={true}>
-      <HeaderContainer
-        expandableFilter={false}
-        fixedItems={<LeadHeader idLead={idLead} versionLead={versionLead} />}
-      />
+      <HeaderContainer expandableFilter={false} fixedItems={<LeadHeader />} />
       <ScrollView
         refresh={{loading: loadingLead, fetcher: getLead}}
         style={styles.scrollView}>

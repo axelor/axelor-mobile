@@ -33,9 +33,7 @@ const ProspectFormScreen = ({navigation}) => {
         }),
       );
 
-      navigation.navigate('ProspectDetailsScreen', {
-        idProspect: objectState.id,
-      });
+      navigation.pop();
     },
     [navigation],
   );

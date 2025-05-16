@@ -16,28 +16,31 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import React from 'react';
-import {StyleSheet, TouchableOpacity} from 'react-native';
-import {DrawerActions, useNavigation} from '@react-navigation/native';
-import {Icon} from '@axelor/aos-mobile-ui';
-
-const DrawerToggleButton = ({tintColor}) => {
-  const navigation = useNavigation();
-
-  return (
-    <TouchableOpacity
-      onPress={() => navigation.dispatch(DrawerActions.toggleDrawer())}
-      style={styles.icon}>
-      <Icon name="list" size={26} color={tintColor} />
-    </TouchableOpacity>
-  );
-};
-
-const styles = StyleSheet.create({
-  icon: {
-    paddingLeft: 14,
-    paddingRight: 28,
-  },
-});
-
-export default DrawerToggleButton;
+export {
+  checkModulesMenusAccessibility,
+  manageOverridingMenus,
+  manageWebConfig,
+} from './access.helper';
+export {
+  formatCompatibilityToDisplay,
+  manageWebCompatibility,
+} from './compatibility.helper';
+export {
+  findIndexAndRouteOfMenu,
+  formatMenus,
+  getCompatibilityError,
+  getDefaultMenuKey,
+  getMenuTitle,
+  hasSubMenus,
+  isMenuIncompatible,
+  manageSubMenusOverriding,
+  resolveSubMenus,
+} from './menu.helper';
+export {
+  findIndexAndObjectOfModule,
+  getDefaultModule,
+  moduleHasMenus,
+  numberOfModules,
+} from './module.helper';
+export {addModuleTools, addToolDefaultValues} from './tool.helper';
+export * from './navigation-type';

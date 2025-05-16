@@ -138,9 +138,9 @@ const ExpenseLineFormScreen = ({route, navigation}) => {
       );
 
       if (idExpense == null) {
-        navigation.navigate('ExpenseLinesListScreen');
+        navigation.popTo('ExpenseLinesListScreen');
       } else {
-        navigation.navigate('ExpenseDetailsScreen', {idExpense});
+        navigation.popTo('ExpenseDetailsScreen', {idExpense});
       }
     },
     [

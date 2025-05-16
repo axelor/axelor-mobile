@@ -17,9 +17,9 @@
  */
 
 import {useCallback, useEffect, useMemo, useState} from 'react';
-import {useIsFocused} from '../hooks/use-navigation';
-import {Module, Tool} from '../app';
-import {addModuleTools, addToolDefaultValues} from './module.helper';
+import {Module, Tool} from '../../app';
+import {useIsFocused} from '../../hooks';
+import {addModuleTools, addToolDefaultValues} from '../helpers';
 
 class ActiveScreenProvider {
   private screenName: string;

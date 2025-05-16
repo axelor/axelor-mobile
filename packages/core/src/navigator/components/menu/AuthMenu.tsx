@@ -17,26 +17,34 @@
  */
 
 import React from 'react';
-import {useThemeColor} from '@axelor/aos-mobile-ui';
-import {authModule} from '../../auth';
+import {authModule} from '../../../auth';
+import {Module} from '../../../app';
+import {useActiveModule} from '../../providers';
 import MenuIconButton from './MenuIconButton';
-import useTranslator from '../../i18n/hooks/use-translator';
 
-const AuthMenuIconButton = ({isActive, showModulesSubtitle, onPress}) => {
-  const Colors = useThemeColor();
-  const I18n = useTranslator();
+interface AuthMenuProps {
+  isVisible?: boolean;
+  onPress: (module: Module) => void;
+}
+
+const AuthMenu = ({isVisible = true, onPress}: AuthMenuProps) => {
+  const {activeModule} = useActiveModule();
+
+  if (!isVisible) {
+    return null;
+  }
 
   return (
     <MenuIconButton
       key={authModule.title}
       icon={authModule.icon}
-      subtitle={showModulesSubtitle && I18n.t(authModule.subtitle)}
+      subtitle={authModule.subtitle}
       disabled={authModule.disabled}
-      color={isActive ? Colors.primaryColor.background_light : null}
-      onPress={onPress}
-      rounded={true}
+      isActive={activeModule?.name === authModule.name}
+      onPress={() => onPress(authModule)}
+      rounded
     />
   );
 };
 
-export default AuthMenuIconButton;
+export default AuthMenu;

@@ -110,7 +110,7 @@ const TaskView = () => {
         <TaskActionCard
           task={item}
           onPress={() => {
-            navigation.navigate('TaskDetailsScreen', {projecTaskId: item.id});
+            navigation.popTo('TaskDetailsScreen', {projecTaskId: item.id});
           }}
         />
       )}

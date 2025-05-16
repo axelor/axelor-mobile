@@ -37,10 +37,7 @@ const EventLeadCard = ({}) => {
   }, [dispatch, event.eventLead]);
 
   const handleCardPress = useCallback(() => {
-    navigation.navigate('LeadDetailsScreen', {
-      idLead: lead.id,
-      versionLead: lead.version,
-    });
+    navigation.navigate('LeadDetailsScreen', {idLead: lead.id});
   }, [lead, navigation]);
 
   if (!event.eventLead) {

@@ -46,7 +46,7 @@ const DropdownEmployeeView = ({contactList}: DropdownEmployeeViewProps) => {
         fixedPhoneNumber={contact.fixedPhone}
         email={contact.emailAddress?.address}
         onPress={() =>
-          navigation.navigate('ContactDetailsScreen', {
+          navigation.popTo('ContactDetailsScreen', {
             idContact: contact.id,
           })
         }

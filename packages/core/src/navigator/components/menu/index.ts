@@ -16,12 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import {navigationInformations} from '../../navigator';
-import {axiosApiProvider} from '../../apiProviders';
-
-export async function uploadNavigationTools() {
-  return axiosApiProvider.post({
-    url: '/ws/aos/mobilesettings/navigation',
-    data: navigationInformations.getInformations(),
-  });
-}
+export {default as AuthMenu} from './AuthMenu';
+export {default as Menu} from './Menu';
+export {default as MenuIconButton} from './MenuIconButton';
+export {default as MenuTitle} from './MenuTitle';

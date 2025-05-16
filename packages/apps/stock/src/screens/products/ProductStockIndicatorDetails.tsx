@@ -84,15 +84,15 @@ const ProductStockIndicatorDetails = ({route}) => {
     stockMove => {
       switch (stockMove?.typeSelect) {
         case StockMove?.typeSelect.internal:
-          return navigation.navigate('InternalMoveDetailsGeneralScreen', {
+          return navigation.popTo('InternalMoveDetailsGeneralScreen', {
             internalMoveId: stockMove?.id,
           });
         case StockMove?.typeSelect.outgoing:
-          return navigation.navigate('CustomerDeliveryDetailScreen', {
+          return navigation.popTo('CustomerDeliveryDetailScreen', {
             customerDeliveryId: stockMove?.id,
           });
         case StockMove?.typeSelect.incoming:
-          return navigation.navigate('SupplierArrivalDetailsScreen', {
+          return navigation.popTo('SupplierArrivalDetailsScreen', {
             supplierArrivalId: stockMove?.id,
           });
         default:

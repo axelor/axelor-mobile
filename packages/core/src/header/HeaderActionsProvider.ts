@@ -102,7 +102,7 @@ export const headerActionsProvider = new HeaderActionsProvider();
 
 export const useHeaderActions = (
   actionID: string,
-): {headers: HeaderOptions} => {
+): {headers: HeaderOptions; genericHeaders: GenericHeaderActions} => {
   const [headers, setHeaders] = useState<HeaderActions>(
     headerActionsProvider.getAllHeaderActions(),
   );
