@@ -38,7 +38,7 @@ const CustomerDeliveryLineCreationButton = ({
   const navigation = useNavigation();
 
   const navigateBackToDetails = useCallback(() => {
-    navigation.navigate('CustomerDeliveryDetailScreen', {
+    navigation.popTo('CustomerDeliveryDetailScreen', {
       customerDeliveryId: customerDelivery.id,
     });
   }, [customerDelivery, navigation]);

@@ -19,38 +19,37 @@
 import React, {useMemo} from 'react';
 import {View, StyleSheet, TouchableOpacity} from 'react-native';
 import {Icon, Text, WarningCard, useThemeColor} from '@axelor/aos-mobile-ui';
-import {getCompatibilityError, isMenuIncompatible} from '../menu.helper';
-import {useTranslator} from '../../i18n';
+import {Compatibility} from '../../../app';
+import {useTranslator} from '../../../i18n';
+import {getCompatibilityError, isMenuIncompatible} from '../../helpers';
+
+interface MenuItemEntryProps {
+  style?: any;
+  icon: string;
+  title: string;
+  compatibility: Compatibility;
+  onPress: () => void;
+  isActive?: boolean;
+  disabled?: boolean;
+  isDropdown?: boolean;
+  dropdown?: boolean;
+  iconSize?: number;
+}
 
 const MenuItemEntry = ({
+  style,
   icon,
   title,
   compatibility,
-  onPress = _route => {},
+  onPress,
   isActive = false,
   disabled = false,
   isDropdown = false,
   dropdown = false,
   iconSize = 24,
-  style,
-}) => {
+}: MenuItemEntryProps) => {
   const Colors = useThemeColor();
   const I18n = useTranslator();
-
-  const backgroundColor = useMemo(
-    () =>
-      getIndicatorColor(
-        !dropdown && isActive
-          ? Colors.primaryColor.background
-          : Colors.backgroundColor,
-      ).indicator,
-    [
-      Colors.backgroundColor,
-      Colors.primaryColor.background,
-      dropdown,
-      isActive,
-    ],
-  );
 
   const compatibilityError = useMemo(
     () => isMenuIncompatible(compatibility),
@@ -65,7 +64,17 @@ const MenuItemEntry = ({
   return (
     <TouchableOpacity onPress={onPress} disabled={menuDisabled}>
       <View style={styles.container}>
-        <View style={[styles.menuItemActive, backgroundColor]} />
+        <View
+          style={[
+            styles.menuItemActive,
+            {
+              backgroundColor:
+                !dropdown && isActive
+                  ? Colors.primaryColor.background
+                  : Colors.backgroundColor,
+            },
+          ]}
+        />
         <View style={[styles.menuItemContainer, style]}>
           <Icon
             style={styles.menuItemIcon}
@@ -111,14 +120,6 @@ const MenuItemEntry = ({
       )}
     </TouchableOpacity>
   );
-};
-
-const getIndicatorColor = color => {
-  return StyleSheet.create({
-    indicator: {
-      backgroundColor: color,
-    },
-  });
 };
 
 const styles = StyleSheet.create({

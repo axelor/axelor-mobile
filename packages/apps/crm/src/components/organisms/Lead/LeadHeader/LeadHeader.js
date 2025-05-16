@@ -38,7 +38,7 @@ import {
 } from '@axelor/aos-mobile-core';
 import {updateLeadScore} from '../../../../features/leadSlice';
 
-const LeadHeader = ({idLead, versionLead}) => {
+const LeadHeader = () => {
   const Colors = useThemeColor();
   const I18n = useTranslator();
   const dispatch = useDispatch();
@@ -64,7 +64,11 @@ const LeadHeader = ({idLead, versionLead}) => {
     <View style={styles.headerContainer}>
       <View style={styles.headerLeft}>
         <ImageBubble
-          source={formatURI(idLead, versionLead, 'com.axelor.apps.crm.db.Lead')}
+          source={formatURI(
+            lead.id,
+            lead.version,
+            'com.axelor.apps.crm.db.Lead',
+          )}
           listComponent={[
             lead.isDoNotSendEmail ? (
               <InfoBubble

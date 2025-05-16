@@ -1,0 +1,5 @@
+{
+  "title": "Components: remove unused components HeaderOptionMenu & HeaderOptionMenuItem",
+  "type": "refactor",
+  "packages": "core"
+}

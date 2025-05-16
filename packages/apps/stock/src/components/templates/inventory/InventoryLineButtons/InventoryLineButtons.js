@@ -55,9 +55,9 @@ const InventoryLineButtons = ({
 
   const navigateBack = useCallback(() => {
     if (isScreenMounted('InventoryLineListScreen')) {
-      navigation.navigate('InventoryLineListScreen', {inventory});
+      navigation.popTo('InventoryLineListScreen', {inventory});
     } else {
-      navigation.navigate('InventoryLineListScreen', {
+      navigation.popTo('InventoryStartedDetailsScreen', {
         inventoryId: inventory?.id,
       });
     }

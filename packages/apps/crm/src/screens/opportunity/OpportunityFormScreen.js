@@ -48,7 +48,7 @@ const OpportunityFormScreen = ({navigation, route}) => {
         }),
       );
 
-      navigation.navigate('OpportunityListScreen');
+      navigation.pop();
     },
     [user, navigation],
   );
@@ -67,9 +67,7 @@ const OpportunityFormScreen = ({navigation, route}) => {
         }),
       );
 
-      navigation.navigate('OpportunityDetailsScreen', {
-        opportunityId: objectState.id,
-      });
+      navigation.pop();
     },
     [navigation],
   );

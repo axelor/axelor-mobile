@@ -17,10 +17,23 @@
  */
 
 import {checkNullString} from '@axelor/aos-mobile-ui';
-import {formatVersionString} from '../utils/string';
-import {formatCompatibilityToDisplay} from './module.helper';
+import {
+  Compatibility,
+  Menu,
+  MenuWithSubMenus,
+  Module,
+  SubMenu,
+} from '../../app';
+import {TranslatorProps} from '../../i18n';
+import {formatVersionString} from '../../utils';
+import {formatCompatibilityToDisplay} from './compatibility.helper';
+import {Route} from './navigation-type';
+import {moduleHasMenus} from './module.helper';
 
-export function findIndexAndRouteOfMenu(routes, menuName) {
+export function findIndexAndRouteOfMenu(
+  routes: Route[],
+  menuName: string,
+): {route: Route; index: number} {
   const index = routes.findIndex(_route => _route.name === menuName);
 
   if (index === -1) {
@@ -30,18 +43,21 @@ export function findIndexAndRouteOfMenu(routes, menuName) {
   return {route: routes[index], index: index};
 }
 
-export function getMenuTitle(menu, {I18n}) {
+export function getMenuTitle(
+  menu: Menu | Module,
+  I18n: TranslatorProps,
+): string {
   if (menu.title != null) {
     return I18n.t(menu.title);
   }
-  return menu.screen;
+  return (menu as any).screen;
 }
 
-function isModuleNotFound(compatibility) {
+function isModuleNotFound(compatibility: Compatibility) {
   return compatibility?.moduleVersion == null;
 }
 
-function isVersionTooLow(compatibility) {
+function isVersionTooLow(compatibility: Compatibility) {
   const moduleVersion = formatVersionString(compatibility.moduleVersion);
 
   return (
@@ -50,7 +66,7 @@ function isVersionTooLow(compatibility) {
   );
 }
 
-function isVersionTooHigh(compatibility) {
+function isVersionTooHigh(compatibility: Compatibility) {
   const moduleVersion = formatVersionString(compatibility.moduleVersion);
 
   return (
@@ -59,7 +75,7 @@ function isVersionTooHigh(compatibility) {
   );
 }
 
-export function isMenuIncompatible(compatibility) {
+export function isMenuIncompatible(compatibility: Compatibility) {
   if (compatibility == null) {
     return false;
   }
@@ -71,7 +87,11 @@ export function isMenuIncompatible(compatibility) {
   );
 }
 
-export function getCompatibilityError(compatibility, I18n, showDetails = true) {
+export function getCompatibilityError(
+  compatibility: Compatibility,
+  I18n: TranslatorProps,
+  showDetails: boolean = true,
+) {
   if (compatibility == null) {
     return undefined;
   }
@@ -108,7 +128,7 @@ export function getCompatibilityError(compatibility, I18n, showDetails = true) {
   return undefined;
 }
 
-export function formatMenus(module) {
+export function formatMenus(module: Module) {
   return Object.fromEntries(
     Object.entries(module.menus).map(([key, menu], idx) => {
       return [
@@ -119,15 +139,11 @@ export function formatMenus(module) {
   );
 }
 
-export function hasSubMenus(menu) {
-  return (
-    menu != null &&
-    Object.keys(menu).length > 0 &&
-    Object.keys(menu).includes('subMenus')
-  );
+export function hasSubMenus(menu: Menu) {
+  return Object.keys(menu ?? {}).includes('subMenus');
 }
 
-export function resolveSubMenus(subMenus) {
+export function resolveSubMenus(subMenus: {[key: string]: SubMenu}) {
   if (subMenus == null || Object.keys(subMenus).length === 0) {
     return [];
   }
@@ -144,8 +160,8 @@ export function resolveSubMenus(subMenus) {
     .sort((a, b) => a.order - b.order);
 }
 
-export function manageSubMenusOverriding(modules) {
-  const allMenus = {};
+export function manageSubMenusOverriding(modules: Module[]) {
+  const allMenus: {[key: string]: Menu} = {};
 
   modules.forEach(module => {
     if (module.menus) {
@@ -158,12 +174,12 @@ export function manageSubMenusOverriding(modules) {
   modules.forEach(module => {
     if (module.menus) {
       Object.values(module.menus).forEach(menu => {
-        if (menu.subMenus && Object.keys(menu.subMenus).length !== 0) {
-          menu.subMenus = Object.entries(menu.subMenus).reduce(
+        if (hasSubMenus(menu)) {
+          const _menu = menu as MenuWithSubMenus;
+          _menu.subMenus = Object.entries(_menu.subMenus).reduce(
             (acc, [subMenuKey, subMenu]) => {
               if ('parent' in subMenu) {
-                const parentMenuName = subMenu.parent;
-                const parentMenu = allMenus[parentMenuName];
+                const parentMenu = allMenus[subMenu.parent] as MenuWithSubMenus;
 
                 if (parentMenu) {
                   if (!parentMenu.subMenus) {
@@ -189,19 +205,15 @@ export function manageSubMenusOverriding(modules) {
   return cleanEmptyMenusAndSubMenus(modules);
 }
 
-export function cleanEmptyMenusAndSubMenus(modules) {
-  const cleanedModules = modules.map(module => {
-    const {menus, ...restModuleAttrs} = module;
+function cleanEmptyMenusAndSubMenus(modules: Module[]) {
+  const cleanedModules: Module[] = modules.map(module => {
+    const {menus} = module;
 
-    if (menus) {
-      if (Object.keys(menus).length === 0) {
-        return {...restModuleAttrs};
-      }
-
+    if (moduleHasMenus(module)) {
       const cleanedMenus = Object.entries(menus).map(([key, menu]) => {
-        const {subMenus, ...restMenusAttrs} = menu;
+        const {subMenus, ...restMenusAttrs} = menu as MenuWithSubMenus;
 
-        if (subMenus && Object.keys(subMenus).length === 0) {
+        if (hasSubMenus(menu) && Object.keys(subMenus).length === 0) {
           return [key, {...restMenusAttrs}];
         }
 
@@ -217,17 +229,15 @@ export function cleanEmptyMenusAndSubMenus(modules) {
   return cleanedModules;
 }
 
-export function getDefaultMenuKey(module) {
-  const {menus} = module;
-
-  if (menus == null) {
+export function getDefaultMenuKey(module: Module) {
+  if (!moduleHasMenus(module)) {
     return null;
   }
 
-  const defaultMenuEntry = Object.entries(menus)
+  const defaultMenuEntry = Object.entries(module.menus)
     .map(([key, menu]) => ({...menu, key}))
-    .filter(menu => !isMenuIncompatible(menu.compatibilityAOS))
-    .find(menu => menu.isDefault === true);
+    .filter((menu: any) => !isMenuIncompatible(menu.compatibilityAOS))
+    .find((menu: any) => menu.isDefault === true);
 
   return defaultMenuEntry ? defaultMenuEntry.key : null;
 }

@@ -50,7 +50,7 @@ const ProductListVariantScreen = ({route, navigation}) => {
   );
 
   const navigateToProductVariable = productVar => {
-    navigation.navigate('ProductStockDetailsScreen', {product: productVar});
+    navigation.popTo('ProductStockDetailsScreen', {product: productVar});
   };
 
   return (

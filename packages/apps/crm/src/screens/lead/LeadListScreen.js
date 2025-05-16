@@ -104,10 +104,7 @@ const LeadListScreen = ({navigation}) => {
             isDoNotSendEmail={item.isDoNotSendEmail}
             isDoNotCall={item.isDoNotCall}
             onPress={() =>
-              navigation.navigate('LeadDetailsScreen', {
-                idLead: item.id,
-                versionLead: item.version,
-              })
+              navigation.navigate('LeadDetailsScreen', {idLead: item.id})
             }
           />
         )}

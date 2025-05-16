@@ -70,15 +70,11 @@ const ProducedProductDetailsScreen = ({route, navigation}) => {
   }, [getManufOrderAndProducedProduct]);
 
   const handleShowProduct = () => {
-    navigation.navigate('ProductStockDetailsScreen', {
-      product: product,
-    });
+    navigation.navigate('ProductStockDetailsScreen', {product});
   };
 
   const handleNavigateBackToList = useCallback(() => {
-    navigation.navigate('ProducedProductListScreen', {
-      manufOrder: manufOrder,
-    });
+    navigation.popTo('ProducedProductListScreen', {manufOrder});
   }, [manufOrder, navigation]);
 
   const getManufOrderAndProducedProduct = useCallback(() => {

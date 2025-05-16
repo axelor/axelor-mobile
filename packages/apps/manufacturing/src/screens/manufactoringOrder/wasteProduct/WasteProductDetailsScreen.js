@@ -74,15 +74,11 @@ const WasteProductDetailsScreen = ({route, navigation}) => {
   }, [getManufOrderAndWasteProduct]);
 
   const handleShowProduct = () => {
-    navigation.navigate('ProductStockDetailsScreen', {
-      product: product,
-    });
+    navigation.navigate('ProductStockDetailsScreen', {product});
   };
 
   const handleNavigateBackToList = useCallback(() => {
-    navigation.navigate('WasteProductListScreen', {
-      manufOrder: manufOrder,
-    });
+    navigation.popTo('WasteProductListScreen', {manufOrder});
   }, [manufOrder, navigation]);
 
   const getManufOrderAndWasteProduct = useCallback(() => {

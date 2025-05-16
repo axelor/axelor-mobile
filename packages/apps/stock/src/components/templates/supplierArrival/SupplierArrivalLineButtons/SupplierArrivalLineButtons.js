@@ -49,9 +49,9 @@ const SupplierArrivalLineButtons = ({
 
   const navigateBackToDetails = useCallback(() => {
     if (isScreenMounted('SupplierArrivalLineListScreen')) {
-      navigation.navigate('SupplierArrivalLineListScreen', {supplierArrival});
+      navigation.popTo('SupplierArrivalLineListScreen', {supplierArrival});
     } else {
-      navigation.navigate('SupplierArrivalDetailsScreen', {
+      navigation.popTo('SupplierArrivalDetailsScreen', {
         supplierArrivalId: supplierArrival?.id,
       });
     }

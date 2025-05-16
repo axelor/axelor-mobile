@@ -67,7 +67,7 @@ const SupplierArrivalAddTrackingScreen = ({route, navigation}) => {
 
   useEffect(() => {
     if (!loading && createdTrackingNumber != null) {
-      navigation.navigate('SupplierArrivalLineDetailScreen', {
+      navigation.popTo('SupplierArrivalLineDetailScreen', {
         supplierArrivalLineId: supplierArrivalLine?.id,
         supplierArrival: supplierArrival,
         productId: product?.id,

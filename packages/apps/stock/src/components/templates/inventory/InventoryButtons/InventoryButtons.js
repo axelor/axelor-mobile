@@ -50,7 +50,7 @@ const InventoryButtons = ({}) => {
       }),
     );
 
-    navigation.navigate('InventoryStartedDetailsScreen', {
+    navigation.replace('InventoryStartedDetailsScreen', {
       inventoryId: inventory?.id,
     });
   }, [Inventory?.statusSelect.InProgress, dispatch, inventory, navigation]);
