@@ -16,143 +16,75 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import React, {useCallback, useMemo, useState} from 'react';
-import {Dimensions, StyleSheet, View} from 'react-native';
+import React, {useMemo, useState} from 'react';
+import {Screen} from '@axelor/aos-mobile-ui';
 import {
-  ChipSelect,
-  Screen,
-  ScrollList,
-  ToggleButton,
-} from '@axelor/aos-mobile-ui';
-import {
-  DateInput,
-  FilterContainer,
-  useActiveFilter,
-  useDispatch,
   useSelector,
   useTranslator,
-  useTypes,
-  useTypeHelpers,
+  SearchListView,
 } from '@axelor/aos-mobile-core';
-import {searchControlEntry} from '../../features/controlEntrySlice';
-import {ControlEntryCard} from '../../components';
+import {
+  QualityImprovementFilter,
+  QualityImprovementsActionCard,
+} from '../../components';
+import {searchQualityImprovement} from '../../features/qualityImprovementSlice';
 
-const QualityImprovementListScreen = ({navigation}) => {
+const QualityImprovementListScreen = ({}) => {
   const I18n = useTranslator();
-  const dispatch = useDispatch();
-  const {ControlEntry} = useTypes();
-  const {getSelectionItems} = useTypeHelpers();
-  const {activeFilter} = useActiveFilter();
 
-  const {userId} = useSelector(state => state.auth);
-  const {controlEntryList, loadingControlEntryList, moreLoading, isListEnd} =
-    useSelector(state => state.controlEntry);
+  const {user} = useSelector(state => state.user);
+  const {
+    qualityImprovementList,
+    loadingQualityImprovements,
+    moreLoadingQualityImprovement,
+    isListEndQualityImprovement,
+  } = useSelector(state => state.quality_qualityImprovement);
 
-  const [isInspectorFilter, setIsInspectorFilter] = useState(false);
-  const [dateFilter, setDateFilter] = useState(null);
+  const [isAssignedToMe, setIsAssignedToMe] = useState(true);
   const [selectedStatus, setSelectedStatus] = useState([]);
+  const [selectedGravity, setSelectedGravity] = useState([]);
 
-  const statusListItems = useMemo(
-    () => getSelectionItems(ControlEntry?.statusSelect, selectedStatus),
-    [ControlEntry?.statusSelect, getSelectionItems, selectedStatus],
-  );
-
-  const fetchControlEntryAPI = useCallback(
-    (page = 0) => {
-      dispatch(
-        (searchControlEntry as any)({
-          page: page,
-          isInspector: isInspectorFilter,
-          userId: userId,
-          date: dateFilter,
-          selectedStatus: selectedStatus,
-          filterDomain: activeFilter,
-        }),
-      );
-    },
+  const sliceFunctionData = useMemo(
+    () => ({
+      companyId: user.activeCompany?.id,
+      userId: isAssignedToMe ? user.id : null,
+      selectedStatus: selectedStatus,
+      selectedGravity: selectedGravity,
+    }),
     [
-      activeFilter,
-      dateFilter,
-      dispatch,
-      isInspectorFilter,
+      isAssignedToMe,
+      selectedGravity,
       selectedStatus,
-      userId,
+      user.activeCompany?.id,
+      user.id,
     ],
   );
 
   return (
     <Screen removeSpaceOnTop={true}>
-      <FilterContainer
-        expandableFilter={false}
+      <SearchListView
         fixedItems={
-          <View style={styles.headerContainer}>
-            <ToggleButton
-              isActive={isInspectorFilter}
-              onPress={() => setIsInspectorFilter(current => !current)}
-              buttonConfig={{
-                iconName: 'person-fill',
-                width: '10%',
-                style: styles.toggleButton,
-              }}
-            />
-            <DateInput
-              style={styles.dateInput}
-              nullable={true}
-              onDateChange={setDateFilter}
-              mode="date"
-              popup
-            />
-          </View>
-        }
-        chipComponent={
-          <ChipSelect
-            mode="multi"
-            selectionItems={statusListItems}
-            width={Dimensions.get('window').width * 0.25}
-            onChangeValue={setSelectedStatus}
+          <QualityImprovementFilter
+            isAssignedToMe={isAssignedToMe}
+            setIsAssignedToMe={setIsAssignedToMe}
+            setSelectedGravity={setSelectedGravity}
+            setSelectedStatus={setSelectedStatus}
           />
         }
-      />
-      <ScrollList
-        loadingList={loadingControlEntryList}
-        data={controlEntryList}
-        renderItem={({item}) => (
-          <ControlEntryCard
-            sampleCount={item.sampleCount}
-            entryDateTime={item.entryDateTime}
-            statusSelect={item.statusSelect}
-            name={item.name}
-            controlEntryId={item.id}
-            onPress={() => {
-              navigation.navigate('ControlEntryDetailsScreen', {
-                controlEntryId: item.id,
-              });
-            }}
-          />
+        expandableFilter={false}
+        list={qualityImprovementList}
+        loading={loadingQualityImprovements}
+        moreLoading={moreLoadingQualityImprovement}
+        isListEnd={isListEndQualityImprovement}
+        sliceFunction={searchQualityImprovement}
+        sliceFunctionData={sliceFunctionData}
+        searchPlaceholder={I18n.t('Base_Search')}
+        renderListItem={({item}) => (
+          <QualityImprovementsActionCard qualityImprovement={item} />
         )}
-        fetchData={fetchControlEntryAPI}
-        moreLoading={moreLoading}
-        isListEnd={isListEnd}
-        translator={I18n.t}
       />
     </Screen>
   );
 };
-
-const styles = StyleSheet.create({
-  headerContainer: {
-    width: '90%',
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignSelf: 'center',
-    alignItems: 'center',
-  },
-  toggleButton: {
-    height: 40,
-  },
-  dateInput: {
-    width: '85%',
-  },
-});
 
 export default QualityImprovementListScreen;

@@ -27,3 +27,7 @@ export {
   updateControlEntry,
 } from './controlEntrySlice';
 export {fetchControlPlanById} from './controlPlanSlice';
+export {
+  fetchQualityImprovementStatus,
+  searchQualityImprovement,
+} from './qualityImprovementSlice';

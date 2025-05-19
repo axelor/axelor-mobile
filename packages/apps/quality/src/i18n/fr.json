@@ -21,11 +21,20 @@
   "Quality_ControlResult_NotControlled": "Non contrôlé",
   "Quality_ConformityResult": "Résultat de la conformité",
   "Quality_SampleNotFound": "Ce contrôle a été supprimé ou le plan de contrôle a été modifié après la création de ce relevé. Veuillez passer au contrôle suivant.",
+  "Quality_Detection": "Detection",
+  "Quality_EditImprovements": "modifier l'amélioration",
+  "Quality_Critical": "Critique",
+  "Quality_Major": "Majeur",
+  "Quality_Minor": "Mineur",
+  "Quality_Status": "Statut",
+  "Quality_Gravity": "Gravité",
   "Quality_SliceAction_SearchControlEntry": "recherche des relevés de contrôle",
   "Quality_SliceAction_FetchControlEntryById": "récupération du relevé de contrôle par id",
   "Quality_SliceAction_SearchControlEntrySample": "recherche sur les échantillons du relevé de contôle",
   "Quality_SliceAction_FetchControlPlan": "récupération de la gamme de contrôle",
   "Quality_SliceAction_SearchControlEntrySampleLine": "recherche des lignes d'échantillons du relevé de contrôle",
   "Quality_SliceAction_FetchControlEntrySampleLine": "récupération de la ligne d'échantillon du relevé de contrôle",
-  "Quality_SliceAction_UpdateControlEntry": "mise à jour du relevé de contrôle"
+  "Quality_SliceAction_UpdateControlEntry": "mise à jour du relevé de contrôle",
+  "Quality_SliceAction_SearchQualityImprovement": "",
+  "Quality_SliceAction_FetchQualityImprovementStatus": ""
 }
