@@ -20,11 +20,11 @@ import React, {useMemo} from 'react';
 import {StyleSheet, View} from 'react-native';
 import {Svg, Circle} from 'react-native-svg';
 import {useThemeColor} from '../../../theme';
-import {Text} from '../../atoms';
-
-const CIRCLE_SIZE = 80;
+import Text from '../Text/Text';
 
 interface ProgressCircleProps {
+  circleSize?: number;
+  strokeWidth?: number;
   activeStep: number;
   numberOfSteps: number;
   isError: boolean;
@@ -32,6 +32,8 @@ interface ProgressCircleProps {
 }
 
 const ProgressCircle = ({
+  circleSize = 80,
+  strokeWidth = 4,
   activeStep,
   numberOfSteps,
   isError,
@@ -44,24 +46,29 @@ const ProgressCircle = ({
     [activeStep, numberOfSteps],
   );
 
-  const radius = 38;
-  const strokeWidth = 4;
-  const circumference = 2 * Math.PI * radius;
-  const strokeDashoffset = circumference - circumference * progress;
+  const {radius, circumference, strokeDashoffset} = useMemo(() => {
+    const _radius = circleSize / 2 - strokeWidth / 2;
+
+    return {
+      radius: _radius,
+      circumference: 2 * Math.PI * _radius,
+      strokeDashoffset: circumference - circumference * progress,
+    };
+  }, [circleSize, progress, strokeWidth]);
 
   return (
-    <Svg width={CIRCLE_SIZE} height={CIRCLE_SIZE}>
+    <Svg width={circleSize} height={circleSize}>
       <Circle
-        cx={CIRCLE_SIZE / 2}
-        cy={CIRCLE_SIZE / 2}
+        cx={circleSize / 2}
+        cy={circleSize / 2}
         r={radius}
         stroke={Colors.secondaryColor.background_light}
         strokeWidth={strokeWidth}
         fill="none"
       />
       <Circle
-        cx={CIRCLE_SIZE / 2}
-        cy={CIRCLE_SIZE / 2}
+        cx={circleSize / 2}
+        cy={circleSize / 2}
         r={radius}
         stroke={
           isError
@@ -73,7 +80,7 @@ const ProgressCircle = ({
         strokeDasharray={`${circumference} ${circumference}`}
         strokeDashoffset={strokeDashoffset}
         rotation="-90"
-        origin={`${CIRCLE_SIZE / 2}, ${CIRCLE_SIZE / 2}`}
+        origin={`${circleSize / 2}, ${circleSize / 2}`}
         fill="none"
       />
       <View style={styles.textContainer}>

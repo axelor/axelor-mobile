@@ -20,35 +20,36 @@ import React from 'react';
 import {View, StyleSheet} from 'react-native';
 import {useThemeColor} from '../../../theme';
 import {Icon, Text} from '../../atoms';
-import {Step} from './Stepper';
+import {Step, StepState} from './Stepper';
 
 interface StepListProps {
   steps: Step[];
+  translator: (key: string, values?: any) => string;
 }
 
-const StepList = ({steps}: StepListProps) => {
+const StepList = ({steps, translator}: StepListProps) => {
   const Colors = useThemeColor();
 
-  const getIconName = (state: string) => {
+  const getIconName = (state: StepState) => {
     switch (state) {
-      case 'inProgress':
+      case StepState.inProgress:
         return 'record-circle';
-      case 'completed':
+      case StepState.completed:
         return 'check-circle';
-      case 'error':
+      case StepState.error:
         return 'exclamation-circle';
       default:
         return 'circle';
     }
   };
 
-  const getIconColor = (state: string) => {
+  const getIconColor = (state: StepState) => {
     switch (state) {
-      case 'inProgress':
+      case StepState.inProgress:
         return Colors.progressColor.background;
-      case 'completed':
+      case StepState.completed:
         return Colors.successColor.background;
-      case 'error':
+      case StepState.error:
         return Colors.errorColor.background;
       default:
         return Colors.secondaryColor.background;
@@ -73,7 +74,7 @@ const StepList = ({steps}: StepListProps) => {
               />
             )}
           </View>
-          <Text>{step.title}</Text>
+          <Text>{translator(step.titleKey)}</Text>
         </View>
       ))}
     </View>
