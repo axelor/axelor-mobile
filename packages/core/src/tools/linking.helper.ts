@@ -67,7 +67,6 @@ export const iosMapURLBuilder = (
 ) => {
   const params = [
     {param: 'q', value: address},
-    {param: 'saddr', value: address},
     {param: 'daddr', value: destination},
     {param: 'sll', value: `${latitude},${longitude}`},
     {param: 'dirflg', value: transportType},
