@@ -3,6 +3,26 @@ title: 8.3.0
 tags: Changelog
 ---
 
+## [8.3.5] (2025-05-21)
+
+### @axelor/aos-mobile-core
+
+#### Fixes
+
+- Map widget: automatically filled address when clicking on widget
+
+### @axelor/aos-mobile-intervention
+
+#### Fixes
+
+- Intervention: resolve issue when no contact provided
+
+### @axelor/aos-mobile-stock
+
+#### Fixes
+
+- Inventory line: resolve navigation issue after validation
+
 ## [8.3.4] (2025-04-30)
 
 ### @axelor/aos-mobile-core
@@ -233,6 +253,7 @@ This version add a new part of the HR package, user can now manage leave request
 
 - Header actions: remove use of attachedFileScreenTitle
 
+[8.3.5]: https://github.com/axelor/axelor-mobile/compare/8.3.4...8.3.5
 [8.3.4]: https://github.com/axelor/axelor-mobile/compare/8.3.3...8.3.4
 [8.3.3]: https://github.com/axelor/axelor-mobile/compare/8.3.2...8.3.3
 [8.3.2]: https://github.com/axelor/axelor-mobile/compare/8.3.1...8.3.2
