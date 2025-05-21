@@ -1,5 +1,5 @@
 {
-  "title": "MassScannerButton: add mass scan widget",
+  "title": "Scanner: add mass scan management",
   "type": "feat",
   "packages": "core"
 }

@@ -16,14 +16,9 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import React, {useMemo, useState} from 'react';
-import {StyleSheet, View} from 'react-native';
-import {
-  Card,
-  DoubleIcon,
-  ThemeColors,
-  useThemeColor,
-} from '@axelor/aos-mobile-ui';
+import React, {useMemo} from 'react';
+import {StyleSheet} from 'react-native';
+import {Card, DoubleIcon, useThemeColor} from '@axelor/aos-mobile-ui';
 import {useMassScanner} from '../../../hooks';
 
 interface MassScannerButtonProps {
@@ -32,6 +27,7 @@ interface MassScannerButtonProps {
   backgroundAction: (scannedValue: string) => void;
   fallbackAction?: (error: any) => void;
   scanInterval?: number;
+  iconSize?: number;
 }
 
 const MassScannerButton = ({
@@ -39,64 +35,54 @@ const MassScannerButton = ({
   scanKey,
   backgroundAction,
   fallbackAction,
-  scanInterval = 1000,
+  scanInterval,
+  iconSize = 20,
 }: MassScannerButtonProps) => {
   const Colors = useThemeColor();
 
-  const [scannerActive, setScannerActive] = useState(false);
-
-  const styles = useMemo(() => getStyles(Colors), [Colors]);
-
-  useMassScanner({
+  const {isEnabled, enableScan} = useMassScanner({
     scanKey,
     backgroundAction,
     fallbackAction,
     scanInterval,
-    onClose: () => setScannerActive(false),
-    enabled: scannerActive,
   });
 
-  const handleToggleScanner = () => {
-    setScannerActive(prev => !prev);
-  };
+  const styles = useMemo(
+    () => getStyles(Colors.secondaryColor.background),
+    [Colors],
+  );
+  const position = useMemo(() => -iconSize / 4, [iconSize]);
 
   return (
-    <View style={[styles.container, style]}>
-      <Card style={styles.card}>
-        <DoubleIcon
-          style={styles.doubleIcon}
-          topIconConfig={{
-            name: 'search',
-            color: Colors.primaryColor.background,
-          }}
-          bottomIconConfig={{
-            name: 'qr-code-scan',
-            color: scannerActive
-              ? Colors.successColor.background
-              : Colors.defaultColor.background,
-          }}
-          predefinedPosition="bottom-right"
-          size={32}
-          touchable
-          onPress={handleToggleScanner}
-        />
-      </Card>
-    </View>
+    <Card style={[styles.container, style]}>
+      <DoubleIcon
+        predefinedPosition="bottom-right"
+        topIconPosition={{bottom: position, right: position}}
+        topIconConfig={{
+          name: 'search',
+          color: Colors.primaryColor.background,
+        }}
+        bottomIconConfig={{
+          name: 'qr-code-scan',
+          color: isEnabled ? Colors.successColor.background : undefined,
+        }}
+        size={iconSize}
+        touchable
+        onPress={enableScan}
+      />
+    </Card>
   );
 };
-const getStyles = (Colors: ThemeColors) =>
+const getStyles = (borderColor: string) =>
   StyleSheet.create({
     container: {
-      width: 80,
-      height: 80,
-    },
-    card: {
-      borderColor: Colors.secondaryColor.background,
+      borderColor: borderColor,
       borderWidth: 1,
-    },
-    doubleIcon: {
-      alignSelf: 'center',
-      paddingLeft: 20,
+      paddingHorizontal: 12,
+      paddingRight: 12,
+      paddingVertical: 10,
+      marginVertical: 3,
+      borderRadius: 7,
     },
   });
 
