@@ -3,6 +3,20 @@ title: 7.2.0
 tags: Changelog
 ---
 
+## [7.2.32] (2025-05-21)
+
+### @axelor/aos-mobile-core
+
+#### Fixes
+
+- Map widget: automatically filled address when clicking on widget
+
+### @axelor/aos-mobile-stock
+
+#### Fixes
+
+- Inventory line: resolve navigation issue after validation
+
 ## [7.2.31] (2025-04-30)
 
 ### @axelor/aos-mobile-core
@@ -923,6 +937,7 @@ It enables user to manage Expenses through the mobile application. You can creat
 - Remove IconButton component which should be replaced by Button component.
 - Remove Pop-up components which should be replaced by Alert component.
 
+[7.2.32]: https://github.com/axelor/axelor-mobile/compare/7.2.31...7.2.32
 [7.2.31]: https://github.com/axelor/axelor-mobile/compare/7.2.30...7.2.31
 [7.2.30]: https://github.com/axelor/axelor-mobile/compare/7.2.29...7.2.30
 [7.2.29]: https://github.com/axelor/axelor-mobile/compare/7.2.28...7.2.29
