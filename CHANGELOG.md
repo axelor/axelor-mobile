@@ -3,6 +3,20 @@ title: 8.2.0
 tags: Changelog
 ---
 
+## [8.2.13] (2025-05-21)
+
+### @axelor/aos-mobile-core
+
+#### Fixes
+
+- Map widget: automatically filled address when clicking on widget
+
+### @axelor/aos-mobile-stock
+
+#### Fixes
+
+- Inventory line: resolve navigation issue after validation
+
 ## [8.2.12] (2025-04-30)
 
 ### @axelor/aos-mobile-core
@@ -594,6 +608,7 @@ This package is linked with the @axelor/aos-mobile-hr to manage time logging.
 
 - Supplier arrival: add possibility to fill origin when creating or selecting tracking number
 
+[8.2.13]: https://github.com/axelor/axelor-mobile/compare/8.2.12...8.2.13
 [8.2.12]: https://github.com/axelor/axelor-mobile/compare/8.2.11...8.2.12
 [8.2.11]: https://github.com/axelor/axelor-mobile/compare/8.2.10...8.2.11
 [8.2.10]: https://github.com/axelor/axelor-mobile/compare/8.2.9...8.2.10
