@@ -16,7 +16,18 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-export * from './atoms';
-export * from './molecules';
-export * from './organisms';
-export * from './templates';
+import QualityImprovementListScreen from './QualityImprovementListScreen';
+
+export default {
+  QualityImprovementListScreen: {
+    title: 'Quality_QualityImprovements',
+    component: QualityImprovementListScreen,
+    options: {
+      shadedHeader: false,
+    },
+    isUsableOnShortcut: true,
+    actionID: 'quality_qualityImprovement_list',
+  },
+};
+
+export {QualityImprovementListScreen};

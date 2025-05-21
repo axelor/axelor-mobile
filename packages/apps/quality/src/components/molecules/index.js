@@ -21,3 +21,4 @@ export {default as ControlEntryDetailsHeader} from './ControlEntryDetailsHeader/
 export {default as ControlEntryFormButtons} from './ControlEntryFormButtons/ControlEntryFormButtons';
 export {default as ControlEntryFormHeader} from './ControlEntryFormHeader/ControlEntryFormHeader';
 export {default as FillingMethodAlert} from './FillingMethodAlert/FillingMethodAlert';
+export {default as QualityImprovementsActionCard} from './QualityImprovementsActionCard/QualityImprovementsActionCard';

@@ -20,3 +20,4 @@ export {controlEntrySampleLineReducer as controlEntrySampleLine} from './control
 export {controlEntrySampleReducer as controlEntrySample} from './controlEntrySampleSlice';
 export {controlEntryReducer as controlEntry} from './controlEntrySlice';
 export {controlPlanReducer as controlPlan} from './controlPlanSlice';
+export {qualityImprovementReducer as quality_qualityImprovement} from './qualityImprovementSlice';
