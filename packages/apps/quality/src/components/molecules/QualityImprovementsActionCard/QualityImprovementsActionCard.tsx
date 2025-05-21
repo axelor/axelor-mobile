@@ -16,7 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import React from 'react';
+import React, {useMemo} from 'react';
 import {ActionCard} from '@axelor/aos-mobile-ui';
 import {usePermitted, useTranslator} from '@axelor/aos-mobile-core';
 import {QualityImprovementsCard} from '../../atoms';
@@ -45,6 +45,11 @@ const QualityImprovementsActionCard = ({
     modelName: 'com.axelor.apps.quality.db.QualityImprovement',
   });
 
+  const isEditable = useMemo(
+    () => !readonly && qualityImprovement?.qiStatus?.sequence === 1,
+    [qualityImprovement?.qiStatus?.sequence, readonly],
+  );
+
   return (
     <ActionCard
       style={style}
@@ -53,7 +58,7 @@ const QualityImprovementsActionCard = ({
           iconName: 'pencil-fill',
           helper: I18n.t('Quality_EditImprovements'),
           onPress: () => console.log('edit'),
-          hidden: readonly,
+          hidden: !isEditable,
         },
       ]}
       translator={I18n.t}>
