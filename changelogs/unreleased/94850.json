@@ -1,5 +1,0 @@
-{
-  "title": "Inventory line: resolve navigation issue after validation",
-  "type": "fix",
-  "packages": "stock"
-}

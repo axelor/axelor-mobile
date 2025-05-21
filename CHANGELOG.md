@@ -3,6 +3,20 @@ title: 8.1.0
 tags: Changelog
 ---
 
+## [8.1.21] (2025-05-21)
+
+### @axelor/aos-mobile-core
+
+#### Fixes
+
+- Map widget: automatically filled address when clicking on widget
+
+### @axelor/aos-mobile-stock
+
+#### Fixes
+
+- Inventory line: resolve navigation issue after validation
+
 ## [8.1.20] (2025-04-30)
 
 ### @axelor/aos-mobile-core
@@ -824,6 +838,7 @@ It enables user to manage interventions and customer parc through the mobile app
 - Selections: use new system and tools instead of type files
 - Product indicators: use new chart component to display quantity indicators
 
+[8.1.21]: https://github.com/axelor/axelor-mobile/compare/8.1.20...8.1.21
 [8.1.20]: https://github.com/axelor/axelor-mobile/compare/8.1.19...8.1.20
 [8.1.19]: https://github.com/axelor/axelor-mobile/compare/8.1.18...8.1.19
 [8.1.18]: https://github.com/axelor/axelor-mobile/compare/8.1.17...8.1.18
