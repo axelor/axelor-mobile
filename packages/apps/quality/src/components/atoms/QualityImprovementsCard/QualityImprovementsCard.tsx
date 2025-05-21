@@ -113,17 +113,6 @@ const styles = StyleSheet.create({
     paddingRight: 5,
     flex: 1,
   },
-  progressBar: {
-    borderRadius: 20,
-    marginVertical: 5,
-  },
-  textProgressBar: {
-    display: 'none',
-  },
-  badge: {
-    justifyContent: 'flex-end',
-    alignItems: 'flex-end',
-  },
 });
 
 export default QualityImprovementsCard;
