@@ -18,64 +18,71 @@
 
 import {useCallback, useEffect, useMemo, useState} from 'react';
 import DeviceInfo from 'react-native-device-info';
-import {enableCameraScanner} from '../features/cameraScannerSlice';
+import {
+  enableCameraScanner,
+  enableMassCameraScanner,
+} from '../features/cameraScannerSlice';
 import {enableScan} from '../features/scannerSlice';
 import {useDispatch} from '../redux/hooks';
 
-export const useScanActivator = scanKeySearch => {
+export const useScanActivator = (
+  scanKeySearch: string,
+  isMassScan: boolean = false,
+) => {
   const {enable: enableScanner} = useScannerDeviceActivator(scanKeySearch);
-  const {enable: enableCamera} = useCameraScannerActivator(scanKeySearch);
+  const {enable: enableCamera, enableMassCamera} =
+    useCameraScannerActivator(scanKeySearch);
 
-  const [isZebraDevice, setDeviceType] = useState(false);
+  const [isZebraDevice, setIsZebraDevice] = useState(false);
 
   useEffect(() => {
     DeviceInfo.getManufacturer().then(manufacturer =>
-      setDeviceType(manufacturer === 'Zebra Technologies'),
+      setIsZebraDevice(manufacturer === 'Zebra Technologies'),
     );
   }, []);
 
   const enable = useCallback(() => {
     if (isZebraDevice) {
-      enableScanner(scanKeySearch);
+      enableScanner();
+    } else if (isMassScan) {
+      enableMassCamera();
     } else {
-      enableCamera(scanKeySearch);
+      enableCamera();
     }
-  }, [enableCamera, enableScanner, isZebraDevice, scanKeySearch]);
+  }, [
+    isZebraDevice,
+    enableScanner,
+    isMassScan,
+    enableMassCamera,
+    enableCamera,
+  ]);
 
-  return useMemo(
-    () => ({
-      enable,
-    }),
-    [enable],
-  );
+  return useMemo(() => ({enable, isZebraDevice}), [enable, isZebraDevice]);
 };
 
-export const useScannerDeviceActivator = scanKeySearch => {
+export const useScannerDeviceActivator = (scanKeySearch: string) => {
   const dispatch = useDispatch();
 
   const enable = useCallback(() => {
     dispatch(enableScan(scanKeySearch));
   }, [dispatch, scanKeySearch]);
 
-  return useMemo(
-    () => ({
-      enable,
-    }),
-    [enable],
-  );
+  return useMemo(() => ({enable}), [enable]);
 };
 
-export const useCameraScannerActivator = scanKeySearch => {
+export const useCameraScannerActivator = (scanKeySearch: string) => {
   const dispatch = useDispatch();
 
-  const enable = useCallback(() => {
+  const enableCamera = useCallback(() => {
     dispatch(enableCameraScanner(scanKeySearch));
   }, [dispatch, scanKeySearch]);
 
+  const enableMassCamera = useCallback(() => {
+    dispatch(enableMassCameraScanner(scanKeySearch));
+  }, [dispatch, scanKeySearch]);
+
   return useMemo(
-    () => ({
-      enable,
-    }),
-    [enable],
+    () => ({enable: enableCamera, enableMassCamera}),
+    [enableCamera, enableMassCamera],
   );
 };
