@@ -73,6 +73,7 @@ const MassScannerButton = ({
     </Card>
   );
 };
+
 const getStyles = (borderColor: string) =>
   StyleSheet.create({
     container: {
