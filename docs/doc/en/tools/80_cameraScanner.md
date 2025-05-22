@@ -74,3 +74,85 @@ useEffect(() => {
 ```
 
 There are already several components that use scanning, such as **ScannerAutocompleteSearch**.
+
+## Mass scanner operation
+
+In certain functional contexts, mass input management may be required. To activate mass scanning, simply use the _useMassScanner_ hook in the core library. The hook expects as arguments :
+
+- **[required]** the scan key (_scankey_), which must be unique to avoid conflicts with other components/screens
+- **[required]** the function to be executed when a value is received (_backgroundAction_). This function will receive the scanned value as an argument and must perform processing on it, or return an error in the event of a problem to stop the mass scan.
+- the function to be executed in the event of an error when processing the value (_fallbackAction_). This function will receive the error content as an argument and can apply the appropriate behavior.
+- an interval in milliseconds to be applied before reactivating the camera scan (_scanInterval_). By default, this interval is set to 1000ms.
+
+This hook returns the scan activation status and a function to trigger the scan both on the Zebra device or with the camera, depending on the device used.
+
+Here is an example of how to set up the hook:
+
+```tsx
+import React, {useMemo} from 'react';
+import {Icon, useThemeColor} from '@axelor/aos-mobile-ui';
+import {showToastMessage, useMassScanner} from '@axelor/aos-mobile-core';
+
+const MassScanButton = ({scanKey}) => {
+  const Colors = useThemeColor();
+
+  const {isEnabled, enableScan} = useMassScanner({
+    scanKey,
+    backgroundAction: (_value: string) =>
+      showToastMessage({
+        type: 'success',
+        position: 'bottom',
+        text1: 'Value scanned :',
+        text2: _value,
+      }),
+    fallbackAction: () =>
+      showToastMessage({
+        type: 'error',
+        position: 'bottom',
+        text1: 'Issue while using mass scan feature',
+      }),
+  });
+
+  return (
+    <Icon
+      name="qr-code-scan"
+      color={isEnabled ? Colors.successColor.background : undefined}
+      touchable
+      onPress={enableScan}
+    />
+  );
+};
+
+export default MassScanButton;
+```
+
+The core library also provides a component with this functionality, the **MassScannerButton**. Simply provide it with the options to be supplied to the hook presented above: scanKey, backgroundAction, fallbackAction & scanInterval. The behavior will then take care of transmitting and activating the scan when the button is clicked.
+
+Here's an example of how to set up the component:
+
+```tsx
+import React, {useCallback} from 'react';
+import {MassScannerButton, showToastMessage} from '@axelor/aos-mobile-core';
+
+const PickingScan = ({scanKey}) => {
+  const handlePicking = useCallback((scanValue: string) => {
+    //...
+  }, []);
+
+  return (
+    <MassScannerButton
+      scanKey={scanKey}
+      backgroundAction={handlePicking}
+      fallbackAction={() =>
+        showToastMessage({
+          type: 'error',
+          position: 'bottom',
+          text1: 'Issue while using mass scan feature',
+        })
+      }
+    />
+  );
+};
+
+export default PickingScan;
+```
