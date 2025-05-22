@@ -23,15 +23,23 @@ import {checkNullString, MessageBox} from '@axelor/aos-mobile-ui';
 import {sendMailMessageComment} from '../../../features/mailMessageSlice';
 
 interface SendMessageBoxProps {
+  style?: any;
   model: string;
   modelId: number;
+  parentId?: number;
   hideMessageBox?: boolean;
+  onSend?: () => void;
+  wrapperRef?: any;
 }
 
 const SendMessageBox = ({
+  style,
   model,
   modelId,
+  parentId,
   hideMessageBox = false,
+  onSend,
+  wrapperRef,
 }: SendMessageBoxProps) => {
   const I18n = useTranslator();
   const dispatch = useDispatch();
@@ -39,17 +47,19 @@ const SendMessageBox = ({
   const [comment, setComment] = useState('');
 
   const handleSendComment = useCallback(() => {
-    dispatch((sendMailMessageComment as any)({model, modelId, comment}));
+    (dispatch as any)(
+      (sendMailMessageComment as any)({model, modelId, comment, parentId}),
+    ).then(() => onSend?.());
     Keyboard.dismiss();
     setComment('');
-  }, [dispatch, model, modelId, comment]);
+  }, [dispatch, model, modelId, comment, parentId, onSend]);
 
   if (hideMessageBox) {
     return null;
   }
 
   return (
-    <View style={styles.messageBox}>
+    <View style={[styles.messageBox, style]} ref={wrapperRef}>
       <MessageBox
         placeholder={I18n.t('Message_CommentInput_Placeholder')}
         disabled={checkNullString(comment)}

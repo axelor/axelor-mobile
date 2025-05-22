@@ -107,18 +107,23 @@ interface postMailMessageCommentProps {
   model: string;
   modelId: number;
   comment: string;
+  parentId?: number;
 }
 
 export async function postMailMessageComment({
   model,
   modelId,
   comment,
+  parentId,
 }: postMailMessageCommentProps) {
-  const body = {
+  const body: any = {
     body: `${comment}`,
     type: 'comment',
     files: [],
   };
+  if (parentId != null) {
+    body.parent = {id: parentId};
+  }
   const {matchers} = formatRequestBody(body, 'data');
 
   return getActionApi().send({
