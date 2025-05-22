@@ -29,6 +29,7 @@ interface CameraScannerSliceState {
   isEnabled: boolean;
   cameraKey: string | null;
   barcode: Barcode | null;
+  isMassScan: boolean;
 }
 
 const cameraScannerSlice = createSlice({
@@ -37,21 +38,33 @@ const cameraScannerSlice = createSlice({
     isEnabled: false,
     cameraKey: null,
     barcode: null,
+    isMassScan: false,
   },
   reducers: {
     enableCameraScanner(state, action) {
       state.isEnabled = true;
       state.cameraKey = action.payload;
       state.barcode = null;
+      state.isMassScan = false;
+    },
+    enableMassCameraScanner(state, action) {
+      state.isEnabled = true;
+      state.cameraKey = action.payload;
+      state.barcode = null;
+      state.isMassScan = true;
     },
     scanBarcode(state, action) {
-      state.isEnabled = false;
       state.barcode = action.payload;
+      if (!state.isMassScan) {
+        state.isEnabled = false;
+        state.cameraKey = null;
+      }
     },
     disableCameraScanner(state) {
       state.isEnabled = false;
       state.cameraKey = null;
       state.barcode = null;
+      state.isMassScan = false;
     },
     clearBarcode(state) {
       state.barcode = null;
@@ -61,6 +74,7 @@ const cameraScannerSlice = createSlice({
 
 export const {
   enableCameraScanner,
+  enableMassCameraScanner,
   scanBarcode,
   disableCameraScanner,
   clearBarcode,
