@@ -68,7 +68,7 @@ const DocumentCard = ({style, document, customOnPress}: DocumentCardProps) => {
     <ObjectCard
       style={[styles.card, style]}
       showArrow={false}
-      onPress={() => (customOnPress ? customOnPress() : handleOpenFile())}
+      onPress={customOnPress ?? handleOpenFile}
       upperTexts={{
         items: [
           {
