@@ -183,7 +183,9 @@ const DocumentList = ({
             disableDownload={hideActions}
             disableEdit={hideActions}
             disabledDelete={hideActions}
-            customOnPress={() => customOnPress(item)}
+            customOnPress={
+              customOnPress ? () => customOnPress(item) : undefined
+            }
           />
         )}
         headerChildren={<AuthorFilter author={author} setAuthor={setAuthor} />}
