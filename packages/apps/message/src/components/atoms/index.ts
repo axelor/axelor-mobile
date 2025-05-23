@@ -18,5 +18,6 @@
 
 export {default as Avatar, AVATAR_SIZE, AVATAR_PADDING} from './Avatar/Avatar';
 export {default as ExpandableText} from './ExpandableText/ExpandableText';
+export {default as MessageBox} from './MessageBox/MessageBox';
 export {default as ReadIcon} from './ReadIcon/ReadIcon';
 export {default as TrackItem} from './TrackItem/TrackItem';

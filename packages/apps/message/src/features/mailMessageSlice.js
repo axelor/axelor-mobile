@@ -186,6 +186,8 @@ const initialState = {
   moreLoadingInbox: false,
   isInboxListEnd: false,
   inboxList: [],
+
+  linkFiles: [],
 };
 
 const mailMessagesSlice = createSlice({
@@ -197,6 +199,9 @@ const mailMessagesSlice = createSlice({
     },
     registerModelId: (state, action) => {
       state.modelId = action.payload;
+    },
+    saveLinkFiles: (state, action) => {
+      state.linkFiles = action.payload;
     },
   },
   extraReducers: builder => {
@@ -221,6 +226,7 @@ const mailMessagesSlice = createSlice({
   },
 });
 
-export const {registerModel, registerModelId} = mailMessagesSlice.actions;
+export const {registerModel, registerModelId, saveLinkFiles} =
+  mailMessagesSlice.actions;
 
 export const mailMessagesReducer = mailMessagesSlice.reducer;
