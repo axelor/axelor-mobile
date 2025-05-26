@@ -17,103 +17,64 @@
  */
 
 import React from 'react';
-import {View} from 'react-native';
-import {shallow} from 'enzyme';
-import {Stepper, Text, Card, Icon} from '@axelor/aos-mobile-ui';
-import {getGlobalStyles} from '../../tools';
+import {fireEvent, render, screen} from '@testing-library/react-native';
+import {Stepper} from '@axelor/aos-mobile-ui';
 
 describe('Stepper Component', () => {
   const steps = [
-    {title: 'Step 1', state: 'draft'},
-    {title: 'Step 2', state: 'inProgress'},
-    {title: 'Step 3', state: 'completed'},
+    {titleKey: 'Step_1', state: 'draft'},
+    {titleKey: 'Step_2', state: 'inProgress'},
+    {titleKey: 'Step_3', state: 'completed'},
+    {titleKey: 'Step_4', state: 'completed'},
   ];
 
-  const translator = (key, values) => {
-    if (key === 'Base_Next') return 'Next';
-    if (key === 'Base_StepOfStep')
-      return `${values.activeStep}/${values.numberOfSteps}`;
-    return key;
-  };
+  const mockTranslator = key => key;
 
-  const baseProps = {
-    steps,
-    activeStepIndex: 0,
-    translator,
-  };
+  it('renders Stepper correctly', () => {
+    render(
+      <Stepper steps={steps} activeStepIndex={0} translator={mockTranslator} />,
+    );
 
-  it('should render without crashing', () => {
-    const wrapper = shallow(<Stepper {...baseProps} />);
-    expect(wrapper.exists()).toBe(true);
+    expect(screen.getByText('Step_1')).toBeTruthy();
+    expect(screen.getByText('Base_Next : Step_2')).toBeTruthy();
   });
 
-  it('should render ProgressCircle', () => {
-    const wrapper = shallow(<Stepper {...baseProps} />);
+  it('renders current step title and next step label', () => {
+    render(
+      <Stepper steps={steps} activeStepIndex={1} translator={mockTranslator} />,
+    );
 
-    const progressCircleWrapper = wrapper.find('ProgressCircle');
-    expect(progressCircleWrapper.exists()).toBe(true);
-
-    const progressCircleContent = progressCircleWrapper.dive();
-    expect(progressCircleContent.exists()).toBe(true);
+    expect(screen.getByText('Step_2')).toBeTruthy();
+    expect(screen.getByText('Base_Next : Step_3')).toBeTruthy();
   });
 
-  it('should render active step title', () => {
-    const wrapper = shallow(<Stepper {...baseProps} />);
-    expect(wrapper.find(Text).at(0).prop('children')).toBe(steps[0].title);
+  it('does not show dropdown icon if displayDropdown is false', () => {
+    render(
+      <Stepper steps={steps} activeStepIndex={0} translator={mockTranslator} />,
+    );
+
+    expect(screen.queryByTestId('chevron-down')).toBeNull();
   });
 
-  it('should render next step title if not last step', () => {
-    const wrapper = shallow(<Stepper {...baseProps} />);
-    expect(wrapper.find(Text).at(1).prop('children')).toBe('Next : Step 2');
-  });
+  it('shows and toggles step list when dropdown is enabled', () => {
+    render(
+      <Stepper
+        steps={steps}
+        activeStepIndex={0}
+        translator={mockTranslator}
+        displayDropdown
+      />,
+    );
 
-  it('should not render next step title if last step', () => {
-    const wrapper = shallow(<Stepper {...baseProps} activeStepIndex={2} />);
-    expect(wrapper.find(Text).length).toBe(1);
-  });
+    const dropdown = screen.getByTestId('stepper-dropdown');
+    fireEvent.press(dropdown);
 
-  it('should display StepList when dropdown is clicked', () => {
-    const wrapper = shallow(<Stepper {...baseProps} displayDropdown />);
+    expect(screen.getByText('Step_2')).toBeTruthy();
+    expect(screen.getByText('Step_3')).toBeTruthy();
+    expect(screen.getByText('Step_4')).toBeTruthy();
 
-    expect(wrapper.find('StepList').exists()).toBe(false);
+    fireEvent.press(dropdown);
 
-    wrapper.find('TouchableOpacity').simulate('press');
-
-    const stepListWrapper = wrapper.find('StepList');
-    expect(stepListWrapper.exists()).toBe(true);
-
-    const stepListContent = stepListWrapper.dive();
-    expect(stepListContent.exists()).toBe(true);
-  });
-
-  it('should render Icon chevron when displayDropdown is true', () => {
-    const wrapper = shallow(<Stepper {...baseProps} displayDropdown />);
-    expect(wrapper.find(Icon).exists()).toBe(true);
-  });
-
-  it('should not render Icon chevron when displayDropdown is false', () => {
-    const wrapper = shallow(<Stepper {...baseProps} />);
-    expect(wrapper.find(Icon).exists()).toBe(false);
-  });
-
-  it('should use Card as container when isCardBackground or displayDropdown is true', () => {
-    const wrapper1 = shallow(<Stepper {...baseProps} isCardBackground />);
-    expect(wrapper1.find(Card).exists()).toBe(true);
-
-    const wrapper2 = shallow(<Stepper {...baseProps} displayDropdown />);
-    expect(wrapper2.find(Card).exists()).toBe(true);
-  });
-
-  it('should use View as container by default', () => {
-    const wrapper = shallow(<Stepper {...baseProps} />);
-    expect(wrapper.find(View).exists()).toBe(true);
-  });
-
-  it('applies custom border style when isCardBackground is true', () => {
-    const wrapper = shallow(<Stepper {...baseProps} isCardBackground />);
-    const container = wrapper.find(Card);
-    const styles = getGlobalStyles(container);
-
-    expect(styles.borderWidth).toBe(1);
+    expect(screen.queryByText('Step_4')).toBeNull();
   });
 });

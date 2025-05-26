@@ -17,14 +17,36 @@
  */
 
 import React from 'react';
-import {shallow} from 'enzyme';
+import {render, screen} from '@testing-library/react-native';
 import {ProgressCircle} from '@axelor/aos-mobile-ui';
+import {getDefaultThemeColors} from '../../tools';
+import {Circle} from 'react-native-svg';
 
 describe('ProgressCircle Component', () => {
-  const props = {};
+  const Colors = getDefaultThemeColors();
 
   it('renders without crashing', () => {
-    const wrapper = shallow(<ProgressCircle {...props} />);
-    expect(wrapper.exists()).toBe(true);
+    const props = {
+      activeStep: 1,
+      numberOfSteps: 4,
+      isError: false,
+      translator: jest.fn(() => 'Step 1 of 4'),
+    };
+
+    const {toJSON} = render(<ProgressCircle {...props} />);
+    expect(toJSON()).toBeTruthy();
+  });
+
+  it('uses error color when isError is true', () => {
+    const baseProps = {
+      activeStep: 1,
+      numberOfSteps: 4,
+      isError: true,
+      translator: jest.fn(() => ''),
+    };
+    const {UNSAFE_getAllByType} = render(<ProgressCircle {...baseProps} />);
+    const circles = UNSAFE_getAllByType(Circle);
+
+    expect(circles[1].props.stroke).toBe(Colors.errorColor.background);
   });
 });

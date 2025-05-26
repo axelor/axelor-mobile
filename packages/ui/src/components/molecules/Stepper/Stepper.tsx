@@ -71,6 +71,7 @@ const Stepper = ({
   return (
     <ContainerComponent style={styles.container}>
       <TouchableOpacity
+        testID="stepper-dropdown"
         activeOpacity={0.9}
         disabled={!displayDropdown}
         onPress={() => setIsStepListVisible(current => !current)}>
