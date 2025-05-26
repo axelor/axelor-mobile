@@ -53,7 +53,7 @@ interface MailMessageCardProps {
   relatedModel: string;
   isInbox?: boolean;
   numReplies?: number;
-  getParentReplies?: () => void;
+  getParentReplies?: (newMessage?: any) => void;
 }
 
 const MailMessageCard = ({
@@ -80,14 +80,25 @@ const MailMessageCard = ({
 
   const [areRepliesVisible, setAreRepliesVisible] = useState(false);
   const [replies, setReplies] = useState([]);
+  const [numberReplies, setNumberReplies] = useState(0);
   const [isMessageBoxVisible, setIsMessageBoxVisible] = useState(false);
 
   const getReplies = useCallback(
-    () =>
+    (newMessage?: any) =>
       fetchRepliesApi({messageId})
         .then(res => {
-          setReplies(res?.data?.data);
-          setAreRepliesVisible(true);
+          const _replies = res?.data?.data;
+          setAreRepliesVisible(current => {
+            if (current || newMessage == null) {
+              setReplies(_replies);
+            } else {
+              const newReply = _replies.find(msg => msg.id === newMessage.id);
+              setReplies([newReply]);
+            }
+            setNumberReplies(_replies.length);
+
+            return true;
+          });
         })
         .catch(() => setReplies([])),
     [messageId],
@@ -113,9 +124,9 @@ const MailMessageCard = ({
     <View style={[styles.container, style]}>
       <View>
         <Avatar style={styles.avatar} avatar={avatar} />
-        {(replies.length > 0 || numReplies > 0) && (
+        {(numberReplies > 0 || numReplies > 0) && (
           <TouchableOpacity
-            style={styles.manageRepliesContainer}
+            style={styles.displayRepliesContainer}
             activeOpacity={0.9}
             onPress={() => {
               setAreRepliesVisible(current => {
@@ -126,17 +137,9 @@ const MailMessageCard = ({
               });
             }}>
             <Text textColor={Colors.secondaryColor_dark.background}>
-              {replies.length > 0 ? replies.length : numReplies}
+              {numberReplies > 0 ? numberReplies : numReplies}
             </Text>
             <Icon name="chat-dots" />
-          </TouchableOpacity>
-        )}
-        {isInbox && (
-          <TouchableOpacity
-            style={styles.manageRepliesContainer}
-            activeOpacity={0.9}
-            onPress={() => setIsMessageBoxVisible(current => !current)}>
-            <Icon name="arrow-90deg-left" />
           </TouchableOpacity>
         )}
         {areRepliesVisible && <View style={styles.verticalRule} />}
@@ -174,20 +177,34 @@ const MailMessageCard = ({
               isInbox={isInbox}
             />
           )}
+          {isInbox && !isMessageBoxVisible && (
+            <TouchableOpacity
+              style={styles.replyContainer}
+              activeOpacity={0.9}
+              onPress={() => setIsMessageBoxVisible(true)}>
+              <Icon name="arrow-90deg-left" size={12} />
+              <Text style={styles.replyText} fontSize={12}>
+                {I18n.t('Message_Respond')}
+              </Text>
+            </TouchableOpacity>
+          )}
           <SendMessageBox
             style={styles.messageBox}
             hideMessageBox={!isMessageBoxVisible}
             model={relatedModel}
             modelId={relatedId}
             parentId={messageId}
-            onSend={() =>
-              getParentReplies ? getParentReplies() : getReplies()
-            }
+            onSend={message => {
+              getParentReplies
+                ? getParentReplies(message)
+                : getReplies(message);
+              setIsMessageBoxVisible(false);
+            }}
             wrapperRef={wrapperRef}
           />
         </View>
         {areRepliesVisible &&
-          (replies.length === 0 ? (
+          (numberReplies === 0 ? (
             <ActivityIndicator
               size="large"
               color={Colors.inverseColor.background}
@@ -229,7 +246,7 @@ const getStyles = (verticalRuleColor: string) =>
     avatar: {
       paddingBottom: 5,
     },
-    manageRepliesContainer: {
+    displayRepliesContainer: {
       flexDirection: 'row',
       justifyContent: 'center',
       gap: 5,
@@ -253,6 +270,16 @@ const getStyles = (verticalRuleColor: string) =>
       width: '100%',
       marginTop: 2,
       paddingHorizontal: 5,
+    },
+    replyContainer: {
+      flexDirection: 'row',
+      justifyContent: 'flex-end',
+      gap: 5,
+      paddingTop: 3,
+      paddingHorizontal: 10,
+    },
+    replyText: {
+      textDecorationLine: 'underline',
     },
     messageBox: {
       width: null,

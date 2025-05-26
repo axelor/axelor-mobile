@@ -28,7 +28,7 @@ interface SendMessageBoxProps {
   modelId: number;
   parentId?: number;
   hideMessageBox?: boolean;
-  onSend?: () => void;
+  onSend?: (message: any) => void;
   wrapperRef?: any;
 }
 
@@ -49,7 +49,7 @@ const SendMessageBox = ({
   const handleSendComment = useCallback(() => {
     (dispatch as any)(
       (sendMailMessageComment as any)({model, modelId, comment, parentId}),
-    ).then(() => onSend?.());
+    ).then(res => onSend?.(res.payload));
     Keyboard.dismiss();
     setComment('');
   }, [dispatch, model, modelId, comment, parentId, onSend]);
