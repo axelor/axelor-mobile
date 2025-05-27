@@ -20,14 +20,14 @@ import React, {useMemo} from 'react';
 import {StyleSheet, View} from 'react-native';
 import {Svg, Circle} from 'react-native-svg';
 import {useThemeColor} from '../../../theme';
-import Text from '../Text/Text';
+import {Text} from '../../atoms';
 
 interface ProgressCircleProps {
   circleSize?: number;
   strokeWidth?: number;
   activeStep: number;
   numberOfSteps: number;
-  isError: boolean;
+  isError?: boolean;
   translator: (key: string, values?: any) => string;
 }
 
@@ -36,7 +36,7 @@ const ProgressCircle = ({
   strokeWidth = 4,
   activeStep,
   numberOfSteps,
-  isError,
+  isError = false,
   translator,
 }: ProgressCircleProps) => {
   const Colors = useThemeColor();
@@ -48,11 +48,12 @@ const ProgressCircle = ({
 
   const {radius, circumference, strokeDashoffset} = useMemo(() => {
     const _radius = circleSize / 2 - strokeWidth / 2;
+    const _circumference = 2 * Math.PI * _radius;
 
     return {
       radius: _radius,
-      circumference: 2 * Math.PI * _radius,
-      strokeDashoffset: circumference - circumference * progress,
+      circumference: _circumference,
+      strokeDashoffset: _circumference - _circumference * progress,
     };
   }, [circleSize, progress, strokeWidth]);
 
@@ -65,6 +66,7 @@ const ProgressCircle = ({
         stroke={Colors.secondaryColor.background_light}
         strokeWidth={strokeWidth}
         fill="none"
+        testID="internal-circle"
       />
       <Circle
         cx={circleSize / 2}
@@ -82,6 +84,7 @@ const ProgressCircle = ({
         rotation="-90"
         origin={`${circleSize / 2}, ${circleSize / 2}`}
         fill="none"
+        testID="progress-circle"
       />
       <View style={styles.textContainer}>
         <Text writingType="important">

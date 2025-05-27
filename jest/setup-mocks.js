@@ -33,6 +33,18 @@ jest.mock('react-native-reanimated', () => {
   };
 });
 
+jest.mock('react-native-svg', () => {
+  const React = require('react');
+  const {View} = require('react-native');
+  const createMock = () =>
+    React.forwardRef((props, ref) => <View {...props} ref={ref} />);
+
+  return {
+    Circle: createMock('Circle'),
+    Svg: createMock('Svg'),
+  };
+});
+
 jest.mock('react-native/Libraries/Animated/NativeAnimatedHelper');
 jest.mock('react-native/Libraries/BatchedBridge/NativeModules');
 jest.mock('react-native/Libraries/EventEmitter/NativeEventEmitter');

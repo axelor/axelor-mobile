@@ -17,36 +17,66 @@
  */
 
 import React from 'react';
-import {render, screen} from '@testing-library/react-native';
+import {render} from '@testing-library/react-native';
 import {ProgressCircle} from '@axelor/aos-mobile-ui';
 import {getDefaultThemeColors} from '../../tools';
-import {Circle} from 'react-native-svg';
+
+const TEST_ID = {
+  INTERNAL_CIRCLE: 'internal-circle',
+  PROGRESS_CIRCLE: 'progress-circle',
+};
 
 describe('ProgressCircle Component', () => {
   const Colors = getDefaultThemeColors();
+  const props = {activeStep: 1, numberOfSteps: 4, translator: () => ''};
 
-  it('renders without crashing', () => {
-    const props = {
-      activeStep: 1,
-      numberOfSteps: 4,
-      isError: false,
-      translator: jest.fn(() => 'Step 1 of 4'),
-    };
+  it('renders correctly without crashing', () => {
+    const {getByTestId} = render(<ProgressCircle {...props} />);
 
-    const {toJSON} = render(<ProgressCircle {...props} />);
-    expect(toJSON()).toBeTruthy();
+    expect(getByTestId(TEST_ID.INTERNAL_CIRCLE)).toBeTruthy();
+    expect(getByTestId(TEST_ID.PROGRESS_CIRCLE)).toBeTruthy();
   });
 
-  it('uses error color when isError is true', () => {
-    const baseProps = {
-      activeStep: 1,
-      numberOfSteps: 4,
-      isError: true,
-      translator: jest.fn(() => ''),
-    };
-    const {UNSAFE_getAllByType} = render(<ProgressCircle {...baseProps} />);
-    const circles = UNSAFE_getAllByType(Circle);
+  it('uses success stroke color when isError is false', () => {
+    const {getByTestId} = render(<ProgressCircle {...props} />);
 
-    expect(circles[1].props.stroke).toBe(Colors.errorColor.background);
+    const circle = getByTestId(TEST_ID.PROGRESS_CIRCLE);
+    expect(circle.props.stroke).toBe(Colors.successColor.background);
+  });
+
+  it('uses error stroke color when isError is true', () => {
+    const {getByTestId} = render(<ProgressCircle {...props} isError />);
+
+    const circle = getByTestId(TEST_ID.PROGRESS_CIRCLE);
+
+    expect(circle.props.stroke).toBe(Colors.errorColor.background);
+  });
+
+  it('calculates correct strokeDashoffset based on progress', () => {
+    const computedProps = {...props, circleSize: 100, strokeWidth: 10};
+    const {circleSize, strokeWidth, activeStep, numberOfSteps} = computedProps;
+
+    const progress = activeStep / numberOfSteps;
+    const radius = circleSize / 2 - strokeWidth / 2;
+    const circumference = 2 * Math.PI * radius;
+    const expectedOffset = circumference - circumference * progress;
+
+    const {getByTestId} = render(<ProgressCircle {...computedProps} />);
+
+    const circle = getByTestId(TEST_ID.PROGRESS_CIRCLE);
+    expect(circle.props.strokeDashoffset).toBeCloseTo(expectedOffset, 5);
+  });
+
+  it('displays correct step text', () => {
+    const mockTranslator = jest.fn(
+      (_, {activeStep, numberOfSteps}) =>
+        `Step ${activeStep} of ${numberOfSteps}`,
+    );
+
+    const {getByText} = render(
+      <ProgressCircle {...props} translator={mockTranslator} />,
+    );
+
+    expect(getByText(mockTranslator(undefined, props))).toBeTruthy();
   });
 });
