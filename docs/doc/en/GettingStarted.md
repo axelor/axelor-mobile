@@ -79,6 +79,36 @@ The configurations taken into consideration are :
 
 An example configuration file is [available on Github](https://github.com/axelor/axelor-mobile/blob/main/src/app.config.js).
 
+### Managing allowed instances
+
+By default, Apple blocks unsecured HTTP connections (non-HTTPS) through a security policy called App Transport Security (ATS), introduced to enhance user privacy and security.
+
+This configuration has been modified in the standard application to allow the use of test instances hosted under the domain axelor.io.
+
+If you wish to enable or disable this exception in your projects, here’s how to proceed:
+
+- **Step 1** : Open the Info.plist file of your iOS project.
+
+- **Step 2** : Add (or modify) the following section to allow HTTP connections to a specific domain:
+
+```
+<key>NSAppTransportSecurity</key>
+<dict>
+  <key>NSExceptionDomains</key>
+  <dict>
+    <key>your-domain.com</key>
+    <dict>
+      <key>NSExceptionAllowsInsecureHTTPLoads</key>
+      <true/>
+      <key>NSIncludesSubdomains</key>
+      <true/>
+    </dict>
+  </dict>
+</dict>
+```
+
+- **Step 3** : Replace your-domain.com with your desired domain.
+
 ## Start project
 
 ### Add or remove a functionnal module for APK generation
