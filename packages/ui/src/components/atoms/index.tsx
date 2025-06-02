@@ -19,12 +19,13 @@
 export {default as BlockInteractionScreen} from './BlockInteractionScreen/BlockInteractionScreen';
 export {default as BootstrapIcon} from './BootstrapIcon/BootstrapIcon';
 export {default as Card} from './Card/Card';
+export {default as DottedLine} from './DottedLine/DottedLine';
 export {default as HorizontalRule} from './HorizontalRule/HorizontalRule';
 export {default as HtmlInput} from './HtmlInput/HtmlInput';
-export {default as DottedLine} from './DottedLine/DottedLine';
 export {default as Icon} from './Icon/Icon';
 export {default as Input} from './Input/Input';
 export {default as KeyboardAvoidingScrollView} from './KeyboardAvoidingScrollView/KeyboardAvoidingScrollView';
+export {default as ProgressCircle} from './ProgressCircle/ProgressCircle';
 export {default as RadioButton} from './RadioButton/RadioButton';
 export {default as Screen} from './Screen/Screen';
 export {default as ScrollView} from './ScrollView/ScrollView';
