@@ -40,8 +40,9 @@ jest.mock('react-native-svg', () => {
     React.forwardRef((props, ref) => <View {...props} ref={ref} />);
 
   return {
-    Circle: createMock('Circle'),
-    Svg: createMock('Svg'),
+    Circle: createMock(),
+    Svg: createMock(),
+    Path: createMock(),
   };
 });
 

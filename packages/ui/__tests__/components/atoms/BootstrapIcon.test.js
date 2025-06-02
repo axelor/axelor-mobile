@@ -17,7 +17,7 @@
  */
 
 import React from 'react';
-import Svg from 'react-native-svg';
+import {Svg} from 'react-native-svg';
 import {shallow} from 'enzyme';
 import {BootstrapIcon, Text} from '@axelor/aos-mobile-ui';
 import {getGlobalStyles, getDefaultThemeColors} from '../../tools';
