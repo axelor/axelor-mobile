@@ -39,7 +39,6 @@ jest.mock('react-native', () => {
   };
 });
 
-jest.mock('react-native/Libraries/Animated/NativeAnimatedHelper');
 jest.mock('react-native/Libraries/BatchedBridge/NativeModules');
 jest.mock('react-native/Libraries/EventEmitter/NativeEventEmitter');
 jest.mock('react-native/Libraries/Settings/NativeSettingsManager', () => ({

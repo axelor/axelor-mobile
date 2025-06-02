@@ -23,8 +23,6 @@ Install the library :
 yarn add @axelor/aos-mobile-maintenance
 ```
 
-Compatibility with React v18.3.1 and React Native v0.75.5.
-
 To add this package in your application, you need to add it in the _modules_ props of the component `Application` from @axelor/aos-mobile-core package.
 
 ```typescript

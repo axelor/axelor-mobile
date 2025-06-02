@@ -37,10 +37,10 @@
     "react-native-webview": "11.26.1"
   },
   "devDependencies": {
-    "@babel/runtime": "^7.20.0",
+    "@babel/runtime": "^7.25.0",
     "@react-native-community/slider": "^4.5.6",
-    "@react-native/babel-preset": "0.75.5",
-    "@react-native/eslint-config": "0.75.5",
+    "@react-native/babel-preset": "0.76.9",
+    "@react-native/eslint-config": "0.76.9",
     "@svgr/core": "^6.5.1",
     "@svgr/plugin-jsx": "^6.5.1",
     "@svgr/plugin-prettier": "^6.5.1",
@@ -51,7 +51,7 @@
     "glob": "^8.1.0",
     "prettier": "^3.3.3",
     "react": "18.3.1",
-    "react-native": "0.75.5",
+    "react-native": "0.76.9",
     "react-native-gifted-charts": "1.4.59",
     "react-native-linear-gradient": "2.8.3",
     "react-native-pell-rich-editor": "1.9.0",
