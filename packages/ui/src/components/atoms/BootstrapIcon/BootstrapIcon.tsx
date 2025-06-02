@@ -18,7 +18,7 @@
 
 import React from 'react';
 import {ColorValue} from 'react-native';
-import Svg, {Path} from 'react-native-svg';
+import {Svg, Path} from 'react-native-svg';
 import Text from '../Text/Text';
 import iconsMap from '../../../icons/bootstrap-icon-map.json';
 import {useThemeColor} from '../../../theme';
