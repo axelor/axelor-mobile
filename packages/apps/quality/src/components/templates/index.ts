@@ -16,4 +16,8 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+export {default as GravityPicker} from './GravityPicker/GravityPicker';
+export {default as QIDetectionSearchBar} from './QIDetectionSearchBar/QIDetectionSearchBar';
+export {default as QIMethodAnalysisSearchBar} from './QIMethodAnalysisSearchBar/QIMethodAnalysisSearchBar';
 export {default as QualityImprovementFilter} from './QualityImprovementFilter/QualityImprovementFilter';
+export {default as TypePicker} from './TypePicker/TypePicker';

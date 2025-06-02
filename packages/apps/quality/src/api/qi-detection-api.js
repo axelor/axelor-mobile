@@ -16,27 +16,31 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import QualityImprovementListScreen from './QualityImprovementListScreen';
-import QualityImprovementFormScreen from './QualityImprovementFormScreen';
+import {
+  createStandardSearch,
+  getSearchCriterias,
+} from '@axelor/aos-mobile-core';
 
-export default {
-  QualityImprovementListScreen: {
-    title: 'Quality_QualityImprovements',
-    component: QualityImprovementListScreen,
-    options: {
-      shadedHeader: false,
-    },
-    isUsableOnShortcut: true,
-    actionID: 'quality_qualityImprovement_list',
-  },
-  QualityImprovementFormScreen: {
-    title: 'Quality_QualityImprovements',
-    component: QualityImprovementFormScreen,
-    options: {
-      shadedHeader: false,
-    },
-  },
+const createQIDetectionCriteria = (searchValue, origin) => {
+  const criteria = [getSearchCriterias('quality_QIDetection', searchValue)];
+
+  if (origin != null) {
+    criteria.push({
+      fieldName: origin,
+      operator: '=',
+      value: true,
+    });
+  }
+  return criteria;
 };
 
-export {QualityImprovementListScreen};
-export {QualityImprovementFormScreen};
+export async function searchQIDetection({page = 0, searchValue, origin}) {
+  return createStandardSearch({
+    model: 'com.axelor.apps.quality.db.QIDetection',
+    criteria: createQIDetectionCriteria(searchValue, origin),
+    fieldKey: 'quality_QIDetection',
+    sortKey: 'quality_QIDetection',
+    page,
+    provider: 'model',
+  });
+}

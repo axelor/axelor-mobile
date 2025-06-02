@@ -18,11 +18,11 @@
 
 import React, {useMemo} from 'react';
 import {Picker} from '@axelor/aos-mobile-ui';
-import {useTypes} from '@axelor/aos-mobile-core';
+import {useTypeHelpers, useTypes} from '@axelor/aos-mobile-core';
 
-const CivilityPicker = ({
+const TypePicker = ({
   style,
-  title = 'Crm_Civility',
+  title = 'Quality_Type',
   defaultValue = null,
   onChange,
   readonly = false,
@@ -35,21 +35,20 @@ const CivilityPicker = ({
   readonly?: boolean;
   required?: boolean;
 }) => {
-  const {Partner} = useTypes();
+  const {QualityImprovement} = useTypes();
+  const {getSelectionItems} = useTypeHelpers();
 
-  const civilityList = useMemo(
-    () => Partner?.titleSelect.list,
-    [Partner?.titleSelect],
+  const typeList = useMemo(
+    () => getSelectionItems(QualityImprovement?.type),
+    [QualityImprovement?.type, getSelectionItems],
   );
-
-  console.log('civilityList', civilityList);
 
   return (
     <Picker
       style={style}
       title={title}
-      defaultValue={Number(defaultValue)}
-      listItems={civilityList}
+      defaultValue={defaultValue}
+      listItems={typeList}
       labelField="title"
       valueField="value"
       emptyValue={false}
@@ -61,4 +60,4 @@ const CivilityPicker = ({
   );
 };
 
-export default CivilityPicker;
+export default TypePicker;

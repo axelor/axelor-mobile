@@ -20,4 +20,6 @@ export {controlEntrySampleLineReducer as controlEntrySampleLine} from './control
 export {controlEntrySampleReducer as controlEntrySample} from './controlEntrySampleSlice';
 export {controlEntryReducer as controlEntry} from './controlEntrySlice';
 export {controlPlanReducer as controlPlan} from './controlPlanSlice';
+export {qiAnalysisMethodReducer as quality_qiAnalysisMethod} from './qiAnalysisMethodSlice';
 export {qualityImprovementReducer as quality_qualityImprovement} from './qualityImprovementSlice';
+export {qiDetectionReducer as quality_qiDetection} from './qiDetectionSlice';

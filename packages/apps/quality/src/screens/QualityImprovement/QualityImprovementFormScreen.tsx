@@ -16,20 +16,29 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-export {
-  fetchControlEntrySampleLine,
-  searchControlEntrySampleLineOfControlEntry,
-} from './controlEntrySampleLineSlice';
-export {searchControlEntrySample} from './controlEntrySampleSlice';
-export {
-  fetchControlEntryById,
-  searchControlEntry,
-  updateControlEntry,
-} from './controlEntrySlice';
-export {fetchControlPlanById} from './controlPlanSlice';
-export {searchQIAnalysisMethod} from './qiAnalysisMethodSlice';
-export {
-  fetchQualityImprovementStatus,
-  searchQualityImprovement,
-} from './qualityImprovementSlice';
-export {searchQIDetection} from './qiDetectionSlice';
+import React from 'react';
+import {Screen} from '@axelor/aos-mobile-ui';
+import {FormView} from '@axelor/aos-mobile-core';
+
+const QualityImprovementFormScreen = ({}) => {
+  return (
+    <Screen removeSpaceOnTop={true}>
+      <FormView
+        formKey="quality_qualityImprovement"
+        defaultEditMode
+        actions={[
+          {
+            key: 'create-qi',
+            type: 'create',
+            needValidation: true,
+            needRequiredFields: true,
+            customAction: ({dispatch, objectState}) => {},
+            // createCatalogAPI(objectState, dispatch),
+          },
+        ]}
+      />
+    </Screen>
+  );
+};
+
+export default QualityImprovementFormScreen;

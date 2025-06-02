@@ -30,6 +30,8 @@ export {
   searchControlEntrySampleLineOfControlEntry as searchControlEntrySampleLineOfControlEntryApi,
 } from './control-entry-sample-line-api';
 export {fetchControlPlanById as fetchControlPlanByIdApi} from './control-plan-api';
+export {searchQIAnalysisMethod as searchQIAnalysisMethodApi} from './qi-analysis-method-api';
+export {searchQIDetection as searchQIDetectionApi} from './qi-detection-api';
 export {
   fetchQualityImprovementStatus as fetchQualityImprovementStatusApi,
   searchQualityImprovement as searchQualityImprovementApi,

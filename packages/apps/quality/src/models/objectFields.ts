@@ -60,4 +60,12 @@ export const quality_modelAPI: ObjectFields = {
   quality_qiStatus: schemaContructor.object({
     name: schemaContructor.string(),
   }),
+  quality_QIDetection: schemaContructor.object({
+    name: schemaContructor.string(),
+    code: schemaContructor.string(),
+  }),
+  quality_QIAnalysisMethod: schemaContructor.object({
+    code: schemaContructor.string(),
+    name: schemaContructor.string(),
+  }),
 };

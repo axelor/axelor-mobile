@@ -59,11 +59,22 @@ const initialState = {
   qualityImprovementList: [],
 
   qiStatusList: [],
+
+  typeForm: null,
+  gravityForm: null,
 };
 
 const qualityImprovementSlice = createSlice({
   name: 'quality_qualityImprovement',
   initialState,
+  reducers: {
+    updateTypeForm: (state, action) => {
+      state.typeForm = action.payload;
+    },
+    updateGravityForm: (state, action) => {
+      state.gravityForm = action.payload;
+    },
+  },
   extraReducers: builder => {
     generateInifiniteScrollCases(builder, searchQualityImprovement, {
       loading: 'loadingQualityImprovements',
@@ -79,5 +90,8 @@ const qualityImprovementSlice = createSlice({
     );
   },
 });
+
+export const {updateTypeForm, updateGravityForm} =
+  qualityImprovementSlice.actions;
 
 export const qualityImprovementReducer = qualityImprovementSlice.reducer;

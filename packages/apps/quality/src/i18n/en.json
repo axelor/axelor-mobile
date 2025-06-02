@@ -28,6 +28,11 @@
   "Quality_Gravity_Critical": "Critical",
   "Quality_Gravity_Major": "Major",
   "Quality_Gravity_Minor": "Minor",
+  "Quality_Product": "Product",
+  "Quality_System": "System",
+  "Quality_Type": "Type",
+  "Quality_QIDetection": "Detection",
+  "Quality_QIMethodAnalysis": "Analysis Method",
   "Quality_CreateNewQI": "Create new quality improvement",
   "Quality_SliceAction_SearchControlEntry": "search control entries",
   "Quality_SliceAction_FetchControlEntryById": "fetch control entry by id",
@@ -37,5 +42,7 @@
   "Quality_SliceAction_FetchControlEntrySampleLine": "fetch control entry sample line",
   "Quality_SliceAction_UpdateControlEntry": "update control entry",
   "Quality_SliceAction_SearchQualityImprovement": "search quality improvements",
-  "Quality_SliceAction_FetchQualityImprovementStatus": "fetch improvement status"
+  "Quality_SliceAction_FetchQualityImprovementStatus": "fetch improvement status",
+  "Quality_SliceAction_SearchQIDetection": "",
+  "Quality_SliceAction_SearchQIAnalysisMethod": ""
 }

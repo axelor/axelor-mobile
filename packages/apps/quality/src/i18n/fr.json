@@ -28,6 +28,11 @@
   "Quality_Gravity_Critical": "Critique",
   "Quality_Gravity_Major": "Majeur",
   "Quality_Gravity_Minor": "Mineur",
+  "Quality_Product": "Produit",
+  "Quality_System": "Système",
+  "Quality_Type": "Type",
+  "Quality_QIDetection": "Détection",
+  "Quality_QIMethodAnalysis": "Méthode d'analyse",
   "Quality_CreateNewQI": "Créer une nouvelle amélioration qualité",
   "Quality_SliceAction_SearchControlEntry": "recherche des relevés de contrôle",
   "Quality_SliceAction_FetchControlEntryById": "récupération du relevé de contrôle par id",
@@ -37,5 +42,7 @@
   "Quality_SliceAction_FetchControlEntrySampleLine": "récupération de la ligne d'échantillon du relevé de contrôle",
   "Quality_SliceAction_UpdateControlEntry": "mise à jour du relevé de contrôle",
   "Quality_SliceAction_SearchQualityImprovement": "recherche des améliorations qualité",
-  "Quality_SliceAction_FetchQualityImprovementStatus": "récupération des statuts des améliorations"
+  "Quality_SliceAction_FetchQualityImprovementStatus": "récupération des statuts des améliorations",
+  "Quality_SliceAction_SearchQIDetection": "",
+  "Quality_SliceAction_SearchQIAnalysisMethod": ""
 }

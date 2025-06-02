@@ -82,6 +82,20 @@ export const quality_typeObjects: ModuleSelections = [
   {
     modelName: 'com.axelor.apps.quality.db.QualityImprovement',
     fields: {
+      type: {
+        content: [
+          {
+            key: 'Product',
+            value: 1,
+            title: 'Quality_Product',
+          },
+          {
+            key: 'System',
+            value: 2,
+            title: 'Quality_System',
+          },
+        ],
+      },
       gravityTypeSelect: {
         content: [
           {
