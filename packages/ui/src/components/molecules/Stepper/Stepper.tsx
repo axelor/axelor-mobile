@@ -20,19 +20,8 @@ import React, {useMemo, useState} from 'react';
 import {TouchableOpacity, View, StyleSheet} from 'react-native';
 import {useThemeColor} from '../../../theme';
 import {Card, Icon, ProgressCircle, Text} from '../../atoms';
+import {Step} from './types';
 import StepList from './StepList';
-
-export enum StepState {
-  draft = 'draft',
-  inProgress = 'inProgress',
-  completed = 'completed',
-  error = 'error',
-}
-
-export interface Step {
-  titleKey: string;
-  state: StepState;
-}
 
 interface StepperProps {
   steps: Step[];
@@ -44,7 +33,7 @@ interface StepperProps {
 
 const Stepper = ({
   steps,
-  activeStepIndex,
+  activeStepIndex: _activeStepIndex,
   isCardBackground = false,
   displayDropdown = false,
   translator,
@@ -68,6 +57,24 @@ const Stepper = ({
     [Colors.secondaryColor.background, _isCardBackground],
   );
 
+  const activeStepIndex = useMemo(() => {
+    if (!_activeStepIndex || _activeStepIndex < 0) {
+      return 0;
+    }
+
+    const maxIdx = steps?.length ?? 0;
+
+    if (_activeStepIndex >= maxIdx) {
+      return maxIdx - 1;
+    }
+
+    return _activeStepIndex;
+  }, [_activeStepIndex, steps?.length]);
+
+  if (!Array.isArray(steps) || steps.length === 0) {
+    return null;
+  }
+
   return (
     <ContainerComponent style={styles.container}>
       <TouchableOpacity
@@ -83,7 +90,9 @@ const Stepper = ({
             translator={translator}
           />
           <View style={styles.textContainer}>
-            <Text writingType="title">{steps[activeStepIndex].titleKey}</Text>
+            <Text writingType="title">
+              {translator(steps[activeStepIndex].titleKey)}
+            </Text>
             {activeStepIndex + 1 !== steps.length && (
               <Text>
                 {`${translator('Base_Next')} : ${translator(steps[activeStepIndex + 1].titleKey)}`}

@@ -19,6 +19,7 @@
 import React from 'react';
 import type {Meta} from '@storybook/react';
 import {Stepper as Component} from '../../src/components/molecules';
+import {StepState} from '../../src/components/molecules/Stepper/types';
 import {disabledControl, Story} from '../utils/control-type.helpers';
 
 const meta: Meta<typeof Component> = {
@@ -27,6 +28,11 @@ const meta: Meta<typeof Component> = {
 };
 
 export default meta;
+
+const statePicker = {
+  control: {type: 'select'},
+  options: StepState,
+};
 
 export const Stepper: Story<typeof Component> = {
   args: {
@@ -43,7 +49,14 @@ export const Stepper: Story<typeof Component> = {
     displayDropdown: false,
     translator: key => key,
   },
-  argTypes: {steps: disabledControl, translator: disabledControl},
+  argTypes: {
+    step1_state: statePicker,
+    step2_state: statePicker,
+    step3_state: statePicker,
+    step4_state: statePicker,
+    steps: disabledControl,
+    translator: disabledControl,
+  },
   render: args => (
     <Component
       {...args}

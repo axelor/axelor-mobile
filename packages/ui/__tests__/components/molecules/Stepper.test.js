@@ -17,64 +17,61 @@
  */
 
 import React from 'react';
-import {fireEvent, render, screen} from '@testing-library/react-native';
+import {fireEvent, render} from '@testing-library/react-native';
 import {Stepper} from '@axelor/aos-mobile-ui';
 
 describe('Stepper Component', () => {
-  const steps = [
-    {titleKey: 'Step_1', state: 'draft'},
-    {titleKey: 'Step_2', state: 'inProgress'},
-    {titleKey: 'Step_3', state: 'completed'},
-    {titleKey: 'Step_4', state: 'completed'},
-  ];
+  const props = {
+    steps: [
+      {titleKey: 'Step_1', state: 'completed'},
+      {titleKey: 'Step_2', state: 'error'},
+      {titleKey: 'Step_3', state: 'inProgress'},
+      {titleKey: 'Step_4', state: 'draft'},
+    ],
+    activeStepIndex: 0,
+    translator: jest.fn(key => key),
+  };
 
-  const mockTranslator = key => key;
+  it('displays the active step title and next step title if not the last', () => {
+    const {steps, activeStepIndex} = props;
+    const {getByText} = render(<Stepper {...props} />);
 
-  it('renders Stepper correctly', () => {
-    render(
-      <Stepper steps={steps} activeStepIndex={0} translator={mockTranslator} />,
-    );
-
-    expect(screen.getByText('Step_1')).toBeTruthy();
-    expect(screen.getByText('Base_Next : Step_2')).toBeTruthy();
+    expect(getByText(steps[activeStepIndex].titleKey)).toBeTruthy();
+    expect(
+      getByText(`Base_Next : ${steps[activeStepIndex + 1].titleKey}`),
+    ).toBeTruthy();
   });
 
-  it('renders current step title and next step label', () => {
-    render(
-      <Stepper steps={steps} activeStepIndex={1} translator={mockTranslator} />,
+  it('does not show the next label on the last step', () => {
+    const {queryByText} = render(
+      <Stepper {...props} activeStepIndex={props.steps.length - 1} />,
     );
 
-    expect(screen.getByText('Step_2')).toBeTruthy();
-    expect(screen.getByText('Base_Next : Step_3')).toBeTruthy();
+    expect(queryByText(/Base_Next/)).toBeNull();
   });
 
-  it('does not show dropdown icon if displayDropdown is false', () => {
-    render(
-      <Stepper steps={steps} activeStepIndex={0} translator={mockTranslator} />,
+  it('toggles StepList on dropdown press when displayDropdown is true', () => {
+    const {steps, activeStepIndex} = props;
+    const {getByTestId, queryByText, queryAllByText} = render(
+      <Stepper {...props} displayDropdown />,
     );
 
-    expect(screen.queryByTestId('chevron-down')).toBeNull();
-  });
+    steps.forEach(({titleKey}, idx) => {
+      if (idx === activeStepIndex) {
+        expect(queryByText(titleKey)).toBeTruthy();
+      } else {
+        expect(queryByText(titleKey)).toBeNull();
+      }
+    });
 
-  it('shows and toggles step list when dropdown is enabled', () => {
-    render(
-      <Stepper
-        steps={steps}
-        activeStepIndex={0}
-        translator={mockTranslator}
-        displayDropdown
-      />,
-    );
+    fireEvent.press(getByTestId('stepper-dropdown'));
 
-    const dropdown = screen.getByTestId('stepper-dropdown');
-    fireEvent.press(dropdown);
-
-    expect(screen.getByText('Step_2')).toBeTruthy();
-    expect(screen.getByText('Step_3')).toBeTruthy();
-    expect(screen.getByText('Step_4')).toBeTruthy();
-
-    fireEvent.press(dropdown);
-
-    expect(screen.queryByText('Step_4')).toBeNull();
+    steps.forEach(({titleKey}, idx) => {
+      if (idx === activeStepIndex) {
+        expect(queryAllByText(titleKey).length).toBe(2);
+      } else {
+        expect(queryByText(titleKey)).toBeTruthy();
+      }
+    });
   });
 });

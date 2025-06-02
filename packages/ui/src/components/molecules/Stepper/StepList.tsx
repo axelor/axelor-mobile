@@ -20,7 +20,7 @@ import React from 'react';
 import {View, StyleSheet} from 'react-native';
 import {useThemeColor} from '../../../theme';
 import {Icon, Text} from '../../atoms';
-import {Step, StepState} from './Stepper';
+import {Step, StepState} from './types';
 
 interface StepListProps {
   steps: Step[];
