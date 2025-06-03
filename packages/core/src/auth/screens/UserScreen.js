@@ -56,8 +56,6 @@ const UserScreen = ({children}) => {
     dispatch(fetchActiveUser(userId));
   }, [dispatch, userId]);
 
-  console.log('jnnjbj');
-
   return (
     <Screen>
       <ScrollView
