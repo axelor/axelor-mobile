@@ -20,21 +20,23 @@ import React, {useMemo} from 'react';
 import {Picker} from '@axelor/aos-mobile-ui';
 import {useTypeHelpers, useTypes} from '@axelor/aos-mobile-core';
 
-const TypePicker = ({
-  style,
-  title = 'Quality_Type',
-  defaultValue = null,
-  onChange,
-  readonly = false,
-  required = false,
-}: {
+interface TypePickerProps {
   style?: any;
   title?: string;
   defaultValue?: string;
   onChange?: (item: any) => void;
   readonly?: boolean;
   required?: boolean;
-}) => {
+}
+
+const TypePickerAux = ({
+  style,
+  title = 'Quality_Type',
+  defaultValue = null,
+  onChange,
+  readonly = false,
+  required = false,
+}: TypePickerProps) => {
   const {QualityImprovement} = useTypes();
   const {getSelectionItems} = useTypeHelpers();
 
@@ -56,6 +58,26 @@ const TypePicker = ({
       required={required}
       readonly={readonly}
       isValueItem={false}
+    />
+  );
+};
+
+const TypePicker = ({
+  style,
+  title,
+  defaultValue,
+  onChange,
+  readonly,
+  required,
+}: TypePickerProps) => {
+  return (
+    <TypePickerAux
+      style={style}
+      title={title}
+      defaultValue={defaultValue}
+      onChange={onChange}
+      readonly={readonly}
+      required={required}
     />
   );
 };

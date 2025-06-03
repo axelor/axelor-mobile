@@ -20,21 +20,23 @@ import React, {useMemo} from 'react';
 import {Picker} from '@axelor/aos-mobile-ui';
 import {useTypeHelpers, useTypes} from '@axelor/aos-mobile-core';
 
-const GravityPicker = ({
-  style,
-  title = 'Quality_Gravity',
-  defaultValue = null,
-  onChange,
-  readonly = false,
-  required = false,
-}: {
+interface GravityPickerProps {
   style?: any;
   title?: string;
   defaultValue?: string;
   onChange?: (item: any) => void;
   readonly?: boolean;
   required?: boolean;
-}) => {
+}
+
+const GravityPickerAux = ({
+  style,
+  title = 'Quality_Gravity',
+  defaultValue = null,
+  onChange,
+  readonly = false,
+  required = false,
+}: GravityPickerProps) => {
   const {QualityImprovement} = useTypes();
   const {getSelectionItems} = useTypeHelpers();
 
@@ -56,6 +58,26 @@ const GravityPicker = ({
       required={required}
       readonly={readonly}
       isValueItem={false}
+    />
+  );
+};
+
+const GravityPicker = ({
+  style,
+  title,
+  defaultValue,
+  onChange,
+  readonly,
+  required,
+}: GravityPickerProps) => {
+  return (
+    <GravityPickerAux
+      style={style}
+      title={title}
+      defaultValue={defaultValue}
+      onChange={onChange}
+      readonly={readonly}
+      required={required}
     />
   );
 };

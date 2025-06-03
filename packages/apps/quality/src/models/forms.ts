@@ -22,6 +22,7 @@ import {
   ProductSearchBar,
   QIDetectionSearchBar,
   QIMethodAnalysisSearchBar,
+  QIStepper,
   SupplierOrderLineSearchBar,
   SupplierOrderSearchBar,
   SupplierSearchBar,
@@ -34,16 +35,28 @@ import {
 import {supplierPartnerForm} from '../features/partnerSlice';
 import {supplierOrderPartnerForm} from '../features/purchaseOrderSlice';
 
+const Steps = {
+  detection: 0,
+  identification: 1,
+  defaults: 2,
+};
+
 export const quality_formsRegister: FormConfigs = {
   quality_qualityImprovement: {
     modelName: 'com.axelor.apps.quality.db.QualityImprovement',
     fields: {
+      stepper: {
+        widget: 'custom',
+        type: 'string',
+        customComponent: QIStepper,
+      },
       gravityTypeSelect: {
         titleKey: 'Quality_Gravity',
         widget: 'custom',
         type: 'number',
         required: true,
         customComponent: GravityPicker,
+        hideIf: ({objectState}) => objectState?.stepper !== Steps.detection,
       },
       type: {
         titleKey: 'Quality_Type',
@@ -51,12 +64,14 @@ export const quality_formsRegister: FormConfigs = {
         type: 'number',
         required: true,
         customComponent: TypePicker,
+        hideIf: ({objectState}) => objectState?.stepper !== Steps.detection,
       },
       qiDetection: {
         titleKey: 'Quality_QIDetection',
         type: 'object',
         widget: 'custom',
         customComponent: QIDetectionSearchBar,
+        hideIf: ({objectState}) => objectState?.stepper !== Steps.detection,
         dependsOn: {
           type: ({newValue, dispatch}) => {
             dispatch(updateTypeForm(newValue));
@@ -68,6 +83,7 @@ export const quality_formsRegister: FormConfigs = {
         type: 'object',
         widget: 'custom',
         customComponent: QIMethodAnalysisSearchBar,
+        hideIf: ({objectState}) => objectState?.stepper !== Steps.detection,
         dependsOn: {
           type: ({newValue, dispatch}) => {
             dispatch(updateTypeForm(newValue));
@@ -83,14 +99,18 @@ export const quality_formsRegister: FormConfigs = {
         type: 'object',
         widget: 'custom',
         customComponent: SupplierSearchBar,
-        hideIf: ({objectState}) => objectState?.qiDetection?.origin !== 1,
+        hideIf: ({objectState}) =>
+          objectState?.qiDetection?.origin !== 1 ||
+          objectState?.stepper !== Steps.identification,
       },
       supplierPurchaseOrder: {
         titleKey: 'Quality_SupplierOrder',
         type: 'object',
         widget: 'custom',
         customComponent: SupplierOrderSearchBar,
-        hideIf: ({objectState}) => objectState?.qiDetection?.origin !== 1,
+        hideIf: ({objectState}) =>
+          objectState?.qiDetection?.origin !== 1 ||
+          objectState?.stepper !== Steps.identification,
         dependsOn: {
           supplierPartner: ({newValue, dispatch}) => {
             dispatch(supplierPartnerForm(newValue));
@@ -102,7 +122,9 @@ export const quality_formsRegister: FormConfigs = {
         type: 'object',
         widget: 'custom',
         customComponent: SupplierOrderLineSearchBar,
-        hideIf: ({objectState}) => objectState?.qiDetection?.origin !== 1,
+        hideIf: ({objectState}) =>
+          objectState?.qiDetection?.origin !== 1 ||
+          objectState?.stepper !== Steps.identification,
         dependsOn: {
           supplierPurchaseOrder: ({newValue, dispatch}) => {
             dispatch(supplierOrderPartnerForm(newValue));
@@ -114,13 +136,17 @@ export const quality_formsRegister: FormConfigs = {
         type: 'object',
         widget: 'custom',
         customComponent: ProductSearchBar,
-        hideIf: ({objectState}) => objectState?.qiDetection?.origin !== 1,
+        hideIf: ({objectState}) =>
+          objectState?.qiDetection?.origin !== 1 ||
+          objectState?.stepper !== Steps.identification,
       },
       nonConformingQuantity: {
         titleKey: 'Quality_NonConformingQuantity',
         type: 'number',
         widget: 'increment',
-        hideIf: ({objectState}) => objectState?.qiDetection?.origin !== 1,
+        hideIf: ({objectState}) =>
+          objectState?.qiDetection?.origin !== 1 ||
+          objectState?.stepper !== Steps.identification,
       },
     },
   },

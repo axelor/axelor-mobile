@@ -20,6 +20,7 @@ export {default as GravityPicker} from './GravityPicker/GravityPicker';
 export {default as ProductSearchBar} from './ProductSearchBar/ProductSearchBar';
 export {default as QIDetectionSearchBar} from './QIDetectionSearchBar/QIDetectionSearchBar';
 export {default as QIMethodAnalysisSearchBar} from './QIMethodAnalysisSearchBar/QIMethodAnalysisSearchBar';
+export {default as QIStepper} from './QIStepper/QIStepper';
 export {default as QualityImprovementFilter} from './QualityImprovementFilter/QualityImprovementFilter';
 export {default as SupplierOrderLineSearchBar} from './SupplierOrderLineSearchBar/SupplierOrderLineSearchBar';
 export {default as SupplierOrderSearchBar} from './SupplierOrderSearchBar/SupplierOrderSearchBar';

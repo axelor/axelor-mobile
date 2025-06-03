@@ -62,6 +62,8 @@ const initialState = {
 
   typeForm: null,
   gravityForm: null,
+
+  actualSteps: 0,
 };
 
 const qualityImprovementSlice = createSlice({
@@ -73,6 +75,9 @@ const qualityImprovementSlice = createSlice({
     },
     updateGravityForm: (state, action) => {
       state.gravityForm = action.payload;
+    },
+    updateSteps: (state, action) => {
+      state.actualSteps = action.payload;
     },
   },
   extraReducers: builder => {
@@ -91,7 +96,7 @@ const qualityImprovementSlice = createSlice({
   },
 });
 
-export const {updateTypeForm, updateGravityForm} =
+export const {updateTypeForm, updateGravityForm, updateSteps} =
   qualityImprovementSlice.actions;
 
 export const qualityImprovementReducer = qualityImprovementSlice.reducer;
