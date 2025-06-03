@@ -34,6 +34,10 @@
   "Quality_QIDetection": "Détection",
   "Quality_QIMethodAnalysis": "Méthode d'analyse",
   "Quality_CreateNewQI": "Créer une nouvelle amélioration qualité",
+  "Quality_Supplier": "Fournisseur",
+  "Quality_SupplierOrder": "Commande fournisseur",
+  "Quality_SupplierOrderLine": "ligne de commande fournisseur",
+  "Quality_NonConformingQuantity": "Quantité non conforme",
   "Quality_SliceAction_SearchControlEntry": "recherche des relevés de contrôle",
   "Quality_SliceAction_FetchControlEntryById": "récupération du relevé de contrôle par id",
   "Quality_SliceAction_SearchControlEntrySample": "recherche sur les échantillons du relevé de contôle",
@@ -44,5 +48,9 @@
   "Quality_SliceAction_SearchQualityImprovement": "recherche des améliorations qualité",
   "Quality_SliceAction_FetchQualityImprovementStatus": "récupération des statuts des améliorations",
   "Quality_SliceAction_SearchQIDetection": "",
-  "Quality_SliceAction_SearchQIAnalysisMethod": ""
+  "Quality_SliceAction_SearchQIAnalysisMethod": "",
+  "Quality_SliceAction_SearchSupplier": "",
+  "Quality_SliceAction_SearchSupplierOrder": "",
+  "Quality_SliceAction_searchSupplierPurchaseOrderLine": "",
+  "Quality_SliceAction_SearchProduct": ""
 }

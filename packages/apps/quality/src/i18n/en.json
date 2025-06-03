@@ -34,6 +34,10 @@
   "Quality_QIDetection": "Detection",
   "Quality_QIMethodAnalysis": "Analysis Method",
   "Quality_CreateNewQI": "Create new quality improvement",
+  "Quality_Supplier": "Supplier",
+  "Quality_SupplierOrder": "Supplier order",
+  "Quality_SupplierOrderLine": "Supplier order line",
+  "Quality_NonConformingQuantity": "Non conforming quantity",
   "Quality_SliceAction_SearchControlEntry": "search control entries",
   "Quality_SliceAction_FetchControlEntryById": "fetch control entry by id",
   "Quality_SliceAction_SearchControlEntrySample": "search control entry samples",
@@ -44,5 +48,9 @@
   "Quality_SliceAction_SearchQualityImprovement": "search quality improvements",
   "Quality_SliceAction_FetchQualityImprovementStatus": "fetch improvement status",
   "Quality_SliceAction_SearchQIDetection": "",
-  "Quality_SliceAction_SearchQIAnalysisMethod": ""
+  "Quality_SliceAction_SearchQIAnalysisMethod": "",
+  "Quality_SliceAction_SearchSupplier": "",
+  "Quality_SliceAction_SearchSupplierOrder": "",
+  "Quality_SliceAction_searchSupplierPurchaseOrderLine": "",
+  "Quality_SliceAction_SearchProduct": ""
 }

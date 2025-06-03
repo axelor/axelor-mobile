@@ -120,4 +120,33 @@ export const quality_typeObjects: ModuleSelections = [
       },
     },
   },
+  {
+    modelName: 'com.axelor.apps.quality.db.QIDetection',
+    fields: {
+      origin: {
+        content: [
+          {
+            key: 'none',
+            value: 0,
+            title: 'Quality_none',
+          },
+          {
+            key: 'supplier',
+            value: 1,
+            title: 'Quality_Supplier',
+          },
+          {
+            key: 'Internal',
+            value: 2,
+            title: 'Quality_Internal',
+          },
+          {
+            key: 'Customer',
+            value: 3,
+            title: 'Quality_Customer',
+          },
+        ],
+      },
+    },
+  },
 ];

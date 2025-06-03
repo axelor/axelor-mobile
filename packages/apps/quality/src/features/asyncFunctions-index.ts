@@ -27,6 +27,12 @@ export {
   updateControlEntry,
 } from './controlEntrySlice';
 export {fetchControlPlanById} from './controlPlanSlice';
+export {searchSupplier} from './partnerSlice';
+export {
+  searchProduct,
+} from './productSlice';
+export {searchSupplierPurchaseOrderLine} from './purchaseOrderLineSlice';
+export {searchSupplierOrder} from './purchaseOrderSlice';
 export {searchQIAnalysisMethod} from './qiAnalysisMethodSlice';
 export {
   fetchQualityImprovementStatus,

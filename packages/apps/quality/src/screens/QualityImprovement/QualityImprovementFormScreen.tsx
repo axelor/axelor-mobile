@@ -18,9 +18,13 @@
 
 import React from 'react';
 import {Screen} from '@axelor/aos-mobile-ui';
-import {FormView} from '@axelor/aos-mobile-core';
+import {FormView, useTypes} from '@axelor/aos-mobile-core';
 
 const QualityImprovementFormScreen = ({}) => {
+  const {QIDetection} = useTypes();
+
+  console.log('QIDetection', QIDetection);
+
   return (
     <Screen removeSpaceOnTop={true}>
       <FormView

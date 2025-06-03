@@ -19,14 +19,20 @@
 import {FormConfigs} from '@axelor/aos-mobile-core';
 import {
   GravityPicker,
+  ProductSearchBar,
   QIDetectionSearchBar,
   QIMethodAnalysisSearchBar,
+  SupplierOrderLineSearchBar,
+  SupplierOrderSearchBar,
+  SupplierSearchBar,
   TypePicker,
 } from '../components';
 import {
   updateGravityForm,
   updateTypeForm,
 } from '../features/qualityImprovementSlice';
+import {supplierPartnerForm} from '../features/partnerSlice';
+import {supplierOrderPartnerForm} from '../features/purchaseOrderSlice';
 
 export const quality_formsRegister: FormConfigs = {
   quality_qualityImprovement: {
@@ -70,6 +76,51 @@ export const quality_formsRegister: FormConfigs = {
             dispatch(updateGravityForm(newValue));
           },
         },
+      },
+      // ------- SUPPLIER CASE ------- //
+      supplierPartner: {
+        titleKey: 'Quality_Supplier',
+        type: 'object',
+        widget: 'custom',
+        customComponent: SupplierSearchBar,
+        hideIf: ({objectState}) => objectState?.qiDetection?.origin !== 1,
+      },
+      supplierPurchaseOrder: {
+        titleKey: 'Quality_SupplierOrder',
+        type: 'object',
+        widget: 'custom',
+        customComponent: SupplierOrderSearchBar,
+        hideIf: ({objectState}) => objectState?.qiDetection?.origin !== 1,
+        dependsOn: {
+          supplierPartner: ({newValue, dispatch}) => {
+            dispatch(supplierPartnerForm(newValue));
+          },
+        },
+      },
+      supplierPurchaseOrderLine: {
+        titleKey: 'Quality_SupplierOrderLine',
+        type: 'object',
+        widget: 'custom',
+        customComponent: SupplierOrderLineSearchBar,
+        hideIf: ({objectState}) => objectState?.qiDetection?.origin !== 1,
+        dependsOn: {
+          supplierPurchaseOrder: ({newValue, dispatch}) => {
+            dispatch(supplierOrderPartnerForm(newValue));
+          },
+        },
+      },
+      product: {
+        titleKey: 'Quality_Product',
+        type: 'object',
+        widget: 'custom',
+        customComponent: ProductSearchBar,
+        hideIf: ({objectState}) => objectState?.qiDetection?.origin !== 1,
+      },
+      nonConformingQuantity: {
+        titleKey: 'Quality_NonConformingQuantity',
+        type: 'number',
+        widget: 'increment',
+        hideIf: ({objectState}) => objectState?.qiDetection?.origin !== 1,
       },
     },
   },

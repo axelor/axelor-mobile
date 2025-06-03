@@ -63,9 +63,23 @@ export const quality_modelAPI: ObjectFields = {
   quality_QIDetection: schemaContructor.object({
     name: schemaContructor.string(),
     code: schemaContructor.string(),
+    origin: schemaContructor.number(),
   }),
   quality_QIAnalysisMethod: schemaContructor.object({
     code: schemaContructor.string(),
+    name: schemaContructor.string(),
+  }),
+  quality_supplier: schemaContructor.object({
+    simpleFullName: schemaContructor.string(),
+  }),
+  quality_supplierOrder: schemaContructor.object({
+    purchaseOrderSeq: schemaContructor.string(),
+  }),
+  quality_supplierOrderLine: schemaContructor.object({
+    fullName: schemaContructor.string(),
+  }),
+  quality_product: schemaContructor.object({
+    fullName: schemaContructor.string(),
     name: schemaContructor.string(),
   }),
 };
