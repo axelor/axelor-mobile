@@ -16,7 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import React, {useCallback} from 'react';
+import React, {useCallback, useMemo} from 'react';
 import {
   DateDisplay,
   useTranslator,
@@ -34,10 +34,11 @@ interface SaleOrderQtyIndicatorCardProps {
   reservedQty?: number;
   receivedQty?: number;
   unit: any;
-  estimatedShippingDate?: string;
+  estimatedDeliveryDate?: string;
   estimatedReceiptDate?: string;
   deliveryState?: number;
   receiptState?: number;
+  sequence?: number;
 }
 
 const SaleOrderQtyIndicatorCard = ({
@@ -49,10 +50,11 @@ const SaleOrderQtyIndicatorCard = ({
   reservedQty,
   receivedQty,
   unit,
-  estimatedShippingDate,
+  estimatedDeliveryDate,
   estimatedReceiptDate,
   deliveryState,
   receiptState,
+  sequence,
 }: SaleOrderQtyIndicatorCardProps) => {
   const I18n = useTranslator();
   const {
@@ -73,6 +75,20 @@ const SaleOrderQtyIndicatorCard = ({
     [I18n, formatNumber, unit?.name],
   );
 
+  const date = useMemo(
+    () =>
+      estimatedDeliveryDate ??
+      saleOrder?.estimatedDeliveryDate ??
+      estimatedReceiptDate ??
+      purchaseOrder?.estimatedReceiptDate,
+    [
+      estimatedDeliveryDate,
+      estimatedReceiptDate,
+      purchaseOrder?.estimatedReceiptDate,
+      saleOrder?.estimatedDeliveryDate,
+    ],
+  );
+
   return (
     <ObjectCard
       style={style}
@@ -85,6 +101,13 @@ const SaleOrderQtyIndicatorCard = ({
               saleOrder?.saleOrderSeq ?? purchaseOrder?.purchaseOrderSeq,
             isTitle: true,
           },
+          {indicatorText: I18n.t('Stock_LineNumber', {sequence})},
+          {
+            iconName: 'tag-fill',
+            indicatorText:
+              saleOrder?.externalReference ?? purchaseOrder?.externalReference,
+            hideIfNull: true,
+          },
           {
             iconName: 'house',
             indicatorText:
@@ -96,17 +119,12 @@ const SaleOrderQtyIndicatorCard = ({
           {...formatQty(reservedQty, 'Stock_AllocatedQty')},
           {...formatQty(receivedQty, 'Stock_ReceivedQty')},
           {
-            customComponent: (
-              <DateDisplay
-                date={estimatedShippingDate ?? estimatedReceiptDate}
-                size={14}
-                displayYear
-              />
-            ),
+            customComponent: <DateDisplay date={date} size={14} displayYear />,
           },
         ],
       }}
-      sideBadges={{
+      lowerBadges={{
+        fixedOnRightSide: true,
         items: [
           {
             displayText: getItemTitle(
@@ -114,7 +132,8 @@ const SaleOrderQtyIndicatorCard = ({
               deliveryState,
             ),
             color: getItemColor(SaleOrderLine?.deliveryState, deliveryState),
-            showIf: deliveryState == null,
+            showIf: deliveryState != null,
+            style: {width: undefined, paddingHorizontal: 5},
           },
           {
             displayText: getItemTitle(
@@ -122,7 +141,8 @@ const SaleOrderQtyIndicatorCard = ({
               receiptState,
             ),
             color: getItemColor(PurchaseOrderLine?.receiptState, receiptState),
-            showIf: receiptState == null,
+            showIf: receiptState != null,
+            style: {width: undefined, paddingHorizontal: 5},
           },
         ],
       }}
