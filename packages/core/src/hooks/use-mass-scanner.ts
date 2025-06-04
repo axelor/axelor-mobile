@@ -31,7 +31,10 @@ import {useScanActivator} from './use-scan-activator';
 
 interface UseMassScannerParams {
   scanKey: string;
-  backgroundAction: (scannedValue: string) => any;
+  backgroundAction: (
+    scannedValue: string,
+    tools?: {disableScan: () => void},
+  ) => any;
   fallbackAction?: (error: any) => void;
   scanInterval?: number;
   disableOnError?: boolean;
@@ -65,22 +68,22 @@ export const useMassScanner = ({
 
   const processScan = useCallback(
     async (value: string, clearAction: () => void) => {
+      if (isProcessingRef.current) return;
+
       try {
-        if (!isProcessingRef.current) {
-          isProcessingRef.current = true;
-          await backgroundAction(value);
-          timerRef.current = setTimeout(
-            () => (isProcessingRef.current = false),
-            isZebraDevice ? 0 : scanInterval,
-          );
-        }
+        isProcessingRef.current = true;
+        await backgroundAction(value, {disableScan});
       } catch (error) {
-        if (disableOnError) {
-          disableScan();
-        }
+        if (disableOnError) disableScan();
         fallbackAction?.(error);
       } finally {
-        clearAction();
+        timerRef.current = setTimeout(
+          () => {
+            isProcessingRef.current = false;
+            clearAction();
+          },
+          isZebraDevice ? 0 : scanInterval,
+        );
       }
     },
     [
@@ -96,10 +99,14 @@ export const useMassScanner = ({
   useEffect(() => {
     if (scannedValue) {
       processScan(scannedValue, () => dispatch(clearScan()));
-    } else if (scannedBarcode?.value) {
+    }
+  }, [dispatch, processScan, scannedValue]);
+
+  useEffect(() => {
+    if (scannedBarcode?.value) {
       processScan(scannedBarcode.value, () => dispatch(clearBarcode()));
     }
-  }, [dispatch, processScan, scannedBarcode?.value, scannedValue]);
+  }, [dispatch, processScan, scannedBarcode?.value]);
 
   return useMemo(
     () => ({disableScan, enableScan, isEnabled}),
