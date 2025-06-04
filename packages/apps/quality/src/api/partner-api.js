@@ -34,10 +34,36 @@ const createSupplierCriteria = searchValue => {
   return criterias;
 };
 
+const createCustomerCriteria = searchValue => {
+  const criterias = [
+    getSearchCriterias('quality_supplier', searchValue),
+    {
+      fieldName: 'isCustomer',
+      operator: '=',
+      value: true,
+    },
+  ];
+
+  return criterias;
+};
+
 export async function searchSupplier({page = 0, searchValue, companyId}) {
   return createStandardSearch({
     model: 'com.axelor.apps.base.db.Partner',
     criteria: createSupplierCriteria(searchValue),
+    fieldKey: 'quality_supplier',
+    sortKey: 'quality_supplier',
+    page,
+    companyId,
+    isCompanyM2M: true,
+    provider: 'model',
+  });
+}
+
+export async function searchCustomer({page = 0, searchValue, companyId}) {
+  return createStandardSearch({
+    model: 'com.axelor.apps.base.db.Partner',
+    criteria: createCustomerCriteria(searchValue),
     fieldKey: 'quality_supplier',
     sortKey: 'quality_supplier',
     page,

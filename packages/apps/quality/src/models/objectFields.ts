@@ -82,4 +82,10 @@ export const quality_modelAPI: ObjectFields = {
     fullName: schemaContructor.string(),
     name: schemaContructor.string(),
   }),
+  quality_customerOrder: schemaContructor.object({
+    saleOrderSeq: schemaContructor.string(),
+  }),
+  quality_customerOrderLine: schemaContructor.object({
+    productName: schemaContructor.string(),
+  }),
 };

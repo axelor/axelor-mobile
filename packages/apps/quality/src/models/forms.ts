@@ -16,8 +16,11 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import {FormConfigs} from '@axelor/aos-mobile-core';
+import {FormConfigs, getTypes} from '@axelor/aos-mobile-core';
 import {
+  CustomerOrderLineSearchBar,
+  CustomerOrderSearchBar,
+  CustomerSearchBar,
   GravityPicker,
   ProductSearchBar,
   QIDetectionSearchBar,
@@ -32,8 +35,12 @@ import {
   updateGravityForm,
   updateTypeForm,
 } from '../features/qualityImprovementSlice';
-import {supplierPartnerForm} from '../features/partnerSlice';
+import {
+  supplierPartnerForm,
+  updateCustomerPartnerForm,
+} from '../features/partnerSlice';
 import {supplierOrderPartnerForm} from '../features/purchaseOrderSlice';
+import {updateCustomerOrderPartnerForm} from '../features/saleOrderSlice';
 
 const Steps = {
   detection: 0,
@@ -99,18 +106,26 @@ export const quality_formsRegister: FormConfigs = {
         type: 'object',
         widget: 'custom',
         customComponent: SupplierSearchBar,
-        hideIf: ({objectState}) =>
-          objectState?.qiDetection?.origin !== 1 ||
-          objectState?.stepper !== Steps.identification,
+        hideIf: ({objectState}) => {
+          const QIDetection = getTypes().QIDetection;
+          return (
+            objectState?.qiDetection?.origin !== QIDetection.origin.supplier ||
+            objectState?.stepper !== Steps.identification
+          );
+        },
       },
       supplierPurchaseOrder: {
         titleKey: 'Quality_SupplierOrder',
         type: 'object',
         widget: 'custom',
         customComponent: SupplierOrderSearchBar,
-        hideIf: ({objectState}) =>
-          objectState?.qiDetection?.origin !== 1 ||
-          objectState?.stepper !== Steps.identification,
+        hideIf: ({objectState}) => {
+          const QIDetection = getTypes().QIDetection;
+          return (
+            objectState?.qiDetection?.origin !== QIDetection.origin.supplier ||
+            objectState?.stepper !== Steps.identification
+          );
+        },
         dependsOn: {
           supplierPartner: ({newValue, dispatch}) => {
             dispatch(supplierPartnerForm(newValue));
@@ -122,12 +137,66 @@ export const quality_formsRegister: FormConfigs = {
         type: 'object',
         widget: 'custom',
         customComponent: SupplierOrderLineSearchBar,
-        hideIf: ({objectState}) =>
-          objectState?.qiDetection?.origin !== 1 ||
-          objectState?.stepper !== Steps.identification,
+        hideIf: ({objectState}) => {
+          const QIDetection = getTypes().QIDetection;
+          return (
+            objectState?.qiDetection?.origin !== QIDetection.origin.supplier ||
+            objectState?.stepper !== Steps.identification
+          );
+        },
         dependsOn: {
           supplierPurchaseOrder: ({newValue, dispatch}) => {
             dispatch(supplierOrderPartnerForm(newValue));
+          },
+        },
+      },
+      // ------- CUSTOMER CASE ------- //
+      customerPartner: {
+        titleKey: 'Quality_Customer',
+        type: 'object',
+        widget: 'custom',
+        customComponent: CustomerSearchBar,
+        hideIf: ({objectState}) => {
+          const QIDetection = getTypes().QIDetection;
+          return (
+            objectState?.qiDetection?.origin !== QIDetection.origin.customer ||
+            objectState?.stepper !== Steps.identification
+          );
+        },
+      },
+      customerSaleOrder: {
+        titleKey: 'Quality_CustomerOrder',
+        type: 'object',
+        widget: 'custom',
+        customComponent: CustomerOrderSearchBar,
+        hideIf: ({objectState}) => {
+          const QIDetection = getTypes().QIDetection;
+          return (
+            objectState?.qiDetection?.origin !== QIDetection.origin.customer ||
+            objectState?.stepper !== Steps.identification
+          );
+        },
+        dependsOn: {
+          customerPartner: ({newValue, dispatch}) => {
+            dispatch(updateCustomerPartnerForm(newValue));
+          },
+        },
+      },
+      customerSaleOrderLine: {
+        titleKey: 'Quality_CustomerOrderLine',
+        type: 'object',
+        widget: 'custom',
+        customComponent: CustomerOrderLineSearchBar,
+        hideIf: ({objectState}) => {
+          const QIDetection = getTypes().QIDetection;
+          return (
+            objectState?.qiDetection?.origin !== QIDetection.origin.customer ||
+            objectState?.stepper !== Steps.identification
+          );
+        },
+        dependsOn: {
+          customerSaleOrder: ({newValue, dispatch}) => {
+            dispatch(updateCustomerOrderPartnerForm(newValue));
           },
         },
       },
@@ -136,17 +205,29 @@ export const quality_formsRegister: FormConfigs = {
         type: 'object',
         widget: 'custom',
         customComponent: ProductSearchBar,
-        hideIf: ({objectState}) =>
-          objectState?.qiDetection?.origin !== 1 ||
-          objectState?.stepper !== Steps.identification,
+        hideIf: ({objectState}) => {
+          const QualityImprovement = getTypes().QualityImprovement;
+          const QIDetection = getTypes().QIDetection;
+          return (
+            objectState?.qiDetection?.origin !== QIDetection.origin.supplier ||
+            objectState?.stepper !== Steps.identification ||
+            objectState?.type === QualityImprovement?.type?.System
+          );
+        },
       },
       nonConformingQuantity: {
         titleKey: 'Quality_NonConformingQuantity',
         type: 'number',
         widget: 'increment',
-        hideIf: ({objectState}) =>
-          objectState?.qiDetection?.origin !== 1 ||
-          objectState?.stepper !== Steps.identification,
+        hideIf: ({objectState}) => {
+          const QualityImprovement = getTypes().QualityImprovement;
+          const QIDetection = getTypes().QIDetection;
+          return (
+            objectState?.qiDetection?.origin !== QIDetection.origin.supplier ||
+            objectState?.stepper !== Steps.identification ||
+            objectState?.type === QualityImprovement?.type?.System
+          );
+        },
       },
     },
   },

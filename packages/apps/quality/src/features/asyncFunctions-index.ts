@@ -27,10 +27,8 @@ export {
   updateControlEntry,
 } from './controlEntrySlice';
 export {fetchControlPlanById} from './controlPlanSlice';
-export {searchSupplier} from './partnerSlice';
-export {
-  searchProduct,
-} from './productSlice';
+export {searchCustomer, searchSupplier} from './partnerSlice';
+export {searchProduct} from './productSlice';
 export {searchSupplierPurchaseOrderLine} from './purchaseOrderLineSlice';
 export {searchSupplierOrder} from './purchaseOrderSlice';
 export {searchQIAnalysisMethod} from './qiAnalysisMethodSlice';
@@ -39,3 +37,5 @@ export {
   searchQualityImprovement,
 } from './qualityImprovementSlice';
 export {searchQIDetection} from './qiDetectionSlice';
+export {searchCustomerOrderLine} from './saleOrderLineSlice';
+export {searchCustomerOrder} from './saleOrderSlice';

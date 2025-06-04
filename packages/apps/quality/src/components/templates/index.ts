@@ -16,6 +16,9 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+export {default as CustomerOrderLineSearchBar} from './CustomerOrderLineSearchBar/CustomerOrderLineSearchBar';
+export {default as CustomerOrderSearchBar} from './CustomerOrderSearchBar/CustomerOrderSearchBar';
+export {default as CustomerSearchBar} from './CustomerSearchBar/CustomerSearchBar';
 export {default as GravityPicker} from './GravityPicker/GravityPicker';
 export {default as ProductSearchBar} from './ProductSearchBar/ProductSearchBar';
 export {default as QIDetectionSearchBar} from './QIDetectionSearchBar/QIDetectionSearchBar';

@@ -21,7 +21,10 @@ import {
   generateInifiniteScrollCases,
   handlerApiCall,
 } from '@axelor/aos-mobile-core';
-import {searchSupplier as _searchSupplier} from '../api/partner-api';
+import {
+  searchCustomer as _searchCustomer,
+  searchSupplier as _searchSupplier,
+} from '../api/partner-api';
 
 export const searchSupplier = createAsyncThunk(
   'quality_partner/searchSupplier',
@@ -36,13 +39,32 @@ export const searchSupplier = createAsyncThunk(
   },
 );
 
+export const searchCustomer = createAsyncThunk(
+  'quality_partner/searchCustomer',
+  async function (data, {getState}) {
+    return handlerApiCall({
+      fetchFunction: _searchCustomer,
+      data,
+      action: 'Quality_SliceAction_SearchCustomer',
+      getState,
+      responseOptions: {isArrayResponse: true},
+    });
+  },
+);
+
 const initialState = {
+  loadingCustomer: false,
+  moreLoadingCustomer: false,
+  isListEndCustomer: false,
+  customerList: [],
+
   loadingSuppliers: false,
   moreLoadingSupplier: false,
   isListEndSupplier: false,
   supplierList: [],
 
   supplierPartnerForm: null,
+  customerPartnerForm: null,
 };
 
 const partnerSlice = createSlice({
@@ -52,6 +74,9 @@ const partnerSlice = createSlice({
     supplierPartnerForm: (state, action) => {
       state.supplierPartnerForm = action.payload;
     },
+    updateCustomerPartnerForm: (state, action) => {
+      state.customerPartnerForm = action.payload;
+    },
   },
   extraReducers: builder => {
     generateInifiniteScrollCases(builder, searchSupplier, {
@@ -60,9 +85,16 @@ const partnerSlice = createSlice({
       isListEnd: 'isListEndSupplier',
       list: 'supplierList',
     });
+    generateInifiniteScrollCases(builder, searchCustomer, {
+      loading: 'loadingCustomer',
+      moreLoading: 'moreLoadingCustomer',
+      isListEnd: 'isListEndCustomer',
+      list: 'customerList',
+    });
   },
 });
 
-export const {supplierPartnerForm} = partnerSlice.actions;
+export const {supplierPartnerForm, updateCustomerPartnerForm} =
+  partnerSlice.actions;
 
 export const partnerReducer = partnerSlice.reducer;

@@ -44,6 +44,9 @@
   "Quality_SupplierOrder": "Commande fournisseur",
   "Quality_SupplierOrderLine": "ligne de commande fournisseur",
   "Quality_NonConformingQuantity": "Quantité non conforme",
+  "Quality_Customer": "Client",
+  "Quality_CustomerOrder": "Commande client",
+  "Quality_CustomerOrderLine": "Ligne de commande client",
   "Quality_SliceAction_SearchControlEntry": "recherche des relevés de contrôle",
   "Quality_SliceAction_FetchControlEntryById": "récupération du relevé de contrôle par id",
   "Quality_SliceAction_SearchControlEntrySample": "recherche sur les échantillons du relevé de contôle",
@@ -58,5 +61,8 @@
   "Quality_SliceAction_SearchSupplier": "",
   "Quality_SliceAction_SearchSupplierOrder": "",
   "Quality_SliceAction_searchSupplierPurchaseOrderLine": "",
-  "Quality_SliceAction_SearchProduct": ""
+  "Quality_SliceAction_SearchProduct": "",
+  "Quality_SliceAction_SearchCustomer": "",
+  "Quality_SliceAction_SearchCustomerOrder": "",
+  "Quality_SliceAction_SearchCustomerOrderLine": ""
 }

@@ -30,10 +30,11 @@ export {
   searchControlEntrySampleLineOfControlEntry as searchControlEntrySampleLineOfControlEntryApi,
 } from './control-entry-sample-line-api';
 export {fetchControlPlanById as fetchControlPlanByIdApi} from './control-plan-api';
-export {searchSupplier as searchSupplierApi} from './partner-api';
 export {
-  searchProduct as searchProductApi,
-} from './product-api';
+  searchCustomer as searchCustomerApi,
+  searchSupplier as searchSupplierApi,
+} from './partner-api';
+export {searchProduct as searchProductApi} from './product-api';
 export {searchSupplierOrder as searchSupplierOrderApi} from './purchase-order-api';
 export {searchSupplierPurchaseOrderLine as searchSupplierPurchaseOrderLineApi} from './purchase-order-line-api';
 export {searchQIAnalysisMethod as searchQIAnalysisMethodApi} from './qi-analysis-method-api';
@@ -42,3 +43,5 @@ export {
   fetchQualityImprovementStatus as fetchQualityImprovementStatusApi,
   searchQualityImprovement as searchQualityImprovementApi,
 } from './quality-improvement-api';
+export {searchCustomerOrder as searchCustomerOrderApi} from './sale-order-api';
+export {searchCustomerOrderLine as searchCustomerOrderLineApi} from './sale-order-line-api';

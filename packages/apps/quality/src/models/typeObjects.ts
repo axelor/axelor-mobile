@@ -136,12 +136,12 @@ export const quality_typeObjects: ModuleSelections = [
             title: 'Quality_Supplier',
           },
           {
-            key: 'Internal',
+            key: 'internal',
             value: 2,
             title: 'Quality_Internal',
           },
           {
-            key: 'Customer',
+            key: 'customer',
             value: 3,
             title: 'Quality_Customer',
           },
