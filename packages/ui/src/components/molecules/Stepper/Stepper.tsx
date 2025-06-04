@@ -84,10 +84,12 @@ const Stepper = ({
         onPress={() => setIsStepListVisible(current => !current)}>
         <View style={styles.fixedContainer}>
           <ProgressCircle
-            activeStep={activeStepIndex + 1}
-            numberOfSteps={steps.length}
+            progress={(activeStepIndex + 1) / steps.length}
             isError={steps.some(_step => _step.state === 'error')}
-            translator={translator}
+            innerText={translator('Base_StepOfStep', {
+              activeStep: activeStepIndex + 1,
+              numberOfSteps: steps.length,
+            })}
           />
           <View style={styles.textContainer}>
             <Text writingType="title">
