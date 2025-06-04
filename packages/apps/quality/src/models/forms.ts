@@ -22,6 +22,8 @@ import {
   CustomerOrderSearchBar,
   CustomerSearchBar,
   GravityPicker,
+  ManufOrderSearchBar,
+  OperationLineSearchBar,
   ProductSearchBar,
   QIDetectionSearchBar,
   QIMethodAnalysisSearchBar,
@@ -41,6 +43,7 @@ import {
 } from '../features/partnerSlice';
 import {supplierOrderPartnerForm} from '../features/purchaseOrderSlice';
 import {updateCustomerOrderPartnerForm} from '../features/saleOrderSlice';
+import {updateManufOrder} from '../features/manufOrderSlice';
 
 const Steps = {
   detection: 0,
@@ -159,7 +162,9 @@ export const quality_formsRegister: FormConfigs = {
         hideIf: ({objectState}) => {
           const QIDetection = getTypes().QIDetection;
           return (
-            objectState?.qiDetection?.origin !== QIDetection.origin.customer ||
+            (objectState?.qiDetection?.origin !== QIDetection.origin.customer &&
+              objectState?.qiDetection?.origin !==
+                QIDetection.origin.internal) ||
             objectState?.stepper !== Steps.identification
           );
         },
@@ -200,6 +205,38 @@ export const quality_formsRegister: FormConfigs = {
           },
         },
       },
+      // ------- Interal CASE ------- //
+      manufOrder: {
+        titleKey: 'Quality_ManufOrder',
+        type: 'object',
+        widget: 'custom',
+        customComponent: ManufOrderSearchBar,
+        hideIf: ({objectState}) => {
+          const QIDetection = getTypes().QIDetection;
+          return (
+            objectState?.qiDetection?.origin !== QIDetection.origin.internal ||
+            objectState?.stepper !== Steps.identification
+          );
+        },
+      },
+      operationOrder: {
+        titleKey: 'Quality_OperationLine',
+        type: 'object',
+        widget: 'custom',
+        customComponent: OperationLineSearchBar,
+        hideIf: ({objectState}) => {
+          const QIDetection = getTypes().QIDetection;
+          return (
+            objectState?.qiDetection?.origin !== QIDetection.origin.internal ||
+            objectState?.stepper !== Steps.identification
+          );
+        },
+        dependsOn: {
+          manufOrder: ({newValue, dispatch}) => {
+            dispatch(updateManufOrder(newValue));
+          },
+        },
+      },
       product: {
         titleKey: 'Quality_Product',
         type: 'object',
@@ -207,9 +244,7 @@ export const quality_formsRegister: FormConfigs = {
         customComponent: ProductSearchBar,
         hideIf: ({objectState}) => {
           const QualityImprovement = getTypes().QualityImprovement;
-          const QIDetection = getTypes().QIDetection;
           return (
-            objectState?.qiDetection?.origin !== QIDetection.origin.supplier ||
             objectState?.stepper !== Steps.identification ||
             objectState?.type === QualityImprovement?.type?.System
           );
@@ -221,9 +256,7 @@ export const quality_formsRegister: FormConfigs = {
         widget: 'increment',
         hideIf: ({objectState}) => {
           const QualityImprovement = getTypes().QualityImprovement;
-          const QIDetection = getTypes().QIDetection;
           return (
-            objectState?.qiDetection?.origin !== QIDetection.origin.supplier ||
             objectState?.stepper !== Steps.identification ||
             objectState?.type === QualityImprovement?.type?.System
           );

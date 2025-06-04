@@ -20,6 +20,8 @@ export {controlEntrySampleLineReducer as controlEntrySampleLine} from './control
 export {controlEntrySampleReducer as controlEntrySample} from './controlEntrySampleSlice';
 export {controlEntryReducer as controlEntry} from './controlEntrySlice';
 export {controlPlanReducer as controlPlan} from './controlPlanSlice';
+export {manufOrderReducer as quality_manufOrder} from './manufOrderSlice';
+export {operationOrderReducer as quality_operationOrder} from './operationOrderSlice';
 export {partnerReducer as quality_partner} from './partnerSlice';
 export {productReducer as quality_product} from './productSlice';
 export {purchaseOrderLineReducer as quality_purchaseOrderLine} from './purchaseOrderLineSlice';

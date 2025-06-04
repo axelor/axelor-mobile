@@ -16,19 +16,23 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import {SearchFields} from '@axelor/aos-mobile-core';
+import {
+  createStandardSearch,
+  getSearchCriterias,
+} from '@axelor/aos-mobile-core';
 
-export const quality_searchFields: SearchFields = {
-  quality_controlEntry: ['entryDateTime'],
-  quality_qualityImprovement: ['sequence'],
-  quality_QIDetection: ['name', 'code'],
-  quality_QIAnalysisMethod: ['objective'],
-  quality_supplier: ['simpleFullName'],
-  quality_supplierOrder: ['purchaseOrderSeq'],
-  quality_supplierOrderLine: ['fullName'],
-  quality_product: ['fullName', 'name'],
-  quality_customerOrder: ['saleOrderSeq'],
-  quality_customerOrderLine: ['productName'],
-  quality_manufacturingOrder: ['manufOrderSeq'],
-  quality_operationOrder: ['name'],
+const createManufOrderCriteria = searchValue => {
+  return [getSearchCriterias('quality_manufacturingOrder', searchValue)];
 };
+
+export async function searchManufOrder({page = 0, searchValue, companyId}) {
+  return createStandardSearch({
+    model: 'com.axelor.apps.production.db.ManufOrder',
+    criteria: createManufOrderCriteria(searchValue),
+    fieldKey: 'quality_manufacturingOrder',
+    sortKey: 'quality_manufacturingOrder',
+    page,
+    provider: 'model',
+    companyId,
+  });
+}

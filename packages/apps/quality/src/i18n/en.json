@@ -47,6 +47,11 @@
   "Quality_Customer": "Customer",
   "Quality_CustomerOrder": "Customer order",
   "Quality_CustomerOrderLine": "Customer order line",
+  "Quality_ManufOrder": "Manufacturing order",
+  "Quality_OperationLine": "Operation line",
+  "Quality_PreviousStep": "Previous step",
+  "Quality_NextStep": "Next step",
+  "Quality_Save": "Save",
   "Quality_SliceAction_SearchControlEntry": "search control entries",
   "Quality_SliceAction_FetchControlEntryById": "fetch control entry by id",
   "Quality_SliceAction_SearchControlEntrySample": "search control entry samples",
@@ -64,5 +69,7 @@
   "Quality_SliceAction_SearchProduct": "",
   "Quality_SliceAction_SearchCustomer": "",
   "Quality_SliceAction_SearchCustomerOrder": "",
-  "Quality_SliceAction_SearchCustomerOrderLine": ""
+  "Quality_SliceAction_SearchCustomerOrderLine": "",
+  "Quality_SliceAction_SearchManufOrder": "",
+  "Quality_SliceAction_SearchOperationLine": ""
 }

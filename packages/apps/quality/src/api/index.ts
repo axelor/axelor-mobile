@@ -31,6 +31,12 @@ export {
 } from './control-entry-sample-line-api';
 export {fetchControlPlanById as fetchControlPlanByIdApi} from './control-plan-api';
 export {
+  searchManufOrder as searchManufOrderApi,
+} from './manuf-order-api';
+export {
+  searchOperationLine as searchOperationLineApi,
+} from './operation-order-api';
+export {
   searchCustomer as searchCustomerApi,
   searchSupplier as searchSupplierApi,
 } from './partner-api';

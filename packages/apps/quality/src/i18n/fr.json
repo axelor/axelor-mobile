@@ -47,6 +47,11 @@
   "Quality_Customer": "Client",
   "Quality_CustomerOrder": "Commande client",
   "Quality_CustomerOrderLine": "Ligne de commande client",
+  "Quality_ManufOrder": "Ordre de fabrication",
+  "Quality_OperationLine": "Ligne de l'opération",
+  "Quality_PreviousStep": "Étape précédente",
+  "Quality_NextStep": "Étape suivante",
+  "Quality_Save": "Sauvegarder",
   "Quality_SliceAction_SearchControlEntry": "recherche des relevés de contrôle",
   "Quality_SliceAction_FetchControlEntryById": "récupération du relevé de contrôle par id",
   "Quality_SliceAction_SearchControlEntrySample": "recherche sur les échantillons du relevé de contôle",
@@ -64,5 +69,7 @@
   "Quality_SliceAction_SearchProduct": "",
   "Quality_SliceAction_SearchCustomer": "",
   "Quality_SliceAction_SearchCustomerOrder": "",
-  "Quality_SliceAction_SearchCustomerOrderLine": ""
+  "Quality_SliceAction_SearchCustomerOrderLine": "",
+  "Quality_SliceAction_SearchManufOrder": "",
+  "Quality_SliceAction_SearchOperationLine": ""
 }
