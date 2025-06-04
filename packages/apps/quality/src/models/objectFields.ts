@@ -94,4 +94,7 @@ export const quality_modelAPI: ObjectFields = {
   quality_operationOrder: schemaContructor.object({
     name: schemaContructor.string(),
   }),
+  quality_defects: schemaContructor.object({
+    name: schemaContructor.string(),
+  }),
 };

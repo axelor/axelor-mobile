@@ -39,5 +39,6 @@ export {
   searchQualityImprovement,
 } from './qualityImprovementSlice';
 export {searchQIDetection} from './qiDetectionSlice';
+export {searchDefect} from './qiDefaultSlice';
 export {searchCustomerOrderLine} from './saleOrderLineSlice';
 export {searchCustomerOrder} from './saleOrderSlice';

@@ -21,6 +21,7 @@ import {
   CustomerOrderLineSearchBar,
   CustomerOrderSearchBar,
   CustomerSearchBar,
+  DefectViewAllList,
   GravityPicker,
   ManufOrderSearchBar,
   OperationLineSearchBar,
@@ -260,6 +261,15 @@ export const quality_formsRegister: FormConfigs = {
             objectState?.stepper !== Steps.identification ||
             objectState?.type === QualityImprovement?.type?.System
           );
+        },
+      },
+      QIResolutionDefault: {
+        titleKey: 'Quality_Defaults',
+        type: 'array',
+        widget: 'custom',
+        customComponent: DefectViewAllList,
+        hideIf: ({objectState}) => {
+          return objectState?.stepper !== Steps.defaults;
         },
       },
     },

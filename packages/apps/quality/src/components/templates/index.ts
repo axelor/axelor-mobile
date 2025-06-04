@@ -19,6 +19,8 @@
 export {default as CustomerOrderLineSearchBar} from './CustomerOrderLineSearchBar/CustomerOrderLineSearchBar';
 export {default as CustomerOrderSearchBar} from './CustomerOrderSearchBar/CustomerOrderSearchBar';
 export {default as CustomerSearchBar} from './CustomerSearchBar/CustomerSearchBar';
+export {default as DefectSearchBar} from './DefectSearchBar/DefectSearchBar';
+export {default as DefectViewAllList} from './DefectViewAllList/DefectViewAllList';
 export {default as GravityPicker} from './GravityPicker/GravityPicker';
 export {default as ManufOrderSearchBar} from './ManufOrderSearchBar/ManufOrderSearchBar';
 export {default as OperationLineSearchBar} from './OperationLineSearchBar/OperationLineSearchBar';
