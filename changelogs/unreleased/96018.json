@@ -1,5 +1,0 @@
-{
-  "title": "Stock indicators: add external reference and line number on sale & purchase order card",
-  "type": "feat",
-  "packages": "stock"
-}

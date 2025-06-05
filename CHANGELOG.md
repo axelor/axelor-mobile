@@ -3,6 +3,23 @@ title: 8.2.0
 tags: Changelog
 ---
 
+## [8.2.14] (2025-06-05)
+
+Resolve issue on connection to Axelor test instances on iOS devices
+
+### @axelor/aos-mobile-stock
+
+#### Features
+
+- Stock move: add possibility to search on order reference
+- Stock indicators: add external reference and line number on sale & purchase order card
+
+#### Fixes
+
+- Line verification: add missing product information
+- Stock indicators: inverse condition on badges display on sale & purchase orders card
+- Stock indicators: use sale or purchase orders estimated date when null on line object
+
 ## [8.2.13] (2025-05-21)
 
 ### @axelor/aos-mobile-core
@@ -608,6 +625,7 @@ This package is linked with the @axelor/aos-mobile-hr to manage time logging.
 
 - Supplier arrival: add possibility to fill origin when creating or selecting tracking number
 
+[8.2.14]: https://github.com/axelor/axelor-mobile/compare/8.2.13...8.2.14
 [8.2.13]: https://github.com/axelor/axelor-mobile/compare/8.2.12...8.2.13
 [8.2.12]: https://github.com/axelor/axelor-mobile/compare/8.2.11...8.2.12
 [8.2.11]: https://github.com/axelor/axelor-mobile/compare/8.2.10...8.2.11
