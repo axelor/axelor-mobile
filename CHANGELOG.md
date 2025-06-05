@@ -3,6 +3,10 @@ title: 7.2.0
 tags: Changelog
 ---
 
+## [7.2.33] (2025-06-05)
+
+Resolve issue on connection to Axelor test instances on iOS devices
+
 ## [7.2.32] (2025-05-21)
 
 ### @axelor/aos-mobile-core
