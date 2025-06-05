@@ -17,17 +17,19 @@
  */
 
 import React, {useState} from 'react';
-import {View, StyleSheet} from 'react-native';
 import {Alert, HeaderContainer, Screen, Text} from '@axelor/aos-mobile-ui';
 import {useTranslator} from '@axelor/aos-mobile-core';
-import {ProductSearchBar, StockMoveHeader} from '../../components';
+import {
+  ProductCardInfo,
+  ProductSearchBar,
+  StockMoveHeader,
+} from '../../components';
 import StockMove from '../../types/stock-move';
 
 const productScanKey = 'product_customer-delivery-select';
 
 const CustomerDeliverySelectProductScreen = ({route, navigation}) => {
-  const customerDelivery = route.params.customerDelivery;
-  const customerDeliveryLine = route.params.customerDeliveryLine;
+  const {customerDelivery, customerDeliveryLine, product} = route.params;
   const I18n = useTranslator();
 
   const [isVisible, setVisible] = useState(false);
@@ -74,14 +76,22 @@ const CustomerDeliverySelectProductScreen = ({route, navigation}) => {
           />
         }
       />
-      <View style={styles.stockView}>
-        <ProductSearchBar
-          scanKey={productScanKey}
-          onChange={handleProductSelection}
-          isFocus={true}
-          changeScreenAfter={true}
-        />
-      </View>
+      <ProductCardInfo
+        onPress={() =>
+          navigation.navigate('ProductStockDetailsScreen', {product})
+        }
+        picture={product?.picture}
+        code={product?.code}
+        name={product?.name}
+        trackingNumber={customerDeliveryLine?.trackingNumber?.trackingNumberSeq}
+        locker={customerDeliveryLine?.locker}
+      />
+      <ProductSearchBar
+        scanKey={productScanKey}
+        onChange={handleProductSelection}
+        isFocus={true}
+        changeScreenAfter={true}
+      />
       <Alert
         visible={isVisible}
         title={I18n.t('Auth_Warning')}
@@ -95,11 +105,5 @@ const CustomerDeliverySelectProductScreen = ({route, navigation}) => {
     </Screen>
   );
 };
-
-const styles = StyleSheet.create({
-  stockView: {
-    marginTop: '2%',
-  },
-});
 
 export default CustomerDeliverySelectProductScreen;

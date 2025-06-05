@@ -69,12 +69,13 @@ export const showLine = ({
     navigation.navigate(selectTrackingScreen, {
       [itemLine.name]: line,
       [item.name]: item.data,
-      product: product,
+      product,
     });
   } else {
     navigation.navigate(selectProductScreen, {
       [itemLine.name]: itemLine.data,
       [item.name]: item.data,
+      product,
     });
   }
 };

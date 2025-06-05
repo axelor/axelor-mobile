@@ -17,16 +17,13 @@
  */
 
 import React, {useState, useCallback} from 'react';
-import {View, StyleSheet} from 'react-native';
-import {
-  Alert,
-  Card,
-  HeaderContainer,
-  Screen,
-  Text,
-} from '@axelor/aos-mobile-ui';
+import {Alert, HeaderContainer, Screen, Text} from '@axelor/aos-mobile-ui';
 import {useTranslator} from '@axelor/aos-mobile-core';
-import {StockMoveHeader, TrackingNumberSearchBar} from '../../components';
+import {
+  ProductCardInfo,
+  StockMoveHeader,
+  TrackingNumberSearchBar,
+} from '../../components';
 import StockMove from '../../types/stock-move';
 
 const trackingScanKey = 'tracking_customer-delivery-select';
@@ -80,40 +77,35 @@ const CustomerDeliverySelectTrackingScreen = ({route, navigation}) => {
           />
         }
       />
-      <View style={styles.container}>
-        <Card style={styles.cardProductInfo}>
-          <Text>{product.name}</Text>
-        </Card>
-        <TrackingNumberSearchBar
-          scanKey={trackingScanKey}
-          onChange={handleTrackingNumberSelection}
-          isFocus={true}
-          changeScreenAfter={true}
-          product={product}
-        />
-        <Alert
-          visible={isVisible}
-          title={I18n.t('Auth_Warning')}
-          confirmButtonConfig={{
-            width: 50,
-            title: null,
-            onPress: () => setVisible(false),
-          }}>
-          <Text>{I18n.t('Stock_ErrorTrackingNumber')}</Text>
-        </Alert>
-      </View>
+      <ProductCardInfo
+        onPress={() =>
+          navigation.navigate('ProductStockDetailsScreen', {product})
+        }
+        picture={product?.picture}
+        code={product?.code}
+        name={product?.name}
+        trackingNumber={customerDeliveryLine?.trackingNumber?.trackingNumberSeq}
+        locker={customerDeliveryLine?.locker}
+      />
+      <TrackingNumberSearchBar
+        scanKey={trackingScanKey}
+        onChange={handleTrackingNumberSelection}
+        isFocus={true}
+        changeScreenAfter={true}
+        product={product}
+      />
+      <Alert
+        visible={isVisible}
+        title={I18n.t('Auth_Warning')}
+        confirmButtonConfig={{
+          width: 50,
+          title: null,
+          onPress: () => setVisible(false),
+        }}>
+        <Text>{I18n.t('Stock_ErrorTrackingNumber')}</Text>
+      </Alert>
     </Screen>
   );
 };
-
-const styles = StyleSheet.create({
-  container: {
-    marginVertical: '2%',
-  },
-  cardProductInfo: {
-    marginVertical: '2%',
-    marginHorizontal: 16,
-  },
-});
 
 export default CustomerDeliverySelectTrackingScreen;
