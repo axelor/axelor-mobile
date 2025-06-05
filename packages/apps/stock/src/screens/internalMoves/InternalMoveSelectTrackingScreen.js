@@ -17,16 +17,13 @@
  */
 
 import React, {useCallback, useState} from 'react';
-import {StyleSheet, View} from 'react-native';
-import {
-  Alert,
-  Card,
-  HeaderContainer,
-  Screen,
-  Text,
-} from '@axelor/aos-mobile-ui';
+import {Alert, HeaderContainer, Screen, Text} from '@axelor/aos-mobile-ui';
 import {useTranslator} from '@axelor/aos-mobile-core';
-import {StockMoveHeader, TrackingNumberSearchBar} from '../../components';
+import {
+  ProductCardInfo,
+  StockMoveHeader,
+  TrackingNumberSearchBar,
+} from '../../components';
 import StockMove from '../../types/stock-move';
 
 const trackingNumberScanKey = 'tracking-number_internal-move-new';
@@ -55,26 +52,31 @@ const InternalMoveSelectTrackingScreen = ({navigation, route}) => {
 
   return (
     <Screen removeSpaceOnTop={internalMove != null ? true : false}>
-      <View>
-        <HeaderContainer
-          expandableFilter={false}
-          fixedItems={
-            <StockMoveHeader
-              reference={internalMove.stockMoveSeq}
-              status={internalMove.statusSelect}
-              date={StockMove.getStockMoveDate(
-                internalMove.statusSelect,
-                internalMove,
-              )}
-              availability={internalMoveLine?.availableStatusSelect}
-              stockMoveLineId={internalMoveLine?.id}
-            />
-          }
-        />
-        <Card style={styles.cardProductInfo}>
-          <Text>{internalMoveLine.product?.fullName}</Text>
-        </Card>
-      </View>
+      <HeaderContainer
+        expandableFilter={false}
+        fixedItems={
+          <StockMoveHeader
+            reference={internalMove.stockMoveSeq}
+            status={internalMove.statusSelect}
+            date={StockMove.getStockMoveDate(
+              internalMove.statusSelect,
+              internalMove,
+            )}
+            availability={internalMoveLine?.availableStatusSelect}
+            stockMoveLineId={internalMoveLine?.id}
+          />
+        }
+      />
+      <ProductCardInfo
+        onPress={() =>
+          navigation.navigate('ProductStockDetailsScreen', {product})
+        }
+        picture={product?.picture}
+        code={product?.code}
+        name={product?.name}
+        trackingNumber={internalMoveLine?.trackingNumber?.trackingNumberSeq}
+        locker={internalMoveLine?.locker}
+      />
       <TrackingNumberSearchBar
         scanKey={trackingNumberScanKey}
         onChange={handleTrackingNumberSelection}
@@ -95,12 +97,5 @@ const InternalMoveSelectTrackingScreen = ({navigation, route}) => {
     </Screen>
   );
 };
-
-const styles = StyleSheet.create({
-  cardProductInfo: {
-    marginVertical: '2%',
-    marginHorizontal: 16,
-  },
-});
 
 export default InternalMoveSelectTrackingScreen;

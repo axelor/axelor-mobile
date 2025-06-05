@@ -18,6 +18,18 @@
 
 import {ObjectFields, schemaContructor} from '@axelor/aos-mobile-core';
 
+const productModel = schemaContructor
+  .subObject()
+  .concat(
+    schemaContructor.object({
+      fullName: schemaContructor.string(),
+      name: schemaContructor.string(),
+      trackingNumberConfiguration: schemaContructor.subObject(),
+      code: schemaContructor.string(),
+      picture: schemaContructor.subObject('fileName'),
+    }),
+  );
+
 export const stock_modelAPI: ObjectFields = {
   stock_customerDelivery: schemaContructor.object({
     availableStatusSelect: schemaContructor.number(),
@@ -41,13 +53,7 @@ export const stock_modelAPI: ObjectFields = {
     isIspmRequired: schemaContructor.boolean(),
   }),
   stock_customerDeliveryLine: schemaContructor.object({
-    product: schemaContructor.subObject().concat(
-      schemaContructor.object({
-        fullName: schemaContructor.string(),
-        name: schemaContructor.string(),
-        trackingNumberConfiguration: schemaContructor.subObject(),
-      }),
-    ),
+    product: productModel,
     availableStatusSelect: schemaContructor.number(),
     trackingNumber: schemaContructor.subObject('trackingNumberSeq'),
     unit: schemaContructor.subObject('name'),
@@ -78,13 +84,7 @@ export const stock_modelAPI: ObjectFields = {
     pickingOrderComments: schemaContructor.string(),
   }),
   stock_internalMoveLine: schemaContructor.object({
-    product: schemaContructor.subObject().concat(
-      schemaContructor.object({
-        fullName: schemaContructor.string(),
-        name: schemaContructor.string(),
-        trackingNumberConfiguration: schemaContructor.subObject(),
-      }),
-    ),
+    product: productModel,
     availableStatusSelect: schemaContructor.number(),
     trackingNumber: schemaContructor.subObject('trackingNumberSeq'),
     unit: schemaContructor.subObject('name'),
@@ -115,13 +115,7 @@ export const stock_modelAPI: ObjectFields = {
     productFamily: schemaContructor.subObject('name'),
   }),
   stock_inventoryLine: schemaContructor.object({
-    product: schemaContructor.subObject().concat(
-      schemaContructor.object({
-        fullName: schemaContructor.string(),
-        name: schemaContructor.string(),
-        trackingNumberConfiguration: schemaContructor.subObject(),
-      }),
-    ),
+    product: productModel,
     trackingNumber: schemaContructor.subObject('trackingNumberSeq'),
     unit: schemaContructor.subObject('name'),
     currentQty: schemaContructor.number(),
@@ -201,16 +195,18 @@ export const stock_modelAPI: ObjectFields = {
   }),
   stock_availableProducts: schemaContructor.object({
     currentQty: schemaContructor.number(),
-    product: schemaContructor.subObject().concat(
-      schemaContructor.object({
-        fullName: schemaContructor.string(),
-        name: schemaContructor.string(),
-        code: schemaContructor.string(),
-        unit: schemaContructor.subObject('name'),
-        picture: schemaContructor.subObject('fileName'),
-        trackingNumberConfiguration: schemaContructor.subObject(),
-      }),
-    ),
+    product: schemaContructor
+      .subObject()
+      .concat(
+        schemaContructor.object({
+          fullName: schemaContructor.string(),
+          name: schemaContructor.string(),
+          code: schemaContructor.string(),
+          unit: schemaContructor.subObject('name'),
+          picture: schemaContructor.subObject('fileName'),
+          trackingNumberConfiguration: schemaContructor.subObject(),
+        }),
+      ),
     trackingNumber: schemaContructor.subObject('trackingNumberSeq'),
   }),
   stock_supplierArrival: schemaContructor.object({
@@ -232,12 +228,14 @@ export const stock_modelAPI: ObjectFields = {
     statusSelect: schemaContructor.number(),
   }),
   stock_supplierArrivalLine: schemaContructor.object({
-    trackingNumber: schemaContructor.subObject().concat(
-      schemaContructor.object({
-        trackingNumberSeq: schemaContructor.string(),
-        origin: schemaContructor.string(),
-      }),
-    ),
+    trackingNumber: schemaContructor
+      .subObject()
+      .concat(
+        schemaContructor.object({
+          trackingNumberSeq: schemaContructor.string(),
+          origin: schemaContructor.string(),
+        }),
+      ),
     unit: schemaContructor.subObject('name'),
     qty: schemaContructor.number(),
     realQty: schemaContructor.number(),
@@ -245,14 +243,7 @@ export const stock_modelAPI: ObjectFields = {
     name: schemaContructor.string(),
     conformitySelect: schemaContructor.number(),
     productName: schemaContructor.string(),
-    product: schemaContructor.subObject().concat(
-      schemaContructor.object({
-        fullName: schemaContructor.string(),
-        name: schemaContructor.string(),
-        code: schemaContructor.string(),
-        trackingNumberConfiguration: schemaContructor.subObject(),
-      }),
-    ),
+    product: productModel,
     isRealQtyModifiedByUser: schemaContructor.boolean(),
     toStockLocation: schemaContructor.subObject('name'),
   }),
@@ -265,20 +256,20 @@ export const stock_modelAPI: ObjectFields = {
     origin: schemaContructor.string(),
     serialNumber: schemaContructor.string(),
   }),
-  stock_unit: schemaContructor.object({
-    name: schemaContructor.string(),
-  }),
+  stock_unit: schemaContructor.object({name: schemaContructor.string()}),
   stock_stockQtyIndicator: schemaContructor.object({
     name: schemaContructor.string(),
-    stockMove: schemaContructor.subObject().concat(
-      schemaContructor.object({
-        estimatedDate: schemaContructor.string(),
-        realDate: schemaContructor.string(),
-        typeSelect: schemaContructor.number(),
-        fromStockLocation: schemaContructor.subObject('name'),
-        toStockLocation: schemaContructor.subObject('name'),
-      }),
-    ),
+    stockMove: schemaContructor
+      .subObject()
+      .concat(
+        schemaContructor.object({
+          estimatedDate: schemaContructor.string(),
+          realDate: schemaContructor.string(),
+          typeSelect: schemaContructor.number(),
+          fromStockLocation: schemaContructor.subObject('name'),
+          toStockLocation: schemaContructor.subObject('name'),
+        }),
+      ),
     realQty: schemaContructor.number(),
     qty: schemaContructor.number(),
     reservedQty: schemaContructor.number(),
@@ -287,14 +278,16 @@ export const stock_modelAPI: ObjectFields = {
     qtyInvoiced: schemaContructor.number(),
   }),
   stock_saleOrderQtyIndicator: schemaContructor.object({
-    saleOrder: schemaContructor.subObject().concat(
-      schemaContructor.object({
-        saleOrderSeq: schemaContructor.string(),
-        stockLocation: schemaContructor.subObject('name'),
-        estimatedDeliveryDate: schemaContructor.string(),
-        externalReference: schemaContructor.string(),
-      }),
-    ),
+    saleOrder: schemaContructor
+      .subObject()
+      .concat(
+        schemaContructor.object({
+          saleOrderSeq: schemaContructor.string(),
+          stockLocation: schemaContructor.subObject('name'),
+          estimatedDeliveryDate: schemaContructor.string(),
+          externalReference: schemaContructor.string(),
+        }),
+      ),
     qty: schemaContructor.number(),
     deliveredQty: schemaContructor.number(),
     reservedQty: schemaContructor.number(),
@@ -304,14 +297,16 @@ export const stock_modelAPI: ObjectFields = {
     sequence: schemaContructor.number(),
   }),
   stock_purchaseOrderQtyIndicator: schemaContructor.object({
-    purchaseOrder: schemaContructor.subObject().concat(
-      schemaContructor.object({
-        purchaseOrderSeq: schemaContructor.string(),
-        stockLocation: schemaContructor.subObject('name'),
-        estimatedReceiptDate: schemaContructor.string(),
-        externalReference: schemaContructor.string(),
-      }),
-    ),
+    purchaseOrder: schemaContructor
+      .subObject()
+      .concat(
+        schemaContructor.object({
+          purchaseOrderSeq: schemaContructor.string(),
+          stockLocation: schemaContructor.subObject('name'),
+          estimatedReceiptDate: schemaContructor.string(),
+          externalReference: schemaContructor.string(),
+        }),
+      ),
     qty: schemaContructor.number(),
     receivedQty: schemaContructor.number(),
     unit: schemaContructor.subObject('name'),

@@ -1,0 +1,5 @@
+{
+  "title": "Line verification: add missing product information",
+  "type": "fix",
+  "packages": "stock"
+}

@@ -19,25 +19,28 @@
 import React, {useCallback, useState} from 'react';
 import {Alert, HeaderContainer, Screen, Text} from '@axelor/aos-mobile-ui';
 import {useTranslator} from '@axelor/aos-mobile-core';
-import {ProductSearchBar, StockMoveHeader} from '../../components';
+import {
+  ProductCardInfo,
+  ProductSearchBar,
+  StockMoveHeader,
+} from '../../components';
 import StockMove from '../../types/stock-move';
 
 const productScanKey = 'product_internal-move-select';
 
 const InternalMoveSelectProductScreen = ({navigation, route}) => {
-  const internalMove = route.params.internalMove;
-  const internalMoveLine = route.params.internalMoveLine;
+  const {internalMove, internalMoveLine, product} = route.params;
   const I18n = useTranslator();
 
   const [isVisible, setVisible] = useState(false);
 
   const handleNavigate = useCallback(
-    product => {
-      if (product != null) {
-        if (product.id !== internalMoveLine?.product.id) {
+    item => {
+      if (item != null) {
+        if (item.id !== internalMoveLine?.product.id) {
           setVisible(true);
         } else {
-          if (product.trackingNumberConfiguration == null) {
+          if (item.trackingNumberConfiguration == null) {
             navigation.navigate('InternalMoveLineDetailsScreen', {
               internalMove: internalMove,
               internalMoveLineId: internalMoveLine?.id,
@@ -46,7 +49,7 @@ const InternalMoveSelectProductScreen = ({navigation, route}) => {
             navigation.navigate('InternalMoveSelectTrackingScreen', {
               internalMove: internalMove,
               internalMoveLine: internalMoveLine,
-              product: product,
+              product: item,
             });
           }
         }
@@ -71,6 +74,16 @@ const InternalMoveSelectProductScreen = ({navigation, route}) => {
             stockMoveLineId={internalMoveLine?.id}
           />
         }
+      />
+      <ProductCardInfo
+        onPress={() =>
+          navigation.navigate('ProductStockDetailsScreen', {product})
+        }
+        picture={product?.picture}
+        code={product?.code}
+        name={product?.name}
+        trackingNumber={internalMoveLine?.trackingNumber?.trackingNumberSeq}
+        locker={internalMoveLine?.locker}
       />
       <ProductSearchBar
         scanKey={productScanKey}
