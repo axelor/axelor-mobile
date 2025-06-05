@@ -9,6 +9,7 @@
   "Message_Unfollow_Confirmation": "Are you sure to unfollow this document?",
   "Message_Notifications": "Notifications",
   "Message_Inbox": "Inbox",
+  "Message_Respond": "Respond",
   "Message_SliceAction_FetchMailMessages": "fetch mail messages",
   "Message_SliceAction_PostMailMessageComment": "post mail message comment",
   "Message_SliceAction_FetchModelSubscribers": "fetch model subscribers",
