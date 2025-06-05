@@ -1,5 +1,0 @@
-{
-  "title": "Stock indicators: use sale or purchase orders estimated date when null on line object",
-  "type": "fix",
-  "packages": "stock"
-}

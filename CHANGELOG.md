@@ -3,6 +3,23 @@ title: 8.3.0
 tags: Changelog
 ---
 
+## [8.3.6] (2025-06-05)
+
+Resolve issue on connection to Axelor test instances on iOS devices
+
+### @axelor/aos-mobile-stock
+
+#### Features
+
+- Stock move: add possibility to search on order reference
+- Stock indicators: add external reference and line number on sale & purchase order card
+
+#### Fixes
+
+- Line verification: add missing product information
+- Stock indicators: inverse condition on badges display on sale & purchase orders card
+- Stock indicators: use sale or purchase orders estimated date when null on line object
+
 ## [8.3.5] (2025-05-21)
 
 ### @axelor/aos-mobile-core
@@ -253,6 +270,7 @@ This version add a new part of the HR package, user can now manage leave request
 
 - Header actions: remove use of attachedFileScreenTitle
 
+[8.3.6]: https://github.com/axelor/axelor-mobile/compare/8.3.5...8.3.6
 [8.3.5]: https://github.com/axelor/axelor-mobile/compare/8.3.4...8.3.5
 [8.3.4]: https://github.com/axelor/axelor-mobile/compare/8.3.3...8.3.4
 [8.3.3]: https://github.com/axelor/axelor-mobile/compare/8.3.2...8.3.3
