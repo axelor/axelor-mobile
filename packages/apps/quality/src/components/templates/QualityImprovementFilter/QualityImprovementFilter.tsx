@@ -54,16 +54,17 @@ const QualityImprovementFilter = ({
     dispatch((fetchQualityImprovementStatus as any)());
   }, [dispatch]);
 
-  const statusList = useMemo(() => {
-    return getCustomSelectionItems(QIStatusList, 'name', []);
-  }, [QIStatusList, getCustomSelectionItems]);
+  const statusList = useMemo(
+    () => getCustomSelectionItems(QIStatusList, 'name'),
+    [QIStatusList, getCustomSelectionItems],
+  );
 
   const gravityList = useMemo(() => {
     return getSelectionItems(QualityImprovement?.gravityTypeSelect);
   }, [QualityImprovement?.gravityTypeSelect, getSelectionItems]);
 
   return (
-    <View style={[styles.headerContainer, styles.zIndex]}>
+    <View style={styles.container}>
       <ToggleButton
         isActive={isAssignedToMe}
         onPress={() => setIsAssignedToMe((current: any) => !current)}
@@ -74,13 +75,13 @@ const QualityImprovementFilter = ({
         }}
       />
       <MultiValuePicker
-        style={styles.flexPicker}
+        style={styles.flexOne}
         listItems={statusList}
         onValueChange={setSelectedStatus}
         placeholder={I18n.t('Quality_Status')}
       />
       <MultiValuePicker
-        style={[styles.flexPicker, styles.pickerSpacingLeft]}
+        style={styles.flexOne}
         listItems={gravityList}
         onValueChange={setSelectedGravity}
         placeholder={I18n.t('Quality_Gravity')}
@@ -90,27 +91,20 @@ const QualityImprovementFilter = ({
 };
 
 const styles = StyleSheet.create({
-  headerContainer: {
-    zIndex: 1,
+  container: {
     width: '90%',
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignSelf: 'center',
     alignItems: 'center',
-  },
-  zIndex: {
-    zIndex: 2,
+    gap: 5,
   },
   toggleButton: {
     height: 40,
     marginVertical: 0,
-    marginRight: 5,
   },
-  flexPicker: {
+  flexOne: {
     flex: 1,
-  },
-  pickerSpacingLeft: {
-    marginLeft: 10,
   },
 });
 

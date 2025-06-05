@@ -21,6 +21,8 @@ import {ActionCard} from '@axelor/aos-mobile-ui';
 import {usePermitted, useTranslator} from '@axelor/aos-mobile-core';
 import {QualityImprovementsCard} from '../../atoms';
 
+const FIRST_STATUS = 1;
+
 interface qualityImprovementProps {
   id: number;
   sequence?: string;
@@ -46,7 +48,7 @@ const QualityImprovementsActionCard = ({
   });
 
   const isEditable = useMemo(
-    () => !readonly && qualityImprovement?.qiStatus?.sequence === 1,
+    () => !readonly && qualityImprovement?.qiStatus?.sequence === FIRST_STATUS,
     [qualityImprovement?.qiStatus?.sequence, readonly],
   );
 

@@ -53,8 +53,6 @@ export const fetchQualityImprovementStatus = createAsyncThunk(
 );
 
 const initialState = {
-  loadingQualityImprovement: false,
-  qualityImprovement: {},
   loadingQualityImprovements: false,
   moreLoadingQualityImprovement: false,
   isListEndQualityImprovement: false,

@@ -42,6 +42,9 @@ const useQualityImprovementListActions = () => {
   useEffect(() => {
     headerActionsProvider.registerModel('quality_qualityImprovement_list', {
       model: 'com.axelor.apps.quality.db.QualityImprovement',
+      options: {
+        core_modelFilters: {name: 'act:quality.improvements'},
+      },
       actions: [
         {
           hideIf: !canCreate,

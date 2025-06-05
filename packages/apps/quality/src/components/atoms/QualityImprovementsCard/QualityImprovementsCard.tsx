@@ -48,18 +48,14 @@ const QualityImprovementsCard = ({
   const {QualityImprovement} = useTypes();
   const {getItemColor, getItemTitle} = useTypeHelpers();
 
-  const {qualityImprovementList} = useSelector(
-    state => state.quality_qualityImprovement,
-  );
+  const {QIStatusList} = useSelector(state => state.quality_qualityImprovement);
 
   const borderStyle = useMemo(() => {
     return (
       status != null &&
-      getStyles(
-        getItemColorFromIndex(qualityImprovementList, status)?.background,
-      )?.border
+      getStyles(getItemColorFromIndex(QIStatusList, status)?.background)?.border
     );
-  }, [getItemColorFromIndex, qualityImprovementList, status]);
+  }, [getItemColorFromIndex, QIStatusList, status]);
 
   return (
     <ObjectCard
@@ -72,7 +68,7 @@ const QualityImprovementsCard = ({
         items: [
           {displayText: sequence, isTitle: true},
           {
-            indicatorText: `${I18n.t('Quality_Detection')}:`,
+            indicatorText: `${I18n.t('Quality_Detection')}`,
             displayText: qiDetection,
             numberOfLines: 2,
           },

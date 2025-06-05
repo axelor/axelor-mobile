@@ -36,6 +36,6 @@
   "Quality_SliceAction_SearchControlEntrySampleLine": "search control entry sample lines",
   "Quality_SliceAction_FetchControlEntrySampleLine": "fetch control entry sample line",
   "Quality_SliceAction_UpdateControlEntry": "update control entry",
-  "Quality_SliceAction_SearchQualityImprovement": "search quality improvement",
+  "Quality_SliceAction_SearchQualityImprovement": "search quality improvements",
   "Quality_SliceAction_FetchQualityImprovementStatus": "fetch improvement status"
 }
