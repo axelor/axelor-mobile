@@ -19,7 +19,7 @@
 import {SearchFields} from '@axelor/aos-mobile-core';
 
 export const stock_searchFields: SearchFields = {
-  stock_customerDelivery: ['stockMoveSeq'],
+  stock_customerDelivery: ['stockMoveSeq', 'saleOrderSet.externalReference'],
   stock_customerDeliveryLine: [
     'product.fullName',
     'product.serialNumber',
@@ -55,7 +55,7 @@ export const stock_searchFields: SearchFields = {
     'trackingNumber.trackingNumberSeq',
     'trackingNumber.serialNumber',
   ],
-  stock_supplierArrival: ['stockMoveSeq'],
+  stock_supplierArrival: ['stockMoveSeq', 'purchaseOrderSet.externalReference'],
   stock_supplierArrivalLine: [
     'product.fullName',
     'product.serialNumber',
