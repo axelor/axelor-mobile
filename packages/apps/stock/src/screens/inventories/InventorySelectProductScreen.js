@@ -19,13 +19,16 @@
 import React, {useState} from 'react';
 import {Alert, HeaderContainer, Screen, Text} from '@axelor/aos-mobile-ui';
 import {useTranslator, useTypes} from '@axelor/aos-mobile-core';
-import {InventoryHeader, ProductSearchBar} from '../../components';
+import {
+  InventoryHeader,
+  ProductCardInfo,
+  ProductSearchBar,
+} from '../../components';
 
 const productScanKey = 'product_inventory-select';
 
 const InventorySelectProductScreen = ({route, navigation}) => {
-  const inventory = route.params.inventory;
-  const inventoryLine = route.params.inventoryLine;
+  const {inventory, inventoryLine, product} = route.params;
   const I18n = useTranslator();
   const {Inventory} = useTypes();
 
@@ -83,6 +86,16 @@ const InventorySelectProductScreen = ({route, navigation}) => {
             stockLocation={inventory.stockLocation?.name}
           />
         }
+      />
+      <ProductCardInfo
+        onPress={() =>
+          navigation.navigate('ProductStockDetailsScreen', {product})
+        }
+        picture={product?.picture}
+        code={product?.code}
+        name={product?.name}
+        trackingNumber={inventoryLine?.trackingNumber?.trackingNumberSeq}
+        locker={inventoryLine?.locker}
       />
       <ProductSearchBar
         scanKey={productScanKey}

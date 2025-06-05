@@ -17,16 +17,13 @@
  */
 
 import React, {useCallback, useState} from 'react';
-import {StyleSheet} from 'react-native';
-import {
-  Alert,
-  Card,
-  HeaderContainer,
-  Screen,
-  Text,
-} from '@axelor/aos-mobile-ui';
+import {Alert, HeaderContainer, Screen, Text} from '@axelor/aos-mobile-ui';
 import {useTranslator, useTypes} from '@axelor/aos-mobile-core';
-import {InventoryHeader, TrackingNumberSearchBar} from '../../components';
+import {
+  InventoryHeader,
+  ProductCardInfo,
+  TrackingNumberSearchBar,
+} from '../../components';
 
 const trackingScanKey = 'tracking_inventory-select';
 
@@ -81,9 +78,16 @@ const InventorySelectTrackingScreen = ({route, navigation}) => {
           />
         }
       />
-      <Card style={styles.cardProductInfo}>
-        <Text>{product?.fullName ?? inventoryLine?.product?.fullName}</Text>
-      </Card>
+      <ProductCardInfo
+        onPress={() =>
+          navigation.navigate('ProductStockDetailsScreen', {product})
+        }
+        picture={product?.picture}
+        code={product?.code}
+        name={product?.name}
+        trackingNumber={inventoryLine?.trackingNumber?.trackingNumberSeq}
+        locker={inventoryLine?.locker}
+      />
       <TrackingNumberSearchBar
         scanKey={trackingScanKey}
         onChange={handleTrackingNumberSelection}
@@ -104,12 +108,5 @@ const InventorySelectTrackingScreen = ({route, navigation}) => {
     </Screen>
   );
 };
-
-const styles = StyleSheet.create({
-  cardProductInfo: {
-    marginVertical: '2%',
-    marginHorizontal: 16,
-  },
-});
 
 export default InventorySelectTrackingScreen;

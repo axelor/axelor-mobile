@@ -20,17 +20,16 @@ import React, {useState} from 'react';
 import {Alert, HeaderContainer, Screen, Text} from '@axelor/aos-mobile-ui';
 import {useTranslator} from '@axelor/aos-mobile-core';
 import {
+  ProductCardInfo,
   StockMoveHeader,
   SupplierArrivalTrackingNumberSelect,
-  SupplierArrivalProductName,
 } from '../../components';
 import StockMove from '../../types/stock-move';
 
 const SupplierArrivalSelectTrackingScreen = ({route, navigation}) => {
+  const {product, supplierArrival, supplierArrivalLine} = route.params;
   const I18n = useTranslator();
-  const supplierArrival = route.params.supplierArrival;
-  const supplierArrivalLine = route.params.supplierArrivalLine;
-  const product = route.params.product;
+
   const [isVisible, setVisible] = useState(false);
 
   const handleTrackingNumberSelection = item => {
@@ -71,7 +70,16 @@ const SupplierArrivalSelectTrackingScreen = ({route, navigation}) => {
           />
         }
       />
-      <SupplierArrivalProductName product={product} />
+      <ProductCardInfo
+        onPress={() =>
+          navigation.navigate('ProductStockDetailsScreen', {product})
+        }
+        picture={product?.picture}
+        code={product?.code}
+        name={product?.name}
+        trackingNumber={supplierArrivalLine?.trackingNumber?.trackingNumberSeq}
+        locker={supplierArrivalLine?.locker}
+      />
       <SupplierArrivalTrackingNumberSelect
         product={product}
         supplierArrival={supplierArrival}

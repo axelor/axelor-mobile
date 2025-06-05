@@ -17,16 +17,19 @@
  */
 
 import React, {useState} from 'react';
-import {View, StyleSheet} from 'react-native';
 import {Alert, HeaderContainer, Screen, Text} from '@axelor/aos-mobile-ui';
 import {useTranslator} from '@axelor/aos-mobile-core';
-import {ProductSearchBar, StockMoveHeader} from '../../components';
+import {
+  ProductCardInfo,
+  ProductSearchBar,
+  StockMoveHeader,
+} from '../../components';
 import StockMove from '../../types/stock-move';
 
 const productScanKey = 'product_supplier-arrival-select';
 
 const SupplierArrivalSelectProductScreen = ({route, navigation}) => {
-  const {supplierArrival, supplierArrivalLine} = route.params;
+  const {product, supplierArrival, supplierArrivalLine} = route.params;
   const I18n = useTranslator();
 
   const [isVisible, setVisible] = useState(false);
@@ -74,14 +77,22 @@ const SupplierArrivalSelectProductScreen = ({route, navigation}) => {
           />
         }
       />
-      <View style={styles.stockView}>
-        <ProductSearchBar
-          scanKey={productScanKey}
-          onChange={handleProductSelection}
-          isFocus={true}
-          changeScreenAfter={true}
-        />
-      </View>
+      <ProductCardInfo
+        onPress={() =>
+          navigation.navigate('ProductStockDetailsScreen', {product})
+        }
+        picture={product?.picture}
+        code={product?.code}
+        name={product?.name}
+        trackingNumber={supplierArrivalLine?.trackingNumber?.trackingNumberSeq}
+        locker={supplierArrivalLine?.locker}
+      />
+      <ProductSearchBar
+        scanKey={productScanKey}
+        onChange={handleProductSelection}
+        isFocus={true}
+        changeScreenAfter={true}
+      />
       <Alert
         visible={isVisible}
         title={I18n.t('Auth_Warning')}
@@ -95,11 +106,5 @@ const SupplierArrivalSelectProductScreen = ({route, navigation}) => {
     </Screen>
   );
 };
-
-const styles = StyleSheet.create({
-  stockView: {
-    marginTop: '2%',
-  },
-});
 
 export default SupplierArrivalSelectProductScreen;
