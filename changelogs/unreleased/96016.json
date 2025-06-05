@@ -1,5 +1,0 @@
-{
-  "title": "Stock move: add possibility to search on order reference",
-  "type": "feat",
-  "packages": "stock"
-}

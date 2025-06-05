@@ -3,6 +3,16 @@ title: 8.1.0
 tags: Changelog
 ---
 
+## [8.1.22] (2025-06-05)
+
+Resolve issue on connection to Axelor test instances on iOS devices
+
+### @axelor/aos-mobile-stock
+
+#### Features
+
+- Stock move: add possibility to search on order reference
+
 ## [8.1.21] (2025-05-21)
 
 ### @axelor/aos-mobile-core
@@ -838,6 +848,7 @@ It enables user to manage interventions and customer parc through the mobile app
 - Selections: use new system and tools instead of type files
 - Product indicators: use new chart component to display quantity indicators
 
+[8.1.22]: https://github.com/axelor/axelor-mobile/compare/8.1.21...8.1.22
 [8.1.21]: https://github.com/axelor/axelor-mobile/compare/8.1.20...8.1.21
 [8.1.20]: https://github.com/axelor/axelor-mobile/compare/8.1.19...8.1.20
 [8.1.19]: https://github.com/axelor/axelor-mobile/compare/8.1.18...8.1.19
