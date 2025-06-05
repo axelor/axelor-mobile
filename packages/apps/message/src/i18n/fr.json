@@ -9,6 +9,7 @@
   "Message_Unfollow_Confirmation": "Êtes-vous sûr de vouloir vous désabonner de ce document?",
   "Message_Notifications": "Notifications",
   "Message_Inbox": "Boîte de reception",
+  "Message_Respond": "Répondre",
   "Message_SliceAction_FetchMailMessages": "récupération des mail messages",
   "Message_SliceAction_PostMailMessageComment": "ajout d'un mail message",
   "Message_SliceAction_FetchModelSubscribers": "récupération des abonnés du modèle",
