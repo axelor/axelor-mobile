@@ -1,0 +1,5 @@
+{
+  "title": "Stock indicators: inverse condition on badges display on sale & purchase orders card",
+  "type": "fix",
+  "packages": "stock"
+}
