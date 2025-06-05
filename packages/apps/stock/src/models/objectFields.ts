@@ -291,20 +291,25 @@ export const stock_modelAPI: ObjectFields = {
       schemaContructor.object({
         saleOrderSeq: schemaContructor.string(),
         stockLocation: schemaContructor.subObject('name'),
+        estimatedDeliveryDate: schemaContructor.string(),
+        externalReference: schemaContructor.string(),
       }),
     ),
     qty: schemaContructor.number(),
     deliveredQty: schemaContructor.number(),
     reservedQty: schemaContructor.number(),
     unit: schemaContructor.subObject('name'),
-    estimatedShippingDate: schemaContructor.string(),
+    estimatedDeliveryDate: schemaContructor.string(),
     deliveryState: schemaContructor.number(),
+    sequence: schemaContructor.number(),
   }),
   stock_purchaseOrderQtyIndicator: schemaContructor.object({
     purchaseOrder: schemaContructor.subObject().concat(
       schemaContructor.object({
         purchaseOrderSeq: schemaContructor.string(),
         stockLocation: schemaContructor.subObject('name'),
+        estimatedReceiptDate: schemaContructor.string(),
+        externalReference: schemaContructor.string(),
       }),
     ),
     qty: schemaContructor.number(),
@@ -312,6 +317,7 @@ export const stock_modelAPI: ObjectFields = {
     unit: schemaContructor.subObject('name'),
     estimatedReceiptDate: schemaContructor.string(),
     receiptState: schemaContructor.number(),
+    sequence: schemaContructor.number(),
   }),
   stock_alternativeBarcode: schemaContructor.object({
     product: schemaContructor.subObject(),
