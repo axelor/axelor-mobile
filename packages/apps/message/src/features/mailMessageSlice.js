@@ -56,8 +56,9 @@ export const sendMailMessageComment = createAsyncThunk(
       action: 'Message_SliceAction_PostMailMessageComment',
       getState: getState,
       responseOptions: {isArrayResponse: false},
-    }).then(() => {
+    }).then(res => {
       dispatch(getMailMessages({...fetchMailMessageData, page: 0}));
+      return res;
     });
   },
 );
