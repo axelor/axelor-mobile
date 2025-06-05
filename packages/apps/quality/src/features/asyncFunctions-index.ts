@@ -35,6 +35,7 @@ export {searchSupplierPurchaseOrderLine} from './purchaseOrderLineSlice';
 export {searchSupplierOrder} from './purchaseOrderSlice';
 export {searchQIAnalysisMethod} from './qiAnalysisMethodSlice';
 export {
+  fetchQualityImprovementById,
   fetchQualityImprovementStatus,
   searchQualityImprovement,
 } from './qualityImprovementSlice';

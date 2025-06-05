@@ -43,6 +43,7 @@ export {searchQIAnalysisMethod as searchQIAnalysisMethodApi} from './qi-analysis
 export {searchQIDetection as searchQIDetectionApi} from './qi-detection-api';
 export {searchDefect as searchDefectApi} from './qi-default-api';
 export {
+  fetchQualityImprovementById as fetchQualityImprovementByIdApi,
   fetchQualityImprovementStatus as fetchQualityImprovementStatusApi,
   searchQualityImprovement as searchQualityImprovementApi,
 } from './quality-improvement-api';

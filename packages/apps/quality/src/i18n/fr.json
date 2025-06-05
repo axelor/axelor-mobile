@@ -54,6 +54,7 @@
   "Quality_Save": "Sauvegarder",
   "Quality_Quantity": "Quantité",
   "Quality_AddDefault": "Ajout du défault et continuer",
+  "Quality_Defects": "Défauts",
   "Quality_SliceAction_SearchControlEntry": "recherche des relevés de contrôle",
   "Quality_SliceAction_FetchControlEntryById": "récupération du relevé de contrôle par id",
   "Quality_SliceAction_SearchControlEntrySample": "recherche sur les échantillons du relevé de contôle",
@@ -74,5 +75,6 @@
   "Quality_SliceAction_SearchCustomerOrderLine": "recherche des lignes de commande client",
   "Quality_SliceAction_SearchManufOrder": "recherche des ordres de fabrication",
   "Quality_SliceAction_SearchOperationLine": "recherche des lignes d'opération",
-  "Quality_SliceAction_SearchDefect": "recherche des défauts"
+  "Quality_SliceAction_SearchDefect": "recherche des défauts",
+  "Quality_SliceAction_FetchQualityImprovementById": ""
 }

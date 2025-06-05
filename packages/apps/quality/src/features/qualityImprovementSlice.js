@@ -22,6 +22,7 @@ import {
   handlerApiCall,
 } from '@axelor/aos-mobile-core';
 import {
+  fetchQualityImprovementById as _fetchQualityImprovementById,
   fetchQualityImprovementStatus as _fetchQualityImprovementStatus,
   searchQualityImprovement as _searchQualityImprovement,
 } from '../api/quality-improvement-api';
@@ -48,6 +49,19 @@ export const fetchQualityImprovementStatus = createAsyncThunk(
       action: 'Quality_SliceAction_FetchQualityImprovementStatus',
       getState,
       responseOptions: {isArrayResponse: true},
+    });
+  },
+);
+
+export const fetchQualityImprovementById = createAsyncThunk(
+  'quality_qualityImprovement/fetchQualityImprovementById',
+  async function (data, {getState}) {
+    return handlerApiCall({
+      fetchFunction: _fetchQualityImprovementById,
+      data,
+      action: 'Quality_SliceAction_FetchQualityImprovementById',
+      getState,
+      responseOptions: {isArrayResponse: false},
     });
   },
 );
@@ -93,6 +107,16 @@ const qualityImprovementSlice = createSlice({
         state.qiStatusList = action.payload;
       },
     );
+    builder.addCase(fetchQualityImprovementById.pending, state => {
+      state.loadingQualityImprovement = true;
+    });
+    builder.addCase(fetchQualityImprovementById.rejected, state => {
+      state.loadingQualityImprovement = false;
+    });
+    builder.addCase(fetchQualityImprovementById.fulfilled, (state, action) => {
+      state.loadingQualityImprovement = false;
+      state.qualityImprovement = action.payload;
+    });
   },
 });
 

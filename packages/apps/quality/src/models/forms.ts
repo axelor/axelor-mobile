@@ -65,7 +65,6 @@ export const quality_formsRegister: FormConfigs = {
         titleKey: 'Quality_Gravity',
         widget: 'custom',
         type: 'number',
-        required: true,
         customComponent: GravityPicker,
         hideIf: ({objectState}) => objectState?.stepper !== Steps.detection,
       },
@@ -73,7 +72,6 @@ export const quality_formsRegister: FormConfigs = {
         titleKey: 'Quality_Type',
         widget: 'custom',
         type: 'number',
-        required: true,
         customComponent: TypePicker,
         hideIf: ({objectState}) => objectState?.stepper !== Steps.detection,
       },
@@ -81,6 +79,7 @@ export const quality_formsRegister: FormConfigs = {
         titleKey: 'Quality_QIDetection',
         type: 'object',
         widget: 'custom',
+        required: true,
         customComponent: QIDetectionSearchBar,
         hideIf: ({objectState}) => objectState?.stepper !== Steps.detection,
         dependsOn: {
@@ -104,7 +103,6 @@ export const quality_formsRegister: FormConfigs = {
           },
         },
       },
-      // ------- SUPPLIER CASE ------- //
       supplierPartner: {
         titleKey: 'Quality_Supplier',
         type: 'object',
@@ -154,7 +152,6 @@ export const quality_formsRegister: FormConfigs = {
           },
         },
       },
-      // ------- CUSTOMER CASE ------- //
       customerPartner: {
         titleKey: 'Quality_Customer',
         type: 'object',
@@ -206,7 +203,6 @@ export const quality_formsRegister: FormConfigs = {
           },
         },
       },
-      // ------- Interal CASE ------- //
       manufOrder: {
         titleKey: 'Quality_ManufOrder',
         type: 'object',
