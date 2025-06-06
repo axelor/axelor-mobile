@@ -25,4 +25,6 @@ export const quality_sortFields: SortFields = {
     'controlEntrySample.id',
     'controlPlanLine.id',
   ],
+  quality_qualityImprovement: ['qiStatus.sequence', '-createdOn'],
+  quality_qiStatus: ['sequence'],
 };

@@ -32,14 +32,14 @@ import {
   ControlEntryFormButtons,
   ControlEntryFormHeader,
   SampleNotFoundView,
-} from '../components';
+} from '../../components';
 import {
   fetchControlEntrySampleLine,
   searchControlEntrySampleLineOfControlEntry as searchControlEntrySampleLine,
-} from '../features/controlEntrySampleLineSlice';
-import {fetchControlPlanById} from '../features/controlPlanSlice';
-import {ControlEntry as ControlEntryType} from '../types';
-import {checkComformity, getProgressValuesApi} from '../api';
+} from '../../features/controlEntrySampleLineSlice';
+import {fetchControlPlanById} from '../../features/controlPlanSlice';
+import {ControlEntry as ControlEntryType} from '../../types';
+import {checkComformity, getProgressValuesApi} from '../../api';
 
 const ControlEntryFormScreen = ({navigation, route}) => {
   const {selectedMode, sampleId} = route.params;

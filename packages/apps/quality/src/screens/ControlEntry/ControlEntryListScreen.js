@@ -34,8 +34,8 @@ import {
   useTypes,
   useTypeHelpers,
 } from '@axelor/aos-mobile-core';
-import {searchControlEntry} from '../features/controlEntrySlice';
-import {ControlEntryCard} from '../components';
+import {searchControlEntry} from '../../features/controlEntrySlice';
+import {ControlEntryCard} from '../../components';
 
 const ControlEntryListScreen = ({navigation}) => {
   const I18n = useTranslator();

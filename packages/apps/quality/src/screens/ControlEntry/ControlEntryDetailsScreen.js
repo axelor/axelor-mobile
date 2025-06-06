@@ -30,10 +30,10 @@ import {
   ControlEntryDetailsButtons,
   ControlEntryDetailsHeader,
   ControlEntrySampleCard,
-} from '../components';
-import {searchControlEntrySample} from '../features/controlEntrySampleSlice';
-import {fetchControlEntryById} from '../features/controlEntrySlice';
-import {ControlEntry as ControlEntryType} from '../types';
+} from '../../components';
+import {searchControlEntrySample} from '../../features/controlEntrySampleSlice';
+import {fetchControlEntryById} from '../../features/controlEntrySlice';
+import {ControlEntry as ControlEntryType} from '../../types';
 
 const ControlEntryDetailsScreen = ({route}) => {
   const {controlEntryId} = route.params;
