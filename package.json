@@ -24,7 +24,8 @@
     "graph": "nx graph",
     "license:add": "nx run-many --target=license:add",
     "storybook": "start-storybook -p 6006",
-    "build-storybook": "build-storybook"
+    "build-storybook": "build-storybook",
+    "postinstall": "patch-package"
   },
   "dependencies": {
     "@axelor/aos-mobile-core": "7.1.23",
@@ -38,6 +39,8 @@
     "axios": "^0.26.1",
     "i18n-parser": "^1.0.0",
     "i18next": "^21.8.3",
+    "patch-package": "^8.0.0",
+    "postinstall-postinstall": "^2.1.0",
     "react": "18.2.0",
     "react-i18next": "^11.16.7",
     "react-native": "0.68.1",
