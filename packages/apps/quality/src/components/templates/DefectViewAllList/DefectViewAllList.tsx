@@ -21,7 +21,7 @@ import {StyleSheet, View} from 'react-native';
 import {useTranslator} from '@axelor/aos-mobile-core';
 import {
   Button,
-  FormInput,
+  FormHtmlInput,
   QuantityCard,
   Text,
   ViewAllEditList,
@@ -31,7 +31,6 @@ import {DefectSearchBar} from '../../templates';
 interface DefectViewAllListProps {
   title?: string;
   defaultValue?: any[];
-  objectState?: any;
   onChange: (employees: any[]) => void;
   readonly?: boolean;
 }
@@ -39,7 +38,6 @@ interface DefectViewAllListProps {
 const DefectViewAllListAux = ({
   title = 'Quality_Defects',
   defaultValue,
-  objectState,
   onChange,
   readonly = false,
 }: DefectViewAllListProps) => {
@@ -50,8 +48,6 @@ const DefectViewAllListAux = ({
   const [selectedQty, setSelectedQty] = useState(1);
   const [editIndex, setEditIndex] = useState<number | null>(null);
   const [selectedDescription, setSelectedDescription] = useState('');
-
-  console.log('objectSate', objectState);
 
   const handleAddDefect = useCallback((defect: any) => {
     if (defect) {
@@ -141,13 +137,10 @@ const DefectViewAllListAux = ({
             translator={I18n.t}>
             <Text fontSize={16}>{selectedDefect.name}</Text>
           </QuantityCard>
-          <FormInput
-            style={styles.formInput}
+          <FormHtmlInput
             title={I18n.t('Base_Description')}
             defaultValue={selectedDescription}
             onChange={setSelectedDescription}
-            multiline
-            adjustHeightWithLines
           />
           <View style={styles.addButton}>
             <Button
