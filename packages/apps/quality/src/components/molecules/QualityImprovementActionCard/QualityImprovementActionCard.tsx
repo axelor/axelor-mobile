@@ -19,37 +19,39 @@
 import React, {useMemo} from 'react';
 import {ActionCard} from '@axelor/aos-mobile-ui';
 import {usePermitted, useTranslator} from '@axelor/aos-mobile-core';
-import {QualityImprovementsCard} from '../../atoms';
+import {QualityImprovementCard} from '../../atoms';
 
-const FIRST_STATUS = 1;
+const FIRST_STATUS_SEQUENCE = 1;
 
-interface qualityImprovementProps {
+interface QualityImprovement {
   id: number;
-  sequence?: string;
-  qiDetection?: any;
-  qiStatus?: any;
+  sequence: string;
+  qiDetection: any;
+  qiStatus: any;
   gravityTypeSelect?: number;
 }
 
-interface QualityImprovementsActionCardProps {
+interface QualityImprovementActionCardProps {
   style?: any;
-  qualityImprovement?: qualityImprovementProps;
+  qualityImprovement: QualityImprovement;
   onPress?: () => void;
 }
 
-const QualityImprovementsActionCard = ({
+const QualityImprovementActionCard = ({
   style,
   qualityImprovement,
   onPress,
-}: QualityImprovementsActionCardProps) => {
+}: QualityImprovementActionCardProps) => {
   const I18n = useTranslator();
   const {readonly} = usePermitted({
     modelName: 'com.axelor.apps.quality.db.QualityImprovement',
   });
 
   const isEditable = useMemo(
-    () => !readonly && qualityImprovement?.qiStatus?.sequence === FIRST_STATUS,
-    [qualityImprovement?.qiStatus?.sequence, readonly],
+    () =>
+      !readonly &&
+      qualityImprovement.qiStatus?.sequence === FIRST_STATUS_SEQUENCE,
+    [qualityImprovement.qiStatus?.sequence, readonly],
   );
 
   return (
@@ -58,21 +60,21 @@ const QualityImprovementsActionCard = ({
       actionList={[
         {
           iconName: 'pencil-fill',
-          helper: I18n.t('Quality_EditImprovements'),
+          helper: I18n.t('Quality_EditImprovement'),
           onPress: () => console.log('edit'),
           hidden: !isEditable,
         },
       ]}
       translator={I18n.t}>
-      <QualityImprovementsCard
+      <QualityImprovementCard
         onPress={onPress}
         sequence={qualityImprovement.sequence}
-        qiDetection={qualityImprovement?.qiDetection?.name}
-        status={qualityImprovement?.qiStatus}
-        gravityTypeSelect={qualityImprovement?.gravityTypeSelect}
+        qiDetection={qualityImprovement.qiDetection?.name}
+        status={qualityImprovement.qiStatus}
+        gravityTypeSelect={qualityImprovement.gravityTypeSelect}
       />
     </ActionCard>
   );
 };
 
-export default QualityImprovementsActionCard;
+export default QualityImprovementActionCard;

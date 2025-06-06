@@ -28,13 +28,13 @@ import {
 } from '@axelor/aos-mobile-core';
 import {fetchQualityImprovementStatus} from '../../../features/qualityImprovementSlice';
 
-type SetterFunction = (value: any | ((_current: any) => any)) => void;
+type SetterFunction<T> = (value: T | ((_current: T) => T)) => void;
 
 interface QualityImprovementFilterProps {
   isAssignedToMe: boolean;
-  setIsAssignedToMe?: SetterFunction;
-  setSelectedStatus?: SetterFunction;
-  setSelectedGravity?: SetterFunction;
+  setIsAssignedToMe?: SetterFunction<boolean>;
+  setSelectedStatus?: SetterFunction<any[]>;
+  setSelectedGravity?: SetterFunction<any[]>;
 }
 
 const QualityImprovementFilter = ({
@@ -43,31 +43,32 @@ const QualityImprovementFilter = ({
   setSelectedStatus,
   setSelectedGravity,
 }: QualityImprovementFilterProps) => {
-  const dispatch = useDispatch();
   const I18n = useTranslator();
+  const dispatch = useDispatch();
   const {getCustomSelectionItems, getSelectionItems} = useTypeHelpers();
   const {QualityImprovement} = useTypes();
 
-  const {QIStatusList} = useSelector(state => state.quality_qualityImprovement);
+  const {qiStatusList} = useSelector(state => state.quality_qualityImprovement);
 
   useEffect(() => {
     dispatch((fetchQualityImprovementStatus as any)());
   }, [dispatch]);
 
   const statusList = useMemo(
-    () => getCustomSelectionItems(QIStatusList, 'name'),
-    [QIStatusList, getCustomSelectionItems],
+    () => getCustomSelectionItems(qiStatusList, 'name'),
+    [qiStatusList, getCustomSelectionItems],
   );
 
-  const gravityList = useMemo(() => {
-    return getSelectionItems(QualityImprovement?.gravityTypeSelect);
-  }, [QualityImprovement?.gravityTypeSelect, getSelectionItems]);
+  const gravityList = useMemo(
+    () => getSelectionItems(QualityImprovement?.gravityTypeSelect),
+    [QualityImprovement?.gravityTypeSelect, getSelectionItems],
+  );
 
   return (
     <View style={styles.container}>
       <ToggleButton
         isActive={isAssignedToMe}
-        onPress={() => setIsAssignedToMe((current: any) => !current)}
+        onPress={() => setIsAssignedToMe(current => !current)}
         buttonConfig={{
           iconName: 'person-fill',
           width: '10%',

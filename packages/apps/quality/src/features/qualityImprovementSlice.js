@@ -58,7 +58,7 @@ const initialState = {
   isListEndQualityImprovement: false,
   qualityImprovementList: [],
 
-  QIStatusList: [],
+  qiStatusList: [],
 };
 
 const qualityImprovementSlice = createSlice({
@@ -74,7 +74,7 @@ const qualityImprovementSlice = createSlice({
     builder.addCase(
       fetchQualityImprovementStatus.fulfilled,
       (state, action) => {
-        state.QIStatusList = action.payload;
+        state.qiStatusList = action.payload;
       },
     );
   },

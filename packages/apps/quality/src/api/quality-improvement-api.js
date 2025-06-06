@@ -86,13 +86,15 @@ export async function searchQualityImprovement({
     page,
     companyId,
     filter: filterDomain,
+    provider: 'model',
   });
 }
 
 export async function fetchQualityImprovementStatus() {
   return createStandardSearch({
     model: 'com.axelor.apps.quality.db.QIStatus',
-    fieldKey: 'quality_QIStatus',
+    fieldKey: 'quality_qiStatus',
+    sortKey: 'quality_qiStatus',
     numberElementsByPage: null,
     page: 0,
     provider: 'model',

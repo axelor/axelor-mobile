@@ -26,43 +26,43 @@ import {
   useTypes,
 } from '@axelor/aos-mobile-core';
 
-interface TaskCardProps {
+interface QualityImprovementCardProps {
   style?: any;
-  sequence?: string;
-  qiDetection?: string;
-  status?: any;
-  onPress?: () => void;
+  sequence: string;
+  qiDetection: string;
+  status: any;
   gravityTypeSelect?: number;
+  onPress?: () => void;
 }
 
-const QualityImprovementsCard = ({
+const QualityImprovementCard = ({
   style,
   sequence,
   qiDetection,
   status,
-  onPress,
   gravityTypeSelect,
-}: TaskCardProps) => {
+  onPress,
+}: QualityImprovementCardProps) => {
   const I18n = useTranslator();
   const {getItemColorFromIndex} = useTypeHelpers();
   const {QualityImprovement} = useTypes();
   const {getItemColor, getItemTitle} = useTypeHelpers();
 
-  const {QIStatusList} = useSelector(state => state.quality_qualityImprovement);
+  const {qiStatusList} = useSelector(state => state.quality_qualityImprovement);
 
-  const borderStyle = useMemo(() => {
-    return (
-      status != null &&
-      getStyles(getItemColorFromIndex(QIStatusList, status)?.background)?.border
-    );
-  }, [getItemColorFromIndex, QIStatusList, status]);
+  const borderColor = useMemo(
+    () => status && getItemColorFromIndex(qiStatusList, status)?.background,
+    [getItemColorFromIndex, qiStatusList, status],
+  );
+
+  const styles = useMemo(() => getStyles(borderColor), [borderColor]);
 
   return (
     <ObjectCard
       onPress={onPress}
-      style={[borderStyle, styles.card, style]}
+      style={[styles.card, status && styles.border, style]}
       leftContainerFlex={2}
-      touchable={false}
+      touchable={!!onPress}
       showArrow={false}
       upperTexts={{
         items: [
@@ -92,18 +92,20 @@ const QualityImprovementsCard = ({
   );
 };
 
-const getStyles = color =>
-  StyleSheet.create({border: {borderLeftWidth: 7, borderLeftColor: color}});
+const getStyles = (borderColor: string) =>
+  StyleSheet.create({
+    border: {
+      borderLeftWidth: 7,
+      borderLeftColor: borderColor,
+    },
+    card: {
+      marginHorizontal: 2,
+      marginVertical: 2,
+      padding: 0,
+      marginRight: 5,
+      paddingRight: 5,
+      flex: 1,
+    },
+  });
 
-const styles = StyleSheet.create({
-  card: {
-    marginHorizontal: 2,
-    marginVertical: 2,
-    padding: 0,
-    marginRight: 5,
-    paddingRight: 5,
-    flex: 1,
-  },
-});
-
-export default QualityImprovementsCard;
+export default QualityImprovementCard;

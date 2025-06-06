@@ -25,7 +25,7 @@ import {
 } from '@axelor/aos-mobile-core';
 import {
   QualityImprovementFilter,
-  QualityImprovementsActionCard,
+  QualityImprovementActionCard,
 } from '../../components';
 import {searchQualityImprovement} from '../../features/qualityImprovementSlice';
 
@@ -80,7 +80,7 @@ const QualityImprovementListScreen = ({}) => {
         sliceFunctionData={sliceFunctionData}
         searchPlaceholder={I18n.t('Base_Search')}
         renderListItem={({item}) => (
-          <QualityImprovementsActionCard qualityImprovement={item} />
+          <QualityImprovementActionCard qualityImprovement={item} />
         )}
       />
     </Screen>

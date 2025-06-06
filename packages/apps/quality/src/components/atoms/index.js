@@ -21,4 +21,4 @@ export {default as ControlEntryHeader} from './ControlEntryHeader/ControlEntryHe
 export {default as ControlEntrySampleCard} from './ControlEntrySampleCard/ControlEntrySampleCard';
 export {default as ControlEntrySampleLineHeader} from './ControlEntrySampleLineHeader/ControlEntrySampleLineHeader';
 export {default as NavigationButton} from './NavigationButton/NavigationButton';
-export {default as QualityImprovementsCard} from './QualityImprovementsCard/QualityImprovementsCard';
+export {default as QualityImprovementCard} from './QualityImprovementCard/QualityImprovementCard';
