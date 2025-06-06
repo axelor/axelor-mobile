@@ -79,4 +79,31 @@ export const quality_typeObjects: ModuleSelections = [
       },
     },
   },
+  {
+    modelName: 'com.axelor.apps.quality.db.QualityImprovement',
+    fields: {
+      gravityTypeSelect: {
+        content: [
+          {
+            key: 'Critical',
+            value: 1,
+            title: 'Quality_Gravity_Critical',
+            color: 'errorColor',
+          },
+          {
+            key: 'Major',
+            value: 2,
+            title: 'Quality_Gravity_Major',
+            color: 'warningColor',
+          },
+          {
+            key: 'Minor',
+            value: 3,
+            title: 'Quality_Gravity_Minor',
+            color: 'infoColor',
+          },
+        ],
+      },
+    },
+  },
 ];
