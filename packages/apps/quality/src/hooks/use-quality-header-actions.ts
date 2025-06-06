@@ -19,6 +19,7 @@
 import {
   headerActionsProvider,
   useDispatch,
+  usePermitted,
   useSelector,
   useTranslator,
 } from '@axelor/aos-mobile-core';
@@ -29,6 +30,36 @@ import {fetchControlEntryById} from '../features/controlEntrySlice';
 export const useQualityHeaders = () => {
   useControlEntryListActions();
   useControlEntryDetailsActions();
+  useQualityImprovementListActions();
+};
+
+const useQualityImprovementListActions = () => {
+  const I18n = useTranslator();
+  const {canCreate} = usePermitted({
+    modelName: 'com.axelor.apps.quality.db.QualityImprovement',
+  });
+
+  useEffect(() => {
+    headerActionsProvider.registerModel('quality_qualityImprovement_list', {
+      model: 'com.axelor.apps.quality.db.QualityImprovement',
+      options: {
+        core_modelFilters: {name: 'act:quality.improvements'},
+      },
+      actions: [
+        {
+          hideIf: !canCreate,
+          key: 'createNewQI',
+          order: 10,
+          iconName: 'plus-lg',
+          title: I18n.t('Quality_CreateNewQI'),
+          onPress: () => {
+            console.log('new QI');
+          },
+          showInHeader: true,
+        },
+      ],
+    });
+  }, [I18n, canCreate]);
 };
 
 const useControlEntryListActions = () => {

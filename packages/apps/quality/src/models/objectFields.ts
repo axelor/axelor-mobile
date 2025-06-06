@@ -51,4 +51,13 @@ export const quality_modelAPI: ObjectFields = {
       .array()
       .of(schemaContructor.subObject()),
   }),
+  quality_qualityImprovement: schemaContructor.object({
+    sequence: schemaContructor.string(),
+    qiDetection: schemaContructor.subObject(),
+    qiStatus: schemaContructor.subObject('sequence'),
+    gravityTypeSelect: schemaContructor.number(),
+  }),
+  quality_qiStatus: schemaContructor.object({
+    name: schemaContructor.string(),
+  }),
 };
