@@ -22,12 +22,7 @@ import {Stepper, StepState} from '@axelor/aos-mobile-ui';
 import {useSelector, useTranslator} from '@axelor/aos-mobile-core';
 
 interface QIStepperProps {
-  style?: any;
-  title?: string;
-  defaultValue?: string;
   onChange?: (any: any) => void;
-  readonly?: boolean;
-  required?: boolean;
 }
 
 const getStepsState = (stepIndex: number): StepState[] => {
@@ -38,14 +33,7 @@ const getStepsState = (stepIndex: number): StepState[] => {
   });
 };
 
-const QIStepper = ({
-  style = null,
-  title = 'Quality_QIMethodAnalysis',
-  defaultValue = null,
-  onChange = () => {},
-  readonly = false,
-  required = false,
-}: QIStepperProps) => {
+const QIStepper = ({onChange = () => {}}: QIStepperProps) => {
   const I18n = useTranslator();
   const {actualSteps} = useSelector(
     (state: any) => state.quality_qualityImprovement,
