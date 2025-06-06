@@ -68,7 +68,7 @@ const QualityImprovementsCard = ({
         items: [
           {displayText: sequence, isTitle: true},
           {
-            indicatorText: `${I18n.t('Quality_Detection')}`,
+            indicatorText: I18n.t('Quality_Detection'),
             displayText: qiDetection,
             numberOfLines: 2,
           },
@@ -93,12 +93,7 @@ const QualityImprovementsCard = ({
 };
 
 const getStyles = color =>
-  StyleSheet.create({
-    border: {
-      borderLeftWidth: 7,
-      borderLeftColor: color,
-    },
-  });
+  StyleSheet.create({border: {borderLeftWidth: 7, borderLeftColor: color}});
 
 const styles = StyleSheet.create({
   card: {
