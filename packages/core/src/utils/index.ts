@@ -22,6 +22,7 @@ export {
   diffDate,
   getDay,
   getEndOfDay,
+  getFromNowDate,
   getFullDateItems,
   getMonth,
   getNextMonth,
