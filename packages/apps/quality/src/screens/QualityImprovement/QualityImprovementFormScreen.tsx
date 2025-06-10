@@ -35,6 +35,9 @@ const QualityImprovementFormScreen = ({route}) => {
       qualityImprovementId != null
         ? {
             ...qualityImprovement,
+            nonConformingQuantity:
+              qualityImprovement?.qiIdentification?.nonConformingQuantity,
+            product: qualityImprovement?.qiIdentification?.product,
           }
         : null,
     [qualityImprovement, qualityImprovementId],

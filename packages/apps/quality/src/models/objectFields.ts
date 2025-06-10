@@ -56,6 +56,15 @@ export const quality_modelAPI: ObjectFields = {
     qiDetection: schemaContructor.subObject(),
     qiStatus: schemaContructor.subObject('sequence'),
     gravityTypeSelect: schemaContructor.number(),
+    analysisMethod: schemaContructor.subObject(),
+    type: schemaContructor.number(),
+    qiIdentification: schemaContructor.subObject().concat(
+      schemaContructor.object({
+        product: schemaContructor.subObject(),
+        quantity: schemaContructor.number(),
+        nonConformingQuantity: schemaContructor.number(),
+      }),
+    ),
   }),
   quality_qiStatus: schemaContructor.object({
     name: schemaContructor.string(),
