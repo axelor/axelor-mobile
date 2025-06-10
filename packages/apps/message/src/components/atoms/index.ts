@@ -16,6 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+export {default as AuthorText} from './AuthorText/AuthorText';
 export {default as Avatar, AVATAR_SIZE, AVATAR_PADDING} from './Avatar/Avatar';
 export {default as ExpandableText} from './ExpandableText/ExpandableText';
 export {default as ReadIcon} from './ReadIcon/ReadIcon';
