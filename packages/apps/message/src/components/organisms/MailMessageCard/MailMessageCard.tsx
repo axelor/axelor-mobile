@@ -23,7 +23,7 @@ import {
   TouchableOpacity,
   View,
 } from 'react-native';
-import {formatDateTime, useTranslator} from '@axelor/aos-mobile-core';
+import {useTranslator} from '@axelor/aos-mobile-core';
 import {
   Icon,
   OUTSIDE_INDICATOR,
@@ -31,7 +31,7 @@ import {
   useClickOutside,
   useThemeColor,
 } from '@axelor/aos-mobile-ui';
-import {Avatar, AVATAR_SIZE, AVATAR_PADDING} from '../../atoms';
+import {Avatar, AVATAR_SIZE, AVATAR_PADDING, AuthorText} from '../../atoms';
 import {CommentCard, NotificationCard, SendMessageBox} from '../../molecules';
 import {fetchRepliesApi} from '../../../api';
 import {MailMessageType} from '../../../types';
@@ -110,9 +110,7 @@ const MailMessageCard = ({
   );
 
   const wrapperRef = useRef(null);
-  const clickOutside = useClickOutside({
-    wrapperRef,
-  });
+  const clickOutside = useClickOutside({wrapperRef});
 
   useEffect(() => {
     if (isMessageBoxVisible && clickOutside === OUTSIDE_INDICATOR) {
@@ -146,12 +144,11 @@ const MailMessageCard = ({
       </View>
       <View style={styles.flexOne}>
         <View style={styles.flexOne}>
-          <Text style={styles.author} fontSize={12}>
-            {`${author} ${eventText} - ${formatDateTime(
-              eventTime,
-              I18n.t('Base_DateTimeFormat'),
-            )}`}
-          </Text>
+          <AuthorText
+            author={author}
+            eventText={eventText}
+            eventTime={eventTime}
+          />
           {type === MailMessageType.status.comment && (
             <CommentCard
               style={styles.card}
@@ -261,9 +258,6 @@ const getStyles = (verticalRuleColor: string) =>
     },
     flexOne: {
       flex: 1,
-    },
-    author: {
-      paddingLeft: 10,
     },
     card: {
       flex: 1,

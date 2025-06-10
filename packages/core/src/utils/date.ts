@@ -16,7 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import moment from 'moment';
+import moment from 'moment/min/moment-with-locales';
 
 export const isDate = (date: string): boolean => {
   return moment(date, moment.ISO_8601, true).isValid();
@@ -146,4 +146,8 @@ export const ISODateTimeToDate = (date: string): string => {
   }
 
   return date.split('T')[0];
+};
+
+export const getFromNowDate = (date: string, localeCode: string) => {
+  return moment(date).locale(localeCode).fromNow();
 };
