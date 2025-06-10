@@ -23,11 +23,7 @@ import {
   TouchableOpacity,
   View,
 } from 'react-native';
-import {
-  getFromNowDate,
-  useSelector,
-  useTranslator,
-} from '@axelor/aos-mobile-core';
+import {useTranslator} from '@axelor/aos-mobile-core';
 import {
   Icon,
   OUTSIDE_INDICATOR,
@@ -35,7 +31,7 @@ import {
   useClickOutside,
   useThemeColor,
 } from '@axelor/aos-mobile-ui';
-import {Avatar, AVATAR_SIZE, AVATAR_PADDING} from '../../atoms';
+import {Avatar, AVATAR_SIZE, AVATAR_PADDING, AuthorText} from '../../atoms';
 import {CommentCard, NotificationCard, SendMessageBox} from '../../molecules';
 import {fetchRepliesApi} from '../../../api';
 import {MailMessageType} from '../../../types';
@@ -86,8 +82,6 @@ const MailMessageCard = ({
   const [replies, setReplies] = useState([]);
   const [numberReplies, setNumberReplies] = useState(0);
   const [isMessageBoxVisible, setIsMessageBoxVisible] = useState(false);
-
-  const {user} = useSelector(state => state.user);
 
   const getReplies = useCallback(
     (newMessage?: any) =>
@@ -150,9 +144,11 @@ const MailMessageCard = ({
       </View>
       <View style={styles.flexOne}>
         <View style={styles.flexOne}>
-          <Text style={styles.author} fontSize={12}>
-            {`${author} ${eventText} - ${getFromNowDate(eventTime, user?.localization?.language?.code)}`}
-          </Text>
+          <AuthorText
+            author={author}
+            eventText={eventText}
+            eventTime={eventTime}
+          />
           {type === MailMessageType.status.comment && (
             <CommentCard
               style={styles.card}
@@ -240,8 +236,13 @@ const MailMessageCard = ({
 
 const getStyles = (verticalRuleColor: string) =>
   StyleSheet.create({
-    container: {flexDirection: 'row', marginTop: 10},
-    avatar: {paddingBottom: 5},
+    container: {
+      flexDirection: 'row',
+      marginTop: 10,
+    },
+    avatar: {
+      paddingBottom: 5,
+    },
     displayRepliesContainer: {
       flexDirection: 'row',
       justifyContent: 'center',
@@ -255,9 +256,15 @@ const getStyles = (verticalRuleColor: string) =>
       marginTop: 5,
       backgroundColor: verticalRuleColor,
     },
-    flexOne: {flex: 1},
-    author: {paddingLeft: 10},
-    card: {flex: 1, width: '100%', marginTop: 2, paddingHorizontal: 5},
+    flexOne: {
+      flex: 1,
+    },
+    card: {
+      flex: 1,
+      width: '100%',
+      marginTop: 2,
+      paddingHorizontal: 5,
+    },
     replyContainer: {
       flexDirection: 'row',
       justifyContent: 'flex-end',
@@ -265,9 +272,15 @@ const getStyles = (verticalRuleColor: string) =>
       paddingTop: 3,
       paddingHorizontal: 10,
     },
-    replyText: {textDecorationLine: 'underline'},
-    messageBox: {width: null},
-    replyCard: {marginLeft: -((AVATAR_SIZE + AVATAR_PADDING) / 2)},
+    replyText: {
+      textDecorationLine: 'underline',
+    },
+    messageBox: {
+      width: null,
+    },
+    replyCard: {
+      marginLeft: -((AVATAR_SIZE + AVATAR_PADDING) / 2),
+    },
   });
 
 export default MailMessageCard;
