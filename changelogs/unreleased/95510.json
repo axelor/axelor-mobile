@@ -1,0 +1,5 @@
+{
+  "title": "Date utils: add new function to get date under from now format",
+  "type": "feat",
+  "packages": "core"
+}
