@@ -21,6 +21,7 @@ import {Screen} from '@axelor/aos-mobile-ui';
 import {FormView, useDispatch, useSelector} from '@axelor/aos-mobile-core';
 import {QIFormButton} from '../../components';
 import {fetchQualityImprovementById} from '../../features/qualityImprovementSlice';
+import {fetchQiResolution} from '../../features/qiResolutionSlice';
 
 const QualityImprovementFormScreen = ({route}) => {
   const dispatch = useDispatch();
@@ -30,6 +31,21 @@ const QualityImprovementFormScreen = ({route}) => {
     (state: any) => state.quality_qualityImprovement,
   );
 
+  const {qiResolution} = useSelector(
+    (state: any) => state.quality_qiResolution,
+  );
+
+  const defectDefaults = useMemo(() => {
+    return (
+      qiResolution?.qiResolutionDefaultsList?.map(item => ({
+        id: item.id,
+        name: item.name,
+        qty: parseFloat(item.quantity ?? '1'),
+        description: item.description,
+      })) ?? []
+    );
+  }, [qiResolution]);
+
   const _defaultValue = useMemo(
     () =>
       qualityImprovementId != null
@@ -38,9 +54,10 @@ const QualityImprovementFormScreen = ({route}) => {
             nonConformingQuantity:
               qualityImprovement?.qiIdentification?.nonConformingQuantity,
             product: qualityImprovement?.qiIdentification?.product,
+            QIResolutionDefault: defectDefaults,
           }
         : null,
-    [qualityImprovement, qualityImprovementId],
+    [defectDefaults, qualityImprovement, qualityImprovementId],
   );
 
   useEffect(() => {
@@ -50,6 +67,19 @@ const QualityImprovementFormScreen = ({route}) => {
       );
     }
   }, [dispatch, qualityImprovementId]);
+
+  useEffect(() => {
+    if (qualityImprovementId && qualityImprovement) {
+      dispatch(
+        (fetchQiResolution as any)({id: qualityImprovement?.qiResolution?.id}),
+      );
+    }
+  }, [
+    dispatch,
+    qualityImprovement,
+    qualityImprovement?.qiResolution?.id,
+    qualityImprovementId,
+  ]);
 
   return (
     <Screen removeSpaceOnTop={true}>

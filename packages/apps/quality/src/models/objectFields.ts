@@ -65,6 +65,7 @@ export const quality_modelAPI: ObjectFields = {
         nonConformingQuantity: schemaContructor.number(),
       }),
     ),
+    qiResolution: schemaContructor.subObject(),
   }),
   quality_qiStatus: schemaContructor.object({
     name: schemaContructor.string(),

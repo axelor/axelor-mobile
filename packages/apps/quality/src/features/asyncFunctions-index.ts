@@ -39,6 +39,7 @@ export {
   fetchQualityImprovementStatus,
   searchQualityImprovement,
 } from './qualityImprovementSlice';
+export {fetchQiResolution} from './qiResolutionSlice';
 export {searchQIDetection} from './qiDetectionSlice';
 export {searchDefect} from './qiDefaultSlice';
 export {searchCustomerOrderLine} from './saleOrderLineSlice';
