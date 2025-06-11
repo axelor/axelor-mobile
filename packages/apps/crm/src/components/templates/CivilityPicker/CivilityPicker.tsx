@@ -42,8 +42,6 @@ const CivilityPicker = ({
     [Partner?.titleSelect],
   );
 
-  console.log('civilityList', civilityList);
-
   return (
     <Picker
       style={style}
