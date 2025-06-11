@@ -46,6 +46,7 @@ import {
   useCameraScannerSelector,
 } from '../../../features/cameraScannerSlice';
 import {formatScan} from '../../../utils/formatters';
+import {Toast} from '../Toast';
 
 const CONTENT_SPACING = 40;
 const PHOTO_TYPE = 'jpeg';
@@ -230,6 +231,9 @@ const Camera = () => {
           />
         </View>
       ) : null}
+      <View style={styles.toastContainer}>
+        <Toast />
+      </View>
     </SafeAreaView>
   );
 };
@@ -264,6 +268,12 @@ const styles = StyleSheet.create({
     right: SAFE_AREA_PADDING.paddingRight,
     top: SAFE_AREA_PADDING.paddingTop,
     zIndex: 800,
+  },
+  toastContainer: {
+    position: 'absolute',
+    top: Dimensions.get('window').height + SAFE_AREA_PADDING.paddingBottom,
+    zIndex: 900,
+    width: '100%',
   },
 });
 
