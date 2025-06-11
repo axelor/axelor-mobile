@@ -19,19 +19,24 @@
 import {useCallback, useEffect, useMemo, useState} from 'react';
 import DeviceInfo from 'react-native-device-info';
 import {
+  disableCameraScanner,
   enableCameraScanner,
   enableMassCameraScanner,
 } from '../features/cameraScannerSlice';
-import {enableScan} from '../features/scannerSlice';
+import {enableScan, disableScan} from '../features/scannerSlice';
 import {useDispatch} from '../redux/hooks';
 
 export const useScanActivator = (
   scanKeySearch: string,
   isMassScan: boolean = false,
 ) => {
-  const {enable: enableScanner} = useScannerDeviceActivator(scanKeySearch);
-  const {enable: enableCamera, enableMassCamera} =
-    useCameraScannerActivator(scanKeySearch);
+  const {enable: enableScanner, disable: disableScanner} =
+    useScannerDeviceActivator(scanKeySearch);
+  const {
+    enable: enableCamera,
+    enableMassCamera,
+    disable: disableCamera,
+  } = useCameraScannerActivator(scanKeySearch);
 
   const [isZebraDevice, setIsZebraDevice] = useState(false);
 
@@ -57,7 +62,18 @@ export const useScanActivator = (
     enableCamera,
   ]);
 
-  return useMemo(() => ({enable, isZebraDevice}), [enable, isZebraDevice]);
+  const disable = useCallback(() => {
+    if (isZebraDevice) {
+      disableScanner();
+    } else {
+      disableCamera();
+    }
+  }, [isZebraDevice, disableScanner, disableCamera]);
+
+  return useMemo(
+    () => ({disable, enable, isZebraDevice}),
+    [disable, enable, isZebraDevice],
+  );
 };
 
 export const useScannerDeviceActivator = (scanKeySearch: string) => {
@@ -67,7 +83,11 @@ export const useScannerDeviceActivator = (scanKeySearch: string) => {
     dispatch(enableScan(scanKeySearch));
   }, [dispatch, scanKeySearch]);
 
-  return useMemo(() => ({enable}), [enable]);
+  const disable = useCallback(() => {
+    dispatch(disableScan());
+  }, [dispatch]);
+
+  return useMemo(() => ({enable, disable}), [disable, enable]);
 };
 
 export const useCameraScannerActivator = (scanKeySearch: string) => {
@@ -81,8 +101,12 @@ export const useCameraScannerActivator = (scanKeySearch: string) => {
     dispatch(enableMassCameraScanner(scanKeySearch));
   }, [dispatch, scanKeySearch]);
 
+  const disableCamera = useCallback(() => {
+    dispatch(disableCameraScanner());
+  }, [dispatch]);
+
   return useMemo(
-    () => ({enable: enableCamera, enableMassCamera}),
-    [enableCamera, enableMassCamera],
+    () => ({enable: enableCamera, enableMassCamera, disable: disableCamera}),
+    [enableCamera, enableMassCamera, disableCamera],
   );
 };

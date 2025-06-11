@@ -21,7 +21,6 @@ import {useDispatch} from '../redux/hooks';
 import {
   useCameraScannerValueByKey,
   clearBarcode,
-  disableCameraScanner,
 } from '../features/cameraScannerSlice';
 import {
   clearScan,
@@ -35,6 +34,7 @@ interface UseMassScannerParams {
   backgroundAction: (scannedValue: string) => any;
   fallbackAction?: (error: any) => void;
   scanInterval?: number;
+  disableOnError?: boolean;
 }
 
 export const useMassScanner = ({
@@ -42,6 +42,7 @@ export const useMassScanner = ({
   backgroundAction,
   fallbackAction,
   scanInterval = 1000,
+  disableOnError = true,
 }: UseMassScannerParams) => {
   const isProcessingRef = useRef(false);
   const timerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
@@ -49,7 +50,11 @@ export const useMassScanner = ({
 
   const {isEnabled: isScanEnabled, scanKey: activeScanKey} =
     useScannerSelector();
-  const {enable: enableScan, isZebraDevice} = useScanActivator(scanKey, true);
+  const {
+    enable: enableScan,
+    disable: disableScan,
+    isZebraDevice,
+  } = useScanActivator(scanKey, true);
   const scannedBarcode = useCameraScannerValueByKey(scanKey);
   const scannedValue = useScannedValueByKey(scanKey);
 
@@ -70,13 +75,22 @@ export const useMassScanner = ({
           );
         }
       } catch (error) {
-        dispatch(disableCameraScanner());
+        if (disableOnError) {
+          disableScan();
+        }
         fallbackAction?.(error);
       } finally {
         clearAction();
       }
     },
-    [backgroundAction, fallbackAction, dispatch, isZebraDevice, scanInterval],
+    [
+      backgroundAction,
+      disableOnError,
+      disableScan,
+      fallbackAction,
+      isZebraDevice,
+      scanInterval,
+    ],
   );
 
   useEffect(() => {
@@ -87,5 +101,8 @@ export const useMassScanner = ({
     }
   }, [dispatch, processScan, scannedBarcode?.value, scannedValue]);
 
-  return useMemo(() => ({isEnabled, enableScan}), [enableScan, isEnabled]);
+  return useMemo(
+    () => ({disableScan, enableScan, isEnabled}),
+    [disableScan, enableScan, isEnabled],
+  );
 };
