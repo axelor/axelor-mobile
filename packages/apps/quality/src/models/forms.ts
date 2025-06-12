@@ -46,20 +46,25 @@ import {supplierOrderPartnerForm} from '../features/purchaseOrderSlice';
 import {updateCustomerOrderPartnerForm} from '../features/saleOrderSlice';
 import {updateManufOrder} from '../features/manufOrderSlice';
 
-const Steps = {
-  detection: 0,
-  identification: 1,
-  defaults: 2,
-};
+const Steps = {detection: 0, identification: 1, defaults: 2};
 
 export const quality_formsRegister: FormConfigs = {
   quality_qualityImprovement: {
     modelName: 'com.axelor.apps.quality.db.QualityImprovement',
+    panels: {
+      header: {direction: 'row', colSpan: 12},
+      headerLeft: {direction: 'column', colSpan: 6, parent: 'header'},
+      headerRight: {direction: 'column', colSpan: 6, parent: 'header'},
+    },
     fields: {
-      stepper: {
+      stepper: {widget: 'custom', type: 'number', customComponent: QIStepper},
+      type: {
+        titleKey: 'Quality_Type',
         widget: 'custom',
-        type: 'string',
-        customComponent: QIStepper,
+        type: 'number',
+        customComponent: TypePicker,
+        hideIf: ({objectState}) => objectState?.stepper !== Steps.detection,
+        parentPanel: 'headerLeft',
       },
       gravityTypeSelect: {
         titleKey: 'Quality_Gravity',
@@ -67,13 +72,7 @@ export const quality_formsRegister: FormConfigs = {
         type: 'number',
         customComponent: GravityPicker,
         hideIf: ({objectState}) => objectState?.stepper !== Steps.detection,
-      },
-      type: {
-        titleKey: 'Quality_Type',
-        widget: 'custom',
-        type: 'number',
-        customComponent: TypePicker,
-        hideIf: ({objectState}) => objectState?.stepper !== Steps.detection,
+        parentPanel: 'headerRight',
       },
       qiDetection: {
         titleKey: 'Quality_QIDetection',
@@ -131,6 +130,7 @@ export const quality_formsRegister: FormConfigs = {
         dependsOn: {
           supplierPartner: ({newValue, dispatch}) => {
             dispatch(supplierPartnerForm(newValue));
+            return null;
           },
         },
       },
@@ -149,6 +149,10 @@ export const quality_formsRegister: FormConfigs = {
         dependsOn: {
           supplierPurchaseOrder: ({newValue, dispatch}) => {
             dispatch(supplierOrderPartnerForm(newValue));
+            return null;
+          },
+          supplierPartner: () => {
+            return null;
           },
         },
       },
@@ -182,6 +186,7 @@ export const quality_formsRegister: FormConfigs = {
         dependsOn: {
           customerPartner: ({newValue, dispatch}) => {
             dispatch(updateCustomerPartnerForm(newValue));
+            return null;
           },
         },
       },
@@ -200,6 +205,10 @@ export const quality_formsRegister: FormConfigs = {
         dependsOn: {
           customerSaleOrder: ({newValue, dispatch}) => {
             dispatch(updateCustomerOrderPartnerForm(newValue));
+            return null;
+          },
+          customerPartner: () => {
+            return null;
           },
         },
       },
@@ -231,6 +240,7 @@ export const quality_formsRegister: FormConfigs = {
         dependsOn: {
           manufOrder: ({newValue, dispatch}) => {
             dispatch(updateManufOrder(newValue));
+            return null;
           },
         },
       },

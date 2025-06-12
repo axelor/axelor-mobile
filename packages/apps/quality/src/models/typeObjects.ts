@@ -128,22 +128,22 @@ export const quality_typeObjects: ModuleSelections = [
           {
             key: 'none',
             value: 0,
-            title: 'Quality_none',
+            title: null,
           },
           {
             key: 'supplier',
             value: 1,
-            title: 'Quality_Supplier',
+            title: null,
           },
           {
             key: 'internal',
             value: 2,
-            title: 'Quality_Internal',
+            title: null,
           },
           {
             key: 'customer',
             value: 3,
-            title: 'Quality_Customer',
+            title: null,
           },
         ],
       },

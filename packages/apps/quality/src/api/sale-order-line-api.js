@@ -22,18 +22,14 @@ import {
 } from '@axelor/aos-mobile-core';
 
 const createCustomerOrderLineCriteria = (searchValue, customerSaleOrder) => {
-  const criterias = [
+  return [
     getSearchCriterias('quality_customerOrderLine', searchValue),
-  ];
-  if (customerSaleOrder != null) {
-    criterias.push({
+    {
       fieldName: 'saleOrder.id',
       operator: '=',
       value: customerSaleOrder.id,
-    });
-  }
-
-  return criterias;
+    },
+  ];
 };
 
 export async function searchCustomerOrderLine({

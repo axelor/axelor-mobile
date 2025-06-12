@@ -22,18 +22,14 @@ import {
 } from '@axelor/aos-mobile-core';
 
 const createPurchaseOrderLineCriteria = (searchValue, purchaseOrder) => {
-  const criterias = [
+  return [
     getSearchCriterias('quality_supplierOrderLine', searchValue),
-  ];
-  if (purchaseOrder != null) {
-    criterias.push({
+    {
       fieldName: 'purchaseOrder.id',
       operator: '=',
       value: purchaseOrder.id,
-    });
-  }
-
-  return criterias;
+    },
+  ];
 };
 
 export async function searchSupplierPurchaseOrderLine({

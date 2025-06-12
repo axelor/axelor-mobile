@@ -22,16 +22,14 @@ import {
 } from '@axelor/aos-mobile-core';
 
 const createSupplierOrderCriteria = (searchValue, supplierPartner) => {
-  const criterias = [getSearchCriterias('quality_supplierOrder', searchValue)];
-  if (supplierPartner != null) {
-    criterias.push({
+  return [
+    getSearchCriterias('quality_supplierOrder', searchValue),
+    {
       fieldName: 'supplierPartner.id',
       operator: '=',
       value: supplierPartner.id,
-    });
-  }
-
-  return criterias;
+    },
+  ];
 };
 
 export async function searchSupplierOrder({

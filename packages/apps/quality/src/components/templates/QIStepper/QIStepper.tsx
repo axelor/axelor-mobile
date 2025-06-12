@@ -23,27 +23,31 @@ import {useSelector, useTranslator} from '@axelor/aos-mobile-core';
 
 interface QIStepperProps {
   onChange?: (any: any) => void;
+  objectState?: any;
 }
 
-const getStepsState = (stepIndex: number): StepState[] => {
+const getStepsState = (stepIndex: number, objectState?: any): StepState[] => {
   return [0, 1, 2].map(index => {
+    if (index === 0 && stepIndex >= 1 && !objectState?.qiDetection) {
+      return StepState.error;
+    }
     if (index < stepIndex) return StepState.completed;
     if (index === stepIndex) return StepState.inProgress;
     return StepState.draft;
   });
 };
 
-const QIStepper = ({onChange = () => {}}: QIStepperProps) => {
+const QIStepper = ({onChange = () => {}, objectState}: QIStepperProps) => {
   const I18n = useTranslator();
-  const {actualSteps} = useSelector(
+  const {actualStep} = useSelector(
     (state: any) => state.quality_qualityImprovement,
   );
 
   useEffect(() => {
-    onChange(actualSteps as string);
-  }, [onChange, actualSteps]);
+    onChange(actualStep);
+  }, [onChange, actualStep]);
 
-  const stepStates = getStepsState(actualSteps);
+  const stepStates = getStepsState(actualStep, objectState);
 
   return (
     <Stepper
@@ -52,7 +56,7 @@ const QIStepper = ({onChange = () => {}}: QIStepperProps) => {
         {titleKey: 'Quality_Identification', state: stepStates[1]},
         {titleKey: 'Quality_Defaults', state: stepStates[2]},
       ]}
-      activeStepIndex={actualSteps}
+      activeStepIndex={actualStep}
       translator={I18n.t}
       displayDropdown
     />

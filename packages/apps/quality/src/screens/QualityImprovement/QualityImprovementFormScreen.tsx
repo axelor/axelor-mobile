@@ -20,8 +20,12 @@ import React, {useEffect, useMemo} from 'react';
 import {Screen} from '@axelor/aos-mobile-ui';
 import {FormView, useDispatch, useSelector} from '@axelor/aos-mobile-core';
 import {QIFormButton} from '../../components';
-import {fetchQualityImprovementById} from '../../features/qualityImprovementSlice';
+import {
+  fetchQualityImprovementById,
+  updateSteps,
+} from '../../features/qualityImprovementSlice';
 import {fetchQiResolution} from '../../features/qiResolutionSlice';
+import {QualityImprovement} from '../../types';
 
 const QualityImprovementFormScreen = ({route}) => {
   const dispatch = useDispatch();
@@ -59,6 +63,10 @@ const QualityImprovementFormScreen = ({route}) => {
         : null,
     [defectDefaults, qualityImprovement, qualityImprovementId],
   );
+
+  useEffect(() => {
+    dispatch(updateSteps(QualityImprovement.Steps.detection));
+  }, [dispatch]);
 
   useEffect(() => {
     if (qualityImprovementId) {

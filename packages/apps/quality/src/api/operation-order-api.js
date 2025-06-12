@@ -22,16 +22,14 @@ import {
 } from '@axelor/aos-mobile-core';
 
 const createOperationLineCriteria = (searchValue, manufOrder) => {
-  const criterias = [getSearchCriterias('quality_operationOrder', searchValue)];
-  if (manufOrder != null) {
-    criterias.push({
+  return [
+    getSearchCriterias('quality_operationOrder', searchValue),
+    {
       fieldName: 'manufOrder.id',
       operator: '=',
       value: manufOrder.id,
-    });
-  }
-
-  return criterias;
+    },
+  ];
 };
 
 export async function searchOperationLine({page = 0, searchValue, manufOrder}) {

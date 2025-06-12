@@ -16,5 +16,12 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-export {default as ControlEntry} from './controlEntry';
-export {default as QualityImprovement} from './qualityImprovement';
+class QualityImprovement {
+  static Steps = {
+    detection: 0,
+    identification: 1,
+    defaults: 2,
+  };
+}
+
+export default QualityImprovement;

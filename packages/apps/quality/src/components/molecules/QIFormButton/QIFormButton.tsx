@@ -21,70 +21,59 @@ import {StyleSheet, View} from 'react-native';
 import {useSelector, useTranslator, useDispatch} from '@axelor/aos-mobile-core';
 import {NavigationButton} from '../../atoms';
 import {updateSteps} from '../../../features/qualityImprovementSlice';
+import {QualityImprovement} from '../../../types';
 
-const Steps = {
-  detection: 0,
-  identification: 1,
-  defaults: 2,
-};
-
-const MIN_STEP = Steps.detection;
-const MAX_STEP = Steps.defaults;
+const MIN_STEP = QualityImprovement.Steps.detection;
+const MAX_STEP = QualityImprovement.Steps.defaults;
 
 interface QIFormButtonProps {}
 
 const QIFormButton = ({}: QIFormButtonProps) => {
   const I18n = useTranslator();
   const _dispatch = useDispatch();
-  const {actualSteps} = useSelector(
+  const {actualStep} = useSelector(
     (state: any) => state.quality_qualityImprovement,
   );
 
   const goToPreviousStep = () => {
-    if (actualSteps > MIN_STEP) {
-      _dispatch(updateSteps(actualSteps - 1));
+    if (actualStep > MIN_STEP) {
+      _dispatch(updateSteps(actualStep - 1));
     }
   };
 
   const goToNextStep = () => {
-    if (actualSteps < MAX_STEP) {
-      _dispatch(updateSteps(actualSteps + 1));
+    if (actualStep < MAX_STEP) {
+      _dispatch(updateSteps(actualStep + 1));
     }
   };
 
   const styles = useMemo(() => {
-    return getStyles(actualSteps);
-  }, [actualSteps]);
+    return getStyles(actualStep);
+  }, [actualStep]);
 
   const handleRightButtonPress = () => {
-    if (actualSteps < MAX_STEP) {
+    if (actualStep < MAX_STEP) {
       goToNextStep();
     } else {
       console.log('Save');
     }
   };
 
-  const rightButtonTitle = useMemo(() => {
-    return actualSteps === MAX_STEP
-      ? I18n.t('Quality_Save')
-      : I18n.t('Quality_NextStep');
-  }, [I18n, actualSteps]);
-
   return (
     <View style={styles.buttonContainer}>
-      {actualSteps > MIN_STEP && (
+      {actualStep > MIN_STEP && (
         <NavigationButton
           style={styles.button}
-          title={I18n.t('Quality_PreviousStep')}
+          title={I18n.t('Quality_Previous')}
           onPress={goToPreviousStep}
           position="left"
         />
       )}
       <NavigationButton
-        style={
-          actualSteps === MIN_STEP ? styles.fullWidthButton : styles.button
-        }
-        title={rightButtonTitle}
+        style={actualStep === MIN_STEP ? styles.fullWidthButton : styles.button}
+        title={I18n.t(
+          actualStep === MAX_STEP ? 'Quality_Save' : 'Quality_Next',
+        )}
         onPress={handleRightButtonPress}
         position={'right'}
       />
@@ -92,12 +81,12 @@ const QIFormButton = ({}: QIFormButtonProps) => {
   );
 };
 
-const getStyles = (actualSteps: number) =>
+const getStyles = (actualStep: number) =>
   StyleSheet.create({
     buttonContainer: {
       flexDirection: 'row',
       justifyContent: 'space-evenly',
-      marginHorizontal: actualSteps > MIN_STEP ? 10 : 0,
+      marginHorizontal: actualStep > MIN_STEP ? 10 : 0,
     },
     button: {
       width: '50%',
