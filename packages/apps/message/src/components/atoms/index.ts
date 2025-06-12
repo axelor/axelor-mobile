@@ -19,5 +19,5 @@
 export {default as AuthorText} from './AuthorText/AuthorText';
 export {default as Avatar, AVATAR_SIZE, AVATAR_PADDING} from './Avatar/Avatar';
 export {default as ExpandableText} from './ExpandableText/ExpandableText';
-export {default as ReadIcon} from './ReadIcon/ReadIcon';
+export {default as MessageFlags} from './MessageFlags/MessageFlags';
 export {default as TrackItem} from './TrackItem/TrackItem';

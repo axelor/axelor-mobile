@@ -23,9 +23,9 @@ export {
   fetchModelSubscribers as fetchModelSubscribersApi,
   fetchReplies as fetchRepliesApi,
   getAllUnreadFlagsOfMailMessage as getAllUnreadFlagsOfMailMessageApi,
+  modifyMailMessagesFlags as modifyMailMessagesFlagsApi,
   postMailMessageComment as postMailMessageCommentApi,
   readAllMailMessages as readAllMailMessagesApi,
-  readMailMessage as readMailMessageApi,
   subscribeRequest as subscribeRequestApi,
   unsubscribeRequest as unsubscribeRequestApi,
 } from './mail-message-api';

@@ -22,7 +22,7 @@ export {
   getMailMessages,
   getModelSubscribers,
   markAllMailMessageAsRead,
-  markMailMessageAsRead,
+  modifyMailMessagesFlags,
   registerModel,
   registerModelId,
   sendMailMessageComment,

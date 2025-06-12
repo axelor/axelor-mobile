@@ -10,6 +10,8 @@
   "Message_Notifications": "Notifications",
   "Message_Inbox": "Inbox",
   "Message_Respond": "Respond",
+  "Message_MarkAsRead": "Mark as read",
+  "Message_MarkAsUnread": "Mark as unread",
   "Message_SliceAction_FetchMailMessages": "fetch mail messages",
   "Message_SliceAction_PostMailMessageComment": "post mail message comment",
   "Message_SliceAction_FetchModelSubscribers": "fetch model subscribers",
@@ -18,5 +20,6 @@
   "Message_SliceAction_CountUnreadMailMessages": "count unread mail messages",
   "Message_SliceAction_MarkMailMessageAsRead": "mark mail message as read",
   "Message_SliceAction_MarkAllMailMessageAsRead": "mark all mail messages as read",
-  "Message_SliceAction_FetchInboxMessages": "fetch inbox messages"
+  "Message_SliceAction_FetchInboxMessages": "fetch inbox messages",
+  "Message_SliceAction_ModifyMailMessagesFlags": "modify mail messages flags"
 }

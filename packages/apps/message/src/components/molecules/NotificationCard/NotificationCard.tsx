@@ -26,7 +26,7 @@ import {
   UnorderedList,
   Badge,
 } from '@axelor/aos-mobile-ui';
-import {ReadIcon, TrackItem} from '../../atoms';
+import {MessageFlags, TrackItem} from '../../atoms';
 import {MailMessageNotificationType} from '../../../types';
 
 const MAX_TRACK_ITEMS = 5;
@@ -101,8 +101,8 @@ const NotificationCard = ({
             </View>
           )}
           {displayFlags && (
-            <ReadIcon
-              mailMessageFlag={flags}
+            <MessageFlags
+              flags={flags}
               model={relatedModel}
               modelId={relatedId}
               isInbox={isInbox}
@@ -141,30 +141,12 @@ const NotificationCard = ({
 };
 
 const styles = StyleSheet.create({
-  card: {
-    flex: 1,
-    paddingHorizontal: 15,
-    paddingRight: 15,
-    paddingVertical: 10,
-  },
-  cardHeader: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    gap: 5,
-  },
-  moreIcon: {
-    alignSelf: 'center',
-  },
-  tagContainer: {
-    width: '30%',
-    flexDirection: 'row-reverse',
-  },
-  tagTxt: {
-    fontSize: 12,
-  },
-  flexOne: {
-    flex: 1,
-  },
+  card: {flex: 1, paddingHorizontal: 15, paddingRight: 15, paddingVertical: 10},
+  cardHeader: {flexDirection: 'row', justifyContent: 'space-between', gap: 5},
+  moreIcon: {alignSelf: 'center'},
+  tagContainer: {width: '30%', flexDirection: 'row-reverse'},
+  tagTxt: {fontSize: 12},
+  flexOne: {flex: 1},
 });
 
 export default NotificationCard;

@@ -91,8 +91,8 @@ const useMailMessagesDetailsAction = () => {
           iconName: 'check-all',
           iconColor:
             unreadMessages === 0
-              ? Colors.primaryColor.background
-              : Colors.secondaryColor.background,
+              ? Colors.secondaryColor.background
+              : Colors.primaryColor.background,
           title: I18n.t('Message_MarkAllAsRead'),
           onPress: handleMarkAllAsRead,
         },

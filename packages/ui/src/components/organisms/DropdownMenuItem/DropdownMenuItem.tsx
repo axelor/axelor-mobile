@@ -23,6 +23,7 @@ import {Icon, Text} from '../../atoms';
 import {Badge} from '../../molecules';
 
 interface DropdownMenuItemProps {
+  style?: any;
   icon?: string;
   color?: string;
   placeholder: string;
@@ -36,6 +37,7 @@ interface DropdownMenuItemProps {
 const BADGE_SIZE = 12;
 
 const DropdownMenuItem = ({
+  style,
   icon = 'paperclip',
   color,
   placeholder,
@@ -66,7 +68,7 @@ const DropdownMenuItem = ({
   return (
     <TouchableOpacity
       onPress={onPress}
-      style={styles.menuItem}
+      style={[styles.menuItem, style]}
       disabled={disableIf}>
       <View style={styles.iconContainer}>
         {customComponent != null ? (
@@ -102,21 +104,15 @@ const styles = StyleSheet.create({
     right: -8,
     zIndex: 10,
   },
-  badgeText: {
-    fontSize: Math.ceil(BADGE_SIZE / 2),
-  },
+  badgeText: {fontSize: Math.ceil(BADGE_SIZE / 2)},
   menuItem: {
     flexDirection: 'row',
     alignItems: 'center',
     marginVertical: 5,
     padding: 5,
   },
-  text: {
-    fontSize: 18,
-  },
-  iconContainer: {
-    marginRight: 10,
-  },
+  text: {fontSize: 18},
+  iconContainer: {marginRight: 10},
 });
 
 export default DropdownMenuItem;

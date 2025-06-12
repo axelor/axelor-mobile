@@ -26,9 +26,9 @@ import {
   fetchInboxMessages as _fetchInboxMessages,
   fetchMailMessages,
   fetchModelSubscribers,
+  modifyMailMessagesFlags as _modifyMailMessagesFlags,
   postMailMessageComment,
   readAllMailMessages,
-  readMailMessage,
   subscribeRequest,
   unsubscribeRequest,
 } from '../api/mail-message-api';
@@ -119,27 +119,6 @@ export const countUnreadMailMessages = createAsyncThunk(
   },
 );
 
-export const markMailMessageAsRead = createAsyncThunk(
-  'mailMessages/markMailMessageAsRead',
-  async function (data, {getState, dispatch}) {
-    const fetchMailMessageData = {model: data?.model, modelId: data?.modelId};
-    return handlerApiCall({
-      fetchFunction: readMailMessage,
-      data: data,
-      action: 'Message_SliceAction_MarkMailMessageAsRead',
-      getState: getState,
-      responseOptions: {returnTotal: true},
-    }).then(() => {
-      if (data?.isInbox) {
-        dispatch(fetchInboxMessages({page: 0}));
-      } else {
-        dispatch(getMailMessages({...fetchMailMessageData, page: 0}));
-        dispatch(countUnreadMailMessages(fetchMailMessageData));
-      }
-    });
-  },
-);
-
 export const markAllMailMessageAsRead = createAsyncThunk(
   'mailMessages/markAllMailMessageAsRead',
   async function (data, {getState, dispatch}) {
@@ -153,6 +132,27 @@ export const markAllMailMessageAsRead = createAsyncThunk(
     }).then(() => {
       dispatch(getMailMessages({...fetchMailMessageData, page: 0}));
       dispatch(countUnreadMailMessages(fetchMailMessageData));
+    });
+  },
+);
+
+export const modifyMailMessagesFlags = createAsyncThunk(
+  'mailMessages/modifyMailMessagesFlags',
+  async function (data, {getState, dispatch}) {
+    const fetchMailMessageData = {model: data?.model, modelId: data?.modelId};
+    return handlerApiCall({
+      fetchFunction: _modifyMailMessagesFlags,
+      data,
+      action: 'Message_SliceAction_ModifyMailMessagesFlags',
+      getState,
+      responseOptions: {isArrayResponse: false},
+    }).then(() => {
+      if (data?.isInbox) {
+        dispatch(fetchInboxMessages({page: 0}));
+      } else {
+        dispatch(getMailMessages({...fetchMailMessageData, page: 0}));
+        dispatch(countUnreadMailMessages(fetchMailMessageData));
+      }
     });
   },
 );
