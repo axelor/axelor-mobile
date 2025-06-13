@@ -162,7 +162,7 @@ const useInboxActions = () => {
     headerActionsProvider.registerModel('message_inbox', {
       actions: [
         {
-          key: 'inbox',
+          key: 'inboxImportant',
           order: 10,
           iconName: null,
           customComponent: (
