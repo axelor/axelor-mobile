@@ -264,6 +264,7 @@ const getStyles = (verticalRuleColor: string) =>
       width: '100%',
       marginTop: 2,
       paddingHorizontal: 5,
+      zIndex: 5,
     },
     replyContainer: {
       flexDirection: 'row',

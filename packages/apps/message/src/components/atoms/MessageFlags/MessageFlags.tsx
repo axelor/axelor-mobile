@@ -56,18 +56,30 @@ const MessageFlags = ({
     <DropdownMenu style={styles.container}>
       <DropdownMenuItem
         style={styles.itemContainer}
-        icon="check-lg"
+        icon={flags?.isRead ? 'x-lg' : 'check-lg'}
         placeholder={I18n.t(
           flags?.isRead ? 'Message_MarkAsUnread' : 'Message_MarkAsRead',
         )}
         onPress={() => handleModifyMailMessageFlags('isRead', !flags?.isRead)}
+      />
+      <DropdownMenuItem
+        style={styles.itemContainer}
+        icon={flags?.isStarred ? 'star' : 'star-fill'}
+        placeholder={I18n.t(
+          flags?.isStarred
+            ? 'Message_MarkAsNotImportant'
+            : 'Message_MarkAsImportant',
+        )}
+        onPress={() =>
+          handleModifyMailMessageFlags('isStarred', !flags?.isStarred)
+        }
       />
     </DropdownMenu>
   );
 };
 
 const styles = StyleSheet.create({
-  container: {zIndex: 10},
+  container: {zIndex: 15},
   itemContainer: {marginVertical: 0},
 });
 

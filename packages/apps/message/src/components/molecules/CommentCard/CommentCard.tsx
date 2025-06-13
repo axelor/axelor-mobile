@@ -101,6 +101,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
     gap: 5,
+    zIndex: 10,
   },
   flexOne: {flex: 1},
   floatingButtonContainer: {position: 'relative'},

@@ -24,6 +24,7 @@ import {
   getActionApi,
   RouterProvider,
 } from '@axelor/aos-mobile-core';
+import {InboxFolder} from '../types';
 
 const createUnreadMessagesCriteria = ({model, modelId}): Criteria[] => {
   return [
@@ -214,14 +215,16 @@ export async function modifyMailMessagesFlags({
 }
 
 export async function fetchInboxMessages({
+  folder = InboxFolder.Inbox,
   limit = 10,
   page,
 }: {
+  folder?: InboxFolder;
   limit?: number;
   page: number;
 }) {
   return axiosApiProvider.get({
-    url: `/ws/messages?folder=inbox&limit=${limit}&offset=${limit * page}`,
+    url: `/ws/messages?folder=${folder}&limit=${limit}&offset=${limit * page}`,
   });
 }
 

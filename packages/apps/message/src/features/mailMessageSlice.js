@@ -32,6 +32,7 @@ import {
   subscribeRequest,
   unsubscribeRequest,
 } from '../api/mail-message-api';
+import {InboxFolder} from '../types';
 
 export const getMailMessages = createAsyncThunk(
   'mailMessages/getMailMessages',
@@ -187,6 +188,7 @@ const initialState = {
   moreLoadingInbox: false,
   isInboxListEnd: false,
   inboxList: [],
+  inboxFolder: InboxFolder.Inbox,
 };
 
 const mailMessagesSlice = createSlice({
@@ -198,6 +200,9 @@ const mailMessagesSlice = createSlice({
     },
     registerModelId: (state, action) => {
       state.modelId = action.payload;
+    },
+    saveInboxFolder: (state, action) => {
+      state.inboxFolder = action.payload;
     },
   },
   extraReducers: builder => {
@@ -222,6 +227,7 @@ const mailMessagesSlice = createSlice({
   },
 });
 
-export const {registerModel, registerModelId} = mailMessagesSlice.actions;
+export const {registerModel, registerModelId, saveInboxFolder} =
+  mailMessagesSlice.actions;
 
 export const mailMessagesReducer = mailMessagesSlice.reducer;

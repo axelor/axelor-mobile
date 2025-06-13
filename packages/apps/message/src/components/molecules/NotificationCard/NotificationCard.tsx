@@ -142,7 +142,12 @@ const NotificationCard = ({
 
 const styles = StyleSheet.create({
   card: {flex: 1, paddingHorizontal: 15, paddingRight: 15, paddingVertical: 10},
-  cardHeader: {flexDirection: 'row', justifyContent: 'space-between', gap: 5},
+  cardHeader: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    gap: 5,
+    zIndex: 10,
+  },
   moreIcon: {alignSelf: 'center'},
   tagContainer: {width: '30%', flexDirection: 'row-reverse'},
   tagTxt: {fontSize: 12},

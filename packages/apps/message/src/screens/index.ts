@@ -29,6 +29,7 @@ export default {
   InboxScreen: {
     title: 'Message_Inbox',
     component: InboxScreen,
+    actionID: 'message_inbox',
   },
   MailMessageAttachedFilesScreen: {
     title: 'Dms_AttachedFiles',
