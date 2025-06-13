@@ -26,7 +26,10 @@ interface MassScannerButtonProps {
   progress?: number;
   titleKey?: string;
   scanKey: string;
-  backgroundAction: (scannedValue: string, disableScan: () => void) => void;
+  backgroundAction: (
+    scannedValue: string,
+    tools: {disableScan: () => void},
+  ) => void;
   fallbackAction?: (error: any) => void;
   scanInterval?: number;
 }
@@ -43,9 +46,9 @@ const MassScannerButton = ({
   const Colors = useThemeColor();
   const I18n = useTranslator();
 
-  const {isEnabled, enableScan, disableScan} = useMassScanner({
+  const {isEnabled, enableScan} = useMassScanner({
     scanKey,
-    backgroundAction: _v => backgroundAction(_v, disableScan),
+    backgroundAction,
     fallbackAction,
     scanInterval,
   });

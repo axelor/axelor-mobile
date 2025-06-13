@@ -24,7 +24,7 @@ import {
   useSelector,
   useTranslator,
 } from '@axelor/aos-mobile-core';
-import {SearchLineContainer} from '../../../organisms';
+import {SearchLineContainer, StockMovePickingWidget} from '../../../organisms';
 import {InternalMoveLineActionCard} from '../../../templates';
 import {fetchInternalMoveLines} from '../../../../features/internalMoveLineSlice';
 import {useInternalLinesWithRacks, useLineHandler} from '../../../../hooks';
@@ -60,9 +60,10 @@ const InternalMoveSearchLineContainer = ({}) => {
     [internalMove, showLine],
   );
 
-  const handleLineSearch = item => {
-    handleShowLine(item, true);
-  };
+  const handleLineSearch = useCallback(
+    item => handleShowLine(item, true),
+    [handleShowLine],
+  );
 
   const fetchInternalLinesAPI = useCallback(
     ({page = 0, searchValue}) => {
@@ -77,6 +78,11 @@ const InternalMoveSearchLineContainer = ({}) => {
     [dispatch, internalMove],
   );
 
+  const handleRefresh = useCallback(
+    () => fetchInternalLinesAPI({page: 0}),
+    [fetchInternalLinesAPI],
+  );
+
   const filterLine = useCallback(item => {
     return (
       parseFloat(item.realQty) == null ||
@@ -85,23 +91,32 @@ const InternalMoveSearchLineContainer = ({}) => {
   }, []);
 
   return (
-    <SearchLineContainer
-      title={I18n.t('Stock_InternalMoveLines')}
-      numberOfItems={totalNumberLines}
-      objectList={internalMoveLineList}
-      handleSelect={handleLineSearch}
-      handleSearch={fetchInternalLinesAPI}
-      scanKey={scanKey}
-      onViewPress={handleViewAll}
-      filterLine={filterLine}
-      renderItem={item => (
-        <InternalMoveLineActionCard
-          internalMoveLine={item}
-          style={styles.item}
-          onPress={() => handleShowLine(item)}
-        />
-      )}
-    />
+    <>
+      <StockMovePickingWidget
+        stockMoveId={internalMove.id}
+        type="internal-details"
+        totalLines={totalNumberLines}
+        onRefresh={handleRefresh}
+        handleShowLine={handleLineSearch}
+      />
+      <SearchLineContainer
+        title={I18n.t('Stock_InternalMoveLines')}
+        numberOfItems={totalNumberLines}
+        objectList={internalMoveLineList}
+        handleSelect={handleLineSearch}
+        handleSearch={fetchInternalLinesAPI}
+        scanKey={scanKey}
+        onViewPress={handleViewAll}
+        filterLine={filterLine}
+        renderItem={item => (
+          <InternalMoveLineActionCard
+            internalMoveLine={item}
+            style={styles.item}
+            onPress={() => handleShowLine(item)}
+          />
+        )}
+      />
+    </>
   );
 };
 
