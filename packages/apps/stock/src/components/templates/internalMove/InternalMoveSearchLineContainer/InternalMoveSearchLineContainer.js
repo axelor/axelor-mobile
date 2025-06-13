@@ -31,6 +31,7 @@ import {useInternalLinesWithRacks, useLineHandler} from '../../../../hooks';
 import {LineVerification} from '../../../../types';
 
 const scanKey = 'trackingNumber-or-product_internal-move-details';
+const massScanKey = 'internal-move-line_mass-scan';
 
 const InternalMoveSearchLineContainer = ({}) => {
   const I18n = useTranslator();
@@ -93,8 +94,8 @@ const InternalMoveSearchLineContainer = ({}) => {
   return (
     <>
       <StockMovePickingWidget
+        scanKey={massScanKey}
         stockMoveId={internalMove.id}
-        type="internal-details"
         totalLines={totalNumberLines}
         onRefresh={handleRefresh}
         handleShowLine={handleLineSearch}

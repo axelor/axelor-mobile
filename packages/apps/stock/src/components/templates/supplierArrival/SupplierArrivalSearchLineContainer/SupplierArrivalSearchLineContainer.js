@@ -26,13 +26,14 @@ import {
   useTranslator,
   useTypes,
 } from '@axelor/aos-mobile-core';
-import {SearchLineContainer} from '../../../organisms';
+import {SearchLineContainer, StockMovePickingWidget} from '../../../organisms';
 import {SupplierArrivalLineActionCard} from '../../../templates';
 import {fetchSupplierArrivalLines} from '../../../../features/supplierArrivalLineSlice';
 import {useLineHandler, useSupplierLinesWithRacks} from '../../../../hooks';
 import {LineVerification} from '../../../../types';
 
 const scanKey = 'trackingNumber-or-product_supplier-arrival-details';
+const massScanKey = 'supplier-arrival-line_mass-scan';
 
 const SupplierArrivalSearchLineContainer = ({}) => {
   const I18n = useTranslator();
@@ -76,9 +77,10 @@ const SupplierArrivalSearchLineContainer = ({}) => {
     [showLine, supplierArrival],
   );
 
-  const handleLineSearch = item => {
-    handleShowLine(item, true);
-  };
+  const handleLineSearch = useCallback(
+    item => handleShowLine(item, true),
+    [handleShowLine],
+  );
 
   const fetchSupplierLinesAPI = useCallback(
     ({page = 0, searchValue}) => {
@@ -91,6 +93,11 @@ const SupplierArrivalSearchLineContainer = ({}) => {
       );
     },
     [dispatch, supplierArrival],
+  );
+
+  const handleRefresh = useCallback(
+    () => fetchSupplierLinesAPI({page: 0}),
+    [fetchSupplierLinesAPI],
   );
 
   const filterLine = useCallback(item => {
@@ -123,25 +130,34 @@ const SupplierArrivalSearchLineContainer = ({}) => {
   ]);
 
   return (
-    <SearchLineContainer
-      title={I18n.t('Stock_SupplierArrivalLines')}
-      numberOfItems={totalNumberLines}
-      objectList={supplierArrivalLineList}
-      handleSelect={handleLineSearch}
-      handleSearch={fetchSupplierLinesAPI}
-      scanKey={scanKey}
-      onViewPress={handleViewAll}
-      filterLine={filterLine}
-      showAction={showLineAdditionIcon}
-      onAction={handleNewLine}
-      renderItem={item => (
-        <SupplierArrivalLineActionCard
-          style={styles.container}
-          supplierArrivalLine={item}
-          handleShowLine={handleShowLine}
-        />
-      )}
-    />
+    <>
+      <StockMovePickingWidget
+        scanKey={massScanKey}
+        stockMoveId={supplierArrival.id}
+        totalLines={totalNumberLines}
+        onRefresh={handleRefresh}
+        handleShowLine={handleLineSearch}
+      />
+      <SearchLineContainer
+        title={I18n.t('Stock_SupplierArrivalLines')}
+        numberOfItems={totalNumberLines}
+        objectList={supplierArrivalLineList}
+        handleSelect={handleLineSearch}
+        handleSearch={fetchSupplierLinesAPI}
+        scanKey={scanKey}
+        onViewPress={handleViewAll}
+        filterLine={filterLine}
+        showAction={showLineAdditionIcon}
+        onAction={handleNewLine}
+        renderItem={item => (
+          <SupplierArrivalLineActionCard
+            style={styles.container}
+            supplierArrivalLine={item}
+            handleShowLine={handleShowLine}
+          />
+        )}
+      />
+    </>
   );
 };
 
