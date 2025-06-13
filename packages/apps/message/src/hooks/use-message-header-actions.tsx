@@ -188,6 +188,36 @@ const useInboxActions = () => {
           },
           showInHeader: true,
         },
+        {
+          key: 'inboxArchive',
+          order: 20,
+          iconName: null,
+          customComponent: (
+            <DoubleIcon
+              topIconConfig={{
+                name:
+                  inboxFolder === InboxFolder.Archive
+                    ? 'archive-fill'
+                    : 'archive',
+                size: 15,
+                color: Colors.primaryColor.background,
+              }}
+              topIconPosition={{bottom: -7, right: -7}}
+              bottomIconConfig={{name: 'eye'}}
+            />
+          ),
+          title: I18n.t('Message_ArchivedMessages'),
+          onPress: () => {
+            dispatch(
+              (saveInboxFolder as any)(
+                inboxFolder === InboxFolder.Archive
+                  ? InboxFolder.Inbox
+                  : InboxFolder.Archive,
+              ),
+            );
+          },
+          showInHeader: true,
+        },
       ],
     });
   }, [Colors.primaryColor.background, I18n, dispatch, inboxFolder]);

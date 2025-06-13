@@ -56,6 +56,13 @@ const MessageFlags = ({
         confirmKey: 'Message_MarkAsImportant',
         cancelKey: 'Message_MarkAsNotImportant',
       },
+      {
+        flag: 'isArchived',
+        confirmIcon: 'archive-fill',
+        cancelIcon: 'archive',
+        confirmKey: 'Message_MarkAsArchived',
+        cancelKey: 'Message_MarkAsNotArchived',
+      },
     ],
     [],
   );
