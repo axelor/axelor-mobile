@@ -16,8 +16,8 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import React, {useCallback} from 'react';
-import {StyleSheet} from 'react-native';
+import React, {useCallback, useMemo} from 'react';
+import {Dimensions, StyleSheet} from 'react-native';
 import {useDispatch, useTranslator} from '@axelor/aos-mobile-core';
 import {DropdownMenu, DropdownMenuItem} from '@axelor/aos-mobile-ui';
 import {modifyMailMessagesFlags} from '../../../features/mailMessageSlice';
@@ -38,6 +38,26 @@ const MessageFlags = ({
   const I18n = useTranslator();
   const dispatch = useDispatch();
 
+  const menuItemList = useMemo(
+    () => [
+      {
+        flag: 'isRead',
+        confirmIcon: 'check-lg',
+        cancelIcon: 'x-lg',
+        confirmKey: 'Message_MarkAsRead',
+        cancelKey: 'Message_MarkAsUnread',
+      },
+      {
+        flag: 'isStarred',
+        confirmIcon: 'star-fill',
+        cancelIcon: 'star',
+        confirmKey: 'Message_MarkAsImportant',
+        cancelKey: 'Message_MarkAsNotImportant',
+      },
+    ],
+    [],
+  );
+
   const handleModifyMailMessageFlags = useCallback(
     (key: string, value: boolean) => {
       dispatch(
@@ -53,34 +73,35 @@ const MessageFlags = ({
   );
 
   return (
-    <DropdownMenu style={styles.container}>
-      <DropdownMenuItem
-        style={styles.itemContainer}
-        icon={flags?.isRead ? 'x-lg' : 'check-lg'}
-        placeholder={I18n.t(
-          flags?.isRead ? 'Message_MarkAsUnread' : 'Message_MarkAsRead',
-        )}
-        onPress={() => handleModifyMailMessageFlags('isRead', !flags?.isRead)}
-      />
-      <DropdownMenuItem
-        style={styles.itemContainer}
-        icon={flags?.isStarred ? 'star' : 'star-fill'}
-        placeholder={I18n.t(
-          flags?.isStarred
-            ? 'Message_MarkAsNotImportant'
-            : 'Message_MarkAsImportant',
-        )}
-        onPress={() =>
-          handleModifyMailMessageFlags('isStarred', !flags?.isStarred)
-        }
-      />
+    <DropdownMenu style={styles.container} styleMenu={styles.menuContainer}>
+      {menuItemList.map((menuItem, index) => (
+        <DropdownMenuItem
+          style={styles.itemContainer}
+          styleText={styles.itemText}
+          numberOfLines={1}
+          icon={flags?.isRead ? menuItem.cancelIcon : menuItem.confirmIcon}
+          placeholder={I18n.t(
+            flags?.isRead ? menuItem.cancelKey : menuItem.confirmKey,
+          )}
+          onPress={() =>
+            handleModifyMailMessageFlags(menuItem.flag, !flags?.[menuItem.flag])
+          }
+          key={index}
+        />
+      ))}
     </DropdownMenu>
   );
 };
 
 const styles = StyleSheet.create({
   container: {zIndex: 15},
+  menuContainer: {
+    width: Dimensions.get('window').width * 0.8,
+    top: -15,
+    right: 30,
+  },
   itemContainer: {marginVertical: 0},
+  itemText: {fontSize: 16},
 });
 
 export default MessageFlags;

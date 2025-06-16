@@ -24,6 +24,8 @@ import {Badge} from '../../molecules';
 
 interface DropdownMenuItemProps {
   style?: any;
+  styleText?: any;
+  numberOfLines?: number;
   icon?: string;
   color?: string;
   placeholder: string;
@@ -38,6 +40,8 @@ const BADGE_SIZE = 12;
 
 const DropdownMenuItem = ({
   style,
+  styleText,
+  numberOfLines = null,
   icon = 'paperclip',
   color,
   placeholder,
@@ -89,7 +93,9 @@ const DropdownMenuItem = ({
           />
         )}
       </View>
-      <Text style={styles.text}>{placeholder}</Text>
+      <Text style={[styles.text, styleText]} numberOfLines={numberOfLines}>
+        {placeholder}
+      </Text>
     </TouchableOpacity>
   );
 };

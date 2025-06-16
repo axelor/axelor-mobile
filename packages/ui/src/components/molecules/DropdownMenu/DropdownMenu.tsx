@@ -27,10 +27,11 @@ import {Card, Icon} from '../../atoms';
 
 interface DropdownMenuProps {
   style?: any;
+  styleMenu?: any;
   children: any;
 }
 
-const DropdownMenu = ({style, children}: DropdownMenuProps) => {
+const DropdownMenu = ({style, styleMenu, children}: DropdownMenuProps) => {
   const [visible, setVisible] = useState(false);
   const Colors = useThemeColor();
 
@@ -58,7 +59,9 @@ const DropdownMenu = ({style, children}: DropdownMenuProps) => {
           size={22}
         />
       </TouchableOpacity>
-      {visible && <Card style={styles.menuContainer}>{children}</Card>}
+      {visible && (
+        <Card style={[styles.menuContainer, styleMenu]}>{children}</Card>
+      )}
     </View>
   );
 };
