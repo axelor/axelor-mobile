@@ -30,20 +30,20 @@ interface QIFormButtonProps {}
 
 const QIFormButton = ({}: QIFormButtonProps) => {
   const I18n = useTranslator();
-  const _dispatch = useDispatch();
+  const dispatch = useDispatch();
   const {actualStep} = useSelector(
     (state: any) => state.quality_qualityImprovement,
   );
 
   const goToPreviousStep = () => {
     if (actualStep > MIN_STEP) {
-      _dispatch(updateSteps(actualStep - 1));
+      dispatch(updateSteps(actualStep - 1));
     }
   };
 
   const goToNextStep = () => {
     if (actualStep < MAX_STEP) {
-      _dispatch(updateSteps(actualStep + 1));
+      dispatch(updateSteps(actualStep + 1));
     }
   };
 
@@ -88,12 +88,8 @@ const getStyles = (actualStep: number) =>
       justifyContent: 'space-evenly',
       marginHorizontal: actualStep > MIN_STEP ? 10 : 0,
     },
-    button: {
-      width: '50%',
-    },
-    fullWidthButton: {
-      width: '100%',
-    },
+    button: {width: '50%'},
+    fullWidthButton: {width: '100%'},
   });
 
 export default QIFormButton;

@@ -39,7 +39,7 @@ const QualityImprovementFormScreen = ({route}) => {
     (state: any) => state.quality_qiResolution,
   );
 
-  const defectDefaults = useMemo(() => {
+  const getDefaults = useMemo(() => {
     return (
       qiResolution?.qiResolutionDefaultsList?.map(item => ({
         id: item.id,
@@ -58,10 +58,10 @@ const QualityImprovementFormScreen = ({route}) => {
             nonConformingQuantity:
               qualityImprovement?.qiIdentification?.nonConformingQuantity,
             product: qualityImprovement?.qiIdentification?.product,
-            QIResolutionDefault: defectDefaults,
+            QIResolutionDefault: getDefaults,
           }
         : null,
-    [defectDefaults, qualityImprovement, qualityImprovementId],
+    [getDefaults, qualityImprovement, qualityImprovementId],
   );
 
   useEffect(() => {
