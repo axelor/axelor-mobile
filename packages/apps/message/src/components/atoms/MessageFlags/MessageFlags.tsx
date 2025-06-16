@@ -79,9 +79,11 @@ const MessageFlags = ({
           style={styles.itemContainer}
           styleText={styles.itemText}
           numberOfLines={1}
-          icon={flags?.isRead ? menuItem.cancelIcon : menuItem.confirmIcon}
+          icon={
+            flags?.[menuItem.flag] ? menuItem.cancelIcon : menuItem.confirmIcon
+          }
           placeholder={I18n.t(
-            flags?.isRead ? menuItem.cancelKey : menuItem.confirmKey,
+            flags?.[menuItem.flag] ? menuItem.cancelKey : menuItem.confirmKey,
           )}
           onPress={() =>
             handleModifyMailMessageFlags(menuItem.flag, !flags?.[menuItem.flag])
