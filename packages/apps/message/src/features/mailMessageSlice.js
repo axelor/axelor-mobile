@@ -149,7 +149,7 @@ export const modifyMailMessagesFlags = createAsyncThunk(
       responseOptions: {isArrayResponse: false},
     }).then(() => {
       if (data?.isInbox) {
-        dispatch(fetchInboxMessages({page: 0}));
+        dispatch(fetchInboxMessages({folder: data?.inboxFolder, page: 0}));
       } else {
         dispatch(getMailMessages({...fetchMailMessageData, page: 0}));
         dispatch(countUnreadMailMessages(fetchMailMessageData));

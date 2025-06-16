@@ -18,7 +18,7 @@
 
 import React, {useCallback, useMemo} from 'react';
 import {Dimensions, StyleSheet} from 'react-native';
-import {useDispatch, useTranslator} from '@axelor/aos-mobile-core';
+import {useDispatch, useSelector, useTranslator} from '@axelor/aos-mobile-core';
 import {DropdownMenu, DropdownMenuItem} from '@axelor/aos-mobile-ui';
 import {modifyMailMessagesFlags} from '../../../features/mailMessageSlice';
 
@@ -37,6 +37,8 @@ const MessageFlags = ({
 }: MessageFlagsProps) => {
   const I18n = useTranslator();
   const dispatch = useDispatch();
+
+  const {inboxFolder} = useSelector(state => state.mailMessages);
 
   const menuItemList = useMemo(
     () => [
@@ -66,10 +68,11 @@ const MessageFlags = ({
           model,
           modelId,
           isInbox,
+          inboxFolder,
         }),
       );
     },
-    [dispatch, flags, isInbox, model, modelId],
+    [dispatch, flags, inboxFolder, isInbox, model, modelId],
   );
 
   return (
