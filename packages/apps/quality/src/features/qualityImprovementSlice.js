@@ -90,18 +90,11 @@ const initialState = {
   qiStatusList: [],
 
   qualityImprovement: {},
-
-  actualStep: 0,
 };
 
 const qualityImprovementSlice = createSlice({
   name: 'quality_qualityImprovement',
   initialState,
-  reducers: {
-    updateSteps: (state, action) => {
-      state.actualStep = action.payload;
-    },
-  },
   extraReducers: builder => {
     generateInifiniteScrollCases(builder, searchQualityImprovement, {
       loading: 'loadingQualityImprovements',
@@ -120,7 +113,5 @@ const qualityImprovementSlice = createSlice({
     });
   },
 });
-
-export const {updateSteps} = qualityImprovementSlice.actions;
 
 export const qualityImprovementReducer = qualityImprovementSlice.reducer;

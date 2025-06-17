@@ -22,6 +22,14 @@ class QualityImprovement {
     identification: 1,
     defaults: 2,
   };
+
+  static getStepValues = () => {
+    return [
+      {titleKey: 'Quality_Detection', value: this.Steps.detection},
+      {titleKey: 'Quality_Identification', value: this.Steps.identification},
+      {titleKey: 'Quality_Defaults', value: this.Steps.defaults},
+    ];
+  };
 }
 
 export default QualityImprovement;

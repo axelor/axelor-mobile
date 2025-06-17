@@ -16,90 +16,43 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import React, {useEffect, useMemo, useRef} from 'react';
+import React, {useMemo} from 'react';
 import {Stepper, StepState} from '@axelor/aos-mobile-ui';
-import {
-  useDispatch,
-  useSelector,
-  useTranslator,
-  useTypes,
-} from '@axelor/aos-mobile-core';
-import {updateSteps} from '../../../features/qualityImprovementSlice';
-import {QualityImprovement as QualityImprovementType} from '../../../types';
+import {useTranslator} from '@axelor/aos-mobile-core';
+import {QualityImprovement as QI_Type} from '../../../types';
 
 interface QIStepperProps {
-  onChange?: (value: any) => void;
+  defaultValue?: number;
   objectState?: any;
 }
 
-const getStepsState = (stepIndex: number, objectState?: any): StepState[] => {
-  return [0, 1, 2].map(index => {
-    if (index === 0 && stepIndex >= 1 && !objectState?.qiDetection) {
-      return StepState.error;
-    }
-    if (index < stepIndex) return StepState.completed;
-    if (index === stepIndex) return StepState.inProgress;
-    return StepState.draft;
-  });
-};
-
-const QIStepper = ({onChange = () => {}, objectState}: QIStepperProps) => {
+const QIStepper = ({defaultValue, objectState}: QIStepperProps) => {
   const I18n = useTranslator();
-  const dispatch = useDispatch();
-  const previousStepRef = useRef<number | null>(null);
-  const {QualityImprovement, QIDetection} = useTypes();
 
-  const {actualStep} = useSelector(
-    (state: any) => state.quality_qualityImprovement,
+  const stepsState: StepState[] = useMemo(
+    () =>
+      Object.values(QI_Type.Steps).map(value => {
+        if (
+          value === QI_Type.Steps.detection &&
+          defaultValue > QI_Type.Steps.detection &&
+          !objectState?.qiDetection
+        ) {
+          return StepState.error;
+        }
+        if (value < defaultValue) return StepState.completed;
+        if (value === defaultValue) return StepState.inProgress;
+        return StepState.draft;
+      }),
+    [defaultValue, objectState],
   );
-
-  useEffect(() => {
-    onChange(actualStep);
-  }, [onChange, actualStep]);
-
-  const stepStates = useMemo(
-    () => getStepsState(actualStep, objectState),
-    [actualStep, objectState],
-  );
-
-  useEffect(() => {
-    const previousStep = previousStepRef.current;
-    previousStepRef.current = actualStep;
-
-    const {detection, identification, defaults} = QualityImprovementType.Steps;
-    const SYSTEM_TYPE =
-      QualityImprovement.type?.System ?? QualityImprovement.type?.system;
-    const NONE_ORIGIN = QIDetection.origin?.none;
-
-    const isComingFrom = (step: number) => previousStep === step;
-    const isSystem = objectState?.type === SYSTEM_TYPE;
-    const isAnalysis = objectState?.qiDetection?.origin === NONE_ORIGIN;
-
-    const isIdentificationStep = actualStep === identification;
-
-    if (!isIdentificationStep || !isSystem || !isAnalysis) return;
-
-    if (isComingFrom(detection)) {
-      dispatch(updateSteps(defaults));
-    } else if (isComingFrom(defaults)) {
-      dispatch(updateSteps(detection));
-    }
-  }, [
-    actualStep,
-    objectState,
-    dispatch,
-    QIDetection.origin,
-    QualityImprovement.type,
-  ]);
 
   return (
     <Stepper
-      steps={[
-        {titleKey: 'Quality_Detection', state: stepStates[0]},
-        {titleKey: 'Quality_Identification', state: stepStates[1]},
-        {titleKey: 'Quality_Defaults', state: stepStates[2]},
-      ]}
-      activeStepIndex={actualStep}
+      steps={QI_Type.getStepValues().map(item => ({
+        ...item,
+        state: stepsState[item.value],
+      }))}
+      activeStepIndex={defaultValue}
       translator={I18n.t}
       displayDropdown
     />
