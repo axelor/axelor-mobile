@@ -33,14 +33,14 @@ const createOperationLineCriteria = (searchValue, manufOrder) => {
 };
 
 export async function searchOperationLine({page = 0, searchValue, manufOrder}) {
-  if (!manufOrder) {
-    return {data: {data: [], total: 0}};
-  }
+  if (!manufOrder) return undefined;
+
   return createStandardSearch({
     model: 'com.axelor.apps.production.db.OperationOrder',
     criteria: createOperationLineCriteria(searchValue, manufOrder),
     fieldKey: 'quality_operationOrder',
     sortKey: 'quality_operationOrder',
     page,
+    provider: 'model',
   });
 }

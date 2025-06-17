@@ -24,18 +24,24 @@ import {searchCustomer} from '../../../features/partnerSlice';
 const displaySimpleFullName = item => item.simpleFullName;
 
 interface CustomerSearchBarProps {
-  placeholderKey?: string;
-  defaultValue: any;
+  style?: any;
+  title?: string;
+  defaultValue?: any;
+  onChange: (value?: any) => void;
+  required?: boolean;
+  readonly?: boolean;
   showDetailsPopup?: boolean;
   navigate?: boolean;
   oneFilter?: boolean;
-  onChange: (value: any) => void;
 }
 
 const CustomerSearchBarAux = ({
-  placeholderKey = 'Quality_Customer',
-  defaultValue = '',
-  onChange = () => {},
+  style,
+  title = 'Quality_Customer',
+  defaultValue,
+  onChange,
+  required = false,
+  readonly = false,
   showDetailsPopup = true,
   navigate = false,
   oneFilter = false,
@@ -66,41 +72,28 @@ const CustomerSearchBarAux = ({
 
   return (
     <AutoCompleteSearch
-      title={I18n.t(placeholderKey)}
+      style={style}
+      title={I18n.t(title)}
+      placeholder={I18n.t(title)}
       objectList={customerList}
+      loadingList={loadingCustomer}
+      moreLoading={moreLoadingCustomer}
+      isListEnd={isListEndCustomer}
       value={defaultValue}
       onChangeValue={onChange}
       fetchData={fetchCustomerAPI}
       displayValue={displaySimpleFullName}
-      placeholder={I18n.t(placeholderKey)}
+      readonly={readonly}
+      required={required}
       showDetailsPopup={showDetailsPopup}
-      loadingList={loadingCustomer}
-      moreLoading={moreLoadingCustomer}
-      isListEnd={isListEndCustomer}
       navigate={navigate}
       oneFilter={oneFilter}
     />
   );
 };
 
-const CustomerSearchBar = ({
-  placeholderKey,
-  defaultValue,
-  onChange = () => {},
-  showDetailsPopup,
-  navigate,
-  oneFilter,
-}: CustomerSearchBarProps) => {
-  return (
-    <CustomerSearchBarAux
-      placeholderKey={placeholderKey}
-      defaultValue={defaultValue}
-      onChange={onChange}
-      showDetailsPopup={showDetailsPopup}
-      navigate={navigate}
-      oneFilter={oneFilter}
-    />
-  );
+const CustomerSearchBar = (props: CustomerSearchBarProps) => {
+  return <CustomerSearchBarAux {...props} />;
 };
 
 export default CustomerSearchBar;

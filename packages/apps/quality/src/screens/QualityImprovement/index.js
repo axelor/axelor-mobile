@@ -32,6 +32,7 @@ export default {
   QualityImprovementFormScreen: {
     title: 'Quality_QualityImprovements',
     component: QualityImprovementFormScreen,
+    isUsableOnShortcut: true,
     options: {
       shadedHeader: false,
     },

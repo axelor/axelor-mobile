@@ -16,7 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import React, {useCallback} from 'react';
+import React, {useCallback, useMemo} from 'react';
 import {
   displayItemName,
   useDispatch,
@@ -29,17 +29,19 @@ import {searchOperationLine} from '../../../features/operationOrderSlice';
 interface OperationLineSearchBarProps {
   style?: any;
   title?: string;
-  defaultValue?: string;
-  onChange?: (any: any) => void;
-  readonly?: boolean;
+  defaultValue?: any;
+  onChange: (value?: any) => void;
+  objectState?: any;
   required?: boolean;
+  readonly?: boolean;
 }
 
 const OperationLineSearchBarAux = ({
-  style = null,
+  style,
   title = 'Quality_OperationLine',
-  defaultValue = null,
-  onChange = () => {},
+  defaultValue,
+  onChange,
+  objectState,
   readonly = false,
   required = false,
 }: OperationLineSearchBarProps) => {
@@ -51,23 +53,18 @@ const OperationLineSearchBarAux = ({
     moreLoadingOperationOrder,
     isListEndOperationOrder,
     operationOrderList,
-  } = useSelector((state: any) => state.quality_operationOrder);
+  } = useSelector(state => state.quality_operationOrder);
 
-  const {manufOrderForm} = useSelector(
-    (state: any) => state.quality_manufOrder,
+  const manufOrder = useMemo(
+    () => objectState?.manufOrder,
+    [objectState?.manufOrder],
   );
 
-  const searchOerationLineAPI = useCallback(
+  const searchOperationLineAPI = useCallback(
     ({page = 0, searchValue}) => {
-      dispatch(
-        (searchOperationLine as any)({
-          page,
-          searchValue,
-          manufOrder: manufOrderForm,
-        }),
-      );
+      dispatch((searchOperationLine as any)({page, searchValue, manufOrder}));
     },
-    [dispatch, manufOrderForm],
+    [dispatch, manufOrder],
   );
 
   return (
@@ -79,10 +76,10 @@ const OperationLineSearchBarAux = ({
       required={required}
       readonly={readonly}
       onChangeValue={onChange}
-      fetchData={searchOerationLineAPI}
+      fetchData={searchOperationLineAPI}
       displayValue={displayItemName}
-      placeholder={title}
-      showDetailsPopup={true}
+      placeholder={I18n.t(title)}
+      showDetailsPopup
       loadingList={loadingOperationOrders}
       moreLoading={moreLoadingOperationOrder}
       isListEnd={isListEndOperationOrder}
@@ -92,24 +89,8 @@ const OperationLineSearchBarAux = ({
   );
 };
 
-const OperationLineSearchBar = ({
-  style = null,
-  title = 'Quality_OperationLine',
-  defaultValue = null,
-  onChange = () => {},
-  readonly = false,
-  required = false,
-}: OperationLineSearchBarProps) => {
-  return (
-    <OperationLineSearchBarAux
-      style={style}
-      title={title}
-      defaultValue={defaultValue}
-      onChange={onChange}
-      readonly={readonly}
-      required={required}
-    />
-  );
+const OperationLineSearchBar = (props: OperationLineSearchBarProps) => {
+  return <OperationLineSearchBarAux {...props} />;
 };
 
 export default OperationLineSearchBar;

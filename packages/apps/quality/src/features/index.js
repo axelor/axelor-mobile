@@ -30,6 +30,5 @@ export {qiAnalysisMethodReducer as quality_qiAnalysisMethod} from './qiAnalysisM
 export {qualityImprovementReducer as quality_qualityImprovement} from './qualityImprovementSlice';
 export {qiDetectionReducer as quality_qiDetection} from './qiDetectionSlice';
 export {qiDefaultReducer as quality_qiDefault} from './qiDefaultSlice';
-export {qiResolutionReducer as quality_qiResolution} from './qiResolutionSlice';
 export {saleOrderLineReducer as quality_saleOrderLine} from './saleOrderLineSlice';
 export {saleOrderReducer as quality_saleOrder} from './saleOrderSlice';

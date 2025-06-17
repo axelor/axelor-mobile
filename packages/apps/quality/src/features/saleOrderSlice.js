@@ -41,18 +41,11 @@ const initialState = {
   moreLoadingCustomerOrder: false,
   isListEndCustomerOrder: false,
   customerOrderList: [],
-
-  customerSaleOrderForm: null,
 };
 
 const saleOrderSlice = createSlice({
   name: 'quality_saleOrder',
   initialState,
-  reducers: {
-    updateCustomerOrderPartnerForm: (state, action) => {
-      state.customerSaleOrderForm = action.payload;
-    },
-  },
   extraReducers: builder => {
     generateInifiniteScrollCases(builder, searchCustomerOrder, {
       loading: 'loadingCustomerOrders',
@@ -62,7 +55,5 @@ const saleOrderSlice = createSlice({
     });
   },
 });
-
-export const {updateCustomerOrderPartnerForm} = saleOrderSlice.actions;
 
 export const saleOrderReducer = saleOrderSlice.reducer;

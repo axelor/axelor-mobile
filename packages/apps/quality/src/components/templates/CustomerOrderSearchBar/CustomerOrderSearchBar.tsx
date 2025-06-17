@@ -16,7 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import React, {useCallback} from 'react';
+import React, {useCallback, useMemo} from 'react';
 import {useDispatch, useSelector, useTranslator} from '@axelor/aos-mobile-core';
 import {AutoCompleteSearch} from '@axelor/aos-mobile-ui';
 import {searchCustomerOrder} from '../../../features/saleOrderSlice';
@@ -24,18 +24,26 @@ import {searchCustomerOrder} from '../../../features/saleOrderSlice';
 const displaySeq = item => item.saleOrderSeq;
 
 interface CustomerOrderSearchBarProps {
-  placeholderKey?: string;
-  defaultValue: any;
+  style?: any;
+  title?: string;
+  defaultValue?: any;
+  onChange: (value?: any) => void;
+  objectState?: any;
+  required?: boolean;
+  readonly?: boolean;
   showDetailsPopup?: boolean;
   navigate?: boolean;
   oneFilter?: boolean;
-  onChange: (value: any) => void;
 }
 
 const CustomerOrderSearchBarAux = ({
-  placeholderKey = 'Quality_CustomerOrder',
-  defaultValue = '',
-  onChange = () => {},
+  style,
+  title = 'Quality_CustomerOrder',
+  defaultValue,
+  onChange,
+  objectState,
+  required = false,
+  readonly = false,
   showDetailsPopup = true,
   navigate = false,
   oneFilter = false,
@@ -50,59 +58,50 @@ const CustomerOrderSearchBarAux = ({
     moreLoadingCustomerOrder,
     isListEndCustomerOrder,
   } = useSelector(state => state.quality_saleOrder);
-  const {customerPartnerForm} = useSelector(state => state.quality_partner);
 
-  const fetchSupplierOrderAPI = useCallback(
+  const customerPartner = useMemo(
+    () => objectState?.customerPartner,
+    [objectState?.customerPartner],
+  );
+
+  const fetchCustomerOrderAPI = useCallback(
     ({page = 0, searchValue}) => {
       dispatch(
         (searchCustomerOrder as any)({
           page,
           searchValue,
-          customerPartner: customerPartnerForm,
+          customerPartner,
           companyId: user.activeCompany?.id,
         }),
       );
     },
-    [dispatch, customerPartnerForm, user.activeCompany?.id],
+    [dispatch, customerPartner, user.activeCompany?.id],
   );
 
   return (
     <AutoCompleteSearch
-      title={I18n.t(placeholderKey)}
+      style={style}
+      title={I18n.t(title)}
+      placeholder={I18n.t(title)}
       objectList={customerOrderList}
-      value={defaultValue}
-      onChangeValue={onChange}
-      fetchData={fetchSupplierOrderAPI}
-      displayValue={displaySeq}
-      placeholder={I18n.t(placeholderKey)}
-      showDetailsPopup={showDetailsPopup}
       loadingList={loadingCustomerOrders}
       moreLoading={moreLoadingCustomerOrder}
       isListEnd={isListEndCustomerOrder}
+      value={defaultValue}
+      onChangeValue={onChange}
+      fetchData={fetchCustomerOrderAPI}
+      displayValue={displaySeq}
+      readonly={readonly}
+      required={required}
+      showDetailsPopup={showDetailsPopup}
       navigate={navigate}
       oneFilter={oneFilter}
     />
   );
 };
 
-const CustomerOrderSearchBar = ({
-  placeholderKey,
-  defaultValue,
-  onChange = () => {},
-  showDetailsPopup,
-  navigate,
-  oneFilter,
-}: CustomerOrderSearchBarProps) => {
-  return (
-    <CustomerOrderSearchBarAux
-      placeholderKey={placeholderKey}
-      defaultValue={defaultValue}
-      onChange={onChange}
-      showDetailsPopup={showDetailsPopup}
-      navigate={navigate}
-      oneFilter={oneFilter}
-    />
-  );
+const CustomerOrderSearchBar = (props: CustomerOrderSearchBarProps) => {
+  return <CustomerOrderSearchBarAux {...props} />;
 };
 
 export default CustomerOrderSearchBar;

@@ -41,18 +41,11 @@ const initialState = {
   moreLoadingSupplierPurchaseOrder: false,
   isListEndSupplierPurchaseOrder: false,
   supplierPurchaseOrderList: [],
-
-  supplierOrderForm: null,
 };
 
 const purchaseOrderSlice = createSlice({
   name: 'quality_purchaseOrder',
   initialState,
-  reducers: {
-    supplierOrderPartnerForm: (state, action) => {
-      state.supplierOrderForm = action.payload;
-    },
-  },
   extraReducers: builder => {
     generateInifiniteScrollCases(builder, searchSupplierOrder, {
       loading: 'loadingSupplierPurchaseOrders',
@@ -62,7 +55,5 @@ const purchaseOrderSlice = createSlice({
     });
   },
 });
-
-export const {supplierOrderPartnerForm} = purchaseOrderSlice.actions;
 
 export const purchaseOrderReducer = purchaseOrderSlice.reducer;

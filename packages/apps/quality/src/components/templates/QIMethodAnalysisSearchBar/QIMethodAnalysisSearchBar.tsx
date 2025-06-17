@@ -30,64 +30,59 @@ import {searchQIAnalysisMethod} from '../../../features/qiAnalysisMethodSlice';
 interface QIMethodAnalysisSearchBarProps {
   style?: any;
   title?: string;
-  defaultValue?: string;
-  onChange?: (any: any) => void;
-  readonly?: boolean;
+  defaultValue?: any;
+  onChange: (value?: any) => void;
+  objectState?: any;
   required?: boolean;
+  readonly?: boolean;
 }
 
 const QIMethodAnalysisSearchBarAux = ({
-  style = null,
+  style,
   title = 'Quality_QIMethodAnalysis',
-  defaultValue = null,
-  onChange = () => {},
+  defaultValue,
+  onChange,
+  objectState,
   readonly = false,
   required = false,
 }: QIMethodAnalysisSearchBarProps) => {
   const I18n = useTranslator();
   const dispatch = useDispatch();
-  const {user} = useSelector(state => state.user);
+  const {QualityImprovement} = useTypes();
 
+  const {user} = useSelector(state => state.user);
   const {
     qiAnalysisMethodList,
     loadingQiAnalysisMethods,
     moreLoadingQiAnalysisMethod,
     isListEndQiAnalysisMethod,
   } = useSelector((state: any) => state.quality_qiAnalysisMethod);
-  const {QualityImprovement} = useTypes();
 
-  const {typeForm, gravityForm} = useSelector(
-    (state: any) => state.quality_qualityImprovement,
-  );
+  const gravityFieldName = useMemo(() => {
+    const gravity = objectState?.gravityTypeSelect;
 
-  const origin = useMemo(() => {
-    if (typeForm === QualityImprovement.type.Product) {
+    if (gravity === QualityImprovement.gravityTypeSelect.Critical) {
+      return 'isCritical';
+    } else if (gravity === QualityImprovement.gravityTypeSelect.Major) {
+      return 'isMajor';
+    } else if (gravity === QualityImprovement.gravityTypeSelect.Minor) {
+      return 'isMinor';
+    } else {
+      return null;
+    }
+  }, [QualityImprovement.gravityTypeSelect, objectState?.gravityTypeSelect]);
+
+  const originFieldName = useMemo(() => {
+    const type = objectState?.type;
+
+    if (type === QualityImprovement.type.Product) {
       return 'isProduct';
-    } else if (typeForm === QualityImprovement.type.System) {
+    } else if (type === QualityImprovement.type.System) {
       return 'isSystem';
     } else {
       return null;
     }
-  }, [QualityImprovement.type, typeForm]);
-
-  const gravity = useMemo(() => {
-    if (gravityForm === QualityImprovement.gravityTypeSelect.Critical) {
-      return 'isCritical';
-    } else if (gravityForm === QualityImprovement.gravityTypeSelect.Major) {
-      return 'isMajor';
-    } else {
-      if (gravityForm === QualityImprovement.gravityTypeSelect.Minor) {
-        return 'isMinor';
-      } else {
-        return null;
-      }
-    }
-  }, [
-    QualityImprovement.gravityTypeSelect.Critical,
-    QualityImprovement.gravityTypeSelect.Major,
-    QualityImprovement.gravityTypeSelect.Minor,
-    gravityForm,
-  ]);
+  }, [QualityImprovement.type, objectState?.type]);
 
   const searchQIAnalysisMethodAPI = useCallback(
     ({page = 0, searchValue}) => {
@@ -96,54 +91,38 @@ const QIMethodAnalysisSearchBarAux = ({
           page,
           searchValue,
           companyId: user.activeCompany?.id,
-          origin: origin,
-          gravity: gravity,
+          origin: originFieldName,
+          gravity: gravityFieldName,
         }),
       );
     },
-    [dispatch, gravity, origin, user.activeCompany?.id],
+    [dispatch, gravityFieldName, originFieldName, user.activeCompany?.id],
   );
 
   return (
     <AutoCompleteSearch
       style={style}
       title={I18n.t(title)}
+      placeholder={I18n.t(title)}
       objectList={qiAnalysisMethodList}
-      value={defaultValue}
-      required={required}
-      readonly={readonly}
-      onChangeValue={onChange}
-      fetchData={searchQIAnalysisMethodAPI}
-      displayValue={displayItemName}
-      placeholder={title}
-      showDetailsPopup={true}
       loadingList={loadingQiAnalysisMethods}
       moreLoading={moreLoadingQiAnalysisMethod}
       isListEnd={isListEndQiAnalysisMethod}
+      value={defaultValue}
+      onChangeValue={onChange}
+      fetchData={searchQIAnalysisMethodAPI}
+      displayValue={displayItemName}
+      required={required}
+      readonly={readonly}
+      showDetailsPopup={true}
       navigate={false}
       oneFilter={false}
     />
   );
 };
 
-const QIMethodAnalysisSearchBar = ({
-  style = null,
-  title = 'Quality_QIDetection',
-  defaultValue = null,
-  onChange = () => {},
-  readonly = false,
-  required = false,
-}: QIMethodAnalysisSearchBarProps) => {
-  return (
-    <QIMethodAnalysisSearchBarAux
-      style={style}
-      title={title}
-      defaultValue={defaultValue}
-      onChange={onChange}
-      readonly={readonly}
-      required={required}
-    />
-  );
+const QIMethodAnalysisSearchBar = (props: QIMethodAnalysisSearchBarProps) => {
+  return <QIMethodAnalysisSearchBarAux {...props} />;
 };
 
 export default QIMethodAnalysisSearchBar;

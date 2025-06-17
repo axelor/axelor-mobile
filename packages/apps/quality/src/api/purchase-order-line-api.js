@@ -37,9 +37,7 @@ export async function searchSupplierPurchaseOrderLine({
   searchValue,
   purchaseOrder,
 }) {
-  if (!purchaseOrder) {
-    return {data: {data: [], total: 0}};
-  }
+  if (!purchaseOrder) return undefined;
 
   return createStandardSearch({
     model: 'com.axelor.apps.purchase.db.PurchaseOrderLine',
@@ -47,5 +45,6 @@ export async function searchSupplierPurchaseOrderLine({
     fieldKey: 'quality_supplierOrderLine',
     sortKey: 'quality_supplierOrderLine',
     page,
+    provider: 'model',
   });
 }

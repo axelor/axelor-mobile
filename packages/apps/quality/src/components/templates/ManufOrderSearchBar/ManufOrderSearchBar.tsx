@@ -21,20 +21,22 @@ import {useDispatch, useSelector, useTranslator} from '@axelor/aos-mobile-core';
 import {AutoCompleteSearch} from '@axelor/aos-mobile-ui';
 import {searchManufOrder} from '../../../features/manufOrderSlice';
 
+const displayItemSeq = item => item.manufOrderSeq;
+
 interface ManufOrderSearchBarProps {
   style?: any;
   title?: string;
   defaultValue?: string;
-  onChange?: (any: any) => void;
+  onChange: (value: any) => void;
   readonly?: boolean;
   required?: boolean;
 }
 
 const ManufOrderSearchBarAux = ({
-  style = null,
+  style,
   title = 'Quality_ManufOrder',
-  defaultValue = null,
-  onChange = () => {},
+  defaultValue,
+  onChange,
   readonly = false,
   required = false,
 }: ManufOrderSearchBarProps) => {
@@ -58,48 +60,30 @@ const ManufOrderSearchBarAux = ({
     [dispatch, user?.activeCompany?.id],
   );
 
-  const displayItemSeq = item => item.manufOrderSeq;
-
   return (
     <AutoCompleteSearch
       style={style}
       title={I18n.t(title)}
+      placeholder={I18n.t(title)}
       objectList={manufOrderList}
-      value={defaultValue}
-      required={required}
-      readonly={readonly}
-      onChangeValue={onChange}
-      fetchData={searchManufOrderAPI}
-      displayValue={displayItemSeq}
-      placeholder={title}
-      showDetailsPopup={true}
       loadingList={loadingManufOrder}
       moreLoading={moreLoading}
       isListEnd={isListEnd}
+      value={defaultValue}
+      onChangeValue={onChange}
+      fetchData={searchManufOrderAPI}
+      displayValue={displayItemSeq}
+      required={required}
+      readonly={readonly}
+      showDetailsPopup={true}
       navigate={false}
       oneFilter={false}
     />
   );
 };
 
-const ManufOrderSearchBar = ({
-  style = null,
-  title = 'Quality_ManufOrder',
-  defaultValue = null,
-  onChange = () => {},
-  readonly = false,
-  required = false,
-}: ManufOrderSearchBarProps) => {
-  return (
-    <ManufOrderSearchBarAux
-      style={style}
-      title={title}
-      defaultValue={defaultValue}
-      onChange={onChange}
-      readonly={readonly}
-      required={required}
-    />
-  );
+const ManufOrderSearchBar = (props: ManufOrderSearchBarProps) => {
+  return <ManufOrderSearchBarAux {...props} />;
 };
 
 export default ManufOrderSearchBar;

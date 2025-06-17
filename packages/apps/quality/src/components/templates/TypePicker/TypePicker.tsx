@@ -24,7 +24,7 @@ interface TypePickerProps {
   style?: any;
   title?: string;
   defaultValue?: string;
-  onChange?: (item: any) => void;
+  onChange: (item: any) => void;
   readonly?: boolean;
   required?: boolean;
 }
@@ -32,7 +32,7 @@ interface TypePickerProps {
 const TypePickerAux = ({
   style,
   title = 'Quality_Type',
-  defaultValue = null,
+  defaultValue,
   onChange,
   readonly = false,
   required = false,
@@ -49,6 +49,7 @@ const TypePickerAux = ({
     <Picker
       style={style}
       title={title}
+      placeholder={title}
       defaultValue={defaultValue}
       listItems={typeList}
       labelField="title"
@@ -62,24 +63,8 @@ const TypePickerAux = ({
   );
 };
 
-const TypePicker = ({
-  style,
-  title,
-  defaultValue,
-  onChange,
-  readonly,
-  required,
-}: TypePickerProps) => {
-  return (
-    <TypePickerAux
-      style={style}
-      title={title}
-      defaultValue={defaultValue}
-      onChange={onChange}
-      readonly={readonly}
-      required={required}
-    />
-  );
+const TypePicker = (props: TypePickerProps) => {
+  return <TypePickerAux {...props} />;
 };
 
 export default TypePicker;

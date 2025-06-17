@@ -24,7 +24,7 @@ interface GravityPickerProps {
   style?: any;
   title?: string;
   defaultValue?: string;
-  onChange?: (item: any) => void;
+  onChange: (item: any) => void;
   readonly?: boolean;
   required?: boolean;
 }
@@ -32,7 +32,7 @@ interface GravityPickerProps {
 const GravityPickerAux = ({
   style,
   title = 'Quality_Gravity',
-  defaultValue = null,
+  defaultValue,
   onChange,
   readonly = false,
   required = false,
@@ -49,6 +49,7 @@ const GravityPickerAux = ({
     <Picker
       style={style}
       title={title}
+      placeholder={title}
       defaultValue={defaultValue}
       listItems={gravityList}
       labelField="title"
@@ -62,24 +63,8 @@ const GravityPickerAux = ({
   );
 };
 
-const GravityPicker = ({
-  style,
-  title,
-  defaultValue,
-  onChange,
-  readonly,
-  required,
-}: GravityPickerProps) => {
-  return (
-    <GravityPickerAux
-      style={style}
-      title={title}
-      defaultValue={defaultValue}
-      onChange={onChange}
-      readonly={readonly}
-      required={required}
-    />
-  );
+const GravityPicker = (props: GravityPickerProps) => {
+  return <GravityPickerAux {...props} />;
 };
 
 export default GravityPicker;

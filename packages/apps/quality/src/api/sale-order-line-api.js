@@ -37,14 +37,14 @@ export async function searchCustomerOrderLine({
   searchValue,
   customerSaleOrder,
 }) {
-  if (!customerSaleOrder) {
-    return {data: {data: [], total: 0}};
-  }
+  if (!customerSaleOrder) return undefined;
+
   return createStandardSearch({
     model: 'com.axelor.apps.sale.db.SaleOrderLine',
     criteria: createCustomerOrderLineCriteria(searchValue, customerSaleOrder),
     fieldKey: 'quality_customerOrderLine',
     sortKey: 'quality_customerOrderLine',
     page,
+    provider: 'model',
   });
 }

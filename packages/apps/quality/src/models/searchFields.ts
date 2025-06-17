@@ -27,6 +27,7 @@ export const quality_searchFields: SearchFields = {
   quality_supplierOrder: ['purchaseOrderSeq'],
   quality_supplierOrderLine: ['fullName'],
   quality_product: ['fullName', 'name'],
+  quality_customer: ['simpleFullName'],
   quality_customerOrder: ['saleOrderSeq'],
   quality_customerOrderLine: ['productName'],
   quality_manufacturingOrder: ['manufOrderSeq'],

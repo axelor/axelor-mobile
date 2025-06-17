@@ -16,7 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import React, {useCallback} from 'react';
+import React, {useCallback, useMemo} from 'react';
 import {useDispatch, useSelector, useTranslator} from '@axelor/aos-mobile-core';
 import {AutoCompleteSearch} from '@axelor/aos-mobile-ui';
 import {searchSupplierOrder} from '../../../features/purchaseOrderSlice';
@@ -24,18 +24,26 @@ import {searchSupplierOrder} from '../../../features/purchaseOrderSlice';
 const displaySeq = item => item.purchaseOrderSeq;
 
 interface SupplierOrderSearchBarProps {
-  placeholderKey?: string;
-  defaultValue: any;
+  style?: any;
+  title?: string;
+  defaultValue?: any;
+  onChange: (value?: any) => void;
+  objectState?: any;
+  required?: boolean;
+  readonly?: boolean;
   showDetailsPopup?: boolean;
   navigate?: boolean;
   oneFilter?: boolean;
-  onChange: (value: any) => void;
 }
 
 const SupplierOrderSearchBarAux = ({
-  placeholderKey = 'Quality_SupplierOrder',
-  defaultValue = '',
-  onChange = () => {},
+  style,
+  title = 'Quality_SupplierOrder',
+  defaultValue,
+  onChange,
+  objectState,
+  required = false,
+  readonly = false,
   showDetailsPopup = true,
   navigate = false,
   oneFilter = false,
@@ -50,7 +58,11 @@ const SupplierOrderSearchBarAux = ({
     moreLoadingSupplierPurchaseOrder,
     isListEndSupplierPurchaseOrder,
   } = useSelector(state => state.quality_purchaseOrder);
-  const {supplierPartnerForm} = useSelector(state => state.quality_partner);
+
+  const supplierPartner = useMemo(
+    () => objectState?.supplierPartner,
+    [objectState?.supplierPartner],
+  );
 
   const fetchSupplierOrderAPI = useCallback(
     ({page = 0, searchValue}) => {
@@ -58,51 +70,38 @@ const SupplierOrderSearchBarAux = ({
         (searchSupplierOrder as any)({
           page,
           searchValue,
-          supplierPartner: supplierPartnerForm,
+          supplierPartner,
           companyId: user.activeCompany?.id,
         }),
       );
     },
-    [dispatch, supplierPartnerForm, user.activeCompany?.id],
+    [dispatch, supplierPartner, user.activeCompany?.id],
   );
 
   return (
     <AutoCompleteSearch
-      title={I18n.t(placeholderKey)}
+      style={style}
+      title={I18n.t(title)}
+      placeholder={I18n.t(title)}
       objectList={supplierPurchaseOrderList}
+      loadingList={loadingSupplierPurchaseOrders}
+      moreLoading={moreLoadingSupplierPurchaseOrder}
+      isListEnd={isListEndSupplierPurchaseOrder}
       value={defaultValue}
       onChangeValue={onChange}
       fetchData={fetchSupplierOrderAPI}
       displayValue={displaySeq}
-      placeholder={I18n.t(placeholderKey)}
+      readonly={readonly}
+      required={required}
       showDetailsPopup={showDetailsPopup}
-      loadingList={loadingSupplierPurchaseOrders}
-      moreLoading={moreLoadingSupplierPurchaseOrder}
-      isListEnd={isListEndSupplierPurchaseOrder}
       navigate={navigate}
       oneFilter={oneFilter}
     />
   );
 };
 
-const SupplierOrderSearchBar = ({
-  placeholderKey,
-  defaultValue,
-  onChange = () => {},
-  showDetailsPopup,
-  navigate,
-  oneFilter,
-}: SupplierOrderSearchBarProps) => {
-  return (
-    <SupplierOrderSearchBarAux
-      placeholderKey={placeholderKey}
-      defaultValue={defaultValue}
-      onChange={onChange}
-      showDetailsPopup={showDetailsPopup}
-      navigate={navigate}
-      oneFilter={oneFilter}
-    />
-  );
+const SupplierOrderSearchBar = (props: SupplierOrderSearchBarProps) => {
+  return <SupplierOrderSearchBarAux {...props} />;
 };
 
 export default SupplierOrderSearchBar;

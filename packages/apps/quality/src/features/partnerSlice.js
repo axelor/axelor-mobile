@@ -62,22 +62,11 @@ const initialState = {
   moreLoadingSupplier: false,
   isListEndSupplier: false,
   supplierList: [],
-
-  supplierPartnerForm: null,
-  customerPartnerForm: null,
 };
 
 const partnerSlice = createSlice({
   name: 'quality_partner',
   initialState,
-  reducers: {
-    supplierPartnerForm: (state, action) => {
-      state.supplierPartnerForm = action.payload;
-    },
-    updateCustomerPartnerForm: (state, action) => {
-      state.customerPartnerForm = action.payload;
-    },
-  },
   extraReducers: builder => {
     generateInifiniteScrollCases(builder, searchSupplier, {
       loading: 'loadingSuppliers',
@@ -93,8 +82,5 @@ const partnerSlice = createSlice({
     });
   },
 });
-
-export const {supplierPartnerForm, updateCustomerPartnerForm} =
-  partnerSlice.actions;
 
 export const partnerReducer = partnerSlice.reducer;

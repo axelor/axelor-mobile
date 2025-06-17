@@ -24,18 +24,24 @@ import {searchSupplier} from '../../../features/partnerSlice';
 const displaySimpleFullName = item => item.simpleFullName;
 
 interface SupplierSearchBarProps {
-  placeholderKey?: string;
-  defaultValue: any;
+  style?: any;
+  title?: string;
+  defaultValue?: any;
+  onChange: (value?: any) => void;
+  required?: boolean;
+  readonly?: boolean;
   showDetailsPopup?: boolean;
   navigate?: boolean;
   oneFilter?: boolean;
-  onChange: (value: any) => void;
 }
 
 const SupplierSearchBarAux = ({
-  placeholderKey = 'Quality_Supplier',
-  defaultValue = '',
-  onChange = () => {},
+  style,
+  title = 'Quality_Supplier',
+  defaultValue,
+  onChange,
+  required = false,
+  readonly = false,
   showDetailsPopup = true,
   navigate = false,
   oneFilter = false,
@@ -66,41 +72,28 @@ const SupplierSearchBarAux = ({
 
   return (
     <AutoCompleteSearch
-      title={I18n.t(placeholderKey)}
+      style={style}
+      title={I18n.t(title)}
+      placeholder={I18n.t(title)}
       objectList={supplierList}
+      loadingList={loadingSuppliers}
+      moreLoading={moreLoadingSupplier}
+      isListEnd={isListEndSupplier}
       value={defaultValue}
       onChangeValue={onChange}
       fetchData={fetchSupplierAPI}
       displayValue={displaySimpleFullName}
-      placeholder={I18n.t(placeholderKey)}
+      readonly={readonly}
+      required={required}
       showDetailsPopup={showDetailsPopup}
-      loadingList={loadingSuppliers}
-      moreLoading={moreLoadingSupplier}
-      isListEnd={isListEndSupplier}
       navigate={navigate}
       oneFilter={oneFilter}
     />
   );
 };
 
-const SupplierSearchBar = ({
-  placeholderKey,
-  defaultValue,
-  onChange = () => {},
-  showDetailsPopup,
-  navigate,
-  oneFilter,
-}: SupplierSearchBarProps) => {
-  return (
-    <SupplierSearchBarAux
-      placeholderKey={placeholderKey}
-      defaultValue={defaultValue}
-      onChange={onChange}
-      showDetailsPopup={showDetailsPopup}
-      navigate={navigate}
-      oneFilter={oneFilter}
-    />
-  );
+const SupplierSearchBar = (props: SupplierSearchBarProps) => {
+  return <SupplierSearchBarAux {...props} />;
 };
 
 export default SupplierSearchBar;

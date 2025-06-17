@@ -31,6 +31,7 @@ const createQIDetectionCriteria = (searchValue, origin) => {
       value: true,
     });
   }
+
   return criteria;
 };
 

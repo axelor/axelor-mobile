@@ -38,9 +38,7 @@ export async function searchSupplierOrder({
   companyId,
   supplierPartner,
 }) {
-  if (!supplierPartner) {
-    return {data: {data: [], total: 0}};
-  }
+  if (!supplierPartner) return undefined;
 
   return createStandardSearch({
     model: 'com.axelor.apps.purchase.db.PurchaseOrder',

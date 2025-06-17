@@ -25,14 +25,14 @@ const createDefectCriteria = searchValue => {
   return [
     getSearchCriterias('quality_defects', searchValue),
     {
-      fieldName: 'isProductDefault',
+      fieldName: 'isProductDefault', //TODO: check
       operator: '=',
       value: true,
     },
   ];
 };
 
-export async function searchDefect({page = 0, searchValue}) {
+export async function searchDefect({page = 0, searchValue, companyId}) {
   return createStandardSearch({
     model: 'com.axelor.apps.quality.db.QIDefault',
     criteria: createDefectCriteria(searchValue),
@@ -40,5 +40,6 @@ export async function searchDefect({page = 0, searchValue}) {
     sortKey: 'quality_defects',
     page,
     provider: 'model',
+    companyId,
   });
 }

@@ -22,7 +22,8 @@ import {
   handlerApiCall,
 } from '@axelor/aos-mobile-core';
 import {
-  fetchQualityImprovementById as _fetchQualityImprovementById,
+  fetchQiResolution as _fetchQiResolution,
+  fetchQualityImprovement as _fetchQualityImprovement,
   fetchQualityImprovementStatus as _fetchQualityImprovementStatus,
   searchQualityImprovement as _searchQualityImprovement,
 } from '../api/quality-improvement-api';
@@ -53,15 +54,29 @@ export const fetchQualityImprovementStatus = createAsyncThunk(
   },
 );
 
-export const fetchQualityImprovementById = createAsyncThunk(
-  'quality_qualityImprovement/fetchQualityImprovementById',
+export const fetchQualityImprovement = createAsyncThunk(
+  'quality_qualityImprovement/fetchQualityImprovement',
   async function (data, {getState}) {
     return handlerApiCall({
-      fetchFunction: _fetchQualityImprovementById,
+      fetchFunction: _fetchQualityImprovement,
       data,
-      action: 'Quality_SliceAction_FetchQualityImprovementById',
+      action: 'Quality_SliceAction_FetchQualityImprovement',
       getState,
       responseOptions: {isArrayResponse: false},
+    }).then(async res => {
+      if (!res?.id) {
+        return undefined;
+      }
+
+      const qiResolution = await handlerApiCall({
+        fetchFunction: _fetchQiResolution,
+        data: {id: res.qiResolution?.id},
+        action: 'Quality_SliceAction_FetchQiResolution',
+        getState,
+        responseOptions: {isArrayResponse: false},
+      });
+
+      return {...res, qiResolution};
     });
   },
 );
@@ -74,8 +89,7 @@ const initialState = {
 
   qiStatusList: [],
 
-  typeForm: null,
-  gravityForm: null,
+  qualityImprovement: {},
 
   actualStep: 0,
 };
@@ -84,12 +98,6 @@ const qualityImprovementSlice = createSlice({
   name: 'quality_qualityImprovement',
   initialState,
   reducers: {
-    updateTypeForm: (state, action) => {
-      state.typeForm = action.payload;
-    },
-    updateGravityForm: (state, action) => {
-      state.gravityForm = action.payload;
-    },
     updateSteps: (state, action) => {
       state.actualStep = action.payload;
     },
@@ -107,20 +115,12 @@ const qualityImprovementSlice = createSlice({
         state.qiStatusList = action.payload;
       },
     );
-    builder.addCase(fetchQualityImprovementById.pending, state => {
-      state.loadingQualityImprovement = true;
-    });
-    builder.addCase(fetchQualityImprovementById.rejected, state => {
-      state.loadingQualityImprovement = false;
-    });
-    builder.addCase(fetchQualityImprovementById.fulfilled, (state, action) => {
-      state.loadingQualityImprovement = false;
+    builder.addCase(fetchQualityImprovement.fulfilled, (state, action) => {
       state.qualityImprovement = action.payload;
     });
   },
 });
 
-export const {updateTypeForm, updateGravityForm, updateSteps} =
-  qualityImprovementSlice.actions;
+export const {updateSteps} = qualityImprovementSlice.actions;
 
 export const qualityImprovementReducer = qualityImprovementSlice.reducer;

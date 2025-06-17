@@ -102,11 +102,23 @@ export async function fetchQualityImprovementStatus() {
   });
 }
 
-export async function fetchQualityImprovementById({id}) {
+export async function fetchQualityImprovement({id}) {
   return createStandardFetch({
     model: 'com.axelor.apps.quality.db.QualityImprovement',
     id,
     fieldKey: 'quality_qualityImprovement',
+    provider: 'model',
+  });
+}
+
+export async function fetchQiResolution({id}) {
+  return createStandardFetch({
+    model: 'com.axelor.apps.quality.db.QIResolution',
+    id,
+    fieldKey: 'quality_qiResolution',
+    relatedFields: {
+      qiResolutionDefaultsList: ['description', 'quantity', 'name'],
+    },
     provider: 'model',
   });
 }

@@ -47,10 +47,10 @@ const QualityImprovementActionCard = ({
   onPress,
 }: QualityImprovementActionCardProps) => {
   const I18n = useTranslator();
+  const navigation = useNavigation();
   const {readonly} = usePermitted({
     modelName: 'com.axelor.apps.quality.db.QualityImprovement',
   });
-  const navigation = useNavigation();
 
   const isEditable = useMemo(
     () =>

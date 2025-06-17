@@ -28,7 +28,7 @@ import {updateSteps} from '../../../features/qualityImprovementSlice';
 import {QualityImprovement as QualityImprovementType} from '../../../types';
 
 interface QIStepperProps {
-  onChange?: (any: any) => void;
+  onChange?: (value: any) => void;
   objectState?: any;
 }
 

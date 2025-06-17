@@ -34,19 +34,19 @@ import {
   SupplierSearchBar,
   TypePicker,
 } from '../components';
-import {
-  updateGravityForm,
-  updateTypeForm,
-} from '../features/qualityImprovementSlice';
-import {
-  supplierPartnerForm,
-  updateCustomerPartnerForm,
-} from '../features/partnerSlice';
-import {supplierOrderPartnerForm} from '../features/purchaseOrderSlice';
-import {updateCustomerOrderPartnerForm} from '../features/saleOrderSlice';
-import {updateManufOrder} from '../features/manufOrderSlice';
+import {QualityImprovement as QI_Type} from '../types';
 
-const Steps = {detection: 0, identification: 1, defaults: 2};
+const Steps = QI_Type.Steps;
+
+const isStep = (state: any, wantedStep: number) =>
+  state?.stepper === wantedStep;
+
+const isType = (state: any, wantedTypeKey: string) =>
+  state?.type === getTypes().QualityImprovement?.type?.[wantedTypeKey];
+
+const isOrigin = (state: any, wantedOriginKey: string) =>
+  state?.qiDetection?.origin ===
+  getTypes().QIDetection?.origin?.[wantedOriginKey];
 
 export const quality_formsRegister: FormConfigs = {
   quality_qualityImprovement: {
@@ -63,7 +63,7 @@ export const quality_formsRegister: FormConfigs = {
         widget: 'custom',
         type: 'number',
         customComponent: TypePicker,
-        hideIf: ({objectState}) => objectState?.stepper !== Steps.detection,
+        hideIf: ({objectState}) => !isStep(objectState, Steps.detection),
         parentPanel: 'headerLeft',
       },
       gravityTypeSelect: {
@@ -71,7 +71,7 @@ export const quality_formsRegister: FormConfigs = {
         widget: 'custom',
         type: 'number',
         customComponent: GravityPicker,
-        hideIf: ({objectState}) => objectState?.stepper !== Steps.detection,
+        hideIf: ({objectState}) => !isStep(objectState, Steps.detection),
         parentPanel: 'headerRight',
       },
       qiDetection: {
@@ -80,80 +80,47 @@ export const quality_formsRegister: FormConfigs = {
         widget: 'custom',
         required: true,
         customComponent: QIDetectionSearchBar,
-        hideIf: ({objectState}) => objectState?.stepper !== Steps.detection,
-        dependsOn: {
-          type: ({newValue, dispatch}) => {
-            dispatch(updateTypeForm(newValue));
-          },
-        },
+        hideIf: ({objectState}) => !isStep(objectState, Steps.detection),
+        dependsOn: {type: () => null},
       },
       analysisMethod: {
         titleKey: 'Quality_QIMethodAnalysis',
         type: 'object',
         widget: 'custom',
         customComponent: QIMethodAnalysisSearchBar,
-        hideIf: ({objectState}) => objectState?.stepper !== Steps.detection,
-        dependsOn: {
-          type: ({newValue, dispatch}) => {
-            dispatch(updateTypeForm(newValue));
-          },
-          gravityTypeSelect: ({newValue, dispatch}) => {
-            dispatch(updateGravityForm(newValue));
-          },
-        },
+        hideIf: ({objectState}) => !isStep(objectState, Steps.detection),
+        dependsOn: {type: () => null, gravityTypeSelect: () => null},
       },
       supplierPartner: {
         titleKey: 'Quality_Supplier',
         type: 'object',
         widget: 'custom',
         customComponent: SupplierSearchBar,
-        hideIf: ({objectState}) => {
-          const QIDetection = getTypes().QIDetection;
-          return (
-            objectState?.qiDetection?.origin !== QIDetection.origin.supplier ||
-            objectState?.stepper !== Steps.identification
-          );
-        },
+        hideIf: ({objectState}) =>
+          !isOrigin(objectState, 'Supplier') ||
+          !isStep(objectState, Steps.identification),
       },
       supplierPurchaseOrder: {
         titleKey: 'Quality_SupplierOrder',
         type: 'object',
         widget: 'custom',
         customComponent: SupplierOrderSearchBar,
-        hideIf: ({objectState}) => {
-          const QIDetection = getTypes().QIDetection;
-          return (
-            objectState?.qiDetection?.origin !== QIDetection.origin.supplier ||
-            objectState?.stepper !== Steps.identification
-          );
-        },
-        dependsOn: {
-          supplierPartner: ({newValue, dispatch}) => {
-            dispatch(supplierPartnerForm(newValue));
-            return null;
-          },
-        },
+        hideIf: ({objectState}) =>
+          !isOrigin(objectState, 'Supplier') ||
+          !isStep(objectState, Steps.identification),
+        dependsOn: {supplierPartner: () => null},
       },
       supplierPurchaseOrderLine: {
         titleKey: 'Quality_SupplierOrderLine',
         type: 'object',
         widget: 'custom',
         customComponent: SupplierOrderLineSearchBar,
-        hideIf: ({objectState}) => {
-          const QIDetection = getTypes().QIDetection;
-          return (
-            objectState?.qiDetection?.origin !== QIDetection.origin.supplier ||
-            objectState?.stepper !== Steps.identification
-          );
-        },
+        hideIf: ({objectState}) =>
+          !isOrigin(objectState, 'Supplier') ||
+          !isStep(objectState, Steps.identification),
         dependsOn: {
-          supplierPurchaseOrder: ({newValue, dispatch}) => {
-            dispatch(supplierOrderPartnerForm(newValue));
-            return null;
-          },
-          supplierPartner: () => {
-            return null;
-          },
+          supplierPurchaseOrder: () => null,
+          supplierPartner: () => null,
         },
       },
       customerPartner: {
@@ -161,122 +128,73 @@ export const quality_formsRegister: FormConfigs = {
         type: 'object',
         widget: 'custom',
         customComponent: CustomerSearchBar,
-        hideIf: ({objectState}) => {
-          const QIDetection = getTypes().QIDetection;
-          return (
-            (objectState?.qiDetection?.origin !== QIDetection.origin.customer &&
-              objectState?.qiDetection?.origin !==
-                QIDetection.origin.internal) ||
-            objectState?.stepper !== Steps.identification
-          );
-        },
+        hideIf: ({objectState}) =>
+          !isOrigin(objectState, 'Customer') ||
+          !isOrigin(objectState, 'Internal') ||
+          !isStep(objectState, Steps.identification),
       },
       customerSaleOrder: {
         titleKey: 'Quality_CustomerOrder',
         type: 'object',
         widget: 'custom',
         customComponent: CustomerOrderSearchBar,
-        hideIf: ({objectState}) => {
-          const QIDetection = getTypes().QIDetection;
-          return (
-            objectState?.qiDetection?.origin !== QIDetection.origin.customer ||
-            objectState?.stepper !== Steps.identification
-          );
-        },
-        dependsOn: {
-          customerPartner: ({newValue, dispatch}) => {
-            dispatch(updateCustomerPartnerForm(newValue));
-            return null;
-          },
-        },
+        hideIf: ({objectState}) =>
+          !isOrigin(objectState, 'Customer') ||
+          !isStep(objectState, Steps.identification),
+        dependsOn: {customerPartner: () => null},
       },
       customerSaleOrderLine: {
         titleKey: 'Quality_CustomerOrderLine',
         type: 'object',
         widget: 'custom',
         customComponent: CustomerOrderLineSearchBar,
-        hideIf: ({objectState}) => {
-          const QIDetection = getTypes().QIDetection;
-          return (
-            objectState?.qiDetection?.origin !== QIDetection.origin.customer ||
-            objectState?.stepper !== Steps.identification
-          );
-        },
-        dependsOn: {
-          customerSaleOrder: ({newValue, dispatch}) => {
-            dispatch(updateCustomerOrderPartnerForm(newValue));
-            return null;
-          },
-          customerPartner: () => {
-            return null;
-          },
-        },
+        hideIf: ({objectState}) =>
+          !isOrigin(objectState, 'Customer') ||
+          !isStep(objectState, Steps.identification),
+        dependsOn: {customerSaleOrder: () => null, customerPartner: () => null},
       },
       manufOrder: {
         titleKey: 'Quality_ManufOrder',
         type: 'object',
         widget: 'custom',
         customComponent: ManufOrderSearchBar,
-        hideIf: ({objectState}) => {
-          const QIDetection = getTypes().QIDetection;
-          return (
-            objectState?.qiDetection?.origin !== QIDetection.origin.internal ||
-            objectState?.stepper !== Steps.identification
-          );
-        },
+        hideIf: ({objectState}) =>
+          !isOrigin(objectState, 'Internal') ||
+          !isStep(objectState, Steps.identification),
       },
       operationOrder: {
         titleKey: 'Quality_OperationLine',
         type: 'object',
         widget: 'custom',
         customComponent: OperationLineSearchBar,
-        hideIf: ({objectState}) => {
-          const QIDetection = getTypes().QIDetection;
-          return (
-            objectState?.qiDetection?.origin !== QIDetection.origin.internal ||
-            objectState?.stepper !== Steps.identification
-          );
-        },
-        dependsOn: {
-          manufOrder: ({newValue, dispatch}) => {
-            dispatch(updateManufOrder(newValue));
-            return null;
-          },
-        },
+        hideIf: ({objectState}) =>
+          !isOrigin(objectState, 'Internal') ||
+          !isStep(objectState, Steps.identification),
+        dependsOn: {manufOrder: () => null},
       },
       product: {
         titleKey: 'Quality_Product',
         type: 'object',
         widget: 'custom',
         customComponent: ProductSearchBar,
-        hideIf: ({objectState}) => {
-          const QualityImprovement = getTypes().QualityImprovement;
-          return (
-            objectState?.stepper !== Steps.identification ||
-            objectState?.type === QualityImprovement?.type?.System
-          );
-        },
+        hideIf: ({objectState}) =>
+          !isStep(objectState, Steps.identification) ||
+          isType(objectState, 'System'),
       },
       nonConformingQuantity: {
         titleKey: 'Quality_NonConformingQuantity',
         type: 'number',
         widget: 'increment',
-        hideIf: ({objectState}) => {
-          const QualityImprovement = getTypes().QualityImprovement;
-          return (
-            objectState?.stepper !== Steps.identification ||
-            objectState?.type === QualityImprovement?.type?.System
-          );
-        },
+        hideIf: ({objectState}) =>
+          !isStep(objectState, Steps.identification) ||
+          isType(objectState, 'System'),
       },
-      QIResolutionDefault: {
+      qiResolutionDefaults: {
         titleKey: 'Quality_Defaults',
         type: 'array',
         widget: 'custom',
         customComponent: DefectViewAllList,
-        hideIf: ({objectState}) => {
-          return objectState?.stepper !== Steps.defaults;
-        },
+        hideIf: ({objectState}) => !isStep(objectState, Steps.defaults),
       },
     },
   },

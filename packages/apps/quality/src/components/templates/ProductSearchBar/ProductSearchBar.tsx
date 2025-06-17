@@ -30,16 +30,16 @@ interface ProductSearchBarProps {
   style?: any;
   title?: string;
   defaultValue?: string;
-  onChange?: (any: any) => void;
+  onChange: (value: any) => void;
   readonly?: boolean;
   required?: boolean;
 }
 
 const ProductSearchBarAux = ({
-  style = null,
+  style,
   title = 'Quality_Product',
-  defaultValue = null,
-  onChange = () => {},
+  defaultValue,
+  onChange,
   readonly = false,
   required = false,
 }: ProductSearchBarProps) => {
@@ -51,12 +51,7 @@ const ProductSearchBarAux = ({
 
   const searchProductAPI = useCallback(
     ({page = 0, searchValue}) => {
-      dispatch(
-        (searchProduct as any)({
-          page,
-          searchValue,
-        }),
-      );
+      dispatch((searchProduct as any)({page, searchValue}));
     },
     [dispatch],
   );
@@ -65,42 +60,26 @@ const ProductSearchBarAux = ({
     <AutoCompleteSearch
       style={style}
       title={I18n.t(title)}
+      placeholder={I18n.t(title)}
       objectList={productList}
-      value={defaultValue}
-      required={required}
-      readonly={readonly}
-      onChangeValue={onChange}
-      fetchData={searchProductAPI}
-      displayValue={displayItemFullname}
-      placeholder={title}
-      showDetailsPopup={true}
       loadingList={loadingProducts}
       moreLoading={moreLoadingProduct}
       isListEnd={isListEndProduct}
+      value={defaultValue}
+      onChangeValue={onChange}
+      fetchData={searchProductAPI}
+      displayValue={displayItemFullname}
+      required={required}
+      readonly={readonly}
+      showDetailsPopup={true}
       navigate={false}
       oneFilter={false}
     />
   );
 };
 
-const ProductSearchBar = ({
-  style = null,
-  title = 'Quality_Product',
-  defaultValue = null,
-  onChange = () => {},
-  readonly = false,
-  required = false,
-}: ProductSearchBarProps) => {
-  return (
-    <ProductSearchBarAux
-      style={style}
-      title={title}
-      defaultValue={defaultValue}
-      onChange={onChange}
-      readonly={readonly}
-      required={required}
-    />
-  );
+const ProductSearchBar = (props: ProductSearchBarProps) => {
+  return <ProductSearchBarAux {...props} />;
 };
 
 export default ProductSearchBar;

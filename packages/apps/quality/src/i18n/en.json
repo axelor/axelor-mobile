@@ -75,6 +75,6 @@
   "Quality_SliceAction_SearchManufOrder": "search manufacturing orders",
   "Quality_SliceAction_SearchOperationLine": "search operation lines",
   "Quality_SliceAction_SearchDefect": "search defects",
-  "Quality_SliceAction_FetchQualityImprovementById": "fetch quality imprvement by id",
+  "Quality_SliceAction_FetchQualityImprovement": "fetch quality imprvement by id",
   "Quality_SliceAction_FetchQiResolution": "fetch QI resolution"
 }

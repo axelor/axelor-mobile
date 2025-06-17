@@ -21,7 +21,7 @@ import {
   getSearchCriterias,
 } from '@axelor/aos-mobile-core';
 
-const createQIAnalysisMethoCriteria = (searchValue, origin, gravity) => {
+const createQIAnalysisMethoCriteria = ({searchValue, origin, gravity}) => {
   const criteria = [
     getSearchCriterias('quality_QIAnalysisMethod', searchValue),
   ];
@@ -54,10 +54,11 @@ export async function searchQIAnalysisMethod({
 }) {
   return createStandardSearch({
     model: 'com.axelor.apps.quality.db.QIAnalysisMethod',
-    criteria: createQIAnalysisMethoCriteria(searchValue, origin, gravity),
+    criteria: createQIAnalysisMethoCriteria({searchValue, origin, gravity}),
     fieldKey: 'quality_QIAnalysisMethod',
     sortKey: 'quality_QIAnalysisMethod',
     page,
     companyId,
+    provider: 'model',
   });
 }

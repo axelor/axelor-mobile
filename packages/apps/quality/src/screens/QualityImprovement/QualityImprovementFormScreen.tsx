@@ -21,47 +21,17 @@ import {Screen} from '@axelor/aos-mobile-ui';
 import {FormView, useDispatch, useSelector} from '@axelor/aos-mobile-core';
 import {QIFormButton} from '../../components';
 import {
-  fetchQualityImprovementById,
+  fetchQualityImprovement,
   updateSteps,
 } from '../../features/qualityImprovementSlice';
-import {fetchQiResolution} from '../../features/qiResolutionSlice';
 import {QualityImprovement} from '../../types';
 
 const QualityImprovementFormScreen = ({route}) => {
+  const {qualityImprovementId: qiId} = route.params ?? {};
   const dispatch = useDispatch();
-  const qualityImprovementId = route.params?.qualityImprovementId;
 
   const {qualityImprovement} = useSelector(
-    (state: any) => state.quality_qualityImprovement,
-  );
-
-  const {qiResolution} = useSelector(
-    (state: any) => state.quality_qiResolution,
-  );
-
-  const getDefaults = useMemo(() => {
-    return (
-      qiResolution?.qiResolutionDefaultsList?.map(item => ({
-        id: item.id,
-        name: item.name,
-        qty: parseFloat(item.quantity ?? '1'),
-        description: item.description,
-      })) ?? []
-    );
-  }, [qiResolution]);
-
-  const _defaultValue = useMemo(
-    () =>
-      qualityImprovementId != null
-        ? {
-            ...qualityImprovement,
-            nonConformingQuantity:
-              qualityImprovement?.qiIdentification?.nonConformingQuantity,
-            product: qualityImprovement?.qiIdentification?.product,
-            QIResolutionDefault: getDefaults,
-          }
-        : null,
-    [getDefaults, qualityImprovement, qualityImprovementId],
+    state => state.quality_qualityImprovement,
   );
 
   useEffect(() => {
@@ -69,28 +39,32 @@ const QualityImprovementFormScreen = ({route}) => {
   }, [dispatch]);
 
   useEffect(() => {
-    if (qualityImprovementId) {
-      dispatch(
-        (fetchQualityImprovementById as any)({id: qualityImprovementId}),
-      );
+    if (qiId) {
+      dispatch((fetchQualityImprovement as any)({id: qiId}));
     }
-  }, [dispatch, qualityImprovementId]);
+  }, [dispatch, qiId]);
 
-  useEffect(() => {
-    if (qualityImprovementId && qualityImprovement) {
-      dispatch(
-        (fetchQiResolution as any)({id: qualityImprovement?.qiResolution?.id}),
-      );
+  const _defaultValue = useMemo(() => {
+    if (!qiId || qualityImprovement?.id !== qiId) {
+      return {stepper: QualityImprovement.Steps.detection};
     }
-  }, [
-    dispatch,
-    qualityImprovement,
-    qualityImprovement?.qiResolution?.id,
-    qualityImprovementId,
-  ]);
+
+    const {qiIdentification, qiResolution} = qualityImprovement;
+
+    return {
+      stepper: QualityImprovement.Steps.detection,
+      ...qiIdentification,
+      ...qualityImprovement,
+      qiResolutionDefaults:
+        qiResolution?.qiResolutionDefaultsList?.map(item => ({
+          ...item,
+          qty: parseFloat(item.quantity ?? '1'),
+        })) ?? [],
+    };
+  }, [qualityImprovement, qiId]);
 
   return (
-    <Screen removeSpaceOnTop={true}>
+    <Screen>
       <FormView
         defaultValue={_defaultValue}
         formKey="quality_qualityImprovement"

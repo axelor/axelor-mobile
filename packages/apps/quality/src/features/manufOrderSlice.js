@@ -41,18 +41,11 @@ const initialState = {
   moreLoadingManufOrder: false,
   isListEndManufOrder: false,
   manufOrderList: [],
-
-  manufOrderForm: null,
 };
 
 const manufOrderSlice = createSlice({
   name: 'quality_manufOrder',
   initialState,
-  reducers: {
-    updateManufOrder: (state, action) => {
-      state.manufOrderForm = action.payload;
-    },
-  },
   extraReducers: builder => {
     generateInifiniteScrollCases(builder, searchManufOrder, {
       loading: 'loadingManufOrders',
@@ -62,7 +55,5 @@ const manufOrderSlice = createSlice({
     });
   },
 });
-
-export const {updateManufOrder} = manufOrderSlice.actions;
 
 export const manufOrderReducer = manufOrderSlice.reducer;

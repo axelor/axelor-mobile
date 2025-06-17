@@ -41,10 +41,10 @@ export {searchSupplierOrder as searchSupplierOrderApi} from './purchase-order-ap
 export {searchSupplierPurchaseOrderLine as searchSupplierPurchaseOrderLineApi} from './purchase-order-line-api';
 export {searchQIAnalysisMethod as searchQIAnalysisMethodApi} from './qi-analysis-method-api';
 export {searchQIDetection as searchQIDetectionApi} from './qi-detection-api';
-export {fetchQiResolution as fetchQiResolutionApi} from './qi-resolution-api';
 export {searchDefect as searchDefectApi} from './qi-default-api';
 export {
-  fetchQualityImprovementById as fetchQualityImprovementByIdApi,
+  fetchQiResolution as fetchQiResolutionApi,
+  fetchQualityImprovement as fetchQualityImprovementApi,
   fetchQualityImprovementStatus as fetchQualityImprovementStatusApi,
   searchQualityImprovement as searchQualityImprovementApi,
 } from './quality-improvement-api';

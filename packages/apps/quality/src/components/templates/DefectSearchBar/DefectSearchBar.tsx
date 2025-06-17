@@ -27,23 +27,29 @@ import {AutoCompleteSearch} from '@axelor/aos-mobile-ui';
 import {searchDefect} from '../../../features/qiDefaultSlice';
 
 interface DefectSearchBarProps {
-  placeholderKey?: string;
+  style?: any;
+  title?: string;
   defaultValue?: any;
+  onChange: (value?: any) => void;
+  required?: boolean;
+  readonly?: boolean;
   showDetailsPopup?: boolean;
   navigate?: boolean;
   oneFilter?: boolean;
-  onChange: (value: any) => void;
   showTitle?: boolean;
 }
 
 const DefectSearchBarAux = ({
-  placeholderKey = 'Quality_Defects',
-  defaultValue = '',
-  onChange = () => {},
+  style,
+  title = 'Quality_Defects',
+  defaultValue,
+  onChange,
+  required = false,
+  readonly = false,
   showDetailsPopup = true,
   navigate = false,
   oneFilter = false,
-  showTitle,
+  showTitle = true,
 }: DefectSearchBarProps) => {
   const I18n = useTranslator();
   const dispatch = useDispatch();
@@ -71,43 +77,28 @@ const DefectSearchBarAux = ({
 
   return (
     <AutoCompleteSearch
-      title={showTitle && I18n.t(placeholderKey)}
+      style={style}
+      title={showTitle && I18n.t(title)}
+      placeholder={I18n.t(title)}
       objectList={qiDefaultList}
+      loadingList={loadingQiDefaults}
+      moreLoading={moreLoadingQiDefault}
+      isListEnd={isListEndQiDefault}
       value={defaultValue}
       onChangeValue={onChange}
       fetchData={fetchDefectLineAPI}
       displayValue={displayItemName}
-      placeholder={I18n.t(placeholderKey)}
+      readonly={readonly}
+      required={required}
       showDetailsPopup={showDetailsPopup}
-      loadingList={loadingQiDefaults}
-      moreLoading={moreLoadingQiDefault}
-      isListEnd={isListEndQiDefault}
       navigate={navigate}
       oneFilter={oneFilter}
     />
   );
 };
 
-const DefectSearchBar = ({
-  placeholderKey,
-  defaultValue,
-  onChange = () => {},
-  showDetailsPopup,
-  navigate,
-  oneFilter,
-  showTitle,
-}: DefectSearchBarProps) => {
-  return (
-    <DefectSearchBarAux
-      placeholderKey={placeholderKey}
-      defaultValue={defaultValue}
-      onChange={onChange}
-      showDetailsPopup={showDetailsPopup}
-      navigate={navigate}
-      oneFilter={oneFilter}
-      showTitle={showTitle}
-    />
-  );
+const DefectSearchBar = (props: DefectSearchBarProps) => {
+  return <DefectSearchBarAux {...props} />;
 };
 
 export default DefectSearchBar;

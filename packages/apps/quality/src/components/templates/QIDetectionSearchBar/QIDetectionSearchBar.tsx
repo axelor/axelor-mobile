@@ -30,17 +30,19 @@ import {searchQIDetection} from '../../../features/qiDetectionSlice';
 interface QIDetectionSearchBarProps {
   style?: any;
   title?: string;
-  defaultValue?: string;
-  onChange?: (any: any) => void;
-  readonly?: boolean;
+  defaultValue?: any;
+  onChange: (value?: any) => void;
+  objectState?: any;
   required?: boolean;
+  readonly?: boolean;
 }
 
 const QIDetectionSearchBarAux = ({
-  style = null,
+  style,
   title = 'Quality_QIDetection',
-  defaultValue = null,
-  onChange = () => {},
+  defaultValue,
+  onChange,
+  objectState,
   readonly = false,
   required = false,
 }: QIDetectionSearchBarProps) => {
@@ -55,19 +57,17 @@ const QIDetectionSearchBarAux = ({
     isListEndQiDetection,
   } = useSelector((state: any) => state.quality_qiDetection);
 
-  const {typeForm} = useSelector(
-    (state: any) => state.quality_qualityImprovement,
-  );
+  const originFieldName = useMemo(() => {
+    const type = objectState?.type;
 
-  const origin = useMemo(() => {
-    if (typeForm === QualityImprovement.type.Product) {
+    if (type === QualityImprovement.type.Product) {
       return 'isProductOrigin';
-    } else if (typeForm === QualityImprovement.type.System) {
+    } else if (type === QualityImprovement.type.System) {
       return 'isSystemOrigin';
     } else {
       return null;
     }
-  }, [QualityImprovement.type, typeForm]);
+  }, [QualityImprovement.type, objectState?.type]);
 
   const searchQIDetectionAPI = useCallback(
     ({page = 0, searchValue}) => {
@@ -75,53 +75,37 @@ const QIDetectionSearchBarAux = ({
         (searchQIDetection as any)({
           page,
           searchValue,
-          origin: origin,
+          origin: originFieldName,
         }),
       );
     },
-    [dispatch, origin],
+    [dispatch, originFieldName],
   );
 
   return (
     <AutoCompleteSearch
       style={style}
       title={I18n.t(title)}
+      placeholder={I18n.t(title)}
       objectList={QiDetectionList}
-      value={defaultValue}
-      required={required}
-      readonly={readonly}
-      onChangeValue={onChange}
-      fetchData={searchQIDetectionAPI}
-      displayValue={displayItemName}
-      placeholder={title}
-      showDetailsPopup={true}
       loadingList={loadingQiDetections}
       moreLoading={moreLoadingQiDetection}
       isListEnd={isListEndQiDetection}
+      value={defaultValue}
+      onChangeValue={onChange}
+      fetchData={searchQIDetectionAPI}
+      displayValue={displayItemName}
+      required={required}
+      readonly={readonly}
+      showDetailsPopup={true}
       navigate={false}
       oneFilter={false}
     />
   );
 };
 
-const QIDetectionSearchBar = ({
-  style = null,
-  title = 'Quality_QIDetection',
-  defaultValue = null,
-  onChange = () => {},
-  readonly = false,
-  required = false,
-}: QIDetectionSearchBarProps) => {
-  return (
-    <QIDetectionSearchBarAux
-      style={style}
-      title={title}
-      defaultValue={defaultValue}
-      onChange={onChange}
-      readonly={readonly}
-      required={required}
-    />
-  );
+const QIDetectionSearchBar = (props: QIDetectionSearchBarProps) => {
+  return <QIDetectionSearchBarAux {...props} />;
 };
 
 export default QIDetectionSearchBar;

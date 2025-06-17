@@ -126,22 +126,22 @@ export const quality_typeObjects: ModuleSelections = [
       origin: {
         content: [
           {
-            key: 'none',
+            key: 'None',
             value: 0,
             title: null,
           },
           {
-            key: 'supplier',
+            key: 'Supplier',
             value: 1,
             title: null,
           },
           {
-            key: 'internal',
+            key: 'Internal',
             value: 2,
             title: null,
           },
           {
-            key: 'customer',
+            key: 'Customer',
             value: 3,
             title: null,
           },

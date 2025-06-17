@@ -16,26 +16,34 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import React, {useCallback} from 'react';
+import React, {useCallback, useMemo} from 'react';
 import {useDispatch, useSelector, useTranslator} from '@axelor/aos-mobile-core';
 import {AutoCompleteSearch} from '@axelor/aos-mobile-ui';
 import {searchCustomerOrderLine} from '../../../features/saleOrderLineSlice';
 
-const displayProductName = item => item.productName;
+const displayProductName = item => item.productName; //TODO: check
 
 interface CustomerOrderLineSearchBarProps {
-  placeholderKey?: string;
-  defaultValue: any;
+  style?: any;
+  title?: string;
+  defaultValue?: any;
+  onChange: (value?: any) => void;
+  objectState?: any;
+  required?: boolean;
+  readonly?: boolean;
   showDetailsPopup?: boolean;
   navigate?: boolean;
   oneFilter?: boolean;
-  onChange: (value: any) => void;
 }
 
 const CustomerOrderLineSearchBarAux = ({
-  placeholderKey = 'Quality_CustomerOrderLine',
-  defaultValue = '',
-  onChange = () => {},
+  style,
+  title = 'Quality_CustomerOrderLine',
+  defaultValue,
+  onChange,
+  objectState,
+  required = false,
+  readonly = false,
   showDetailsPopup = true,
   navigate = false,
   oneFilter = false,
@@ -50,7 +58,11 @@ const CustomerOrderLineSearchBarAux = ({
     moreLoadingCustomerOrderLine,
     isListEndCustomerOrderLine,
   } = useSelector(state => state.quality_saleOrderLine);
-  const {customerSaleOrderForm} = useSelector(state => state.quality_saleOrder);
+
+  const customerSaleOrder = useMemo(
+    () => objectState?.customerSaleOrder,
+    [objectState?.customerSaleOrder],
+  );
 
   const fetchCustomerOrderLineAPI = useCallback(
     ({page = 0, searchValue}) => {
@@ -58,51 +70,38 @@ const CustomerOrderLineSearchBarAux = ({
         (searchCustomerOrderLine as any)({
           page,
           searchValue,
-          customerSaleOrder: customerSaleOrderForm,
+          customerSaleOrder,
           companyId: user.activeCompany?.id,
         }),
       );
     },
-    [dispatch, customerSaleOrderForm, user.activeCompany?.id],
+    [dispatch, customerSaleOrder, user.activeCompany?.id],
   );
 
   return (
     <AutoCompleteSearch
-      title={I18n.t(placeholderKey)}
+      style={style}
+      title={I18n.t(title)}
+      placeholder={I18n.t(title)}
       objectList={customerOrderLineList}
+      loadingList={loadingCustomerOrderLines}
+      moreLoading={moreLoadingCustomerOrderLine}
+      isListEnd={isListEndCustomerOrderLine}
       value={defaultValue}
       onChangeValue={onChange}
       fetchData={fetchCustomerOrderLineAPI}
       displayValue={displayProductName}
-      placeholder={I18n.t(placeholderKey)}
+      readonly={readonly}
+      required={required}
       showDetailsPopup={showDetailsPopup}
-      loadingList={loadingCustomerOrderLines}
-      moreLoading={moreLoadingCustomerOrderLine}
-      isListEnd={isListEndCustomerOrderLine}
       navigate={navigate}
       oneFilter={oneFilter}
     />
   );
 };
 
-const CustomerOrderLineSearchBar = ({
-  placeholderKey,
-  defaultValue,
-  onChange = () => {},
-  showDetailsPopup,
-  navigate,
-  oneFilter,
-}: CustomerOrderLineSearchBarProps) => {
-  return (
-    <CustomerOrderLineSearchBarAux
-      placeholderKey={placeholderKey}
-      defaultValue={defaultValue}
-      onChange={onChange}
-      showDetailsPopup={showDetailsPopup}
-      navigate={navigate}
-      oneFilter={oneFilter}
-    />
-  );
+const CustomerOrderLineSearchBar = (props: CustomerOrderLineSearchBarProps) => {
+  return <CustomerOrderLineSearchBarAux {...props} />;
 };
 
 export default CustomerOrderLineSearchBar;

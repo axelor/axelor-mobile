@@ -16,7 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import React, {useCallback} from 'react';
+import React, {useCallback, useMemo} from 'react';
 import {
   displayItemFullname,
   useDispatch,
@@ -27,18 +27,26 @@ import {AutoCompleteSearch} from '@axelor/aos-mobile-ui';
 import {searchSupplierPurchaseOrderLine} from '../../../features/purchaseOrderLineSlice';
 
 interface SupplierOrderLineSearchBarProps {
-  placeholderKey?: string;
-  defaultValue: any;
+  style?: any;
+  title?: string;
+  defaultValue?: any;
+  onChange: (value?: any) => void;
+  objectState?: any;
+  required?: boolean;
+  readonly?: boolean;
   showDetailsPopup?: boolean;
   navigate?: boolean;
   oneFilter?: boolean;
-  onChange: (value: any) => void;
 }
 
 const SupplierOrderLineSearchBarAux = ({
-  placeholderKey = 'Quality_SupplierOrderLine',
-  defaultValue = '',
-  onChange = () => {},
+  style,
+  title = 'Quality_SupplierOrderLine',
+  defaultValue,
+  onChange,
+  objectState,
+  required = false,
+  readonly = false,
   showDetailsPopup = true,
   navigate = false,
   oneFilter = false,
@@ -53,7 +61,11 @@ const SupplierOrderLineSearchBarAux = ({
     moreLoadingSupplierPurchaseOrderLine,
     isListEndSupplierPurchaseOrderLine,
   } = useSelector(state => state.quality_purchaseOrderLine);
-  const {supplierOrderForm} = useSelector(state => state.quality_purchaseOrder);
+
+  const purchaseOrder = useMemo(
+    () => objectState?.supplierPurchaseOrder,
+    [objectState?.supplierPurchaseOrder],
+  );
 
   const fetchSupplierOrderLineAPI = useCallback(
     ({page = 0, searchValue}) => {
@@ -61,51 +73,38 @@ const SupplierOrderLineSearchBarAux = ({
         (searchSupplierPurchaseOrderLine as any)({
           page,
           searchValue,
-          purchaseOrder: supplierOrderForm,
+          purchaseOrder,
           companyId: user.activeCompany?.id,
         }),
       );
     },
-    [dispatch, supplierOrderForm, user.activeCompany?.id],
+    [dispatch, purchaseOrder, user.activeCompany?.id],
   );
 
   return (
     <AutoCompleteSearch
-      title={I18n.t(placeholderKey)}
+      style={style}
+      title={I18n.t(title)}
+      placeholder={I18n.t(title)}
       objectList={supplierpurchaseOrderLineList}
+      loadingList={loadingSupplierPurchaseOrderLines}
+      moreLoading={moreLoadingSupplierPurchaseOrderLine}
+      isListEnd={isListEndSupplierPurchaseOrderLine}
       value={defaultValue}
       onChangeValue={onChange}
       fetchData={fetchSupplierOrderLineAPI}
       displayValue={displayItemFullname}
-      placeholder={I18n.t(placeholderKey)}
+      readonly={readonly}
+      required={required}
       showDetailsPopup={showDetailsPopup}
-      loadingList={loadingSupplierPurchaseOrderLines}
-      moreLoading={moreLoadingSupplierPurchaseOrderLine}
-      isListEnd={isListEndSupplierPurchaseOrderLine}
       navigate={navigate}
       oneFilter={oneFilter}
     />
   );
 };
 
-const SupplierOrderLineSearchBar = ({
-  placeholderKey,
-  defaultValue,
-  onChange = () => {},
-  showDetailsPopup,
-  navigate,
-  oneFilter,
-}: SupplierOrderLineSearchBarProps) => {
-  return (
-    <SupplierOrderLineSearchBarAux
-      placeholderKey={placeholderKey}
-      defaultValue={defaultValue}
-      onChange={onChange}
-      showDetailsPopup={showDetailsPopup}
-      navigate={navigate}
-      oneFilter={oneFilter}
-    />
-  );
+const SupplierOrderLineSearchBar = (props: SupplierOrderLineSearchBarProps) => {
+  return <SupplierOrderLineSearchBarAux {...props} />;
 };
 
 export default SupplierOrderLineSearchBar;

@@ -35,11 +35,10 @@ export {searchSupplierPurchaseOrderLine} from './purchaseOrderLineSlice';
 export {searchSupplierOrder} from './purchaseOrderSlice';
 export {searchQIAnalysisMethod} from './qiAnalysisMethodSlice';
 export {
-  fetchQualityImprovementById,
+  fetchQualityImprovement,
   fetchQualityImprovementStatus,
   searchQualityImprovement,
 } from './qualityImprovementSlice';
-export {fetchQiResolution} from './qiResolutionSlice';
 export {searchQIDetection} from './qiDetectionSlice';
 export {searchDefect} from './qiDefaultSlice';
 export {searchCustomerOrderLine} from './saleOrderLineSlice';

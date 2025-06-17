@@ -22,7 +22,7 @@ import {
 } from '@axelor/aos-mobile-core';
 
 const createSupplierCriteria = searchValue => {
-  const criterias = [
+  return [
     getSearchCriterias('quality_supplier', searchValue),
     {
       fieldName: 'isSupplier',
@@ -30,21 +30,6 @@ const createSupplierCriteria = searchValue => {
       value: true,
     },
   ];
-
-  return criterias;
-};
-
-const createCustomerCriteria = searchValue => {
-  const criterias = [
-    getSearchCriterias('quality_supplier', searchValue),
-    {
-      fieldName: 'isCustomer',
-      operator: '=',
-      value: true,
-    },
-  ];
-
-  return criterias;
 };
 
 export async function searchSupplier({page = 0, searchValue, companyId}) {
@@ -60,12 +45,23 @@ export async function searchSupplier({page = 0, searchValue, companyId}) {
   });
 }
 
+const createCustomerCriteria = searchValue => {
+  return [
+    getSearchCriterias('quality_customer', searchValue),
+    {
+      fieldName: 'isCustomer',
+      operator: '=',
+      value: true,
+    },
+  ];
+};
+
 export async function searchCustomer({page = 0, searchValue, companyId}) {
   return createStandardSearch({
     model: 'com.axelor.apps.base.db.Partner',
     criteria: createCustomerCriteria(searchValue),
-    fieldKey: 'quality_supplier',
-    sortKey: 'quality_supplier',
+    fieldKey: 'quality_customer',
+    sortKey: 'quality_customer',
     page,
     companyId,
     isCompanyM2M: true,
