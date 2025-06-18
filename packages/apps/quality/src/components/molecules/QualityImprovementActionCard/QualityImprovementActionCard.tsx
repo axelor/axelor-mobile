@@ -18,7 +18,11 @@
 
 import React, {useMemo} from 'react';
 import {ActionCard} from '@axelor/aos-mobile-ui';
-import {usePermitted, useTranslator} from '@axelor/aos-mobile-core';
+import {
+  useNavigation,
+  usePermitted,
+  useTranslator,
+} from '@axelor/aos-mobile-core';
 import {QualityImprovementCard} from '../../atoms';
 
 const FIRST_STATUS_SEQUENCE = 1;
@@ -43,6 +47,7 @@ const QualityImprovementActionCard = ({
   onPress,
 }: QualityImprovementActionCardProps) => {
   const I18n = useTranslator();
+  const navigation = useNavigation();
   const {readonly} = usePermitted({
     modelName: 'com.axelor.apps.quality.db.QualityImprovement',
   });
@@ -61,7 +66,10 @@ const QualityImprovementActionCard = ({
         {
           iconName: 'pencil-fill',
           helper: I18n.t('Quality_EditImprovement'),
-          onPress: () => console.log('edit'),
+          onPress: () =>
+            navigation.navigate('QualityImprovementFormScreen', {
+              qualityImprovementId: qualityImprovement.id,
+            }),
           hidden: !isEditable,
         },
       ]}

@@ -255,6 +255,8 @@ const FormView = ({
       return React.cloneElement(_action.customComponent, {
         key: _action.key,
         onPress: onPress,
+        objectState: object,
+        handleObjectChange: setObject,
         disabled: _action.isDisabled,
       });
     }

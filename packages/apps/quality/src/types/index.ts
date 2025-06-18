@@ -17,3 +17,4 @@
  */
 
 export {default as ControlEntry} from './controlEntry';
+export {default as QualityImprovement} from './qualityImprovement';
