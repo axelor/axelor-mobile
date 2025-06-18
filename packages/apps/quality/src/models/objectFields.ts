@@ -64,11 +64,11 @@ export const quality_modelAPI: ObjectFields = {
     type: schemaContructor.number(),
     qiIdentification: schemaContructor.subObject().concat(
       schemaContructor.object({
-        customerPartner: schemaContructor.subObject(),
-        customerSaleOrder: schemaContructor.subObject(),
+        customerPartner: schemaContructor.subObject('simpleFullName'),
+        customerSaleOrder: schemaContructor.subObject('saleOrderSeq'),
         customerSaleOrderLine: schemaContructor.subObject(),
-        supplierPartner: schemaContructor.subObject(),
-        supplierPurchaseOrder: schemaContructor.subObject(),
+        supplierPartner: schemaContructor.subObject('simpleFullName'),
+        supplierPurchaseOrder: schemaContructor.subObject('purchaseOrderSeq'),
         supplierPurchaseOrderLine: schemaContructor.subObject(),
         manufOrder: schemaContructor.subObject(),
         operationOrder: schemaContructor.subObject(),

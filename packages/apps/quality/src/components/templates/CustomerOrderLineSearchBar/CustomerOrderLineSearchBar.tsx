@@ -17,11 +17,14 @@
  */
 
 import React, {useCallback, useMemo} from 'react';
-import {useDispatch, useSelector, useTranslator} from '@axelor/aos-mobile-core';
+import {
+  useDispatch,
+  useSelector,
+  useTranslator,
+  displayItemFullname,
+} from '@axelor/aos-mobile-core';
 import {AutoCompleteSearch} from '@axelor/aos-mobile-ui';
 import {searchCustomerOrderLine} from '../../../features/saleOrderLineSlice';
-
-const displayProductName = item => item.productName;
 
 interface CustomerOrderLineSearchBarProps {
   style?: any;
@@ -90,7 +93,7 @@ const CustomerOrderLineSearchBarAux = ({
       value={defaultValue}
       onChangeValue={onChange}
       fetchData={fetchCustomerOrderLineAPI}
-      displayValue={displayProductName}
+      displayValue={displayItemFullname}
       readonly={readonly}
       required={required}
       showDetailsPopup={showDetailsPopup}
