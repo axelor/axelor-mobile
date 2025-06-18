@@ -27,12 +27,13 @@ import {
   useTypes,
 } from '@axelor/aos-mobile-core';
 import {CustomerDeliveryLineActionCard} from '../../../templates';
-import {SearchLineContainer} from '../../../organisms';
+import {SearchLineContainer, StockMovePickingWidget} from '../../../organisms';
 import {LineVerification} from '../../../../types';
 import {fetchCustomerDeliveryLines} from '../../../../features/customerDeliveryLineSlice';
 import {useCustomerLinesWithRacks, useLineHandler} from '../../../../hooks';
 
 const scanKey = 'trackingNumber-or-product_dustomer-delivery-details';
+const massScanKey = 'customer-delivery-line_mass-scan';
 
 const CustomerDeliverySearchLineContainer = ({}) => {
   const I18n = useTranslator();
@@ -76,9 +77,10 @@ const CustomerDeliverySearchLineContainer = ({}) => {
     [customerDelivery, showLine],
   );
 
-  const handleLineSearch = item => {
-    handleShowLine(item, true);
-  };
+  const handleLineSearch = useCallback(
+    item => handleShowLine(item, true),
+    [handleShowLine],
+  );
 
   const fetchCustomerLinesAPI = useCallback(
     ({page = 0, searchValue}) => {
@@ -91,6 +93,11 @@ const CustomerDeliverySearchLineContainer = ({}) => {
       );
     },
     [dispatch, customerDelivery],
+  );
+
+  const handleRefresh = useCallback(
+    () => fetchCustomerLinesAPI({page: 0}),
+    [fetchCustomerLinesAPI],
   );
 
   const filterLine = useCallback(item => {
@@ -123,25 +130,34 @@ const CustomerDeliverySearchLineContainer = ({}) => {
   ]);
 
   return (
-    <SearchLineContainer
-      title={I18n.t('Stock_CustomerDeliveryLines')}
-      numberOfItems={totalNumberLines}
-      objectList={customerDeliveryLineList}
-      handleSelect={handleLineSearch}
-      handleSearch={fetchCustomerLinesAPI}
-      scanKey={scanKey}
-      onViewPress={handleViewAll}
-      filterLine={filterLine}
-      showAction={showLineAdditionIcon}
-      onAction={handleNewLine}
-      renderItem={item => (
-        <CustomerDeliveryLineActionCard
-          style={styles.card}
-          customerDeliveryLine={item}
-          handleShowLine={handleShowLine}
-        />
-      )}
-    />
+    <>
+      <StockMovePickingWidget
+        scanKey={massScanKey}
+        stockMoveId={customerDelivery.id}
+        totalLines={totalNumberLines}
+        onRefresh={handleRefresh}
+        handleShowLine={handleLineSearch}
+      />
+      <SearchLineContainer
+        title={I18n.t('Stock_CustomerDeliveryLines')}
+        numberOfItems={totalNumberLines}
+        objectList={customerDeliveryLineList}
+        handleSelect={handleLineSearch}
+        handleSearch={fetchCustomerLinesAPI}
+        scanKey={scanKey}
+        onViewPress={handleViewAll}
+        filterLine={filterLine}
+        showAction={showLineAdditionIcon}
+        onAction={handleNewLine}
+        renderItem={item => (
+          <CustomerDeliveryLineActionCard
+            style={styles.card}
+            customerDeliveryLine={item}
+            handleShowLine={handleShowLine}
+          />
+        )}
+      />
+    </>
   );
 };
 

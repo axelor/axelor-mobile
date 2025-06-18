@@ -1,0 +1,5 @@
+{
+  "title": "Toast: add possibility to display a message above the camera",
+  "type": "feat",
+  "packages": "core"
+}

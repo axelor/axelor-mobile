@@ -21,7 +21,6 @@ import {useDispatch} from '../redux/hooks';
 import {
   useCameraScannerValueByKey,
   clearBarcode,
-  disableCameraScanner,
 } from '../features/cameraScannerSlice';
 import {
   clearScan,
@@ -32,9 +31,13 @@ import {useScanActivator} from './use-scan-activator';
 
 interface UseMassScannerParams {
   scanKey: string;
-  backgroundAction: (scannedValue: string) => any;
+  backgroundAction: (
+    scannedValue: string,
+    tools?: {disableScan: () => void},
+  ) => any;
   fallbackAction?: (error: any) => void;
   scanInterval?: number;
+  disableOnError?: boolean;
 }
 
 export const useMassScanner = ({
@@ -42,6 +45,7 @@ export const useMassScanner = ({
   backgroundAction,
   fallbackAction,
   scanInterval = 1000,
+  disableOnError = true,
 }: UseMassScannerParams) => {
   const isProcessingRef = useRef(false);
   const timerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
@@ -49,7 +53,11 @@ export const useMassScanner = ({
 
   const {isEnabled: isScanEnabled, scanKey: activeScanKey} =
     useScannerSelector();
-  const {enable: enableScan, isZebraDevice} = useScanActivator(scanKey, true);
+  const {
+    enable: enableScan,
+    disable: disableScan,
+    isZebraDevice,
+  } = useScanActivator(scanKey, true);
   const scannedBarcode = useCameraScannerValueByKey(scanKey);
   const scannedValue = useScannedValueByKey(scanKey);
 
@@ -60,32 +68,48 @@ export const useMassScanner = ({
 
   const processScan = useCallback(
     async (value: string, clearAction: () => void) => {
+      if (isProcessingRef.current) return;
+
       try {
-        if (!isProcessingRef.current) {
-          isProcessingRef.current = true;
-          await backgroundAction(value);
-          timerRef.current = setTimeout(
-            () => (isProcessingRef.current = false),
-            isZebraDevice ? 0 : scanInterval,
-          );
-        }
+        isProcessingRef.current = true;
+        await backgroundAction(value, {disableScan});
       } catch (error) {
-        dispatch(disableCameraScanner());
+        if (disableOnError) disableScan();
         fallbackAction?.(error);
       } finally {
-        clearAction();
+        timerRef.current = setTimeout(
+          () => {
+            isProcessingRef.current = false;
+            clearAction();
+          },
+          isZebraDevice ? 0 : scanInterval,
+        );
       }
     },
-    [backgroundAction, fallbackAction, dispatch, isZebraDevice, scanInterval],
+    [
+      backgroundAction,
+      disableOnError,
+      disableScan,
+      fallbackAction,
+      isZebraDevice,
+      scanInterval,
+    ],
   );
 
   useEffect(() => {
     if (scannedValue) {
       processScan(scannedValue, () => dispatch(clearScan()));
-    } else if (scannedBarcode?.value) {
+    }
+  }, [dispatch, processScan, scannedValue]);
+
+  useEffect(() => {
+    if (scannedBarcode?.value) {
       processScan(scannedBarcode.value, () => dispatch(clearBarcode()));
     }
-  }, [dispatch, processScan, scannedBarcode?.value, scannedValue]);
+  }, [dispatch, processScan, scannedBarcode?.value]);
 
-  return useMemo(() => ({isEnabled, enableScan}), [enableScan, isEnabled]);
+  return useMemo(
+    () => ({disableScan, enableScan, isEnabled}),
+    [disableScan, enableScan, isEnabled],
+  );
 };

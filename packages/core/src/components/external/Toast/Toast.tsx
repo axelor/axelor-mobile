@@ -20,18 +20,12 @@ import React, {useMemo, useState} from 'react';
 import {StyleSheet, View} from 'react-native';
 import {
   default as ReactNativeToast,
-  BaseToast,
-  ErrorToast,
+  ToastConfig,
 } from 'react-native-toast-message';
-import {
-  Alert,
-  Icon,
-  Text,
-  ThemeColors,
-  useThemeColor,
-} from '@axelor/aos-mobile-ui';
+import {Alert, Icon, Text, useThemeColor} from '@axelor/aos-mobile-ui';
 import {useTranslator} from '../../../i18n';
 import toastProvider from './ToastProvider';
+import ToastDisplay from './ToastDisplay';
 
 const Toast = () => {
   const Colors = useThemeColor();
@@ -47,45 +41,18 @@ const Toast = () => {
     [Colors, isError],
   );
 
-  const styles = useMemo(
-    () => getStyles(Colors, alertColor),
-    [Colors, alertColor],
-  );
+  const styles = useMemo(() => getStyles(alertColor), [alertColor]);
 
   const [isAlertVisible, setIsAlertVisible] = useState(false);
 
-  const toastConfig = {
-    success: (props: any) => (
-      <BaseToast
-        {...props}
-        style={[styles.toast, styles.success]}
-        contentContainerStyle={styles.toastContent}
-        text1Style={styles.title}
-        text2Style={styles.detail}
-        text2NumberOfLines={3}
-      />
-    ),
-    error: (props: any) => (
-      <ErrorToast
-        {...props}
-        style={[styles.toast, styles.error]}
-        contentContainerStyle={styles.toastContent}
-        text1Style={styles.title}
-        text2Style={styles.detail}
-        text2NumberOfLines={3}
-      />
-    ),
-    neutral: (props: any) => (
-      <BaseToast
-        {...props}
-        style={[styles.toast, styles.neutral]}
-        contentContainerStyle={styles.toastContent}
-        text1Style={styles.title}
-        text2Style={styles.detail}
-        text2NumberOfLines={3}
-      />
-    ),
-  };
+  const toastConfig: ToastConfig = useMemo(
+    () => ({
+      success: ToastDisplay,
+      error: ToastDisplay,
+      neutral: ToastDisplay,
+    }),
+    [],
+  );
 
   return (
     <>
@@ -117,34 +84,8 @@ const Toast = () => {
   );
 };
 
-const getStyles = (Colors: ThemeColors, alertColor: string) =>
+const getStyles = (alertColor: string) =>
   StyleSheet.create({
-    toast: {
-      width: '90%',
-      height: 90,
-    },
-    error: {
-      borderLeftColor: Colors.errorColor.background,
-    },
-    success: {
-      borderLeftColor: Colors.successColor.background,
-    },
-    neutral: {
-      borderLeftColor: Colors.secondaryColor.background,
-    },
-    toastContent: {
-      paddingVertical: 5,
-    },
-    title: {
-      fontSize: 18,
-      color: Colors.text,
-      flex: 1,
-    },
-    detail: {
-      fontSize: 16,
-      color: Colors.text,
-      flex: 3,
-    },
     alertContainer: {
       flexDirection: 'row',
       alignItems: 'center',
