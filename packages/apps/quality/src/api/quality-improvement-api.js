@@ -17,7 +17,9 @@
  */
 
 import {
+  createStandardFetch,
   createStandardSearch,
+  getObjectFields,
   getSearchCriterias,
 } from '@axelor/aos-mobile-core';
 
@@ -97,6 +99,27 @@ export async function fetchQualityImprovementStatus() {
     sortKey: 'quality_qiStatus',
     numberElementsByPage: null,
     page: 0,
+    provider: 'model',
+  });
+}
+
+export async function fetchQualityImprovement({id}) {
+  return createStandardFetch({
+    model: 'com.axelor.apps.quality.db.QualityImprovement',
+    id,
+    fieldKey: 'quality_qualityImprovement',
+    provider: 'model',
+  });
+}
+
+export async function fetchQiResolution({id}) {
+  return createStandardFetch({
+    model: 'com.axelor.apps.quality.db.QIResolution',
+    id,
+    fieldKey: 'quality_qiResolution',
+    relatedFields: {
+      qiResolutionDefaultsList: getObjectFields('quality_qiResolutionDefault'),
+    },
     provider: 'model',
   });
 }

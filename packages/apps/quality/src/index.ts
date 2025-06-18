@@ -22,6 +22,7 @@ import QualityImprovement from './screens/QualityImprovement';
 import enTranslations from './i18n/en.json';
 import frTranslations from './i18n/fr.json';
 import {
+  quality_formsRegister,
   quality_modelAPI,
   quality_searchFields,
   quality_sortFields,
@@ -72,6 +73,7 @@ export const QualityModule: Module = {
     objectFields: {...quality_modelAPI},
     sortFields: {...quality_sortFields},
     searchFields: {...quality_searchFields},
+    formsRegister: {...quality_formsRegister},
     headerRegisters: useQualityHeaders,
     typeObjects: quality_typeObjects,
   },

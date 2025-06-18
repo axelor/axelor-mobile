@@ -1,0 +1,5 @@
+{
+  "title": "FormView: add access to form state from custom button",
+  "type": "feat",
+  "packages": "core"
+}

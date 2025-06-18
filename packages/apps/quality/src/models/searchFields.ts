@@ -21,4 +21,16 @@ import {SearchFields} from '@axelor/aos-mobile-core';
 export const quality_searchFields: SearchFields = {
   quality_controlEntry: ['entryDateTime'],
   quality_qualityImprovement: ['sequence'],
+  quality_qiDetection: ['name', 'code'],
+  quality_qiAnalysisMethod: ['objective'],
+  quality_supplier: ['simpleFullName'],
+  quality_supplierOrder: ['purchaseOrderSeq'],
+  quality_supplierOrderLine: ['fullName'],
+  quality_product: ['fullName', 'name'],
+  quality_customer: ['simpleFullName'],
+  quality_customerOrder: ['saleOrderSeq'],
+  quality_customerOrderLine: ['productName'],
+  quality_manufacturingOrder: ['manufOrderSeq'],
+  quality_operationOrder: ['name'],
+  quality_qiDefault: ['name'],
 };
