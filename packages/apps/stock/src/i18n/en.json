@@ -128,7 +128,7 @@
   "Stock_Picking_ErrorLineUpdate": "An error occured while updating the line, please try again manually.",
   "Stock_Picking_LineUpdated": "The line with id {{id}} was successfully updated, the new quantity is {{newQty}}.",
   "Stock_Picking_NoLineFound": "No line associated with this barcode was found on this stock move.",
-  "Stock_Picking_MultipleLinesFound": "Multiple lines were found for this stock move with the product or trackin number scanned.",
+  "Stock_Picking_MultipleLinesFound": "Multiple lines were found for this stock move with the product or tracking number scanned.",
   "Stock_SliceAction_FetchCustomerDeliveryLines": "fetch customer delivery lines",
   "Stock_SliceAction_FetchCustomerDeliveryLine": "fetch customer delivery line",
   "Stock_SliceAction_UpdateCustomerDeliveryLine": "update customer delivery line",
