@@ -16,6 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+export {quality_formsRegister} from './forms';
 export {quality_searchFields} from './searchFields';
 export {quality_sortFields} from './sortFields';
 export {quality_modelAPI} from './objectFields';

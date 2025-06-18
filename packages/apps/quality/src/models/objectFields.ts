@@ -53,11 +53,84 @@ export const quality_modelAPI: ObjectFields = {
   }),
   quality_qualityImprovement: schemaContructor.object({
     sequence: schemaContructor.string(),
-    qiDetection: schemaContructor.subObject(),
+    qiDetection: schemaContructor.subObject().concat(
+      schemaContructor.object({
+        origin: schemaContructor.number(),
+      }),
+    ),
     qiStatus: schemaContructor.subObject('sequence'),
     gravityTypeSelect: schemaContructor.number(),
+    analysisMethod: schemaContructor.subObject(),
+    type: schemaContructor.number(),
+    qiIdentification: schemaContructor.subObject().concat(
+      schemaContructor.object({
+        customerPartner: schemaContructor.subObject('simpleFullName'),
+        customerSaleOrder: schemaContructor.subObject('saleOrderSeq'),
+        customerSaleOrderLine: schemaContructor.subObject(),
+        supplierPartner: schemaContructor.subObject('simpleFullName'),
+        supplierPurchaseOrder: schemaContructor.subObject('purchaseOrderSeq'),
+        supplierPurchaseOrderLine: schemaContructor.subObject(),
+        manufOrder: schemaContructor.subObject(),
+        operationOrder: schemaContructor.subObject(),
+        product: schemaContructor.subObject(),
+        quantity: schemaContructor.number(),
+        nonConformingQuantity: schemaContructor.number(),
+      }),
+    ),
+    qiResolution: schemaContructor.subObject(),
   }),
   quality_qiStatus: schemaContructor.object({
+    name: schemaContructor.string(),
+  }),
+  quality_qiResolution: schemaContructor.object({
+    qiResolutionDefaultsList: schemaContructor
+      .array()
+      .of(schemaContructor.subObject()),
+  }),
+  quality_qiResolutionDefault: schemaContructor.object({
+    name: schemaContructor.string(),
+    description: schemaContructor.string(),
+    quantity: schemaContructor.number(),
+    qiDefault: schemaContructor.subObject(),
+  }),
+  quality_qiDetection: schemaContructor.object({
+    name: schemaContructor.string(),
+    code: schemaContructor.string(),
+    origin: schemaContructor.number(),
+  }),
+  quality_qiAnalysisMethod: schemaContructor.object({
+    code: schemaContructor.string(),
+    name: schemaContructor.string(),
+  }),
+  quality_supplier: schemaContructor.object({
+    simpleFullName: schemaContructor.string(),
+  }),
+  quality_supplierOrder: schemaContructor.object({
+    purchaseOrderSeq: schemaContructor.string(),
+  }),
+  quality_supplierOrderLine: schemaContructor.object({
+    fullName: schemaContructor.string(),
+  }),
+  quality_customer: schemaContructor.object({
+    simpleFullName: schemaContructor.string(),
+  }),
+  quality_customerOrder: schemaContructor.object({
+    saleOrderSeq: schemaContructor.string(),
+  }),
+  quality_customerOrderLine: schemaContructor.object({
+    productName: schemaContructor.string(),
+  }),
+  quality_manufacturingOrder: schemaContructor.object({
+    manufOrderSeq: schemaContructor.string(),
+  }),
+  quality_operationOrder: schemaContructor.object({
+    name: schemaContructor.string(),
+  }),
+  quality_product: schemaContructor.object({
+    fullName: schemaContructor.string(),
+    name: schemaContructor.string(),
+  }),
+  quality_qiDefault: schemaContructor.object({
     name: schemaContructor.string(),
   }),
 };

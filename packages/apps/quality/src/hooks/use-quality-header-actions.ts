@@ -19,6 +19,7 @@
 import {
   headerActionsProvider,
   useDispatch,
+  useNavigation,
   usePermitted,
   useSelector,
   useTranslator,
@@ -35,6 +36,8 @@ export const useQualityHeaders = () => {
 
 const useQualityImprovementListActions = () => {
   const I18n = useTranslator();
+  const navigation = useNavigation();
+
   const {canCreate} = usePermitted({
     modelName: 'com.axelor.apps.quality.db.QualityImprovement',
   });
@@ -53,13 +56,13 @@ const useQualityImprovementListActions = () => {
           iconName: 'plus-lg',
           title: I18n.t('Quality_CreateNewQI'),
           onPress: () => {
-            console.log('new QI');
+            navigation.navigate('QualityImprovementFormScreen');
           },
           showInHeader: true,
         },
       ],
     });
-  }, [I18n, canCreate]);
+  }, [I18n, canCreate, navigation]);
 };
 
 const useControlEntryListActions = () => {

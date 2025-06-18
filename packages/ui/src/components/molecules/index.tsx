@@ -56,7 +56,7 @@ export {default as RadioSelect} from './RadioSelect/RadioSelect';
 export {default as RightIconButton} from './RightIconButton/RightIconButton';
 export {default as SelectionContainer} from './SelectionContainer/SelectionContainer';
 export {default as StarScore} from './StarScore/StarScore';
-export {default as Stepper} from './Stepper/Stepper';
+export {Stepper, StepState} from './Stepper/';
 export {default as SwitchCard} from './SwitchCard/SwitchCard';
 export {default as TextUnit} from './TextUnit/TextUnit';
 export {default as TitledValue} from './TitledValue/TitledValue';

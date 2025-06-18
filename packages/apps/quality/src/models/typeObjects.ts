@@ -82,6 +82,20 @@ export const quality_typeObjects: ModuleSelections = [
   {
     modelName: 'com.axelor.apps.quality.db.QualityImprovement',
     fields: {
+      type: {
+        content: [
+          {
+            key: 'Product',
+            value: 1,
+            title: 'Quality_Type_Product',
+          },
+          {
+            key: 'System',
+            value: 2,
+            title: 'Quality_Type_System',
+          },
+        ],
+      },
       gravityTypeSelect: {
         content: [
           {
@@ -101,6 +115,35 @@ export const quality_typeObjects: ModuleSelections = [
             value: 3,
             title: 'Quality_Gravity_Minor',
             color: 'infoColor',
+          },
+        ],
+      },
+    },
+  },
+  {
+    modelName: 'com.axelor.apps.quality.db.QIDetection',
+    fields: {
+      origin: {
+        content: [
+          {
+            key: 'None',
+            value: 0,
+            title: null,
+          },
+          {
+            key: 'Supplier',
+            value: 1,
+            title: null,
+          },
+          {
+            key: 'Internal',
+            value: 2,
+            title: null,
+          },
+          {
+            key: 'Customer',
+            value: 3,
+            title: null,
           },
         ],
       },

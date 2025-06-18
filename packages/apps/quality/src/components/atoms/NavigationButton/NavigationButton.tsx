@@ -18,16 +18,41 @@
 
 import React, {useMemo} from 'react';
 import {StyleSheet, View} from 'react-native';
-import {Button, Icon, useThemeColor} from '@axelor/aos-mobile-ui';
+import {
+  Button,
+  checkNullString,
+  Icon,
+  useThemeColor,
+} from '@axelor/aos-mobile-ui';
 
-const NavigationButton = ({position, onPress, icon, disabled}) => {
+interface NavigationButtonProps {
+  style?: any;
+  position: string;
+  onPress: () => void;
+  icon?: string;
+  disabled?: boolean;
+  title?: string;
+}
+
+const NavigationButton = ({
+  style,
+  position,
+  onPress,
+  icon,
+  disabled,
+  title,
+}: NavigationButtonProps) => {
   const Colors = useThemeColor();
 
-  const positionStyle = useMemo(() => ({[position]: '15%'}), [position]);
+  const positionStyle = useMemo(
+    () => ({[position]: !checkNullString(title) ? '10%' : '15%'}),
+    [position, title],
+  );
 
   return (
-    <View style={styles.buttonContainer}>
+    <View style={[styles.buttonContainer, style]}>
       <Button
+        title={title}
         onPress={onPress}
         color={Colors.priorityColor}
         disabled={disabled}
