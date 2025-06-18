@@ -19,6 +19,7 @@
 import {
   createStandardFetch,
   createStandardSearch,
+  getObjectFields,
   getSearchCriterias,
 } from '@axelor/aos-mobile-core';
 
@@ -117,7 +118,7 @@ export async function fetchQiResolution({id}) {
     id,
     fieldKey: 'quality_qiResolution',
     relatedFields: {
-      qiResolutionDefaultsList: ['description', 'quantity', 'name'],
+      qiResolutionDefaultsList: getObjectFields('quality_qiResolutionDefault'),
     },
     provider: 'model',
   });

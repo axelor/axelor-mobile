@@ -22,8 +22,8 @@ import {useTranslator} from '@axelor/aos-mobile-core';
 import {
   Button,
   FormHtmlInput,
+  HorizontalRuleText,
   QuantityCard,
-  Text,
   ViewAllEditList,
 } from '@axelor/aos-mobile-ui';
 import {DefectSearchBar} from '../../templates';
@@ -31,45 +31,33 @@ import {DefectSearchBar} from '../../templates';
 interface DefectViewAllListProps {
   title?: string;
   defaultValue?: any[];
-  onChange: (employees: any[]) => void;
+  onChange: (value: any[]) => void;
+  objectState?: any;
   readonly?: boolean;
 }
 
 const DefectViewAllListAux = ({
-  title = 'Quality_Defects',
+  title = 'Quality_Defect',
   defaultValue,
   onChange,
+  objectState,
   readonly = false,
 }: DefectViewAllListProps) => {
   const I18n = useTranslator();
 
-  const [lines, setLines] = useState(defaultValue ?? []);
-  const [selectedDefect, setSelectedDefect] = useState(null);
-  const [selectedQty, setSelectedQty] = useState(1);
-  const [editIndex, setEditIndex] = useState<number | null>(null);
-  const [selectedDescription, setSelectedDescription] = useState('');
+  const [lines, setLines] = useState<any[]>(defaultValue ?? []);
+  const [editId, setEditId] = useState<number | undefined>();
+  const [defect, setDefect] = useState<any>();
+  const [qty, setQty] = useState<number>(1);
+  const [description, setDescription] = useState<string>('');
 
-  const handleAddDefect = useCallback((defect: any) => {
-    if (defect) {
-      setSelectedDefect(defect);
-      setSelectedQty(1);
-      setSelectedDescription('');
-      setEditIndex(null);
-    }
+  const handleEditLine = useCallback((line: any) => {
+    setEditId(line.id);
+    setDefect(line.qiDefault);
+    setQty(line.qty);
+    setDescription(line.description);
   }, []);
 
-  const handleEditLine = useCallback(
-    (line: any) => {
-      const index = lines.findIndex(l => l.id === line.id);
-      if (index !== -1) {
-        setEditIndex(index);
-        setSelectedDefect(line);
-        setSelectedQty(line.qty || 1);
-        setSelectedDescription(line.description || '');
-      }
-    },
-    [lines],
-  );
   const handleChange = useCallback(
     (updated: any[]) => {
       setLines(updated);
@@ -78,79 +66,74 @@ const DefectViewAllListAux = ({
     [onChange],
   );
 
-  const handleConfirmAdd = () => {
-    const newDefect = {
-      ...selectedDefect,
-      qty: selectedQty,
-      description: selectedDescription,
-    };
+  const handleConfirm = useCallback(() => {
+    setLines(_current => {
+      const lineContent = {
+        id: `qiDefault-${defect.id}.${_current.length}`,
+        name: defect.name,
+        qiDefault: defect,
+        qty,
+        description,
+      };
 
-    let updatedLines;
-    if (editIndex !== null) {
-      updatedLines = [...lines];
-      updatedLines[editIndex] = newDefect;
-    } else {
-      updatedLines = [...lines, newDefect].filter(
-        ({id}, idx, self) => self.findIndex(_e => _e.id === id) === idx,
-      );
-    }
+      let updatedLines: any[];
+      if (editId != null) {
+        updatedLines = _current.map(_item =>
+          _item.id === editId ? lineContent : _item,
+        );
+      } else {
+        updatedLines = [..._current, lineContent];
+      }
 
-    setLines(updatedLines);
-    onChange(updatedLines);
-    setSelectedDefect(null);
-    setSelectedQty(1);
-    setSelectedDescription('');
-    setEditIndex(null);
-  };
+      onChange(updatedLines);
+
+      return updatedLines;
+    });
+
+    setDefect(null);
+    setQty(1);
+    setDescription('');
+    setEditId(null);
+  }, [defect, description, editId, onChange, qty]);
 
   return (
-    <>
+    <View style={styles.container}>
       <ViewAllEditList
-        currentLineId={selectedDefect?.id ?? null}
         title={I18n.t(title)}
         lines={lines}
         setLines={handleChange}
+        currentLineId={editId}
         handleEditLine={handleEditLine}
         translator={I18n.t}
       />
-      {!readonly && (
-        <DefectSearchBar
-          placeholderKey="Quality_Defects"
-          showTitle={false}
-          onChange={handleAddDefect}
-        />
-      )}
-      {selectedDefect && (
-        <>
-          <QuantityCard
-            labelQty={I18n.t('Quality_Quantity')}
-            defaultValue={selectedQty}
-            onValueChange={setSelectedQty}
-            editable
-            actionQty
-            iconName="x-lg"
-            onPressActionQty={() => {
-              setSelectedDefect(null);
-              setSelectedQty(1);
-            }}
-            isBigButton
-            translator={I18n.t}>
-            <Text fontSize={16}>{selectedDefect.name}</Text>
-          </QuantityCard>
-          <FormHtmlInput
-            title={I18n.t('Base_Description')}
-            defaultValue={selectedDescription}
-            onChange={setSelectedDescription}
-          />
-          <View style={styles.addButton}>
-            <Button
-              title={I18n.t('Quality_AddDefault')}
-              onPress={handleConfirmAdd}
-            />
-          </View>
-        </>
-      )}
-    </>
+      <HorizontalRuleText
+        text={I18n.t('Quality_NewDefault')}
+        style={styles.width}
+      />
+      <DefectSearchBar
+        defaultValue={defect}
+        onChange={setDefect}
+        objectState={objectState}
+        readonly={readonly}
+        required
+      />
+      <QuantityCard
+        style={styles.width}
+        labelQty={I18n.t('Quality_Quantity')}
+        defaultValue={qty}
+        onValueChange={setQty}
+        editable={!readonly}
+        isBigButton
+        translator={I18n.t}
+      />
+      <FormHtmlInput
+        title={I18n.t('Base_Description')}
+        defaultValue={description}
+        onChange={setDescription}
+        readonly={readonly}
+      />
+      <Button title={I18n.t('Quality_SaveContinue')} onPress={handleConfirm} />
+    </View>
   );
 };
 
@@ -159,12 +142,12 @@ const DefectViewAllList = (props: DefectViewAllListProps) => {
 };
 
 const styles = StyleSheet.create({
-  formInput: {
-    alignSelf: 'center',
-  },
-  addButton: {
-    marginTop: 10,
+  container: {
+    gap: 3,
     alignItems: 'center',
+  },
+  width: {
+    width: '90%',
   },
 });
 

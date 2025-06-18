@@ -21,7 +21,7 @@ import {useDispatch, useSelector, useTranslator} from '@axelor/aos-mobile-core';
 import {AutoCompleteSearch} from '@axelor/aos-mobile-ui';
 import {searchCustomerOrderLine} from '../../../features/saleOrderLineSlice';
 
-const displayProductName = item => item.productName; //TODO: check
+const displayProductName = item => item.productName;
 
 interface CustomerOrderLineSearchBarProps {
   style?: any;

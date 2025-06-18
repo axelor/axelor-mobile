@@ -87,12 +87,12 @@ export const quality_typeObjects: ModuleSelections = [
           {
             key: 'Product',
             value: 1,
-            title: 'Quality_Product',
+            title: 'Quality_Type_Product',
           },
           {
             key: 'System',
             value: 2,
-            title: 'Quality_System',
+            title: 'Quality_Type_System',
           },
         ],
       },

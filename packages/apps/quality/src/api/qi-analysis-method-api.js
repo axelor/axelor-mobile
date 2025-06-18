@@ -23,7 +23,7 @@ import {
 
 const createQIAnalysisMethoCriteria = ({searchValue, origin, gravity}) => {
   const criteria = [
-    getSearchCriterias('quality_QIAnalysisMethod', searchValue),
+    getSearchCriterias('quality_qiAnalysisMethod', searchValue),
   ];
 
   if (origin != null) {
@@ -55,8 +55,8 @@ export async function searchQIAnalysisMethod({
   return createStandardSearch({
     model: 'com.axelor.apps.quality.db.QIAnalysisMethod',
     criteria: createQIAnalysisMethoCriteria({searchValue, origin, gravity}),
-    fieldKey: 'quality_QIAnalysisMethod',
-    sortKey: 'quality_QIAnalysisMethod',
+    fieldKey: 'quality_qiAnalysisMethod',
+    sortKey: 'quality_qiAnalysisMethod',
     page,
     companyId,
     provider: 'model',

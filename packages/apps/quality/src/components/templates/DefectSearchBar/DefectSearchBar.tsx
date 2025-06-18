@@ -16,12 +16,13 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import React, {useCallback} from 'react';
+import React, {useCallback, useMemo} from 'react';
 import {
   displayItemName,
   useDispatch,
   useSelector,
   useTranslator,
+  useTypes,
 } from '@axelor/aos-mobile-core';
 import {AutoCompleteSearch} from '@axelor/aos-mobile-ui';
 import {searchDefect} from '../../../features/qiDefaultSlice';
@@ -31,6 +32,7 @@ interface DefectSearchBarProps {
   title?: string;
   defaultValue?: any;
   onChange: (value?: any) => void;
+  objectState?: any;
   required?: boolean;
   readonly?: boolean;
   showDetailsPopup?: boolean;
@@ -41,9 +43,10 @@ interface DefectSearchBarProps {
 
 const DefectSearchBarAux = ({
   style,
-  title = 'Quality_Defects',
+  title = 'Quality_Defect',
   defaultValue,
   onChange,
+  objectState,
   required = false,
   readonly = false,
   showDetailsPopup = true,
@@ -53,6 +56,7 @@ const DefectSearchBarAux = ({
 }: DefectSearchBarProps) => {
   const I18n = useTranslator();
   const dispatch = useDispatch();
+  const {QualityImprovement} = useTypes();
 
   const {user} = useSelector(state => state.user);
   const {
@@ -62,6 +66,18 @@ const DefectSearchBarAux = ({
     isListEndQiDefault,
   } = useSelector(state => state.quality_qiDefault);
 
+  const typeFieldName = useMemo(() => {
+    const type = objectState?.type;
+
+    if (type === QualityImprovement.type.Product) {
+      return 'isProductDefault';
+    } else if (type === QualityImprovement.type.System) {
+      return 'isSystemDefault';
+    } else {
+      return null;
+    }
+  }, [QualityImprovement.type, objectState?.type]);
+
   const fetchDefectLineAPI = useCallback(
     ({page = 0, searchValue}) => {
       dispatch(
@@ -69,10 +85,11 @@ const DefectSearchBarAux = ({
           page,
           searchValue,
           companyId: user.activeCompany?.id,
+          type: typeFieldName,
         }),
       );
     },
-    [dispatch, user.activeCompany?.id],
+    [dispatch, typeFieldName, user.activeCompany?.id],
   );
 
   return (

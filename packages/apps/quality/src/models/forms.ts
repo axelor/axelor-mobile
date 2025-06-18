@@ -27,7 +27,7 @@ import {
   OperationLineSearchBar,
   ProductSearchBar,
   QIDetectionSearchBar,
-  QIMethodAnalysisSearchBar,
+  QIAnalysisMethodSearchBar,
   QIStepper,
   SupplierOrderLineSearchBar,
   SupplierOrderSearchBar,
@@ -75,7 +75,7 @@ export const quality_formsRegister: FormConfigs = {
         parentPanel: 'headerRight',
       },
       qiDetection: {
-        titleKey: 'Quality_QIDetection',
+        titleKey: 'Quality_Detection',
         type: 'object',
         widget: 'custom',
         required: true,
@@ -84,10 +84,10 @@ export const quality_formsRegister: FormConfigs = {
         dependsOn: {type: () => null},
       },
       analysisMethod: {
-        titleKey: 'Quality_QIMethodAnalysis',
+        titleKey: 'Quality_AnalysisMethod',
         type: 'object',
         widget: 'custom',
-        customComponent: QIMethodAnalysisSearchBar,
+        customComponent: QIAnalysisMethodSearchBar,
         hideIf: ({objectState}) => !isStep(objectState, Steps.detection),
         dependsOn: {type: () => null, gravityTypeSelect: () => null},
       },
@@ -129,9 +129,10 @@ export const quality_formsRegister: FormConfigs = {
         widget: 'custom',
         customComponent: CustomerSearchBar,
         hideIf: ({objectState}) =>
-          !isOrigin(objectState, 'Customer') ||
-          !isOrigin(objectState, 'Internal') ||
-          !isStep(objectState, Steps.identification),
+          !(
+            isOrigin(objectState, 'Customer') ||
+            isOrigin(objectState, 'Internal')
+          ) || !isStep(objectState, Steps.identification),
       },
       customerSaleOrder: {
         titleKey: 'Quality_CustomerOrder',

@@ -112,7 +112,7 @@ const QIFormButton = ({objectState, handleObjectChange}: QIFormButtonProps) => {
         />
       ) : (
         <Button
-          title={I18n.t('Quality_Save')}
+          title={I18n.t('Quality_Send')}
           onPress={handleSave}
           width="50%"
         />

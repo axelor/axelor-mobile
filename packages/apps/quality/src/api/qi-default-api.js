@@ -21,23 +21,26 @@ import {
   getSearchCriterias,
 } from '@axelor/aos-mobile-core';
 
-const createDefectCriteria = searchValue => {
-  return [
-    getSearchCriterias('quality_defects', searchValue),
-    {
-      fieldName: 'isProductDefault', //TODO: check
+const createDefectCriteria = (searchValue, typeFieldName) => {
+  const criterias = [getSearchCriterias('quality_qiDefault', searchValue)];
+
+  if (typeFieldName) {
+    criterias.push({
+      fieldName: typeFieldName,
       operator: '=',
       value: true,
-    },
-  ];
+    });
+  }
+
+  return criterias;
 };
 
-export async function searchDefect({page = 0, searchValue, companyId}) {
+export async function searchDefect({page = 0, searchValue, companyId, type}) {
   return createStandardSearch({
     model: 'com.axelor.apps.quality.db.QIDefault',
-    criteria: createDefectCriteria(searchValue),
-    fieldKey: 'quality_defects',
-    sortKey: 'quality_defects',
+    criteria: createDefectCriteria(searchValue, type),
+    fieldKey: 'quality_qiDefault',
+    sortKey: 'quality_qiDefault',
     page,
     provider: 'model',
     companyId,

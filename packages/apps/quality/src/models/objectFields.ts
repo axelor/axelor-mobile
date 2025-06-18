@@ -64,6 +64,14 @@ export const quality_modelAPI: ObjectFields = {
     type: schemaContructor.number(),
     qiIdentification: schemaContructor.subObject().concat(
       schemaContructor.object({
+        customerPartner: schemaContructor.subObject(),
+        customerSaleOrder: schemaContructor.subObject(),
+        customerSaleOrderLine: schemaContructor.subObject(),
+        supplierPartner: schemaContructor.subObject(),
+        supplierPurchaseOrder: schemaContructor.subObject(),
+        supplierPurchaseOrderLine: schemaContructor.subObject(),
+        manufOrder: schemaContructor.subObject(),
+        operationOrder: schemaContructor.subObject(),
         product: schemaContructor.subObject(),
         quantity: schemaContructor.number(),
         nonConformingQuantity: schemaContructor.number(),
@@ -79,12 +87,18 @@ export const quality_modelAPI: ObjectFields = {
       .array()
       .of(schemaContructor.subObject()),
   }),
-  quality_QIDetection: schemaContructor.object({
+  quality_qiResolutionDefault: schemaContructor.object({
+    name: schemaContructor.string(),
+    description: schemaContructor.string(),
+    quantity: schemaContructor.number(),
+    qiDefault: schemaContructor.subObject(),
+  }),
+  quality_qiDetection: schemaContructor.object({
     name: schemaContructor.string(),
     code: schemaContructor.string(),
     origin: schemaContructor.number(),
   }),
-  quality_QIAnalysisMethod: schemaContructor.object({
+  quality_qiAnalysisMethod: schemaContructor.object({
     code: schemaContructor.string(),
     name: schemaContructor.string(),
   }),
@@ -96,10 +110,6 @@ export const quality_modelAPI: ObjectFields = {
   }),
   quality_supplierOrderLine: schemaContructor.object({
     fullName: schemaContructor.string(),
-  }),
-  quality_product: schemaContructor.object({
-    fullName: schemaContructor.string(),
-    name: schemaContructor.string(),
   }),
   quality_customer: schemaContructor.object({
     simpleFullName: schemaContructor.string(),
@@ -116,7 +126,11 @@ export const quality_modelAPI: ObjectFields = {
   quality_operationOrder: schemaContructor.object({
     name: schemaContructor.string(),
   }),
-  quality_defects: schemaContructor.object({
+  quality_product: schemaContructor.object({
+    fullName: schemaContructor.string(),
+    name: schemaContructor.string(),
+  }),
+  quality_qiDefault: schemaContructor.object({
     name: schemaContructor.string(),
   }),
 };

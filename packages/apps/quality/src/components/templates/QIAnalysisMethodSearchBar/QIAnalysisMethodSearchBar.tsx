@@ -27,7 +27,7 @@ import {
 import {AutoCompleteSearch} from '@axelor/aos-mobile-ui';
 import {searchQIAnalysisMethod} from '../../../features/qiAnalysisMethodSlice';
 
-interface QIMethodAnalysisSearchBarProps {
+interface QIAnalysisMethodSearchBarProps {
   style?: any;
   title?: string;
   defaultValue?: any;
@@ -37,15 +37,15 @@ interface QIMethodAnalysisSearchBarProps {
   readonly?: boolean;
 }
 
-const QIMethodAnalysisSearchBarAux = ({
+const QIAnalysisMethodSearchBarAux = ({
   style,
-  title = 'Quality_QIMethodAnalysis',
+  title = 'Quality_AnalysisMethod',
   defaultValue,
   onChange,
   objectState,
   readonly = false,
   required = false,
-}: QIMethodAnalysisSearchBarProps) => {
+}: QIAnalysisMethodSearchBarProps) => {
   const I18n = useTranslator();
   const dispatch = useDispatch();
   const {QualityImprovement} = useTypes();
@@ -121,8 +121,8 @@ const QIMethodAnalysisSearchBarAux = ({
   );
 };
 
-const QIMethodAnalysisSearchBar = (props: QIMethodAnalysisSearchBarProps) => {
-  return <QIMethodAnalysisSearchBarAux {...props} />;
+const QIAnalysisMethodSearchBar = (props: QIAnalysisMethodSearchBarProps) => {
+  return <QIAnalysisMethodSearchBarAux {...props} />;
 };
 
-export default QIMethodAnalysisSearchBar;
+export default QIAnalysisMethodSearchBar;

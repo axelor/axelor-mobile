@@ -49,10 +49,15 @@ const QualityImprovementFormScreen = ({route}) => {
       ...qiIdentification,
       ...qualityImprovement,
       qiResolutionDefaults:
-        qiResolution?.qiResolutionDefaultsList?.map(item => ({
-          ...item,
-          qty: parseFloat(item.quantity ?? '1'),
-        })) ?? [],
+        qiResolution?.qiResolutionDefaultsList?.map(
+          ({name, qiDefault, quantity, description}, idx: number) => ({
+            id: `qiDefault-${qiDefault.id}.${idx}`,
+            name,
+            qiDefault,
+            qty: parseFloat(quantity),
+            description,
+          }),
+        ) ?? [],
     };
   }, [qualityImprovement, qiId]);
 

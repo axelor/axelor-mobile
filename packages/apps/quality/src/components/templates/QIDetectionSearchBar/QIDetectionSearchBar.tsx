@@ -39,7 +39,7 @@ interface QIDetectionSearchBarProps {
 
 const QIDetectionSearchBarAux = ({
   style,
-  title = 'Quality_QIDetection',
+  title = 'Quality_Detection',
   defaultValue,
   onChange,
   objectState,
