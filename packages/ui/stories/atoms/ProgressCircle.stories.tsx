@@ -16,7 +16,6 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import React from 'react';
 import type {Meta} from '@storybook/react';
 import {ProgressCircle as Component} from '../../src/components/atoms';
 import {disabledControl, Story} from '../utils/control-type.helpers';
@@ -32,11 +31,23 @@ export const ProgressCircle: Story<typeof Component> = {
   args: {
     circleSize: 80,
     strokeWidth: 4,
-    activeStep: 3,
-    numberOfSteps: 4,
+    progress: 0.2,
     isError: false,
-    translator: key => key,
   },
-  argTypes: {translator: disabledControl},
-  render: args => <Component {...args} />,
+  argTypes: {
+    progress: {
+      control: {
+        type: 'number',
+        min: 0,
+        max: 1,
+        step: 0.1,
+      },
+    },
+    innerText: disabledControl,
+    textStyle: disabledControl,
+    writingType: disabledControl,
+  },
+  render: (args: any) => (
+    <Component {...args} innerText={`${args.progress}%`} />
+  ),
 };

@@ -25,26 +25,23 @@ import {Text} from '../../atoms';
 interface ProgressCircleProps {
   circleSize?: number;
   strokeWidth?: number;
-  activeStep: number;
-  numberOfSteps: number;
   isError?: boolean;
-  translator: (key: string, values?: any) => string;
+  progress: number;
+  innerText?: string;
+  writingType?: 'title' | 'subtitle' | 'important' | 'details' | undefined;
+  textStyle?: any;
 }
 
 const ProgressCircle = ({
   circleSize = 80,
   strokeWidth = 4,
-  activeStep,
-  numberOfSteps,
   isError = false,
-  translator,
+  progress,
+  innerText,
+  writingType = 'important',
+  textStyle,
 }: ProgressCircleProps) => {
   const Colors = useThemeColor();
-
-  const progress = useMemo(
-    () => activeStep / numberOfSteps,
-    [activeStep, numberOfSteps],
-  );
 
   const {radius, circumference, strokeDashoffset} = useMemo(() => {
     const _radius = circleSize / 2 - strokeWidth / 2;
@@ -87,8 +84,8 @@ const ProgressCircle = ({
         testID="progress-circle"
       />
       <View style={styles.textContainer}>
-        <Text writingType="important">
-          {translator('Base_StepOfStep', {activeStep, numberOfSteps})}
+        <Text writingType={writingType} style={textStyle} adjustsFontSizeToFit>
+          {innerText}
         </Text>
       </View>
     </Svg>

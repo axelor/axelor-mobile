@@ -125,34 +125,3 @@ const MassScanButton = ({scanKey}) => {
 
 export default MassScanButton;
 ```
-
-La librairie core met également à disposition un composant avec cette fonctionnalité, il s'agit du **MassScannerButton**. Il suffit de lui fournir les options à fournir au hook présenté précédemment : scanKey, backgroundAction, fallbackAction & scanInterval. Le comportement s'occupera alors de la transmission et de l'activation du scan au click sur le bouton.
-
-Voici un exemple de mise en place du composant :
-
-```tsx
-import React, {useCallback} from 'react';
-import {MassScannerButton, showToastMessage} from '@axelor/aos-mobile-core';
-
-const PickingScan = ({scanKey}) => {
-  const handlePicking = useCallback((scanValue: string) => {
-    //...
-  }, []);
-
-  return (
-    <MassScannerButton
-      scanKey={scanKey}
-      backgroundAction={handlePicking}
-      fallbackAction={() =>
-        showToastMessage({
-          type: 'error',
-          position: 'bottom',
-          text1: 'Issue while using mass scan feature',
-        })
-      }
-    />
-  );
-};
-
-export default PickingScan;
-```
