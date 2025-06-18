@@ -18,12 +18,12 @@
 
 import React, {useMemo} from 'react';
 import {ActionCard} from '@axelor/aos-mobile-ui';
-import {QualityImprovementCard} from '../../atoms';
 import {
   useNavigation,
   usePermitted,
   useTranslator,
 } from '@axelor/aos-mobile-core';
+import {QualityImprovementCard} from '../../atoms';
 
 const FIRST_STATUS_SEQUENCE = 1;
 
