@@ -27,7 +27,19 @@ export {
   updateControlEntry,
 } from './controlEntrySlice';
 export {fetchControlPlanById} from './controlPlanSlice';
+export {searchManufOrder} from './manufOrderSlice';
+export {searchOperationLine} from './operationOrderSlice';
+export {searchCustomer, searchSupplier} from './partnerSlice';
+export {searchProduct} from './productSlice';
+export {searchSupplierPurchaseOrderLine} from './purchaseOrderLineSlice';
+export {searchSupplierOrder} from './purchaseOrderSlice';
+export {searchQIAnalysisMethod} from './qiAnalysisMethodSlice';
+export {searchQIDetection} from './qiDetectionSlice';
+export {searchDefect} from './qiDefaultSlice';
 export {
+  fetchQualityImprovement,
   fetchQualityImprovementStatus,
   searchQualityImprovement,
 } from './qualityImprovementSlice';
+export {searchCustomerOrderLine} from './saleOrderLineSlice';
+export {searchCustomerOrder} from './saleOrderSlice';

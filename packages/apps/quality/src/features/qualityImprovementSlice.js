@@ -22,6 +22,8 @@ import {
   handlerApiCall,
 } from '@axelor/aos-mobile-core';
 import {
+  fetchQiResolution as _fetchQiResolution,
+  fetchQualityImprovement as _fetchQualityImprovement,
   fetchQualityImprovementStatus as _fetchQualityImprovementStatus,
   searchQualityImprovement as _searchQualityImprovement,
 } from '../api/quality-improvement-api';
@@ -52,6 +54,33 @@ export const fetchQualityImprovementStatus = createAsyncThunk(
   },
 );
 
+export const fetchQualityImprovement = createAsyncThunk(
+  'quality_qualityImprovement/fetchQualityImprovement',
+  async function (data, {getState}) {
+    return handlerApiCall({
+      fetchFunction: _fetchQualityImprovement,
+      data,
+      action: 'Quality_SliceAction_FetchQualityImprovement',
+      getState,
+      responseOptions: {isArrayResponse: false},
+    }).then(async res => {
+      if (!res?.id) {
+        return undefined;
+      }
+
+      const qiResolution = await handlerApiCall({
+        fetchFunction: _fetchQiResolution,
+        data: {id: res.qiResolution?.id},
+        action: 'Quality_SliceAction_FetchQiResolution',
+        getState,
+        responseOptions: {isArrayResponse: false},
+      });
+
+      return {...res, qiResolution};
+    });
+  },
+);
+
 const initialState = {
   loadingQualityImprovements: false,
   moreLoadingQualityImprovement: false,
@@ -59,6 +88,8 @@ const initialState = {
   qualityImprovementList: [],
 
   qiStatusList: [],
+
+  qualityImprovement: {},
 };
 
 const qualityImprovementSlice = createSlice({
@@ -77,6 +108,9 @@ const qualityImprovementSlice = createSlice({
         state.qiStatusList = action.payload;
       },
     );
+    builder.addCase(fetchQualityImprovement.fulfilled, (state, action) => {
+      state.qualityImprovement = action.payload;
+    });
   },
 });
 
