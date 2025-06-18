@@ -318,4 +318,24 @@ export const stock_modelAPI: ObjectFields = {
     product: schemaContructor.subObject(),
     serialNumber: schemaContructor.number(),
   }),
+  stock_stockMoveLine: schemaContructor.object({
+    trackingNumber: schemaContructor.subObject().concat(
+      schemaContructor.object({
+        trackingNumberSeq: schemaContructor.string(),
+        origin: schemaContructor.string(),
+      }),
+    ),
+    unit: schemaContructor.subObject('name'),
+    qty: schemaContructor.number(),
+    realQty: schemaContructor.number(),
+    product: schemaContructor.subObject().concat(
+      schemaContructor.object({
+        fullName: schemaContructor.string(),
+        name: schemaContructor.string(),
+        code: schemaContructor.string(),
+        trackingNumberConfiguration: schemaContructor.subObject(),
+      }),
+    ),
+    isRealQtyModifiedByUser: schemaContructor.boolean(),
+  }),
 };

@@ -28,7 +28,7 @@ const TEST_ID = {
 
 describe('ProgressCircle Component', () => {
   const Colors = getDefaultThemeColors();
-  const props = {activeStep: 1, numberOfSteps: 4, translator: () => ''};
+  const props = {progress: 0.25};
 
   it('renders correctly without crashing', () => {
     const {getByTestId} = render(<ProgressCircle {...props} />);
@@ -54,9 +54,8 @@ describe('ProgressCircle Component', () => {
 
   it('calculates correct strokeDashoffset based on progress', () => {
     const computedProps = {...props, circleSize: 100, strokeWidth: 10};
-    const {circleSize, strokeWidth, activeStep, numberOfSteps} = computedProps;
+    const {circleSize, strokeWidth, progress} = computedProps;
 
-    const progress = activeStep / numberOfSteps;
     const radius = circleSize / 2 - strokeWidth / 2;
     const circumference = 2 * Math.PI * radius;
     const expectedOffset = circumference - circumference * progress;
@@ -68,15 +67,12 @@ describe('ProgressCircle Component', () => {
   });
 
   it('displays correct step text', () => {
-    const mockTranslator = jest.fn(
-      (_, {activeStep, numberOfSteps}) =>
-        `Step ${activeStep} of ${numberOfSteps}`,
-    );
+    const innerText = 'Test';
 
     const {getByText} = render(
-      <ProgressCircle {...props} translator={mockTranslator} />,
+      <ProgressCircle {...props} innerText={innerText} />,
     );
 
-    expect(getByText(mockTranslator(undefined, props))).toBeTruthy();
+    expect(getByText(innerText)).toBeTruthy();
   });
 });

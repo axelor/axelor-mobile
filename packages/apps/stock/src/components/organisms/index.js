@@ -20,3 +20,4 @@ export {default as DescriptionCard} from './DescriptionCard/DescriptionCard';
 export {default as SearchLineContainer} from './SearchLineContainer/SearchLineContainer';
 export {default as SmallPropertyCard} from './SmallPropertyCard/SmallPropertyCard';
 export {default as StockMoveHeader} from './StockMoveHeader/StockMoveHeader';
+export {default as StockMovePickingWidget} from './StockMovePickingWidget/StockMovePickingWidget';

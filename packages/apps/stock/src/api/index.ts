@@ -83,7 +83,11 @@ export {
   searchAvailableProducts as searchAvailableProductsApi,
   searchStockLocationLine as searchStockLocationLineApi,
 } from './stock-location-line-api';
-export {checkQuantity as checkQuantityApi} from './stock-move-line-api';
+export {
+  checkQuantity as checkQuantityApi,
+  searchStockMoveLine as searchStockMoveLineApi,
+  updateStockMoveLine as updateStockMoveLineApi,
+} from './stock-move-line-api';
 export {
   addLineStockMove as addSupplierArrivalLine,
   fetchSupplierArrival as fetchSupplierArrivalApi,
