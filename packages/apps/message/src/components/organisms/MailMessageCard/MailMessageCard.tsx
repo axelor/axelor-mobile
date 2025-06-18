@@ -118,6 +118,8 @@ const MailMessageCard = ({
     }
   }, [clickOutside, isMessageBoxVisible]);
 
+  const isReply = useMemo(() => !!getParentReplies, [getParentReplies]);
+
   return (
     <View style={[styles.container, style]}>
       <View>
@@ -155,7 +157,7 @@ const MailMessageCard = ({
               subject={subject}
               files={files}
               value={body}
-              flags={flags}
+              flags={isReply ? null : flags}
               relatedId={relatedId}
               relatedModel={relatedModel}
               isInbox={isInbox}
@@ -168,7 +170,7 @@ const MailMessageCard = ({
               subject={subject}
               tracks={JSON.parse(body ?? '{}').tracks}
               tag={JSON.parse(body ?? '{}').tags[0]}
-              flags={flags}
+              flags={isReply ? null : flags}
               relatedId={relatedId}
               relatedModel={relatedModel}
               isInbox={isInbox}
@@ -236,13 +238,8 @@ const MailMessageCard = ({
 
 const getStyles = (verticalRuleColor: string) =>
   StyleSheet.create({
-    container: {
-      flexDirection: 'row',
-      marginTop: 10,
-    },
-    avatar: {
-      paddingBottom: 5,
-    },
+    container: {flexDirection: 'row', marginTop: 10},
+    avatar: {paddingBottom: 5},
     displayRepliesContainer: {
       flexDirection: 'row',
       justifyContent: 'center',
@@ -256,9 +253,7 @@ const getStyles = (verticalRuleColor: string) =>
       marginTop: 5,
       backgroundColor: verticalRuleColor,
     },
-    flexOne: {
-      flex: 1,
-    },
+    flexOne: {flex: 1},
     card: {
       flex: 1,
       width: '100%',
@@ -273,15 +268,9 @@ const getStyles = (verticalRuleColor: string) =>
       paddingTop: 3,
       paddingHorizontal: 10,
     },
-    replyText: {
-      textDecorationLine: 'underline',
-    },
-    messageBox: {
-      width: null,
-    },
-    replyCard: {
-      marginLeft: -((AVATAR_SIZE + AVATAR_PADDING) / 2),
-    },
+    replyText: {textDecorationLine: 'underline'},
+    messageBox: {width: null},
+    replyCard: {marginLeft: -((AVATAR_SIZE + AVATAR_PADDING) / 2)},
   });
 
 export default MailMessageCard;
