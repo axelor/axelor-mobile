@@ -25,7 +25,7 @@ import {
   LabelText,
   useThemeColor,
 } from '@axelor/aos-mobile-ui';
-import {ExpandableText, ReadIcon} from '../../atoms';
+import {ExpandableText, MessageFlags} from '../../atoms';
 
 interface CommentCardProps {
   relatedModel: string;
@@ -60,9 +60,7 @@ const CommentCard = ({
       _actions.push({
         iconName: 'paperclip',
         onPress: () =>
-          navigation.navigate('MailMessageAttachedFilesScreen', {
-            files,
-          }),
+          navigation.navigate('MailMessageAttachedFilesScreen', {files}),
       });
     }
 
@@ -83,8 +81,8 @@ const CommentCard = ({
             color={Colors.primaryColor.background}
           />
           {flags != null && (
-            <ReadIcon
-              mailMessageFlag={flags}
+            <MessageFlags
+              flags={flags}
               model={relatedModel}
               modelId={relatedId}
               isInbox={isInbox}
@@ -98,20 +96,16 @@ const CommentCard = ({
 };
 
 const styles = StyleSheet.create({
-  card: {
-    flex: 1,
-    paddingHorizontal: 15,
-    paddingRight: 15,
-    paddingVertical: 10,
-  },
+  card: {flex: 1, paddingHorizontal: 15, paddingRight: 15, paddingVertical: 10},
   headerContainer: {
     flexDirection: 'row',
     justifyContent: 'space-between',
     gap: 5,
+    zIndex: 10,
   },
-  flexOne: {
-    flex: 1,
-  },
+  flexOne: {flex: 1},
+  floatingButtonContainer: {position: 'relative'},
+  floatingButton: {width: 20, height: 20},
 });
 
 export default CommentCard;

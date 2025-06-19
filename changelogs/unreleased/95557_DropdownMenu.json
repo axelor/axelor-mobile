@@ -1,0 +1,5 @@
+{
+  "title": "DropdownMenu: add props to manage style",
+  "type": "feat",
+  "packages": "ui"
+}
