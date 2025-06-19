@@ -26,12 +26,13 @@ import {
   fetchInboxMessages as _fetchInboxMessages,
   fetchMailMessages,
   fetchModelSubscribers,
+  modifyMailMessagesFlags as _modifyMailMessagesFlags,
   postMailMessageComment,
   readAllMailMessages,
-  readMailMessage,
   subscribeRequest,
   unsubscribeRequest,
 } from '../api/mail-message-api';
+import {InboxFolder} from '../types';
 
 export const getMailMessages = createAsyncThunk(
   'mailMessages/getMailMessages',
@@ -119,27 +120,6 @@ export const countUnreadMailMessages = createAsyncThunk(
   },
 );
 
-export const markMailMessageAsRead = createAsyncThunk(
-  'mailMessages/markMailMessageAsRead',
-  async function (data, {getState, dispatch}) {
-    const fetchMailMessageData = {model: data?.model, modelId: data?.modelId};
-    return handlerApiCall({
-      fetchFunction: readMailMessage,
-      data: data,
-      action: 'Message_SliceAction_MarkMailMessageAsRead',
-      getState: getState,
-      responseOptions: {returnTotal: true},
-    }).then(() => {
-      if (data?.isInbox) {
-        dispatch(fetchInboxMessages({page: 0}));
-      } else {
-        dispatch(getMailMessages({...fetchMailMessageData, page: 0}));
-        dispatch(countUnreadMailMessages(fetchMailMessageData));
-      }
-    });
-  },
-);
-
 export const markAllMailMessageAsRead = createAsyncThunk(
   'mailMessages/markAllMailMessageAsRead',
   async function (data, {getState, dispatch}) {
@@ -153,6 +133,27 @@ export const markAllMailMessageAsRead = createAsyncThunk(
     }).then(() => {
       dispatch(getMailMessages({...fetchMailMessageData, page: 0}));
       dispatch(countUnreadMailMessages(fetchMailMessageData));
+    });
+  },
+);
+
+export const modifyMailMessagesFlags = createAsyncThunk(
+  'mailMessages/modifyMailMessagesFlags',
+  async function (data, {getState, dispatch}) {
+    const fetchMailMessageData = {model: data?.model, modelId: data?.modelId};
+    return handlerApiCall({
+      fetchFunction: _modifyMailMessagesFlags,
+      data,
+      action: 'Message_SliceAction_ModifyMailMessagesFlags',
+      getState,
+      responseOptions: {isArrayResponse: false},
+    }).then(() => {
+      if (data?.isInbox) {
+        dispatch(fetchInboxMessages({folder: data?.inboxFolder, page: 0}));
+      } else {
+        dispatch(getMailMessages({...fetchMailMessageData, page: 0}));
+        dispatch(countUnreadMailMessages(fetchMailMessageData));
+      }
     });
   },
 );
@@ -187,6 +188,7 @@ const initialState = {
   moreLoadingInbox: false,
   isInboxListEnd: false,
   inboxList: [],
+  inboxFolder: InboxFolder.Inbox,
 };
 
 const mailMessagesSlice = createSlice({
@@ -198,6 +200,9 @@ const mailMessagesSlice = createSlice({
     },
     registerModelId: (state, action) => {
       state.modelId = action.payload;
+    },
+    saveInboxFolder: (state, action) => {
+      state.inboxFolder = action.payload;
     },
   },
   extraReducers: builder => {
@@ -222,6 +227,7 @@ const mailMessagesSlice = createSlice({
   },
 });
 
-export const {registerModel, registerModelId} = mailMessagesSlice.actions;
+export const {registerModel, registerModelId, saveInboxFolder} =
+  mailMessagesSlice.actions;
 
 export const mailMessagesReducer = mailMessagesSlice.reducer;

@@ -26,10 +26,12 @@ import {ThemeColors, useThemeColor} from '../../../theme';
 import {Card, Icon} from '../../atoms';
 
 interface DropdownMenuProps {
+  style?: any;
+  styleMenu?: any;
   children: any;
 }
 
-const DropdownMenu = ({children}: DropdownMenuProps) => {
+const DropdownMenu = ({style, styleMenu, children}: DropdownMenuProps) => {
   const [visible, setVisible] = useState(false);
   const Colors = useThemeColor();
 
@@ -45,7 +47,7 @@ const DropdownMenu = ({children}: DropdownMenuProps) => {
   }, [clickOutside, visible]);
 
   return (
-    <View ref={wrapperRef}>
+    <View style={style} ref={wrapperRef}>
       <TouchableOpacity
         style={styles.action}
         onPress={() => {
@@ -57,7 +59,9 @@ const DropdownMenu = ({children}: DropdownMenuProps) => {
           size={22}
         />
       </TouchableOpacity>
-      {visible && <Card style={styles.menuContainer}>{children}</Card>}
+      {visible && (
+        <Card style={[styles.menuContainer, styleMenu]}>{children}</Card>
+      )}
     </View>
   );
 };
@@ -77,10 +81,7 @@ const getStyles = (Colors: ThemeColors) =>
       shadowColor: Colors.secondaryColor.background,
       shadowOffset: {width: 0, height: 0},
     },
-    action: {
-      padding: 5,
-      paddingLeft: 15,
-    },
+    action: {padding: 5, paddingLeft: 15},
   });
 
 export default DropdownMenu;

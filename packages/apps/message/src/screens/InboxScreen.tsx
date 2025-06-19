@@ -26,14 +26,19 @@ const InboxScreen = ({}) => {
   const I18n = useTranslator();
   const dispatch = useDispatch();
 
-  const {loadingInbox, moreLoadingInbox, isInboxListEnd, inboxList} =
-    useSelector(state => state.mailMessages);
+  const {
+    loadingInbox,
+    moreLoadingInbox,
+    isInboxListEnd,
+    inboxList,
+    inboxFolder,
+  } = useSelector(state => state.mailMessages);
 
   const fetchInboxMessagesAPI = useCallback(
     (page: number) => {
-      dispatch((fetchInboxMessages as any)({page}));
+      dispatch((fetchInboxMessages as any)({folder: inboxFolder, page}));
     },
-    [dispatch],
+    [dispatch, inboxFolder],
   );
 
   return (

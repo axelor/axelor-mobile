@@ -16,17 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-export {
-  countUnreadMailMessages,
-  fetchInboxMessages,
-  getMailMessages,
-  getModelSubscribers,
-  markAllMailMessageAsRead,
-  modifyMailMessagesFlags,
-  registerModel,
-  registerModelId,
-  saveInboxFolder,
-  sendMailMessageComment,
-  subscribeModel,
-  unsubscribeModel,
-} from './mailMessageSlice';
+export enum InboxFolder {
+  Inbox = 'inbox',
+  Important = 'important',
+}

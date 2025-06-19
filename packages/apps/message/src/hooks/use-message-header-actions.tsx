@@ -25,20 +25,23 @@ import {
   useTranslator,
   useWebSocket,
 } from '@axelor/aos-mobile-core';
-import {useThemeColor} from '@axelor/aos-mobile-ui';
+import {DoubleIcon, useThemeColor} from '@axelor/aos-mobile-ui';
 import {getAction} from '../utils';
 import {
   countUnreadMailMessages,
   getModelSubscribers,
   markAllMailMessageAsRead,
+  saveInboxFolder,
 } from '../features/mailMessageSlice';
 import {UnsubscribeIcon} from '../components';
 import {useIsSubscribed} from './use-is-subscribed';
+import {InboxFolder} from '../types';
 
 export const useMessageHeaders = () => {
   useMailMessagesGenericAction();
   useMailMessagesDetailsAction();
   useUserProfileActions();
+  useInboxActions();
 };
 
 const useMailMessagesGenericAction = () => {
@@ -145,4 +148,47 @@ const useUserProfileActions = () => {
     navigation,
     numberUnreadMessages,
   ]);
+};
+
+const useInboxActions = () => {
+  const I18n = useTranslator();
+  const Colors = useThemeColor();
+  const dispatch = useDispatch();
+
+  const {inboxFolder} = useSelector(state => state.mailMessages);
+
+  useEffect(() => {
+    headerActionsProvider.registerModel('message_mailMessage_inbox', {
+      actions: [
+        {
+          key: 'inboxImportant',
+          order: 10,
+          iconName: null,
+          customComponent: (
+            <DoubleIcon
+              topIconConfig={{
+                name:
+                  inboxFolder === InboxFolder.Important ? 'star-fill' : 'star',
+                size: 15,
+                color: Colors.primaryColor.background,
+              }}
+              topIconPosition={{bottom: -7, right: -7}}
+              bottomIconConfig={{name: 'eye'}}
+            />
+          ),
+          title: I18n.t('Message_ImportantMessages'),
+          onPress: () => {
+            dispatch(
+              (saveInboxFolder as any)(
+                inboxFolder === InboxFolder.Important
+                  ? InboxFolder.Inbox
+                  : InboxFolder.Important,
+              ),
+            );
+          },
+          showInHeader: true,
+        },
+      ],
+    });
+  }, [Colors.primaryColor.background, I18n, dispatch, inboxFolder]);
 };
