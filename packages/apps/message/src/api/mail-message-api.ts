@@ -24,44 +24,21 @@ import {
   getActionApi,
   RouterProvider,
 } from '@axelor/aos-mobile-core';
+import {InboxFolder} from '../types';
 
 const createUnreadMessagesCriteria = ({model, modelId}): Criteria[] => {
   return [
-    {
-      fieldName: 'relatedModel',
-      operator: '=',
-      value: model,
-    },
-    {
-      fieldName: 'relatedId',
-      operator: '=',
-      value: modelId,
-    },
-    {
-      fieldName: 'flags.isRead',
-      operator: '=',
-      value: false,
-    },
+    {fieldName: 'relatedModel', operator: '=', value: model},
+    {fieldName: 'relatedId', operator: '=', value: modelId},
+    {fieldName: 'flags.isRead', operator: '=', value: false},
   ];
 };
 
 const createUnreadFlagsCriteria = ({model, modelId}): Criteria[] => {
   return [
-    {
-      fieldName: 'message.relatedModel',
-      operator: '=',
-      value: model,
-    },
-    {
-      fieldName: 'message.relatedId',
-      operator: '=',
-      value: modelId,
-    },
-    {
-      fieldName: 'isRead',
-      operator: '=',
-      value: false,
-    },
+    {fieldName: 'message.relatedModel', operator: '=', value: model},
+    {fieldName: 'message.relatedId', operator: '=', value: modelId},
+    {fieldName: 'isRead', operator: '=', value: false},
   ];
 };
 
@@ -116,11 +93,7 @@ export async function postMailMessageComment({
   comment,
   parentId,
 }: postMailMessageCommentProps) {
-  const body: any = {
-    body: `${comment}`,
-    type: 'comment',
-    files: [],
-  };
+  const body: any = {body: `${comment}`, type: 'comment', files: []};
   if (parentId != null) {
     body.parent = {id: parentId};
   }
@@ -129,9 +102,7 @@ export async function postMailMessageComment({
   return getActionApi().send({
     url: `/ws/rest/${model}/${modelId}/message`,
     method: 'post',
-    body: {
-      data: body,
-    },
+    body: {data: body},
     description: 'post mail message comment',
     matchers: {
       modelName: 'com.axelor.mail.db.MailMessage',
@@ -219,41 +190,44 @@ export async function readAllMailMessages({
   modelId: number;
 }) {
   return getAllUnreadFlagsOfMailMessage({model, modelId}).then(res => {
-    return readMailMessage({mailFlagList: res?.data?.data});
+    return modifyMailMessagesFlags({mailMessagesFlags: res?.data?.data});
   });
 }
 
-export async function readMailMessage({mailFlagList}: {mailFlagList: any[]}) {
-  if (!Array.isArray(mailFlagList) || mailFlagList?.length === 0) {
+export async function modifyMailMessagesFlags({
+  mailMessagesFlags,
+}: {
+  mailMessagesFlags: any[];
+}) {
+  if (!Array.isArray(mailMessagesFlags) || mailMessagesFlags?.length === 0) {
     return null;
   }
 
   return axiosApiProvider.post({
     url: '/ws/rest/com.axelor.mail.db.MailFlags',
     data: {
-      records: mailFlagList.map(item => ({
-        id: item.id,
-        isRead: true,
-        version: item.version,
+      records: mailMessagesFlags.map(item => ({
+        ...item,
+        isRead: item?.isRead ?? true,
       })),
     },
   });
 }
 
 export async function fetchInboxMessages({
+  folder = InboxFolder.Inbox,
   limit = 10,
   page,
 }: {
+  folder?: InboxFolder;
   limit?: number;
   page: number;
 }) {
   return axiosApiProvider.get({
-    url: `/ws/messages?folder=inbox&limit=${limit}&offset=${limit * page}`,
+    url: `/ws/messages?folder=${folder}&limit=${limit}&offset=${limit * page}`,
   });
 }
 
 export async function fetchReplies({messageId}: {messageId: number}) {
-  return axiosApiProvider.get({
-    url: `/ws/messages/${messageId}/replies`,
-  });
+  return axiosApiProvider.get({url: `/ws/messages/${messageId}/replies`});
 }
