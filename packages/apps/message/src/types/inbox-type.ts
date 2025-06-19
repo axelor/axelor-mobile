@@ -19,4 +19,5 @@
 export enum InboxFolder {
   Inbox = 'inbox',
   Important = 'important',
+  Archive = 'archive',
 }
