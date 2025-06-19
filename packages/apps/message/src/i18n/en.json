@@ -23,5 +23,5 @@
   "Message_SliceAction_CountUnreadMailMessages": "count unread mail messages",
   "Message_SliceAction_MarkAllMailMessageAsRead": "mark all mail messages as read",
   "Message_SliceAction_FetchInboxMessages": "fetch inbox messages",
-  "Message_SliceAction_ModifyMailMessagesFlags": "modify mail messages flags"
+  "Message_SliceAction_ModifyMailMessagesFlags": "modify mail message flags"
 }

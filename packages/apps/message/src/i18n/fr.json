@@ -14,7 +14,7 @@
   "Message_MarkAsUnread": "Marquer comme non lu",
   "Message_MarkAsImportant": "Marquer comme important",
   "Message_MarkAsNotImportant": "Marquer comme non important",
-  "Message_ImportantMessages": "Messages important",
+  "Message_ImportantMessages": "Messages importants",
   "Message_SliceAction_FetchMailMessages": "récupération des mail messages",
   "Message_SliceAction_PostMailMessageComment": "ajout d'un mail message",
   "Message_SliceAction_FetchModelSubscribers": "récupération des abonnés du modèle",
@@ -23,5 +23,5 @@
   "Message_SliceAction_CountUnreadMailMessages": "comptage des mail messages non lus",
   "Message_SliceAction_MarkAllMailMessageAsRead": "marquer tous les messages comme lus",
   "Message_SliceAction_FetchInboxMessages": "récupération des messages de la boîte de reception",
-  "Message_SliceAction_ModifyMailMessagesFlags": "modification des indicateurs des messages"
+  "Message_SliceAction_ModifyMailMessagesFlags": "modification des indicateurs du message"
 }

@@ -29,7 +29,6 @@ import {DoubleIcon, useThemeColor} from '@axelor/aos-mobile-ui';
 import {getAction} from '../utils';
 import {
   countUnreadMailMessages,
-  fetchInboxMessages,
   getModelSubscribers,
   markAllMailMessageAsRead,
   saveInboxFolder,
@@ -95,8 +94,8 @@ const useMailMessagesDetailsAction = () => {
           iconName: 'check-all',
           iconColor:
             unreadMessages === 0
-              ? Colors.secondaryColor.background
-              : Colors.primaryColor.background,
+              ? Colors.primaryColor.background
+              : Colors.secondaryColor.background,
           title: I18n.t('Message_MarkAllAsRead'),
           onPress: handleMarkAllAsRead,
         },
@@ -159,7 +158,7 @@ const useInboxActions = () => {
   const {inboxFolder} = useSelector(state => state.mailMessages);
 
   useEffect(() => {
-    headerActionsProvider.registerModel('message_inbox', {
+    headerActionsProvider.registerModel('message_mailMessage_inbox', {
       actions: [
         {
           key: 'inboxImportant',
@@ -167,24 +166,25 @@ const useInboxActions = () => {
           iconName: null,
           customComponent: (
             <DoubleIcon
-              topIconConfig={{name: 'eye', size: 15}}
-              topIconPosition={{bottom: -7, right: -7}}
-              bottomIconConfig={{
+              topIconConfig={{
                 name:
                   inboxFolder === InboxFolder.Important ? 'star-fill' : 'star',
+                size: 15,
                 color: Colors.primaryColor.background,
               }}
+              topIconPosition={{bottom: -7, right: -7}}
+              bottomIconConfig={{name: 'eye'}}
             />
           ),
           title: I18n.t('Message_ImportantMessages'),
           onPress: () => {
-            const newValue =
-              inboxFolder === InboxFolder.Important
-                ? InboxFolder.Inbox
-                : InboxFolder.Important;
-
-            dispatch((fetchInboxMessages as any)({folder: newValue, page: 0}));
-            dispatch((saveInboxFolder as any)(newValue));
+            dispatch(
+              (saveInboxFolder as any)(
+                inboxFolder === InboxFolder.Important
+                  ? InboxFolder.Inbox
+                  : InboxFolder.Important,
+              ),
+            );
           },
           showInHeader: true,
         },
