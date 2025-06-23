@@ -121,6 +121,13 @@ export const quality_formsRegister: FormConfigs = {
         dependsOn: {
           supplierPurchaseOrder: () => null,
           supplierPartner: () => null,
+          qiDetection: ({objectState}) => {
+            if (!isOrigin(objectState, 'Supplier')) {
+              return null;
+            } else {
+              return objectState.supplierPurchaseOrderLine;
+            }
+          },
         },
       },
       customerPartner: {
@@ -152,7 +159,17 @@ export const quality_formsRegister: FormConfigs = {
         hideIf: ({objectState}) =>
           !isOrigin(objectState, 'Customer') ||
           !isStep(objectState, Steps.identification),
-        dependsOn: {customerSaleOrder: () => null, customerPartner: () => null},
+        dependsOn: {
+          customerSaleOrder: () => null,
+          customerPartner: () => null,
+          qiDetection: ({objectState}) => {
+            if (!isOrigin(objectState, 'Customer')) {
+              return null;
+            } else {
+              return objectState.customerSaleOrderLine;
+            }
+          },
+        },
       },
       manufOrder: {
         titleKey: 'Quality_ManufOrder',
@@ -162,6 +179,15 @@ export const quality_formsRegister: FormConfigs = {
         hideIf: ({objectState}) =>
           !isOrigin(objectState, 'Internal') ||
           !isStep(objectState, Steps.identification),
+        dependsOn: {
+          qiDetection: ({objectState}) => {
+            if (!isOrigin(objectState, 'Internal')) {
+              return null;
+            } else {
+              return objectState.manufOrder;
+            }
+          },
+        },
       },
       operationOrder: {
         titleKey: 'Quality_OperationLine',
@@ -194,10 +220,6 @@ export const quality_formsRegister: FormConfigs = {
           },
           customerSaleOrderLine: ({newValue}) => {
             return newValue?.product;
-          },
-          qiDetection: ({newValue, objectState}) => {
-            console.log('newValueDetection', newValue);
-            return null;
           },
         },
       },
