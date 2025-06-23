@@ -16,7 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import React, {useCallback} from 'react';
+import React, {useCallback, useMemo} from 'react';
 import {
   displayItemFullname,
   useDispatch,
@@ -33,6 +33,7 @@ interface ProductSearchBarProps {
   onChange: (value: any) => void;
   readonly?: boolean;
   required?: boolean;
+  objectState?: any;
 }
 
 const ProductSearchBarAux = ({
@@ -42,6 +43,7 @@ const ProductSearchBarAux = ({
   onChange,
   readonly = false,
   required = false,
+  objectState,
 }: ProductSearchBarProps) => {
   const I18n = useTranslator();
   const dispatch = useDispatch();
@@ -49,11 +51,37 @@ const ProductSearchBarAux = ({
   const {loadingProducts, moreLoadingProduct, isListEndProduct, productList} =
     useSelector((state: any) => state.quality_product);
 
+  const productIdsList = useMemo(() => {
+    const ids = new Set<number>();
+
+    if (objectState?.supplierPurchaseOrderLine?.product?.id) {
+      ids.add(objectState.supplierPurchaseOrderLine.product.id);
+    }
+
+    if (objectState?.manufOrder?.product?.id) {
+      ids.add(objectState.manufOrder.product.id);
+    }
+
+    if (objectState?.manufOrder?.billOfMaterial?.product?.id) {
+      const bomProductId = objectState.manufOrder.billOfMaterial.product.id;
+      const moProductId = objectState.manufOrder.product?.id;
+      if (bomProductId !== moProductId) {
+        ids.add(bomProductId);
+      }
+    }
+
+    if (objectState?.customerSaleOrderLine?.product?.id) {
+      ids.add(objectState.customerSaleOrderLine.product.id);
+    }
+
+    return Array.from(ids);
+  }, [objectState]);
+
   const searchProductAPI = useCallback(
     ({page = 0, searchValue}) => {
-      dispatch((searchProduct as any)({page, searchValue}));
+      dispatch((searchProduct as any)({page, searchValue, productIdsList}));
     },
-    [dispatch],
+    [dispatch, productIdsList],
   );
 
   return (

@@ -181,6 +181,25 @@ export const quality_formsRegister: FormConfigs = {
         hideIf: ({objectState}) =>
           !isStep(objectState, Steps.identification) ||
           isType(objectState, 'System'),
+        dependsOn: {
+          supplierPurchaseOrderLine: ({newValue}) => {
+            return newValue?.product;
+          },
+          manufOrder: ({newValue}) => {
+            if (
+              newValue?.product?.id === newValue?.billOfMaterial?.product?.id
+            ) {
+              return newValue?.product;
+            } else return null;
+          },
+          customerSaleOrderLine: ({newValue}) => {
+            return newValue?.product;
+          },
+          qiDetection: ({newValue, objectState}) => {
+            console.log('newValueDetection', newValue);
+            return null;
+          },
+        },
       },
       nonConformingQuantity: {
         titleKey: 'Quality_NonConformingQuantity',
