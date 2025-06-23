@@ -16,7 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import React, {useCallback, useState} from 'react';
+import React, {useCallback, useMemo, useState} from 'react';
 import {StyleSheet, TouchableOpacity, View} from 'react-native';
 import {useDispatch, useSelector, useTranslator} from '@axelor/aos-mobile-core';
 import {Button, Icon, Screen, Text} from '@axelor/aos-mobile-ui';
@@ -30,6 +30,11 @@ const MailMessageLinkFilesScreen = ({navigation}) => {
   const {linkFiles: _linkFiles} = useSelector(state => state.mailMessages);
 
   const [linkFiles, setLinkFiles] = useState<any[]>(_linkFiles);
+
+  const displayLinkFiles = useMemo(
+    () => linkFiles.length > 0 || linkFiles.length !== _linkFiles.length,
+    [_linkFiles.length, linkFiles.length],
+  );
 
   const handleLinkFiles = useCallback((file: any) => {
     setLinkFiles(prevFiles => {
@@ -62,7 +67,7 @@ const MailMessageLinkFilesScreen = ({navigation}) => {
     <Screen
       removeSpaceOnTop
       fixedItems={
-        linkFiles.length > 0 && (
+        displayLinkFiles && (
           <View style={styles.linkFilesContainer}>
             {linkFiles.map(renderFile)}
             <Button
@@ -89,16 +94,8 @@ const styles = StyleSheet.create({
     paddingHorizontal: 15,
     gap: 5,
   },
-  linkFile: {
-    flexShrink: 1,
-    flexDirection: 'row',
-    alignItems: 'center',
-    gap: 3,
-  },
-  text: {
-    flexShrink: 1,
-    textDecorationLine: 'underline',
-  },
+  linkFile: {flexShrink: 1, flexDirection: 'row', alignItems: 'center', gap: 3},
+  text: {flexShrink: 1, textDecorationLine: 'underline'},
 });
 
 export default MailMessageLinkFilesScreen;
