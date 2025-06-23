@@ -30,7 +30,7 @@ export const INSIDE_INDICATOR = 'inside';
 
 const defaultOutsideAlerterContext = {
   ref: undefined,
-  setRef: () => {
+  setRef: ref => {
     throw new Error(
       'OutsideAlerter should be mounted to set handle click outside event',
     );
@@ -39,27 +39,19 @@ const defaultOutsideAlerterContext = {
 
 const OutsideAlerterContext = createContext(defaultOutsideAlerterContext);
 
-const actionTypes = {
-  setRef: 'setRef',
-};
+const actionTypes = {setRef: 'setRef'};
 
 const outsideAlerterReducer = (state, action) => {
   switch (action.type) {
     case actionTypes.setRef: {
-      return {
-        ...state,
-        ref: action.payload,
-      };
+      return {...state, ref: action.payload};
     }
   }
 };
 
 const actions = {
   setRef: target => {
-    return {
-      type: actionTypes.setRef,
-      payload: target,
-    };
+    return {type: actionTypes.setRef, payload: target};
   },
 };
 
@@ -74,10 +66,7 @@ export const OutsideAlerterProvider = ({children}) => {
   }, []);
 
   const outsideAlerterContextState = useMemo(
-    () => ({
-      ...state,
-      setRef,
-    }),
+    () => ({...state, setRef}),
     [state, setRef],
   );
 
@@ -134,4 +123,12 @@ export const useClickOutside = ({wrapperRef}) => {
 
     return handleClickOutside(wrapperRef?.current, _ref);
   }, [_ref, wrapperRef]);
+};
+
+export const useClickOutsideContext = () => {
+  const {ref, setRef} = useContext(OutsideAlerterContext);
+
+  return useMemo(() => {
+    return {ref, setRef};
+  }, [ref, setRef]);
 };

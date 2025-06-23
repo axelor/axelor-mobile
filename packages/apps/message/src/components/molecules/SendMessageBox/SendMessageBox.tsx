@@ -39,6 +39,7 @@ interface SendMessageBoxProps {
   hideMessageBox?: boolean;
   onSend?: (message: any) => void;
   wrapperRef?: any;
+  onLinkFiles?: () => void;
 }
 
 const SendMessageBox = ({
@@ -49,6 +50,7 @@ const SendMessageBox = ({
   hideMessageBox = false,
   onSend,
   wrapperRef,
+  onLinkFiles,
 }: SendMessageBoxProps) => {
   const I18n = useTranslator();
   const navigation = useNavigation();
@@ -74,8 +76,9 @@ const SendMessageBox = ({
   }, [dispatch, model, modelId, comment, parentId, linkFiles, onSend]);
 
   const handleLinkFiles = useCallback(() => {
+    onLinkFiles?.();
     navigation.navigate('MailMessageLinkFilesScreen');
-  }, [navigation]);
+  }, [navigation, onLinkFiles]);
 
   if (hideMessageBox) {
     return null;
