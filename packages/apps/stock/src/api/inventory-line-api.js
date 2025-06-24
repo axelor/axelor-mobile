@@ -36,7 +36,7 @@ const createSearchCriteria = (inventoryId, searchValue) => {
 
 export async function searchInventoryLines({
   inventoryId,
-  searchValue,
+  searchValue = null,
   page = 0,
 }) {
   return createStandardSearch({

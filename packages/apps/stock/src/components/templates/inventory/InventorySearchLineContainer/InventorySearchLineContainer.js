@@ -26,13 +26,14 @@ import {
   useTranslator,
   useTypes,
 } from '@axelor/aos-mobile-core';
-import {SearchLineContainer} from '../../../organisms';
+import {InventoryPickingWidget, SearchLineContainer} from '../../../organisms';
 import {InventoryLineActionCard} from '../../../templates';
 import {fetchInventoryLines} from '../../../../features/inventoryLineSlice';
 import {useLineHandler} from '../../../../hooks';
 import {LineVerification} from '../../../../types';
 
 const scanKey = 'trackingNumber-or-product_inventory-details';
+const massScanKey = 'inventory-line_mass-scan';
 
 const InventorySearchLineContainer = ({}) => {
   const I18n = useTranslator();
@@ -97,30 +98,44 @@ const InventorySearchLineContainer = ({}) => {
     return item.realQty == null;
   }, []);
 
+  const handleRefresh = useCallback(
+    () => fetchInventoryLinesAPI({page: 0}),
+    [fetchInventoryLinesAPI],
+  );
+
   return (
-    <SearchLineContainer
-      title={I18n.t('Stock_InventoryLines')}
-      numberOfItems={totalNumberLines}
-      objectList={inventoryLineList}
-      handleSelect={handleLineSearch}
-      handleSearch={fetchInventoryLinesAPI}
-      scanKey={scanKey}
-      onViewPress={handleViewAll}
-      filterLine={filterLine}
-      showAction={
-        !readonly &&
-        canCreate &&
-        inventory?.statusSelect < Inventory?.statusSelect.Completed
-      }
-      onAction={handleNewLine}
-      renderItem={item => (
-        <InventoryLineActionCard
-          style={styles.item}
-          inventoryLine={item}
-          onPress={() => handleShowLine(item)}
-        />
-      )}
-    />
+    <>
+      <InventoryPickingWidget
+        scanKey={massScanKey}
+        inventoryId={inventory.id}
+        totalLines={totalNumberLines}
+        onRefresh={handleRefresh}
+        handleShowLine={handleLineSearch}
+      />
+      <SearchLineContainer
+        title={I18n.t('Stock_InventoryLines')}
+        numberOfItems={totalNumberLines}
+        objectList={inventoryLineList}
+        handleSelect={handleLineSearch}
+        handleSearch={fetchInventoryLinesAPI}
+        scanKey={scanKey}
+        onViewPress={handleViewAll}
+        filterLine={filterLine}
+        showAction={
+          !readonly &&
+          canCreate &&
+          inventory?.statusSelect < Inventory?.statusSelect.Completed
+        }
+        onAction={handleNewLine}
+        renderItem={item => (
+          <InventoryLineActionCard
+            style={styles.item}
+            inventoryLine={item}
+            onPress={() => handleShowLine(item)}
+          />
+        )}
+      />
+    </>
   );
 };
 
