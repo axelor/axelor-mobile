@@ -21,14 +21,24 @@ import {
   getSearchCriterias,
 } from '@axelor/aos-mobile-core';
 
-const createProductCriteria = searchValue => {
-  return [getSearchCriterias('quality_product', searchValue)];
+const createProductCriteria = (searchValue, productIds) => {
+  const criterias = [getSearchCriterias('quality_product', searchValue)];
+
+  if (Array.isArray(productIds) && productIds?.length > 0) {
+    criterias.push({
+      fieldName: 'id',
+      operator: 'in',
+      value: productIds,
+    });
+  }
+
+  return criterias;
 };
 
-export async function searchProduct({page = 0, searchValue}) {
+export async function searchProduct({page = 0, searchValue, productIds}) {
   return createStandardSearch({
     model: 'com.axelor.apps.base.db.Product',
-    criteria: createProductCriteria(searchValue),
+    criteria: createProductCriteria(searchValue, productIds),
     fieldKey: 'quality_product',
     sortKey: 'quality_product',
     page,
