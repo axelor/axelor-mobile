@@ -53,9 +53,11 @@ export const quality_modelAPI: ObjectFields = {
   }),
   quality_qualityImprovement: schemaContructor.object({
     sequence: schemaContructor.string(),
-    qiDetection: schemaContructor
-      .subObject()
-      .concat(schemaContructor.object({origin: schemaContructor.number()})),
+    qiDetection: schemaContructor.subObject().concat(
+      schemaContructor.object({
+        origin: schemaContructor.number(),
+      }),
+    ),
     qiStatus: schemaContructor.subObject('sequence'),
     gravityTypeSelect: schemaContructor.number(),
     analysisMethod: schemaContructor.subObject(),
@@ -77,7 +79,9 @@ export const quality_modelAPI: ObjectFields = {
     ),
     qiResolution: schemaContructor.subObject(),
   }),
-  quality_qiStatus: schemaContructor.object({name: schemaContructor.string()}),
+  quality_qiStatus: schemaContructor.object({
+    name: schemaContructor.string(),
+  }),
   quality_qiResolution: schemaContructor.object({
     qiResolutionDefaultsList: schemaContructor
       .array()
@@ -115,7 +119,7 @@ export const quality_modelAPI: ObjectFields = {
     saleOrderSeq: schemaContructor.string(),
   }),
   quality_customerOrderLine: schemaContructor.object({
-    productName: schemaContructor.string(),
+    fullName: schemaContructor.string(),
     product: schemaContructor.subObject(),
   }),
   quality_manufacturingOrder: schemaContructor.object({
@@ -130,5 +134,7 @@ export const quality_modelAPI: ObjectFields = {
     fullName: schemaContructor.string(),
     name: schemaContructor.string(),
   }),
-  quality_qiDefault: schemaContructor.object({name: schemaContructor.string()}),
+  quality_qiDefault: schemaContructor.object({
+    name: schemaContructor.string(),
+  }),
 };
