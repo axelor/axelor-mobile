@@ -231,6 +231,11 @@ export const quality_formsRegister: FormConfigs = {
         hideIf: ({objectState}) =>
           !isStep(objectState, Steps.identification) ||
           isType(objectState, 'System'),
+        dependsOn: {
+          manufOrder: () => null,
+          customerSaleOrderLine: () => null,
+          supplierPurchaseOrderLine: () => null,
+        },
       },
       nonConformingQuantity: {
         titleKey: 'Quality_NonConformingQuantity',

@@ -78,8 +78,10 @@ const ProductSearchBarAux = ({
   ]);
 
   useEffect(() => {
-    onChange(productSet.length === 1 ? productSet[0] : undefined);
-  }, [onChange, productSet]);
+    if (!defaultValue) {
+      onChange(productSet.length === 1 ? productSet[0] : undefined);
+    }
+  }, [defaultValue, onChange, productSet]);
 
   const searchProductAPI = useCallback(
     ({page = 0, searchValue}) => {

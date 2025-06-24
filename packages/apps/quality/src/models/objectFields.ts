@@ -66,11 +66,24 @@ export const quality_modelAPI: ObjectFields = {
       schemaContructor.object({
         customerPartner: schemaContructor.subObject('simpleFullName'),
         customerSaleOrder: schemaContructor.subObject('saleOrderSeq'),
-        customerSaleOrderLine: schemaContructor.subObject(),
+        customerSaleOrderLine: schemaContructor.subObject().concat(
+          schemaContructor.object({
+            product: schemaContructor.subObject(),
+          }),
+        ),
         supplierPartner: schemaContructor.subObject('simpleFullName'),
         supplierPurchaseOrder: schemaContructor.subObject('purchaseOrderSeq'),
-        supplierPurchaseOrderLine: schemaContructor.subObject(),
-        manufOrder: schemaContructor.subObject(),
+        supplierPurchaseOrderLine: schemaContructor.subObject().concat(
+          schemaContructor.object({
+            product: schemaContructor.subObject(),
+          }),
+        ),
+        manufOrder: schemaContructor.subObject().concat(
+          schemaContructor.object({
+            billOfMaterial: schemaContructor.subObject(),
+            product: schemaContructor.subObject(),
+          }),
+        ),
         operationOrder: schemaContructor.subObject(),
         product: schemaContructor.subObject(),
         quantity: schemaContructor.number(),
