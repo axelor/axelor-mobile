@@ -71,6 +71,7 @@
   "Quality_SliceAction_SearchCustomerOrder": "search customer orders",
   "Quality_SliceAction_SearchCustomerOrderLine": "search customer order lines",
   "Quality_SliceAction_SearchManufOrder": "search manufacturing orders",
+  "Quality_SliceAction_SearchBoMLines": "search bill of material lines",
   "Quality_SliceAction_SearchOperationLine": "search operation lines",
   "Quality_SliceAction_SearchDefect": "search defects",
   "Quality_SliceAction_FetchQualityImprovement": "fetch quality imprvement by id",

@@ -66,11 +66,24 @@ export const quality_modelAPI: ObjectFields = {
       schemaContructor.object({
         customerPartner: schemaContructor.subObject('simpleFullName'),
         customerSaleOrder: schemaContructor.subObject('saleOrderSeq'),
-        customerSaleOrderLine: schemaContructor.subObject(),
+        customerSaleOrderLine: schemaContructor.subObject().concat(
+          schemaContructor.object({
+            product: schemaContructor.subObject(),
+          }),
+        ),
         supplierPartner: schemaContructor.subObject('simpleFullName'),
         supplierPurchaseOrder: schemaContructor.subObject('purchaseOrderSeq'),
-        supplierPurchaseOrderLine: schemaContructor.subObject(),
-        manufOrder: schemaContructor.subObject(),
+        supplierPurchaseOrderLine: schemaContructor.subObject().concat(
+          schemaContructor.object({
+            product: schemaContructor.subObject(),
+          }),
+        ),
+        manufOrder: schemaContructor.subObject().concat(
+          schemaContructor.object({
+            billOfMaterial: schemaContructor.subObject(),
+            product: schemaContructor.subObject(),
+          }),
+        ),
         operationOrder: schemaContructor.subObject(),
         product: schemaContructor.subObject(),
         quantity: schemaContructor.number(),
@@ -110,6 +123,7 @@ export const quality_modelAPI: ObjectFields = {
   }),
   quality_supplierOrderLine: schemaContructor.object({
     fullName: schemaContructor.string(),
+    product: schemaContructor.subObject(),
   }),
   quality_customer: schemaContructor.object({
     simpleFullName: schemaContructor.string(),
@@ -118,10 +132,16 @@ export const quality_modelAPI: ObjectFields = {
     saleOrderSeq: schemaContructor.string(),
   }),
   quality_customerOrderLine: schemaContructor.object({
-    productName: schemaContructor.string(),
+    fullName: schemaContructor.string(),
+    product: schemaContructor.subObject(),
   }),
   quality_manufacturingOrder: schemaContructor.object({
     manufOrderSeq: schemaContructor.string(),
+    product: schemaContructor.subObject(),
+    billOfMaterial: schemaContructor.subObject(),
+  }),
+  quality_billOfMaterialLine: schemaContructor.object({
+    product: schemaContructor.subObject(),
   }),
   quality_operationOrder: schemaContructor.object({
     name: schemaContructor.string(),

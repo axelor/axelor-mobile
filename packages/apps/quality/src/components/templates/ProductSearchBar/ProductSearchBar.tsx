@@ -16,7 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import React, {useCallback} from 'react';
+import React, {useCallback, useEffect, useMemo} from 'react';
 import {
   displayItemFullname,
   useDispatch,
@@ -25,12 +25,14 @@ import {
 } from '@axelor/aos-mobile-core';
 import {AutoCompleteSearch} from '@axelor/aos-mobile-ui';
 import {searchProduct} from '../../../features/productSlice';
+import {searchBoMLines} from '../../../features/manufOrderSlice';
 
 interface ProductSearchBarProps {
   style?: any;
   title?: string;
   defaultValue?: string;
   onChange: (value: any) => void;
+  objectState?: any;
   readonly?: boolean;
   required?: boolean;
 }
@@ -40,6 +42,7 @@ const ProductSearchBarAux = ({
   title = 'Quality_Product',
   defaultValue,
   onChange,
+  objectState,
   readonly = false,
   required = false,
 }: ProductSearchBarProps) => {
@@ -48,12 +51,49 @@ const ProductSearchBarAux = ({
 
   const {loadingProducts, moreLoadingProduct, isListEndProduct, productList} =
     useSelector((state: any) => state.quality_product);
+  const {bomLineList} = useSelector((state: any) => state.quality_manufOrder);
+
+  useEffect(() => {
+    dispatch(
+      (searchBoMLines as any)({
+        bomId: objectState?.manufOrder?.billOfMaterial?.id,
+      }),
+    );
+  }, [dispatch, objectState?.manufOrder?.billOfMaterial?.id]);
+
+  const productSet = useMemo(() => {
+    return [
+      objectState?.supplierPurchaseOrderLine?.product,
+      objectState?.customerSaleOrderLine?.product,
+      objectState?.manufOrder?.product,
+      ...(bomLineList?.map(({product}) => product) ?? []),
+    ]
+      .filter(_p => !!_p)
+      .filter(({id}, idx, self) => self.findIndex(_i => _i?.id === id) === idx);
+  }, [
+    bomLineList,
+    objectState?.customerSaleOrderLine?.product,
+    objectState?.manufOrder?.product,
+    objectState?.supplierPurchaseOrderLine?.product,
+  ]);
+
+  useEffect(() => {
+    if (!defaultValue) {
+      onChange(productSet.length === 1 ? productSet[0] : undefined);
+    }
+  }, [defaultValue, onChange, productSet]);
 
   const searchProductAPI = useCallback(
     ({page = 0, searchValue}) => {
-      dispatch((searchProduct as any)({page, searchValue}));
+      dispatch(
+        (searchProduct as any)({
+          page,
+          searchValue,
+          productIds: productSet.map(_p => _p.id),
+        }),
+      );
     },
-    [dispatch],
+    [dispatch, productSet],
   );
 
   return (

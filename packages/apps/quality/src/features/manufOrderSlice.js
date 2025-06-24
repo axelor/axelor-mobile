@@ -21,7 +21,10 @@ import {
   generateInifiniteScrollCases,
   handlerApiCall,
 } from '@axelor/aos-mobile-core';
-import {searchManufOrder as _searchManufOrder} from '../api/manuf-order-api';
+import {
+  searchBoMLines as _searchBoMLines,
+  searchManufOrder as _searchManufOrder,
+} from '../api/manuf-order-api';
 
 export const searchManufOrder = createAsyncThunk(
   'quality_manufOrder/searchManufOrder',
@@ -36,11 +39,29 @@ export const searchManufOrder = createAsyncThunk(
   },
 );
 
+export const searchBoMLines = createAsyncThunk(
+  'quality_manufOrder/searchBoMLines',
+  async function (data, {getState}) {
+    return handlerApiCall({
+      fetchFunction: _searchBoMLines,
+      data,
+      action: 'Quality_SliceAction_SearchBoMLines',
+      getState,
+      responseOptions: {isArrayResponse: true},
+    });
+  },
+);
+
 const initialState = {
   loadingManufOrders: false,
   moreLoadingManufOrder: false,
   isListEndManufOrder: false,
   manufOrderList: [],
+
+  loadingBoMLines: false,
+  moreLoadingBoMLine: false,
+  isListEndBoMLine: false,
+  bomLineList: [],
 };
 
 const manufOrderSlice = createSlice({
@@ -52,6 +73,12 @@ const manufOrderSlice = createSlice({
       moreLoading: 'moreLoadingManufOrder',
       isListEnd: 'isListEndManufOrder',
       list: 'manufOrderList',
+    });
+    generateInifiniteScrollCases(builder, searchBoMLines, {
+      loading: 'loadingBoMLines',
+      moreLoading: 'moreLoadingBoMLine',
+      isListEnd: 'isListEndBoMLine',
+      list: 'bomLineList',
     });
   },
 });
