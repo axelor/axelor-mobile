@@ -48,6 +48,7 @@ const InventoryPickingWidget = ({
       const data = await searchInventoryLinesApi({
         inventoryId,
         searchValue: scanValue,
+        useMassScanSortKey: true,
       }).then(res => {
         return res?.data?.data;
       });

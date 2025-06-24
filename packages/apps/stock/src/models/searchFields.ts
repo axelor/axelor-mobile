@@ -40,6 +40,7 @@ export const stock_searchFields: SearchFields = {
     'trackingNumber.trackingNumberSeq',
     'trackingNumber.serialNumber',
   ],
+  stock_inventoryLineMassScan: ['product.serialNumber'],
   stock_partner: [
     'fullName',
     'partnerSeq',
