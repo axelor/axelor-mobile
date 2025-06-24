@@ -27,7 +27,7 @@ export {
   updateControlEntry,
 } from './controlEntrySlice';
 export {fetchControlPlanById} from './controlPlanSlice';
-export {searchManufOrder} from './manufOrderSlice';
+export {searchBoMLines, searchManufOrder} from './manufOrderSlice';
 export {searchOperationLine} from './operationOrderSlice';
 export {searchCustomer, searchSupplier} from './partnerSlice';
 export {searchProduct} from './productSlice';

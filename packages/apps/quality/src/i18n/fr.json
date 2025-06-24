@@ -71,6 +71,7 @@
   "Quality_SliceAction_SearchCustomerOrder": "recherche des commandes clients",
   "Quality_SliceAction_SearchCustomerOrderLine": "recherche des lignes de commande client",
   "Quality_SliceAction_SearchManufOrder": "recherche des ordres de fabrication",
+  "Quality_SliceAction_SearchBoMLines": "recherche sur les lignes de nomenclature",
   "Quality_SliceAction_SearchOperationLine": "recherche des lignes d'opération",
   "Quality_SliceAction_SearchDefect": "recherche des défauts",
   "Quality_SliceAction_FetchQualityImprovement": "récupération de l'amélioration qualité par id",

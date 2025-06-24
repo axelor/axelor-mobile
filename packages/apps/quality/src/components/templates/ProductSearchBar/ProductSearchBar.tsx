@@ -16,7 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import React, {useCallback, useMemo} from 'react';
+import React, {useCallback, useEffect, useMemo} from 'react';
 import {
   displayItemFullname,
   useDispatch,
@@ -25,15 +25,16 @@ import {
 } from '@axelor/aos-mobile-core';
 import {AutoCompleteSearch} from '@axelor/aos-mobile-ui';
 import {searchProduct} from '../../../features/productSlice';
+import {searchBoMLines} from '../../../features/manufOrderSlice';
 
 interface ProductSearchBarProps {
   style?: any;
   title?: string;
   defaultValue?: string;
   onChange: (value: any) => void;
+  objectState?: any;
   readonly?: boolean;
   required?: boolean;
-  objectState?: any;
 }
 
 const ProductSearchBarAux = ({
@@ -41,47 +42,56 @@ const ProductSearchBarAux = ({
   title = 'Quality_Product',
   defaultValue,
   onChange,
+  objectState,
   readonly = false,
   required = false,
-  objectState,
 }: ProductSearchBarProps) => {
   const I18n = useTranslator();
   const dispatch = useDispatch();
 
   const {loadingProducts, moreLoadingProduct, isListEndProduct, productList} =
     useSelector((state: any) => state.quality_product);
+  const {bomLineList} = useSelector((state: any) => state.quality_manufOrder);
 
-  const productIdsList = useMemo(() => {
-    const ids = new Set<number>();
+  useEffect(() => {
+    dispatch(
+      (searchBoMLines as any)({
+        bomId: objectState?.manufOrder?.billOfMaterial?.id,
+      }),
+    );
+  }, [dispatch, objectState?.manufOrder?.billOfMaterial?.id]);
 
-    if (objectState?.supplierPurchaseOrderLine?.product?.id) {
-      ids.add(objectState.supplierPurchaseOrderLine.product.id);
-    }
+  const productSet = useMemo(() => {
+    return [
+      objectState?.supplierPurchaseOrderLine?.product,
+      objectState?.customerSaleOrderLine?.product,
+      objectState?.manufOrder?.product,
+      ...(bomLineList?.map(({product}) => product) ?? []),
+    ]
+      .filter(_p => !!_p)
+      .filter(({id}, idx, self) => self.findIndex(_i => _i?.id === id) === idx);
+  }, [
+    bomLineList,
+    objectState?.customerSaleOrderLine?.product,
+    objectState?.manufOrder?.product,
+    objectState?.supplierPurchaseOrderLine?.product,
+  ]);
 
-    if (objectState?.manufOrder?.product?.id) {
-      ids.add(objectState.manufOrder.product.id);
-    }
-
-    if (objectState?.manufOrder?.billOfMaterial?.product?.id) {
-      const bomProductId = objectState.manufOrder.billOfMaterial.product.id;
-      const moProductId = objectState.manufOrder.product?.id;
-      if (bomProductId !== moProductId) {
-        ids.add(bomProductId);
-      }
-    }
-
-    if (objectState?.customerSaleOrderLine?.product?.id) {
-      ids.add(objectState.customerSaleOrderLine.product.id);
-    }
-
-    return Array.from(ids);
-  }, [objectState]);
+  useEffect(() => {
+    onChange(productSet.length === 1 ? productSet[0] : undefined);
+  }, [onChange, productSet]);
 
   const searchProductAPI = useCallback(
     ({page = 0, searchValue}) => {
-      dispatch((searchProduct as any)({page, searchValue, productIdsList}));
+      dispatch(
+        (searchProduct as any)({
+          page,
+          searchValue,
+          productIdsList: productSet.map(_p => _p.id),
+        }),
+      );
     },
-    [dispatch, productIdsList],
+    [dispatch, productSet],
   );
 
   return (

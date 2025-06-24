@@ -125,7 +125,10 @@ export const quality_modelAPI: ObjectFields = {
   quality_manufacturingOrder: schemaContructor.object({
     manufOrderSeq: schemaContructor.string(),
     product: schemaContructor.subObject(),
-    billOfMaterial: schemaContructor.subObject('product'),
+    billOfMaterial: schemaContructor.subObject(),
+  }),
+  quality_billOfMaterialLine: schemaContructor.object({
+    product: schemaContructor.subObject(),
   }),
   quality_operationOrder: schemaContructor.object({
     name: schemaContructor.string(),

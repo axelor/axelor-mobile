@@ -36,3 +36,26 @@ export async function searchManufOrder({page = 0, searchValue, companyId}) {
     companyId,
   });
 }
+
+const createBoMLinesCriteria = (bomId, searchValue) => {
+  return [
+    getSearchCriterias('quality_billOfMaterialLine', searchValue),
+    {
+      fieldName: 'billOfMaterialParent.id',
+      operator: '=',
+      value: bomId,
+    },
+  ];
+};
+
+export async function searchBoMLines({bomId, page, searchValue}) {
+  return createStandardSearch({
+    model: 'com.axelor.apps.production.db.BillOfMaterialLine',
+    criteria: createBoMLinesCriteria(bomId, searchValue),
+    fieldKey: 'quality_billOfMaterialLine',
+    sortKey: 'quality_billOfMaterialLine',
+    page: page ?? 0,
+    numberElementsByPage: !page ? null : undefined,
+    provider: 'model',
+  });
+}
