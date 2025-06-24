@@ -89,7 +89,7 @@ const ProductSearchBarAux = ({
         (searchProduct as any)({
           page,
           searchValue,
-          productIdsList: productSet.map(_p => _p.id),
+          productIds: productSet.map(_p => _p.id),
         }),
       );
     },
