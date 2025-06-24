@@ -99,6 +99,12 @@ export const quality_formsRegister: FormConfigs = {
         hideIf: ({objectState}) =>
           !isOrigin(objectState, 'Supplier') ||
           !isStep(objectState, Steps.identification),
+        dependsOn: {
+          qiDetection: ({objectState}) =>
+            !isOrigin(objectState, 'Supplier')
+              ? undefined
+              : objectState.supplierPartner,
+        },
       },
       supplierPurchaseOrder: {
         titleKey: 'Quality_SupplierOrder',
@@ -108,7 +114,13 @@ export const quality_formsRegister: FormConfigs = {
         hideIf: ({objectState}) =>
           !isOrigin(objectState, 'Supplier') ||
           !isStep(objectState, Steps.identification),
-        dependsOn: {supplierPartner: () => null},
+        dependsOn: {
+          supplierPartner: () => null,
+          qiDetection: ({objectState}) =>
+            !isOrigin(objectState, 'Supplier')
+              ? undefined
+              : objectState.supplierPurchaseOrder,
+        },
       },
       supplierPurchaseOrderLine: {
         titleKey: 'Quality_SupplierOrderLine',
@@ -121,13 +133,10 @@ export const quality_formsRegister: FormConfigs = {
         dependsOn: {
           supplierPurchaseOrder: () => null,
           supplierPartner: () => null,
-          qiDetection: ({objectState}) => {
-            if (!isOrigin(objectState, 'Supplier')) {
-              return null;
-            } else {
-              return objectState.supplierPurchaseOrderLine;
-            }
-          },
+          qiDetection: ({objectState}) =>
+            !isOrigin(objectState, 'Supplier')
+              ? undefined
+              : objectState.supplierPurchaseOrderLine,
         },
       },
       customerPartner: {
@@ -140,6 +149,15 @@ export const quality_formsRegister: FormConfigs = {
             isOrigin(objectState, 'Customer') ||
             isOrigin(objectState, 'Internal')
           ) || !isStep(objectState, Steps.identification),
+        dependsOn: {
+          qiDetection: ({objectState}) =>
+            !(
+              isOrigin(objectState, 'Customer') ||
+              isOrigin(objectState, 'Internal')
+            )
+              ? undefined
+              : objectState.customerPartner,
+        },
       },
       customerSaleOrder: {
         titleKey: 'Quality_CustomerOrder',
@@ -149,7 +167,13 @@ export const quality_formsRegister: FormConfigs = {
         hideIf: ({objectState}) =>
           !isOrigin(objectState, 'Customer') ||
           !isStep(objectState, Steps.identification),
-        dependsOn: {customerPartner: () => null},
+        dependsOn: {
+          customerPartner: () => null,
+          qiDetection: ({objectState}) =>
+            !isOrigin(objectState, 'Customer')
+              ? undefined
+              : objectState.customerSaleOrder,
+        },
       },
       customerSaleOrderLine: {
         titleKey: 'Quality_CustomerOrderLine',
@@ -162,13 +186,10 @@ export const quality_formsRegister: FormConfigs = {
         dependsOn: {
           customerSaleOrder: () => null,
           customerPartner: () => null,
-          qiDetection: ({objectState}) => {
-            if (!isOrigin(objectState, 'Customer')) {
-              return null;
-            } else {
-              return objectState.customerSaleOrderLine;
-            }
-          },
+          qiDetection: ({objectState}) =>
+            !isOrigin(objectState, 'Customer')
+              ? undefined
+              : objectState.customerSaleOrderLine,
         },
       },
       manufOrder: {
@@ -180,13 +201,10 @@ export const quality_formsRegister: FormConfigs = {
           !isOrigin(objectState, 'Internal') ||
           !isStep(objectState, Steps.identification),
         dependsOn: {
-          qiDetection: ({objectState}) => {
-            if (!isOrigin(objectState, 'Internal')) {
-              return null;
-            } else {
-              return objectState.manufOrder;
-            }
-          },
+          qiDetection: ({objectState}) =>
+            !isOrigin(objectState, 'Internal')
+              ? undefined
+              : objectState.manufOrder,
         },
       },
       operationOrder: {
@@ -197,7 +215,13 @@ export const quality_formsRegister: FormConfigs = {
         hideIf: ({objectState}) =>
           !isOrigin(objectState, 'Internal') ||
           !isStep(objectState, Steps.identification),
-        dependsOn: {manufOrder: () => null},
+        dependsOn: {
+          manufOrder: () => null,
+          qiDetection: ({objectState}) =>
+            !isOrigin(objectState, 'Internal')
+              ? undefined
+              : objectState.operationOrder,
+        },
       },
       product: {
         titleKey: 'Quality_Product',
@@ -207,21 +231,6 @@ export const quality_formsRegister: FormConfigs = {
         hideIf: ({objectState}) =>
           !isStep(objectState, Steps.identification) ||
           isType(objectState, 'System'),
-        dependsOn: {
-          supplierPurchaseOrderLine: ({newValue}) => {
-            return newValue?.product;
-          },
-          manufOrder: ({newValue}) => {
-            if (
-              newValue?.product?.id === newValue?.billOfMaterial?.product?.id
-            ) {
-              return newValue?.product;
-            } else return null;
-          },
-          customerSaleOrderLine: ({newValue}) => {
-            return newValue?.product;
-          },
-        },
       },
       nonConformingQuantity: {
         titleKey: 'Quality_NonConformingQuantity',
