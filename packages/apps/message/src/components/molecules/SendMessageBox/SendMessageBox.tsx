@@ -67,7 +67,7 @@ const SendMessageBox = ({
         modelId,
         comment,
         parentId,
-        files: linkFiles.map(file => file.metaFile.id),
+        files: linkFiles.map(file => file?.metaFile?.id),
       }),
     ).then(res => onSend?.(res.payload));
     Keyboard.dismiss();
