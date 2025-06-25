@@ -19,6 +19,7 @@
 import {useCallback, useEffect, useMemo} from 'react';
 import {
   handlerApiCall,
+  isEmpty,
   useDispatch,
   useNavigation,
   useSelector,
@@ -32,6 +33,8 @@ import {showLine} from '../utils';
 import {LineVerification} from '../types';
 
 const recreateProductStructure = (product: any, productByCompany: any): any => {
+  if (isEmpty(product)) return product;
+
   return {
     ...product,
     trackingNumberConfiguration: productByCompany?.trackingNumberConfiguration,
@@ -136,18 +139,20 @@ export const useLineHandler = () => {
       skipVerification?: boolean;
       type: keyof typeof LineVerification.type;
     }) => {
-      const config = LineVerification.getLineVerificationConfig(type);
-      const _skipVerification =
-        skipVerification ?? !mobileSettings?.[config.configName];
-      const product = await fetchProductByCompany(line.product);
+      if (line != null) {
+        const config = LineVerification.getLineVerificationConfig(type);
+        const _skipVerification =
+          skipVerification ?? !mobileSettings?.[config.configName];
+        const product = await fetchProductByCompany(line.product);
 
-      showLine({
-        ...config,
-        item: {name: config.item, data: move},
-        itemLine: {name: config.itemLine, data: {...line, product}},
-        skipVerification: _skipVerification,
-        navigation,
-      });
+        showLine({
+          ...config,
+          item: {name: config.item, data: move},
+          itemLine: {name: config.itemLine, data: {...line, product}},
+          skipVerification: _skipVerification,
+          navigation,
+        });
+      }
     },
     [fetchProductByCompany, mobileSettings, navigation],
   );

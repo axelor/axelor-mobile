@@ -1,0 +1,5 @@
+{
+  "title": "Product by company: avoid undefined issue when fetching product for the first time",
+  "type": "fix",
+  "packages": "stock"
+}
