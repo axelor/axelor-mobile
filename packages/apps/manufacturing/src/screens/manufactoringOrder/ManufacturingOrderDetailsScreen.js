@@ -24,7 +24,12 @@ import {
   HeaderContainer,
   ViewAllContainer,
 } from '@axelor/aos-mobile-ui';
-import {useDispatch, useSelector, useTranslator} from '@axelor/aos-mobile-core';
+import {
+  useContextRegister,
+  useDispatch,
+  useSelector,
+  useTranslator,
+} from '@axelor/aos-mobile-core';
 import {fetchProductWithId, ProductCardInfo} from '@axelor/aos-mobile-stock';
 import {
   ManufacturingOrderHeader,
@@ -40,8 +45,17 @@ import {fetchManufOrder} from '../../features/manufacturingOrderSlice';
 import {fetchOperationOrders} from '../../features/operationOrderSlice';
 
 const ManufacturingOrderDetailsScreen = ({route, navigation}) => {
+  const manufacturingOrderId = route.params.manufacturingOrderId;
   const I18n = useTranslator();
   const dispatch = useDispatch();
+  useContextRegister({
+    models: [
+      {
+        model: 'com.axelor.apps.production.db.ManufOrder',
+        id: manufacturingOrderId,
+      },
+    ],
+  });
 
   const {operationOrderList} = useSelector(state => state.operationOrder);
   const {productFromId: product} = useSelector(state => state.product);
@@ -56,22 +70,16 @@ const ManufacturingOrderDetailsScreen = ({route, navigation}) => {
   }, [manufOrder, dispatch]);
 
   const fetchManufOrderAndOperation = useCallback(() => {
-    dispatch(
-      fetchManufOrder({manufOrderId: route.params.manufacturingOrderId}),
-    );
-    dispatch(
-      fetchOperationOrders({manufOrderId: route.params.manufacturingOrderId}),
-    );
-  }, [dispatch, route.params.manufacturingOrderId]);
+    dispatch(fetchManufOrder({manufOrderId: manufacturingOrderId}));
+    dispatch(fetchOperationOrders({manufOrderId: manufacturingOrderId}));
+  }, [dispatch, manufacturingOrderId]);
 
   useEffect(() => {
     fetchManufOrderAndOperation();
   }, [fetchManufOrderAndOperation]);
 
   const handleShowProduct = () => {
-    navigation.navigate('ProductStockDetailsScreen', {
-      product: product,
-    });
+    navigation.navigate('ProductStockDetailsScreen', {product: product});
   };
 
   const handleViewSaleOrderRefs = () => {
@@ -99,15 +107,11 @@ const ManufacturingOrderDetailsScreen = ({route, navigation}) => {
   };
 
   const handleShowConsumedProduct = () => {
-    navigation.navigate('ConsumedProductListScreen', {
-      manufOrder: manufOrder,
-    });
+    navigation.navigate('ConsumedProductListScreen', {manufOrder: manufOrder});
   };
 
   const handleShowProducedProduct = () => {
-    navigation.navigate('ProducedProductListScreen', {
-      manufOrder: manufOrder,
-    });
+    navigation.navigate('ProducedProductListScreen', {manufOrder: manufOrder});
   };
 
   return (
@@ -125,10 +129,7 @@ const ManufacturingOrderDetailsScreen = ({route, navigation}) => {
       />
       <KeyboardAvoidingScrollView
         style={styles.scroll}
-        refresh={{
-          loading: loadingOrder,
-          fetcher: fetchManufOrderAndOperation,
-        }}>
+        refresh={{loading: loadingOrder, fetcher: fetchManufOrderAndOperation}}>
         <ManufacturingOrderDatesCard />
         <ProductCardInfo
           onPress={handleShowProduct}
@@ -171,13 +172,8 @@ const ManufacturingOrderDetailsScreen = ({route, navigation}) => {
 };
 
 const styles = StyleSheet.create({
-  item: {
-    marginHorizontal: 1,
-    marginVertical: 4,
-  },
-  scroll: {
-    paddingVertical: 10,
-  },
+  item: {marginHorizontal: 1, marginVertical: 4},
+  scroll: {paddingVertical: 10},
 });
 
 export default ManufacturingOrderDetailsScreen;

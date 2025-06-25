@@ -18,34 +18,101 @@
 
 import React, {useEffect, useMemo} from 'react';
 import {Screen} from '@axelor/aos-mobile-ui';
-import {FormView, useDispatch, useSelector} from '@axelor/aos-mobile-core';
+import {
+  FormView,
+  useDispatch,
+  useSelector,
+  useTypes,
+} from '@axelor/aos-mobile-core';
 import {QIFormButton} from '../../components';
 import {fetchQualityImprovement} from '../../features/qualityImprovementSlice';
-import {QualityImprovement} from '../../types';
+import {
+  fetchStockMove,
+  fetchStockMoveLine,
+} from '../../features/stockMoveSlice';
+import {fetchManufOrder} from '../../features/manufOrderSlice';
+import {fetchOperationOrder} from '../../features/operationOrderSlice';
+import {QualityImprovement as QualityImprovementType} from '../../types';
 
 const QualityImprovementFormScreen = ({route}) => {
-  const {qualityImprovementId: qiId} = route.params ?? {};
+  const {
+    qualityImprovementId: qiId,
+    stockMoveId,
+    stockMoveLineId,
+    manufOrderId,
+    operationOrderId,
+  } = route.params;
   const dispatch = useDispatch();
+  const {QualityImprovement} = useTypes();
 
   const {qualityImprovement} = useSelector(
     state => state.quality_qualityImprovement,
   );
+  const {stockMove, stockMoveLine} = useSelector(
+    state => state.quality_stockMove,
+  );
+  const {manufOrder} = useSelector(state => state.quality_manufOrder);
+  const {operationOrder} = useSelector(state => state.quality_operationOrder);
 
   useEffect(() => {
-    if (qiId) {
-      dispatch((fetchQualityImprovement as any)({id: qiId}));
-    }
-  }, [dispatch, qiId]);
+    qiId && dispatch((fetchQualityImprovement as any)({id: qiId}));
+    stockMoveId && dispatch((fetchStockMove as any)({id: stockMoveId}));
+    stockMoveLineId &&
+      dispatch((fetchStockMoveLine as any)({id: stockMoveLineId}));
+    manufOrderId && dispatch((fetchManufOrder as any)({id: manufOrderId}));
+    operationOrderId &&
+      dispatch((fetchOperationOrder as any)({id: operationOrderId}));
+  }, [
+    dispatch,
+    manufOrderId,
+    operationOrderId,
+    qiId,
+    stockMoveId,
+    stockMoveLineId,
+  ]);
 
   const _defaultValue = useMemo(() => {
+    let baseValue: any = {
+      stepper: QualityImprovementType.Steps.detection,
+      type: QualityImprovement.type.Product,
+    };
+
+    if (stockMoveId) {
+      baseValue.purchaseOrderIdList = stockMove?.purchaseOrderSet?.map(
+        item => item.id,
+      );
+      baseValue.saleOrderIdList = stockMove?.saleOrderSet?.map(item => item.id);
+    }
+
+    if (stockMoveLineId) {
+      baseValue.supplierPartner =
+        stockMoveLine?.purchaseOrderLine?.purchaseOrder?.supplierPartner;
+      baseValue.supplierPurchaseOrder =
+        stockMoveLine?.purchaseOrderLine?.purchaseOrder;
+      baseValue.supplierPurchaseOrderLine = stockMoveLine?.purchaseOrderLine;
+      baseValue.customerPartner =
+        stockMoveLine?.saleOrderLine?.saleOrder?.clientPartner;
+      baseValue.customerSaleOrder = stockMoveLine?.saleOrderLine?.saleOrder;
+      baseValue.customerSaleOrderLine = stockMoveLine?.saleOrderLine;
+    }
+
+    if (manufOrderId) {
+      baseValue.manufOrder = manufOrder;
+    }
+
+    if (operationOrderId) {
+      baseValue.operationOrder = operationOrder;
+      baseValue.manufOrder = operationOrder?.manufOrder;
+    }
+
     if (!qiId || qualityImprovement?.id !== qiId) {
-      return {stepper: QualityImprovement.Steps.detection};
+      return baseValue;
     }
 
     const {qiIdentification, qiResolution} = qualityImprovement;
 
     return {
-      stepper: QualityImprovement.Steps.detection,
+      ...baseValue,
       ...qiIdentification,
       ...qualityImprovement,
       qiResolutionDefaults:
@@ -59,7 +126,19 @@ const QualityImprovementFormScreen = ({route}) => {
           }),
         ) ?? [],
     };
-  }, [qualityImprovement, qiId]);
+  }, [
+    QualityImprovement.type.Product,
+    stockMoveId,
+    stockMoveLineId,
+    manufOrderId,
+    operationOrderId,
+    qiId,
+    qualityImprovement,
+    stockMove,
+    stockMoveLine,
+    manufOrder,
+    operationOrder,
+  ]);
 
   return (
     <Screen>

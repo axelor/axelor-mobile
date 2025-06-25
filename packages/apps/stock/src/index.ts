@@ -40,10 +40,7 @@ export const StockModule: Module = {
   title: 'Stock',
   subtitle: 'Stock',
   icon: 'boxes',
-  compatibilityAOS: {
-    moduleName: 'axelor-stock',
-    downToVersion: '7.1.0',
-  },
+  compatibilityAOS: {moduleName: 'axelor-stock', downToVersion: '7.1.0'},
   menus: {
     stock_menu_product: {
       title: 'Stock_Product',
@@ -85,13 +82,8 @@ export const StockModule: Module = {
     ...StockCorrectionScreens,
     ...SupplierArrivalsScreens,
   },
-  translations: {
-    en: enTranslations,
-    fr: frTranslations,
-  },
-  reducers: {
-    ...stockReducers,
-  },
+  translations: {en: enTranslations, fr: frTranslations},
+  reducers: {...stockReducers},
   models: {
     objectFields: {...stock_modelAPI},
     sortFields: {...stock_sortFields},

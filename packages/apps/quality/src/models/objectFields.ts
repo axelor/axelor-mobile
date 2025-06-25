@@ -38,11 +38,13 @@ export const quality_modelAPI: ObjectFields = {
   quality_controlEntrySampleLine: schemaContructor.object({
     name: schemaContructor.string(),
     resultSelect: schemaContructor.number(),
-    controlPlanLine: schemaContructor.subObject().concat(
-      schemaContructor.object({
-        characteristic: schemaContructor.subObject('name'),
-      }),
-    ),
+    controlPlanLine: schemaContructor
+      .subObject()
+      .concat(
+        schemaContructor.object({
+          characteristic: schemaContructor.subObject('name'),
+        }),
+      ),
     controlEntrySample: schemaContructor.subObject('fullName'),
   }),
   quality_controlPlan: schemaContructor.object({
@@ -53,48 +55,48 @@ export const quality_modelAPI: ObjectFields = {
   }),
   quality_qualityImprovement: schemaContructor.object({
     sequence: schemaContructor.string(),
-    qiDetection: schemaContructor.subObject().concat(
-      schemaContructor.object({
-        origin: schemaContructor.number(),
-      }),
-    ),
+    qiDetection: schemaContructor
+      .subObject()
+      .concat(schemaContructor.object({origin: schemaContructor.number()})),
     qiStatus: schemaContructor.subObject('sequence'),
     gravityTypeSelect: schemaContructor.number(),
     analysisMethod: schemaContructor.subObject(),
     type: schemaContructor.number(),
-    qiIdentification: schemaContructor.subObject().concat(
-      schemaContructor.object({
-        customerPartner: schemaContructor.subObject('simpleFullName'),
-        customerSaleOrder: schemaContructor.subObject('saleOrderSeq'),
-        customerSaleOrderLine: schemaContructor.subObject().concat(
-          schemaContructor.object({
-            product: schemaContructor.subObject(),
-          }),
-        ),
-        supplierPartner: schemaContructor.subObject('simpleFullName'),
-        supplierPurchaseOrder: schemaContructor.subObject('purchaseOrderSeq'),
-        supplierPurchaseOrderLine: schemaContructor.subObject().concat(
-          schemaContructor.object({
-            product: schemaContructor.subObject(),
-          }),
-        ),
-        manufOrder: schemaContructor.subObject().concat(
-          schemaContructor.object({
-            billOfMaterial: schemaContructor.subObject(),
-            product: schemaContructor.subObject(),
-          }),
-        ),
-        operationOrder: schemaContructor.subObject(),
-        product: schemaContructor.subObject(),
-        quantity: schemaContructor.number(),
-        nonConformingQuantity: schemaContructor.number(),
-      }),
-    ),
+    qiIdentification: schemaContructor
+      .subObject()
+      .concat(
+        schemaContructor.object({
+          customerPartner: schemaContructor.subObject('simpleFullName'),
+          customerSaleOrder: schemaContructor.subObject('saleOrderSeq'),
+          customerSaleOrderLine: schemaContructor
+            .subObject()
+            .concat(
+              schemaContructor.object({product: schemaContructor.subObject()}),
+            ),
+          supplierPartner: schemaContructor.subObject('simpleFullName'),
+          supplierPurchaseOrder: schemaContructor.subObject('purchaseOrderSeq'),
+          supplierPurchaseOrderLine: schemaContructor
+            .subObject()
+            .concat(
+              schemaContructor.object({product: schemaContructor.subObject()}),
+            ),
+          manufOrder: schemaContructor
+            .subObject()
+            .concat(
+              schemaContructor.object({
+                billOfMaterial: schemaContructor.subObject(),
+                product: schemaContructor.subObject(),
+              }),
+            ),
+          operationOrder: schemaContructor.subObject(),
+          product: schemaContructor.subObject(),
+          quantity: schemaContructor.number(),
+          nonConformingQuantity: schemaContructor.number(),
+        }),
+      ),
     qiResolution: schemaContructor.subObject(),
   }),
-  quality_qiStatus: schemaContructor.object({
-    name: schemaContructor.string(),
-  }),
+  quality_qiStatus: schemaContructor.object({name: schemaContructor.string()}),
   quality_qiResolution: schemaContructor.object({
     qiResolutionDefaultsList: schemaContructor
       .array()
@@ -120,6 +122,7 @@ export const quality_modelAPI: ObjectFields = {
   }),
   quality_supplierOrder: schemaContructor.object({
     purchaseOrderSeq: schemaContructor.string(),
+    supplierPartner: schemaContructor.subObject('simpleFullName'),
   }),
   quality_supplierOrderLine: schemaContructor.object({
     fullName: schemaContructor.string(),
@@ -130,6 +133,7 @@ export const quality_modelAPI: ObjectFields = {
   }),
   quality_customerOrder: schemaContructor.object({
     saleOrderSeq: schemaContructor.string(),
+    clientPartner: schemaContructor.subObject('simpleFullName'),
   }),
   quality_customerOrderLine: schemaContructor.object({
     fullName: schemaContructor.string(),
@@ -145,12 +149,31 @@ export const quality_modelAPI: ObjectFields = {
   }),
   quality_operationOrder: schemaContructor.object({
     name: schemaContructor.string(),
+    manufOrder: schemaContructor.subObject('manufOrderSeq'),
   }),
   quality_product: schemaContructor.object({
     fullName: schemaContructor.string(),
     name: schemaContructor.string(),
   }),
-  quality_qiDefault: schemaContructor.object({
-    name: schemaContructor.string(),
+  quality_qiDefault: schemaContructor.object({name: schemaContructor.string()}),
+  quality_stockMove: schemaContructor.object({
+    purchaseOrderSet: schemaContructor.array().of(schemaContructor.subObject()),
+    saleOrderSet: schemaContructor.array().of(schemaContructor.subObject()),
+  }),
+  quality_stockMoveLine: schemaContructor.object({
+    purchaseOrderLine: schemaContructor.object({
+      fullName: schemaContructor.string(),
+      purchaseOrder: schemaContructor.object({
+        purchaseOrderSeq: schemaContructor.string(),
+        supplierPartner: schemaContructor.subObject('simpleFullName'),
+      }),
+    }),
+    saleOrderLine: schemaContructor.object({
+      fullName: schemaContructor.string(),
+      saleOrder: schemaContructor.object({
+        saleOrderSeq: schemaContructor.string(),
+        clientPartner: schemaContructor.subObject('simpleFullName'),
+      }),
+    }),
   }),
 };

@@ -24,6 +24,7 @@ import {
   NotesCard,
 } from '@axelor/aos-mobile-ui';
 import {
+  useContextRegister,
   useDispatch,
   usePermitted,
   useSelector,
@@ -52,6 +53,14 @@ const CustomerDeliveryLineDetailScreen = ({route, navigation}) => {
   const {StockMove} = useTypes();
   const {readonly} = usePermitted({
     modelName: 'com.axelor.apps.stock.db.StockMoveLine',
+  });
+  useContextRegister({
+    models: [
+      {
+        model: 'com.axelor.apps.stock.db.StockMoveLine',
+        id: customerDeliveryLineId,
+      },
+    ],
   });
 
   const {stock: stockConfig} = useSelector(state => state.appConfig);
@@ -91,9 +100,7 @@ const CustomerDeliveryLineDetailScreen = ({route, navigation}) => {
   }, [customerDeliveryLine, customerDelivery]);
 
   const handleShowProduct = () => {
-    navigation.navigate('ProductStockDetailsScreen', {
-      product: product,
-    });
+    navigation.navigate('ProductStockDetailsScreen', {product: product});
   };
 
   const getCustomerDeliveryLine = useCallback(() => {

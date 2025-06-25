@@ -22,7 +22,11 @@ import {
   Screen,
   KeyboardAvoidingScrollView,
 } from '@axelor/aos-mobile-ui';
-import {useSelector, useDispatch} from '@axelor/aos-mobile-core';
+import {
+  useContextRegister,
+  useDispatch,
+  useSelector,
+} from '@axelor/aos-mobile-core';
 import {
   SupplierArrivalHeader,
   SupplierArrivalButtons,
@@ -31,9 +35,14 @@ import {
 } from '../../components';
 import {fetchSupplierArrival} from '../../features/supplierArrivalSlice';
 
-const SupplierArrivalDetailsScreen = ({route, navigation}) => {
+const SupplierArrivalDetailsScreen = ({route}) => {
   const supplierArrivalId = route.params.supplierArrivalId;
   const dispatch = useDispatch();
+  useContextRegister({
+    models: [
+      {model: 'com.axelor.apps.stock.db.StockMove', id: supplierArrivalId},
+    ],
+  });
 
   const {loading, supplierArrival} = useSelector(
     state => state.supplierArrival,

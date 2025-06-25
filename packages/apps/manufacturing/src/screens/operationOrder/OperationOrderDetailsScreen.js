@@ -19,7 +19,11 @@
 import React, {useCallback, useEffect} from 'react';
 import {StyleSheet} from 'react-native';
 import {HeaderContainer, Screen, ScrollView} from '@axelor/aos-mobile-ui';
-import {useDispatch, useSelector} from '@axelor/aos-mobile-core';
+import {
+  useContextRegister,
+  useDispatch,
+  useSelector,
+} from '@axelor/aos-mobile-core';
 import {
   OperationOrderDatesCard,
   OperationOrderHeader,
@@ -29,19 +33,24 @@ import {
 import {fetchOperationOrderById} from '../../features/operationOrderSlice';
 
 function OperationOrderDetailsScreen({route}) {
+  const operationOrderId = route.params.operationOrderId;
   const dispatch = useDispatch();
+  useContextRegister({
+    models: [
+      {
+        model: 'com.axelor.apps.production.db.OperationOrder',
+        id: operationOrderId,
+      },
+    ],
+  });
 
   const {loadingOrder, operationOrder} = useSelector(
     state => state.operationOrder,
   );
 
   const getOperationOrder = useCallback(() => {
-    dispatch(
-      fetchOperationOrderById({
-        operationOrderId: route.params.operationOrderId,
-      }),
-    );
-  }, [dispatch, route.params.operationOrderId]);
+    dispatch(fetchOperationOrderById({operationOrderId}));
+  }, [dispatch, operationOrderId]);
 
   useEffect(() => {
     getOperationOrder();
@@ -71,10 +80,6 @@ function OperationOrderDetailsScreen({route}) {
   );
 }
 
-const styles = StyleSheet.create({
-  scrollView: {
-    height: null,
-  },
-});
+const styles = StyleSheet.create({scrollView: {height: null}});
 
 export default OperationOrderDetailsScreen;

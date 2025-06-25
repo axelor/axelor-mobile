@@ -25,6 +25,7 @@ import {
   KeyboardAvoidingScrollView,
 } from '@axelor/aos-mobile-ui';
 import {
+  useContextRegister,
   useDispatch,
   usePermitted,
   useSelector,
@@ -58,6 +59,14 @@ const SupplierArrivalLineDetailScreen = ({route, navigation}) => {
   const {getSelectionItems, getItemTitle} = useTypeHelpers();
   const {readonly} = usePermitted({
     modelName: 'com.axelor.apps.stock.db.StockMoveLine',
+  });
+  useContextRegister({
+    models: [
+      {
+        model: 'com.axelor.apps.stock.db.StockMoveLine',
+        id: supplierArrivalLineId,
+      },
+    ],
   });
 
   const {stock: stockConfig} = useSelector(state => state.appConfig);
@@ -126,9 +135,7 @@ const SupplierArrivalLineDetailScreen = ({route, navigation}) => {
 
   const getSupplierArrivalLine = useCallback(() => {
     dispatch(
-      fetchSupplierArrivalLine({
-        supplierArrivalLineId: supplierArrivalLineId,
-      }),
+      fetchSupplierArrivalLine({supplierArrivalLineId: supplierArrivalLineId}),
     );
   }, [dispatch, supplierArrivalLineId]);
 
@@ -154,9 +161,7 @@ const SupplierArrivalLineDetailScreen = ({route, navigation}) => {
   };
 
   const handleShowProduct = () => {
-    navigation.navigate('ProductStockDetailsScreen', {
-      product: product,
-    });
+    navigation.navigate('ProductStockDetailsScreen', {product: product});
   };
 
   const handleTrackingNumberSelection = item => {
@@ -282,10 +287,7 @@ const SupplierArrivalLineDetailScreen = ({route, navigation}) => {
 };
 
 const styles = StyleSheet.create({
-  container: {
-    alignItems: 'center',
-    paddingBottom: 100,
-  },
+  container: {alignItems: 'center', paddingBottom: 100},
 });
 
 export default SupplierArrivalLineDetailScreen;
