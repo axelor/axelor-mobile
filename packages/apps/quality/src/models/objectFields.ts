@@ -38,13 +38,11 @@ export const quality_modelAPI: ObjectFields = {
   quality_controlEntrySampleLine: schemaContructor.object({
     name: schemaContructor.string(),
     resultSelect: schemaContructor.number(),
-    controlPlanLine: schemaContructor
-      .subObject()
-      .concat(
-        schemaContructor.object({
-          characteristic: schemaContructor.subObject('name'),
-        }),
-      ),
+    controlPlanLine: schemaContructor.subObject().concat(
+      schemaContructor.object({
+        characteristic: schemaContructor.subObject('name'),
+      }),
+    ),
     controlEntrySample: schemaContructor.subObject('fullName'),
   }),
   quality_controlPlan: schemaContructor.object({
@@ -62,38 +60,34 @@ export const quality_modelAPI: ObjectFields = {
     gravityTypeSelect: schemaContructor.number(),
     analysisMethod: schemaContructor.subObject(),
     type: schemaContructor.number(),
-    qiIdentification: schemaContructor
-      .subObject()
-      .concat(
-        schemaContructor.object({
-          customerPartner: schemaContructor.subObject('simpleFullName'),
-          customerSaleOrder: schemaContructor.subObject('saleOrderSeq'),
-          customerSaleOrderLine: schemaContructor
-            .subObject()
-            .concat(
-              schemaContructor.object({product: schemaContructor.subObject()}),
-            ),
-          supplierPartner: schemaContructor.subObject('simpleFullName'),
-          supplierPurchaseOrder: schemaContructor.subObject('purchaseOrderSeq'),
-          supplierPurchaseOrderLine: schemaContructor
-            .subObject()
-            .concat(
-              schemaContructor.object({product: schemaContructor.subObject()}),
-            ),
-          manufOrder: schemaContructor
-            .subObject()
-            .concat(
-              schemaContructor.object({
-                billOfMaterial: schemaContructor.subObject(),
-                product: schemaContructor.subObject(),
-              }),
-            ),
-          operationOrder: schemaContructor.subObject(),
-          product: schemaContructor.subObject(),
-          quantity: schemaContructor.number(),
-          nonConformingQuantity: schemaContructor.number(),
-        }),
-      ),
+    qiIdentification: schemaContructor.subObject().concat(
+      schemaContructor.object({
+        customerPartner: schemaContructor.subObject('simpleFullName'),
+        customerSaleOrder: schemaContructor.subObject('saleOrderSeq'),
+        customerSaleOrderLine: schemaContructor
+          .subObject()
+          .concat(
+            schemaContructor.object({product: schemaContructor.subObject()}),
+          ),
+        supplierPartner: schemaContructor.subObject('simpleFullName'),
+        supplierPurchaseOrder: schemaContructor.subObject('purchaseOrderSeq'),
+        supplierPurchaseOrderLine: schemaContructor
+          .subObject()
+          .concat(
+            schemaContructor.object({product: schemaContructor.subObject()}),
+          ),
+        manufOrder: schemaContructor.subObject().concat(
+          schemaContructor.object({
+            billOfMaterial: schemaContructor.subObject(),
+            product: schemaContructor.subObject(),
+          }),
+        ),
+        operationOrder: schemaContructor.subObject(),
+        product: schemaContructor.subObject(),
+        quantity: schemaContructor.number(),
+        nonConformingQuantity: schemaContructor.number(),
+      }),
+    ),
     qiResolution: schemaContructor.subObject(),
   }),
   quality_qiStatus: schemaContructor.object({name: schemaContructor.string()}),
