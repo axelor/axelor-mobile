@@ -95,7 +95,6 @@ const TaskFilters = ({
                   filterAvailableSet(_c?.projectTaskStatusSet, _list),
                 )
                 .filter(({key}, idx, self) => {
-                  console.log(key);
                   return self.findIndex(_i => _i.key === key) === idx;
                 })
             : _list;
