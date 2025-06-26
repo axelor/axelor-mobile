@@ -19,6 +19,7 @@
   "Message_ImportantMessages": "Important messages",
   "Message_ArchivedMessages": "Archived messages",
   "Message_LinkFiles": "Link files",
+  "Message_InvalidFile": "This file is not valid as it does not contain any document.",
   "Message_SliceAction_FetchMailMessages": "fetch mail messages",
   "Message_SliceAction_PostMailMessageComment": "post mail message comment",
   "Message_SliceAction_FetchModelSubscribers": "fetch model subscribers",

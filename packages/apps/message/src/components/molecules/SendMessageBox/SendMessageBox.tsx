@@ -67,12 +67,12 @@ const SendMessageBox = ({
         modelId,
         comment,
         parentId,
-        files: linkFiles.map(file => file?.metaFile?.id),
+        files: linkFiles?.map(file => file?.metaFile?.id) ?? [],
       }),
     ).then(res => onSend?.(res.payload));
     Keyboard.dismiss();
     setComment('');
-    linkFiles.length > 0 && dispatch(saveLinkFiles([]));
+    linkFiles?.length > 0 && dispatch(saveLinkFiles([]));
   }, [dispatch, model, modelId, comment, parentId, linkFiles, onSend]);
 
   const handleLinkFiles = useCallback(() => {

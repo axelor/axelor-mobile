@@ -18,7 +18,12 @@
 
 import React, {useCallback, useMemo, useState} from 'react';
 import {StyleSheet, TouchableOpacity, View} from 'react-native';
-import {useDispatch, useSelector, useTranslator} from '@axelor/aos-mobile-core';
+import {
+  showToastMessage,
+  useDispatch,
+  useSelector,
+  useTranslator,
+} from '@axelor/aos-mobile-core';
 import {Button, Icon, Screen, Text} from '@axelor/aos-mobile-ui';
 import {DocumentList} from '@axelor/aos-mobile-dms';
 import {saveLinkFiles} from '../features/mailMessageSlice';
@@ -36,15 +41,27 @@ const MailMessageLinkFilesScreen = ({navigation}) => {
     [_linkFiles.length, linkFiles.length],
   );
 
-  const handleLinkFiles = useCallback((file: any) => {
-    setLinkFiles(prevFiles => {
-      if (prevFiles.some(({id}) => id === file.id)) {
-        return prevFiles.filter(({id}) => id !== file.id);
+  const handleLinkFiles = useCallback(
+    (file: any) => {
+      if (!file?.metaFile) {
+        showToastMessage({
+          position: 'bottom',
+          type: 'error',
+          text1: I18n.t('Base_Error'),
+          text2: I18n.t('Message_InvalidFile'),
+        });
       } else {
-        return [...prevFiles, file];
+        setLinkFiles(prevFiles => {
+          if (prevFiles.some(({id}) => id === file.id)) {
+            return prevFiles.filter(({id}) => id !== file.id);
+          } else {
+            return [...prevFiles, file];
+          }
+        });
       }
-    });
-  }, []);
+    },
+    [I18n],
+  );
 
   const renderFile = useCallback(
     (file: any, idx: number) => {
@@ -94,8 +111,16 @@ const styles = StyleSheet.create({
     paddingHorizontal: 15,
     gap: 5,
   },
-  linkFile: {flexShrink: 1, flexDirection: 'row', alignItems: 'center', gap: 3},
-  text: {flexShrink: 1, textDecorationLine: 'underline'},
+  linkFile: {
+    flexShrink: 1,
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 3,
+  },
+  text: {
+    flexShrink: 1,
+    textDecorationLine: 'underline',
+  },
 });
 
 export default MailMessageLinkFilesScreen;
