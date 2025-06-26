@@ -231,9 +231,11 @@ const Camera = () => {
           />
         </View>
       ) : null}
-      <View style={styles.toastContainer}>
-        <Toast />
-      </View>
+      {cameraVisible && (
+        <View style={styles.toastContainer}>
+          <Toast />
+        </View>
+      )}
     </SafeAreaView>
   );
 };
