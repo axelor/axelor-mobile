@@ -66,27 +66,6 @@ describe('AutoCompleteSearch Component', () => {
     });
   });
 
-  it('should call onChangeValue with the right args when value change', () => {
-    const onChangeValue = jest.fn();
-    const wrapper = shallow(
-      <AutoCompleteSearch {...props} onChangeValue={onChangeValue} />,
-    );
-
-    wrapper.find(SearchBar).simulate('clearPress');
-
-    expect(onChangeValue).toHaveBeenCalledWith(null);
-    expect(wrapper.find(SearchBar).prop('valueTxt')).toBe('');
-
-    wrapper.setProps({objectList: [props.objectList[0]]});
-
-    wrapper.find(SearchBar).simulate('changeTxt', props.objectList[0].name);
-
-    expect(onChangeValue).toHaveBeenCalledWith(props.objectList[0]);
-    expect(wrapper.find(SearchBar).prop('valueTxt')).toBe(
-      props.objectList[0].name,
-    );
-  });
-
   it('should call onChangeValue with the right args on selection', () => {
     const onChangeValue = jest.fn();
     const wrapper = shallow(

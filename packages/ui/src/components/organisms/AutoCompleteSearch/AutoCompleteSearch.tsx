@@ -200,35 +200,37 @@ const AutoCompleteSearch = ({
     }
   }, [handleTimeOut, searchText, stopTimeout]);
 
-  const handleSearchValueChange = useCallback(
-    input => {
-      if (Array.isArray(objectList) && isValidString(input) && !selected) {
-        if (objectList.length === 1 && selectLastItem) {
-          setSearchText(
-            changeScreenAfter || oneFilter ? '' : displayValue(objectList[0]),
-          );
+  const handleLastItem = useCallback(
+    (set: any[]) => {
+      if (isValidString(searchText) && !selected) {
+        if (set.length === 1 && selectLastItem) {
+          const shouldResetValue = changeScreenAfter || oneFilter;
+          setSearchText(shouldResetValue ? '' : displayValue(set[0]));
           setDisplayList(false);
           stopInterval();
-          onChangeValue?.(objectList[0]);
+          onChangeValue?.(set[0]);
         } else {
           setDisplayList(true);
         }
       }
-      setPreviousState(searchText);
-      setSearchText(input);
     },
     [
       changeScreenAfter,
       displayValue,
-      objectList,
-      selectLastItem,
       onChangeValue,
       oneFilter,
       searchText,
+      selectLastItem,
       selected,
       stopInterval,
     ],
   );
+
+  useEffect(() => {
+    if (Array.isArray(objectList)) handleLastItem(objectList);
+    // Only declench itself when objectList change
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [objectList]);
 
   const handleFocus = useCallback(() => {
     setDisplayList(true);
@@ -241,6 +243,15 @@ const AutoCompleteSearch = ({
     setPopupIsVisible(true);
     setDisplayList(false);
   }, [stopInterval, stopTimeout]);
+
+  const handleSearchValueChange = useCallback(
+    (input: string) => {
+      setPreviousState(searchText);
+      setSearchText(input);
+      setSelected(false);
+    },
+    [searchText],
+  );
 
   useEffect(() => {
     if (isValidString(value)) {
