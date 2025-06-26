@@ -17,7 +17,7 @@
  */
 
 import React, {useCallback} from 'react';
-import {StyleSheet} from 'react-native';
+import {StyleSheet, View} from 'react-native';
 import {
   useDispatch,
   useNavigation,
@@ -104,7 +104,7 @@ const InventorySearchLineContainer = ({}) => {
   );
 
   return (
-    <>
+    <View style={styles.container}>
       <InventoryPickingWidget
         scanKey={massScanKey}
         inventoryId={inventory.id}
@@ -134,11 +134,14 @@ const InventorySearchLineContainer = ({}) => {
           />
         )}
       />
-    </>
+    </View>
   );
 };
 
 const styles = StyleSheet.create({
+  container: {
+    marginTop: 5,
+  },
   item: {
     width: '100%',
   },
