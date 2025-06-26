@@ -16,7 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import React, {useCallback, useEffect, useMemo, useState} from 'react';
+import React, {useCallback} from 'react';
 import {showToastMessage, useTranslator} from '@axelor/aos-mobile-core';
 import {MassScannerButton} from '../../molecules';
 import {
@@ -35,31 +35,10 @@ interface InventoryPickingWidgetProps {
 const InventoryPickingWidget = ({
   scanKey,
   inventoryId,
-  totalLines,
   onRefresh,
   handleShowLine,
 }: InventoryPickingWidgetProps) => {
   const I18n = useTranslator();
-  const [validatedLines, setValidatedLines] = useState(0);
-
-  const getValidatedLines = useCallback(async () => {
-    if (!inventoryId) return;
-    const total = await searchInventoryLinesApi({
-      inventoryId,
-    })
-      .then(res => Number(res?.data?.total) ?? 0)
-      .catch(() => 0);
-    setValidatedLines(total);
-  }, [inventoryId]);
-
-  useEffect(() => {
-    if (totalLines > 0) getValidatedLines();
-  }, [getValidatedLines, totalLines]);
-
-  const progress = useMemo(() => {
-    if (totalLines > 0) return validatedLines / totalLines;
-    return 0;
-  }, [totalLines, validatedLines]);
 
   const handleScanValue = useCallback(
     async (scanValue: string, {disableScan}) => {
@@ -71,9 +50,9 @@ const InventoryPickingWidget = ({
         return res?.data?.data;
       });
       if (!Array.isArray(data) || data.length === 0) {
-        throw new Error('Stock_Picking_NoLineFound');
+        throw new Error('Stock_Picking_NoInventoryLineFound');
       } else if (data.length > 1) {
-        throw new Error('Stock_Picking_MultipleLinesFound');
+        throw new Error('Stock_Picking_MultipleInventoryLinesFound');
       }
 
       const line = data[0];
@@ -123,7 +102,6 @@ const InventoryPickingWidget = ({
   return (
     <MassScannerButton
       scanKey={scanKey}
-      progress={progress}
       titleKey="Stock_StartPicking"
       backgroundAction={handleScanValue}
       fallbackAction={handleError}

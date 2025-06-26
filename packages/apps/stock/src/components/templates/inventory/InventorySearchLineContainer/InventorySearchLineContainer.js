@@ -108,7 +108,6 @@ const InventorySearchLineContainer = ({}) => {
       <InventoryPickingWidget
         scanKey={massScanKey}
         inventoryId={inventory.id}
-        totalLines={totalNumberLines}
         onRefresh={handleRefresh}
         handleShowLine={handleLineSearch}
       />
