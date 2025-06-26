@@ -41,7 +41,7 @@ const QualityImprovementFormScreen = ({route}) => {
     stockMoveLineId,
     manufOrderId,
     operationOrderId,
-  } = route.params;
+  } = route.params ?? {};
   const dispatch = useDispatch();
   const {QualityImprovement} = useTypes();
 

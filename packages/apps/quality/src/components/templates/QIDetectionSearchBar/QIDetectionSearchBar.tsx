@@ -48,7 +48,7 @@ const QIDetectionSearchBarAux = ({
 }: QIDetectionSearchBarProps) => {
   const I18n = useTranslator();
   const dispatch = useDispatch();
-  const {QualityImprovement} = useTypes();
+  const {QualityImprovement, QIDetection} = useTypes();
 
   const {
     QiDetectionList,
@@ -69,6 +69,25 @@ const QIDetectionSearchBarAux = ({
     }
   }, [QualityImprovement.type, objectState?.type]);
 
+  const detectionOrigin = useMemo(() => {
+    const isSupplier =
+      objectState?.supplierPartner ||
+      objectState?.purchaseOrderIdList?.length > 0;
+    const isCustomer =
+      objectState?.customerPartner || objectState?.saleOrderIdList?.length > 0;
+    const isInternal = objectState?.manufOrder;
+
+    if (isSupplier) {
+      return QIDetection?.origin.Supplier;
+    } else if (isCustomer) {
+      return QIDetection?.origin.Customer;
+    } else if (isInternal) {
+      return QIDetection?.origin.Internal;
+    } else {
+      return null;
+    }
+  }, [QIDetection?.origin, objectState]);
+
   const searchQIDetectionAPI = useCallback(
     ({page = 0, searchValue}) => {
       dispatch(
@@ -76,10 +95,11 @@ const QIDetectionSearchBarAux = ({
           page,
           searchValue,
           origin: originFieldName,
+          detectionOrigin,
         }),
       );
     },
-    [dispatch, originFieldName],
+    [detectionOrigin, dispatch, originFieldName],
   );
 
   return (

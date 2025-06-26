@@ -21,24 +21,29 @@ import {
   getSearchCriterias,
 } from '@axelor/aos-mobile-core';
 
-const createQIDetectionCriteria = (searchValue, origin) => {
+const createQIDetectionCriteria = (searchValue, origin, detectionOrigin) => {
   const criteria = [getSearchCriterias('quality_qiDetection', searchValue)];
 
   if (origin != null) {
-    criteria.push({
-      fieldName: origin,
-      operator: '=',
-      value: true,
-    });
+    criteria.push({fieldName: origin, operator: '=', value: true});
+  }
+
+  if (detectionOrigin != null) {
+    criteria.push({fieldName: 'origin', operator: '=', value: detectionOrigin});
   }
 
   return criteria;
 };
 
-export async function searchQIDetection({page = 0, searchValue, origin}) {
+export async function searchQIDetection({
+  page = 0,
+  searchValue,
+  origin,
+  detectionOrigin,
+}) {
   return createStandardSearch({
     model: 'com.axelor.apps.quality.db.QIDetection',
-    criteria: createQIDetectionCriteria(searchValue, origin),
+    criteria: createQIDetectionCriteria(searchValue, origin, detectionOrigin),
     fieldKey: 'quality_qiDetection',
     sortKey: 'quality_qiDetection',
     page,
