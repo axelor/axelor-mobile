@@ -122,11 +122,13 @@ const SearchLineContainer = ({
         oneFilter={true}
         navigate={navigate}
       />
-      {item != null && (
-        <View style={styles.cardContainer}>
-          {renderItem(item.data, item.index)}
-        </View>
-      )}
+      <View style={styles.cardContainer}>
+        {!item ? (
+          <Text style={styles.text}>{I18n.t('Base_NoData')}</Text>
+        ) : (
+          renderItem(item.data, item.index)
+        )}
+      </View>
       <TouchableOpacity onPress={onViewPress} activeOpacity={0.9}>
         <View style={styles.iconContainer}>
           <Text style={styles.txtDetails}>{I18n.t('Base_ViewAll')}</Text>
@@ -172,6 +174,9 @@ const styles = StyleSheet.create({
   cardContainer: {
     marginBottom: 2,
     width: '100%',
+  },
+  text: {
+    alignSelf: 'center',
   },
   iconContainer: {
     width: '100%',
