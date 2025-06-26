@@ -23,12 +23,13 @@ import {
   TouchableOpacity,
   View,
 } from 'react-native';
-import {useTranslator} from '@axelor/aos-mobile-core';
+import {useIsFocused, useTranslator} from '@axelor/aos-mobile-core';
 import {
   Icon,
   OUTSIDE_INDICATOR,
   Text,
   useClickOutside,
+  useClickOutsideContext,
   useThemeColor,
 } from '@axelor/aos-mobile-ui';
 import {Avatar, AVATAR_SIZE, AVATAR_PADDING, AuthorText} from '../../atoms';
@@ -77,11 +78,13 @@ const MailMessageCard = ({
 }: MailMessageCardProps) => {
   const I18n = useTranslator();
   const Colors = useThemeColor();
+  const isFocused = useIsFocused();
 
   const [areRepliesVisible, setAreRepliesVisible] = useState(false);
   const [replies, setReplies] = useState([]);
   const [numberReplies, setNumberReplies] = useState(0);
   const [isMessageBoxVisible, setIsMessageBoxVisible] = useState(false);
+  const [isToggleMBDisabled, setIsToggleMBDisabled] = useState(false);
 
   const getReplies = useCallback(
     (newMessage?: any) =>
@@ -111,12 +114,26 @@ const MailMessageCard = ({
 
   const wrapperRef = useRef(null);
   const clickOutside = useClickOutside({wrapperRef});
+  const {setRef} = useClickOutsideContext();
 
   useEffect(() => {
-    if (isMessageBoxVisible && clickOutside === OUTSIDE_INDICATOR) {
+    if (isFocused && isToggleMBDisabled) {
+      setRef(wrapperRef?.current);
+      setTimeout(() => {
+        setIsToggleMBDisabled(false);
+      }, 100);
+    }
+  }, [isFocused, isToggleMBDisabled, setRef]);
+
+  useEffect(() => {
+    if (
+      isMessageBoxVisible &&
+      clickOutside === OUTSIDE_INDICATOR &&
+      !isToggleMBDisabled
+    ) {
       setIsMessageBoxVisible(false);
     }
-  }, [clickOutside, isMessageBoxVisible]);
+  }, [clickOutside, isMessageBoxVisible, isToggleMBDisabled]);
 
   const isReply = useMemo(() => !!getParentReplies, [getParentReplies]);
 
@@ -200,6 +217,7 @@ const MailMessageCard = ({
               setIsMessageBoxVisible(false);
             }}
             wrapperRef={wrapperRef}
+            onLinkFiles={() => setIsToggleMBDisabled(true)}
           />
         </View>
         {areRepliesVisible &&

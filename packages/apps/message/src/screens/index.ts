@@ -19,6 +19,7 @@
 import MailMessageScreen from './MailMessageScreen';
 import InboxScreen from './InboxScreen';
 import MailMessageAttachedFilesScreen from './MailMessageAttachedFilesScreen';
+import MailMessageLinkFilesScreen from './MailMessageLinkFilesScreen';
 
 export default {
   MailMessageScreen: {
@@ -38,8 +39,17 @@ export default {
       shadedHeader: false,
     },
   },
+  MailMessageLinkFilesScreen: {
+    title: 'Message_LinkFiles',
+    component: MailMessageLinkFilesScreen,
+    acionID: 'dms_all_documents',
+    options: {
+      shadedHeader: false,
+    },
+  },
 };
 
 export {MailMessageScreen};
 export {InboxScreen};
 export {MailMessageAttachedFilesScreen};
+export {MailMessageLinkFilesScreen};
