@@ -20,48 +20,61 @@ import React, {
   createContext,
   useCallback,
   useContext,
+  useEffect,
   useMemo,
   useReducer,
+  useState,
 } from 'react';
 import {Dimensions, StyleSheet, View} from 'react-native';
 
-export const OUTSIDE_INDICATOR = 'outside';
-export const INSIDE_INDICATOR = 'inside';
+type RefObject = any;
 
-const defaultOutsideAlerterContext = {
+enum Indicator {
+  outside = 'outside',
+  inside = 'inside',
+}
+
+export const OUTSIDE_INDICATOR = Indicator.outside;
+export const INSIDE_INDICATOR = Indicator.inside;
+
+interface ContextState {
+  ref: RefObject;
+  setRef: (ref?: RefObject) => void;
+}
+
+const defaultValue: ContextState = {
   ref: undefined,
-  setRef: ref => {
-    throw new Error(
-      'OutsideAlerter should be mounted to set handle click outside event',
-    );
+  setRef: () => {
+    throw new Error('OutsideAlerter should be mounted to set active ref');
   },
 };
 
-const OutsideAlerterContext = createContext(defaultOutsideAlerterContext);
+const OutsideAlerterContext = createContext<ContextState>(defaultValue);
 
 const actionTypes = {setRef: 'setRef'};
 
-const outsideAlerterReducer = (state, action) => {
+const outsideAlerterReducer = (
+  state: ContextState,
+  action: {type: string; payload: any},
+) => {
   switch (action.type) {
     case actionTypes.setRef: {
-      return {...state, ref: action.payload};
+      return {...state, ref: action.payload as RefObject};
     }
   }
 };
 
 const actions = {
-  setRef: target => {
-    return {type: actionTypes.setRef, payload: target};
-  },
+  setRef: (target: RefObject) => ({
+    type: actionTypes.setRef,
+    payload: target,
+  }),
 };
 
 export const OutsideAlerterProvider = ({children}) => {
-  const [state, dispatch] = useReducer(
-    outsideAlerterReducer,
-    defaultOutsideAlerterContext,
-  );
+  const [state, dispatch] = useReducer(outsideAlerterReducer, defaultValue);
 
-  const setRef = useCallback(target => {
+  const setRef = useCallback((target: RefObject) => {
     dispatch(actions.setRef(target));
   }, []);
 
@@ -94,14 +107,18 @@ const styles = StyleSheet.create({
  * Hook that alerts clicks outside
  * @param {Object} wrapperRef - component reference to track if we click outside of it.
  */
-export const useClickOutside = ({wrapperRef}) => {
+export const useClickOutside = ({
+  wrapperRef,
+}: {
+  wrapperRef: React.MutableRefObject<RefObject>;
+}) => {
   const {ref: _ref} = useContext(OutsideAlerterContext);
 
-  return useMemo(() => {
-    const handleClickOutside = (componentRef, ref) => {
-      if (!componentRef || !ref) {
-        return undefined;
-      }
+  const [state, setState] = useState<Indicator | undefined>(undefined);
+
+  const handleClickOutside = useCallback(
+    (componentRef: RefObject, ref: RefObject) => {
+      if (!componentRef || !ref) return undefined;
 
       if (componentRef._nativeTag === ref._nativeTag) {
         return INSIDE_INDICATOR;
@@ -109,26 +126,25 @@ export const useClickOutside = ({wrapperRef}) => {
 
       // check ref if one ref child has target._nativeTag
       if (componentRef._children) {
-        const res = componentRef._children.map(child =>
-          handleClickOutside(child, ref),
+        const res: (Indicator | undefined)[] = componentRef._children.map(
+          (child: RefObject) => handleClickOutside(child, ref),
         );
 
-        return res.find(r => r === INSIDE_INDICATOR)
-          ? INSIDE_INDICATOR
-          : OUTSIDE_INDICATOR;
+        return res.find(r => r === INSIDE_INDICATOR) ?? OUTSIDE_INDICATOR;
       }
 
       return OUTSIDE_INDICATOR;
-    };
+    },
+    [],
+  );
 
-    return handleClickOutside(wrapperRef?.current, _ref);
-  }, [_ref, wrapperRef]);
+  useEffect(() => {
+    setState(handleClickOutside(wrapperRef?.current, _ref));
+  }, [_ref, handleClickOutside, wrapperRef]);
+
+  return useMemo(() => state, [state]);
 };
 
 export const useClickOutsideContext = () => {
-  const {ref, setRef} = useContext(OutsideAlerterContext);
-
-  return useMemo(() => {
-    return {ref, setRef};
-  }, [ref, setRef]);
+  return useContext(OutsideAlerterContext);
 };
