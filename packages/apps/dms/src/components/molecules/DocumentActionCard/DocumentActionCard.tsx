@@ -41,6 +41,7 @@ interface DocumentActionCardProps {
   disableDownload?: boolean;
   disableEdit?: boolean;
   disabledDelete?: boolean;
+  customOnPress?: () => void;
 }
 
 const DocumentActionCard = ({
@@ -50,6 +51,7 @@ const DocumentActionCard = ({
   disableDownload = false,
   disableEdit = false,
   disabledDelete = false,
+  customOnPress,
 }: DocumentActionCardProps) => {
   const I18n = useTranslator();
   const Colors = useThemeColor();
@@ -127,7 +129,7 @@ const DocumentActionCard = ({
         },
       ]}
       translator={I18n.t}>
-      <DocumentCard document={document} />
+      <DocumentCard document={document} customOnPress={customOnPress} />
     </ActionCard>
   );
 };

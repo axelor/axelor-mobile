@@ -18,6 +18,8 @@
   "Message_MarkAsNotArchived": "Marquer comme non archivé",
   "Message_ImportantMessages": "Messages importants",
   "Message_ArchivedMessages": "Messages archivés",
+  "Message_LinkFiles": "Lier des fichiers",
+  "Message_InvalidFile": "Cet enregistrement est invalide car il ne contient aucun fichier.",
   "Message_SliceAction_FetchMailMessages": "récupération des mail messages",
   "Message_SliceAction_PostMailMessageComment": "ajout d'un mail message",
   "Message_SliceAction_FetchModelSubscribers": "récupération des abonnés du modèle",
