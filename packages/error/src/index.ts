@@ -16,4 +16,4 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-export {default as ErrorBoundary} from './ErrorBoundary';
+export {default as ErrorBoundary, MaintenanceError} from './ErrorBoundary';

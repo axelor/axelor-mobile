@@ -17,9 +17,17 @@
  */
 
 import React from 'react';
+import axios from 'axios';
 
 const TECHNICAL_ABNORMALITY = 0;
 const CONFIGURATION_PROBLEM = 4;
+
+export class MaintenanceError extends Error {
+  constructor(message = 'The server is under maintenance.') {
+    super(message);
+    this.name = 'MaintenanceError';
+  }
+}
 
 interface ErrorBoundaryProps {
   children: React.ReactNode;
@@ -30,6 +38,9 @@ interface ErrorBoundaryProps {
     errorMessage: string;
     onReloadPress: () => any;
   }) => React.ReactNode;
+
+  maintenanceScreen?: React.ComponentType<{onCheckStatus: () => void}>;
+
   putMethod: (fetchOptions: {additionalURL: string; data: any}) => Promise<any>;
   userIdfetcher: () => Promise<any>;
   additionalURL: string;
@@ -39,6 +50,7 @@ interface ErrorBoundaryState {
   hasError: boolean;
   tracing: boolean;
   errorMessage: string;
+  maintenance: boolean;
 }
 
 class ErrorBoundary extends React.Component<
@@ -51,6 +63,7 @@ class ErrorBoundary extends React.Component<
       hasError: false,
       tracing: false,
       errorMessage: '',
+      maintenance: false,
     };
   }
 
@@ -58,14 +71,24 @@ class ErrorBoundary extends React.Component<
     return {hasError: true};
   }
 
-  componentDidCatch(error, errorInfo) {
+  componentDidCatch(error: any, errorInfo: any) {
     const {putMethod, userIdfetcher, additionalURL} = this.props;
+
+    if (error instanceof MaintenanceError) {
+      this.setState({
+        hasError: true,
+        maintenance: true,
+        errorMessage: error.message,
+      });
+      return;
+    }
+
     userIdfetcher().then(userId => {
-      this.setState(state => ({
-        ...state,
+      this.setState({
         tracing: true,
         errorMessage: error.message,
-      }));
+        maintenance: false,
+      });
 
       putMethod({
         additionalURL,
@@ -79,24 +102,42 @@ class ErrorBoundary extends React.Component<
           cause: JSON.stringify(errorInfo.componentStack),
           internalUser: {id: userId},
         },
-      }).finally(() => this.setState(state => ({...state, tracing: false})));
+      }).finally(() => this.setState({tracing: false}));
     });
   }
 
-  reloadApp() {
-    (window as any).location.reload();
-  }
+  handleCheckStatus = () => {
+    axios
+      .get('/ws/public/app/info/')
+      .then(() => {
+        this.setState({
+          hasError: false,
+          maintenance: false,
+          errorMessage: '',
+        });
+      })
+      .catch(e => {
+        console.log('Still under maintenance', e?.response?.status);
+      });
+  };
 
   render() {
-    const {errorScreen} = this.props;
-    if (this.state.hasError) {
+    const {children, errorScreen, maintenanceScreen} = this.props;
+    const {hasError, errorMessage, maintenance} = this.state;
+
+    if (hasError) {
+      if (maintenance && maintenanceScreen) {
+        const MaintenanceScreen = maintenanceScreen;
+        return <MaintenanceScreen onCheckStatus={this.handleCheckStatus} />;
+      }
+
       return errorScreen({
-        errorMessage: this.state.errorMessage,
+        errorMessage,
         onReloadPress: () => this.setState({hasError: false}),
       });
     }
 
-    return this.props.children;
+    return children;
   }
 }
 
