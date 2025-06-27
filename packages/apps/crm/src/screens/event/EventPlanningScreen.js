@@ -173,8 +173,8 @@ function EventPlanningScreen({navigation}) {
           <View style={styles.headerContainer}>
             <MultiValuePicker
               listItems={eventCategoryList}
-              title={I18n.t('Base_Status')}
-              onValueChange={statusList => setSelectedStatus(statusList)}
+              placeholder={I18n.t('Crm_Type')}
+              onValueChange={setSelectedStatus}
             />
             <EventSearchBar
               onChange={setFilter}
