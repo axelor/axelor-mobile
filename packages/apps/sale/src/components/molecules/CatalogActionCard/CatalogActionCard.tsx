@@ -19,6 +19,7 @@
 import React, {useCallback, useState} from 'react';
 import {
   useDispatch,
+  useNavigation,
   usePermitted,
   useSelector,
   useTranslator,
@@ -35,6 +36,7 @@ interface CatalogActionCardProps {
 const CatalogActionCard = ({style, product}: CatalogActionCardProps) => {
   const I18n = useTranslator();
   const dispatch = useDispatch();
+  const navigation = useNavigation();
   const {canCreate} = usePermitted({
     modelName: 'com.axelor.apps.sale.db.CartLine',
   });
@@ -57,6 +59,10 @@ const CatalogActionCard = ({style, product}: CatalogActionCardProps) => {
     [activeCart, dispatch],
   );
 
+  const handleShowProduct = useCallback(() => {
+    navigation.navigate('ProductSaleDetailsScreen', {productId: product.id});
+  }, [navigation, product.id]);
+
   return (
     <>
       <ActionCard
@@ -73,7 +79,7 @@ const CatalogActionCard = ({style, product}: CatalogActionCardProps) => {
           },
         ]}
         translator={I18n.t}>
-        <CartLineCard product={product} />
+        <CartLineCard product={product} onPress={handleShowProduct} />
       </ActionCard>
       <VariantPopup
         visible={alertVisible}
