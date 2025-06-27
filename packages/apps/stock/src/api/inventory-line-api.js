@@ -23,25 +23,35 @@ import {
   getActionApi,
 } from '@axelor/aos-mobile-core';
 
-const createSearchCriteria = (inventoryId, searchValue) => {
+const createSearchCriteria = (inventoryId, searchValue, useMassScanSortKey) => {
   return [
     {
       fieldName: 'inventory.id',
       operator: '=',
       value: inventoryId,
     },
-    getSearchCriterias('stock_inventoryLine', searchValue),
+    getSearchCriterias(
+      useMassScanSortKey
+        ? 'stock_inventoryLineMassScan'
+        : 'stock_inventoryLine',
+      searchValue,
+    ),
   ];
 };
 
 export async function searchInventoryLines({
   inventoryId,
-  searchValue,
+  searchValue = null,
   page = 0,
+  useMassScanSortKey = false,
 }) {
   return createStandardSearch({
     model: 'com.axelor.apps.stock.db.InventoryLine',
-    criteria: createSearchCriteria(inventoryId, searchValue),
+    criteria: createSearchCriteria(
+      inventoryId,
+      searchValue,
+      useMassScanSortKey,
+    ),
     fieldKey: 'stock_inventoryLine',
     sortKey: 'stock_inventoryLine',
     page,
