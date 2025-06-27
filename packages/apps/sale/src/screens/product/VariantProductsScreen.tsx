@@ -41,9 +41,9 @@ const VariantProductsScreen = ({}) => {
 
   const sliceFunctionData = useMemo(
     () => ({
-      parentProductId: product?.parentProduct?.id,
+      parentProductId: product?.parentProduct?.id ?? product?.id,
     }),
-    [product?.parentProduct?.id],
+    [product?.id, product?.parentProduct?.id],
   );
 
   return (

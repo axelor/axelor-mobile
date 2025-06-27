@@ -1,0 +1,5 @@
+{
+  "title": "Product details: allow display of variant products from generic one",
+  "type": "fix",
+  "packages": "sale"
+}
