@@ -57,7 +57,8 @@ const ProductFloatingButton = ({}) => {
           onPress: () => navigation.navigate('VariantProductsScreen'),
           iconName: 'palette2',
           color: Colors.priorityColor,
-          hideIf: product?.productVariant == null,
+          hideIf:
+            !product?.productVariant == null && !product?.productVariantConfig,
         },
       ]}
     />
