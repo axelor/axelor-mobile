@@ -22,7 +22,7 @@ import {MassScannerButton} from '../../molecules';
 import {
   searchInventoryLinesApi,
   updateInventoryLineDetailsApi,
-} from '../../../api/';
+} from '../../../api';
 
 interface InventoryPickingWidgetProps {
   scanKey: string;
@@ -41,14 +41,13 @@ const InventoryPickingWidget = ({
   const I18n = useTranslator();
 
   const handleScanValue = useCallback(
-    async (scanValue: string, {disableScan}) => {
+    async (scanValue: string, {disableScan}: {disableScan: () => void}) => {
       const data = await searchInventoryLinesApi({
         inventoryId,
         searchValue: scanValue,
         useMassScanSortKey: true,
-      }).then(res => {
-        return res?.data?.data;
-      });
+      }).then(res => res?.data?.data);
+
       if (!Array.isArray(data) || data.length === 0) {
         throw new Error('Stock_Picking_NoInventoryLineFound');
       } else if (data.length > 1) {
@@ -56,26 +55,35 @@ const InventoryPickingWidget = ({
       }
 
       const line = data[0];
-      const {id, version, realQty, stockLocation} = line;
+      const {
+        id,
+        version,
+        realQty: currentQty,
+        stockLocation,
+        description,
+      } = line;
+
+      const newQty = parseFloat(currentQty ?? 0) + 1;
+
       const result = await updateInventoryLineDetailsApi({
         inventoryLineId: id,
         version,
-        stockLocationId: stockLocation.id,
-        realQty: (parseFloat(realQty) || 0) + 1,
+        stockLocationId: stockLocation?.id,
+        realQty: newQty,
+        description,
       }).then((res: any) => res?.data);
 
-      if (result?.codeStatus !== 200)
+      if (result?.codeStatus !== 200) {
         throw new Error('Stock_Picking_ErrorLineUpdate');
+      }
+
       onRefresh?.();
 
       showToastMessage({
         position: 'bottom',
         type: 'success',
         text1: I18n.t('Base_Success'),
-        text2: I18n.t('Stock_Picking_LineUpdated', {
-          id,
-          newQty: (parseFloat(realQty) || 0) + 1,
-        }),
+        text2: I18n.t('Stock_Picking_LineUpdated', {id, newQty}),
         onPress: !handleShowLine
           ? undefined
           : () => {
@@ -88,7 +96,7 @@ const InventoryPickingWidget = ({
   );
 
   const handleError = useCallback(
-    error => {
+    (error: any) => {
       showToastMessage({
         position: 'bottom',
         type: 'error',
@@ -102,7 +110,7 @@ const InventoryPickingWidget = ({
   return (
     <MassScannerButton
       scanKey={scanKey}
-      titleKey="Stock_StartPicking"
+      titleKey="Stock_StartMassScan"
       backgroundAction={handleScanValue}
       fallbackAction={handleError}
       scanInterval={1500}

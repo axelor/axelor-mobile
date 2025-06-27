@@ -126,6 +126,7 @@
   "Stock_LineNumber": "Line no. {{sequence}}",
   "Stock_SeeAvailability": "See availability",
   "Stock_StartPicking": "Start picking",
+  "Stock_StartMassScan": "Start mass scan",
   "Stock_Picking_ErrorLineUpdate": "An error occured while updating the line, please try again manually.",
   "Stock_Picking_LineUpdated": "The line with id {{id}} was successfully updated, the new quantity is {{newQty}}.",
   "Stock_Picking_NoLineFound": "No line associated with this barcode was found on this stock move.",
