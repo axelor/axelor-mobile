@@ -322,7 +322,7 @@ export const crm_formsRegister: FormConfigs = {
         dependsOn: {
           partner: ({newValue, objectState, dispatch}) => {
             dispatch(updatePartner(newValue));
-            if (objectState.contact?.mainPartner?.id != newValue?.id) {
+            if (objectState.contact?.mainPartner?.id !== newValue?.id) {
               return null;
             } else {
               return objectState.contact;
