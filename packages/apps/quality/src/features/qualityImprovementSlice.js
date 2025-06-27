@@ -22,10 +22,12 @@ import {
   handlerApiCall,
 } from '@axelor/aos-mobile-core';
 import {
+  createQualityImprovement as _createQualityImprovement,
   fetchQiResolution as _fetchQiResolution,
   fetchQualityImprovement as _fetchQualityImprovement,
   fetchQualityImprovementStatus as _fetchQualityImprovementStatus,
   searchQualityImprovement as _searchQualityImprovement,
+  updateQualityImprovement as _updateQualityImprovement,
 } from '../api/quality-improvement-api';
 
 export const searchQualityImprovement = createAsyncThunk(
@@ -77,6 +79,32 @@ export const fetchQualityImprovement = createAsyncThunk(
       });
 
       return {...res, qiResolution};
+    });
+  },
+);
+
+export const createQualityImprovement = createAsyncThunk(
+  'quality_qualityImprovement/createQualityImprovement',
+  async function (data, {getState}) {
+    return handlerApiCall({
+      fetchFunction: _createQualityImprovement,
+      data,
+      action: 'Quality_SliceAction_CreateQualityImprovement',
+      getState,
+      responseOptions: {isArrayResponse: false},
+    });
+  },
+);
+
+export const updateQualityImprovement = createAsyncThunk(
+  'quality_qualityImprovement/updateQualityImprovement',
+  async function (data, {getState}) {
+    return handlerApiCall({
+      fetchFunction: _updateQualityImprovement,
+      data,
+      action: 'Quality_SliceAction_UpdateQualityImprovement',
+      getState,
+      responseOptions: {isArrayResponse: false},
     });
   },
 );

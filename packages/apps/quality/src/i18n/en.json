@@ -80,5 +80,7 @@
   "Quality_SliceAction_FetchStockMove": "fetch stock move",
   "Quality_SliceAction_FetchStockMoveLine": "fetch stock move line",
   "Quality_SliceAction_FetchManufOrder": "fetch manuf order",
-  "Quality_SliceAction_FetchOperationOrder": "fetch operation order"
+  "Quality_SliceAction_FetchOperationOrder": "fetch operation order",
+  "Quality_SliceAction_CreateQualityImprovement": "create quality improvement",
+  "Quality_SliceAction_UpdateQualityImprovement": "update quality improvement"
 }
