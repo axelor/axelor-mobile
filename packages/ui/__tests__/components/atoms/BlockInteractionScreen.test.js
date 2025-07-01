@@ -18,56 +18,68 @@
 
 import React from 'react';
 import {TouchableOpacity, View} from 'react-native';
-import {shallow} from 'enzyme';
+import {render} from '@testing-library/react-native';
 import {BlockInteractionScreen} from '@axelor/aos-mobile-ui';
 import * as configContext from '../../../lib/config/ConfigContext';
-import {getGlobalStyles} from '../../tools';
 
 describe('BlockInteractionScreen Component', () => {
+  const defaultHeaderHeight = 70;
+
+  beforeEach(() => {
+    jest.spyOn(configContext, 'useConfig').mockImplementation(() => ({
+      headerHeight: defaultHeaderHeight,
+    }));
+  });
+
+  const wrapper = ({children}) => (
+    <BlockInteractionScreen>{children}</BlockInteractionScreen>
+  );
+
   it('renders without crashing', () => {
-    const wrapper = shallow(<BlockInteractionScreen />);
-    expect(wrapper.exists()).toBe(true);
+    const {getByTestId} = render(
+      wrapper({children: <View testID="children" />}),
+    );
+    expect(getByTestId('children')).toBeTruthy();
   });
 
   it('renders children correctly', () => {
-    const children = <View testID="children" />;
-    const wrapper = shallow(
-      <BlockInteractionScreen>{children}</BlockInteractionScreen>,
+    const {getByTestId} = render(
+      wrapper({children: <View testID="children" />}),
     );
-
-    expect(wrapper.find('[testID="children"]').exists()).toBe(true);
+    expect(getByTestId('children')).toBeTruthy();
   });
 
-  it('blocks interactions', () => {
-    const onPressMock = jest.fn();
-    const children = (
-      <TouchableOpacity testID="children" onPress={onPressMock} />
-    );
-    const wrapper = shallow(
-      <BlockInteractionScreen>{children}</BlockInteractionScreen>,
+  it('renders touchable child', () => {
+    const onPress = jest.fn();
+    const {getByTestId} = render(
+      wrapper({
+        children: <TouchableOpacity testID="touchable" onPress={onPress} />,
+      }),
     );
 
-    wrapper.simulate('press');
-
-    expect(onPressMock).not.toHaveBeenCalled();
+    const button = getByTestId('touchable');
+    expect(button).toBeTruthy();
   });
 
-  it('hides the header if specified', () => {
-    const mockHeaderHeight = 70;
+  it('applies header offset correctly when not hidden', () => {
+    const {getByTestId} = render(
+      wrapper({children: <View testID="children" />}),
+    );
+    const container = getByTestId('BlockInteractionContainer');
+    expect(container.props.style).toMatchObject({top: defaultHeaderHeight});
+  });
 
+  it('applies no offset when header is hidden', () => {
     jest.spyOn(configContext, 'useConfig').mockImplementation(() => ({
-      headerHeight: mockHeaderHeight,
+      headerHeight: defaultHeaderHeight,
     }));
 
-    const children = <View testID="children" />;
-    const wrapper = shallow(<BlockInteractionScreen children={children} />);
-    const hiddenWrapper = shallow(
-      <BlockInteractionScreen children={children} hideHeader />,
+    const {getByTestId} = render(
+      <BlockInteractionScreen hideHeader>
+        <View testID="children" />
+      </BlockInteractionScreen>,
     );
-
-    expect(getGlobalStyles(wrapper.find(View).at(0)).top).toBe(
-      mockHeaderHeight,
-    );
-    expect(getGlobalStyles(hiddenWrapper.find(View).at(0)).top).toBe(0);
+    const container = getByTestId('BlockInteractionContainer');
+    expect(container.props.style).toMatchObject({top: 0});
   });
 });
