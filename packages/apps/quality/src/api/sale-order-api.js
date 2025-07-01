@@ -37,7 +37,11 @@ const createCustomerOrderCriteria = (
   }
 
   if (Array.isArray(saleOrderIdList) && saleOrderIdList?.length > 0) {
-    criteria.push({fieldName: 'id', operator: 'in', value: saleOrderIdList});
+    criteria.push({
+      fieldName: 'id',
+      operator: 'in',
+      value: saleOrderIdList,
+    });
   }
 
   return criteria;

@@ -36,8 +36,14 @@ export const QualityModule: Module = {
   title: 'Quality_Quality',
   subtitle: 'Quality_Quality',
   icon: 'clipboard-check',
-  compatibilityAOS: {moduleName: 'axelor-quality', downToVersion: '8.0.0'},
-  translations: {en: enTranslations, fr: frTranslations},
+  compatibilityAOS: {
+    moduleName: 'axelor-quality',
+    downToVersion: '8.0.0',
+  },
+  translations: {
+    en: enTranslations,
+    fr: frTranslations,
+  },
   menus: {
     quality_menu_controlEntrySeparator: {
       title: 'Quality_ControlEntries',
@@ -58,7 +64,10 @@ export const QualityModule: Module = {
       screen: 'QualityImprovementListScreen',
     },
   },
-  screens: {...ControlEntyScreens, ...QualityImprovement},
+  screens: {
+    ...ControlEntyScreens,
+    ...QualityImprovement,
+  },
   reducers: {...qualityReducers},
   models: {
     objectFields: {...quality_modelAPI},

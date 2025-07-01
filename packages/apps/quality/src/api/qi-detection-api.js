@@ -25,11 +25,19 @@ const createQIDetectionCriteria = (searchValue, origin, detectionOrigin) => {
   const criteria = [getSearchCriterias('quality_qiDetection', searchValue)];
 
   if (origin != null) {
-    criteria.push({fieldName: origin, operator: '=', value: true});
+    criteria.push({
+      fieldName: origin,
+      operator: '=',
+      value: true,
+    });
   }
 
   if (detectionOrigin != null) {
-    criteria.push({fieldName: 'origin', operator: '=', value: detectionOrigin});
+    criteria.push({
+      fieldName: 'origin',
+      operator: '=',
+      value: detectionOrigin,
+    });
   }
 
   return criteria;

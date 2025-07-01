@@ -100,7 +100,9 @@ const CustomerDeliveryLineDetailScreen = ({route, navigation}) => {
   }, [customerDeliveryLine, customerDelivery]);
 
   const handleShowProduct = () => {
-    navigation.navigate('ProductStockDetailsScreen', {product: product});
+    navigation.navigate('ProductStockDetailsScreen', {
+      product: product,
+    });
   };
 
   const getCustomerDeliveryLine = useCallback(() => {

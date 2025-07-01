@@ -25,7 +25,11 @@ import {
 const createOperationLineCriteria = (searchValue, manufOrder) => {
   return [
     getSearchCriterias('quality_operationOrder', searchValue),
-    {fieldName: 'manufOrder.id', operator: '=', value: manufOrder.id},
+    {
+      fieldName: 'manufOrder.id',
+      operator: '=',
+      value: manufOrder.id,
+    },
   ];
 };
 

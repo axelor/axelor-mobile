@@ -33,7 +33,7 @@ import {
 import {fetchOperationOrderById} from '../../features/operationOrderSlice';
 
 function OperationOrderDetailsScreen({route}) {
-  const operationOrderId = route.params.operationOrderId;
+  const {operationOrderId} = route.params;
   const dispatch = useDispatch();
   useContextRegister({
     models: [
@@ -80,6 +80,10 @@ function OperationOrderDetailsScreen({route}) {
   );
 }
 
-const styles = StyleSheet.create({scrollView: {height: null}});
+const styles = StyleSheet.create({
+  scrollView: {
+    height: null,
+  },
+});
 
 export default OperationOrderDetailsScreen;

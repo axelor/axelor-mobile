@@ -45,7 +45,7 @@ import {fetchManufOrder} from '../../features/manufacturingOrderSlice';
 import {fetchOperationOrders} from '../../features/operationOrderSlice';
 
 const ManufacturingOrderDetailsScreen = ({route, navigation}) => {
-  const manufacturingOrderId = route.params.manufacturingOrderId;
+  const {manufacturingOrderId} = route.params;
   const I18n = useTranslator();
   const dispatch = useDispatch();
   useContextRegister({
@@ -79,7 +79,9 @@ const ManufacturingOrderDetailsScreen = ({route, navigation}) => {
   }, [fetchManufOrderAndOperation]);
 
   const handleShowProduct = () => {
-    navigation.navigate('ProductStockDetailsScreen', {product: product});
+    navigation.navigate('ProductStockDetailsScreen', {
+      product: product,
+    });
   };
 
   const handleViewSaleOrderRefs = () => {
@@ -107,11 +109,15 @@ const ManufacturingOrderDetailsScreen = ({route, navigation}) => {
   };
 
   const handleShowConsumedProduct = () => {
-    navigation.navigate('ConsumedProductListScreen', {manufOrder: manufOrder});
+    navigation.navigate('ConsumedProductListScreen', {
+      manufOrder: manufOrder,
+    });
   };
 
   const handleShowProducedProduct = () => {
-    navigation.navigate('ProducedProductListScreen', {manufOrder: manufOrder});
+    navigation.navigate('ProducedProductListScreen', {
+      manufOrder: manufOrder,
+    });
   };
 
   return (
@@ -172,8 +178,13 @@ const ManufacturingOrderDetailsScreen = ({route, navigation}) => {
 };
 
 const styles = StyleSheet.create({
-  item: {marginHorizontal: 1, marginVertical: 4},
-  scroll: {paddingVertical: 10},
+  item: {
+    marginHorizontal: 1,
+    marginVertical: 4,
+  },
+  scroll: {
+    paddingVertical: 10,
+  },
 });
 
 export default ManufacturingOrderDetailsScreen;

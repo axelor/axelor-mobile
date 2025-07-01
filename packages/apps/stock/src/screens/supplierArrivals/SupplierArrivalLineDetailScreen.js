@@ -135,7 +135,9 @@ const SupplierArrivalLineDetailScreen = ({route, navigation}) => {
 
   const getSupplierArrivalLine = useCallback(() => {
     dispatch(
-      fetchSupplierArrivalLine({supplierArrivalLineId: supplierArrivalLineId}),
+      fetchSupplierArrivalLine({
+        supplierArrivalLineId: supplierArrivalLineId,
+      }),
     );
   }, [dispatch, supplierArrivalLineId]);
 
@@ -161,7 +163,9 @@ const SupplierArrivalLineDetailScreen = ({route, navigation}) => {
   };
 
   const handleShowProduct = () => {
-    navigation.navigate('ProductStockDetailsScreen', {product: product});
+    navigation.navigate('ProductStockDetailsScreen', {
+      product: product,
+    });
   };
 
   const handleTrackingNumberSelection = item => {
@@ -287,7 +291,10 @@ const SupplierArrivalLineDetailScreen = ({route, navigation}) => {
 };
 
 const styles = StyleSheet.create({
-  container: {alignItems: 'center', paddingBottom: 100},
+  container: {
+    alignItems: 'center',
+    paddingBottom: 100,
+  },
 });
 
 export default SupplierArrivalLineDetailScreen;

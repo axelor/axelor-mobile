@@ -53,9 +53,11 @@ export const quality_modelAPI: ObjectFields = {
   }),
   quality_qualityImprovement: schemaContructor.object({
     sequence: schemaContructor.string(),
-    qiDetection: schemaContructor
-      .subObject()
-      .concat(schemaContructor.object({origin: schemaContructor.number()})),
+    qiDetection: schemaContructor.subObject().concat(
+      schemaContructor.object({
+        origin: schemaContructor.number(),
+      }),
+    ),
     qiStatus: schemaContructor.subObject('sequence'),
     gravityTypeSelect: schemaContructor.number(),
     analysisMethod: schemaContructor.subObject(),
@@ -64,18 +66,18 @@ export const quality_modelAPI: ObjectFields = {
       schemaContructor.object({
         customerPartner: schemaContructor.subObject('simpleFullName'),
         customerSaleOrder: schemaContructor.subObject('saleOrderSeq'),
-        customerSaleOrderLine: schemaContructor
-          .subObject()
-          .concat(
-            schemaContructor.object({product: schemaContructor.subObject()}),
-          ),
+        customerSaleOrderLine: schemaContructor.subObject().concat(
+          schemaContructor.object({
+            product: schemaContructor.subObject(),
+          }),
+        ),
         supplierPartner: schemaContructor.subObject('simpleFullName'),
         supplierPurchaseOrder: schemaContructor.subObject('purchaseOrderSeq'),
-        supplierPurchaseOrderLine: schemaContructor
-          .subObject()
-          .concat(
-            schemaContructor.object({product: schemaContructor.subObject()}),
-          ),
+        supplierPurchaseOrderLine: schemaContructor.subObject().concat(
+          schemaContructor.object({
+            product: schemaContructor.subObject(),
+          }),
+        ),
         manufOrder: schemaContructor.subObject().concat(
           schemaContructor.object({
             billOfMaterial: schemaContructor.subObject(),
@@ -90,7 +92,9 @@ export const quality_modelAPI: ObjectFields = {
     ),
     qiResolution: schemaContructor.subObject(),
   }),
-  quality_qiStatus: schemaContructor.object({name: schemaContructor.string()}),
+  quality_qiStatus: schemaContructor.object({
+    name: schemaContructor.string(),
+  }),
   quality_qiResolution: schemaContructor.object({
     qiResolutionDefaultsList: schemaContructor
       .array()
@@ -149,7 +153,9 @@ export const quality_modelAPI: ObjectFields = {
     fullName: schemaContructor.string(),
     name: schemaContructor.string(),
   }),
-  quality_qiDefault: schemaContructor.object({name: schemaContructor.string()}),
+  quality_qiDefault: schemaContructor.object({
+    name: schemaContructor.string(),
+  }),
   quality_stockMove: schemaContructor.object({
     purchaseOrderSet: schemaContructor.array().of(schemaContructor.subObject()),
     saleOrderSet: schemaContructor.array().of(schemaContructor.subObject()),

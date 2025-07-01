@@ -41,7 +41,11 @@ export async function searchManufOrder({page = 0, searchValue, companyId}) {
 const createBoMLinesCriteria = (bomId, searchValue) => {
   return [
     getSearchCriterias('quality_billOfMaterialLine', searchValue),
-    {fieldName: 'billOfMaterialParent.id', operator: '=', value: bomId},
+    {
+      fieldName: 'billOfMaterialParent.id',
+      operator: '=',
+      value: bomId,
+    },
   ];
 };
 
