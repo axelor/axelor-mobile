@@ -43,7 +43,7 @@ const QualityImprovementFormScreen = ({route}) => {
     operationOrderId,
   } = route.params ?? {};
   const dispatch = useDispatch();
-  const {QualityImprovement} = useTypes();
+  const {QualityImprovement, QIDetection} = useTypes();
 
   const {qualityImprovement} = useSelector(
     state => state.quality_qualityImprovement,
@@ -78,31 +78,43 @@ const QualityImprovementFormScreen = ({route}) => {
     };
 
     if (stockMoveId) {
-      baseValue.purchaseOrderIdList = stockMove?.purchaseOrderSet?.map(
-        item => item.id,
-      );
-      baseValue.saleOrderIdList = stockMove?.saleOrderSet?.map(item => item.id);
+      if (stockMove?.purchaseOrderSet) {
+        baseValue.purchaseOrderIdList = stockMove?.purchaseOrderSet?.map(
+          ({id}) => id,
+        );
+        baseValue.detectionOrigin = QIDetection?.origin.Supplier;
+      } else if (stockMove?.saleOrderSet) {
+        baseValue.saleOrderIdList = stockMove?.saleOrderSet?.map(({id}) => id);
+        baseValue.detectionOrigin = QIDetection?.origin.Customer;
+      }
     }
 
     if (stockMoveLineId) {
-      baseValue.supplierPartner =
-        stockMoveLine?.purchaseOrderLine?.purchaseOrder?.supplierPartner;
-      baseValue.supplierPurchaseOrder =
-        stockMoveLine?.purchaseOrderLine?.purchaseOrder;
-      baseValue.supplierPurchaseOrderLine = stockMoveLine?.purchaseOrderLine;
-      baseValue.customerPartner =
-        stockMoveLine?.saleOrderLine?.saleOrder?.clientPartner;
-      baseValue.customerSaleOrder = stockMoveLine?.saleOrderLine?.saleOrder;
-      baseValue.customerSaleOrderLine = stockMoveLine?.saleOrderLine;
+      if (stockMoveLine?.purchaseOrderLine) {
+        baseValue.supplierPartner =
+          stockMoveLine?.purchaseOrderLine?.purchaseOrder?.supplierPartner;
+        baseValue.supplierPurchaseOrder =
+          stockMoveLine?.purchaseOrderLine?.purchaseOrder;
+        baseValue.supplierPurchaseOrderLine = stockMoveLine?.purchaseOrderLine;
+        baseValue.detectionOrigin = QIDetection?.origin.Supplier;
+      } else if (stockMoveLine?.saleOrderLine) {
+        baseValue.customerPartner =
+          stockMoveLine?.saleOrderLine?.saleOrder?.clientPartner;
+        baseValue.customerSaleOrder = stockMoveLine?.saleOrderLine?.saleOrder;
+        baseValue.customerSaleOrderLine = stockMoveLine?.saleOrderLine;
+        baseValue.detectionOrigin = QIDetection?.origin.Customer;
+      }
     }
 
     if (manufOrderId) {
       baseValue.manufOrder = manufOrder;
+      baseValue.detectionOrigin = QIDetection?.origin.Internal;
     }
 
     if (operationOrderId) {
       baseValue.operationOrder = operationOrder;
       baseValue.manufOrder = operationOrder?.manufOrder;
+      baseValue.detectionOrigin = QIDetection?.origin.Internal;
     }
 
     if (!qiId || qualityImprovement?.id !== qiId) {
@@ -127,17 +139,18 @@ const QualityImprovementFormScreen = ({route}) => {
         ) ?? [],
     };
   }, [
+    QIDetection?.origin,
     QualityImprovement.type.Product,
-    stockMoveId,
-    stockMoveLineId,
+    manufOrder,
     manufOrderId,
+    operationOrder,
     operationOrderId,
     qiId,
     qualityImprovement,
     stockMove,
+    stockMoveId,
     stockMoveLine,
-    manufOrder,
-    operationOrder,
+    stockMoveLineId,
   ]);
 
   return (

@@ -104,13 +104,8 @@ export const quality_formsRegister: FormConfigs = {
             !isOrigin(objectState, 'Supplier')
               ? undefined
               : objectState.supplierPartner,
-          supplierPurchaseOrder: ({newValue, objectState}) => {
-            if (objectState?.supplierPartner == null) {
-              return newValue?.supplierPartner;
-            } else {
-              return objectState?.supplierPartner;
-            }
-          },
+          supplierPurchaseOrder: ({newValue, objectState}) =>
+            objectState?.supplierPartner ?? newValue?.supplierPartner,
         },
       },
       supplierPurchaseOrder: {
@@ -164,14 +159,8 @@ export const quality_formsRegister: FormConfigs = {
             )
               ? undefined
               : objectState.customerPartner,
-          customerSaleOrder: ({newValue, objectState}) => {
-            console.log(newValue);
-            if (objectState?.customerPartner == null) {
-              return newValue?.clientPartner;
-            } else {
-              return objectState?.customerPartner;
-            }
-          },
+          customerSaleOrder: ({newValue, objectState}) =>
+            objectState?.customerPartner ?? newValue?.clientPartner,
         },
       },
       customerSaleOrder: {

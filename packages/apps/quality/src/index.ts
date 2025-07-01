@@ -100,7 +100,7 @@ export const QualityModule: Module = {
             'com.axelor.apps.production.db.OperationOrder',
           ),
         }),
-      title: 'Quality_AccessQualityImprovements',
+      title: 'Quality_DeclareNonConformity',
       hideIf: ({screenContext}) =>
         !isModel(screenContext, 'com.axelor.apps.stock.db.StockMove') &&
         !isModel(screenContext, 'com.axelor.apps.stock.db.StockMoveLine') &&
