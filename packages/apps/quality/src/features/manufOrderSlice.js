@@ -23,6 +23,7 @@ import {
 } from '@axelor/aos-mobile-core';
 import {
   searchBoMLines as _searchBoMLines,
+  fetchManufOrder as _fetchManufOrder,
   searchManufOrder as _searchManufOrder,
 } from '../api/manuf-order-api';
 
@@ -52,6 +53,19 @@ export const searchBoMLines = createAsyncThunk(
   },
 );
 
+export const fetchManufOrder = createAsyncThunk(
+  'quality_manufOrder/fetchManufOrder',
+  async function (data, {getState}) {
+    return handlerApiCall({
+      fetchFunction: _fetchManufOrder,
+      data,
+      action: 'Quality_SliceAction_FetchManufOrder',
+      getState,
+      responseOptions: {isArrayResponse: false},
+    });
+  },
+);
+
 const initialState = {
   loadingManufOrders: false,
   moreLoadingManufOrder: false,
@@ -62,6 +76,9 @@ const initialState = {
   moreLoadingBoMLine: false,
   isListEndBoMLine: false,
   bomLineList: [],
+
+  loadingManufOrder: false,
+  manufOrder: {},
 };
 
 const manufOrderSlice = createSlice({
@@ -79,6 +96,16 @@ const manufOrderSlice = createSlice({
       moreLoading: 'moreLoadingBoMLine',
       isListEnd: 'isListEndBoMLine',
       list: 'bomLineList',
+    });
+    builder.addCase(fetchManufOrder.pending, state => {
+      state.loadingManufOrder = true;
+    });
+    builder.addCase(fetchManufOrder.rejected, state => {
+      state.loadingManufOrder = false;
+    });
+    builder.addCase(fetchManufOrder.fulfilled, (state, action) => {
+      state.loadingManufOrder = false;
+      state.manufOrder = action.payload;
     });
   },
 });

@@ -16,7 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import React, {useCallback, useMemo} from 'react';
+import React, {useCallback, useEffect, useMemo} from 'react';
 import {useDispatch, useSelector, useTranslator} from '@axelor/aos-mobile-core';
 import {AutoCompleteSearch} from '@axelor/aos-mobile-ui';
 import {searchCustomerOrder} from '../../../features/saleOrderSlice';
@@ -64,6 +64,11 @@ const CustomerOrderSearchBarAux = ({
     [objectState?.customerPartner],
   );
 
+  const saleOrderIdList = useMemo(
+    () => objectState?.saleOrderIdList,
+    [objectState?.saleOrderIdList],
+  );
+
   const fetchCustomerOrderAPI = useCallback(
     ({page = 0, searchValue}) => {
       dispatch(
@@ -72,11 +77,22 @@ const CustomerOrderSearchBarAux = ({
           searchValue,
           customerPartner,
           companyId: user.activeCompany?.id,
+          saleOrderIdList,
         }),
       );
     },
-    [dispatch, customerPartner, user.activeCompany?.id],
+    [dispatch, customerPartner, user.activeCompany?.id, saleOrderIdList],
   );
+
+  useEffect(() => {
+    if (
+      Array.isArray(saleOrderIdList) &&
+      saleOrderIdList.length > 0 &&
+      customerOrderList.length === 1
+    ) {
+      onChange(customerOrderList[0]);
+    }
+  }, [customerOrderList, customerOrderList.length, onChange, saleOrderIdList]);
 
   return (
     <AutoCompleteSearch

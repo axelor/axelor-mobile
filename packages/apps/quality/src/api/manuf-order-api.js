@@ -17,6 +17,7 @@
  */
 
 import {
+  createStandardFetch,
   createStandardSearch,
   getSearchCriterias,
 } from '@axelor/aos-mobile-core';
@@ -56,6 +57,15 @@ export async function searchBoMLines({bomId, page, searchValue}) {
     sortKey: 'quality_billOfMaterialLine',
     page: page ?? 0,
     numberElementsByPage: !page ? null : undefined,
+    provider: 'model',
+  });
+}
+
+export async function fetchManufOrder({id}) {
+  return createStandardFetch({
+    model: 'com.axelor.apps.production.db.ManufOrder',
+    id,
+    fieldKey: 'quality_manufacturingOrder',
     provider: 'model',
   });
 }

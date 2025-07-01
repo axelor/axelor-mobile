@@ -44,9 +44,10 @@ const isStep = (state: any, wantedStep: number) =>
 const isType = (state: any, wantedTypeKey: string) =>
   state?.type === getTypes().QualityImprovement?.type?.[wantedTypeKey];
 
-const isOrigin = (state: any, wantedOriginKey: string) =>
-  state?.qiDetection?.origin ===
-  getTypes().QIDetection?.origin?.[wantedOriginKey];
+const isOrigin = (state: any, wantedOriginKey: string) => {
+  const _origin = state?.detectionOrigin ?? state?.qiDetection?.origin;
+  return _origin === getTypes().QIDetection?.origin?.[wantedOriginKey];
+};
 
 export const quality_formsRegister: FormConfigs = {
   quality_qualityImprovement: {
@@ -104,6 +105,8 @@ export const quality_formsRegister: FormConfigs = {
             !isOrigin(objectState, 'Supplier')
               ? undefined
               : objectState.supplierPartner,
+          supplierPurchaseOrder: ({newValue, objectState}) =>
+            objectState?.supplierPartner ?? newValue?.supplierPartner,
         },
       },
       supplierPurchaseOrder: {
@@ -157,6 +160,8 @@ export const quality_formsRegister: FormConfigs = {
             )
               ? undefined
               : objectState.customerPartner,
+          customerSaleOrder: ({newValue, objectState}) =>
+            objectState?.customerPartner ?? newValue?.clientPartner,
         },
       },
       customerSaleOrder: {

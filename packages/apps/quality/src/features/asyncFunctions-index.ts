@@ -27,8 +27,12 @@ export {
   updateControlEntry,
 } from './controlEntrySlice';
 export {fetchControlPlanById} from './controlPlanSlice';
-export {searchBoMLines, searchManufOrder} from './manufOrderSlice';
-export {searchOperationLine} from './operationOrderSlice';
+export {
+  fetchManufOrder,
+  searchBoMLines,
+  searchManufOrder,
+} from './manufOrderSlice';
+export {fetchOperationOrder, searchOperationLine} from './operationOrderSlice';
 export {searchCustomer, searchSupplier} from './partnerSlice';
 export {searchProduct} from './productSlice';
 export {searchSupplierPurchaseOrderLine} from './purchaseOrderLineSlice';
@@ -43,3 +47,4 @@ export {
 } from './qualityImprovementSlice';
 export {searchCustomerOrderLine} from './saleOrderLineSlice';
 export {searchCustomerOrder} from './saleOrderSlice';
+export {fetchStockMove, fetchStockMoveLine} from './stockMoveSlice';

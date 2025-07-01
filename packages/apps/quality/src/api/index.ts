@@ -31,10 +31,14 @@ export {
 } from './control-entry-sample-line-api';
 export {fetchControlPlanById as fetchControlPlanByIdApi} from './control-plan-api';
 export {
+  fetchManufOrder as fetchManufOrderApi,
   searchBoMLines as searchBoMLinesApi,
   searchManufOrder as searchManufOrderApi,
 } from './manuf-order-api';
-export {searchOperationLine as searchOperationLineApi} from './operation-order-api';
+export {
+  fetchOperationOrder as fetchOperationOrderApi,
+  searchOperationLine as searchOperationLineApi,
+} from './operation-order-api';
 export {
   searchCustomer as searchCustomerApi,
   searchSupplier as searchSupplierApi,
@@ -53,3 +57,7 @@ export {
 } from './quality-improvement-api';
 export {searchCustomerOrder as searchCustomerOrderApi} from './sale-order-api';
 export {searchCustomerOrderLine as searchCustomerOrderLineApi} from './sale-order-line-api';
+export {
+  fetchStockMove as fetchStockMoveApi,
+  fetchStockMoveLine as fetchStockMoveLineApi,
+} from './stock-move-api';

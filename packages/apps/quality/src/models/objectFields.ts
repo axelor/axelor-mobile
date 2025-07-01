@@ -120,6 +120,7 @@ export const quality_modelAPI: ObjectFields = {
   }),
   quality_supplierOrder: schemaContructor.object({
     purchaseOrderSeq: schemaContructor.string(),
+    supplierPartner: schemaContructor.subObject('simpleFullName'),
   }),
   quality_supplierOrderLine: schemaContructor.object({
     fullName: schemaContructor.string(),
@@ -130,6 +131,7 @@ export const quality_modelAPI: ObjectFields = {
   }),
   quality_customerOrder: schemaContructor.object({
     saleOrderSeq: schemaContructor.string(),
+    clientPartner: schemaContructor.subObject('simpleFullName'),
   }),
   quality_customerOrderLine: schemaContructor.object({
     fullName: schemaContructor.string(),
@@ -145,6 +147,7 @@ export const quality_modelAPI: ObjectFields = {
   }),
   quality_operationOrder: schemaContructor.object({
     name: schemaContructor.string(),
+    manufOrder: schemaContructor.subObject('manufOrderSeq'),
   }),
   quality_product: schemaContructor.object({
     fullName: schemaContructor.string(),
@@ -152,5 +155,25 @@ export const quality_modelAPI: ObjectFields = {
   }),
   quality_qiDefault: schemaContructor.object({
     name: schemaContructor.string(),
+  }),
+  quality_stockMove: schemaContructor.object({
+    purchaseOrderSet: schemaContructor.array().of(schemaContructor.subObject()),
+    saleOrderSet: schemaContructor.array().of(schemaContructor.subObject()),
+  }),
+  quality_stockMoveLine: schemaContructor.object({
+    purchaseOrderLine: schemaContructor.object({
+      fullName: schemaContructor.string(),
+      purchaseOrder: schemaContructor.object({
+        purchaseOrderSeq: schemaContructor.string(),
+        supplierPartner: schemaContructor.subObject('simpleFullName'),
+      }),
+    }),
+    saleOrderLine: schemaContructor.object({
+      fullName: schemaContructor.string(),
+      saleOrder: schemaContructor.object({
+        saleOrderSeq: schemaContructor.string(),
+        clientPartner: schemaContructor.subObject('simpleFullName'),
+      }),
+    }),
   }),
 };

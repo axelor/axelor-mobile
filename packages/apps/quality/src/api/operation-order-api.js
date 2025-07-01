@@ -17,6 +17,7 @@
  */
 
 import {
+  createStandardFetch,
   createStandardSearch,
   getSearchCriterias,
 } from '@axelor/aos-mobile-core';
@@ -41,6 +42,15 @@ export async function searchOperationLine({page = 0, searchValue, manufOrder}) {
     fieldKey: 'quality_operationOrder',
     sortKey: 'quality_operationOrder',
     page,
+    provider: 'model',
+  });
+}
+
+export async function fetchOperationOrder({id}) {
+  return createStandardFetch({
+    model: 'com.axelor.apps.production.db.OperationOrder',
+    id,
+    fieldKey: 'quality_operationOrder',
     provider: 'model',
   });
 }

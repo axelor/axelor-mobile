@@ -23,7 +23,12 @@ import {
   HeaderContainer,
   NotesCard,
 } from '@axelor/aos-mobile-ui';
-import {useDispatch, useSelector, useTranslator} from '@axelor/aos-mobile-core';
+import {
+  useContextRegister,
+  useDispatch,
+  useSelector,
+  useTranslator,
+} from '@axelor/aos-mobile-core';
 import {
   CustomerDeliveryHeader,
   CustomerDeliverySearchLineContainer,
@@ -36,6 +41,11 @@ const CustomerDeliveryDetailScreen = ({route, navigation}) => {
   const customerDeliveryId = route.params.customerDeliveryId;
   const I18n = useTranslator();
   const dispatch = useDispatch();
+  useContextRegister({
+    models: [
+      {model: 'com.axelor.apps.stock.db.StockMove', id: customerDeliveryId},
+    ],
+  });
 
   const {loading, customerDelivery} = useSelector(
     state => state.customerDelivery,
