@@ -41,7 +41,8 @@ const CatalogActionCard = ({style, product}: CatalogActionCardProps) => {
     modelName: 'com.axelor.apps.sale.db.CartLine',
   });
 
-  const {activeCart} = useSelector((state: any) => state.sale_cart);
+  const {activeCart} = useSelector(state => state.sale_cart);
+  const {mobileSettings} = useSelector(state => state.appConfig);
 
   const [alertVisible, setAlertVisible] = useState(false);
 
@@ -63,6 +64,22 @@ const CatalogActionCard = ({style, product}: CatalogActionCardProps) => {
     navigation.navigate('ProductSaleDetailsScreen', {productId: product.id});
   }, [navigation, product.id]);
 
+  const handlePress = useCallback(() => {
+    if (
+      mobileSettings?.isGenericProductShown &&
+      product.productVariantConfig != null
+    ) {
+      setAlertVisible(true);
+    } else {
+      handleAddProduct(product.id);
+    }
+  }, [
+    handleAddProduct,
+    mobileSettings?.isGenericProductShown,
+    product.id,
+    product.productVariantConfig,
+  ]);
+
   return (
     <>
       <ActionCard
@@ -71,10 +88,7 @@ const CatalogActionCard = ({style, product}: CatalogActionCardProps) => {
           {
             iconName: 'plus-lg',
             helper: I18n.t('Sale_AddOne'),
-            onPress:
-              product?.productVariantConfig == null
-                ? () => handleAddProduct(product.id)
-                : () => setAlertVisible(true),
+            onPress: handlePress,
             hidden: !canCreate,
           },
         ]}
