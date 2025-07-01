@@ -101,12 +101,12 @@ const QIFormButton = ({objectState, handleObjectChange}: QIFormButtonProps) => {
   const styles = useMemo(() => getStyles(currentStep), [currentStep]);
 
   const handleSave = useCallback(() => {
-    const sliceFunction = objectState.id
+    const sliceFunction: any = objectState.id
       ? updateQualityImprovement
       : createQualityImprovement;
 
     dispatch(
-      (sliceFunction as any)({
+      sliceFunction({
         qualityImprovement: {
           id: objectState.id,
           version: objectState.version,
@@ -128,8 +128,9 @@ const QIFormButton = ({objectState, handleObjectChange}: QIFormButtonProps) => {
             nonConformingQuantity: objectState.nonConformingQuantity,
           },
           qiResolution: {
-            defects: objectState.qiResolutionDefaults.map(item => ({
-              qiDefaultId: item.qiDefault.id,
+            defects: objectState.qiResolutionDefaults?.map((item: any) => ({
+              id: item._id,
+              qiDefaultId: item.qiDefault?.id,
               description: item.description,
               quantity: item.qty,
             })),
@@ -137,6 +138,7 @@ const QIFormButton = ({objectState, handleObjectChange}: QIFormButtonProps) => {
         },
       }),
     );
+
     navigation.goBack();
   }, [dispatch, navigation, objectState]);
 

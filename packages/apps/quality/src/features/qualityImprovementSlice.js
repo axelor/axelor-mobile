@@ -91,7 +91,7 @@ export const createQualityImprovement = createAsyncThunk(
       data,
       action: 'Quality_SliceAction_CreateQualityImprovement',
       getState,
-      responseOptions: {isArrayResponse: false},
+      responseOptions: {isArrayResponse: false, showToast: true},
     });
   },
 );
@@ -104,7 +104,7 @@ export const updateQualityImprovement = createAsyncThunk(
       data,
       action: 'Quality_SliceAction_UpdateQualityImprovement',
       getState,
-      responseOptions: {isArrayResponse: false},
+      responseOptions: {isArrayResponse: false, showToast: true},
     });
   },
 );

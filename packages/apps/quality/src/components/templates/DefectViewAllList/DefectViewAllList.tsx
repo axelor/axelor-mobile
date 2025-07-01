@@ -69,7 +69,7 @@ const DefectViewAllListAux = ({
   const handleConfirm = useCallback(() => {
     setLines(_current => {
       const lineContent = {
-        id: `qiDefault-${defect.id}.${_current.length}`,
+        id: editId ?? `qiDefault-${defect.id}.${_current.length}`,
         name: defect.name,
         qiDefault: defect,
         qty,
@@ -79,7 +79,7 @@ const DefectViewAllListAux = ({
       let updatedLines: any[];
       if (editId != null) {
         updatedLines = _current.map(_item =>
-          _item.id === editId ? lineContent : _item,
+          _item.id === editId ? {..._item, ...lineContent} : _item,
         );
       } else {
         updatedLines = [..._current, lineContent];
