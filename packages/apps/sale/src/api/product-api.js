@@ -79,7 +79,7 @@ const createProductCriteria = ({
 
   if (!isConfiguratorProductShown) {
     criteria.push({
-      fieldName: 'configurator.id',
+      fieldName: 'configurator',
       operator: 'isNull',
     });
   }
