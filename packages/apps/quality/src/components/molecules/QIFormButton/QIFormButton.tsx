@@ -19,8 +19,17 @@
 import React, {useCallback, useMemo} from 'react';
 import {StyleSheet, View} from 'react-native';
 import {Button} from '@axelor/aos-mobile-ui';
-import {useTranslator, useTypes} from '@axelor/aos-mobile-core';
+import {
+  useDispatch,
+  useNavigation,
+  useTranslator,
+  useTypes,
+} from '@axelor/aos-mobile-core';
 import {NavigationButton} from '../../atoms';
+import {
+  createQualityImprovement,
+  updateQualityImprovement,
+} from '../../../features/qualityImprovementSlice';
 import {QualityImprovement as QI_Type} from '../../../types';
 
 type SetterFunction<T> = (value: T | ((_current: T) => T)) => void;
@@ -38,6 +47,8 @@ interface QIFormButtonProps {
 const QIFormButton = ({objectState, handleObjectChange}: QIFormButtonProps) => {
   const I18n = useTranslator();
   const {QualityImprovement, QIDetection} = useTypes();
+  const dispatch = useDispatch();
+  const navigation = useNavigation();
 
   const handleStepUpdate = useCallback(
     (_value: number) =>
@@ -90,8 +101,46 @@ const QIFormButton = ({objectState, handleObjectChange}: QIFormButtonProps) => {
   const styles = useMemo(() => getStyles(currentStep), [currentStep]);
 
   const handleSave = useCallback(() => {
-    console.log('Save');
-  }, []);
+    const sliceFunction: any = objectState.id
+      ? updateQualityImprovement
+      : createQualityImprovement;
+
+    dispatch(
+      sliceFunction({
+        qualityImprovement: {
+          id: objectState.id,
+          version: objectState.version,
+          type: objectState.type,
+          qiDetectionId: objectState.qiDetection?.id,
+          gravityType: objectState.gravityTypeSelect,
+          analysisMethodId: objectState.analysisMethod?.id,
+          qiIdentification: {
+            supplierPartnerId: objectState.supplierPartner?.id,
+            supplierPurchaseOrderId: objectState.supplierPurchaseOrder?.id,
+            supplierPurchaseOrderLineId:
+              objectState.supplierPurchaseOrderLine?.id,
+            customerPartnerId: objectState.customerPartner?.id,
+            customerSaleOrderId: objectState.customerSaleOrder?.id,
+            customerSaleOrderLineId: objectState.customerSaleOrderLine?.id,
+            manufOrderId: objectState.manufOrder?.id,
+            operationOrderId: objectState.operationOrder?.id,
+            productId: objectState.product?.id,
+            nonConformingQuantity: objectState.nonConformingQuantity,
+          },
+          qiResolution: {
+            defects: objectState.qiResolutionDefaults?.map((item: any) => ({
+              id: item._id,
+              qiDefaultId: item.qiDefault?.id,
+              description: item.description,
+              quantity: item.qty,
+            })),
+          },
+        },
+      }),
+    );
+
+    navigation.goBack();
+  }, [dispatch, navigation, objectState]);
 
   return (
     <View style={styles.buttonContainer}>

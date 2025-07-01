@@ -41,9 +41,11 @@ export {searchQIAnalysisMethod} from './qiAnalysisMethodSlice';
 export {searchQIDetection} from './qiDetectionSlice';
 export {searchDefect} from './qiDefaultSlice';
 export {
+  createQualityImprovement,
   fetchQualityImprovement,
   fetchQualityImprovementStatus,
   searchQualityImprovement,
+  updateQualityImprovement,
 } from './qualityImprovementSlice';
 export {searchCustomerOrderLine} from './saleOrderLineSlice';
 export {searchCustomerOrder} from './saleOrderSlice';
