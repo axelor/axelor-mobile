@@ -52,6 +52,7 @@
   "Quality_Previous": "Précédent",
   "Quality_Next": "Suivant",
   "Quality_Send": "Envoyer",
+  "Quality_DeclareNonConformity": "Déclarer une non-conformité",
   "Quality_SliceAction_SearchControlEntry": "recherche des relevés de contrôle",
   "Quality_SliceAction_FetchControlEntryById": "récupération du relevé de contrôle par id",
   "Quality_SliceAction_SearchControlEntrySample": "recherche sur les échantillons du relevé de contôle",
@@ -75,5 +76,9 @@
   "Quality_SliceAction_SearchOperationLine": "recherche des lignes d'opération",
   "Quality_SliceAction_SearchDefect": "recherche des défauts",
   "Quality_SliceAction_FetchQualityImprovement": "récupération de l'amélioration qualité par id",
-  "Quality_SliceAction_FetchQiResolution": "récupération de la résolution d'amélioration qualité"
+  "Quality_SliceAction_FetchQiResolution": "récupération de la résolution d'amélioration qualité",
+  "Quality_SliceAction_FetchStockMove": "récupération du mouvement de stock",
+  "Quality_SliceAction_FetchStockMoveLine": "récupération de la ligne du mouvement de stock",
+  "Quality_SliceAction_FetchManufOrder": "récupération de l'ordre de fabrication",
+  "Quality_SliceAction_FetchOperationOrder": "récupération de l'opération de fabrication"
 }

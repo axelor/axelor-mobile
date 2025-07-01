@@ -16,7 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import {Module} from '@axelor/aos-mobile-core';
+import {getModelId, isModel, Module} from '@axelor/aos-mobile-core';
 import ControlEntyScreens from './screens/ControlEntry';
 import QualityImprovement from './screens/QualityImprovement';
 import enTranslations from './i18n/en.json';
@@ -77,6 +77,37 @@ export const QualityModule: Module = {
     headerRegisters: useQualityHeaders,
     typeObjects: quality_typeObjects,
   },
+  globalTools: [
+    {
+      key: 'quality_accessQICreation',
+      iconName: 'clipboard2-x',
+      onPress: ({navigation, screenContext}) =>
+        navigation.navigate('QualityImprovementFormScreen', {
+          stockMoveId: getModelId(
+            screenContext,
+            'com.axelor.apps.stock.db.StockMove',
+          ),
+          stockMoveLineId: getModelId(
+            screenContext,
+            'com.axelor.apps.stock.db.StockMoveLine',
+          ),
+          manufOrderId: getModelId(
+            screenContext,
+            'com.axelor.apps.production.db.ManufOrder',
+          ),
+          operationOrderId: getModelId(
+            screenContext,
+            'com.axelor.apps.production.db.OperationOrder',
+          ),
+        }),
+      title: 'Quality_DeclareNonConformity',
+      hideIf: ({screenContext}) =>
+        !isModel(screenContext, 'com.axelor.apps.stock.db.StockMove') &&
+        !isModel(screenContext, 'com.axelor.apps.stock.db.StockMoveLine') &&
+        !isModel(screenContext, 'com.axelor.apps.production.db.ManufOrder') &&
+        !isModel(screenContext, 'com.axelor.apps.production.db.OperationOrder'),
+    },
+  ],
 };
 
 export * from './api';

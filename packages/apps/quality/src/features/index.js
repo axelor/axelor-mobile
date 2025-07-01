@@ -32,3 +32,4 @@ export {qiDefaultReducer as quality_qiDefault} from './qiDefaultSlice';
 export {qualityImprovementReducer as quality_qualityImprovement} from './qualityImprovementSlice';
 export {saleOrderLineReducer as quality_saleOrderLine} from './saleOrderLineSlice';
 export {saleOrderReducer as quality_saleOrder} from './saleOrderSlice';
+export {stockMoveReducer as quality_stockMove} from './stockMoveSlice';

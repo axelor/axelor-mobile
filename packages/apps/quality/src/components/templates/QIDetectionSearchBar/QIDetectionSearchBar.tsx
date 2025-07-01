@@ -69,6 +69,11 @@ const QIDetectionSearchBarAux = ({
     }
   }, [QualityImprovement.type, objectState?.type]);
 
+  const detectionOrigin = useMemo(
+    () => objectState?.detectionOrigin,
+    [objectState?.detectionOrigin],
+  );
+
   const searchQIDetectionAPI = useCallback(
     ({page = 0, searchValue}) => {
       dispatch(
@@ -76,10 +81,11 @@ const QIDetectionSearchBarAux = ({
           page,
           searchValue,
           origin: originFieldName,
+          detectionOrigin,
         }),
       );
     },
-    [dispatch, originFieldName],
+    [detectionOrigin, dispatch, originFieldName],
   );
 
   return (

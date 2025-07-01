@@ -21,7 +21,10 @@ import {
   generateInifiniteScrollCases,
   handlerApiCall,
 } from '@axelor/aos-mobile-core';
-import {searchOperationLine as _searchOperationLine} from '../api/operation-order-api';
+import {
+  fetchOperationOrder as _fetchOperationOrder,
+  searchOperationLine as _searchOperationLine,
+} from '../api/operation-order-api';
 
 export const searchOperationLine = createAsyncThunk(
   'quality_operationOrder/searchOperationLine',
@@ -36,11 +39,27 @@ export const searchOperationLine = createAsyncThunk(
   },
 );
 
+export const fetchOperationOrder = createAsyncThunk(
+  'quality_operationOrder/fetchOperationOrder',
+  async function (data, {getState}) {
+    return handlerApiCall({
+      fetchFunction: _fetchOperationOrder,
+      data,
+      action: 'Quality_SliceAction_FetchOperationOrder',
+      getState,
+      responseOptions: {isArrayResponse: false},
+    });
+  },
+);
+
 const initialState = {
   loadingOperationOrders: false,
   moreLoadingOperationOrder: false,
   isListEndOperationOrder: false,
   operationOrderList: [],
+
+  loadingOperationOrder: false,
+  operationOrder: {},
 };
 
 const operationOrderSlice = createSlice({
@@ -52,6 +71,16 @@ const operationOrderSlice = createSlice({
       moreLoading: 'moreLoadingOperationOrder',
       isListEnd: 'isListEndOperationOrder',
       list: 'operationOrderList',
+    });
+    builder.addCase(fetchOperationOrder.pending, state => {
+      state.loadingOperationOrder = true;
+    });
+    builder.addCase(fetchOperationOrder.rejected, state => {
+      state.loadingOperationOrder = false;
+    });
+    builder.addCase(fetchOperationOrder.fulfilled, (state, action) => {
+      state.loadingOperationOrder = false;
+      state.operationOrder = action.payload;
     });
   },
 });

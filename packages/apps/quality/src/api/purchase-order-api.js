@@ -21,15 +21,30 @@ import {
   getSearchCriterias,
 } from '@axelor/aos-mobile-core';
 
-const createSupplierOrderCriteria = (searchValue, supplierPartner) => {
-  return [
-    getSearchCriterias('quality_supplierOrder', searchValue),
-    {
+const createSupplierOrderCriteria = (
+  searchValue,
+  supplierPartner,
+  purchaseOrderIdList,
+) => {
+  const criteria = [getSearchCriterias('quality_supplierOrder', searchValue)];
+
+  if (supplierPartner != null) {
+    criteria.push({
       fieldName: 'supplierPartner.id',
       operator: '=',
       value: supplierPartner.id,
-    },
-  ];
+    });
+  }
+
+  if (Array.isArray(purchaseOrderIdList) && purchaseOrderIdList?.length > 0) {
+    criteria.push({
+      fieldName: 'id',
+      operator: 'in',
+      value: purchaseOrderIdList,
+    });
+  }
+
+  return criteria;
 };
 
 export async function searchSupplierOrder({
@@ -37,12 +52,22 @@ export async function searchSupplierOrder({
   searchValue,
   companyId,
   supplierPartner,
+  purchaseOrderIdList,
 }) {
-  if (!supplierPartner) return undefined;
+  if (
+    !supplierPartner &&
+    (!Array.isArray(purchaseOrderIdList) || purchaseOrderIdList?.length === 0)
+  ) {
+    return undefined;
+  }
 
   return createStandardSearch({
     model: 'com.axelor.apps.purchase.db.PurchaseOrder',
-    criteria: createSupplierOrderCriteria(searchValue, supplierPartner),
+    criteria: createSupplierOrderCriteria(
+      searchValue,
+      supplierPartner,
+      purchaseOrderIdList,
+    ),
     fieldKey: 'quality_supplierOrder',
     sortKey: 'quality_supplierOrder',
     page,
