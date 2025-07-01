@@ -80,5 +80,7 @@
   "Quality_SliceAction_FetchStockMove": "récupération du mouvement de stock",
   "Quality_SliceAction_FetchStockMoveLine": "récupération de la ligne du mouvement de stock",
   "Quality_SliceAction_FetchManufOrder": "récupération de l'ordre de fabrication",
-  "Quality_SliceAction_FetchOperationOrder": "récupération de l'opération de fabrication"
+  "Quality_SliceAction_FetchOperationOrder": "récupération de l'opération de fabrication",
+  "Quality_SliceAction_CreateQualityImprovement": "création d'une amélioration qualité",
+  "Quality_SliceAction_UpdateQualityImprovement": "modification d'une amélioration qualité"
 }

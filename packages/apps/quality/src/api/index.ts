@@ -50,10 +50,12 @@ export {searchQIAnalysisMethod as searchQIAnalysisMethodApi} from './qi-analysis
 export {searchQIDetection as searchQIDetectionApi} from './qi-detection-api';
 export {searchDefect as searchDefectApi} from './qi-default-api';
 export {
+  createQualityImprovement as createQualityImprovementApi,
   fetchQiResolution as fetchQiResolutionApi,
   fetchQualityImprovement as fetchQualityImprovementApi,
   fetchQualityImprovementStatus as fetchQualityImprovementStatusApi,
   searchQualityImprovement as searchQualityImprovementApi,
+  updateQualityImprovement as updateQualityImprovementApi,
 } from './quality-improvement-api';
 export {searchCustomerOrder as searchCustomerOrderApi} from './sale-order-api';
 export {searchCustomerOrderLine as searchCustomerOrderLineApi} from './sale-order-line-api';
