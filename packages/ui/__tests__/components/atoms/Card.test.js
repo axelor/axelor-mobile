@@ -18,27 +18,38 @@
 
 import React from 'react';
 import {View} from 'react-native';
-import {shallow} from 'enzyme';
+import {render} from '@testing-library/react-native';
 import {Card} from '@axelor/aos-mobile-ui';
 
 describe('Card Component', () => {
   it('renders without crashing', () => {
-    const wrapper = shallow(<Card />);
-    expect(wrapper.exists()).toBe(true);
+    const {getByTestId} = render(
+      <Card>
+        <View />
+      </Card>,
+    );
+    expect(getByTestId('CardContainer')).toBeTruthy();
   });
 
   it('renders children correctly', () => {
-    const children = <View testID="children" />;
-    const wrapper = shallow(<Card>{children}</Card>);
-
-    expect(wrapper.find('[testID="children"]').length).toBe(1);
+    const {getByTestId} = render(
+      <Card>
+        <View testID="children" />
+      </Card>,
+    );
+    expect(getByTestId('children')).toBeTruthy();
   });
 
   it('applies custom style correctly', () => {
     const customStyle = {marginBottom: 10};
-    const children = <View testID="children" />;
-    const wrapper = shallow(<Card style={customStyle}>{children}</Card>);
-
-    expect(wrapper.prop('style')).toContain(customStyle);
+    const {getByTestId} = render(
+      <Card style={customStyle}>
+        <View testID="child" />
+      </Card>,
+    );
+    const container = getByTestId('CardContainer');
+    expect(container.props.style).toEqual(
+      expect.arrayContaining([expect.objectContaining(customStyle)]),
+    );
   });
 });
