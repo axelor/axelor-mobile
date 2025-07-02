@@ -21,15 +21,20 @@ import React from 'react';
 const TECHNICAL_ABNORMALITY = 0;
 const CONFIGURATION_PROBLEM = 4;
 
+export class MaintenanceError extends Error {
+  constructor(message = 'The server is under maintenance.') {
+    super(message);
+    this.name = 'MaintenanceError';
+  }
+}
+
 interface ErrorBoundaryProps {
   children: React.ReactNode;
-  errorScreen: ({
-    errorMessage,
-    onReloadPress,
-  }: {
+  ErrorScreen: React.ComponentType<{
     errorMessage: string;
-    onReloadPress: () => any;
-  }) => React.ReactNode;
+    handleReload: () => void;
+    isMaintenance?: boolean;
+  }>;
   putMethod: (fetchOptions: {additionalURL: string; data: any}) => Promise<any>;
   userIdfetcher: () => Promise<any>;
   additionalURL: string;
@@ -39,6 +44,7 @@ interface ErrorBoundaryState {
   hasError: boolean;
   tracing: boolean;
   errorMessage: string;
+  maintenance: boolean;
 }
 
 class ErrorBoundary extends React.Component<
@@ -51,6 +57,7 @@ class ErrorBoundary extends React.Component<
       hasError: false,
       tracing: false,
       errorMessage: '',
+      maintenance: false,
     };
   }
 
@@ -58,8 +65,19 @@ class ErrorBoundary extends React.Component<
     return {hasError: true};
   }
 
-  componentDidCatch(error, errorInfo) {
+  componentDidCatch(error: any, errorInfo: any) {
     const {putMethod, userIdfetcher, additionalURL} = this.props;
+
+    if (error instanceof MaintenanceError) {
+      this.setState(state => ({
+        ...state,
+        hasError: true,
+        maintenance: true,
+        errorMessage: error.message,
+      }));
+      return;
+    }
+
     userIdfetcher().then(userId => {
       this.setState(state => ({
         ...state,
@@ -87,16 +105,25 @@ class ErrorBoundary extends React.Component<
     (window as any).location.reload();
   }
 
+  resetState() {
+    this.setState({hasError: false});
+  }
+
   render() {
-    const {errorScreen} = this.props;
-    if (this.state.hasError) {
-      return errorScreen({
-        errorMessage: this.state.errorMessage,
-        onReloadPress: () => this.setState({hasError: false}),
-      });
+    const {children, ErrorScreen} = this.props;
+    const {hasError, errorMessage, maintenance} = this.state;
+
+    if (hasError) {
+      return (
+        <ErrorScreen
+          errorMessage={errorMessage}
+          handleReload={() => this.resetState()}
+          isMaintenance={maintenance}
+        />
+      );
     }
 
-    return this.props.children;
+    return children;
   }
 }
 

@@ -216,6 +216,8 @@
   "Base_FileDownloadiOS": "Téléchargement complété, document sauvegardé.",
   "Base_DownloadPermissionDenied": "L'application ne possède pas les permissions nécessaires au téléchargement du fichier.",
   "Base_StepOfStep": "{{activeStep}} sur {{numberOfSteps}}",
+  "Base_ReloadApp": "Recharger l'application",
+  "Base_ServerMaintenance": "Le serveur ERP est actuellement en maintenance. Veuillez réessayer ultérieurement.",
   "Base_SliceAction_FetchFilesDetails": "récupération des détails du fichier",
   "Base_SliceAction_FetchMetaModule": "récupération des modules",
   "Base_SliceAction_FetchMobileConfig": "récupération des configs mobile",
