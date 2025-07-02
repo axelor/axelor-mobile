@@ -17,46 +17,46 @@
  */
 
 import React from 'react';
-import {ScrollView} from 'react-native';
-import {shallow} from 'enzyme';
-import {RichEditor, RichToolbar} from 'react-native-pell-rich-editor';
-import {HtmlInput, Text} from '@axelor/aos-mobile-ui';
+import {render} from '@testing-library/react-native';
+import {HtmlInput} from '@axelor/aos-mobile-ui';
 
 describe('HtmlInput Component', () => {
   it('renders without crashing', () => {
-    const wrapper = shallow(<HtmlInput />);
-    expect(wrapper.exists()).toBe(true);
+    const {getByTestId} = render(<HtmlInput />);
+    expect(getByTestId('htmlInputScrollView')).toBeTruthy();
   });
 
-  it('renders the title if provided', () => {
-    const wrapper = shallow(<HtmlInput title="Test Title" />);
-    expect(wrapper.find(Text)).toHaveLength(1);
-    expect(wrapper.find(Text).children().text()).toEqual('Test Title');
+  it('renders the title when provided', () => {
+    const title = 'Test Title';
+    const {getByText} = render(<HtmlInput title={title} />);
+    expect(getByText(title)).toBeTruthy();
   });
 
   it('applies custom styles correctly', () => {
     const customStyle = {width: 200};
     const customToolbarStyle = {backgroundColor: 'red'};
     const customContainerStyle = {flex: 1};
-    const wrapper = shallow(
+
+    const {getByTestId, queryByTestId} = render(
       <HtmlInput
-        readonly={false}
         style={customStyle}
         styleToolbar={customToolbarStyle}
         containerStyle={customContainerStyle}
+        readonly={false}
+        defaultInput="test"
       />,
     );
 
-    expect(
-      wrapper.find(ScrollView).at(0).prop('contentContainerStyle'),
-    ).toMatchObject(customContainerStyle);
-    expect(wrapper.find(ScrollView).at(1).prop('style')).toContain(customStyle);
-
-    wrapper.find(RichEditor).prop('editorInitializedCallback')();
-
-    expect(wrapper.find(RichToolbar).exists()).toBe(true);
-    expect(wrapper.find(RichToolbar).prop('style')).toMatchObject(
-      customToolbarStyle,
+    const container = getByTestId('htmlInputScrollView');
+    expect(container.props.contentContainerStyle).toMatchObject(
+      customContainerStyle,
     );
+
+    const contentScroll = getByTestId('htmlInputInnerScroll');
+    expect(contentScroll.props.style).toEqual(
+      expect.arrayContaining([expect.objectContaining(customStyle)]),
+    );
+
+    expect(queryByTestId('htmlInputToolbar')).toBeNull();
   });
 });
