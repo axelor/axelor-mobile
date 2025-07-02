@@ -3,30 +3,113 @@ sidebar_position: 30
 description: ''
 ---
 
-# Error handling
+# Error Handling
 
-The **_ERROR_** library contains the _ErrorBoundary_ component, which displays an emergency screen in the event of a technical error during execution of the mobile application. This component detects errors and sends a traceback to the web ERP.
+The **_error_** library provides an `ErrorBoundary` component designed to catch and manage runtime errors in your React or React Native application. When an error occurs, it displays a fallback screen and reports the error to the web ERP.
 
-In order to perform these actions, the component needs several attributes:
+## Overview
+
+`ErrorBoundary` is a React component that:
+
+- Catches runtime errors within its child component tree.
+- Displays a customizable error screen to users.
+- Sends error details, including stack trace and user information, to the ERP system via a provided PUT method.
+- Handles maintenance-mode errors separately via a custom `MaintenanceError` class.
 
 ```tsx
 interface ErrorBoundaryProps {
   children: React.ReactNode;
-  errorScreen: ({
-    errorMessage,
-    onReloadPress,
-  }: {
+  ErrorScreen: React.ComponentType<{
     errorMessage: string;
-    onReloadPress: () => any;
-  }) => React.ReactNode;
+    handleReload: () => void;
+    isMaintenance?: boolean;
+  }>;
   putMethod: (fetchOptions: {additionalURL: string; data: any}) => Promise<any>;
   userIdfetcher: () => Promise<any>;
   additionalURL: string;
 }
 ```
 
-The _errorScreen_ attribute must contain the emergency screen in the event of an error, with a button to reload the application. The _putMethod_ attribute must provide a function for the component to perform a put request. The component gives the url to be added to the instance url to access the TraceBack object, as well as the data to be sent to the ERP. The last _userIdFetcher_ attribute is used to obtain the id of the active user. Version 7.0.0 of the application adds the _additionalURL_ attribute, which defines the Traceback object class on the web instance. Indeed, to enable backward compatibility with earlier versions, it is now the router that transmits the route to access Tracebacks.
+This component is waiting for a few attributes :
 
-This component must be placed around the application to detect runtime errors.
+- `children`: the part of the application to be wrapped by the `ErrorBoundary` component.
+- `ErrorScreen`: a React component that renders a fallback screen when an error is caught. It receives the following props:
 
-This library does not depend on React Native and should be able to be used on classic React projects.
+  - `errorMessage`: the error message to display.
+  - `handleReload`: function that should trigger a reload or recovery logic.
+  - `isMaintenance`: boolean indicating whether the error was caused by a maintenance mode (`MaintenanceError`).
+
+- `putMethod`: function used to send error details to the ERP system. It receives:
+
+  - `additionalURL`: The specific endpoint path for submitting the traceback.
+  - `data`: A payload containing information about the error, user, and context.
+
+- `userIdfetcher`: asynchronous function that returns the active user's ID. This ID is included in the error report.
+- `additionalURL`: string that defines the endpoint for the traceback submission on the ERP system.
+
+## Usage
+
+Wrap your application's root or high-level components with `ErrorBoundary`:
+
+```tsx
+<ErrorBoundary
+  ErrorScreen={MyErrorScreen}
+  putMethod={sendErrorToERP}
+  userIdfetcher={fetchUserId}
+  additionalURL="/api/tracebacks">
+  <App />
+</ErrorBoundary>
+```
+
+## Maintenance Error Handling
+
+The library provides a dedicated mechanism to detect and handle server maintenance mode. This ensures that users see an appropriate message when the application is temporarily unavailable.
+
+```ts
+throw new MaintenanceError('Scheduled maintenance in progress');
+```
+
+Throw this error to activate maintenance-specific UI in the `ErrorScreen` component.
+
+The following tools from core package can be used to handle and monitor maintenance mode in a declarative way.
+
+- `maintenanceMiddleware`
+
+A middleware function designed for API error interception:
+
+```ts
+export const maintenanceMiddleware = (error: any): any => {
+  if (error?.response?.status === 503) {
+    maintenanceManager.trigger();
+  }
+
+  return Promise.reject(error);
+};
+```
+
+Attach this middleware to your API client (e.g., Axios) to trigger maintenance mode automatically on receiving a 503 error. This interceptor is automatically added to the axios provider after user connection.
+
+- `useMaintenance`
+
+A React hook that tracks maintenance state:
+
+```ts
+const {isMaintenance} = useMaintenance();
+```
+
+Use this hook inside components to access live maintenance status and respond accordingly.
+
+- `MaintenanceTrigger`
+
+A component that throws a `MaintenanceError` when maintenance is detected. Include this component near the top of your app (e.g., inside a layout or navigation wrapper). When maintenance is triggered, it automatically throws a `MaintenanceError`, allowing the `ErrorBoundary` to display the maintenance UI.
+
+```tsx
+<ErrorBoundary
+  ErrorScreen={MyErrorScreen}
+  putMethod={sendErrorToERP}
+  userIdfetcher={fetchUserId}
+  additionalURL="/api/tracebacks">
+  <MaintenanceTrigger />
+  <App />
+</ErrorBoundary>
+```
