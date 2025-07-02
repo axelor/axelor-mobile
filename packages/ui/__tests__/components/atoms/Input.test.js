@@ -17,12 +17,11 @@
  */
 
 import React from 'react';
-import {TextInput} from 'react-native';
-import {shallow} from 'enzyme';
+import {render, fireEvent} from '@testing-library/react-native';
 import {Input} from '@axelor/aos-mobile-ui';
 
 describe('Input component', () => {
-  const props = {
+  const baseProps = {
     value: 'Hello',
     onChange: jest.fn(),
     placeholder: 'Enter text',
@@ -33,54 +32,44 @@ describe('Input component', () => {
     numberOfLines: 3,
     keyboardType: 'default',
     onEndFocus: jest.fn(),
-    isFocus: true,
+    isFocus: false,
     writingType: 'title',
   };
 
+  const setup = (override = {}) => {
+    const props = {...baseProps, ...override};
+    const utils = render(<Input {...props} />);
+    const input = utils.getByPlaceholderText(props.placeholder);
+    return {input, props, ...utils};
+  };
+
   it('renders without crashing', () => {
-    const wrapper = shallow(<Input {...props} />);
-    expect(wrapper.exists()).toBe(true);
+    const {input} = setup();
+    expect(input).toBeTruthy();
   });
 
-  it('should render the TextInput component with the correct props', () => {
-    const wrapper = shallow(<Input {...props} />);
-
-    const textInput = wrapper.find(TextInput);
-
-    expect(textInput.prop('value')).toEqual('Hello');
-
-    expect(textInput.prop('placeholder')).toEqual('Enter text');
+  it('renders the TextInput with correct props', () => {
+    const {input} = setup();
+    expect(input.props.value).toBe('Hello');
+    expect(input.props.placeholder).toBe('Enter text');
+    expect(input.props.secureTextEntry).toBe(true);
   });
 
-  it('should call onChange handler with new value when text is changed', () => {
-    const wrapper = shallow(<Input {...props} />);
-
-    const textInput = wrapper.find(TextInput);
-
-    const newValue = 'New value';
-
-    textInput.simulate('changeText', newValue);
-
-    expect(props.onChange).toHaveBeenCalledWith(newValue);
+  it('calls onChange handler with new value', () => {
+    const {input, props} = setup();
+    fireEvent.changeText(input, 'New value');
+    expect(props.onChange).toHaveBeenCalledWith('New value');
   });
 
-  it('should call onSelection handler when TextInput is focused', () => {
-    const wrapper = shallow(<Input {...props} />);
-
-    const textInput = wrapper.find(TextInput);
-
-    textInput.simulate('focus');
-
+  it('calls onSelection handler on focus', () => {
+    const {input, props} = setup();
+    fireEvent(input, 'focus');
     expect(props.onSelection).toHaveBeenCalled();
   });
 
-  it('should call onEndFocus handler when TextInput is blurred', () => {
-    const wrapper = shallow(<Input {...props} />);
-
-    const textInput = wrapper.find(TextInput);
-
-    textInput.simulate('blur');
-
+  it('calls onEndFocus handler on blur', () => {
+    const {input, props} = setup();
+    fireEvent(input, 'blur');
     expect(props.onEndFocus).toHaveBeenCalled();
   });
 });
