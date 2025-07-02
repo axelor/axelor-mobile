@@ -22,32 +22,29 @@ import {render} from '@testing-library/react-native';
 import {Card} from '@axelor/aos-mobile-ui';
 
 describe('Card Component', () => {
+  const wrapper = props => (
+    <Card {...props}>
+      <View testID="children" />
+    </Card>
+  );
+
   it('renders without crashing', () => {
-    const {getByTestId} = render(
-      <Card>
-        <View />
-      </Card>,
-    );
-    expect(getByTestId('CardContainer')).toBeTruthy();
+    const {getByTestId} = render(wrapper());
+
+    expect(getByTestId('cardContainer')).toBeTruthy();
   });
 
   it('renders children correctly', () => {
-    const {getByTestId} = render(
-      <Card>
-        <View testID="children" />
-      </Card>,
-    );
+    const {getByTestId} = render(wrapper());
+
     expect(getByTestId('children')).toBeTruthy();
   });
 
   it('applies custom style correctly', () => {
     const customStyle = {marginBottom: 10};
-    const {getByTestId} = render(
-      <Card style={customStyle}>
-        <View testID="child" />
-      </Card>,
-    );
-    const container = getByTestId('CardContainer');
+    const {getByTestId} = render(wrapper({style: customStyle}));
+    const container = getByTestId('cardContainer');
+
     expect(container.props.style).toEqual(
       expect.arrayContaining([expect.objectContaining(customStyle)]),
     );
