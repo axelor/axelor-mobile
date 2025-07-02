@@ -41,7 +41,7 @@ const BlockInteractionScreen = ({
   );
 
   return (
-    <View style={styles.container} testID="BlockInteractionContainer">
+    <View style={styles.container} testID="blockInteractionContainer">
       <View style={styles.greyCard} />
       {children}
     </View>

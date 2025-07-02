@@ -18,7 +18,7 @@
 
 import React from 'react';
 import {TouchableOpacity, View} from 'react-native';
-import {render} from '@testing-library/react-native';
+import {render, fireEvent} from '@testing-library/react-native';
 import {BlockInteractionScreen} from '@axelor/aos-mobile-ui';
 import * as configContext from '../../../lib/config/ConfigContext';
 
@@ -31,55 +31,33 @@ describe('BlockInteractionScreen Component', () => {
     }));
   });
 
-  const wrapper = ({children}) => (
-    <BlockInteractionScreen>{children}</BlockInteractionScreen>
+  const wrapper = props => (
+    <BlockInteractionScreen {...props}>{props.children}</BlockInteractionScreen>
   );
 
   it('renders without crashing', () => {
     const {getByTestId} = render(
       wrapper({children: <View testID="children" />}),
     );
+
     expect(getByTestId('children')).toBeTruthy();
-  });
-
-  it('renders children correctly', () => {
-    const {getByTestId} = render(
-      wrapper({children: <View testID="children" />}),
-    );
-    expect(getByTestId('children')).toBeTruthy();
-  });
-
-  it('renders touchable child', () => {
-    const onPress = jest.fn();
-    const {getByTestId} = render(
-      wrapper({
-        children: <TouchableOpacity testID="touchable" onPress={onPress} />,
-      }),
-    );
-
-    const button = getByTestId('touchable');
-    expect(button).toBeTruthy();
   });
 
   it('applies header offset correctly when not hidden', () => {
     const {getByTestId} = render(
       wrapper({children: <View testID="children" />}),
     );
-    const container = getByTestId('BlockInteractionContainer');
+
+    const container = getByTestId('blockInteractionContainer');
     expect(container.props.style).toMatchObject({top: defaultHeaderHeight});
   });
 
   it('applies no offset when header is hidden', () => {
-    jest.spyOn(configContext, 'useConfig').mockImplementation(() => ({
-      headerHeight: defaultHeaderHeight,
-    }));
-
     const {getByTestId} = render(
-      <BlockInteractionScreen hideHeader>
-        <View testID="children" />
-      </BlockInteractionScreen>,
+      wrapper({hideHeader: true, children: <View testID="children" />}),
     );
-    const container = getByTestId('BlockInteractionContainer');
+
+    const container = getByTestId('blockInteractionContainer');
     expect(container.props.style).toMatchObject({top: 0});
   });
 });
