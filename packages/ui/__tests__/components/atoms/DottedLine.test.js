@@ -17,18 +17,19 @@
  */
 
 import React from 'react';
+import {render} from '@testing-library/react-native';
 import {DottedLine} from '@axelor/aos-mobile-ui';
 
 describe('DottedLine Component', () => {
   it('renders without crashing', () => {
     const {getByTestId} = render(<DottedLine />);
-    expect(getByTestId('DottedLine')).toBeTruthy();
+    expect(getByTestId('dottedLine')).toBeTruthy();
   });
 
   it('applies custom style correctly', () => {
     const customStyle = {marginBottom: 12};
     const {getByTestId} = render(<DottedLine style={customStyle} />);
-    expect(getByTestId('DottedLine').props.style).toEqual(
+    expect(getByTestId('dottedLine').props.style).toEqual(
       expect.arrayContaining([expect.objectContaining(customStyle)]),
     );
   });
