@@ -27,7 +27,7 @@ interface DottedLineProps {
 function DottedLine({style}: DottedLineProps) {
   const Colors = useThemeColor();
   const styles = useMemo(() => getStyles(Colors), [Colors]);
-  return <View style={[styles.dottedLine, style]} />;
+  return <View testID="DottedLine" style={[styles.dottedLine, style]} />;
 }
 
 const getStyles = (Colors: ThemeColors) =>

@@ -17,20 +17,18 @@
  */
 
 import React from 'react';
-import {shallow} from 'enzyme';
 import {DottedLine} from '@axelor/aos-mobile-ui';
 
 describe('DottedLine Component', () => {
   it('renders without crashing', () => {
-    const wrapper = shallow(<DottedLine />);
-    expect(wrapper.exists()).toBe(true);
+    const {getByTestId} = render(<DottedLine />);
+    expect(getByTestId('DottedLine')).toBeTruthy();
   });
 
   it('applies custom style correctly', () => {
-    const customStyle = {width: 200};
-    const wrapper = shallow(<DottedLine style={customStyle} />);
-
-    expect(wrapper.prop('style')).toEqual(
+    const customStyle = {marginBottom: 12};
+    const {getByTestId} = render(<DottedLine style={customStyle} />);
+    expect(getByTestId('DottedLine').props.style).toEqual(
       expect.arrayContaining([expect.objectContaining(customStyle)]),
     );
   });
