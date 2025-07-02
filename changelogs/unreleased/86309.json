@@ -1,0 +1,5 @@
+{
+  "title": "Maintenance: trigger error screen when receive a 503 error in API",
+  "type": "feat",
+  "packages": "core"
+}
