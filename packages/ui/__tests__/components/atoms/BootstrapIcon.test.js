@@ -17,10 +17,9 @@
  */
 
 import React from 'react';
-import {Svg} from 'react-native-svg';
-import {shallow} from 'enzyme';
-import {BootstrapIcon, Text} from '@axelor/aos-mobile-ui';
-import {getGlobalStyles, getDefaultThemeColors} from '../../tools';
+import {render} from '@testing-library/react-native';
+import {BootstrapIcon} from '@axelor/aos-mobile-ui';
+import {getDefaultThemeColors} from '../../tools';
 
 describe('BootstrapIcon Component', () => {
   const Colors = getDefaultThemeColors();
@@ -30,30 +29,30 @@ describe('BootstrapIcon Component', () => {
     color: Colors.primaryColor.background,
   };
 
-  it('should render without crashing', () => {
-    const wrapper = shallow(<BootstrapIcon {...props} />);
-
-    expect(wrapper.exists()).toBe(true);
+  it('renders without crashing', () => {
+    const {getByTestId} = render(<BootstrapIcon {...props} />);
+    expect(getByTestId('icon')).toBeTruthy();
   });
 
-  it('should give the right props to Svg component', () => {
-    const wrapper = shallow(<BootstrapIcon {...props} />);
+  it('gives the correct props to Svg', () => {
+    const {getByTestId} = render(<BootstrapIcon {...props} />);
+    const icon = getByTestId('icon');
 
-    expect(wrapper.find(Svg).prop('width')).toBe(props.size);
-    expect(wrapper.find(Svg).prop('height')).toBe(props.size);
-    expect(wrapper.find(Svg).prop('fill')).toBe(props.color);
+    expect(icon.props.width).toBe(props.size);
+    expect(icon.props.height).toBe(props.size);
+    expect(icon.props.fill).toBe(props.color);
   });
 
-  it('should apply custom style when provided', () => {
+  it('applies custom style when provided', () => {
     const customStyle = {width: 200};
-    const wrapper = shallow(<BootstrapIcon {...props} style={customStyle} />);
-
-    expect(getGlobalStyles(wrapper.find(Svg))).toMatchObject(customStyle);
+    const {getByTestId} = render(
+      <BootstrapIcon {...props} style={customStyle} />,
+    );
+    expect(getByTestId('icon').props.style).toMatchObject(customStyle);
   });
 
-  it('should render Text component if the icon does not exist', () => {
-    const wrapper = shallow(<BootstrapIcon {...props} name={'Fake icon'} />);
-
-    expect(wrapper.find(Text).exists()).toBe(true);
+  it('renders fallback Text when icon does not exist', () => {
+    const {getByText} = render(<BootstrapIcon {...props} name="Fake icon" />);
+    expect(getByText('?')).toBeTruthy();
   });
 });
