@@ -31,7 +31,7 @@ const HorizontalRule = ({style}: HorizontalRuleProps) => {
     return getStyles(Colors);
   }, [Colors]);
 
-  return <View style={[styles.line, style]} />;
+  return <View testID="horizontalRule" style={[styles.line, style]} />;
 };
 
 const getStyles = Colors =>

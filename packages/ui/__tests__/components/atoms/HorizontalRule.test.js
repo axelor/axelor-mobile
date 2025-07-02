@@ -17,20 +17,20 @@
  */
 
 import React from 'react';
-import {shallow} from 'enzyme';
+import {render} from '@testing-library/react-native';
 import {HorizontalRule} from '@axelor/aos-mobile-ui';
 
 describe('HorizontalRule Component', () => {
   it('renders without crashing', () => {
-    const wrapper = shallow(<HorizontalRule />);
-    expect(wrapper.exists()).toBe(true);
+    const {getByTestId} = render(<HorizontalRule />);
+    expect(getByTestId('horizontalRule')).toBeTruthy();
   });
 
   it('applies custom style correctly', () => {
-    const customStyle = {width: 200};
-    const wrapper = shallow(<HorizontalRule style={customStyle} />);
+    const customStyle = {marginTop: 20};
+    const {getByTestId} = render(<HorizontalRule style={customStyle} />);
 
-    expect(wrapper.prop('style')).toEqual(
+    expect(getByTestId('horizontalRule').props.style).toEqual(
       expect.arrayContaining([expect.objectContaining(customStyle)]),
     );
   });
