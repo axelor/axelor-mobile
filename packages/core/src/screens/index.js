@@ -45,3 +45,5 @@ export default {
     },
   },
 };
+
+export {default as ErrorScreen} from './ErrorScreen';

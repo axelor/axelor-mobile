@@ -21,6 +21,7 @@ import {
   fieldsParserMiddleware,
   provider,
   translationMiddleware,
+  maintenanceMiddleware,
 } from '../apiProviders';
 
 const LOGIN_PATH = 'callback';
@@ -56,8 +57,9 @@ export function initAxiosWithHeaders(res: any, url: string) {
     return config;
   });
 
-  const responseInterceptorId = axios.interceptors.response.use(_response =>
-    fieldsParserMiddleware(translationMiddleware(_response)),
+  const responseInterceptorId = axios.interceptors.response.use(
+    _response => fieldsParserMiddleware(translationMiddleware(_response)),
+    _error => maintenanceMiddleware(_error),
   );
 
   provider.getModelApi()?.init();

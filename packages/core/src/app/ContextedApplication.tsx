@@ -24,7 +24,7 @@ import {ErrorBoundary} from '@axelor/aos-mobile-error';
 import RootNavigator from './RootNavigator';
 import Translator from '../i18n/component/Translator';
 import {getActiveUserInfo} from '../api/login-api';
-import ErrorScreen from '../screens/ErrorScreen';
+import {ErrorScreen} from '../screens';
 import {
   Camera,
   GlobalToolBox,
@@ -37,11 +37,7 @@ import {proxy, releaseConfig, versionCheckConfig} from './types';
 import {useDispatch} from '../redux/hooks';
 import {setAppVersion} from '../features/authSlice';
 import {Module} from './modules';
-import MaintenanceScreen from '../screens/MaintenanceScreen';
-import {
-  installMaintenanceInterceptor,
-  MaintenanceTrigger,
-} from '../api/installMaintenanceInterceptor';
+import {MaintenanceTrigger} from '../apiProviders';
 
 interface instanceConfig {
   testInstanceConfig: proxy;
@@ -58,8 +54,6 @@ interface ContextedApplicationProps {
   configuration?: instanceConfig;
   customLoginPage?: React.ComponentType;
 }
-
-installMaintenanceInterceptor();
 
 const ContextedApplication = ({
   modules,
@@ -96,8 +90,7 @@ const ContextedApplication = ({
       <Scanner />
       <Translator />
       <ErrorBoundary
-        errorScreen={ErrorScreen}
-        maintenanceScreen={MaintenanceScreen}
+        ErrorScreen={ErrorScreen}
         userIdfetcher={getActiveUserId}
         putMethod={traceBackPutMethod}
         additionalURL={tracebackRoute}>

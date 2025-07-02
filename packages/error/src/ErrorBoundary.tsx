@@ -17,7 +17,6 @@
  */
 
 import React from 'react';
-import axios from 'axios';
 
 const TECHNICAL_ABNORMALITY = 0;
 const CONFIGURATION_PROBLEM = 4;
@@ -31,16 +30,11 @@ export class MaintenanceError extends Error {
 
 interface ErrorBoundaryProps {
   children: React.ReactNode;
-  errorScreen: ({
-    errorMessage,
-    onReloadPress,
-  }: {
+  ErrorScreen: React.ComponentType<{
     errorMessage: string;
-    onReloadPress: () => any;
-  }) => React.ReactNode;
-
-  maintenanceScreen?: React.ComponentType<{onCheckStatus: () => void}>;
-
+    handleReload: () => void;
+    isMaintenance?: boolean;
+  }>;
   putMethod: (fetchOptions: {additionalURL: string; data: any}) => Promise<any>;
   userIdfetcher: () => Promise<any>;
   additionalURL: string;
@@ -75,20 +69,21 @@ class ErrorBoundary extends React.Component<
     const {putMethod, userIdfetcher, additionalURL} = this.props;
 
     if (error instanceof MaintenanceError) {
-      this.setState({
+      this.setState(state => ({
+        ...state,
         hasError: true,
         maintenance: true,
         errorMessage: error.message,
-      });
+      }));
       return;
     }
 
     userIdfetcher().then(userId => {
-      this.setState({
+      this.setState(state => ({
+        ...state,
         tracing: true,
         errorMessage: error.message,
-        maintenance: false,
-      });
+      }));
 
       putMethod({
         additionalURL,
@@ -102,39 +97,30 @@ class ErrorBoundary extends React.Component<
           cause: JSON.stringify(errorInfo.componentStack),
           internalUser: {id: userId},
         },
-      }).finally(() => this.setState({tracing: false}));
+      }).finally(() => this.setState(state => ({...state, tracing: false})));
     });
   }
 
-  handleCheckStatus = () => {
-    axios
-      .get('/ws/public/app/info/')
-      .then(() => {
-        this.setState({
-          hasError: false,
-          maintenance: false,
-          errorMessage: '',
-        });
-      })
-      .catch(e => {
-        console.log('Still under maintenance', e?.response?.status);
-      });
-  };
+  reloadApp() {
+    (window as any).location.reload();
+  }
+
+  resetState() {
+    this.setState({hasError: false});
+  }
 
   render() {
-    const {children, errorScreen, maintenanceScreen} = this.props;
+    const {children, ErrorScreen} = this.props;
     const {hasError, errorMessage, maintenance} = this.state;
 
     if (hasError) {
-      if (maintenance && maintenanceScreen) {
-        const MaintenanceScreen = maintenanceScreen;
-        return <MaintenanceScreen onCheckStatus={this.handleCheckStatus} />;
-      }
-
-      return errorScreen({
-        errorMessage,
-        onReloadPress: () => this.setState({hasError: false}),
-      });
+      return (
+        <ErrorScreen
+          errorMessage={errorMessage}
+          handleReload={() => this.resetState()}
+          isMaintenance={maintenance}
+        />
+      );
     }
 
     return children;
