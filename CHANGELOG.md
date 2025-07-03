@@ -3,6 +3,27 @@ title: 8.1.0
 tags: Changelog
 ---
 
+## [8.1.23] (2025-07-03)
+
+### @axelor/aos-mobile-ui
+
+#### Fixes
+
+- AutoCompleteSearch: improve process to let objectList refresh before processing last item
+
+### @axelor/aos-mobile-crm
+
+#### Fixes
+
+- Event planning: use the right title to the type picker
+
+### @axelor/aos-mobile-stock
+
+#### Fixes
+
+- SearchLineContainer: add message when no data provided
+- Product by company: avoid undefined issue when fetching product for the first time
+
 ## [8.1.22] (2025-06-05)
 
 Resolve issue on connection to Axelor test instances on iOS devices
@@ -848,6 +869,7 @@ It enables user to manage interventions and customer parc through the mobile app
 - Selections: use new system and tools instead of type files
 - Product indicators: use new chart component to display quantity indicators
 
+[8.1.23]: https://github.com/axelor/axelor-mobile/compare/8.1.22...8.1.23
 [8.1.22]: https://github.com/axelor/axelor-mobile/compare/8.1.21...8.1.22
 [8.1.21]: https://github.com/axelor/axelor-mobile/compare/8.1.20...8.1.21
 [8.1.20]: https://github.com/axelor/axelor-mobile/compare/8.1.19...8.1.20
