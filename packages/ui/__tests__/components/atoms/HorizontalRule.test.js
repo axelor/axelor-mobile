@@ -30,8 +30,6 @@ describe('HorizontalRule Component', () => {
     const customStyle = {marginTop: 20};
     const {getByTestId} = render(<HorizontalRule style={customStyle} />);
 
-    expect(getByTestId('horizontalRule').props.style).toEqual(
-      expect.arrayContaining([expect.objectContaining(customStyle)]),
-    );
+    expect(getByTestId('horizontalRule')).toHaveStyle(customStyle);
   });
 });
