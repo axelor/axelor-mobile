@@ -25,7 +25,7 @@ import {
   StyleSheet,
 } from 'react-native';
 
-const DEFAULT_OFFSET = {ios: 70, android: 115};
+export const DEFAULT_OFFSET = {ios: 70, android: 115};
 
 interface Offset {
   ios: number;
@@ -56,6 +56,7 @@ const KeyboardAvoidingScrollView = ({
 
   return (
     <KeyboardAvoidingView
+      testID="keyboardAvoidingView"
       behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
       style={[styles.containerKeyboard, getZIndexStyles(5)]}
       keyboardVerticalOffset={
@@ -64,6 +65,7 @@ const KeyboardAvoidingScrollView = ({
           : keyboardVerticalOffset?.android
       }>
       <ScrollView
+        testID="keyboardAvoidingScrollView"
         style={globalStyle}
         keyboardShouldPersistTaps="handled"
         contentContainerStyle={[getZIndexStyles(10), style]}

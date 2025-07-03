@@ -16,8 +16,48 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+import React from 'react';
 import 'react-native-gesture-handler/jestSetup';
 import 'react-native/jest/setup';
+
+jest.mock('react-native/Libraries/Settings/NativeSettingsManager', () => ({
+  settings: {},
+  getConstants: () => ({
+    settings: {},
+  }),
+}));
+
+jest.mock('react-native/Libraries/TurboModule/TurboModuleRegistry', () => {
+  const turboModuleRegistry = jest.requireActual(
+    'react-native/Libraries/TurboModule/TurboModuleRegistry',
+  );
+  return {
+    ...turboModuleRegistry,
+    getEnforcing: name => {
+      if (name === 'RNDocumentPicker') {
+        return null;
+      }
+      return turboModuleRegistry.getEnforcing(name);
+    },
+  };
+});
+
+jest.mock('react-native', () => {
+  const RN = jest.requireActual('react-native');
+
+  const KeyboardAvoidingView = ({children, ...props}) => {
+    return (
+      <RN.View testID="keyboardAvoidingView" {...props}>
+        {children}
+      </RN.View>
+    );
+  };
+
+  return {
+    ...RN,
+    KeyboardAvoidingView,
+  };
+});
 
 jest.mock('react-native-reanimated', () => {
   const View = require('react-native').View;
