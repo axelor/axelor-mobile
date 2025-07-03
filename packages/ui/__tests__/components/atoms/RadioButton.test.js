@@ -17,13 +17,12 @@
  */
 
 import React from 'react';
-import {fireEvent, render} from '@testing-library/react-native';
+import {fireEvent} from '@testing-library/react-native';
 import {RadioButton} from '@axelor/aos-mobile-ui';
-import {getDefaultThemeColors} from '../../tools';
+import {getDefaultThemeColors, setup} from '../../tools';
 
 describe('RadioButton Component', () => {
   const Colors = getDefaultThemeColors();
-  const onPressMock = jest.fn();
 
   const baseProps = {
     title: 'Option 1',
@@ -31,32 +30,33 @@ describe('RadioButton Component', () => {
     selected: false,
   };
 
-  const setup = (override = {}) => {
-    const props = {...baseProps, ...override};
-    const utils = render(<RadioButton {...props} />);
-    return {...utils, props};
-  };
+  const setupRadioButton = overrideProps =>
+    setup({Component: RadioButton, baseProps, overrideProps});
 
   it('renders without crashing', () => {
-    const {getByText} = setup();
-    expect(getByText('Option 1')).toBeTruthy();
+    const {getByText} = setupRadioButton();
+
+    expect(getByText(baseProps.title)).toBeTruthy();
   });
 
   it('renders the correct title', () => {
-    const {getByText} = setup({title: 'CustomTitle'});
-    expect(getByText('CustomTitle')).toBeTruthy();
+    const customTitle = 'CustomTitle';
+    const {getByText} = setupRadioButton({title: customTitle});
+
+    expect(getByText(customTitle)).toBeTruthy();
   });
 
   it('calls onPress when tapped', () => {
     const onPress = jest.fn();
-    const {getByRole} = setup({onPress});
+    const {getByRole} = setupRadioButton({onPress});
 
     fireEvent.press(getByRole('button'));
     expect(onPress).toHaveBeenCalled();
   });
 
   it('applies selected styles when `selected` is true', () => {
-    const {getByTestId} = setup({selected: true});
+    const {getByTestId} = setupRadioButton({selected: true});
+
     expect(getByTestId('radio').props.style).toMatchObject({
       backgroundColor: Colors.primaryColor.background,
     });
