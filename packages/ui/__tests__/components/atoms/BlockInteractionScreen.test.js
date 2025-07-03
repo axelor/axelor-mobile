@@ -17,8 +17,8 @@
  */
 
 import React from 'react';
-import {TouchableOpacity, View} from 'react-native';
-import {render, fireEvent} from '@testing-library/react-native';
+import {View} from 'react-native';
+import {render} from '@testing-library/react-native';
 import {BlockInteractionScreen} from '@axelor/aos-mobile-ui';
 import * as configContext from '../../../lib/config/ConfigContext';
 
@@ -31,9 +31,7 @@ describe('BlockInteractionScreen Component', () => {
     }));
   });
 
-  const wrapper = props => (
-    <BlockInteractionScreen {...props}>{props.children}</BlockInteractionScreen>
-  );
+  const wrapper = props => <BlockInteractionScreen {...props} />;
 
   it('renders without crashing', () => {
     const {getByTestId} = render(
@@ -48,16 +46,16 @@ describe('BlockInteractionScreen Component', () => {
       wrapper({children: <View testID="children" />}),
     );
 
-    const container = getByTestId('blockInteractionContainer');
-    expect(container.props.style).toMatchObject({top: defaultHeaderHeight});
+    expect(getByTestId('blockInteractionContainer')).toHaveStyle({
+      top: defaultHeaderHeight,
+    });
   });
 
   it('applies no offset when header is hidden', () => {
     const {getByTestId} = render(
-      wrapper({hideHeader: true, children: <View testID="children" />}),
+      wrapper({children: <View testID="children" />, hideHeader: true}),
     );
 
-    const container = getByTestId('blockInteractionContainer');
-    expect(container.props.style).toMatchObject({top: 0});
+    expect(getByTestId('blockInteractionContainer')).toHaveStyle({top: 0});
   });
 });
