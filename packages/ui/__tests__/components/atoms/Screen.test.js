@@ -17,49 +17,50 @@
  */
 
 import React from 'react';
-import {ActivityIndicator, Button, View} from 'react-native';
-import {shallow} from 'enzyme';
+import {Button, View} from 'react-native';
+import {render} from '@testing-library/react-native';
 import {Screen} from '@axelor/aos-mobile-ui';
 
 describe('Screen Component', () => {
+  const wrapper = props => (
+    <Screen {...props}>
+      <View testID="child" />
+    </Screen>
+  );
+
   it('renders without crashing', () => {
-    const wrapper = shallow(<Screen />);
-    expect(wrapper.exists()).toBe(true);
+    const {getByTestId} = render(wrapper());
+    expect(getByTestId('child')).toBeTruthy();
   });
 
-  it('renders children', () => {
-    const wrapper = shallow(
-      <Screen>
-        <View testID="child" />
-      </Screen>,
-    );
-
-    expect(wrapper.find('[testID="child"]').exists()).toBe(true);
+  it('shows loading indicator when `loading` is true', () => {
+    const {getByTestId} = render(wrapper({loading: true}));
+    expect(getByTestId('loadingIndicator')).toBeTruthy();
   });
 
-  it('renders loading indicator when loading prop is true', () => {
-    const wrapper = shallow(<Screen loading={true} />);
-
-    expect(wrapper.find(ActivityIndicator).exists()).toBe(true);
-  });
-
-  it('does not render loading indicator when loading prop is false', () => {
-    const wrapper = shallow(<Screen loading={false} />);
-
-    expect(wrapper.find(ActivityIndicator).exists()).toBe(false);
-  });
-
-  it('applies custom styles', () => {
-    const style = {backgroundColor: 'red'};
-    const wrapper = shallow(<Screen style={style} />);
-
-    expect(wrapper.prop('style')).toContain(style);
+  it('does not show loading indicator when `loading` is false', () => {
+    const {queryByTestId} = render(wrapper({loading: false}));
+    expect(queryByTestId('loadingIndicator')).toBeNull();
   });
 
   it('renders fixedItems when provided', () => {
-    const fixedItems = <Button testID="fixedButton" title="Fixed Button" />;
-    const wrapper = shallow(<Screen fixedItems={fixedItems} />);
+    const {getByTestId} = render(
+      wrapper({
+        fixedItems: <Button testID="fixedButton" title="Fixed" />,
+      }),
+    );
+    expect(getByTestId('fixedButton')).toBeTruthy();
+  });
 
-    expect(wrapper.find('[testID="fixedButton"]').exists()).toBe(true);
+  it('applies custom styles', () => {
+    const customStyle = {backgroundColor: 'red'};
+
+    const {getByTestId} = render(
+      wrapper({
+        style: customStyle,
+      }),
+    );
+
+    expect(getByTestId('screenRoot')).toHaveStyle(customStyle);
   });
 });

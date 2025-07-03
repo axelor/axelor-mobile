@@ -74,11 +74,12 @@ const Screen = ({
   }, []);
 
   if (loading) {
-    return <ActivityIndicator size="large" />;
+    return <ActivityIndicator testID="loadingIndicator" size="large" />;
   }
 
   return (
     <View
+      testID="screenRoot"
       pointerEvents={showActivityIndicator === true ? 'none' : 'auto'}
       style={[
         styles.container,
