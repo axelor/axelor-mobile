@@ -19,7 +19,7 @@
 import React, {ReactNode, useMemo} from 'react';
 import {View, StyleSheet, Dimensions} from 'react-native';
 import {useThemeColor} from '../../../theme';
-import {useConfig} from '../../../config/ConfigContext';
+import {useConfig} from '../../../config';
 
 interface BlockInteractionScreenProps {
   children: ReactNode;
@@ -36,19 +36,23 @@ const BlockInteractionScreen = ({
   const Colors = useThemeColor();
 
   const styles = useMemo(
-    () => getStyles(hideHeader ? DEFAULT_TOP_OFFSET : headerHeight, Colors),
+    () =>
+      getStyles(
+        hideHeader ? DEFAULT_TOP_OFFSET : headerHeight,
+        Colors.secondaryColor.background,
+      ),
     [Colors, headerHeight, hideHeader],
   );
 
   return (
-    <View style={styles.container}>
+    <View style={styles.container} testID="blockInteractionContainer">
       <View style={styles.greyCard} />
       {children}
     </View>
   );
 };
 
-const getStyles = (topOffset, Colors) =>
+const getStyles = (topOffset: number, color: string) =>
   StyleSheet.create({
     container: {
       position: 'absolute',
@@ -60,7 +64,7 @@ const getStyles = (topOffset, Colors) =>
       marginTop: 15,
       justifyContent: 'center',
       alignItems: 'center',
-      backgroundColor: Colors.secondaryColor.background,
+      backgroundColor: color,
       opacity: 0.2,
       height: Dimensions.get('window').height * 2,
       top: -50,

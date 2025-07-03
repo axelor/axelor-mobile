@@ -16,10 +16,11 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-export * from './components';
-export * from './config';
-export * from './hooks';
-export * from './theme';
-export * from './tools';
-export * from './types';
-export * from './utils';
+export {
+  OutsideAlerterProvider,
+  useClickOutside,
+  useClickOutsideContext,
+  OUTSIDE_INDICATOR,
+} from './use-click-outside';
+export {useDigitFormat} from './use-digit-format';
+export {usePriceFormat} from './use-price-format';
