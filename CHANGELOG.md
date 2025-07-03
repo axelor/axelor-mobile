@@ -3,6 +3,26 @@ title: 7.2.0
 tags: Changelog
 ---
 
+## [7.2.34] (2025-07-03)
+
+### @axelor/aos-mobile-ui
+
+#### Fixes
+
+- AutoCompleteSearch: improve process to let objectList refresh before processing last item
+
+### @axelor/aos-mobile-crm
+
+#### Fixes
+
+- Event planning: use the right title to the type picker
+
+### @axelor/aos-mobile-stock
+
+#### Fixes
+
+- SearchLineContainer: add message when no data provided
+
 ## [7.2.33] (2025-06-05)
 
 Resolve issue on connection to Axelor test instances on iOS devices
@@ -941,6 +961,7 @@ It enables user to manage Expenses through the mobile application. You can creat
 - Remove IconButton component which should be replaced by Button component.
 - Remove Pop-up components which should be replaced by Alert component.
 
+[7.2.34]: https://github.com/axelor/axelor-mobile/compare/7.2.33...7.2.34
 [7.2.32]: https://github.com/axelor/axelor-mobile/compare/7.2.31...7.2.32
 [7.2.31]: https://github.com/axelor/axelor-mobile/compare/7.2.30...7.2.31
 [7.2.30]: https://github.com/axelor/axelor-mobile/compare/7.2.29...7.2.30
