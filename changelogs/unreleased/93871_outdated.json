@@ -1,5 +1,0 @@
-{
-  "title": "Application version: add hook to check if version is outdated",
-  "type": "feat",
-  "packages": "core"
-}

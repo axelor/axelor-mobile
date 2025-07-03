@@ -1,5 +1,0 @@
-{
-  "title": "WebSocket: add a hook to listen to websocket messages",
-  "type": "feat",
-  "packages": "core"
-}

@@ -1,5 +1,0 @@
-{
-  "title": "StockMove: add mass scan management to increment line quantity by one",
-  "type": "feat",
-  "packages": "stock"
-}

@@ -1,5 +1,0 @@
-{
-  "title": "Navigation: upgrade packages and improve code with typescript",
-  "type": "refactor",
-  "packages": ["stock", "hr", "helpdesk", "manufacturing", "project", "crm"]
-}

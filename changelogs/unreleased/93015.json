@@ -1,5 +1,0 @@
-{
-  "title": "Price management: add new hook to help formatting price depending on currency configuration",
-  "type": "feat",
-  "packages": "core"
-}

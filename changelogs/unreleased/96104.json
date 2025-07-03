@@ -1,5 +1,0 @@
-{
-  "title": "SupplierArrivalProductName: delete unused component",
-  "type": "refactor",
-  "packages": "stock"
-}

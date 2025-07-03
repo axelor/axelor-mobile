@@ -1,5 +1,0 @@
-{
-  "title": "MessageBox: move component to message package",
-  "type": "refactor",
-  "packages": "ui"
-}

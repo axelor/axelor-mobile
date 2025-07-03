@@ -1,5 +1,0 @@
-{
-  "title": "Error types: add new error type MaintenanceError",
-  "type": "feat",
-  "packages": "error"
-}

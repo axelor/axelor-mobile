@@ -1,309 +1,161 @@
 ---
-title: 8.3.0
+title: 8.4.0
 tags: Changelog
 ---
 
-## [8.3.7] (2025-07-03)
+## [8.4.0] (2025-07-03)
 
-### @axelor/aos-mobile-ui
+This release brings a major update to the project's dependencies, including React Native, which is now at 0.75.x. This version also add a new test library RNTL and existing test cases will be migrated one by one during the next patch versions. The enzyme dependency should be removed in a next version.
 
-#### Fixes
-
-- AutoCompleteSearch: improve process to let objectList refresh before processing last item
-
-### @axelor/aos-mobile-sale
-
-#### Fixes
-
-- Catalog: add missing redirection to product details screen
-- Product details: allow display of variant products from generic one
-- Catalog: open variant selection pop up only on generic product
-
-### @axelor/aos-mobile-crm
-
-#### Fixes
-
-- Event planning: use the right title to the type picker
-
-### @axelor/aos-mobile-stock
-
-#### Fixes
-
-- SearchLineContainer: add message when no data provided
-- Product by company: avoid undefined issue when fetching product for the first time
-
-## [8.3.6] (2025-06-05)
-
-Resolve issue on connection to Axelor test instances on iOS devices
-
-### @axelor/aos-mobile-stock
+### @axelor/aos-mobile-core
 
 #### Features
 
-- Stock move: add possibility to search on order reference
-- Stock indicators: add external reference and line number on sale & purchase order card
-
-#### Fixes
-
-- Line verification: add missing product information
-- Stock indicators: inverse condition on badges display on sale & purchase orders card
-- Stock indicators: use sale or purchase orders estimated date when null on line object
-
-## [8.3.5] (2025-05-21)
-
-### @axelor/aos-mobile-core
-
-#### Fixes
-
-- Map widget: automatically filled address when clicking on widget
-
-### @axelor/aos-mobile-intervention
-
-#### Fixes
-
-- Intervention: resolve issue when no contact provided
-
-### @axelor/aos-mobile-stock
-
-#### Fixes
-
-- Inventory line: resolve navigation issue after validation
-
-## [8.3.4] (2025-04-30)
-
-### @axelor/aos-mobile-core
-
-#### Fixes
-
-- Upload tool: remove illegal characters from filename before processing
-
-### @axelor/aos-mobile-ui
+- Maintenance: trigger error screen when receive a 503 error in API
+- Toast: add possibility to display a message above the camera
+- Scanner: add mass scan management
+- Price management: add new hook to help formatting price depending on currency configuration
+- WebSocket: add a configuration to activate or not connection
+- WebSocket: add a hook to listen to websocket messages
+- FormView: add access to form state from custom button
+- Application version: add hook to check if version is outdated
+- Date utils: add new function to get date under from now format
+- List views: add management of AOP filters through a new generic header action
 
 #### Changes
 
-- ViewAllEditList: improve line display
-- ViewAllEditList: make line edit management optional
-
-### @axelor/aos-mobile-manufacturing
-
-#### Fixes
-
-- prodProductSlice: use the correct product API import
-
-## [8.3.3] (2025-04-16)
+- UploadFileInput: simplify component to use document picker tool
+- Document picker tool: use new library @react-native-documents/picker
+- Header actions: use generic actions to generate basic header actions
+- Components: remove unused components HeaderOptionMenu & HeaderOptionMenuItem
+- Navigation: upgrade dependencies and improve code with typescript
 
 ### @axelor/aos-mobile-ui
 
-#### Changes
+#### Features
 
-- Increment: facilitate edition by making whole input clickable
-
-### @axelor/aos-mobile-project
-
-#### Fixes
-
-- Project task: remove field section which was deleted in the model
-
-## [8.3.2] (2025-04-10)
-
-### @axelor/aos-mobile-core
+- DropdownMenu: add props to manage style
+- DropdownMenuItem: add props to manage style
+- ProgressCircle: add new component to show progress with svg circles
+- Stepper: add new component to manage progress of a process
 
 #### Changes
 
-- Compatibility: improve error messages in drawer with more details
-
-#### Fixes
-
-- iPad: add configuration to be in full screen in portrait mode
-- Download tool: remove illegal characters from filename before processing
-- Scanner: always add listener on intents to resolve profile creation
-
-### @axelor/aos-mobile-ui
-
-#### Fixes
-
+- MessageBox: move component to message package
+- AttachmentCard: delete component
+- RadioSelect: manage update when default value change
 - ActionCard: merge style of children instead of replacing with height
+- Icons: remove possibility to use font awesome
+
+<details>
+Those props were deprecated since version 8.0.0. Icons should use bootstrap database.
+</details>
+
+### New package : @axelor/aos-mobile-message
+
+This package is compatible with the AOS message module from version 8.4.0. It allows users to access their inbox through the mobile application. This package has replaced the old tracking feature from core package with a generic header action with enhanced functionalities.
 
 ### @axelor/aos-mobile-dms
 
-#### Fixes
-
-- Extension: apply filter on MetaFile name instead of DMSFile name
-
-### @axelor/aos-mobile-hr
-
-#### Fixes
-
-- Config: add null checks to avoid crash
-
-### @axelor/aos-mobile-stock
-
-#### Fixes
-
-- Inventory: use keyboard avoiding view on details screen
-- Config: add null checks to avoid crash
-
-## [8.3.1] (2025-03-25)
-
-### @axelor/aos-mobile-core
-
 #### Features
 
-- Navigation: add new tool to check if a screen is present in the current stack
+- DocumentActionCard: add options on component to disable each action
+- Document: add possibility to search document through a list of id
 
-#### Fixes
-
-- ScannerAutocompleteSearch: handle scan focus when going back to a screen
-- DateInput: reset date when click outside
-- Login: remove double slash before callback endpoint
-
-### @axelor/aos-mobile-ui
+### @axelor/aos-mobile-purchase
 
 #### Changes
 
-- LabelText: improve multi lines management of title and value
-
-#### Fixes
-
-- RadioSelect: manage update when default value change
-
-### @axelor/aos-mobile-crm
-
-#### Fixes
-
-- Event form: improve date management
-- Event form: resolve issue with period when creating an event
-
-### @axelor/aos-mobile-stock
-
-#### Fixes
-
-- Line update: improve navigation after update to match user history
-- Line card: add more line to fixed issue with too long title
-
-## [8.3.0] (2025-03-13)
-
-### @axelor/aos-mobile-core
-
-#### Features
-
-- User active company: manage update on AOS
-- Theme: add support for AOP's configurable themes
-- Attached files: remove attached files feature from core package
-- Virtual keyboard: replace boolean by selection ('Always', 'Hidden on scannable inputs', 'Never')
-- Version control: add APK download management based on web config
-- SearchTreeView: add Breadcrumb on view
-- SearchTreeView: add possibility to define default value for parent filter
-- SearchTreeView: add onParentChange props to get parent update
-- SearchTreeView: add possibility to remove management of parent filter
-- SearchListView: add possibility to define a custom component for the integrated search bar
-- ActionApi: add props on send request to enable provider to ignore it
-- MailMessageView: add option to filter messages between a given date and current date
-- MailMessageView: add option to hide message box
-- Tools: add new helper to download a file in storage
-- DoubleScannerSearchBar: add new component to manage new configuration of multi barcodes
-
-### @axelor/aos-mobile-ui
-
-#### Features
-
-- Theme: add support for AOP's configurable themes
-- Virtual keyboard: replace boolean by selection ('Always', 'Hidden on scannable inputs', 'Never')
-- ActionCard: add the possibility to define a quick action which is displayed above the button to see all the actions
-- TreeView: add the possibility to define additional actions on branch
-- Breadcrumb: add new component
-- HorizontalRuleText: add new component to display horizontal rules with text in the center
-- ChipSelect: add showClearButton prop to clear all selected chips
-- TreeView: add possibility to hide branch filter quick action
-- DropdownCardSwitch: add possibility to give style on each dropdown item for the card container
-- EditableHtmlInput: add new component to manage html text edition
-
-#### Changes
-
-- TreeView: use ActionCard for branch display
-
-### New package : @axelor/aos-mobile-dms
-
-This package is compatible with AOS DMS module from version 8.3.0.
-It enables user to manage documents through the mobile application.
-This package replaced the old attached files feature with a generic header action.
-
-### New package : @axelor/aos-mobile-purchase
-
-This package is compatible with AOS Purchase module from version 8.3.0.
-It enables user to manage internal purchase requests through the mobile application.
+- List views: add AOP filter management
 
 ### @axelor/aos-mobile-sale
 
 #### Changes
 
-- Header actions: remove use of attachedFileScreenTitle
+- List views: add AOP filter management
+- Price management: use new tool to format totals with currency
 
 ### @axelor/aos-mobile-project
 
-#### Features
-
-- Tasks: add sprint management
-
 #### Changes
 
-- Header actions: remove use of attachedFileScreenTitle
+- List views: add AOP filter management
+- Navigation: use new tool to go back to an existing screen in the stack when navigating
 
 ### @axelor/aos-mobile-intervention
 
+#### Changes
+
+- List views: add AOP filter management
+
+### @axelor/aos-mobile-quality
+
 #### Features
 
-- Contact and addresses dropdown: add edition management
+This version add a new part of the Quality package, user can now manage quality improvements from the mobile application. A new menu entries have been added to see the existing QI and complete a new request through an assistant.
 
 #### Changes
 
-- Header actions: remove use of attachedFileScreenTitle
+- List views: add AOP filter management
 
 ### @axelor/aos-mobile-hr
 
 #### Features
 
-This version add a new part of the HR package, user can now manage leave requests from the mobile application. Two menu entries have been added to see the leave requests and complete a new request through an assistant.
+- Timesheet line: manage duration based on timesheet unit on form
+- Expense line: manage invited collaborators on form
 
-- Expense: add cancel and return to draft status actions
+#### Changes
+
+- List views: add AOP filter management
+- Navigation: use new tool to go back to an existing screen in the stack when navigating
 
 ### @axelor/aos-mobile-helpdesk
 
 #### Changes
 
-- Header actions: remove use of attachedFileScreenTitle
+- List views: add AOP filter management
+- Navigation: use new tool to go back to an existing screen in the stack when navigating
 
 ### @axelor/aos-mobile-crm
 
+#### Changes
+
+- List views: add AOP filter management
+- Navigation: use new tool to go back to an existing screen in the stack when navigating
+
+### @axelor/aos-mobile-manufacturing
+
 #### Features
 
-- Contact and addresses dropdown: add edition management
-- Planning view: add possibility to create an event
-- Lead: manage address through the address field
-- DropdownContactView: renane 'Address' to 'Main address' on clients and prospects
-- Addresses: add new dropdown to manage addresses of prospects and clients
+- Consumed product: add available quantity on card
 
 #### Changes
 
-- Header actions: remove use of attachedFileScreenTitle
+- List views: add AOP filter management
+- Navigation: use new tool to go back to an existing screen in the stack when navigating
 
 ### @axelor/aos-mobile-stock
 
 #### Features
 
-- Customer delivery: add button to split lines
-- Inventory line: manage stock location
-- Products: use new widget DoubleScannerSearchBar to manage configuration of multi barcodes
+- StockMove/Inventory: add availability access on line cards
+- StockMove/Inventory: add mass scan management to increment line quantity by one
 
 #### Changes
 
-- Header actions: remove use of attachedFileScreenTitle
+- List views: add AOP filter management
+- Navigation: use new tool to go back to an existing screen in the stack when navigating
+- SupplierArrivalProductName: delete unused component
 
-[8.3.7]: https://github.com/axelor/axelor-mobile/compare/8.3.6...8.3.7
-[8.3.6]: https://github.com/axelor/axelor-mobile/compare/8.3.5...8.3.6
-[8.3.5]: https://github.com/axelor/axelor-mobile/compare/8.3.4...8.3.5
-[8.3.4]: https://github.com/axelor/axelor-mobile/compare/8.3.3...8.3.4
-[8.3.3]: https://github.com/axelor/axelor-mobile/compare/8.3.2...8.3.3
-[8.3.2]: https://github.com/axelor/axelor-mobile/compare/8.3.1...8.3.2
-[8.3.1]: https://github.com/axelor/axelor-mobile/compare/8.3.0...8.3.1
-[8.3.0]: https://github.com/axelor/axelor-mobile/compare/8.2.8...8.3.0
+### @axelor/aos-mobile-error
+
+#### Features
+
+- Error types: add new error type MaintenanceError
+
+#### Changes
+
+- ErrorBoundary: modify fallback screen management to manage maintenance error type
+
+[8.4.0]: https://github.com/axelor/axelor-mobile/compare/8.3.7...8.4.0

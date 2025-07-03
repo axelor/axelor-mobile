@@ -1,6 +1,0 @@
-{
-  "title": "Icons: remove possibility to use font awesome",
-  "type": "refactor",
-  "packages": "ui",
-  "description": "Those props were deprecated since version 8.0.0. Icons should use bootstrap database."
-}

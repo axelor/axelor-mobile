@@ -1,5 +1,0 @@
-{
-  "title": "Price management: use new tool to format totals with currency",
-  "type": "refactor",
-  "packages": "sale"
-}
