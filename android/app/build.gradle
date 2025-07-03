@@ -83,7 +83,7 @@ android {
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
         versionCode 61
-        versionName "8.5.5"
+        versionName "9.0.0"
     }
     signingConfigs {
         debug {
@@ -123,7 +123,7 @@ android {
     productFlavors {
         pipeline {
             dimension "type"
-            applicationIdSuffix ".eight.five"
+            applicationIdSuffix ".nine.zero"
             versionNameSuffix "-demo"
         }
         dev {
