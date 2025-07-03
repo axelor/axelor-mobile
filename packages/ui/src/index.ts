@@ -17,16 +17,9 @@
  */
 
 export * from './components';
+export * from './config';
+export * from './hooks';
 export * from './theme';
-export * from './utils';
+export * from './tools';
 export * from './types';
-export {ConfigProvider, useConfig} from './config/ConfigContext';
-export {
-  OutsideAlerterProvider,
-  useClickOutside,
-  useClickOutsideContext,
-  OUTSIDE_INDICATOR,
-} from './hooks/use-click-outside';
-export {animationUtil} from './tools/AnimationUtil';
-export {useDigitFormat} from './hooks/use-digit-format';
-export {usePriceFormat} from './hooks/use-price-format';
+export * from './utils';
