@@ -1,5 +1,0 @@
-{
-  "title": "AutoCompleteSearch: improve process to let objectList refresh before processing last item",
-  "type": "fix",
-  "packages": "ui"
-}

@@ -3,6 +3,35 @@ title: 8.3.0
 tags: Changelog
 ---
 
+## [8.3.7] (2025-07-03)
+
+### @axelor/aos-mobile-ui
+
+#### Fixes
+
+- AutoCompleteSearch: improve process to let objectList refresh before processing last item
+
+### @axelor/aos-mobile-sale
+
+#### Fixes
+
+- Catalog: add missing redirection to product details screen
+- Product details: allow display of variant products from generic one
+- Catalog: open variant selection pop up only on generic product
+
+### @axelor/aos-mobile-crm
+
+#### Fixes
+
+- Event planning: use the right title to the type picker
+
+### @axelor/aos-mobile-stock
+
+#### Fixes
+
+- SearchLineContainer: add message when no data provided
+- Product by company: avoid undefined issue when fetching product for the first time
+
 ## [8.3.6] (2025-06-05)
 
 Resolve issue on connection to Axelor test instances on iOS devices
@@ -270,6 +299,7 @@ This version add a new part of the HR package, user can now manage leave request
 
 - Header actions: remove use of attachedFileScreenTitle
 
+[8.3.7]: https://github.com/axelor/axelor-mobile/compare/8.3.6...8.3.7
 [8.3.6]: https://github.com/axelor/axelor-mobile/compare/8.3.5...8.3.6
 [8.3.5]: https://github.com/axelor/axelor-mobile/compare/8.3.4...8.3.5
 [8.3.4]: https://github.com/axelor/axelor-mobile/compare/8.3.3...8.3.4
