@@ -3,6 +3,35 @@ title: 8.2.0
 tags: Changelog
 ---
 
+## [8.2.15] (2025-07-03)
+
+### @axelor/aos-mobile-ui
+
+#### Fixes
+
+- AutoCompleteSearch: improve process to let objectList refresh before processing last item
+
+### @axelor/aos-mobile-sale
+
+#### Fixes
+
+- Catalog: add missing redirection to product details screen
+- Product details: allow display of variant products from generic one
+- Catalog: open variant selection pop up only on generic product
+
+### @axelor/aos-mobile-crm
+
+#### Fixes
+
+- Event planning: use the right title to the type picker
+
+### @axelor/aos-mobile-stock
+
+#### Fixes
+
+- SearchLineContainer: add message when no data provided
+- Product by company: avoid undefined issue when fetching product for the first time
+
 ## [8.2.14] (2025-06-05)
 
 Resolve issue on connection to Axelor test instances on iOS devices
@@ -625,6 +654,7 @@ This package is linked with the @axelor/aos-mobile-hr to manage time logging.
 
 - Supplier arrival: add possibility to fill origin when creating or selecting tracking number
 
+[8.2.15]: https://github.com/axelor/axelor-mobile/compare/8.2.14...8.2.15
 [8.2.14]: https://github.com/axelor/axelor-mobile/compare/8.2.13...8.2.14
 [8.2.13]: https://github.com/axelor/axelor-mobile/compare/8.2.12...8.2.13
 [8.2.12]: https://github.com/axelor/axelor-mobile/compare/8.2.11...8.2.12
