@@ -16,21 +16,20 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import React from 'react';
-import {render} from '@testing-library/react-native';
 import {DottedLine} from '@axelor/aos-mobile-ui';
+import {setup} from '../../tools';
 
 describe('DottedLine Component', () => {
+  const setupDottedLine = overrideProps =>
+    setup({Component: DottedLine, overrideProps});
+
   it('renders without crashing', () => {
-    const {getByTestId} = render(<DottedLine />);
+    const {getByTestId} = setupDottedLine();
     expect(getByTestId('dottedLine')).toBeTruthy();
   });
 
   it('applies custom style correctly', () => {
-    const customStyle = {marginBottom: 12};
-    const {getByTestId} = render(<DottedLine style={customStyle} />);
-    expect(getByTestId('dottedLine').props.style).toEqual(
-      expect.arrayContaining([expect.objectContaining(customStyle)]),
-    );
+    const {getByTestId, props} = setupDottedLine({style: {marginBottom: 12}});
+    expect(getByTestId('dottedLine')).toHaveStyle(props.style);
   });
 });
