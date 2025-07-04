@@ -16,7 +16,6 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import React from 'react';
 import {fireEvent} from '@testing-library/react-native';
 import {RadioButton} from '@axelor/aos-mobile-ui';
 import {getDefaultThemeColors, setup} from '../../tools';
@@ -24,41 +23,51 @@ import {getDefaultThemeColors, setup} from '../../tools';
 describe('RadioButton Component', () => {
   const Colors = getDefaultThemeColors();
 
-  const baseProps = {
-    title: 'Option 1',
-    onPress: jest.fn(),
-    selected: false,
-  };
-
   const setupRadioButton = overrideProps =>
-    setup({Component: RadioButton, baseProps, overrideProps});
-
-  it('renders without crashing', () => {
-    const {getByText} = setupRadioButton();
-
-    expect(getByText(baseProps.title)).toBeTruthy();
-  });
+    setup({
+      Component: RadioButton,
+      baseProps: {
+        title: 'Option 1',
+        onPress: jest.fn(),
+        selected: false,
+      },
+      overrideProps,
+    });
 
   it('renders the correct title', () => {
-    const customTitle = 'CustomTitle';
-    const {getByText} = setupRadioButton({title: customTitle});
+    const {getByText, props} = setupRadioButton();
 
-    expect(getByText(customTitle)).toBeTruthy();
+    expect(getByText(props.title)).toBeTruthy();
   });
 
   it('calls onPress when tapped', () => {
-    const onPress = jest.fn();
-    const {getByRole} = setupRadioButton({onPress});
+    const {getByRole, props} = setupRadioButton({onPress: jest.fn()});
 
     fireEvent.press(getByRole('button'));
-    expect(onPress).toHaveBeenCalled();
+    expect(props.onPress).toHaveBeenCalled();
+  });
+
+  it('applies normal styles when `selected` is false', () => {
+    const {queryByTestId} = setupRadioButton({selected: false});
+
+    expect(queryByTestId('radio')).toBeFalsy();
   });
 
   it('applies selected styles when `selected` is true', () => {
     const {getByTestId} = setupRadioButton({selected: true});
 
-    expect(getByTestId('radio').props.style).toMatchObject({
+    expect(getByTestId('radio')).toHaveStyle({
       backgroundColor: Colors.primaryColor.background,
     });
+  });
+
+  it('renders a disabled component when `readonly` is true', () => {
+    const {getByRole, props} = setupRadioButton({
+      readonly: true,
+      onPress: jest.fn(),
+    });
+
+    fireEvent.press(getByRole('button'));
+    expect(props.onPress).not.toHaveBeenCalled();
   });
 });
