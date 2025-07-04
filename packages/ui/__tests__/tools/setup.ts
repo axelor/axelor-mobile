@@ -16,6 +16,18 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-export * from './setup';
-export * from './styles';
-export * from './theme';
+import React from 'react';
+import {render} from '@testing-library/react-native';
+
+interface SetupProps {
+  Component: React.ComponentType<any>;
+  baseProps: any;
+  overrideProps: any;
+}
+
+export function setup({Component, baseProps, overrideProps}: SetupProps) {
+  const props = {...baseProps, ...overrideProps};
+  const utils = render(React.createElement(Component, props));
+
+  return {...utils, props};
+}

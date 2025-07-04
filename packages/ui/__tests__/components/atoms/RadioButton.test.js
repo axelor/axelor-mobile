@@ -16,51 +16,58 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import React from 'react';
-import {TouchableOpacity, View} from 'react-native';
-import {shallow} from 'enzyme';
+import {fireEvent} from '@testing-library/react-native';
 import {RadioButton} from '@axelor/aos-mobile-ui';
-import {getDefaultThemeColors} from '../../tools';
+import {getDefaultThemeColors, setup} from '../../tools';
 
 describe('RadioButton Component', () => {
   const Colors = getDefaultThemeColors();
-  const onPressMock = jest.fn();
 
-  it('should render without crashing', () => {
-    const wrapper = shallow(
-      <RadioButton onPress={onPressMock} selected={false} title="Option 1" />,
-    );
+  const setupRadioButton = overrideProps =>
+    setup({
+      Component: RadioButton,
+      baseProps: {
+        title: 'Option 1',
+        onPress: jest.fn(),
+        selected: false,
+      },
+      overrideProps,
+    });
 
-    expect(wrapper.exists()).toBe(true);
+  it('renders the correct title', () => {
+    const {getByText, props} = setupRadioButton();
+
+    expect(getByText(props.title)).toBeTruthy();
   });
 
-  it('should render with the correct title', () => {
-    const wrapper = shallow(
-      <RadioButton onPress={onPressMock} selected={false} title="Option 2" />,
-    );
+  it('calls onPress when tapped', () => {
+    const {getByRole, props} = setupRadioButton({onPress: jest.fn()});
 
-    expect(wrapper.find('Text').prop('children')).toBe('Option 2');
+    fireEvent.press(getByRole('button'));
+    expect(props.onPress).toHaveBeenCalled();
   });
 
-  it('should call onPress when TouchableOpacity is pressed', () => {
-    const wrapper = shallow(
-      <RadioButton onPress={onPressMock} selected={false} title="Option 3" />,
-    );
+  it('applies normal styles when `selected` is false', () => {
+    const {queryByTestId} = setupRadioButton({selected: false});
 
-    wrapper.find(TouchableOpacity).simulate('press');
-    expect(onPressMock).toHaveBeenCalled();
+    expect(queryByTestId('radio')).toBeFalsy();
   });
 
-  it('should apply selected styles when selected is true', () => {
-    const wrapper = shallow(
-      <RadioButton onPress={onPressMock} title="Option 4" selected />,
-    );
+  it('applies selected styles when `selected` is true', () => {
+    const {getByTestId} = setupRadioButton({selected: true});
 
-    const selectedView = wrapper.find(View).at(1);
+    expect(getByTestId('radio')).toHaveStyle({
+      backgroundColor: Colors.primaryColor.background,
+    });
+  });
 
-    expect(selectedView.prop('style')).toHaveProperty(
-      'backgroundColor',
-      Colors.primaryColor.background,
-    );
+  it('renders a disabled component when `readonly` is true', () => {
+    const {getByRole, props} = setupRadioButton({
+      readonly: true,
+      onPress: jest.fn(),
+    });
+
+    fireEvent.press(getByRole('button'));
+    expect(props.onPress).not.toHaveBeenCalled();
   });
 });
