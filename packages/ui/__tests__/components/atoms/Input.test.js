@@ -16,71 +16,87 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import React from 'react';
-import {TextInput} from 'react-native';
-import {shallow} from 'enzyme';
+import {fireEvent} from '@testing-library/react-native';
 import {Input} from '@axelor/aos-mobile-ui';
+import {setup} from '../../tools';
 
 describe('Input component', () => {
-  const props = {
-    value: 'Hello',
-    onChange: jest.fn(),
-    placeholder: 'Enter text',
-    secureTextEntry: true,
-    readOnly: false,
-    onSelection: jest.fn(),
-    multiline: true,
-    numberOfLines: 3,
-    keyboardType: 'default',
-    onEndFocus: jest.fn(),
-    isFocus: true,
-    writingType: 'title',
+  const setupInput = overrideProps => {
+    const {props, ...utils} = setup({
+      Component: Input,
+      baseProps: {
+        value: 'Hello',
+        onChange: jest.fn(),
+        placeholder: 'Enter text',
+      },
+      overrideProps,
+    });
+    return {
+      ...utils,
+      props,
+      input: utils.getByPlaceholderText(props.placeholder),
+    };
   };
 
   it('renders without crashing', () => {
-    const wrapper = shallow(<Input {...props} />);
-    expect(wrapper.exists()).toBe(true);
+    const {input} = setupInput();
+    expect(input).toBeTruthy();
   });
 
-  it('should render the TextInput component with the correct props', () => {
-    const wrapper = shallow(<Input {...props} />);
+  it('renders the TextInput with correct props', () => {
+    const {input, props} = setupInput({
+      keyboardType: 'default',
+      multiline: true,
+      numberOfLines: 3,
+      secureTextEntry: true,
+    });
 
-    const textInput = wrapper.find(TextInput);
-
-    expect(textInput.prop('value')).toEqual('Hello');
-
-    expect(textInput.prop('placeholder')).toEqual('Enter text');
+    expect(input.props.value).toBe(props.value);
+    expect(input.props.placeholder).toBe(props.placeholder);
+    expect(input.props.keyboardType).toBe(props.keyboardType);
+    expect(input.props.multiline).toBe(props.multiline);
+    expect(input.props.numberOfLines).toBe(props.numberOfLines);
+    expect(input.props.secureTextEntry).toBe(props.secureTextEntry);
   });
 
-  it('should call onChange handler with new value when text is changed', () => {
-    const wrapper = shallow(<Input {...props} />);
+  it('renders a disabled component when `readonly` is true', () => {
+    const {input, props} = setupInput({readOnly: true});
 
-    const textInput = wrapper.find(TextInput);
-
-    const newValue = 'New value';
-
-    textInput.simulate('changeText', newValue);
-
-    expect(props.onChange).toHaveBeenCalledWith(newValue);
+    expect(input.props.editable).toBe(!props.readOnly);
   });
 
-  it('should call onSelection handler when TextInput is focused', () => {
-    const wrapper = shallow(<Input {...props} />);
+  it('calls onChange handler with new value', () => {
+    const {input, props} = setupInput({onChange: jest.fn()});
+    const _newValue = 'New value';
 
-    const textInput = wrapper.find(TextInput);
+    fireEvent.changeText(input, _newValue);
+    expect(props.onChange).toHaveBeenCalledWith(_newValue);
+  });
 
-    textInput.simulate('focus');
+  it('calls onSelection handler on focus', () => {
+    const {input, props} = setupInput({onSelection: jest.fn()});
 
+    fireEvent(input, 'focus');
     expect(props.onSelection).toHaveBeenCalled();
   });
 
-  it('should call onEndFocus handler when TextInput is blurred', () => {
-    const wrapper = shallow(<Input {...props} />);
+  it('calls onEndFocus handler on blur', () => {
+    const {input, props} = setupInput({onEndFocus: jest.fn()});
 
-    const textInput = wrapper.find(TextInput);
-
-    textInput.simulate('blur');
-
+    fireEvent(input, 'blur');
     expect(props.onEndFocus).toHaveBeenCalled();
+  });
+
+  it('calls onContentSizeChange handler on size cange', () => {
+    const {input, props} = setupInput({onContentSizeChange: jest.fn()});
+
+    fireEvent(input, 'contentSizeChange');
+    expect(props.onContentSizeChange).toHaveBeenCalled();
+  });
+
+  it('applies custom style when provided', () => {
+    const {input, props} = setupInput({style: {color: 'red'}});
+
+    expect(input).toHaveStyle(props.style);
   });
 });
