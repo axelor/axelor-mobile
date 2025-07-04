@@ -63,7 +63,7 @@ const ProgressCircle = ({
         stroke={Colors.secondaryColor.background_light}
         strokeWidth={strokeWidth}
         fill="none"
-        testID="internal-circle"
+        testID="internalCircle"
       />
       <Circle
         cx={circleSize / 2}
@@ -81,7 +81,7 @@ const ProgressCircle = ({
         rotation="-90"
         origin={`${circleSize / 2}, ${circleSize / 2}`}
         fill="none"
-        testID="progress-circle"
+        testID="progressCircle"
       />
       <View style={styles.textContainer}>
         <Text writingType={writingType} style={textStyle} adjustsFontSizeToFit>

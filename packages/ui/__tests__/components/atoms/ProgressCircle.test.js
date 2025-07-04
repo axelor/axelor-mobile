@@ -16,63 +16,59 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import React from 'react';
-import {render} from '@testing-library/react-native';
 import {ProgressCircle} from '@axelor/aos-mobile-ui';
-import {getDefaultThemeColors} from '../../tools';
-
-const TEST_ID = {
-  INTERNAL_CIRCLE: 'internal-circle',
-  PROGRESS_CIRCLE: 'progress-circle',
-};
+import {getDefaultThemeColors, setup} from '../../tools';
 
 describe('ProgressCircle Component', () => {
   const Colors = getDefaultThemeColors();
-  const props = {progress: 0.25};
+
+  const setupProgressCircle = overrideProps =>
+    setup({
+      Component: ProgressCircle,
+      baseProps: {progress: 0.25},
+      overrideProps,
+    });
 
   it('renders correctly without crashing', () => {
-    const {getByTestId} = render(<ProgressCircle {...props} />);
+    const {getByTestId} = setupProgressCircle();
 
-    expect(getByTestId(TEST_ID.INTERNAL_CIRCLE)).toBeTruthy();
-    expect(getByTestId(TEST_ID.PROGRESS_CIRCLE)).toBeTruthy();
+    expect(getByTestId('internalCircle')).toBeTruthy();
+    expect(getByTestId('progressCircle')).toBeTruthy();
   });
 
   it('uses success stroke color when isError is false', () => {
-    const {getByTestId} = render(<ProgressCircle {...props} />);
+    const {getByTestId} = setupProgressCircle();
 
-    const circle = getByTestId(TEST_ID.PROGRESS_CIRCLE);
+    const circle = getByTestId('progressCircle');
     expect(circle.props.stroke).toBe(Colors.successColor.background);
   });
 
   it('uses error stroke color when isError is true', () => {
-    const {getByTestId} = render(<ProgressCircle {...props} isError />);
+    const {getByTestId} = setupProgressCircle({isError: true});
 
-    const circle = getByTestId(TEST_ID.PROGRESS_CIRCLE);
+    const circle = getByTestId('progressCircle');
 
     expect(circle.props.stroke).toBe(Colors.errorColor.background);
   });
 
   it('calculates correct strokeDashoffset based on progress', () => {
-    const computedProps = {...props, circleSize: 100, strokeWidth: 10};
-    const {circleSize, strokeWidth, progress} = computedProps;
+    const {getByTestId, props} = setupProgressCircle({
+      circleSize: 100,
+      strokeWidth: 10,
+    });
+    const {circleSize, strokeWidth, progress} = props;
 
     const radius = circleSize / 2 - strokeWidth / 2;
     const circumference = 2 * Math.PI * radius;
     const expectedOffset = circumference - circumference * progress;
 
-    const {getByTestId} = render(<ProgressCircle {...computedProps} />);
-
-    const circle = getByTestId(TEST_ID.PROGRESS_CIRCLE);
+    const circle = getByTestId('progressCircle');
     expect(circle.props.strokeDashoffset).toBeCloseTo(expectedOffset, 5);
   });
 
   it('displays correct step text', () => {
-    const innerText = 'Test';
+    const {getByText, props} = setupProgressCircle({innerText: 'Test'});
 
-    const {getByText} = render(
-      <ProgressCircle {...props} innerText={innerText} />,
-    );
-
-    expect(getByText(innerText)).toBeTruthy();
+    expect(getByText(props.innerText)).toBeTruthy();
   });
 });

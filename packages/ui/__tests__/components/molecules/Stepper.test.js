@@ -16,25 +16,32 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import React from 'react';
-import {fireEvent, render} from '@testing-library/react-native';
+import {fireEvent} from '@testing-library/react-native';
 import {Stepper} from '@axelor/aos-mobile-ui';
+import {setup} from '../../tools';
 
 describe('Stepper Component', () => {
-  const props = {
-    steps: [
-      {titleKey: 'Step_1', state: 'completed'},
-      {titleKey: 'Step_2', state: 'error'},
-      {titleKey: 'Step_3', state: 'inProgress'},
-      {titleKey: 'Step_4', state: 'draft'},
-    ],
-    activeStepIndex: 0,
-    translator: jest.fn(key => key),
-  };
+  const steps = [
+    {titleKey: 'Step_1', state: 'completed'},
+    {titleKey: 'Step_2', state: 'error'},
+    {titleKey: 'Step_3', state: 'inProgress'},
+    {titleKey: 'Step_4', state: 'draft'},
+  ];
+
+  const setupStepper = overrideProps =>
+    setup({
+      Component: Stepper,
+      baseProps: {
+        steps,
+        activeStepIndex: 0,
+        translator: jest.fn(key => key),
+      },
+      overrideProps,
+    });
 
   it('displays the active step title and next step title if not the last', () => {
+    const {getByText, props} = setupStepper();
     const {steps, activeStepIndex} = props;
-    const {getByText} = render(<Stepper {...props} />);
 
     expect(getByText(steps[activeStepIndex].titleKey)).toBeTruthy();
     expect(
@@ -43,18 +50,15 @@ describe('Stepper Component', () => {
   });
 
   it('does not show the next label on the last step', () => {
-    const {queryByText} = render(
-      <Stepper {...props} activeStepIndex={props.steps.length - 1} />,
-    );
-
+    const {queryByText} = setupStepper({activeStepIndex: steps.length - 1});
     expect(queryByText(/Base_Next/)).toBeNull();
   });
 
   it('toggles StepList on dropdown press when displayDropdown is true', () => {
+    const {getByTestId, queryByText, queryAllByText, props} = setupStepper({
+      displayDropdown: true,
+    });
     const {steps, activeStepIndex} = props;
-    const {getByTestId, queryByText, queryAllByText} = render(
-      <Stepper {...props} displayDropdown />,
-    );
 
     steps.forEach(({titleKey}, idx) => {
       if (idx === activeStepIndex) {

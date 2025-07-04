@@ -16,111 +16,114 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import React from 'react';
-import {fireEvent, render, screen} from '@testing-library/react-native';
+import {fireEvent} from '@testing-library/react-native';
 import {Button} from '@axelor/aos-mobile-ui';
-import {getDefaultThemeColors} from '../../tools';
+import {getDefaultThemeColors, setup} from '../../tools';
 
 describe('Button Component', () => {
   const Colors = getDefaultThemeColors();
-  const props = {
-    title: 'Click here',
-    onPress: jest.fn(),
-    width: 45,
-  };
+
+  const setupButton = overrideProps =>
+    setup({
+      Component: Button,
+      baseProps: {
+        title: 'Click here',
+        onPress: jest.fn(),
+        width: 45,
+      },
+      overrideProps,
+    });
 
   it('renders without crashing', () => {
-    render(<Button {...props} />);
-    expect(screen.getByRole('button')).toBeTruthy();
+    const {getByRole} = setupButton();
+    expect(getByRole('button')).toBeTruthy();
   });
 
   it('renders correctly with default props', () => {
-    render(<Button {...props} />);
+    const {getByRole, getByText, props} = setupButton();
 
-    expect(screen.getByText(props.title)).toBeTruthy();
-    expect(screen.getByRole('button').props.disabled).toBeFalsy();
+    expect(getByText(props.title)).toBeTruthy();
+    expect(getByRole('button').props.disabled).toBeFalsy();
   });
 
   it('should call onPress function when needed', () => {
-    const onPress = jest.fn();
-    render(<Button {...props} onPress={onPress} />);
+    const {getByRole, props} = setupButton({onPress: jest.fn()});
 
-    fireEvent.press(screen.getByRole('button'));
-    expect(onPress).toHaveBeenCalled();
+    fireEvent.press(getByRole('button'));
+    expect(props.onPress).toHaveBeenCalled();
   });
 
   it('should not call the onPress function in disabled state', () => {
-    const onPress = jest.fn();
-    render(<Button {...props} onPress={onPress} disabled />);
+    const {getByRole, props} = setupButton({
+      onPress: jest.fn(),
+      disabled: true,
+    });
 
-    fireEvent.press(screen.getByRole('button'));
-    expect(onPress).not.toHaveBeenCalled();
+    fireEvent.press(getByRole('button'));
+    expect(props.onPress).not.toHaveBeenCalled();
   });
 
   it('should call the right onPress function in disabled state', () => {
-    const onPress = jest.fn();
-    const onDisabledPress = jest.fn();
-    render(
-      <Button
-        {...props}
-        onPress={onPress}
-        disabled
-        onDisabledPress={onDisabledPress}
-      />,
-    );
+    const {getByRole, props} = setupButton({
+      onPress: jest.fn(),
+      disabled: true,
+      onDisabledPress: jest.fn(),
+    });
 
-    fireEvent.press(screen.getByRole('button'));
-    expect(onPress).not.toHaveBeenCalled();
-    expect(onDisabledPress).toHaveBeenCalled();
+    fireEvent.press(getByRole('button'));
+    expect(props.onPress).not.toHaveBeenCalled();
+    expect(props.onDisabledPress).toHaveBeenCalled();
   });
 
   it('renders with custom style', () => {
-    const style = {margin: 10};
     const defaultColor = Colors.primaryColor;
-    render(<Button {...props} style={style} />);
+    const {getByRole, getByText, props} = setupButton({style: {margin: 10}});
 
-    expect(screen.getByRole('button')).toHaveStyle({
+    expect(getByRole('button')).toHaveStyle({
       borderColor: defaultColor.background,
       backgroundColor: defaultColor.background_light,
       width: props.width,
-      ...style,
+      ...props.style,
     });
 
-    expect(screen.getByText(props.title)).toHaveStyle({
+    expect(getByText(props.title)).toHaveStyle({
       color: defaultColor.foreground,
     });
   });
 
   it('renders with correct color', () => {
-    const color = Colors.secondaryColor_dark;
-    render(<Button {...props} color={color} />);
-
-    expect(screen.getByRole('button')).toHaveStyle({
-      borderColor: color.background,
-      backgroundColor: color.background_light,
+    const {getByRole, getByText, props} = setupButton({
+      color: Colors.secondaryColor_dark,
     });
 
-    expect(screen.getByText(props.title)).toHaveStyle({
-      color: color.foreground,
+    expect(getByRole('button')).toHaveStyle({
+      borderColor: props.color.background,
+      backgroundColor: props.color.background_light,
+    });
+
+    expect(getByText(props.title)).toHaveStyle({
+      color: props.color.foreground,
     });
   });
 
   it('renders neutral background when asked', () => {
-    render(<Button {...props} isNeutralBackground />);
+    const {getByRole, getByText, props} = setupButton({
+      isNeutralBackground: true,
+    });
 
-    expect(screen.getByRole('button')).toHaveStyle({
+    expect(getByRole('button')).toHaveStyle({
       borderColor: Colors.primaryColor.background,
       backgroundColor: Colors.backgroundColor,
     });
 
-    expect(screen.getByText(props.title)).toHaveStyle({
+    expect(getByText(props.title)).toHaveStyle({
       color: Colors.text,
     });
   });
 
   it('renders Icon when provided', () => {
-    render(<Button {...props} iconName="check" />);
+    const {getByTestId} = setupButton({iconName: 'check'});
 
-    expect(screen.getByTestId('icon')).toBeTruthy();
+    expect(getByTestId('icon')).toBeTruthy();
   });
 });

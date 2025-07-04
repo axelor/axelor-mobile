@@ -18,12 +18,21 @@
 
 import React from 'react';
 import {View} from 'react-native';
-import {render} from '@testing-library/react-native';
 import {BlockInteractionScreen} from '@axelor/aos-mobile-ui';
 import * as configContext from '../../../lib/config/ConfigContext';
+import {setup} from '../../tools';
 
 describe('BlockInteractionScreen Component', () => {
   const defaultHeaderHeight = 70;
+
+  const setupBlockInteractionScreen = overrideProps =>
+    setup({
+      Component: BlockInteractionScreen,
+      baseProps: {
+        children: <View testID="children" />,
+      },
+      overrideProps,
+    });
 
   beforeEach(() => {
     jest.spyOn(configContext, 'useConfig').mockImplementation(() => ({
@@ -31,20 +40,14 @@ describe('BlockInteractionScreen Component', () => {
     }));
   });
 
-  const wrapper = props => <BlockInteractionScreen {...props} />;
-
   it('renders without crashing', () => {
-    const {getByTestId} = render(
-      wrapper({children: <View testID="children" />}),
-    );
+    const {getByTestId} = setupBlockInteractionScreen();
 
     expect(getByTestId('children')).toBeTruthy();
   });
 
   it('applies header offset correctly when not hidden', () => {
-    const {getByTestId} = render(
-      wrapper({children: <View testID="children" />}),
-    );
+    const {getByTestId} = setupBlockInteractionScreen();
 
     expect(getByTestId('blockInteractionContainer')).toHaveStyle({
       top: defaultHeaderHeight,
@@ -52,9 +55,7 @@ describe('BlockInteractionScreen Component', () => {
   });
 
   it('applies no offset when header is hidden', () => {
-    const {getByTestId} = render(
-      wrapper({children: <View testID="children" />, hideHeader: true}),
-    );
+    const {getByTestId} = setupBlockInteractionScreen({hideHeader: true});
 
     expect(getByTestId('blockInteractionContainer')).toHaveStyle({top: 0});
   });
