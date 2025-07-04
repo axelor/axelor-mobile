@@ -21,8 +21,8 @@ import {render} from '@testing-library/react-native';
 
 interface SetupProps {
   Component: React.ComponentType<any>;
-  baseProps: any;
-  overrideProps: any;
+  baseProps?: any;
+  overrideProps?: any;
 }
 
 export function setup({Component, baseProps, overrideProps}: SetupProps) {

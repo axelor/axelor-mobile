@@ -30,7 +30,11 @@ const Card = ({style, children}: CardProps) => {
 
   const styles = useMemo(() => getStyles(Colors), [Colors]);
 
-  return <View style={[styles.container, style]}>{children}</View>;
+  return (
+    <View testID="cardContainer" style={[styles.container, style]}>
+      {children}
+    </View>
+  );
 };
 
 const getStyles = (Colors: ThemeColors) =>

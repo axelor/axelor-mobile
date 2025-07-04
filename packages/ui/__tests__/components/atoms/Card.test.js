@@ -18,27 +18,27 @@
 
 import React from 'react';
 import {View} from 'react-native';
-import {shallow} from 'enzyme';
 import {Card} from '@axelor/aos-mobile-ui';
+import {setup} from '../../tools';
 
 describe('Card Component', () => {
+  const setupCard = overrideProps => setup({Component: Card, overrideProps});
+
   it('renders without crashing', () => {
-    const wrapper = shallow(<Card />);
-    expect(wrapper.exists()).toBe(true);
+    const {getByTestId} = setupCard();
+
+    expect(getByTestId('cardContainer')).toBeTruthy();
   });
 
   it('renders children correctly', () => {
-    const children = <View testID="children" />;
-    const wrapper = shallow(<Card>{children}</Card>);
+    const {getByTestId} = setupCard({children: <View testID="children" />});
 
-    expect(wrapper.find('[testID="children"]').length).toBe(1);
+    expect(getByTestId('children')).toBeTruthy();
   });
 
   it('applies custom style correctly', () => {
-    const customStyle = {marginBottom: 10};
-    const children = <View testID="children" />;
-    const wrapper = shallow(<Card style={customStyle}>{children}</Card>);
+    const {getByTestId, props} = setupCard({style: {marginBottom: 10}});
 
-    expect(wrapper.prop('style')).toContain(customStyle);
+    expect(getByTestId('cardContainer')).toHaveStyle(props.style);
   });
 });
