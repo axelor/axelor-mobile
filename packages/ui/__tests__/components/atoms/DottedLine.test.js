@@ -16,22 +16,20 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import React from 'react';
-import {shallow} from 'enzyme';
 import {DottedLine} from '@axelor/aos-mobile-ui';
+import {setup} from '../../tools';
 
 describe('DottedLine Component', () => {
+  const setupDottedLine = overrideProps =>
+    setup({Component: DottedLine, overrideProps});
+
   it('renders without crashing', () => {
-    const wrapper = shallow(<DottedLine />);
-    expect(wrapper.exists()).toBe(true);
+    const {getByTestId} = setupDottedLine();
+    expect(getByTestId('dottedLine')).toBeTruthy();
   });
 
   it('applies custom style correctly', () => {
-    const customStyle = {width: 200};
-    const wrapper = shallow(<DottedLine style={customStyle} />);
-
-    expect(wrapper.prop('style')).toEqual(
-      expect.arrayContaining([expect.objectContaining(customStyle)]),
-    );
+    const {getByTestId, props} = setupDottedLine({style: {marginBottom: 12}});
+    expect(getByTestId('dottedLine')).toHaveStyle(props.style);
   });
 });
