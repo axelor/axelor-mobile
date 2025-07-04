@@ -16,60 +16,87 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import React from 'react';
-import {render, fireEvent} from '@testing-library/react-native';
+import {fireEvent} from '@testing-library/react-native';
 import {Input} from '@axelor/aos-mobile-ui';
+import {setup} from '../../tools';
 
 describe('Input component', () => {
-  const baseProps = {
-    value: 'Hello',
-    onChange: jest.fn(),
-    placeholder: 'Enter text',
-    secureTextEntry: true,
-    readOnly: false,
-    onSelection: jest.fn(),
-    multiline: true,
-    numberOfLines: 3,
-    keyboardType: 'default',
-    onEndFocus: jest.fn(),
-    isFocus: false,
-    writingType: 'title',
-  };
-
-  const setup = (override = {}) => {
-    const props = {...baseProps, ...override};
-    const utils = render(<Input {...props} />);
-    const input = utils.getByPlaceholderText(props.placeholder);
-    return {input, props, ...utils};
+  const setupInput = overrideProps => {
+    const {props, ...utils} = setup({
+      Component: Input,
+      baseProps: {
+        value: 'Hello',
+        onChange: jest.fn(),
+        placeholder: 'Enter text',
+      },
+      overrideProps,
+    });
+    return {
+      ...utils,
+      props,
+      input: utils.getByPlaceholderText(props.placeholder),
+    };
   };
 
   it('renders without crashing', () => {
-    const {input} = setup();
+    const {input} = setupInput();
     expect(input).toBeTruthy();
   });
 
   it('renders the TextInput with correct props', () => {
-    const {input} = setup();
-    expect(input.props.value).toBe('Hello');
-    expect(input.props.placeholder).toBe('Enter text');
-    expect(input.props.secureTextEntry).toBe(true);
+    const {input, props} = setupInput({
+      keyboardType: 'default',
+      multiline: true,
+      numberOfLines: 3,
+      secureTextEntry: true,
+    });
+
+    expect(input.props.value).toBe(props.value);
+    expect(input.props.placeholder).toBe(props.placeholder);
+    expect(input.props.keyboardType).toBe(props.keyboardType);
+    expect(input.props.multiline).toBe(props.multiline);
+    expect(input.props.numberOfLines).toBe(props.numberOfLines);
+    expect(input.props.secureTextEntry).toBe(props.secureTextEntry);
+  });
+
+  it('renders a disabled component when `readonly` is true', () => {
+    const {input, props} = setupInput({readOnly: true});
+
+    expect(input.props.editable).toBe(!props.readOnly);
   });
 
   it('calls onChange handler with new value', () => {
-    const {input, props} = setup();
-    fireEvent.changeText(input, 'New value');
-    expect(props.onChange).toHaveBeenCalledWith('New value');
+    const {input, props} = setupInput({onChange: jest.fn()});
+    const _newValue = 'New value';
+
+    fireEvent.changeText(input, _newValue);
+    expect(props.onChange).toHaveBeenCalledWith(_newValue);
   });
 
   it('calls onSelection handler on focus', () => {
-    const {input, props} = setup();
+    const {input, props} = setupInput({onSelection: jest.fn()});
+
     fireEvent(input, 'focus');
     expect(props.onSelection).toHaveBeenCalled();
   });
 
   it('calls onEndFocus handler on blur', () => {
-    const {input, props} = setup();
+    const {input, props} = setupInput({onEndFocus: jest.fn()});
+
     fireEvent(input, 'blur');
     expect(props.onEndFocus).toHaveBeenCalled();
+  });
+
+  it('calls onContentSizeChange handler on size cange', () => {
+    const {input, props} = setupInput({onContentSizeChange: jest.fn()});
+
+    fireEvent(input, 'contentSizeChange');
+    expect(props.onContentSizeChange).toHaveBeenCalled();
+  });
+
+  it('applies custom style when provided', () => {
+    const {input, props} = setupInput({style: {color: 'red'}});
+
+    expect(input).toHaveStyle(props.style);
   });
 });
