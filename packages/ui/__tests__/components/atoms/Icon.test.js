@@ -16,63 +16,51 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import React from 'react';
-import {TouchableOpacity} from 'react-native';
-import {shallow} from 'enzyme';
-import {Icon, BootstrapIcon} from '@axelor/aos-mobile-ui';
+import {fireEvent} from '@testing-library/react-native';
+import {Icon} from '@axelor/aos-mobile-ui';
+import {setup} from '../../tools';
 
 describe('Icon Component', () => {
-  const props = {
-    name: 'check',
-    color: 'red',
-    size: 24,
-    touchable: true,
-    visible: true,
-    onPress: jest.fn(),
-    disabled: false,
-  };
+  const setupIcon = overrideProps =>
+    setup({Component: Icon, baseProps: {name: 'check'}, overrideProps});
 
   it('renders without crashing', () => {
-    const wrapper = shallow(<Icon />);
-    expect(wrapper.exists()).toBe(true);
-  });
+    const {getByTestId} = setupIcon();
 
-  it('renders BootstrapIcon icon ', () => {
-    const wrapper = shallow(<Icon name="star" />);
-    const iconComponent = wrapper.find(BootstrapIcon);
-
-    expect(iconComponent.exists()).toBe(true);
-    expect(iconComponent.prop('name')).toBe('star');
-  });
-
-  it('applies custom style to the component', () => {
-    const customStyle = {backgroundColor: 'red'};
-    const wrapper = shallow(<Icon name="star" style={customStyle} />);
-
-    const iconStyle = wrapper.find(TouchableOpacity).prop('style');
-    expect(iconStyle).toEqual(
-      expect.arrayContaining([expect.objectContaining(customStyle)]),
-    );
+    expect(getByTestId('iconTouchable')).toBeTruthy();
+    expect(getByTestId('icon')).toBeTruthy();
   });
 
   it('renders nothing when visible prop is false', () => {
-    const wrapper = shallow(<Icon visible={false} />);
+    const {queryByTestId} = setupIcon({visible: false});
 
-    expect(wrapper.isEmptyRender()).toBeTruthy();
+    expect(queryByTestId('iconTouchable')).toBeFalsy();
+    expect(queryByTestId('icon')).toBeFalsy();
   });
 
   it('renders a disabled icon', () => {
-    const wrapper = shallow(<Icon name="star" touchable={false} />);
-    const touchableComponent = wrapper.find(TouchableOpacity);
+    const {getByTestId, props} = setupIcon({
+      touchable: false,
+      onPress: jest.fn(),
+    });
 
-    expect(touchableComponent.prop('disabled')).toBe(true);
+    fireEvent.press(getByTestId('iconTouchable'));
+    expect(props.onPress).not.toHaveBeenCalled();
   });
 
   it('renders a touchable icon', () => {
-    const wrapper = shallow(<Icon {...props} />);
-    const touchableComponent = wrapper.find(TouchableOpacity);
+    const {getByTestId, props} = setupIcon({
+      touchable: true,
+      onPress: jest.fn(),
+    });
 
-    expect(touchableComponent.exists()).toBeTruthy();
-    expect(touchableComponent.prop('disabled')).toBe(false);
+    fireEvent.press(getByTestId('iconTouchable'));
+    expect(props.onPress).toHaveBeenCalled();
+  });
+
+  it('applies custom style to the component', () => {
+    const {getByTestId, props} = setupIcon({style: {backgroundColor: 'red'}});
+
+    expect(getByTestId('iconTouchable')).toHaveStyle(props.style);
   });
 });

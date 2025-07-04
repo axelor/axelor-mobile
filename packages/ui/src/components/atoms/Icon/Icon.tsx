@@ -55,7 +55,8 @@ const Icon = ({
     <TouchableOpacity
       style={[styles.container, style]}
       onPress={onPress}
-      disabled={!touchable}>
+      disabled={!touchable}
+      testID="iconTouchable">
       <BootstrapIcon name={name} size={size} color={_color} />
     </TouchableOpacity>
   );
