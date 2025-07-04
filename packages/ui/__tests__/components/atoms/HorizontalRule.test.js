@@ -16,20 +16,21 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import React from 'react';
-import {render} from '@testing-library/react-native';
 import {HorizontalRule} from '@axelor/aos-mobile-ui';
+import {setup} from '../../tools';
 
 describe('HorizontalRule Component', () => {
+  const setupHorizontalRule = overrideProps =>
+    setup({Component: HorizontalRule, overrideProps});
+
   it('renders without crashing', () => {
-    const {getByTestId} = render(<HorizontalRule />);
+    const {getByTestId} = setupHorizontalRule();
     expect(getByTestId('horizontalRule')).toBeTruthy();
   });
 
   it('applies custom style correctly', () => {
-    const customStyle = {marginTop: 20};
-    const {getByTestId} = render(<HorizontalRule style={customStyle} />);
+    const {getByTestId, props} = setupHorizontalRule({style: {marginTop: 20}});
 
-    expect(getByTestId('horizontalRule')).toHaveStyle(customStyle);
+    expect(getByTestId('horizontalRule')).toHaveStyle(props.style);
   });
 });
