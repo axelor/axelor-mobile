@@ -24,7 +24,10 @@ export {default as HorizontalRule} from './HorizontalRule/HorizontalRule';
 export {default as HtmlInput} from './HtmlInput/HtmlInput';
 export {default as Icon} from './Icon/Icon';
 export {default as Input} from './Input/Input';
-export {default as KeyboardAvoidingScrollView} from './KeyboardAvoidingScrollView/KeyboardAvoidingScrollView';
+export {
+  default as KeyboardAvoidingScrollView,
+  DEFAULT_OFFSET,
+} from './KeyboardAvoidingScrollView/KeyboardAvoidingScrollView';
 export {default as ProgressCircle} from './ProgressCircle/ProgressCircle';
 export {default as RadioButton} from './RadioButton/RadioButton';
 export {default as Screen} from './Screen/Screen';
