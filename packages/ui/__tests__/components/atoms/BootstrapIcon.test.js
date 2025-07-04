@@ -16,26 +16,30 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import React from 'react';
-import {render} from '@testing-library/react-native';
 import {BootstrapIcon} from '@axelor/aos-mobile-ui';
-import {getDefaultThemeColors} from '../../tools';
+import {getDefaultThemeColors, setup} from '../../tools';
 
 describe('BootstrapIcon Component', () => {
   const Colors = getDefaultThemeColors();
-  const props = {
-    name: '123',
-    size: 25,
-    color: Colors.primaryColor.background,
-  };
+
+  const setupBootstrapIcon = overrideProps =>
+    setup({
+      Component: BootstrapIcon,
+      baseProps: {
+        name: '123',
+        size: 25,
+        color: Colors.primaryColor.background,
+      },
+      overrideProps,
+    });
 
   it('renders without crashing', () => {
-    const {getByTestId} = render(<BootstrapIcon {...props} />);
+    const {getByTestId} = setupBootstrapIcon();
     expect(getByTestId('icon')).toBeTruthy();
   });
 
   it('gives the correct props to Svg', () => {
-    const {getByTestId} = render(<BootstrapIcon {...props} />);
+    const {getByTestId, props} = setupBootstrapIcon();
     const icon = getByTestId('icon');
 
     expect(icon.props.width).toBe(props.size);
@@ -44,15 +48,12 @@ describe('BootstrapIcon Component', () => {
   });
 
   it('applies custom style when provided', () => {
-    const customStyle = {width: 200};
-    const {getByTestId} = render(
-      <BootstrapIcon {...props} style={customStyle} />,
-    );
-    expect(getByTestId('icon').props.style).toMatchObject(customStyle);
+    const {getByTestId, props} = setupBootstrapIcon({style: {width: 200}});
+    expect(getByTestId('icon')).toHaveStyle(props.style);
   });
 
   it('renders fallback Text when icon does not exist', () => {
-    const {getByText} = render(<BootstrapIcon {...props} name="Fake icon" />);
+    const {getByText} = setupBootstrapIcon({name: 'Fake icon'});
     expect(getByText('?')).toBeTruthy();
   });
 });
