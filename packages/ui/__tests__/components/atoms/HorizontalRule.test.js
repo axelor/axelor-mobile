@@ -16,22 +16,21 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import React from 'react';
-import {shallow} from 'enzyme';
 import {HorizontalRule} from '@axelor/aos-mobile-ui';
+import {setup} from '../../tools';
 
 describe('HorizontalRule Component', () => {
+  const setupHorizontalRule = overrideProps =>
+    setup({Component: HorizontalRule, overrideProps});
+
   it('renders without crashing', () => {
-    const wrapper = shallow(<HorizontalRule />);
-    expect(wrapper.exists()).toBe(true);
+    const {getByTestId} = setupHorizontalRule();
+    expect(getByTestId('horizontalRule')).toBeTruthy();
   });
 
   it('applies custom style correctly', () => {
-    const customStyle = {width: 200};
-    const wrapper = shallow(<HorizontalRule style={customStyle} />);
+    const {getByTestId, props} = setupHorizontalRule({style: {marginTop: 20}});
 
-    expect(wrapper.prop('style')).toEqual(
-      expect.arrayContaining([expect.objectContaining(customStyle)]),
-    );
+    expect(getByTestId('horizontalRule')).toHaveStyle(props.style);
   });
 });
