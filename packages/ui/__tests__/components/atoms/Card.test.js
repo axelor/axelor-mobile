@@ -18,35 +18,27 @@
 
 import React from 'react';
 import {View} from 'react-native';
-import {render} from '@testing-library/react-native';
 import {Card} from '@axelor/aos-mobile-ui';
+import {setup} from '../../tools';
 
 describe('Card Component', () => {
-  const wrapper = props => (
-    <Card {...props}>
-      <View testID="children" />
-    </Card>
-  );
+  const setupCard = overrideProps => setup({Component: Card, overrideProps});
 
   it('renders without crashing', () => {
-    const {getByTestId} = render(wrapper());
+    const {getByTestId} = setupCard();
 
     expect(getByTestId('cardContainer')).toBeTruthy();
   });
 
   it('renders children correctly', () => {
-    const {getByTestId} = render(wrapper());
+    const {getByTestId} = setupCard({children: <View testID="children" />});
 
     expect(getByTestId('children')).toBeTruthy();
   });
 
   it('applies custom style correctly', () => {
-    const customStyle = {marginBottom: 10};
-    const {getByTestId} = render(wrapper({style: customStyle}));
-    const container = getByTestId('cardContainer');
+    const {getByTestId, props} = setupCard({style: {marginBottom: 10}});
 
-    expect(container.props.style).toEqual(
-      expect.arrayContaining([expect.objectContaining(customStyle)]),
-    );
+    expect(getByTestId('cardContainer')).toHaveStyle(props.style);
   });
 });
