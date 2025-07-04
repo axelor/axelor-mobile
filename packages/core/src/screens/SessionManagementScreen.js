@@ -17,7 +17,12 @@
  */
 
 import React, {useCallback, useEffect, useMemo, useState} from 'react';
-import {KeyboardAvoidingView, StyleSheet, View} from 'react-native';
+import {
+  NativeEventEmitter,
+  KeyboardAvoidingView,
+  StyleSheet,
+  View,
+} from 'react-native';
 import {useDispatch} from 'react-redux';
 import {Text, Screen} from '@axelor/aos-mobile-ui';
 import {
@@ -86,6 +91,16 @@ const SessionManagementScreen = ({route}) => {
 
   const changeActiveSession = useCallback(_session => {
     setSession(_session);
+  }, []);
+
+  useEffect(() => {
+    const eventEmitter = new NativeEventEmitter();
+
+    const subscription = eventEmitter.addListener('onKeyPressed', event => {
+      console.log('keyCode:', event.keyCode);
+    });
+
+    return () => subscription.remove();
   }, []);
 
   return (
