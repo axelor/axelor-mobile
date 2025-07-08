@@ -1,0 +1,5 @@
+{
+  "title": "InternalMoveLine detail: resolve issue on StockMove notes from line details",
+  "type": "fix",
+  "packages": "stock"
+}
