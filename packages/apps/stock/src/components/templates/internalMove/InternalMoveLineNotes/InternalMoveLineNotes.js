@@ -18,29 +18,17 @@
 
 import React from 'react';
 import {FormHtmlInput} from '@axelor/aos-mobile-ui';
-import {useTranslator, useTypes} from '@axelor/aos-mobile-core';
+import {useTranslator} from '@axelor/aos-mobile-core';
 
-const InternalMoveLineNotes = ({
-  status = null,
-  notes,
-  setNotes = () => {},
-  setSaveStatus = () => {},
-  readonly = false,
-}) => {
+const InternalMoveLineNotes = ({notes, readonly = false}) => {
   const I18n = useTranslator();
-  const {StockMove} = useTypes();
-
-  const handleNotesChange = value => {
-    setNotes(value);
-    setSaveStatus(false);
-  };
 
   return (
     <FormHtmlInput
       title={I18n.t('Stock_NotesOnStockMove')}
-      onChange={handleNotesChange}
+      onChange={() => {}}
       defaultValue={notes}
-      readonly={readonly || status !== StockMove?.statusSelect.Draft}
+      readonly={readonly}
       hideIfNull={true}
     />
   );
