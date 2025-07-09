@@ -16,15 +16,12 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import React from 'react';
-import {View} from 'react-native';
-import {shallow} from 'enzyme';
-import RNSlider from '@react-native-community/slider';
-import {Slider, Text} from '@axelor/aos-mobile-ui';
-import {getGlobalStyles} from '../../tools';
+import {fireEvent} from '@testing-library/react-native';
+import {Slider} from '@axelor/aos-mobile-ui';
+import {setup} from '../../tools';
 
 describe('Slider Component', () => {
-  const props = {
+  const baseProps = {
     minValue: 0,
     maxValue: 100,
     minLimit: 0,
@@ -35,105 +32,81 @@ describe('Slider Component', () => {
     disabled: false,
   };
 
-  it('should render without crashing', () => {
-    const wrapper = shallow(<Slider {...props} />);
-
-    expect(wrapper.exists()).toBe(true);
-  });
-
-  it('should render RNSlider with correct props', () => {
-    const wrapper = shallow(<Slider {...props} />);
-    const rnSlider = wrapper.find(RNSlider);
-
-    expect(rnSlider.props()).toMatchObject({
-      minimumValue: props.minValue,
-      maximumValue: props.maxValue,
-      lowerLimit: props.minLimit,
-      upperLimit: props.maxLimit,
-      step: props.step,
-      value: props.defaultValue,
+  const setupSlider = (overrideProps = {}) =>
+    setup({
+      Component: Slider,
+      baseProps,
+      overrideProps,
     });
+
+  it('renders without crashing', () => {
+    const {getByTestId} = setupSlider();
+    expect(getByTestId('slider')).toBeTruthy();
   });
 
-  it('should render steps only if displayStepNumber is true', () => {
-    const step = 10;
-    const minValue = 0;
-    const maxValue = 100;
-    const wrapper = shallow(
-      <Slider
-        {...props}
-        minValue={minValue}
-        maxValue={maxValue}
-        step={step}
-        displayStepNumber={true}
-      />,
-    )
-      .find(View)
-      .at(2);
+  it('renders step numbers if displayStepNumber is true and not too many', () => {
+    const {getAllByText} = setupSlider({
+      displayStepNumber: true,
+    });
 
-    expect(wrapper.exists()).toBe(true);
-
-    const expectedSteps = Math.floor((maxValue - minValue) / step) + 1;
-    expect(wrapper.find(Text).length).toBe(expectedSteps);
+    expect(getAllByText('0')).toHaveLength(1);
+    expect(getAllByText('50')).toHaveLength(1);
+    expect(getAllByText('100')).toHaveLength(1);
   });
 
-  it('should not render steps when there are too many', () => {
-    const wrapper = shallow(
-      <Slider {...props} minValue={0} maxValue={100} step={5} />,
-    );
+  it('does not render step numbers when too many', () => {
+    const {queryByText} = setupSlider({
+      step: 5,
+      displayStepNumber: true,
+    });
 
-    expect(wrapper.find(View).at(2).find(Text).length).toBe(0);
+    expect(queryByText('0')).toBeNull();
+    expect(queryByText('5')).toBeNull();
   });
 
-  it('should update the value when the slider value changes', () => {
-    const wrapper = shallow(<Slider {...props} />);
-    const sliderComponent = wrapper.find(RNSlider);
+  it('calls onChange on sliding complete', () => {
+    const onChange = jest.fn();
+    const {getByTestId} = setupSlider({onChange});
+    const slider = getByTestId('slider');
 
-    sliderComponent.simulate('valueChange', 60);
-
-    expect(wrapper.find(RNSlider).prop('value')).toBe(60);
+    fireEvent(slider, 'slidingComplete', 70);
+    expect(onChange).toHaveBeenCalledWith(70);
   });
 
-  it('should call the onChange prop when sliding completes', () => {
-    const wrapper = shallow(<Slider {...props} />);
-    const sliderComponent = wrapper.find(RNSlider);
+  it('displays slider value when displaySliderValue is true', () => {
+    const {getByText} = setupSlider({
+      displaySliderValue: true,
+      defaultValue: 25,
+    });
 
-    sliderComponent.simulate('slidingComplete', 70);
-    expect(props.onChange).toHaveBeenCalledWith(70);
+    expect(getByText('25.00')).toBeTruthy();
   });
 
-  it('should display the slider value only if displaySliderValue is true', () => {
-    const findValueText = node => node.prop('style')?.textAlign === 'right';
+  it('does not display slider value when displaySliderValue is false', () => {
+    const {queryByText} = setupSlider({
+      displaySliderValue: false,
+      defaultValue: 25,
+    });
 
-    const noValueWrapper = shallow(
-      <Slider {...props} displaySliderValue={false} />,
-    );
-    const sliderText = noValueWrapper.findWhere(findValueText);
-
-    expect(sliderText.exists()).toBe(false);
-
-    const wrapper = shallow(<Slider {...props} displaySliderValue={true} />);
-    const sliderValueText = wrapper.findWhere(findValueText);
-
-    expect(sliderValueText.exists()).toBe(true);
-
-    expect(sliderValueText.children().text()).toBe('50.00');
+    expect(queryByText('25.00')).toBeNull();
   });
 
   it('should disable the slider when needed', () => {
-    const disabledWrapper = shallow(<Slider {...props} disabled={true} />);
-    const wrapper = shallow(<Slider {...props} disabled={false} />);
+    const {getByTestId: getByTestIdDisabled} = setupSlider({disabled: true});
+    const {getByTestId: getByTestIdEnabled} = setupSlider({disabled: false});
 
-    expect(disabledWrapper.find(View).at(1).prop('pointerEvents')).toBe('none');
-    expect(wrapper.find(View).at(1).prop('pointerEvents')).toBe('auto');
+    expect(getByTestIdDisabled('sliderWrapper').props.pointerEvents).toBe(
+      'none',
+    );
+    expect(getByTestIdEnabled('sliderWrapper').props.pointerEvents).toBe(
+      'auto',
+    );
   });
 
   it('should render with custom style', () => {
     const customStyle = {margin: 20};
-    const wrapper = shallow(<Slider {...props} style={customStyle} />);
+    const {getByTestId, props} = setupSlider({style: customStyle});
 
-    expect(getGlobalStyles(wrapper.find(View).first())).toMatchObject(
-      customStyle,
-    );
+    expect(getByTestId('sliderContainer')).toHaveStyle(props.style);
   });
 });

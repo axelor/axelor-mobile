@@ -89,11 +89,13 @@ const Slider = ({
   }, [defaultValue]);
 
   return (
-    <View style={[styles.container, style]}>
+    <View testID="sliderContainer" style={[styles.container, style]}>
       <View
+        testID="sliderWrapper"
         style={styles.sliderContainer}
         pointerEvents={disabled ? 'none' : 'auto'}>
         <RNSlider
+          testID="slider"
           thumbTintColor={_color.background}
           minimumTrackTintColor={_color.background}
           maximumTrackTintColor={_color.background_light}
