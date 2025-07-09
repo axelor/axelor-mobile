@@ -248,11 +248,7 @@ const InternalMoveLineDetailsScreen = ({navigation, route}) => {
             }
           />
         ) : null}
-        <InternalMoveLineNotes
-          notes={internalMove.note}
-          status={internalMove.statusSelect}
-          readonly={readonly}
-        />
+        <InternalMoveLineNotes notes={internalMove.note} readonly={true} />
       </KeyboardAvoidingScrollView>
     </Screen>
   );

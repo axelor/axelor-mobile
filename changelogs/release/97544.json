@@ -1,0 +1,5 @@
+{
+  "title": "InternalMoveLine details: make stock move notes readonly",
+  "type": "fix",
+  "packages": "stock"
+}
