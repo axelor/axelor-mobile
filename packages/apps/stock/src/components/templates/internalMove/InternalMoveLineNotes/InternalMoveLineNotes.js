@@ -26,6 +26,7 @@ const InternalMoveLineNotes = ({
   notes,
   setNotes = () => {},
   setSaveStatus = () => {},
+  readonly = false,
 }) => {
   const I18n = useTranslator();
 
@@ -39,7 +40,7 @@ const InternalMoveLineNotes = ({
       title={I18n.t('Stock_NotesOnStockMove')}
       onChange={handleNotesChange}
       defaultValue={notes}
-      readonly={status !== StockMove.status.Draft}
+      readonly={readonly || status !== StockMove.status.Draft}
       hideIfNull={true}
     />
   );

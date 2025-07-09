@@ -233,10 +233,7 @@ const InternalMoveLineDetailsScreen = ({navigation, route}) => {
             readOnly={internalMove.statusSelect !== StockMove.status.Planned}
           />
         ) : null}
-        <InternalMoveLineNotes
-          notes={internalMove.note}
-          status={internalMove.statusSelect}
-        />
+        <InternalMoveLineNotes notes={internalMove.note} readonly={true} />
       </KeyboardAvoidingScrollView>
     </Screen>
   );
