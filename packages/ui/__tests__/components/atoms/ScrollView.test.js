@@ -18,30 +18,36 @@
 
 import React from 'react';
 import {View} from 'react-native';
-import {shallow} from 'enzyme';
 import {ScrollView} from '@axelor/aos-mobile-ui';
+import {setup} from '../../tools';
 
 describe('ScrollView Component', () => {
+  const setupScrollView = (overrideProps = {}) =>
+    setup({
+      Component: ScrollView,
+      overrideProps,
+    });
+
   it('renders without crashing', () => {
-    const wrapper = shallow(<ScrollView />);
+    const {getByTestId} = setupScrollView({
+      children: <View testID="child" />,
+    });
 
-    expect(wrapper.exists()).toBe(true);
-  });
-
-  it('renders children', () => {
-    const wrapper = shallow(
-      <ScrollView>
-        <View testID="child" />
-      </ScrollView>,
-    );
-
-    expect(wrapper.find('[testID="child"]').exists()).toBe(true);
+    expect(getByTestId('child')).toBeTruthy();
   });
 
   it('applies custom styles', () => {
-    const style = {backgroundColor: 'red'};
-    const wrapper = shallow(<ScrollView style={style} />);
+    const customStyle = {backgroundColor: 'red'};
 
-    expect(wrapper.prop('contentContainerStyle')).toContain(style);
+    const {getByTestId} = setupScrollView({
+      style: customStyle,
+      children: <View testID="child" />,
+    });
+
+    const scroll = getByTestId('scrollViewContainer');
+
+    expect(scroll.props.contentContainerStyle).toEqual(
+      expect.arrayContaining([expect.objectContaining(customStyle)]),
+    );
   });
 });

@@ -41,6 +41,7 @@ const ScrollView = ({style, children, refresh}: ScrollViewProps) => {
 
   return (
     <ReactNativeScrollView
+      testID="scrollViewContainer"
       contentContainerStyle={[
         styles.container,
         Platform.OS === 'ios' ? styles.containerZIndex : null,
