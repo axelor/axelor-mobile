@@ -20,47 +20,45 @@ import React from 'react';
 import {Button, View} from 'react-native';
 import {render} from '@testing-library/react-native';
 import {Screen} from '@axelor/aos-mobile-ui';
+import {setup} from '../../tools';
 
 describe('Screen Component', () => {
-  const wrapper = props => (
-    <Screen {...props}>
-      <View testID="child" />
-    </Screen>
-  );
+  const baseProps = {
+    children: <View testID="child" />,
+  };
+
+  const setupScreen = (overrideProps = {}) =>
+    setup({
+      Component: Screen,
+      baseProps,
+      overrideProps,
+    });
 
   it('renders without crashing', () => {
-    const {getByTestId} = render(wrapper());
+    const {getByTestId} = setupScreen();
     expect(getByTestId('child')).toBeTruthy();
   });
 
   it('shows loading indicator when `loading` is true', () => {
-    const {getByTestId} = render(wrapper({loading: true}));
+    const {getByTestId} = setupScreen({loading: true});
     expect(getByTestId('loadingIndicator')).toBeTruthy();
   });
 
   it('does not show loading indicator when `loading` is false', () => {
-    const {queryByTestId} = render(wrapper({loading: false}));
+    const {queryByTestId} = setupScreen({loading: false});
     expect(queryByTestId('loadingIndicator')).toBeNull();
   });
 
   it('renders fixedItems when provided', () => {
-    const {getByTestId} = render(
-      wrapper({
-        fixedItems: <Button testID="fixedButton" title="Fixed" />,
-      }),
-    );
+    const {getByTestId} = setupScreen({
+      fixedItems: <Button testID="fixedButton" title="Fixed" />,
+    });
     expect(getByTestId('fixedButton')).toBeTruthy();
   });
 
   it('applies custom styles', () => {
     const customStyle = {backgroundColor: 'red'};
-
-    const {getByTestId} = render(
-      wrapper({
-        style: customStyle,
-      }),
-    );
-
-    expect(getByTestId('screenRoot')).toHaveStyle(customStyle);
+    const {getByTestId, props} = setupScreen({style: customStyle});
+    expect(getByTestId('screenRoot')).toHaveStyle(props.style);
   });
 });
