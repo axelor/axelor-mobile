@@ -18,35 +18,40 @@
 
 import React from 'react';
 import {Platform, RefreshControl} from 'react-native';
-import {render} from '@testing-library/react-native';
 import {
   KeyboardAvoidingScrollView,
   Text,
   DEFAULT_OFFSET,
 } from '@axelor/aos-mobile-ui';
+import {setup} from '../../tools';
 
 describe('KeyboardAvoidingScrollView Component', () => {
-  const wrapper = props => (
-    <KeyboardAvoidingScrollView {...props}>
-      <Text>Child</Text>
-    </KeyboardAvoidingScrollView>
-  );
+  const setupKeyboardAvoidingScrollView = overrideProps =>
+    setup({
+      Component: KeyboardAvoidingScrollView,
+      baseProps: {
+        children: <Text>children</Text>,
+      },
+      overrideProps,
+    });
 
   it('renders without crashing', () => {
-    const {getByTestId} = render(wrapper());
+    const {getByTestId} = setupKeyboardAvoidingScrollView();
 
+    expect(getByTestId('keyboardAvoidingView')).toBeTruthy();
     expect(getByTestId('keyboardAvoidingScrollView')).toBeTruthy();
   });
 
   it('renders children correctly', () => {
-    const {getByText} = render(wrapper());
-    expect(getByText('Child')).toBeTruthy();
+    const {getByText} = setupKeyboardAvoidingScrollView();
+
+    expect(getByText('children')).toBeTruthy();
   });
 
   it('applies refreshControl when provided', () => {
-    const fetcher = jest.fn();
-
-    const {getByTestId} = render(wrapper({refresh: {loading: true, fetcher}}));
+    const {getByTestId, props} = setupKeyboardAvoidingScrollView({
+      refresh: {loading: true, fetcher: jest.fn()},
+    });
 
     const scroll = getByTestId('keyboardAvoidingScrollView');
     const refreshControl = scroll.props.refreshControl;
@@ -56,7 +61,7 @@ describe('KeyboardAvoidingScrollView Component', () => {
     expect(refreshControl?.props.refreshing).toBe(true);
   });
 
-  describe('platform-specific props', () => {
+  describe('applies platform-specific props', () => {
     it.each([
       ['ios', 'padding', DEFAULT_OFFSET.ios],
       ['android', 'height', DEFAULT_OFFSET.android],
@@ -64,29 +69,25 @@ describe('KeyboardAvoidingScrollView Component', () => {
       'on %s sets correct behavior and default offset',
       (platform, expectedBehavior, expectedOffset) => {
         Platform.OS = platform;
-        const {getByTestId} = render(wrapper());
+        const {getByTestId} = setupKeyboardAvoidingScrollView();
         const view = getByTestId('keyboardAvoidingView');
+
         expect(view.props.behavior).toBe(expectedBehavior);
         expect(view.props.keyboardVerticalOffset).toBe(expectedOffset);
       },
     );
 
-    it('overrides offset for ios', () => {
-      Platform.OS = 'ios';
-      const {getByTestId} = render(
-        wrapper({keyboardOffset: {ios: DEFAULT_OFFSET.ios}}),
-      );
+    it.each([
+      ['ios', DEFAULT_OFFSET.ios - 10],
+      ['android', DEFAULT_OFFSET.android - 10],
+    ])('on %s overrides offset', (platform, expectedOffset) => {
+      Platform.OS = platform;
+      const {getByTestId} = setupKeyboardAvoidingScrollView({
+        keyboardOffset: {[platform]: expectedOffset},
+      });
       const view = getByTestId('keyboardAvoidingView');
-      expect(view.props.keyboardVerticalOffset).toBe(DEFAULT_OFFSET.ios);
-    });
 
-    it('overrides offset for android', () => {
-      Platform.OS = 'android';
-      const {getByTestId} = render(
-        wrapper({keyboardOffset: {android: DEFAULT_OFFSET.android}}),
-      );
-      const view = getByTestId('keyboardAvoidingView');
-      expect(view.props.keyboardVerticalOffset).toBe(DEFAULT_OFFSET.android);
+      expect(view.props.keyboardVerticalOffset).toBe(expectedOffset);
     });
   });
 });
