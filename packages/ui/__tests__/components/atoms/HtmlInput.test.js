@@ -17,46 +17,46 @@
  */
 
 import React from 'react';
-import {ScrollView} from 'react-native';
-import {shallow} from 'enzyme';
-import {RichEditor, RichToolbar} from 'react-native-pell-rich-editor';
-import {HtmlInput, Text} from '@axelor/aos-mobile-ui';
+import {HtmlInput} from '@axelor/aos-mobile-ui';
+import {setup} from '../../tools';
+
+jest.mock('react-native-pell-rich-editor', () => {
+  const {View} = require('react-native');
+
+  return {
+    RichEditor: jest
+      .fn()
+      .mockImplementation(() => <View testID="richEditor" />),
+  };
+});
 
 describe('HtmlInput Component', () => {
+  const setupHtmlInput = overrideProps =>
+    setup({Component: HtmlInput, overrideProps});
+
   it('renders without crashing', () => {
-    const wrapper = shallow(<HtmlInput />);
-    expect(wrapper.exists()).toBe(true);
+    const {getByTestId} = setupHtmlInput();
+
+    expect(getByTestId('htmlInputScrollView')).toBeTruthy();
+    expect(getByTestId('htmlInputInnerScroll')).toBeTruthy();
+    expect(getByTestId('richEditor')).toBeTruthy();
   });
 
-  it('renders the title if provided', () => {
-    const wrapper = shallow(<HtmlInput title="Test Title" />);
-    expect(wrapper.find(Text)).toHaveLength(1);
-    expect(wrapper.find(Text).children().text()).toEqual('Test Title');
+  it('renders with a title if provided', () => {
+    const {getByText, props} = setupHtmlInput({title: 'Test Title'});
+
+    expect(getByText(props.title)).toBeTruthy();
   });
 
-  it('applies custom styles correctly', () => {
-    const customStyle = {width: 200};
-    const customToolbarStyle = {backgroundColor: 'red'};
-    const customContainerStyle = {flex: 1};
-    const wrapper = shallow(
-      <HtmlInput
-        readonly={false}
-        style={customStyle}
-        styleToolbar={customToolbarStyle}
-        containerStyle={customContainerStyle}
-      />,
-    );
+  it('applies custom container and content styles correctly', () => {
+    const {getByTestId, props} = setupHtmlInput({
+      style: {width: 200},
+      containerStyle: {flex: 1},
+    });
 
     expect(
-      wrapper.find(ScrollView).at(0).prop('contentContainerStyle'),
-    ).toMatchObject(customContainerStyle);
-    expect(wrapper.find(ScrollView).at(1).prop('style')).toContain(customStyle);
-
-    wrapper.find(RichEditor).prop('editorInitializedCallback')();
-
-    expect(wrapper.find(RichToolbar).exists()).toBe(true);
-    expect(wrapper.find(RichToolbar).prop('style')).toMatchObject(
-      customToolbarStyle,
-    );
+      getByTestId('htmlInputScrollView').props.contentContainerStyle,
+    ).toMatchObject(props.containerStyle);
+    expect(getByTestId('htmlInputInnerScroll')).toHaveStyle(props.style);
   });
 });

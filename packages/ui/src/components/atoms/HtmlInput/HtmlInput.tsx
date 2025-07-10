@@ -75,7 +75,7 @@ const HtmlInput = ({
   }, [onBlur]);
 
   useEffect(() => {
-    if (defaultInput == null || defaultInput === '') {
+    if (editor.current && (defaultInput == null || defaultInput === '')) {
       editor.current.setContentHTML('');
       if (editor.current.isKeyboardOpen) {
         editor.current.dismissKeyboard();
@@ -90,8 +90,10 @@ const HtmlInput = ({
   }, [defaultInput, isFocused]);
 
   return (
-    <ScrollView contentContainerStyle={containerStyle}>
-      <ScrollView style={[style]}>
+    <ScrollView
+      testID="htmlInputScrollView"
+      contentContainerStyle={containerStyle}>
+      <ScrollView testID="htmlInputInnerScroll" style={style}>
         <View>
           {title != null ? <Text>{title}</Text> : null}
           <RichEditor
