@@ -16,47 +16,43 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import React from 'react';
-import {render} from '@testing-library/react-native';
 import {HtmlInput} from '@axelor/aos-mobile-ui';
+import {setup} from '../../tools';
 
 describe('HtmlInput Component', () => {
+  const setupHtmlInput = overrideProps =>
+    setup({
+      Component: HtmlInput,
+      overrideProps,
+    });
+
   it('renders without crashing', () => {
-    const {getByTestId} = render(<HtmlInput />);
+    const {getByTestId} = setupHtmlInput();
     expect(getByTestId('htmlInputScrollView')).toBeTruthy();
   });
 
   it('renders the title when provided', () => {
     const title = 'Test Title';
-    const {getByText} = render(<HtmlInput title={title} />);
+    const {getByText} = setupHtmlInput({title});
     expect(getByText(title)).toBeTruthy();
   });
 
-  it('applies custom styles correctly', () => {
+  it('applies custom container and content styles correctly', () => {
     const customStyle = {width: 200};
-    const customToolbarStyle = {backgroundColor: 'red'};
     const customContainerStyle = {flex: 1};
+    const {getByTestId} = setupHtmlInput({
+      style: customStyle,
+      containerStyle: customContainerStyle,
+    });
 
-    const {getByTestId, queryByTestId} = render(
-      <HtmlInput
-        style={customStyle}
-        styleToolbar={customToolbarStyle}
-        containerStyle={customContainerStyle}
-        readonly={false}
-        defaultInput="test"
-      />,
-    );
+    expect(
+      getByTestId('htmlInputScrollView').props.contentContainerStyle,
+    ).toMatchObject(customContainerStyle);
+    expect(getByTestId('htmlInputInnerScroll')).toHaveStyle(customStyle);
+  });
 
-    const container = getByTestId('htmlInputScrollView');
-    expect(container.props.contentContainerStyle).toMatchObject(
-      customContainerStyle,
-    );
-
-    const contentScroll = getByTestId('htmlInputInnerScroll');
-    expect(contentScroll.props.style).toEqual(
-      expect.arrayContaining([expect.objectContaining(customStyle)]),
-    );
-
+  it('does not render toolbar when showToolbar is false', () => {
+    const {queryByTestId} = setupHtmlInput({showToolbar: false});
     expect(queryByTestId('htmlInputToolbar')).toBeNull();
   });
 });
