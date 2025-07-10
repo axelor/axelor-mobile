@@ -96,6 +96,7 @@ const InternalMoveSearchLineContainer = ({}) => {
       <StockMovePickingWidget
         scanKey={massScanKey}
         stockMoveId={internalMove.id}
+        stockMoveStatus={internalMove.statusSelect}
         totalLines={totalNumberLines}
         onRefresh={handleRefresh}
         handleShowLine={handleLineSearch}

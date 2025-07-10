@@ -17,13 +17,19 @@
  */
 
 import React, {useCallback, useEffect, useMemo, useState} from 'react';
-import {showToastMessage, useTranslator} from '@axelor/aos-mobile-core';
+import {
+  showToastMessage,
+  usePermitted,
+  useTranslator,
+  useTypes,
+} from '@axelor/aos-mobile-core';
 import {searchStockMoveLineApi, updateStockMoveLineApi} from '../../../api';
 import {MassScannerButton} from '../../molecules';
 
 interface StockMovePickingWidgetProps {
   scanKey: string;
   stockMoveId: number;
+  stockMoveStatus?: number;
   totalLines: number;
   onRefresh?: () => void;
   handleShowLine?: (line: any) => void;
@@ -32,11 +38,16 @@ interface StockMovePickingWidgetProps {
 const StockMovePickingWidget = ({
   scanKey,
   stockMoveId,
+  stockMoveStatus,
   totalLines,
   onRefresh,
   handleShowLine,
 }: StockMovePickingWidgetProps) => {
   const I18n = useTranslator();
+  const {StockMove} = useTypes();
+  const {readonly} = usePermitted({
+    modelName: 'com.axelor.apps.stock.db.StockMoveLine',
+  });
 
   const [validatedLines, setValidatedLines] = useState(4);
 
@@ -121,6 +132,15 @@ const StockMovePickingWidget = ({
     },
     [I18n],
   );
+
+  const isAvailable = useMemo(
+    () => !readonly && stockMoveStatus < StockMove?.statusSelect.Realized,
+    [StockMove?.statusSelect.Realized, readonly, stockMoveStatus],
+  );
+
+  if (!isAvailable) {
+    return null;
+  }
 
   return (
     <MassScannerButton

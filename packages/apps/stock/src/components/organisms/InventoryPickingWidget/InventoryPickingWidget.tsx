@@ -16,8 +16,13 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import React, {useCallback} from 'react';
-import {showToastMessage, useTranslator} from '@axelor/aos-mobile-core';
+import React, {useCallback, useMemo} from 'react';
+import {
+  showToastMessage,
+  usePermitted,
+  useTranslator,
+  useTypes,
+} from '@axelor/aos-mobile-core';
 import {MassScannerButton} from '../../molecules';
 import {
   searchInventoryLinesApi,
@@ -27,18 +32,24 @@ import {
 interface InventoryPickingWidgetProps {
   scanKey: string;
   inventoryId: number;
-  totalLines: number;
+  inventoryStatus?: number;
   onRefresh?: () => void;
   handleShowLine?: (line: any) => void;
+  visible?: boolean;
 }
 
 const InventoryPickingWidget = ({
   scanKey,
   inventoryId,
+  inventoryStatus,
   onRefresh,
   handleShowLine,
 }: InventoryPickingWidgetProps) => {
   const I18n = useTranslator();
+  const {Inventory} = useTypes();
+  const {readonly} = usePermitted({
+    modelName: 'com.axelor.apps.stock.db.InventoryLine',
+  });
 
   const handleScanValue = useCallback(
     async (scanValue: string, {disableScan}: {disableScan: () => void}) => {
@@ -106,6 +117,15 @@ const InventoryPickingWidget = ({
     },
     [I18n],
   );
+
+  const isAvailable = useMemo(
+    () => !readonly && inventoryStatus < Inventory?.statusSelect.Completed,
+    [Inventory?.statusSelect.Completed, inventoryStatus, readonly],
+  );
+
+  if (!isAvailable) {
+    return null;
+  }
 
   return (
     <MassScannerButton
