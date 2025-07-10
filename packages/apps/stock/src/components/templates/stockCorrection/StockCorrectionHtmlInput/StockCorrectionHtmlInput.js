@@ -36,7 +36,7 @@ const StockCorrectionHtmlInput = ({
 
   return (
     <FormHtmlInput
-      title={I18n.t('Base_Comment')}
+      title={I18n.t('Base_Comments')}
       defaultValue={stockCorrection?.comments}
       onChange={handleCommentsChange}
       readonly={

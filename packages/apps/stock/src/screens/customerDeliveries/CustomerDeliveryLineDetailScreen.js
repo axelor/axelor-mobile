@@ -194,7 +194,7 @@ const CustomerDeliveryLineDetailScreen = ({route, navigation}) => {
           readonly={readonly}
         />
         <NotesCard
-          title={I18n.t('Stock_NotesClient')}
+          title={I18n.t('Stock_PickingOrderComments')}
           data={customerDelivery?.pickingOrderComments}
         />
         <NotesCard
