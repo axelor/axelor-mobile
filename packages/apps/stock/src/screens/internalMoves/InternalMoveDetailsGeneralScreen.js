@@ -84,7 +84,7 @@ const InternalMoveDetailsGeneralScreen = ({route}) => {
         />
         <InternalMoveSearchLineContainer />
         <NotesCard
-          title={I18n.t('Stock_NotesOnPreparation')}
+          title={I18n.t('Stock_PickingOrderComments')}
           data={internalMove.pickingOrderComments}
         />
         <NotesCard
