@@ -39,6 +39,7 @@ export const stock_modelAPI: ObjectFields = {
     pickingOrderComments: schemaContructor.string(),
     deliveryCondition: schemaContructor.string(),
     isIspmRequired: schemaContructor.boolean(),
+    note: schemaContructor.string(),
   }),
   stock_customerDeliveryLine: schemaContructor.object({
     product: schemaContructor.subObject().concat(
