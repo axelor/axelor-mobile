@@ -17,49 +17,111 @@
  */
 
 import React from 'react';
-import {ActivityIndicator, Button, View} from 'react-native';
-import {shallow} from 'enzyme';
+import {Keyboard, View} from 'react-native';
+import SystemNavigationBar from 'react-native-system-navigation-bar';
+import {fireEvent} from '@testing-library/react-native';
 import {Screen} from '@axelor/aos-mobile-ui';
+import * as configContext from '../../../lib/config/ConfigContext';
+import {setup} from '../../tools';
 
 describe('Screen Component', () => {
+  const setupScreen = overrideProps =>
+    setup({
+      Component: Screen,
+      baseProps: {children: <View testID="child" />},
+      overrideProps,
+    });
+
   it('renders without crashing', () => {
-    const wrapper = shallow(<Screen />);
-    expect(wrapper.exists()).toBe(true);
+    const {getByTestId} = setupScreen();
+
+    expect(getByTestId('child')).toBeTruthy();
   });
 
-  it('renders children', () => {
-    const wrapper = shallow(
-      <Screen>
-        <View testID="child" />
-      </Screen>,
-    );
+  it('shows loading indicator when loading is true', () => {
+    const {getByTestId, queryByTestId} = setupScreen({loading: true});
 
-    expect(wrapper.find('[testID="child"]').exists()).toBe(true);
+    expect(getByTestId('loadingIndicator')).toBeTruthy();
+    expect(queryByTestId('screenRoot')).toBeFalsy();
   });
 
-  it('renders loading indicator when loading prop is true', () => {
-    const wrapper = shallow(<Screen loading={true} />);
+  it('does not show loading indicator when loading is false', () => {
+    const {getByTestId, queryByTestId} = setupScreen({loading: false});
 
-    expect(wrapper.find(ActivityIndicator).exists()).toBe(true);
-  });
-
-  it('does not render loading indicator when loading prop is false', () => {
-    const wrapper = shallow(<Screen loading={false} />);
-
-    expect(wrapper.find(ActivityIndicator).exists()).toBe(false);
-  });
-
-  it('applies custom styles', () => {
-    const style = {backgroundColor: 'red'};
-    const wrapper = shallow(<Screen style={style} />);
-
-    expect(wrapper.prop('style')).toContain(style);
+    expect(getByTestId('screenRoot')).toBeTruthy();
+    expect(queryByTestId('loadingIndicator')).toBeFalsy();
   });
 
   it('renders fixedItems when provided', () => {
-    const fixedItems = <Button testID="fixedButton" title="Fixed Button" />;
-    const wrapper = shallow(<Screen fixedItems={fixedItems} />);
+    const {getByTestId} = setupScreen({
+      fixedItems: <View testID="fixedItem" />,
+    });
 
-    expect(wrapper.find('[testID="fixedButton"]').exists()).toBe(true);
+    expect(getByTestId('fixedItem')).toBeTruthy();
+  });
+
+  it('hides fixed item background if hideButtonBackground is true', () => {
+    const {getByTestId} = setupScreen({
+      fixedItems: <View testID="fixedItem" />,
+      hideButtonBackground: true,
+    });
+
+    fireEvent(getByTestId('screenFixedItemsContainer'), 'layout', {
+      nativeEvent: {layout: {height: 100}},
+    });
+
+    expect(
+      getByTestId('screenFixedItemsContainer').props.style.some(
+        style => style?.elevation,
+      ),
+    ).toBe(false);
+  });
+
+  it('sets pointerEvents to none when showActivityIndicator is true from context', () => {
+    jest.spyOn(configContext, 'useConfig').mockImplementation(() => ({
+      showActivityIndicator: true,
+    }));
+
+    const {getByTestId} = setupScreen();
+
+    expect(getByTestId('screenRoot').props.pointerEvents).toBe('none');
+  });
+
+  it('applies marginTop if removeSpaceOnTop is false', () => {
+    const {getByTestId} = setupScreen({removeSpaceOnTop: false});
+
+    expect(getByTestId('screenRoot')).toHaveStyle({paddingTop: '1.5%'});
+  });
+
+  it('does not apply marginTop if removeSpaceOnTop is true', () => {
+    const {getByTestId} = setupScreen({removeSpaceOnTop: true});
+
+    expect(getByTestId('screenRoot')).not.toHaveStyle({paddingTop: '1.5%'});
+  });
+
+  it('applies custom styles', () => {
+    const {getByTestId, props} = setupScreen({style: {backgroundColor: 'red'}});
+
+    expect(getByTestId('screenRoot')).toHaveStyle(props.style);
+  });
+
+  it('calls SystemNavigationBar.navigationHide on mount and keyboardDidHide', () => {
+    const keyboardListeners = {};
+    const navigationHide = jest.fn();
+    jest
+      .spyOn(SystemNavigationBar, 'navigationHide')
+      .mockImplementation(navigationHide);
+
+    jest.spyOn(Keyboard, 'addListener').mockImplementation((event, cb) => {
+      keyboardListeners[event] = cb;
+      return {remove: jest.fn()};
+    });
+
+    setupScreen();
+
+    expect(navigationHide).toHaveBeenCalledTimes(1);
+
+    keyboardListeners['keyboardDidHide']();
+    expect(navigationHide).toHaveBeenCalledTimes(2);
   });
 });

@@ -74,11 +74,12 @@ const Screen = ({
   }, []);
 
   if (loading) {
-    return <ActivityIndicator size="large" />;
+    return <ActivityIndicator testID="loadingIndicator" size="large" />;
   }
 
   return (
     <View
+      testID="screenRoot"
       pointerEvents={showActivityIndicator === true ? 'none' : 'auto'}
       style={[
         styles.container,
@@ -88,6 +89,7 @@ const Screen = ({
       <View style={styles.childrenContainer}>{children}</View>
       {!!fixedItems && (
         <View
+          testID="screenFixedItemsContainer"
           style={
             fixedItemsHeight > FIXED_ITEMS_NOT_DISPLAY_HEIGHT && [
               styles.fixedContainer,
