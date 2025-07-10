@@ -72,8 +72,12 @@ const CustomerDeliveryDetailScreen = ({route, navigation}) => {
         />
         <CustomerDeliverySearchLineContainer />
         <NotesCard
-          title={I18n.t('Stock_NotesClient')}
+          title={I18n.t('Stock_PickingOrderComments')}
           data={customerDelivery?.pickingOrderComments}
+        />
+        <NotesCard
+          title={I18n.t('Stock_NotesOnStockMove')}
+          data={customerDelivery?.note}
         />
         <NotesCard
           title={I18n.t('Stock_DeliveryCondition')}
