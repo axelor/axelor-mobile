@@ -134,6 +134,7 @@ const SupplierArrivalSearchLineContainer = ({}) => {
       <StockMovePickingWidget
         scanKey={massScanKey}
         stockMoveId={supplierArrival.id}
+        stockMoveStatus={supplierArrival.statusSelect}
         totalLines={totalNumberLines}
         onRefresh={handleRefresh}
         handleShowLine={handleLineSearch}

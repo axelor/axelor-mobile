@@ -1,0 +1,5 @@
+{
+  "title": "Mass scan: add permission check before displaying button",
+  "type": "fix",
+  "packages": "stock"
+}

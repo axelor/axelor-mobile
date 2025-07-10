@@ -108,6 +108,7 @@ const InventorySearchLineContainer = ({}) => {
       <InventoryPickingWidget
         scanKey={massScanKey}
         inventoryId={inventory.id}
+        inventoryStatus={inventory.statusSelect}
         onRefresh={handleRefresh}
         handleShowLine={handleLineSearch}
       />
