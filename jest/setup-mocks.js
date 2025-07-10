@@ -16,39 +16,38 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+import React from 'react';
 import 'react-native-gesture-handler/jestSetup';
 import 'react-native/jest/setup';
 
-jest.mock('react-native-reanimated', () => {
-  const View = require('react-native').View;
-  return {
-    useSharedValue: jest.fn,
-    useAnimatedStyle: jest.fn,
-    useAnimatedRef: () => ({current: null}),
-    View: View,
-    default: {
-      call: jest.fn(),
-      createAnimatedComponent: Component => Component,
-    },
+jest.useFakeTimers();
+
+jest.mock('react-native', () => {
+  const RN = jest.requireActual('react-native');
+
+  const KeyboardAvoidingView = ({children, ...props}) => {
+    return (
+      <RN.View testID="keyboardAvoidingView" {...props}>
+        {children}
+      </RN.View>
+    );
   };
-});
-
-jest.mock('react-native-svg', () => {
-  const React = require('react');
-  const {View} = require('react-native');
-  const createMock = () =>
-    React.forwardRef((props, ref) => <View {...props} ref={ref} />);
 
   return {
-    Circle: createMock(),
-    Svg: createMock(),
-    Path: createMock(),
+    ...RN,
+    KeyboardAvoidingView,
   };
 });
 
 jest.mock('react-native/Libraries/Animated/NativeAnimatedHelper');
 jest.mock('react-native/Libraries/BatchedBridge/NativeModules');
 jest.mock('react-native/Libraries/EventEmitter/NativeEventEmitter');
+jest.mock('react-native/Libraries/Settings/NativeSettingsManager', () => ({
+  settings: {},
+  getConstants: () => ({
+    settings: {},
+  }),
+}));
 jest.mock('react-native/Libraries/TurboModule/TurboModuleRegistry', () => {
   const turboModuleRegistry = jest.requireActual(
     'react-native/Libraries/TurboModule/TurboModuleRegistry',
@@ -64,10 +63,28 @@ jest.mock('react-native/Libraries/TurboModule/TurboModuleRegistry', () => {
   };
 });
 
-jest.useFakeTimers();
+jest.mock('react-native-blob-util', () => ({
+  DocumentDir: 'FAKE-DIRECTORY-PATH',
+}));
+
+jest.mock('react-native-calendars', () => ({
+  Agenda: jest.fn(),
+  AgendaEntry: jest.fn(),
+  DateData: jest.fn(),
+}));
+
+jest.mock('@react-native-clipboard/clipboard', () => ({default: jest.fn()}));
+
+jest.mock('@react-native-community/slider', () => 'RNSlider');
 
 jest.mock('react-native-datawedge-intents', () => ({
   registerBroadcastReceiver: () => jest.fn(),
+}));
+
+jest.mock('react-native-date-picker', () => ({default: jest.fn()}));
+
+jest.mock('react-native-device-info', () => ({
+  getManufacturer: 'FAKE-MANUFACTURER',
 }));
 
 jest.mock('react-native-file-viewer', () => ({
@@ -79,27 +96,11 @@ jest.mock('react-native-fs', () => ({
   downloadFile: jest.fn(),
 }));
 
-jest.mock('react-native-device-info', () => ({
-  getManufacturer: 'FAKE-MANUFACTURER',
+jest.mock('react-native-gifted-charts', () => ({
+  LineChart: jest.fn(),
+  BarChart: jest.fn(),
+  PieChart: jest.fn(),
 }));
-
-jest.mock(
-  'react-native-toast-message',
-  () => ({
-    show: jest.fn(),
-    BaseToast: 'BaseToastMock',
-    ErrorToast: 'ErrorToastMock',
-  }),
-  {virtual: true},
-);
-
-jest.mock(
-  'react-redux',
-  () => ({
-    useSelector: jest.fn(),
-  }),
-  {virtual: true},
-);
 
 jest.mock(
   'react-native-mmkv',
@@ -113,10 +114,32 @@ jest.mock(
   {virtual: true},
 );
 
-jest.mock('react-native-system-navigation-bar', () => ({
-  default: jest.fn(),
-  navigationHide: () => jest.fn(),
+jest.mock('react-native-pell-rich-editor', () => ({
+  actions: jest.fn(),
+  RichEditor: jest.fn(),
+  RichToolbar: jest.fn(),
 }));
+
+jest.mock('react-native-reanimated', () => {
+  const View = require('react-native').View;
+
+  return {
+    useSharedValue: jest.fn,
+    useAnimatedStyle: jest.fn,
+    useAnimatedRef: () => ({current: null}),
+    View: View,
+    default: {
+      call: jest.fn(),
+      createAnimatedComponent: Component => Component,
+    },
+  };
+});
+
+jest.mock('react-native-share', () => ({
+  turboModuleRegistry: jest.fn(),
+}));
+
+jest.mock('react-native-signature-canvas', () => ({Signature: jest.fn()}));
 
 jest.mock('react-native-static-safe-area-insets', () => ({
   addEventListener: jest.fn(),
@@ -129,54 +152,46 @@ jest.mock('react-native-static-safe-area-insets', () => ({
   })),
 }));
 
-jest.mock('react-native-calendars', () => ({
-  Agenda: jest.fn(),
-  AgendaEntry: jest.fn(),
-  DateData: jest.fn(),
-}));
+jest.mock('react-native-svg', () => {
+  const React = require('react');
+  const {View} = require('react-native');
+  const createMock = () =>
+    React.forwardRef((props, ref) => <View {...props} ref={ref} />);
 
-jest.mock('react-native-date-picker', () => ({
-  default: jest.fn(),
-}));
-
-jest.mock('react-native-blob-util', () => ({
-  DocumentDir: 'FAKE-DIRECTORY-PATH',
-}));
-
-jest.mock('react-native-webview', () => ({
-  default: jest.fn(),
-}));
-
-jest.mock('react-native-gifted-charts', () => ({
-  LineChart: jest.fn(),
-  BarChart: jest.fn(),
-  PieChart: jest.fn(),
-}));
-
-jest.mock('react-native-pell-rich-editor', () => ({
-  actions: jest.fn(),
-  RichEditor: jest.fn(),
-  RichToolbar: jest.fn(),
-}));
-
-jest.mock('@react-native-clipboard/clipboard', () => ({
-  default: jest.fn(),
-}));
-
-jest.mock('react-native-signature-canvas', () => ({
-  Signature: jest.fn(),
-}));
-
-jest.mock('react-native-vision-camera', () => {
   return {
-    useCameraDevices: jest.fn(),
-    useCameraFormat: jest.fn(),
-    useCodeScanner: jest.fn(),
+    Circle: createMock(),
+    Svg: createMock(),
+    Path: createMock(),
   };
 });
 
-jest.mock('@react-native-community/slider', () => 'RNSlider');
-
-jest.mock('react-native-share', () => ({
-  turboModuleRegistry: jest.fn(),
+jest.mock('react-native-system-navigation-bar', () => ({
+  default: jest.fn(),
+  navigationHide: () => jest.fn(),
 }));
+
+jest.mock(
+  'react-native-toast-message',
+  () => ({
+    show: jest.fn(),
+    BaseToast: 'BaseToastMock',
+    ErrorToast: 'ErrorToastMock',
+  }),
+  {virtual: true},
+);
+
+jest.mock('react-native-vision-camera', () => ({
+  useCameraDevices: jest.fn(),
+  useCameraFormat: jest.fn(),
+  useCodeScanner: jest.fn(),
+}));
+
+jest.mock('react-native-webview', () => ({default: jest.fn()}));
+
+jest.mock(
+  'react-redux',
+  () => ({
+    useSelector: jest.fn(),
+  }),
+  {virtual: true},
+);
