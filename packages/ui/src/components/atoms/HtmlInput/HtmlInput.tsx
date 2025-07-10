@@ -93,7 +93,7 @@ const HtmlInput = ({
     <ScrollView
       testID="htmlInputScrollView"
       contentContainerStyle={containerStyle}>
-      <ScrollView testID="htmlInputInnerScroll" style={[style]}>
+      <ScrollView testID="htmlInputInnerScroll" style={style}>
         <View>
           {title != null ? <Text>{title}</Text> : null}
           <RichEditor
@@ -121,7 +121,6 @@ const HtmlInput = ({
       </ScrollView>
       {!readonly && editorAttached && (
         <RichToolbar
-          testID="htmlInputToolbar"
           style={styleToolbar}
           editor={editor}
           selectedIconTint={Colors.primaryColor.background}

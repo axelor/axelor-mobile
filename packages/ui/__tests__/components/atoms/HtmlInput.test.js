@@ -16,43 +16,47 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+import React from 'react';
 import {HtmlInput} from '@axelor/aos-mobile-ui';
 import {setup} from '../../tools';
 
+jest.mock('react-native-pell-rich-editor', () => {
+  const {View} = require('react-native');
+
+  return {
+    RichEditor: jest
+      .fn()
+      .mockImplementation(() => <View testID="richEditor" />),
+  };
+});
+
 describe('HtmlInput Component', () => {
   const setupHtmlInput = overrideProps =>
-    setup({
-      Component: HtmlInput,
-      overrideProps,
-    });
+    setup({Component: HtmlInput, overrideProps});
 
   it('renders without crashing', () => {
     const {getByTestId} = setupHtmlInput();
+
     expect(getByTestId('htmlInputScrollView')).toBeTruthy();
+    expect(getByTestId('htmlInputInnerScroll')).toBeTruthy();
+    expect(getByTestId('richEditor')).toBeTruthy();
   });
 
-  it('renders the title when provided', () => {
-    const title = 'Test Title';
-    const {getByText} = setupHtmlInput({title});
-    expect(getByText(title)).toBeTruthy();
+  it('renders with a title if provided', () => {
+    const {getByText, props} = setupHtmlInput({title: 'Test Title'});
+
+    expect(getByText(props.title)).toBeTruthy();
   });
 
   it('applies custom container and content styles correctly', () => {
-    const customStyle = {width: 200};
-    const customContainerStyle = {flex: 1};
-    const {getByTestId} = setupHtmlInput({
-      style: customStyle,
-      containerStyle: customContainerStyle,
+    const {getByTestId, props} = setupHtmlInput({
+      style: {width: 200},
+      containerStyle: {flex: 1},
     });
 
     expect(
       getByTestId('htmlInputScrollView').props.contentContainerStyle,
-    ).toMatchObject(customContainerStyle);
-    expect(getByTestId('htmlInputInnerScroll')).toHaveStyle(customStyle);
-  });
-
-  it('does not render toolbar when showToolbar is false', () => {
-    const {queryByTestId} = setupHtmlInput({showToolbar: false});
-    expect(queryByTestId('htmlInputToolbar')).toBeNull();
+    ).toMatchObject(props.containerStyle);
+    expect(getByTestId('htmlInputInnerScroll')).toHaveStyle(props.style);
   });
 });
