@@ -35,7 +35,6 @@ interface InventoryPickingWidgetProps {
   inventoryStatus?: number;
   onRefresh?: () => void;
   handleShowLine?: (line: any) => void;
-  visible?: boolean;
 }
 
 const InventoryPickingWidget = ({
