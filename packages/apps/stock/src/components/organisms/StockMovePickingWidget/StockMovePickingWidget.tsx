@@ -89,6 +89,7 @@ const StockMovePickingWidget = ({
       }
 
       onRefresh?.();
+      getValidatedLines();
 
       showToastMessage({
         position: 'bottom',
@@ -106,7 +107,7 @@ const StockMovePickingWidget = ({
             },
       });
     },
-    [I18n, handleShowLine, onRefresh, stockMoveId],
+    [I18n, getValidatedLines, handleShowLine, onRefresh, stockMoveId],
   );
 
   const handleError = useCallback(

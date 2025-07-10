@@ -1,0 +1,5 @@
+{
+  "title": "Mass scan: add missing refresh on stock move lines completion",
+  "type": "fix",
+  "packages": "stock"
+}
