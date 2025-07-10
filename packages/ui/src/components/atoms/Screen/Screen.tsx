@@ -89,6 +89,7 @@ const Screen = ({
       <View style={styles.childrenContainer}>{children}</View>
       {!!fixedItems && (
         <View
+          testID="screenFixedItemsContainer"
           style={
             fixedItemsHeight > FIXED_ITEMS_NOT_DISPLAY_HEIGHT && [
               styles.fixedContainer,
