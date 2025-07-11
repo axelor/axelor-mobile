@@ -21,74 +21,91 @@ import {Slider} from '@axelor/aos-mobile-ui';
 import {setup} from '../../tools';
 
 describe('Slider Component', () => {
-  const baseProps = {
-    minValue: 0,
-    maxValue: 100,
-    minLimit: 0,
-    maxLimit: 100,
-    step: 10,
-    defaultValue: 50,
-    onChange: jest.fn(),
-    disabled: false,
-  };
-
-  const setupSlider = (overrideProps = {}) =>
+  const setupSlider = overrideProps =>
     setup({
       Component: Slider,
-      baseProps,
+      baseProps: {
+        minValue: 0,
+        maxValue: 100,
+        minLimit: 0,
+        maxLimit: 100,
+        step: 10,
+        defaultValue: 50,
+        onChange: jest.fn(),
+        disabled: false,
+      },
       overrideProps,
     });
 
   it('renders without crashing', () => {
     const {getByTestId} = setupSlider();
+
     expect(getByTestId('slider')).toBeTruthy();
   });
 
-  it('renders step numbers if displayStepNumber is true and not too many', () => {
-    const {getAllByText} = setupSlider({
+  it('renders steps only if displayStepNumber is true', () => {
+    const {getAllByText, getByTestId, props} = setupSlider({
       displayStepNumber: true,
     });
 
-    expect(getAllByText('0')).toHaveLength(1);
-    expect(getAllByText('50')).toHaveLength(1);
-    expect(getAllByText('100')).toHaveLength(1);
+    const {maxValue, minValue, step} = props;
+
+    expect(getByTestId('sliderStepsContainer')).toBeTruthy();
+
+    Array.from(
+      {length: Math.floor((maxValue - minValue) / step) + 1},
+      (_, k) => minValue + k * step,
+    ).forEach(_value => {
+      expect(getAllByText(`${_value}`)).toHaveLength(1);
+    });
   });
 
-  it('does not render step numbers when too many', () => {
-    const {queryByText} = setupSlider({
+  it('does not render steps when there are too many', () => {
+    const {queryByText, props} = setupSlider({
       step: 5,
       displayStepNumber: true,
     });
 
-    expect(queryByText('0')).toBeNull();
-    expect(queryByText('5')).toBeNull();
+    const {maxValue, minValue, step} = props;
+
+    Array.from(
+      {length: Math.floor((maxValue - minValue) / step) + 1},
+      (_, k) => minValue + k * step,
+    ).forEach(_value => {
+      expect(queryByText(`${_value}`)).toBeFalsy();
+    });
   });
 
   it('calls onChange on sliding complete', () => {
-    const onChange = jest.fn();
-    const {getByTestId} = setupSlider({onChange});
-    const slider = getByTestId('slider');
+    const {getByTestId, props} = setupSlider({onChange: jest.fn()});
+    const _newValue = 70;
 
-    fireEvent(slider, 'slidingComplete', 70);
-    expect(onChange).toHaveBeenCalledWith(70);
+    fireEvent(getByTestId('slider'), 'slidingComplete', _newValue);
+    expect(props.onChange).toHaveBeenCalledWith(_newValue);
   });
 
   it('displays slider value when displaySliderValue is true', () => {
-    const {getByText} = setupSlider({
+    const {getByText, getByTestId, queryByText, props} = setupSlider({
       displaySliderValue: true,
       defaultValue: 25,
     });
 
-    expect(getByText('25.00')).toBeTruthy();
+    expect(getByText(`${props.defaultValue}.00`)).toBeTruthy();
+
+    const _newValue = 70;
+    fireEvent(getByTestId('slider'), 'slidingComplete', _newValue);
+
+    expect(queryByText(`${props.defaultValue}.00`)).toBeFalsy();
+    expect(getByText(`${_newValue}.00`)).toBeTruthy();
   });
 
   it('does not display slider value when displaySliderValue is false', () => {
-    const {queryByText} = setupSlider({
+    const {queryByText, props} = setupSlider({
       displaySliderValue: false,
       defaultValue: 25,
     });
 
-    expect(queryByText('25.00')).toBeNull();
+    expect(queryByText(`${props.defaultValue}.00`)).toBeFalsy();
   });
 
   it('should disable the slider when needed', () => {
@@ -104,8 +121,7 @@ describe('Slider Component', () => {
   });
 
   it('should render with custom style', () => {
-    const customStyle = {margin: 20};
-    const {getByTestId, props} = setupSlider({style: customStyle});
+    const {getByTestId, props} = setupSlider({style: {margin: 20}});
 
     expect(getByTestId('sliderContainer')).toHaveStyle(props.style);
   });

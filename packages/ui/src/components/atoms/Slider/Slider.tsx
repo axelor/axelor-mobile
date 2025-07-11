@@ -112,7 +112,9 @@ const Slider = ({
           }}
         />
         {displaySteps && (
-          <View style={styles.stepNumberContainer}>
+          <View
+            testID="sliderStepsContainer"
+            style={styles.stepNumberContainer}>
             {stepNumberList?.map((_value, index) => (
               <Text style={styles.stepNumber} fontSize={10} key={index}>
                 {_value}
