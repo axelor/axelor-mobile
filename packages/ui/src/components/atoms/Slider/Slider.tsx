@@ -89,11 +89,13 @@ const Slider = ({
   }, [defaultValue]);
 
   return (
-    <View style={[styles.container, style]}>
+    <View testID="sliderContainer" style={[styles.container, style]}>
       <View
+        testID="sliderWrapper"
         style={styles.sliderContainer}
         pointerEvents={disabled ? 'none' : 'auto'}>
         <RNSlider
+          testID="slider"
           thumbTintColor={_color.background}
           minimumTrackTintColor={_color.background}
           maximumTrackTintColor={_color.background_light}
@@ -110,7 +112,9 @@ const Slider = ({
           }}
         />
         {displaySteps && (
-          <View style={styles.stepNumberContainer}>
+          <View
+            testID="sliderStepsContainer"
+            style={styles.stepNumberContainer}>
             {stepNumberList?.map((_value, index) => (
               <Text style={styles.stepNumber} fontSize={10} key={index}>
                 {_value}
