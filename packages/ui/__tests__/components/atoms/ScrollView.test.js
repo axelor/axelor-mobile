@@ -17,37 +17,62 @@
  */
 
 import React from 'react';
-import {View} from 'react-native';
+import {RefreshControl, View} from 'react-native';
 import {ScrollView} from '@axelor/aos-mobile-ui';
-import {setup} from '../../tools';
+import * as configContext from '../../../lib/config/ConfigContext';
+import {getTestIdStyles, setup} from '../../tools';
 
 describe('ScrollView Component', () => {
-  const setupScrollView = (overrideProps = {}) =>
+  const setupScrollView = overrideProps =>
     setup({
       Component: ScrollView,
+      baseProps: {children: <View testID="child" />},
       overrideProps,
     });
 
   it('renders without crashing', () => {
-    const {getByTestId} = setupScrollView({
-      children: <View testID="child" />,
-    });
+    const {getByTestId} = setupScrollView();
+
+    expect(getByTestId('scrollViewContainer')).toBeTruthy();
+  });
+
+  it('renders children correctly', () => {
+    const {getByTestId} = setupScrollView();
 
     expect(getByTestId('child')).toBeTruthy();
   });
 
-  it('applies custom styles', () => {
-    const customStyle = {backgroundColor: 'red'};
-
+  it('applies refreshControl when provided', () => {
     const {getByTestId} = setupScrollView({
-      style: customStyle,
-      children: <View testID="child" />,
+      refresh: {loading: true, fetcher: jest.fn()},
     });
 
     const scroll = getByTestId('scrollViewContainer');
+    const refreshControl = scroll.props.refreshControl;
 
-    expect(scroll.props.contentContainerStyle).toEqual(
-      expect.arrayContaining([expect.objectContaining(customStyle)]),
-    );
+    expect(refreshControl).toBeTruthy();
+    expect(refreshControl?.type).toBe(RefreshControl);
+    expect(refreshControl?.props.refreshing).toBe(true);
+  });
+
+  it('sets scrollEnabled to false when isScrollEnabled is false from context', () => {
+    jest.spyOn(configContext, 'useConfig').mockImplementation(() => ({
+      isScrollEnabled: false,
+    }));
+
+    const {getByTestId} = setupScrollView();
+
+    expect(getByTestId('scrollViewContainer').props.scrollEnabled).toBe(false);
+  });
+
+  it('applies custom styles', () => {
+    const {props} = setupScrollView({
+      style: {backgroundColor: 'red'},
+      children: <View testID="child" />,
+    });
+
+    expect(
+      getTestIdStyles('scrollViewContainer', 'contentContainerStyle'),
+    ).toMatchObject(props.style);
   });
 });
