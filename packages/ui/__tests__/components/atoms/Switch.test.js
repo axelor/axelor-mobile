@@ -16,43 +16,47 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import React from 'react';
-import {Switch as RNSwitch} from 'react-native';
-import {shallow} from 'enzyme';
+import {fireEvent} from '@testing-library/react-native';
 import {Switch} from '@axelor/aos-mobile-ui';
+import {setup} from '../../tools';
 
 describe('Switch Component', () => {
-  const handleToggle = jest.fn();
+  const setupSwitch = overrideProps =>
+    setup({
+      Component: Switch,
+      baseProps: {isEnabled: false, handleToggle: jest.fn()},
+      overrideProps,
+    });
 
-  it('renders without crashing', () => {
-    const wrapper = shallow(<Switch />);
+  it('renders correctly', () => {
+    const {getByRole} = setupSwitch();
 
-    expect(wrapper.exists()).toBe(true);
+    expect(getByRole('switch')).toBeTruthy();
   });
 
-  it('renders the switch with the correct initial value', () => {
-    const wrapper = shallow(
-      <Switch isEnabled={true} handleToggle={handleToggle} />,
-    );
+  it('switch reflects enabled state', () => {
+    const {getByRole} = setupSwitch();
 
-    expect(wrapper.prop('value')).toBe(true);
+    expect(getByRole('switch').props.value).toBe(false);
   });
 
-  it('should call handleToggle function with value true when switching on', () => {
-    const wrapper = shallow(
-      <Switch isEnabled={false} handleToggle={handleToggle} />,
-    );
+  it('calls handleToggle with negated value when toggled', () => {
+    const {getByRole, props} = setupSwitch({handleToggle: jest.fn()});
 
-    wrapper.find(RNSwitch).simulate('valueChange');
-    expect(handleToggle).toHaveBeenCalledWith(true);
+    fireEvent(getByRole('switch'), 'valueChange', true);
+
+    expect(props.handleToggle).toHaveBeenCalledWith(true);
   });
 
-  it('should call handleToggle function with value false when switching off', () => {
-    const wrapper = shallow(
-      <Switch isEnabled={true} handleToggle={handleToggle} />,
-    );
+  it('renders a disabled compoent when readonly is true', () => {
+    const {getByRole} = setupSwitch({readonly: true});
 
-    wrapper.find(RNSwitch).simulate('valueChange');
-    expect(handleToggle).toHaveBeenCalledWith(false);
+    expect(getByRole('switch').props.disabled).toBe(true);
+  });
+
+  it('passes style prop to the Switch', () => {
+    const {getByRole, props} = setupSwitch({style: {marginTop: 10}});
+
+    expect(getByRole('switch')).toHaveStyle(props.style);
   });
 });

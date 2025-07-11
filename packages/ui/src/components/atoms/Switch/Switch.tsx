@@ -21,16 +21,16 @@ import {Switch as RNSwitch} from 'react-native';
 import {useThemeColor} from '../../../theme';
 
 interface SwitchProps {
+  style?: any;
   isEnabled: boolean;
-  style: any;
+  handleToggle: (value?: boolean) => void;
   readonly?: boolean;
-  handleToggle: (any) => void;
 }
 
 const Switch = ({
+  style,
   isEnabled,
   handleToggle,
-  style,
   readonly = false,
 }: SwitchProps) => {
   const Colors = useThemeColor();
