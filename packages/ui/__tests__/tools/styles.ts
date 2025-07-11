@@ -16,6 +16,8 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+import {screen} from '@testing-library/react-native';
+
 export function getComputedStyles(componentStyles: any[]) {
   if (!Array.isArray(componentStyles)) {
     return componentStyles;
@@ -32,4 +34,8 @@ export function getComputedStyles(componentStyles: any[]) {
 
 export function getGlobalStyles(component: any, styleName: string = 'style') {
   return getComputedStyles(component.prop(styleName));
+}
+
+export function getTestIdStyles(testId: any, styleName: string = 'style') {
+  return getComputedStyles(screen.getByTestId(testId).props?.[styleName]);
 }

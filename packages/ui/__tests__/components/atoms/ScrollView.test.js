@@ -17,31 +17,62 @@
  */
 
 import React from 'react';
-import {View} from 'react-native';
-import {shallow} from 'enzyme';
+import {RefreshControl, View} from 'react-native';
 import {ScrollView} from '@axelor/aos-mobile-ui';
+import * as configContext from '../../../lib/config/ConfigContext';
+import {getTestIdStyles, setup} from '../../tools';
 
 describe('ScrollView Component', () => {
-  it('renders without crashing', () => {
-    const wrapper = shallow(<ScrollView />);
+  const setupScrollView = overrideProps =>
+    setup({
+      Component: ScrollView,
+      baseProps: {children: <View testID="child" />},
+      overrideProps,
+    });
 
-    expect(wrapper.exists()).toBe(true);
+  it('renders without crashing', () => {
+    const {getByTestId} = setupScrollView();
+
+    expect(getByTestId('scrollViewContainer')).toBeTruthy();
   });
 
-  it('renders children', () => {
-    const wrapper = shallow(
-      <ScrollView>
-        <View testID="child" />
-      </ScrollView>,
-    );
+  it('renders children correctly', () => {
+    const {getByTestId} = setupScrollView();
 
-    expect(wrapper.find('[testID="child"]').exists()).toBe(true);
+    expect(getByTestId('child')).toBeTruthy();
+  });
+
+  it('applies refreshControl when provided', () => {
+    const {getByTestId} = setupScrollView({
+      refresh: {loading: true, fetcher: jest.fn()},
+    });
+
+    const scroll = getByTestId('scrollViewContainer');
+    const refreshControl = scroll.props.refreshControl;
+
+    expect(refreshControl).toBeTruthy();
+    expect(refreshControl?.type).toBe(RefreshControl);
+    expect(refreshControl?.props.refreshing).toBe(true);
+  });
+
+  it('sets scrollEnabled to false when isScrollEnabled is false from context', () => {
+    jest.spyOn(configContext, 'useConfig').mockImplementation(() => ({
+      isScrollEnabled: false,
+    }));
+
+    const {getByTestId} = setupScrollView();
+
+    expect(getByTestId('scrollViewContainer').props.scrollEnabled).toBe(false);
   });
 
   it('applies custom styles', () => {
-    const style = {backgroundColor: 'red'};
-    const wrapper = shallow(<ScrollView style={style} />);
+    const {props} = setupScrollView({
+      style: {backgroundColor: 'red'},
+      children: <View testID="child" />,
+    });
 
-    expect(wrapper.prop('contentContainerStyle')).toContain(style);
+    expect(
+      getTestIdStyles('scrollViewContainer', 'contentContainerStyle'),
+    ).toMatchObject(props.style);
   });
 });

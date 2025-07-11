@@ -49,7 +49,7 @@ describe('KeyboardAvoidingScrollView Component', () => {
   });
 
   it('applies refreshControl when provided', () => {
-    const {getByTestId, props} = setupKeyboardAvoidingScrollView({
+    const {getByTestId} = setupKeyboardAvoidingScrollView({
       refresh: {loading: true, fetcher: jest.fn()},
     });
 
