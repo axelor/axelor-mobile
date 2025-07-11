@@ -108,7 +108,7 @@ const TimesheetDetailsScreen = ({navigation, route}) => {
             comments={item.comments}
             date={item.date}
             duration={item.duration}
-            showTrash={item.timer == null && canDelete}
+            showTrash={canDelete}
             durationUnit={timesheet.timeLoggingPreferenceSelect}
             isActions={_statusSelect === Timesheet?.statusSelect.Draft}
             canEdit={!readonly}
