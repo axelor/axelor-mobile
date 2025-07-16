@@ -195,14 +195,14 @@ const InternalMoveCreationScreen = () => {
             translator={I18n.t}
           />
         )}
-        {currentStep === InternalMoveCreation.step.addLine &&
-          fromStockLocation?.id && (
-            <InternalMoveCreationPickingWidget
-              scanKey={massScanKey}
-              stockLocationId={fromStockLocation.id}
-              setLines={setLines}
-            />
-          )}
+        {currentStep === InternalMoveCreation.step.addLine && (
+          <InternalMoveCreationPickingWidget
+            scanKey={massScanKey}
+            stockLocationId={fromStockLocation?.id}
+            setLines={setLines}
+            handleEditLine={handleEditLine}
+          />
+        )}
         {currentStep === InternalMoveCreation.step.addLine && (
           <AvailableProductsSearchBar
             stockLocationId={fromStockLocation?.id}

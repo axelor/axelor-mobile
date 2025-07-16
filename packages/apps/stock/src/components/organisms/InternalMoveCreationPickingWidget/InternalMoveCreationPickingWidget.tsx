@@ -22,12 +22,14 @@ import {useTranslator, showToastMessage} from '@axelor/aos-mobile-core';
 import {MassScannerButton} from '../../molecules';
 import {searchAvailableProductsApi} from '../../../api';
 
+type SetterFunction<T> = (value: T | ((_current: T) => T)) => void;
+
 interface InternalMoveCreationPickingWidgetProps {
-  style: any;
+  style?: any;
   scanKey: string;
   stockLocationId: number;
-  lines: any[];
-  setLines: React.Dispatch<React.SetStateAction<any[]>>;
+  setLines: SetterFunction<any[]>;
+  handleEditLine?: (line: any) => void;
 }
 
 const InternalMoveCreationPickingWidget = ({
@@ -35,44 +37,35 @@ const InternalMoveCreationPickingWidget = ({
   scanKey,
   stockLocationId,
   setLines,
+  handleEditLine,
 }: InternalMoveCreationPickingWidgetProps) => {
   const I18n = useTranslator();
 
   const handleScanValue = useCallback(
-    async (scanValue: string, {}) => {
-      const result = await (searchAvailableProductsApi as any)({
+    async (scanValue: string, {disableScan}: {disableScan: () => void}) => {
+      const data = await searchAvailableProductsApi({
         stockLocationId,
         searchValue: scanValue,
       }).then(res => res?.data?.data);
 
-      if (!Array.isArray(result) || result.length === 0) {
-        throw new Error('Stock_Picking_NoLineFound');
-      } else if (result.length > 1) {
-        throw new Error('Stock_Picking_MultipleLinesFound');
+      if (!Array.isArray(data) || data.length === 0) {
+        throw new Error('Stock_Picking_NoProductFound');
+      } else if (data.length > 1) {
+        throw new Error('Stock_Picking_MultipleProductsFound');
       }
 
-      const scanned = result[0];
-      const productName = scanned.product?.name;
-      const id = scanned.id;
-      const qty = 1;
-      let newQty = qty;
+      let line = {...data[0], unit: data[0].product?.unit, realQty: 1};
+      const _id = line.id;
 
       setLines(prev => {
         const updated = [...prev];
-        const index = updated.findIndex(line => line.id === id);
+        const index = updated.findIndex(_i => _i.id === _id);
 
         if (index >= 0) {
-          updated[index].realQty += qty;
-          newQty = updated[index].realQty;
+          updated[index].realQty += line.realQty;
+          line = updated[index];
         } else {
-          updated.push({
-            product: scanned.product,
-            trackingNumber: scanned.trackingNumber,
-            realQty: qty,
-            currentQty: scanned.currentQty,
-            unit: scanned.product?.unit,
-            id,
-          });
+          updated.push(line);
         }
 
         return updated;
@@ -83,13 +76,18 @@ const InternalMoveCreationPickingWidget = ({
         type: 'success',
         text1: I18n.t('Base_Success'),
         text2: I18n.t('Stock_Picking_LineUpdatedProduct', {
-          productName,
-          id,
-          newQty: newQty,
+          productName: line.product?.name,
+          newQty: line.realQty,
         }),
+        onPress: !handleEditLine
+          ? undefined
+          : () => {
+              disableScan();
+              handleEditLine(line);
+            },
       });
     },
-    [I18n, stockLocationId, setLines],
+    [stockLocationId, setLines, I18n, handleEditLine],
   );
 
   const handleError = useCallback(
