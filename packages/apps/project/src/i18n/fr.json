@@ -68,6 +68,7 @@
   "Project_ParentItem": "Élément parent",
   "Project_MarkAsUncompleted": "Marquer comme non-complété",
   "Project_MarkAsCompleted": "Marquer comme complété",
+  "Project_CheckList": "Check list",
   "Project_SliceAction_SearchProject": "recherche sur les projets",
   "Project_SliceAction_FetchProjectById": "récupération du projet par id",
   "Project_SliceAction_FetchProjectStatus": "récupération des statuts de projet",
