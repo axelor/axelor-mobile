@@ -25,14 +25,14 @@ import {
 } from '../api/login-api';
 import {apiProviderConfig} from '../apiProviders/config';
 import {saveUrlInStorage} from '../sessions';
-import {checkNullString} from '../utils';
-import {testUrl} from '../utils/api';
+import {checkNullString, testUrl} from '../utils';
 import {modulesProvider} from '../app';
 import {webSocketProvider} from '../websocket';
+import {resetConfigs} from './appConfigSlice';
 
 export const login = createAsyncThunk(
   'auth/login',
-  async ({url, username, password, closePopup}) => {
+  async ({url, username, password, closePopup}, {dispatch}) => {
     const urlWithProtocol = await testUrl(url);
     const {token, jsessionId, requestInterceptorId, responseInterceptorId} =
       await loginApi(urlWithProtocol, username, password);
@@ -52,6 +52,8 @@ export const login = createAsyncThunk(
       token,
       jsessionId,
     });
+
+    dispatch(resetConfigs());
 
     return {
       url: urlWithProtocol,
@@ -76,7 +78,7 @@ export const isUrlValid = createAsyncThunk('auth/isUrlValid', async ({url}) => {
 
 export const logout = createAsyncThunk(
   'auth/logout',
-  async function (data, {getState}) {
+  async function (_, {getState}) {
     await logoutApi();
 
     const {requestInterceptorId, responseInterceptorId} = getState()?.auth;

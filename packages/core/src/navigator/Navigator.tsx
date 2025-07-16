@@ -65,7 +65,8 @@ const Navigator = ({mainMenu, onRefresh, versionCheckConfig}) => {
   const {modules} = useModulesInitialisation();
 
   const storeState = useSelector(state => state.appConfig);
-  const {mobileSettings} = useSelector(state => state.appConfig);
+  const {loadingConfig, mobileSettings, mobileConfigured, numberConfig} =
+    useSelector(state => state.appConfig);
   const {metaModules} = useSelector(state => state.metaModule);
 
   const enabledModule = useMemo(
@@ -101,11 +102,15 @@ const Navigator = ({mainMenu, onRefresh, versionCheckConfig}) => {
   }, [enabledModule]);
 
   useEffect(() => {
-    dispatch((fetchRequiredConfig as any)(requiredConfig));
-    registerTypes();
-    // Note: the configs only need to be fetched once at user connection
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+    if (!loadingConfig) {
+      if (!mobileConfigured) {
+        dispatch((fetchRequiredConfig as any)(['AppMobileSettings']));
+      } else if (numberConfig === 1 && requiredConfig.length > 0) {
+        dispatch((fetchRequiredConfig as any)(requiredConfig));
+        registerTypes();
+      }
+    }
+  }, [dispatch, loadingConfig, mobileConfigured, numberConfig, requiredConfig]);
 
   useEffect(() => {
     dispatch(fetchMetaModules());
