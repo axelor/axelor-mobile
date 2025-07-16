@@ -17,6 +17,7 @@
  */
 
 import React, {useCallback, useEffect} from 'react';
+import {StyleSheet} from 'react-native';
 import {
   Screen,
   KeyboardAvoidingScrollView,
@@ -34,10 +35,11 @@ import {
   CustomerDeliverySearchLineContainer,
   CustomerDeliveryMovementIndicationCard,
   CustomerDeliveryRealizeButton,
+  CustomerDeliveryNotes,
 } from '../../components';
 import {fetchCustomerDelivery} from '../../features/customerDeliverySlice';
 
-const CustomerDeliveryDetailScreen = ({route, navigation}) => {
+const CustomerDeliveryDetailScreen = ({route}) => {
   const customerDeliveryId = route.params.customerDeliveryId;
   const I18n = useTranslator();
   const dispatch = useDispatch();
@@ -76,11 +78,14 @@ const CustomerDeliveryDetailScreen = ({route, navigation}) => {
         }
       />
       <KeyboardAvoidingScrollView
-        refresh={{loading, fetcher: getCustomerDelivery}}>
+        refresh={{loading, fetcher: getCustomerDelivery}}
+        style={styles.scroll}>
         <CustomerDeliveryMovementIndicationCard
           customerDelivery={customerDelivery}
         />
         <CustomerDeliverySearchLineContainer />
+
+        <CustomerDeliveryNotes notes={customerDelivery?.note} />
         <NotesCard
           title={I18n.t('Stock_PickingOrderComments')}
           data={customerDelivery?.pickingOrderComments}
@@ -97,5 +102,14 @@ const CustomerDeliveryDetailScreen = ({route, navigation}) => {
     </Screen>
   );
 };
+const styles = StyleSheet.create({
+  item: {
+    marginHorizontal: 1,
+    marginVertical: 4,
+  },
+  scroll: {
+    paddingVertical: 10,
+  },
+});
 
 export default CustomerDeliveryDetailScreen;

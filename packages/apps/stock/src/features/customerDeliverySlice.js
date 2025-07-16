@@ -23,6 +23,7 @@ import {
 } from '@axelor/aos-mobile-core';
 import {
   fetchCustomerDelivery as _fetchCustomerDelivery,
+  updateCustomerDeliveryNote as _updateCustomerDeliveryNote,
   addLineStockMove,
   realizeSockMove,
   searchDeliveryFilter,
@@ -80,6 +81,23 @@ export const realizeCustomerDelivery = createAsyncThunk(
   },
 );
 
+export const updateCustomerDeliveryNote = createAsyncThunk(
+  'deliveries/updateCustomerDeliveryNote',
+  async function (data, {getState, dispatch}) {
+    return handlerApiCall({
+      fetchFunction: _updateCustomerDeliveryNote,
+      data,
+      action: 'Stock_SliceAction_UpdateCustomerDeliveryNote',
+      getState,
+      responseOptions: {showToast: true},
+    }).then(() => {
+      dispatch(
+        fetchCustomerDelivery({customerDeliveryId: data.customerDeliveryId}),
+      );
+    });
+  },
+);
+
 const initialState = {
   loadingList: false,
   moreLoading: false,
@@ -104,6 +122,10 @@ const customerDeliverySlice = createSlice({
       state.loading = true;
     });
     builder.addCase(fetchCustomerDelivery.fulfilled, (state, action) => {
+      state.loading = false;
+      state.customerDelivery = action.payload;
+    });
+    builder.addCase(updateCustomerDeliveryNote.fulfilled, (state, action) => {
       state.loading = false;
       state.customerDelivery = action.payload;
     });
