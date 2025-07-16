@@ -16,5 +16,6 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+export * from './use-check-list-item-actions';
 export * from './use-reporting-configuration';
 export * from './use-task-filter';

@@ -201,4 +201,17 @@ export const project_modelAPI: ObjectFields = {
   project_projectSprint: schemaContructor.object({
     name: schemaContructor.string(),
   }),
+  project_checkListItem: schemaContructor.object({
+    title: schemaContructor.string(),
+    sequence: schemaContructor.number(),
+    completed: schemaContructor.boolean(),
+    parentItem: schemaContructor.subObject('title'),
+    project: schemaContructor.subObject(),
+    projectTask: schemaContructor.subObject(),
+    projectCheckListItemList: schemaContructor
+      .array()
+      .of(schemaContructor.subObject()),
+    updatedBy: schemaContructor.subObject('fullName'),
+    createdBy: schemaContructor.subObject('fullName'),
+  }),
 };
