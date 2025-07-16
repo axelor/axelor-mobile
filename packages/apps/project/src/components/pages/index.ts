@@ -20,6 +20,7 @@ export {default as GeneralInformationView} from './GeneralInformationView/Genera
 export {default as ProjectCheckListView} from './ProjectCheckListView/ProjectCheckListView';
 export {default as ReportingView} from './ReportingView/ReportingView';
 export {default as SubProjectView} from './SubProjectView/SubProjectView';
+export {default as TaskCheckListView} from './TaskCheckListView/TaskCheckListView';
 export {default as TaskCustomFieldsView} from './TaskCustomFieldsView/TaskCustomFieldsView';
 export {default as TaskGeneralInformationView} from './TaskGeneralInformationView/TaskGeneralInformationView';
 export {default as TaskLinkView} from './TaskLinkView/TaskLinkView';

@@ -26,6 +26,7 @@ import {
 } from '@axelor/aos-mobile-core';
 import {getImputationMode} from '@axelor/aos-mobile-hr';
 import {
+  TaskCheckListView,
   TaskCustomFieldsView,
   TaskDetailsHeader,
   TaskGeneralInformationView,
@@ -74,6 +75,13 @@ const TaskDetailsScreen = ({navigation, route}) => {
         title: I18n.t('Project_CustomFieldsView'),
       },
       {
+        iconName: 'check2-square',
+        color: Colors.successColor,
+        viewComponent: <TaskCheckListView />,
+        onPress: () => setManageActiveItem(false),
+        title: I18n.t('Project_CheckList'),
+      },
+      {
         iconName: 'diagram-3-fill',
         viewComponent: <TaskLinkView />,
         color: Colors.infoColor,
@@ -88,7 +96,7 @@ const TaskDetailsScreen = ({navigation, route}) => {
       },
       {
         iconName: 'clock-history',
-        color: Colors.primaryColor,
+        color: Colors.cautionColor,
         hidden:
           !canCreateTimesheetLine ||
           !projectTask?.project?.manageTimeSpent ||
