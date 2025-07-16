@@ -26,6 +26,7 @@ import {
 import {
   AvailableProductsSearchBar,
   InternalMoveCreationButtons,
+  InternalMoveCreationPickingWidget,
   InternalMoveCreationQuantityCard,
   StockLocationSearchBar,
 } from '../../components';
@@ -33,6 +34,7 @@ import {
 import {InternalMoveCreation} from '../../types';
 
 const fromStockLocationScanKey = 'from-stock-location_internal-move-creation';
+const massScanKey = 'product-massScan-internal-move-creation';
 const itemScanKey = 'product-tracking-number_internal-move-creation';
 const toStockLocationScanKey = 'to-stock-location_internal-move-creation';
 
@@ -191,6 +193,14 @@ const InternalMoveCreationScreen = () => {
             }
             handleEditLine={handleEditLine}
             translator={I18n.t}
+          />
+        )}
+        {currentStep === InternalMoveCreation.step.addLine && (
+          <InternalMoveCreationPickingWidget
+            scanKey={massScanKey}
+            stockLocationId={fromStockLocation?.id}
+            setLines={setLines}
+            handleEditLine={handleEditLine}
           />
         )}
         {currentStep === InternalMoveCreation.step.addLine && (
