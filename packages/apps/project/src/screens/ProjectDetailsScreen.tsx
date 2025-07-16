@@ -27,6 +27,7 @@ import {
 import {getImputationMode} from '@axelor/aos-mobile-hr';
 import {
   GeneralInformationView,
+  ProjectCheckListView,
   ProjectHeader,
   ReportingView,
   SubProjectView,
@@ -78,6 +79,12 @@ const ProjectDetailsScreen = ({
         title: I18n.t('Project_TasksView'),
       },
       {
+        iconName: 'check2-square',
+        color: Colors.successColor,
+        viewComponent: <ProjectCheckListView />,
+        title: I18n.t('Project_CheckList'),
+      },
+      {
         iconName: 'diagram-3-fill',
         color: Colors.infoColor,
         viewComponent: <SubProjectView />,
@@ -94,7 +101,7 @@ const ProjectDetailsScreen = ({
       },
       {
         iconName: 'clock-history',
-        color: Colors.primaryColor,
+        color: Colors.cautionColor,
         hidden:
           !canCreate ||
           !project?.manageTimeSpent ||
