@@ -29,7 +29,6 @@ const CustomerDeliveryNotes = ({notes, readonly = false}) => {
   const {customerDelivery} = useSelector(state => state.customerDelivery);
 
   const handleNotesChange = value => {
-    console.log(value);
     dispatch(
       updateCustomerDeliveryNote({
         customerDeliveryId: customerDelivery.id,
