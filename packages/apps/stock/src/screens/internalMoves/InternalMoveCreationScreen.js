@@ -34,6 +34,7 @@ import {
 import {InternalMoveCreation} from '../../types';
 
 const fromStockLocationScanKey = 'from-stock-location_internal-move-creation';
+const massScanKey = 'product-massScan-internal-move-creation';
 const itemScanKey = 'product-tracking-number_internal-move-creation';
 const toStockLocationScanKey = 'to-stock-location_internal-move-creation';
 
@@ -197,7 +198,7 @@ const InternalMoveCreationScreen = () => {
         {currentStep === InternalMoveCreation.step.addLine &&
           fromStockLocation?.id && (
             <InternalMoveCreationPickingWidget
-              scanKey="product_massScan_internal-move-creation"
+              scanKey={massScanKey}
               stockLocationId={fromStockLocation.id}
               setLines={setLines}
             />

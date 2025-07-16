@@ -17,11 +17,13 @@
  */
 
 import React, {useCallback} from 'react';
+import {StyleSheet} from 'react-native';
 import {useTranslator, showToastMessage} from '@axelor/aos-mobile-core';
 import {MassScannerButton} from '../../molecules';
 import {searchAvailableProductsApi} from '../../../api';
 
 interface InternalMoveCreationPickingWidgetProps {
+  style: any;
   scanKey: string;
   stockLocationId: number;
   lines: any[];
@@ -29,6 +31,7 @@ interface InternalMoveCreationPickingWidgetProps {
 }
 
 const InternalMoveCreationPickingWidget = ({
+  style,
   scanKey,
   stockLocationId,
   setLines,
@@ -49,8 +52,10 @@ const InternalMoveCreationPickingWidget = ({
       }
 
       const scanned = result[0];
+      const productName = scanned.product?.name;
       const id = scanned.id;
       const qty = 1;
+      let newQty = qty;
 
       setLines(prev => {
         const updated = [...prev];
@@ -58,6 +63,7 @@ const InternalMoveCreationPickingWidget = ({
 
         if (index >= 0) {
           updated[index].realQty += qty;
+          newQty = updated[index].realQty;
         } else {
           updated.push({
             product: scanned.product,
@@ -73,11 +79,13 @@ const InternalMoveCreationPickingWidget = ({
       });
 
       showToastMessage({
+        position: 'bottom',
         type: 'success',
         text1: I18n.t('Base_Success'),
-        text2: I18n.t('Stock_Picking_LineUpdated', {
+        text2: I18n.t('Stock_Picking_LineUpdatedProduct', {
+          productName,
           id,
-          newQty: qty,
+          newQty: newQty,
         }),
       });
     },
@@ -87,6 +95,7 @@ const InternalMoveCreationPickingWidget = ({
   const handleError = useCallback(
     (error: any) => {
       showToastMessage({
+        position: 'bottom',
         type: 'error',
         text1: I18n.t('Base_Error'),
         text2: I18n.t(error.message),
@@ -97,6 +106,7 @@ const InternalMoveCreationPickingWidget = ({
 
   return (
     <MassScannerButton
+      style={[styles.container, style]}
       scanKey={scanKey}
       titleKey="Stock_StartMassScan"
       backgroundAction={handleScanValue}
@@ -105,5 +115,11 @@ const InternalMoveCreationPickingWidget = ({
     />
   );
 };
+
+const styles = StyleSheet.create({
+  container: {
+    width: '90%',
+  },
+});
 
 export default InternalMoveCreationPickingWidget;
