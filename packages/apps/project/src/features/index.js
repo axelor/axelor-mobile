@@ -16,6 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+export {checkListReducer as project_checkList} from './checkListSlice';
 export {projectReducer as project_project} from './projectSlice';
 export {projectTaskReducer as project_projectTask} from './projectTaskSlice';
 export {reportingReducer as project_reporting} from './reportingSlice';

@@ -22,4 +22,5 @@ export const project_sortFields: SortFields = {
   project_project: ['projectStatus.sequence', 'name'],
   project_projectVersion: ['title'],
   project_projectTaskLink: ['projectTaskLinkType.id'],
+  project_checkListItem: ['sequence'],
 };

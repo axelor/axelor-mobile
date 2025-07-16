@@ -17,6 +17,7 @@
  */
 
 export {default as ActivityCard} from './ActivityCard/ActivityCard';
+export {default as CheckListItemActionCard} from './CheckListItemActionCard/CheckListItemActionCard';
 export {default as CustomFieldPopup} from './CustomFieldPopup/CustomFieldPopup';
 export {default as DropdownInvoicing} from './DropdownInvoicing/DropdownInvoicing';
 export {default as DropdownMembers} from './DropdownMembers/DropdownMembers';

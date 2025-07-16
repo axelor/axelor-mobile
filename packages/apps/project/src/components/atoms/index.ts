@@ -16,7 +16,9 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+export {default as CheckListItemCard} from './CheckListItemCard/CheckListItemCard';
 export {default as DatesDisplay} from './DatesDisplay/DatesDisplay';
+export {default as ParentCheckListItemCard} from './ParentCheckListItemCard/ParentCheckListItemCard';
 export {default as PartnerCard} from './PartnerCard/PartnerCard';
 export {default as ProjectCard} from './ProjectCard/ProjectCard';
 export {default as ProjectSimpleCard} from './ProjectSimpleCard/ProjectSimpleCard';

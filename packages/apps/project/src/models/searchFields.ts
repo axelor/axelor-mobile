@@ -30,4 +30,5 @@ export const project_searchFields: SearchFields = {
   project_projectPriority: ['name'],
   project_taskStatus: ['name'],
   project_projectSprint: ['name'],
+  project_checkListItem: ['title'],
 };
