@@ -26,6 +26,7 @@ import {
 import {
   AvailableProductsSearchBar,
   InternalMoveCreationButtons,
+  InternalMoveCreationPickingWidget,
   InternalMoveCreationQuantityCard,
   StockLocationSearchBar,
 } from '../../components';
@@ -193,6 +194,14 @@ const InternalMoveCreationScreen = () => {
             translator={I18n.t}
           />
         )}
+        {currentStep === InternalMoveCreation.step.addLine &&
+          fromStockLocation?.id && (
+            <InternalMoveCreationPickingWidget
+              scanKey="product_massScan_internal-move-creation"
+              stockLocationId={fromStockLocation.id}
+              setLines={setLines}
+            />
+          )}
         {currentStep === InternalMoveCreation.step.addLine && (
           <AvailableProductsSearchBar
             stockLocationId={fromStockLocation?.id}
