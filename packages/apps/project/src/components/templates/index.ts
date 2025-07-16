@@ -19,6 +19,7 @@
 export {default as ActiveSprintSearchBar} from './ActiveSprintSearchBar/ActiveSprintSearchBar';
 export {default as ActivityListView} from './ActivityListView/ActivityListView';
 export {default as CategorySearchBar} from './CategorySearchBar/CategorySearchBar';
+export {default as CheckListView} from './CheckListView/CheckListView';
 export {default as ParentTaskSearchBar} from './ParentTaskSearchBar/ParentTaskSearchBar';
 export {default as PrioritySearchBar} from './PrioritySearchBar/PrioritySearchBar';
 export {default as ProjectListView} from './ProjectListView/ProjectListView';
