@@ -1,5 +1,5 @@
 {
-  "title": "InternalMoveCreation: add mass scan management for picking product",
+  "title": "Internal move creation: add mass scan management to pick product",
   "type": "feat",
   "packages": "stock"
 }
