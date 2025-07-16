@@ -18,6 +18,7 @@
 
 import {
   createStandardSearch,
+  Criteria,
   getSearchCriterias,
   getTypes,
 } from '@axelor/aos-mobile-core';
@@ -25,7 +26,7 @@ import {
 const createSearchCriteria = ({productId, stockLocationId}) => {
   const StockLocation = getTypes().StockLocation;
 
-  let criterias = [
+  let criterias: Criteria[] = [
     {
       fieldName: 'product.id',
       operator: '=',
@@ -76,7 +77,7 @@ const createAvailableProductsCriteria = ({
   searchValue,
   alternativeBarcodeList,
 }) => {
-  let criterias = [
+  let criterias: Criteria[] = [
     {
       operator: 'or',
       criteria: [
@@ -137,6 +138,11 @@ export async function searchAvailableProducts({
   searchValue,
   page = 0,
   alternativeBarcodeList,
+}: {
+  stockLocationId: number;
+  searchValue?: string;
+  page?: number;
+  alternativeBarcodeList?: any[];
 }) {
   return createStandardSearch({
     model: 'com.axelor.apps.stock.db.StockLocationLine',
