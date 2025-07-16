@@ -50,6 +50,13 @@ const initialState = {
 const appConfigSlice = createSlice({
   name: 'appConfig',
   initialState,
+  reducers: {
+    resetConfigs: state => {
+      state.loadingConfig = false;
+      state.mobileConfigured = false;
+      state.numberConfig = 0;
+    },
+  },
   extraReducers: builder => {
     builder.addCase(fetchRequiredConfig.pending, state => {
       state.loadingConfig = true;
@@ -58,10 +65,13 @@ const appConfigSlice = createSlice({
       state.loadingConfig = false;
     });
     builder.addCase(fetchRequiredConfig.fulfilled, (state, action) => {
+      const configs = action.meta.arg ?? [];
       state.loadingConfig = false;
-      action.meta.arg.forEach((_configName, index) => {
-        state[formatAppName(_configName)] = action.payload[index];
+      configs.forEach((name, idx) => {
+        state[formatAppName(name)] = action.payload[idx];
       });
+      state.mobileConfigured = configs.find(_i => _i === 'AppMobileSettings');
+      state.numberConfig = configs.length;
     });
   },
 });
@@ -71,5 +81,7 @@ const formatAppName = appName => {
 
   return configName.charAt(0).toLowerCase() + configName.substr(1);
 };
+
+export const {resetConfigs} = appConfigSlice.actions;
 
 export const appConfigReducer = appConfigSlice.reducer;
