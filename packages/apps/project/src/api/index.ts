@@ -17,6 +17,10 @@
  */
 
 export {
+  searchCheckListItems as searchCheckListItemsApi,
+  updateCheckListItem as updateCheckListItemApi,
+} from './check-list-api';
+export {
   fetchProjectStatus as fetchProjectStatusApi,
   fetchProjectById as fetchProjectByIdApi,
   previousProjectActivity as previousProjectActivityApi,
