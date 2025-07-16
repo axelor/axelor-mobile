@@ -17,6 +17,11 @@
  */
 
 export {
+  searchCheckListItems,
+  searchParentCheckListItems,
+  updateCheckListItem,
+} from './checkListSlice';
+export {
   fetchProjectById,
   fetchProjectStatus,
   searchProject,
