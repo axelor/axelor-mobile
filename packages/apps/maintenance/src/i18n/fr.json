@@ -3,6 +3,7 @@
   "Maintenance_MaintenanceRequests": "Demandes de maintenance",
   "Maintenance_Machine": "Machine",
   "Maintenance_Deadline": "Échéance",
+  "Maintenance_RequestActionType": "Action",
   "Maintenance_RequestActionType_Corrective": "Corrective",
   "Maintenance_RequestActionType_Preventive": "Préventive",
   "Maintenance_RequestStatus_Planned": "Planifiée",
