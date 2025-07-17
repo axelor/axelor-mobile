@@ -1,5 +1,0 @@
-{
-  "title": "Configs: fetch only configs required for enabled apps",
-  "type": "fix",
-  "packages": "core"
-}

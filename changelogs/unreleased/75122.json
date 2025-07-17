@@ -1,5 +1,0 @@
-{
-  "title": "Timesheet: enable deletion of a TimesheetLine linked to a TSTimer",
-  "type": "feat",
-  "packages": "hr"
-}

@@ -1,5 +1,0 @@
-{
-  "title": "Timers: remove crash issue when trying to navigate to form view",
-  "type": "fix",
-  "packages": "hr"
-}
