@@ -22,6 +22,7 @@ export {
   fetchCustomerDelivery as fetchCustomerDeliveryApi,
   searchDeliveryFilter as searchDeliveryFilterApi,
   realizeSockMove as realizeCustomerDeliveryApi,
+  updateCustomerDeliveryNote as updateCustomerDeliveryNoteApi,
 } from './customer-delivery-api';
 export {
   fetchCustomerDeliveryLine as fetchCustomerDeliveryLineApi,
