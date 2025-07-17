@@ -1,3 +1,9 @@
 {
-  "Maintenance_Maintenance": "Maintenance"
+  "Maintenance_Maintenance": "Maintenance",
+  "Maintenance_RequestActionType_Corrective": "Corrective",
+  "Maintenance_RequestActionType_Preventive": "Préventive",
+  "Maintenance_RequestStatus_Planned": "Planifiée",
+  "Maintenance_RequestStatus_InProgress": "En cours",
+  "Maintenance_RequestStatus_Completed": "Complétée",
+  "Maintenance_RequestStatus_Canceled": "Annulée"
 }

@@ -19,6 +19,12 @@
 import {Module} from '@axelor/aos-mobile-core';
 import enTranslations from './i18n/en.json';
 import frTranslations from './i18n/fr.json';
+import {
+  maintenance_modelAPI,
+  maintenance_searchFields,
+  maintenance_sortFields,
+  maintenance_typeObjects,
+} from './models';
 
 export const MaintenanceModule: Module = {
   name: 'app-maintenance',
@@ -32,5 +38,11 @@ export const MaintenanceModule: Module = {
   translations: {
     en: enTranslations,
     fr: frTranslations,
+  },
+  models: {
+    objectFields: maintenance_modelAPI,
+    searchFields: maintenance_searchFields,
+    sortFields: maintenance_sortFields,
+    typeObjects: maintenance_typeObjects,
   },
 };
