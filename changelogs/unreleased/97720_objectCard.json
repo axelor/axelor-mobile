@@ -1,5 +1,0 @@
-{
-  "title": "ObjectCard: add fontSize attribute on TextElement",
-  "type": "feat",
-  "packages": "ui"
-}

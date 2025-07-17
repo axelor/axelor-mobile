@@ -3,6 +3,38 @@ title: 8.3.0
 tags: Changelog
 ---
 
+## [8.3.8] (2025-07-17)
+
+### @axelor/aos-mobile-core
+
+#### Fixes
+
+- Configs: fetch only configs required for enabled apps
+
+### @axelor/aos-mobile-ui
+
+#### Features
+
+- ObjectCard: add fontSize attribute on TextElement
+
+#### Fixes
+
+- HtmlInput: add blur on click outside management
+
+### @axelor/aos-mobile-hr
+
+#### Features
+
+- Timesheet: enable deletion of a TimesheetLine linked to a TSTimer
+
+### @axelor/aos-mobile-stock
+
+#### Fixes
+
+- StockMove: modify note titles to match with AOS
+- InternalMoveLine: make stock move notes readonly
+- StockMoveLine: improve card display with smaller title & move badge to upper
+
 ## [8.3.7] (2025-07-03)
 
 ### @axelor/aos-mobile-ui
@@ -299,6 +331,7 @@ This version add a new part of the HR package, user can now manage leave request
 
 - Header actions: remove use of attachedFileScreenTitle
 
+[8.3.8]: https://github.com/axelor/axelor-mobile/compare/8.3.7...8.3.8
 [8.3.7]: https://github.com/axelor/axelor-mobile/compare/8.3.6...8.3.7
 [8.3.6]: https://github.com/axelor/axelor-mobile/compare/8.3.5...8.3.6
 [8.3.5]: https://github.com/axelor/axelor-mobile/compare/8.3.4...8.3.5
