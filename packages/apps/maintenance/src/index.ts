@@ -46,3 +46,5 @@ export const MaintenanceModule: Module = {
     typeObjects: maintenance_typeObjects,
   },
 };
+
+export * from './components';

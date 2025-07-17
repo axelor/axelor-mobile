@@ -1,5 +1,7 @@
 {
   "Maintenance_Maintenance": "Maintenance",
+  "Maintenance_Machine": "Machine",
+  "Maintenance_Deadline": "Deadline",
   "Maintenance_RequestActionType_Corrective": "Corrective",
   "Maintenance_RequestActionType_Preventive": "Preventive",
   "Maintenance_RequestStatus_Planned": "Planned",
