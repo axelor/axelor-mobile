@@ -101,7 +101,7 @@ const InternalMoveLineCard = ({
       style={[borderStyle, style]}
       lowerTexts={{
         items: [
-          {displayText: productName, isTitle: true},
+          {displayText: productName, isTitle: true, fontSize: 16},
           {
             displayText: formatNumber(expectedQty),
             indicatorText: `${I18n.t('Stock_AskedQty')} :`,
@@ -134,7 +134,8 @@ const InternalMoveLineCard = ({
           },
         ],
       }}
-      sideBadges={{
+      upperBadges={{
+        fixedOnRightSide: true,
         items: [
           {
             displayText: checkQtyObject?.availability,
@@ -156,7 +157,7 @@ const InternalMoveLineCard = ({
   );
 };
 
-const getStyles = color =>
+const getStyles = (color: string) =>
   StyleSheet.create({
     border: {
       borderWidth: 1.5,
@@ -164,6 +165,7 @@ const getStyles = color =>
       paddingRight: 5,
       marginVertical: 2,
       marginHorizontal: 2,
+      paddingTop: 5,
     },
   });
 

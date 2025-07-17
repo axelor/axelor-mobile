@@ -1,0 +1,5 @@
+{
+  "title": "StockMoveLine: improve card display with smaller title & move badge to upper",
+  "type": "fix",
+  "packages": "stock"
+}
