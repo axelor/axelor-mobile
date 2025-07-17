@@ -90,7 +90,7 @@ const CustomerDeliveryLineCard = ({
       style={[styles.container, style]}
       lowerTexts={{
         items: [
-          {displayText: productName, isTitle: true},
+          {displayText: productName, isTitle: true, fontSize: 16},
           {
             displayText: formatNumber(askedQty),
             indicatorText: `${I18n.t('Stock_AskedQty')} :`,
@@ -122,7 +122,8 @@ const CustomerDeliveryLineCard = ({
           },
         ],
       }}
-      sideBadges={{
+      upperBadges={{
+        fixedOnRightSide: true,
         items: [
           {
             displayText: checkQtyObject?.availability,
@@ -144,12 +145,13 @@ const CustomerDeliveryLineCard = ({
   );
 };
 
-const getStyles = color =>
+const getStyles = (color: string) =>
   StyleSheet.create({
     container: {
       borderWidth: 1.5,
       borderColor: color,
       paddingRight: 5,
+      paddingTop: 5,
     },
     textWidth: {
       width: '85%',

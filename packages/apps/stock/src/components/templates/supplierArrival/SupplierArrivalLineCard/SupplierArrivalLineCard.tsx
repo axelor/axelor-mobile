@@ -17,7 +17,7 @@
  */
 
 import React, {useMemo} from 'react';
-import {StyleSheet} from 'react-native';
+import {Dimensions, StyleSheet} from 'react-native';
 import {
   ObjectCard,
   checkNullString,
@@ -25,7 +25,6 @@ import {
   useThemeColor,
 } from '@axelor/aos-mobile-ui';
 import {useSelector, useTranslator} from '@axelor/aos-mobile-core';
-import {Dimensions} from 'react-native';
 
 interface SupplierArrivalLineCardProps {
   style?: any;
@@ -77,7 +76,7 @@ const SupplierArrivalLineCard = ({
       showArrow={true}
       lowerTexts={{
         items: [
-          {displayText: productName, isTitle: true},
+          {displayText: productName, isTitle: true, fontSize: 16},
           {
             displayText: formatNumber(askedQty),
             indicatorText: `${I18n.t('Stock_AskedQty')} :`,
@@ -113,7 +112,7 @@ const SupplierArrivalLineCard = ({
   );
 };
 
-const getStyles = color =>
+const getStyles = (color: string) =>
   StyleSheet.create({
     border: {
       borderWidth: 1.5,
@@ -128,6 +127,7 @@ const styles = StyleSheet.create({
   card: {
     marginVertical: 2,
     marginHorizontal: 2,
+    paddingRight: 5,
   },
 });
 
