@@ -25,7 +25,7 @@ import {
   useTypeHelpers,
   useTypes,
 } from '@axelor/aos-mobile-core';
-import {MaintenanceRequestCard} from '../components';
+import {MaintenanceRequestCard, MaintenanceRequestFilters} from '../components';
 import {searchMaintenanceRequests} from '../features/maintenanceRequestSlice';
 
 const MaintenanceRequestListScreen = () => {
@@ -39,8 +39,12 @@ const MaintenanceRequestListScreen = () => {
     isListEndMaintenanceRequest,
     maintenanceRequestList,
   } = useSelector(state => state.maintenance_maintenanceRequest);
+  const {user} = useSelector(state => state.user);
 
   const [selectedStatus, setSelectedStatus] = useState([]);
+  const [selectedAction, setSelectedAction] = useState(null);
+  const [selectedMachine, setSelectedMachine] = useState(null);
+  const [isAssignedToMe, setIsAssignedToMe] = useState(true);
 
   const availableStatus = useMemo(
     () => [
@@ -65,8 +69,19 @@ const MaintenanceRequestListScreen = () => {
   );
 
   const sliceFunctionData = useMemo(
-    () => ({statusList: selectedStatus}),
-    [selectedStatus],
+    () => ({
+      userId: isAssignedToMe ? user.id : null,
+      statusList: selectedStatus,
+      machineId: selectedMachine?.id,
+      actionType: selectedAction,
+    }),
+    [
+      isAssignedToMe,
+      selectedAction,
+      selectedMachine?.id,
+      selectedStatus,
+      user.id,
+    ],
   );
 
   return (
@@ -85,6 +100,16 @@ const MaintenanceRequestListScreen = () => {
             mode="switch"
             selectionItems={statusList}
             onChangeValue={setSelectedStatus}
+          />
+        }
+        headerChildren={
+          <MaintenanceRequestFilters
+            isAssignedToMe={isAssignedToMe}
+            setIsAssignedToMe={setIsAssignedToMe}
+            selectedAction={selectedAction}
+            setSelectedAction={setSelectedAction}
+            selectedMachine={selectedMachine}
+            setSelectedMachine={setSelectedMachine}
           />
         }
       />
