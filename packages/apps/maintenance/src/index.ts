@@ -27,6 +27,7 @@ import {
   maintenance_sortFields,
   maintenance_typeObjects,
 } from './models';
+import {useMaintenanceHeaders} from './hooks/use-maintenance-header-actions';
 
 export const MaintenanceModule: Module = {
   name: 'app-maintenance',
@@ -55,6 +56,7 @@ export const MaintenanceModule: Module = {
     searchFields: maintenance_searchFields,
     sortFields: maintenance_sortFields,
     typeObjects: maintenance_typeObjects,
+    headerRegisters: useMaintenanceHeaders,
   },
 };
 

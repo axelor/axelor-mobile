@@ -9,5 +9,6 @@
   "Maintenance_RequestStatus_InProgress": "En cours",
   "Maintenance_RequestStatus_Completed": "Complétée",
   "Maintenance_RequestStatus_Canceled": "Annulée",
+  "Maintenance_CreateMaintenanceRequest": "Créer une demande de maintenance",
   "Maintenance_SliceAction_SearchMaintenanceRequests": "recherche sur les demandes de maintenance"
 }
