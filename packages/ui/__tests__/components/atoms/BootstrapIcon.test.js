@@ -34,13 +34,14 @@ describe('BootstrapIcon Component', () => {
     });
 
   it('renders without crashing', () => {
-    const {getByTestId} = setupBootstrapIcon();
-    expect(getByTestId('icon')).toBeTruthy();
+    const {getByTestId, props} = setupBootstrapIcon();
+
+    expect(getByTestId(`icon-${props.name}`)).toBeTruthy();
   });
 
   it('gives the correct props to Svg', () => {
     const {getByTestId, props} = setupBootstrapIcon();
-    const icon = getByTestId('icon');
+    const icon = getByTestId(`icon-${props.name}`);
 
     expect(icon.props.width).toBe(props.size);
     expect(icon.props.height).toBe(props.size);
@@ -49,11 +50,16 @@ describe('BootstrapIcon Component', () => {
 
   it('applies custom style when provided', () => {
     const {getByTestId, props} = setupBootstrapIcon({style: {width: 200}});
-    expect(getByTestId('icon')).toHaveStyle(props.style);
+
+    expect(getByTestId(`icon-${props.name}`)).toHaveStyle(props.style);
   });
 
   it('renders fallback Text when icon does not exist', () => {
-    const {getByText} = setupBootstrapIcon({name: 'Fake icon'});
+    const {getByText, queryByTestId, props} = setupBootstrapIcon({
+      name: 'Fake icon',
+    });
+
+    expect(queryByTestId(`icon-${props.name}`)).toBeFalsy();
     expect(getByText('?')).toBeTruthy();
   });
 });

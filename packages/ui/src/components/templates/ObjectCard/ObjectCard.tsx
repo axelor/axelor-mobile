@@ -51,6 +51,7 @@ interface TextElement {
   style?: any;
   displayText?: string;
   indicatorText?: string;
+  fontSize?: number;
   size?: number;
   iconName?: string;
   color?: string;
@@ -172,6 +173,7 @@ const ObjectCard = ({
         <Text
           key={`${item.displayText} - ${item.order}`}
           writingType="title"
+          fontSize={item.fontSize}
           style={[styles.text, item.style]}
           numberOfLines={item.numberOfLines}>
           {item.displayText}
@@ -184,6 +186,7 @@ const ObjectCard = ({
         <Text
           key={`${item.displayText} - ${item.order}`}
           writingType="subtitle"
+          fontSize={item.fontSize}
           style={[styles.text, item.style]}
           numberOfLines={item.numberOfLines}>
           {item.displayText}
@@ -198,6 +201,7 @@ const ObjectCard = ({
         textStyle={item.style}
         iconName={item.iconName}
         size={item.size}
+        textSize={item.fontSize}
         color={item.color}
         title={item.indicatorText}
         value={item.displayText}
@@ -231,6 +235,7 @@ const ObjectCard = ({
     <TouchableOpacity
       onPress={onPress}
       activeOpacity={0.9}
+      testID="objectCardTouchable"
       disabled={!touchable}>
       <Card style={[styles.container, style]}>
         {upperBadges != null && (

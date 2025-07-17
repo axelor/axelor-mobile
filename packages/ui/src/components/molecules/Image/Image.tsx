@@ -81,6 +81,8 @@ const Image = ({
 
   return (
     <ReactNativeImage
+      accessible={true}
+      accessibilityRole="image"
       onError={handleURIError}
       resizeMode={resizeMode}
       source={source}

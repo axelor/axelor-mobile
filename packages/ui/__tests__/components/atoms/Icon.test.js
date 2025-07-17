@@ -25,17 +25,17 @@ describe('Icon Component', () => {
     setup({Component: Icon, baseProps: {name: 'check'}, overrideProps});
 
   it('renders without crashing', () => {
-    const {getByTestId} = setupIcon();
+    const {getByTestId, props} = setupIcon();
 
     expect(getByTestId('iconTouchable')).toBeTruthy();
-    expect(getByTestId('icon')).toBeTruthy();
+    expect(getByTestId(`icon-${props.name}`)).toBeTruthy();
   });
 
   it('renders nothing when visible prop is false', () => {
-    const {queryByTestId} = setupIcon({visible: false});
+    const {queryByTestId, props} = setupIcon({visible: false});
 
     expect(queryByTestId('iconTouchable')).toBeFalsy();
-    expect(queryByTestId('icon')).toBeFalsy();
+    expect(queryByTestId(`icon-${props.name}`)).toBeFalsy();
   });
 
   it('renders a disabled icon', () => {
