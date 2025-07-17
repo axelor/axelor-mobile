@@ -47,7 +47,7 @@ const BootstrapIcon = ({name, size, color, style}: BootstrapIconProps) => {
         viewBox="0 0 16 16"
         fill={color}
         style={style}
-        testID="icon">
+        testID={`icon-${name}`}>
         {_pathList.map((_path, index) => (
           <Path key={index} d={_path} />
         ))}

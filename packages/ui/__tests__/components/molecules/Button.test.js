@@ -122,8 +122,8 @@ describe('Button Component', () => {
   });
 
   it('renders Icon when provided', () => {
-    const {getByTestId} = setupButton({iconName: 'check'});
+    const {getByTestId, props} = setupButton({iconName: 'check'});
 
-    expect(getByTestId('icon')).toBeTruthy();
+    expect(getByTestId(`icon-${props.iconName}`)).toBeTruthy();
   });
 });
