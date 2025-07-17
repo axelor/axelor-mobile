@@ -68,8 +68,8 @@ const MassScannerButton = ({
         title={I18n.t(titleKey)}
         iconName="qr-code-scan"
         onPress={enableScan}
-        color={isEnabled ? Colors.primaryColor : Colors.secondaryColor}
-        isNeutralBackground
+        color={isEnabled ? Colors.progressColor : Colors.secondaryColor}
+        isNeutralBackground={!isEnabled}
         style={styles.button}
       />
     </View>
