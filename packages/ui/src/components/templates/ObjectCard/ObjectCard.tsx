@@ -235,6 +235,7 @@ const ObjectCard = ({
     <TouchableOpacity
       onPress={onPress}
       activeOpacity={0.9}
+      testID="objectCardTouchable"
       disabled={!touchable}>
       <Card style={[styles.container, style]}>
         {upperBadges != null && (
