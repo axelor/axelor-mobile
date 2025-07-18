@@ -26,27 +26,47 @@ import {
 import {AutoCompleteSearch} from '@axelor/aos-mobile-ui';
 import {searchMachines} from '../../../features/machinesSlice';
 
+interface MachineSearchBarProps {
+  style?: any;
+  title?: string;
+  defaultValue?: any;
+  onChange: (value: any) => void;
+  readonly?: boolean;
+  required?: boolean;
+  showTitle?: boolean;
+  showDetailsPopup?: boolean;
+  navigate?: boolean;
+  oneFilter?: boolean;
+}
+
 const MachineSearchBar = ({
-  placeholderKey = 'Manufacturing_Machine',
-  defaultValue = '',
-  onChange = () => {},
+  style,
+  title = 'Manufacturing_Machine',
+  defaultValue,
+  onChange,
+  readonly = false,
+  required = false,
+  showTitle = true,
   showDetailsPopup = true,
   navigate = false,
   oneFilter = false,
-  isFocus = false,
-}) => {
+}: MachineSearchBarProps) => {
   const I18n = useTranslator();
   const dispatch = useDispatch();
 
+  const {user} = useSelector(state => state.user);
   const {machineList, loading, moreLoading, isListEnd} = useSelector(
     state => state.machines,
   );
-  const {user} = useSelector(state => state.user);
 
   const fetchMachineAPI = useCallback(
     ({page = 0, searchValue}) => {
       dispatch(
-        searchMachines({page, companyId: user.activeCompany?.id, searchValue}),
+        (searchMachines as any)({
+          page,
+          companyId: user.activeCompany?.id,
+          searchValue,
+        }),
       );
     },
     [dispatch, user.activeCompany?.id],
@@ -54,19 +74,22 @@ const MachineSearchBar = ({
 
   return (
     <AutoCompleteSearch
+      style={style}
+      title={showTitle && I18n.t(title)}
+      placeholder={I18n.t(title)}
       objectList={machineList}
+      loadingList={loading}
+      moreLoading={moreLoading}
+      isListEnd={isListEnd}
       value={defaultValue}
       onChangeValue={onChange}
       fetchData={fetchMachineAPI}
       displayValue={displayItemName}
-      placeholder={I18n.t(placeholderKey)}
+      readonly={readonly}
+      required={required}
       showDetailsPopup={showDetailsPopup}
-      loadingList={loading}
-      moreLoading={moreLoading}
-      isListEnd={isListEnd}
       navigate={navigate}
       oneFilter={oneFilter}
-      isFocus={isFocus}
     />
   );
 };
