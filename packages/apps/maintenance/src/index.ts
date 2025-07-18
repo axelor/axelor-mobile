@@ -19,6 +19,15 @@
 import {Module} from '@axelor/aos-mobile-core';
 import enTranslations from './i18n/en.json';
 import frTranslations from './i18n/fr.json';
+import MaintenanceScreens from './screens';
+import * as maintenanceReducers from './features';
+import {
+  maintenance_modelAPI,
+  maintenance_searchFields,
+  maintenance_sortFields,
+  maintenance_typeObjects,
+} from './models';
+import {useMaintenanceHeaders} from './hooks/use-maintenance-header-actions';
 
 export const MaintenanceModule: Module = {
   name: 'app-maintenance',
@@ -33,4 +42,25 @@ export const MaintenanceModule: Module = {
     en: enTranslations,
     fr: frTranslations,
   },
+  menus: {
+    maintenance_menu_maintenanceRequests: {
+      title: 'Maintenance_MaintenanceRequests',
+      icon: 'clipboard-x',
+      screen: 'MaintenanceRequestListScreen',
+    },
+  },
+  screens: MaintenanceScreens,
+  reducers: maintenanceReducers,
+  models: {
+    objectFields: maintenance_modelAPI,
+    searchFields: maintenance_searchFields,
+    sortFields: maintenance_sortFields,
+    typeObjects: maintenance_typeObjects,
+    headerRegisters: useMaintenanceHeaders,
+  },
 };
+
+export * from './api';
+export * from './components';
+export * from './features/asyncFunctions-index';
+export * from './screens';
