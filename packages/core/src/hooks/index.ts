@@ -19,6 +19,7 @@
 export * from './use-effect-debugger';
 export {
   useIsFocused,
+  useIsNavigationRoot,
   useNavigation,
   useNavigationRoutes,
   useStackChecker,
