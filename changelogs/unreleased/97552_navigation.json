@@ -1,0 +1,5 @@
+{
+  "title": "Navigation: add hook to check if screen is a stack root",
+  "type": "feat",
+  "packages": "core"
+}

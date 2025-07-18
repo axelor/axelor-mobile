@@ -35,6 +35,11 @@ export const useNavigationRoutes = (): any => {
   return useReactNavigationState(state => state.routes);
 };
 
+export const useIsNavigationRoot = (): any => {
+  const routes = useNavigationRoutes();
+  return useMemo(() => routes?.length <= 1, [routes?.length]);
+};
+
 export const useStackChecker = (): ((name: string) => boolean) => {
   const routes = useNavigationRoutes();
 
