@@ -1,0 +1,5 @@
+{
+  "title": "MachineSearchBar: improve component with new props",
+  "type": "feat",
+  "packages": "manufacturing"
+}

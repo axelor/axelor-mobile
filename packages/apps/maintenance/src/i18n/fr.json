@@ -1,3 +1,15 @@
 {
-  "Maintenance_Maintenance": "Maintenance"
+  "Maintenance_Maintenance": "Maintenance",
+  "Maintenance_MaintenanceRequests": "Demandes de maintenance",
+  "Maintenance_Machine": "Machine",
+  "Maintenance_Deadline": "Échéance",
+  "Maintenance_RequestActionType": "Action",
+  "Maintenance_RequestActionType_Corrective": "Corrective",
+  "Maintenance_RequestActionType_Preventive": "Préventive",
+  "Maintenance_RequestStatus_Planned": "Planifiée",
+  "Maintenance_RequestStatus_InProgress": "En cours",
+  "Maintenance_RequestStatus_Completed": "Complétée",
+  "Maintenance_RequestStatus_Canceled": "Annulée",
+  "Maintenance_CreateMaintenanceRequest": "Créer une demande de maintenance",
+  "Maintenance_SliceAction_SearchMaintenanceRequests": "recherche sur les demandes de maintenance"
 }
