@@ -17,6 +17,7 @@
  */
 
 import {
+  createStandardFetch,
   createStandardSearch,
   getSearchCriterias,
 } from '@axelor/aos-mobile-core';
@@ -55,6 +56,15 @@ export async function searchQIDetection({
     fieldKey: 'quality_qiDetection',
     sortKey: 'quality_qiDetection',
     page,
+    provider: 'model',
+  });
+}
+
+export async function fetchQIDetection({id}) {
+  return createStandardFetch({
+    model: 'com.axelor.apps.quality.db.QIDetection',
+    id,
+    fieldKey: 'quality_qiDetection',
     provider: 'model',
   });
 }
