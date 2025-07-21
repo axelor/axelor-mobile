@@ -16,143 +16,159 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import React from 'react';
-import {View} from 'react-native';
-import {shallow} from 'enzyme';
-import {CircleButton, FloatingButton, Text} from '@axelor/aos-mobile-ui';
-import {getGlobalStyles, getDefaultThemeColors} from '../../tools';
+import {fireEvent, waitFor} from '@testing-library/react-native';
+import {FloatingButton} from '@axelor/aos-mobile-ui';
+import {getDefaultThemeColors, setup} from '../../tools';
 
 describe('FloatingButton Component', () => {
   const Colors = getDefaultThemeColors();
-  const props = {
-    actions: [
-      {
-        key: 1,
-        title: 'Title 1',
-        iconName: 'car',
-        color: Colors.errorColor,
-        disabled: false,
-        onPress: jest.fn(),
+
+  const setupFloatingButton = overrideProps =>
+    setup({
+      Component: FloatingButton,
+      baseProps: {
+        actions: [
+          {
+            key: 'edit',
+            title: 'Edit',
+            iconName: 'edit-icon',
+            color: Colors.errorColor,
+            onPress: jest.fn(),
+            closeOnPress: true,
+          },
+          {
+            key: 'delete',
+            title: 'Delete',
+            iconName: 'trash-icon',
+            onPress: jest.fn(),
+            closeOnPress: false,
+            indicator: true,
+          },
+        ],
+        translator: key => key,
       },
-      {
-        key: 2,
-        iconName: 'motorcycle',
-        disabled: true,
-        onPress: jest.fn(),
-      },
-      {
-        key: 3,
-        title: 'Title 3',
-        iconName: 'truck',
-        disabled: false,
-        onPress: jest.fn(),
-      },
-    ],
-    translator: key => key,
-  };
+      overrideProps,
+    });
 
-  it('should render without crashing', () => {
-    const wrapper = shallow(<FloatingButton {...props} />);
+  it('renders without crashing', () => {
+    const {getByTestId} = setupFloatingButton();
 
-    expect(wrapper.exists()).toBe(true);
+    expect(getByTestId('floatingButtonContainer')).toBeTruthy();
   });
 
-  it('should render an empty View if actions props is null or empty', () => {
-    const actionsNull = null;
-    const actionsEmpty = [];
+  it('toggles open and close on button press', () => {
+    const {getByTestId, queryByTestId, props} = setupFloatingButton();
 
-    const wrapperNull = shallow(
-      <FloatingButton {...props} actions={actionsNull} />,
-    );
-    const wrapperEmpty = shallow(
-      <FloatingButton {...props} actions={actionsEmpty} />,
-    );
+    const mainButton = getByTestId('floatingButtonMainButton');
 
-    expect(wrapperNull.find(View).children().exists()).toBe(false);
-    expect(wrapperEmpty.find(View).children().exists()).toBe(false);
+    fireEvent.press(mainButton);
+
+    props.actions.forEach(_a => {
+      expect(queryByTestId(`action-button-${_a.iconName}`)).toBeTruthy();
+    });
+
+    fireEvent.press(mainButton);
+
+    props.actions.forEach(_a => {
+      expect(queryByTestId(`action-button-${_a.iconName}`)).toBeNull();
+    });
   });
 
-  it('should give the right iconName and size props to the main button', () => {
-    const iconName = 'check';
-    const closeIconName = 'x-lg';
-    const size = 50;
-    const wrapper = shallow(
-      <FloatingButton {...props} iconName={iconName} size={size} />,
-    );
+  it('calls onGlobalPress if provided', () => {
+    const {getByTestId, props} = setupFloatingButton({
+      onGlobalPress: jest.fn(),
+    });
 
-    expect(wrapper.find(CircleButton).prop('iconName')).toBe(iconName);
-    expect(wrapper.find(CircleButton).prop('size')).toBe(size);
+    fireEvent.press(getByTestId('floatingButtonMainButton'));
 
-    wrapper.find(CircleButton).simulate('press');
-
-    expect(wrapper.find(CircleButton).prop('iconName')).toBe(closeIconName);
-    expect(wrapper.find(CircleButton).prop('size')).toBe(size);
+    expect(props.onGlobalPress).toHaveBeenCalled();
   });
 
-  it('should render the rights FloatingActionButton when click on the main button', () => {
-    const wrapper = shallow(<FloatingButton {...props} />);
+  it('renders the indicator when any action has it enabled', () => {
+    const {getByTestId} = setupFloatingButton({useCircleStyle: true});
 
-    wrapper.find(CircleButton).simulate('press');
+    fireEvent.press(getByTestId('floatingButtonMainButton'));
+    fireEvent.press(getByTestId('icon-chevron-down')); // Collapse actions to see indicator
 
-    expect(wrapper.find('FloatingActionButton').length).toBe(
-      props.actions.length,
-    );
-    for (let i = 0; i < props.actions.length; i++) {
-      expect(
-        wrapper
-          .find('FloatingActionButton')
-          .at(i)
-          .dive()
-          .find(CircleButton)
-          .props(),
-      ).toMatchObject({
-        iconName: props.actions[i].iconName,
-        disabled: props.actions[i].disabled,
-        color: props.actions[i].color,
-        square: true,
-      });
-
-      if (props.actions[i].title != null) {
-        expect(
-          wrapper
-            .find('FloatingActionButton')
-            .at(i)
-            .dive()
-            .find(Text)
-            .prop('children'),
-        ).toBe(props.actions[i].title);
-      } else {
-        expect(
-          wrapper.find('FloatingActionButton').at(i).dive().find(Text).length,
-        ).toBe(0);
-      }
-    }
+    expect(getByTestId('floatingButtonIndicator')).toBeTruthy();
   });
 
-  it('should render circle style when defined', () => {
-    const wrapper = shallow(
-      <FloatingButton {...props} useCircleStyle={true} />,
-    );
+  it('expands and collapses when clicking expand icon', () => {
+    const {getByTestId, queryByTestId, props} = setupFloatingButton({
+      useCircleStyle: true,
+    });
 
-    expect(wrapper.find(CircleButton).prop('square')).toBe(false);
-    wrapper.find(CircleButton).simulate('press');
+    fireEvent.press(getByTestId('floatingButtonMainButton'));
+    props.actions.forEach(_a => {
+      expect(queryByTestId(`action-button-${_a.iconName}`)).toBeTruthy();
+    });
 
-    for (let i = 0; i < props.actions.length; i++) {
-      expect(
-        wrapper
-          .find('FloatingActionButton')
-          .at(i)
-          .dive()
-          .find(CircleButton)
-          .prop('square'),
-      ).toBe(false);
-    }
+    expect(getByTestId('icon-chevron-down')).toBeTruthy();
+    fireEvent.press(getByTestId('icon-chevron-down')); // Collapse actions
+    props.actions.forEach(_a => {
+      expect(queryByTestId(`action-button-${_a.iconName}`)).toBeNull();
+    });
+
+    expect(getByTestId('icon-chevron-up')).toBeTruthy();
+    fireEvent.press(getByTestId('icon-chevron-up')); // Expand agatin actions
+    props.actions.forEach(_a => {
+      expect(queryByTestId(`action-button-${_a.iconName}`)).toBeTruthy();
+    });
   });
 
-  it('should apply custom style when provided', () => {
-    const customStyle = {width: 200};
-    const wrapper = shallow(<FloatingButton {...props} style={customStyle} />);
+  it('should always display all actions when expandable is false', () => {
+    const {getByTestId, queryByTestId, props} = setupFloatingButton({
+      useCircleStyle: true,
+      expandable: false,
+    });
 
-    expect(getGlobalStyles(wrapper.find(View))).toMatchObject(customStyle);
+    fireEvent.press(getByTestId('floatingButtonMainButton'));
+
+    expect(queryByTestId('icon-chevron-down')).toBeNull();
+    expect(queryByTestId('icon-chevron-up')).toBeNull();
+
+    props.actions.forEach(_a => {
+      expect(queryByTestId(`action-button-${_a.iconName}`)).toBeTruthy();
+    });
+  });
+
+  it('executes action onPress and closes if closeOnPress is true', async () => {
+    const {getByTestId, queryByTestId, props} = setupFloatingButton();
+
+    const action = props.actions[0];
+
+    fireEvent.press(getByTestId('floatingButtonMainButton'));
+    fireEvent.press(getByTestId(`action-button-${action.iconName}`));
+
+    await waitFor(() => {
+      expect(action.onPress).toHaveBeenCalled();
+      expect(queryByTestId(`action-button-${action.iconName}`)).toBeNull();
+    });
+  });
+
+  it('remains open if action.closeOnPress is false', async () => {
+    const {getByTestId, queryByTestId, props} = setupFloatingButton();
+
+    const action = props.actions[1];
+
+    fireEvent.press(getByTestId('floatingButtonMainButton'));
+    fireEvent.press(getByTestId(`action-button-${action.iconName}`));
+
+    await waitFor(() => {
+      expect(action.onPress).toHaveBeenCalled();
+      expect(queryByTestId(`action-button-${action.iconName}`)).toBeTruthy();
+    });
+  });
+
+  it('does not render when actions list is empty', () => {
+    const {queryByTestId} = setupFloatingButton({actions: []});
+
+    expect(queryByTestId('floatingButtonContainer')).toBeNull();
+  });
+
+  it('applies custom style when provided', () => {
+    const {getByTestId, props} = setupFloatingButton({style: {width: 200}});
+
+    expect(getByTestId('floatingButtonContainer')).toHaveStyle(props.style);
   });
 });

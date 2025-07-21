@@ -133,7 +133,10 @@ const FloatingButton = ({
   }
 
   return (
-    <View ref={wrapperRef} style={[styles.container, style]}>
+    <View
+      ref={wrapperRef}
+      testID="floatingButtonContainer"
+      style={[styles.container, style]}>
       {isOpen && (
         <View
           style={[
@@ -158,6 +161,7 @@ const FloatingButton = ({
         </View>
       )}
       <CircleButton
+        testID="floatingButtonMainButton"
         iconName={isOpen ? closeIconName : iconName}
         onPress={handleFLoatingButtonPress}
         size={size}
