@@ -28,8 +28,11 @@ const createSearchCriteria = ({searchValue}) => {
   return [
     {
       fieldName: 'typeSelect',
-      operator: '=',
-      value: StockLocation?.typeSelect.internal,
+      operator: 'in',
+      value: [
+        StockLocation?.typeSelect.internal,
+        StockLocation?.typeSelect.external,
+      ],
     },
     getSearchCriterias('stock_stockLocation', searchValue),
   ];

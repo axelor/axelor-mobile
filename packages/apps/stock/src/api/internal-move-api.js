@@ -36,13 +36,19 @@ const createSearchCriteria = (
   const criteria = [
     {
       fieldName: 'fromStockLocation.typeSelect',
-      operator: '=',
-      value: StockLocation?.typeSelect.internal,
+      operator: 'in',
+      value: [
+        StockLocation?.typeSelect.internal,
+        StockLocation?.typeSelect.external,
+      ],
     },
     {
       fieldName: 'toStockLocation.typeSelect',
-      operator: '=',
-      value: StockLocation?.typeSelect.internal,
+      operator: 'in',
+      value: [
+        StockLocation?.typeSelect.internal,
+        StockLocation?.typeSelect.external,
+      ],
     },
     {
       fieldName: 'typeSelect',
