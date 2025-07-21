@@ -16,28 +16,40 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import React, {useCallback} from 'react';
-import {StyleSheet, View} from 'react-native';
-import {EditableHtmlInput, Text} from '@axelor/aos-mobile-ui';
-import {useDispatch, useSelector, useTranslator} from '@axelor/aos-mobile-core';
+import React, {useCallback, useMemo} from 'react';
+import {EditableHtmlInput, NotesCard} from '@axelor/aos-mobile-ui';
+import {
+  useDispatch,
+  usePermitted,
+  useSelector,
+  useTranslator,
+  useTypes,
+} from '@axelor/aos-mobile-core';
 import {updateCustomerDeliveryNote} from '../../../../features/customerDeliverySlice';
+import {StyleSheet} from 'react-native';
 
 interface CustomerDeliveryNotesProps {
+  titleKey?: string;
   notes: string;
   readonly?: boolean;
 }
 
 const CustomerDeliveryNotes = ({
+  titleKey = 'Stock_NotesOnStockMove',
   notes,
   readonly = false,
 }: CustomerDeliveryNotesProps) => {
-  const dispatch = useDispatch();
   const I18n = useTranslator();
+  const dispatch = useDispatch();
+  const {StockMove} = useTypes();
+  const {readonly: modelReadonly} = usePermitted({
+    modelName: 'com.axelor.apps.stock.db.StockMove',
+  });
 
   const {customerDelivery} = useSelector(state => state.customerDelivery);
 
-  const handleNotesChange = useCallback(
-    value => {
+  const handleValidate = useCallback(
+    (value: string) => {
       dispatch(
         (updateCustomerDeliveryNote as any)({
           customerDeliveryId: customerDelivery.id,
@@ -49,22 +61,36 @@ const CustomerDeliveryNotes = ({
     [customerDelivery.id, customerDelivery.version, dispatch],
   );
 
+  const isReadonly = useMemo(
+    () =>
+      readonly ||
+      modelReadonly ||
+      customerDelivery?.statusSelect >= StockMove?.statusSelect.Realized,
+    [
+      StockMove?.statusSelect.Realized,
+      customerDelivery?.statusSelect,
+      modelReadonly,
+      readonly,
+    ],
+  );
+
+  if (isReadonly) {
+    return <NotesCard title={I18n.t(titleKey)} data={notes} />;
+  }
+
   return (
-    <View>
-      <Text style={styles.title}>{I18n.t('Stock_NotesOnStockMove')}</Text>
-      <EditableHtmlInput
-        onValidate={handleNotesChange}
-        defaultValue={notes}
-        readonly={readonly}
-        placeholder=""
-      />
-    </View>
+    <EditableHtmlInput
+      style={styles.input}
+      title={I18n.t(titleKey)}
+      onValidate={handleValidate}
+      defaultValue={notes}
+    />
   );
 };
 
 const styles = StyleSheet.create({
-  title: {
-    marginLeft: 30,
+  input: {
+    marginBottom: 30,
   },
 });
 

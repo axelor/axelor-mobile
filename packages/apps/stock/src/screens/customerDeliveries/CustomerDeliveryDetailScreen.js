@@ -17,7 +17,6 @@
  */
 
 import React, {useCallback, useEffect} from 'react';
-import {StyleSheet} from 'react-native';
 import {
   Screen,
   KeyboardAvoidingScrollView,
@@ -27,7 +26,6 @@ import {
 import {
   useContextRegister,
   useDispatch,
-  usePermitted,
   useSelector,
   useTranslator,
 } from '@axelor/aos-mobile-core';
@@ -48,9 +46,6 @@ const CustomerDeliveryDetailScreen = ({route}) => {
     models: [
       {model: 'com.axelor.apps.stock.db.StockMove', id: customerDeliveryId},
     ],
-  });
-  const {readonly} = usePermitted({
-    modelName: 'com.axelor.apps.stock.db.StockMove',
   });
 
   const {loading, customerDelivery} = useSelector(
@@ -82,16 +77,12 @@ const CustomerDeliveryDetailScreen = ({route}) => {
         }
       />
       <KeyboardAvoidingScrollView
-        refresh={{loading, fetcher: getCustomerDelivery}}
-        style={styles.scroll}>
+        refresh={{loading, fetcher: getCustomerDelivery}}>
         <CustomerDeliveryMovementIndicationCard
           customerDelivery={customerDelivery}
         />
         <CustomerDeliverySearchLineContainer />
-        <CustomerDeliveryNotes
-          notes={customerDelivery?.note}
-          readonly={readonly}
-        />
+        <CustomerDeliveryNotes notes={customerDelivery?.note} />
         <NotesCard
           title={I18n.t('Stock_PickingOrderComments')}
           data={customerDelivery?.pickingOrderComments}
@@ -104,11 +95,5 @@ const CustomerDeliveryDetailScreen = ({route}) => {
     </Screen>
   );
 };
-
-const styles = StyleSheet.create({
-  scroll: {
-    paddingVertical: 10,
-  },
-});
 
 export default CustomerDeliveryDetailScreen;

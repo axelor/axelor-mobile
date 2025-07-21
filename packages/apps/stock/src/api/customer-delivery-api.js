@@ -184,11 +184,7 @@ export async function updateCustomerDeliveryNote({
   version,
   note,
 }) {
-  const body = {
-    id: customerDeliveryId,
-    version,
-    note,
-  };
+  const body = {id: customerDeliveryId, version, note};
 
   const {matchers} = formatRequestBody(body, 'data');
 
