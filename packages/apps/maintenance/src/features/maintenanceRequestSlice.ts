@@ -21,7 +21,10 @@ import {
   generateInifiniteScrollCases,
   handlerApiCall,
 } from '@axelor/aos-mobile-core';
-import {searchMaintenanceRequests as _searchMaintenanceRequests} from '../api/maintenance-request-api';
+import {
+  createMaintenanceRequest as _createMaintenanceRequest,
+  searchMaintenanceRequests as _searchMaintenanceRequests,
+} from '../api/maintenance-request-api';
 
 export const searchMaintenanceRequests = createAsyncThunk(
   'maintenance_maintenanceRequest/searchMaintenanceRequests',
@@ -36,6 +39,19 @@ export const searchMaintenanceRequests = createAsyncThunk(
   },
 );
 
+export const createMaintenanceRequest = createAsyncThunk(
+  'maintenance_maintenanceRequest/createMaintenanceRequest',
+  async function (data, {getState, dispatch}) {
+    return handlerApiCall({
+      fetchFunction: _createMaintenanceRequest,
+      data,
+      action: 'Maintenance_SliceAction_CreateMaintenanceRequest',
+      getState,
+      responseOptions: {isArrayResponse: false, showToast: true},
+    }).then(() => dispatch(searchMaintenanceRequests()));
+  },
+);
+
 const initialState = {
   loadingMaintenanceRequests: false,
   moreLoadingMaintenanceRequest: false,
@@ -46,6 +62,7 @@ const initialState = {
 const maintenanceRequestSlice = createSlice({
   name: 'maintenance_maintenanceRequest',
   initialState,
+  reducers: {},
   extraReducers: builder => {
     generateInifiniteScrollCases(builder, searchMaintenanceRequests, {
       loading: 'loadingMaintenanceRequests',

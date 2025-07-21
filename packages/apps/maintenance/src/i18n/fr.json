@@ -12,6 +12,8 @@
   "Maintenance_RequestStatus_Completed": "Complétée",
   "Maintenance_RequestStatus_Canceled": "Annulée",
   "Maintenance_CreateMaintenanceRequest": "Créer une demande de maintenance",
+  "Maintenance_CreateRequest": "Créer une demande",
   "Maintenance_SliceAction_SearchMaintenanceRequests": "recherche sur les demandes de maintenance",
+  "Maintenance_SliceAction_CreateMaintenanceRequest": "création de la demande de maintenance",
   "Maintenance_SliceAction_SearchEquipementMaintenance": "recherche sur les équipements de maintenance"
 }

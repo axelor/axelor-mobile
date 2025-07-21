@@ -16,6 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+export {maintenance_formsRegister} from './forms';
 export {maintenance_modelAPI} from './objectFields';
 export {maintenance_searchFields} from './searchFields';
 export {maintenance_sortFields} from './sortFields';

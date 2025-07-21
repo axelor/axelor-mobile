@@ -17,4 +17,7 @@
  */
 
 export {searchEquipementMaintenance} from './equipementMaintenanceSlice';
-export {searchMaintenanceRequests} from './maintenanceRequestSlice';
+export {
+  createMaintenanceRequest,
+  searchMaintenanceRequests,
+} from './maintenanceRequestSlice';
