@@ -43,8 +43,11 @@ const createSearchCriteria = ({productId, stockLocationId}) => {
   } else {
     criterias.push({
       fieldName: 'stockLocation.typeSelect',
-      operator: '=',
-      value: StockLocation?.typeSelect.internal,
+      operator: 'in',
+      value: [
+        StockLocation?.typeSelect.internal,
+        StockLocation?.typeSelect.external,
+      ],
     });
   }
 

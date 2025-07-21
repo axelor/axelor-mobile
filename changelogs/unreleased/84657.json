@@ -1,0 +1,5 @@
+{
+  "title": "StockLocation: manage external stock location types",
+  "type": "feat",
+  "packages": "stock"
+}
