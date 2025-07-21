@@ -126,14 +126,36 @@ export const useContextRegister = (data: Data) => {
   }, [data, isFocused]);
 };
 
-const isModelMatch = (model: Model, modelName: string, key: string) => {
-  const isModelNameMatch = model.model === modelName;
-
-  if (key) {
-    return isModelNameMatch && model.key === key;
+const computeModelIds = (model: Model): undefined | number | number[] => {
+  if (!model) {
+    return undefined;
   }
 
-  return isModelNameMatch;
+  const {id, ids} = model;
+
+  if (Array.isArray(ids) && ids.length > 0) {
+    const filteredIds = ids.filter(
+      (item, idx, self) =>
+        item != null && self.findIndex(_i => _i === item) === idx,
+    );
+
+    if (filteredIds.length > 0) return filteredIds;
+  }
+
+  if (id) return id;
+
+  return undefined;
+};
+
+const isModelMatch = (model: Model, modelName: string, key: string) => {
+  const isBaseMatch =
+    model.model === modelName && computeModelIds(model) != null;
+
+  if (!isBaseMatch) return false;
+
+  if (key) return model.key === key;
+
+  return true;
 };
 
 export const isModel = (
@@ -159,15 +181,5 @@ export const getModelId = (
 
   const foundModel = context?.models.find(m => isModelMatch(m, model, key));
 
-  if (!foundModel) {
-    return undefined;
-  }
-
-  if (Array.isArray(foundModel.ids) && foundModel.ids.length > 0) {
-    return foundModel.ids;
-  } else if (foundModel.id) {
-    return foundModel.id;
-  }
-
-  return undefined;
+  return computeModelIds(foundModel);
 };
