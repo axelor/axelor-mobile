@@ -16,15 +16,20 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import React, {useCallback, useEffect, useMemo} from 'react';
+import React, {useCallback, useMemo} from 'react';
 import {AutoCompleteSearch} from '@axelor/aos-mobile-ui';
 import {
-  displayItemName,
+  TranslatorProps,
   useDispatch,
   useSelector,
   useTranslator,
 } from '@axelor/aos-mobile-core';
 import {searchEquipementMaintenance} from '../../../features/equipementMaintenanceSlice';
+import {EquipementMaintenanceActionCard} from '../../molecules';
+
+const displayEquipement = (item: any, I18n: TranslatorProps) => {
+  return `${item.code} - ${item.name}\n${I18n.t('Maintenance_Machine')} : ${item.machine.name}`;
+};
 
 interface EquipementMaintenanceSearchBarProps {
   style?: any;
@@ -79,11 +84,15 @@ const EquipementMaintenanceSearchBarAux = ({
     [dispatch, machineId],
   );
 
-  useEffect(() => {
-    if (equipementMaintenanceList.length === 1) {
-      onChange(equipementMaintenanceList[0]);
-    }
-  }, [equipementMaintenanceList, onChange]);
+  if (defaultValue != null) {
+    return (
+      <EquipementMaintenanceActionCard
+        onPress={() => onChange(null)}
+        item={defaultValue}
+        readonly={readonly}
+      />
+    );
+  }
 
   return (
     <AutoCompleteSearch
@@ -97,7 +106,7 @@ const EquipementMaintenanceSearchBarAux = ({
       value={defaultValue}
       onChangeValue={onChange}
       fetchData={fetchEquipementMaintenanceAPI}
-      displayValue={displayItemName}
+      displayValue={_i => displayEquipement(_i, I18n)}
       readonly={readonly}
       required={required}
       showDetailsPopup={showDetailsPopup}

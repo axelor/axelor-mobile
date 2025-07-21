@@ -18,3 +18,4 @@
 
 export {default as ActionRadioSelect} from './ActionRadioSelect/ActionRadioSelect';
 export {default as ActionTypePicker} from './ActionTypePicker/ActionTypePicker';
+export {default as EquipementMaintenanceActionCard} from './EquipementMaintenanceActionCard/EquipementMaintenanceActionCard';
