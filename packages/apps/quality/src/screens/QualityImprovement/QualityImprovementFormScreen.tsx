@@ -33,6 +33,7 @@ import {
 import {fetchManufOrder} from '../../features/manufOrderSlice';
 import {fetchOperationOrder} from '../../features/operationOrderSlice';
 import {QualityImprovement as QualityImprovementType} from '../../types';
+import {fetchQIDetection} from '../../features/qiDetectionSlice';
 
 const QualityImprovementFormScreen = ({route}) => {
   const {
@@ -53,8 +54,16 @@ const QualityImprovementFormScreen = ({route}) => {
   );
   const {manufOrder} = useSelector(state => state.quality_manufOrder);
   const {operationOrder} = useSelector(state => state.quality_operationOrder);
+  const {qiDetection} = useSelector(state => state.quality_qiDetection);
+  const {mobileSettings} = useSelector(state => state.appConfig);
 
   useEffect(() => {
+    mobileSettings?.defaultQiDetectionId &&
+      dispatch(
+        (fetchQIDetection as any)({
+          id: mobileSettings?.defaultQiDetectionId,
+        }),
+      );
     qiId && dispatch((fetchQualityImprovement as any)({id: qiId}));
     stockMoveId && dispatch((fetchStockMove as any)({id: stockMoveId}));
     stockMoveLineId &&
@@ -65,6 +74,7 @@ const QualityImprovementFormScreen = ({route}) => {
   }, [
     dispatch,
     manufOrderId,
+    mobileSettings?.defaultQiDetectionId,
     operationOrderId,
     qiId,
     stockMoveId,
@@ -74,8 +84,15 @@ const QualityImprovementFormScreen = ({route}) => {
   const _defaultValue = useMemo(() => {
     let baseValue: any = {
       stepper: QualityImprovementType.Steps.detection,
-      type: QualityImprovement.type.Product,
+      type: QualityImprovement?.type.Product,
     };
+
+    if (mobileSettings?.defaultQiDetectionId) {
+      baseValue.qiDetection = qiDetection;
+      baseValue.type = qiDetection?.isProductOrigin
+        ? QualityImprovement?.type.Product
+        : QualityImprovement?.type.System;
+    }
 
     if (stockMoveId) {
       if (stockMove?.purchaseOrderSet) {
@@ -141,13 +158,15 @@ const QualityImprovementFormScreen = ({route}) => {
     };
   }, [
     QIDetection?.origin,
-    QualityImprovement.type.Product,
+    QualityImprovement?.type,
     manufOrder,
     manufOrderId,
     operationOrder,
     operationOrderId,
+    qiDetection,
     qiId,
     qualityImprovement,
+    mobileSettings?.defaultQiDetectionId,
     stockMove,
     stockMoveId,
     stockMoveLine,

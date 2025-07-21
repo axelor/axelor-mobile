@@ -21,7 +21,10 @@ import {
   generateInifiniteScrollCases,
   handlerApiCall,
 } from '@axelor/aos-mobile-core';
-import {searchQIDetection as _searchQIDetection} from '../api/qi-detection-api';
+import {
+  fetchQIDetection as _fetchQIDetection,
+  searchQIDetection as _searchQIDetection,
+} from '../api/qi-detection-api';
 
 export const searchQIDetection = createAsyncThunk(
   'quality_QiDetection/searchQIDetection',
@@ -36,11 +39,27 @@ export const searchQIDetection = createAsyncThunk(
   },
 );
 
+export const fetchQIDetection = createAsyncThunk(
+  'quality_qiDetection/fetchQIDetection',
+  async function (data, {getState}) {
+    return handlerApiCall({
+      fetchFunction: _fetchQIDetection,
+      data,
+      action: 'Quality_SliceAction_FetchQIDetection',
+      getState,
+      responseOptions: {isArrayResponse: false},
+    });
+  },
+);
+
 const initialState = {
   loadingQiDetections: false,
   moreLoadingQiDetection: false,
   isListEndQiDetection: false,
   QiDetectionList: [],
+
+  loadingQiDetection: false,
+  qiDetection: {},
 };
 
 const qiDetectionSlice = createSlice({
@@ -52,6 +71,16 @@ const qiDetectionSlice = createSlice({
       moreLoading: 'moreLoadingQiDetection',
       isListEnd: 'isListEndQiDetection',
       list: 'QiDetectionList',
+    });
+    builder.addCase(fetchQIDetection.pending, state => {
+      state.loadingQiDetection = true;
+    });
+    builder.addCase(fetchQIDetection.rejected, state => {
+      state.loadingQiDetection = false;
+    });
+    builder.addCase(fetchQIDetection.fulfilled, (state, action) => {
+      state.loadingQiDetection = false;
+      state.qiDetection = action.payload;
     });
   },
 });
