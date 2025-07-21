@@ -27,6 +27,7 @@ import {
 import {
   useContextRegister,
   useDispatch,
+  usePermitted,
   useSelector,
   useTranslator,
 } from '@axelor/aos-mobile-core';
@@ -47,6 +48,9 @@ const CustomerDeliveryDetailScreen = ({route}) => {
     models: [
       {model: 'com.axelor.apps.stock.db.StockMove', id: customerDeliveryId},
     ],
+  });
+  const {readonly} = usePermitted({
+    modelName: 'com.axelor.apps.stock.db.StockMove',
   });
 
   const {loading, customerDelivery} = useSelector(
@@ -84,15 +88,13 @@ const CustomerDeliveryDetailScreen = ({route}) => {
           customerDelivery={customerDelivery}
         />
         <CustomerDeliverySearchLineContainer />
-
-        <CustomerDeliveryNotes notes={customerDelivery?.note} />
+        <CustomerDeliveryNotes
+          notes={customerDelivery?.note}
+          readonly={readonly}
+        />
         <NotesCard
           title={I18n.t('Stock_PickingOrderComments')}
           data={customerDelivery?.pickingOrderComments}
-        />
-        <NotesCard
-          title={I18n.t('Stock_NotesOnStockMove')}
-          data={customerDelivery?.note}
         />
         <NotesCard
           title={I18n.t('Stock_DeliveryCondition')}
@@ -102,11 +104,8 @@ const CustomerDeliveryDetailScreen = ({route}) => {
     </Screen>
   );
 };
+
 const styles = StyleSheet.create({
-  item: {
-    marginHorizontal: 1,
-    marginVertical: 4,
-  },
   scroll: {
     paddingVertical: 10,
   },

@@ -91,9 +91,7 @@ export const updateCustomerDeliveryNote = createAsyncThunk(
       getState,
       responseOptions: {showToast: true},
     }).then(() => {
-      dispatch(
-        fetchCustomerDelivery({customerDeliveryId: data.customerDeliveryId}),
-      );
+      dispatch(fetchCustomerDelivery(data));
     });
   },
 );
@@ -122,10 +120,6 @@ const customerDeliverySlice = createSlice({
       state.loading = true;
     });
     builder.addCase(fetchCustomerDelivery.fulfilled, (state, action) => {
-      state.loading = false;
-      state.customerDelivery = action.payload;
-    });
-    builder.addCase(updateCustomerDeliveryNote.fulfilled, (state, action) => {
       state.loading = false;
       state.customerDelivery = action.payload;
     });
