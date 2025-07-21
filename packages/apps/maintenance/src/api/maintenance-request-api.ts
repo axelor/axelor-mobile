@@ -102,6 +102,7 @@ export async function searchMaintenanceRequests({
     sortKey: 'maintenance_maintenanceRequest',
     page,
     filter: filterDomain,
+    provider: 'model',
   });
 }
 
