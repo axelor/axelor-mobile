@@ -16,7 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import {Module} from '@axelor/aos-mobile-core';
+import {getModelId, isModel, Module} from '@axelor/aos-mobile-core';
 import enTranslations from './i18n/en.json';
 import frTranslations from './i18n/fr.json';
 import MaintenanceScreens from './screens';
@@ -65,6 +65,22 @@ export const MaintenanceModule: Module = {
     typeObjects: maintenance_typeObjects,
     headerRegisters: useMaintenanceHeaders,
   },
+  globalTools: [
+    {
+      key: 'maintenance_createRequest',
+      iconName: 'wrench',
+      onPress: ({navigation, screenContext}) =>
+        navigation.navigate('MaintenanceRequestFormScreen', {
+          machineId: getModelId(
+            screenContext,
+            'com.axelor.apps.production.db.Machine',
+          ),
+        }),
+      title: 'Maintenance_CreateMaintenanceRequest',
+      hideIf: ({screenContext}) =>
+        !isModel(screenContext, 'com.axelor.apps.production.db.Machine'),
+    },
+  ],
 };
 
 export * from './api';

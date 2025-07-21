@@ -1,0 +1,5 @@
+{
+  "title": "FloatingButton: display titles on the left",
+  "type": "fix",
+  "packages": "ui"
+}

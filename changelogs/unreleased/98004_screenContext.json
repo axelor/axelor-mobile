@@ -1,0 +1,5 @@
+{
+  "title": "Screen context: filter undefined ids to avoid sending inconsistent results in helpers",
+  "type": "fix",
+  "packages": "core"
+}
