@@ -35,18 +35,23 @@ import {fetchOperationOrderById} from '../../features/operationOrderSlice';
 function OperationOrderDetailsScreen({route}) {
   const {operationOrderId} = route.params;
   const dispatch = useDispatch();
-  useContextRegister({
-    models: [
-      {
-        model: 'com.axelor.apps.production.db.OperationOrder',
-        id: operationOrderId,
-      },
-    ],
-  });
 
   const {loadingOrder, operationOrder} = useSelector(
     state => state.operationOrder,
   );
+
+  useContextRegister({
+    models: [
+      {
+        model: 'com.axelor.apps.production.db.OperationOrder',
+        id: operationOrder?.id,
+      },
+      {
+        model: 'com.axelor.apps.production.db.Machine',
+        id: operationOrder?.machine?.id,
+      },
+    ],
+  });
 
   const getOperationOrder = useCallback(() => {
     dispatch(fetchOperationOrderById({operationOrderId}));

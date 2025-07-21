@@ -46,7 +46,7 @@ const MachineSearchBar = ({
   onChange,
   readonly = false,
   required = false,
-  showTitle = true,
+  showTitle = false,
   showDetailsPopup = true,
   navigate = false,
   oneFilter = false,
