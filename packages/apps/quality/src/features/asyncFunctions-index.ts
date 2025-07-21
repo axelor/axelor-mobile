@@ -38,7 +38,7 @@ export {searchProduct} from './productSlice';
 export {searchSupplierPurchaseOrderLine} from './purchaseOrderLineSlice';
 export {searchSupplierOrder} from './purchaseOrderSlice';
 export {searchQIAnalysisMethod} from './qiAnalysisMethodSlice';
-export {searchQIDetection} from './qiDetectionSlice';
+export {fetchQIDetection, searchQIDetection} from './qiDetectionSlice';
 export {searchDefect} from './qiDefaultSlice';
 export {
   createQualityImprovement,

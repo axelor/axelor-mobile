@@ -47,7 +47,10 @@ export {searchProduct as searchProductApi} from './product-api';
 export {searchSupplierOrder as searchSupplierOrderApi} from './purchase-order-api';
 export {searchSupplierPurchaseOrderLine as searchSupplierPurchaseOrderLineApi} from './purchase-order-line-api';
 export {searchQIAnalysisMethod as searchQIAnalysisMethodApi} from './qi-analysis-method-api';
-export {searchQIDetection as searchQIDetectionApi} from './qi-detection-api';
+export {
+  fetchQIDetection as fetchQIDetectionApi,
+  searchQIDetection as searchQIDetectionApi,
+} from './qi-detection-api';
 export {searchDefect as searchDefectApi} from './qi-default-api';
 export {
   createQualityImprovement as createQualityImprovementApi,
