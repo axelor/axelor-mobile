@@ -29,6 +29,7 @@ export {
   fetchCustomerDelivery,
   realizeCustomerDelivery,
   searchDeliveries,
+  updateCustomerDeliveryNote,
 } from './customerDeliverySlice';
 export {
   addTrackingNumber as addTrackingNumberToInternalMoveLine,

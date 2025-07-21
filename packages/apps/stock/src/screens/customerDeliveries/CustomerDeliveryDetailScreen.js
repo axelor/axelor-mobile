@@ -34,10 +34,11 @@ import {
   CustomerDeliverySearchLineContainer,
   CustomerDeliveryMovementIndicationCard,
   CustomerDeliveryRealizeButton,
+  CustomerDeliveryNotes,
 } from '../../components';
 import {fetchCustomerDelivery} from '../../features/customerDeliverySlice';
 
-const CustomerDeliveryDetailScreen = ({route, navigation}) => {
+const CustomerDeliveryDetailScreen = ({route}) => {
   const customerDeliveryId = route.params.customerDeliveryId;
   const I18n = useTranslator();
   const dispatch = useDispatch();
@@ -81,13 +82,10 @@ const CustomerDeliveryDetailScreen = ({route, navigation}) => {
           customerDelivery={customerDelivery}
         />
         <CustomerDeliverySearchLineContainer />
+        <CustomerDeliveryNotes notes={customerDelivery?.note} />
         <NotesCard
           title={I18n.t('Stock_PickingOrderComments')}
           data={customerDelivery?.pickingOrderComments}
-        />
-        <NotesCard
-          title={I18n.t('Stock_NotesOnStockMove')}
-          data={customerDelivery?.note}
         />
         <NotesCard
           title={I18n.t('Stock_DeliveryCondition')}

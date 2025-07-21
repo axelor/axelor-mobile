@@ -19,6 +19,7 @@
 import {
   createStandardFetch,
   createStandardSearch,
+  formatRequestBody,
   getActionApi,
   getSearchCriterias,
   getTypes,
@@ -175,5 +176,27 @@ export async function realizeSockMove({stockMoveId, version}) {
       version,
     },
     description: 'realize customer delivery',
+  });
+}
+
+export async function updateCustomerDeliveryNote({
+  customerDeliveryId,
+  version,
+  note,
+}) {
+  const body = {id: customerDeliveryId, version, note};
+
+  const {matchers} = formatRequestBody(body, 'data');
+
+  return getActionApi().send({
+    url: '/ws/rest/com.axelor.apps.stock.db.StockMove',
+    method: 'post',
+    body: {data: body},
+    description: 'update customer delivery note',
+    matchers: {
+      modelName: 'com.axelor.apps.stock.db.StockMove',
+      id: customerDeliveryId,
+      fields: matchers,
+    },
   });
 }

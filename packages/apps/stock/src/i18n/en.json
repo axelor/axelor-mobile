@@ -199,5 +199,6 @@
   "Stock_SliceAction_SplitSupplierArrivalLine": "split supplier arrival line",
   "Stock_SliceAction_FetchProductCompanyWithId": "fetch product by company",
   "Stock_SliceAction_SplitCustomerDeliveryLine": "split customer delivery line",
-  "Stock_SliceAction_SearchAlternativeBarcode": "search for alternative barcodes"
+  "Stock_SliceAction_SearchAlternativeBarcode": "search for alternative barcodes",
+  "Stock_SliceAction_UpdateCustomerDeliveryNote": "update customer delivery note"
 }
