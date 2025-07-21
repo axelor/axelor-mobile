@@ -17,6 +17,7 @@
  */
 
 import React, {useCallback, useMemo} from 'react';
+import {StyleSheet} from 'react-native';
 import {EditableHtmlInput, NotesCard} from '@axelor/aos-mobile-ui';
 import {
   useDispatch,
@@ -26,7 +27,6 @@ import {
   useTypes,
 } from '@axelor/aos-mobile-core';
 import {updateCustomerDeliveryNote} from '../../../../features/customerDeliverySlice';
-import {StyleSheet} from 'react-native';
 
 interface CustomerDeliveryNotesProps {
   titleKey?: string;
