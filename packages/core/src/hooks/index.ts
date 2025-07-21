@@ -21,6 +21,7 @@ export {useCurrencyFormat} from './use-currency-formatter';
 export {useMassScanner} from './use-mass-scanner';
 export {
   useIsFocused,
+  useIsNavigationRoot,
   useNavigation,
   useNavigationRoutes,
   useStackChecker,

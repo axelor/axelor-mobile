@@ -20,4 +20,5 @@ import {SortFields} from '@axelor/aos-mobile-core';
 
 export const maintenance_sortFields: SortFields = {
   maintenance_maintenanceRequest: [],
+  maintenance_equipementMaintenance: ['code'],
 };
