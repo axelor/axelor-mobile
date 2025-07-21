@@ -37,4 +37,15 @@ export const maintenance_modelAPI: ObjectFields = {
     statusSelect: schemaContructor.number(),
     actionSelect: schemaContructor.number(),
   }),
+  maintenance_equipementMaintenance: schemaContructor.object({
+    code: schemaContructor.string(),
+    name: schemaContructor.string(),
+    image: schemaContructor.subObject('fileName'),
+    machine: schemaContructor.subObject().concat(
+      schemaContructor.object({
+        code: schemaContructor.string(),
+        name: schemaContructor.string(),
+      }),
+    ),
+  }),
 };
