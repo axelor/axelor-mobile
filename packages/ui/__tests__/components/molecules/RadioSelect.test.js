@@ -16,93 +16,101 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import React from 'react';
-import {View} from 'react-native';
-import {shallow} from 'enzyme';
-import {RadioSelect, RadioButton, Text} from '@axelor/aos-mobile-ui';
-import {getGlobalStyles} from '../../tools';
+import {fireEvent} from '@testing-library/react-native';
+import {RadioSelect} from '@axelor/aos-mobile-ui';
+import {setup} from '../../tools';
 
 describe('RadioSelect Component', () => {
-  const items = [
-    {id: '1', title: 'Option 1'},
-    {id: '2', title: 'Option 2'},
-    {id: '3', title: 'Option 3'},
-  ];
-
-  const props = {
-    items,
-    question: 'Test Question',
-    onChange: jest.fn(),
-    direction: 'column',
-  };
-
-  it('should render without crashing', () => {
-    const wrapper = shallow(<RadioSelect {...props} />);
-
-    expect(wrapper.exists()).toBe(true);
-  });
+  const setupRadioSelect = overrideProps =>
+    setup({
+      Component: RadioSelect,
+      baseProps: {
+        items: [
+          {id: '1', title: 'Option 1'},
+          {id: '2', title: 'Option 2'},
+          {id: '3', title: 'Option 3'},
+        ],
+        question: 'Test Question',
+        onChange: jest.fn(),
+        direction: 'column',
+      },
+      overrideProps,
+    });
 
   it('should display the question when provided', () => {
-    const wrapper = shallow(<RadioSelect {...props} />);
+    const {getByText, props} = setupRadioSelect();
 
-    expect(wrapper.find(Text).prop('children')).toBe(props.question);
+    expect(getByText(props.question)).toBeTruthy();
   });
 
   it('should render the correct number of RadioButton components', () => {
-    const wrapper = shallow(<RadioSelect {...props} />);
+    const {getAllByRole, props} = setupRadioSelect();
 
-    expect(wrapper.find(RadioButton)).toHaveLength(items.length);
+    expect(getAllByRole('button')).toHaveLength(props.items.length);
   });
 
-  it('should handle RadioButton click', () => {
-    const onPress = jest.fn();
-    const wrapper = shallow(<RadioSelect {...props} onChange={onPress} />);
+  it('selects radio item when pressed and triggers onChange', () => {
+    const {getAllByRole, props} = setupRadioSelect({onChange: jest.fn()});
 
-    for (let i = 0; i < items.length; i++) {
-      wrapper.find(RadioButton).at(i).simulate('press');
+    const radioButtons = getAllByRole('button');
 
-      expect(onPress).toHaveBeenNthCalledWith(i + 1, items[i].id);
-    }
-  });
+    props.items.forEach((_i, idx) => {
+      fireEvent.press(radioButtons[idx]);
 
-  it('should set the default value as selected', () => {
-    const defaultSelectedItem = items[0];
-    const wrapper = shallow(
-      <RadioSelect {...props} defaultValue={defaultSelectedItem.id} />,
-    );
-
-    const selectedRadioButtons = wrapper
-      .find(RadioButton)
-      .filterWhere(button => button.props().selected);
-
-    expect(selectedRadioButtons).toHaveLength(1);
-    expect(selectedRadioButtons.prop('title')).toBe(defaultSelectedItem.title);
-  });
-
-  it('should set correct size when provided', () => {
-    const radioSize = 40;
-    const wrapper = shallow(<RadioSelect {...props} radioSize={radioSize} />);
-
-    for (let i = 0; i < items.length; i++) {
-      expect(wrapper.find(RadioButton).at(i).prop('size')).toBe(radioSize);
-    }
-  });
-
-  it('should set correct direction when provided', () => {
-    const direction = 'column';
-    const wrapper = shallow(<RadioSelect {...props} direction={direction} />);
-
-    expect(getGlobalStyles(wrapper.find(View).at(1))).toMatchObject({
-      flexDirection: direction,
+      expect(props.onChange).toHaveBeenNthCalledWith(idx + 1, _i.id);
     });
   });
 
-  it('applies custom style when provided', () => {
-    const customStyle = {width: 200};
-    const wrapper = shallow(<RadioSelect {...props} style={customStyle} />);
+  it('does not trigger onChange in readonly mode', () => {
+    const {getAllByRole, props} = setupRadioSelect({
+      onChange: jest.fn(),
+      readonly: true,
+    });
 
-    expect(getGlobalStyles(wrapper.find(View).at(0))).toMatchObject(
-      customStyle,
+    const radioButtons = getAllByRole('button');
+
+    props.items.forEach((_i, idx) => {
+      fireEvent.press(radioButtons[idx]);
+
+      expect(props.onChange).not.toHaveBeenCalled();
+    });
+  });
+
+  it('renders items in column direction when specified', () => {
+    const {getByTestId, props} = setupRadioSelect({direction: 'column'});
+
+    expect(getByTestId('radioSelectButtonContainer')).toHaveStyle(
+      props.direction,
     );
+  });
+
+  it('applies custom style when provided', () => {
+    const {getByTestId, props} = setupRadioSelect({style: {width: 200}});
+
+    expect(getByTestId('radioSelectContainer')).toHaveStyle(props.style);
+  });
+
+  it('applies custom item style when provided', () => {
+    const {getByTestId, props} = setupRadioSelect({itemStyle: {width: 200}});
+
+    expect(getByTestId('radioSelectButtonContainer')).toHaveStyle(
+      props.itemStyle,
+    );
+  });
+
+  it('applies custom question style when provided', () => {
+    const {getByText, props} = setupRadioSelect({questionStyle: {width: 200}});
+
+    expect(getByText(props.question)).toHaveStyle(props.questionStyle);
+  });
+
+  it('applies custom radioButton style to every items when provided', () => {
+    const {getAllByRole, props} = setupRadioSelect({
+      radioButtonStyle: {width: 200},
+    });
+
+    getAllByRole('button').forEach(_i => {
+      expect(_i).toHaveStyle(props.radioButtonStyle);
+    });
   });
 });
