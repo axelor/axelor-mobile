@@ -1,6 +1,7 @@
 {
   "Maintenance_Maintenance": "Maintenance",
   "Maintenance_MaintenanceRequests": "Maintenance requests",
+  "Maintenance_MaintenanceEquipment": "Maintenance equipment",
   "Maintenance_Machine": "Machine",
   "Maintenance_Deadline": "Deadline",
   "Maintenance_RequestActionType": "Action",
@@ -11,5 +12,8 @@
   "Maintenance_RequestStatus_Completed": "Completed",
   "Maintenance_RequestStatus_Canceled": "Canceled",
   "Maintenance_CreateMaintenanceRequest": "Create maintenance request",
-  "Maintenance_SliceAction_SearchMaintenanceRequests": "search maintenance requests"
+  "Maintenance_CreateRequest": "Create request",
+  "Maintenance_SliceAction_SearchMaintenanceRequests": "search maintenance requests",
+  "Maintenance_SliceAction_CreateMaintenanceRequest": "create maitenance request",
+  "Maintenance_SliceAction_SearchEquipementMaintenance": "search maintenance equipments"
 }
