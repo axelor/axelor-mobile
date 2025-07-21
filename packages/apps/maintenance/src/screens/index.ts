@@ -17,6 +17,7 @@
  */
 
 import MaintenanceRequestListScreen from './MaintenanceRequestListScreen';
+import MaintenanceRequestFormScreen from './MaintenanceRequestFormScreen';
 
 export default {
   MaintenanceRequestListScreen: {
@@ -26,6 +27,12 @@ export default {
     options: {shadedHeader: false},
     isUsableOnShortcut: true,
   },
+  MaintenanceRequestFormScreen: {
+    title: 'Maintenance_CreateRequest',
+    component: MaintenanceRequestFormScreen,
+    isUsableOnShortcut: true,
+  },
 };
 
 export {MaintenanceRequestListScreen};
+export {MaintenanceRequestFormScreen};

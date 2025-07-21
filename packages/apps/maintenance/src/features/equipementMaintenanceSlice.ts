@@ -21,15 +21,15 @@ import {
   generateInifiniteScrollCases,
   handlerApiCall,
 } from '@axelor/aos-mobile-core';
-import {searchMaintenanceRequests as _searchMaintenanceRequests} from '../api/maintenance-request-api';
+import {searchEquipementMaintenance as _searchEquipementMaintenance} from '../api/equipement-maintenance-api';
 
-export const searchMaintenanceRequests = createAsyncThunk(
-  'maintenance_maintenanceRequest/searchMaintenanceRequests',
+export const searchEquipementMaintenance = createAsyncThunk(
+  'maintenance_equipementMaintenance/searchEquipementMaintenance',
   async function (data, {getState}) {
     return handlerApiCall({
-      fetchFunction: _searchMaintenanceRequests,
+      fetchFunction: _searchEquipementMaintenance,
       data,
-      action: 'Maintenance_SliceAction_SearchMaintenanceRequests',
+      action: 'Maintenance_SliceAction_SearchEquipementMaintenance',
       getState,
       responseOptions: {isArrayResponse: true},
     });
@@ -37,23 +37,24 @@ export const searchMaintenanceRequests = createAsyncThunk(
 );
 
 const initialState = {
-  loadingMaintenanceRequests: false,
-  moreLoadingMaintenanceRequest: false,
-  isListEndMaintenanceRequest: false,
-  maintenanceRequestList: [],
+  loadingEquipementMaintenances: false,
+  moreLoadingEquipementMaintenance: false,
+  isListEndEquipementMaintenance: false,
+  equipementMaintenanceList: [],
 };
 
-const maintenanceRequestSlice = createSlice({
-  name: 'maintenance_maintenanceRequest',
+const equipementMaintenanceSlice = createSlice({
+  name: 'maintenance_equipementMaintenance',
   initialState,
+  reducers: {},
   extraReducers: builder => {
-    generateInifiniteScrollCases(builder, searchMaintenanceRequests, {
-      loading: 'loadingMaintenanceRequests',
-      moreLoading: 'moreLoadingMaintenanceRequest',
-      isListEnd: 'isListEndMaintenanceRequest',
-      list: 'maintenanceRequestList',
+    generateInifiniteScrollCases(builder, searchEquipementMaintenance, {
+      loading: 'loadingEquipementMaintenances',
+      moreLoading: 'moreLoadingEquipementMaintenance',
+      isListEnd: 'isListEndEquipementMaintenance',
+      list: 'equipementMaintenanceList',
     });
   },
 });
 
-export const maintenanceRequestReducer = maintenanceRequestSlice.reducer;
+export const equipementMaintenanceReducer = equipementMaintenanceSlice.reducer;

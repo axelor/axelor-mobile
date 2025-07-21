@@ -16,4 +16,8 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-export {searchMaintenanceRequests as searchMaintenanceRequestsApi} from './maintenance-request-api';
+export {searchEquipementMaintenance as searchEquipementMaintenanceApi} from './equipement-maintenance-api';
+export {
+  createMaintenanceRequest as createMaintenanceRequestApi,
+  searchMaintenanceRequests as searchMaintenanceRequestsApi,
+} from './maintenance-request-api';

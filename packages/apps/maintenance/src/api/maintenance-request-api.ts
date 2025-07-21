@@ -19,6 +19,7 @@
 import {
   createStandardSearch,
   Criteria,
+  getActionApi,
   getSearchCriterias,
 } from '@axelor/aos-mobile-core';
 
@@ -101,5 +102,20 @@ export async function searchMaintenanceRequests({
     sortKey: 'maintenance_maintenanceRequest',
     page,
     filter: filterDomain,
+  });
+}
+
+export async function createMaintenanceRequest({}) {
+  // TODO: finalize request path
+  return getActionApi().send({
+    method: 'post',
+    url: '/ws/aos/maintenance-request',
+    body: {},
+    description: 'create maintenance request',
+    matchers: {
+      modelName: 'com.axelor.apps.maintenance.db.MaintenanceRequest',
+      id: Date.now(),
+      fields: {},
+    },
   });
 }
