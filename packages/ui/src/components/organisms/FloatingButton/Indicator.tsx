@@ -45,6 +45,7 @@ const Indicator = ({
 
   return (
     <View
+      testID="floatingButtonIndicator"
       style={[
         styles.indicator,
         {
