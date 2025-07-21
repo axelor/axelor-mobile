@@ -20,16 +20,20 @@ import React, {useEffect, useMemo, useState} from 'react';
 import {StyleSheet, View} from 'react-native';
 import {checkNullString, getCommonStyles} from '../../../utils';
 import {useThemeColor} from '../../../theme';
-import {HtmlInput, Icon} from '../../atoms';
+import {HtmlInput, Icon, Text} from '../../atoms';
 
 interface EditableHtmlInputProps {
-  placeholder: string;
+  style?: any;
+  title?: string;
+  placeholder?: string;
   defaultValue: string;
   readonly?: boolean;
   onValidate: (value: string) => void;
 }
 
 const EditableHtmlInput = ({
+  style,
+  title,
   placeholder,
   defaultValue,
   readonly = false,
@@ -58,28 +62,44 @@ const EditableHtmlInput = ({
   }
 
   return (
-    <View style={[commonStyles.filter, commonStyles.filterAlign]}>
-      <HtmlInput
-        style={styles.htmlInput}
-        styleToolbar={styles.htmlToolBar}
-        placeholder={placeholder}
-        defaultInput={value}
-        readonly={readonly || isEditable}
-        onChange={setValue}
-      />
-      {!readonly && (
-        <Icon
-          name={isEditable ? 'pencil-fill' : 'check-lg'}
-          size={15}
-          touchable
-          onPress={handleIconPress}
+    <View style={[styles.container, style]}>
+      {!checkNullString(title) && <Text style={styles.title}>{title}</Text>}
+      <View
+        style={[commonStyles.filter, commonStyles.filterAlign, styles.content]}>
+        <HtmlInput
+          style={styles.htmlInput}
+          styleToolbar={styles.htmlToolBar}
+          placeholder={placeholder}
+          defaultInput={value}
+          readonly={readonly || isEditable}
+          onChange={setValue}
         />
-      )}
+        {!readonly && (
+          <Icon
+            name={isEditable ? 'pencil-fill' : 'check-lg'}
+            size={15}
+            touchable
+            onPress={handleIconPress}
+          />
+        )}
+      </View>
     </View>
   );
 };
 
 const styles = StyleSheet.create({
+  container: {
+    width: '90%',
+    alignSelf: 'center',
+  },
+  title: {
+    marginLeft: 10,
+  },
+  content: {
+    width: '100%',
+    marginHorizontal: 0,
+    minHeight: 40,
+  },
   htmlInput: {
     fontSize: 14,
     flex: 1,
