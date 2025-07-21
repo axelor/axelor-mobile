@@ -53,5 +53,6 @@ export async function searchEquipementMaintenance({
     fieldKey: 'maintenance_equipementMaintenance',
     sortKey: 'maintenance_equipementMaintenance',
     page,
+    provider: 'model',
   });
 }
