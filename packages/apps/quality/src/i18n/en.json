@@ -82,5 +82,6 @@
   "Quality_SliceAction_FetchManufOrder": "fetch manuf order",
   "Quality_SliceAction_FetchOperationOrder": "fetch operation order",
   "Quality_SliceAction_CreateQualityImprovement": "create quality improvement",
-  "Quality_SliceAction_UpdateQualityImprovement": "update quality improvement"
+  "Quality_SliceAction_UpdateQualityImprovement": "update quality improvement",
+  "Quality_SliceAction_FetchQIDetection": "fetch quality detection"
 }
