@@ -22,6 +22,7 @@ import frTranslations from './i18n/fr.json';
 import MaintenanceScreens from './screens';
 import * as maintenanceReducers from './features';
 import {
+  maintenance_formsRegister,
   maintenance_modelAPI,
   maintenance_searchFields,
   maintenance_sortFields,
@@ -48,10 +49,16 @@ export const MaintenanceModule: Module = {
       icon: 'clipboard-x',
       screen: 'MaintenanceRequestListScreen',
     },
+    maintenance_menu_createRequest: {
+      title: 'Maintenance_CreateRequest',
+      icon: 'plus-lg',
+      screen: 'MaintenanceRequestFormScreen',
+    },
   },
   screens: MaintenanceScreens,
   reducers: maintenanceReducers,
   models: {
+    formsRegister: maintenance_formsRegister,
     objectFields: maintenance_modelAPI,
     searchFields: maintenance_searchFields,
     sortFields: maintenance_sortFields,

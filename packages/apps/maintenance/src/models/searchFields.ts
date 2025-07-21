@@ -25,4 +25,10 @@ export const maintenance_searchFields: SearchFields = {
     'machine.code',
     'machine.name',
   ],
+  maintenance_equipementMaintenance: [
+    'code',
+    'name',
+    'machine.code',
+    'machine.name',
+  ],
 };

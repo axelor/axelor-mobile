@@ -16,4 +16,5 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+export {equipementMaintenanceReducer as maintenance_equipementMaintenance} from './equipementMaintenanceSlice';
 export {maintenanceRequestReducer as maintenance_maintenanceRequest} from './maintenanceRequestSlice';
