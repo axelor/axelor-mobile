@@ -25,5 +25,6 @@ export {default as CustomerDeliveryLineCreationButton} from './CustomerDeliveryL
 export {default as CustomerDeliveryLineQuantityCard} from './CustomerDeliveryLineQuantityCard/CustomerDeliveryLineQuantityCard';
 export {default as CustomerDeliveryLineTrackingNumberSelect} from './CustomerDeliveryLineTrackingNumberSelect/CustomerDeliveryLineTrackingNumberSelect';
 export {default as CustomerDeliveryMovementIndicationCard} from './CustomerDeliveryMovementIndicationCard/CustomerDeliveryMovementIndicationCard';
+export {default as CustomerDeliveryNotes} from './CustomerDeliveryNotes/CustomerDeliveryNotes';
 export {default as CustomerDeliveryRealizeButton} from './CustomerDeliveryRealizeButton/CustomerDeliveryRealizeButton';
 export {default as CustomerDeliverySearchLineContainer} from './CustomerDeliverySearchLineContainer/CustomerDeliverySearchLineContainer';
