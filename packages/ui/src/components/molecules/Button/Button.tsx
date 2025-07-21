@@ -23,6 +23,7 @@ import {Color, useThemeColor} from '../../../theme';
 import {Icon, Text} from '../../atoms';
 
 export interface ButtonProps {
+  testID?: string;
   width?: DimensionValue;
   color?: Color;
   isNeutralBackground?: boolean;
@@ -38,6 +39,7 @@ export interface ButtonProps {
 }
 
 const Button = ({
+  testID,
   width = '90%',
   color,
   isNeutralBackground = false,
@@ -85,6 +87,7 @@ const Button = ({
 
   return (
     <TouchableOpacity
+      testID={testID}
       style={[commonStyles.button, styles.colorButton, style]}
       onPress={disabled ? onDisabledPress : onPress}
       disabled={disabled && !onDisabledPress}

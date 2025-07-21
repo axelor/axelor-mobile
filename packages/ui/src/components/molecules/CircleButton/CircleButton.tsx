@@ -24,6 +24,7 @@ import {Color} from '../../../theme';
 const BUTTON_SIZE = 50;
 
 interface CircleButtonProps {
+  testID?: string;
   square?: boolean;
   size?: number;
   color?: Color;
@@ -36,6 +37,7 @@ interface CircleButtonProps {
 }
 
 const CircleButton = ({
+  testID,
   square = true,
   size = BUTTON_SIZE,
   color,
@@ -54,6 +56,7 @@ const CircleButton = ({
 
   return (
     <Button
+      testID={testID}
       color={color}
       isNeutralBackground={isNeutralBackground}
       iconName={iconName}
