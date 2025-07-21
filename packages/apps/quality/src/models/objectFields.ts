@@ -110,6 +110,8 @@ export const quality_modelAPI: ObjectFields = {
     name: schemaContructor.string(),
     code: schemaContructor.string(),
     origin: schemaContructor.number(),
+    isProductOrigin: schemaContructor.boolean(),
+    isSystemOrigin: schemaContructor.boolean(),
   }),
   quality_qiAnalysisMethod: schemaContructor.object({
     code: schemaContructor.string(),
