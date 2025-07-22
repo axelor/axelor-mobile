@@ -1,0 +1,5 @@
+{
+  "title": "saleOrderLine: add disponibility display",
+  "type": "feat",
+  "packages": "sale"
+}

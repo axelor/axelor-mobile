@@ -66,6 +66,7 @@ const SaleOrderLineListScreen = ({}) => {
         data={saleOrderLineList}
         renderItem={({item}) => (
           <SaleOrderLineCard
+            availableStatusSelect={item.availableStatusSelect}
             typeSelect={item.typeSelect}
             product={item.product}
             productName={item.productName}

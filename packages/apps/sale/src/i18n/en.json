@@ -60,6 +60,8 @@
   "Sale_SOLineType_Title": "Title",
   "Sale_SOLineType_StartOfPack": "Start of pack",
   "Sale_SOLineType_EndOfPack": "End of pack",
+  "Sale_SOLineAvailableStatus_Available": "Available",
+  "Sale_SOLineAvailableStatus_Missing": "Missing",
   "Sale_UnitPrice": "Unit price",
   "Sale_SeeComplementaryProducts": "See complementary products",
   "Sale_SeeVariantProducts": "See variant products",

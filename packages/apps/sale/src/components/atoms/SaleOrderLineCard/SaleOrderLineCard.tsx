@@ -22,6 +22,7 @@ import {
   useCurrencyFormat,
   useMetafileUri,
   useTranslator,
+  useTypeHelpers,
   useTypes,
 } from '@axelor/aos-mobile-core';
 import {
@@ -34,6 +35,7 @@ import {
 
 interface SaleOrderLineCardProps {
   style?: any;
+  availableStatusSelect?: number;
   typeSelect: number;
   product?: any;
   productName: string;
@@ -51,6 +53,7 @@ interface SaleOrderLineCardProps {
 
 const SaleOrderLineCard = ({
   style,
+  availableStatusSelect,
   typeSelect,
   product,
   productName,
@@ -71,6 +74,7 @@ const SaleOrderLineCard = ({
   const formatNumber = useDigitFormat();
   const formatPrice = usePriceFormat();
   const formatCurrencyPrice = useCurrencyFormat();
+  const {getItemColor, getItemTitle} = useTypeHelpers();
 
   const total = useMemo(
     () => (SOinAti ? inTaxTotal : exTaxTotal),
@@ -82,6 +86,7 @@ const SaleOrderLineCard = ({
       <ObjectCard
         style={[styles.card, styles.cardPadding, style]}
         iconLeftMargin={5}
+        leftContainerFlex={2}
         onPress={onPress}
         image={{
           generalStyle: styles.imageSize,
@@ -114,6 +119,17 @@ const SaleOrderLineCard = ({
         sideBadges={{
           style: styles.sideContainer,
           items: [
+            {
+              displayText: getItemTitle(
+                SaleOrderLine?.availableStatusSelect,
+                availableStatusSelect,
+              ),
+              color: getItemColor(
+                SaleOrderLine?.availableStatusSelect,
+                availableStatusSelect,
+              ),
+              showIf: availableStatusSelect != null,
+            },
             {
               customComponent: (
                 <TextUnit
