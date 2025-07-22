@@ -25,21 +25,15 @@ const createProjectCriteria = ({
   searchValue,
   isBusinessProject,
   manageTimeSpent,
+  inProgress,
 }) => {
   const criteria = [getSearchCriterias('hr_project', searchValue)];
 
   if (isBusinessProject) {
-    const _businessCriteria = [
-      {
-        fieldName: 'isBusinessProject',
-        operator: '=',
-        value: true,
-      },
-    ];
-
     criteria.push({
-      operator: 'and',
-      criteria: _businessCriteria,
+      fieldName: 'isBusinessProject',
+      operator: '=',
+      value: true,
     });
   }
 
@@ -48,6 +42,14 @@ const createProjectCriteria = ({
       fieldName: 'manageTimeSpent',
       operator: '=',
       value: true,
+    });
+  }
+
+  if (inProgress) {
+    criteria.push({
+      fieldName: 'projectStatus.isCompleted',
+      operator: '=',
+      value: false,
     });
   }
 
@@ -103,6 +105,9 @@ export async function searchProject({
   activeCompanyId,
   isBusinessProject,
   manageTimeSpent,
+  isMemberRequired,
+  userId,
+  inProgress,
 }) {
   return createStandardSearch({
     model: 'com.axelor.apps.project.db.Project',
@@ -111,6 +116,11 @@ export async function searchProject({
       searchValue,
       isBusinessProject,
       manageTimeSpent,
+      inProgress,
+    }),
+    ...(isMemberRequired && {
+      domain: ':user MEMBER OF self.membersUserSet OR self.assignedTo = :user',
+      domainContext: {user: {id: userId}},
     }),
     fieldKey: 'hr_project',
     sortKey: 'hr_project',

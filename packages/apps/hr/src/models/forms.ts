@@ -99,6 +99,10 @@ export const hr_formsRegister: FormConfigs = {
         type: 'object',
         widget: 'custom',
         customComponent: ProjectSearchBar,
+        options: {
+          inProgress: true,
+          isMemberRequired: true,
+        },
         hideIf: ({storeState}) =>
           !storeState.appConfig.mobileSettings
             ?.isExpenseProjectInvoicingEnabled,
@@ -106,9 +110,6 @@ export const hr_formsRegister: FormConfigs = {
           projectTask: ({newValue}) => {
             return newValue?.project;
           },
-        },
-        options: {
-          isBusinessProject: true,
         },
       },
       projectTask: {
@@ -278,6 +279,7 @@ export const hr_formsRegister: FormConfigs = {
           ),
         options: {
           manageTimeSpent: true,
+          isMemberRequired: true,
         },
       },
       projectTask: {
