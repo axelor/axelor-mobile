@@ -79,6 +79,7 @@ const InternalMoveLineActionCard = ({
             ? internalMoveLine.availableStatusSelect
             : null
         }
+        totalNetMass={internalMoveLine.totalNetMass}
         stockMoveLineId={internalMoveLine.id}
         onPress={onPress}
       />

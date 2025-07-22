@@ -16,15 +16,15 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import React from 'react';
-import {StyleSheet} from 'react-native';
-import {QuantityCard, Text, useDigitFormat} from '@axelor/aos-mobile-ui';
+import React, {useCallback, useMemo} from 'react';
+import {LabelText, QuantityCard, useDigitFormat} from '@axelor/aos-mobile-ui';
 import {
   useNavigation,
   usePermitted,
   useTranslator,
   useTypes,
 } from '@axelor/aos-mobile-core';
+import {useMassIndicatorChecker} from '../../../../providers';
 
 const InternalMoveLineQuantityCard = ({
   status,
@@ -34,7 +34,18 @@ const InternalMoveLineQuantityCard = ({
   setMovedQty,
   originalStockLocation,
   trackingNumber,
+  totalNetMass,
   readonly = false,
+}: {
+  status: number;
+  movedQty: number;
+  plannedQty: number;
+  stockProduct: any;
+  setMovedQty: (value: number) => void;
+  originalStockLocation: any;
+  trackingNumber?: any;
+  totalNetMass?: string;
+  readonly?: boolean;
 }) => {
   const I18n = useTranslator();
   const navigation = useNavigation();
@@ -43,50 +54,45 @@ const InternalMoveLineQuantityCard = ({
   const {canCreate} = usePermitted({
     modelName: 'com.axelor.apps.stock.db.StockCorrection',
   });
+  const {getMassIndicator, massUnitLabel} = useMassIndicatorChecker();
 
-  const handleQtyChange = value => {
-    setMovedQty(value);
-  };
-
-  const handleCreateCorrection = () => {
+  const handleCreateCorrection = useCallback(() => {
     navigation.navigate('StockCorrectionCreationScreen', {
       stockLocation: originalStockLocation,
       product: stockProduct,
-      trackingNumber: trackingNumber,
+      trackingNumber,
     });
-  };
+  }, [navigation, originalStockLocation, stockProduct, trackingNumber]);
+
+  const massIndicator = useMemo(
+    () => getMassIndicator(totalNetMass),
+    [getMassIndicator, totalNetMass],
+  );
 
   return (
     <QuantityCard
       labelQty={I18n.t('Stock_MovedQty')}
       defaultValue={movedQty}
-      onValueChange={handleQtyChange}
-      editable={
-        !readonly &&
-        (status === StockMove?.statusSelect.Draft ||
-          status === StockMove?.statusSelect.Planned)
-      }
-      actionQty={
-        canCreate &&
-        (status === StockMove?.statusSelect.Draft ||
-          status === StockMove?.statusSelect.Planned)
-      }
+      onValueChange={setMovedQty}
+      editable={!readonly && status < StockMove?.statusSelect.Realized}
+      actionQty={canCreate && status < StockMove?.statusSelect.Realized}
       onPressActionQty={handleCreateCorrection}
       isBigButton={true}
       translator={I18n.t}>
-      <Text style={styles.text}>
-        {`${I18n.t('Stock_AvailableQty')}: ${formatNumber(plannedQty)} ${
-          stockProduct.unit?.name
-        }`}
-      </Text>
+      <LabelText
+        title={`${I18n.t('Stock_AvailableQty')} :`}
+        value={`${formatNumber(plannedQty)} ${stockProduct.unit?.name}`}
+      />
+      {totalNetMass != null && (
+        <LabelText
+          iconName={massIndicator?.icon ?? 'box-seam-fill'}
+          title={`${I18n.t('Stock_TotalMass')} :`}
+          value={`${totalNetMass} ${massUnitLabel ?? ''}`}
+          color={massIndicator?.color?.background}
+        />
+      )}
     </QuantityCard>
   );
 };
-
-const styles = StyleSheet.create({
-  text: {
-    fontSize: 16,
-  },
-});
 
 export default InternalMoveLineQuantityCard;
