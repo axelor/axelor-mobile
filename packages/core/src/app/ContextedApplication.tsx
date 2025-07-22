@@ -38,6 +38,7 @@ import {useDispatch} from '../redux/hooks';
 import {setAppVersion} from '../features/authSlice';
 import {Module} from './modules';
 import {MaintenanceTrigger} from '../apiProviders';
+import {resetConfigs} from '../features/appConfigSlice';
 
 interface instanceConfig {
   testInstanceConfig: proxy;
@@ -84,6 +85,11 @@ const ContextedApplication = ({
     [],
   );
 
+  const handleAppRefresh = useCallback(() => {
+    dispatch(resetConfigs());
+    setRefresh(_current => !_current);
+  }, [dispatch]);
+
   return (
     <>
       <Camera />
@@ -103,7 +109,7 @@ const ContextedApplication = ({
           <RootNavigator
             modules={modules}
             mainMenu={mainMenu}
-            onRefresh={() => setRefresh(_current => !_current)}
+            onRefresh={handleAppRefresh}
             configuration={configuration}
             customLoginPage={customLoginPage}
           />
