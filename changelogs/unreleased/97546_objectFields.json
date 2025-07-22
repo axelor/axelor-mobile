@@ -1,0 +1,5 @@
+{
+  "title": "Object fields: manage deep merging to simplify fields addition in override",
+  "type": "fix",
+  "packages": "core"
+}

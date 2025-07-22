@@ -16,8 +16,39 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import {Schema, mixed, number, object} from 'yup';
+import {Schema, mixed, number, object, ObjectSchema} from 'yup';
 import {Models, Module, ObjectFields, SearchFields, SortFields} from './Module';
+
+function deepMergeSchemas(
+  schemaA: ObjectSchema<Record<string, any>>,
+  schemaB: ObjectSchema<Record<string, any>>,
+) {
+  if (!object().isType(schemaA) || !object().isType(schemaB)) {
+    return schemaB ?? schemaA;
+  }
+
+  const fieldsA = schemaA.fields;
+  const fieldsB = schemaB.fields;
+
+  const mergedFields = {...fieldsA};
+
+  for (const key in fieldsB) {
+    if (
+      fieldsA[key] &&
+      object().isType(fieldsA[key]) &&
+      object().isType(fieldsB[key])
+    ) {
+      mergedFields[key] = deepMergeSchemas(
+        fieldsA[key] as any,
+        fieldsB[key] as any,
+      );
+    } else {
+      mergedFields[key] = fieldsB[key];
+    }
+  }
+
+  return object().shape(mergedFields);
+}
 
 export const addModuleObjectFields = (
   objectFields: ObjectFields,
@@ -30,7 +61,10 @@ export const addModuleObjectFields = (
 
   newObjects.forEach(_objectKey => {
     if (currentObjects.includes(_objectKey)) {
-      result[_objectKey] = result[_objectKey].concat(moduleObjects[_objectKey]);
+      result[_objectKey] = deepMergeSchemas(
+        result[_objectKey] as any,
+        moduleObjects[_objectKey] as any,
+      );
     } else {
       result[_objectKey] = (
         object({
