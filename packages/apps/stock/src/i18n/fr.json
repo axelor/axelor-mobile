@@ -135,6 +135,7 @@
   "Stock_Picking_LineUpdatedProduct": "Le produit {{productName}} a été ajouté au mouvement, la nouvelle quantité est de {{newQty}}.",
   "Stock_Picking_NoProductFound": "Aucun produit ou numéro de suivi associé à ce code-barre n'a été trouvé dans cet emplacement.",
   "Stock_Picking_MultipleProductsFound": "Plusieurs produits et/ou numéros de suivi ont été trouvés dans cet emplacement avec le code-barre scanné.",
+  "Stock_TotalMass": "Poids total",
   "Stock_SliceAction_FetchCustomerDeliveryLines": "récupération des lignes de livraison client",
   "Stock_SliceAction_FetchCustomerDeliveryLine": "récupération de la ligne de livraison client",
   "Stock_SliceAction_UpdateCustomerDeliveryLine": "mise à jour de la ligne de livraison client",

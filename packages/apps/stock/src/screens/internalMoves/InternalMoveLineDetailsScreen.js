@@ -224,6 +224,7 @@ const InternalMoveLineDetailsScreen = ({navigation, route}) => {
           status={internalMove.statusSelect}
           stockProduct={product}
           trackingNumber={internalMoveLine.trackingNumber}
+          totalNetMass={internalMoveLine.totalNetMass}
           readonly={readonly}
         />
         <InternalMoveLinePicker

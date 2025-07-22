@@ -25,6 +25,7 @@ import {
   useThemeColor,
 } from '@axelor/aos-mobile-ui';
 import {useSelector, useTranslator} from '@axelor/aos-mobile-core';
+import {useMassIndicatorChecker} from '../../../../providers';
 
 interface SupplierArrivalLineCardProps {
   style?: any;
@@ -34,6 +35,7 @@ interface SupplierArrivalLineCardProps {
   deliveredQty: number;
   locker?: string;
   trackingNumber?: {trackingNumberSeq: string};
+  totalNetMass?: string;
   onPress: () => void;
 }
 
@@ -45,11 +47,13 @@ const SupplierArrivalLineCard = ({
   deliveredQty,
   locker,
   trackingNumber,
+  totalNetMass,
   onPress,
 }: SupplierArrivalLineCardProps) => {
   const Colors = useThemeColor();
   const I18n = useTranslator();
   const formatNumber = useDigitFormat();
+  const {getMassIndicator, massUnitLabel} = useMassIndicatorChecker();
 
   const {stock: stockConfig} = useSelector((state: any) => state.appConfig);
 
@@ -68,6 +72,11 @@ const SupplierArrivalLineCard = ({
   const borderStyle = useMemo(() => {
     return getStyles(borderColor)?.border;
   }, [borderColor]);
+
+  const massIndicator = useMemo(
+    () => getMassIndicator(totalNetMass),
+    [getMassIndicator, totalNetMass],
+  );
 
   return (
     <ObjectCard
@@ -105,6 +114,13 @@ const SupplierArrivalLineCard = ({
             indicatorText: `${I18n.t('Stock_TrackingNumber')} :`,
             hideIf: trackingNumber?.trackingNumberSeq == null,
             iconName: 'qr-code',
+          },
+          {
+            displayText: `${totalNetMass} ${massUnitLabel ?? ''}`,
+            indicatorText: `${I18n.t('Stock_TotalMass')} :`,
+            iconName: massIndicator?.icon ?? 'box-seam-fill',
+            hideIf: totalNetMass == null,
+            color: massIndicator?.color?.background,
           },
         ],
       }}
