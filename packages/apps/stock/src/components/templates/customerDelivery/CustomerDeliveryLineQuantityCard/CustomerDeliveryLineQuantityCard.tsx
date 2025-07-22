@@ -26,29 +26,33 @@ import {
 } from '@axelor/aos-mobile-core';
 import {
   Badge,
+  LabelText,
   QuantityCard,
-  Text,
   useThemeColor,
   useDigitFormat,
 } from '@axelor/aos-mobile-ui';
+import {useMassIndicatorChecker} from '../../../../providers';
 
 const CustomerDeliveryLineQuantityCard = ({
   customerDelivery,
+  customerDeliveryLine,
   realQty,
   setRealQty,
-  customerDeliveryLine,
   readonly = false,
+}: {
+  customerDelivery: any;
+  customerDeliveryLine?: any;
+  realQty: number;
+  setRealQty: (value: number) => void;
+  readonly?: boolean;
 }) => {
   const I18n = useTranslator();
   const Colors = useThemeColor();
   const formatNumber = useDigitFormat();
   const {StockMove} = useTypes();
+  const {getMassIndicator, massUnitLabel} = useMassIndicatorChecker();
 
   const {productFromId: product} = useSelector((state: any) => state.product);
-
-  const handleQtyChange = value => {
-    setRealQty(value);
-  };
 
   const indicatorBadge = useMemo(
     () =>
@@ -69,25 +73,34 @@ const CustomerDeliveryLineQuantityCard = ({
     [customerDeliveryLine, formatNumber, product?.unit?.name],
   );
 
+  const massIndicator = useMemo(
+    () => getMassIndicator(customerDeliveryLine?.totalNetMass),
+    [getMassIndicator, customerDeliveryLine?.totalNetMass],
+  );
+
   return (
     <QuantityCard
       labelQty={I18n.t('Stock_PickedQty')}
       defaultValue={realQty}
-      onValueChange={handleQtyChange}
+      onValueChange={setRealQty}
       editable={
         !readonly &&
-        customerDelivery.statusSelect !== StockMove?.statusSelect.Realized
+        customerDelivery.statusSelect < StockMove?.statusSelect.Realized
       }
       isBigButton={true}
       translator={I18n.t}>
       <View style={styles.headerQuantityCard}>
-        <Text>{`${I18n.t('Stock_AskedQty')} : ${askedQty}`}</Text>
-        {customerDeliveryLine != null && (
-          <View>
-            <Badge title={indicatorBadge.title} color={indicatorBadge.color} />
-          </View>
-        )}
+        <LabelText title={`${I18n.t('Stock_AskedQty')} :`} value={askedQty} />
+        {customerDeliveryLine != null && <Badge {...indicatorBadge} />}
       </View>
+      {customerDeliveryLine?.totalNetMass != null && (
+        <LabelText
+          iconName={massIndicator?.icon ?? 'box-seam-fill'}
+          title={`${I18n.t('Stock_TotalMass')} :`}
+          value={`${customerDeliveryLine?.totalNetMass} ${massUnitLabel ?? ''}`}
+          color={massIndicator?.color?.background}
+        />
+      )}
     </QuantityCard>
   );
 };

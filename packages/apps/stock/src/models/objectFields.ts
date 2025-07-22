@@ -64,6 +64,7 @@ export const stock_modelAPI: ObjectFields = {
     'saleOrderLine.pickingOrderInfo': schemaContructor.string(),
     isRealQtyModifiedByUser: schemaContructor.boolean(),
     fromStockLocation: schemaContructor.subObject('name'),
+    totalNetMass: schemaContructor.number(),
   }),
   stock_internalMove: schemaContructor.object({
     name: schemaContructor.string(),
@@ -94,6 +95,7 @@ export const stock_modelAPI: ObjectFields = {
     isRealQtyModifiedByUser: schemaContructor.boolean(),
     fromStockLocation: schemaContructor.subObject('name'),
     toStockLocation: schemaContructor.subObject('name'),
+    totalNetMass: schemaContructor.number(),
   }),
   stock_inventory: schemaContructor.object({
     inventoryTitle: schemaContructor.string(),
@@ -242,6 +244,7 @@ export const stock_modelAPI: ObjectFields = {
     product: productModel,
     isRealQtyModifiedByUser: schemaContructor.boolean(),
     toStockLocation: schemaContructor.subObject('name'),
+    totalNetMass: schemaContructor.number(),
   }),
   stock_supplierCatalog: schemaContructor.object({
     productSupplierName: schemaContructor.string(),
@@ -327,5 +330,16 @@ export const stock_modelAPI: ObjectFields = {
       }),
     ),
     isRealQtyModifiedByUser: schemaContructor.boolean(),
+  }),
+  auth_user: schemaContructor.object({
+    activeCompany: schemaContructor.subObject().concat(
+      schemaContructor.object({
+        stockConfig: schemaContructor.subObject().concat(
+          schemaContructor.object({
+            customsMassUnit: schemaContructor.subObject('labelToPrinting'),
+          }),
+        ),
+      }),
+    ),
   }),
 };

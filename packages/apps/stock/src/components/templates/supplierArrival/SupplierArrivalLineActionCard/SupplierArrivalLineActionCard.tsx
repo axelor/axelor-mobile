@@ -88,6 +88,7 @@ const SupplierArrivalLineActionCard = ({
         askedQty={supplierArrivalLine.qty}
         trackingNumber={supplierArrivalLine.trackingNumber}
         locker={supplierArrivalLine.locker}
+        totalNetMass={supplierArrivalLine.totalNetMass}
         onPress={() => handleShowLine(supplierArrivalLine)}
       />
     </ActionCard>
