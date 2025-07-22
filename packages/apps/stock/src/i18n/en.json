@@ -135,6 +135,7 @@
   "Stock_Picking_LineUpdatedProduct": "The product {{productName}} was successfully added, the new quantity is {{newQty}}.",
   "Stock_Picking_NoProductFound": "No product or tracking number associated with this barcode was found in this stock location.",
   "Stock_Picking_MultipleProductsFound": "Multiple products and/or tracking numbers were found in this stock location with the barcode scanned.",
+  "Stock_TotalMass": "Total mass",
   "Stock_SliceAction_FetchCustomerDeliveryLines": "fetch customer delivery lines",
   "Stock_SliceAction_FetchCustomerDeliveryLine": "fetch customer delivery line",
   "Stock_SliceAction_UpdateCustomerDeliveryLine": "update customer delivery line",
