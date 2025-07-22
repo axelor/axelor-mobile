@@ -328,4 +328,15 @@ export const stock_modelAPI: ObjectFields = {
     ),
     isRealQtyModifiedByUser: schemaContructor.boolean(),
   }),
+  auth_user: schemaContructor.object({
+    activeCompany: schemaContructor.subObject().concat(
+      schemaContructor.object({
+        stockConfig: schemaContructor.subObject().concat(
+          schemaContructor.object({
+            customsMassUnit: schemaContructor.subObject('labelToPrinting'),
+          }),
+        ),
+      }),
+    ),
+  }),
 };
