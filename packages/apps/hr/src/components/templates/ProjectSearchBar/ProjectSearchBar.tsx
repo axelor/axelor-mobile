@@ -35,6 +35,8 @@ interface ProjectSearchBarProps {
   required?: boolean;
   isBusinessProject?: boolean;
   manageTimeSpent?: boolean;
+  isMemberRequired?: boolean;
+  inProgress?: boolean;
 }
 
 const ProjectSearchBarAux = ({
@@ -46,6 +48,8 @@ const ProjectSearchBarAux = ({
   required = false,
   isBusinessProject = false,
   manageTimeSpent = false,
+  isMemberRequired = false,
+  inProgress = false,
 }: ProjectSearchBarProps) => {
   const I18n = useTranslator();
   const dispatch = useDispatch();
@@ -61,13 +65,24 @@ const ProjectSearchBarAux = ({
         (searchProject as any)({
           page,
           searchValue,
-          activeCompanyId: user?.activeCompany?.id,
-          isBusinessProject: isBusinessProject,
-          manageTimeSpent: manageTimeSpent,
+          userId: user.id,
+          activeCompanyId: user.activeCompany?.id,
+          isBusinessProject,
+          manageTimeSpent,
+          isMemberRequired,
+          inProgress,
         }),
       );
     },
-    [dispatch, isBusinessProject, manageTimeSpent, user?.activeCompany?.id],
+    [
+      dispatch,
+      inProgress,
+      isBusinessProject,
+      isMemberRequired,
+      manageTimeSpent,
+      user.activeCompany?.id,
+      user.id,
+    ],
   );
 
   return (
@@ -92,28 +107,8 @@ const ProjectSearchBarAux = ({
   );
 };
 
-const ProjectSearchBar = ({
-  style = null,
-  title = 'Hr_Project',
-  defaultValue = null,
-  onChange = () => {},
-  readonly = false,
-  required = false,
-  isBusinessProject = false,
-  manageTimeSpent = false,
-}: ProjectSearchBarProps) => {
-  return (
-    <ProjectSearchBarAux
-      style={style}
-      title={title}
-      defaultValue={defaultValue}
-      onChange={onChange}
-      readonly={readonly}
-      required={required}
-      isBusinessProject={isBusinessProject}
-      manageTimeSpent={manageTimeSpent}
-    />
-  );
+const ProjectSearchBar = (props: ProjectSearchBarProps) => {
+  return <ProjectSearchBarAux {...props} />;
 };
 
 export default ProjectSearchBar;
