@@ -33,6 +33,7 @@ import {
   useTypes,
 } from '@axelor/aos-mobile-core';
 import {useStockLinesCheckQty} from '../../../../hooks';
+import {useMassIndicatorChecker} from '../../../../providers';
 
 interface InternalMoveLineCardProps {
   style?: any;
@@ -46,6 +47,7 @@ interface InternalMoveLineCardProps {
   locker: string;
   expectedQty: number;
   movedQty: number;
+  totalNetMass?: string;
   onPress: () => void;
 }
 
@@ -61,6 +63,7 @@ const InternalMoveLineCard = ({
   locker,
   expectedQty,
   movedQty,
+  totalNetMass,
   onPress,
 }: InternalMoveLineCardProps) => {
   const Colors = useThemeColor();
@@ -68,6 +71,7 @@ const InternalMoveLineCard = ({
   const formatNumber = useDigitFormat();
   const {StockMove} = useTypes();
   const {getItemColor} = useTypeHelpers();
+  const {getMassIndicator, massUnitLabel} = useMassIndicatorChecker();
 
   const {stock: stockConfig} = useSelector((state: any) => state.appConfig);
 
@@ -89,9 +93,9 @@ const InternalMoveLineCard = ({
     return getStyles(borderColor)?.border;
   }, [borderColor]);
 
-  const _internalMoveStatus = useMemo(
-    () => internalMoveStatus ?? StockMove?.statusSelect.Planned,
-    [StockMove?.statusSelect.Planned, internalMoveStatus],
+  const massIndicator = useMemo(
+    () => getMassIndicator(totalNetMass),
+    [getMassIndicator, totalNetMass],
   );
 
   return (
@@ -132,6 +136,13 @@ const InternalMoveLineCard = ({
             hideIf: trackingNumber == null,
             iconName: 'qr-code',
           },
+          {
+            displayText: `${totalNetMass} ${massUnitLabel ?? ''}`,
+            indicatorText: `${I18n.t('Stock_TotalMass')} :`,
+            iconName: massIndicator?.icon ?? 'box-seam-fill',
+            hideIf: totalNetMass == null,
+            color: massIndicator?.color?.background,
+          },
         ],
       }}
       upperBadges={{
@@ -144,7 +155,7 @@ const InternalMoveLineCard = ({
               checkQtyObject?.availability &&
               availability != null &&
               availability > 0 &&
-              _internalMoveStatus !== StockMove?.statusSelect.Realized,
+              internalMoveStatus < StockMove?.statusSelect.Realized,
           },
           {
             displayText: formatNumber(checkQtyObject?.missingQty),
