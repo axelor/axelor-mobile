@@ -77,12 +77,16 @@ const InternalMoveSearchLineContainer = ({}) => {
     [dispatch, internalMove],
   );
 
-  const filterLine = useCallback(item => {
-    return (
-      parseFloat(item.realQty) == null ||
-      parseFloat(item.realQty) < parseFloat(item.qty)
-    );
-  }, []);
+  const filterLine = useCallback(
+    item => {
+      return (
+        StockMoveLine.hideLineQty(item, internalMove) ||
+        parseFloat(item.realQty) == null ||
+        parseFloat(item.realQty) < parseFloat(item.qty)
+      );
+    },
+    [internalMove],
+  );
 
   return (
     <SearchLineContainer
