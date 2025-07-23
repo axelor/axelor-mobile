@@ -29,12 +29,14 @@ export const stock_sortFields: SortFields = {
     'estimatedDate',
     'stockMoveSeq',
   ],
+  stock_customerDeliveryLine: ['sequence'],
   stock_internalMove: [
     'statusSelect',
     '-realDate',
     'estimatedDate',
     'stockMoveSeq',
   ],
+  stock_internalMoveLine: ['sequence'],
   stock_inventory: [
     'statusSelect',
     '-validatedOn',
@@ -49,5 +51,6 @@ export const stock_sortFields: SortFields = {
     'estimatedDate',
     'stockMoveSeq',
   ],
+  stock_supplierArrivalLine: ['sequence'],
   stock_trackingNumber: ['trackingNumberSeq'],
 };

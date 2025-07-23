@@ -28,7 +28,7 @@ import {
 } from '@axelor/aos-mobile-core';
 import {CustomerDeliveryLineActionCard} from '../../../templates';
 import {SearchLineContainer, StockMovePickingWidget} from '../../../organisms';
-import {LineVerification} from '../../../../types';
+import {LineVerification, StockMoveLine} from '../../../../types';
 import {fetchCustomerDeliveryLines} from '../../../../features/customerDeliveryLineSlice';
 import {useCustomerLinesWithRacks, useLineHandler} from '../../../../hooks';
 
@@ -100,12 +100,16 @@ const CustomerDeliverySearchLineContainer = ({}) => {
     [fetchCustomerLinesAPI],
   );
 
-  const filterLine = useCallback(item => {
-    return (
-      parseFloat(item.realQty) == null ||
-      parseFloat(item.realQty) < parseFloat(item.qty)
-    );
-  }, []);
+  const filterLine = useCallback(
+    item => {
+      return (
+        StockMoveLine.hideLineQty(item, customerDelivery) ||
+        parseFloat(item.realQty) == null ||
+        parseFloat(item.realQty) < parseFloat(item.qty)
+      );
+    },
+    [customerDelivery],
+  );
 
   const showLineAdditionIcon = useMemo(() => {
     if (

@@ -28,7 +28,7 @@ import {SearchLineContainer, StockMovePickingWidget} from '../../../organisms';
 import {InternalMoveLineActionCard} from '../../../templates';
 import {fetchInternalMoveLines} from '../../../../features/internalMoveLineSlice';
 import {useInternalLinesWithRacks, useLineHandler} from '../../../../hooks';
-import {LineVerification} from '../../../../types';
+import {LineVerification, StockMoveLine} from '../../../../types';
 
 const scanKey = 'trackingNumber-or-product_internal-move-details';
 const massScanKey = 'internal-move-line_mass-scan';
@@ -84,12 +84,16 @@ const InternalMoveSearchLineContainer = ({}) => {
     [fetchInternalLinesAPI],
   );
 
-  const filterLine = useCallback(item => {
-    return (
-      parseFloat(item.realQty) == null ||
-      parseFloat(item.realQty) < parseFloat(item.qty)
-    );
-  }, []);
+  const filterLine = useCallback(
+    item => {
+      return (
+        StockMoveLine.hideLineQty(item, internalMove) ||
+        parseFloat(item.realQty) == null ||
+        parseFloat(item.realQty) < parseFloat(item.qty)
+      );
+    },
+    [internalMove],
+  );
 
   return (
     <>
