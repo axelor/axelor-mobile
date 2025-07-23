@@ -20,6 +20,7 @@ import React, {useMemo} from 'react';
 import {useCurrencyFormat, useTranslator} from '@axelor/aos-mobile-core';
 import {useDigitFormat, usePriceFormat} from '@axelor/aos-mobile-ui';
 import {PriceDetails} from '../../atoms';
+import {SaleOrderLineAvailabilityBadges} from '../../molecules';
 
 interface SaleOrderLinePriceDetailsProps {
   style?: any;
@@ -82,7 +83,15 @@ const SaleOrderLinePriceDetails = ({
     ],
   );
 
-  return <PriceDetails style={style} lineList={priceList} />;
+  return (
+    <PriceDetails
+      style={style}
+      lineList={priceList}
+      topChildren={
+        <SaleOrderLineAvailabilityBadges saleOrderLine={saleOrderLine} />
+      }
+    />
+  );
 };
 
 export default SaleOrderLinePriceDetails;

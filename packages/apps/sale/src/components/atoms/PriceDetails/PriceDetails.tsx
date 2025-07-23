@@ -32,9 +32,16 @@ interface Line {
 export interface PriceDetailsProps {
   style?: any;
   lineList: Line[];
+  topChildren?: any;
+  bottomChildren?: any;
 }
 
-const PriceDetails = ({style, lineList}: PriceDetailsProps) => {
+const PriceDetails = ({
+  style,
+  lineList,
+  topChildren,
+  bottomChildren,
+}: PriceDetailsProps) => {
   const _lineList = useMemo(
     () =>
       Array.isArray(lineList) && lineList.length > 0
@@ -49,6 +56,7 @@ const PriceDetails = ({style, lineList}: PriceDetailsProps) => {
 
   return (
     <Card style={[styles.container, style]}>
+      {topChildren}
       {_lineList.map((line, index) => {
         const fontSize = line.size ?? 16;
         return (
@@ -61,6 +69,7 @@ const PriceDetails = ({style, lineList}: PriceDetailsProps) => {
           </View>
         );
       })}
+      {bottomChildren}
     </Card>
   );
 };
