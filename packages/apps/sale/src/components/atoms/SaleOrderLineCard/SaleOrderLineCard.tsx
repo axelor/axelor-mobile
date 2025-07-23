@@ -31,9 +31,12 @@ import {
   useDigitFormat,
   usePriceFormat,
 } from '@axelor/aos-mobile-ui';
+import {useSaleOrderLineAvailability} from '../../../hooks';
 
 interface SaleOrderLineCardProps {
   style?: any;
+  availableStatusSelect?: number;
+  availableStatus?: string;
   typeSelect: number;
   product?: any;
   productName: string;
@@ -51,6 +54,8 @@ interface SaleOrderLineCardProps {
 
 const SaleOrderLineCard = ({
   style,
+  availableStatusSelect,
+  availableStatus,
   typeSelect,
   product,
   productName,
@@ -71,6 +76,15 @@ const SaleOrderLineCard = ({
   const formatNumber = useDigitFormat();
   const formatPrice = usePriceFormat();
   const formatCurrencyPrice = useCurrencyFormat();
+  const {
+    availabilityTitle,
+    availabilityColor,
+    missingQty,
+    isAvailabilityHidden,
+  } = useSaleOrderLineAvailability({
+    availableStatus,
+    availableStatusSelect,
+  });
 
   const total = useMemo(
     () => (SOinAti ? inTaxTotal : exTaxTotal),
@@ -82,6 +96,7 @@ const SaleOrderLineCard = ({
       <ObjectCard
         style={[styles.card, styles.cardPadding, style]}
         iconLeftMargin={5}
+        leftContainerFlex={2}
         onPress={onPress}
         image={{
           generalStyle: styles.imageSize,
@@ -95,10 +110,12 @@ const SaleOrderLineCard = ({
             {
               displayText: product?.name,
               isTitle: true,
+              fontSize: 16,
             },
             {
               displayText: productName,
               hideIfNull: true,
+              fontSize: 14,
             },
           ],
         }}
@@ -108,6 +125,23 @@ const SaleOrderLineCard = ({
               indicatorText: I18n.t('Sale_UnitPrice'),
               displayText: formatPrice(price),
               style: styles.noBold,
+            },
+            {
+              indicatorText: I18n.t('Sale_MissingQty'),
+              displayText: formatNumber(missingQty),
+              hideIf: missingQty == null,
+              style: [styles.noBold, {color: availabilityColor?.background}],
+              numberOfLines: 2,
+            },
+          ],
+        }}
+        upperBadges={{
+          fixedOnRightSide: true,
+          items: [
+            {
+              displayText: availabilityTitle,
+              color: availabilityColor,
+              showIf: !isAvailabilityHidden,
             },
           ],
         }}
