@@ -30,7 +30,7 @@ import {SearchLineContainer, StockMovePickingWidget} from '../../../organisms';
 import {SupplierArrivalLineActionCard} from '../../../templates';
 import {fetchSupplierArrivalLines} from '../../../../features/supplierArrivalLineSlice';
 import {useLineHandler, useSupplierLinesWithRacks} from '../../../../hooks';
-import {LineVerification} from '../../../../types';
+import {LineVerification, StockMoveLine} from '../../../../types';
 
 const scanKey = 'trackingNumber-or-product_supplier-arrival-details';
 const massScanKey = 'supplier-arrival-line_mass-scan';
@@ -100,12 +100,16 @@ const SupplierArrivalSearchLineContainer = ({}) => {
     [fetchSupplierLinesAPI],
   );
 
-  const filterLine = useCallback(item => {
-    return (
-      parseFloat(item.realQty) == null ||
-      parseFloat(item.realQty) < parseFloat(item.qty)
-    );
-  }, []);
+  const filterLine = useCallback(
+    item => {
+      return (
+        StockMoveLine.hideLineQty(item, supplierArrival) ||
+        parseFloat(item.realQty) == null ||
+        parseFloat(item.realQty) < parseFloat(item.qty)
+      );
+    },
+    [supplierArrival],
+  );
 
   const showLineAdditionIcon = useMemo(() => {
     if (
