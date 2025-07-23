@@ -83,6 +83,7 @@ const Increment = ({
   });
 
   const [valueQty, setValueQty] = useState<string>(value);
+  const [isFocused, setIsFocused] = useState<boolean>(false);
 
   const handleDecimal = useCallback(
     (numberToFormat: string | number) => {
@@ -162,6 +163,8 @@ const Increment = ({
   };
 
   const handleEndInput = useCallback(() => {
+    setIsFocused(false);
+
     const unformattedValue = defaultFormatting
       ? valueQty.replaceAll(',', '.')
       : valueQty;
@@ -176,12 +179,14 @@ const Increment = ({
   }, [defaultFormatting, handleResult, onBlur, valueQty]);
 
   useEffect(() => {
-    if (clickOutside === OUTSIDE_INDICATOR) {
+    if (clickOutside === OUTSIDE_INDICATOR && isFocused) {
       handleEndInput();
     }
-  }, [clickOutside, handleEndInput]);
+  }, [clickOutside, handleEndInput, isFocused]);
 
   const handleFocus = () => {
+    setIsFocused(true);
+
     if (defaultFormatting) {
       setValueQty(current => unformat(current).replace('.', decimalSpacer));
     }
