@@ -107,6 +107,22 @@ export const sale_typeObjects: ModuleSelections = [
   {
     modelName: 'com.axelor.apps.sale.db.SaleOrderLine',
     fields: {
+      availableStatusSelect: {
+        content: [
+          {
+            key: 'Available',
+            value: 1,
+            title: 'Sale_SOLineAvailableStatus_Available',
+            color: 'successColor',
+          },
+          {
+            key: 'Missing',
+            value: 2,
+            title: 'Sale_SOLineAvailableStatus_Missing',
+            color: 'errorColor',
+          },
+        ],
+      },
       typeSelect: {
         content: [
           {

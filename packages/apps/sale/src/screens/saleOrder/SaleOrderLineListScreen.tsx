@@ -66,18 +66,11 @@ const SaleOrderLineListScreen = ({}) => {
         data={saleOrderLineList}
         renderItem={({item}) => (
           <SaleOrderLineCard
-            typeSelect={item.typeSelect}
-            product={item.product}
-            productName={item.productName}
-            price={item.price}
+            {...item}
             unit={item.unit?.name}
-            qty={item.qty}
             SOinAti={saleOrder.inAti}
-            inTaxTotal={item.inTaxTotal}
-            exTaxTotal={item.exTaxTotal}
             isShowEndOfPackTotal={item.isShowTotal}
             currency={saleOrder.currency}
-            description={item.description}
             onPress={() =>
               navigation.navigate('SaleOrderLineDetailsScreen', {
                 saleOrderLineId: item.id,

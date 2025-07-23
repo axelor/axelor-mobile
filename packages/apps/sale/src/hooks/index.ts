@@ -17,4 +17,5 @@
  */
 
 export * from './use-product-by-company';
+export * from './use-sale-order-line-availability';
 export * from './use-tax-mode-indicator';
