@@ -16,7 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import React, {useCallback, useEffect} from 'react';
+import React, {useCallback, useEffect, useMemo} from 'react';
 import {StyleSheet} from 'react-native';
 import {
   useContextRegister,
@@ -73,6 +73,11 @@ const SaleOrderLineDetailsScreen = ({navigation, route}) => {
     fetchSaleOrderLine();
   }, [fetchSaleOrderLine]);
 
+  const _product = useMemo(
+    () => saleOrderLine?.product ?? {name: saleOrderLine?.productName},
+    [saleOrderLine?.product, saleOrderLine?.productName],
+  );
+
   if (saleOrderLine?.id !== saleOrderLineId) {
     return null;
   }
@@ -93,18 +98,21 @@ const SaleOrderLineDetailsScreen = ({navigation, route}) => {
         />
         <ProductCard
           style={styles.productCard}
-          onPress={() => {
-            navigation.navigate('ProductSaleDetailsScreen', {
-              productId: saleOrderLine.product.id,
-            });
-          }}
-          picture={saleOrderLine.product.picture}
-          name={saleOrderLine.product.name}
-          code={saleOrderLine.product.code}
-          productFamily={saleOrderLine.product.productFamily?.name}
-          productCategory={saleOrderLine.product.productCategory?.name}
-          description={saleOrderLine.product.description}
-          isConfigurator={saleOrderLine.product.configurator?.id != null}
+          onPress={
+            _product?.id != null
+              ? () =>
+                  navigation.navigate('ProductSaleDetailsScreen', {
+                    productId: _product?.id,
+                  })
+              : undefined
+          }
+          picture={_product?.picture}
+          name={_product?.name}
+          code={_product?.code}
+          productFamily={_product?.productFamily?.name}
+          productCategory={_product?.productCategory?.name}
+          description={_product?.description}
+          isConfigurator={_product?.configurator?.id != null}
           displayPrice={false}
         />
         <NotesCard

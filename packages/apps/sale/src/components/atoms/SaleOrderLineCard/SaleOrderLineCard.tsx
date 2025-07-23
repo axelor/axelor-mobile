@@ -93,12 +93,12 @@ const SaleOrderLineCard = ({
           imageSize: styles.imageSize,
           resizeMode: 'contain',
           defaultIconSize: 50,
-          source: formatMetaFile(product.picture?.id),
+          source: formatMetaFile(product?.picture?.id),
         }}
         upperTexts={{
           items: [
             {
-              displayText: product.name,
+              displayText: product?.name,
               isTitle: true,
             },
             {
