@@ -1,0 +1,5 @@
+{
+  "title": "SaleOrderLine: avoid issue when product is null",
+  "type": "fix",
+  "packages": "sale"
+}
