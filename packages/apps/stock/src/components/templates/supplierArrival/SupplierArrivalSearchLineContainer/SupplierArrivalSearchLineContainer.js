@@ -93,12 +93,16 @@ const SupplierArrivalSearchLineContainer = ({}) => {
     [dispatch, supplierArrival],
   );
 
-  const filterLine = useCallback(item => {
-    return (
-      parseFloat(item.realQty) == null ||
-      parseFloat(item.realQty) < parseFloat(item.qty)
-    );
-  }, []);
+  const filterLine = useCallback(
+    item => {
+      return (
+        StockMoveLine.hideLineQty(item, supplierArrival) ||
+        parseFloat(item.realQty) == null ||
+        parseFloat(item.realQty) < parseFloat(item.qty)
+      );
+    },
+    [supplierArrival],
+  );
 
   const showLineAdditionIcon = useMemo(() => {
     if (

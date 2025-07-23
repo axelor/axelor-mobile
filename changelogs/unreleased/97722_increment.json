@@ -1,0 +1,5 @@
+{
+  "title": "Increment: apply outside click behavior only when input was focused",
+  "type": "fix",
+  "packages": "ui"
+}
