@@ -63,6 +63,7 @@
   "Sale_SOLineAvailableStatus_Available": "Available",
   "Sale_SOLineAvailableStatus_Missing": "Missing",
   "Sale_UnitPrice": "Unit price",
+  "Sale_MissingQty": "Missing quantity",
   "Sale_SeeComplementaryProducts": "See complementary products",
   "Sale_SeeVariantProducts": "See variant products",
   "Sale_PriceList": "Price list",
