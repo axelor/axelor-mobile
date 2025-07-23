@@ -27,6 +27,7 @@ interface SaleOrderLineAvailabilityBadgesProps {
 }
 
 const SaleOrderLineAvailabilityBadges = ({
+  style,
   saleOrderLine,
 }: SaleOrderLineAvailabilityBadgesProps) => {
   const {
@@ -41,7 +42,7 @@ const SaleOrderLineAvailabilityBadges = ({
   }
 
   return (
-    <View style={styles.container}>
+    <View style={[styles.container, style]}>
       <Badge
         title={availabilityTitle}
         color={availabilityColor}
