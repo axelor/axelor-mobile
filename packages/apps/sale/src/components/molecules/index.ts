@@ -32,6 +32,7 @@ export {default as ProductFloatingButton} from './ProductFloatingButton/ProductF
 export {default as ProductHeader} from './ProductHeader/ProductHeader';
 export {default as SaleOrderDropdownCards} from './SaleOrderDropdownCards/SaleOrderDropdownCards';
 export {default as SaleOrderHeader} from './SaleOrderHeader/SaleOrderHeader';
+export {default as SaleOrderLineAvailabilityBadges} from './SaleOrderLineAvailabilityBadges/SaleOrderLineAvailabilityBadges';
 export {default as SaleOrderLineDropdownCards} from './SaleOrderLineDropdownCards/SaleOrderLineDropdownCards';
 export {default as SaleOrderLinePriceDetails} from './SaleOrderLinePriceDetails/SaleOrderLinePriceDetails';
 export {default as SaleOrderPriceDetails} from './SaleOrderPriceDetails/SaleOrderPriceDetails';
