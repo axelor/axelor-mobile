@@ -41,6 +41,7 @@ interface PeriodInputProps {
   style?: any;
   horizontal?: boolean;
   showTitle?: boolean;
+  usePopup?: boolean;
   startDateConfig: dateInputConfig;
   endDateConfig: dateInputConfig;
   defaultIntervalHours?: number;
@@ -51,6 +52,7 @@ const PeriodInput = ({
   style,
   horizontal = true,
   showTitle = true,
+  usePopup = false,
   startDateConfig,
   endDateConfig,
   defaultIntervalHours = null,
@@ -169,7 +171,7 @@ const PeriodInput = ({
           title={showTitle && I18n.t(translationKey)}
           mode={dateConfig.dateInputMode ?? 'date'}
           nullable={nullable}
-          popup={horizontal}
+          popup={usePopup || horizontal}
           defaultDate={date}
           onDateChange={_date => handleDateChange(isStartDate, _date)}
           readonly={dateConfig.readonly}
@@ -185,6 +187,7 @@ const PeriodInput = ({
       styles.dateInput,
       showTitle,
       I18n,
+      usePopup,
       horizontal,
       handleDateChange,
     ],
