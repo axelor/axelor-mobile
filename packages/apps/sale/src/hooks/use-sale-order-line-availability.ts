@@ -34,11 +34,6 @@ export const useSaleOrderLineAvailability = ({
   const {SaleOrderLine} = useTypes();
   const {getItemColor, getItemTitle} = useTypeHelpers();
 
-  console.log({
-    availableStatus,
-    availableStatusSelect,
-  });
-
   return useMemo(
     () => ({
       availabilityTitle: getItemTitle(
