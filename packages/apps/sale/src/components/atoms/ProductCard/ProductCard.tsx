@@ -28,7 +28,7 @@ import {useMetafileUri} from '@axelor/aos-mobile-core';
 
 export interface ProductCardProps {
   style?: any;
-  onPress: () => void;
+  onPress?: () => void;
   picture: any;
   name: string;
   code: string;
@@ -70,6 +70,8 @@ const ProductCard = ({
     <ObjectCard
       style={[borderStyle, style]}
       onPress={onPress}
+      touchable={!!onPress}
+      showArrow={!!onPress}
       image={{
         generalStyle: styles.imageSize,
         imageSize: styles.imageSize,
