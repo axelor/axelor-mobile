@@ -176,6 +176,8 @@ export const sale_modelAPI: ObjectFields = {
   }),
   sale_saleOrderLine: schemaContructor.object({
     typeSelect: schemaContructor.number(),
+    availableStatusSelect: schemaContructor.number(),
+    availableStatus: schemaContructor.string(),
     product: schemaContructor.subObject().concat(
       schemaContructor.object({
         name: schemaContructor.string(),
