@@ -55,6 +55,7 @@ const EventPeriodInputAux = ({
         onDateChange: date => handleValueChange('endDateTime', date),
       }}
       onPeriodErrorChange={isError => handleValueChange('isError', isError)}
+      usePopup
     />
   );
 };

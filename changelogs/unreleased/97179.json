@@ -1,0 +1,5 @@
+{
+  "title": "Event: use popup date inputs on form view to simplify validation",
+  "type": "refactor",
+  "packages": "ui"
+}
