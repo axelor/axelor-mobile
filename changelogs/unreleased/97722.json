@@ -1,5 +1,0 @@
-{
-  "title": "StockMoveLine: improve sorting management with sequence field",
-  "type": "fix",
-  "packages": "stock"
-}

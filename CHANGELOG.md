@@ -3,6 +3,54 @@ title: 8.3.0
 tags: Changelog
 ---
 
+## [8.3.9] (2025-07-24)
+
+### @axelor/aos-mobile-core
+
+#### Features
+
+- Navigation: add hook to check if screen is a stack root
+
+#### Fixes
+
+- Object fields: manage deep merging to simplify fields addition in override
+- Screen context: filter undefined ids to avoid sending inconsistent results in helpers
+- Configs: reset web configurations on app refresh
+
+### @axelor/aos-mobile-ui
+
+#### Features
+
+- PeriodInput: add usePopup prop to define if date input should display as dropdown or alert
+- RadioSelect: add prop to modify question style
+
+#### Changes
+
+- Event: use popup date inputs on form view to simplify validation
+
+#### Fixes
+
+- Increment: apply outside click behavior only when input was focused
+- FloatingButton: display titles on the left
+
+### @axelor/aos-mobile-sale
+
+#### Fixes
+
+- SaleOrderLine: avoid issue when product is null
+
+### @axelor/aos-mobile-hr
+
+#### Fixes
+
+- Projects: apply the same filters as AOS
+
+### @axelor/aos-mobile-stock
+
+#### Fixes
+
+- StockMoveLine: improve sorting management with sequence field
+
 ## [8.3.8] (2025-07-17)
 
 ### @axelor/aos-mobile-core
@@ -331,6 +379,7 @@ This version add a new part of the HR package, user can now manage leave request
 
 - Header actions: remove use of attachedFileScreenTitle
 
+[8.3.9]: https://github.com/axelor/axelor-mobile/compare/8.3.8...8.3.9
 [8.3.8]: https://github.com/axelor/axelor-mobile/compare/8.3.7...8.3.8
 [8.3.7]: https://github.com/axelor/axelor-mobile/compare/8.3.6...8.3.7
 [8.3.6]: https://github.com/axelor/axelor-mobile/compare/8.3.5...8.3.6

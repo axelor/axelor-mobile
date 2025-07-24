@@ -1,5 +1,0 @@
-{
-  "title": "Configs: reset web configurations on app refresh",
-  "type": "fix",
-  "packages": "core"
-}
