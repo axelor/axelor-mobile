@@ -1,0 +1,5 @@
+{
+  "title": "Camera scanner: do not reset camera key after scanning a value to avoid lost information",
+  "type": "fix",
+  "packages": "core"
+}
