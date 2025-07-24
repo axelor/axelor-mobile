@@ -30,6 +30,7 @@ interface RadioSelectProps {
   style?: any;
   itemStyle?: any;
   radioButtonStyle?: any;
+  questionStyle?: any;
   items: RadioItem[];
   question?: string;
   radioSize?: number;
@@ -43,6 +44,7 @@ const RadioSelect = ({
   style,
   itemStyle,
   radioButtonStyle,
+  questionStyle,
   items,
   question,
   radioSize,
@@ -67,7 +69,7 @@ const RadioSelect = ({
   return (
     <View style={[styles.container, style]}>
       {!checkNullString(question) && (
-        <Text writingType="important" style={styles.question}>
+        <Text writingType="important" style={[styles.question, questionStyle]}>
           {question}
         </Text>
       )}
