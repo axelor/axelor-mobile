@@ -16,13 +16,12 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import React, {useCallback, useEffect, useMemo} from 'react';
+import React, {useCallback, useEffect} from 'react';
 import {
   Screen,
   KeyboardAvoidingScrollView,
   HeaderContainer,
   NotesCard,
-  DropdownCardSwitch,
 } from '@axelor/aos-mobile-ui';
 import {
   useContextRegister,
@@ -36,7 +35,7 @@ import {
   CustomerDeliveryMovementIndicationCard,
   CustomerDeliveryRealizeButton,
   CustomerDeliveryNotes,
-  FreightCarrierCard,
+  CustomerDeliveryDropdownCard,
 } from '../../components';
 import {fetchCustomerDelivery} from '../../features/customerDeliverySlice';
 
@@ -61,51 +60,6 @@ const CustomerDeliveryDetailScreen = ({route}) => {
   useEffect(() => {
     getCustomerDelivery();
   }, [getCustomerDelivery]);
-
-  const dropdownItems = useMemo(() => {
-    const _dropdownItems = [
-      {
-        title: I18n.t('Stock_FreightCarrier'),
-        key: 1,
-        childrenComp: (
-          <FreightCarrierCard
-            freightCarrier={customerDelivery?.freightCarrierMode}
-            incoterm={customerDelivery?.incoterm?.fullname}
-            trackingNumber={customerDelivery?.trackingNumber}
-            modeOfTransport={customerDelivery?.modeOfTransport}
-            numOfPalettes={customerDelivery?.numOfPalettes}
-            numOfPackages={customerDelivery?.numOfPackages}
-            grossMass={customerDelivery?.grossMass}
-            signatoryUser={customerDelivery?.signatoryUser?.fullName}
-            forwarderPartner={customerDelivery?.forwarderPartner?.fullName}
-            isConformityCertifSigned={
-              customerDelivery?.isConformityCertifSigned
-            }
-            isNeedingConformityCertificate={
-              customerDelivery?.isNeedingConformityCertificate
-            }
-            isIspmRequired={customerDelivery?.isIspmRequired}
-          />
-        ),
-      },
-    ];
-
-    return _dropdownItems;
-  }, [
-    I18n,
-    customerDelivery?.forwarderPartner?.fullName,
-    customerDelivery?.freightCarrierMode,
-    customerDelivery?.grossMass,
-    customerDelivery?.incoterm?.fullname,
-    customerDelivery?.isConformityCertifSigned,
-    customerDelivery?.isIspmRequired,
-    customerDelivery?.isNeedingConformityCertificate,
-    customerDelivery?.modeOfTransport,
-    customerDelivery?.numOfPackages,
-    customerDelivery?.numOfPalettes,
-    customerDelivery?.signatoryUser?.fullName,
-    customerDelivery?.trackingNumber,
-  ]);
 
   if (customerDelivery?.id !== customerDeliveryId) {
     return null;
@@ -138,7 +92,7 @@ const CustomerDeliveryDetailScreen = ({route}) => {
           title={I18n.t('Stock_DeliveryCondition')}
           data={customerDelivery?.deliveryCondition}
         />
-        <DropdownCardSwitch dropdownItems={dropdownItems} multiSelection />
+        <CustomerDeliveryDropdownCard />
       </KeyboardAvoidingScrollView>
     </Screen>
   );
