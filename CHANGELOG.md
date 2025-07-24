@@ -3,6 +3,52 @@ title: 8.2.0
 tags: Changelog
 ---
 
+## [8.2.17] (2025-07-24)
+
+### @axelor/aos-mobile-core
+
+#### Fixes
+
+- Object fields: manage deep merging to simplify fields addition in override
+- Screen context: filter undefined ids to avoid sending inconsistent results in helpers
+- Configs: reset web configurations on app refresh
+
+### @axelor/aos-mobile-ui
+
+#### Features
+
+- PeriodInput: add usePopup prop to define if date input should display as dropdown or alert
+- RadioSelect: add prop to modify question style
+- ObjectCard: add fontSize attribute on TextElement
+
+#### Changes
+
+- Event: use popup date inputs on form view to simplify validation
+
+#### Fixes
+
+- Increment: apply outside click behavior only when input was focused
+- FloatingButton: display titles on the left
+
+### @axelor/aos-mobile-sale
+
+#### Fixes
+
+- SaleOrderLine: avoid issue when product is null
+
+### @axelor/aos-mobile-hr
+
+#### Fixes
+
+- Projects: apply the same filters as AOS
+
+### @axelor/aos-mobile-stock
+
+#### Fixes
+
+- StockMoveLine: improve card display with smaller title & move badge to upper
+- StockMoveLine: improve sorting management with sequence field
+
 ## [8.2.16] (2025-07-17)
 
 ### @axelor/aos-mobile-core
@@ -681,6 +727,7 @@ This package is linked with the @axelor/aos-mobile-hr to manage time logging.
 
 - Supplier arrival: add possibility to fill origin when creating or selecting tracking number
 
+[8.2.17]: https://github.com/axelor/axelor-mobile/compare/8.2.16...8.2.17
 [8.2.16]: https://github.com/axelor/axelor-mobile/compare/8.2.15...8.2.16
 [8.2.15]: https://github.com/axelor/axelor-mobile/compare/8.2.14...8.2.15
 [8.2.14]: https://github.com/axelor/axelor-mobile/compare/8.2.13...8.2.14

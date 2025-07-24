@@ -1,5 +1,0 @@
-{
-  "title": "PeriodInput: add usePopup prop to define if date input should display as dropdown or alert",
-  "type": "feat",
-  "packages": "ui"
-}
