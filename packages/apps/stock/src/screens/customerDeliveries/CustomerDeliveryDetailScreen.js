@@ -35,6 +35,7 @@ import {
   CustomerDeliveryMovementIndicationCard,
   CustomerDeliveryRealizeButton,
   CustomerDeliveryNotes,
+  CustomerDeliveryDropdownCard,
 } from '../../components';
 import {fetchCustomerDelivery} from '../../features/customerDeliverySlice';
 
@@ -91,6 +92,7 @@ const CustomerDeliveryDetailScreen = ({route}) => {
           title={I18n.t('Stock_DeliveryCondition')}
           data={customerDelivery?.deliveryCondition}
         />
+        <CustomerDeliveryDropdownCard />
       </KeyboardAvoidingScrollView>
     </Screen>
   );
