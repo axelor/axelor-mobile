@@ -63,7 +63,7 @@ const FloatingActionButton = ({
       />
       <Indicator show={indicator} color={Colors.errorColor} />
       {title != null ? (
-        <View style={[styles.actionTitleContainer, {left: size + margin * 2}]}>
+        <View style={[styles.actionTitleContainer, {right: size + margin * 2}]}>
           <View style={styles.actionTitle}>
             <Text
               fontSize={16}
