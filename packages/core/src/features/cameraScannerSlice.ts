@@ -57,7 +57,6 @@ const cameraScannerSlice = createSlice({
       state.barcode = action.payload;
       if (!state.isMassScan) {
         state.isEnabled = false;
-        state.cameraKey = null;
       }
     },
     disableCameraScanner(state) {
