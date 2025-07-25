@@ -237,7 +237,8 @@ const AutoCompleteSearch = ({
   const handleFocus = useCallback(() => {
     setDisplayList(true);
     onSelection();
-  }, [onSelection]);
+    handleAPICall();
+  }, [handleAPICall, onSelection]);
 
   const handleDetailsView = useCallback(() => {
     stopInterval();
