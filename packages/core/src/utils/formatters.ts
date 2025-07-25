@@ -76,12 +76,16 @@ export function formatDuration(duration: number, format: string): string {
   return format;
 }
 
-export function formatScan(barcodeValue, barcodeType, config = true) {
+export function formatScan(
+  barcodeValue: string,
+  barcodeType: string,
+  config: boolean = true,
+) {
   if (config && barcodeType != null && barcodeValue != null) {
     if (
-      barcodeType === 'EAN_13' ||
-      barcodeType === 'EAN_8' ||
-      barcodeType === 'UPC_A'
+      ['ean13', 'ean8', 'upca'].includes(
+        barcodeType.toLowerCase().replaceAll(/[-_]/g, ''),
+      )
     ) {
       return barcodeValue.slice(0, -1);
     } else {
