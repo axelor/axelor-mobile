@@ -3,6 +3,15 @@ title: 7.2.0
 tags: Changelog
 ---
 
+## [7.2.37] (2025-07-31)
+
+### @axelor/aos-mobile-ui
+
+#### Fixes
+
+- AutoCompleteSearch: declench api call when user focus input
+- Increment: unformat value before processing end input to resolve outside click issue
+
 ## [7.2.36] (2025-07-24)
 
 ### @axelor/aos-mobile-core
@@ -996,6 +1005,7 @@ It enables user to manage Expenses through the mobile application. You can creat
 - Remove IconButton component which should be replaced by Button component.
 - Remove Pop-up components which should be replaced by Alert component.
 
+[7.2.37]: https://github.com/axelor/axelor-mobile/compare/7.2.36...7.2.37
 [7.2.36]: https://github.com/axelor/axelor-mobile/compare/7.2.35...7.2.36
 [7.2.35]: https://github.com/axelor/axelor-mobile/compare/7.2.34...7.2.35
 [7.2.34]: https://github.com/axelor/axelor-mobile/compare/7.2.33...7.2.34
