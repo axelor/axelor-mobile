@@ -165,9 +165,7 @@ const Increment = ({
   const handleEndInput = useCallback(() => {
     setIsFocused(false);
 
-    const unformattedValue = defaultFormatting
-      ? valueQty.replaceAll(',', '.')
-      : valueQty;
+    const unformattedValue = defaultFormatting ? unformat(valueQty) : valueQty;
 
     if (unformattedValue === '' || unformattedValue == null) {
       handleResult(0);
@@ -176,7 +174,7 @@ const Increment = ({
     }
 
     onBlur?.();
-  }, [defaultFormatting, handleResult, onBlur, valueQty]);
+  }, [defaultFormatting, handleResult, onBlur, unformat, valueQty]);
 
   useEffect(() => {
     if (clickOutside === OUTSIDE_INDICATOR && isFocused) {
