@@ -3,6 +3,38 @@ title: 8.1.0
 tags: Changelog
 ---
 
+## [8.1.24] (2025-07-31)
+
+### @axelor/aos-mobile-core
+
+#### Fixes
+
+- Object fields: manage deep merging to simplify fields addition in override
+- Camera scanner: apply formatter which remove last character when needed like Zebra scanner
+
+### @axelor/aos-mobile-ui
+
+#### Fixes
+
+- Increment: apply outside click behavior only when input was focused
+- HtmlInput: add blur on click outside management
+- AutoCompleteSearch: declench api call when user focus input
+- Increment: unformat value before processing end input to resolve outside click issue
+
+### @axelor/aos-mobile-hr
+
+#### Features
+
+- Timesheet: enable deletion of a TimesheetLine linked to a TSTimer
+
+### @axelor/aos-mobile-stock
+
+#### Fixes
+
+- StockMove: modify note titles to match with AOS
+- InternalMoveLine: make stock move notes readonly
+- StockMoveLine: improve sorting management with sequence field
+
 ## [8.1.23] (2025-07-03)
 
 ### @axelor/aos-mobile-ui
@@ -869,6 +901,7 @@ It enables user to manage interventions and customer parc through the mobile app
 - Selections: use new system and tools instead of type files
 - Product indicators: use new chart component to display quantity indicators
 
+[8.1.24]: https://github.com/axelor/axelor-mobile/compare/8.1.23...8.1.24
 [8.1.23]: https://github.com/axelor/axelor-mobile/compare/8.1.22...8.1.23
 [8.1.22]: https://github.com/axelor/axelor-mobile/compare/8.1.21...8.1.22
 [8.1.21]: https://github.com/axelor/axelor-mobile/compare/8.1.20...8.1.21

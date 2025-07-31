@@ -1,5 +1,0 @@
-{
-  "title": "StockMove: modify note titles to match with AOS",
-  "type": "fix",
-  "packages": "stock"
-}

@@ -1,5 +1,0 @@
-{
-  "title": "Camera scanner: apply formatter which remove last character when needed like Zebra scanner",
-  "type": "fix",
-  "packages": "core"
-}
