@@ -32,6 +32,7 @@
   "Stock_RealQty": "Quantité réelle",
   "Stock_FutureQty": "Quantité future",
   "Stock_AllocatedQty": "Quantité allouée",
+  "Stock_SaleOrder": "Commande client",
   "Stock_SaleOrderQty": "Quantité en commande client",
   "Stock_PurchaseOrderQty": "Quantité en commande fournisseur",
   "Stock_AvailableStock": "Stock disponible",
