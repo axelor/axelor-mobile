@@ -3,6 +3,21 @@ title: 8.3.0
 tags: Changelog
 ---
 
+## [8.3.10] (2025-07-31)
+
+### @axelor/aos-mobile-core
+
+#### Fixes
+
+- Camera scanner: apply formatter which remove last character when needed like Zebra scanner
+
+### @axelor/aos-mobile-ui
+
+#### Fixes
+
+- AutoCompleteSearch: declench api call when user focus input
+- Increment: unformat value before processing end input to resolve outside click issue
+
 ## [8.3.9] (2025-07-24)
 
 ### @axelor/aos-mobile-core
@@ -379,6 +394,7 @@ This version add a new part of the HR package, user can now manage leave request
 
 - Header actions: remove use of attachedFileScreenTitle
 
+[8.3.10]: https://github.com/axelor/axelor-mobile/compare/8.3.9...8.3.10
 [8.3.9]: https://github.com/axelor/axelor-mobile/compare/8.3.8...8.3.9
 [8.3.8]: https://github.com/axelor/axelor-mobile/compare/8.3.7...8.3.8
 [8.3.7]: https://github.com/axelor/axelor-mobile/compare/8.3.6...8.3.7
