@@ -3,6 +3,22 @@ title: 8.4.0
 tags: Changelog
 ---
 
+## [8.4.3] (2025-07-31)
+
+### @axelor/aos-mobile-core
+
+#### Fixes
+
+- Camera scanner: apply formatter which remove last character when needed like Zebra scanner
+- Camera scanner: do not reset camera key after scanning a value to avoid lost information
+
+### @axelor/aos-mobile-ui
+
+#### Fixes
+
+- AutoCompleteSearch: declench api call when user focus input
+- Increment: unformat value before processing end input to resolve outside click issue
+
 ## [8.4.2] (2025-07-24)
 
 ### @axelor/aos-mobile-core
@@ -247,6 +263,7 @@ This version add a new part of the Quality package, user can now manage quality 
 
 - ErrorBoundary: modify fallback screen management to manage maintenance error type
 
+[8.4.3]: https://github.com/axelor/axelor-mobile/compare/8.4.2...8.4.3
 [8.4.2]: https://github.com/axelor/axelor-mobile/compare/8.4.1...8.4.2
 [8.4.1]: https://github.com/axelor/axelor-mobile/compare/8.4.0...8.4.1
 [8.4.0]: https://github.com/axelor/axelor-mobile/compare/8.3.7...8.4.0

@@ -1,5 +1,0 @@
-{
-  "title": "Increment: unformat value before processing end input to resolve outside click issue",
-  "type": "fix",
-  "packages": "ui"
-}
