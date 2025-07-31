@@ -32,6 +32,7 @@
   "Stock_RealQty": "Real quantity",
   "Stock_FutureQty": "Future quantity",
   "Stock_AllocatedQty": "Allocated quantiy",
+  "Stock_SaleOrder": "Sale order",
   "Stock_SaleOrderQty": "Sale order quantity",
   "Stock_PurchaseOrderQty": "Purchase order quantity",
   "Stock_AvailableStock": "Available stock",
