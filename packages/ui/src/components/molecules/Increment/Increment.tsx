@@ -189,7 +189,7 @@ const Increment = ({
       setValueQty(current => unformat(current).replace('.', decimalSpacer));
     }
 
-    if (inputRef.current) {
+    if (inputRef.current?.setSelection) {
       inputRef.current.setSelection(0, valueQty.length);
     }
     onFocus?.();
@@ -202,7 +202,8 @@ const Increment = ({
       ref={containerRef}
       style={[styles.container_increment, style]}
       activeOpacity={0.9}
-      onPress={() => inputRef.current?.focus()}>
+      onPress={() => inputRef.current?.focus()}
+      testID="incrementContainer">
       <IncrementButton
         iconName="dash-lg"
         onPress={handleMinus}
