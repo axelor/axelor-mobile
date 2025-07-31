@@ -16,175 +16,149 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import React from 'react';
-import {shallow} from 'enzyme';
-import {Increment, Input} from '@axelor/aos-mobile-ui';
+import {fireEvent} from '@testing-library/react-native';
+import {Increment, formatNumber, unformatNumber} from '@axelor/aos-mobile-ui';
+import {setup} from '../../tools';
 
-describe('Increment Component', () => {
-  const props = {
-    value: '5',
-    stepSize: 2,
-    onValueChange: jest.fn(),
-  };
+describe('Increment component', () => {
+  const setupIncrement = overrideProps =>
+    setup({
+      Component: Increment,
+      baseProps: {value: '5', onValueChange: jest.fn()},
+      overrideProps,
+    });
 
-  it('should render without crashing', () => {
-    const wrapper = shallow(<Increment {...props} />);
-
-    expect(wrapper.exists()).toBe(true);
-    expect(wrapper.find(Input).exists()).toBe(true);
-    expect(wrapper.find('IncrementButton')).toHaveLength(2);
+  it('renders with default value', () => {
+    const {getByDisplayValue, props} = setupIncrement();
+    expect(getByDisplayValue(`${props.value}.00`)).toBeTruthy();
   });
 
-  it('renders input field with the initial value', () => {
-    const wrapper = shallow(<Increment {...props} />);
+  it('increments value on plus button press', () => {
+    const {getAllByTestId, props} = setupIncrement({onValueChange: jest.fn()});
 
-    expect(wrapper.find(Input).prop('value')).toBe(props.value);
+    const plusButton = getAllByTestId('iconTouchable')[1];
+
+    fireEvent.press(plusButton);
+
+    expect(props.onValueChange).toHaveBeenCalledWith(
+      parseFloat(props.value) + 1,
+    );
   });
 
-  it('increments value when plus button is clicked', () => {
-    const onValueChange = jest.fn();
-    const wrapper = shallow(
-      <Increment {...props} onValueChange={onValueChange} />,
+  it('decrements value on minus button press', () => {
+    const {getAllByTestId, props} = setupIncrement({onValueChange: jest.fn()});
+
+    const minusButton = getAllByTestId('iconTouchable')[0];
+
+    fireEvent.press(minusButton);
+
+    expect(props.onValueChange).toHaveBeenCalledWith(
+      parseFloat(props.value) - 1,
+    );
+  });
+
+  it('does not decrement below minValue', () => {
+    const {getAllByTestId, props} = setupIncrement({
+      onValueChange: jest.fn(),
+      minValue: 5,
+    });
+
+    const minusButton = getAllByTestId('iconTouchable')[0];
+
+    fireEvent.press(minusButton);
+
+    expect(props.onValueChange).not.toHaveBeenCalled();
+  });
+
+  it('does not increment above maxValue', () => {
+    const {getAllByTestId, props} = setupIncrement({
+      onValueChange: jest.fn(),
+      maxValue: 5,
+    });
+
+    const plusButton = getAllByTestId('iconTouchable')[1];
+
+    fireEvent.press(plusButton);
+
+    expect(props.onValueChange).not.toHaveBeenCalled();
+  });
+
+  it('calls onFocus when input is focused', () => {
+    const {getByDisplayValue, props} = setupIncrement({onFocus: jest.fn()});
+
+    fireEvent(getByDisplayValue(`${props.value}.00`), 'focus');
+
+    expect(props.onFocus).toHaveBeenCalled();
+  });
+
+  it('calls onBlur and resets value when blurred with empty input', () => {
+    const {getByDisplayValue, props} = setupIncrement({onBlur: jest.fn()});
+
+    const input = getByDisplayValue(`${props.value}.00`);
+
+    fireEvent.changeText(input, '');
+    fireEvent(input, 'blur');
+
+    expect(props.onBlur).toHaveBeenCalled();
+    expect(props.onValueChange).toHaveBeenCalledWith(0);
+  });
+
+  it('respects readonly prop', () => {
+    const {queryAllByTestId} = setupIncrement({readonly: true});
+
+    expect(queryAllByTestId('iconTouchable').length).toBe(0);
+  });
+
+  it('applies custom formatting logic when defaultFormatting is false', () => {
+    const {getByDisplayValue, props} = setupIncrement({
+      defaultFormatting: false,
+      value: '1234',
+    });
+
+    expect(getByDisplayValue(props.value)).toBeTruthy();
+  });
+
+  it('increments value using thousandSpacer ","', () => {
+    const {getAllByTestId, getByDisplayValue, props} = setupIncrement({
+      onValueChange: jest.fn(),
+      value: '5000.5',
+      decimalSpacer: '.',
+      thousandSpacer: ',',
+    });
+
+    const plusButton = getAllByTestId('iconTouchable')[1];
+    fireEvent.press(plusButton);
+
+    const expectedValue =
+      parseFloat(
+        unformatNumber(props.value, props.decimalSpacer, props.thousandSpacer),
+      ) + 1;
+    const inputExpectedValue = formatNumber(
+      expectedValue,
+      props.decimalSpacer,
+      props.thousandSpacer,
     );
 
-    wrapper.find('IncrementButton[iconName="plus-lg"]').simulate('press');
+    expect(expectedValue).toBe(5001.5);
+    expect(props.onValueChange).toHaveBeenCalledWith(expectedValue);
+    expect(getByDisplayValue(inputExpectedValue)).toBeTruthy();
+  });
 
-    expect(onValueChange).toHaveBeenCalledWith(
+  it('respects stepSize prop', () => {
+    const {getAllByTestId, props} = setupIncrement({stepSize: 5});
+
+    const plusButton = getAllByTestId('iconTouchable')[1];
+
+    fireEvent.press(plusButton);
+
+    expect(props.onValueChange).toHaveBeenCalledWith(
       parseFloat(props.value) + props.stepSize,
     );
   });
 
-  it('decrements value when minus button is clicked', () => {
-    const onValueChange = jest.fn();
-    const wrapper = shallow(
-      <Increment {...props} onValueChange={onValueChange} />,
-    );
-    wrapper.find('IncrementButton[iconName="dash-lg"]').simulate('press');
+  it('applies custom style when provided', () => {
+    const {getByTestId, props} = setupIncrement({style: {color: 'red'}});
 
-    expect(onValueChange).toHaveBeenCalledWith(
-      parseFloat(props.value) - props.stepSize,
-    );
-  });
-
-  it('increments value using decimalSpacer ","', () => {
-    const decimalSpacer = ',';
-    const onValueChange = jest.fn();
-    const initialValue = '5,5';
-    const wrapper = shallow(
-      <Increment
-        {...props}
-        value={initialValue}
-        decimalSpacer={decimalSpacer}
-        onValueChange={onValueChange}
-      />,
-    );
-
-    wrapper.find('IncrementButton[iconName="plus-lg"]').simulate('press');
-
-    const expectedValue =
-      parseFloat(initialValue.replace(decimalSpacer, '.')) + props.stepSize;
-    const inputExpectedValue = expectedValue
-      .toFixed(2)
-      .toString()
-      .replace('.', decimalSpacer);
-
-    expect(onValueChange).toHaveBeenCalledWith(expectedValue);
-
-    expect(wrapper.find(Input).prop('value')).toBe(inputExpectedValue);
-  });
-
-  it('increments value using thousandSpacer ","', () => {
-    const initialValue = '5,000';
-    const stepSize = 1000;
-    const thousandSpacer = ',';
-    const onValueChange = jest.fn();
-    const wrapper = shallow(
-      <Increment
-        {...props}
-        value={initialValue}
-        stepSize={stepSize}
-        thousandSpacer={thousandSpacer}
-        onValueChange={onValueChange}
-      />,
-    );
-
-    wrapper.find('IncrementButton[iconName="plus-lg"]').simulate('press');
-
-    const expectedValue = parseFloat(initialValue.replace(',', '')) + stepSize;
-    expect(onValueChange).toHaveBeenCalledWith(expectedValue);
-
-    const formattedValue = expectedValue
-      .toFixed(2)
-      .toString()
-      .replace(/\B(?=(\d{3})+(?!\d))/g, thousandSpacer);
-    expect(wrapper.find('Input').prop('value')).toBe(formattedValue);
-  });
-
-  it('calls onFocus when we select increment input', () => {
-    const onFocusMock = jest.fn();
-    const wrapper = shallow(<Increment {...props} onFocus={onFocusMock} />);
-
-    wrapper.find(Input).simulate('selection');
-    expect(onFocusMock).toHaveBeenCalled();
-  });
-
-  it('calls onBlur when we unselect increment input', () => {
-    const onBlurMock = jest.fn();
-    const wrapper = shallow(<Increment {...props} onBlur={onBlurMock} />);
-
-    wrapper.find(Input).simulate('endFocus');
-    expect(onBlurMock).toHaveBeenCalled();
-  });
-
-  it('disables component when it should be readonly', () => {
-    const wrapper = shallow(<Increment {...props} readonly />);
-
-    expect(wrapper.find(Input).prop('readOnly')).toBe(true);
-    expect(
-      wrapper.find('IncrementButton[iconName="plus-lg"]').prop('readonly'),
-    ).toBe(true);
-    expect(
-      wrapper.find('IncrementButton[iconName="dash-lg"]').prop('readonly'),
-    ).toBe(true);
-  });
-
-  it('does not increment value up to the max with step', () => {
-    const maxValue = 10;
-    const wrapper = shallow(
-      <Increment {...props} value="9" maxValue={maxValue} />,
-    );
-
-    wrapper.find('IncrementButton[iconName="plus-lg"]').simulate('press');
-    expect(wrapper.find('Input').prop('value')).toBe(
-      maxValue.toFixed(2).toString(),
-    );
-  });
-
-  it('can not increment value when value equal max', () => {
-    const wrapper = shallow(<Increment {...props} value="10" maxValue={10} />);
-
-    expect(
-      wrapper.find('IncrementButton[iconName="plus-lg"]').prop('disabled'),
-    ).toBe(true);
-  });
-
-  it('does not decrement value below to the min with step', () => {
-    const minValue = 0;
-    const wrapper = shallow(
-      <Increment {...props} value="1" minValue={minValue} />,
-    );
-
-    wrapper.find('IncrementButton[iconName="dash-lg"]').simulate('press');
-    expect(wrapper.find('Input').prop('value')).toBe(
-      minValue.toFixed(2).toString(),
-    );
-  });
-
-  it('can not decrement value when value equal min', () => {
-    const wrapper = shallow(<Increment {...props} value="0" minValue={0} />);
-
-    expect(
-      wrapper.find('IncrementButton[iconName="dash-lg"]').prop('disabled'),
-    ).toBe(true);
+    expect(getByTestId('incrementContainer')).toHaveStyle(props.style);
   });
 });
