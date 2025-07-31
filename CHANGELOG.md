@@ -3,6 +3,21 @@ title: 8.2.0
 tags: Changelog
 ---
 
+## [8.2.18] (2025-07-31)
+
+### @axelor/aos-mobile-core
+
+#### Fixes
+
+- Camera scanner: apply formatter which remove last character when needed like Zebra scanner
+
+### @axelor/aos-mobile-ui
+
+#### Fixes
+
+- AutoCompleteSearch: declench api call when user focus input
+- Increment: unformat value before processing end input to resolve outside click issue
+
 ## [8.2.17] (2025-07-24)
 
 ### @axelor/aos-mobile-core
@@ -727,6 +742,7 @@ This package is linked with the @axelor/aos-mobile-hr to manage time logging.
 
 - Supplier arrival: add possibility to fill origin when creating or selecting tracking number
 
+[8.2.18]: https://github.com/axelor/axelor-mobile/compare/8.2.17...8.2.18
 [8.2.17]: https://github.com/axelor/axelor-mobile/compare/8.2.16...8.2.17
 [8.2.16]: https://github.com/axelor/axelor-mobile/compare/8.2.15...8.2.16
 [8.2.15]: https://github.com/axelor/axelor-mobile/compare/8.2.14...8.2.15
