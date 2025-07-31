@@ -18,7 +18,12 @@
 
 import React from 'react';
 import {shallow} from 'enzyme';
-import {Increment, Input} from '@axelor/aos-mobile-ui';
+import {
+  Increment,
+  Input,
+  formatNumber,
+  unformatNumber,
+} from '@axelor/aos-mobile-ui';
 
 describe('Increment Component', () => {
   const props = {
@@ -66,43 +71,17 @@ describe('Increment Component', () => {
     );
   });
 
-  it('increments value using decimalSpacer ","', () => {
-    const decimalSpacer = ',';
-    const onValueChange = jest.fn();
-    const initialValue = '5,5';
-    const wrapper = shallow(
-      <Increment
-        {...props}
-        value={initialValue}
-        decimalSpacer={decimalSpacer}
-        onValueChange={onValueChange}
-      />,
-    );
-
-    wrapper.find('IncrementButton[iconName="plus"]').simulate('press');
-
-    const expectedValue =
-      parseFloat(initialValue.replace(decimalSpacer, '.')) + props.stepSize;
-    const inputExpectedValue = expectedValue
-      .toFixed(2)
-      .toString()
-      .replace('.', decimalSpacer);
-
-    expect(onValueChange).toHaveBeenCalledWith(expectedValue);
-
-    expect(wrapper.find(Input).prop('value')).toBe(inputExpectedValue);
-  });
-
-  it('increments value using thousandSpacer ","', () => {
-    const initialValue = '5,000';
-    const stepSize = 1000;
+  it('increments value using decimalSpacer & thousandSpacer', () => {
+    const decimalSpacer = '.';
     const thousandSpacer = ',';
     const onValueChange = jest.fn();
+    const initialValue = '5000.5';
     const wrapper = shallow(
       <Increment
         {...props}
+        stepSize={1}
         value={initialValue}
-        stepSize={stepSize}
+        decimalSpacer={decimalSpacer}
         thousandSpacer={thousandSpacer}
         onValueChange={onValueChange}
       />,
@@ -110,14 +89,16 @@ describe('Increment Component', () => {
 
     wrapper.find('IncrementButton[iconName="plus"]').simulate('press');
 
-    const expectedValue = parseFloat(initialValue.replace(',', '')) + stepSize;
-    expect(onValueChange).toHaveBeenCalledWith(expectedValue);
+    const expectedValue = parseFloat(unformatNumber(initialValue)) + 1;
+    const inputExpectedValue = formatNumber(
+      expectedValue,
+      decimalSpacer,
+      thousandSpacer,
+    );
 
-    const formattedValue = expectedValue
-      .toFixed(2)
-      .toString()
-      .replace(/\B(?=(\d{3})+(?!\d))/g, thousandSpacer);
-    expect(wrapper.find('Input').prop('value')).toBe(formattedValue);
+    expect(expectedValue).toBe(5001.5);
+    expect(onValueChange).toHaveBeenCalledWith(expectedValue);
+    expect(wrapper.find(Input).prop('value')).toBe(inputExpectedValue);
   });
 
   it('calls onFocus when we select increment input', () => {

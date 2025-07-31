@@ -84,7 +84,11 @@ export function unformatNumber(
   const JS_THOUSAND_SPACER = '';
   const JS_DECIMAL_SPACER = '.';
 
-  return number
-    .replaceAll(thousandSpacer, JS_THOUSAND_SPACER)
-    .replace(decimalSpacer, JS_DECIMAL_SPACER);
+  if (number.includes(decimalSpacer) && number.includes(thousandSpacer)) {
+    return number
+      .replaceAll(thousandSpacer, JS_THOUSAND_SPACER)
+      .replace(decimalSpacer, JS_DECIMAL_SPACER);
+  }
+
+  return number.replace(',', JS_DECIMAL_SPACER);
 }
