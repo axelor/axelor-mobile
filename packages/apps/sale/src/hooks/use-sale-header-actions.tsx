@@ -168,14 +168,29 @@ const useCreateSaleOrderHeaderActionGetter = () => {
 const useClientDetailsActions = () => {
   const {getCreationHeaderAction} = useCreateSaleOrderHeaderActionGetter();
   const {customer} = useSelector(state => state.sale_customer);
+  const I18n = useTranslator();
+  const {canCreate} = usePermitted({modelName: 'com.axelor.apps.crm.db.Event'});
+  const navigation = useNavigation();
 
   useEffect(() => {
     headerActionsProvider.registerModel('sale_client_details', {
       model: 'com.axelor.apps.base.db.Partner',
       modelId: customer?.id,
-      actions: [getCreationHeaderAction(customer)],
+      actions: [
+        getCreationHeaderAction(customer),
+        {
+          key: 'client-openEventForm',
+          order: 10,
+          iconName: 'calendar-plus-fill',
+          title: I18n.t('Crm_CreateEvent'),
+          hideIf: !canCreate,
+          onPress: () =>
+            navigation.navigate('EventFormScreen', {client: customer}),
+          showInHeader: true,
+        },
+      ],
     });
-  }, [customer, getCreationHeaderAction]);
+  }, [I18n, canCreate, customer, getCreationHeaderAction, navigation]);
 };
 
 const useCRMOverrideActions = () => {
