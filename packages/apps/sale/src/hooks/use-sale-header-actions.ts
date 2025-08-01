@@ -117,14 +117,30 @@ const useClientListActions = () => {
 };
 
 const useClientDetailsActions = () => {
+  const I18n = useTranslator();
+  const {canCreate} = usePermitted({modelName: 'com.axelor.apps.crm.db.Event'});
+  const navigation = useNavigation();
+
   const {customer} = useSelector((state: any) => state.sale_customer);
 
   useEffect(() => {
     headerActionsProvider.registerModel('sale_client_details', {
       model: 'com.axelor.apps.base.db.Partner',
       modelId: customer?.id,
+      actions: [
+        {
+          key: 'client-openEventForm',
+          order: 10,
+          iconName: 'calendar-plus-fill',
+          title: I18n.t('Crm_CreateEvent'),
+          hideIf: !canCreate,
+          onPress: () =>
+            navigation.navigate('EventFormScreen', {client: customer}),
+          showInHeader: true,
+        },
+      ],
     });
-  }, [customer]);
+  }, [I18n, canCreate, customer, navigation]);
 };
 
 const useCartLineDetailsActions = () => {
