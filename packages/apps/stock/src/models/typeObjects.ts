@@ -160,6 +160,50 @@ export const stock_typeObjects: ModuleSelections = [
   {
     modelName: 'com.axelor.apps.stock.db.StockMove',
     fields: {
+      modeOfTransport: {
+        content: [
+          {
+            key: 'TRANSPORT_BY_SEA',
+            value: 'TRANSPORT_BY_SEA',
+            title: 'Stock_ModeOfTransport_TransportBySea',
+          },
+          {
+            key: 'TRANSPORT_BY_RAIL',
+            value: 'TRANSPORT_BY_RAIL',
+            title: 'Stock_ModeOfTransport_TransportByRail',
+          },
+          {
+            key: 'TRANSPORT_BY_ROAD',
+            value: 'TRANSPORT_BY_ROAD',
+            title: 'Stock_ModeOfTransport_TransportByRoad',
+          },
+          {
+            key: 'TRANSPORT_BY_AIR',
+            value: 'TRANSPORT_BY_AIR',
+            title: 'Stock_ModeOfTransport_TransportByAir',
+          },
+          {
+            key: 'CONSIGNMENTS_BY_POST',
+            value: 'CONSIGNMENTS_BY_POST',
+            title: 'Stock_ModeOfTransport_ConsignmentsByPost',
+          },
+          {
+            key: 'FIXED_TRANSPORT_INSTALLATIONS',
+            value: 'FIXED_TRANSPORT_INSTALLATIONS',
+            title: 'Stock_ModeOfTransport_FixedTransportInstallations',
+          },
+          {
+            key: 'TRANSPORT_BY_INLAND_WATERWAY',
+            value: 'TRANSPORT_BY_INLAND_WATERWAY',
+            title: 'Stock_ModeOfTransport_TransportByInlandWaterway',
+          },
+          {
+            key: 'OWN_PROPULSION',
+            value: 'OWN_PROPULSION',
+            title: 'Stock_ModeOfTransport_OwnPropulsion',
+          },
+        ],
+      },
       statusSelect: {
         content: [
           {
