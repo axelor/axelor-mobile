@@ -24,15 +24,17 @@ import {CheckListItemCard} from '../../atoms';
 
 interface CheckListItemActionCardProps {
   item: any;
+  handleRefresh?: () => void;
   showActions?: boolean;
 }
 
 const CheckListItemActionCard = ({
   item,
+  handleRefresh,
   showActions = true,
 }: CheckListItemActionCardProps) => {
   const I18n = useTranslator();
-  const {getItemActions} = useCheckListItemActions();
+  const {getItemActions} = useCheckListItemActions(handleRefresh);
 
   return (
     <ActionCard
