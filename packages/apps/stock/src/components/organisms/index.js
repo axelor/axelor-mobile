@@ -16,6 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+export {default as CustomerDeliveryDropdownCard} from './CustomerDeliveryDropdownCard/CustomerDeliveryDropdownCard';
 export {default as DescriptionCard} from './DescriptionCard/DescriptionCard';
 export {default as InternalMoveCreationPickingWidget} from './InternalMoveCreationPickingWidget/InternalMoveCreationPickingWidget';
 export {default as InventoryPickingWidget} from './InventoryPickingWidget/InventoryPickingWidget';
