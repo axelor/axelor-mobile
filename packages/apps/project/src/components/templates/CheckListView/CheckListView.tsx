@@ -48,7 +48,9 @@ const CheckListView = ({
 }: CheckListViewProps) => {
   const I18n = useTranslator();
   const Colors = useThemeColor();
-  const {getItemActions} = useCheckListItemActions();
+  const {getItemActions} = useCheckListItemActions(() =>
+    setSelectedStatus(current => [...current]),
+  );
 
   const [selectedStatus, setSelectedStatus] = useState([]);
 
@@ -110,7 +112,11 @@ const CheckListView = ({
       renderBranch={({item}) => <ParentCheckListItemCard item={item} />}
       getBranchActions={({item}) => (showActions ? getItemActions(item) : null)}
       renderLeaf={({item}) => (
-        <CheckListItemActionCard item={item} showActions={showActions} />
+        <CheckListItemActionCard
+          item={item}
+          handleRefresh={() => setSelectedStatus(current => [...current])}
+          showActions={showActions}
+        />
       )}
       chipComponent={
         <ChipSelect
