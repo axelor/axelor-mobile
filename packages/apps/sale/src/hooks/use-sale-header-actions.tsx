@@ -16,7 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import {useEffect, useMemo} from 'react';
+import React, {useEffect, useMemo} from 'react';
 import {
   headerActionsProvider,
   useNavigation,
@@ -25,7 +25,7 @@ import {
   useTranslator,
   useTypes,
 } from '@axelor/aos-mobile-core';
-import {useThemeColor} from '@axelor/aos-mobile-ui';
+import {DoubleIcon, useThemeColor} from '@axelor/aos-mobile-ui';
 
 export const useSaleHeaders = () => {
   useProductListActions();
@@ -117,14 +117,50 @@ const useClientListActions = () => {
 };
 
 const useClientDetailsActions = () => {
-  const {customer} = useSelector((state: any) => state.sale_customer);
+  const Colors = useThemeColor();
+  const I18n = useTranslator();
+  const navigation = useNavigation();
+  const {customer} = useSelector(state => state.sale_customer);
+  const {canCreate} = usePermitted({
+    modelName: 'com.axelor.apps.sale.db.SaleOrder',
+  });
 
   useEffect(() => {
     headerActionsProvider.registerModel('sale_client_details', {
       model: 'com.axelor.apps.base.db.Partner',
       modelId: customer?.id,
+      actions: [
+        {
+          key: 'newSaleQuotation',
+          order: 10,
+          iconName: 'plus-lg',
+          title: I18n.t('Sale_NewSaleQuotation'),
+          iconColor: Colors.primaryColor.background,
+          onPress: () =>
+            navigation.navigate('SaleQuotationCreationScreen', {
+              clientPartner: customer,
+            }),
+          showInHeader: true,
+          hideIf: !canCreate,
+          customComponent: (
+            <DoubleIcon
+              topIconConfig={{
+                name: 'plus-lg',
+                color: Colors.primaryColor.background,
+                size: 16,
+              }}
+              bottomIconConfig={{
+                name: 'file-earmark-text',
+                color: Colors.secondaryColor_dark.background,
+              }}
+              predefinedPosition="top-right"
+              topIconPosition={{top: -9}}
+            />
+          ),
+        },
+      ],
     });
-  }, [customer]);
+  }, [Colors, I18n, canCreate, customer, navigation]);
 };
 
 const useCartLineDetailsActions = () => {
