@@ -26,10 +26,10 @@ import {useThemeColor} from '@axelor/aos-mobile-ui';
 import {updateCheckListItem} from '../features/checkListSlice';
 import {CheckListItemType} from '../types';
 
-export const useCheckListItemActions = () => {
+export const useCheckListItemActions = (handleRefresh?: () => void) => {
   const I18n = useTranslator();
   const Colors = useThemeColor();
-  const dispatch = useDispatch();
+  const dispatch: any = useDispatch();
   const {readonly} = usePermitted({
     modelName: 'com.axelor.apps.project.db.ProjectCheckListItem',
   });
@@ -46,12 +46,15 @@ export const useCheckListItemActions = () => {
           helper: I18n.t(
             completed ? 'Project_MarkAsUncompleted' : 'Project_MarkAsCompleted',
           ),
-          onPress: () => dispatch((updateCheckListItem as any)(item)),
+          onPress: () =>
+            dispatch((updateCheckListItem as any)(item)).then(() =>
+              handleRefresh?.(),
+            ),
           hidden: readonly,
         },
       ];
     },
-    [Colors, I18n, dispatch, readonly],
+    [Colors, I18n, dispatch, handleRefresh, readonly],
   );
 
   return useMemo(() => ({getItemActions}), [getItemActions]);
