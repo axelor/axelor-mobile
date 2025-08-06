@@ -106,17 +106,20 @@ export async function searchMaintenanceRequests({
   });
 }
 
-export async function createMaintenanceRequest({}) {
-  // TODO: finalize request path
+export async function createMaintenanceRequest({
+  equipementMaintenanceId,
+  expectedDate,
+  actionSelect,
+}) {
   return getActionApi().send({
     method: 'post',
     url: '/ws/aos/maintenance-request',
-    body: {},
+    body: {equipementMaintenanceId, expectedDate, actionSelect},
     description: 'create maintenance request',
     matchers: {
       modelName: 'com.axelor.apps.maintenance.db.MaintenanceRequest',
       id: Date.now(),
-      fields: {},
+      fields: {equipementMaintenanceId: 'equipementMaintenance.id'},
     },
   });
 }

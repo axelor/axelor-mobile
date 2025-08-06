@@ -62,7 +62,7 @@ const MaintenanceRequestFormScreen = ({route}) => {
     <Screen>
       <FormView
         formKey="maintenance_maintenanceRequest"
-        defaultValue={defaultValue}
+        creationDefaultValue={defaultValue}
         defaultEditMode
         actions={[
           {
