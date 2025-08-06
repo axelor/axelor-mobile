@@ -123,6 +123,7 @@ const CustomerDeliveryLineActionCard = ({
         stockMoveLineId={customerDeliveryLine.id}
         trackingNumber={customerDeliveryLine.trackingNumber}
         totalNetMass={customerDeliveryLine.totalNetMass}
+        saleOrderLine={customerDeliveryLine.saleOrderLine}
         onPress={() => handleShowLine(customerDeliveryLine)}
       />
     </ActionCard>
