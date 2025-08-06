@@ -139,7 +139,7 @@ const CustomerDeliveryLineCard = ({
             color: massIndicator?.color?.background,
           },
           {
-            displayText: `${saleOrderLine?.saleOrder?.saleOrderSeq} - ${saleOrderLine?.saleOrder?.clientPartner.fullName ?? ''}`,
+            displayText: `${saleOrderLine?.saleOrder?.saleOrderSeq}-${saleOrderLine?.sequence} (${saleOrderLine?.saleOrder?.clientPartner.fullName ?? ''})`,
             indicatorText: `${I18n.t('Stock_SaleOrder')} :`,
             hideIf: saleOrderLine?.saleOrder == null,
             numberOfLines: 2,

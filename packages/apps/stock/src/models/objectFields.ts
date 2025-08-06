@@ -65,7 +65,7 @@ export const stock_modelAPI: ObjectFields = {
     isRealQtyModifiedByUser: schemaContructor.boolean(),
     fromStockLocation: schemaContructor.subObject('name'),
     totalNetMass: schemaContructor.number(),
-    saleOrderLine: schemaContructor.subObject().concat(
+    saleOrderLine: schemaContructor.subObject('sequence').concat(
       schemaContructor.object({
         saleOrder: schemaContructor.subObject().concat(
           schemaContructor.object({

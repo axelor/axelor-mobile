@@ -23,7 +23,6 @@ import {
   useSelector,
   isEmpty,
   useTypes,
-  clipboardProvider,
 } from '@axelor/aos-mobile-core';
 import {
   Badge,
@@ -31,8 +30,6 @@ import {
   QuantityCard,
   useThemeColor,
   useDigitFormat,
-  Text,
-  Icon,
 } from '@axelor/aos-mobile-ui';
 import {useMassIndicatorChecker} from '../../../../providers';
 
@@ -96,25 +93,6 @@ const CustomerDeliveryLineQuantityCard = ({
         <LabelText title={`${I18n.t('Stock_AskedQty')} :`} value={askedQty} />
         {customerDeliveryLine != null && <Badge {...indicatorBadge} />}
       </View>
-      <View style={styles.rowDirection}>
-        <Text fontSize={14}>
-          {`${I18n.t('Stock_SaleOrder')} : ${customerDeliveryLine?.saleOrderLine?.saleOrder?.saleOrderSeq} - ${
-            customerDeliveryLine?.saleOrderLine?.saleOrder?.clientPartner
-              .fullName ?? ''
-          }
-        `}
-        </Text>
-        <Icon
-          style={styles.icon}
-          name="copy"
-          touchable={true}
-          onPress={() =>
-            clipboardProvider.copyToClipboard(
-              customerDeliveryLine?.saleOrderLine?.saleOrder?.saleOrderSeq,
-            )
-          }
-        />
-      </View>
       {customerDeliveryLine?.totalNetMass != null && (
         <LabelText
           iconName={massIndicator?.icon ?? 'box-seam-fill'}
@@ -132,14 +110,6 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
     flexWrap: 'wrap',
-  },
-  rowDirection: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'flex-start',
-  },
-  icon: {
-    marginLeft: 5,
   },
 });
 
