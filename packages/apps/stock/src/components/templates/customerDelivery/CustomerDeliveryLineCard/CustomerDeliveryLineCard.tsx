@@ -44,6 +44,7 @@ interface CustomerDeliveryLineCardProps {
   stockMoveLineId: number;
   trackingNumber?: {trackingNumberSeq: string};
   totalNetMass?: string;
+  saleOrderLine?: any;
   onPress: () => void;
 }
 
@@ -58,6 +59,7 @@ const CustomerDeliveryLineCard = ({
   stockMoveLineId,
   trackingNumber,
   totalNetMass,
+  saleOrderLine,
   onPress,
 }: CustomerDeliveryLineCardProps) => {
   const Colors = useThemeColor();
@@ -135,6 +137,12 @@ const CustomerDeliveryLineCard = ({
             iconName: massIndicator?.icon ?? 'box-seam-fill',
             hideIf: totalNetMass == null,
             color: massIndicator?.color?.background,
+          },
+          {
+            displayText: `${saleOrderLine?.saleOrder?.saleOrderSeq}-${saleOrderLine?.sequence} (${saleOrderLine?.saleOrder?.clientPartner.fullName ?? ''})`,
+            indicatorText: `${I18n.t('Stock_SaleOrder')} :`,
+            hideIf: saleOrderLine?.saleOrder == null,
+            numberOfLines: 2,
           },
         ],
       }}
