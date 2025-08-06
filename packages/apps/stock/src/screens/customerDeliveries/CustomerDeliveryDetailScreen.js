@@ -83,6 +83,7 @@ const CustomerDeliveryDetailScreen = ({route}) => {
           customerDelivery={customerDelivery}
         />
         <CustomerDeliverySearchLineContainer />
+        <CustomerDeliveryDropdownCard />
         <CustomerDeliveryNotes notes={customerDelivery?.note} />
         <NotesCard
           title={I18n.t('Stock_PickingOrderComments')}
@@ -92,7 +93,6 @@ const CustomerDeliveryDetailScreen = ({route}) => {
           title={I18n.t('Stock_DeliveryCondition')}
           data={customerDelivery?.deliveryCondition}
         />
-        <CustomerDeliveryDropdownCard />
       </KeyboardAvoidingScrollView>
     </Screen>
   );

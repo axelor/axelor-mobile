@@ -1,5 +1,5 @@
 {
-  "title": "customerDelivery:  add freight carrier information",
+  "title": "Customer delivery: add freight carrier panel",
   "type": "feat",
   "packages": "stock"
 }

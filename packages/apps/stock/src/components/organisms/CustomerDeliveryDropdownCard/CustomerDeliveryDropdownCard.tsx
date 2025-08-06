@@ -19,57 +19,23 @@
 import React, {useMemo} from 'react';
 import {DropdownCardSwitch} from '@axelor/aos-mobile-ui';
 import {useSelector, useTranslator} from '@axelor/aos-mobile-core';
-import {FreightCarrierCard} from '../../atoms';
+import {FreightCarrierContent} from '../../atoms';
 
 const CustomerDeliveryDropdownCard = () => {
   const I18n = useTranslator();
 
   const {customerDelivery} = useSelector(state => state.customerDelivery);
 
-  const dropdownItems = useMemo(() => {
-    const _dropdownItems = [
+  const dropdownItems = useMemo(
+    () => [
       {
-        title: I18n.t('Stock_FreightCarrier'),
         key: 1,
-        childrenComp: (
-          <FreightCarrierCard
-            freightCarrier={customerDelivery?.freightCarrierMode}
-            incoterm={customerDelivery?.incoterm?.fullname}
-            trackingNumber={customerDelivery?.trackingNumber}
-            modeOfTransport={customerDelivery?.modeOfTransport}
-            numOfPalettes={customerDelivery?.numOfPalettes}
-            numOfPackages={customerDelivery?.numOfPackages}
-            grossMass={customerDelivery?.grossMass}
-            signatoryUser={customerDelivery?.signatoryUser?.fullName}
-            forwarderPartner={customerDelivery?.forwarderPartner?.fullName}
-            isConformityCertifSigned={
-              customerDelivery?.isConformityCertifSigned
-            }
-            isNeedingConformityCertificate={
-              customerDelivery?.isNeedingConformityCertificate
-            }
-            isIspmRequired={customerDelivery?.isIspmRequired}
-          />
-        ),
+        title: I18n.t('Stock_FreightCarrier'),
+        childrenComp: <FreightCarrierContent {...customerDelivery} />,
       },
-    ];
-
-    return _dropdownItems;
-  }, [
-    I18n,
-    customerDelivery?.forwarderPartner?.fullName,
-    customerDelivery?.freightCarrierMode,
-    customerDelivery?.grossMass,
-    customerDelivery?.incoterm?.fullname,
-    customerDelivery?.isConformityCertifSigned,
-    customerDelivery?.isIspmRequired,
-    customerDelivery?.isNeedingConformityCertificate,
-    customerDelivery?.modeOfTransport,
-    customerDelivery?.numOfPackages,
-    customerDelivery?.numOfPalettes,
-    customerDelivery?.signatoryUser?.fullName,
-    customerDelivery?.trackingNumber,
-  ]);
+    ],
+    [I18n, customerDelivery],
+  );
 
   return <DropdownCardSwitch dropdownItems={dropdownItems} />;
 };

@@ -16,6 +16,6 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-export {default as FreightCarrierCard} from './FreightCarrierCard/FreightCarrierCard';
+export {default as FreightCarrierContent} from './FreightCarrierContent/FreightCarrierContent';
 export {default as OrderQtyIndicatorCard} from './OrderQtyIndicatorCard/OrderQtyIndicatorCard';
 export {default as StockQtyIndicatorCard} from './StockQtyIndicatorCard/StockQtyIndicatorCard';
