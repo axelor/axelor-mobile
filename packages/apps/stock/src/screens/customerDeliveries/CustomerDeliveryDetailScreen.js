@@ -35,6 +35,7 @@ import {
   CustomerDeliveryMovementIndicationCard,
   CustomerDeliveryRealizeButton,
   CustomerDeliveryNotes,
+  CustomerDeliveryDropdownCard,
 } from '../../components';
 import {fetchCustomerDelivery} from '../../features/customerDeliverySlice';
 
@@ -82,6 +83,7 @@ const CustomerDeliveryDetailScreen = ({route}) => {
           customerDelivery={customerDelivery}
         />
         <CustomerDeliverySearchLineContainer />
+        <CustomerDeliveryDropdownCard />
         <CustomerDeliveryNotes notes={customerDelivery?.note} />
         <NotesCard
           title={I18n.t('Stock_PickingOrderComments')}
