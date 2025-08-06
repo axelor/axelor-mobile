@@ -114,8 +114,8 @@ export async function updateCheckListItem({
 }) {
   return getActionApi().send({
     method: 'put',
-    url: `/ws/aos/check-list-item/${id}`,
-    body: {version, completed},
+    url: `/ws/aos/project-check-list-item/${id}/complete`,
+    body: {version, complete: !completed},
     description: 'update check list item',
     matchers: {
       id,
