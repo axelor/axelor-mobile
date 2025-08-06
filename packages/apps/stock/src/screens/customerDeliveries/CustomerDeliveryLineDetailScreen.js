@@ -38,6 +38,7 @@ import {
   CustomerDeliveryLineQuantityCard,
   CustomerDeliveryLineTrackingNumberSelect,
   StockLocationSearchBar,
+  ClipableSaleOrderLabel,
 } from '../../components';
 import {StockMove as StockMoveType, StockMoveLine} from '../../types';
 import {fetchCustomerDeliveryLine} from '../../features/customerDeliveryLineSlice';
@@ -137,21 +138,26 @@ const CustomerDeliveryLineDetailScreen = ({route, navigation}) => {
       <HeaderContainer
         expandableFilter={false}
         fixedItems={
-          <StockMoveHeader
-            reference={customerDelivery?.stockMoveSeq}
-            status={customerDelivery?.statusSelect}
-            lineRef={customerDeliveryLine?.name}
-            date={
-              customerDelivery
-                ? StockMoveType.getStockMoveDate(
-                    customerDelivery.statusSelect,
-                    customerDelivery,
-                  )
-                : null
-            }
-            availability={customerDeliveryLine?.availableStatusSelect}
-            stockMoveLineId={customerDeliveryLine?.id}
-          />
+          <>
+            <StockMoveHeader
+              reference={customerDelivery?.stockMoveSeq}
+              status={customerDelivery?.statusSelect}
+              lineRef={customerDeliveryLine?.name}
+              date={
+                customerDelivery
+                  ? StockMoveType.getStockMoveDate(
+                      customerDelivery.statusSelect,
+                      customerDelivery,
+                    )
+                  : null
+              }
+              availability={customerDeliveryLine?.availableStatusSelect}
+              stockMoveLineId={customerDeliveryLine?.id}
+            />
+            <ClipableSaleOrderLabel
+              saleOrderLine={customerDeliveryLine?.saleOrderLine}
+            />
+          </>
         }
       />
       <KeyboardAvoidingScrollView
