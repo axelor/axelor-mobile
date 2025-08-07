@@ -57,7 +57,8 @@ const SaleQuotationCreationButtons = ({
         customerId,
       }),
     );
-    navigation.popToTop();
+
+    navigation.pop();
   };
 
   if (isProduct) {
