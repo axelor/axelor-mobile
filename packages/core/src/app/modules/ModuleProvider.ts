@@ -17,6 +17,8 @@
  */
 
 import {useCallback, useEffect, useMemo, useState} from 'react';
+import {useSelector} from '../../redux/hooks';
+import {checkModulesMenusAccessibility} from '../../navigator';
 import {Module} from './types';
 
 class ModuleProvider {
@@ -82,6 +84,12 @@ export const useModules = (): {
   const [modules, setModules] = useState<Module[]>(
     modulesProvider.getModules(),
   );
+  const {mobileSettings} = useSelector(state => state.appConfig);
+
+  const _modules = useMemo(
+    () => checkModulesMenusAccessibility(modules, mobileSettings?.apps),
+    [mobileSettings?.apps, modules],
+  );
 
   const refreshData = useCallback(
     (data: Module[]) => setModules([...data]),
@@ -98,10 +106,10 @@ export const useModules = (): {
 
   return useMemo(
     () => ({
-      modules,
+      modules: _modules,
       checkModule: moduleName =>
-        modules.find(({name}) => name === moduleName) != null,
+        _modules.find(({name}) => name === moduleName) != null,
     }),
-    [modules],
+    [_modules],
   );
 };
