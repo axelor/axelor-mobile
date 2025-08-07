@@ -16,9 +16,11 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import React, {useEffect, useMemo} from 'react';
+import React, {useCallback, useEffect, useMemo} from 'react';
 import {
+  ActionType,
   headerActionsProvider,
+  useModules,
   useNavigation,
   usePermitted,
   useSelector,
@@ -34,6 +36,7 @@ export const useSaleHeaders = () => {
   useProductDetailsActions();
   useClientListActions();
   useClientDetailsActions();
+  useCRMOverrideActions();
   useCartLineDetailsActions();
   useSaleQuotationsActions();
   useSaleOrdersActions();
@@ -116,51 +119,87 @@ const useClientListActions = () => {
   }, []);
 };
 
-const useClientDetailsActions = () => {
+const useCreateSaleOrderHeaderActionGetter = () => {
   const Colors = useThemeColor();
   const I18n = useTranslator();
   const navigation = useNavigation();
-  const {customer} = useSelector(state => state.sale_customer);
   const {canCreate} = usePermitted({
     modelName: 'com.axelor.apps.sale.db.SaleOrder',
   });
+
+  const getCreationHeaderAction = useCallback(
+    (clientPartner: any, options?: Partial<ActionType>) => {
+      return {
+        key: 'client-createSaleOrder',
+        order: 10,
+        iconName: 'plus-lg',
+        title: I18n.t('Sale_NewSaleQuotation'),
+        iconColor: Colors.primaryColor.background,
+        onPress: () =>
+          navigation.navigate('SaleQuotationCreationScreen', {
+            clientPartner,
+          }),
+        showInHeader: true,
+        ...(options ?? {}),
+        hideIf: !canCreate || (options?.hideIf ?? false),
+        customComponent: (
+          <DoubleIcon
+            topIconConfig={{
+              name: 'plus-lg',
+              color: Colors.primaryColor.background,
+              size: 16,
+            }}
+            bottomIconConfig={{
+              name: 'file-earmark-text',
+              color: Colors.secondaryColor_dark.background,
+            }}
+            predefinedPosition="top-right"
+            topIconPosition={{top: -9}}
+          />
+        ),
+      };
+    },
+    [Colors, I18n, canCreate, navigation],
+  );
+
+  return useMemo(() => ({getCreationHeaderAction}), [getCreationHeaderAction]);
+};
+
+const useClientDetailsActions = () => {
+  const {getCreationHeaderAction} = useCreateSaleOrderHeaderActionGetter();
+  const {customer} = useSelector(state => state.sale_customer);
 
   useEffect(() => {
     headerActionsProvider.registerModel('sale_client_details', {
       model: 'com.axelor.apps.base.db.Partner',
       modelId: customer?.id,
+      actions: [getCreationHeaderAction(customer)],
+    });
+  }, [customer, getCreationHeaderAction]);
+};
+
+const useCRMOverrideActions = () => {
+  const {checkModule} = useModules();
+  const {getCreationHeaderAction} = useCreateSaleOrderHeaderActionGetter();
+
+  const {prospect} = useSelector(state => state.prospect);
+  const {client} = useSelector(state => state.client);
+
+  useEffect(() => {
+    headerActionsProvider.registerModel('crm_prospect_details', {
       actions: [
-        {
-          key: 'newSaleQuotation',
-          order: 10,
-          iconName: 'plus-lg',
-          title: I18n.t('Sale_NewSaleQuotation'),
-          iconColor: Colors.primaryColor.background,
-          onPress: () =>
-            navigation.navigate('SaleQuotationCreationScreen', {
-              clientPartner: customer,
-            }),
-          showInHeader: true,
-          hideIf: !canCreate,
-          customComponent: (
-            <DoubleIcon
-              topIconConfig={{
-                name: 'plus-lg',
-                color: Colors.primaryColor.background,
-                size: 16,
-              }}
-              bottomIconConfig={{
-                name: 'file-earmark-text',
-                color: Colors.secondaryColor_dark.background,
-              }}
-              predefinedPosition="top-right"
-              topIconPosition={{top: -9}}
-            />
-          ),
-        },
+        getCreationHeaderAction(prospect, {hideIf: !checkModule('app-sale')}),
       ],
     });
-  }, [Colors, I18n, canCreate, customer, navigation]);
+  }, [checkModule, getCreationHeaderAction, prospect]);
+
+  useEffect(() => {
+    headerActionsProvider.registerModel('crm_client_details', {
+      actions: [
+        getCreationHeaderAction(client, {hideIf: !checkModule('app-sale')}),
+      ],
+    });
+  }, [checkModule, client, getCreationHeaderAction]);
 };
 
 const useCartLineDetailsActions = () => {
