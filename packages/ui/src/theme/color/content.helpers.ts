@@ -175,12 +175,16 @@ export function registerThemes(
   newThemes.forEach(_theme => {
     if ((_theme as ConfigurableTheme).id != null) {
       const _t = _theme as ConfigurableTheme;
-      result.push({
-        key: _t.id,
-        name: _t.label ?? _t.name,
-        colors: mapPaletteColors(_t),
-        isCustom: true,
-      });
+      try {
+        const colors = mapPaletteColors(_t);
+
+        result.push({
+          key: _t.id,
+          name: _t.label ?? _t.name,
+          colors,
+          isCustom: true,
+        });
+      } catch (error) {}
     } else {
       result.push(_theme as Theme);
     }

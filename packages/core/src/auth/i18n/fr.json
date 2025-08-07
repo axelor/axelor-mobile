@@ -22,7 +22,7 @@
   "User_Language": "Langage",
   "User_Theme": "Thème",
   "User_NoAppUser": "L'utilisateur n'a pas pu être récupéré. Veuillez vérifier que vous avez les permissions nécessaires ou contactez votre administrateur.",
-  "User_KeyboardVisibility_Always": "Toujous",
+  "User_KeyboardVisibility_Always": "Toujours",
   "User_KeyboardVisibility_HiddenOnScannableInputs": "Caché sur les entrées scannables",
   "User_KeyboardVisibility_Never": "Jamais",
   "Auth_SliceAction_FetchLocalization": "récupération des localisations",

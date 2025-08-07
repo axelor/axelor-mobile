@@ -32,13 +32,14 @@ import {
   SaleQuotationCreationQuantityCard,
 } from '../../components';
 
-const SaleQuotationCreationScreen = ({}) => {
+const SaleQuotationCreationScreen = ({route}) => {
+  const {clientPartner} = route?.params ?? {};
   const I18n = useTranslator();
   const {canCreate} = usePermitted({
     modelName: 'com.axelor.apps.sale.db.SaleOrder',
   });
 
-  const [customer, setCustomer] = useState(null);
+  const [customer, setCustomer] = useState(clientPartner);
   const [lines, setLines] = useState([]);
   const [product, setProduct] = useState(null);
   const [productQty, setProductQty] = useState(0);
