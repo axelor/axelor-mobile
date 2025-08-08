@@ -26,19 +26,31 @@ import {
 import {AutoCompleteSearch} from '@axelor/aos-mobile-ui';
 import {fetchClientAndProspect} from '../../../features/partnerSlice';
 
-const ClientProspectSearchBar = ({
-  style = null,
+interface ClientProspectSearchBarProps {
+  style?: any;
+  title?: string;
+  defaultValue?: string;
+  onChange?: (item: any) => void;
+  readonly?: boolean;
+  required?: boolean;
+  showDetailsPopup?: boolean;
+  navigate?: boolean;
+  oneFilter?: boolean;
+  showTitle?: boolean;
+}
+
+const ClientProspectSearchBarAux = ({
+  style,
   title = 'Crm_ClientProspect',
-  defaultValue = null,
-  onChange = () => {},
+  defaultValue,
+  onChange,
   readonly = false,
   required = false,
   showDetailsPopup = true,
   navigate = false,
   oneFilter = false,
-  isFocus = false,
   showTitle = true,
-}) => {
+}: ClientProspectSearchBarProps) => {
   const I18n = useTranslator();
   const dispatch = useDispatch();
 
@@ -49,7 +61,7 @@ const ClientProspectSearchBar = ({
   const searchClientAndProspectAPI = useCallback(
     ({page = 0, searchValue}) => {
       dispatch(
-        fetchClientAndProspect({
+        (fetchClientAndProspect as any)({
           page,
           searchValue,
           companyId: user.activeCompany?.id,
@@ -61,25 +73,28 @@ const ClientProspectSearchBar = ({
 
   return (
     <AutoCompleteSearch
+      style={style}
       title={showTitle && I18n.t(title)}
-      objectList={clientAndProspectList}
-      value={defaultValue}
-      required={required}
-      readonly={readonly}
-      onChangeValue={onChange}
-      fetchData={searchClientAndProspectAPI}
-      displayValue={displayItemFullname}
       placeholder={I18n.t(title)}
-      showDetailsPopup={showDetailsPopup}
+      objectList={clientAndProspectList}
       loadingList={loadingList}
       moreLoading={moreLoading}
       isListEnd={isListEnd}
+      value={defaultValue}
+      onChangeValue={onChange}
+      fetchData={searchClientAndProspectAPI}
+      displayValue={displayItemFullname}
+      required={required}
+      readonly={readonly}
+      showDetailsPopup={showDetailsPopup}
       navigate={navigate}
       oneFilter={oneFilter}
-      isFocus={isFocus}
-      style={style}
     />
   );
+};
+
+const ClientProspectSearchBar = (props: ClientProspectSearchBarProps) => {
+  return <ClientProspectSearchBarAux {...props} />;
 };
 
 export default ClientProspectSearchBar;

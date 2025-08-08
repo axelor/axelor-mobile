@@ -16,52 +16,51 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import React, {useCallback, useMemo} from 'react';
-import {useSelector, FormView} from '@axelor/aos-mobile-core';
-import {updateContact} from '../../features/contactSlice';
+import React, {useCallback, useEffect, useMemo} from 'react';
+import {useSelector, FormView, useDispatch} from '@axelor/aos-mobile-core';
+import {getClientbyId, updateClient} from '../../features/clientSlice';
 
-const ContactFormScreen = ({navigation}) => {
-  const {contact} = useSelector(state => state.contact);
+const ClientFormScreen = ({navigation, route}) => {
+  const {clientId} = route?.params ?? {};
+  const _dispatch = useDispatch();
 
-  const updateContactAPI = useCallback(
+  const {client} = useSelector(state => state.client);
+
+  useEffect(() => {
+    _dispatch((getClientbyId as any)({clientId}));
+  }, [_dispatch, clientId]);
+
+  const defaultValue = useMemo(
+    () => (clientId !== client?.id ? undefined : client),
+    [client, clientId],
+  );
+
+  const updateClientAPI = useCallback(
     (objectState, dispatch) => {
-      dispatch(
-        updateContact({
-          ...objectState,
-          emailId: objectState.emailAddress?.id,
-          emailVersion: objectState.emailAddress?.$version,
-        }),
-      );
+      dispatch((updateClient as any)(objectState));
 
       navigation.pop();
     },
     [navigation],
   );
 
-  const _defaultValue = useMemo(() => {
-    return {
-      ...contact,
-      email: contact.emailAddress?.address,
-    };
-  }, [contact]);
-
   return (
     <FormView
-      formKey="crm_contact"
-      defaultValue={_defaultValue}
+      formKey="crm_partner"
+      defaultValue={defaultValue}
       defaultEditMode
       actions={[
         {
-          key: 'update-contact',
+          key: 'update-client',
           type: 'update',
-          needRequiredFields: true,
           needValidation: true,
+          needRequiredFields: true,
           customAction: ({dispatch, objectState}) =>
-            updateContactAPI(objectState, dispatch),
+            updateClientAPI(objectState, dispatch),
         },
       ]}
     />
   );
 };
 
-export default ContactFormScreen;
+export default ClientFormScreen;

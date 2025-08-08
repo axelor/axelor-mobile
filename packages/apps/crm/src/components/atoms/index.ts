@@ -16,29 +16,4 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import React from 'react';
-import {useNavigation, usePermitted} from '@axelor/aos-mobile-core';
-import EditButton from '../../EditButton/EditButton';
-
-const ContactBottom = ({idContact}) => {
-  const navigation = useNavigation();
-  const {readonly} = usePermitted({
-    modelName: 'com.axelor.apps.base.db.Partner',
-  });
-
-  if (readonly) {
-    return null;
-  }
-
-  return (
-    <EditButton
-      onPress={() =>
-        navigation.navigate('ContactFormScreen', {
-          idContact: idContact,
-        })
-      }
-    />
-  );
-};
-
-export default ContactBottom;
+export {default as PartnerTypeRadioSelect} from './PartnerTypeRadioSelect/PartnerTypeRadioSelect';

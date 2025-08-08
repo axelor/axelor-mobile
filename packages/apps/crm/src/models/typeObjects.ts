@@ -95,12 +95,12 @@ export const crm_typeObjects: ModuleSelections = [
           {
             key: 'Company',
             value: 1,
-            title: null,
+            title: 'Crm_PartnerType_Company',
           },
           {
             key: 'Individual',
             value: 2,
-            title: null,
+            title: 'Crm_PartnerType_Individual',
           },
         ],
       },

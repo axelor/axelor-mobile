@@ -1,0 +1,5 @@
+{
+  "title": "Partners: improve form view to take into account individual partners",
+  "type": "feat",
+  "packages": "crm"
+}
