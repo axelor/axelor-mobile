@@ -103,19 +103,9 @@ export const crm_formsRegister: FormConfigs = {
   crm_partner: {
     modelName: MODELS.partner,
     panels: {
-      header: {
-        direction: 'row',
+      booleanContainer: {
+        direction: 'column',
         colSpan: 12,
-      },
-      headerLeft: {
-        direction: 'column',
-        colSpan: 7,
-        parent: 'header',
-      },
-      headerRight: {
-        direction: 'column',
-        colSpan: 5,
-        parent: 'header',
       },
     },
     fields: {
@@ -130,7 +120,7 @@ export const crm_formsRegister: FormConfigs = {
         titleKey: 'Crm_Prospect',
         type: 'boolean',
         widget: 'checkbox',
-        parentPanel: 'headerLeft',
+        parentPanel: 'booleanContainer',
         options: {iconSize: 20},
         dependsOn: {isCustomer: ({newValue}) => !newValue},
         hideIf: ({objectState}) =>
@@ -141,18 +131,12 @@ export const crm_formsRegister: FormConfigs = {
         titleKey: 'Crm_Client',
         type: 'boolean',
         widget: 'checkbox',
-        parentPanel: 'headerLeft',
+        parentPanel: 'booleanContainer',
         options: {iconSize: 20},
         dependsOn: {isProspect: ({newValue}) => !newValue},
         hideIf: ({objectState}) =>
           isPartnerCreation(objectState) ||
           checkPartnerType(objectState, 'contact'),
-      },
-      leadScoringSelect: {
-        type: 'number',
-        widget: 'star',
-        parentPanel: 'headerRight',
-        hideIf: ({objectState}) => !checkPartnerType(objectState, 'prospect'),
       },
       titleSelect: {
         titleKey: 'Crm_Civility',
