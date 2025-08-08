@@ -27,6 +27,22 @@ const addressModel = schemaContructor.subObject('fullName').concat(
   }),
 );
 
+const basePartnerModel = schemaContructor.object({
+  isContact: schemaContructor.boolean(),
+  isCustomer: schemaContructor.boolean(),
+  isProspect: schemaContructor.boolean(),
+  partnerSeq: schemaContructor.string(),
+  simpleFullName: schemaContructor.string(),
+  fullName: schemaContructor.string(),
+  partnerTypeSelect: schemaContructor.number(),
+  leadScoringSelect: schemaContructor.number(),
+  titleSelect: schemaContructor.string(),
+  firstName: schemaContructor.string(),
+  name: schemaContructor.string(),
+  mainPartner: schemaContructor.subObject('simpleFullName'),
+  description: schemaContructor.string(),
+});
+
 export const crm_modelAPI: ObjectFields = {
   crm_partnerAddress: schemaContructor.object({
     address: addressModel,
@@ -44,45 +60,35 @@ export const crm_modelAPI: ObjectFields = {
   crm_catologType: schemaContructor.object({
     name: schemaContructor.string(),
   }),
-  crm_client: schemaContructor.object({
-    simpleFullName: schemaContructor.string(),
-    name: schemaContructor.string(),
-    fullName: schemaContructor.string(),
-    partnerSeq: schemaContructor.string(),
-    mainAddress: addressModel,
-    fixedPhone: schemaContructor.string(),
-    mobilePhone: schemaContructor.string(),
-    leadScoring: schemaContructor.number(),
-    emailAddress: schemaContructor.subObject('address'),
-    user: schemaContructor.subObject('fullName'),
-    industrySector: schemaContructor.subObject('name'),
-    partnerCategory: schemaContructor.subObject('name'),
-    description: schemaContructor.string(),
-    webSite: schemaContructor.string(),
-    contactPartnerSet: schemaContructor
-      .array()
-      .of(schemaContructor.subObject()),
-    picture: schemaContructor.subObject('fileName'),
-    salePartnerPriceList: schemaContructor.subObject('label'),
-  }),
-  crm_contact: schemaContructor.object({
-    simpleFullName: schemaContructor.string(),
-    name: schemaContructor.string(),
-    firstName: schemaContructor.string(),
-    partnerSeq: schemaContructor.string(),
-    mainAddress: addressModel,
-    fixedPhone: schemaContructor.string(),
-    mobilePhone: schemaContructor.string(),
-    emailAddress: schemaContructor.subObject('address'),
-    mainPartner: schemaContructor.subObject('simpleFullName'),
-    picture: schemaContructor.subObject('fileName'),
-    jobTitleFunction: schemaContructor.subObject('name'),
-    description: schemaContructor.string(),
-    webSite: schemaContructor.string(),
-    language: schemaContructor.subObject('name'),
-    titleSelect: schemaContructor.number(),
-    fullName: schemaContructor.string(),
-  }),
+  crm_client: basePartnerModel.concat(
+    schemaContructor.object({
+      mainAddress: addressModel,
+      fixedPhone: schemaContructor.string(),
+      mobilePhone: schemaContructor.string(),
+      emailAddress: schemaContructor.subObject('address'),
+      user: schemaContructor.subObject('fullName'),
+      industrySector: schemaContructor.subObject('name'),
+      partnerCategory: schemaContructor.subObject('name'),
+      webSite: schemaContructor.string(),
+      contactPartnerSet: schemaContructor
+        .array()
+        .of(schemaContructor.subObject()),
+      picture: schemaContructor.subObject('fileName'),
+      salePartnerPriceList: schemaContructor.subObject('label'),
+    }),
+  ),
+  crm_contact: basePartnerModel.concat(
+    schemaContructor.object({
+      mainAddress: addressModel,
+      fixedPhone: schemaContructor.string(),
+      mobilePhone: schemaContructor.string(),
+      emailAddress: schemaContructor.subObject('address'),
+      picture: schemaContructor.subObject('fileName'),
+      jobTitleFunction: schemaContructor.subObject('name'),
+      webSite: schemaContructor.string(),
+      language: schemaContructor.subObject('name'),
+    }),
+  ),
   crm_event: schemaContructor.object({
     startDateTime: schemaContructor.string(),
     endDateTime: schemaContructor.string(),
@@ -150,50 +156,41 @@ export const crm_modelAPI: ObjectFields = {
   crm_opportunityStatus: schemaContructor.object({
     name: schemaContructor.string(),
   }),
-  crm_partner: schemaContructor.object({
-    simpleFullName: schemaContructor.string(),
-    fullName: schemaContructor.string(),
-    name: schemaContructor.string(),
-    partnerSeq: schemaContructor.string(),
-    mainAddress: addressModel,
-    fixedPhone: schemaContructor.string(),
-    mobilePhone: schemaContructor.string(),
-    emailAddress: schemaContructor.subObject('address'),
-    user: schemaContructor.subObject('fullName'),
-    industrySector: schemaContructor.subObject('name'),
-    partnerCategory: schemaContructor.subObject('name'),
-    description: schemaContructor.string(),
-    webSite: schemaContructor.string(),
-    picture: schemaContructor.subObject('fileName'),
-    isCustomer: schemaContructor.boolean(),
-    isProspect: schemaContructor.boolean(),
-    salePartnerPriceList: schemaContructor.subObject('label'),
-    contactPartnerSet: schemaContructor
-      .array()
-      .of(schemaContructor.subObject()),
-  }),
-  crm_prospect: schemaContructor.object({
-    fullName: schemaContructor.string(),
-    simpleFullName: schemaContructor.string(),
-    name: schemaContructor.string(),
-    partnerSeq: schemaContructor.string(),
-    mainAddress: addressModel,
-    partnerTypeSelect: schemaContructor.number(),
-    fixedPhone: schemaContructor.string(),
-    mobilePhone: schemaContructor.string(),
-    emailAddress: schemaContructor.subObject('address'),
-    user: schemaContructor.subObject('fullName'),
-    industrySector: schemaContructor.subObject('name'),
-    partnerCategory: schemaContructor.subObject('name'),
-    description: schemaContructor.string(),
-    webSite: schemaContructor.string(),
-    picture: schemaContructor.subObject('fileName'),
-    partnerStatus: schemaContructor.subObject('name'),
-    contactPartnerSet: schemaContructor
-      .array()
-      .of(schemaContructor.subObject()),
-    leadScoringSelect: schemaContructor.number(),
-  }),
+  crm_partner: basePartnerModel.concat(
+    schemaContructor.object({
+      mainAddress: addressModel,
+      fixedPhone: schemaContructor.string(),
+      mobilePhone: schemaContructor.string(),
+      emailAddress: schemaContructor.subObject('address'),
+      user: schemaContructor.subObject('fullName'),
+      industrySector: schemaContructor.subObject('name'),
+      partnerCategory: schemaContructor.subObject('name'),
+      webSite: schemaContructor.string(),
+      picture: schemaContructor.subObject('fileName'),
+      salePartnerPriceList: schemaContructor.subObject('label'),
+      contactPartnerSet: schemaContructor
+        .array()
+        .of(schemaContructor.subObject()),
+    }),
+  ),
+  crm_prospect: basePartnerModel.concat(
+    schemaContructor.object({
+      mainAddress: addressModel,
+      fixedPhone: schemaContructor.string(),
+      mobilePhone: schemaContructor.string(),
+      emailAddress: schemaContructor.subObject('address'),
+      user: schemaContructor.subObject('fullName'),
+      industrySector: schemaContructor.subObject('name'),
+      partnerCategory: schemaContructor.subObject('name'),
+      webSite: schemaContructor.string(),
+      picture: schemaContructor.subObject('fileName'),
+      partnerStatus: schemaContructor.subObject('name'),
+      contactPartnerSet: schemaContructor
+        .array()
+        .of(schemaContructor.subObject()),
+      leadScoringSelect: schemaContructor.number(),
+    }),
+  ),
   crm_tour: schemaContructor.object({
     name: schemaContructor.string(),
     salespersonUser: schemaContructor.subObject(),

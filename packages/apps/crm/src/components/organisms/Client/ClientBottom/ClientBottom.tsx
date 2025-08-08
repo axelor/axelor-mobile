@@ -20,7 +20,7 @@ import React from 'react';
 import {useNavigation, usePermitted} from '@axelor/aos-mobile-core';
 import {EditButton} from '../../../organisms';
 
-const ProspectBottom = ({idProspect}) => {
+const ClientBottom = ({idClient}: {idClient: number}) => {
   const navigation = useNavigation();
   const {readonly} = usePermitted({
     modelName: 'com.axelor.apps.base.db.Partner',
@@ -33,12 +33,10 @@ const ProspectBottom = ({idProspect}) => {
   return (
     <EditButton
       onPress={() =>
-        navigation.navigate('ProspectFormScreen', {
-          idProspect: idProspect,
-        })
+        navigation.navigate('ClientFormScreen', {clientId: idClient})
       }
     />
   );
 };
 
-export default ProspectBottom;
+export default ClientBottom;

@@ -16,7 +16,27 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-export * from './atoms';
-export * from './molecules';
-export * from './organisms';
-export * from './templates';
+import React from 'react';
+import {useNavigation, usePermitted} from '@axelor/aos-mobile-core';
+import EditButton from '../../EditButton/EditButton';
+
+const ContactBottom = ({idContact}: {idContact: number}) => {
+  const navigation = useNavigation();
+  const {readonly} = usePermitted({
+    modelName: 'com.axelor.apps.base.db.Partner',
+  });
+
+  if (readonly) {
+    return null;
+  }
+
+  return (
+    <EditButton
+      onPress={() =>
+        navigation.navigate('ContactFormScreen', {contactId: idContact})
+      }
+    />
+  );
+};
+
+export default ContactBottom;
