@@ -20,21 +20,23 @@ import React, {useMemo} from 'react';
 import {Picker} from '@axelor/aos-mobile-ui';
 import {useTypes} from '@axelor/aos-mobile-core';
 
-const CivilityPicker = ({
-  style,
-  title = 'Crm_Civility',
-  defaultValue = null,
-  onChange,
-  readonly = false,
-  required = false,
-}: {
+interface CivilityPickerProps {
   style?: any;
   title?: string;
   defaultValue?: string;
   onChange?: (item: any) => void;
   readonly?: boolean;
   required?: boolean;
-}) => {
+}
+
+const CivilityPickerAux = ({
+  style,
+  title = 'Crm_Civility',
+  defaultValue = null,
+  onChange,
+  readonly = false,
+  required = false,
+}: CivilityPickerProps) => {
   const {Partner} = useTypes();
 
   const civilityList = useMemo(
@@ -57,6 +59,10 @@ const CivilityPicker = ({
       isValueItem={false}
     />
   );
+};
+
+const CivilityPicker = (props: CivilityPickerProps) => {
+  return <CivilityPickerAux {...props} />;
 };
 
 export default CivilityPicker;

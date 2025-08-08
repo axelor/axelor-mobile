@@ -23,7 +23,6 @@ import {
   getActionApi,
   getSearchCriterias,
 } from '@axelor/aos-mobile-core';
-import {updateEmail} from './contact-info-api';
 
 const createClientCriteria = (searchValue, userId, assigned) => {
   const criteria = [
@@ -86,46 +85,18 @@ export async function getClient({clientId}) {
   });
 }
 
-export async function updateClient({
-  id,
-  version,
-  name,
-  fixedPhone,
-  website,
-  description,
-  email,
-  emailId,
-  emailVersion,
-}) {
-  const body = {
-    id,
-    version,
-    name,
-    fixedPhone,
-    website,
-    description,
-  };
+export async function updateClient(body) {
   const {matchers, formattedData} = formatRequestBody(body, 'data');
 
-  return getActionApi()
-    .send({
-      url: '/ws/rest/com.axelor.apps.base.db.Partner',
-      method: 'post',
-      body: {data: formattedData},
-      description: 'update client',
-      matchers: {
-        modelName: 'com.axelor.apps.base.db.Partner',
-        id,
-        fields: matchers,
-      },
-    })
-    .then(
-      () =>
-        emailId &&
-        updateEmail({
-          id: emailId,
-          version: emailVersion,
-          email,
-        }),
-    );
+  return getActionApi().send({
+    url: '/ws/rest/com.axelor.apps.base.db.Partner',
+    method: 'post',
+    body: {data: formattedData},
+    description: 'update client',
+    matchers: {
+      modelName: 'com.axelor.apps.base.db.Partner',
+      id: body.id,
+      fields: matchers,
+    },
+  });
 }

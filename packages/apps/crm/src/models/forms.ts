@@ -16,7 +16,12 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import {FormConfigs, UserSearchBar, isEmpty} from '@axelor/aos-mobile-core';
+import {
+  FormConfigs,
+  UserSearchBar,
+  getTypes,
+  isEmpty,
+} from '@axelor/aos-mobile-core';
 import {
   CatalogTypePicker,
   CivilityPicker,
@@ -29,6 +34,7 @@ import {
   LeadSearchBar,
   OpportunityStatusPicker,
   PartnerSearchBar,
+  PartnerTypeRadioSelect,
 } from '../components';
 import {updatePartner} from '../features/partnerSlice';
 
@@ -36,6 +42,17 @@ const MODELS = {
   lead: 'com.axelor.apps.crm.db.Lead',
   partner: 'com.axelor.apps.base.db.Partner',
 };
+
+const isPartnerCreation = (state: any) => state?.id != null;
+
+const isIndividualPartner = (state: any) =>
+  state?.partnerTypeSelect ===
+  getTypes().Partner?.partnerTypeSelect?.Individual;
+
+const checkPartnerType = (
+  state: any,
+  type: 'contact' | 'client' | 'prospect',
+) => state?.[`is${type.charAt(0).toUpperCase() + type.slice(1)}`] === true;
 
 export const crm_formsRegister: FormConfigs = {
   crm_catalog: {
@@ -83,81 +100,86 @@ export const crm_formsRegister: FormConfigs = {
       },
     },
   },
-  crm_client: {
-    modelName: 'com.axelor.apps.base.db.Partner',
-    fields: {
-      name: {
-        titleKey: 'Crm_Name',
-        type: 'string',
-        widget: 'default',
+  crm_partner: {
+    modelName: MODELS.partner,
+    panels: {
+      header: {
+        direction: 'row',
+        colSpan: 12,
       },
-      fixedPhone: {
-        titleKey: 'Crm_Phone',
-        type: 'phone',
-        widget: 'default',
+      headerLeft: {
+        direction: 'column',
+        colSpan: 7,
+        parent: 'header',
       },
-      email: {
-        titleKey: 'Crm_Email',
-        type: 'email',
-        widget: 'default',
-      },
-      webSite: {
-        titleKey: 'Crm_WebSite',
-        type: 'url',
-        widget: 'default',
-      },
-      description: {
-        titleKey: 'Crm_Notes',
-        type: 'string',
-        widget: 'HTML',
+      headerRight: {
+        direction: 'column',
+        colSpan: 5,
+        parent: 'header',
       },
     },
-  },
-  crm_contact: {
-    modelName: 'com.axelor.apps.base.db.Partner',
     fields: {
+      partnerTypeSelect: {
+        titleKey: 'Crm_PartnerType',
+        type: 'number',
+        widget: 'custom',
+        customComponent: PartnerTypeRadioSelect,
+        hideIf: ({objectState}) => checkPartnerType(objectState, 'contact'),
+      },
+      isProspect: {
+        titleKey: 'Crm_Prospect',
+        type: 'boolean',
+        widget: 'checkbox',
+        parentPanel: 'headerLeft',
+        options: {iconSize: 20},
+        dependsOn: {isCustomer: ({newValue}) => !newValue},
+        hideIf: ({objectState}) =>
+          isPartnerCreation(objectState) ||
+          checkPartnerType(objectState, 'contact'),
+      },
+      isCustomer: {
+        titleKey: 'Crm_Client',
+        type: 'boolean',
+        widget: 'checkbox',
+        parentPanel: 'headerLeft',
+        options: {iconSize: 20},
+        dependsOn: {isProspect: ({newValue}) => !newValue},
+        hideIf: ({objectState}) =>
+          isPartnerCreation(objectState) ||
+          checkPartnerType(objectState, 'contact'),
+      },
+      leadScoringSelect: {
+        type: 'number',
+        widget: 'star',
+        parentPanel: 'headerRight',
+        hideIf: ({objectState}) => !checkPartnerType(objectState, 'prospect'),
+      },
       titleSelect: {
         titleKey: 'Crm_Civility',
         type: 'string',
         widget: 'custom',
         customComponent: CivilityPicker,
+        hideIf: ({objectState}) => !isIndividualPartner(objectState),
       },
       firstName: {
         titleKey: 'Crm_FirstName',
         type: 'string',
         widget: 'default',
+        hideIf: ({objectState}) => !isIndividualPartner(objectState),
       },
       name: {
         titleKey: 'Crm_Name',
         type: 'string',
         widget: 'default',
+        required: true,
       },
       mainPartner: {
         titleKey: 'Crm_ClientProspect',
         type: 'object',
         widget: 'custom',
         customComponent: ClientProspectSearchBar,
-        required: true,
-      },
-      fixedPhone: {
-        titleKey: 'Crm_Phone',
-        type: 'phone',
-        widget: 'default',
-      },
-      mobilePhone: {
-        titleKey: 'Crm_MobilePhone',
-        type: 'phone',
-        widget: 'default',
-      },
-      email: {
-        titleKey: 'Crm_Email',
-        type: 'email',
-        widget: 'default',
-      },
-      webSite: {
-        titleKey: 'Crm_WebSite',
-        type: 'url',
-        widget: 'default',
+        hideIf: ({objectState}) => !checkPartnerType(objectState, 'contact'),
+        requiredIf: ({objectState}) => checkPartnerType(objectState, 'contact'),
       },
       description: {
         titleKey: 'Crm_Notes',
@@ -357,57 +379,6 @@ export const crm_formsRegister: FormConfigs = {
         widget: 'custom',
         customComponent: OpportunityStatusPicker,
         required: true,
-      },
-    },
-  },
-  crm_prospect: {
-    modelName: 'com.axelor.apps.base.db.Partner',
-    panels: {
-      header: {
-        direction: 'row',
-        colSpan: 12,
-      },
-      headerLeft: {
-        direction: 'column',
-        colSpan: 8,
-        parent: 'header',
-      },
-      headerRight: {
-        direction: 'column',
-        colSpan: 4,
-        parent: 'header',
-      },
-    },
-    fields: {
-      leadScoringSelect: {
-        type: 'number',
-        widget: 'star',
-        parentPanel: 'headerRight',
-      },
-      name: {
-        titleKey: 'Crm_Name',
-        type: 'string',
-        widget: 'default',
-      },
-      fixedPhone: {
-        titleKey: 'Crm_Phone',
-        type: 'phone',
-        widget: 'default',
-      },
-      email: {
-        titleKey: 'Crm_Email',
-        type: 'email',
-        widget: 'default',
-      },
-      webSite: {
-        titleKey: 'Crm_WebSite',
-        type: 'url',
-        widget: 'default',
-      },
-      description: {
-        titleKey: 'Crm_Notes',
-        type: 'string',
-        widget: 'HTML',
       },
     },
   },
