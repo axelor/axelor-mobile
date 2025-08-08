@@ -16,52 +16,50 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import React, {useCallback, useMemo} from 'react';
-import {useSelector, FormView} from '@axelor/aos-mobile-core';
-import {updateClient} from '../../features/clientSlice';
+import React, {useCallback, useEffect, useMemo} from 'react';
+import {useSelector, FormView, useDispatch} from '@axelor/aos-mobile-core';
+import {fetchProspectById, updateProspect} from '../../features/prospectSlice';
 
-const ClientFormScreen = ({navigation}) => {
-  const {client} = useSelector(state => state.client);
+const ProspectFormScreen = ({navigation, route}) => {
+  const {prospectId} = route?.params ?? {};
+  const _dispatch = useDispatch();
 
-  const updateClientAPI = useCallback(
+  const {prospect} = useSelector(state => state.prospect);
+
+  useEffect(() => {
+    _dispatch((fetchProspectById as any)({partnerId: prospectId}));
+  }, [_dispatch, prospectId]);
+
+  const defaultValue = useMemo(
+    () => (prospectId !== prospect?.id ? undefined : prospect),
+    [prospect, prospectId],
+  );
+
+  const updateProspectAPI = useCallback(
     (objectState, dispatch) => {
-      dispatch(
-        updateClient({
-          ...objectState,
-          emailVersion: objectState.emailAddress?.$version,
-          emailId: objectState.emailAddress?.id,
-        }),
-      );
+      dispatch((updateProspect as any)(objectState));
 
       navigation.pop();
     },
     [navigation],
   );
 
-  const _defaultValue = useMemo(() => {
-    return {
-      ...client,
-      email: client.emailAddress?.address,
-    };
-  }, [client]);
-
   return (
     <FormView
-      formKey="crm_client"
-      defaultValue={_defaultValue}
+      formKey="crm_partner"
+      defaultValue={defaultValue}
       defaultEditMode
       actions={[
         {
-          key: 'update-client',
+          key: 'update-prospect',
           type: 'update',
           needValidation: true,
           needRequiredFields: true,
           customAction: ({dispatch, objectState}) =>
-            updateClientAPI(objectState, dispatch),
+            updateProspectAPI(objectState, dispatch),
         },
       ]}
     />
   );
 };
-
-export default ClientFormScreen;
+export default ProspectFormScreen;

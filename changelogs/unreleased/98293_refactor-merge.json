@@ -1,0 +1,5 @@
+{
+  "title": "Partners: merge client, prospect and contact forms into a single one",
+  "type": "refactor",
+  "packages": "crm"
+}

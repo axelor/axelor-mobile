@@ -17,3 +17,4 @@
  */
 
 export {default as EventCategoryPicker} from './EventCategoryPicker/EventCategoryPicker';
+export {default as PartnerTypeRadioSelect} from './PartnerTypeRadioSelect/PartnerTypeRadioSelect';
