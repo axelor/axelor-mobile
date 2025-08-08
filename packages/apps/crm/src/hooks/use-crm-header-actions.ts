@@ -59,14 +59,31 @@ const useCatalogListActions = () => {
 };
 
 const useClientListActions = () => {
+  const Colors = useThemeColor();
+  const navigation = useNavigation();
+  const I18n = useTranslator();
+  const {canCreate} = usePermitted({
+    modelName: 'com.axelor.apps.base.db.Partner',
+  });
+
   useEffect(() => {
     headerActionsProvider.registerModel('crm_client_list', {
       model: 'com.axelor.apps.base.db.Partner',
-      options: {
-        core_modelFilters: {name: 'partner-filters'},
-      },
+      options: {core_modelFilters: {name: 'partner-filters'}},
+      actions: [
+        {
+          key: 'client-creationForm',
+          order: 10,
+          iconName: 'plus-lg',
+          title: I18n.t('Crm_CreateClient'),
+          iconColor: Colors.primaryColor.background,
+          hideIf: !canCreate,
+          onPress: () => navigation.navigate('ClientFormScreen'),
+          showInHeader: true,
+        },
+      ],
     });
-  }, []);
+  }, [Colors, I18n, canCreate, navigation]);
 };
 
 const useClientDetailsActions = () => {
@@ -119,14 +136,31 @@ const useClientDetailsActions = () => {
   }, [client, I18n, navigation, canCreate]);
 };
 const useContactListActions = () => {
+  const Colors = useThemeColor();
+  const navigation = useNavigation();
+  const I18n = useTranslator();
+  const {canCreate} = usePermitted({
+    modelName: 'com.axelor.apps.base.db.Partner',
+  });
+
   useEffect(() => {
     headerActionsProvider.registerModel('crm_contact_list', {
       model: 'com.axelor.apps.base.db.Partner',
-      options: {
-        core_modelFilters: {name: 'contact-filters'},
-      },
+      options: {core_modelFilters: {name: 'contact-filters'}},
+      actions: [
+        {
+          key: 'contact-creationForm',
+          order: 10,
+          iconName: 'plus-lg',
+          title: I18n.t('Crm_CreateContact'),
+          iconColor: Colors.primaryColor.background,
+          hideIf: !canCreate,
+          onPress: () => navigation.navigate('ContactFormScreen'),
+          showInHeader: true,
+        },
+      ],
     });
-  }, []);
+  }, [Colors, I18n, canCreate, navigation]);
 };
 
 const useContactDetailsActions = () => {
@@ -291,14 +325,31 @@ const useOpportunityDetailsActions = () => {
 };
 
 const useProspectListActions = () => {
+  const Colors = useThemeColor();
+  const navigation = useNavigation();
+  const I18n = useTranslator();
+  const {canCreate} = usePermitted({
+    modelName: 'com.axelor.apps.base.db.Partner',
+  });
+
   useEffect(() => {
     headerActionsProvider.registerModel('crm_prospect_list', {
       model: 'com.axelor.apps.base.db.Partner',
-      options: {
-        core_modelFilters: {name: 'partner-filters'},
-      },
+      options: {core_modelFilters: {name: 'partner-filters'}},
+      actions: [
+        {
+          key: 'prospect-creationForm',
+          order: 10,
+          iconName: 'plus-lg',
+          title: I18n.t('Crm_CreateProspect'),
+          iconColor: Colors.primaryColor.background,
+          hideIf: !canCreate,
+          onPress: () => navigation.navigate('ProspectFormScreen'),
+          showInHeader: true,
+        },
+      ],
     });
-  }, []);
+  }, [Colors, I18n, canCreate, navigation]);
 };
 
 const useProspectDetailsActions = () => {

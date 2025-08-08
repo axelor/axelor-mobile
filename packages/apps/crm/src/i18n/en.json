@@ -106,6 +106,9 @@
   "Crm_City": "City",
   "Crm_Country": "Country",
   "Crm_Zip": "Zip",
+  "Crm_CreateClient": "Create a client",
+  "Crm_CreateContact": "Create a contact",
+  "Crm_CreateProspect": "Create a prospect",
   "Crm_ApiAction_UpdateContactInfo": "update contact information",
   "Crm_ApiAction_UpdateAddress": "update address",
   "Crm_ApiAction_DeleteAddress": "delete address",
@@ -159,5 +162,8 @@
   "Crm_SliceAction_ValidateTourLine": "validate tour line",
   "Crm_SliceAction_ValidateTour": "validate tour",
   "Crm_SliceAction_UpdateTourLine": "update tour line",
-  "Crm_SliceAction_FetchPartnerAddresses": "fetch partner addresses"
+  "Crm_SliceAction_FetchPartnerAddresses": "fetch partner addresses",
+  "Crm_SliceAction_CreateClient": "create client",
+  "Crm_SliceAction_CreateContact": "create contact",
+  "Crm_SliceAction_CreateProspect": "create prospect"
 }

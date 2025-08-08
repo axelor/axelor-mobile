@@ -29,6 +29,7 @@ import {
   updateProspectScoring,
   updateProspect as _updateProspect,
 } from '../api/prospect-api';
+import {createPartner} from '../api/partner-api';
 
 export const fetchProspects = createAsyncThunk(
   'prospect/fetchProspects',
@@ -71,42 +72,45 @@ export const fetchProspectById = createAsyncThunk(
 
 export const updateProspectScore = createAsyncThunk(
   'lead/updateProspectScore',
-  async function (data = {}, {getState}) {
+  async function (data = {}, {getState, dispatch}) {
     return handlerApiCall({
       fetchFunction: updateProspectScoring,
       data,
       action: 'Crm_SliceAction_UpdateProspectScore',
       getState,
       responseOptions: {isArrayResponse: false},
-    }).then(res => {
-      return handlerApiCall({
-        fetchFunction: getProspect,
-        data: {partnerId: res?.id},
-        action: 'Crm_SliceAction_FetchProspectById',
-        getState,
-        responseOptions: {isArrayResponse: false},
-      });
-    });
+    }).then(() => dispatch(fetchProspectById({partnerId: data.partnerId})));
   },
 );
 
 export const updateProspect = createAsyncThunk(
   'prospect/updateProspect',
-  async function (data = {}, {getState}) {
+  async function (data = {}, {getState, dispatch}) {
     return handlerApiCall({
       fetchFunction: _updateProspect,
       data,
       action: 'Crm_SliceAction_UpdateProspect',
       getState,
       responseOptions: {isArrayResponse: false},
+    }).then(() => dispatch(fetchProspectById({partnerId: data.id})));
+  },
+);
+
+export const createProspect = createAsyncThunk(
+  'prospect/createProspect',
+  async function (data, {getState, dispatch}) {
+    return handlerApiCall({
+      fetchFunction: createPartner,
+      data,
+      action: 'Crm_SliceAction_CreateProspect',
+      getState,
+      responseOptions: {isArrayResponse: false, showToast: true},
     }).then(res => {
-      return handlerApiCall({
-        fetchFunction: getProspect,
-        data: {partnerId: res?.id},
-        action: 'Crm_SliceAction_FetchProspectById',
-        getState,
-        responseOptions: {isArrayResponse: false},
-      });
+      dispatch(
+        fetchProspects({companyId: getState()?.user?.user?.activeCompany?.id}),
+      );
+
+      return res;
     });
   },
 );
@@ -137,9 +141,15 @@ const prospectSlice = createSlice({
     builder.addCase(fetchProspectById.pending, (state, action) => {
       state.loading = true;
     });
+    builder.addCase(fetchProspectById.rejected, (state, action) => {
+      state.loading = false;
+    });
     builder.addCase(fetchProspectById.fulfilled, (state, action) => {
       state.loading = false;
       state.prospect = action.payload;
+      state.prospectList = updateAgendaItems(state.prospectList, [
+        action.payload,
+      ]);
     });
     builder.addCase(fetchProspectStatus.pending, state => {
       state.loadingProspectStatus = true;
@@ -147,26 +157,6 @@ const prospectSlice = createSlice({
     builder.addCase(fetchProspectStatus.fulfilled, (state, action) => {
       state.loadingProspectStatus = false;
       state.prospectStatusList = action.payload;
-    });
-    builder.addCase(updateProspectScore.pending, (state, action) => {
-      state.loading = true;
-    });
-    builder.addCase(updateProspectScore.fulfilled, (state, action) => {
-      state.loading = false;
-      state.prospect = action.payload;
-      state.prospectList = updateAgendaItems(state.prospectList, [
-        action.payload,
-      ]);
-    });
-    builder.addCase(updateProspect.pending, (state, action) => {
-      state.loading = true;
-    });
-    builder.addCase(updateProspect.fulfilled, (state, action) => {
-      state.loading = false;
-      state.prospect = action.payload;
-      state.prospectList = updateAgendaItems(state.prospectList, [
-        action.payload,
-      ]);
     });
   },
 });

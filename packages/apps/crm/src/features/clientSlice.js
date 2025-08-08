@@ -23,10 +23,11 @@ import {
   updateAgendaItems,
 } from '@axelor/aos-mobile-core';
 import {
-  searchClient,
   getClient,
+  searchClient,
   updateClient as _updateClient,
 } from '../api/client-api';
+import {createPartner} from '../api/partner-api';
 
 export const fetchClients = createAsyncThunk(
   'client/fetchClients',
@@ -56,21 +57,32 @@ export const getClientbyId = createAsyncThunk(
 
 export const updateClient = createAsyncThunk(
   'client/updateClient',
-  async function (data = {}, {getState}) {
+  async function (data = {}, {getState, dispatch}) {
     return handlerApiCall({
       fetchFunction: _updateClient,
       data,
       action: 'Crm_SliceAction_UpdateClient',
       getState,
       responseOptions: {isArrayResponse: false},
+    }).then(() => dispatch(getClientbyId({clientId: data.id})));
+  },
+);
+
+export const createClient = createAsyncThunk(
+  'client/createClient',
+  async function (data, {getState, dispatch}) {
+    return handlerApiCall({
+      fetchFunction: createPartner,
+      data,
+      action: 'Crm_SliceAction_CreateClient',
+      getState,
+      responseOptions: {isArrayResponse: false, showToast: true},
     }).then(res => {
-      return handlerApiCall({
-        fetchFunction: getClient,
-        data: {clientId: res?.id},
-        action: 'Crm_SliceAction_FetchClientById',
-        getState,
-        responseOptions: {isArrayResponse: false},
-      });
+      dispatch(
+        fetchClients({companyId: getState()?.user?.user?.activeCompany?.id}),
+      );
+
+      return res;
     });
   },
 );
@@ -98,14 +110,10 @@ const clientSlice = createSlice({
     builder.addCase(getClientbyId.pending, state => {
       state.loadingClient = true;
     });
-    builder.addCase(getClientbyId.fulfilled, (state, action) => {
+    builder.addCase(getClientbyId.rejected, state => {
       state.loadingClient = false;
-      state.client = action.payload;
     });
-    builder.addCase(updateClient.pending, (state, action) => {
-      state.loadingClient = true;
-    });
-    builder.addCase(updateClient.fulfilled, (state, action) => {
+    builder.addCase(getClientbyId.fulfilled, (state, action) => {
       state.loadingClient = false;
       state.client = action.payload;
       state.clientList = updateAgendaItems(state.clientList, [action.payload]);

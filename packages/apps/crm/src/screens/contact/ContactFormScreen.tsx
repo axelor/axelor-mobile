@@ -17,29 +17,57 @@
  */
 
 import React, {useCallback, useEffect, useMemo} from 'react';
-import {useSelector, FormView, useDispatch} from '@axelor/aos-mobile-core';
-import {getContact, updateContact} from '../../features/contactSlice';
+import {
+  useSelector,
+  FormView,
+  useDispatch,
+  useTypes,
+} from '@axelor/aos-mobile-core';
+import {
+  createContact,
+  getContact,
+  updateContact,
+} from '../../features/contactSlice';
 
 const ContactFormScreen = ({navigation, route}) => {
   const {contactId} = route?.params ?? {};
+  const {Partner} = useTypes();
   const _dispatch = useDispatch();
 
   const {contact} = useSelector(state => state.contact);
 
   useEffect(() => {
-    _dispatch((getContact as any)({contactId}));
+    if (contactId != null) {
+      _dispatch((getContact as any)({contactId}));
+    }
   }, [_dispatch, contactId]);
 
   const defaultValue = useMemo(
-    () => (contactId !== contact?.id ? undefined : contact),
+    () => (!contactId || contactId !== contact?.id ? undefined : contact),
     [contact, contactId],
   );
 
-  const updateContactAPI = useCallback(
-    (objectState, dispatch) => {
-      dispatch((updateContact as any)(objectState));
+  const creationDefaultValue = useMemo(
+    () => ({
+      isContact: true,
+      partnerTypeSelect: Partner?.partnerTypeSelect?.Individual,
+    }),
+    [Partner?.partnerTypeSelect?.Individual],
+  );
 
-      navigation.pop();
+  const handleSaveAPI = useCallback(
+    ({dispatch, objectState}) => {
+      const isCreation = objectState?.id == null;
+      const sliceFct: any = isCreation ? createContact : updateContact;
+
+      dispatch(sliceFct(objectState)).then(res => {
+        const _recordId = res?.payload?.id;
+        if (_recordId) {
+          navigation.replace('ContactDetailsScreen', {idContact: _recordId});
+        } else {
+          navigation.pop();
+        }
+      });
     },
     [navigation],
   );
@@ -48,15 +76,22 @@ const ContactFormScreen = ({navigation, route}) => {
     <FormView
       formKey="crm_partner"
       defaultValue={defaultValue}
+      creationDefaultValue={creationDefaultValue}
       defaultEditMode
       actions={[
         {
+          key: 'create-contact',
+          type: 'create',
+          needValidation: true,
+          needRequiredFields: true,
+          customAction: handleSaveAPI,
+        },
+        {
           key: 'update-contact',
           type: 'update',
-          needRequiredFields: true,
           needValidation: true,
-          customAction: ({dispatch, objectState}) =>
-            updateContactAPI(objectState, dispatch),
+          needRequiredFields: true,
+          customAction: handleSaveAPI,
         },
       ]}
     />

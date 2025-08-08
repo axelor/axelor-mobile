@@ -17,29 +17,57 @@
  */
 
 import React, {useCallback, useEffect, useMemo} from 'react';
-import {useSelector, FormView, useDispatch} from '@axelor/aos-mobile-core';
-import {getClientbyId, updateClient} from '../../features/clientSlice';
+import {
+  useSelector,
+  FormView,
+  useDispatch,
+  useTypes,
+} from '@axelor/aos-mobile-core';
+import {
+  createClient,
+  getClientbyId,
+  updateClient,
+} from '../../features/clientSlice';
 
 const ClientFormScreen = ({navigation, route}) => {
   const {clientId} = route?.params ?? {};
+  const {Partner} = useTypes();
   const _dispatch = useDispatch();
 
   const {client} = useSelector(state => state.client);
 
   useEffect(() => {
-    _dispatch((getClientbyId as any)({clientId}));
+    if (clientId != null) {
+      _dispatch((getClientbyId as any)({clientId}));
+    }
   }, [_dispatch, clientId]);
 
   const defaultValue = useMemo(
-    () => (clientId !== client?.id ? undefined : client),
+    () => (!clientId || clientId !== client?.id ? undefined : client),
     [client, clientId],
   );
 
-  const updateClientAPI = useCallback(
-    (objectState, dispatch) => {
-      dispatch((updateClient as any)(objectState));
+  const creationDefaultValue = useMemo(
+    () => ({
+      isCustomer: true,
+      partnerTypeSelect: Partner?.partnerTypeSelect?.Company,
+    }),
+    [Partner?.partnerTypeSelect?.Company],
+  );
 
-      navigation.pop();
+  const handleSaveAPI = useCallback(
+    ({dispatch, objectState}) => {
+      const isCreation = objectState?.id == null;
+      const sliceFct: any = isCreation ? createClient : updateClient;
+
+      dispatch(sliceFct(objectState)).then(res => {
+        const _recordId = res?.payload?.id;
+        if (_recordId) {
+          navigation.replace('ClientDetailsScreen', {idClient: _recordId});
+        } else {
+          navigation.pop();
+        }
+      });
     },
     [navigation],
   );
@@ -48,15 +76,22 @@ const ClientFormScreen = ({navigation, route}) => {
     <FormView
       formKey="crm_partner"
       defaultValue={defaultValue}
+      creationDefaultValue={creationDefaultValue}
       defaultEditMode
       actions={[
+        {
+          key: 'create-client',
+          type: 'create',
+          needValidation: true,
+          needRequiredFields: true,
+          customAction: handleSaveAPI,
+        },
         {
           key: 'update-client',
           type: 'update',
           needValidation: true,
           needRequiredFields: true,
-          customAction: ({dispatch, objectState}) =>
-            updateClientAPI(objectState, dispatch),
+          customAction: handleSaveAPI,
         },
       ]}
     />

@@ -19,6 +19,7 @@
 import {
   createStandardFetch,
   createStandardSearch,
+  getActionApi,
   getSearchCriterias,
 } from '@axelor/aos-mobile-core';
 
@@ -170,5 +171,22 @@ export async function fetchPartnerAddresses({partnerId}) {
     sortKey: 'crm_partnerAddress',
     numberElementsByPage: null,
     provider: 'model',
+  });
+}
+
+export async function createPartner(body) {
+  return getActionApi().send({
+    url: '/ws/aos/partner',
+    method: 'post',
+    body: {
+      ...body,
+      mainPartnerId: body.mainPartner?.id,
+    },
+    description: 'create partner',
+    matchers: {
+      modelName: 'com.axelor.apps.base.db.Partner',
+      id: Date.now(),
+      fields: {mainPartnerId: 'mainPartner.id'},
+    },
   });
 }

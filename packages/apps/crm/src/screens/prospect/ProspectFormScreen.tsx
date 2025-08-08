@@ -17,29 +17,57 @@
  */
 
 import React, {useCallback, useEffect, useMemo} from 'react';
-import {useSelector, FormView, useDispatch} from '@axelor/aos-mobile-core';
-import {fetchProspectById, updateProspect} from '../../features/prospectSlice';
+import {
+  useSelector,
+  FormView,
+  useDispatch,
+  useTypes,
+} from '@axelor/aos-mobile-core';
+import {
+  createProspect,
+  fetchProspectById,
+  updateProspect,
+} from '../../features/prospectSlice';
 
 const ProspectFormScreen = ({navigation, route}) => {
   const {prospectId} = route?.params ?? {};
+  const {Partner} = useTypes();
   const _dispatch = useDispatch();
 
   const {prospect} = useSelector(state => state.prospect);
 
   useEffect(() => {
-    _dispatch((fetchProspectById as any)({partnerId: prospectId}));
+    if (prospectId != null) {
+      _dispatch((fetchProspectById as any)({partnerId: prospectId}));
+    }
   }, [_dispatch, prospectId]);
 
   const defaultValue = useMemo(
-    () => (prospectId !== prospect?.id ? undefined : prospect),
+    () => (!prospectId || prospectId !== prospect?.id ? undefined : prospect),
     [prospect, prospectId],
   );
 
-  const updateProspectAPI = useCallback(
-    (objectState, dispatch) => {
-      dispatch((updateProspect as any)(objectState));
+  const creationDefaultValue = useMemo(
+    () => ({
+      isProspect: true,
+      partnerTypeSelect: Partner?.partnerTypeSelect?.Company,
+    }),
+    [Partner?.partnerTypeSelect?.Company],
+  );
 
-      navigation.pop();
+  const handleSaveAPI = useCallback(
+    ({dispatch, objectState}) => {
+      const isCreation = objectState?.id == null;
+      const sliceFct: any = isCreation ? createProspect : updateProspect;
+
+      dispatch(sliceFct(objectState)).then(res => {
+        const _recordId = res?.payload?.id;
+        if (_recordId) {
+          navigation.replace('ProspectDetailsScreen', {idProspect: _recordId});
+        } else {
+          navigation.pop();
+        }
+      });
     },
     [navigation],
   );
@@ -48,15 +76,22 @@ const ProspectFormScreen = ({navigation, route}) => {
     <FormView
       formKey="crm_partner"
       defaultValue={defaultValue}
+      creationDefaultValue={creationDefaultValue}
       defaultEditMode
       actions={[
+        {
+          key: 'create-prospect',
+          type: 'create',
+          needValidation: true,
+          needRequiredFields: true,
+          customAction: handleSaveAPI,
+        },
         {
           key: 'update-prospect',
           type: 'update',
           needValidation: true,
           needRequiredFields: true,
-          customAction: ({dispatch, objectState}) =>
-            updateProspectAPI(objectState, dispatch),
+          customAction: handleSaveAPI,
         },
       ]}
     />
