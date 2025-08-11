@@ -180,7 +180,7 @@ const useClientDetailsActions = () => {
         getCreationHeaderAction(customer),
         {
           key: 'client-openEventForm',
-          order: 10,
+          order: 20,
           iconName: 'calendar-plus-fill',
           title: I18n.t('Crm_CreateEvent'),
           hideIf: !canCreate,
