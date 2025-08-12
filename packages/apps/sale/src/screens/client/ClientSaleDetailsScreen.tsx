@@ -18,7 +18,12 @@
 
 import React, {useCallback, useEffect} from 'react';
 import {StyleSheet} from 'react-native';
-import {useDispatch, useSelector, useTranslator} from '@axelor/aos-mobile-core';
+import {
+  useDispatch,
+  useIsFocused,
+  useSelector,
+  useTranslator,
+} from '@axelor/aos-mobile-core';
 import {
   HeaderContainer,
   NotesCard,
@@ -32,6 +37,7 @@ import {fetchCustomerById} from '../../features/customerSlice';
 const ClientSaleDetailsScreen = ({route}) => {
   const {customerId} = route?.params;
   const I18n = useTranslator();
+  const isFocused = useIsFocused();
   const dispatch = useDispatch();
 
   const {loadingCustomer, customer} = useSelector(
@@ -45,10 +51,12 @@ const ClientSaleDetailsScreen = ({route}) => {
   }, [dispatch, customerId]);
 
   useEffect(() => {
-    getCustomer();
-  }, [getCustomer]);
+    if (isFocused) {
+      getCustomer();
+    }
+  }, [getCustomer, isFocused]);
 
-  if (customer?.id !== customerId || client?.id !== customerId) {
+  if (customer?.id !== customerId || client?.id !== customerId || !isFocused) {
     return null;
   }
 
