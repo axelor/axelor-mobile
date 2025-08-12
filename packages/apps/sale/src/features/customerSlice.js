@@ -26,6 +26,7 @@ import {
   searchCustomer as _searchCustomer,
   searchCustomerCategory as _searchCustomerCategory,
 } from '../api/customer-api';
+import {createPartnerApi} from '@axelor/aos-mobile-crm';
 
 export const searchCustomer = createAsyncThunk(
   'sale_customer/searchCustomer',
@@ -66,6 +67,25 @@ export const fetchCustomerById = createAsyncThunk(
   },
 );
 
+export const createCustomer = createAsyncThunk(
+  'sale_customer/createCustomer',
+  async function (data, {getState, dispatch}) {
+    return handlerApiCall({
+      fetchFunction: createPartnerApi,
+      data,
+      action: 'Sale_SliceAction_CreateCustomer',
+      getState,
+      responseOptions: {isArrayResponse: false},
+    }).then(res => {
+      dispatch(
+        searchCustomer({companyId: getState()?.user?.user?.activeCompany?.id}),
+      );
+
+      return res;
+    });
+  },
+);
+
 const initialState = {
   loading: true,
   moreLoading: false,
@@ -99,6 +119,9 @@ const customerSlice = createSlice({
     });
     builder.addCase(fetchCustomerById.pending, state => {
       state.loadingCustomer = true;
+    });
+    builder.addCase(fetchCustomerById.rejected, state => {
+      state.loadingCustomer = false;
     });
     builder.addCase(fetchCustomerById.fulfilled, (state, action) => {
       state.loadingCustomer = false;
