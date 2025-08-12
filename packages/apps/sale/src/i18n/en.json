@@ -152,6 +152,7 @@
   "Sale_ChooseVariant": "Choose variant",
   "Sale_AddProductToCart": "Add product to cart",
   "Sale_NoActiveCart": "No active cart found",
+  "Sale_CreateClient": "Create a client",
   "Sale_SliceAction_FetchSaleConfig": "fetch sale config",
   "Sale_SliceAction_FetchSaleOrder": "fetch sale orders",
   "Sale_SliceAction_SearchCustomer": "search customers",
@@ -180,5 +181,6 @@
   "Sale_SliceAction_fetchProductVariantConfig": "fetch product variant config",
   "Sale_SliceAction_FetchMatchingProduct": "fetch matching product",
   "Sale_SliceAction_CreateSaleOrder": "create sale quotation",
-  "Sale_SliceAction_AddProductToActiveCart": "add product to active cart"
+  "Sale_SliceAction_AddProductToActiveCart": "add product to active cart",
+  "Sale_SliceAction_CreateCustomer": "create client"
 }

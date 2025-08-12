@@ -152,6 +152,7 @@
   "Sale_ChooseVariant": "Choisir un variant",
   "Sale_AddProductToCart": "Ajouter le produit au panier",
   "Sale_NoActiveCart": "Aucun panier actif trouvé",
+  "Sale_CreateClient": "Créer un client",
   "Sale_SliceAction_FetchSaleConfig": "récupération des configurations de vente",
   "Sale_SliceAction_FetchSaleOrder": "récupération des commandes client",
   "Sale_SliceAction_SearchCustomer": "recherche sur les clients",
@@ -180,5 +181,6 @@
   "Sale_SliceAction_fetchProductVariantConfig": "récupération de la configuration du variant de produit",
   "Sale_SliceAction_FetchMatchingProduct": "récupération du produit correspondant",
   "Sale_SliceAction_CreateSaleOrder": "création d'un devis",
-  "Sale_SliceAction_AddProductToActiveCart": "ajout du produit dans le panier actif"
+  "Sale_SliceAction_AddProductToActiveCart": "ajout du produit dans le panier actif",
+  "Sale_SliceAction_CreateCustomer": "création d'un client"
 }

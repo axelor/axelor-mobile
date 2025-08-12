@@ -109,14 +109,32 @@ const useProductDetailsActions = () => {
 };
 
 const useClientListActions = () => {
+  const Colors = useThemeColor();
+  const navigation = useNavigation();
+  const I18n = useTranslator();
+  const {checkModule} = useModules();
+  const {canCreate} = usePermitted({
+    modelName: 'com.axelor.apps.base.db.Partner',
+  });
+
   useEffect(() => {
     headerActionsProvider.registerModel('sale_client_list', {
       model: 'com.axelor.apps.base.db.Partner',
-      options: {
-        core_modelFilters: {name: 'partner-filters'},
-      },
+      options: {core_modelFilters: {name: 'partner-filters'}},
+      actions: [
+        {
+          key: 'client-creationForm',
+          order: 10,
+          iconName: 'plus-lg',
+          title: I18n.t('Sale_CreateClient'),
+          iconColor: Colors.primaryColor.background,
+          hideIf: !canCreate,
+          onPress: () => navigation.navigate('ClientSaleFormScreen'),
+          showInHeader: true,
+        },
+      ],
     });
-  }, []);
+  }, [Colors, I18n, canCreate, checkModule, navigation]);
 };
 
 const useCreateSaleOrderHeaderActionGetter = () => {

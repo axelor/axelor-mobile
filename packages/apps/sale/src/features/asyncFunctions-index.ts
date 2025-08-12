@@ -33,6 +33,7 @@ export {
 export {fetchComplementaryProduct} from './complementaryProductSlice';
 export {fetchCustomerDelivery} from './customerDeliverySlice';
 export {
+  createCustomer,
   fetchCustomerById,
   searchCustomer,
   searchCustomerCategory,
