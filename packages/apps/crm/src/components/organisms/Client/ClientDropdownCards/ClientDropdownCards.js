@@ -97,7 +97,7 @@ const ClientDropdownCards = ({additionalDropdowns = []}) => {
       additionalDropdowns.forEach((dropdown, index) => {
         _dropdownItems.push({
           title: dropdown.title,
-          key: 6 + index,
+          key: 7 + index,
           childrenComp: dropdown.childrenComp,
         });
       });
