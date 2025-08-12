@@ -18,6 +18,7 @@
 
 import ClientSaleListScreen from './ClientSaleListScreen';
 import ClientSaleDetailsScreen from './ClientSaleDetailsScreen';
+import ClientSaleFormScreen from './ClientSaleFormScreen';
 
 export default {
   ClientSaleListScreen: {
@@ -37,7 +38,14 @@ export default {
       shadedHeader: false,
     },
   },
+  ClientSaleFormScreen: {
+    title: 'Sale_Client',
+    actionID: 'sale_client_form',
+    component: ClientSaleFormScreen,
+    isUsableOnShortcut: true,
+  },
 };
 
 export {ClientSaleListScreen};
 export {ClientSaleDetailsScreen};
+export {ClientSaleFormScreen};

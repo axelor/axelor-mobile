@@ -17,9 +17,15 @@
  */
 
 export {createCatalog, fetchCatalog, fetchCatalogType} from './catalogSlice';
-export {fetchClients, getClientbyId, updateClient} from './clientSlice';
+export {
+  createClient,
+  fetchClients,
+  getClientbyId,
+  updateClient,
+} from './clientSlice';
 export {fetchCompanyById} from './companySlice';
 export {
+  createContact,
   fetchContact,
   getContact,
   searchContactById,
@@ -62,6 +68,7 @@ export {
   updatePartner,
 } from './partnerSlice';
 export {
+  createProspect,
   fetchProspectById,
   fetchProspects,
   fetchProspectStatus,
