@@ -112,7 +112,6 @@ const useClientListActions = () => {
   const Colors = useThemeColor();
   const navigation = useNavigation();
   const I18n = useTranslator();
-  const {checkModule} = useModules();
   const {canCreate} = usePermitted({
     modelName: 'com.axelor.apps.base.db.Partner',
   });
@@ -134,7 +133,7 @@ const useClientListActions = () => {
         },
       ],
     });
-  }, [Colors, I18n, canCreate, checkModule, navigation]);
+  }, [Colors, I18n, canCreate, navigation]);
 };
 
 const useCreateSaleOrderHeaderActionGetter = () => {
