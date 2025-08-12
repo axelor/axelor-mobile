@@ -27,6 +27,7 @@ import {
   getContact as _getContact,
   updateContact as _updateContact,
 } from '../api/contact-api';
+import {createPartner} from '../api/partner-api';
 
 export const searchContactById = createAsyncThunk(
   'contact/searchContactById',
@@ -77,6 +78,25 @@ export const updateContact = createAsyncThunk(
       getState,
       responseOptions: {isArrayResponse: false},
     }).then(() => dispatch(getContact({contactId: data.id})));
+  },
+);
+
+export const createContact = createAsyncThunk(
+  'contact/createContact',
+  async function (data, {getState, dispatch}) {
+    return handlerApiCall({
+      fetchFunction: createPartner,
+      data,
+      action: 'Crm_SliceAction_CreateContact',
+      getState,
+      responseOptions: {isArrayResponse: false, showToast: true},
+    }).then(res => {
+      dispatch(
+        fetchContact({companyId: getState()?.user?.user?.activeCompany?.id}),
+      );
+
+      return res;
+    });
   },
 );
 

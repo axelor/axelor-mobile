@@ -1,0 +1,5 @@
+{
+  "title": "Partners: add creation management from the corresponding list view",
+  "type": "feat",
+  "packages": "crm"
+}

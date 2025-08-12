@@ -16,36 +16,12 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import React, {useCallback, useEffect, useMemo} from 'react';
-import {
-  useSelector,
-  FormView,
-  useDispatch,
-  useTypes,
-} from '@axelor/aos-mobile-core';
-import {
-  createClient,
-  getClientbyId,
-  updateClient,
-} from '../../features/clientSlice';
+import React, {useCallback, useMemo} from 'react';
+import {FormView, useTypes} from '@axelor/aos-mobile-core';
+import {createCustomer} from '../../features/customerSlice';
 
-const ClientFormScreen = ({navigation, route}) => {
-  const {clientId} = route?.params ?? {};
+const ClientSaleFormScreen = ({navigation}) => {
   const {Partner} = useTypes();
-  const _dispatch = useDispatch();
-
-  const {client} = useSelector(state => state.client);
-
-  useEffect(() => {
-    if (clientId != null) {
-      _dispatch((getClientbyId as any)({clientId}));
-    }
-  }, [_dispatch, clientId]);
-
-  const defaultValue = useMemo(
-    () => (!clientId || clientId !== client?.id ? undefined : client),
-    [client, clientId],
-  );
 
   const creationDefaultValue = useMemo(
     () => ({
@@ -57,15 +33,12 @@ const ClientFormScreen = ({navigation, route}) => {
 
   const handleSaveAPI = useCallback(
     ({dispatch, objectState}) => {
-      const isCreation = objectState?.id == null;
-      const sliceFct: any = isCreation ? createClient : updateClient;
-
-      dispatch(sliceFct(objectState)).then(res => {
+      dispatch((createCustomer as any)(objectState)).then(res => {
         const _recordId = res?.payload?.id;
         if (_recordId) {
-          navigation.replace('ClientDetailsScreen', {idClient: _recordId});
-        } else {
-          navigation.pop();
+          navigation.replace('ClientSaleDetailsScreen', {
+            customerId: _recordId,
+          });
         }
       });
     },
@@ -74,8 +47,7 @@ const ClientFormScreen = ({navigation, route}) => {
 
   return (
     <FormView
-      formKey="crm_partner"
-      defaultValue={defaultValue}
+      formKey="sale_client"
       creationDefaultValue={creationDefaultValue}
       defaultEditMode
       actions={[
@@ -86,16 +58,9 @@ const ClientFormScreen = ({navigation, route}) => {
           needRequiredFields: true,
           customAction: handleSaveAPI,
         },
-        {
-          key: 'update-client',
-          type: 'update',
-          needValidation: true,
-          needRequiredFields: true,
-          customAction: handleSaveAPI,
-        },
       ]}
     />
   );
 };
 
-export default ClientFormScreen;
+export default ClientSaleFormScreen;

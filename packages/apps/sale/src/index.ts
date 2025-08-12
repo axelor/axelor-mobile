@@ -25,6 +25,7 @@ import SaleOrderScreens from './screens/saleOrder';
 import ClientScreens from './screens/client';
 import * as saleReducers from './features';
 import {
+  sale_formsRegister,
   sale_modelAPI,
   sale_searchFields,
   sale_sortFields,
@@ -96,6 +97,7 @@ export const SaleModule: Module = {
     ...CartScreens,
   },
   models: {
+    formsRegister: sale_formsRegister,
     objectFields: {...sale_modelAPI},
     searchFields: {...sale_searchFields},
     sortFields: {...sale_sortFields},

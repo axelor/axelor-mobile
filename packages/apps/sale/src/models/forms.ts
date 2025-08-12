@@ -16,8 +16,28 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-export {sale_formsRegister} from './forms';
-export {sale_modelAPI} from './objectFields';
-export {sale_searchFields} from './searchFields';
-export {sale_sortFields} from './sortFields';
-export {sale_typeObjects} from './typeObjects';
+import {FormConfigs} from '@axelor/aos-mobile-core';
+import {CrmModule} from '@axelor/aos-mobile-crm';
+
+const crm_partner = CrmModule.models.formsRegister.crm_partner;
+
+export const sale_formsRegister: FormConfigs = {
+  sale_client: {
+    modelName: 'com.axelor.apps.base.db.Partner',
+    fields: {
+      ...crm_partner.fields,
+      isProspect: {
+        titleKey: 'Crm_Prospect',
+        type: 'boolean',
+        widget: 'checkbox',
+        hideIf: () => true,
+      },
+      isCustomer: {
+        titleKey: 'Crm_Client',
+        type: 'boolean',
+        widget: 'checkbox',
+        hideIf: () => true,
+      },
+    },
+  },
+};

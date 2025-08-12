@@ -22,10 +22,11 @@ import {
   handlerApiCall,
 } from '@axelor/aos-mobile-core';
 import {
-  searchClient,
   getClient,
+  searchClient,
   updateClient as _updateClient,
 } from '../api/client-api';
+import {createPartner} from '../api/partner-api';
 
 export const fetchClients = createAsyncThunk(
   'client/fetchClients',
@@ -63,6 +64,25 @@ export const updateClient = createAsyncThunk(
       getState,
       responseOptions: {isArrayResponse: false},
     }).then(() => dispatch(getClientbyId({clientId: data.id})));
+  },
+);
+
+export const createClient = createAsyncThunk(
+  'client/createClient',
+  async function (data, {getState, dispatch}) {
+    return handlerApiCall({
+      fetchFunction: createPartner,
+      data,
+      action: 'Crm_SliceAction_CreateClient',
+      getState,
+      responseOptions: {isArrayResponse: false, showToast: true},
+    }).then(res => {
+      dispatch(
+        fetchClients({companyId: getState()?.user?.user?.activeCompany?.id}),
+      );
+
+      return res;
+    });
   },
 );
 

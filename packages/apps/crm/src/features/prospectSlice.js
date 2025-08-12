@@ -28,6 +28,7 @@ import {
   updateProspectScoring,
   updateProspect as _updateProspect,
 } from '../api/prospect-api';
+import {createPartner} from '../api/partner-api';
 
 export const fetchProspects = createAsyncThunk(
   'prospect/fetchProspects',
@@ -91,6 +92,25 @@ export const updateProspect = createAsyncThunk(
       getState,
       responseOptions: {isArrayResponse: false},
     }).then(() => dispatch(fetchProspectById({partnerId: data.id})));
+  },
+);
+
+export const createProspect = createAsyncThunk(
+  'prospect/createProspect',
+  async function (data, {getState, dispatch}) {
+    return handlerApiCall({
+      fetchFunction: createPartner,
+      data,
+      action: 'Crm_SliceAction_CreateProspect',
+      getState,
+      responseOptions: {isArrayResponse: false, showToast: true},
+    }).then(res => {
+      dispatch(
+        fetchProspects({companyId: getState()?.user?.user?.activeCompany?.id}),
+      );
+
+      return res;
+    });
   },
 );
 

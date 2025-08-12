@@ -41,6 +41,8 @@ export default {
   ClientFormScreen: {
     title: 'Crm_Clients',
     component: ClientFormScreen,
+    actionID: 'crm_client_form',
+    isUsableOnShortcut: true,
   },
 };
 
