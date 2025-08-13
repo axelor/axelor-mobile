@@ -27,6 +27,7 @@ import {
 import {SwitchCard, useThemeColor} from '@axelor/aos-mobile-ui';
 import {useSelector} from '../../../redux/hooks';
 import {useTranslator} from '../../../i18n';
+import {useIsFocused} from '../../../hooks/use-navigation';
 import {
   AgendaEvent,
   AgendaItem,
@@ -47,12 +48,13 @@ interface PlanningProps {
   numberMonthsAroundToday?: number;
   loading?: boolean;
   itemList?: AgendaEvent[];
-  fetchbyMonth: (param: any) => void;
+  fetchbyMonth: (params: {date: Date; isAssigned?: boolean}) => void;
   renderItem?: (item: AgendaItem) => React.ReactNode;
   renderFullDayItem?: (item: AgendaItem) => React.ReactNode;
   changeWeekButton?: boolean;
   returnToDayButton?: boolean;
   manageAssignment?: boolean;
+  computeAssignmentLocally?: boolean;
 }
 
 const PlanningView = ({
@@ -65,13 +67,15 @@ const PlanningView = ({
   changeWeekButton = true,
   returnToDayButton = true,
   manageAssignment = false,
+  computeAssignmentLocally = true,
 }: PlanningProps) => {
   const Colors = useThemeColor();
   const I18n = useTranslator();
+  const isFocused = useIsFocused();
 
   const {userId} = useSelector(state => state.auth);
 
-  const [fetchDate, setFetchDate] = useState<any>();
+  const [fetchDate, setFetchDate] = useState(new Date());
   const [currentDate, setCurrentDate] = useState(new Date().toISOString());
   const [assigned, setAssigned] = useState(true);
 
@@ -79,15 +83,13 @@ const PlanningView = ({
     (list: any[]) => {
       if (!Array.isArray(list) || list.length === 0) {
         return [];
+      } else if (manageAssignment && computeAssignmentLocally) {
+        return list.filter(item => !assigned || item?.data?.userId === userId);
       } else {
-        if (assigned && manageAssignment) {
-          return list?.filter(item => item?.data?.userId === userId);
-        } else {
-          return list;
-        }
+        return list;
       }
     },
-    [assigned, manageAssignment, userId],
+    [assigned, computeAssignmentLocally, manageAssignment, userId],
   );
 
   useEffect(() => {
@@ -156,15 +158,17 @@ const PlanningView = ({
     );
   };
 
-  const handleLoadItemsForMonth = useCallback(
-    (date: DateData) => {
-      const _date = new Date(date.year, date.month, date.day);
+  const handleLoadItemsForMonth = useCallback((date: DateData) => {
+    setFetchDate(new Date(date.year, date.month, date.day));
+  }, []);
 
-      setFetchDate(_date);
-      fetchbyMonth(_date);
-    },
-    [fetchbyMonth],
-  );
+  const loadItemsWithAPI = useCallback(() => {
+    fetchbyMonth({date: fetchDate, isAssigned: assigned});
+  }, [assigned, fetchDate, fetchbyMonth]);
+
+  useEffect(() => {
+    if (isFocused) loadItemsWithAPI();
+  }, [isFocused, loadItemsWithAPI]);
 
   const todayBtnOnPress = useCallback(() => {
     setCurrentDate(new Date().toISOString());
@@ -233,7 +237,7 @@ const PlanningView = ({
         renderItem={renderDayItem}
         renderDay={renderDate}
         renderEmptyDate={renderEmptyDate}
-        onRefresh={() => fetchbyMonth(fetchDate)}
+        onRefresh={loadItemsWithAPI}
         refreshing={loading}
         theme={{
           todayTextColor: Colors.text,
