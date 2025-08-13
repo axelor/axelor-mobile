@@ -26,15 +26,27 @@ import {
 import {AutoCompleteSearch} from '@axelor/aos-mobile-ui';
 import {fetchPlannedEvent} from '../../../features/eventSlice';
 
+interface EventSearchBarProps {
+  style?: any;
+  title?: string;
+  showTitle?: boolean;
+  defaultValue?: string;
+  onChange?: (any: any) => void;
+  navigate?: boolean;
+  oneFilter?: boolean;
+  showDetailsPopup?: boolean;
+}
+
 const EventSearchBar = ({
-  placeholderKey = 'Crm_Events',
-  defaultValue = '',
-  onChange = () => {},
+  style,
+  title = 'Crm_Events',
+  defaultValue,
+  onChange,
   showDetailsPopup = true,
+  showTitle = true,
   navigate = false,
   oneFilter = false,
-  isFocus = false,
-}) => {
+}: EventSearchBarProps) => {
   const I18n = useTranslator();
   const dispatch = useDispatch();
 
@@ -44,26 +56,27 @@ const EventSearchBar = ({
 
   const fetchEventSearchBarAPI = useCallback(
     ({page = 0, searchValue}) => {
-      dispatch(fetchPlannedEvent({page, searchValue}));
+      dispatch((fetchPlannedEvent as any)({page, searchValue}));
     },
     [dispatch],
   );
 
   return (
     <AutoCompleteSearch
+      style={style}
+      title={showTitle && I18n.t(title)}
+      loadingList={loadingEventList}
+      moreLoading={moreLoading}
+      isListEnd={isListEnd}
       objectList={eventList}
       value={defaultValue}
       onChangeValue={onChange}
       fetchData={fetchEventSearchBarAPI}
       displayValue={displayItemName}
-      placeholder={I18n.t(placeholderKey)}
+      placeholder={I18n.t(title)}
       showDetailsPopup={showDetailsPopup}
-      loadingList={loadingEventList}
-      moreLoading={moreLoading}
-      isListEnd={isListEnd}
       navigate={navigate}
       oneFilter={oneFilter}
-      isFocus={isFocus}
     />
   );
 };
