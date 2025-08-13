@@ -1,0 +1,5 @@
+{
+  "title": "DoubleScannerSearchBar: make props sliceFunctionBarCodeData and onFetchDataAction optional",
+  "type": "fix",
+  "packages": "core"
+}
