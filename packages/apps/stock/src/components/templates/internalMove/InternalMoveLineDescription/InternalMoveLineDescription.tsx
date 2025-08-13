@@ -24,14 +24,14 @@ import {
   useSelector,
   useTranslator,
 } from '@axelor/aos-mobile-core';
-import {updateCustomerDeliveryLineDescription} from '../../../features/customerDeliveryLineSlice';
+import {updateInternalMoveLineDescription} from '../../../../features/internalMoveLineSlice';
 
 interface CustomerDeliveryNotesProps {
   titleKey?: string;
   readonly?: boolean;
 }
 
-const CustomerDeliveryLineDescription = ({
+const InternalMoveLineDescription = ({
   titleKey = 'Base_Description',
   readonly = false,
 }: CustomerDeliveryNotesProps) => {
@@ -41,31 +41,28 @@ const CustomerDeliveryLineDescription = ({
     modelName: 'com.axelor.apps.stock.db.StockMoveLine',
   });
 
-  const {customerDelivery} = useSelector(state => state.customerDelivery);
-  const {customerDeliveryLine} = useSelector(
-    state => state.customerDeliveryLine,
-  );
+  const {internalMoveLine} = useSelector(state => state.internalMoveLine);
 
   const handleValidate = useCallback(
     value => {
       dispatch(
-        (updateCustomerDeliveryLineDescription as any)({
-          stockMoveLineId: customerDeliveryLine.id,
-          customerDeliveryId: customerDelivery.id,
-          version: customerDeliveryLine.version,
-          realQty: customerDeliveryLine.realQty,
+        (updateInternalMoveLineDescription as any)({
+          stockMoveLineId: internalMoveLine.id,
+          version: internalMoveLine.version,
+          realQty: internalMoveLine.realQty,
           description: value,
-          fromStockLocation: customerDeliveryLine.fromStockLocation,
+          fromStockLocation: internalMoveLine.fromStockLocation,
+          unitId: internalMoveLine.unit?.id,
         }),
       );
     },
     [
-      customerDelivery.id,
-      customerDeliveryLine.fromStockLocation,
-      customerDeliveryLine.id,
-      customerDeliveryLine.realQty,
-      customerDeliveryLine.version,
       dispatch,
+      internalMoveLine.fromStockLocation,
+      internalMoveLine.id,
+      internalMoveLine.realQty,
+      internalMoveLine.unit?.id,
+      internalMoveLine.version,
     ],
   );
 
@@ -73,7 +70,7 @@ const CustomerDeliveryLineDescription = ({
     return (
       <NotesCard
         title={I18n.t(titleKey)}
-        data={customerDeliveryLine?.description}
+        data={internalMoveLine?.description}
       />
     );
   }
@@ -82,9 +79,9 @@ const CustomerDeliveryLineDescription = ({
     <EditableHtmlInput
       title={I18n.t('Base_Description')}
       onValidate={handleValidate}
-      defaultValue={customerDeliveryLine?.description}
+      defaultValue={internalMoveLine?.description}
     />
   );
 };
 
-export default CustomerDeliveryLineDescription;
+export default InternalMoveLineDescription;
