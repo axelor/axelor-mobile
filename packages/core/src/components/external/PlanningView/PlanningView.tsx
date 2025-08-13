@@ -18,14 +18,14 @@
 
 import React, {useCallback, useEffect, useMemo, useState} from 'react';
 import {StyleSheet, View} from 'react-native';
-import {SwitchCard, useThemeColor} from '@axelor/aos-mobile-ui';
-import {useSelector} from 'react-redux';
 import {
   Agenda,
   AgendaEntry,
   DateData,
   LocaleConfig,
 } from 'react-native-calendars';
+import {SwitchCard, useThemeColor} from '@axelor/aos-mobile-ui';
+import {useSelector} from '../../../redux/hooks';
 import {useTranslator} from '../../../i18n';
 import {
   AgendaEvent,
@@ -46,22 +46,22 @@ import NavigationButton from './NavigationButton';
 interface PlanningProps {
   numberMonthsAroundToday?: number;
   loading?: boolean;
+  itemList?: AgendaEvent[];
   fetchbyMonth: (param: any) => void;
   renderItem?: (item: AgendaItem) => React.ReactNode;
   renderFullDayItem?: (item: AgendaItem) => React.ReactNode;
-  itemList?: AgendaEvent[];
-  changeWeekButton: boolean;
-  returnToDayButton: boolean;
+  changeWeekButton?: boolean;
+  returnToDayButton?: boolean;
   manageAssignment?: boolean;
 }
 
 const PlanningView = ({
   numberMonthsAroundToday = 12,
-  renderItem,
-  renderFullDayItem,
-  fetchbyMonth,
   loading = false,
   itemList = [],
+  fetchbyMonth,
+  renderItem,
+  renderFullDayItem,
   changeWeekButton = true,
   returnToDayButton = true,
   manageAssignment = false,
@@ -69,7 +69,7 @@ const PlanningView = ({
   const Colors = useThemeColor();
   const I18n = useTranslator();
 
-  const {userId} = useSelector((state: any) => state.auth);
+  const {userId} = useSelector(state => state.auth);
 
   const [fetchDate, setFetchDate] = useState<any>();
   const [currentDate, setCurrentDate] = useState(new Date().toISOString());
@@ -121,20 +121,20 @@ const PlanningView = ({
     [agendaItems],
   );
 
-  const renderDate = (date: Date) => {
-    return <DayDisplay date={date} />;
-  };
+  const renderDate = useCallback(
+    (date: Date) => <DayDisplay date={date} />,
+    [],
+  );
 
-  const renderEmptyDate = () => {
-    return <View style={styles.emptyDate} />;
-  };
+  const renderEmptyDate = useCallback(
+    () => <View style={styles.emptyDate} />,
+    [styles.emptyDate],
+  );
 
   const renderDayItem = (item: AgendaEntry, isFirst: boolean) => {
     const agendaItem: AgendaItem = mapEntryToItem(item, _agendaItems);
 
-    if (agendaItem == null) {
-      return null;
-    }
+    if (agendaItem == null) return null;
 
     const {id, date, isNewMonth} = agendaItem;
 
@@ -166,20 +166,27 @@ const PlanningView = ({
     [fetchbyMonth],
   );
 
-  const todayBtnOnPress = () => {
+  const todayBtnOnPress = useCallback(() => {
     setCurrentDate(new Date().toISOString());
-  };
-  const nextWeekBtnOnPress = () => {
-    var firstDay = new Date(currentDate);
-    var nextWeek = new Date(firstDay.getTime() + 7 * 24 * 60 * 60 * 1000);
-    setCurrentDate(nextWeek.toISOString());
-  };
+  }, []);
 
-  const lastWeekBtnOnPress = () => {
-    var firstDay = new Date(currentDate);
-    var lastWeek = new Date(firstDay.getTime() - 7 * 24 * 60 * 60 * 1000);
-    setCurrentDate(lastWeek.toISOString());
-  };
+  const nextWeekBtnOnPress = useCallback(() => {
+    setCurrentDate(_current => {
+      var firstDay = new Date(_current);
+      var nextWeek = new Date(firstDay.getTime() + 7 * 24 * 60 * 60 * 1000);
+
+      return nextWeek.toISOString();
+    });
+  }, []);
+
+  const lastWeekBtnOnPress = useCallback(() => {
+    setCurrentDate(_current => {
+      var firstDay = new Date(_current);
+      var lastWeek = new Date(firstDay.getTime() - 7 * 24 * 60 * 60 * 1000);
+
+      return lastWeek.toISOString();
+    });
+  }, []);
 
   return (
     <View
