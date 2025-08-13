@@ -52,6 +52,7 @@ const createProductCriteria = ({
   productCategory,
   isConfiguratorProductShown,
   isGenericProductShown,
+  alternativeBarcodeList,
 }) => {
   const criteria = [
     {
@@ -116,6 +117,17 @@ const createProductCriteria = ({
     });
   }
 
+  if (
+    Array.isArray(alternativeBarcodeList) &&
+    alternativeBarcodeList.length > 0
+  ) {
+    criteria.push({
+      fieldName: 'id',
+      operator: 'in',
+      value: alternativeBarcodeList.map(barcode => barcode.product.id),
+    });
+  }
+
   return criteria;
 };
 
@@ -146,6 +158,7 @@ export async function searchProduct({
   isConfiguratorProductShown,
   isGenericProductShown,
   filterDomain,
+  alternativeBarcodeList,
 }) {
   return createStandardSearch({
     model: 'com.axelor.apps.base.db.Product',
@@ -155,6 +168,7 @@ export async function searchProduct({
       productCategory,
       isConfiguratorProductShown,
       isGenericProductShown,
+      alternativeBarcodeList,
     }),
     fieldKey: 'sale_product',
     sortKey: 'sale_product',

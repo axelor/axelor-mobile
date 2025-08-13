@@ -51,8 +51,8 @@ interface DoubleScannerSearchBarProps {
   isListEnd?: boolean;
   isScrollViewContainer?: boolean;
   sliceBarCodeFunction: any;
-  sliceFunctionBarCodeData: Object;
-  onFetchDataAction: any;
+  sliceFunctionBarCodeData?: Object;
+  onFetchDataAction?: any;
   displayBarCodeInput?: boolean;
 }
 
