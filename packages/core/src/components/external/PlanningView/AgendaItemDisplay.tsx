@@ -54,8 +54,12 @@ const AgendaItemDisplay = ({
         <View style={styles.containerTime}>
           {!isFullDayEvent && (
             <>
-              <Text style={styles.centerText}>{startHour}</Text>
-              <Text style={styles.centerText}>{endHour}</Text>
+              <Text fontSize={14} style={styles.centerText}>
+                {startHour}
+              </Text>
+              <Text fontSize={14} style={styles.centerText}>
+                {endHour}
+              </Text>
             </>
           )}
         </View>
