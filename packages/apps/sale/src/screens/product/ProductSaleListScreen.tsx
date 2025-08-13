@@ -123,7 +123,6 @@ const ProductSaleListScreen = ({navigation}) => {
             scanKeyBarCode={barCodeScanKey}
             showDetailsPopup={false}
             selectLastItem={false}
-            oneFilter
           />
         }
         headerChildren={
