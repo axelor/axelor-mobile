@@ -16,22 +16,27 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import {SearchFields} from '@axelor/aos-mobile-core';
+import {
+  createStandardSearch,
+  getSearchCriterias,
+} from '@axelor/aos-mobile-core';
 
-export const sale_searchFields: SearchFields = {
-  sale_product: [
-    'name',
-    'code',
-    'productFamily.name',
-    'productCategory.name',
-    'description',
-  ],
-  sale_productCategory: ['name'],
-  sale_saleOrder: ['saleOrderSeq', 'externalReference'],
-  sale_customer: ['fullName', 'name', 'partnerSeq'],
-  sale_customerCategory: ['name'],
-  sale_complementaryProduct: ['product.name', 'product.code'],
-  sale_priceListLine: ['priceList.title'],
-  sale_cartLine: ['product.name', 'product.code'],
-  sale_alternativeBarcode: ['serialNumber'],
+const createAlternativeBarcodeCriteria = searchValue => {
+  const criteria = [getSearchCriterias('sale_alternativeBarcode', searchValue)];
+
+  return criteria;
 };
+
+export async function searchAlternativeBarcode({page = 0, searchValue}) {
+  if (searchValue == null) {
+    return null;
+  }
+  return createStandardSearch({
+    model: 'com.axelor.apps.base.db.AlternativeBarcode',
+    criteria: createAlternativeBarcodeCriteria(searchValue),
+    fieldKey: 'sale_alternativeBarcode',
+    sortKey: 'sale_alternativeBarcode',
+    page,
+    provider: 'model',
+  });
+}
