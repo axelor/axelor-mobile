@@ -110,6 +110,7 @@ export const stock_modelAPI: ObjectFields = {
   }),
   stock_internalMoveLine: schemaContructor.object({
     product: productModel,
+    description: schemaContructor.string(),
     availableStatusSelect: schemaContructor.number(),
     trackingNumber: schemaContructor.subObject('trackingNumberSeq'),
     unit: schemaContructor.subObject('name'),

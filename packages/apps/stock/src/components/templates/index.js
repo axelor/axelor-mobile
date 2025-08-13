@@ -17,7 +17,6 @@
  */
 
 export {default as AvailableProductsSearchBar} from './AvailableProductsSearchBar/AvailableProductsSearchBar';
-export {default as CustomerDeliveryLineDescription} from './CustomerDeliveryLineDescription/CustomerDeliveryLineDescription';
 export {default as PartnerSearchBar} from './PartnerSearchBar/PartnerSearchBar';
 export {default as ProductSearchBar} from './ProductSearchBar/ProductSearchBar';
 export {default as ProductTrackingNumberSearchBar} from './ProductTrackingNumberSearchBar/ProductTrackingNumberSearchBar';

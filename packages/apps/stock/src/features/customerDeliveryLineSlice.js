@@ -45,7 +45,7 @@ export const fetchCustomerDeliveryLines = createAsyncThunk(
 
 export const updateCustomerDeliveryLineDescription = createAsyncThunk(
   'customerDeliveryLine/updateCustomerDeliveryLineDescription',
-  async function (data, {getState, dispatch}) {
+  async function (data, {getState}) {
     return handlerApiCall({
       fetchFunction: updateLine,
       data,

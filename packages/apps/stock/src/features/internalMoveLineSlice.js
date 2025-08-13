@@ -63,6 +63,27 @@ export const updateInternalMoveLine = createAsyncThunk(
   },
 );
 
+export const updateInternalMoveLineDescription = createAsyncThunk(
+  'internalMoveLine/updateInternalMoveLineDescription',
+  async function (data, {getState}) {
+    return handlerApiCall({
+      fetchFunction: _updateInternalMoveLine,
+      data,
+      action: 'Stock_SliceAction_UpdateCustomerDeliveryDescrition',
+      getState,
+      responseOptions: {showToast: true},
+    }).then(res => {
+      return handlerApiCall({
+        fetchFunction: _fetchInternalMoveLine,
+        data: {internalMoveLineId: res?.id},
+        action: 'Stock_SliceAction_FetchInternalMoveLine',
+        getState,
+        responseOptions: {isArrayResponse: false},
+      });
+    });
+  },
+);
+
 export const fetchInternalMoveLine = createAsyncThunk(
   'internalMoveLine/fetchInternalMoveLine',
   async function (data, {getState}) {

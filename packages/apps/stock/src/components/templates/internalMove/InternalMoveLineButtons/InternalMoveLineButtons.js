@@ -45,6 +45,7 @@ const InternalMoveLineButtons = ({
       updateInternalMoveLine({
         stockMoveLineId: internalMoveLine.id,
         version: internalMoveLine.version,
+        description: internalMoveLine.description,
         realQty: movedQty,
         unitId: unit.id,
         fromStockLocationId:
