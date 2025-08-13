@@ -140,6 +140,7 @@ export const SaleModule: Module = {
 export * from './api';
 export * from './components';
 export * from './features/asyncFunctions-index';
+export * from './hooks';
 export * from './screens/cart';
 export * from './screens/product';
 export * from './screens/saleOrder';

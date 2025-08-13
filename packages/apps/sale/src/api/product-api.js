@@ -47,6 +47,7 @@ const createVariantCriteria = selectedVariants => {
 };
 
 const createProductCriteria = ({
+  useCompanySellable,
   searchValue,
   productTypeSelect,
   productCategory,
@@ -54,11 +55,6 @@ const createProductCriteria = ({
   isGenericProductShown,
 }) => {
   const criteria = [
-    {
-      fieldName: 'sellable',
-      operator: '=',
-      value: true,
-    },
     {
       fieldName: 'isShippingCostsProduct',
       operator: '=',
@@ -76,6 +72,14 @@ const createProductCriteria = ({
     },
     getSearchCriterias('sale_product', searchValue),
   ];
+
+  if (!useCompanySellable) {
+    criteria.push({
+      fieldName: 'sellable',
+      operator: '=',
+      value: true,
+    });
+  }
 
   if (!isConfiguratorProductShown) {
     criteria.push({
@@ -146,10 +150,13 @@ export async function searchProduct({
   isConfiguratorProductShown,
   isGenericProductShown,
   filterDomain,
+  companyId,
+  useCompanySellable = false,
 }) {
   return createStandardSearch({
     model: 'com.axelor.apps.base.db.Product',
     criteria: createProductCriteria({
+      useCompanySellable,
       searchValue,
       productTypeSelect,
       productCategory,
@@ -160,6 +167,10 @@ export async function searchProduct({
     sortKey: 'sale_product',
     page,
     provider: 'model',
+    domain: useCompanySellable
+      ? '(SELECT sellable FROM ProductCompany productCompany WHERE productCompany.product.id = self.id AND productCompany.company.id = :companyId) IS TRUE'
+      : undefined,
+    domainContext: {companyId},
     filter: filterDomain,
   });
 }
