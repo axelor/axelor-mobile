@@ -25,6 +25,7 @@ import {
 } from '@axelor/aos-mobile-core';
 import {AutoCompleteSearch} from '@axelor/aos-mobile-ui';
 import {searchProduct} from '../../../features/productSlice';
+import {useSellableByCompany} from '../../../hooks/use-product-by-company';
 
 interface ProductSearchBarProps {
   style?: any;
@@ -49,16 +50,20 @@ const ProductSearchBar = ({
 }: ProductSearchBarProps) => {
   const I18n = useTranslator();
   const dispatch = useDispatch();
+  const isSellableByCompany = useSellableByCompany();
 
-  const {mobileSettings} = useSelector((state: any) => state.appConfig);
+  const {mobileSettings} = useSelector(state => state.appConfig);
+  const {user} = useSelector(state => state.user);
   const {loadingList, moreLoading, isListEnd, productList} = useSelector(
-    (state: any) => state.sale_product,
+    state => state.sale_product,
   );
 
   const searchProductAPI = useCallback(
     ({page = 0, searchValue}) => {
       dispatch(
         (searchProduct as any)({
+          useCompanySellable: isSellableByCompany,
+          companyId: user.activeCompany?.id,
           page,
           searchValue,
           productTypeSelect: mobileSettings?.productTypesToDisplay.map(
@@ -69,7 +74,13 @@ const ProductSearchBar = ({
         }),
       );
     },
-    [dispatch, mobileSettings],
+    [
+      dispatch,
+      isSellableByCompany,
+      mobileSettings?.isConfiguratorProductShown,
+      mobileSettings?.productTypesToDisplay,
+      user.activeCompany?.id,
+    ],
   );
 
   return (
