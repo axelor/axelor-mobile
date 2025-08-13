@@ -43,6 +43,27 @@ export const fetchCustomerDeliveryLines = createAsyncThunk(
   },
 );
 
+export const updateCustomerDeliveryLineDescription = createAsyncThunk(
+  'customerDeliveryLine/updateCustomerDeliveryLineDescription',
+  async function (data, {getState, dispatch}) {
+    return handlerApiCall({
+      fetchFunction: updateLine,
+      data,
+      action: 'Stock_SliceAction_UpdateCustomerDeliveryDescrition',
+      getState,
+      responseOptions: {showToast: true},
+    }).then(res => {
+      return handlerApiCall({
+        fetchFunction: _fetchCustomerDeliveryLine,
+        data: {customerDeliveryLineId: res?.id},
+        action: 'Stock_SliceAction_FetchCustomerDeliveryLine',
+        getState,
+        responseOptions: {isArrayResponse: false},
+      });
+    });
+  },
+);
+
 export const updateCustomerDeliveryLine = createAsyncThunk(
   'customerDeliveryLine/updateCustomerDeliveryLine',
   async function (data, {getState}) {

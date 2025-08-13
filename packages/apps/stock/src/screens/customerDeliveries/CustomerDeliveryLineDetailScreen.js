@@ -39,6 +39,7 @@ import {
   CustomerDeliveryLineTrackingNumberSelect,
   StockLocationSearchBar,
   ClipableSaleOrderLabel,
+  CustomerDeliveryLineDescription,
 } from '../../components';
 import {StockMove as StockMoveType, StockMoveLine} from '../../types';
 import {fetchCustomerDeliveryLine} from '../../features/customerDeliveryLineSlice';
@@ -207,6 +208,7 @@ const CustomerDeliveryLineDetailScreen = ({route, navigation}) => {
           title={I18n.t('Stock_LineComment')}
           data={customerDeliveryLine?.saleOrderLine?.pickingOrderInfo}
         />
+        <CustomerDeliveryLineDescription />
       </KeyboardAvoidingScrollView>
     </Screen>
   );

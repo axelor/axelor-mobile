@@ -54,6 +54,7 @@ export async function updateLine({
   version,
   realQty,
   fromStockLocationId,
+  description,
 }) {
   return getActionApi().send({
     url: `/ws/aos/stock-move-line/${stockMoveLineId}`,
@@ -62,6 +63,7 @@ export async function updateLine({
       version,
       realQty,
       fromStockLocationId,
+      description,
     },
     description: 'update customer delivery line qty',
     matchers: {
@@ -70,6 +72,7 @@ export async function updateLine({
       fields: {
         fromStockLocationId: 'fromStockLocation.id',
         realQty,
+        description,
       },
     },
   });

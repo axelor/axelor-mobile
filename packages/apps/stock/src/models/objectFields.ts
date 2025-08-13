@@ -66,6 +66,7 @@ export const stock_modelAPI: ObjectFields = {
   }),
   stock_customerDeliveryLine: schemaContructor.object({
     product: productModel,
+    description: schemaContructor.string(),
     availableStatusSelect: schemaContructor.number(),
     trackingNumber: schemaContructor.subObject('trackingNumberSeq'),
     unit: schemaContructor.subObject('name'),
