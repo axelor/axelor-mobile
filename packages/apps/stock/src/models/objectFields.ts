@@ -66,6 +66,7 @@ export const stock_modelAPI: ObjectFields = {
   }),
   stock_customerDeliveryLine: schemaContructor.object({
     product: productModel,
+    description: schemaContructor.string(),
     availableStatusSelect: schemaContructor.number(),
     trackingNumber: schemaContructor.subObject('trackingNumberSeq'),
     unit: schemaContructor.subObject('name'),
@@ -109,6 +110,7 @@ export const stock_modelAPI: ObjectFields = {
   }),
   stock_internalMoveLine: schemaContructor.object({
     product: productModel,
+    description: schemaContructor.string(),
     availableStatusSelect: schemaContructor.number(),
     trackingNumber: schemaContructor.subObject('trackingNumberSeq'),
     unit: schemaContructor.subObject('name'),
@@ -268,6 +270,7 @@ export const stock_modelAPI: ObjectFields = {
     isRealQtyModifiedByUser: schemaContructor.boolean(),
     toStockLocation: schemaContructor.subObject('name'),
     totalNetMass: schemaContructor.number(),
+    description: schemaContructor.string(),
   }),
   stock_supplierCatalog: schemaContructor.object({
     productSupplierName: schemaContructor.string(),

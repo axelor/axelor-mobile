@@ -38,6 +38,7 @@ import {
   InternalMoveLinePicker,
   InternalMoveLineTrackingNumberSelect,
   StockLocationSearchBar,
+  InternalMoveLineDescription,
 } from '../../components';
 import {fetchInternalMoveLine} from '../../features/internalMoveLineSlice';
 import {fetchProductIndicators} from '../../features/productIndicatorsSlice';
@@ -250,6 +251,7 @@ const InternalMoveLineDetailsScreen = ({navigation, route}) => {
           />
         ) : null}
         <InternalMoveLineNotes notes={internalMove.note} readonly={true} />
+        <InternalMoveLineDescription />
       </KeyboardAvoidingScrollView>
     </Screen>
   );
