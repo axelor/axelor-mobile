@@ -224,5 +224,7 @@
   "Stock_SliceAction_SplitCustomerDeliveryLine": "séparation de la ligne de livraison client",
   "Stock_SliceAction_SearchAlternativeBarcode": "recherche des codes-barres alternatifs",
   "Stock_SliceAction_UpdateCustomerDeliveryNote": "mise à jour de la note de la livraison client",
-  "Stock_SliceAction_UpdateCustomerDeliveryDescrition": "mise à jour de la descirption de la ligne livraison client"
+  "Stock_SliceAction_UpdateCustomerDeliveryLineDescription": "mise à jour de la description de la ligne livraison client",
+  "Stock_SliceAction_UpdateSupllierArrivalDescrition": "mise à jour de la description de la ligne réception fournisseur",
+  "Stock_SliceAction_UpdateInternalMoveLineDescription": "mise à jour de la description de la ligne mouvement interne"
 }

@@ -48,7 +48,7 @@ export const updateSupplierLineDescription = createAsyncThunk(
     return handlerApiCall({
       fetchFunction: updateLine,
       data,
-      action: 'Stock_SliceAction_UpdateCustomerDeliveryDescrition',
+      action: 'Stock_SliceAction_UpdateSupllierArrivalDescription',
       getState,
       responseOptions: {showToast: true},
     }).then(res => {

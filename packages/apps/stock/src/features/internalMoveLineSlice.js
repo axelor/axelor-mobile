@@ -69,7 +69,7 @@ export const updateInternalMoveLineDescription = createAsyncThunk(
     return handlerApiCall({
       fetchFunction: _updateInternalMoveLine,
       data,
-      action: 'Stock_SliceAction_UpdateCustomerDeliveryDescrition',
+      action: 'Stock_SliceAction_UpdateInternalMoveLineDescription',
       getState,
       responseOptions: {showToast: true},
     }).then(res => {
