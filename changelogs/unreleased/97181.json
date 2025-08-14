@@ -1,0 +1,5 @@
+{
+  "title": "Event: add new filter on planning view for statusSelect",
+  "type": "feat",
+  "packages": "crm"
+}
