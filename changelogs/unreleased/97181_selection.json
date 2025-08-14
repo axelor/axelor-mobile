@@ -1,0 +1,5 @@
+{
+  "title": "Event: use statusSelect values from web selection",
+  "type": "feat",
+  "packages": "crm"
+}

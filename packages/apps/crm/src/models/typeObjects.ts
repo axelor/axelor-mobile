@@ -23,6 +23,7 @@ export const crm_typeObjects: ModuleSelections = [
     modelName: 'com.axelor.apps.crm.db.Event',
     fields: {
       statusSelect: {
+        useWebContent: true,
         content: [
           {
             key: 'Planned',

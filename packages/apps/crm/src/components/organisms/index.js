@@ -25,6 +25,7 @@ export {default as DropdownGeneralView} from './DropdownGeneralView/DropdownGene
 export {default as DropdownOpportunityView} from './DropdownOpportunityView/DropdownOpportunityView';
 export {default as EditButton} from './EditButton/EditButton';
 export {default as EventPeriodInput} from './EventPeriodInput/EventPeriodInput';
+export {default as EventPlanningFilters} from './EventPlanningFilters/EventPlanningFilters';
 export {default as TourItineraryButton} from './TourItineraryButton/TourItineraryButton';
 export {default as TourLineActionCard} from './TourLineActionCard/TourLineActionCard';
 export {default as TourLineEventPopup} from './TourLineEventPopup/TourLineEventPopup';

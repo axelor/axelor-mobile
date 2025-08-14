@@ -65,7 +65,7 @@ function OperationOrderPlanningScreen({navigation}) {
   }, [OperationOrder?.statusSelect, getItemColor, plannedOperationOrderList]);
 
   const fetchItemsByMonth = useCallback(
-    date => {
+    ({date}) => {
       dispatch(
         fetchPlannedOperationOrder({date, companyId: user.activeCompany?.id}),
       );

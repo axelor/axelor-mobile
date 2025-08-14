@@ -1,0 +1,5 @@
+{
+  "title": "Events: optimize management of API calls in planning view",
+  "type": "refactor",
+  "packages": "crm"
+}
