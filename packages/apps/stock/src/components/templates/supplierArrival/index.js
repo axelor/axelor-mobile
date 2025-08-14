@@ -23,6 +23,7 @@ export {default as SupplierArrivalLineActionCard} from './SupplierArrivalLineAct
 export {default as SupplierArrivalLineButtons} from './SupplierArrivalLineButtons/SupplierArrivalLineButtons';
 export {default as SupplierArrivalLineCard} from './SupplierArrivalLineCard/SupplierArrivalLineCard';
 export {default as SupplierArrivalLineCreationButton} from './SupplierArrivalLineCreationButton/SupplierArrivalLineCreationButton';
+export {default as SupplierArrivalLineDescription} from './SupplierArrivalLineDescription/SupplierArrivalLineDescription';
 export {default as SupplierArrivalLineQuantityCard} from './SupplierArrivalLineQuantityCard/SupplierArrivalLineQuantityCard';
 export {default as SupplierArrivalMovementIndicationCard} from './SupplierArrivalMovementIndicationCard/SupplierArrivalMovementIndicationCard';
 export {default as SupplierArrivalOriginInput} from './SupplierArrivalOriginInput/SupplierArrivalOriginInput';

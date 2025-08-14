@@ -270,6 +270,7 @@ export const stock_modelAPI: ObjectFields = {
     isRealQtyModifiedByUser: schemaContructor.boolean(),
     toStockLocation: schemaContructor.subObject('name'),
     totalNetMass: schemaContructor.number(),
+    description: schemaContructor.string(),
   }),
   stock_supplierCatalog: schemaContructor.object({
     productSupplierName: schemaContructor.string(),

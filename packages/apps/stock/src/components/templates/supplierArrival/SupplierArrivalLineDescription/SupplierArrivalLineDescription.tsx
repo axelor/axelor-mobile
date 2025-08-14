@@ -24,45 +24,45 @@ import {
   useSelector,
   useTranslator,
 } from '@axelor/aos-mobile-core';
-import {updateInternalMoveLineDescription} from '../../../../features/internalMoveLineSlice';
+import {updateSupplierLineDescription} from '../../../../features/supplierArrivalLineSlice';
 
-interface InternalMoveLineDescriptionProps {
+interface SupplierArrivalLineDescriptionProps {
   titleKey?: string;
   readonly?: boolean;
 }
 
-const InternalMoveLineDescription = ({
+const SupplierArrivalLineDescription = ({
   titleKey = 'Base_Description',
   readonly = false,
-}: InternalMoveLineDescriptionProps) => {
+}: SupplierArrivalLineDescriptionProps) => {
   const I18n = useTranslator();
   const dispatch = useDispatch();
   const {readonly: isReadonly} = usePermitted({
     modelName: 'com.axelor.apps.stock.db.StockMoveLine',
   });
 
-  const {internalMoveLine} = useSelector(state => state.internalMoveLine);
+  const {supplierArrivalLine} = useSelector(state => state.supplierArrivalLine);
 
   const handleValidate = useCallback(
     value => {
       dispatch(
-        (updateInternalMoveLineDescription as any)({
-          stockMoveLineId: internalMoveLine.id,
-          version: internalMoveLine.version,
-          realQty: internalMoveLine.realQty,
+        (updateSupplierLineDescription as any)({
+          stockMoveLineId: supplierArrivalLine.id,
+          version: supplierArrivalLine.version,
+          realQty: supplierArrivalLine.realQty,
           description: value,
-          fromStockLocation: internalMoveLine.fromStockLocation,
-          unitId: internalMoveLine.unit?.id,
+          fromStockLocation: supplierArrivalLine.fromStockLocation,
+          conformity: supplierArrivalLine.conformitySelect,
         }),
       );
     },
     [
       dispatch,
-      internalMoveLine.fromStockLocation,
-      internalMoveLine.id,
-      internalMoveLine.realQty,
-      internalMoveLine.unit?.id,
-      internalMoveLine.version,
+      supplierArrivalLine.conformitySelect,
+      supplierArrivalLine.fromStockLocation,
+      supplierArrivalLine.id,
+      supplierArrivalLine.realQty,
+      supplierArrivalLine.version,
     ],
   );
 
@@ -70,7 +70,7 @@ const InternalMoveLineDescription = ({
     return (
       <NotesCard
         title={I18n.t(titleKey)}
-        data={internalMoveLine?.description}
+        data={supplierArrivalLine?.description}
       />
     );
   }
@@ -79,9 +79,9 @@ const InternalMoveLineDescription = ({
     <EditableHtmlInput
       title={I18n.t('Base_Description')}
       onValidate={handleValidate}
-      defaultValue={internalMoveLine?.description}
+      defaultValue={supplierArrivalLine?.description}
     />
   );
 };
 
-export default InternalMoveLineDescription;
+export default SupplierArrivalLineDescription;

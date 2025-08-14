@@ -19,6 +19,7 @@
 import React, {useCallback, useMemo, useState} from 'react';
 import {View, StyleSheet} from 'react-native';
 import {
+  FormHtmlInput,
   HeaderContainer,
   KeyboardAvoidingScrollView,
   Picker,
@@ -66,6 +67,7 @@ const SupplierArrivalLineCreationScreen = ({route, navigation}) => {
   const [_product, setProduct] = useState(null);
   const [trackingNumber, setTrackingNumber] = useState(null);
   const [realQty, setRealQty] = useState(0);
+  const [description, setDescription] = useState('');
   const [toStockLocation, setToStockLocation] = useState(
     supplierArrival.toStockLocation,
   );
@@ -142,10 +144,12 @@ const SupplierArrivalLineCreationScreen = ({route, navigation}) => {
         setProduct(null);
         setTrackingNumber(null);
         setRealQty(0);
+        setDescription('');
       }
 
       if (_step === CREATION_STEP.validation) {
         setRealQty(0);
+        setDescription('');
       }
     },
     [],
@@ -191,6 +195,7 @@ const SupplierArrivalLineCreationScreen = ({route, navigation}) => {
           toStockLocation={toStockLocation}
           realQty={realQty}
           conformity={conformity}
+          description={description}
           visible={_product != null}
         />
       }>
@@ -255,6 +260,10 @@ const SupplierArrivalLineCreationScreen = ({route, navigation}) => {
                   StockMove?.statusSelect.Realized
                 }
                 isScrollViewContainer={true}
+              />
+              <FormHtmlInput
+                defaultValue={description}
+                onChange={setDescription}
               />
             </>
           ) : null}
