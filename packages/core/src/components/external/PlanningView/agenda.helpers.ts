@@ -96,9 +96,12 @@ function formatDate(date: Date) {
     .padStart(2, '0')}-${date.getDate().toString().padStart(2, '0')}`;
 }
 
-function addDays(originDate, days) {
+function addDays(originDate: string | Date, days: number, resetTime = false) {
   var date = new Date(originDate);
   date.setDate(date.getDate() + days);
+
+  if (resetTime) date.setHours(23, 59, 59, 999);
+
   return date;
 }
 
@@ -132,7 +135,7 @@ function generateAgendaItems(monthsAroundDate): AgendaSchedule {
 
   dateArray.forEach((date: Date) => {
     if (isStartOfMonth(date)) {
-      const _d = addDays(date, -1);
+      const _d = addDays(date, -1, true);
 
       agendaItems[formatDate(_d)] = [
         {
@@ -160,7 +163,10 @@ export function createAgendaSchedule(
 
   agendaItems.forEach((item: AgendaEntry) => {
     const itemDate = formatDate(new Date(item.day));
-    return (agendaSchedule[itemDate] = [...agendaSchedule[itemDate], item]);
+    return (agendaSchedule[itemDate] = [
+      ...agendaSchedule[itemDate],
+      item,
+    ]).sort((a, b) => new Date(a.day).getTime() - new Date(b.day).getTime());
   });
 
   return agendaSchedule;

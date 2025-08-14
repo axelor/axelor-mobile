@@ -114,9 +114,6 @@ export const createEvent = createAsyncThunk(
       if (data?.event?.isLead) {
         dispatch(fetchLeadById({leadId: data?.event?.eventLead?.id}));
       }
-      if (data?.eventPlanningDate) {
-        dispatch(fetchPlannedEvent({date: new Date(data?.eventPlanningDate)}));
-      }
       return res;
     });
   },
@@ -162,6 +159,12 @@ const eventSlice = createSlice({
   name: 'event',
   initialState,
   extraReducers: builder => {
+    generateInifiniteScrollCases(builder, fetchPlannedEvent, {
+      loading: 'loadingEventList',
+      moreLoading: 'moreLoading',
+      isListEnd: 'isListEnd',
+      list: 'eventList',
+    });
     builder.addCase(searchEventById.pending, state => {
       state.loading = true;
     });
@@ -182,12 +185,6 @@ const eventSlice = createSlice({
     builder.addCase(fetchContactEventById.fulfilled, (state, action) => {
       state.loading = false;
       state.listEventContact = action.payload;
-    });
-    generateInifiniteScrollCases(builder, fetchPlannedEvent, {
-      loading: 'loadingEventList',
-      moreLoading: 'moreLoading',
-      isListEnd: 'isListEnd',
-      list: 'eventList',
     });
     builder.addCase(fetchEventById.pending, (state, action) => {
       state.loadingEvent = true;
