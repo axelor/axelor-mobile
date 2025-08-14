@@ -23,6 +23,7 @@ export {
   fetchCustomerDeliveryLines,
   splitCustomerDeliveryLine,
   updateCustomerDeliveryLine,
+  updateCustomerDeliveryLineDescription,
 } from './customerDeliveryLineSlice';
 export {
   addNewLine as addNewCustomerDeliveryLine,
@@ -36,6 +37,7 @@ export {
   fetchInternalMoveLine,
   fetchInternalMoveLines,
   updateInternalMoveLine,
+  updateInternalMoveLineDescription,
 } from './internalMoveLineSlice';
 export {
   createInternalMove,
@@ -94,6 +96,7 @@ export {
   fetchSupplierArrivalLines,
   splitSupplierArrivalLine,
   updateSupplierArrivalLine,
+  updateSupplierLineDescription,
 } from './supplierArrivalLineSlice';
 export {
   addNewLine as addNewSupplierArrivalLine,
