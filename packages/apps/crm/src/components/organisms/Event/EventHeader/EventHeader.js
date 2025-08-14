@@ -16,54 +16,57 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import React from 'react';
+import React, {useCallback} from 'react';
 import {StyleSheet, View} from 'react-native';
-import {Text, Badge, useThemeColor} from '@axelor/aos-mobile-ui';
+import {Text, Badge} from '@axelor/aos-mobile-ui';
 import {useSelector, useTypes, useTypeHelpers} from '@axelor/aos-mobile-core';
 
 const EventHeader = ({}) => {
-  const Colors = useThemeColor();
-  const {event} = useSelector(state => state.event);
   const {Event} = useTypes();
-  const {getItemTitle} = useTypeHelpers();
+  const {getItemTitle, getItemColor} = useTypeHelpers();
+
+  const {event} = useSelector(state => state.event);
+
+  const renderBadge = useCallback(
+    fieldName => {
+      if (event?.[fieldName] != null) {
+        return (
+          <Badge
+            title={getItemTitle(Event?.[fieldName], event?.[fieldName])}
+            color={getItemColor(Event?.[fieldName], event?.[fieldName])}
+          />
+        );
+      }
+
+      return null;
+    },
+    [Event, event, getItemColor, getItemTitle],
+  );
 
   return (
-    <View style={styles.headerContainer}>
-      <View style={styles.halfContainer}>
-        <Text style={styles.bold} numberOfLines={2}>
-          {event.subject}
-        </Text>
-      </View>
-      <View style={styles.halfContainer}>
-        {event.statusSelect != null && (
-          <Badge
-            title={getItemTitle(Event?.statusSelect, event.statusSelect)}
-          />
-        )}
-        {event.typeSelect != null && (
-          <Badge
-            title={getItemTitle(Event?.typeSelect, event.typeSelect)}
-            color={Colors.plannedColor}
-          />
-        )}
+    <View style={styles.container}>
+      <Text style={styles.text} numberOfLines={5} writingType="title">
+        {event.subject}
+      </Text>
+      <View>
+        {renderBadge('statusSelect')}
+        {renderBadge('typeSelect')}
       </View>
     </View>
   );
 };
 
 const styles = StyleSheet.create({
-  headerContainer: {
+  container: {
+    alignSelf: 'center',
     flexDirection: 'row',
-    justifyContent: 'space-evenly',
+    justifyContent: 'space-between',
     alignItems: 'center',
-    padding: 10,
+    width: '95%',
+    gap: 3,
   },
-  halfContainer: {
-    flexDirection: 'row',
-    width: '50%',
-  },
-  bold: {
-    fontWeight: 'bold',
+  text: {
+    flex: 1,
   },
 });
 
