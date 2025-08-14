@@ -17,7 +17,6 @@
  */
 
 import React, {useCallback, useEffect, useMemo, useState} from 'react';
-import {StyleSheet, View} from 'react-native';
 import {Screen, HeaderContainer} from '@axelor/aos-mobile-ui';
 import {
   filterChip,
@@ -31,11 +30,7 @@ import {
   useTypeHelpers,
 } from '@axelor/aos-mobile-core';
 import {fetchPlannedEvent} from '../../features/eventSlice';
-import {
-  EventCategoryPicker,
-  EventSearchBar,
-  PlanningEventCard,
-} from '../../components';
+import {EventPlanningFilters, PlanningEventCard} from '../../components';
 
 function EventPlanningScreen({navigation}) {
   const dispatch = useDispatch();
@@ -49,12 +44,18 @@ function EventPlanningScreen({navigation}) {
 
   const [searchValue, setSearchValue] = useState(null);
   const [selectedTypes, setSelectedTypes] = useState([]);
+  const [selectedStatus, setSelectedStatus] = useState([]);
   const [planningDate, setPlanningDate] = useState();
   const [assigned, setAssigned] = useState(true);
 
   const filterOnStatus = useCallback(
-    list => filterChip(list, selectedTypes, 'typeSelect'),
-    [selectedTypes],
+    list =>
+      filterChip(
+        filterChip(list, selectedTypes, 'typeSelect'),
+        selectedStatus,
+        'statusSelect',
+      ),
+    [selectedStatus, selectedTypes],
   );
 
   const filteredList = useMemo(() => {
@@ -168,15 +169,12 @@ function EventPlanningScreen({navigation}) {
       <HeaderContainer
         expandableFilter={false}
         fixedItems={
-          <View style={styles.headerContainer}>
-            <EventCategoryPicker onChange={setSelectedTypes} />
-            <EventSearchBar
-              onChange={setSearchValue}
-              showDetailsPopup={false}
-              oneFilter={true}
-              fetchData={fetchData}
-            />
-          </View>
+          <EventPlanningFilters
+            setSearchValue={setSearchValue}
+            setSelectedStatus={setSelectedStatus}
+            setSelectedTypes={setSelectedTypes}
+            fetchData={fetchData}
+          />
         }
       />
       <PlanningView
@@ -191,11 +189,5 @@ function EventPlanningScreen({navigation}) {
     </Screen>
   );
 }
-
-const styles = StyleSheet.create({
-  headerContainer: {
-    alignItems: 'center',
-  },
-});
 
 export default EventPlanningScreen;
