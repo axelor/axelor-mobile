@@ -26,53 +26,59 @@ import {
   getSearchCriterias,
 } from '@axelor/aos-mobile-core';
 
-const createEventCriteria = (searchValue, date) => {
-  const startDate = getPreviousMonth(date).toISOString();
-  const endDate = getNextMonth(date).toISOString();
+const createEventCriteria = ({searchValue, date, isAssigned, userId}) => {
+  const criteria = [getSearchCriterias('crm_event', searchValue)];
 
-  return [
-    {
-      operator: 'and',
+  if (date != null) {
+    const startDate = getPreviousMonth(date).toISOString();
+    const endDate = getNextMonth(date).toISOString();
+
+    criteria.push({
+      operator: 'or',
       criteria: [
         {
-          operator: 'or',
+          operator: 'and',
           criteria: [
             {
-              operator: 'and',
-              criteria: [
-                {
-                  fieldName: 'startDateTime',
-                  operator: '>=',
-                  value: startDate,
-                },
-                {
-                  fieldName: 'startDateTime',
-                  operator: '<=',
-                  value: endDate,
-                },
-              ],
+              fieldName: 'startDateTime',
+              operator: '>=',
+              value: startDate,
             },
             {
-              operator: 'and',
-              criteria: [
-                {
-                  fieldName: 'endDateTime',
-                  operator: '>=',
-                  value: startDate,
-                },
-                {
-                  fieldName: 'startDateTime',
-                  operator: '<=',
-                  value: endDate,
-                },
-              ],
+              fieldName: 'startDateTime',
+              operator: '<=',
+              value: endDate,
+            },
+          ],
+        },
+        {
+          operator: 'and',
+          criteria: [
+            {
+              fieldName: 'endDateTime',
+              operator: '>=',
+              value: startDate,
+            },
+            {
+              fieldName: 'startDateTime',
+              operator: '<=',
+              value: endDate,
             },
           ],
         },
       ],
-    },
-    getSearchCriterias('crm_event', searchValue),
-  ];
+    });
+  }
+
+  if (isAssigned && userId) {
+    criteria.push({
+      fieldName: 'user.id',
+      operator: '=',
+      value: userId,
+    });
+  }
+
+  return criteria;
 };
 
 export async function searchEventsByIds(idList) {
@@ -126,10 +132,15 @@ export async function contactEventById(id) {
   });
 }
 
-export async function getPlannedEvent({date, searchValue = null}) {
+export async function getPlannedEvent({
+  searchValue = null,
+  date,
+  isAssigned,
+  userId,
+}) {
   return createStandardSearch({
     model: 'com.axelor.apps.crm.db.Event',
-    criteria: createEventCriteria(searchValue, date),
+    criteria: createEventCriteria({searchValue, date, isAssigned, userId}),
     fieldKey: 'crm_event',
     sortKey: 'crm_event',
     numberElementsByPage: null,
