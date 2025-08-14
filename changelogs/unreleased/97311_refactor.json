@@ -1,0 +1,5 @@
+{
+  "title": "PlanningView: optimize management of API calls on focus and assignation",
+  "type": "refactor",
+  "packages": "core"
+}

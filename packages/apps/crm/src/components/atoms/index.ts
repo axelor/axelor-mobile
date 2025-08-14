@@ -16,4 +16,5 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+export {default as EventCategoryPicker} from './EventCategoryPicker/EventCategoryPicker';
 export {default as PartnerTypeRadioSelect} from './PartnerTypeRadioSelect/PartnerTypeRadioSelect';
