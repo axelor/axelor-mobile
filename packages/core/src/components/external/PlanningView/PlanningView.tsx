@@ -159,7 +159,7 @@ const PlanningView = ({
   };
 
   const handleLoadItemsForMonth = useCallback((date: DateData) => {
-    setFetchDate(new Date(date.year, date.month, date.day));
+    setFetchDate(new Date(date.dateString));
   }, []);
 
   const loadItemsWithAPI = useCallback(() => {
@@ -170,7 +170,12 @@ const PlanningView = ({
     if (isFocused) loadItemsWithAPI();
   }, [isFocused, loadItemsWithAPI]);
 
+  const handleMonthChange = useCallback((months: DateData[]) => {
+    setFetchDate(new Date(months?.[0]?.dateString));
+  }, []);
+
   const todayBtnOnPress = useCallback(() => {
+    setFetchDate(new Date());
     setCurrentDate(new Date().toISOString());
   }, []);
 
@@ -178,6 +183,7 @@ const PlanningView = ({
     setCurrentDate(_current => {
       var firstDay = new Date(_current);
       var nextWeek = new Date(firstDay.getTime() + 7 * 24 * 60 * 60 * 1000);
+      setFetchDate(nextWeek);
 
       return nextWeek.toISOString();
     });
@@ -187,6 +193,7 @@ const PlanningView = ({
     setCurrentDate(_current => {
       var firstDay = new Date(_current);
       var lastWeek = new Date(firstDay.getTime() - 7 * 24 * 60 * 60 * 1000);
+      setFetchDate(lastWeek);
 
       return lastWeek.toISOString();
     });
@@ -228,6 +235,7 @@ const PlanningView = ({
       <Agenda
         onDayPress={date => setCurrentDate(date.dateString)}
         selected={currentDate}
+        onVisibleMonthsChange={handleMonthChange}
         items={agendaItems}
         markedDates={markedDots}
         firstDay={1}

@@ -1,0 +1,5 @@
+{
+  "title": "PlanningView: load items of visible month when scrolling up or down the agenda months",
+  "type": "fix",
+  "packages": "core"
+}
