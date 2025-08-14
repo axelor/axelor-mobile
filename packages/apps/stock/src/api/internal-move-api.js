@@ -143,6 +143,7 @@ export async function createInternalStockMove({
         realQty: _item.realQty,
         fromStockLocationId: _item.fromStockLocation?.id,
         toStockLocationId: _item.toStockLocation?.id,
+        description: _item.description,
       })),
     },
     description: 'create internal move',

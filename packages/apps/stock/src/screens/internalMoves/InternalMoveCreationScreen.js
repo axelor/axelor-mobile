@@ -19,6 +19,7 @@
 import React, {useCallback, useEffect, useMemo, useState} from 'react';
 import {useTranslator} from '@axelor/aos-mobile-core';
 import {
+  FormHtmlInput,
   KeyboardAvoidingScrollView,
   Screen,
   ViewAllEditList,
@@ -49,6 +50,7 @@ const InternalMoveCreationScreen = () => {
   const [newLine, setNewLine] = useState(null);
   const [toStockLocation, setToStockLocation] = useState(null);
   const [movedQty, setMovedQty] = useState(0);
+  const [description, setDescription] = useState('');
 
   const handleAddLine = () => {
     setLines(prevLines => {
@@ -58,6 +60,7 @@ const InternalMoveCreationScreen = () => {
       if (indexLine >= 0) {
         if (isEditionMode) {
           newLines[indexLine].realQty = movedQty;
+          newLines[indexLine].description = description;
         } else {
           newLines[indexLine].realQty += movedQty;
         }
@@ -69,6 +72,7 @@ const InternalMoveCreationScreen = () => {
           currentQty: newLine?.currentQty,
           unit: newLine?.product?.unit,
           id: newLine?.id,
+          description: description,
         });
       }
 
@@ -80,6 +84,7 @@ const InternalMoveCreationScreen = () => {
   const handleEditLine = line => {
     setNewLine(line);
     setMovedQty(line.realQty);
+    setDescription(line.description || '');
     setCurrentStep(InternalMoveCreation.step.validateLine);
   };
 
@@ -130,6 +135,7 @@ const InternalMoveCreationScreen = () => {
       if (_step === InternalMoveCreation.step.addLine) {
         setMovedQty(0);
         setNewLine(null);
+        setDescription('');
       }
 
       if (_step === InternalMoveCreation.step.toStockLocation) {
@@ -214,15 +220,22 @@ const InternalMoveCreationScreen = () => {
           />
         )}
         {currentStep === InternalMoveCreation.step.validateLine && (
-          <InternalMoveCreationQuantityCard
-            movedQty={movedQty}
-            setMovedQty={setMovedQty}
-            cancelMove={() => handleProductChange(null)}
-            productName={newLine?.product?.name}
-            trackingNumber={newLine?.trackingNumber?.trackingNumberSeq}
-            availableQty={newLine?.currentQty}
-            productUnit={newLine?.product?.unit?.name}
-          />
+          <>
+            <InternalMoveCreationQuantityCard
+              movedQty={movedQty}
+              setMovedQty={setMovedQty}
+              cancelMove={() => handleProductChange(null)}
+              productName={newLine?.product?.name}
+              trackingNumber={newLine?.trackingNumber?.trackingNumberSeq}
+              availableQty={newLine?.currentQty}
+              productUnit={newLine?.product?.unit?.name}
+              description={description}
+            />
+            <FormHtmlInput
+              defaultValue={description}
+              onChange={setDescription}
+            />
+          </>
         )}
         {currentStep >= InternalMoveCreation.step.toStockLocation && (
           <StockLocationSearchBar
