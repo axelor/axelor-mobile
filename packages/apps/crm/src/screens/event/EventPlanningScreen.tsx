@@ -50,6 +50,7 @@ function EventPlanningScreen({navigation}) {
   const [searchValue, setSearchValue] = useState(null);
   const [selectedTypes, setSelectedTypes] = useState([]);
   const [planningDate, setPlanningDate] = useState();
+  const [assigned, setAssigned] = useState(true);
 
   const filterOnStatus = useCallback(
     list => filterChip(list, selectedTypes, 'typeSelect'),
@@ -84,6 +85,7 @@ function EventPlanningScreen({navigation}) {
   const fetchItemsByMonth = useCallback(
     ({date, isAssigned}) => {
       setPlanningDate(date?.toDateString());
+      setAssigned(isAssigned);
       dispatch(
         (fetchPlannedEvent as any)({date, isAssigned, userId, searchValue}),
       );
@@ -156,6 +158,11 @@ function EventPlanningScreen({navigation}) {
     });
   }, [I18n, canCreate, planningDate, navigation]);
 
+  const fetchData = useMemo(
+    () => ({date: planningDate, isAssigned: assigned, userId}),
+    [assigned, planningDate, userId],
+  );
+
   return (
     <Screen removeSpaceOnTop={true}>
       <HeaderContainer
@@ -167,6 +174,7 @@ function EventPlanningScreen({navigation}) {
               onChange={setSearchValue}
               showDetailsPopup={false}
               oneFilter={true}
+              fetchData={fetchData}
             />
           </View>
         }

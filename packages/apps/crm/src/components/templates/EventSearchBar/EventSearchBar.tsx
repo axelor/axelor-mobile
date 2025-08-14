@@ -35,6 +35,7 @@ interface EventSearchBarProps {
   navigate?: boolean;
   oneFilter?: boolean;
   showDetailsPopup?: boolean;
+  fetchData?: Object;
 }
 
 const EventSearchBar = ({
@@ -43,9 +44,10 @@ const EventSearchBar = ({
   defaultValue,
   onChange,
   showDetailsPopup = true,
-  showTitle = true,
+  showTitle = false,
   navigate = false,
   oneFilter = false,
+  fetchData,
 }: EventSearchBarProps) => {
   const I18n = useTranslator();
   const dispatch = useDispatch();
@@ -56,9 +58,11 @@ const EventSearchBar = ({
 
   const fetchEventSearchBarAPI = useCallback(
     ({page = 0, searchValue}) => {
-      dispatch((fetchPlannedEvent as any)({page, searchValue}));
+      dispatch(
+        (fetchPlannedEvent as any)({...(fetchData ?? {}), page, searchValue}),
+      );
     },
-    [dispatch],
+    [dispatch, fetchData],
   );
 
   return (
