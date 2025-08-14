@@ -42,6 +42,27 @@ export const fetchSupplierArrivalLines = createAsyncThunk(
   },
 );
 
+export const updateSupplierLineDescription = createAsyncThunk(
+  'supplierLine/updateSupplierLineDescription',
+  async function (data, {getState}) {
+    return handlerApiCall({
+      fetchFunction: updateLine,
+      data,
+      action: 'Stock_SliceAction_UpdateCustomerDeliveryDescrition',
+      getState,
+      responseOptions: {showToast: true},
+    }).then(res => {
+      return handlerApiCall({
+        fetchFunction: _fetchSupplierArrivalLine,
+        data: {supplierArrivalLineId: res?.id},
+        action: 'Stock_SliceAction_FetchSupplierArrivalLine',
+        getState,
+        responseOptions: {isArrayResponse: false},
+      });
+    });
+  },
+);
+
 export const updateSupplierArrivalLine = createAsyncThunk(
   'supplierLine/updateSupplierArrivalLine',
   async function (data, {getState}) {

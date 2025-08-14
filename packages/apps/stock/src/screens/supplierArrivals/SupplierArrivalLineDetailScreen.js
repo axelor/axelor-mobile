@@ -42,6 +42,7 @@ import {
   StockLocationSearchBar,
   SupplierArrivalTrackingNumberSelect,
   SupplierArrivalOriginInput,
+  SupplierArrivalLineDescription,
 } from '../../components';
 import {fetchProductForSupplier} from '../../features/supplierCatalogSlice';
 import {fetchSupplierArrivalLine} from '../../features/supplierArrivalLineSlice';
@@ -285,6 +286,7 @@ const SupplierArrivalLineDetailScreen = ({route, navigation}) => {
           }
           isScrollViewContainer={true}
         />
+        <SupplierArrivalLineDescription />
       </KeyboardAvoidingScrollView>
     </Screen>
   );

@@ -32,6 +32,7 @@ const SupplierArrivalLineCreationButton = ({
   trackingNumber,
   conformity,
   toStockLocation,
+  description,
   visible = true,
 }) => {
   const I18n = useTranslator();
@@ -56,18 +57,22 @@ const SupplierArrivalLineCreationButton = ({
         realQty: realQty,
         conformity: conformity?.id,
         toStockLocationId: toStockLocation?.id,
+        description,
       }),
     );
 
     navigateBackToDetails();
   }, [
     dispatch,
-    supplierArrival,
-    product,
+    supplierArrival.id,
+    supplierArrival.version,
+    product.id,
+    product.unit?.id,
     trackingNumber,
     realQty,
-    conformity,
-    toStockLocation,
+    conformity?.id,
+    toStockLocation?.id,
+    description,
     navigateBackToDetails,
   ]);
 
