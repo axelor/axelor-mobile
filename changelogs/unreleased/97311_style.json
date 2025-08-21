@@ -1,5 +1,0 @@
-{
-  "title": "PlanningView: reduce size of hours to make it fit on one line",
-  "type": "fix",
-  "packages": "core"
-}

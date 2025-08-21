@@ -3,6 +3,37 @@ title: 8.2.0
 tags: Changelog
 ---
 
+## [8.2.19] (2025-08-21)
+
+### @axelor/aos-mobile-core
+
+#### Changes
+
+- PlanningView: optimize management of API calls on focus and assignation
+
+#### Fixes
+
+- PlanningView: load items of visible month when scrolling up or down the agenda months
+- PlanningView: sort items to make month separator appear at the end
+- PlanningView: reduce size of hours to make it fit on one line
+- Modules checker: filter modules on enabled ones only
+
+### @axelor/aos-mobile-sale
+
+#### Fixes
+
+- Products: manage sellable configuration by company for sale order creation
+
+### @axelor/aos-mobile-crm
+
+#### Changes
+
+- Events: optimize management of API calls in planning view
+
+#### Fixes
+
+- Clients: resolve issue on dropdown items duplicated keys
+
 ## [8.2.18] (2025-07-31)
 
 ### @axelor/aos-mobile-core
@@ -742,6 +773,7 @@ This package is linked with the @axelor/aos-mobile-hr to manage time logging.
 
 - Supplier arrival: add possibility to fill origin when creating or selecting tracking number
 
+[8.2.19]: https://github.com/axelor/axelor-mobile/compare/8.2.18...8.2.19
 [8.2.18]: https://github.com/axelor/axelor-mobile/compare/8.2.17...8.2.18
 [8.2.17]: https://github.com/axelor/axelor-mobile/compare/8.2.16...8.2.17
 [8.2.16]: https://github.com/axelor/axelor-mobile/compare/8.2.15...8.2.16
