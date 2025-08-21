@@ -17,4 +17,5 @@
  */
 
 export {default as EventCategoryPicker} from './EventCategoryPicker/EventCategoryPicker';
+export {default as EventStatusMultiPicker} from './EventStatusMultiPicker/EventStatusMultiPicker';
 export {default as PartnerTypeRadioSelect} from './PartnerTypeRadioSelect/PartnerTypeRadioSelect';
