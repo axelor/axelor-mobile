@@ -3,6 +3,45 @@ title: 8.4.0
 tags: Changelog
 ---
 
+## [8.4.4] (2025-08-21)
+
+### @axelor/aos-mobile-core
+
+#### Changes
+
+- PlanningView: optimize management of API calls on focus and assignation
+
+#### Fixes
+
+- PlanningView: load items of visible month when scrolling up or down the agenda months
+- PlanningView: sort items to make month separator appear at the end
+- PlanningView: reduce size of hours to make it fit on one line
+- Modules checker: filter modules on enabled ones only
+- Keyboard visibility: remove typo in translation
+- DoubleScannerSearchBar: make props sliceFunctionBarCodeData and onFetchDataAction optional
+
+### @axelor/aos-mobile-ui
+
+#### Fixes
+
+- Theme: catch erros when mapping colors
+
+### @axelor/aos-mobile-sale
+
+#### Fixes
+
+- Products: manage sellable configuration by company for sale order creation
+
+### @axelor/aos-mobile-crm
+
+#### Changes
+
+- Events: optimize management of API calls in planning view
+
+#### Fixes
+
+- Clients: resolve issue on dropdown items duplicated keys
+
 ## [8.4.3] (2025-07-31)
 
 ### @axelor/aos-mobile-core
@@ -263,6 +302,7 @@ This version add a new part of the Quality package, user can now manage quality 
 
 - ErrorBoundary: modify fallback screen management to manage maintenance error type
 
+[8.4.4]: https://github.com/axelor/axelor-mobile/compare/8.4.3...8.4.4
 [8.4.3]: https://github.com/axelor/axelor-mobile/compare/8.4.2...8.4.3
 [8.4.2]: https://github.com/axelor/axelor-mobile/compare/8.4.1...8.4.2
 [8.4.1]: https://github.com/axelor/axelor-mobile/compare/8.4.0...8.4.1

@@ -1,5 +1,0 @@
-{
-  "title": "Clients: resolve issue on dropdown items duplicated keys",
-  "type": "fix",
-  "packages": "crm"
-}
