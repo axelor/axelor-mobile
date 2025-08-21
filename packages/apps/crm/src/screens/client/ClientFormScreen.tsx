@@ -17,7 +17,6 @@
  */
 
 import React, {useCallback, useEffect, useMemo} from 'react';
-import {DeviceEventEmitter} from 'react-native';
 import {
   useSelector,
   FormView,
@@ -64,7 +63,6 @@ const ClientFormScreen = ({navigation, route}) => {
       dispatch(sliceFct(objectState)).then(res => {
         const _recordId = res?.payload?.id;
         if (_recordId) {
-          DeviceEventEmitter.emit('client.creation', {id: _recordId});
           navigation.replace('ClientDetailsScreen', {idClient: _recordId});
         } else {
           navigation.pop();

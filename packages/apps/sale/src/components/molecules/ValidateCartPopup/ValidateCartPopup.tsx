@@ -33,6 +33,8 @@ import {
 import {updateCart} from '../../../features/cartSlice';
 import {CustomerSearchBar} from '../../organisms';
 
+const CLIENT_CREATION_EVENT = 'sale.client-creation';
+
 interface ValidateCartPopupProps {
   style?: any;
   visible: boolean;
@@ -51,8 +53,8 @@ const ValidateCartPopup = ({
   const navigation = useNavigation();
   const dispatch: any = useDispatch();
 
-  const {activeCart} = useSelector((state: any) => state.sale_cart);
-  const {userId} = useSelector((state: any) => state.auth);
+  const {activeCart} = useSelector(state => state.sale_cart);
+  const {userId} = useSelector(state => state.auth);
 
   const [customerSelected, setCustomerSelected] = useState(null);
 
@@ -74,11 +76,17 @@ const ValidateCartPopup = ({
     [activeCart?.id, activeCart?.version, dispatch, handleValidate, userId],
   );
 
+  const handleClientCreation = useCallback(() => {
+    navigation.navigate('ClientSaleFormScreen', {
+      eventName: CLIENT_CREATION_EVENT,
+    });
+  }, [navigation]);
+
   useEffect(() => {
-    DeviceEventEmitter.addListener('client.creation', handleLinkCustomer);
+    DeviceEventEmitter.addListener(CLIENT_CREATION_EVENT, handleLinkCustomer);
 
     return () => {
-      DeviceEventEmitter.removeAllListeners('client.creation');
+      DeviceEventEmitter.removeAllListeners(CLIENT_CREATION_EVENT);
     };
   }, [handleLinkCustomer]);
 
@@ -87,11 +95,7 @@ const ValidateCartPopup = ({
       title={I18n.t('Sale_LinkQuotationToCustomer')}
       style={style}
       visible={visible}
-      cancelButtonConfig={{
-        title: null,
-        onPress: onClose,
-        width: 50,
-      }}
+      cancelButtonConfig={{title: null, onPress: onClose, width: 50}}
       confirmButtonConfig={{
         title: null,
         onPress: () => handleLinkCustomer(customerSelected),
@@ -106,9 +110,7 @@ const ValidateCartPopup = ({
           defaultValue={customerSelected}
           companyId={activeCart?.company?.id}
         />
-        <TouchableOpacity
-          onPress={() => navigation.navigate('ClientFormScreen')}
-          style={styles.labelText}>
+        <TouchableOpacity onPress={handleClientCreation}>
           <LabelText
             iconName="plus-lg"
             color={Colors.primaryColor.background}
@@ -125,9 +127,7 @@ const styles = StyleSheet.create({
   container: {
     flexDirection: 'column',
     width: '100%',
-  },
-  labelText: {
-    marginTop: 5,
+    gap: 5,
   },
   searchBar: {
     width: '100%',
