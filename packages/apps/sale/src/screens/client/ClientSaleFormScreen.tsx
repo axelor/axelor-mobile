@@ -17,10 +17,12 @@
  */
 
 import React, {useCallback, useMemo} from 'react';
+import {DeviceEventEmitter} from 'react-native';
 import {FormView, useTypes} from '@axelor/aos-mobile-core';
 import {createCustomer} from '../../features/customerSlice';
 
-const ClientSaleFormScreen = ({navigation}) => {
+const ClientSaleFormScreen = ({navigation, route}) => {
+  const {eventName} = route?.params ?? {};
   const {Partner} = useTypes();
 
   const creationDefaultValue = useMemo(
@@ -36,13 +38,18 @@ const ClientSaleFormScreen = ({navigation}) => {
       dispatch((createCustomer as any)(objectState)).then(res => {
         const _recordId = res?.payload?.id;
         if (_recordId) {
-          navigation.replace('ClientSaleDetailsScreen', {
-            customerId: _recordId,
-          });
+          if (eventName) {
+            DeviceEventEmitter.emit(eventName, {id: _recordId});
+            navigation.pop();
+          } else {
+            navigation.replace('ClientSaleDetailsScreen', {
+              customerId: _recordId,
+            });
+          }
         }
       });
     },
-    [navigation],
+    [eventName, navigation],
   );
 
   return (

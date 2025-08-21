@@ -140,6 +140,7 @@
   "Sale_Delete": "Supprimer",
   "Sale_NoCartAvailable": "Aucun panier disponible",
   "Sale_LinkQuotationToCustomer": "Lier le devis au client",
+  "Sale_CreateNewCustomer": "Créer un nouveau client",
   "Sale_ProductUnavailable": "Ce produit n'est pas disponible",
   "Sale_LinkedQuotationsAndOrders": "Devis et commandes associés",
   "Sale_NoSaleOrderOrQuotation": "Pas de commande de vente ni devis",
