@@ -3,6 +3,45 @@ title: 8.3.0
 tags: Changelog
 ---
 
+## [8.3.11] (2025-08-21)
+
+### @axelor/aos-mobile-core
+
+#### Changes
+
+- PlanningView: optimize management of API calls on focus and assignation
+
+#### Fixes
+
+- PlanningView: load items of visible month when scrolling up or down the agenda months
+- PlanningView: sort items to make month separator appear at the end
+- PlanningView: reduce size of hours to make it fit on one line
+- Modules checker: filter modules on enabled ones only
+- Keyboard visibility: remove typo in translation
+- DoubleScannerSearchBar: make props sliceFunctionBarCodeData and onFetchDataAction optional
+
+### @axelor/aos-mobile-ui
+
+#### Fixes
+
+- Theme: catch erros when mapping colors
+
+### @axelor/aos-mobile-sale
+
+#### Fixes
+
+- Products: manage sellable configuration by company for sale order creation
+
+### @axelor/aos-mobile-crm
+
+#### Changes
+
+- Events: optimize management of API calls in planning view
+
+#### Fixes
+
+- Clients: resolve issue on dropdown items duplicated keys
+
 ## [8.3.10] (2025-07-31)
 
 ### @axelor/aos-mobile-core
@@ -394,6 +433,7 @@ This version add a new part of the HR package, user can now manage leave request
 
 - Header actions: remove use of attachedFileScreenTitle
 
+[8.3.11]: https://github.com/axelor/axelor-mobile/compare/8.3.10...8.3.11
 [8.3.10]: https://github.com/axelor/axelor-mobile/compare/8.3.9...8.3.10
 [8.3.9]: https://github.com/axelor/axelor-mobile/compare/8.3.8...8.3.9
 [8.3.8]: https://github.com/axelor/axelor-mobile/compare/8.3.7...8.3.8

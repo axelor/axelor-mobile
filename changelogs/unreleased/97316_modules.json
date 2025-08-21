@@ -1,5 +1,0 @@
-{
-  "title": "Modules checker: filter modules on enabled ones only",
-  "type": "fix",
-  "packages": "core"
-}
