@@ -23,7 +23,6 @@ export {
   fetchCustomerDeliveryLines,
   splitCustomerDeliveryLine,
   updateCustomerDeliveryLine,
-  updateCustomerDeliveryLineDescription,
 } from './customerDeliveryLineSlice';
 export {
   addNewLine as addNewCustomerDeliveryLine,

@@ -76,6 +76,7 @@ const CustomerDeliveryLineDetailScreen = ({route, navigation}) => {
 
   const [fromStockLocation, setFromStockLocation] = useState();
   const [realQty, setRealQty] = useState(0);
+  const [description, setDescription] = useState('');
 
   const trackingNumber = useMemo(
     () => customerDeliveryLine?.trackingNumber ?? route.params.trackingNumber,
@@ -133,6 +134,7 @@ const CustomerDeliveryLineDetailScreen = ({route, navigation}) => {
           realQty={realQty}
           fromStockLocation={fromStockLocation}
           visible={!readonly && !isTrackingNumberSelectVisible}
+          description={description}
         />
       }
       loading={loadingCustomerDeliveryLine}>
@@ -208,7 +210,10 @@ const CustomerDeliveryLineDetailScreen = ({route, navigation}) => {
           title={I18n.t('Stock_LineComment')}
           data={customerDeliveryLine?.saleOrderLine?.pickingOrderInfo}
         />
-        <CustomerDeliveryLineDescription />
+        <CustomerDeliveryLineDescription
+          value={description}
+          onChange={setDescription}
+        />
       </KeyboardAvoidingScrollView>
     </Screen>
   );

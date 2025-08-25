@@ -16,72 +16,49 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import React, {useCallback} from 'react';
-import {EditableHtmlInput, NotesCard} from '@axelor/aos-mobile-ui';
+import React from 'react';
+import {FormHtmlInput, NotesCard} from '@axelor/aos-mobile-ui';
 import {
-  useDispatch,
   usePermitted,
   useSelector,
   useTranslator,
 } from '@axelor/aos-mobile-core';
-import {updateCustomerDeliveryLineDescription} from '../../../../features/customerDeliveryLineSlice';
 
 interface CustomerDeliveryNotesProps {
   titleKey?: string;
   readonly?: boolean;
+  value?: string;
+  onChange?: (val: string) => void;
 }
 
 const CustomerDeliveryLineDescription = ({
   titleKey = 'Base_Description',
   readonly = false,
+  value = '',
+  onChange,
 }: CustomerDeliveryNotesProps) => {
   const I18n = useTranslator();
-  const dispatch = useDispatch();
   const {readonly: isReadonly} = usePermitted({
     modelName: 'com.axelor.apps.stock.db.StockMoveLine',
   });
 
-  const {customerDelivery} = useSelector(state => state.customerDelivery);
   const {customerDeliveryLine} = useSelector(
     state => state.customerDeliveryLine,
-  );
-
-  const handleValidate = useCallback(
-    value => {
-      dispatch(
-        (updateCustomerDeliveryLineDescription as any)({
-          stockMoveLineId: customerDeliveryLine.id,
-          customerDeliveryId: customerDelivery.id,
-          version: customerDeliveryLine.version,
-          realQty: customerDeliveryLine.realQty,
-          description: value,
-          fromStockLocation: customerDeliveryLine.fromStockLocation,
-        }),
-      );
-    },
-    [
-      customerDelivery.id,
-      customerDeliveryLine.fromStockLocation,
-      customerDeliveryLine.id,
-      customerDeliveryLine.realQty,
-      customerDeliveryLine.version,
-      dispatch,
-    ],
   );
 
   if (isReadonly || readonly) {
     return (
       <NotesCard
         title={I18n.t(titleKey)}
-        data={customerDeliveryLine?.description}
+        data={value ?? customerDeliveryLine?.description}
       />
     );
   }
 
   return (
-    <EditableHtmlInput
+    <FormHtmlInput
       title={I18n.t('Base_Description')}
-      onValidate={handleValidate}
+      onChange={onChange}
       defaultValue={customerDeliveryLine?.description}
     />
   );

@@ -33,6 +33,7 @@ const CustomerDeliveryLineButtons = ({
   realQty,
   fromStockLocation,
   visible = true,
+  description,
 }) => {
   const I18n = useTranslator();
   const dispatch = useDispatch();
@@ -59,7 +60,8 @@ const CustomerDeliveryLineButtons = ({
         version: customerDeliveryLine.version,
         realQty: realQty,
         fromStockLocationId: fromStockLocation?.id,
-        description: customerDeliveryLine.description,
+
+        description: description,
       }),
     );
 
@@ -70,6 +72,7 @@ const CustomerDeliveryLineButtons = ({
     fromStockLocation,
     navigateBackToDetails,
     realQty,
+    description,
   ]);
 
   if (!visible) {
