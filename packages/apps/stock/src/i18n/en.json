@@ -224,7 +224,6 @@
   "Stock_SliceAction_SplitCustomerDeliveryLine": "split customer delivery line",
   "Stock_SliceAction_SearchAlternativeBarcode": "search for alternative barcodes",
   "Stock_SliceAction_UpdateCustomerDeliveryNote": "update customer delivery note",
-  "Stock_SliceAction_UpdateCustomerDeliveryLineDescription": "update customer delivery line descirption",
   "Stock_SliceAction_UpdateSupllierArrivalDescrition": "update supplier arrival line descirption",
   "Stock_SliceAction_UpdateInternalMoveLineDescription": "update internal move line descirption"
 }
