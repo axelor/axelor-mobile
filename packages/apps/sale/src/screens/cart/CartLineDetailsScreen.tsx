@@ -33,6 +33,8 @@ import {
   ProductSearchBar,
 } from '../../components';
 
+const productScanKey = 'product_sale_cart-line-details';
+
 const CartLineDetailsScreen = ({route}) => {
   const cartLineId = route.params?.cartLineId;
 
@@ -93,7 +95,7 @@ const CartLineDetailsScreen = ({route}) => {
           />
         ) : (
           <ProductSearchBar
-            defaultValue={product}
+            scanKey={productScanKey}
             onChange={setProduct}
             isScrollViewContainer
           />

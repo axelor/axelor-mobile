@@ -1,5 +1,5 @@
 {
-  "title": "ProductSaleListScreen: add product search by scan",
+  "title": "ProductSale: add product search by scan",
   "type": "feat",
   "packages": "sale"
 }

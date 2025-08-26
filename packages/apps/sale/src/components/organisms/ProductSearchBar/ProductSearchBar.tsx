@@ -15,67 +15,74 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-
-import React, {useCallback} from 'react';
+import React, {useMemo} from 'react';
 import {
+  DoubleScannerSearchBar,
   displayItemName,
-  useDispatch,
   useSelector,
   useTranslator,
 } from '@axelor/aos-mobile-core';
-import {AutoCompleteSearch} from '@axelor/aos-mobile-ui';
 import {searchProduct} from '../../../features/productSlice';
 import {useSellableByCompany} from '../../../hooks/use-product-by-company';
+import {searchAlternativeBarcode} from '../../../features/alternativeBarcodeSlice';
+
+const barCodeScanKey = 'product_sale_bar-code_product-search-bar';
 
 interface ProductSearchBarProps {
-  style?: any;
-  title?: string;
-  showTitle?: boolean;
+  placeholderKey?: string;
   defaultValue?: string;
-  onChange?: (any: any) => void;
-  readonly?: boolean;
-  required?: boolean;
+  onChange?: (value: any) => void;
+  scanKey: string;
+  showDetailsPopup?: boolean;
+  navigate?: boolean;
+  oneFilter?: boolean;
+  isFocus?: boolean;
+  changeScreenAfter?: boolean;
   isScrollViewContainer?: boolean;
+  onFetchDataAction?: (searchValue: string) => void;
+  clearKey?: number;
 }
 
 const ProductSearchBar = ({
-  style = null,
-  title = 'Sale_Product',
-  showTitle = false,
-  defaultValue = null,
+  placeholderKey = 'Sale_Product',
+  defaultValue = '',
   onChange = () => {},
-  readonly = false,
-  required = false,
+  scanKey,
+  showDetailsPopup = true,
+  navigate = false,
+  oneFilter = false,
+  isFocus = false,
+  changeScreenAfter = false,
   isScrollViewContainer = false,
+  onFetchDataAction,
+  clearKey,
 }: ProductSearchBarProps) => {
   const I18n = useTranslator();
-  const dispatch = useDispatch();
   const isSellableByCompany = useSellableByCompany();
 
-  const {mobileSettings} = useSelector(state => state.appConfig);
+  const {base: baseConfig, mobileSettings} = useSelector(
+    state => state.appConfig,
+  );
   const {user} = useSelector(state => state.user);
   const {loadingList, moreLoading, isListEnd, productList} = useSelector(
     state => state.sale_product,
   );
+  const {alternativeBarcodeList} = useSelector(
+    state => state.sale_alternativeBarcode,
+  );
 
-  const searchProductAPI = useCallback(
-    ({page = 0, searchValue}) => {
-      dispatch(
-        (searchProduct as any)({
-          useCompanySellable: isSellableByCompany,
-          companyId: user.activeCompany?.id,
-          page,
-          searchValue,
-          productTypeSelect: mobileSettings?.productTypesToDisplay.map(
-            type => ({value: type}),
-          ),
-          isConfiguratorProductShown:
-            mobileSettings?.isConfiguratorProductShown,
-        }),
-      );
-    },
+  const sliceFunctionData = useMemo(
+    () => ({
+      useCompanySellable: isSellableByCompany,
+      companyId: user.activeCompany?.id,
+      productTypeSelect: mobileSettings?.productTypesToDisplay.map(type => ({
+        value: type,
+      })),
+      isConfiguratorProductShown: mobileSettings?.isConfiguratorProductShown,
+      alternativeBarcodeList,
+    }),
     [
-      dispatch,
+      alternativeBarcodeList,
       isSellableByCompany,
       mobileSettings?.isConfiguratorProductShown,
       mobileSettings?.productTypesToDisplay,
@@ -84,24 +91,29 @@ const ProductSearchBar = ({
   );
 
   return (
-    <AutoCompleteSearch
-      style={style}
-      title={showTitle && I18n.t(title)}
-      objectList={productList}
+    <DoubleScannerSearchBar
       value={defaultValue}
-      required={required}
-      readonly={readonly}
-      onChangeValue={onChange}
-      fetchData={searchProductAPI}
-      displayValue={displayItemName}
-      placeholder={I18n.t(title)}
-      showDetailsPopup={true}
+      placeholderSearchBar={I18n.t(placeholderKey)}
+      onFetchDataAction={onFetchDataAction}
+      sliceFunction={searchProduct}
+      sliceFunctionData={sliceFunctionData}
+      list={productList}
       loadingList={loadingList}
       moreLoading={moreLoading}
       isListEnd={isListEnd}
-      navigate={false}
-      oneFilter={false}
+      onChangeValue={onChange}
+      displayValue={displayItemName}
+      scanKeySearch={scanKey}
+      showDetailsPopup={showDetailsPopup}
+      navigate={navigate}
+      oneFilter={oneFilter}
+      isFocus={isFocus}
+      changeScreenAfter={changeScreenAfter}
+      sliceBarCodeFunction={searchAlternativeBarcode}
+      scanKeyBarCode={barCodeScanKey}
+      displayBarCodeInput={baseConfig?.enableMultiBarcodeOnProducts}
       isScrollViewContainer={isScrollViewContainer}
+      clearKey={clearKey}
     />
   );
 };
