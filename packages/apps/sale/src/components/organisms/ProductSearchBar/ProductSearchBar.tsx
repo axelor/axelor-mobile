@@ -40,7 +40,6 @@ interface ProductSearchBarProps {
   changeScreenAfter?: boolean;
   isScrollViewContainer?: boolean;
   onFetchDataAction?: (searchValue: string) => void;
-  clearKey?: number;
 }
 
 const ProductSearchBar = ({
@@ -55,7 +54,6 @@ const ProductSearchBar = ({
   changeScreenAfter = false,
   isScrollViewContainer = false,
   onFetchDataAction,
-  clearKey,
 }: ProductSearchBarProps) => {
   const I18n = useTranslator();
   const isSellableByCompany = useSellableByCompany();
@@ -113,7 +111,6 @@ const ProductSearchBar = ({
       scanKeyBarCode={barCodeScanKey}
       displayBarCodeInput={baseConfig?.enableMultiBarcodeOnProducts}
       isScrollViewContainer={isScrollViewContainer}
-      clearKey={clearKey}
     />
   );
 };
