@@ -16,55 +16,31 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import React, {useCallback} from 'react';
-import {EditableHtmlInput, NotesCard} from '@axelor/aos-mobile-ui';
+import React from 'react';
+import {FormHtmlInput, NotesCard} from '@axelor/aos-mobile-ui';
 import {
-  useDispatch,
   usePermitted,
   useSelector,
   useTranslator,
 } from '@axelor/aos-mobile-core';
-import {updateSupplierLineDescription} from '../../../../features/supplierArrivalLineSlice';
 
 interface SupplierArrivalLineDescriptionProps {
   titleKey?: string;
   readonly?: boolean;
+  onChange?: (value: string) => void;
 }
 
 const SupplierArrivalLineDescription = ({
   titleKey = 'Base_Description',
   readonly = false,
+  onChange,
 }: SupplierArrivalLineDescriptionProps) => {
   const I18n = useTranslator();
-  const dispatch = useDispatch();
   const {readonly: isReadonly} = usePermitted({
     modelName: 'com.axelor.apps.stock.db.StockMoveLine',
   });
 
   const {supplierArrivalLine} = useSelector(state => state.supplierArrivalLine);
-
-  const handleValidate = useCallback(
-    value => {
-      dispatch(
-        (updateSupplierLineDescription as any)({
-          stockMoveLineId: supplierArrivalLine.id,
-          version: supplierArrivalLine.version,
-          realQty: supplierArrivalLine.realQty,
-          description: value,
-          fromStockLocation: supplierArrivalLine.fromStockLocation,
-          conformity: supplierArrivalLine.conformitySelect,
-        }),
-      );
-    },
-    [
-      dispatch,
-      supplierArrivalLine.conformitySelect,
-      supplierArrivalLine.fromStockLocation,
-      supplierArrivalLine.id,
-      supplierArrivalLine.realQty,
-      supplierArrivalLine.version,
-    ],
-  );
 
   if (isReadonly || readonly) {
     return (
@@ -76,9 +52,9 @@ const SupplierArrivalLineDescription = ({
   }
 
   return (
-    <EditableHtmlInput
+    <FormHtmlInput
       title={I18n.t('Base_Description')}
-      onValidate={handleValidate}
+      onChange={onChange}
       defaultValue={supplierArrivalLine?.description}
     />
   );

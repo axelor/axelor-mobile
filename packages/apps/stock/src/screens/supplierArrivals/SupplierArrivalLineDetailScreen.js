@@ -87,6 +87,7 @@ const SupplierArrivalLineDetailScreen = ({route, navigation}) => {
   const [toStockLocation, setToStockLocation] = useState(null);
   const [realQty, setRealQty] = useState(0);
   const [origin, setOrigin] = useState();
+  const [description, setDescription] = useState('');
   const [conformity, setConformity] = useState({
     title: getItemTitle(
       StockMove?.conformitySelect,
@@ -112,6 +113,7 @@ const SupplierArrivalLineDetailScreen = ({route, navigation}) => {
           ? supplierArrivalLine.conformitySelect
           : StockMove?.conformitySelect.None,
     });
+    setDescription(supplierArrivalLine?.description ?? '');
     setToStockLocation(supplierArrivalLine?.toStockLocation);
   }, [
     supplierArrivalLine,
@@ -204,6 +206,7 @@ const SupplierArrivalLineDetailScreen = ({route, navigation}) => {
           supplierArrivalLine={supplierArrivalLine}
           trackingNumber={trackingNumber}
           origin={origin}
+          description={description}
         />
       }>
       <HeaderContainer
@@ -286,7 +289,10 @@ const SupplierArrivalLineDetailScreen = ({route, navigation}) => {
           }
           isScrollViewContainer={true}
         />
-        <SupplierArrivalLineDescription />
+        <SupplierArrivalLineDescription
+          value={description}
+          onChange={setDescription}
+        />
       </KeyboardAvoidingScrollView>
     </Screen>
   );

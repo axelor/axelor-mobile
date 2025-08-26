@@ -34,7 +34,6 @@ interface CustomerDeliveryNotesProps {
 const CustomerDeliveryLineDescription = ({
   titleKey = 'Base_Description',
   readonly = false,
-  value = '',
   onChange,
 }: CustomerDeliveryNotesProps) => {
   const I18n = useTranslator();
@@ -50,7 +49,7 @@ const CustomerDeliveryLineDescription = ({
     return (
       <NotesCard
         title={I18n.t(titleKey)}
-        data={value ?? customerDeliveryLine?.description}
+        data={customerDeliveryLine?.description}
       />
     );
   }

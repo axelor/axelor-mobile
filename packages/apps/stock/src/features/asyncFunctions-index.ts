@@ -95,7 +95,6 @@ export {
   fetchSupplierArrivalLines,
   splitSupplierArrivalLine,
   updateSupplierArrivalLine,
-  updateSupplierLineDescription,
 } from './supplierArrivalLineSlice';
 export {
   addNewLine as addNewSupplierArrivalLine,

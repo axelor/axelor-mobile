@@ -210,10 +210,7 @@ const CustomerDeliveryLineDetailScreen = ({route, navigation}) => {
           title={I18n.t('Stock_LineComment')}
           data={customerDeliveryLine?.saleOrderLine?.pickingOrderInfo}
         />
-        <CustomerDeliveryLineDescription
-          value={description}
-          onChange={setDescription}
-        />
+        <CustomerDeliveryLineDescription onChange={setDescription} />
       </KeyboardAvoidingScrollView>
     </Screen>
   );
