@@ -77,6 +77,7 @@ const InternalMoveLineDetailsScreen = ({navigation, route}) => {
       : internalMoveLine?.realQty,
   );
   const [unit, setUnit] = useState(internalMoveLine?.unit);
+  const [description, setDescription] = useState('');
 
   const trackingNumber = useMemo(
     () => internalMoveLine?.trackingNumber ?? route.params.trackingNumber,
@@ -141,6 +142,7 @@ const InternalMoveLineDetailsScreen = ({navigation, route}) => {
       setUnit(internalMoveLine.unit);
       setFromStockLocation(internalMoveLine.fromStockLocation);
       setToStockLocation(internalMoveLine.toStockLocation);
+      +setDescription(internalMoveLine.description ?? '');
     }
   }, [internalMoveLine, internalMove]);
 
@@ -166,6 +168,7 @@ const InternalMoveLineDetailsScreen = ({navigation, route}) => {
           fromStockLocation={fromStockLocation}
           toStockLocation={toStockLocation}
           visible={!readonly && !isTrackingNumberSelectVisible}
+          description={description}
         />
       }>
       <HeaderContainer
@@ -251,7 +254,7 @@ const InternalMoveLineDetailsScreen = ({navigation, route}) => {
           />
         ) : null}
         <InternalMoveLineNotes notes={internalMove.note} readonly={true} />
-        <InternalMoveLineDescription />
+        <InternalMoveLineDescription onChange={setDescription} />
       </KeyboardAvoidingScrollView>
     </Screen>
   );

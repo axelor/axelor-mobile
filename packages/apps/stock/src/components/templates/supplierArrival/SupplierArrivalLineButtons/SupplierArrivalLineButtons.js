@@ -37,6 +37,7 @@ const SupplierArrivalLineButtons = ({
   toStockLocation,
   trackingNumber,
   origin,
+  description,
 }) => {
   const I18n = useTranslator();
   const dispatch = useDispatch();
@@ -77,18 +78,21 @@ const SupplierArrivalLineButtons = ({
         realQty: realQty,
         conformity: conformity?.id,
         toStockLocationId: toStockLocation?.id,
+        description: description,
       }),
     );
 
     navigateBackToDetails();
   }, [
-    conformity,
+    conformity?.id,
+    description,
     dispatch,
     handleTrackingNumberOrigin,
     navigateBackToDetails,
     realQty,
-    supplierArrivalLine,
-    toStockLocation,
+    supplierArrivalLine.id,
+    supplierArrivalLine.version,
+    toStockLocation?.id,
   ]);
 
   if (

@@ -36,7 +36,6 @@ export {
   fetchInternalMoveLine,
   fetchInternalMoveLines,
   updateInternalMoveLine,
-  updateInternalMoveLineDescription,
 } from './internalMoveLineSlice';
 export {
   createInternalMove,

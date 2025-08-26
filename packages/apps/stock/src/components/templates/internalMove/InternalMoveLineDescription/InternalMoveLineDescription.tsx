@@ -16,55 +16,31 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import React, {useCallback} from 'react';
-import {EditableHtmlInput, NotesCard} from '@axelor/aos-mobile-ui';
+import React from 'react';
+import {FormHtmlInput, NotesCard} from '@axelor/aos-mobile-ui';
 import {
-  useDispatch,
   usePermitted,
   useSelector,
   useTranslator,
 } from '@axelor/aos-mobile-core';
-import {updateInternalMoveLineDescription} from '../../../../features/internalMoveLineSlice';
 
 interface InternalMoveLineDescriptionProps {
   titleKey?: string;
   readonly?: boolean;
+  onChange?: (value: string) => void;
 }
 
 const InternalMoveLineDescription = ({
   titleKey = 'Base_Description',
   readonly = false,
+  onChange,
 }: InternalMoveLineDescriptionProps) => {
   const I18n = useTranslator();
-  const dispatch = useDispatch();
   const {readonly: isReadonly} = usePermitted({
     modelName: 'com.axelor.apps.stock.db.StockMoveLine',
   });
 
   const {internalMoveLine} = useSelector(state => state.internalMoveLine);
-
-  const handleValidate = useCallback(
-    value => {
-      dispatch(
-        (updateInternalMoveLineDescription as any)({
-          stockMoveLineId: internalMoveLine.id,
-          version: internalMoveLine.version,
-          realQty: internalMoveLine.realQty,
-          description: value,
-          fromStockLocation: internalMoveLine.fromStockLocation,
-          unitId: internalMoveLine.unit?.id,
-        }),
-      );
-    },
-    [
-      dispatch,
-      internalMoveLine.fromStockLocation,
-      internalMoveLine.id,
-      internalMoveLine.realQty,
-      internalMoveLine.unit?.id,
-      internalMoveLine.version,
-    ],
-  );
 
   if (isReadonly || readonly) {
     return (
@@ -76,9 +52,9 @@ const InternalMoveLineDescription = ({
   }
 
   return (
-    <EditableHtmlInput
+    <FormHtmlInput
       title={I18n.t('Base_Description')}
-      onValidate={handleValidate}
+      onChange={onChange}
       defaultValue={internalMoveLine?.description}
     />
   );

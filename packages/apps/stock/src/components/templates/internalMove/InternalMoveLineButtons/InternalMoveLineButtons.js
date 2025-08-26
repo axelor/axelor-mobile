@@ -34,6 +34,7 @@ const InternalMoveLineButtons = ({
   fromStockLocation,
   toStockLocation,
   visible = true,
+  description,
 }) => {
   const I18n = useTranslator();
   const dispatch = useDispatch();
@@ -45,7 +46,7 @@ const InternalMoveLineButtons = ({
       updateInternalMoveLine({
         stockMoveLineId: internalMoveLine.id,
         version: internalMoveLine.version,
-        description: internalMoveLine.description,
+        description: description,
         realQty: movedQty,
         unitId: unit.id,
         fromStockLocationId:
