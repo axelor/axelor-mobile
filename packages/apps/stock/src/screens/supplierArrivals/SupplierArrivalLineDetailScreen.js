@@ -292,6 +292,10 @@ const SupplierArrivalLineDetailScreen = ({route, navigation}) => {
         <SupplierArrivalLineDescription
           value={description}
           onChange={setDescription}
+          readonly={
+            readonly ||
+            supplierArrival?.statusSelect === StockMove?.statusSelect.Realized
+          }
         />
       </KeyboardAvoidingScrollView>
     </Screen>
