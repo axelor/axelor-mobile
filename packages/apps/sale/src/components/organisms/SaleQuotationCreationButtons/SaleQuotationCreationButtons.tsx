@@ -34,6 +34,8 @@ interface SaleQuotationCreationButtonsProps {
   customerId: number;
   deliveredPartnerId?: number;
   requireDeliveredPartner?: boolean;
+  paymentModeId: number;
+  paymentConditionId: number;
 }
 
 const SaleQuotationCreationButtons = ({
@@ -45,6 +47,8 @@ const SaleQuotationCreationButtons = ({
   customerId,
   deliveredPartnerId,
   requireDeliveredPartner = false,
+  paymentModeId,
+  paymentConditionId,
 }: SaleQuotationCreationButtonsProps) => {
   const Colors = useThemeColor();
   const I18n = useTranslator();
@@ -60,6 +64,8 @@ const SaleQuotationCreationButtons = ({
         })),
         customerId,
         deliveredPartnerId,
+        paymentModeId,
+        paymentConditionId,
       }),
     );
 

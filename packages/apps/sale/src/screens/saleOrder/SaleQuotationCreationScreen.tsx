@@ -35,6 +35,8 @@ import {
   ProductSearchBar,
   SaleQuotationCreationButtons,
   SaleQuotationCreationQuantityCard,
+  PaymentModeSearchBar,
+  PaymentConditionSearchBar,
 } from '../../components';
 
 const productScanKey = 'product_sale_quotation-creation';
@@ -52,6 +54,8 @@ const SaleQuotationCreationScreen = ({route}) => {
   const [productQty, setProductQty] = useState(0);
   const [isEditionMode, setIsEditionMode] = useState(false);
   const [deliveredPartner, setDeliveredPartner] = useState<any>(null);
+  const [paymentMode, setPaymentMode] = useState(null);
+  const [paymentCondition, setPaymentCondition] = useState(null);
 
   const {base: baseConfig} = useSelector(state => state.appConfig);
 
@@ -116,6 +120,8 @@ const SaleQuotationCreationScreen = ({route}) => {
           customerId={customer?.id}
           deliveredPartnerId={deliveredPartner?.id}
           requireDeliveredPartner={partnerRelationsEnabled}
+          paymentModeId={paymentMode?.id}
+          paymentConditionId={paymentCondition?.id}
         />
       }>
       <ScrollView style={styles.container}>
@@ -124,6 +130,8 @@ const SaleQuotationCreationScreen = ({route}) => {
           onChange={cust => {
             setCustomer(cust);
             setDeliveredPartner(null);
+            setPaymentMode(cust?.inPaymentMode);
+            setPaymentCondition(cust?.paymentCondition);
           }}
         />
         {customer && (
@@ -136,6 +144,14 @@ const SaleQuotationCreationScreen = ({route}) => {
                 required
               />
             )}
+            <PaymentModeSearchBar
+              defaultValue={paymentMode}
+              onChange={setPaymentMode}
+            />
+            <PaymentConditionSearchBar
+              defaultValue={paymentCondition}
+              onChange={setPaymentCondition}
+            />
             <ViewAllEditList
               title={I18n.t('Sale_Products')}
               lines={lines.map(line => ({

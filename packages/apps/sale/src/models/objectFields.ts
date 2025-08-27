@@ -174,6 +174,14 @@ export const sale_modelAPI: ObjectFields = {
     description: schemaContructor.string(),
     factorizedCustomer: schemaContructor.boolean(),
     hasBlockedAccount: schemaContructor.boolean(),
+    inPaymentMode: schemaContructor.subObject('name'),
+    paymentCondition: schemaContructor.subObject('name'),
+  }),
+  sale_paymentMode: schemaContructor.object({
+    name: schemaContructor.string(),
+  }),
+  sale_paymentCondition: schemaContructor.object({
+    name: schemaContructor.string(),
   }),
   sale_saleOrderLine: schemaContructor.object({
     typeSelect: schemaContructor.number(),

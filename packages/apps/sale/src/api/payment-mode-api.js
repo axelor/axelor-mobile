@@ -16,17 +16,19 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import {SortFields} from '@axelor/aos-mobile-core';
+import {
+  createStandardSearch,
+  getSearchCriterias,
+} from '@axelor/aos-mobile-core';
 
-export const sale_sortFields: SortFields = {
-  sale_product: ['code', 'name'],
-  sale_saleOrder: ['-creationDate'],
-  sale_customer: ['name', 'partnerSeq'],
-  sale_customerDelivery: ['statusSelect', '-estimatedDate'],
-  sale_saleOrderLine: ['sequence'],
-  sale_customerCategory: ['name'],
-  sale_complementaryProduct: ['optional'],
-  sale_priceListLine: ['priceList.title'],
-  sale_paymentMode: ['name'],
-  sale_paymentCondition: ['name'],
-};
+export async function searchPaymentMode({searchValue, page = 0, filterDomain}) {
+  return createStandardSearch({
+    model: 'com.axelor.apps.account.db.PaymentMode',
+    criteria: [getSearchCriterias('sale_paymentMode', searchValue)],
+    fieldKey: 'sale_paymentMode',
+    sortKey: 'sale_paymentMode',
+    page,
+    provider: 'model',
+    filter: filterDomain,
+  });
+}
