@@ -1,0 +1,5 @@
+{
+  "title": "SaleOrder: display payment mode and condition on details",
+  "type": "feat",
+  "packages": "sale"
+}

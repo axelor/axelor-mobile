@@ -66,6 +66,8 @@
   "Sale_MissingQty": "Missing quantity",
   "Sale_SeeComplementaryProducts": "See complementary products",
   "Sale_SeeVariantProducts": "See variant products",
+  "Sale_PaymentMode": "Payment mode",
+  "Sale_PaymentCondition": "Payment condition",
   "Sale_PriceList": "Price list",
   "Sale_SeePriceLists": "See price lists",
   "Sale_InternalDescription": "Internal description",

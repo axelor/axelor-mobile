@@ -133,6 +133,8 @@ export const sale_modelAPI: ObjectFields = {
     internalNote: schemaContructor.string(),
     stockLocation: schemaContructor.subObject('name'),
     fiscalPosition: schemaContructor.subObject('name'),
+    paymentMode: schemaContructor.subObject('name'),
+    paymentCondition: schemaContructor.subObject('name'),
     invoicedPartner: schemaContructor.subObject('fullName'),
     mainInvoicingAddressStr: schemaContructor.string(),
     deliveredPartner: schemaContructor.subObject('fullName'),
