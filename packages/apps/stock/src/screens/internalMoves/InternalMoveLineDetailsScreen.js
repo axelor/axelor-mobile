@@ -18,6 +18,7 @@
 
 import React, {useCallback, useEffect, useMemo, useState} from 'react';
 import {
+  FormHtmlInput,
   HeaderContainer,
   KeyboardAvoidingScrollView,
   Screen,
@@ -27,6 +28,7 @@ import {
   useDispatch,
   usePermitted,
   useSelector,
+  useTranslator,
   useTypes,
 } from '@axelor/aos-mobile-core';
 import {
@@ -50,6 +52,7 @@ const toScanKey = 'to-stock-location_internal-move-line-update';
 const InternalMoveLineDetailsScreen = ({navigation, route}) => {
   const {internalMove, internalMoveLineId} = route.params;
   const dispatch = useDispatch();
+  const I18n = useTranslator();
   const {StockMove} = useTypes();
   const {readonly} = usePermitted({
     modelName: 'com.axelor.apps.stock.db.StockMoveLine',
@@ -76,6 +79,7 @@ const InternalMoveLineDetailsScreen = ({navigation, route}) => {
       : internalMoveLine?.realQty,
   );
   const [unit, setUnit] = useState(internalMoveLine?.unit);
+  const [description, setDescription] = useState('');
 
   const trackingNumber = useMemo(
     () => internalMoveLine?.trackingNumber ?? route.params.trackingNumber,
@@ -140,6 +144,7 @@ const InternalMoveLineDetailsScreen = ({navigation, route}) => {
       setUnit(internalMoveLine.unit);
       setFromStockLocation(internalMoveLine.fromStockLocation);
       setToStockLocation(internalMoveLine.toStockLocation);
+      setDescription(internalMoveLine.description ?? '');
     }
   }, [internalMoveLine, internalMove]);
 
@@ -165,6 +170,7 @@ const InternalMoveLineDetailsScreen = ({navigation, route}) => {
           fromStockLocation={fromStockLocation}
           toStockLocation={toStockLocation}
           visible={!readonly && !isTrackingNumberSelectVisible}
+          description={description}
         />
       }>
       <HeaderContainer
@@ -250,6 +256,15 @@ const InternalMoveLineDetailsScreen = ({navigation, route}) => {
           />
         ) : null}
         <InternalMoveLineNotes notes={internalMove.note} readonly={true} />
+        <FormHtmlInput
+          title={I18n.t('Base_Description')}
+          onChange={setDescription}
+          defaultValue={description}
+          readonly={
+            readonly ||
+            internalMove.statusSelect === StockMove?.statusSelect.Realized
+          }
+        />
       </KeyboardAvoidingScrollView>
     </Screen>
   );

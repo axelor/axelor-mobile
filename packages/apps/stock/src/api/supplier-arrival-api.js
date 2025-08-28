@@ -136,6 +136,7 @@ export async function addLineStockMove({
   conformity,
   version,
   toStockLocationId,
+  description,
 }) {
   const StockMove = getTypes().StockMove;
 
@@ -151,6 +152,7 @@ export async function addLineStockMove({
       conformity: conformity ?? StockMove?.conformitySelect.None,
       version,
       toStockLocationId,
+      description,
     },
     description: 'add new supplier arrival line',
     matchers: {
@@ -164,6 +166,7 @@ export async function addLineStockMove({
         realQty,
         conformity: 'conformitySelect',
         toStockLocationId: 'toStockLocation.id',
+        description,
       },
     },
   });

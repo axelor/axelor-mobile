@@ -23,6 +23,7 @@ import {
   Picker,
   Screen,
   KeyboardAvoidingScrollView,
+  FormHtmlInput,
 } from '@axelor/aos-mobile-ui';
 import {
   useContextRegister,
@@ -86,6 +87,7 @@ const SupplierArrivalLineDetailScreen = ({route, navigation}) => {
   const [toStockLocation, setToStockLocation] = useState(null);
   const [realQty, setRealQty] = useState(0);
   const [origin, setOrigin] = useState();
+  const [description, setDescription] = useState('');
   const [conformity, setConformity] = useState({
     title: getItemTitle(
       StockMove?.conformitySelect,
@@ -111,6 +113,7 @@ const SupplierArrivalLineDetailScreen = ({route, navigation}) => {
           ? supplierArrivalLine.conformitySelect
           : StockMove?.conformitySelect.None,
     });
+    setDescription(supplierArrivalLine?.description ?? '');
     setToStockLocation(supplierArrivalLine?.toStockLocation);
   }, [
     supplierArrivalLine,
@@ -203,6 +206,7 @@ const SupplierArrivalLineDetailScreen = ({route, navigation}) => {
           supplierArrivalLine={supplierArrivalLine}
           trackingNumber={trackingNumber}
           origin={origin}
+          description={description}
         />
       }>
       <HeaderContainer
@@ -284,6 +288,15 @@ const SupplierArrivalLineDetailScreen = ({route, navigation}) => {
             supplierArrival?.statusSelect === StockMove?.statusSelect.Realized
           }
           isScrollViewContainer={true}
+        />
+        <FormHtmlInput
+          title={I18n.t('Base_Description')}
+          onChange={setDescription}
+          defaultValue={description}
+          readonly={
+            readonly ||
+            supplierArrival?.statusSelect === StockMove?.statusSelect.Realized
+          }
         />
       </KeyboardAvoidingScrollView>
     </Screen>

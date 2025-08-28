@@ -29,6 +29,7 @@ const CustomerDeliveryLineCreationButton = ({
   customerDelivery,
   product,
   realQty,
+  description,
   trackingNumber,
   fromStockLocation,
   visible = true,
@@ -54,12 +55,14 @@ const CustomerDeliveryLineCreationButton = ({
         trackingNumberId: trackingNumber != null ? trackingNumber.id : null,
         expectedQty: 0,
         realQty: realQty,
+        description,
       }),
     );
 
     navigateBackToDetails();
   }, [
     customerDelivery,
+    description,
     dispatch,
     fromStockLocation,
     navigateBackToDetails,

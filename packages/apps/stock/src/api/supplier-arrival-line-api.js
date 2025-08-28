@@ -56,6 +56,7 @@ export async function updateLine({
   realQty,
   conformity: _conformity,
   toStockLocationId,
+  description,
 }) {
   const StockMove = getTypes().StockMove;
   const conformity = _conformity ?? StockMove?.conformitySelect.None;
@@ -70,11 +71,13 @@ export async function updateLine({
             realQty,
             conformity,
             toStockLocationId,
+            description,
           }
         : {
             version,
             realQty,
             toStockLocationId,
+            description,
           },
     description: 'update supplier arrival line',
     matchers: {
@@ -84,6 +87,7 @@ export async function updateLine({
         conformity: 'conformitySelect',
         realQty,
         toStockLocationId: 'toStockLocation.id',
+        description,
       },
     },
   });
