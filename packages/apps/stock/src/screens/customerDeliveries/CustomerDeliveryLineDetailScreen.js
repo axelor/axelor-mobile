@@ -22,6 +22,7 @@ import {
   Screen,
   KeyboardAvoidingScrollView,
   NotesCard,
+  FormHtmlInput,
 } from '@axelor/aos-mobile-ui';
 import {
   useContextRegister,
@@ -75,6 +76,7 @@ const CustomerDeliveryLineDetailScreen = ({route, navigation}) => {
 
   const [fromStockLocation, setFromStockLocation] = useState();
   const [realQty, setRealQty] = useState(0);
+  const [description, setDescription] = useState('');
 
   const trackingNumber = useMemo(
     () => customerDeliveryLine?.trackingNumber ?? route.params.trackingNumber,
@@ -98,6 +100,7 @@ const CustomerDeliveryLineDetailScreen = ({route, navigation}) => {
         : customerDeliveryLine?.realQty || 0,
     );
     setFromStockLocation(customerDeliveryLine?.fromStockLocation);
+    setDescription(customerDeliveryLine?.description ?? '');
   }, [customerDeliveryLine, customerDelivery]);
 
   const handleShowProduct = () => {
@@ -132,6 +135,7 @@ const CustomerDeliveryLineDetailScreen = ({route, navigation}) => {
           realQty={realQty}
           fromStockLocation={fromStockLocation}
           visible={!readonly && !isTrackingNumberSelectVisible}
+          description={description}
         />
       }
       loading={loadingCustomerDeliveryLine}>
@@ -206,6 +210,15 @@ const CustomerDeliveryLineDetailScreen = ({route, navigation}) => {
         <NotesCard
           title={I18n.t('Stock_LineComment')}
           data={customerDeliveryLine?.saleOrderLine?.pickingOrderInfo}
+        />
+        <FormHtmlInput
+          title={I18n.t('Base_Description')}
+          onChange={setDescription}
+          defaultValue={description}
+          readonly={
+            readonly ||
+            customerDelivery?.statusSelect === StockMove?.statusSelect.Realized
+          }
         />
       </KeyboardAvoidingScrollView>
     </Screen>

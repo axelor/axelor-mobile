@@ -1,0 +1,5 @@
+{
+  "title": "Stock move line: add editable description",
+  "type": "feat",
+  "packages": "stock"
+}

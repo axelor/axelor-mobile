@@ -56,6 +56,7 @@ export async function updateInternalMoveLine({
   unitId,
   fromStockLocationId,
   toStockLocationId,
+  description,
 }) {
   return getActionApi().send({
     url: `/ws/aos/stock-move-line/${stockMoveLineId}`,
@@ -66,6 +67,7 @@ export async function updateInternalMoveLine({
       unitId,
       fromStockLocationId,
       toStockLocationId,
+      description,
     },
     description: 'update internal move line qty',
     matchers: {
@@ -76,6 +78,7 @@ export async function updateInternalMoveLine({
         fromStockLocationId: 'fromStockLocation.id',
         toStockLocationId: 'toStockLocation.id',
         realQty,
+        description,
       },
     },
   });

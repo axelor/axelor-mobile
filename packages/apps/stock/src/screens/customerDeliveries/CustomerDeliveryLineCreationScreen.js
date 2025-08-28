@@ -18,6 +18,7 @@
 
 import React, {useCallback, useState} from 'react';
 import {
+  FormHtmlInput,
   HeaderContainer,
   KeyboardAvoidingScrollView,
   Screen,
@@ -54,6 +55,7 @@ const CustomerDeliveryLineCreationScreen = ({route, navigation}) => {
   );
   const [locationLine, setLocationLine] = useState(null);
   const [realQty, setRealQty] = useState(0);
+  const [description, setDescription] = useState('');
   const [currentStep, setCurrentStep] = useState(
     CREATION_STEP.product_trackingNumber,
   );
@@ -91,6 +93,7 @@ const CustomerDeliveryLineCreationScreen = ({route, navigation}) => {
     if (_step <= CREATION_STEP.product_trackingNumber) {
       setLocationLine(null);
       setRealQty(0);
+      setDescription('');
     }
 
     if (_step <= CREATION_STEP.fromStockLocation) {
@@ -99,6 +102,7 @@ const CustomerDeliveryLineCreationScreen = ({route, navigation}) => {
 
     if (_step === CREATION_STEP.validation) {
       setRealQty(0);
+      setDescription('');
     }
   }, []);
 
@@ -129,6 +133,7 @@ const CustomerDeliveryLineCreationScreen = ({route, navigation}) => {
           product={product}
           trackingNumber={locationLine?.trackingNumber}
           realQty={realQty}
+          description={description}
           fromStockLocation={fromStockLocation}
           visible={currentStep >= CREATION_STEP.validation}
         />
@@ -184,6 +189,10 @@ const CustomerDeliveryLineCreationScreen = ({route, navigation}) => {
               customerDeliveryLine={null}
               realQty={realQty}
               setRealQty={setRealQty}
+            />
+            <FormHtmlInput
+              defaultValue={description}
+              onChange={setDescription}
             />
           </>
         ) : null}
