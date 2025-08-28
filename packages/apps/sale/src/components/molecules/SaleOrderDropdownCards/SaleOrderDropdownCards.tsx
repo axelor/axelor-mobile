@@ -55,6 +55,8 @@ const SaleOrderDropdownCards = ({saleOrder}: SaleOrderDropdownCardsProps) => {
                 deliveredPartnerName={saleOrder.deliveredPartner?.fullName}
                 deliveryAddress={saleOrder.deliveryAddressStr}
                 priceListName={saleOrder.priceList?.title}
+                paymentModeName={saleOrder.paymentMode?.name}
+                paymentConditionName={saleOrder.paymentCondition?.name}
               />
             ),
           },
