@@ -18,10 +18,11 @@
 
 import React, {useCallback, useEffect} from 'react';
 import {StyleSheet} from 'react-native';
-import {useDispatch, useSelector, useTranslator} from '@axelor/aos-mobile-core';
-import {HeaderContainer, Screen, ScrollView, Text} from '@axelor/aos-mobile-ui';
+import {useDispatch, useSelector} from '@axelor/aos-mobile-core';
+import {HeaderContainer, Screen, ScrollView} from '@axelor/aos-mobile-ui';
 import {
   PartnerActionCard,
+  PartnerLinkCards,
   SaleOrderBottomButton,
   SaleOrderDropdownCards,
   SaleOrderHeader,
@@ -34,7 +35,6 @@ import {fetchSaleOrderLine} from '../../features/saleOrderLineSlice';
 const SaleOrderDetailsScreen = ({route}) => {
   const {saleOrderId} = route?.params;
   const dispatch = useDispatch();
-  const I18n = useTranslator();
 
   const {loadingSaleOrder, saleOrder} = useSelector(
     (state: any) => state.sale_saleOrder,
@@ -42,7 +42,6 @@ const SaleOrderDetailsScreen = ({route}) => {
   const {totalSaleOrderLine} = useSelector(
     (state: any) => state.sale_saleOrderLine,
   );
-  const {base: baseConfig} = useSelector((state: any) => state.appConfig);
 
   const getSaleOrder = useCallback(() => {
     dispatch((fetchSaleOrderById as any)({saleOrderId}));
@@ -75,37 +74,21 @@ const SaleOrderDetailsScreen = ({route}) => {
           style={styles.marginBottom}
           saleOrder={saleOrder}
         />
-        <PartnerActionCard partner={saleOrder.clientPartner} />
         <PartnerActionCard
-          style={styles.marginBottom}
+          partner={saleOrder.clientPartner}
+          showAddressAction
+          showPhoneAction={saleOrder.contactPartner == null}
+        />
+        <PartnerActionCard
           partner={saleOrder.contactPartner}
+          showPhoneAction
           isContact
         />
-        {baseConfig?.activatePartnerRelations && (
-          <>
-            {saleOrder.invoicedPartner &&
-              saleOrder.invoicedPartner.id !== saleOrder.clientPartner?.id && (
-                <>
-                  <Text style={styles.title} writingType="important">
-                    {I18n.t('Sale_InvoicedPartner')}
-                  </Text>
-                  <PartnerActionCard partner={saleOrder.invoicedPartner} />
-                </>
-              )}
-            {saleOrder.deliveredPartner &&
-              saleOrder.deliveredPartner.id !== saleOrder.clientPartner?.id && (
-                <>
-                  <Text style={styles.title} writingType="important">
-                    {I18n.t('Sale_DeliveredPartner')}
-                  </Text>
-                  <PartnerActionCard
-                    style={styles.marginBottom}
-                    partner={saleOrder.deliveredPartner}
-                  />
-                </>
-              )}
-          </>
-        )}
+        <PartnerLinkCards
+          clientPartner={saleOrder.clientPartner}
+          invoicedPartner={saleOrder.invoicedPartner}
+          deliveredPartner={saleOrder.deliveredPartner}
+        />
         <SaleOrderDropdownCards saleOrder={saleOrder} />
         <SaleOrderSeeLinesButton numberLines={totalSaleOrderLine} />
       </ScrollView>
@@ -119,9 +102,6 @@ const styles = StyleSheet.create({
   },
   marginBottom: {
     marginBottom: 10,
-  },
-  title: {
-    marginHorizontal: 20,
   },
 });
 
