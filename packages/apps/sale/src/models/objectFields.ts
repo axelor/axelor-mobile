@@ -18,6 +18,18 @@
 
 import {ObjectFields, schemaContructor} from '@axelor/aos-mobile-core';
 
+const partnerModel = schemaContructor.object({
+  fullName: schemaContructor.string(),
+  picture: schemaContructor.subObject(),
+  simpleFullName: schemaContructor.string(),
+  name: schemaContructor.string(),
+  partnerSeq: schemaContructor.string(),
+  jobTitleFunction: schemaContructor.subObject('name'),
+  mainAddress: schemaContructor.subObject('fullName'),
+  fixedPhone: schemaContructor.string(),
+  mobilePhone: schemaContructor.string(),
+});
+
 export const sale_modelAPI: ObjectFields = {
   sale_saleConfig: schemaContructor.object({
     saleOrderInAtiSelect: schemaContructor.number(),
@@ -91,30 +103,8 @@ export const sale_modelAPI: ObjectFields = {
     orderBeingEdited: schemaContructor.boolean(),
     externalReference: schemaContructor.string(),
     priceList: schemaContructor.subObject(),
-    clientPartner: schemaContructor.subObject().concat(
-      schemaContructor.object({
-        fullName: schemaContructor.string(),
-        picture: schemaContructor.subObject(),
-        simpleFullName: schemaContructor.string(),
-        name: schemaContructor.string(),
-        partnerSeq: schemaContructor.string(),
-        jobTitleFunction: schemaContructor.subObject('name'),
-        mainAddress: schemaContructor.subObject('fullName'),
-        fixedPhone: schemaContructor.string(),
-        mobilePhone: schemaContructor.string(),
-      }),
-    ),
-    contactPartner: schemaContructor.subObject().concat(
-      schemaContructor.object({
-        picture: schemaContructor.subObject(),
-        simpleFullName: schemaContructor.string(),
-        name: schemaContructor.string(),
-        partnerSeq: schemaContructor.string(),
-        jobTitleFunction: schemaContructor.subObject('name'),
-        fixedPhone: schemaContructor.string(),
-        mobilePhone: schemaContructor.string(),
-      }),
-    ),
+    clientPartner: partnerModel,
+    contactPartner: partnerModel,
     company: schemaContructor.subObject('name'),
     tradingName: schemaContructor.subObject('name'),
     orderDate: schemaContructor.string(),
@@ -135,9 +125,9 @@ export const sale_modelAPI: ObjectFields = {
     fiscalPosition: schemaContructor.subObject('name'),
     paymentMode: schemaContructor.subObject('name'),
     paymentCondition: schemaContructor.subObject('name'),
-    invoicedPartner: schemaContructor.subObject('fullName'),
+    invoicedPartner: partnerModel,
     mainInvoicingAddressStr: schemaContructor.string(),
-    deliveredPartner: schemaContructor.subObject('fullName'),
+    deliveredPartner: partnerModel,
     deliveryAddressStr: schemaContructor.string(),
     accountedRevenue: schemaContructor.number(),
     totalCostPrice: schemaContructor.number(),

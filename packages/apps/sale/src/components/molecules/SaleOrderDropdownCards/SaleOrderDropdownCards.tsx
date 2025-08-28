@@ -108,6 +108,7 @@ const SaleOrderDropdownCards = ({saleOrder}: SaleOrderDropdownCardsProps) => {
 const styles = StyleSheet.create({
   container: {
     alignItems: 'center',
+    marginTop: 5,
   },
   dropdown: {
     marginBottom: 0,
