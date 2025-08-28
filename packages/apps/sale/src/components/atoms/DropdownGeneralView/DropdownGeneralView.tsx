@@ -33,6 +33,8 @@ interface DropdownGeneralViewProps {
   deliveredPartnerName: string;
   deliveryAddress: string;
   priceListName: string;
+  paymentModeName?: string;
+  paymentConditionName?: string;
 }
 
 const DropdownGeneralView = ({
@@ -46,6 +48,8 @@ const DropdownGeneralView = ({
   deliveredPartnerName,
   deliveryAddress,
   priceListName,
+  paymentModeName,
+  paymentConditionName,
 }: DropdownGeneralViewProps) => {
   const I18n = useTranslator();
 
@@ -75,6 +79,15 @@ const DropdownGeneralView = ({
       )}
       {!checkNullString(priceListName) && (
         <LabelText title={I18n.t('Sale_PriceList')} value={priceListName} />
+      )}
+      {!checkNullString(paymentModeName) && (
+        <LabelText title={I18n.t('Sale_PaymentMode')} value={paymentModeName} />
+      )}
+      {!checkNullString(paymentConditionName) && (
+        <LabelText
+          title={I18n.t('Sale_PaymentCondition')}
+          value={paymentConditionName}
+        />
       )}
       {!checkNullString(invoicedPartnerName) && (
         <LabelText
