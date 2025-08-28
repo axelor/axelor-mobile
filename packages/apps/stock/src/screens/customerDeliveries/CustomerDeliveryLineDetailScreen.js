@@ -22,6 +22,7 @@ import {
   Screen,
   KeyboardAvoidingScrollView,
   NotesCard,
+  FormHtmlInput,
 } from '@axelor/aos-mobile-ui';
 import {
   useContextRegister,
@@ -39,7 +40,6 @@ import {
   CustomerDeliveryLineTrackingNumberSelect,
   StockLocationSearchBar,
   ClipableSaleOrderLabel,
-  CustomerDeliveryLineDescription,
 } from '../../components';
 import {StockMove as StockMoveType, StockMoveLine} from '../../types';
 import {fetchCustomerDeliveryLine} from '../../features/customerDeliveryLineSlice';
@@ -211,13 +211,14 @@ const CustomerDeliveryLineDetailScreen = ({route, navigation}) => {
           title={I18n.t('Stock_LineComment')}
           data={customerDeliveryLine?.saleOrderLine?.pickingOrderInfo}
         />
-        <CustomerDeliveryLineDescription
+        <FormHtmlInput
+          title={I18n.t('Base_Description')}
           onChange={setDescription}
+          defaultValue={customerDeliveryLine?.description}
           readonly={
             readonly ||
             customerDelivery?.statusSelect === StockMove?.statusSelect.Realized
           }
-          value={customerDeliveryLine?.description}
         />
       </KeyboardAvoidingScrollView>
     </Screen>

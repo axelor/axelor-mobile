@@ -23,6 +23,7 @@ import {
   Picker,
   Screen,
   KeyboardAvoidingScrollView,
+  FormHtmlInput,
 } from '@axelor/aos-mobile-ui';
 import {
   useContextRegister,
@@ -42,7 +43,6 @@ import {
   StockLocationSearchBar,
   SupplierArrivalTrackingNumberSelect,
   SupplierArrivalOriginInput,
-  SupplierArrivalLineDescription,
 } from '../../components';
 import {fetchProductForSupplier} from '../../features/supplierCatalogSlice';
 import {fetchSupplierArrivalLine} from '../../features/supplierArrivalLineSlice';
@@ -289,9 +289,10 @@ const SupplierArrivalLineDetailScreen = ({route, navigation}) => {
           }
           isScrollViewContainer={true}
         />
-        <SupplierArrivalLineDescription
-          value={supplierArrivalLine?.description}
+        <FormHtmlInput
+          title={I18n.t('Base_Description')}
           onChange={setDescription}
+          defaultValue={supplierArrivalLine?.description}
           readonly={
             readonly ||
             supplierArrival?.statusSelect === StockMove?.statusSelect.Realized

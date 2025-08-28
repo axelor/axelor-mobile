@@ -18,6 +18,7 @@
 
 import React, {useCallback, useEffect, useMemo, useState} from 'react';
 import {
+  FormHtmlInput,
   HeaderContainer,
   KeyboardAvoidingScrollView,
   Screen,
@@ -27,6 +28,7 @@ import {
   useDispatch,
   usePermitted,
   useSelector,
+  useTranslator,
   useTypes,
 } from '@axelor/aos-mobile-core';
 import {
@@ -38,7 +40,6 @@ import {
   InternalMoveLinePicker,
   InternalMoveLineTrackingNumberSelect,
   StockLocationSearchBar,
-  InternalMoveLineDescription,
 } from '../../components';
 import {fetchInternalMoveLine} from '../../features/internalMoveLineSlice';
 import {fetchProductIndicators} from '../../features/productIndicatorsSlice';
@@ -51,6 +52,7 @@ const toScanKey = 'to-stock-location_internal-move-line-update';
 const InternalMoveLineDetailsScreen = ({navigation, route}) => {
   const {internalMove, internalMoveLineId} = route.params;
   const dispatch = useDispatch();
+  const I18n = useTranslator();
   const {StockMove} = useTypes();
   const {readonly} = usePermitted({
     modelName: 'com.axelor.apps.stock.db.StockMoveLine',
@@ -254,13 +256,14 @@ const InternalMoveLineDetailsScreen = ({navigation, route}) => {
           />
         ) : null}
         <InternalMoveLineNotes notes={internalMove.note} readonly={true} />
-        <InternalMoveLineDescription
+        <FormHtmlInput
+          title={I18n.t('Base_Description')}
           onChange={setDescription}
           readonly={
             readonly ||
             internalMove.statusSelect === StockMove?.statusSelect.Realized
           }
-          value={internalMoveLine?.description}
+          defaultValue={internalMoveLine?.description}
         />
       </KeyboardAvoidingScrollView>
     </Screen>

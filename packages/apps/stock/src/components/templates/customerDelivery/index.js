@@ -22,7 +22,6 @@ export {default as CustomerDeliveryLineActionCard} from './CustomerDeliveryLineA
 export {default as CustomerDeliveryLineButtons} from './CustomerDeliveryLineButtons/CustomerDeliveryLineButtons';
 export {default as CustomerDeliveryLineCard} from './CustomerDeliveryLineCard/CustomerDeliveryLineCard';
 export {default as CustomerDeliveryLineCreationButton} from './CustomerDeliveryLineCreationButton/CustomerDeliveryLineCreationButton';
-export {default as CustomerDeliveryLineDescription} from './CustomerDeliveryLineDescription/CustomerDeliveryLineDescription';
 export {default as CustomerDeliveryLineQuantityCard} from './CustomerDeliveryLineQuantityCard/CustomerDeliveryLineQuantityCard';
 export {default as CustomerDeliveryLineTrackingNumberSelect} from './CustomerDeliveryLineTrackingNumberSelect/CustomerDeliveryLineTrackingNumberSelect';
 export {default as CustomerDeliveryMovementIndicationCard} from './CustomerDeliveryMovementIndicationCard/CustomerDeliveryMovementIndicationCard';
