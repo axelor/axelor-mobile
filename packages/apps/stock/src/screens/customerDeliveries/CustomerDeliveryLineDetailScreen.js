@@ -214,7 +214,7 @@ const CustomerDeliveryLineDetailScreen = ({route, navigation}) => {
         <FormHtmlInput
           title={I18n.t('Base_Description')}
           onChange={setDescription}
-          defaultValue={customerDeliveryLine?.description}
+          defaultValue={description}
           readonly={
             readonly ||
             customerDelivery?.statusSelect === StockMove?.statusSelect.Realized

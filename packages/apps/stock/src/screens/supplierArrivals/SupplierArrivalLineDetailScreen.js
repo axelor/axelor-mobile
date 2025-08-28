@@ -292,7 +292,7 @@ const SupplierArrivalLineDetailScreen = ({route, navigation}) => {
         <FormHtmlInput
           title={I18n.t('Base_Description')}
           onChange={setDescription}
-          defaultValue={supplierArrivalLine?.description}
+          defaultValue={description}
           readonly={
             readonly ||
             supplierArrival?.statusSelect === StockMove?.statusSelect.Realized

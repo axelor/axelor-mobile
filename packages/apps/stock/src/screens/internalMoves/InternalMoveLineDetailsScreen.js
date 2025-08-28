@@ -259,11 +259,11 @@ const InternalMoveLineDetailsScreen = ({navigation, route}) => {
         <FormHtmlInput
           title={I18n.t('Base_Description')}
           onChange={setDescription}
+          defaultValue={description}
           readonly={
             readonly ||
             internalMove.statusSelect === StockMove?.statusSelect.Realized
           }
-          defaultValue={internalMoveLine?.description}
         />
       </KeyboardAvoidingScrollView>
     </Screen>
