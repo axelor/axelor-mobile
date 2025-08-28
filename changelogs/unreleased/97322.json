@@ -1,5 +1,5 @@
 {
-  "title": "ProductSale: add product search by scan",
+  "title": "Product: add search by scan",
   "type": "feat",
   "packages": "sale"
 }
