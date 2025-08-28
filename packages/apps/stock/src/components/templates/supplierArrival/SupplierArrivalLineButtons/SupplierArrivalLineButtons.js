@@ -84,15 +84,14 @@ const SupplierArrivalLineButtons = ({
 
     navigateBackToDetails();
   }, [
-    conformity?.id,
+    conformity,
     description,
     dispatch,
     handleTrackingNumberOrigin,
     navigateBackToDetails,
     realQty,
-    supplierArrivalLine.id,
-    supplierArrivalLine.version,
-    toStockLocation?.id,
+    supplierArrivalLine,
+    toStockLocation,
   ]);
 
   if (

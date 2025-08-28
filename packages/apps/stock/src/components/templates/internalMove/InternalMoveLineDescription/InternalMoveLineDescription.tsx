@@ -18,15 +18,12 @@
 
 import React from 'react';
 import {FormHtmlInput} from '@axelor/aos-mobile-ui';
-import {
-  usePermitted,
-  useSelector,
-  useTranslator,
-} from '@axelor/aos-mobile-core';
+import {useTranslator} from '@axelor/aos-mobile-core';
 
 interface InternalMoveLineDescriptionProps {
   titleKey?: string;
   readonly?: boolean;
+  value?: string;
   onChange?: (value: string) => void;
 }
 
@@ -34,20 +31,16 @@ const InternalMoveLineDescription = ({
   titleKey = 'Base_Description',
   readonly = false,
   onChange,
+  value,
 }: InternalMoveLineDescriptionProps) => {
   const I18n = useTranslator();
-  const {readonly: isReadonly} = usePermitted({
-    modelName: 'com.axelor.apps.stock.db.StockMoveLine',
-  });
-
-  const {internalMoveLine} = useSelector(state => state.internalMoveLine);
 
   return (
     <FormHtmlInput
       title={I18n.t(titleKey)}
       onChange={onChange}
-      defaultValue={internalMoveLine?.description}
-      readonly={isReadonly || readonly}
+      defaultValue={value}
+      readonly={readonly}
     />
   );
 };

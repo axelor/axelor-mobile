@@ -61,7 +61,7 @@ const CustomerDeliveryLineButtons = ({
         realQty: realQty,
         fromStockLocationId: fromStockLocation?.id,
 
-        description: description,
+        description,
       }),
     );
 

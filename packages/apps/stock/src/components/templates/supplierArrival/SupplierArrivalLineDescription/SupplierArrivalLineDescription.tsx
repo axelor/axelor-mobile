@@ -18,15 +18,12 @@
 
 import React from 'react';
 import {FormHtmlInput} from '@axelor/aos-mobile-ui';
-import {
-  usePermitted,
-  useSelector,
-  useTranslator,
-} from '@axelor/aos-mobile-core';
+import {useTranslator} from '@axelor/aos-mobile-core';
 
 interface SupplierArrivalLineDescriptionProps {
   titleKey?: string;
   readonly?: boolean;
+  value?: string;
   onChange?: (value: string) => void;
 }
 
@@ -34,20 +31,16 @@ const SupplierArrivalLineDescription = ({
   titleKey = 'Base_Description',
   readonly = false,
   onChange,
+  value,
 }: SupplierArrivalLineDescriptionProps) => {
   const I18n = useTranslator();
-  const {readonly: isReadonly} = usePermitted({
-    modelName: 'com.axelor.apps.stock.db.StockMoveLine',
-  });
-
-  const {supplierArrivalLine} = useSelector(state => state.supplierArrivalLine);
 
   return (
     <FormHtmlInput
       title={I18n.t(titleKey)}
       onChange={onChange}
-      defaultValue={supplierArrivalLine?.description}
-      readonly={isReadonly || readonly}
+      defaultValue={value}
+      readonly={readonly}
     />
   );
 };

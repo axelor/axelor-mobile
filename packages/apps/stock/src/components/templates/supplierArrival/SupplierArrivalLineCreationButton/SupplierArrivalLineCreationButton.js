@@ -64,14 +64,12 @@ const SupplierArrivalLineCreationButton = ({
     navigateBackToDetails();
   }, [
     dispatch,
-    supplierArrival.id,
-    supplierArrival.version,
-    product.id,
-    product.unit?.id,
+    supplierArrival,
+    product,
     trackingNumber,
     realQty,
-    conformity?.id,
-    toStockLocation?.id,
+    conformity,
+    toStockLocation,
     description,
     navigateBackToDetails,
   ]);

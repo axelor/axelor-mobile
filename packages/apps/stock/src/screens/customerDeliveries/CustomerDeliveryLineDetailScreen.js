@@ -217,6 +217,7 @@ const CustomerDeliveryLineDetailScreen = ({route, navigation}) => {
             readonly ||
             customerDelivery?.statusSelect === StockMove?.statusSelect.Realized
           }
+          value={customerDeliveryLine?.description}
         />
       </KeyboardAvoidingScrollView>
     </Screen>

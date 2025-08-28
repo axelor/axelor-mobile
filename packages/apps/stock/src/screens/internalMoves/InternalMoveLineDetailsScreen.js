@@ -260,6 +260,7 @@ const InternalMoveLineDetailsScreen = ({navigation, route}) => {
             readonly ||
             internalMove.statusSelect === StockMove?.statusSelect.Realized
           }
+          value={internalMoveLine?.description}
         />
       </KeyboardAvoidingScrollView>
     </Screen>

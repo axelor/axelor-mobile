@@ -61,14 +61,12 @@ const CustomerDeliveryLineCreationButton = ({
 
     navigateBackToDetails();
   }, [
-    customerDelivery.id,
-    customerDelivery.version,
+    customerDelivery,
     description,
     dispatch,
-    fromStockLocation?.id,
+    fromStockLocation,
     navigateBackToDetails,
-    product.id,
-    product.unit?.id,
+    product,
     realQty,
     trackingNumber,
   ]);

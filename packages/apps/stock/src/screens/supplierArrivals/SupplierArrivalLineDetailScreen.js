@@ -290,7 +290,7 @@ const SupplierArrivalLineDetailScreen = ({route, navigation}) => {
           isScrollViewContainer={true}
         />
         <SupplierArrivalLineDescription
-          value={description}
+          value={supplierArrivalLine?.description}
           onChange={setDescription}
           readonly={
             readonly ||

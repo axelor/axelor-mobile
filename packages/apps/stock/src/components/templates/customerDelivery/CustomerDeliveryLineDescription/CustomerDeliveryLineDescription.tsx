@@ -18,11 +18,7 @@
 
 import React from 'react';
 import {FormHtmlInput} from '@axelor/aos-mobile-ui';
-import {
-  usePermitted,
-  useSelector,
-  useTranslator,
-} from '@axelor/aos-mobile-core';
+import {useTranslator} from '@axelor/aos-mobile-core';
 
 interface CustomerDeliveryNotesProps {
   titleKey?: string;
@@ -34,23 +30,17 @@ interface CustomerDeliveryNotesProps {
 const CustomerDeliveryLineDescription = ({
   titleKey = 'Base_Description',
   readonly = false,
+  value,
   onChange,
 }: CustomerDeliveryNotesProps) => {
   const I18n = useTranslator();
-  const {readonly: isReadonly} = usePermitted({
-    modelName: 'com.axelor.apps.stock.db.StockMoveLine',
-  });
-
-  const {customerDeliveryLine} = useSelector(
-    state => state.customerDeliveryLine,
-  );
 
   return (
     <FormHtmlInput
       title={I18n.t(titleKey)}
       onChange={onChange}
-      defaultValue={customerDeliveryLine?.description}
-      readonly={isReadonly || readonly}
+      defaultValue={value}
+      readonly={readonly}
     />
   );
 };
