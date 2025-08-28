@@ -22,6 +22,7 @@ import {useDispatch, useSelector} from '@axelor/aos-mobile-core';
 import {HeaderContainer, Screen, ScrollView} from '@axelor/aos-mobile-ui';
 import {
   PartnerActionCard,
+  PartnerLinkCards,
   SaleOrderBottomButton,
   SaleOrderDropdownCards,
   SaleOrderHeader,
@@ -73,11 +74,20 @@ const SaleOrderDetailsScreen = ({route}) => {
           style={styles.marginBottom}
           saleOrder={saleOrder}
         />
-        <PartnerActionCard partner={saleOrder.clientPartner} />
         <PartnerActionCard
-          style={styles.marginBottom}
+          partner={saleOrder.clientPartner}
+          showAddressAction
+          showPhoneAction={saleOrder.contactPartner == null}
+        />
+        <PartnerActionCard
           partner={saleOrder.contactPartner}
+          showPhoneAction
           isContact
+        />
+        <PartnerLinkCards
+          clientPartner={saleOrder.clientPartner}
+          invoicedPartner={saleOrder.invoicedPartner}
+          deliveredPartner={saleOrder.deliveredPartner}
         />
         <SaleOrderDropdownCards saleOrder={saleOrder} />
         <SaleOrderSeeLinesButton numberLines={totalSaleOrderLine} />

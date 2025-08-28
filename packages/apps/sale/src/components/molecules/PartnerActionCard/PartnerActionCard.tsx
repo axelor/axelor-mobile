@@ -38,12 +38,16 @@ interface PartnerActionCardProps {
   style?: any;
   partner: PartnerProps;
   isContact?: boolean;
+  showAddressAction?: boolean;
+  showPhoneAction?: boolean;
 }
 
 const PartnerActionCard = ({
   style,
   partner,
   isContact = false,
+  showAddressAction = false,
+  showPhoneAction = false,
 }: PartnerActionCardProps) => {
   const I18n = useTranslator();
 
@@ -53,7 +57,7 @@ const PartnerActionCard = ({
         iconName: 'telephone-fill',
         helper: I18n.t('Sale_Call'),
         hidden:
-          !isContact ||
+          !showPhoneAction ||
           (partner?.mobilePhone == null && partner?.fixedPhone == null),
         onPress: () =>
           linkingProvider.openCallApp(
@@ -63,11 +67,11 @@ const PartnerActionCard = ({
       {
         iconName: 'geo-alt-fill',
         helper: I18n.t('Sale_OpenMap'),
-        hidden: partner?.mainAddress == null,
+        hidden: !showAddressAction || partner?.mainAddress == null,
         onPress: () => linkingProvider.openMapApp(partner.mainAddress.fullName),
       },
     ],
-    [I18n, isContact, partner],
+    [I18n, partner, showAddressAction, showPhoneAction],
   );
 
   if (isEmpty(partner)) {
