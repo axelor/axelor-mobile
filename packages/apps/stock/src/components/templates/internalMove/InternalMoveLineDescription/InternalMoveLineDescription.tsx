@@ -17,7 +17,7 @@
  */
 
 import React from 'react';
-import {FormHtmlInput, NotesCard} from '@axelor/aos-mobile-ui';
+import {FormHtmlInput} from '@axelor/aos-mobile-ui';
 import {
   usePermitted,
   useSelector,
@@ -42,20 +42,12 @@ const InternalMoveLineDescription = ({
 
   const {internalMoveLine} = useSelector(state => state.internalMoveLine);
 
-  if (isReadonly || readonly) {
-    return (
-      <NotesCard
-        title={I18n.t(titleKey)}
-        data={internalMoveLine?.description}
-      />
-    );
-  }
-
   return (
     <FormHtmlInput
-      title={I18n.t('Base_Description')}
+      title={I18n.t(titleKey)}
       onChange={onChange}
       defaultValue={internalMoveLine?.description}
+      readonly={isReadonly || readonly}
     />
   );
 };

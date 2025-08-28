@@ -142,7 +142,7 @@ const InternalMoveLineDetailsScreen = ({navigation, route}) => {
       setUnit(internalMoveLine.unit);
       setFromStockLocation(internalMoveLine.fromStockLocation);
       setToStockLocation(internalMoveLine.toStockLocation);
-      +setDescription(internalMoveLine.description ?? '');
+      setDescription(internalMoveLine.description ?? '');
     }
   }, [internalMoveLine, internalMove]);
 
