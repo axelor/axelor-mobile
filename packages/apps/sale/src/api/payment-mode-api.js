@@ -21,10 +21,25 @@ import {
   getSearchCriterias,
 } from '@axelor/aos-mobile-core';
 
+const IN_PAYMENT_MODE = 1;
+
+const createPaymentModeCriteria = searchValue => {
+  const criteria = [
+    {
+      fieldName: 'inOutSelect',
+      operator: '=',
+      value: IN_PAYMENT_MODE,
+    },
+    getSearchCriterias('sale_paymentMode', searchValue),
+  ];
+
+  return criteria;
+};
+
 export async function searchPaymentMode({searchValue, page = 0, filterDomain}) {
   return createStandardSearch({
     model: 'com.axelor.apps.account.db.PaymentMode',
-    criteria: [getSearchCriterias('sale_paymentMode', searchValue)],
+    criteria: createPaymentModeCriteria(searchValue),
     fieldKey: 'sale_paymentMode',
     sortKey: 'sale_paymentMode',
     page,
