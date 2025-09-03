@@ -20,21 +20,8 @@ import React from 'react';
 import {shallow} from 'enzyme';
 import App from '../src/App';
 
-jest.mock('../packages/core/lib/app/index', () => ({
-  schemaContructor: {
-    mixed: jest.fn(),
-    string: jest.fn(),
-    boolean: jest.fn(),
-    date: jest.fn(),
-    array: () => ({
-      of: jest.fn(),
-    }),
-    object: jest.fn(),
-    subObject: () => ({
-      concat: jest.fn(),
-    }),
-    number: jest.fn(),
-  },
+jest.mock('@axelor/aos-mobile-core', () => ({
+  Application: ({children}) => children ?? null,
 }));
 
 describe('Appplication', () => {

@@ -22,6 +22,65 @@ import 'react-native/jest/setup';
 
 jest.useFakeTimers();
 
+const fs = require('fs');
+const path = require('path');
+
+const appsPackagesDir = path.resolve(__dirname, '../packages/apps');
+
+const getModuleExportName = moduleDir => {
+  const candidates = [
+    path.join(appsPackagesDir, moduleDir, 'src', 'index.ts'),
+    path.join(appsPackagesDir, moduleDir, 'src', 'index.tsx'),
+    path.join(appsPackagesDir, moduleDir, 'src', 'index.js'),
+  ];
+
+  for (const candidate of candidates) {
+    if (fs.existsSync(candidate)) {
+      const content = fs.readFileSync(candidate, 'utf8');
+      const match = content.match(/export const (\w+)Module\b/);
+      if (match) {
+        return `${match[1]}Module`;
+      }
+    }
+  }
+
+  const defaultName = moduleDir
+    .split(/[-_]/)
+    .filter(Boolean)
+    .map(segment => segment.charAt(0).toUpperCase() + segment.slice(1))
+    .join('');
+
+  return `${defaultName || 'Module'}Module`;
+};
+
+if (fs.existsSync(appsPackagesDir)) {
+  fs.readdirSync(appsPackagesDir, {withFileTypes: true})
+    .filter(dirent => dirent.isDirectory())
+    .forEach(dirent => {
+      const moduleDir = dirent.name;
+      const packageJsonPath = path.join(
+        appsPackagesDir,
+        moduleDir,
+        'package.json',
+      );
+
+      if (!fs.existsSync(packageJsonPath)) {
+        return;
+      }
+
+      const {name: packageName} = require(packageJsonPath);
+      const exportName = getModuleExportName(moduleDir);
+      const mockExportName = exportName;
+      const mockModuleDir = moduleDir;
+
+      jest.doMock(packageName, () => ({
+        [mockExportName]: {
+          name: `mock-${mockModuleDir}`,
+        },
+      }));
+    });
+}
+
 jest.mock('react-native', () => {
   const RN = jest.requireActual('react-native');
 
@@ -112,12 +171,6 @@ jest.mock(
   }),
   {virtual: true},
 );
-
-jest.mock('react-native-pell-rich-editor', () => ({
-  actions: jest.fn(),
-  RichEditor: jest.fn(),
-  RichToolbar: jest.fn(),
-}));
 
 jest.mock('react-native-reanimated', () => {
   const View = require('react-native').View;

@@ -31,10 +31,9 @@
     "react-native": "*",
     "react-native-gifted-charts": "1.4.59",
     "react-native-linear-gradient": "2.8.3",
-    "react-native-pell-rich-editor": "1.9.0",
     "react-native-svg": "15.11.2",
     "react-native-system-navigation-bar": "2.2.0",
-    "react-native-webview": "11.26.1"
+    "react-native-webview": "^13.8.4"
   },
   "devDependencies": {
     "@babel/runtime": "^7.25.0",
@@ -54,10 +53,9 @@
     "react-native": "0.76.9",
     "react-native-gifted-charts": "1.4.59",
     "react-native-linear-gradient": "2.8.3",
-    "react-native-pell-rich-editor": "1.9.0",
     "react-native-svg": "15.11.2",
     "react-native-system-navigation-bar": "2.2.0",
-    "react-native-webview": "11.26.1"
+    "react-native-webview": "^13.8.4"
   },
   "resolutions": {
     "@types/react": "^18.3.20"

@@ -16,18 +16,16 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import React, {useCallback, useEffect, useRef, useState} from 'react';
-import {View, ScrollView} from 'react-native';
-import {actions, RichEditor, RichToolbar} from 'react-native-pell-rich-editor';
-import {OUTSIDE_INDICATOR, useClickOutside} from '../../../hooks';
+import React, {useCallback, useEffect, useMemo, useRef, useState} from 'react';
+import {View, ScrollView, Keyboard} from 'react-native';
+import {WebView} from 'react-native-webview';
+import {buildQuillHtml} from './quillTemplate';
 import {useThemeColor} from '../../../theme';
 import {Text} from '../../atoms';
-
-// NOTE: documentation https://www.npmjs.com/package/react-native-pell-rich-editor
+import {InteractionManager} from 'react-native';
 
 interface HtmlInputProps {
   style?: any;
-  styleToolbar?: any;
   containerStyle?: any;
   editorBackgroundColor?: string;
   title?: string;
@@ -42,7 +40,6 @@ interface HtmlInputProps {
 
 const HtmlInput = ({
   style,
-  styleToolbar,
   containerStyle,
   editorBackgroundColor,
   title,
@@ -55,100 +52,158 @@ const HtmlInput = ({
   onBlur = () => {},
 }: HtmlInputProps) => {
   const Colors = useThemeColor();
-  const editor = useRef(null);
   const wrapperRef = useRef(null);
-  const clickOutside = useClickOutside({wrapperRef});
+  const webviewRef = useRef<any>(null);
 
-  const [editorAttached, setEditorAttached] = useState(false);
   const [key, setKey] = useState(defaultInput);
-  const [isFocused, setIsFocused] = useState(false);
+  const lastSelfValueRef = useRef<string | null>(null);
+  const changeTimerRef = useRef<any>(null);
+  const [ready, setReady] = useState(false);
+  const [initialHTML, setInitialHTML] = useState<string>(defaultInput ?? '');
+  const onChangeRef = useRef(onChange);
+  const onFocusRef = useRef(onFocus);
+  const onBlurRef = useRef(onBlur);
+  const hasFocusRef = useRef(false);
 
-  const editorInitializedCallback = () => {
-    setEditorAttached(true);
-  };
+  useEffect(() => {
+    onChangeRef.current = onChange;
+  }, [onChange]);
 
-  const handleFocus = useCallback(() => {
-    setIsFocused(true);
-    onFocus();
+  useEffect(() => {
+    onFocusRef.current = onFocus;
   }, [onFocus]);
 
-  const handleBlur = useCallback(() => {
-    setIsFocused(false);
-    onBlur();
+  useEffect(() => {
+    onBlurRef.current = onBlur;
   }, [onBlur]);
 
   useEffect(() => {
-    if (editor.current && (defaultInput == null || defaultInput === '')) {
-      editor.current.setContentHTML('');
-      if (editor.current.isKeyboardOpen) {
-        editor.current.dismissKeyboard();
-      }
+    const task = InteractionManager.runAfterInteractions(() => {
+      setReady(true);
+    });
+    return () => task.cancel?.();
+  }, []);
+
+  useEffect(() => {
+    const incoming = defaultInput ?? '';
+    if (
+      lastSelfValueRef.current != null &&
+      incoming === lastSelfValueRef.current
+    ) {
+      return;
     }
+    setKey(incoming);
+    setInitialHTML(incoming);
   }, [defaultInput]);
 
-  useEffect(() => {
-    if (!isFocused) {
-      setKey(defaultInput);
+  const handleHtmlChange = useCallback((html: string) => {
+    lastSelfValueRef.current = html ?? '';
+    if (changeTimerRef.current) {
+      clearTimeout(changeTimerRef.current);
+      changeTimerRef.current = null;
     }
-  }, [defaultInput, isFocused]);
+    changeTimerRef.current = setTimeout(() => {
+      onChangeRef.current(html);
+    }, 120);
+  }, []);
 
   useEffect(() => {
-    if (clickOutside === OUTSIDE_INDICATOR && isFocused) {
-      editor.current?.blurContentEditor?.();
+    return () => {
+      if (changeTimerRef.current) clearTimeout(changeTimerRef.current);
+    };
+  }, []);
+
+  const blurEditor = useCallback(() => {
+    try {
+      webviewRef.current?.injectJavaScript(
+        'window.__axelorQuill?.blur?.(); true;',
+      );
+    } catch {}
+  }, []);
+
+  const handleWrapperTouch = useCallback(() => {
+    if (hasFocusRef.current) {
+      blurEditor();
     }
-  }, [clickOutside, isFocused]);
+  }, [blurEditor]);
+
+  useEffect(() => {
+    const hideListener = Keyboard.addListener('keyboardDidHide', () => {
+      if (hasFocusRef.current) {
+        blurEditor();
+      }
+    });
+    return () => hideListener.remove();
+  }, [blurEditor]);
+
+  const webStyle = useMemo(
+    () => [
+      {
+        backgroundColor: editorBackgroundColor || Colors.backgroundColor,
+        width: '100%',
+        height: 200,
+        minHeight: 40,
+      } as any,
+    ],
+    [editorBackgroundColor, Colors.backgroundColor],
+  );
+  const html = useMemo(() => {
+    return buildQuillHtml({
+      initialHtml: initialHTML,
+      placeholder,
+      readOnly: readonly,
+      pinToolbar: true,
+      colors: {
+        background: editorBackgroundColor || Colors.backgroundColor,
+        text: Colors.text,
+        placeholder: Colors.placeholderTextColor,
+        accent: Colors.primaryColor.background,
+      },
+    });
+  }, [initialHTML, placeholder, readonly, editorBackgroundColor, Colors]);
 
   return (
     <ScrollView
       ref={wrapperRef}
       testID="htmlInputScrollView"
-      contentContainerStyle={containerStyle}>
-      <ScrollView testID="htmlInputInnerScroll" style={style}>
-        <View>
-          {title != null ? <Text>{title}</Text> : null}
-          <RichEditor
+      keyboardShouldPersistTaps="always"
+      contentContainerStyle={containerStyle}
+      onTouchStart={handleWrapperTouch}>
+      <View testID="htmlInputInnerScroll" style={style}>
+        {title != null ? <Text>{title}</Text> : null}
+        {ready ? (
+          <WebView
             key={key}
-            ref={editor}
-            placeholder={placeholder}
-            androidHardwareAccelerationDisabled={true}
-            androidLayerType="software"
-            initialContentHTML={defaultInput}
-            onChange={onChange}
-            disabled={readonly}
-            // eslint-disable-next-line react-native/no-inline-styles
-            editorStyle={{
-              backgroundColor: editorBackgroundColor || Colors.backgroundColor,
-              color: Colors.text,
-              placeholderColor: Colors.placeholderTextColor,
-              contentCSSText: 'word-wrap: break-word',
+            originWhitelist={['*']}
+            source={{html}}
+            ref={webviewRef}
+            onMessage={e => {
+              try {
+                const data = JSON.parse(e.nativeEvent.data);
+                if (data?.type === 'onChange') handleHtmlChange(data.message);
+                if (data?.type === 'onHeight') {
+                  const next = Number(data.message);
+                  if (!Number.isNaN(next)) onHeightChange(next);
+                }
+                if (data?.type === 'onFocus') {
+                  hasFocusRef.current = true;
+                  onFocusRef.current?.();
+                }
+                if (data?.type === 'onBlur') {
+                  hasFocusRef.current = false;
+                  onBlurRef.current?.();
+                }
+              } catch {}
             }}
-            onHeightChange={onHeightChange}
-            onFocus={handleFocus}
-            onBlur={handleBlur}
-            editorInitializedCallback={editorInitializedCallback}
+            javaScriptEnabled
+            keyboardDisplayRequiresUserAction={false}
+            androidLayerType="software"
+            nestedScrollEnabled
+            overScrollMode="always"
+            style={webStyle}
           />
-        </View>
-      </ScrollView>
-      {!readonly && editorAttached && (
-        <RichToolbar
-          style={styleToolbar}
-          editor={editor}
-          selectedIconTint={Colors.primaryColor.background}
-          iconTint={Colors.text}
-          actions={[
-            actions.setBold,
-            actions.setItalic,
-            actions.insertBulletsList,
-            actions.insertOrderedList,
-            actions.insertLink,
-            actions.setStrikethrough,
-            actions.setUnderline,
-            actions.checkboxList,
-            actions.undo,
-            actions.redo,
-          ]}
-        />
-      )}
+        ) : null}
+      </View>
     </ScrollView>
   );
 };

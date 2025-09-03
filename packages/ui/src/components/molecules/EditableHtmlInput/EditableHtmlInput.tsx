@@ -68,7 +68,6 @@ const EditableHtmlInput = ({
         style={[commonStyles.filter, commonStyles.filterAlign, styles.content]}>
         <HtmlInput
           style={styles.htmlInput}
-          styleToolbar={styles.htmlToolBar}
           placeholder={placeholder}
           defaultInput={value}
           readonly={readonly || isEditable}
@@ -103,10 +102,6 @@ const styles = StyleSheet.create({
   htmlInput: {
     fontSize: 14,
     flex: 1,
-  },
-  htmlToolBar: {
-    backgroundColor: null,
-    marginLeft: -5,
   },
 });
 
