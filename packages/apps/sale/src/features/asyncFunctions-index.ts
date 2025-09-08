@@ -57,3 +57,4 @@ export {
   fetchSaleOrderById,
   updateSaleOrderStatus,
 } from './saleOrderSlice';
+export {searchDeliveryPartnerLinks} from './partnerLinkSlice';

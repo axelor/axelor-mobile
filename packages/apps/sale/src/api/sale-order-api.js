@@ -102,13 +102,18 @@ export async function updateSaleOrderStatus({
   });
 }
 
-export async function createSaleOrder({saleOrderLineList, customerId}) {
+export async function createSaleOrder({
+  saleOrderLineList,
+  customerId,
+  deliveredPartnerId,
+}) {
   return getActionApi().send({
     url: '/ws/aos/sale-order',
     method: 'post',
     body: {
       saleOrderLineList,
       clientPartnerId: customerId,
+      deliveredPartnerId,
     },
     description: 'Create Sale Order',
     matchers: {
@@ -117,6 +122,7 @@ export async function createSaleOrder({saleOrderLineList, customerId}) {
       fields: {
         saleOrderLineList: 'saleOrderLineList',
         clientPartnerId: 'clientPartnerId',
+        deliveredPartnerId: 'deliveredPartnerId',
       },
     },
   });

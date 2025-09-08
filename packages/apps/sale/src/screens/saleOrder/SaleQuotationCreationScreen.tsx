@@ -16,9 +16,13 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import React, {useState} from 'react';
+import React, {useMemo, useState} from 'react';
 import {StyleSheet} from 'react-native';
-import {usePermitted, useTranslator} from '@axelor/aos-mobile-core';
+import {
+  usePermitted,
+  useSelector,
+  useTranslator,
+} from '@axelor/aos-mobile-core';
 import {
   Label,
   Screen,
@@ -27,6 +31,7 @@ import {
 } from '@axelor/aos-mobile-ui';
 import {
   CustomerSearchBar,
+  DeliveredPartnerSearchBar,
   ProductSearchBar,
   SaleQuotationCreationButtons,
   SaleQuotationCreationQuantityCard,
@@ -46,6 +51,13 @@ const SaleQuotationCreationScreen = ({route}) => {
   const [product, setProduct] = useState(null);
   const [productQty, setProductQty] = useState(0);
   const [isEditionMode, setIsEditionMode] = useState(false);
+  const [deliveredPartner, setDeliveredPartner] = useState<any>(null);
+
+  const {base: baseConfig} = useSelector((state: any) => state.appConfig);
+  const partnerRelationsEnabled = useMemo(
+    () => Boolean(baseConfig?.activatePartnerRelations),
+    [baseConfig?.activatePartnerRelations],
+  );
 
   const handleAddLine = () => {
     setLines(prevLines => {
@@ -101,12 +113,28 @@ const SaleQuotationCreationScreen = ({route}) => {
           addProduct={handleAddLine}
           lines={lines}
           customerId={customer?.id}
+          deliveredPartnerId={deliveredPartner?.id}
+          requireDeliveredPartner={partnerRelationsEnabled}
         />
       }>
       <ScrollView style={styles.container}>
-        <CustomerSearchBar defaultValue={customer} onChange={setCustomer} />
+        <CustomerSearchBar
+          defaultValue={customer}
+          onChange={cust => {
+            setCustomer(cust);
+            setDeliveredPartner(null);
+          }}
+        />
         {customer && (
           <>
+            {partnerRelationsEnabled && (
+              <DeliveredPartnerSearchBar
+                customer={customer}
+                defaultValue={deliveredPartner}
+                onChange={setDeliveredPartner}
+                required
+              />
+            )}
             <ViewAllEditList
               title={I18n.t('Sale_Products')}
               lines={lines.map(line => ({

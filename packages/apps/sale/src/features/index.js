@@ -27,3 +27,4 @@ export {productReducer as sale_product} from './productSlice';
 export {saleConfigReducer as sale_saleConfig} from './saleConfigSlice';
 export {saleOrderLineReducer as sale_saleOrderLine} from './saleOrderLineSlice';
 export {saleOrderReducer as sale_saleOrder} from './saleOrderSlice';
+export {partnerLinkReducer as sale_partnerLink} from './partnerLinkSlice';

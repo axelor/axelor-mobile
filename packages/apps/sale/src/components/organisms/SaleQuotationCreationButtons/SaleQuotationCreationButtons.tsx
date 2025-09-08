@@ -32,6 +32,8 @@ interface SaleQuotationCreationButtonsProps {
   addProduct: () => void;
   lines: any[];
   customerId: number;
+  deliveredPartnerId?: number;
+  requireDeliveredPartner?: boolean;
 }
 
 const SaleQuotationCreationButtons = ({
@@ -41,6 +43,8 @@ const SaleQuotationCreationButtons = ({
   addProduct,
   lines,
   customerId,
+  deliveredPartnerId,
+  requireDeliveredPartner = false,
 }: SaleQuotationCreationButtonsProps) => {
   const Colors = useThemeColor();
   const I18n = useTranslator();
@@ -55,6 +59,7 @@ const SaleQuotationCreationButtons = ({
           quantity: line.qty,
         })),
         customerId,
+        deliveredPartnerId,
       }),
     );
 
@@ -80,6 +85,7 @@ const SaleQuotationCreationButtons = ({
         title={I18n.t('Base_Realize')}
         iconName="check-lg"
         width="90%"
+        disabled={requireDeliveredPartner && deliveredPartnerId == null}
         onPress={handleRealizePress}
       />
     );

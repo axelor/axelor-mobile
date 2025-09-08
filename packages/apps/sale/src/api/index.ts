@@ -60,3 +60,4 @@ export {
   fetchSaleOrderLine as fetchSaleOrderLineApi,
   fetchSaleOrderLineById as fetchSaleOrderLineByIdApi,
 } from './sale-order-line-api';
+export {searchDeliveryPartnerLinks as searchDeliveryPartnerLinksApi} from './partner-link-api';

@@ -25,3 +25,4 @@ export {default as ProductDropdownCard} from './ProductDropdownCard/ProductDropd
 export {default as ProductSearchBar} from './ProductSearchBar/ProductSearchBar';
 export {default as SaleQuotationCreationButtons} from './SaleQuotationCreationButtons/SaleQuotationCreationButtons';
 export {default as SaleQuotationCreationQuantityCard} from './SaleQuotationCreationQuantityCard/SaleQuotationCreationQuantityCard';
+export {default as DeliveredPartnerSearchBar} from './DeliveredPartnerSearchBar/DeliveredPartnerSearchBar';
