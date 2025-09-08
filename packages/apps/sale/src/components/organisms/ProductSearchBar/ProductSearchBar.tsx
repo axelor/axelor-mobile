@@ -23,35 +23,43 @@ import {
   useTranslator,
 } from '@axelor/aos-mobile-core';
 import {searchProduct} from '../../../features/productSlice';
-import {useSellableByCompany} from '../../../hooks/use-product-by-company';
 import {searchAlternativeBarcode} from '../../../features/alternativeBarcodeSlice';
-
-const barCodeScanKey = 'product_sale_bar-code_product-search-bar';
+import {useSellableByCompany} from '../../../hooks/use-product-by-company';
 
 interface ProductSearchBarProps {
-  placeholderKey?: string;
+  style?: any;
+  title?: string;
+  showTitle?: boolean;
   defaultValue?: string;
   onChange?: (value: any) => void;
+  readonly?: boolean;
+  required?: boolean;
   scanKey: string;
   showDetailsPopup?: boolean;
   navigate?: boolean;
   oneFilter?: boolean;
   isFocus?: boolean;
   changeScreenAfter?: boolean;
+  selectLastItem?: boolean;
   isScrollViewContainer?: boolean;
   onFetchDataAction?: (searchValue: string) => void;
 }
 
 const ProductSearchBar = ({
-  placeholderKey = 'Sale_Product',
-  defaultValue = '',
-  onChange = () => {},
+  style,
+  title = 'Sale_Product',
+  showTitle = true,
+  defaultValue,
+  onChange,
+  readonly = false,
+  required = false,
   scanKey,
   showDetailsPopup = true,
   navigate = false,
   oneFilter = false,
-  isFocus = false,
+  isFocus = true,
   changeScreenAfter = false,
+  selectLastItem = true,
   isScrollViewContainer = false,
   onFetchDataAction,
 }: ProductSearchBarProps) => {
@@ -90,8 +98,14 @@ const ProductSearchBar = ({
 
   return (
     <DoubleScannerSearchBar
+      style={style}
+      title={showTitle && I18n.t(title)}
       value={defaultValue}
-      placeholderSearchBar={I18n.t(placeholderKey)}
+      required={required}
+      readonly={readonly}
+      onChangeValue={onChange}
+      displayValue={displayItemName}
+      placeholderSearchBar={I18n.t(title)}
       onFetchDataAction={onFetchDataAction}
       sliceFunction={searchProduct}
       sliceFunctionData={sliceFunctionData}
@@ -99,16 +113,15 @@ const ProductSearchBar = ({
       loadingList={loadingList}
       moreLoading={moreLoading}
       isListEnd={isListEnd}
-      onChangeValue={onChange}
-      displayValue={displayItemName}
       scanKeySearch={scanKey}
       showDetailsPopup={showDetailsPopup}
       navigate={navigate}
       oneFilter={oneFilter}
       isFocus={isFocus}
+      selectLastItem={selectLastItem}
       changeScreenAfter={changeScreenAfter}
       sliceBarCodeFunction={searchAlternativeBarcode}
-      scanKeyBarCode={barCodeScanKey}
+      scanKeyBarCode={`${scanKey}_alternative-barcode`}
       displayBarCodeInput={baseConfig?.enableMultiBarcodeOnProducts}
       isScrollViewContainer={isScrollViewContainer}
     />

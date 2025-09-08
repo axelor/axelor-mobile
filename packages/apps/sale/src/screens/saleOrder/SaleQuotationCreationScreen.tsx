@@ -119,7 +119,13 @@ const SaleQuotationCreationScreen = ({route}) => {
               handleEditLine={handleEditLine}
               translator={I18n.t}
             />
-            {product ? (
+            <ProductSearchBar
+              scanKey={productScanKey}
+              defaultValue={product}
+              onChange={setProduct}
+              isScrollViewContainer
+            />
+            {product && (
               <SaleQuotationCreationQuantityCard
                 productQty={productQty}
                 setProductQty={setProductQty}
@@ -128,12 +134,6 @@ const SaleQuotationCreationScreen = ({route}) => {
                   setProductQty(0);
                 }}
                 productName={product?.name}
-              />
-            ) : (
-              <ProductSearchBar
-                scanKey={productScanKey}
-                onChange={setProduct}
-                isScrollViewContainer
               />
             )}
           </>

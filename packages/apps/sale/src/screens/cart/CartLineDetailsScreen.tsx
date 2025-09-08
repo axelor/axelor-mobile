@@ -96,6 +96,7 @@ const CartLineDetailsScreen = ({route}) => {
         ) : (
           <ProductSearchBar
             scanKey={productScanKey}
+            defaultValue={product}
             onChange={setProduct}
             isScrollViewContainer
           />

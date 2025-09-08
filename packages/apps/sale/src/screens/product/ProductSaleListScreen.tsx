@@ -28,11 +28,11 @@ import {
   useTypes,
 } from '@axelor/aos-mobile-core';
 import {searchProduct} from '../../features/productSlice';
-import {ProductCard, ProductCategorySearchBar} from '../../components';
 import {searchAlternativeBarcode} from '../../features/alternativeBarcodeSlice';
+import {ProductCard, ProductCategorySearchBar} from '../../components';
 
 const productScanKey = 'product_sale_product-list';
-const barCodeScanKey = 'product_sale_bar-code_product-list';
+const barCodeScanKey = `${productScanKey}_alternative-barcode`;
 
 const ProductSaleListScreen = ({navigation}) => {
   const I18n = useTranslator();
@@ -122,7 +122,7 @@ const ProductSaleListScreen = ({navigation}) => {
             scanKeySearch={productScanKey}
             scanKeyBarCode={barCodeScanKey}
             showDetailsPopup={false}
-            selectLastItem={false}
+            oneFilter
           />
         }
         headerChildren={
