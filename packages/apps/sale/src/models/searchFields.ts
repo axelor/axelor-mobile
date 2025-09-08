@@ -22,6 +22,7 @@ export const sale_searchFields: SearchFields = {
   sale_product: [
     'name',
     'code',
+    'serialNumber',
     'productFamily.name',
     'productCategory.name',
     'description',
