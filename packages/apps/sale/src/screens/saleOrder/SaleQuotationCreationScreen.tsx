@@ -32,6 +32,8 @@ import {
   SaleQuotationCreationQuantityCard,
 } from '../../components';
 
+const productScanKey = 'product_sale_quotation-creation';
+
 const SaleQuotationCreationScreen = ({route}) => {
   const {clientPartner} = route?.params ?? {};
   const I18n = useTranslator();
@@ -117,7 +119,13 @@ const SaleQuotationCreationScreen = ({route}) => {
               handleEditLine={handleEditLine}
               translator={I18n.t}
             />
-            {product ? (
+            <ProductSearchBar
+              scanKey={productScanKey}
+              defaultValue={product}
+              onChange={setProduct}
+              isScrollViewContainer
+            />
+            {product && (
               <SaleQuotationCreationQuantityCard
                 productQty={productQty}
                 setProductQty={setProductQty}
@@ -126,12 +134,6 @@ const SaleQuotationCreationScreen = ({route}) => {
                   setProductQty(0);
                 }}
                 productName={product?.name}
-              />
-            ) : (
-              <ProductSearchBar
-                defaultValue={product}
-                onChange={setProduct}
-                isScrollViewContainer
               />
             )}
           </>
