@@ -146,6 +146,11 @@ const DoubleScannerSearchBar = ({
     checkNullString(_barCode) ? setBarCode(null) : setBarCode(_barCode);
   }, []);
 
+  useEffect(() => {
+    setSearchValue(value);
+    if (!value) setBarCode(null);
+  }, [value]);
+
   return (
     <View style={[styles.container, style]}>
       <View style={styles.searchContainer}>
