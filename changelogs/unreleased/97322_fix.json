@@ -1,0 +1,5 @@
+{
+  "title": "DoubleScannerSearchBar: add refresh on default value",
+  "type": "fix",
+  "packages": "core"
+}
