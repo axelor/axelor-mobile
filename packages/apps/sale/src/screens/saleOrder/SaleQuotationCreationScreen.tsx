@@ -21,6 +21,7 @@ import {StyleSheet} from 'react-native';
 import {
   usePermitted,
   useSelector,
+  useStudioApps,
   useTranslator,
 } from '@axelor/aos-mobile-core';
 import {
@@ -47,6 +48,7 @@ const SaleQuotationCreationScreen = ({route}) => {
   const {canCreate} = usePermitted({
     modelName: 'com.axelor.apps.sale.db.SaleOrder',
   });
+  const {checkAppInstallation} = useStudioApps();
 
   const [customer, setCustomer] = useState(clientPartner);
   const [lines, setLines] = useState([]);
@@ -98,6 +100,11 @@ const SaleQuotationCreationScreen = ({route}) => {
     setProductQty(line.qty);
   };
 
+  const isAccountEnabled = useMemo(
+    () => checkAppInstallation('supplychain'),
+    [checkAppInstallation],
+  );
+
   if (!canCreate) {
     return (
       <Label
@@ -144,14 +151,18 @@ const SaleQuotationCreationScreen = ({route}) => {
                 required
               />
             )}
-            <PaymentModeSearchBar
-              defaultValue={paymentMode}
-              onChange={setPaymentMode}
-            />
-            <PaymentConditionSearchBar
-              defaultValue={paymentCondition}
-              onChange={setPaymentCondition}
-            />
+            {isAccountEnabled && (
+              <PaymentModeSearchBar
+                defaultValue={paymentMode}
+                onChange={setPaymentMode}
+              />
+            )}
+            {isAccountEnabled && (
+              <PaymentConditionSearchBar
+                defaultValue={paymentCondition}
+                onChange={setPaymentCondition}
+              />
+            )}
             <ViewAllEditList
               title={I18n.t('Sale_Products')}
               lines={lines.map(line => ({
