@@ -31,6 +31,11 @@ const partnerModel = schemaContructor.object({
 });
 
 export const sale_modelAPI: ObjectFields = {
+  sale_partnerLink: schemaContructor.object({
+    partner1: schemaContructor.subObject(),
+    partner2: partnerModel,
+    partnerLinkType: schemaContructor.number(),
+  }),
   sale_saleConfig: schemaContructor.object({
     saleOrderInAtiSelect: schemaContructor.number(),
   }),
