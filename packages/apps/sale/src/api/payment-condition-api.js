@@ -16,21 +16,23 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-export {useStudioApps} from './use-app-installed';
-export * from './use-effect-debugger';
-export {useCurrencyFormat} from './use-currency-formatter';
-export {useMassScanner} from './use-mass-scanner';
-export {
-  useIsFocused,
-  useIsNavigationRoot,
-  useNavigation,
-  useNavigationRoutes,
-  useStackChecker,
-} from './use-navigation';
-export {useOutdatedVersion} from './use-outdated-version';
-export {
-  useScanActivator,
-  useScannerDeviceActivator,
-  useCameraScannerActivator,
-} from './use-scan-activator';
-export {useConfigUpdater, useStorageUpdater} from './use-storage-config';
+import {
+  createStandardSearch,
+  getSearchCriterias,
+} from '@axelor/aos-mobile-core';
+
+export async function searchPaymentCondition({
+  searchValue,
+  page = 0,
+  filterDomain,
+}) {
+  return createStandardSearch({
+    model: 'com.axelor.apps.account.db.PaymentCondition',
+    criteria: [getSearchCriterias('sale_paymentCondition', searchValue)],
+    fieldKey: 'sale_paymentCondition',
+    sortKey: 'sale_paymentCondition',
+    page,
+    provider: 'model',
+    filter: filterDomain,
+  });
+}

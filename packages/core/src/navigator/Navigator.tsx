@@ -24,7 +24,7 @@ import {useThemeColor} from '@axelor/aos-mobile-ui';
 import {useTranslator} from '../i18n';
 import {useDispatch, useSelector} from '../redux/hooks';
 import BaseScreen from '../screens';
-import {fetchMetaModules} from '../features/metaModuleSlice';
+import {fetchMetaModules, getAllStudioApp} from '../features/metaModuleSlice';
 import {fetchAllCurrencies} from '../features/currencySlice';
 import {fetchRequiredConfig} from '../features/appConfigSlice';
 import {usePermissionsFetcher} from '../permissions';
@@ -114,6 +114,7 @@ const Navigator = ({mainMenu, onRefresh, versionCheckConfig}) => {
 
   useEffect(() => {
     dispatch(fetchMetaModules());
+    dispatch(getAllStudioApp());
     dispatch((fetchAllCurrencies as any)());
     fetchAllPermission();
   }, [dispatch, fetchAllPermission]);

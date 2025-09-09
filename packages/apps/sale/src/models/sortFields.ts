@@ -27,4 +27,6 @@ export const sale_sortFields: SortFields = {
   sale_customerCategory: ['name'],
   sale_complementaryProduct: ['optional'],
   sale_priceListLine: ['priceList.title'],
+  sale_paymentMode: ['name'],
+  sale_paymentCondition: ['name'],
 };

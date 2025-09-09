@@ -220,6 +220,7 @@
   "Base_ServerMaintenance": "Le serveur ERP est actuellement en maintenance. Veuillez réessayer ultérieurement.",
   "Base_SliceAction_FetchFilesDetails": "récupération des détails du fichier",
   "Base_SliceAction_FetchMetaModule": "récupération des modules",
+  "Base_SliceAction_GetStudioApp": "récupération des applications studio",
   "Base_SliceAction_FetchMobileConfig": "récupération des configs mobile",
   "Base_SliceAction_CreateRecord": "création de l'objet",
   "Base_SliceAction_UpdateRecord": "mise à jour de l'objet",

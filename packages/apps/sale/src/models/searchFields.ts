@@ -41,4 +41,6 @@ export const sale_searchFields: SearchFields = {
     'partner2.partnerSeq',
     'partner2.name',
   ],
+  sale_paymentMode: ['name'],
+  sale_paymentCondition: ['name'],
 };

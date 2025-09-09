@@ -16,24 +16,34 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import {createStandardSearch} from '../apiProviders';
+import {
+  createStandardSearch,
+  getSearchCriterias,
+} from '@axelor/aos-mobile-core';
 
-export async function getAllMetaModules({}) {
-  return createStandardSearch({
-    model: 'com.axelor.meta.db.MetaModule',
-    fieldKey: 'core_module',
-    numberElementsByPage: null,
-    page: 0,
-    provider: 'model',
-  });
-}
+const IN_PAYMENT_MODE = 1;
 
-export async function getAllStudioApp({}) {
+const createPaymentModeCriteria = searchValue => {
+  const criteria = [
+    {
+      fieldName: 'inOutSelect',
+      operator: '=',
+      value: IN_PAYMENT_MODE,
+    },
+    getSearchCriterias('sale_paymentMode', searchValue),
+  ];
+
+  return criteria;
+};
+
+export async function searchPaymentMode({searchValue, page = 0, filterDomain}) {
   return createStandardSearch({
-    model: 'com.axelor.studio.db.App',
-    fieldKey: 'core_app',
-    numberElementsByPage: null,
-    page: 0,
+    model: 'com.axelor.apps.account.db.PaymentMode',
+    criteria: createPaymentModeCriteria(searchValue),
+    fieldKey: 'sale_paymentMode',
+    sortKey: 'sale_paymentMode',
+    page,
     provider: 'model',
+    filter: filterDomain,
   });
 }

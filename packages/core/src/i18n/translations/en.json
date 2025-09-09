@@ -220,6 +220,7 @@
   "Base_ServerMaintenance": "The ERP server is currently undergoing maintenance. Please try again later.",
   "Base_SliceAction_FetchFilesDetails": "fetch file details",
   "Base_SliceAction_FetchMetaModule": "fetch meta modules",
+  "Base_SliceAction_GetStudioApp": "fetch studio apps",
   "Base_SliceAction_FetchMobileConfig": "fetch mobile config",
   "Base_SliceAction_CreateRecord": "create record",
   "Base_SliceAction_UpdateRecord": "update record",
