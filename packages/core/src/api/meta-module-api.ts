@@ -27,3 +27,13 @@ export async function getAllMetaModules({}) {
     provider: 'model',
   });
 }
+
+export async function getAllStudioApp({}) {
+  return createStandardSearch({
+    model: 'com.axelor.studio.db.App',
+    fieldKey: 'core_app',
+    numberElementsByPage: null,
+    page: 0,
+    provider: 'model',
+  });
+}
