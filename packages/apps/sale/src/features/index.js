@@ -22,6 +22,7 @@ export {cartReducer as sale_cart} from './cartSlice';
 export {complementaryProductReducer as sale_complementaryProduct} from './complementaryProductSlice';
 export {customerDeliveryReducer as sale_customerDelivery} from './customerDeliverySlice';
 export {customerReducer as sale_customer} from './customerSlice';
+export {partnerLinkReducer as sale_partnerLink} from './partnerLinkSlice';
 export {priceListLineReducer as sale_priceListLine} from './priceListLineSlice';
 export {productReducer as sale_product} from './productSlice';
 export {saleConfigReducer as sale_saleConfig} from './saleConfigSlice';

@@ -186,5 +186,6 @@
   "Sale_SliceAction_CreateSaleOrder": "create sale quotation",
   "Sale_SliceAction_AddProductToActiveCart": "add product to active cart",
   "Sale_SliceAction_CreateCustomer": "create client",
-  "Sale_SliceAction_SearchAlternativeBarcode": "search for alternative barcodes"
+  "Sale_SliceAction_SearchAlternativeBarcode": "search for alternative barcodes",
+  "Sale_SliceAction_SearchDeliveryPartnerLinks": "search delivery partner links"
 }

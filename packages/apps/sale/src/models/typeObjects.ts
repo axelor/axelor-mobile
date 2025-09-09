@@ -333,4 +333,18 @@ export const sale_typeObjects: ModuleSelections = [
       },
     },
   },
+  {
+    modelName: 'com.axelor.apps.base.db.PartnerLink',
+    fields: {
+      partnerLinkType: {
+        content: [
+          {
+            key: 'Delivery',
+            value: 4,
+            title: null,
+          },
+        ],
+      },
+    },
+  },
 ];

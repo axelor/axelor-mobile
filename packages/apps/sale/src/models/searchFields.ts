@@ -35,4 +35,10 @@ export const sale_searchFields: SearchFields = {
   sale_priceListLine: ['priceList.title'],
   sale_cartLine: ['product.name', 'product.code'],
   sale_alternativeBarcode: ['serialNumber'],
+  sale_partnerLink: [
+    'partner2.fullName',
+    'partner2.simpleFullName',
+    'partner2.partnerSeq',
+    'partner2.name',
+  ],
 };
