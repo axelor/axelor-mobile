@@ -106,24 +106,52 @@ export async function createSaleOrder({
   saleOrderLineList,
   customerId,
   deliveredPartnerId,
+  paymentModeId,
+  paymentConditionId,
 }) {
-  return getActionApi().send({
-    url: '/ws/aos/sale-order',
-    method: 'post',
-    body: {
-      saleOrderLineList,
-      clientPartnerId: customerId,
-      deliveredPartnerId,
-    },
-    description: 'Create Sale Order',
-    matchers: {
-      modelName: 'com.axelor.apps.sale.db.SaleOrder',
-      id: Date.now(),
-      fields: {
-        saleOrderLineList: 'saleOrderLineList',
-        clientPartnerId: 'clientPartnerId',
-        deliveredPartnerId: 'deliveredPartnerId',
+  const body = {
+    saleOrderLineList,
+    clientPartnerId: customerId,
+    deliveredPartnerId,
+    paymentModeId,
+    paymentConditionId,
+  };
+
+  const fields = {
+    saleOrderLineList: 'saleOrderLineList',
+    clientPartnerId: 'clientPartner.id',
+    deliveredPartnerId: 'deliveredPartner.id',
+    paymentModeId: 'paymentMode.id',
+    paymentConditionId: 'paymentCondition.id',
+  };
+
+  return getActionApi()
+    .send({
+      url: 'ws/aos/supplychain/sale-order',
+      method: 'post',
+      body,
+      description: 'Create Sale Order (SupplyChain)',
+      matchers: {
+        modelName: 'com.axelor.apps.sale.db.SaleOrder',
+        id: Date.now(),
+        fields,
       },
-    },
-  });
+    })
+    .catch(e => {
+      if (e.response?.status === 404) {
+        return getActionApi().send({
+          url: 'ws/aos/sale-order',
+          method: 'post',
+          body,
+          description: 'Create Sale Order (Standard)',
+          matchers: {
+            modelName: 'com.axelor.apps.sale.db.SaleOrder',
+            id: Date.now(),
+            fields,
+          },
+        });
+      } else {
+        throw e;
+      }
+    });
 }

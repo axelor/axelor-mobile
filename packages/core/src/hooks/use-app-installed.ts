@@ -16,21 +16,22 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-export {useStudioApps} from './use-app-installed';
-export * from './use-effect-debugger';
-export {useCurrencyFormat} from './use-currency-formatter';
-export {useMassScanner} from './use-mass-scanner';
-export {
-  useIsFocused,
-  useIsNavigationRoot,
-  useNavigation,
-  useNavigationRoutes,
-  useStackChecker,
-} from './use-navigation';
-export {useOutdatedVersion} from './use-outdated-version';
-export {
-  useScanActivator,
-  useScannerDeviceActivator,
-  useCameraScannerActivator,
-} from './use-scan-activator';
-export {useConfigUpdater, useStorageUpdater} from './use-storage-config';
+import {useCallback, useMemo} from 'react';
+import {useSelector} from '../redux/hooks';
+
+export const useStudioApps = () => {
+  const {studioApps} = useSelector(state => state.metaModule);
+
+  const checkAppInstallation = useCallback(
+    (code: string) => {
+      if (!Array.isArray(studioApps)) {
+        return false;
+      }
+
+      return studioApps.find(_a => _a.code === code)?.active ?? false;
+    },
+    [studioApps],
+  );
+
+  return useMemo(() => ({checkAppInstallation}), [checkAppInstallation]);
+};

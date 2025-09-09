@@ -21,6 +21,7 @@ import {StyleSheet} from 'react-native';
 import {
   usePermitted,
   useSelector,
+  useStudioApps,
   useTranslator,
 } from '@axelor/aos-mobile-core';
 import {
@@ -35,6 +36,8 @@ import {
   ProductSearchBar,
   SaleQuotationCreationButtons,
   SaleQuotationCreationQuantityCard,
+  PaymentModeSearchBar,
+  PaymentConditionSearchBar,
 } from '../../components';
 
 const productScanKey = 'product_sale_quotation-creation';
@@ -45,6 +48,7 @@ const SaleQuotationCreationScreen = ({route}) => {
   const {canCreate} = usePermitted({
     modelName: 'com.axelor.apps.sale.db.SaleOrder',
   });
+  const {checkAppInstallation} = useStudioApps();
 
   const [customer, setCustomer] = useState(clientPartner);
   const [lines, setLines] = useState([]);
@@ -52,6 +56,8 @@ const SaleQuotationCreationScreen = ({route}) => {
   const [productQty, setProductQty] = useState(0);
   const [isEditionMode, setIsEditionMode] = useState(false);
   const [deliveredPartner, setDeliveredPartner] = useState<any>(null);
+  const [paymentMode, setPaymentMode] = useState(null);
+  const [paymentCondition, setPaymentCondition] = useState(null);
 
   const {base: baseConfig} = useSelector(state => state.appConfig);
 
@@ -94,6 +100,11 @@ const SaleQuotationCreationScreen = ({route}) => {
     setProductQty(line.qty);
   };
 
+  const isAccountEnabled = useMemo(
+    () => checkAppInstallation('supplychain'),
+    [checkAppInstallation],
+  );
+
   if (!canCreate) {
     return (
       <Label
@@ -116,6 +127,8 @@ const SaleQuotationCreationScreen = ({route}) => {
           customerId={customer?.id}
           deliveredPartnerId={deliveredPartner?.id}
           requireDeliveredPartner={partnerRelationsEnabled}
+          paymentModeId={paymentMode?.id}
+          paymentConditionId={paymentCondition?.id}
         />
       }>
       <ScrollView style={styles.container}>
@@ -124,6 +137,8 @@ const SaleQuotationCreationScreen = ({route}) => {
           onChange={cust => {
             setCustomer(cust);
             setDeliveredPartner(null);
+            setPaymentMode(cust?.inPaymentMode);
+            setPaymentCondition(cust?.paymentCondition);
           }}
         />
         {customer && (
@@ -134,6 +149,18 @@ const SaleQuotationCreationScreen = ({route}) => {
                 defaultValue={deliveredPartner}
                 onChange={setDeliveredPartner}
                 required
+              />
+            )}
+            {isAccountEnabled && (
+              <PaymentModeSearchBar
+                defaultValue={paymentMode}
+                onChange={setPaymentMode}
+              />
+            )}
+            {isAccountEnabled && (
+              <PaymentConditionSearchBar
+                defaultValue={paymentCondition}
+                onChange={setPaymentCondition}
               />
             )}
             <ViewAllEditList

@@ -18,7 +18,10 @@
 
 import {createAsyncThunk, createSlice} from '@reduxjs/toolkit';
 import {handlerApiCall} from '../apiProviders/utils';
-import {getAllMetaModules} from '../api/meta-module-api';
+import {
+  getAllMetaModules,
+  getAllStudioApp as _getAllStudioApp,
+} from '../api/meta-module-api';
 
 export const fetchMetaModules = createAsyncThunk(
   'metaModule/fetchMetaModules',
@@ -33,9 +36,25 @@ export const fetchMetaModules = createAsyncThunk(
   },
 );
 
+export const getAllStudioApp = createAsyncThunk(
+  'metaModule/getAllStudioApp',
+  async function (data = {}, {getState}) {
+    return handlerApiCall({
+      fetchFunction: _getAllStudioApp,
+      data,
+      action: 'Base_SliceAction_GetStudioApp',
+      getState,
+      responseOptions: {isArrayResponse: true},
+    });
+  },
+);
+
 const initialState = {
   loading: false,
   metaModules: [],
+
+  loadingApps: false,
+  studioApps: [],
 };
 
 const metaModuleSlice = createSlice({
@@ -45,9 +64,22 @@ const metaModuleSlice = createSlice({
     builder.addCase(fetchMetaModules.pending, state => {
       state.loading = true;
     });
+    builder.addCase(fetchMetaModules.rejected, state => {
+      state.loading = false;
+    });
     builder.addCase(fetchMetaModules.fulfilled, (state, action) => {
       state.loading = false;
       state.metaModules = action.payload;
+    });
+    builder.addCase(getAllStudioApp.pending, state => {
+      state.loadingApps = true;
+    });
+    builder.addCase(getAllStudioApp.rejected, state => {
+      state.loadingApps = false;
+    });
+    builder.addCase(getAllStudioApp.fulfilled, (state, action) => {
+      state.loadingApps = false;
+      state.studioApps = action.payload;
     });
   },
 });
