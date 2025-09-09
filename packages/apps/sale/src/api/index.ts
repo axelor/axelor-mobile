@@ -38,6 +38,7 @@ export {
   searchCustomerCategory as searchCustomerCategoryApi,
 } from './customer-api';
 export {fetchCustomerDelivery as fetchCustomerDeliveryApi} from './customer-delivery-api';
+export {searchDeliveryPartnerLinks as searchDeliveryPartnerLinksApi} from './partner-link-api';
 export {fetchPriceListLine as fetchPriceListLineApi} from './price-list-line-api';
 export {
   fetchMatchingProduct as fetchMatchingProductApi,
@@ -60,4 +61,3 @@ export {
   fetchSaleOrderLine as fetchSaleOrderLineApi,
   fetchSaleOrderLineById as fetchSaleOrderLineByIdApi,
 } from './sale-order-line-api';
-export {searchDeliveryPartnerLinks as searchDeliveryPartnerLinksApi} from './partner-link-api';

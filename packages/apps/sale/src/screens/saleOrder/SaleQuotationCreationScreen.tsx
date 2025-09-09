@@ -53,9 +53,10 @@ const SaleQuotationCreationScreen = ({route}) => {
   const [isEditionMode, setIsEditionMode] = useState(false);
   const [deliveredPartner, setDeliveredPartner] = useState<any>(null);
 
-  const {base: baseConfig} = useSelector((state: any) => state.appConfig);
+  const {base: baseConfig} = useSelector(state => state.appConfig);
+
   const partnerRelationsEnabled = useMemo(
-    () => Boolean(baseConfig?.activatePartnerRelations),
+    () => baseConfig?.activatePartnerRelations ?? false,
     [baseConfig?.activatePartnerRelations],
   );
 

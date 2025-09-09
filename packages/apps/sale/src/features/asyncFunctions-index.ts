@@ -39,6 +39,7 @@ export {
   searchCustomer,
   searchCustomerCategory,
 } from './customerSlice';
+export {searchDeliveryPartnerLinks} from './partnerLinkSlice';
 export {fetchPriceListLine} from './priceListLineSlice';
 export {
   fetchMatchingProduct,
@@ -57,4 +58,3 @@ export {
   fetchSaleOrderById,
   updateSaleOrderStatus,
 } from './saleOrderSlice';
-export {searchDeliveryPartnerLinks} from './partnerLinkSlice';

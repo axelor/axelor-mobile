@@ -16,7 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import React, {useCallback, useEffect, useState} from 'react';
+import React, {useCallback, useEffect, useMemo} from 'react';
 import {AutoCompleteSearch} from '@axelor/aos-mobile-ui';
 import {
   displayItemFullname,
@@ -25,6 +25,7 @@ import {
   useTranslator,
 } from '@axelor/aos-mobile-core';
 import {searchDeliveryPartnerLinks} from '../../../features/partnerLinkSlice';
+import {useDeliveredPartners} from './hooks';
 
 interface DeliveredPartnerSearchBarProps {
   style?: any;
@@ -41,7 +42,7 @@ interface DeliveredPartnerSearchBarProps {
 const DeliveredPartnerSearchBar = ({
   style,
   title = 'Sale_DeliveredPartner',
-  showTitle = false,
+  showTitle = true,
   customer,
   defaultValue,
   onChange,
@@ -53,99 +54,71 @@ const DeliveredPartnerSearchBar = ({
   const dispatch = useDispatch();
 
   const {base: baseConfig} = useSelector(state => state.appConfig);
-  const {deliveryPartnerLinkList, loadingLinks} = useSelector(
-    state => state.sale_partnerLink,
+  const {
+    loadingLinks,
+    moreLoadingLinks,
+    isLinksListEnd,
+    deliveryPartnerLinkList,
+  } = useDeliveredPartners();
+
+  const relationsEnabled = useMemo(
+    () => baseConfig?.activatePartnerRelations,
+    [baseConfig?.activatePartnerRelations],
   );
 
-  const [options, setOptions] = useState<any[]>([]);
-  const [currentValue, setCurrentValue] = useState<any>(defaultValue);
-
-  const enabled = baseConfig?.activatePartnerRelations;
-  const customerId = customer?.id;
-
-  useEffect(() => {
-    if (enabled && customerId != null) {
-      dispatch((searchDeliveryPartnerLinks as any)({partnerId: customerId}));
-    } else {
-      setOptions([]);
-      setCurrentValue(null);
-      onChange(null);
-    }
-  }, [customerId, dispatch, enabled, onChange]);
-
-  useEffect(() => {
-    if (!enabled || customerId == null) return;
-
-    const partner2List = (deliveryPartnerLinkList || [])
-      .map((l: any) => l?.partner2)
-      .filter((p: any) => p != null);
-
-    const partner2Unique: any[] = Array.from(
-      new Map(
-        partner2List.map((p: any) => [
-          ((p as any)?.id ?? JSON.stringify(p)) as any,
-          p,
-        ]),
-      ).values(),
-    );
-
-    const includeCustomer =
-      customer != null &&
-      !partner2Unique.some(
-        (_p: any) => _p?.id != null && _p.id === customer?.id,
+  const options = useMemo(() => {
+    const partnerList = deliveryPartnerLinkList
+      ?.map(l => l?.partner2)
+      .filter(
+        (p, idx, self) =>
+          p?.id != null &&
+          p.id !== customer?.id &&
+          self.findIndex(({id}) => id === p.id) === idx,
       );
 
-    const allOptions = includeCustomer
-      ? [customer, ...partner2Unique]
-      : partner2Unique;
+    return [customer, ...partnerList];
+  }, [customer, deliveryPartnerLinkList]);
 
-    setOptions(allOptions);
-
-    if (allOptions.length === 1) {
-      setCurrentValue(allOptions[0]);
-      onChange(allOptions[0]);
-    } else if (allOptions.length === 0) {
-      setCurrentValue(null);
-      onChange(null);
+  useEffect(() => {
+    if (options.length === 1) {
+      onChange(options[0]);
     } else {
-      setCurrentValue(null);
-      onChange(null);
+      onChange(options.length === 2 ? options[1] : null);
     }
-  }, [customer, customerId, deliveryPartnerLinkList, enabled, onChange]);
+  }, [onChange, options]);
 
   const searchDeliveredPartnerAPI = useCallback(
     ({page = 0, searchValue}) => {
-      if (enabled && customerId != null) {
+      if (relationsEnabled && customer?.id != null) {
         dispatch(
           (searchDeliveryPartnerLinks as any)({
-            partnerId: customerId,
+            partnerId: customer.id,
             searchValue,
             page,
           }),
         );
       }
     },
-    [customerId, dispatch, enabled],
+    [customer?.id, dispatch, relationsEnabled],
   );
 
-  if (!enabled) return null;
+  if (!relationsEnabled) return null;
 
   return (
     <AutoCompleteSearch
       style={style}
       title={showTitle && I18n.t(title)}
+      loadingList={loadingLinks}
+      moreLoading={moreLoadingLinks}
+      isListEnd={isLinksListEnd}
       objectList={options}
-      value={currentValue}
+      value={defaultValue}
       required={required}
       readonly={readonly}
-      onChangeValue={item => {
-        setCurrentValue(item);
-        onChange(item);
-      }}
+      onChangeValue={onChange}
       fetchData={searchDeliveredPartnerAPI}
       displayValue={displayItemFullname}
       placeholder={I18n.t(title)}
-      loadingList={loadingLinks}
       showDetailsPopup={true}
       navigate={false}
       oneFilter={false}
