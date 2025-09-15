@@ -83,6 +83,7 @@ interface UploadFileInputProps {
   maxSize?: number;
   canTakePicture?: boolean;
   getFileName?: (extension: string, dateTime: string) => string;
+  manageFileLocally?: boolean;
 }
 
 const UploadFileInput = ({
@@ -99,6 +100,7 @@ const UploadFileInput = ({
   maxSize = DEFAULT_MAX_FILE_SIZE,
   canTakePicture = true,
   getFileName = (extension, dateTime) => `picture_${dateTime}.${extension}`,
+  manageFileLocally = true,
 }: UploadFileInputProps) => {
   const I18n = useTranslator();
   const Colors = useThemeColor();
@@ -170,11 +172,12 @@ const UploadFileInput = ({
         returnBase64String,
       });
 
-      setSelectedFile(
-        returnBase64String
-          ? {...file, base64: response}
-          : {...file, ...response},
-      );
+      manageFileLocally &&
+        setSelectedFile(
+          returnBase64String
+            ? {...file, base64: response}
+            : {...file, ...response},
+        );
       onUpload(response);
     } catch (error) {
       console.log('Could not upload the file:', error);
@@ -194,7 +197,7 @@ const UploadFileInput = ({
         };
 
         if (returnBase64String) {
-          setSelectedFile(_file);
+          manageFileLocally && setSelectedFile(_file);
           onUpload(_file.base64);
           return;
         }
@@ -205,13 +208,21 @@ const UploadFileInput = ({
           jsessionId,
         });
 
-        setSelectedFile({..._file, ...response});
+        manageFileLocally && setSelectedFile({..._file, ...response});
         onUpload(response);
       } catch (error) {
         console.log('Could not upload the file:', error);
       }
     },
-    [baseUrl, getFileName, jsessionId, onUpload, returnBase64String, token],
+    [
+      baseUrl,
+      getFileName,
+      jsessionId,
+      manageFileLocally,
+      onUpload,
+      returnBase64String,
+      token,
+    ],
   );
 
   const handleFileDelete = async () => {
@@ -223,7 +234,7 @@ const UploadFileInput = ({
       }
     }
 
-    setSelectedFile(null);
+    manageFileLocally && setSelectedFile(null);
     onUpload(null);
   };
 
