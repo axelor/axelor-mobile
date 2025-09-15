@@ -133,6 +133,11 @@ const QIFormButton = ({objectState, handleObjectChange}: QIFormButtonProps) => {
               qiDefaultId: item.qiDefault?.id,
               description: item.description,
               quantity: item.qty,
+              metaFiles: Array.isArray(item.files)
+                ? item.files
+                    .filter((f: any) => f?.id != null)
+                    .map((f: any) => f.id)
+                : undefined,
             })),
           },
         },
