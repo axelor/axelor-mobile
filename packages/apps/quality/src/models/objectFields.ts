@@ -105,9 +105,6 @@ export const quality_modelAPI: ObjectFields = {
     description: schemaContructor.string(),
     quantity: schemaContructor.number(),
     qiDefault: schemaContructor.subObject(),
-    metaFileList: schemaContructor
-      .array()
-      .of(schemaContructor.subObject('fileName')),
   }),
   quality_qiDetection: schemaContructor.object({
     name: schemaContructor.string(),

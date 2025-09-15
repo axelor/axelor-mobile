@@ -146,17 +146,13 @@ const QualityImprovementFormScreen = ({route}) => {
       ...qualityImprovement,
       qiResolutionDefaults:
         qiResolution?.qiResolutionDefaultsList?.map(
-          (
-            {id, name, qiDefault, quantity, description, metaFileList},
-            idx: number,
-          ) => ({
+          ({id, name, qiDefault, quantity, description}, idx: number) => ({
             id: `qiDefault-${qiDefault.id}.${idx}`,
             _id: id,
             name,
             qiDefault,
             qty: parseFloat(quantity),
             description,
-            files: metaFileList ?? [],
           }),
         ) ?? [],
     };
