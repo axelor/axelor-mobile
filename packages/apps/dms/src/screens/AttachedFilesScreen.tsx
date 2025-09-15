@@ -34,18 +34,12 @@ const AttachedFilesScreen = ({navigation, route}) => {
   const I18n = useTranslator();
   const Colors = useThemeColor();
   const isFocused = useIsFocused();
-  const {canCreate} = usePermitted({
-    modelName: 'com.axelor.dms.db.DMSFile',
-  });
+  const {canCreate} = usePermitted({modelName: 'com.axelor.dms.db.DMSFile'});
 
-  const {mobileSettings} = useSelector((state: any) => state.appConfig);
+  const {mobileSettings} = useSelector(state => state.appConfig);
 
   const [isVisible, setIsVisible] = useState(false);
   const [parent, setParent] = useState(_parent);
-
-  useEffect(() => {
-    !parent && setIsVisible(true);
-  }, [parent]);
 
   useEffect(() => {
     if (isFocused && parent == null) {
@@ -59,7 +53,10 @@ const AttachedFilesScreen = ({navigation, route}) => {
           errorTracing: false,
           showErrorToast: false,
         },
-      }).then(setParent);
+      }).then(res => {
+        setParent(res);
+        setIsVisible(!res);
+      });
     }
   }, [isFocused, model, modelId, parent]);
 
@@ -100,7 +97,7 @@ const AttachedFilesScreen = ({navigation, route}) => {
 
   return (
     <>
-      {!isVisible && (
+      {!isVisible && parent != null && (
         <DocumentList defaultParent={parent} isAttachedFilesList />
       )}
       <Alert

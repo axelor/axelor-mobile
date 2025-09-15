@@ -16,7 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import React, {useCallback, useState} from 'react';
+import React, {useCallback, useMemo, useState} from 'react';
 import {StyleSheet, View} from 'react-native';
 import {useTranslator} from '@axelor/aos-mobile-core';
 import {
@@ -27,6 +27,7 @@ import {
   ViewAllEditList,
 } from '@axelor/aos-mobile-ui';
 import {DefectSearchBar} from '../../templates';
+import {DefectFilesManager} from '../../organisms';
 
 interface DefectViewAllListProps {
   title?: string;
@@ -50,12 +51,14 @@ const DefectViewAllListAux = ({
   const [defect, setDefect] = useState<any>();
   const [qty, setQty] = useState<number>(1);
   const [description, setDescription] = useState<string>('');
+  const [files, setFiles] = useState<any[]>([]);
 
   const handleEditLine = useCallback((line: any) => {
     setEditId(line.id);
     setDefect(line.qiDefault);
     setQty(line.qty);
     setDescription(line.description);
+    setFiles(line.files ?? []);
   }, []);
 
   const handleChange = useCallback(
@@ -74,6 +77,7 @@ const DefectViewAllListAux = ({
         qiDefault: defect,
         qty,
         description,
+        files,
       };
 
       let updatedLines: any[];
@@ -93,8 +97,14 @@ const DefectViewAllListAux = ({
     setDefect(null);
     setQty(1);
     setDescription('');
+    setFiles([]);
     setEditId(null);
-  }, [defect, description, editId, onChange, qty]);
+  }, [defect, description, editId, onChange, qty, files]);
+
+  const currentDefectId = useMemo(
+    () => lines?.find(l => l.id === editId)?._id,
+    [editId, lines],
+  );
 
   return (
     <View style={styles.container}>
@@ -130,6 +140,13 @@ const DefectViewAllListAux = ({
         title={I18n.t('Base_Description')}
         defaultValue={description}
         onChange={setDescription}
+        readonly={readonly}
+      />
+      <DefectFilesManager
+        style={styles.width}
+        defectId={currentDefectId}
+        files={files}
+        setFiles={setFiles}
         readonly={readonly}
       />
       <Button title={I18n.t('Quality_SaveContinue')} onPress={handleConfirm} />
