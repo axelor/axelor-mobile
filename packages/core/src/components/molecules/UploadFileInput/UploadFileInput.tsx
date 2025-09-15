@@ -76,6 +76,7 @@ interface UploadFileInputProps {
   maxSize?: number;
   canTakePicture?: boolean;
   getFileName?: (extension: string, dateTime: string) => string;
+  manageFileLocally?: boolean;
 }
 
 const UploadFileInput = ({
@@ -92,6 +93,7 @@ const UploadFileInput = ({
   maxSize = DEFAULT_MAX_FILE_SIZE,
   canTakePicture = true,
   getFileName = (extension, dateTime) => `picture_${dateTime}.${extension}`,
+  manageFileLocally = true,
 }: UploadFileInputProps) => {
   const I18n = useTranslator();
   const Colors = useThemeColor();
@@ -146,7 +148,7 @@ const UploadFileInput = ({
     }) => {
       try {
         if (returnBase64String) {
-          setSelectedFile(file);
+          manageFileLocally && setSelectedFile(file);
           onUpload(file.base64);
           return;
         }
@@ -157,13 +159,20 @@ const UploadFileInput = ({
           jsessionId,
         });
 
-        setSelectedFile({...file, ...response});
+        manageFileLocally && setSelectedFile({...file, ...response});
         onUpload(response);
       } catch (error) {
         console.log('Could not upload the file:', error);
       }
     },
-    [baseUrl, jsessionId, onUpload, returnBase64String, token],
+    [
+      baseUrl,
+      jsessionId,
+      manageFileLocally,
+      onUpload,
+      returnBase64String,
+      token,
+    ],
   );
 
   const handleDocumentPick = useCallback(
@@ -210,7 +219,7 @@ const UploadFileInput = ({
       }
     }
 
-    setSelectedFile(null);
+    manageFileLocally && setSelectedFile(null);
     onUpload(null);
   };
 
