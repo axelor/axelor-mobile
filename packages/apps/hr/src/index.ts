@@ -16,7 +16,8 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import {Module} from '@axelor/aos-mobile-core';
+import {Module, getTypes} from '@axelor/aos-mobile-core';
+import {updateTimerStatus} from './features/asyncFunctions-index';
 import enTranslations from './i18n/en.json';
 import frTranslations from './i18n/fr.json';
 import ExpenseScreens from './screens/expense';
@@ -133,6 +134,83 @@ export const HrModule: Module = {
     typeObjects: hr_typeObjects,
   },
   requiredConfig: ['AppExpense', 'AppTimesheet'],
+  globalTools: [
+    {
+      key: 'hr_startActiveTimer',
+      iconName: 'play-fill',
+      title: 'Hr_StartActiveTimer',
+      onPress: ({navigation, storeState, dispatch}) => {
+        const timer = storeState?.hr_timer?.timer;
+        const userId = storeState?.user?.user?.id;
+
+        const Timer = getTypes()?.Timer;
+        const isStarted =
+          timer?.statusSelect != null &&
+          timer?.statusSelect === Timer?.statusSelect?.Start;
+
+        if (timer?.id != null && !isStarted) {
+          (dispatch as any)(
+            (updateTimerStatus as any)({
+              userId,
+              timerId: timer.id,
+              version: timer.version,
+              toStatus: 'start',
+            }),
+          );
+        } else {
+          navigation.navigate('ActiveTimerFormScreen');
+        }
+      },
+      hideIf: ({storeState}) => {
+        const enableTimer = storeState?.appConfig?.timesheet?.enableTimer;
+        if (!enableTimer) return true;
+
+        const timer = storeState?.hr_timer?.timer;
+        const Timer = getTypes()?.Timer;
+        const isStarted =
+          timer?.statusSelect != null &&
+          timer?.statusSelect === Timer?.statusSelect?.Start;
+
+        return isStarted === true;
+      },
+    },
+    {
+      key: 'hr_pauseActiveTimer',
+      iconName: 'pause-fill',
+      title: 'Hr_PauseActiveTimer',
+      onPress: ({storeState, dispatch}) => {
+        const timer = storeState?.hr_timer?.timer;
+        const userId = storeState?.user?.user?.id;
+        const Timer = getTypes()?.Timer;
+        const isStarted =
+          timer?.statusSelect != null &&
+          timer?.statusSelect === Timer?.statusSelect?.Start;
+
+        if (timer?.id != null && isStarted) {
+          (dispatch as any)(
+            (updateTimerStatus as any)({
+              userId,
+              timerId: timer.id,
+              version: timer.version,
+              toStatus: 'pause',
+            }),
+          );
+        }
+      },
+      hideIf: ({storeState}) => {
+        const enableTimer = storeState?.appConfig?.timesheet?.enableTimer;
+        if (!enableTimer) return true;
+
+        const timer = storeState?.hr_timer?.timer;
+        const Timer = getTypes()?.Timer;
+        const isStarted =
+          timer?.statusSelect != null &&
+          timer?.statusSelect === Timer?.statusSelect?.Start;
+
+        return !isStarted;
+      },
+    },
+  ],
 };
 
 export * from './api';

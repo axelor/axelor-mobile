@@ -65,6 +65,8 @@
   "Hr_UpdatedDuration": "Durée mise à jour",
   "Hr_TotalDuration": "Durée totale",
   "Hr_ActiveTimer": "Chronomètre actif",
+  "Hr_StartActiveTimer": "Démarrer le chronomètre",
+  "Hr_PauseActiveTimer": "Mettre en pause le chronomètre",
   "Hr_CreateTimer": "Créer un chronomètre",
   "Hr_Product": "Activité",
   "Hr_SelectTimers": "Sélectionner des chronomètres",

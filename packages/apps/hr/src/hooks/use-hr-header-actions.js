@@ -28,8 +28,10 @@ import {
 import {useThemeColor} from '@axelor/aos-mobile-ui';
 import {fetchExpenseById, quickCreateExpense} from '../features/expenseSlice';
 import {Expense} from '../types';
+import {fetchActiveTimer} from '../features/timerSlice';
 
 export const useHrHeaders = () => {
+  useInitActiveTimer();
   useExpenseListAction();
   useExpenseDetailsAction();
   useTimerListAction();
@@ -37,6 +39,18 @@ export const useHrHeaders = () => {
   useTimesheetDetailsAction();
   useLeaveListAction();
   useLeaveDetailsAction();
+};
+
+const useInitActiveTimer = () => {
+  const dispatch = useDispatch();
+  const {user} = useSelector(state => state.user);
+  const {timesheet: timesheetConfig} = useSelector(state => state.appConfig);
+
+  useEffect(() => {
+    if (timesheetConfig?.enableTimer && user?.id != null) {
+      dispatch(fetchActiveTimer({userId: user.id}));
+    }
+  }, [dispatch, timesheetConfig?.enableTimer, user?.id]);
 };
 
 const useExpenseListAction = () => {

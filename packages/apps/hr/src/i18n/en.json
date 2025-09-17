@@ -65,6 +65,8 @@
   "Hr_UpdatedDuration": "Updated duration",
   "Hr_TotalDuration": "Total duration",
   "Hr_ActiveTimer": "Active timer",
+  "Hr_StartActiveTimer": "Start active timer",
+  "Hr_PauseActiveTimer": "Pause active timer",
   "Hr_CreateTimer": "Create a timer",
   "Hr_Product": "Activity",
   "Hr_SelectTimers": "Select timers",
