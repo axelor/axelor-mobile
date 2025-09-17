@@ -132,3 +132,31 @@ export async function deleteCheckListItem({id}) {
     matchers: {modelName: MODEL, id, fields: {}},
   });
 }
+
+export async function createCheckListItem({
+  title,
+  parentItemId,
+  projectId,
+  projectTaskId,
+  complete,
+  sequence,
+}) {
+  return getActionApi().send({
+    method: 'post',
+    url: '/ws/aos/project-check-list-item',
+    body: {title, parentItemId, projectId, projectTaskId, complete, sequence},
+    description: 'create check list item',
+    matchers: {
+      modelName: MODEL,
+      id: Date.now(),
+      fields: {
+        completed: 'completed',
+        title: 'title',
+        sequence: 'sequence',
+        parentItemId: 'parentItem.id',
+        projectId: 'project.id',
+        projectTaskId: 'projectTask.id',
+      },
+    },
+  });
+}
