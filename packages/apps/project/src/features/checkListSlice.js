@@ -22,6 +22,7 @@ import {
   handlerApiCall,
 } from '@axelor/aos-mobile-core';
 import {
+  deleteCheckListItem as _deleteCheckListItem,
   searchCheckListItems as _searchCheckListItems,
   updateCheckListItem as _updateCheckListItem,
 } from '../api/check-list-api';
@@ -59,6 +60,19 @@ export const updateCheckListItem = createAsyncThunk(
       fetchFunction: _updateCheckListItem,
       data,
       action: 'Project_SliceAction_UpdateCheckListItem',
+      getState,
+      responseOptions: {isArrayResponse: false, showToast: true},
+    });
+  },
+);
+
+export const deleteCheckListItem = createAsyncThunk(
+  'project_checkList/deleteCheckListItem',
+  async function (data, {getState}) {
+    return handlerApiCall({
+      fetchFunction: _deleteCheckListItem,
+      data,
+      action: 'Project_SliceAction_DeleteCheckListItem',
       getState,
       responseOptions: {isArrayResponse: false, showToast: true},
     });

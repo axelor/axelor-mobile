@@ -61,12 +61,13 @@
   "Project_CustomFieldsView": "Custom fields",
   "Project_ReportingView": "Reporting",
   "Project_ActiveSprint": "Active sprint",
+  "Project_CheckList": "Check list",
   "Project_CheckListStatus_Completed": "Completed",
   "Project_CheckListStatus_Uncompleted": "Uncompleted",
   "Project_ParentItem": "Parent item",
   "Project_MarkAsUncompleted": "Mark as uncompleted",
   "Project_MarkAsCompleted": "Mark as completed",
-  "Project_CheckList": "Check list",
+  "Project_DeleteItem": "Delete item",
   "Project_SliceAction_SearchProject": "search projects",
   "Project_SliceAction_FetchProjectById": "fetch project by id",
   "Project_SliceAction_FetchProjectStatus": "fetch project status",
@@ -90,5 +91,6 @@
   "Project_SliceAction_SearchSprint": "search sprint",
   "Project_SliceAction_SearchCheckListItems": "search check list items",
   "Project_SliceAction_SearchParentCheckListItems": "search parent check list items",
-  "Project_SliceAction_UpdateCheckListItem": "update check list item"
+  "Project_SliceAction_UpdateCheckListItem": "update check list item",
+  "Project_SliceAction_DeleteCheckListItem": "delete check list item"
 }
