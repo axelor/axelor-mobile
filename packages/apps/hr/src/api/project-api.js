@@ -21,21 +21,8 @@ import {
   getSearchCriterias,
 } from '@axelor/aos-mobile-core';
 
-const createProjectCriteria = ({
-  searchValue,
-  isBusinessProject,
-  manageTimeSpent,
-  inProgress,
-}) => {
+const createProjectCriteria = ({searchValue, manageTimeSpent, inProgress}) => {
   const criteria = [getSearchCriterias('hr_project', searchValue)];
-
-  if (isBusinessProject) {
-    criteria.push({
-      fieldName: 'isBusinessProject',
-      operator: '=',
-      value: true,
-    });
-  }
 
   if (manageTimeSpent) {
     criteria.push({
@@ -103,7 +90,6 @@ export async function searchProject({
   searchValue,
   page = 0,
   activeCompanyId,
-  isBusinessProject,
   manageTimeSpent,
   isMemberRequired,
   userId,
@@ -114,7 +100,6 @@ export async function searchProject({
     companyId: activeCompanyId,
     criteria: createProjectCriteria({
       searchValue,
-      isBusinessProject,
       manageTimeSpent,
       inProgress,
     }),
