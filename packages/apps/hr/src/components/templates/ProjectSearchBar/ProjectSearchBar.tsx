@@ -33,7 +33,6 @@ interface ProjectSearchBarProps {
   onChange?: (any: any) => void;
   readonly?: boolean;
   required?: boolean;
-  isBusinessProject?: boolean;
   manageTimeSpent?: boolean;
   isMemberRequired?: boolean;
   inProgress?: boolean;
@@ -46,7 +45,6 @@ const ProjectSearchBarAux = ({
   onChange = () => {},
   readonly = false,
   required = false,
-  isBusinessProject = false,
   manageTimeSpent = false,
   isMemberRequired = false,
   inProgress = false,
@@ -67,7 +65,6 @@ const ProjectSearchBarAux = ({
           searchValue,
           userId: user.id,
           activeCompanyId: user.activeCompany?.id,
-          isBusinessProject,
           manageTimeSpent,
           isMemberRequired,
           inProgress,
@@ -77,7 +74,6 @@ const ProjectSearchBarAux = ({
     [
       dispatch,
       inProgress,
-      isBusinessProject,
       isMemberRequired,
       manageTimeSpent,
       user.activeCompany?.id,
