@@ -21,11 +21,7 @@ import {
   getSearchCriterias,
 } from '@axelor/aos-mobile-core';
 
-const createProjectCriteria = ({
-  searchValue,
-  manageTimeSpent,
-  inProgress,
-}) => {
+const createProjectCriteria = ({searchValue, manageTimeSpent, inProgress}) => {
   const criteria = [getSearchCriterias('hr_project', searchValue)];
 
   if (manageTimeSpent) {
