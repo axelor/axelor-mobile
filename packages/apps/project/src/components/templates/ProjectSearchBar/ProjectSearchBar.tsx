@@ -34,25 +34,23 @@ interface ProjectSearchBarProps {
   readonly?: boolean;
   required?: boolean;
   showTitle?: boolean;
-  differentiateBusinessProjects?: boolean;
 }
 
 const ProjectSearchBarAux = ({
-  style = null,
+  style,
   title = 'Project_Project',
-  defaultValue = null,
-  onChange = () => {},
+  defaultValue,
+  onChange,
   readonly = false,
   required = false,
   showTitle = true,
-  differentiateBusinessProjects = true,
 }: ProjectSearchBarProps) => {
   const I18n = useTranslator();
   const dispatch = useDispatch();
 
   const {user} = useSelector(state => state.user);
   const {projectList, loading, moreLoading, isListEnd} = useSelector(
-    (state: any) => state.project_project,
+    state => state.project_project,
   );
 
   const searchProjectAPI = useCallback(
@@ -61,12 +59,11 @@ const ProjectSearchBarAux = ({
         (searchProject as any)({
           page,
           searchValue,
-          differentiateBusinessProjects,
           companyId: user.activeCompany?.id,
         }),
       );
     },
-    [differentiateBusinessProjects, dispatch, user.activeCompany?.id],
+    [dispatch, user.activeCompany?.id],
   );
 
   return (
@@ -91,28 +88,8 @@ const ProjectSearchBarAux = ({
   );
 };
 
-const ProjectSearchBar = ({
-  style = null,
-  title = 'Project_Project',
-  defaultValue = null,
-  onChange = () => {},
-  readonly = false,
-  required = false,
-  showTitle = true,
-  differentiateBusinessProjects = true,
-}: ProjectSearchBarProps) => {
-  return (
-    <ProjectSearchBarAux
-      style={style}
-      title={title}
-      defaultValue={defaultValue}
-      required={required}
-      readonly={readonly}
-      onChange={onChange}
-      showTitle={showTitle}
-      differentiateBusinessProjects={differentiateBusinessProjects}
-    />
-  );
+const ProjectSearchBar = (props: ProjectSearchBarProps) => {
+  return <ProjectSearchBarAux {...props} />;
 };
 
 export default ProjectSearchBar;

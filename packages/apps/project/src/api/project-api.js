@@ -23,39 +23,8 @@ import {
   getSearchCriterias,
 } from '@axelor/aos-mobile-core';
 
-const createProjectCriteria = ({
-  searchValue,
-  isBusinessProject,
-  differentiateBusinessProjects,
-  statusList,
-  userId,
-}) => {
+const createProjectCriteria = ({searchValue, statusList, userId}) => {
   const criteria = [getSearchCriterias('project_project', searchValue)];
-
-  if (differentiateBusinessProjects) {
-    if (isBusinessProject) {
-      criteria.push({
-        fieldName: 'isBusinessProject',
-        operator: '=',
-        value: true,
-      });
-    } else {
-      criteria.push({
-        operator: 'or',
-        criteria: [
-          {
-            fieldName: 'isBusinessProject',
-            operator: '=',
-            value: false,
-          },
-          {
-            fieldName: 'isBusinessProject',
-            operator: 'isNull',
-          },
-        ],
-      });
-    }
-  }
 
   if (userId != null) {
     criteria.push({
@@ -92,22 +61,22 @@ const createSubProjectCriteria = ({projectId}) => {
 export async function searchProject({
   searchValue,
   page = 0,
-  isBusinessProject = false,
-  differentiateBusinessProjects = true,
   statusList,
   userId,
+  additionnalCriterias,
   companyId,
   filterDomain,
 }) {
   return createStandardSearch({
     model: 'com.axelor.apps.project.db.Project',
-    criteria: createProjectCriteria({
-      searchValue,
-      isBusinessProject,
-      differentiateBusinessProjects,
-      statusList,
-      userId,
-    }),
+    criteria: [
+      ...createProjectCriteria({
+        searchValue,
+        statusList,
+        userId,
+      }),
+      ...(additionnalCriterias ?? []),
+    ],
     fieldKey: 'project_project',
     sortKey: 'project_project',
     page,

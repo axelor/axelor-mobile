@@ -18,14 +18,26 @@
 
 import React from 'react';
 import {Screen} from '@axelor/aos-mobile-ui';
-import {ProjectListView} from '../components';
+import {useSelector} from '@axelor/aos-mobile-core';
+import {ProjectListView} from '../../components';
+import {searchProject} from '../../features/projectSlice';
 
-const ProjectScreen = ({}) => {
+const ProjectListScreen = ({}) => {
+  const {loading, moreLoading, isListEnd, projectList} = useSelector(
+    state => state.project_project,
+  );
+
   return (
     <Screen removeSpaceOnTop={true}>
-      <ProjectListView />
+      <ProjectListView
+        loading={loading}
+        moreLoading={moreLoading}
+        isListEnd={isListEnd}
+        projectList={projectList}
+        searchProject={searchProject}
+      />
     </Screen>
   );
 };
 
-export default ProjectScreen;
+export default ProjectListScreen;

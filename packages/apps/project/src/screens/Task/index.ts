@@ -16,16 +16,29 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import React from 'react';
-import {Screen} from '@axelor/aos-mobile-ui';
-import {ProjectListView} from '../components';
+import TaskDetailsScreen from './TaskDetailsScreen';
+import TaskFormScreen from './TaskFormScreen';
+import TaskListScreen from './TaskListScreen';
 
-const BuisnessProjectScreen = ({}) => {
-  return (
-    <Screen removeSpaceOnTop={true}>
-      <ProjectListView businessProject={true} />
-    </Screen>
-  );
+export const TaskScreens = {
+  TaskListScreen: {
+    title: 'Project_Tasks',
+    component: TaskListScreen,
+    options: {shadedHeader: false},
+    actionID: 'project_projectTask_list',
+  },
+  TaskDetailsScreen: {
+    title: 'Project_Task',
+    component: TaskDetailsScreen,
+    actionID: 'project_projectTask_details',
+    options: {shadedHeader: false},
+  },
+  TaskFormScreen: {
+    title: 'Project_Task',
+    component: TaskFormScreen,
+  },
 };
 
-export default BuisnessProjectScreen;
+export {TaskListScreen};
+export {TaskDetailsScreen};
+export {TaskFormScreen};
