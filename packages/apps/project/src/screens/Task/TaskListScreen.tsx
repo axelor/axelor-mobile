@@ -23,9 +23,9 @@ import {
   useSelector,
   useTranslator,
 } from '@axelor/aos-mobile-core';
-import {TaskActionCard, TaskFilters} from '../components';
-import {searchProjectTask} from '../features/projectTaskSlice';
-import {useTaskFilters} from '../hooks';
+import {TaskActionCard, TaskFilters} from '../../components';
+import {searchProjectTask} from '../../features/projectTaskSlice';
+import {useTaskFilters} from '../../hooks';
 
 const TaskListScreen = ({navigation}) => {
   const I18n = useTranslator();

@@ -147,7 +147,6 @@ const TaskFilters = ({
           showTitle={false}
           onChange={setProject}
           defaultValue={project}
-          differentiateBusinessProjects={false}
         />
       )}
       <View style={[styles.headerContainer, styles.zIndex]}>

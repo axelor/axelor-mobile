@@ -19,7 +19,7 @@
 import {Module} from '@axelor/aos-mobile-core';
 import enTranslations from './i18n/en.json';
 import frTranslations from './i18n/fr.json';
-import ProjectScreens from './screens/';
+import Screens from './screens';
 import * as projectReducers from './features';
 import {
   project_formsRegister,
@@ -52,12 +52,7 @@ export const ProjectModule: Module = {
     project_menu_projects: {
       title: 'Project_Projects',
       icon: 'clipboard2-data',
-      screen: 'ProjectScreen',
-    },
-    project_menu_businessProjects: {
-      title: 'Project_BuisnessProjects',
-      icon: 'briefcase-fill',
-      screen: 'BuisnessProjectScreen',
+      screen: 'ProjectListScreen',
     },
     project_menu_tasks: {
       title: 'Project_Tasks',
@@ -65,9 +60,7 @@ export const ProjectModule: Module = {
       screen: 'TaskListScreen',
     },
   },
-  screens: {
-    ...ProjectScreens,
-  },
+  screens: Screens,
   reducers: {
     ...projectReducers,
   },
@@ -86,5 +79,6 @@ export * from './api';
 export * from './components';
 export * from './features/asyncFunctions-index';
 export * from './hooks';
-export * from './screens';
+export * from './screens/Project';
+export * from './screens/Task';
 export * from './types';

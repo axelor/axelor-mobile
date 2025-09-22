@@ -115,9 +115,6 @@ export const project_formsRegister: FormConfigs = {
         customComponent: ProjectSearchBar,
         readonlyIf: ({objectState}) => objectState?.projectReadonly,
         required: true,
-        options: {
-          differentiateBusinessProjects: false,
-        },
         parentPanel: 'projectContainer',
       },
       parentTask: {
