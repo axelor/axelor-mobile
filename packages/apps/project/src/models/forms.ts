@@ -34,10 +34,6 @@ import {
   TaskStatusSearchBar,
   TaskTagMultiValuePicker,
 } from '../components';
-import {
-  udpateFormCategory,
-  updateTargetVersion,
-} from '../features/projectTaskSlice';
 
 const hr_TimesheetLineForm = HrModule.models.formsRegister.hr_TimesheetLine;
 
@@ -162,14 +158,15 @@ export const project_formsRegister: FormConfigs = {
           project: () => {
             return null;
           },
-          projectTaskCategory: ({newValue, objectState, dispatch}) => {
+          projectTaskCategory: ({objectState}) => {
             if (
               objectState?.project?.taskStatusManagementSelect ===
               getTypes().Project.taskStatusManagementSelect?.ManageByCategory
             ) {
-              dispatch(udpateFormCategory(newValue));
               return null;
             }
+
+            return undefined;
           },
         },
       },
@@ -210,8 +207,7 @@ export const project_formsRegister: FormConfigs = {
         widget: 'custom',
         customComponent: ActiveSprintSearchBar,
         dependsOn: {
-          targetVersion: ({dispatch, newValue, objectState}) => {
-            dispatch(updateTargetVersion(newValue));
+          targetVersion: ({objectState}) => {
             if (
               objectState?.project?.sprintManagementSelect ===
               getTypes().Project?.sprintManagementSelect.Version

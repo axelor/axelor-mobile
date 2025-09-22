@@ -16,41 +16,21 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import React, {useCallback, useEffect, useMemo} from 'react';
+import React, {useCallback, useMemo} from 'react';
 import {
   useSelector,
   FormView,
-  useDispatch,
   isEmpty,
   useTypes,
 } from '@axelor/aos-mobile-core';
-import {
-  fetchCategoryFormById,
-  saveProjectTask,
-  updateTargetVersion,
-} from '../../features/projectTaskSlice';
+import {saveProjectTask} from '../../features/projectTaskSlice';
 
 const TaskFormScreen = ({navigation, route}) => {
   const {isCreation} = route.params ?? {};
-  const _dispatch = useDispatch();
   const {Project, ProjectTask} = useTypes();
 
-  const {projectTask} = useSelector((state: any) => state.project_projectTask);
-  const {project} = useSelector((state: any) => state.project_project);
-
-  useEffect(() => {
-    _dispatch(
-      updateTargetVersion(isCreation ? null : projectTask?.targetVersion),
-    );
-  }, [_dispatch, isCreation, projectTask?.targetVersion]);
-
-  useEffect(() => {
-    _dispatch(
-      (fetchCategoryFormById as any)({
-        categoryId: isCreation ? null : projectTask?.projectTaskCategory?.id,
-      }),
-    );
-  }, [_dispatch, isCreation, projectTask?.projectTaskCategory]);
+  const {projectTask} = useSelector(state => state.project_projectTask);
+  const {project} = useSelector(state => state.project_project);
 
   const _defaultValue = useMemo(() => {
     if (!isCreation && !isEmpty(projectTask)) {

@@ -39,26 +39,21 @@ interface ActiveSprintSearchBarProps {
 }
 
 const ActiveSprintSearchBarAux = ({
-  style = null,
+  style,
   title = 'Project_ActiveSprint',
-  defaultValue = null,
-  onChange = () => {},
+  defaultValue,
+  onChange,
   readonly = false,
   required = false,
   showTitle = true,
-  objectState = null,
+  objectState,
 }: ActiveSprintSearchBarProps) => {
   const I18n = useTranslator();
   const {Project} = useTypes();
   const dispatch = useDispatch();
 
-  const {
-    targetVersion,
-    sprintList,
-    loadingSprint,
-    moreLoadingSprint,
-    isListEndSprint,
-  } = useSelector((state: any) => state.project_projectTask);
+  const {sprintList, loadingSprint, moreLoadingSprint, isListEndSprint} =
+    useSelector(state => state.project_projectTask);
 
   const searchSprintAPI = useCallback(
     ({page = 0, searchValue}) => {
@@ -69,7 +64,7 @@ const ActiveSprintSearchBarAux = ({
             objectState?.project?.sprintManagementSelect ===
             Project?.sprintManagementSelect.Project,
           projectId: objectState?.project?.id,
-          targetVersionId: targetVersion?.id,
+          targetVersionId: objectState?.targetVersion?.id,
           backlogSprintId: objectState?.project?.backlogSprint?.id,
           page,
         }),
@@ -79,7 +74,7 @@ const ActiveSprintSearchBarAux = ({
       Project?.sprintManagementSelect.Project,
       dispatch,
       objectState?.project,
-      targetVersion?.id,
+      objectState?.targetVersion?.id,
     ],
   );
 

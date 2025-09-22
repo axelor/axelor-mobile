@@ -39,26 +39,21 @@ interface TaskStatusSearchBarProps {
 }
 
 const TaskStatusSearchBarAux = ({
-  style = null,
+  style,
   title = 'Project_Status',
-  defaultValue = null,
-  onChange = () => {},
+  defaultValue,
+  onChange,
   required = false,
   readonly = false,
   showTitle = true,
-  objectState = null,
+  objectState,
 }: TaskStatusSearchBarProps) => {
   const I18n = useTranslator();
   const dispatch = useDispatch();
   const {Project} = useTypes();
 
-  const {
-    loadingStatus,
-    moreLoadingStatus,
-    isListEndStatus,
-    statusList,
-    categoryForm,
-  } = useSelector((state: any) => state.project_projectTask);
+  const {loadingStatus, moreLoadingStatus, isListEndStatus, statusList} =
+    useSelector(state => state.project_projectTask);
 
   const statusIds = useMemo(() => {
     const management =
@@ -74,9 +69,12 @@ const TaskStatusSearchBarAux = ({
         );
       case Project?.taskStatusManagementSelect.ManageByCategory:
         return (
-          objectState?.projectTaskCategory?.projectTaskStatusSet?.map(
-            (status: any) => status.id,
-          ) ?? categoryForm?.projectTaskStatusSet?.map(({id}) => id) ?? []
+          objectState?.project?.projectTaskCategorySet
+            ?.find(
+              (category: any) =>
+                category.id === objectState?.projectTaskCategory?.id,
+            )
+            ?.projectTaskStatusSet?.map((status: any) => status.id) ?? []
         );
       default:
         return [];
@@ -85,8 +83,8 @@ const TaskStatusSearchBarAux = ({
     Project?.taskStatusManagementSelect,
     objectState?.project?.projectTaskStatusSet,
     objectState?.project?.taskStatusManagementSelect,
-    objectState?.projectTaskCategory?.projectTaskStatusSet,
-    categoryForm?.projectTaskStatusSet,
+    objectState?.project?.projectTaskCategorySet,
+    objectState?.projectTaskCategory?.id,
   ]);
 
   const searchStatusAPI = useCallback(

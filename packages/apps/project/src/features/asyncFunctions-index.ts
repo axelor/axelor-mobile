@@ -30,7 +30,6 @@ export {
   searchSubProject,
 } from './projectSlice';
 export {
-  fetchCategoryFormById,
   fetchProjectPriority,
   fetchProjectTaskById,
   fetchProjectTaskCategory,
@@ -45,8 +44,6 @@ export {
   searchSprint,
   searchStatus,
   searchTargetVersion,
-  udpateFormCategory,
-  updateTargetVersion,
 } from './projectTaskSlice';
 export {getProjectReportingIndicator} from './reportingSlice';
 export {
