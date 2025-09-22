@@ -24,7 +24,6 @@ import {
   isEmpty,
   useTypes,
 } from '@axelor/aos-mobile-core';
-import {fetchProjectFormById} from '../../features/projectSlice';
 import {
   fetchCategoryFormById,
   saveProjectTask,
@@ -44,14 +43,6 @@ const TaskFormScreen = ({navigation, route}) => {
       updateTargetVersion(isCreation ? null : projectTask?.targetVersion),
     );
   }, [_dispatch, isCreation, projectTask?.targetVersion]);
-
-  useEffect(() => {
-    _dispatch(
-      (fetchProjectFormById as any)({
-        projectId: isCreation ? project?.id : projectTask?.project?.id,
-      }),
-    );
-  }, [_dispatch, isCreation, project?.id, projectTask?.project]);
 
   useEffect(() => {
     _dispatch(

@@ -34,6 +34,7 @@ interface PrioritySearchBarProps {
   readonly?: boolean;
   required?: boolean;
   showTitle?: boolean;
+  objectState?: any;
 }
 
 const PrioritySearchBarAux = ({
@@ -44,6 +45,7 @@ const PrioritySearchBarAux = ({
   readonly = false,
   required = false,
   showTitle = true,
+  objectState = null,
 }: PrioritySearchBarProps) => {
   const I18n = useTranslator();
   const dispatch = useDispatch();
@@ -54,11 +56,13 @@ const PrioritySearchBarAux = ({
     moreLoadingPriority,
     isListEndPriority,
   } = useSelector((state: any) => state.project_projectTask);
-  const {projectForm} = useSelector((state: any) => state.project_project);
 
   const priorityIds = useMemo(
-    () => projectForm?.projectTaskPrioritySet?.map(priority => priority.id),
-    [projectForm?.projectTaskPrioritySet],
+    () =>
+      objectState?.project?.projectTaskPrioritySet?.map(
+        (priority: any) => priority.id,
+      ),
+    [objectState?.project?.projectTaskPrioritySet],
   );
 
   const searchPriorityAPI = useCallback(
@@ -104,6 +108,7 @@ const PrioritySearchBar = ({
   readonly = false,
   required = false,
   showTitle = true,
+  objectState = null,
 }: PrioritySearchBarProps) => {
   return (
     <PrioritySearchBarAux
@@ -114,6 +119,7 @@ const PrioritySearchBar = ({
       readonly={readonly}
       onChange={onChange}
       showTitle={showTitle}
+      objectState={objectState}
     />
   );
 };

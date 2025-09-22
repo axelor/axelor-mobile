@@ -21,6 +21,7 @@ import {
   createStandardSearch,
   formatRequestBody,
   getActionApi,
+  getObjectFields,
   getSearchCriterias,
   getTypes,
 } from '@axelor/aos-mobile-core';
@@ -258,6 +259,14 @@ export async function fetchProjectTaskById({projecTaskId}) {
     fieldKey: 'project_projectTask',
     relatedFields: {
       tagSet: ['name', 'colorSelect'],
+      project: getObjectFields('project_project'),
+      'project.projectTaskCategorySet': getObjectFields(
+        'project_projectTaskCategory',
+      ),
+      'project.projectTaskPrioritySet': getObjectFields(
+        'project_projectPriority',
+      ),
+      'project.projectTaskStatusSet': getObjectFields('project_taskStatus'),
     },
     provider: 'model',
   });

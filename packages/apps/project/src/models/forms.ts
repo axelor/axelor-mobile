@@ -34,7 +34,6 @@ import {
   TaskStatusSearchBar,
   TaskTagMultiValuePicker,
 } from '../components';
-import {updateProject} from '../features/projectSlice';
 import {
   udpateFormCategory,
   updateTargetVersion,
@@ -122,11 +121,9 @@ export const project_formsRegister: FormConfigs = {
         type: 'object',
         widget: 'custom',
         customComponent: ParentTaskSearchBar,
-        readonlyIf: ({storeState}) =>
-          isEmpty(storeState.project_project.projectForm),
+        readonlyIf: ({objectState}) => isEmpty(objectState?.project),
         dependsOn: {
-          project: ({newValue, dispatch}) => {
-            dispatch(updateProject(newValue));
+          project: () => {
             return null;
           },
         },
@@ -137,10 +134,9 @@ export const project_formsRegister: FormConfigs = {
         type: 'object',
         widget: 'custom',
         customComponent: CategorySearchBar,
-        hideIf: ({storeState}) =>
-          !storeState.project_project.projectForm?.isShowTaskCategory,
-        requiredIf: ({storeState}) =>
-          storeState.project_project.projectForm?.taskStatusManagementSelect ===
+        hideIf: ({objectState}) => !objectState?.project?.isShowTaskCategory,
+        requiredIf: ({objectState}) =>
+          objectState?.project?.taskStatusManagementSelect ===
           getTypes().Project.taskStatusManagementSelect?.ManageByCategory,
         dependsOn: {
           project: () => {
@@ -153,24 +149,22 @@ export const project_formsRegister: FormConfigs = {
         type: 'object',
         widget: 'custom',
         customComponent: TaskStatusSearchBar,
-        hideIf: ({storeState}) => {
+        hideIf: ({objectState}) => {
           return (
-            storeState.project_project.projectForm
-              ?.taskStatusManagementSelect ===
+            objectState?.project?.taskStatusManagementSelect ===
             getTypes().Project.taskStatusManagementSelect?.NoStatusManagement
           );
         },
-        requiredIf: ({storeState}) =>
-          storeState.project_project.projectForm?.taskStatusManagementSelect !==
+        requiredIf: ({objectState}) =>
+          objectState?.project?.taskStatusManagementSelect !==
           getTypes().Project.taskStatusManagementSelect?.NoStatusManagement,
         dependsOn: {
           project: () => {
             return null;
           },
-          projectTaskCategory: ({newValue, storeState, dispatch}) => {
+          projectTaskCategory: ({newValue, objectState, dispatch}) => {
             if (
-              storeState.project_project.projectForm
-                ?.taskStatusManagementSelect ===
+              objectState?.project?.taskStatusManagementSelect ===
               getTypes().Project.taskStatusManagementSelect?.ManageByCategory
             ) {
               dispatch(udpateFormCategory(newValue));
@@ -185,8 +179,7 @@ export const project_formsRegister: FormConfigs = {
         widget: 'custom',
         required: true,
         customComponent: PrioritySearchBar,
-        hideIf: ({storeState}) =>
-          !storeState.project_project.projectForm?.isShowPriority,
+        hideIf: ({objectState}) => !objectState?.project?.isShowPriority,
         dependsOn: {
           project: () => {
             return null;
@@ -217,22 +210,22 @@ export const project_formsRegister: FormConfigs = {
         widget: 'custom',
         customComponent: ActiveSprintSearchBar,
         dependsOn: {
-          targetVersion: ({dispatch, newValue, objectState, storeState}) => {
+          targetVersion: ({dispatch, newValue, objectState}) => {
             dispatch(updateTargetVersion(newValue));
             if (
-              storeState.project_project.projectForm?.sprintManagementSelect ===
+              objectState?.project?.sprintManagementSelect ===
               getTypes().Project?.sprintManagementSelect.Version
             ) {
-              return storeState.project_project.projectForm?.backlogSprint;
-            } else {
-              return objectState?.activeSprint;
+              return objectState?.project?.backlogSprint;
             }
+
+            return objectState?.activeSprint;
           },
         },
-        hideIf: ({objectState, storeState}) =>
-          storeState.project_project.projectForm?.sprintManagementSelect ===
+        hideIf: ({objectState}) =>
+          objectState?.project?.sprintManagementSelect ===
             getTypes().Project?.sprintManagementSelect.None ||
-          (storeState.project_project.projectForm?.sprintManagementSelect ===
+          (objectState?.project?.sprintManagementSelect ===
             getTypes().Project?.sprintManagementSelect.Version &&
             objectState?.targetVersion == null),
       },
@@ -268,8 +261,7 @@ export const project_formsRegister: FormConfigs = {
             }
           },
         },
-        hideIf: ({storeState}) =>
-          !storeState.project_project.projectForm?.isShowProgress,
+        hideIf: ({objectState}) => !objectState?.project?.isShowProgress,
       },
       description: {
         type: 'string',

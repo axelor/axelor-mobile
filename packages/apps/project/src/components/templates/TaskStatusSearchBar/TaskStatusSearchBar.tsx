@@ -35,6 +35,7 @@ interface TaskStatusSearchBarProps {
   readonly?: boolean;
   required?: boolean;
   showTitle?: boolean;
+  objectState?: any;
 }
 
 const TaskStatusSearchBarAux = ({
@@ -45,6 +46,7 @@ const TaskStatusSearchBarAux = ({
   required = false,
   readonly = false,
   showTitle = true,
+  objectState = null,
 }: TaskStatusSearchBarProps) => {
   const I18n = useTranslator();
   const dispatch = useDispatch();
@@ -57,21 +59,33 @@ const TaskStatusSearchBarAux = ({
     statusList,
     categoryForm,
   } = useSelector((state: any) => state.project_projectTask);
-  const {projectForm} = useSelector((state: any) => state.project_project);
 
   const statusIds = useMemo(() => {
-    switch (projectForm?.taskStatusManagementSelect) {
+    const management =
+      objectState?.project?.taskStatusManagementSelect ??
+      Project?.taskStatusManagementSelect.NoStatusManagement;
+
+    switch (management) {
       case Project?.taskStatusManagementSelect.ManageByProject:
-        return projectForm?.projectTaskStatusSet?.map(({id}) => id) ?? [];
+        return (
+          objectState?.project?.projectTaskStatusSet?.map(
+            (status: any) => status.id,
+          ) ?? []
+        );
       case Project?.taskStatusManagementSelect.ManageByCategory:
-        return categoryForm?.projectTaskStatusSet?.map(({id}) => id) ?? [];
+        return (
+          objectState?.projectTaskCategory?.projectTaskStatusSet?.map(
+            (status: any) => status.id,
+          ) ?? categoryForm?.projectTaskStatusSet?.map(({id}) => id) ?? []
+        );
       default:
         return [];
     }
   }, [
     Project?.taskStatusManagementSelect,
-    projectForm?.projectTaskStatusSet,
-    projectForm?.taskStatusManagementSelect,
+    objectState?.project?.projectTaskStatusSet,
+    objectState?.project?.taskStatusManagementSelect,
+    objectState?.projectTaskCategory?.projectTaskStatusSet,
     categoryForm?.projectTaskStatusSet,
   ]);
 
@@ -118,6 +132,7 @@ const TaskStatusSearchBar = ({
   required = false,
   readonly = false,
   showTitle = true,
+  objectState = null,
 }: TaskStatusSearchBarProps) => {
   return (
     <TaskStatusSearchBarAux
@@ -128,6 +143,7 @@ const TaskStatusSearchBar = ({
       readonly={readonly}
       onChange={onChange}
       showTitle={showTitle}
+      objectState={objectState}
     />
   );
 };

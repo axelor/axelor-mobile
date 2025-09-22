@@ -35,6 +35,7 @@ interface ActiveSprintSearchBarProps {
   readonly?: boolean;
   required?: boolean;
   showTitle?: boolean;
+  objectState?: any;
 }
 
 const ActiveSprintSearchBarAux = ({
@@ -45,6 +46,7 @@ const ActiveSprintSearchBarAux = ({
   readonly = false,
   required = false,
   showTitle = true,
+  objectState = null,
 }: ActiveSprintSearchBarProps) => {
   const I18n = useTranslator();
   const {Project} = useTypes();
@@ -57,7 +59,6 @@ const ActiveSprintSearchBarAux = ({
     moreLoadingSprint,
     isListEndSprint,
   } = useSelector((state: any) => state.project_projectTask);
-  const {projectForm} = useSelector((state: any) => state.project_project);
 
   const searchSprintAPI = useCallback(
     ({page = 0, searchValue}) => {
@@ -65,11 +66,11 @@ const ActiveSprintSearchBarAux = ({
         (searchSprint as any)({
           searchValue,
           sprintManagedOnProject:
-            projectForm?.sprintManagementSelect ===
+            objectState?.project?.sprintManagementSelect ===
             Project?.sprintManagementSelect.Project,
-          projectId: projectForm?.id,
+          projectId: objectState?.project?.id,
           targetVersionId: targetVersion?.id,
-          backlogSprintId: projectForm?.backlogSprint?.id,
+          backlogSprintId: objectState?.project?.backlogSprint?.id,
           page,
         }),
       );
@@ -77,7 +78,7 @@ const ActiveSprintSearchBarAux = ({
     [
       Project?.sprintManagementSelect.Project,
       dispatch,
-      projectForm,
+      objectState?.project,
       targetVersion?.id,
     ],
   );
@@ -112,6 +113,7 @@ const ActiveSprintSearchBar = ({
   readonly = false,
   required = false,
   showTitle = true,
+  objectState = null,
 }: ActiveSprintSearchBarProps) => {
   return (
     <ActiveSprintSearchBarAux
@@ -122,6 +124,7 @@ const ActiveSprintSearchBar = ({
       readonly={readonly}
       onChange={onChange}
       showTitle={showTitle}
+      objectState={objectState}
     />
   );
 };

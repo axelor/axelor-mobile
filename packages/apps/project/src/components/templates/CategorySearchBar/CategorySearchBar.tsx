@@ -34,6 +34,7 @@ interface CategorySearchBarProps {
   readonly?: boolean;
   required?: boolean;
   showTitle?: boolean;
+  objectState?: any;
 }
 
 const CategorySearchBarAux = ({
@@ -44,6 +45,7 @@ const CategorySearchBarAux = ({
   readonly = false,
   required = false,
   showTitle = true,
+  objectState = null,
 }: CategorySearchBarProps) => {
   const I18n = useTranslator();
   const dispatch = useDispatch();
@@ -54,11 +56,13 @@ const CategorySearchBarAux = ({
     moreLoadingCategory,
     isListEndCategory,
   } = useSelector((state: any) => state.project_projectTask);
-  const {projectForm} = useSelector((state: any) => state.project_project);
 
   const categoryIds = useMemo(
-    () => projectForm?.projectTaskCategorySet?.map(priority => priority.id),
-    [projectForm?.projectTaskCategorySet],
+    () =>
+      objectState?.project?.projectTaskCategorySet?.map(
+        (category: any) => category.id,
+      ),
+    [objectState?.project?.projectTaskCategorySet],
   );
 
   const searchCategoryAPI = useCallback(
@@ -104,6 +108,7 @@ const CategorySearchBar = ({
   readonly = false,
   required = false,
   showTitle = true,
+  objectState = null,
 }: CategorySearchBarProps) => {
   return (
     <CategorySearchBarAux
@@ -114,6 +119,7 @@ const CategorySearchBar = ({
       readonly={readonly}
       onChange={onChange}
       showTitle={showTitle}
+      objectState={objectState}
     />
   );
 };
