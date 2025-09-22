@@ -23,14 +23,17 @@ import {
   useTranslator,
 } from '@axelor/aos-mobile-core';
 import {useThemeColor} from '@axelor/aos-mobile-ui';
-import {updateCheckListItem} from '../features/checkListSlice';
+import {
+  deleteCheckListItem,
+  updateCheckListItem,
+} from '../features/checkListSlice';
 import {CheckListItemType} from '../types';
 
 export const useCheckListItemActions = (handleRefresh?: () => void) => {
   const I18n = useTranslator();
   const Colors = useThemeColor();
   const dispatch: any = useDispatch();
-  const {readonly} = usePermitted({
+  const {readonly, canDelete} = usePermitted({
     modelName: 'com.axelor.apps.project.db.ProjectCheckListItem',
   });
 
@@ -51,10 +54,22 @@ export const useCheckListItemActions = (handleRefresh?: () => void) => {
               handleRefresh?.(),
             ),
           hidden: readonly,
+          large: !canDelete,
+        },
+        {
+          iconName: 'trash3-fill',
+          iconColor: Colors.errorColor?.background,
+          helper: I18n.t('Project_DeleteItem'),
+          onPress: () =>
+            dispatch((deleteCheckListItem as any)(item)).then(() =>
+              handleRefresh?.(),
+            ),
+          hidden: !canDelete,
+          large: readonly,
         },
       ];
     },
-    [Colors, I18n, dispatch, handleRefresh, readonly],
+    [Colors, I18n, canDelete, dispatch, handleRefresh, readonly],
   );
 
   return useMemo(() => ({getItemActions}), [getItemActions]);

@@ -23,6 +23,8 @@ import {
   Criteria,
 } from '@axelor/aos-mobile-core';
 
+const MODEL = 'com.axelor.apps.project.db.ProjectCheckListItem';
+
 const createCheckListCriterias = ({
   searchValue,
   parentKey,
@@ -87,7 +89,7 @@ export async function searchCheckListItems({
   page?: number;
 }) {
   return createStandardSearch({
-    model: 'com.axelor.apps.project.db.ProjectCheckListItem',
+    model: MODEL,
     criteria: createCheckListCriterias({
       searchValue,
       parentKey,
@@ -117,10 +119,16 @@ export async function updateCheckListItem({
     url: `/ws/aos/project-check-list-item/${id}/complete`,
     body: {version, complete: !completed},
     description: 'update check list item',
-    matchers: {
-      id,
-      modelName: 'com.axelor.apps.project.db.ProjectCheckListItem',
-      fields: {completed: 'completed'},
-    },
+    matchers: {modelName: MODEL, id, fields: {completed: 'completed'}},
+  });
+}
+
+export async function deleteCheckListItem({id}) {
+  return getActionApi().send({
+    method: 'delete',
+    url: `/ws/rest/${MODEL}/${id}`,
+    body: {},
+    description: 'delete check list item',
+    matchers: {modelName: MODEL, id, fields: {}},
   });
 }

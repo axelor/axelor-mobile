@@ -17,6 +17,7 @@
  */
 
 export {
+  deleteCheckListItem,
   searchCheckListItems,
   searchParentCheckListItems,
   updateCheckListItem,
