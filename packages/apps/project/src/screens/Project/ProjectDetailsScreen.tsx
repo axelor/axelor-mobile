@@ -33,9 +33,9 @@ import {
   SubProjectView,
   TaskView,
   TimeView,
-} from '../components';
-import {fetchProjectById} from '../features/projectSlice';
-import {useReportingConfiguration} from '../hooks/use-reporting-configuration';
+} from '../../components';
+import {fetchProjectById} from '../../features/projectSlice';
+import {useReportingConfiguration} from '../../hooks/use-reporting-configuration';
 
 export interface ProjectDetailsScreenProps {
   route?: any;

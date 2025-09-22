@@ -24,12 +24,12 @@ import {
   isEmpty,
   useTypes,
 } from '@axelor/aos-mobile-core';
-import {fetchProjectFormById} from '../features/projectSlice';
+import {fetchProjectFormById} from '../../features/projectSlice';
 import {
   fetchCategoryFormById,
   saveProjectTask,
   updateTargetVersion,
-} from '../features/projectTaskSlice';
+} from '../../features/projectTaskSlice';
 
 const TaskFormScreen = ({navigation, route}) => {
   const {isCreation} = route.params ?? {};

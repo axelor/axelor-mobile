@@ -32,8 +32,8 @@ import {
   TaskGeneralInformationView,
   TaskLinkView,
   TimeView,
-} from '../components';
-import {fetchProjectTaskById} from '../features/projectTaskSlice';
+} from '../../components';
+import {fetchProjectTaskById} from '../../features/projectTaskSlice';
 
 const TaskDetailsScreen = ({navigation, route}) => {
   const {projecTaskId, isTimeViewActive} = route?.params;

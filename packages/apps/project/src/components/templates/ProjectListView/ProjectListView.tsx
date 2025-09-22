@@ -27,18 +27,25 @@ import {
   useNavigation,
 } from '@axelor/aos-mobile-core';
 import {MultiValuePicker, ToggleButton} from '@axelor/aos-mobile-ui';
-import {
-  fetchProjectStatus,
-  searchProject,
-} from '../../../features/projectSlice';
+import {fetchProjectStatus} from '../../../features/projectSlice';
 import {ProjectCard} from '../../atoms';
 
 interface ProjectListViewListViewProps {
-  businessProject?: boolean;
+  loading: boolean;
+  moreLoading: boolean;
+  isListEnd: boolean;
+  projectList: any[];
+  searchProject: any;
+  additionnalData?: any;
 }
 
 const ProjectListView = ({
-  businessProject = false,
+  loading,
+  moreLoading,
+  isListEnd,
+  projectList,
+  searchProject,
+  additionnalData,
 }: ProjectListViewListViewProps) => {
   const I18n = useTranslator();
   const dispatch = useDispatch();
@@ -46,8 +53,7 @@ const ProjectListView = ({
   const {getCustomSelectionItems} = useTypeHelpers();
 
   const {user} = useSelector(state => state.user);
-  const {loading, moreLoading, isListEnd, projectList, projectStatusList} =
-    useSelector((state: any) => state.project_project);
+  const {projectStatusList} = useSelector(state => state.project_project);
 
   const [selectedStatus, setSelectedStatus] = useState([]);
   const [isAssignedToMe, setIsAssignedToMe] = useState(true);
@@ -59,12 +65,18 @@ const ProjectListView = ({
 
   const sliceFunctionData = useMemo(
     () => ({
-      isBusinessProject: businessProject,
+      ...(additionnalData ?? {}),
       statusList: selectedStatus,
       userId: isAssignedToMe ? user.id : null,
       companyId: user.activeCompany?.id,
     }),
-    [businessProject, isAssignedToMe, selectedStatus, user],
+    [
+      additionnalData,
+      isAssignedToMe,
+      selectedStatus,
+      user.activeCompany?.id,
+      user.id,
+    ],
   );
 
   useEffect(() => {

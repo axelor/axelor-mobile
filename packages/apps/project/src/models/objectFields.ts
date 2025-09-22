@@ -75,7 +75,6 @@ export const project_modelAPI: ObjectFields = {
         ),
       }),
     ),
-    isBusinessProject: schemaContructor.boolean(),
     fromDate: schemaContructor.string(),
     toDate: schemaContructor.string(),
     siteSet: schemaContructor.array().of(schemaContructor.subObject()),

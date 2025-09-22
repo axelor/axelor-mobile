@@ -28,7 +28,6 @@ import {fetchProjectById} from '../features/projectSlice';
 
 export const useProjectHeaders = () => {
   useProjectListScreenActions();
-  useBusinessProjectListScreenActions();
   useProjectDetailsActions();
   useProjectTaskListActions();
   useProjectTaskDetailsActions();
@@ -40,17 +39,6 @@ const useProjectListScreenActions = () => {
       model: 'com.axelor.apps.project.db.Project',
       options: {
         core_modelFilters: {name: 'project-project-filters'},
-      },
-    });
-  }, []);
-};
-
-const useBusinessProjectListScreenActions = () => {
-  useEffect(() => {
-    headerActionsProvider.registerModel('project_businessProject_list', {
-      model: 'com.axelor.apps.project.db.Project',
-      options: {
-        core_modelFilters: {name: 'project-filters'},
       },
     });
   }, []);
