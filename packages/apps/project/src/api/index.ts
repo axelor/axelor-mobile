@@ -17,6 +17,7 @@
  */
 
 export {
+  deleteCheckListItem as deleteCheckListItemApi,
   searchCheckListItems as searchCheckListItemsApi,
   updateCheckListItem as updateCheckListItemApi,
 } from './check-list-api';
