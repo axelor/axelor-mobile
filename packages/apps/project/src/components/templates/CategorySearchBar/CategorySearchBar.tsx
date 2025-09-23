@@ -34,16 +34,18 @@ interface CategorySearchBarProps {
   readonly?: boolean;
   required?: boolean;
   showTitle?: boolean;
+  objectState?: any;
 }
 
 const CategorySearchBarAux = ({
-  style = null,
+  style,
   title = 'Project_Category',
-  defaultValue = null,
-  onChange = () => {},
+  defaultValue,
+  onChange,
   readonly = false,
   required = false,
   showTitle = true,
+  objectState,
 }: CategorySearchBarProps) => {
   const I18n = useTranslator();
   const dispatch = useDispatch();
@@ -53,23 +55,19 @@ const CategorySearchBarAux = ({
     loadingCategory,
     moreLoadingCategory,
     isListEndCategory,
-  } = useSelector((state: any) => state.project_projectTask);
-  const {projectForm} = useSelector((state: any) => state.project_project);
+  } = useSelector(state => state.project_projectTask);
 
   const categoryIds = useMemo(
-    () => projectForm?.projectTaskCategorySet?.map(priority => priority.id),
-    [projectForm?.projectTaskCategorySet],
+    () =>
+      objectState?.project?.projectTaskCategorySet?.map(
+        (category: any) => category.id,
+      ),
+    [objectState?.project?.projectTaskCategorySet],
   );
 
   const searchCategoryAPI = useCallback(
     ({page = 0, searchValue}) => {
-      dispatch(
-        (searchCategory as any)({
-          page,
-          searchValue,
-          categoryIds: categoryIds,
-        }),
-      );
+      dispatch((searchCategory as any)({page, searchValue, categoryIds}));
     },
     [categoryIds, dispatch],
   );
@@ -96,26 +94,8 @@ const CategorySearchBarAux = ({
   );
 };
 
-const CategorySearchBar = ({
-  style = null,
-  title = 'Project_Category',
-  defaultValue = null,
-  onChange = () => {},
-  readonly = false,
-  required = false,
-  showTitle = true,
-}: CategorySearchBarProps) => {
-  return (
-    <CategorySearchBarAux
-      style={style}
-      title={title}
-      defaultValue={defaultValue}
-      required={required}
-      readonly={readonly}
-      onChange={onChange}
-      showTitle={showTitle}
-    />
-  );
+const CategorySearchBar = (props: CategorySearchBarProps) => {
+  return <CategorySearchBarAux {...props} />;
 };
 
 export default CategorySearchBar;

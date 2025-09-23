@@ -34,16 +34,18 @@ interface ParentTaskSearchBarProps {
   readonly?: boolean;
   required?: boolean;
   showTitle?: boolean;
+  objectState?: any;
 }
 
 const ParentTaskSearchBarAux = ({
-  style = null,
+  style,
   title = 'Project_ParentTask',
-  defaultValue = null,
-  onChange = () => {},
+  defaultValue,
+  onChange,
   readonly = false,
   required = false,
   showTitle = true,
+  objectState,
 }: ParentTaskSearchBarProps) => {
   const I18n = useTranslator();
   const dispatch = useDispatch();
@@ -54,8 +56,7 @@ const ParentTaskSearchBarAux = ({
     loadingParentTask,
     moreLoadingParentTask,
     isListEndParentTask,
-  } = useSelector((state: any) => state.project_projectTask);
-  const {projectForm} = useSelector((state: any) => state.project_project);
+  } = useSelector(state => state.project_projectTask);
 
   const searchParentTaskAPI = useCallback(
     ({page = 0, searchValue}) => {
@@ -63,12 +64,12 @@ const ParentTaskSearchBarAux = ({
         (searchParentTask as any)({
           page,
           searchValue,
-          projectId: projectForm?.id,
+          projectId: objectState?.project?.id,
           projectTaskId: projectTask?.id,
         }),
       );
     },
-    [dispatch, projectForm?.id, projectTask?.id],
+    [dispatch, objectState?.project?.id, projectTask?.id],
   );
 
   return (
@@ -93,26 +94,8 @@ const ParentTaskSearchBarAux = ({
   );
 };
 
-const ParentTaskSearchBar = ({
-  style = null,
-  title = 'Project_ParentTask',
-  defaultValue = null,
-  onChange = () => {},
-  readonly = false,
-  required = false,
-  showTitle = true,
-}: ParentTaskSearchBarProps) => {
-  return (
-    <ParentTaskSearchBarAux
-      style={style}
-      title={title}
-      defaultValue={defaultValue}
-      required={required}
-      readonly={readonly}
-      onChange={onChange}
-      showTitle={showTitle}
-    />
-  );
+const ParentTaskSearchBar = (props: ParentTaskSearchBarProps) => {
+  return <ParentTaskSearchBarAux {...props} />;
 };
 
 export default ParentTaskSearchBar;
