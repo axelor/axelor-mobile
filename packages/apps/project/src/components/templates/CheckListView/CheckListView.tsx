@@ -19,6 +19,8 @@
 import React, {useMemo, useState} from 'react';
 import {
   SearchTreeView,
+  useNavigation,
+  usePermitted,
   useSelector,
   useTranslator,
 } from '@axelor/aos-mobile-core';
@@ -48,9 +50,13 @@ const CheckListView = ({
 }: CheckListViewProps) => {
   const I18n = useTranslator();
   const Colors = useThemeColor();
+  const navigation = useNavigation();
   const {getItemActions} = useCheckListItemActions(() =>
     setSelectedStatus(current => [...current]),
   );
+  const {canCreate} = usePermitted({
+    modelName: 'com.axelor.apps.project.db.ProjectCheckListItem',
+  });
 
   const [selectedStatus, setSelectedStatus] = useState([]);
 
@@ -126,6 +132,18 @@ const CheckListView = ({
         />
       }
       headerTopChildren={headerTopChildren}
+      actionList={
+        canCreate && [
+          {
+            iconName: 'plus-lg',
+            title: I18n.t('Project_CreateItem'),
+            onPress: () =>
+              navigation.navigate('CheckListItemFormScreen', {
+                [`${parentKey}Id`]: parentId,
+              }),
+          },
+        ]
+      }
     />
   );
 };

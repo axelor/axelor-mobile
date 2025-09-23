@@ -19,6 +19,7 @@
 import {useCallback, useMemo} from 'react';
 import {
   useDispatch,
+  useNavigation,
   usePermitted,
   useTranslator,
 } from '@axelor/aos-mobile-core';
@@ -33,13 +34,16 @@ export const useCheckListItemActions = (handleRefresh?: () => void) => {
   const I18n = useTranslator();
   const Colors = useThemeColor();
   const dispatch: any = useDispatch();
-  const {readonly, canDelete} = usePermitted({
+  const navigation = useNavigation();
+  const {readonly, canCreate, canDelete} = usePermitted({
     modelName: 'com.axelor.apps.project.db.ProjectCheckListItem',
   });
 
   const getItemActions = useCallback(
     (item: any) => {
-      const {completed} = item;
+      const {completed, parentItem, project, projectTask} = item;
+
+      const creationDisabled = !canCreate || parentItem?.id != null;
 
       return [
         {
@@ -54,6 +58,19 @@ export const useCheckListItemActions = (handleRefresh?: () => void) => {
               handleRefresh?.(),
             ),
           hidden: readonly,
+          large:
+            !creationDisabled || canCreate || (creationDisabled && !canCreate),
+        },
+        {
+          iconName: 'plus-lg',
+          helper: I18n.t('Project_CreateItem'),
+          onPress: () =>
+            navigation.navigate('CheckListItemFormScreen', {
+              parentItem: item,
+              projectId: project?.id,
+              projectTaskId: projectTask?.id,
+            }),
+          hidden: creationDisabled,
           large: !canDelete,
         },
         {
@@ -65,11 +82,20 @@ export const useCheckListItemActions = (handleRefresh?: () => void) => {
               handleRefresh?.(),
             ),
           hidden: !canDelete,
-          large: readonly,
+          large: readonly && creationDisabled,
         },
       ];
     },
-    [Colors, I18n, canDelete, dispatch, handleRefresh, readonly],
+    [
+      Colors,
+      I18n,
+      canCreate,
+      canDelete,
+      dispatch,
+      handleRefresh,
+      navigation,
+      readonly,
+    ],
   );
 
   return useMemo(() => ({getItemActions}), [getItemActions]);

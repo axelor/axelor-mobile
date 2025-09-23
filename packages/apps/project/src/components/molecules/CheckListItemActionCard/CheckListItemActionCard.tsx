@@ -39,6 +39,7 @@ const CheckListItemActionCard = ({
   return (
     <ActionCard
       actionList={showActions ? getItemActions(item) : []}
+      forceActionsDisplay
       translator={I18n.t}>
       <CheckListItemCard {...item} />
     </ActionCard>
