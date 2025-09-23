@@ -17,21 +17,15 @@
  */
 
 import React, {useMemo, useState} from 'react';
-import {StyleSheet} from 'react-native';
 import {ChipSelect, Screen} from '@axelor/aos-mobile-ui';
 import {
-  DateInput,
   SearchListView,
   useSelector,
   useTranslator,
   useTypeHelpers,
   useTypes,
 } from '@axelor/aos-mobile-core';
-import {
-  LogisticalFormCard,
-  PartnerSearchBar,
-  StockLocationSearchBar,
-} from '../../components';
+import {LogisticalFormCard, LogisticalFormFilter} from '../../components';
 import {searchLogisticalForms} from '../../features/logisticalFormSlice';
 import {displayLogisticalForm} from '../../utils/displayers';
 
@@ -95,28 +89,14 @@ const LogisticalFormListScreen = () => {
         }
         headerChildren={
           <>
-            <PartnerSearchBar
-              placeholderKey="Stock_CarrierPartner"
-              defaultValue={carrier}
-              onChange={setCarrier}
-              showDetailsPopup={false}
-              partnerType="carrier"
-            />
-            <StockLocationSearchBar
-              style={{}}
-              readOnly={false}
-              scanKey={stockLocationScanKey}
-              placeholderKey="Stock_StockLocation"
-              defaultValue={stockLocation}
-              onChange={setStockLocation as any}
-            />
-            <DateInput
-              mode="date"
-              nullable
-              popup
-              defaultDate={collectionDate ?? undefined}
-              onDateChange={value => setCollectionDate(value ?? null)}
-              style={styles.dateInput}
+            <LogisticalFormFilter
+              carrier={carrier}
+              onCarrierChange={setCarrier}
+              stockLocation={stockLocation}
+              onStockLocationChange={setStockLocation}
+              collectionDate={collectionDate}
+              onCollectionDateChange={setCollectionDate}
+              stockLocationScanKey={stockLocationScanKey}
             />
           </>
         }
@@ -133,13 +113,5 @@ const LogisticalFormListScreen = () => {
     </Screen>
   );
 };
-
-const styles = StyleSheet.create({
-  dateInput: {
-    alignSelf: 'center',
-    width: '90%',
-    marginTop: 8,
-  },
-});
 
 export default LogisticalFormListScreen;

@@ -27,6 +27,7 @@ import {
 import {displayPartner} from '../../../utils/displayers';
 
 const PartnerSearchBar = ({
+  style,
   placeholderKey,
   defaultValue,
   onChange,
@@ -113,6 +114,7 @@ const PartnerSearchBar = ({
       loadingList={loadingPartners}
       moreLoading={moreLoading}
       isListEnd={isListEnd}
+      style={style}
     />
   );
 };
