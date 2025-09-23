@@ -219,19 +219,6 @@ export const searchProjectTaskLink = createAsyncThunk(
   },
 );
 
-export const fetchCategoryFormById = createAsyncThunk(
-  'project_projectTask/fetchCategoryFormById',
-  async function (data, {getState}) {
-    return handlerApiCall({
-      fetchFunction: _searchCategory,
-      data: {categoryIds: data.categoryId == null ? null : [data.categoryId]},
-      action: 'Project_SliceAction_SearchCategory',
-      getState,
-      responseOptions: {isArrayResponse: false},
-    });
-  },
-);
-
 export const searchSprint = createAsyncThunk(
   'project_projectTask/searchSprint',
   async function (data, {getState}) {
@@ -260,8 +247,6 @@ const initialState = {
   moreLoadingTargetVersion: false,
   isListEndTargetVersion: false,
   targetVersionList: [],
-  targetVersion: {},
-
   loadingCategory: true,
   moreLoadingCategory: false,
   isListEndCategory: false,
@@ -292,8 +277,6 @@ const initialState = {
   loadingTaskTag: true,
   tagList: [],
 
-  categoryForm: {},
-
   loadingSprint: true,
   moreLoadingSprint: false,
   isListEndSprint: false,
@@ -303,14 +286,7 @@ const initialState = {
 const projectTaskSlice = createSlice({
   name: 'project_projectTask',
   initialState,
-  reducers: {
-    udpateFormCategory: (state, action) => {
-      state.categoryForm = action.payload;
-    },
-    updateTargetVersion: (state, action) => {
-      state.targetVersion = action.payload;
-    },
-  },
+  reducers: {},
   extraReducers: builder => {
     generateInifiniteScrollCases(builder, searchProjectTask, {
       loading: 'loading',
@@ -395,13 +371,7 @@ const projectTaskSlice = createSlice({
         action.payload,
       ]);
     });
-    builder.addCase(fetchCategoryFormById.fulfilled, (state, action) => {
-      state.categoryForm = action.payload;
-    });
   },
 });
-
-export const {udpateFormCategory, updateTargetVersion} =
-  projectTaskSlice.actions;
 
 export const projectTaskReducer = projectTaskSlice.reducer;

@@ -34,11 +34,6 @@ import {
   TaskStatusSearchBar,
   TaskTagMultiValuePicker,
 } from '../components';
-import {updateProject} from '../features/projectSlice';
-import {
-  udpateFormCategory,
-  updateTargetVersion,
-} from '../features/projectTaskSlice';
 
 const hr_TimesheetLineForm = HrModule.models.formsRegister.hr_TimesheetLine;
 
@@ -122,14 +117,8 @@ export const project_formsRegister: FormConfigs = {
         type: 'object',
         widget: 'custom',
         customComponent: ParentTaskSearchBar,
-        readonlyIf: ({storeState}) =>
-          isEmpty(storeState.project_project.projectForm),
-        dependsOn: {
-          project: ({newValue, dispatch}) => {
-            dispatch(updateProject(newValue));
-            return null;
-          },
-        },
+        readonlyIf: ({objectState}) => isEmpty(objectState?.project),
+        dependsOn: {project: () => null},
         parentPanel: 'parentContainer',
       },
       projectTaskCategory: {
@@ -137,45 +126,34 @@ export const project_formsRegister: FormConfigs = {
         type: 'object',
         widget: 'custom',
         customComponent: CategorySearchBar,
-        hideIf: ({storeState}) =>
-          !storeState.project_project.projectForm?.isShowTaskCategory,
-        requiredIf: ({storeState}) =>
-          storeState.project_project.projectForm?.taskStatusManagementSelect ===
+        hideIf: ({objectState}) => !objectState?.project?.isShowTaskCategory,
+        requiredIf: ({objectState}) =>
+          objectState?.project?.taskStatusManagementSelect ===
           getTypes().Project.taskStatusManagementSelect?.ManageByCategory,
-        dependsOn: {
-          project: () => {
-            return null;
-          },
-        },
+        dependsOn: {project: () => null},
       },
       status: {
         titleKey: 'Project_Status',
         type: 'object',
         widget: 'custom',
         customComponent: TaskStatusSearchBar,
-        hideIf: ({storeState}) => {
-          return (
-            storeState.project_project.projectForm
-              ?.taskStatusManagementSelect ===
-            getTypes().Project.taskStatusManagementSelect?.NoStatusManagement
-          );
-        },
-        requiredIf: ({storeState}) =>
-          storeState.project_project.projectForm?.taskStatusManagementSelect !==
+        hideIf: ({objectState}) =>
+          objectState?.project?.taskStatusManagementSelect ===
+          getTypes().Project.taskStatusManagementSelect?.NoStatusManagement,
+        requiredIf: ({objectState}) =>
+          objectState?.project?.taskStatusManagementSelect !==
           getTypes().Project.taskStatusManagementSelect?.NoStatusManagement,
         dependsOn: {
-          project: () => {
-            return null;
-          },
-          projectTaskCategory: ({newValue, storeState, dispatch}) => {
+          project: () => null,
+          projectTaskCategory: ({objectState}) => {
             if (
-              storeState.project_project.projectForm
-                ?.taskStatusManagementSelect ===
+              objectState?.project?.taskStatusManagementSelect ===
               getTypes().Project.taskStatusManagementSelect?.ManageByCategory
             ) {
-              dispatch(udpateFormCategory(newValue));
               return null;
             }
+
+            return objectState?.status;
           },
         },
       },
@@ -185,13 +163,8 @@ export const project_formsRegister: FormConfigs = {
         widget: 'custom',
         required: true,
         customComponent: PrioritySearchBar,
-        hideIf: ({storeState}) =>
-          !storeState.project_project.projectForm?.isShowPriority,
-        dependsOn: {
-          project: () => {
-            return null;
-          },
-        },
+        hideIf: ({objectState}) => !objectState?.project?.isShowPriority,
+        dependsOn: {project: () => null},
       },
       assignedTo: {
         titleKey: 'Project_AssignedTo',
@@ -205,11 +178,7 @@ export const project_formsRegister: FormConfigs = {
         type: 'object',
         widget: 'custom',
         customComponent: TargetVersionSearchBar,
-        dependsOn: {
-          project: () => {
-            return null;
-          },
-        },
+        dependsOn: {project: () => null},
       },
       activeSprint: {
         titleKey: 'Project_ActiveSprint',
@@ -217,22 +186,21 @@ export const project_formsRegister: FormConfigs = {
         widget: 'custom',
         customComponent: ActiveSprintSearchBar,
         dependsOn: {
-          targetVersion: ({dispatch, newValue, objectState, storeState}) => {
-            dispatch(updateTargetVersion(newValue));
+          targetVersion: ({objectState}) => {
             if (
-              storeState.project_project.projectForm?.sprintManagementSelect ===
+              objectState?.project?.sprintManagementSelect ===
               getTypes().Project?.sprintManagementSelect.Version
             ) {
-              return storeState.project_project.projectForm?.backlogSprint;
-            } else {
-              return objectState?.activeSprint;
+              return objectState?.project?.backlogSprint;
             }
+
+            return objectState?.activeSprint;
           },
         },
-        hideIf: ({objectState, storeState}) =>
-          storeState.project_project.projectForm?.sprintManagementSelect ===
+        hideIf: ({objectState}) =>
+          objectState?.project?.sprintManagementSelect ===
             getTypes().Project?.sprintManagementSelect.None ||
-          (storeState.project_project.projectForm?.sprintManagementSelect ===
+          (objectState?.project?.sprintManagementSelect ===
             getTypes().Project?.sprintManagementSelect.Version &&
             objectState?.targetVersion == null),
       },
@@ -268,8 +236,7 @@ export const project_formsRegister: FormConfigs = {
             }
           },
         },
-        hideIf: ({storeState}) =>
-          !storeState.project_project.projectForm?.isShowProgress,
+        hideIf: ({objectState}) => !objectState?.project?.isShowProgress,
       },
       description: {
         type: 'string',

@@ -123,9 +123,31 @@ export const project_modelAPI: ObjectFields = {
         projectStatus: schemaContructor.subObject(),
         customFieldManagementSelect: schemaContructor.string(),
         manageTimeSpent: schemaContructor.boolean(),
+        taskStatusManagementSelect: schemaContructor.number(),
+        isShowTaskCategory: schemaContructor.boolean(),
+        isShowPriority: schemaContructor.boolean(),
+        isShowProgress: schemaContructor.boolean(),
+        sprintManagementSelect: schemaContructor.string(),
+        backlogSprint: schemaContructor.subObject(),
+        projectTaskCategorySet: schemaContructor
+          .array()
+          .of(schemaContructor.subObject()),
+        projectTaskStatusSet: schemaContructor
+          .array()
+          .of(schemaContructor.subObject()),
+        projectTaskPrioritySet: schemaContructor
+          .array()
+          .of(schemaContructor.subObject()),
       }),
     ),
-    projectTaskCategory: schemaContructor.subObject(),
+    projectTaskCategory: schemaContructor.subObject().concat(
+      schemaContructor.object({
+        name: schemaContructor.subObject(),
+        projectTaskStatusSet: schemaContructor
+          .array()
+          .of(schemaContructor.subObject()),
+      }),
+    ),
     targetVersion: schemaContructor.subObject(),
     taskDate: schemaContructor.string(),
     taskEndDate: schemaContructor.string(),
@@ -192,7 +214,9 @@ export const project_modelAPI: ObjectFields = {
   }),
   project_projectTaskCategory: schemaContructor.object({
     name: schemaContructor.subObject(),
-    projectTaskStatusSet: schemaContructor.subObject(),
+    projectTaskStatusSet: schemaContructor
+      .array()
+      .of(schemaContructor.subObject()),
   }),
   auth_user: schemaContructor.object({
     activeProject: schemaContructor.subObject(),

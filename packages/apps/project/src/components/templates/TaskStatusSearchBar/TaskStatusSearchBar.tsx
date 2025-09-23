@@ -35,44 +35,52 @@ interface TaskStatusSearchBarProps {
   readonly?: boolean;
   required?: boolean;
   showTitle?: boolean;
+  objectState?: any;
 }
 
 const TaskStatusSearchBarAux = ({
-  style = null,
+  style,
   title = 'Project_Status',
-  defaultValue = null,
-  onChange = () => {},
+  defaultValue,
+  onChange,
   required = false,
   readonly = false,
   showTitle = true,
+  objectState,
 }: TaskStatusSearchBarProps) => {
   const I18n = useTranslator();
   const dispatch = useDispatch();
   const {Project} = useTypes();
 
-  const {
-    loadingStatus,
-    moreLoadingStatus,
-    isListEndStatus,
-    statusList,
-    categoryForm,
-  } = useSelector((state: any) => state.project_projectTask);
-  const {projectForm} = useSelector((state: any) => state.project_project);
+  const {loadingStatus, moreLoadingStatus, isListEndStatus, statusList} =
+    useSelector(state => state.project_projectTask);
 
   const statusIds = useMemo(() => {
-    switch (projectForm?.taskStatusManagementSelect) {
+    const management =
+      objectState?.project?.taskStatusManagementSelect ??
+      Project?.taskStatusManagementSelect.NoStatusManagement;
+
+    switch (management) {
       case Project?.taskStatusManagementSelect.ManageByProject:
-        return projectForm?.projectTaskStatusSet?.map(({id}) => id) ?? [];
+        return (
+          objectState?.project?.projectTaskStatusSet?.map(
+            (status: any) => status.id,
+          ) ?? []
+        );
       case Project?.taskStatusManagementSelect.ManageByCategory:
-        return categoryForm?.projectTaskStatusSet?.map(({id}) => id) ?? [];
+        return (
+          objectState?.projectTaskCategory?.projectTaskStatusSet?.map(
+            (status: any) => status.id,
+          ) ?? []
+        );
       default:
         return [];
     }
   }, [
     Project?.taskStatusManagementSelect,
-    projectForm?.projectTaskStatusSet,
-    projectForm?.taskStatusManagementSelect,
-    categoryForm?.projectTaskStatusSet,
+    objectState?.project?.taskStatusManagementSelect,
+    objectState?.project?.projectTaskStatusSet,
+    objectState?.projectTaskCategory?.projectTaskStatusSet,
   ]);
 
   const searchStatusAPI = useCallback(
@@ -110,26 +118,8 @@ const TaskStatusSearchBarAux = ({
   );
 };
 
-const TaskStatusSearchBar = ({
-  style = null,
-  title = 'Project_Status',
-  defaultValue = null,
-  onChange = () => {},
-  required = false,
-  readonly = false,
-  showTitle = true,
-}: TaskStatusSearchBarProps) => {
-  return (
-    <TaskStatusSearchBarAux
-      style={style}
-      title={title}
-      defaultValue={defaultValue}
-      required={required}
-      readonly={readonly}
-      onChange={onChange}
-      showTitle={showTitle}
-    />
-  );
+const TaskStatusSearchBar = (props: TaskStatusSearchBarProps) => {
+  return <TaskStatusSearchBarAux {...props} />;
 };
 
 export default TaskStatusSearchBar;

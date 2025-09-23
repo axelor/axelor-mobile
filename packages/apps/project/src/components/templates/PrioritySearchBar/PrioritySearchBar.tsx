@@ -34,16 +34,18 @@ interface PrioritySearchBarProps {
   readonly?: boolean;
   required?: boolean;
   showTitle?: boolean;
+  objectState?: any;
 }
 
 const PrioritySearchBarAux = ({
-  style = null,
+  style,
   title = 'Project_Priority',
-  defaultValue = null,
-  onChange = () => {},
+  defaultValue,
+  onChange,
   readonly = false,
   required = false,
   showTitle = true,
+  objectState,
 }: PrioritySearchBarProps) => {
   const I18n = useTranslator();
   const dispatch = useDispatch();
@@ -53,23 +55,19 @@ const PrioritySearchBarAux = ({
     loadingPriority,
     moreLoadingPriority,
     isListEndPriority,
-  } = useSelector((state: any) => state.project_projectTask);
-  const {projectForm} = useSelector((state: any) => state.project_project);
+  } = useSelector(state => state.project_projectTask);
 
   const priorityIds = useMemo(
-    () => projectForm?.projectTaskPrioritySet?.map(priority => priority.id),
-    [projectForm?.projectTaskPrioritySet],
+    () =>
+      objectState?.project?.projectTaskPrioritySet?.map(
+        (priority: any) => priority.id,
+      ),
+    [objectState?.project?.projectTaskPrioritySet],
   );
 
   const searchPriorityAPI = useCallback(
     ({page = 0, searchValue}) => {
-      dispatch(
-        (searchPriority as any)({
-          page,
-          searchValue,
-          priorityIds: priorityIds,
-        }),
-      );
+      dispatch((searchPriority as any)({page, searchValue, priorityIds}));
     },
     [dispatch, priorityIds],
   );
@@ -96,26 +94,8 @@ const PrioritySearchBarAux = ({
   );
 };
 
-const PrioritySearchBar = ({
-  style = null,
-  title = 'Project_Priority',
-  defaultValue = null,
-  onChange = () => {},
-  readonly = false,
-  required = false,
-  showTitle = true,
-}: PrioritySearchBarProps) => {
-  return (
-    <PrioritySearchBarAux
-      style={style}
-      title={title}
-      defaultValue={defaultValue}
-      required={required}
-      readonly={readonly}
-      onChange={onChange}
-      showTitle={showTitle}
-    />
-  );
+const PrioritySearchBar = (props: PrioritySearchBarProps) => {
+  return <PrioritySearchBarAux {...props} />;
 };
 
 export default PrioritySearchBar;
