@@ -38,14 +38,14 @@ interface TargetVersionSearchBarProps {
 }
 
 const TargetVersionSearchBarAux = ({
-  style = null,
+  style,
   title = 'Project_TargetVersion',
-  defaultValue = null,
-  onChange = () => {},
+  defaultValue,
+  onChange,
   readonly = false,
   required = false,
   showTitle = true,
-  objectState = null,
+  objectState,
 }: TargetVersionSearchBarProps) => {
   const I18n = useTranslator();
   const dispatch = useDispatch();
@@ -55,7 +55,7 @@ const TargetVersionSearchBarAux = ({
     loadingTargetVersion,
     moreLoadingTargetVersion,
     isListEndTargetVersion,
-  } = useSelector((state: any) => state.project_projectTask);
+  } = useSelector(state => state.project_projectTask);
 
   const searchTargetVersionAPI = useCallback(
     ({page = 0, searchValue}) => {
@@ -92,28 +92,8 @@ const TargetVersionSearchBarAux = ({
   );
 };
 
-const TargetVersionSearchBar = ({
-  style = null,
-  title = 'Project_TargetVersion',
-  defaultValue = null,
-  onChange = () => {},
-  readonly = false,
-  required = false,
-  showTitle = true,
-  objectState = null,
-}: TargetVersionSearchBarProps) => {
-  return (
-    <TargetVersionSearchBarAux
-      style={style}
-      title={title}
-      defaultValue={defaultValue}
-      required={required}
-      readonly={readonly}
-      onChange={onChange}
-      showTitle={showTitle}
-      objectState={objectState}
-    />
-  );
+const TargetVersionSearchBar = (props: TargetVersionSearchBarProps) => {
+  return <TargetVersionSearchBarAux {...props} />;
 };
 
 export default TargetVersionSearchBar;

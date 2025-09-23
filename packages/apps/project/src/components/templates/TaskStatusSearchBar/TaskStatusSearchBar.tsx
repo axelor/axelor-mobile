@@ -69,22 +69,18 @@ const TaskStatusSearchBarAux = ({
         );
       case Project?.taskStatusManagementSelect.ManageByCategory:
         return (
-          objectState?.project?.projectTaskCategorySet
-            ?.find(
-              (category: any) =>
-                category.id === objectState?.projectTaskCategory?.id,
-            )
-            ?.projectTaskStatusSet?.map((status: any) => status.id) ?? []
+          objectState?.projectTaskCategory?.projectTaskStatusSet?.map(
+            (status: any) => status.id,
+          ) ?? []
         );
       default:
         return [];
     }
   }, [
     Project?.taskStatusManagementSelect,
-    objectState?.project?.projectTaskStatusSet,
     objectState?.project?.taskStatusManagementSelect,
-    objectState?.project?.projectTaskCategorySet,
-    objectState?.projectTaskCategory?.id,
+    objectState?.project?.projectTaskStatusSet,
+    objectState?.projectTaskCategory?.projectTaskStatusSet,
   ]);
 
   const searchStatusAPI = useCallback(
@@ -122,28 +118,8 @@ const TaskStatusSearchBarAux = ({
   );
 };
 
-const TaskStatusSearchBar = ({
-  style = null,
-  title = 'Project_Status',
-  defaultValue = null,
-  onChange = () => {},
-  required = false,
-  readonly = false,
-  showTitle = true,
-  objectState = null,
-}: TaskStatusSearchBarProps) => {
-  return (
-    <TaskStatusSearchBarAux
-      style={style}
-      title={title}
-      defaultValue={defaultValue}
-      required={required}
-      readonly={readonly}
-      onChange={onChange}
-      showTitle={showTitle}
-      objectState={objectState}
-    />
-  );
+const TaskStatusSearchBar = (props: TaskStatusSearchBarProps) => {
+  return <TaskStatusSearchBarAux {...props} />;
 };
 
 export default TaskStatusSearchBar;

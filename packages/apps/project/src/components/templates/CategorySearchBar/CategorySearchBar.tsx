@@ -38,14 +38,14 @@ interface CategorySearchBarProps {
 }
 
 const CategorySearchBarAux = ({
-  style = null,
+  style,
   title = 'Project_Category',
-  defaultValue = null,
-  onChange = () => {},
+  defaultValue,
+  onChange,
   readonly = false,
   required = false,
   showTitle = true,
-  objectState = null,
+  objectState,
 }: CategorySearchBarProps) => {
   const I18n = useTranslator();
   const dispatch = useDispatch();
@@ -55,7 +55,7 @@ const CategorySearchBarAux = ({
     loadingCategory,
     moreLoadingCategory,
     isListEndCategory,
-  } = useSelector((state: any) => state.project_projectTask);
+  } = useSelector(state => state.project_projectTask);
 
   const categoryIds = useMemo(
     () =>
@@ -67,13 +67,7 @@ const CategorySearchBarAux = ({
 
   const searchCategoryAPI = useCallback(
     ({page = 0, searchValue}) => {
-      dispatch(
-        (searchCategory as any)({
-          page,
-          searchValue,
-          categoryIds: categoryIds,
-        }),
-      );
+      dispatch((searchCategory as any)({page, searchValue, categoryIds}));
     },
     [categoryIds, dispatch],
   );
@@ -100,28 +94,8 @@ const CategorySearchBarAux = ({
   );
 };
 
-const CategorySearchBar = ({
-  style = null,
-  title = 'Project_Category',
-  defaultValue = null,
-  onChange = () => {},
-  readonly = false,
-  required = false,
-  showTitle = true,
-  objectState = null,
-}: CategorySearchBarProps) => {
-  return (
-    <CategorySearchBarAux
-      style={style}
-      title={title}
-      defaultValue={defaultValue}
-      required={required}
-      readonly={readonly}
-      onChange={onChange}
-      showTitle={showTitle}
-      objectState={objectState}
-    />
-  );
+const CategorySearchBar = (props: CategorySearchBarProps) => {
+  return <CategorySearchBarAux {...props} />;
 };
 
 export default CategorySearchBar;

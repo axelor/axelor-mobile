@@ -100,28 +100,8 @@ const ActiveSprintSearchBarAux = ({
   );
 };
 
-const ActiveSprintSearchBar = ({
-  style = null,
-  title = 'Project_ActiveSprint',
-  defaultValue = null,
-  onChange = () => {},
-  readonly = false,
-  required = false,
-  showTitle = true,
-  objectState = null,
-}: ActiveSprintSearchBarProps) => {
-  return (
-    <ActiveSprintSearchBarAux
-      style={style}
-      title={title}
-      defaultValue={defaultValue}
-      required={required}
-      readonly={readonly}
-      onChange={onChange}
-      showTitle={showTitle}
-      objectState={objectState}
-    />
-  );
+const ActiveSprintSearchBar = (props: ActiveSprintSearchBarProps) => {
+  return <ActiveSprintSearchBarAux {...props} />;
 };
 
 export default ActiveSprintSearchBar;

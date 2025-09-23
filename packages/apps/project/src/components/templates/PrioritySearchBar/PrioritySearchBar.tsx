@@ -38,14 +38,14 @@ interface PrioritySearchBarProps {
 }
 
 const PrioritySearchBarAux = ({
-  style = null,
+  style,
   title = 'Project_Priority',
-  defaultValue = null,
-  onChange = () => {},
+  defaultValue,
+  onChange,
   readonly = false,
   required = false,
   showTitle = true,
-  objectState = null,
+  objectState,
 }: PrioritySearchBarProps) => {
   const I18n = useTranslator();
   const dispatch = useDispatch();
@@ -55,7 +55,7 @@ const PrioritySearchBarAux = ({
     loadingPriority,
     moreLoadingPriority,
     isListEndPriority,
-  } = useSelector((state: any) => state.project_projectTask);
+  } = useSelector(state => state.project_projectTask);
 
   const priorityIds = useMemo(
     () =>
@@ -67,13 +67,7 @@ const PrioritySearchBarAux = ({
 
   const searchPriorityAPI = useCallback(
     ({page = 0, searchValue}) => {
-      dispatch(
-        (searchPriority as any)({
-          page,
-          searchValue,
-          priorityIds: priorityIds,
-        }),
-      );
+      dispatch((searchPriority as any)({page, searchValue, priorityIds}));
     },
     [dispatch, priorityIds],
   );
@@ -100,28 +94,8 @@ const PrioritySearchBarAux = ({
   );
 };
 
-const PrioritySearchBar = ({
-  style = null,
-  title = 'Project_Priority',
-  defaultValue = null,
-  onChange = () => {},
-  readonly = false,
-  required = false,
-  showTitle = true,
-  objectState = null,
-}: PrioritySearchBarProps) => {
-  return (
-    <PrioritySearchBarAux
-      style={style}
-      title={title}
-      defaultValue={defaultValue}
-      required={required}
-      readonly={readonly}
-      onChange={onChange}
-      showTitle={showTitle}
-      objectState={objectState}
-    />
-  );
+const PrioritySearchBar = (props: PrioritySearchBarProps) => {
+  return <PrioritySearchBarAux {...props} />;
 };
 
 export default PrioritySearchBar;

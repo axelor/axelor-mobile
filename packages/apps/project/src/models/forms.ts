@@ -118,11 +118,7 @@ export const project_formsRegister: FormConfigs = {
         widget: 'custom',
         customComponent: ParentTaskSearchBar,
         readonlyIf: ({objectState}) => isEmpty(objectState?.project),
-        dependsOn: {
-          project: () => {
-            return null;
-          },
-        },
+        dependsOn: {project: () => null},
         parentPanel: 'parentContainer',
       },
       projectTaskCategory: {
@@ -134,30 +130,21 @@ export const project_formsRegister: FormConfigs = {
         requiredIf: ({objectState}) =>
           objectState?.project?.taskStatusManagementSelect ===
           getTypes().Project.taskStatusManagementSelect?.ManageByCategory,
-        dependsOn: {
-          project: () => {
-            return null;
-          },
-        },
+        dependsOn: {project: () => null},
       },
       status: {
         titleKey: 'Project_Status',
         type: 'object',
         widget: 'custom',
         customComponent: TaskStatusSearchBar,
-        hideIf: ({objectState}) => {
-          return (
-            objectState?.project?.taskStatusManagementSelect ===
-            getTypes().Project.taskStatusManagementSelect?.NoStatusManagement
-          );
-        },
+        hideIf: ({objectState}) =>
+          objectState?.project?.taskStatusManagementSelect ===
+          getTypes().Project.taskStatusManagementSelect?.NoStatusManagement,
         requiredIf: ({objectState}) =>
           objectState?.project?.taskStatusManagementSelect !==
           getTypes().Project.taskStatusManagementSelect?.NoStatusManagement,
         dependsOn: {
-          project: () => {
-            return null;
-          },
+          project: () => null,
           projectTaskCategory: ({objectState}) => {
             if (
               objectState?.project?.taskStatusManagementSelect ===
@@ -166,7 +153,7 @@ export const project_formsRegister: FormConfigs = {
               return null;
             }
 
-            return undefined;
+            return objectState?.status;
           },
         },
       },
@@ -177,11 +164,7 @@ export const project_formsRegister: FormConfigs = {
         required: true,
         customComponent: PrioritySearchBar,
         hideIf: ({objectState}) => !objectState?.project?.isShowPriority,
-        dependsOn: {
-          project: () => {
-            return null;
-          },
-        },
+        dependsOn: {project: () => null},
       },
       assignedTo: {
         titleKey: 'Project_AssignedTo',
@@ -195,11 +178,7 @@ export const project_formsRegister: FormConfigs = {
         type: 'object',
         widget: 'custom',
         customComponent: TargetVersionSearchBar,
-        dependsOn: {
-          project: () => {
-            return null;
-          },
-        },
+        dependsOn: {project: () => null},
       },
       activeSprint: {
         titleKey: 'Project_ActiveSprint',
