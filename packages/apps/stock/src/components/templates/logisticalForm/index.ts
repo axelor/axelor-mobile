@@ -16,12 +16,4 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-export const displayStockMoveSeq = (item: any): string => item.stockMoveSeq;
-export const displayItemTrackingNumber = (item: any): string =>
-  item.trackingNumberSeq;
-export const displayInventorySeq = (item: any): string => item.inventorySeq;
-export const displayPartner = (item: any): string => item.fullName;
-export const displayLine = (item: any): string =>
-  item?.productName || item?.product?.fullName || '';
-export const displayLogisticalForm = (item: any): string =>
-  item.deliveryNumberSeq;
+export {default as LogisticalFormCard} from './LogisticalFormCard/LogisticalFormCard';

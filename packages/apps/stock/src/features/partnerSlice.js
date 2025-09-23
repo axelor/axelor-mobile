@@ -21,7 +21,11 @@ import {
   generateInifiniteScrollCases,
   handlerApiCall,
 } from '@axelor/aos-mobile-core';
-import {searchClientsFilter, searchSuppliersFilter} from '../api/partner-api';
+import {
+  searchCarriersFilter,
+  searchClientsFilter,
+  searchSuppliersFilter,
+} from '../api/partner-api';
 
 export const filterClients = createAsyncThunk(
   'stock_partner/filterClients',
@@ -49,12 +53,26 @@ export const filterSuppliers = createAsyncThunk(
   },
 );
 
+export const filterCarriers = createAsyncThunk(
+  'stock_partner/filterCarriers',
+  async function (data, {getState}) {
+    return handlerApiCall({
+      fetchFunction: searchCarriersFilter,
+      data,
+      action: 'Stock_SliceAction_FilterCarriers',
+      getState,
+      responseOptions: {isArrayResponse: true},
+    });
+  },
+);
+
 const initialState = {
   loadingPartners: false,
   moreLoading: false,
   isListEnd: false,
   clientList: [],
   supplierList: [],
+  carrierList: [],
 };
 
 const partnerSlice = createSlice({
@@ -72,6 +90,12 @@ const partnerSlice = createSlice({
       moreLoading: 'moreLoading',
       isListEnd: 'isListEnd',
       list: 'supplierList',
+    });
+    generateInifiniteScrollCases(builder, filterCarriers, {
+      loading: 'loadingPartners',
+      moreLoading: 'moreLoading',
+      isListEnd: 'isListEnd',
+      list: 'carrierList',
     });
   },
 });

@@ -56,7 +56,7 @@ export {
   searchInventories,
   updateInventory,
 } from './inventorySlice';
-export {filterClients, filterSuppliers} from './partnerSlice';
+export {filterCarriers, filterClients, filterSuppliers} from './partnerSlice';
 export {
   fetchAvailableStockIndicator,
   fetchProductIndicators,
@@ -101,6 +101,7 @@ export {
   realizeSupplierArrival,
   searchSupplierArrivals,
 } from './supplierArrivalSlice';
+export {searchLogisticalForms} from './logisticalFormSlice';
 export {fetchProductForSupplier} from './supplierCatalogSlice';
 export {
   createTrackingNumberSeq,

@@ -43,6 +43,11 @@ export const stock_sortFields: SortFields = {
     'plannedStartDateT',
     'inventorySeq',
   ],
+  stock_logisticalForm: [
+    'statusSelect',
+    '-collectionDate',
+    'deliveryNumberSeq',
+  ],
   stock_product: ['name'],
   stock_stockCorrection: ['statusSelect', '-validationDateT', 'createdOn'],
   stock_supplierArrival: [

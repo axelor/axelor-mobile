@@ -189,6 +189,13 @@ export const stock_modelAPI: ObjectFields = {
     product: schemaContructor.subObject(),
     trackingNumberConfiguration: schemaContructor.subObject(),
   }),
+  stock_logisticalForm: schemaContructor.object({
+    deliveryNumberSeq: schemaContructor.string(),
+    carrierPartner: schemaContructor.subObject('fullName'),
+    stockLocation: schemaContructor.subObject('name'),
+    collectionDate: schemaContructor.string(),
+    statusSelect: schemaContructor.number(),
+  }),
   stock_stockCorrection: schemaContructor.object({
     statusSelect: schemaContructor.number(),
     product: schemaContructor.subObject('fullName'),

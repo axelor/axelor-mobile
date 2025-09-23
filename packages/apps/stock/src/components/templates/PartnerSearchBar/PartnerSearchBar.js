@@ -16,10 +16,14 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import React, {useCallback} from 'react';
+import React, {useCallback, useMemo} from 'react';
 import {AutoCompleteSearch} from '@axelor/aos-mobile-ui';
 import {useDispatch, useSelector, useTranslator} from '@axelor/aos-mobile-core';
-import {filterClients, filterSuppliers} from '../../../features/partnerSlice';
+import {
+  filterCarriers,
+  filterClients,
+  filterSuppliers,
+} from '../../../features/partnerSlice';
 import {displayPartner} from '../../../utils/displayers';
 
 const PartnerSearchBar = ({
@@ -28,13 +32,28 @@ const PartnerSearchBar = ({
   onChange,
   showDetailsPopup = true,
   isClient = true,
+  partnerType,
 }) => {
   const I18n = useTranslator();
   const dispatch = useDispatch();
 
-  const {loadingPartners, moreLoading, isListEnd, clientList, supplierList} =
-    useSelector(state => state.stock_partner);
+  const {
+    loadingPartners,
+    moreLoading,
+    isListEnd,
+    clientList,
+    supplierList,
+    carrierList,
+  } = useSelector(state => state.stock_partner);
   const {user} = useSelector(state => state.user);
+
+  const type = useMemo(() => {
+    if (partnerType != null) {
+      return partnerType;
+    }
+
+    return isClient ? 'client' : 'supplier';
+  }, [isClient, partnerType]);
 
   const fetchClientsAPI = useCallback(
     ({page = 0, searchValue}) => {
@@ -54,12 +73,40 @@ const PartnerSearchBar = ({
     [dispatch, user.activeCompany?.id],
   );
 
+  const fetchCarriersAPI = useCallback(
+    ({page = 0, searchValue}) => {
+      dispatch(
+        filterCarriers({page, searchValue, companyId: user.activeCompany?.id}),
+      );
+    },
+    [dispatch, user.activeCompany?.id],
+  );
+
+  const {objectList, fetchData} = useMemo(() => {
+    switch (type) {
+      case 'supplier':
+        return {objectList: supplierList, fetchData: fetchSuppliersAPI};
+      case 'carrier':
+        return {objectList: carrierList, fetchData: fetchCarriersAPI};
+      default:
+        return {objectList: clientList, fetchData: fetchClientsAPI};
+    }
+  }, [
+    carrierList,
+    clientList,
+    fetchCarriersAPI,
+    fetchClientsAPI,
+    fetchSuppliersAPI,
+    supplierList,
+    type,
+  ]);
+
   return (
     <AutoCompleteSearch
-      objectList={isClient ? clientList : supplierList}
+      objectList={objectList}
       value={defaultValue}
       onChangeValue={onChange}
-      fetchData={isClient ? fetchClientsAPI : fetchSuppliersAPI}
+      fetchData={fetchData}
       displayValue={displayPartner}
       placeholder={I18n.t(placeholderKey)}
       showDetailsPopup={showDetailsPopup}

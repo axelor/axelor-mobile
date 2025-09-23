@@ -24,6 +24,7 @@ import InventoriesScreens from './screens/inventories';
 import ProductsScreens from './screens/products';
 import StockCorrectionScreens from './screens/stockCorrections';
 import SupplierArrivalsScreens from './screens/supplierArrivals';
+import LogisticalFormScreens from './screens/logisticalForms';
 import enTranslations from './i18n/en.json';
 import frTranslations from './i18n/fr.json';
 import * as stockReducers from './features';
@@ -70,6 +71,11 @@ export const StockModule: Module = {
       icon: 'truck-loading',
       screen: 'SupplierArrivalListScreen',
     },
+    stock_menu_logistical_form: {
+      title: 'Stock_LogisticalForm',
+      icon: 'boxes',
+      screen: 'LogisticalFormListScreen',
+    },
     stock_menu_inventory: {
       title: 'Stock_Inventory',
       icon: 'house-check',
@@ -79,6 +85,7 @@ export const StockModule: Module = {
   screens: {
     ...AuthScreens,
     ...CustomerDeliveryScreens,
+    ...LogisticalFormScreens,
     ...InternalMovesScreens,
     ...InventoriesScreens,
     ...ProductsScreens,
@@ -111,6 +118,7 @@ export * from './screens/auth';
 export * from './screens/customerDeliveries';
 export * from './screens/internalMoves';
 export * from './screens/inventories';
+export * from './screens/logisticalForms';
 export * from './screens/products';
 export * from './screens/stockCorrections';
 export * from './screens/supplierArrivals';
