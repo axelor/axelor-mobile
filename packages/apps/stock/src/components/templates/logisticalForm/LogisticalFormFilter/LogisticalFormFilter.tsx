@@ -19,7 +19,6 @@
 import React from 'react';
 import {StyleSheet, View} from 'react-native';
 import {DateInput} from '@axelor/aos-mobile-core';
-
 import PartnerSearchBar from '../../PartnerSearchBar/PartnerSearchBar';
 import StockLocationSearchBar from '../../StockLocationSearchBar/StockLocationSearchBar';
 
@@ -54,12 +53,11 @@ const LogisticalFormFilter = ({
           partnerType="carrier"
         />
         <StockLocationSearchBar
-          readOnly={false}
           style={styles.halfInput}
           scanKey={stockLocationScanKey}
           placeholderKey="Stock_StockLocation"
           defaultValue={stockLocation}
-          onChange={onStockLocationChange as any}
+          onChange={onStockLocationChange}
         />
       </View>
       <DateInput

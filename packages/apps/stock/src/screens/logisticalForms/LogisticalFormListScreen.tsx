@@ -79,7 +79,6 @@ const LogisticalFormListScreen = () => {
         sliceFunctionData={sliceFunctionData}
         displaySearchValue={displayLogisticalForm}
         searchPlaceholder={I18n.t('Stock_Ref')}
-        selectLastItem={false}
         chipComponent={
           <ChipSelect
             mode="multi"

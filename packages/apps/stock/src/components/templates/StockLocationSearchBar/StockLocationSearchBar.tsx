@@ -29,6 +29,22 @@ import {
   searchStockLocations,
 } from '../../../features/stockLocationSlice';
 
+interface StockLocationSearchBarProps {
+  style?: any;
+  placeholderKey?: string;
+  defaultValue?: any;
+  onChange?: (value: any) => void;
+  scanKey?: string;
+  showDetailsPopup?: boolean;
+  secondFilter?: boolean;
+  isFocus?: boolean;
+  isScrollViewContainer?: boolean;
+  showTitle?: boolean;
+  titleKey?: string;
+  defaultStockLocation?: any;
+  readOnly?: boolean;
+}
+
 const StockLocationSearchBar = ({
   style,
   placeholderKey = 'Stock_StockLocation',
@@ -42,8 +58,8 @@ const StockLocationSearchBar = ({
   showTitle = false,
   titleKey = 'Stock_StockLocation',
   defaultStockLocation = null,
-  readOnly,
-}) => {
+  readOnly = false,
+}: StockLocationSearchBarProps) => {
   const I18n = useTranslator();
   const dispatch = useDispatch();
 
@@ -56,13 +72,13 @@ const StockLocationSearchBar = ({
     moreLoadingStockLocationMultiFilter: moreLoadingMultiFilter,
     isListEndStockLocationMultiFilter: isListEndMultiFilter,
     stockLocationListMultiFilter,
-  } = useSelector(state => state.stockLocation);
-  const {user} = useSelector(state => state.user);
+  } = useSelector((state: any) => state.stockLocation);
+  const {user} = useSelector((state: any) => state.user);
 
   const fetchStockLocationsAPI = useCallback(
-    ({page = 0, searchValue}) => {
+    ({page = 0, searchValue}: {page?: number; searchValue?: string | null}) => {
       dispatch(
-        searchStockLocations({
+        (searchStockLocations as any)({
           page,
           searchValue,
           companyId: user.activeCompany?.id,
@@ -75,9 +91,9 @@ const StockLocationSearchBar = ({
   );
 
   const fetchStockLocationsMultiFilterAPI = useCallback(
-    ({page = 0, searchValue}) => {
+    ({page = 0, searchValue}: {page?: number; searchValue?: string | null}) => {
       dispatch(
-        filterSecondStockLocations({
+        (filterSecondStockLocations as any)({
           page,
           searchValue,
           companyId: user.activeCompany?.id,
