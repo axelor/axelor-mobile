@@ -85,6 +85,7 @@ const LogisticalFormListScreen = () => {
         sliceFunctionData={sliceFunctionData}
         displaySearchValue={displayLogisticalForm}
         searchPlaceholder={I18n.t('Stock_Ref')}
+        selectLastItem={false}
         chipComponent={
           <ChipSelect
             mode="multi"
@@ -135,7 +136,8 @@ const LogisticalFormListScreen = () => {
 
 const styles = StyleSheet.create({
   dateInput: {
-    marginHorizontal: 16,
+    alignSelf: 'center',
+    width: '90%',
     marginTop: 8,
   },
 });
