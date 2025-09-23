@@ -68,6 +68,10 @@
   "Project_MarkAsUncompleted": "Marquer comme non-complété",
   "Project_MarkAsCompleted": "Marquer comme complété",
   "Project_DeleteItem": "Supprimer l'élément",
+  "Project_CreateItem": "Créer un élément",
+  "Project_Title": "Titre",
+  "Project_IsCompleted": "Complété ?",
+  "Project_Sequence": "Sequence",
   "Project_SliceAction_SearchProject": "recherche sur les projets",
   "Project_SliceAction_FetchProjectById": "récupération du projet par id",
   "Project_SliceAction_FetchProjectStatus": "récupération des statuts de projet",
@@ -92,5 +96,6 @@
   "Project_SliceAction_SearchCheckListItems": "recherche sur les éléments de la checklist",
   "Project_SliceAction_SearchParentCheckListItems": "recherche sur les éléments parent de la checklist",
   "Project_SliceAction_UpdateCheckListItem": "mise à jour d'un élément de la check list",
-  "Project_SliceAction_DeleteCheckListItem": "suppression d'un élément de la check list"
+  "Project_SliceAction_DeleteCheckListItem": "suppression d'un élément de la check list",
+  "Project_SliceAction_CreateCheckListItem": "création d'un élément de la check list"
 }

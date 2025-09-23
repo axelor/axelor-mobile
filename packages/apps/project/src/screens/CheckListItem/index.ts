@@ -16,8 +16,13 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import {CheckListItemScreens} from './CheckListItem';
-import {ProjectScreens} from './Project';
-import {TaskScreens} from './Task';
+import CheckListItemFormScreen from './CheckListItemFormScreen';
 
-export default {...CheckListItemScreens, ...ProjectScreens, ...TaskScreens};
+export const CheckListItemScreens = {
+  CheckListItemFormScreen: {
+    title: 'Project_CheckList',
+    component: CheckListItemFormScreen,
+  },
+};
+
+export {CheckListItemFormScreen};

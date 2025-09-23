@@ -79,6 +79,7 @@ export * from './api';
 export * from './components';
 export * from './features/asyncFunctions-index';
 export * from './hooks';
+export * from './screens/CheckListItem';
 export * from './screens/Project';
 export * from './screens/Task';
 export * from './types';

@@ -283,4 +283,22 @@ export const project_formsRegister: FormConfigs = {
       },
     },
   },
+  project_checkListItem: {
+    modelName: 'com.axelor.apps.project.db.ProjectCheckListItem',
+    fields: {
+      title: {
+        titleKey: 'Project_Title',
+        type: 'string',
+        required: true,
+      },
+      completed: {
+        titleKey: 'Project_IsCompleted',
+        type: 'boolean',
+      },
+      sequence: {
+        titleKey: 'Project_Sequence',
+        type: 'number',
+      },
+    },
+  },
 };
