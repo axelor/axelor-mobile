@@ -138,7 +138,7 @@ export async function createCheckListItem({
   parentItemId,
   projectId,
   projectTaskId,
-  complete,
+  completed: complete,
   sequence,
 }) {
   return getActionApi().send({
@@ -150,7 +150,7 @@ export async function createCheckListItem({
       modelName: MODEL,
       id: Date.now(),
       fields: {
-        completed: 'completed',
+        complete: 'completed',
         title: 'title',
         sequence: 'sequence',
         parentItemId: 'parentItem.id',
