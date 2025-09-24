@@ -66,88 +66,57 @@ const LogisticalFormDropdownGeneralView = ({
     getItemTitle,
   ]);
 
-  const hasAccountSelection = !checkNullString(accountSelectionLabel);
-  const hasCustomerAccountNumber = !checkNullString(
-    customerAccountNumberToCarrier,
-  );
+  const renderField = (
+    titleKey: string,
+    value?: string | null,
+  ): JSX.Element | null => {
+    if (checkNullString(value)) {
+      return null;
+    }
 
-  const hasForwarder = !checkNullString(forwarderPartner.simpleFullName);
-  const hasIncoterm = !checkNullString(incoterm?.name);
-  const hasTracking = !checkNullString(tracking);
-  const hasTotalGrossMass = totalGrossMass != null;
-  const hasTotalNetMass = totalNetMass != null;
-  const hasTotalVolume = totalVolume != null;
+    return (
+      <LabelText title={I18n.t(titleKey)} value={value ?? ''} onlyOneLine={false} />
+    );
+  };
 
-  if (
-    !hasAccountSelection &&
-    !hasCustomerAccountNumber &&
-    !hasForwarder &&
-    !hasIncoterm &&
-    !hasTracking &&
-    !hasTotalGrossMass &&
-    !hasTotalNetMass &&
-    !hasTotalVolume
-  ) {
+  const hasContent =
+    !checkNullString(accountSelectionLabel) ||
+    !checkNullString(customerAccountNumberToCarrier) ||
+    !checkNullString(forwarderPartner?.simpleFullName) ||
+    !checkNullString(incoterm?.name) ||
+    !checkNullString(tracking) ||
+    totalGrossMass != null ||
+    totalNetMass != null ||
+    totalVolume != null;
+
+  if (!hasContent) {
     return null;
   }
 
   return (
     <View style={styles.container}>
-      {hasAccountSelection && (
-        <LabelText
-          title={I18n.t('Stock_LogisticalForm_AccountSelectionToCarrier')}
-          value={accountSelectionLabel}
-          onlyOneLine={false}
-        />
+      {renderField(
+        'Stock_LogisticalForm_AccountSelectionToCarrier',
+        accountSelectionLabel,
       )}
-      {hasCustomerAccountNumber && (
-        <LabelText
-          title={I18n.t('Stock_LogisticalForm_CustomerAccountNumberToCarrier')}
-          value={customerAccountNumberToCarrier}
-          onlyOneLine={false}
-        />
+      {renderField(
+        'Stock_LogisticalForm_CustomerAccountNumberToCarrier',
+        customerAccountNumberToCarrier,
       )}
-      {hasForwarder && (
-        <LabelText
-          title={I18n.t('Stock_ForwarderPartner')}
-          value={forwarderPartner.simpleFullName}
-          onlyOneLine={false}
-        />
+      {renderField('Stock_ForwarderPartner', forwarderPartner?.simpleFullName)}
+      {renderField('Stock_Incoterm', incoterm?.name)}
+      {renderField('Stock_LogisticalForm_Tracking', tracking)}
+      {renderField(
+        'Stock_LogisticalForm_TotalGrossMass',
+        totalGrossMass != null ? formatNumber(totalGrossMass) : null,
       )}
-      {hasIncoterm && (
-        <LabelText
-          title={I18n.t('Stock_Incoterm')}
-          value={incoterm?.name}
-          onlyOneLine={false}
-        />
+      {renderField(
+        'Stock_LogisticalForm_TotalNetMass',
+        totalNetMass != null ? formatNumber(totalNetMass) : null,
       )}
-      {hasTracking && (
-        <LabelText
-          title={I18n.t('Stock_LogisticalForm_Tracking')}
-          value={tracking}
-          onlyOneLine={false}
-        />
-      )}
-      {hasTotalGrossMass && (
-        <LabelText
-          title={I18n.t('Stock_LogisticalForm_TotalGrossMass')}
-          value={formatNumber(totalGrossMass)}
-          onlyOneLine={false}
-        />
-      )}
-      {hasTotalNetMass && (
-        <LabelText
-          title={I18n.t('Stock_LogisticalForm_TotalNetMass')}
-          value={formatNumber(totalNetMass)}
-          onlyOneLine={false}
-        />
-      )}
-      {hasTotalVolume && (
-        <LabelText
-          title={I18n.t('Stock_LogisticalForm_TotalVolume')}
-          value={formatNumber(totalVolume)}
-          onlyOneLine={false}
-        />
+      {renderField(
+        'Stock_LogisticalForm_TotalVolume',
+        totalVolume != null ? formatNumber(totalVolume) : null,
       )}
     </View>
   );
