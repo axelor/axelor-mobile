@@ -72,8 +72,8 @@ const StockLocationSearchBar = ({
     moreLoadingStockLocationMultiFilter: moreLoadingMultiFilter,
     isListEndStockLocationMultiFilter: isListEndMultiFilter,
     stockLocationListMultiFilter,
-  } = useSelector((state: any) => state.stockLocation);
-  const {user} = useSelector((state: any) => state.user);
+  } = useSelector(state => state.stockLocation);
+  const {user} = useSelector(state => state.user);
 
   const fetchStockLocationsAPI = useCallback(
     ({page = 0, searchValue}: {page?: number; searchValue?: string | null}) => {

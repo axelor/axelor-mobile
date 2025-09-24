@@ -73,7 +73,6 @@ const LogisticalFormCard = ({
   return (
     <ObjectCard
       onPress={onPress}
-      showArrow={onPress != null}
       style={[borderStyle, style]}
       lowerTexts={{
         items: [
@@ -81,7 +80,7 @@ const LogisticalFormCard = ({
           {
             displayText: carrier,
             iconName: 'truck',
-            hideIf: carrier == null,
+            hideIfNull: true,
             indicatorText: I18n.t('Stock_Carrier'),
           },
           {

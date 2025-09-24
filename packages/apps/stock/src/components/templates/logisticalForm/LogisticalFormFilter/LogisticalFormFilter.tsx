@@ -19,8 +19,7 @@
 import React from 'react';
 import {StyleSheet, View} from 'react-native';
 import {DateInput} from '@axelor/aos-mobile-core';
-import PartnerSearchBar from '../../PartnerSearchBar/PartnerSearchBar';
-import StockLocationSearchBar from '../../StockLocationSearchBar/StockLocationSearchBar';
+import {PartnerSearchBar, StockLocationSearchBar} from '../../../templates';
 
 type LogisticalFormFilterProps = {
   carrier: any;
@@ -49,7 +48,7 @@ const LogisticalFormFilter = ({
           placeholderKey="Stock_CarrierPartner"
           defaultValue={carrier}
           onChange={onCarrierChange}
-          showDetailsPopup={false}
+          showDetailsPopup={true}
           partnerType="carrier"
         />
         <StockLocationSearchBar
@@ -64,8 +63,8 @@ const LogisticalFormFilter = ({
         mode="date"
         nullable
         popup
-        defaultDate={collectionDate ?? undefined}
-        onDateChange={value => onCollectionDateChange(value ?? null)}
+        defaultDate={collectionDate}
+        onDateChange={onCollectionDateChange}
         style={styles.dateInput}
       />
     </View>

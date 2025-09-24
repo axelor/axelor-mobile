@@ -111,7 +111,7 @@ const SupplierArrivalListScreen = ({navigation}) => {
               defaultValue={partner}
               onChange={setPartner}
               placeholderKey="Stock_Supplier"
-              isClient={false}
+              partnerType="supplier"
             />
           </>
         }

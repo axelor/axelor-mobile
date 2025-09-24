@@ -19,17 +19,16 @@
 import {
   createStandardSearch,
   Criteria,
-  getEndOfDay,
+  formatDate,
   getSearchCriterias,
-  getStartOfDay,
 } from '@axelor/aos-mobile-core';
 
 const createSearchCriteria = (
-  searchValue?: string | null,
+  searchValue?: string,
   carrierPartnerId?: number,
   stockLocationId?: number,
-  collectionDate?: Date | null,
-  statusList?: Array<{key: number}> | null,
+  collectionDate?: Date,
+  statusList?: Array<{key: number}>,
 ) => {
   const criteria: Criteria[] = [
     getSearchCriterias('stock_logisticalForm', searchValue),
@@ -52,18 +51,11 @@ const createSearchCriteria = (
   }
 
   if (collectionDate != null) {
-    criteria.push(
-      {
-        fieldName: 'collectionDate',
-        operator: '>=',
-        value: getStartOfDay(collectionDate).toISOString(),
-      },
-      {
-        fieldName: 'collectionDate',
-        operator: '<=',
-        value: getEndOfDay(collectionDate).toISOString(),
-      },
-    );
+    criteria.push({
+      fieldName: 'collectionDate',
+      operator: '=',
+      value: formatDate(collectionDate, 'YYYY-MM-DD'),
+    });
   }
 
   if (Array.isArray(statusList) && statusList.length > 0) {
@@ -89,11 +81,11 @@ export async function searchLogisticalForms({
   page = 0,
   filterDomain,
 }: {
-  searchValue?: string | null;
+  searchValue?: string;
   carrierPartnerId?: number;
   stockLocationId?: number;
-  collectionDate?: Date | null;
-  statusList?: Array<{key: number}> | null;
+  collectionDate?: Date;
+  statusList?: Array<{key: number}>;
   companyId?: number;
   page?: number;
   filterDomain?: any;

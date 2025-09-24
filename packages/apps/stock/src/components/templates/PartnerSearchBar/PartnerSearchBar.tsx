@@ -26,15 +26,30 @@ import {
 } from '../../../features/partnerSlice';
 import {displayPartner} from '../../../utils/displayers';
 
+type PartnerType = 'client' | 'supplier' | 'carrier';
+
+type FetchArgs = {
+  page?: number;
+  searchValue?: string;
+};
+
+type PartnerSearchBarProps = {
+  style?: any;
+  placeholderKey: string;
+  defaultValue?: any;
+  onChange: (value: any) => void;
+  showDetailsPopup?: boolean;
+  partnerType?: PartnerType;
+};
+
 const PartnerSearchBar = ({
   style,
   placeholderKey,
   defaultValue,
   onChange,
   showDetailsPopup = true,
-  isClient = true,
   partnerType,
-}) => {
+}: PartnerSearchBarProps) => {
   const I18n = useTranslator();
   const dispatch = useDispatch();
 
@@ -45,39 +60,48 @@ const PartnerSearchBar = ({
     clientList,
     supplierList,
     carrierList,
-  } = useSelector(state => state.stock_partner);
-  const {user} = useSelector(state => state.user);
+  } = useSelector((state: any) => state.stock_partner);
+  const {user} = useSelector((state: any) => state.user);
 
-  const type = useMemo(() => {
-    if (partnerType != null) {
-      return partnerType;
-    }
-
-    return isClient ? 'client' : 'supplier';
-  }, [isClient, partnerType]);
+  const type = useMemo<PartnerType>(
+    () => partnerType ?? 'client',
+    [partnerType],
+  );
 
   const fetchClientsAPI = useCallback(
-    ({page = 0, searchValue}) => {
+    ({page = 0, searchValue}: FetchArgs = {}) => {
       dispatch(
-        filterClients({page, searchValue, companyId: user.activeCompany?.id}),
+        (filterClients as any)({
+          page,
+          searchValue,
+          companyId: user.activeCompany?.id,
+        }),
       );
     },
     [dispatch, user.activeCompany?.id],
   );
 
   const fetchSuppliersAPI = useCallback(
-    ({page = 0, searchValue}) => {
+    ({page = 0, searchValue}: FetchArgs = {}) => {
       dispatch(
-        filterSuppliers({page, searchValue, companyId: user.activeCompany?.id}),
+        (filterSuppliers as any)({
+          page,
+          searchValue,
+          companyId: user.activeCompany?.id,
+        }),
       );
     },
     [dispatch, user.activeCompany?.id],
   );
 
   const fetchCarriersAPI = useCallback(
-    ({page = 0, searchValue}) => {
+    ({page = 0, searchValue}: FetchArgs = {}) => {
       dispatch(
-        filterCarriers({page, searchValue, companyId: user.activeCompany?.id}),
+        (filterCarriers as any)({
+          page,
+          searchValue,
+          companyId: user.activeCompany?.id,
+        }),
       );
     },
     [dispatch, user.activeCompany?.id],
