@@ -39,6 +39,7 @@ export const useStockHeaders = () => {
   useInventoryPlannedDetailsActions();
   useInventoryStartedDetailsActions();
   useInventoryLineDetailsActions();
+  useLogisticalFormListActions();
   useProductListActions();
   useProductDetailsActions();
   useProductStockDetailsActions();
@@ -295,6 +296,17 @@ const useStockCorrectionDetailsActions = () => {
       modelId: stockCorrection?.id,
     });
   }, [stockCorrection]);
+};
+
+const useLogisticalFormListActions = () => {
+  useEffect(() => {
+    headerActionsProvider.registerModel('stock_logisticalForm_list', {
+      model: 'com.axelor.apps.stock.db.LogisticalForm',
+      options: {
+        core_modelFilters: {name: 'logistical-form-filters'},
+      },
+    });
+  }, []);
 };
 
 const useSupplierArrivalDetailsActions = () => {

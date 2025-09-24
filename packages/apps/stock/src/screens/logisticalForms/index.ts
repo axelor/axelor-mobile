@@ -22,6 +22,7 @@ export default {
   LogisticalFormListScreen: {
     title: 'Stock_LogisticalForm',
     component: LogisticalFormListScreen,
+    actionID: 'stock_logisticalForm_list',
     options: {
       shadedHeader: false,
     },

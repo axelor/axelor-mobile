@@ -66,15 +66,15 @@ export const StockModule: Module = {
       icon: 'truck',
       screen: 'CustomerDeliveryListScreen',
     },
-    stock_menu_supplier_arrival: {
-      title: 'Stock_SupplierArrival',
-      icon: 'truck-loading',
-      screen: 'SupplierArrivalListScreen',
-    },
     stock_menu_logistical_form: {
       title: 'Stock_LogisticalForm',
       icon: 'boxes',
       screen: 'LogisticalFormListScreen',
+    },
+    stock_menu_supplier_arrival: {
+      title: 'Stock_SupplierArrival',
+      icon: 'truck-loading',
+      screen: 'SupplierArrivalListScreen',
     },
     stock_menu_inventory: {
       title: 'Stock_Inventory',

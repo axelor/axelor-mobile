@@ -77,12 +77,12 @@ const styles = StyleSheet.create({
   },
   row: {
     flexDirection: 'row',
-    justifyContent: 'space-between',
     width: '90%',
     alignSelf: 'center',
+    columnGap: 16,
   },
   halfInput: {
-    width: '48%',
+    flex: 1,
   },
   dateInput: {
     alignSelf: 'center',

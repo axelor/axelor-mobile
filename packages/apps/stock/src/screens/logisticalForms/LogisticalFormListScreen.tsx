@@ -27,7 +27,7 @@ import {
 } from '@axelor/aos-mobile-core';
 import {LogisticalFormCard, LogisticalFormFilter} from '../../components';
 import {searchLogisticalForms} from '../../features/logisticalFormSlice';
-import {displayLogisticalForm} from '../../utils/displayers';
+import {displayLogisticalForm} from '../../utils';
 
 const stockLocationScanKey = 'stock-location_logistical-form-list';
 
@@ -87,17 +87,15 @@ const LogisticalFormListScreen = () => {
           />
         }
         headerChildren={
-          <>
-            <LogisticalFormFilter
-              carrier={carrier}
-              onCarrierChange={setCarrier}
-              stockLocation={stockLocation}
-              onStockLocationChange={setStockLocation}
-              collectionDate={collectionDate}
-              onCollectionDateChange={setCollectionDate}
-              stockLocationScanKey={stockLocationScanKey}
-            />
-          </>
+          <LogisticalFormFilter
+            carrier={carrier}
+            onCarrierChange={setCarrier}
+            stockLocation={stockLocation}
+            onStockLocationChange={setStockLocation}
+            collectionDate={collectionDate}
+            onCollectionDateChange={setCollectionDate}
+            stockLocationScanKey={stockLocationScanKey}
+          />
         }
         renderListItem={({item}) => (
           <LogisticalFormCard

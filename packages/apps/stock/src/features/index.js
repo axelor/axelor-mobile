@@ -23,6 +23,7 @@ export {internalMoveLineReducer as internalMoveLine} from './internalMoveLineSli
 export {internalMoveReducer as internalMove} from './internalMoveSlice';
 export {inventoryLineReducer as inventoryLine} from './inventoryLineSlice';
 export {inventoryReducer as inventory} from './inventorySlice';
+export {logisticalFormReducer as logisticalForm} from './logisticalFormSlice';
 export {partnerReducer as stock_partner} from './partnerSlice';
 export {productIndicatorsReducer as productIndicators} from './productIndicatorsSlice';
 export {productReducer as product} from './productSlice';
@@ -33,7 +34,6 @@ export {stockCorrectionReasonReducer as stockCorrectionReason} from './stockCorr
 export {stockCorrectionReducer as stockCorrection} from './stockCorrectionSlice';
 export {stockLocationLineReducer as stockLocationLine} from './stockLocationLineSlice';
 export {stockLocationReducer as stockLocation} from './stockLocationSlice';
-export {logisticalFormReducer as logisticalForm} from './logisticalFormSlice';
 export {supplierArrivalLineReducer as supplierArrivalLine} from './supplierArrivalLineSlice';
 export {supplierArrivalReducer as supplierArrival} from './supplierArrivalSlice';
 export {supplierCatalogReducer as supplierCatalog} from './supplierCatalogSlice';
