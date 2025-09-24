@@ -26,6 +26,7 @@ import {
 import {useTranslator} from '@axelor/aos-mobile-core';
 import LogisticalFormHeader from '../LogisticalFormHeader/LogisticalFormHeader';
 import LogisticalFormCarrierActionCard from '../LogisticalFormCarrierActionCard/LogisticalFormCarrierActionCard';
+import {LogisticalFormDropdownCards} from '../../../molecules';
 
 interface LogisticalFormGeneralInformationViewProps {
   logisticalForm?: any;
@@ -53,6 +54,7 @@ const LogisticalFormGeneralInformationView = ({
         <LogisticalFormCarrierActionCard
           carrierPartner={logisticalForm.carrierPartner}
         />
+        <LogisticalFormDropdownCards logisticalForm={logisticalForm} />
         <NotesCard
           title={I18n.t('Stock_InternalDeliveryComment')}
           data={logisticalForm.internalDeliveryComment}
@@ -76,6 +78,6 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   scrollContent: {
-    marginVertical: 10,
+    marginVertical: 5,
   },
 });

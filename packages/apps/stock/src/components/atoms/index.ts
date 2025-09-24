@@ -17,5 +17,6 @@
  */
 
 export {default as FreightCarrierContent} from './FreightCarrierContent/FreightCarrierContent';
+export {default as LogisticalFormDropdownGeneralView} from './LogisticalFormDropdownGeneralView/LogisticalFormDropdownGeneralView';
 export {default as OrderQtyIndicatorCard} from './OrderQtyIndicatorCard/OrderQtyIndicatorCard';
 export {default as StockQtyIndicatorCard} from './StockQtyIndicatorCard/StockQtyIndicatorCard';
