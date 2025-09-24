@@ -56,7 +56,10 @@ export {
   searchInventories,
   updateInventory,
 } from './inventorySlice';
-export {searchLogisticalForms} from './logisticalFormSlice';
+export {
+  fetchLogisticalForm,
+  searchLogisticalForms,
+} from './logisticalFormSlice';
 export {filterCarriers, filterClients, filterSuppliers} from './partnerSlice';
 export {
   fetchAvailableStockIndicator,

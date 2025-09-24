@@ -191,10 +191,22 @@ export const stock_modelAPI: ObjectFields = {
   }),
   stock_logisticalForm: schemaContructor.object({
     deliveryNumberSeq: schemaContructor.string(),
-    carrierPartner: schemaContructor.subObject('fullName'),
+    carrierPartner: schemaContructor.subObject('fullName').concat(
+      schemaContructor.object({
+        simpleFullName: schemaContructor.string(),
+        partnerSeq: schemaContructor.string(),
+        name: schemaContructor.string(),
+        fixedPhone: schemaContructor.string(),
+        mobilePhone: schemaContructor.string(),
+        mainAddress: schemaContructor.subObject('fullName'),
+        picture: schemaContructor.subObject('fileName'),
+      }),
+    ),
     stockLocation: schemaContructor.subObject('name'),
     collectionDate: schemaContructor.string(),
     statusSelect: schemaContructor.number(),
+    internalDeliveryComment: schemaContructor.string(),
+    externalDeliveryComment: schemaContructor.string(),
   }),
   stock_stockCorrection: schemaContructor.object({
     statusSelect: schemaContructor.number(),

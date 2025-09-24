@@ -17,6 +17,7 @@
  */
 
 import {
+  createStandardFetch,
   createStandardSearch,
   Criteria,
   getSearchCriterias,
@@ -105,5 +106,18 @@ export async function searchLogisticalForms({
     companyId,
     provider: 'model',
     filter: filterDomain,
+  });
+}
+
+export async function fetchLogisticalForm({
+  logisticalFormId,
+}: {
+  logisticalFormId: number;
+}) {
+  return createStandardFetch({
+    model: 'com.axelor.apps.stock.db.LogisticalForm',
+    id: logisticalFormId,
+    fieldKey: 'stock_logisticalForm',
+    provider: 'model',
   });
 }
