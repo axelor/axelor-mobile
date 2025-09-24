@@ -75,7 +75,7 @@ const LogisticalFormDropdownGeneralView = ({
     }
 
     return (
-      <LabelText title={I18n.t(titleKey)} value={value ?? ''} onlyOneLine={false} />
+      <LabelText title={I18n.t(titleKey)} value={value} onlyOneLine={false} />
     );
   };
 
