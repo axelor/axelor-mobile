@@ -19,5 +19,4 @@
 export {checkListReducer as project_checkList} from './checkListSlice';
 export {projectReducer as project_project} from './projectSlice';
 export {projectTaskReducer as project_projectTask} from './projectTaskSlice';
-export {reportingReducer as project_reporting} from './reportingSlice';
 export {timesheetLinesReducer as project_timesheetLines} from './timesheetLinesSlice';

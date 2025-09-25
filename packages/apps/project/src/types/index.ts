@@ -17,4 +17,3 @@
  */
 
 export * from './check-list-item-status';
-export * from './reporting-type';

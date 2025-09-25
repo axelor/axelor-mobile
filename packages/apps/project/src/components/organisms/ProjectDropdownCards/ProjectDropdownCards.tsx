@@ -20,45 +20,31 @@ import React, {useMemo} from 'react';
 import {StyleSheet} from 'react-native';
 import {useSelector, useTranslator} from '@axelor/aos-mobile-core';
 import {DropdownCardSwitch} from '@axelor/aos-mobile-ui';
-import {DropdownInvoicing, DropdownMembers} from '../../molecules';
+import {DropdownMembers} from '../../molecules';
 
-const ProjectDropdownCards = () => {
+const ProjectDropdownCards = ({additionalItems}: {additionalItems?: any[]}) => {
   const I18n = useTranslator();
 
-  const {project} = useSelector((state: any) => state.project_project);
+  const {project} = useSelector(state => state.project_project);
 
-  const items = useMemo(() => {
-    const result = [];
-
-    if (project.isBusinessProject) {
-      result.push({
-        key: 1,
-        title: I18n.t('Project_Invoicing'),
-        childrenComp: (
-          <DropdownInvoicing
-            currency={project?.currency}
-            priceList={project?.priceList}
-            tasksInvoicing={project?.toInvoice}
-            expensesInvoicing={project?.isInvoicingExpenses}
-            purchasesInvoicing={project?.isInvoicingPurchases}
-          />
-        ),
-      });
-    }
-
-    result.push({
-      key: 2,
-      title: I18n.t('Project_Members'),
-      childrenComp: (
-        <DropdownMembers
-          team={project?.team?.name}
-          memberSet={project?.membersUserSet}
-        />
-      ),
-    });
-
-    return result;
-  }, [I18n, project]);
+  const items = useMemo(
+    () =>
+      [
+        ...(additionalItems ?? []),
+        {
+          key: 10,
+          order: 10,
+          title: I18n.t('Project_Members'),
+          childrenComp: (
+            <DropdownMembers
+              team={project?.team?.name}
+              memberSet={project?.membersUserSet}
+            />
+          ),
+        },
+      ].sort((a, b) => a.order - b.order),
+    [I18n, additionalItems, project],
+  );
 
   return <DropdownCardSwitch dropdownItems={items} style={styles.dropdown} />;
 };
