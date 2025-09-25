@@ -24,7 +24,6 @@ export {default as ParentTaskSearchBar} from './ParentTaskSearchBar/ParentTaskSe
 export {default as PrioritySearchBar} from './PrioritySearchBar/PrioritySearchBar';
 export {default as ProjectListView} from './ProjectListView/ProjectListView';
 export {default as ProjectSearchBar} from './ProjectSearchBar/ProjectSearchBar';
-export {default as ReportingDetailsView} from './ReportingDetailsView/ReportingDetailsView';
 export {default as TargetVersionSearchBar} from './TargetVersionSearchBar/TargetVersionSearchBar';
 export {default as TaskFilters} from './TaskFilters/TaskFilters';
 export {default as TaskStatusSearchBar} from './TaskStatusSearchBar/TaskStatusSearchBar';

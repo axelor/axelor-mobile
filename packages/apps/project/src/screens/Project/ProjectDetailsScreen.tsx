@@ -40,11 +40,13 @@ import {useReportingConfiguration} from '../../hooks/use-reporting-configuration
 export interface ProjectDetailsScreenProps {
   route?: any;
   projectId?: number;
+  additionnalsItems?: any[];
 }
 
 const ProjectDetailsScreen = ({
   route,
   projectId,
+  additionnalsItems,
 }: ProjectDetailsScreenProps) => {
   const _projectId = route?.params?.projectId || projectId;
 
@@ -55,67 +57,86 @@ const ProjectDetailsScreen = ({
     modelName: 'com.axelor.apps.hr.db.TimesheetLine',
   });
 
-  const {project} = useSelector((state: any) => state.project_project);
-  const {user} = useSelector((state: any) => state.user);
+  const {project} = useSelector(state => state.project_project);
+  const {user} = useSelector(state => state.user);
 
-  const {noReporting} = useReportingConfiguration(project);
+  const {noReporting} = useReportingConfiguration();
 
   useEffect(() => {
     dispatch((fetchProjectById as any)({projectId: _projectId}));
   }, [_projectId, dispatch]);
 
   const bottomBarItems = useMemo(
-    () => [
-      {
-        iconName: 'house',
-        viewComponent: <GeneralInformationView />,
-        color: Colors.secondaryColor_dark,
-        title: I18n.t('Project_DetailsView'),
-      },
-      {
-        iconName: 'card-list',
-        color: Colors.plannedColor,
-        viewComponent: <TaskView />,
-        title: I18n.t('Project_TasksView'),
-      },
-      {
-        iconName: 'check2-square',
-        color: Colors.successColor,
-        viewComponent: <ProjectCheckListView />,
-        title: I18n.t('Project_CheckList'),
-      },
-      {
-        iconName: 'diagram-3-fill',
-        color: Colors.infoColor,
-        viewComponent: <SubProjectView />,
-        hidden:
-          !project?.isShowPhasesElements && project?.parentProject == null,
-        title: I18n.t('Project_TreeStructureView'),
-      },
-      {
-        iconName: 'activity',
-        color: Colors.progressColor,
-        viewComponent: <ReportingView />,
-        hidden: noReporting,
-        title: I18n.t('Project_ReportingView'),
-      },
-      {
-        iconName: 'clock-history',
-        color: Colors.cautionColor,
-        hidden:
-          !canCreate ||
-          !project?.manageTimeSpent ||
-          user.employee?.timesheetImputationSelect ===
-            getImputationMode()?.ManufOrder,
-        viewComponent: (
-          <TimeView project={project} headerComponent={<ProjectHeader />} />
-        ),
-        title: I18n.t('Project_TimeLogView'),
-      },
-    ],
+    () =>
+      [
+        ...(additionnalsItems ?? []),
+        {
+          key: 'home',
+          iconName: 'house',
+          viewComponent: <GeneralInformationView />,
+          color: Colors.secondaryColor_dark,
+          title: I18n.t('Project_DetailsView'),
+          order: 0,
+        },
+        {
+          key: 'task',
+          iconName: 'card-list',
+          color: Colors.plannedColor,
+          viewComponent: <TaskView />,
+          title: I18n.t('Project_TasksView'),
+          order: 10,
+        },
+        {
+          key: 'check-list',
+          iconName: 'check2-square',
+          color: Colors.successColor,
+          viewComponent: <ProjectCheckListView />,
+          title: I18n.t('Project_CheckList'),
+          order: 20,
+        },
+        {
+          key: 'structure',
+          iconName: 'diagram-3-fill',
+          color: Colors.infoColor,
+          viewComponent: <SubProjectView />,
+          hidden:
+            !project?.isShowPhasesElements && project?.parentProject == null,
+          title: I18n.t('Project_TreeStructureView'),
+          order: 30,
+        },
+        {
+          key: 'reporting',
+          iconName: 'activity',
+          color: Colors.progressColor,
+          viewComponent: <ReportingView />,
+          hidden: noReporting,
+          title: I18n.t('Project_ReportingView'),
+          order: 40,
+        },
+        {
+          key: 'timesheet',
+          iconName: 'clock-history',
+          color: Colors.cautionColor,
+          hidden:
+            !canCreate ||
+            !project?.manageTimeSpent ||
+            user.employee?.timesheetImputationSelect ===
+              getImputationMode()?.ManufOrder,
+          viewComponent: (
+            <TimeView project={project} headerComponent={<ProjectHeader />} />
+          ),
+          title: I18n.t('Project_TimeLogView'),
+          order: 50,
+        },
+      ]
+        .filter(
+          (_a, idx, self) => self.findIndex(_b => _b.key === _a.key) === idx,
+        )
+        .sort((a, b) => a.order - b.order),
     [
       Colors,
       I18n,
+      additionnalsItems,
       canCreate,
       noReporting,
       project,

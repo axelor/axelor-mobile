@@ -28,7 +28,11 @@ import {
 } from '../../molecules';
 import {ProjectDropdownCards} from '../../organisms';
 
-const GeneralInformationView = () => {
+const GeneralInformationView = ({
+  additionalDropdownItems,
+}: {
+  additionalDropdownItems?: any[];
+}) => {
   const I18n = useTranslator();
 
   const {project} = useSelector((state: any) => state.project_project);
@@ -54,7 +58,7 @@ const GeneralInformationView = () => {
         />
         <PartnerActionCard partner={project.clientPartner} />
         <PartnerActionCard partner={project.contactPartner} isContact />
-        <ProjectDropdownCards />
+        <ProjectDropdownCards additionalItems={additionalDropdownItems} />
       </ScrollView>
     </View>
   );

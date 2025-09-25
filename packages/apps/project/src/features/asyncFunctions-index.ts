@@ -45,7 +45,6 @@ export {
   searchStatus,
   searchTargetVersion,
 } from './projectTaskSlice';
-export {getProjectReportingIndicator} from './reportingSlice';
 export {
   clearReset,
   createTimeLog,
