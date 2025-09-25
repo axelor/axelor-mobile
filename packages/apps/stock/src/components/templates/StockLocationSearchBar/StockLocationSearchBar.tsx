@@ -29,21 +29,37 @@ import {
   searchStockLocations,
 } from '../../../features/stockLocationSlice';
 
+interface StockLocationSearchBarProps {
+  style?: any;
+  placeholderKey?: string;
+  defaultValue?: any;
+  onChange?: (value: any) => void;
+  scanKey?: string;
+  showDetailsPopup?: boolean;
+  secondFilter?: boolean;
+  isFocus?: boolean;
+  isScrollViewContainer?: boolean;
+  showTitle?: boolean;
+  titleKey?: string;
+  defaultStockLocation?: any;
+  readOnly?: boolean;
+}
+
 const StockLocationSearchBar = ({
   style,
+  titleKey = 'Stock_StockLocation',
   placeholderKey = 'Stock_StockLocation',
-  defaultValue = null,
-  onChange = () => {},
+  defaultValue,
+  defaultStockLocation,
+  onChange,
   scanKey,
   showDetailsPopup = true,
   secondFilter = false,
   isFocus = false,
   isScrollViewContainer = false,
   showTitle = false,
-  titleKey = 'Stock_StockLocation',
-  defaultStockLocation = null,
-  readOnly,
-}) => {
+  readOnly = false,
+}: StockLocationSearchBarProps) => {
   const I18n = useTranslator();
   const dispatch = useDispatch();
 
@@ -62,7 +78,7 @@ const StockLocationSearchBar = ({
   const fetchStockLocationsAPI = useCallback(
     ({page = 0, searchValue}) => {
       dispatch(
-        searchStockLocations({
+        (searchStockLocations as any)({
           page,
           searchValue,
           companyId: user.activeCompany?.id,
@@ -77,7 +93,7 @@ const StockLocationSearchBar = ({
   const fetchStockLocationsMultiFilterAPI = useCallback(
     ({page = 0, searchValue}) => {
       dispatch(
-        filterSecondStockLocations({
+        (filterSecondStockLocations as any)({
           page,
           searchValue,
           companyId: user.activeCompany?.id,

@@ -16,56 +16,90 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import React, {useCallback} from 'react';
+import React, {useCallback, useMemo} from 'react';
 import {AutoCompleteSearch} from '@axelor/aos-mobile-ui';
 import {useDispatch, useSelector, useTranslator} from '@axelor/aos-mobile-core';
-import {filterClients, filterSuppliers} from '../../../features/partnerSlice';
-import {displayPartner} from '../../../utils/displayers';
+import {
+  filterCarriers,
+  filterClients,
+  filterSuppliers,
+} from '../../../features/partnerSlice';
+import {displayPartner} from '../../../utils';
+
+type PartnerType = 'client' | 'supplier' | 'carrier';
+
+type PartnerSearchBarProps = {
+  style?: any;
+  placeholderKey: string;
+  defaultValue?: any;
+  onChange: (value: any) => void;
+  showDetailsPopup?: boolean;
+  partnerType?: PartnerType;
+};
 
 const PartnerSearchBar = ({
+  style,
   placeholderKey,
   defaultValue,
   onChange,
   showDetailsPopup = true,
-  isClient = true,
-}) => {
+  partnerType,
+}: PartnerSearchBarProps) => {
   const I18n = useTranslator();
   const dispatch = useDispatch();
 
-  const {loadingPartners, moreLoading, isListEnd, clientList, supplierList} =
-    useSelector(state => state.stock_partner);
+  const {
+    loadingPartners,
+    moreLoading,
+    isListEnd,
+    clientList,
+    supplierList,
+    carrierList,
+  } = useSelector(state => state.stock_partner);
   const {user} = useSelector(state => state.user);
 
-  const fetchClientsAPI = useCallback(
-    ({page = 0, searchValue}) => {
-      dispatch(
-        filterClients({page, searchValue, companyId: user.activeCompany?.id}),
-      );
-    },
-    [dispatch, user.activeCompany?.id],
+  const type = useMemo<PartnerType>(
+    () => partnerType ?? 'client',
+    [partnerType],
   );
 
-  const fetchSuppliersAPI = useCallback(
+  const {objectList, sliceFct} = useMemo(() => {
+    switch (type) {
+      case 'supplier':
+        return {objectList: supplierList, sliceFct: filterSuppliers};
+      case 'carrier':
+        return {objectList: carrierList, sliceFct: filterCarriers};
+      default:
+        return {objectList: clientList, sliceFct: filterClients};
+    }
+  }, [carrierList, clientList, supplierList, type]);
+
+  const fetchPartnersAPI = useCallback(
     ({page = 0, searchValue}) => {
       dispatch(
-        filterSuppliers({page, searchValue, companyId: user.activeCompany?.id}),
+        (sliceFct as any)({
+          page,
+          searchValue,
+          companyId: user.activeCompany?.id,
+        }),
       );
     },
-    [dispatch, user.activeCompany?.id],
+    [dispatch, sliceFct, user.activeCompany?.id],
   );
 
   return (
     <AutoCompleteSearch
-      objectList={isClient ? clientList : supplierList}
+      objectList={objectList}
       value={defaultValue}
       onChangeValue={onChange}
-      fetchData={isClient ? fetchClientsAPI : fetchSuppliersAPI}
+      fetchData={fetchPartnersAPI}
       displayValue={displayPartner}
       placeholder={I18n.t(placeholderKey)}
       showDetailsPopup={showDetailsPopup}
       loadingList={loadingPartners}
       moreLoading={moreLoading}
       isListEnd={isListEnd}
+      style={style}
     />
   );
 };
