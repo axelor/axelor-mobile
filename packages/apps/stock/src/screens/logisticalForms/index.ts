@@ -17,6 +17,7 @@
  */
 
 import LogisticalFormListScreen from './LogisticalFormListScreen';
+import LogisticalFormDetailsScreen from './LogisticalFormDetailsScreen';
 
 export default {
   LogisticalFormListScreen: {
@@ -27,6 +28,13 @@ export default {
       shadedHeader: false,
     },
   },
+  LogisticalFormDetailsScreen: {
+    title: 'Stock_LogisticalForm',
+    component: LogisticalFormDetailsScreen,
+    options: {
+      shadedHeader: false,
+    },
+  },
 };
 
-export {LogisticalFormListScreen};
+export {LogisticalFormListScreen, LogisticalFormDetailsScreen};

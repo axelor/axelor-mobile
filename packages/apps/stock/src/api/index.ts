@@ -55,7 +55,10 @@ export {
   searchInventoryLines as searchInventoryLinesApi,
   updateInventoryLineDetails as updateInventoryLineDetailsApi,
 } from './inventory-line-api';
-export {searchLogisticalForms as searchLogisticalFormsApi} from './logistical-form-api';
+export {
+  fetchLogisticalForm as fetchLogisticalFormApi,
+  searchLogisticalForms as searchLogisticalFormsApi,
+} from './logistical-form-api';
 export {
   searchClientsFilter,
   searchSuppliersFilter,
