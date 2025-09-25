@@ -211,6 +211,7 @@ export const stock_modelAPI: ObjectFields = {
     totalNetMass: schemaContructor.number(),
     totalVolume: schemaContructor.number(),
     stockLocation: schemaContructor.subObject('name'),
+    deliverToCustomerPartner: schemaContructor.subObject('fullName'),
     collectionDate: schemaContructor.string(),
     statusSelect: schemaContructor.number(),
     internalDeliveryComment: schemaContructor.string(),

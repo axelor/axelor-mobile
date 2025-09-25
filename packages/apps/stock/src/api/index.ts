@@ -56,8 +56,10 @@ export {
   updateInventoryLineDetails as updateInventoryLineDetailsApi,
 } from './inventory-line-api';
 export {
+  createLogisticalForm as createLogisticalFormApi,
   fetchLogisticalForm as fetchLogisticalFormApi,
   searchLogisticalForms as searchLogisticalFormsApi,
+  updateLogisticalForm as updateLogisticalFormApi,
 } from './logistical-form-api';
 export {
   searchClientsFilter,

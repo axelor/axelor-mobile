@@ -111,7 +111,7 @@ const CustomerDeliveryListScreen = ({navigation}) => {
             <PartnerSearchBar
               defaultValue={customer}
               onChange={setCustomer}
-              placeholderKey="Stock_Customer"
+              title="Stock_Customer"
             />
           </>
         }

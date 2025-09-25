@@ -20,6 +20,8 @@ import {
   createStandardFetch,
   createStandardSearch,
   Criteria,
+  formatRequestBody,
+  getActionApi,
   getSearchCriterias,
 } from '@axelor/aos-mobile-core';
 
@@ -119,5 +121,49 @@ export async function fetchLogisticalForm({
     id: logisticalFormId,
     fieldKey: 'stock_logisticalForm',
     provider: 'model',
+  });
+}
+
+export async function createLogisticalForm({
+  logisticalForm,
+}: {
+  logisticalForm: any;
+}) {
+  const {matchers} = formatRequestBody(logisticalForm, 'data');
+
+  return getActionApi().send({
+    url: '/ws/rest/com.axelor.apps.stock.db.LogisticalForm',
+    method: 'put',
+    body: {
+      data: logisticalForm,
+    },
+    description: 'create logistical form',
+    matchers: {
+      id: Date.now(),
+      modelName: 'com.axelor.apps.stock.db.LogisticalForm',
+      fields: matchers,
+    },
+  });
+}
+
+export async function updateLogisticalForm({
+  logisticalForm,
+}: {
+  logisticalForm: any;
+}) {
+  const {matchers} = formatRequestBody(logisticalForm, 'data');
+
+  return getActionApi().send({
+    url: '/ws/rest/com.axelor.apps.stock.db.LogisticalForm',
+    method: 'post',
+    body: {
+      data: logisticalForm,
+    },
+    description: 'update logistical form',
+    matchers: {
+      id: logisticalForm?.id,
+      modelName: 'com.axelor.apps.stock.db.LogisticalForm',
+      fields: matchers,
+    },
   });
 }
