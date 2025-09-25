@@ -41,9 +41,9 @@ const LogisticalFormListScreen = () => {
   );
   const {user} = useSelector(state => state.user);
 
-  const [carrier, setCarrier] = useState(null);
-  const [stockLocation, setStockLocation] = useState(null);
-  const [collectionDate, setCollectionDate] = useState<Date | null>(null);
+  const [carrier, setCarrier] = useState<any>(null);
+  const [stockLocation, setStockLocation] = useState<any>(null);
+  const [collectionDate, setCollectionDate] = useState<Date>(null);
   const [selectedStatus, setSelectedStatus] = useState([]);
 
   const statusList = useMemo(

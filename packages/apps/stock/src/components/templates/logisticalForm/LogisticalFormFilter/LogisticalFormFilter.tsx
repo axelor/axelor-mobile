@@ -26,8 +26,8 @@ type LogisticalFormFilterProps = {
   onCarrierChange: (value: any) => void;
   stockLocation: any;
   onStockLocationChange: (value: any) => void;
-  collectionDate: Date | null;
-  onCollectionDateChange: (value: Date | null) => void;
+  collectionDate: Date;
+  onCollectionDateChange: (value: Date) => void;
   stockLocationScanKey: string;
 };
 
@@ -45,10 +45,9 @@ const LogisticalFormFilter = ({
       <View style={styles.row}>
         <PartnerSearchBar
           style={styles.halfInput}
-          placeholderKey="Stock_CarrierPartner"
+          placeholderKey="Stock_Carrier"
           defaultValue={carrier}
           onChange={onCarrierChange}
-          showDetailsPopup={true}
           partnerType="carrier"
         />
         <StockLocationSearchBar
@@ -65,7 +64,6 @@ const LogisticalFormFilter = ({
         popup
         defaultDate={collectionDate}
         onDateChange={onCollectionDateChange}
-        style={styles.dateInput}
       />
     </View>
   );
@@ -73,20 +71,15 @@ const LogisticalFormFilter = ({
 
 const styles = StyleSheet.create({
   container: {
-    width: '100%',
+    width: '90%',
+    alignSelf: 'center',
   },
   row: {
     flexDirection: 'row',
-    width: '90%',
-    alignSelf: 'center',
-    columnGap: 16,
+    gap: 5,
   },
   halfInput: {
     flex: 1,
-  },
-  dateInput: {
-    alignSelf: 'center',
-    width: '90%',
   },
 });
 

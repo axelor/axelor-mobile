@@ -32,7 +32,7 @@ interface LogisticalFormCardProps {
   status?: number;
   carrier?: string;
   stockLocation?: string;
-  collectionDate?: Date | string;
+  collectionDate?: string;
   onPress?: () => void;
 }
 
@@ -64,10 +64,7 @@ const LogisticalFormCard = ({
   const formattedDate = useMemo(() => {
     if (!collectionDate) return null;
 
-    return `${I18n.t('Stock_CollectionDate')}: ${formatDate(
-      collectionDate,
-      I18n.t('Base_DateFormat'),
-    )}`;
+    return formatDate(collectionDate, I18n.t('Base_DateFormat'));
   }, [I18n, collectionDate]);
 
   return (
@@ -80,7 +77,7 @@ const LogisticalFormCard = ({
           {
             displayText: carrier,
             iconName: 'truck',
-            hideIfNull: true,
+            hideIf: carrier == null,
             indicatorText: I18n.t('Stock_Carrier'),
           },
           {
@@ -93,6 +90,7 @@ const LogisticalFormCard = ({
             displayText: formattedDate,
             hideIf: formattedDate == null,
             iconName: 'calendar-event',
+            indicatorText: `${I18n.t('Stock_CollectionDate')} :`,
           },
         ],
       }}

@@ -24,14 +24,9 @@ import {
   filterClients,
   filterSuppliers,
 } from '../../../features/partnerSlice';
-import {displayPartner} from '../../../utils/displayers';
+import {displayPartner} from '../../../utils';
 
 type PartnerType = 'client' | 'supplier' | 'carrier';
-
-type FetchArgs = {
-  page?: number;
-  searchValue?: string;
-};
 
 type PartnerSearchBarProps = {
   style?: any;
@@ -60,78 +55,44 @@ const PartnerSearchBar = ({
     clientList,
     supplierList,
     carrierList,
-  } = useSelector((state: any) => state.stock_partner);
-  const {user} = useSelector((state: any) => state.user);
+  } = useSelector(state => state.stock_partner);
+  const {user} = useSelector(state => state.user);
 
   const type = useMemo<PartnerType>(
     () => partnerType ?? 'client',
     [partnerType],
   );
 
-  const fetchClientsAPI = useCallback(
-    ({page = 0, searchValue}: FetchArgs = {}) => {
-      dispatch(
-        (filterClients as any)({
-          page,
-          searchValue,
-          companyId: user.activeCompany?.id,
-        }),
-      );
-    },
-    [dispatch, user.activeCompany?.id],
-  );
-
-  const fetchSuppliersAPI = useCallback(
-    ({page = 0, searchValue}: FetchArgs = {}) => {
-      dispatch(
-        (filterSuppliers as any)({
-          page,
-          searchValue,
-          companyId: user.activeCompany?.id,
-        }),
-      );
-    },
-    [dispatch, user.activeCompany?.id],
-  );
-
-  const fetchCarriersAPI = useCallback(
-    ({page = 0, searchValue}: FetchArgs = {}) => {
-      dispatch(
-        (filterCarriers as any)({
-          page,
-          searchValue,
-          companyId: user.activeCompany?.id,
-        }),
-      );
-    },
-    [dispatch, user.activeCompany?.id],
-  );
-
-  const {objectList, fetchData} = useMemo(() => {
+  const {objectList, sliceFct} = useMemo(() => {
     switch (type) {
       case 'supplier':
-        return {objectList: supplierList, fetchData: fetchSuppliersAPI};
+        return {objectList: supplierList, sliceFct: filterSuppliers};
       case 'carrier':
-        return {objectList: carrierList, fetchData: fetchCarriersAPI};
+        return {objectList: carrierList, sliceFct: filterCarriers};
       default:
-        return {objectList: clientList, fetchData: fetchClientsAPI};
+        return {objectList: clientList, sliceFct: filterClients};
     }
-  }, [
-    carrierList,
-    clientList,
-    fetchCarriersAPI,
-    fetchClientsAPI,
-    fetchSuppliersAPI,
-    supplierList,
-    type,
-  ]);
+  }, [carrierList, clientList, supplierList, type]);
+
+  const fetchPartnersAPI = useCallback(
+    ({page = 0, searchValue}) => {
+      dispatch(
+        (sliceFct as any)({
+          page,
+          searchValue,
+          companyId: user.activeCompany?.id,
+        }),
+      );
+    },
+    [dispatch, sliceFct, user.activeCompany?.id],
+  );
 
   return (
     <AutoCompleteSearch
       objectList={objectList}
       value={defaultValue}
       onChangeValue={onChange}
-      fetchData={fetchData}
+      fetchData={fetchPartnersAPI}
       displayValue={displayPartner}
       placeholder={I18n.t(placeholderKey)}
       showDetailsPopup={showDetailsPopup}

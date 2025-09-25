@@ -19,7 +19,6 @@
 import {
   createStandardSearch,
   Criteria,
-  formatDate,
   getSearchCriterias,
 } from '@axelor/aos-mobile-core';
 
@@ -54,18 +53,19 @@ const createSearchCriteria = (
     criteria.push({
       fieldName: 'collectionDate',
       operator: '=',
-      value: formatDate(collectionDate, 'YYYY-MM-DD'),
+      value: collectionDate,
     });
   }
 
   if (Array.isArray(statusList) && statusList.length > 0) {
-    const statusCriteria = statusList.map(status => ({
-      fieldName: 'statusSelect',
-      operator: '=',
-      value: status.key,
-    }));
-
-    criteria.push({operator: 'or', criteria: statusCriteria as Criteria[]});
+    criteria.push({
+      operator: 'or',
+      criteria: statusList.map(status => ({
+        fieldName: 'statusSelect',
+        operator: '=',
+        value: status.key,
+      })),
+    });
   }
 
   return criteria;
@@ -92,7 +92,6 @@ export async function searchLogisticalForms({
 }) {
   return createStandardSearch({
     model: 'com.axelor.apps.stock.db.LogisticalForm',
-    companyId,
     criteria: createSearchCriteria(
       searchValue,
       carrierPartnerId,
@@ -103,6 +102,7 @@ export async function searchLogisticalForms({
     fieldKey: 'stock_logisticalForm',
     sortKey: 'stock_logisticalForm',
     page,
+    companyId,
     provider: 'model',
     filter: filterDomain,
   });

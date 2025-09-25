@@ -47,17 +47,17 @@ interface StockLocationSearchBarProps {
 
 const StockLocationSearchBar = ({
   style,
+  titleKey = 'Stock_StockLocation',
   placeholderKey = 'Stock_StockLocation',
-  defaultValue = null,
-  onChange = () => {},
+  defaultValue,
+  defaultStockLocation,
+  onChange,
   scanKey,
   showDetailsPopup = true,
   secondFilter = false,
   isFocus = false,
   isScrollViewContainer = false,
   showTitle = false,
-  titleKey = 'Stock_StockLocation',
-  defaultStockLocation = null,
   readOnly = false,
 }: StockLocationSearchBarProps) => {
   const I18n = useTranslator();
@@ -76,7 +76,7 @@ const StockLocationSearchBar = ({
   const {user} = useSelector(state => state.user);
 
   const fetchStockLocationsAPI = useCallback(
-    ({page = 0, searchValue}: {page?: number; searchValue?: string | null}) => {
+    ({page = 0, searchValue}) => {
       dispatch(
         (searchStockLocations as any)({
           page,
@@ -91,7 +91,7 @@ const StockLocationSearchBar = ({
   );
 
   const fetchStockLocationsMultiFilterAPI = useCallback(
-    ({page = 0, searchValue}: {page?: number; searchValue?: string | null}) => {
+    ({page = 0, searchValue}) => {
       dispatch(
         (filterSecondStockLocations as any)({
           page,
