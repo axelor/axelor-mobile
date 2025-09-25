@@ -16,6 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+export {default as CarrierActionCard} from './CarrierActionCard/CarrierActionCard';
 export {default as ClipableSaleOrderLabel} from './ClipableSaleOrderLabel/ClipableSaleOrderLabel';
 export {default as LocationsMoveCard} from './LocationsMoveCard/LocationsMoveCard';
 export {default as LogisticalFormDropdownCards} from './LogisticalFormDropdownCards/LogisticalFormDropdownCards';

@@ -18,43 +18,35 @@
 
 import React from 'react';
 import {StyleSheet, View} from 'react-native';
+import {HeaderContainer, NotesCard, ScrollView} from '@axelor/aos-mobile-ui';
+import {useSelector, useTranslator} from '@axelor/aos-mobile-core';
 import {
-  HeaderContainer,
-  KeyboardAvoidingScrollView,
-  NotesCard,
-} from '@axelor/aos-mobile-ui';
-import {useTranslator} from '@axelor/aos-mobile-core';
-import LogisticalFormHeader from '../LogisticalFormHeader/LogisticalFormHeader';
-import LogisticalFormCarrierActionCard from '../LogisticalFormCarrierActionCard/LogisticalFormCarrierActionCard';
-import {LogisticalFormDropdownCards} from '../../../molecules';
+  CarrierActionCard,
+  LogisticalFormDropdownCards,
+} from '../../../molecules';
+import {LogisticalFormHeader} from '../../logisticalForm';
 
 interface LogisticalFormGeneralInformationViewProps {
-  logisticalForm?: any;
-  loading: boolean;
   onRefresh: () => void;
 }
 
 const LogisticalFormGeneralInformationView = ({
-  logisticalForm,
-  loading,
   onRefresh,
 }: LogisticalFormGeneralInformationViewProps) => {
   const I18n = useTranslator();
 
+  const {logisticalForm, loading} = useSelector(state => state.logisticalForm);
+
   return (
-    <View style={styles.container}>
+    <View style={styles.flexOne}>
       <HeaderContainer
         expandableFilter={false}
-        fixedItems={<LogisticalFormHeader logisticalForm={logisticalForm} />}
+        fixedItems={<LogisticalFormHeader {...logisticalForm} />}
       />
-      <KeyboardAvoidingScrollView
-        globalStyle={styles.scroll}
+      <ScrollView
         style={styles.scrollContent}
         refresh={{loading, fetcher: onRefresh}}>
-        <LogisticalFormCarrierActionCard
-          carrierPartner={logisticalForm.carrierPartner}
-        />
-        <LogisticalFormDropdownCards logisticalForm={logisticalForm} />
+        <CarrierActionCard carrierPartner={logisticalForm.carrierPartner} />
         <NotesCard
           title={I18n.t('Stock_InternalDeliveryComment')}
           data={logisticalForm.internalDeliveryComment}
@@ -63,21 +55,20 @@ const LogisticalFormGeneralInformationView = ({
           title={I18n.t('Stock_ExternalDeliveryComment')}
           data={logisticalForm.externalDeliveryComment}
         />
-      </KeyboardAvoidingScrollView>
+        <LogisticalFormDropdownCards logisticalForm={logisticalForm} />
+      </ScrollView>
     </View>
   );
 };
 
-export default LogisticalFormGeneralInformationView;
-
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-  },
-  scroll: {
+  flexOne: {
     flex: 1,
   },
   scrollContent: {
-    marginVertical: 5,
+    marginTop: 5,
+    height: null,
   },
 });
+
+export default LogisticalFormGeneralInformationView;

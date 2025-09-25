@@ -16,35 +16,18 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import React, {useMemo} from 'react';
+import React from 'react';
 import {StyleSheet} from 'react-native';
 import {ObjectCard} from '@axelor/aos-mobile-ui';
 import {useMetafileUri} from '@axelor/aos-mobile-core';
 
-interface LogisticalFormCarrierCardProps {
+interface CarrierCardProps {
   carrierPartner?: any;
   style?: any;
 }
 
-const LogisticalFormCarrierCard = ({
-  carrierPartner,
-  style,
-}: LogisticalFormCarrierCardProps) => {
+const CarrierCard = ({carrierPartner, style}: CarrierCardProps) => {
   const formatMetaFile = useMetafileUri();
-
-  const upperTextsItems = useMemo(() => {
-    return [
-      {
-        displayText: carrierPartner?.simpleFullName,
-        isTitle: true,
-        hideIfNull: true,
-      },
-      {
-        displayText: carrierPartner?.partnerSeq,
-        hideIfNull: true,
-      },
-    ];
-  }, [carrierPartner?.simpleFullName, carrierPartner?.partnerSeq]);
 
   return (
     <ObjectCard
@@ -58,7 +41,19 @@ const LogisticalFormCarrierCard = ({
         imageSize: styles.imageSize,
         generalStyle: styles.imageSize,
       }}
-      upperTexts={{items: upperTextsItems}}
+      upperTexts={{
+        items: [
+          {
+            displayText: carrierPartner?.simpleFullName,
+            isTitle: true,
+            hideIfNull: true,
+          },
+          {
+            displayText: carrierPartner?.partnerSeq,
+            hideIfNull: true,
+          },
+        ],
+      }}
     />
   );
 };
@@ -74,4 +69,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default LogisticalFormCarrierCard;
+export default CarrierCard;

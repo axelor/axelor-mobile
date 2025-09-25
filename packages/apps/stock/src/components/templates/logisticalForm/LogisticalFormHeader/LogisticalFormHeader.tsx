@@ -27,57 +27,50 @@ import {
 } from '@axelor/aos-mobile-core';
 
 interface LogisticalFormHeaderProps {
-  logisticalForm?: any;
+  statusSelect?: number;
+  deliveryNumberSeq: string;
+  collectionDate: string;
+  stockLocation?: any;
 }
 
-const LogisticalFormHeader = ({logisticalForm}: LogisticalFormHeaderProps) => {
+const LogisticalFormHeader = ({
+  statusSelect,
+  deliveryNumberSeq,
+  collectionDate,
+  stockLocation,
+}: LogisticalFormHeaderProps) => {
   const I18n = useTranslator();
   const {LogisticalForm} = useTypes();
   const {getItemColor, getItemTitle} = useTypeHelpers();
 
   const statusBadge = useMemo(() => {
-    const status = logisticalForm?.statusSelect;
-    if (status == null) {
-      return null;
-    }
+    if (statusSelect == null) return null;
 
     return {
-      color: getItemColor(LogisticalForm?.statusSelect, status),
-      title: getItemTitle(LogisticalForm?.statusSelect, status),
+      color: getItemColor(LogisticalForm?.statusSelect, statusSelect),
+      title: getItemTitle(LogisticalForm?.statusSelect, statusSelect),
     };
-  }, [
-    LogisticalForm?.statusSelect,
-    getItemColor,
-    getItemTitle,
-    logisticalForm,
-  ]);
+  }, [LogisticalForm?.statusSelect, getItemColor, getItemTitle, statusSelect]);
 
   const formattedDate = useMemo(() => {
-    if (!logisticalForm?.collectionDate) {
-      return null;
-    }
+    if (!collectionDate) return null;
 
-    return formatDate(logisticalForm.collectionDate, I18n.t('Base_DateFormat'));
-  }, [I18n, logisticalForm?.collectionDate]);
+    return formatDate(collectionDate, I18n.t('Base_DateFormat'));
+  }, [I18n, collectionDate]);
 
   return (
     <View style={styles.container}>
-      <View style={styles.topRow}>
-        {logisticalForm?.deliveryNumberSeq && (
+      <View style={styles.column}>
+        {deliveryNumberSeq && (
           <Text fontSize={18} writingType="important">
-            {logisticalForm.deliveryNumberSeq}
+            {deliveryNumberSeq}
           </Text>
         )}
-        {statusBadge != null && (
-          <Badge color={statusBadge.color} title={statusBadge.title} />
-        )}
-      </View>
-      <View style={styles.bottomRow}>
-        {logisticalForm?.stockLocation?.name && (
+        {stockLocation?.name && (
           <LabelText
             iconName="geo-alt-fill"
             title={`${I18n.t('Stock_StockLocation')}:`}
-            value={logisticalForm.stockLocation.name}
+            value={stockLocation.name}
           />
         )}
         {formattedDate && (
@@ -88,23 +81,33 @@ const LogisticalFormHeader = ({logisticalForm}: LogisticalFormHeaderProps) => {
           />
         )}
       </View>
+      {statusBadge != null && (
+        <Badge
+          color={statusBadge.color}
+          title={statusBadge.title}
+          style={styles.badge}
+        />
+      )}
     </View>
   );
 };
 
 const styles = StyleSheet.create({
   container: {
-    marginHorizontal: 24,
-    marginBottom: 12,
-  },
-  topRow: {
     flexDirection: 'row',
-    alignItems: 'center',
     justifyContent: 'space-between',
+    alignSelf: 'center',
+    width: '90%',
+    gap: 5,
+    marginBottom: 10,
   },
-  bottomRow: {
-    marginTop: 8,
-    gap: 4,
+  column: {
+    flexDirection: 'column',
+    gap: 5,
+  },
+  badge: {
+    width: undefined,
+    paddingHorizontal: 10,
   },
 });
 

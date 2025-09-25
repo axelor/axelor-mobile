@@ -20,21 +20,21 @@ import React, {useMemo} from 'react';
 import {StyleSheet} from 'react-native';
 import {ActionCard} from '@axelor/aos-mobile-ui';
 import {isEmpty, linkingProvider, useTranslator} from '@axelor/aos-mobile-core';
-import LogisticalFormCarrierCard from '../LogisticalFormCarrierCard/LogisticalFormCarrierCard';
+import {CarrierCard} from '../../atoms';
 
-interface LogisticalFormCarrierActionCardProps {
-  carrierPartner?: any;
+interface CarrierActionCardProps {
   style?: any;
+  carrierPartner?: any;
   showPhoneAction?: boolean;
   showAddressAction?: boolean;
 }
 
-const LogisticalFormCarrierActionCard = ({
-  carrierPartner,
+const CarrierActionCard = ({
   style,
+  carrierPartner,
   showPhoneAction = true,
   showAddressAction = true,
-}: LogisticalFormCarrierActionCardProps) => {
+}: CarrierActionCardProps) => {
   const I18n = useTranslator();
 
   const actionList = useMemo(
@@ -79,7 +79,7 @@ const LogisticalFormCarrierActionCard = ({
       style={[styles.container, style]}
       translator={I18n.t}
       actionList={actionList}>
-      <LogisticalFormCarrierCard carrierPartner={carrierPartner} />
+      <CarrierCard carrierPartner={carrierPartner} />
     </ActionCard>
   );
 };
@@ -88,8 +88,8 @@ const styles = StyleSheet.create({
   container: {
     width: '90%',
     alignSelf: 'center',
-    marginVertical: 12,
+    marginVertical: 5,
   },
 });
 
-export default LogisticalFormCarrierActionCard;
+export default CarrierActionCard;

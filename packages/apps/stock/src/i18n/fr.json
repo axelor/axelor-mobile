@@ -177,6 +177,7 @@
   "Stock_LogisticalForm_TotalGrossMass": "Masse brute totale",
   "Stock_LogisticalForm_TotalNetMass": "Masse nette totale",
   "Stock_LogisticalForm_TotalVolume": "Volume total (m³)",
+  "Stock_NoInformationAvailable": "Aucune information disponible",
   "Stock_SliceAction_FetchCustomerDeliveryLines": "récupération des lignes de livraison client",
   "Stock_SliceAction_FetchCustomerDeliveryLine": "récupération de la ligne de livraison client",
   "Stock_SliceAction_UpdateCustomerDeliveryLine": "mise à jour de la ligne de livraison client",

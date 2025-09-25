@@ -17,13 +17,13 @@
  */
 
 import React, {useMemo} from 'react';
-import {StyleSheet, View} from 'react-native';
+import {StyleSheet} from 'react-native';
 import {DropdownCardSwitch} from '@axelor/aos-mobile-ui';
 import {useTranslator} from '@axelor/aos-mobile-core';
 import {LogisticalFormDropdownGeneralView} from '../../atoms';
 
 interface LogisticalFormDropdownCardsProps {
-  logisticalForm?: any;
+  logisticalForm: any;
 }
 
 const LogisticalFormDropdownCards = ({
@@ -37,60 +37,21 @@ const LogisticalFormDropdownCards = ({
         key: 1,
         title: I18n.t('Stock_General'),
         isDefaultVisible: true,
-        childrenComp: (
-          <LogisticalFormDropdownGeneralView
-            accountSelectionToCarrierSelect={
-              logisticalForm?.accountSelectionToCarrierSelect
-            }
-            customerAccountNumberToCarrier={
-              logisticalForm?.customerAccountNumberToCarrier
-            }
-            forwarderPartner={logisticalForm?.forwarderPartner}
-            incoterm={logisticalForm?.incoterm}
-            tracking={logisticalForm?.tracking}
-            totalGrossMass={logisticalForm?.totalGrossMass}
-            totalNetMass={logisticalForm?.totalNetMass}
-            totalVolume={logisticalForm?.totalVolume}
-          />
-        ),
+        childrenComp: <LogisticalFormDropdownGeneralView {...logisticalForm} />,
       },
     ],
-    [
-      I18n,
-      logisticalForm?.accountSelectionToCarrierSelect,
-      logisticalForm?.customerAccountNumberToCarrier,
-      logisticalForm?.forwarderPartner,
-      logisticalForm?.incoterm,
-      logisticalForm?.tracking,
-      logisticalForm?.totalGrossMass,
-      logisticalForm?.totalNetMass,
-      logisticalForm?.totalVolume,
-    ],
+    [I18n, logisticalForm],
   );
 
-  if (logisticalForm == null) {
-    return null;
-  }
-
   return (
-    <View style={styles.container}>
-      <DropdownCardSwitch
-        styleTitle={styles.textTitle}
-        style={styles.dropdown}
-        dropdownItems={dropdownItems}
-      />
-    </View>
+    <DropdownCardSwitch
+      styleTitle={styles.textTitle}
+      dropdownItems={dropdownItems}
+    />
   );
 };
 
 const styles = StyleSheet.create({
-  container: {
-    alignItems: 'center',
-    marginTop: 10,
-  },
-  dropdown: {
-    marginBottom: 0,
-  },
   textTitle: {
     fontWeight: 'bold',
   },

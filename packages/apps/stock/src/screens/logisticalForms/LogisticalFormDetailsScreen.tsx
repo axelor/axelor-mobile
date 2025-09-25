@@ -18,16 +18,17 @@
 
 import React, {useCallback, useEffect, useMemo} from 'react';
 import {BottomBar, Screen, useThemeColor} from '@axelor/aos-mobile-ui';
-import {useDispatch, useSelector} from '@axelor/aos-mobile-core';
+import {useDispatch, useSelector, useTranslator} from '@axelor/aos-mobile-core';
 import {LogisticalFormGeneralInformationView} from '../../components';
 import {fetchLogisticalForm} from '../../features/logisticalFormSlice';
 
 const LogisticalFormDetailsScreen = ({route}: any) => {
   const {logisticalFormId} = route?.params ?? {};
   const Colors = useThemeColor();
+  const I18n = useTranslator();
   const dispatch = useDispatch();
 
-  const {logisticalForm, loading} = useSelector(state => state.logisticalForm);
+  const {logisticalForm} = useSelector(state => state.logisticalForm);
 
   const loadLogisticalForm = useCallback(() => {
     dispatch((fetchLogisticalForm as any)({logisticalFormId}));
@@ -41,17 +42,16 @@ const LogisticalFormDetailsScreen = ({route}: any) => {
     () => [
       {
         iconName: 'house',
+        title: I18n.t('Stock_General'),
         color: Colors.secondaryColor_dark,
         viewComponent: (
           <LogisticalFormGeneralInformationView
-            logisticalForm={logisticalForm}
-            loading={loading}
             onRefresh={loadLogisticalForm}
           />
         ),
       },
     ],
-    [Colors, loadLogisticalForm, loading, logisticalForm],
+    [Colors, I18n, loadLogisticalForm],
   );
 
   if (logisticalForm?.id !== logisticalFormId) {
