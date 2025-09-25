@@ -22,7 +22,6 @@ export const project_modelAPI: ObjectFields = {
   project_project: schemaContructor.object({
     createdOn: schemaContructor.string(),
     projectStatus: schemaContructor.subObject('name'),
-    fullName: schemaContructor.string(),
     name: schemaContructor.string(),
     code: schemaContructor.string(),
     clientPartner: schemaContructor.subObject().concat(
@@ -30,6 +29,8 @@ export const project_modelAPI: ObjectFields = {
         picture: schemaContructor.subObject(),
         name: schemaContructor.string(),
         partnerSeq: schemaContructor.string(),
+        fixedPhone: schemaContructor.string(),
+        mobilePhone: schemaContructor.string(),
         mainAddress: schemaContructor.subObject('fullName').concat(
           schemaContructor.object({
             city: schemaContructor.subObject('name'),
@@ -41,12 +42,12 @@ export const project_modelAPI: ObjectFields = {
     contactPartner: schemaContructor.subObject().concat(
       schemaContructor.object({
         picture: schemaContructor.subObject(),
-        jobTitleFunction: schemaContructor.subObject('name'),
         name: schemaContructor.string(),
+        partnerSeq: schemaContructor.string(),
         simpleFullName: schemaContructor.string(),
         fixedPhone: schemaContructor.string(),
         mobilePhone: schemaContructor.string(),
-        partnerSeq: schemaContructor.string(),
+        jobTitleFunction: schemaContructor.subObject('name'),
       }),
     ),
     company: schemaContructor.subObject('name'),
@@ -63,8 +64,10 @@ export const project_modelAPI: ObjectFields = {
         clientPartner: schemaContructor.subObject().concat(
           schemaContructor.object({
             picture: schemaContructor.subObject(),
-            jobTitleFunction: schemaContructor.subObject(),
             name: schemaContructor.string(),
+            partnerSeq: schemaContructor.string(),
+            fixedPhone: schemaContructor.string(),
+            mobilePhone: schemaContructor.string(),
             mainAddress: schemaContructor.subObject('fullName').concat(
               schemaContructor.object({
                 city: schemaContructor.subObject('name'),
@@ -81,15 +84,6 @@ export const project_modelAPI: ObjectFields = {
     description: schemaContructor.string(),
     team: schemaContructor.subObject(),
     membersUserSet: schemaContructor.array().of(schemaContructor.subObject()),
-    toInvoice: schemaContructor.boolean(),
-    isInvoicingExpenses: schemaContructor.boolean(),
-    isInvoicingPurchases: schemaContructor.boolean(),
-    currency: schemaContructor.subObject().concat(
-      schemaContructor.object({
-        symbol: schemaContructor.string(),
-      }),
-    ),
-    priceList: schemaContructor.subObject(),
     taskStatusManagementSelect: schemaContructor.number(),
     projectTaskStatusSet: schemaContructor
       .array()

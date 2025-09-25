@@ -16,32 +16,15 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import React, {useEffect, useState} from 'react';
+import React from 'react';
 import {View, StyleSheet} from 'react-native';
-import {useSelector, useTranslator} from '@axelor/aos-mobile-core';
-import {HeaderContainer, ToggleSwitch} from '@axelor/aos-mobile-ui';
-import {ProjectHeader} from '../../molecules';
-import {ActivityListView, ReportingDetailsView} from '../../templates';
-import {ReportingType} from '../../../types';
+import {HeaderContainer} from '@axelor/aos-mobile-ui';
 import {useReportingConfiguration} from '../../../hooks/use-reporting-configuration';
+import {ProjectHeader} from '../../molecules';
+import {ActivityListView} from '../../templates';
 
 const ReportingView = () => {
-  const I18n = useTranslator();
-
-  const {project} = useSelector((state: any) => state.project_project);
-
-  const {showActivities, showIndicators, noReporting} =
-    useReportingConfiguration(project);
-
-  const [mode, setMode] = useState(ReportingType.indicators);
-
-  useEffect(() => {
-    if (!showIndicators) {
-      setMode(ReportingType.activities);
-    } else if (!showActivities) {
-      setMode(ReportingType.indicators);
-    }
-  }, [showActivities, showIndicators]);
+  const {noReporting} = useReportingConfiguration();
 
   if (noReporting) {
     return null;
@@ -51,30 +34,9 @@ const ReportingView = () => {
     <View style={styles.container}>
       <HeaderContainer
         expandableFilter={false}
-        fixedItems={
-          <>
-            <ProjectHeader />
-            {showIndicators && showActivities && (
-              <ToggleSwitch
-                leftTitle={I18n.t('Project_Reporting')}
-                rightTitle={I18n.t('Project_Activities')}
-                onSwitch={() =>
-                  setMode(_mode => {
-                    return _mode === ReportingType.activities
-                      ? ReportingType.indicators
-                      : ReportingType.activities;
-                  })
-                }
-              />
-            )}
-          </>
-        }
+        fixedItems={<ProjectHeader />}
       />
-      {mode === ReportingType.activities ? (
-        <ActivityListView />
-      ) : (
-        <ReportingDetailsView />
-      )}
+      <ActivityListView />
     </View>
   );
 };

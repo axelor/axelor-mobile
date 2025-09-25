@@ -79,6 +79,20 @@ export const project_typeObjects: ModuleSelections = [
           },
         ],
       },
+      reportingSelect: {
+        content: [
+          {
+            key: 'None',
+            value: 'none',
+            title: null,
+          },
+          {
+            key: 'Activities',
+            value: 'activities',
+            title: null,
+          },
+        ],
+      },
     },
   },
 ];

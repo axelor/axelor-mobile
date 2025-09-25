@@ -17,35 +17,24 @@
  */
 
 import {useMemo} from 'react';
-import {useSelector} from '@axelor/aos-mobile-core';
-import {ReportingType} from '../types';
+import {useSelector, useTypes} from '@axelor/aos-mobile-core';
 
-export const useReportingConfiguration = project => {
-  const {mobileSettings} = useSelector((state: any) => state.appConfig);
+export const useReportingConfiguration = () => {
+  const {Project} = useTypes();
+  const {mobileSettings} = useSelector(state => state.appConfig);
 
   const allowedReportingTypes = useMemo(
-    () => mobileSettings?.reportingTypesToDisplay || [],
+    () => mobileSettings?.reportingTypesToDisplay ?? [],
     [mobileSettings?.reportingTypesToDisplay],
   );
 
   const showActivities = useMemo(
-    () => allowedReportingTypes.includes(ReportingType.activities),
-    [allowedReportingTypes],
-  );
-
-  const showIndicators = useMemo(
-    () =>
-      allowedReportingTypes.includes(ReportingType.indicators) &&
-      project?.isBusinessProject,
-    [allowedReportingTypes, project?.isBusinessProject],
+    () => allowedReportingTypes.includes(Project?.reportingSelect.Activities),
+    [Project?.reportingSelect.Activities, allowedReportingTypes],
   );
 
   return useMemo(
-    () => ({
-      showActivities,
-      showIndicators,
-      noReporting: !showActivities && !showIndicators,
-    }),
-    [showActivities, showIndicators],
+    () => ({showActivities, noReporting: !showActivities}),
+    [showActivities],
   );
 };

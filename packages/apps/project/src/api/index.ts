@@ -44,5 +44,4 @@ export {
   searchStatus as searchStatusApi,
   searchTargetVersion as searchTargetVersionApi,
 } from './project-task-api';
-export {fetchIndicator} from './reporting-api';
 export {fetchTimesheetLinesByTask as fetchTimesheetLinesByTaskApi} from './timesheet-lines-api';
