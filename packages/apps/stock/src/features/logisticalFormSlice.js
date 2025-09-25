@@ -21,7 +21,10 @@ import {
   generateInifiniteScrollCases,
   handlerApiCall,
 } from '@axelor/aos-mobile-core';
-import {searchLogisticalForms as _searchLogisticalForms} from '../api/logistical-form-api';
+import {
+  searchLogisticalForms as _searchLogisticalForms,
+  fetchLogisticalForm as _fetchLogisticalForm,
+} from '../api/logistical-form-api';
 
 export const searchLogisticalForms = createAsyncThunk(
   'logisticalForm/searchLogisticalForms',
@@ -36,11 +39,27 @@ export const searchLogisticalForms = createAsyncThunk(
   },
 );
 
+export const fetchLogisticalForm = createAsyncThunk(
+  'logisticalForm/fetchLogisticalForm',
+  async function (data, {getState}) {
+    return handlerApiCall({
+      fetchFunction: _fetchLogisticalForm,
+      data,
+      action: 'Stock_SliceAction_FetchLogisticalForm',
+      getState,
+      responseOptions: {isArrayResponse: false},
+    });
+  },
+);
+
 const initialState = {
   loadingList: false,
   moreLoading: false,
   isListEnd: false,
   logisticalFormList: [],
+
+  loading: false,
+  logisticalForm: null,
 };
 
 const logisticalFormSlice = createSlice({
@@ -52,6 +71,16 @@ const logisticalFormSlice = createSlice({
       moreLoading: 'moreLoading',
       isListEnd: 'isListEnd',
       list: 'logisticalFormList',
+    });
+    builder.addCase(fetchLogisticalForm.pending, state => {
+      state.loading = true;
+    });
+    builder.addCase(fetchLogisticalForm.fulfilled, (state, action) => {
+      state.loading = false;
+      state.logisticalForm = action.payload;
+    });
+    builder.addCase(fetchLogisticalForm.rejected, state => {
+      state.loading = false;
     });
   },
 });

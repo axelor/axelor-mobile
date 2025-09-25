@@ -31,7 +31,7 @@ import {displayLogisticalForm} from '../../utils';
 
 const stockLocationScanKey = 'stock-location_logistical-form-list';
 
-const LogisticalFormListScreen = () => {
+const LogisticalFormListScreen = ({navigation}: any) => {
   const I18n = useTranslator();
   const {LogisticalForm} = useTypes();
   const {getSelectionItems} = useTypeHelpers();
@@ -104,6 +104,11 @@ const LogisticalFormListScreen = () => {
             stockLocation={item.stockLocation?.name}
             collectionDate={item.collectionDate}
             status={item.statusSelect}
+            onPress={() =>
+              navigation.navigate('LogisticalFormDetailsScreen', {
+                logisticalFormId: item.id,
+              })
+            }
           />
         )}
       />

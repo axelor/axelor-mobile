@@ -160,6 +160,22 @@ export const stock_typeObjects: ModuleSelections = [
   {
     modelName: 'com.axelor.apps.stock.db.LogisticalForm',
     fields: {
+      accountSelectionToCarrierSelect: {
+        content: [
+          {
+            key: 'CompanyAccount',
+            value: 1,
+            title:
+              'Stock_LogisticalForm_AccountSelectionToCarrier_CompanyAccount',
+          },
+          {
+            key: 'CustomerAccount',
+            value: 2,
+            title:
+              'Stock_LogisticalForm_AccountSelectionToCarrier_CustomerAccount',
+          },
+        ],
+      },
       statusSelect: {
         content: [
           {
