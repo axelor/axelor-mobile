@@ -23,6 +23,7 @@ export {internalMoveLineReducer as internalMoveLine} from './internalMoveLineSli
 export {internalMoveReducer as internalMove} from './internalMoveSlice';
 export {inventoryLineReducer as inventoryLine} from './inventoryLineSlice';
 export {inventoryReducer as inventory} from './inventorySlice';
+export {logisticalFormReducer as logisticalForm} from './logisticalFormSlice';
 export {partnerReducer as stock_partner} from './partnerSlice';
 export {productIndicatorsReducer as productIndicators} from './productIndicatorsSlice';
 export {productReducer as product} from './productSlice';

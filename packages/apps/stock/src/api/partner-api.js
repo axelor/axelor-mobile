@@ -21,7 +21,13 @@ import {
   getSearchCriterias,
 } from '@axelor/aos-mobile-core';
 
-const createSearchCriteria = (searchValue, isSupplier) => {
+const PARTNER_TYPES = {
+  client: 'client',
+  supplier: 'supplier',
+  carrier: 'carrier',
+};
+
+const createSearchCriteria = (searchValue, type = PARTNER_TYPES.client) => {
   const criteria = [
     {
       fieldName: 'isContact',
@@ -31,9 +37,15 @@ const createSearchCriteria = (searchValue, isSupplier) => {
     getSearchCriterias('stock_partner', searchValue),
   ];
 
-  if (isSupplier) {
+  if (type === PARTNER_TYPES.supplier) {
     criteria.push({
       fieldName: 'isSupplier',
+      operator: '=',
+      value: true,
+    });
+  } else if (type === PARTNER_TYPES.carrier) {
+    criteria.push({
+      fieldName: 'isCarrier',
       operator: '=',
       value: true,
     });
@@ -67,7 +79,7 @@ export async function searchSuppliersFilter({
     model: 'com.axelor.apps.base.db.Partner',
     companyId,
     isCompanyM2M: true,
-    criteria: createSearchCriteria(searchValue, true),
+    criteria: createSearchCriteria(searchValue, PARTNER_TYPES.supplier),
     fieldKey: 'stock_partner',
     sortKey: 'stock_partner',
     page,
@@ -80,7 +92,20 @@ export async function searchClientsFilter({searchValue, companyId, page = 0}) {
     model: 'com.axelor.apps.base.db.Partner',
     companyId,
     isCompanyM2M: true,
-    criteria: createSearchCriteria(searchValue, false),
+    criteria: createSearchCriteria(searchValue, PARTNER_TYPES.client),
+    fieldKey: 'stock_partner',
+    sortKey: 'stock_partner',
+    page,
+    provider: 'model',
+  });
+}
+
+export async function searchCarriersFilter({searchValue, companyId, page = 0}) {
+  return createStandardSearch({
+    model: 'com.axelor.apps.base.db.Partner',
+    companyId,
+    isCompanyM2M: true,
+    criteria: createSearchCriteria(searchValue, PARTNER_TYPES.carrier),
     fieldKey: 'stock_partner',
     sortKey: 'stock_partner',
     page,

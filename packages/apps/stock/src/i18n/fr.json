@@ -13,6 +13,7 @@
   "Stock_CustomerDeliveryLines": "Lignes de livraison client",
   "Stock_SupplierArrival": "Réception fournisseur",
   "Stock_SupplierArrivalLines": "Lignes de réception fournisseur",
+  "Stock_LogisticalForm": "Fiches logistique",
   "Stock_Inventory": "Inventaire",
   "Stock_InventoryLines": "Lignes d'inventaire",
   "Stock_SeeDistributionStockLocation": "Voir la répartition par emplacement de stock",
@@ -85,6 +86,7 @@
   "Stock_ErrorProduct": "Ce n'est pas le bon produit.",
   "Stock_ErrorTrackingNumber": "Ce n'est pas le bon numéro de suivi.",
   "Stock_Customer": "Client",
+  "Stock_Carrier": "Transporteur",
   "Stock_Supplier": "Fournisseur",
   "Stock_SupplierCatalog": "Catalogue fournisseur",
   "Stock_OriginalAddress": "Adresse d'origine",
@@ -158,6 +160,10 @@
   "Stock_ModeOfTransport_FixedTransportInstallations": "Installations de transport fixes",
   "Stock_ModeOfTransport_TransportByInlandWaterway": "Transport fluvial",
   "Stock_ModeOfTransport_OwnPropulsion": "Propulsion propre",
+  "Stock_CollectionDate": "Date de collecte",
+  "Stock_LogisticalForm_Status_Provision": "Mise à disposition",
+  "Stock_LogisticalForm_Status_CarrierValidated": "Transporteur validé",
+  "Stock_LogisticalForm_Status_Collected": "Enlevé",
   "Stock_SliceAction_FetchCustomerDeliveryLines": "récupération des lignes de livraison client",
   "Stock_SliceAction_FetchCustomerDeliveryLine": "récupération de la ligne de livraison client",
   "Stock_SliceAction_UpdateCustomerDeliveryLine": "mise à jour de la ligne de livraison client",
@@ -186,6 +192,7 @@
   "Stock_SliceAction_UpdateInventoryStatus": "mise à jour du status de l'inventaire",
   "Stock_SliceAction_FilterClients": "filtre sur les clients",
   "Stock_SliceAction_FilterSuppliers": "filtre sur les fournisseurs",
+  "Stock_SliceAction_FilterCarriers": "filtre sur les transporteurs",
   "Stock_SliceAction_FetchProductStockIndicators": "récupération des indicateurs stock du produit",
   "Stock_SliceAction_FilterProducts": "filtre sur les produits",
   "Stock_SliceAction_FetchProductFromId": "récupération du produit par id",
@@ -223,5 +230,6 @@
   "Stock_SliceAction_FetchProductCompanyWithId": "récupération du produit par société",
   "Stock_SliceAction_SplitCustomerDeliveryLine": "séparation de la ligne de livraison client",
   "Stock_SliceAction_SearchAlternativeBarcode": "recherche des codes-barres alternatifs",
-  "Stock_SliceAction_UpdateCustomerDeliveryNote": "mise à jour de la note de la livraison client"
+  "Stock_SliceAction_UpdateCustomerDeliveryNote": "mise à jour de la note de la livraison client",
+  "Stock_SliceAction_SearchLogisticalForms": "recherche sur les fiches logistique"
 }

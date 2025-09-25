@@ -24,6 +24,7 @@ export {default as StockLocationSearchBar} from './StockLocationSearchBar/StockL
 export {default as TrackingNumberSearchBar} from './TrackingNumberSearchBar/TrackingNumberSearchBar';
 
 export * from './customerDelivery';
+export * from './logisticalForm';
 export * from './internalMove';
 export * from './inventory';
 export * from './product';

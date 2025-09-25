@@ -158,6 +158,33 @@ export const stock_typeObjects: ModuleSelections = [
     },
   },
   {
+    modelName: 'com.axelor.apps.stock.db.LogisticalForm',
+    fields: {
+      statusSelect: {
+        content: [
+          {
+            key: 'Provision',
+            value: 1,
+            title: 'Stock_LogisticalForm_Status_Provision',
+            color: 'plannedColor',
+          },
+          {
+            key: 'CarrierValidated',
+            value: 2,
+            title: 'Stock_LogisticalForm_Status_CarrierValidated',
+            color: 'infoColor',
+          },
+          {
+            key: 'Collected',
+            value: 3,
+            title: 'Stock_LogisticalForm_Status_Collected',
+            color: 'successColor',
+          },
+        ],
+      },
+    },
+  },
+  {
     modelName: 'com.axelor.apps.stock.db.StockMove',
     fields: {
       modeOfTransport: {

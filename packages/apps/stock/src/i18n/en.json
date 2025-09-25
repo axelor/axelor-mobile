@@ -13,6 +13,7 @@
   "Stock_CustomerDeliveryLines": "Customer delivery lines",
   "Stock_SupplierArrival": "Supplier arrival",
   "Stock_SupplierArrivalLines": "Supplier arrival lines",
+  "Stock_LogisticalForm": "Logistical forms",
   "Stock_Inventory": "Inventory",
   "Stock_InventoryLines": "Inventory lines",
   "Stock_SeeDistributionStockLocation": "See distribution per stock location",
@@ -85,6 +86,7 @@
   "Stock_ErrorProduct": "This is not the right product.",
   "Stock_ErrorTrackingNumber": "This is not the right tracking number.",
   "Stock_Customer": "Customer",
+  "Stock_Carrier": "Carrier",
   "Stock_Supplier": "Supplier",
   "Stock_SupplierCatalog": "Supplier catalog",
   "Stock_OriginalAddress": "Original address",
@@ -158,6 +160,10 @@
   "Stock_ModeOfTransport_FixedTransportInstallations": "Fixed transport installations",
   "Stock_ModeOfTransport_TransportByInlandWaterway": "Transport by inland waterway",
   "Stock_ModeOfTransport_OwnPropulsion": "Own propulsion",
+  "Stock_CollectionDate": "Collection date",
+  "Stock_LogisticalForm_Status_Provision": "Provision",
+  "Stock_LogisticalForm_Status_CarrierValidated": "Carrier validated",
+  "Stock_LogisticalForm_Status_Collected": "Collected",
   "Stock_SliceAction_FetchCustomerDeliveryLines": "fetch customer delivery lines",
   "Stock_SliceAction_FetchCustomerDeliveryLine": "fetch customer delivery line",
   "Stock_SliceAction_UpdateCustomerDeliveryLine": "update customer delivery line",
@@ -186,6 +192,7 @@
   "Stock_SliceAction_UpdateInventoryStatus": "update inventory status",
   "Stock_SliceAction_FilterClients": "filter clients",
   "Stock_SliceAction_FilterSuppliers": "filter suppliers",
+  "Stock_SliceAction_FilterCarriers": "filter carriers",
   "Stock_SliceAction_FetchProductStockIndicators": "fetch product stock indicators",
   "Stock_SliceAction_FilterProducts": "filter products",
   "Stock_SliceAction_FetchProductFromId": "fetch product from id",
@@ -223,5 +230,6 @@
   "Stock_SliceAction_FetchProductCompanyWithId": "fetch product by company",
   "Stock_SliceAction_SplitCustomerDeliveryLine": "split customer delivery line",
   "Stock_SliceAction_SearchAlternativeBarcode": "search for alternative barcodes",
-  "Stock_SliceAction_UpdateCustomerDeliveryNote": "update customer delivery note"
+  "Stock_SliceAction_UpdateCustomerDeliveryNote": "update customer delivery note",
+  "Stock_SliceAction_SearchLogisticalForms": "search logistical forms"
 }
