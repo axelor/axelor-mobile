@@ -40,13 +40,13 @@ import {useReportingConfiguration} from '../../hooks/use-reporting-configuration
 export interface ProjectDetailsScreenProps {
   route?: any;
   projectId?: number;
-  additionnalsItems?: any[];
+  additionalBottomItems?: any[];
 }
 
 const ProjectDetailsScreen = ({
   route,
   projectId,
-  additionnalsItems,
+  additionalBottomItems,
 }: ProjectDetailsScreenProps) => {
   const _projectId = route?.params?.projectId || projectId;
 
@@ -69,7 +69,7 @@ const ProjectDetailsScreen = ({
   const bottomBarItems = useMemo(
     () =>
       [
-        ...(additionnalsItems ?? []),
+        ...(additionalBottomItems ?? []),
         {
           key: 'home',
           iconName: 'house',
@@ -136,7 +136,7 @@ const ProjectDetailsScreen = ({
     [
       Colors,
       I18n,
-      additionnalsItems,
+      additionalBottomItems,
       canCreate,
       noReporting,
       project,
