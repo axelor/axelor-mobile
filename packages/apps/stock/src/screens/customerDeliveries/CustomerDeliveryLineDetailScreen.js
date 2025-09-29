@@ -177,7 +177,7 @@ const CustomerDeliveryLineDetailScreen = ({route, navigation}) => {
             scanKey={stockLocationScanKey}
             isFocus={true}
             defaultStockLocation={customerDelivery.fromStockLocation}
-            readOnly={
+            readonly={
               readonly ||
               customerDelivery?.statusSelect !== StockMove?.statusSelect.Planned
             }

@@ -42,7 +42,7 @@ interface StockLocationSearchBarProps {
   showTitle?: boolean;
   titleKey?: string;
   defaultStockLocation?: any;
-  readOnly?: boolean;
+  readonly?: boolean;
 }
 
 const StockLocationSearchBar = ({
@@ -58,7 +58,7 @@ const StockLocationSearchBar = ({
   isFocus = false,
   isScrollViewContainer = false,
   showTitle = false,
-  readOnly = false,
+  readonly = false,
 }: StockLocationSearchBarProps) => {
   const I18n = useTranslator();
   const dispatch = useDispatch();
@@ -120,7 +120,7 @@ const StockLocationSearchBar = ({
         secondFilter ? stockLocationListMultiFilter : stockLocationList
       }
       value={defaultValue}
-      readonly={readOnly}
+      readonly={readonly}
       onChangeValue={onChange}
       fetchData={
         secondFilter
