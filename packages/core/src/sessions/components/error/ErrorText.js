@@ -24,6 +24,7 @@ import {StyleSheet} from 'react-native';
 const ERROR_CODE_REGEX = /\d{3}$/g;
 const LOGIN_ERROR = 401;
 const URL_ERROR = 999;
+const NO_CONNECTION_CODE = 418;
 
 const ErrorText = ({error, style}) => {
   const I18n = useTranslator();
@@ -45,6 +46,10 @@ const ErrorText = ({error, style}) => {
 
     if (errorCode === URL_ERROR) {
       return `${I18n.t('Base_Connection_InvalidUrl')}: ${error.url}`;
+    }
+
+    if (errorCode === NO_CONNECTION_CODE) {
+      return I18n.t('Base_NoConnection');
     }
 
     return error?.message;
