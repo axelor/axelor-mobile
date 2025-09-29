@@ -16,10 +16,12 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+import {getNetInfo} from '../api/net-info-utils';
 import {formatURL as _formatURL} from './formatters';
 
 const PREFIX_REGEX = /^https?:\/\//;
 const INVALID_URL_CODE = 999;
+const NO_CONNECTION_CODE = 418;
 
 export function testUrl(url: string): Promise<string | null> {
   return new Promise(async (resolve, reject) => {
@@ -44,6 +46,16 @@ export function testUrl(url: string): Promise<string | null> {
           return;
         }
       } catch (error) {}
+    }
+
+    const {isConnected} = await getNetInfo();
+
+    if (!isConnected) {
+      reject(
+        new Error(
+          `No available connection while testing URL: "${url}" ${NO_CONNECTION_CODE}`,
+        ),
+      );
     }
 
     reject(new Error(`Could not fetch URL: "${url}" ${INVALID_URL_CODE}`));
