@@ -72,7 +72,7 @@
     "react-native-system-navigation-bar": "2.2.0",
     "react-native-toast-message": "2.2.1",
     "react-native-vision-camera": "4.6.4",
-    "react-native-webview": "^13.8.4"
+    "react-native-webview": "13.8.4"
   },
   "devDependencies": {
     "@babel/core": "^7.25.2",

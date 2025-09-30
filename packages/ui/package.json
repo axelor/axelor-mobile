@@ -33,7 +33,7 @@
     "react-native-linear-gradient": "2.8.3",
     "react-native-svg": "15.11.2",
     "react-native-system-navigation-bar": "2.2.0",
-    "react-native-webview": "^13.8.4"
+    "react-native-webview": "13.8.4"
   },
   "devDependencies": {
     "@babel/runtime": "^7.25.0",
@@ -55,7 +55,7 @@
     "react-native-linear-gradient": "2.8.3",
     "react-native-svg": "15.11.2",
     "react-native-system-navigation-bar": "2.2.0",
-    "react-native-webview": "^13.8.4"
+    "react-native-webview": "13.8.4"
   },
   "resolutions": {
     "@types/react": "^18.3.20"
