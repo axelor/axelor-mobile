@@ -68,14 +68,21 @@ const LogisticalFormFormScreen = ({navigation, route}: any) => {
         ? createLogisticalForm
         : updateLogisticalForm;
 
-      dispatch(sliceFct({logisticalForm: objectState})).then(res => {
-        const _recordId = res?.payload?.id;
-        if (_recordId) {
-          navigation.replace('LogisticalFormDetailsScreen', {
-            logisticalFormId: _recordId,
-          });
+      dispatch(sliceFct(objectState)).then((res: any) => {
+        if (isCreation) {
+          const _recordId = res?.payload?.logisticalFormId;
+
+          if (_recordId) {
+            navigation.replace('LogisticalFormDetailsScreen', {
+              logisticalFormId: _recordId,
+            });
+          } else {
+            navigation.pop();
+          }
         } else {
-          navigation.pop();
+          navigation.popTo('LogisticalFormDetailsScreen', {
+            logisticalFormId: objectState.id,
+          });
         }
       });
     },

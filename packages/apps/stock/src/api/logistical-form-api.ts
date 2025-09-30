@@ -125,40 +125,47 @@ export async function fetchLogisticalForm({
 }
 
 export async function createLogisticalForm({
-  logisticalForm,
-}: {
-  logisticalForm: any;
+  carrierPartner,
+  deliverToCustomerPartner,
+  stockLocation,
+  collectionDate,
+  internalDeliveryComment,
+  externalDeliveryComment,
 }) {
-  const {matchers} = formatRequestBody(logisticalForm, 'data');
-
   return getActionApi().send({
-    url: '/ws/rest/com.axelor.apps.stock.db.LogisticalForm',
-    method: 'put',
+    url: '/ws/aos/logistical-form',
+    method: 'post',
     body: {
-      data: logisticalForm,
+      carrierPartnerId: carrierPartner?.id,
+      deliverToCustomerPartnerId: deliverToCustomerPartner?.id,
+      stockLocationId: stockLocation?.id,
+      collectionDate,
+      internalDeliveryComment,
+      externalDeliveryComment,
     },
     description: 'create logistical form',
     matchers: {
       id: Date.now(),
       modelName: 'com.axelor.apps.stock.db.LogisticalForm',
-      fields: matchers,
+      fields: {
+        carrierPartnerId: 'carrierPartner.id',
+        deliverToCustomerPartnerId: 'deliverToCustomerPartner.id',
+        stockLocationId: 'stockLocation.id',
+        collectionDate: 'collectionDate',
+        internalDeliveryComment: 'internalDeliveryComment',
+        externalDeliveryComment: 'externalDeliveryComment',
+      },
     },
   });
 }
 
-export async function updateLogisticalForm({
-  logisticalForm,
-}: {
-  logisticalForm: any;
-}) {
-  const {matchers} = formatRequestBody(logisticalForm, 'data');
+export async function updateLogisticalForm(logisticalForm: any) {
+  const {formattedData, matchers} = formatRequestBody(logisticalForm, 'data');
 
   return getActionApi().send({
     url: '/ws/rest/com.axelor.apps.stock.db.LogisticalForm',
     method: 'post',
-    body: {
-      data: logisticalForm,
-    },
+    body: {data: formattedData},
     description: 'update logistical form',
     matchers: {
       id: logisticalForm?.id,

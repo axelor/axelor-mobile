@@ -76,11 +76,7 @@ export const updateLogisticalForm = createAsyncThunk(
       action: 'Stock_SliceAction_UpdateLogisticalForm',
       getState,
       responseOptions: {isArrayResponse: false, showToast: true},
-    }).then(() =>
-      dispatch(
-        fetchLogisticalForm({logisticalFormId: data?.logisticalForm?.id}),
-      ),
-    );
+    }).then(() => dispatch(fetchLogisticalForm({logisticalFormId: data.id})));
   },
 );
 

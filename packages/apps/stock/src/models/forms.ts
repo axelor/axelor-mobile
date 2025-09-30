@@ -21,19 +21,11 @@ import {PartnerSearchBar, StockLocationSearchBar} from '../components';
 
 const getLogisticalFormStatuses = () => getTypes().LogisticalForm?.statusSelect;
 
-const isCollectedStatus = (status?: number) => {
-  const statusSelect = getLogisticalFormStatuses();
-  return status != null && status === statusSelect?.Collected;
-};
+const isCollectedStatus = (status?: number) =>
+  status === getLogisticalFormStatuses()?.Collected;
 
-const isReadonlyOutsideProvision = (status?: number) => {
-  if (!status) return false;
-  const statusSelect = getLogisticalFormStatuses();
-
-  if (status === statusSelect?.Collected) return true;
-
-  return status !== statusSelect?.Provision;
-};
+const isProvisionStatus = (status?: number) =>
+  status === getLogisticalFormStatuses()?.Provision;
 
 export const stock_formsRegister: FormConfigs = {
   stock_logisticalForm: {
@@ -61,14 +53,14 @@ export const stock_formsRegister: FormConfigs = {
           isCollectedStatus(objectState?.statusSelect),
       },
       carrierPartner: {
-        titleKey: 'Stock_CarrierPartner',
+        titleKey: 'Stock_Carrier',
         type: 'object',
         widget: 'custom',
         customComponent: PartnerSearchBar,
         options: {partnerType: 'carrier', showTitle: true},
         parentPanel: 'carrierPanel',
         readonlyIf: ({objectState}) =>
-          isReadonlyOutsideProvision(objectState?.statusSelect),
+          !isProvisionStatus(objectState?.statusSelect),
       },
       stockLocation: {
         titleKey: 'Stock_StockLocation',
@@ -79,7 +71,7 @@ export const stock_formsRegister: FormConfigs = {
         options: {showTitle: true},
         parentPanel: 'locationPanel',
         readonlyIf: ({objectState}) =>
-          isReadonlyOutsideProvision(objectState?.statusSelect),
+          !isProvisionStatus(objectState?.statusSelect),
       },
       deliverToCustomerPartner: {
         titleKey: 'Stock_DeliverToCustomerPartner',
@@ -88,17 +80,15 @@ export const stock_formsRegister: FormConfigs = {
         customComponent: PartnerSearchBar,
         options: {partnerType: 'client', showTitle: true},
         hideIf: ({storeState}) =>
-          !storeState.appConfig?.supplychain?.logisticalFormMultiClients,
+          storeState.appConfig?.supplychain?.logisticalFormMultiClients,
         readonlyIf: ({objectState}) =>
-          isReadonlyOutsideProvision(objectState?.statusSelect),
+          !isProvisionStatus(objectState?.statusSelect),
       },
       internalDeliveryComment: {
         titleKey: 'Stock_InternalDeliveryComment',
         type: 'string',
         widget: 'default',
-        options: {
-          multiline: true,
-        },
+        options: {multiline: true, adjustHeightWithLines: true},
         readonlyIf: ({objectState}) =>
           isCollectedStatus(objectState?.statusSelect),
       },
@@ -106,11 +96,9 @@ export const stock_formsRegister: FormConfigs = {
         titleKey: 'Stock_ExternalDeliveryComment',
         type: 'string',
         widget: 'default',
-        options: {
-          multiline: true,
-        },
+        options: {multiline: true, adjustHeightWithLines: true},
         readonlyIf: ({objectState}) =>
-          isReadonlyOutsideProvision(objectState?.statusSelect),
+          !isProvisionStatus(objectState?.statusSelect),
       },
     },
   },
