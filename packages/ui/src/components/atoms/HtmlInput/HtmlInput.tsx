@@ -16,13 +16,13 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import React, {useCallback, useEffect, useMemo, useRef, useState} from 'react';
-import {View, ScrollView, Keyboard} from 'react-native';
+import React, {useEffect, useMemo, useRef, useState} from 'react';
+import {InteractionManager, View, ScrollView} from 'react-native';
 import {WebView} from 'react-native-webview';
-import {buildQuillHtml} from './quillTemplate';
+import {OUTSIDE_INDICATOR, useClickOutside} from '../../../hooks';
 import {useThemeColor} from '../../../theme';
 import {Text} from '../../atoms';
-import {InteractionManager} from 'react-native';
+import {buildQuillHtml} from './quillTemplate';
 
 interface HtmlInputProps {
   style?: any;
@@ -44,43 +44,26 @@ const HtmlInput = ({
   editorBackgroundColor,
   title,
   placeholder = '',
-  onChange = () => {},
+  onChange,
   defaultInput = '',
   readonly = false,
-  onHeightChange = () => {},
-  onFocus = () => {},
-  onBlur = () => {},
+  onHeightChange,
+  onFocus,
+  onBlur,
 }: HtmlInputProps) => {
   const Colors = useThemeColor();
   const wrapperRef = useRef(null);
   const webviewRef = useRef<any>(null);
+  const lastSelfValueRef = useRef<string | null>(null);
+  const clickOutside = useClickOutside({wrapperRef});
 
   const [key, setKey] = useState(defaultInput);
-  const lastSelfValueRef = useRef<string | null>(null);
-  const changeTimerRef = useRef<any>(null);
+  const [isFocused, setIsFocused] = useState(false);
   const [ready, setReady] = useState(false);
   const [initialHTML, setInitialHTML] = useState<string>(defaultInput ?? '');
-  const onChangeRef = useRef(onChange);
-  const onFocusRef = useRef(onFocus);
-  const onBlurRef = useRef(onBlur);
-  const hasFocusRef = useRef(false);
 
   useEffect(() => {
-    onChangeRef.current = onChange;
-  }, [onChange]);
-
-  useEffect(() => {
-    onFocusRef.current = onFocus;
-  }, [onFocus]);
-
-  useEffect(() => {
-    onBlurRef.current = onBlur;
-  }, [onBlur]);
-
-  useEffect(() => {
-    const task = InteractionManager.runAfterInteractions(() => {
-      setReady(true);
-    });
+    const task = InteractionManager.runAfterInteractions(() => setReady(true));
     return () => task.cancel?.();
   }, []);
 
@@ -96,45 +79,15 @@ const HtmlInput = ({
     setInitialHTML(incoming);
   }, [defaultInput]);
 
-  const handleHtmlChange = useCallback((html: string) => {
-    lastSelfValueRef.current = html ?? '';
-    if (changeTimerRef.current) {
-      clearTimeout(changeTimerRef.current);
-      changeTimerRef.current = null;
-    }
-    changeTimerRef.current = setTimeout(() => {
-      onChangeRef.current(html);
-    }, 120);
-  }, []);
-
   useEffect(() => {
-    return () => {
-      if (changeTimerRef.current) clearTimeout(changeTimerRef.current);
-    };
-  }, []);
-
-  const blurEditor = useCallback(() => {
-    try {
-      webviewRef.current?.injectJavaScript(
-        'window.__axelorQuill?.blur?.(); true;',
-      );
-    } catch {}
-  }, []);
-
-  const handleWrapperTouch = useCallback(() => {
-    if (hasFocusRef.current) {
-      blurEditor();
+    if (clickOutside === OUTSIDE_INDICATOR && isFocused) {
+      try {
+        webviewRef.current?.injectJavaScript(
+          'window.__axelorQuill?.blur?.(); true;',
+        );
+      } catch {}
     }
-  }, [blurEditor]);
-
-  useEffect(() => {
-    const hideListener = Keyboard.addListener('keyboardDidHide', () => {
-      if (hasFocusRef.current) {
-        blurEditor();
-      }
-    });
-    return () => hideListener.remove();
-  }, [blurEditor]);
+  }, [clickOutside, isFocused]);
 
   const webStyle = useMemo(
     () => [
@@ -147,28 +100,29 @@ const HtmlInput = ({
     ],
     [editorBackgroundColor, Colors.backgroundColor],
   );
-  const html = useMemo(() => {
-    return buildQuillHtml({
-      initialHtml: initialHTML,
-      placeholder,
-      readOnly: readonly,
-      pinToolbar: true,
-      colors: {
-        background: editorBackgroundColor || Colors.backgroundColor,
-        text: Colors.text,
-        placeholder: Colors.placeholderTextColor,
-        accent: Colors.primaryColor.background,
-      },
-    });
-  }, [initialHTML, placeholder, readonly, editorBackgroundColor, Colors]);
+
+  const html = useMemo(
+    () =>
+      buildQuillHtml({
+        initialHtml: initialHTML,
+        placeholder,
+        readOnly: readonly,
+        pinToolbar: true,
+        colors: {
+          background: editorBackgroundColor || Colors.backgroundColor,
+          text: Colors.text,
+          placeholder: Colors.placeholderTextColor,
+          accent: Colors.primaryColor.background,
+        },
+      }),
+    [initialHTML, placeholder, readonly, editorBackgroundColor, Colors],
+  );
 
   return (
     <ScrollView
       ref={wrapperRef}
       testID="htmlInputScrollView"
-      keyboardShouldPersistTaps="always"
-      contentContainerStyle={containerStyle}
-      onTouchStart={handleWrapperTouch}>
+      contentContainerStyle={containerStyle}>
       <View testID="htmlInputInnerScroll" style={style}>
         {title != null ? <Text>{title}</Text> : null}
         {ready ? (
@@ -180,18 +134,22 @@ const HtmlInput = ({
             onMessage={e => {
               try {
                 const data = JSON.parse(e.nativeEvent.data);
-                if (data?.type === 'onChange') handleHtmlChange(data.message);
-                if (data?.type === 'onHeight') {
-                  const next = Number(data.message);
-                  if (!Number.isNaN(next)) onHeightChange(next);
-                }
-                if (data?.type === 'onFocus') {
-                  hasFocusRef.current = true;
-                  onFocusRef.current?.();
-                }
-                if (data?.type === 'onBlur') {
-                  hasFocusRef.current = false;
-                  onBlurRef.current?.();
+                switch (data?.type) {
+                  case 'onChange':
+                    onChange?.(data.message);
+                    break;
+                  case 'onHeight':
+                    const next = Number(data.message);
+                    if (!Number.isNaN(next)) onHeightChange?.(next);
+                    break;
+                  case 'onFocus':
+                    setIsFocused(true);
+                    onFocus?.();
+                    break;
+                  case 'onBlur':
+                    setIsFocused(false);
+                    onBlur?.();
+                    break;
                 }
               } catch {}
             }}

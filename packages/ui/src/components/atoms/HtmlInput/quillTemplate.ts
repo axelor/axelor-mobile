@@ -113,22 +113,12 @@ export function buildQuillHtml({
             hasFocus = false;
             try { window.ReactNativeWebView.postMessage(JSON.stringify({ type: 'onBlur' })); } catch(e) {}
           };
-          quill.on('selection-change', function(range){
-            if (range) {
-              emitFocus();
-            } else {
-              emitBlur();
-            }
-          });
           quill.root.addEventListener('focus', emitFocus);
           quill.root.addEventListener('blur', emitBlur);
           window.__axelorQuill = {
             focus: function(){ try { quill.focus(); } catch(e){} },
-            blur: function(){ try { quill.blur(); emitBlur(); } catch(e){} }
+            blur: function(){ try { quill.blur(); } catch(e){} }
           };
-          if (!${readOnly ? 'true' : 'false'}) {
-            try { quill.focus(); } catch(e) {}
-          }
           function sendHeight() {
             try {
               var el = document.querySelector('.ql-editor');
@@ -143,9 +133,6 @@ export function buildQuillHtml({
             try {
               var html = document.querySelector('#editor').children[0].innerHTML;
               window.ReactNativeWebView.postMessage(JSON.stringify({ type: 'onChange', message: html }));
-              if (hasFocus) {
-                setTimeout(function(){ try { quill.focus(); } catch(e){} }, 0);
-              }
               sendHeight();
             } catch(e) {}
           });
