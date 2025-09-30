@@ -55,34 +55,6 @@ export const createTrackingNumberSeq = createAsyncThunk(
   },
 );
 
-export const updateSupplierTrackingNumber = createAsyncThunk(
-  'trackingNumber/updateSupplierTrackingNumber',
-  async function (data, {getState}) {
-    const {stockMoveLineId, stockMoveLineVersion} = data;
-
-    return handlerApiCall({
-      fetchFunction: createTrackingNumber,
-      data,
-      action: 'Stock_SliceAction_CreateTrakingNumber',
-      getState,
-      responseOptions: {isArrayResponse: false, showToast: true},
-    }).then(trackingNumber => {
-      handlerApiCall({
-        fetchFunction: _updateStockMoveLineTrackingNumber,
-        data: {
-          stockMoveLineId: stockMoveLineId,
-          stockMoveLineVersion: stockMoveLineVersion,
-          trackingNumber: trackingNumber,
-        },
-        action: 'Stock_SliceAction_UpdateSupplierArrivalLineWithTrackingNumber',
-        getState,
-        responseOptions: {isArrayResponse: false, showToast: true},
-      });
-      return trackingNumber;
-    });
-  },
-);
-
 export const updateStockMoveLineTrackingNumber = createAsyncThunk(
   'trackingNumber/updateStockMoveLineTrackingNumber',
   async function (data, {getState, dispatch}) {
@@ -98,6 +70,30 @@ export const updateStockMoveLineTrackingNumber = createAsyncThunk(
           supplierArrivalLineId: data.stockMoveLineId,
         }),
       );
+    });
+  },
+);
+
+export const updateSupplierTrackingNumber = createAsyncThunk(
+  'trackingNumber/updateSupplierTrackingNumber',
+  async function (data, {getState, dispatch}) {
+    const {stockMoveLineId, stockMoveLineVersion} = data;
+
+    return handlerApiCall({
+      fetchFunction: createTrackingNumber,
+      data,
+      action: 'Stock_SliceAction_CreateTrakingNumber',
+      getState,
+      responseOptions: {isArrayResponse: false, showToast: true},
+    }).then(trackingNumber => {
+      dispatch(
+        updateStockMoveLineTrackingNumber({
+          stockMoveLineId,
+          stockMoveLineVersion,
+          trackingNumber,
+        }),
+      );
+      return trackingNumber;
     });
   },
 );

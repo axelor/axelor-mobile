@@ -1,0 +1,5 @@
+{
+  "title": "SupplierArrival: adapt tracking number creation to stay reusable and refresh line details",
+  "type": "fix",
+  "packages": "stock"
+}
