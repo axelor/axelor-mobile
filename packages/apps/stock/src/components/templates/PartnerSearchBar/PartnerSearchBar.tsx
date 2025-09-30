@@ -30,19 +30,27 @@ type PartnerType = 'client' | 'supplier' | 'carrier';
 
 type PartnerSearchBarProps = {
   style?: any;
-  placeholderKey: string;
+  title?: string;
   defaultValue?: any;
-  onChange: (value: any) => void;
+  onChange?: (value: any) => void;
   showDetailsPopup?: boolean;
+  isScrollViewContainer?: boolean;
+  required?: boolean;
+  readonly?: boolean;
+  showTitle?: boolean;
   partnerType?: PartnerType;
 };
 
-const PartnerSearchBar = ({
+const PartnerSearchBarAux = ({
   style,
-  placeholderKey,
+  title = 'Stock_Partner',
   defaultValue,
   onChange,
   showDetailsPopup = true,
+  isScrollViewContainer = false,
+  required = false,
+  readonly = false,
+  showTitle = false,
   partnerType,
 }: PartnerSearchBarProps) => {
   const I18n = useTranslator();
@@ -89,19 +97,27 @@ const PartnerSearchBar = ({
 
   return (
     <AutoCompleteSearch
+      title={showTitle && I18n.t(title)}
       objectList={objectList}
       value={defaultValue}
+      required={required}
+      readonly={readonly}
       onChangeValue={onChange}
       fetchData={fetchPartnersAPI}
       displayValue={displayPartner}
-      placeholder={I18n.t(placeholderKey)}
+      placeholder={I18n.t(title)}
       showDetailsPopup={showDetailsPopup}
       loadingList={loadingPartners}
       moreLoading={moreLoading}
       isListEnd={isListEnd}
+      isScrollViewContainer={isScrollViewContainer}
       style={style}
     />
   );
+};
+
+const PartnerSearchBar = (props: PartnerSearchBarProps) => {
+  return <PartnerSearchBarAux {...props} />;
 };
 
 export default PartnerSearchBar;

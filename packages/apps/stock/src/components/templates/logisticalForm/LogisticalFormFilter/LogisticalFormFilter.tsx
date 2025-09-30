@@ -45,7 +45,7 @@ const LogisticalFormFilter = ({
       <View style={styles.row}>
         <PartnerSearchBar
           style={styles.halfInput}
-          placeholderKey="Stock_Carrier"
+          title="Stock_Carrier"
           defaultValue={carrier}
           onChange={onCarrierChange}
           partnerType="carrier"

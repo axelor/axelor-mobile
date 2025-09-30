@@ -20,6 +20,8 @@ import {
   createStandardFetch,
   createStandardSearch,
   Criteria,
+  formatRequestBody,
+  getActionApi,
   getSearchCriterias,
 } from '@axelor/aos-mobile-core';
 
@@ -119,5 +121,56 @@ export async function fetchLogisticalForm({
     id: logisticalFormId,
     fieldKey: 'stock_logisticalForm',
     provider: 'model',
+  });
+}
+
+export async function createLogisticalForm({
+  carrierPartner,
+  deliverToCustomerPartner,
+  stockLocation,
+  collectionDate,
+  internalDeliveryComment,
+  externalDeliveryComment,
+}) {
+  return getActionApi().send({
+    url: '/ws/aos/logistical-form',
+    method: 'post',
+    body: {
+      carrierPartnerId: carrierPartner?.id,
+      deliverToCustomerPartnerId: deliverToCustomerPartner?.id,
+      stockLocationId: stockLocation?.id,
+      collectionDate,
+      internalDeliveryComment,
+      externalDeliveryComment,
+    },
+    description: 'create logistical form',
+    matchers: {
+      id: Date.now(),
+      modelName: 'com.axelor.apps.stock.db.LogisticalForm',
+      fields: {
+        carrierPartnerId: 'carrierPartner.id',
+        deliverToCustomerPartnerId: 'deliverToCustomerPartner.id',
+        stockLocationId: 'stockLocation.id',
+        collectionDate: 'collectionDate',
+        internalDeliveryComment: 'internalDeliveryComment',
+        externalDeliveryComment: 'externalDeliveryComment',
+      },
+    },
+  });
+}
+
+export async function updateLogisticalForm(logisticalForm: any) {
+  const {formattedData, matchers} = formatRequestBody(logisticalForm, 'data');
+
+  return getActionApi().send({
+    url: '/ws/rest/com.axelor.apps.stock.db.LogisticalForm',
+    method: 'post',
+    body: {data: formattedData},
+    description: 'update logistical form',
+    matchers: {
+      id: logisticalForm?.id,
+      modelName: 'com.axelor.apps.stock.db.LogisticalForm',
+      fields: matchers,
+    },
   });
 }

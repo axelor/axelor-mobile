@@ -270,7 +270,7 @@ const SupplierArrivalLineDetailScreen = ({route, navigation}) => {
             scanKey={stockLocationScanKey}
             isFocus={true}
             defaultStockLocation={supplierArrival.toStockLocation}
-            readOnly={
+            readonly={
               readonly ||
               supplierArrival?.statusSelect !== StockMove?.statusSelect.Planned
             }

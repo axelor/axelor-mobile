@@ -32,6 +32,8 @@ export const useStockHeaders = () => {
   useCustomerDeliveryDetailsActions();
   useCustomerDeliveryLineDetailsActions();
   useCustomerDeliveryLineListActions();
+  useLogisticalFormListActions();
+  useLogisticalFormDetailsActions();
   useInternalMoveDetailsActions();
   useInternalMoveLineDetailsActions();
   useInternalMoveListActions();
@@ -39,7 +41,6 @@ export const useStockHeaders = () => {
   useInventoryPlannedDetailsActions();
   useInventoryStartedDetailsActions();
   useInventoryLineDetailsActions();
-  useLogisticalFormListActions();
   useProductListActions();
   useProductDetailsActions();
   useProductStockDetailsActions();
@@ -299,12 +300,42 @@ const useStockCorrectionDetailsActions = () => {
 };
 
 const useLogisticalFormListActions = () => {
+  const Colors = useThemeColor();
+  const navigation = useNavigation();
+  const I18n = useTranslator();
+  const {canCreate} = usePermitted({
+    modelName: 'com.axelor.apps.stock.db.LogisticalForm',
+  });
+
   useEffect(() => {
     headerActionsProvider.registerModel('stock_logisticalForm_list', {
       model: 'com.axelor.apps.stock.db.LogisticalForm',
+      actions: [
+        {
+          key: 'newLogisticalForm',
+          order: 10,
+          iconName: 'plus-lg',
+          title: I18n.t('Stock_NewLogisticalForm'),
+          iconColor: Colors.primaryColor.background,
+          hideIf: !canCreate,
+          onPress: () => navigation.navigate('LogisticalFormFormScreen'),
+          showInHeader: true,
+        },
+      ],
       options: {core_modelFilters: {name: 'logistical-form-filters'}},
     });
-  }, []);
+  }, [Colors, I18n, canCreate, navigation]);
+};
+
+const useLogisticalFormDetailsActions = () => {
+  const {logisticalForm} = useSelector(state => state.logisticalForm);
+
+  useEffect(() => {
+    headerActionsProvider.registerModel('stock_logisticalForm_details', {
+      model: 'com.axelor.apps.stock.db.LogisticalForm',
+      modelId: logisticalForm?.id,
+    });
+  }, [logisticalForm?.id]);
 };
 
 const useSupplierArrivalDetailsActions = () => {

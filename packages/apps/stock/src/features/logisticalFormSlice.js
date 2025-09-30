@@ -24,6 +24,8 @@ import {
 import {
   searchLogisticalForms as _searchLogisticalForms,
   fetchLogisticalForm as _fetchLogisticalForm,
+  createLogisticalForm as _createLogisticalForm,
+  updateLogisticalForm as _updateLogisticalForm,
 } from '../api/logistical-form-api';
 
 export const searchLogisticalForms = createAsyncThunk(
@@ -49,6 +51,32 @@ export const fetchLogisticalForm = createAsyncThunk(
       getState,
       responseOptions: {isArrayResponse: false},
     });
+  },
+);
+
+export const createLogisticalForm = createAsyncThunk(
+  'logisticalForm/createLogisticalForm',
+  async function (data, {getState}) {
+    return handlerApiCall({
+      fetchFunction: _createLogisticalForm,
+      data,
+      action: 'Stock_SliceAction_CreateLogisticalForm',
+      getState,
+      responseOptions: {isArrayResponse: false, showToast: true},
+    });
+  },
+);
+
+export const updateLogisticalForm = createAsyncThunk(
+  'logisticalForm/updateLogisticalForm',
+  async function (data, {getState, dispatch}) {
+    return handlerApiCall({
+      fetchFunction: _updateLogisticalForm,
+      data,
+      action: 'Stock_SliceAction_UpdateLogisticalForm',
+      getState,
+      responseOptions: {isArrayResponse: false, showToast: true},
+    }).then(() => dispatch(fetchLogisticalForm({logisticalFormId: data.id})));
   },
 );
 
@@ -80,6 +108,26 @@ const logisticalFormSlice = createSlice({
       state.logisticalForm = action.payload;
     });
     builder.addCase(fetchLogisticalForm.rejected, state => {
+      state.loading = false;
+    });
+    builder.addCase(createLogisticalForm.pending, state => {
+      state.loading = true;
+    });
+    builder.addCase(createLogisticalForm.fulfilled, (state, action) => {
+      state.loading = false;
+      state.logisticalForm = action.payload;
+    });
+    builder.addCase(createLogisticalForm.rejected, state => {
+      state.loading = false;
+    });
+    builder.addCase(updateLogisticalForm.pending, state => {
+      state.loading = true;
+    });
+    builder.addCase(updateLogisticalForm.fulfilled, (state, action) => {
+      state.loading = false;
+      state.logisticalForm = action.payload;
+    });
+    builder.addCase(updateLogisticalForm.rejected, state => {
       state.loading = false;
     });
   },

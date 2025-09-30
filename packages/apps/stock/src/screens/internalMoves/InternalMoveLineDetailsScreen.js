@@ -200,7 +200,7 @@ const InternalMoveLineDetailsScreen = ({navigation, route}) => {
             onChange={setFromStockLocation}
             defaultValue={fromStockLocation}
             defaultStockLocation={internalMove.fromStockLocation}
-            readOnly={
+            readonly={
               readonly ||
               internalMove.statusSelect !== StockMove?.statusSelect.Planned
             }
@@ -249,7 +249,7 @@ const InternalMoveLineDetailsScreen = ({navigation, route}) => {
             secondFilter={true}
             defaultStockLocation={internalMove.toStockLocation}
             isScrollViewContainer={true}
-            readOnly={
+            readonly={
               readonly ||
               internalMove.statusSelect !== StockMove?.statusSelect.Planned
             }
