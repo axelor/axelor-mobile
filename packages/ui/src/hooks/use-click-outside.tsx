@@ -118,29 +118,26 @@ export const useClickOutside = ({
 
   const handleClickOutside = useCallback(
     (componentRef: RefObject, ref: RefObject) => {
-      if (!componentRef || !ref) return undefined;
+      if (!componentRef || !ref) return;
 
-      if (componentRef._nativeTag === ref._nativeTag) {
-        return INSIDE_INDICATOR;
-      }
+      componentRef.measure((x, y, width, height, pageX, pageY) => {
+        ref.measure((tx, ty, tWidth, tHeight, tPageX, tPageY) => {
+          const isInside =
+            tPageX >= pageX &&
+            tPageX + tWidth <= pageX + width &&
+            tPageY >= pageY &&
+            tPageY + tHeight <= pageY + height;
 
-      // check ref if one ref child has target._nativeTag
-      if (componentRef._children) {
-        const res: (Indicator | undefined)[] = componentRef._children.map(
-          (child: RefObject) => handleClickOutside(child, ref),
-        );
-
-        return res.find(r => r === INSIDE_INDICATOR) ?? OUTSIDE_INDICATOR;
-      }
-
-      return OUTSIDE_INDICATOR;
+          setState(isInside ? INSIDE_INDICATOR : OUTSIDE_INDICATOR);
+        });
+      });
     },
     [],
   );
 
   useEffect(() => {
-    setState(handleClickOutside(wrapperRef?.current, _ref));
-  }, [_ref, handleClickOutside, wrapperRef]);
+    handleClickOutside(wrapperRef?.current, _ref);
+  }, [handleClickOutside, wrapperRef, _ref]);
 
   return useMemo(() => state, [state]);
 };
