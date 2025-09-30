@@ -33,6 +33,7 @@ import {
   stock_searchFields,
   stock_sortFields,
   stock_typeObjects,
+  stock_formsRegister,
 } from './models';
 import {useStockHeaders} from './hooks/use-stock-header-actions';
 
@@ -105,6 +106,7 @@ export const StockModule: Module = {
     searchFields: {...stock_searchFields},
     headerRegisters: useStockHeaders,
     typeObjects: stock_typeObjects,
+    formsRegister: stock_formsRegister,
   },
   requiredConfig: ['AppStock', 'AppSupplychain'],
 };

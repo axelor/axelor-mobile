@@ -1,0 +1,5 @@
+{
+  "title": "StockLocationSearchBar: rename readonly prop",
+  "type": "refactor",
+  "packages": "stock"
+}

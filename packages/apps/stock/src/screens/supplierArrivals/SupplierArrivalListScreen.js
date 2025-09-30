@@ -110,7 +110,7 @@ const SupplierArrivalListScreen = ({navigation}) => {
             <PartnerSearchBar
               defaultValue={partner}
               onChange={setPartner}
-              placeholderKey="Stock_Supplier"
+              title="Stock_Supplier"
               partnerType="supplier"
             />
           </>

@@ -18,15 +18,25 @@
 
 import React, {useCallback, useEffect, useMemo} from 'react';
 import {BottomBar, Screen, useThemeColor} from '@axelor/aos-mobile-ui';
-import {useDispatch, useSelector, useTranslator} from '@axelor/aos-mobile-core';
+import {
+  useDispatch,
+  usePermitted,
+  useSelector,
+  useTranslator,
+  useTypes,
+} from '@axelor/aos-mobile-core';
 import {LogisticalFormGeneralInformationView} from '../../components';
 import {fetchLogisticalForm} from '../../features/logisticalFormSlice';
 
-const LogisticalFormDetailsScreen = ({route}: any) => {
+const LogisticalFormDetailsScreen = ({navigation, route}: any) => {
   const {logisticalFormId} = route?.params ?? {};
   const Colors = useThemeColor();
   const I18n = useTranslator();
   const dispatch = useDispatch();
+  const {LogisticalForm} = useTypes();
+  const {readonly} = usePermitted({
+    modelName: 'com.axelor.apps.stock.db.LogisticalForm',
+  });
 
   const {logisticalForm} = useSelector(state => state.logisticalForm);
 
@@ -50,8 +60,28 @@ const LogisticalFormDetailsScreen = ({route}: any) => {
           />
         ),
       },
+      {
+        iconName: 'pencil-fill',
+        title: I18n.t('Stock_EditLogisticalForm'),
+        color: Colors.primaryColor,
+        hidden:
+          readonly ||
+          logisticalForm?.statusSelect ===
+            LogisticalForm?.statusSelect?.Collected,
+        onPress: () =>
+          navigation.navigate('LogisticalFormFormScreen', {logisticalFormId}),
+      },
     ],
-    [Colors, I18n, loadLogisticalForm],
+    [
+      Colors,
+      I18n,
+      LogisticalForm?.statusSelect?.Collected,
+      loadLogisticalForm,
+      logisticalForm?.statusSelect,
+      logisticalFormId,
+      navigation,
+      readonly,
+    ],
   );
 
   if (logisticalForm?.id !== logisticalFormId) {
