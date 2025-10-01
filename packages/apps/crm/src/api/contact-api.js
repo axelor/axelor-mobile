@@ -157,15 +157,13 @@ export async function updateContact({
     description,
     mainPartner,
   };
-  const {matchers} = formatRequestBody(body, 'data');
+  const {matchers, formattedData} = formatRequestBody(body, 'data');
 
   return getActionApi()
     .send({
       url: '/ws/rest/com.axelor.apps.base.db.Partner',
       method: 'post',
-      body: {
-        data: body,
-      },
+      body: {data: formattedData},
       description: 'update contact',
       matchers: {
         modelName: 'com.axelor.apps.base.db.Partner',

@@ -119,28 +119,31 @@ export async function updatePartnerAddress({id, version, address}) {
     return;
   }
 
+  const {matchers, formattedData} = formatRequestBody(
+    {id, version, address},
+    'data',
+  );
+
   return getActionApi().send({
     url: '/ws/rest/com.axelor.apps.base.db.PartnerAddress',
     method: 'post',
-    body: {data: {id, version, address}},
+    body: {data: formattedData},
     description: 'update partner address',
     matchers: {
       modelName: 'com.axelor.apps.base.db.PartnerAddress',
       id,
-      fields: {
-        'data.address': 'address',
-      },
+      fields: matchers,
     },
   });
 }
 
 export async function updateMainAddress({modelName, id, body}) {
-  const {matchers} = formatRequestBody(body, 'data');
+  const {matchers, formattedData} = formatRequestBody(body, 'data');
 
   return getActionApi().send({
     url: `/ws/rest/${modelName}`,
     method: 'post',
-    body: {data: body},
+    body: {data: formattedData},
     description: 'update address',
     matchers: {modelName, id, fields: matchers},
   });
@@ -187,26 +190,25 @@ export async function updateEmail({id, version, email, partner}) {
   const route = await RouterProvider.get('EmailAddress');
 
   const modelName = route.replace('/ws/rest/', '');
+  const {matchers, formattedData} = formatRequestBody(
+    {
+      id,
+      version,
+      address: email,
+      partner,
+    },
+    'data',
+  );
 
   return getActionApi().send({
     url: route,
     method: 'post',
-    body: {
-      data: {
-        id,
-        version,
-        address: email,
-        partner,
-      },
-    },
+    body: {data: formattedData},
     description: 'update email',
     matchers: {
       modelName: modelName,
       id: id ?? Date.now(),
-      fields: {
-        'data.address': 'address',
-        'data.partner': 'partner',
-      },
+      fields: matchers,
     },
   });
 }
@@ -223,12 +225,12 @@ export async function linkEmail({id, version, email, isLead}) {
       emailAddress: res?.data?.data?.[0],
     };
 
-    const {matchers} = formatRequestBody(body, 'data');
+    const {matchers, formattedData} = formatRequestBody(body, 'data');
 
     return getActionApi().send({
       url: '/ws/rest/com.axelor.apps.crm.db.Lead',
       method: 'post',
-      body: {data: body},
+      body: {data: formattedData},
       description: 'update email address',
       matchers: {
         modelName: 'com.axelor.apps.crm.db.Lead',
@@ -253,14 +255,12 @@ export async function updatePartner({
     fixedPhone,
     webSite,
   };
-  const {matchers} = formatRequestBody(body, 'data');
+  const {matchers, formattedData} = formatRequestBody(body, 'data');
 
   return getActionApi().send({
     url: '/ws/rest/com.axelor.apps.base.db.Partner',
     method: 'post',
-    body: {
-      data: body,
-    },
+    body: {data: formattedData},
     description: 'update partner',
     matchers: {
       modelName: 'com.axelor.apps.base.db.Partner',

@@ -125,15 +125,13 @@ export async function updateLeadScoring({leadId, leadVersion, newScore}) {
 }
 
 export async function updateLead({lead, emailId, emailVersion}) {
-  const {matchers} = formatRequestBody(lead, 'data');
+  const {matchers, formattedData} = formatRequestBody(lead, 'data');
 
   return getActionApi()
     .send({
       url: '/ws/rest/com.axelor.apps.crm.db.Lead',
       method: 'post',
-      body: {
-        data: lead,
-      },
+      body: {data: formattedData},
       description: 'update lead',
       matchers: {
         modelName: 'com.axelor.apps.crm.db.Lead',
@@ -153,14 +151,12 @@ export async function updateLead({lead, emailId, emailVersion}) {
 }
 
 export async function createLead({lead}) {
-  const {matchers} = formatRequestBody(lead, 'data');
+  const {matchers, formattedData} = formatRequestBody(lead, 'data');
 
   return getActionApi().send({
     url: '/ws/rest/com.axelor.apps.crm.db.Lead',
     method: 'put',
-    body: {
-      data: lead,
-    },
+    body: {data: formattedData},
     description: 'create lead',
     matchers: {
       modelName: 'com.axelor.apps.crm.db.Lead',
