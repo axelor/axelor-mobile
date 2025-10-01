@@ -166,14 +166,12 @@ export async function updateOpportunityStatus({
 }
 
 export async function updateOpportunity({opportunity}) {
-  const {matchers} = formatRequestBody(opportunity, 'data');
+  const {matchers, formattedData} = formatRequestBody(opportunity, 'data');
 
   return getActionApi().send({
     url: '/ws/rest/com.axelor.apps.crm.db.Opportunity',
     method: 'post',
-    body: {
-      data: opportunity,
-    },
+    body: {data: formattedData},
     description: 'update opportunity',
     matchers: {
       modelName: 'com.axelor.apps.crm.db.Opportunity',
@@ -184,14 +182,12 @@ export async function updateOpportunity({opportunity}) {
 }
 
 export async function createOpportunity({opportunity}) {
-  const {matchers} = formatRequestBody(opportunity, 'data');
+  const {matchers, formattedData} = formatRequestBody(opportunity, 'data');
 
   return getActionApi().send({
     url: '/ws/rest/com.axelor.apps.crm.db.Opportunity',
     method: 'put',
-    body: {
-      data: opportunity,
-    },
+    body: {data: formattedData},
     description: 'create opportunity',
     matchers: {
       modelName: 'com.axelor.apps.crm.db.Opportunity',
