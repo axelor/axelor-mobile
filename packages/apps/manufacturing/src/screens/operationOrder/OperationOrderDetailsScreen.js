@@ -18,11 +18,17 @@
 
 import React, {useCallback, useEffect} from 'react';
 import {StyleSheet} from 'react-native';
-import {HeaderContainer, Screen, ScrollView} from '@axelor/aos-mobile-ui';
+import {
+  HalfLabelCard,
+  HeaderContainer,
+  Screen,
+  ScrollView,
+} from '@axelor/aos-mobile-ui';
 import {
   useContextRegister,
   useDispatch,
   useSelector,
+  useTranslator,
 } from '@axelor/aos-mobile-core';
 import {
   OperationOrderDatesCard,
@@ -31,10 +37,12 @@ import {
   OperationOrderStopwatch,
 } from '../../components';
 import {fetchOperationOrderById} from '../../features/operationOrderSlice';
+import {CONSUMED_PRODUCT_CONTEXT} from '../../utils/consumedProductConsts';
 
-function OperationOrderDetailsScreen({route}) {
+function OperationOrderDetailsScreen({route, navigation}) {
   const {operationOrderId} = route.params;
   const dispatch = useDispatch();
+  const I18n = useTranslator();
 
   const {loadingOrder, operationOrder} = useSelector(
     state => state.operationOrder,
@@ -61,6 +69,21 @@ function OperationOrderDetailsScreen({route}) {
     getOperationOrder();
   }, [getOperationOrder]);
 
+  const showConsumedProducts =
+    operationOrder?.manufOrder?.isConsProOnOperation === true;
+
+  const handleOpenConsumedProducts = useCallback(() => {
+    if (operationOrder == null) {
+      return;
+    }
+
+    navigation.navigate('OperationOrderConsumedProductListScreen', {
+      context: CONSUMED_PRODUCT_CONTEXT.OPERATION_ORDER,
+      operationOrder,
+      manufOrder: operationOrder?.manufOrder,
+    });
+  }, [navigation, operationOrder]);
+
   return (
     <Screen removeSpaceOnTop={true}>
       <HeaderContainer
@@ -79,6 +102,14 @@ function OperationOrderDetailsScreen({route}) {
         refresh={{loading: loadingOrder, fetcher: getOperationOrder}}>
         <OperationOrderDatesCard />
         <OperationOrderLabelTextList />
+        {showConsumedProducts && (
+          <HalfLabelCard
+            style={styles.actionCard}
+            iconName="dolly"
+            title={I18n.t('Manufacturing_ConsumedProduct')}
+            onPress={handleOpenConsumedProducts}
+          />
+        )}
         <OperationOrderStopwatch />
       </ScrollView>
     </Screen>
@@ -88,6 +119,9 @@ function OperationOrderDetailsScreen({route}) {
 const styles = StyleSheet.create({
   scrollView: {
     height: null,
+  },
+  actionCard: {
+    marginHorizontal: 20,
   },
 });
 

@@ -71,7 +71,12 @@ export const manufacturing_modelAPI: ObjectFields = {
     plannedDuration: schemaContructor.string(),
     plannedHumanDuration: schemaContructor.string(),
     plannedMachineDuration: schemaContructor.string(),
-    manufOrder: schemaContructor.subObject('manufOrderSeq'),
+    manufOrder: schemaContructor.subObject('manufOrderSeq').concat(
+      schemaContructor.object({
+        manufOrderSeq: schemaContructor.string(),
+        isConsProOnOperation: schemaContructor.boolean(),
+      }),
+    ),
     machine: schemaContructor.subObject('name'),
     plannedStartDateT: schemaContructor.string(),
     plannedEndDateT: schemaContructor.string(),

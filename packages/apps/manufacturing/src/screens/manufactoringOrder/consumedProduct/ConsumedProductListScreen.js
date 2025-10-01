@@ -39,57 +39,129 @@ import {
 import {StockIndicator} from '@axelor/aos-mobile-stock';
 import {
   ManufacturingOrderHeader,
+  OperationOrderHeader,
   ConsumedProductGlobalCard,
 } from '../../../components';
 import {
   fetchConsumedProducts,
+  fetchOperationOrderConsumedProducts,
+  updateConsumedProductOfOperationOrder,
   updateProdProductOfManufOrder,
 } from '../../../features/prodProductSlice';
+import {
+  CONSUMED_PRODUCT_CONTEXT,
+  getConsumedProductScreenNames,
+} from '../../../utils/consumedProductConsts';
 
-const productScanKey = 'product_manufacturing-order-consumed-product-list';
+const MANUF_ORDER_PRODUCT_SCAN_KEY =
+  'product_manufacturing-order-consumed-product-list';
+const OPERATION_ORDER_PRODUCT_SCAN_KEY =
+  'product_operation-order-consumed-product-list';
 const IS_INFINITE_SCROLL_ENABLED = false;
 
 const ConsumedProductListScreen = ({route, navigation}) => {
-  const manufOrder = route.params.manufOrder;
+  const context =
+    route?.params?.context ?? CONSUMED_PRODUCT_CONTEXT.MANUF_ORDER;
+  const isOperationOrderContext =
+    context === CONSUMED_PRODUCT_CONTEXT.OPERATION_ORDER;
+  const baseOperationOrder = route?.params?.operationOrder;
+  const screenNames = getConsumedProductScreenNames(context);
+  const productScanKey = isOperationOrderContext
+    ? OPERATION_ORDER_PRODUCT_SCAN_KEY
+    : MANUF_ORDER_PRODUCT_SCAN_KEY;
   const Colors = useThemeColor();
   const I18n = useTranslator();
   const dispatch = useDispatch();
   const {canCreate, readonly} = usePermitted({
     modelName: 'com.axelor.apps.production.db.ProdProduct',
   });
-  const {ManufOrder} = useTypes();
+  const {ManufOrder, OperationOrder} = useTypes();
 
   const {loadingConsumedProducts, consumedProductList} = useSelector(
     state => state.prodProducts,
   );
+  const {operationOrder: operationOrderState} = useSelector(
+    state => state.operationOrder,
+  );
+
+  const operationOrder = isOperationOrderContext
+    ? operationOrderState?.id === baseOperationOrder?.id
+      ? operationOrderState
+      : baseOperationOrder
+    : null;
+  const manufOrder =
+    route?.params?.manufOrder ?? operationOrder?.manufOrder ?? null;
 
   const [filteredList, setFilteredList] = useState(consumedProductList);
   const [selectedStatus, setSelectedStatus] = useState([]);
   const [product, setProduct] = useState(null);
+  const isEditableStatus = isOperationOrderContext
+    ? operationOrder?.statusSelect === OperationOrder?.statusSelect.InProgress
+    : manufOrder?.statusSelect === ManufOrder?.statusSelect.InProgress;
 
   const fetchConsumedProductsAPI = useCallback(() => {
-    dispatch(
-      fetchConsumedProducts({
-        manufOrderId: manufOrder?.id,
-        manufOrderVersion: manufOrder?.version,
-      }),
-    );
-  }, [dispatch, manufOrder]);
+    if (isOperationOrderContext) {
+      if (operationOrder?.id == null || operationOrder?.version == null) {
+        return;
+      }
 
-  const updateConsumedProductQtyAPI = useCallback(
-    (item, moreValue) => {
       dispatch(
-        updateProdProductOfManufOrder({
-          stockMoveLineVersion: item.stockMoveLineVersion,
-          stockMoveLineId: item.stockMoveLineId,
-          prodProductQty: parseFloat(item.realQty) + parseFloat(moreValue),
-          type: 'consumed',
+        fetchOperationOrderConsumedProducts({
+          operationOrderId: operationOrder?.id,
+          operationOrderVersion: operationOrder?.version,
+        }),
+      );
+    } else {
+      if (manufOrder?.id == null || manufOrder?.version == null) {
+        return;
+      }
+
+      dispatch(
+        fetchConsumedProducts({
           manufOrderId: manufOrder?.id,
           manufOrderVersion: manufOrder?.version,
         }),
       );
+    }
+  }, [dispatch, isOperationOrderContext, manufOrder, operationOrder]);
+
+  const updateConsumedProductQtyAPI = useCallback(
+    (item, moreValue) => {
+      const increment = parseFloat(moreValue);
+      const currentQty = parseFloat(item?.realQty ?? 0);
+
+      if (Number.isNaN(increment) || Number.isNaN(currentQty)) {
+        return;
+      }
+
+      const qty = currentQty + increment;
+
+      if (isOperationOrderContext) {
+        dispatch(
+          updateConsumedProductOfOperationOrder({
+            operationOrderId: operationOrder?.id,
+            operationOrderVersion: operationOrder?.version,
+            productId: item?.productId,
+            trackingNumberId:
+              item?.trackingNumber?.id ?? item?.trackingNumberId,
+            qty,
+            stockMoveLineId: item?.stockMoveLineId,
+          }),
+        );
+      } else {
+        dispatch(
+          updateProdProductOfManufOrder({
+            stockMoveLineVersion: item.stockMoveLineVersion,
+            stockMoveLineId: item.stockMoveLineId,
+            prodProductQty: qty,
+            type: 'consumed',
+            manufOrderId: manufOrder?.id,
+            manufOrderVersion: manufOrder?.version,
+          }),
+        );
+      }
     },
-    [dispatch, manufOrder],
+    [dispatch, isOperationOrderContext, manufOrder, operationOrder],
   );
 
   const filterOnStatus = useCallback(
@@ -134,10 +206,19 @@ const ConsumedProductListScreen = ({route, navigation}) => {
   }, [filterOnStatus, consumedProductList, filterOnProduct, product]);
 
   const handleViewItem = item => {
-    navigation.navigate('ConsumedProductDetailsScreen', {
-      manufOrderId: manufOrder.id,
+    const params = {
+      context,
       consumedProdProduct: item,
-    });
+      manufOrderId: manufOrder?.id,
+      manufOrder,
+    };
+
+    if (isOperationOrderContext) {
+      params.operationOrder = operationOrder;
+      params.operationOrderId = operationOrder?.id;
+    }
+
+    navigation.navigate(screenNames.details, params);
   };
 
   const handleViewSubOF = () => {
@@ -147,9 +228,18 @@ const ConsumedProductListScreen = ({route, navigation}) => {
   };
 
   const handleAddProduct = () => {
-    navigation.navigate('ConsumedProductSelectProductScreen', {
-      manufOrder: manufOrder,
-    });
+    const params = {
+      context,
+      manufOrder,
+      manufOrderId: manufOrder?.id,
+    };
+
+    if (isOperationOrderContext) {
+      params.operationOrder = operationOrder;
+      params.operationOrderId = operationOrder?.id;
+    }
+
+    navigation.navigate(screenNames.selectProduct, params);
   };
 
   const handleViewAvailability = item => {
@@ -166,12 +256,22 @@ const ConsumedProductListScreen = ({route, navigation}) => {
         expandableFilter={false}
         fixedItems={
           <>
-            <ManufacturingOrderHeader
-              parentMO={manufOrder.parentMO}
-              reference={manufOrder.manufOrderSeq}
-              status={manufOrder.statusSelect}
-              priority={manufOrder.prioritySelect}
-            />
+            {!isOperationOrderContext && manufOrder != null && (
+              <ManufacturingOrderHeader
+                parentMO={manufOrder?.parentMO}
+                reference={manufOrder?.manufOrderSeq}
+                status={manufOrder?.statusSelect}
+                priority={manufOrder?.prioritySelect}
+              />
+            )}
+            {isOperationOrderContext && operationOrder != null && (
+              <OperationOrderHeader
+                manufOrderRef={manufOrder?.manufOrderSeq}
+                name={operationOrder?.operationName}
+                status={operationOrder?.statusSelect}
+                priority={operationOrder?.priority}
+              />
+            )}
             <View style={styles.titleContainer}>
               <Text>{I18n.t('Manufacturing_ConsumedProduct')}</Text>
               <Icon
@@ -179,11 +279,7 @@ const ConsumedProductListScreen = ({route, navigation}) => {
                 size={20}
                 color={Colors.primaryColor.background}
                 touchable={true}
-                visible={
-                  canCreate &&
-                  manufOrder?.statusSelect ===
-                    ManufOrder?.statusSelect.InProgress
-                }
+                visible={canCreate && isEditableStatus}
                 onPress={handleAddProduct}
               />
             </View>
@@ -236,13 +332,10 @@ const ConsumedProductListScreen = ({route, navigation}) => {
             onMorePress={pressValue =>
               updateConsumedProductQtyAPI(item, pressValue)
             }
-            disableMore={
-              readonly ||
-              manufOrder?.statusSelect !== ManufOrder?.statusSelect.InProgress
-            }
+            disableMore={readonly || !isEditableStatus}
             onPress={() => handleViewItem(item)}
             onLocationPress={() => handleViewAvailability(item)}
-            isSubOF={item.subManufOrderId != null}
+            isSubOF={item.subManufOrderId != null && !isOperationOrderContext}
             onSubOfPress={handleViewSubOF}
             stockMoveLineId={item.stockMoveLineId}
           />

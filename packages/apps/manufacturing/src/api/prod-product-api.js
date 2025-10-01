@@ -48,6 +48,21 @@ export async function fetchManufacturingOrderProducedProducts({
   });
 }
 
+export async function fetchOperationOrderConsumedProducts({
+  operationOrderId,
+  operationOrderVersion,
+}) {
+  return getActionApi().send({
+    url: '/ws/aos/operation-order/consumed-products/fetch',
+    method: 'post',
+    body: {
+      operationOrderId,
+      operationOrderVersion,
+    },
+    description: 'fetch operation order consumed products',
+  });
+}
+
 export async function searchProdProductWithId({productId}) {
   return createStandardFetch({
     model: 'com.axelor.apps.production.db.ProdProduct',
@@ -93,6 +108,33 @@ export async function updateProdProduct({
       prodProductQty,
     },
     description: 'update prod product',
+  });
+}
+
+export async function saveOperationOrderConsumedProduct({
+  operationOrderId,
+  operationOrderVersion,
+  productId,
+  trackingNumberId,
+  qty,
+  stockMoveLineId,
+}) {
+  const body = {
+    version: operationOrderVersion,
+    productId,
+    trackingNumberId,
+    qty,
+  };
+
+  if (stockMoveLineId != null) {
+    body.stockMoveLineId = stockMoveLineId;
+  }
+
+  return getActionApi().send({
+    url: `/ws/aos/operation-order/${operationOrderId}/add-product`,
+    method: 'post',
+    body,
+    description: 'save operation order consumed product',
   });
 }
 

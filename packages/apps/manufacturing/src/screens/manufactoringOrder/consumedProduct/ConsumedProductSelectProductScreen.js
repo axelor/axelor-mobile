@@ -19,25 +19,50 @@
 import React from 'react';
 import {Screen, ScrollView, HeaderContainer} from '@axelor/aos-mobile-ui';
 import {ProductSearchBar} from '@axelor/aos-mobile-stock';
-import {ManufacturingOrderHeader} from '../../../components';
+import {
+  ManufacturingOrderHeader,
+  OperationOrderHeader,
+} from '../../../components';
+import {
+  CONSUMED_PRODUCT_CONTEXT,
+  getConsumedProductScreenNames,
+} from '../../../utils/consumedProductConsts';
 
-const productScanKey = 'product_manufacturing-order-consumed-product-select';
+const MANUF_ORDER_PRODUCT_SCAN_KEY =
+  'product_manufacturing-order-consumed-product-select';
+const OPERATION_ORDER_PRODUCT_SCAN_KEY =
+  'product_operation-order-consumed-product-select';
 
 const ConsumedProductSelectProductScreen = ({route, navigation}) => {
-  const manufOrder = route.params.manufOrder;
+  const context =
+    route?.params?.context ?? CONSUMED_PRODUCT_CONTEXT.MANUF_ORDER;
+  const isOperationOrderContext =
+    context === CONSUMED_PRODUCT_CONTEXT.OPERATION_ORDER;
+  const manufOrder = route?.params?.manufOrder;
+  const operationOrder = route?.params?.operationOrder;
+  const screenNames = getConsumedProductScreenNames(context);
+  const productScanKey = isOperationOrderContext
+    ? OPERATION_ORDER_PRODUCT_SCAN_KEY
+    : MANUF_ORDER_PRODUCT_SCAN_KEY;
 
   const handleSelectProduct = product => {
     if (product != null) {
+      const baseParams = {
+        context,
+        product,
+        manufOrder,
+        manufOrderId: manufOrder?.id,
+      };
+
+      if (isOperationOrderContext) {
+        baseParams.operationOrder = operationOrder;
+        baseParams.operationOrderId = operationOrder?.id;
+      }
+
       if (product.trackingNumberConfiguration == null) {
-        navigation.navigate('ConsumedProductDetailsScreen', {
-          manufOrderId: manufOrder.id,
-          product: product,
-        });
+        navigation.navigate(screenNames.details, baseParams);
       } else {
-        navigation.navigate('ConsumedProductSelectTrackingScreen', {
-          manufOrder: manufOrder,
-          product: product,
-        });
+        navigation.navigate(screenNames.selectTracking, baseParams);
       }
     }
   };
@@ -47,12 +72,24 @@ const ConsumedProductSelectProductScreen = ({route, navigation}) => {
       <HeaderContainer
         expandableFilter={false}
         fixedItems={
-          <ManufacturingOrderHeader
-            parentMO={manufOrder.parentMO}
-            reference={manufOrder.manufOrderSeq}
-            status={manufOrder.statusSelect}
-            priority={manufOrder.prioritySelect}
-          />
+          <>
+            {!isOperationOrderContext && manufOrder != null && (
+              <ManufacturingOrderHeader
+                parentMO={manufOrder?.parentMO}
+                reference={manufOrder?.manufOrderSeq}
+                status={manufOrder?.statusSelect}
+                priority={manufOrder?.prioritySelect}
+              />
+            )}
+            {isOperationOrderContext && operationOrder != null && (
+              <OperationOrderHeader
+                manufOrderRef={manufOrder?.manufOrderSeq}
+                name={operationOrder?.operationName}
+                status={operationOrder?.statusSelect}
+                priority={operationOrder?.priority}
+              />
+            )}
+          </>
         }
       />
       <ScrollView>

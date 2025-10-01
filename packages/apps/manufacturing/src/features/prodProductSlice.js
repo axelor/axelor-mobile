@@ -28,10 +28,15 @@ import {
   fetchManufacturingOrderProducedProducts,
   searchProdProductWithId,
   updateProdProduct,
+  fetchOperationOrderConsumedProducts as fetchOperationOrderConsumedProductsApi,
+  saveOperationOrderConsumedProduct as saveOperationOrderConsumedProductApi,
 } from '../api/prod-product-api';
+import {fetchOperationOrderById} from './operationOrderSlice';
 
 const TYPE_CONSUMED = 'consumed';
 const TYPE_PRODUCED = 'produced';
+const CONTEXT_MANUF_ORDER = 'manufOrder';
+const CONTEXT_OPERATION_ORDER = 'operationOrder';
 
 export const fetchConsumedProducts = createAsyncThunk(
   'prodProducts/fetchConsumedProducts',
@@ -40,6 +45,19 @@ export const fetchConsumedProducts = createAsyncThunk(
       fetchFunction: fetchManufacturingOrderConsumedProducts,
       data,
       action: 'Manufacturing_SliceAction_FetchComsumedProducts',
+      getState,
+      responseOptions: {},
+    });
+  },
+);
+
+export const fetchOperationOrderConsumedProducts = createAsyncThunk(
+  'prodProducts/fetchOperationOrderConsumedProducts',
+  async function (data, {getState}) {
+    return handlerApiCall({
+      fetchFunction: fetchOperationOrderConsumedProductsApi,
+      data,
+      action: 'Manufacturing_SliceAction_FetchOperationOrderConsumedProducts',
       getState,
       responseOptions: {},
     });
@@ -111,6 +129,43 @@ export const addProdProductToManufOrder = createAsyncThunk(
   },
 );
 
+const saveOperationOrderConsumedProduct = (action, responseOptions = {}) =>
+  createAsyncThunk(action, async function (data, {getState, dispatch}) {
+    return handlerApiCall({
+      fetchFunction: saveOperationOrderConsumedProductApi,
+      data,
+      action,
+      getState,
+      responseOptions: {showToast: true, ...responseOptions},
+    }).then(async () => {
+      const result = await handlerApiCall({
+        fetchFunction: fetchOperationOrderConsumedProductsApi,
+        data,
+        action: 'Manufacturing_SliceAction_FetchOperationOrderConsumedProducts',
+        getState,
+        responseOptions: {},
+      });
+
+      if (data?.operationOrderId != null) {
+        dispatch(
+          fetchOperationOrderById({operationOrderId: data.operationOrderId}),
+        );
+      }
+
+      return result;
+    });
+  });
+
+export const addConsumedProductToOperationOrder =
+  saveOperationOrderConsumedProduct(
+    'prodProducts/addConsumedProductToOperationOrder',
+  );
+
+export const updateConsumedProductOfOperationOrder =
+  saveOperationOrderConsumedProduct(
+    'prodProducts/updateConsumedProductOfOperationOrder',
+  );
+
 export const updateProdProductOfManufOrder = createAsyncThunk(
   'prodProducts/updateProdProductOfManufOrder',
   async function (data, {getState}) {
@@ -145,7 +200,8 @@ export const updateProdProductOfManufOrder = createAsyncThunk(
 
 export const addTrackingNumberToConsumedProduct = createAsyncThunk(
   'consumedProduct/addTrackingNumberToConsumedProduct',
-  async function (data = {}, {getState}) {
+  async function (data = {}, {getState, dispatch}) {
+    const {context = CONTEXT_MANUF_ORDER} = data;
     return handlerApiCall({
       fetchFunction: updateStockMoveLineTrackingNumber,
       data,
@@ -154,13 +210,31 @@ export const addTrackingNumberToConsumedProduct = createAsyncThunk(
       getState,
       responseOptions: {showToast: true, isArrayResponse: false},
     }).then(async res => {
+      const fetchFunction =
+        context === CONTEXT_OPERATION_ORDER
+          ? fetchOperationOrderConsumedProductsApi
+          : fetchManufacturingOrderConsumedProducts;
+      const actionName =
+        context === CONTEXT_OPERATION_ORDER
+          ? 'Manufacturing_SliceAction_FetchOperationOrderConsumedProducts'
+          : 'Manufacturing_SliceAction_FetchComsumedProducts';
+
       const {productList} = await handlerApiCall({
-        fetchFunction: fetchManufacturingOrderConsumedProducts,
+        fetchFunction,
         data,
-        action: 'Manufacturing_SliceAction_FetchComsumedProducts',
+        action: actionName,
         getState,
         responseOptions: {},
       });
+
+      if (
+        context === CONTEXT_OPERATION_ORDER &&
+        data?.operationOrderId != null
+      ) {
+        dispatch(
+          fetchOperationOrderById({operationOrderId: data.operationOrderId}),
+        );
+      }
 
       return {consumedProducts: productList, stockMoveLine: res};
     });
@@ -193,6 +267,16 @@ const prodProductsSlice = createSlice({
       state.loadingConsumedProducts = false;
       state.consumedProductList = action.payload?.productList;
     });
+    builder.addCase(fetchOperationOrderConsumedProducts.pending, state => {
+      state.loadingConsumedProducts = true;
+    });
+    builder.addCase(
+      fetchOperationOrderConsumedProducts.fulfilled,
+      (state, action) => {
+        state.loadingConsumedProducts = false;
+        state.consumedProductList = action.payload?.productList;
+      },
+    );
     builder.addCase(fetchProducedProducts.pending, state => {
       state.loadingProducedProducts = true;
     });
@@ -208,6 +292,18 @@ const prodProductsSlice = createSlice({
         } else if (action.meta.arg.type === TYPE_PRODUCED) {
           state.producedProductList = action.payload?.productList;
         }
+      },
+    );
+    builder.addCase(
+      addConsumedProductToOperationOrder.fulfilled,
+      (state, action) => {
+        state.consumedProductList = action.payload?.productList;
+      },
+    );
+    builder.addCase(
+      updateConsumedProductOfOperationOrder.fulfilled,
+      (state, action) => {
+        state.consumedProductList = action.payload?.productList;
       },
     );
     builder.addCase(addTrackingNumberToConsumedProduct.pending, state => {

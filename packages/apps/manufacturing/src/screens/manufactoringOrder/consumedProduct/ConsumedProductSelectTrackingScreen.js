@@ -24,22 +24,49 @@ import {
   HeaderContainer,
 } from '@axelor/aos-mobile-ui';
 import {TrackingNumberSearchBar} from '@axelor/aos-mobile-stock';
-import {ManufacturingOrderHeader} from '../../../components';
+import {
+  ManufacturingOrderHeader,
+  OperationOrderHeader,
+} from '../../../components';
+import {
+  CONSUMED_PRODUCT_CONTEXT,
+  getConsumedProductScreenNames,
+} from '../../../utils/consumedProductConsts';
 
-const trackingNumberScanKey =
+const MANUF_ORDER_TRACKING_SCAN_KEY =
   'tracking-number_manufacturing-order-consumed-product-select';
+const OPERATION_ORDER_TRACKING_SCAN_KEY =
+  'tracking-number_operation-order-consumed-product-select';
 
 const ConsumedProductSelectTrackingScreen = ({route, navigation}) => {
-  const manufOrder = route.params.manufOrder;
-  const product = route.params.product;
+  const context =
+    route?.params?.context ?? CONSUMED_PRODUCT_CONTEXT.MANUF_ORDER;
+  const isOperationOrderContext =
+    context === CONSUMED_PRODUCT_CONTEXT.OPERATION_ORDER;
+  const manufOrder = route?.params?.manufOrder;
+  const operationOrder = route?.params?.operationOrder;
+  const product = route?.params?.product;
+  const screenNames = getConsumedProductScreenNames(context);
+  const trackingNumberScanKey = isOperationOrderContext
+    ? OPERATION_ORDER_TRACKING_SCAN_KEY
+    : MANUF_ORDER_TRACKING_SCAN_KEY;
 
   const handleTrackingNumberSelection = item => {
     if (item != null) {
-      navigation.navigate('ConsumedProductDetailsScreen', {
-        manufOrderId: manufOrder.id,
-        product: product,
+      const params = {
+        context,
+        manufOrder,
+        manufOrderId: manufOrder?.id,
+        product,
         trackingNumber: item,
-      });
+      };
+
+      if (isOperationOrderContext) {
+        params.operationOrder = operationOrder;
+        params.operationOrderId = operationOrder?.id;
+      }
+
+      navigation.navigate(screenNames.details, params);
     }
   };
 
@@ -48,12 +75,24 @@ const ConsumedProductSelectTrackingScreen = ({route, navigation}) => {
       <HeaderContainer
         expandableFilter={false}
         fixedItems={
-          <ManufacturingOrderHeader
-            parentMO={manufOrder.parentMO}
-            reference={manufOrder.manufOrderSeq}
-            status={manufOrder.statusSelect}
-            priority={manufOrder.prioritySelect}
-          />
+          <>
+            {!isOperationOrderContext && manufOrder != null && (
+              <ManufacturingOrderHeader
+                parentMO={manufOrder?.parentMO}
+                reference={manufOrder?.manufOrderSeq}
+                status={manufOrder?.statusSelect}
+                priority={manufOrder?.prioritySelect}
+              />
+            )}
+            {isOperationOrderContext && operationOrder != null && (
+              <OperationOrderHeader
+                manufOrderRef={manufOrder?.manufOrderSeq}
+                name={operationOrder?.operationName}
+                status={operationOrder?.statusSelect}
+                priority={operationOrder?.priority}
+              />
+            )}
+          </>
         }
       />
       <ScrollView>
