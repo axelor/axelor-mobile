@@ -16,7 +16,11 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import {createStandardSearch, getActionApi} from '@axelor/aos-mobile-core';
+import {
+  createStandardSearch,
+  formatRequestBody,
+  getActionApi,
+} from '@axelor/aos-mobile-core';
 
 const createTourLineCriteria = (tourId, isValidated) => {
   const criteria = [
@@ -68,23 +72,24 @@ export async function validateTourLine({tourLineId}) {
 }
 
 export async function updateTourLine({tourLineId, tourLineVersion, event}) {
+  const {matchers, formattedData} = formatRequestBody(
+    {
+      id: tourLineId,
+      version: tourLineVersion,
+      event,
+    },
+    'data',
+  );
+
   return getActionApi().send({
     url: '/ws/rest/com.axelor.apps.crm.db.TourLine',
     method: 'post',
-    body: {
-      data: {
-        id: tourLineId,
-        version: tourLineVersion,
-        event: {id: event?.id},
-      },
-    },
+    body: {data: formattedData},
     description: 'create catalog',
     matchers: {
       modelName: 'com.axelor.apps.crm.db.TourLine',
       id: tourLineId,
-      fields: {
-        'data.event': 'event',
-      },
+      fields: matchers,
     },
   });
 }
