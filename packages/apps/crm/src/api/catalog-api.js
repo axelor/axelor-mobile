@@ -18,6 +18,7 @@
 
 import {
   createStandardSearch,
+  formatRequestBody,
   getActionApi,
   getSearchCriterias,
 } from '@axelor/aos-mobile-core';
@@ -68,29 +69,24 @@ export async function createCatalog({
   image,
   description,
 }) {
+  const body = {
+    name,
+    catalogType,
+    pdfFile,
+    image,
+    description,
+  };
+  const {matchers, formattedData} = formatRequestBody(body, 'data');
+
   return getActionApi().send({
     url: '/ws/rest/com.axelor.apps.crm.db.Catalog',
     method: 'put',
-    body: {
-      data: {
-        name,
-        catalogType,
-        pdfFile,
-        image,
-        description,
-      },
-    },
+    body: {data: formattedData},
     description: 'create catalog',
     matchers: {
       modelName: '/ws/rest/com.axelor.apps.crm.db.Catalog',
       id: Date.now(),
-      fields: {
-        'data.name': 'name',
-        'data.catalogType': 'catalogType',
-        'data.pdfFile': 'pdfFile',
-        'data.image': 'image',
-        'data.description': 'description',
-      },
+      fields: matchers,
     },
   });
 }

@@ -19,6 +19,7 @@
 import {
   createStandardFetch,
   createStandardSearch,
+  formatRequestBody,
   getActionApi,
   getSearchCriterias,
   RouterProvider,
@@ -147,59 +148,54 @@ export async function updateContact({
   const route = await RouterProvider.get('EmailAddress');
 
   const modelName = route.replace('/ws/rest/', '');
+  const {matchers: emailMatchers, formattedData: emailBody} = formatRequestBody(
+    {
+      id: emailId,
+      version: emailVersion,
+      address: email,
+    },
+    'data',
+  );
+
+  const {matchers: partnerMatchers, formattedData: partnerBody} =
+    formatRequestBody(
+      {
+        id,
+        version,
+        titleSelect,
+        firstName,
+        name,
+        fixedPhone,
+        mobilePhone,
+        webSite,
+        description,
+        mainPartner,
+      },
+      'data',
+    );
 
   return getActionApi()
     .send({
       url: route,
       method: 'post',
-      body: {
-        data: {
-          id: emailId,
-          version: emailVersion,
-          address: email,
-        },
-      },
+      body: {data: emailBody},
       description: 'update contact email',
       matchers: {
         modelName: modelName,
         id: emailId,
-        fields: {
-          'data.address': 'address',
-        },
+        fields: emailMatchers,
       },
     })
     .then(() =>
       getActionApi().send({
         url: '/ws/rest/com.axelor.apps.base.db.Partner',
         method: 'post',
-        body: {
-          data: {
-            id,
-            version,
-            titleSelect,
-            firstName,
-            name,
-            fixedPhone,
-            mobilePhone,
-            webSite,
-            description,
-            mainPartner,
-          },
-        },
+        body: {data: partnerBody},
         description: 'update contact',
         matchers: {
           modelName: 'com.axelor.apps.base.db.Partner',
           id: id,
-          fields: {
-            'data.titleSelect': 'titleSelect',
-            'data.firstName': 'firstName',
-            'data.name': 'name',
-            'data.fixedPhone': 'fixedPhone',
-            'data.mobilePhone': 'mobilePhone',
-            'data.webSite': 'webSite',
-            'data.description': 'description',
-            'data.mainPartner': 'mainPartner',
-          },
+          fields: partnerMatchers,
         },
       }),
     );

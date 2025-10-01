@@ -16,7 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import {getNetInfo} from '../api';
+import {getNetInfo} from '../api/net-info-utils';
 import {formatURL as _formatURL} from './formatters';
 
 const PREFIX_REGEX = /^https?:\/\//;

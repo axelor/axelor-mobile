@@ -128,36 +128,34 @@ export async function updateLead({lead, emailId, emailVersion}) {
   const route = await RouterProvider.get('EmailAddress');
 
   const modelName = route.replace('/ws/rest/', '');
+  const {matchers: emailMatchers, formattedData: emailBody} = formatRequestBody(
+    {
+      id: emailId,
+      version: emailVersion,
+      address: lead.emailAddress?.address,
+    },
+    'data',
+  );
 
   return getActionApi()
     .send({
       url: route,
       method: 'post',
-      body: {
-        data: {
-          id: emailId,
-          version: emailVersion,
-          address: lead.emailAddress?.address,
-        },
-      },
+      body: {data: emailBody},
       description: 'update lead email',
       matchers: {
         modelName: modelName,
         id: emailId,
-        fields: {
-          'data.address': 'address',
-        },
+        fields: emailMatchers,
       },
     })
     .then(() => {
-      const {matchers} = formatRequestBody(lead, 'data');
+      const {matchers, formattedData} = formatRequestBody(lead, 'data');
 
       return getActionApi().send({
         url: '/ws/rest/com.axelor.apps.crm.db.Lead',
         method: 'post',
-        body: {
-          data: lead,
-        },
+        body: {data: formattedData},
         description: 'update lead',
         matchers: {
           modelName: 'com.axelor.apps.crm.db.Lead',
@@ -169,14 +167,12 @@ export async function updateLead({lead, emailId, emailVersion}) {
 }
 
 export async function createLead({lead}) {
-  const {matchers} = formatRequestBody(lead, 'data');
+  const {matchers, formattedData} = formatRequestBody(lead, 'data');
 
   return getActionApi().send({
     url: '/ws/rest/com.axelor.apps.crm.db.Lead',
     method: 'put',
-    body: {
-      data: lead,
-    },
+    body: {data: formattedData},
     description: 'create lead',
     matchers: {
       modelName: 'com.axelor.apps.crm.db.Lead',

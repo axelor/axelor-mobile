@@ -19,6 +19,7 @@
 import {
   createStandardFetch,
   createStandardSearch,
+  formatRequestBody,
   getActionApi,
   getSearchCriterias,
   RouterProvider,
@@ -97,51 +98,50 @@ export async function updateClient({
   const route = await RouterProvider.get('EmailAddress');
 
   const modelName = route.replace('/ws/rest/', '');
+  const {matchers: emailMatchers, formattedData: emailBody} = formatRequestBody(
+    {
+      id: emailId,
+      version: emailVersion,
+      address: email,
+    },
+    'data',
+  );
+
+  const {matchers: partnerMatchers, formattedData: partnerBody} =
+    formatRequestBody(
+      {
+        id,
+        version,
+        name,
+        fixedPhone,
+        website,
+        description,
+      },
+      'data',
+    );
 
   return getActionApi()
     .send({
       url: route,
       method: 'post',
-      body: {
-        data: {
-          id: emailId,
-          version: emailVersion,
-          address: email,
-        },
-      },
+      body: {data: emailBody},
       description: 'update client email',
       matchers: {
         modelName: modelName,
         id: emailId,
-        fields: {
-          'data.address': 'address',
-        },
+        fields: emailMatchers,
       },
     })
     .then(() =>
       getActionApi().send({
         url: '/ws/rest/com.axelor.apps.base.db.Partner',
         method: 'post',
-        body: {
-          data: {
-            id,
-            version,
-            name,
-            fixedPhone,
-            website,
-            description,
-          },
-        },
+        body: {data: partnerBody},
         description: 'update lead',
         matchers: {
           modelName: 'com.axelor.apps.base.db.Partner',
           id: id,
-          fields: {
-            'data.name': 'name',
-            'data.fixedPhone': 'fixedPhone',
-            'data.webSite': 'webSite',
-            'data.description': 'description',
-          },
+          fields: partnerMatchers,
         },
       }),
     );
