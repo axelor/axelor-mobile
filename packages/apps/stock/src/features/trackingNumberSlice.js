@@ -57,7 +57,7 @@ export const createTrackingNumberSeq = createAsyncThunk(
 
 export const updateSupplierTrackingNumber = createAsyncThunk(
   'trackingNumber/updateSupplierTrackingNumber',
-  async function (data, {getState}) {
+  async function (data, {getState, dispatch}) {
     const {stockMoveLineId, stockMoveLineVersion} = data;
 
     return handlerApiCall({
@@ -67,17 +67,13 @@ export const updateSupplierTrackingNumber = createAsyncThunk(
       getState,
       responseOptions: {isArrayResponse: false, showToast: true},
     }).then(trackingNumber => {
-      handlerApiCall({
-        fetchFunction: _updateStockMoveLineTrackingNumber,
-        data: {
-          stockMoveLineId: stockMoveLineId,
-          stockMoveLineVersion: stockMoveLineVersion,
-          trackingNumber: trackingNumber,
-        },
-        action: 'Stock_SliceAction_UpdateSupplierArrivalLineWithTrackingNumber',
-        getState,
-        responseOptions: {isArrayResponse: false, showToast: true},
-      });
+      dispatch(
+        updateStockMoveLineTrackingNumber({
+          stockMoveLineId,
+          stockMoveLineVersion,
+          trackingNumber,
+        }),
+      );
       return trackingNumber;
     });
   },
@@ -117,7 +113,6 @@ export const updateTrackingNumber = createAsyncThunk(
 
 const initialState = {
   loading: false,
-  createdTrackingNumber: null,
 
   loadingList: false,
   moreLoading: false,
@@ -138,16 +133,20 @@ const trackingNumberSlice = createSlice({
     builder.addCase(createTrackingNumberSeq.pending, state => {
       state.loading = true;
     });
-    builder.addCase(createTrackingNumberSeq.fulfilled, (state, action) => {
+    builder.addCase(createTrackingNumberSeq.fulfilled, state => {
       state.loading = false;
-      state.createdTrackingNumber = action.payload;
+    });
+    builder.addCase(createTrackingNumberSeq.rejected, state => {
+      state.loading = false;
     });
     builder.addCase(updateSupplierTrackingNumber.pending, state => {
       state.loading = true;
     });
-    builder.addCase(updateSupplierTrackingNumber.fulfilled, (state, action) => {
+    builder.addCase(updateSupplierTrackingNumber.fulfilled, state => {
       state.loading = false;
-      state.createdTrackingNumber = action.payload;
+    });
+    builder.addCase(updateSupplierTrackingNumber.rejected, state => {
+      state.loading = false;
     });
   },
 });

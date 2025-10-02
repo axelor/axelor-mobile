@@ -1,0 +1,5 @@
+{
+  "title": "SupplierArrival: resolve tracking number creation issues",
+  "type": "fix",
+  "packages": "stock"
+}
