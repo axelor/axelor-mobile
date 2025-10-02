@@ -3,6 +3,37 @@ title: 8.4.0
 tags: Changelog
 ---
 
+## [8.4.5] (2025-10-02)
+
+### @axelor/aos-mobile-core
+
+#### Features
+
+- UploadFileInput: add possibility to manage state outside of component
+
+#### Fixes
+
+- Login: add a more relevant error message when the user attempts to log in without an internet connection.
+- DoubleScannerSearchBar: add refresh on default value
+
+### @axelor/aos-mobile-dms
+
+#### Fixes
+
+- Attached files: improve on root folder creation management
+
+### @axelor/aos-mobile-crm
+
+#### Changes
+
+- AOP request: simplify body content to avoid permission issue
+
+### @axelor/aos-mobile-stock
+
+#### Fixes
+
+- SupplierArrival: resolve tracking number creation issues
+
 ## [8.4.4] (2025-08-21)
 
 ### @axelor/aos-mobile-core
@@ -302,6 +333,7 @@ This version add a new part of the Quality package, user can now manage quality 
 
 - ErrorBoundary: modify fallback screen management to manage maintenance error type
 
+[8.4.5]: https://github.com/axelor/axelor-mobile/compare/8.4.4...8.4.5
 [8.4.4]: https://github.com/axelor/axelor-mobile/compare/8.4.3...8.4.4
 [8.4.3]: https://github.com/axelor/axelor-mobile/compare/8.4.2...8.4.3
 [8.4.2]: https://github.com/axelor/axelor-mobile/compare/8.4.1...8.4.2

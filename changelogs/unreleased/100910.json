@@ -1,5 +1,0 @@
-{
-  "title": "Login: add a more relevant error message when the user attempts to log in without an internet connection.",
-  "type": "fix",
-  "packages": "core"
-}
