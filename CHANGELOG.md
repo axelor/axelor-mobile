@@ -3,6 +3,37 @@ title: 8.3.0
 tags: Changelog
 ---
 
+## [8.3.12] (2025-10-02)
+
+### @axelor/aos-mobile-core
+
+#### Features
+
+- UploadFileInput: add possibility to manage state outside of component
+
+#### Fixes
+
+- Login: add a more relevant error message when the user attempts to log in without an internet connection.
+- DoubleScannerSearchBar: add refresh on default value
+
+### @axelor/aos-mobile-dms
+
+#### Fixes
+
+- Attached files: improve on root folder creation management
+
+### @axelor/aos-mobile-crm
+
+#### Changes
+
+- AOP request: simplify body content to avoid permission issue
+
+### @axelor/aos-mobile-stock
+
+#### Fixes
+
+- SupplierArrival: resolve tracking number creation issues
+
 ## [8.3.11] (2025-08-21)
 
 ### @axelor/aos-mobile-core
@@ -433,6 +464,7 @@ This version add a new part of the HR package, user can now manage leave request
 
 - Header actions: remove use of attachedFileScreenTitle
 
+[8.3.12]: https://github.com/axelor/axelor-mobile/compare/8.3.11...8.3.12
 [8.3.11]: https://github.com/axelor/axelor-mobile/compare/8.3.10...8.3.11
 [8.3.10]: https://github.com/axelor/axelor-mobile/compare/8.3.9...8.3.10
 [8.3.9]: https://github.com/axelor/axelor-mobile/compare/8.3.8...8.3.9
