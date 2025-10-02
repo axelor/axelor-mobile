@@ -61,6 +61,7 @@ const HeaderContainer = ({
 
   return (
     <View style={[styles.container, style]}>
+      <View pointerEvents="none" style={styles.topMask} />
       {expandableFilter && isVisible && topChildren}
       {fixedItems}
       {expandableFilter && isVisible && children}
@@ -86,12 +87,23 @@ const getStyles = (Colors: ThemeColors) =>
       flexDirection: 'column',
       justifyContent: 'center',
       backgroundColor: Colors.backgroundColor,
-      elevation: 3,
-      shadowOpacity: 3,
+      elevation: 6,
+      shadowColor: Colors.secondaryColor.background,
+      shadowOpacity: 0.12,
+      shadowRadius: 6,
+      shadowOffset: {width: 0, height: 4},
       zIndex: 2,
       paddingBottom: 5,
       borderBottomEndRadius: 10,
       borderBottomStartRadius: 10,
+    },
+    topMask: {
+      position: 'absolute',
+      top: -10,
+      left: 0,
+      right: 0,
+      height: 12,
+      backgroundColor: Colors.backgroundColor,
     },
     arrowContainer: {
       alignSelf: 'center',
