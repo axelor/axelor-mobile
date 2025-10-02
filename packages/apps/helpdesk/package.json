@@ -1,6 +1,6 @@
 {
   "name": "@axelor/aos-mobile-helpdesk",
-  "version": "8.2.19",
+  "version": "8.2.20",
   "author": "Axelor",
   "license": "AGPL-3.0-only",
   "publishConfig": {
@@ -27,8 +27,8 @@
     "react-native": "0.73.9"
   },
   "dependencies": {
-    "@axelor/aos-mobile-core": "8.2.19",
-    "@axelor/aos-mobile-ui": "8.2.19",
+    "@axelor/aos-mobile-core": "8.2.20",
+    "@axelor/aos-mobile-ui": "8.2.20",
     "@reduxjs/toolkit": "^2.2.7"
   },
   "devDependencies": {

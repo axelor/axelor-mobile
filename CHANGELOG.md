@@ -3,6 +3,26 @@ title: 8.2.0
 tags: Changelog
 ---
 
+## [8.2.20] (2025-10-02)
+
+### @axelor/aos-mobile-core
+
+#### Fixes
+
+- Login: add a more relevant error message when the user attempts to log in without an internet connection.
+
+### @axelor/aos-mobile-crm
+
+#### Changes
+
+- AOP request: simplify body content to avoid permission issue
+
+### @axelor/aos-mobile-stock
+
+#### Fixes
+
+- SupplierArrival: resolve tracking number creation issues
+
 ## [8.2.19] (2025-08-21)
 
 ### @axelor/aos-mobile-core
@@ -773,6 +793,7 @@ This package is linked with the @axelor/aos-mobile-hr to manage time logging.
 
 - Supplier arrival: add possibility to fill origin when creating or selecting tracking number
 
+[8.2.20]: https://github.com/axelor/axelor-mobile/compare/8.2.19...8.2.20
 [8.2.19]: https://github.com/axelor/axelor-mobile/compare/8.2.18...8.2.19
 [8.2.18]: https://github.com/axelor/axelor-mobile/compare/8.2.17...8.2.18
 [8.2.17]: https://github.com/axelor/axelor-mobile/compare/8.2.16...8.2.17
