@@ -60,12 +60,13 @@ const SupplierArrivalAddTrackingScreen = ({route, navigation}) => {
         stockMoveLineId: supplierArrivalLine.id,
         stockMoveLineVersion: supplierArrivalLine.version,
       }),
-    ).then(createdTrackingNumber => {
+    ).then(res => {
+      const _trackingNumber = res?.payload;
       navigation.popTo('SupplierArrivalLineDetailScreen', {
         supplierArrivalLineId: supplierArrivalLine?.id,
         supplierArrival: supplierArrival,
         productId: product?.id,
-        trackingNumber: createdTrackingNumber,
+        trackingNumber: _trackingNumber,
       });
     });
   }, [

@@ -1,5 +1,5 @@
 {
-  "title": "SupplierArrival: adapt tracking number creation to stay reusable and refresh line details",
+  "title": "SupplierArrival: resolve tracking number creation issues",
   "type": "fix",
   "packages": "stock"
 }

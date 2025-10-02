@@ -55,25 +55,6 @@ export const createTrackingNumberSeq = createAsyncThunk(
   },
 );
 
-export const updateStockMoveLineTrackingNumber = createAsyncThunk(
-  'trackingNumber/updateStockMoveLineTrackingNumber',
-  async function (data, {getState, dispatch}) {
-    return handlerApiCall({
-      fetchFunction: _updateStockMoveLineTrackingNumber,
-      data,
-      action: 'Stock_SliceAction_UpdateSupplierArrivalLineWithTrackingNumber',
-      getState,
-      responseOptions: {isArrayResponse: false, showToast: true},
-    }).then(() => {
-      dispatch(
-        fetchSupplierArrivalLine({
-          supplierArrivalLineId: data.stockMoveLineId,
-        }),
-      );
-    });
-  },
-);
-
 export const updateSupplierTrackingNumber = createAsyncThunk(
   'trackingNumber/updateSupplierTrackingNumber',
   async function (data, {getState, dispatch}) {
@@ -98,6 +79,25 @@ export const updateSupplierTrackingNumber = createAsyncThunk(
   },
 );
 
+export const updateStockMoveLineTrackingNumber = createAsyncThunk(
+  'trackingNumber/updateStockMoveLineTrackingNumber',
+  async function (data, {getState, dispatch}) {
+    return handlerApiCall({
+      fetchFunction: _updateStockMoveLineTrackingNumber,
+      data,
+      action: 'Stock_SliceAction_UpdateSupplierArrivalLineWithTrackingNumber',
+      getState,
+      responseOptions: {isArrayResponse: false, showToast: true},
+    }).then(() => {
+      dispatch(
+        fetchSupplierArrivalLine({
+          supplierArrivalLineId: data.stockMoveLineId,
+        }),
+      );
+    });
+  },
+);
+
 export const updateTrackingNumber = createAsyncThunk(
   'trackingNumber/updateTrackingNumber',
   async function (data, {getState}) {
@@ -113,7 +113,6 @@ export const updateTrackingNumber = createAsyncThunk(
 
 const initialState = {
   loading: false,
-  createdTrackingNumber: null,
 
   loadingList: false,
   moreLoading: false,
@@ -134,16 +133,20 @@ const trackingNumberSlice = createSlice({
     builder.addCase(createTrackingNumberSeq.pending, state => {
       state.loading = true;
     });
-    builder.addCase(createTrackingNumberSeq.fulfilled, (state, action) => {
+    builder.addCase(createTrackingNumberSeq.fulfilled, state => {
       state.loading = false;
-      state.createdTrackingNumber = action.payload;
+    });
+    builder.addCase(createTrackingNumberSeq.rejected, state => {
+      state.loading = false;
     });
     builder.addCase(updateSupplierTrackingNumber.pending, state => {
       state.loading = true;
     });
-    builder.addCase(updateSupplierTrackingNumber.fulfilled, (state, action) => {
+    builder.addCase(updateSupplierTrackingNumber.fulfilled, state => {
       state.loading = false;
-      state.createdTrackingNumber = action.payload;
+    });
+    builder.addCase(updateSupplierTrackingNumber.rejected, state => {
+      state.loading = false;
     });
   },
 });
