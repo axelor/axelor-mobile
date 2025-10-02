@@ -16,7 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import React, {useCallback, useEffect, useState} from 'react';
+import React, {useCallback, useState} from 'react';
 import {StyleSheet} from 'react-native';
 import {
   Button,
@@ -46,9 +46,7 @@ const SupplierArrivalAddTrackingScreen = ({route, navigation}) => {
   const [sequence, setSequence] = useState(null);
   const [trackingQty, setTrackingQty] = useState(0);
 
-  const {loading, createdTrackingNumber} = useSelector(
-    state => state.trackingNumber,
-  );
+  const {loading} = useSelector(state => state.trackingNumber);
 
   const handleCreateTrackingNumber = useCallback(() => {
     dispatch(
@@ -59,25 +57,23 @@ const SupplierArrivalAddTrackingScreen = ({route, navigation}) => {
         stockMoveLineId: supplierArrivalLine.id,
         stockMoveLineVersion: supplierArrivalLine.version,
       }),
-    );
-  }, [dispatch, product, sequence, supplierArrivalLine, trackingQty]);
-
-  useEffect(() => {
-    if (!loading && createdTrackingNumber != null) {
+    ).then(res => {
+      const _trackingNumber = res?.payload;
       navigation.navigate('SupplierArrivalLineDetailScreen', {
         supplierArrivalLineId: supplierArrivalLine?.id,
         supplierArrival: supplierArrival,
         productId: product?.id,
-        trackingNumber: createdTrackingNumber,
+        trackingNumber: _trackingNumber,
       });
-    }
+    });
   }, [
-    createdTrackingNumber,
-    loading,
+    dispatch,
     navigation,
     product,
+    sequence,
     supplierArrival,
     supplierArrivalLine,
+    trackingQty,
   ]);
 
   return (
