@@ -1,6 +1,6 @@
 {
   "name": "@axelor/aos-mobile-manufacturing",
-  "version": "7.2.37",
+  "version": "7.2.38",
   "author": "Axelor",
   "license": "AGPL-3.0-only",
   "publishConfig": {
@@ -28,9 +28,9 @@
     "react-i18next": "^11.18.6"
   },
   "dependencies": {
-    "@axelor/aos-mobile-core": "7.2.37",
-    "@axelor/aos-mobile-stock": "7.2.37",
-    "@axelor/aos-mobile-ui": "7.2.37",
+    "@axelor/aos-mobile-core": "7.2.38",
+    "@axelor/aos-mobile-stock": "7.2.38",
+    "@axelor/aos-mobile-ui": "7.2.38",
     "@reduxjs/toolkit": "^1.8.5"
   },
   "devDependencies": {
