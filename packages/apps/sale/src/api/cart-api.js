@@ -18,6 +18,7 @@
 
 import {
   createStandardSearch,
+  formatRequestBody,
   getActionApi,
   getSearchCriterias,
 } from '@axelor/aos-mobile-core';
@@ -50,38 +51,24 @@ export async function searchCart({searchValue, page = 0, userId, companyId}) {
 }
 
 export async function updateCart({partnerId, companyId, cartId, cartVersion}) {
-  let data = {id: cartId, version: cartVersion};
+  const body = {
+    id: cartId,
+    version: cartVersion,
+    ...(companyId != null ? {company: {id: companyId}} : {}),
+    ...(partnerId != null ? {partner: {id: partnerId}} : {}),
+  };
 
-  if (companyId != null) {
-    data = {
-      ...data,
-      company: {
-        id: companyId,
-      },
-    };
-  }
-
-  if (partnerId != null) {
-    data = {
-      ...data,
-      partner: {
-        id: partnerId,
-      },
-    };
-  }
+  const {matchers, formattedData} = formatRequestBody(body, 'data');
 
   return getActionApi().send({
     url: '/ws/rest/com.axelor.apps.sale.db.Cart',
     method: 'post',
-    body: {data},
+    body: {data: formattedData},
     description: 'Update Cart',
     matchers: {
       modelName: 'com.axelor.apps.sale.db.Cart',
       id: cartId,
-      fields: {
-        'data.company.id': 'company.id',
-        'data.partner.id': 'partner.id',
-      },
+      fields: matchers,
     },
   });
 }

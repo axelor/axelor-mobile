@@ -47,27 +47,23 @@ export async function searchCartLine({searchValue, page = 0, cartId}) {
 }
 
 export async function updateCartLine({cartLine, qty, variantProduct}) {
-  const {matchers} = formatRequestBody(cartLine, 'data');
+  const body = {
+    id: cartLine.id,
+    version: cartLine.version,
+    qty,
+    variantProduct,
+  };
+  const {matchers, formattedData} = formatRequestBody(body, 'data');
 
   return getActionApi().send({
     url: '/ws/rest/com.axelor.apps.sale.db.CartLine',
     method: 'post',
-    body: {
-      data: {
-        ...cartLine,
-        qty,
-        variantProduct,
-      },
-    },
+    body: {data: formattedData},
     description: 'Update Cart Line',
     matchers: {
       modelName: 'com.axelor.apps.sale.db.CartLine',
       id: cartLine.id,
-      fields: {
-        'data.qty': 'qty',
-        'data.variantProduct': 'variantProduct',
-        ...matchers,
-      },
+      fields: matchers,
     },
   });
 }
@@ -94,18 +90,22 @@ export async function addCartLine({cartId, cartVersion, productId, qty}) {
     throw {response: {status: 404, statusText: 'Sale_NoActiveCart'}};
   }
 
+  const {matchers, formattedData} = formatRequestBody(
+    {version: cartVersion, cartId, productId, qty},
+  );
+
   return getActionApi().send({
     url: `/ws/aos/cart/add-line/${cartId}`,
     method: 'put',
-    body: {version: cartVersion, cartId, productId, qty},
+    body: formattedData,
     description: 'Add Product to Cart Line',
     matchers: {
       modelName: 'com.axelor.apps.sale.db.CartLine',
       id: Date.now(),
       fields: {
+        ...matchers,
         cartId: 'cart.id',
         productId: 'product.id',
-        qty: 'qty',
       },
     },
   });

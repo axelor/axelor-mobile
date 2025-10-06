@@ -19,6 +19,7 @@
 import {
   createStandardFetch,
   createStandardSearch,
+  formatRequestBody,
   getActionApi,
   getSearchCriterias,
 } from '@axelor/aos-mobile-core';
@@ -83,19 +84,22 @@ export async function updateSaleOrderStatus({
   saleOrderVersion,
   status,
 }) {
+  const body = {
+    version: saleOrderVersion,
+    toStatus: mapStatusToAPIValue(status),
+  };
+  const {matchers, formattedData} = formatRequestBody(body);
+
   return getActionApi().send({
     url: `/ws/aos/sale-order/status/${saleOrderId}`,
     method: 'put',
-    body: {
-      version: saleOrderVersion,
-      toStatus: mapStatusToAPIValue(status),
-    },
+    body: formattedData,
     description: 'Update Sale Order Status',
     matchers: {
       modelName: 'com.axelor.apps.sale.db.SaleOrder',
       id: saleOrderId,
       fields: {
-        version: 'version',
+        ...matchers,
         toStatus: 'statusSelect',
       },
     },
@@ -103,20 +107,24 @@ export async function updateSaleOrderStatus({
 }
 
 export async function createSaleOrder({saleOrderLineList, customerId}) {
+  const body = customerId != null ? {clientPartnerId: customerId} : {};
+  const {matchers, formattedData} = formatRequestBody(body);
+  const requestBody = {
+    ...(formattedData ?? {}),
+    saleOrderLineList,
+  };
+
   return getActionApi().send({
     url: '/ws/aos/sale-order',
     method: 'post',
-    body: {
-      saleOrderLineList,
-      clientPartnerId: customerId,
-    },
+    body: requestBody,
     description: 'Create Sale Order',
     matchers: {
       modelName: 'com.axelor.apps.sale.db.SaleOrder',
       id: Date.now(),
       fields: {
         saleOrderLineList: 'saleOrderLineList',
-        clientPartnerId: 'clientPartnerId',
+        ...matchers,
       },
     },
   });
