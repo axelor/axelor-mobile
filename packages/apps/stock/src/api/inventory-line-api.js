@@ -19,6 +19,7 @@
 import {
   createStandardSearch,
   createStandardFetch,
+  formatRequestBody,
   getSearchCriterias,
   getActionApi,
 } from '@axelor/aos-mobile-core';
@@ -130,23 +131,24 @@ export async function addTrackingNumber({
   version,
   trackingNumber,
 }) {
+  const {matchers, formattedData} = formatRequestBody(
+    {
+      id: inventoryLineId,
+      version,
+      trackingNumber,
+    },
+    'data',
+  );
+
   return getActionApi().send({
     url: `/ws/rest/com.axelor.apps.stock.db.InventoryLine/${inventoryLineId}`,
     method: 'post',
-    body: {
-      data: {
-        id: inventoryLineId,
-        version,
-        trackingNumber,
-      },
-    },
+    body: {data: formattedData},
     description: 'add trackingNumber on inventory line',
     matchers: {
       modelName: 'com.axelor.apps.stock.db.InventoryLine',
       id: inventoryLineId,
-      fields: {
-        'data.trackingNumber': 'trackingNumber',
-      },
+      fields: matchers,
     },
   });
 }

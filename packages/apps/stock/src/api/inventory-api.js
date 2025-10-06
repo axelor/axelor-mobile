@@ -19,6 +19,7 @@
 import {
   createStandardFetch,
   createStandardSearch,
+  formatRequestBody,
   getActionApi,
   getSearchCriterias,
   getTypes,
@@ -97,23 +98,24 @@ export async function modifyDescriptionInventory({
   description,
   version,
 }) {
+  const {matchers, formattedData} = formatRequestBody(
+    {
+      id: inventoryId,
+      description,
+      version,
+    },
+    'data',
+  );
+
   return getActionApi().send({
     url: `/ws/rest/com.axelor.apps.stock.db.Inventory/${inventoryId}`,
     method: 'post',
-    body: {
-      data: {
-        id: inventoryId,
-        description,
-        version,
-      },
-    },
+    body: {data: formattedData},
     description: 'modify inventory description',
     matchers: {
       modelName: 'com.axelor.apps.stock.db.Inventory',
       id: inventoryId,
-      fields: {
-        'data.description': 'description',
-      },
+      fields: matchers,
     },
   });
 }
