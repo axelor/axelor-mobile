@@ -33,13 +33,14 @@
     "react-native-linear-gradient": "2.8.3",
     "react-native-svg": "15.11.2",
     "react-native-system-navigation-bar": "2.2.0",
-    "react-native-webview": "13.8.4"
+    "react-native-webview": "13.16.0"
   },
   "devDependencies": {
     "@babel/runtime": "^7.25.0",
     "@react-native-community/slider": "^4.5.6",
-    "@react-native/babel-preset": "0.76.9",
-    "@react-native/eslint-config": "0.76.9",
+    "@react-native/babel-preset": "0.77.3",
+    "@react-native/eslint-config": "0.77.3",
+    "@react-native/typescript-config": "0.77.3",
     "@svgr/core": "^6.5.1",
     "@svgr/plugin-jsx": "^6.5.1",
     "@svgr/plugin-prettier": "^6.5.1",
@@ -50,12 +51,12 @@
     "glob": "^8.1.0",
     "prettier": "^3.3.3",
     "react": "18.3.1",
-    "react-native": "0.76.9",
+    "react-native": "0.77.3",
     "react-native-gifted-charts": "1.4.59",
     "react-native-linear-gradient": "2.8.3",
     "react-native-svg": "15.11.2",
     "react-native-system-navigation-bar": "2.2.0",
-    "react-native-webview": "13.8.4"
+    "react-native-webview": "13.16.0"
   },
   "resolutions": {
     "@types/react": "^18.3.20"
