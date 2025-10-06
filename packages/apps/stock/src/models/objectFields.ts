@@ -391,6 +391,7 @@ export const stock_modelAPI: ObjectFields = {
         stockConfig: schemaContructor.subObject().concat(
           schemaContructor.object({
             customsMassUnit: schemaContructor.subObject('labelToPrinting'),
+            isLogisticalFormMultiClientsEnabled: schemaContructor.boolean(),
           }),
         ),
       }),
