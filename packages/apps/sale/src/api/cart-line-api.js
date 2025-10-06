@@ -90,9 +90,12 @@ export async function addCartLine({cartId, cartVersion, productId, qty}) {
     throw {response: {status: 404, statusText: 'Sale_NoActiveCart'}};
   }
 
-  const {matchers, formattedData} = formatRequestBody(
-    {version: cartVersion, cartId, productId, qty},
-  );
+  const {matchers, formattedData} = formatRequestBody({
+    version: cartVersion,
+    cartId,
+    productId,
+    qty,
+  });
 
   return getActionApi().send({
     url: `/ws/aos/cart/add-line/${cartId}`,
