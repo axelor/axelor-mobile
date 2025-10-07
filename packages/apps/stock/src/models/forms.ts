@@ -80,7 +80,8 @@ export const stock_formsRegister: FormConfigs = {
         customComponent: PartnerSearchBar,
         options: {partnerType: 'client', showTitle: true},
         hideIf: ({storeState}) =>
-          storeState.appConfig?.supplychain?.logisticalFormMultiClients,
+          !storeState.user?.user?.activeCompany?.stockConfig
+            ?.isLogisticalFormMultiClientsEnabled,
         readonlyIf: ({objectState}) =>
           !isProvisionStatus(objectState?.statusSelect),
       },
