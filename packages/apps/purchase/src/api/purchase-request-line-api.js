@@ -110,7 +110,10 @@ export async function createPurchaseRequestLine({
 }
 
 export async function updatePurchaseRequestLine({purchaseRequestLine}) {
-  const {matchers, formattedData} = formatRequestBody(purchaseRequestLine, 'data');
+  const {matchers, formattedData} = formatRequestBody(
+    purchaseRequestLine,
+    'data',
+  );
   const data = {
     ...formattedData,
     newProduct: purchaseRequestLine.product == null,
