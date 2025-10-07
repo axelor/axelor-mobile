@@ -83,21 +83,25 @@ export async function createPurchaseRequestLine({
   purchaseRequestVersion,
   purchaseRequestLine,
 }) {
+  const requestBody = {
+    version: purchaseRequestVersion,
+    productId: purchaseRequestLine.product?.id,
+    productTitle: purchaseRequestLine.productTitle,
+    unitId: purchaseRequestLine.unit?.id,
+    quantity: purchaseRequestLine.quantity,
+  };
+  const {formattedData, matchers} = formatRequestBody(requestBody);
+
   return getActionApi().send({
     url: `ws/aos/purchase-request/add-line/${purchaseRequestId}`,
     method: 'put',
-    body: {
-      version: purchaseRequestVersion,
-      productId: purchaseRequestLine.product?.id,
-      productTitle: purchaseRequestLine.productTitle,
-      unitId: purchaseRequestLine.unit?.id,
-      quantity: purchaseRequestLine.quantity,
-    },
+    body: formattedData,
     description: 'create purchase request line',
     matchers: {
       modelName: 'com.axelor.apps.purchase.db.PurchaseRequestLine',
       id: Date.now(),
       fields: {
+        ...matchers,
         productId: 'product.id',
         unitId: 'unit.id',
       },
@@ -106,22 +110,26 @@ export async function createPurchaseRequestLine({
 }
 
 export async function updatePurchaseRequestLine({purchaseRequestLine}) {
-  const {matchers} = formatRequestBody(purchaseRequestLine, 'data');
+  const {matchers, formattedData} = formatRequestBody(purchaseRequestLine, 'data');
+  const data = {
+    ...formattedData,
+    newProduct: purchaseRequestLine.product == null,
+  };
 
   return getActionApi().send({
     url: '/ws/rest/com.axelor.apps.purchase.db.PurchaseRequestLine',
     method: 'post',
     body: {
-      data: {
-        ...purchaseRequestLine,
-        newProduct: purchaseRequestLine.product == null,
-      },
+      data,
     },
     description: 'update purchase request line',
     matchers: {
       modelName: 'com.axelor.apps.purchase.db.PurchaseRequestLine',
       id: purchaseRequestLine.id,
-      fields: matchers,
+      fields: {
+        ...matchers,
+        'data.newProduct': 'newProduct',
+      },
     },
   });
 }

@@ -85,13 +85,21 @@ export async function getPurchaseRequest({id}) {
 }
 
 export async function updatePurchaseRequestStatus({purchaseRequest, status}) {
+  const body = {
+    version: purchaseRequest.version,
+  };
+  const {formattedData, matchers} = formatRequestBody(body);
+
   return getActionApi().send({
     url: `ws/aos/purchase-request/${status}/${purchaseRequest.id}`,
     method: 'put',
-    body: {
-      version: purchaseRequest.version,
-    },
+    body: formattedData,
     description: 'update purchase request status',
+    matchers: {
+      modelName: 'com.axelor.apps.purchase.db.PurchaseRequest',
+      id: purchaseRequest.id,
+      fields: matchers,
+    },
   });
 }
 
@@ -101,27 +109,45 @@ export async function createPurchaseRequest({
   description,
   purchaseRequestLineList,
 }) {
+  const requestBody = {
+    companyId,
+    status,
+    description,
+  };
+  const {formattedData, matchers} = formatRequestBody(requestBody);
+
   return getActionApi().send({
     url: 'ws/aos/purchase-request/create',
     method: 'post',
     body: {
-      companyId,
-      status,
-      description,
+      ...formattedData,
       purchaseRequestLineList,
     },
     description: 'create purchase request',
+    matchers: {
+      modelName: 'com.axelor.apps.purchase.db.PurchaseRequest',
+      id: Date.now(),
+      fields: {
+        ...matchers,
+        purchaseRequestLineList: 'purchaseRequestLineList',
+      },
+    },
   });
 }
 
 export async function updatePurchaseRequest({purchaseRequest}) {
-  const {matchers} = formatRequestBody(purchaseRequest, 'data');
+  const body = {
+    id: purchaseRequest.id,
+    version: purchaseRequest.version,
+    description: purchaseRequest.description,
+  };
+  const {matchers, formattedData} = formatRequestBody(body, 'data');
 
   return getActionApi().send({
     url: '/ws/rest/com.axelor.apps.purchase.db.PurchaseRequest',
     method: 'post',
     body: {
-      data: purchaseRequest,
+      data: formattedData,
     },
     description: 'update purchase request',
     matchers: {
