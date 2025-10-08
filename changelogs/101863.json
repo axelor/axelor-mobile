@@ -1,0 +1,5 @@
+{
+  "title": "AOP request: simplify body content to avoid permission issue",
+  "type": "refactor",
+  "packages": "hr"
+}
