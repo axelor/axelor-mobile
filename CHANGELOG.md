@@ -3,6 +3,68 @@ title: 8.3.0
 tags: Changelog
 ---
 
+## [8.3.13] (2025-10-09)
+
+### @axelor/aos-mobile-dms
+
+#### Changes
+
+- AOP request: simplify body content to avoid permission issue
+
+### @axelor/aos-mobile-purchase
+
+#### Changes
+
+- AOP request: simplify body content to avoid permission issue
+
+### @axelor/aos-mobile-sale
+
+#### Changes
+
+- AOP request: simplify body content to avoid permission issue
+
+### @axelor/aos-mobile-project
+
+#### Changes
+
+- AOP request: simplify body content to avoid permission issue
+
+### @axelor/aos-mobile-intervention
+
+#### Changes
+
+- AOP request: simplify body content to avoid permission issue
+
+### @axelor/aos-mobile-quality
+
+#### Changes
+
+- AOP request: simplify body content to avoid permission issue
+
+### @axelor/aos-mobile-hr
+
+#### Changes
+
+- AOP request: simplify body content to avoid permission issue
+
+### @axelor/aos-mobile-helpdesk
+
+#### Changes
+
+- AOP request: simplify body content to avoid permission issue
+
+### @axelor/aos-mobile-crm
+
+#### Fixes
+
+- Updates: improve refresh management to avoid undefined issue after record update
+
+### @axelor/aos-mobile-stock
+
+#### Changes
+
+- AOP request: simplify body content to avoid permission issue
+
 ## [8.3.12] (2025-10-02)
 
 ### @axelor/aos-mobile-core
@@ -464,6 +526,7 @@ This version add a new part of the HR package, user can now manage leave request
 
 - Header actions: remove use of attachedFileScreenTitle
 
+[8.3.13]: https://github.com/axelor/axelor-mobile/compare/8.3.12...8.3.13
 [8.3.12]: https://github.com/axelor/axelor-mobile/compare/8.3.11...8.3.12
 [8.3.11]: https://github.com/axelor/axelor-mobile/compare/8.3.10...8.3.11
 [8.3.10]: https://github.com/axelor/axelor-mobile/compare/8.3.9...8.3.10
