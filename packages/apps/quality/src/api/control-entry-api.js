@@ -19,6 +19,7 @@
 import {
   createStandardFetch,
   createStandardSearch,
+  formatRequestBody,
   getActionApi,
   getEndOfDay,
   getSearchCriterias,
@@ -104,19 +105,19 @@ export async function fetchControlEntryById({controlEntryId}) {
 }
 
 export async function updateControlEntry({controlEntry}) {
+  const {matchers, formattedData} = formatRequestBody(controlEntry, 'data');
+
   return getActionApi().send({
     url: '/ws/rest/com.axelor.apps.quality.db.ControlEntry/',
     method: 'post',
     body: {
-      data: controlEntry,
+      data: formattedData,
     },
     description: 'update control entry',
     matchers: {
       id: controlEntry.id,
       modelName: 'com.axelor.apps.quality.db.ControlEntry',
-      fields: {
-        'data.statusSelect': 'statusSelect',
-      },
+      fields: matchers,
     },
   });
 }
