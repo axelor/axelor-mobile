@@ -326,13 +326,13 @@ export async function searchStatus({searchValue, page = 0, statusIds}) {
 }
 
 export async function saveProjectTask({projectTask}) {
-  const {matchers} = formatRequestBody(projectTask, 'data');
+  const {matchers, formattedData} = formatRequestBody(projectTask, 'data');
 
   return getActionApi().send({
     url: '/ws/rest/com.axelor.apps.project.db.ProjectTask/',
     method: 'post',
     body: {
-      data: projectTask,
+      data: formattedData,
     },
     description: 'save project task',
     matchers: {
