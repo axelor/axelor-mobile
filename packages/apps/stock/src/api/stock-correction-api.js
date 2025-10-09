@@ -19,6 +19,7 @@
 import {
   createStandardFetch,
   createStandardSearch,
+  formatRequestBody,
   getActionApi,
 } from '@axelor/aos-mobile-core';
 
@@ -165,23 +166,24 @@ export async function updateStockCorrectionTrackingNumber({
   stockCorrectionVersion,
   trackingNumber,
 }) {
+  const {matchers, formattedData} = formatRequestBody(
+    {
+      id: stockCorrectionId,
+      version: stockCorrectionVersion,
+      trackingNumber,
+    },
+    'data',
+  );
+
   return getActionApi().send({
     url: `/ws/rest/com.axelor.apps.stock.db.StockCorrection/${stockCorrectionId}`,
     method: 'post',
-    body: {
-      data: {
-        id: stockCorrectionId,
-        version: stockCorrectionVersion,
-        trackingNumber: trackingNumber,
-      },
-    },
+    body: {data: formattedData},
     description: 'update stock correction tracking number',
     matchers: {
       modelName: 'com.axelor.apps.stock.db.StockCorrection',
       id: stockCorrectionId,
-      fields: {
-        'data.trackingNumber': 'trackingNumber',
-      },
+      fields: matchers,
     },
   });
 }

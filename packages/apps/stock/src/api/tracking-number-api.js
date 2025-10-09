@@ -58,27 +58,25 @@ export async function createTrackingNumber({
   trackingNumberSeq,
   origin,
 }) {
+  const {matchers, formattedData} = formatRequestBody(
+    {
+      counter: qty,
+      product,
+      trackingNumberSeq,
+      origin,
+    },
+    'data',
+  );
+
   return getActionApi().send({
     url: '/ws/rest/com.axelor.apps.stock.db.TrackingNumber',
     method: 'put',
-    body: {
-      data: {
-        counter: qty,
-        product,
-        trackingNumberSeq,
-        origin,
-      },
-    },
+    body: {data: formattedData},
     description: 'create tracking number',
     matchers: {
       modelName: 'com.axelor.apps.stock.db.TrackingNumber',
       id: Date.now(),
-      fields: {
-        'data.counter': 'counter',
-        'data.product': 'product',
-        'data.trackingNumberSeq': 'trackingNumberSeq',
-        'data.origin': 'origin',
-      },
+      fields: matchers,
     },
   });
 }
@@ -88,48 +86,47 @@ export async function updateStockMoveLineTrackingNumber({
   stockMoveLineVersion,
   trackingNumber,
 }) {
+  const {matchers, formattedData} = formatRequestBody(
+    {
+      id: stockMoveLineId,
+      version: stockMoveLineVersion,
+      trackingNumber,
+    },
+    'data',
+  );
+
   return getActionApi().send({
     url: `/ws/rest/com.axelor.apps.stock.db.StockMoveLine/${stockMoveLineId}`,
     method: 'post',
-    body: {
-      data: {
-        id: stockMoveLineId,
-        version: stockMoveLineVersion,
-        trackingNumber,
-      },
-    },
+    body: {data: formattedData},
     description: 'add tracking number on stock move line',
     matchers: {
       modelName: 'com.axelor.apps.stock.db.StockMoveLine',
       id: stockMoveLineId,
-      fields: {
-        'data.trackingNumber': 'trackingNumber',
-      },
+      fields: matchers,
     },
   });
 }
 
 export async function updateTrackingNumber({id, origin, ...trackingNumber}) {
-  const {matchers} = formatRequestBody(trackingNumber, 'data');
+  const {$version, version, ...rest} = trackingNumber;
+  const payload = {
+    ...rest,
+    origin,
+    version: $version ?? version,
+  };
+
+  const {matchers, formattedData} = formatRequestBody(payload, 'data');
 
   return getActionApi().send({
     url: `/ws/rest/com.axelor.apps.stock.db.TrackingNumber/${id}`,
     method: 'post',
-    body: {
-      data: {
-        ...trackingNumber,
-        origin: origin,
-        version: trackingNumber.$version ?? trackingNumber.version,
-      },
-    },
+    body: {data: formattedData},
     description: 'Update tracking number',
     matchers: {
       modelName: 'com.axelor.apps.stock.db.TrackingNumber',
       id: id,
-      fields: {
-        'data.origin': 'origin',
-        ...matchers,
-      },
+      fields: matchers,
     },
   });
 }
