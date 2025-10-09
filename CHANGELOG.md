@@ -3,6 +3,68 @@ title: 8.4.0
 tags: Changelog
 ---
 
+## [8.4.6] (2025-10-09)
+
+### @axelor/aos-mobile-dms
+
+#### Changes
+
+- AOP request: simplify body content to avoid permission issue
+
+### @axelor/aos-mobile-purchase
+
+#### Changes
+
+- AOP request: simplify body content to avoid permission issue
+
+### @axelor/aos-mobile-sale
+
+#### Changes
+
+- AOP request: simplify body content to avoid permission issue
+
+### @axelor/aos-mobile-project
+
+#### Changes
+
+- AOP request: simplify body content to avoid permission issue
+
+### @axelor/aos-mobile-intervention
+
+#### Changes
+
+- AOP request: simplify body content to avoid permission issue
+
+### @axelor/aos-mobile-quality
+
+#### Changes
+
+- AOP request: simplify body content to avoid permission issue
+
+### @axelor/aos-mobile-hr
+
+#### Changes
+
+- AOP request: simplify body content to avoid permission issue
+
+### @axelor/aos-mobile-helpdesk
+
+#### Changes
+
+- AOP request: simplify body content to avoid permission issue
+
+### @axelor/aos-mobile-crm
+
+#### Fixes
+
+- Updates: improve refresh management to avoid undefined issue after record update
+
+### @axelor/aos-mobile-stock
+
+#### Changes
+
+- AOP request: simplify body content to avoid permission issue
+
 ## [8.4.5] (2025-10-02)
 
 ### @axelor/aos-mobile-core
@@ -333,6 +395,7 @@ This version add a new part of the Quality package, user can now manage quality 
 
 - ErrorBoundary: modify fallback screen management to manage maintenance error type
 
+[8.4.6]: https://github.com/axelor/axelor-mobile/compare/8.4.5...8.4.6
 [8.4.5]: https://github.com/axelor/axelor-mobile/compare/8.4.4...8.4.5
 [8.4.4]: https://github.com/axelor/axelor-mobile/compare/8.4.3...8.4.4
 [8.4.3]: https://github.com/axelor/axelor-mobile/compare/8.4.2...8.4.3

@@ -1,6 +1,6 @@
 {
   "name": "@axelor/aos-mobile-message",
-  "version": "8.4.5",
+  "version": "8.4.6",
   "author": "Axelor",
   "license": "AGPL-3.0-only",
   "publishConfig": {
@@ -27,9 +27,9 @@
     "react-native": "0.75.5"
   },
   "dependencies": {
-    "@axelor/aos-mobile-core": "8.4.5",
-    "@axelor/aos-mobile-dms": "8.4.5",
-    "@axelor/aos-mobile-ui": "8.4.5",
+    "@axelor/aos-mobile-core": "8.4.6",
+    "@axelor/aos-mobile-dms": "8.4.6",
+    "@axelor/aos-mobile-ui": "8.4.6",
     "@reduxjs/toolkit": "^2.2.7"
   },
   "devDependencies": {
