@@ -106,17 +106,15 @@ export async function createPurchaseRequestLine({
 }
 
 export async function updatePurchaseRequestLine({purchaseRequestLine}) {
-  const {matchers} = formatRequestBody(purchaseRequestLine, 'data');
+  const {matchers, formattedData} = formatRequestBody(
+    {...purchaseRequestLine, newProduct: purchaseRequestLine.product == null},
+    'data',
+  );
 
   return getActionApi().send({
     url: '/ws/rest/com.axelor.apps.purchase.db.PurchaseRequestLine',
     method: 'post',
-    body: {
-      data: {
-        ...purchaseRequestLine,
-        newProduct: purchaseRequestLine.product == null,
-      },
-    },
+    body: {data: formattedData},
     description: 'update purchase request line',
     matchers: {
       modelName: 'com.axelor.apps.purchase.db.PurchaseRequestLine',
