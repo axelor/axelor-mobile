@@ -83,25 +83,21 @@ export async function createPurchaseRequestLine({
   purchaseRequestVersion,
   purchaseRequestLine,
 }) {
-  const requestBody = {
-    version: purchaseRequestVersion,
-    productId: purchaseRequestLine.product?.id,
-    productTitle: purchaseRequestLine.productTitle,
-    unitId: purchaseRequestLine.unit?.id,
-    quantity: purchaseRequestLine.quantity,
-  };
-  const {formattedData, matchers} = formatRequestBody(requestBody);
-
   return getActionApi().send({
     url: `ws/aos/purchase-request/add-line/${purchaseRequestId}`,
     method: 'put',
-    body: formattedData,
+    body: {
+      version: purchaseRequestVersion,
+      productId: purchaseRequestLine.product?.id,
+      productTitle: purchaseRequestLine.productTitle,
+      unitId: purchaseRequestLine.unit?.id,
+      quantity: purchaseRequestLine.quantity,
+    },
     description: 'create purchase request line',
     matchers: {
       modelName: 'com.axelor.apps.purchase.db.PurchaseRequestLine',
       id: Date.now(),
       fields: {
-        ...matchers,
         productId: 'product.id',
         unitId: 'unit.id',
       },

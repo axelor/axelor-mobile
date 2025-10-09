@@ -85,21 +85,13 @@ export async function getPurchaseRequest({id}) {
 }
 
 export async function updatePurchaseRequestStatus({purchaseRequest, status}) {
-  const body = {
-    version: purchaseRequest.version,
-  };
-  const {formattedData, matchers} = formatRequestBody(body);
-
   return getActionApi().send({
     url: `ws/aos/purchase-request/${status}/${purchaseRequest.id}`,
     method: 'put',
-    body: formattedData,
-    description: 'update purchase request status',
-    matchers: {
-      modelName: 'com.axelor.apps.purchase.db.PurchaseRequest',
-      id: purchaseRequest.id,
-      fields: matchers,
+    body: {
+      version: purchaseRequest.version,
     },
+    description: 'update purchase request status',
   });
 }
 
@@ -109,29 +101,16 @@ export async function createPurchaseRequest({
   description,
   purchaseRequestLineList,
 }) {
-  const requestBody = {
-    companyId,
-    status,
-    description,
-  };
-  const {formattedData, matchers} = formatRequestBody(requestBody);
-
   return getActionApi().send({
     url: 'ws/aos/purchase-request/create',
     method: 'post',
     body: {
-      ...formattedData,
+      companyId,
+      status,
+      description,
       purchaseRequestLineList,
     },
     description: 'create purchase request',
-    matchers: {
-      modelName: 'com.axelor.apps.purchase.db.PurchaseRequest',
-      id: Date.now(),
-      fields: {
-        ...matchers,
-        purchaseRequestLineList: 'purchaseRequestLineList',
-      },
-    },
   });
 }
 
