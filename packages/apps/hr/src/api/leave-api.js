@@ -217,13 +217,13 @@ export async function deleteLeave({leaveRequestId}) {
 }
 
 export async function updateLeave({leave}) {
-  const {matchers} = formatRequestBody(leave, 'data');
+  const {matchers, formattedData} = formatRequestBody(leave, 'data');
 
   return getActionApi().send({
     url: '/ws/rest/com.axelor.apps.hr.db.LeaveRequest',
     method: 'post',
     body: {
-      data: leave,
+      data: formattedData,
     },
     description: 'update leave',
     matchers: {
