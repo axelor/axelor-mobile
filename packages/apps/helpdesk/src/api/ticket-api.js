@@ -192,13 +192,13 @@ export async function updateStatusTicket({
 }
 
 export async function updateTicket({ticket}) {
-  const {matchers} = formatRequestBody(ticket, 'data');
+  const {matchers, formattedData} = formatRequestBody(ticket, 'data');
 
   return getActionApi().send({
     url: '/ws/rest/com.axelor.apps.helpdesk.db.Ticket',
     method: 'post',
     body: {
-      data: ticket,
+      data: formattedData,
     },
     description: 'update ticket',
     matchers: {
@@ -210,13 +210,13 @@ export async function updateTicket({ticket}) {
 }
 
 export async function createTicket({ticket}) {
-  const {matchers} = formatRequestBody(ticket, 'data');
+  const {matchers, formattedData} = formatRequestBody(ticket, 'data');
 
   return getActionApi().send({
     url: '/ws/rest/com.axelor.apps.helpdesk.db.Ticket',
     method: 'put',
     body: {
-      data: ticket,
+      data: formattedData,
     },
     description: 'create ticket',
     matchers: {
