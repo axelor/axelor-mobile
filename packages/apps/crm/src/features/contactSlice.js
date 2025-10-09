@@ -20,7 +20,6 @@ import {createAsyncThunk, createSlice} from '@reduxjs/toolkit';
 import {
   generateInifiniteScrollCases,
   handlerApiCall,
-  updateAgendaItems,
 } from '@axelor/aos-mobile-core';
 import {
   searchContactWithIds,
@@ -70,22 +69,14 @@ export const getContact = createAsyncThunk(
 
 export const updateContact = createAsyncThunk(
   'contact/updateContact',
-  async function (data = {}, {getState}) {
+  async function (data = {}, {getState, dispatch}) {
     return handlerApiCall({
       fetchFunction: _updateContact,
       data,
       action: 'Crm_SliceAction_UpdateContact',
       getState,
       responseOptions: {isArrayResponse: false},
-    }).then(res => {
-      return handlerApiCall({
-        fetchFunction: _getContact,
-        data: {contactId: res?.id},
-        action: 'Crm_SliceAction_GetContactById',
-        getState,
-        responseOptions: {isArrayResponse: false},
-      });
-    });
+    }).then(() => dispatch(getContact({contactId: data.id})));
   },
 );
 
@@ -120,19 +111,12 @@ const contactSlice = createSlice({
     builder.addCase(getContact.pending, state => {
       state.loading = true;
     });
+    builder.addCase(getContact.rejected, state => {
+      state.loading = false;
+    });
     builder.addCase(getContact.fulfilled, (state, action) => {
       state.loading = false;
       state.contact = action.payload;
-    });
-    builder.addCase(updateContact.pending, (state, action) => {
-      state.loading = true;
-    });
-    builder.addCase(updateContact.fulfilled, (state, action) => {
-      state.loading = false;
-      state.contact = action.payload;
-      state.contactList = updateAgendaItems(state.contactList, [
-        action.payload,
-      ]);
     });
   },
 });
