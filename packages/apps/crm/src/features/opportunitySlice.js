@@ -175,7 +175,7 @@ const opportunitySlice = createSlice({
       state.loadingOpportunity = true;
     });
     builder.addCase(getOpportunity.rejected, state => {
-      state.loadingOpportunity = true;
+      state.loadingOpportunity = false;
     });
     builder.addCase(getOpportunity.fulfilled, (state, action) => {
       state.loadingOpportunity = false;
