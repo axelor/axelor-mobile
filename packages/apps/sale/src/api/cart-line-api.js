@@ -47,27 +47,23 @@ export async function searchCartLine({searchValue, page = 0, cartId}) {
 }
 
 export async function updateCartLine({cartLine, qty, variantProduct}) {
-  const {matchers} = formatRequestBody(cartLine, 'data');
+  const body = {
+    id: cartLine.id,
+    version: cartLine.version,
+    qty,
+    variantProduct,
+  };
+  const {matchers, formattedData} = formatRequestBody(body, 'data');
 
   return getActionApi().send({
     url: '/ws/rest/com.axelor.apps.sale.db.CartLine',
     method: 'post',
-    body: {
-      data: {
-        ...cartLine,
-        qty,
-        variantProduct,
-      },
-    },
+    body: {data: formattedData},
     description: 'Update Cart Line',
     matchers: {
       modelName: 'com.axelor.apps.sale.db.CartLine',
       id: cartLine.id,
-      fields: {
-        'data.qty': 'qty',
-        'data.variantProduct': 'variantProduct',
-        ...matchers,
-      },
+      fields: matchers,
     },
   });
 }
