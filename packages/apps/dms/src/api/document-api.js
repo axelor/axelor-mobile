@@ -220,13 +220,13 @@ export async function searchDirectory({searchValue, authorId, page = 0}) {
 
 export async function createDocument({document, model, modelId}) {
   const body = {relatedModel: model, relatedId: modelId, ...document};
-  const {matchers} = formatRequestBody(body, 'data');
+  const {matchers, formattedData} = formatRequestBody(body, 'data');
 
   return getActionApi().send({
     url: '/ws/rest/com.axelor.dms.db.DMSFile',
     method: 'put',
     body: {
-      data: body,
+      data: formattedData,
     },
     description: 'create document',
     matchers: {
@@ -238,13 +238,13 @@ export async function createDocument({document, model, modelId}) {
 }
 
 export async function updateDocument({document}) {
-  const {matchers} = formatRequestBody(document, 'data');
+  const {matchers, formattedData} = formatRequestBody(document, 'data');
 
   return getActionApi().send({
     url: '/ws/rest/com.axelor.dms.db.DMSFile',
     method: 'post',
     body: {
-      data: document,
+      data: formattedData,
     },
     description: 'update document',
     matchers: {
