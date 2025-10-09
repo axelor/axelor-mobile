@@ -20,7 +20,6 @@ import {createAsyncThunk, createSlice} from '@reduxjs/toolkit';
 import {
   generateInifiniteScrollCases,
   handlerApiCall,
-  updateAgendaItems,
 } from '@axelor/aos-mobile-core';
 import {
   searchProspect,
@@ -71,43 +70,27 @@ export const fetchProspectById = createAsyncThunk(
 
 export const updateProspectScore = createAsyncThunk(
   'lead/updateProspectScore',
-  async function (data = {}, {getState}) {
+  async function (data = {}, {getState, dispatch}) {
     return handlerApiCall({
       fetchFunction: updateProspectScoring,
       data,
       action: 'Crm_SliceAction_UpdateProspectScore',
       getState,
       responseOptions: {isArrayResponse: false},
-    }).then(res => {
-      return handlerApiCall({
-        fetchFunction: getProspect,
-        data: {partnerId: res?.id},
-        action: 'Crm_SliceAction_FetchProspectById',
-        getState,
-        responseOptions: {isArrayResponse: false},
-      });
-    });
+    }).then(() => dispatch(fetchProspectById({partnerId: data.partnerId})));
   },
 );
 
 export const updateProspect = createAsyncThunk(
   'prospect/updateProspect',
-  async function (data = {}, {getState}) {
+  async function (data = {}, {getState, dispatch}) {
     return handlerApiCall({
       fetchFunction: _updateProspect,
       data,
       action: 'Crm_SliceAction_UpdateProspect',
       getState,
       responseOptions: {isArrayResponse: false},
-    }).then(res => {
-      return handlerApiCall({
-        fetchFunction: getProspect,
-        data: {partnerId: res?.id},
-        action: 'Crm_SliceAction_FetchProspectById',
-        getState,
-        responseOptions: {isArrayResponse: false},
-      });
-    });
+    }).then(() => dispatch(fetchProspectById({partnerId: data.id})));
   },
 );
 
@@ -134,8 +117,11 @@ const prospectSlice = createSlice({
       isListEnd: 'isListEnd',
       list: 'prospectList',
     });
-    builder.addCase(fetchProspectById.pending, (state, action) => {
+    builder.addCase(fetchProspectById.pending, state => {
       state.loading = true;
+    });
+    builder.addCase(fetchProspectById.rejected, state => {
+      state.loading = false;
     });
     builder.addCase(fetchProspectById.fulfilled, (state, action) => {
       state.loading = false;
@@ -147,26 +133,6 @@ const prospectSlice = createSlice({
     builder.addCase(fetchProspectStatus.fulfilled, (state, action) => {
       state.loadingProspectStatus = false;
       state.prospectStatusList = action.payload;
-    });
-    builder.addCase(updateProspectScore.pending, (state, action) => {
-      state.loading = true;
-    });
-    builder.addCase(updateProspectScore.fulfilled, (state, action) => {
-      state.loading = false;
-      state.prospect = action.payload;
-      state.prospectList = updateAgendaItems(state.prospectList, [
-        action.payload,
-      ]);
-    });
-    builder.addCase(updateProspect.pending, (state, action) => {
-      state.loading = true;
-    });
-    builder.addCase(updateProspect.fulfilled, (state, action) => {
-      state.loading = false;
-      state.prospect = action.payload;
-      state.prospectList = updateAgendaItems(state.prospectList, [
-        action.payload,
-      ]);
     });
   },
 });

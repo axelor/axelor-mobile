@@ -1,0 +1,5 @@
+{
+  "title": "Updates: improve refresh management to avoid undefined issue after record update",
+  "type": "fix",
+  "packages": "crm"
+}

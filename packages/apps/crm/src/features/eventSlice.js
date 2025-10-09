@@ -121,22 +121,14 @@ export const createEvent = createAsyncThunk(
 
 export const updateEvent = createAsyncThunk(
   'event/updateEvent',
-  async function (data = {}, {getState}) {
+  async function (data = {}, {getState, dispatch}) {
     return handlerApiCall({
       fetchFunction: _updateEvent,
       data,
       action: 'Crm_SliceAction_UpdateEvent',
       getState,
       responseOptions: {isArrayResponse: false, showToast: true},
-    }).then(() => {
-      return handlerApiCall({
-        fetchFunction: getEvent,
-        data: {eventId: data?.event?.id},
-        action: 'Crm_SliceAction_FetchEventById',
-        getState,
-        responseOptions: {isArrayResponse: false},
-      });
-    });
+    }).then(() => dispatch(fetchEventById({eventId: data.event.id})));
   },
 );
 
@@ -186,17 +178,13 @@ const eventSlice = createSlice({
       state.loading = false;
       state.listEventContact = action.payload;
     });
-    builder.addCase(fetchEventById.pending, (state, action) => {
+    builder.addCase(fetchEventById.pending, state => {
       state.loadingEvent = true;
+    });
+    builder.addCase(fetchEventById.rejected, state => {
+      state.loadingEvent = false;
     });
     builder.addCase(fetchEventById.fulfilled, (state, action) => {
-      state.loadingEvent = false;
-      state.event = action.payload;
-    });
-    builder.addCase(updateEvent.pending, (state, action) => {
-      state.loadingEvent = true;
-    });
-    builder.addCase(updateEvent.fulfilled, (state, action) => {
       state.loadingEvent = false;
       state.event = action.payload;
     });
