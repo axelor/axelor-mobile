@@ -19,6 +19,7 @@
 import {
   createStandardFetch,
   createStandardSearch,
+  formatRequestBody,
   getActionApi,
   getSearchCriterias,
   getTypes,
@@ -157,22 +158,23 @@ export async function modifyInternalMoveNotes({
   version,
   notes,
 }) {
+  const {matchers, formattedData} = formatRequestBody(
+    {
+      note: notes,
+      version,
+    },
+    'data',
+  );
+
   return getActionApi().send({
     url: `/ws/rest/com.axelor.apps.stock.db.StockMove/${internalMoveId}`,
     method: 'post',
-    body: {
-      data: {
-        version,
-        note: notes,
-      },
-    },
+    body: {data: formattedData},
     description: 'modify internal move notes',
     matchers: {
       modelName: 'com.axelor.apps.stock.db.StockMove',
       id: internalMoveId,
-      fields: {
-        'data.note': 'note',
-      },
+      fields: matchers,
     },
   });
 }
