@@ -19,7 +19,6 @@
 import {
   createStandardFetch,
   createStandardSearch,
-  formatRequestBody,
   getActionApi,
   getObjectFields,
   getSearchCriterias,
@@ -127,33 +126,19 @@ export async function fetchQiResolution({id}) {
 }
 
 export async function createQualityImprovement({qualityImprovement}) {
-  const {matchers, formattedData} = formatRequestBody(qualityImprovement);
-
   return getActionApi().send({
     url: '/ws/aos/quality-improvement',
     method: 'post',
-    body: formattedData,
+    body: qualityImprovement,
     description: 'create quality improvement',
-    matchers: {
-      modelName: 'com.axelor.apps.quality.db.QualityImprovement',
-      id: formattedData?.id ?? Date.now(),
-      fields: matchers,
-    },
   });
 }
 
 export async function updateQualityImprovement({qualityImprovement}) {
-  const {matchers, formattedData} = formatRequestBody(qualityImprovement);
-
   return getActionApi().send({
     url: `/ws/aos/quality-improvement/update/${qualityImprovement.id}`,
     method: 'put',
-    body: formattedData,
+    body: qualityImprovement,
     description: 'update quality improvement',
-    matchers: {
-      modelName: 'com.axelor.apps.quality.db.QualityImprovement',
-      id: qualityImprovement.id,
-      fields: matchers,
-    },
   });
 }
