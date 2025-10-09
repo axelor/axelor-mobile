@@ -3,6 +3,50 @@ title: 8.2.0
 tags: Changelog
 ---
 
+## [8.2.21] (2025-10-09)
+
+### @axelor/aos-mobile-sale
+
+#### Changes
+
+- AOP request: simplify body content to avoid permission issue
+
+### @axelor/aos-mobile-project
+
+#### Changes
+
+- AOP request: simplify body content to avoid permission issue
+
+### @axelor/aos-mobile-intervention
+
+#### Changes
+
+- AOP request: simplify body content to avoid permission issue
+
+### @axelor/aos-mobile-quality
+
+#### Changes
+
+- AOP request: simplify body content to avoid permission issue
+
+### @axelor/aos-mobile-helpdesk
+
+#### Changes
+
+- AOP request: simplify body content to avoid permission issue
+
+### @axelor/aos-mobile-crm
+
+#### Fixes
+
+- Updates: improve refresh management to avoid undefined issue after record update
+
+### @axelor/aos-mobile-stock
+
+#### Changes
+
+- AOP request: simplify body content to avoid permission issue
+
 ## [8.2.20] (2025-10-02)
 
 ### @axelor/aos-mobile-core
@@ -793,6 +837,7 @@ This package is linked with the @axelor/aos-mobile-hr to manage time logging.
 
 - Supplier arrival: add possibility to fill origin when creating or selecting tracking number
 
+[8.2.21]: https://github.com/axelor/axelor-mobile/compare/8.2.20...8.2.21
 [8.2.20]: https://github.com/axelor/axelor-mobile/compare/8.2.19...8.2.20
 [8.2.19]: https://github.com/axelor/axelor-mobile/compare/8.2.18...8.2.19
 [8.2.18]: https://github.com/axelor/axelor-mobile/compare/8.2.17...8.2.18
