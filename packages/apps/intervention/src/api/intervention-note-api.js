@@ -91,13 +91,13 @@ export async function fetchInterventionNoteType() {
 }
 
 export async function createInterventionNote({interventionNote}) {
-  const {matchers} = formatRequestBody(interventionNote, 'data');
+  const {matchers, formattedData} = formatRequestBody(interventionNote, 'data');
 
   return getActionApi().send({
     url: '/ws/rest/com.axelor.apps.intervention.db.InterventionNote',
     method: 'post',
     body: {
-      data: interventionNote,
+      data: formattedData,
     },
     description: 'create intervention note',
     matchers: {
@@ -109,13 +109,13 @@ export async function createInterventionNote({interventionNote}) {
 }
 
 export async function updateInterventionNote({interventionNote}) {
-  const {matchers} = formatRequestBody(interventionNote, 'data');
+  const {matchers, formattedData} = formatRequestBody(interventionNote, 'data');
 
   return getActionApi().send({
     url: `/ws/rest/com.axelor.apps.intervention.db.InterventionNote/${interventionNote.id}`,
     method: 'post',
     body: {
-      data: interventionNote,
+      data: formattedData,
     },
     description: 'update intervention note',
     matchers: {

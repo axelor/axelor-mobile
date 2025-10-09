@@ -238,13 +238,13 @@ export async function getEquipmentById({equipmentId}) {
 }
 
 export async function saveEquipment({equipment}) {
-  const {matchers} = formatRequestBody(equipment, 'data');
+  const {matchers, formattedData} = formatRequestBody(equipment, 'data');
 
   return getActionApi().send({
     url: '/ws/rest/com.axelor.apps.intervention.db.Equipment',
     method: 'post',
     body: {
-      data: equipment,
+      data: formattedData,
     },
     description: 'save equipment',
     matchers: {
@@ -256,23 +256,24 @@ export async function saveEquipment({equipment}) {
 }
 
 export async function archiveEquipment({equipmentId, equipmentVersion}) {
+  const body = {
+    id: equipmentId,
+    version: equipmentVersion,
+    archived: true,
+  };
+  const {matchers, formattedData} = formatRequestBody(body, 'data');
+
   return getActionApi().send({
     url: '/ws/rest/com.axelor.apps.intervention.db.Equipment',
     method: 'post',
     body: {
-      data: {
-        id: equipmentId,
-        version: equipmentVersion,
-        archived: true,
-      },
+      data: formattedData,
     },
     description: 'archive equipment',
     matchers: {
       modelName: 'com.axelor.apps.intervention.db.Equipment',
       id: equipmentId,
-      fields: {
-        'data.archived': 'archived',
-      },
+      fields: matchers,
     },
   });
 }
