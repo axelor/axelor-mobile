@@ -90,25 +90,18 @@ export async function addCartLine({cartId, cartVersion, productId, qty}) {
     throw {response: {status: 404, statusText: 'Sale_NoActiveCart'}};
   }
 
-  const {matchers, formattedData} = formatRequestBody({
-    version: cartVersion,
-    cartId,
-    productId,
-    qty,
-  });
-
   return getActionApi().send({
     url: `/ws/aos/cart/add-line/${cartId}`,
     method: 'put',
-    body: formattedData,
+    body: {version: cartVersion, cartId, productId, qty},
     description: 'Add Product to Cart Line',
     matchers: {
       modelName: 'com.axelor.apps.sale.db.CartLine',
       id: Date.now(),
       fields: {
-        ...matchers,
         cartId: 'cart.id',
         productId: 'product.id',
+        qty: 'qty',
       },
     },
   });
