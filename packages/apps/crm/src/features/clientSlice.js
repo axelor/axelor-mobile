@@ -20,7 +20,6 @@ import {createAsyncThunk, createSlice} from '@reduxjs/toolkit';
 import {
   generateInifiniteScrollCases,
   handlerApiCall,
-  updateAgendaItems,
 } from '@axelor/aos-mobile-core';
 import {
   searchClient,
@@ -56,22 +55,14 @@ export const getClientbyId = createAsyncThunk(
 
 export const updateClient = createAsyncThunk(
   'client/updateClient',
-  async function (data = {}, {getState}) {
+  async function (data = {}, {getState, dispatch}) {
     return handlerApiCall({
       fetchFunction: _updateClient,
       data,
       action: 'Crm_SliceAction_UpdateClient',
       getState,
       responseOptions: {isArrayResponse: false},
-    }).then(res => {
-      return handlerApiCall({
-        fetchFunction: getClient,
-        data: {clientId: res?.id},
-        action: 'Crm_SliceAction_FetchClientById',
-        getState,
-        responseOptions: {isArrayResponse: false},
-      });
-    });
+    }).then(() => dispatch(getClientbyId({clientId: data.id})));
   },
 );
 
@@ -98,17 +89,12 @@ const clientSlice = createSlice({
     builder.addCase(getClientbyId.pending, state => {
       state.loadingClient = true;
     });
+    builder.addCase(getClientbyId.rejected, state => {
+      state.loadingClient = false;
+    });
     builder.addCase(getClientbyId.fulfilled, (state, action) => {
       state.loadingClient = false;
       state.client = action.payload;
-    });
-    builder.addCase(updateClient.pending, (state, action) => {
-      state.loadingClient = true;
-    });
-    builder.addCase(updateClient.fulfilled, (state, action) => {
-      state.loadingClient = false;
-      state.client = action.payload;
-      state.clientList = updateAgendaItems(state.clientList, [action.payload]);
     });
   },
 });

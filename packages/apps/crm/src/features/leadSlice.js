@@ -20,7 +20,6 @@ import {createAsyncThunk, createSlice} from '@reduxjs/toolkit';
 import {
   generateInifiniteScrollCases,
   handlerApiCall,
-  updateAgendaItems,
 } from '@axelor/aos-mobile-core';
 import {
   searchLeads,
@@ -72,64 +71,40 @@ export const fetchLeadById = createAsyncThunk(
 
 export const updateLeadScore = createAsyncThunk(
   'lead/updateLeadScore',
-  async function (data = {}, {getState}) {
+  async function (data = {}, {getState, dispatch}) {
     return handlerApiCall({
       fetchFunction: updateLeadScoring,
       data,
       action: 'Crm_SliceAction_UpdateLeadScore',
       getState,
       responseOptions: {isArrayResponse: false},
-    }).then(() => {
-      return handlerApiCall({
-        fetchFunction: getLead,
-        data,
-        action: 'Crm_SliceAction_FetchLeadById',
-        getState,
-        responseOptions: {isArrayResponse: false},
-      });
-    });
+    }).then(() => dispatch(fetchLeadById({leadId: data.leadId})));
   },
 );
 
 export const updateLead = createAsyncThunk(
   'lead/updateLead',
-  async function (data = {}, {getState}) {
+  async function (data = {}, {getState, dispatch}) {
     return handlerApiCall({
       fetchFunction: _updateLead,
       data,
       action: 'Crm_SliceAction_UpdateLead',
       getState,
       responseOptions: {isArrayResponse: false},
-    }).then(() => {
-      return handlerApiCall({
-        fetchFunction: getLead,
-        data: {leadId: data?.lead?.id},
-        action: 'Crm_SliceAction_FetchLeadById',
-        getState,
-        responseOptions: {isArrayResponse: false},
-      });
-    });
+    }).then(() => dispatch(fetchLeadById({leadId: data.lead.id})));
   },
 );
 
 export const createLead = createAsyncThunk(
   'lead/createLead',
-  async function (data = {}, {getState}) {
+  async function (data = {}, {getState, dispatch}) {
     return handlerApiCall({
       fetchFunction: _createLead,
       data,
       action: 'Crm_SliceAction_CreateLead',
       getState,
       responseOptions: {isArrayResponse: false, showToast: true},
-    }).then(() => {
-      return handlerApiCall({
-        fetchFunction: searchLeads,
-        data,
-        action: 'Crm_SliceAction_FetchLead',
-        getState,
-        responseOptions: {isArrayResponse: true},
-      });
-    });
+    }).then(() => dispatch(fetchLeads(data)));
   },
 );
 
@@ -163,35 +138,15 @@ const leadSlice = createSlice({
       state.loadingLeadStatus = false;
       state.leadStatusList = action.payload;
     });
-    builder.addCase(fetchLeadById.pending, (state, action) => {
+    builder.addCase(fetchLeadById.pending, state => {
       state.loadingLead = true;
+    });
+    builder.addCase(fetchLeadById.rejected, state => {
+      state.loadingLead = false;
     });
     builder.addCase(fetchLeadById.fulfilled, (state, action) => {
       state.loadingLead = false;
       state.lead = action.payload;
-    });
-    builder.addCase(updateLeadScore.pending, (state, action) => {
-      state.loadingLead = true;
-    });
-    builder.addCase(updateLeadScore.fulfilled, (state, action) => {
-      state.loadingLead = false;
-      state.lead = action.payload;
-      state.leadList = updateAgendaItems(state.leadList, [action.payload]);
-    });
-    builder.addCase(updateLead.pending, (state, action) => {
-      state.loadingLead = true;
-    });
-    builder.addCase(updateLead.fulfilled, (state, action) => {
-      state.loadingLead = false;
-      state.lead = action.payload;
-      state.leadList = updateAgendaItems(state.leadList, [action.payload]);
-    });
-    builder.addCase(createLead.pending, (state, action) => {
-      state.loadingLeadList = true;
-    });
-    builder.addCase(createLead.fulfilled, (state, action) => {
-      state.loadingLeadList = false;
-      state.leadList = action.payload;
     });
   },
 });

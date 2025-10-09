@@ -20,7 +20,6 @@ import {createAsyncThunk, createSlice} from '@reduxjs/toolkit';
 import {
   generateInifiniteScrollCases,
   handlerApiCall,
-  updateAgendaItems,
 } from '@axelor/aos-mobile-core';
 import {
   getOpportunityStatus,
@@ -74,85 +73,55 @@ export const getOpportunity = createAsyncThunk(
 
 export const updateOpportunityStatus = createAsyncThunk(
   'opportunity/updateOpportunityStatus',
-  async function (data = {}, {getState}) {
+  async function (data = {}, {getState, dispatch}) {
     return handlerApiCall({
       fetchFunction: _updateOpportunityStatus,
       data,
       action: 'Crm_SliceAction_UpdateOpportunityStatus',
       getState,
       responseOptions: {isArrayResponse: false},
-    }).then(() =>
-      handlerApiCall({
-        fetchFunction: _getOpportunity,
-        data: {opportunityId: data?.opportunityId},
-        action: 'Crm_SliceAction_GetOpportunity',
-        getState,
-        responseOptions: {isArrayResponse: false},
-      }),
-    );
+    }).then(() => dispatch(getOpportunity(data)));
   },
 );
 
 export const updateOpportunityScore = createAsyncThunk(
   'opportunity/updateOpportunityScore',
-  async function (data = {}, {getState}) {
+  async function (data = {}, {getState, dispatch}) {
     return handlerApiCall({
       fetchFunction: _updateOpportunityScoring,
       data,
       action: 'Crm_SliceAction_UpdateOpportunityScore',
       getState,
       responseOptions: {isArrayResponse: false},
-    }).then(() => {
-      return handlerApiCall({
-        fetchFunction: _getOpportunity,
-        data: {opportunityId: data?.opportunityId},
-        action: 'Crm_SliceAction_GetOpportunity',
-        getState,
-        responseOptions: {isArrayResponse: false},
-      });
-    });
+    }).then(() => dispatch(getOpportunity(data)));
   },
 );
 
 export const updateOpportunity = createAsyncThunk(
   'opportunity/updateOpportunity',
-  async function (data = {}, {getState}) {
+  async function (data = {}, {getState, dispatch}) {
     return handlerApiCall({
       fetchFunction: _updateOpportunity,
       data,
       action: 'Crm_SliceAction_UpdateOpportunity',
       getState,
       responseOptions: {isArrayResponse: false},
-    }).then(() => {
-      return handlerApiCall({
-        fetchFunction: _getOpportunity,
-        data: {opportunityId: data?.opportunity?.id},
-        action: 'Crm_SliceAction_GetOpportunity',
-        getState,
-        responseOptions: {isArrayResponse: false},
-      });
-    });
+    }).then(() =>
+      dispatch(getOpportunity({opportunityId: data.opportunity.id})),
+    );
   },
 );
 
 export const createOpportunity = createAsyncThunk(
   'opportunity/createOpportunity',
-  async function (data = {}, {getState}) {
+  async function (data = {}, {getState, dispatch}) {
     return handlerApiCall({
       fetchFunction: _createOpportunity,
       data,
       action: 'Crm_SliceAction_CreateOpportunity',
       getState,
       responseOptions: {isArrayResponse: false, showToast: true},
-    }).then(() => {
-      return handlerApiCall({
-        fetchFunction: searchOpportunities,
-        data,
-        action: 'Crm_SliceAction_FetchOpportunities',
-        getState,
-        responseOptions: {isArrayResponse: true},
-      });
-    });
+    }).then(() => dispatch(fetchOpportunities(data)));
   },
 );
 
@@ -205,46 +174,12 @@ const opportunitySlice = createSlice({
     builder.addCase(getOpportunity.pending, state => {
       state.loadingOpportunity = true;
     });
+    builder.addCase(getOpportunity.rejected, state => {
+      state.loadingOpportunity = true;
+    });
     builder.addCase(getOpportunity.fulfilled, (state, action) => {
       state.loadingOpportunity = false;
       state.opportunity = action.payload;
-    });
-    builder.addCase(updateOpportunityStatus.pending, (state, action) => {
-      state.loadingOpportunity = true;
-    });
-    builder.addCase(updateOpportunityStatus.fulfilled, (state, action) => {
-      state.loadingOpportunity = false;
-      state.opportunity = action.payload;
-      state.opportunityList = updateAgendaItems(state.opportunityList, [
-        action.payload,
-      ]);
-    });
-    builder.addCase(updateOpportunity.pending, (state, action) => {
-      state.loading = true;
-    });
-    builder.addCase(updateOpportunity.fulfilled, (state, action) => {
-      state.loading = false;
-      state.opportunity = action.payload;
-      state.opportunityList = updateAgendaItems(state.opportunityList, [
-        action.payload,
-      ]);
-    });
-    builder.addCase(updateOpportunityScore.pending, (state, action) => {
-      state.loading = true;
-    });
-    builder.addCase(updateOpportunityScore.fulfilled, (state, action) => {
-      state.loading = false;
-      state.opportunity = action.payload;
-      state.opportunityList = updateAgendaItems(state.opportunityList, [
-        action.payload,
-      ]);
-    });
-    builder.addCase(createOpportunity.pending, (state, action) => {
-      state.loadingList = true;
-    });
-    builder.addCase(createOpportunity.fulfilled, (state, action) => {
-      state.loadingList = false;
-      state.opportunityList = action.payload;
     });
     builder.addCase(getPartnerOpportunities.fulfilled, (state, action) => {
       state.partnerOpportunityList = action.payload;
