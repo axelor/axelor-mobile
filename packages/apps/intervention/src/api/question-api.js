@@ -73,13 +73,13 @@ export async function fetchQuestionById({questionId}) {
 }
 
 export async function updateQuestion({question}) {
-  const {matchers} = formatRequestBody(question, 'data');
+  const {matchers, formattedData} = formatRequestBody(question, 'data');
 
   return getActionApi().send({
     url: `/ws/rest/com.axelor.apps.intervention.db.InterventionQuestion/${question.id}`,
     method: 'post',
     body: {
-      data: question,
+      data: formattedData,
     },
     description: 'update intervention question',
     matchers: {
