@@ -153,7 +153,7 @@ const ScrollList = ({
     [renderActions, renderItem],
   );
 
-  const flatList = useRef<FlatList>();
+  const flatList = useRef<FlatList>(null);
 
   const moveToTop = () => {
     flatList.current.scrollToIndex({index: 0, animated: true});

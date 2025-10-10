@@ -54,11 +54,10 @@ const cameraSlice = createSlice({
     },
     clearPhoto(state) {
       state.photo = null;
+      state.cameraKey = null;
     },
     disableCamera(state) {
       state.isEnabled = false;
-      state.cameraKey = null;
-      state.photo = null;
     },
   },
 });

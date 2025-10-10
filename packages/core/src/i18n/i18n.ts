@@ -50,7 +50,7 @@ class I18nProvider {
 
   initI18n = defaultLanguage => {
     this.i18next.use(initReactI18next).init({
-      compatibilityJSON: 'v3',
+      compatibilityJSON: 'v4',
       lng: defaultLanguage,
       fallbackLng: 'en',
       resources: this.resources,

@@ -17,7 +17,7 @@
  */
 
 import React, {useMemo} from 'react';
-import {Dimensions, SafeAreaView, StatusBar, StyleSheet} from 'react-native';
+import {SafeAreaView} from 'react-native-safe-area-context';
 import {Color} from '@axelor/aos-mobile-ui';
 import {HeaderBand} from '../../molecules';
 import {useHeaderBand, HeaderBandHelper} from '../../../header';
@@ -39,7 +39,7 @@ const HeaderBandList = () => {
   );
 
   return (
-    <SafeAreaView style={styles.container}>
+    <SafeAreaView>
       {filteredBands.map((item: HeaderBandItem) => (
         <HeaderBand
           key={item.key}
@@ -51,12 +51,5 @@ const HeaderBandList = () => {
     </SafeAreaView>
   );
 };
-
-const styles = StyleSheet.create({
-  container: {
-    marginTop: StatusBar.currentHeight,
-    width: Dimensions.get('screen').width,
-  },
-});
 
 export default HeaderBandList;

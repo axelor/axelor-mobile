@@ -17,13 +17,9 @@
  */
 
 import React, {useEffect, useState, useCallback, useMemo, useRef} from 'react';
-import {
-  Dimensions,
-  Platform,
-  SafeAreaView,
-  StyleSheet,
-  View,
-} from 'react-native';
+import {Dimensions, Platform, StyleSheet, View} from 'react-native';
+import {SafeAreaView} from 'react-native-safe-area-context';
+import StaticSafeAreaInsets from 'react-native-static-safe-area-insets';
 import {useDispatch} from 'react-redux';
 import {
   Camera as PackageCamera,
@@ -31,7 +27,6 @@ import {
   useCameraPermission,
   useCodeScanner,
 } from 'react-native-vision-camera';
-import StaticSafeAreaInsets from 'react-native-static-safe-area-insets';
 import RNFS from 'react-native-fs';
 import {Icon, useThemeColor} from '@axelor/aos-mobile-ui';
 import {
@@ -251,7 +246,7 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   camera: {
-    height: Dimensions.get('screen').height,
+    height: Dimensions.get('window').height,
     width: Dimensions.get('window').width,
     position: 'absolute',
     top: 0,

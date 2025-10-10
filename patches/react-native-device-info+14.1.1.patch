@@ -1,5 +1,5 @@
 diff --git a/node_modules/react-native-device-info/android/src/main/java/com/learnium/RNDeviceInfo/RNDeviceModule.java b/node_modules/react-native-device-info/android/src/main/java/com/learnium/RNDeviceInfo/RNDeviceModule.java
-index 23e8fb4..e3a2377 100644
+index 768a713..98fb369 100644
 --- a/node_modules/react-native-device-info/android/src/main/java/com/learnium/RNDeviceInfo/RNDeviceModule.java
 +++ b/node_modules/react-native-device-info/android/src/main/java/com/learnium/RNDeviceInfo/RNDeviceModule.java
 @@ -525,7 +525,13 @@ public class RNDeviceModule extends ReactContextBaseJavaModule {

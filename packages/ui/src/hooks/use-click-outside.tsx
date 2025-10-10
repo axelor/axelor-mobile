@@ -97,8 +97,8 @@ const styles = StyleSheet.create({
     position: 'absolute',
     top: 0,
     right: 0,
-    width: Dimensions.get('screen').width,
-    height: Dimensions.get('screen').height,
+    width: Dimensions.get('window').width,
+    height: '100%',
     elevation: -1,
   },
 });

@@ -33,7 +33,7 @@ import {PopupFilters, PopupPrintTemplate} from '../components';
 import {headerActionsProvider} from './HeaderActionsProvider';
 
 export const useBasicActions = () => {
-  const connectionInterval = useRef<number>();
+  const connectionInterval = useRef<number>(null);
 
   const [isConnected, setIsConnected] = useState(true);
 
