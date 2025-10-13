@@ -17,15 +17,10 @@
  */
 
 import React, {useCallback, useEffect, useMemo, useState} from 'react';
-import {Pressable, StyleSheet, View} from 'react-native';
 import {
   AutoCompleteSearch,
   ChipSelect,
-  Color,
-  HeaderContainer,
   Screen,
-  TagList,
-  Text,
   useThemeColor,
 } from '@axelor/aos-mobile-ui';
 import {
@@ -33,9 +28,10 @@ import {
   useSelector,
   useTranslator,
 } from '@axelor/aos-mobile-core';
-import LogisticalFormHeader from '../LogisticalFormHeader/LogisticalFormHeader';
 import {fetchStockMoveLines} from '../../../../features/stockMoveLineSlice';
 import LogisticalFormStockMoveLineCard from '../LogisticalFormStockMoveLineCard/LogisticalFormStockMoveLineCard';
+import {StockMoveTagSelect} from '../../../molecules';
+import LogisticalFormHeader from '../LogisticalFormHeader/LogisticalFormHeader';
 
 const PACKAGING_STATUS = {
   NOT_PROCESSED: 'not_processed',
@@ -76,20 +72,6 @@ const LogisticalFormStockMoveLinesView = () => {
   const [selectedStockMoveId, setSelectedStockMoveId] = useState<
     string | number | null
   >(stockMoveItems[0]?.key ?? null);
-
-  useEffect(() => {
-    setSelectedStockMoveId(prev => {
-      if (stockMoveItems.length === 0) {
-        return null;
-      }
-
-      if (prev != null && stockMoveItems.some(item => item.key === prev)) {
-        return prev;
-      }
-
-      return stockMoveItems[0].key;
-    });
-  }, [stockMoveItems]);
 
   useEffect(() => {
     setSelectedStockMoveId(prev => {
@@ -196,73 +178,9 @@ const LogisticalFormStockMoveLinesView = () => {
     [Colors.defaultColor.background, statusOptions],
   );
 
-  const computeTagColor = useCallback(
-    (color: Color, isSelected: boolean): Color => {
-      if (isSelected) {
-        return {...color};
-      }
-
-      return {
-        background: color.background,
-        background_light: Colors.backgroundColor,
-        foreground: color.background,
-      };
-    },
-    [Colors.backgroundColor],
-  );
-
-  const renderTagBadges = useCallback(
-    (
-      items: any[],
-      isSelected: (key: string | number) => boolean,
-      onPress: (key: string | number) => void,
-      defaultColor: Color,
-    ) =>
-      items.map(item => {
-        const baseColor = item.color ?? defaultColor;
-        const tagColor = computeTagColor(baseColor, isSelected(item.key));
-
-        return (
-          <Pressable
-            key={item.key}
-            onPress={() => onPress(item.key)}
-            style={styles.tagWrapper}>
-            <TagList
-              hideIfNull={false}
-              tags={[
-                {
-                  title: item.label,
-                  color: tagColor,
-                  order: item.order,
-                },
-              ]}
-            />
-          </Pressable>
-        );
-      }),
-    [computeTagColor],
-  );
-
-  const handleSelectStockMove = useCallback((key: string | number) => {
+  const handleSelectStockMove = useCallback((key: string | number | null) => {
     setSelectedStockMoveId(key);
   }, []);
-
-  const stockMoveTagElements = useMemo(
-    () =>
-      renderTagBadges(
-        stockMoveItems,
-        key => key === selectedStockMoveId,
-        handleSelectStockMove,
-        Colors.infoColor,
-      ),
-    [
-      Colors.infoColor,
-      stockMoveItems,
-      handleSelectStockMove,
-      renderTagBadges,
-      selectedStockMoveId,
-    ],
-  );
 
   const filteredLines = useMemo(() => {
     if (!Array.isArray(stockMoveLineList)) {
@@ -279,23 +197,6 @@ const LogisticalFormStockMoveLinesView = () => {
       );
     });
   }, [selectedStatusKeys, selectedStockMoveId, stockMoveLineList]);
-
-  const renderStockMoveSection = (
-    <View style={styles.section}>
-      <Text writingType="important" style={styles.sectionTitle}>
-        {I18n.t('Stock_LinkedStockMoves')}
-      </Text>
-      {stockMoveItems.length === 0 ? (
-        <View style={styles.emptyContainer}>
-          <Text style={styles.emptyText}>
-            {I18n.t('Stock_NoLinkedStockMove')}
-          </Text>
-        </View>
-      ) : (
-        <View style={styles.tagsContainer}>{stockMoveTagElements}</View>
-      )}
-    </View>
-  );
 
   const selectedStockMoveOption = useMemo(
     () => stockMoveItems.find(item => item.key === selectedStockMoveId) ?? null,
@@ -335,11 +236,16 @@ const LogisticalFormStockMoveLinesView = () => {
         }
         topFixedItems={
           <>
-            <HeaderContainer
-              expandableFilter={false}
-              fixedItems={<LogisticalFormHeader {...logisticalForm} />}
+            <LogisticalFormHeader {...logisticalForm} />
+            <StockMoveTagSelect
+              title={I18n.t('Stock_LinkedStockMoves')}
+              items={stockMoveItems}
+              selectedKey={selectedStockMoveId}
+              onSelect={handleSelectStockMove}
+              defaultColor={Colors.infoColor}
+              emptyLabel={I18n.t('Stock_NoLinkedStockMove')}
+              colors={Colors}
             />
-            {renderStockMoveSection}
           </>
         }
         fixedItems={
@@ -362,39 +268,5 @@ const LogisticalFormStockMoveLinesView = () => {
     </Screen>
   );
 };
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-  },
-  section: {
-    paddingHorizontal: 12,
-    paddingTop: 12,
-    paddingBottom: 4,
-  },
-  sectionTitle: {
-    marginBottom: 8,
-  },
-  emptyContainer: {
-    paddingVertical: 16,
-  },
-  emptyText: {
-    fontStyle: 'italic',
-  },
-  tagsContainer: {
-    flexDirection: 'row',
-    flexWrap: 'wrap',
-    alignItems: 'center',
-    marginTop: 8,
-  },
-  tagWrapper: {
-    marginRight: 8,
-    marginBottom: 8,
-  },
-  searchBar: {
-    marginTop: 4,
-    marginBottom: 8,
-  },
-});
 
 export default LogisticalFormStockMoveLinesView;
