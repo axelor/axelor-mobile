@@ -53,10 +53,12 @@ export async function searchStockMoveLine({
   stockMoveId,
   scanValue,
   checkValidated = false,
+  page = 0,
 }: {
   stockMoveId: number;
   scanValue?: string;
   checkValidated?: boolean;
+  page?: number;
 }) {
   return createStandardSearch({
     model: 'com.axelor.apps.stock.db.StockMoveLine',
@@ -64,7 +66,7 @@ export async function searchStockMoveLine({
     domain: checkValidated ? 'self.qty <= self.realQty' : undefined,
     fieldKey: 'stock_stockMoveLine',
     sortKey: 'stock_stockMoveLine',
-    page: 0,
+    page,
     provider: 'model',
   });
 }

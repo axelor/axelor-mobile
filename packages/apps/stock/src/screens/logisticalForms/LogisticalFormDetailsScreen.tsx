@@ -28,6 +28,7 @@ import {
 import {
   LogisticalFormGeneralInformationView,
   LogisticalFormPackagingView,
+  LogisticalFormStockMoveLinesView,
 } from '../../components';
 import {fetchLogisticalForm} from '../../features/logisticalFormSlice';
 
@@ -68,6 +69,12 @@ const LogisticalFormDetailsScreen = ({navigation, route}: any) => {
         title: I18n.t('Stock_Packaging'),
         color: Colors.infoColor,
         viewComponent: <LogisticalFormPackagingView />,
+      },
+      {
+        iconName: 'card-list',
+        title: I18n.t('Stock_StockMoveLinesToPackage'),
+        color: Colors.plannedColor,
+        viewComponent: <LogisticalFormStockMoveLinesView />,
       },
       {
         iconName: 'pencil-fill',

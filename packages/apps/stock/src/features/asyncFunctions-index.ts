@@ -97,6 +97,7 @@ export {
   filterSecondStockLocations,
   searchStockLocations,
 } from './stockLocationSlice';
+export {fetchStockMoveLines} from './stockMoveLineSlice';
 export {
   fetchSupplierArrivalLine,
   fetchSupplierArrivalLines,

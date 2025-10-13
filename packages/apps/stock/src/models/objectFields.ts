@@ -216,6 +216,14 @@ export const stock_modelAPI: ObjectFields = {
     statusSelect: schemaContructor.number(),
     internalDeliveryComment: schemaContructor.string(),
     externalDeliveryComment: schemaContructor.string(),
+    stockMoveList: schemaContructor.array().of(
+      schemaContructor.subObject().concat(
+        schemaContructor.object({
+          stockMoveSeq: schemaContructor.string(),
+          statusSelect: schemaContructor.number(),
+        }),
+      ),
+    ),
   }),
   stock_stockCorrection: schemaContructor.object({
     statusSelect: schemaContructor.number(),
@@ -375,12 +383,25 @@ export const stock_modelAPI: ObjectFields = {
     unit: schemaContructor.subObject('name'),
     qty: schemaContructor.number(),
     realQty: schemaContructor.number(),
+    sequence: schemaContructor.number(),
+    totalNetMass: schemaContructor.number(),
+    qtyRemainingToPackage: schemaContructor.number(),
     product: schemaContructor.subObject().concat(
       schemaContructor.object({
         fullName: schemaContructor.string(),
         name: schemaContructor.string(),
         code: schemaContructor.string(),
         trackingNumberConfiguration: schemaContructor.subObject(),
+      }),
+    ),
+    stockMove: schemaContructor.subObject('stockMoveSeq').concat(
+      schemaContructor.object({
+        statusSelect: schemaContructor.number(),
+      }),
+    ),
+    saleOrderLine: schemaContructor.subObject('sequence').concat(
+      schemaContructor.object({
+        saleOrder: schemaContructor.subObject('saleOrderSeq'),
       }),
     ),
     isRealQtyModifiedByUser: schemaContructor.boolean(),

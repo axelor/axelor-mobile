@@ -36,6 +36,7 @@ export {stockCorrectionReasonReducer as stockCorrectionReason} from './stockCorr
 export {stockCorrectionReducer as stockCorrection} from './stockCorrectionSlice';
 export {stockLocationLineReducer as stockLocationLine} from './stockLocationLineSlice';
 export {stockLocationReducer as stockLocation} from './stockLocationSlice';
+export {stockMoveLineReducer as stockMoveLine} from './stockMoveLineSlice';
 export {supplierArrivalLineReducer as supplierArrivalLine} from './supplierArrivalLineSlice';
 export {supplierArrivalReducer as supplierArrival} from './supplierArrivalSlice';
 export {supplierCatalogReducer as supplierCatalog} from './supplierCatalogSlice';
