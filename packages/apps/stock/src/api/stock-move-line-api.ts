@@ -38,6 +38,7 @@ export async function checkQuantity({
 const createSearchCriteria = (
   stockMoveId: number,
   scanValue?: string,
+  searchValue?: string,
 ): Criteria[] => {
   return [
     {
@@ -46,6 +47,7 @@ const createSearchCriteria = (
       value: stockMoveId,
     },
     getSearchCriterias('stock_massStockMoveLine', scanValue),
+    getSearchCriterias('stock_stockMoveLine', searchValue),
   ];
 };
 
@@ -54,15 +56,17 @@ export async function searchStockMoveLine({
   scanValue,
   checkValidated = false,
   page = 0,
+  searchValue,
 }: {
   stockMoveId: number;
   scanValue?: string;
   checkValidated?: boolean;
   page?: number;
+  searchValue?: string;
 }) {
   return createStandardSearch({
     model: 'com.axelor.apps.stock.db.StockMoveLine',
-    criteria: createSearchCriteria(stockMoveId, scanValue),
+    criteria: createSearchCriteria(stockMoveId, scanValue, searchValue),
     domain: checkValidated ? 'self.qty <= self.realQty' : undefined,
     fieldKey: 'stock_stockMoveLine',
     sortKey: 'stock_stockMoveLine',

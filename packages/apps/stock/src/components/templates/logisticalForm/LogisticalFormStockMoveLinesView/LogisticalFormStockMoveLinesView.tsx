@@ -69,9 +69,9 @@ const LogisticalFormStockMoveLinesView = () => {
     }));
   }, [Colors.infoColor, logisticalForm?.stockMoveList]);
 
-  const [selectedStockMoveId, setSelectedStockMoveId] = useState<
-    string | number | null
-  >(stockMoveItems[0]?.key ?? null);
+  const [selectedStockMoveId, setSelectedStockMoveId] = useState(
+    stockMoveItems[0]?.key ?? null,
+  );
 
   useEffect(() => {
     setSelectedStockMoveId(prev => {
@@ -112,27 +112,17 @@ const LogisticalFormStockMoveLinesView = () => {
     [statusOptions],
   );
 
-  const [selectedStatusKeys, setSelectedStatusKeys] =
-    useState<string[]>(allStatusKeys);
+  const [selectedStatusKeys, setSelectedStatusKeys] = useState([]);
 
   useEffect(() => {
     setSelectedStatusKeys(prev => {
-      const current = Array.isArray(prev) ? prev : [];
-      const next = current.filter(key => allStatusKeys.includes(key));
-
-      if (next.length === 0) {
-        const shouldReset =
-          current.length !== allStatusKeys.length ||
-          current.some(key => !allStatusKeys.includes(key));
-
-        return shouldReset ? allStatusKeys : current;
+      if (!Array.isArray(prev)) {
+        return [];
       }
 
-      if (next.length === current.length) {
-        return current;
-      }
-
-      return next;
+      return Array.from(new Set(prev)).filter(key =>
+        allStatusKeys.includes(key),
+      );
     });
   }, [allStatusKeys]);
 
@@ -147,17 +137,16 @@ const LogisticalFormStockMoveLinesView = () => {
     [selectedStatusKeys, statusOptions],
   );
 
-  const handleStatusChipChange = useCallback(
-    (items: any[]) => {
-      if (!Array.isArray(items) || items.length === 0) {
-        setSelectedStatusKeys(allStatusKeys);
-        return;
-      }
+  const handleStatusChipChange = useCallback((items: any[]) => {
+    if (!Array.isArray(items) || items.length === 0) {
+      setSelectedStatusKeys([]);
+      return;
+    }
 
-      setSelectedStatusKeys(items.map(item => String(item.key)));
-    },
-    [allStatusKeys],
-  );
+    setSelectedStatusKeys(
+      Array.from(new Set(items.map(item => String(item.key)))),
+    );
+  }, []);
 
   const renderLineItem = useCallback(
     ({item}) => {
@@ -165,12 +154,9 @@ const LogisticalFormStockMoveLinesView = () => {
       const statusColor =
         statusOptions.find(option => option.key === status)?.color
           ?.background ?? Colors.defaultColor.background;
-      const remainingQty = item?.qtyRemainingToPackage;
-
       return (
         <LogisticalFormStockMoveLineCard
           line={item}
-          remainingQty={remainingQty}
           statusColor={statusColor}
         />
       );
@@ -192,11 +178,19 @@ const LogisticalFormStockMoveLinesView = () => {
         selectedStockMoveId == null ||
         item?.stockMove?.id === selectedStockMoveId;
 
+      const activeStatusKeys =
+        selectedStatusKeys.length > 0 ? selectedStatusKeys : allStatusKeys;
+
       return (
-        isSelectedMove && selectedStatusKeys.includes(getPackagingStatus(item))
+        isSelectedMove && activeStatusKeys.includes(getPackagingStatus(item))
       );
     });
-  }, [selectedStatusKeys, selectedStockMoveId, stockMoveLineList]);
+  }, [
+    allStatusKeys,
+    selectedStatusKeys,
+    selectedStockMoveId,
+    stockMoveLineList,
+  ]);
 
   const selectedStockMoveOption = useMemo(
     () => stockMoveItems.find(item => item.key === selectedStockMoveId) ?? null,

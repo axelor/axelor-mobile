@@ -392,6 +392,7 @@ export const stock_modelAPI: ObjectFields = {
         name: schemaContructor.string(),
         code: schemaContructor.string(),
         trackingNumberConfiguration: schemaContructor.subObject(),
+        picture: schemaContructor.subObject(),
       }),
     ),
     stockMove: schemaContructor.subObject('stockMoveSeq').concat(
@@ -399,11 +400,7 @@ export const stock_modelAPI: ObjectFields = {
         statusSelect: schemaContructor.number(),
       }),
     ),
-    saleOrderLine: schemaContructor.subObject('sequence').concat(
-      schemaContructor.object({
-        saleOrder: schemaContructor.subObject('saleOrderSeq'),
-      }),
-    ),
+    saleOrderLine: schemaContructor.subObject('sequence'),
     isRealQtyModifiedByUser: schemaContructor.boolean(),
   }),
   stock_packaging: schemaContructor.object({
