@@ -16,8 +16,22 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-export {default as LogisticalFormCard} from './LogisticalFormCard/LogisticalFormCard';
-export {default as LogisticalFormFilter} from './LogisticalFormFilter/LogisticalFormFilter';
-export {default as LogisticalFormGeneralInformationView} from './LogisticalFormGeneralInformationView/LogisticalFormGeneralInformationView';
-export {default as LogisticalFormHeader} from './LogisticalFormHeader/LogisticalFormHeader';
-export {default as LogisticalFormPackagingView} from './LogisticalFormPackagingView/LogisticalFormPackagingView';
+import React from 'react';
+import {StyleSheet, View} from 'react-native';
+import {Text} from '@axelor/aos-mobile-ui';
+
+const LogisticalFormPackagingView = () => {
+  return (
+    <View style={styles.container}>
+      <Text>Test</Text>
+    </View>
+  );
+};
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+  },
+});
+
+export default LogisticalFormPackagingView;

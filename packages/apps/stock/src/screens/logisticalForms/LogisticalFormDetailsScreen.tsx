@@ -25,7 +25,10 @@ import {
   useTranslator,
   useTypes,
 } from '@axelor/aos-mobile-core';
-import {LogisticalFormGeneralInformationView} from '../../components';
+import {
+  LogisticalFormGeneralInformationView,
+  LogisticalFormPackagingView,
+} from '../../components';
 import {fetchLogisticalForm} from '../../features/logisticalFormSlice';
 
 const LogisticalFormDetailsScreen = ({navigation, route}: any) => {
@@ -59,6 +62,12 @@ const LogisticalFormDetailsScreen = ({navigation, route}: any) => {
             onRefresh={loadLogisticalForm}
           />
         ),
+      },
+      {
+        iconName: 'diagram-3-fill',
+        title: I18n.t('Stock_Packaging'),
+        color: Colors.infoColor,
+        viewComponent: <LogisticalFormPackagingView />,
       },
       {
         iconName: 'pencil-fill',
