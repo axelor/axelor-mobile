@@ -57,6 +57,7 @@ export const stock_searchFields: SearchFields = {
     'trackingNumber.trackingNumberSeq',
     'trackingNumber.serialNumber',
   ],
+  stock_packaging: ['packagingNumber'],
   stock_supplierArrival: ['stockMoveSeq', 'purchaseOrderSet.externalReference'],
   stock_supplierArrivalLine: [
     'product.fullName',

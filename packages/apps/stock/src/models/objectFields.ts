@@ -385,6 +385,45 @@ export const stock_modelAPI: ObjectFields = {
     ),
     isRealQtyModifiedByUser: schemaContructor.boolean(),
   }),
+  stock_packaging: schemaContructor
+    .object({
+      packagingNumber: schemaContructor.string(),
+      totalNetMass: schemaContructor.number(),
+      totalGrossMass: schemaContructor.number(),
+      netMass: schemaContructor.number(),
+      grossMass: schemaContructor.number(),
+      packagingLevelSelect: schemaContructor.number(),
+      parentPackaging: schemaContructor.subObject('packagingNumber'),
+      logisticalForm: schemaContructor.subObject('deliveryNumberSeq'),
+      packageUsed: schemaContructor.subObject('fullName'),
+    })
+    .concat(
+      schemaContructor.object({
+        childrenPackagingList: schemaContructor
+          .array()
+          .of(schemaContructor.subObject('packagingNumber')),
+      }),
+    ),
+  stock_packagingLine: schemaContructor
+    .object({
+      qty: schemaContructor.number(),
+      packaging: schemaContructor.subObject('packagingNumber'),
+      stockMoveLine: schemaContructor.subObject().concat(
+        schemaContructor.object({
+          product: schemaContructor.subObject('fullName'),
+          trackingNumber: schemaContructor.subObject('trackingNumberSeq'),
+          stockMove: schemaContructor.subObject('stockMoveSeq'),
+        }),
+      ),
+      saleOrderLine: schemaContructor.subObject('sequence'),
+    })
+    .concat(
+      schemaContructor.object({
+        trackingNumberSet: schemaContructor
+          .array()
+          .of(schemaContructor.subObject('trackingNumberSeq')),
+      }),
+    ),
   auth_user: schemaContructor.object({
     activeCompany: schemaContructor.subObject().concat(
       schemaContructor.object({

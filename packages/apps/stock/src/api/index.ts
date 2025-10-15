@@ -119,3 +119,8 @@ export {
   updateTrackingNumber as updateTrackingNumberApi,
 } from './tracking-number-api';
 export {searchUnit as searchUnitApi} from './unit-api';
+export {searchPackaging as searchPackagingApi} from './packaging-api';
+export {
+  searchPackagingLines as searchPackagingLinesApi,
+  searchPackagingBranch as searchPackagingBranchApi,
+} from './packaging-line-api';

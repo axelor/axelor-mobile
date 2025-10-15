@@ -17,6 +17,8 @@
   "Stock_NewLogisticalForm": "Nouvelle fiche logistique",
   "Stock_EditLogisticalForm": "Modifier la fiche logistique",
   "Stock_Packaging": "Colisage",
+  "Stock_ParentPackaging": "Colis parent",
+  "Stock_PackagingLine": "Ligne de colisage",
   "Stock_Inventory": "Inventaire",
   "Stock_InventoryLines": "Lignes d'inventaire",
   "Stock_SeeDistributionStockLocation": "Voir la répartition par emplacement de stock",

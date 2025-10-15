@@ -16,14 +16,99 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import React from 'react';
+import React, {useMemo} from 'react';
 import {StyleSheet, View} from 'react-native';
-import {Text} from '@axelor/aos-mobile-ui';
+import {HeaderContainer, Text} from '@axelor/aos-mobile-ui';
+import {
+  SearchTreeView,
+  useSelector,
+  useTranslator,
+} from '@axelor/aos-mobile-core';
+import {
+  searchPackaging,
+  searchParentPackaging,
+} from '../../../../features/packagingSlice';
+import LogisticalFormHeader from '../LogisticalFormHeader/LogisticalFormHeader';
+import {searchPackagingBranchApi} from '../../../../api';
 
 const LogisticalFormPackagingView = () => {
+  const I18n = useTranslator();
+
+  const {logisticalForm} = useSelector((state: any) => state.logisticalForm);
+  const packagingState = useSelector((state: any) => state.stock_packaging) ?? {
+    loadingPackaging: false,
+    moreLoadingPackaging: false,
+    isListEndPackaging: false,
+    packagingList: [],
+    parentPackagingList: [],
+  };
+  const {
+    loadingPackaging,
+    moreLoadingPackaging,
+    isListEndPackaging,
+    packagingList,
+    parentPackagingList,
+  } = packagingState;
+
+  const logisticalFormId = logisticalForm?.id;
+  const packagingLabel = I18n.t('Stock_PackagingLine');
+
+  const sliceFunctionData = useMemo(
+    () => ({
+      logisticalFormId,
+    }),
+    [logisticalFormId],
+  );
+
+  const sliceParentFunctionData = useMemo(
+    () => ({
+      logisticalFormId,
+    }),
+    [logisticalFormId],
+  );
+
   return (
     <View style={styles.container}>
-      <Text>Test</Text>
+      <HeaderContainer
+        expandableFilter={false}
+        fixedItems={<LogisticalFormHeader {...(logisticalForm ?? {})} />}
+      />
+      {logisticalFormId != null && (
+        <SearchTreeView
+          parentList={parentPackagingList}
+          list={packagingList}
+          loading={loadingPackaging}
+          moreLoading={moreLoadingPackaging}
+          isListEnd={isListEndPackaging}
+          sliceParentFunction={searchParentPackaging}
+          sliceParentFunctionData={sliceParentFunctionData}
+          sliceFunction={searchPackaging}
+          sliceFunctionData={sliceFunctionData}
+          sliceFunctionDataParentIdName="parentPackagingId"
+          sliceFunctionDataNoParentName="noParent"
+          fetchBranchData={branchId =>
+            searchPackagingBranchApi({
+              parentPackagingId: branchId,
+            })
+          }
+          branchCondition={item => item?.packagingNumber != null}
+          displayParentSearchValue={item => item?.packagingNumber ?? ''}
+          searchParentPlaceholder={I18n.t('Stock_ParentPackaging')}
+          searchPlaceholder={I18n.t('Base_Search')}
+          parentFieldName="parentPackaging"
+          renderBranch={({item}) => (
+            <Text style={styles.branchText}>
+              {item?.packagingNumber ?? `#${item?.id}`}
+            </Text>
+          )}
+          renderLeaf={({item}) => (
+            <Text style={styles.leafText}>
+              {packagingLabel} #{item?.id}
+            </Text>
+          )}
+          isHideableParentSearch={false}
+        />
+      )}
     </View>
   );
 };
@@ -31,6 +116,12 @@ const LogisticalFormPackagingView = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+  },
+  branchText: {
+    fontWeight: '600',
+  },
+  leafText: {
+    marginLeft: 8,
   },
 });
 

@@ -39,3 +39,4 @@ export {supplierArrivalReducer as supplierArrival} from './supplierArrivalSlice'
 export {supplierCatalogReducer as supplierCatalog} from './supplierCatalogSlice';
 export {trackingNumberReducer as trackingNumber} from './trackingNumberSlice';
 export {unitReducer as unit} from './unitSlice';
+export {packagingReducer as stock_packaging} from './packagingSlice';

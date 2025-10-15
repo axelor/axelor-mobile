@@ -17,6 +17,8 @@
   "Stock_NewLogisticalForm": "New logistical form",
   "Stock_EditLogisticalForm": "Edit logistical form",
   "Stock_Packaging": "Packaging",
+  "Stock_ParentPackaging": "Parent packaging",
+  "Stock_PackagingLine": "Packaging line",
   "Stock_Inventory": "Inventory",
   "Stock_InventoryLines": "Inventory lines",
   "Stock_SeeDistributionStockLocation": "See distribution per stock location",
