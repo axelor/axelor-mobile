@@ -30,6 +30,7 @@ import {
 } from '../../../../features/packagingSlice';
 import LogisticalFormHeader from '../LogisticalFormHeader/LogisticalFormHeader';
 import {searchPackagingBranchApi} from '../../../../api';
+import LogisticalFormPackagingLineCard from '../LogisticalFormPackagingLineCard/LogisticalFormPackagingLineCard';
 
 const LogisticalFormPackagingView = () => {
   const I18n = useTranslator();
@@ -51,8 +52,6 @@ const LogisticalFormPackagingView = () => {
   } = packagingState;
 
   const logisticalFormId = logisticalForm?.id;
-  const packagingLabel = I18n.t('Stock_PackagingLine');
-
   const sliceFunctionData = useMemo(
     () => ({
       logisticalFormId,
@@ -102,9 +101,7 @@ const LogisticalFormPackagingView = () => {
             </Text>
           )}
           renderLeaf={({item}) => (
-            <Text style={styles.leafText}>
-              {packagingLabel} #{item?.id}
-            </Text>
+            <LogisticalFormPackagingLineCard packagingLine={item} />
           )}
           isHideableParentSearch={false}
         />
@@ -119,9 +116,6 @@ const styles = StyleSheet.create({
   },
   branchText: {
     fontWeight: '600',
-  },
-  leafText: {
-    marginLeft: 8,
   },
 });
 

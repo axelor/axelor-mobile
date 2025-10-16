@@ -19,8 +19,6 @@
 import {createStandardSearch, Criteria} from '@axelor/aos-mobile-core';
 import {searchPackaging as searchPackagingApi} from './packaging-api';
 
-const PACKAGING_LINE_MODEL = 'com.axelor.apps.supplychain.db.PackagingLine';
-
 const createPackagingLineCriteria = ({packagingId}: {packagingId: number}) => {
   const criteria: Criteria[] = [];
 
@@ -43,7 +41,7 @@ export async function searchPackagingLines({
   page?: number;
 }) {
   return createStandardSearch({
-    model: PACKAGING_LINE_MODEL,
+    model: 'com.axelor.apps.supplychain.db.PackagingLine',
     criteria: createPackagingLineCriteria({packagingId}),
     fieldKey: 'stock_packagingLine',
     sortKey: 'stock_packagingLine',
@@ -55,12 +53,10 @@ export async function searchPackagingLines({
 export async function searchPackagingBranch({
   parentPackagingId,
 }: {
-  logisticalFormId?: number;
   parentPackagingId: number;
 }) {
   const [packagingResponse, packagingLineResponse] = await Promise.all([
     searchPackagingApi({
-      logisticalFormId: null,
       parentPackagingId,
     }),
     searchPackagingLines({packagingId: parentPackagingId}),
@@ -74,14 +70,16 @@ export async function searchPackagingBranch({
     }),
   );
 
+  const data =
+    packagingData.length + packagingLines.length
+      ? [...packagingData, ...packagingLines]
+      : null;
+
   return {
     ...packagingResponse,
     data: {
       ...(packagingResponse?.data ?? {}),
-      data:
-        packagingData.length + packagingLines.length > 0
-          ? [...packagingData, ...packagingLines]
-          : null,
+      data,
     },
   };
 }

@@ -410,11 +410,13 @@ export const stock_modelAPI: ObjectFields = {
       packaging: schemaContructor.subObject('packagingNumber'),
       stockMoveLine: schemaContructor.subObject().concat(
         schemaContructor.object({
-          product: schemaContructor.subObject('fullName'),
-          trackingNumber: schemaContructor.subObject('trackingNumberSeq'),
+          unit: schemaContructor.subObject('name'),
+          product: productModel,
           stockMove: schemaContructor.subObject('stockMoveSeq'),
+          totalNetMass: schemaContructor.number(),
         }),
       ),
+      trackingNumberSet: schemaContructor.subObject('trackingNumberSeq'),
       saleOrderLine: schemaContructor.subObject('sequence'),
     })
     .concat(
