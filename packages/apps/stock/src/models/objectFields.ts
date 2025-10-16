@@ -396,28 +396,20 @@ export const stock_modelAPI: ObjectFields = {
     logisticalForm: schemaContructor.subObject('deliveryNumberSeq'),
     packageUsed: schemaContructor.subObject('fullName'),
   }),
-  stock_packagingLine: schemaContructor
-    .object({
-      qty: schemaContructor.number(),
-      packaging: schemaContructor.subObject('packagingNumber'),
-      stockMoveLine: schemaContructor.subObject().concat(
-        schemaContructor.object({
-          unit: schemaContructor.subObject('name'),
-          product: productModel,
-          stockMove: schemaContructor.subObject('stockMoveSeq'),
-          totalNetMass: schemaContructor.number(),
-        }),
-      ),
-      trackingNumberSet: schemaContructor.subObject('trackingNumberSeq'),
-      saleOrderLine: schemaContructor.subObject('sequence'),
-    })
-    .concat(
+  stock_packagingLine: schemaContructor.object({
+    qty: schemaContructor.number(),
+    packaging: schemaContructor.subObject('packagingNumber'),
+    stockMoveLine: schemaContructor.subObject().concat(
       schemaContructor.object({
-        trackingNumberSet: schemaContructor
-          .array()
-          .of(schemaContructor.subObject('trackingNumberSeq')),
+        unit: schemaContructor.subObject('name'),
+        product: productModel,
+        stockMove: schemaContructor.subObject('stockMoveSeq'),
+        totalNetMass: schemaContructor.number(),
       }),
     ),
+    trackingNumberSet: schemaContructor.subObject('trackingNumberSeq'),
+    saleOrderLine: schemaContructor.subObject('sequence'),
+  }),
   auth_user: schemaContructor.object({
     activeCompany: schemaContructor.subObject().concat(
       schemaContructor.object({
