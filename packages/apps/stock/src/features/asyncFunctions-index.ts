@@ -116,7 +116,4 @@ export {
   updateTrackingNumber,
 } from './trackingNumberSlice';
 export {fetchUnit} from './unitSlice';
-export {
-  searchPackaging,
-  searchParentPackaging,
-} from './packagingSlice';
+export {searchPackaging, searchParentPackaging} from './packagingSlice';

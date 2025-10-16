@@ -66,16 +66,12 @@ const packagingSlice = createSlice({
   initialState,
   reducers: {},
   extraReducers: builder => {
-    generateInifiniteScrollCases(
-      builder,
-      searchPackaging,
-      {
-        loading: 'loadingPackaging',
-        moreLoading: 'moreLoadingPackaging',
-        isListEnd: 'isListEndPackaging',
-        list: 'packagingList',
-      },
-    );
+    generateInifiniteScrollCases(builder, searchPackaging, {
+      loading: 'loadingPackaging',
+      moreLoading: 'moreLoadingPackaging',
+      isListEnd: 'isListEndPackaging',
+      list: 'packagingList',
+    });
     generateInifiniteScrollCases(builder, searchParentPackaging, {
       loading: 'loadingParentPackaging',
       moreLoading: 'moreLoadingParentPackaging',
