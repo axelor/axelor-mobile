@@ -40,7 +40,7 @@ const createPackagingCriteria = ({
     criteria.push(searchCriteria);
   }
 
-  if (logisticalFormId != null) {
+  if (logisticalFormId != null && parentPackagingId == null) {
     criteria.push({
       fieldName: 'logisticalForm.id',
       operator: '=',
