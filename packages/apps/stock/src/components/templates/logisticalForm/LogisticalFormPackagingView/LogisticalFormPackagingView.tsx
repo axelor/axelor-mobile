@@ -18,7 +18,7 @@
 
 import React, {useMemo} from 'react';
 import {StyleSheet, View} from 'react-native';
-import {HeaderContainer, Text} from '@axelor/aos-mobile-ui';
+import {HeaderContainer} from '@axelor/aos-mobile-ui';
 import {
   SearchTreeView,
   useSelector,
@@ -29,8 +29,9 @@ import {
   searchParentPackaging,
 } from '../../../../features/packagingSlice';
 import LogisticalFormHeader from '../LogisticalFormHeader/LogisticalFormHeader';
-import {searchPackagingBranchApi} from '../../../../api';
+import LogisticalFormPackagingCard from '../LogisticalFormPackagingCard/LogisticalFormPackagingCard';
 import LogisticalFormPackagingLineCard from '../LogisticalFormPackagingLineCard/LogisticalFormPackagingLineCard';
+import {searchPackagingBranchApi} from '../../../../api';
 
 const LogisticalFormPackagingView = () => {
   const I18n = useTranslator();
@@ -96,9 +97,7 @@ const LogisticalFormPackagingView = () => {
           searchPlaceholder={I18n.t('Base_Search')}
           parentFieldName="parentPackaging"
           renderBranch={({item}) => (
-            <Text style={styles.branchText}>
-              {item?.packagingNumber ?? `#${item?.id}`}
-            </Text>
+            <LogisticalFormPackagingCard packaging={item} />
           )}
           renderLeaf={({item}) => (
             <LogisticalFormPackagingLineCard packagingLine={item} />
@@ -113,9 +112,6 @@ const LogisticalFormPackagingView = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-  },
-  branchText: {
-    fontWeight: '600',
   },
 });
 
