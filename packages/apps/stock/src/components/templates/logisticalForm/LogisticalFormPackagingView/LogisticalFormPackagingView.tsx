@@ -17,8 +17,7 @@
  */
 
 import React, {useMemo} from 'react';
-import {StyleSheet, View} from 'react-native';
-import {HeaderContainer} from '@axelor/aos-mobile-ui';
+import {Screen} from '@axelor/aos-mobile-ui';
 import {
   SearchTreeView,
   useSelector,
@@ -68,13 +67,10 @@ const LogisticalFormPackagingView = () => {
   );
 
   return (
-    <View style={styles.container}>
-      <HeaderContainer
-        expandableFilter={false}
-        fixedItems={<LogisticalFormHeader {...(logisticalForm ?? {})} />}
-      />
+    <Screen removeSpaceOnTop={true}>
       {logisticalFormId != null && (
         <SearchTreeView
+          topFixedItems={<LogisticalFormHeader {...(logisticalForm ?? {})} />}
           parentList={parentPackagingList}
           list={packagingList}
           loading={loadingPackaging}
@@ -105,14 +101,8 @@ const LogisticalFormPackagingView = () => {
           isHideableParentSearch={false}
         />
       )}
-    </View>
+    </Screen>
   );
 };
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-  },
-});
 
 export default LogisticalFormPackagingView;
