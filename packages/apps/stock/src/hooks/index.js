@@ -18,6 +18,7 @@
 
 export {useCustomerLinesWithRacks} from './customer-delivery-lines';
 export {useInternalLinesWithRacks} from './internal-move-lines';
+export {useLogisticalFormState} from './logistical-form';
 export {useStockLinesCheckQty} from './stock-move-lines';
 export {
   useLineHandler,

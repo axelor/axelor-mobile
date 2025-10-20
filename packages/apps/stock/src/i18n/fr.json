@@ -18,6 +18,12 @@
   "Stock_EditLogisticalForm": "Modifier la fiche logistique",
   "Stock_Packaging": "Colisage",
   "Stock_ParentPackaging": "Emballage parent",
+  "Stock_StockMoveLinesToPackage": "Lignes de mouvements de stock à coliser",
+  "Stock_LinkedStockMoves": "Mouvements de stock liés",
+  "Stock_StockMove": "Mouvements de stock",
+  "Stock_PackagingStatus_NotProcessed": "Non traité",
+  "Stock_PackagingStatus_Partially": "Partiellement",
+  "Stock_PackagingStatus_Processed": "Traité",
   "Stock_Inventory": "Inventaire",
   "Stock_InventoryLines": "Lignes d'inventaire",
   "Stock_SeeDistributionStockLocation": "Voir la répartition par emplacement de stock",
@@ -213,6 +219,7 @@
   "Stock_SliceAction_FilterSuppliers": "filtre sur les fournisseurs",
   "Stock_SliceAction_FilterCarriers": "filtre sur les transporteurs",
   "Stock_SliceAction_FetchLogisticalForm": "récupération de la fiche logistique",
+  "Stock_SliceAction_FetchStockMoveLines": "récupération des lignes de mouvement de stock",
   "Stock_SliceAction_CreateLogisticalForm": "création de fiche logistique",
   "Stock_SliceAction_UpdateLogisticalForm": "mise à jour de la fiche logistique",
   "Stock_SliceAction_FetchProductStockIndicators": "récupération des indicateurs stock du produit",
@@ -255,5 +262,6 @@
   "Stock_SliceAction_UpdateCustomerDeliveryNote": "mise à jour de la note de la livraison client",
   "Stock_SliceAction_SearchLogisticalForms": "recherche sur les fiches logistique",
   "Stock_SliceAction_SearchPackaging": "recherche sur les emballages",
-  "Stock_SliceAction_SearchParentPackaging": "recherche sur les emballages parent"
+  "Stock_SliceAction_SearchParentPackaging": "recherche sur les emballages parent",
+  "Stock_SliceAction_SearchStockMove": "recherche sur les mouvements de stock"
 }
