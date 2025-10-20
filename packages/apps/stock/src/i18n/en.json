@@ -16,6 +16,8 @@
   "Stock_LogisticalForm": "Logistical forms",
   "Stock_NewLogisticalForm": "New logistical form",
   "Stock_EditLogisticalForm": "Edit logistical form",
+  "Stock_Packaging": "Packaging",
+  "Stock_ParentPackaging": "Parent packaging",
   "Stock_Inventory": "Inventory",
   "Stock_InventoryLines": "Inventory lines",
   "Stock_SeeDistributionStockLocation": "See distribution per stock location",
@@ -251,5 +253,7 @@
   "Stock_SliceAction_SplitCustomerDeliveryLine": "split customer delivery line",
   "Stock_SliceAction_SearchAlternativeBarcode": "search for alternative barcodes",
   "Stock_SliceAction_UpdateCustomerDeliveryNote": "update customer delivery note",
-  "Stock_SliceAction_SearchLogisticalForms": "search logistical forms"
+  "Stock_SliceAction_SearchLogisticalForms": "search logistical forms",
+  "Stock_SliceAction_SearchPackaging": "search packaging",
+  "Stock_SliceAction_SearchParentPackaging": "search parent packaging"
 }

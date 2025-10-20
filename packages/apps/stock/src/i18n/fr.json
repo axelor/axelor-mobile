@@ -16,6 +16,8 @@
   "Stock_LogisticalForm": "Fiches logistique",
   "Stock_NewLogisticalForm": "Nouvelle fiche logistique",
   "Stock_EditLogisticalForm": "Modifier la fiche logistique",
+  "Stock_Packaging": "Colisage",
+  "Stock_ParentPackaging": "Emballage parent",
   "Stock_Inventory": "Inventaire",
   "Stock_InventoryLines": "Lignes d'inventaire",
   "Stock_SeeDistributionStockLocation": "Voir la répartition par emplacement de stock",
@@ -251,5 +253,7 @@
   "Stock_SliceAction_SplitCustomerDeliveryLine": "séparation de la ligne de livraison client",
   "Stock_SliceAction_SearchAlternativeBarcode": "recherche des codes-barres alternatifs",
   "Stock_SliceAction_UpdateCustomerDeliveryNote": "mise à jour de la note de la livraison client",
-  "Stock_SliceAction_SearchLogisticalForms": "recherche sur les fiches logistique"
+  "Stock_SliceAction_SearchLogisticalForms": "recherche sur les fiches logistique",
+  "Stock_SliceAction_SearchPackaging": "recherche sur les emballages",
+  "Stock_SliceAction_SearchParentPackaging": "recherche sur les emballages parent"
 }
