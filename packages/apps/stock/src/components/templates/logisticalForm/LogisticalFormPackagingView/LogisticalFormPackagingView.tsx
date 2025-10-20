@@ -17,7 +17,6 @@
  */
 
 import React, {useMemo} from 'react';
-import {Screen} from '@axelor/aos-mobile-ui';
 import {
   SearchTreeView,
   useSelector,
@@ -58,33 +57,31 @@ const LogisticalFormPackagingView = () => {
   );
 
   return (
-    <Screen removeSpaceOnTop={true}>
-      <SearchTreeView
-        headerTopChildren={<LogisticalFormHeader {...logisticalForm} />}
-        parentList={parentPackagingList}
-        list={content}
-        loading={loadingPackaging}
-        moreLoading={moreLoadingPackaging}
-        isListEnd={isListEndPackaging}
-        sliceParentFunction={searchParentPackaging}
-        sliceParentFunctionData={sliceFunctionData}
-        sliceFunction={searchPackaging}
-        sliceFunctionData={sliceFunctionData}
-        sliceFunctionDataParentIdName="parentPackagingId"
-        sliceFunctionDataNoParentName="noParent"
-        fetchBranchData={parentPackagingId =>
-          searchPackagingBranchApi({parentPackagingId})
-        }
-        branchCondition={item => item?.packagingNumber != null}
-        displayParentSearchValue={item => item?.packagingNumber ?? ''}
-        searchParentPlaceholder={I18n.t('Stock_ParentPackaging')}
-        searchPlaceholder={I18n.t('Base_Search')}
-        parentFieldName="parentPackaging"
-        renderBranch={({item}) => <LogisticalFormPackagingCard {...item} />}
-        renderLeaf={({item}) => <LogisticalFormPackagingLineCard {...item} />}
-        isHideableParentSearch={false}
-      />
-    </Screen>
+    <SearchTreeView
+      headerTopChildren={<LogisticalFormHeader {...logisticalForm} />}
+      parentList={parentPackagingList}
+      list={content}
+      loading={loadingPackaging}
+      moreLoading={moreLoadingPackaging}
+      isListEnd={isListEndPackaging}
+      sliceParentFunction={searchParentPackaging}
+      sliceParentFunctionData={sliceFunctionData}
+      sliceFunction={searchPackaging}
+      sliceFunctionData={sliceFunctionData}
+      sliceFunctionDataParentIdName="parentPackagingId"
+      sliceFunctionDataNoParentName="noParent"
+      fetchBranchData={parentPackagingId =>
+        searchPackagingBranchApi({parentPackagingId})
+      }
+      branchCondition={item => item?.packagingNumber != null}
+      displayParentSearchValue={item => item?.packagingNumber ?? ''}
+      searchParentPlaceholder={I18n.t('Stock_ParentPackaging')}
+      searchPlaceholder={I18n.t('Base_Search')}
+      parentFieldName="parentPackaging"
+      renderBranch={({item}) => <LogisticalFormPackagingCard {...item} />}
+      renderLeaf={({item}) => <LogisticalFormPackagingLineCard {...item} />}
+      isHideableParentSearch={false}
+    />
   );
 };
 
