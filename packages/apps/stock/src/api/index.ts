@@ -61,6 +61,11 @@ export {
   searchLogisticalForms as searchLogisticalFormsApi,
   updateLogisticalForm as updateLogisticalFormApi,
 } from './logistical-form-api';
+export {searchPackaging as searchPackagingApi} from './packaging-api';
+export {
+  searchPackagingLines as searchPackagingLinesApi,
+  searchPackagingBranch as searchPackagingBranchApi,
+} from './packaging-line-api';
 export {
   searchClientsFilter,
   searchSuppliersFilter,

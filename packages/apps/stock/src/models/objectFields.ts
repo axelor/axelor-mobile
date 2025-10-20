@@ -385,6 +385,36 @@ export const stock_modelAPI: ObjectFields = {
     ),
     isRealQtyModifiedByUser: schemaContructor.boolean(),
   }),
+  stock_packaging: schemaContructor.object({
+    packagingNumber: schemaContructor.string(),
+    totalNetMass: schemaContructor.number(),
+    packagingLevelSelect: schemaContructor.number(),
+    parentPackaging: schemaContructor.subObject('packagingNumber'),
+    logisticalForm: schemaContructor.subObject('deliveryNumberSeq'),
+    packageUsed: schemaContructor.subObject('fullName'),
+  }),
+  stock_packagingLine: schemaContructor.object({
+    qty: schemaContructor.number(),
+    packaging: schemaContructor.subObject('packagingNumber'),
+    stockMoveLine: schemaContructor.subObject('name').concat(
+      schemaContructor.object({
+        unit: schemaContructor.subObject('name'),
+        product: productModel,
+        netMass: schemaContructor.number(),
+        trackingNumber: schemaContructor.subObject('trackingNumberSeq'),
+        saleOrderLine: schemaContructor.subObject('sequence').concat(
+          schemaContructor.object({
+            saleOrder: schemaContructor.subObject('fullName'),
+          }),
+        ),
+      }),
+    ),
+    saleOrderLine: schemaContructor.subObject('sequence').concat(
+      schemaContructor.object({
+        saleOrder: schemaContructor.subObject('fullName'),
+      }),
+    ),
+  }),
   auth_user: schemaContructor.object({
     activeCompany: schemaContructor.subObject().concat(
       schemaContructor.object({
