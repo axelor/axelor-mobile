@@ -95,9 +95,7 @@ export {
 } from './stock-correction-api';
 export {searchStockCorrectionReason as searchStockCorrectionReasonApi} from './stock-correction-reason-api';
 export {searchStockLocationsFilter as searchStockLocationsFilterApi} from './stock-location-api';
-export {
-  searchStockMove as searchStockMoveApi,
-} from './stock-move-api';
+export {searchStockMove as searchStockMoveApi} from './stock-move-api';
 export {
   searchAvailableProducts as searchAvailableProductsApi,
   searchStockLocationLine as searchStockLocationLineApi,
