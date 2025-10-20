@@ -36,35 +36,46 @@ export async function checkQuantity({
 }
 
 const createSearchCriteria = (
-  stockMoveId: number,
+  stockMoveId: number | number[],
   scanValue?: string,
+  searchValue?: string,
 ): Criteria[] => {
-  return [
-    {
-      fieldName: 'stockMove.id',
-      operator: '=',
-      value: stockMoveId,
-    },
+  const criterias: Criteria[] = [
     getSearchCriterias('stock_massStockMoveLine', scanValue),
+    getSearchCriterias('stock_stockMoveLine', searchValue),
   ];
+
+  if (stockMoveId != null) {
+    criterias.push({
+      fieldName: 'stockMove.id',
+      operator: 'in',
+      value: Array.isArray(stockMoveId) ? stockMoveId : [stockMoveId],
+    });
+  }
+
+  return criterias;
 };
 
 export async function searchStockMoveLine({
   stockMoveId,
   scanValue,
   checkValidated = false,
+  page = 0,
+  searchValue,
 }: {
-  stockMoveId: number;
+  stockMoveId: number | number[];
   scanValue?: string;
   checkValidated?: boolean;
+  page?: number;
+  searchValue?: string;
 }) {
   return createStandardSearch({
     model: 'com.axelor.apps.stock.db.StockMoveLine',
-    criteria: createSearchCriteria(stockMoveId, scanValue),
+    criteria: createSearchCriteria(stockMoveId, scanValue, searchValue),
     domain: checkValidated ? 'self.qty <= self.realQty' : undefined,
     fieldKey: 'stock_stockMoveLine',
     sortKey: 'stock_stockMoveLine',
-    page: 0,
+    page,
     provider: 'model',
   });
 }

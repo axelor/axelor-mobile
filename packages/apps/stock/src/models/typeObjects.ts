@@ -198,6 +198,28 @@ export const stock_typeObjects: ModuleSelections = [
           },
         ],
       },
+      packagingState: {
+        content: [
+          {
+            key: 'NotProcessed',
+            value: 'not_processed',
+            title: 'Stock_PackagingStatus_NotProcessed',
+            color: 'defaultColor',
+          },
+          {
+            key: 'PartiallyProcessed',
+            value: 'partially',
+            title: 'Stock_PackagingStatus_Partially',
+            color: 'cautionColor',
+          },
+          {
+            key: 'Processed',
+            value: 'processed',
+            title: 'Stock_PackagingStatus_Processed',
+            color: 'successColor',
+          },
+        ],
+      },
     },
   },
   {

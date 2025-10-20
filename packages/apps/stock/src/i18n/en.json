@@ -18,6 +18,12 @@
   "Stock_EditLogisticalForm": "Edit logistical form",
   "Stock_Packaging": "Packaging",
   "Stock_ParentPackaging": "Parent packaging",
+  "Stock_StockMoveLinesToPackage": "Stock move lines to package",
+  "Stock_LinkedStockMoves": "Linked stock moves",
+  "Stock_StockMove": "Stock moves",
+  "Stock_PackagingStatus_NotProcessed": "Not processed",
+  "Stock_PackagingStatus_Partially": "Partially",
+  "Stock_PackagingStatus_Processed": "Processed",
   "Stock_Inventory": "Inventory",
   "Stock_InventoryLines": "Inventory lines",
   "Stock_SeeDistributionStockLocation": "See distribution per stock location",
@@ -213,6 +219,7 @@
   "Stock_SliceAction_FilterSuppliers": "filter suppliers",
   "Stock_SliceAction_FilterCarriers": "filter carriers",
   "Stock_SliceAction_FetchLogisticalForm": "fetch logistical form",
+  "Stock_SliceAction_FetchStockMoveLines": "fetch stock move lines",
   "Stock_SliceAction_CreateLogisticalForm": "create logistical form",
   "Stock_SliceAction_UpdateLogisticalForm": "update logistical form",
   "Stock_SliceAction_FetchProductStockIndicators": "fetch product stock indicators",
@@ -255,5 +262,6 @@
   "Stock_SliceAction_UpdateCustomerDeliveryNote": "update customer delivery note",
   "Stock_SliceAction_SearchLogisticalForms": "search logistical forms",
   "Stock_SliceAction_SearchPackaging": "search packaging",
-  "Stock_SliceAction_SearchParentPackaging": "search parent packaging"
+  "Stock_SliceAction_SearchParentPackaging": "search parent packaging",
+  "Stock_SliceAction_SearchStockMove": "search stock move"
 }

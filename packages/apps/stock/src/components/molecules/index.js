@@ -23,3 +23,4 @@ export {default as LogisticalFormDropdownCards} from './LogisticalFormDropdownCa
 export {default as MassScannerButton} from './MassScannerButton/MassScannerButton';
 export {default as ProductCardDetails} from './ProductCardDetails/ProductCardDetails';
 export {default as StockCorrectionCard} from './StockCorrectionCard/StockCorrectionCard';
+export {default as StockMoveTagSelect} from './StockMoveTagSelect/StockMoveTagSelect';
