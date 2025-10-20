@@ -23,6 +23,7 @@ import {
 } from '@axelor/aos-mobile-core';
 import {searchPackaging as _searchPackaging} from '../api/packaging-api';
 import {searchPackagingLines} from './packagingLineSlice';
+import {fetchPackagingProducts as _fetchPackagingProducts} from '../api/packaging-product-api';
 
 export const searchPackaging = createAsyncThunk(
   'stock_packaging/searchPackaging',
@@ -59,6 +60,19 @@ export const searchParentPackaging = createAsyncThunk(
   },
 );
 
+export const fetchPackagingProducts = createAsyncThunk(
+  'stock_packaging/fetchPackagingProducts',
+  async function (data, {getState}) {
+    return handlerApiCall({
+      fetchFunction: _fetchPackagingProducts,
+      data,
+      action: 'Stock_SliceAction_FetchPackagingProducts',
+      getState,
+      responseOptions: {isArrayResponse: true},
+    });
+  },
+);
+
 const initialState = {
   loadingPackaging: false,
   moreLoadingPackaging: false,
@@ -69,6 +83,11 @@ const initialState = {
   moreLoadingParentPackaging: false,
   isListEndParentPackaging: false,
   parentPackagingList: [],
+
+  loadingPackagingProducts: false,
+  moreLoadingPackagingProducts: false,
+  isListEndPackagingProducts: false,
+  packagingProductList: [],
 };
 
 const packagingSlice = createSlice({
@@ -87,6 +106,12 @@ const packagingSlice = createSlice({
       moreLoading: 'moreLoadingParentPackaging',
       isListEnd: 'isListEndParentPackaging',
       list: 'parentPackagingList',
+    });
+    generateInifiniteScrollCases(builder, fetchPackagingProducts, {
+      loading: 'loadingPackagingProducts',
+      moreLoading: 'moreLoadingPackagingProducts',
+      isListEnd: 'isListEndPackagingProducts',
+      list: 'packagingProductList',
     });
   },
 });

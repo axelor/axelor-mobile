@@ -17,7 +17,13 @@
  */
 
 import {FormConfigs, getTypes} from '@axelor/aos-mobile-core';
-import {PartnerSearchBar, StockLocationSearchBar} from '../components';
+import {
+  PartnerSearchBar,
+  StockLocationSearchBar,
+  LogisticalFormPackagingLineTypeToggle,
+  LogisticalFormPackagingProductSearch,
+  LogisticalFormPackagingStockMoveLineSearch,
+} from '../components';
 
 const getLogisticalFormStatuses = () => getTypes().LogisticalForm?.statusSelect;
 
@@ -100,6 +106,40 @@ export const stock_formsRegister: FormConfigs = {
         options: {multiline: true, adjustHeightWithLines: true},
         readonlyIf: ({objectState}) =>
           !isProvisionStatus(objectState?.statusSelect),
+      },
+    },
+  },
+  stock_logisticalFormPackagingItem: {
+    modelName: 'com.axelor.apps.supplychain.db.Packaging',
+    fields: {
+      lineType: {
+        type: 'string',
+        widget: 'custom',
+        customComponent: LogisticalFormPackagingLineTypeToggle,
+        hideIf: ({objectState}) => objectState?.id != null,
+      },
+      packageUsed: {
+        titleKey: 'Stock_PackagingUsed',
+        type: 'object',
+        widget: 'custom',
+        customComponent: LogisticalFormPackagingProductSearch,
+        hideIf: ({objectState}) => objectState.lineType !== 'packaging',
+      },
+      stockMoveLine: {
+        titleKey: 'Stock_StockMoveLine',
+        type: 'object',
+        widget: 'custom',
+        customComponent: LogisticalFormPackagingStockMoveLineSearch,
+        hideIf: ({objectState}) => objectState.lineType !== 'product',
+      },
+      qty: {
+        titleKey: 'Stock_Quantity',
+        type: 'number',
+        widget: 'default',
+        dependsOn: {
+          stockMoveLine: ({newValue}) => newValue?.qtyRemainingToPackage,
+        },
+        hideIf: ({objectState}) => objectState.lineType !== 'product',
       },
     },
   },

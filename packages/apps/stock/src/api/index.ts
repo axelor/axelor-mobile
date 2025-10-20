@@ -66,6 +66,7 @@ export {
   searchPackagingLines as searchPackagingLinesApi,
   searchPackagingBranch as searchPackagingBranchApi,
 } from './packaging-line-api';
+export {fetchPackagingProducts as fetchPackagingProductsApi} from './packaging-product-api';
 export {
   searchClientsFilter,
   searchSuppliersFilter,
