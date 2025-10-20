@@ -17,7 +17,7 @@
   "Stock_NewLogisticalForm": "Nouvelle fiche logistique",
   "Stock_EditLogisticalForm": "Modifier la fiche logistique",
   "Stock_Packaging": "Colisage",
-  "Stock_ParentPackaging": "Colis parent",
+  "Stock_ParentPackaging": "Emballage parent",
   "Stock_Inventory": "Inventaire",
   "Stock_InventoryLines": "Lignes d'inventaire",
   "Stock_SeeDistributionStockLocation": "Voir la répartition par emplacement de stock",
@@ -67,6 +67,7 @@
   "Stock_Application_SalePrice": "Prix de vente",
   "Stock_Application_CostPrice": "Prix de revient",
   "Stock_Application_PurchasePrice": "Prix d'achat",
+  "Stock_Comments": "Commentaires",
   "Stock_Status_Draft": "Brouillon",
   "Stock_Status_Validated": "Validé",
   "Stock_Status_Planned": "Planifié",
@@ -97,6 +98,7 @@
   "Stock_Name": "Nom",
   "Stock_Code": "Code",
   "Stock_Origin": "Origine",
+  "Stock_SupplierShipmentRef": "Ref. expédition fournisseur",
   "Stock_AddTrackingNumber": "Ajouter un numéro de suivi",
   "Stock_Locker": "Casier",
   "Stock_FromLocker": "Du casier",
@@ -218,6 +220,7 @@
   "Stock_SliceAction_FetchProductFromId": "récupération du produit par id",
   "Stock_SliceAction_UpdateProductLocker": "mise à jour du casier du produit",
   "Stock_SliceAction_FetchProductVariants": "récupération des variantes du produit",
+  "Stock_SliceAction_FetchProductVariantAttributes": "récupération des attributs du variant",
   "Stock_SliceAction_FetchRacks": "récupération des casiers",
   "Stock_SliceAction_FetchStockCorrectionReasons": "récupération des motifs de correction de stock",
   "Stock_SliceAction_SearchStockCorrections": "recherche sur les corrections de stock",
@@ -250,5 +253,7 @@
   "Stock_SliceAction_SplitCustomerDeliveryLine": "séparation de la ligne de livraison client",
   "Stock_SliceAction_SearchAlternativeBarcode": "recherche des codes-barres alternatifs",
   "Stock_SliceAction_UpdateCustomerDeliveryNote": "mise à jour de la note de la livraison client",
-  "Stock_SliceAction_SearchLogisticalForms": "recherche sur les fiches logistique"
+  "Stock_SliceAction_SearchLogisticalForms": "recherche sur les fiches logistique",
+  "Stock_SliceAction_SearchPackaging": "recherche sur les emballages",
+  "Stock_SliceAction_SearchParentPackaging": "recherche sur les emballages parent"
 }

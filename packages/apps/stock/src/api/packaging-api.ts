@@ -33,12 +33,9 @@ const createPackagingCriteria = ({
   parentPackagingId?: number;
   noParent?: boolean;
 }) => {
-  const criteria: Criteria[] = [];
-  const searchCriteria = getSearchCriterias('stock_packaging', searchValue);
-
-  if (searchCriteria != null) {
-    criteria.push(searchCriteria);
-  }
+  const criteria: Criteria[] = [
+    getSearchCriterias('stock_packaging', searchValue),
+  ];
 
   if (logisticalFormId != null && parentPackagingId == null) {
     criteria.push({
@@ -71,14 +68,12 @@ export async function searchPackaging({
   parentPackagingId,
   noParent,
   page = 0,
-  filterDomain,
 }: {
   searchValue?: string;
   logisticalFormId?: number;
   parentPackagingId?: number;
   noParent?: boolean;
   page?: number;
-  filterDomain?: any;
 }) {
   return createStandardSearch({
     model: 'com.axelor.apps.supplychain.db.Packaging',
@@ -92,6 +87,5 @@ export async function searchPackaging({
     sortKey: 'stock_packaging',
     page,
     provider: 'model',
-    filter: filterDomain,
   });
 }

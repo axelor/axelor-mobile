@@ -16,25 +16,41 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import React from 'react';
+import React, {useMemo} from 'react';
 import {View} from 'react-native';
+import {useTranslator} from '@axelor/aos-mobile-core';
 import {LabelText, Text, useDigitFormat} from '@axelor/aos-mobile-ui';
+import {useMassIndicatorChecker} from '../../../../providers';
 
 interface LogisticalFormPackagingCardProps {
-  packaging: any;
+  packageUsed: any;
+  packagingNumber: string;
+  totalNetMass: number;
 }
 
 const LogisticalFormPackagingCard = ({
-  packaging,
+  packageUsed,
+  packagingNumber,
+  totalNetMass,
 }: LogisticalFormPackagingCardProps) => {
+  const I18n = useTranslator();
   const formatNumber = useDigitFormat();
+  const {getMassIndicator, massUnitLabel} = useMassIndicatorChecker();
+
+  const massIndicator = useMemo(
+    () => getMassIndicator(totalNetMass),
+    [getMassIndicator, totalNetMass],
+  );
 
   return (
     <View>
-      <Text writingType="title">{packaging?.packagingNumber}</Text>
+      <Text writingType="title">{packageUsed?.fullName}</Text>
+      <Text>{packagingNumber}</Text>
       <LabelText
-        iconName="box-seam-fill"
-        value={formatNumber(packaging?.totalGrossMass)}
+        iconName={massIndicator?.icon ?? 'box-seam-fill'}
+        color={massIndicator?.color?.background}
+        title={`${I18n.t('Stock_TotalMass')} :`}
+        value={`${formatNumber(totalNetMass ?? 0)} ${massUnitLabel ?? ''}`}
       />
     </View>
   );

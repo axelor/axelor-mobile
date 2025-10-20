@@ -16,36 +16,42 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import {createStandardSearch, Criteria} from '@axelor/aos-mobile-core';
+import {
+  createStandardSearch,
+  Criteria,
+  getSearchCriterias,
+} from '@axelor/aos-mobile-core';
 import {searchPackaging as searchPackagingApi} from './packaging-api';
 
-const createPackagingLineCriteria = ({packagingId}: {packagingId: number}) => {
-  const criteria: Criteria[] = [];
-
-  if (packagingId != null) {
-    criteria.push({
-      fieldName: 'packaging.id',
-      operator: '=',
-      value: packagingId,
-    });
-  }
-
-  return criteria;
+const createPackagingLineCriteria = ({
+  packagingId,
+  searchValue,
+}: {
+  packagingId: number;
+  searchValue?: string;
+}): Criteria[] => {
+  return [
+    getSearchCriterias('stock_packagingLine', searchValue),
+    {fieldName: 'packaging.id', operator: '=', value: packagingId},
+  ];
 };
 
 export async function searchPackagingLines({
   packagingId,
-  page = 0,
+  searchValue,
 }: {
   packagingId: number;
-  page?: number;
+  searchValue?: string;
 }) {
+  if (!packagingId) return {data: {data: []}};
+
   return createStandardSearch({
     model: 'com.axelor.apps.supplychain.db.PackagingLine',
-    criteria: createPackagingLineCriteria({packagingId}),
+    criteria: createPackagingLineCriteria({packagingId, searchValue}),
     fieldKey: 'stock_packagingLine',
     sortKey: 'stock_packagingLine',
-    page,
+    page: 0,
+    numberElementsByPage: null,
     provider: 'model',
   });
 }
@@ -55,31 +61,18 @@ export async function searchPackagingBranch({
 }: {
   parentPackagingId: number;
 }) {
-  const [packagingResponse, packagingLineResponse] = await Promise.all([
-    searchPackagingApi({
-      parentPackagingId,
-    }),
-    searchPackagingLines({packagingId: parentPackagingId}),
-  ]);
-
-  const packagingData = packagingResponse?.data?.data ?? [];
-  const packagingLines = (packagingLineResponse?.data?.data ?? []).map(
-    line => ({
-      ...line,
-      parentPackaging: line.packaging ?? null,
-    }),
+  const packagings = await searchPackagingApi({parentPackagingId}).then(
+    res => res?.data?.data ?? [],
   );
+  const packagingLines = await searchPackagingLines({
+    packagingId: parentPackagingId,
+  })
+    .then(res => res?.data?.data ?? [])
+    .then(data =>
+      data.map((line: any) => ({...line, parentPackaging: line.packaging})),
+    );
 
-  const data =
-    packagingData.length + packagingLines.length
-      ? [...packagingData, ...packagingLines]
-      : null;
+  const result = [...packagings, ...packagingLines];
 
-  return {
-    ...packagingResponse,
-    data: {
-      ...(packagingResponse?.data ?? {}),
-      data,
-    },
-  };
+  return {data: {data: result.length > 0 ? result : null}} as any;
 }

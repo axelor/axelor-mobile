@@ -62,6 +62,8 @@ export {
   searchLogisticalForms,
   updateLogisticalForm,
 } from './logisticalFormSlice';
+export {searchPackagingLines} from './packagingLineSlice';
+export {searchPackaging, searchParentPackaging} from './packagingSlice';
 export {filterCarriers, filterClients, filterSuppliers} from './partnerSlice';
 export {
   fetchAvailableStockIndicator,
@@ -116,4 +118,3 @@ export {
   updateTrackingNumber,
 } from './trackingNumberSlice';
 export {fetchUnit} from './unitSlice';
-export {searchPackaging, searchParentPackaging} from './packagingSlice';

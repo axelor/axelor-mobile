@@ -67,6 +67,7 @@
   "Stock_Application_SalePrice": "Sale price",
   "Stock_Application_CostPrice": "Cost price",
   "Stock_Application_PurchasePrice": "Purchase price",
+  "Stock_Comments": "Comments",
   "Stock_Status_Draft": "Draft",
   "Stock_Status_Validated": "Validated",
   "Stock_Status_Planned": "Planned",
@@ -97,6 +98,7 @@
   "Stock_Name": "Name",
   "Stock_Code": "Code",
   "Stock_Origin": "Origin",
+  "Stock_SupplierShipmentRef": "Supplier shipment ref.",
   "Stock_AddTrackingNumber": "Add tracking number",
   "Stock_Locker": "Locker",
   "Stock_FromLocker": "From locker",
@@ -218,6 +220,7 @@
   "Stock_SliceAction_FetchProductFromId": "fetch product from id",
   "Stock_SliceAction_UpdateProductLocker": "update product locker",
   "Stock_SliceAction_FetchProductVariants": "fetch product variants",
+  "Stock_SliceAction_FetchProductVariantAttributes": "fetch product variants attributes",
   "Stock_SliceAction_FetchRacks": "fetch racks",
   "Stock_SliceAction_FetchStockCorrectionReasons": "fetch stock correction reasons",
   "Stock_SliceAction_SearchStockCorrections": "search stock corrections",
@@ -250,5 +253,7 @@
   "Stock_SliceAction_SplitCustomerDeliveryLine": "split customer delivery line",
   "Stock_SliceAction_SearchAlternativeBarcode": "search for alternative barcodes",
   "Stock_SliceAction_UpdateCustomerDeliveryNote": "update customer delivery note",
-  "Stock_SliceAction_SearchLogisticalForms": "search logistical forms"
+  "Stock_SliceAction_SearchLogisticalForms": "search logistical forms",
+  "Stock_SliceAction_SearchPackaging": "search packaging",
+  "Stock_SliceAction_SearchParentPackaging": "search parent packaging"
 }

@@ -22,16 +22,26 @@ import {
   handlerApiCall,
 } from '@axelor/aos-mobile-core';
 import {searchPackaging as _searchPackaging} from '../api/packaging-api';
+import {searchPackagingLines} from './packagingLineSlice';
 
 export const searchPackaging = createAsyncThunk(
   'stock_packaging/searchPackaging',
-  async function (data, {getState}) {
+  async function (data: any, {getState, dispatch}) {
     return handlerApiCall({
       fetchFunction: _searchPackaging,
       data,
       action: 'Stock_SliceAction_SearchPackaging',
       getState,
       responseOptions: {isArrayResponse: true},
+    }).then(res => {
+      dispatch(
+        (searchPackagingLines as any)({
+          packagingId: data?.parentPackagingId,
+          searchValue: data?.searchValue,
+        }),
+      );
+
+      return res;
     });
   },
 );

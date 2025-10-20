@@ -388,9 +388,6 @@ export const stock_modelAPI: ObjectFields = {
   stock_packaging: schemaContructor.object({
     packagingNumber: schemaContructor.string(),
     totalNetMass: schemaContructor.number(),
-    totalGrossMass: schemaContructor.number(),
-    netMass: schemaContructor.number(),
-    grossMass: schemaContructor.number(),
     packagingLevelSelect: schemaContructor.number(),
     parentPackaging: schemaContructor.subObject('packagingNumber'),
     logisticalForm: schemaContructor.subObject('deliveryNumberSeq'),
@@ -399,16 +396,24 @@ export const stock_modelAPI: ObjectFields = {
   stock_packagingLine: schemaContructor.object({
     qty: schemaContructor.number(),
     packaging: schemaContructor.subObject('packagingNumber'),
-    stockMoveLine: schemaContructor.subObject().concat(
+    stockMoveLine: schemaContructor.subObject('name').concat(
       schemaContructor.object({
         unit: schemaContructor.subObject('name'),
         product: productModel,
-        stockMove: schemaContructor.subObject('stockMoveSeq'),
-        totalNetMass: schemaContructor.number(),
+        netMass: schemaContructor.number(),
+        trackingNumber: schemaContructor.subObject('trackingNumberSeq'),
+        saleOrderLine: schemaContructor.subObject('sequence').concat(
+          schemaContructor.object({
+            saleOrder: schemaContructor.subObject('fullName'),
+          }),
+        ),
       }),
     ),
-    trackingNumberSet: schemaContructor.subObject('trackingNumberSeq'),
-    saleOrderLine: schemaContructor.subObject('sequence'),
+    saleOrderLine: schemaContructor.subObject('sequence').concat(
+      schemaContructor.object({
+        saleOrder: schemaContructor.subObject('fullName'),
+      }),
+    ),
   }),
   auth_user: schemaContructor.object({
     activeCompany: schemaContructor.subObject().concat(

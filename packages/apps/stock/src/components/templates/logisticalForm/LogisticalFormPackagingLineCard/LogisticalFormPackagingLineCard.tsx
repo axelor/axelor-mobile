@@ -16,45 +16,68 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import React from 'react';
-import {ObjectCard, TextUnit, useDigitFormat} from '@axelor/aos-mobile-ui';
-import {useMetafileUri} from '@axelor/aos-mobile-core';
+import React, {useMemo} from 'react';
 import {StyleSheet} from 'react-native';
+import {ObjectCard, TextUnit, useDigitFormat} from '@axelor/aos-mobile-ui';
+import {useMetafileUri, useTranslator} from '@axelor/aos-mobile-core';
+import {useMassIndicatorChecker} from '../../../../providers';
 
 interface LogisticalFormPackagingLineCardProps {
-  packagingLine: any;
+  stockMoveLine: any;
+  saleOrderLine: any;
+  qty: number;
 }
 
 const LogisticalFormPackagingLineCard = ({
-  packagingLine,
+  stockMoveLine,
+  saleOrderLine: _saleOrderLine,
+  qty,
 }: LogisticalFormPackagingLineCardProps) => {
+  const I18n = useTranslator();
   const formatNumber = useDigitFormat();
   const formatMetaFile = useMetafileUri();
+  const {getMassIndicator, massUnitLabel} = useMassIndicatorChecker();
+
+  const {
+    netMass,
+    product,
+    saleOrderLine: _stockMoveSaleOrderLine,
+    trackingNumber,
+    unit,
+  } = useMemo(() => stockMoveLine ?? {}, [stockMoveLine]);
+
+  const totalNetMass = useMemo(
+    () => parseFloat(netMass ?? '0') * qty,
+    [netMass, qty],
+  );
+
+  const massIndicator = useMemo(
+    () => getMassIndicator(totalNetMass),
+    [getMassIndicator, totalNetMass],
+  );
+
+  const saleOrderLine = useMemo(
+    () => _saleOrderLine ?? _stockMoveSaleOrderLine,
+    [_stockMoveSaleOrderLine, _saleOrderLine],
+  );
 
   return (
     <ObjectCard
       showArrow={false}
+      touchable={false}
       image={{
         generalStyle: styles.imageSize,
         imageSize: styles.imageSize,
         resizeMode: 'contain',
         defaultIconSize: 50,
-        source: formatMetaFile(
-          packagingLine?.stockMoveLine?.product?.picture?.id,
-        ),
+        source: formatMetaFile(product?.picture?.id),
       }}
       upperTexts={{
         items: [
+          {displayText: product?.name, isTitle: true},
+          {displayText: product?.code},
           {
-            displayText: packagingLine?.stockMoveLine?.product?.name,
-            isTitle: true,
-          },
-          {
-            displayText: packagingLine?.stockMoveLine?.product?.code,
-            hideIfNull: true,
-          },
-          {
-            displayText: packagingLine?.trackingNumberSet,
+            displayText: trackingNumber?.trackingNumberSeq,
             iconName: 'qr-code',
             hideIfNull: true,
           },
@@ -63,16 +86,15 @@ const LogisticalFormPackagingLineCard = ({
       lowerTexts={{
         items: [
           {
-            displayText: packagingLine?.saleOrderLine?.sequence,
+            indicatorText: `${stockMoveLine?.name}${saleOrderLine ? ` (${saleOrderLine?.saleOrder?.fullName})` : ''}`,
             iconName: 'tag-fill',
-            hideIfNull: true,
           },
           {
-            displayText: formatNumber(
-              packagingLine?.stockMoveLine?.totalNetMass,
-            ),
-            iconName: 'box-seam-fill',
-            hideIfNull: true,
+            indicatorText: `${I18n.t('Stock_TotalMass')} :`,
+            displayText: `${formatNumber(totalNetMass)} ${massUnitLabel ?? ''}`,
+            iconName: massIndicator?.icon ?? 'box-seam-fill',
+            hideIf: totalNetMass === 0,
+            color: massIndicator?.color?.background,
           },
         ],
       }}
@@ -80,10 +102,7 @@ const LogisticalFormPackagingLineCard = ({
         items: [
           {
             customComponent: (
-              <TextUnit
-                unit={packagingLine?.stockMoveLine?.unit?.name}
-                value={formatNumber(packagingLine?.qty)}
-              />
+              <TextUnit unit={unit?.name} value={formatNumber(qty)} />
             ),
           },
         ],

@@ -20,5 +20,6 @@ export {default as LogisticalFormCard} from './LogisticalFormCard/LogisticalForm
 export {default as LogisticalFormFilter} from './LogisticalFormFilter/LogisticalFormFilter';
 export {default as LogisticalFormGeneralInformationView} from './LogisticalFormGeneralInformationView/LogisticalFormGeneralInformationView';
 export {default as LogisticalFormHeader} from './LogisticalFormHeader/LogisticalFormHeader';
+export {default as LogisticalFormPackagingCard} from './LogisticalFormPackagingCard/LogisticalFormPackagingCard';
 export {default as LogisticalFormPackagingLineCard} from './LogisticalFormPackagingLineCard/LogisticalFormPackagingLineCard';
 export {default as LogisticalFormPackagingView} from './LogisticalFormPackagingView/LogisticalFormPackagingView';

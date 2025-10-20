@@ -24,6 +24,8 @@ export {internalMoveReducer as internalMove} from './internalMoveSlice';
 export {inventoryLineReducer as inventoryLine} from './inventoryLineSlice';
 export {inventoryReducer as inventory} from './inventorySlice';
 export {logisticalFormReducer as logisticalForm} from './logisticalFormSlice';
+export {packagingLineReducer as stock_packagingLine} from './packagingLineSlice';
+export {packagingReducer as stock_packaging} from './packagingSlice';
 export {partnerReducer as stock_partner} from './partnerSlice';
 export {productIndicatorsReducer as productIndicators} from './productIndicatorsSlice';
 export {productReducer as product} from './productSlice';
@@ -39,4 +41,3 @@ export {supplierArrivalReducer as supplierArrival} from './supplierArrivalSlice'
 export {supplierCatalogReducer as supplierCatalog} from './supplierCatalogSlice';
 export {trackingNumberReducer as trackingNumber} from './trackingNumberSlice';
 export {unitReducer as unit} from './unitSlice';
-export {packagingReducer as stock_packaging} from './packagingSlice';
