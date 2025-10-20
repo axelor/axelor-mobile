@@ -20,9 +20,7 @@
   "Stock_ParentPackaging": "Emballage parent",
   "Stock_StockMoveLinesToPackage": "Lignes de mouvements de stock à coliser",
   "Stock_LinkedStockMoves": "Mouvements de stock liés",
-  "Stock_NoLinkedStockMove": "Aucun mouvement de stock lié.",
-  "Stock_SearchStockMove": "Rechercher un mouvement de stock",
-  "Stock_FilterByStatus": "Filtrer par statut",
+  "Stock_StockMove": "Mouvements de stock",
   "Stock_PackagingStatus_NotProcessed": "Non traité",
   "Stock_PackagingStatus_Partially": "Partiellement",
   "Stock_PackagingStatus_Processed": "Traité",
@@ -264,5 +262,6 @@
   "Stock_SliceAction_UpdateCustomerDeliveryNote": "mise à jour de la note de la livraison client",
   "Stock_SliceAction_SearchLogisticalForms": "recherche sur les fiches logistique",
   "Stock_SliceAction_SearchPackaging": "recherche sur les emballages",
-  "Stock_SliceAction_SearchParentPackaging": "recherche sur les emballages parent"
+  "Stock_SliceAction_SearchParentPackaging": "recherche sur les emballages parent",
+  "Stock_SliceAction_SearchStockMove": "recherche sur les mouvements de stock"
 }

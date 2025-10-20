@@ -98,6 +98,7 @@ export {
   searchStockLocations,
 } from './stockLocationSlice';
 export {fetchStockMoveLines} from './stockMoveLineSlice';
+export {searchStockMove} from './stockMoveSlice';
 export {
   fetchSupplierArrivalLine,
   fetchSupplierArrivalLines,

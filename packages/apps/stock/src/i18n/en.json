@@ -20,9 +20,7 @@
   "Stock_ParentPackaging": "Parent packaging",
   "Stock_StockMoveLinesToPackage": "Stock move lines to package",
   "Stock_LinkedStockMoves": "Linked stock moves",
-  "Stock_NoLinkedStockMove": "No linked stock move.",
-  "Stock_SearchStockMove": "Search stock move",
-  "Stock_FilterByStatus": "Filter by status",
+  "Stock_StockMove": "Stock moves",
   "Stock_PackagingStatus_NotProcessed": "Not processed",
   "Stock_PackagingStatus_Partially": "Partially",
   "Stock_PackagingStatus_Processed": "Processed",
@@ -264,5 +262,6 @@
   "Stock_SliceAction_UpdateCustomerDeliveryNote": "update customer delivery note",
   "Stock_SliceAction_SearchLogisticalForms": "search logistical forms",
   "Stock_SliceAction_SearchPackaging": "search packaging",
-  "Stock_SliceAction_SearchParentPackaging": "search parent packaging"
+  "Stock_SliceAction_SearchParentPackaging": "search parent packaging",
+  "Stock_SliceAction_SearchStockMove": "search stock move"
 }

@@ -16,250 +16,87 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import React, {useCallback, useEffect, useMemo, useState} from 'react';
-import {
-  AutoCompleteSearch,
-  ChipSelect,
-  Screen,
-  useThemeColor,
-} from '@axelor/aos-mobile-ui';
+import React, {useMemo, useState} from 'react';
+import {ChipSelect} from '@axelor/aos-mobile-ui';
 import {
   SearchListView,
   useSelector,
   useTranslator,
 } from '@axelor/aos-mobile-core';
-import {fetchStockMoveLines} from '../../../../features/stockMoveLineSlice';
-import LogisticalFormStockMoveLineCard from '../LogisticalFormStockMoveLineCard/LogisticalFormStockMoveLineCard';
+import {
+  LogisticalFormHeader,
+  LogisticalFormStockMoveLineCard,
+} from '../../logisticalForm';
 import {StockMoveTagSelect} from '../../../molecules';
-import LogisticalFormHeader from '../LogisticalFormHeader/LogisticalFormHeader';
+import {StockMoveSearchBar} from '../../../organisms';
+import {fetchStockMoveLines} from '../../../../features/stockMoveLineSlice';
+import {useLogisticalFormState} from '../../../../hooks';
 
-const PACKAGING_STATUS = {
-  NOT_PROCESSED: 'not_processed',
-  PARTIALLY: 'partially',
-  PROCESSED: 'processed',
-};
-
-const getPackagingStatus = (line: any): string => {
-  if (line?.qtyRemainingToPackage === 0) {
-    return PACKAGING_STATUS.PROCESSED;
-  }
-
-  if (line?.qtyRemainingToPackage === line?.qty) {
-    return PACKAGING_STATUS.NOT_PROCESSED;
-  }
-
-  return PACKAGING_STATUS.PARTIALLY;
-};
+const stockMoveLineScanKey = 'stock-move-line_logistical-form-state-list';
 
 const LogisticalFormStockMoveLinesView = () => {
-  const Colors = useThemeColor();
   const I18n = useTranslator();
+  const {options, filterLineState} = useLogisticalFormState();
 
   const {logisticalForm} = useSelector(state => state.logisticalForm);
   const {stockMoveLineList, loadingList, moreLoading, isListEnd} = useSelector(
-    state => state.stockMoveLine,
+    state => state.stock_stockMoveLine,
   );
 
-  const stockMoveItems = useMemo(() => {
-    return (logisticalForm?.stockMoveList ?? []).map((move, index) => ({
-      key: move?.id,
-      label: move?.stockMoveSeq ?? `${move?.id}`,
-      color: Colors.infoColor,
-      order: index,
-    }));
-  }, [Colors.infoColor, logisticalForm?.stockMoveList]);
-
-  const [selectedStockMoveId, setSelectedStockMoveId] = useState(
-    stockMoveItems[0]?.key ?? null,
-  );
-
-  useEffect(() => {
-    setSelectedStockMoveId(prev => {
-      if (stockMoveItems.length === 0) {
-        return null;
-      }
-
-      if (prev != null && stockMoveItems.some(item => item.key === prev)) {
-        return prev;
-      }
-
-      return stockMoveItems[0].key;
-    });
-  }, [stockMoveItems]);
-
-  const statusOptions = useMemo(() => {
-    return [
-      {
-        key: PACKAGING_STATUS.NOT_PROCESSED,
-        label: I18n.t('Stock_PackagingStatus_NotProcessed'),
-        color: Colors.defaultColor,
-      },
-      {
-        key: PACKAGING_STATUS.PARTIALLY,
-        label: I18n.t('Stock_PackagingStatus_Partially'),
-        color: Colors.cautionColor,
-      },
-      {
-        key: PACKAGING_STATUS.PROCESSED,
-        label: I18n.t('Stock_PackagingStatus_Processed'),
-        color: Colors.successColor,
-      },
-    ];
-  }, [Colors.cautionColor, Colors.defaultColor, Colors.successColor, I18n]);
-
-  const allStatusKeys = useMemo(
-    () => statusOptions.map(option => option.key),
-    [statusOptions],
-  );
-
-  const [selectedStatusKeys, setSelectedStatusKeys] = useState([]);
-
-  useEffect(() => {
-    setSelectedStatusKeys(prev => {
-      if (!Array.isArray(prev)) {
-        return [];
-      }
-
-      return Array.from(new Set(prev)).filter(key =>
-        allStatusKeys.includes(key),
-      );
-    });
-  }, [allStatusKeys]);
-
-  const statusChipItems = useMemo(
-    () =>
-      statusOptions.map(option => ({
-        key: option.key,
-        title: option.label,
-        color: option.color,
-        isActive: selectedStatusKeys.includes(option.key),
-      })),
-    [selectedStatusKeys, statusOptions],
-  );
-
-  const handleStatusChipChange = useCallback((items: any[]) => {
-    if (!Array.isArray(items) || items.length === 0) {
-      setSelectedStatusKeys([]);
-      return;
-    }
-
-    setSelectedStatusKeys(
-      Array.from(new Set(items.map(item => String(item.key)))),
-    );
-  }, []);
-
-  const renderLineItem = useCallback(
-    ({item}) => {
-      const status = getPackagingStatus(item);
-      const statusColor =
-        statusOptions.find(option => option.key === status)?.color
-          ?.background ?? Colors.defaultColor.background;
-      return (
-        <LogisticalFormStockMoveLineCard
-          line={item}
-          statusColor={statusColor}
-        />
-      );
-    },
-    [Colors.defaultColor.background, statusOptions],
-  );
-
-  const handleSelectStockMove = useCallback((key: string | number | null) => {
-    setSelectedStockMoveId(key);
-  }, []);
-
-  const filteredLines = useMemo(() => {
-    if (!Array.isArray(stockMoveLineList)) {
-      return [];
-    }
-
-    return stockMoveLineList.filter(item => {
-      const isSelectedMove =
-        selectedStockMoveId == null ||
-        item?.stockMove?.id === selectedStockMoveId;
-
-      const activeStatusKeys =
-        selectedStatusKeys.length > 0 ? selectedStatusKeys : allStatusKeys;
-
-      return (
-        isSelectedMove && activeStatusKeys.includes(getPackagingStatus(item))
-      );
-    });
-  }, [
-    allStatusKeys,
-    selectedStatusKeys,
-    selectedStockMoveId,
-    stockMoveLineList,
-  ]);
-
-  const selectedStockMoveOption = useMemo(
-    () => stockMoveItems.find(item => item.key === selectedStockMoveId) ?? null,
-    [selectedStockMoveId, stockMoveItems],
-  );
-
-  const handleStockMoveAutoCompleteChange = useCallback((item: any) => {
-    if (item?.key != null) {
-      setSelectedStockMoveId(item.key);
-    } else {
-      setSelectedStockMoveId(null);
-    }
-  }, []);
+  const [selectedStatus, setSelectedStatus] = useState([]);
+  const [selectedStockMove, setSelectedStockMove] = useState(null);
 
   const sliceFunctionData = useMemo(
-    () => ({stockMoveId: selectedStockMoveId}),
-    [selectedStockMoveId],
+    () => ({
+      stockMoveId:
+        selectedStockMove?.id ??
+        logisticalForm?.stockMoveList?.map((_m: any) => _m.id),
+    }),
+    [logisticalForm?.stockMoveList, selectedStockMove?.id],
+  );
+
+  const filteredList = useMemo(
+    () => filterLineState(stockMoveLineList, selectedStatus),
+    [filterLineState, selectedStatus, stockMoveLineList],
   );
 
   return (
-    <Screen removeSpaceOnTop={true}>
-      <SearchListView
-        list={filteredLines}
-        loading={loadingList}
-        moreLoading={moreLoading}
-        isListEnd={isListEnd}
-        sliceFunction={fetchStockMoveLines}
-        sliceFunctionData={sliceFunctionData}
-        searchPlaceholder={I18n.t('Stock_SearchLine')}
-        displaySearchValue={item => item?.product?.fullName}
-        chipComponent={
-          <ChipSelect
-            mode="multi"
-            selectionItems={statusChipItems}
-            onChangeValue={handleStatusChipChange}
+    <SearchListView
+      scanKeySearch={stockMoveLineScanKey}
+      headerTopChildren={
+        <>
+          <LogisticalFormHeader {...logisticalForm} />
+          <StockMoveTagSelect
+            titleKey="Stock_LinkedStockMoves"
+            items={logisticalForm?.stockMoveList ?? []}
           />
-        }
-        topFixedItems={
-          <>
-            <LogisticalFormHeader {...logisticalForm} />
-            <StockMoveTagSelect
-              title={I18n.t('Stock_LinkedStockMoves')}
-              items={stockMoveItems}
-              selectedKey={selectedStockMoveId}
-              onSelect={handleSelectStockMove}
-              defaultColor={Colors.infoColor}
-              emptyLabel={I18n.t('Stock_NoLinkedStockMove')}
-              colors={Colors}
-            />
-          </>
-        }
-        fixedItems={
-          <AutoCompleteSearch
-            objectList={stockMoveItems}
-            value={selectedStockMoveOption}
-            onChangeValue={handleStockMoveAutoCompleteChange}
-            displayValue={item => item?.label ?? ''}
-            placeholder={I18n.t('Stock_SearchStockMove')}
-            selectLastItem={false}
-            showDetailsPopup={true}
-            oneFilter={true}
-            readonly={stockMoveItems.length === 0}
-          />
-        }
-        renderListItem={renderLineItem}
-        isHideableSearch={false}
-        expandableFilter={false}
-      />
-    </Screen>
+        </>
+      }
+      fixedItems={
+        <StockMoveSearchBar
+          defaultValue={selectedStockMove}
+          onChange={setSelectedStockMove}
+          stockMoveSet={logisticalForm?.stockMoveList ?? []}
+        />
+      }
+      list={filteredList}
+      loading={loadingList}
+      moreLoading={moreLoading}
+      isListEnd={isListEnd}
+      sliceFunction={fetchStockMoveLines}
+      sliceFunctionData={sliceFunctionData}
+      searchPlaceholder={I18n.t('Stock_SearchLine')}
+      displaySearchValue={item => item?.product?.fullName}
+      chipComponent={
+        <ChipSelect
+          mode="multi"
+          selectionItems={options}
+          onChangeValue={setSelectedStatus}
+        />
+      }
+      renderListItem={({item}) => <LogisticalFormStockMoveLineCard {...item} />}
+      isHideableSearch={false}
+    />
   );
 };
 

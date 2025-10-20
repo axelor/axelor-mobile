@@ -216,14 +216,9 @@ export const stock_modelAPI: ObjectFields = {
     statusSelect: schemaContructor.number(),
     internalDeliveryComment: schemaContructor.string(),
     externalDeliveryComment: schemaContructor.string(),
-    stockMoveList: schemaContructor.array().of(
-      schemaContructor.subObject().concat(
-        schemaContructor.object({
-          stockMoveSeq: schemaContructor.string(),
-          statusSelect: schemaContructor.number(),
-        }),
-      ),
-    ),
+    stockMoveList: schemaContructor
+      .array()
+      .of(schemaContructor.subObject('stockMoveSeq')),
   }),
   stock_stockCorrection: schemaContructor.object({
     statusSelect: schemaContructor.number(),
@@ -373,6 +368,9 @@ export const stock_modelAPI: ObjectFields = {
     product: schemaContructor.subObject(),
     serialNumber: schemaContructor.number(),
   }),
+  stock_stockMove: schemaContructor.object({
+    stockMoveSeq: schemaContructor.string(),
+  }),
   stock_stockMoveLine: schemaContructor.object({
     trackingNumber: schemaContructor.subObject().concat(
       schemaContructor.object({
@@ -383,24 +381,15 @@ export const stock_modelAPI: ObjectFields = {
     unit: schemaContructor.subObject('name'),
     qty: schemaContructor.number(),
     realQty: schemaContructor.number(),
-    sequence: schemaContructor.number(),
-    totalNetMass: schemaContructor.number(),
+    product: productModel,
+    name: schemaContructor.number(),
+    netMass: schemaContructor.number(),
     qtyRemainingToPackage: schemaContructor.number(),
-    product: schemaContructor.subObject().concat(
+    saleOrderLine: schemaContructor.subObject('sequence').concat(
       schemaContructor.object({
-        fullName: schemaContructor.string(),
-        name: schemaContructor.string(),
-        code: schemaContructor.string(),
-        trackingNumberConfiguration: schemaContructor.subObject(),
-        picture: schemaContructor.subObject(),
+        saleOrder: schemaContructor.subObject('fullName'),
       }),
     ),
-    stockMove: schemaContructor.subObject('stockMoveSeq').concat(
-      schemaContructor.object({
-        statusSelect: schemaContructor.number(),
-      }),
-    ),
-    saleOrderLine: schemaContructor.subObject('sequence'),
     isRealQtyModifiedByUser: schemaContructor.boolean(),
   }),
   stock_packaging: schemaContructor.object({

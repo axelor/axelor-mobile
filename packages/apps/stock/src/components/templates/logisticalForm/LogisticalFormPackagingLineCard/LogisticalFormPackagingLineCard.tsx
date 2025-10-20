@@ -23,12 +23,14 @@ import {useMetafileUri, useTranslator} from '@axelor/aos-mobile-core';
 import {useMassIndicatorChecker} from '../../../../providers';
 
 interface LogisticalFormPackagingLineCardProps {
+  style?: any;
   stockMoveLine: any;
   saleOrderLine: any;
   qty: number;
 }
 
 const LogisticalFormPackagingLineCard = ({
+  style,
   stockMoveLine,
   saleOrderLine: _saleOrderLine,
   qty,
@@ -65,6 +67,7 @@ const LogisticalFormPackagingLineCard = ({
     <ObjectCard
       showArrow={false}
       touchable={false}
+      style={style}
       image={{
         generalStyle: styles.imageSize,
         imageSize: styles.imageSize,

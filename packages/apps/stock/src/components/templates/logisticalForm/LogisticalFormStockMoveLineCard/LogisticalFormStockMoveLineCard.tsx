@@ -16,91 +16,55 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import React from 'react';
+import React, {useMemo} from 'react';
 import {StyleSheet} from 'react-native';
-import {ObjectCard, TextUnit, useDigitFormat} from '@axelor/aos-mobile-ui';
-import {useMetafileUri, useTranslator} from '@axelor/aos-mobile-core';
+import {useLogisticalFormState} from '../../../../hooks';
+import {LogisticalFormPackagingLineCard} from '../../logisticalForm';
 
 interface LogisticalFormStockMoveLineCardProps {
-  line: any;
-  statusColor: string;
+  product: any;
+  trackingNumber: any;
+  saleOrderLine: any;
+  totalNetMass: number;
+  qtyRemainingToPackage: number;
+  qty: number;
+  unit: any;
 }
 
 const LogisticalFormStockMoveLineCard = ({
-  line,
-  statusColor,
+  saleOrderLine,
+  qtyRemainingToPackage,
+  qty,
+  ...stockMoveLine
 }: LogisticalFormStockMoveLineCardProps) => {
-  const I18n = useTranslator();
-  const formatNumber = useDigitFormat();
-  const formatMetaFile = useMetafileUri();
+  const {getLineColor} = useLogisticalFormState();
+
+  const statusColor = useMemo(
+    () => getLineColor({qty, qtyRemainingToPackage}),
+    [getLineColor, qty, qtyRemainingToPackage],
+  );
+
+  const styles = useMemo(
+    () => getStyles(statusColor?.background),
+    [statusColor?.background],
+  );
 
   return (
-    <ObjectCard
-      touchable={false}
-      showArrow={false}
-      style={[styles.card, {borderLeftColor: statusColor}]}
-      image={{
-        generalStyle: styles.imageSize,
-        imageSize: styles.imageSize,
-        resizeMode: 'contain',
-        defaultIconSize: 50,
-        source: formatMetaFile(line?.product?.picture?.id),
-      }}
-      upperTexts={{
-        items: [
-          {displayText: line?.product?.name, isTitle: true},
-          {
-            displayText: line?.product?.code,
-            hideIfNull: true,
-          },
-          {
-            displayText: line?.trackingNumber?.trackingNumberSeq,
-            indicatorText: `${I18n.t('Stock_TrackingNumber')} :`,
-            iconName: 'qr-code',
-            hideIf: line?.trackingNumber == null,
-          },
-        ],
-      }}
-      lowerTexts={{
-        items: [
-          {
-            displayText: line?.saleOrderLine?.sequence,
-            iconName: 'tag-fill',
-            hideIfNull: true,
-          },
-          {
-            displayText: formatNumber(line?.totalNetMass),
-            indicatorText: `${I18n.t('Stock_TotalMass')} :`,
-            iconName: 'box-seam-fill',
-            hideIfNull: true,
-          },
-        ],
-      }}
-      upperBadges={{
-        items: [
-          {
-            customComponent: (
-              <TextUnit
-                unit={line?.unit?.name}
-                value={formatNumber(line?.qtyRemainingToPackage)}
-              />
-            ),
-          },
-        ],
-        fixedOnRightSide: true,
-      }}
+    <LogisticalFormPackagingLineCard
+      style={[styles.border]}
+      stockMoveLine={stockMoveLine}
+      saleOrderLine={saleOrderLine}
+      qty={qtyRemainingToPackage}
     />
   );
 };
 
-const styles = StyleSheet.create({
-  imageSize: {
-    height: 50,
-    width: 50,
-  },
-  card: {
-    borderLeftWidth: 7,
-  },
-});
+const getStyles = (color: string) =>
+  StyleSheet.create({
+    border: {
+      borderLeftWidth: 7,
+      borderLeftColor: color,
+    },
+  });
 
 export default LogisticalFormStockMoveLineCard;

@@ -21,15 +21,15 @@ import {
   generateInifiniteScrollCases,
   handlerApiCall,
 } from '@axelor/aos-mobile-core';
-import {searchStockMoveLine as _searchStockMoveLine} from '../api/stock-move-line-api';
+import {searchStockMove as _searchStockMove} from '../api/stock-move-api';
 
-export const fetchStockMoveLines = createAsyncThunk(
-  'stock_stockMoveLine/fetchStockMoveLines',
+export const searchStockMove = createAsyncThunk(
+  'stock_stockMove/searchStockMove',
   async function (data, {getState}) {
     return handlerApiCall({
-      fetchFunction: _searchStockMoveLine,
+      fetchFunction: _searchStockMove,
       data,
-      action: 'Stock_SliceAction_FetchStockMoveLines',
+      action: 'Stock_SliceAction_SearchStockMove',
       getState,
       responseOptions: {isArrayResponse: true},
     });
@@ -37,24 +37,23 @@ export const fetchStockMoveLines = createAsyncThunk(
 );
 
 const initialState = {
-  loadingList: false,
-  moreLoading: false,
-  isListEnd: false,
-  stockMoveLineList: [],
+  loadingStockMoves: false,
+  moreLoadingStockMove: false,
+  isListEndStockMove: false,
+  stockMoveList: [],
 };
 
-const stockMoveLineSlice = createSlice({
-  name: 'stock_stockMoveLine',
+const stockMoveSlice = createSlice({
+  name: 'stock_stockMove',
   initialState,
-  reducers: {},
   extraReducers: builder => {
-    generateInifiniteScrollCases(builder, fetchStockMoveLines, {
-      loading: 'loadingList',
-      moreLoading: 'moreLoading',
-      isListEnd: 'isListEnd',
-      list: 'stockMoveLineList',
+    generateInifiniteScrollCases(builder, searchStockMove, {
+      loading: 'loadingStockMoves',
+      moreLoading: 'moreLoadingStockMove',
+      isListEnd: 'isListEndStockMove',
+      list: 'stockMoveList',
     });
   },
 });
 
-export const stockMoveLineReducer = stockMoveLineSlice.reducer;
+export const stockMoveReducer = stockMoveSlice.reducer;

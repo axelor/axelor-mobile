@@ -24,3 +24,4 @@ export {default as SearchLineContainer} from './SearchLineContainer/SearchLineCo
 export {default as SmallPropertyCard} from './SmallPropertyCard/SmallPropertyCard';
 export {default as StockMoveHeader} from './StockMoveHeader/StockMoveHeader';
 export {default as StockMovePickingWidget} from './StockMovePickingWidget/StockMovePickingWidget';
+export {default as StockMoveSearchBar} from './StockMoveSearchBar/StockMoveSearchBar';

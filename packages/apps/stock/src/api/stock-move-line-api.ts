@@ -36,19 +36,24 @@ export async function checkQuantity({
 }
 
 const createSearchCriteria = (
-  stockMoveId: number,
+  stockMoveId: number | number[],
   scanValue?: string,
   searchValue?: string,
 ): Criteria[] => {
-  return [
-    {
-      fieldName: 'stockMove.id',
-      operator: '=',
-      value: stockMoveId,
-    },
+  const criterias: Criteria[] = [
     getSearchCriterias('stock_massStockMoveLine', scanValue),
     getSearchCriterias('stock_stockMoveLine', searchValue),
   ];
+
+  if (stockMoveId != null) {
+    criterias.push({
+      fieldName: 'stockMove.id',
+      operator: 'in',
+      value: Array.isArray(stockMoveId) ? stockMoveId : [stockMoveId],
+    });
+  }
+
+  return criterias;
 };
 
 export async function searchStockMoveLine({
@@ -58,7 +63,7 @@ export async function searchStockMoveLine({
   page = 0,
   searchValue,
 }: {
-  stockMoveId: number;
+  stockMoveId: number | number[];
   scanValue?: string;
   checkValidated?: boolean;
   page?: number;

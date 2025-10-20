@@ -20,7 +20,7 @@ export {default as CarrierActionCard} from './CarrierActionCard/CarrierActionCar
 export {default as ClipableSaleOrderLabel} from './ClipableSaleOrderLabel/ClipableSaleOrderLabel';
 export {default as LocationsMoveCard} from './LocationsMoveCard/LocationsMoveCard';
 export {default as LogisticalFormDropdownCards} from './LogisticalFormDropdownCards/LogisticalFormDropdownCards';
-export {default as StockMoveTagSelect} from './StockMoveTagSelect/StockMoveTagSelect';
 export {default as MassScannerButton} from './MassScannerButton/MassScannerButton';
 export {default as ProductCardDetails} from './ProductCardDetails/ProductCardDetails';
 export {default as StockCorrectionCard} from './StockCorrectionCard/StockCorrectionCard';
+export {default as StockMoveTagSelect} from './StockMoveTagSelect/StockMoveTagSelect';

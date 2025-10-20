@@ -16,131 +16,39 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import React, {useCallback, useMemo} from 'react';
-import {Pressable, StyleSheet, View} from 'react-native';
-import {Color, TagList, Text, ThemeColors} from '@axelor/aos-mobile-ui';
-
-interface StockMoveSelectItem {
-  key: string | number;
-  label: string;
-  color?: Color;
-  order?: number;
-}
+import React from 'react';
+import {StyleSheet} from 'react-native';
+import {useTranslator} from '@axelor/aos-mobile-core';
+import {TagList, useThemeColor} from '@axelor/aos-mobile-ui';
 
 interface StockMoveTagSelectProps {
-  title: string;
-  items: StockMoveSelectItem[];
-  selectedKey: string | number | null;
-  onSelect: (key: string | number | null) => void;
-  defaultColor: Color;
-  emptyLabel: string;
-  colors: ThemeColors;
+  titleKey: string;
+  items: any[];
 }
 
-const StockMoveTagSelect = ({
-  title,
-  items,
-  selectedKey,
-  onSelect,
-  defaultColor,
-  emptyLabel,
-  colors,
-}: StockMoveTagSelectProps) => {
-  const sortedItems = useMemo(
-    () =>
-      (items ?? [])
-        .map((item, index) => ({
-          ...item,
-          order: item.order ?? index,
-        }))
-        .sort((first, second) => (first.order ?? 0) - (second.order ?? 0)),
-    [items],
-  );
-
-  const computeTagColor = useCallback(
-    (color: Color, isSelected: boolean): Color => {
-      if (isSelected) {
-        return {...color};
-      }
-
-      return {
-        background: color.background,
-        background_light: colors.backgroundColor,
-        foreground: color.background,
-      };
-    },
-    [colors.backgroundColor],
-  );
-
-  const handlePress = useCallback(
-    (key: string | number) => {
-      if (selectedKey === key) {
-        onSelect(null);
-        return;
-      }
-
-      onSelect(key);
-    },
-    [onSelect, selectedKey],
-  );
-
-  if (sortedItems.length === 0) {
-    return (
-      <View style={styles.section}>
-        <Text writingType="important">{title}</Text>
-        <View style={styles.emptyContainer}>
-          <Text writingType="details">{emptyLabel}</Text>
-        </View>
-      </View>
-    );
-  }
+const StockMoveTagSelect = ({titleKey, items}: StockMoveTagSelectProps) => {
+  const Colors = useThemeColor();
+  const I18n = useTranslator();
 
   return (
-    <View style={styles.section}>
-      <Text writingType="important">{title}</Text>
-      <View style={styles.tagsContainer}>
-        {sortedItems.map(item => {
-          const baseColor = item.color ?? defaultColor;
-          const tagColor = computeTagColor(baseColor, item.key === selectedKey);
-
-          return (
-            <Pressable
-              key={item.key}
-              onPress={() => handlePress(item.key)}
-              style={styles.tagWrapper}>
-              <TagList
-                hideIfNull={false}
-                tags={[
-                  {
-                    title: item.label,
-                    color: tagColor,
-                    order: item.order,
-                  },
-                ]}
-              />
-            </Pressable>
-          );
-        })}
-      </View>
-    </View>
+    <TagList
+      style={styles.container}
+      title={I18n.t(titleKey)}
+      translator={I18n.t}
+      hideIfNull={false}
+      tags={items.map((item, idx) => ({
+        title: item.stockMoveSeq,
+        color: Colors.infoColor,
+        order: idx,
+      }))}
+    />
   );
 };
 
 const styles = StyleSheet.create({
-  section: {
-    marginHorizontal: 20,
-  },
-  emptyContainer: {
-    paddingVertical: 16,
-  },
-  tagsContainer: {
-    flexDirection: 'row',
-    flexWrap: 'wrap',
-    alignItems: 'center',
-  },
-  tagWrapper: {
-    marginRight: 8,
-    marginBottom: 8,
+  container: {
+    width: '90%',
+    alignSelf: 'center',
   },
 });
 
