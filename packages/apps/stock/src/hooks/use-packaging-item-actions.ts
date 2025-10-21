@@ -24,30 +24,17 @@ import {
 } from '@axelor/aos-mobile-core';
 import {useThemeColor} from '@axelor/aos-mobile-ui';
 
-interface UsePackagingItemActionsProps {
-  logisticalForm: any;
-  onRefresh?: () => void;
-}
-
-export const usePackagingItemActions = ({
-  logisticalForm,
-  onRefresh,
-}: UsePackagingItemActionsProps) => {
+export const usePackagingItemActions = (onRefresh?: () => void) => {
   const I18n = useTranslator();
   const Colors = useThemeColor();
   const navigation = useNavigation();
 
-  const packagingPermissions = usePermitted({
+  const {canCreate, canDelete, readonly} = usePermitted({
     modelName: 'com.axelor.apps.supplychain.db.Packaging',
   });
-  const packagingLinePermissions = usePermitted({
+  const {canCreate: canCreateLine} = usePermitted({
     modelName: 'com.axelor.apps.supplychain.db.PackagingLine',
   });
-
-  const logisticalFormId = useMemo(
-    () => logisticalForm?.id,
-    [logisticalForm?.id],
-  );
 
   const handleRefresh = useCallback(() => {
     onRefresh?.();
@@ -55,128 +42,64 @@ export const usePackagingItemActions = ({
 
   const navigateToForm = useCallback(
     (params: any) => {
-      navigation.navigate('LogisticalFormPackagingItemFormScreen', {
-        ...params,
-        logisticalForm,
-      });
+      navigation.navigate('LogisticalFormPackagingItemFormScreen', params);
     },
-    [logisticalForm, navigation],
+    [navigation],
   );
 
   const getPackagingActions = useCallback(
     (packaging: any) => {
-      if (packaging == null) {
-        return [];
-      }
-
       return [
         {
           iconName: 'plus-lg',
           helper: I18n.t('Stock_AddPackagingItem'),
-          onPress: () =>
-            navigateToForm({
-              logisticalFormId,
-              parentPackaging: packaging,
-              initialType: 'product',
-            }),
-          hidden: !packagingPermissions?.canCreate,
+          onPress: () => navigateToForm({parentPackaging: packaging}),
+          hidden: !canCreate && !canCreateLine,
         },
         {
           iconName: 'pencil-fill',
           helper: I18n.t('Stock_EditPackaging'),
-          onPress: () =>
-            navigateToForm({
-              logisticalFormId,
-              packaging,
-              initialType: 'packaging',
-            }),
-          hidden: packagingPermissions?.readonly,
+          onPress: () => navigateToForm({packaging}),
+          hidden: readonly,
         },
         {
           iconName: 'trash3-fill',
-          iconColor: Colors.errorColor?.background,
+          iconColor: Colors.errorColor.background,
           helper: I18n.t('Stock_DeletePackaging'),
           onPress: () => {
-            console.warn('TODO delete packaging', packaging?.id);
-            handleRefresh();
+            handleRefresh?.();
           },
-          hidden: !packagingPermissions?.canDelete,
+          hidden: !canDelete,
         },
       ];
     },
     [
       Colors,
       I18n,
+      canCreate,
+      canCreateLine,
+      canDelete,
       handleRefresh,
-      logisticalFormId,
       navigateToForm,
-      packagingPermissions?.canCreate,
-      packagingPermissions?.canDelete,
-      packagingPermissions?.readonly,
-    ],
-  );
-
-  const getPackagingLineActions = useCallback(
-    (packagingLine: any) => {
-      if (packagingLine == null) {
-        return [];
-      }
-
-      return [
-        {
-          iconName: 'pencil-fill',
-          helper: I18n.t('Stock_EditPackagingLine'),
-          onPress: () =>
-            navigateToForm({
-              logisticalFormId,
-              packagingLine,
-              initialType: 'product',
-            }),
-          hidden: packagingLinePermissions?.readonly,
-        },
-        {
-          iconName: 'trash3-fill',
-          iconColor: Colors.errorColor?.background,
-          helper: I18n.t('Stock_DeletePackagingLine'),
-          onPress: () => {
-            console.warn('TODO delete packaging line', packagingLine?.id);
-            handleRefresh();
-          },
-          hidden: !packagingLinePermissions?.canDelete,
-        },
-      ];
-    },
-    [
-      Colors,
-      I18n,
-      handleRefresh,
-      logisticalFormId,
-      navigateToForm,
-      packagingLinePermissions?.canDelete,
-      packagingLinePermissions?.readonly,
+      readonly,
     ],
   );
 
   const actionList = useMemo(() => {
-    if (!packagingPermissions?.canCreate) {
-      return [];
-    }
+    if (!canCreate && !canCreateLine) return [];
 
     return [
       {
         iconName: 'plus-lg',
         title: I18n.t('Stock_AddPackagingItem'),
         onPress: () =>
-          navigateToForm({
-            logisticalFormId,
-            initialType: 'packaging',
-          }),
+          navigation.navigate('LogisticalFormPackagingItemFormScreen'),
       },
     ];
-  }, [I18n, logisticalFormId, navigateToForm, packagingPermissions?.canCreate]);
+  }, [I18n, canCreate, canCreateLine, navigation]);
 
   return useMemo(
-    () => ({actionList, getPackagingActions, getPackagingLineActions}),
-    [actionList, getPackagingActions, getPackagingLineActions],
+    () => ({actionList, getPackagingActions}),
+    [actionList, getPackagingActions],
   );
 };

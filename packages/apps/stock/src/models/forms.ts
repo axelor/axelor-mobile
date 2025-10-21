@@ -18,12 +18,14 @@
 
 import {FormConfigs, getTypes} from '@axelor/aos-mobile-core';
 import {
+  LogisticalFormPackagingTypeToggle,
   PartnerSearchBar,
+  PackagingProductSearchBar,
   StockLocationSearchBar,
-  LogisticalFormPackagingLineTypeToggle,
-  LogisticalFormPackagingProductSearch,
-  LogisticalFormPackagingStockMoveLineSearch,
+  StockMoveLineSearchBar,
+  PackagingLineQuantityCard,
 } from '../components';
+import {PackagingType} from '../types';
 
 const getLogisticalFormStatuses = () => getTypes().LogisticalForm?.statusSelect;
 
@@ -112,34 +114,42 @@ export const stock_formsRegister: FormConfigs = {
   stock_logisticalFormPackagingItem: {
     modelName: 'com.axelor.apps.supplychain.db.Packaging',
     fields: {
-      lineType: {
+      packagingType: {
         type: 'string',
         widget: 'custom',
-        customComponent: LogisticalFormPackagingLineTypeToggle,
-        hideIf: ({objectState}) => objectState?.id != null,
+        customComponent: LogisticalFormPackagingTypeToggle,
+        hideIf: ({objectState}) =>
+          objectState?.id != null || objectState?.parentPackaging == null,
       },
       packageUsed: {
         titleKey: 'Stock_PackagingUsed',
         type: 'object',
         widget: 'custom',
-        customComponent: LogisticalFormPackagingProductSearch,
-        hideIf: ({objectState}) => objectState.lineType !== 'packaging',
+        customComponent: PackagingProductSearchBar,
+        hideIf: ({objectState}) =>
+          objectState?.packagingType !== PackagingType.Packaging,
+        options: {scanKeySearch: 'packaging-product_packaging-form'},
       },
       stockMoveLine: {
         titleKey: 'Stock_StockMoveLine',
         type: 'object',
         widget: 'custom',
-        customComponent: LogisticalFormPackagingStockMoveLineSearch,
-        hideIf: ({objectState}) => objectState.lineType !== 'product',
+        customComponent: StockMoveLineSearchBar,
+        hideIf: ({objectState}) =>
+          objectState?.packagingType !== PackagingType.Product,
+        options: {scanKeySearch: 'stock-move-line_packaging-line-form'},
       },
       qty: {
         titleKey: 'Stock_Quantity',
         type: 'number',
-        widget: 'default',
+        widget: 'custom',
+        customComponent: PackagingLineQuantityCard,
         dependsOn: {
           stockMoveLine: ({newValue}) => newValue?.qtyRemainingToPackage,
         },
-        hideIf: ({objectState}) => objectState.lineType !== 'product',
+        hideIf: ({objectState}) =>
+          objectState?.packagingType !== PackagingType.Product ||
+          !objectState?.stockMoveLine,
       },
     },
   },

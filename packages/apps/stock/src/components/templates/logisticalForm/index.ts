@@ -21,12 +21,10 @@ export {default as LogisticalFormFilter} from './LogisticalFormFilter/Logistical
 export {default as LogisticalFormGeneralInformationView} from './LogisticalFormGeneralInformationView/LogisticalFormGeneralInformationView';
 export {default as LogisticalFormHeader} from './LogisticalFormHeader/LogisticalFormHeader';
 export {default as LogisticalFormPackagingCard} from './LogisticalFormPackagingCard/LogisticalFormPackagingCard';
-export {default as LogisticalFormPackagingLineCard} from './LogisticalFormPackagingLineCard/LogisticalFormPackagingLineCard';
 export {default as LogisticalFormPackagingLineActionCard} from './LogisticalFormPackagingLineActionCard/LogisticalFormPackagingLineActionCard';
-export {default as LogisticalFormPackagingCard} from './LogisticalFormPackagingCard/LogisticalFormPackagingCard';
-export {default as LogisticalFormPackagingLineTypeToggle} from './LogisticalFormPackagingLineTypeToggle/LogisticalFormPackagingLineTypeToggle';
-export {default as LogisticalFormPackagingProductSearch} from './LogisticalFormPackagingProductSearch/LogisticalFormPackagingProductSearch';
-export {default as LogisticalFormPackagingStockMoveLineSearch} from './LogisticalFormPackagingStockMoveLineSearch/LogisticalFormPackagingStockMoveLineSearch';
+export {default as LogisticalFormPackagingLineCard} from './LogisticalFormPackagingLineCard/LogisticalFormPackagingLineCard';
+export {default as LogisticalFormPackagingTypeToggle} from './LogisticalFormPackagingTypeToggle/LogisticalFormPackagingTypeToggle';
 export {default as LogisticalFormPackagingView} from './LogisticalFormPackagingView/LogisticalFormPackagingView';
 export {default as LogisticalFormStockMoveLineCard} from './LogisticalFormStockMoveLineCard/LogisticalFormStockMoveLineCard';
 export {default as LogisticalFormStockMoveLinesView} from './LogisticalFormStockMoveLinesView/LogisticalFormStockMoveLinesView';
+export {default as PackagingLineQuantityCard} from './PackagingLineQuantityCard/PackagingLineQuantityCard';

@@ -16,28 +16,66 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import React from 'react';
-import {useTranslator} from '@axelor/aos-mobile-core';
-import {ActionCard, ActionCardType} from '@axelor/aos-mobile-ui';
-import LogisticalFormPackagingLineCard from '../LogisticalFormPackagingLineCard/LogisticalFormPackagingLineCard';
+import React, {useMemo} from 'react';
+import {
+  useNavigation,
+  usePermitted,
+  useTranslator,
+} from '@axelor/aos-mobile-core';
+import {ActionCard, ActionCardType, useThemeColor} from '@axelor/aos-mobile-ui';
+import {LogisticalFormPackagingLineCard} from '../../logisticalForm';
 
 interface LogisticalFormPackagingLineActionCardProps {
   packagingLine: any;
-  actions?: ActionCardType[] | null;
+  handleRefresh?: () => void;
 }
 
 const LogisticalFormPackagingLineActionCard = ({
   packagingLine,
-  actions,
+  handleRefresh,
 }: LogisticalFormPackagingLineActionCardProps) => {
   const I18n = useTranslator();
+  const Colors = useThemeColor();
+  const navigation = useNavigation();
+  const {readonly, canDelete} = usePermitted({
+    modelName: 'com.axelor.apps.supplychain.db.PackagingLine',
+  });
+
+  const actionList: ActionCardType[] = useMemo(
+    () => [
+      {
+        iconName: 'pencil-fill',
+        helper: I18n.t('Stock_EditPackagingLine'),
+        onPress: () =>
+          navigation.navigate('LogisticalFormPackagingItemFormScreen', {
+            packagingLine,
+          }),
+        hidden: readonly,
+      },
+      {
+        iconName: 'trash3-fill',
+        iconColor: Colors.errorColor.background,
+        helper: I18n.t('Stock_DeletePackagingLine'),
+        onPress: () => {
+          handleRefresh?.();
+        },
+        hidden: !canDelete,
+      },
+    ],
+    [
+      Colors,
+      I18n,
+      canDelete,
+      handleRefresh,
+      navigation,
+      packagingLine,
+      readonly,
+    ],
+  );
 
   return (
-    <ActionCard
-      actionList={actions ?? []}
-      forceActionsDisplay
-      translator={I18n.t}>
-      <LogisticalFormPackagingLineCard packagingLine={packagingLine} />
+    <ActionCard actionList={actionList} forceActionsDisplay translator={I18n.t}>
+      <LogisticalFormPackagingLineCard {...packagingLine} />
     </ActionCard>
   );
 };

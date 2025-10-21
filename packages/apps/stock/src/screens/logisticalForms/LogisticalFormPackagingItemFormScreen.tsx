@@ -17,69 +17,44 @@
  */
 
 import React, {useCallback, useMemo} from 'react';
-import {FormView} from '@axelor/aos-mobile-core';
-
-type LineType = 'packaging' | 'product';
+import {FormView, useSelector} from '@axelor/aos-mobile-core';
+import {PackagingType} from '../../types';
 
 const LogisticalFormPackagingItemFormScreen = ({navigation, route}: any) => {
-  const {
-    logisticalFormId,
-    logisticalForm: logisticalFormParam,
-    parentPackaging,
-    packaging,
-    packagingLine,
-    initialType = 'packaging',
-  } = route?.params ?? {};
+  const {parentPackaging, packaging, packagingLine} = route?.params ?? {};
 
-  const isEditingPackaging = packaging != null;
-  const isEditingPackagingLine = packagingLine != null;
+  const {logisticalForm} = useSelector(state => state.logisticalForm);
 
   const defaultValue = useMemo(() => {
-    if (isEditingPackaging) {
+    if (packaging != null)
       return {
-        id: packaging?.id,
-        version: packaging?.version,
-        lineType: 'packaging' as LineType,
-        packageUsed: packaging?.packageUsed,
-        logisticalForm: packaging?.logisticalForm ?? logisticalFormParam,
-        parentPackaging: packaging?.parentPackaging,
+        ...packaging,
+        packagingType: PackagingType.Packaging,
+        stockMoveSet: logisticalForm?.stockMoveList ?? [],
       };
-    }
 
-    if (isEditingPackagingLine) {
+    if (packagingLine != null)
       return {
         ...packagingLine,
-        lineType: 'product' as LineType,
-        logisticalForm:
-          packagingLine?.packaging?.logisticalForm ?? logisticalFormParam,
-        parentPackaging: packagingLine?.packaging,
-        stockMoveLine: packagingLine?.stockMoveLine,
-        qty: packagingLine?.qty,
+        parentPackaging: packagingLine.packaging,
+        packagingType: PackagingType.Product,
+        stockMoveSet: logisticalForm?.stockMoveList ?? [],
       };
-    }
 
     return null;
-  }, [
-    isEditingPackaging,
-    isEditingPackagingLine,
-    packaging,
-    logisticalFormParam,
-    packagingLine,
-  ]);
+  }, [logisticalForm?.stockMoveList, packaging, packagingLine]);
 
   const creationDefaultValue = useMemo(
     () => ({
-      lineType: initialType as LineType,
-      logisticalForm:
-        logisticalFormParam ??
-        (logisticalFormId ? {id: logisticalFormId} : undefined),
+      packagingType: PackagingType.Packaging,
       parentPackaging,
+      stockMoveSet: logisticalForm?.stockMoveList ?? [],
     }),
-    [initialType, logisticalFormId, logisticalFormParam, parentPackaging],
+    [logisticalForm?.stockMoveList, parentPackaging],
   );
 
-  const handleSave = useCallback(() => {
-    navigation.goBack();
+  const handleSaveApi = useCallback(() => {
+    navigation.pop();
   }, [navigation]);
 
   return (
@@ -94,7 +69,7 @@ const LogisticalFormPackagingItemFormScreen = ({navigation, route}: any) => {
           type: 'update',
           needValidation: true,
           needRequiredFields: true,
-          customAction: handleSave,
+          customAction: handleSaveApi,
         },
       ]}
     />

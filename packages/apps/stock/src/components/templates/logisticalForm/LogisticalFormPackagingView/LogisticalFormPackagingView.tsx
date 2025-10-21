@@ -16,7 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import React, {useMemo, useState} from 'react';
+import React, {useCallback, useMemo, useState} from 'react';
 import {
   SearchTreeView,
   useSelector,
@@ -32,7 +32,7 @@ import {
   searchParentPackaging,
 } from '../../../../features/packagingSlice';
 import {searchPackagingBranchApi} from '../../../../api';
-import {usePackagingItemActions} from '../../../../hooks/use-packaging-item-actions';
+import {usePackagingItemActions} from '../../../../hooks';
 
 const LogisticalFormPackagingView = () => {
   const I18n = useTranslator();
@@ -49,11 +49,13 @@ const LogisticalFormPackagingView = () => {
 
   const [refreshKey, setRefreshKey] = useState(0);
 
-  const {actionList, getPackagingActions, getPackagingLineActions} =
-    usePackagingItemActions({
-      logisticalForm,
-      onRefresh: () => setRefreshKey(current => current + 1),
-    });
+  const handleRefresh = useCallback(
+    () => setRefreshKey(current => current + 1),
+    [],
+  );
+
+  const {actionList, getPackagingActions} =
+    usePackagingItemActions(handleRefresh);
 
   const sliceFunctionData = useMemo(
     () => ({logisticalFormId: logisticalForm?.id}),
@@ -93,8 +95,8 @@ const LogisticalFormPackagingView = () => {
       renderBranch={({item}) => <LogisticalFormPackagingCard {...item} />}
       renderLeaf={({item}) => (
         <LogisticalFormPackagingLineActionCard
-          {...item}
-          actions={getPackagingLineActions(item)}
+          packagingLine={item}
+          handleRefresh={handleRefresh}
         />
       )}
       isHideableParentSearch={false}

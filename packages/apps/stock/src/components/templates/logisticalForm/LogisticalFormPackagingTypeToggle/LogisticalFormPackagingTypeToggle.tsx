@@ -16,32 +16,33 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import React, {useMemo, useState} from 'react';
+import React, {useMemo} from 'react';
 import {RadioSelect} from '@axelor/aos-mobile-ui';
 import {useTranslator} from '@axelor/aos-mobile-core';
+import {PackagingType} from '../../../../types';
 
-type LineType = 'packaging' | 'product';
-
-interface LogisticalFormPackagingLineTypeToggleProps {
-  defaultValue?: LineType;
-  onChange?: (value: LineType) => void;
-  readonly?: boolean;
+interface LogisticalFormPackagingTypeToggleProps {
   style?: any;
+  defaultValue?: PackagingType;
+  onChange?: (value: PackagingType) => void;
+  readonly?: boolean;
 }
 
-const LogisticalFormPackagingLineTypeToggle = ({
-  defaultValue = 'packaging',
-  onChange = () => {},
-  readonly = false,
+const LogisticalFormPackagingTypeToggle = ({
   style,
-}: LogisticalFormPackagingLineTypeToggleProps) => {
+  defaultValue = PackagingType.Packaging,
+  onChange,
+  readonly = false,
+}: LogisticalFormPackagingTypeToggleProps) => {
   const I18n = useTranslator();
-  const [value, setValue] = useState<LineType>(defaultValue);
 
   const items = useMemo(
     () => [
-      {id: 'packaging', title: I18n.t('Stock_LineType_Packaging')},
-      {id: 'product', title: I18n.t('Stock_LineType_Product')},
+      {
+        id: PackagingType.Packaging,
+        title: I18n.t('Stock_PackagingType_Packaging'),
+      },
+      {id: PackagingType.Product, title: I18n.t('Stock_PackagingType_Product')},
     ],
     [I18n],
   );
@@ -49,15 +50,13 @@ const LogisticalFormPackagingLineTypeToggle = ({
   return (
     <RadioSelect
       style={style}
-      defaultValue={value}
+      question={I18n.t('Stock_PackagingType')}
       items={items}
+      defaultValue={defaultValue}
+      onChange={onChange}
       readonly={readonly}
-      onChange={selected => {
-        setValue(selected as LineType);
-        onChange(selected as LineType);
-      }}
     />
   );
 };
 
-export default LogisticalFormPackagingLineTypeToggle;
+export default LogisticalFormPackagingTypeToggle;
