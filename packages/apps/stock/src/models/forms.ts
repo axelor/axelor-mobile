@@ -24,6 +24,7 @@ import {
   StockLocationSearchBar,
   StockMoveLineSearchBar,
   PackagingLineQuantityCard,
+  LogisticalFormPackagingMassScanner,
 } from '../components';
 import {PackagingType} from '../types';
 
@@ -131,6 +132,14 @@ export const stock_formsRegister: FormConfigs = {
         requiredIf: ({objectState}) =>
           objectState?.packagingType === PackagingType.Packaging,
         options: {scanKeySearch: 'packaging-product_packaging-form'},
+      },
+      massScan: {
+        type: 'string',
+        widget: 'custom',
+        customComponent: LogisticalFormPackagingMassScanner,
+        hideIf: ({objectState}) =>
+          objectState?.packagingType !== PackagingType.Packaging ||
+          objectState?.id != null,
       },
       stockMoveLine: {
         titleKey: 'Stock_StockMoveLine',

@@ -23,6 +23,7 @@ export {default as LogisticalFormHeader} from './LogisticalFormHeader/Logistical
 export {default as LogisticalFormPackagingCard} from './LogisticalFormPackagingCard/LogisticalFormPackagingCard';
 export {default as LogisticalFormPackagingLineActionCard} from './LogisticalFormPackagingLineActionCard/LogisticalFormPackagingLineActionCard';
 export {default as LogisticalFormPackagingLineCard} from './LogisticalFormPackagingLineCard/LogisticalFormPackagingLineCard';
+export {default as LogisticalFormPackagingMassScanner} from './LogisticalFormPackagingMassScanner/LogisticalFormPackagingMassScanner';
 export {default as LogisticalFormPackagingTypeToggle} from './LogisticalFormPackagingTypeToggle/LogisticalFormPackagingTypeToggle';
 export {default as LogisticalFormPackagingView} from './LogisticalFormPackagingView/LogisticalFormPackagingView';
 export {default as LogisticalFormStockMoveLineCard} from './LogisticalFormStockMoveLineCard/LogisticalFormStockMoveLineCard';
