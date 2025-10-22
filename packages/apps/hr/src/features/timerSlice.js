@@ -139,7 +139,7 @@ export const updateTimerStatus = createAsyncThunk(
       data,
       action: 'Hr_SliceAction_UpdateTimerStatus',
       getState,
-      responseOptions: {isArrayResponse: false},
+      responseOptions: {isArrayResponse: false, showToast: true},
     })
       .then(() => {
         dispatch(fetchTimerById({timerId: data.timerId}));

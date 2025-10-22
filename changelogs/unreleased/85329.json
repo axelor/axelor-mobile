@@ -1,5 +1,5 @@
 {
-  "title": "Active timer: add toolbox Start/Pause for active timer",
+  "title": "Timer: add toolbox to start/pause user active timer",
   "type": "feat",
   "packages": "hr"
 }
