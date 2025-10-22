@@ -61,10 +61,18 @@ export {
   searchLogisticalForms as searchLogisticalFormsApi,
   updateLogisticalForm as updateLogisticalFormApi,
 } from './logistical-form-api';
-export {searchPackaging as searchPackagingApi} from './packaging-api';
 export {
+  createPackaging as createPackagingApi,
+  deletePackaging as deletePackagingApi,
+  searchPackaging as searchPackagingApi,
+  updatePackaging as updatePackagingApi,
+} from './packaging-api';
+export {
+  createPackagingLine as createPackagingLineApi,
+  deletePackagingLine as deletePackagingLineApi,
   searchPackagingLines as searchPackagingLinesApi,
   searchPackagingBranch as searchPackagingBranchApi,
+  updatePackagingLine as updatePackagingLineApi,
 } from './packaging-line-api';
 export {fetchPackagingProducts as fetchPackagingProductsApi} from './packaging-product-api';
 export {

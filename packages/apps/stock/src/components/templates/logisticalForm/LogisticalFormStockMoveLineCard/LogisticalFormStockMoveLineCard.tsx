@@ -62,6 +62,9 @@ const LogisticalFormStockMoveLineCard = ({
 const getStyles = (color: string) =>
   StyleSheet.create({
     border: {
+      marginHorizontal: 12,
+      marginRight: 12,
+      marginVertical: 4,
       borderLeftWidth: 7,
       borderLeftColor: color,
     },

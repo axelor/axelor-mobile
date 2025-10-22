@@ -128,6 +128,8 @@ export const stock_formsRegister: FormConfigs = {
         customComponent: PackagingProductSearchBar,
         hideIf: ({objectState}) =>
           objectState?.packagingType !== PackagingType.Packaging,
+        requiredIf: ({objectState}) =>
+          objectState?.packagingType === PackagingType.Packaging,
         options: {scanKeySearch: 'packaging-product_packaging-form'},
       },
       stockMoveLine: {
@@ -137,9 +139,12 @@ export const stock_formsRegister: FormConfigs = {
         customComponent: StockMoveLineSearchBar,
         hideIf: ({objectState}) =>
           objectState?.packagingType !== PackagingType.Product,
+        readonlyIf: ({objectState}) => objectState?.id != null,
+        requiredIf: ({objectState}) =>
+          objectState?.packagingType === PackagingType.Product,
         options: {scanKeySearch: 'stock-move-line_packaging-line-form'},
       },
-      qty: {
+      quantity: {
         titleKey: 'Stock_Quantity',
         type: 'number',
         widget: 'custom',
@@ -150,6 +155,8 @@ export const stock_formsRegister: FormConfigs = {
         hideIf: ({objectState}) =>
           objectState?.packagingType !== PackagingType.Product ||
           !objectState?.stockMoveLine,
+        requiredIf: ({objectState}) =>
+          objectState?.packagingType === PackagingType.Product,
       },
     },
   },

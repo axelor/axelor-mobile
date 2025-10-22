@@ -18,12 +18,14 @@
 
 import React, {useMemo} from 'react';
 import {
+  useDispatch,
   useNavigation,
   usePermitted,
   useTranslator,
 } from '@axelor/aos-mobile-core';
 import {ActionCard, ActionCardType, useThemeColor} from '@axelor/aos-mobile-ui';
 import {LogisticalFormPackagingLineCard} from '../../logisticalForm';
+import {deletePackagingLine} from '../../../../features/packagingLineSlice';
 
 interface LogisticalFormPackagingLineActionCardProps {
   packagingLine: any;
@@ -37,6 +39,7 @@ const LogisticalFormPackagingLineActionCard = ({
   const I18n = useTranslator();
   const Colors = useThemeColor();
   const navigation = useNavigation();
+  const dispatch = useDispatch();
   const {readonly, canDelete} = usePermitted({
     modelName: 'com.axelor.apps.supplychain.db.PackagingLine',
   });
@@ -57,6 +60,7 @@ const LogisticalFormPackagingLineActionCard = ({
         iconColor: Colors.errorColor.background,
         helper: I18n.t('Stock_DeletePackagingLine'),
         onPress: () => {
+          dispatch((deletePackagingLine as any)({id: packagingLine.id}));
           handleRefresh?.();
         },
         hidden: !canDelete,
@@ -66,6 +70,7 @@ const LogisticalFormPackagingLineActionCard = ({
       Colors,
       I18n,
       canDelete,
+      dispatch,
       handleRefresh,
       navigation,
       packagingLine,

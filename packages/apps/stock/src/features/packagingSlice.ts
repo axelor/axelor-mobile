@@ -21,7 +21,12 @@ import {
   generateInifiniteScrollCases,
   handlerApiCall,
 } from '@axelor/aos-mobile-core';
-import {searchPackaging as _searchPackaging} from '../api/packaging-api';
+import {
+  createPackaging as _createPackaging,
+  deletePackaging as _deletePackaging,
+  searchPackaging as _searchPackaging,
+  updatePackaging as _updatePackaging,
+} from '../api/packaging-api';
 import {searchPackagingLines} from './packagingLineSlice';
 import {fetchPackagingProducts as _fetchPackagingProducts} from '../api/packaging-product-api';
 
@@ -69,6 +74,45 @@ export const fetchPackagingProducts = createAsyncThunk(
       action: 'Stock_SliceAction_FetchPackagingProducts',
       getState,
       responseOptions: {isArrayResponse: true},
+    });
+  },
+);
+
+export const createPackaging = createAsyncThunk(
+  'stock_packaging/createPackaging',
+  async function (data, {getState}) {
+    return handlerApiCall({
+      fetchFunction: _createPackaging,
+      data,
+      action: 'Stock_SliceAction_CreatePackaging',
+      getState,
+      responseOptions: {isArrayResponse: false, showToast: true},
+    });
+  },
+);
+
+export const updatePackaging = createAsyncThunk(
+  'stock_packaging/updatePackaging',
+  async function (data, {getState}) {
+    return handlerApiCall({
+      fetchFunction: _updatePackaging,
+      data,
+      action: 'Stock_SliceAction_UpdatePackaging',
+      getState,
+      responseOptions: {isArrayResponse: false, showToast: true},
+    });
+  },
+);
+
+export const deletePackaging = createAsyncThunk(
+  'stock_packaging/deletePackaging',
+  async function (data, {getState}) {
+    return handlerApiCall({
+      fetchFunction: _deletePackaging,
+      data,
+      action: 'Stock_SliceAction_DeletePackaging',
+      getState,
+      responseOptions: {isArrayResponse: false, showToast: true},
     });
   },
 );

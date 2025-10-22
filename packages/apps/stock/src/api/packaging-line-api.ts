@@ -19,6 +19,7 @@
 import {
   createStandardSearch,
   Criteria,
+  getActionApi,
   getSearchCriterias,
 } from '@axelor/aos-mobile-core';
 import {searchPackaging as searchPackagingApi} from './packaging-api';
@@ -75,4 +76,61 @@ export async function searchPackagingBranch({
   const result = [...packagings, ...packagingLines];
 
   return {data: {data: result.length > 0 ? result : null}} as any;
+}
+
+export async function createPackagingLine(body: {
+  packagingId: number;
+  stockMoveLineId: number;
+  quantity: number;
+}) {
+  return getActionApi().send({
+    method: 'post',
+    url: 'ws/aos/packaging-line',
+    body,
+    description: 'create new packaging line',
+    matchers: {
+      modelName: 'com.axelor.apps.supplychain.db.PackagingLine',
+      id: Date.now(),
+      fields: {
+        packagingId: 'packaging.id',
+        stockMoveLineId: 'stockMoveLine.id',
+        quantity: 'qty',
+      },
+    },
+  });
+}
+
+export async function updatePackagingLine({
+  id,
+  ...body
+}: {
+  id: number;
+  version?: number;
+  quantity?: number;
+}) {
+  return getActionApi().send({
+    method: 'put',
+    url: `ws/aos/packaging-line/update-quantity/${id}`,
+    body,
+    description: 'update packaging line',
+    matchers: {
+      modelName: 'com.axelor.apps.supplychain.db.PackagingLine',
+      id,
+      fields: {quantity: 'qty'},
+    },
+  });
+}
+
+export async function deletePackagingLine({id}: {id: number}) {
+  return getActionApi().send({
+    method: 'delete',
+    url: `ws/aos/packaging-line/${id}`,
+    body: {},
+    description: 'delete packaging line',
+    matchers: {
+      modelName: 'com.axelor.apps.supplychain.db.PackagingLine',
+      id,
+      fields: {},
+    },
+  });
 }

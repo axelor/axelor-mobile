@@ -275,5 +275,12 @@
   "Stock_SliceAction_SearchLogisticalForms": "recherche sur les fiches logistique",
   "Stock_SliceAction_SearchPackaging": "recherche sur les emballages",
   "Stock_SliceAction_SearchParentPackaging": "recherche sur les emballages parent",
-  "Stock_SliceAction_SearchStockMove": "recherche sur les mouvements de stock"
+  "Stock_SliceAction_SearchPackagingLines": "recherche sur les lignes d'emballage",
+  "Stock_SliceAction_SearchStockMove": "recherche sur les mouvements de stock",
+  "Stock_SliceAction_CreatePackaging": "création d'un emballage",
+  "Stock_SliceAction_UpdatePackaging": "mise à jour d'un emballage",
+  "Stock_SliceAction_DeletePackaging": "suppression d'un emballage",
+  "Stock_SliceAction_CreatePackagingLine": "création d'une ligne d'emballage",
+  "Stock_SliceAction_UpdatePackagingLine": "mise à jour d'une ligne d'emballage",
+  "Stock_SliceAction_DeletePackagingLine": "suppression d'une ligne d'emballage"
 }

@@ -275,5 +275,12 @@
   "Stock_SliceAction_SearchLogisticalForms": "search logistical forms",
   "Stock_SliceAction_SearchPackaging": "search packaging",
   "Stock_SliceAction_SearchParentPackaging": "search parent packaging",
-  "Stock_SliceAction_SearchStockMove": "search stock move"
+  "Stock_SliceAction_SearchPackagingLines": "search packaging lines",
+  "Stock_SliceAction_SearchStockMove": "search stock move",
+  "Stock_SliceAction_CreatePackaging": "create packaging",
+  "Stock_SliceAction_UpdatePackaging": "update packaging",
+  "Stock_SliceAction_DeletePackaging": "delete packaging",
+  "Stock_SliceAction_CreatePackagingLine": "create packaging line",
+  "Stock_SliceAction_UpdatePackagingLine": "update packaging line",
+  "Stock_SliceAction_DeletePackagingLine": "delete packaging line"
 }

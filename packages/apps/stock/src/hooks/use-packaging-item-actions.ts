@@ -18,16 +18,19 @@
 
 import {useCallback, useMemo} from 'react';
 import {
+  useDispatch,
   useNavigation,
   usePermitted,
   useTranslator,
 } from '@axelor/aos-mobile-core';
 import {useThemeColor} from '@axelor/aos-mobile-ui';
+import {deletePackaging} from '../features/packagingSlice';
 
 export const usePackagingItemActions = (onRefresh?: () => void) => {
   const I18n = useTranslator();
   const Colors = useThemeColor();
   const navigation = useNavigation();
+  const dispatch = useDispatch();
 
   const {canCreate, canDelete, readonly} = usePermitted({
     modelName: 'com.axelor.apps.supplychain.db.Packaging',
@@ -67,6 +70,7 @@ export const usePackagingItemActions = (onRefresh?: () => void) => {
           iconColor: Colors.errorColor.background,
           helper: I18n.t('Stock_DeletePackaging'),
           onPress: () => {
+            dispatch((deletePackaging as any)({id: packaging.id}));
             handleRefresh?.();
           },
           hidden: !canDelete,
@@ -74,11 +78,12 @@ export const usePackagingItemActions = (onRefresh?: () => void) => {
       ];
     },
     [
-      Colors,
+      Colors.errorColor.background,
       I18n,
       canCreate,
       canCreateLine,
       canDelete,
+      dispatch,
       handleRefresh,
       navigateToForm,
       readonly,

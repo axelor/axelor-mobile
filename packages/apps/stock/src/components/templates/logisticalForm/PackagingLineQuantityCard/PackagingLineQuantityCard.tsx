@@ -47,6 +47,11 @@ const PackagingLineQuantityCardAux = ({
   const formatNumber = useDigitFormat();
   const {getMassIndicator, massUnitLabel} = useMassIndicatorChecker();
 
+  const isPackagingCreation = useMemo(
+    () => objectState?.id == null,
+    [objectState?.id],
+  );
+
   const stockMoveLine = useMemo(
     () => objectState?.stockMoveLine,
     [objectState?.stockMoveLine],
@@ -62,10 +67,17 @@ const PackagingLineQuantityCardAux = ({
     [getMassIndicator, totalNetMass],
   );
 
-  if (
-    !!stockMoveLine &&
-    parseFloat(stockMoveLine.qtyRemainingToPackage ?? '0') === 0
-  ) {
+  const qtyRemainingToPackage = useMemo(
+    () => parseFloat(stockMoveLine?.qtyRemainingToPackage ?? '0'),
+    [stockMoveLine?.qtyRemainingToPackage],
+  );
+
+  const initalValue = useMemo(
+    () => parseFloat(objectState?.qty ?? '0'),
+    [objectState?.qty],
+  );
+
+  if (isPackagingCreation && qtyRemainingToPackage === 0) {
     return (
       <Label
         style={style}
@@ -83,7 +95,7 @@ const PackagingLineQuantityCardAux = ({
       onValueChange={onChange}
       editable={!readonly}
       isBigButton
-      maxValue={stockMoveLine?.qtyRemainingToPackage}
+      maxValue={initalValue + qtyRemainingToPackage}
       translator={I18n.t}>
       <LabelText value={stockMoveLine?.product?.fullName} />
       {!!stockMoveLine?.trackingNumber && (

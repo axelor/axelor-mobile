@@ -19,6 +19,11 @@
 import React, {useCallback, useMemo} from 'react';
 import {FormView, useSelector} from '@axelor/aos-mobile-core';
 import {PackagingType} from '../../types';
+import {
+  createPackagingLine,
+  updatePackagingLine,
+} from '../../features/packagingLineSlice';
+import {createPackaging, updatePackaging} from '../../features/packagingSlice';
 
 const LogisticalFormPackagingItemFormScreen = ({navigation, route}: any) => {
   const {parentPackaging, packaging, packagingLine} = route?.params ?? {};
@@ -36,6 +41,7 @@ const LogisticalFormPackagingItemFormScreen = ({navigation, route}: any) => {
     if (packagingLine != null)
       return {
         ...packagingLine,
+        quantity: packagingLine.qty,
         parentPackaging: packagingLine.packaging,
         packagingType: PackagingType.Product,
         stockMoveSet: logisticalForm?.stockMoveList ?? [],
@@ -53,9 +59,57 @@ const LogisticalFormPackagingItemFormScreen = ({navigation, route}: any) => {
     [logisticalForm?.stockMoveList, parentPackaging],
   );
 
-  const handleSaveApi = useCallback(() => {
-    navigation.pop();
-  }, [navigation]);
+  const handleSavePackagingLine = useCallback(
+    (objectState: any, dispatch: any) => {
+      const isCreation = objectState.id == null;
+      const sliceFct: any = isCreation
+        ? createPackagingLine
+        : updatePackagingLine;
+
+      dispatch(
+        sliceFct({
+          ...objectState,
+          packagingId: objectState.parentPackaging?.id,
+          stockMoveLineId: objectState.stockMoveLine?.id,
+          quantity: objectState.quantity,
+        }),
+      );
+    },
+    [],
+  );
+
+  const handleSavePackaging = useCallback(
+    (objectState: any, dispatch: any) => {
+      const isCreation = objectState.id == null;
+      const sliceFct: any = isCreation ? createPackaging : updatePackaging;
+
+      dispatch(
+        sliceFct({
+          ...objectState,
+          packageUsedId: objectState.packageUsed?.id,
+          parentPackagingId: objectState.parentPackaging?.id,
+          logisticalFormId: logisticalForm.id,
+        }),
+      );
+    },
+    [logisticalForm.id],
+  );
+
+  const handleSave = useCallback(
+    (objectState: any, dispatch: any) => {
+      const packagingType =
+        objectState.packagingType ?? PackagingType.Packaging;
+
+      if (packagingType === PackagingType.Packaging) {
+        handleSavePackaging(objectState, dispatch);
+      } else if (packagingType === PackagingType.Product) {
+        handleSavePackagingLine(objectState, dispatch);
+      }
+
+      navigation.pop();
+    },
+    [handleSavePackaging, handleSavePackagingLine, navigation],
+  );
 
   return (
     <FormView
@@ -65,11 +119,20 @@ const LogisticalFormPackagingItemFormScreen = ({navigation, route}: any) => {
       defaultEditMode
       actions={[
         {
-          key: 'save-packaging',
+          key: 'create-packaging',
+          type: 'create',
+          needValidation: true,
+          needRequiredFields: true,
+          customAction: ({objectState, dispatch}) =>
+            handleSave(objectState, dispatch),
+        },
+        {
+          key: 'update-packaging',
           type: 'update',
           needValidation: true,
           needRequiredFields: true,
-          customAction: handleSaveApi,
+          customAction: ({objectState, dispatch}) =>
+            handleSave(objectState, dispatch),
         },
       ]}
     />
