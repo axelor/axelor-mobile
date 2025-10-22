@@ -52,9 +52,17 @@ const GlobalToolBox = () => {
         color: Colors[_a.color],
         iconName: _a.iconName,
         disabled: _a.disabledIf(data),
-        onPress: () => _a.onPress({...data, navigation}),
+        onPress: () => _a.onPress({...data, navigation, translator: I18n.t}),
       }));
-  }, [Colors, context, dispatch, modulesActions, navigation, storeState]);
+  }, [
+    Colors,
+    I18n.t,
+    context,
+    dispatch,
+    modulesActions,
+    navigation,
+    storeState,
+  ]);
 
   if (!token || name == null || !showToolbox) {
     return null;
