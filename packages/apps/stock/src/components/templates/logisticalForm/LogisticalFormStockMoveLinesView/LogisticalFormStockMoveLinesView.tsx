@@ -17,7 +17,7 @@
  */
 
 import React, {useMemo, useState} from 'react';
-import {ChipSelect} from '@axelor/aos-mobile-ui';
+import {ActionType, ChipSelect, useThemeColor} from '@axelor/aos-mobile-ui';
 import {
   SearchListView,
   useSelector,
@@ -31,20 +31,25 @@ import {StockMoveTagSelect} from '../../../molecules';
 import {StockMoveSearchBar} from '../../../organisms';
 import {fetchStockMoveLines} from '../../../../features/stockMoveLineSlice';
 import {useLogisticalFormState} from '../../../../hooks';
+import LogisticalFormSelectStockMovePopup from './LogisticalFormSelectStockMovePopup';
 
 const stockMoveLineScanKey = 'stock-move-line_logistical-form-state-list';
 
 const LogisticalFormStockMoveLinesView = () => {
   const I18n = useTranslator();
+  const Colors = useThemeColor();
   const {options, filterLineState} = useLogisticalFormState();
 
   const {logisticalForm} = useSelector(state => state.logisticalForm);
+  const {user} = useSelector(state => state.user);
   const {stockMoveLineList, loadingList, moreLoading, isListEnd} = useSelector(
     state => state.stock_stockMoveLine,
   );
 
   const [selectedStatus, setSelectedStatus] = useState([]);
   const [selectedStockMove, setSelectedStockMove] = useState(null);
+  const companyId = user?.activeCompany?.id;
+  const stockConfig = user?.activeCompany?.stockConfig;
 
   const sliceFunctionData = useMemo(
     () => ({
@@ -60,43 +65,59 @@ const LogisticalFormStockMoveLinesView = () => {
     [filterLineState, selectedStatus, stockMoveLineList],
   );
 
+  const [popupActions, setPopupActions] = useState<ActionType[]>([]);
+
   return (
-    <SearchListView
-      scanKeySearch={stockMoveLineScanKey}
-      headerTopChildren={
-        <>
-          <LogisticalFormHeader {...logisticalForm} />
-          <StockMoveTagSelect
-            titleKey="Stock_LinkedStockMoves"
-            items={logisticalForm?.stockMoveList ?? []}
+    <>
+      <SearchListView
+        scanKeySearch={stockMoveLineScanKey}
+        headerTopChildren={
+          <>
+            <LogisticalFormHeader {...logisticalForm} />
+            <StockMoveTagSelect
+              titleKey="Stock_LinkedStockMoves"
+              items={logisticalForm?.stockMoveList ?? []}
+            />
+          </>
+        }
+        fixedItems={
+          <StockMoveSearchBar
+            defaultValue={selectedStockMove}
+            onChange={setSelectedStockMove}
+            stockMoveSet={logisticalForm?.stockMoveList ?? []}
           />
-        </>
-      }
-      fixedItems={
-        <StockMoveSearchBar
-          defaultValue={selectedStockMove}
-          onChange={setSelectedStockMove}
-          stockMoveSet={logisticalForm?.stockMoveList ?? []}
-        />
-      }
-      list={filteredList}
-      loading={loadingList}
-      moreLoading={moreLoading}
-      isListEnd={isListEnd}
-      sliceFunction={fetchStockMoveLines}
-      sliceFunctionData={sliceFunctionData}
-      searchPlaceholder={I18n.t('Stock_SearchLine')}
-      displaySearchValue={item => item?.product?.fullName}
-      chipComponent={
-        <ChipSelect
-          mode="multi"
-          selectionItems={options}
-          onChangeValue={setSelectedStatus}
-        />
-      }
-      renderListItem={({item}) => <LogisticalFormStockMoveLineCard {...item} />}
-      isHideableSearch={false}
-    />
+        }
+        list={filteredList}
+        loading={loadingList}
+        moreLoading={moreLoading}
+        isListEnd={isListEnd}
+        sliceFunction={fetchStockMoveLines}
+        sliceFunctionData={sliceFunctionData}
+        searchPlaceholder={I18n.t('Stock_SearchLine')}
+        displaySearchValue={item => item?.product?.fullName}
+        chipComponent={
+          <ChipSelect
+            mode="multi"
+            selectionItems={options}
+            onChangeValue={setSelectedStatus}
+          />
+        }
+        renderListItem={({item}) => (
+          <LogisticalFormStockMoveLineCard {...item} />
+        )}
+        isHideableSearch={false}
+        actionList={popupActions}
+        verticalActions={true}
+      />
+      <LogisticalFormSelectStockMovePopup
+        logisticalForm={logisticalForm}
+        stockConfig={stockConfig}
+        companyId={companyId}
+        translator={I18n.t}
+        colors={Colors}
+        onActionListChange={setPopupActions}
+      />
+    </>
   );
 };
 

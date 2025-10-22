@@ -61,6 +61,8 @@ export {
   fetchLogisticalForm,
   searchLogisticalForms,
   updateLogisticalForm,
+  addStockMoveToLogisticalForm,
+  removeStockMoveFromLogisticalForm,
 } from './logisticalFormSlice';
 export {
   createPackagingLine,

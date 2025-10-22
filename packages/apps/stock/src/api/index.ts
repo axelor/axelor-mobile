@@ -60,6 +60,8 @@ export {
   fetchLogisticalForm as fetchLogisticalFormApi,
   searchLogisticalForms as searchLogisticalFormsApi,
   updateLogisticalForm as updateLogisticalFormApi,
+  addStockMoveToLogisticalForm as addStockMoveToLogisticalFormApi,
+  removeStockMoveFromLogisticalForm as removeStockMoveFromLogisticalFormApi,
 } from './logistical-form-api';
 export {
   createPackaging as createPackagingApi,

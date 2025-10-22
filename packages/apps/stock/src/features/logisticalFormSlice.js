@@ -26,6 +26,8 @@ import {
   fetchLogisticalForm as _fetchLogisticalForm,
   createLogisticalForm as _createLogisticalForm,
   updateLogisticalForm as _updateLogisticalForm,
+  addStockMoveToLogisticalForm as _addStockMoveToLogisticalForm,
+  removeStockMoveFromLogisticalForm as _removeStockMoveFromLogisticalForm,
 } from '../api/logistical-form-api';
 
 export const searchLogisticalForms = createAsyncThunk(
@@ -76,7 +78,50 @@ export const updateLogisticalForm = createAsyncThunk(
       action: 'Stock_SliceAction_UpdateLogisticalForm',
       getState,
       responseOptions: {isArrayResponse: false, showToast: true},
-    }).then(() => dispatch(fetchLogisticalForm({logisticalFormId: data.id})));
+    }).then(response => {
+      dispatch(fetchLogisticalForm({logisticalFormId: data.id}));
+      return response;
+    });
+  },
+);
+
+export const addStockMoveToLogisticalForm = createAsyncThunk(
+  'logisticalForm/addStockMoveToLogisticalForm',
+  async function (data, {getState, dispatch}) {
+    return handlerApiCall({
+      fetchFunction: _addStockMoveToLogisticalForm,
+      data,
+      action: 'Stock_SliceAction_AddStockMoveToLogisticalForm',
+      getState,
+      responseOptions: {isArrayResponse: false, showToast: true},
+    }).then(response => {
+      if (data?.logisticalFormId != null) {
+        dispatch(
+          fetchLogisticalForm({logisticalFormId: data.logisticalFormId}),
+        );
+      }
+      return response;
+    });
+  },
+);
+
+export const removeStockMoveFromLogisticalForm = createAsyncThunk(
+  'logisticalForm/removeStockMoveFromLogisticalForm',
+  async function (data, {getState, dispatch}) {
+    return handlerApiCall({
+      fetchFunction: _removeStockMoveFromLogisticalForm,
+      data,
+      action: 'Stock_SliceAction_RemoveStockMoveFromLogisticalForm',
+      getState,
+      responseOptions: {isArrayResponse: false, showToast: true},
+    }).then(response => {
+      if (data?.logisticalFormId != null) {
+        dispatch(
+          fetchLogisticalForm({logisticalFormId: data.logisticalFormId}),
+        );
+      }
+      return response;
+    });
   },
 );
 
@@ -128,6 +173,24 @@ const logisticalFormSlice = createSlice({
       state.logisticalForm = action.payload;
     });
     builder.addCase(updateLogisticalForm.rejected, state => {
+      state.loading = false;
+    });
+    builder.addCase(addStockMoveToLogisticalForm.pending, state => {
+      state.loading = true;
+    });
+    builder.addCase(addStockMoveToLogisticalForm.fulfilled, state => {
+      state.loading = false;
+    });
+    builder.addCase(addStockMoveToLogisticalForm.rejected, state => {
+      state.loading = false;
+    });
+    builder.addCase(removeStockMoveFromLogisticalForm.pending, state => {
+      state.loading = true;
+    });
+    builder.addCase(removeStockMoveFromLogisticalForm.fulfilled, state => {
+      state.loading = false;
+    });
+    builder.addCase(removeStockMoveFromLogisticalForm.rejected, state => {
       state.loading = false;
     });
   },

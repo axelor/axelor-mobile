@@ -22,6 +22,15 @@ import {useDispatch, useSelector, useTranslator} from '@axelor/aos-mobile-core';
 import {displayStockMoveSeq} from '../../../utils';
 import {searchStockMove} from '../../../features/stockMoveSlice';
 
+type StockMoveSearchFilters = Partial<{
+  stockMoveIds: number[];
+  excludeStockMoveIds: number[];
+  typeSelectList: number[];
+  partnerId: number;
+  statusList: number[];
+  companyId: number;
+}>;
+
 interface StockMoveSearchBarProps {
   style?: any;
   title?: string;
@@ -33,6 +42,7 @@ interface StockMoveSearchBarProps {
   readonly?: boolean;
   showTitle?: boolean;
   stockMoveSet?: any[];
+  searchFilters?: StockMoveSearchFilters;
 }
 
 const StockMoveSearchBarAux = ({
@@ -46,6 +56,7 @@ const StockMoveSearchBarAux = ({
   readonly = false,
   showTitle = false,
   stockMoveSet,
+  searchFilters,
 }: StockMoveSearchBarProps) => {
   const I18n = useTranslator();
   const dispatch = useDispatch();
@@ -64,15 +75,27 @@ const StockMoveSearchBarAux = ({
 
   const fetchStockMovesAPI = useCallback(
     ({page = 0, searchValue}) => {
+      const payload: any = {
+        page,
+        searchValue,
+        ...(searchFilters ?? {}),
+      };
+
+      if (
+        Array.isArray(stockMoveIds) &&
+        stockMoveIds.length > 0 &&
+        (searchFilters == null || searchFilters.stockMoveIds == null)
+      ) {
+        payload.stockMoveIds = stockMoveIds;
+      }
+
       dispatch(
         (searchStockMove as any)({
-          page,
-          searchValue,
-          stockMoveIds,
+          ...payload,
         }),
       );
     },
-    [dispatch, stockMoveIds],
+    [dispatch, searchFilters, stockMoveIds],
   );
 
   return (
