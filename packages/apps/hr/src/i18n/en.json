@@ -66,6 +66,8 @@
   "Hr_TotalDuration": "Total duration",
   "Hr_ActiveTimer": "Active timer",
   "Hr_CreateTimer": "Create a timer",
+  "Hr_UpdateActiveTimer": "Update status of active timer",
+  "Hr_TimerTool_NoTimerFound": "No active timer found. CLick here to create a new one.",
   "Hr_Product": "Activity",
   "Hr_SelectTimers": "Select timers",
   "Hr_TimesheetToLink": "Timesheet to link",
