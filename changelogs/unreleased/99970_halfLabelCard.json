@@ -1,0 +1,5 @@
+{
+  "title": "HalfLabelCard: improve component style",
+  "type": "refactor",
+  "packages": "ui"
+}
