@@ -50,9 +50,7 @@ const LogisticalFormPackagingLineActionCard = ({
         iconName: 'pencil-fill',
         helper: I18n.t('Stock_EditPackagingLine'),
         onPress: () =>
-          navigation.navigate('LogisticalFormPackagingItemFormScreen', {
-            packagingLine,
-          }),
+          navigation.navigate('PackagingItemFormScreen', {packagingLine}),
         hidden: readonly,
       },
       {

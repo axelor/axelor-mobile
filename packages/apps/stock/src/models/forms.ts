@@ -19,12 +19,12 @@
 import {FormConfigs, getTypes} from '@axelor/aos-mobile-core';
 import {
   LogisticalFormPackagingTypeToggle,
-  PartnerSearchBar,
+  PackagingLineMassScanner,
+  PackagingLineQuantityCard,
   PackagingProductSearchBar,
+  PartnerSearchBar,
   StockLocationSearchBar,
   StockMoveLineSearchBar,
-  PackagingLineQuantityCard,
-  LogisticalFormPackagingMassScanner,
 } from '../components';
 import {PackagingType} from '../types';
 
@@ -134,11 +134,12 @@ export const stock_formsRegister: FormConfigs = {
         options: {scanKeySearch: 'packaging-product_packaging-form'},
       },
       massScan: {
+        titleKey: 'Stock_StartMassScan',
         type: 'string',
         widget: 'custom',
-        customComponent: LogisticalFormPackagingMassScanner,
+        customComponent: PackagingLineMassScanner,
         hideIf: ({objectState}) =>
-          objectState?.packagingType !== PackagingType.Packaging ||
+          objectState?.packagingType !== PackagingType.Product ||
           objectState?.id != null,
       },
       stockMoveLine: {

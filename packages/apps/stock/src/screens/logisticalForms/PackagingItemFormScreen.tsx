@@ -25,7 +25,7 @@ import {
 } from '../../features/packagingLineSlice';
 import {createPackaging, updatePackaging} from '../../features/packagingSlice';
 
-const LogisticalFormPackagingItemFormScreen = ({navigation, route}: any) => {
+const PackagingItemFormScreen = ({navigation, route}: any) => {
   const {parentPackaging, packaging, packagingLine} = route?.params ?? {};
 
   const {logisticalForm} = useSelector(state => state.logisticalForm);
@@ -60,8 +60,11 @@ const LogisticalFormPackagingItemFormScreen = ({navigation, route}: any) => {
   );
 
   const handleSavePackagingLine = useCallback(
-    (objectState: any, dispatch: any) => {
-      const isCreation = objectState.id == null;
+    (
+      objectState: any,
+      dispatch: (fct: any) => void,
+      isCreation: boolean = false,
+    ) => {
       const sliceFct: any = isCreation
         ? createPackagingLine
         : updatePackagingLine;
@@ -79,8 +82,11 @@ const LogisticalFormPackagingItemFormScreen = ({navigation, route}: any) => {
   );
 
   const handleSavePackaging = useCallback(
-    (objectState: any, dispatch: any) => {
-      const isCreation = objectState.id == null;
+    (
+      objectState: any,
+      dispatch: (fct: any) => void,
+      isCreation: boolean = false,
+    ) => {
       const sliceFct: any = isCreation ? createPackaging : updatePackaging;
 
       dispatch(
@@ -96,17 +102,23 @@ const LogisticalFormPackagingItemFormScreen = ({navigation, route}: any) => {
   );
 
   const handleSave = useCallback(
-    (objectState: any, dispatch: any) => {
-      const packagingType =
-        objectState.packagingType ?? PackagingType.Packaging;
+    (
+      objectState: any,
+      dispatch: (fct: any) => void,
+      handleReset: () => void,
+    ) => {
+      const isCreation = objectState.id == null;
 
-      if (packagingType === PackagingType.Packaging) {
-        handleSavePackaging(objectState, dispatch);
-      } else if (packagingType === PackagingType.Product) {
-        handleSavePackagingLine(objectState, dispatch);
+      switch (objectState.packagingType ?? PackagingType.Packaging) {
+        case PackagingType.Packaging:
+          handleSavePackaging(objectState, dispatch, isCreation);
+          break;
+        case PackagingType.Product:
+          handleSavePackagingLine(objectState, dispatch, isCreation);
+          break;
       }
 
-      navigation.pop();
+      isCreation ? handleReset() : navigation.pop();
     },
     [handleSavePackaging, handleSavePackagingLine, navigation],
   );
@@ -123,20 +135,20 @@ const LogisticalFormPackagingItemFormScreen = ({navigation, route}: any) => {
           type: 'create',
           needValidation: true,
           needRequiredFields: true,
-          customAction: ({objectState, dispatch}) =>
-            handleSave(objectState, dispatch),
+          customAction: ({objectState, dispatch, handleReset}) =>
+            handleSave(objectState, dispatch, handleReset),
         },
         {
           key: 'update-packaging',
           type: 'update',
           needValidation: true,
           needRequiredFields: true,
-          customAction: ({objectState, dispatch}) =>
-            handleSave(objectState, dispatch),
+          customAction: ({objectState, dispatch, handleReset}) =>
+            handleSave(objectState, dispatch, handleReset),
         },
       ]}
     />
   );
 };
 
-export default LogisticalFormPackagingItemFormScreen;
+export default PackagingItemFormScreen;

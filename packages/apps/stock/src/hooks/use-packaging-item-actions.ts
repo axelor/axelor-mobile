@@ -45,7 +45,7 @@ export const usePackagingItemActions = (onRefresh?: () => void) => {
 
   const navigateToForm = useCallback(
     (params: any) => {
-      navigation.navigate('LogisticalFormPackagingItemFormScreen', params);
+      navigation.navigate('PackagingItemFormScreen', params);
     },
     [navigation],
   );
@@ -97,8 +97,7 @@ export const usePackagingItemActions = (onRefresh?: () => void) => {
       {
         iconName: 'plus-lg',
         title: I18n.t('Stock_AddPackagingItem'),
-        onPress: () =>
-          navigation.navigate('LogisticalFormPackagingItemFormScreen'),
+        onPress: () => navigation.navigate('PackagingItemFormScreen'),
       },
     ];
   }, [I18n, canCreate, canCreateLine, navigation]);
