@@ -78,10 +78,12 @@ const ConsumedProductListScreen = ({route, navigation}) => {
       operationOrderId != null
         ? operationOrder?.statusSelect ===
           OperationOrder?.statusSelect.InProgress
-        : manufOrder?.statusSelect === ManufOrder?.statusSelect.InProgress,
+        : manufOrder?.statusSelect === ManufOrder?.statusSelect.InProgress &&
+          !manufOrder?.isConsProOnOperation,
     [
       ManufOrder?.statusSelect,
       OperationOrder?.statusSelect,
+      manufOrder?.isConsProOnOperation,
       manufOrder?.statusSelect,
       operationOrder?.statusSelect,
       operationOrderId,

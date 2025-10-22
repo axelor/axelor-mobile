@@ -105,7 +105,7 @@ export const fetchProdProductWithId = createAsyncThunk(
 export const addProdProductToManufOrder = createAsyncThunk(
   'prodProducts/addProdProductToManufOrder',
   async function (data, {getState, dispatch}) {
-    const type = data?.type;
+    const type = data?.productType;
     return handlerApiCall({
       fetchFunction: createProdProduct,
       data,
