@@ -61,6 +61,7 @@ const ConsumedProductDetailsScreen = ({route, navigation}) => {
 
   const trackingNumber = useMemo(() => {
     if (
+      consumedProdProduct &&
       consumedProdProduct?.stockMoveLineId === consumedProductStockMoveLine?.id
     ) {
       return consumedProductStockMoveLine.trackingNumber;
