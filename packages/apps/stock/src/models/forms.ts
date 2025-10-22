@@ -141,6 +141,7 @@ export const stock_formsRegister: FormConfigs = {
         hideIf: ({objectState}) =>
           objectState?.packagingType !== PackagingType.Product ||
           objectState?.id != null,
+        options: {scanKey: 'stock-move-line_packaging-line-form_mass-scan'},
       },
       stockMoveLine: {
         titleKey: 'Stock_StockMoveLine',
