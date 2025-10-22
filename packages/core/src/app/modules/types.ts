@@ -98,6 +98,7 @@ interface ToolData {
 
 interface ActionToolData extends ToolData {
   navigation: any;
+  translator: (key: string) => string;
 }
 
 export interface Tool {
