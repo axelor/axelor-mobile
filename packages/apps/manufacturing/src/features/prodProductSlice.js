@@ -23,9 +23,11 @@ import {
   updateStockMoveLineTrackingNumberApi,
 } from '@axelor/aos-mobile-stock';
 import {
+  createOperationOrderConsumedProduct,
   createProdProduct,
   fetchManufacturingOrderConsumedProducts,
   fetchManufacturingOrderProducedProducts,
+  fetchOperationOrderConsumedProducts,
   searchProdProductWithId,
   updateProdProduct,
 } from '../api/prod-product-api';
@@ -37,7 +39,9 @@ export const fetchConsumedProducts = createAsyncThunk(
   'prodProducts/fetchConsumedProducts',
   async function (data, {getState}) {
     return handlerApiCall({
-      fetchFunction: fetchManufacturingOrderConsumedProducts,
+      fetchFunction: data.operationOrderId
+        ? fetchOperationOrderConsumedProducts
+        : fetchManufacturingOrderConsumedProducts,
       data,
       action: 'Manufacturing_SliceAction_FetchComsumedProducts',
       getState,
@@ -100,20 +104,42 @@ export const fetchProdProductWithId = createAsyncThunk(
 
 export const addProdProductToManufOrder = createAsyncThunk(
   'prodProducts/addProdProductToManufOrder',
-  async function (data, {getState}) {
+  async function (data, {getState, dispatch}) {
+    const type = data?.productType;
     return handlerApiCall({
       fetchFunction: createProdProduct,
       data,
       action: 'Manufacturing_SliceAction_CreateProdProduct',
       getState,
       responseOptions: {showToast: true},
+    }).then(() => {
+      if (type === TYPE_CONSUMED) {
+        dispatch(fetchConsumedProducts(data));
+      } else if (type === TYPE_PRODUCED) {
+        dispatch(fetchProducedProducts(data));
+      }
+    });
+  },
+);
+
+export const addProdProductToOperationOrder = createAsyncThunk(
+  'prodProducts/addProdProductToOperationOrder',
+  async function (data, {getState, dispatch}) {
+    return handlerApiCall({
+      fetchFunction: createOperationOrderConsumedProduct,
+      data,
+      action: 'Manufacturing_SliceAction_CreateProdProduct',
+      getState,
+      responseOptions: {showToast: true},
+    }).then(() => {
+      dispatch(fetchConsumedProducts(data));
     });
   },
 );
 
 export const updateProdProductOfManufOrder = createAsyncThunk(
   'prodProducts/updateProdProductOfManufOrder',
-  async function (data, {getState}) {
+  async function (data, {getState, dispatch}) {
     const type = data?.type;
     return handlerApiCall({
       fetchFunction: updateProdProduct,
@@ -123,21 +149,9 @@ export const updateProdProductOfManufOrder = createAsyncThunk(
       responseOptions: {showToast: true},
     }).then(() => {
       if (type === TYPE_CONSUMED) {
-        return handlerApiCall({
-          fetchFunction: fetchManufacturingOrderConsumedProducts,
-          data,
-          action: 'Manufacturing_SliceAction_FetchComsumedProducts',
-          getState,
-          responseOptions: {},
-        });
+        dispatch(fetchConsumedProducts(data));
       } else if (type === TYPE_PRODUCED) {
-        return handlerApiCall({
-          fetchFunction: fetchManufacturingOrderProducedProducts,
-          data,
-          action: 'Manufacturing_SliceAction_FetchProducedProducts',
-          getState,
-          responseOptions: {},
-        });
+        dispatch(fetchProducedProducts(data));
       }
     });
   },
@@ -145,7 +159,7 @@ export const updateProdProductOfManufOrder = createAsyncThunk(
 
 export const addTrackingNumberToConsumedProduct = createAsyncThunk(
   'consumedProduct/addTrackingNumberToConsumedProduct',
-  async function (data = {}, {getState}) {
+  async function (data = {}, {getState, dispatch}) {
     return handlerApiCall({
       fetchFunction: updateStockMoveLineTrackingNumberApi,
       data,
@@ -154,15 +168,9 @@ export const addTrackingNumberToConsumedProduct = createAsyncThunk(
       getState,
       responseOptions: {showToast: true, isArrayResponse: false},
     }).then(async res => {
-      const {productList} = await handlerApiCall({
-        fetchFunction: fetchManufacturingOrderConsumedProducts,
-        data,
-        action: 'Manufacturing_SliceAction_FetchComsumedProducts',
-        getState,
-        responseOptions: {},
-      });
+      dispatch(fetchConsumedProducts(data));
 
-      return {consumedProducts: productList, stockMoveLine: res};
+      return res;
     });
   },
 );
@@ -170,14 +178,18 @@ export const addTrackingNumberToConsumedProduct = createAsyncThunk(
 const initialState = {
   loadingConsumedProducts: false,
   consumedProductList: [],
-  loadingConsumedProductStockMoveLine: false,
+
   consumedProductStockMoveLine: {},
+
   loadingProducedProducts: false,
   producedProductList: [],
+
   loadingConsumedProduct: false,
   consumedProduct: {},
+
   loadingProducedProduct: false,
   producedProduct: {},
+
   loadingProdProduct: false,
   prodProduct: {},
 };
@@ -201,24 +213,9 @@ const prodProductsSlice = createSlice({
       state.producedProductList = action.payload?.productList;
     });
     builder.addCase(
-      updateProdProductOfManufOrder.fulfilled,
-      (state, action) => {
-        if (action.meta.arg.type === TYPE_CONSUMED) {
-          state.consumedProductList = action.payload?.productList;
-        } else if (action.meta.arg.type === TYPE_PRODUCED) {
-          state.producedProductList = action.payload?.productList;
-        }
-      },
-    );
-    builder.addCase(addTrackingNumberToConsumedProduct.pending, state => {
-      state.loadingConsumedProductStockMoveLine = true;
-    });
-    builder.addCase(
       addTrackingNumberToConsumedProduct.fulfilled,
       (state, action) => {
-        state.loadingConsumedProductStockMoveLine = false;
-        state.consumedProductList = action.payload?.consumedProducts;
-        state.consumedProductStockMoveLine = action.payload?.stockMoveLine;
+        state.consumedProductStockMoveLine = action.payload;
       },
     );
     builder.addCase(fetchConsumedProductWithId.pending, state => {

@@ -29,6 +29,8 @@ const ConsumedProductTrackingNumberSelect = ({
   stockMoveLineVersion,
   manufOrderId,
   manufOrderVersion,
+  operationOrderId,
+  operationOrderVersion,
   visible,
 }) => {
   const dispatch = useDispatch();
@@ -41,6 +43,8 @@ const ConsumedProductTrackingNumberSelect = ({
           stockMoveLineVersion,
           manufOrderId,
           manufOrderVersion,
+          operationOrderId,
+          operationOrderVersion,
           trackingNumber: selectedTrackingNumber,
         }),
       );
@@ -49,6 +53,8 @@ const ConsumedProductTrackingNumberSelect = ({
       dispatch,
       manufOrderId,
       manufOrderVersion,
+      operationOrderId,
+      operationOrderVersion,
       stockMoveLineId,
       stockMoveLineVersion,
     ],

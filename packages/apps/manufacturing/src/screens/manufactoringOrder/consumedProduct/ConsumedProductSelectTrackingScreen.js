@@ -17,6 +17,7 @@
  */
 
 import React from 'react';
+import {useSelector} from '@axelor/aos-mobile-core';
 import {
   ClearableCard,
   Screen,
@@ -24,20 +25,25 @@ import {
   HeaderContainer,
 } from '@axelor/aos-mobile-ui';
 import {TrackingNumberSearchBar} from '@axelor/aos-mobile-stock';
-import {ManufacturingOrderHeader} from '../../../components';
+import {
+  ManufacturingOrderHeader,
+  OperationOrderHeader,
+} from '../../../components';
 
 const trackingNumberScanKey =
   'tracking-number_manufacturing-order-consumed-product-select';
 
 const ConsumedProductSelectTrackingScreen = ({route, navigation}) => {
-  const manufOrder = route.params.manufOrder;
-  const product = route.params.product;
+  const {manufOrder, operationOrderId, product} = route?.params ?? {};
+
+  const {operationOrder} = useSelector(state => state.operationOrder);
 
   const handleTrackingNumberSelection = item => {
     if (item != null) {
       navigation.navigate('ConsumedProductDetailsScreen', {
         manufOrderId: manufOrder.id,
-        product: product,
+        operationOrderId,
+        product,
         trackingNumber: item,
       });
     }
@@ -48,12 +54,21 @@ const ConsumedProductSelectTrackingScreen = ({route, navigation}) => {
       <HeaderContainer
         expandableFilter={false}
         fixedItems={
-          <ManufacturingOrderHeader
-            parentMO={manufOrder.parentMO}
-            reference={manufOrder.manufOrderSeq}
-            status={manufOrder.statusSelect}
-            priority={manufOrder.prioritySelect}
-          />
+          operationOrderId != null ? (
+            <OperationOrderHeader
+              manufOrderRef={manufOrder?.manufOrderSeq}
+              name={operationOrder?.operationName}
+              status={operationOrder?.statusSelect}
+              priority={operationOrder?.priority}
+            />
+          ) : (
+            <ManufacturingOrderHeader
+              parentMO={manufOrder?.parentMO}
+              reference={manufOrder?.manufOrderSeq}
+              status={manufOrder?.statusSelect}
+              priority={manufOrder?.prioritySelect}
+            />
+          )
         }
       />
       <ScrollView>

@@ -36,31 +36,57 @@ import {ProductCardInfo} from '@axelor/aos-mobile-stock';
 import {
   ConsumedProductTrackingNumberSelect,
   ManufacturingOrderHeader,
+  OperationOrderHeader,
   ProdProductFixedItems,
 } from '../../../components';
 import {
   addProdProductToManufOrder,
+  addProdProductToOperationOrder,
   fetchConsumedProductWithId,
   updateProdProductOfManufOrder,
 } from '../../../features/prodProductSlice';
 import {fetchManufOrder} from '../../../features/manufacturingOrderSlice';
+import {fetchOperationOrderById} from '../../../features/operationOrderSlice';
 
 const ConsumedProductDetailsScreen = ({route, navigation}) => {
-  const manufOrderId = route.params.manufOrderId;
-  const consumedProdProduct = route.params.consumedProdProduct;
+  const {operationOrderId, manufOrderId, consumedProdProduct} =
+    route?.params ?? {};
   const I18n = useTranslator();
   const formatNumber = useDigitFormat();
   const dispatch = useDispatch();
   const {readonly} = usePermitted({
     modelName: 'com.axelor.apps.production.db.ProdProduct',
   });
-  const {ManufOrder} = useTypes();
+  const {ManufOrder, OperationOrder} = useTypes();
 
   const {consumedProductStockMoveLine, consumedProduct} = useSelector(
     state => state.prodProducts,
   );
   const {manufOrder, loadingOrder} = useSelector(
     state => state.manufacturingOrder,
+  );
+  const {operationOrder: _operationOrder, loadingOrder: loadingOperation} =
+    useSelector(state => state.operationOrder);
+
+  const operationOrder = useMemo(
+    () =>
+      _operationOrder?.id === operationOrderId ? _operationOrder : undefined,
+    [_operationOrder, operationOrderId],
+  );
+
+  const isEditableStatus = useMemo(
+    () =>
+      operationOrderId != null
+        ? operationOrder?.statusSelect ===
+          OperationOrder?.statusSelect.InProgress
+        : manufOrder?.statusSelect === ManufOrder?.statusSelect.InProgress,
+    [
+      ManufOrder?.statusSelect,
+      OperationOrder?.statusSelect,
+      manufOrder?.statusSelect,
+      operationOrder?.statusSelect,
+      operationOrderId,
+    ],
   );
 
   const product = consumedProdProduct ? consumedProduct : route.params.product;
@@ -95,44 +121,59 @@ const ConsumedProductDetailsScreen = ({route, navigation}) => {
     [product, trackingNumber],
   );
 
-  useEffect(() => {
-    getManufOrderAndConsumedProduct();
-  }, [getManufOrderAndConsumedProduct]);
+  const getOrderAndConsumedProduct = useCallback(() => {
+    if (operationOrderId != null) {
+      dispatch(fetchOperationOrderById({operationOrderId}));
+    }
 
-  const handleShowProduct = () => {
-    navigation.navigate('ProductStockDetailsScreen', {
-      product: product,
-    });
-  };
+    if (manufOrderId != null) dispatch(fetchManufOrder({manufOrderId}));
 
-  const handleNavigateBackToList = useCallback(() => {
-    navigation.popTo('ConsumedProductListScreen', {manufOrder});
-  }, [manufOrder, navigation]);
-
-  const getManufOrderAndConsumedProduct = useCallback(() => {
-    dispatch(fetchManufOrder({manufOrderId: manufOrderId}));
     if (consumedProdProduct != null) {
       dispatch(fetchConsumedProductWithId(consumedProdProduct?.productId));
     }
-  }, [consumedProdProduct, dispatch, manufOrderId]);
+  }, [consumedProdProduct, dispatch, manufOrderId, operationOrderId]);
+
+  useEffect(() => {
+    getOrderAndConsumedProduct();
+  }, [getOrderAndConsumedProduct]);
+
+  const handleShowProduct = useCallback(() => {
+    navigation.navigate('ProductStockDetailsScreen', {product});
+  }, [navigation, product]);
+
+  const handleNavigateBackToList = useCallback(() => {
+    navigation.popTo('ConsumedProductListScreen', {
+      manufOrder,
+      operationOrderId,
+    });
+  }, [navigation, manufOrder, operationOrderId]);
 
   const handleCreateConsumedProduct = useCallback(() => {
+    const sliceFct = operationOrderId
+      ? addProdProductToOperationOrder
+      : addProdProductToManufOrder;
+
     dispatch(
-      addProdProductToManufOrder({
+      sliceFct({
         manufOrderId: manufOrder?.id,
         manufOrderVersion: manufOrder?.version,
+        operationOrderId: operationOrder?.id,
+        operationOrderVersion: operationOrder?.version,
         productId: product?.id,
         trackingNumberId: trackingNumber?.id,
         qty: consumedQty,
         productType: 'consumed',
       }),
     );
+
     handleNavigateBackToList();
   }, [
     consumedQty,
     dispatch,
     handleNavigateBackToList,
     manufOrder,
+    operationOrder,
+    operationOrderId,
     product,
     trackingNumber,
   ]);
@@ -143,15 +184,18 @@ const ConsumedProductDetailsScreen = ({route, navigation}) => {
         stockMoveLineVersion:
           consumedProdProduct?.stockMoveLineId ===
           consumedProductStockMoveLine?.id
-            ? consumedProductStockMoveLine.version
+            ? consumedProductStockMoveLine?.version
             : consumedProdProduct?.stockMoveLineVersion,
         stockMoveLineId: consumedProdProduct?.stockMoveLineId,
         prodProductQty: consumedQty,
         type: 'consumed',
         manufOrderId: manufOrder?.id,
         manufOrderVersion: manufOrder?.version,
+        operationOrderId: operationOrder?.id,
+        operationOrderVersion: operationOrder?.version,
       }),
     );
+
     handleNavigateBackToList();
   }, [
     consumedProdProduct,
@@ -160,6 +204,7 @@ const ConsumedProductDetailsScreen = ({route, navigation}) => {
     dispatch,
     handleNavigateBackToList,
     manufOrder,
+    operationOrder,
   ]);
 
   return (
@@ -167,9 +212,7 @@ const ConsumedProductDetailsScreen = ({route, navigation}) => {
       removeSpaceOnTop={true}
       fixedItems={
         <ProdProductFixedItems
-          show={
-            manufOrder?.statusSelect === ManufOrder?.statusSelect.InProgress
-          }
+          show={isEditableStatus}
           prodProduct={consumedProdProduct}
           onPressCreate={handleCreateConsumedProduct}
           onPressUpdate={handleUpdateConsumedProduct}
@@ -178,20 +221,29 @@ const ConsumedProductDetailsScreen = ({route, navigation}) => {
       <HeaderContainer
         expandableFilter={false}
         fixedItems={
-          <ManufacturingOrderHeader
-            parentMO={manufOrder.parentMO}
-            reference={manufOrder.manufOrderSeq}
-            status={manufOrder.statusSelect}
-            priority={manufOrder.prioritySelect}
-          />
+          operationOrderId != null ? (
+            <OperationOrderHeader
+              manufOrderRef={manufOrder?.manufOrderSeq}
+              name={operationOrder?.operationName}
+              status={operationOrder?.statusSelect}
+              priority={operationOrder?.priority}
+            />
+          ) : (
+            <ManufacturingOrderHeader
+              parentMO={manufOrder?.parentMO}
+              reference={manufOrder?.manufOrderSeq}
+              status={manufOrder?.statusSelect}
+              priority={manufOrder?.prioritySelect}
+            />
+          )
         }
       />
       <ScrollView
         refresh={
           consumedProdProduct != null
             ? {
-                loading: loadingOrder,
-                fetcher: getManufOrderAndConsumedProduct,
+                loading: loadingOperation || loadingOrder,
+                fetcher: getOrderAndConsumedProduct,
               }
             : null
         }>
@@ -213,16 +265,15 @@ const ConsumedProductDetailsScreen = ({route, navigation}) => {
           stockMoveLineVersion={consumedProdProduct?.stockMoveLineVersion}
           manufOrderId={manufOrder?.id}
           manufOrderVersion={manufOrder?.version}
+          operationOrderId={operationOrder?.id}
+          operationOrderVersion={operationOrder?.version}
           visible={!readonly && isTrackingNumberSelectVisible}
         />
         <QuantityCard
           labelQty={I18n.t('Manufacturing_ConsumedQty')}
           defaultValue={consumedQty}
           onValueChange={setConsumedQty}
-          editable={
-            !readonly &&
-            manufOrder?.statusSelect === ManufOrder?.statusSelect.InProgress
-          }
+          editable={!readonly && isEditableStatus}
           isBigButton={true}
           translator={I18n.t}>
           <Text>
