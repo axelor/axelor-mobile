@@ -67,7 +67,7 @@ const LogisticalFormPackagingLineCard = ({
     <ObjectCard
       showArrow={false}
       touchable={false}
-      style={style}
+      style={[styles.container, style]}
       image={{
         generalStyle: styles.imageSize,
         imageSize: styles.imageSize,
@@ -119,6 +119,11 @@ const styles = StyleSheet.create({
   imageSize: {
     height: 50,
     width: 50,
+  },
+  container: {
+    marginVertical: 2,
+    marginHorizontal: 0,
+    marginRight: 2,
   },
 });
 

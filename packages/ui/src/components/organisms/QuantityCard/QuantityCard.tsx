@@ -16,8 +16,8 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import React, {useMemo} from 'react';
-import {StyleSheet, View} from 'react-native';
+import React, {useCallback, useMemo} from 'react';
+import {KeyboardTypeOptions, StyleSheet, View} from 'react-native';
 import {Card, Icon, Text} from '../../atoms';
 import {Increment} from '../../molecules';
 import {getCommonStyles} from '../../../utils/commons-styles';
@@ -36,6 +36,15 @@ interface QuantityCardProps {
   onPressActionQty?: () => void;
   isBigButton?: boolean;
   translator: (key: string) => string;
+  inputStyle?: any;
+  onFocus?: () => void;
+  onBlur?: () => void;
+  defaultFormatting?: boolean;
+  stepSize?: number;
+  minValue?: number;
+  maxValue?: number;
+  keyboardType?: KeyboardTypeOptions;
+  scale?: number;
 }
 
 const QuantityCard = ({
@@ -50,6 +59,7 @@ const QuantityCard = ({
   onPressActionQty = () => {},
   isBigButton = false,
   translator,
+  ...incrementProps
 }: QuantityCardProps) => {
   const Colors = useThemeColor();
   const formatNumber = useDigitFormat();
@@ -61,18 +71,25 @@ const QuantityCard = ({
     [defaultValue, formatNumber],
   );
 
+  const renderIncrement = useCallback(() => {
+    return (
+      <Increment
+        {...incrementProps}
+        value={_defaultValue}
+        decimalSpacer={translator('Base_DecimalSpacer')}
+        thousandSpacer={translator('Base_ThousandSpacer')}
+        onValueChange={onValueChange}
+        isBigButton={isBigButton}
+      />
+    );
+  }, [_defaultValue, incrementProps, isBigButton, onValueChange, translator]);
+
   if (children == null || children.length === 0) {
     return (
       <Card style={[styles.noChildrenContainer, style]}>
         <Text style={styles.noChildrenTextField}>{labelQty}</Text>
         {editable ? (
-          <Increment
-            value={_defaultValue}
-            decimalSpacer={translator('Base_DecimalSpacer')}
-            thousandSpacer={translator('Base_ThousandSpacer')}
-            onValueChange={onValueChange}
-            isBigButton={isBigButton}
-          />
+          renderIncrement()
         ) : (
           <Text style={styles.noChildrenTextValue}>{_defaultValue}</Text>
         )}
@@ -100,13 +117,7 @@ const QuantityCard = ({
       <View style={styles.container_down}>
         <Text style={styles.textField}>{labelQty}</Text>
         {editable ? (
-          <Increment
-            value={_defaultValue}
-            decimalSpacer={translator('Base_DecimalSpacer')}
-            thousandSpacer={translator('Base_ThousandSpacer')}
-            onValueChange={onValueChange}
-            isBigButton={isBigButton}
-          />
+          renderIncrement()
         ) : (
           <Text style={styles.textValue}>{_defaultValue}</Text>
         )}

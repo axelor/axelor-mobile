@@ -20,8 +20,10 @@ export {default as CustomerDeliveryDropdownCard} from './CustomerDeliveryDropdow
 export {default as DescriptionCard} from './DescriptionCard/DescriptionCard';
 export {default as InternalMoveCreationPickingWidget} from './InternalMoveCreationPickingWidget/InternalMoveCreationPickingWidget';
 export {default as InventoryPickingWidget} from './InventoryPickingWidget/InventoryPickingWidget';
+export {default as PackagingProductSearchBar} from './PackagingProductSearchBar/PackagingProductSearchBar';
 export {default as SearchLineContainer} from './SearchLineContainer/SearchLineContainer';
 export {default as SmallPropertyCard} from './SmallPropertyCard/SmallPropertyCard';
 export {default as StockMoveHeader} from './StockMoveHeader/StockMoveHeader';
+export {default as StockMoveLineSearchBar} from './StockMoveLineSearchBar/StockMoveLineSearchBar';
 export {default as StockMovePickingWidget} from './StockMovePickingWidget/StockMovePickingWidget';
 export {default as StockMoveSearchBar} from './StockMoveSearchBar/StockMoveSearchBar';

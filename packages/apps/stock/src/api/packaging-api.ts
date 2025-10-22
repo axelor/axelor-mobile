@@ -19,6 +19,7 @@
 import {
   createStandardSearch,
   Criteria,
+  getActionApi,
   getSearchCriterias,
 } from '@axelor/aos-mobile-core';
 
@@ -87,5 +88,62 @@ export async function searchPackaging({
     sortKey: 'stock_packaging',
     page,
     provider: 'model',
+  });
+}
+
+export async function createPackaging(body: {
+  packageUsedId: number;
+  parentPackagingId?: number;
+  logisticalFormId?: number;
+}) {
+  return getActionApi().send({
+    method: 'post',
+    url: 'ws/aos/packaging',
+    body,
+    description: 'create new packaging',
+    matchers: {
+      modelName: 'com.axelor.apps.supplychain.db.Packaging',
+      id: Date.now(),
+      fields: {
+        logisticalFormId: 'logisticalForm.id',
+        parentPackagingId: 'parentPackaging.id',
+        packageUsedId: 'packageUsed.id',
+      },
+    },
+  });
+}
+
+export async function updatePackaging({
+  id,
+  ...body
+}: {
+  id: number;
+  version?: number;
+  packageUsedId?: number;
+}) {
+  return getActionApi().send({
+    method: 'put',
+    url: `ws/aos/packaging/update-package-used/${id}`,
+    body,
+    description: 'update packaging',
+    matchers: {
+      modelName: 'com.axelor.apps.supplychain.db.Packaging',
+      id,
+      fields: {packageUsedId: 'packageUsed.id'},
+    },
+  });
+}
+
+export async function deletePackaging({id}: {id: number}) {
+  return getActionApi().send({
+    method: 'delete',
+    url: `ws/aos/packaging/${id}`,
+    body: {},
+    description: 'delete packaging',
+    matchers: {
+      modelName: 'com.axelor.apps.supplychain.db.Packaging',
+      id,
+      fields: {},
+    },
   });
 }

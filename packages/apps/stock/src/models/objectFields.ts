@@ -414,6 +414,7 @@ export const stock_modelAPI: ObjectFields = {
             saleOrder: schemaContructor.subObject('fullName'),
           }),
         ),
+        qtyRemainingToPackage: schemaContructor.number(),
       }),
     ),
     saleOrderLine: schemaContructor.subObject('sequence').concat(

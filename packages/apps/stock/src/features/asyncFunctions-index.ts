@@ -62,8 +62,20 @@ export {
   searchLogisticalForms,
   updateLogisticalForm,
 } from './logisticalFormSlice';
-export {searchPackagingLines} from './packagingLineSlice';
-export {searchPackaging, searchParentPackaging} from './packagingSlice';
+export {
+  createPackagingLine,
+  deletePackagingLine,
+  searchPackagingLines,
+  updatePackagingLine,
+} from './packagingLineSlice';
+export {
+  createPackaging,
+  deletePackaging,
+  fetchPackagingProducts,
+  searchPackaging,
+  searchParentPackaging,
+  updatePackaging,
+} from './packagingSlice';
 export {filterCarriers, filterClients, filterSuppliers} from './partnerSlice';
 export {
   fetchAvailableStockIndicator,
