@@ -94,6 +94,26 @@ export async function createProdProduct({
   });
 }
 
+export async function createOperationOrderConsumedProduct({
+  operationOrderId,
+  operationOrderVersion,
+  productId,
+  trackingNumberId,
+  qty,
+}) {
+  return getActionApi().send({
+    url: `/ws/aos/operation-order/${operationOrderId}/add-product`,
+    method: 'post',
+    body: {
+      version: operationOrderVersion,
+      productId,
+      trackingNumberId,
+      qty,
+    },
+    description: 'create operation order consumed product',
+  });
+}
+
 export async function updateProdProduct({
   stockMoveLineVersion,
   stockMoveLineId,
@@ -108,33 +128,6 @@ export async function updateProdProduct({
       prodProductQty,
     },
     description: 'update prod product',
-  });
-}
-
-export async function saveOperationOrderConsumedProduct({
-  operationOrderId,
-  operationOrderVersion,
-  productId,
-  trackingNumberId,
-  qty,
-  stockMoveLineId,
-}) {
-  const body = {
-    version: operationOrderVersion,
-    productId,
-    trackingNumberId,
-    qty,
-  };
-
-  if (stockMoveLineId != null) {
-    body.stockMoveLineId = stockMoveLineId;
-  }
-
-  return getActionApi().send({
-    url: `/ws/aos/operation-order/${operationOrderId}/add-product`,
-    method: 'post',
-    body,
-    description: 'save operation order consumed product',
   });
 }
 

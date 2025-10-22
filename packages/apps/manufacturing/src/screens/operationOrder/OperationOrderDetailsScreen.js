@@ -16,7 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import React, {useCallback, useEffect} from 'react';
+import React, {useCallback, useEffect, useMemo} from 'react';
 import {StyleSheet} from 'react-native';
 import {
   HalfLabelCard,
@@ -37,12 +37,11 @@ import {
   OperationOrderStopwatch,
 } from '../../components';
 import {fetchOperationOrderById} from '../../features/operationOrderSlice';
-import {CONSUMED_PRODUCT_CONTEXT} from '../../utils/consumedProductConsts';
 
 function OperationOrderDetailsScreen({route, navigation}) {
   const {operationOrderId} = route.params;
-  const dispatch = useDispatch();
   const I18n = useTranslator();
+  const dispatch = useDispatch();
 
   const {loadingOrder, operationOrder} = useSelector(
     state => state.operationOrder,
@@ -69,20 +68,17 @@ function OperationOrderDetailsScreen({route, navigation}) {
     getOperationOrder();
   }, [getOperationOrder]);
 
-  const showConsumedProducts =
-    operationOrder?.manufOrder?.isConsProOnOperation === true;
+  const showConsumedProducts = useMemo(
+    () => operationOrder?.manufOrder?.isConsProOnOperation,
+    [operationOrder?.manufOrder?.isConsProOnOperation],
+  );
 
   const handleOpenConsumedProducts = useCallback(() => {
-    if (operationOrder == null) {
-      return;
-    }
-
-    navigation.navigate('OperationOrderConsumedProductListScreen', {
-      context: CONSUMED_PRODUCT_CONTEXT.OPERATION_ORDER,
-      operationOrder,
-      manufOrder: operationOrder?.manufOrder,
+    navigation.navigate('ConsumedProductListScreen', {
+      operationOrderId: operationOrderId,
+      manufOrder: operationOrder.manufOrder,
     });
-  }, [navigation, operationOrder]);
+  }, [navigation, operationOrder.manufOrder, operationOrderId]);
 
   return (
     <Screen removeSpaceOnTop={true}>
@@ -121,7 +117,11 @@ const styles = StyleSheet.create({
     height: null,
   },
   actionCard: {
-    marginHorizontal: 20,
+    width: '90%',
+    height: undefined,
+    alignSelf: 'center',
+    marginLeft: 0,
+    marginRight: 0,
   },
 });
 

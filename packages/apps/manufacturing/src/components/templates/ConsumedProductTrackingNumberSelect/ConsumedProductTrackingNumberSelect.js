@@ -20,7 +20,6 @@ import React, {useCallback} from 'react';
 import {useDispatch} from '@axelor/aos-mobile-core';
 import {ProductTrackingNumberSelect} from '@axelor/aos-mobile-stock';
 import {addTrackingNumberToConsumedProduct} from '../../../features/prodProductSlice';
-import {CONSUMED_PRODUCT_CONTEXT} from '../../../utils/consumedProductConsts';
 
 const trackingScanKey = 'tracking_consumed-product-select';
 
@@ -33,38 +32,24 @@ const ConsumedProductTrackingNumberSelect = ({
   operationOrderId,
   operationOrderVersion,
   visible,
-  context = CONSUMED_PRODUCT_CONTEXT.MANUF_ORDER,
 }) => {
   const dispatch = useDispatch();
 
   const handleAddTrackingNumber = useCallback(
     selectedTrackingNumber => {
-      const payload =
-        context === CONSUMED_PRODUCT_CONTEXT.OPERATION_ORDER
-          ? {
-              context,
-              stockMoveLineId,
-              stockMoveLineVersion,
-              operationOrderId,
-              operationOrderVersion,
-            }
-          : {
-              context,
-              stockMoveLineId,
-              stockMoveLineVersion,
-              manufOrderId,
-              manufOrderVersion,
-            };
-
       dispatch(
         addTrackingNumberToConsumedProduct({
-          ...payload,
+          stockMoveLineId,
+          stockMoveLineVersion,
+          manufOrderId,
+          manufOrderVersion,
+          operationOrderId,
+          operationOrderVersion,
           trackingNumber: selectedTrackingNumber,
         }),
       );
     },
     [
-      context,
       dispatch,
       manufOrderId,
       manufOrderVersion,
