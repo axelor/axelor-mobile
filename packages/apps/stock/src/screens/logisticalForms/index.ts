@@ -19,7 +19,7 @@
 import LogisticalFormDetailsScreen from './LogisticalFormDetailsScreen';
 import LogisticalFormFormScreen from './LogisticalFormFormScreen';
 import LogisticalFormListScreen from './LogisticalFormListScreen';
-import LogisticalFormPackagingItemFormScreen from './LogisticalFormPackagingItemFormScreen';
+import PackagingItemFormScreen from './PackagingItemFormScreen';
 
 export default {
   LogisticalFormListScreen: {
@@ -44,9 +44,9 @@ export default {
     component: LogisticalFormFormScreen,
     isUsableOnShortcut: true,
   },
-  LogisticalFormPackagingItemFormScreen: {
+  PackagingItemFormScreen: {
     title: 'Stock_Packaging',
-    component: LogisticalFormPackagingItemFormScreen,
+    component: PackagingItemFormScreen,
   },
 };
 
@@ -54,5 +54,5 @@ export {
   LogisticalFormDetailsScreen,
   LogisticalFormFormScreen,
   LogisticalFormListScreen,
-  LogisticalFormPackagingItemFormScreen,
+  PackagingItemFormScreen,
 };
