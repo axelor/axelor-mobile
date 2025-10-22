@@ -1,0 +1,5 @@
+{
+  "title": "Consumed products: use the right API function from stock module to add a tracking number",
+  "type": "fix",
+  "packages": "manufacturing"
+}
