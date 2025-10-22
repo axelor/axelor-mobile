@@ -57,10 +57,10 @@ const styles = StyleSheet.create({
     paddingRight: 15,
     marginVertical: 5,
     marginLeft: 12,
+    gap: 5,
   },
   text: {
-    marginHorizontal: '2%',
-    width: Dimensions.get('window').width * 0.2,
+    flex: 1,
     textAlign: 'center',
   },
 });
