@@ -143,11 +143,6 @@ const InterventionQuestionFormScreen = ({route, navigation}) => {
         defaultEditMode
         actions={[
           {
-            key: 'reset-interventionQuestion',
-            type: 'reset',
-            color: Colors.cautionColor,
-          },
-          {
             key: 'save-interventionQuestion',
             type: 'update',
             needValidation: true,

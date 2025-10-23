@@ -1,5 +1,5 @@
 {
-  "title": "InterventionQuestionFormScreen: allow clearing answers",
+  "title": "FormView: restore initial values when using reset",
   "type": "fix",
-  "packages": "intervention"
+  "packages": "core"
 }
