@@ -1,0 +1,5 @@
+{
+  "title": "InterventionQuestionFormScreen: allow clearing answers",
+  "type": "fix",
+  "packages": "intervention"
+}
