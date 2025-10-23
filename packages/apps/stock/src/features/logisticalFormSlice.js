@@ -22,9 +22,11 @@ import {
   handlerApiCall,
 } from '@axelor/aos-mobile-core';
 import {
-  searchLogisticalForms as _searchLogisticalForms,
-  fetchLogisticalForm as _fetchLogisticalForm,
+  addStockMoveToLogisticalForm as _addStockMoveToLogisticalForm,
   createLogisticalForm as _createLogisticalForm,
+  fetchLogisticalForm as _fetchLogisticalForm,
+  removeStockMoveFromLogisticalForm as _removeStockMoveFromLogisticalForm,
+  searchLogisticalForms as _searchLogisticalForms,
   updateLogisticalForm as _updateLogisticalForm,
 } from '../api/logistical-form-api';
 
@@ -80,6 +82,32 @@ export const updateLogisticalForm = createAsyncThunk(
   },
 );
 
+export const addStockMoveToLogisticalForm = createAsyncThunk(
+  'logisticalForm/addStockMoveToLogisticalForm',
+  async function (data, {getState, dispatch}) {
+    return handlerApiCall({
+      fetchFunction: _addStockMoveToLogisticalForm,
+      data,
+      action: 'Stock_SliceAction_AddStockMoveToLogisticalForm',
+      getState,
+      responseOptions: {isArrayResponse: false, showToast: true},
+    }).then(() => dispatch(fetchLogisticalForm({logisticalFormId: data.id})));
+  },
+);
+
+export const removeStockMoveFromLogisticalForm = createAsyncThunk(
+  'logisticalForm/removeStockMoveFromLogisticalForm',
+  async function (data, {getState, dispatch}) {
+    return handlerApiCall({
+      fetchFunction: _removeStockMoveFromLogisticalForm,
+      data,
+      action: 'Stock_SliceAction_RemoveStockMoveFromLogisticalForm',
+      getState,
+      responseOptions: {isArrayResponse: false, showToast: true},
+    }).then(() => dispatch(fetchLogisticalForm({logisticalFormId: data.id})));
+  },
+);
+
 const initialState = {
   loadingList: false,
   moreLoading: false,
@@ -108,26 +136,6 @@ const logisticalFormSlice = createSlice({
       state.logisticalForm = action.payload;
     });
     builder.addCase(fetchLogisticalForm.rejected, state => {
-      state.loading = false;
-    });
-    builder.addCase(createLogisticalForm.pending, state => {
-      state.loading = true;
-    });
-    builder.addCase(createLogisticalForm.fulfilled, (state, action) => {
-      state.loading = false;
-      state.logisticalForm = action.payload;
-    });
-    builder.addCase(createLogisticalForm.rejected, state => {
-      state.loading = false;
-    });
-    builder.addCase(updateLogisticalForm.pending, state => {
-      state.loading = true;
-    });
-    builder.addCase(updateLogisticalForm.fulfilled, (state, action) => {
-      state.loading = false;
-      state.logisticalForm = action.payload;
-    });
-    builder.addCase(updateLogisticalForm.rejected, state => {
       state.loading = false;
     });
   },

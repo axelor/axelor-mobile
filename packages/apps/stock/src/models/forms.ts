@@ -75,7 +75,6 @@ export const stock_formsRegister: FormConfigs = {
         titleKey: 'Stock_StockLocation',
         type: 'object',
         widget: 'custom',
-        required: true,
         customComponent: StockLocationSearchBar,
         options: {showTitle: true},
         parentPanel: 'locationPanel',
@@ -89,6 +88,9 @@ export const stock_formsRegister: FormConfigs = {
         customComponent: PartnerSearchBar,
         options: {partnerType: 'client', showTitle: true},
         hideIf: ({storeState}) =>
+          storeState.user?.user?.activeCompany?.stockConfig
+            ?.isLogisticalFormMultiClientsEnabled,
+        requiredIf: ({storeState}) =>
           !storeState.user?.user?.activeCompany?.stockConfig
             ?.isLogisticalFormMultiClientsEnabled,
         readonlyIf: ({objectState}) =>
