@@ -69,6 +69,10 @@ export async function searchStockMoveLine({
   page?: number;
   searchValue?: string;
 }) {
+  if (Array.isArray(stockMoveId) && stockMoveId.length === 0) {
+    return {data: {data: []}};
+  }
+
   return createStandardSearch({
     model: 'com.axelor.apps.stock.db.StockMoveLine',
     criteria: createSearchCriteria(stockMoveId, scanValue, searchValue),

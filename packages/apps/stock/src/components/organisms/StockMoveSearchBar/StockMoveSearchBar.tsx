@@ -33,6 +33,11 @@ interface StockMoveSearchBarProps {
   readonly?: boolean;
   showTitle?: boolean;
   stockMoveSet?: any[];
+  excludeStockMoveSet?: boolean;
+  allowInternalMoves?: boolean;
+  partnerId?: number;
+  logisticalFormId?: number;
+  stockLocationId?: number;
 }
 
 const StockMoveSearchBarAux = ({
@@ -46,6 +51,11 @@ const StockMoveSearchBarAux = ({
   readonly = false,
   showTitle = false,
   stockMoveSet,
+  excludeStockMoveSet = false,
+  allowInternalMoves = false,
+  partnerId,
+  stockLocationId,
+  logisticalFormId,
 }: StockMoveSearchBarProps) => {
   const I18n = useTranslator();
   const dispatch = useDispatch();
@@ -56,6 +66,7 @@ const StockMoveSearchBarAux = ({
     isListEndStockMove,
     stockMoveList,
   } = useSelector(state => state.stock_stockMove);
+  const {user} = useSelector(state => state.user);
 
   const stockMoveIds = useMemo<number[]>(
     () => stockMoveSet?.map(_m => _m.id) ?? [],
@@ -69,10 +80,25 @@ const StockMoveSearchBarAux = ({
           page,
           searchValue,
           stockMoveIds,
+          companyId: user.activeCompany?.id,
+          isExclusion: excludeStockMoveSet,
+          partnerId,
+          allowInternalMoves,
+          stockLocationId,
+          logisticalFormId,
         }),
       );
     },
-    [dispatch, stockMoveIds],
+    [
+      allowInternalMoves,
+      dispatch,
+      excludeStockMoveSet,
+      logisticalFormId,
+      partnerId,
+      stockLocationId,
+      stockMoveIds,
+      user.activeCompany?.id,
+    ],
   );
 
   return (

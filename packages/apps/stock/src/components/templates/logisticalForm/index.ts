@@ -29,3 +29,7 @@ export {default as LogisticalFormStockMoveLineCard} from './LogisticalFormStockM
 export {default as LogisticalFormStockMoveLinesView} from './LogisticalFormStockMoveLinesView/LogisticalFormStockMoveLinesView';
 export {default as PackagingLineMassScanner} from './PackagingLineMassScanner/PackagingLineMassScanner';
 export {default as PackagingLineQuantityCard} from './PackagingLineQuantityCard/PackagingLineQuantityCard';
+export {
+  default as SelectStockMovePopup,
+  PopupType as SelectStockMovePopupType,
+} from './SelectStockMovePopup/SelectStockMovePopup';

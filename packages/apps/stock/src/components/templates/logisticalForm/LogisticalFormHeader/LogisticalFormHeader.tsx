@@ -21,6 +21,7 @@ import {StyleSheet, View} from 'react-native';
 import {Badge, LabelText, Text} from '@axelor/aos-mobile-ui';
 import {
   formatDate,
+  useSelector,
   useTranslator,
   useTypeHelpers,
   useTypes,
@@ -31,6 +32,7 @@ interface LogisticalFormHeaderProps {
   deliveryNumberSeq: string;
   collectionDate: string;
   stockLocation?: any;
+  deliverToCustomerPartner?: any;
 }
 
 const LogisticalFormHeader = ({
@@ -38,10 +40,18 @@ const LogisticalFormHeader = ({
   deliveryNumberSeq,
   collectionDate,
   stockLocation,
+  deliverToCustomerPartner,
 }: LogisticalFormHeaderProps) => {
   const I18n = useTranslator();
   const {LogisticalForm} = useTypes();
   const {getItemColor, getItemTitle} = useTypeHelpers();
+
+  const {user} = useSelector(state => state.user);
+
+  const isMultiClientsEnabled = useMemo(
+    () => user.activeCompany?.stockConfig?.isLogisticalFormMultiClientsEnabled,
+    [user.activeCompany?.stockConfig?.isLogisticalFormMultiClientsEnabled],
+  );
 
   const statusBadge = useMemo(() => {
     if (statusSelect == null) return null;
@@ -80,6 +90,13 @@ const LogisticalFormHeader = ({
             value={formattedDate}
           />
         )}
+        {!isMultiClientsEnabled && deliverToCustomerPartner?.fullName && (
+          <LabelText
+            iconName="person-fill"
+            title={`${I18n.t('Stock_DeliverToCustomerPartner')}:`}
+            value={deliverToCustomerPartner?.fullName}
+          />
+        )}
       </View>
       {statusBadge != null && (
         <Badge
@@ -103,11 +120,13 @@ const styles = StyleSheet.create({
   },
   column: {
     flexDirection: 'column',
+    flex: 1,
     gap: 5,
   },
   badge: {
     width: undefined,
     paddingHorizontal: 10,
+    marginHorizontal: 0,
   },
 });
 

@@ -57,8 +57,10 @@ export {
   updateInventory,
 } from './inventorySlice';
 export {
+  addStockMoveToLogisticalForm,
   createLogisticalForm,
   fetchLogisticalForm,
+  removeStockMoveFromLogisticalForm,
   searchLogisticalForms,
   updateLogisticalForm,
 } from './logisticalFormSlice';
