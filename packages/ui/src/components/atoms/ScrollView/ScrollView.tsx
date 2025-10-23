@@ -48,13 +48,13 @@ const ScrollView = ({style, children, refresh}: ScrollViewProps) => {
         style,
       ]}
       refreshControl={
-        refresh != null && (
+        refresh != null ? (
           <RefreshControl
             refreshing={refresh.loading}
             onRefresh={refresh.fetcher}
             enabled={isScrollEnabled}
           />
-        )
+        ) : undefined
       }
       scrollEnabled={isScrollEnabled}>
       {children}

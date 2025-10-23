@@ -56,6 +56,7 @@ const MessageBox = ({
         onChange={onChange}
         placeholder={placeholder}
         containerStyle={[commonStyles.filter, styles.htlmInput]}
+        styleToolbar={styles.htmlToolBar}
       />
       <View style={styles.iconsContainer}>
         {onSend && (
@@ -96,6 +97,10 @@ const styles = StyleSheet.create({
   htlmInput: {
     paddingHorizontal: 0,
     paddingTop: 10,
+  },
+  htmlToolBar: {
+    backgroundColor: null,
+    marginLeft: -5,
   },
   iconsContainer: {
     width: '10%',

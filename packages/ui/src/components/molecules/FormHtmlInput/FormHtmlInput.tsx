@@ -76,13 +76,13 @@ const FormHtmlInput = ({
     [Colors, _required],
   );
 
-  const handleFocus = useCallback(() => {
+  const handleFocus = () => {
     setIsFocused(true);
-  }, []);
+  };
 
-  const handleBlur = useCallback(() => {
+  const handleBlur = () => {
     setIsFocused(false);
-  }, []);
+  };
 
   if (hideIfNull && readonly && checkNullString(defaultValue)) {
     return null;
@@ -103,6 +103,7 @@ const FormHtmlInput = ({
           placeholder={placeholder}
           readonly={readonly}
           style={styles.input}
+          styleToolbar={styles.htmlToolBar}
           onFocus={handleFocus}
           onBlur={handleBlur}
         />
@@ -130,6 +131,10 @@ const getStyles = (Colors: ThemeColors, _required: boolean) =>
     },
     title: {
       marginLeft: 10,
+    },
+    htmlToolBar: {
+      backgroundColor: null,
+      marginLeft: -5,
     },
   });
 

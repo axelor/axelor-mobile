@@ -16,16 +16,18 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import React, {useEffect, useMemo, useRef, useState} from 'react';
-import {InteractionManager, View, ScrollView} from 'react-native';
-import {WebView} from 'react-native-webview';
+import React, {useCallback, useEffect, useRef, useState} from 'react';
+import {View, ScrollView} from 'react-native';
+import {actions, RichEditor, RichToolbar} from 'react-native-pell-rich-editor';
 import {OUTSIDE_INDICATOR, useClickOutside} from '../../../hooks';
 import {useThemeColor} from '../../../theme';
 import {Text} from '../../atoms';
-import {buildQuillHtml} from './quillTemplate';
+
+// NOTE: documentation https://www.npmjs.com/package/react-native-pell-rich-editor
 
 interface HtmlInputProps {
   style?: any;
+  styleToolbar?: any;
   containerStyle?: any;
   editorBackgroundColor?: string;
   title?: string;
@@ -40,128 +42,112 @@ interface HtmlInputProps {
 
 const HtmlInput = ({
   style,
+  styleToolbar,
   containerStyle,
   editorBackgroundColor,
   title,
-  placeholder = '',
+  placeholder,
   onChange,
-  defaultInput = '',
+  defaultInput,
   readonly = false,
   onHeightChange,
   onFocus,
   onBlur,
 }: HtmlInputProps) => {
   const Colors = useThemeColor();
+  const editor = useRef(null);
   const wrapperRef = useRef(null);
-  const webviewRef = useRef<any>(null);
-  const lastSelfValueRef = useRef<string | null>(null);
   const clickOutside = useClickOutside({wrapperRef});
 
+  const [editorAttached, setEditorAttached] = useState(false);
   const [key, setKey] = useState(defaultInput);
   const [isFocused, setIsFocused] = useState(false);
-  const [ready, setReady] = useState(false);
-  const [initialHTML, setInitialHTML] = useState<string>(defaultInput ?? '');
+
+  const editorInitializedCallback = () => {
+    setEditorAttached(true);
+  };
+
+  const handleFocus = useCallback(() => {
+    setIsFocused(true);
+    onFocus?.();
+  }, [onFocus]);
+
+  const handleBlur = useCallback(() => {
+    setIsFocused(false);
+    onBlur?.();
+  }, [onBlur]);
 
   useEffect(() => {
-    const task = InteractionManager.runAfterInteractions(() => setReady(true));
-    return () => task.cancel?.();
-  }, []);
-
-  useEffect(() => {
-    const incoming = defaultInput ?? '';
-    if (
-      lastSelfValueRef.current != null &&
-      incoming === lastSelfValueRef.current
-    ) {
-      return;
+    if (editor.current && (defaultInput == null || defaultInput === '')) {
+      editor.current.setContentHTML('');
+      if (editor.current.isKeyboardOpen) {
+        editor.current.dismissKeyboard();
+      }
     }
-    setKey(incoming);
-    setInitialHTML(incoming);
   }, [defaultInput]);
 
   useEffect(() => {
+    if (!isFocused) {
+      setKey(defaultInput);
+    }
+  }, [defaultInput, isFocused]);
+
+  useEffect(() => {
     if (clickOutside === OUTSIDE_INDICATOR && isFocused) {
-      try {
-        webviewRef.current?.injectJavaScript(
-          'window.__axelorQuill?.blur?.(); true;',
-        );
-      } catch {}
+      editor.current?.blurContentEditor?.();
     }
   }, [clickOutside, isFocused]);
-
-  const webStyle = useMemo(
-    () => [
-      {
-        backgroundColor: editorBackgroundColor || Colors.backgroundColor,
-        width: '100%',
-        height: 200,
-        minHeight: 40,
-      } as any,
-    ],
-    [editorBackgroundColor, Colors.backgroundColor],
-  );
-
-  const html = useMemo(
-    () =>
-      buildQuillHtml({
-        initialHtml: initialHTML,
-        placeholder,
-        readOnly: readonly,
-        pinToolbar: true,
-        colors: {
-          background: editorBackgroundColor || Colors.backgroundColor,
-          text: Colors.text,
-          placeholder: Colors.placeholderTextColor,
-          accent: Colors.primaryColor.background,
-        },
-      }),
-    [initialHTML, placeholder, readonly, editorBackgroundColor, Colors],
-  );
 
   return (
     <ScrollView
       ref={wrapperRef}
       testID="htmlInputScrollView"
       contentContainerStyle={containerStyle}>
-      <View testID="htmlInputInnerScroll" style={style}>
-        {title != null ? <Text>{title}</Text> : null}
-        {ready ? (
-          <WebView
+      <ScrollView testID="htmlInputInnerScroll" style={style}>
+        <View>
+          {title != null ? <Text>{title}</Text> : null}
+          <RichEditor
             key={key}
-            originWhitelist={['*']}
-            source={{html}}
-            ref={webviewRef}
-            onMessage={e => {
-              try {
-                const data = JSON.parse(e.nativeEvent.data);
-                switch (data?.type) {
-                  case 'onChange':
-                    onChange?.(data.message);
-                    break;
-                  case 'onHeight':
-                    const next = Number(data.message);
-                    if (!Number.isNaN(next)) onHeightChange?.(next);
-                    break;
-                  case 'onFocus':
-                    setIsFocused(true);
-                    onFocus?.();
-                    break;
-                  case 'onBlur':
-                    setIsFocused(false);
-                    onBlur?.();
-                    break;
-                }
-              } catch {}
-            }}
-            javaScriptEnabled
-            keyboardDisplayRequiresUserAction={false}
+            ref={editor}
+            placeholder={placeholder}
             androidLayerType="software"
-            nestedScrollEnabled
-            overScrollMode="always"
-            style={webStyle}
+            initialContentHTML={defaultInput}
+            onChange={onChange}
+            disabled={readonly}
+            // eslint-disable-next-line react-native/no-inline-styles
+            editorStyle={{
+              backgroundColor: editorBackgroundColor || Colors.backgroundColor,
+              color: Colors.text,
+              placeholderColor: Colors.placeholderTextColor,
+              contentCSSText: 'word-wrap: break-word',
+            }}
+            onHeightChange={onHeightChange}
+            onFocus={handleFocus}
+            onBlur={handleBlur}
+            editorInitializedCallback={editorInitializedCallback}
           />
-        ) : null}
-      </View>
+        </View>
+      </ScrollView>
+      {!readonly && editorAttached && (
+        <RichToolbar
+          style={styleToolbar}
+          editor={editor}
+          selectedIconTint={Colors.primaryColor.background}
+          iconTint={Colors.text}
+          actions={[
+            actions.setBold,
+            actions.setItalic,
+            actions.setUnderline,
+            actions.setStrikethrough,
+            actions.insertBulletsList,
+            actions.insertOrderedList,
+            actions.insertLink,
+            actions.checkboxList,
+            actions.undo,
+            actions.redo,
+          ]}
+        />
+      )}
     </ScrollView>
   );
 };

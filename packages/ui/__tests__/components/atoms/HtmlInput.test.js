@@ -20,6 +20,16 @@ import React from 'react';
 import {HtmlInput} from '@axelor/aos-mobile-ui';
 import {setup} from '../../tools';
 
+jest.mock('react-native-pell-rich-editor', () => {
+  const {View} = require('react-native');
+
+  return {
+    RichEditor: jest
+      .fn()
+      .mockImplementation(() => <View testID="richEditor" />),
+  };
+});
+
 describe('HtmlInput Component', () => {
   const setupHtmlInput = overrideProps =>
     setup({Component: HtmlInput, overrideProps});
@@ -29,6 +39,7 @@ describe('HtmlInput Component', () => {
 
     expect(getByTestId('htmlInputScrollView')).toBeTruthy();
     expect(getByTestId('htmlInputInnerScroll')).toBeTruthy();
+    expect(getByTestId('richEditor')).toBeTruthy();
   });
 
   it('renders with a title if provided', () => {
