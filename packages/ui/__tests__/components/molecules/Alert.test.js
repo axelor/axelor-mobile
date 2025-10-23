@@ -17,75 +17,95 @@
  */
 
 import React from 'react';
-import {Modal} from 'react-native';
-import {shallow} from 'enzyme';
-import {Alert, Button, Card, Icon, Text} from '@axelor/aos-mobile-ui';
+import {Alert, Text} from '@axelor/aos-mobile-ui';
+import {setup} from '../../tools';
 
-describe('Alert Card Component', () => {
-  const props = {
-    visible: true,
-    title: 'TEST',
-    children: <Text>ALERT</Text>,
-  };
+describe('Alert Component', () => {
+  const setupAlert = overrideProps =>
+    setup({
+      Component: Alert,
+      baseProps: {
+        visible: true,
+        title: 'TEST',
+        children: <Text>ALERT</Text>,
+      },
+      overrideProps,
+    });
 
   it('should render without crashing', () => {
-    const wrapper = shallow(<Alert {...props} />);
-
-    expect(wrapper.exists()).toBe(true);
+    expect(() => setupAlert()).not.toThrow();
   });
 
-  it('should render a non visible Modal component when visible prop is false', () => {
-    const wrapper = shallow(<Alert {...props} visible={false} />);
+  it('should render the content when visible', () => {
+    const {getByTestId} = setupAlert();
 
-    expect(wrapper.find(Modal).prop('visible')).toBe(false);
+    expect(getByTestId('cardContainer')).toBeTruthy();
+  });
+
+  it('should not render the content when visible prop is false', () => {
+    const {queryByTestId} = setupAlert({visible: false});
+
+    expect(queryByTestId('cardContainer')).toBeNull();
   });
 
   it('should render the title', () => {
-    const wrapper = shallow(<Alert {...props} />);
+    const {getByText, props} = setupAlert();
 
-    expect(wrapper.find(Text).at(0).prop('children')).toBe(props.title);
+    expect(getByText(props.title)).toBeTruthy();
   });
 
   it('should render the children', () => {
-    const wrapper = shallow(<Alert {...props} />);
+    const {getByText, props} = setupAlert();
+    const childContent = props.children.props.children;
 
-    expect(wrapper.find(Card).children().contains(props.children)).toBe(true);
+    expect(getByText(childContent)).toBeTruthy();
   });
 
   it('should render the cancelButtonConfig and the confirmButtonConfig', () => {
-    const cancelButtonConfig = {};
-    const confirmButtonConfig = {};
-    const wrapper = shallow(
-      <Alert
-        {...props}
-        cancelButtonConfig={cancelButtonConfig}
-        confirmButtonConfig={confirmButtonConfig}
-      />,
-    );
+    const cancelButtonConfig = {title: 'Cancel', testID: 'cancelButton'};
+    const confirmButtonConfig = {title: 'Confirm', testID: 'confirmButton'};
+    const {getByTestId} = setupAlert({
+      cancelButtonConfig,
+      confirmButtonConfig,
+    });
 
-    expect(wrapper.find(Button).length).toBe(2);
+    expect(getByTestId(cancelButtonConfig.testID)).toBeTruthy();
+    expect(getByTestId(confirmButtonConfig.testID)).toBeTruthy();
   });
 
   it('should not render the cancelButtonConfig and the confirmButtonConfig when hide prop is true', () => {
-    const cancelButtonConfig = {hide: true};
-    const confirmButtonConfig = {hide: true};
-    const wrapper = shallow(
-      <Alert
-        {...props}
-        cancelButtonConfig={cancelButtonConfig}
-        confirmButtonConfig={confirmButtonConfig}
-      />,
-    );
+    const cancelButtonConfig = {
+      title: 'Cancel',
+      testID: 'cancelButton',
+      hide: true,
+    };
+    const confirmButtonConfig = {
+      title: 'Confirm',
+      testID: 'confirmButton',
+      hide: true,
+    };
+    const {queryByTestId} = setupAlert({
+      cancelButtonConfig,
+      confirmButtonConfig,
+    });
 
-    expect(wrapper.find(Button).length).toBe(0);
+    expect(queryByTestId(cancelButtonConfig.testID)).toBeNull();
+    expect(queryByTestId(confirmButtonConfig.testID)).toBeNull();
   });
 
-  it('should render the cancelButtonConfig in header when showInHeader prop is true', () => {
-    const cancelButtonConfig = {showInHeader: true};
-    const wrapper = shallow(
-      <Alert {...props} cancelButtonConfig={cancelButtonConfig} />,
-    );
+  it('should render the cancel button in the header when showInHeader prop is true', () => {
+    const cancelButtonConfig = {
+      testID: 'cancelButton',
+      title: 'Cancel',
+      showInHeader: true,
+    };
+    const {getAllByTestId, getByTestId, queryByTestId} = setupAlert({
+      cancelButtonConfig,
+      confirmButtonConfig: {hide: true},
+    });
 
-    expect(wrapper.find(Icon).length).toBe(1);
+    expect(queryByTestId(cancelButtonConfig.testID)).toBeNull();
+    expect(getByTestId('iconTouchable')).toBeTruthy();
+    expect(getAllByTestId('iconTouchable')).toHaveLength(1);
   });
 });
