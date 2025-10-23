@@ -17,21 +17,24 @@
  */
 
 import React, {useMemo, useState} from 'react';
-import {ActionType, ChipSelect, useThemeColor} from '@axelor/aos-mobile-ui';
+import {ChipSelect, useThemeColor} from '@axelor/aos-mobile-ui';
 import {
   SearchListView,
+  usePermitted,
   useSelector,
   useTranslator,
+  useTypes,
 } from '@axelor/aos-mobile-core';
 import {
   LogisticalFormHeader,
   LogisticalFormStockMoveLineCard,
+  SelectStockMovePopup,
+  SelectStockMovePopupType,
 } from '../../logisticalForm';
 import {StockMoveTagSelect} from '../../../molecules';
 import {StockMoveSearchBar} from '../../../organisms';
 import {fetchStockMoveLines} from '../../../../features/stockMoveLineSlice';
 import {useLogisticalFormState} from '../../../../hooks';
-import LogisticalFormSelectStockMovePopup from './LogisticalFormSelectStockMovePopup';
 
 const stockMoveLineScanKey = 'stock-move-line_logistical-form-state-list';
 
@@ -39,17 +42,20 @@ const LogisticalFormStockMoveLinesView = () => {
   const I18n = useTranslator();
   const Colors = useThemeColor();
   const {options, filterLineState} = useLogisticalFormState();
+  const {LogisticalForm} = useTypes();
+  const {readonly} = usePermitted({
+    modelName: 'com.axelor.apps.stock.db.LogisticalForm',
+  });
 
   const {logisticalForm} = useSelector(state => state.logisticalForm);
-  const {user} = useSelector(state => state.user);
   const {stockMoveLineList, loadingList, moreLoading, isListEnd} = useSelector(
     state => state.stock_stockMoveLine,
   );
 
   const [selectedStatus, setSelectedStatus] = useState([]);
   const [selectedStockMove, setSelectedStockMove] = useState(null);
-  const companyId = user?.activeCompany?.id;
-  const stockConfig = user?.activeCompany?.stockConfig;
+  const [popupConfig, setPopupConfig] =
+    useState<SelectStockMovePopupType | null>(null);
 
   const sliceFunctionData = useMemo(
     () => ({
@@ -65,7 +71,34 @@ const LogisticalFormStockMoveLinesView = () => {
     [filterLineState, selectedStatus, stockMoveLineList],
   );
 
-  const [popupActions, setPopupActions] = useState<ActionType[]>([]);
+  const actionList = useMemo(() => {
+    if (
+      readonly ||
+      logisticalForm?.statusSelect === LogisticalForm?.statusSelect.Collected
+    )
+      return undefined;
+
+    return [
+      {
+        iconName: 'plus-lg',
+        title: I18n.t('Stock_AddStockMove'),
+        color: Colors.primaryColor,
+        onPress: () => setPopupConfig(SelectStockMovePopupType.add),
+      },
+      {
+        iconName: 'dash-lg',
+        title: I18n.t('Stock_RemoveStockMove'),
+        color: Colors.errorColor,
+        onPress: () => setPopupConfig(SelectStockMovePopupType.remove),
+      },
+    ];
+  }, [
+    Colors,
+    I18n,
+    LogisticalForm?.statusSelect.Collected,
+    logisticalForm?.statusSelect,
+    readonly,
+  ]);
 
   return (
     <>
@@ -106,16 +139,13 @@ const LogisticalFormStockMoveLinesView = () => {
           <LogisticalFormStockMoveLineCard {...item} />
         )}
         isHideableSearch={false}
-        actionList={popupActions}
+        actionList={actionList}
         verticalActions={true}
       />
-      <LogisticalFormSelectStockMovePopup
+      <SelectStockMovePopup
         logisticalForm={logisticalForm}
-        stockConfig={stockConfig}
-        companyId={companyId}
-        translator={I18n.t}
-        colors={Colors}
-        onActionListChange={setPopupActions}
+        type={popupConfig}
+        closePopup={() => setPopupConfig(null)}
       />
     </>
   );

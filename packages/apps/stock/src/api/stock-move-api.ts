@@ -20,15 +20,17 @@ import {
   createStandardSearch,
   Criteria,
   getSearchCriterias,
+  getTypes,
 } from '@axelor/aos-mobile-core';
 
 type SearchStockMoveCriteriaParams = {
   searchValue?: string;
   stockMoveIds?: number[];
-  excludeStockMoveIds?: number[];
-  typeSelectList?: number[];
   partnerId?: number;
-  statusList?: number[];
+  isExclusion?: boolean;
+  allowInternalMoves?: boolean;
+  logisticalFormId?: number;
+  stockLocationId?: number;
 };
 
 type SearchStockMoveParams = SearchStockMoveCriteriaParams & {
@@ -36,78 +38,107 @@ type SearchStockMoveParams = SearchStockMoveCriteriaParams & {
   companyId?: number;
 };
 
-const buildTypeCriteria = (typeSelectList: number[]): Criteria => {
-  if (typeSelectList.length === 1) {
-    return {
+const createTypeCriteria = (
+  partnerId: number,
+  allowInternalMoves: boolean = false,
+): Criteria[] => {
+  const StockMove = getTypes().StockMove;
+
+  const criteria: Criteria[] = [];
+
+  if (allowInternalMoves) {
+    criteria.push({
       fieldName: 'typeSelect',
       operator: '=',
-      value: typeSelectList[0],
-    };
+      value: StockMove?.typeSelect.internal,
+    });
   }
 
-  return {
-    operator: 'or',
-    criteria: typeSelectList.map(type => ({
+  if (partnerId != null) {
+    criteria.push({
+      operator: 'and',
+      criteria: [
+        {
+          fieldName: 'typeSelect',
+          operator: '=',
+          value: StockMove?.typeSelect.outgoing,
+        },
+        {
+          fieldName: 'partner.id',
+          operator: '=',
+          value: partnerId,
+        },
+      ],
+    });
+  } else {
+    criteria.push({
       fieldName: 'typeSelect',
       operator: '=',
-      value: type,
-    })),
-  };
+      value: StockMove?.typeSelect.outgoing,
+    });
+  }
+
+  return criteria;
 };
 
 const createSearchCriteria = ({
   searchValue,
   stockMoveIds,
-  excludeStockMoveIds,
-  typeSelectList,
   partnerId,
-  statusList,
+  isExclusion = false,
+  allowInternalMoves,
+  logisticalFormId,
+  stockLocationId,
 }: SearchStockMoveCriteriaParams): Criteria[] => {
+  const StockMove = getTypes().StockMove;
+
   const criteria: Criteria[] = [
+    {
+      fieldName: 'statusSelect',
+      operator: '=',
+      value: StockMove?.statusSelect.Planned,
+    },
     getSearchCriterias('stock_stockMove', searchValue),
+    {
+      operator: 'or',
+      criteria: createTypeCriteria(partnerId, allowInternalMoves),
+    },
   ];
 
   if (Array.isArray(stockMoveIds) && stockMoveIds.length > 0) {
     criteria.push({
-      fieldName: 'id',
-      operator: 'in',
-      value: stockMoveIds,
+      operator: isExclusion ? 'not' : 'and',
+      criteria: [{fieldName: 'id', operator: 'in', value: stockMoveIds}],
     });
   }
 
-  if (Array.isArray(typeSelectList) && typeSelectList.length > 0) {
-    criteria.push(buildTypeCriteria(typeSelectList));
-  }
-
-  if (partnerId != null) {
+  if (isExclusion) {
     criteria.push({
-      fieldName: 'partner.id',
+      fieldName: 'fullySpreadOverLogisticalFormsFlag',
       operator: '=',
-      value: partnerId,
+      value: false,
     });
   }
 
-  if (Array.isArray(statusList) && statusList.length > 0) {
+  if (logisticalFormId != null) {
     criteria.push({
       operator: 'or',
-      criteria: statusList.map(status => ({
-        fieldName: 'statusSelect',
-        operator: '=',
-        value: status,
-      })),
+      criteria: [
+        {
+          fieldName: 'logisticalForm.id',
+          operator: '=',
+          value: logisticalFormId,
+        },
+        {fieldName: 'logisticalForm', operator: 'isNull'},
+      ],
     });
   }
 
-  if (Array.isArray(excludeStockMoveIds) && excludeStockMoveIds.length > 0) {
+  if (stockLocationId != null) {
     criteria.push({
-      operator: 'not',
-      criteria: [
-        {
-          fieldName: 'id',
-          operator: 'in',
-          value: excludeStockMoveIds,
-        },
-      ],
+      fieldName: 'stockMoveLineList.fromStockLocation.id',
+      operator: '=',
+      value: stockLocationId,
     });
   }
 
@@ -117,18 +148,14 @@ const createSearchCriteria = ({
 export async function searchStockMove({
   page = 0,
   companyId,
-  ...rest
+  ...criteriaParams
 }: SearchStockMoveParams) {
-  const criteriaParams: SearchStockMoveCriteriaParams = rest;
-  const {stockMoveIds, typeSelectList, partnerId, statusList} = criteriaParams;
+  const {isExclusion, stockMoveIds} = criteriaParams;
 
-  const hasInclusionFilter =
-    (Array.isArray(stockMoveIds) && stockMoveIds.length > 0) ||
-    (Array.isArray(typeSelectList) && typeSelectList.length > 0) ||
-    partnerId != null ||
-    (Array.isArray(statusList) && statusList.length > 0);
-
-  if (!hasInclusionFilter) {
+  if (
+    !isExclusion &&
+    (!Array.isArray(stockMoveIds) || stockMoveIds.length === 0)
+  ) {
     return {data: {data: []}};
   }
 

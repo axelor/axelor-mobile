@@ -176,44 +176,44 @@ export async function updateLogisticalForm(logisticalForm: any) {
 }
 
 export async function addStockMoveToLogisticalForm({
-  logisticalFormId,
-  stockMoveId,
+  id,
   version,
+  stockMoveId,
 }: {
-  logisticalFormId: number;
-  stockMoveId: number;
+  id: number;
   version: number;
+  stockMoveId: number;
 }) {
   return getActionApi().send({
-    url: `/ws/aos/logistical-form/add-stock-move/${logisticalFormId}`,
+    url: `/ws/aos/logistical-form/add-stock-move/${id}`,
     method: 'put',
     body: {stockMoveId, version},
     description: 'add stock move to logistical form',
     matchers: {
       modelName: 'com.axelor.apps.stock.db.LogisticalForm',
-      id: logisticalFormId,
+      id,
       fields: {},
     },
   });
 }
 
 export async function removeStockMoveFromLogisticalForm({
-  logisticalFormId,
-  stockMoveId,
+  id,
   version,
+  stockMoveId,
 }: {
-  logisticalFormId: number;
-  stockMoveId: number;
+  id: number;
   version: number;
+  stockMoveId: number;
 }) {
   return getActionApi().send({
-    url: `/ws/aos/logistical-form/remove-stock-move/${logisticalFormId}`,
+    url: `/ws/aos/logistical-form/remove-stock-move/${id}`,
     method: 'put',
     body: {stockMoveId, version},
     description: 'remove stock move from logistical form',
     matchers: {
       modelName: 'com.axelor.apps.stock.db.LogisticalForm',
-      id: logisticalFormId,
+      id,
       fields: {},
     },
   });

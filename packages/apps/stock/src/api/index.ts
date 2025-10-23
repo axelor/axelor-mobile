@@ -56,12 +56,12 @@ export {
   updateInventoryLineDetails as updateInventoryLineDetailsApi,
 } from './inventory-line-api';
 export {
+  addStockMoveToLogisticalForm as addStockMoveToLogisticalFormApi,
   createLogisticalForm as createLogisticalFormApi,
   fetchLogisticalForm as fetchLogisticalFormApi,
+  removeStockMoveFromLogisticalForm as removeStockMoveFromLogisticalFormApi,
   searchLogisticalForms as searchLogisticalFormsApi,
   updateLogisticalForm as updateLogisticalFormApi,
-  addStockMoveToLogisticalForm as addStockMoveToLogisticalFormApi,
-  removeStockMoveFromLogisticalForm as removeStockMoveFromLogisticalFormApi,
 } from './logistical-form-api';
 export {
   createPackaging as createPackagingApi,

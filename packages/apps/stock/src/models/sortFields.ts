@@ -48,6 +48,7 @@ export const stock_sortFields: SortFields = {
     '-collectionDate',
     'deliveryNumberSeq',
   ],
+  stock_stockMove: ['-estimatedDate'],
   stock_stockMoveLine: ['-qtyRemainingToPackage'],
   stock_product: ['name'],
   stock_stockCorrection: ['statusSelect', '-validationDateT', 'createdOn'],

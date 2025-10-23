@@ -22,12 +22,12 @@ import {
   handlerApiCall,
 } from '@axelor/aos-mobile-core';
 import {
-  searchLogisticalForms as _searchLogisticalForms,
-  fetchLogisticalForm as _fetchLogisticalForm,
-  createLogisticalForm as _createLogisticalForm,
-  updateLogisticalForm as _updateLogisticalForm,
   addStockMoveToLogisticalForm as _addStockMoveToLogisticalForm,
+  createLogisticalForm as _createLogisticalForm,
+  fetchLogisticalForm as _fetchLogisticalForm,
   removeStockMoveFromLogisticalForm as _removeStockMoveFromLogisticalForm,
+  searchLogisticalForms as _searchLogisticalForms,
+  updateLogisticalForm as _updateLogisticalForm,
 } from '../api/logistical-form-api';
 
 export const searchLogisticalForms = createAsyncThunk(
@@ -78,10 +78,7 @@ export const updateLogisticalForm = createAsyncThunk(
       action: 'Stock_SliceAction_UpdateLogisticalForm',
       getState,
       responseOptions: {isArrayResponse: false, showToast: true},
-    }).then(response => {
-      dispatch(fetchLogisticalForm({logisticalFormId: data.id}));
-      return response;
-    });
+    }).then(() => dispatch(fetchLogisticalForm({logisticalFormId: data.id})));
   },
 );
 
@@ -94,14 +91,7 @@ export const addStockMoveToLogisticalForm = createAsyncThunk(
       action: 'Stock_SliceAction_AddStockMoveToLogisticalForm',
       getState,
       responseOptions: {isArrayResponse: false, showToast: true},
-    }).then(response => {
-      if (data?.logisticalFormId != null) {
-        dispatch(
-          fetchLogisticalForm({logisticalFormId: data.logisticalFormId}),
-        );
-      }
-      return response;
-    });
+    }).then(() => dispatch(fetchLogisticalForm({logisticalFormId: data.id})));
   },
 );
 
@@ -114,14 +104,7 @@ export const removeStockMoveFromLogisticalForm = createAsyncThunk(
       action: 'Stock_SliceAction_RemoveStockMoveFromLogisticalForm',
       getState,
       responseOptions: {isArrayResponse: false, showToast: true},
-    }).then(response => {
-      if (data?.logisticalFormId != null) {
-        dispatch(
-          fetchLogisticalForm({logisticalFormId: data.logisticalFormId}),
-        );
-      }
-      return response;
-    });
+    }).then(() => dispatch(fetchLogisticalForm({logisticalFormId: data.id})));
   },
 );
 
@@ -153,44 +136,6 @@ const logisticalFormSlice = createSlice({
       state.logisticalForm = action.payload;
     });
     builder.addCase(fetchLogisticalForm.rejected, state => {
-      state.loading = false;
-    });
-    builder.addCase(createLogisticalForm.pending, state => {
-      state.loading = true;
-    });
-    builder.addCase(createLogisticalForm.fulfilled, (state, action) => {
-      state.loading = false;
-      state.logisticalForm = action.payload;
-    });
-    builder.addCase(createLogisticalForm.rejected, state => {
-      state.loading = false;
-    });
-    builder.addCase(updateLogisticalForm.pending, state => {
-      state.loading = true;
-    });
-    builder.addCase(updateLogisticalForm.fulfilled, (state, action) => {
-      state.loading = false;
-      state.logisticalForm = action.payload;
-    });
-    builder.addCase(updateLogisticalForm.rejected, state => {
-      state.loading = false;
-    });
-    builder.addCase(addStockMoveToLogisticalForm.pending, state => {
-      state.loading = true;
-    });
-    builder.addCase(addStockMoveToLogisticalForm.fulfilled, state => {
-      state.loading = false;
-    });
-    builder.addCase(addStockMoveToLogisticalForm.rejected, state => {
-      state.loading = false;
-    });
-    builder.addCase(removeStockMoveFromLogisticalForm.pending, state => {
-      state.loading = true;
-    });
-    builder.addCase(removeStockMoveFromLogisticalForm.fulfilled, state => {
-      state.loading = false;
-    });
-    builder.addCase(removeStockMoveFromLogisticalForm.rejected, state => {
       state.loading = false;
     });
   },

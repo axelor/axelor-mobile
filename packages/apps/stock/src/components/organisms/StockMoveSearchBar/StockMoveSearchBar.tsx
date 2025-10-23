@@ -22,15 +22,6 @@ import {useDispatch, useSelector, useTranslator} from '@axelor/aos-mobile-core';
 import {displayStockMoveSeq} from '../../../utils';
 import {searchStockMove} from '../../../features/stockMoveSlice';
 
-type StockMoveSearchFilters = Partial<{
-  stockMoveIds: number[];
-  excludeStockMoveIds: number[];
-  typeSelectList: number[];
-  partnerId: number;
-  statusList: number[];
-  companyId: number;
-}>;
-
 interface StockMoveSearchBarProps {
   style?: any;
   title?: string;
@@ -42,7 +33,11 @@ interface StockMoveSearchBarProps {
   readonly?: boolean;
   showTitle?: boolean;
   stockMoveSet?: any[];
-  searchFilters?: StockMoveSearchFilters;
+  excludeStockMoveSet?: boolean;
+  allowInternalMoves?: boolean;
+  partnerId?: number;
+  logisticalFormId?: number;
+  stockLocationId?: number;
 }
 
 const StockMoveSearchBarAux = ({
@@ -56,7 +51,11 @@ const StockMoveSearchBarAux = ({
   readonly = false,
   showTitle = false,
   stockMoveSet,
-  searchFilters,
+  excludeStockMoveSet = false,
+  allowInternalMoves = false,
+  partnerId,
+  stockLocationId,
+  logisticalFormId,
 }: StockMoveSearchBarProps) => {
   const I18n = useTranslator();
   const dispatch = useDispatch();
@@ -67,6 +66,7 @@ const StockMoveSearchBarAux = ({
     isListEndStockMove,
     stockMoveList,
   } = useSelector(state => state.stock_stockMove);
+  const {user} = useSelector(state => state.user);
 
   const stockMoveIds = useMemo<number[]>(
     () => stockMoveSet?.map(_m => _m.id) ?? [],
@@ -75,27 +75,30 @@ const StockMoveSearchBarAux = ({
 
   const fetchStockMovesAPI = useCallback(
     ({page = 0, searchValue}) => {
-      const payload: any = {
-        page,
-        searchValue,
-        ...(searchFilters ?? {}),
-      };
-
-      if (
-        Array.isArray(stockMoveIds) &&
-        stockMoveIds.length > 0 &&
-        (searchFilters == null || searchFilters.stockMoveIds == null)
-      ) {
-        payload.stockMoveIds = stockMoveIds;
-      }
-
       dispatch(
         (searchStockMove as any)({
-          ...payload,
+          page,
+          searchValue,
+          stockMoveIds,
+          companyId: user.activeCompany?.id,
+          isExclusion: excludeStockMoveSet,
+          partnerId,
+          allowInternalMoves,
+          stockLocationId,
+          logisticalFormId,
         }),
       );
     },
-    [dispatch, searchFilters, stockMoveIds],
+    [
+      allowInternalMoves,
+      dispatch,
+      excludeStockMoveSet,
+      logisticalFormId,
+      partnerId,
+      stockLocationId,
+      stockMoveIds,
+      user.activeCompany?.id,
+    ],
   );
 
   return (

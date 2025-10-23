@@ -57,12 +57,12 @@ export {
   updateInventory,
 } from './inventorySlice';
 export {
+  addStockMoveToLogisticalForm,
   createLogisticalForm,
   fetchLogisticalForm,
+  removeStockMoveFromLogisticalForm,
   searchLogisticalForms,
   updateLogisticalForm,
-  addStockMoveToLogisticalForm,
-  removeStockMoveFromLogisticalForm,
 } from './logisticalFormSlice';
 export {
   createPackagingLine,
