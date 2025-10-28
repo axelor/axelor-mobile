@@ -65,6 +65,7 @@ const BlockInteractionMessage = () => {
                     title={action.title}
                     onPress={action.onPress}
                     color={action.color}
+                    testID={action.testID}
                     style={styles.width}
                   />
                 );

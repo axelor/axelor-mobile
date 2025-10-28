@@ -16,68 +16,91 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import React from 'react';
-import {shallow} from 'enzyme';
-import {
-  BlockInteractionMessage,
-  Button,
-  Card,
-  WarningCard,
-} from '@axelor/aos-mobile-ui';
+import {BlockInteractionMessage} from '@axelor/aos-mobile-ui';
 import * as configContext from '../../../lib/config/ConfigContext';
-import {getGlobalStyles} from '../../tools';
+import * as configIndex from '../../../lib/config';
+import {getComputedStyles, getDefaultThemeColors, setup} from '../../tools';
+import {fireEvent, within} from '@testing-library/react-native';
 
 describe('BlockInteractionMessage Component', () => {
-  it('renders without crashing', () => {
-    const wrapper = shallow(<BlockInteractionMessage />);
+  const Colors = getDefaultThemeColors();
+  const setupBlockInteractionMessage = () =>
+    setup({
+      Component: BlockInteractionMessage,
+    });
 
-    expect(wrapper.exists()).toBe(true);
+  afterEach(() => {
+    jest.restoreAllMocks();
   });
 
-  it('does not render if blockInteractionConfig.visible is not defined', () => {
-    const wrapper = shallow(<BlockInteractionMessage />);
-
-    expect(wrapper.isEmptyRender()).toBe(true);
+  it('should render without crashing', () => {
+    expect(() => setupBlockInteractionMessage()).not.toThrow();
   });
 
-  it('renders the informations given in context', () => {
-    jest.spyOn(configContext, 'useConfig').mockImplementation(() => ({
+  it('should not render when blockInteractionConfig.visible is false', () => {
+    const {queryByTestId} = setupBlockInteractionMessage();
+
+    expect(queryByTestId('blockInteractionContainer')).toBeNull();
+  });
+
+  it('should render the informations provided by the config context', () => {
+    const firstAction = {
+      iconName: 'check',
+      title: 'Action 1',
+      onPress: jest.fn(),
+      color: Colors.successColor,
+      testID: 'action-1',
+    };
+    const secondAction = {
+      title: 'Action 2',
+      onPress: jest.fn(),
+      color: Colors.cautionColor,
+      testID: 'action-2',
+    };
+    const mockConfig = {
+      headerHeight: 60,
       blockInteractionConfig: {
         visible: true,
         message: 'Test Message',
         style: {backgroundColor: 'blue'},
-        actionItems: [
-          {
-            iconName: 'check',
-            title: 'Action 1',
-            onPress: jest.fn(),
-            color: 'green',
-          },
-          {
-            title: 'Action 2',
-            onPress: jest.fn(),
-            color: 'red',
-          },
-        ],
+        actionItems: [firstAction, secondAction],
       },
-    }));
-    const wrapper = shallow(<BlockInteractionMessage />);
+    };
 
-    expect(wrapper.find(WarningCard).prop('errorMessage')).toBe('Test Message');
+    jest.spyOn(configContext, 'useConfig').mockReturnValue(mockConfig);
+    jest.spyOn(configIndex, 'useConfig').mockReturnValue(mockConfig);
 
-    expect(getGlobalStyles(wrapper.find(Card))).toMatchObject({
-      backgroundColor: 'blue',
+    const {getByText, getByTestId} = setupBlockInteractionMessage();
+
+    expect(getByText('Test Message')).toBeTruthy();
+
+    const cardStyles = getComputedStyles(
+      getByTestId('cardContainer').props.style,
+    );
+    expect(cardStyles).toMatchObject(mockConfig.blockInteractionConfig.style);
+
+    const firstButton = getByTestId(firstAction.testID);
+    const firstButtonStyles = getComputedStyles(firstButton?.props?.style);
+    expect(firstButtonStyles).toMatchObject({
+      backgroundColor: firstAction.color.background_light,
+      borderColor: firstAction.color.background,
     });
+    fireEvent.press(firstButton);
+    expect(firstAction.onPress).toHaveBeenCalled();
+    expect(
+      within(firstButton).getAllByTestId('iconTouchable').length,
+    ).toBeGreaterThan(0);
 
-    const buttons = wrapper.find(Button);
-    expect(buttons).toHaveLength(2);
-
-    expect(buttons.at(0).prop('title')).toBe('Action 1');
-    expect(buttons.at(0).prop('color')).toBe('green');
-    expect(buttons.at(0).prop('iconName')).toBe('check');
-
-    expect(buttons.at(1).prop('title')).toBe('Action 2');
-    expect(buttons.at(1).prop('color')).toBe('red');
-    expect(buttons.at(1).prop('iconName')).toBe(undefined);
+    const secondButton = getByTestId(secondAction.testID);
+    const secondButtonStyles = getComputedStyles(secondButton?.props?.style);
+    expect(secondButtonStyles).toMatchObject({
+      backgroundColor: secondAction.color.background_light,
+      borderColor: secondAction.color.background,
+    });
+    fireEvent.press(secondButton);
+    expect(secondAction.onPress).toHaveBeenCalled();
+    expect(within(secondButton).queryAllByTestId('iconTouchable').length).toBe(
+      0,
+    );
   });
 });

@@ -31,6 +31,7 @@ interface Action {
   title: string;
   onPress: () => void;
   color?: Color;
+  testID?: string;
 }
 
 interface BlockInteractionConfig {
