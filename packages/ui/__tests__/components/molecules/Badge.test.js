@@ -16,71 +16,85 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import React from 'react';
-import {View} from 'react-native';
-import {shallow} from 'enzyme';
-import {Badge, Text} from '@axelor/aos-mobile-ui';
-import {getGlobalStyles, getDefaultThemeColors} from '../../tools';
+import {Badge} from '@axelor/aos-mobile-ui';
+import {getComputedStyles, getDefaultThemeColors, setup} from '../../tools';
 
 describe('Badge Component', () => {
   const Colors = getDefaultThemeColors();
-  const props = {title: 'Badge Title'};
+  const setupBadge = overrideProps =>
+    setup({
+      Component: Badge,
+      baseProps: {
+        title: 'Badge Title',
+      },
+      overrideProps,
+    });
 
-  it('renders without crashing', () => {
-    const wrapper = shallow(<Badge />);
-
-    expect(wrapper.exists()).toBe(true);
+  it('should render without crashing', () => {
+    expect(() => setupBadge()).not.toThrow();
   });
 
-  it('renders the correct title', () => {
-    const wrapper = shallow(<Badge {...props} />);
+  it('should render the correct title', () => {
+    const {getByText, props} = setupBadge();
 
-    expect(wrapper.find(Text).prop('children')).toBe(props.title);
+    expect(getByText(props.title)).toBeTruthy();
   });
 
-  it('applies custom styles', () => {
-    const wrapper = shallow(
-      <Badge
-        {...props}
-        style={{backgroundColor: 'blue'}}
-        txtStyle={{color: 'white'}}
-      />,
+  it('should apply custom styles', () => {
+    const customStyle = {backgroundColor: 'blue'};
+    const customTxtStyle = {color: 'white'};
+    const {getByTestId} = setupBadge({
+      style: customStyle,
+      txtStyle: customTxtStyle,
+    });
+    const containerStyles = getComputedStyles(
+      getByTestId('badgeContainer').props.style,
+    );
+    const textStyles = getComputedStyles(getByTestId('badgeTitle').props.style);
+
+    expect(containerStyles).toMatchObject(customStyle);
+    expect(textStyles).toMatchObject(customTxtStyle);
+  });
+
+  it('should apply default color if color prop is not provided', () => {
+    const {getByTestId} = setupBadge();
+    const containerStyles = getComputedStyles(
+      getByTestId('badgeContainer').props.style,
     );
 
-    expect(getGlobalStyles(wrapper.find(View))).toMatchObject({
-      backgroundColor: 'blue',
-    });
-    expect(getGlobalStyles(wrapper.find(Text))).toMatchObject({color: 'white'});
-  });
-
-  it('applies default color if color prop is not provided', () => {
-    const wrapper = shallow(<Badge {...props} />);
-
-    expect(getGlobalStyles(wrapper.find(View))).toMatchObject({
+    expect(containerStyles).toMatchObject({
       backgroundColor: Colors.primaryColor.background_light,
       borderColor: Colors.primaryColor.background,
     });
   });
 
-  it('applies custom color if color prop is provided', () => {
+  it('should apply custom color if color prop is provided', () => {
     const color = Colors.infoColor;
-    const wrapper = shallow(<Badge {...props} color={color} />);
+    const {getByTestId} = setupBadge({color});
+    const containerStyles = getComputedStyles(
+      getByTestId('badgeContainer').props.style,
+    );
 
-    expect(getGlobalStyles(wrapper.find(View))).toMatchObject({
+    expect(containerStyles).toMatchObject({
       backgroundColor: color.background_light,
       borderColor: color.background,
     });
   });
 
-  it('applies default number of lines if numberOfLines prop is not provided', () => {
-    const wrapper = shallow(<Badge {...props} />);
+  it('should apply default number of lines if numberOfLines prop is not provided', () => {
+    const {getByText, props} = setupBadge();
 
-    expect(wrapper.find(Text).prop('numberOfLines')).toBe(1);
+    expect(getByText(props.title).props.numberOfLines).toBe(1);
   });
 
-  it('applies custom number of lines if numberOfLines prop is provided', () => {
-    const wrapper = shallow(<Badge {...props} numberOfLines={2} />);
+  it('should apply custom number of lines if numberOfLines prop is provided', () => {
+    const customNumberOfLines = 2;
+    const {getByText, props} = setupBadge({
+      numberOfLines: customNumberOfLines,
+    });
 
-    expect(wrapper.find(Text).prop('numberOfLines')).toBe(2);
+    expect(getByText(props.title).props.numberOfLines).toBe(
+      customNumberOfLines,
+    );
   });
 });
