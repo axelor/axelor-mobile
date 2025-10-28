@@ -18,45 +18,57 @@
 
 import React from 'react';
 import {View} from 'react-native';
-import {shallow} from 'enzyme';
-import {Card, CardIndicator, Text, Alert} from '@axelor/aos-mobile-ui';
+import {CardIndicator} from '@axelor/aos-mobile-ui';
+import {setup} from '../../tools';
 
 describe('CardIndicator Component', () => {
-  const props = {
-    indication: 'heart',
-    children: <View testID="children" />,
-    isVisible: true,
-    handleClose: jest.fn(),
-    usePopup: false,
-  };
+  const setupCardIndicator = overrideProps =>
+    setup({
+      Component: CardIndicator,
+      baseProps: {
+        indication: 'heart',
+        children: <View testID="indicatorChild" />,
+        isVisible: true,
+        handleClose: jest.fn(),
+        usePopup: false,
+      },
+      overrideProps,
+    });
 
   it('should render without crashing', () => {
-    const wrapper = shallow(<CardIndicator {...props} />);
-
-    expect(wrapper.exists()).toBe(true);
+    expect(() => setupCardIndicator()).not.toThrow();
   });
 
-  it('renders the right components when usePopup is false', () => {
-    const wrapper = shallow(<CardIndicator {...props} />);
+  it('should render card indicator when visible and usePopup is false', () => {
+    const {
+      getByTestId,
+      getByText,
+      queryByTestId,
+      queryByText,
+      rerender,
+      props,
+    } = setupCardIndicator();
 
-    expect(wrapper.contains(props.children)).toBe(true);
-    expect(wrapper.find(Card).exists()).toBe(true);
-    expect(wrapper.find(Text).prop('children')).toBe(props.indication);
+    expect(getByTestId('indicatorChild')).toBeTruthy();
+    expect(getByText(props.indication)).toBeTruthy();
+    expect(getByTestId('cardIndicatorCard')).toBeTruthy();
 
-    wrapper.setProps({isVisible: false});
-    expect(wrapper.contains(props.children)).toBe(true);
-    expect(wrapper.find(Card).exists()).toBe(false);
+    rerender(<CardIndicator {...props} isVisible={false} />);
+
+    expect(queryByText(props.indication)).toBeNull();
+    expect(queryByTestId('cardIndicatorCard')).toBeNull();
   });
 
-  it('renders the right components when usePopup is true', () => {
-    const wrapper = shallow(<CardIndicator {...props} usePopup={true} />);
+  it('should render alert indicator when usePopup is true', () => {
+    const {getByText, queryByTestId, queryByText, rerender, props} =
+      setupCardIndicator({usePopup: true});
 
-    expect(wrapper.contains(props.children)).toBe(true);
-    expect(wrapper.find(Alert).exists()).toBe(true);
-    expect(wrapper.find(Text).prop('children')).toBe(props.indication);
+    expect(getByText(props.indication)).toBeTruthy();
+    expect(queryByTestId('cardIndicatorCard')).toBeNull();
 
-    wrapper.setProps({isVisible: false});
-    expect(wrapper.contains(props.children)).toBe(true);
-    expect(wrapper.find(Alert).exists()).toBe(false);
+    rerender(<CardIndicator {...props} isVisible={false} />);
+
+    expect(queryByText(props.indication)).toBeNull();
+    expect(queryByTestId('cardIndicatorCard')).toBeNull();
   });
 });

@@ -75,14 +75,19 @@ const CardIndicator = ({
         <Text>{indication}</Text>
       </Alert>
     ) : (
-      <Card style={[styles.indicationCard, textIndicationStyle]}>
+      <Card
+        testID="cardIndicatorCard"
+        style={[styles.indicationCard, textIndicationStyle]}>
         <Text>{indication}</Text>
       </Card>
     );
   };
 
   return (
-    <View ref={wrapperRef} style={[styles.container, style]}>
+    <View
+      ref={wrapperRef}
+      testID="cardIndicatorContainer"
+      style={[styles.container, style]}>
       {children}
       {isVisible && renderIndication()}
     </View>
