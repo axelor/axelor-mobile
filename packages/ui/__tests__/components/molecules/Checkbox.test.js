@@ -17,81 +17,119 @@
  */
 
 import React from 'react';
-import {shallow} from 'enzyme';
-import {Checkbox, Icon, Text} from '@axelor/aos-mobile-ui';
-import {getDefaultThemeColors} from '../../tools';
+import {fireEvent} from '@testing-library/react-native';
+import {Checkbox} from '@axelor/aos-mobile-ui';
+import {getDefaultThemeColors, setup} from '../../tools';
+
+const Colors = getDefaultThemeColors();
+
+const getIconTouchable = getAllByTestId =>
+  getAllByTestId('iconTouchable')[0] ?? null;
+
+const getIconProps = iconTouchable => {
+  const child = Array.isArray(iconTouchable?.props?.children)
+    ? iconTouchable.props.children[0]
+    : iconTouchable?.props?.children;
+
+  return child?.props;
+};
 
 describe('Checkbox Component', () => {
-  const Colors = getDefaultThemeColors();
-  const props = {
-    title: 'Checkbox Label',
-    onChange: jest.fn(),
-    isDefaultChecked: false,
-    disabled: false,
-    iconColor: Colors.infoColor.background,
-    iconSize: 20,
-  };
+  const setupCheckbox = overrideProps =>
+    setup({
+      Component: Checkbox,
+      baseProps: {
+        title: 'Checkbox Label',
+        onChange: jest.fn(),
+        isDefaultChecked: false,
+        disabled: false,
+        iconColor: Colors.infoColor.background,
+        iconSize: 20,
+      },
+      overrideProps,
+    });
 
-  it('renders without crashing', () => {
-    const wrapper = shallow(<Checkbox {...props} />);
-    expect(wrapper.exists()).toBe(true);
+  beforeEach(() => {
+    jest.clearAllMocks();
   });
 
-  it('renders icon with the correct props', () => {
-    const wrapper = shallow(<Checkbox {...props} />);
-    const iconComponent = wrapper.find(Icon);
-
-    expect(iconComponent.exists()).toBeTruthy();
-    expect(iconComponent.prop('color')).toBe(props.iconColor);
-    expect(iconComponent.prop('size')).toBe(props.iconSize);
-    expect(iconComponent.prop('touchable')).toBe(!props.disabled);
+  it('should render without crashing', () => {
+    expect(() => setupCheckbox()).not.toThrow();
   });
 
-  it('renders disabled icon when specified', () => {
-    const wrapper = shallow(<Checkbox {...props} disabled={true} />);
-    const iconComponent = wrapper.find(Icon);
+  it('should render icon with provided props', () => {
+    const {getAllByTestId, props} = setupCheckbox();
+    const iconTouchable = getIconTouchable(getAllByTestId);
+    const iconProps = getIconProps(iconTouchable);
 
-    expect(iconComponent.exists()).toBeTruthy();
-    expect(iconComponent.prop('touchable')).toBe(false);
+    expect(iconTouchable).toBeTruthy();
+    expect(iconProps?.color).toBe(props.iconColor);
+    expect(iconProps?.size).toBe(props.iconSize);
+    expect(iconTouchable?.props?.disabled ?? false).toBe(props.disabled);
   });
 
-  it('renders correct icon when checkbox is pressed', () => {
-    const wrapper = shallow(<Checkbox {...props} />);
+  it('should not trigger onChange when disabled', () => {
+    const {getAllByTestId, props} = setupCheckbox({
+      disabled: true,
+      onChange: jest.fn(),
+    });
+    const iconTouchable = getIconTouchable(getAllByTestId);
 
-    expect(wrapper.find(Icon).prop('name')).toBe('square');
+    if (iconTouchable) {
+      fireEvent.press(iconTouchable);
+    }
 
-    wrapper.find(Icon).simulate('press');
-
-    expect(wrapper.find(Icon).prop('name')).toBe('check-square-fill');
+    expect(props.onChange).not.toHaveBeenCalled();
   });
 
-  it('renders correct icon if isDefaultChecked is true', () => {
-    const wrapper = shallow(<Checkbox {...props} isDefaultChecked />);
+  it('should toggle icon when pressed', () => {
+    const {getAllByTestId, props} = setupCheckbox({
+      onChange: jest.fn(),
+    });
 
-    expect(wrapper.find(Icon).prop('name')).toBe('check-square-fill');
+    const iconTouchable = getIconTouchable(getAllByTestId);
+    expect(getIconProps(iconTouchable)?.name).toBe('square');
+
+    if (iconTouchable) {
+      fireEvent.press(iconTouchable);
+    }
+
+    const toggledIconProps = getIconProps(getIconTouchable(getAllByTestId));
+    expect(toggledIconProps?.name).toBe('check-square-fill');
+    expect(props.onChange).toHaveBeenCalledWith(true);
   });
 
-  it('renders correct icon if isDefaultPartialChecked is true', () => {
-    const wrapper = shallow(<Checkbox {...props} isDefaultPartialChecked />);
+  it('should render checked icon when default checked', () => {
+    const {getAllByTestId} = setupCheckbox({isDefaultChecked: true});
+    const iconProps = getIconProps(getIconTouchable(getAllByTestId));
 
-    expect(wrapper.find(Icon).prop('name')).toBe('dash-square-fill');
+    expect(iconProps?.name).toBe('check-square-fill');
   });
 
-  it('renders with correct title', () => {
-    const wrapper = shallow(<Checkbox {...props} />);
+  it('should render partial icon when default partial checked', () => {
+    const {getAllByTestId} = setupCheckbox({
+      isDefaultPartialChecked: true,
+    });
+    const iconProps = getIconProps(getIconTouchable(getAllByTestId));
 
-    expect(wrapper.find(Text).prop('children')).toBe(props.title);
+    expect(iconProps?.name).toBe('dash-square-fill');
   });
 
-  it('renders with correct icon color based on disabled prop', () => {
-    const wrapper = shallow(<Checkbox {...props} />);
+  it('should render title text', () => {
+    const {getByText, props} = setupCheckbox();
 
-    expect(wrapper.find(Icon).prop('color')).toEqual(props.iconColor);
+    expect(getByText(props.title)).toBeTruthy();
+  });
 
-    wrapper.setProps({disabled: true});
+  it('should adjust icon color when disabled', () => {
+    const {getAllByTestId, rerender, props} = setupCheckbox();
+    const initialIconProps = getIconProps(getIconTouchable(getAllByTestId));
 
-    expect(wrapper.find(Icon).prop('color')).toEqual(
-      Colors.secondaryColor.background,
-    );
+    expect(initialIconProps?.color).toBe(props.iconColor);
+
+    rerender(<Checkbox {...props} disabled />);
+
+    const disabledIconProps = getIconProps(getIconTouchable(getAllByTestId));
+    expect(disabledIconProps?.color).toBe(Colors.secondaryColor.background);
   });
 });
