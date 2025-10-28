@@ -90,6 +90,7 @@ const Breadcrumb = ({
 
   return (
     <View
+      testID="breadcrumbContainer"
       style={[styles.container, style]}
       onLayout={e => setContainerWidth(e?.nativeEvent?.layout?.width)}>
       <Icon
@@ -104,6 +105,7 @@ const Breadcrumb = ({
           key={index}>
           <Icon name="chevron-right" color={Colors.secondaryColor.background} />
           <TouchableOpacity
+            testID={`breadcrumbItem-${index}`}
             style={styles.textContainer}
             activeOpacity={0.7}
             disabled={disabled || !item.onPress}
