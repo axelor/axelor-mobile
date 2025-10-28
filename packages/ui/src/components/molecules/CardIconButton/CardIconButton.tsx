@@ -47,6 +47,7 @@ const CardIconButton = ({
 
   return (
     <TouchableOpacity
+      testID="cardIconButtonTouchable"
       style={[styles.container, style]}
       disabled={disabled}
       onLongPress={onLongPress}
