@@ -94,7 +94,9 @@ const DropdownCard = ({
         </View>
       </TouchableOpacity>
       {displayCard && (
-        <Card testID="dropdownContent" style={[styles.containerChildren, styleCard]}>
+        <Card
+          testID="dropdownContent"
+          style={[styles.containerChildren, styleCard]}>
           {children}
         </Card>
       )}
