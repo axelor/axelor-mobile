@@ -17,41 +17,47 @@
  */
 
 import React from 'react';
-import {TouchableOpacity} from 'react-native';
-import {shallow} from 'enzyme';
-import {Card, DropdownMenu, Text} from '@axelor/aos-mobile-ui';
+import {fireEvent} from '@testing-library/react-native';
+import {DropdownMenu, Text} from '@axelor/aos-mobile-ui';
+import {setup} from '../../tools';
 
 describe('DropdownMenu Component', () => {
   const props = {
     children: <Text testID="MENU-CONTENT">Menu Content</Text>,
   };
 
-  it('should render without crashing', () => {
-    const wrapper = shallow(<DropdownMenu {...props} />);
+  const setupDropdownMenu = overrideProps =>
+    setup({
+      Component: DropdownMenu,
+      baseProps: props,
+      overrideProps,
+    });
 
-    expect(wrapper.exists()).toBe(true);
+  it('should render without crashing', () => {
+    expect(() => setupDropdownMenu()).not.toThrow();
   });
 
   it('renders children when visible is true', () => {
-    const wrapper = shallow(<DropdownMenu {...props} />);
+    const {getByTestId, getByText} = setupDropdownMenu();
 
-    wrapper.find(TouchableOpacity).simulate('press');
+    fireEvent.press(getByTestId('dropdownMenuToggle'));
 
-    expect(wrapper.find(Card).exists()).toBe(true);
-    expect(wrapper.find('[testID="MENU-CONTENT"]').exists()).toBe(true);
+    expect(getByTestId('dropdownMenuContent')).toBeTruthy();
+    expect(getByText('Menu Content')).toBeTruthy();
   });
 
   it('toggles visibility when action button is pressed', () => {
-    const wrapper = shallow(<DropdownMenu {...props} />);
+    const {getByTestId, queryByTestId, getByText} = setupDropdownMenu();
 
-    expect(wrapper.find('[testID="MENU-CONTENT"]').exists()).toBe(false);
+    expect(queryByTestId('dropdownMenuContent')).toBeNull();
 
-    wrapper.find(TouchableOpacity).simulate('press');
+    fireEvent.press(getByTestId('dropdownMenuToggle'));
 
-    expect(wrapper.find('[testID="MENU-CONTENT"]').exists()).toBe(true);
+    expect(getByTestId('dropdownMenuContent')).toBeTruthy();
+    expect(getByText('Menu Content')).toBeTruthy();
 
-    wrapper.find(TouchableOpacity).simulate('press');
+    fireEvent.press(getByTestId('dropdownMenuToggle'));
 
-    expect(wrapper.find('[testID="MENU-CONTENT"]').exists()).toBe(false);
+    expect(queryByTestId('dropdownMenuContent')).toBeNull();
   });
 });

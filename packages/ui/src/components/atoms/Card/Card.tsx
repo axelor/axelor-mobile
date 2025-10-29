@@ -20,18 +20,19 @@ import React, {useMemo} from 'react';
 import {StyleSheet, View} from 'react-native';
 import {ThemeColors, useThemeColor} from '../../../theme';
 
-interface CardProps {
+export interface CardProps {
   style?: any;
   children: any;
+  testID?: string;
 }
 
-const Card = ({style, children}: CardProps) => {
+const Card = ({style, children, testID = 'cardContainer'}: CardProps) => {
   const Colors = useThemeColor();
 
   const styles = useMemo(() => getStyles(Colors), [Colors]);
 
   return (
-    <View testID="cardContainer" style={[styles.container, style]}>
+    <View testID={testID} style={[styles.container, style]}>
       {children}
     </View>
   );
