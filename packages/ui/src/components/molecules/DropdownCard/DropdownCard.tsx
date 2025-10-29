@@ -66,6 +66,7 @@ const DropdownCard = ({
   return (
     <View style={[styles.container, styleContainer]}>
       <TouchableOpacity
+        testID="dropdownToggle"
         style={styles.containerContent}
         onPress={handleCardPress}
         disabled={!showIcon}
@@ -85,6 +86,7 @@ const DropdownCard = ({
           </View>
           {showIcon && (
             <Icon
+              testID="dropdownChevron"
               name={displayCard ? 'chevron-up' : 'chevron-down'}
               color={Colors.primaryColor.background}
             />
@@ -92,7 +94,9 @@ const DropdownCard = ({
         </View>
       </TouchableOpacity>
       {displayCard && (
-        <Card style={[styles.containerChildren, styleCard]}>{children}</Card>
+        <Card testID="dropdownContent" style={[styles.containerChildren, styleCard]}>
+          {children}
+        </Card>
       )}
     </View>
   );

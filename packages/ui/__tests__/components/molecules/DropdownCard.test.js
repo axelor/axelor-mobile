@@ -17,9 +17,9 @@
  */
 
 import React from 'react';
-import {TouchableOpacity} from 'react-native';
-import {shallow} from 'enzyme';
-import {DropdownCard, Icon, Text} from '@axelor/aos-mobile-ui';
+import {fireEvent} from '@testing-library/react-native';
+import {DropdownCard, Text} from '@axelor/aos-mobile-ui';
+import {setup} from '../../tools';
 
 describe('DropdownCard Component', () => {
   const props = {
@@ -29,42 +29,59 @@ describe('DropdownCard Component', () => {
     showIcon: true,
   };
 
-  it('should render without crashing', () => {
-    const wrapper = shallow(<DropdownCard {...props} />);
+  const setupDropdownCard = overrideProps =>
+    setup({
+      Component: DropdownCard,
+      baseProps: props,
+      overrideProps,
+    });
 
-    expect(wrapper.exists()).toBe(true);
+  it('should render without crashing', () => {
+    expect(() => setupDropdownCard()).not.toThrow();
   });
 
   it('renders correctly with title and icon', () => {
-    const wrapper = shallow(<DropdownCard {...props} />);
+    const {getByText, getByTestId} = setupDropdownCard();
 
-    expect(wrapper.find(Text).prop('children')).toBe(props.title);
-    expect(wrapper.find(Icon).prop('name')).toBe('chevron-down');
+    expect(getByText(props.title)).toBeTruthy();
+    expect(
+      getByTestId(
+        `icon-${props.dropdownIsOpen ? 'chevron-up' : 'chevron-down'}`,
+      ),
+    ).toBeTruthy();
   });
 
   it('renders correctly without icon', () => {
-    const wrapper = shallow(<DropdownCard {...props} showIcon={false} />);
+    const {queryByTestId} = setupDropdownCard({showIcon: false});
 
-    expect(wrapper.find(Icon).exists()).toBe(false);
+    expect(queryByTestId('icon-chevron-down')).toBeNull();
+    expect(queryByTestId('icon-chevron-up')).toBeNull();
   });
 
   it('toggles the dropdown on touchable press', () => {
-    const wrapper = shallow(<DropdownCard {...props} />);
+    const {getByTestId, queryByTestId} = setupDropdownCard();
 
-    expect(wrapper.find(Icon).prop('name')).toBe('chevron-down');
+    expect(getByTestId('icon-chevron-down')).toBeTruthy();
+    expect(queryByTestId('icon-chevron-up')).toBeNull();
+    expect(queryByTestId('dropdownContent')).toBeNull();
 
-    wrapper.find(TouchableOpacity).simulate('press');
+    fireEvent.press(getByTestId('dropdownToggle'));
 
-    expect(wrapper.find(Icon).prop('name')).toBe('chevron-up');
+    expect(getByTestId('icon-chevron-up')).toBeTruthy();
+    expect(queryByTestId('icon-chevron-down')).toBeNull();
+    expect(getByTestId('dropdownContent')).toBeTruthy();
 
-    wrapper.find(TouchableOpacity).simulate('press');
+    fireEvent.press(getByTestId('dropdownToggle'));
 
-    expect(wrapper.find(Icon).prop('name')).toBe('chevron-down');
+    expect(getByTestId('icon-chevron-down')).toBeTruthy();
+    expect(queryByTestId('icon-chevron-up')).toBeNull();
+    expect(queryByTestId('dropdownContent')).toBeNull();
   });
 
   it('renders children content when DropdownIsOpen prop is true', () => {
-    const wrapper = shallow(<DropdownCard {...props} dropdownIsOpen={true} />);
+    const {getByTestId, getByText} = setupDropdownCard({dropdownIsOpen: true});
 
-    expect(wrapper.find('Text[testID="CHILDREN-CONTENT"]').exists()).toBe(true);
+    expect(getByText('Content goes here')).toBeTruthy();
+    expect(getByTestId('dropdownContent')).toBeTruthy();
   });
 });
