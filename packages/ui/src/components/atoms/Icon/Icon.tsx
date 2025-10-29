@@ -29,6 +29,7 @@ interface IconProps {
   touchable?: boolean;
   visible?: boolean;
   onPress?: () => void;
+  testID?: string;
 }
 
 const Icon = ({
@@ -39,6 +40,7 @@ const Icon = ({
   touchable = false,
   visible = true,
   onPress = () => {},
+  testID,
 }: IconProps) => {
   const Colors = useThemeColor();
 
@@ -53,10 +55,10 @@ const Icon = ({
 
   return (
     <TouchableOpacity
+      testID={testID ?? 'iconTouchable'}
       style={[styles.container, style]}
       onPress={onPress}
-      disabled={!touchable}
-      testID="iconTouchable">
+      disabled={!touchable}>
       <BootstrapIcon name={name} size={size} color={_color} />
     </TouchableOpacity>
   );
