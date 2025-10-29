@@ -17,37 +17,54 @@
  */
 
 import React from 'react';
-import {shallow} from 'enzyme';
-import {ClearableCard, Icon} from '@axelor/aos-mobile-ui';
+import {fireEvent} from '@testing-library/react-native';
+import {ClearableCard} from '@axelor/aos-mobile-ui';
+import {setup} from '../../tools';
 
 describe('ClearableCard Component', () => {
-  const props = {
-    onPress: jest.fn(),
-    onClearPress: jest.fn(),
-    valueTxt: 'test',
-    clearable: true,
-  };
+  const setupClearableCard = overrideProps =>
+    setup({
+      Component: ClearableCard,
+      baseProps: {
+        onClearPress: jest.fn(),
+        valueTxt: 'test',
+        clearable: true,
+      },
+      overrideProps,
+    });
 
-  it('should render without crashing', () => {
-    const wrapper = shallow(<ClearableCard {...props} />);
-
-    expect(wrapper.exists()).toBe(true);
+  beforeEach(() => {
+    jest.clearAllMocks();
   });
 
-  it('renders correctly when clearable is true', () => {
-    const wrapper = shallow(<ClearableCard {...props} />);
+  it('should render without crashing', () => {
+    expect(() => setupClearableCard()).not.toThrow();
+  });
 
-    const iconComponent = wrapper.find(Icon);
+  it('renders clear icon when clearable is true', () => {
+    const {getAllByTestId, getByText, props} = setupClearableCard();
 
-    expect(iconComponent.exists()).toBeTruthy();
-    expect(iconComponent.prop('name')).toBe('x-lg');
-    expect(iconComponent.prop('touchable')).toBe(true);
-    expect(iconComponent.prop('size')).toBeGreaterThan(0);
+    expect(getByText(props.valueTxt)).toBeTruthy();
+    expect(getAllByTestId('iconTouchable')[0]).toBeTruthy();
+    expect(getAllByTestId('icon-x-lg')[0]).toBeTruthy();
   });
 
   it('does not render clear icon when clearable is false', () => {
-    const wrapper = shallow(<ClearableCard {...props} clearable={false} />);
+    const {queryAllByTestId, getByText, props} = setupClearableCard({
+      clearable: false,
+    });
 
-    expect(wrapper.find(Icon)).toHaveLength(0);
+    expect(getByText(props.valueTxt)).toBeTruthy();
+    expect(queryAllByTestId('iconTouchable')).toHaveLength(0);
+  });
+
+  it('calls onClearPress when clear icon is pressed', () => {
+    const {getAllByTestId, props} = setupClearableCard({
+      onClearPress: jest.fn(),
+    });
+
+    fireEvent.press(getAllByTestId('iconTouchable')[0]);
+
+    expect(props.onClearPress).toHaveBeenCalledTimes(1);
   });
 });
