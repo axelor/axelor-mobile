@@ -16,102 +16,98 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import React from 'react';
-import {TouchableOpacity, View} from 'react-native';
-import {shallow} from 'enzyme';
-import {Icon, Text, Breadcrumb} from '@axelor/aos-mobile-ui';
-import {getGlobalStyles} from '../../tools';
+import {fireEvent, within} from '@testing-library/react-native';
+import {Breadcrumb} from '@axelor/aos-mobile-ui';
+import {setup} from '../../tools';
 
 describe('Breadcrumb Component', () => {
-  const mockOnHomePress = jest.fn();
-  const mockOnPress = jest.fn();
-  const props = {
-    items: [
-      {title: 'Home', onPress: mockOnPress},
-      {title: 'Products'},
-      {title: 'Electronics'},
-    ],
-    onHomePress: mockOnHomePress,
-  };
+  const setupBreadcrumb = overrideProps =>
+    setup({
+      Component: Breadcrumb,
+      baseProps: {
+        items: [
+          {title: 'Home', onPress: jest.fn()},
+          {title: 'Products'},
+          {title: 'Electronics'},
+        ],
+        onHomePress: jest.fn(),
+      },
+      overrideProps,
+    });
 
   it('renders without crashing', () => {
-    const wrapper = shallow(<Breadcrumb {...props} />);
-    expect(wrapper.exists()).toBe(true);
+    const {getByTestId} = setupBreadcrumb();
+
+    expect(getByTestId('breadcrumbContainer')).toBeTruthy();
   });
 
-  it('renders the home icon with correct props', () => {
-    const wrapper = shallow(<Breadcrumb {...props} />);
-    const homeIcon = wrapper.find(Icon).first();
+  it('should render the home icon with correct props', () => {
+    const {getAllByTestId, props} = setupBreadcrumb({onHomePress: jest.fn()});
 
-    expect(homeIcon.exists()).toBeTruthy();
-    expect(homeIcon.prop('name')).toBe('house-door-fill');
-    expect(homeIcon.prop('touchable')).toBe(true);
-    homeIcon.simulate('press');
-    expect(mockOnHomePress).toHaveBeenCalled();
+    const _homeIcon = getAllByTestId('iconTouchable').at(0);
+
+    expect(_homeIcon).toBeTruthy();
+    expect(within(_homeIcon).getByTestId('icon-house-door-fill'));
+
+    fireEvent.press(_homeIcon);
+    expect(props.onHomePress).toHaveBeenCalled();
   });
 
-  it('renders the correct number of breadcrumb items', () => {
-    const wrapper = shallow(<Breadcrumb {...props} />);
-    const breadcrumbItems = wrapper.find(Text);
+  it('should render the correct number of breadcrumb items', () => {
+    const {getAllByTestId, props} = setupBreadcrumb();
 
-    expect(breadcrumbItems.length).toBe(props.items.length);
-  });
+    const _elts = getAllByTestId(/^breadcrumbItemContainer-idx.*/);
+    expect(_elts).toHaveLength(props.items.length);
 
-  it('renders the chevron icon between breadcrumb items', () => {
-    const wrapper = shallow(<Breadcrumb {...props} />);
-    const chevrons = wrapper.findWhere(
-      node => node.type() === Icon && node.prop('name') === 'chevron-right',
-    );
-
-    expect(chevrons.length).toBe(props.items.length);
-  });
-
-  it('renders breadcrumb items with onPress handlers when provided', () => {
-    const wrapper = shallow(<Breadcrumb {...props} />);
-    const clickableItem = wrapper.findWhere(
-      node =>
-        node.type() === TouchableOpacity &&
-        node.find(Text).prop('children') === 'Home',
-    );
-
-    expect(clickableItem.exists()).toBeTruthy();
-    clickableItem.simulate('press');
-    expect(mockOnPress).toHaveBeenCalled();
-  });
-
-  it('does not render onPress for items without handlers', () => {
-    const wrapper = shallow(<Breadcrumb {...props} />);
-    const nonClickableItem = wrapper.findWhere(
-      node => node.type() === Text && node.prop('children') === 'Products',
-    );
-
-    expect(nonClickableItem.exists()).toBeTruthy();
-    expect(nonClickableItem.prop('onPress')).toBeUndefined();
-  });
-
-  it('renders correctly when disabled', () => {
-    const wrapper = shallow(<Breadcrumb {...props} disabled />);
-    const items = wrapper.find(TouchableOpacity);
-
-    items.forEach(_item => {
-      expect(_item.exists()).toBeTruthy();
-      expect(_item.prop('disabled')).toBeTruthy();
+    props.items.forEach((_i, idx) => {
+      const _elt = _elts.at(idx);
+      expect(within(_elt).getByTestId('icon-chevron-right')).toBeTruthy();
+      expect(within(_elt).getByTestId(`breadcrumbItem-idx${idx}`)).toBeTruthy();
+      expect(within(_elt).getByText(_i.title)).toBeTruthy();
     });
   });
 
-  it('should apply custom styles to the container when style prop is provided', () => {
-    const customStyle = {
-      fontSize: 25,
-      width: '90%',
-      height: 25,
-      flexDirection: 'row',
-      alignSelf: 'center',
-    };
+  it('should render chevron icons between breadcrumb items', () => {
+    const {getAllByTestId, props} = setupBreadcrumb();
 
-    const wrapper = shallow(<Breadcrumb {...props} style={customStyle} />);
-
-    expect(getGlobalStyles(wrapper.find(View).at(0))).toMatchObject(
-      customStyle,
+    expect(getAllByTestId('icon-chevron-right')).toHaveLength(
+      props.items.length,
     );
+  });
+
+  it('should call onPress when a breadcrumb item has a handler', () => {
+    const {getByTestId, props} = setupBreadcrumb();
+
+    props.items.forEach((_i, idx) => {
+      if (_i.onPress != null) {
+        fireEvent.press(getByTestId(`breadcrumbItem-idx${idx}`));
+        expect(_i.onPress).toHaveBeenCalled();
+      }
+    });
+  });
+
+  it('should disable all items when breadcrumb is disabled', () => {
+    const {getByTestId, props} = setupBreadcrumb({disabled: true});
+
+    props.items.forEach((_i, idx) => {
+      if (_i.onPress != null) {
+        fireEvent.press(getByTestId(`breadcrumbItem-idx${idx}`));
+        expect(_i.onPress).not.toHaveBeenCalled();
+      }
+    });
+  });
+
+  it('should apply custom styles to the container', () => {
+    const {getByTestId, props} = setupBreadcrumb({
+      style: {
+        fontSize: 25,
+        width: '90%',
+        height: 25,
+        flexDirection: 'row',
+        alignSelf: 'center',
+      },
+    });
+
+    expect(getByTestId('breadcrumbContainer')).toHaveStyle(props.style);
   });
 });
