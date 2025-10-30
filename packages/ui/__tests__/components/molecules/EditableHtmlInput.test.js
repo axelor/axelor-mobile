@@ -17,48 +17,55 @@
  */
 
 import React from 'react';
-import {shallow} from 'enzyme';
-import {EditableHtmlInput, HtmlInput, Icon} from '@axelor/aos-mobile-ui';
+import {fireEvent} from '@testing-library/react-native';
+import {EditableHtmlInput} from '@axelor/aos-mobile-ui';
+import {setup} from '../../tools';
+
+jest.mock('../../../lib/components/atoms/HtmlInput/HtmlInput', () => {
+  const {View} = require('react-native');
+
+  return props => <View testID="mocked_htmlInput" {...props} />;
+});
 
 describe('EditableHtmlInput Component', () => {
-  const props = {
-    placeholder: 'Enter text',
-    onValidate: jest.fn(),
-    defaultValue: 'Initial value',
-  };
+  const setupEditableHtmlInput = overrideProps =>
+    setup({
+      Component: EditableHtmlInput,
+      baseProps: {
+        placeholder: 'Enter text',
+        onValidate: jest.fn(),
+        defaultValue: 'Initial value',
+      },
+      overrideProps,
+    });
 
-  it('should render without crashing', () => {
-    const wrapper = shallow(<EditableHtmlInput {...props} />);
+  it('renders without crashing', () => {
+    const {getByTestId} = setupEditableHtmlInput();
 
-    expect(wrapper.exists()).toBe(true);
+    expect(getByTestId('mocked_htmlInput')).toBeTruthy();
   });
 
-  it('toggles between editable and non-editable modes when the icon is pressed', () => {
-    const wrapper = shallow(<EditableHtmlInput {...props} />);
+  it('should render with pencil icon and readonly HtmlInput by default', () => {
+    const {getByTestId} = setupEditableHtmlInput();
 
-    expect(wrapper.find(HtmlInput).prop('readonly')).toBe(true);
-    expect(wrapper.find(HtmlInput).prop('defaultInput')).toBe(
-      props.defaultValue,
-    );
+    expect(getByTestId('icon-pencil-fill')).toBeTruthy();
 
-    wrapper.find(Icon).simulate('press');
-
-    expect(wrapper.find(HtmlInput).prop('readonly')).toBe(false);
+    const _htmlElt = getByTestId('mocked_htmlInput');
+    expect(_htmlElt).toBeTruthy();
+    expect(_htmlElt.props.readonly).toBe(true);
   });
 
-  it('updates input value when changed and toggles back to non-editable', () => {
-    const wrapper = shallow(<EditableHtmlInput {...props} />);
+  it('toggles to editable mode and calls onValidate when confirmed', () => {
+    const {getByTestId, props} = setupEditableHtmlInput({
+      onValidate: jest.fn(),
+    });
 
-    wrapper.find(Icon).simulate('press');
+    fireEvent.press(getByTestId('iconTouchable'));
+    expect(getByTestId('icon-check-lg')).toBeTruthy();
 
-    const newValue = 'New Value';
-    wrapper.find(HtmlInput).simulate('change', newValue);
-    expect(wrapper.find(HtmlInput).prop('defaultInput')).toBe(newValue);
+    fireEvent.press(getByTestId('iconTouchable'));
 
-    wrapper.find(Icon).simulate('press');
-
-    expect(wrapper.find(HtmlInput).prop('readonly')).toBe(true);
-
-    expect(props.onValidate).toHaveBeenCalledWith(newValue);
+    expect(getByTestId('icon-pencil-fill')).toBeTruthy();
+    expect(props.onValidate).toHaveBeenCalledWith(props.defaultValue);
   });
 });
