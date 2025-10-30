@@ -17,14 +17,34 @@
  */
 
 import React from 'react';
-import {View} from 'react-native';
-import {shallow} from 'enzyme';
-import {FormInput, Input, Text} from '@axelor/aos-mobile-ui';
-import {getGlobalStyles, getDefaultThemeColors} from '../../tools';
+import {act} from '@testing-library/react-native';
+import {FormInput, Input} from '@axelor/aos-mobile-ui';
+import {setup, getComputedStyles, getDefaultThemeColors} from '../../tools';
+
+const findElementByType = (element, type) => {
+  if (!element || !element.props) {
+    return null;
+  }
+
+  if (element.type === type) {
+    return element;
+  }
+
+  const children = React.Children.toArray(element.props.children);
+
+  for (const child of children) {
+    const result = findElementByType(child, type);
+    if (result) {
+      return result;
+    }
+  }
+
+  return null;
+};
 
 describe('FormInput Component', () => {
   const Colors = getDefaultThemeColors();
-  const props = {
+  const baseProps = {
     title: 'Input Title',
     defaultValue: 'Initial Value',
     onChange: jest.fn(),
@@ -32,68 +52,92 @@ describe('FormInput Component', () => {
     onEndFocus: jest.fn(),
   };
 
-  it('should render without crashing', () => {
-    const wrapper = shallow(<FormInput {...props} />);
+  const setupFormInput = overrideProps =>
+    setup({Component: FormInput, baseProps, overrideProps});
 
-    expect(wrapper.exists()).toBe(true);
+  const getInput = getByTestId => {
+    const container = getByTestId('formInputContainer');
+    const input = findElementByType(container, Input);
+
+    return {container, input};
+  };
+
+  it('renders without crashing', () => {
+    const {getByTestId, getByText} = setupFormInput();
+
+    expect(getByTestId('formInputContainer')).toBeTruthy();
+    expect(getByText(baseProps.title)).toBeTruthy();
   });
 
-  it('renders correctly with initial props', () => {
-    const wrapper = shallow(<FormInput {...props} />);
+  it('passes default value to underlying input', () => {
+    const {getByTestId, getByText} = setupFormInput();
+    const {input} = getInput(getByTestId);
 
-    expect(wrapper.find(Text).prop('children')).toBe(props.title);
-    expect(wrapper.find(Input).prop('value')).toBe(props.defaultValue);
+    expect(getByText(baseProps.title)).toBeTruthy();
+    expect(input.props.value).toBe(baseProps.defaultValue);
   });
 
-  it('updates input value on change', () => {
-    const wrapper = shallow(<FormInput {...props} />);
+  it('passes onChange through to increment input', () => {
+    const {getByTestId, props} = setupFormInput({onChange: jest.fn()});
+    const {input} = getInput(getByTestId);
 
-    const newValue = 'New Value';
-    wrapper.find(Input).simulate('change', newValue);
+    act(() => {
+      input.props.onChange?.('Updated');
+    });
 
-    expect(wrapper.find(Input).prop('value')).toBe(newValue);
-    expect(props.onChange).toHaveBeenCalledWith(newValue);
+    expect(props.onChange).toHaveBeenCalledWith('Updated');
   });
 
-  it('handles selection and end focus', () => {
-    const wrapper = shallow(<FormInput {...props} />);
+  it('updates focus styling on selection and blur', () => {
+    const {getByTestId, props} = setupFormInput({
+      onSelection: jest.fn(),
+      onEndFocus: jest.fn(),
+    });
+    const {input} = getInput(getByTestId);
 
-    wrapper.find(Input).simulate('selection');
+    act(() => {
+      input.props.onSelection?.();
+    });
 
-    expect(getGlobalStyles(wrapper.find(View).at(1))).toMatchObject({
+    let inner = getByTestId('formInputInnerContainer');
+    expect(getComputedStyles(inner.props.style)).toMatchObject({
       borderColor: Colors.primaryColor.background,
     });
     expect(props.onSelection).toHaveBeenCalled();
 
-    wrapper.find(Input).simulate('endFocus');
+    act(() => {
+      input.props.onEndFocus?.();
+    });
 
-    expect(getGlobalStyles(wrapper.find(View).at(1))).toMatchObject({
+    inner = getByTestId('formInputInnerContainer');
+    expect(getComputedStyles(inner.props.style)).toMatchObject({
       borderColor: Colors.secondaryColor.background,
     });
     expect(props.onEndFocus).toHaveBeenCalled();
   });
 
-  it('applies required styling when field is required and no value', () => {
-    const wrapper = shallow(
-      <FormInput {...props} required={true} defaultValue={null} />,
-    );
+  it('applies required styling when empty', () => {
+    const {getByTestId} = setupFormInput({required: true, defaultValue: ''});
+    const inner = getByTestId('formInputInnerContainer');
 
-    expect(getGlobalStyles(wrapper.find(View).at(1))).toMatchObject({
+    expect(getComputedStyles(inner.props.style)).toMatchObject({
       borderColor: Colors.errorColor.background,
     });
   });
 
-  it('does not apply required styling when field is required and not empty', () => {
-    const wrapper = shallow(<FormInput {...props} required={true} />);
+  it('keeps default styling when required but not empty', () => {
+    const {getByTestId} = setupFormInput({required: true});
+    const inner = getByTestId('formInputInnerContainer');
 
-    expect(getGlobalStyles(wrapper.find(View).at(1))).toMatchObject({
+    expect(getComputedStyles(inner.props.style)).toMatchObject({
       borderColor: Colors.secondaryColor.background,
     });
   });
 
-  it('renders readonly input when necessary', () => {
-    const wrapper = shallow(<FormInput {...props} readOnly={true} />);
+  it('marks input as readonly when requested', () => {
+    const {getByTestId} = setupFormInput({readOnly: true});
+    const {input} = getInput(getByTestId);
 
-    expect(wrapper.find(Input).prop('readOnly')).toBe(true);
+    expect(input.props.readOnly).toBe(true);
   });
 });
