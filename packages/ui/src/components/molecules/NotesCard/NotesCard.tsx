@@ -44,9 +44,10 @@ const NotesCard = ({title, data, style}: NotesCardProps) => {
   };
 
   return (
-    <View style={[styles.description, style]}>
+    <View testID="notesCardContainer" style={[styles.description, style]}>
       <Text style={styles.title}>{title}</Text>
       <TouchableOpacity
+        testID="notesCardTouchable"
         disabled={chevronHeight < MAX_HEIGHT}
         activeOpacity={0.9}
         onPress={toggleExpanded}>

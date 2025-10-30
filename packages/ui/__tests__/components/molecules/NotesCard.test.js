@@ -17,72 +17,115 @@
  */
 
 import React from 'react';
-import {TouchableOpacity, View} from 'react-native';
-import {shallow} from 'enzyme';
-import {HtmlInput, Icon, NotesCard, Text} from '@axelor/aos-mobile-ui';
-import {getGlobalStyles} from '../../tools';
+import {act, fireEvent} from '@testing-library/react-native';
+import {HtmlInput, Icon, NotesCard} from '@axelor/aos-mobile-ui';
+import {setup, getComputedStyles} from '../../tools';
 
 describe('NotesCard Component', () => {
-  const props = {
+  const baseProps = {
     title: 'Title',
     data: 'TEST',
   };
 
-  it('should render without crashing', () => {
-    const wrapper = shallow(<NotesCard {...props} />);
+  const setupNotesCard = overrideProps =>
+    setup({
+      Component: NotesCard,
+      baseProps,
+      overrideProps,
+    });
 
-    expect(wrapper.exists()).toBe(true);
+  it('renders title and html content', () => {
+    const {getByText, getByTestId} = setupNotesCard();
+
+    expect(getByText(baseProps.title)).toBeTruthy();
+    expect(getByTestId('htmlInputScrollView')).toBeTruthy();
   });
 
-  it('should render an Text component with title props', () => {
-    const wrapper = shallow(<NotesCard {...props} />);
+  it('returns null when data is empty', () => {
+    const {queryByText, queryByTestId} = setupNotesCard({data: ''});
 
-    expect(wrapper.find(Text).prop('children')).toBe(props.title);
+    expect(queryByText(baseProps.title)).toBeNull();
+    expect(queryByTestId('htmlInputScrollView')).toBeNull();
   });
 
-  it('should render an HtmlInput component', () => {
-    const wrapper = shallow(<NotesCard {...props} />);
+  const findElementByType = (element, type) => {
+    if (!element || !element.props) {
+      return null;
+    }
 
-    expect(wrapper.find(HtmlInput).exists()).toBe(true);
-    expect(wrapper.find(HtmlInput).prop('readonly')).toBe(true);
-    expect(wrapper.find(HtmlInput).prop('defaultInput')).toBe(props.data);
+    if (element.type === type) {
+      return element;
+    }
+
+    const children = React.Children.toArray(element.props.children);
+
+    for (const child of children) {
+      const result = findElementByType(child, type);
+      if (result) {
+        return result;
+      }
+    }
+
+    return null;
+  };
+
+  it('renders chevron when content exceeds maximum height and toggles on press', () => {
+    const {getByTestId} = setupNotesCard();
+    const htmlInput = findElementByType(
+      getByTestId('notesCardTouchable'),
+      HtmlInput,
+    );
+
+    expect(htmlInput).toBeTruthy();
+
+    act(() => {
+      htmlInput.props.onHeightChange(150);
+    });
+
+    let touchable = getByTestId('notesCardTouchable');
+    expect(touchable.props.accessibilityState?.disabled).toBe(false);
+
+    const iconDown = findElementByType(touchable, Icon);
+    expect(iconDown).toBeTruthy();
+    expect(iconDown.props.name).toBe('chevron-down');
+
+    fireEvent.press(touchable);
+
+    touchable = getByTestId('notesCardTouchable');
+    const iconUp = findElementByType(touchable, Icon);
+    expect(iconUp).toBeTruthy();
+    expect(iconUp.props.name).toBe('chevron-up');
+
+    act(() => {
+      htmlInput.props.onHeightChange(50);
+    });
+
+    expect(
+      findElementByType(getByTestId('notesCardTouchable'), Icon),
+    ).toBeNull();
   });
 
-  it('should not render if data is null', () => {
-    const wrapper = shallow(<NotesCard {...props} data={null} />);
+  it('disables toggle when content height is below threshold', () => {
+    const {getByTestId} = setupNotesCard();
+    const touchable = getByTestId('notesCardTouchable');
+    const htmlInput = findElementByType(touchable, HtmlInput);
 
-    expect(wrapper.isEmptyRender()).toBe(true);
-    expect(wrapper.find(Text).exists()).toBe(false);
-    expect(wrapper.find(HtmlInput).exists()).toBe(false);
+    expect(htmlInput).toBeTruthy();
+
+    act(() => {
+      htmlInput.props.onHeightChange(50);
+    });
+
+    const updatedTouchable = getByTestId('notesCardTouchable');
+    expect(updatedTouchable.props.accessibilityState?.disabled).toBe(true);
   });
 
-  it('should render chevron icon when content exceeds maximum height', () => {
-    const wrapper = shallow(<NotesCard {...props} />);
+  it('applies custom container style', () => {
+    const style = {width: 200};
+    const {getByTestId} = setupNotesCard({style});
 
-    wrapper.find(HtmlInput).simulate('heightChange', 150);
-
-    expect(wrapper.find(Icon).exists()).toBe(true);
-    expect(wrapper.find(Icon).prop('name')).toBe('chevron-down');
-
-    wrapper.find(TouchableOpacity).simulate('press');
-
-    expect(wrapper.find(Icon).prop('name')).toBe('chevron-up');
-  });
-
-  it('should not render chevron icon when content is within maximum height', () => {
-    const wrapper = shallow(<NotesCard {...props} />);
-
-    wrapper
-      .find(TouchableOpacity)
-      .simulate('layout', {nativeEvent: {layout: {height: 20}}});
-
-    expect(wrapper.find(Icon).exists()).toBe(false);
-  });
-
-  it('should apply custom style when provided', () => {
-    const customStyle = {width: 200};
-    const wrapper = shallow(<NotesCard {...props} style={customStyle} />);
-
-    expect(getGlobalStyles(wrapper.find(View))).toMatchObject(customStyle);
+    expect(
+      getComputedStyles(getByTestId('notesCardContainer').props.style),
+    ).toMatchObject(style);
   });
 });
