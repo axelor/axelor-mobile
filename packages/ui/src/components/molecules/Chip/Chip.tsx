@@ -72,8 +72,9 @@ const Chip = ({
       style={[{width: width, marginHorizontal: marginHorizontal}, style]}
       disabled={readonly}
       onPress={onPress}
-      activeOpacity={0.8}>
-      <View style={styles.container}>
+      activeOpacity={0.8}
+      testID="chipTouchable">
+      <View style={styles.container} testID="chipContainer">
         <Text
           textColor={selected ? chipColor.foreground : Colors.text}
           numberOfLines={numberOfLines}
