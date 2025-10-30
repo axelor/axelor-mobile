@@ -16,20 +16,18 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import React from 'react';
-import {View} from 'react-native';
-import {shallow} from 'enzyme';
-import {Icon, Input, NumberChevronInput} from '@axelor/aos-mobile-ui';
-import {getGlobalStyles} from '../../tools';
+import {fireEvent} from '@testing-library/react-native';
+import {NumberChevronInput} from '@axelor/aos-mobile-ui';
+import {setup, getComputedStyles} from '../../tools';
 
-export const INPUT_CHANGE_TYPE = {
+const INPUT_CHANGE_TYPE = {
   button: 0,
   keyboard: 1,
   limit: 2,
 };
 
 describe('NumberChevronInput Component', () => {
-  const props = {
+  const baseProps = {
     defaultValue: 5,
     minValue: 0,
     maxValue: 9,
@@ -37,121 +35,104 @@ describe('NumberChevronInput Component', () => {
     onEndFocus: jest.fn(),
   };
 
-  it('renders without crashing', () => {
-    const wrapper = shallow(<NumberChevronInput {...props} />);
-    expect(wrapper.exists()).toBe(true);
+  const setupInput = overrideProps =>
+    setup({Component: NumberChevronInput, baseProps, overrideProps});
+
+  it('renders with default value', () => {
+    const {getByDisplayValue} = setupInput();
+
+    expect(getByDisplayValue(baseProps.defaultValue.toString())).toBeTruthy();
   });
 
-  it('increments and decrements value correctly', () => {
-    const _onValueChangeMock = jest.fn();
+  it('increments and decrements value via chevron buttons', () => {
+    const {getAllByTestId, props} = setupInput({
+      onValueChange: jest.fn(),
+    });
 
-    const _props = {
-      ...props,
-      onValueChange: _onValueChangeMock,
-    };
+    const [increaseButton, decreaseButton] = getAllByTestId('iconTouchable');
 
-    const wrapper = shallow(<NumberChevronInput {..._props} />);
-    const increaseButton = wrapper
-      .find('ChevronButton')
-      .at(0)
-      .dive()
-      .find(Icon);
-    const decreaseButton = wrapper
-      .find('ChevronButton')
-      .at(1)
-      .dive()
-      .find(Icon);
-
-    increaseButton.simulate('press');
-    expect(_onValueChangeMock).toHaveBeenCalledWith(
-      6,
+    fireEvent.press(increaseButton);
+    expect(props.onValueChange).toHaveBeenLastCalledWith(
+      baseProps.defaultValue + 1,
       INPUT_CHANGE_TYPE.button,
     );
 
-    decreaseButton.simulate('press');
-    expect(_onValueChangeMock).toHaveBeenCalledWith(
-      5,
+    fireEvent.press(decreaseButton);
+    expect(props.onValueChange).toHaveBeenLastCalledWith(
+      baseProps.defaultValue,
       INPUT_CHANGE_TYPE.button,
     );
   });
 
-  it('does not allow value to exceed max limits', () => {
-    const _props = {
-      ...props,
+  it('prevents increment when value reaches maxValue', () => {
+    const {getAllByTestId, props} = setupInput({
       defaultValue: 9,
-    };
+      onValueChange: jest.fn(),
+    });
 
-    const wrapper = shallow(<NumberChevronInput {..._props} />);
-    const increaseButton = wrapper
-      .find('ChevronButton')
-      .at(0)
-      .dive()
-      .find(Icon);
+    const [increaseTouchable] = getAllByTestId('iconTouchable');
+    fireEvent.press(increaseTouchable);
 
-    expect(increaseButton.prop('touchable')).toBe(false);
+    expect(props.onValueChange).not.toHaveBeenCalled();
   });
 
-  it('does not allow value to exceed min limits', () => {
-    const _props = {
-      ...props,
+  it('prevents decrement when value reaches minValue', () => {
+    const {getAllByTestId, props} = setupInput({
       defaultValue: 0,
-    };
+      onValueChange: jest.fn(),
+    });
 
-    const wrapper = shallow(<NumberChevronInput {..._props} />);
-    const decreaseButton = wrapper
-      .find('ChevronButton')
-      .at(1)
-      .dive()
-      .find(Icon);
+    const [, decreaseTouchable] = getAllByTestId('iconTouchable');
+    fireEvent.press(decreaseTouchable);
 
-    expect(decreaseButton.prop('touchable')).toBe(false);
+    expect(props.onValueChange).not.toHaveBeenCalled();
   });
 
-  it('value is correctly re-set when value is out of bound', () => {
-    const _onValueChangeMock = jest.fn();
+  it('clamps keyboard input that exceeds bounds', () => {
+    const {getByDisplayValue, props} = setupInput({
+      maxValue: 5,
+      onValueChange: jest.fn(),
+    });
 
-    const wrapper = shallow(
-      <NumberChevronInput
-        {...props}
-        maxValue={5}
-        onValueChange={_onValueChangeMock}
-      />,
+    const input = getByDisplayValue(baseProps.defaultValue.toString());
+
+    fireEvent.changeText(input, '8');
+
+    expect(props.onValueChange).toHaveBeenLastCalledWith(
+      5,
+      INPUT_CHANGE_TYPE.limit,
     );
-
-    wrapper.find(Input).simulate('change', '8');
-    expect(_onValueChangeMock).toHaveBeenCalledWith(5, INPUT_CHANGE_TYPE.limit);
   });
 
-  it('handles text input changes correctly', () => {
-    const _onValueChangeMock = jest.fn();
+  it('handles valid keyboard input', () => {
+    const {getByDisplayValue, props} = setupInput({
+      onValueChange: jest.fn(),
+    });
 
-    const _props = {
-      ...props,
-      onValueChange: _onValueChangeMock,
-    };
-    const wrapper = shallow(<NumberChevronInput {..._props} />);
+    const input = getByDisplayValue(baseProps.defaultValue.toString());
 
-    wrapper.find('Input').simulate('change', '7');
-    expect(_onValueChangeMock).toHaveBeenCalledWith(
+    fireEvent.changeText(input, '7');
+
+    expect(props.onValueChange).toHaveBeenLastCalledWith(
       7,
       INPUT_CHANGE_TYPE.keyboard,
     );
 
-    wrapper.find('Input').simulate('change', 'invalid');
-    expect(_onValueChangeMock).not.toHaveBeenCalledWith(
+    fireEvent.changeText(input, 'invalid');
+
+    expect(props.onValueChange).not.toHaveBeenLastCalledWith(
       NaN,
       INPUT_CHANGE_TYPE.keyboard,
     );
   });
 
-  it('applies custom style when provided', () => {
-    const customStyle = {height: 200};
-    const wrapper = shallow(
-      <NumberChevronInput {...props} style={customStyle} />,
-    );
+  it('applies custom container style', () => {
+    const style = {height: 200};
+    const {getByTestId} = setupInput({style});
 
-    expect(getGlobalStyles(wrapper.find(View).at(0))).toMatchObject(
-      customStyle,
+    const styles = getComputedStyles(
+      getByTestId('numberChevronInputContainer').props.style,
     );
+    expect(styles).toMatchObject(style);
   });
 });

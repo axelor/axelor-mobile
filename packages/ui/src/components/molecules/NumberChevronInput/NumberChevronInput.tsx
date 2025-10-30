@@ -190,7 +190,9 @@ const NumberChevronInput = ({
   }, [onEndFocus]);
 
   return (
-    <View style={[styles.container, style]}>
+    <View
+      testID={'numberChevronInputContainer'}
+      style={[styles.container, style]}>
       <ChevronButton
         isIncreasing={true}
         inputValue={inputValue}
