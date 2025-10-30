@@ -47,13 +47,11 @@ const DropdownMenu = ({style, styleMenu, children}: DropdownMenuProps) => {
   }, [clickOutside, visible]);
 
   return (
-    <View style={style} ref={wrapperRef}>
+    <View style={style} ref={wrapperRef} testID="dropdownMenuContainer">
       <TouchableOpacity
-        testID="dropdownMenuToggle"
         style={styles.action}
-        onPress={() => {
-          setVisible(!visible);
-        }}>
+        onPress={() => setVisible(!visible)}
+        testID="dropdownMenuTouchable">
         <Icon
           name="three-dots-vertical"
           color={Colors.primaryColor.background}
@@ -61,11 +59,7 @@ const DropdownMenu = ({style, styleMenu, children}: DropdownMenuProps) => {
         />
       </TouchableOpacity>
       {visible && (
-        <Card
-          testID="dropdownMenuContent"
-          style={[styles.menuContainer, styleMenu]}>
-          {children}
-        </Card>
+        <Card style={[styles.menuContainer, styleMenu]}>{children}</Card>
       )}
     </View>
   );

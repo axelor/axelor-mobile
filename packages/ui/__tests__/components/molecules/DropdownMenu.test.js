@@ -17,47 +17,54 @@
  */
 
 import React from 'react';
+import {View} from 'react-native';
 import {fireEvent} from '@testing-library/react-native';
-import {DropdownMenu, Text} from '@axelor/aos-mobile-ui';
+import {DropdownMenu} from '@axelor/aos-mobile-ui';
 import {setup} from '../../tools';
 
 describe('DropdownMenu Component', () => {
-  const props = {
-    children: <Text testID="MENU-CONTENT">Menu Content</Text>,
-  };
-
   const setupDropdownMenu = overrideProps =>
     setup({
       Component: DropdownMenu,
-      baseProps: props,
+      baseProps: {children: <View testID="mocked_children" />},
       overrideProps,
     });
 
-  it('should render without crashing', () => {
-    expect(() => setupDropdownMenu()).not.toThrow();
+  it('renders without crashing', () => {
+    const {getByTestId} = setupDropdownMenu();
+
+    expect(getByTestId('dropdownMenuContainer')).toBeTruthy();
   });
 
   it('renders children when visible is true', () => {
-    const {getByTestId, getByText} = setupDropdownMenu();
+    const {getByTestId} = setupDropdownMenu();
 
-    fireEvent.press(getByTestId('dropdownMenuToggle'));
+    fireEvent.press(getByTestId('dropdownMenuTouchable'));
 
-    expect(getByTestId('dropdownMenuContent')).toBeTruthy();
-    expect(getByText('Menu Content')).toBeTruthy();
+    expect(getByTestId('cardContainer')).toBeTruthy();
+    expect(getByTestId('mocked_children')).toBeTruthy();
   });
 
   it('toggles visibility when action button is pressed', () => {
-    const {getByTestId, queryByTestId, getByText} = setupDropdownMenu();
+    const {getByTestId, queryByTestId} = setupDropdownMenu();
 
-    expect(queryByTestId('dropdownMenuContent')).toBeNull();
+    expect(queryByTestId('cardContainer')).toBeFalsy();
 
-    fireEvent.press(getByTestId('dropdownMenuToggle'));
+    fireEvent.press(getByTestId('dropdownMenuTouchable'));
 
-    expect(getByTestId('dropdownMenuContent')).toBeTruthy();
-    expect(getByText('Menu Content')).toBeTruthy();
+    expect(getByTestId('cardContainer')).toBeTruthy();
+    expect(getByTestId('mocked_children')).toBeTruthy();
 
-    fireEvent.press(getByTestId('dropdownMenuToggle'));
+    fireEvent.press(getByTestId('dropdownMenuTouchable'));
 
-    expect(queryByTestId('dropdownMenuContent')).toBeNull();
+    expect(queryByTestId('cardContainer')).toBeFalsy();
+  });
+
+  it('should apply custom styles', () => {
+    const {getByTestId, props} = setupDropdownMenu({
+      style: {backgroundColor: 'blue'},
+    });
+
+    expect(getByTestId('dropdownMenuContainer')).toHaveStyle(props.style);
   });
 });
