@@ -23,16 +23,15 @@ import {ThemeColors, useThemeColor} from '../../../theme';
 interface CardProps {
   style?: any;
   children: any;
-  testID?: string;
 }
 
-const Card = ({style, children, testID = 'cardContainer'}: CardProps) => {
+const Card = ({style, children}: CardProps) => {
   const Colors = useThemeColor();
 
   const styles = useMemo(() => getStyles(Colors), [Colors]);
 
   return (
-    <View testID={testID} style={[styles.container, style]}>
+    <View testID="cardContainer" style={[styles.container, style]}>
       {children}
     </View>
   );

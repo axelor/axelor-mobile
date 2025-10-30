@@ -64,13 +64,15 @@ const DropdownCard = ({
   };
 
   return (
-    <View style={[styles.container, styleContainer]}>
+    <View
+      style={[styles.container, styleContainer]}
+      testID="dropdownCardContainer">
       <TouchableOpacity
-        testID="dropdownToggle"
         style={styles.containerContent}
         onPress={handleCardPress}
         disabled={!showIcon}
-        activeOpacity={0.95}>
+        activeOpacity={0.95}
+        testID="dropdownCardTouchable">
         <View
           style={[
             commonStyles.filter,
@@ -86,7 +88,6 @@ const DropdownCard = ({
           </View>
           {showIcon && (
             <Icon
-              testID="dropdownChevron"
               name={displayCard ? 'chevron-up' : 'chevron-down'}
               color={Colors.primaryColor.background}
             />
@@ -94,11 +95,7 @@ const DropdownCard = ({
         </View>
       </TouchableOpacity>
       {displayCard && (
-        <Card
-          testID="dropdownContent"
-          style={[styles.containerChildren, styleCard]}>
-          {children}
-        </Card>
+        <Card style={[styles.containerChildren, styleCard]}>{children}</Card>
       )}
     </View>
   );
