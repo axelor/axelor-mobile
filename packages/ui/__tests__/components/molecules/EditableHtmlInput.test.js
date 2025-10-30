@@ -16,32 +16,43 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+import React from 'react';
 import {fireEvent} from '@testing-library/react-native';
 import {EditableHtmlInput} from '@axelor/aos-mobile-ui';
 import {setup} from '../../tools';
 
-describe('EditableHtmlInput Component', () => {
-  const baseProps = {
-    placeholder: 'Enter text',
-    onValidate: jest.fn(),
-    defaultValue: 'Initial value',
-  };
+jest.mock('../../../lib/components/atoms/HtmlInput/HtmlInput', () => {
+  const {View} = require('react-native');
 
+  return props => <View testID="mocked_htmlInput" {...props} />;
+});
+
+describe('EditableHtmlInput Component', () => {
   const setupEditableHtmlInput = overrideProps =>
     setup({
       Component: EditableHtmlInput,
-      baseProps,
+      baseProps: {
+        placeholder: 'Enter text',
+        onValidate: jest.fn(),
+        defaultValue: 'Initial value',
+      },
       overrideProps,
     });
 
-  beforeEach(() => {
-    jest.clearAllMocks();
+  it('renders without crashing', () => {
+    const {getByTestId} = setupEditableHtmlInput();
+
+    expect(getByTestId('mocked_htmlInput')).toBeTruthy();
   });
 
   it('should render with pencil icon and readonly HtmlInput by default', () => {
     const {getByTestId} = setupEditableHtmlInput();
 
     expect(getByTestId('icon-pencil-fill')).toBeTruthy();
+
+    const _htmlElt = getByTestId('mocked_htmlInput');
+    expect(_htmlElt).toBeTruthy();
+    expect(_htmlElt.props.readonly).toBe(true);
   });
 
   it('toggles to editable mode and calls onValidate when confirmed', () => {
@@ -55,6 +66,6 @@ describe('EditableHtmlInput Component', () => {
     fireEvent.press(getByTestId('iconTouchable'));
 
     expect(getByTestId('icon-pencil-fill')).toBeTruthy();
-    expect(props.onValidate).toHaveBeenCalledWith(baseProps.defaultValue);
+    expect(props.onValidate).toHaveBeenCalledWith(props.defaultValue);
   });
 });
