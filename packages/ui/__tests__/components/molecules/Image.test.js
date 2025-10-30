@@ -21,15 +21,10 @@ import {Image} from '@axelor/aos-mobile-ui';
 import {setup} from '../../tools';
 
 describe('Image Component', () => {
-  const baseProps = {
-    resizeMode: 'contain',
-    source: null,
-  };
-
   const setupImage = overrideProps =>
     setup({
       Component: Image,
-      baseProps,
+      baseProps: {resizeMode: 'contain', source: null},
       overrideProps,
     });
 
@@ -40,38 +35,41 @@ describe('Image Component', () => {
   });
 
   it('renders the fallback icon with a custom size when provided', () => {
-    const customSize = 50;
-    const {getByTestId} = setupImage({defaultIconSize: customSize});
+    const {getByTestId, props} = setupImage({defaultIconSize: 50});
 
     const icon = getByTestId('icon-camera-fill');
-    expect(icon.props.width).toBe(customSize);
-    expect(icon.props.height).toBe(customSize);
+    expect(icon.props.width).toBe(props.defaultIconSize);
+    expect(icon.props.height).toBe(props.defaultIconSize);
   });
 
   it('renders the React Native Image when a valid source is provided', () => {
-    const source = {uri: 'https://docs.axelor.com/_/img/logo_axelor.png'};
-    const {getByRole} = setupImage({source});
+    const {getByRole} = setupImage({
+      source: {uri: 'https://docs.axelor.com/_/img/logo_axelor.png'},
+    });
 
     expect(getByRole('image')).toBeTruthy();
   });
 
   it('applies the provided imageSize style', () => {
-    const source = {uri: 'https://docs.axelor.com/_/img/logo_axelor.png'};
-    const imageSize = {width: 80, height: 40};
-    const {getByRole} = setupImage({source, imageSize});
+    const {getByRole, props} = setupImage({
+      source: {uri: 'https://docs.axelor.com/_/img/logo_axelor.png'},
+      imageSize: {width: 80, height: 40},
+    });
 
-    expect(getByRole('image')).toHaveStyle(imageSize);
+    expect(getByRole('image')).toHaveStyle(props.imageSize);
   });
 
   it('falls back to the icon when the image fails to load', async () => {
-    const source = {uri: 'https://docs.axelor.com/_/img/logo_axelor.png'};
-    const {getByRole, getByTestId, queryByRole} = setupImage({source});
+    const {getByRole, getByTestId, queryByRole} = setupImage({
+      source: {uri: 'https://docs.axelor.com/_/img/logo_axelor.png'},
+    });
 
     fireEvent(getByRole('image'), 'error');
 
     await waitFor(() => {
       expect(queryByRole('image')).toBeNull();
     });
+
     expect(getByTestId('icon-camera-fill')).toBeTruthy();
   });
 });
